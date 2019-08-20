@@ -22,9 +22,9 @@
 
 enum __ablscan_const : uint32_t
 {
-	TAB_SIZE		= 4,
+	TAB_SIZE = 4,
 	MAX_DIGIT_COUNT = 20,
-	MAX_EXPONENT	= 20,
+	MAX_EXPONENT = 20,
 };
 
 //***************************************************************************

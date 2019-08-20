@@ -31,9 +31,9 @@ public:
 	inline FixedLengthString(size_t Length)
 	{
 		gosASSERT(Length != 0);
-		Text		  = (PSTR)malloc(Length);
+		Text = (PSTR)malloc(Length);
 		MaximumLength = Length;
-		CurrentSize   = 0;
+		CurrentSize = 0;
 		if (Text)
 			*Text = 0;
 	}
@@ -65,7 +65,7 @@ public:
 	inline void Reset()
 	{
 		CurrentSize = 0;
-		*Text		= 0;
+		*Text = 0;
 	}
 	//
 	// Strings can be initialized by other FixedLengthStrings
@@ -82,7 +82,7 @@ public:
 			if (Length > MaximumLength)
 				Length = MaximumLength;
 			memcpy(Text, Source, Length);
-			CurrentSize			  = Length - 1;
+			CurrentSize = Length - 1;
 			*(Text + CurrentSize) = 0;
 		}
 		return *this;

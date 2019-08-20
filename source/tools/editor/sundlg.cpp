@@ -24,15 +24,17 @@ ON_BN_CLICKED(IDC_REFRACTALIZE_TERRAIN_BUTTON, OnRefractalizeTerrainButton)
 ON_CONTROL_RANGE(EN_CHANGE, IDC_LIGHTCOLOR, IDC_AMBIENT2, OnChangeLightcolor)
 END_MESSAGE_MAP()
 
-SunDlg::SunDlg() : CDialog(IDD_LIGHT)
+SunDlg::SunDlg() :
+	CDialog(IDD_LIGHT)
 {
 	//{{AFX_DATA_INIT(SunDlg)
-	m_Yaw			  = 0.0f;
+	m_Yaw = 0.0f;
 	m_InitialSunPitch = 0.0f;
 	//}}AFX_DATA_INIT
 }
 
-void SunDlg::DoDataExchange(CDataExchange* pDX)
+void
+SunDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(SunDlg)
@@ -43,18 +45,20 @@ void SunDlg::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-void SunDlg::Init()
+void
+SunDlg::Init()
 {
 	uint32_t color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8) | (eye->dayAmbientRed << 16);
 	displayInHex(color, m_AmbientEdit);
 	color = eye->dayLightBlue | (eye->dayLightGreen << 8) | (eye->dayLightRed << 16);
 	displayInHex(color, m_LightColor);
 	m_InitialSunPitch = eye->lightPitch;
-	m_Yaw			  = eye->lightYaw;
+	m_Yaw = eye->lightYaw;
 	UpdateData(0);
 }
 
-void SunDlg::displayInHex(int32_t number, CEdit& edit)
+void
+SunDlg::displayInHex(int32_t number, CEdit& edit)
 {
 	// turn this into hex
 	CString text;
@@ -62,7 +66,8 @@ void SunDlg::displayInHex(int32_t number, CEdit& edit)
 	edit.SetWindowText(text);
 }
 
-int32_t SunDlg::getHexValue(CEdit& edit)
+int32_t
+SunDlg::getHexValue(CEdit& edit)
 {
 	CString str;
 	edit.GetWindowText(str);
@@ -73,15 +78,16 @@ int32_t SunDlg::getHexValue(CEdit& edit)
 	return value;
 }
 
-void SunDlg::applyChanges()
+void
+SunDlg::applyChanges()
 {
 	UpdateData();
-	int32_t color  = getHexValue(m_LightColor);
+	int32_t color = getHexValue(m_LightColor);
 	eye->lightBlue = eye->dayLightBlue = (color & 0xff);
 	eye->lightGreen = eye->dayLightGreen = (color & 0x0000ff00) >> 8;
 	eye->lightRed = eye->dayLightRed = (color & 0x00ff0000) >> 16;
 	eye->setLightColor(0, color);
-	color			 = getHexValue(m_AmbientEdit);
+	color = getHexValue(m_AmbientEdit);
 	eye->ambientBlue = eye->dayAmbientBlue = (color & 0xff);
 	eye->ambientGreen = eye->dayAmbientGreen = (color & 0x0000ff00) >> 8;
 	eye->ambientRed = eye->dayAmbientRed = (color & 0x00ff0000) >> 16;
@@ -99,18 +105,19 @@ void SunDlg::applyChanges()
 	eye->update();
 }
 
-void SunDlg::OnOK()
+void
+SunDlg::OnOK()
 {
 	applyChanges();
 	CDialog::OnOK();
 }
 
-HBRUSH SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
+HBRUSH
+SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 {
 	int32_t ID = pWnd->GetDlgCtrlID();
 	HBRUSH hbr = CDialog ::OnCtlColor(pDC, pWnd, nCtlColor);
-	if (ID == IDC_LIGHTCOLOR || ID == IDC_AMBIENT || ID == IDC_LIGHTCOLOR2 || ID == IDC_AMBIENT2 ||
-		ID == IDC_SUNSETCOLOR)
+	if (ID == IDC_LIGHTCOLOR || ID == IDC_AMBIENT || ID == IDC_LIGHTCOLOR2 || ID == IDC_AMBIENT2 || ID == IDC_SUNSETCOLOR)
 	{
 		int32_t i = getHexValue(*(CEdit*)pWnd);
 		if (backgroundBrush.m_hObject)
@@ -127,20 +134,26 @@ HBRUSH SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 	return hbr;
 }
 
-BOOL SunDlg::OnInitDialog()
+BOOL
+SunDlg::OnInitDialog()
 {
 	CDialog ::OnInitDialog();
 	Init();
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 //*************************************************************************************************
 // end of file ( sunDlg.cpp )
 
-void SunDlg::OnAmbientButton() { DoColorDlg(m_AmbientEdit); }
+void
+SunDlg::OnAmbientButton()
+{
+	DoColorDlg(m_AmbientEdit);
+}
 
-void SunDlg::DoColorDlg(CEdit& edit)
+void
+SunDlg::DoColorDlg(CEdit& edit)
 {
 	CString tmpStr;
 	int32_t base = getHexValue(edit);
@@ -154,14 +167,19 @@ void SunDlg::DoColorDlg(CEdit& edit)
 	}
 }
 
-void SunDlg::OnLightButton() { DoColorDlg(m_LightColor); }
+void
+SunDlg::OnLightButton()
+{
+	DoColorDlg(m_LightColor);
+}
 
-void SunDlg::OnChangeLightcolor(uint32_t ID)
+void
+SunDlg::OnChangeLightcolor(uint32_t ID)
 {
 	CString text;
 	GetDlgItem(ID)->GetWindowText(text);
 	bool bChanged = false;
-	int32_t i	 = 0;
+	int32_t i = 0;
 	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
@@ -177,7 +195,8 @@ void SunDlg::OnChangeLightcolor(uint32_t ID)
 	GetDlgItem(ID)->RedrawWindow();
 }
 
-void SunDlg::OnRecalculateTerrainShadowsButton()
+void
+SunDlg::OnRecalculateTerrainShadowsButton()
 {
 	EditorInterface::instance()->SetBusyMode();
 	applyChanges();
@@ -188,7 +207,8 @@ void SunDlg::OnRecalculateTerrainShadowsButton()
 	EditorInterface::instance()->UnsetBusyMode();
 }
 
-void SunDlg::OnRefractalizeTerrainButton()
+void
+SunDlg::OnRefractalizeTerrainButton()
 {
 	applyChanges();
 	EditorInterface::instance()->RefractalizeTerrain(1);

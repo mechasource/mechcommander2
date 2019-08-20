@@ -13,33 +13,33 @@ viewer
 bool Mission::statisticsInitialized = 0;
 
 #ifdef LAB_ONLY
-int64_t MCTimeABLLoad		 = 0;
+int64_t MCTimeABLLoad = 0;
 int64_t MCTimeMiscToTeamLoad = 0;
-int64_t MCTimeTeamLoad		 = 0;
-int64_t MCTimeObjectLoad	 = 0;
-int64_t MCTimeTerrainLoad	= 0;
-int64_t MCTimeMoveLoad		 = 0;
+int64_t MCTimeTeamLoad = 0;
+int64_t MCTimeObjectLoad = 0;
+int64_t MCTimeTerrainLoad = 0;
+int64_t MCTimeMoveLoad = 0;
 int64_t MCTimeMissionABLLoad = 0;
-int64_t MCTimeWarriorLoad	= 0;
+int64_t MCTimeWarriorLoad = 0;
 int64_t MCTimeMoverPartsLoad = 0;
-int64_t MCTimeObjectiveLoad  = 0;
-int64_t MCTimeCommanderLoad  = 0;
-int64_t MCTimeMiscLoad		 = 0;
-int64_t MCTimeGUILoad		 = 0;
+int64_t MCTimeObjectiveLoad = 0;
+int64_t MCTimeCommanderLoad = 0;
+int64_t MCTimeMiscLoad = 0;
+int64_t MCTimeGUILoad = 0;
 
 int64_t x1;
 
 int64_t MCTimeMultiplayerUpdate = 0;
-int64_t MCTimeTerrainUpdate		= 0;
-int64_t MCTimeCameraUpdate		= 0;
-int64_t MCTimeWeatherUpdate		= 0;
+int64_t MCTimeTerrainUpdate = 0;
+int64_t MCTimeCameraUpdate = 0;
+int64_t MCTimeWeatherUpdate = 0;
 int64_t MCTimePathManagerUpdate = 0;
-int64_t MCTimeRunBrainUpdate	= 0;
-int64_t MCTimePath1Update		= 0;
-int64_t MCTimePath2Update		= 0;
-int64_t MCTimePath3Update		= 0;
-int64_t MCTimePath4Update		= 0;
-int64_t MCTimePath5Update		= 0;
+int64_t MCTimeRunBrainUpdate = 0;
+int64_t MCTimePath1Update = 0;
+int64_t MCTimePath2Update = 0;
+int64_t MCTimePath3Update = 0;
+int64_t MCTimePath4Update = 0;
+int64_t MCTimePath5Update = 0;
 
 int64_t MCTimeCalcGoal1Update = 0;
 extern int64_t MCTimeCalcPath1Update;
@@ -53,15 +53,15 @@ int64_t MCTimeCalcGoal4Update = 0;
 int64_t MCTimeCalcGoal5Update = 0;
 int64_t MCTimeCalcGoal6Update = 0;
 
-int64_t MCTimeTerrainGeometry  = 0;
-int64_t MCTimeCraterUpdate	 = 0;
+int64_t MCTimeTerrainGeometry = 0;
+int64_t MCTimeCraterUpdate = 0;
 int64_t MCTimeTXMManagerUpdate = 0;
-int64_t MCTimeSensorUpdate	 = 0;
-int64_t MCTimeLOSUpdate		   = 0;
-int64_t MCTimeCollisionUpdate  = 0;
-int64_t MCTimeMissionScript	= 0;
-int64_t MCTimeInterfaceUpdate  = 0;
-int64_t MCTimeMissionTotal	 = 0;
+int64_t MCTimeSensorUpdate = 0;
+int64_t MCTimeLOSUpdate = 0;
+int64_t MCTimeCollisionUpdate = 0;
+int64_t MCTimeMissionScript = 0;
+int64_t MCTimeInterfaceUpdate = 0;
+int64_t MCTimeMissionTotal = 0;
 
 extern int64_t MCTimeTerrainGeometry;
 extern int64_t MCTimeCraterUpdate;
@@ -92,7 +92,8 @@ extern int64_t x;
 extern float OneOverProcessorSpeed;
 #endif
 
-void Mission::initBareMinimum()
+void
+Mission::initBareMinimum()
 {
 	int32_t result = 0;
 	result;
@@ -125,7 +126,8 @@ void Mission::initBareMinimum()
 	}
 }
 
-void Mission::initializeStatistics()
+void
+Mission::initializeStatistics()
 {
 #ifdef LAB_ONLY
 	// Add Mission Load statistics to GameOS Debugger screen!
@@ -199,7 +201,8 @@ void Mission::initializeStatistics()
 #endif
 }
 
-void Mission::initTGLForLogistics()
+void
+Mission::initTGLForLogistics()
 {
 	//---------------------------------------------------------
 	uint32_t tglHeapSize = 4 * 1024 * 1024;

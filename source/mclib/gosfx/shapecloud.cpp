@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
-	std::iostream stream, uint32_t gfx_version)
-	: SpinningCloud__Specification(gosFX::ShapeCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version) :
+	SpinningCloud__Specification(gosFX::ShapeCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	_ASSERT(m_class == ShapeCloudClassID);
@@ -41,13 +41,13 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShapeCloud__Specification::ShapeCloud__Specification(MidLevelRenderer::MLRShape* shape)
-	: SpinningCloud__Specification(gosFX::ShapeCloudClassID)
+gosFX::ShapeCloud__Specification::ShapeCloud__Specification(MidLevelRenderer::MLRShape* shape) :
+	SpinningCloud__Specification(gosFX::ShapeCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = m_particleClassSize = sizeof(gosFX::ShapeCloud::Particle);
-	m_shape									  = nullptr;
+	m_shape = nullptr;
 	SetShape(shape);
 }
 
@@ -65,7 +65,8 @@ gosFX::ShapeCloud__Specification::~ShapeCloud__Specification()
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShapeCloud__Specification* gosFX::ShapeCloud__Specification::Make(
+gosFX::ShapeCloud__Specification*
+gosFX::ShapeCloud__Specification::Make(
 	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
@@ -79,7 +80,8 @@ gosFX::ShapeCloud__Specification* gosFX::ShapeCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud__Specification::Save(std::iostream stream)
+void
+gosFX::ShapeCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -91,7 +93,8 @@ void gosFX::ShapeCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
+void
+gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -100,7 +103,7 @@ void gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
 	// gos_PushCurrentHeap(Heap);
 #endif
 	m_radius = spec->m_radius;
-	m_shape  = spec->m_shape;
+	m_shape = spec->m_shape;
 	// gos_PopCurrentHeap();
 	Check_Object(m_shape);
 	m_shape->AttachReference();
@@ -108,7 +111,8 @@ void gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
+void
+gosFX::ShapeCloud__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 {
 	// Check_Object(this);
 	//
@@ -137,7 +141,7 @@ void gosFX::ShapeCloud__Specification::SetShape(MidLevelRenderer::MLRShape* shap
 		// distance any point is from the origin
 		//-----------------------------------------------------------------
 		//
-		m_radius	  = 0.0f;
+		m_radius = 0.0f;
 		int32_t count = m_shape->GetNum();
 		for (size_t i = 0; i < count; ++i)
 		{
@@ -166,7 +170,8 @@ gosFX::ShapeCloud::ClassData* gosFX::ShapeCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud::InitializeClass()
+void
+gosFX::ShapeCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -177,7 +182,8 @@ void gosFX::ShapeCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud::TerminateClass()
+void
+gosFX::ShapeCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -186,15 +192,16 @@ void gosFX::ShapeCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShapeCloud::ShapeCloud(Specification* spec, uint32_t flags)
-	: SpinningCloud(DefaultData, spec, flags)
+gosFX::ShapeCloud::ShapeCloud(Specification* spec, uint32_t flags) :
+	SpinningCloud(DefaultData, spec, flags)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShapeCloud* gosFX::ShapeCloud::Make(Specification* spec, uint32_t flags)
+gosFX::ShapeCloud*
+gosFX::ShapeCloud::Make(Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
 #ifdef _GAMEOS_HPP_
@@ -207,7 +214,8 @@ gosFX::ShapeCloud* gosFX::ShapeCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void
+gosFX::ShapeCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -225,7 +233,8 @@ void gosFX::ShapeCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* transl
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::ShapeCloud::AnimateParticle(
+bool
+gosFX::ShapeCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -242,22 +251,23 @@ bool gosFX::ShapeCloud::AnimateParticle(
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	float seed = particle->m_seed;
-	float age  = particle->m_age;
+	float age = particle->m_age;
 	//
 	//------------------
 	// Animate the color
 	//------------------
 	//
-	particle->m_color.red   = spec->m_pRed.ComputeValue(age, seed);
+	particle->m_color.red = spec->m_pRed.ComputeValue(age, seed);
 	particle->m_color.green = spec->m_pGreen.ComputeValue(age, seed);
-	particle->m_color.blue  = spec->m_pBlue.ComputeValue(age, seed);
+	particle->m_color.blue = spec->m_pBlue.ComputeValue(age, seed);
 	particle->m_color.alpha = spec->m_pAlpha.ComputeValue(age, seed);
 	return true;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud::Draw(DrawInfo* info)
+void
+gosFX::ShapeCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -272,13 +282,13 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 		MidLevelRenderer::DrawScalableShapeInformation dinfo;
 		MidLevelRenderer::MLRShape* shape = GetSpecification()->m_shape;
 		dinfo.clippingFlags.SetClippingState(0x3f);
-		dinfo.worldToShape  = nullptr;
+		dinfo.worldToShape = nullptr;
 		Specification* spec = GetSpecification();
 		Check_Object(spec);
 		dinfo.state.Combine(info->m_state, spec->m_state);
-		dinfo.activeLights	 = nullptr;
+		dinfo.activeLights = nullptr;
 		dinfo.nrOfActiveLights = 0;
-		dinfo.shape			   = shape;
+		dinfo.shape = shape;
 		Stuff::LinearMatrix4D local_to_world;
 		local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
 		//
@@ -463,4 +473,8 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::ShapeCloud::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

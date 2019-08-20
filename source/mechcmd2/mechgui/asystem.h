@@ -25,36 +25,36 @@ namespace mechgui
 
 typedef enum __asystem_constants
 {
-	MAX_CHILDREN			= 64,
-	aMSG_LEFTMOUSEDOWN		= 1,
-	aMSG_MIDDLEMOUSEDOWN	= 2,
-	aMSG_RIGHTMOUSEDOWN		= 3,
-	aMSG_LEFTMOUSEUP		= 4,
-	aMSG_MIDDLEMOUSEUP		= 5,
-	aMSG_RIGHTMOUSEUP		= 6,
-	aMSG_MOUSEMOVE			= 7,
-	aMSG_LEFTMOUSEDBLCLICK  = 16,
+	MAX_CHILDREN = 64,
+	aMSG_LEFTMOUSEDOWN = 1,
+	aMSG_MIDDLEMOUSEDOWN = 2,
+	aMSG_RIGHTMOUSEDOWN = 3,
+	aMSG_LEFTMOUSEUP = 4,
+	aMSG_MIDDLEMOUSEUP = 5,
+	aMSG_RIGHTMOUSEUP = 6,
+	aMSG_MOUSEMOVE = 7,
+	aMSG_LEFTMOUSEDBLCLICK = 16,
 	aMSG_RIGHTMOUSEDBLCLICK = 17,
-	aMSG_LEFTMOUSEHELD		= 18,
-	aMSG_RIGHTMOUSEHELD		= 19,
-	aMSG_SCROLLUP			= 101,
-	aMSG_SCROLLDOWN			= 102,
-	aMSG_PAGEUP				= 103,
-	aMSG_PAGEDOWN			= 104,
-	aMSG_TRACKTAB			= 106,
-	aMSG_SCROLLTO			= 107, //	sent by parent
-	aMSG_SCROLLPARENT		= 108, //	sent to parent
-	aMSG_SELECTME			= 109,
-	aMSG_DONE				= 110,
-	aMSG_BUTTONCLICKED		= 111,
-	aMSG_SELCHANGED			= 112,
+	aMSG_LEFTMOUSEHELD = 18,
+	aMSG_RIGHTMOUSEHELD = 19,
+	aMSG_SCROLLUP = 101,
+	aMSG_SCROLLDOWN = 102,
+	aMSG_PAGEUP = 103,
+	aMSG_PAGEDOWN = 104,
+	aMSG_TRACKTAB = 106,
+	aMSG_SCROLLTO = 107, //	sent by parent
+	aMSG_SCROLLPARENT = 108, //	sent to parent
+	aMSG_SELECTME = 109,
+	aMSG_DONE = 110,
+	aMSG_BUTTONCLICKED = 111,
+	aMSG_SELCHANGED = 112,
 };
 
 #if _CONSIDERED_OBSOLETE
 typedef enum WINDOW_ID
 {
 	UNDEFINEDWINDOW = -1,
-	GENERIC			= 1,
+	GENERIC = 1,
 	STATIC,
 	SCROLLBAR,
 	BUTTON,
@@ -122,7 +122,7 @@ public:
 	aObject* getParent(void)
 	{
 		return pParent; // No Need for this to be virtual!!!!! Can now check if
-						// object has been deleted without crashing!
+			// object has been deleted without crashing!
 	}
 
 	int32_t numberOfChildren(void) const;

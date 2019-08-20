@@ -22,10 +22,10 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
+			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			UseOfATL="0"
+			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -44,19 +44,9 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -76,7 +66,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -103,10 +92,8 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			UseOfATL="0"
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -125,18 +112,9 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -156,7 +134,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -183,10 +160,9 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			UseOfATL="0"
+			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -205,19 +181,9 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -237,7 +203,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -264,10 +229,9 @@
 		<Configuration
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			UseOfATL="0"
+			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -286,18 +250,9 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -317,7 +272,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -490,22 +444,6 @@
 					</File>
 					<File
 						RelativePath="..\mclib\stuff\socket.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\sortedchain.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\sortedsocket.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\table.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\tree.cpp"
 						>
 					</File>
 				</Filter>
@@ -695,14 +633,110 @@
 					<File
 						RelativePath="..\mclib\stuff\notationfile.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\mclib\stuff\note.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\mclib\stuff\page.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 				<Filter
@@ -1786,22 +1820,6 @@
 				<Filter
 					Name="Stream Functions"
 					>
-					<File
-						RelativePath="..\mclib\stuff\filestream.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\filestreammanager.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\memorystream.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\namelist.hpp"
-						>
-					</File>
 					<File
 						RelativePath="..\mclib\stuff\notationfile.hpp"
 						>

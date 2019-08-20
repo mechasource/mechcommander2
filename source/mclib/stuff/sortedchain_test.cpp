@@ -33,12 +33,16 @@ public:
 	bool RunTest();
 };
 
-SortedChainTestPlug::SortedChainTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
+SortedChainTestPlug::SortedChainTestPlug(int32_t value) :
+	Plug(DefaultData)
+{
+	this->value = value;
+}
 
 SortedChainTestPlug::~SortedChainTestPlug() {}
 
-SortedChainTestNode::SortedChainTestNode()
-	: Node(DefaultData), vchain1(this, true), vchain2(this, true)
+SortedChainTestNode::SortedChainTestNode() :
+	Node(DefaultData), vchain1(this, true), vchain2(this, true)
 {
 }
 
@@ -50,7 +54,8 @@ SortedChainTestNode::~SortedChainTestNode() {}
 //###########################################################################
 //
 
-bool SortedChain::ProfileClass()
+bool
+SortedChain::ProfileClass()
 {
 	SortedChainTestNode testNode;
 #if defined(_ARMOR)
@@ -69,7 +74,8 @@ bool SortedChain::ProfileClass()
 //###########################################################################
 //
 
-bool SortedChain::TestClass()
+bool
+SortedChain::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting SortedChain test..."));
 	SortedChainTestNode testNode;
@@ -77,7 +83,8 @@ bool SortedChain::TestClass()
 	return true;
 }
 
-bool SortedChainTestNode::RunProfile()
+bool
+SortedChainTestNode::RunProfile()
 {
 	SortedChainTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -93,8 +100,8 @@ bool SortedChainTestNode::RunProfile()
 	for (i = 0; i < TEST_COUNT; i++)
 	{
 		int32_t tmp;
-		j		  = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp		  = values[j];
+		j = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -186,7 +193,8 @@ bool SortedChainTestNode::RunProfile()
 	return true;
 }
 
-bool SortedChainTestNode::RunTest()
+bool
+SortedChainTestNode::RunTest()
 {
 	SortedChainTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -202,8 +210,8 @@ bool SortedChainTestNode::RunTest()
 	for (i = 0; i < TEST_COUNT; i++)
 	{
 		int32_t tmp;
-		j		  = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp		  = values[j];
+		j = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -396,7 +404,7 @@ bool SortedChainTestNode::RunTest()
 		i = 0;
 		while ((size = iterator1.GetSize()) != 0)
 		{
-			index	 = Random::GetLessThan(size);
+			index = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);

@@ -14,38 +14,41 @@ using namespace MidLevelRenderer;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(PCSTR iName) : Plug(DefaultData)
+GOSImage::GOSImage(PCSTR iName) :
+	Plug(DefaultData)
 {
-	imageName		   = iName;
-	flags			   = 0;
-	instance		   = 0;
+	imageName = iName;
+	flags = 0;
+	instance = 0;
 	mcTextureNodeIndex = 0xffffffff;
-	ptr.pTexture	   = nullptr;
+	ptr.pTexture = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(uint32_t iHandle) : Plug(DefaultData)
+GOSImage::GOSImage(uint32_t iHandle) :
+	Plug(DefaultData)
 {
 	char str[20];
 	sprintf(str, "image%03d", iHandle);
-	imageName		   = str;
-	flags			   = Loaded;
-	instance		   = 0;
+	imageName = str;
+	flags = Loaded;
+	instance = 0;
 	mcTextureNodeIndex = iHandle;
-	ptr.pTexture	   = nullptr;
+	ptr.pTexture = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(PCSTR name, gos_TextureHints hints) : Plug(DefaultData)
+GOSImage::GOSImage(PCSTR name, gos_TextureHints hints) :
+	Plug(DefaultData)
 {
-	imageName		   = name;
-	flags			   = Loaded;
-	instance		   = 0;
-	ipHints			   = hints;
+	imageName = name;
+	flags = Loaded;
+	instance = 0;
+	ipHints = hints;
 	mcTextureNodeIndex = mcTextureManager->loadTexture(name, gos_Texture_Detect, ipHints);
-	ptr.pTexture	   = nullptr;
+	ptr.pTexture = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,15 +75,24 @@ GOSImage::~GOSImage(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t GOSImage::GetWidth() { return 0; }
+int32_t
+GOSImage::GetWidth()
+{
+	return 0;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t GOSImage::GetHeight() { return 0; }
+int32_t
+GOSImage::GetHeight()
+{
+	return 0;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void GOSImage::LockImage()
+void
+GOSImage::LockImage()
 {
 	if (!(flags & Locked))
 	{
@@ -93,7 +105,8 @@ void GOSImage::LockImage()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void GOSImage::UnlockImage()
+void
+GOSImage::UnlockImage()
 {
 	if (flags & Locked)
 	{
@@ -109,6 +122,10 @@ void GOSImage::UnlockImage()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-puint8_t GOSImage::GetImagePtr() { return (puint8_t)ptr.pTexture; }
+puint8_t
+GOSImage::GetImagePtr()
+{
+	return (puint8_t)ptr.pTexture;
+}
 
 #endif

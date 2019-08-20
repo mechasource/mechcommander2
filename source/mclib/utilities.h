@@ -53,28 +53,34 @@ typedef struct _GUI_RECTd
 } RECT;
 #endif
 
-void drawEmptyRect(const RECT& rect, uint32_t leftBorderColor = 0xffffffff,
+void
+drawEmptyRect(const RECT& rect, uint32_t leftBorderColor = 0xffffffff,
 	uint32_t rightBorderColor = 0xff000000);
 
-void drawRect(const RECT& rect, uint32_t color);
+void
+drawRect(const RECT& rect, uint32_t color);
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+void
+drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
 	int32_t top, bool proportional, PCSTR text, bool bBold, float scale);
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+void
+drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
 	int32_t top, bool proportional, PCSTR text, bool bold, float scale, int32_t xOffset,
 	int32_t yOffset);
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+void
+drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
 	int32_t top, int32_t right, int32_t bottom, bool proportional, PCSTR text, bool bold,
 	float scale, int32_t xOffset, int32_t yOffset);
 
-uint32_t interpolateColor(uint32_t color1, uint32_t color2, float percent);
+uint32_t
+interpolateColor(uint32_t color1, uint32_t color2, float percent);
 
-inline COLORREF reverseRGB(COLORREF oldVal)
+inline COLORREF
+reverseRGB(COLORREF oldVal)
 {
-	return ((oldVal & 0xff000000) | ((oldVal & 0xff0000) >> 16) | (oldVal & 0xff00) |
-		((oldVal & 0xff) << 16));
+	return ((oldVal & 0xff000000) | ((oldVal & 0xff0000) >> 16) | (oldVal & 0xff00) | ((oldVal & 0xff) << 16));
 }
 
 //-------------------------------------------------------
@@ -87,13 +93,14 @@ inline COLORREF reverseRGB(COLORREF oldVal)
 extern uint32_t gosResourceHandle;
 
 #if _CONSIDERED_OBSOLETE
-inline size_t cLoadString(uint32_t uID, // resource identifier
-	PSTR lpBuffer,						// pointer to buffer for resource
-	size_t nBufferMax,					// size of buffer
+inline size_t
+cLoadString(uint32_t uID, // resource identifier
+	PSTR lpBuffer, // pointer to buffer for resource
+	size_t nBufferMax, // size of buffer
 	uint32_t handle = gosResourceHandle)
 {
 	memset(lpBuffer, 0, nBufferMax);
-	PSTR tmpBuffer		= gos_GetResourceString(handle, uID);
+	PSTR tmpBuffer = gos_GetResourceString(handle, uID);
 	size_t stringLength = strlen(tmpBuffer);
 	if (stringLength >= nBufferMax)
 		STOP(("String too int32_t for buffer.  String Id %d, bufferLen %d, "
@@ -105,7 +112,11 @@ inline size_t cLoadString(uint32_t uID, // resource identifier
 
 #else
 
-inline PSTR cLoadString(uint32_t uID) { return gos_GetResourceString(gosResourceHandle, uID); }
+inline PSTR
+cLoadString(uint32_t uID)
+{
+	return gos_GetResourceString(gosResourceHandle, uID);
+}
 #endif
 
 #endif

@@ -12,7 +12,8 @@
 //###########################################################################
 //###########################################################################
 //
-bool UnitVector3D::TestClass()
+bool
+UnitVector3D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting UnitVector3D test..."));
 	UnitVector3D b;

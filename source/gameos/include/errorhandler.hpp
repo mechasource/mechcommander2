@@ -18,16 +18,16 @@ typedef LPDIRECT3DVERTEXBUFFER7(__stdcall* GETDXFUNC)(LPDIRECT3DVERTEXBUFFER7, L
 extern GETDXFUNC g_pGetDXVB;
 
 //
-cint32_t MAX_MESSAGE_SIZE   = 65536; // Maximum total error message size
-cint32_t MAX_BUG_NOTES		= 1024;  // Maximum characters entered as bug notes
-cint32_t MAX_LINE_LENGTH	= 256;   // Maximum characters per line in a file (shown as error line)
-cint32_t MAX_SUBJECT_LENGTH = 128;   // Maximum length of email subject
-cint32_t MAX_RAID_DESC		= 2048;  // Maximum length of the Raid description (may
-									 // need to be longer to accomodate RTF info)
+cint32_t MAX_MESSAGE_SIZE = 65536; // Maximum total error message size
+cint32_t MAX_BUG_NOTES = 1024; // Maximum characters entered as bug notes
+cint32_t MAX_LINE_LENGTH = 256; // Maximum characters per line in a file (shown as error line)
+cint32_t MAX_SUBJECT_LENGTH = 128; // Maximum length of email subject
+cint32_t MAX_RAID_DESC = 2048; // Maximum length of the Raid description (may
+	// need to be longer to accomodate RTF info)
 
 extern uint32_t DisableErrors;
 extern volatile uint16_t FPUControl; // Current FPU control word
-extern uint16_t FPUDefault;			 // Default FPU control word
+extern uint16_t FPUDefault; // Default FPU control word
 extern uint32_t ShowFrame;
 extern float L2SpeedR, L2SpeedW, L2SpeedRW, MainSpeedR, MainSpeedW, MainSpeedRW, VidMemR, VidMemW,
 	VidMemRW, AGPMemR, AGPMemW, AGPMemRW;
@@ -106,7 +106,8 @@ extern pFTOL* ListOfFTOL;
 //
 // Routines dealing with floating point precision
 //
-void CheckPrecision(void);
+void
+CheckPrecision(void);
 
 //
 // Playback/Record mode?
@@ -159,7 +160,7 @@ extern PSTR ErrorMessageTitle;
 extern volatile int32_t ProcessingError; // Renentrancy test flag for assert error routine
 extern PSTR ErrorExceptionText;
 extern puint8_t GotScreenImage; // Pointer to buffer containing screen image
-								// (always 24 bit bmp)
+	// (always 24 bit bmp)
 extern int32_t AllowDebugButton;
 extern int32_t ErrorFlags, ErrorReturn;
 
@@ -208,7 +209,7 @@ typedef struct _LogStruct
 	//
 	// Store time at top of loop
 	//
-	double CurrentTime;			 // Current time at top of the loop
+	double CurrentTime; // Current time at top of the loop
 	double NonPausedCurrentTime; // Time that does not pause
 	//
 	// Store mouse information at top of loop
@@ -225,20 +226,20 @@ typedef struct _LogStruct
 
 typedef struct _LogHeader
 {
-	uint32_t Magic;		   // Magic number for valid log file
-	uint32_t Version;	  // Version number of log file data
-	char GameName[32];	 // Name of application being logged
-	char AppPath[256];	 // Path of application being logged
+	uint32_t Magic; // Magic number for valid log file
+	uint32_t Version; // Version number of log file data
+	char GameName[32]; // Name of application being logged
+	char AppPath[256]; // Path of application being logged
 	char CommandLine[128]; // Command line passed to App
-	char UserName[32];	 // Username who created log
-	char LogDate[64];	  // Date/Time log created
-	char ExeDate[64];	  // Date/Time exe file used to create log
-	uint32_t Frames;	   // Number of frames of data
-	uint32_t Length;	   // Size of logging information
-	int32_t StartSeed;	 // Random Number seed
-	LogStructure* First;   // Pointer to first frame
+	char UserName[32]; // Username who created log
+	char LogDate[64]; // Date/Time log created
+	char ExeDate[64]; // Date/Time exe file used to create log
+	uint32_t Frames; // Number of frames of data
+	uint32_t Length; // Size of logging information
+	int32_t StartSeed; // Random Number seed
+	LogStructure* First; // Pointer to first frame
 	LogStructure* Current; // Pointer to current frame
-	LogStructure* Last;	// Pointer to last frame
+	LogStructure* Last; // Pointer to last frame
 
 } LogHeader;
 
@@ -255,7 +256,7 @@ extern void __stdcall CheckLogInSync(void);
 // Size of blocks of memory allocated for logs
 //
 #define LOGBLOCKSIZE (1024 * 1024 * 4) // 4 Meg of log data maximum (About 10 minutes at 60f/s)
-#define LOGVERSION 11				   // Current version number of log file
+#define LOGVERSION 11 // Current version number of log file
 
 extern bool AllowFail;
 extern volatile bool SpewSilence; // Set to disable all spews

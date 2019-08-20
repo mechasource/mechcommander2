@@ -100,13 +100,15 @@ protected:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Socket inlines ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-inline void Socket::RemovePlug(Plug* plug)
+inline void
+Socket::RemovePlug(Plug* plug)
 {
 	Check_Object(plug);
 	plug->RemoveSocket(this);
 }
 
-inline bool Socket::IsPlugMember(Plug* plug)
+inline bool
+Socket::IsPlugMember(Plug* plug)
 {
 	Check_Object(plug);
 	return plug->IsSocketMember(this);

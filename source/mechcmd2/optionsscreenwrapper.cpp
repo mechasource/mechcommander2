@@ -16,7 +16,7 @@ component.
 OptionsScreenWrapper::OptionsScreenWrapper()
 {
 	pOptionsScreen = 0;
-	isActive	   = false;
+	isActive = false;
 }
 
 OptionsScreenWrapper::~OptionsScreenWrapper()
@@ -27,7 +27,8 @@ OptionsScreenWrapper::~OptionsScreenWrapper()
 	}
 }
 
-void OptionsScreenWrapper::begin()
+void
+OptionsScreenWrapper::begin()
 {
 	isActive = true;
 	if (!pOptionsScreen)
@@ -48,18 +49,26 @@ void OptionsScreenWrapper::begin()
 	}
 }
 
-void OptionsScreenWrapper::init() {}
+void
+OptionsScreenWrapper::init()
+{
+}
 
-void OptionsScreenWrapper::destroy() {}
+void
+OptionsScreenWrapper::destroy()
+{
+}
 
-void OptionsScreenWrapper::end()
+void
+OptionsScreenWrapper::end()
 {
 	delete pOptionsScreen;
 	pOptionsScreen = nullptr;
-	isActive	   = false;
+	isActive = false;
 }
 
-OptionsScreenWrapper::status_type OptionsScreenWrapper::update()
+OptionsScreenWrapper::status_type
+OptionsScreenWrapper::update()
 {
 	if (pOptionsScreen && isActive)
 	{
@@ -82,7 +91,8 @@ OptionsScreenWrapper::status_type OptionsScreenWrapper::update()
 	}
 }
 
-void OptionsScreenWrapper::render()
+void
+OptionsScreenWrapper::render()
 {
 	if (pOptionsScreen && isActive)
 		pOptionsScreen->render();

@@ -32,11 +32,16 @@ public:
 	bool RunTest();
 };
 
-SafeChainTestPlug::SafeChainTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
+SafeChainTestPlug::SafeChainTestPlug(int32_t value) :
+	Plug(DefaultData)
+{
+	this->value = value;
+}
 
 SafeChainTestPlug::~SafeChainTestPlug() {}
 
-SafeChainTestNode::SafeChainTestNode() : Node(DefaultData), chain1(this), chain2(this) {}
+SafeChainTestNode::SafeChainTestNode() :
+	Node(DefaultData), chain1(this), chain2(this) {}
 
 SafeChainTestNode::~SafeChainTestNode() {}
 
@@ -46,7 +51,8 @@ SafeChainTestNode::~SafeChainTestNode() {}
 //###########################################################################
 //
 
-void SafeChain::ProfileClass()
+void
+SafeChain::ProfileClass()
 {
 	SafeChainTestNode testNode;
 #if defined(_ARMOR)
@@ -64,14 +70,16 @@ void SafeChain::ProfileClass()
 //###########################################################################
 //
 
-void SafeChain::TestClass()
+void
+SafeChain::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting SafeChain test..."));
 	SafeChainTestNode testNode;
 	testNode.RunTest();
 }
 
-bool SafeChainTestNode::RunProfile()
+bool
+SafeChainTestNode::RunProfile()
 {
 	SafeChainTestPlug* testPlug1;
 	int32_t i;
@@ -146,7 +154,8 @@ bool SafeChainTestNode::RunProfile()
 	return true;
 }
 
-bool SafeChainTestNode::RunTest()
+bool
+SafeChainTestNode::RunTest()
 {
 	SafeChainTestPlug *testPlug1, *testPlug2;
 	int32_t i, j;
@@ -327,7 +336,7 @@ bool SafeChainTestNode::RunTest()
 		i = 0;
 		while ((size = iterator1.GetSize()) != 0)
 		{
-			index	 = Random::GetLessThan(size);
+			index = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);

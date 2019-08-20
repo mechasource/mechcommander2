@@ -16,7 +16,8 @@ class Sphere;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::Sphere& sphere);
+void
+Spew(PCSTR group, const Stuff::Sphere& sphere);
 #endif
 
 namespace Stuff
@@ -34,9 +35,12 @@ public:
 	float radius;
 
 	Sphere() {}
-	Sphere(const Point3D& A_Point, float Radius) : center(A_Point), radius(Radius) {}
-	Sphere(float X, float Y, float Z, float Radius) : center(X, Y, Z), radius(Radius) {}
-	Sphere(const Sphere& sphere) : center(sphere.center), radius(sphere.radius) {}
+	Sphere(const Point3D& A_Point, float Radius) :
+		center(A_Point), radius(Radius) {}
+	Sphere(float X, float Y, float Z, float Radius) :
+		center(X, Y, Z), radius(Radius) {}
+	Sphere(const Sphere& sphere) :
+		center(sphere.center), radius(sphere.radius) {}
 	explicit Sphere(const OBB& obb) { *this = obb; }
 
 	Sphere& operator=(const Sphere& sphere)
@@ -76,7 +80,9 @@ public:
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const Sphere& sphere);
 #endif
-	void TestInstance(void) const {}
+	void TestInstance(void) const
+	{
+	}
 };
 } // namespace Stuff
 #endif

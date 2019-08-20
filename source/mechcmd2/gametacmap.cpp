@@ -24,31 +24,32 @@ extern bool useLeftRightMouseProfile;
 #define TRIANGLE_BLIP 2
 
 const float GameTacMap::s_blinkLength = .5f;
-float GameTacMap::s_lastBlinkTime	 = 0.f;
+float GameTacMap::s_lastBlinkTime = 0.f;
 
 extern bool ShowMovers;
 
 GameTacMap::GameTacMap()
 {
-	top					 = 0;
-	left				 = 0;
-	right				 = 0;
-	bottom				 = 0;
-	buildingPoints		 = nullptr;
-	buildingCount		 = 0;
-	navMarkerCount		 = 0;
-	curNavMarker		 = -1;
+	top = 0;
+	left = 0;
+	right = 0;
+	bottom = 0;
+	buildingPoints = nullptr;
+	buildingCount = 0;
+	navMarkerCount = 0;
+	curNavMarker = -1;
 	objectiveAnimationId = -1;
-	objectiveFlashTime   = 0.0f;
-	objectiveNumFlashes  = 0;
+	objectiveFlashTime = 0.0f;
+	objectiveNumFlashes = 0;
 }
 
-void GameTacMap::init(puint8_t bitmapData, size_t dataSize)
+void
+GameTacMap::init(puint8_t bitmapData, size_t dataSize)
 {
 	EllipseElement::init();
 	TGAFileHeader* pHeader = (TGAFileHeader*)bitmapData;
-	bmpWidth			   = pHeader->width;
-	bmpHeight			   = pHeader->height;
+	bmpWidth = pHeader->width;
+	bmpHeight = pHeader->height;
 	textureHandle = gos_NewTextureFromMemory(gos_Texture_Solid, ".tga", bitmapData, dataSize, 0);
 	char path[256];
 	strcpy(path, artPath);
@@ -59,12 +60,13 @@ void GameTacMap::init(puint8_t bitmapData, size_t dataSize)
 	blipHandle = mcTextureManager->loadTexture(path, gos_Texture_Alpha, 0);
 }
 
-void GameTacMap::update()
+void
+GameTacMap::update()
 {
 	Stuff::Vector2DOf<int32_t> screen;
-	screen.x	 = userInput->getMouseX();
-	screen.y	 = userInput->getMouseY();
-	float width  = right - left;
+	screen.x = userInput->getMouseX();
+	screen.y = userInput->getMouseY();
+	float width = right - left;
 	float height = bottom - top;
 	if (!inRegion(screen.x, screen.y))
 		return;
@@ -75,9 +77,7 @@ void GameTacMap::update()
 		screen.y -= top;
 		Stuff::Vector3D world;
 		tacMapToWorld(screen, width, height, world);
-		if (MissionInterfaceManager::instance()->getControlGui()->isAddingAirstrike() &&
-			MissionInterfaceManager::instance()->getControlGui()->isButtonPressed(
-				ControlGui::SENSOR_PROBE))
+		if (MissionInterfaceManager::instance()->getControlGui()->isAddingAirstrike() && MissionInterfaceManager::instance()->getControlGui()->isButtonPressed(ControlGui::SENSOR_PROBE))
 			MissionInterfaceManager::instance()->doMove(world);
 		else
 		{
@@ -95,19 +95,21 @@ void GameTacMap::update()
 	}
 }
 
-bool GameTacMap::animate(int32_t objectiveId, int32_t nFlashes)
+bool
+GameTacMap::animate(int32_t objectiveId, int32_t nFlashes)
 {
 	if (objectiveAnimationId == -1)
 	{
 		objectiveAnimationId = objectiveId - 1;
-		objectiveFlashTime   = 0.0f;
-		objectiveNumFlashes  = nFlashes;
+		objectiveFlashTime = 0.0f;
+		objectiveNumFlashes = nFlashes;
 		return true;
 	}
 	return false;
 }
 
-void GameTacMap::render()
+void
+GameTacMap::render()
 {
 	if (turn < 2) // Terrain not setup yet.  Left,Right,Top,Bottom are poopy!
 		return;
@@ -121,23 +123,23 @@ void GameTacMap::render()
 	gos_SetRenderState(gos_State_Texture, textureHandle);
 	for (size_t i = 0; i < 4; ++i)
 	{
-		corners[i].rhw  = 1.0f;
+		corners[i].rhw = 1.0f;
 		corners[i].argb = 0xffffffff;
 		corners[i].frgb = 0;
-		corners[i].z	= 0.0f;
+		corners[i].z = 0.0f;
 	}
 	corners[0].x = corners[2].x = left;
 	corners[1].x = corners[3].x = right;
 	corners[3].y = corners[2].y = bottom;
 	corners[0].y = corners[1].y = top;
-	corners[0].u				= 2.f / (float)bmpWidth;
-	corners[3].u				= 128.f / (float)bmpWidth;
-	corners[2].u				= 2.f / (float)bmpWidth;
-	corners[1].u				= 128.f / (float)bmpWidth;
-	corners[0].v				= 2.f / (float)bmpWidth;
-	corners[3].v				= 128.f / (float)bmpHeight;
-	corners[2].v				= 128.f / (float)bmpHeight;
-	corners[1].v				= 2.f / (float)bmpWidth;
+	corners[0].u = 2.f / (float)bmpWidth;
+	corners[3].u = 128.f / (float)bmpWidth;
+	corners[2].u = 2.f / (float)bmpWidth;
+	corners[1].u = 128.f / (float)bmpWidth;
+	corners[0].v = 2.f / (float)bmpWidth;
+	corners[3].v = 128.f / (float)bmpHeight;
+	corners[2].v = 128.f / (float)bmpHeight;
+	corners[1].v = 2.f / (float)bmpWidth;
 	gos_DrawTriangles(corners, 3);
 	gos_DrawTriangles(&corners[1], 3);
 	Stuff::Vector2DOf<int32_t> screen;
@@ -179,23 +181,23 @@ void GameTacMap::render()
 	// Routine that InverseProjects is slightly less accurate but an order of
 	// magnitude faster. Can make more accurate later at very little expense to
 	// performance. Easy to fix with camera later.  -fs
-	screen.x  = 1;
-	screen.y  = 1;
+	screen.x = 1;
+	screen.y = 1;
 	nScreen.x = nScreen.y = 1.0f;
 	nScreen.z = nScreen.w = 0.0f;
 	eye->inverseProjectZ(nScreen, world);
 	worldToTacMap(world, corners[0]);
-	screen.y  = Environment.screenHeight - 1;
+	screen.y = Environment.screenHeight - 1;
 	nScreen.y = (Environment.screenHeight * 0.6667f) - 1;
 	nScreen.z = nScreen.w = 0.0f;
 	eye->inverseProjectZ(nScreen, world);
 	worldToTacMap(world, corners[1]);
-	screen.x  = Environment.screenWidth - 1;
+	screen.x = Environment.screenWidth - 1;
 	nScreen.x = Environment.screenWidth - 1;
 	nScreen.z = nScreen.w = 0.0f;
 	eye->inverseProjectZ(nScreen, world);
 	worldToTacMap(world, corners[2]);
-	screen.y  = 1;
+	screen.y = 1;
 	nScreen.y = 1;
 	nScreen.z = nScreen.w = 0.0f;
 	eye->inverseProjectZ(nScreen, world);
@@ -208,7 +210,7 @@ void GameTacMap::render()
 	corners[3].u = corners[2].u = .99875f;
 	corners[0].v = corners[3].v = 0.078125f;
 	corners[1].v = corners[2].v = .99875f;
-	corners[4]					= corners[0];
+	corners[4] = corners[0];
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_ShadeMode, gos_ShadeGouraud);
 	gos_SetRenderState(gos_State_MonoEnable, 0);
@@ -244,16 +246,15 @@ void GameTacMap::render()
 				SensorSystem* pSensor = pSys->sensors[j];
 				if (!pSensor)
 					continue;
-				if (pSensor->owner->isDestroyed() || pSensor->owner->isDisabled() ||
-					pSensor->owner->getStatus() == OBJECT_STATUS_SHUTDOWN)
+				if (pSensor->owner->isDestroyed() || pSensor->owner->isDisabled() || pSensor->owner->getStatus() == OBJECT_STATUS_SHUTDOWN)
 					continue;
 				if (pSensor->getRange() < 1.1 || pSensor->broken)
 					continue;
 				if (!pSensor->owner->getTeam())
 					continue;
 				ObjectClass objClass = pSensor->owner->getObjectClass();
-				uint32_t colorBlip   = pSensor->owner->getSelected() ? 0xff4bff4b : 0xff00cc00;
-				uint32_t colorRing   = 0xff00cc00;
+				uint32_t colorBlip = pSensor->owner->getSelected() ? 0xff4bff4b : 0xff00cc00;
+				uint32_t colorRing = 0xff00cc00;
 				if (pSensor->owner->getTeam()->isNeutral(Team::home))
 				{
 					colorBlip = pSensor->owner->getSelected() ? 0xff4c4cff : 0xff0000ff;
@@ -274,16 +275,16 @@ void GameTacMap::render()
 						s_lastBlinkTime += frameLength;
 						if (s_lastBlinkTime > s_blinkLength)
 						{
-							colorBlip		= 0;
-							colorRing		= 0;
+							colorBlip = 0;
+							colorRing = 0;
 							s_lastBlinkTime = 0.f;
 						}
 					}
-					colors[count]	 = colorBlip;
+					colors[count] = colorBlip;
 					ringColors[count] = colorRing;
-					ranges[count]	 = pSensor->getRange();
-					selected[count]   = 0;
-					positions[count]  = pSensor->owner->getPosition();
+					ranges[count] = pSensor->getRange();
+					selected[count] = 0;
+					positions[count] = pSensor->owner->getPosition();
 					count++;
 				}
 			}
@@ -298,7 +299,7 @@ void GameTacMap::render()
 		if (mover && mover->getExists() && !(mover->isDestroyed() || mover->isDisabled()))
 		{
 			SensorSystem* pSensor = mover->getSensorSystem();
-			float range			  = pSensor ? pSensor->getRange() : 0;
+			float range = pSensor ? pSensor->getRange() : 0;
 			int32_t contactStatus = mover->getContactStatus(Team::home->getId(), true);
 			if (mover->getTeamId() == Team::home->id)
 			{
@@ -315,8 +316,7 @@ void GameTacMap::render()
 				}
 				else
 				{
-					if (mover->isOnGUI() &&
-						land->IsGameSelectTerrainPosition(mover->getPosition()) && mover->pathLocks)
+					if (mover->isOnGUI() && land->IsGameSelectTerrainPosition(mover->getPosition()) && mover->pathLocks)
 					{
 						colorBlip = mover->getSelected() ? 0xff4b4bff : 0xff0000cc;
 						mover->getStatus() == OBJECT_STATUS_SHUTDOWN ? colorRing = 0
@@ -326,11 +326,7 @@ void GameTacMap::render()
 						continue;
 				}
 			}
-			else if (ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]) ||
-				((mover->getTeamId() != Team::home->id) && (contactStatus != CONTACT_NONE) &&
-					(mover->getStatus() != OBJECT_STATUS_SHUTDOWN) &&
-					(!mover->hasNullSignature()) &&
-					(mover->getEcmRange() <= 0.0f))) // Do not draw ECM mechs!!)
+			else if (ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]) || ((mover->getTeamId() != Team::home->id) && (contactStatus != CONTACT_NONE) && (mover->getStatus() != OBJECT_STATUS_SHUTDOWN) && (!mover->hasNullSignature()) && (mover->getEcmRange() <= 0.0f))) // Do not draw ECM mechs!!)
 			{
 				// Not on our side.  Draw by contact status
 				colorBlip = mover->getSelected() ? 0xffff3f3f : 0xffff0000;
@@ -338,11 +334,11 @@ void GameTacMap::render()
 			}
 			else
 				continue;
-			colors[count]	 = colorBlip;
+			colors[count] = colorBlip;
 			ringColors[count] = colorRing;
-			ranges[count]	 = range;
-			selected[count]   = mover->getSelected();
-			positions[count]  = mover->getPosition();
+			ranges[count] = range;
+			selected[count] = mover->getSelected();
+			positions[count] = mover->getPosition();
 			count++;
 		}
 	}
@@ -364,36 +360,39 @@ void GameTacMap::render()
 	}
 }
 
-void GameTacMap::worldToTacMap(Stuff::Vector3D& world, gos_VERTEX& tac)
+void
+GameTacMap::worldToTacMap(Stuff::Vector3D& world, gos_VERTEX& tac)
 {
 	TacMap::worldToTacMap(world, left, top, right - left, bottom - top, tac);
 }
-void GameTacMap::initBuildings(puint8_t data, int32_t size)
+void
+GameTacMap::initBuildings(puint8_t data, int32_t size)
 {
 	if (data)
 	{
 		int32_t* pData = (int32_t*)data;
-		buildingCount  = *pData++;
+		buildingCount = *pData++;
 		if (buildingCount)
 		{
-			buildingPoints   = new gos_VERTEX[buildingCount];
+			buildingPoints = new gos_VERTEX[buildingCount];
 			gos_VERTEX* pTmp = buildingPoints;
 			for (size_t i = 0; i < buildingCount; ++i, pTmp++)
 			{
-				pTmp->x	= *pData++ + left;
-				pTmp->y	= *pData++ + top;
-				pTmp->z	= 0;
+				pTmp->x = *pData++ + left;
+				pTmp->y = *pData++ + top;
+				pTmp->z = 0;
 				pTmp->argb = BUILDING_COLOR;
 				pTmp->frgb = 0;
-				pTmp->rhw  = .5;
-				pTmp->u	= 0.f;
-				pTmp->v	= 0.f;
+				pTmp->rhw = .5;
+				pTmp->u = 0.f;
+				pTmp->v = 0.f;
 			}
 		}
 	}
 }
 
-void GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t color)
+void
+GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t color)
 {
 	if (color == 0)
 		return;
@@ -403,8 +402,8 @@ void GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t co
 	radius *= ((float)(right - left)) / (land->metersPerCell * land->realVerticesMapSide * 3.f);
 	for (size_t i = 0; i < 4; ++i)
 	{
-		sqare[i].z	= 0;
-		sqare[i].rhw  = .5;
+		sqare[i].z = 0;
+		sqare[i].rhw = .5;
 		sqare[i].argb = color;
 		sqare[i].frgb = 0;
 	}
@@ -420,15 +419,16 @@ void GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t co
 	Stuff::Vector2DOf<int32_t> radii;
 	center.x = float2long(sqare[1].x);
 	center.y = float2long(sqare[1].y);
-	radii.x  = 2.0f * float2long(radius + .5);
-	radii.y  = 2.0f * float2long(radius + .5);
+	radii.x = 2.0f * float2long(radius + .5);
+	radii.y = 2.0f * float2long(radius + .5);
 	EllipseElement circle(center, radii, color, 0);
 	RECT rect = {left, top, right, bottom};
 	circle.setClip(rect);
 	circle.draw();
 }
 
-void GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t type)
+void
+GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t type)
 {
 	if (color == 0)
 		return;
@@ -443,12 +443,12 @@ void GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t typ
 	gos_SetRenderState(gos_State_Texture, gosID);
 	for (size_t i = 0; i < 4; ++i)
 	{
-		triangle[i].z	= 0;
-		triangle[i].rhw  = .5;
+		triangle[i].z = 0;
+		triangle[i].rhw = .5;
 		triangle[i].argb = color;
 		triangle[i].frgb = 0;
-		triangle[i].u	= 0.f;
-		triangle[i].v	= 0.f;
+		triangle[i].u = 0.f;
+		triangle[i].v = 0.f;
 	}
 	worldToTacMap((Stuff::Vector3D&)pos, triangle[0]);
 	triangle[0].x -= 2.f;
@@ -462,11 +462,12 @@ void GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t typ
 	gos_DrawQuads(triangle, 4);
 }
 
-void GameTacMap::setPos(const RECT& newPos)
+void
+GameTacMap::setPos(const RECT& newPos)
 {
-	left   = newPos.left;
-	right  = newPos.right;
-	top	= newPos.top;
+	left = newPos.left;
+	right = newPos.right;
+	top = newPos.top;
 	bottom = newPos.bottom;
 }
 

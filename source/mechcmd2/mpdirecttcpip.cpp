@@ -18,19 +18,20 @@ MPDirectTcpip.cpp			: Implementation of the MPDirectTcpip component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID  = 1000010;
-static cint32_t OK_BUTTON_ID	 = 1000001;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPDirectTcpip::MPDirectTcpip()
 {
-	bDone  = 0;
+	bDone = 0;
 	status = RUNNING;
 }
 
 MPDirectTcpip::~MPDirectTcpip() {}
 
-int32_t MPDirectTcpip::indexOfButtonWithID(int32_t id)
+int32_t
+MPDirectTcpip::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -44,7 +45,8 @@ int32_t MPDirectTcpip::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void MPDirectTcpip::init(FitIniFile* file)
+void
+MPDirectTcpip::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -84,11 +86,19 @@ void MPDirectTcpip::init(FitIniFile* file)
 	}
 }
 
-void MPDirectTcpip::begin() { status = RUNNING; }
+void
+MPDirectTcpip::begin()
+{
+	status = RUNNING;
+}
 
-void MPDirectTcpip::end() {}
+void
+MPDirectTcpip::end()
+{
+}
 
-void MPDirectTcpip::render(int32_t xOffset, int32_t yOffset)
+void
+MPDirectTcpip::render(int32_t xOffset, int32_t yOffset)
 {
 	if ((0 == xOffset) && (0 == yOffset))
 	{
@@ -97,9 +107,14 @@ void MPDirectTcpip::render(int32_t xOffset, int32_t yOffset)
 	LogisticsScreen::render(xOffset, yOffset);
 }
 
-void MPDirectTcpip::render() { render(0, 0); }
+void
+MPDirectTcpip::render()
+{
+	render(0, 0);
+}
 
-int32_t MPDirectTcpip::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MPDirectTcpip::handleMessage(uint32_t message, uint32_t who)
 {
 	if (RUNNING == status)
 	{
@@ -144,13 +159,18 @@ int32_t MPDirectTcpip::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool MPDirectTcpip::isDone() { return bDone; }
+bool
+MPDirectTcpip::isDone()
+{
+	return bDone;
+}
 
-void MPDirectTcpip::update()
+void
+MPDirectTcpip::update()
 {
 	LogisticsScreen::update();
 	ipAddressComboBox.update();
-	helpTextID		 = 0;
+	helpTextID = 0;
 	helpTextHeaderID = 0;
 	/*
 	for ( int32_t i = 0; i < buttonCount; i++ )
@@ -167,7 +187,8 @@ void MPDirectTcpip::update()
 	*/
 }
 
-int32_t aStyle7TextListItem::init(FitIniFile* file, PCSTR blockName)
+int32_t
+aStyle7TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x = 0;
@@ -200,7 +221,8 @@ int32_t aStyle7TextListItem::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aStyle7TextListItem::render()
+void
+aStyle7TextListItem::render()
 {
 	float color;
 	if (aListItem::SELECTED == getState())

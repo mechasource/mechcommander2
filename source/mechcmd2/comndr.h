@@ -67,7 +67,7 @@ public:
 
 	virtual void setId(int32_t _id)
 	{
-		id			   = _id;
+		id = _id;
 		commanders[id] = this;
 	}
 

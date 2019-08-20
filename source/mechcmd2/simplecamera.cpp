@@ -34,8 +34,8 @@ SimpleCamera::SimpleCamera()
 	}
 	Camera::init(&camFile);
 	AltitudeTight = 650;
-	rotation	  = -45.f;
-	bIsComponent  = 0;
+	rotation = -45.f;
+	bIsComponent = 0;
 	rotateLightRight(90.0f);
 	bIsInMission = false;
 }
@@ -71,7 +71,8 @@ SimpleCamera::~SimpleCamera()
 	}
 }
 
-void SimpleCamera::init(float left, float top, float right, float bottom)
+void
+SimpleCamera::init(float left, float top, float right, float bottom)
 {
 	bounds[0] = left;
 	bounds[1] = top;
@@ -80,9 +81,14 @@ void SimpleCamera::init(float left, float top, float right, float bottom)
 }
 
 ////////////////////////////////////////////////
-void SimpleCamera::render() { render(0, 0); }
+void
+SimpleCamera::render()
+{
+	render(0, 0);
+}
 
-void SimpleCamera::render(int32_t xOffset, int32_t yOffset)
+void
+SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 {
 	if (xOffset != 0 && yOffset != 0) // don't know how to do this
 		return;
@@ -90,16 +96,16 @@ void SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 	{
 		if (bIsComponent)
 		{
-			lightRed	 = 196;
-			lightGreen   = 196;
-			lightBlue	= 220;
-			ambientRed   = 196;
+			lightRed = 196;
+			lightGreen = 196;
+			lightBlue = 220;
+			ambientRed = 196;
 			ambientGreen = 196;
-			ambientBlue  = 196;
+			ambientBlue = 196;
 		}
 		gos_PushRenderStates();
 		oldCam = eye;
-		eye	= this;
+		eye = this;
 		useFog = 0;
 		gos_GetViewport(&viewMulX, &viewMulY, &viewAddX, &viewAddY);
 		//--------------------------------------------------------
@@ -122,10 +128,10 @@ void SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 		default_state.SetZBufferWriteOn();
 		default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 		Stuff::RGBAColor fColor;
-		fColor.red						  = 0;
-		fColor.green					  = 0;
-		fColor.blue						  = 0;
-		float z							  = 1.0;
+		fColor.red = 0;
+		fColor.green = 0;
+		fColor.blue = 0;
+		float z = 1.0;
 		MidLevelRenderer::PerspectiveMode = usePerspective;
 		theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
 		MidLevelRenderer::GOSVertex::farClipReciprocal =
@@ -172,7 +178,8 @@ void SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 }
 
 ////////////////////////////////////////////////
-int32_t SimpleCamera::update()
+int32_t
+SimpleCamera::update()
 {
 	if (pObject)
 	{
@@ -206,19 +213,19 @@ int32_t SimpleCamera::update()
 		offsetY += fudgeY; // hack, just to get exactly where Dorje wants it
 		TG_Shape::SetViewport(viewMulX, viewMulY, offsetX, offsetY);
 		useShadows = 0;
-		oldCam	 = eye;
-		eye		   = this;
+		oldCam = eye;
+		eye = this;
 		Camera::update();
 		ZoomTight();
 		pObject->recalcBounds();
 		pObject->scale(shapeScale);
 		// we don't want to center around the feet
 		Stuff::Vector3D mechPos = pObject->getRootNodeCenter();
-		mechPos.x				= -mechPos.x / 2.f;
-		float tmp				= -mechPos.y / 2.f;
-		mechPos.y				= -mechPos.z / 2.f;
-		mechPos.z				= tmp;
-		float rotation			= frameLength * rotationIncrement + pObject->rotation;
+		mechPos.x = -mechPos.x / 2.f;
+		float tmp = -mechPos.y / 2.f;
+		mechPos.y = -mechPos.z / 2.f;
+		mechPos.z = tmp;
+		float rotation = frameLength * rotationIncrement + pObject->rotation;
 		pObject->setObjectParameters(mechPos, rotation, 0, 0, 0);
 		pObject->update();
 		pObject->setVisibility(true, true);
@@ -227,13 +234,14 @@ int32_t SimpleCamera::update()
 	return 0;
 }
 
-void SimpleCamera::setMech(
+void
+SimpleCamera::setMech(
 	PCSTR fileName, int32_t baseColor, int32_t highlight1, int32_t highlight2)
 {
-	shapeScale	= 0.0f;
-	bIsComponent  = 0;
-	fudgeX		  = 5;
-	fudgeY		  = 10;
+	shapeScale = 0.0f;
+	bIsComponent = 0;
+	fudgeX = 5;
+	fudgeY = 10;
 	AltitudeTight = 650;
 	// moving this to above the spot where we create the appearancetypelist
 	if (appearanceTypeList && appearanceTypeList->pointerCanBeDeleted(pObject))
@@ -241,7 +249,7 @@ void SimpleCamera::setMech(
 	if (!appearanceTypeList)
 		Mission::initBareMinimum();
 	rotationIncrement = 0;
-	pObject			  = nullptr;
+	pObject = nullptr;
 	if (!fileName)
 	{
 		//		allNormal();
@@ -273,12 +281,13 @@ void SimpleCamera::setMech(
 	ZoomTight();
 }
 
-void SimpleCamera::setVehicle(PCSTR fileName, int32_t base, int32_t highlight, int32_t h2)
+void
+SimpleCamera::setVehicle(PCSTR fileName, int32_t base, int32_t highlight, int32_t h2)
 {
-	shapeScale	= 0.0f;
-	bIsComponent  = 0;
-	fudgeX		  = 5;
-	fudgeY		  = 10;
+	shapeScale = 0.0f;
+	bIsComponent = 0;
+	fudgeX = 5;
+	fudgeY = 10;
 	AltitudeTight = 650;
 	if (!appearanceTypeList)
 		Mission::initBareMinimum();
@@ -314,13 +323,14 @@ void SimpleCamera::setVehicle(PCSTR fileName, int32_t base, int32_t highlight, i
 	ZoomTight();
 }
 
-void SimpleCamera::setComponent(PCSTR fileName)
+void
+SimpleCamera::setComponent(PCSTR fileName)
 {
-	shapeScale	= 0.0f;
-	bIsComponent  = 1;
+	shapeScale = 0.0f;
+	bIsComponent = 1;
 	AltitudeTight = 580;
-	fudgeX		  = 0;
-	fudgeY		  = 0;
+	fudgeX = 0;
+	fudgeY = 0;
 	if (!appearanceTypeList)
 		Mission::initBareMinimum();
 	if (appearanceTypeList && appearanceTypeList->pointerCanBeDeleted(pObject))
@@ -353,17 +363,23 @@ void SimpleCamera::setComponent(PCSTR fileName)
 	setPosition(position);
 	ZoomTight();
 }
-void SimpleCamera::setScale(float newAltitude) { shapeScale = newAltitude; }
+void
+SimpleCamera::setScale(float newAltitude)
+{
+	shapeScale = newAltitude;
+}
 
-void SimpleCamera::setBuilding(PCSTR pBuilding)
+void
+SimpleCamera::setBuilding(PCSTR pBuilding)
 {
 	shapeScale = 0.0f;
 	setComponent(pBuilding);
 	AltitudeTight = 800;
-	bIsComponent  = 0;
+	bIsComponent = 0;
 }
 
-void SimpleCamera::setObject(
+void
+SimpleCamera::setObject(
 	PCSTR pFileName, int32_t type, int32_t base, int32_t highlight, int32_t h2)
 {
 	if (!pFileName || !strlen(pFileName))
@@ -393,12 +409,14 @@ void SimpleCamera::setObject(
 	}
 }
 
-void SimpleCamera::setColors(int32_t base, int32_t highlight, int32_t h2)
+void
+SimpleCamera::setColors(int32_t base, int32_t highlight, int32_t h2)
 {
 	pObject->resetPaintScheme(base, highlight, h2);
 }
 
-void SimpleCamera::zoomIn(float howMuch)
+void
+SimpleCamera::zoomIn(float howMuch)
 {
 	AltitudeTight = 650.f / howMuch;
 } // scale for things that can't

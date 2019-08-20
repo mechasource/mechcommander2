@@ -67,10 +67,10 @@ class TG_TypeMultiShape
 	//-------------
 	// Data Members
 protected:
-	uint32_t numTG_TypeShapes;		  // Number of TG_Shapes
-	uint32_t numTextures;			  // Total Textures for all shapes.
+	uint32_t numTG_TypeShapes; // Number of TG_Shapes
+	uint32_t numTextures; // Total Textures for all shapes.
 	TG_TypeNodePtr* listOfTypeShapes; // Memory holding all TG_TypeNodes and TypeShapes
-	TG_TexturePtr listOfTextures;	 // List of texture Structures for all shapes.
+	TG_TexturePtr listOfTextures; // List of texture Structures for all shapes.
 
 #ifdef _DEBUG
 	char* shapeName; // FileName of shape
@@ -79,7 +79,7 @@ protected:
 public:
 	Stuff::Vector3D maxBox; // Bounding Box Max Coords
 	Stuff::Vector3D minBox; // Bounding Box Min Coords
-	float extentRadius;		// Bounding Sphere Coords
+	float extentRadius; // Bounding Sphere Coords
 
 	//-----------------
 	// Member Functions
@@ -92,14 +92,14 @@ public:
 	{
 		numTG_TypeShapes = 0;
 		listOfTypeShapes = nullptr;
-		numTextures		 = 0;
-		listOfTextures   = nullptr;
+		numTextures = 0;
+		listOfTextures = nullptr;
 #ifdef _DEBUG
 		shapeName = nullptr;
 #endif
 		maxBox.x = maxBox.y = maxBox.z = -100000.0f;
 		minBox.x = minBox.y = minBox.z = 100000.0f;
-		extentRadius				   = 0.0f;
+		extentRadius = 0.0f;
 	}
 
 	TG_TypeMultiShape(void) { init(void); }
@@ -218,13 +218,13 @@ class TG_MultiShape
 	// Data Members
 protected:
 	TG_TypeMultiShapePtr myMultiType; // Pointer to the type
-	int32_t numTG_Shapes;			  // Number of TG_Shapes
-	TG_ShapeRecPtr listOfShapes;	  // Memory holding all TG_ShapeRecs
-	float frameNum;					  // Frame number of animation
+	int32_t numTG_Shapes; // Number of TG_Shapes
+	TG_ShapeRecPtr listOfShapes; // Memory holding all TG_ShapeRecs
+	float frameNum; // Frame number of animation
 	bool d_useShadows;
 	bool isHudElement;
 	uint8_t alphaValue; // To fade shapes in and out
-	bool isClamped;		// So I can force a shape to clamp its textures
+	bool isClamped; // So I can force a shape to clamp its textures
 
 	//-----------------
 	// Member Functions
@@ -235,14 +235,14 @@ public:
 
 	void init(void)
 	{
-		myMultiType  = nullptr;
+		myMultiType = nullptr;
 		numTG_Shapes = 0;
 		listOfShapes = nullptr;
-		frameNum	 = 0.0f;
+		frameNum = 0.0f;
 		d_useShadows = true;
 		isHudElement = false;
-		alphaValue   = 0xff;
-		isClamped	= false;
+		alphaValue = 0xff;
+		isClamped = false;
 	}
 
 	TG_MultiShape(void) { init(void); }
@@ -463,8 +463,7 @@ public:
 		float my = mouseY;
 		for (size_t i = 0; i < numTG_Shapes; i++)
 		{
-			if (listOfShapes[i].node->numVisibleFaces &&
-				listOfShapes[i].node->PerPolySelect(mx, my))
+			if (listOfShapes[i].node->numVisibleFaces && listOfShapes[i].node->PerPolySelect(mx, my))
 				return true;
 		}
 		return false;
@@ -510,7 +509,7 @@ public:
 	{
 		listOfAnimation = nullptr;
 		count = actualCount = 0;
-		shapeIdsSet			= false;
+		shapeIdsSet = false;
 	}
 
 	TG_AnimateShape(void) { init(void); }

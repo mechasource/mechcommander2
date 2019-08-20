@@ -55,7 +55,7 @@ public:
 	GlobalCollisionAlert(void)
 	{
 		collisionAlerts = nullptr;
-		maxAlerts		= 0;
+		maxAlerts = 0;
 	}
 
 	int32_t init(uint32_t maxCollisionAlerts);
@@ -89,8 +89,8 @@ protected:
 	uint32_t maxObjects; // Max number of objects in world.
 
 	CollisionGridNodePtr giantObjects; // Collection of objects larger than maxGridRadius
-	CollisionGridNodePtr* grid;		   // Pointer to array of gridNodes layed out in space
-	CollisionGridNodePtr nodes;		   // Actual grid nodes available to layout in space.
+	CollisionGridNodePtr* grid; // Pointer to array of gridNodes layed out in space
+	CollisionGridNodePtr nodes; // Actual grid nodes available to layout in space.
 
 	uint32_t nextAvailableNode; // next node in nodes which can be used.
 	Stuff::Vector3D gridOrigin; // Center point of the grid.
@@ -115,11 +115,11 @@ public:
 	void init(void)
 	{
 		giantObjects = nullptr;
-		grid		 = nullptr;
-		nodes		 = nullptr;
+		grid = nullptr;
+		nodes = nullptr;
 		xGridWidth = yGridWidth = 0;
-		maxGridRadius			= 0;
-		nextAvailableNode		= 0;
+		maxGridRadius = 0;
+		nextAvailableNode = 0;
 		gridOrigin.Zero(void);
 		gridIsGo = FALSE;
 	}
@@ -166,8 +166,8 @@ public:
 	static uint32_t numCollisions;
 
 	float warningDist; // Distance to worry about int16_t term collision
-					   // avoidance (in World Units!!)
-	float alertTime;   // Time to worry about int16_t term collision avoidance.
+		// avoidance (in World Units!!)
+	float alertTime; // Time to worry about int16_t term collision avoidance.
 
 	static UserHeapPtr collisionHeap;
 

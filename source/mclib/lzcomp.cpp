@@ -34,25 +34,25 @@ typedef uint8_t* puint8_t;
 
 //-----------------------------
 // Used by Compressor Routine
-puint8_t LZCHashBuf		  = nullptr;
+puint8_t LZCHashBuf = nullptr;
 size_t InBufferUpperLimit = 0;
-size_t InBufferPos		  = 0;
-puint8_t InBuffer		  = nullptr;
-size_t OutBufferPos		  = 0;
-puint8_t OutBuffer		  = nullptr;
-uint32_t PrefixCode		  = 0;
-uint32_t FreeCode		  = 0;
-uint32_t MaxCode		  = 0;
-uint32_t NBits			  = 0;
-uint32_t BitOffset		  = 0;
-uint32_t codeToWrite	  = 0;
-uint8_t K				  = 0;
+size_t InBufferPos = 0;
+puint8_t InBuffer = nullptr;
+size_t OutBufferPos = 0;
+puint8_t OutBuffer = nullptr;
+uint32_t PrefixCode = 0;
+uint32_t FreeCode = 0;
+uint32_t MaxCode = 0;
+uint32_t NBits = 0;
+uint32_t BitOffset = 0;
+uint32_t codeToWrite = 0;
+uint8_t K = 0;
 
 typedef enum __lzcomp_const
 {
-	MaxMax	 = 4096,
-	Clear	  = 256,
-	EOF		   = 257,
+	MaxMax = 4096,
+	Clear = 256,
+	EOF = 257,
 	First_Free = 258,
 };
 
@@ -126,7 +126,7 @@ save1:
 		mov		al, dl
 		stosb
 
-			// AdvanceBuffer
+				// AdvanceBuffer
 
 		mov		ecx, [NBits]                 ;
 		get number of bits to advance
@@ -166,7 +166,7 @@ Set_AX_Prefix:
 		{
 		mov		[PrefixCode], eax // into prefix code
 
-				// call	ReadChar              		//more...
+								 // call	ReadChar              		//more...
 		mov		esi, [InBufferPos] // get address
 		cmp		esi, [InBufferUpperLimit] // Check to see if we are done
 		cmc // compliment carry
@@ -182,7 +182,7 @@ doneRC2:
 		jc		FoundEOF // No more input
 		mov		[K], al // Save returned char
 		mov		ebx, [PrefixCode] // check for this pair
-						 // call	LookUpCode            		//in the table
+			// call	LookUpCode            		//in the table
 
 			// call	Index                      	//index into current table
 			// address
@@ -250,7 +250,7 @@ addcode:
 		cmp		ebx, MaxMax // is this the last code?
 		je		exitAC
 
-					// call	Index                     	//create new entry
+							 // call	Index                     	//create new entry
 		lea		esi, [ebx*8]
 		add		esi, ebx // EBX * 9
 		add		esi, [LZCHashBuf]
@@ -294,10 +294,10 @@ exitAC:
 				pop ebx // back
 					mov al,
 			[K] cmp ebx,
-			[MaxCode]		  // exceeded size?
+			[MaxCode] // exceeded size?
 			jb Make_Into_Code // no
 				cmp[NBits],
-			12			   // less than 12 bit encoding?
+			12 // less than 12 bit encoding?
 			jb Another_Bit // give it one more
 
 				//---------------------------------------------------------------
@@ -331,7 +331,7 @@ save2:
 		mov		al, dl
 		stosb
 
-			// AdvanceBuffer
+				// AdvanceBuffer
 
 		mov		ecx, [NBits]                 ;
 		get number of bits to advance
@@ -397,7 +397,7 @@ save3:
 		mov		al, dl
 		stosb
 
-			// AdvanceBuffer
+				// AdvanceBuffer
 
 		mov		ecx, [NBits]                 ;
 		get number of bits to advance
@@ -434,7 +434,7 @@ save4:
 		mov		al, dl
 		stosb
 
-			// AdvanceBuffer
+				// AdvanceBuffer
 
 		mov		ecx, [NBits]                 ;
 		get number of bits to advance

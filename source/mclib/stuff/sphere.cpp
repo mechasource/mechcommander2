@@ -16,7 +16,8 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Sphere& Sphere::Union(const Sphere& sphere1, const Sphere& sphere2)
+Sphere&
+Sphere::Union(const Sphere& sphere1, const Sphere& sphere2)
 {
 	// Check_Object(this);
 	Check_Object(&sphere1);
@@ -68,7 +69,8 @@ Sphere& Sphere::Union(const Sphere& sphere1, const Sphere& sphere2)
 //###########################################################################
 //
 #if !defined(Spew)
-void Spew(PCSTR group, const Sphere& sphere)
+void
+Spew(PCSTR group, const Sphere& sphere)
 {
 	Check_Object(&sphere);
 	SPEW((group, "\n\tSphere Centerpoint: +"));

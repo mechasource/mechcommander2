@@ -54,24 +54,24 @@ public:
 	enum SORT_ORDERS
 	{
 		DAMAGE = 0,
-		HEAT   = 1,
-		NAME   = 2,
-		RANGE  = 3,
+		HEAT = 1,
+		NAME = 2,
+		RANGE = 3,
 		WEIGHT = 4
 	};
 
 	enum WEAPON_RANGE
 	{
-		int16_t  = 0,
-		MEDIUM   = 1,
-		int32_t  = 2,
+		int16_t = 0,
+		MEDIUM = 1,
+		int32_t = 2,
 		NO_RANGE = 3 // not a weapon
 	};
 
 	WEAPON_RANGE getRangeType(void) const { return rangeType; }
 
 private:
-	int32_t ID;   // index into csv
+	int32_t ID; // index into csv
 	int32_t Type; // defined in csv
 	int32_t stringID;
 	int32_t helpStringID;

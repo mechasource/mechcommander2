@@ -25,7 +25,8 @@
 #define WHITE_PIXEL 255.0f
 #define RESIZE_PI 3.1415926
 
-float CLAMP(float x, float min, float max)
+float
+CLAMP(float x, float min, float max)
 {
 	if (x < min)
 		return min;
@@ -41,7 +42,8 @@ typedef struct
 	float* data;
 } Image;
 
-float getPixel(Image* image, int32_t x, int32_t y)
+float
+getPixel(Image* image, int32_t x, int32_t y)
 {
 	if ((x < 0) || (x >= image->xSize) || (y < 0) || (y > image->ySize))
 		return 0.0f;
@@ -49,14 +51,16 @@ float getPixel(Image* image, int32_t x, int32_t y)
 	return p[x];
 }
 
-void getRow(float* row, Image* image, int32_t y)
+void
+getRow(float* row, Image* image, int32_t y)
 {
 	if ((y < 0) || (y >= image->ySize))
 		return;
 	memcpy(row, image->data + (y * image->xSize), image->ySize * sizeof(float));
 }
 
-void getCol(float* col, Image* image, int32_t x)
+void
+getCol(float* col, Image* image, int32_t x)
 {
 	if ((x < 0) || (x >= image->xSize))
 		return;
@@ -67,7 +71,8 @@ void getCol(float* col, Image* image, int32_t x)
 	}
 }
 
-float putPixel(Image* image, int32_t x, int32_t y, float data)
+float
+putPixel(Image* image, int32_t x, int32_t y, float data)
 {
 	if ((x < 0) || (x >= image->xSize) || (y < 0) || (y >= image->ySize))
 		return 0.0f;
@@ -85,7 +90,8 @@ float putPixel(Image* image, int32_t x, int32_t y, float data)
 #define Lanczos3Support (3.0)
 #define MitchellSupport (2.0)
 
-double filter(double t)
+double
+filter(double t)
 {
 	if (t < 0.0)
 		t = -t;
@@ -94,14 +100,16 @@ double filter(double t)
 	return 0.0;
 }
 
-double boxFilter(double t)
+double
+boxFilter(double t)
 {
 	if ((t > -0.5) && (t <= 0.5))
 		return 1.0;
 	return 0.0;
 }
 
-double triangleFilter(double t)
+double
+triangleFilter(double t)
 {
 	if (t < 0.0)
 		t = -t;
@@ -110,7 +118,8 @@ double triangleFilter(double t)
 	return 0.0;
 }
 
-double bellFilter(double t)
+double
+bellFilter(double t)
 {
 	if (t < 0.0)
 		t = -t;
@@ -124,7 +133,8 @@ double bellFilter(double t)
 	return 0.0;
 }
 
-double bSplineFilter(double t)
+double
+bSplineFilter(double t)
 {
 	double tt;
 	if (t < 0.0)
@@ -142,7 +152,8 @@ double bSplineFilter(double t)
 	return 0.0;
 }
 
-double sinc(double t)
+double
+sinc(double t)
 {
 	t *= RESIZE_PI;
 	if (t != 0.0)
@@ -150,7 +161,8 @@ double sinc(double t)
 	return 1.0;
 }
 
-double lanczos3Filter(double t)
+double
+lanczos3Filter(double t)
 {
 	if (t < 0.0)
 		t = -t;
@@ -159,7 +171,8 @@ double lanczos3Filter(double t)
 	return 0.0;
 }
 
-double mitchellFilter(double t)
+double
+mitchellFilter(double t)
 {
 	double B = (1.0 / 3.0);
 	double C = (1.0 / 3.0);
@@ -169,14 +182,12 @@ double mitchellFilter(double t)
 		t = -t;
 	if (t < 1.0)
 	{
-		t = (((12.0 - 9.0 * B - 6.0 * C) * (t * tt)) + ((-18.0 + 12.0 * B + 6.0 * C) * tt) +
-			(6.0 - 2.0 * B));
+		t = (((12.0 - 9.0 * B - 6.0 * C) * (t * tt)) + ((-18.0 + 12.0 * B + 6.0 * C) * tt) + (6.0 - 2.0 * B));
 		return (t / 6.0);
 	}
 	else if (t < 2.0)
 	{
-		t = (((-1.0 * B - 6.0 * C) * (t * tt)) + ((6.0 * B + 30.0 * C) * tt) +
-			((-12.0 * B - 48.0 * C) * t) + (8.0 * B + 24.0 * C));
+		t = (((-1.0 * B - 6.0 * C) * (t * tt)) + ((6.0 * B + 30.0 * C) * tt) + ((-12.0 * B - 48.0 * C) * t) + (8.0 * B + 24.0 * C));
 		return (t / 6.0);
 	}
 	return 0.0;
@@ -196,7 +207,8 @@ typedef struct
 
 CLIST* contrib;
 
-Image* newImage(int32_t xSize, int32_t ySize)
+Image*
+newImage(int32_t xSize, int32_t ySize)
 {
 	Image* image = (Image*)malloc(sizeof(Image));
 	if (image)
@@ -209,13 +221,15 @@ Image* newImage(int32_t xSize, int32_t ySize)
 	return image;
 }
 
-void freeImage(Image* image)
+void
+freeImage(Image* image)
 {
 	free(image->data);
 	free(image);
 }
 
-void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
+void
+zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 {
 	Image* tmp;
 	double xscale, yscale;
@@ -225,7 +239,7 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 	double width, fscale, weight;
 	float* raster;
 	// Create Intermediate image to hold horizontal zoom
-	tmp	= newImage(dst->xSize, src->ySize);
+	tmp = newImage(dst->xSize, src->ySize);
 	xscale = (double)dst->xSize / (double)src->xSize;
 	yscale = (double)dst->ySize / (double)src->ySize;
 	// pre-calculate filter contributions for a row
@@ -233,15 +247,15 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 	memset(contrib, 0, dst->xSize * sizeof(CLIST));
 	if (xscale < 1.0)
 	{
-		width  = fwidth / xscale;
+		width = fwidth / xscale;
 		fscale = 1.0 / xscale;
 		for (i = 0; i < dst->xSize; ++i)
 		{
 			contrib[i].n = 0;
 			contrib[i].p = (CONTRIB*)malloc((width * 2 + 1) * sizeof(CONTRIB));
-			center		 = (double)i / xscale;
-			left		 = ceil(center - width);
-			right		 = floor(center + width);
+			center = (double)i / xscale;
+			left = ceil(center - width);
+			right = floor(center + width);
 			for (j = left; j <= right; ++j)
 			{
 				weight = center - (double)j;
@@ -258,8 +272,8 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 				{
 					n = j;
 				}
-				k					   = contrib[i].n++;
-				contrib[i].p[k].pixel  = n;
+				k = contrib[i].n++;
+				contrib[i].p[k].pixel = n;
 				contrib[i].p[k].weight = weight;
 			}
 		}
@@ -270,9 +284,9 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 		{
 			contrib[i].n = 0;
 			contrib[i].p = (CONTRIB*)malloc((fwidth * 2 + 1) * sizeof(CONTRIB));
-			center		 = (double)i / xscale;
-			left		 = ceil(center - fwidth);
-			right		 = floor(center + fwidth);
+			center = (double)i / xscale;
+			left = ceil(center - fwidth);
+			right = floor(center + fwidth);
 			for (j = left; j <= right; ++j)
 			{
 				weight = center - (double)j;
@@ -289,8 +303,8 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 				{
 					n = j;
 				}
-				k					   = contrib[i].n++;
-				contrib[i].p[k].pixel  = n;
+				k = contrib[i].n++;
+				contrib[i].p[k].pixel = n;
 				contrib[i].p[k].weight = weight;
 			}
 		}
@@ -325,15 +339,15 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 	memset(contrib, 0, dst->ySize * sizeof(CLIST));
 	if (yscale < 1.0)
 	{
-		width  = fwidth / yscale;
+		width = fwidth / yscale;
 		fscale = 1.0 / yscale;
 		for (i = 0; i < dst->ySize; ++i)
 		{
 			contrib[i].n = 0;
 			contrib[i].p = (CONTRIB*)malloc((width * 2 + 1) * sizeof(CONTRIB));
-			center		 = (double)i / yscale;
-			left		 = ceil(center - width);
-			right		 = floor(center + width);
+			center = (double)i / yscale;
+			left = ceil(center - width);
+			right = floor(center + width);
 			for (j = left; j <= right; ++j)
 			{
 				weight = center - (double)j;
@@ -350,8 +364,8 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 				{
 					n = j;
 				}
-				k					   = contrib[i].n++;
-				contrib[i].p[k].pixel  = n;
+				k = contrib[i].n++;
+				contrib[i].p[k].pixel = n;
 				contrib[i].p[k].weight = weight;
 			}
 		}
@@ -362,9 +376,9 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 		{
 			contrib[i].n = 0;
 			contrib[i].p = (CONTRIB*)malloc((fwidth * 2 + 1) * sizeof(CONTRIB));
-			center		 = (double)i / yscale;
-			left		 = ceil(center - fwidth);
-			right		 = floor(center + fwidth);
+			center = (double)i / yscale;
+			left = ceil(center - fwidth);
+			right = floor(center + fwidth);
 			for (j = left; j <= right; ++j)
 			{
 				weight = center - (double)j;
@@ -381,8 +395,8 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 				{
 					n = j;
 				}
-				k					   = contrib[i].n++;
-				contrib[i].p[k].pixel  = n;
+				k = contrib[i].n++;
+				contrib[i].p[k].pixel = n;
 				contrib[i].p[k].weight = weight;
 			}
 		}
@@ -414,7 +428,8 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 	freeImage(tmp);
 }
 
-void rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize);
+void
+rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize);
 
 //----------------------------------------------------------------------------
 #endif

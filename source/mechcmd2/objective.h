@@ -65,8 +65,8 @@ enum condition_species_type
 enum MARKER_TYPES
 {
 	NO_MARKER = 0,
-	NAV		  = 1,
-	NUMERIC   = 2
+	NAV = 1,
+	NUMERIC = 2
 };
 
 static PCSTR g_conditionSpeciesStringArray[] = {
@@ -133,7 +133,7 @@ public:
 	int32_t elementPos(std::wstring element)
 	{
 		bool elementFound = false;
-		int32_t pos		  = 0;
+		int32_t pos = 0;
 		CEStringList::EIterator flagIDListIter;
 		for (flagIDListIter = m_FlagIDList.Begin(void); !flagIDListIter.IsDone(void);
 			 flagIDListIter++)
@@ -201,7 +201,7 @@ public:
 	virtual bool Read(FitIniFile* /*missionFile */) { return true; }
 	virtual bool Save(FitIniFile* /*file*/) { return true; }
 	virtual objective_status_type Status() = 0;
-	virtual std::wstring Description()	 = 0;
+	virtual std::wstring Description() = 0;
 	virtual std::wstring InstanceDescription()
 	{
 		std::wstring retval;
@@ -217,7 +217,8 @@ public:
 class CDestroyAllEnemyUnits : public CObjectiveCondition
 {
 public:
-	CDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
+	CDestroyAllEnemyUnits(int32_t alignment) :
+		CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_ALL_ENEMY_UNITS; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -233,7 +234,8 @@ protected:
 	int32_t m_num;
 
 public:
-	CNumberOfUnitsObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
+	CNumberOfUnitsObjectiveCondition(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
 		m_num = 0;
 	}
@@ -249,7 +251,8 @@ public:
 class CDestroyNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 {
 public:
-	CDestroyNumberOfEnemyUnits(int32_t alignment) : CNumberOfUnitsObjectiveCondition(alignment) {}
+	CDestroyNumberOfEnemyUnits(int32_t alignment) :
+		CNumberOfUnitsObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_NUMBER_OF_ENEMY_UNITS; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -267,7 +270,8 @@ protected:
 	GameObjectWatchID m_pUnitWID;
 
 public:
-	CSpecificUnitObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
+	CSpecificUnitObjectiveCondition(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
 		m_pUnitWID = 0;
 	}
@@ -279,12 +283,11 @@ public:
 	virtual bool Save(FitIniFile* file);
 };
 
-class CSpecificEnemyUnitObjectiveCondition
-	: public CSpecificUnitObjectiveCondition /*abstract class*/
+class CSpecificEnemyUnitObjectiveCondition : public CSpecificUnitObjectiveCondition /*abstract class*/
 {
 public:
-	CSpecificEnemyUnitObjectiveCondition(int32_t alignment)
-		: CSpecificUnitObjectiveCondition(alignment)
+	CSpecificEnemyUnitObjectiveCondition(int32_t alignment) :
+		CSpecificUnitObjectiveCondition(alignment)
 	{
 	}
 	bool Read(FitIniFile* missionFile);
@@ -293,7 +296,8 @@ public:
 class CDestroySpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CDestroySpecificEnemyUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment)
+	CDestroySpecificEnemyUnit(int32_t alignment) :
+		CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species() { return DESTROY_SPECIFIC_ENEMY_UNIT; }
@@ -312,7 +316,8 @@ protected:
 	int32_t m_pBuildingWID;
 
 public:
-	CSpecificStructureObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
+	CSpecificStructureObjectiveCondition(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
 		m_pBuildingWID = 0;
 	}
@@ -336,7 +341,8 @@ public:
 class CDestroySpecificStructure : public CSpecificStructureObjectiveCondition
 {
 public:
-	CDestroySpecificStructure(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment)
+	CDestroySpecificStructure(int32_t alignment) :
+		CSpecificStructureObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species() { return DESTROY_SPECIFIC_STRUCTURE; }
@@ -352,7 +358,8 @@ public:
 class CCaptureOrDestroyAllEnemyUnits : public CObjectiveCondition
 {
 public:
-	CCaptureOrDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
+	CCaptureOrDestroyAllEnemyUnits(int32_t alignment) :
+		CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -367,8 +374,8 @@ public:
 class CCaptureOrDestroyNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 {
 public:
-	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment)
-		: CNumberOfUnitsObjectiveCondition(alignment)
+	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment) :
+		CNumberOfUnitsObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS; }
@@ -384,8 +391,8 @@ public:
 class CCaptureOrDestroySpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment)
-		: CSpecificEnemyUnitObjectiveCondition(alignment)
+	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment) :
+		CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT; }
@@ -402,8 +409,8 @@ public:
 class CCaptureOrDestroySpecificStructure : public CSpecificStructureObjectiveCondition
 {
 public:
-	CCaptureOrDestroySpecificStructure(int32_t alignment)
-		: CSpecificStructureObjectiveCondition(alignment)
+	CCaptureOrDestroySpecificStructure(int32_t alignment) :
+		CSpecificStructureObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE; }
@@ -420,7 +427,8 @@ public:
 class CDeadOrFledAllEnemyUnits : public CObjectiveCondition
 {
 public:
-	CDeadOrFledAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
+	CDeadOrFledAllEnemyUnits(int32_t alignment) :
+		CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DEAD_OR_FLED_ALL_ENEMY_UNITS; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -434,7 +442,8 @@ public:
 class CDeadOrFledNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 {
 public:
-	CDeadOrFledNumberOfEnemyUnits(int32_t alignment) : CNumberOfUnitsObjectiveCondition(alignment)
+	CDeadOrFledNumberOfEnemyUnits(int32_t alignment) :
+		CNumberOfUnitsObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species() { return DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS; }
@@ -451,8 +460,8 @@ public:
 class CDeadOrFledSpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CDeadOrFledSpecificEnemyUnit(int32_t alignment)
-		: CSpecificEnemyUnitObjectiveCondition(alignment)
+	CDeadOrFledSpecificEnemyUnit(int32_t alignment) :
+		CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species() { return DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT; }
@@ -468,7 +477,8 @@ public:
 class CCaptureUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CCaptureUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
+	CCaptureUnit(int32_t alignment) :
+		CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_UNIT; }
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
@@ -482,7 +492,8 @@ public:
 class CCaptureStructure : public CSpecificStructureObjectiveCondition
 {
 public:
-	CCaptureStructure(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment) {}
+	CCaptureStructure(int32_t alignment) :
+		CSpecificStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_STRUCTURE; }
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
@@ -496,7 +507,8 @@ public:
 class CGuardSpecificUnit : public CSpecificUnitObjectiveCondition
 {
 public:
-	CGuardSpecificUnit(int32_t alignment) : CSpecificUnitObjectiveCondition(alignment) {}
+	CGuardSpecificUnit(int32_t alignment) :
+		CSpecificUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() { return GUARD_SPECIFIC_UNIT; }
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
@@ -510,7 +522,8 @@ public:
 class CGuardSpecificStructure : public CSpecificStructureObjectiveCondition
 {
 public:
-	CGuardSpecificStructure(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment) {}
+	CGuardSpecificStructure(int32_t alignment) :
+		CSpecificStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() { return GUARD_SPECIFIC_STRUCTURE; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -529,17 +542,18 @@ protected:
 	float m_targetRadius;
 
 public:
-	CAreaObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
+	CAreaObjectiveCondition(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
 		m_targetCenterX = 0.0;
 		m_targetCenterY = 0.0;
-		m_targetRadius  = 0.0;
+		m_targetRadius = 0.0;
 	}
 	virtual bool SetParams(float targetCenterX, float targetCenterY, float targetRadius)
 	{
 		m_targetCenterX = targetCenterX;
 		m_targetCenterY = targetCenterY;
-		m_targetRadius  = targetRadius;
+		m_targetRadius = targetRadius;
 		return true;
 	}
 	virtual bool Read(FitIniFile* missionFile);
@@ -559,7 +573,8 @@ public:
 class CMoveAnyUnitToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAnyUnitToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAnyUnitToArea(int32_t alignment) :
+		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ANY_UNIT_TO_AREA; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -572,7 +587,8 @@ public:
 class CMoveAllUnitsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllUnitsToArea(int32_t alignment) :
+		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_UNITS_TO_AREA; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -585,7 +601,8 @@ public:
 class CMoveAllSurvivingUnitsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllSurvivingUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllSurvivingUnitsToArea(int32_t alignment) :
+		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_SURVIVING_UNITS_TO_AREA; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -599,7 +616,8 @@ public:
 class CMoveAllSurvivingMechsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllSurvivingMechsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllSurvivingMechsToArea(int32_t alignment) :
+		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_SURVIVING_MECHS_TO_AREA; }
 	objective_status_type Status(void);
 	std::wstring Description()
@@ -617,10 +635,11 @@ protected:
 	bool m_value;
 
 public:
-	CBooleanFlagIsSet(int32_t alignment) : CObjectiveCondition(alignment)
+	CBooleanFlagIsSet(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
 		m_flagID = _TEXT("flag0");
-		m_value  = true;
+		m_value = true;
 	}
 	condition_species_type Species() { return BOOLEAN_FLAG_IS_SET; }
 	bool Read(FitIniFile* missionFile);
@@ -644,7 +663,8 @@ protected:
 	float m_time;
 
 public:
-	CElapsedMissionTime(int32_t alignment) : CObjectiveCondition(alignment) { m_time = 0.0; }
+	CElapsedMissionTime(int32_t alignment) :
+		CObjectiveCondition(alignment) { m_time = 0.0; }
 	condition_species_type Species() { return ELAPSED_MISSION_TIME; }
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
@@ -695,12 +715,12 @@ public:
 	int32_t Alignment() { return m_alignment; }
 	void Alignment(int32_t alignment) { m_alignment = alignment; }
 	bool DoCommonEditDialog() {}
-	virtual action_species_type Species()	  = 0;
-	virtual bool Init()						   = 0;
+	virtual action_species_type Species() = 0;
+	virtual bool Init() = 0;
 	virtual bool Read(FitIniFile* missionFile) = 0;
-	virtual bool Save(FitIniFile* file)		   = 0;
-	virtual int32_t Execute()				   = 0;
-	virtual std::wstring Description()		   = 0;
+	virtual bool Save(FitIniFile* file) = 0;
+	virtual int32_t Execute() = 0;
+	virtual std::wstring Description() = 0;
 	virtual std::wstring InstanceDescription()
 	{
 		std::wstring retval;
@@ -715,7 +735,8 @@ private:
 	std::wstring m_pathname;
 
 public:
-	CPlayBIK(int32_t alignment) : CObjectiveAction(alignment) {}
+	CPlayBIK(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	action_species_type Species() { return PLAY_BIK; }
 	bool Init() { return true; }
 	bool Read(FitIniFile* missionFile);
@@ -739,7 +760,8 @@ private:
 	std::wstring m_pathname;
 
 public:
-	CPlayWAV(int32_t alignment) : CObjectiveAction(alignment) {}
+	CPlayWAV(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	action_species_type Species() { return PLAY_WAV; }
 	bool Init() { return true; }
 	bool Read(FitIniFile* missionFile);
@@ -763,7 +785,8 @@ private:
 	std::wstring m_message;
 
 public:
-	CDisplayTextMessage(int32_t alignment) : CObjectiveAction(alignment) {}
+	CDisplayTextMessage(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	action_species_type Species() { return DISPLAY_TEXT_MESSAGE; }
 	bool Init() { return true; }
 	bool Read(FitIniFile* missionFile);
@@ -787,7 +810,8 @@ private:
 	int32_t m_resourceStringID;
 
 public:
-	CDisplayResourceTextMessage(int32_t alignment) : CObjectiveAction(alignment) {}
+	CDisplayResourceTextMessage(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	action_species_type Species() { return DISPLAY_RESOURCE_TEXT_MESSAGE; }
 	bool Init() { return true; }
 	bool Read(FitIniFile* missionFile);
@@ -813,10 +837,11 @@ private:
 	bool m_value;
 
 public:
-	CSetBooleanFlag(int32_t alignment) : CObjectiveAction(alignment)
+	CSetBooleanFlag(int32_t alignment) :
+		CObjectiveAction(alignment)
 	{
 		m_flagID = _TEXT("flag0");
-		m_value  = true;
+		m_value = true;
 	}
 	action_species_type Species() { return SET_BOOLEAN_FLAG; }
 	bool Init() { return true; }
@@ -841,7 +866,8 @@ private:
 	std::wstring m_purchaseFilePathname;
 
 public:
-	CMakeNewTechnologyAvailable(int32_t alignment) : CObjectiveAction(alignment) {}
+	CMakeNewTechnologyAvailable(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	action_species_type Species() { return MAKE_NEW_TECHNOLOGY_AVAILABLE; }
 	bool Init() { return true; }
 	bool Read(FitIniFile* missionFile);
@@ -866,7 +892,8 @@ private:
 	int32_t m_pBuildingWID;
 
 public:
-	C_RemoveStructure(int32_t alignment) : CObjectiveAction(alignment) {}
+	C_RemoveStructure(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	bool SetParams(float positionX, float positionY);
 	action_species_type Species() { return _REMOVE_STRUCTURE; }
 	bool Init() { return true; }
@@ -1089,7 +1116,8 @@ private:
 };
 
 /* Reads Nav Marker info and adds appropriate "hidden trigger" objectives. */
-bool ReadNavMarkers(FitIniFile* missionFile, CObjectives& objectives);
+bool
+ReadNavMarkers(FitIniFile* missionFile, CObjectives& objectives);
 
 //*************************************************************************************************
 #endif // end of file ( Objective.h )

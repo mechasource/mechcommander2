@@ -29,7 +29,8 @@ Weather* weather = nullptr;
 
 //----------------------------------------------------------------------------------
 // Class Weather
-void Weather::destroy(void)
+void
+Weather::destroy(void)
 {
 	systemHeap->Free(rainDrops);
 	rainDrops = nullptr;
@@ -37,7 +38,8 @@ void Weather::destroy(void)
 }
 
 //----------------------------------------------------------------------------------
-void Weather::save(FitIniFile* missionFile)
+void
+Weather::save(FitIniFile* missionFile)
 {
 	missionFile->writeBlock("Weather");
 	missionFile->writeIdULong("MaxRainDrops", totalRainDrops);
@@ -47,13 +49,14 @@ void Weather::save(FitIniFile* missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void Weather::load(FitIniFile* missionFile)
+void
+Weather::load(FitIniFile* missionFile)
 {
 	int32_t result = missionFile->seekBlock("Weather");
 	if (result == NO_ERROR)
 	{
 		weatherActive = true;
-		result		  = missionFile->readIdULong("MaxRainDrops", totalRainDrops);
+		result = missionFile->readIdULong("MaxRainDrops", totalRainDrops);
 		if (result != NO_ERROR)
 			totalRainDrops = 500;
 		if (totalRainDrops > 500)
@@ -84,13 +87,14 @@ void Weather::load(FitIniFile* missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void Weather::init(FitIniFilePtr missionFile)
+void
+Weather::init(FitIniFilePtr missionFile)
 {
 	int32_t result = missionFile->seekBlock("Weather");
 	if (result == NO_ERROR)
 	{
 		weatherActive = true;
-		result		  = missionFile->readIdULong("MaxRainDrops", totalRainDrops);
+		result = missionFile->readIdULong("MaxRainDrops", totalRainDrops);
 		if (result != NO_ERROR)
 			totalRainDrops = 500;
 		if (totalRainDrops > 500)
@@ -127,9 +131,10 @@ void Weather::init(FitIniFilePtr missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void Weather::init(uint32_t maxDrops, float startingRain, float brChance, float ltChance)
+void
+Weather::init(uint32_t maxDrops, float startingRain, float brChance, float ltChance)
 {
-	totalRainDrops   = maxDrops;
+	totalRainDrops = maxDrops;
 	currentRainDrops = 0;
 	if (maxDrops)
 	{
@@ -146,18 +151,19 @@ void Weather::init(uint32_t maxDrops, float startingRain, float brChance, float 
 	if (rainLevel != 0.0f)
 	{
 		rainFactor = 0.05f + float(RandomNumber(100)) / 1000.0f;
-		rainTrend  = 1.0f;
+		rainTrend = 1.0f;
 	}
-	lighteningLevel		 = 0.0f;
-	baseRainChance		 = brChance;
+	lighteningLevel = 0.0f;
+	baseRainChance = brChance;
 	baseLighteningChance = ltChance;
 	// Force update on frame one, in case its already raining!!
 	rainUpdateTime = 0.0f;
-	oldFog		   = -1.0f;
+	oldFog = -1.0f;
 }
 
 //----------------------------------------------------------------------------------
-void Weather::update(void)
+void
+Weather::update(void)
 {
 	if (!weatherActive)
 		return;
@@ -184,7 +190,7 @@ void Weather::update(void)
 			if ((baseRainChance != 0.0f) && RollDice(baseRainChance))
 			{
 				rainFactor = 0.05f + float(RandomNumber(100)) / 1000.0f;
-				rainTrend  = 1.0f;
+				rainTrend = 1.0f;
 			}
 			else
 			{
@@ -200,7 +206,7 @@ void Weather::update(void)
 				if ((invRainChance != 0.0f) && RollDice(invRainChance))
 				{
 					rainFactor = 0.05f + float(RandomNumber(100)) / 1000.0f;
-					rainTrend  = -1.0f;
+					rainTrend = -1.0f;
 				}
 				if (rainLevel > 4.0f)
 					rainLevel = 4.0f;
@@ -208,9 +214,9 @@ void Weather::update(void)
 		}
 		if (rainLevel <= 0.0f)
 		{
-			rainLevel  = 0.0f;
+			rainLevel = 0.0f;
 			rainFactor = 0.0f;
-			rainTrend  = 1.0f;
+			rainTrend = 1.0f;
 		}
 		rainUpdateTime = BASE_RAIN_UPDATE_TIME;
 	}
@@ -243,7 +249,7 @@ void Weather::update(void)
 				{
 					lighteningLevel = 64.0f + float(RandomNumber(192));
 					if (thunderTime == 0.0f) // Fire off a crack of thunder
-											 // unless one is on its way!
+						// unless one is on its way!
 					{
 						thunderTime = RandomNumber(BASE_THUNDER_RANDOM_START);
 						if (lighteningLevel > 210)
@@ -299,31 +305,31 @@ void Weather::update(void)
 				soundSystem->playDigitalSample(thunderSFX);
 				thunderSFX = 0xffffffff;
 			}
-			uint8_t lightening			= lighteningLevel;
+			uint8_t lightening = lighteningLevel;
 			TerrainQuad::rainLightLevel = rainLightLevel * 0.2f;
 			{
-				eye->ambientRed   = eye->dayAmbientRed / rainLightLevel;
+				eye->ambientRed = eye->dayAmbientRed / rainLightLevel;
 				eye->ambientGreen = eye->dayAmbientGreen / rainLightLevel;
-				eye->ambientBlue  = eye->dayAmbientBlue / rainLightLevel;
-				eye->lightRed	 = eye->dayLightRed / rainLightLevel;
-				eye->lightGreen   = eye->dayLightGreen / rainLightLevel;
-				eye->lightBlue	= eye->dayLightBlue / rainLightLevel;
+				eye->ambientBlue = eye->dayAmbientBlue / rainLightLevel;
+				eye->lightRed = eye->dayLightRed / rainLightLevel;
+				eye->lightGreen = eye->dayLightGreen / rainLightLevel;
+				eye->lightBlue = eye->dayLightBlue / rainLightLevel;
 			}
 			if (lighteningLevel != 0.0f)
 			{
 				TerrainQuad::lighteningLevel = lightening >> 1;
-				TG_Shape::lighteningLevel	= lightening >> 1;
+				TG_Shape::lighteningLevel = lightening >> 1;
 			}
 		}
 		else
 		{
 			{
-				eye->ambientRed   = eye->dayAmbientRed;
+				eye->ambientRed = eye->dayAmbientRed;
 				eye->ambientGreen = eye->dayAmbientGreen;
-				eye->ambientBlue  = eye->dayAmbientBlue;
-				eye->lightRed	 = eye->dayLightRed;
-				eye->lightGreen   = eye->dayLightGreen;
-				eye->lightBlue	= eye->dayLightBlue;
+				eye->ambientBlue = eye->dayAmbientBlue;
+				eye->lightRed = eye->dayLightRed;
+				eye->lightGreen = eye->dayLightGreen;
+				eye->lightBlue = eye->dayLightBlue;
 			}
 		}
 		//-----------------------
@@ -349,8 +355,7 @@ void Weather::update(void)
 					positionOffset.z =
 						RandomNumber(BASE_RAIN_RANDOM_HGT_FACTOR * 2) - BASE_RAIN_RANDOM_HGT_FACTOR;
 					rainDrops[i].position.Add(startPos, positionOffset);
-					rainDrops[i].length = BASE_RAIN_LENGTH +
-						RandomNumber(BASE_RAIN_RANDOM_LEN_FACTOR * 2) - BASE_RAIN_RANDOM_LEN_FACTOR;
+					rainDrops[i].length = BASE_RAIN_LENGTH + RandomNumber(BASE_RAIN_RANDOM_LEN_FACTOR * 2) - BASE_RAIN_RANDOM_LEN_FACTOR;
 				}
 			}
 			currentRainDrops = newRainDrops;
@@ -371,26 +376,26 @@ void Weather::update(void)
 				positionOffset.z =
 					RandomNumber(BASE_RAIN_RANDOM_HGT_FACTOR * 2) - BASE_RAIN_RANDOM_HGT_FACTOR;
 				rainDrops[i].position.Add(startPos, positionOffset);
-				rainDrops[i].length = BASE_RAIN_LENGTH +
-					RandomNumber(BASE_RAIN_RANDOM_LEN_FACTOR * 2) - BASE_RAIN_RANDOM_LEN_FACTOR;
+				rainDrops[i].length = BASE_RAIN_LENGTH + RandomNumber(BASE_RAIN_RANDOM_LEN_FACTOR * 2) - BASE_RAIN_RANDOM_LEN_FACTOR;
 			}
 		}
 	}
 	else
 	{
 		{
-			eye->ambientRed   = eye->dayAmbientRed;
+			eye->ambientRed = eye->dayAmbientRed;
 			eye->ambientGreen = eye->dayAmbientGreen;
-			eye->ambientBlue  = eye->dayAmbientBlue;
-			eye->lightRed	 = eye->dayLightRed;
-			eye->lightGreen   = eye->dayLightGreen;
-			eye->lightBlue	= eye->dayLightBlue;
+			eye->ambientBlue = eye->dayAmbientBlue;
+			eye->lightRed = eye->dayLightRed;
+			eye->lightGreen = eye->dayLightGreen;
+			eye->lightBlue = eye->dayLightBlue;
 		}
 	}
 }
 
 //----------------------------------------------------------------------------------
-void Weather::render(void)
+void
+Weather::render(void)
 {
 	if (!weatherActive)
 		return;
@@ -428,24 +433,24 @@ void Weather::render(void)
 				onScreen = eye->projectZ(botPos, screen2);
 				if (onScreen)
 				{
-					uint8_t amb		   = ambientFactor * (1.0f - screen1.z);
+					uint8_t amb = ambientFactor * (1.0f - screen1.z);
 					uint32_t rainColor = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
 					// Gotta draw this one!
 					gos_VERTEX sVertices[2];
-					sVertices[0].x   = screen1.x;
-					sVertices[0].y   = screen1.y;
-					sVertices[0].z   = screen1.z;
+					sVertices[0].x = screen1.x;
+					sVertices[0].y = screen1.y;
+					sVertices[0].z = screen1.z;
 					sVertices[0].rhw = screen1.w;
 					sVertices[0].u = sVertices[0].v = 0.0f;
-					sVertices[0].argb				= rainColor;
-					sVertices[0].frgb				= 0xff000000;
-					sVertices[1].x					= screen2.x;
-					sVertices[1].y					= screen2.y;
-					sVertices[1].z					= screen2.z;
-					sVertices[1].rhw				= screen2.w;
+					sVertices[0].argb = rainColor;
+					sVertices[0].frgb = 0xff000000;
+					sVertices[1].x = screen2.x;
+					sVertices[1].y = screen2.y;
+					sVertices[1].z = screen2.z;
+					sVertices[1].rhw = screen2.w;
 					sVertices[1].u = sVertices[1].v = 0.0f;
-					sVertices[1].argb				= rainColor;
-					sVertices[1].frgb				= 0xff000000;
+					sVertices[1].argb = rainColor;
+					sVertices[1].frgb = 0xff000000;
 					gos_DrawLines(sVertices, 2);
 				}
 			}

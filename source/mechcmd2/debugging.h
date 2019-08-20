@@ -38,10 +38,10 @@ public:
 public:
 	void init(void)
 	{
-		display  = false;
-		pos[0]   = 0;
-		pos[1]   = 0;
-		linePos  = 0;
+		display = false;
+		pos[0] = 0;
+		pos[1] = 0;
+		linePos = 0;
 		numLines = 0;
 		for (size_t i = 0; i < MAX_DEBUG_WINDOW_LINES; i++)
 			textBuffer[i][0] = nullptr;

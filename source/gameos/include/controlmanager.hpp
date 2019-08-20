@@ -24,7 +24,7 @@ extern uint32_t KeyPressed; // Where the next key pressed will go
 extern uint32_t dbKeyBoardBuffer[256];
 extern uint32_t dbKeyCurrent; // Where the next key to be read is
 extern uint32_t dbKeyPressed; // Where the next key pressed will go
-extern uint32_t LastWMDown;   // Last WM_KEYDOWN message scan code
+extern uint32_t LastWMDown; // Last WM_KEYDOWN message scan code
 extern void __stdcall SaveOldKeyState(void);
 extern void __stdcall DoKeyReleased(uint32_t KeyCode);
 extern void __stdcall DealWithKey(uint32_t wParam, uint32_t lParam);

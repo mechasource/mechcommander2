@@ -15,13 +15,12 @@
 
 //---------------------------------------------------------------------------
 
-
 enum __dteam_const : uint32_t
 {
-	MAX_TEAMS						= 8,
-	MAX_MOVERS_PER_TEAM				= 120,
-	MAX_CONTACTS_PER_TEAM			= MAX_MOVERS,
-	NUM_CONTACT_UPDATES_PER_PASS	= 3,
+	MAX_TEAMS = 8,
+	MAX_MOVERS_PER_TEAM = 120,
+	MAX_CONTACTS_PER_TEAM = MAX_MOVERS,
+	NUM_CONTACT_UPDATES_PER_PASS = 3,
 };
 
 typedef enum Relation : uint32_t

@@ -30,13 +30,14 @@ public:
 	int32_t endColor;
 	puint8_t fadeTable;
 
-	LineElement(void) : Element()
+	LineElement(void) :
+		Element()
 	{
 		startPos.x = startPos.y = startPos.z = startPos.w = 0.0f;
 		endPos.x = endPos.y = endPos.z = endPos.w = 0.0f;
-		color									  = 0;
-		endColor								  = -1;
-		fadeTable								  = nullptr;
+		color = 0;
+		endColor = -1;
+		fadeTable = nullptr;
 	}
 
 	LineElement(Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr, puint8_t fTable,

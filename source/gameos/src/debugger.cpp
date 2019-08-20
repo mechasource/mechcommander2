@@ -140,9 +140,12 @@ ShowLogFileControls(void);
 gos_GetMouseInfo(float*, float*, int*, int*, int*, uint32_t*);
 gos_SetViewport(uint32_t, uint32_t, uint32_t, uint32_t, float, float);
 SaveStatistics(void);
-IJLERR (*_ijlFree)(_JPEG_CORE_PROPERTIES*);
-IJLERR (*_ijlWrite)(_JPEG_CORE_PROPERTIES*, IJLIOTYPE);
-IJLERR (*_ijlInit)(_JPEG_CORE_PROPERTIES*);
+IJLERR (*_ijlFree)
+(_JPEG_CORE_PROPERTIES*);
+IJLERR (*_ijlWrite)
+(_JPEG_CORE_PROPERTIES*, IJLIOTYPE);
+IJLERR (*_ijlInit)
+(_JPEG_CORE_PROPERTIES*);
 InternalDoesFileExist(char const*);
 GrabScreenImage(void);
 CheckLogFile(void);

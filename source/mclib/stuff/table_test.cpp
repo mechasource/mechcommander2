@@ -33,11 +33,16 @@ public:
 	bool RunTest();
 };
 
-TableTestPlug::TableTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
+TableTestPlug::TableTestPlug(int32_t value) :
+	Plug(DefaultData)
+{
+	this->value = value;
+}
 
 TableTestPlug::~TableTestPlug() {}
 
-TableTestNode::TableTestNode() : Node(DefaultData), table1(this, true), table2(this, true) {}
+TableTestNode::TableTestNode() :
+	Node(DefaultData), table1(this, true), table2(this, true) {}
 
 TableTestNode::~TableTestNode() {}
 
@@ -47,7 +52,8 @@ TableTestNode::~TableTestNode() {}
 //###########################################################################
 //
 
-bool Table::ProfileClass()
+bool
+Table::ProfileClass()
 {
 	TableTestNode testNode;
 #if defined(_ARMOR)
@@ -65,7 +71,8 @@ bool Table::ProfileClass()
 //###########################################################################
 //
 
-bool Table::TestClass()
+bool
+Table::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Table test..."));
 	TableTestNode testNode;
@@ -73,7 +80,8 @@ bool Table::TestClass()
 	return true;
 }
 
-bool TableTestNode::RunProfile()
+bool
+TableTestNode::RunProfile()
 {
 	TableTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -89,8 +97,8 @@ bool TableTestNode::RunProfile()
 	for (i = 0; i < TEST_COUNT; i++)
 	{
 		int32_t tmp;
-		j		  = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp		  = values[j];
+		j = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -180,7 +188,8 @@ bool TableTestNode::RunProfile()
 	return true;
 }
 
-bool TableTestNode::RunTest()
+bool
+TableTestNode::RunTest()
 {
 	TableTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -196,8 +205,8 @@ bool TableTestNode::RunTest()
 	for (i = 0; i < TEST_COUNT; i++)
 	{
 		int32_t tmp;
-		j		  = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp		  = values[j];
+		j = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -390,7 +399,7 @@ bool TableTestNode::RunTest()
 		i = 0;
 		while ((size = iterator1.GetSize()) != 0)
 		{
-			index	 = Random::GetLessThan(size);
+			index = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);

@@ -18,15 +18,16 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // NewSingleMission dialog
 
-NewSingleMission::NewSingleMission(CWnd* pParent /*=nullptr*/)
-	: CDialog(NewSingleMission::IDD, pParent)
+NewSingleMission::NewSingleMission(CWnd* pParent /*=nullptr*/) :
+	CDialog(NewSingleMission::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(NewSingleMission)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
-void NewSingleMission::DoDataExchange(CDataExchange* pDX)
+void
+NewSingleMission::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(NewSingleMission)
@@ -44,11 +45,20 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // NewSingleMission message handlers
 
-void NewSingleMission::OnLoadMission() { EndDialog(ID_LOAD_MISSION); }
+void
+NewSingleMission::OnLoadMission()
+{
+	EndDialog(ID_LOAD_MISSION);
+}
 
-void NewSingleMission::OnNewmission() { EndDialog(ID_NEWMISSION); }
+void
+NewSingleMission::OnNewmission()
+{
+	EndDialog(ID_NEWMISSION);
+}
 
-void NewSingleMission::OnCancel()
+void
+NewSingleMission::OnCancel()
 {
 	// TODO: Add extra cleanup here
 	CDialog::OnCancel();

@@ -86,7 +86,8 @@ ExtentBox::ExtentBox(const OBB& obb)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ExtentBox& ExtentBox::Intersect(const ExtentBox& box_1, const ExtentBox& box_2)
+ExtentBox&
+ExtentBox::Intersect(const ExtentBox& box_1, const ExtentBox& box_2)
 {
 	// Check_Pointer(this);
 	Check_Object(&box_1);
@@ -108,7 +109,8 @@ ExtentBox& ExtentBox::Intersect(const ExtentBox& box_1, const ExtentBox& box_2)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ExtentBox& ExtentBox::Union(const ExtentBox& box_1, const ExtentBox& box_2)
+ExtentBox&
+ExtentBox::Union(const ExtentBox& box_1, const ExtentBox& box_2)
 {
 	// Check_Pointer(this);
 	Check_Object(&box_1);
@@ -125,7 +127,8 @@ ExtentBox& ExtentBox::Union(const ExtentBox& box_1, const ExtentBox& box_2)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ExtentBox& ExtentBox::Union(const ExtentBox& box, const Vector3D& point)
+ExtentBox&
+ExtentBox::Union(const ExtentBox& box, const Vector3D& point)
 {
 	// Check_Pointer(this);
 	Check_Object(&box);
@@ -141,7 +144,8 @@ ExtentBox& ExtentBox::Union(const ExtentBox& box, const Vector3D& point)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Vector3D* ExtentBox::Constrain(Vector3D* point) const
+Vector3D*
+ExtentBox::Constrain(Vector3D* point) const
 {
 	// Check_Object(this);
 	Check_Object(point);
@@ -153,37 +157,38 @@ Vector3D* ExtentBox::Constrain(Vector3D* point) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool ExtentBox::Contains(const Vector3D& point) const
+bool
+ExtentBox::Contains(const Vector3D& point) const
 {
 	// Check_Object(this);
 	Check_Object(&point);
-	return minX <= point.x && maxX >= point.x && minY <= point.y && maxY >= point.y &&
-		minZ <= point.z && maxZ >= point.z;
+	return minX <= point.x && maxX >= point.x && minY <= point.y && maxY >= point.y && minZ <= point.z && maxZ >= point.z;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool ExtentBox::Contains(const ExtentBox& box) const
+bool
+ExtentBox::Contains(const ExtentBox& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
-	return minX <= box.minX && maxX >= box.maxX && minY <= box.minY && maxY >= box.maxY &&
-		minZ <= box.minZ && maxZ >= box.maxZ;
+	return minX <= box.minX && maxX >= box.maxX && minY <= box.minY && maxY >= box.maxY && minZ <= box.minZ && maxZ >= box.maxZ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool ExtentBox::Intersects(const ExtentBox& box) const
+bool
+ExtentBox::Intersects(const ExtentBox& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
-	return minX <= box.maxX && maxX >= box.minX && minY <= box.maxY && maxY >= box.minY &&
-		minZ <= box.maxZ && maxZ >= box.minZ;
+	return minX <= box.maxX && maxX >= box.minX && minY <= box.maxY && maxY >= box.minY && minZ <= box.maxZ && maxZ >= box.minZ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void ExtentBox::GetCenterpoint(Point3D* point) const
+void
+ExtentBox::GetCenterpoint(Point3D* point) const
 {
 	// Check_Object(this);
 	Check_Pointer(point);
@@ -194,12 +199,17 @@ void ExtentBox::GetCenterpoint(Point3D* point) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void ExtentBox::TestInstance(void) const { _ASSERT(minX <= maxX && minY <= maxY && minZ <= maxZ); }
+void
+ExtentBox::TestInstance(void) const
+{
+	_ASSERT(minX <= maxX && minY <= maxY && minZ <= maxZ);
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 #if !defined(Spew)
-void Spew(PCSTR group, const ExtentBox& box)
+void
+Spew(PCSTR group, const ExtentBox& box)
 {
 	Check_Object(&box);
 	SPEW((group, "[%f..%f,%f..%f,%f..%f]+", box.minX, box.maxX, box.minY, box.maxY, box.minZ,
@@ -211,30 +221,32 @@ void Spew(PCSTR group, const ExtentBox& box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::Convert_From_Ascii(PCSTR str, ExtentBox* extent_box)
+void
+Stuff::Convert_From_Ascii(PCSTR str, ExtentBox* extent_box)
 {
 	Check_Pointer(str);
 	Check_Object(extent_box);
 	std::wstring parse_string(str);
 	Check_Object(&parse_string);
 	std::wstring token = parse_string.GetNthToken(0);
-	extent_box->minX   = AtoF(token);
-	token			   = parse_string.GetNthToken(1);
-	extent_box->minY   = AtoF(token);
-	token			   = parse_string.GetNthToken(2);
-	extent_box->minZ   = AtoF(token);
-	token			   = parse_string.GetNthToken(3);
-	extent_box->maxX   = AtoF(token);
-	token			   = parse_string.GetNthToken(4);
-	extent_box->maxY   = AtoF(token);
-	token			   = parse_string.GetNthToken(5);
-	extent_box->maxZ   = AtoF(token);
+	extent_box->minX = AtoF(token);
+	token = parse_string.GetNthToken(1);
+	extent_box->minY = AtoF(token);
+	token = parse_string.GetNthToken(2);
+	extent_box->minZ = AtoF(token);
+	token = parse_string.GetNthToken(3);
+	extent_box->maxX = AtoF(token);
+	token = parse_string.GetNthToken(4);
+	extent_box->maxY = AtoF(token);
+	token = parse_string.GetNthToken(5);
+	extent_box->maxZ = AtoF(token);
 	Check_Object(extent_box);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, puint32_t max_index,
+void
+Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, puint32_t max_index,
 	uint32_t block_size, float threshold)
 {
 	Check_Object(values);
@@ -245,7 +257,7 @@ void Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, 
 	//-------------------------------------------------------------
 	//
 	uint32_t bottom = 0;
-	uint32_t top	= *max_index;
+	uint32_t top = *max_index;
 	while (top > bottom)
 	{
 		uint32_t middle = (top + bottom - 1) >> 1;
@@ -285,7 +297,8 @@ void Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes)
+void
+Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes)
 {
 	Check_Object(planes);
 	Check_Object(&boxes);
@@ -300,7 +313,7 @@ void Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<E
 	uint32_t max_x = 0;
 	uint32_t max_y = 0;
 	uint32_t max_z = 0;
-	size_t count   = boxes.GetLength();
+	size_t count = boxes.GetLength();
 	uint32_t i;
 	_ASSERT(count > 0);
 	for (i = 0; i < count; ++i)
@@ -331,7 +344,7 @@ void Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<E
 		plane->normal.x = 1.0f;
 		plane->normal.y = 0.0f;
 		plane->normal.z = 0.0f;
-		plane->offset   = xs[i];
+		plane->offset = xs[i];
 		++plane;
 	}
 	//
@@ -345,7 +358,7 @@ void Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<E
 		plane->normal.x = 0.0f;
 		plane->normal.y = 1.0f;
 		plane->normal.z = 0.0f;
-		plane->offset   = ys[i];
+		plane->offset = ys[i];
 		++plane;
 	}
 	//
@@ -359,7 +372,7 @@ void Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<E
 		plane->normal.x = 0.0f;
 		plane->normal.y = 0.0f;
 		plane->normal.z = 1.0f;
-		plane->offset   = zs[i];
+		plane->offset = zs[i];
 		++plane;
 	}
 }

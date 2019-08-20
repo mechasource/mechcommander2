@@ -40,7 +40,10 @@
 
 void __stdcall InitProcessorSpeed(void) {}
 
-PSTR __stdcall GetProcessor(void) { return nullptr; }
+PSTR __stdcall GetProcessor(void)
+{
+	return nullptr;
+}
 
 void __stdcall GetProcessorInfo(void) {}
 

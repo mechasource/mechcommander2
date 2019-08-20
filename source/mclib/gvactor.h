@@ -55,9 +55,9 @@ public:
 
 	char rotationalNodeId[TG_NODE_ID];
 
-	int32_t numSmokeNodes;  // Where damage smoke comes from.
+	int32_t numSmokeNodes; // Where damage smoke comes from.
 	int32_t numWeaponNodes; // Where weapons fire from.
-	int32_t numFootNodes;   // Where dust trail, contrail comes out of.
+	int32_t numFootNodes; // Where dust trail, contrail comes out of.
 	NodeData* nodeData;
 
 	static TG_TypeMultiShapePtr SensorTriangleShape;
@@ -69,18 +69,18 @@ public:
 		int32_t i = 0;
 		for (i = 0; i < MAX_LODS; i++)
 		{
-			gvShape[i]	 = nullptr;
+			gvShape[i] = nullptr;
 			lodDistance[i] = 0.0f;
 		}
 		gvShadowShape = nullptr;
-		gvDmgShape	= nullptr;
+		gvDmgShape = nullptr;
 		for (i = 0; i < MAX_GV_ANIMATIONS; i++)
 		{
 			gvAnimData[i] = nullptr;
 			gvAnimLoop[i] = false;
-			gvReverse[i]  = false;
-			gvRandom[i]   = false;
-			gvStartF[i]   = 0;
+			gvReverse[i] = false;
+			gvRandom[i] = false;
+			gvStartF[i] = 0;
 		}
 		destructEffect[0] = 0;
 	}
@@ -184,9 +184,9 @@ public:
 
 	int32_t currentLOD;
 
-	int32_t* nodeUsed;  // Used to stagger the weapon nodes for firing.
+	int32_t* nodeUsed; // Used to stagger the weapon nodes for firing.
 	float* nodeRecycle; // Used for ripple fire to find out if the node has
-						// fired recently.
+		// fired recently.
 
 	uint32_t localTextureHandle;
 

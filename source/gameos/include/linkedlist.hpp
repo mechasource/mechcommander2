@@ -17,14 +17,14 @@ public:
 	gosLink()
 	{
 		linkData = 0;
-		Next	 = 0;
-		Prev	 = 0;
+		Next = 0;
+		Prev = 0;
 	}
 	gosLink(PVOID ptr)
 	{
 		linkData = ptr;
-		Next	 = 0;
-		Prev	 = 0;
+		Next = 0;
+		Prev = 0;
 	}
 	virtual ~gosLink()
 	{
@@ -34,7 +34,8 @@ public:
 	gosLink* GetNext() { return (gosLink*)linkData; }
 };
 
-template <class T> class LinkedList
+template <class T>
+class LinkedList
 {
 public:
 	gosLink* m_Head;
@@ -49,9 +50,9 @@ public:
 	LinkedList(T ptr)
 	{
 		gosLink* newlink = (gosLink*)malloc(sizeof(gosLink));
-		m_Head			 = newlink;
-		m_Head->Next	 = 0;
-		m_Size			 = 1;
+		m_Head = newlink;
+		m_Head->Next = 0;
+		m_Size = 1;
 	};
 	~LinkedList()
 	{
@@ -60,13 +61,13 @@ public:
 	};
 	void Add(T ptr)
 	{
-		gosLink* newlink  = (gosLink*)malloc(sizeof(gosLink));
+		gosLink* newlink = (gosLink*)malloc(sizeof(gosLink));
 		newlink->linkData = ptr;
-		newlink->Next	 = 0;
-		newlink->Prev	 = 0;
+		newlink->Next = 0;
+		newlink->Prev = 0;
 		if (m_Head == 0)
 		{
-			m_Head		  = newlink;
+			m_Head = newlink;
 			newlink->Next = 0;
 			newlink->Prev = 0;
 		}
@@ -75,7 +76,7 @@ public:
 			gosLink* tmp = m_Head;
 			while (tmp->Next != 0)
 				tmp = tmp->Next;
-			tmp->Next	 = newlink;
+			tmp->Next = newlink;
 			newlink->Next = 0;
 			newlink->Prev = tmp;
 		}
@@ -84,12 +85,12 @@ public:
 	void Del(T ptr)
 	{
 		if (!m_Head) // YIK - Why does it need this! (Delete All surfaces used
-					 // to crash)
+			// to crash)
 			return;
 		gosLink* tmp = m_Head;
 		if (tmp->linkData == (PVOID)ptr)
 		{
-			m_Head	= tmp->Next;
+			m_Head = tmp->Next;
 			tmp->Prev = 0;
 			m_Size -= 1;
 			memset(tmp, 0, sizeof(tmp));
@@ -102,7 +103,7 @@ public:
 			{
 				if (tmp->Next->linkData == (PVOID)ptr)
 				{
-					target	= tmp->Next;
+					target = tmp->Next;
 					tmp->Next = target->Next;
 					if (target->Next)
 						target->Next->Prev = tmp;
@@ -143,7 +144,8 @@ public:
 	}
 };
 
-template <class T> class LinkedListIterator
+template <class T>
+class LinkedListIterator
 {
 public:
 	gosLink* m_Iterator;
@@ -153,7 +155,7 @@ public:
 	LinkedListIterator(LinkedList<T>* list)
 	{
 		m_Iterator = list->m_Head;
-		m_List	 = list;
+		m_List = list;
 	}
 	~LinkedListIterator() {}
 	T Head()

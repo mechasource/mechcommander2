@@ -49,10 +49,13 @@ volatile bool UserInput::drawMouse = false;
 extern volatile bool mc2IsInDisplayBackBuffer;
 extern volatile bool mc2IsInMouseTimer;
 
-void MouseTimerInit();
-void MouseTimerKill();
+void
+MouseTimerInit();
+void
+MouseTimerKill();
 //---------------------------------------------------------------------------
-void MouseCursorData::initCursors(PSTR cursorFileName)
+void
+MouseCursorData::initCursors(PSTR cursorFileName)
 {
 	// New
 	// add an "a" to the end of the cursorFileName IF we are running in 800x600
@@ -90,7 +93,8 @@ void MouseCursorData::initCursors(PSTR cursorFileName)
 }
 
 //---------------------------------------------------------------------------
-void MouseCursorData::destroy(void)
+void
+MouseCursorData::destroy(void)
 {
 	if (mc2UseAsyncMouse && mc2MouseThreadStarted)
 		MouseTimerKill();
@@ -107,17 +111,20 @@ void MouseCursorData::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void UserInput::mouseOn(void) // Draw Mouse Cursor
+void
+UserInput::mouseOn(void) // Draw Mouse Cursor
 {
 	drawMouse = true;
 }
 
-void UserInput::mouseOff(void) // Don't Draw Mouse Cursor
+void
+UserInput::mouseOff(void) // Don't Draw Mouse Cursor
 {
 	drawMouse = false;
 }
 
-void UserInput::setMouseCursor(int32_t state)
+void
+UserInput::setMouseCursor(int32_t state)
 {
 	if ((state < 0) || (state >= mState_NUMMOUSESTATES))
 		return;
@@ -128,7 +135,8 @@ void UserInput::setMouseCursor(int32_t state)
 }
 
 //---------------------------------------------------------------------------
-void UserInput::update(void)
+void
+UserInput::update(void)
 {
 	if (mc2UseAsyncMouse && !mc2MouseThreadStarted)
 		MouseTimerInit();
@@ -136,23 +144,23 @@ void UserInput::update(void)
 		MouseTimerKill();
 	//-----------------------------
 	// Save the last Mouse States
-	lastLeftMouseButtonState  = leftMouseButtonState;
+	lastLeftMouseButtonState = leftMouseButtonState;
 	lastRightMouseButtonState = rightMouseButtonState;
-	lastMouseXPosition		  = mouseXPosition;
-	lastMouseYPosition		  = mouseYPosition;
-	leftMouseJustUp			  = 0;
-	rightMouseJustUp		  = 0;
-	bool bWasDouble			  = leftDoubleClick;
+	lastMouseXPosition = mouseXPosition;
+	lastMouseYPosition = mouseYPosition;
+	leftMouseJustUp = 0;
+	rightMouseJustUp = 0;
+	bool bWasDouble = leftDoubleClick;
 	//------------------------------------------------------
 	// Reset Frame dependant variables
 	leftClick = rightClick = middleClick = false;
 	leftDoubleClick = rightDoubleClick = middleDoubleClick = false;
-	uint32_t LEFT_MOUSE_CODE							   = VK_LBUTTON;
-	uint32_t RIGHT_MOUSE_CODE							   = VK_RBUTTON;
+	uint32_t LEFT_MOUSE_CODE = VK_LBUTTON;
+	uint32_t RIGHT_MOUSE_CODE = VK_RBUTTON;
 	if (GetSystemMetrics(SM_SWAPBUTTON))
 	{
 		RIGHT_MOUSE_CODE = VK_LBUTTON;
-		LEFT_MOUSE_CODE  = VK_RBUTTON;
+		LEFT_MOUSE_CODE = VK_RBUTTON;
 	}
 	//-----------------
 	// Poll the mouse.
@@ -162,11 +170,11 @@ void UserInput::update(void)
 	//	leftMouseButtonState = buttonStates & 1;
 	//	rightMouseButtonState = (buttonStates & 2) >> 1;
 	//	middleMouseButtonState = (buttonStates & 4) >> 2;
-	int16_t code		   = GetAsyncKeyState(LEFT_MOUSE_CODE);
-	int16_t rCode		   = GetAsyncKeyState(RIGHT_MOUSE_CODE);
-	int16_t mCode		   = GetAsyncKeyState(VK_MBUTTON);
-	leftMouseButtonState   = code ? MC2_MOUSE_DOWN : MC2_MOUSE_UP;
-	rightMouseButtonState  = rCode ? MC2_MOUSE_DOWN : MC2_MOUSE_UP;
+	int16_t code = GetAsyncKeyState(LEFT_MOUSE_CODE);
+	int16_t rCode = GetAsyncKeyState(RIGHT_MOUSE_CODE);
+	int16_t mCode = GetAsyncKeyState(VK_MBUTTON);
+	leftMouseButtonState = code ? MC2_MOUSE_DOWN : MC2_MOUSE_UP;
+	rightMouseButtonState = rCode ? MC2_MOUSE_DOWN : MC2_MOUSE_UP;
 	middleMouseButtonState = mCode ? MC2_MOUSE_DOWN : MC2_MOUSE_UP;
 	//---------------------------------------------------------
 	// Adjust MouseWheelDelta to get old Broken Win2K values.
@@ -177,12 +185,12 @@ void UserInput::update(void)
 	{
 		//--------------------------------------------------------------------
 		// Just lifted the button.  Drags are OFF!  Double Click clock starts!
-		wasLeftMouseDrag  = leftMouseDrag;
+		wasLeftMouseDrag = leftMouseDrag;
 		wasRightMouseDrag = rightMouseDrag;
-		leftMouseDrag	 = false;
+		leftMouseDrag = false;
 		mouseLeftUpTime += frameLength;
 		//		if ( !bWasDouble )
-		leftMouseJustUp   = 1;
+		leftMouseJustUp = 1;
 		mouseLeftHeldTime = 0.f;
 	}
 	if ((leftMouseButtonState == MC2_MOUSE_UP) && (lastLeftMouseButtonState == MC2_MOUSE_UP))
@@ -204,11 +212,11 @@ void UserInput::update(void)
 		}
 		else
 		{
-			leftClick		= true;
+			leftClick = true;
 			mouseLeftUpTime = 0.001f;
 		}
-		mouseDragX	= lastMouseXPosition;
-		mouseDragY	= lastMouseYPosition;
+		mouseDragX = lastMouseXPosition;
+		mouseDragY = lastMouseYPosition;
 		leftMouseDrag = 0;
 	}
 	else if (gos_GetKeyStatus(KEY_LMOUSE) == KEY_HELD /*code & 0x8000*/) // held
@@ -219,8 +227,7 @@ void UserInput::update(void)
 		// Deltas to see if this is TRUE IF AND ONLY IF we are NOT yet DRAGGING!
 		if (!leftMouseDrag)
 		{
-			if ((fabs(mouseDragX - mouseXPosition) > mouseDragThreshold) ||
-				(fabs(mouseDragY - mouseYPosition) > mouseDragThreshold))
+			if ((fabs(mouseDragX - mouseXPosition) > mouseDragThreshold) || (fabs(mouseDragY - mouseYPosition) > mouseDragThreshold))
 			{
 				//------------------
 				// We are dragging.
@@ -234,10 +241,10 @@ void UserInput::update(void)
 	{
 		//--------------------------------------------------------------------
 		// Just lifted the button.  Drags are OFF!  Double Click clock starts!
-		wasRightMouseDrag  = rightMouseDrag;
-		rightMouseDrag	 = false;
-		mouseRightUpTime   = 0.001f;
-		rightMouseJustUp   = true;
+		wasRightMouseDrag = rightMouseDrag;
+		rightMouseDrag = false;
+		mouseRightUpTime = 0.001f;
+		rightMouseJustUp = true;
 		mouseRightHeldTime = 0.f;
 	}
 	if ((rightMouseButtonState == MC2_MOUSE_UP) && (lastRightMouseButtonState == MC2_MOUSE_UP))
@@ -245,7 +252,7 @@ void UserInput::update(void)
 		//--------------------------------------------
 		// We are still up.  Increment mouse up time.
 		mouseRightUpTime += frameLength;
-		rightMouseDrag	 = 0;
+		rightMouseDrag = 0;
 		mouseRightHeldTime = 0.f;
 	}
 	if (gos_GetKeyStatus(KEY_RMOUSE) == KEY_PRESSED /*rCode & 0x0001*/)
@@ -257,8 +264,8 @@ void UserInput::update(void)
 			rightDoubleClick = true;
 		else
 			rightClick = true;
-		mouseDragX	 = lastMouseXPosition;
-		mouseDragY	 = lastMouseYPosition;
+		mouseDragX = lastMouseXPosition;
+		mouseDragY = lastMouseYPosition;
 		rightMouseDrag = 0;
 	}
 	else if (gos_GetKeyStatus(KEY_RMOUSE) == KEY_HELD /*rCode & 0x8000*/)
@@ -268,15 +275,14 @@ void UserInput::update(void)
 		// Deltas to see if this is TRUE IF AND ONLY IF we are NOT yet DRAGGING!
 		if (!rightMouseDrag)
 		{
-			if ((fabs(mouseDragX - mouseXPosition) > mouseDragThreshold) ||
-				(fabs(mouseDragY - mouseYPosition) > mouseDragThreshold))
+			if ((fabs(mouseDragX - mouseXPosition) > mouseDragThreshold) || (fabs(mouseDragY - mouseYPosition) > mouseDragThreshold))
 			{
 				//------------------
 				// We are dragging.
 				rightMouseDrag = true;
 			}
 		}
-		rightClick		 = true;
+		rightClick = true;
 		mouseRightUpTime = 0;
 		mouseRightHeldTime += frameLength;
 	}
@@ -333,31 +339,22 @@ void UserInput::update(void)
 		// Need to update the mouse in the mouse thread to inform it that the
 		// cursor
 		// possibly changed size and shape.
-		mc2MouseHotSpotX		  = cursors->getMouseHSX(mouseState);
-		mc2MouseHotSpotY		  = cursors->getMouseHSY(mouseState);
-		mc2MouseWidth			  = cursors->cursorInfos[mouseState].width();
-		mc2MouseHeight			  = cursors->cursorInfos[mouseState].height();
+		mc2MouseHotSpotX = cursors->getMouseHSX(mouseState);
+		mc2MouseHotSpotY = cursors->getMouseHSY(mouseState);
+		mc2MouseWidth = cursors->cursorInfos[mouseState].width();
+		mc2MouseHeight = cursors->cursorInfos[mouseState].height();
 		uint32_t totalMouseFrames = cursors->getNumFrames(mouseState);
 		if (totalMouseFrames > 1)
 		{
-			int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth /
-				cursors->cursorInfos[mouseState].width();
+			int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth / cursors->cursorInfos[mouseState].width();
 			int32_t iIndex = mouseFrame % framesPerRow;
 			int32_t jIndex = mouseFrame / framesPerRow;
-			float oldU	 = cursors->cursorInfos[mouseState].u;
-			float oldV	 = cursors->cursorInfos[mouseState].v;
-			float newU	 = (.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth +
-				((float)iIndex * cursors->cursorInfos[mouseState].width() /
-					cursors->cursorInfos[mouseState].textureWidth);
-			float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth +
-				(float)jIndex * cursors->cursorInfos[mouseState].height() /
-					cursors->cursorInfos[mouseState].textureWidth;
-			float newU2 = newU +
-				(cursors->cursorInfos[mouseState].width() + .1) /
-					cursors->cursorInfos[mouseState].textureWidth;
-			float newV2 = newV +
-				(cursors->cursorInfos[mouseState].height() + .1) /
-					cursors->cursorInfos[mouseState].textureWidth;
+			float oldU = cursors->cursorInfos[mouseState].u;
+			float oldV = cursors->cursorInfos[mouseState].v;
+			float newU = (.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth + ((float)iIndex * cursors->cursorInfos[mouseState].width() / cursors->cursorInfos[mouseState].textureWidth);
+			float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth + (float)jIndex * cursors->cursorInfos[mouseState].height() / cursors->cursorInfos[mouseState].textureWidth;
+			float newU2 = newU + (cursors->cursorInfos[mouseState].width() + .1) / cursors->cursorInfos[mouseState].textureWidth;
+			float newV2 = newV + (cursors->cursorInfos[mouseState].height() + .1) / cursors->cursorInfos[mouseState].textureWidth;
 			cursors->cursorInfos[mouseState].setNewUVs(newU, newV, newU2, newV2);
 			cursors->cursorInfos[mouseState].getData(mc2MouseData);
 			cursors->cursorInfos[mouseState].u = oldU;
@@ -373,7 +370,8 @@ void UserInput::update(void)
 }
 
 //---------------------------------------------------------------------------
-void UserInput::initMouseCursors(PSTR mouseFile)
+void
+UserInput::initMouseCursors(PSTR mouseFile)
 {
 	if (cursors)
 	{
@@ -435,14 +433,16 @@ float largeTextureBRUVY[64] = {0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 
 	0.875, 0.875, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00};
 
 //---------------------------------------------------------------------------
-void UserInput::setMouseScale(float scaleFactor)
+void
+UserInput::setMouseScale(float scaleFactor)
 {
 	if (scaleFactor > 0.0f)
 		mouseScale = scaleFactor;
 }
 
 //---------------------------------------------------------------------------
-void UserInput::render(void) // Last thing rendered.  Draws Mouse.
+void
+UserInput::render(void) // Last thing rendered.  Draws Mouse.
 {
 	if (!mc2UseAsyncMouse)
 	{
@@ -457,24 +457,15 @@ void UserInput::render(void) // Last thing rendered.  Draws Mouse.
 			int32_t totalMouseFrames = cursors->getNumFrames(mouseState);
 			if (totalMouseFrames > 1)
 			{
-				int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth /
-					cursors->cursorInfos[mouseState].width();
+				int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth / cursors->cursorInfos[mouseState].width();
 				int32_t iIndex = mouseFrame % framesPerRow;
 				int32_t jIndex = mouseFrame / framesPerRow;
-				float oldU	 = cursors->cursorInfos[mouseState].u;
-				float oldV	 = cursors->cursorInfos[mouseState].v;
-				float newU	 = (.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth +
-					((float)iIndex * cursors->cursorInfos[mouseState].width() /
-						cursors->cursorInfos[mouseState].textureWidth);
-				float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth +
-					(float)jIndex * cursors->cursorInfos[mouseState].height() /
-						cursors->cursorInfos[mouseState].textureWidth;
-				float newU2 = newU +
-					(cursors->cursorInfos[mouseState].width() + .1) /
-						cursors->cursorInfos[mouseState].textureWidth;
-				float newV2 = newV +
-					(cursors->cursorInfos[mouseState].height() + .1) /
-						cursors->cursorInfos[mouseState].textureWidth;
+				float oldU = cursors->cursorInfos[mouseState].u;
+				float oldV = cursors->cursorInfos[mouseState].v;
+				float newU = (.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth + ((float)iIndex * cursors->cursorInfos[mouseState].width() / cursors->cursorInfos[mouseState].textureWidth);
+				float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth + (float)jIndex * cursors->cursorInfos[mouseState].height() / cursors->cursorInfos[mouseState].textureWidth;
+				float newU2 = newU + (cursors->cursorInfos[mouseState].width() + .1) / cursors->cursorInfos[mouseState].textureWidth;
+				float newV2 = newV + (cursors->cursorInfos[mouseState].height() + .1) / cursors->cursorInfos[mouseState].textureWidth;
 				cursors->cursorInfos[mouseState].setNewUVs(newU, newV, newU2, newV2);
 				cursors->cursorInfos[mouseState].render();
 				cursors->cursorInfos[mouseState].u = oldU;

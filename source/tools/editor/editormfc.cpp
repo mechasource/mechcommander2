@@ -33,7 +33,8 @@ EditorMFCApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // EditorMFCApp initialization
 
-BOOL EditorMFCApp::InitInstance()
+BOOL
+EditorMFCApp::InitInstance()
 {
 	// Standard initialization
 #ifdef _AFXDLL
@@ -44,7 +45,7 @@ BOOL EditorMFCApp::InitInstance()
 	// Change the registry key under which our settings are stored.
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 	MainFrame* pFrame = new MainFrame;
-	m_pMainWnd		  = pFrame;
+	m_pMainWnd = pFrame;
 	// create and load the frame with its resources
 	pFrame->LoadFrame(
 		IDR_EDITOR_MENU /*, WS_OVERLAPPED |WS_CAPTION | WS_SYSMENU | FWS_ADDTOTITLE*/);
@@ -80,7 +81,7 @@ public:
 	//{{AFX_VIRTUAL(CAboutDlg)
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
-													 //}}AFX_VIRTUAL
+		//}}AFX_VIRTUAL
 
 	// Implementation
 protected:
@@ -90,13 +91,15 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
+CAboutDlg::CAboutDlg() :
+	CDialog(CAboutDlg::IDD)
 {
 	//{{AFX_DATA_INIT(CAboutDlg)
 	//}}AFX_DATA_INIT
 }
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+void
+CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAboutDlg)
@@ -110,7 +113,8 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
-void EditorMFCApp::OnAppAbout()
+void
+EditorMFCApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
@@ -119,7 +123,8 @@ void EditorMFCApp::OnAppAbout()
 /////////////////////////////////////////////////////////////////////////////
 // EditorMFCApp message handlers
 
-BOOL EditorMFCApp::OnIdle(int32_t lCount)
+BOOL
+EditorMFCApp::OnIdle(int32_t lCount)
 {
 	const CWnd* pW1 = this->GetMainWnd();
 	const CWnd* pW2 = EditorInterface::instance();
@@ -135,7 +140,8 @@ BOOL EditorMFCApp::OnIdle(int32_t lCount)
 	return 1;
 }
 
-int32_t EditorMFCApp::ExitInstance()
+int32_t
+EditorMFCApp::ExitInstance()
 {
 	{
 		Environment.TerminateGameEngine();

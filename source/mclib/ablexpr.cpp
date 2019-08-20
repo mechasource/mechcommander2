@@ -57,7 +57,8 @@ extern TokenCodeType statementEndList[];
 
 extern bool EnterStateSymbol;
 extern ABLModulePtr CurFSM;
-SymTableNodePtr forwardState(PSTR stateName);
+SymTableNodePtr
+forwardState(PSTR stateName);
 extern SymTableNodePtr CurModuleIdPtr;
 
 //***************************************************************************
@@ -75,14 +76,16 @@ TokenCodeType multiplyOperatorList[] = {TKN_STAR, TKN_FSLASH,
 // MISC
 //***************************************************************************
 
-inline bool integerOperands(TypePtr type1, TypePtr type2)
+inline bool
+integerOperands(TypePtr type1, TypePtr type2)
 {
 	return ((type1 == IntegerTypePtr) && (type2 == IntegerTypePtr));
 }
 
 //***************************************************************************
 
-inline bool realOperands(TypePtr type1, TypePtr type2)
+inline bool
+realOperands(TypePtr type1, TypePtr type2)
 {
 	if (type1 == RealTypePtr)
 		return ((type2 == RealTypePtr) || (type2 == IntegerTypePtr));
@@ -94,26 +97,24 @@ inline bool realOperands(TypePtr type1, TypePtr type2)
 
 //***************************************************************************
 
-inline bool booleanOperands(TypePtr type1, TypePtr type2)
+inline bool
+booleanOperands(TypePtr type1, TypePtr type2)
 {
 	return ((type1 == BooleanTypePtr) && (type2 == BooleanTypePtr));
 }
 
 //***************************************************************************
 
-void checkRelationalOpTypes(TypePtr type1, TypePtr type2)
+void
+checkRelationalOpTypes(TypePtr type1, TypePtr type2)
 {
 	if (type1 && type2)
 	{
 		if ((type1 == type2) && ((type1->form == FRM_SCALAR) || (type1->form == FRM_ENUM)))
 			return;
-		if (((type1 == IntegerTypePtr) && (type2 == RealTypePtr)) ||
-			((type2 == IntegerTypePtr) && (type1 == RealTypePtr)))
+		if (((type1 == IntegerTypePtr) && (type2 == RealTypePtr)) || ((type2 == IntegerTypePtr) && (type1 == RealTypePtr)))
 			return;
-		if ((type1->form == FRM_ARRAY) && (type2->form == FRM_ARRAY) &&
-			(type1->info.array.elementTypePtr == CharTypePtr) &&
-			(type2->info.array.elementTypePtr == CharTypePtr) &&
-			(type1->info.array.elementCount == type2->info.array.elementCount))
+		if ((type1->form == FRM_ARRAY) && (type2->form == FRM_ARRAY) && (type1->info.array.elementTypePtr == CharTypePtr) && (type2->info.array.elementTypePtr == CharTypePtr) && (type1->info.array.elementCount == type2->info.array.elementCount))
 			return;
 	}
 	syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
@@ -121,16 +122,14 @@ void checkRelationalOpTypes(TypePtr type1, TypePtr type2)
 
 //***************************************************************************
 
-int32_t isAssignTypeCompatible(TypePtr type1, TypePtr type2)
+int32_t
+isAssignTypeCompatible(TypePtr type1, TypePtr type2)
 {
 	if (type1 == type2)
 		return (1);
 	if ((type1 == RealTypePtr) && (type2 == IntegerTypePtr))
 		return (1);
-	if ((type1->form == FRM_ARRAY) && (type2->form == FRM_ARRAY) &&
-		(type1->info.array.elementTypePtr == CharTypePtr) &&
-		(type2->info.array.elementTypePtr == CharTypePtr) &&
-		(type1->info.array.elementCount >= type2->info.array.elementCount))
+	if ((type1->form == FRM_ARRAY) && (type2->form == FRM_ARRAY) && (type1->info.array.elementTypePtr == CharTypePtr) && (type2->info.array.elementTypePtr == CharTypePtr) && (type1->info.array.elementCount >= type2->info.array.elementCount))
 		return (1);
 	return (0);
 }
@@ -139,9 +138,10 @@ int32_t isAssignTypeCompatible(TypePtr type1, TypePtr type2)
 // EXPRESSION routines
 //***************************************************************************
 
-TypePtr variable(SymTableNodePtr variableIdPtr)
+TypePtr
+variable(SymTableNodePtr variableIdPtr)
 {
-	TypePtr typePtr		   = (TypePtr)(variableIdPtr->typePtr);
+	TypePtr typePtr = (TypePtr)(variableIdPtr->typePtr);
 	DefinitionType defnKey = variableIdPtr->defn.key;
 	crunchSymTableNodePtr(variableIdPtr);
 	switch (defnKey)
@@ -179,16 +179,17 @@ TypePtr variable(SymTableNodePtr variableIdPtr)
 
 //***************************************************************************
 
-TypePtr arraySubscriptList(TypePtr typePtr)
+TypePtr
+arraySubscriptList(TypePtr typePtr)
 {
-	TypePtr indexTypePtr	 = nullptr;
-	TypePtr elementTypePtr   = nullptr;
+	TypePtr indexTypePtr = nullptr;
+	TypePtr elementTypePtr = nullptr;
 	TypePtr subscriptTypePtr = nullptr;
 	do
 	{
 		if (typePtr->form == FRM_ARRAY)
 		{
-			indexTypePtr   = typePtr->info.array.indexTypePtr;
+			indexTypePtr = typePtr->info.array.indexTypePtr;
 			elementTypePtr = typePtr->info.array.elementTypePtr;
 			getToken();
 			subscriptTypePtr = expression();
@@ -212,7 +213,8 @@ TypePtr arraySubscriptList(TypePtr typePtr)
 
 //***************************************************************************
 
-TypePtr factor(void)
+TypePtr
+factor(void)
 {
 	TypePtr thisType = nullptr;
 	switch (curToken)
@@ -246,14 +248,14 @@ TypePtr factor(void)
 			thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
 		if (curLiteral.type == LIT_INTEGER)
 		{
-			thisNode->typePtr						   = IntegerTypePtr;
-			thisType								   = (TypePtr)(thisNode->typePtr);
+			thisNode->typePtr = IntegerTypePtr;
+			thisType = (TypePtr)(thisNode->typePtr);
 			thisNode->defn.info.constant.value.integer = curLiteral.value.integer;
 		}
 		else
 		{
-			thisNode->typePtr						= RealTypePtr;
-			thisType								= (TypePtr)(thisNode->typePtr);
+			thisNode->typePtr = RealTypePtr;
+			thisType = (TypePtr)(thisNode->typePtr);
 			thisNode->defn.info.constant.value.real = curLiteral.value.real;
 		}
 		crunchSymTableNodePtr(thisNode);
@@ -276,12 +278,12 @@ TypePtr factor(void)
 		if (length == 1)
 		{
 			thisNode->defn.info.constant.value.character = curLiteral.value.string[0];
-			thisType									 = CharTypePtr;
+			thisType = CharTypePtr;
 		}
 		else
 		{
 			thisNode->typePtr = thisType = makeStringType(length);
-			thisNode->info				 = (PSTR)ABLSymbolMallocCallback(length + 1);
+			thisNode->info = (PSTR)ABLSymbolMallocCallback(length + 1);
 			if (!thisNode->info)
 				ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc string literal ");
 			strcpy(thisNode->info, curLiteral.value.string);
@@ -311,7 +313,8 @@ TypePtr factor(void)
 
 //***************************************************************************
 
-TypePtr term(void)
+TypePtr
+term(void)
 {
 	//-------------------------
 	// Grab the first factor...
@@ -383,13 +386,14 @@ TypePtr term(void)
 
 //***************************************************************************
 
-TypePtr simpleExpression(void)
+TypePtr
+simpleExpression(void)
 {
-	bool usedUnaryOp	  = false;
+	bool usedUnaryOp = false;
 	TokenCodeType unaryOp = TKN_PLUS;
 	if ((curToken == TKN_PLUS) || (curToken == TKN_MINUS))
 	{
-		unaryOp		= curToken;
+		unaryOp = curToken;
 		usedUnaryOp = true;
 		getToken();
 	}
@@ -439,7 +443,8 @@ TypePtr simpleExpression(void)
 
 //***************************************************************************
 
-TypePtr expression(void)
+TypePtr
+expression(void)
 {
 	//------------------------------------
 	// Grab the first simple expression...

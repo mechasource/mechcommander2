@@ -20,8 +20,8 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CBooleanFlagIsSetDialog dialog
 
-CBooleanFlagIsSetDialog::CBooleanFlagIsSetDialog(CWnd* pParent /*=nullptr*/)
-	: CDialog(IDD_FLAG_IS_SET_DIALOG, pParent)
+CBooleanFlagIsSetDialog::CBooleanFlagIsSetDialog(CWnd* pParent /*=nullptr*/) :
+	CDialog(IDD_FLAG_IS_SET_DIALOG, pParent)
 {
 	//{{AFX_DATA_INIT(CBooleanFlagIsSetDialog)
 	m_Index = -1;
@@ -29,7 +29,8 @@ CBooleanFlagIsSetDialog::CBooleanFlagIsSetDialog(CWnd* pParent /*=nullptr*/)
 	//}}AFX_DATA_INIT
 }
 
-void CBooleanFlagIsSetDialog::DoDataExchange(CDataExchange* pDX)
+void
+CBooleanFlagIsSetDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CBooleanFlagIsSetDialog)

@@ -33,7 +33,8 @@ MLRIndexedTriangleCloud::ClassData* MLRIndexedTriangleCloud::DefaultData = nullp
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedTriangleCloud::InitializeClass(void)
+void
+MLRIndexedTriangleCloud::InitializeClass(void)
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -51,7 +52,8 @@ void MLRIndexedTriangleCloud::InitializeClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedTriangleCloud::TerminateClass(void)
+void
+MLRIndexedTriangleCloud::TerminateClass(void)
 {
 	Unregister_Pointer(clipExtraIndex);
 	delete clipExtraIndex;
@@ -66,23 +68,25 @@ void MLRIndexedTriangleCloud::TerminateClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedTriangleCloud::SetData(pcsize_t tri_count, pcsize_t point_count,
+void
+MLRIndexedTriangleCloud::SetData(pcsize_t tri_count, pcsize_t point_count,
 	pcuint16_t index_data, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data,
 	const Stuff::Vector2DScalar* uv_data)
 {
 	// Check_Pointer(this);
 	usedNrOfTriangles = tri_count;
-	usedNrOfPoints	= point_count;
+	usedNrOfPoints = point_count;
 	_ASSERT(*usedNrOfTriangles <= maxNrOf);
-	index	 = index_data;
-	points	= point_data;
-	colors	= color_data;
+	index = index_data;
+	points = point_data;
+	colors = color_data;
 	texCoords = uv_data;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedTriangleCloud::Draw(
+void
+MLRIndexedTriangleCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -106,12 +110,13 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
+uint32_t
+MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 {
 	size_t myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 	(void)clippingFlags; // C4100
 	myNumberUsedClipVertex = 0;
-	myNumberUsedClipIndex  = 0;
+	myNumberUsedClipIndex = 0;
 	myNumberUsedClipLength = 0;
 	_ASSERT(*usedNrOfTriangles > 0);
 	//
@@ -206,12 +211,12 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 					//----------------------------------------------------
 					//
 					size_t clipped_index = myNumberUsedClipVertex + numberVerticesPerPolygon;
-					theTest				 = cs[k0];
+					theTest = cs[k0];
 					if (theTest == 0)
 					{
-						firstIsIn							 = true;
-						(*clipExtraCoords)[clipped_index]	= (*transformedCoords)[k0];
-						(*clipExtraColors)[clipped_index]	= colors[k0];
+						firstIsIn = true;
+						(*clipExtraCoords)[clipped_index] = (*transformedCoords)[k0];
+						(*clipExtraColors)[clipped_index] = colors[k0];
 						(*clipExtraTexCoords)[clipped_index] = texCoords[k0];
 						numberVerticesPerPolygon++;
 						clipped_index++;
@@ -252,7 +257,7 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 					//--------------------------------------------------
 					//
 					size_t ct = 0;
-					mask	  = 1;
+					mask = 1;
 					theTest |= cs[k1];
 					//
 					//-----------------------------------------------------
@@ -366,10 +371,10 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 				Set_Statistic(PolysClippedButGOnePlane, PolysClippedButGOnePlane + 1);
 #endif
 				ClipData2 srcPolygon, dstPolygon;
-				size_t dstBuffer		 = 1;
-				srcPolygon.coords		 = clipBuffer[dstBuffer].coords.GetData();
-				srcPolygon.colors		 = clipBuffer[dstBuffer].colors.GetData();
-				srcPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
+				size_t dstBuffer = 1;
+				srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+				srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
+				srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 				srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 				//
 				//----------------------------------------------------------
@@ -378,10 +383,10 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 				//
 				for (k = j, l = 0; k < j + 3; k++, l++)
 				{
-					size_t indexK				= index[k];
-					srcPolygon.coords[l]		= (*transformedCoords)[indexK];
-					srcPolygon.colors[l]		= colors[indexK];
-					srcPolygon.texCoords[l]		= texCoords[indexK];
+					size_t indexK = index[k];
+					srcPolygon.coords[l] = (*transformedCoords)[indexK];
+					srcPolygon.colors[l] = colors[indexK];
+					srcPolygon.texCoords[l] = texCoords[indexK];
 					srcPolygon.clipPerVertex[l] = (*clipPerVertex)[indexK];
 				}
 				srcPolygon.length = l;
@@ -390,12 +395,12 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 				// Point to the destination buffer
 				//--------------------------------
 				//
-				dstBuffer				 = 0;
-				dstPolygon.coords		 = clipBuffer[dstBuffer].coords.GetData();
-				dstPolygon.colors		 = clipBuffer[dstBuffer].colors.GetData();
-				dstPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
+				dstBuffer = 0;
+				dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+				dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
+				dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 				dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
-				dstPolygon.length		 = 0;
+				dstPolygon.length = 0;
 				//
 				//-----------------------------------------------------------
 				// Spin through each plane that clipped the primitive and use
@@ -432,7 +437,7 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 #endif
 							for (k = 0; k < srcPolygon.length; k++)
 							{
-								k1		= (k + 1) < srcPolygon.length ? k + 1 : 0;
+								k1 = (k + 1) < srcPolygon.length ? k + 1 : 0;
 								theTest = srcPolygon.clipPerVertex[k];
 								//
 								//----------------------------------------------------
@@ -442,7 +447,7 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 								//
 								if (theTest.IsClipped(mask) == 0)
 								{
-									firstIsIn							 = true;
+									firstIsIn = true;
 									dstPolygon.coords[dstPolygon.length] = srcPolygon.coords[k];
 #if HUNT_CLIP_ERROR
 									DEBUG_STREAM << k << " goes " << setiosflags(ios::scientific)
@@ -484,8 +489,7 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 									firstIsIn = false;
 									if (srcPolygon.clipPerVertex[k1].IsClipped(mask) != 0)
 									{
-										_ASSERT(srcPolygon.clipPerVertex[k1].IsClipped(mask) ==
-											srcPolygon.clipPerVertex[k].IsClipped(mask));
+										_ASSERT(srcPolygon.clipPerVertex[k1].IsClipped(mask) == srcPolygon.clipPerVertex[k].IsClipped(mask));
 										continue;
 									}
 								}
@@ -604,15 +608,15 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 							// preparation for the next plane test
 							//-----------------------------------------------
 							//
-							srcPolygon.coords	= clipBuffer[dstBuffer].coords.GetData();
-							srcPolygon.colors	= clipBuffer[dstBuffer].colors.GetData();
+							srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+							srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 							srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 							srcPolygon.clipPerVertex =
 								clipBuffer[dstBuffer].clipPerVertex.GetData();
-							srcPolygon.length	= dstPolygon.length;
-							dstBuffer			 = size_t(!dstBuffer ? 1 : 0);
-							dstPolygon.coords	= clipBuffer[dstBuffer].coords.GetData();
-							dstPolygon.colors	= clipBuffer[dstBuffer].colors.GetData();
+							srcPolygon.length = dstPolygon.length;
+							dstBuffer = size_t(!dstBuffer ? 1 : 0);
+							dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+							dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 							dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 							dstPolygon.clipPerVertex =
 								clipBuffer[dstBuffer].clipPerVertex.GetData();
@@ -656,8 +660,8 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 								 << srcPolygon.coords[k].x << " " << srcPolygon.coords[k].y << " "
 								 << srcPolygon.coords[k].z << " " << srcPolygon.coords[k].w << '\n';
 #endif
-					(*clipExtraCoords)[clipped_index]	= srcPolygon.coords[k];
-					(*clipExtraColors)[clipped_index]	= srcPolygon.colors[k];
+					(*clipExtraCoords)[clipped_index] = srcPolygon.coords[k];
+					(*clipExtraColors)[clipped_index] = srcPolygon.colors[k];
 					(*clipExtraTexCoords)[clipped_index] = srcPolygon.texCoords[k];
 				}
 				numberVerticesPerPolygon = srcPolygon.length;
@@ -678,10 +682,10 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 		}
 	}
 	Check_Object(vt);
-	gos_vertices   = vt->GetActualVertexPool();
+	gos_vertices = vt->GetActualVertexPool();
 	numGOSVertices = 0;
-	gos_indices	= vt->GetActualIndexPool();
-	numGOSIndices  = 0;
+	gos_indices = vt->GetActualIndexPool();
+	numGOSIndices = 0;
 	uint16_t strideIndex;
 	for (j = 0, strideIndex = 0; j < *usedNrOfPoints; j++)
 	{
@@ -698,8 +702,8 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 			if (gShowClippedPolys)
 			{
 				gos_vertices[numGOSVertices].argb = 0xff0000ff;
-				gos_vertices[numGOSVertices].u	= 0.0f;
-				gos_vertices[numGOSVertices].v	= 0.0f;
+				gos_vertices[numGOSVertices].u = 0.0f;
+				gos_vertices[numGOSVertices].v = 0.0f;
 			}
 #endif
 			numGOSVertices++;
@@ -741,33 +745,33 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 				{
 					if ((*clipExtraLength)[i] & 0x8000)
 					{
-						gos_vertices[numGOSVertices].argb	 = 0xffff0000;
-						gos_vertices[numGOSVertices].u		  = 0.0f;
-						gos_vertices[numGOSVertices].v		  = 0.0f;
+						gos_vertices[numGOSVertices].argb = 0xffff0000;
+						gos_vertices[numGOSVertices].u = 0.0f;
+						gos_vertices[numGOSVertices].v = 0.0f;
 						gos_vertices[numGOSVertices + 1].argb = 0xffff0000;
-						gos_vertices[numGOSVertices + 1].u	= 0.0f;
-						gos_vertices[numGOSVertices + 1].v	= 0.0f;
+						gos_vertices[numGOSVertices + 1].u = 0.0f;
+						gos_vertices[numGOSVertices + 1].v = 0.0f;
 						gos_vertices[numGOSVertices + 2].argb = 0xffff0000;
-						gos_vertices[numGOSVertices + 2].u	= 0.0f;
-						gos_vertices[numGOSVertices + 2].v	= 0.0f;
+						gos_vertices[numGOSVertices + 2].u = 0.0f;
+						gos_vertices[numGOSVertices + 2].v = 0.0f;
 					}
 					else
 					{
-						gos_vertices[numGOSVertices].argb	 = 0xffff9999;
-						gos_vertices[numGOSVertices].u		  = 0.0f;
-						gos_vertices[numGOSVertices].v		  = 0.0f;
+						gos_vertices[numGOSVertices].argb = 0xffff9999;
+						gos_vertices[numGOSVertices].u = 0.0f;
+						gos_vertices[numGOSVertices].v = 0.0f;
 						gos_vertices[numGOSVertices + 1].argb = 0xffff9999;
-						gos_vertices[numGOSVertices + 1].u	= 0.0f;
-						gos_vertices[numGOSVertices + 1].v	= 0.0f;
+						gos_vertices[numGOSVertices + 1].u = 0.0f;
+						gos_vertices[numGOSVertices + 1].v = 0.0f;
 						gos_vertices[numGOSVertices + 2].argb = 0xffff9999;
-						gos_vertices[numGOSVertices + 2].u	= 0.0f;
-						gos_vertices[numGOSVertices + 2].v	= 0.0f;
+						gos_vertices[numGOSVertices + 2].u = 0.0f;
+						gos_vertices[numGOSVertices + 2].v = 0.0f;
 					}
 				}
 #endif
 				_ASSERT((vt->GetLastIndex() + 3 + numGOSIndices) < vt.size());
 				_ASSERT(numGOSIndices % 3 == 0);
-				gos_indices[numGOSIndices]	 = (uint16_t)numGOSVertices;
+				gos_indices[numGOSIndices] = (uint16_t)numGOSVertices;
 				gos_indices[numGOSIndices + 1] = (uint16_t)(numGOSVertices + 1);
 				gos_indices[numGOSIndices + 2] = (uint16_t)(numGOSVertices + 2);
 				numGOSVertices += 3;
@@ -776,7 +780,8 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 			j += stride;
 		}
 #if HUNT_CLIP_ERROR
-		DEBUG_STREAM << "***" << endl << endl;
+		DEBUG_STREAM << "***" << endl
+					 << endl;
 #endif
 	}
 	vt->Increase(numGOSVertices);
@@ -786,7 +791,8 @@ uint32_t MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertex
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedTriangleCloud::TestInstance(void) const
+void
+MLRIndexedTriangleCloud::TestInstance(void) const
 {
 	if (usedNrOfTriangles)
 	{

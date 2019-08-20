@@ -72,8 +72,7 @@ LRESULT __stdcall ProcessIMEMessages(
 /// <returns></returns>
 void __stdcall UpdateCursor(void)
 {
-	if (gActive && gGotFocus && (ProcessingError == 0) &&
-		(static_cast<uint16_t>(LastlParam) == 1 || (Environment.fullScreen == true)))
+	if (gActive && gGotFocus && (ProcessingError == 0) && (static_cast<uint16_t>(LastlParam) == 1 || (Environment.fullScreen == true)))
 	{
 		if (!gHardwareMouse && !DebuggerMouse || Environment.fullScreen || Compatibility3D & 0x400)
 			SetCursor(0);
@@ -166,15 +165,14 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 			DealWithKey(wParam, lParam);
 		if (!Environment.Key_FullScreen || ProcessingError || wParam != Environment.Key_FullScreen)
 		{
-			if (!Environment.Key_SwitchMonitors || ProcessingError ||
-				wParam != Environment.Key_SwitchMonitors)
+			if (!Environment.Key_SwitchMonitors || ProcessingError || wParam != Environment.Key_SwitchMonitors)
 			{
 				if (Environment.Key_Exit && !ProcessingError && wParam == Environment.Key_Exit)
 				{
 					InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - Esc");
 					if (Environment.fullScreen)
 					{
-						DoUpdateWindow		 = 1;
+						DoUpdateWindow = 1;
 						GlobalGotoWindowMode = 1;
 					}
 					else
@@ -191,12 +189,12 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 					++Environment.FullScreenDevice;
 					if ((unsigned int)Environment.FullScreenDevice >= NumDevices)
 						Environment.FullScreenDevice = 0;
-					DoUpdateWindow		 = 1;
+					DoUpdateWindow = 1;
 					GlobalGotoFullScreen = 1;
 				}
 				else
 				{
-					DoUpdateWindow		 = 1;
+					DoUpdateWindow = 1;
 					GlobalGotoFullScreen = 1;
 				}
 			}
@@ -206,12 +204,12 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 			InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - F4");
 			if (Environment.fullScreen)
 			{
-				DoUpdateWindow		 = 1;
+				DoUpdateWindow = 1;
 				GlobalGotoWindowMode = 1;
 			}
 			else
 			{
-				DoUpdateWindow		 = 1;
+				DoUpdateWindow = 1;
 				GlobalGotoFullScreen = 1;
 			}
 		}
@@ -254,7 +252,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 		default:
 		$LN2:
 			bHandled = 0;
-			lResult  = ProcessIMEMessages(hWnd, uMsg, wParam, lParam, &bHandled);
+			lResult = ProcessIMEMessages(hWnd, uMsg, wParam, lParam, &bHandled);
 			if (!bHandled)
 				return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 			lResult = lResult;
@@ -278,12 +276,12 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 					InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - Alt Enter");
 					if (Environment.fullScreen)
 					{
-						DoUpdateWindow		 = 1;
+						DoUpdateWindow = 1;
 						GlobalGotoWindowMode = 1;
 					}
 					else
 					{
-						DoUpdateWindow		 = 1;
+						DoUpdateWindow = 1;
 						GlobalGotoFullScreen = 1;
 					}
 					return 0;
@@ -315,12 +313,12 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 					if (DebuggerActive && ((dbKeyPressed + 1) != dbKeyCurrent))
 					{
 						dbKeyBoardBuffer[dbKeyPressed] = wParam + LastWMDown;
-						dbKeyPressed				   = (dbKeyPressed + 1);
+						dbKeyPressed = (dbKeyPressed + 1);
 					}
 					if (!DebuggerActive || DebuggerActive && gControlsActive && !gStopSystem)
 						AddKeyEvent(wParam + LastWMDown);
 					LastWMDown = 0;
-					lResult	= 0;
+					lResult = 0;
 				}
 				else
 				{
@@ -342,12 +340,12 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 				"GameOS_DirectDraw", "Mode change requested - WM_SYSCOMMAND - SC_RESTORE");
 			if (Environment.fullScreen)
 			{
-				DoUpdateWindow		 = 1;
+				DoUpdateWindow = 1;
 				GlobalGotoFullScreen = 1;
 			}
 			else
 			{
-				DoUpdateWindow		 = 1;
+				DoUpdateWindow = 1;
 				GlobalGotoWindowMode = 1;
 			}
 			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
@@ -363,7 +361,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 			{
 				InternalFunctionSpew(
 					"GameOS_DirectDraw", "Mode change requested - WM_SYSCOMMAND - other");
-				DoUpdateWindow		 = 1;
+				DoUpdateWindow = 1;
 				GlobalGotoWindowMode = 1;
 			}
 			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
@@ -372,7 +370,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 		{
 			InternalFunctionSpew(
 				"GameOS_DirectDraw", "Mode change requested - WM_SYSCOMMAND - SC_MAXIMIZE");
-			DoUpdateWindow		 = 1;
+			DoUpdateWindow = 1;
 			GlobalGotoFullScreen = 1;
 		}
 		lResult = 0;
@@ -393,20 +391,19 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 		}
 		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 	case WM_PAINT:
-		if (InUpdateRenderers || g_DDstate != 1 || !g_DDperformFlip || Environment.fullScreen ||
-			status != Running && status != GameInit)
+		if (InUpdateRenderers || g_DDstate != 1 || !g_DDperformFlip || Environment.fullScreen || status != Running && status != GameInit)
 			goto LABEL_35;
 		if (FrontBufferSurface)
 		{
-			rect.left   = clientToScreen.x;
-			rect.right  = Environment.screenWidth + clientToScreen.x;
-			rect.top	= clientToScreen.y;
+			rect.left = clientToScreen.x;
+			rect.right = Environment.screenWidth + clientToScreen.x;
+			rect.top = clientToScreen.y;
 			rect.bottom = Environment.screenHeight + clientToScreen.y;
 			if (Environment.fullScreen)
 			{
-				rect.left   = 0;
-				rect.right  = Environment.screenWidth;
-				rect.top	= 0;
+				rect.left = 0;
+				rect.right = Environment.screenWidth;
+				rect.top = 0;
 				rect.bottom = Environment.screenHeight;
 			}
 			AllowFail = true;
@@ -438,16 +435,15 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 		}
 		return lResult;
 	case WM_ACTIVATE:
-		bActive = (unsigned __int16)wParam == WA_ACTIVE ||
-			(unsigned __int16)wParam == WA_CLICKACTIVE; // low order word
+		bActive = (unsigned __int16)wParam == WA_ACTIVE || (unsigned __int16)wParam == WA_CLICKACTIVE; // low order word
 		gActive = bActive;
 		if (gActive)
 			mc2HasLostFocus = false;
 		else
 			mc2HasLostFocus = true;
 		if (!(wParam & 0xFFFF0000) && gActive) // high order word. A nonzero
-											   // value indicates the window is
-											   // minimized.
+			// value indicates the window is
+			// minimized.
 			CMAcquireControls();
 		if (Environment.fullScreen && !(_WORD)wParam)
 			ClipCursor(0);

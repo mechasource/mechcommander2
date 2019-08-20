@@ -98,7 +98,7 @@ public:
 protected:
 	bool visibleIndexedVerticesKey;
 	std::vector<uint8_t> visibleIndexedVertices;
-	std::vector<uint16_t> colorIndexes;				// List of color indexes
+	std::vector<uint16_t> colorIndexes; // List of color indexes
 	std::vector<uint16_t> gos_indices;
 
 	//static std::vector<uint16_t> clipExtraIndex;	// , Max_Number_Vertices_Per_Mesh

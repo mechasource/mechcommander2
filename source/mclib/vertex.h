@@ -47,8 +47,8 @@ struct PostcompVertex
 	uint32_t localRGBLight; // aRGB format
 
 	uint32_t terrainType; // terrainTypeNumber.
-	uint8_t selected;	 // selection
-	uint8_t water;		  // Additional Storage to pull into 16 Byte Alignment
+	uint8_t selected; // selection
+	uint8_t water; // Additional Storage to pull into 16 Byte Alignment
 	uint8_t shadow;
 	uint8_t highlighted; // Used to highlight WHOLE FACES!!!
 
@@ -68,9 +68,9 @@ class Vertex
 	//-------------
 public:
 	PostcompVertexPtr pVertex; // Pointer to PostcompVertex for this Vertex
-	float vx, vy;			   // Unrotated World Coordinates of Vertex
-	float px, py;			   // Screen Coordinates of vertex.
-	float pz, pw;			   // Depth of vertex.
+	float vx, vy; // Unrotated World Coordinates of Vertex
+	float px, py; // Screen Coordinates of vertex.
+	float pz, pw; // Depth of vertex.
 
 	int32_t vertexNum; // Physical Vertex Position in mapData
 
@@ -79,13 +79,13 @@ public:
 	// What vertex number in the block
 
 	int32_t posTile; // Where are we on the tile!  Saves 24 divides per tile if
-					 // overlay on tile!!!
+		// overlay on tile!!!
 	// Saves a mere 8 if no overlay!
 
 	uint32_t clipInfo; // Stores data on vertex clip information.
 
 	uint32_t lightRGB; // Light at this vertex.
-	uint32_t fogRGB;   // Fog at this vertex.
+	uint32_t fogRGB; // Fog at this vertex.
 
 	float wx, wy; // Screen Coordinates of water face if there is one!
 	float wz, ww; // Depth of vertex for water if there is one!
@@ -108,11 +108,11 @@ public:
 		px = py = 0.0f;
 		pz = pw = 0.0f;
 		wx = wy = 0.0f;
-		wz = ww   = 0.0f;
-		posTile   = -1;
+		wz = ww = 0.0f;
+		posTile = -1;
 		vertexNum = -1;
 		lightRGB = fogRGB = 0xffffffff;
-		calcThisFrame	 = false;
+		calcThisFrame = false;
 	}
 
 	Vertex(void) { init(void); }

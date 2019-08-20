@@ -16,7 +16,8 @@ MLRShape::ClassData* MLRShape::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::InitializeClass()
+void
+MLRShape::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -26,7 +27,8 @@ void MLRShape::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::TerminateClass()
+void
+MLRShape::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -35,7 +37,8 @@ void MLRShape::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape::MLRShape(std::iostream stream, uint32_t version) : Plug(DefaultData)
+MLRShape::MLRShape(std::iostream stream, uint32_t version) :
+	Plug(DefaultData)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -128,10 +131,7 @@ MLRShape::MLRShape(std::iostream stream, uint32_t version) : Plug(DefaultData)
 			Check_Object(class_data);
 			pt = (*class_data->primitiveFactory)(stream, version);
 			Register_Object(pt);
-			if (ConvertToTriangleMeshes == true &&
-				(pt->IsDerivedFrom(MLR_I_PMesh::DefaultData) ||
-					pt->IsDerivedFrom(MLR_I_C_PMesh::DefaultData) ||
-					pt->IsDerivedFrom(MLR_I_L_PMesh::DefaultData)))
+			if (ConvertToTriangleMeshes == true && (pt->IsDerivedFrom(MLR_I_PMesh::DefaultData) || pt->IsDerivedFrom(MLR_I_C_PMesh::DefaultData) || pt->IsDerivedFrom(MLR_I_L_PMesh::DefaultData)))
 			{
 				puint8_t length;
 				int32_t i, num, threes, nonThrees;
@@ -225,10 +225,11 @@ MLRShape::MLRShape(std::iostream stream, uint32_t version) : Plug(DefaultData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape::MLRShape(int32_t nr) : Plug(DefaultData), allPrimitives(nr ? nr : 4)
+MLRShape::MLRShape(int32_t nr) :
+	Plug(DefaultData), allPrimitives(nr ? nr : 4)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	numPrimitives  = 0;
+	numPrimitives = 0;
 	referenceCount = 1;
 }
 
@@ -240,7 +241,7 @@ MLRShape::~MLRShape()
 	MLRPrimitiveBase* pt;
 	for (i = numPrimitives - 1; i >= 0; i--)
 	{
-		pt				 = allPrimitives[i];
+		pt = allPrimitives[i];
 		allPrimitives[i] = nullptr;
 		pt->DetachReference();
 	}
@@ -249,7 +250,8 @@ MLRShape::~MLRShape()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MLRShape::Make(std::iostream stream, uint32_t version)
+MLRShape*
+MLRShape::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -262,7 +264,8 @@ MLRShape* MLRShape::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::Save(std::iostream stream)
+void
+MLRShape::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -277,7 +280,8 @@ void MLRShape::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::Add(MLRPrimitiveBase* p)
+void
+MLRShape::Add(MLRPrimitiveBase* p)
 {
 	// Check_Object(this);
 	if (numPrimitives >= allPrimitives.GetLength() || allPrimitives.GetLength() == 0)
@@ -295,7 +299,8 @@ void MLRShape::Add(MLRPrimitiveBase* p)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t MLRShape::GetNumPrimitives()
+int32_t
+MLRShape::GetNumPrimitives()
 {
 	int32_t i, ret = 0;
 	for (i = 0; i < numPrimitives; i++)
@@ -308,7 +313,8 @@ int32_t MLRShape::GetNumPrimitives()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t MLRShape::GetNumDrawnTriangles()
+int32_t
+MLRShape::GetNumDrawnTriangles()
 {
 	int32_t i, j, ret = 0;
 	for (i = 0; i < numPrimitives; i++)
@@ -332,7 +338,8 @@ int32_t MLRShape::GetNumDrawnTriangles()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase* MLRShape::Find(int32_t i)
+MLRPrimitiveBase*
+MLRShape::Find(int32_t i)
 {
 	// Check_Object(this);
 	_ASSERT(i < numPrimitives);
@@ -341,7 +348,8 @@ MLRPrimitiveBase* MLRShape::Find(int32_t i)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t MLRShape::Find(MLRPrimitiveBase* p)
+int32_t
+MLRShape::Find(MLRPrimitiveBase* p)
 {
 	// Check_Object(this);
 	Check_Object(p);
@@ -359,7 +367,8 @@ int32_t MLRShape::Find(MLRPrimitiveBase* p)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool MLRShape::Replace(MLRPrimitiveBase* pout, MLRPrimitiveBase* pin)
+bool
+MLRShape::Replace(MLRPrimitiveBase* pout, MLRPrimitiveBase* pin)
 {
 	// Check_Object(this);
 	Check_Object(pout);
@@ -380,7 +389,8 @@ bool MLRShape::Replace(MLRPrimitiveBase* pout, MLRPrimitiveBase* pin)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase* MLRShape::Remove(MLRPrimitiveBase* p)
+MLRPrimitiveBase*
+MLRShape::Remove(MLRPrimitiveBase* p)
 {
 	// Check_Object(this);
 	Check_Object(p);
@@ -401,7 +411,8 @@ MLRPrimitiveBase* MLRShape::Remove(MLRPrimitiveBase* p)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase* MLRShape::Remove(int32_t nr)
+MLRPrimitiveBase*
+MLRShape::Remove(int32_t nr)
 {
 	// Check_Object(this);
 	int32_t i;
@@ -422,7 +433,8 @@ MLRPrimitiveBase* MLRShape::Remove(int32_t nr)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t MLRShape::Insert(MLRPrimitiveBase* p, int32_t nr)
+int32_t
+MLRShape::Insert(MLRPrimitiveBase* p, int32_t nr)
 {
 	// Check_Object(this);
 	if (nr >= numPrimitives)
@@ -451,7 +463,8 @@ int32_t MLRShape::Insert(MLRPrimitiveBase* p, int32_t nr)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::InitializePrimitives(uint8_t vis, const MLRState& master, int32_t parameter)
+void
+MLRShape::InitializePrimitives(uint8_t vis, const MLRState& master, int32_t parameter)
 {
 	// Check_Object(this);
 	int32_t i;
@@ -465,7 +478,8 @@ void MLRShape::InitializePrimitives(uint8_t vis, const MLRState& master, int32_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // p is the eye point
-void MLRShape::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
+void
+MLRShape::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
 {
 	for (size_t i = 0; i < numPrimitives; i++)
 	{
@@ -476,7 +490,8 @@ void MLRShape::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // p is the eye point
-int32_t MLRShape::FindBackFace(const Point3D& p)
+int32_t
+MLRShape::FindBackFace(const Point3D& p)
 {
 	// Check_Object(this);
 	int32_t i, ret = 0;
@@ -550,7 +565,8 @@ int32_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::Lighting(
+void
+MLRShape::Lighting(
 	const LinearMatrix4D& WorldToShape, MLRLight* const* lights, int32_t nrLights)
 {
 	// Check_Object(this);
@@ -573,7 +589,8 @@ void MLRShape::Lighting(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool MLRShape::CastRay(Line3D* line, Normal3D* normal)
+bool
+MLRShape::CastRay(Line3D* line, Normal3D* normal)
 {
 	// Check_Object(this);
 	Check_Object(line);

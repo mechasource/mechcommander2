@@ -54,9 +54,9 @@ typedef struct SMALLPOOLBLOCK
 	uint8_t Size; // Size of block (note pools are always <64K)
 #endif
 #ifdef _DEBUG
-	DOUBLE dTimeStamp;	// at what time was the block alloc'd
+	DOUBLE dTimeStamp; // at what time was the block alloc'd
 	uint32_t pContext[0]; // we'll allocate the right size based on
-						  // gMemoryStackWalkLevel
+		// gMemoryStackWalkLevel
 #endif
 } SMALLPOOLBLOCK;
 typedef SMALLPOOLBLOCK* PSMALLPOOLBLOCK;
@@ -70,9 +70,9 @@ typedef struct POOLBLOCK
 	uint16_t Size; // Size of block (note pools are always <64K)
 #endif
 #ifdef _DEBUG
-	DOUBLE dTimeStamp;	// at what time was the block alloc'd
+	DOUBLE dTimeStamp; // at what time was the block alloc'd
 	uint32_t pContext[0]; // we'll allocate the right size based on
-						  // gMemoryStackWalkLevel
+		// gMemoryStackWalkLevel
 #endif
 } POOLBLOCK;
 typedef POOLBLOCK* PPOOLBLOCK;
@@ -82,14 +82,14 @@ typedef POOLBLOCK* PPOOLBLOCK;
 //
 typedef struct _LARGEBLOCK
 {
-	uint32_t Size;			  // Size of block (note can be any size)
+	uint32_t Size; // Size of block (note can be any size)
 	_LARGEBLOCKHEADER* pLast; // Pointer to previous large memory block
 	_LARGEBLOCKHEADER* pNext; // Pointer to next large memory block
 	uint8_t Heap;
 #ifdef _DEBUG
-	DOUBLE dTimeStamp;	// at what time was the block alloc'd
+	DOUBLE dTimeStamp; // at what time was the block alloc'd
 	uint32_t pContext[0]; // we'll allocate the right size based on
-						  // gMemoryStackWalkLevel
+		// gMemoryStackWalkLevel
 #endif
 } LARGEBLOCK;
 typedef LARGEBLOCK* PLARGEBLOCK;
@@ -109,24 +109,24 @@ typedef LARGEBLOCKHEADER* PLARGEBLOCKHEADER;
 //
 typedef struct _MEMORYPOOL
 {
-	uint32_t HeapTag;		// Tag so that memory is easily spotted in VM viewers
-	_MEMORYPOOL* pLast;		// Points to the last heap of the SAME block size
-	_MEMORYPOOL* pNext;		// Points to the next heap of the SAME block size
+	uint32_t HeapTag; // Tag so that memory is easily spotted in VM viewers
+	_MEMORYPOOL* pLast; // Points to the last heap of the SAME block size
+	_MEMORYPOOL* pNext; // Points to the next heap of the SAME block size
 	POOLBLOCK* pInfoBlocks; // an array of blocks which describe particular
-							// memory blocks (may point to a SMALLPOOLBLOCK
-							// header for >256 bytes)
-	puint8_t pMemoryPool;   // Pointer to the base of the memory blocks (pointer
-							// to header byte before allocation)
-	uint16_t wBlockSize;	// what is the size of the individual blocks?
-	uint16_t wTotalBlocks;  // Total blocks available
+		// memory blocks (may point to a SMALLPOOLBLOCK
+		// header for >256 bytes)
+	puint8_t pMemoryPool; // Pointer to the base of the memory blocks (pointer
+		// to header byte before allocation)
+	uint16_t wBlockSize; // what is the size of the individual blocks?
+	uint16_t wTotalBlocks; // Total blocks available
 #if defined(LAB_ONLY)
 	uint16_t wUserBytes; // the amount of memory in the pool that is actual user data
 #endif
-	uint16_t AllocCount[16];	// Number of blocks allocated in each 4K page (when
-								// 0, block can be decommitted)
-	uint16_t FreeBlockPtr;		// Next available block in FreeBlockStack
+	uint16_t AllocCount[16]; // Number of blocks allocated in each 4K page (when
+		// 0, block can be decommitted)
+	uint16_t FreeBlockPtr; // Next available block in FreeBlockStack
 	uint16_t FreeBlockStack[0]; // Free block offsets (from base of pool -
-								// pointer to header byte before allocation)
+		// pointer to header byte before allocation)
 } MEMORYPOOL;
 typedef MEMORYPOOL* PMEMORYPOOL;
 

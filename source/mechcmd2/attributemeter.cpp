@@ -20,33 +20,39 @@
 extern uint32_t helpTextID;
 extern uint32_t helpTextHeaderID;
 
-bool AttributeMeter::pointInside(int32_t mouseX, int32_t mouseY) const
+bool
+AttributeMeter::pointInside(int32_t mouseX, int32_t mouseY) const
 {
-	if ((outsideRect.left) <= mouseX && outsideRect.right >= mouseX && outsideRect.top <= mouseY &&
-		outsideRect.bottom >= mouseY)
+	if ((outsideRect.left) <= mouseX && outsideRect.right >= mouseX && outsideRect.top <= mouseY && outsideRect.bottom >= mouseY)
 		return true;
 	return false;
 }
 
-void AttributeMeter::update()
+void
+AttributeMeter::update()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
 	if (pointInside(mouseX, mouseY))
 		::helpTextID = helpID;
 }
-void AttributeMeter::render() { render(0, 0); }
+void
+AttributeMeter::render()
+{
+	render(0, 0);
+}
 
-void AttributeMeter::render(int32_t xOffset, int32_t yOffset)
+void
+AttributeMeter::render(int32_t xOffset, int32_t yOffset)
 {
 	uint32_t i;
 	if (!bShow)
 		return;
-	float barCount		 = percent * numBars;
-	uint32_t nBarCount   = static_cast<uint32_t>(barCount);
-	float remainder		 = (addedPercent * numBars) + (barCount - nBarCount);
+	float barCount = percent * numBars;
+	uint32_t nBarCount = static_cast<uint32_t>(barCount);
+	float remainder = (addedPercent * numBars) + (barCount - nBarCount);
 	uint32_t nAddedCount = static_cast<uint32_t>(remainder);
-	RECT tmpOutside		 = outsideRect;
+	RECT tmpOutside = outsideRect;
 	tmpOutside.left += xOffset;
 	tmpOutside.right += xOffset;
 	tmpOutside.top += yOffset;
@@ -54,9 +60,9 @@ void AttributeMeter::render(int32_t xOffset, int32_t yOffset)
 	// drawRect( tmpOutside, 0xff000000 );
 	drawEmptyRect(tmpOutside, rectColor, rectColor);
 	RECT tmpRect;
-	tmpRect.left   = outsideRect.left + 2 * skipWidth + xOffset;
-	tmpRect.right  = tmpRect.left + unitWidth;
-	tmpRect.top	= outsideRect.top + 2 * skipWidth + yOffset;
+	tmpRect.left = outsideRect.left + 2 * skipWidth + xOffset;
+	tmpRect.right = tmpRect.left + unitWidth;
+	tmpRect.top = outsideRect.top + 2 * skipWidth + yOffset;
 	tmpRect.bottom = outsideRect.bottom - 2 * skipWidth + yOffset;
 	uint32_t color = colorMin;
 	tmpRect.bottom += skipWidth;
@@ -84,7 +90,8 @@ void AttributeMeter::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void AttributeMeter::init(FitIniFile* file, PCSTR headerName)
+void
+AttributeMeter::init(FitIniFile* file, PCSTR headerName)
 {
 	if (NO_ERROR != file->seekBlock(headerName))
 	{

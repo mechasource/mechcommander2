@@ -76,34 +76,48 @@ public:
 	}
 };
 
-void Rotate(Stuff::Vector2DOf<float>& vec, float angle);
+void
+Rotate(Stuff::Vector2DOf<float>& vec, float angle);
 
-void Rotate(Stuff::Vector3D& vec, float angle);
+void
+Rotate(Stuff::Vector3D& vec, float angle);
 
-void RotateLight(Stuff::Vector3D& vec, float angle);
+void
+RotateLight(Stuff::Vector3D& vec, float angle);
 
-void OppRotate(Stuff::Vector3D& vec, float angle);
+void
+OppRotate(Stuff::Vector3D& vec, float angle);
 
-float distance_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2);
+float
+distance_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2);
 
-float my_acos(float val);
+float
+my_acos(float val);
 
-float angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2);
+float
+angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2);
 
-float angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2);
+float
+angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2);
 
-float world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2);
+float
+world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2);
 
-Stuff::Vector3D relativePositionToPoint(
+Stuff::Vector3D
+relativePositionToPoint(
 	Stuff::Vector3D point, float angle, float distance, uint32_t flags);
 
-int32_t RandomNumber(int32_t range);
+int32_t
+RandomNumber(int32_t range);
 
-int32_t SignedRandomNumber(int32_t range);
+int32_t
+SignedRandomNumber(int32_t range);
 
-bool RollDice(int32_t percent);
+bool
+RollDice(int32_t percent);
 
-inline int32_t float2long(float val)
+inline int32_t
+float2long(float val)
 {
 	//_ftol TRUNCS not rounds.  Processor wants to round.  Surely there is some
 	// flag to not have this happen?
@@ -143,7 +157,8 @@ inline int32_t float2long(float val)
 }
 
 //---------------------------------------------------------------------------
-inline float mc2_atan2(float f1, float f2)
+inline float
+mc2_atan2(float f1, float f2)
 {
 	// Return atan of f1/f2;
 	float result = 1.570796f;
@@ -166,7 +181,8 @@ inline float mc2_atan2(float f1, float f2)
 
 //---------------------------------------------------------------------------
 #if _CONSIDERED_OBSOLETE
-inline float fmax(float f1, float f2)
+inline float
+fmax(float f1, float f2)
 {
 	if (f1 > f2)
 		return f1;
@@ -175,7 +191,8 @@ inline float fmax(float f1, float f2)
 }
 
 //---------------------------------------------------------------------------
-inline float fmin(float f1, float f2)
+inline float
+fmin(float f1, float f2)
 {
 	if (f1 < f2)
 		return f1;
@@ -185,7 +202,8 @@ inline float fmin(float f1, float f2)
 #endif
 
 //---------------------------------------------------------------------------
-inline float sign(float f1)
+inline float
+sign(float f1)
 {
 	if (f1 < 0.0f)
 		return -1.0f;

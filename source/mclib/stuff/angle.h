@@ -20,9 +20,12 @@ class SinCosPair;
 } // namespace Stuff
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::Radian& angle);
-void Spew(PCSTR group, const Stuff::Degree& angle);
-void Spew(PCSTR group, const Stuff::SinCosPair& angle);
+void
+Spew(PCSTR group, const Stuff::Radian& angle);
+void
+Spew(PCSTR group, const Stuff::Degree& angle);
+void
+Spew(PCSTR group, const Stuff::SinCosPair& angle);
 #endif
 
 namespace Stuff
@@ -193,7 +196,9 @@ public:
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const Radian& angle);
 #endif
-	void TestInstance(void) const {}
+	void TestInstance(void) const
+	{
+	}
 	static bool TestClass(void);
 };
 
@@ -242,11 +247,14 @@ public:
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const Degree& angle);
 #endif
-	void TestInstance(void) const {}
+	void TestInstance(void) const
+	{
+	}
 	static bool TestClass(void);
 };
 
-inline Radian& Radian::operator=(const Degree& degree)
+inline Radian&
+Radian::operator=(const Degree& degree)
 {
 	// Check_Pointer(this);
 	Check_Object(&degree);
@@ -268,7 +276,7 @@ public:
 	SinCosPair(float sin, float cos)
 	{
 		// Check_Pointer(this);
-		sine   = sin;
+		sine = sin;
 		cosine = cos;
 		// Check_Object(this);
 	}
@@ -276,7 +284,7 @@ public:
 	{
 		// Check_Pointer(this);
 		Check_Object(&pair);
-		sine   = pair.sine;
+		sine = pair.sine;
 		cosine = pair.cosine;
 	}
 	explicit SinCosPair(const Radian& radian) { *this = radian; }
@@ -288,7 +296,7 @@ public:
 	{
 		// Check_Pointer(this);
 		Check_Object(&pair);
-		sine   = pair.sine;
+		sine = pair.sine;
 		cosine = pair.cosine;
 		return *this;
 	}
@@ -317,7 +325,7 @@ public:
 		}
 #else
 		cosine = cos(radian);
-		sine   = sin(radian);
+		sine = sin(radian);
 #endif
 		// Check_Object(this);
 		return *this;
@@ -329,11 +337,14 @@ public:
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const SinCosPair& angle);
 #endif
-	void TestInstance(void) const {}
+	void TestInstance(void) const
+	{
+	}
 	static bool TestClass(void);
 };
 
-inline Radian& Radian::operator=(const SinCosPair& pair)
+inline Radian&
+Radian::operator=(const SinCosPair& pair)
 {
 	// Check_Pointer(this);
 	Check_Object(&pair);
@@ -345,12 +356,14 @@ inline Radian& Radian::operator=(const SinCosPair& pair)
 namespace MemoryStreamIO
 {
 #if _CONSIDERED_TEMPORARILY_DISABLED
-inline std::istream& Read(std::istream& stream, Stuff::Radian* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::Radian* output)
 {
 	return stream.read(output, sizeof(*output));
 }
 
-inline std::ostream& Write(std::ostream stream, const Stuff::Radian* input)
+inline std::ostream&
+Write(std::ostream stream, const Stuff::Radian* input)
 {
 	return stream.write(input, sizeof(*input));
 }

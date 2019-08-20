@@ -45,7 +45,8 @@ static uint32_t lines, DestWidth, paneX0, paneX1, paneY0, paneY1;
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
+void
+AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -871,7 +872,8 @@ void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t h
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_lookaside(puint8_t table)
+void
+AG_shape_lookaside(puint8_t table)
 {
 	_asm
 	{
@@ -909,7 +911,8 @@ void AG_shape_lookaside(puint8_t table)
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_translate_draw(
+void
+AG_shape_translate_draw(
 	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm
@@ -1813,7 +1816,7 @@ void AG_shape_translate_draw(
 		version[i] = *shapeTable;
 		shapeTable++;
 	}
-	version[4]		  = 0;
+	version[4] = 0;
 	int32_t numShapes = (int32_t)*shapeTable;
 	shapeTable += 4;
 	shapeTable += (shape_number * 8);

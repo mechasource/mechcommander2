@@ -29,9 +29,9 @@ struct SortAlpha;
 class SortData
 {
 public:
-	SortData(void)
-		: vertices(nullptr), indices(nullptr), numVertices(0), numIndices(0), type(TriList),
-		  texture2(0)
+	SortData(void) :
+		vertices(nullptr), indices(nullptr), numVertices(0), numIndices(0), type(TriList),
+		texture2(0)
 	{
 	}
 
@@ -118,8 +118,8 @@ public:
 	MLRSorter(ClassData* class_data, MLRTexturePool*);
 	~MLRSorter(void);
 
-	virtual void AddPrimitive(MLRPrimitiveBase*, uint32_t = 0)				   = 0;
-	virtual void AddEffect(MLREffect*, const MLRState&)						   = 0;
+	virtual void AddPrimitive(MLRPrimitiveBase*, uint32_t = 0) = 0;
+	virtual void AddEffect(MLREffect*, const MLRState&) = 0;
 	virtual void AddScreenQuads(GOSVertex*, const DrawScreenQuadsInformation*) = 0;
 
 	virtual void AddSortRawData(SortData*) = 0;
@@ -195,7 +195,7 @@ protected:
 	std::vector<ToBeDrawnPrimitive> drawData; // Max_Number_Primitives_Per_Frame
 	std::vector<ToBeDrawnPrimitive*>
 		priorityBucketsNotDrawn[MLRState::PriorityCount]; //, Max_Number_Primitives_Per_Frame +
-														  // Max_Number_ScreenQuads_Per_Frame
+		// Max_Number_ScreenQuads_Per_Frame
 #endif
 	float farClipReciprocal;
 };

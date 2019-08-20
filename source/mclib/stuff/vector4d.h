@@ -19,7 +19,8 @@ class Vector4D;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::Vector4D& vector);
+void
+Spew(PCSTR group, const Stuff::Vector4D& vector);
 #endif
 
 namespace Stuff
@@ -201,10 +202,10 @@ public:
 		Check_Object(&v);
 		_ASSERT(!Small_Enough(scale));
 		scale = 1.0f / scale;
-		x	 = v.x * scale;
-		y	 = v.y * scale;
-		z	 = v.z * scale;
-		w	 = v.w * scale;
+		x = v.x * scale;
+		y = v.y * scale;
+		z = v.z * scale;
+		w = v.w * scale;
 		return *this;
 	}
 	Vector4D& operator/=(float v) { return Divide(*this, v); }
@@ -537,7 +538,9 @@ public:
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const Vector4D& vector);
 #endif
-	void TestInstance(void) const {}
+	void TestInstance(void) const
+	{
+	}
 	static bool TestClass(void);
 };
 } // namespace Stuff

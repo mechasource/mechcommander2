@@ -18,14 +18,16 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // TextMessageDlg dialog
 
-TextMessageDlg::TextMessageDlg(CWnd* pParent /*=nullptr*/) : CDialog(TextMessageDlg::IDD, pParent)
+TextMessageDlg::TextMessageDlg(CWnd* pParent /*=nullptr*/) :
+	CDialog(TextMessageDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(TextMessageDlg)
 	m_TextMessage = _T("");
 	//}}AFX_DATA_INIT
 }
 
-void TextMessageDlg::DoDataExchange(CDataExchange* pDX)
+void
+TextMessageDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(TextMessageDlg)

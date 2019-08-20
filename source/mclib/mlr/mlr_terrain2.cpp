@@ -29,7 +29,8 @@ extern std::vector<float>* lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain2::InitializeClass()
+void
+MLR_Terrain2::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -46,7 +47,8 @@ void MLR_Terrain2::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain2::TerminateClass()
+void
+MLR_Terrain2::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -61,8 +63,8 @@ void MLR_Terrain2::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t version)
-	: MLR_I_DeT_TMesh(class_data, stream, version)
+MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t version) :
+	MLR_I_DeT_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -126,7 +128,7 @@ MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t
 		int32_t i, d = texName[len - 6] - '0';
 		strncpy(texRoot, texName, len - 7);
 		texRoot[len - 7] = '\0';
-		textures[d]		 = referenceState.GetTextureHandle();
+		textures[d] = referenceState.GetTextureHandle();
 		MLRTexture* texture;
 		uint8_t mask = 1;
 		for (i = 0; i < 8; i++)
@@ -171,16 +173,17 @@ MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain2::MLR_Terrain2(ClassData* class_data) : MLR_I_DeT_TMesh(class_data)
+MLR_Terrain2::MLR_Terrain2(ClassData* class_data) :
+	MLR_I_DeT_TMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	tileX		   = 0;
-	tileZ		   = 0;
-	maxDepth	   = 0;
-	maxAllDepth	= 0;
+	tileX = 0;
+	tileZ = 0;
+	maxDepth = 0;
+	maxAllDepth = 0;
 	borderPixelFun = 0.0f;
-	float* fptr	= &frame[0][0];
+	float* fptr = &frame[0][0];
 	int32_t i;
 	for (i = 0; i < 32; i++)
 	{
@@ -201,7 +204,8 @@ MLR_Terrain2::~MLR_Terrain2()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain2* MLR_Terrain2::Make(std::iostream stream, uint32_t version)
+MLR_Terrain2*
+MLR_Terrain2::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -214,7 +218,8 @@ MLR_Terrain2* MLR_Terrain2::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain2::Save(std::iostream stream)
+void
+MLR_Terrain2::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -278,11 +283,16 @@ void MLR_Terrain2::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain2::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLR_Terrain2::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain2::SetCurrentDepth(uint8_t d)
+void
+MLR_Terrain2::SetCurrentDepth(uint8_t d)
 {
 	if (d == currentDepth)
 	{
@@ -305,7 +315,8 @@ void MLR_Terrain2::SetCurrentDepth(uint8_t d)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
+void
+MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
 {
 	// Check_Object(this);
 	_ASSERT(lev >= 0 && lev < 8);
@@ -318,7 +329,8 @@ void MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain2::CalculateUVs()
+void
+MLR_Terrain2::CalculateUVs()
 {
 	if (texCoords.GetLength() != coords.GetLength())
 	{
@@ -328,8 +340,8 @@ void MLR_Terrain2::CalculateUVs()
 		texCoords.SetLength(coords.GetLength());
 		gos_PopCurrentHeap();
 	}
-	float maxX	 = frame[currentDepth][2];
-	float maxZ	 = frame[currentDepth][3];
+	float maxX = frame[currentDepth][2];
+	float maxZ = frame[currentDepth][3];
 	float OneOverX = 1.0f / (frame[currentDepth][2] - frame[currentDepth][0]);
 	float OneOverZ = 1.0f / (frame[currentDepth][3] - frame[currentDepth][1]);
 	for (size_t i = 0; i < texCoords.GetLength(); i++)
@@ -377,11 +389,13 @@ void MLR_Terrain2::CalculateUVs()
 #undef CLASSNAME
 
 extern RGBAColor errorColor;
-extern bool CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs, uint32_t stride);
+extern bool
+CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs, uint32_t stride);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain2::LightMapLighting(MLRLight* light)
+void
+MLR_Terrain2::LightMapLighting(MLRLight* light)
 {
 	if (!gEnableLightMaps)
 	{
@@ -392,14 +406,14 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 	Point3D lightPosInShape, hitPoint;
 	UnitVector3D up, left, forward;
 	bool lm;
-	float falloff		  = 1.0f, distance;
+	float falloff = 1.0f, distance;
 	MLRLightMap* lightMap = light->GetLightMap();
 	if ((!lightMap) || (!gEnableLightMaps))
 	{
 		return;
 	}
 	int32_t tooBig = 0;
-	float bigUV	= MLRState::GetMaxUV();
+	float bigUV = MLRState::GetMaxUV();
 	switch (light->GetLightType())
 	{
 	case MLRLight::PointLight:
@@ -416,8 +430,8 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 			{
 				continue;
 			}
-			f	  = facePlanes[i].GetDistanceTo(lightPosInShape);
-			lm	 = false;
+			f = facePlanes[i].GetDistanceTo(lightPosInShape);
+			lm = false;
 			tooBig = 0;
 			for (k = 0; k < 3; k++)
 			{
@@ -425,14 +439,12 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 				vec -= lightPosInShape;
 				(*lightMapUVs)[k][0] = vec.x * One_Over_Falloff;
 				(*lightMapUVs)[k][1] = vec.z * One_Over_Falloff;
-				falloff				 = 1.0f;
-				if ((*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f &&
-					(*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f)
+				falloff = 1.0f;
+				if ((*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f && (*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f)
 				{
 					lm = true;
 				}
-				if ((*lightMapUVs)[k][0] < -bigUV || (*lightMapUVs)[k][0] > bigUV ||
-					(*lightMapUVs)[k][1] < -bigUV || (*lightMapUVs)[k][1] > bigUV)
+				if ((*lightMapUVs)[k][0] < -bigUV || (*lightMapUVs)[k][0] > bigUV || (*lightMapUVs)[k][1] < -bigUV || (*lightMapUVs)[k][1] > bigUV)
 				{
 					tooBig++;
 				}
@@ -483,7 +495,7 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 		Check_Object(lightMap);
 		lightMap->AddState(referenceState.GetPriority() + 1);
 		light->GetInShapePosition(matrix);
-		lightPosInShape		= matrix;
+		lightPosInShape = matrix;
 		float tanSpeadAngle = Cast_Object(MLRSpotLight*, light)->GetTanSpreadAngle();
 #ifndef TOP_DOWN_ONLY
 		matrix.GetLocalLeftInWorld(&left);
@@ -491,13 +503,13 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 		matrix.GetLocalForwardInWorld(&forward);
 #else
 		forward = UnitVector3D(0.0f, -1.0f, 0.0);
-		up		= UnitVector3D(1.0f, 0.0f, 0.0);
-		left	= UnitVector3D(0.0f, 0.0f, 1.0);
+		up = UnitVector3D(1.0f, 0.0f, 0.0);
+		left = UnitVector3D(0.0f, 0.0f, 1.0);
 #endif
 		_ASSERT(Small_Enough(up * left));
 		for (i = 0, j = 0, k = 0; i < len; i++, j += 3)
 		{
-			behindCount  = 0;
+			behindCount = 0;
 			falloffCount = 0;
 			if (testList[i] == 0)
 			{
@@ -545,8 +557,7 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 			{
 				maxZ = coords[index[j + 2]].z;
 			}
-			if (lightPosInShape.x > minX && lightPosInShape.x < maxX && lightPosInShape.z > minZ &&
-				lightPosInShape.z < maxZ)
+			if (lightPosInShape.x > minX && lightPosInShape.x < maxX && lightPosInShape.z > minZ && lightPosInShape.z < maxZ)
 			{
 				SPEW(("micgaert", "On Target !!"));
 			}
@@ -560,7 +571,7 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 #ifndef TOP_DOWN_ONLY
 				distance = (vec * forward);
 #else
-				   distance = -vec.y;
+				distance = -vec.y;
 #endif
 #if SPEW_AWAY
 				SPEW(("micgaert", "vertex%d = %f,%f,%f", k, coords[index[k + j]].x,
@@ -570,7 +581,8 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 				if (distance > SMALL)
 				{
 					if (Cast_Object(MLRInfiniteLightWithFalloff*, light)
-							->GetFalloff(distance, falloff) == false)
+							->GetFalloff(distance, falloff)
+						== false)
 					{
 						falloffCount++;
 					}
@@ -579,13 +591,13 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 #if 0
 							= 1.0f / (2.0f * distance * tanSpeadAngle);
 #else
-						   = OneOverApproximate(2.0f * distance * tanSpeadAngle);
+						= OneOverApproximate(2.0f * distance * tanSpeadAngle);
 #endif
 				}
 				else
 				{
 					behindCount++;
-					oneOver					 = 1.0f / 50.0f;
+					oneOver = 1.0f / 50.0f;
 					(*lightMapSqFalloffs)[k] = 0.0f;
 #if SPEW_AWAY
 					SPEW(("micgaert", "Behind"));
@@ -595,26 +607,23 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 				(*lightMapUVs)[k][0] = (left * vec) * oneOver;
 				(*lightMapUVs)[k][1] = -(up * vec) * oneOver;
 #else
-				   (*lightMapUVs)[k][0] = vec.x * oneOver;
-				   (*lightMapUVs)[k][1] = -vec.z * oneOver;
+				(*lightMapUVs)[k][0] = vec.x * oneOver;
+				(*lightMapUVs)[k][1] = -vec.z * oneOver;
 #endif
 #if SPEW_AWAY
 				SPEW(("micgaert", "uv%d = %f,%f", k, (*lightMapUVs)[k][0], (*lightMapUVs)[k][1]));
 #endif
-				if ((*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f &&
-					(*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f)
+				if ((*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f && (*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f)
 				{
 					lm = true;
 				}
-				if ((*lightMapUVs)[k][0] < -bigUV || (*lightMapUVs)[k][0] > bigUV ||
-					(*lightMapUVs)[k][1] < -bigUV || (*lightMapUVs)[k][1] > bigUV)
+				if ((*lightMapUVs)[k][0] < -bigUV || (*lightMapUVs)[k][0] > bigUV || (*lightMapUVs)[k][1] < -bigUV || (*lightMapUVs)[k][1] > bigUV)
 				{
 					tooBig++;
 				}
 			}
 #if 1
-			if (tooBig == 0 && behindCount < 3 && falloffCount < 3 &&
-				((lm == true) || CheckForBigTriangles(lightMapUVs, 3) == true))
+			if (tooBig == 0 && behindCount < 3 && falloffCount < 3 && ((lm == true) || CheckForBigTriangles(lightMapUVs, 3) == true))
 			{
 				lightMap->SetPolygonMarker(1);
 				lightMap->AddUShort(3);
@@ -685,8 +694,7 @@ void MLR_Terrain2::LightMapLighting(MLRLight* light)
 					//" << lightMapUVs[k][0] << "\n";
 				}
 			}
-			else if (behindCount == 0 &&
-				(lm == true || CheckForBigTriangles(&lightMapUVs, 3) == true))
+			else if (behindCount == 0 && (lm == true || CheckForBigTriangles(&lightMapUVs, 3) == true))
 			{
 				lightMap->SetPolygonMarker(1);
 				lightMap->AddUShort(3);

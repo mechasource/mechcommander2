@@ -56,7 +56,7 @@ protected:
 
 	struct MoveInfo
 	{
-		float time;		 // in seconds
+		float time; // in seconds
 		float positionX; // x pixels
 		float positionY; // pixels
 		float scaleX;
@@ -81,11 +81,11 @@ class aAnimGroup
 public:
 	enum STATE
 	{
-		NORMAL			 = 0,
-		PRESSED			 = 1,
-		HIGHLIGHT		 = 2,
+		NORMAL = 0,
+		PRESSED = 1,
+		HIGHLIGHT = 2,
 		PRESSEDHIGHLIGHT = 3,
-		DISABLED		 = 4,
+		DISABLED = 4,
 		MAX_ANIMATION_STATE
 	};
 

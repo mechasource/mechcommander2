@@ -12,7 +12,8 @@
 //###########################################################################
 //###########################################################################
 //
-bool Vector3D::TestClass()
+bool
+Vector3D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Vector3D test..."));
 	const Vector3D a(Identity);

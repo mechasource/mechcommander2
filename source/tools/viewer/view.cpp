@@ -38,17 +38,17 @@ extern float frameRate;
 
 // globals used for memory
 UserHeapPtr systemHeap = nullptr;
-UserHeapPtr guiHeap	= nullptr;
+UserHeapPtr guiHeap = nullptr;
 
-int32_t GameVisibleVertices   = 30;
+int32_t GameVisibleVertices = 30;
 bool useLeftRightMouseProfile = true;
 
 float MaxMinUV = 8.0f;
 
 uint32_t systemHeapSize = 65535000;
-uint32_t guiHeapSize	= 1023999;
-uint32_t tglHeapSize	= 32767000;
-bool GeneralAlarm		= 0;
+uint32_t guiHeapSize = 1023999;
+uint32_t tglHeapSize = 32767000;
+bool GeneralAlarm = 0;
 
 extern int32_t DigitalMasterVolume;
 extern int32_t MusicVolume;
@@ -61,14 +61,14 @@ extern char MissingTitleString[];
 
 extern char CDInstallPath[];
 
-int32_t FilterState	= gos_FilterNone;
-int32_t gammaLevel	 = 0;
-int32_t renderer	   = 0;
+int32_t FilterState = gos_FilterNone;
+int32_t gammaLevel = 0;
+int32_t renderer = 0;
 int32_t GameDifficulty = 0;
-int32_t resolution	 = 0;
-bool useUnlimitedAmmo  = true;
+int32_t resolution = 0;
+bool useUnlimitedAmmo = true;
 
-Camera* eye				 = nullptr;
+Camera* eye = nullptr;
 uint32_t BaseVertexColor = 0;
 
 enum
@@ -78,9 +78,9 @@ enum
 	CPU_MMX,
 	CPU_KATMAI
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
-						   // -- MECHCMDR2
+	// -- MECHCMDR2
 
-bool reloadBounds		  = false;
+bool reloadBounds = false;
 int32_t ObjectTextureSize = 128;
 // char missionName[1024];
 float gosFontScale = 1.0;
@@ -95,13 +95,13 @@ bool quitGame = false;
 
 // these globals are necessary for fast files for some reason
 FastFile** fastFiles = nullptr;
-size_t numFastFiles  = 0;
-size_t maxFastFiles  = 0;
+size_t numFastFiles = 0;
+size_t maxFastFiles = 0;
 
 PSTR ExceptionGameMsg = "";
 
 bool justResaveAllMaps = 0;
-bool useLOSAngle	   = 0;
+bool useLOSAngle = 0;
 
 std::iostream effectStream = nullptr;
 extern MidLevelRenderer::MLRClipper* theClipper;
@@ -115,7 +115,7 @@ PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
 	"ToughnessSpecialist", // Thoughness Specialty
 
 	"MediumMechSpecialist", "PulseLaserSpecialist", "ERLaserSpecialist", "LRMSpecialist",
-	"Scout",	// Scouting Specialty
+	"Scout", // Scouting Specialty
 	"LongJump", // Jump Jet Specialty
 
 	"HevayMechSpecialist", // Heavy mech Specialty
@@ -128,7 +128,10 @@ PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
 
 // called by gos
 //---------------------------------------------------------------------------
-PSTR __stdcall GetGameInformation() { return (ExceptionGameMsg); }
+PSTR __stdcall GetGameInformation()
+{
+	return (ExceptionGameMsg);
+}
 
 // called by GOS when you need to draw
 //---------------------------------------------------------------------------
@@ -185,7 +188,7 @@ void __stdcall InitializeGameEngine()
 	if (pStr)
 	{
 		gosFontScale = atoi(pStr + 2);
-		*pStr		 = 0;
+		*pStr = 0;
 	}
 	char path[256];
 	strcpy(path, "assets\\graphics\\");
@@ -213,7 +216,7 @@ void __stdcall InitializeGameEngine()
 	gosASSERT(systemHeap != nullptr);
 	systemHeap->init(systemHeapSize, "SYSTEM");
 	float doubleClickThreshold = 0.2f;
-	int32_t dragThreshold	  = .016667;
+	int32_t dragThreshold = .016667;
 	//--------------------------------------------------------------
 	// Read in System.CFG
 	FitIniFile systemFile;
@@ -317,7 +320,7 @@ void __stdcall InitializeGameEngine()
 	systemFile.close();
 	//--------------------------------------------------------------
 	// Read in Prefs.cfg
-	bool fullScreen		= false;
+	bool fullScreen = false;
 	FitIniFilePtr prefs = new FitIniFile;
 #ifdef _DEBUG
 	int32_t prefsOpenResult =
@@ -422,7 +425,7 @@ void __stdcall InitializeGameEngine()
 	int32_t result = effectFile.open(effectsName);
 	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
-	int32_t effectsSize  = effectFile.fileSize();
+	int32_t effectsSize = effectFile.fileSize();
 	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
@@ -522,52 +525,52 @@ void __stdcall TerminateGameEngine()
 //---------------------------------------------------------------------
 void __stdcall GetGameOSEnvironment(PSTR CommandLine)
 {
-	Environment.applicationName		 = "MechCommander 2 Encyclopedia";
-	Environment.debugLog			 = ""; //"DebugLog.txt";
-	Environment.memoryTraceLevel	 = 5;
-	Environment.spew				 = ""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
-	Environment.TimeStampSpew		 = 0;
-	Environment.GetGameInformation   = GetGameInformation;
-	Environment.UpdateRenderers		 = UpdateRenderers;
+	Environment.applicationName = "MechCommander 2 Encyclopedia";
+	Environment.debugLog = ""; //"DebugLog.txt";
+	Environment.memoryTraceLevel = 5;
+	Environment.spew = ""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
+	Environment.TimeStampSpew = 0;
+	Environment.GetGameInformation = GetGameInformation;
+	Environment.UpdateRenderers = UpdateRenderers;
 	Environment.InitializeGameEngine = InitializeGameEngine;
-	Environment.DoGameLogic			 = DoGameLogic;
-	Environment.TerminateGameEngine  = TerminateGameEngine;
+	Environment.DoGameLogic = DoGameLogic;
+	Environment.TerminateGameEngine = TerminateGameEngine;
 	if (useSound)
 	{
-		Environment.soundDisable  = false;
-		Environment.soundHiFi	 = TRUE;
+		Environment.soundDisable = false;
+		Environment.soundHiFi = TRUE;
 		Environment.soundChannels = 24;
 	}
 	else
 	{
-		Environment.soundDisable  = TRUE;
-		Environment.soundHiFi	 = false;
+		Environment.soundDisable = TRUE;
+		Environment.soundHiFi = false;
 		Environment.soundChannels = 0;
 	}
-	Environment.version   = versionStamp;
+	Environment.version = versionStamp;
 	Environment.AntiAlias = 0;
 	//
 	// Texture infomation
 	//
-	Environment.Texture_S_256	= 6;
-	Environment.Texture_S_128	= 1;
-	Environment.Texture_S_64	 = 0;
-	Environment.Texture_S_32	 = 1;
-	Environment.Texture_S_16	 = 5;
-	Environment.Texture_K_256	= 2;
-	Environment.Texture_K_128	= 5;
-	Environment.Texture_K_64	 = 5;
-	Environment.Texture_K_32	 = 5;
-	Environment.Texture_K_16	 = 5;
-	Environment.Texture_A_256	= 0;
-	Environment.Texture_A_128	= 1;
-	Environment.Texture_A_64	 = 5;
-	Environment.Texture_A_32	 = 1;
-	Environment.Texture_A_16	 = 0;
-	Environment.bitDepth		 = 16;
-	Environment.RaidDataSource   = "MechCommander 2:Raid4";
-	Environment.RaidFilePath	 = "\\\\aas1\\MC2\\Test\\GOSRaid";
+	Environment.Texture_S_256 = 6;
+	Environment.Texture_S_128 = 1;
+	Environment.Texture_S_64 = 0;
+	Environment.Texture_S_32 = 1;
+	Environment.Texture_S_16 = 5;
+	Environment.Texture_K_256 = 2;
+	Environment.Texture_K_128 = 5;
+	Environment.Texture_K_64 = 5;
+	Environment.Texture_K_32 = 5;
+	Environment.Texture_K_16 = 5;
+	Environment.Texture_A_256 = 0;
+	Environment.Texture_A_128 = 1;
+	Environment.Texture_A_64 = 5;
+	Environment.Texture_A_32 = 1;
+	Environment.Texture_A_16 = 0;
+	Environment.bitDepth = 16;
+	Environment.RaidDataSource = "MechCommander 2:Raid4";
+	Environment.RaidFilePath = "\\\\aas1\\MC2\\Test\\GOSRaid";
 	Environment.RaidCustomFields = "Area=GOSRaid";
-	Environment.screenWidth		 = 800;
-	Environment.screenHeight	 = 600;
+	Environment.screenWidth = 800;
+	Environment.screenHeight = 600;
 }

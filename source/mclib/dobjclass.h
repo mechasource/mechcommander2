@@ -13,7 +13,7 @@
 
 enum ObjectClass
 {
-	INVALID	= -1,
+	INVALID = -1,
 	BASEOBJECT = 0,
 	TERRN,
 	BATTLEMECH,

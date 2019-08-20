@@ -12,10 +12,10 @@ thing lets you assign a particular elevation to selected vertices
 #include "utilities.h"
 
 extern uint32_t gameResourceHandle; // Default handle must be used for
-									// mc2res.dll due to shared game/editor code
+	// mc2res.dll due to shared game/editor code
 
-SingleValueDlg::SingleValueDlg(int32_t captionID, int32_t staticTextID, int32_t newVal)
-	: CDialog(IDD_VALUE)
+SingleValueDlg::SingleValueDlg(int32_t captionID, int32_t staticTextID, int32_t newVal) :
+	CDialog(IDD_VALUE)
 {
 	cLoadString(captionID, caption, 256, gameResourceHandle);
 	cLoadString(staticTextID, staticText, 256, gameResourceHandle);
@@ -23,7 +23,8 @@ SingleValueDlg::SingleValueDlg(int32_t captionID, int32_t staticTextID, int32_t 
 }
 
 SingleValueDlg::~SingleValueDlg() {}
-void SingleValueDlg::Init()
+void
+SingleValueDlg::Init()
 {
 	char minTxt[256];
 	itoa(val, minTxt, 10);
@@ -32,7 +33,8 @@ void SingleValueDlg::Init()
 	SetWindowText(caption);
 }
 
-void SingleValueDlg::OnOK()
+void
+SingleValueDlg::OnOK()
 {
 	char wcsMinTxt[256];
 	((CEdit*)GetDlgItem(IDC_HEIGHT))->GetWindowText(wcsMinTxt, 256);
@@ -58,7 +60,8 @@ void SingleValueDlg::OnOK()
 	}
 }*/
 
-void SingleValueDlg::Update()
+void
+SingleValueDlg::Update()
 {
 	char minTxt[256];
 	itoa(val, minTxt, 10);

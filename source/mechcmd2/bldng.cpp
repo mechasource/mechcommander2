@@ -106,7 +106,11 @@ extern int32_t NumMarines;
 
 extern bool GeneralAlarm;
 
-inline float agsqrt(float _a, float _b) { return sqrt(_a * _a + _b * _b); }
+inline float
+agsqrt(float _a, float _b)
+{
+	return sqrt(_a * _a + _b * _b);
+}
 
 uint32_t WallType[18] = {
 	26, 125, 152, 154, 156, 158, 160, 161, 162, 202, 204, 206, 231, 232, 233, 286, 287, 288};
@@ -117,26 +121,28 @@ uint32_t WallType[18] = {
 // class BuildingType
 //---------------------------------------------------------------------------
 
-void BuildingType::init(void)
+void
+BuildingType::init(void)
 {
 	objectTypeClass = BUILDING_TYPE; // any reason to record TREEBUILDING_TYPE?
-	objectClass		= BUILDING;
-	damageLevel		= 0.0;
-	sensorRange		= -1.0;
-	teamId			= -1;
-	explDmg = explRad	 = 0.0;
-	baseTonnage			  = 0.0;
-	buildingTypeName	  = 0;
+	objectClass = BUILDING;
+	damageLevel = 0.0;
+	sensorRange = -1.0;
+	teamId = -1;
+	explDmg = explRad = 0.0;
+	baseTonnage = 0.0;
+	buildingTypeName = 0;
 	buildingDescriptionID = -1;
-	startBR				  = 0;
-	numMarines			  = 0;
-	canRefit			  = false;
-	mechBay				  = false;
+	startBR = 0;
+	numMarines = 0;
+	canRefit = false;
+	mechBay = false;
 }
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr BuildingType::createInstance(void)
+GameObjectPtr
+BuildingType::createInstance(void)
 {
 	BuildingPtr result = new Building;
 	if (!result)
@@ -148,11 +154,16 @@ GameObjectPtr BuildingType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void BuildingType::destroy(void) { ObjectType::destroy(); }
+void
+BuildingType::destroy(void)
+{
+	ObjectType::destroy();
+}
 
 //---------------------------------------------------------------------------
 
-int32_t BuildingType::init(FilePtr objFile, uint32_t fileSize)
+int32_t
+BuildingType::init(FilePtr objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile bldgFile;
@@ -176,7 +187,7 @@ int32_t BuildingType::init(FilePtr objFile, uint32_t fileSize)
 	if (result != NO_ERROR)
 		return (result);
 	damageLevel = (float)dmgLevel;
-	result		= bldgFile.readIdBoolean("CanRefit", canRefit);
+	result = bldgFile.readIdBoolean("CanRefit", canRefit);
 	if (result != NO_ERROR)
 		canRefit = false;
 	if (canRefit)
@@ -201,7 +212,7 @@ int32_t BuildingType::init(FilePtr objFile, uint32_t fileSize)
 	if (result != NO_ERROR)
 		numMarines = 0;
 	float realExtent = 0.0;
-	result			 = bldgFile.readIdFloat("ExtentRadius", realExtent);
+	result = bldgFile.readIdFloat("ExtentRadius", realExtent);
 	if (result != NO_ERROR)
 		realExtent = -1.0;
 	result = bldgFile.readIdULong("ActivityEffectID", activityEffectId);
@@ -245,7 +256,7 @@ int32_t BuildingType::init(FilePtr objFile, uint32_t fileSize)
 	result = bldgFile.readIdFloat("PerimeterAlarmTimer", perimeterAlarmTimer);
 	if (result != NO_ERROR)
 		perimeterAlarmTimer = 0.0f;
-	result		 = ObjectType::init(&bldgFile);
+	result = ObjectType::init(&bldgFile);
 	extentRadius = realExtent;
 	if (perimeterAlarmRange > 0.0f)
 		extentRadius = perimeterAlarmRange;
@@ -275,7 +286,8 @@ int32_t BuildingType::init(FilePtr objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool BuildingType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+BuildingType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (true);
@@ -289,8 +301,7 @@ bool BuildingType::handleCollision(GameObjectPtr collidee, GameObjectPtr collide
 	case GROUNDVEHICLE:
 	case ELEMENTAL:
 	{
-		if ((perimeterAlarmRange > 0.0f) && (perimeterAlarmTimer > 0.0f) &&
-			(collider->getTeamId() != collidee->getTeamId()))
+		if ((perimeterAlarmRange > 0.0f) && (perimeterAlarmTimer > 0.0f) && (collider->getTeamId() != collidee->getTeamId()))
 		{
 			((BuildingPtr)collidee)->moverInProximity = true;
 			return true; // Don't blow the perimeter alarm up!!
@@ -313,7 +324,8 @@ bool BuildingType::handleCollision(GameObjectPtr collidee, GameObjectPtr collide
 
 //---------------------------------------------------------------------------
 
-bool BuildingType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+BuildingType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	return (false);
 }
@@ -322,7 +334,8 @@ bool BuildingType::handleDestruction(GameObjectPtr collidee, GameObjectPtr colli
 // class Building
 //---------------------------------------------------------------------------
 
-bool Building::isVisible(void)
+bool
+Building::isVisible(void)
 {
 	//----------------------------------------------------------------------
 	// This function is the meat and potatoes of the object cull system.
@@ -332,7 +345,7 @@ bool Building::isVisible(void)
 	// to see if they are in the viewport of each camera.  Returned value
 	// is number of windows that object can be seen in.
 	bool isVisible = false; // land->getVertexScreenPos(blockNumber,
-							// vertexNumber, screenPos);
+		// vertexNumber, screenPos);
 	if (appearance)
 		isVisible = appearance->recalcBounds();
 	if (isVisible)
@@ -345,14 +358,21 @@ bool Building::isVisible(void)
 
 //---------------------------------------------------------------------------
 
-void Building::openFootPrint(void) {}
+void
+Building::openFootPrint(void)
+{
+}
 
 //---------------------------------------------------------------------------
 
-void Building::closeFootPrint(void) {}
+void
+Building::closeFootPrint(void)
+{
+}
 
 //---------------------------------------------------------------------------
-int32_t Building::updateAnimations(void)
+int32_t
+Building::updateAnimations(void)
 {
 	//---------------------------------------------
 	// Animate Sensor Towers first.
@@ -644,7 +664,8 @@ int32_t Building::updateAnimations(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t Building::update(void)
+int32_t
+Building::update(void)
 {
 	if (getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
@@ -711,9 +732,7 @@ int32_t Building::update(void)
 		if (appearance)
 		{
 			updateAnimations();
-			if (parent && (!ObjectManager->getByWatchID(parent)->isDisabled()) &&
-				ObjectManager->getByWatchID(parent)
-					->getTargeted()) // must do before we set selection
+			if (parent && (!ObjectManager->getByWatchID(parent)->isDisabled()) && ObjectManager->getByWatchID(parent)->getTargeted()) // must do before we set selection
 			{
 				setTargeted(true);
 			}
@@ -734,14 +753,12 @@ int32_t Building::update(void)
 			if (inView)
 			{
 				windowsVisible = turn;
-				float zPos	 = land->getTerrainElevation(position);
-				position.z	 = zPos;
+				float zPos = land->getTerrainElevation(position);
+				position.z = zPos;
 				setPosition(position);
 				// Check if this object has a GOSFX associated with it for its
 				// "activity"
-				if ((getStatus() != OBJECT_STATUS_DESTROYED) &&
-					(getStatus() != OBJECT_STATUS_DISABLED) &&
-					!((BuildingTypePtr)getObjectType())->mechBay)
+				if ((getStatus() != OBJECT_STATUS_DESTROYED) && (getStatus() != OBJECT_STATUS_DISABLED) && !((BuildingTypePtr)getObjectType())->mechBay)
 				{
 					if (((BuildingTypePtr)getObjectType())->activityEffectId != 0xffffffff)
 						appearance->startActivity(
@@ -785,15 +802,11 @@ int32_t Building::update(void)
 	}
 	//-------------------------------------------
 	// Handle power out.
-	if (powerSupply &&
-		(ObjectManager->getByWatchID(powerSupply)->getStatus() == OBJECT_STATUS_DESTROYED))
+	if (powerSupply && (ObjectManager->getByWatchID(powerSupply)->getStatus() == OBJECT_STATUS_DESTROYED))
 		appearance->setLightsOut(true);
 	//---------------------------------------
 	// Handle Lookout tower
-	if ((((BuildingTypePtr)getObjectType())->lookoutTowerRange > 0.0f) && getTeam() &&
-		(!parent ||
-			(parent && !ObjectManager->getByWatchID(parent)->isDisabled() &&
-				!ObjectManager->getByWatchID(parent)->isDestroyed())))
+	if ((((BuildingTypePtr)getObjectType())->lookoutTowerRange > 0.0f) && getTeam() && (!parent || (parent && !ObjectManager->getByWatchID(parent)->isDisabled() && !ObjectManager->getByWatchID(parent)->isDestroyed())))
 	{
 		float lookoutRange = ((BuildingTypePtr)getObjectType())->lookoutTowerRange;
 		getTeam()->markSeen(position, lookoutRange);
@@ -802,8 +815,7 @@ int32_t Building::update(void)
 	// Handle Sensor Building
 	if (parent && sensorSystem)
 	{
-		if (ObjectManager->getByWatchID(parent)->isDisabled() ||
-			ObjectManager->getByWatchID(parent)->isDestroyed())
+		if (ObjectManager->getByWatchID(parent)->isDisabled() || ObjectManager->getByWatchID(parent)->isDestroyed())
 		{
 			sensorSystem->disable();
 			sensorSystem->broken = true;
@@ -811,22 +823,16 @@ int32_t Building::update(void)
 	}
 	//---------------------------------------
 	// Handle Building captured.
-	if (parent && !ObjectManager->getByWatchID(parent)->isDisabled() &&
-		!ObjectManager->getByWatchID(parent)->isDestroyed() &&
-		(ObjectManager->getByWatchID(parent)->getTeamId() != getTeamId()))
+	if (parent && !ObjectManager->getByWatchID(parent)->isDisabled() && !ObjectManager->getByWatchID(parent)->isDestroyed() && (ObjectManager->getByWatchID(parent)->getTeamId() != getTeamId()))
 	{
 		// if building recaptured play a sound
-		if ((ObjectManager->getByWatchID(parent)->getTeamId() != Team::home->getId()) &&
-			(turn > 5) && (getTeamId() != -1))
+		if ((ObjectManager->getByWatchID(parent)->getTeamId() != Team::home->getId()) && (turn > 5) && (getTeamId() != -1))
 			soundSystem->playBettySample(BETTY_BUILDING_RECAPTURED);
 		setTeamId(ObjectManager->getByWatchID(parent)->getTeam()->getId(), false);
 	}
 	//-----------------------------------------------
 	// Handle parent disabled or destroyed or asleep
-	if (parent &&
-		(ObjectManager->getByWatchID(parent)->isDisabled() ||
-			ObjectManager->getByWatchID(parent)->isDestroyed() ||
-			!ObjectManager->getByWatchID(parent)->getAwake()))
+	if (parent && (ObjectManager->getByWatchID(parent)->isDisabled() || ObjectManager->getByWatchID(parent)->isDestroyed() || !ObjectManager->getByWatchID(parent)->getAwake()))
 	{
 		//--------------------------------------------------
 		// Put the child to sleep.  DO NOT DESTROY CHILD!
@@ -838,7 +844,8 @@ int32_t Building::update(void)
 
 //---------------------------------------------------------------------------
 
-int32_t Building::setTeamId(int32_t _teamId, bool setup)
+int32_t
+Building::setTeamId(int32_t _teamId, bool setup)
 {
 	if (sensorSystem)
 		SensorManager->removeTeamSensor(teamId, sensorSystem);
@@ -847,11 +854,10 @@ int32_t Building::setTeamId(int32_t _teamId, bool setup)
 		//--------------------------------------------------------------------------
 		// If this building is set for a team that isn't in this session, kill
 		// it...
-		if (_teamId >= MPlayer->numTeams &&
-			(getObjectType()->getObjTypeNum() != GENERIC_HQ_BUILDING_OBJNUM))
+		if (_teamId >= MPlayer->numTeams && (getObjectType()->getObjTypeNum() != GENERIC_HQ_BUILDING_OBJNUM))
 			_teamId = -1;
 		captureTime = scenarioTime;
-		scoreTime   = scenarioTime + 1.0;
+		scoreTime = scenarioTime + 1.0;
 		//-----------------------
 		// Now, reset the team...
 		teamId = _teamId;
@@ -859,7 +865,7 @@ int32_t Building::setTeamId(int32_t _teamId, bool setup)
 	else
 	{
 		if (_teamId == 2) // Allies
-			teamId = 0;   // Same as PlayerTeam.
+			teamId = 0; // Same as PlayerTeam.
 		else if (_teamId > 2)
 			teamId = 1; // Not ally.  ENEMY!!
 		else
@@ -906,7 +912,7 @@ int32_t Building::setTeamId(int32_t _teamId, bool setup)
 	{
 		if (getObjectType()->getObjTypeNum() == GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM)
 		{
-			teamId		= -1;
+			teamId = -1;
 			commanderId = -1;
 		}
 	}
@@ -915,7 +921,8 @@ int32_t Building::setTeamId(int32_t _teamId, bool setup)
 
 //---------------------------------------------------------------------------
 
-TeamPtr Building::getTeam(void)
+TeamPtr
+Building::getTeam(void)
 {
 	if (teamId == -1)
 		return (nullptr);
@@ -924,7 +931,8 @@ TeamPtr Building::getTeam(void)
 
 //---------------------------------------------------------------------------
 
-bool Building::isFriendly(TeamPtr team)
+bool
+Building::isFriendly(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_FRIENDLY);
@@ -933,7 +941,8 @@ bool Building::isFriendly(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool Building::isEnemy(TeamPtr team)
+bool
+Building::isEnemy(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_ENEMY);
@@ -942,7 +951,8 @@ bool Building::isEnemy(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool Building::isNeutral(TeamPtr team)
+bool
+Building::isNeutral(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_NEUTRAL);
@@ -951,29 +961,35 @@ bool Building::isNeutral(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-void Building::lightOnFire(float timeToBurn)
+void
+Building::lightOnFire(float timeToBurn)
 {
 	// Nothing lights on fire now. Part of the effect.
 }
 
 //---------------------------------------------------------------------------
 
-bool Building::isCaptureable(int32_t capturingTeamID)
+bool
+Building::isCaptureable(int32_t capturingTeamID)
 {
 	//	if (MPlayer)
 	//		return(getFlag(OBJECT_FLAG_CAPTURABLE) && !isDestroyed());
 	//	else
-	return (getFlag(OBJECT_FLAG_CAPTURABLE) && getAwake() && (getTeamId() != capturingTeamID) &&
-		!isDestroyed());
+	return (getFlag(OBJECT_FLAG_CAPTURABLE) && getAwake() && (getTeamId() != capturingTeamID) && !isDestroyed());
 }
 
 //---------------------------------------------------------------------------
 
-void Building::setCommanderId(int32_t _commanderId) { commanderId = _commanderId; }
+void
+Building::setCommanderId(int32_t _commanderId)
+{
+	commanderId = _commanderId;
+}
 
 //---------------------------------------------------------------------------
 
-void Building::render(void)
+void
+Building::render(void)
 {
 	if (!getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
@@ -985,7 +1001,7 @@ void Building::render(void)
 		if (getDrawBars())
 		{
 			BuildingTypePtr type = (BuildingTypePtr)getObjectType();
-			float barStatus		 = 1.0;
+			float barStatus = 1.0;
 			if (getStatus() != OBJECT_STATUS_DESTROYED)
 			{
 				float totalDmgLvl = type->getDamageLevel();
@@ -1027,7 +1043,8 @@ void Building::render(void)
 }
 
 //---------------------------------------------------------------------------
-PSTR Building::getName(void)
+PSTR
+Building::getName(void)
 {
 	if (((BuildingTypePtr)getObjectType())->buildingTypeName != -1)
 	{
@@ -1038,7 +1055,8 @@ PSTR Building::getName(void)
 }
 
 //---------------------------------------------------------------------------
-void Building::destroy(void)
+void
+Building::destroy(void)
 {
 	//-----------------------------------------------------
 	// This will free any memory the Building is using.
@@ -1051,7 +1069,8 @@ void Building::destroy(void)
 
 //---------------------------------------------------------------------------
 
-void Building::setDamage(float newDamage)
+void
+Building::setDamage(float newDamage)
 {
 	damage = newDamage;
 	if (damage >= getDamageLevel())
@@ -1063,7 +1082,8 @@ void Building::setDamage(float newDamage)
 
 //---------------------------------------------------------------------------
 
-void Building::setSensorRange(float range)
+void
+Building::setSensorRange(float range)
 {
 	if (sensorSystem)
 		sensorSystem->setRange(range);
@@ -1071,7 +1091,8 @@ void Building::setSensorRange(float range)
 
 //---------------------------------------------------------------------------
 
-void Building::setSensorData(TeamPtr team, float range, bool setTeam)
+void
+Building::setSensorData(TeamPtr team, float range, bool setTeam)
 {
 	if (range > -1.0)
 	{
@@ -1095,7 +1116,8 @@ void Building::setSensorData(TeamPtr team, float range, bool setTeam)
 extern int32_t languageOffset;
 //---------------------------------------------------------------------------
 
-void Building::init(bool create, ObjectTypePtr objType)
+void
+Building::init(bool create, ObjectTypePtr objType)
 {
 	//-------------------------------------------
 	// Initialize the Building Appearance here.
@@ -1112,14 +1134,14 @@ void Building::init(bool create, ObjectTypePtr objType)
 	// We need to append the sprite type to the appearance num now.
 	// The MechEdit tool does not assume a sprite type, nor should it.
 	// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-	int32_t appearanceType					 = (BLDG_TYPE << 24);
+	int32_t appearanceType = (BLDG_TYPE << 24);
 	AppearanceTypePtr buildingAppearanceType = nullptr;
 	if (!appearName)
 	{
 		//------------------------------------------------------
 		// LOAD a dummy appearance until real ones are available
 		// for this building!
-		appearanceType		   = (BLDG_TYPE << 24);
+		appearanceType = (BLDG_TYPE << 24);
 		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 	}
 	else
@@ -1147,7 +1169,7 @@ void Building::init(bool create, ObjectTypePtr objType)
 	BuildingTypePtr type = (BuildingTypePtr)getObjectType();
 	if (type->getExtentRadius() > 0.0)
 		setTangible(true);
-	tonnage	= type->baseTonnage;
+	tonnage = type->baseTonnage;
 	explDamage = type->explDmg;
 	explRadius = type->explRad;
 	curCV = maxCV = type->startBR;
@@ -1172,11 +1194,12 @@ void Building::init(bool create, ObjectTypePtr objType)
 
 //---------------------------------------------------------------------------
 
-void Building::createBuildingMarines(void)
+void
+Building::createBuildingMarines(void)
 {
 #ifdef USE_ELEMENTALS
 	int32_t totalMarines = ((BuildingTypePtr)type)->numMarines;
-	int32_t numCreated   = 0;
+	int32_t numCreated = 0;
 	if (totalMarines)
 	{
 		//-----------------------------------------------------
@@ -1188,13 +1211,11 @@ void Building::createBuildingMarines(void)
 			MechWarriorPtr pilot = scenario->getWarrior(j);
 			if (pilot && (pilot->getAlignment() != homeTeam->getAlignment()))
 			{
-				GameObjectPtr myVehicle	= pilot->getVehicle();
+				GameObjectPtr myVehicle = pilot->getVehicle();
 				int32_t pilotVehicleStatus = OBJECT_STATUS_DESTROYED;
 				if (myVehicle)
 					pilotVehicleStatus = myVehicle->getStatus();
-				if (!myVehicle ||
-					((pilotVehicleStatus == OBJECT_STATUS_DESTROYED) ||
-						(pilotVehicleStatus == OBJECT_STATUS_DISABLED)))
+				if (!myVehicle || ((pilotVehicleStatus == OBJECT_STATUS_DESTROYED) || (pilotVehicleStatus == OBJECT_STATUS_DISABLED)))
 				{
 					//--------------------------------------------------------------------
 					// We must create the vehicle for the pilot and then
@@ -1221,7 +1242,7 @@ void Building::createBuildingMarines(void)
 						Fatal(-1, " Bad Vehicle Marine Profile File ");
 					profileFile.close();
 					vehiclePilot->setPilot(pilot); // Gets Current Vehicle
-												   // Pilot.
+						// Pilot.
 					pilot->setVehicle(vehiclePilot);
 					pilot->lobotomy();
 					vehiclePilot->setControl(2, 3); // AI Control
@@ -1298,7 +1319,8 @@ void Building::createBuildingMarines(void)
 
 //---------------------------------------------------------------------------
 
-int32_t Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+int32_t
+Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
 	if (!shotInfo)
 		return (NO_ERROR);
@@ -1319,7 +1341,7 @@ int32_t Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayC
 		BuildingTypePtr type = (BuildingTypePtr)getObjectType();
 		if (dmg >= type->getDamageLevel())
 		{
-			dmg			  = type->getDamageLevel();
+			dmg = type->getDamageLevel();
 			bool blowItUp = false;
 			if (getFlag(OBJECT_FLAG_ANIMATED))
 			{
@@ -1361,7 +1383,7 @@ int32_t Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayC
 					ObjectManager->createExplosion(
 						BUILDING_EXPLOSION_ID, nullptr, hitNodePos, explDamage, explRadius);
 				else // Play the sound effect and do splash damage but don't
-					 // draw any effect.  We are playing a magical GosFX one!!
+					// draw any effect.  We are playing a magical GosFX one!!
 					ObjectManager->createExplosion(
 						EMPTY_EXPLOSION_ID, nullptr, hitNodePos, explDamage, explRadius);
 #if 0
@@ -1450,7 +1472,8 @@ int32_t Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayC
 
 //---------------------------------------------------------------------------
 
-float Building::getDamageLevel(void)
+float
+Building::getDamageLevel(void)
 {
 	BuildingTypePtr type = (BuildingTypePtr)getObjectType();
 	if (type)
@@ -1459,16 +1482,29 @@ float Building::getDamageLevel(void)
 }
 
 //---------------------------------------------------------------------------
-bool Building::isLinked(void) { return (parent != nullptr); }
+bool
+Building::isLinked(void)
+{
+	return (parent != nullptr);
+}
 
 //---------------------------------------------------------------------------
-GameObjectPtr Building::getParent(void) { return (ObjectManager->getByWatchID(parent)); }
+GameObjectPtr
+Building::getParent(void)
+{
+	return (ObjectManager->getByWatchID(parent));
+}
 
 //---------------------------------------------------------------------------
-void Building::setParentId(uint32_t pId) { parentId = pId; }
+void
+Building::setParentId(uint32_t pId)
+{
+	parentId = pId;
+}
 
 //***************************************************************************
-void Building::Save(PacketFilePtr file, int32_t packetNum)
+void
+Building::Save(PacketFilePtr file, int32_t packetNum)
 {
 	BuildingData data;
 	CopyTo(&data);
@@ -1477,41 +1513,44 @@ void Building::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void Building::CopyTo(BuildingData* data)
+void
+Building::CopyTo(BuildingData* data)
 {
 	data->teamId = teamId;
 	;
-	data->baseTileId	   = baseTileId;
-	data->commanderId	  = commanderId;
-	data->refitBuddyWID	= refitBuddyWID;
-	data->parentId		   = parentId;
-	data->parent		   = parent;
-	data->listID		   = listID;
-	data->captureTime	  = captureTime;
+	data->baseTileId = baseTileId;
+	data->commanderId = commanderId;
+	data->refitBuddyWID = refitBuddyWID;
+	data->parentId = parentId;
+	data->parent = parent;
+	data->listID = listID;
+	data->captureTime = captureTime;
 	data->moverInProximity = moverInProximity;
-	data->proximityTimer   = proximityTimer;
-	data->updatedTurn	  = updatedTurn;
+	data->proximityTimer = proximityTimer;
+	data->updatedTurn = updatedTurn;
 	TerrainObject::CopyTo(dynamic_cast<TerrainObjectData*>(data));
 }
 
 //---------------------------------------------------------------------------
-void Building::Load(BuildingData* data)
+void
+Building::Load(BuildingData* data)
 {
 	TerrainObject::Load(dynamic_cast<TerrainObjectData*>(data));
-	teamId			 = data->teamId;
-	baseTileId		 = 0;
-	commanderId		 = data->commanderId;
-	refitBuddyWID	= data->refitBuddyWID;
-	parentId		 = data->parentId;
-	parent			 = data->parent;
-	listID			 = data->listID;
-	captureTime		 = data->captureTime;
+	teamId = data->teamId;
+	baseTileId = 0;
+	commanderId = data->commanderId;
+	refitBuddyWID = data->refitBuddyWID;
+	parentId = data->parentId;
+	parent = data->parent;
+	listID = data->listID;
+	captureTime = data->captureTime;
 	moverInProximity = data->moverInProximity;
-	proximityTimer   = data->proximityTimer;
-	updatedTurn		 = 0;
+	proximityTimer = data->proximityTimer;
+	updatedTurn = 0;
 }
 
-bool Building::burnRefitPoints(float pointsToBurn)
+bool
+Building::burnRefitPoints(float pointsToBurn)
 {
 	setDamage(pointsToBurn + getDamage());
 	if (getDamage() >= getDamageLevel())

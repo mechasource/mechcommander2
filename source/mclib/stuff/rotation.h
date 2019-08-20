@@ -21,9 +21,12 @@ class EulerAngles;
 } // namespace Stuff
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::EulerAngles& angle);
-void Spew(PCSTR group, const Stuff::YawPitchRoll& angle);
-void Spew(PCSTR group, const Stuff::UnitQuaternion& angle);
+void
+Spew(PCSTR group, const Stuff::EulerAngles& angle);
+void
+Spew(PCSTR group, const Stuff::YawPitchRoll& angle);
+void
+Spew(PCSTR group, const Stuff::UnitQuaternion& angle);
 #endif
 
 namespace Stuff
@@ -53,14 +56,14 @@ public:
 	EulerAngles(const Radian& p, const Radian& y, const Radian& r)
 	{
 		pitch = p;
-		yaw   = y;
-		roll  = r;
+		yaw = y;
+		roll = r;
 	}
 	EulerAngles(const EulerAngles& a)
 	{
 		pitch = a.pitch;
-		yaw   = a.yaw;
-		roll  = a.roll;
+		yaw = a.yaw;
+		roll = a.roll;
 	}
 	explicit EulerAngles(const YawPitchRoll& angles) { *this = angles; }
 	explicit EulerAngles(const UnitQuaternion& quaternion) { *this = quaternion; }
@@ -75,8 +78,8 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&angles);
 		pitch = angles.pitch;
-		yaw   = angles.yaw;
-		roll  = angles.roll;
+		yaw = angles.yaw;
+		roll = angles.roll;
 		return *this;
 	}
 	EulerAngles& operator=(const YawPitchRoll& angles);
@@ -151,14 +154,14 @@ public:
 	YawPitchRoll(const Radian& y, const Radian& p, const Radian& r)
 	{
 		pitch = p;
-		yaw   = y;
-		roll  = r;
+		yaw = y;
+		roll = r;
 	}
 	YawPitchRoll(const YawPitchRoll& angles)
 	{
 		pitch = angles.pitch;
-		yaw   = angles.yaw;
-		roll  = angles.roll;
+		yaw = angles.yaw;
+		roll = angles.roll;
 	}
 	explicit YawPitchRoll(const EulerAngles& angles) { *this = angles; }
 	explicit YawPitchRoll(const UnitQuaternion& quaternion) { *this = quaternion; }
@@ -173,8 +176,8 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&angles);
 		pitch = angles.pitch;
-		yaw   = angles.yaw;
-		roll  = angles.roll;
+		yaw = angles.yaw;
+		roll = angles.roll;
 		return *this;
 	}
 	YawPitchRoll& operator=(const EulerAngles& angles);
@@ -369,18 +372,18 @@ public:
 	//------------------------------------------------------------
 
 	UnitQuaternion Squad(const UnitQuaternion& p, // start quaternion
-		const UnitQuaternion& a,				  // start tangent quaternion
-		const UnitQuaternion& b,				  // end tangent quaternion
-		const UnitQuaternion& q,				  // end quaternion
+		const UnitQuaternion& a, // start tangent quaternion
+		const UnitQuaternion& b, // end tangent quaternion
+		const UnitQuaternion& q, // end quaternion
 		float t);
 
 	UnitQuaternion SquadRev(float angle, // angle of rotation
-		const Point3D& axis,			 // the axis of rotation
-		const UnitQuaternion& p,		 // start quaternion
-		const UnitQuaternion& a,		 // start tangent quaternion
-		const UnitQuaternion& b,		 // end tangent quaternion
-		const UnitQuaternion& q,		 // end quaternion
-		float t							 // parameter, in range [0.0,1.0]
+		const Point3D& axis, // the axis of rotation
+		const UnitQuaternion& p, // start quaternion
+		const UnitQuaternion& a, // start tangent quaternion
+		const UnitQuaternion& b, // end tangent quaternion
+		const UnitQuaternion& q, // end quaternion
+		float t // parameter, in range [0.0,1.0]
 	);
 
 	UnitQuaternion& MakeClosest(const UnitQuaternion& qto);
@@ -427,29 +430,35 @@ public:
 namespace MemoryStreamIO
 {
 #if _CONSIDERED_TEMPORARILY_DISABLED
-inline std::istream& Read(std::istream& stream, Stuff::EulerAngles* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::EulerAngles* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::EulerAngles* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::EulerAngles* input)
 {
 	return stream.write(input, sizeof(*input));
 }
 
-inline std::istream& Read(std::istream& stream, Stuff::YawPitchRoll* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::YawPitchRoll* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::YawPitchRoll* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::YawPitchRoll* input)
 {
 	return stream.write(input, sizeof(*input));
 }
 
-inline std::istream& Read(std::istream& stream, Stuff::UnitQuaternion* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::UnitQuaternion* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::UnitQuaternion* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::UnitQuaternion* input)
 {
 	return stream.write(input, sizeof(*input));
 }

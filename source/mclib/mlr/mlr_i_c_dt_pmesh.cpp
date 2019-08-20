@@ -27,7 +27,8 @@ MLR_I_C_DT_PMesh::ClassData* MLR_I_C_DT_PMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_C_DT_PMesh::InitializeClass()
+void
+MLR_I_C_DT_PMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -42,7 +43,8 @@ void MLR_I_C_DT_PMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_C_DT_PMesh::TerminateClass()
+void
+MLR_I_C_DT_PMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -55,8 +57,8 @@ void MLR_I_C_DT_PMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
-	: MLR_I_DT_PMesh(class_data, stream, version)
+MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
+	MLR_I_DT_PMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -81,13 +83,13 @@ MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data, std::iostream stream, 
 		uint32_t theColor;
 		for (i = 0; i < len; i++)
 		{
-			theColor		= smallColors[i];
-			colors[i].blue  = (theColor & 0xff) * One_Over_256;
-			theColor		= theColor >> 8;
+			theColor = smallColors[i];
+			colors[i].blue = (theColor & 0xff) * One_Over_256;
+			theColor = theColor >> 8;
 			colors[i].green = (theColor & 0xff) * One_Over_256;
-			theColor		= theColor >> 8;
-			colors[i].red   = (theColor & 0xff) * One_Over_256;
-			theColor		= theColor >> 8;
+			theColor = theColor >> 8;
+			colors[i].red = (theColor & 0xff) * One_Over_256;
+			theColor = theColor >> 8;
 			colors[i].alpha = (theColor & 0xff) * One_Over_256;
 		}
 #endif
@@ -98,7 +100,8 @@ MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data, std::iostream stream, 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data) : MLR_I_DT_PMesh(class_data), colors(0)
+MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data) :
+	MLR_I_DT_PMesh(class_data), colors(0)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// Check_Pointer(this);
@@ -113,7 +116,8 @@ MLR_I_C_DT_PMesh::~MLR_I_C_DT_PMesh()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_DT_PMesh* MLR_I_C_DT_PMesh::Make(std::iostream stream, uint32_t version)
+MLR_I_C_DT_PMesh*
+MLR_I_C_DT_PMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #if _CONSIDERED_OBSOLETE
@@ -128,7 +132,8 @@ MLR_I_C_DT_PMesh* MLR_I_C_DT_PMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_C_DT_PMesh::Save(std::iostream stream)
+void
+MLR_I_C_DT_PMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -150,11 +155,16 @@ void MLR_I_C_DT_PMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_C_DT_PMesh::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLR_I_C_DT_PMesh::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_C_DT_PMesh::SetColorData(
+void
+MLR_I_C_DT_PMesh::SetColorData(
 #if COLOR_AS_DWORD
 	pcuint32_t data,
 #else
@@ -171,7 +181,8 @@ void MLR_I_C_DT_PMesh::SetColorData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_C_DT_PMesh::GetColorData(
+void
+MLR_I_C_DT_PMesh::GetColorData(
 #if COLOR_AS_DWORD
 	puint32_t* data,
 #else
@@ -180,12 +191,13 @@ void MLR_I_C_DT_PMesh::GetColorData(
 	psize_t dataSize)
 {
 	// Check_Object(this);
-	*data	 = colors.GetData();
+	*data = colors.GetData();
 	*dataSize = colors.GetLength();
 }
 
 //
-void MLR_I_C_DT_PMesh::PaintMe(
+void
+MLR_I_C_DT_PMesh::PaintMe(
 #if COLOR_AS_DWORD
 	pcuint32_t paintMe)
 #else
@@ -237,7 +249,8 @@ void MLR_I_C_DT_PMesh::PaintMe(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_DT_PMesh* MidLevelRenderer::CreateIndexedCube_Color_NoLit_2Tex(
+MLR_I_C_DT_PMesh*
+MidLevelRenderer::CreateIndexedCube_Color_NoLit_2Tex(
 	float half, Stuff::RGBAColor* eightColors, MLRState* state, MLRState* state1)
 {
 #ifdef _GAMEOS_HPP_
@@ -247,14 +260,14 @@ MLR_I_C_DT_PMesh* MidLevelRenderer::CreateIndexedCube_Color_NoLit_2Tex(
 	Register_Object(ret);
 	Stuff::Point3D* coords = new Stuff::Point3D[8];
 	Register_Pointer(coords);
-	coords[0]		 = Stuff::Point3D(half, -half, half);
-	coords[1]		 = Stuff::Point3D(-half, -half, half);
-	coords[2]		 = Stuff::Point3D(half, -half, -half);
-	coords[3]		 = Stuff::Point3D(-half, -half, -half);
-	coords[4]		 = Stuff::Point3D(-half, half, half);
-	coords[5]		 = Stuff::Point3D(half, half, half);
-	coords[6]		 = Stuff::Point3D(half, half, -half);
-	coords[7]		 = Stuff::Point3D(-half, half, -half);
+	coords[0] = Stuff::Point3D(half, -half, half);
+	coords[1] = Stuff::Point3D(-half, -half, half);
+	coords[2] = Stuff::Point3D(half, -half, -half);
+	coords[3] = Stuff::Point3D(-half, -half, -half);
+	coords[4] = Stuff::Point3D(-half, half, half);
+	coords[5] = Stuff::Point3D(half, half, half);
+	coords[6] = Stuff::Point3D(half, half, -half);
+	coords[7] = Stuff::Point3D(-half, half, -half);
 	puint8_t lengths = new uint8_t[6];
 	Register_Pointer(lengths);
 	size_t i;
@@ -266,16 +279,16 @@ MLR_I_C_DT_PMesh* MidLevelRenderer::CreateIndexedCube_Color_NoLit_2Tex(
 	ret->SetCoordData(coords, 8);
 	puint16_t index = new uint16_t[6 * 4];
 	Register_Pointer(index);
-	index[0]  = 0;
-	index[1]  = 2;
-	index[2]  = 6;
-	index[3]  = 5;
-	index[4]  = 0;
-	index[5]  = 5;
-	index[6]  = 4;
-	index[7]  = 1;
-	index[8]  = 5;
-	index[9]  = 6;
+	index[0] = 0;
+	index[1] = 2;
+	index[2] = 6;
+	index[3] = 5;
+	index[4] = 0;
+	index[5] = 5;
+	index[6] = 4;
+	index[7] = 1;
+	index[8] = 5;
+	index[9] = 6;
 	index[10] = 7;
 	index[11] = 4;
 	index[12] = 2;
@@ -331,8 +344,8 @@ MLR_I_C_DT_PMesh* MidLevelRenderer::CreateIndexedCube_Color_NoLit_2Tex(
 		ret->SetReferenceState(*state1, 1);
 		if (state1->GetTextureHandle() > 0)
 		{
-			texCoords[8]  = texCoords[0];
-			texCoords[9]  = texCoords[1];
+			texCoords[8] = texCoords[0];
+			texCoords[9] = texCoords[1];
 			texCoords[10] = texCoords[2];
 			texCoords[11] = texCoords[3];
 			texCoords[12] = texCoords[4];
@@ -356,7 +369,8 @@ MLR_I_C_DT_PMesh* MidLevelRenderer::CreateIndexedCube_Color_NoLit_2Tex(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
+MLRShape*
+MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* state2)
 {
 #ifdef _GAMEOS_HPP_
@@ -395,7 +409,7 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 	for (k = 0; k < 20; k++)
 	{
 		MidLevelRenderer::triDrawn = 0;
-		MLR_I_C_DT_PMesh* mesh	 = new MLR_I_C_DT_PMesh();
+		MLR_I_C_DT_PMesh* mesh = new MLR_I_C_DT_PMesh();
 		Register_Object(mesh);
 		// setup vertex position information
 		for (j = 0; j < 3; j++)
@@ -408,9 +422,9 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 		mesh->SetSubprimitiveLengths(lengths, nrTri);
 		if (icoInfo.indexed == true)
 		{
-			uniquePoints	   = 1;
+			uniquePoints = 1;
 			collapsedCoords[0] = coords[0];
-			index[0]		   = 0;
+			index[0] = 0;
 			for (i = 1; i < nrTri * 3; i++)
 			{
 				for (j = 0; j < uniquePoints; j++)

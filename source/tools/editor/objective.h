@@ -125,7 +125,8 @@ public:
 class CDestroyAllEnemyUnits : public CObjectiveCondition
 {
 public:
-	CDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
+	CDestroyAllEnemyUnits(int32_t alignment) :
+		CObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return DESTROY_ALL_ENEMY_UNITS; }
 	std::wstring Description(void);
 };
@@ -136,7 +137,8 @@ protected:
 	int32_t m_num;
 
 public:
-	CNumberOfEnemyUnitsObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
+	CNumberOfEnemyUnitsObjectiveCondition(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
 		m_num = 0;
 	}
@@ -154,7 +156,8 @@ public:
 class CDestroyNumberOfEnemyUnits : public CNumberOfEnemyUnitsObjectiveCondition
 {
 public:
-	CDestroyNumberOfEnemyUnits(int32_t alignment) : CNumberOfEnemyUnitsObjectiveCondition(alignment)
+	CDestroyNumberOfEnemyUnits(int32_t alignment) :
+		CNumberOfEnemyUnitsObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return DESTROY_NUMBER_OF_ENEMY_UNITS; }
@@ -169,9 +172,10 @@ protected:
 	float m_LastNotedPositionY;
 
 public:
-	CSpecificUnitObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
+	CSpecificUnitObjectiveCondition(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
-		m_pUnit				 = 0;
+		m_pUnit = 0;
 		m_LastNotedPositionX = m_LastNotedPositionY = 0.0;
 	}
 	virtual bool operator==(const CObjectiveCondition& rhs) const;
@@ -191,23 +195,21 @@ public:
 	virtual bool RestoreObjectPointerReferencesFromNotedPositions(void);
 };
 
-class CSpecificEnemyUnitObjectiveCondition
-	: public CSpecificUnitObjectiveCondition /*abstract class*/
+class CSpecificEnemyUnitObjectiveCondition : public CSpecificUnitObjectiveCondition /*abstract class*/
 {
 public:
-	CSpecificEnemyUnitObjectiveCondition(int32_t alignment)
-		: CSpecificUnitObjectiveCondition(alignment)
+	CSpecificEnemyUnitObjectiveCondition(int32_t alignment) :
+		CSpecificUnitObjectiveCondition(alignment)
 	{
 	}
 	virtual bool EditDialog(void);
 };
 
-class CSpecificAlliedUnitObjectiveCondition
-	: public CSpecificUnitObjectiveCondition /*abstract class*/
+class CSpecificAlliedUnitObjectiveCondition : public CSpecificUnitObjectiveCondition /*abstract class*/
 {
 public:
-	CSpecificAlliedUnitObjectiveCondition(int32_t alignment)
-		: CSpecificUnitObjectiveCondition(alignment)
+	CSpecificAlliedUnitObjectiveCondition(int32_t alignment) :
+		CSpecificUnitObjectiveCondition(alignment)
 	{
 	}
 	// virtual bool EditDialog(void);
@@ -216,7 +218,8 @@ public:
 class CDestroySpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CDestroySpecificEnemyUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment)
+	CDestroySpecificEnemyUnit(int32_t alignment) :
+		CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return DESTROY_SPECIFIC_ENEMY_UNIT; }
@@ -231,9 +234,10 @@ protected:
 	float m_LastNotedPositionY;
 
 public:
-	CSpecificStructureObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
+	CSpecificStructureObjectiveCondition(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
-		m_pBuilding			 = 0;
+		m_pBuilding = 0;
 		m_LastNotedPositionX = m_LastNotedPositionY = 0.0;
 	}
 	virtual bool operator==(const CObjectiveCondition& rhs) const;
@@ -250,23 +254,21 @@ public:
 	virtual bool RestoreObjectPointerReferencesFromNotedPositions(void);
 };
 
-class CSpecificEnemyStructureObjectiveCondition
-	: public CSpecificStructureObjectiveCondition /*abstract class*/
+class CSpecificEnemyStructureObjectiveCondition : public CSpecificStructureObjectiveCondition /*abstract class*/
 {
 public:
-	CSpecificEnemyStructureObjectiveCondition(int32_t alignment)
-		: CSpecificStructureObjectiveCondition(alignment)
+	CSpecificEnemyStructureObjectiveCondition(int32_t alignment) :
+		CSpecificStructureObjectiveCondition(alignment)
 	{
 	}
 	// virtual bool EditDialog(void);
 };
 
-class CSpecificAlliedStructureObjectiveCondition
-	: public CSpecificStructureObjectiveCondition /*abstract class*/
+class CSpecificAlliedStructureObjectiveCondition : public CSpecificStructureObjectiveCondition /*abstract class*/
 {
 public:
-	CSpecificAlliedStructureObjectiveCondition(int32_t alignment)
-		: CSpecificStructureObjectiveCondition(alignment)
+	CSpecificAlliedStructureObjectiveCondition(int32_t alignment) :
+		CSpecificStructureObjectiveCondition(alignment)
 	{
 	}
 	// virtual bool EditDialog(void);
@@ -275,8 +277,8 @@ public:
 class CDestroySpecificStructure : public CSpecificEnemyStructureObjectiveCondition
 {
 public:
-	CDestroySpecificStructure(int32_t alignment)
-		: CSpecificEnemyStructureObjectiveCondition(alignment)
+	CDestroySpecificStructure(int32_t alignment) :
+		CSpecificEnemyStructureObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return DESTROY_SPECIFIC_STRUCTURE; }
@@ -288,7 +290,8 @@ class CCaptureOrDestroyAllEnemyUnits : public CObjectiveCondition
 	/* The CaptureOrDestroyAllEnemyUnits condition should not set the units to
 	be capturable. */
 public:
-	CCaptureOrDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
+	CCaptureOrDestroyAllEnemyUnits(int32_t alignment) :
+		CObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS; }
 	std::wstring Description(void);
 };
@@ -298,8 +301,8 @@ class CCaptureOrDestroyNumberOfEnemyUnits : public CNumberOfEnemyUnitsObjectiveC
 	/* The CaptureOrDestroyAllEnemyUnits condition should not set the units to
 	be capturable. */
 public:
-	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment)
-		: CNumberOfEnemyUnitsObjectiveCondition(alignment)
+	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment) :
+		CNumberOfEnemyUnitsObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS; }
@@ -309,8 +312,8 @@ public:
 class CCaptureOrDestroySpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment)
-		: CSpecificEnemyUnitObjectiveCondition(alignment)
+	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment) :
+		CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT; }
@@ -320,8 +323,8 @@ public:
 class CCaptureOrDestroySpecificStructure : public CSpecificEnemyStructureObjectiveCondition
 {
 public:
-	CCaptureOrDestroySpecificStructure(int32_t alignment)
-		: CSpecificEnemyStructureObjectiveCondition(alignment)
+	CCaptureOrDestroySpecificStructure(int32_t alignment) :
+		CSpecificEnemyStructureObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE; }
@@ -331,7 +334,8 @@ public:
 class CDeadOrFledAllEnemyUnits : public CObjectiveCondition
 {
 public:
-	CDeadOrFledAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
+	CDeadOrFledAllEnemyUnits(int32_t alignment) :
+		CObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return DEAD_OR_FLED_ALL_ENEMY_UNITS; }
 	std::wstring Description(void);
 };
@@ -339,8 +343,8 @@ public:
 class CDeadOrFledNumberOfEnemyUnits : public CNumberOfEnemyUnitsObjectiveCondition
 {
 public:
-	CDeadOrFledNumberOfEnemyUnits(int32_t alignment)
-		: CNumberOfEnemyUnitsObjectiveCondition(alignment)
+	CDeadOrFledNumberOfEnemyUnits(int32_t alignment) :
+		CNumberOfEnemyUnitsObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS; }
@@ -350,8 +354,8 @@ public:
 class CDeadOrFledSpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CDeadOrFledSpecificEnemyUnit(int32_t alignment)
-		: CSpecificEnemyUnitObjectiveCondition(alignment)
+	CDeadOrFledSpecificEnemyUnit(int32_t alignment) :
+		CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT; }
@@ -361,7 +365,8 @@ public:
 class CCaptureUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CCaptureUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
+	CCaptureUnit(int32_t alignment) :
+		CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return CAPTURE_UNIT; }
 	std::wstring Description(void);
 };
@@ -369,7 +374,8 @@ public:
 class CCaptureStructure : public CSpecificEnemyStructureObjectiveCondition
 {
 public:
-	CCaptureStructure(int32_t alignment) : CSpecificEnemyStructureObjectiveCondition(alignment) {}
+	CCaptureStructure(int32_t alignment) :
+		CSpecificEnemyStructureObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return CAPTURE_STRUCTURE; }
 	std::wstring Description(void);
 };
@@ -377,7 +383,8 @@ public:
 class CGuardSpecificUnit : public CSpecificAlliedUnitObjectiveCondition
 {
 public:
-	CGuardSpecificUnit(int32_t alignment) : CSpecificAlliedUnitObjectiveCondition(alignment) {}
+	CGuardSpecificUnit(int32_t alignment) :
+		CSpecificAlliedUnitObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return GUARD_SPECIFIC_UNIT; }
 	std::wstring Description(void);
 };
@@ -385,8 +392,8 @@ public:
 class CGuardSpecificStructure : public CSpecificAlliedStructureObjectiveCondition
 {
 public:
-	CGuardSpecificStructure(int32_t alignment)
-		: CSpecificAlliedStructureObjectiveCondition(alignment)
+	CGuardSpecificStructure(int32_t alignment) :
+		CSpecificAlliedStructureObjectiveCondition(alignment)
 	{
 	}
 	condition_species_type Species(void) const { return GUARD_SPECIFIC_STRUCTURE; }
@@ -401,11 +408,12 @@ private:
 	float m_targetRadius;
 
 public:
-	CAreaObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
+	CAreaObjectiveCondition(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
 		m_targetCenterX = 0.0;
 		m_targetCenterY = 0.0;
-		m_targetRadius  = 0.0;
+		m_targetRadius = 0.0;
 	}
 	virtual bool operator==(const CObjectiveCondition& rhs) const;
 	virtual bool Read(FitIniFile* missionFile);
@@ -421,7 +429,8 @@ public:
 class CMoveAnyUnitToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAnyUnitToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAnyUnitToArea(int32_t alignment) :
+		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return MOVE_ANY_UNIT_TO_AREA; }
 	std::wstring Description(void);
 };
@@ -429,7 +438,8 @@ public:
 class CMoveAllUnitsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllUnitsToArea(int32_t alignment) :
+		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return MOVE_ALL_UNITS_TO_AREA; }
 	std::wstring Description(void);
 };
@@ -437,7 +447,8 @@ public:
 class CMoveAllSurvivingUnitsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllSurvivingUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllSurvivingUnitsToArea(int32_t alignment) :
+		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return MOVE_ALL_SURVIVING_UNITS_TO_AREA; }
 	std::wstring Description(void);
 };
@@ -445,7 +456,8 @@ public:
 class CMoveAllSurvivingMechsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllSurvivingMechsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllSurvivingMechsToArea(int32_t alignment) :
+		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species(void) const { return MOVE_ALL_SURVIVING_MECHS_TO_AREA; }
 	std::wstring Description(void);
 };
@@ -457,10 +469,11 @@ protected:
 	bool m_value;
 
 public:
-	CBooleanFlagIsSet(int32_t alignment) : CObjectiveCondition(alignment)
+	CBooleanFlagIsSet(int32_t alignment) :
+		CObjectiveCondition(alignment)
 	{
 		m_flagID = _TEXT("flag0");
-		m_value  = true;
+		m_value = true;
 	}
 	bool operator==(const CObjectiveCondition& rhs) const;
 	condition_species_type Species(void) const { return BOOLEAN_FLAG_IS_SET; }
@@ -481,7 +494,8 @@ protected:
 	float m_time;
 
 public:
-	CElapsedMissionTime(int32_t alignment) : CObjectiveCondition(alignment) { m_time = 0.0; }
+	CElapsedMissionTime(int32_t alignment) :
+		CObjectiveCondition(alignment) { m_time = 0.0; }
 	bool operator==(const CObjectiveCondition& rhs) const;
 	condition_species_type Species(void) const { return ELAPSED_MISSION_TIME; }
 	bool Read(FitIniFile* missionFile);
@@ -529,12 +543,12 @@ public:
 	void Alignment(int32_t alignment) { m_alignment = alignment; }
 	bool DoCommonEditDialog() {}
 	virtual action_species_type Species(void) const = 0;
-	virtual bool Init()								= 0;
-	virtual bool Read(FitIniFile* missionFile)		= 0;
-	virtual bool Save(FitIniFile* file)				= 0;
-	virtual bool EditDialog()						= 0;
-	virtual void WriteAbl()							= 0;
-	virtual std::wstring Description()				= 0;
+	virtual bool Init() = 0;
+	virtual bool Read(FitIniFile* missionFile) = 0;
+	virtual bool Save(FitIniFile* file) = 0;
+	virtual bool EditDialog() = 0;
+	virtual void WriteAbl() = 0;
+	virtual std::wstring Description() = 0;
 	virtual std::wstring InstanceDescription()
 	{
 		std::wstring retval;
@@ -549,7 +563,8 @@ private:
 	std::wstring m_pathname;
 
 public:
-	CPlayBIK(int32_t alignment) : CObjectiveAction(alignment) {}
+	CPlayBIK(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction& rhs) const;
 	action_species_type Species(void) const { return PLAY_BIK; }
 	bool Init() { return true; }
@@ -571,7 +586,8 @@ private:
 	std::wstring m_pathname;
 
 public:
-	CPlayWAV(int32_t alignment) : CObjectiveAction(alignment) {}
+	CPlayWAV(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction& rhs) const;
 	action_species_type Species(void) const { return PLAY_WAV; }
 	bool Init() { return true; }
@@ -593,7 +609,8 @@ private:
 	std::wstring m_message;
 
 public:
-	CDisplayTextMessage(int32_t alignment) : CObjectiveAction(alignment) {}
+	CDisplayTextMessage(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction& rhs) const;
 	action_species_type Species(void) const { return DISPLAY_TEXT_MESSAGE; }
 	bool Init() { return true; }
@@ -615,7 +632,8 @@ private:
 	int32_t m_resourceStringID;
 
 public:
-	CDisplayResourceTextMessage(int32_t alignment) : CObjectiveAction(alignment) {}
+	CDisplayResourceTextMessage(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction& rhs) const;
 	action_species_type Species(void) const { return DISPLAY_RESOURCE_TEXT_MESSAGE; }
 	bool Init() { return true; }
@@ -638,10 +656,11 @@ private:
 	bool m_value;
 
 public:
-	CSetBooleanFlag(int32_t alignment) : CObjectiveAction(alignment)
+	CSetBooleanFlag(int32_t alignment) :
+		CObjectiveAction(alignment)
 	{
 		m_flagID = _TEXT("flag0");
-		m_value  = true;
+		m_value = true;
 	}
 	bool operator==(const CObjectiveAction& rhs) const;
 	action_species_type Species(void) const { return SET_BOOLEAN_FLAG; }
@@ -664,7 +683,8 @@ private:
 	std::wstring m_purchaseFilePathname;
 
 public:
-	CMakeNewTechnologyAvailable(int32_t alignment) : CObjectiveAction(alignment) {}
+	CMakeNewTechnologyAvailable(int32_t alignment) :
+		CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction& rhs) const;
 	action_species_type Species(void) const { return MAKE_NEW_TECHNOLOGY_AVAILABLE; }
 	bool Init() { return true; }
@@ -899,15 +919,15 @@ public:
 		alignment = 0;
 		ModifiedObjectives.Clear(void);
 		objectiveFunction = ADD;
-		nSelectionIndex   = -1;
+		nSelectionIndex = -1;
 		ModifiedObjective.Clear(void);
-		listID								   = SUCCESS_CONDITION;
-		nConditionSpeciesSelectionIndex		   = -1;
-		nActionSpeciesSelectionIndex		   = -1;
+		listID = SUCCESS_CONDITION;
+		nConditionSpeciesSelectionIndex = -1;
+		nActionSpeciesSelectionIndex = -1;
 		nFailureConditionSpeciesSelectionIndex = -1;
-		nFailureActionSpeciesSelectionIndex	= -1;
-		pModifiedUnitPtr					   = 0;
-		pModifiedBuildingPtr				   = 0;
+		nFailureActionSpeciesSelectionIndex = -1;
+		pModifiedUnitPtr = 0;
+		pModifiedBuildingPtr = 0;
 	}
 };
 //*************************************************************************************************

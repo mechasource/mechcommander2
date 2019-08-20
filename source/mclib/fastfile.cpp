@@ -16,7 +16,8 @@ int32_t ffLastError = 0;
 
 // #define NO_ERROR 0
 //-----------------------------------------------------------------------------------
-bool FastFileInit(PSTR fname)
+bool
+FastFileInit(PSTR fname)
 {
 	if (numFastFiles == maxFastFiles)
 	{
@@ -26,7 +27,7 @@ bool FastFileInit(PSTR fname)
 	//-----------------------------------------------------------------------------
 	//-- Open this fast file, add it to the list O pointers and return TRUE if OK!
 	fastFiles[numFastFiles] = new FastFile;
-	int32_t result			= fastFiles[numFastFiles]->open(fname);
+	int32_t result = fastFiles[numFastFiles]->open(fname);
 	if (result == FASTFILE_VERSION)
 	{
 		ffLastError = result;
@@ -37,7 +38,8 @@ bool FastFileInit(PSTR fname)
 }
 
 //-----------------------------------------------------------------------------------
-void FastFileFini(void)
+void
+FastFileFini(void)
 {
 	if (fastFiles)
 	{
@@ -54,18 +56,19 @@ void FastFileFini(void)
 		}
 	}
 	free(fastFiles);
-	fastFiles	= nullptr;
+	fastFiles = nullptr;
 	numFastFiles = 0;
 }
 
 //-----------------------------------------------------------------------------------
-FastFile* FastFileFind(PSTR fname, int32_t& fastFileHandle)
+FastFile*
+FastFileFind(PSTR fname, int32_t& fastFileHandle)
 {
 	if (fastFiles)
 	{
-		uint32_t thisHash		 = elfHash(fname);
+		uint32_t thisHash = elfHash(fname);
 		uint32_t currentFastFile = 0;
-		int32_t tempHandle		 = -1;
+		int32_t tempHandle = -1;
 		while (currentFastFile < numFastFiles)
 		{
 			tempHandle = fastFiles[currentFastFile]->openFast(thisHash, fname);
@@ -81,7 +84,8 @@ FastFile* FastFileFind(PSTR fname, int32_t& fastFileHandle)
 }
 
 //------------------------------------------------------------------
-uint32_t elfHash(PSTR name)
+uint32_t
+elfHash(PSTR name)
 {
 	uint32_t h = 0, g;
 	while (*name)

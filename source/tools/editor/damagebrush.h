@@ -25,7 +25,7 @@ class DamageBrush : public Brush
 public:
 	DamageBrush(bool bDamage)
 	{
-		damage  = bDamage;
+		damage = bDamage;
 		pAction = nullptr;
 	}
 	virtual ~DamageBrush() {}

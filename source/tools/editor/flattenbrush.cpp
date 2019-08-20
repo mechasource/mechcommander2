@@ -8,20 +8,25 @@ FlattenBrush.cpp			: Implementation of the FlattenBrush component.
 #include "FlattenBrush.h"
 
 //-------------------------------------------------------------------------------------------------
-FlattenBrush::FlattenBrush() { pCurAction = nullptr; }
+FlattenBrush::FlattenBrush()
+{
+	pCurAction = nullptr;
+}
 
 //-------------------------------------------------------------------------------------------------
 FlattenBrush::~FlattenBrush() {}
 
 //-------------------------------------------------------------------------------------------------
-bool FlattenBrush::beginPaint()
+bool
+FlattenBrush::beginPaint()
 {
 	pCurAction = new ActionPaintTile();
 	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
-Action* FlattenBrush::endPaint()
+Action*
+FlattenBrush::endPaint()
 {
 	ActionPaintTile* pRetAction = pCurAction;
 	if (pCurAction)
@@ -39,12 +44,13 @@ Action* FlattenBrush::endPaint()
 }
 
 //-------------------------------------------------------------------------------------------------
-bool FlattenBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool
+FlattenBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	int32_t closestX = floor((worldPos.x - land->mapTopLeft3d.x) / land->worldUnitsPerVertex + .5);
 	int32_t closestY = floor((land->mapTopLeft3d.y - worldPos.y) / land->worldUnitsPerVertex + .5);
-	float height	 = 0.f;
-	float viable	 = 0.f;
+	float height = 0.f;
+	float viable = 0.f;
 	for (size_t i = closestX - 1; i < closestX + 2; ++i)
 	{
 		for (size_t j = closestY - 1; j < closestY + 2; ++j)
@@ -57,24 +63,25 @@ bool FlattenBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t scr
 		}
 	}
 	height /= viable;
-	if (closestY > -1 && closestY < land->realVerticesMapSide &&
-		closestX < land->realVerticesMapSide && closestX > -1)
+	if (closestY > -1 && closestY < land->realVerticesMapSide && closestX < land->realVerticesMapSide && closestX > -1)
 		flattenVertex(closestY, closestX, height);
 	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
-Action* FlattenBrush::applyToSelection()
+Action*
+FlattenBrush::applyToSelection()
 {
 	float height = getAverageHeightOfSelection();
 	return applyHeightToSelection(height);
 }
 
 //-------------------------------------------------------------------------------------------------
-float FlattenBrush::getAverageHeightOfSelection()
+float
+FlattenBrush::getAverageHeightOfSelection()
 {
 	float height = 0.f;
-	float count  = 0.0f;
+	float count = 0.0f;
 	for (size_t j = 0; j < land->realVerticesMapSide; ++j)
 	{
 		for (size_t i = 0; i < land->realVerticesMapSide; ++i)
@@ -91,7 +98,8 @@ float FlattenBrush::getAverageHeightOfSelection()
 }
 
 //-------------------------------------------------------------------------------------------------
-Action* FlattenBrush::applyHeightToSelection(float height)
+Action*
+FlattenBrush::applyHeightToSelection(float height)
 {
 	beginPaint();
 	for (size_t j = 0; j < land->realVerticesMapSide; ++j)
@@ -108,7 +116,8 @@ Action* FlattenBrush::applyHeightToSelection(float height)
 }
 
 //-------------------------------------------------------------------------------------------------
-void FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
+void
+FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 {
 #if 1 /*flattening without "area effect"*/
 	{
@@ -120,7 +129,7 @@ void FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 			land->setVertexHeight(j * land->realVerticesMapSide + i, val);
 		}
 	}
-#else  /*flattening without "area effect"*/
+#else /*flattening without "area effect"*/
 	for (size_t i = col - 1; i < col + 2; ++i)
 	{
 		for (size_t j = row - 1; j < row + 2; ++j)

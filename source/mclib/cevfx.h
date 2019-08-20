@@ -32,12 +32,12 @@ public:
 	VFXElement(void)
 	{
 		shapeTable = nullptr;
-		frameNum   = 0;
-		x = y		= 0;
-		reverse		= false;
-		fadeTable   = nullptr;
+		frameNum = 0;
+		x = y = 0;
+		reverse = false;
+		fadeTable = nullptr;
 		noScaleDraw = false;
-		scaleUp		= false;
+		scaleUp = false;
 	}
 
 	VFXElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
@@ -74,21 +74,21 @@ public:
 	{
 		shapeTable[0] = shapeTable[1] = shapeTable[2] = shapeTable[3] = nullptr;
 		frameNum[0] = frameNum[1] = frameNum[2] = frameNum[3] = 0;
-		x = y	  = 0;
+		x = y = 0;
 		reverse[0] = reverse[1] = reverse[2] = reverse[3] = false;
-		fadeTable										  = nullptr;
-		textureMemoryHandle								  = 0xffffffff;
-		actualHeight									  = -1;
-		lightRGB										  = 0xffffffff; // Fully Lit
-		fogRGB											  = 0xffffffff; // NO Fog
+		fadeTable = nullptr;
+		textureMemoryHandle = 0xffffffff;
+		actualHeight = -1;
+		lightRGB = 0xffffffff; // Fully Lit
+		fogRGB = 0xffffffff; // NO Fog
 	}
 
 	void init(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
 		size_t* fTable = nullptr, float _z = 0.0, float tZ = 0.0);
 
 	int32_t getTextureHandle(int32_t height = -1); // Return the block of memory
-												   // so I store it for this
-												   // mech/vehicle,etc.
+		// so I store it for this
+		// mech/vehicle,etc.
 	void setTextureHandle(uint32_t handle, int32_t height = -1);
 
 	void setLight(uint32_t light) { lightRGB = light; }
@@ -118,9 +118,9 @@ public:
 	TextureElement(void)
 	{
 		x = y = 0;
-		topZ = z			= 0.0;
+		topZ = z = 0.0;
 		textureMemoryHandle = 0xffffffff;
-		lightRGB			= 0xffffffff;
+		lightRGB = 0xffffffff;
 	}
 
 	void setLight(uint32_t light) { lightRGB = light; }

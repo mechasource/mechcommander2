@@ -77,8 +77,8 @@ extern "C"
 
 #ifndef TYPEDEFS1
 #define TYPEDEFS1
-	typedef int32_t FIXED16;   // 16:16 fixed-VFX_POINT type [-32K,+32K]
-	typedef int32_t FIXED30;   // 2:30 fixed-VFX_POINT type [-1.999,+1.999]
+	typedef int32_t FIXED16; // 16:16 fixed-VFX_POINT type [-32K,+32K]
+	typedef int32_t FIXED30; // 2:30 fixed-VFX_POINT type [-1.999,+1.999]
 	typedef int32_t* PFIXED16; // 16:16 fixed-VFX_POINT type [-32K,+32K]
 	typedef int32_t* PFIXED30; // 2:30 fixed-VFX_POINT type [-1.999,+1.999]
 #endif
@@ -91,12 +91,12 @@ extern "C"
 // VFX_map_polygon() flags
 //
 #define MP_XLAT 0x0001 // Use lookaside table (speed loss = ~9%)
-#define MP_XP 0x0002   // Enable transparency (speed loss = ~6%)
+#define MP_XP 0x0002 // Enable transparency (speed loss = ~6%)
 
 //
 // VFX_shape_transform() flags
 //
-#define ST_XLAT 0x0001  // Use shape_lookaside() table
+#define ST_XLAT 0x0001 // Use shape_lookaside() table
 #define ST_REUSE 0x0002 // Use buffer contents from prior call
 
 //
@@ -127,8 +127,8 @@ extern "C"
 	// PANE_LIST.flags values
 	//
 
-#define PL_FREE 0	  // Free and available for assignment
-#define PL_VALID 1	 // Assigned; to be refreshed
+#define PL_FREE 0 // Free and available for assignment
+#define PL_VALID 1 // Assigned; to be refreshed
 #define PL_CONTAINED 2 // Contained within another pane; don't refresh
 
 	//

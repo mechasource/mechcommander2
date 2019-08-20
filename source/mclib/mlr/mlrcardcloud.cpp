@@ -32,7 +32,8 @@ MLRCardCloud::ClassData* MLRCardCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRCardCloud::InitializeClass(void)
+void
+MLRCardCloud::InitializeClass(void)
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -54,7 +55,8 @@ void MLRCardCloud::InitializeClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRCardCloud::TerminateClass(void)
+void
+MLRCardCloud::TerminateClass(void)
 {
 	Unregister_Object(clipPerVertex);
 	delete clipPerVertex;
@@ -73,7 +75,8 @@ void MLRCardCloud::TerminateClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRCardCloud::MLRCardCloud(uint32_t nr) : MLREffect(nr, DefaultData)
+MLRCardCloud::MLRCardCloud(uint32_t nr) :
+	MLREffect(nr, DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfCards = nullptr;
@@ -90,7 +93,8 @@ MLRCardCloud::~MLRCardCloud(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRCardCloud::SetData(
+void
+MLRCardCloud::SetData(
 	pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data)
 {
 	// Check_Pointer(this);
@@ -103,7 +107,8 @@ void MLRCardCloud::SetData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRCardCloud::SetData(pcsize_t count, const Stuff::Point3D* point_data,
+void
+MLRCardCloud::SetData(pcsize_t count, const Stuff::Point3D* point_data,
 	const Stuff::RGBAColor* color_data, const Stuff::Vector2DScalar* uv_data)
 {
 	// Check_Pointer(this);
@@ -115,7 +120,8 @@ void MLRCardCloud::SetData(pcsize_t count, const Stuff::Point3D* point_data,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRCardCloud::Draw(
+void
+MLRCardCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -131,7 +137,8 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
+uint32_t
+MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 {
 	// Check_Object(this);
 	size_t i, j, k;
@@ -218,7 +225,7 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		//
 		theAnd.SetClippingState(0x3f);
 		theOr.SetClippingState(0);
-		end					 = j + 4;
+		end = j + 4;
 		Stuff::Vector4D* v4d = transformedCoords->GetData() + j;
 		MLRClippingState* cs = clipPerVertex->GetData() + j;
 		for (k = j; k < end; k++, v4d++, cs++)
@@ -256,12 +263,12 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			TurnVisible(i);
 			GOSCopyTriangleData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
 				texCoords, j, j + 1, j + 2, true);
-			uint32_t tmpColor					  = GOSCopyColor(&colors[i]);
-			gos_vertices[numGOSVertices].argb	 = tmpColor;
+			uint32_t tmpColor = GOSCopyColor(&colors[i]);
+			gos_vertices[numGOSVertices].argb = tmpColor;
 			gos_vertices[numGOSVertices + 1].argb = tmpColor;
 			gos_vertices[numGOSVertices + 2].argb = tmpColor;
-			gos_vertices[numGOSVertices + 3]	  = gos_vertices[numGOSVertices];
-			gos_vertices[numGOSVertices + 4]	  = gos_vertices[numGOSVertices + 2];
+			gos_vertices[numGOSVertices + 3] = gos_vertices[numGOSVertices];
+			gos_vertices[numGOSVertices + 4] = gos_vertices[numGOSVertices + 2];
 			GOSCopyData(&gos_vertices[numGOSVertices + 5], transformedCoords->GetData(), texCoords,
 				j + 3, true);
 			gos_vertices[numGOSVertices + 5].argb = tmpColor;
@@ -271,8 +278,8 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				for (x = 0; x < 6; x++)
 				{
 					gos_vertices[numGOSVertices + x].argb = 0xff0000ff;
-					gos_vertices[numGOSVertices + x].u	= 0.0f;
-					gos_vertices[numGOSVertices + x].v	= 0.0f;
+					gos_vertices[numGOSVertices + x].u = 0.0f;
+					gos_vertices[numGOSVertices + x].v = 0.0f;
 				}
 			}
 #endif
@@ -311,12 +318,12 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					//----------------------------------------------------
 					//
 					size_t clipped_index = myNumberUsedClipVertex + numberVerticesPerPolygon;
-					theTest				 = (*clipPerVertex)[k];
+					theTest = (*clipPerVertex)[k];
 					if (theTest == 0)
 					{
-						(*clipExtraCoords)[clipped_index]	= (*transformedCoords)[k];
+						(*clipExtraCoords)[clipped_index] = (*transformedCoords)[k];
 						(*clipExtraTexCoords)[clipped_index] = texCoords[k];
-						(*clipExtraColors)[clipped_index]	= colors[i];
+						(*clipExtraColors)[clipped_index] = colors[i];
 						numberVerticesPerPolygon++;
 						clipped_index++;
 						//
@@ -414,14 +421,14 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				// Point the source polygon buffer at our original data
 				//-----------------------------------------------------
 				//
-				srcPolygon.coords		 = &((*transformedCoords)[j]);
+				srcPolygon.coords = &((*transformedCoords)[j]);
 				srcPolygon.clipPerVertex = &((*clipPerVertex)[j]);
-				srcPolygon.flags		 = 0;
+				srcPolygon.flags = 0;
 				// srcPolygon.colors =
 				// const_cast<Stuff::RGBAColor*>(&colors[j]);
 				srcPolygon.flags |= 2;
 				srcPolygon.texCoords = const_cast<Stuff::Vector2DScalar*>(&texCoords[j]);
-				srcPolygon.length	= 4;
+				srcPolygon.length = 4;
 				//
 				//--------------------------------
 				// Point to the destination buffer
@@ -429,10 +436,10 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				//
 				dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 				// dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
-				dstPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
+				dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 				dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
-				dstPolygon.flags		 = srcPolygon.flags;
-				dstPolygon.length		 = 0;
+				dstPolygon.flags = srcPolygon.flags;
+				dstPolygon.length = 0;
 				//
 				//-----------------------------------------------------------
 				// Spin through each plane that clipped the primitive and use
@@ -455,7 +462,7 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 							//
 							for (k = 0; k < srcPolygon.length; k++)
 							{
-								k1		= (k + 1 < srcPolygon.length) ? k + 1 : 0;
+								k1 = (k + 1 < srcPolygon.length) ? k + 1 : 0;
 								theTest = srcPolygon.clipPerVertex[k];
 								//
 								//----------------------------------------------------
@@ -495,8 +502,7 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 								//
 								else if (srcPolygon.clipPerVertex[k1].IsClipped(mask) != 0)
 								{
-									_ASSERT(srcPolygon.clipPerVertex[k1].IsClipped(mask) ==
-										srcPolygon.clipPerVertex[k].IsClipped(mask));
+									_ASSERT(srcPolygon.clipPerVertex[k1].IsClipped(mask) == srcPolygon.clipPerVertex[k].IsClipped(mask));
 									continue;
 								}
 								//
@@ -552,7 +558,7 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 							srcPolygon.clipPerVertex =
 								clipBuffer[dstBuffer].clipPerVertex.GetData();
 							srcPolygon.length = dstPolygon.length;
-							dstBuffer		  = !dstBuffer;
+							dstBuffer = !dstBuffer;
 							dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 							// dstPolygon.colors =
 							// clipBuffer[dstBuffer].colors.GetData();
@@ -592,9 +598,9 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					{
 						srcPolygon.coords[k].z -= Stuff::SMALL;
 					}
-					(*clipExtraCoords)[clipped_index]	= srcPolygon.coords[k];
+					(*clipExtraCoords)[clipped_index] = srcPolygon.coords[k];
 					(*clipExtraTexCoords)[clipped_index] = srcPolygon.texCoords[k];
-					(*clipExtraColors)[clipped_index]	= colors[i];
+					(*clipExtraColors)[clipped_index] = colors[i];
 				}
 				numberVerticesPerPolygon = srcPolygon.length;
 			}
@@ -621,15 +627,15 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 #ifdef LAB_ONLY
 				if (gShowClippedPolys)
 				{
-					gos_vertices[numGOSVertices].argb	 = 0xffff0000;
-					gos_vertices[numGOSVertices].u		  = 0.0f;
-					gos_vertices[numGOSVertices].v		  = 0.0f;
+					gos_vertices[numGOSVertices].argb = 0xffff0000;
+					gos_vertices[numGOSVertices].u = 0.0f;
+					gos_vertices[numGOSVertices].v = 0.0f;
 					gos_vertices[numGOSVertices + 1].argb = 0xffff0000;
-					gos_vertices[numGOSVertices + 1].u	= 0.0f;
-					gos_vertices[numGOSVertices + 1].v	= 0.0f;
+					gos_vertices[numGOSVertices + 1].u = 0.0f;
+					gos_vertices[numGOSVertices + 1].v = 0.0f;
 					gos_vertices[numGOSVertices + 2].argb = 0xffff0000;
-					gos_vertices[numGOSVertices + 2].u	= 0.0f;
-					gos_vertices[numGOSVertices + 2].v	= 0.0f;
+					gos_vertices[numGOSVertices + 2].u = 0.0f;
+					gos_vertices[numGOSVertices + 2].v = 0.0f;
 				}
 #endif
 				numGOSVertices += 3;
@@ -650,7 +656,8 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRCardCloud::TestInstance(void) const
+void
+MLRCardCloud::TestInstance(void) const
 {
 	if (usedNrOfCards)
 	{

@@ -33,11 +33,11 @@ public:
 			Resize(void);
 		EventInfo* pInfo = pEventInfo + NextEntry;
 		ListSpace--;
-		pInfo->m_type	  = type;
-		pInfo->m_pName	 = name;
+		pInfo->m_type = type;
+		pInfo->m_pName = name;
 		pInfo->m_pFileName = filename;
-		pInfo->m_nLineNo   = lineno;
-		pInfo->m_id		   = EntryToId(NextEntry, (int32_t)type);
+		pInfo->m_nLineNo = lineno;
+		pInfo->m_id = EntryToId(NextEntry, (int32_t)type);
 		NextEntry++;
 		return pInfo->m_id;
 	}

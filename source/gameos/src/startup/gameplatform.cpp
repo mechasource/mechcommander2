@@ -18,7 +18,8 @@
 #include <gameos.hpp>
 #include <platform.hpp>
 
-extern "C" int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+extern "C" int WINAPI
+WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	_In_ PSTR pCmdLine, _In_ int nShowCmd)
 {
 	Platform = Platform_Game;
@@ -29,19 +30,29 @@ extern "C" int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrev
 #if _CONSIDERED_OBSOLETE
 extern bool gViaNew;
 
-PVOID __cdecl operator new(size_t nSize, HGOSHEAP HeapBlock)
+PVOID __cdecl
+operator new(size_t nSize, HGOSHEAP HeapBlock)
 {
 	gViaNew = true;
 	return gos_Malloc(nSize, HeapBlock);
 }
 
-PVOID __cdecl operator new(size_t nSize)
+PVOID __cdecl
+operator new(size_t nSize)
 {
 	gViaNew = true;
 	return gos_Malloc(nSize, (HGOSHEAP)-1);
 }
 
-void __cdecl operator delete(PVOID block) { gos_Free(block); }
+void __cdecl
+operator delete(PVOID block)
+{
+	gos_Free(block);
+}
 
-void __cdecl operator delete[](PVOID block) { operator delete(block); }
+void __cdecl
+operator delete[](PVOID block)
+{
+	operator delete(block);
+}
 #endif

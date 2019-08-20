@@ -21,18 +21,19 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // ResourceStringSelectionDlg dialog
 
-ResourceStringSelectionDlg::ResourceStringSelectionDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(ResourceStringSelectionDlg::IDD, pParent)
+ResourceStringSelectionDlg::ResourceStringSelectionDlg(CWnd* pParent /*=nullptr*/) :
+	CDialog(ResourceStringSelectionDlg::IDD, pParent)
 {
-	m_BottomOfIDRange		   = 0;
-	m_TopOfIDRange			   = 65535;
+	m_BottomOfIDRange = 0;
+	m_TopOfIDRange = 65535;
 	m_SelectedResourceStringID = -1;
 	//{{AFX_DATA_INIT(ResourceStringSelectionDlg)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
-void ResourceStringSelectionDlg::DoDataExchange(CDataExchange* pDX)
+void
+ResourceStringSelectionDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(ResourceStringSelectionDlg)
@@ -48,7 +49,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // ResourceStringSelectionDlg message handlers
 
-static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
+static BOOL
+CSLoadString(int32_t resourceID, CString& targetStr)
 {
 	char szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
@@ -62,7 +64,8 @@ static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-BOOL ResourceStringSelectionDlg::OnInitDialog()
+BOOL
+ResourceStringSelectionDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_ResourceStringIDs.Clear();
@@ -96,10 +99,11 @@ BOOL ResourceStringSelectionDlg::OnInitDialog()
 		m_Combo.SetCurSel(-1);
 	}
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void ResourceStringSelectionDlg::OnOK()
+void
+ResourceStringSelectionDlg::OnOK()
 {
 	uint32_t selectionIndex = m_Combo.GetCurSel();
 	if (CB_ERR != selectionIndex)

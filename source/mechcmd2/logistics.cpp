@@ -36,14 +36,16 @@ extern bool useUnlimitedAmmo;
 extern float loadProgress;
 extern bool aborted;
 
-void DEBUGWINS_print(PSTR s, int32_t window = 0);
+void
+DEBUGWINS_print(PSTR s, int32_t window = 0);
 
 //----------------------------------------------------------------------------------
 // class Logistics
 Logistics* logistics = nullptr;
 
 //----------------------------------------------------------------------------------
-void Logistics::destroy(void)
+void
+Logistics::destroy(void)
 {
 	delete missionBegin;
 	missionBegin = nullptr;
@@ -52,7 +54,8 @@ void Logistics::destroy(void)
 }
 
 //----------------------------------------------------------------------------------
-void Logistics::start(int32_t startMode)
+void
+Logistics::start(int32_t startMode)
 {
 	bMissionLoaded = 0;
 	userInput->setMouseCursor(mState_LOGISTICS);
@@ -61,7 +64,7 @@ void Logistics::start(int32_t startMode)
 	if (prefs.renderer != 0 && prefs.renderer != 3)
 		localRenderer = 0;
 	bool localFullScreen = prefs.fullScreen;
-	bool localWindow	 = !prefs.fullScreen;
+	bool localWindow = !prefs.fullScreen;
 	if (Environment.fullScreen && prefs.fullScreen)
 		localFullScreen = false;
 	switch (startMode)
@@ -88,8 +91,7 @@ void Logistics::start(int32_t startMode)
 			if (!MPlayer)
 				LogisticsData::instance->setMissionCompleted();
 			// if mission is over, play video then quit when  done
-			if (LogisticsData::instance->campaignOver() && !MPlayer &&
-				!LogisticsData::instance->isSingleMission())
+			if (LogisticsData::instance->campaignOver() && !MPlayer && !LogisticsData::instance->isSingleMission())
 			{
 				mission->destroy();
 				playFullScreenVideo(LogisticsData::instance->getFinalVideo());
@@ -119,7 +121,7 @@ void Logistics::start(int32_t startMode)
 		else if (!justStartMission)
 		{
 			missionResults->bDone = true;
-			logisticsState		  = log_RESULTS;
+			logisticsState = log_RESULTS;
 		}
 		else // end the game
 			quitGame = true;
@@ -182,7 +184,8 @@ void Logistics::start(int32_t startMode)
 }
 
 //----------------------------------------------------------------------------------
-void Logistics::stop(void)
+void
+Logistics::stop(void)
 {
 	switch (prevState)
 	{
@@ -195,22 +198,21 @@ void Logistics::stop(void)
 }
 
 //----------------------------------------------------------------------------------
-int32_t Logistics::update(void)
+int32_t
+Logistics::update(void)
 {
 	// MUST do this every frame.  The movie movies will play wrong, otherwise!!
 	if (bMovie)
 	{
 		userInput->mouseOff();
-		if (userInput->getKeyDown(KEY_SPACE) || userInput->getKeyDown(KEY_ESCAPE) ||
-			userInput->getKeyDown(KEY_LMOUSE))
+		if (userInput->getKeyDown(KEY_SPACE) || userInput->getKeyDown(KEY_ESCAPE) || userInput->getKeyDown(KEY_LMOUSE))
 		{
 			bMovie->stop();
 		}
 		bool result = bMovie->update();
 		if (result)
 		{
-			if (LogisticsData::instance->campaignOver() &&
-				(strnicmp(bMovie->getMovieName(), "credits", 7) == 0))
+			if (LogisticsData::instance->campaignOver() && (strnicmp(bMovie->getMovieName(), "credits", 7) == 0))
 			{
 				missionBegin->beginSplash();
 			}
@@ -226,11 +228,11 @@ int32_t Logistics::update(void)
 				FullPathFileName path;
 				path.init(moviePath, "credits", ".bik");
 				RECT movieRect;
-				movieRect.top	= 0;
-				movieRect.left   = 0;
-				movieRect.right  = Environment.screenWidth;
+				movieRect.top = 0;
+				movieRect.left = 0;
+				movieRect.right = Environment.screenWidth;
 				movieRect.bottom = 600;
-				bMovie			 = new MC2Movie;
+				bMovie = new MC2Movie;
 				bMovie->init(path, movieRect, true);
 				soundSystem->playDigitalMusic(33);
 			}
@@ -342,7 +344,8 @@ int32_t Logistics::update(void)
 }
 
 //----------------------------------------------------------------------------------
-void Logistics::render(void)
+void
+Logistics::render(void)
 {
 	if (bMovie)
 	{
@@ -382,15 +385,14 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 			{
 				if (CID != curCommanderID)
 				{
-					int32_t oldCommanderID				 = CID;
+					int32_t oldCommanderID = CID;
 					MPlayer->playerInfo[CID].commanderID = curCommanderID;
 					memcpy(&MPlayer->playerInfo[curCommanderID], &MPlayer->playerInfo[CID],
 						sizeof(MC2Player));
-					MPlayer->playerInfo[CID].player		 = nullptr;
+					MPlayer->playerInfo[CID].player = nullptr;
 					MPlayer->playerInfo[CID].commanderID = -1;
 					for (size_t j = 0; j < MAX_MC_PLAYERS; j++)
-						if (MPlayer->playerList[j].player ==
-							MPlayer->playerInfo[curCommanderID].player)
+						if (MPlayer->playerList[j].player == MPlayer->playerInfo[curCommanderID].player)
 							MPlayer->playerList[j].commanderID = curCommanderID;
 					if (oldCommanderID == MPlayer->commanderID)
 						MPlayer->commanderID = curCommanderID;
@@ -410,7 +412,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				if (MPlayer->playerInfo[i].player && (MPlayer->playerInfo[i].team == teamID))
 				{
 					MPlayer->playerInfo[i].team = curTeamID;
-					teamFound					= true;
+					teamFound = true;
 				}
 			if (teamFound)
 				curTeamID++;
@@ -478,9 +480,9 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		}
 		else
 		{
-			MultiPlayTeamId		 = MPlayer->playerInfo[MPlayer->commanderID].team;
+			MultiPlayTeamId = MPlayer->playerInfo[MPlayer->commanderID].team;
 			MultiPlayCommanderId = MPlayer->commanderID;
-			missionLoadType		 = MISSION_LOAD_MP_LOGISTICS;
+			missionLoadType = MISSION_LOAD_MP_LOGISTICS;
 		}
 		int32_t maxTeam = -1;
 		for (i = 0; i < MAX_MC_PLAYERS; i++)
@@ -529,7 +531,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 			EList<LogisticsMech*, LogisticsMech*> list;
 			LogisticsData::instance->getForceGroup(list);
 			int32_t dropZoneIndex = 0;
-			int32_t numMechs	  = 0;
+			int32_t numMechs = 0;
 			for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter = list.Begin();
 				 !iter.IsDone(); iter++)
 			{
@@ -537,11 +539,11 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				if (!(*iter)->getPilot())
 					continue;
 				CompressedMech mechData;
-				mechData.lastMech	= (list.Count() == numMechs);
-				mechData.objNumber   = (*iter)->getFitID();
+				mechData.lastMech = (list.Count() == numMechs);
+				mechData.objNumber = (*iter)->getFitID();
 				mechData.commanderID = MPlayer->commanderID;
-				mechData.baseColor   = MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderID]
-														   .baseColor[BASECOLOR_TEAM]];
+				mechData.baseColor = MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderID]
+														 .baseColor[BASECOLOR_TEAM]];
 				mechData.highlightColor1 =
 					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderID].stripeColor];
 				mechData.highlightColor2 =
@@ -549,11 +551,11 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				strcpy(mechData.pilotFile, (*iter)->getPilot()->getFileName());
 				strcpy(mechData.mechFile, (*iter)->getFileName());
 				strcpy(mechData.variantName, (*iter)->getName());
-				mechData.variantNum	= (*iter)->getVariant()->getFileID();
-				mechData.cBills		   = (*iter)->getVariant()->getCost();
-				mechData.pos[0]		   = dropZoneList[dropZoneIndex].x;
-				mechData.pos[1]		   = dropZoneList[dropZoneIndex++].y;
-				mechData.designerMech  = (*iter)->getVariant()->isDesignerMech();
+				mechData.variantNum = (*iter)->getVariant()->getFileID();
+				mechData.cBills = (*iter)->getVariant()->getCost();
+				mechData.pos[0] = dropZoneList[dropZoneIndex].x;
+				mechData.pos[1] = dropZoneList[dropZoneIndex++].y;
+				mechData.designerMech = (*iter)->getVariant()->isDesignerMech();
 				mechData.numComponents = (*iter)->getComponentCount();
 				if (mechData.numComponents)
 				{
@@ -575,7 +577,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				mission->destroy();
 				return (0);
 			}
-			ObjectManager->numMechs	= 0;
+			ObjectManager->numMechs = 0;
 			ObjectManager->numVehicles = 0;
 			for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 			{
@@ -587,25 +589,25 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 						{
 							MoverInitData data;
 							memset(&data, 0, sizeof(MoverInitData));
-							data.objNumber		 = MPlayer->mechData[i][j].objNumber;
-							data.rosterIndex	 = 255;
-							data.controlType	 = 2;
+							data.objNumber = MPlayer->mechData[i][j].objNumber;
+							data.rosterIndex = 255;
+							data.controlType = 2;
 							data.controlDataType = 1;
-							data.position.x		 = MPlayer->mechData[i][j].pos[0];
-							data.position.y		 = MPlayer->mechData[i][j].pos[1];
-							data.position.z		 = 0.0;
-							data.rotation		 = 0;
+							data.position.x = MPlayer->mechData[i][j].pos[0];
+							data.position.y = MPlayer->mechData[i][j].pos[1];
+							data.position.z = 0.0;
+							data.rotation = 0;
 							data.teamID =
 								MPlayer->playerInfo[MPlayer->mechData[i][j].commanderID].team;
-							data.commanderID	 = MPlayer->mechData[i][j].commanderID;
-							data.baseColor		 = MPlayer->mechData[i][j].baseColor;
+							data.commanderID = MPlayer->mechData[i][j].commanderID;
+							data.baseColor = MPlayer->mechData[i][j].baseColor;
 							data.highlightColor1 = MPlayer->mechData[i][j].highlightColor1;
 							data.highlightColor2 = MPlayer->mechData[i][j].highlightColor2;
-							data.gestureID		 = 2;
-							data.active			 = 1;
-							data.exists			 = 1;
-							data.capturable		 = 0;
-							data.icon			 = 0;
+							data.gestureID = 2;
+							data.active = 1;
+							data.exists = 1;
+							data.capturable = 0;
+							data.icon = 0;
 							strcpy(data.pilotFileName, MPlayer->mechData[i][j].pilotFile);
 							strcpy(data.brainFileName, "pbrain");
 							strcpy(data.csvFileName, MPlayer->mechData[i][j].mechFile);
@@ -672,17 +674,17 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		float rotation = list.Count() ? 360.f / list.Count() : 0.f;
 		MoverInitData data;
 		memset(&data, 0, sizeof(data));
-		data.rosterIndex	 = 255;
-		data.controlType	 = 2;
+		data.rosterIndex = 255;
+		data.controlType = 2;
 		data.controlDataType = 1;
 		data.position.Zero(); // need to get the drop zone location
-		data.rotation		 = 0;
-		data.teamID			 = Team::home->getId();
-		data.commanderID	 = Team::home->getId();
-		data.active			 = 1;
-		data.exists			 = 1;
-		data.capturable		 = 0;
-		data.baseColor		 = prefs.baseColor;
+		data.rotation = 0;
+		data.teamID = Team::home->getId();
+		data.commanderID = Team::home->getId();
+		data.active = 1;
+		data.exists = 1;
+		data.capturable = 0;
+		data.baseColor = prefs.baseColor;
 		data.highlightColor1 = prefs.highlightColor;
 		data.highlightColor2 = prefs.highlightColor;
 		strcpy(data.pilotFileName, "pmw00031");
@@ -705,8 +707,8 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				continue;
 			strcpy(data.pilotFileName, (*iter)->getPilot()->getFileName());
 			data.overrideLoadedPilot = true;
-			data.gunnerySkill		 = (*iter)->getPilot()->getGunnery();
-			data.pilotingSkill		 = (*iter)->getPilot()->getPiloting();
+			data.gunnerySkill = (*iter)->getPilot()->getGunnery();
+			data.pilotingSkill = (*iter)->getPilot()->getPiloting();
 			memcpy(data.specialtySkills, (*iter)->getPilot()->getSpecialtySkills(),
 				sizeof(bool) * NUM_SPECIALTY_SKILLS);
 			if (!(*iter)->getVariant()->isDesignerMech())
@@ -760,7 +762,8 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 	return (1);
 }
 
-int32_t Logistics::DoBeginMission()
+int32_t
+Logistics::DoBeginMission()
 {
 #ifndef TEST_SHELL
 //---------------------------
@@ -786,7 +789,8 @@ int32_t Logistics::DoBeginMission()
 	return 0;
 }
 
-void Logistics::initializeLogData()
+void
+Logistics::initializeLogData()
 {
 	LogisticsData::instance->removeMechsInForceGroup();
 	LogisticsData::instance->init();
@@ -812,23 +816,25 @@ void Logistics::initializeLogData()
 	}
 }
 
-void Logistics::playFullScreenVideo(PCSTR fileName)
+void
+Logistics::playFullScreenVideo(PCSTR fileName)
 {
 	if (!fileName || !fileName[0])
 		return;
 	FullPathFileName path;
 	path.init(moviePath, fileName, ".bik");
 	RECT movieRect;
-	movieRect.top	= 100;
-	movieRect.left   = 0;
-	movieRect.right  = Environment.screenWidth;
+	movieRect.top = 100;
+	movieRect.left = 0;
+	movieRect.right = Environment.screenWidth;
 	movieRect.bottom = 500;
-	bMovie			 = new MC2Movie;
+	bMovie = new MC2Movie;
 	bMovie->init(path, movieRect, true);
 	soundSystem->stopDigitalMusic();
 }
 
-void Logistics::setResultsHostLeftDlg(PCSTR pName)
+void
+Logistics::setResultsHostLeftDlg(PCSTR pName)
 {
 	if (missionResults && logisticsState == log_RESULTS)
 	{

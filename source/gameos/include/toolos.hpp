@@ -35,11 +35,11 @@ void __stdcall gos_DeleteThread(uint32_t ThreadHandle);
 
 enum gosThreadPriority : uint32_t
 {
-	ThreadPri_Lowest        = 1,
-	ThreadPri_BelowNormal   = 2,
-	ThreadPri_Normal        = 3,
-	ThreadPri_AboveNormal   = 4,
-	ThreadPri_Highest       = 5
+	ThreadPri_Lowest = 1,
+	ThreadPri_BelowNormal = 2,
+	ThreadPri_Normal = 3,
+	ThreadPri_AboveNormal = 4,
+	ThreadPri_Highest = 5
 };
 
 //
@@ -189,9 +189,9 @@ void __stdcall gos_FileSetReadOnly(PCSTR FileName);
 // Ways to specify how to open file.
 enum gosEnum_FileWriteStatus : uint32_t
 {
-	READONLY,  // Open for READ
+	READONLY, // Open for READ
 	READWRITE, // Open for READ and WRITE - but clears the file on open
-	APPEND	 // Open for READ and WRITE - leaves the file alone if it already exists
+	APPEND // Open for READ and WRITE - leaves the file alone if it already exists
 };
 
 //////////////////////////////////////////////////////////////////////////////////

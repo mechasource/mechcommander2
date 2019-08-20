@@ -30,7 +30,8 @@
 // Class PriorityQueue
 //***************************************************************************
 
-int32_t PriorityQueue::init(int32_t max, int32_t keyMinValue)
+int32_t
+PriorityQueue::init(int32_t max, int32_t keyMinValue)
 {
 	//-------------------------
 	// Create the queue list...
@@ -41,18 +42,19 @@ int32_t PriorityQueue::init(int32_t max, int32_t keyMinValue)
 	// of the queue list are used as sentinels (to assist implementation
 	// execution speed)...
 	maxItems = max + 2;
-	keyMin   = keyMinValue;
+	keyMin = keyMinValue;
 	return (0);
 }
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::upHeap(int32_t curIndex)
+void
+PriorityQueue::upHeap(int32_t curIndex)
 {
 	PQNode startNode = pqList[curIndex];
-	int32_t stopKey  = startNode.key;
-	pqList[0].key	= keyMin;
-	pqList[0].id	 = 0xFFFFFFFF;
+	int32_t stopKey = startNode.key;
+	pqList[0].key = keyMin;
+	pqList[0].id = 0xFFFFFFFF;
 	//--------------------
 	// sort up the heap...
 	while (pqList[curIndex / 2].key >= stopKey)
@@ -65,7 +67,8 @@ void PriorityQueue::upHeap(int32_t curIndex)
 
 //---------------------------------------------------------------------------
 
-int32_t PriorityQueue::insert(PQNode& item)
+int32_t
+PriorityQueue::insert(PQNode& item)
 {
 	if (numItems == maxItems)
 		return (1);
@@ -76,12 +79,13 @@ int32_t PriorityQueue::insert(PQNode& item)
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::downHeap(int32_t curIndex)
+void
+PriorityQueue::downHeap(int32_t curIndex)
 {
 	//----------------------------------
 	// Start at the top from curIndex...
 	PQNode startNode = pqList[curIndex];
-	int32_t stopKey  = startNode.key;
+	int32_t stopKey = startNode.key;
 	//----------------------
 	// Sort down the heap...
 	while (curIndex <= numItems / 2)
@@ -92,23 +96,25 @@ void PriorityQueue::downHeap(int32_t curIndex)
 		if (stopKey <= pqList[nextIndex].key)
 			break;
 		pqList[curIndex] = pqList[nextIndex];
-		curIndex		 = nextIndex;
+		curIndex = nextIndex;
 	}
 	pqList[curIndex] = startNode;
 }
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::remove(PQNode& item)
+void
+PriorityQueue::remove(PQNode& item)
 {
-	item	  = pqList[1];
+	item = pqList[1];
 	pqList[1] = pqList[numItems--];
 	downHeap(1);
 }
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::change(int32_t itemIndex, int32_t newValue)
+void
+PriorityQueue::change(int32_t itemIndex, int32_t newValue)
 {
 	if (newValue > pqList[itemIndex].key)
 	{
@@ -124,7 +130,8 @@ void PriorityQueue::change(int32_t itemIndex, int32_t newValue)
 
 //---------------------------------------------------------------------------
 
-int32_t PriorityQueue::find(int32_t id)
+int32_t
+PriorityQueue::find(int32_t id)
 {
 	for (size_t index = 0; index <= numItems; index++)
 		if (pqList[index].id == (uint32_t)id)
@@ -134,10 +141,11 @@ int32_t PriorityQueue::find(int32_t id)
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::destroy(void)
+void
+PriorityQueue::destroy(void)
 {
 	systemHeap->Free(pqList);
-	pqList   = nullptr;
+	pqList = nullptr;
 	maxItems = 0;
 	numItems = 0;
 }

@@ -51,23 +51,24 @@
 
 //---------------------------------------------------------------------------
 // static globals
-MC_TextureManager* mcTextureManager				= nullptr;
+MC_TextureManager* mcTextureManager = nullptr;
 gos_VERTEXManager* MC_TextureManager::gvManager = nullptr;
-puint8_t MC_TextureManager::lzBuffer1			= nullptr;
-puint8_t MC_TextureManager::lzBuffer2			= nullptr;
-int32_t MC_TextureManager::iBufferRefCount		= 0;
+puint8_t MC_TextureManager::lzBuffer1 = nullptr;
+puint8_t MC_TextureManager::lzBuffer2 = nullptr;
+int32_t MC_TextureManager::iBufferRefCount = 0;
 
 bool MLRVertexLimitReached = false;
 extern bool useFog;
 
-uint32_t actualTextureSize	 = 0;
+uint32_t actualTextureSize = 0;
 uint32_t compressedTextureSize = 0;
 
 #define MAX_SENDDOWN 10002
 
 //------------------------------------------------------
 // Frees up gos_VERTEX manager memory
-void MC_TextureManager::freeVertices(void)
+void
+MC_TextureManager::freeVertices(void)
 {
 	if (gvManager)
 	{
@@ -80,7 +81,8 @@ void MC_TextureManager::freeVertices(void)
 //------------------------------------------------------
 // Creates gos_VERTEX Manager and allocates RAM.  Will not allocate if already
 // done!
-void MC_TextureManager::startVertices(int32_t maxVertices)
+void
+MC_TextureManager::startVertices(int32_t maxVertices)
 {
 	if (gvManager == nullptr)
 	{
@@ -92,12 +94,13 @@ void MC_TextureManager::startVertices(int32_t maxVertices)
 
 //----------------------------------------------------------------------
 // Class MC_TextureManager
-void MC_TextureManager::start(void)
+void
+MC_TextureManager::start(void)
 {
 	init();
 	//------------------------------------------
 	// Create nodes from systemHeap.
-	int32_t nodeRAM	= MC_MAXTEXTURES * sizeof(MC_TextureNode);
+	int32_t nodeRAM = MC_MAXTEXTURES * sizeof(MC_TextureNode);
 	masterTextureNodes = (MC_TextureNode*)systemHeap->Malloc(nodeRAM);
 	gosASSERT(masterTextureNodes != nullptr);
 	int32_t i;
@@ -105,7 +108,7 @@ void MC_TextureManager::start(void)
 		masterTextureNodes[i].init();
 	//-------------------------------------------
 	// Create VertexNodes from systemHeap
-	nodeRAM			  = MC_MAXTEXTURES * sizeof(MC_VertexArrayNode);
+	nodeRAM = MC_MAXTEXTURES * sizeof(MC_VertexArrayNode);
 	masterVertexNodes = (MC_VertexArrayNode*)systemHeap->Malloc(nodeRAM);
 	gosASSERT(masterVertexNodes != nullptr);
 	memset(masterVertexNodes, 0, nodeRAM);
@@ -131,21 +134,22 @@ void MC_TextureManager::start(void)
 		indexArray[i] = i;
 	// Add an Empty Texture node for all untextured triangles to go down into.
 	masterTextureNodes[0].gosTextureHandle = 0;
-	masterTextureNodes[0].nodeName		   = nullptr;
-	masterTextureNodes[0].uniqueInstance   = false;
-	masterTextureNodes[0].neverFLUSH	   = 0x1;
-	masterTextureNodes[0].numUsers		   = 0;
-	masterTextureNodes[0].key			   = gos_Texture_Solid;
-	masterTextureNodes[0].hints			   = 0;
-	masterTextureNodes[0].width			   = 0;
-	masterTextureNodes[0].lastUsed		   = -1;
-	masterTextureNodes[0].textureData	  = nullptr;
+	masterTextureNodes[0].nodeName = nullptr;
+	masterTextureNodes[0].uniqueInstance = false;
+	masterTextureNodes[0].neverFLUSH = 0x1;
+	masterTextureNodes[0].numUsers = 0;
+	masterTextureNodes[0].key = gos_Texture_Solid;
+	masterTextureNodes[0].hints = 0;
+	masterTextureNodes[0].width = 0;
+	masterTextureNodes[0].lastUsed = -1;
+	masterTextureNodes[0].textureData = nullptr;
 }
 
 extern std::iostream effectStream;
 extern MidLevelRenderer::MLRClipper* theClipper;
 //----------------------------------------------------------------------
-void MC_TextureManager::destroy(void)
+void
+MC_TextureManager::destroy(void)
 {
 	if (masterTextureNodes)
 	{
@@ -154,7 +158,7 @@ void MC_TextureManager::destroy(void)
 		int32_t usedCount = 0;
 		for (size_t i = 0; i < MC_MAXTEXTURES; i++)
 			masterTextureNodes[i].destroy(); // Destroy for nodes whacks GOS Handle
-		currentUsedTextures = usedCount;	 // Can this have been the damned bug all along!?
+		currentUsedTextures = usedCount; // Can this have been the damned bug all along!?
 	}
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	delete MidLevelRenderer::MLRTexturePool::Instance;
@@ -212,7 +216,8 @@ MC_TextureManager::~MC_TextureManager(void)
 }
 
 //----------------------------------------------------------------------
-void MC_TextureManager::flush(bool justTextures)
+void
+MC_TextureManager::flush(bool justTextures)
 {
 	if (masterTextureNodes)
 	{
@@ -275,7 +280,7 @@ void MC_TextureManager::flush(bool justTextures)
 	int32_t result = effectFile.open(effectsName);
 	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
-	int32_t effectsSize  = effectFile.fileSize();
+	int32_t effectsSize = effectFile.fileSize();
 	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
@@ -290,7 +295,8 @@ void MC_TextureManager::flush(bool justTextures)
 }
 
 //----------------------------------------------------------------------
-void MC_TextureManager::removeTextureNode(uint32_t textureNode)
+void
+MC_TextureManager::removeTextureNode(uint32_t textureNode)
 {
 	if (textureNode != 0xffffffff)
 	{
@@ -310,7 +316,8 @@ void MC_TextureManager::removeTextureNode(uint32_t textureNode)
 }
 
 //----------------------------------------------------------------------
-void MC_TextureManager::removeTexture(uint32_t gosHandle)
+void
+MC_TextureManager::removeTexture(uint32_t gosHandle)
 {
 	int32_t i;
 	//-----------------------------------------------------------
@@ -340,7 +347,8 @@ void MC_TextureManager::removeTexture(uint32_t gosHandle)
 
 #define cache_Threshold 150
 //----------------------------------------------------------------------
-bool MC_TextureManager::flushCache(void)
+bool
+MC_TextureManager::flushCache(void)
 {
 	bool cacheNotFull = false;
 	totalCacheMisses++;
@@ -351,8 +359,7 @@ bool MC_TextureManager::flushCache(void)
 	// simple Camera is up!!
 	for (i = 0; i < MC_MAXTEXTURES; i++)
 	{
-		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) &&
-			(masterTextureNodes[i].gosTextureHandle != 0xffffffff))
+		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) && (masterTextureNodes[i].gosTextureHandle != 0xffffffff))
 		{
 			currentUsedTextures++;
 		}
@@ -362,9 +369,7 @@ bool MC_TextureManager::flushCache(void)
 		return true;
 	for (i = 0; i < MC_MAXTEXTURES; i++)
 	{
-		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) &&
-			(masterTextureNodes[i].gosTextureHandle != 0xffffffff) &&
-			(!masterTextureNodes[i].uniqueInstance))
+		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) && (masterTextureNodes[i].gosTextureHandle != 0xffffffff) && (!masterTextureNodes[i].uniqueInstance))
 		{
 			if (masterTextureNodes[i].lastUsed <= (turn - cache_Threshold))
 			{
@@ -381,9 +386,7 @@ bool MC_TextureManager::flushCache(void)
 	}
 	for (i = 0; i < MC_MAXTEXTURES; i++)
 	{
-		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) &&
-			(masterTextureNodes[i].gosTextureHandle != 0xffffffff) &&
-			(masterTextureNodes[i].gosTextureHandle) && (!masterTextureNodes[i].uniqueInstance))
+		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) && (masterTextureNodes[i].gosTextureHandle != 0xffffffff) && (masterTextureNodes[i].gosTextureHandle) && (!masterTextureNodes[i].uniqueInstance))
 		{
 			if (masterTextureNodes[i].lastUsed <= (turn - 30))
 			{
@@ -400,9 +403,7 @@ bool MC_TextureManager::flushCache(void)
 	}
 	for (i = 0; i < MC_MAXTEXTURES; i++)
 	{
-		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) &&
-			(masterTextureNodes[i].gosTextureHandle != 0xffffffff) &&
-			(!masterTextureNodes[i].uniqueInstance))
+		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) && (masterTextureNodes[i].gosTextureHandle != 0xffffffff) && (!masterTextureNodes[i].uniqueInstance))
 		{
 			if (masterTextureNodes[i].lastUsed <= (turn - 1))
 			{
@@ -424,7 +425,8 @@ bool MC_TextureManager::flushCache(void)
 //----------------------------------------------------------------------
 // Draws all textures with isTerrain set that are solid first,
 // then draws all alpha with isTerrain set.
-void MC_TextureManager::renderLists(void)
+void
+MC_TextureManager::renderLists(void)
 {
 	if (Environment.Renderer == 3)
 	{
@@ -479,8 +481,7 @@ void MC_TextureManager::renderLists(void)
 			else
 				gos_SetRenderState(gos_State_TextureAddress, gos_TextureWrap);
 			uint32_t totalVertices = masterVertexNodes[i].numVertices;
-			if (masterVertexNodes[i].currentVertex !=
-				(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
 			}
@@ -501,7 +502,7 @@ void MC_TextureManager::renderLists(void)
 				int32_t currentVertices = 0;
 				while (currentVertices < totalVertices)
 				{
-					gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+					gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 					int32_t tVertices = totalVertices - currentVertices;
 					if (tVertices > MAX_SENDDOWN)
 						tVertices = MAX_SENDDOWN;
@@ -527,13 +528,10 @@ void MC_TextureManager::renderLists(void)
 	}
 	for (i = 0; i < nextAvailableVertexNode; i++)
 	{
-		if ((masterVertexNodes[i].flags & MC2_ISTERRAIN) &&
-			(masterVertexNodes[i].flags & MC2_DRAWALPHA) &&
-			!(masterVertexNodes[i].flags & MC2_ISCRATERS) && (masterVertexNodes[i].vertices))
+		if ((masterVertexNodes[i].flags & MC2_ISTERRAIN) && (masterVertexNodes[i].flags & MC2_DRAWALPHA) && !(masterVertexNodes[i].flags & MC2_ISCRATERS) && (masterVertexNodes[i].vertices))
 		{
 			uint32_t totalVertices = masterVertexNodes[i].numVertices;
-			if (masterVertexNodes[i].currentVertex !=
-				(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
 			}
@@ -554,7 +552,7 @@ void MC_TextureManager::renderLists(void)
 				int32_t currentVertices = 0;
 				while (currentVertices < totalVertices)
 				{
-					gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+					gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 					int32_t tVertices = totalVertices - currentVertices;
 					if (tVertices > MAX_SENDDOWN)
 						tVertices = MAX_SENDDOWN;
@@ -583,13 +581,10 @@ void MC_TextureManager::renderLists(void)
 	{
 		for (i = 0; i < nextAvailableVertexNode; i++)
 		{
-			if (!(masterVertexNodes[i].flags & MC2_ISTERRAIN) &&
-				(masterVertexNodes[i].flags & MC2_DRAWALPHA) &&
-				(masterVertexNodes[i].flags & MC2_ISCRATERS) && (masterVertexNodes[i].vertices))
+			if (!(masterVertexNodes[i].flags & MC2_ISTERRAIN) && (masterVertexNodes[i].flags & MC2_DRAWALPHA) && (masterVertexNodes[i].flags & MC2_ISCRATERS) && (masterVertexNodes[i].vertices))
 			{
 				uint32_t totalVertices = masterVertexNodes[i].numVertices;
-				if (masterVertexNodes[i].currentVertex !=
-					(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+				if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 				{
 					totalVertices =
 						masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -613,7 +608,7 @@ void MC_TextureManager::renderLists(void)
 					int32_t currentVertices = 0;
 					while (currentVertices < totalVertices)
 					{
-						gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+						gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 						int32_t tVertices = totalVertices - currentVertices;
 						if (tVertices > MAX_SENDDOWN)
 							tVertices = MAX_SENDDOWN;
@@ -636,13 +631,10 @@ void MC_TextureManager::renderLists(void)
 	// never be anything here in the OLD universe.
 	for (i = 0; i < nextAvailableVertexNode; i++)
 	{
-		if ((masterVertexNodes[i].flags & MC2_ISTERRAIN) &&
-			(masterVertexNodes[i].flags & MC2_DRAWALPHA) &&
-			(masterVertexNodes[i].flags & MC2_ISCRATERS) && (masterVertexNodes[i].vertices))
+		if ((masterVertexNodes[i].flags & MC2_ISTERRAIN) && (masterVertexNodes[i].flags & MC2_DRAWALPHA) && (masterVertexNodes[i].flags & MC2_ISCRATERS) && (masterVertexNodes[i].vertices))
 		{
 			uint32_t totalVertices = masterVertexNodes[i].numVertices;
-			if (masterVertexNodes[i].currentVertex !=
-				(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
 			}
@@ -663,7 +655,7 @@ void MC_TextureManager::renderLists(void)
 				int32_t currentVertices = 0;
 				while (currentVertices < totalVertices)
 				{
-					gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+					gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 					int32_t tVertices = totalVertices - currentVertices;
 					if (tVertices > MAX_SENDDOWN)
 						tVertices = MAX_SENDDOWN;
@@ -698,12 +690,10 @@ void MC_TextureManager::renderLists(void)
 	{
 		for (i = 0; i < nextAvailableVertexNode; i++)
 		{
-			if ((masterVertexNodes[i].flags & MC2_ISSHADOWS) &&
-				(masterVertexNodes[i].flags & MC2_DRAWALPHA) && (masterVertexNodes[i].vertices))
+			if ((masterVertexNodes[i].flags & MC2_ISSHADOWS) && (masterVertexNodes[i].flags & MC2_DRAWALPHA) && (masterVertexNodes[i].vertices))
 			{
 				uint32_t totalVertices = masterVertexNodes[i].numVertices;
-				if (masterVertexNodes[i].currentVertex !=
-					(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+				if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 				{
 					totalVertices =
 						masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -727,7 +717,7 @@ void MC_TextureManager::renderLists(void)
 					int32_t currentVertices = 0;
 					while (currentVertices < totalVertices)
 					{
-						gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+						gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 						int32_t tVertices = totalVertices - currentVertices;
 						if (tVertices > MAX_SENDDOWN)
 							tVertices = MAX_SENDDOWN;
@@ -749,15 +739,10 @@ void MC_TextureManager::renderLists(void)
 	}
 	for (i = 0; i < nextAvailableVertexNode; i++)
 	{
-		if (!(masterVertexNodes[i].flags & MC2_ISTERRAIN) &&
-			!(masterVertexNodes[i].flags & MC2_ISSHADOWS) &&
-			!(masterVertexNodes[i].flags & MC2_ISCOMPASS) &&
-			!(masterVertexNodes[i].flags & MC2_ISCRATERS) &&
-			(masterVertexNodes[i].flags & MC2_DRAWALPHA) && (masterVertexNodes[i].vertices))
+		if (!(masterVertexNodes[i].flags & MC2_ISTERRAIN) && !(masterVertexNodes[i].flags & MC2_ISSHADOWS) && !(masterVertexNodes[i].flags & MC2_ISCOMPASS) && !(masterVertexNodes[i].flags & MC2_ISCRATERS) && (masterVertexNodes[i].flags & MC2_DRAWALPHA) && (masterVertexNodes[i].vertices))
 		{
 			uint32_t totalVertices = masterVertexNodes[i].numVertices;
-			if (masterVertexNodes[i].currentVertex !=
-				(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
 			}
@@ -778,7 +763,7 @@ void MC_TextureManager::renderLists(void)
 				int32_t currentVertices = 0;
 				while (currentVertices < totalVertices)
 				{
-					gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+					gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 					int32_t tVertices = totalVertices - currentVertices;
 					if (tVertices > MAX_SENDDOWN)
 						tVertices = MAX_SENDDOWN;
@@ -818,8 +803,7 @@ void MC_TextureManager::renderLists(void)
 		if ((masterVertexNodes[i].flags & MC2_ISEFFECTS) && (masterVertexNodes[i].vertices))
 		{
 			uint32_t totalVertices = masterVertexNodes[i].numVertices;
-			if (masterVertexNodes[i].currentVertex !=
-				(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
 			}
@@ -840,7 +824,7 @@ void MC_TextureManager::renderLists(void)
 				int32_t currentVertices = 0;
 				while (currentVertices < totalVertices)
 				{
-					gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+					gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 					int32_t tVertices = totalVertices - currentVertices;
 					if (tVertices > MAX_SENDDOWN)
 						tVertices = MAX_SENDDOWN;
@@ -859,8 +843,7 @@ void MC_TextureManager::renderLists(void)
 		if ((masterVertexNodes[i].flags & MC2_ISSPOTLGT) && (masterVertexNodes[i].vertices))
 		{
 			uint32_t totalVertices = masterVertexNodes[i].numVertices;
-			if (masterVertexNodes[i].currentVertex !=
-				(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
 			}
@@ -881,7 +864,7 @@ void MC_TextureManager::renderLists(void)
 				int32_t currentVertices = 0;
 				while (currentVertices < totalVertices)
 				{
-					gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+					gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 					int32_t tVertices = totalVertices - currentVertices;
 					if (tVertices > MAX_SENDDOWN)
 						tVertices = MAX_SENDDOWN;
@@ -904,8 +887,7 @@ void MC_TextureManager::renderLists(void)
 		if ((masterVertexNodes[i].flags & MC2_ISCOMPASS) && (masterVertexNodes[i].vertices))
 		{
 			uint32_t totalVertices = masterVertexNodes[i].numVertices;
-			if (masterVertexNodes[i].currentVertex !=
-				(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
 			}
@@ -926,7 +908,7 @@ void MC_TextureManager::renderLists(void)
 				int32_t currentVertices = 0;
 				while (currentVertices < totalVertices)
 				{
-					gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+					gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 					int32_t tVertices = totalVertices - currentVertices;
 					if (tVertices > MAX_SENDDOWN)
 						tVertices = MAX_SENDDOWN;
@@ -945,8 +927,7 @@ void MC_TextureManager::renderLists(void)
 		if ((masterVertexNodes[i].flags & MC2_ISHUDLMNT) && (masterVertexNodes[i].vertices))
 		{
 			uint32_t totalVertices = masterVertexNodes[i].numVertices;
-			if (masterVertexNodes[i].currentVertex !=
-				(masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
+			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
 			}
@@ -967,7 +948,7 @@ void MC_TextureManager::renderLists(void)
 				int32_t currentVertices = 0;
 				while (currentVertices < totalVertices)
 				{
-					gos_VERTEX* v	 = masterVertexNodes[i].vertices + currentVertices;
+					gos_VERTEX* v = masterVertexNodes[i].vertices + currentVertices;
 					int32_t tVertices = totalVertices - currentVertices;
 					if (tVertices > MAX_SENDDOWN)
 						tVertices = MAX_SENDDOWN;
@@ -985,20 +966,19 @@ void MC_TextureManager::renderLists(void)
 }
 
 //----------------------------------------------------------------------
-uint32_t MC_TextureManager::update(void)
+uint32_t
+MC_TextureManager::update(void)
 {
 	uint32_t numTexturesFreed = 0;
-	currentUsedTextures		  = 0;
+	currentUsedTextures = 0;
 	for (size_t i = 0; i < MC_MAXTEXTURES; i++)
 	{
-		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) &&
-			(masterTextureNodes[i].gosTextureHandle != 0xffffffff))
+		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) && (masterTextureNodes[i].gosTextureHandle != 0xffffffff))
 		{
-			if (!masterTextureNodes[i].uniqueInstance &&
-				!(masterTextureNodes[i].neverFLUSH & 1)) // Only uncachable if
-														 // BIT 1 is set,
-														 // otherwise, cache 'em
-														 // out!
+			if (!masterTextureNodes[i].uniqueInstance && !(masterTextureNodes[i].neverFLUSH & 1)) // Only uncachable if
+				// BIT 1 is set,
+				// otherwise, cache 'em
+				// out!
 			{
 				if (masterTextureNodes[i].lastUsed <= (turn - 60))
 				{
@@ -1022,7 +1002,8 @@ uint32_t MC_TextureManager::update(void)
 }
 
 //----------------------------------------------------------------------
-uint32_t MC_TextureManager::textureFromMemory(
+uint32_t
+MC_TextureManager::textureFromMemory(
 	uint32_t* data, gos_TextureFormat key, uint32_t hints, uint32_t width, uint32_t bitDepth)
 {
 	int32_t i = 0;
@@ -1043,14 +1024,14 @@ uint32_t MC_TextureManager::textureFromMemory(
 	// New Method.  Just store memory footprint of texture.
 	// DO NOT create GOS handle until we need it.
 	masterTextureNodes[i].gosTextureHandle = CACHED_OUT_HANDLE;
-	masterTextureNodes[i].nodeName		   = nullptr;
-	masterTextureNodes[i].numUsers		   = 1;
-	masterTextureNodes[i].key			   = key;
-	masterTextureNodes[i].hints			   = hints;
+	masterTextureNodes[i].nodeName = nullptr;
+	masterTextureNodes[i].numUsers = 1;
+	masterTextureNodes[i].key = key;
+	masterTextureNodes[i].hints = hints;
 	//------------------------------------------
 	// Find and store the width.
 	masterTextureNodes[i].width = width;
-	int32_t txmSize				= width * width * bitDepth;
+	int32_t txmSize = width * width * bitDepth;
 	if (!lzBuffer1)
 	{
 		lzBuffer1 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
@@ -1078,7 +1059,8 @@ uint32_t MC_TextureManager::textureFromMemory(
 }
 
 //----------------------------------------------------------------------
-uint32_t MC_TextureManager::textureInstanceExists(PCSTR textureFullPathName, gos_TextureFormat key,
+uint32_t
+MC_TextureManager::textureInstanceExists(PCSTR textureFullPathName, gos_TextureFormat key,
 	uint32_t hints, uint32_t uniqueInstance, uint32_t nFlush)
 {
 	int32_t i = 0;
@@ -1110,7 +1092,8 @@ uint32_t MC_TextureManager::textureInstanceExists(PCSTR textureFullPathName, gos
 }
 
 //----------------------------------------------------------------------
-uint32_t MC_TextureManager::loadTexture(PCSTR textureFullPathName, gos_TextureFormat key,
+uint32_t
+MC_TextureManager::loadTexture(PCSTR textureFullPathName, gos_TextureFormat key,
 	uint32_t hints, uint32_t uniqueInstance, uint32_t nFlush)
 {
 	int32_t i = 0;
@@ -1118,8 +1101,7 @@ uint32_t MC_TextureManager::loadTexture(PCSTR textureFullPathName, gos_TextureFo
 	// Is this texture already Loaded?
 	for (i = 0; i < MC_MAXTEXTURES; i++)
 	{
-		if (masterTextureNodes[i].nodeName &&
-			(_stricmp(masterTextureNodes[i].nodeName, textureFullPathName) == 0))
+		if (masterTextureNodes[i].nodeName && (_stricmp(masterTextureNodes[i].nodeName, textureFullPathName) == 0))
 		{
 			if (uniqueInstance == masterTextureNodes[i].uniqueInstance)
 			{
@@ -1162,11 +1144,11 @@ uint32_t MC_TextureManager::loadTexture(PCSTR textureFullPathName, gos_TextureFo
 		(PSTR)textureStringHeap->Malloc(strlen(textureFullPathName) + 1);
 	gosASSERT(masterTextureNodes[i].nodeName != nullptr);
 	strcpy(masterTextureNodes[i].nodeName, textureFullPathName);
-	masterTextureNodes[i].numUsers		 = 1;
-	masterTextureNodes[i].key			 = key;
-	masterTextureNodes[i].hints			 = hints;
+	masterTextureNodes[i].numUsers = 1;
+	masterTextureNodes[i].key = key;
+	masterTextureNodes[i].hints = hints;
 	masterTextureNodes[i].uniqueInstance = uniqueInstance;
-	masterTextureNodes[i].neverFLUSH	 = nFlush;
+	masterTextureNodes[i].neverFLUSH = nFlush;
 	//----------------------------------------------------------------------------------------------
 	// Store 0xf0000000 & fileSize in width so that cache knows to create new
 	// texture from memory. This way, we never need to know anything about the
@@ -1215,10 +1197,10 @@ uint32_t MC_TextureManager::loadTexture(PCSTR textureFullPathName, gos_TextureFo
 }
 
 //----------------------------------------------------------------------
-int32_t MC_TextureManager::saveTexture(uint32_t textureIndex, PCSTR textureFullPathName)
+int32_t
+MC_TextureManager::saveTexture(uint32_t textureIndex, PCSTR textureFullPathName)
 {
-	if ((MC_MAXTEXTURES <= textureIndex) ||
-		(nullptr == masterTextureNodes[textureIndex].textureData))
+	if ((MC_MAXTEXTURES <= textureIndex) || (nullptr == masterTextureNodes[textureIndex].textureData))
 	{
 		return (~NO_ERROR);
 	}
@@ -1255,7 +1237,8 @@ int32_t MC_TextureManager::saveTexture(uint32_t textureIndex, PCSTR textureFullP
 	return NO_ERROR;
 }
 
-uint32_t MC_TextureManager::copyTexture(uint32_t texNodeID)
+uint32_t
+MC_TextureManager::copyTexture(uint32_t texNodeID)
 {
 	gosASSERT(texNodeID < MC_MAXTEXTURES);
 	if (masterTextureNodes[texNodeID].gosTextureHandle != -1)
@@ -1271,9 +1254,10 @@ uint32_t MC_TextureManager::copyTexture(uint32_t texNodeID)
 }
 //----------------------------------------------------------------------
 // MC_TextureNode
-uint32_t MC_TextureNode::get_gosTextureHandle(void) // If texture is not in
-													// VidRAM, cache a texture
-													// out and cache this one in.
+uint32_t
+MC_TextureNode::get_gosTextureHandle(void) // If texture is not in
+	// VidRAM, cache a texture
+	// out and cache this one in.
 {
 	if (gosTextureHandle == 0xffffffff)
 	{
@@ -1290,8 +1274,7 @@ uint32_t MC_TextureNode::get_gosTextureHandle(void) // If texture is not in
 	}
 	else
 	{
-		if ((mcTextureManager->currentUsedTextures >= MAX_MC2_GOS_TEXTURES) &&
-			!mcTextureManager->flushCache())
+		if ((mcTextureManager->currentUsedTextures >= MAX_MC2_GOS_TEXTURES) && !mcTextureManager->flushCache())
 			return 0x0; // No texture!
 		if (width == 0)
 			return 0; // These faces have no texture!!
@@ -1341,10 +1324,10 @@ uint32_t MC_TextureNode::get_gosTextureHandle(void) // If texture is not in
 }
 
 //----------------------------------------------------------------------
-void MC_TextureNode::destroy(void)
+void
+MC_TextureNode::destroy(void)
 {
-	if ((gosTextureHandle != CACHED_OUT_HANDLE) && (gosTextureHandle != 0xffffffff) &&
-		(gosTextureHandle != 0x0))
+	if ((gosTextureHandle != CACHED_OUT_HANDLE) && (gosTextureHandle != 0xffffffff) && (gosTextureHandle != 0x0))
 	{
 		gos_DestroyTexture(gosTextureHandle);
 	}

@@ -33,7 +33,7 @@ extern uint32_t TopStatistics;
 #define DbSizeY 342
 
 extern int32_t CurrentX, CurrentY; // Current pixel position
-extern int32_t DbChrX, DbChrY;	 // Current character x,y
-extern int32_t StartX, StartY;	 // Current start of line
+extern int32_t DbChrX, DbChrY; // Current character x,y
+extern int32_t StartX, StartY; // Current start of line
 
 #endif

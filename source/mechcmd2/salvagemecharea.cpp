@@ -23,17 +23,17 @@ aAnimButton* SalvageListItem::templateCheckButton = nullptr;
 SalvageMechArea* SalvageMechArea::instance = nullptr;
 
 aText* SalvageListItem::variantNameText = nullptr;
-aText* SalvageListItem::mechNameText	= nullptr;
-aText* SalvageListItem::weightText		= nullptr;
-aText* SalvageListItem::costText		= nullptr;
-aObject* SalvageListItem::cBillsIcon	= nullptr;
-aObject* SalvageListItem::weightIcon	= nullptr;
+aText* SalvageListItem::mechNameText = nullptr;
+aText* SalvageListItem::weightText = nullptr;
+aText* SalvageListItem::costText = nullptr;
+aObject* SalvageListItem::cBillsIcon = nullptr;
+aObject* SalvageListItem::weightIcon = nullptr;
 RECT SalvageListItem::iconRect;
 RECT SalvageListItem::rect;
 
-aAnimation* SalvageListItem::s_pressedAnim   = nullptr;
+aAnimation* SalvageListItem::s_pressedAnim = nullptr;
 aAnimation* SalvageListItem::s_highlightAnim = nullptr;
-aAnimation* SalvageListItem::s_normalAnim	= nullptr;
+aAnimation* SalvageListItem::s_normalAnim = nullptr;
 
 #define RP_TEXTID 3
 #define NAME_TEXTID 0
@@ -53,9 +53,9 @@ SalvageMechScreen::SalvageMechScreen()
 	// this MUST be initialized
 	LogisticsData::instance->init();
 	helpTextArrayID = 2;
-	countDownTime   = .5;
-	curCount		= 0.0;
-	previousAmount  = 0;
+	countDownTime = .5;
+	curCount = 0.0;
+	previousAmount = 0;
 	oldCBillsAmount = 0;
 	salvageListBox.setSpaceBetweenItems(5);
 	salvageListBox.setTopSkip(2);
@@ -87,8 +87,8 @@ SalvageMechScreen::~SalvageMechScreen()
 
 int32_t __cdecl sortMechs(PCVOID pW1, PCVOID pW2)
 {
-	BattleMech* p1		  = *(BattleMech**)pW1;
-	BattleMech* p2		  = *(BattleMech**)pW2;
+	BattleMech* p1 = *(BattleMech**)pW1;
+	BattleMech* p2 = *(BattleMech**)pW2;
 	LogisticsVariant* pV1 = LogisticsData::instance->getVariant(p1->variantName);
 	LogisticsVariant* pV2 = LogisticsData::instance->getVariant(p2->variantName);
 	if (pV1 && pV2)
@@ -103,7 +103,8 @@ int32_t __cdecl sortMechs(PCVOID pW1, PCVOID pW2)
 	return 0;
 }
 
-void SalvageMechScreen::init(FitIniFile* file)
+void
+SalvageMechScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(
 		*file, "SalvageAreaStatic", "SalvageAreaText", "SalvageAreaRect", "SalvageAreaButton");
@@ -132,8 +133,7 @@ void SalvageMechScreen::init(FitIniFile* file)
 	for (i = 0; i < count; i++)
 	{
 		BattleMech* pMech = pSortedMechs[i];
-		if (pMech->isDisabled() && !pMech->isDestroyed() &&
-			pMech->moveLevel != 2) // don't put copters in the list
+		if (pMech->isDisabled() && !pMech->isDestroyed() && pMech->moveLevel != 2) // don't put copters in the list
 		{
 			SalvageListItem* pItem = new SalvageListItem(pMech);
 			salvageListBox.AddItem(pItem);
@@ -148,7 +148,8 @@ void SalvageMechScreen::init(FitIniFile* file)
 	beginFadeIn(1.0);
 }
 
-void SalvageMechScreen::render()
+void
+SalvageMechScreen::render()
 {
 	int32_t xOffset = 0;
 	int32_t yOffset = 0;
@@ -171,14 +172,15 @@ void SalvageMechScreen::render()
 	//	}
 }
 
-int32_t SalvageMechScreen::handleMessage(uint32_t message, uint32_t who)
+int32_t
+SalvageMechScreen::handleMessage(uint32_t message, uint32_t who)
 {
 	if (who == 101)
 	{
 		bDone = true;
 		{
 			soundSystem->stopBettySample(); // don't want to carry droning on to
-											// next screen
+				// next screen
 			if (LogisticsData::instance->skipPilotReview())
 			{
 				beginFadeOut(.5);
@@ -187,7 +189,7 @@ int32_t SalvageMechScreen::handleMessage(uint32_t message, uint32_t who)
 			{
 				exitAnim.begin();
 				exitAnim.update();
-				fadeTime   = 0.0f;
+				fadeTime = 0.0f;
 				fadeInTime = 0.f;
 			}
 			return 1;
@@ -196,18 +198,20 @@ int32_t SalvageMechScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool SalvageMechScreen::isDone()
+bool
+SalvageMechScreen::isDone()
 {
 	return bDone && (exitAnim.isDone() || (fadeTime > fadeOutTime));
 }
-void SalvageMechScreen::update()
+void
+SalvageMechScreen::update()
 {
 	int32_t amount = LogisticsData::instance->getCBills();
-	int32_t color  = 0xff005392;
+	int32_t color = 0xff005392;
 	if (amount != oldCBillsAmount)
 	{
-		previousAmount  = oldCBillsAmount - amount;
-		curCount		= .00001f;
+		previousAmount = oldCBillsAmount - amount;
+		curCount = .00001f;
 		oldCBillsAmount = amount;
 		if (previousAmount < 0)
 			soundSystem->playDigitalSample(WINDOW_OPEN);
@@ -246,7 +250,8 @@ void SalvageMechScreen::update()
 		fadeTime = 0.f;
 }
 
-void SalvageMechScreen::updateSalvage()
+void
+SalvageMechScreen::updateSalvage()
 {
 	for (size_t i = 0; i < salvageListBox.GetItemCount(); i++)
 	{
@@ -261,19 +266,23 @@ void SalvageMechScreen::updateSalvage()
 
 //////////////////////////////////////////////
 
-SalvageListItem::~SalvageListItem() { removeAllChildren(true); }
+SalvageListItem::~SalvageListItem()
+{
+	removeAllChildren(true);
+}
 
-void SalvageListItem::init(FitIniFile* file)
+void
+SalvageListItem::init(FitIniFile* file)
 {
 	if (templateCheckButton)
 		return; // already initialized
 	templateCheckButton = new aAnimButton;
-	mechNameText		= new aText;
-	variantNameText		= new aText;
-	weightText			= new aText;
-	costText			= new aText;
-	cBillsIcon			= new aObject;
-	weightIcon			= new aObject;
+	mechNameText = new aText;
+	variantNameText = new aText;
+	weightText = new aText;
+	costText = new aText;
+	cBillsIcon = new aObject;
+	weightIcon = new aObject;
 	templateCheckButton->init(*file, "SalvageAreaCheckBoxButton");
 	cBillsIcon->init(file, "CBillsIcon");
 	weightIcon->init(file, "WeightIcon");
@@ -287,10 +296,10 @@ void SalvageListItem::init(FitIniFile* file)
 	int32_t width, height;
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
-	rect.right		= rect.left + width;
-	rect.bottom		= rect.top + height;
-	s_normalAnim	= new aAnimation;
-	s_pressedAnim   = new aAnimation;
+	rect.right = rect.left + width;
+	rect.bottom = rect.top + height;
+	s_normalAnim = new aAnimation;
+	s_pressedAnim = new aAnimation;
 	s_highlightAnim = new aAnimation;
 	s_normalAnim->init(file, "Normal");
 	s_pressedAnim->init(file, "Pressed");
@@ -300,7 +309,7 @@ void SalvageListItem::init(FitIniFile* file)
 	file->readIdLong("YLocation", iconRect.right);
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
-	iconRect.right  = iconRect.left + width;
+	iconRect.right = iconRect.left + width;
 	iconRect.bottom = iconRect.top + height;
 }
 
@@ -313,23 +322,23 @@ SalvageListItem::SalvageListItem(BattleMech* pMech)
 	icon->init(pMech);
 	icon->update();
 	((Mech3DAppearance*)pMech->getAppearance())->getPaintScheme(psRed, psGreen, psBlue);
-	normalAnim	= *s_normalAnim;
-	pressedAnim   = *s_pressedAnim;
+	normalAnim = *s_normalAnim;
+	pressedAnim = *s_pressedAnim;
 	highlightAnim = *s_highlightAnim;
-	pVariant	  = LogisticsData::instance->getVariant(pMech->variantName);
+	pVariant = LogisticsData::instance->getVariant(pMech->variantName);
 	if (!pVariant)
 		return;
 	costToSalvage = .8f * (float)pVariant->getCost();
 	// add the chassis
-	aText* pText   = new aText();
-	*pText		   = *mechNameText;
+	aText* pText = new aText();
+	*pText = *mechNameText;
 	int32_t nameID = pVariant->getChassisName();
 	char tmp[64];
 	cLoadString(nameID, tmp, 63);
 	pText->setText(tmp);
 	addChild(pText);
 	// add the variant name
-	pText  = new aText();
+	pText = new aText();
 	*pText = *variantNameText;
 	pText->setText(pVariant->getName());
 	addChild(pText);
@@ -337,34 +346,35 @@ SalvageListItem::SalvageListItem(BattleMech* pMech)
 	char text[64];
 	int32_t salvageAmount = costToSalvage;
 	sprintf(text, "%ld", salvageAmount);
-	pText  = new aText();
+	pText = new aText();
 	*pText = *costText;
 	pText->setText(text);
 	addChild(pText);
 	// add tonnage
 	int32_t tonnage = pMech->tonnage;
 	sprintf(text, "%ld", tonnage);
-	pText  = new aText();
+	pText = new aText();
 	*pText = *weightText;
 	pText->setText(text);
 	addChild(pText);
 	// need to make the check box button
 	aAnimButton* pButton = new aAnimButton;
-	*pButton			 = *templateCheckButton;
+	*pButton = *templateCheckButton;
 	pButton->setID(CHECK_BUTTON);
 	addChild(pButton);
 	checkButton = pButton;
 	// add the icons
 	aObject* pObject = new aObject;
-	*pObject		 = *cBillsIcon;
+	*pObject = *cBillsIcon;
 	addChild(pObject);
-	pObject  = new aObject;
+	pObject = new aObject;
 	*pObject = *weightIcon;
 	addChild(pObject);
 	normalAnim.begin();
 }
 
-void SalvageListItem::update()
+void
+SalvageListItem::update()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
@@ -431,7 +441,8 @@ void SalvageListItem::update()
 	aObject::update();
 }
 
-void SalvageListItem::render()
+void
+SalvageListItem::render()
 {
 	aObject::render();
 	icon->renderUnitIcon(iconRect.left + location[0].x + 3, iconRect.top + location[0].y + 5,
@@ -446,16 +457,21 @@ void SalvageListItem::render()
 		pChildren[i]->setColor(color, 1);
 	}
 	RECT tmp;
-	tmp.left   = location[0].x + templateCheckButton->width() + 3;
-	tmp.right  = tmp.left + rect.right - rect.left;
-	tmp.top	= location[0].y;
+	tmp.left = location[0].x + templateCheckButton->width() + 3;
+	tmp.right = tmp.left + rect.right - rect.left;
+	tmp.top = location[0].y;
 	tmp.bottom = location[2].y;
 	drawEmptyRect(tmp, color, color);
 }
 
-bool SalvageListItem::isChecked() { return checkButton->isPressed(); }
+bool
+SalvageListItem::isChecked()
+{
+	return checkButton->isPressed();
+}
 
-int32_t SalvageListItem::handleMessage(uint32_t message, uint32_t who)
+int32_t
+SalvageListItem::handleMessage(uint32_t message, uint32_t who)
 {
 	if (message == aMSG_LEFTMOUSEDOWN)
 	{
@@ -475,18 +491,22 @@ int32_t SalvageListItem::handleMessage(uint32_t message, uint32_t who)
 
 SalvageMechArea::SalvageMechArea()
 {
-	statics		= 0;
-	rects		= 0;
+	statics = 0;
+	rects = 0;
 	staticCount = rectCount = textCount = 0;
-	textObjects							= 0;
+	textObjects = 0;
 	gosASSERT(!instance);
 	instance = this;
-	unit	 = 0;
+	unit = 0;
 }
 
-SalvageMechArea::~SalvageMechArea() { instance = nullptr; }
+SalvageMechArea::~SalvageMechArea()
+{
+	instance = nullptr;
+}
 
-void SalvageMechArea::init(FitIniFile* file)
+void
+SalvageMechArea::init(FitIniFile* file)
 {
 	file->seekBlock("SalvageAreaRect8");
 	int32_t left, right, top, bottom;
@@ -512,12 +532,14 @@ void SalvageMechArea::init(FitIniFile* file)
 	}
 }
 
-void SalvageMechArea::update()
+void
+SalvageMechArea::update()
 {
 	loadoutListBox.update();
 	mechCamera.update();
 }
-void SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue)
+void
+SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue)
 {
 	if (pMech == unit)
 		return;
@@ -525,10 +547,10 @@ void SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t gree
 	if (pMech)
 	{
 		std::wstring fileName = pMech->getFileName();
-		int32_t index		  = fileName.Find('.');
-		fileName			  = fileName.Left(index);
-		index				  = fileName.ReverseFind('\\');
-		fileName			  = fileName.Right(fileName.Length() - index - 1);
+		int32_t index = fileName.Find('.');
+		fileName = fileName.Left(index);
+		index = fileName.ReverseFind('\\');
+		fileName = fileName.Right(fileName.Length() - index - 1);
 		mechCamera.setMech(fileName, red, green, blue);
 		textObjects[NAME_TEXTID].setText(pMech->getName());
 		char text[256];
@@ -561,7 +583,8 @@ void SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t gree
 	unit = pMech;
 }
 
-void SalvageMechArea::render(int32_t xOffset, int32_t yOffset)
+void
+SalvageMechArea::render(int32_t xOffset, int32_t yOffset)
 {
 	loadoutListBox.move(xOffset, yOffset);
 	loadoutListBox.render();

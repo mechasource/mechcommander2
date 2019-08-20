@@ -68,12 +68,12 @@ enum // AssertActionCodes
 
 enum // ECrashTimeDialogStates	// msoctds
 {
-	msoctdsNull	= 0x00000000,
-	msoctdsQuit	= 0x00000001,
+	msoctdsNull = 0x00000000,
+	msoctdsQuit = 0x00000001,
 	msoctdsRestart = 0x00000002,
 	msoctdsRecover = 0x00000004,
-	msoctdsUnused  = 0x00000008,
-	msoctdsDebug   = 0x00000010,
+	msoctdsUnused = 0x00000008,
+	msoctdsDebug = 0x00000010,
 };
 
 #define MSODWRECOVERQUIT (msoctdsRecover | msoctdsQuit)
@@ -85,59 +85,59 @@ enum // EMsoCrashHandlerFlags  // msochf
 {
 	msochfNull = 0x00000000,
 
-	msochfUnused			  = msoctdsUnused, // THESE MUST BE THE SAME
+	msochfUnused = msoctdsUnused, // THESE MUST BE THE SAME
 	msochfCanRecoverDocuments = msoctdsRecover,
 
-	msochfObsoleteCanDebug  = 0x00010001, // not used anymore
+	msochfObsoleteCanDebug = 0x00010001, // not used anymore
 	msochfCannotSneakyDebug = 0x00010002, // The "hidden" debug feature won't work
 	msochfDefaultDontReport = 0x00010004,
-	msochReportingDisabled  = 0x00010008, // User cannot change default reporting choice
+	msochReportingDisabled = 0x00010008, // User cannot change default reporting choice
 };
 
 //
 enum // EMsoCrashHandlerResults  // msochr
 {
-	msochrNotHandled	   = msoctdsNull,
-	msochrUnused		   = msoctdsUnused,
-	msochrDebug			   = msoctdsDebug,
+	msochrNotHandled = msoctdsNull,
+	msochrUnused = msoctdsUnused,
+	msochrDebug = msoctdsDebug,
 	msochrRecoverDocuments = msoctdsRecover,
-	msochrRestart		   = msoctdsRestart,
-	msochrQuit			   = msoctdsQuit,
+	msochrRestart = msoctdsRestart,
+	msochrQuit = msoctdsQuit,
 };
 
 enum // EDwBehaviorFlags
 {
-	fDwOfficeApp	   = 0x00000001,
-	fDwNoReporting	 = 0x00000002, // don't report
-	fDwCheckSig		   = 0x00000004, // checks the signatures of the App/Mod list
+	fDwOfficeApp = 0x00000001,
+	fDwNoReporting = 0x00000002, // don't report
+	fDwCheckSig = 0x00000004, // checks the signatures of the App/Mod list
 	fDwGiveAppResponse = 0x00000008, // hands szResponse to app on command line
-	fDwWhistler		   = 0x00000010, // Whistler's exception handler is caller
-	fDwUseIE		   = 0x00000020, // always launch w/ IE
-	fDwDeleteFiles	 = 0x00000040, // delete the additional files after use.
-	fDwHeadless		   = 0x00000080, // DW will auto-report. policy required to enable
-	fDwUseHKLM		   = 0x00000100, // DW reg from HKLM instead of HKCU
+	fDwWhistler = 0x00000010, // Whistler's exception handler is caller
+	fDwUseIE = 0x00000020, // always launch w/ IE
+	fDwDeleteFiles = 0x00000040, // delete the additional files after use.
+	fDwHeadless = 0x00000080, // DW will auto-report. policy required to enable
+	fDwUseHKLM = 0x00000100, // DW reg from HKLM instead of HKCU
 };
 
 typedef struct _DWSharedMem
 {
-	uint32_t dwSize;		 // should be set to size of DWSharedMem
-	uint32_t pid;			 // Process Id of caller
-	uint32_t tid;			 // Id of excepting thread
-	DWORD_PTR eip;			 // EIP of the excepting instruction
+	uint32_t dwSize; // should be set to size of DWSharedMem
+	uint32_t pid; // Process Id of caller
+	uint32_t tid; // Id of excepting thread
+	DWORD_PTR eip; // EIP of the excepting instruction
 	PEXCEPTION_POINTERS pep; // Exception pointers given to the callee's
 	// exception handler
 	HANDLE hEventDone; // event DW signals when done
 	// caller will also signal this if it things
 	// DW has hung and restarts itself
 	HANDLE hEventNotifyDone; // App sets when it's done w/ notifcation phase
-	HANDLE hEventAlive;		 // heartbeat event DW signals per EVENT_TIMEOUT
-	HANDLE hMutex;			 // to protect the signaling of EventDone
-	HANDLE hProc;			 // handle to the calling process (! in Assert)
+	HANDLE hEventAlive; // heartbeat event DW signals per EVENT_TIMEOUT
+	HANDLE hMutex; // to protect the signaling of EventDone
+	HANDLE hProc; // handle to the calling process (! in Assert)
 
 	uint32_t bfDWBehaviorFlags; // controls caller-specific behaviors
 
-	uint32_t msoctdsResult;  // result from crash-time dialog
-	BOOL fReportProblem;	 // did user approve reporting?
+	uint32_t msoctdsResult; // result from crash-time dialog
+	BOOL fReportProblem; // did user approve reporting?
 	uint32_t bfmsoctdsOffer; // bitfield of user choices to offer
 	// note that you must specify two of:
 	// Quit, Restart, Recover, Ignore
@@ -155,19 +155,19 @@ typedef struct _DWSharedMem
 	// the app and exit.
 
 	int32_t iPingCurrent; // current count for the recovery progress bar
-	int32_t iPingEnd;	 // index for the end of the recovery progress bar
+	int32_t iPingEnd; // index for the end of the recovery progress bar
 
-	char szFormalAppName[DW_APPNAME_LENGTH];   // the app name for display to user
-											   // (ie "Microsoft Word")
+	char szFormalAppName[DW_APPNAME_LENGTH]; // the app name for display to user
+		// (ie "Microsoft Word")
 	char szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to
-											   // user (ie "Word")
-	char szModuleFileName[DW_MAX_PATH];		   // The result of
-											   // GetModuleFileNameA(nullptr)
-	WCHAR wzErrorMessage[DW_MAX_ERROR_CWC];	// Error message to show user.
+		// user (ie "Word")
+	char szModuleFileName[DW_MAX_PATH]; // The result of
+		// GetModuleFileNameA(nullptr)
+	WCHAR wzErrorMessage[DW_MAX_ERROR_CWC]; // Error message to show user.
 
 	char szServer[DW_MAX_SERVERNAME]; // name of server to try by default
 	char szLCIDKeyValue[DW_MAX_PATH]; // name of key value uint32_t containing
-									  // the
+		// the
 	// PlugUI LCID, if this string fails to
 	// be a valid key-value, DW will use the
 	// system LCID, and if it can't find
@@ -194,11 +194,11 @@ typedef struct _DWSharedMem
 	char szBrand[DW_APPNAME_LENGTH]; // passed as a param to Privacy Policy link
 #ifdef DEBUG
 	// for Assert communication
-	uint32_t dwTag;					  // [in] AssertTag
-	char szFile[DW_MAX_PATH];		  // [in] File name of the assert
-	int32_t line;					  // [in] Line number of the assert
+	uint32_t dwTag; // [in] AssertTag
+	char szFile[DW_MAX_PATH]; // [in] File name of the assert
+	int32_t line; // [in] Line number of the assert
 	char szAssert[DW_MAX_ASSERT_CCH]; // [in] Sz from the assert
-	int32_t AssertActionCode;		  // [out] action code to take
+	int32_t AssertActionCode; // [out] action code to take
 #endif
 } DWSharedMem;
 

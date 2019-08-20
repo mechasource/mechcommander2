@@ -152,7 +152,7 @@ typedef enum
 	TACTICAL_ORDER_DEPLOY_ELEMENTALS,
 	TACTICAL_ORDER_RECOVER,
 	NUM_TACTICAL_ORDERS // IF THIS CHANGES, ADD GUARD_POINT AS SEP. ORDER (see
-						// pack/unpack hack)
+	// pack/unpack hack)
 } TacticalOrderCode;
 
 //***************************************************************************
@@ -245,25 +245,25 @@ public:
 
 	void operator=(TacticalOrder copy)
 	{
-		time			  = copy.time;
-		delayedTime		  = copy.delayedTime;
-		lastTime		  = copy.lastTime;
-		unitOrder		  = copy.unitOrder;
-		origin			  = copy.origin;
-		code			  = copy.code;
-		moveParams		  = copy.moveParams;
-		attackParams	  = copy.attackParams;
-		targetWID		  = copy.targetWID;
+		time = copy.time;
+		delayedTime = copy.delayedTime;
+		lastTime = copy.lastTime;
+		unitOrder = copy.unitOrder;
+		origin = copy.origin;
+		code = copy.code;
+		moveParams = copy.moveParams;
+		attackParams = copy.attackParams;
+		targetWID = copy.targetWID;
 		targetObjectClass = copy.targetObjectClass;
-		selectionIndex	= copy.selectionIndex;
-		stage			  = copy.stage;
-		subOrder		  = copy.subOrder;
-		lastMoveGoal.x	= -99999.0;
-		statusCode		  = 0;
+		selectionIndex = copy.selectionIndex;
+		stage = copy.stage;
+		subOrder = copy.subOrder;
+		lastMoveGoal.x = -99999.0;
+		statusCode = 0;
 		pointLocalMoverId = copy.pointLocalMoverId;
-		groupFlags		  = copy.groupFlags;
-		data[0]			  = copy.data[0];
-		data[1]			  = copy.data[1];
+		groupFlags = copy.groupFlags;
+		data[0] = copy.data[0];
+		data[1] = copy.data[1];
 	}
 
 	void init(void);

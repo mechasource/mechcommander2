@@ -220,15 +220,15 @@
 #define ULLARM 0xb5
 #define ULRARM 0xb6
 
-#define BIG_ARTLRY 0xf8	// 248
-#define SMALL_ARTLRY 0xf9  // 249
+#define BIG_ARTLRY 0xf8 // 248
+#define SMALL_ARTLRY 0xf9 // 249
 #define SENSOR_ARTLRY 0xfa // 250
 
-#define BIG_STRIKE 0x1fb	// 507
-#define SMALL_STRIKE 0x1fc  // 508
+#define BIG_STRIKE 0x1fb // 507
+#define SMALL_STRIKE 0x1fc // 508
 #define SENSOR_STRIKE 0x1fd // 509
 
-#define CAMERA_CALL 0x204  // 516
+#define CAMERA_CALL 0x204 // 516
 #define CAMERA_DRONE 0x205 // 517
 
 //---------------------------------------------------------------------------

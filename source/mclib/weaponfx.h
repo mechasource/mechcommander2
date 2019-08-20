@@ -70,7 +70,7 @@ public:
 
 	void init(void)
 	{
-		effects	= nullptr;
+		effects = nullptr;
 		numEffects = 0;
 	}
 

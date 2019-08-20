@@ -57,13 +57,13 @@ using namespace MidLevelRenderer;
 extern uint32_t gShowClippedPolys;
 extern uint32_t gShowBirdView;
 
-uint32_t gShowClippedPolys	= 0;
-uint32_t gShowBirdView		  = 0;
+uint32_t gShowClippedPolys = 0;
+uint32_t gShowBirdView = 0;
 uint32_t gEnableDetailTexture = 1;
-uint32_t gEnableTextureSort   = 1;
-uint32_t gEnableAlphaSort	 = 1;
-uint32_t gEnableMultiTexture  = 1;
-uint32_t gEnableLightMaps	 = 1;
+uint32_t gEnableTextureSort = 1;
+uint32_t gEnableAlphaSort = 1;
+uint32_t gEnableMultiTexture = 1;
+uint32_t gEnableLightMaps = 1;
 
 static uint8_t __stdcall CheckDetailTexture(void)
 {
@@ -73,12 +73,18 @@ static uint8_t __stdcall CheckTextureSort(void)
 {
 	return uint8_t((gEnableTextureSort != 0) ? 1 : 0);
 }
-static uint8_t __stdcall CheckAlphaSort(void) { return uint8_t((gEnableAlphaSort != 0) ? 1 : 0); }
+static uint8_t __stdcall CheckAlphaSort(void)
+{
+	return uint8_t((gEnableAlphaSort != 0) ? 1 : 0);
+}
 static uint8_t __stdcall CheckMultiTexture(void)
 {
 	return uint8_t((gEnableMultiTexture != 0) ? 1 : 0);
 }
-static uint8_t __stdcall CheckLightMaps(void) { return uint8_t((gEnableLightMaps != 0) ? 1 : 0); }
+static uint8_t __stdcall CheckLightMaps(void)
+{
+	return uint8_t((gEnableLightMaps != 0) ? 1 : 0);
+}
 
 static void __stdcall EnableDetailTexture(void)
 {
@@ -108,7 +114,10 @@ static void __stdcall Toggle_ShowClippedPolys(void)
 {
 	gShowClippedPolys = uint32_t((!gShowClippedPolys) ? 1 : 0);
 }
-static uint8_t __stdcall Check_ShowBirdView(void) { return uint8_t((gShowBirdView != 0) ? 1 : 0); }
+static uint8_t __stdcall Check_ShowBirdView(void)
+{
+	return uint8_t((gShowBirdView != 0) ? 1 : 0);
+}
 static void __stdcall Toggle_ShowBirdView(void)
 {
 	gShowBirdView = uint32_t((!gShowBirdView) ? 1 : 0);
@@ -120,7 +129,7 @@ uint32_t Limits::Max_Number_Primitives_Per_Frame;
 uint32_t Limits::Max_Number_ScreenQuads_Per_Frame;
 uint32_t Limits::Max_Size_Of_LightMap_MemoryStream;
 
-HGOSHEAP MidLevelRenderer::Heap		  = nullptr;
+HGOSHEAP MidLevelRenderer::Heap = nullptr;
 HGOSHEAP MidLevelRenderer::StaticHeap = nullptr;
 
 DEFINE_TIMER(MidLevelRenderer, Scene_Draw_Time);
@@ -149,11 +158,12 @@ uint32_t MidLevelRenderer::PolysClippedButOnePlane;
 uint32_t MidLevelRenderer::PolysClippedButGOnePlane;
 
 bool MidLevelRenderer::ConvertToTriangleMeshes = true;
-bool MidLevelRenderer::PerspectiveMode		   = true;
+bool MidLevelRenderer::PerspectiveMode = true;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
+void
+MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
 	uint32_t Max_Number_Primitives_Per_Frame, uint32_t Max_Number_ScreenQuads_Per_Frame,
 	uint32_t Max_Size_Of_LightMap_MemoryStream, bool Convert_To_Triangle_Meshes)
 {
@@ -167,11 +177,11 @@ void MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
 	Heap = gos_CreateMemoryHeap("MLR", 0, ParentClientHeap);
 	Check_Pointer(Heap);
 #endif
-	Limits::Max_Number_Vertices_Per_Frame	 = Max_Number_Vertices_Per_Frame;
-	Limits::Max_Number_Primitives_Per_Frame   = Max_Number_Primitives_Per_Frame;
-	Limits::Max_Number_ScreenQuads_Per_Frame  = Max_Number_ScreenQuads_Per_Frame;
+	Limits::Max_Number_Vertices_Per_Frame = Max_Number_Vertices_Per_Frame;
+	Limits::Max_Number_Primitives_Per_Frame = Max_Number_Primitives_Per_Frame;
+	Limits::Max_Number_ScreenQuads_Per_Frame = Max_Number_ScreenQuads_Per_Frame;
 	Limits::Max_Size_Of_LightMap_MemoryStream = Max_Size_Of_LightMap_MemoryStream;
-	ConvertToTriangleMeshes					  = Convert_To_Triangle_Meshes;
+	ConvertToTriangleMeshes = Convert_To_Triangle_Meshes;
 	MLRLight::InitializeClass();
 	MLRTexturePool::InitializeClass();
 	MLRClipper::InitializeClass();
@@ -288,10 +298,11 @@ void MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MidLevelRenderer::TerminateClasses(void)
+void
+MidLevelRenderer::TerminateClasses(void)
 {
 	if (!MLRLookUpLight::DefaultData) // make sure there is something to
-									  // termiante
+		// termiante
 		return;
 	MLRLookUpLight::TerminateClass();
 	MLR_I_L_DeT_TMesh::TerminateClass();
@@ -348,7 +359,8 @@ void MidLevelRenderer::TerminateClasses(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t MidLevelRenderer::ReadMLRVersion(std::iostream erf_stream)
+uint32_t
+MidLevelRenderer::ReadMLRVersion(std::iostream erf_stream)
 {
 	Check_Object(erf_stream);
 	//
@@ -371,7 +383,8 @@ uint32_t MidLevelRenderer::ReadMLRVersion(std::iostream erf_stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MidLevelRenderer::WriteMLRVersion(std::iostream erf_stream)
+void
+MidLevelRenderer::WriteMLRVersion(std::iostream erf_stream)
 {
 	Check_Object(erf_stream);
 	*erf_stream << 'MLR#' << static_cast<uint32_t>(Current_MLR_Version);

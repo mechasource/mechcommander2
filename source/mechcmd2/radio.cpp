@@ -20,11 +20,11 @@ extern bool useSound;
 
 PacketFilePtr Radio::noiseFile = nullptr;
 RadioPtr Radio::radioList[MAX_RADIOS]; // Warriors no longer delete their
-									   // radios.
-bool Radio::radioListGo		  = false;
+	// radios.
+bool Radio::radioListGo = false;
 bool Radio::messageInfoLoaded = false;
-int32_t Radio::currentRadio   = 0;
-UserHeapPtr Radio::radioHeap  = nullptr;
+int32_t Radio::currentRadio = 0;
+UserHeapPtr Radio::radioHeap = nullptr;
 PacketFilePtr Radio::messagesFile[MAX_RADIOS];
 
 RadioMessageInfo messageInfo[RADIO_MESSAGE_COUNT];
@@ -32,18 +32,19 @@ RadioMessageInfo messageInfo[RADIO_MESSAGE_COUNT];
 //------------------------------------------------------------------------------------------
 // Class Radio
 //------------------------------------------------------------------------------------------
-PVOID Radio::operator new(size_t mySize)
+PVOID
+Radio::operator new(size_t mySize)
 {
 	if (!radioListGo)
 	{
 		radioListGo = true;
 		for (size_t i = 0; i < MAX_RADIOS; i++)
 		{
-			radioList[i]	= nullptr;
+			radioList[i] = nullptr;
 			messagesFile[i] = nullptr;
 		}
 		currentRadio = 0;
-		radioHeap	= new UserHeap;
+		radioHeap = new UserHeap;
 		radioHeap->init((4096 * 51) - 1, "Radios");
 		radioHeap->setMallocFatals(false);
 	}
@@ -52,10 +53,15 @@ PVOID Radio::operator new(size_t mySize)
 }
 
 //-------------------------------------------------------------------------------
-void Radio::operator delete(PVOID us) { radioHeap->Free(us); }
+void
+Radio::operator delete(PVOID us)
+{
+	radioHeap->Free(us);
+}
 
 //-------------------------------------------------------------------------------
-int32_t Radio::init(PSTR fileName, uint32_t heapSize, PSTR movie)
+int32_t
+Radio::init(PSTR fileName, uint32_t heapSize, PSTR movie)
 {
 	FullPathFileName pilotAudioPath;
 	pilotAudioPath.init(CDsoundPath, fileName, ".pak");
@@ -63,7 +69,7 @@ int32_t Radio::init(PSTR fileName, uint32_t heapSize, PSTR movie)
 	noisePath.init(CDsoundPath, "noise", ".pak");
 	//--------------------------------------
 	// Startup the packet file.
-	radioID				  = currentRadio;
+	radioID = currentRadio;
 	messagesFile[radioID] = new PacketFile;
 	gosASSERT(messagesFile[radioID] != nullptr);
 	int32_t result = messagesFile[radioID]->open(pilotAudioPath);
@@ -92,7 +98,8 @@ int32_t Radio::init(PSTR fileName, uint32_t heapSize, PSTR movie)
 
 #define NO_PLAY -1
 //------------------------------------------------------------------------------------------
-int32_t Radio::playMessage(RadioMessageType msgType)
+int32_t
+Radio::playMessage(RadioMessageType msgType)
 {
 	int32_t i, roll, callsign, fragmentNum, dropOut = 0;
 	if (!useSound)
@@ -129,18 +136,18 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 		return (NO_PLAY);
 	}
 	memset(msgData, 0, sizeof(RadioData));
-	msgData->noiseId		= SHORT_STATIC;
-	msgData->msgType		= msgType;
-	msgData->msgId			= messageInfo[msgType].messageMapping + i;
-	msgData->movieCode		= messageInfo[msgType].movieCode;
-	msgData->msgHeap		= radioHeap;
-	msgData->turnQueued		= turn;
-	msgData->priority		= messageInfo[msgType].priority;
-	msgData->pilot			= owner;
+	msgData->noiseId = SHORT_STATIC;
+	msgData->msgType = msgType;
+	msgData->msgId = messageInfo[msgType].messageMapping + i;
+	msgData->movieCode = messageInfo[msgType].movieCode;
+	msgData->msgHeap = radioHeap;
+	msgData->turnQueued = turn;
+	msgData->priority = messageInfo[msgType].priority;
+	msgData->pilot = owner;
 	msgData->expirationDate = scenarioTime + messageInfo[msgType].shelfLife;
 	//-----------------------------------------------------------------------
 	// Load the pieces need for playback.
-	callsign	= 0;
+	callsign = 0;
 	fragmentNum = 0;
 	if (messageInfo[msgType].pilotIdentifiesSelf)
 	{
@@ -166,7 +173,7 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 	{
 		if (messagesFile[radioID]->seekPacket(callsign) == NO_ERROR)
 		{
-			uint32_t messageSize	   = messagesFile[radioID]->getPacketSize();
+			uint32_t messageSize = messagesFile[radioID]->getPacketSize();
 			msgData->data[fragmentNum] = (puint8_t)radioHeap->Malloc(messageSize);
 			if (!msgData->data[fragmentNum])
 			{
@@ -180,7 +187,7 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 	}
 	if (messagesFile[radioID]->seekPacket(msgData->msgId) == NO_ERROR)
 	{
-		uint32_t messageSize	   = messagesFile[radioID]->getPacketSize();
+		uint32_t messageSize = messagesFile[radioID]->getPacketSize();
 		msgData->data[fragmentNum] = (puint8_t)radioHeap->Malloc(messageSize);
 		if (!msgData->data[fragmentNum])
 		{
@@ -197,7 +204,7 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 		if (noiseFile->seekPacket(msgData->noiseId) == NO_ERROR)
 		{
 			uint32_t messageSize = noiseFile->getPacketSize();
-			msgData->noise[0]	= (puint8_t)radioHeap->Malloc(messageSize);
+			msgData->noise[0] = (puint8_t)radioHeap->Malloc(messageSize);
 			if (!msgData->noise[0])
 			{
 				radioHeap->Free(msgData);
@@ -236,7 +243,8 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 }
 
 //------------------------------------------------------------------------------------------
-int32_t Radio::loadMessageInfo(void)
+int32_t
+Radio::loadMessageInfo(void)
 {
 	FullPathFileName messageInfoPath;
 	FilePtr messageInfoFile;

@@ -12,34 +12,42 @@ extern float frameRate;
 aAnimation::aAnimation(void)
 {
 	currentTime = -1.f;
-	infoCount   = 0;
-	infos		= nullptr;
-	bLoops		= 0;
-	refX		= 0;
-	refY		= 0;
-	direction   = 1.0;
+	infoCount = 0;
+	infos = nullptr;
+	bLoops = 0;
+	refX = 0;
+	refY = 0;
+	direction = 1.0;
 }
 
-aAnimation::~aAnimation(void) { destroy(); }
+aAnimation::~aAnimation(void)
+{
+	destroy();
+}
 
-aAnimation& aAnimation::operator=(const aAnimation& src)
+aAnimation&
+aAnimation::operator=(const aAnimation& src)
 {
 	copyData(src);
 	return *this;
 }
 
-aAnimation::aAnimation(const aAnimation& src) { copyData(src); }
+aAnimation::aAnimation(const aAnimation& src)
+{
+	copyData(src);
+}
 
-void aAnimation::copyData(const aAnimation& src)
+void
+aAnimation::copyData(const aAnimation& src)
 {
 	if (&src != this)
 	{
 		currentTime = src.currentTime;
-		infoCount   = src.infoCount;
-		infos		= nullptr;
-		bLoops		= src.bLoops;
-		refX		= src.refX;
-		refY		= src.refY;
+		infoCount = src.infoCount;
+		infos = nullptr;
+		bLoops = src.bLoops;
+		refX = src.refX;
+		refY = src.refY;
 		// Maybe someone already inited this?
 		if (infos)
 		{
@@ -57,7 +65,8 @@ void aAnimation::copyData(const aAnimation& src)
 	}
 }
 
-int32_t aAnimation::init(FitIniFile* file, PCSTR headerName)
+int32_t
+aAnimation::init(FitIniFile* file, PCSTR headerName)
 {
 	std::wstring strToCheck = headerName;
 	strToCheck += "AnimationTimeStamps";
@@ -118,22 +127,25 @@ int32_t aAnimation::init(FitIniFile* file, PCSTR headerName)
 	return 0;
 }
 
-void aAnimation::destroy()
+void
+aAnimation::destroy()
 {
 	if (infos)
 		delete[] infos;
-	infos		= nullptr;
-	infoCount   = 0;
+	infos = nullptr;
+	infoCount = 0;
 	currentTime = -1.f;
 }
 
-void aAnimation::begin()
+void
+aAnimation::begin()
 {
 	currentTime = 0;
-	direction   = 1.0;
+	direction = 1.0;
 }
 
-void aAnimation::reverseBegin()
+void
+aAnimation::reverseBegin()
 {
 	if (infos && infoCount)
 		currentTime = infos[infoCount - 1].time;
@@ -142,9 +154,14 @@ void aAnimation::reverseBegin()
 	direction = -1.0;
 }
 
-void aAnimation::end() { currentTime = -1.f; }
+void
+aAnimation::end()
+{
+	currentTime = -1.f;
+}
 
-void aAnimation::update()
+void
+aAnimation::update()
 {
 	if (currentTime != -1.f)
 		currentTime += direction * frameLength;
@@ -160,11 +177,12 @@ void aAnimation::update()
 	}
 }
 
-float aAnimation::getXDelta(void) const
+float
+aAnimation::getXDelta(void) const
 {
 	float t0, t1, p0, p1;
 	t1 = p1 = t0 = p0 = 0.f;
-	float delta		  = 0.f;
+	float delta = 0.f;
 	// figure out where we are in animation
 	for (size_t j = 0; j < infoCount - 1; j++)
 	{
@@ -180,9 +198,9 @@ float aAnimation::getXDelta(void) const
 	// if not done yet
 	if (t1)
 	{
-		float dT			  = currentTime - t0;
+		float dT = currentTime - t0;
 		float currentPosition = p0 + dT * ((p1 - p0) / (t1 - t0));
-		delta				  = currentPosition - refX;
+		delta = currentPosition - refX;
 	}
 	else if (infos)
 	{
@@ -191,11 +209,12 @@ float aAnimation::getXDelta(void) const
 	return delta;
 }
 
-float aAnimation::getYDelta(void) const
+float
+aAnimation::getYDelta(void) const
 {
 	float t0, t1, p0, p1;
 	t1 = p1 = t0 = p0 = 0.f;
-	float delta		  = 0.f;
+	float delta = 0.f;
 	// figure out where we are in animation
 	for (size_t j = 0; j < infoCount - 1; j++)
 	{
@@ -211,9 +230,9 @@ float aAnimation::getYDelta(void) const
 	// if not done yet
 	if (t1)
 	{
-		float dT			  = currentTime - t0;
+		float dT = currentTime - t0;
 		float currentPosition = p0 + dT * ((p1 - p0) / (t1 - t0));
-		delta				  = currentPosition - refY;
+		delta = currentPosition - refY;
 	}
 	else if (infos)
 	{
@@ -222,11 +241,12 @@ float aAnimation::getYDelta(void) const
 	return delta;
 }
 
-float aAnimation::getScaleX(void) const
+float
+aAnimation::getScaleX(void) const
 {
 	float t0, t1, p0, p1;
 	t1 = p1 = t0 = p0 = 0.f;
-	float curScale	= 1.0;
+	float curScale = 1.0;
 	// figure out where we are in animation
 	for (size_t j = 0; j < infoCount - 1; j++)
 	{
@@ -252,11 +272,12 @@ float aAnimation::getScaleX(void) const
 	return curScale;
 }
 
-float aAnimation::getScaleY(void) const
+float
+aAnimation::getScaleY(void) const
 {
 	float t0, t1, p0, p1;
 	t1 = p1 = t0 = p0 = 0.f;
-	float curScale	= 1.0;
+	float curScale = 1.0;
 	// figure out where we are in animation
 	for (size_t j = 0; j < infoCount - 1; j++)
 	{
@@ -282,18 +303,23 @@ float aAnimation::getScaleY(void) const
 	return curScale;
 }
 
-uint32_t aAnimation::getColor() const { return getColor(currentTime); }
+uint32_t
+aAnimation::getColor() const
+{
+	return getColor(currentTime);
+}
 
-uint32_t aAnimation::getColor(float time) const
+uint32_t
+aAnimation::getColor(float time) const
 {
 	float t0, t1;
 	if (infoCount && (time > infos[infoCount - 1].time) && bLoops)
 	{
 		float numCycles = infos[infoCount - 1].time ? time / infos[infoCount - 1].time : 0;
-		int32_t numCyc  = (int32_t)numCycles;
+		int32_t numCyc = (int32_t)numCycles;
 		time -= ((float)numCyc * infos[infoCount - 1].time);
 	}
-	t1 = t0		   = 0.f;
+	t1 = t0 = 0.f;
 	uint32_t color = 0xffffffff;
 	uint32_t color1, color2;
 	color1 = color2 = 0;
@@ -302,8 +328,8 @@ uint32_t aAnimation::getColor(float time) const
 	{
 		if (infos[j].time <= time && infos[j + 1].time > time)
 		{
-			t0	 = infos[j].time;
-			t1	 = infos[j + 1].time;
+			t0 = infos[j].time;
+			t1 = infos[j + 1].time;
 			color1 = (infos[j].color);
 			color2 = (infos[j + 1].color);
 			break;
@@ -313,8 +339,8 @@ uint32_t aAnimation::getColor(float time) const
 	if (t1)
 	{
 		float totalTime = t1 - t0;
-		float tmpTime   = time - t0;
-		float percent   = tmpTime / totalTime;
+		float tmpTime = time - t0;
+		float percent = tmpTime / totalTime;
 		return interpolateColor(color1, color2, percent);
 	}
 	else if (infos)
@@ -324,13 +350,15 @@ uint32_t aAnimation::getColor(float time) const
 	return color;
 }
 
-void aAnimation::setReferencePoints(float X, float Y)
+void
+aAnimation::setReferencePoints(float X, float Y)
 {
 	refX = X;
 	refY = Y;
 }
 
-bool aAnimation::isDone(void) const
+bool
+aAnimation::isDone(void) const
 {
 	if (bLoops)
 		return 0;
@@ -343,7 +371,8 @@ bool aAnimation::isDone(void) const
 	return 0;
 }
 
-int32_t aAnimation::initWithBlockName(FitIniFile* file, PCSTR blockName)
+int32_t
+aAnimation::initWithBlockName(FitIniFile* file, PCSTR blockName)
 {
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
@@ -355,7 +384,8 @@ int32_t aAnimation::initWithBlockName(FitIniFile* file, PCSTR blockName)
 	return init(file, "");
 }
 
-float aAnimation::getMaxTime()
+float
+aAnimation::getMaxTime()
 {
 	if (infos && infoCount)
 	{
@@ -364,7 +394,8 @@ float aAnimation::getMaxTime()
 	return -1;
 }
 
-int32_t aAnimGroup::init(FitIniFile* file, PCSTR blockName)
+int32_t
+aAnimGroup::init(FitIniFile* file, PCSTR blockName)
 {
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
@@ -381,18 +412,21 @@ int32_t aAnimGroup::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aAnimGroup::update()
+void
+aAnimGroup::update()
 {
 	animations[NORMAL].update();
 	animations[getState()].update();
 }
 
-int32_t aAnimGroup::getCurrentColor(aAnimGroup::STATE state) const
+int32_t
+aAnimGroup::getCurrentColor(aAnimGroup::STATE state) const
 {
 	return animations[state].getColor();
 }
 
-void aAnimGroup::setState(aAnimGroup::STATE newState)
+void
+aAnimGroup::setState(aAnimGroup::STATE newState)
 {
 	if (newState != curState)
 	{
@@ -402,4 +436,8 @@ void aAnimGroup::setState(aAnimGroup::STATE newState)
 	}
 }
 
-aAnimGroup::STATE aAnimGroup::getState(void) const { return curState; }
+aAnimGroup::STATE
+aAnimGroup::getState(void) const
+{
+	return curState;
+}

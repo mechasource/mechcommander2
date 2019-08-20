@@ -9,14 +9,16 @@ DamageBrush.cpp			: Implementation of the DamageBrush component.
 #include "DamageBrush.h"
 #include "editorobjectmgr.h"
 
-bool DamageBrush::beginPaint()
+bool
+DamageBrush::beginPaint()
 {
 	if (!pAction)
 		pAction = new ModifyBuildingAction();
 	return true;
 }
 
-Action* DamageBrush::endPaint()
+Action*
+DamageBrush::endPaint()
 {
 	Action* pRetAction = nullptr;
 	if (pAction)
@@ -32,7 +34,8 @@ Action* DamageBrush::endPaint()
 	return pRetAction;
 }
 
-bool DamageBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool
+DamageBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	EditorObject* pObject =
 		const_cast<EditorObject*>(EditorObjectMgr::instance()->getObjectAtPosition(worldPos));
@@ -44,16 +47,22 @@ bool DamageBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t scre
 	return true;
 }
 
-bool DamageBrush::canPaint(
+bool
+DamageBrush::canPaint(
 	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	const EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
 	return pObject ? true : false;
 }
 
-bool DamageBrush::canPaintSelection() { return EditorObjectMgr::instance()->hasSelection(); }
+bool
+DamageBrush::canPaintSelection()
+{
+	return EditorObjectMgr::instance()->hasSelection();
+}
 
-Action* DamageBrush::applyToSelection()
+Action*
+DamageBrush::applyToSelection()
 {
 	ModifyBuildingAction* pRetAction = new ModifyBuildingAction;
 	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =

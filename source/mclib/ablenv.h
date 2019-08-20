@@ -56,12 +56,12 @@ public:
 
 	void init(void)
 	{
-		handle		= -1;
-		inUse		= false;
+		handle = -1;
+		inUse = false;
 		fileName[0] = nullptr;
-		filePtr		= nullptr;
-		numLines	= 0;
-		totalLines  = 0;
+		filePtr = nullptr;
+		numLines = 0;
+		totalLines = 0;
 		for (size_t i = 0; i < MAX_USER_FILE_LINES; i++)
 			lines[i][0] = nullptr;
 	}
@@ -90,7 +90,7 @@ public:
 //---------------------------------------------------------------------------
 
 #define MAX_ABLMODULE_NAME 5
-#define MAX_SOURCE_FILES 256  // per module
+#define MAX_SOURCE_FILES 256 // per module
 #define MAX_LIBRARIES_USED 25 // per module
 #define MAX_STATE_HANDLES_PER_MODULE 10
 
@@ -165,20 +165,20 @@ public:
 
 	void init(void)
 	{
-		id				  = -1;
-		name[0]			  = nullptr;
-		handle			  = -1;
-		staticData		  = nullptr;
+		id = -1;
+		name[0] = nullptr;
+		handle = -1;
+		staticData = nullptr;
 		returnVal.integer = 0;
-		initCalled		  = false;
-		prevState		  = nullptr;
-		state			  = nullptr;
-		watchManager	  = nullptr;
+		initCalled = false;
+		prevState = nullptr;
+		state = nullptr;
+		watchManager = nullptr;
 		breakPointManager = nullptr;
-		trace			  = false;
-		step			  = false;
-		traceEntry		  = false;
-		traceExit		  = false;
+		trace = false;
+		step = false;
+		traceEntry = false;
+		traceExit = false;
 	}
 
 	ABLModule(void) { init(void); }
@@ -240,9 +240,9 @@ public:
 
 	void setTrace(bool _trace)
 	{
-		trace	  = _trace;
+		trace = _trace;
 		traceEntry = _trace;
-		traceExit  = _trace;
+		traceExit = _trace;
 	}
 
 	bool getTrace(void) { return (trace); }
@@ -296,10 +296,14 @@ public:
 
 //*************************************************************************
 
-void initModuleRegistry(int32_t maxModules);
-void destroyModuleRegistry(void);
-void initLibraryRegistry(int32_t maxLibraries);
-void destroyLibraryRegistry(void);
+void
+initModuleRegistry(int32_t maxModules);
+void
+destroyModuleRegistry(void);
+void
+initLibraryRegistry(int32_t maxLibraries);
+void
+destroyLibraryRegistry(void);
 
 //***************************************************************************
 

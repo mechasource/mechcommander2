@@ -45,8 +45,10 @@
 #if _CONSIDERED_OBSOLETE
 File* fileTrafficLog = nullptr;
 char CDInstallPath[1024];
-void EnterWindowMode();
-void EnterFullScreenMode();
+void
+EnterWindowMode();
+void
+EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
 extern char FileMissingString[];
@@ -56,7 +58,8 @@ extern char MissingTitleString[];
 
 #if _CONSIDERED_OBSOLETE
 //---------------------------------------------------------------------------
-void createTrafficLog(void)
+void
+createTrafficLog(void)
 {
 	if (fileTrafficLog && fileTrafficLog->isOpen())
 		return;
@@ -77,7 +80,7 @@ int32_t __stdcall fileExists(PSTR fName)
 	}
 
 	int32_t fastFileHandle = -1;
-	FastFile* fastFile	 = FastFileFind(fName, fastFileHandle);
+	FastFile* fastFile = FastFileFind(fName, fastFileHandle);
 	if (fastFile)
 		return 2;
 	return 0;
@@ -120,20 +123,26 @@ bool __stdcall file1OlderThan2(PSTR file1, PSTR file2)
 #if _CONSIDERED_DISABLED
 //---------------------------------------------------------------------------
 //	class File member functions
-PVOID MechFile::operator new(size_t mySize)
+PVOID
+MechFile::operator new(size_t mySize)
 {
 	PVOID result = ::malloc(mySize);
 	return result;
 }
 
 //---------------------------------------------------------------------------
-void MechFile::operator delete(PVOID us) { ::free(us); }
+void
+MechFile::operator delete(PVOID us)
+{
+	::free(us);
+}
 #endif
 
 //---------------------------------------------------------------------------
 
 #if _CONSIDERED_DISABLED
-inline void MechFile::setup(void)
+inline void
+MechFile::setup(void)
 {
 	logicalPosition = 0;
 	//----------------------------------------------------------------------
@@ -143,11 +152,11 @@ inline void MechFile::setup(void)
 		length = fileSize();
 	else
 		length = 0;
-	m_parent	   = nullptr;
-	parentOffset   = 0;
+	m_parent = nullptr;
+	parentOffset = 0;
 	physicalLength = length;
-	childList	  = nullptr;
-	numChildren	= 0;
+	childList = nullptr;
+	numChildren = 0;
 }
 #endif
 
@@ -170,7 +179,8 @@ considered way out of scope for our purposes
 /// </remarks>
 /// <param name="path">absolute or relative path</param>
 /// <returns>HRESULT S_OK on success</returns>
-HRESULT MechFile::open(std::filesystem::path& path)
+HRESULT
+MechFile::open(std::filesystem::path& path)
 {
 	// todo: error handling
 
@@ -188,11 +198,11 @@ HRESULT MechFile::open(std::filesystem::path& path)
 	gosASSERT(!isOpen());
 	//-------------------------------------------------------------
 	int32_t fNameLength = strlen(fName);
-	m_fileName			= (PSTR)systemHeap->Malloc(fNameLength + 1);
+	m_fileName = (PSTR)systemHeap->Malloc(fNameLength + 1);
 	gosASSERT(m_fileName != nullptr);
 	strncpy(m_fileName, fName, fNameLength + 1);
 	fileMode = _mode;
-	_fmode   = _O_BINARY;
+	_fmode = _O_BINARY;
 	_strlwr(m_fileName);
 	if (fileMode == CREATE)
 	{
@@ -213,7 +223,7 @@ HRESULT MechFile::open(std::filesystem::path& path)
 		if (handle == INVALID_HANDLE_VALUE)
 		{
 			lastError = errno;
-			fastFile  = FastFileFind(m_fileName, fastFileHandle);
+			fastFile = FastFileFind(m_fileName, fastFileHandle);
 			if (!fastFile)
 			{
 				// Not in main installed directory and not in fastfile.  Look on
@@ -224,7 +234,7 @@ HRESULT MechFile::open(std::filesystem::path& path)
 				handle = _open(actualPath, _O_RDONLY);
 				if (handle == INVALID_HANDLE_VALUE)
 				{
-					bool openFailed		   = false;
+					bool openFailed = false;
 					bool alreadyFullScreen = (Environment.fullScreen != 0);
 					while (handle == INVALID_HANDLE_VALUE)
 					{
@@ -239,7 +249,7 @@ HRESULT MechFile::open(std::filesystem::path& path)
 						strcat(testCDPath, "tgl.fst");
 						uint32_t findCD = fileExists(testCDPath);
 						if (findCD == 1) // File exists. CD is in drive.  Return
-										 // 2 to indicate file not found.
+							// 2 to indicate file not found.
 							return 2;
 						EnterWindowMode();
 						char data[2048];
@@ -250,7 +260,7 @@ HRESULT MechFile::open(std::filesystem::path& path)
 						{
 							ExitGameOS();
 							return (2); // File not found.  Never returns
-										// though!
+								// though!
 						}
 						handle = _open(actualPath, _O_RDONLY);
 					}
@@ -284,7 +294,7 @@ HRESULT MechFile::open(std::filesystem::path& path)
 					//
 					// There is now an open which takes a FilePtr and a size.
 					maxChildren = numChild;
-					childList   = (FilePtr*)systemHeap->Malloc(sizeof(FilePtr) * maxChildren);
+					childList = (FilePtr*)systemHeap->Malloc(sizeof(FilePtr) * maxChildren);
 					if (!childList)
 					{
 						return (NO_RAM_FOR_CHILD_LIST);
@@ -311,7 +321,7 @@ HRESULT MechFile::open(std::filesystem::path& path)
 			//-- FastFiles are all compressed.  Must read in entire chunk into
 			// RAM
 			//-- Then close fastfile!!!!!
-			inRAM	 = TRUE;
+			inRAM = TRUE;
 			fileImage = (puint8_t)malloc(fileSize());
 			if (fileImage)
 			{
@@ -352,7 +362,7 @@ HRESULT MechFile::open(std::filesystem::path& path)
 			//
 			// There is now an open which takes a FilePtr and a size.
 			maxChildren = numChild;
-			childList   = (FilePtr*)systemHeap->Malloc(sizeof(FilePtr) * maxChildren);
+			childList = (FilePtr*)systemHeap->Malloc(sizeof(FilePtr) * maxChildren);
 			if (!childList)
 			{
 				return (NO_RAM_FOR_CHILD_LIST);
@@ -369,7 +379,8 @@ HRESULT MechFile::open(std::filesystem::path& path)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
+int32_t
+MechFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 {
 	if (_parent && (_parent->fastFile == nullptr))
 	{
@@ -378,13 +389,13 @@ int32_t MechFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 		{
 			return (CANT_WRITE_TO_CHILD);
 		}
-		physicalLength  = fileSize;
-		parentOffset	= m_parent->getLogicalPosition();
+		physicalLength = fileSize;
+		parentOffset = m_parent->getLogicalPosition();
 		logicalPosition = 0;
 		//-------------------------------------------------------------
 		m_fileName = m_parent->getFilename();
-		fileMode   = m_parent->getFileMode();
-		handle	 = m_parent->getFileHandle();
+		fileMode = m_parent->getFileMode();
+		handle = m_parent->getFileHandle();
 		if (logFileTraffic)
 		{
 			if (!fileTrafficLog)
@@ -416,7 +427,7 @@ int32_t MechFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 		if (numChild != -1)
 		{
 			maxChildren = numChild;
-			childList   = (FilePtr*)systemHeap->Malloc(sizeof(FilePtr) * maxChildren);
+			childList = (FilePtr*)systemHeap->Malloc(sizeof(FilePtr) * maxChildren);
 			gosASSERT(childList != nullptr);
 			numChildren = 0;
 			for (size_t i = 0; i < (int32_t)maxChildren; i++)
@@ -426,10 +437,10 @@ int32_t MechFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 		}
 		else
 		{
-			maxChildren		= 0;
-			inRAM			= TRUE;
+			maxChildren = 0;
+			inRAM = TRUE;
 			uint32_t result = 0;
-			fileImage		= (puint8_t)malloc(fileSize);
+			fileImage = (puint8_t)malloc(fileSize);
 			if (!fileImage)
 				inRAM = false;
 			if (_parent->getFileClass() == PACKETFILE)
@@ -452,15 +463,16 @@ int32_t MechFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 	return (NO_ERROR);
 }
 
-int32_t MechFile::open(PCSTR buffer, int32_t bufferLength)
+int32_t
+MechFile::open(PCSTR buffer, int32_t bufferLength)
 {
 	if (buffer && bufferLength > 0)
 	{
-		fileImage		= (puint8_t)buffer;
-		physicalLength  = bufferLength;
+		fileImage = (puint8_t)buffer;
+		physicalLength = bufferLength;
 		logicalPosition = 0;
-		fileMode		= RDWRITE;
-		inRAM			= true;
+		fileMode = RDWRITE;
+		inRAM = true;
 	}
 	else // fail on nullptr
 	{
@@ -470,19 +482,24 @@ int32_t MechFile::open(PCSTR buffer, int32_t bufferLength)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::create(PCSTR fName) { return (open(fName, CREATE)); }
+int32_t
+MechFile::create(PCSTR fName)
+{
+	return (open(fName, CREATE));
+}
 
-int32_t MechFile::createWithCase(PSTR fName)
+int32_t
+MechFile::createWithCase(PSTR fName)
 {
 	gosASSERT(!isOpen());
 	//-------------------------------------------------------------
 	int32_t fNameLength = strlen(fName);
-	m_fileName			= (PSTR)systemHeap->Malloc(fNameLength + 1);
+	m_fileName = (PSTR)systemHeap->Malloc(fNameLength + 1);
 	gosASSERT(m_fileName != nullptr);
 	strncpy(m_fileName, fName, fNameLength + 1);
 	fileMode = CREATE;
-	_fmode   = _O_BINARY;
-	handle   = _creat(m_fileName, _S_IWRITE);
+	_fmode = _O_BINARY;
+	handle = _creat(m_fileName, _S_IWRITE);
 	if (handle == INVALID_HANDLE_VALUE)
 	{
 		lastError = errno;
@@ -491,7 +508,8 @@ int32_t MechFile::createWithCase(PSTR fName)
 	return 0;
 }
 //---------------------------------------------------------------------------
-int32_t MechFile::addChild(FilePtr child)
+int32_t
+MechFile::addChild(FilePtr child)
 {
 	if (maxChildren)
 	{
@@ -508,7 +526,8 @@ int32_t MechFile::addChild(FilePtr child)
 }
 
 //---------------------------------------------------------------------------
-void MechFile::removeChild(FilePtr child)
+void
+MechFile::removeChild(FilePtr child)
 {
 	if (maxChildren)
 	{
@@ -527,7 +546,8 @@ void MechFile::removeChild(FilePtr child)
 }
 
 //---------------------------------------------------------------------------
-void MechFile::close(void)
+void
+MechFile::close(void)
 {
 	//------------------------------------------------------------------------
 	// First, close us if we are the parent.  Otherwise, just nullptr the handle
@@ -541,7 +561,7 @@ void MechFile::close(void)
 		systemHeap->Free(m_fileName);
 	}
 	m_fileName = nullptr;
-	length	 = 0;
+	length = 0;
 	if (isOpen())
 	{
 		if ((m_parent == nullptr) && (handle != nullptr) && (-1 != handle))
@@ -552,7 +572,7 @@ void MechFile::close(void)
 			fastFile->closeFast(fastFileHandle);
 			bFast = true; // save that it was a fast file
 		}
-		fastFile	   = nullptr; // DO NOT DELETE THE FASTFILE!!!!!!!!!!!!!
+		fastFile = nullptr; // DO NOT DELETE THE FASTFILE!!!!!!!!!!!!!
 		fastFileHandle = -1;
 	}
 	//---------------------------------------------------------------------
@@ -574,19 +594,20 @@ void MechFile::close(void)
 	}
 	if (m_parent != nullptr)
 		m_parent->removeChild(this);
-	childList   = nullptr;
+	childList = nullptr;
 	numChildren = 0;
 	if (inRAM && (bFast || m_parent)) // don't want to delete memFiles
 	{
 		if (fileImage)
 			free(fileImage);
 		fileImage = nullptr;
-		inRAM	 = false;
+		inRAM = false;
 	}
 }
 
 //---------------------------------------------------------------------------
-void MechFile::deleteFile(void)
+void
+MechFile::deleteFile(void)
 {
 	//--------------------------------------------------------------
 	// Must be the ultimate parent to delete this file.  Close will
@@ -597,7 +618,8 @@ void MechFile::deleteFile(void)
 
 int32_t newPosition = 0;
 //---------------------------------------------------------------------------
-int32_t MechFile::seek(int32_t pos, int32_t from)
+int32_t
+MechFile::seek(int32_t pos, int32_t from)
 {
 	switch (from)
 	{
@@ -661,7 +683,7 @@ int32_t MechFile::seek(int32_t pos, int32_t from)
 	}
 	else if (fastFile)
 	{
-		newPosition		= fastFile->seekFast(fastFileHandle, pos, from);
+		newPosition = fastFile->seekFast(fastFileHandle, pos, from);
 		logicalPosition = newPosition;
 	}
 	else
@@ -699,7 +721,8 @@ int32_t MechFile::seek(int32_t pos, int32_t from)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::read(uint32_t pos, puint8_t buffer, int32_t length)
+int32_t
+MechFile::read(uint32_t pos, puint8_t buffer, int32_t length)
 {
 	int32_t result = 0;
 	if (inRAM && fileImage)
@@ -733,9 +756,10 @@ int32_t MechFile::read(uint32_t pos, puint8_t buffer, int32_t length)
 }
 
 //---------------------------------------------------------------------------
-uint8_t MechFile::readByte(void)
+uint8_t
+MechFile::readByte(void)
 {
-	uint8_t value  = 0;
+	uint8_t value = 0;
 	int32_t result = 0;
 	if (inRAM && fileImage)
 	{
@@ -766,9 +790,10 @@ uint8_t MechFile::readByte(void)
 }
 
 //---------------------------------------------------------------------------
-int16_t MechFile::readWord(void)
+int16_t
+MechFile::readWord(void)
 {
-	int16_t value  = 0;
+	int16_t value = 0;
 	int32_t result = 0;
 	if (inRAM && fileImage)
 	{
@@ -799,12 +824,17 @@ int16_t MechFile::readWord(void)
 }
 
 //---------------------------------------------------------------------------
-int16_t MechFile::readShort(void) { return (readWord()); }
+int16_t
+MechFile::readShort(void)
+{
+	return (readWord());
+}
 
 //---------------------------------------------------------------------------
-int32_t MechFile::readLong(void)
+int32_t
+MechFile::readLong(void)
 {
-	int32_t value   = 0;
+	int32_t value = 0;
 	uint32_t result = 0;
 	if (inRAM && fileImage)
 	{
@@ -834,7 +864,8 @@ int32_t MechFile::readLong(void)
 	return value;
 }
 
-bool isNAN(float* pFloat)
+bool
+isNAN(float* pFloat)
 {
 	/* We're assuming ansi/ieee 754 floating point representation. See
 	 * http://www.research.microsoft.com/~hollasch/cgindex/coding/ieeefloat.html.
@@ -857,9 +888,10 @@ bool isNAN(float* pFloat)
 	return false;
 }
 
-float MechFile::readFloat(void)
+float
+MechFile::readFloat(void)
 {
-	float value		= 0;
+	float value = 0;
 	uint32_t result = 0;
 	if (inRAM && fileImage)
 	{
@@ -895,14 +927,15 @@ float MechFile::readFloat(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::readString(puint8_t buffer)
+int32_t
+MechFile::readString(puint8_t buffer)
 {
 	int32_t last = 0;
 	if (isOpen())
 	{
 		for (;;)
 		{
-			byte ch		 = readByte();
+			byte ch = readByte();
 			buffer[last] = ch;
 			if (ch)
 				++last;
@@ -918,7 +951,8 @@ int32_t MechFile::readString(puint8_t buffer)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::read(puint8_t buffer, int32_t length)
+int32_t
+MechFile::read(puint8_t buffer, int32_t length)
 {
 	int32_t result = 0;
 	if (inRAM && fileImage)
@@ -952,21 +986,23 @@ int32_t MechFile::read(puint8_t buffer, int32_t length)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::readRAW(uint32_t*& buffer, UserHeapPtr heap)
+int32_t
+MechFile::readRAW(uint32_t*& buffer, UserHeapPtr heap)
 {
 	int32_t result = 0;
 	if (fastFile && heap && fastFile->isLZCompressed())
 	{
 		int32_t lzSizeNeeded = fastFile->lzSizeFast(fastFileHandle);
-		buffer				 = (uint32_t*)heap->Malloc(lzSizeNeeded);
-		result				 = fastFile->readFastRAW(fastFileHandle, buffer, lzSizeNeeded);
+		buffer = (uint32_t*)heap->Malloc(lzSizeNeeded);
+		result = fastFile->readFastRAW(fastFileHandle, buffer, lzSizeNeeded);
 		logicalPosition += result;
 	}
 	return result;
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::readLine(puint8_t buffer, int32_t maxLength)
+int32_t
+MechFile::readLine(puint8_t buffer, int32_t maxLength)
 {
 	int32_t i = 0;
 	if (inRAM && fileImage)
@@ -1029,7 +1065,8 @@ int32_t MechFile::readLine(puint8_t buffer, int32_t maxLength)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::readLineEx(puint8_t buffer, int32_t maxLength)
+int32_t
+MechFile::readLineEx(puint8_t buffer, int32_t maxLength)
 {
 	int32_t i = 0;
 	if (inRAM && fileImage)
@@ -1085,7 +1122,8 @@ int32_t MechFile::readLineEx(puint8_t buffer, int32_t maxLength)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::write(uint32_t pos, puint8_t buffer, int32_t bytes)
+int32_t
+MechFile::write(uint32_t pos, puint8_t buffer, int32_t bytes)
 {
 	uint32_t result = 0;
 	if (m_parent == nullptr)
@@ -1121,7 +1159,8 @@ int32_t MechFile::write(uint32_t pos, puint8_t buffer, int32_t bytes)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::writeByte(byte value)
+int32_t
+MechFile::writeByte(byte value)
 {
 	int32_t result = 0;
 	if (m_parent == nullptr)
@@ -1160,7 +1199,8 @@ int32_t MechFile::writeByte(byte value)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::writeWord(int16_t value)
+int32_t
+MechFile::writeWord(int16_t value)
 {
 	uint32_t result = 0;
 	if (m_parent == nullptr)
@@ -1199,14 +1239,16 @@ int32_t MechFile::writeWord(int16_t value)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::writeShort(int16_t value)
+int32_t
+MechFile::writeShort(int16_t value)
 {
 	int32_t result = writeWord(value);
 	return (result);
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::writeLong(int32_t value)
+int32_t
+MechFile::writeLong(int32_t value)
 {
 	uint32_t result = 0;
 	if (m_parent == nullptr)
@@ -1245,7 +1287,8 @@ int32_t MechFile::writeLong(int32_t value)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::writeFloat(float value)
+int32_t
+MechFile::writeFloat(float value)
 {
 	uint32_t result = 0;
 	gosASSERT(!isNAN(&value));
@@ -1286,7 +1329,8 @@ int32_t MechFile::writeFloat(float value)
 
 //---------------------------------------------------------------------------
 
-int32_t MechFile::writeString(PSTR buffer)
+int32_t
+MechFile::writeString(PSTR buffer)
 {
 	int32_t result = -1;
 	if (m_parent == nullptr)
@@ -1311,7 +1355,8 @@ int32_t MechFile::writeString(PSTR buffer)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::writeLine(PSTR buffer)
+int32_t
+MechFile::writeLine(PSTR buffer)
 {
 	int32_t result = -1;
 	if (m_parent == nullptr)
@@ -1338,7 +1383,8 @@ int32_t MechFile::writeLine(PSTR buffer)
 }
 
 //---------------------------------------------------------------------------
-int32_t MechFile::write(puint8_t buffer, int32_t bytes)
+int32_t
+MechFile::write(puint8_t buffer, int32_t bytes)
 {
 	int32_t result = 0;
 	if (m_parent == nullptr)
@@ -1376,16 +1422,22 @@ int32_t MechFile::write(puint8_t buffer, int32_t bytes)
 }
 
 //---------------------------------------------------------------------------
-bool MechFile::isOpen(void)
+bool
+MechFile::isOpen(void)
 {
 	return ((handle != nullptr && handle != -1) || (fileImage != nullptr));
 }
 
 //---------------------------------------------------------------------------
-PSTR MechFile::getFilename(void) { return (m_fileName); }
+PSTR
+MechFile::getFilename(void)
+{
+	return (m_fileName);
+}
 
 //---------------------------------------------------------------------------
-time_t MechFile::getFileMTime(void)
+time_t
+MechFile::getFileMTime(void)
 {
 	time_t mTime = 0;
 	if (isOpen())
@@ -1402,7 +1454,8 @@ time_t MechFile::getFileMTime(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t MechFile::getLength(void)
+uint32_t
+MechFile::getLength(void)
 {
 	if (fastFile && (length == 0))
 	{
@@ -1423,13 +1476,18 @@ uint32_t MechFile::getLength(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t MechFile::fileSize(void) { return getLength(); }
+uint32_t
+MechFile::fileSize(void)
+{
+	return getLength();
+}
 
 //---------------------------------------------------------------------------
-uint32_t MechFile::getNumLines(void)
+uint32_t
+MechFile::getNumLines(void)
 {
 	uint32_t currentPos = logicalPosition;
-	uint32_t numLines   = 0;
+	uint32_t numLines = 0;
 	seek(0);
 	for (uint32_t i = 0; i < getLength(); i++)
 	{
@@ -1442,10 +1500,15 @@ uint32_t MechFile::getNumLines(void)
 }
 
 //---------------------------------------------------------------------------
-void MechFile::seekEnd(void) { seek(0, SEEK_END); }
+void
+MechFile::seekEnd(void)
+{
+	seek(0, SEEK_END);
+}
 
 //---------------------------------------------------------------------------
-void MechFile::skip(int32_t bytesToSkip)
+void
+MechFile::skip(int32_t bytesToSkip)
 {
 	if (bytesToSkip)
 	{

@@ -60,14 +60,14 @@ public:
 	void init(void)
 	{
 		ObjectType::init(void);
-		dmgLevel	   = 0;
-		blownEffectId  = 0xFFFFFFFF;
+		dmgLevel = 0;
+		blownEffectId = 0xFFFFFFFF;
 		normalEffectId = 0xFFFFFFFF;
 		damageEffectId = 0xFFFFFFFF;
 		explDmg = explRad = 0.0;
-		baseTonnage		  = 0.0;
-		gateTypeName	  = 0;
-		objectClass		  = GATE;
+		baseTonnage = 0.0;
+		gateTypeName = 0;
+		objectClass = GATE;
 	}
 
 	GateType(void) { init(void); }
@@ -143,20 +143,21 @@ public:
 public:
 	void init(bool create) {}
 
-	Gate(void) : TerrainObject()
+	Gate(void) :
+		TerrainObject()
 	{
 		init(true);
 		reasonToOpen = TRUE;
-		lockedClose  = FALSE;
-		lockedOpen   = FALSE;
-		closed		 = TRUE;
+		lockedClose = FALSE;
+		lockedOpen = FALSE;
+		closed = TRUE;
 		closing = opening = opened = FALSE;
-		justDestroyed			   = FALSE;
-		lastMarkedOpen			   = false;
-		closestObject			   = nullptr;
-		parentId				   = 0xffffffff;
-		parent					   = 0;
-		updatedTurn				   = -1;
+		justDestroyed = FALSE;
+		lastMarkedOpen = false;
+		closestObject = nullptr;
+		parentId = 0xffffffff;
+		parent = 0;
+		updatedTurn = -1;
 	}
 
 	~Gate(void) { destroy(void); }
@@ -197,7 +198,7 @@ public:
 
 	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
 	{
-		blockNum  = blockNumber;
+		blockNum = blockNumber;
 		vertexNum = vertexNumber;
 	}
 
@@ -205,19 +206,19 @@ public:
 
 	void setLockedOpen()
 	{
-		lockedOpen  = TRUE;
+		lockedOpen = TRUE;
 		lockedClose = FALSE;
 	}
 
 	void setLockedClose()
 	{
-		lockedOpen  = FALSE;
+		lockedOpen = FALSE;
 		lockedClose = TRUE;
 	}
 
 	void releaseLocks()
 	{
-		lockedOpen  = FALSE;
+		lockedOpen = FALSE;
 		lockedClose = FALSE;
 	}
 

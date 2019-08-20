@@ -16,7 +16,8 @@ MLRInfiniteLightWithFalloff::ClassData* MLRInfiniteLightWithFalloff::DefaultData
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::InitializeClass()
+void
+MLRInfiniteLightWithFalloff::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -27,7 +28,8 @@ void MLRInfiniteLightWithFalloff::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::TerminateClass()
+void
+MLRInfiniteLightWithFalloff::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -36,21 +38,21 @@ void MLRInfiniteLightWithFalloff::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data)
-	: MLRLight(class_data)
+MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data) :
+	MLRLight(class_data)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	lightMask		= MLRState::FaceLightingMode | MLRState::VertexLightingMode;
-	innerRadius		= 0.0f;
-	outerRadius		= 0.0f;
+	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
+	innerRadius = 0.0f;
+	outerRadius = 0.0f;
 	oneOverDistance = 100.0f;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
-	ClassData* class_data, std::iostream stream, uint32_t version)
-	: MLRLight(class_data, stream, version)
+	ClassData* class_data, std::iostream stream, uint32_t version) :
+	MLRLight(class_data, stream, version)
 {
 	Check_Object(stream);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -62,12 +64,12 @@ MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data, Stuff::Page* page)
-	: MLRLight(class_data, page)
+MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data, Stuff::Page* page) :
+	MLRLight(class_data, page)
 {
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	lightMask   = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
+	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 	float inner = 0.0f;
 	page->GetEntry("InnerRadius", &inner);
 	float outer = 100.0;
@@ -81,7 +83,8 @@ MLRInfiniteLightWithFalloff::~MLRInfiniteLightWithFalloff() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::Save(std::iostream stream)
+void
+MLRInfiniteLightWithFalloff::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -91,7 +94,8 @@ void MLRInfiniteLightWithFalloff::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::Write(Stuff::Page* page)
+void
+MLRInfiniteLightWithFalloff::Write(Stuff::Page* page)
 {
 	// Check_Object(this);
 	Check_Object(page);
@@ -102,21 +106,27 @@ void MLRInfiniteLightWithFalloff::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLRInfiniteLightWithFalloff::TestInstance()
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::SetFalloffDistance(float ir, float or)
+void
+MLRInfiniteLightWithFalloff::SetFalloffDistance(float ir, float or)
 {
 	// Check_Object(this);
-	innerRadius		= ir;
-	outerRadius		= or ;
+	innerRadius = ir;
+	outerRadius = or ;
 	oneOverDistance = 1.0f / (outerRadius - innerRadius);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool MLRInfiniteLightWithFalloff::GetFalloffDistance(float& ir, float& or)
+bool
+MLRInfiniteLightWithFalloff::GetFalloffDistance(float& ir, float& or)
 {
 	// Check_Object(this);
 	ir = innerRadius;
@@ -126,7 +136,8 @@ bool MLRInfiniteLightWithFalloff::GetFalloffDistance(float& ir, float& or)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
+void
+MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
 {
 	UnitVector3D light_z;
 	GetInShapeDirection(light_z);
@@ -149,7 +160,7 @@ void MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
 	// light level as appropriate to the distance
 	//--------------------------------------------------------------
 	//
-	float length  = vertex_to_light.GetApproximateLength();
+	float length = vertex_to_light.GetApproximateLength();
 	float falloff = 1.0f;
 #if COLOR_AS_DWORD
 	TO_DO;

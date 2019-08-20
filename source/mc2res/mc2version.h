@@ -46,7 +46,7 @@
 #define MC2_VERSION_MINOR 1
 #define MC2_VERSION_RELEASE 1
 #define MC2_VERSION_BUILD 1 // if 0 release or repository snapshot release
-#define MC2_VERSION_BETA 1  // TRUE 1  or FALSE 0
+#define MC2_VERSION_BETA 1 // TRUE 1  or FALSE 0
 #define MC2_VERSION_BUILD_COMMENT L"MechCommander 2 first patched beta build"
 
 #endif

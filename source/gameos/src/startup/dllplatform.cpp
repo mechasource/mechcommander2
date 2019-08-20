@@ -19,16 +19,29 @@
 #include <platform.hpp>
 #include <dllplatform.hpp>
 
-extern "C" void WINAPI InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
+extern "C" void WINAPI
+InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
 {
 	Platform = Platform_DLL;
 	RunFromOtherApp(hInstance, hWindow, CommandLine);
 }
 
 #if _CONSIDERED_OBSOLETE
-PVOID __cdecl operator new(size_t size, HGOSHEAP /*Heap*/) { return malloc(Size); }
+PVOID __cdecl
+operator new(size_t size, HGOSHEAP /*Heap*/)
+{
+	return malloc(Size);
+}
 
-PVOID __cdecl operator new(size_t Size) { return malloc(Size); }
+PVOID __cdecl
+operator new(size_t Size)
+{
+	return malloc(Size);
+}
 
-void __cdecl operator delete(PVOID Memory) { free(Memory); }
+void __cdecl
+operator delete(PVOID Memory)
+{
+	free(Memory);
+}
 #endif

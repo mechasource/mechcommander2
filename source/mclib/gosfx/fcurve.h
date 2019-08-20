@@ -16,21 +16,22 @@ class Curve
 public:
 	enum class CurveType : uint32_t
 	{
-		e_ConstantType			= (1 << 0),
-		e_LinearType			= (1 << 1),
-		e_SplineType			= (1 << 2),
-		e_ComplexType			= (1 << 3),
-		e_ComplexLinearType		= (1 << 4),
-		e_ComplexComplexType	= (1 << 5),
-		e_ComplexSplineType		= (1 << 6),
-		e_ConstantComplexType	= (1 << 7),
-		e_ConstantLinearType	= (1 << 8),
-		e_ConstantSplineType	= (1 << 9),
-		e_SplineLinearType		= (1 << 10),
-		e_SplineSplineType		= (1 << 11)
+		e_ConstantType = (1 << 0),
+		e_LinearType = (1 << 1),
+		e_SplineType = (1 << 2),
+		e_ComplexType = (1 << 3),
+		e_ComplexLinearType = (1 << 4),
+		e_ComplexComplexType = (1 << 5),
+		e_ComplexSplineType = (1 << 6),
+		e_ConstantComplexType = (1 << 7),
+		e_ConstantLinearType = (1 << 8),
+		e_ConstantSplineType = (1 << 9),
+		e_SplineLinearType = (1 << 10),
+		e_SplineSplineType = (1 << 11)
 	};
 
-	Curve(CurveType type) : m_type(type) {}
+	Curve(CurveType type) :
+		m_type(type) {}
 
 	float ExpensiveCompute(float tme, int32_t curvenum = 0);
 
@@ -63,7 +64,6 @@ public:
 
 protected:
 	const CurveType m_type;
-
 };
 
 //######################################################################
@@ -73,7 +73,8 @@ protected:
 class ConstantCurve : public Curve
 {
 public:
-	ConstantCurve(CurveType type = CurveType::e_ConstantType) : Curve(type) {}
+	ConstantCurve(CurveType type = CurveType::e_ConstantType) :
+		Curve(type) {}
 
 	ConstantCurve& operator=(const ConstantCurve& curve)
 	{
@@ -126,8 +127,8 @@ class LinearCurve : public ConstantCurve
 {
 
 public:
-
-	LinearCurve(CurveType typ = CurveType::e_LinearType) : ConstantCurve(typ) {}
+	LinearCurve(CurveType typ = CurveType::e_LinearType) :
+		ConstantCurve(typ) {}
 
 	LinearCurve& operator=(const LinearCurve& curve)
 	{
@@ -171,7 +172,8 @@ class SplineCurve : public LinearCurve
 public:
 	float m_a, m_b;
 
-	SplineCurve() : LinearCurve(CurveType::e_SplineType) {}
+	SplineCurve() :
+		LinearCurve(CurveType::e_SplineType) {}
 
 	SplineCurve& operator=(const SplineCurve& curve);
 
@@ -267,8 +269,10 @@ public:
 	size_t GetKeyIndex(float time)
 	{
 		// Check_Object(this);
-		for (size_t i = 0; i < m_keys.size(); ++i) {
-			if (m_keys[i].m_time > time) {
+		for (size_t i = 0; i < m_keys.size(); ++i)
+		{
+			if (m_keys[i].m_time > time)
+			{
 				return --i;
 			}
 		}
@@ -300,14 +304,16 @@ public:
 //#####################    SeededCurveOf    ############################
 //######################################################################
 
-template <class C, class S, Curve::CurveType type> class SeededCurveOf : public Curve
+template <class C, class S, Curve::CurveType type>
+class SeededCurveOf : public Curve
 {
 public:
 	C m_ageCurve;
 	S m_seedCurve;
 	bool m_seeded;
 
-	SeededCurveOf() : Curve(type) {}
+	SeededCurveOf() :
+		Curve(type) {}
 
 	SeededCurveOf<C, S, type>& operator=(const SeededCurveOf<C, S, type>& curve);
 	void Save(std::ostream& stream);
@@ -333,19 +339,21 @@ public:
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class C, class S, Curve::CurveType type>
-SeededCurveOf<C, S, type>& SeededCurveOf<C, S, type>::operator=(
+SeededCurveOf<C, S, type>&
+SeededCurveOf<C, S, type>::operator=(
 	const SeededCurveOf<C, S, type>& curve)
 {
-	m_ageCurve  = curve.m_ageCurve;
+	m_ageCurve = curve.m_ageCurve;
 	m_seedCurve = curve.m_seedCurve;
-	m_seeded	= curve.m_seeded;
+	m_seeded = curve.m_seeded;
 	return *this;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class C, class S, Curve::CurveType type>
-void SeededCurveOf<C, S, type>::Save(std::ostream& stream)
+void
+SeededCurveOf<C, S, type>::Save(std::ostream& stream)
 {
 	m_ageCurve.Save(stream);
 	m_seedCurve.Save(stream);
@@ -355,7 +363,8 @@ void SeededCurveOf<C, S, type>::Save(std::ostream& stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class C, class S, Curve::CurveType type>
-void SeededCurveOf<C, S, type>::Load(std::iostream stream, uint32_t gfx_version)
+void
+SeededCurveOf<C, S, type>::Load(std::iostream stream, uint32_t gfx_version)
 {
 	m_ageCurve.Load(stream, gfx_version);
 	m_seedCurve.Load(stream, gfx_version);
@@ -365,7 +374,8 @@ void SeededCurveOf<C, S, type>::Load(std::iostream stream, uint32_t gfx_version)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class C, class S, Curve::CurveType type>
-void SeededCurveOf<C, S, type>::ComputeRange(float* low, float* hi)
+void
+SeededCurveOf<C, S, type>::ComputeRange(float* low, float* hi)
 {
 	float low_age, hi_age;
 	m_ageCurve.ComputeRange(&low_age, &hi_age);

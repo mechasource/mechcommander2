@@ -48,18 +48,18 @@ float MinVCoord;
 int32_t HasModulateAlpha; // not used
 uint16_t QuadIndex[192];
 int32_t HasBumpEnvMap; // not used
-int32_t HasDecal;	  // not used
+int32_t HasDecal; // not used
 float MinGuardBandClip;
 int32_t HasGuardBandClipping; // not used
-int32_t HasAdd;				  // not used
-int32_t HasAntiAlias;		  // not used
-int32_t HasSpecular;		  // not used
-int32_t HasAGP;				  // not used
-uint32_t ModeMagBiLinear;	 // not used
-uint32_t ModeMinNone;		  // not used
-int32_t HasDither;			  // not used
+int32_t HasAdd; // not used
+int32_t HasAntiAlias; // not used
+int32_t HasSpecular; // not used
+int32_t HasAGP; // not used
+uint32_t ModeMagBiLinear; // not used
+uint32_t ModeMinNone; // not used
+int32_t HasDither; // not used
 float MaxUCoord;
-int32_t HasMipLodBias;	 // not used
+int32_t HasMipLodBias; // not used
 uint32_t ModeMinTriLinear; // not used
 gos_VERTEX Pickv1;
 gos_VERTEX Pickv2;
@@ -84,24 +84,24 @@ uint32_t DrawingPolys;
 uint32_t CulledMax; // not used
 uint32_t DrawingMax;
 uint32_t DrawingHighest; // not used
-uint32_t NumSpecular;	// not used
+uint32_t NumSpecular; // not used
 uint32_t NumPerspective; // not used
-uint32_t NumAlpha;		 // not used
+uint32_t NumAlpha; // not used
 uint32_t NumTextured;
-uint32_t PrimitivesRendered;	 // not used
-uint32_t PointsRendered;		 // not used
-uint32_t LinesRendered;			 // not used
-uint32_t TrianglesRendered;		 // not used
-uint32_t QuadsRendered;			 // not used
-uint32_t IndexedTriangleCalls;   // not used
-float IndexedTriangleLength;	 // not used
+uint32_t PrimitivesRendered; // not used
+uint32_t PointsRendered; // not used
+uint32_t LinesRendered; // not used
+uint32_t TrianglesRendered; // not used
+uint32_t QuadsRendered; // not used
+uint32_t IndexedTriangleCalls; // not used
+float IndexedTriangleLength; // not used
 uint32_t IndexedVBTriangleCalls; // not used
-float IndexedVBTriangleLength;   // not used
-uint32_t LastSpecularPrim;		 // not used
-uint32_t LastPerspectivePrim;	// not used
-uint32_t LastAlphaPrim;			 // not used
-uint32_t LastTexturePrim;		 // not used
-uint32_t LastFilterPrim;		 // not used
+float IndexedVBTriangleLength; // not used
+uint32_t LastSpecularPrim; // not used
+uint32_t LastPerspectivePrim; // not used
+uint32_t LastAlphaPrim; // not used
+uint32_t LastTexturePrim; // not used
+uint32_t LastFilterPrim; // not used
 uint32_t NumPointSampled;
 uint32_t NumBilinear;
 uint32_t NumTrilinear;

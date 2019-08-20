@@ -19,19 +19,29 @@
 #include <platform.hpp>
 #include <mfcplatform.hpp>
 
-extern "C" void WINAPI InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
+extern "C" void WINAPI
+InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
 {
 	Platform = Platform_MFC;
 	RunFromOtherApp(hInstance, hWindow, CommandLine);
 }
 
 #if _CONSIDERED_OBSOLETE
-PVOID __cdecl operator new(size_t nSize, HGOSHEAP HeapBlock)
+PVOID __cdecl
+operator new(size_t nSize, HGOSHEAP HeapBlock)
 {
 	return gos_Malloc(nSize, HeapBlock);
 }
 
-PVOID __cdecl operator new(size_t nSize) { return gos_Malloc(nSize, (HGOSHEAP)-1); }
+PVOID __cdecl
+operator new(size_t nSize)
+{
+	return gos_Malloc(nSize, (HGOSHEAP)-1);
+}
 
-void __cdecl operator delete(PVOID block) { gos_Free(block); }
+void __cdecl
+operator delete(PVOID block)
+{
+	gos_Free(block);
+}
 #endif

@@ -92,7 +92,8 @@ extern bool MLRVertexLimitReached;
 // MISC
 //***************************************************************************
 
-void CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc,
+void
+CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc,
 	int32_t secondsToImpact, bool randomOff)
 {
 	//-------------------------------------------------------------------
@@ -141,17 +142,17 @@ void CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D stri
 				MPlayer->addArtilleryChunk(commanderID, strikeType, strikeLoc, secondsToImpact);
 		}
 		artilleryStrike->update(); // call this so if in pause mode, there is
-								   // something to draw
+			// something to draw
 	}
 }
 
 //---------------------------------------------------------------------------
 
-void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr strikeTarget,
+void
+IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr strikeTarget,
 	bool playerStrike, bool clanStrike, float timeToImpact)
 {
-	if ((strikeID != ARTILLERY_LARGE) && (strikeID != ARTILLERY_SMALL) &&
-		(strikeID != ARTILLERY_SENSOR))
+	if ((strikeID != ARTILLERY_LARGE) && (strikeID != ARTILLERY_SMALL) && (strikeID != ARTILLERY_SENSOR))
 		return;
 	if (!strikeLoc && !strikeTarget)
 		return;
@@ -160,12 +161,12 @@ void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr
 		strikeLocation = *strikeLoc;
 	else
 		strikeLocation = strikeTarget->getPosition();
-	bool bRandom		= 0;
+	bool bRandom = 0;
 	int32_t commanderID = -1;
 	if (playerStrike)
 	{
 		commanderID = Commander::home->getId();
-		bRandom		= Team::home->teamLineOfSight(*strikeLoc, 0.0f) ? 0 : 1;
+		bRandom = Team::home->teamLineOfSight(*strikeLoc, 0.0f) ? 0 : 1;
 	}
 	else if (clanStrike)
 	{
@@ -175,7 +176,7 @@ void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr
 				"MPlayer ");
 		//------------------------------------------------------------
 		// In campaign game, clans can strike into unrevealed terrain.
-		bRandom		= Team::teams[1]->teamLineOfSight(*strikeLoc, 0.0f) ? 0 : 1;
+		bRandom = Team::teams[1]->teamLineOfSight(*strikeLoc, 0.0f) ? 0 : 1;
 		commanderID = 1;
 	}
 	switch (strikeID)
@@ -214,7 +215,8 @@ void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr
 // ARTILLERY CHUNK
 //***************************************************************************
 
-PVOID ArtilleryChunk::operator new(size_t ourSize)
+PVOID
+ArtilleryChunk::operator new(size_t ourSize)
 {
 	PVOID result;
 	result = systemHeap->Malloc(ourSize);
@@ -223,23 +225,29 @@ PVOID ArtilleryChunk::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void ArtilleryChunk::operator delete(PVOID us) { systemHeap->Free(us); }
-
-//---------------------------------------------------------------------------
-
-void ArtilleryChunk::build(
-	int32_t _commanderId, int32_t _strikeType, Stuff::Vector3D location, int32_t _seconds)
+void
+ArtilleryChunk::operator delete(PVOID us)
 {
-	commanderId = _commanderId;
-	strikeType  = _strikeType;
-	land->worldToCell(location, cellRC[0], cellRC[1]);
-	secondsToImpact = _seconds;
-	data			= 0;
+	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void ArtilleryChunk::pack(void)
+void
+ArtilleryChunk::build(
+	int32_t _commanderId, int32_t _strikeType, Stuff::Vector3D location, int32_t _seconds)
+{
+	commanderId = _commanderId;
+	strikeType = _strikeType;
+	land->worldToCell(location, cellRC[0], cellRC[1]);
+	secondsToImpact = _seconds;
+	data = 0;
+}
+
+//---------------------------------------------------------------------------
+
+void
+ArtilleryChunk::pack(void)
 {
 	data = 0;
 	data |= (secondsToImpact + 1);
@@ -255,10 +263,11 @@ void ArtilleryChunk::pack(void)
 
 //---------------------------------------------------------------------------
 
-void ArtilleryChunk::unpack(void)
+void
+ArtilleryChunk::unpack(void)
 {
 	uint32_t tempData = data;
-	commanderId		  = (tempData & ARTILLERYCHUNK_COMMANDERID_MASK);
+	commanderId = (tempData & ARTILLERYCHUNK_COMMANDERID_MASK);
 	tempData >>= ARTILLERYCHUNK_COMMANDERID_BITS;
 	strikeType = (tempData & ARTILLERYCHUNK_STRIKETYPE_MASK);
 	tempData >>= ARTILLERYCHUNK_STRIKETYPE_BITS;
@@ -271,7 +280,8 @@ void ArtilleryChunk::unpack(void)
 
 //---------------------------------------------------------------------------
 
-bool ArtilleryChunk::equalTo(ArtilleryChunkPtr chunk)
+bool
+ArtilleryChunk::equalTo(ArtilleryChunkPtr chunk)
 {
 	if (commanderId != chunk->commanderId)
 		return (false);
@@ -290,7 +300,8 @@ bool ArtilleryChunk::equalTo(ArtilleryChunkPtr chunk)
 // class ArtilleryType
 //***************************************************************************
 
-GameObjectPtr ArtilleryType::createInstance(void)
+GameObjectPtr
+ArtilleryType::createInstance(void)
 {
 	ArtilleryPtr newArtillery = new Artillery;
 	if (!newArtillery)
@@ -301,16 +312,18 @@ GameObjectPtr ArtilleryType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void ArtilleryType::init(void)
+void
+ArtilleryType::init(void)
 {
 	ObjectType::init();
 	objectTypeClass = ARTILLERY_TYPE;
-	objectClass		= ARTILLERY;
+	objectClass = ARTILLERY;
 }
 
 //---------------------------------------------------------------------------
 
-void ArtilleryType::destroy(void)
+void
+ArtilleryType::destroy(void)
 {
 	if (explosionOffsetX)
 	{
@@ -332,7 +345,8 @@ void ArtilleryType::destroy(void)
 
 //---------------------------------------------------------------------------
 
-int32_t ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
+int32_t
+ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile miFile;
@@ -447,7 +461,8 @@ int32_t ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
 }
 
 //---------------------------------------------------------------------------
-bool ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
@@ -455,7 +470,7 @@ bool ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collid
 	// Artillery counts as damage IF AND ONLY IF the artillery
 	// strike arrives during the collision time.  At all other
 	// times, the artillery doesn't matter.
-	ArtilleryPtr artillery		   = (ArtilleryPtr)collidee;
+	ArtilleryPtr artillery = (ArtilleryPtr)collidee;
 	ArtilleryTypePtr artilleryType = (ArtilleryTypePtr)artillery->getObjectType();
 	if (artillery->getFlag(OBJECT_FLAG_BOOM))
 	{
@@ -464,7 +479,7 @@ bool ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collid
 		Stuff::Vector3D distance = collider->getPosition();
 		distance -= collidee->getPosition();
 		distance.z = 0.0; // Do NOT use elevation!!!  Will make it look like its
-						  // not WORKING!!!!
+			// not WORKING!!!!
 		float range = distance.GetLength() * metersPerWorldUnit;
 		if ((collider->getObjectClass() == GATE) || (collider->getObjectClass() == TURRET))
 		{
@@ -479,8 +494,7 @@ bool ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collid
 				if (littleExtent < range)
 				{
 					float realRange = range - littleExtent;
-					if (realRange >
-						((ArtilleryTypePtr)artillery->getObjectType())->nominalMajorRange)
+					if (realRange > ((ArtilleryTypePtr)artillery->getObjectType())->nominalMajorRange)
 						return FALSE;
 				}
 			}
@@ -501,9 +515,7 @@ bool ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collid
 			break;
 			}
 		}
-		else if ((collider->getObjectClass() == BATTLEMECH) &&
-			(((MoverPtr)collider)->getMoveType() == MOVETYPE_AIR) &&
-			(collider->getStatus() != OBJECT_STATUS_SHUTDOWN))
+		else if ((collider->getObjectClass() == BATTLEMECH) && (((MoverPtr)collider)->getMoveType() == MOVETYPE_AIR) && (collider->getStatus() != OBJECT_STATUS_SHUTDOWN))
 		{
 			// DO Nothing.  Helicopters are immune.
 			return false;
@@ -532,7 +544,8 @@ bool ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collid
 }
 
 //---------------------------------------------------------------------------
-bool ArtilleryType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+ArtilleryType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// Artillery goes away when it hits.  Nothing happens as
@@ -543,26 +556,28 @@ bool ArtilleryType::handleDestruction(GameObjectPtr collidee, GameObjectPtr coll
 //***************************************************************************
 // class Artillery
 //***************************************************************************
-void Artillery::init(bool create)
+void
+Artillery::init(bool create)
 {
 	artilleryType = ARTILLERY_SMALL;
 	initFlags();
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
-	info.strike.timeToImpact	  = -1.0;
-	info.strike.timeToLaunch	  = -1.0;
-	info.strike.sensorRange		  = 0.0;
-	info.strike.contactUpdate	 = scenarioTime;
+	info.strike.timeToImpact = -1.0;
+	info.strike.timeToLaunch = -1.0;
+	info.strike.sensorRange = 0.0;
+	info.strike.contactUpdate = scenarioTime;
 	info.strike.sensorSystemIndex = -1;
-	info.strike.timeToBlind		  = 0.0;
-	hitEffect					  = nullptr;
-	leftContrail				  = nullptr;
-	rightContrail				  = nullptr;
-	bomber						  = nullptr;
+	info.strike.timeToBlind = 0.0;
+	hitEffect = nullptr;
+	leftContrail = nullptr;
+	rightContrail = nullptr;
+	bomber = nullptr;
 	setFlag(OBJECT_FLAG_RANDOM_OFFSET, 0);
 }
 
 //---------------------------------------------------------------------------
-void Artillery::init(bool create, int32_t _artilleryType)
+void
+Artillery::init(bool create, int32_t _artilleryType)
 {
 	init(create);
 	artilleryType = _artilleryType;
@@ -575,13 +590,14 @@ void Artillery::init(bool create, int32_t _artilleryType)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::handleStaticCollision(void)
+void
+Artillery::handleStaticCollision(void)
 {
 	if (getFlag(OBJECT_FLAG_TANGIBLE))
 	{
 		//-----------------------------------------------------
 		// What is our block and vertex number?
-		int32_t blockNumber  = 0;
+		int32_t blockNumber = 0;
 		int32_t vertexNumber = 0;
 		getBlockAndVertexNumber(blockNumber, vertexNumber);
 		int32_t CellRow, CellCol;
@@ -591,7 +607,7 @@ void Artillery::handleStaticCollision(void)
 		// -fs
 		int32_t startCellRow = CellRow - 4;
 		int32_t startCellCol = CellCol - 4;
-		int32_t i			 = 0;
+		int32_t i = 0;
 		for (i = startCellRow; i < startCellRow + 9; i++)
 		{
 			for (size_t j = startCellCol; j < startCellCol + 9; j++)
@@ -599,7 +615,7 @@ void Artillery::handleStaticCollision(void)
 				if (GameMap->inBounds(i, j))
 				{
 					int32_t mineResult = 0;
-					mineResult		   = GameMap->getMine(i, j);
+					mineResult = GameMap->getMine(i, j);
 					if (mineResult == 1)
 					{
 						Stuff::Vector3D minePosition;
@@ -619,7 +635,7 @@ void Artillery::handleStaticCollision(void)
 		// We must now move out into other tiles for the artillery strike to
 		// work. Remember, Its pretty big! Just grab the nine vertices around
 		// this one.  Problems arise when on Block border.  Handle it.
-		blockNumber  = 0;
+		blockNumber = 0;
 		vertexNumber = 0;
 		getBlockAndVertexNumber(blockNumber, vertexNumber);
 		//-------------------------------------------------------------------------
@@ -628,7 +644,7 @@ void Artillery::handleStaticCollision(void)
 		// this one.  Problems arise when on Block border.  Handle it.
 		int32_t topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
 		int32_t currentBlockNumber = topLeftBlockNumber;
-		int32_t totalBlocks		   = Terrain::blocksMapSide * Terrain::blocksMapSide;
+		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 		for (i = 0; i < 3; i++)
 		{
 			for (size_t j = 0; j < 3; j++)
@@ -657,7 +673,8 @@ void Artillery::handleStaticCollision(void)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::setJustCreated(void)
+void
+Artillery::setJustCreated(void)
 {
 	if (getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
@@ -666,8 +683,8 @@ void Artillery::setJustCreated(void)
 		if (info.strike.timeToImpact == -1.0)
 			info.strike.timeToImpact = type->nominalTimeToImpact;
 		info.strike.timeToLaunch = type->nominalTimeToLaunch;
-		info.strike.sensorRange  = type->nominalSensorRange;
-		info.strike.timeToBlind  = 0.0;
+		info.strike.sensorRange = type->nominalSensorRange;
+		info.strike.timeToBlind = 0.0;
 		setFlag(OBJECT_FLAG_TANGIBLE, false);
 		setFlag(OBJECT_FLAG_SENSORS_GOING, false);
 		if (info.strike.sensorRange)
@@ -715,7 +732,7 @@ void Artillery::setJustCreated(void)
 		}
 		if (info.strike.sensorRange)
 		{
-			SensorSystemPtr sensor		  = SensorManager->newSensor();
+			SensorSystemPtr sensor = SensorManager->newSensor();
 			info.strike.sensorSystemIndex = sensor->id;
 			setSensorData(getTeam());
 			if ((info.strike.timeToBlind == 0.0f) && !getFlag(OBJECT_FLAG_SENSORS_GOING))
@@ -739,7 +756,8 @@ void Artillery::setJustCreated(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t Artillery::update(void)
+int32_t
+Artillery::update(void)
 {
 	if (getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
@@ -779,7 +797,7 @@ int32_t Artillery::update(void)
 			if (!result)
 			{
 				hitEffect->Kill(); // Effect is over.  Otherwise, wait until
-								   // hit!
+					// hit!
 				delete hitEffect;
 				hitEffect = nullptr;
 				if (bomber)
@@ -806,7 +824,7 @@ int32_t Artillery::update(void)
 	if ((info.strike.timeToImpact > 0.0f) || (type->nominalDamage == 0.0))
 	{
 		bool oldShadows = useShadows;
-		useShadows		= false;
+		useShadows = false;
 		appearance->setObjectParameters(iFacePosition, ((ObjectAppearance*)appearance)->rotation,
 			false, getTeamId(), Team::getRelation(getTeamId(), Team::home->getId()));
 		appearance->recalcBounds();
@@ -895,8 +913,7 @@ int32_t Artillery::update(void)
 			soundSystem->playDigitalSample(INCOMING_AIRSTRIKE, position, true);
 		}
 	}
-	if (!getFlag(OBJECT_FLAG_BOOM) && (info.strike.timeToImpact <= 0.0) &&
-		(type->nominalDamage > 0.0))
+	if (!getFlag(OBJECT_FLAG_BOOM) && (info.strike.timeToImpact <= 0.0) && (type->nominalDamage > 0.0))
 	{
 		Stuff::Vector3D actualPosition = position;
 		//-----------------------------------
@@ -931,7 +948,7 @@ int32_t Artillery::update(void)
 			if (!result)
 			{
 				hitEffect->Kill(); // Effect is over.  Otherwise, wait until
-								   // hit!
+					// hit!
 				delete hitEffect;
 				hitEffect = nullptr;
 			}
@@ -991,7 +1008,7 @@ int32_t Artillery::update(void)
 			if (!result)
 			{
 				hitEffect->Kill(); // Effect is over.  Otherwise, wait until
-								   // hit!
+					// hit!
 				delete hitEffect;
 				hitEffect = nullptr;
 			}
@@ -1001,7 +1018,8 @@ int32_t Artillery::update(void)
 }
 
 //---------------------------------------------------------------------------
-bool Artillery::recalcBounds(CameraPtr myEye)
+bool
+Artillery::recalcBounds(CameraPtr myEye)
 {
 	if (myEye)
 	{
@@ -1053,11 +1071,7 @@ bool Artillery::recalcBounds(CameraPtr myEye)
 			eye->projectZ(position, screenPos);
 			Stuff::Vector4D iFaceScreen;
 			eye->projectZ(iFacePosition, iFaceScreen);
-			if ((screenPos.x >= 0) && (screenPos.y >= 0) && (screenPos.x <= eye->getScreenResX()) &&
-					(screenPos.y <= eye->getScreenResY()) ||
-				((iFaceScreen.x >= 0) && (iFaceScreen.y >= 0) &&
-					(iFaceScreen.x <= eye->getScreenResX()) &&
-					(iFaceScreen.y <= eye->getScreenResY())))
+			if ((screenPos.x >= 0) && (screenPos.y >= 0) && (screenPos.x <= eye->getScreenResX()) && (screenPos.y <= eye->getScreenResY()) || ((iFaceScreen.x >= 0) && (iFaceScreen.y >= 0) && (iFaceScreen.x <= eye->getScreenResX()) && (iFaceScreen.y <= eye->getScreenResY())))
 			{
 				inView = true;
 			}
@@ -1071,7 +1085,8 @@ bool Artillery::recalcBounds(CameraPtr myEye)
 }
 
 //---------------------------------------------------------------------------
-TeamPtr Artillery::getTeam(void)
+TeamPtr
+Artillery::getTeam(void)
 {
 	if (teamId == -1)
 		return (nullptr);
@@ -1079,10 +1094,15 @@ TeamPtr Artillery::getTeam(void)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::setCommanderId(int32_t _commanderId) { commanderId = _commanderId; }
+void
+Artillery::setCommanderId(int32_t _commanderId)
+{
+	commanderId = _commanderId;
+}
 
 //---------------------------------------------------------------------------
-int32_t Artillery::setTeamId(int32_t _teamId, bool setup)
+int32_t
+Artillery::setTeamId(int32_t _teamId, bool setup)
 {
 	teamId = _teamId;
 	Assert(teamId > -1, teamId, " Mover.setTeamId: bad teamId ");
@@ -1091,7 +1111,8 @@ int32_t Artillery::setTeamId(int32_t _teamId, bool setup)
 
 //---------------------------------------------------------------------------
 
-bool Artillery::isFriendly(TeamPtr team)
+bool
+Artillery::isFriendly(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_FRIENDLY);
@@ -1100,7 +1121,8 @@ bool Artillery::isFriendly(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool Artillery::isEnemy(TeamPtr team)
+bool
+Artillery::isEnemy(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_ENEMY);
@@ -1109,7 +1131,8 @@ bool Artillery::isEnemy(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool Artillery::isNeutral(TeamPtr team)
+bool
+Artillery::isNeutral(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_NEUTRAL);
@@ -1117,7 +1140,8 @@ bool Artillery::isNeutral(TeamPtr team)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::setSensorRange(float range)
+void
+Artillery::setSensorRange(float range)
 {
 	SensorSystemPtr sensor = SensorManager->getSensor(info.strike.sensorSystemIndex);
 	if (sensor)
@@ -1125,7 +1149,8 @@ void Artillery::setSensorRange(float range)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::setSensorData(TeamPtr team, float sensorTime, float range)
+void
+Artillery::setSensorData(TeamPtr team, float sensorTime, float range)
 {
 	if (sensorTime != -1.0)
 		info.strike.timeToBlind = sensorTime;
@@ -1141,10 +1166,14 @@ void Artillery::setSensorData(TeamPtr team, float sensorTime, float range)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::drawSelectBox(uint8_t color) {}
+void
+Artillery::drawSelectBox(uint8_t color)
+{
+}
 
 //---------------------------------------------------------------------------
-void Artillery::render(void)
+void
+Artillery::render(void)
 {
 	if (inView)
 	{
@@ -1160,7 +1189,7 @@ void Artillery::render(void)
 			mlrState.SetZBufferWriteOn();
 			// mlrState.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 			// mlrState.SetAlphaMode(MidLevelRenderer::MLRState::AlphaInvAlphaMode);
-			drawInfo.m_state		 = mlrState;
+			drawInfo.m_state = mlrState;
 			drawInfo.m_clippingFlags = 0x0;
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -position.x;
@@ -1173,9 +1202,7 @@ void Artillery::render(void)
 			if (!MLRVertexLimitReached)
 				hitEffect->Draw(&drawInfo);
 		}
-		if ((!MPlayer && (info.strike.timeToImpact > 0.f)) ||
-			(MPlayer && info.strike.timeToImpact > 0.f &&
-				((teamId == Team::home->getId()) || info.strike.timeToImpact < 3.0f)))
+		if ((!MPlayer && (info.strike.timeToImpact > 0.f)) || (MPlayer && info.strike.timeToImpact > 0.f && ((teamId == Team::home->getId()) || info.strike.timeToImpact < 3.0f)))
 		{
 			// We are drawing the timer.
 			// Draw it.
@@ -1226,7 +1253,7 @@ void Artillery::render(void)
 		mlrState.SetZBufferWriteOn();
 		// mlrState.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 		// mlrState.SetAlphaMode(MidLevelRenderer::MLRState::AlphaInvAlphaMode);
-		drawInfo.m_state		 = mlrState;
+		drawInfo.m_state = mlrState;
 		drawInfo.m_clippingFlags = 0x0;
 		if (leftContrail)
 		{
@@ -1260,13 +1287,15 @@ void Artillery::render(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t Artillery::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+int32_t
+Artillery::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
 	return (NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-void Artillery::destroy(void)
+void
+Artillery::destroy(void)
 {
 	// Must delete here too in case effect was NOT over when mission ended!
 	if (hitEffect)
@@ -1295,7 +1324,8 @@ void Artillery::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::init(bool create, ObjectTypePtr _type)
+void
+Artillery::init(bool create, ObjectTypePtr _type)
 {
 	GameObject::init(create, _type);
 	initFlags();
@@ -1306,7 +1336,7 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 		setFlag(OBJECT_FLAG_EXISTS, true);
 		setFlag(OBJECT_FLAG_JUSTCREATED, true);
 		setFlag(OBJECT_FLAG_BOOM, false);
-		info.strike.timeToImpact	  = -1.0;
+		info.strike.timeToImpact = -1.0;
 		info.strike.explosionOffFlags = 0;
 		break;
 	}
@@ -1327,14 +1357,14 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 		// The MechEdit tool does not assume a sprite type, nor should it.
 		// MechCmdr2 features much simpler objects which only use 1 type of
 		// sprite!
-		int32_t appearanceType					 = (BLDG_TYPE << 24);
+		int32_t appearanceType = (BLDG_TYPE << 24);
 		AppearanceTypePtr buildingAppearanceType = nullptr;
 		if (!appearName)
 		{
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			appearanceType		   = (BLDG_TYPE << 24);
+			appearanceType = (BLDG_TYPE << 24);
 			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 		}
 		else
@@ -1387,14 +1417,14 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 		// The MechEdit tool does not assume a sprite type, nor should it.
 		// MechCmdr2 features much simpler objects which only use 1 type of
 		// sprite!
-		int32_t appearanceType					 = (BLDG_TYPE << 24);
+		int32_t appearanceType = (BLDG_TYPE << 24);
 		AppearanceTypePtr buildingAppearanceType = nullptr;
 		if (!appearName)
 		{
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			appearanceType		   = (BLDG_TYPE << 24);
+			appearanceType = (BLDG_TYPE << 24);
 			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 		}
 		else
@@ -1447,14 +1477,14 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 		// The MechEdit tool does not assume a sprite type, nor should it.
 		// MechCmdr2 features much simpler objects which only use 1 type of
 		// sprite!
-		int32_t appearanceType					 = (BLDG_TYPE << 24);
+		int32_t appearanceType = (BLDG_TYPE << 24);
 		AppearanceTypePtr buildingAppearanceType = nullptr;
 		if (!appearName)
 		{
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			appearanceType		   = (BLDG_TYPE << 24);
+			appearanceType = (BLDG_TYPE << 24);
 			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 		}
 		else
@@ -1479,7 +1509,8 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::Save(PacketFilePtr file, int32_t packetNum)
+void
+Artillery::Save(PacketFilePtr file, int32_t packetNum)
 {
 	ArtilleryData data;
 	CopyTo(&data);
@@ -1488,36 +1519,37 @@ void Artillery::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::CopyTo(ArtilleryData* data)
+void
+Artillery::CopyTo(ArtilleryData* data)
 {
-	data->artilleryType  = artilleryType;
-	data->teamId		 = teamId;
-	data->commanderId	= commanderId;
-	data->info			 = info;
-	data->effectId		 = effectId;
+	data->artilleryType = artilleryType;
+	data->teamId = teamId;
+	data->commanderId = commanderId;
+	data->info = info;
+	data->effectId = effectId;
 	data->bombRunStarted = bombRunStarted;
-	data->inView		 = inView;
-	data->iFacePosition  = iFacePosition;
+	data->inView = inView;
+	data->iFacePosition = iFacePosition;
 	GameObject::CopyTo(dynamic_cast<GameObjectData*>(data));
 }
 
 //---------------------------------------------------------------------------
-void Artillery::Load(ArtilleryData* data)
+void
+Artillery::Load(ArtilleryData* data)
 {
 	GameObject::Load(dynamic_cast<GameObjectData*>(data));
-	artilleryType  = data->artilleryType;
-	commanderId	= data->commanderId;
-	teamId		   = data->teamId;
-	info		   = data->info;
-	effectId	   = data->effectId;
+	artilleryType = data->artilleryType;
+	commanderId = data->commanderId;
+	teamId = data->teamId;
+	info = data->info;
+	effectId = data->effectId;
 	bombRunStarted = data->bombRunStarted;
-	inView		   = data->inView;
-	iFacePosition  = data->iFacePosition;
+	inView = data->inView;
+	iFacePosition = data->iFacePosition;
 	// if we're not a true artillery round, we're a sensor probe.
 	// This checks to see if we've hit yet.
 	// If not, create the impact effect and move on.
-	if ((data->info.strike.sensorRange != 0.0f) && (data->info.strike.timeToImpact <= 0.0) &&
-		!getFlag(OBJECT_FLAG_SENSORS_GOING))
+	if ((data->info.strike.sensorRange != 0.0f) && (data->info.strike.timeToImpact <= 0.0) && !getFlag(OBJECT_FLAG_SENSORS_GOING))
 	{
 		int32_t cellR, cellC;
 		land->worldToCell(position, cellR, cellC);
@@ -1553,8 +1585,7 @@ void Artillery::Load(ArtilleryData* data)
 			hitEffect->Start(&info);
 		}
 	}
-	if (!getFlag(OBJECT_FLAG_BOOM) && (data->info.strike.timeToImpact > 0.0) &&
-		(data->info.strike.sensorRange == 0.0f))
+	if (!getFlag(OBJECT_FLAG_BOOM) && (data->info.strike.timeToImpact > 0.0) && (data->info.strike.sensorRange == 0.0f))
 	{
 		// Create the GOSFX here.
 		if (strcmp(weaponEffects->GetEffectName(effectId), "NONE") != 0)
@@ -1576,7 +1607,7 @@ void Artillery::Load(ArtilleryData* data)
 	}
 	if (data->info.strike.sensorSystemIndex != -1)
 	{
-		SensorSystemPtr sensor		  = SensorManager->newSensor();
+		SensorSystemPtr sensor = SensorManager->newSensor();
 		info.strike.sensorSystemIndex = sensor->id;
 		setSensorData(getTeam());
 	}

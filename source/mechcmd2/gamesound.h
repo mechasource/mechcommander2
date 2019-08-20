@@ -25,12 +25,12 @@ class GameSoundSystem : public SoundSystem
 	// Data Members
 	//-------------
 protected:
-	RadioData* currentMessage;			   // Radio message playing.
-	uint32_t messagesInQueue;			   // Radio messages waiting to play.
+	RadioData* currentMessage; // Radio message playing.
+	uint32_t messagesInQueue; // Radio messages waiting to play.
 	RadioData* queue[MAX_QUEUED_MESSAGES]; // Radio message queue.
-	uint32_t currentFragment;			   // Which piece are we playing.
-	uint32_t playingNoise;				   // are we playing noise right now?
-	bool wholeMsgDone;					   // Are all fragments played?
+	uint32_t currentFragment; // Which piece are we playing.
+	uint32_t playingNoise; // are we playing noise right now?
+	bool wholeMsgDone; // Are all fragments played?
 	HGOSAUDIO radioHandle;
 
 	float generalAlarmTimer; // How int32_t do we play the alarm buzzer?
@@ -45,16 +45,16 @@ public:
 	void init(void)
 	{
 		SoundSystem::init(void);
-		wholeMsgDone	= true;
-		currentMessage  = nullptr;
+		wholeMsgDone = true;
+		currentMessage = nullptr;
 		messagesInQueue = 0;
 		currentFragment = 0;
-		playingNoise	= false;
-		radioHandle		= nullptr;
+		playingNoise = false;
+		radioHandle = nullptr;
 		//------------------------------------------------------------
 		// Startup the Radio Message Queue.
 		messagesInQueue = 0;
-		wholeMsgDone	= true;
+		wholeMsgDone = true;
 		for (size_t i = 0; i < MAX_QUEUED_MESSAGES; i++)
 			queue[i] = nullptr;
 		generalAlarmTimer = 0.0f;

@@ -68,9 +68,9 @@ public:
 
 	int32_t RefractalizeTerrain(int32_t threshold);
 
-	virtual void handleLeftButtonDown(int32_t PosX, int32_t PosY);  // mouse button down
+	virtual void handleLeftButtonDown(int32_t PosX, int32_t PosY); // mouse button down
 	virtual void handleLeftButtonDbl(int32_t PosX, int32_t PosY) {} // mouse button dbl click
-	virtual void handleLeftButtonUp(int32_t PosX, int32_t PosY);	// pop ups etc need this
+	virtual void handleLeftButtonUp(int32_t PosX, int32_t PosY); // pop ups etc need this
 	virtual void handleKeyDown(int32_t Key);
 	virtual void handleMouseMove(int32_t PosX, int32_t PosY);
 
@@ -306,14 +306,16 @@ public:
 	void update(void);
 
 	void resaveAll(void); // Used by autoBuild to automagically resave all maps
-						  // with correct data.
+		// with correct data.
 };
 
 class TeamsAction : public Action
 {
 public:
-	TeamsAction() : Action() {}
-	TeamsAction(const CTeams& teams) : Action() { PreviousTeams(teams); }
+	TeamsAction() :
+		Action() {}
+	TeamsAction(const CTeams& teams) :
+		Action() { PreviousTeams(teams); }
 	virtual ~TeamsAction() {}
 	virtual bool redo() { return undo(void); }
 	virtual bool undo(void);

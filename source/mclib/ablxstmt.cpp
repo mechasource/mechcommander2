@@ -87,15 +87,19 @@ extern bool NewStateSet;
 
 int32_t dummyCount = 0;
 
-void execOrderReturn(int32_t returnVal);
-void ABL_AddToProfileLog(PSTR profileString);
-void transState(SymTableNodePtr newState);
+void
+execOrderReturn(int32_t returnVal);
+void
+ABL_AddToProfileLog(PSTR profileString);
+void
+transState(SymTableNodePtr newState);
 
 //***************************************************************************
 //
 //***************************************************************************
 
-void execStatement(void)
+void
+execStatement(void)
 {
 	if (codeToken == TKN_STATEMENT_MARKER)
 	{
@@ -114,16 +118,14 @@ void execStatement(void)
 		ABL_Assert(idPtr != nullptr, 0, " oops ");
 		if (idPtr->defn.key == DFN_FUNCTION)
 		{
-			bool skipOrder		 = false;
-			uint8_t orderDWord   = 0;
+			bool skipOrder = false;
+			uint8_t orderDWord = 0;
 			uint8_t orderBitMask = 0;
-			if ((idPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER) &&
-				CurModule->getOrderCallFlags())
+			if ((idPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER) && CurModule->getOrderCallFlags())
 			{
-				orderDWord   = getCodeByte();
+				orderDWord = getCodeByte();
 				orderBitMask = getCodeByte();
-				skipOrder	= !CurModule->isLibrary() &&
-					CurModule->getOrderCallFlag(orderDWord, orderBitMask);
+				skipOrder = !CurModule->isLibrary() && CurModule->getOrderCallFlag(orderDWord, orderBitMask);
 			}
 			TypePtr returnType = execRoutineCall(idPtr, skipOrder);
 			if (idPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
@@ -158,8 +160,7 @@ void execStatement(void)
 	case TKN_CODE:
 	{
 		bool wasAutoReturnFromOrders = AutoReturnFromOrders;
-		AutoReturnFromOrders		 = ((CurRoutineIdPtr->defn.info.routine.flags &
-									(ROUTINE_FLAG_ORDER + ROUTINE_FLAG_STATE)) != 0);
+		AutoReturnFromOrders = ((CurRoutineIdPtr->defn.info.routine.flags & (ROUTINE_FLAG_ORDER + ROUTINE_FLAG_STATE)) != 0);
 		getCodeToken();
 		TokenCodeType endToken = TKN_END_FUNCTION;
 		if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
@@ -214,7 +215,8 @@ void execStatement(void)
 
 //***************************************************************************
 
-void execAssignmentStatement(SymTableNodePtr idPtr)
+void
+execAssignmentStatement(SymTableNodePtr idPtr)
 {
 	StackItemPtr targetPtr;
 	TypePtr targetTypePtr;
@@ -222,7 +224,7 @@ void execAssignmentStatement(SymTableNodePtr idPtr)
 	//--------------------------
 	// Assignment to variable...
 	targetTypePtr = execVariable(idPtr, USE_TARGET);
-	targetPtr	 = (StackItemPtr)tos->address;
+	targetPtr = (StackItemPtr)tos->address;
 	//------------------------------
 	// Pop off the target address...
 	pop();
@@ -247,8 +249,8 @@ void execAssignmentStatement(SymTableNodePtr idPtr)
 	{
 		//-------------------------
 		// Copy the array/record...
-		PSTR dest	= (PSTR)targetPtr;
-		PSTR src	 = tos->address;
+		PSTR dest = (PSTR)targetPtr;
+		PSTR src = tos->address;
 		int32_t size = targetTypePtr->size;
 		memcpy(dest, src, size);
 	}
@@ -275,7 +277,8 @@ void execAssignmentStatement(SymTableNodePtr idPtr)
 
 //***************************************************************************
 
-TypePtr execRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
+TypePtr
+execRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 {
 	if (routineIdPtr->defn.info.routine.key == RTN_DECLARED)
 		return (execDeclaredRoutineCall(routineIdPtr, skipOrder));
@@ -285,7 +288,8 @@ TypePtr execRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 
 //***************************************************************************
 
-TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
+TypePtr
+execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 {
 	if (skipOrder)
 	{
@@ -303,7 +307,7 @@ TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 		pushInteger(1);
 		return ((TypePtr)(routineIdPtr->typePtr));
 	}
-	int32_t oldLevel = level;					// level of caller
+	int32_t oldLevel = level; // level of caller
 	int32_t newLevel = routineIdPtr->level + 1; // level of callee
 	CallStackLevel++;
 	//-------------------------------------------
@@ -325,9 +329,9 @@ TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 	}
 	//-------------------------------------------------
 	// Set the return address in the new stack frame...
-	level							 = newLevel;
-	stackFrameBasePtr				 = newStackFrameBasePtr;
-	StackFrameHeaderPtr headerPtr	= (StackFrameHeaderPtr)stackFrameBasePtr;
+	level = newLevel;
+	stackFrameBasePtr = newStackFrameBasePtr;
+	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
 	headerPtr->returnAddress.address = codeSegmentPtr - 1;
 	//---------------------------------------------------------
 	// If we're calling a library function, we need to set some
@@ -335,12 +339,12 @@ TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 	ABLModulePtr PrevModule = nullptr;
 	if (isLibraryCall)
 	{
-		PrevModule		= CurModule;
-		CurModule		= routineIdPtr->library;
+		PrevModule = CurModule;
+		CurModule = routineIdPtr->library;
 		CurModuleHandle = CurModule->getHandle();
 		if (debugger)
 			debugger->setModule(CurModule);
-		StaticDataPtr  = CurModule->getStaticData();
+		StaticDataPtr = CurModule->getStaticData();
 		CallModuleInit = !CurModule->getInitCalled();
 		CurModule->setInitCalled(true);
 		//	routineEntry(ModuleRegistry[CurModule->getHandle()].moduleIdPtr);
@@ -370,7 +374,7 @@ TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 	if (isLibraryCall)
 	{
 		//	routineExit(ModuleRegistry[CurModule->getHandle()].moduleIdPtr);
-		CurModule		= PrevModule;
+		CurModule = PrevModule;
 		CurModuleHandle = CurModule->getHandle();
 		if (debugger)
 			debugger->setModule(CurModule);
@@ -387,10 +391,11 @@ TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 
 //***************************************************************************
 
-void setOpenArray(TypePtr arrayTypePtr, int32_t size)
+void
+setOpenArray(TypePtr arrayTypePtr, int32_t size)
 {
 	int32_t numElements = size / arrayTypePtr->size;
-	arrayTypePtr->size  = size;
+	arrayTypePtr->size = size;
 	while (arrayTypePtr->info.array.elementTypePtr->form == FRM_ARRAY)
 		arrayTypePtr = arrayTypePtr->info.array.elementTypePtr;
 	arrayTypePtr->info.array.elementCount = numElements;
@@ -398,7 +403,8 @@ void setOpenArray(TypePtr arrayTypePtr, int32_t size)
 
 //***************************************************************************
 
-void execActualParams(SymTableNodePtr routineIdPtr)
+void
+execActualParams(SymTableNodePtr routineIdPtr)
 {
 	//--------------------------
 	// Execute the parameters...
@@ -426,8 +432,8 @@ void execActualParams(SymTableNodePtr routineIdPtr)
 				// The following is a little inefficient, but is kept this way
 				// to keep it clear. Once it's verified to work, optimize...
 				int32_t size = formalTypePtr->size;
-				PSTR src	 = tos->address;
-				PSTR dest	= (PSTR)ABLStackMallocCallback((size_t)size);
+				PSTR src = tos->address;
+				PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
 				if (!dest)
 				{
 					char err[255];
@@ -454,7 +460,8 @@ void execActualParams(SymTableNodePtr routineIdPtr)
 
 //***************************************************************************
 
-void execSwitchStatement(void)
+void
+execSwitchStatement(void)
 {
 	getCodeToken();
 	PSTR branchTableLocation = getCodeAddressMarker();
@@ -470,14 +477,14 @@ void execSwitchStatement(void)
 	// Now, search the branch table for the expression value...
 	codeSegmentPtr = branchTableLocation;
 	getCodeToken();
-	int32_t caseLabelCount  = getCodeInteger();
-	bool done				= false;
+	int32_t caseLabelCount = getCodeInteger();
+	bool done = false;
 	PSTR caseBranchLocation = nullptr;
 	while (!done && caseLabelCount--)
 	{
 		int32_t caseLabelValue = getCodeInteger();
-		caseBranchLocation	 = getCodeAddress();
-		done				   = (caseLabelValue == switchExpressionValue);
+		caseBranchLocation = getCodeAddress();
+		done = (caseLabelValue == switchExpressionValue);
 	}
 	//-----------------------------------------------
 	// If found, go to the aprropriate branch code...
@@ -513,7 +520,8 @@ void execSwitchStatement(void)
 
 //***************************************************************************
 
-void execForStatement(void)
+void
+execForStatement(void)
 {
 	getCodeToken();
 	//---------------------------------------
@@ -523,8 +531,8 @@ void execForStatement(void)
 	// Get the address of the control variable's stack item...
 	getCodeToken();
 	SymTableNodePtr controlIdPtr = getCodeSymTableNodePtr();
-	TypePtr controlTypePtr		 = execVariable(controlIdPtr, USE_TARGET);
-	StackItemPtr targetPtr		 = (StackItemPtr)tos->address;
+	TypePtr controlTypePtr = execVariable(controlIdPtr, USE_TARGET);
+	StackItemPtr targetPtr = (StackItemPtr)tos->address;
 	//------------------------------------
 	// Control variable address...
 	pop();
@@ -560,7 +568,7 @@ void execForStatement(void)
 	//----------------------------
 	// Address of start of loop...
 	PSTR loopStartLocation = codeSegmentPtr;
-	int32_t controlValue   = initialValue;
+	int32_t controlValue = initialValue;
 	//-----------------------------
 	// Now, execute the FOR loop...
 	int32_t iterations = 0;
@@ -614,7 +622,8 @@ void execForStatement(void)
 
 //***************************************************************************
 
-void execTransStatement(void)
+void
+execTransStatement(void)
 {
 	getCodeToken();
 	getCodeToken();
@@ -625,7 +634,8 @@ void execTransStatement(void)
 
 //***************************************************************************
 
-void execTransBackStatement(void)
+void
+execTransBackStatement(void)
 {
 	SymTableNodePtr prevState = CurModule->getPrevState();
 	if (!prevState)
@@ -636,7 +646,8 @@ void execTransBackStatement(void)
 
 //***************************************************************************
 
-void execIfStatement(void)
+void
+execIfStatement(void)
 {
 	getCodeToken();
 	PSTR falseLocation = getCodeAddressMarker();
@@ -693,10 +704,11 @@ void execIfStatement(void)
 
 //***************************************************************************
 
-void execRepeatStatement(void)
+void
+execRepeatStatement(void)
 {
 	PSTR loopStartLocation = codeSegmentPtr;
-	int32_t iterations	 = 0;
+	int32_t iterations = 0;
 	do
 	{
 		getCodeToken();
@@ -726,13 +738,14 @@ void execRepeatStatement(void)
 
 //***************************************************************************
 
-void execWhileStatement(void)
+void
+execWhileStatement(void)
 {
 	getCodeToken();
 	PSTR loopEndLocation = getCodeAddressMarker();
-	PSTR testLocation	= codeSegmentPtr;
-	bool loopDone		 = false;
-	int32_t iterations   = 0;
+	PSTR testLocation = codeSegmentPtr;
+	bool loopDone = false;
+	int32_t iterations = 0;
 	do
 	{
 		//-------------------------------
@@ -742,7 +755,7 @@ void execWhileStatement(void)
 		if (tos->integer == 0)
 		{
 			codeSegmentPtr = loopEndLocation;
-			loopDone	   = true;
+			loopDone = true;
 		}
 		//-------------------------
 		// Get the boolean value...

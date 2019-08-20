@@ -34,9 +34,9 @@ typedef PVOIDNETPLAYER;
 
 enum NETMESSAGETYPE
 {
-	NMT_MESSAGE,	 // a network message
-	NMT_ADDPLAYER,   // a new player
-	NMT_DELPLAYER,   // a player has left
+	NMT_MESSAGE, // a network message
+	NMT_ADDPLAYER, // a new player
+	NMT_DELPLAYER, // a player has left
 	NMT_TERMSESSION, // the session has been terminated
 	NMT_HOSTMIGRATE, // the host has migrated
 };
@@ -48,9 +48,9 @@ class NETMESSAGE
 {
 public:
 	NETMESSAGETYPE m_Type; // 0==network message
-	NETPLAYER m_pPlayer;   // player message is to, or who it's from
-	uint32_t m_dwFlags;	// priority, guaranteed, etc.
-	uint32_t m_dwInfo;	 // additional message info
+	NETPLAYER m_pPlayer; // player message is to, or who it's from
+	uint32_t m_dwFlags; // priority, guaranteed, etc.
+	uint32_t m_dwInfo; // additional message info
 	uint32_t m_dwTimeStamp;
 	PVOID m_pData;
 	int32_t m_size;
@@ -134,7 +134,7 @@ typedef enum
 	MCMSG_PLAYER_INSIGNIA,
 	MCMSG_MISSION_SETUP,
 	MCMSG_PLAYER_CHECK_IN_RECEIPT,
-	MCMSG_MOVERS_SETUP,   // not used?
+	MCMSG_MOVERS_SETUP, // not used?
 	MCMSG_START_PLANNING, // not used?
 	MCMSG_START_MISSION,
 	MCMSG_END_MISSION,
@@ -247,10 +247,10 @@ typedef struct _MC2Player
 
 typedef struct _MissionSettings
 {
-	char map[MAXLEN_MAP_NAME];  // file name
+	char map[MAXLEN_MAP_NAME]; // file name
 	char name[MAXLEN_MAP_DESC]; // displayNmae
-	GUID mapGuid;				// Insures maps are the same version!!
-	char url[256];				/// GLENN, you probably want this somewhere else....
+	GUID mapGuid; // Insures maps are the same version!!
+	char url[256]; /// GLENN, you probably want this somewhere else....
 	int32_t defaultCBills;
 	int32_t resourcePoints;
 	float timeLimit;
@@ -323,16 +323,16 @@ public:
 
 	void init(void)
 	{
-		type					 = -1;
-		tileRC[0]				 = -1;
-		tileRC[1]				 = -1;
-		objectId				 = 0;
+		type = -1;
+		tileRC[0] = -1;
+		tileRC[1] = -1;
+		objectId = 0;
 		objectBlockOrTrainNumber = 0;
-		objectVertexOrCarNumber  = 0;
-		objectItemNumber		 = 0;
-		param1					 = 0;
-		param2					 = 0;
-		data					 = 0;
+		objectVertexOrCarNumber = 0;
+		objectItemNumber = 0;
+		param1 = 0;
+		param2 = 0;
+		data = 0;
 	}
 
 	void destroy(void) {}
@@ -571,9 +571,9 @@ public:
 
 	void init(void)
 	{
-		type		= MCMSG_PLAYER_CID;
+		type = MCMSG_PLAYER_CID;
 		commanderID = -1;
-		subType		= 0;
+		subType = 0;
 	}
 };
 
@@ -595,9 +595,9 @@ public:
 
 	void init(void)
 	{
-		type	   = MCMSG_PLAYER_UPDATE;
+		type = MCMSG_PLAYER_UPDATE;
 		senderTime = -1.0;
-		stage	  = 0;
+		stage = 0;
 	}
 };
 
@@ -633,7 +633,7 @@ public:
 
 	void init(void)
 	{
-		type	= MCMSG_MISSION_SETUP;
+		type = MCMSG_MISSION_SETUP;
 		subType = 0;
 	}
 };
@@ -652,7 +652,7 @@ public:
 
 	void init(void)
 	{
-		type		= MCMSG_PLAYER_INFO;
+		type = MCMSG_PLAYER_INFO;
 		commanderID = -1;
 	}
 };
@@ -676,11 +676,11 @@ public:
 
 	void init(void)
 	{
-		type	   = MCMSG_CHAT;
+		type = MCMSG_CHAT;
 		allPlayers = false;
 		isDeadChat = false;
-		hideName   = false;
-		string[0]  = nullptr;
+		hideName = false;
+		string[0] = nullptr;
 	}
 };
 
@@ -700,7 +700,7 @@ public:
 
 	void init(void)
 	{
-		type		= MCMSG_PLAYER_CHECK_IN;
+		type = MCMSG_PLAYER_CHECK_IN;
 		commanderID = -1;
 	}
 };
@@ -762,7 +762,7 @@ public:
 	void init(void)
 	{
 		type = MCMSG_START_MISSION;
-		huh  = 0;
+		huh = 0;
 	}
 };
 
@@ -784,7 +784,7 @@ public:
 
 	void init(void)
 	{
-		type   = MCMSG_END_MISSION;
+		type = MCMSG_END_MISSION;
 		result = -1;
 	}
 };
@@ -804,8 +804,8 @@ public:
 
 	void init(void)
 	{
-		type		= MCMSG_LEAVE_SESSION;
-		subType		= 0;
+		type = MCMSG_LEAVE_SESSION;
+		subType = 0;
 		commanderID = -1;
 	}
 };
@@ -829,11 +829,11 @@ public:
 
 	void init(void)
 	{
-		type			 = MCMSG_PLAYER_ORDER;
-		commanderID		 = -1;
-		flags			 = 0;
-		location[0]		 = 0.0;
-		location[1]		 = 0.0;
+		type = MCMSG_PLAYER_ORDER;
+		commanderID = -1;
+		flags = 0;
+		location[0] = 0.0;
+		location[1] = 0.0;
 		tacOrderChunk[0] = 0;
 		tacOrderChunk[1] = 0;
 	}
@@ -854,9 +854,9 @@ public:
 
 	void init(void)
 	{
-		type		= MCMSG_HOLD_POSITION;
+		type = MCMSG_HOLD_POSITION;
 		commanderID = -1;
-		flags		= 0;
+		flags = 0;
 	}
 };
 
@@ -883,9 +883,9 @@ public:
 
 	void init(void)
 	{
-		type		   = MCMSG_PLAYER_MOVERGROUP;
-		commanderID	= -1;
-		groupId		   = -1;
+		type = MCMSG_PLAYER_MOVERGROUP;
+		commanderID = -1;
+		groupId = -1;
 		moverGroupInfo = 0;
 	}
 };
@@ -906,10 +906,10 @@ public:
 
 	void init(void)
 	{
-		type		= MCMSG_PLAYER_ARTILLERY;
+		type = MCMSG_PLAYER_ARTILLERY;
 		location[0] = 0.0;
 		location[1] = 0.0;
-		chunk		= 0;
+		chunk = 0;
 	}
 };
 
@@ -932,9 +932,9 @@ public:
 
 	void init(void)
 	{
-		type	 = MCMSG_MOVER_UPDATE;
+		type = MCMSG_MOVER_UPDATE;
 		updateId = 0xFFFF;
-		numRLEs  = 0;
+		numRLEs = 0;
 	}
 };
 
@@ -953,7 +953,7 @@ public:
 
 	void init(void)
 	{
-		type	 = MCMSG_TURRET_UPDATE;
+		type = MCMSG_TURRET_UPDATE;
 		updateId = 0xFFFF;
 		for (size_t i = 0; i < MAX_MULTIPLAYER_TURRETS; i++)
 			targetList[i] = 0;
@@ -977,7 +977,7 @@ public:
 
 	void init(void)
 	{
-		type	= MCMSG_MOVER_WEAPONFIRE_UPDATE;
+		type = MCMSG_MOVER_WEAPONFIRE_UPDATE;
 		numRLEs = 0;
 	}
 };
@@ -999,7 +999,7 @@ public:
 
 	void init(void)
 	{
-		type	   = MCMSG_TURRET_WEAPONFIRE_UPDATE;
+		type = MCMSG_TURRET_WEAPONFIRE_UPDATE;
 		numTurrets = 0;
 	}
 };
@@ -1026,7 +1026,7 @@ public:
 		for (size_t i = 0; i < MAX_MULTIPLAYER_MOVERS; i++)
 		{
 			numCritHitChunks[i] = 0;
-			numRadioChunks[i]   = 0;
+			numRadioChunks[i] = 0;
 		}
 	}
 };
@@ -1048,7 +1048,7 @@ public:
 
 	void init()
 	{
-		type		  = MCMSG_WEAPONHIT_UPDATE;
+		type = MCMSG_WEAPONHIT_UPDATE;
 		numWeaponHits = 0;
 	}
 };
@@ -1071,8 +1071,8 @@ public:
 
 	void init(void)
 	{
-		type				= MCMSG_WORLD_UPDATE;
-		numWorldChanges		= 0;
+		type = MCMSG_WORLD_UPDATE;
+		numWorldChanges = 0;
 		numArtilleryStrikes = 0;
 	}
 };
@@ -1096,14 +1096,14 @@ public:
 
 	void init(void)
 	{
-		type		 = MCMSG_REINFORCEMENT;
-		stage		 = 0;
-		rosterIndex  = 255;
-		vehicleID	= 0;
+		type = MCMSG_REINFORCEMENT;
+		stage = 0;
+		rosterIndex = 255;
+		vehicleID = 0;
 		pilotName[0] = nullptr;
-		commanderID  = 0;
-		location[0]  = 0.0;
-		location[1]  = 0.0;
+		commanderID = 0;
+		location[0] = 0.0;
+		location[1] = 0.0;
 	}
 };
 
@@ -1121,7 +1121,7 @@ public:
 
 	void init(void)
 	{
-		type		 = MCMSG_NEW_SERVER;
+		type = MCMSG_NEW_SERVER;
 		ipAddress[0] = nullptr;
 	}
 };
@@ -1143,8 +1143,8 @@ public:
 
 	void init()
 	{
-		type		= MCMSG_FILE_REPORT;
-		checkSum	= 0;
+		type = MCMSG_FILE_REPORT;
+		checkSum = 0;
 		fileName[0] = nullptr;
 		memset(&fileGuid, 0, sizeof(GUID));
 	}
@@ -1307,8 +1307,8 @@ public:
 	uint32_t worldChunks[MAX_WORLD_CHUNKS];
 	uint32_t serverOrder[MAX_MC_PLAYERS];
 	int32_t reinforcements[MAX_MC_PLAYERS][2]; // index 0 = current
-											   // reinforcement, index 1 =
-											   // current recoverery
+		// reinforcement, index 1 =
+		// current recoverery
 	char reinforcementPilot[MAX_MC_PLAYERS][32];
 
 	bool isMPlayerGame;
@@ -1689,9 +1689,12 @@ public:
 	void redistributeRP(void);
 };
 
-bool StartupNetworking(void);
-void ResetNetworking(void);
-void ShutdownNetworking(void);
+bool
+StartupNetworking(void);
+void
+ResetNetworking(void);
+void
+ShutdownNetworking(void);
 
 extern MultiPlayer* MPlayer;
 

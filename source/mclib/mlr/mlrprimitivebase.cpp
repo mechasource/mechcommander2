@@ -16,7 +16,8 @@ size_t clipTrick[6][2] = {{1, 1}, {1, 0}, {0, 1}, {0, 0}, {2, 0}, {2, 1}};
 //#########################    ClipPolygon2    ############################
 //#############################################################################
 
-void ClipPolygon2::Init(int32_t passes)
+void
+ClipPolygon2::Init(int32_t passes)
 {
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
@@ -25,7 +26,8 @@ void ClipPolygon2::Init(int32_t passes)
 	clipPerVertex.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 }
 
-void ClipPolygon2::Destroy()
+void
+ClipPolygon2::Destroy()
 {
 	coords.SetLength(0);
 	colors.SetLength(0);
@@ -59,7 +61,8 @@ ClipPolygon2* MLRPrimitiveBase::clipBuffer;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::InitializeClass()
+void
+MLRPrimitiveBase::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -93,7 +96,8 @@ void MLRPrimitiveBase::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::TerminateClass()
+void
+MLRPrimitiveBase::TerminateClass()
 {
 	clipBuffer[1].Destroy();
 	clipBuffer[0].Destroy();
@@ -118,8 +122,8 @@ void MLRPrimitiveBase::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data, std::iostream stream, uint32_t version)
-	: RegisteredClass(class_data)
+MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data, std::iostream stream, uint32_t version) :
+	RegisteredClass(class_data)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -142,13 +146,14 @@ MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data, std::iostream stream, 
 	}
 	break;
 	}
-	passes		   = 1;
+	passes = 1;
 	referenceCount = 1;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::Save(std::iostream stream)
+void
+MLRPrimitiveBase::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -162,40 +167,52 @@ void MLRPrimitiveBase::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data)
-	: RegisteredClass(class_data), lengths(0), texCoords(0), coords(0)
+MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data) :
+	RegisteredClass(class_data), lengths(0), texCoords(0), coords(0)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	referenceState = 0;
-	state		   = 0;
-	passes		   = 1;
+	state = 0;
+	passes = 1;
 	referenceCount = 1;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase::~MLRPrimitiveBase() { _ASSERT(referenceCount == 0); }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-void MLRPrimitiveBase::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-void MLRPrimitiveBase::InitializeDraw() {}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-void MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
+MLRPrimitiveBase::~MLRPrimitiveBase()
 {
-	gos_vertices   = nullptr;
-	numGOSVertices = -1;
-	visible		   = vis;
+	_ASSERT(referenceCount == 0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
+void
+MLRPrimitiveBase::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+void
+MLRPrimitiveBase::InitializeDraw()
+{
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+void
+MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
+{
+	gos_vertices = nullptr;
+	numGOSVertices = -1;
+	visible = vis;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+void
+MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
 {
 	// Check_Object(this);
 	lengths.AssignData(data, l);
@@ -203,16 +220,18 @@ void MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t* data, pint32_t len)
+void
+MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t* data, pint32_t len)
 {
 	// Check_Object(this);
 	*data = lengths.GetData();
-	*len  = lengths.GetLength();
+	*len = lengths.GetLength();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t MLRPrimitiveBase::GetSubprimitiveLength(int32_t i) const
+int32_t
+MLRPrimitiveBase::GetSubprimitiveLength(int32_t i) const
 {
 	// Check_Object(this);
 	return (lengths.GetLength() > 0 ? abs(lengths[i]) : 1);
@@ -220,7 +239,8 @@ int32_t MLRPrimitiveBase::GetSubprimitiveLength(int32_t i) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
+void
+MLRPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
@@ -233,16 +253,18 @@ void MLRPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::GetCoordData(Point3D** data, psize_t dataSize)
+void
+MLRPrimitiveBase::GetCoordData(Point3D** data, psize_t dataSize)
 {
 	// Check_Object(this);
-	*data	 = coords.GetData();
+	*data = coords.GetData();
 	*dataSize = coords.GetLength();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::SetTexCoordData(const Stuff::Vector2DScalar* data, size_t dataSize)
+void
+MLRPrimitiveBase::SetTexCoordData(const Stuff::Vector2DScalar* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
@@ -252,16 +274,18 @@ void MLRPrimitiveBase::SetTexCoordData(const Stuff::Vector2DScalar* data, size_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::GetTexCoordData(Stuff::Vector2DScalar** data, psize_t dataSize)
+void
+MLRPrimitiveBase::GetTexCoordData(Stuff::Vector2DScalar** data, psize_t dataSize)
 {
 	// Check_Object(this);
-	*data	 = texCoords.GetData();
+	*data = texCoords.GetData();
 	*dataSize = texCoords.GetLength();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::Transform(Matrix4D* mat)
+void
+MLRPrimitiveBase::Transform(Matrix4D* mat)
 {
 	// Check_Object(this);
 	int32_t i, len = coords.GetLength();
@@ -276,7 +300,8 @@ void MLRPrimitiveBase::Transform(Matrix4D* mat)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::GetExtend(Stuff::ExtentBox* box)
+void
+MLRPrimitiveBase::GetExtend(Stuff::ExtentBox* box)
 {
 	// Check_Object(this);
 	Check_Object(box);
@@ -318,7 +343,8 @@ void MLRPrimitiveBase::GetExtend(Stuff::ExtentBox* box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool MLRPrimitiveBase::CastRay(Line3D* line, Normal3D* normal)
+bool
+MLRPrimitiveBase::CastRay(Line3D* line, Normal3D* normal)
 {
 	// Check_Object(this);
 	Check_Object(line);
@@ -329,7 +355,8 @@ bool MLRPrimitiveBase::CastRay(Line3D* line, Normal3D* normal)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MidLevelRenderer::CreateIndexedIcosahedron(
+MLRShape*
+MidLevelRenderer::CreateIndexedIcosahedron(
 	IcoInfo& icoInfo, std::vector<MLRState>* states)
 {
 	switch (icoInfo.type)
@@ -476,7 +503,8 @@ MidLevelRenderer::IcoInfo::GetTypeName()
 //#####################    MLRPrimitiveBase__ClassData    #####################
 //#############################################################################
 
-void MLRPrimitiveBase__ClassData::TestInstance()
+void
+MLRPrimitiveBase__ClassData::TestInstance()
 {
 	_ASSERT(IsDerivedFrom(MLRPrimitiveBase::DefaultData));
 }

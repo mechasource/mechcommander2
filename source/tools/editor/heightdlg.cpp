@@ -9,12 +9,14 @@ HeightDlg.cpp			: Implementation of the HeightDlg component.
 #include "HeightDlg.h"
 #include "resource.h"
 
-HeightDlg::HeightDlg(int32_t minZ, int32_t maxZ) : CDialog(IDD_HEIGHT_DLG)
+HeightDlg::HeightDlg(int32_t minZ, int32_t maxZ) :
+	CDialog(IDD_HEIGHT_DLG)
 {
 	min = minZ;
 	max = maxZ;
 }
-void HeightDlg::Init()
+void
+HeightDlg::Init()
 {
 	char minTxt[256];
 	char maxTxt[256];
@@ -24,7 +26,8 @@ void HeightDlg::Init()
 	(GetDlgItem(IDC_MAX))->SetWindowText(maxTxt);
 }
 
-void HeightDlg::OnOK()
+void
+HeightDlg::OnOK()
 {
 	char minTxt[256];
 	char maxTxt[256];

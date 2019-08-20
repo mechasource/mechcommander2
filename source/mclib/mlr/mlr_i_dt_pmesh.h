@@ -60,7 +60,7 @@ public:
 		}
 		else
 		{
-			passes			= 2;
+			passes = 2;
 			referenceState2 = _state;
 		}
 	}
@@ -134,7 +134,9 @@ protected:
 		clipExtraTexCoords2; // Max_Number_Vertices_Per_Mesh
 };
 
-MLR_I_DT_PMesh* CreateIndexedCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
-MLRShape* CreateIndexedIcosahedron_NoColor_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
+MLR_I_DT_PMesh*
+CreateIndexedCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
+MLRShape*
+CreateIndexedIcosahedron_NoColor_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

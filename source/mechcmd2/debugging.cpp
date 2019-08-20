@@ -18,14 +18,15 @@
 #include <gameos.hpp>
 #include <GameOS\ToolOS.hpp>
 
-HGOSFONT3D GameDebugWindow::font	= nullptr;
+HGOSFONT3D GameDebugWindow::font = nullptr;
 int32_t GameDebugWindow::fontHeight = 0;
 
 //***************************************************************************
 //	GAME DEBUG WINDOW class
 //***************************************************************************
 
-void GameDebugWindow::setFont(PSTR fontFile)
+void
+GameDebugWindow::setFont(PSTR fontFile)
 {
 	if (font)
 	{
@@ -44,7 +45,8 @@ void GameDebugWindow::setFont(PSTR fontFile)
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::print(PSTR s)
+void
+GameDebugWindow::print(PSTR s)
 {
 	if (numLines < MAX_DEBUG_WINDOW_LINES)
 		strcpy(textBuffer[numLines++], s);
@@ -59,7 +61,8 @@ void GameDebugWindow::print(PSTR s)
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::render(void)
+void
+GameDebugWindow::render(void)
 {
 	if (!display)
 		return;

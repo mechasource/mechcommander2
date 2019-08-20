@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::Singleton__Specification::Singleton__Specification(
-	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
-	: Effect__Specification(class_id, stream, gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version) :
+	Effect__Specification(class_id, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -37,8 +37,8 @@ gosFX::Singleton__Specification::Singleton__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::Singleton__Specification::Singleton__Specification(Stuff::RegisteredClass::ClassID class_id)
-	: Effect__Specification(class_id)
+gosFX::Singleton__Specification::Singleton__Specification(Stuff::RegisteredClass::ClassID class_id) :
+	Effect__Specification(class_id)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -46,7 +46,8 @@ gosFX::Singleton__Specification::Singleton__Specification(Stuff::RegisteredClass
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Singleton__Specification::Save(std::iostream stream)
+void
+gosFX::Singleton__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -66,7 +67,8 @@ void gosFX::Singleton__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Singleton__Specification::BuildDefaults()
+void
+gosFX::Singleton__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
@@ -89,7 +91,8 @@ void gosFX::Singleton__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Singleton__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float min, max;
@@ -109,7 +112,8 @@ bool gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 }
 //------------------------------------------------------------------------------
 //
-void gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
+void
+gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -122,11 +126,11 @@ void gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	m_red		   = spec->m_red;
-	m_green		   = spec->m_green;
-	m_blue		   = spec->m_blue;
-	m_alpha		   = spec->m_alpha;
-	m_scale		   = spec->m_scale;
+	m_red = spec->m_red;
+	m_green = spec->m_green;
+	m_blue = spec->m_blue;
+	m_alpha = spec->m_alpha;
+	m_scale = spec->m_scale;
 	m_alignZUsingX = spec->m_alignZUsingX;
 	m_alignZUsingY = spec->m_alignZUsingY;
 	// gos_PopCurrentHeap();
@@ -140,7 +144,8 @@ gosFX::Singleton::ClassData* gosFX::Singleton::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Singleton::InitializeClass()
+void
+gosFX::Singleton::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -151,7 +156,8 @@ void gosFX::Singleton::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Singleton::TerminateClass()
+void
+gosFX::Singleton::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -160,8 +166,8 @@ void gosFX::Singleton::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Singleton::Singleton(ClassData* class_data, Specification* spec, uint32_t flags)
-	: Effect(class_data, spec, flags)
+gosFX::Singleton::Singleton(ClassData* class_data, Specification* spec, uint32_t flags) :
+	Effect(class_data, spec, flags)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
@@ -170,11 +176,16 @@ gosFX::Singleton::Singleton(ClassData* class_data, Specification* spec, uint32_t
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Singleton::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::Singleton::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Singleton::Execute(ExecuteInfo* info)
+bool
+gosFX::Singleton::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -199,11 +210,11 @@ bool gosFX::Singleton::Execute(ExecuteInfo* info)
 	// Animate the color
 	//------------------
 	//
-	m_color.red   = spec->m_red.ComputeValue(m_age, m_seed);
+	m_color.red = spec->m_red.ComputeValue(m_age, m_seed);
 	m_color.green = spec->m_green.ComputeValue(m_age, m_seed);
-	m_color.blue  = spec->m_blue.ComputeValue(m_age, m_seed);
+	m_color.blue = spec->m_blue.ComputeValue(m_age, m_seed);
 	m_color.alpha = spec->m_alpha.ComputeValue(m_age, m_seed);
-	m_scale		  = spec->m_scale.ComputeValue(m_age, m_seed);
+	m_scale = spec->m_scale.ComputeValue(m_age, m_seed);
 	//
 	//------------------------------
 	// Calculate the bounding volume
@@ -214,7 +225,7 @@ bool gosFX::Singleton::Execute(ExecuteInfo* info)
 	if (bounds.sphereRadius < Stuff::SMALL)
 		bounds.sphereRadius = 0.01f;
 	bounds.localToParent = m_localToParent;
-	bounds.axisExtents   = Stuff::Vector3D::Identity;
+	bounds.axisExtents = Stuff::Vector3D::Identity;
 	info->m_bounds->Union(*info->m_bounds, bounds);
 	return true;
 }

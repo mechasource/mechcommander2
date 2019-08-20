@@ -39,9 +39,9 @@ extern int32_t tileCacheMiss;
 //----------------------------------------------------
 struct TerrainTXM
 {
-	uint32_t flags;				 // Tells me if this texture is a cement texture, has alpha, etc.
+	uint32_t flags; // Tells me if this texture is a cement texture, has alpha, etc.
 	uint32_t mcTextureNodeIndex; // Pointer to MCTextureNode which is used to
-								 // cache handles if necessary
+		// cache handles if necessary
 };
 
 struct MC_TerrainType
@@ -52,7 +52,7 @@ struct MC_TerrainType
 	int32_t terrainPriority;
 	puint8_t* textureData;
 	puint8_t* maskData;
-	int32_t baseTXMIndex;   // Index of Highest MIP Level of Texture.
+	int32_t baseTXMIndex; // Index of Highest MIP Level of Texture.
 	uint32_t terrainMapRGB; // Rgb Color used for TacMap.
 	int32_t nameId;
 };
@@ -82,9 +82,9 @@ struct MC_OverlayType
 
 struct TransitionType
 {
-	uint32_t baseTXMIndex;	// When we build transition, where did we stick it
+	uint32_t baseTXMIndex; // When we build transition, where did we stick it
 	uint32_t transitionIndex; // Code/Hash/Whatever to uniquely ID this transition.
-	uint32_t overlayIndex;	// Overlays blended onto texture now.
+	uint32_t overlayIndex; // Overlays blended onto texture now.
 };
 
 //---------------------------------------------------------------------------
@@ -118,7 +118,7 @@ protected:
 	int32_t firstOverlay;
 
 	bool quickLoad; // Checks for list o magic textures and then checks that
-					// each magic texture exists.
+		// each magic texture exists.
 	char* localBaseName;
 	MechFile* listTransitionFile;
 
@@ -146,28 +146,28 @@ protected:
 public:
 	void init(void)
 	{
-		tileHeap	= nullptr;
+		tileHeap = nullptr;
 		tileRAMHeap = nullptr;
 		//----------------------------------------------
 		// Stores composited and raw textures in VidMem
-		numTxms			= MC_MAX_TERRAIN_TXMS;
-		nextAvailable   = 0;
-		textures		= nullptr;
+		numTxms = MC_MAX_TERRAIN_TXMS;
+		nextAvailable = 0;
+		textures = nullptr;
 		firstTransition = -1;
 		//--------------------------------------------------
 		// Stores Base Terrain Textures and Masks in SysMem
 		numTypes = 0;
-		types	= nullptr;
+		types = nullptr;
 		//----------------------------------------------------------
 		// Stores Overlay Terrain Textures in VidMem and MLR Shapes
 		numOverlays = 0;
-		overlays	= nullptr;
-		numDetails  = 0;
-		details		= nullptr;
+		overlays = nullptr;
+		numDetails = 0;
+		details = nullptr;
 		//--------------------------------------------------------
 		// Stores Transition Texture in VidMem.
 		numTransitions = 0;
-		transitions	= nullptr;
+		transitions = nullptr;
 		nextTransition = 0;
 		//------------------------------------------------------
 		// Used to convert maps to new formats when textures change.
@@ -175,8 +175,8 @@ public:
 		//---------------------------------------------------------------------------------
 		// Checks for list o magic textures and then checks that each magic
 		// texture exists.
-		quickLoad		   = false;
-		localBaseName	  = nullptr;
+		quickLoad = false;
+		localBaseName = nullptr;
 		listTransitionFile = nullptr;
 	}
 

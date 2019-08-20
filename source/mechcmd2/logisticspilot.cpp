@@ -21,15 +21,15 @@ extern PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
 LogisticsPilot::LogisticsPilot()
 {
-	bIsUsed   = 0;
+	bIsUsed = 0;
 	bJustDied = 0;
 	mechKills = vehicleKills = infantryKills = 0;
-	missionsCompleted						 = 0;
+	missionsCompleted = 0;
 	memset(missionsPlayed, 0, sizeof(uint8_t) * MAX_MISSIONS);
-	bDead		= 0;
-	bAvailable  = 0;
+	bDead = 0;
+	bAvailable = 0;
 	newPiloting = 0;
-	newGunnery  = 0;
+	newGunnery = 0;
 	memset(specialtySkills, 0, sizeof(bool) * NUM_SPECIALTY_SKILLS);
 	if (!strlen(skillTexts[0]))
 	{
@@ -45,7 +45,8 @@ LogisticsPilot::LogisticsPilot()
 
 LogisticsPilot::~LogisticsPilot() {}
 
-int32_t LogisticsPilot::init(PSTR pilotFileName)
+int32_t
+LogisticsPilot::init(PSTR pilotFileName)
 {
 	fileName = pilotFileName;
 	char path[256];
@@ -67,7 +68,7 @@ int32_t LogisticsPilot::init(PSTR pilotFileName)
 	result = pilotFile.readIdLong("descIndex", tmp);
 	gosASSERT(result == NO_ERROR);
 	cLoadString(tmp, path, 256);
-	name   = path;
+	name = path;
 	result = pilotFile.readIdLong("PictureIndex", photoIndex);
 	if (result != NO_ERROR)
 		photoIndex = 0;
@@ -78,11 +79,11 @@ int32_t LogisticsPilot::init(PSTR pilotFileName)
 	result = pilotFile.readIdLong("FlavorText", flavorTextID);
 	result = pilotFile.readIdString("pilotAudio", path, 256);
 	gosASSERT(result == 0);
-	audio  = path;
+	audio = path;
 	result = pilotFile.readIdString("pilotVideo", path, 256);
 	gosASSERT(result == 0);
-	video	= path;
-	result   = pilotFile.readIdString("Picture", path, 256);
+	video = path;
+	result = pilotFile.readIdString("Picture", path, 256);
 	iconFile = artPath;
 	iconFile += path;
 	pilotFile.seekBlock("Skills");
@@ -91,8 +92,8 @@ int32_t LogisticsPilot::init(PSTR pilotFileName)
 	gosASSERT(result == NO_ERROR);
 	pilotFile.readIdChar("Gunnery", tGunnery);
 	piloting = tPilot;
-	gunnery  = tGunnery;
-	result   = pilotFile.seekBlock("SpecialtySkills");
+	gunnery = tGunnery;
+	result = pilotFile.seekBlock("SpecialtySkills");
 	if (result == NO_ERROR)
 	{
 		for (size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
@@ -107,7 +108,8 @@ int32_t LogisticsPilot::init(PSTR pilotFileName)
 	return 0;
 }
 
-PCSTR LogisticsPilot::getSkillText(int32_t skillID)
+PCSTR
+LogisticsPilot::getSkillText(int32_t skillID)
 {
 	gosASSERT(skillID <= NUM_SKILLS);
 	if (skillTexts[skillID])
@@ -120,9 +122,14 @@ PCSTR LogisticsPilot::getSkillText(int32_t skillID)
 	return skillTexts[skillID];
 }
 
-int32_t LogisticsPilot::getNumberMissions(void) const { return missionsCompleted; }
+int32_t
+LogisticsPilot::getNumberMissions(void) const
+{
+	return missionsCompleted;
+}
 
-int32_t LogisticsPilot::save(FitIniFile& file, int32_t which)
+int32_t
+LogisticsPilot::save(FitIniFile& file, int32_t which)
 {
 	char tmp[256];
 	sprintf(tmp, "Pilot%ld", which);
@@ -152,7 +159,8 @@ int32_t LogisticsPilot::save(FitIniFile& file, int32_t which)
 	return 0;
 }
 
-int32_t LogisticsPilot::load(FitIniFile& file)
+int32_t
+LogisticsPilot::load(FitIniFile& file)
 {
 	char tmp[256];
 	file.readIdString("FileName", tmp, 255);
@@ -184,7 +192,8 @@ int32_t LogisticsPilot::load(FitIniFile& file)
 	return 0;
 }
 
-void LogisticsPilot::clearIcons()
+void
+LogisticsPilot::clearIcons()
 {
 	// clear out the old ones
 	for (EList<ForceGroupIcon*, ForceGroupIcon*>::EIterator iter = killedIcons.Begin();
@@ -195,7 +204,8 @@ void LogisticsPilot::clearIcons()
 	killedIcons.Clear();
 }
 
-int32_t LogisticsPilot::update(MechWarrior* pWarrior)
+int32_t
+LogisticsPilot::update(MechWarrior* pWarrior)
 {
 #ifndef VIEWER
 	// clear out the old ones
@@ -212,15 +222,15 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 	missionsPlayed[missionJustPlayed] = 1;
 	if (pWarrior->getStatus() == WARRIOR_STATUS_DEAD)
 	{
-		bDead	 = true;
+		bDead = true;
 		bJustDied = true;
 	}
 	setUsed(1);
 	pWarrior->updateMissionSkills();
-	newGunnery  = pWarrior->skillRank[MWS_GUNNERY] - gunnery;
+	newGunnery = pWarrior->skillRank[MWS_GUNNERY] - gunnery;
 	newPiloting = pWarrior->skillRank[MWS_PILOTING] - piloting;
-	gunnery		= pWarrior->skillRank[MWS_GUNNERY];
-	piloting	= pWarrior->skillRank[MWS_PILOTING];
+	gunnery = pWarrior->skillRank[MWS_GUNNERY];
+	piloting = pWarrior->skillRank[MWS_PILOTING];
 	// make sure no more than 4 points per mission
 	if (newGunnery > 4.f)
 	{
@@ -240,7 +250,7 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 	mechKills += pWarrior->numMechKills[VEHICLE_CLASS_HEAVYMECH][COMBAT_STAT_MISSION];
 	mechKills += pWarrior->numMechKills[VEHICLE_CLASS_ASSAULTMECH][COMBAT_STAT_MISSION];
 	vehicleKills += pWarrior->numMechKills[VEHICLE_CLASS_GROUND][COMBAT_STAT_MISSION];
-	rank				  = pWarrior->getRank();
+	rank = pWarrior->getRank();
 	int32_t deadMechCount = 0;
 	for (size_t i = 0; i < pWarrior->numKilled; i++)
 	{
@@ -268,12 +278,12 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 	if (deadMechCount >= 7)
 	{
 		medalsLastMission[UNCOMMON_VALOR] = true;
-		medals[UNCOMMON_VALOR]			  = true;
+		medals[UNCOMMON_VALOR] = true;
 	}
 	if ((deadMechCount >= 3) && (deadMechCount < 7))
 	{
 		medalsLastMission[VALOR] = true;
-		medals[VALOR]			 = true;
+		medals[VALOR] = true;
 	}
 	if (pWarrior->getWounds())
 	{
@@ -284,17 +294,12 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 	// Check for the campaign ribbons and medals.
 	// NOTE: NONE of these should be awarded UNLESS we are playing the shipping
 	// campaign.
-	int32_t anySteinerPlayed = missionsPlayed[0] + missionsPlayed[1] + missionsPlayed[2] +
-		missionsPlayed[3] + missionsPlayed[4] + missionsPlayed[5] + missionsPlayed[6] +
-		missionsPlayed[7] + missionsPlayed[8];
-	int32_t anyLiaoPlayed = missionsPlayed[9] + missionsPlayed[10] + missionsPlayed[11] +
-		missionsPlayed[12] + missionsPlayed[13] + missionsPlayed[14] + missionsPlayed[15] +
-		missionsPlayed[16];
-	int32_t anyDavionPlayed = missionsPlayed[17] + missionsPlayed[18] + missionsPlayed[19] +
-		missionsPlayed[20] + missionsPlayed[21] + missionsPlayed[22] + missionsPlayed[23];
+	int32_t anySteinerPlayed = missionsPlayed[0] + missionsPlayed[1] + missionsPlayed[2] + missionsPlayed[3] + missionsPlayed[4] + missionsPlayed[5] + missionsPlayed[6] + missionsPlayed[7] + missionsPlayed[8];
+	int32_t anyLiaoPlayed = missionsPlayed[9] + missionsPlayed[10] + missionsPlayed[11] + missionsPlayed[12] + missionsPlayed[13] + missionsPlayed[14] + missionsPlayed[15] + missionsPlayed[16];
+	int32_t anyDavionPlayed = missionsPlayed[17] + missionsPlayed[18] + missionsPlayed[19] + missionsPlayed[20] + missionsPlayed[21] + missionsPlayed[22] + missionsPlayed[23];
 	bool allSteinerPlayed = (anySteinerPlayed == 9);
-	bool allLiaoPlayed	= (anyLiaoPlayed == 8);
-	bool allDavionPlayed  = (anyDavionPlayed == 7);
+	bool allLiaoPlayed = (anyLiaoPlayed == 8);
+	bool allDavionPlayed = (anyDavionPlayed == 7);
 	if (anySteinerPlayed)
 	{
 		if (!medals[CAMPAIGN_RIBBON1])
@@ -360,14 +365,15 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 	return 0;
 }
 
-bool LogisticsPilot::promotePilot()
+bool
+LogisticsPilot::promotePilot()
 {
-	float oldGunnery  = gunnery - newGunnery;
+	float oldGunnery = gunnery - newGunnery;
 	float oldPiloting = piloting - newPiloting;
-	float oldAvg	  = (oldGunnery + oldPiloting) / 2.f;
-	float newAvg	  = (gunnery + piloting) / 2.f;
-	int32_t oldRank   = turnAverageIntoRank(oldAvg);
-	int32_t newRank   = turnAverageIntoRank(newAvg);
+	float oldAvg = (oldGunnery + oldPiloting) / 2.f;
+	float newAvg = (gunnery + piloting) / 2.f;
+	int32_t oldRank = turnAverageIntoRank(oldAvg);
+	int32_t newRank = turnAverageIntoRank(newAvg);
 	if (rank != newRank)
 	{
 		// go ahead and set that rank
@@ -384,7 +390,8 @@ bool LogisticsPilot::promotePilot()
 	return false;
 }
 
-int32_t LogisticsPilot::turnAverageIntoRank(float avg)
+int32_t
+LogisticsPilot::turnAverageIntoRank(float avg)
 {
 	if (avg > 79)
 		return WARRIOR_RANK_ACE;
@@ -397,7 +404,8 @@ int32_t LogisticsPilot::turnAverageIntoRank(float avg)
 	return WARRIOR_RANK_GREEN;
 }
 
-int32_t LogisticsPilot::getSpecialtySkillCount(void) const
+int32_t
+LogisticsPilot::getSpecialtySkillCount(void) const
 {
 	int32_t count = 0;
 	for (size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
@@ -407,10 +415,11 @@ int32_t LogisticsPilot::getSpecialtySkillCount(void) const
 	}
 	return count;
 }
-int32_t LogisticsPilot::getSpecialtySkills(PCSTR* array, int32_t& count)
+int32_t
+LogisticsPilot::getSpecialtySkills(PCSTR* array, int32_t& count)
 {
 	int32_t max = count;
-	count		= 0;
+	count = 0;
 	for (size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 	{
 		if (count >= max)
@@ -426,10 +435,11 @@ int32_t LogisticsPilot::getSpecialtySkills(PCSTR* array, int32_t& count)
 	return 0;
 }
 
-int32_t LogisticsPilot::getSpecialtySkills(pint32_t array, int32_t& count)
+int32_t
+LogisticsPilot::getSpecialtySkills(pint32_t array, int32_t& count)
 {
 	int32_t max = count;
-	count		= 0;
+	count = 0;
 	for (size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 	{
 		if (i >= max)
@@ -445,7 +455,8 @@ int32_t LogisticsPilot::getSpecialtySkills(pint32_t array, int32_t& count)
 	return 0;
 }
 
-void LogisticsPilot::setSpecialtySkill(int32_t skill, bool set)
+void
+LogisticsPilot::setSpecialtySkill(int32_t skill, bool set)
 {
 	if (skill >= NUM_SPECIALTY_SKILLS)
 	{

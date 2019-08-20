@@ -113,9 +113,9 @@ public:
 protected:
 	bool unLoadedImages;
 	int32_t instanceDepth; // bits used for image instancing
-	int32_t instanceMax;   // max for image instancing
-	int32_t handleDepth;   // bits used for image instancing
-	int32_t handleMax;	 // max for image instancing
+	int32_t instanceMax; // max for image instancing
+	int32_t handleDepth; // bits used for image instancing
+	int32_t handleMax; // max for image instancing
 	uint32_t lastHandle;
 	uint32_t storedTextures;
 

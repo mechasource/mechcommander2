@@ -62,13 +62,18 @@ TestHost::~TestHost()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool TestHost::TestInstance(void) const { return true; }
+bool
+TestHost::TestInstance(void) const
+{
+	return true;
+}
 
 //#############################################################################
 //##############    ObjectNameList::TestClass    ##############################
 //#############################################################################
 
-bool ObjectNameList::TestClass()
+bool
+ObjectNameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting ObjectNameList test..."));
 	SPEW((GROUP_STUFF_TEST, "ObjectNameList test is stubbed out..."));
@@ -244,7 +249,8 @@ bool ObjectNameList::TestClass()
 //##############    NameList::TestClass    ####################################
 //#############################################################################
 
-bool NameList::TestClass()
+bool
+NameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting NameList test..."));
 	SPEW((GROUP_STUFF_TEST, "  NameList::TestClass() is stubbed out!"));
@@ -255,7 +261,8 @@ bool NameList::TestClass()
 //##############    AlphaNameList::TestClass    ###############################
 //#############################################################################
 
-bool AlphaNameList::TestClass()
+bool
+AlphaNameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting AlphaNameList test..."));
 	SPEW((GROUP_STUFF_TEST, "  AlphaNameList::TestClass() is stubbed out!\n"));

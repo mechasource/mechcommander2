@@ -28,7 +28,8 @@
 //	LIGHT TYPE class
 //***************************************************************************
 
-GameObjectPtr LightType::createInstance(void)
+GameObjectPtr
+LightType::createInstance(void)
 {
 	LightPtr newLight = new Light;
 	if (!newLight)
@@ -39,11 +40,16 @@ GameObjectPtr LightType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void LightType::destroy(void) { ObjectType::destroy(); }
+void
+LightType::destroy(void)
+{
+	ObjectType::destroy();
+}
 
 //---------------------------------------------------------------------------
 
-int32_t LightType::init(FilePtr objFile, uint32_t fileSize)
+int32_t
+LightType::init(FilePtr objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile explFile;
@@ -67,7 +73,8 @@ int32_t LightType::init(FilePtr objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool LightType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+LightType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-----------------------------
 	// Nothing collides with light!
@@ -76,7 +83,8 @@ bool LightType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool LightType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+LightType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//----------------------------
 	// No destroy'n light, either!
@@ -87,11 +95,16 @@ bool LightType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider
 // LIGHT class
 //***************************************************************************
 
-void Light::init(bool create) { setFlag(OBJECT_FLAG_JUSTCREATED, true); }
+void
+Light::init(bool create)
+{
+	setFlag(OBJECT_FLAG_JUSTCREATED, true);
+}
 
 //---------------------------------------------------------------------------
 
-int32_t Light::update(void)
+int32_t
+Light::update(void)
 {
 	if (!getFlag(OBJECT_FLAG_DONE))
 	{
@@ -119,7 +132,8 @@ int32_t Light::update(void)
 
 //---------------------------------------------------------------------------
 
-void Light::render(void)
+void
+Light::render(void)
 {
 	if (gamePaused)
 		onScreen();
@@ -133,11 +147,15 @@ void Light::render(void)
 
 //---------------------------------------------------------------------------
 
-void Light::destroy(void) {}
+void
+Light::destroy(void)
+{
+}
 
 //---------------------------------------------------------------------------
 
-void Light::init(bool create, ObjectTypePtr _type)
+void
+Light::init(bool create, ObjectTypePtr _type)
 {
 	//-------------------------------------------
 	// Initialize the Light Appearance here.
@@ -147,7 +165,7 @@ void Light::init(bool create, ObjectTypePtr _type)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 #ifdef USE_LIGHT_APPEARANCE
-	uint32_t appearanceType				  = _type->getAppearanceTypeNum();
+	uint32_t appearanceType = _type->getAppearanceTypeNum();
 	AppearanceTypePtr lightAppearanceType = appearanceTypeList->getAppearance(appearanceType);
 	if (!lightAppearanceType)
 		return (NO_APPEARANCE_TYPE_FOR_EXPL);

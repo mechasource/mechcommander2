@@ -294,20 +294,18 @@ void __stdcall InitLibraries(void)
 	}
 	pDirectXSetupGetVersion = reinterpret_cast<PDIRECTXSETUPGETVERSION>(
 		GetProcAddress(hModule_dsetup, "DirectXSetupGetVersion"));
-	if (pDirectXSetupGetVersion == nullptr ||
-		pDirectXSetupGetVersion(&DXdwVersion, &DXdwRevision) == 0)
+	if (pDirectXSetupGetVersion == nullptr || pDirectXSetupGetVersion(&DXdwVersion, &DXdwRevision) == 0)
 	{
-		DXdwVersion  = 0;
+		DXdwVersion = 0;
 		DXdwRevision = 0;
 	}
 	FreeLibrary(hModule_dsetup);
 	// ddraw.dll
 	if (gDirectX7)
 	{
-		if ((WindowsNT == false) &&
-			((DXdwVersion < 7) || ((DXdwVersion == 7) && (DXdwRevision < 716))))
+		if ((WindowsNT == false) && ((DXdwVersion < 7) || ((DXdwVersion == 7) && (DXdwRevision < 716))))
 		{
-			pszFormat  = "Requires DirectX 7.0a or later, found %s";
+			pszFormat = "Requires DirectX 7.0a or later, found %s";
 			pszMessage = GetDirectXVersion();
 			sprintf_s(szDirectXVersionMessage1, _countof(szDirectXVersionMessage1), pszFormat,
 				pszMessage);
@@ -322,7 +320,7 @@ void __stdcall InitLibraries(void)
 		{
 			// pszFormat = gos_GetResourceString(gLanguageDLL, 10030u);	//
 			// language.dll : "Requires DirectX 8 or later, found %s"
-			pszFormat  = "Requires DirectX 8 or later, found %s";
+			pszFormat = "Requires DirectX 8 or later, found %s";
 			pszMessage = GetDirectXVersion();
 			sprintf_s(szDirectXVersionMessage2, _countof(szDirectXVersionMessage2), pszFormat,
 				pszMessage);
@@ -391,7 +389,7 @@ void __stdcall InitLibraries(void)
 				{
 					strcpy_s(BladePath, _countof(BladePath), AssetsDirectory1);
 					strcat_s(BladePath, _countof(BladePath), "\\assets\\binaries\\blade.dll");
-					LibBlade	= LoadLibraryA(BladePath);
+					LibBlade = LoadLibraryA(BladePath);
 					bbladepath2 = true;
 					if (LibBlade == nullptr)
 					{
@@ -419,8 +417,7 @@ void __stdcall InitLibraries(void)
 			}
 			else
 			{
-				if (gos_DoesFileExist("assets\\binaries") &&
-					InternalFunctionPause("Warning, '%s' was used", BladePath))
+				if (gos_DoesFileExist("assets\\binaries") && InternalFunctionPause("Warning, '%s' was used", BladePath))
 					ENTER_DEBUGGER;
 			}
 		}
@@ -453,9 +450,9 @@ void __stdcall InitLibraries(void)
 	}
 	if (LibJpeg)
 	{
-		_ijlInit  = reinterpret_cast<PIJLINIT>(GetProcAddress(LibJpeg, "ijlInit"));
-		_ijlFree  = reinterpret_cast<PIJLFREE>(GetProcAddress(LibJpeg, "ijlFree"));
-		_ijlRead  = reinterpret_cast<PIJLREAD>(GetProcAddress(LibJpeg, "ijlRead"));
+		_ijlInit = reinterpret_cast<PIJLINIT>(GetProcAddress(LibJpeg, "ijlInit"));
+		_ijlFree = reinterpret_cast<PIJLFREE>(GetProcAddress(LibJpeg, "ijlFree"));
+		_ijlRead = reinterpret_cast<PIJLREAD>(GetProcAddress(LibJpeg, "ijlRead"));
 		_ijlWrite = reinterpret_cast<PIJLWRITE>(GetProcAddress(LibJpeg, "ijlWrite"));
 	}
 	// dsound.dll
@@ -519,9 +516,9 @@ void __stdcall InitLibraries(void)
 			reinterpret_cast<PIMMGETCANDIDATELISTA>(GetProcAddress(LibIME, "ImmGetCandidateListA"));
 		_ImmGetVirtualKey =
 			reinterpret_cast<PIMMGETVIRTUALKEY>(GetProcAddress(LibIME, "ImmGetVirtualKey"));
-		_ImmLockIMC	= reinterpret_cast<PIMMLOCKIMC>(GetProcAddress(LibIME, "ImmLockIMC"));
-		_ImmUnlockIMC  = reinterpret_cast<PIMMUNLOCKIMC>(GetProcAddress(LibIME, "ImmUnlockIMCC"));
-		_ImmLockIMCC   = reinterpret_cast<PIMMLOCKIMCC>(GetProcAddress(LibIME, "ImmLockIMCC"));
+		_ImmLockIMC = reinterpret_cast<PIMMLOCKIMC>(GetProcAddress(LibIME, "ImmLockIMC"));
+		_ImmUnlockIMC = reinterpret_cast<PIMMUNLOCKIMC>(GetProcAddress(LibIME, "ImmUnlockIMCC"));
+		_ImmLockIMCC = reinterpret_cast<PIMMLOCKIMCC>(GetProcAddress(LibIME, "ImmLockIMCC"));
 		_ImmUnlockIMCC = reinterpret_cast<PIMMUNLOCKIMCC>(GetProcAddress(LibIME, "ImmUnlockIMC"));
 		_ImmGetDefaultIMEWnd =
 			reinterpret_cast<PIMMGETDEFAULTIMEWND>(GetProcAddress(LibIME, "ImmGetDefaultIMEWnd"));
@@ -558,7 +555,7 @@ void __stdcall InitLibraries(void)
 		if (LibWinSock)
 		{
 			_accept = reinterpret_cast<PACCEPT>(GetProcAddress(LibWinSock, "accept"));
-			_bind   = reinterpret_cast<PBIND>(GetProcAddress(LibWinSock, "bind"));
+			_bind = reinterpret_cast<PBIND>(GetProcAddress(LibWinSock, "bind"));
 			_closesocket =
 				reinterpret_cast<PCLOSESOCKET>(GetProcAddress(LibWinSock, "closesocket"));
 			_gethostbyname =
@@ -567,16 +564,16 @@ void __stdcall InitLibraries(void)
 				reinterpret_cast<PGETHOSTNAME>(GetProcAddress(LibWinSock, "gethostname"));
 			_getservbyname =
 				reinterpret_cast<PGETSERVBYNAME>(GetProcAddress(LibWinSock, "getservbyname"));
-			_htonl		= reinterpret_cast<PHTONL>(GetProcAddress(LibWinSock, "htonl"));
-			_htons		= reinterpret_cast<PHTONS>(GetProcAddress(LibWinSock, "htons"));
-			_inet_addr  = reinterpret_cast<PINET_ADDR>(GetProcAddress(LibWinSock, "inet_addr"));
-			_listen		= reinterpret_cast<PLISTEN>(GetProcAddress(LibWinSock, "listen"));
-			_ntohl		= reinterpret_cast<PNTOHL>(GetProcAddress(LibWinSock, "ntohl"));
-			_recv		= reinterpret_cast<PRECV>(GetProcAddress(LibWinSock, "recv"));
-			_recvfrom   = reinterpret_cast<PRECVFROM>(GetProcAddress(LibWinSock, "recvfrom"));
-			_send		= reinterpret_cast<PSEND>(GetProcAddress(LibWinSock, "send"));
-			_sendto		= reinterpret_cast<PSENDTO>(GetProcAddress(LibWinSock, "sendto"));
-			_socket		= reinterpret_cast<PSOCKET>(GetProcAddress(LibWinSock, "socket"));
+			_htonl = reinterpret_cast<PHTONL>(GetProcAddress(LibWinSock, "htonl"));
+			_htons = reinterpret_cast<PHTONS>(GetProcAddress(LibWinSock, "htons"));
+			_inet_addr = reinterpret_cast<PINET_ADDR>(GetProcAddress(LibWinSock, "inet_addr"));
+			_listen = reinterpret_cast<PLISTEN>(GetProcAddress(LibWinSock, "listen"));
+			_ntohl = reinterpret_cast<PNTOHL>(GetProcAddress(LibWinSock, "ntohl"));
+			_recv = reinterpret_cast<PRECV>(GetProcAddress(LibWinSock, "recv"));
+			_recvfrom = reinterpret_cast<PRECVFROM>(GetProcAddress(LibWinSock, "recvfrom"));
+			_send = reinterpret_cast<PSEND>(GetProcAddress(LibWinSock, "send"));
+			_sendto = reinterpret_cast<PSENDTO>(GetProcAddress(LibWinSock, "sendto"));
+			_socket = reinterpret_cast<PSOCKET>(GetProcAddress(LibWinSock, "socket"));
 			_WSACleanup = reinterpret_cast<PWSACLEANUP>(GetProcAddress(LibWinSock, "WSACleanup"));
 			_WSAGetLastError =
 				reinterpret_cast<PWSAGETLASTERROR>(GetProcAddress(LibWinSock, "WSAGetLastError"));
@@ -585,8 +582,8 @@ void __stdcall InitLibraries(void)
 	}
 	// amstream.dll quartz.dll msadp32.acm
 	LibAmstream = LoadLibraryA("amstream.dll");
-	LibQuartz   = LoadLibraryA("quartz.dll");
-	LibMSADP32  = LoadLibraryA("msadp32.acm");
+	LibQuartz = LoadLibraryA("quartz.dll");
+	LibMSADP32 = LoadLibraryA("msadp32.acm");
 	if ((LibAmstream == nullptr) || (LibQuartz == nullptr))
 	{
 		// pszMessage = gos_GetResourceString(gLanguageDLL, 10040u);
@@ -607,7 +604,7 @@ void __stdcall InitLibraries(void)
 	if (LibAmstream == nullptr)
 	{
 		nBufferSize = strlen("amstream.dll  - Version 6.01");
-		pszMessage  = GetDLLInfo("amstream.dll", 0);
+		pszMessage = GetDLLInfo("amstream.dll", 0);
 		if (strncmp(pszMessage, "amstream.dll  - Version 6.01", nBufferSize) < 0)
 		{
 			// pszMessage = gos_GetResourceString(gLanguageDLL, 10043u);
@@ -668,9 +665,9 @@ void __stdcall InitLibraries(void)
 		_SQLDriverConnect =
 			reinterpret_cast<PSQLDRIVERCONNECT>(GetProcAddress(LibODBC, "SQLDriverConnect"));
 		_SQLExecDirect = reinterpret_cast<PSQLEXECDIRECT>(GetProcAddress(LibODBC, "SQLExecDirect"));
-		_SQLFetch	  = reinterpret_cast<PSQLFETCH>(GetProcAddress(LibODBC, "SQLFetch"));
+		_SQLFetch = reinterpret_cast<PSQLFETCH>(GetProcAddress(LibODBC, "SQLFetch"));
 		_SQLFreeHandle = reinterpret_cast<PSQLFREEHANDLE>(GetProcAddress(LibODBC, "SQLFreeHandle"));
-		_SQLFreeStmt   = reinterpret_cast<PSQLFREESTMT>(GetProcAddress(LibODBC, "SQLFreeStmt"));
+		_SQLFreeStmt = reinterpret_cast<PSQLFREESTMT>(GetProcAddress(LibODBC, "SQLFreeStmt"));
 		_SQLGetDiagField =
 			reinterpret_cast<PSQLGETDIAGFIELD>(GetProcAddress(LibODBC, "SQLGetDiagField"));
 		_SQLGetDiagRec = reinterpret_cast<PSQLGETDIAGREC>(GetProcAddress(LibODBC, "SQLGetDiagRec"));

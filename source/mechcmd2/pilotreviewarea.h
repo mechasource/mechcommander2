@@ -79,10 +79,10 @@ public:
 	PilotListItem()
 	{
 		currentTime = -1.f;
-		bDone		= 0;
+		bDone = 0;
 	}
 
-	virtual void begin(void);  // for animation purposes...
+	virtual void begin(void); // for animation purposes...
 	virtual bool isDone() = 0; // implement this yourself
 	virtual void update(void);
 

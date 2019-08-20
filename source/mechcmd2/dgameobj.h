@@ -53,9 +53,9 @@
 #define OBJECT_FLAG_DESTROYED 0x00020000
 #define OBJECT_FLAG_SPREAD 0x00040000
 #define OBJECT_FLAG_DONE 0x00080000
-#define OBJECT_FLAG_OBSCURED                                                                       \
-	0x00100000 // Used to determine if we draw the object in revealed but not
-			   // visible terrain
+#define OBJECT_FLAG_OBSCURED                                                  \
+	0x00100000 // Used to determine if we draw the object in revealed but not \
+		// visible terrain
 #define OBJECT_FLAG_SENSOR 0x00200000
 #define OBJECT_FLAG_REMOVED 0x00400000
 #define OBJECT_FLAG_CONTROLBUILDING 0x00800000

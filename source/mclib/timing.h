@@ -13,12 +13,12 @@
 // #include "dstd.h"
 
 //----------------------------------------------------------------------------------
-extern bool gamePaused;			 // Is the game paused?
-extern int32_t turn;			 // What frame of the scenario is it?
-extern float frameLength;		 // Duration of last frame in seconds.
-extern float scenarioTime;		 // Time scenario has been running.
+extern bool gamePaused; // Is the game paused?
+extern int32_t turn; // What frame of the scenario is it?
+extern float frameLength; // Duration of last frame in seconds.
+extern float scenarioTime; // Time scenario has been running.
 extern uint32_t LastTimeGetTime; // Stores Interval since timeGetTime last called.
-extern bool dynamicFrameTiming;  // This flag determines if we are using frameLength
+extern bool dynamicFrameTiming; // This flag determines if we are using frameLength
 // To time a frame.  This is FALSE when something
 // puches a frame length dramatically over 4fps.
 // Like a cache hit.  It insures all frames get played.
@@ -43,9 +43,9 @@ public:
 
 	void init(void)
 	{
-		startTime		  = 0.0;
-		currentTime		  = 0.0;
-		expired			  = TRUE;
+		startTime = 0.0;
+		currentTime = 0.0;
+		expired = TRUE;
 		updateWhilePaused = FALSE;
 	}
 
@@ -67,9 +67,9 @@ public:
 
 	void setTimer(float newTime)
 	{
-		startTime   = newTime;
+		startTime = newTime;
 		currentTime = newTime;
-		expired		= (newTime > 0.0);
+		expired = (newTime > 0.0);
 	}
 
 	void setUpdateWhilePaused(bool val) { updateWhilePaused = val; }
@@ -143,11 +143,14 @@ typedef struct _MC_SYSTEMTIME
 
 } MC_SYSTEMTIME;
 
-uint32_t MCTiming_GetTimeZoneInforation(PVOID timeData);
+uint32_t
+MCTiming_GetTimeZoneInforation(PVOID timeData);
 
-uint32_t MCTiming_GetTimeZoneInformationSize(void);
+uint32_t
+MCTiming_GetTimeZoneInformationSize(void);
 
-void MCTiming_GetUTCSystemTimeFromInformation(
+void
+MCTiming_GetUTCSystemTimeFromInformation(
 	uint32_t daylightInfo, PVOID timeData, MC_SYSTEMTIME* systemTime);
 //----------------------------------------------------------------------------------
 #endif

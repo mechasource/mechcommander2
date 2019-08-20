@@ -101,6 +101,7 @@ protected:
 //	MLR_I_L_PMesh*
 //		CreateIndexedCube(float, Stuff::RGBAColor*, Stuff::Vector3D*,
 // MLRState*);
-MLRShape* CreateIndexedIcosahedron_Color_Lit(IcoInfo&, MLRState*);
+MLRShape*
+CreateIndexedIcosahedron_Color_Lit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 #endif

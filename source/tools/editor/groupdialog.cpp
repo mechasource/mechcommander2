@@ -23,18 +23,20 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CGroupDialog dialog
 
-CGroupDialog::CGroupDialog(CWnd* pParent /*=nullptr*/) : CDialog(CGroupDialog::IDD, pParent)
+CGroupDialog::CGroupDialog(CWnd* pParent /*=nullptr*/) :
+	CDialog(CGroupDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CGroupDialog)
-	m_OperationFileEdit			= _T("");
-	m_PreVideoFileEdit			= _T("");
-	m_VideoFileEdit				= _T("");
-	m_LabelEdit					= _T("");
+	m_OperationFileEdit = _T("");
+	m_PreVideoFileEdit = _T("");
+	m_VideoFileEdit = _T("");
+	m_LabelEdit = _T("");
 	m_NumMissionsToCompleteEdit = 0;
 	//}}AFX_DATA_INIT
 }
 
-void CGroupDialog::DoDataExchange(CDataExchange* pDX)
+void
+CGroupDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CGroupDialog)
@@ -62,7 +64,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CGroupDialog message handlers
 
-void CGroupDialog::OnGrOperationFileBrowseButton()
+void
+CGroupDialog::OnGrOperationFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -76,7 +79,7 @@ void CGroupDialog::OnGrOperationFileBrowseButton()
 			CString operationPath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			int32_t result = 0;
-			result		   = file.open((PSTR)(PCSTR)operationPath);
+			result = file.open((PSTR)(PCSTR)operationPath);
 			if (NO_ERROR != result)
 			{
 				AfxMessageBox(IDS_COULDNT_OPEN_OPERATION_FILE);
@@ -84,7 +87,7 @@ void CGroupDialog::OnGrOperationFileBrowseButton()
 			else
 			{
 				int32_t result = 0;
-				result		   = file.seekBlock("Button0");
+				result = file.seekBlock("Button0");
 				if (NO_ERROR != result)
 				{
 					AfxMessageBox(IDS_NOT_A_VALID_OPERATION_FILE);
@@ -102,7 +105,8 @@ void CGroupDialog::OnGrOperationFileBrowseButton()
 	UpdateData(FALSE);
 }
 
-void CGroupDialog::OnGrPrevideoFileBrowseButton()
+void
+CGroupDialog::OnGrPrevideoFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -123,7 +127,8 @@ void CGroupDialog::OnGrPrevideoFileBrowseButton()
 	UpdateData(FALSE);
 }
 
-void CGroupDialog::OnGrVideoFileBrowseButton()
+void
+CGroupDialog::OnGrVideoFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -144,7 +149,8 @@ void CGroupDialog::OnGrVideoFileBrowseButton()
 	UpdateData(FALSE);
 }
 
-static void setMissionListBoxValues(CListBox& MissionListBox, const CMissionList& MissionList)
+static void
+setMissionListBoxValues(CListBox& MissionListBox, const CMissionList& MissionList)
 {
 	MissionListBox.ResetContent();
 	CMissionList::EConstIterator it;
@@ -158,38 +164,42 @@ static void setMissionListBoxValues(CListBox& MissionListBox, const CMissionList
 	}
 }
 
-BOOL CGroupDialog::OnInitDialog()
+BOOL
+CGroupDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	setMissionListBoxValues(m_MissionListControl, m_MissionList);
 	m_TuneComboControl.SetCurSel(m_TuneNumber);
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-static void setMissionDialogValues(CMissionDialog& missionDialog, const CMissionData& missionData)
+static void
+setMissionDialogValues(CMissionDialog& missionDialog, const CMissionData& missionData)
 {
-	missionDialog.m_MissionFileEdit		= missionData.m_MissionFile;
-	missionDialog.m_PurchaseFileEdit	= missionData.m_PurchaseFile;
-	missionDialog.m_LogisticsCheck		= missionData.m_LogisticsEnabled;
-	missionDialog.m_MandatoryCheck		= missionData.m_IsMandatory;
+	missionDialog.m_MissionFileEdit = missionData.m_MissionFile;
+	missionDialog.m_PurchaseFileEdit = missionData.m_PurchaseFile;
+	missionDialog.m_LogisticsCheck = missionData.m_LogisticsEnabled;
+	missionDialog.m_MandatoryCheck = missionData.m_IsMandatory;
 	missionDialog.m_PilotPromotionCheck = missionData.m_PilotPromotionEnabled;
-	missionDialog.m_PurchasingCheck		= missionData.m_PurchasingEnabled;
-	missionDialog.m_SalvageCheck		= missionData.m_SalvageEnabled;
+	missionDialog.m_PurchasingCheck = missionData.m_PurchasingEnabled;
+	missionDialog.m_SalvageCheck = missionData.m_SalvageEnabled;
 }
 
-static void setMissionDataValues(CMissionData& missionData, const CMissionDialog& missionDialog)
+static void
+setMissionDataValues(CMissionData& missionData, const CMissionDialog& missionDialog)
 {
-	missionData.m_MissionFile			= missionDialog.m_MissionFileEdit;
-	missionData.m_PurchaseFile			= missionDialog.m_PurchaseFileEdit;
-	missionData.m_LogisticsEnabled		= missionDialog.m_LogisticsCheck;
-	missionData.m_IsMandatory			= missionDialog.m_MandatoryCheck;
+	missionData.m_MissionFile = missionDialog.m_MissionFileEdit;
+	missionData.m_PurchaseFile = missionDialog.m_PurchaseFileEdit;
+	missionData.m_LogisticsEnabled = missionDialog.m_LogisticsCheck;
+	missionData.m_IsMandatory = missionDialog.m_MandatoryCheck;
 	missionData.m_PilotPromotionEnabled = missionDialog.m_PilotPromotionCheck;
-	missionData.m_PurchasingEnabled		= missionDialog.m_PurchasingCheck;
-	missionData.m_SalvageEnabled		= missionDialog.m_SalvageCheck;
+	missionData.m_PurchasingEnabled = missionDialog.m_PurchasingCheck;
+	missionData.m_SalvageEnabled = missionDialog.m_SalvageCheck;
 }
 
-void CGroupDialog::OnGrAddButton()
+void
+CGroupDialog::OnGrAddButton()
 {
 	CMissionData missionData;
 	CMissionDialog missionDialog;
@@ -206,7 +216,8 @@ void CGroupDialog::OnGrAddButton()
 	}
 }
 
-void CGroupDialog::OnGrRemoveButton()
+void
+CGroupDialog::OnGrRemoveButton()
 {
 	uint32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex))
@@ -235,7 +246,8 @@ void CGroupDialog::OnGrRemoveButton()
 	}
 }
 
-void CGroupDialog::OnGrEditButton()
+void
+CGroupDialog::OnGrEditButton()
 {
 	uint32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex))
@@ -253,7 +265,8 @@ void CGroupDialog::OnGrEditButton()
 	}
 }
 
-void CGroupDialog::OnOK()
+void
+CGroupDialog::OnOK()
 {
 	int32_t tmpInt = m_TuneComboControl.GetCurSel();
 	if ((CB_ERR != tmpInt) && (0 <= tmpInt))

@@ -74,6 +74,7 @@ protected:
 		clipTexCoords; // , Max_Number_Vertices_Per_Mesh
 };
 
-MLRShape* CreateIndexedTriIcosahedron_TerrainTest(IcoInfo&, MLRState*, MLRState*);
+MLRShape*
+CreateIndexedTriIcosahedron_TerrainTest(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

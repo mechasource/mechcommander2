@@ -82,7 +82,7 @@ private:
 	bool promptToDisconnect;
 	bool bLegal;
 
-	int32_t tuneId;	// What music should I play here!
+	int32_t tuneId; // What music should I play here!
 	bool musicStarted; // Should I restart the tune?
 
 	int32_t endResult;

@@ -25,7 +25,8 @@ RegisteredClass::ClassData* RegisteredClass::ClassDataArray[__stuff_classids::Cl
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void RegisteredClass::InitializeClass()
+void
+RegisteredClass::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	DefaultData = new ClassData(RegisteredClassClassID, "Stuff::RegisteredClass");
@@ -34,7 +35,8 @@ void RegisteredClass::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void RegisteredClass::TerminateClass()
+void
+RegisteredClass::TerminateClass()
 {
 	// Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -43,14 +45,16 @@ void RegisteredClass::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-RegisteredClass::RegisteredClass(ClassData* class_data) : classData(class_data)
+RegisteredClass::RegisteredClass(ClassData* class_data) :
+	classData(class_data)
 {
 	// Check_Object(class_data);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PCSTR RegisteredClass::GetClassString(void) const
+PCSTR
+RegisteredClass::GetClassString(void) const
 {
 	// Check_Object(this);
 	RegisteredClass__ClassData* data = GetClassData();
@@ -60,7 +64,8 @@ PCSTR RegisteredClass::GetClassString(void) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void RegisteredClass::TestInstance(void) const
+void
+RegisteredClass::TestInstance(void) const
 { /*Check_Object(classData)*/
 	;
 }
@@ -80,11 +85,11 @@ RegisteredClass__ClassData::RegisteredClass__ClassData(
 	//--------------------------------
 	//
 	_ASSERT(static_cast<uint32_t>(class_id) < __stuff_classids::ClassIDCount);
-	classID			 = class_id;
-	className		 = name;
-	firstChildClass  = nullptr;
+	classID = class_id;
+	className = name;
+	firstChildClass = nullptr;
 	nextSiblingClass = nullptr;
-	parentClass		 = parent;
+	parentClass = parent;
 	_ASSERT(!RegisteredClass::ClassDataArray[class_id]);
 	RegisteredClass::ClassDataArray[class_id] = this;
 	//
@@ -146,7 +151,8 @@ RegisteredClass__ClassData::~RegisteredClass__ClassData()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool RegisteredClass__ClassData::IsDerivedFrom(RegisteredClass__ClassData* parent)
+bool
+RegisteredClass__ClassData::IsDerivedFrom(RegisteredClass__ClassData* parent)
 {
 	// Check_Object(this);
 	//
@@ -188,7 +194,8 @@ bool RegisteredClass__ClassData::IsDerivedFrom(RegisteredClass__ClassData* paren
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-RegisteredClass__ClassData* RegisteredClass__ClassData::FindClassData(PCSTR name)
+RegisteredClass__ClassData*
+RegisteredClass__ClassData::FindClassData(PCSTR name)
 {
 	// Check_Object(this);
 	if (!_stricmp(className, name))
@@ -196,7 +203,7 @@ RegisteredClass__ClassData* RegisteredClass__ClassData::FindClassData(PCSTR name
 		return this;
 	}
 	RegisteredClass__ClassData* class_data = firstChildClass;
-	RegisteredClass__ClassData* result	 = nullptr;
+	RegisteredClass__ClassData* result = nullptr;
 	while (class_data)
 	{
 		// Check_Object(class_data);
@@ -213,26 +220,28 @@ RegisteredClass__ClassData* RegisteredClass__ClassData::FindClassData(PCSTR name
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void RegisteredClass__ClassData::DeriveClass(RegisteredClass__ClassData* child)
+void
+RegisteredClass__ClassData::DeriveClass(RegisteredClass__ClassData* child)
 {
 	// Check_Object(this);
 	// Check_Object(child);
 	_ASSERT(child->parentClass == this);
 	_ASSERT(!child->nextSiblingClass);
 	child->nextSiblingClass = firstChildClass;
-	firstChildClass			= child;
+	firstChildClass = child;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void RegisteredClass__ClassData::TestInstance()
+void
+RegisteredClass__ClassData::TestInstance()
 {
-	RegisteredClass__ClassData* p		   = this;
+	RegisteredClass__ClassData* p = this;
 	RegisteredClass__ClassData* class_data = parentClass;
 	while (class_data)
 	{
 		// Check_Signature(class_data);
-		p		   = class_data;
+		p = class_data;
 		class_data = class_data->parentClass;
 	}
 	_ASSERT(p->classID == RegisteredClassClassID);

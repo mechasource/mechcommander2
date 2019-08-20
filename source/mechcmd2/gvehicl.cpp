@@ -125,7 +125,8 @@ extern bool drawTerrainGrid;
 
 extern int32_t adjClippedCell[8][2];
 
-extern void addMoverToList(int32_t blockNum);
+extern void
+addMoverToList(int32_t blockNum);
 
 extern float MaxVelocityMag;
 extern float MineDamage;
@@ -141,12 +142,14 @@ extern bool CantTouchThis;
 extern bool ShowMovers;
 
 extern WeaponFireChunk CurMoverWeaponFireChunk;
-extern void DebugWeaponFireChunk(
+extern void
+DebugWeaponFireChunk(
 	WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker);
-extern void LogWeaponFireChunk(
+extern void
+LogWeaponFireChunk(
 	WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameObjectPtr target);
 
-int32_t DefaultPilotId	 = 653;
+int32_t DefaultPilotId = 653;
 char marineProfileName[80] = "PEM00001";
 
 //**********************************************************************************
@@ -188,23 +191,23 @@ extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 #define MAX_GVACTOR_STATES 3
 
 int32_t GroundVehicleAttackerMoveModifier[MAX_GVACTOR_STATES] = {
-	0,  // Stopped
+	0, // Stopped
 	10, // Moving
 	100 // Destroyed
 };
 
 int32_t GroundVehicleCriticalHitTable[NUM_GROUNDVEHICLE_CRITICAL_HIT_TYPES] = {
 	63, // No Effect
-	1,  // Ammo or Power Unit hit
-	1,  // Fuel Tank Hit
-	1,  // Crew Killed
-	1,  // Engine Hit
-	1,  // Main Weapon Jammed
-	1,  // Crew Stunned
-	6,  // Movement Disabled
-	8,  // Movement Hindered
+	1, // Ammo or Power Unit hit
+	1, // Fuel Tank Hit
+	1, // Crew Killed
+	1, // Engine Hit
+	1, // Main Weapon Jammed
+	1, // Crew Stunned
+	6, // Movement Disabled
+	8, // Movement Hindered
 	11, // Hovercraft -ONLY- Movement Hindered
-	6   // Turret Jammed
+	6 // Turret Jammed
 };
 
 extern int32_t hitLevel[2];
@@ -227,17 +230,17 @@ extern int32_t AimedFireHitTable[3];
 
 extern float ContactFadeTime;
 
-float gvCollisionThreshold		  = 0.0;
-float gvObjectCollisionThreshold  = 0.0;
+float gvCollisionThreshold = 0.0;
+float gvObjectCollisionThreshold = 0.0;
 float gvTonnageCollisionThreshold = 0.0;
-float gvTreeDeflection			  = 0.0;
-float gvSweepTime				  = 0.0;
-float gvWalkSpeed				  = 0.0;
-float gvHillSpeedFactor			  = 0.0;
+float gvTreeDeflection = 0.0;
+float gvSweepTime = 0.0;
+float gvWalkSpeed = 0.0;
+float gvHillSpeedFactor = 0.0;
 
 float InclineThrottleMultiplier[NUM_GROUNDVEHICLE_CHASSIS][2] = {
-	{0.2f /*0.8*/, 1.0},  // WHEELED
-	{0.2f /*1.0*/, 1.0},  // TRACKED
+	{0.2f /*0.8*/, 1.0}, // WHEELED
+	{0.2f /*1.0*/, 1.0}, // TRACKED
 	{0.2f /*0.75*/, 1.25} // HOVER
 };
 
@@ -245,7 +248,7 @@ int32_t DefaultGroundVehicleCrashAvoidSelf = 1;
 int32_t DefaultGroundVehicleCrashAvoidPath = 1;
 int32_t DefaultGroundVehicleCrashBlockSelf = 1;
 int32_t DefaultGroundVehicleCrashBlockPath = 1;
-float DefaultGroundVehicleCrashYieldTime   = 2.0;
+float DefaultGroundVehicleCrashYieldTime = 2.0;
 
 int32_t NumMarines = 0;
 
@@ -262,34 +265,40 @@ extern float DistanceToWaypoint;
 // GROUNDVEHICLE TYPE class
 //**********************************************************************************
 
-void GroundVehicleType::init(void)
+void
+GroundVehicleType::init(void)
 {
-	objectTypeClass  = VEHICLE_TYPE;
-	objectClass		 = GROUNDVEHICLE;
-	mineSweeper		 = false;
-	refitPoints		 = 0;
-	recoverPoints	= 0;
-	crashAvoidSelf   = DefaultGroundVehicleCrashAvoidSelf;
-	crashAvoidPath   = DefaultGroundVehicleCrashAvoidPath;
-	crashBlockSelf   = DefaultGroundVehicleCrashBlockSelf;
-	crashBlockPath   = DefaultGroundVehicleCrashBlockPath;
-	crashYieldTime   = DefaultGroundVehicleCrashYieldTime;
-	explDmg			 = 0.0;
-	explRad			 = 0.0;
-	mineLayer		 = 0;
-	hoverCraft		 = false;
+	objectTypeClass = VEHICLE_TYPE;
+	objectClass = GROUNDVEHICLE;
+	mineSweeper = false;
+	refitPoints = 0;
+	recoverPoints = 0;
+	crashAvoidSelf = DefaultGroundVehicleCrashAvoidSelf;
+	crashAvoidPath = DefaultGroundVehicleCrashAvoidPath;
+	crashBlockSelf = DefaultGroundVehicleCrashBlockSelf;
+	crashBlockPath = DefaultGroundVehicleCrashBlockPath;
+	crashYieldTime = DefaultGroundVehicleCrashYieldTime;
+	explDmg = 0.0;
+	explRad = 0.0;
+	mineLayer = 0;
+	hoverCraft = false;
 	aerospaceSpotter = false;
-	moveType		 = MOVETYPE_GROUND;
-	LOSFactor		 = 1.0f;
+	moveType = MOVETYPE_GROUND;
+	LOSFactor = 1.0f;
 }
 
 //---------------------------------------------------------------------------
 
-void GroundVehicleType::destroy(void) { ObjectType::destroy(); }
+void
+GroundVehicleType::destroy(void)
+{
+	ObjectType::destroy();
+}
 
 //----------------------------------------------------------------------------------
 
-int32_t GroundVehicleType::init(FilePtr objFile, uint32_t fileSize)
+int32_t
+GroundVehicleType::init(FilePtr objFile, uint32_t fileSize)
 {
 	PSTR bodyLocationString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front", "Left", "Right", "Rear", "Turret"};
@@ -373,7 +382,8 @@ int32_t GroundVehicleType::init(FilePtr objFile, uint32_t fileSize)
 
 //-----------------------------------------------------------------------------------
 
-bool GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------
 	// The default reaction of any object in the world
@@ -384,15 +394,14 @@ bool GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr co
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
 	bool sameTeam = false;
-	bool collide  = true;
+	bool collide = true;
 	switch (collider->getObjectClass())
 	{
 	case BATTLEMECH:
 	case GROUNDVEHICLE:
 	case ELEMENTAL:
 	{
-		if (collidee->isFriendly(collider) &&
-			(collidee->getCommanderId() == collider->getCommanderId()))
+		if (collidee->isFriendly(collider) && (collidee->getCommanderId() == collider->getCommanderId()))
 			sameTeam = true;
 		if (sameTeam)
 			collide = false;
@@ -406,7 +415,7 @@ bool GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr co
 				collide = true;
 			else
 				collide = false; //(((MoverPtr)collidee)->getPilot()->checkSkill(MWS_PILOTING)
-								 //>= 0);
+					//>= 0);
 		}
 		if (!((MoverPtr)collidee)->pathLocks && !sameTeam)
 		{
@@ -414,8 +423,7 @@ bool GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr co
 		}
 		if (collide)
 		{
-			if ((collidee->getCollisionFreeFromWID() != collider->getWatchID()) ||
-				(collidee->getCollisionFreeTime() < scenarioTime))
+			if ((collidee->getCollisionFreeFromWID() != collider->getWatchID()) || (collidee->getCollisionFreeTime() < scenarioTime))
 				collide = true;
 			else
 				collide = false;
@@ -468,8 +476,7 @@ bool GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr co
 	case TERRAINOBJECT:
 	case TREE:
 	{
-		if ((collidee->getCollisionFreeFromWID() != collider->getWatchID()) ||
-			(collidee->getCollisionFreeTime() < scenarioTime))
+		if ((collidee->getCollisionFreeFromWID() != collider->getWatchID()) || (collidee->getCollisionFreeTime() < scenarioTime))
 		{
 			//----------------------------------------------------------------------
 			// Don't allow collision between these two again for a period of
@@ -478,7 +485,7 @@ bool GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr co
 			collidee->setCollisionFreeTime(scenarioTime + 2.0);
 			//------------------------------------
 			// Adjust my velocity and direction...
-			float turnAround   = 0.0;
+			float turnAround = 0.0;
 			float tonnageClass = collidee->getTonnage();
 			if (tonnageClass < gvTonnageCollisionThreshold)
 				turnAround = (gvTonnageCollisionThreshold / tonnageClass) * gvTreeDeflection;
@@ -496,7 +503,8 @@ bool GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr co
 }
 
 //-----------------------------------------------------------------------------------
-bool GroundVehicleType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+GroundVehicleType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// For now, a BattleMech will play a default explosion
@@ -558,7 +566,8 @@ bool GroundVehicleType::handleDestruction(GameObjectPtr collidee, GameObjectPtr 
 
 //----------------------------------------------------------------------------------
 
-int32_t GroundVehicleType::loadHotSpots(FitIniFilePtr vehicleFile)
+int32_t
+GroundVehicleType::loadHotSpots(FitIniFilePtr vehicleFile)
 {
 #if 0
 	if(vehicleFile)
@@ -637,7 +646,8 @@ int32_t GroundVehicleType::loadHotSpots(FitIniFilePtr vehicleFile)
 
 //----------------------------------------------------------------------------------
 
-GameObjectPtr GroundVehicleType::createInstance(void)
+GameObjectPtr
+GroundVehicleType::createInstance(void)
 {
 	GroundVehiclePtr newVehicle = new GroundVehicle;
 	if (!newVehicle)
@@ -651,10 +661,11 @@ GameObjectPtr GroundVehicleType::createInstance(void)
 // GROUNDVEHICLE class
 //**********************************************************************************
 
-int32_t GroundVehicle::loadGameSystem(FitIniFilePtr sysFile)
+int32_t
+GroundVehicle::loadGameSystem(FitIniFilePtr sysFile)
 {
 	int32_t result = 0;
-	result		   = sysFile->seekBlock("GroundVehicle:FireWeapon");
+	result = sysFile->seekBlock("GroundVehicle:FireWeapon");
 	if (result != NO_ERROR)
 		return (result);
 	result = sysFile->readIdLongArray(
@@ -687,7 +698,7 @@ int32_t GroundVehicle::loadGameSystem(FitIniFilePtr sysFile)
 	if (result != NO_ERROR)
 		return (result);
 	int32_t crashSize = 0;
-	result			  = sysFile->readIdLong("CrashAvoidSelf", crashSize);
+	result = sysFile->readIdLong("CrashAvoidSelf", crashSize);
 	if (result == NO_ERROR)
 		DefaultGroundVehicleCrashAvoidSelf = crashSize;
 	result = sysFile->readIdLong("CrashAvoidPath", crashSize);
@@ -700,7 +711,7 @@ int32_t GroundVehicle::loadGameSystem(FitIniFilePtr sysFile)
 	if (result == NO_ERROR)
 		DefaultGroundVehicleCrashBlockPath = crashSize;
 	float crashYield = 0.0;
-	result			 = sysFile->readIdFloat("CrashYieldTime", crashYield);
+	result = sysFile->readIdFloat("CrashYieldTime", crashYield);
 	if (result == NO_ERROR)
 		DefaultGroundVehicleCrashYieldTime = crashYield;
 	result = sysFile->readIdFloat("SweeperSlowTime", gvSweepTime);
@@ -717,23 +728,24 @@ int32_t GroundVehicle::loadGameSystem(FitIniFilePtr sysFile)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::handleStaticCollision(void)
+void
+GroundVehicle::handleStaticCollision(void)
 {
 	if (getTangible() && pathLocks)
 	{
 		//-----------------------------------------------------
 		// What is our block and vertex number?
-		int32_t blockNumber  = 0;
+		int32_t blockNumber = 0;
 		int32_t vertexNumber = 0;
 		getBlockAndVertexNumber(blockNumber, vertexNumber);
-		int32_t numCollidables		 = ObjectManager->getObjBlockNumCollidables(blockNumber);
-		int32_t terrainObjHandle	 = ObjectManager->getObjBlockFirstHandle(blockNumber);
-		int32_t colliderBlockNumber  = -1;
+		int32_t numCollidables = ObjectManager->getObjBlockNumCollidables(blockNumber);
+		int32_t terrainObjHandle = ObjectManager->getObjBlockFirstHandle(blockNumber);
+		int32_t colliderBlockNumber = -1;
 		int32_t colliderVertexNumber = -1;
 		for (size_t i = 0; i < numCollidables; i++)
 		{
 			GameObjectPtr terrainObj = ObjectManager->get(terrainObjHandle + i);
-			bool isTangible			 = false;
+			bool isTangible = false;
 			switch (terrainObj->getObjectClass())
 			{
 			case TREE:
@@ -755,40 +767,41 @@ void GroundVehicle::handleStaticCollision(void)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::init(bool create)
+void
+GroundVehicle::init(bool create)
 {
 	longName[0] = 0;
 	// Mover::init();
-	objectClass			 = GROUNDVEHICLE;
-	numBodyLocations	 = NUM_GROUNDVEHICLE_LOCATIONS;
-	numArmorLocations	= NUM_GROUNDVEHICLE_LOCATIONS;
-	accel				 = 0.0;
-	velocityMag			 = 0.0;
-	movementEnabled		 = true;
-	turretRotation		 = 0;
-	turretEnabled		 = true;
+	objectClass = GROUNDVEHICLE;
+	numBodyLocations = NUM_GROUNDVEHICLE_LOCATIONS;
+	numArmorLocations = NUM_GROUNDVEHICLE_LOCATIONS;
+	accel = 0.0;
+	velocityMag = 0.0;
+	movementEnabled = true;
+	turretRotation = 0;
+	turretEnabled = true;
 	turretBlownThisFrame = false;
-	deadByCrushed		 = false;
+	deadByCrushed = false;
 #ifdef USE_SMOKE
 	dmgSmoke = nullptr;
 #endif
-	pathLocks		 = true;
-	captureable		 = false;
-	salvageVehicle   = false;
-	refitBuddyWID	= 0;
-	recoverBuddyWID  = 0;
-	canRefit		 = false;
-	refitting		 = false;
-	canRecover		 = false;
-	recovering		 = false;
-	sweepTime		 = -1;
-	mineLayer		 = 0;
+	pathLocks = true;
+	captureable = false;
+	salvageVehicle = false;
+	refitBuddyWID = 0;
+	recoverBuddyWID = 0;
+	canRefit = false;
+	refitting = false;
+	canRecover = false;
+	recovering = false;
+	sweepTime = -1;
+	mineLayer = 0;
 	aerospaceSpotter = false;
-	blipFrame		 = 0;
+	blipFrame = 0;
 	cellColToMine = cellRowToMine = -1;
-	timeInCurrent				  = 0.0;
-	sensorSystem	   = nullptr; // Make sure they start WITHOUT one or badness will insue
-	isVehiclePilot	 = false;
+	timeInCurrent = 0.0;
+	sensorSystem = nullptr; // Make sure they start WITHOUT one or badness will insue
+	isVehiclePilot = false;
 	lowestWeaponNodeID = -2;
 	dVel.Zero();
 	dRot.Zero();
@@ -797,7 +810,8 @@ void GroundVehicle::init(bool create)
 
 //------------------------------------------------------------------------------------------
 
-void GroundVehicle::init(bool create, ObjectTypePtr objType)
+void
+GroundVehicle::init(bool create, ObjectTypePtr objType)
 {
 	//-------------------------------------------------------------
 	// Call down the chain to init everybody else.
@@ -814,11 +828,11 @@ void GroundVehicle::init(bool create, ObjectTypePtr objType)
 	for (size_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
 	{
 		body[curLocation].maxInternalStructure = vehicleT->maxInternalStructure[curLocation];
-		body[curLocation].CASE				   = false;
-		body[curLocation].damageState		   = IS_DAMAGE_NONE;
-		body[curLocation].totalSpaces		   = 0;
+		body[curLocation].CASE = false;
+		body[curLocation].damageState = IS_DAMAGE_NONE;
+		body[curLocation].totalSpaces = 0;
 	}
-	chassis		   = vehicleT->chassis;
+	chassis = vehicleT->chassis;
 	crashAvoidSelf = vehicleT->crashAvoidSelf;
 	crashAvoidPath = vehicleT->crashAvoidPath;
 	crashBlockSelf = vehicleT->crashBlockSelf;
@@ -828,22 +842,22 @@ void GroundVehicle::init(bool create, ObjectTypePtr objType)
 	if (vehicleT->hoverCraft)
 		moveLevel = 1;
 	setFollowRoads(true);
-	canRefit	= (vehicleT->refitPoints > 0);
-	canRecover  = (vehicleT->recoverPoints > 0);
+	canRefit = (vehicleT->refitPoints > 0);
+	canRecover = (vehicleT->recoverPoints > 0);
 	captureable = captureable || (vehicleT->resourcePoints > 0);
 	if (captureable)
 		setFlag(OBJECT_FLAG_CAPTURABLE, true);
-	mineSweeper		 = vehicleT->mineSweeper;
-	mineLayer		 = vehicleT->mineLayer;
+	mineSweeper = vehicleT->mineSweeper;
+	mineLayer = vehicleT->mineLayer;
 	aerospaceSpotter = vehicleT->aerospaceSpotter;
-	nullSignature	= (vehicleT->isSensorContact ? 255 : 64);
+	nullSignature = (vehicleT->isSensorContact ? 255 : 64);
 	//-------------------------------------------------------------
 	// The control Class starts up here.
 	control.init();
 	//-------------------------------------------------------------
 	// The dynamics class starts up here.
 	dynamics = ((GroundVehicleTypePtr)objType)->dynamics;
-	accel	= dynamics.max.groundVehicle.accel;
+	accel = dynamics.max.groundVehicle.accel;
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	PSTR appearanceName = objType->getAppearanceTypeName();
@@ -873,21 +887,23 @@ void GroundVehicle::init(bool create, ObjectTypePtr objType)
 		appearance->init((GVAppearanceType*)vehicleAppearanceType, (GameObjectPtr)this);
 		appearance->setAlphaValue(alphaValue);
 	}
-	objectClass		  = GROUNDVEHICLE;
+	objectClass = GROUNDVEHICLE;
 	markDistanceMoved = 1000.0;
-	pathLocks		  = ((GroundVehicleTypePtr)objType)->pathLocks;
+	pathLocks = ((GroundVehicleTypePtr)objType)->pathLocks;
 	setObscured(true);
 }
 
 //----------------------------------------------------------------------------------
 
-void GroundVehicle::setControl(ControlType ctrlType)
+void
+GroundVehicle::setControl(ControlType ctrlType)
 {
 	control.init(ctrlType, CONTROL_DATA_GROUNDVEHICLE);
 }
 
 //----------------------------------------------------------------------------------
-int32_t GroundVehicle::init(FitIniFile* vehicleFile)
+int32_t
+GroundVehicle::init(FitIniFile* vehicleFile)
 {
 	PSTR BodyLocationBlockString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front", "Left", "Right", "Rear", "Turret"};
@@ -897,7 +913,7 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 	if (result != NO_ERROR)
 		return (result);
 	name[0] = nullptr;
-	result  = vehicleFile->seekBlock("General");
+	result = vehicleFile->seekBlock("General");
 	if (result != NO_ERROR)
 		return (result);
 	result = vehicleFile->readIdLong("IconIndex", iconPictureIndex);
@@ -917,7 +933,7 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 		sprintf(longName, buffer, name, tonnage);
 	}
 	char cStatus = 0;
-	result		 = vehicleFile->readIdChar("Status", cStatus);
+	result = vehicleFile->readIdChar("Status", cStatus);
 	if (result != NO_ERROR)
 		return (result);
 	status = cStatus;
@@ -955,10 +971,10 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 			return (result);
 		inventory[curItem].health =
 			MasterComponent::masterList[inventory[curItem].masterID].getHealth();
-		inventory[curItem].disabled		= false;
-		inventory[curItem].amount		= 1;
-		inventory[curItem].ammoIndex	= -1;
-		inventory[curItem].readyTime	= 0.0;
+		inventory[curItem].disabled = false;
+		inventory[curItem].amount = 1;
+		inventory[curItem].ammoIndex = -1;
+		inventory[curItem].readyTime = 0.0;
 		inventory[curItem].bodyLocation = 255;
 		//------------------------------------------------------------
 		// Let's keep track of a few special components we may need...
@@ -968,7 +984,7 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 			cockpit = curItem;
 			break;
 		case COMPONENT_FORM_SENSOR:
-			sensor		 = curItem;
+			sensor = curItem;
 			sensorSystem = SensorManager->newSensor();
 			sensorSystem->setOwner(this);
 			sensorSystem->setRange(
@@ -1006,20 +1022,19 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 			return (result);
 		inventory[curItem].health =
 			MasterComponent::masterList[inventory[curItem].masterID].getHealth();
-		inventory[curItem].disabled		= false;
-		inventory[curItem].amount		= 1;
-		inventory[curItem].facing		= 1;
-		inventory[curItem].ammoIndex	= -1;
-		inventory[curItem].readyTime	= 0.0;
+		inventory[curItem].disabled = false;
+		inventory[curItem].amount = 1;
+		inventory[curItem].facing = 1;
+		inventory[curItem].ammoIndex = -1;
+		inventory[curItem].readyTime = 0.0;
 		inventory[curItem].bodyLocation = 255;
 		inventory[curItem].effectiveness =
-			(int16_t)(MasterComponent::masterList[inventory[curItem].masterID].getWeaponDamage() *
-				10.0 / // damage over 10 seconds
+			(int16_t)(MasterComponent::masterList[inventory[curItem].masterID].getWeaponDamage() * 10.0 / // damage over 10 seconds
 				MasterComponent::masterList[inventory[curItem].masterID].getWeaponRecycleTime());
 		inventory[curItem].effectiveness *=
 			WeaponRanges[MasterComponent::masterList[inventory[curItem].masterID].getWeaponRange()]
-						[1] /
-			24;
+						[1]
+			/ 24;
 		curItem++;
 	}
 	//------------------------------
@@ -1039,11 +1054,11 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 		inventory[curItem].amount =
 			MasterComponent::masterList[inventory[curItem].masterID].getAmmoPerTon();
 		inventory[curItem].startAmount = inventory[curItem].amount;
-		inventory[curItem].ammoIndex   = -1;
+		inventory[curItem].ammoIndex = -1;
 		inventory[curItem].health =
 			MasterComponent::masterList[inventory[curItem].masterID].getHealth();
-		inventory[curItem].disabled		= false;
-		inventory[curItem].readyTime	= 0.0;
+		inventory[curItem].disabled = false;
+		inventory[curItem].readyTime = 0.0;
 		inventory[curItem].bodyLocation = 255;
 		curItem++;
 	}
@@ -1077,7 +1092,7 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 		result = vehicleFile->readIdUChar("CurArmorPoints", armorPts);
 		if (result != NO_ERROR)
 			return (result);
-		armor[curLocation].curArmor   = armorPts;
+		armor[curLocation].curArmor = armorPts;
 		body[curLocation].totalSpaces = 0;
 	}
 	calcAmmoTotals();
@@ -1089,7 +1104,8 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 		for (size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if ((int32_t)MasterComponent::masterList[inventory[item].masterID]
-					.getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
+					.getWeaponAmmoMasterId()
+				== ammoTypeTotal[ammoIndex].masterId)
 			{
 				inventory[item].ammoIndex = ammoIndex;
 				break;
@@ -1134,7 +1150,8 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::calcCV(bool calcMax)
+int32_t
+GroundVehicle::calcCV(bool calcMax)
 {
 	if (battleRating != -1)
 		return battleRating;
@@ -1189,11 +1206,16 @@ int32_t GroundVehicle::calcCV(bool calcMax)
 
 //-------------------------------------------------------------------------------------------
 
-void GroundVehicle::pilotingCheck(void) { return; }
+void
+GroundVehicle::pilotingCheck(void)
+{
+	return;
+}
 
 //-------------------------------------------------------------------------------------------
 
-void GroundVehicle::destroy(void)
+void
+GroundVehicle::destroy(void)
 {
 	if (appearance)
 	{
@@ -1204,12 +1226,13 @@ void GroundVehicle::destroy(void)
 
 //------------------------------------------------------------------------------------------
 
-void GroundVehicle::mineCheck(void)
+void
+GroundVehicle::mineCheck(void)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return;
 	uint32_t mine = 0;
-	mine		  = GameMap->getMine(cellPositionRow, cellPositionCol);
+	mine = GameMap->getMine(cellPositionRow, cellPositionCol);
 	if (mine == 1)
 	{
 		//----------------------------------------------------
@@ -1217,7 +1240,7 @@ void GroundVehicle::mineCheck(void)
 		// NOT NEEDED ANYMORE.  EVERYONE CAN SEE MINES!!!!!!!!!!!
 		if (mineSweeper)
 		{
-			sweepTime			   = 0;
+			sweepTime = 0;
 			Stuff::Vector3D curPos = getPosition();
 			ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, curPos);
 			armor[GROUNDVEHICLE_LOCATION_FRONT].curArmor--;
@@ -1230,7 +1253,7 @@ void GroundVehicle::mineCheck(void)
 			if (armor[GROUNDVEHICLE_LOCATION_FRONT].curArmor == 0)
 			{
 				mineSweeper = false;
-				sweepTime   = -1;
+				sweepTime = -1;
 				pilot->clearCurTacOrder(); // stop!!!
 			}
 			//---------------------------------------------------------
@@ -1264,7 +1287,7 @@ void GroundVehicle::mineCheck(void)
 					nullptr, -2, MineDamage, calcHitLocation(nullptr, -1, ATTACKSOURCE_MINE, 0), 0);
 				handleWeaponHit(&shot, (MPlayer != nullptr));
 				pilot->pausePath(); // Force the pilot to recalc based on new
-									// data.
+					// data.
 				//---------------------------------------------------------
 				//  Mark this tile as empty.  (we just set the mine off!!)
 				GameMap->setMine(cellPositionRow, cellPositionCol, 2);
@@ -1286,26 +1309,27 @@ void GroundVehicle::mineCheck(void)
 
 //---------------------------------------------------------------------------
 
-bool GroundVehicle::pivotTo(void)
+bool
+GroundVehicle::pivotTo(void)
 {
 	// If we have no maxVelocity, we are an artillery piece.  DO NOT PIVOT!!
 	if (dynamics.max.groundVehicle.speed == 0.0f)
 		return false;
-	MovePathPtr path	  = pilot->getMovePath();
-	int32_t moveState	 = pilot->getMoveState();
+	MovePathPtr path = pilot->getMovePath();
+	int32_t moveState = pilot->getMoveState();
 	int32_t moveStateGoal = pilot->getMoveStateGoal();
-	bool isRunning		  = false;
+	bool isRunning = false;
 	if (MPlayer && !MPlayer->isServer())
 		isRunning = moveChunk.run;
 	else
 		isRunning = (pilot->getMovePath()->numStepsWhenNotPaused > 0) && pilot->getMoveRun();
 	bool hasTarget = false;
 	Stuff::Vector3D targetPosition;
-	GameObjectPtr target	= pilot->getCurrentTarget();
+	GameObjectPtr target = pilot->getCurrentTarget();
 	float relFacingToTarget = 0.0;
 	if (target)
 	{
-		targetPosition	= target->getPosition();
+		targetPosition = target->getPosition();
 		relFacingToTarget = relFacingTo(targetPosition);
 		// maxVehiclePivotRate =
 		// ((GroundVehicleDynamicsTypePtr)(((GroundVehicleTypePtr)type)->dynamicsType))->maxTurretYawRate
@@ -1314,7 +1338,7 @@ bool GroundVehicle::pivotTo(void)
 	}
 	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
 	{
-		targetPosition	= pilot->getAttackTargetPoint();
+		targetPosition = pilot->getAttackTargetPoint();
 		relFacingToTarget = relFacingTo(targetPosition);
 		// maxVehiclePivotRate =
 		// ((GroundVehicleDynamicsTypePtr)(((GroundVehicleTypePtr)type)->dynamicsType))->maxTurretYawRate
@@ -1329,9 +1353,9 @@ bool GroundVehicle::pivotTo(void)
 			// We want to pivot forward (if we have a path to follow)...
 			if ((path->numStepsWhenNotPaused > 0) && (path->curStep < path->numStepsWhenNotPaused))
 			{
-				Stuff::Vector3D wayPt					= path->stepList[path->curStep].destination;
+				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
 				control.settings.groundVehicle.throttle = 0;
-				float relFacingToWayPt					= relFacingTo(wayPt);
+				float relFacingToWayPt = relFacingTo(wayPt);
 				if ((relFacingToWayPt < -45.0) || (relFacingToWayPt > 45.0))
 				{
 					float turnRate = -relFacingToWayPt;
@@ -1368,8 +1392,8 @@ bool GroundVehicle::pivotTo(void)
 							turnRate = -maxRate;
 					}
 					control.settings.groundVehicle.rotate = turnRate;
-					control.settings.groundVehicle.pivot  = true;
-					NewRotation							  = turnRate;
+					control.settings.groundVehicle.pivot = true;
+					NewRotation = turnRate;
 					return (true);
 				}
 				else
@@ -1393,9 +1417,9 @@ bool GroundVehicle::pivotTo(void)
 			// We want to pivot forward (if we have a path to follow)...
 			if ((path->numStepsWhenNotPaused > 0) && (path->curStep < path->numStepsWhenNotPaused))
 			{
-				Stuff::Vector3D wayPt					= path->stepList[path->curStep].destination;
+				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
 				control.settings.groundVehicle.throttle = 0;
-				float relFacingToWayPt					= relFacingTo(wayPt);
+				float relFacingToWayPt = relFacingTo(wayPt);
 				if ((relFacingToWayPt > -175.0) && (relFacingToWayPt < 175.0))
 				{
 					float turnRate = 0.0;
@@ -1429,8 +1453,8 @@ bool GroundVehicle::pivotTo(void)
 							turnRate = -maxRate;
 					}
 					control.settings.groundVehicle.rotate = turnRate;
-					control.settings.groundVehicle.pivot  = true;
-					NewRotation							  = turnRate;
+					control.settings.groundVehicle.pivot = true;
+					NewRotation = turnRate;
 					return (true);
 				}
 				else
@@ -1468,12 +1492,12 @@ bool GroundVehicle::pivotTo(void)
 				return (false);
 			}
 			control.settings.groundVehicle.throttle = 0;
-			float relFacingToTarget					= relFacingTo(targetPosition);
-			float fireArc							= getFireArc();
+			float relFacingToTarget = relFacingTo(targetPosition);
+			float fireArc = getFireArc();
 			if ((relFacingToTarget < -fireArc) || (relFacingToTarget > fireArc))
 			{
 				float turnRate = -relFacingToTarget;
-				float maxRate  = vehicleTurnRate[int32_t(tonnage)] * frameLength;
+				float maxRate = vehicleTurnRate[int32_t(tonnage)] * frameLength;
 				if (fabs(turnRate) > maxRate)
 				{
 					if (turnRate > 0.0)
@@ -1482,8 +1506,8 @@ bool GroundVehicle::pivotTo(void)
 						turnRate = -maxRate;
 				}
 				control.settings.groundVehicle.rotate = turnRate;
-				control.settings.groundVehicle.pivot  = true;
-				NewRotation							  = turnRate;
+				control.settings.groundVehicle.pivot = true;
+				NewRotation = turnRate;
 				return (true);
 			}
 			else
@@ -1498,9 +1522,7 @@ bool GroundVehicle::pivotTo(void)
 	{
 		//--------------------------------------------------------
 		// If we're supposed to be pivoting, set the move state...
-		if ((moveStateGoal == MOVESTATE_PIVOT_TARGET) ||
-			(moveStateGoal == MOVESTATE_PIVOT_FORWARD) ||
-			(moveStateGoal == MOVESTATE_PIVOT_REVERSE))
+		if ((moveStateGoal == MOVESTATE_PIVOT_TARGET) || (moveStateGoal == MOVESTATE_PIVOT_FORWARD) || (moveStateGoal == MOVESTATE_PIVOT_REVERSE))
 			pilot->setMoveState(moveStateGoal);
 	}
 	if (!pilot->isYielding() && !pilot->isWaitingForPoint())
@@ -1511,7 +1533,8 @@ bool GroundVehicle::pivotTo(void)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::calcThrottleLimits(int32_t& minThrottle, int32_t& maxThrottle)
+void
+GroundVehicle::calcThrottleLimits(int32_t& minThrottle, int32_t& maxThrottle)
 {
 	// NOT WORKING RIGHT...
 	float incline = 90.0; // getVelocityTilt();
@@ -1529,7 +1552,8 @@ void GroundVehicle::calcThrottleLimits(int32_t& minThrottle, int32_t& maxThrottl
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::getSpeedState(void)
+int32_t
+GroundVehicle::getSpeedState(void)
 {
 	if (velocityMag != 0.0)
 		return (SPEED_STATE_MOVING_FAST);
@@ -1538,23 +1562,24 @@ int32_t GroundVehicle::getSpeedState(void)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::updateMoveStateGoal(void)
+void
+GroundVehicle::updateMoveStateGoal(void)
 {
 	Stuff::Vector3D targetPosition;
 	targetPosition.Zero();
 	GameObjectPtr target = pilot->getLastTarget();
-	bool hasTarget		 = false;
+	bool hasTarget = false;
 	if (target)
 	{
 		targetPosition = target->getPosition();
-		hasTarget	  = true;
+		hasTarget = true;
 	}
 	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
 	{
 		targetPosition = pilot->getAttackTargetPoint();
-		hasTarget	  = true;
+		hasTarget = true;
 	}
-	MovePathPtr path	  = pilot->getMovePath();
+	MovePathPtr path = pilot->getMovePath();
 	int32_t moveStateGoal = pilot->getMoveStateGoal();
 	if (path->numSteps > 0)
 	{
@@ -1583,8 +1608,8 @@ void GroundVehicle::updateMoveStateGoal(void)
 			if ((path->numStepsWhenNotPaused > 0) && (path->curStep < path->numStepsWhenNotPaused))
 			{
 				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
-				float facingDelta	 = relFacingDelta(wayPt, targetPosition);
-				float totalFireArc	= getFireArc() + dynamics.max.groundVehicle.turretYaw;
+				float facingDelta = relFacingDelta(wayPt, targetPosition);
+				float totalFireArc = getFireArc() + dynamics.max.groundVehicle.turretYaw;
 				int32_t moveStateGoal = pilot->getMoveStateGoal();
 				if (moveStateGoal == MOVESTATE_FORWARD)
 				{
@@ -1619,8 +1644,7 @@ void GroundVehicle::updateMoveStateGoal(void)
 		else
 			pilot->setMoveStateGoal(MOVESTATE_FORWARD);
 	}
-	else if ((moveStateGoal != MOVESTATE_PIVOT_TARGET) &&
-		(moveStateGoal != MOVESTATE_PIVOT_FORWARD) && (moveStateGoal != MOVESTATE_PIVOT_REVERSE))
+	else if ((moveStateGoal != MOVESTATE_PIVOT_TARGET) && (moveStateGoal != MOVESTATE_PIVOT_FORWARD) && (moveStateGoal != MOVESTATE_PIVOT_REVERSE))
 	{
 		if (!hasTarget && (path->numStepsWhenNotPaused == 0))
 			pilot->setMoveStateGoal(MOVESTATE_FORWARD);
@@ -1629,31 +1653,31 @@ void GroundVehicle::updateMoveStateGoal(void)
 
 //---------------------------------------------------------------------------
 
-bool GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
+bool
+GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 	int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle)
 {
-	DistanceToWaypoint		   = 9999.0;
-	MovePathPtr path		   = pilot->getMovePath();
-	TacticalOrderPtr curOrder  = pilot->getCurTacOrder();
+	DistanceToWaypoint = 9999.0;
+	MovePathPtr path = pilot->getMovePath();
+	TacticalOrderPtr curOrder = pilot->getCurTacOrder();
 	int32_t curThrottleSetting = control.settings.groundVehicle.throttle;
-	newThrottleSetting		   = curThrottleSetting;
-	newRotate				   = 0.0;
-	bool allowedToRun		   = pilot->getMoveRun();
+	newThrottleSetting = curThrottleSetting;
+	newRotate = 0.0;
+	bool allowedToRun = pilot->getMoveRun();
 	updateHustleTime();
 	bool hustle = (lastHustleTime + 2.0) > scenarioTime;
 	//-----------------------------------------------
 	// Am I ahead of my point vehicle, if I have one?
 	bool aheadOfPointVehicle = false;
 	bool stopForPointVehicle = false;
-	MoverPtr pointVehicle	= (MoverPtr)pilot->getPoint();
-	bool hasGroupMoveOrder   = (curOrder->isGroupOrder() && curOrder->isMoveOrder());
-	if (!allowedToRun && !hustle && pointVehicle && !pointVehicle->isDisabled() &&
-		(pointVehicle != this) && hasGroupMoveOrder)
+	MoverPtr pointVehicle = (MoverPtr)pilot->getPoint();
+	bool hasGroupMoveOrder = (curOrder->isGroupOrder() && curOrder->isMoveOrder());
+	if (!allowedToRun && !hustle && pointVehicle && !pointVehicle->isDisabled() && (pointVehicle != this) && hasGroupMoveOrder)
 	{
-		MechWarriorPtr pointPilot   = pointVehicle->getPilot();
+		MechWarriorPtr pointPilot = pointVehicle->getPilot();
 		float pointDistanceFromGoal = pointPilot->getMoveDistanceLeft();
-		float myDistanceFromGoal	= pilot->getMoveDistanceLeft();
-		aheadOfPointVehicle			= (myDistanceFromGoal < pointDistanceFromGoal);
+		float myDistanceFromGoal = pilot->getMoveDistanceLeft();
+		aheadOfPointVehicle = (myDistanceFromGoal < pointDistanceFromGoal);
 		if (aheadOfPointVehicle)
 		{
 			// allowedToRun = false;
@@ -1710,13 +1734,13 @@ bool GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 			//---------------------------------
 			// Have we reached the destination?
 			float distanceFromWayPt = distanceFrom(wayPt);
-			DistanceToWaypoint		= distanceFromWayPt;
+			DistanceToWaypoint = distanceFromWayPt;
 			//--------------------------------------------------
 			// Calculate how far the vehicle will move this frame.
 			// Vel is in m/s
-			float vel				= velocityMag;
+			float vel = velocityMag;
 			float distanceThisFrame = vel * frameLength;
-			float cushion			= Mover::marginOfError[0];
+			float cushion = Mover::marginOfError[0];
 			if (path->curStep == (path->numSteps - 1))
 				cushion = Mover::marginOfError[1];
 			if (cushion < distanceThisFrame)
@@ -1748,8 +1772,8 @@ bool GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 				//-----------------------------------------
 				// First, rotate the vehicle (if moving)...
 				float relFacingToWayPt = relFacingTo(wayPt);
-				int32_t moveState	  = pilot->getMoveState();
-				int32_t moveStateGoal  = pilot->getMoveStateGoal();
+				int32_t moveState = pilot->getMoveState();
+				int32_t moveStateGoal = pilot->getMoveStateGoal();
 				if (moveState == MOVESTATE_FORWARD)
 				{
 					if (moveStateGoal == MOVESTATE_FORWARD)
@@ -1761,7 +1785,7 @@ bool GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 						{
 							//-----------------------------------------------
 							// We can and will shift facing to destination...
-							newRotate	 = -relFacingToWayPt;
+							newRotate = -relFacingToWayPt;
 							float maxRate = vehicleTurnRate[int32_t(tonnage)] * frameLength;
 							if (fabs(newRotate) > maxRate)
 							{
@@ -1871,14 +1895,12 @@ bool GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 				{
 					//--------------------------
 					// Not moving--should we be?
-					if ((moveStateGoal == MOVESTATE_FORWARD) ||
-						(moveStateGoal == MOVESTATE_PIVOT_FORWARD))
+					if ((moveStateGoal == MOVESTATE_FORWARD) || (moveStateGoal == MOVESTATE_PIVOT_FORWARD))
 					{
 						pilot->pausePath();
 						newMoveState = MOVESTATE_PIVOT_FORWARD;
 					}
-					else if ((moveStateGoal == MOVESTATE_REVERSE) ||
-						(moveStateGoal == MOVESTATE_PIVOT_REVERSE))
+					else if ((moveStateGoal == MOVESTATE_REVERSE) || (moveStateGoal == MOVESTATE_PIVOT_REVERSE))
 					{
 						pilot->pausePath();
 						newMoveState = MOVESTATE_PIVOT_REVERSE;
@@ -1921,7 +1943,8 @@ bool GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::setNextMovePath(char& newThrottleSetting)
+void
+GroundVehicle::setNextMovePath(char& newThrottleSetting)
 {
 	//----------------------------------------
 	// If this is only an intermediate path,
@@ -1946,15 +1969,16 @@ void GroundVehicle::setNextMovePath(char& newThrottleSetting)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::setControlSettings(
+void
+GroundVehicle::setControlSettings(
 	float& newRotate, char& newThrottleSetting, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	//-----------------------------------------------------------------------------
 	// If we have no move path, then we shouldn't be moving. Let's set our
 	// throttle setting to zero, just to be safe...
-	int32_t result		= NO_ERROR;
+	int32_t result = NO_ERROR;
 	MovePathPtr curPath = pilot->getMovePath();
-	bool allowedToRun   = false;
+	bool allowedToRun = false;
 	if (MPlayer && !MPlayer->isServer())
 		allowedToRun = moveChunk.run;
 	else
@@ -1977,12 +2001,13 @@ void GroundVehicle::setControlSettings(
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::updateTurret(float newRotatePerSec)
+void
+GroundVehicle::updateTurret(float newRotatePerSec)
 {
 	//----------------------------------------------------
 	// Now, rotate the turret toward our current target...
 	float turretRelFacing = 0.0;
-	GameObjectPtr target  = pilot->getCurrentTarget();
+	GameObjectPtr target = pilot->getCurrentTarget();
 	if (target)
 		turretRelFacing = relFacingTo(target->getPosition()) + turretRotation + newRotatePerSec;
 	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
@@ -2010,14 +2035,15 @@ void GroundVehicle::updateTurret(float newRotatePerSec)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::updateMovement(void)
+void
+GroundVehicle::updateMovement(void)
 {
 	NewRotation = 0.0;
 	if (disableThisFrame)
 	{
-		disableThisFrame  = false;
+		disableThisFrame = false;
 		shutDownThisFrame = false;
-		startUpThisFrame  = false;
+		startUpThisFrame = false;
 		setStatus(OBJECT_STATUS_DISABLED);
 		control.settings.groundVehicle.throttle = 0;
 		return;
@@ -2025,7 +2051,7 @@ void GroundVehicle::updateMovement(void)
 	if (shutDownThisFrame)
 	{
 		shutDownThisFrame = false;
-		startUpThisFrame  = false;
+		startUpThisFrame = false;
 		setStatus(OBJECT_STATUS_SHUTDOWN);
 		control.settings.groundVehicle.throttle = 0;
 		soundSystem->playDigitalSample(VEHICLE_POWERUP, getPosition());
@@ -2050,12 +2076,12 @@ void GroundVehicle::updateMovement(void)
 		return;
 	if (pivotTo())
 		return;
-	int32_t minThrottle		= -100;
-	int32_t maxThrottle		= 100;
-	float newRotate			= 0.0;
+	int32_t minThrottle = -100;
+	int32_t maxThrottle = 100;
+	float newRotate = 0.0;
 	char newThrottleSetting = 0;
-	int32_t newMoveState	= -1;
-	bool goalReached		= false;
+	int32_t newMoveState = -1;
+	bool goalReached = false;
 	calcThrottleLimits(minThrottle, maxThrottle);
 	//	if (!pilot->isYielding())
 	goalReached =
@@ -2073,15 +2099,16 @@ void GroundVehicle::updateMovement(void)
 // NETWORK MOVEMENT UPDATE ROUTINES
 //---------------------------------------------------------------------------
 
-bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
+bool
+GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 	int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle)
 {
-	DistanceToWaypoint		   = 9999.0;
-	MovePathPtr path		   = pilot->getMovePath();
+	DistanceToWaypoint = 9999.0;
+	MovePathPtr path = pilot->getMovePath();
 	int32_t curThrottleSetting = control.settings.groundVehicle.throttle;
-	newThrottleSetting		   = curThrottleSetting;
-	newRotate				   = 0.0;
-	bool goalReached		   = false;
+	newThrottleSetting = curThrottleSetting;
+	newRotate = 0.0;
+	bool goalReached = false;
 	if (path->numSteps > 0)
 	{
 		//---------------------------------------------------------------
@@ -2100,8 +2127,8 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 			//---------------------------------
 			// Have we reached the destination?
 			float distanceFromWayPt = distanceFrom(wayPt);
-			DistanceToWaypoint		= distanceFromWayPt;
-			float cushion			= Mover::marginOfError[0];
+			DistanceToWaypoint = distanceFromWayPt;
+			float cushion = Mover::marginOfError[0];
 			if (path->curStep == (path->numSteps - 1))
 				cushion = Mover::marginOfError[1];
 			if (distanceFromWayPt < cushion)
@@ -2124,8 +2151,8 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 				//-----------------------------------------
 				// First, rotate the vehicle (if moving)...
 				float relFacingToWayPt = relFacingTo(wayPt);
-				int32_t moveState	  = pilot->getMoveState();
-				int32_t moveStateGoal  = pilot->getMoveStateGoal();
+				int32_t moveState = pilot->getMoveState();
+				int32_t moveStateGoal = pilot->getMoveStateGoal();
 				if (moveState == MOVESTATE_FORWARD)
 				{
 					if (moveStateGoal == MOVESTATE_FORWARD)
@@ -2137,7 +2164,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						{
 							//-----------------------------------------------
 							// We can and will shift facing to destination...
-							newRotate	 = -relFacingToWayPt;
+							newRotate = -relFacingToWayPt;
 							float maxRate = dynamics.max.groundVehicle.yawRate * frameLength;
 							if (fabs(newRotate) > maxRate)
 							{
@@ -2154,7 +2181,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						// Stop, and pivot fully reverse to next path step...
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_PIVOT_REVERSE;
 					}
 					else if (moveStateGoal == MOVESTATE_PIVOT_FORWARD)
@@ -2163,7 +2190,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						// Stop, and pivot fully forward to next path step...
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_PIVOT_FORWARD;
 					}
 					else if (moveStateGoal == MOVESTATE_PIVOT_REVERSE)
@@ -2172,7 +2199,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						// Stop, and pivot fully reverse to next path step...
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_PIVOT_REVERSE;
 					}
 					else
@@ -2181,7 +2208,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						// Stop...
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
 					}
 				}
@@ -2193,7 +2220,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						// Stop, and pivot fully forward to next path step...
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_PIVOT_FORWARD;
 					}
 					else if (moveStateGoal == MOVESTATE_REVERSE)
@@ -2210,12 +2237,12 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						{
 							if (newRotate > 0.0)
 							{
-								newRotate		   = maxRate;
+								newRotate = maxRate;
 								newThrottleSetting = -50;
 							}
 							else
 							{
-								newRotate		   = -maxRate;
+								newRotate = -maxRate;
 								newThrottleSetting = -50;
 							}
 						}
@@ -2232,7 +2259,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						// Stop, and pivot fully forward to next path step...
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_PIVOT_FORWARD;
 					}
 					else if (moveStateGoal == MOVESTATE_PIVOT_REVERSE)
@@ -2241,7 +2268,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						// Stop, and pivot fully reverse to next path step...
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_PIVOT_REVERSE;
 					}
 					else
@@ -2250,7 +2277,7 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 						// Stop...
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
 					}
 				}
@@ -2258,20 +2285,18 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 				{
 					//--------------------------
 					// Not moving--should we be?
-					if ((moveStateGoal == MOVESTATE_FORWARD) ||
-						(moveStateGoal == MOVESTATE_PIVOT_FORWARD))
+					if ((moveStateGoal == MOVESTATE_FORWARD) || (moveStateGoal == MOVESTATE_PIVOT_FORWARD))
 					{
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_PIVOT_FORWARD;
 					}
-					else if ((moveStateGoal == MOVESTATE_REVERSE) ||
-						(moveStateGoal == MOVESTATE_PIVOT_REVERSE))
+					else if ((moveStateGoal == MOVESTATE_REVERSE) || (moveStateGoal == MOVESTATE_PIVOT_REVERSE))
 					{
 						//((MechActor*)appearance)->forceStop();
 						pilot->pausePath(); // pilot->getMovePath()->numSteps =
-											// 0;
+							// 0;
 						newMoveState = MOVESTATE_PIVOT_REVERSE;
 					}
 				}
@@ -2294,7 +2319,8 @@ bool GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::netUpdateMovement(void)
+void
+GroundVehicle::netUpdateMovement(void)
 {
 	MovePathPtr path = pilot->getMovePath();
 	bool atEndOfPath = (path->curStep == (path->numSteps - 1));
@@ -2302,7 +2328,7 @@ void GroundVehicle::netUpdateMovement(void)
 	float distanceFromWayPt = 1000000.0;
 	if ((path->curStep > -1) && (path->curStep < path->numSteps))
 	{
-		wayPt			  = path->stepList[path->curStep].destination;
+		wayPt = path->stepList[path->curStep].destination;
 		distanceFromWayPt = distanceFrom(wayPt);
 	}
 	if (atEndOfPath && (distanceFromWayPt < Mover::marginOfError[1]))
@@ -2314,9 +2340,9 @@ void GroundVehicle::netUpdateMovement(void)
 	}
 	if (disableThisFrame)
 	{
-		disableThisFrame  = false;
+		disableThisFrame = false;
 		shutDownThisFrame = false;
-		startUpThisFrame  = false;
+		startUpThisFrame = false;
 		setStatus(OBJECT_STATUS_DISABLED);
 		control.settings.groundVehicle.throttle = 0;
 		return;
@@ -2324,7 +2350,7 @@ void GroundVehicle::netUpdateMovement(void)
 	if (shutDownThisFrame)
 	{
 		shutDownThisFrame = false;
-		startUpThisFrame  = false;
+		startUpThisFrame = false;
 		setStatus(OBJECT_STATUS_SHUTDOWN);
 		control.settings.groundVehicle.throttle = 0;
 		return;
@@ -2347,12 +2373,12 @@ void GroundVehicle::netUpdateMovement(void)
 		return;
 	if (pivotTo())
 		return;
-	int32_t minThrottle		= -100;
-	int32_t maxThrottle		= 100;
-	float newRotate			= 0;
+	int32_t minThrottle = -100;
+	int32_t maxThrottle = 100;
+	float newRotate = 0;
 	char newThrottleSetting = 0;
-	int32_t newMoveState	= -1;
-	bool goalReached		= false;
+	int32_t newMoveState = -1;
+	bool goalReached = false;
 	calcThrottleLimits(minThrottle, maxThrottle);
 	goalReached =
 		netUpdateMovePath(newRotate, newThrottleSetting, newMoveState, minThrottle, maxThrottle);
@@ -2367,7 +2393,8 @@ void GroundVehicle::netUpdateMovement(void)
 // END OF MOVEMENT UPDATE ROUTINES
 //----------------------------------------------------------------------------------
 
-Stuff::Vector3D GroundVehicle::getPositionFromHS(int32_t nodeId)
+Stuff::Vector3D
+GroundVehicle::getPositionFromHS(int32_t nodeId)
 {
 	// NEED TO IMPLEMENT PROPER HOTSPOTS FOR VEHICLES...
 	// How about now?
@@ -2397,7 +2424,8 @@ extern int32_t srObjtUpd;
 // extern L_INTEGER endCk;
 
 //----------------------------------------------------------------------------------
-void GroundVehicle::disable(uint32_t cause)
+void
+GroundVehicle::disable(uint32_t cause)
 {
 	Mover::disable(cause);
 	timeLeft = 0.0;
@@ -2413,7 +2441,8 @@ void GroundVehicle::disable(uint32_t cause)
 
 //----------------------------------------------------------------------------------
 
-float GroundVehicle::getStatusRating(void)
+float
+GroundVehicle::getStatusRating(void)
 {
 	//-------------------------------
 	// calculate Weapon effectiveness
@@ -2422,23 +2451,15 @@ float GroundVehicle::getStatusRating(void)
 		weaponEffect = (float)weaponEffectiveness / (float)maxWeaponEffectiveness;
 	//----------------
 	// Calculate armor
-	float armorFront = armor[GROUNDVEHICLE_LOCATION_FRONT].curArmor /
-			armor[GROUNDVEHICLE_LOCATION_FRONT].maxArmor * 0.6 +
-		0.4;
-	float armorLeft = armor[GROUNDVEHICLE_LOCATION_LEFT].curArmor /
-			armor[GROUNDVEHICLE_LOCATION_LEFT].maxArmor * 0.6 +
-		0.4;
-	float armorRight = armor[GROUNDVEHICLE_LOCATION_RIGHT].curArmor /
-			armor[GROUNDVEHICLE_LOCATION_RIGHT].maxArmor * 0.6 +
-		0.4;
-	float armorRear = armor[GROUNDVEHICLE_LOCATION_REAR].curArmor /
-			armor[GROUNDVEHICLE_LOCATION_REAR].maxArmor * 0.6 +
-		0.4;
+	float armorFront = armor[GROUNDVEHICLE_LOCATION_FRONT].curArmor / armor[GROUNDVEHICLE_LOCATION_FRONT].maxArmor * 0.6 + 0.4;
+	float armorLeft = armor[GROUNDVEHICLE_LOCATION_LEFT].curArmor / armor[GROUNDVEHICLE_LOCATION_LEFT].maxArmor * 0.6 + 0.4;
+	float armorRight = armor[GROUNDVEHICLE_LOCATION_RIGHT].curArmor / armor[GROUNDVEHICLE_LOCATION_RIGHT].maxArmor * 0.6 + 0.4;
+	float armorRear = armor[GROUNDVEHICLE_LOCATION_REAR].curArmor / armor[GROUNDVEHICLE_LOCATION_REAR].maxArmor * 0.6 + 0.4;
 	float armorEffect = armorFront * armorRear * armorLeft * armorRight;
 	//-----------------------
 	// Calculate pilot Wounds
 	float pilotWoundTable[7] = {1.00f, 0.95f, 0.85f, 0.75f, 0.50f, 0.30f, 0.00f};
-	float pilotEffect		 = pilotWoundTable[(int32_t)getPilot()->getWounds()];
+	float pilotEffect = pilotWoundTable[(int32_t)getPilot()->getWounds()];
 	if (isDestroyed() || isDisabled())
 		pilotEffect = 0.0;
 	float rating = weaponEffect * armorEffect * pilotEffect;
@@ -2447,7 +2468,8 @@ float GroundVehicle::getStatusRating(void)
 
 //----------------------------------------------------------------------------------
 
-bool GroundVehicle::crashAvoidanceSystem(void)
+bool
+GroundVehicle::crashAvoidanceSystem(void)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
@@ -2469,7 +2491,7 @@ bool GroundVehicle::crashAvoidanceSystem(void)
 	//-------------------------
 	// To avoid corner stops...
 	bool clippingCorner = false;
-	int32_t dir			= path->getDirection(path->curStep);
+	int32_t dir = path->getDirection(path->curStep);
 	if ((dir == 1) || (dir == 3) || (dir == 5) || (dir == 7))
 	{
 		bool firstCornerClipped = getAdjacentCellPathLocked(
@@ -2482,16 +2504,16 @@ bool GroundVehicle::crashAvoidanceSystem(void)
 	// crashAvoidSelf);
 	bool reachedEnd;
 	bool blockReachedEnd;
-	bool nearingMover	= getPathRangeLock(crashAvoidPath, &reachedEnd);
-	bool pathLocked		 = /*stepOnMover ||*/ nearingMover;
-	bool pathBlocked	 = getPathRangeBlocked(crashAvoidPath, &blockReachedEnd);
+	bool nearingMover = getPathRangeLock(crashAvoidPath, &reachedEnd);
+	bool pathLocked = /*stepOnMover ||*/ nearingMover;
+	bool pathBlocked = getPathRangeBlocked(crashAvoidPath, &blockReachedEnd);
 	int32_t stepIntoGate = (path->crossesClosedGate(-1, 2) > 1);
 	if (pilot->isYielding())
 	{
 		if (pathLocked || pathBlocked || clippingCorner || stepIntoGate)
 		{
 			pilot->pausePath(); // path->numSteps = 0; //in theory, this should
-								// already be zero, yet is sometimes not. WHY?!
+				// already be zero, yet is sometimes not. WHY?!
 			return (true);
 		}
 		else
@@ -2542,7 +2564,8 @@ bool GroundVehicle::crashAvoidanceSystem(void)
 // Infantry Guy
 #define VEHICLEPILOT_ID 638
 //----------------------------------------------------------------------------------
-void GroundVehicle::createVehiclePilot(void)
+void
+GroundVehicle::createVehiclePilot(void)
 {
 	// We are ALREADY a vehicle pilot, stop breeding.
 	if (isVehiclePilot)
@@ -2587,12 +2610,12 @@ void GroundVehicle::createVehiclePilot(void)
 	vehiclePilot->setAwake(true);
 	if (vehiclePilot->sensorSystem)
 		SensorManager->removeTeamSensor(teamId, vehiclePilot->sensorSystem);
-	vehiclePilot->sensorSystem   = nullptr;
+	vehiclePilot->sensorSystem = nullptr;
 	vehiclePilot->isVehiclePilot = true;
 	//-------------------------------------------
 	// <deleted really obnoxious Glenn Slam>
 	// Thanks!
-	vehiclePilot->pilot		  = pilot; // Gets Current Vehicle Pilot.
+	vehiclePilot->pilot = pilot; // Gets Current Vehicle Pilot.
 	vehiclePilot->pilotHandle = pilotHandle;
 	pilot->setVehicle(vehiclePilot);
 	pilot->lobotomy();
@@ -2624,7 +2647,8 @@ void GroundVehicle::createVehiclePilot(void)
 
 //----------------------------------------------------------------------------------
 
-void GroundVehicle::updateAIControl(void)
+void
+GroundVehicle::updateAIControl(void)
 {
 	control.reset();
 	if (getAwake())
@@ -2645,7 +2669,8 @@ void GroundVehicle::updateAIControl(void)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::updateNetworkControl(void)
+void
+GroundVehicle::updateNetworkControl(void)
 {
 	control.reset();
 	if (getAwake())
@@ -2671,7 +2696,8 @@ void GroundVehicle::updateNetworkControl(void)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::updatePlayerControl(void)
+void
+GroundVehicle::updatePlayerControl(void)
 {
 	control.reset();
 #if 0
@@ -2742,13 +2768,14 @@ void GroundVehicle::updatePlayerControl(void)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::updateDynamics(void)
+void
+GroundVehicle::updateDynamics(void)
 {
 	if (!appearance)
 		Fatal(0, " Groundvehicle.updateDynamics: no appearance ");
 	if (isDestroyed())
 		return;
-	float yawRate		= control.settings.groundVehicle.rotate;
+	float yawRate = control.settings.groundVehicle.rotate;
 	float turretYawRate = control.settings.groundVehicle.rotateTurret;
 	//--------------------------------------------------------------------
 	// Rotate turret by turret yaw rate, making sure we don't turn too far.
@@ -2758,12 +2785,12 @@ void GroundVehicle::updateDynamics(void)
 		if (newTurretRotation > dynamics.max.groundVehicle.turretYaw)
 		{
 			newTurretRotation = dynamics.max.groundVehicle.turretYaw;
-			turretYawRate	 = 0.0;
+			turretYawRate = 0.0;
 		}
 		if (newTurretRotation < -dynamics.max.groundVehicle.turretYaw)
 		{
 			newTurretRotation = -dynamics.max.groundVehicle.turretYaw;
-			turretYawRate	 = 0.0;
+			turretYawRate = 0.0;
 		}
 		if ((newTurretRotation + turretYawRate) > dynamics.max.groundVehicle.turretYaw)
 			turretYawRate = dynamics.max.groundVehicle.turretYaw - newTurretRotation;
@@ -2788,7 +2815,7 @@ void GroundVehicle::updateDynamics(void)
 	if (control.settings.groundVehicle.isWalking)
 		realMaxVelocity = gvWalkSpeed;
 	float maxThrottledVel = throttle * realMaxVelocity;
-	float velDiff		  = maxThrottledVel - velocityMag;
+	float velDiff = maxThrottledVel - velocityMag;
 	//-----------------------------------------------------
 	// If we're slowing down, slow us down!
 	if (((velDiff < 0.0) && (accel > 0.0)) || ((velDiff > 0.0) && (accel < 0.0)))
@@ -2800,7 +2827,8 @@ void GroundVehicle::updateDynamics(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t GroundVehicle::updateAnimations(void)
+int32_t
+GroundVehicle::updateAnimations(void)
 {
 	//-------------------------------------------------
 	// Always Animate ground vehicles completely.
@@ -2813,7 +2841,7 @@ int32_t GroundVehicle::updateAnimations(void)
 	//		3 - Repair
 	//
 	if (!MPlayer) // ONLY allowed to animate outside of Multiplayer.  Do not
-				  // want to pass anim info around.  TOO Late!
+		// want to pass anim info around.  TOO Late!
 	{
 		int32_t animState = appearance->getCurrentGestureId();
 		if (!isDisabled() && !isDestroyed())
@@ -2827,15 +2855,14 @@ int32_t GroundVehicle::updateAnimations(void)
 				}
 				break;
 			case 2: // We are running.  If we have stopped or are walking,
-					// change.
+				// change.
 				if (velocityMag == 0.0f)
 				{
 					// we've stopped.
 					// INSTANTLY change to stand!
 					appearance->setGesture(0);
 				}
-				else if ((velocityMag != 0.0f) &&
-					(velocityMag <= (dynamics.max.groundVehicle.speed * 0.5f)))
+				else if ((velocityMag != 0.0f) && (velocityMag <= (dynamics.max.groundVehicle.speed * 0.5f)))
 				{
 					// We are now walking.
 					appearance->setGesture(1);
@@ -2856,8 +2883,7 @@ int32_t GroundVehicle::updateAnimations(void)
 					// We are now running.
 					appearance->setGesture(2);
 				}
-				else if ((velocityMag != 0.0f) &&
-					(velocityMag <= (dynamics.max.groundVehicle.speed * 0.5f)))
+				else if ((velocityMag != 0.0f) && (velocityMag <= (dynamics.max.groundVehicle.speed * 0.5f)))
 				{
 					// We are now Walking.
 					appearance->setGesture(1);
@@ -2873,7 +2899,7 @@ int32_t GroundVehicle::updateAnimations(void)
 				}
 				break;
 			case 1: // We are walking.  If we have stopped moving or are
-					// running, change.
+				// running, change.
 				if (velocityMag == 0.0f)
 				{
 					// we've stopped.
@@ -2896,7 +2922,7 @@ int32_t GroundVehicle::updateAnimations(void)
 				}
 				break;
 			case 3: // Repairing.  Check if done repairing.  If so, switch to
-					// stand.
+				// stand.
 				if (!appearance->getInTransition())
 				{
 					appearance->setGesture(4);
@@ -2933,12 +2959,12 @@ int32_t GroundVehicle::updateAnimations(void)
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::setTeamId(int32_t _teamId, bool setup)
+int32_t
+GroundVehicle::setTeamId(int32_t _teamId, bool setup)
 {
 	int32_t result = Mover::setTeamId(_teamId, setup);
 	// If we are a resource truck, add resources to our side.
-	if ((turn > 10) && ((GroundVehicleTypePtr)getObjectType())->resourcePoints &&
-		(_teamId == Team::home->getId()))
+	if ((turn > 10) && ((GroundVehicleTypePtr)getObjectType())->resourcePoints && (_teamId == Team::home->getId()))
 	{
 		LogisticsData::instance->addResourcePoints(
 			((GroundVehicleTypePtr)getObjectType())->resourcePoints);
@@ -2948,7 +2974,8 @@ int32_t GroundVehicle::setTeamId(int32_t _teamId, bool setup)
 }
 
 //---------------------------------------------------------------------------
-int32_t GroundVehicle::update(void)
+int32_t
+GroundVehicle::update(void)
 {
 	if (withdrawing && (pilot->getStatus() == WARRIOR_STATUS_WITHDRAWN))
 	{
@@ -3028,7 +3055,7 @@ int32_t GroundVehicle::update(void)
 		updateAnimations(); // Keep calling so they stop moving!
 		if (appearance)
 		{
-			rotation			 = dRot.y;
+			rotation = dRot.y;
 			int32_t relationship = 0;
 			if (getTeamId() == Team::home->getId())
 			{
@@ -3075,7 +3102,7 @@ int32_t GroundVehicle::update(void)
 			updateAnimations(); // Keep calling so they stop moving!
 			if (appearance)
 			{
-				rotation			 = dRot.y;
+				rotation = dRot.y;
 				int32_t relationship = 0;
 				if (getTeamId() == Team::home->getId())
 				{
@@ -3187,7 +3214,7 @@ int32_t GroundVehicle::update(void)
 			(GroundVehicleTypePtr)ObjectManager->getObjectType(typeHandle);
 		ObjectManager->getObjectType(typeHandle);
 		if (getTeam()) // Vehicle Pilots are just out there.  They do not help
-					   // anyone with LOS!!!
+			// anyone with LOS!!!
 			getTeam()->markSeen(position, vehicleType->LOSFactor);
 		markDistanceMoved = 0.0;
 	}
@@ -3285,19 +3312,17 @@ int32_t GroundVehicle::update(void)
 		//------------------------------------------------
 		// Find Pitch.
 		Stuff::Vector3D pitchK;
-		pitchK   = worldK;
+		pitchK = worldK;
 		pitchK.x = 0.0f;
 		pitchK.Normalize(pitchK);
 		Stuff::Vector3D up;
-		up.x = up.y		 = 0.0f;
-		up.z			 = 1.0f;
+		up.x = up.y = 0.0f;
+		up.z = 1.0f;
 		float pitchAngle = up * pitchK;
-		pitchAngle		 = acos(pitchAngle) * RADS_TO_DEGREES;
+		pitchAngle = acos(pitchAngle) * RADS_TO_DEGREES;
 		if (pitchK.y < 0.0f)
 			pitchAngle = -pitchAngle;
-		bool useHillFactor = (moveLevel == 0) ||
-			(!GameMap->getShallowWater(cellPositionRow, cellPositionCol) &&
-				!GameMap->getDeepWater(cellPositionRow, cellPositionCol));
+		bool useHillFactor = (moveLevel == 0) || (!GameMap->getShallowWater(cellPositionRow, cellPositionCol) && !GameMap->getDeepWater(cellPositionRow, cellPositionCol));
 		if (useHillFactor)
 		{
 			float pitch = sin(pitchAngle * DEGREES_TO_RADS);
@@ -3322,8 +3347,8 @@ int32_t GroundVehicle::update(void)
 			newPosition.z = Terrain::waterElevation;
 		int32_t newCellRow = 0;
 		int32_t newCellCol = 0;
-		int32_t tileRow	= 0;
-		int32_t tileCol	= 0;
+		int32_t tileRow = 0;
+		int32_t tileCol = 0;
 		land->worldToTileCell(newPosition, tileRow, tileCol, newCellRow, newCellCol);
 	}
 	setVelocity(vel);
@@ -3342,9 +3367,9 @@ int32_t GroundVehicle::update(void)
 			// just warp to it...
 			Stuff::Vector3D correctPos;
 			land->cellToWorld(moveChunk.stepPos[0][0], moveChunk.stepPos[0][1], correctPos);
-			correctPos.z		   = 0.0;
+			correctPos.z = 0.0;
 			Stuff::Vector3D curPos = position;
-			curPos.z			   = 0.0;
+			curPos.z = 0.0;
 			curPos.Subtract(curPos, correctPos);
 			float posDelta = curPos.GetLength();
 			if (posDelta > MPlayer->warpFactor)
@@ -3396,7 +3421,7 @@ int32_t GroundVehicle::update(void)
 		{
 			// Drop airstrikes here.
 			GameObjectPtr curTarget = pilot->getCurrentTarget();
-			float dist				= 0.0f;
+			float dist = 0.0f;
 			if (curTarget)
 			{
 				Stuff::Vector3D distance;
@@ -3404,8 +3429,7 @@ int32_t GroundVehicle::update(void)
 				dist = distance.GetApproximateLength();
 				dist *= metersPerWorldUnit;
 			}
-			if (curTarget && (dist <= WeaponRanges[WEAPON_RANGE_MEDIUM][1]) &&
-				lineOfSight(curTarget))
+			if (curTarget && (dist <= WeaponRanges[WEAPON_RANGE_MEDIUM][1]) && lineOfSight(curTarget))
 			{
 				timeInCurrent += frameLength;
 				if (timeInCurrent > StrikeWaitTime)
@@ -3452,8 +3476,7 @@ int32_t GroundVehicle::update(void)
 			// Start and stop the water wakes here.
 			int32_t watercellR, watercellC;
 			land->worldToCell(position, watercellR, watercellC);
-			if (GameMap->getDeepWater(watercellR, watercellC) ||
-				GameMap->getShallowWater(watercellR, watercellC))
+			if (GameMap->getDeepWater(watercellR, watercellC) || GameMap->getShallowWater(watercellR, watercellC))
 			{
 				appearance->startWaterWake();
 			}
@@ -3483,21 +3506,20 @@ int32_t GroundVehicle::update(void)
 				{
 					//---------------------------------------------------------------
 					conStat = getContactStatus(Team::home->getId(), true);
-					if ((conStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() ||
-						ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
+					if ((conStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
 					{
 						if (alphaValue != 0xff)
 						{
 							fadeTime += frameLength;
 							if (fadeTime > ContactFadeTime)
 							{
-								fadeTime   = ContactFadeTime;
+								fadeTime = ContactFadeTime;
 								alphaValue = 0xff;
 							}
 							else
 							{
 								float fadeValue = fadeTime / ContactFadeTime * 255.0f;
-								alphaValue		= fadeValue;
+								alphaValue = fadeValue;
 							}
 						}
 						appearance->setAlphaValue(alphaValue);
@@ -3511,13 +3533,13 @@ int32_t GroundVehicle::update(void)
 							fadeTime -= frameLength;
 							if (fadeTime < 0.0f)
 							{
-								fadeTime   = 0.0f;
+								fadeTime = 0.0f;
 								alphaValue = 0x0;
 							}
 							else
 							{
 								float fadeValue = fadeTime / ContactFadeTime * 255.0f;
-								alphaValue		= fadeValue;
+								alphaValue = fadeValue;
 							}
 						}
 						appearance->setAlphaValue(alphaValue);
@@ -3562,8 +3584,8 @@ int32_t GroundVehicle::update(void)
 	//-------------------------------------------------------------------------------
 	// Let the moverBlockList know which block the Mech is in for Collision
 	// Purposes
-	float xCoord  = position.x - Terrain::mapTopLeft3d.x;
-	float yCoord  = Terrain::mapTopLeft3d.y + position.y;
+	float xCoord = position.x - Terrain::mapTopLeft3d.x;
+	float yCoord = Terrain::mapTopLeft3d.y + position.y;
 	float divisor = (Terrain::verticesBlockSide * Terrain::worldUnitsPerVertex);
 	xCoord /= divisor;
 	yCoord /= divisor;
@@ -3576,11 +3598,12 @@ int32_t GroundVehicle::update(void)
 	if (getDebugFlag(OBJECT_DFLAG_DISABLE))
 		disable(DEBUGGER_DEATH);
 	return (1); // Vehicle is still around,  false means whack this vehicle from
-				// list.
+		// list.
 }
 
 //---------------------------------------------------------------------------------
-void GroundVehicle::renderShadows(void)
+void
+GroundVehicle::renderShadows(void)
 {
 	if (Terrain::IsGameSelectTerrainPosition(position))
 	{
@@ -3607,18 +3630,18 @@ void GroundVehicle::renderShadows(void)
 
 //----------------------------------------------------------------------------------
 
-void GroundVehicle::render(void)
+void
+GroundVehicle::render(void)
 {
 	if (Terrain::IsGameSelectTerrainPosition(position))
 	{
 		if (teamId != Team::home->getId())
 		{
 			int32_t cStat = conStat;
-			if ((cStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers ||
-				(MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
+			if ((cStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
 			{
 				float barStatus = getTotalEffectiveness();
-				uint32_t color  = 0xff7f7f7f;
+				uint32_t color = 0xff7f7f7f;
 				if ((teamId > -1) && (teamId < 8))
 				{
 					if (getTeam()->isFriendly(Team::home))
@@ -3669,7 +3692,7 @@ void GroundVehicle::render(void)
 						appearance->getScreenPos().y + 20.0f, descID, SD_RED, false);
 			}
 			else if (alphaValue != 0x0) // What if we are out of LOS and NOT on
-										// sensors!!!  Let 'em fade out.
+				// sensors!!!  Let 'em fade out.
 			{
 				appearance->setBarColor(SB_RED);
 				appearance->render();
@@ -3678,7 +3701,7 @@ void GroundVehicle::render(void)
 		else
 		{
 			float barStatus = getTotalEffectiveness();
-			uint32_t color  = 0xff7f7f7f;
+			uint32_t color = 0xff7f7f7f;
 			if (getTeamId() == Team::home->getId())
 			{
 				// Two Possibilities.  Either we have the same commander or we
@@ -3713,9 +3736,9 @@ void GroundVehicle::render(void)
 				if (i != (path->numSteps - 1))
 				{
 					Stuff::Vector3D startPos = path->stepList[i].destination;
-					Stuff::Vector3D endPos   = path->stepList[i + 1].destination;
-					startPos.z				 = land->getTerrainElevation(startPos);
-					endPos.z				 = land->getTerrainElevation(endPos);
+					Stuff::Vector3D endPos = path->stepList[i + 1].destination;
+					startPos.z = land->getTerrainElevation(startPos);
+					endPos.z = land->getTerrainElevation(endPos);
 					eye->projectZ(startPos, lineStart);
 					eye->projectZ(endPos, lineEnd);
 					lineStart.z = lineEnd.z = HUD_DEPTH;
@@ -3729,7 +3752,8 @@ void GroundVehicle::render(void)
 
 //----------------------------------------------------------------------------------
 
-float GroundVehicle::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
+float
+GroundVehicle::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 {
 	float relFacing = Mover::relFacingTo(goal);
 	switch (bodyLocation)
@@ -3749,7 +3773,8 @@ float GroundVehicle::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 // COMBAT routines
 //---------------------------------------------------------------------------
 
-float GroundVehicle::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
+float
+GroundVehicle::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
 	int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint)
 {
 	if ((weaponIndex < numOther) || (weaponIndex >= numOther + numWeapons))
@@ -3761,7 +3786,8 @@ float GroundVehicle::calcAttackChance(GameObjectPtr target, int32_t aimLocation,
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::calcHitLocation(
+int32_t
+GroundVehicle::calcHitLocation(
 	GameObjectPtr attacker, int32_t weaponIndex, int32_t attackSource, int32_t attackType)
 {
 	if (attackSource == MECH_HIT_SECTION_BOTTOM) // if this came from a mine...
@@ -3798,7 +3824,8 @@ int32_t GroundVehicle::calcHitLocation(
 
 //---------------------------------------------------------------------------
 
-bool GroundVehicle::hitInventoryItem(int32_t itemIndex, bool setupOnly)
+bool
+GroundVehicle::hitInventoryItem(int32_t itemIndex, bool setupOnly)
 {
 	//----------------------------------------------------------------------
 	// This should never be called for a ground vehicle, as a CRITICAL SPACE
@@ -3809,17 +3836,22 @@ bool GroundVehicle::hitInventoryItem(int32_t itemIndex, bool setupOnly)
 
 //---------------------------------------------------------------------------
 
-void GroundVehicle::destroyBodyLocation(int32_t location) { armor[location].curArmor = 0; }
+void
+GroundVehicle::destroyBodyLocation(int32_t location)
+{
+	armor[location].curArmor = 0;
+}
 
 //------------------------------------------------------------------------------------------
 
-bool GroundVehicle::injureBodyLocation(int32_t bodyLocation, float damage)
+bool
+GroundVehicle::injureBodyLocation(int32_t bodyLocation, float damage)
 {
 	BodyLocationPtr location = &body[bodyLocation];
 	if (damage >= location->curInternalStructure)
 	{
 		location->curInternalStructure = 0;
-		location->damageState		   = IS_DAMAGE_DESTROYED;
+		location->damageState = IS_DAMAGE_DESTROYED;
 		return (true);
 	}
 	location->curInternalStructure -= damage;
@@ -3836,7 +3868,8 @@ bool GroundVehicle::injureBodyLocation(int32_t bodyLocation, float damage)
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::buildStatusChunk(void)
+int32_t
+GroundVehicle::buildStatusChunk(void)
 {
 	//-----------------------------------------------------------------------
 	// For now, we'll just track a failed piloting check for 3 status updates.
@@ -3854,12 +3887,12 @@ int32_t GroundVehicle::buildStatusChunk(void)
 			if (curTarget->isMover())
 			{
 				statusChunk.targetType = STATUSCHUNK_TARGET_MOVER;
-				statusChunk.targetId   = ((MoverPtr)curTarget)->getNetRosterIndex();
+				statusChunk.targetId = ((MoverPtr)curTarget)->getNetRosterIndex();
 			}
 			else if (curTarget->isTerrainObject())
 			{
 				statusChunk.targetType = STATUSCHUNK_TARGET_TERRAIN;
-				statusChunk.targetId   = curTarget->getPartId();
+				statusChunk.targetId = curTarget->getPartId();
 			}
 			else
 				Fatal(curTarget->getObjectClass(),
@@ -3882,7 +3915,8 @@ int32_t GroundVehicle::buildStatusChunk(void)
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::handleStatusChunk(int32_t updateAge, uint32_t chunk)
+int32_t
+GroundVehicle::handleStatusChunk(int32_t updateAge, uint32_t chunk)
 {
 	statusChunk.init();
 	statusChunk.data = chunk;
@@ -3935,7 +3969,8 @@ int32_t GroundVehicle::handleStatusChunk(int32_t updateAge, uint32_t chunk)
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::buildMoveChunk(void)
+int32_t
+GroundVehicle::buildMoveChunk(void)
 {
 	moveChunk.init();
 	if (pilot)
@@ -3970,7 +4005,8 @@ int32_t GroundVehicle::buildMoveChunk(void)
 //---------------------------------------------------------------------------
 #pragma optimize("", off)
 
-int32_t GroundVehicle::handleMoveChunk(uint32_t chunk)
+int32_t
+GroundVehicle::handleMoveChunk(uint32_t chunk)
 {
 	moveChunk.init();
 	moveChunk.data = chunk;
@@ -4004,14 +4040,16 @@ int32_t GroundVehicle::handleMoveChunk(uint32_t chunk)
 
 //---------------------------------------------------------------------------
 
-float GroundVehicle::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition)
+float
+GroundVehicle::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition)
 {
 	return (relFacingTo(targetPosition, GROUNDVEHICLE_LOCATION_TURRET));
 }
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+int32_t
+GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
 	if (!shotInfo)
 		return (NO_ERROR);
@@ -4035,7 +4073,7 @@ int32_t GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMulti
 	// Since Multiplayer still needs this, preserve it and restore
 	// at the end of this function!
 	WeaponShotInfo startShotInfo = *shotInfo;
-	GameObjectPtr attacker		 = ObjectManager->getByWatchID(shotInfo->attackerWID);
+	GameObjectPtr attacker = ObjectManager->getByWatchID(shotInfo->attackerWID);
 	if ((shotInfo->hitLocation < 0) || (shotInfo->hitLocation >= NUM_GROUNDVEHICLE_LOCATIONS))
 	{
 		char attackerStr[30];
@@ -4075,7 +4113,7 @@ int32_t GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMulti
 	//-----------------------------------------------------
 	// If any damage gets thru, check Internal Structure...
 	bool vehicleAlreadyDisabled = isDisabled();
-	bool vehicleDestroyed		= false;
+	bool vehicleDestroyed = false;
 	if (shotInfo->damage > 0)
 		vehicleDestroyed = injureBodyLocation(shotInfo->hitLocation, shotInfo->damage);
 	if (vehicleDestroyed)
@@ -4106,7 +4144,7 @@ int32_t GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMulti
 				if ((attackerCID == -1) || (attackerCID == getCommanderId()))
 					attackerCID = MAX_MC_PLAYERS;
 				MPlayer->addKillLossChunk(attackerCID, !lost ? getCommanderId() : MAX_MC_PLAYERS);
-				lost   = true;
+				lost = true;
 				killed = true;
 			}
 		}
@@ -4120,7 +4158,7 @@ int32_t GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMulti
 				if ((attackerCID == -1) || (attackerCID == getCommanderId()))
 					attackerCID = MAX_MC_PLAYERS;
 				MPlayer->addKillLossChunk(attackerCID, !lost ? getCommanderId() : MAX_MC_PLAYERS);
-				lost   = true;
+				lost = true;
 				killed = true;
 			}
 		}
@@ -4181,7 +4219,8 @@ int32_t GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMulti
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
+int32_t
+GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
 	int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& dmgDone)
 {
 	if (status != OBJECT_STATUS_NORMAL)
@@ -4299,11 +4338,9 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 	// And see if its recycle time is Green.  If not, just return, we'll shoot
 	// again!
 	int32_t sourceHotSpot;
-	if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
-		COMPONENT_FORM_WEAPON_MISSILE)
+	if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_MISSILE)
 		sourceHotSpot = MECH3D_WEAPONTYPE_MISSILE;
-	else if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
-		COMPONENT_FORM_WEAPON_BALLISTIC)
+	else if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_BALLISTIC)
 		sourceHotSpot = MECH3D_WEAPONTYPE_BALLISTIC;
 	else
 		sourceHotSpot = MECH3D_WEAPONTYPE_ENERGY;
@@ -4342,8 +4379,7 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 		}
 		//------------
 		// Attack hit.
-		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
-			COMPONENT_FORM_WEAPON_MISSILE)
+		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_MISSILE)
 		{
 			//---------------------------------------------------------
 			// It's a missile weapon. We need to determine how many hit
@@ -4381,8 +4417,7 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 			// For now, always use a bullet effect...
 			WeaponShotInfo curShotInfo;
 			curShotInfo.init(this->getWatchID(), inventory[weaponIndex].masterID,
-				numMissiles *
-					MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
+				numMissiles * MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 				hitLocation, entryAngle);
 			dmgDone = curShotInfo.damage;
 			//-------------------------------------------------------------------------
@@ -4563,8 +4598,7 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 			}
 			//----------------------------------------------------
 			// Miss, so check for possible miss resolution here...
-			if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
-				COMPONENT_FORM_WEAPON_MISSILE)
+			if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_MISSILE)
 			{
 				//---------------------------------------------------------
 				// It's a missile weapon. We need to determine how many hit
@@ -4580,9 +4614,7 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 				{
 					WeaponShotInfo curShotInfo;
 					curShotInfo.init(this->getWatchID(), inventory[weaponIndex].masterID,
-						numMissiles *
-							MasterComponent::masterList[inventory[weaponIndex].masterID]
-								.getWeaponDamage(),
+						numMissiles * MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 						-1, entryAngle);
 					//-------------------------------------------------------------------------------------------
 					// If we missed, pick sights away from the target and check
@@ -4596,23 +4628,23 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 						positionOffset = *targetPoint;
 					positionOffset.x += missRadius;
 					positionOffset.z = land->getTerrainElevation(positionOffset);
-					bool canSeeHit   = lineOfSight(positionOffset, true);
+					bool canSeeHit = lineOfSight(positionOffset, true);
 					if (!canSeeHit)
 					{
 						positionOffset.x -= (missRadius * 2.0f);
 						positionOffset.z = land->getTerrainElevation(positionOffset);
-						canSeeHit		 = lineOfSight(positionOffset, true);
+						canSeeHit = lineOfSight(positionOffset, true);
 						if (!canSeeHit)
 						{
 							positionOffset.x += missRadius;
 							positionOffset.y += missRadius;
 							positionOffset.z = land->getTerrainElevation(positionOffset);
-							canSeeHit		 = lineOfSight(positionOffset, true);
+							canSeeHit = lineOfSight(positionOffset, true);
 							if (!canSeeHit)
 							{
 								positionOffset.y -= (missRadius * 2.0f);
 								positionOffset.z = land->getTerrainElevation(positionOffset);
-								canSeeHit		 = lineOfSight(positionOffset, true);
+								canSeeHit = lineOfSight(positionOffset, true);
 								if (!canSeeHit)
 								{
 									// OK, no miss location is visible.  Hit the
@@ -4665,10 +4697,10 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 					else
 					{
 						if (canSeeHit) // miss location is in LOS.  Hit the
-									   // ground
+							// ground
 							weaponFX->connect(this, positionOffset, &curShotInfo, sourceHotSpot);
 						else if (target) // Miss location is NOT in LOS.  Hit
-										 // Target with ZERO damage!!!
+							// Target with ZERO damage!!!
 							weaponFX->connect(this, target, &curShotInfo, sourceHotSpot);
 					}
 					printFireWeaponDebugInfo(
@@ -4696,23 +4728,23 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 					positionOffset = *targetPoint;
 				positionOffset.x += missRadius;
 				positionOffset.z = land->getTerrainElevation(positionOffset);
-				bool canSeeHit   = lineOfSight(positionOffset, true);
+				bool canSeeHit = lineOfSight(positionOffset, true);
 				if (!canSeeHit)
 				{
 					positionOffset.x -= (missRadius * 2.0f);
 					positionOffset.z = land->getTerrainElevation(positionOffset);
-					canSeeHit		 = lineOfSight(positionOffset, true);
+					canSeeHit = lineOfSight(positionOffset, true);
 					if (!canSeeHit)
 					{
 						positionOffset.x += missRadius;
 						positionOffset.y += missRadius;
 						positionOffset.z = land->getTerrainElevation(positionOffset);
-						canSeeHit		 = lineOfSight(positionOffset, true);
+						canSeeHit = lineOfSight(positionOffset, true);
 						if (!canSeeHit)
 						{
 							positionOffset.y -= (missRadius * 2.0f);
 							positionOffset.z = land->getTerrainElevation(positionOffset);
-							canSeeHit		 = lineOfSight(positionOffset, true);
+							canSeeHit = lineOfSight(positionOffset, true);
 							if (!canSeeHit)
 							{
 								// OK, no miss location is visible.  Hit the
@@ -4764,7 +4796,7 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 					if (canSeeHit) // miss location is in LOS.  Hit the ground
 						weaponFX->connect(this, positionOffset, &shotInfo, sourceHotSpot);
 					else if (target) // Miss location is NOT in LOS.  Hit Target
-									 // with ZERO damage!!!
+						// with ZERO damage!!!
 						weaponFX->connect(this, target, &shotInfo, sourceHotSpot);
 				}
 				printFireWeaponDebugInfo(
@@ -4787,7 +4819,8 @@ int32_t GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
+int32_t
+GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 	Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
 	int32_t hitLocation)
 {
@@ -4806,11 +4839,9 @@ int32_t GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr targe
 	// Need to know which hotspot this comes from.
 	// Also need to know which hotspot this is going to.
 	int32_t sourceHotSpot;
-	if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
-		COMPONENT_FORM_WEAPON_MISSILE)
+	if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_MISSILE)
 		sourceHotSpot = MECH3D_WEAPONTYPE_MISSILE;
-	else if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
-		COMPONENT_FORM_WEAPON_BALLISTIC)
+	else if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_BALLISTIC)
 		sourceHotSpot = MECH3D_WEAPONTYPE_BALLISTIC;
 	else
 		sourceHotSpot = MECH3D_WEAPONTYPE_ENERGY;
@@ -4834,8 +4865,7 @@ int32_t GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr targe
 			// We're taking the shot, so reduce our ammo inventory...
 			deductWeaponShot(weaponIndex);
 		}
-		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
-			COMPONENT_FORM_WEAPON_MISSILE)
+		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_MISSILE)
 		{
 			//---------------------------------------------------------
 			// It's a missile weapon. We need to determine how many hit
@@ -4851,9 +4881,7 @@ int32_t GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr targe
 				//--------------------------------------
 				// For now, always use a bullet effect...
 				curShotInfo.init(this->getWatchID(), inventory[weaponIndex].masterID,
-					numMissiles *
-						MasterComponent::masterList[inventory[weaponIndex].masterID]
-							.getWeaponDamage(),
+					numMissiles * MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 					hitLocation, entryAngle);
 				uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID]
 										 .getWeaponSpecialEffect();
@@ -4948,8 +4976,7 @@ int32_t GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr targe
 		}
 		//----------------------------------------------------
 		// Miss, so check for possible miss resolution here...
-		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
-			COMPONENT_FORM_WEAPON_MISSILE)
+		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_MISSILE)
 		{
 			if (numMissiles > 0)
 			{
@@ -4966,9 +4993,7 @@ int32_t GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr targe
 				{
 					WeaponShotInfo curShotInfo;
 					curShotInfo.init(this->getWatchID(), inventory[weaponIndex].masterID,
-						numMissiles *
-							MasterComponent::masterList[inventory[weaponIndex].masterID]
-								.getWeaponDamage(),
+						numMissiles * MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 						-1, entryAngle);
 					weaponFX->connect(this, *targetPoint, &curShotInfo, sourceHotSpot);
 				}
@@ -5055,7 +5080,8 @@ void GroundVehicle::calcSpriteSpeed(float speed, int32_t& state, int32_t& thrott
 
 //---------------------------------------------------------------------------
 
-float GroundVehicle::getTotalEffectiveness(void)
+float
+GroundVehicle::getTotalEffectiveness(void)
 {
 	float weaponEffect, maxFront, curFront, armorFront, maxLeft, curLeft, armorLeft, maxRight,
 		curRight, armorRight;
@@ -5075,32 +5101,32 @@ float GroundVehicle::getTotalEffectiveness(void)
 	if (isRefit() || mineLayer)
 	{
 		//---------TURRET -- Which is Refit Points -- Factor in Please!
-		curTurret   = armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor;
-		maxTurret   = armor[GROUNDVEHICLE_LOCATION_TURRET].maxArmor;
+		curTurret = armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor;
+		maxTurret = armor[GROUNDVEHICLE_LOCATION_TURRET].maxArmor;
 		armorTurret = 1.0;
 		if (maxTurret != 0.0)
 			armorTurret = curTurret / maxTurret;
 		extraEffect = armorTurret;
 	}
 	//---------FRONT
-	maxFront   = armor[GROUNDVEHICLE_LOCATION_FRONT].maxArmor;
-	curFront   = armor[GROUNDVEHICLE_LOCATION_FRONT].curArmor;
+	maxFront = armor[GROUNDVEHICLE_LOCATION_FRONT].maxArmor;
+	curFront = armor[GROUNDVEHICLE_LOCATION_FRONT].curArmor;
 	armorFront = curFront / maxFront * 0.6 + (0.4);
 	//---------LEFT
-	curLeft   = armor[GROUNDVEHICLE_LOCATION_LEFT].curArmor;
-	maxLeft   = armor[GROUNDVEHICLE_LOCATION_LEFT].maxArmor;
+	curLeft = armor[GROUNDVEHICLE_LOCATION_LEFT].curArmor;
+	maxLeft = armor[GROUNDVEHICLE_LOCATION_LEFT].maxArmor;
 	armorLeft = curLeft / maxLeft * 0.6 + (0.4);
 	//---------RIGHT
-	curRight   = armor[GROUNDVEHICLE_LOCATION_RIGHT].curArmor;
-	maxRight   = armor[GROUNDVEHICLE_LOCATION_RIGHT].maxArmor;
+	curRight = armor[GROUNDVEHICLE_LOCATION_RIGHT].curArmor;
+	maxRight = armor[GROUNDVEHICLE_LOCATION_RIGHT].maxArmor;
 	armorRight = curRight / maxRight * 0.6 + (0.4);
 	//---------REAR
-	curRear   = armor[GROUNDVEHICLE_LOCATION_REAR].curArmor;
-	maxRear   = armor[GROUNDVEHICLE_LOCATION_REAR].maxArmor;
+	curRear = armor[GROUNDVEHICLE_LOCATION_REAR].curArmor;
+	maxRear = armor[GROUNDVEHICLE_LOCATION_REAR].maxArmor;
 	armorRear = curRear / maxRear * 0.6 + (0.4);
 	//---------TURRET
-	curTurret   = armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor;
-	maxTurret   = armor[GROUNDVEHICLE_LOCATION_TURRET].maxArmor;
+	curTurret = armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor;
+	maxTurret = armor[GROUNDVEHICLE_LOCATION_TURRET].maxArmor;
 	armorTurret = 1.0;
 	if (maxTurret != 0.0)
 		armorTurret = curTurret / maxTurret * 0.6 + (0.4);
@@ -5108,13 +5134,14 @@ float GroundVehicle::getTotalEffectiveness(void)
 	//-------------------------------------------------------------------------
 	// Calculate pilot Wounds
 	float pilotWoundTable[7] = {1.0, 0.95f, 0.85f, 0.75f, 0.50f, 0.30f, 0.00};
-	pilotEffect				 = pilotWoundTable[float2long(getPilot()->getWounds())];
-	result					 = weaponEffect * armorEffect * pilotEffect * extraEffect;
+	pilotEffect = pilotWoundTable[float2long(getPilot()->getWounds())];
+	result = weaponEffect * armorEffect * pilotEffect * extraEffect;
 	return result;
 }
 
 //***************************************************************************
-void GroundVehicle::Save(PacketFilePtr file, int32_t packetNum)
+void
+GroundVehicle::Save(PacketFilePtr file, int32_t packetNum)
 {
 	GroundVehicleData data;
 	CopyTo(&data);
@@ -5123,38 +5150,39 @@ void GroundVehicle::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void GroundVehicle::CopyTo(GroundVehicleData* data)
+void
+GroundVehicle::CopyTo(GroundVehicleData* data)
 {
-	data->accel				   = accel;
-	data->velocityMag		   = velocityMag;
-	data->suspension		   = suspension;
-	data->movementEnabled	  = movementEnabled;
-	data->turretEnabled		   = turretEnabled;
-	data->turretRotation	   = turretRotation;
+	data->accel = accel;
+	data->velocityMag = velocityMag;
+	data->suspension = suspension;
+	data->movementEnabled = movementEnabled;
+	data->turretEnabled = turretEnabled;
+	data->turretRotation = turretRotation;
 	data->turretBlownThisFrame = turretBlownThisFrame;
-	data->captureable		   = captureable;
-	data->deadByCrushed		   = deadByCrushed;
-	data->canRefit			   = canRefit;
-	data->canRecover		   = canRecover;
-	data->refitting			   = refitting;
-	data->recovering		   = recovering;
-	data->mineSweeper		   = mineSweeper;
-	data->sweepTime			   = sweepTime;
-	data->mineLayer			   = mineLayer;
-	data->aerospaceSpotter	 = aerospaceSpotter;
-	data->cellColToMine		   = cellColToMine;
-	data->cellRowToMine		   = cellRowToMine;
-	data->notMineYet		   = notMineYet;
-	data->battleRating		   = battleRating;
-	data->descID			   = descID;
-	data->timeInCurrent		   = timeInCurrent;
-	data->dVel				   = dVel;
-	data->dRot				   = dRot;
-	data->dAcc				   = dAcc;
-	data->dRVel				   = dRVel;
-	data->dRacc				   = dRacc;
-	data->dTime				   = dTime;
-	data->isVehiclePilot	   = isVehiclePilot;
+	data->captureable = captureable;
+	data->deadByCrushed = deadByCrushed;
+	data->canRefit = canRefit;
+	data->canRecover = canRecover;
+	data->refitting = refitting;
+	data->recovering = recovering;
+	data->mineSweeper = mineSweeper;
+	data->sweepTime = sweepTime;
+	data->mineLayer = mineLayer;
+	data->aerospaceSpotter = aerospaceSpotter;
+	data->cellColToMine = cellColToMine;
+	data->cellRowToMine = cellRowToMine;
+	data->notMineYet = notMineYet;
+	data->battleRating = battleRating;
+	data->descID = descID;
+	data->timeInCurrent = timeInCurrent;
+	data->dVel = dVel;
+	data->dRot = dRot;
+	data->dAcc = dAcc;
+	data->dRVel = dRVel;
+	data->dRacc = dRacc;
+	data->dTime = dTime;
+	data->isVehiclePilot = isVehiclePilot;
 	if (sensorSystem)
 		data->sensorOK = !sensorSystem->broken;
 	else
@@ -5163,39 +5191,40 @@ void GroundVehicle::CopyTo(GroundVehicleData* data)
 }
 
 //---------------------------------------------------------------------------
-void GroundVehicle::Load(GroundVehicleData* data)
+void
+GroundVehicle::Load(GroundVehicleData* data)
 {
 	Mover::Load(dynamic_cast<MoverData*>(data));
-	accel				 = data->accel;
-	velocityMag			 = data->velocityMag;
-	suspension			 = data->suspension;
-	movementEnabled		 = data->movementEnabled;
-	turretEnabled		 = data->turretEnabled;
-	turretRotation		 = data->turretRotation;
+	accel = data->accel;
+	velocityMag = data->velocityMag;
+	suspension = data->suspension;
+	movementEnabled = data->movementEnabled;
+	turretEnabled = data->turretEnabled;
+	turretRotation = data->turretRotation;
 	turretBlownThisFrame = data->turretBlownThisFrame;
-	captureable			 = data->captureable;
-	deadByCrushed		 = data->deadByCrushed;
-	canRefit			 = data->canRefit;
-	canRecover			 = data->canRecover;
-	refitting			 = data->refitting;
-	recovering			 = data->recovering;
-	mineSweeper			 = data->mineSweeper;
-	sweepTime			 = data->sweepTime;
-	mineLayer			 = data->mineLayer;
-	aerospaceSpotter	 = data->aerospaceSpotter;
-	cellColToMine		 = data->cellColToMine;
-	cellRowToMine		 = data->cellRowToMine;
-	notMineYet			 = data->notMineYet;
-	battleRating		 = data->battleRating;
-	descID				 = data->descID;
-	timeInCurrent		 = data->timeInCurrent;
-	dVel				 = data->dVel;
-	dRot				 = data->dRot;
-	dAcc				 = data->dAcc;
-	dRVel				 = data->dRVel;
-	dRacc				 = data->dRacc;
-	dTime				 = data->dTime;
-	isVehiclePilot		 = data->isVehiclePilot;
+	captureable = data->captureable;
+	deadByCrushed = data->deadByCrushed;
+	canRefit = data->canRefit;
+	canRecover = data->canRecover;
+	refitting = data->refitting;
+	recovering = data->recovering;
+	mineSweeper = data->mineSweeper;
+	sweepTime = data->sweepTime;
+	mineLayer = data->mineLayer;
+	aerospaceSpotter = data->aerospaceSpotter;
+	cellColToMine = data->cellColToMine;
+	cellRowToMine = data->cellRowToMine;
+	notMineYet = data->notMineYet;
+	battleRating = data->battleRating;
+	descID = data->descID;
+	timeInCurrent = data->timeInCurrent;
+	dVel = data->dVel;
+	dRot = data->dRot;
+	dAcc = data->dAcc;
+	dRVel = data->dRVel;
+	dRacc = data->dRacc;
+	dTime = data->dTime;
+	isVehiclePilot = data->isVehiclePilot;
 	if (data->sensorOK)
 	{
 		sensorSystem = SensorManager->newSensor();
@@ -5206,7 +5235,8 @@ void GroundVehicle::Load(GroundVehicleData* data)
 	}
 }
 
-bool GroundVehicle::burnRefitPoints(float pointsToBurn)
+bool
+GroundVehicle::burnRefitPoints(float pointsToBurn)
 {
 	if (canRefit)
 	{

@@ -18,16 +18,16 @@
 //#include "../../ARM/Microsoft.Xna.Arm.h"
 // using namespace Microsoft::Xna::Arm;
 
-HINSTANCE hInst			   = nullptr;
+HINSTANCE hInst = nullptr;
 uint32_t gosResourceHandle = 0;
 
 std::iostream effectStream = nullptr;
 
 extern char CDInstallPath[];
 
-bool hasGuardBand	  = false;
+bool hasGuardBand = false;
 bool justResaveAllMaps = false;
-Camera* eye			   = nullptr;
+Camera* eye = nullptr;
 enum
 {
 	CPU_UNKNOWN,
@@ -35,7 +35,7 @@ enum
 	CPU_MMX,
 	CPU_KATMAI
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
-						   // -- MECHCMDR2
+	// -- MECHCMDR2
 
 float MaxMinUV = 8.0f;
 
@@ -44,12 +44,12 @@ uint32_t BaseVertexColor = 0x00000000;
 static PCSTR lpszAppName = "MechCmdr2";
 
 UserHeapPtr systemHeap = nullptr;
-UserHeapPtr guiHeap	= nullptr;
+UserHeapPtr guiHeap = nullptr;
 
 float gosFontScale = 1.0f;
 
 extern bool silentMode;
-bool useLOSAngle	  = false;
+bool useLOSAngle = false;
 static bool createARM = false;
 
 IProviderEngine* armProvider = nullptr;
@@ -64,24 +64,25 @@ HWND appWnd = nullptr;
 
 extern PSTR MechAnimationNames[MaxGestures];
 
-int32_t ObjectTextureSize				 = 128;
-bool reloadBounds						 = false;
+int32_t ObjectTextureSize = 128;
+bool reloadBounds = false;
 MidLevelRenderer::MLRClipper* theClipper = nullptr;
-HGOSFONT3D gosFontHandle				 = 0;
+HGOSFONT3D gosFontHandle = 0;
 extern HGOSFONT3D FontHandle;
 FloatHelpPtr globalFloatHelp = nullptr;
-uint32_t currentFloatHelp	= 0;
+uint32_t currentFloatHelp = 0;
 
 char fileName[1024];
 char listName[1024];
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void ParseCommandLine(PSTR command_line)
+void
+ParseCommandLine(PSTR command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
-	int32_t index  = 0;
+	int32_t index = 0;
 	PSTR argv[30];
 	char tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
@@ -123,7 +124,7 @@ void ParseCommandLine(PSTR command_line)
 							strcat(fileName, argv[i]);
 							if (strstr(argv[i], "\"") != nullptr)
 							{
-								scanName					   = false;
+								scanName = false;
 								fileName[strlen(fileName) - 1] = 0;
 							}
 						}
@@ -131,7 +132,7 @@ void ParseCommandLine(PSTR command_line)
 						{
 							// They put a quote on the line with no space.
 							//
-							scanName					   = false;
+							scanName = false;
 							fileName[strlen(fileName) - 1] = 0;
 						}
 					}
@@ -160,7 +161,7 @@ void ParseCommandLine(PSTR command_line)
 							strcat(listName, argv[i]);
 							if (strstr(argv[i], "\"") != nullptr)
 							{
-								scanName					   = false;
+								scanName = false;
 								listName[strlen(listName) - 1] = 0;
 							}
 						}
@@ -168,7 +169,7 @@ void ParseCommandLine(PSTR command_line)
 						{
 							// They put a quote on the line with no space.
 							//
-							scanName					   = false;
+							scanName = false;
 							listName[strlen(listName) - 1] = 0;
 						}
 					}
@@ -186,7 +187,8 @@ void ParseCommandLine(PSTR command_line)
 }
 
 //-----------------------------
-int32_t convertASE2TGL(PSTR file)
+int32_t
+convertASE2TGL(PSTR file)
 {
 	//---------------------------------------------------
 	// Get all of the .ASE files in the tgl directory.
@@ -222,7 +224,7 @@ int32_t convertASE2TGL(PSTR file)
 			iniAsset->AddProperty("Type", "Object Definition");
 			iniAsset->AddProperty("Version", "1.0");
 			TG_TypeMultiShape* shape = nullptr;
-			result					 = iniFile.seekBlock("TGLData");
+			result = iniFile.seekBlock("TGLData");
 			if (result == NO_ERROR)
 			{
 				char fileName[1024];
@@ -423,7 +425,8 @@ int32_t convertASE2TGL(PSTR file)
 	return 0;
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK
+WndProc(HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -437,21 +440,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lPar
 }
 
 //-----------------------------
-int32_t APIENTRY WinMain(
+int32_t APIENTRY
+WinMain(
 	HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
 {
 	WNDCLASS wc;
 	if (!hPrevInstance)
 	{
-		wc.style		 = CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc   = (WNDPROC)WndProc;
-		wc.cbClsExtra	= 0;
-		wc.cbWndExtra	= 0;
-		wc.hInstance	 = hInstance;
-		wc.hIcon		 = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
-		wc.hCursor		 = LoadCursor(nullptr, IDC_ARROW);
+		wc.style = CS_HREDRAW | CS_VREDRAW;
+		wc.lpfnWndProc = (WNDPROC)WndProc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = hInstance;
+		wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+		wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-		wc.lpszMenuName  = MAKEINTRESOURCE(IDR_MENU1);
+		wc.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
 		wc.lpszClassName = lpszAppName;
 		if (RegisterClass(&wc) == 0)
 			return false;
@@ -619,21 +623,28 @@ uint32_t Seed;
 //
 //
 //
-void UpdateRenderers() {}
+void
+UpdateRenderers()
+{
+}
 
-void DoGameLogic() {}
+void
+DoGameLogic()
+{
+}
 
 //
 // Setup the GameOS structure
 //
-void GetGameOSEnvironment(PSTR CommandLine)
+void
+GetGameOSEnvironment(PSTR CommandLine)
 {
-	CommandLine					= CommandLine;
+	CommandLine = CommandLine;
 	Environment.applicationName = "MechCmdr2";
-	Environment.screenWidth		= 640;
-	Environment.screenHeight	= 480;
-	Environment.bitDepth		= 16;
-	Environment.DoGameLogic		= DoGameLogic;
+	Environment.screenWidth = 640;
+	Environment.screenHeight = 480;
+	Environment.bitDepth = 16;
+	Environment.DoGameLogic = DoGameLogic;
 	Environment.UpdateRenderers = UpdateRenderers;
-	Environment.version			= versionStamp;
+	Environment.version = versionStamp;
 }

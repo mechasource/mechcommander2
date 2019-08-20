@@ -94,7 +94,9 @@ protected:
 #endif
 };
 
-MLR_I_C_DT_TMesh* CreateIndexedTriCube_Color_NoLit_2Tex(float, MLRState*);
-MLRShape* CreateIndexedTriIcosahedron_Color_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
+MLR_I_C_DT_TMesh*
+CreateIndexedTriCube_Color_NoLit_2Tex(float, MLRState*);
+MLRShape*
+CreateIndexedTriIcosahedron_Color_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

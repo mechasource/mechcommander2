@@ -25,18 +25,19 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CCampaignDialog dialog
 
-CCampaignDialog::CCampaignDialog(CWnd* pParent /*=nullptr*/)
-	: CDialog(CCampaignDialog::IDD, pParent)
+CCampaignDialog::CCampaignDialog(CWnd* pParent /*=nullptr*/) :
+	CDialog(CCampaignDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CCampaignDialog)
-	m_CBillsEdit			   = 0;
-	m_FinalVideoEdit		   = _T("");
-	m_NameEdit				   = _T("");
+	m_CBillsEdit = 0;
+	m_FinalVideoEdit = _T("");
+	m_NameEdit = _T("");
 	m_NameResourceStringIDEdit = _T("");
 	//}}AFX_DATA_INIT
 }
 
-void CCampaignDialog::DoDataExchange(CDataExchange* pDX)
+void
+CCampaignDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CCampaignDialog)
@@ -68,7 +69,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CCampaignDialog message handlers
 
-void CCampaignDialog::OnCaFinalVideoBrowseButton()
+void
+CCampaignDialog::OnCaFinalVideoBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -89,7 +91,8 @@ void CCampaignDialog::OnCaFinalVideoBrowseButton()
 	UpdateData(FALSE);
 }
 
-void CCampaignDialog::OnCaExit()
+void
+CCampaignDialog::OnCaExit()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL != res)
@@ -98,7 +101,8 @@ void CCampaignDialog::OnCaExit()
 	}
 }
 
-static void setGroupListBoxValues(CListBox& GroupListBox, const CGroupList& GroupList)
+static void
+setGroupListBoxValues(CListBox& GroupListBox, const CGroupList& GroupList)
 {
 	GroupListBox.ResetContent();
 	CGroupList::EConstIterator it;
@@ -112,29 +116,32 @@ static void setGroupListBoxValues(CListBox& GroupListBox, const CGroupList& Grou
 	}
 }
 
-static void setGroupDialogValues(CGroupDialog& groupDialog, const CGroupData& groupData)
+static void
+setGroupDialogValues(CGroupDialog& groupDialog, const CGroupData& groupData)
 {
-	groupDialog.m_LabelEdit					= groupData.m_Label;
+	groupDialog.m_LabelEdit = groupData.m_Label;
 	groupDialog.m_NumMissionsToCompleteEdit = groupData.m_NumMissionsToComplete;
-	groupDialog.m_OperationFileEdit			= groupData.m_OperationFile;
-	groupDialog.m_PreVideoFileEdit			= groupData.m_PreVideoFile;
-	groupDialog.m_VideoFileEdit				= groupData.m_VideoFile;
-	groupDialog.m_MissionList				= groupData.m_MissionList;
-	groupDialog.m_TuneNumber				= groupData.m_TuneNumber;
+	groupDialog.m_OperationFileEdit = groupData.m_OperationFile;
+	groupDialog.m_PreVideoFileEdit = groupData.m_PreVideoFile;
+	groupDialog.m_VideoFileEdit = groupData.m_VideoFile;
+	groupDialog.m_MissionList = groupData.m_MissionList;
+	groupDialog.m_TuneNumber = groupData.m_TuneNumber;
 }
 
-static void setGroupDataValues(CGroupData& groupData, const CGroupDialog& groupDialog)
+static void
+setGroupDataValues(CGroupData& groupData, const CGroupDialog& groupDialog)
 {
-	groupData.m_Label				  = groupDialog.m_LabelEdit;
+	groupData.m_Label = groupDialog.m_LabelEdit;
 	groupData.m_NumMissionsToComplete = groupDialog.m_NumMissionsToCompleteEdit;
-	groupData.m_OperationFile		  = groupDialog.m_OperationFileEdit;
-	groupData.m_PreVideoFile		  = groupDialog.m_PreVideoFileEdit;
-	groupData.m_VideoFile			  = groupDialog.m_VideoFileEdit;
-	groupData.m_MissionList			  = groupDialog.m_MissionList;
-	groupData.m_TuneNumber			  = groupDialog.m_TuneNumber;
+	groupData.m_OperationFile = groupDialog.m_OperationFileEdit;
+	groupData.m_PreVideoFile = groupDialog.m_PreVideoFileEdit;
+	groupData.m_VideoFile = groupDialog.m_VideoFileEdit;
+	groupData.m_MissionList = groupDialog.m_MissionList;
+	groupData.m_TuneNumber = groupDialog.m_TuneNumber;
 }
 
-void CCampaignDialog::OnCaAddButton()
+void
+CCampaignDialog::OnCaAddButton()
 {
 	CGroupData groupData;
 	CGroupDialog groupDialog;
@@ -151,29 +158,32 @@ void CCampaignDialog::OnCaAddButton()
 	}
 }
 
-static void setCampaignDialogValues(
+static void
+setCampaignDialogValues(
 	CCampaignDialog& campaignDialog, const CCampaignData& campaignData)
 {
-	campaignDialog.m_NameUnlocalizedText   = campaignData.m_Name;
+	campaignDialog.m_NameUnlocalizedText = campaignData.m_Name;
 	campaignDialog.m_NameUseResourceString = campaignData.m_NameUseResourceString;
-	campaignDialog.m_NameResourceStringID  = campaignData.m_NameResourceStringID;
-	campaignDialog.m_CBillsEdit			   = campaignData.m_CBills;
-	campaignDialog.m_FinalVideoEdit		   = campaignData.m_FinalVideo;
+	campaignDialog.m_NameResourceStringID = campaignData.m_NameResourceStringID;
+	campaignDialog.m_CBillsEdit = campaignData.m_CBills;
+	campaignDialog.m_FinalVideoEdit = campaignData.m_FinalVideo;
 	setGroupListBoxValues(campaignDialog.m_GroupListControl, campaignData.m_GroupList);
 	campaignDialog.UpdateData(FALSE);
 }
 
-static void setCampaignDataValues(CCampaignData& campaignData, CCampaignDialog& campaignDialog)
+static void
+setCampaignDataValues(CCampaignData& campaignData, CCampaignDialog& campaignDialog)
 {
 	campaignDialog.UpdateData();
-	campaignData.m_Name					 = campaignDialog.m_NameUnlocalizedText;
+	campaignData.m_Name = campaignDialog.m_NameUnlocalizedText;
 	campaignData.m_NameUseResourceString = campaignDialog.m_NameUseResourceString;
-	campaignData.m_NameResourceStringID  = campaignDialog.m_NameResourceStringID;
-	campaignData.m_CBills				 = campaignDialog.m_CBillsEdit;
-	campaignData.m_FinalVideo			 = campaignDialog.m_FinalVideoEdit;
+	campaignData.m_NameResourceStringID = campaignDialog.m_NameResourceStringID;
+	campaignData.m_CBills = campaignDialog.m_CBillsEdit;
+	campaignData.m_FinalVideo = campaignDialog.m_FinalVideoEdit;
 }
 
-int32_t CCampaignDialog::SaveAs()
+int32_t
+CCampaignDialog::SaveAs()
 {
 	CFileDialog selectFileDialog(FALSE, _T("FIT"), _T("*.FIT"),
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
@@ -181,7 +191,7 @@ int32_t CCampaignDialog::SaveAs()
 	{
 		/* if the mission directory doesn't exist, we attempt to create it */
 		int32_t curDirStrSize = GetCurrentDirectory(0, nullptr);
-		TCHAR* curDirStr	  = new TCHAR[curDirStrSize];
+		TCHAR* curDirStr = new TCHAR[curDirStrSize];
 		GetCurrentDirectory(curDirStrSize, curDirStr);
 		BOOL result = SetCurrentDirectory(campaignPath);
 		SetCurrentDirectory(curDirStr);
@@ -193,7 +203,7 @@ int32_t CCampaignDialog::SaveAs()
 		}
 	}
 	selectFileDialog.m_ofn.lpstrInitialDir = campaignPath;
-	int32_t retval						   = selectFileDialog.DoModal();
+	int32_t retval = selectFileDialog.DoModal();
 	if (IDOK == retval)
 	{
 		setCampaignDataValues(m_CampaignData, *this);
@@ -204,9 +214,14 @@ int32_t CCampaignDialog::SaveAs()
 	return retval;
 }
 
-void CCampaignDialog::OnCaSaveAsButton() { SaveAs(); }
+void
+CCampaignDialog::OnCaSaveAsButton()
+{
+	SaveAs();
+}
 
-void CCampaignDialog::OnCaLoadButton()
+void
+CCampaignDialog::OnCaLoadButton()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL == res)
@@ -223,18 +238,18 @@ void CCampaignDialog::OnCaLoadButton()
 		m_CampaignData.Clear();
 		m_CampaignData.Read(pathname);
 		m_CampaignData.m_PathName = pathname;
-		m_LastSavedCampaignData   = m_CampaignData;
+		m_LastSavedCampaignData = m_CampaignData;
 		setCampaignDialogValues(*this, m_CampaignData);
 		UpdateData(FALSE);
 		UpdateNameDisplay();
 	}
 }
 
-void CCampaignDialog::OnCaEditButton()
+void
+CCampaignDialog::OnCaEditButton()
 {
 	int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
-	if ((0 <= selectedItemIndex) &&
-		((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
+	if ((0 <= selectedItemIndex) && ((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
 	{
 		CGroupData& groupDataRef = m_CampaignData.m_GroupList[selectedItemIndex];
 		CGroupDialog groupDialog;
@@ -249,11 +264,11 @@ void CCampaignDialog::OnCaEditButton()
 	}
 }
 
-void CCampaignDialog::OnCaRemoveButton()
+void
+CCampaignDialog::OnCaRemoveButton()
 {
 	int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
-	if ((0 <= selectedItemIndex) &&
-		((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
+	if ((0 <= selectedItemIndex) && ((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
 	{
 		// should put up confirmation box here
 		CGroupList::EIterator it = m_CampaignData.m_GroupList.Begin();
@@ -279,11 +294,11 @@ void CCampaignDialog::OnCaRemoveButton()
 	}
 }
 
-void CCampaignDialog::OnCaMoveUpButton()
+void
+CCampaignDialog::OnCaMoveUpButton()
 {
 	int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
-	if ((1 <= selectedItemIndex) &&
-		((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
+	if ((1 <= selectedItemIndex) && ((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
 	{
 		CGroupData tmpGroupData;
 		tmpGroupData = (*m_CampaignData.m_GroupList.Iterator(selectedItemIndex));
@@ -296,11 +311,11 @@ void CCampaignDialog::OnCaMoveUpButton()
 	}
 }
 
-void CCampaignDialog::OnCaMoveDownButton()
+void
+CCampaignDialog::OnCaMoveDownButton()
 {
 	int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
-	if ((0 <= selectedItemIndex) &&
-		((int32_t)m_CampaignData.m_GroupList.Count() - 1 > selectedItemIndex))
+	if ((0 <= selectedItemIndex) && ((int32_t)m_CampaignData.m_GroupList.Count() - 1 > selectedItemIndex))
 	{
 		CGroupData tmpGroupData;
 		tmpGroupData = (*m_CampaignData.m_GroupList.Iterator(selectedItemIndex));
@@ -320,7 +335,8 @@ void CCampaignDialog::OnCaMoveDownButton()
 	}
 }
 
-static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
+static BOOL
+CSLoadString(int32_t resourceID, CString& targetStr)
 {
 	char szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
@@ -334,7 +350,8 @@ static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-void CCampaignDialog::UpdateNameDisplay()
+void
+CCampaignDialog::UpdateNameDisplay()
 {
 	UpdateData(TRUE);
 	if (m_NameUseResourceString)
@@ -349,28 +366,30 @@ void CCampaignDialog::UpdateNameDisplay()
 	else
 	{
 		m_NameResourceStringIDEdit = _TEXT("");
-		m_NameEdit				   = m_NameUnlocalizedText;
+		m_NameEdit = m_NameUnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-void CCampaignDialog::OnCaNameEditButton()
+void
+CCampaignDialog::OnCaNameEditButton()
 {
 	CUserTextEdit userTextEditDialog;
-	userTextEditDialog.m_UnlocalizedText   = m_NameUnlocalizedText;
+	userTextEditDialog.m_UnlocalizedText = m_NameUnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_NameUseResourceString;
-	userTextEditDialog.m_ResourceStringID  = m_NameResourceStringID;
-	int32_t ret							   = userTextEditDialog.DoModal();
+	userTextEditDialog.m_ResourceStringID = m_NameResourceStringID;
+	int32_t ret = userTextEditDialog.DoModal();
 	if (IDOK == ret)
 	{
-		m_NameUnlocalizedText   = userTextEditDialog.m_UnlocalizedText;
+		m_NameUnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_NameUseResourceString = userTextEditDialog.m_UseResourceString;
-		m_NameResourceStringID  = userTextEditDialog.m_ResourceStringID;
+		m_NameResourceStringID = userTextEditDialog.m_ResourceStringID;
 		UpdateNameDisplay();
 	}
 }
 
-int32_t CCampaignDialog::Save()
+int32_t
+CCampaignDialog::Save()
 {
 	int32_t retVal = IDOK;
 	if (m_CampaignData.m_PathName.IsEmpty())
@@ -381,17 +400,22 @@ int32_t CCampaignDialog::Save()
 	{
 		m_CampaignData.Save(m_CampaignData.m_PathName);
 		m_LastSavedCampaignData = m_CampaignData;
-		retVal					= IDOK;
+		retVal = IDOK;
 	}
 	return retVal;
 }
 
-void CCampaignDialog::OnCaSaveButton() { Save(); }
+void
+CCampaignDialog::OnCaSaveButton()
+{
+	Save();
+}
 
-int32_t CCampaignDialog::PromptAndSaveIfNecessary()
+int32_t
+CCampaignDialog::PromptAndSaveIfNecessary()
 {
 	setCampaignDataValues(m_CampaignData, *this);
-	int32_t res  = IDNO;
+	int32_t res = IDNO;
 	bool endFlag = false;
 	while (!endFlag)
 	{
@@ -412,16 +436,18 @@ int32_t CCampaignDialog::PromptAndSaveIfNecessary()
 	return res;
 }
 
-BOOL CCampaignDialog::OnInitDialog()
+BOOL
+CCampaignDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	setCampaignDialogValues(*this, m_CampaignData);
 	// TODO: Add extra initialization here
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CCampaignDialog::OnClose()
+void
+CCampaignDialog::OnClose()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL != res)

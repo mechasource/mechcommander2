@@ -20,21 +20,23 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // WaterDlg dialog
 
-WaterDlg::WaterDlg(CWnd* pParent /*=nullptr*/) : CDialog(WaterDlg::IDD, pParent)
+WaterDlg::WaterDlg(CWnd* pParent /*=nullptr*/) :
+	CDialog(WaterDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(WaterDlg)
-	amplitude		 = 0.0f;
-	frequency		 = 0.0f;
-	elevation		 = 0.0f;
+	amplitude = 0.0f;
+	frequency = 0.0f;
+	elevation = 0.0f;
 	shallowElevation = 0.0f;
-	alphaElevation   = 0.0f;
-	alphaDeep		 = 0;
-	alphaMiddle		 = 0;
-	alphaShallow	 = 0;
+	alphaElevation = 0.0f;
+	alphaDeep = 0;
+	alphaMiddle = 0;
+	alphaShallow = 0;
 	//}}AFX_DATA_INIT
 }
 
-void WaterDlg::DoDataExchange(CDataExchange* pDX)
+void
+WaterDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(WaterDlg)
@@ -58,18 +60,20 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // WaterDlg message handlers
 
-BOOL WaterDlg::OnInitDialog()
+BOOL
+WaterDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	alphaDeep	= (alphaDeep >> 24) & 0x000000ff;
-	alphaMiddle  = (alphaMiddle >> 24) & 0x000000ff;
+	alphaDeep = (alphaDeep >> 24) & 0x000000ff;
+	alphaMiddle = (alphaMiddle >> 24) & 0x000000ff;
 	alphaShallow = (alphaShallow >> 24) & 0x000000ff;
 	UpdateData(FALSE);
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void WaterDlg::OnOK()
+void
+WaterDlg::OnOK()
 {
 	UpdateData(TRUE);
 	alphaDeep <<= 24;

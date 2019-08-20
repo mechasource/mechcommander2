@@ -22,10 +22,10 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
+			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			UseOfATL="0"
+			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -44,21 +44,12 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
+				
 				Optimization="0"
-				AdditionalIncludeDirectories="$(mechcmd2_dir)"
+				
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -77,7 +68,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -104,10 +94,10 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
+			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			UseOfATL="0"
+			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -126,20 +116,12 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
+				
 				Optimization="0"
-				AdditionalIncludeDirectories="$(mechcmd2_dir)"
+				
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -158,7 +140,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -185,10 +166,10 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
+			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			UseOfATL="0"
+			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -207,22 +188,13 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
+				
 				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="$(mechcmd2_dir)"
+				
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -240,7 +212,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -267,10 +238,10 @@
 		<Configuration
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
+			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			UseOfATL="0"
+			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -289,21 +260,13 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
+				
 				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="$(mechcmd2_dir)"
+				
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -321,7 +284,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"

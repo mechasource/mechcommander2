@@ -34,14 +34,14 @@ MLRState::MLRState(std::iostream stream, uint32_t version)
 MLRState::MLRState()
 {
 	renderState = renderDeltaMask = 0;
-	renderPermissionMask		  = 0xFFFFFFFF;
+	renderPermissionMask = 0xFFFFFFFF;
 	processState = processDeltaMask = 0;
-	processPermissionMask			= 0xFFFFFFFF;
+	processPermissionMask = 0xFFFFFFFF;
 #ifdef OLDFOG
-	fogColor   = 0xffffffff;
+	fogColor = 0xffffffff;
 	fogDensity = 0.0f;
-	nearFog	= 1.0f;
-	farFog	 = 100.0f;
+	nearFog = 1.0f;
+	farFog = 100.0f;
 #endif
 }
 
@@ -50,21 +50,22 @@ MLRState::MLRState()
 MLRState::MLRState(const MLRState& mState)
 {
 	Check_Object(&mState);
-	renderState			  = mState.renderState;
-	renderDeltaMask		  = mState.renderDeltaMask;
-	renderPermissionMask  = mState.renderPermissionMask;
-	processState		  = mState.processState;
-	processDeltaMask	  = mState.processDeltaMask;
+	renderState = mState.renderState;
+	renderDeltaMask = mState.renderDeltaMask;
+	renderPermissionMask = mState.renderPermissionMask;
+	processState = mState.processState;
+	processDeltaMask = mState.processDeltaMask;
 	processPermissionMask = mState.processPermissionMask;
 #ifdef OLDFOG
 	nearFog = mState.nearFog;
-	farFog  = mState.farFog;
+	farFog = mState.farFog;
 #endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRState* MLRState::Make(std::iostream stream, uint32_t version)
+MLRState*
+MLRState::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -77,7 +78,8 @@ MLRState* MLRState::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRState::Save(std::ostream& stream)
+void
+MLRState::Save(std::ostream& stream)
 {
 	// Check_Object(this);
 	// Check_Object(stream);
@@ -96,7 +98,7 @@ void MLRState::Save(std::ostream& stream)
 		MLRTexture* texture = (*MLRTexturePool::Instance)[this];
 		Check_Object(texture);
 		std::wstring name = texture->GetTextureName();
-		int32_t hint	  = texture->GetHint();
+		int32_t hint = texture->GetHint();
 		hint <<= 4;
 		hint |= texture->GetTextureInstance();
 		stream << name << hint;
@@ -105,7 +107,8 @@ void MLRState::Save(std::ostream& stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRState::Load(std::istream& stream, uint32_t version)
+void
+MLRState::Load(std::istream& stream, uint32_t version)
 {
 	// Check_Object(this);
 	// Check_Object(stream);
@@ -142,7 +145,7 @@ void MLRState::Load(std::istream& stream, uint32_t version)
 	{
 #ifdef OLDFOG
 		fogDensity = 0.0f;
-		fogColor   = 0;
+		fogColor = 0;
 #endif
 		if (renderDeltaMask & FogMask)
 			renderDeltaMask |= FogMask;
@@ -172,16 +175,17 @@ void MLRState::Load(std::istream& stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRState& MLRState::Combine(const MLRState& master, const MLRState& slave)
+MLRState&
+MLRState::Combine(const MLRState& master, const MLRState& slave)
 {
 	// Check_Pointer(this);
 	Check_Object(&master);
 	Check_Object(&slave);
 	renderPermissionMask = master.renderPermissionMask & slave.renderPermissionMask;
-	renderDeltaMask		 = slave.renderDeltaMask & master.renderPermissionMask;
+	renderDeltaMask = slave.renderDeltaMask & master.renderPermissionMask;
 	renderState = (master.renderState & ~renderDeltaMask) | (slave.renderState & renderDeltaMask);
 	processPermissionMask = master.processPermissionMask & slave.processPermissionMask;
-	processDeltaMask	  = slave.processDeltaMask & master.processPermissionMask;
+	processDeltaMask = slave.processDeltaMask & master.processPermissionMask;
 	processState =
 		(master.processState & ~processDeltaMask) | (slave.processState & processDeltaMask);
 #ifdef OLDFOG
@@ -189,25 +193,25 @@ MLRState& MLRState::Combine(const MLRState& master, const MLRState& slave)
 	if (fog_mode)
 	{
 		fogDensity = slave.fogDensity;
-		nearFog	= slave.nearFog;
-		farFog	 = slave.farFog;
+		nearFog = slave.nearFog;
+		farFog = slave.farFog;
 		if ((renderState & fog_mode) == OverrideFogAndColorMode)
 		{
 			fogColor = slave.fogColor;
 		}
 		else
 		{
-			nearFog  = master.nearFog;
-			farFog   = master.farFog;
+			nearFog = master.nearFog;
+			farFog = master.farFog;
 			fogColor = master.fogColor;
 		}
 	}
 	else
 	{
-		fogColor   = master.fogColor;
+		fogColor = master.fogColor;
 		fogDensity = master.fogDensity;
-		nearFog	= master.nearFog;
-		farFog	 = master.farFog;
+		nearFog = master.nearFog;
+		farFog = master.farFog;
 	}
 #endif
 	return *this;
@@ -267,7 +271,8 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRState::SetRendererState(MLRTexturePool* texturePool)
+void
+MLRState::SetRendererState(MLRTexturePool* texturePool)
 {
 	// Check_Object(this);
 	Check_Object(texturePool);
@@ -345,11 +350,12 @@ void MLRState::SetRendererState(MLRTexturePool* texturePool)
 	gos_SetRenderState(gos_State_TextureMapBlend, gos_BlendModulateAlpha);
 }
 
-Stuff::IteratorPosition GetHashFunctions::GetHashValue(const MLRState& value)
+Stuff::IteratorPosition
+GetHashFunctions::GetHashValue(const MLRState& value)
 {
 	_ASSERT(sizeof(Stuff::IteratorPosition) == sizeof(uint32_t));
 	return (((value.processState & MidLevelRenderer::MLRState::UsedProcessMask)
-				<< MidLevelRenderer::MLRState::UsedRenderBits) |
-			   (value.renderState & MidLevelRenderer::MLRState::UsedRenderMask)) &
-		0x7FFFFFFF;
+				<< MidLevelRenderer::MLRState::UsedRenderBits)
+			   | (value.renderState & MidLevelRenderer::MLRState::UsedRenderMask))
+		& 0x7FFFFFFF;
 }

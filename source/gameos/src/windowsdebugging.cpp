@@ -74,7 +74,7 @@ static PCSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos)
 	if (pwinpos->flags & SWP_SHOWWINDOW)
 		strcat_s(szBuffer, _countof(szBuffer), "SHOWWINDOW ");
 	SUPPRESS_WARNING(4172) // returning address of local variable or temporary
-	return szBuffer;	   //-V558
+	return szBuffer; //-V558
 }
 
 static PCSTR __stdcall GetWM_SIZEFlags(WPARAM wParam)
@@ -177,7 +177,7 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPAR
 {
 	/*static*/ char szBuffer[0x100];
 	PCSTR pszMessage = nullptr;
-	szBuffer[0]		 = 0;
+	szBuffer[0] = 0;
 	if (uMsg == WM_NCHITTEST || uMsg == WM_SETCURSOR || uMsg == WM_MOUSEMOVE)
 		return nullptr;
 	switch (uMsg)

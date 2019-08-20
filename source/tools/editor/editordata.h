@@ -369,7 +369,7 @@ public:
 	void drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize);
 	void loadTacMap(PacketFile* file, puint8_t& pDest, size_t dataSize,
 		int32_t tacMapSize); // this allocates memory.  Saves millions of CPU
-							 // cycles on load
+		// cycles on load
 
 private:
 	EditorData& operator=(const EditorData& editorData);

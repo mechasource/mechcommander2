@@ -39,21 +39,54 @@ void __stdcall Stuff::Flood_Memory_With_NAN(PVOID where, size_t how_much)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void __cdecl Terminate_Handler(void) { STOP(("Unhandled exception")); }
+void __cdecl Terminate_Handler(void)
+{
+	STOP(("Unhandled exception"));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-static uint8_t __stdcall Check_0(void) { return uint8_t((ArmorLevel == 0) ? 1 : 0); }
-static uint8_t __stdcall Check_1(void) { return uint8_t((ArmorLevel == 1) ? 1 : 0); }
-static uint8_t __stdcall Check_2(void) { return uint8_t((ArmorLevel == 2) ? 1 : 0); }
-static uint8_t __stdcall Check_3(void) { return uint8_t((ArmorLevel == 3) ? 1 : 0); }
-static uint8_t __stdcall Check_4(void) { return uint8_t((ArmorLevel == 4) ? 1 : 0); }
+static uint8_t __stdcall Check_0(void)
+{
+	return uint8_t((ArmorLevel == 0) ? 1 : 0);
+}
+static uint8_t __stdcall Check_1(void)
+{
+	return uint8_t((ArmorLevel == 1) ? 1 : 0);
+}
+static uint8_t __stdcall Check_2(void)
+{
+	return uint8_t((ArmorLevel == 2) ? 1 : 0);
+}
+static uint8_t __stdcall Check_3(void)
+{
+	return uint8_t((ArmorLevel == 3) ? 1 : 0);
+}
+static uint8_t __stdcall Check_4(void)
+{
+	return uint8_t((ArmorLevel == 4) ? 1 : 0);
+}
 
-static void __stdcall Activate_0(void) { ArmorLevel = 0; }
-static void __stdcall Activate_1(void) { ArmorLevel = 1; }
-static void __stdcall Activate_2(void) { ArmorLevel = 2; }
-static void __stdcall Activate_3(void) { ArmorLevel = 3; }
-static void __stdcall Activate_4(void) { ArmorLevel = 4; }
+static void __stdcall Activate_0(void)
+{
+	ArmorLevel = 0;
+}
+static void __stdcall Activate_1(void)
+{
+	ArmorLevel = 1;
+}
+static void __stdcall Activate_2(void)
+{
+	ArmorLevel = 2;
+}
+static void __stdcall Activate_3(void)
+{
+	ArmorLevel = 3;
+}
+static void __stdcall Activate_4(void)
+{
+	ArmorLevel = 4;
+}
 
 static uint8_t __stdcall Greyed(void)
 {

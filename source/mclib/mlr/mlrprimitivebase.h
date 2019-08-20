@@ -44,7 +44,7 @@ struct ClipPolygon2
 	std::vector<Stuff::RGBAColor> colors; //[Max_Number_Vertices_Per_Polygon];
 #endif
 	std::vector<Stuff::Vector2DScalar> texCoords; //[2*Max_Number_Vertices_Per_Polygon];
-	std::vector<MLRClippingState> clipPerVertex;  //[Max_Number_Vertices_Per_Polygon];
+	std::vector<MLRClippingState> clipPerVertex; //[Max_Number_Vertices_Per_Polygon];
 };
 
 class MLRPrimitiveBase__ClassData;
@@ -73,6 +73,7 @@ public:
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	MLRPrimitiveBase(ClassData* class_data);
+
 protected:
 	MLRPrimitiveBase(ClassData* class_data, std::iostream& stream, uint32_t version);
 #endif
@@ -81,14 +82,13 @@ protected:
 	~MLRPrimitiveBase(void);
 
 public:
-
 	typedef MLRPrimitiveBase* (*Factory)(std::iostream stream, uint32_t version);
 
 	static MLRPrimitiveBase* Make(std::iostream stream, uint32_t version);
 	virtual void Save(std::iostream stream);
 
-	// Subprimitives are units in which this geometry is split off, ie. nr of 
-	// polygons in a polygon mesh or number of tripstrips in a  tristriped mesh, 
+	// Subprimitives are units in which this geometry is split off, ie. nr of
+	// polygons in a polygon mesh or number of tripstrips in a  tristriped mesh,
 	// every of this subprimitives has another/ number which is type specific
 	// ie. number of vertices in a polygon or number of vertices in a tristrip
 	// the data for the coord/color/texcoord/normal or index ARE IN THIS ORDER
@@ -144,7 +144,7 @@ public:
 	virtual void GetTexCoordData(Stuff::Vector2DScalar** array, psize_t point_count, size_t pass = 0);
 
 	// is to call befor clipping, parameter: camera point
-	virtual int32_t FindBackFace(const Stuff::Point3D&)		   = 0;
+	virtual int32_t FindBackFace(const Stuff::Point3D&) = 0;
 	virtual void Lighting(MLRLight* const*, uint32_t nrLights) = 0;
 	static void InitializeDraw(void);
 	virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
@@ -182,7 +182,7 @@ public:
 	virtual bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
 	virtual void PaintMe(const Stuff::RGBAColor* paintMe) = 0;
 	virtual uint32_t TransformAndClip(
-		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false)		 = 0;
+		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false) = 0;
 	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false) = 0;
 
 	virtual uint32_t GetNumPasses(void)
@@ -237,8 +237,8 @@ public:
 		// Mem_Copy(texCoords.GetData(), clipExtraTexCoords->GetData(),
 		//	sizeof(Stuff::Vector2DScalar) * num, sizeof(Stuff::Vector2DScalar) * num);
 
-		for (auto i = 0u; i < num; i++) 
-			texCoords.push_back(clipExtraTexCoords[i]); 
+		for (auto i = 0u; i < num; i++)
+			texCoords.push_back(clipExtraTexCoords[i]);
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -305,15 +305,15 @@ protected:
 	std::vector<uint8_t> lengths; // List of strip lengths
 
 #if COLOR_AS_DWORD // clipExtraColors for the future generations !!!
-	static std::vector<uint32_t> clipExtraColors;					// , Max_Number_Vertices_Per_Mesh
+	static std::vector<uint32_t> clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 #else
-	static std::vector<Stuff::RGBAColor> clipExtraColors;			// , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::RGBAColor> clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 #endif
 
-	static std::vector<MLRClippingState> clipPerVertex;			// , Max_Number_Vertices_Per_Mesh
-	static std::vector<Stuff::Vector4D> clipExtraCoords;			// , Max_Number_Vertices_Per_Mesh
-	static std::vector<Stuff::Vector2DScalar> clipExtraTexCoords;	// , Max_Number_Vertices_Per_Mesh
-	static std::vector<uint16_t> clipExtraLength;					// , Max_Number_Primitives_Per_Frame
+	static std::vector<MLRClippingState> clipPerVertex; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::Vector4D> clipExtraCoords; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::Vector2DScalar> clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<uint16_t> clipExtraLength; // , Max_Number_Primitives_Per_Frame
 
 	MLRState state;
 	MLRState referenceState;
@@ -335,7 +335,8 @@ struct IcoInfo
 	PCSTR GetTypeName(void);
 };
 
-MLRShape* CreateIndexedIcosahedron(IcoInfo&, std::vector<MLRState>*);
+MLRShape*
+CreateIndexedIcosahedron(IcoInfo&, std::vector<MLRState>*);
 
 //##########################################################################
 //################### MLRPrimitiveBase__ClassData ####################
@@ -348,9 +349,9 @@ class MLRPrimitiveBase__ClassData : public Stuff::RegisteredClass::ClassData
 public:
 	MLRPrimitiveBase__ClassData(Stuff::RegisteredClass::ClassID class_id, PCSTR class_name,
 		Stuff::RegisteredClass::ClassData* parent_class,
-		MLRPrimitiveBase::Factory primitive_factory)
-		: RegisteredClass__ClassData(class_id, class_name, parent_class),
-		  primitiveFactory(primitive_factory)
+		MLRPrimitiveBase::Factory primitive_factory) :
+		RegisteredClass__ClassData(class_id, class_name, parent_class),
+		primitiveFactory(primitive_factory)
 	{
 	}
 
@@ -376,7 +377,8 @@ struct ClipData2
 	uint16_t length;
 };
 
-inline float GetBC(uint32_t nr, const Stuff::Vector4D& v4d)
+inline float
+GetBC(uint32_t nr, const Stuff::Vector4D& v4d)
 {
 	switch (nr)
 	{
@@ -396,7 +398,8 @@ inline float GetBC(uint32_t nr, const Stuff::Vector4D& v4d)
 	return 0.0f;
 }
 
-inline void GetDoubleBC(uint32_t nr, float& result1, float& result2, const Stuff::Vector4D& v4d1,
+inline void
+GetDoubleBC(uint32_t nr, float& result1, float& result2, const Stuff::Vector4D& v4d1,
 	const Stuff::Vector4D& v4d2)
 {
 	switch (nr)
@@ -428,7 +431,8 @@ inline void GetDoubleBC(uint32_t nr, float& result1, float& result2, const Stuff
 	}
 }
 
-inline float GetLerpFactor(uint32_t nr, const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
+inline float
+GetLerpFactor(uint32_t nr, const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
 {
 	float result1 = 0.0f;
 	float result2 = 0.0f;

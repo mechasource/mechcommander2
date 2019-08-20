@@ -88,10 +88,10 @@ component.
 
 ObjectSelectionBrush::ObjectSelectionBrush()
 {
-	bPainting  = false;
+	bPainting = false;
 	pCurAction = nullptr;
 	lastPos.x = lastPos.y = lastPos.z = lastPos.w = 0.0f; // Keep the FPU exception from going off!
-	bFirstClick									  = false;
+	bFirstClick = false;
 }
 
 ObjectSelectionBrush::~ObjectSelectionBrush()
@@ -102,17 +102,19 @@ ObjectSelectionBrush::~ObjectSelectionBrush()
 		land->unselectAll();
 }
 
-bool ObjectSelectionBrush::beginPaint()
+bool
+ObjectSelectionBrush::beginPaint()
 {
 	lastPos.x = lastPos.y = 0.0;
-	bPainting			  = true;
-	bFirstClick			  = !bFirstClick;
+	bPainting = true;
+	bFirstClick = !bFirstClick;
 	return true;
 }
 
-Action* ObjectSelectionBrush::endPaint()
+Action*
+ObjectSelectionBrush::endPaint()
 {
-	bPainting		   = false;
+	bPainting = false;
 	Action* pRetAction = nullptr;
 	if (pCurAction)
 	{
@@ -132,7 +134,8 @@ Action* ObjectSelectionBrush::endPaint()
 	return pRetAction;
 }
 
-bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool
+ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	Stuff::Vector4D endPos;
 	endPos.x = screenX;
@@ -176,15 +179,12 @@ bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int
 			{
 				int32_t tileR, tileC;
 				land->worldToTile(worldPos, tileR, tileC);
-				if (tileR > -1 && tileR < land->realVerticesMapSide && tileC > -1 &&
-					tileC < land->realVerticesMapSide)
+				if (tileR > -1 && tileR < land->realVerticesMapSide && tileC > -1 && tileC < land->realVerticesMapSide)
 				{
 					// figure out which vertex is closest
-					if (fabs(worldPos.x - land->tileColToWorldCoord[tileC]) >=
-						land->worldUnitsPerVertex / 2)
+					if (fabs(worldPos.x - land->tileColToWorldCoord[tileC]) >= land->worldUnitsPerVertex / 2)
 						tileC++;
-					if (fabs(worldPos.y - land->tileRowToWorldCoord[tileR]) >=
-						land->worldUnitsPerVertex / 2)
+					if (fabs(worldPos.y - land->tileRowToWorldCoord[tileR]) >= land->worldUnitsPerVertex / 2)
 						tileR++;
 					if (!bShift || (bShift && !land->isVertexSelected(tileR, tileC)))
 						land->selectVertex(tileR, tileC);
@@ -197,7 +197,8 @@ bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int
 	return true;
 }
 
-void ObjectSelectionBrush::render(int32_t screenX, int32_t screenY)
+void
+ObjectSelectionBrush::render(int32_t screenX, int32_t screenY)
 {
 	if (bPainting)
 	{
@@ -214,7 +215,8 @@ void ObjectSelectionBrush::render(int32_t screenX, int32_t screenY)
 	}
 }
 
-EditorObjectPointerList ObjectSelectionBrush::selectedObjectPointerList()
+EditorObjectPointerList
+ObjectSelectionBrush::selectedObjectPointerList()
 {
 	return EditorObjectMgr::instance->getSelectedObjectPointerList();
 }

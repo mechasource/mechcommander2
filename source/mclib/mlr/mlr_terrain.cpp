@@ -24,7 +24,8 @@ std::vector<Stuff::Vector2DScalar>* MLR_Terrain::clipTexCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain::InitializeClass()
+void
+MLR_Terrain::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -41,7 +42,8 @@ void MLR_Terrain::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain::TerminateClass()
+void
+MLR_Terrain::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -56,8 +58,8 @@ void MLR_Terrain::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain::MLR_Terrain(ClassData* class_data, std::iostream stream, uint32_t version)
-	: MLR_I_DeT_TMesh(class_data, stream, version)
+MLR_Terrain::MLR_Terrain(ClassData* class_data, std::iostream stream, uint32_t version) :
+	MLR_I_DeT_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -67,7 +69,8 @@ MLR_Terrain::MLR_Terrain(ClassData* class_data, std::iostream stream, uint32_t v
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain::MLR_Terrain(ClassData* class_data) : MLR_I_DeT_TMesh(class_data)
+MLR_Terrain::MLR_Terrain(ClassData* class_data) :
+	MLR_I_DeT_TMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -83,7 +86,8 @@ MLR_Terrain::~MLR_Terrain()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain* MLR_Terrain::Make(std::iostream stream, uint32_t version)
+MLR_Terrain*
+MLR_Terrain::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -96,7 +100,8 @@ MLR_Terrain* MLR_Terrain::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain::Save(std::iostream stream)
+void
+MLR_Terrain::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -105,17 +110,22 @@ void MLR_Terrain::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLR_Terrain::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain::SetUVData(float bpf, float xmin, float xmax, float zmin, float zmax)
+void
+MLR_Terrain::SetUVData(float bpf, float xmin, float xmax, float zmin, float zmax)
 {
 	borderPixelFun = bpf;
-	minX		   = xmin;
-	minZ		   = zmin;
-	xUVFac		   = (1.0f - 2 * borderPixelFun) / (xmax - xmin);
-	zUVFac		   = (1.0f - 2 * borderPixelFun) / (zmax - zmin);
+	minX = xmin;
+	minZ = zmin;
+	xUVFac = (1.0f - 2 * borderPixelFun) / (xmax - xmin);
+	zUVFac = (1.0f - 2 * borderPixelFun) / (zmax - zmin);
 }
 
 #define I_SAY_YES_TO_DETAIL_TEXTURES
@@ -153,7 +163,8 @@ void MLR_Terrain::SetUVData(float bpf, float xmin, float xmax, float zmin, float
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
+MLRShape*
+MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
 	IcoInfo& icoInfo, MLRState* state, MLRState* stateDet)
 {
 #ifdef _GAMEOS_HPP_
@@ -181,7 +192,7 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
 	int32_t uniquePoints = 0;
 	for (k = 0; k < 20; k++)
 	{
-		triDrawn		  = 0;
+		triDrawn = 0;
 		MLR_Terrain* mesh = new MLR_Terrain();
 		Register_Object(mesh);
 		mesh->SetUVData(2.0f, -1.0f, 1.0f, -1.0f, 1.0f);
@@ -196,9 +207,9 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
 		mesh->SetSubprimitiveLengths(nullptr, nrTri);
 		if (icoInfo.indexed == true)
 		{
-			uniquePoints	   = 1;
+			uniquePoints = 1;
 			collapsedCoords[0] = coords[0];
-			index[0]		   = 0;
+			index[0] = 0;
 			for (i = 1; i < nrTri * 3; i++)
 			{
 				for (j = 0; j < uniquePoints; j++)

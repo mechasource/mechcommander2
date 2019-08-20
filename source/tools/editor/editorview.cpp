@@ -26,7 +26,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // EditorView message handlers
 
-BOOL EditorView::PreCreateWindow(CREATESTRUCT& cs)
+BOOL
+EditorView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if (!CWnd::PreCreateWindow(cs))
 		return FALSE;
@@ -37,13 +38,15 @@ BOOL EditorView::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-void EditorView::OnPaint()
+void
+EditorView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-					   // Do not call CWnd::OnPaint() for painting messages
+		// Do not call CWnd::OnPaint() for painting messages
 }
 
-LRESULT EditorView::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
+LRESULT
+EditorView::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	if (eye)
 		return GameOSWinProc(m_hWnd, message, wParam, lParam);

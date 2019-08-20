@@ -24,9 +24,9 @@ extern PCSTR GAMELIST_KEY_PASSWORD_PROTECTED;
 extern PCSTR GAMELIST_KEY_PASSWORD;
 extern PCSTR GAMELIST_KEY_BROWSER_HANDLE;
 extern PCSTR GAMELIST_KEY_PING;
-extern PCSTR GAMELIST_KEY_GAME_TYPE;   // rules for game (ctf, team fortress, etc...)
+extern PCSTR GAMELIST_KEY_GAME_TYPE; // rules for game (ctf, team fortress, etc...)
 extern PCSTR GAMELIST_KEY_UPDATE_TIME; // whether the game was updated or not in
-									   // the last EnumSessions
+	// the last EnumSessions
 extern PCSTR GAMELIST_KEY_PROTOCOL;
 extern PCSTR GAMELIST_KEY_FLAGS;
 extern PCSTR GAMELIST_KEY_SERVER_INFO_STATUS;
@@ -44,9 +44,9 @@ extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_ERROR;
 extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_NOSERVER;
 extern PCSTR PLAYERLIST_KEY_SERVER_ROWID;
 extern PCSTR PLAYERLIST_KEY_PLAYER_NAME;
-extern PCSTR PLAYERLIST_KEY_CLAN_NAME;   // not yet in MW4 - 8/1/2000
+extern PCSTR PLAYERLIST_KEY_CLAN_NAME; // not yet in MW4 - 8/1/2000
 extern PCSTR PLAYERLIST_KEY_UPDATE_TIME; // whether the player was updated or
-										 // not in the last EnumPlayers
+	// not in the last EnumPlayers
 extern PCSTR ZONE_SERVER_KEY;
 extern PCSTR ZONE_ADVERTISE_PORT_KEY;
 extern PCSTR ZONE_SERVER_INTERNET_ADDRESS;
@@ -80,24 +80,24 @@ enum GUN_STATUS
 	// i.e. -GS_INIT_BROWSER implies an error
 	// occured while initializing the browser
 	GS_UNKNOWN_ERROR = -(0x0fff),
-	GS_DISCONNECTED  = 0x0000,
-	GS_INIT			 = 0x0001,
-	GS_INIT_BROWSER  = 0x0002,
-	GS_FIND_QSERVER  = 0x0004,
+	GS_DISCONNECTED = 0x0000,
+	GS_INIT = 0x0001,
+	GS_INIT_BROWSER = 0x0002,
+	GS_FIND_QSERVER = 0x0004,
 	GS_QUERY_SERVERS = 0x0008,
 	GS_QUERY_PLAYERS = 0x0010,
-	GS_CLOSING		 = 0x0020,
-	GS_CLOSED		 = 0x0040,
-	GS_CONNECTED	 = 0x0080
+	GS_CLOSING = 0x0020,
+	GS_CLOSED = 0x0040,
+	GS_CONNECTED = 0x0080
 };
 
 enum GUN_REGISTRATION_STATUS
 {
 	GRS_UNINITIALIZED, // we haven't tried to register yet since the last
-					   // shutdown
-	GRS_INPROGRESS,	// currently trying to register
-	GRS_FAILURE,	   // failed to register on last attempt
-	GRS_SUCCESS		   // game was successfully registered.
+	// shutdown
+	GRS_INPROGRESS, // currently trying to register
+	GRS_FAILURE, // failed to register on last attempt
+	GRS_SUCCESS // game was successfully registered.
 };
 
 class CZonePing;
@@ -106,7 +106,8 @@ namespace Browse
 {
 
 // control functions for pings
-extern void PingCallback(uint32_t inet, uint32_t latency, PVOID context);
+extern void
+PingCallback(uint32_t inet, uint32_t latency, PVOID context);
 
 typedef PVOID POSITION; // for use by CList
 /*
@@ -114,7 +115,8 @@ typedef PVOID POSITION; // for use by CList
 
 	http://puddle.etri.re.kr/~shbaek/c/clist.h
 */
-template <class CItem> class CList
+template <class CItem>
+class CList
 {
 protected:
 	class CListNode
@@ -201,8 +203,8 @@ public:
 	// node used for implementing field lists.
 	struct FieldItem
 	{
-		PSTR key;		// header name
-		PSTR value;		// value of field
+		PSTR key; // header name
+		PSTR value; // value of field
 		int32_t iValue; // atoi() applied to 'value'
 
 		// these are needed to override GameOS memory management
@@ -299,7 +301,7 @@ protected:
 	PCSTR m_SearchResult;
 
 	IndexedTableView* m_IndexedView; // make list later if we want multiple
-									 // views to be possible
+		// views to be possible
 
 private:
 	// Friends
@@ -380,11 +382,11 @@ public:
 
 	enum FilterType
 	{
-		FT_NONE,		// no filtering performed - default
+		FT_NONE, // no filtering performed - default
 		FT_INCLUDE_ALL, // include if all filter criterion match
 		FT_INCLUDE_ANY, // include if any filter criterion match
 		FT_EXCLUDE_ALL, // exclude if all filter criterion match
-		FT_EXCLUDE_ANY  // exclude if any filter criterion match
+		FT_EXCLUDE_ANY // exclude if any filter criterion match
 	};
 
 public:
@@ -419,7 +421,7 @@ protected:
 		PSTR key;
 		FilterItemType type;
 		int32_t min, max; // min and max integer values
-		PSTR strVal;	  // string value
+		PSTR strVal; // string value
 	};
 
 protected:
@@ -440,9 +442,9 @@ public:
 
 	enum StatusFlag
 	{
-		SF_LOCKED			  = 1,
+		SF_LOCKED = 1,
 		SF_PASSWORD_PROTECTED = 2,
-		SF_SECURE			  = 4
+		SF_SECURE = 4
 	};
 
 public:
@@ -597,7 +599,7 @@ private:
 	TableList* m_TableList;
 	TableItemFilter* m_Filter;
 
-	bool m_DynamicSorting;   // true if sorting is done dynamically
+	bool m_DynamicSorting; // true if sorting is done dynamically
 	bool m_DynamicFiltering; // true if filtering is done dynamically
 
 	// m_SortVec is for full list sorts for speed reasons.
@@ -617,9 +619,9 @@ private:
 	// mdm - used to remember which item is selected in the list
 	PSTR m_Selection;
 	// mdm - true if the list has been changed but not resorted
-	double m_LastSortTime;	// gos_GetHiResTime() from the last sort
+	double m_LastSortTime; // gos_GetHiResTime() from the last sort
 	double m_ResortFrequency; // maximum frequency at which we will resort the list
-	bool m_bSortDirty;		  // true if the list has been marked as needing sorting
+	bool m_bSortDirty; // true if the list has been marked as needing sorting
 };
 
 } // namespace Browse

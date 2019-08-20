@@ -22,21 +22,25 @@ extern char missionName[1024];
 
 LogisticsMissionInfo::LogisticsMissionInfo()
 {
-	currentMission	 = -1;
-	currentStage	   = 0;
-	groups			   = 0;
+	currentMission = -1;
+	currentStage = 0;
+	groups = 0;
 	currentMissionName = missionName;
-	groupCount		   = 0;
-	CBills			   = 0;
+	groupCount = 0;
+	CBills = 0;
 	if (currentMissionName.Length() < 2)
 		currentMissionName = "m0101";
 	bMultiplayer = 0;
 	//	maxTeams = maxPlayers = 2;
 }
 
-LogisticsMissionInfo::~LogisticsMissionInfo() { clear(); }
+LogisticsMissionInfo::~LogisticsMissionInfo()
+{
+	clear();
+}
 
-void LogisticsMissionInfo::clear()
+void
+LogisticsMissionInfo::clear()
 {
 	if (groups)
 	{
@@ -54,15 +58,16 @@ void LogisticsMissionInfo::clear()
 		delete *iter;
 	}
 	additionalPurchaseFiles.Clear();
-	currentMission	 = -1;
-	currentStage	   = 0;
-	groups			   = 0;
+	currentMission = -1;
+	currentStage = 0;
+	groups = 0;
 	currentMissionName = missionName;
-	groupCount		   = 0;
-	CBills			   = 0;
+	groupCount = 0;
+	CBills = 0;
 }
 
-int32_t LogisticsMissionInfo::init(FitIniFile& file)
+int32_t
+LogisticsMissionInfo::init(FitIniFile& file)
 {
 	clear();
 	bMultiplayer = 0;
@@ -70,8 +75,8 @@ int32_t LogisticsMissionInfo::init(FitIniFile& file)
 	// read the number of mission groups
 	file.seekBlock("Campaign");
 	char resultName[256];
-	resultName[0]  = 0;
-	int32_t lName  = 0;
+	resultName[0] = 0;
+	int32_t lName = 0;
 	int32_t result = file.readIdLong("NameID", lName);
 	if (result == NO_ERROR)
 	{
@@ -83,7 +88,7 @@ int32_t LogisticsMissionInfo::init(FitIniFile& file)
 		Assert(result == NO_ERROR, 0, "couldn't find the missionName");
 	}
 	campaignDisplayName = resultName;
-	result				= file.readIdLong("GroupCount", groupCount);
+	result = file.readIdLong("GroupCount", groupCount);
 	if (result != NO_ERROR)
 	{
 		Assert(0, 0, "No group count in campaign file");
@@ -96,7 +101,7 @@ int32_t LogisticsMissionInfo::init(FitIniFile& file)
 		finalVideoName = tmp;
 	}
 	// create storage for 'em
-	groups		 = new MissionGroup[groupCount];
+	groups = new MissionGroup[groupCount];
 	currentStage = 0;
 	char blockName[32];
 	for (size_t i = 0; i < groupCount; i++)
@@ -126,10 +131,10 @@ int32_t LogisticsMissionInfo::init(FitIniFile& file)
 			Assert(0, 0, errorStr);
 		}
 		groups[i].videoFileName = tmp;
-		groups[i].videoShown	= 0;
+		groups[i].videoShown = 0;
 		if (NO_ERROR == file.readIdString("PreVideo", tmp, 255))
 		{
-			groups[i].bigVideoName  = tmp;
+			groups[i].bigVideoName = tmp;
 			groups[i].bigVideoShown = 0;
 		}
 		if (NO_ERROR != file.readIdString("OperationFile", tmp, 255) || !strlen(tmp))
@@ -158,7 +163,7 @@ int32_t LogisticsMissionInfo::init(FitIniFile& file)
 				std::wstring path = missionPath;
 				path += fileName;
 				path += ".fit";
-				pInfo->fileName  = fileName;
+				pInfo->fileName = fileName;
 				pInfo->completed = 0;
 				FitIniFile missionFile;
 				if (NO_ERROR != missionFile.open((PSTR)(PCSTR)path))
@@ -201,15 +206,16 @@ int32_t LogisticsMissionInfo::init(FitIniFile& file)
 	return 0;
 }
 
-void LogisticsMissionInfo::readMissionInfo(
+void
+LogisticsMissionInfo::readMissionInfo(
 	FitIniFile& file, LogisticsMissionInfo::MissionInfo* pInfo)
 {
 	int32_t result = file.seekBlock("MissionSettings");
 	Assert(result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file");
 	char missionName[256];
 	missionName[0] = 0;
-	bool bRes	  = 0;
-	result		   = file.readIdBoolean("MissionNameUseResourceString", bRes);
+	bool bRes = 0;
+	result = file.readIdBoolean("MissionNameUseResourceString", bRes);
 	// Assert( result == NO_ERROR, 0, "couldn't find the
 	// MissionNameUseResourceString" );
 	if (bRes)
@@ -229,19 +235,19 @@ void LogisticsMissionInfo::readMissionInfo(
 	result = file.readIdString("Blurb2", blurb, 4095);
 	Assert(result == NO_ERROR, 0, "couldn't find the mission blurb");
 	bool tmpBool = false;
-	result		 = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
+	result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
 	if (NO_ERROR == result && tmpBool)
 	{
 		uint32_t tmpInt = 0;
-		result			= file.readIdULong("Blurb2ResourceStringID", tmpInt);
+		result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
 		if (NO_ERROR == result)
 		{
 			cLoadString(tmpInt, blurb, 2047);
 		}
 	}
 	pInfo->description = blurb;
-	result			   = file.readIdLong("ResourcePoints", pInfo->resourcePoints);
-	result			   = file.readIdLong("AdditionalCBills", pInfo->additionalCBills);
+	result = file.readIdLong("ResourcePoints", pInfo->resourcePoints);
+	result = file.readIdLong("AdditionalCBills", pInfo->additionalCBills);
 	float fTmp;
 	result = file.readIdFloat("DropWeightLimit", fTmp);
 	if (result != NO_ERROR)
@@ -264,7 +270,8 @@ void LogisticsMissionInfo::readMissionInfo(
 		pInfo->enableArtilleryPiece = 0;
 }
 
-int32_t LogisticsMissionInfo::load(FitIniFile& file)
+int32_t
+LogisticsMissionInfo::load(FitIniFile& file)
 {
 	// read the campaign file name
 	char path[1024];
@@ -307,7 +314,7 @@ int32_t LogisticsMissionInfo::load(FitIniFile& file)
 		sprintf(header, "Mission%ld", i);
 		file.readIdLong(header, cnt);
 		MissionInfo* pInfo = pGroup->infos[(uint32_t)cnt];
-		pInfo->completed   = 1;
+		pInfo->completed = 1;
 		numberCompleted++;
 	}
 	if (numberCompleted >= pGroup->numberToBeCompleted) // unhide necessary missions
@@ -320,7 +327,7 @@ int32_t LogisticsMissionInfo::load(FitIniFile& file)
 				if ((*iter)->videoName.Length())
 				{
 					pGroup->videoFileName = (*iter)->videoName;
-					pGroup->videoShown	= 0;
+					pGroup->videoShown = 0;
 				}
 			}
 			(*iter)->hidden = 0;
@@ -352,7 +359,8 @@ int32_t LogisticsMissionInfo::load(FitIniFile& file)
 	}
 	return 0;
 }
-void LogisticsMissionInfo::save(FitIniFile& file)
+void
+LogisticsMissionInfo::save(FitIniFile& file)
 {
 	// save the campaign file name
 	file.writeIdString("CampaignFile", campaignName);
@@ -400,11 +408,12 @@ void LogisticsMissionInfo::save(FitIniFile& file)
 	}
 }
 
-int32_t LogisticsMissionInfo::getAvailableMissions(PCSTR* missions, int32_t& numberOfEm)
+int32_t
+LogisticsMissionInfo::getAvailableMissions(PCSTR* missions, int32_t& numberOfEm)
 {
-	MissionGroup* pGroup		 = &groups[currentStage];
-	int32_t count				 = 0;
-	int32_t maxOut				 = numberOfEm;
+	MissionGroup* pGroup = &groups[currentStage];
+	int32_t count = 0;
+	int32_t maxOut = numberOfEm;
 	MISSION_LIST::EIterator iter = pGroup->infos.Begin();
 	while (!iter.IsDone())
 	{
@@ -426,11 +435,12 @@ int32_t LogisticsMissionInfo::getAvailableMissions(PCSTR* missions, int32_t& num
 	return 0;
 }
 
-int32_t LogisticsMissionInfo::getCurrentMissions(PCSTR* missions, int32_t& numberOfEm)
+int32_t
+LogisticsMissionInfo::getCurrentMissions(PCSTR* missions, int32_t& numberOfEm)
 {
-	MissionGroup* pGroup		 = &groups[currentStage];
-	int32_t count				 = 0;
-	int32_t maxOut				 = numberOfEm;
+	MissionGroup* pGroup = &groups[currentStage];
+	int32_t count = 0;
+	int32_t maxOut = numberOfEm;
 	MISSION_LIST::EIterator iter = pGroup->infos.Begin();
 	while (!iter.IsDone())
 	{
@@ -451,7 +461,8 @@ int32_t LogisticsMissionInfo::getCurrentMissions(PCSTR* missions, int32_t& numbe
 	}
 	return 0;
 }
-int32_t LogisticsMissionInfo::setNextMission(PCSTR missionName)
+int32_t
+LogisticsMissionInfo::setNextMission(PCSTR missionName)
 {
 	if (!missionName || !strlen(missionName))
 		return -1;
@@ -460,13 +471,13 @@ int32_t LogisticsMissionInfo::setNextMission(PCSTR missionName)
 		std::wstring path = missionPath;
 		path += missionName;
 		path += ".fit";
-		currentMission		  = 0;
-		currentStage		  = 0;
-		MissionInfo* pInfo	= groups[0].infos[0];
-		pInfo->fileName		  = missionName;
-		pInfo->completed	  = 0;
+		currentMission = 0;
+		currentStage = 0;
+		MissionInfo* pInfo = groups[0].infos[0];
+		pInfo->fileName = missionName;
+		pInfo->completed = 0;
 		pInfo->playPurchasing = true;
-		currentMissionName	= missionName;
+		currentMissionName = missionName;
 		FitIniFile missionFile;
 		if (NO_ERROR != missionFile.open((PSTR)(PCSTR)path))
 		{
@@ -483,26 +494,26 @@ int32_t LogisticsMissionInfo::setNextMission(PCSTR missionName)
 		;
 		if (pPlayerInfo)
 		{
-			pInfo->resourcePoints   = MPlayer->missionSettings.resourcePoints;
+			pInfo->resourcePoints = MPlayer->missionSettings.resourcePoints;
 			pInfo->additionalCBills = pPlayerInfo->cBills;
 			// need to put dropweight in here as sooon as we have it
 		}
 		pInfo->dropWeight = MPlayer->missionSettings.dropWeight;
 		missionFile.close();
-		CBills						= pInfo->additionalCBills;
-		pInfo->enableAirStrike		= MPlayer->missionSettings.airStrike;
+		CBills = pInfo->additionalCBills;
+		pInfo->enableAirStrike = MPlayer->missionSettings.airStrike;
 		pInfo->enableArtilleryPiece = MPlayer->missionSettings.guardTower;
-		pInfo->enableRepairTruck	= MPlayer->missionSettings.repairVehicle;
-		pInfo->enableSensorStrike   = MPlayer->missionSettings.sensorProbe;
-		pInfo->enableScoutCopter	= MPlayer->missionSettings.scoutCopter;
-		pInfo->enableMineLayer		= MPlayer->missionSettings.mineLayer;
-		pInfo->enableSalavageCraft  = MPlayer->missionSettings.recoveryTeam;
+		pInfo->enableRepairTruck = MPlayer->missionSettings.repairVehicle;
+		pInfo->enableSensorStrike = MPlayer->missionSettings.sensorProbe;
+		pInfo->enableScoutCopter = MPlayer->missionSettings.scoutCopter;
+		pInfo->enableMineLayer = MPlayer->missionSettings.mineLayer;
+		pInfo->enableSalavageCraft = MPlayer->missionSettings.recoveryTeam;
 	}
 	else
 	{
-		MissionGroup* pGroup		 = &groups[currentStage];
-		int32_t count				 = 0;
-		bool bFound					 = 0;
+		MissionGroup* pGroup = &groups[currentStage];
+		int32_t count = 0;
+		bool bFound = 0;
 		MISSION_LIST::EIterator iter = pGroup->infos.Begin();
 		while (!iter.IsDone())
 		{
@@ -521,7 +532,7 @@ int32_t LogisticsMissionInfo::setNextMission(PCSTR missionName)
 						if (!(pInfo)->completed)
 							CBills -= pInfo->additionalCBills;
 					}
-					currentMission	 = count;
+					currentMission = count;
 					currentMissionName = (*iter)->fileName;
 					currentMissionName.Remove(std::wstring(".fit"));
 					CBills += (*iter)->additionalCBills;
@@ -537,34 +548,35 @@ int32_t LogisticsMissionInfo::setNextMission(PCSTR missionName)
 	return 0;
 }
 
-void LogisticsMissionInfo::setSingleMission(PCSTR missionFileName)
+void
+LogisticsMissionInfo::setSingleMission(PCSTR missionFileName)
 {
 	clear();
-	bMultiplayer	   = true;
-	groups			   = new MissionGroup[1];
-	currentStage	   = 0;
+	bMultiplayer = true;
+	groups = new MissionGroup[1];
+	currentStage = 0;
 	MissionInfo* pInfo = new MissionInfo;
 	groups[0].infos.Append(pInfo);
-	groups[0].operationFileName   = "MCL_CM_Op1_1.fit";
-	groups[0].ablBrainName		  = "";
-	groups[0].bigVideoName		  = "";
-	groups[0].bigVideoShown		  = true;
-	groups[0].logisticsTuneId	 = 0;
+	groups[0].operationFileName = "MCL_CM_Op1_1.fit";
+	groups[0].ablBrainName = "";
+	groups[0].bigVideoName = "";
+	groups[0].bigVideoShown = true;
+	groups[0].logisticsTuneId = 0;
 	groups[0].numberToBeCompleted = 1;
-	groups[0].videoFileName		  = "";
-	groupCount					  = 1;
-	std::wstring path			  = missionPath;
+	groups[0].videoFileName = "";
+	groupCount = 1;
+	std::wstring path = missionPath;
 	path += missionFileName;
 	path += ".fit";
-	currentMission				= 0;
-	currentStage				= 0;
-	pInfo->fileName				= missionName;
-	pInfo->completed			= 0;
+	currentMission = 0;
+	currentStage = 0;
+	pInfo->fileName = missionName;
+	pInfo->completed = 0;
 	pInfo->playMissionSelection = 0;
-	pInfo->playPurchasing		= true;
-	pInfo->playSalvage			= 0;
-	pInfo->playPilotPromotion   = 0;
-	currentMissionName			= missionFileName;
+	pInfo->playPurchasing = true;
+	pInfo->playSalvage = 0;
+	pInfo->playPilotPromotion = 0;
+	currentMissionName = missionFileName;
 	FitIniFile missionFile;
 	if (NO_ERROR != missionFile.open((PSTR)(PCSTR)path))
 	{
@@ -575,15 +587,16 @@ void LogisticsMissionInfo::setSingleMission(PCSTR missionFileName)
 	}
 	readMissionInfo(missionFile, pInfo);
 	float fTmp;
-	int32_t result	= missionFile.readIdFloat("DropWeightLimit", fTmp);
+	int32_t result = missionFile.readIdFloat("DropWeightLimit", fTmp);
 	pInfo->dropWeight = fTmp;
-	result			  = missionFile.readIdLong("AdditionalCBills", pInfo->additionalCBills);
+	result = missionFile.readIdLong("AdditionalCBills", pInfo->additionalCBills);
 	if (result != NO_ERROR || !pInfo->additionalCBills)
 		pInfo->additionalCBills = 1200 * fTmp + 100000;
 	CBills = pInfo->additionalCBills;
 }
 
-int32_t LogisticsMissionInfo::getCurrentMissionId()
+int32_t
+LogisticsMissionInfo::getCurrentMissionId()
 {
 	int32_t missionId = 0;
 	for (size_t i = 0; i <= lastStage; i++)
@@ -595,7 +608,7 @@ int32_t LogisticsMissionInfo::getCurrentMissionId()
 		}
 		else
 		{
-			int32_t count				 = 0;
+			int32_t count = 0;
 			MISSION_LIST::EIterator iter = pGroup->infos.Begin();
 			while (!iter.IsDone())
 			{
@@ -608,24 +621,25 @@ int32_t LogisticsMissionInfo::getCurrentMissionId()
 	return missionId;
 }
 
-void LogisticsMissionInfo::setMissionComplete()
+void
+LogisticsMissionInfo::setMissionComplete()
 {
 	if (currentStage >= groupCount)
 	{
 		return;
 	}
 	// Needed to tell pilots which mission they just completed.
-	lastStage			 = currentStage;
-	lastMission			 = currentMission;
-	lastMissionName		 = currentMissionName;
+	lastStage = currentStage;
+	lastMission = currentMission;
+	lastMissionName = currentMissionName;
 	MissionGroup* pGroup = &groups[currentStage];
 	if (pGroup && currentMission > -1)
 	{
 		CBills += pGroup->infos[currentMission]->additionalCBills;
 	}
-	int32_t count				 = 0;
-	int32_t numberCompleted		 = 0;
-	bool bAllMandatoryCompleted  = 1;
+	int32_t count = 0;
+	int32_t numberCompleted = 0;
+	bool bAllMandatoryCompleted = 1;
 	int32_t nextAvailableMission = -1;
 	// figure out whether to go to the next stage orn not
 	MISSION_LIST::EIterator iter = pGroup->infos.Begin();
@@ -666,7 +680,7 @@ void LogisticsMissionInfo::setMissionComplete()
 					if ((*iter)->videoName.Length())
 					{
 						pGroup->videoFileName = (*iter)->videoName;
-						pGroup->videoShown	= 0;
+						pGroup->videoShown = 0;
 					}
 				}
 				(*iter)->hidden = 0;
@@ -688,13 +702,15 @@ void LogisticsMissionInfo::setMissionComplete()
 
 LogisticsMissionInfo::MissionInfo::~MissionInfo() {}
 
-const std::wstring& LogisticsMissionInfo::getCurrentPurchaseFile(void) const
+const std::wstring&
+LogisticsMissionInfo::getCurrentPurchaseFile(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->infos[currentMission]->purchaseFileName;
 }
 
-int32_t LogisticsMissionInfo::getCurrentDropWeight(void) const
+int32_t
+LogisticsMissionInfo::getCurrentDropWeight(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	if (currentMission != -1)
@@ -703,7 +719,8 @@ int32_t LogisticsMissionInfo::getCurrentDropWeight(void) const
 		return 10000;
 }
 
-PCSTR LogisticsMissionInfo::getCurrentOperationFile(void) const
+PCSTR
+LogisticsMissionInfo::getCurrentOperationFile(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	if (pGroup)
@@ -711,7 +728,8 @@ PCSTR LogisticsMissionInfo::getCurrentOperationFile(void) const
 	return nullptr;
 }
 
-PCSTR LogisticsMissionInfo::getCurrentVideo(void) const
+PCSTR
+LogisticsMissionInfo::getCurrentVideo(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	if (pGroup)
@@ -727,7 +745,8 @@ PCSTR LogisticsMissionInfo::getCurrentVideo(void) const
 	return nullptr;
 }
 
-int32_t LogisticsMissionInfo::getCurrentLogisticsTuneId()
+int32_t
+LogisticsMissionInfo::getCurrentLogisticsTuneId()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	if (pGroup)
@@ -735,7 +754,8 @@ int32_t LogisticsMissionInfo::getCurrentLogisticsTuneId()
 	return -1;
 }
 
-PCSTR LogisticsMissionInfo::getCurrentMissionDescription(void) const
+PCSTR
+LogisticsMissionInfo::getCurrentMissionDescription(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	if (pGroup)
@@ -743,7 +763,8 @@ PCSTR LogisticsMissionInfo::getCurrentMissionDescription(void) const
 	return nullptr;
 }
 
-bool LogisticsMissionInfo::getMissionAvailable(PCSTR missionName)
+bool
+LogisticsMissionInfo::getMissionAvailable(PCSTR missionName)
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	for (size_t i = 0; i < pGroup->infos.Count(); i++)
@@ -756,7 +777,8 @@ bool LogisticsMissionInfo::getMissionAvailable(PCSTR missionName)
 	return nullptr;
 }
 
-PCSTR LogisticsMissionInfo::getCurrentMissionFriendlyName(void) const
+PCSTR
+LogisticsMissionInfo::getCurrentMissionFriendlyName(void) const
 {
 	if (currentStage >= groupCount)
 		return nullptr;
@@ -766,7 +788,8 @@ PCSTR LogisticsMissionInfo::getCurrentMissionFriendlyName(void) const
 	return nullptr;
 }
 
-PCSTR LogisticsMissionInfo::getCurrentABLScriptName(void) const
+PCSTR
+LogisticsMissionInfo::getCurrentABLScriptName(void) const
 {
 	if (currentStage >= groupCount)
 		return nullptr;
@@ -776,7 +799,8 @@ PCSTR LogisticsMissionInfo::getCurrentABLScriptName(void) const
 	return nullptr;
 }
 
-PCSTR LogisticsMissionInfo::getMissionFriendlyName(PCSTR missionName) const
+PCSTR
+LogisticsMissionInfo::getMissionFriendlyName(PCSTR missionName) const
 {
 	if (currentStage >= groupCount)
 		return nullptr;
@@ -791,7 +815,8 @@ PCSTR LogisticsMissionInfo::getMissionFriendlyName(PCSTR missionName) const
 	return nullptr;
 }
 
-int32_t LogisticsMissionInfo::getCurrentRP(void) const
+int32_t
+LogisticsMissionInfo::getCurrentRP(void) const
 {
 	if (currentMission == -1)
 		return 0;
@@ -799,7 +824,8 @@ int32_t LogisticsMissionInfo::getCurrentRP(void) const
 	return pGroup->infos[currentMission]->resourcePoints;
 }
 
-PCSTR LogisticsMissionInfo::getCurrentBigVideo(void) const
+PCSTR
+LogisticsMissionInfo::getCurrentBigVideo(void) const
 {
 	if (currentStage == -1)
 		return nullptr;
@@ -809,31 +835,42 @@ PCSTR LogisticsMissionInfo::getCurrentBigVideo(void) const
 	pGroup->bigVideoShown = true;
 	return pGroup->bigVideoName;
 }
-PCSTR LogisticsMissionInfo::getFinalVideo(void) const { return finalVideoName; }
+PCSTR
+LogisticsMissionInfo::getFinalVideo(void) const
+{
+	return finalVideoName;
+}
 
-bool LogisticsMissionInfo::campaignOver(void) const { return currentStage == groupCount; }
+bool
+LogisticsMissionInfo::campaignOver(void) const
+{
+	return currentStage == groupCount;
+}
 
-void LogisticsMissionInfo::setMultiplayer()
+void
+LogisticsMissionInfo::setMultiplayer()
 {
 	clear();
-	bMultiplayer	   = true;
-	groups			   = new MissionGroup[1];
-	currentStage	   = 0;
+	bMultiplayer = true;
+	groups = new MissionGroup[1];
+	currentStage = 0;
 	MissionInfo* pInfo = new MissionInfo;
 	groups[0].infos.Append(pInfo);
 	currentMission = 0;
-	groupCount	 = 1;
+	groupCount = 1;
 }
-void LogisticsMissionInfo::setPurchaseFile(PCSTR fileName)
+void
+LogisticsMissionInfo::setPurchaseFile(PCSTR fileName)
 {
 	gosASSERT(bMultiplayer);
-	MissionInfo* pInfo		= groups[0].infos[0];
+	MissionInfo* pInfo = groups[0].infos[0];
 	pInfo->purchaseFileName = missionPath;
 	pInfo->purchaseFileName += fileName;
 	pInfo->purchaseFileName += ".fit";
 }
 
-int32_t LogisticsMissionInfo::getAdditionalPurachaseFiles(PCSTR* list, int32_t& maxCount)
+int32_t
+LogisticsMissionInfo::getAdditionalPurachaseFiles(PCSTR* list, int32_t& maxCount)
 {
 	if (maxCount >= additionalPurchaseFiles.Count())
 	{
@@ -846,7 +883,8 @@ int32_t LogisticsMissionInfo::getAdditionalPurachaseFiles(PCSTR* list, int32_t& 
 	maxCount = additionalPurchaseFiles.Count();
 	return additionalPurchaseFiles.Count();
 }
-void LogisticsMissionInfo::addBonusPurchaseFile(PCSTR fileName)
+void
+LogisticsMissionInfo::addBonusPurchaseFile(PCSTR fileName)
 {
 	if (!fileName)
 		return;
@@ -855,7 +893,8 @@ void LogisticsMissionInfo::addBonusPurchaseFile(PCSTR fileName)
 	additionalPurchaseFiles.Append(pNewFile);
 }
 
-bool LogisticsMissionInfo::skipLogistics()
+bool
+LogisticsMissionInfo::skipLogistics()
 {
 	if (MPlayer)
 		return 0;
@@ -864,7 +903,8 @@ bool LogisticsMissionInfo::skipLogistics()
 	MissionGroup* pGroup = &groups[currentStage];
 	return !pGroup->infos[currentMission]->playLogistics;
 }
-bool LogisticsMissionInfo::skipPilotReview()
+bool
+LogisticsMissionInfo::skipPilotReview()
 {
 	// need to subtract a mission, since we already set this one complete if we
 	// got here
@@ -873,7 +913,8 @@ bool LogisticsMissionInfo::skipPilotReview()
 		return 0;
 	return !pInfo->playPilotPromotion;
 }
-bool LogisticsMissionInfo::skipSalvageScreen()
+bool
+LogisticsMissionInfo::skipSalvageScreen()
 {
 	// need to subtract a mission, since we already set this one complete if we
 	// got here
@@ -882,7 +923,8 @@ bool LogisticsMissionInfo::skipSalvageScreen()
 		return 0;
 	return !pInfo->playSalvage;
 }
-bool LogisticsMissionInfo::skipPurchasing()
+bool
+LogisticsMissionInfo::skipPurchasing()
 {
 	if (MPlayer)
 		return 0;
@@ -890,7 +932,8 @@ bool LogisticsMissionInfo::skipPurchasing()
 	return !pGroup->infos[currentMission]->playPurchasing;
 }
 
-LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
+LogisticsMissionInfo::MissionInfo*
+LogisticsMissionInfo::getPreviousMission()
 {
 	if (currentMission > 0)
 	{
@@ -900,7 +943,7 @@ LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
 	else if (currentStage > 0)
 	{
 		MissionGroup* pGroup = &groups[currentStage] - 1;
-		int32_t Count		 = pGroup->infos.Count();
+		int32_t Count = pGroup->infos.Count();
 		if (Count)
 			return pGroup->infos[Count - 1];
 		else
@@ -909,7 +952,7 @@ LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
 	else if (currentStage == 0) // There may be only one stage.  I.e. Tutorials!
 	{
 		MissionGroup* pGroup = &groups[currentStage];
-		int32_t Count		 = pGroup->infos.Count();
+		int32_t Count = pGroup->infos.Count();
 		if (Count)
 			return pGroup->infos[Count - 1];
 		else
@@ -918,7 +961,8 @@ LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
 	return nullptr;
 }
 
-bool LogisticsMissionInfo::isSingleMission(void) const
+bool
+LogisticsMissionInfo::isSingleMission(void) const
 {
 	if (groupCount == 1)
 	{
@@ -928,7 +972,8 @@ bool LogisticsMissionInfo::isSingleMission(void) const
 	return 0;
 }
 
-bool LogisticsMissionInfo::showChooseMission()
+bool
+LogisticsMissionInfo::showChooseMission()
 {
 	if (MPlayer)
 		return 0;
@@ -936,53 +981,62 @@ bool LogisticsMissionInfo::showChooseMission()
 	return pGroup->infos[currentMission]->playMissionSelection;
 }
 
-bool LogisticsMissionInfo::canHaveSalavageCraft()
+bool
+LogisticsMissionInfo::canHaveSalavageCraft()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->infos[currentMission]->enableSalavageCraft;
 }
 
-bool LogisticsMissionInfo::canHaveRepairTruck()
+bool
+LogisticsMissionInfo::canHaveRepairTruck()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->infos[currentMission]->enableRepairTruck;
 }
-bool LogisticsMissionInfo::canHaveScoutCopter()
+bool
+LogisticsMissionInfo::canHaveScoutCopter()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->infos[currentMission]->enableScoutCopter;
 }
-bool LogisticsMissionInfo::canHaveArtilleryPiece()
+bool
+LogisticsMissionInfo::canHaveArtilleryPiece()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->infos[currentMission]->enableArtilleryPiece;
 }
-bool LogisticsMissionInfo::canHaveAirStrike()
+bool
+LogisticsMissionInfo::canHaveAirStrike()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->infos[currentMission]->enableAirStrike;
 }
-bool LogisticsMissionInfo::canHaveSensorStrike()
+bool
+LogisticsMissionInfo::canHaveSensorStrike()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->infos[currentMission]->enableSensorStrike;
 }
-bool LogisticsMissionInfo::canHaveMineLayer()
+bool
+LogisticsMissionInfo::canHaveMineLayer()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->infos[currentMission]->enableMineLayer;
 }
 
-bool LogisticsMissionInfo::getVideoShown()
+bool
+LogisticsMissionInfo::getVideoShown()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	return pGroup->videoShown;
 }
 
-void LogisticsMissionInfo::setVideoShown()
+void
+LogisticsMissionInfo::setVideoShown()
 {
 	MissionGroup* pGroup = &groups[currentStage];
-	pGroup->videoShown   = true;
+	pGroup->videoShown = true;
 }
 
 //*************************************************************************************************

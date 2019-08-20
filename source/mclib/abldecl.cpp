@@ -82,7 +82,8 @@ TokenCodeType followIndexesList[] = {TKN_OF, TKN_IDENTIFIER, TKN_LPAREN, TKN_PLU
 // MISC. routines
 //***************************************************************************
 
-void ifTokenGet(TokenCodeType tokenCode)
+void
+ifTokenGet(TokenCodeType tokenCode)
 {
 	if (curToken == tokenCode)
 		getToken();
@@ -90,7 +91,8 @@ void ifTokenGet(TokenCodeType tokenCode)
 
 //***************************************************************************
 
-void ifTokenGetElseError(TokenCodeType tokenCode, SyntaxErrorType errorCode)
+void
+ifTokenGetElseError(TokenCodeType tokenCode, SyntaxErrorType errorCode)
 {
 	if (curToken == tokenCode)
 		getToken();
@@ -102,7 +104,8 @@ void ifTokenGetElseError(TokenCodeType tokenCode, SyntaxErrorType errorCode)
 // DECLARATIONS routines
 //***************************************************************************
 
-void declarations(SymTableNodePtr routineIdPtr, bool allowFunctions)
+void
+declarations(SymTableNodePtr routineIdPtr, bool allowFunctions)
 {
 	if (curToken == TKN_CONST)
 	{
@@ -141,7 +144,8 @@ void declarations(SymTableNodePtr routineIdPtr, bool allowFunctions)
 // CONST routines
 //***************************************************************************
 
-void constDefinitions(void)
+void
+constDefinitions(void)
 {
 	//-------------------------------------------------------
 	// Loop to process definitions separated by semicolons...
@@ -150,7 +154,7 @@ void constDefinitions(void)
 		SymTableNodePtr constantIdPtr;
 		searchAndEnterLocalSymTable(constantIdPtr);
 		constantIdPtr->defn.key = DFN_CONST;
-		constantIdPtr->library  = CurLibrary;
+		constantIdPtr->library = CurLibrary;
 		getToken();
 		ifTokenGetElseError(TKN_EQUAL, ABL_ERR_SYNTAX_MISSING_EQUAL);
 		doConst(constantIdPtr);
@@ -167,29 +171,31 @@ void constDefinitions(void)
 
 //***************************************************************************
 
-TypePtr makeStringType(int32_t length)
+TypePtr
+makeStringType(int32_t length)
 {
 	TypePtr stringTypePtr = createType();
 	if (!stringTypePtr)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc stringType ");
-	stringTypePtr->form						 = FRM_ARRAY;
-	stringTypePtr->size						 = length;
-	stringTypePtr->typeIdPtr				 = nullptr;
-	stringTypePtr->info.array.indexTypePtr   = IntegerTypePtr;
+	stringTypePtr->form = FRM_ARRAY;
+	stringTypePtr->size = length;
+	stringTypePtr->typeIdPtr = nullptr;
+	stringTypePtr->info.array.indexTypePtr = IntegerTypePtr;
 	stringTypePtr->info.array.elementTypePtr = CharTypePtr;
-	stringTypePtr->info.array.elementCount   = length + 1;
+	stringTypePtr->info.array.elementCount = length + 1;
 	return (stringTypePtr);
 }
 
 //***************************************************************************
 
-void doConst(SymTableNodePtr constantIdPtr)
+void
+doConst(SymTableNodePtr constantIdPtr)
 {
 	TokenCodeType sign = TKN_PLUS;
-	bool sawSign	   = false;
+	bool sawSign = false;
 	if ((curToken == TKN_PLUS) || (curToken == TKN_MINUS))
 	{
-		sign	= curToken;
+		sign = curToken;
 		sawSign = true;
 		getToken();
 	}
@@ -273,7 +279,7 @@ void doConst(SymTableNodePtr constantIdPtr)
 		if (strlen(curLiteral.value.string) == 1)
 		{
 			constantIdPtr->defn.info.constant.value.character = curLiteral.value.string[0];
-			constantIdPtr->typePtr							  = setType(CharTypePtr);
+			constantIdPtr->typePtr = setType(CharTypePtr);
 		}
 		else
 		{
@@ -305,14 +311,15 @@ void doConst(SymTableNodePtr constantIdPtr)
 // PASCAL style array types (otherwise, arrays should be implemented in the
 // var routines...
 
-void typeDefinitions(void)
+void
+typeDefinitions(void)
 {
 	while (curToken == TKN_IDENTIFIER)
 	{
 		SymTableNodePtr typeIdPtr;
 		searchAndEnterLocalSymTable(typeIdPtr);
 		typeIdPtr->defn.key = DFN_TYPE;
-		typeIdPtr->library  = CurLibrary;
+		typeIdPtr->library = CurLibrary;
 		getToken();
 		ifTokenGetElseError(TKN_EQUAL, ABL_ERR_SYNTAX_MISSING_EQUAL);
 		//----------------------------------
@@ -333,7 +340,8 @@ void typeDefinitions(void)
 
 //***************************************************************************
 
-TypePtr doType(void)
+TypePtr
+doType(void)
 {
 	switch (curToken)
 	{
@@ -365,8 +373,8 @@ TypePtr doType(void)
 					getToken();
 					if (tokenIn(indexTypeStartList))
 					{
-						elementTypePtr->form	  = FRM_ARRAY;
-						elementTypePtr->size	  = 0;
+						elementTypePtr->form = FRM_ARRAY;
+						elementTypePtr->size = 0;
 						elementTypePtr->typeIdPtr = nullptr;
 						//----------------------------------------------
 						// All array indices must be integer, for now...
@@ -380,9 +388,9 @@ TypePtr doType(void)
 								elementTypePtr->info.array.elementCount = curLiteral.value.integer;
 							else
 							{
-								elementTypePtr->form					= FRM_NONE;
-								elementTypePtr->size					= 0;
-								elementTypePtr->typeIdPtr				= nullptr;
+								elementTypePtr->form = FRM_NONE;
+								elementTypePtr->size = 0;
+								elementTypePtr->typeIdPtr = nullptr;
 								elementTypePtr->info.array.indexTypePtr = nullptr;
 								syntaxError(ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
 							}
@@ -401,18 +409,18 @@ TypePtr doType(void)
 										idPtr->defn.info.constant.value.integer;
 								else
 								{
-									elementTypePtr->form					= FRM_NONE;
-									elementTypePtr->size					= 0;
-									elementTypePtr->typeIdPtr				= nullptr;
+									elementTypePtr->form = FRM_NONE;
+									elementTypePtr->size = 0;
+									elementTypePtr->typeIdPtr = nullptr;
 									elementTypePtr->info.array.indexTypePtr = nullptr;
 									syntaxError(ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
 								}
 							}
 							else
 							{
-								elementTypePtr->form					= FRM_NONE;
-								elementTypePtr->size					= 0;
-								elementTypePtr->typeIdPtr				= nullptr;
+								elementTypePtr->form = FRM_NONE;
+								elementTypePtr->size = 0;
+								elementTypePtr->typeIdPtr = nullptr;
 								elementTypePtr->info.array.indexTypePtr = nullptr;
 								syntaxError(ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
 							}
@@ -420,9 +428,9 @@ TypePtr doType(void)
 						}
 						break;
 						default:
-							elementTypePtr->form					= FRM_NONE;
-							elementTypePtr->size					= 0;
-							elementTypePtr->typeIdPtr				= nullptr;
+							elementTypePtr->form = FRM_NONE;
+							elementTypePtr->size = 0;
+							elementTypePtr->typeIdPtr = nullptr;
 							elementTypePtr->info.array.indexTypePtr = nullptr;
 							syntaxError(ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
 							getToken();
@@ -430,9 +438,9 @@ TypePtr doType(void)
 					}
 					else
 					{
-						elementTypePtr->form					= FRM_NONE;
-						elementTypePtr->size					= 0;
-						elementTypePtr->typeIdPtr				= nullptr;
+						elementTypePtr->form = FRM_NONE;
+						elementTypePtr->size = 0;
+						elementTypePtr->typeIdPtr = nullptr;
 						elementTypePtr->info.array.indexTypePtr = nullptr;
 						syntaxError(ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
 						getToken();
@@ -451,8 +459,8 @@ TypePtr doType(void)
 				} while (curToken == TKN_COMMA);
 				ifTokenGetElseError(TKN_RBRACKET, ABL_ERR_SYNTAX_MISSING_RBRACKET);
 				elementTypePtr->info.array.elementTypePtr = elementType;
-				typePtr->size							  = arraySize(typePtr);
-				elementType								  = typePtr;
+				typePtr->size = arraySize(typePtr);
+				elementType = typePtr;
 			}
 			return (elementType);
 		}
@@ -473,7 +481,8 @@ TypePtr doType(void)
 
 //***************************************************************************
 
-TypePtr identifierType(SymTableNodePtr idPtr)
+TypePtr
+identifierType(SymTableNodePtr idPtr)
 {
 	TypePtr typePtr = (TypePtr)idPtr->typePtr;
 	getToken();
@@ -482,33 +491,34 @@ TypePtr identifierType(SymTableNodePtr idPtr)
 
 //***************************************************************************
 
-TypePtr enumerationType(void)
+TypePtr
+enumerationType(void)
 {
 	SymTableNodePtr constantIdPtr = nullptr;
-	SymTableNodePtr lastIdPtr	 = nullptr;
-	TypePtr typePtr				  = createType();
+	SymTableNodePtr lastIdPtr = nullptr;
+	TypePtr typePtr = createType();
 	if (!typePtr)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc enumeration type ");
 	int32_t constantValue = -1;
-	typePtr->form		  = FRM_ENUM;
-	typePtr->size		  = sizeof(int32_t);
-	typePtr->typeIdPtr	= nullptr;
+	typePtr->form = FRM_ENUM;
+	typePtr->size = sizeof(int32_t);
+	typePtr->typeIdPtr = nullptr;
 	getToken();
 	//------------------------------------------------------------
 	// Process list of identifiers in this new enumeration type...
 	while (curToken == TKN_IDENTIFIER)
 	{
 		searchAndEnterLocalSymTable(constantIdPtr);
-		constantIdPtr->defn.key							= DFN_CONST;
+		constantIdPtr->defn.key = DFN_CONST;
 		constantIdPtr->defn.info.constant.value.integer = ++constantValue;
-		constantIdPtr->typePtr							= typePtr;
-		constantIdPtr->library							= CurLibrary;
+		constantIdPtr->typePtr = typePtr;
+		constantIdPtr->library = CurLibrary;
 		if (lastIdPtr == nullptr)
 			typePtr->info.enumeration.constIdPtr = lastIdPtr = constantIdPtr;
 		else
 		{
 			lastIdPtr->next = constantIdPtr;
-			lastIdPtr		= constantIdPtr;
+			lastIdPtr = constantIdPtr;
 		}
 		getToken();
 		ifTokenGet(TKN_COMMA);
@@ -520,7 +530,8 @@ TypePtr enumerationType(void)
 
 //***************************************************************************
 
-int32_t arraySize(TypePtr typePtr)
+int32_t
+arraySize(TypePtr typePtr)
 {
 	if (typePtr->info.array.elementTypePtr->size == 0)
 		typePtr->info.array.elementTypePtr->size = arraySize(typePtr->info.array.elementTypePtr);
@@ -540,7 +551,8 @@ int32_t arraySize(TypePtr typePtr)
 // VAR routines
 //***************************************************************************
 
-void varDeclarations(SymTableNodePtr routineIdPtr)
+void
+varDeclarations(SymTableNodePtr routineIdPtr)
 {
 	varOrFieldDeclarations(
 		routineIdPtr, STACK_FRAME_HEADER_SIZE + routineIdPtr->defn.info.routine.paramCount);
@@ -548,14 +560,15 @@ void varDeclarations(SymTableNodePtr routineIdPtr)
 
 //***************************************************************************
 
-void varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
+void
+varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 {
-	bool varFlag				  = (routineIdPtr != nullptr);
-	SymTableNodePtr idPtr		  = nullptr;
-	SymTableNodePtr firstIdPtr	= nullptr;
-	SymTableNodePtr lastIdPtr	 = nullptr;
+	bool varFlag = (routineIdPtr != nullptr);
+	SymTableNodePtr idPtr = nullptr;
+	SymTableNodePtr firstIdPtr = nullptr;
+	SymTableNodePtr lastIdPtr = nullptr;
 	SymTableNodePtr prevLastIdPtr = nullptr;
-	int32_t totalSize			  = 0;
+	int32_t totalSize = 0;
 	while ((curToken == TKN_IDENTIFIER) || (curToken == TKN_ETERNAL) || (curToken == TKN_STATIC))
 	{
 		VariableType varType = VAR_TYPE_NORMAL;
@@ -592,13 +605,13 @@ void varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 				if (varType == VAR_TYPE_ETERNAL)
 				{
 					int32_t curLevel = level;
-					level			 = 0;
+					level = 0;
 					searchAndEnterThisTable(idPtr, SymTableDisplay[0]);
 					level = curLevel;
 				}
 				else
 					searchAndEnterLocalSymTable(idPtr);
-				idPtr->library  = CurLibrary;
+				idPtr->library = CurLibrary;
 				idPtr->defn.key = DFN_VAR;
 			}
 			else
@@ -609,14 +622,13 @@ void varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 			if (!firstIdPtr)
 			{
 				firstIdPtr = lastIdPtr = idPtr;
-				if (varFlag && (varType != VAR_TYPE_ETERNAL) &&
-					(routineIdPtr->defn.info.routine.locals == nullptr))
+				if (varFlag && (varType != VAR_TYPE_ETERNAL) && (routineIdPtr->defn.info.routine.locals == nullptr))
 					routineIdPtr->defn.info.routine.locals = idPtr;
 			}
 			else
 			{
 				lastIdPtr->next = idPtr;
-				lastIdPtr		= idPtr;
+				lastIdPtr = idPtr;
 			}
 			getToken();
 			ifTokenGet(TKN_COMMA);
@@ -654,7 +666,7 @@ void varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 					}
 					else
 					{
-						dataPtr->integer					 = 0;
+						dataPtr->integer = 0;
 						EternalVariablesSizes[eternalOffset] = 0;
 					}
 					eternalOffset++;
@@ -680,7 +692,7 @@ void varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 				//----------------
 				// record field...
 				idPtr->defn.info.data.varType = VAR_TYPE_NORMAL;
-				idPtr->defn.info.data.offset  = offset;
+				idPtr->defn.info.data.offset = offset;
 				offset += size;
 			}
 		}

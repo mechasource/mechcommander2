@@ -18,15 +18,19 @@ SimpleComponentListBox component.
 //-------------------------------------------------------------------------------------------------
 ComponentListBox::ComponentListBox()
 {
-	clickSFX	 = -1;
+	clickSFX = -1;
 	highlightSFX = -1;
-	disabledSFX  = -1;
-	helpID		 = IDS_HELP_WEAPONS;
+	disabledSFX = -1;
+	helpID = IDS_HELP_WEAPONS;
 }
 
-ComponentListBox::~ComponentListBox() { aListBox::destroy(); }
+ComponentListBox::~ComponentListBox()
+{
+	aListBox::destroy();
+}
 
-void ComponentListBox::setMech(LogisticsVariant* pMech)
+void
+ComponentListBox::setMech(LogisticsVariant* pMech)
 {
 	removeAllItems(true);
 	if (pMech)
@@ -36,7 +40,7 @@ void ComponentListBox::setMech(LogisticsVariant* pMech)
 		pMech->getComponents(componentCount, components);
 		setComponents(componentCount, components);
 		int32_t sensor = pMech->getSensorID();
-		int32_t ECM	= pMech->getECM();
+		int32_t ECM = pMech->getECM();
 		if (sensor > 0)
 		{
 			aTextListItem* textItem = new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
@@ -56,7 +60,8 @@ void ComponentListBox::setMech(LogisticsVariant* pMech)
 	}
 }
 
-void ComponentListBox::setVehicle(LogisticsVehicle* pVeh)
+void
+ComponentListBox::setVehicle(LogisticsVehicle* pVeh)
 {
 	removeAllItems(true);
 	if (pVeh)
@@ -68,7 +73,8 @@ void ComponentListBox::setVehicle(LogisticsVehicle* pVeh)
 	}
 }
 
-void ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** components)
+void
+ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** components)
 {
 	LogisticsComponent* finalList[64];
 	int32_t finalListCount[64];
@@ -84,8 +90,7 @@ void ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent*
 		memset(finalListCount, 0, sizeof(int32_t) * 64);
 		for (j = 0; j < componentCount; j++)
 		{
-			if (components[j]->getRangeType() ==
-				(LogisticsComponent::WEAPON_RANGE)i) // int16_t, med, int32_t
+			if (components[j]->getRangeType() == (LogisticsComponent::WEAPON_RANGE)i) // int16_t, med, int32_t
 			{
 				bool bFound = 0;
 				for (k = 0; k < 64; k++)

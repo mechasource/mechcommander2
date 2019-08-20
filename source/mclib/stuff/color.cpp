@@ -24,21 +24,22 @@ const RGBColor RGBColor::Unassigned(-1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
-bool Stuff::Close_Enough(const RGBColor& c1, const RGBColor& c2,
+bool
+Stuff::Close_Enough(const RGBColor& c1, const RGBColor& c2,
 	float e // = SMALL
 )
 {
 	Check_Object(&c1);
 	Check_Object(&c2);
-	return Close_Enough(c1.red, c2.red, e) && Close_Enough(c1.green, c2.green, e) &&
-		Close_Enough(c1.blue, c2.blue, e);
+	return Close_Enough(c1.red, c2.red, e) && Close_Enough(c1.green, c2.green, e) && Close_Enough(c1.blue, c2.blue, e);
 }
 
 //
 //###########################################################################
 //###########################################################################
 //
-RGBColor& RGBColor::operator=(const HSVColor& color)
+RGBColor&
+RGBColor::operator=(const HSVColor& color)
 {
 	// Check_Object(this);
 	Check_Object(&color);
@@ -75,7 +76,7 @@ RGBColor& RGBColor::operator=(const HSVColor& color)
 	switch (sextant)
 	{
 	case 0:
-		red   = color.value;
+		red = color.value;
 		green = color.value * (1.0f - color.saturation * (1.0f - remainder));
 		_ASSERT(green >= 0.0f && green <= 1.0f);
 		blue = a;
@@ -84,16 +85,16 @@ RGBColor& RGBColor::operator=(const HSVColor& color)
 		red = color.value * (1.0f - color.saturation * remainder);
 		_ASSERT(red >= 0.0f && red <= 1.0f);
 		green = color.value;
-		blue  = a;
+		blue = a;
 		break;
 	case 2:
-		red   = a;
+		red = a;
 		green = color.value;
-		blue  = color.value * (1.0f - color.saturation * (1.0f - remainder));
+		blue = color.value * (1.0f - color.saturation * (1.0f - remainder));
 		_ASSERT(blue >= 0.0f && blue <= 1.0f);
 		break;
 	case 3:
-		red   = a;
+		red = a;
 		green = color.value * (1.0f - color.saturation * remainder);
 		_ASSERT(green >= 0.0f && green <= 1.0f);
 		blue = color.value;
@@ -102,12 +103,12 @@ RGBColor& RGBColor::operator=(const HSVColor& color)
 		red = color.value * (1.0f - color.saturation * (1.0f - remainder));
 		_ASSERT(red >= 0.0f && red <= 1.0f);
 		green = a;
-		blue  = color.value;
+		blue = color.value;
 		break;
 	case 5:
-		red   = color.value;
+		red = color.value;
 		green = a;
-		blue  = color.value * (1.0f - color.saturation * remainder);
+		blue = color.value * (1.0f - color.saturation * remainder);
 		_ASSERT(blue >= 0.0f && blue <= 1.0f);
 		break;
 	}
@@ -118,7 +119,8 @@ RGBColor& RGBColor::operator=(const HSVColor& color)
 //###########################################################################
 //###########################################################################
 //
-void Stuff::Convert_From_Ascii(PCSTR str, RGBColor* color)
+void
+Stuff::Convert_From_Ascii(PCSTR str, RGBColor* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
@@ -126,10 +128,10 @@ void Stuff::Convert_From_Ascii(PCSTR str, RGBColor* color)
 	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->red = AtoF(token);
-	token	  = parse_string.GetNthToken(1);
+	token = parse_string.GetNthToken(1);
 	Check_Pointer(token);
 	color->green = AtoF(token);
-	token		 = parse_string.GetNthToken(2);
+	token = parse_string.GetNthToken(2);
 	Check_Pointer(token);
 	color->blue = AtoF(token);
 	Check_Object(color);
@@ -141,21 +143,22 @@ const RGBAColor RGBAColor::Unassigned(-1.0f, -1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
-bool Stuff::Close_Enough(const RGBAColor& c1, const RGBAColor& c2,
+bool
+Stuff::Close_Enough(const RGBAColor& c1, const RGBAColor& c2,
 	float e // = SMALL
 )
 {
 	Check_Object(&c1);
 	Check_Object(&c2);
-	return Close_Enough(c1.red, c2.red, e) && Close_Enough(c1.green, c2.green, e) &&
-		Close_Enough(c1.blue, c2.blue, e) && Close_Enough(c1.alpha, c2.alpha, e);
+	return Close_Enough(c1.red, c2.red, e) && Close_Enough(c1.green, c2.green, e) && Close_Enough(c1.blue, c2.blue, e) && Close_Enough(c1.alpha, c2.alpha, e);
 }
 
 //
 //###########################################################################
 //###########################################################################
 //
-void Stuff::Convert_From_Ascii(PCSTR str, RGBAColor* color)
+void
+Stuff::Convert_From_Ascii(PCSTR str, RGBAColor* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
@@ -163,13 +166,13 @@ void Stuff::Convert_From_Ascii(PCSTR str, RGBAColor* color)
 	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->red = AtoF(token);
-	token	  = parse_string.GetNthToken(1);
+	token = parse_string.GetNthToken(1);
 	Check_Pointer(token);
 	color->green = AtoF(token);
-	token		 = parse_string.GetNthToken(2);
+	token = parse_string.GetNthToken(2);
 	Check_Pointer(token);
 	color->blue = AtoF(token);
-	token		= parse_string.GetNthToken(3);
+	token = parse_string.GetNthToken(3);
 	Check_Pointer(token);
 	color->alpha = AtoF(token);
 	Check_Object(color);
@@ -183,21 +186,22 @@ const HSVColor HSVColor::Unassigned(-1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
-bool Stuff::Close_Enough(const HSVColor& c1, const HSVColor& c2,
+bool
+Stuff::Close_Enough(const HSVColor& c1, const HSVColor& c2,
 	float e // = SMALL
 )
 {
 	Check_Object(&c1);
 	Check_Object(&c2);
-	return Close_Enough(c1.hue, c2.hue, e) && Close_Enough(c1.saturation, c2.saturation, e) &&
-		Close_Enough(c1.value, c2.value, e);
+	return Close_Enough(c1.hue, c2.hue, e) && Close_Enough(c1.saturation, c2.saturation, e) && Close_Enough(c1.value, c2.value, e);
 }
 
 //
 //###########################################################################
 //###########################################################################
 //
-HSVColor& HSVColor::operator=(const RGBColor& color)
+HSVColor&
+HSVColor::operator=(const RGBColor& color)
 {
 	// Check_Object(this);
 	Check_Object(&color);
@@ -263,7 +267,8 @@ HSVColor& HSVColor::operator=(const RGBColor& color)
 //###########################################################################
 //###########################################################################
 //
-void Stuff::Convert_From_Ascii(PCSTR str, HSVColor* color)
+void
+Stuff::Convert_From_Ascii(PCSTR str, HSVColor* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
@@ -271,10 +276,10 @@ void Stuff::Convert_From_Ascii(PCSTR str, HSVColor* color)
 	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->hue = AtoF(token);
-	token	  = parse_string.GetNthToken(1);
+	token = parse_string.GetNthToken(1);
 	Check_Pointer(token);
 	color->saturation = AtoF(token);
-	token			  = parse_string.GetNthToken(2);
+	token = parse_string.GetNthToken(2);
 	Check_Pointer(token);
 	color->value = AtoF(token);
 	Check_Object(color);
@@ -286,21 +291,22 @@ const HSVAColor HSVAColor::Unassigned(-1.0f, -1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
-bool Stuff::Close_Enough(const HSVAColor& c1, const HSVAColor& c2,
+bool
+Stuff::Close_Enough(const HSVAColor& c1, const HSVAColor& c2,
 	float e // = SMALL
 )
 {
 	Check_Object(&c1);
 	Check_Object(&c2);
-	return Close_Enough(c1.hue, c2.hue, e) && Close_Enough(c1.saturation, c2.saturation, e) &&
-		Close_Enough(c1.value, c2.value, e) && Close_Enough(c1.alpha, c2.alpha, e);
+	return Close_Enough(c1.hue, c2.hue, e) && Close_Enough(c1.saturation, c2.saturation, e) && Close_Enough(c1.value, c2.value, e) && Close_Enough(c1.alpha, c2.alpha, e);
 }
 
 //
 //###########################################################################
 //###########################################################################
 //
-void Stuff::Convert_From_Ascii(PCSTR str, HSVAColor* color)
+void
+Stuff::Convert_From_Ascii(PCSTR str, HSVAColor* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
@@ -308,13 +314,13 @@ void Stuff::Convert_From_Ascii(PCSTR str, HSVAColor* color)
 	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->hue = AtoF(token);
-	token	  = parse_string.GetNthToken(1);
+	token = parse_string.GetNthToken(1);
 	Check_Pointer(token);
 	color->saturation = AtoF(token);
-	token			  = parse_string.GetNthToken(2);
+	token = parse_string.GetNthToken(2);
 	Check_Pointer(token);
 	color->value = AtoF(token);
-	token		 = parse_string.GetNthToken(3);
+	token = parse_string.GetNthToken(3);
 	Check_Pointer(token);
 	color->alpha = AtoF(token);
 	Check_Object(color);

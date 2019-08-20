@@ -25,7 +25,8 @@ const UnitVector3D UnitVector3D::Down(DOWN_X, DOWN_Y, DOWN_Z);
 //#############################################################################
 //#############################################################################
 //
-UnitVector3D& UnitVector3D::Lerp(const UnitVector3D& v1, const UnitVector3D& v2, float t)
+UnitVector3D&
+UnitVector3D::Lerp(const UnitVector3D& v1, const UnitVector3D& v2, float t)
 {
 	// Check_Pointer(this);
 	Check_Object(&v1);
@@ -46,11 +47,12 @@ UnitVector3D& UnitVector3D::Lerp(const UnitVector3D& v1, const UnitVector3D& v2,
 //#############################################################################
 //#############################################################################
 //
-void UnitVector3D::TestInstance(void) const
+void
+UnitVector3D::TestInstance(void) const
 {
 #ifdef _ARMOR
 	float length = Vector3D::GetLengthSquared();
-	float diff   = 1.0f - length;
+	float diff = 1.0f - length;
 	// _ASSERT(Small_Enough(diff,3e-5f));
 	_ASSERT(Small_Enough(diff));
 #endif

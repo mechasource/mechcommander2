@@ -38,11 +38,11 @@ class LogisticsScreen : public aObject
 {
 	enum Status
 	{
-		RUNNING  = 0,
-		NEXT	 = 1,
+		RUNNING = 0,
+		NEXT = 1,
 		PREVIOUS = 2,
-		DONE	 = 3,
-		PAUSED   = 4,
+		DONE = 3,
+		PAUSED = 4,
 		UP,
 		DOWN,
 		YES,
@@ -88,14 +88,14 @@ protected:
 
 	void beginFadeIn(float fNewTime)
 	{
-		fadeInTime  = fNewTime;
+		fadeInTime = fNewTime;
 		fadeOutTime = fadeTime = 0.f;
 	}
 	void beginFadeOut(float fNewTime)
 	{
-		fadeInTime  = 0.f;
+		fadeInTime = 0.f;
 		fadeOutTime = fNewTime;
-		fadeTime	= 0.f;
+		fadeTime = 0.f;
 	}
 
 	void clear(void); // remove everything

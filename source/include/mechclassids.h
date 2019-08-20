@@ -50,67 +50,67 @@ enum __stuff_classids : uint32_t
 {
 	FirstStuffClassID = 0,
 	StuffClassIDCount = 64,
-	LastStuffClassID  = FirstStuffClassID + StuffClassIDCount - 1,
+	LastStuffClassID = FirstStuffClassID + StuffClassIDCount - 1,
 
 	FirstMLRClassID,
 	MLRClassIDCount = 64,
-	LastMLRClassID  = FirstMLRClassID + MLRClassIDCount - 1,
+	LastMLRClassID = FirstMLRClassID + MLRClassIDCount - 1,
 
 	FirstElementRendererClassID,
 	ElementRendererClassIDCount = 64,
-	LastElementRendererClassID  = FirstElementRendererClassID + ElementRendererClassIDCount - 1,
+	LastElementRendererClassID = FirstElementRendererClassID + ElementRendererClassIDCount - 1,
 
 	FirstProxyClassID,
 	ProxyClassIDCount = 64,
-	LastProxyClassID  = FirstProxyClassID + ProxyClassIDCount - 1,
+	LastProxyClassID = FirstProxyClassID + ProxyClassIDCount - 1,
 
 	FirstElementProxyClassID,
 	ElementProxyClassIDCount = 64,
-	LastElementProxyClassID  = FirstElementProxyClassID + ElementProxyClassIDCount - 1,
+	LastElementProxyClassID = FirstElementProxyClassID + ElementProxyClassIDCount - 1,
 
 	FirstMGProxyClassID,
 	MGProxyClassIDCount = 64,
-	LastMGProxyClassID  = FirstMGProxyClassID + MGProxyClassIDCount - 1,
+	LastMGProxyClassID = FirstMGProxyClassID + MGProxyClassIDCount - 1,
 
 	FirstSIProxyClassID,
 	SIProxyClassIDCount = 64,
-	LastSIProxyClassID  = FirstSIProxyClassID + SIProxyClassIDCount - 1,
+	LastSIProxyClassID = FirstSIProxyClassID + SIProxyClassIDCount - 1,
 
 	FirstAdeptClassID,
 	AdeptClassIDCount = 256,
-	LastAdeptClassID  = FirstAdeptClassID + AdeptClassIDCount - 1,
+	LastAdeptClassID = FirstAdeptClassID + AdeptClassIDCount - 1,
 
 	FirstWindowsAdeptClassID,
 	WindowsAdeptClassIDCount = 32,
-	LastWindowsAdeptClassID  = FirstWindowsAdeptClassID + WindowsAdeptClassIDCount - 1,
+	LastWindowsAdeptClassID = FirstWindowsAdeptClassID + WindowsAdeptClassIDCount - 1,
 
 	FirstGOSAdeptClassID,
 	GOSAdeptClassIDCount = 16,
-	LastGOSAdeptClassID  = FirstGOSAdeptClassID + GOSAdeptClassIDCount - 1,
+	LastGOSAdeptClassID = FirstGOSAdeptClassID + GOSAdeptClassIDCount - 1,
 
 	FirstSRClassID,
 	SRClassIDCount = 256,
-	LastSRClassID  = FirstSRClassID + SRClassIDCount - 1,
+	LastSRClassID = FirstSRClassID + SRClassIDCount - 1,
 
 	FirstSRGOSClassID,
 	SRGOSClassIDCount = 16,
-	LastSRGOSClassID  = FirstSRGOSClassID + SRGOSClassIDCount - 1,
+	LastSRGOSClassID = FirstSRGOSClassID + SRGOSClassIDCount - 1,
 
 	FirstMWGOSClassID,
 	MWGOSClassIDCount = 16,
-	LastMWGOSClassID  = FirstMWGOSClassID + MWGOSClassIDCount - 1,
+	LastMWGOSClassID = FirstMWGOSClassID + MWGOSClassIDCount - 1,
 
 	FirstMAXProxiesClassID,
 	MAXProxiesClassIDCount = 16,
-	LastMAXProxiesClassID  = FirstMAXProxiesClassID + MAXProxiesClassIDCount - 1,
+	LastMAXProxiesClassID = FirstMAXProxiesClassID + MAXProxiesClassIDCount - 1,
 
 	FirstMW4ClassID,
 	MW4ClassIDCount = 256,
-	LastMW4ClassID  = FirstMW4ClassID + MW4ClassIDCount - 1,
+	LastMW4ClassID = FirstMW4ClassID + MW4ClassIDCount - 1,
 
 	FirstgosFXClassID,
 	gosFXClassIDCount = 64,
-	LastgosFXClassID  = FirstgosFXClassID + gosFXClassIDCount - 1,
+	LastgosFXClassID = FirstgosFXClassID + gosFXClassIDCount - 1,
 
 	//
 	//------------------------------------------
@@ -122,7 +122,7 @@ enum __stuff_classids : uint32_t
 	//
 	FirstTemporaryClassID,
 	TemporaryClassIDCount = 16,
-	LastTemporaryClassID  = FirstTemporaryClassID + TemporaryClassIDCount - 1,
+	LastTemporaryClassID = FirstTemporaryClassID + TemporaryClassIDCount - 1,
 
 	ClassIDCount // does this work?
 };
@@ -139,7 +139,7 @@ enum __stuff_attributeids : uint32_t
 	// attribute IDs
 	//-------------------------
 	//
-	NullClassID	= __stuff_classids::ClassIDCount,
+	NullClassID = __stuff_classids::ClassIDCount,
 	MStringClassID = __stuff_classids::FirstStuffClassID,
 	IntClassID,
 	ScalarClassID,

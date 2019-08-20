@@ -16,7 +16,7 @@ extern uint32_t gameResourceHandle;
 Forest::Forest(int32_t newID)
 {
 	centerX = centerY = 0;
-	radius			  = 1.0f;
+	radius = 1.0f;
 	for (size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		percentages[i] = 0;
@@ -28,9 +28,9 @@ Forest::Forest(int32_t newID)
 	}
 	maxDensity = 7.f;
 	minDensity = .001f;
-	maxHeight  = 1.25;
-	minHeight  = .75;
-	bRandom	= true;
+	maxHeight = 1.25;
+	minHeight = .75;
+	bRandom = true;
 	char tmp[256];
 	cLoadString(IDS_UNNAMDE_FOREST, tmp, 255, gameResourceHandle);
 	name.Format(tmp, ID);
@@ -38,16 +38,16 @@ Forest::Forest(int32_t newID)
 
 Forest::Forest(const Forest& src)
 {
-	centerX	= src.centerX;
-	centerY	= src.centerY;
-	fileName   = src.fileName;
-	bRandom	= src.bRandom;
-	maxHeight  = src.maxHeight;
-	minHeight  = src.minHeight;
+	centerX = src.centerX;
+	centerY = src.centerY;
+	fileName = src.fileName;
+	bRandom = src.bRandom;
+	maxHeight = src.maxHeight;
+	minHeight = src.minHeight;
 	maxDensity = src.maxDensity;
 	minDensity = src.minDensity;
-	name	   = src.name;
-	radius	 = src.radius;
+	name = src.name;
+	radius = src.radius;
 	for (size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		percentages[i] = src.percentages[i];
@@ -55,30 +55,32 @@ Forest::Forest(const Forest& src)
 	ID = src.ID; // this is a bit worisome
 }
 
-Forest& Forest::operator=(const Forest& src)
+Forest&
+Forest::operator=(const Forest& src)
 {
 	if (&src != this)
 	{
-		centerX	= src.centerX;
-		centerY	= src.centerY;
-		fileName   = src.fileName;
-		bRandom	= src.bRandom;
-		maxHeight  = src.maxHeight;
-		minHeight  = src.minHeight;
+		centerX = src.centerX;
+		centerY = src.centerY;
+		fileName = src.fileName;
+		bRandom = src.bRandom;
+		maxHeight = src.maxHeight;
+		minHeight = src.minHeight;
 		maxDensity = src.maxDensity;
 		minDensity = src.minDensity;
-		radius	 = src.radius;
+		radius = src.radius;
 		for (size_t i = 0; i < FOREST_TYPES; i++)
 		{
 			percentages[i] = src.percentages[i];
 		}
-		ID   = src.ID; // this is a bit worisome
+		ID = src.ID; // this is a bit worisome
 		name = src.name;
 	}
 	return *this;
 }
 
-void Forest::init()
+void
+Forest::init()
 {
 	FitIniFile file;
 	if (NO_ERROR != file.open(fileName))
@@ -92,7 +94,8 @@ void Forest::init()
 	init(file);
 }
 
-void Forest::init(FitIniFile& file)
+void
+Forest::init(FitIniFile& file)
 {
 	char headerName[256];
 	for (size_t i = 0; i < FOREST_TYPES; i++)
@@ -111,13 +114,14 @@ void Forest::init(FitIniFile& file)
 	file.readIdBoolean("Random", bRandom);
 	file.readIdFloat("Radius", radius);
 	file.readIdString("Name", tmp, 255);
-	name   = tmp;
+	name = tmp;
 	tmp[0] = 0;
 	file.readIdString("FileName", tmp, 255);
 	fileName = tmp;
 }
 
-void Forest::save()
+void
+Forest::save()
 {
 	FitIniFile file;
 	if (NO_ERROR != file.create((PSTR)(PCSTR)fileName))
@@ -131,7 +135,8 @@ void Forest::save()
 	save(file);
 }
 
-void Forest::save(FitIniFile& file)
+void
+Forest::save(FitIniFile& file)
 {
 	char headerName[256];
 	for (size_t i = 0; i < FOREST_TYPES; i++)

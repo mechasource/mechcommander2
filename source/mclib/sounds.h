@@ -12,37 +12,37 @@
 //---------------------------------------------------------------------------
 // Macro Definitions
 
-#define BOMB_EXPLODE 0		 // Should never be used
-#define ER_LASER_FIRE 1		 // ER Laser Fire
-#define BIGDEATH 2			 // Mech Explosion
-#define LASERHITS 3			 // All other Laser Fire/Hit
-#define MECH_COLLIDE 4		 // Mech Collisions
-#define LRM_HIT 5			 // LRM Hit
-#define FLAMER_FIRE 6		 // Flamer Fire
-#define AC2_FIRE 7			 // AutoCannon Fire
-#define LRM_FIRE 8			 // Lrm Fire
-#define SRM_HIT 9			 // SRM Hit
-#define PPC_FIRE 10			 // PPC Fire
-#define SRM_FIRE 11			 // SRM Fire
-#define GAUSS_FIRE 12		 // Gauss Rifle Fire
-#define FOOTFALL_SMALL 13	// Mech Footstep
-#define TREEFALL 14			 // TreeFall
-#define BUTTON5 15			 // GUI SFX
-#define BUTTON7 16			 // GUI SFX
-#define BUTTON6 17			 // GUI SFX
-#define BUZZER1 18			 // GUI SFX
-#define CRITICAL_HIT_SFX 19  // Mech Critical Hit
-#define PING_SFX 20			 // Sensor Contact
-#define MGUN_FIRE 21		 // Machine Gun Fire
-#define OBJECT_FIRE 22		 // Burning Fire
-#define ER_LASER_HIT 23		 // ER Laser Hit
-#define GAUSS_HIT 24		 // Gauss Rifle Hit
-#define AC2_HIT 25			 // AutoCannon Hit
-#define MGUN_HIT 26			 // Machine Gun Hit
-#define EJECT_SFX 27		 // Eject
-#define TREEFALL1 28		 // Treefall
-#define MECH_FALL_SOUND 29   // Mech Fall Sound
-#define ELEMENTAL_HIT 30	 // Elemental Shredding a Mech Sound
+#define BOMB_EXPLODE 0 // Should never be used
+#define ER_LASER_FIRE 1 // ER Laser Fire
+#define BIGDEATH 2 // Mech Explosion
+#define LASERHITS 3 // All other Laser Fire/Hit
+#define MECH_COLLIDE 4 // Mech Collisions
+#define LRM_HIT 5 // LRM Hit
+#define FLAMER_FIRE 6 // Flamer Fire
+#define AC2_FIRE 7 // AutoCannon Fire
+#define LRM_FIRE 8 // Lrm Fire
+#define SRM_HIT 9 // SRM Hit
+#define PPC_FIRE 10 // PPC Fire
+#define SRM_FIRE 11 // SRM Fire
+#define GAUSS_FIRE 12 // Gauss Rifle Fire
+#define FOOTFALL_SMALL 13 // Mech Footstep
+#define TREEFALL 14 // TreeFall
+#define BUTTON5 15 // GUI SFX
+#define BUTTON7 16 // GUI SFX
+#define BUTTON6 17 // GUI SFX
+#define BUZZER1 18 // GUI SFX
+#define CRITICAL_HIT_SFX 19 // Mech Critical Hit
+#define PING_SFX 20 // Sensor Contact
+#define MGUN_FIRE 21 // Machine Gun Fire
+#define OBJECT_FIRE 22 // Burning Fire
+#define ER_LASER_HIT 23 // ER Laser Hit
+#define GAUSS_HIT 24 // Gauss Rifle Hit
+#define AC2_HIT 25 // AutoCannon Hit
+#define MGUN_HIT 26 // Machine Gun Hit
+#define EJECT_SFX 27 // Eject
+#define TREEFALL1 28 // Treefall
+#define MECH_FALL_SOUND 29 // Mech Fall Sound
+#define ELEMENTAL_HIT 30 // Elemental Shredding a Mech Sound
 #define GENERAL_ALARM_SFX 34 // Perimeter alarm general alarm
 #define BUILDING_EXPLODE 35
 #define ELECTRIC_HUM 36
@@ -158,7 +158,7 @@
 #define COMBAT_TUNE_5 19 // Combat Tune
 #define NUM_COMBAT_TUNES 6
 
-#define GAME_FINALE 20		  // Played when no other music is playing
+#define GAME_FINALE 20 // Played when no other music is playing
 #define BACKGROUND_AMBIENT 21 // Played when no other music is playing
 
 #define LOGISTICS_LOOP 22

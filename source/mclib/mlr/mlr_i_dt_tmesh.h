@@ -60,7 +60,7 @@ public:
 		}
 		else
 		{
-			passes			= 2;
+			passes = 2;
 			referenceState2 = _state;
 		}
 	}
@@ -149,8 +149,10 @@ protected:
 	//		uint16_t	numGOSVertices2uv;
 };
 
-MLR_I_DT_TMesh* CreateIndexedTriCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
+MLR_I_DT_TMesh*
+CreateIndexedTriCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
 
-MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
+MLRShape*
+CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

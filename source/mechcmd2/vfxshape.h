@@ -33,9 +33,9 @@ public:
 	void init(void)
 	{
 		frameList = stupidHeader = nullptr;
-		lastTurnUsed			 = 0;
-		next					 = nullptr;
-		owner					 = nullptr;
+		lastTurnUsed = 0;
+		next = nullptr;
+		owner = nullptr;
 	}
 
 	Shape(void) { init(void); }

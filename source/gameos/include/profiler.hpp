@@ -19,22 +19,22 @@ extern bool NewPerformanceRegister;
 //
 typedef struct _Stat
 {
-	_Stat* pNext;	// Pointer to Next
-	uint32_t Flags;  // flags
-	PSTR TypeName;   // Pointer to type name
-	gosType Type;	// Type of variable
-	uint32_t Count;  // Count for average
+	_Stat* pNext; // Pointer to Next
+	uint32_t Flags; // flags
+	PSTR TypeName; // Pointer to type name
+	gosType Type; // Type of variable
+	uint32_t Count; // Count for average
 	PVOID pVariable; // Pointer to the variable in question
 
-	float MaxPercentage;   // Max percentage
-	float MinPercentage;   // Min percentage
+	float MaxPercentage; // Max percentage
+	float MinPercentage; // Min percentage
 	float TotalPercentage; // Total percentage
-	float MaxValue;		   // Highest graph value (if flag set)
-	float Minimum;		   // Lowest
-	float Maximum;		   // Highest
-	float Total;		   // Total (for average)
+	float MaxValue; // Highest graph value (if flag set)
+	float Minimum; // Lowest
+	float Maximum; // Highest
+	float Total; // Total (for average)
 
-	float* History;  // Last 512 values (for graphing)
+	float* History; // Last 512 values (for graphing)
 	bool BlockOwner; // Do I own the whole statistic history block?
 
 	char Name[1]; // Name of statistic
@@ -52,10 +52,10 @@ __inline void __stdcall SetHistory(Stat* pStat, int32_t GraphHead, float Value)
 	pStat->History[GraphHead * StatsInBlock] = Value;
 }
 
-extern Stat* pStatistics;		  // Pointer to chain of statistics
-extern uint32_t GraphHead;		  // Pointer to current element in statistics History
+extern Stat* pStatistics; // Pointer to chain of statistics
+extern uint32_t GraphHead; // Pointer to current element in statistics History
 extern uint32_t NumberStatistics; // Entries in statistic list
-extern Stat* GraphsActive[20];	// Number of frame graphs active
+extern Stat* GraphsActive[20]; // Number of frame graphs active
 extern uint32_t NumberGraphsActive;
 
 void __stdcall UpdateGraphs(void);

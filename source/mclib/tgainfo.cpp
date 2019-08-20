@@ -21,15 +21,16 @@ typedef struct _RGB
 } RGB;
 
 //---------------------------------------------------------------------------
-void tgaDecomp(puint8_t dest, puint8_t source, TGAFileHeader* tga_header)
+void
+tgaDecomp(puint8_t dest, puint8_t source, TGAFileHeader* tga_header)
 {
 	//---------------------------------------------------------------------
 	// Display Image based on Format 10 (0x0a).  RLE true color.
 	//----------------------------------------------
 	// Parse RLE data -- Check for RLE/RAW byte
-	puint8_t data_offset  = source;
+	puint8_t data_offset = source;
 	int32_t currentHeight = 0;
-	int32_t currentWidth  = 0;
+	int32_t currentWidth = 0;
 	while (currentHeight != tga_header->height)
 	{
 		while (currentWidth != tga_header->width)
@@ -137,15 +138,16 @@ void tgaDecomp(puint8_t dest, puint8_t source, TGAFileHeader* tga_header)
 }
 
 //---------------------------------------------------------------------------
-void flipTopToBottom(puint8_t buffer, uint8_t depth, int32_t width, int32_t height)
+void
+flipTopToBottom(puint8_t buffer, uint8_t depth, int32_t width, int32_t height)
 {
 	//-----------------------------------------------------------
 	// ScanLine by Scanline
-	puint8_t tmpBuffer  = (puint8_t)malloc(width * height * (depth >> 3));
+	puint8_t tmpBuffer = (puint8_t)malloc(width * height * (depth >> 3));
 	puint8_t tmpPointer = tmpBuffer;
 	//----------------------------------
 	// Point to last scanline.
-	int32_t pixelWidth  = width * (depth >> 3);
+	int32_t pixelWidth = width * (depth >> 3);
 	puint8_t workBuffer = buffer + ((height - 1) * pixelWidth);
 	for (size_t i = 0; i < height; i++)
 	{
@@ -158,7 +160,8 @@ void flipTopToBottom(puint8_t buffer, uint8_t depth, int32_t width, int32_t heig
 }
 
 //---------------------------------------------------------------------------
-void tgaCopy(puint8_t dest, puint8_t src, int32_t size)
+void
+tgaCopy(puint8_t dest, puint8_t src, int32_t size)
 {
 	int32_t numCopied = 0;
 	while (numCopied != size)
@@ -185,23 +188,19 @@ std::wstring* g_textureCache_FilenameOfLastLoadedTexture =
 	nullptr; /*This is an (std::wstring *) instead of an std::wstring because apparently
 				gos memory management has a problem with global static
 				allocation of EStrings.*/
-static int32_t g_textureCache_WidthOfLastLoadedTexture  = 0; /*just to be sure*/
+static int32_t g_textureCache_WidthOfLastLoadedTexture = 0; /*just to be sure*/
 static int32_t g_textureCache_HeightOfLastLoadedTexture = 0; /*just to be sure*/
-static int32_t g_textureCache_NumberOfConsecutiveLoads  = 0;
-static bool g_textureCache_LastTextureIsCached			= false;
+static int32_t g_textureCache_NumberOfConsecutiveLoads = 0;
+static bool g_textureCache_LastTextureIsCached = false;
 
-void loadTGATexture(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
+void
+loadTGATexture(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
 {
 	if (!g_textureCache_FilenameOfLastLoadedTexture)
 		g_textureCache_FilenameOfLastLoadedTexture = new std::wstring;
 	if (width * height * sizeof(uint32_t) <= g_textureCache_BufferSize)
 	{
-		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) &&
-			(0 ==
-				strcmp(
-					tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) &&
-			((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture) &&
-			((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture))
+		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) && (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) && ((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture) && ((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture))
 		{
 			if (g_textureCache_LastTextureIsCached)
 			{
@@ -239,7 +238,7 @@ void loadTGATexture(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t hei
 		// Must check image_descriptor to see if we need to un upside down
 		// image.
 		bool left = (header->image_descriptor & 16) != 0;
-		bool top  = (header->image_descriptor & 32) != 0;
+		bool top = (header->image_descriptor & 32) != 0;
 		if (!top && !left)
 		{
 			//--------------------------------
@@ -271,7 +270,7 @@ void loadTGATexture(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t hei
 		// Must check image_descriptor to see if we need to un upside down
 		// image.
 		bool left = (header->image_descriptor & 16) != 0;
-		bool top  = (header->image_descriptor & 32) != 0;
+		bool top = (header->image_descriptor & 32) != 0;
 		if (!top && !left)
 		{
 			//--------------------------------
@@ -293,35 +292,31 @@ void loadTGATexture(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t hei
 	free(tgaBuffer);
 	if (width * height * sizeof(uint32_t) <= g_textureCache_BufferSize)
 	{
-		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) &&
-			(0 ==
-				strcmp(
-					tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) &&
-			((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture) &&
-			((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture))
+		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) && (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) && ((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture) && ((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture))
 		{
 			g_textureCache_NumberOfConsecutiveLoads += 1;
 			if (2 == g_textureCache_NumberOfConsecutiveLoads)
 			{
 				memcpy(g_textureCache_Buffer, ourRAM, width * height * sizeof(uint32_t));
 				(*g_textureCache_FilenameOfLastLoadedTexture) = tgaFile->getFilename();
-				g_textureCache_WidthOfLastLoadedTexture		  = width;
-				g_textureCache_HeightOfLastLoadedTexture	  = height;
-				g_textureCache_LastTextureIsCached			  = true;
+				g_textureCache_WidthOfLastLoadedTexture = width;
+				g_textureCache_HeightOfLastLoadedTexture = height;
+				g_textureCache_LastTextureIsCached = true;
 			}
 		}
 		else
 		{
 			(*g_textureCache_FilenameOfLastLoadedTexture) = tgaFile->getFilename();
-			g_textureCache_WidthOfLastLoadedTexture		  = width;
-			g_textureCache_HeightOfLastLoadedTexture	  = height;
-			g_textureCache_NumberOfConsecutiveLoads		  = 1;
-			g_textureCache_LastTextureIsCached			  = false;
+			g_textureCache_WidthOfLastLoadedTexture = width;
+			g_textureCache_HeightOfLastLoadedTexture = height;
+			g_textureCache_NumberOfConsecutiveLoads = 1;
+			g_textureCache_LastTextureIsCached = false;
 		}
 	}
 }
 
-void loadTGAMask(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
+void
+loadTGAMask(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
 {
 	puint8_t tgaBuffer = (puint8_t)malloc(tgaFile->fileSize());
 	tgaFile->read(tgaBuffer, tgaFile->fileSize());
@@ -348,7 +343,7 @@ void loadTGAMask(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height
 		// Must check image_descriptor to see if we need to un upside down
 		// image.
 		bool left = (header->image_descriptor & 16) != 0;
-		bool top  = (header->image_descriptor & 32) != 0;
+		bool top = (header->image_descriptor & 32) != 0;
 		if (!top && !left)
 		{
 			//--------------------------------

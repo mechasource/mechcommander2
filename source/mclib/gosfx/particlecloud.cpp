@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
-	: Effect__Specification(class_id, stream, gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version) :
+	Effect__Specification(class_id, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -53,8 +53,8 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 //------------------------------------------------------------------------------
 //
 gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id)
-	: Effect__Specification(class_id)
+	Stuff::RegisteredClass::ClassID class_id) :
+	Effect__Specification(class_id)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_maxParticleCount = 0;
@@ -63,7 +63,8 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud__Specification::Save(std::iostream stream)
+void
+gosFX::ParticleCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -98,7 +99,8 @@ void gosFX::ParticleCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud__Specification::BuildDefaults()
+void
+gosFX::ParticleCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
@@ -152,7 +154,8 @@ void gosFX::ParticleCloud__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float min, max;
@@ -194,7 +197,8 @@ bool gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spec)
+void
+gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -210,25 +214,25 @@ void gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spe
 #endif
 	m_startingPopulation = spec->m_startingPopulation;
 	m_particlesPerSecond = spec->m_particlesPerSecond;
-	m_emitterSizeX		 = spec->m_emitterSizeX;
-	m_emitterSizeY		 = spec->m_emitterSizeY;
-	m_emitterSizeZ		 = spec->m_emitterSizeZ;
-	m_minimumDeviation   = spec->m_minimumDeviation;
-	m_maximumDeviation   = spec->m_maximumDeviation;
-	m_startingSpeed		 = spec->m_startingSpeed;
-	m_pLifeSpan			 = spec->m_pLifeSpan;
-	m_pEtherVelocityX	= spec->m_pEtherVelocityX;
-	m_pEtherVelocityY	= spec->m_pEtherVelocityY;
-	m_pEtherVelocityZ	= spec->m_pEtherVelocityZ;
-	m_pAccelerationX	 = spec->m_pAccelerationX;
-	m_pAccelerationY	 = spec->m_pAccelerationY;
-	m_pAccelerationZ	 = spec->m_pAccelerationZ;
-	m_pDrag				 = spec->m_pDrag;
-	m_pRed				 = spec->m_pRed;
-	m_pGreen			 = spec->m_pGreen;
-	m_pBlue				 = spec->m_pBlue;
-	m_pAlpha			 = spec->m_pAlpha;
-	m_maxParticleCount   = spec->m_maxParticleCount;
+	m_emitterSizeX = spec->m_emitterSizeX;
+	m_emitterSizeY = spec->m_emitterSizeY;
+	m_emitterSizeZ = spec->m_emitterSizeZ;
+	m_minimumDeviation = spec->m_minimumDeviation;
+	m_maximumDeviation = spec->m_maximumDeviation;
+	m_startingSpeed = spec->m_startingSpeed;
+	m_pLifeSpan = spec->m_pLifeSpan;
+	m_pEtherVelocityX = spec->m_pEtherVelocityX;
+	m_pEtherVelocityY = spec->m_pEtherVelocityY;
+	m_pEtherVelocityZ = spec->m_pEtherVelocityZ;
+	m_pAccelerationX = spec->m_pAccelerationX;
+	m_pAccelerationY = spec->m_pAccelerationY;
+	m_pAccelerationZ = spec->m_pAccelerationZ;
+	m_pDrag = spec->m_pDrag;
+	m_pRed = spec->m_pRed;
+	m_pGreen = spec->m_pGreen;
+	m_pBlue = spec->m_pBlue;
+	m_pAlpha = spec->m_pAlpha;
+	m_maxParticleCount = spec->m_maxParticleCount;
 	// gos_PopCurrentHeap();
 }
 
@@ -241,7 +245,8 @@ gosFX::ParticleCloud::ClassData* gosFX::ParticleCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud::InitializeClass()
+void
+gosFX::ParticleCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -252,7 +257,8 @@ void gosFX::ParticleCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud::TerminateClass()
+void
+gosFX::ParticleCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -261,8 +267,8 @@ void gosFX::ParticleCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::ParticleCloud::ParticleCloud(ClassData* class_data, Specification* spec, uint32_t flags)
-	: Effect(class_data, spec, flags)
+gosFX::ParticleCloud::ParticleCloud(ClassData* class_data, Specification* spec, uint32_t flags) :
+	Effect(class_data, spec, flags)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
@@ -279,12 +285,13 @@ gosFX::ParticleCloud::ParticleCloud(ClassData* class_data, Specification* spec, 
 	//-------------------------------
 	//
 	m_activeParticleCount = 0;
-	m_birthAccumulator	= 0.0f;
+	m_birthAccumulator = 0.0f;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud::Start(ExecuteInfo* info)
+void
+gosFX::ParticleCloud::Start(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -303,7 +310,8 @@ void gosFX::ParticleCloud::Start(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::ParticleCloud::Execute(ExecuteInfo* info)
+bool
+gosFX::ParticleCloud::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -317,7 +325,7 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo* info)
 	//
 	Stuff::LinearMatrix4D new_world_to_local;
 	Stuff::LinearMatrix4D* matrix = nullptr;
-	int32_t sim_mode			  = GetSimulationMode();
+	int32_t sim_mode = GetSimulationMode();
 	if (sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		Stuff::LinearMatrix4D local_to_world;
@@ -423,7 +431,8 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::ParticleCloud::HasFinished()
+bool
+gosFX::ParticleCloud::HasFinished()
 {
 	// Check_Object(this);
 	return Effect::HasFinished() && (m_activeParticleCount == 0);
@@ -431,7 +440,8 @@ bool gosFX::ParticleCloud::HasFinished()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud::Kill()
+void
+gosFX::ParticleCloud::Kill()
 {
 	// Check_Object(this);
 	//
@@ -442,7 +452,7 @@ void gosFX::ParticleCloud::Kill()
 	for (size_t i = 0; i < m_activeParticleCount; i++)
 		DestroyParticle(i);
 	m_activeParticleCount = 0;
-	m_birthAccumulator	= 0.0f;
+	m_birthAccumulator = 0.0f;
 	//
 	//----------------------------------------
 	// Now let the base effect handle stopping
@@ -453,7 +463,8 @@ void gosFX::ParticleCloud::Kill()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void
+gosFX::ParticleCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -465,13 +476,13 @@ void gosFX::ParticleCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* tra
 	Check_Object(spec);
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
-	particle->m_age  = 0.0f;
-	float min_seed   = spec->m_minimumChildSeed.ComputeValue(m_age, m_seed);
+	particle->m_age = 0.0f;
+	float min_seed = spec->m_minimumChildSeed.ComputeValue(m_age, m_seed);
 	float seed_range = spec->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
-	float seed		 = Stuff::Random::GetFraction() * seed_range + min_seed;
+	float seed = Stuff::Random::GetFraction() * seed_range + min_seed;
 	Clamp(seed, 0.0f, 1.0f);
 	particle->m_seed = seed;
-	float lifetime   = spec->m_pLifeSpan.ComputeValue(m_age, seed);
+	float lifetime = spec->m_pLifeSpan.ComputeValue(m_age, seed);
 	Min_Clamp(lifetime, 0.0333333f);
 	particle->m_ageRate = 1.0f / lifetime;
 	//
@@ -490,7 +501,7 @@ void gosFX::ParticleCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* tra
 	// Figure out the initial velocity
 	//--------------------------------
 	//
-	float pitch_min   = spec->m_minimumDeviation.ComputeValue(m_age, seed);
+	float pitch_min = spec->m_minimumDeviation.ComputeValue(m_age, seed);
 	float pitch_range = spec->m_maximumDeviation.ComputeValue(m_age, seed) - pitch_min;
 	if (pitch_range < 0.0f)
 		pitch_range = 0.0f;
@@ -502,7 +513,8 @@ void gosFX::ParticleCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* tra
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud::DestroyParticle(uint32_t index)
+void
+gosFX::ParticleCloud::DestroyParticle(uint32_t index)
 {
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
@@ -511,4 +523,8 @@ void gosFX::ParticleCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::ParticleCloud::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

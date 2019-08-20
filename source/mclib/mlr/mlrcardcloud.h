@@ -65,7 +65,7 @@ protected:
 	static std::vector<Stuff::RGBAColor>*
 		clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 	static std::vector<Stuff::Vector2DScalar>*
-		clipExtraTexCoords;									 // , Max_Number_Vertices_Per_Mesh
+		clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
 	static std::vector<uint32_t>* clipExtraLength; // , Max_Number_Primitives_Per_Frame
 };
 } // namespace MidLevelRenderer

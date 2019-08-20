@@ -34,19 +34,21 @@
 class KeyboardRef;
 enum COMMAND_KEY_INDEX
 {
-	ENERGY_WEAPON_INDEX	= 3,
-	GUARD_COMMAND_INDEX	= 8,
-	FORCE_FIRE_KEY		   = 11,
-	EJECT_COMMAND_INDEX	= 27,
+	ENERGY_WEAPON_INDEX = 3,
+	GUARD_COMMAND_INDEX = 8,
+	FORCE_FIRE_KEY = 11,
+	EJECT_COMMAND_INDEX = 27,
 	OBJECTVIES_COMMAND_KEY = 59,
-	INFO_COMMAND_INDEX	 = 64
+	INFO_COMMAND_INDEX = 64
 
 };
 //--------------------------------------------------------------------------------------
 // Externs
 extern UserHeapPtr guiHeap;
-PVOID gMalloc(size_t size);
-void gFree(PVOID me);
+PVOID
+gMalloc(size_t size);
+void
+gFree(PVOID me);
 
 #define MAX_COMMAND 107
 //--------------------------------------------------------------------------------------
@@ -124,7 +126,7 @@ protected:
 	int32_t vehicleID[MAX_TEAMS];
 	Stuff::Vector3D dragStart;
 	Stuff::Vector3D dragEnd;
-	bool selectClicked;  // left click
+	bool selectClicked; // left click
 	bool commandClicked; // usually right clicked
 	bool cameraClicked;
 

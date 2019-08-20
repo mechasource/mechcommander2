@@ -32,9 +32,9 @@ public:
 
 	enum BuildingType
 	{
-		UNSPECIAL		= -1,
+		UNSPECIAL = -1,
 		NORMAL_BUILDING = 0,
-		DROP_ZONE		= 1,
+		DROP_ZONE = 1,
 		TURRET_CONTROL,
 		GATE_CONTROL,
 		POWER_STATION,
@@ -278,9 +278,9 @@ private:
 	EDITOR_OBJECT_LIST selectedObjects;
 	bool selectedObjectsNeedsToBeSynched;
 	void syncSelectedObjectPointerList(void); // makes sure that the
-											  // "selectedObjects" list
-											  // corresponds to the objects
-											  // marked as selected
+		// "selectedObjects" list
+		// corresponds to the objects
+		// marked as selected
 
 	// HELPERS
 	int32_t ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength);
@@ -297,45 +297,61 @@ private:
 	static EditorObjectMgr* s_instance; // the one and only instance of this object
 };
 
-inline uint32_t EditorObjectMgr::getGroup(int32_t id) { return ((id >> 16) & 0x00ff); }
-inline uint32_t EditorObjectMgr::getIndexInGroup(int32_t id) { return ((id >> 8) & 0x00ff); }
-inline EditorObjectMgr::BuildingType EditorObjectMgr::getSpecialType(int32_t ID)
+inline uint32_t
+EditorObjectMgr::getGroup(int32_t id)
+{
+	return ((id >> 16) & 0x00ff);
+}
+inline uint32_t
+EditorObjectMgr::getIndexInGroup(int32_t id)
+{
+	return ((id >> 8) & 0x00ff);
+}
+inline EditorObjectMgr::BuildingType
+EditorObjectMgr::getSpecialType(int32_t ID)
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].specialType;
 }
 
-inline bool EditorObjectMgr::isAlignable(int32_t ID)
+inline bool
+EditorObjectMgr::isAlignable(int32_t ID)
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].alignable;
 }
 
-inline int32_t EditorObjectMgr::getAppearanceType(int32_t ID)
+inline int32_t
+EditorObjectMgr::getAppearanceType(int32_t ID)
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].appearanceType->getAppearanceClass(
 		void);
 }
 
-inline int32_t EditorObjectMgr::getObjectTypeNum(int32_t ID)
+inline int32_t
+EditorObjectMgr::getObjectTypeNum(int32_t ID)
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].objectTypeNum;
 }
 
-inline PCSTR EditorObjectMgr::getFileName(int32_t ID) const
+inline PCSTR
+EditorObjectMgr::getFileName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].fileName;
 }
 
-inline PCSTR EditorObjectMgr::getTGAFileName(int32_t ID) const
+inline PCSTR
+EditorObjectMgr::getTGAFileName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].tgaName;
 }
 
-inline uint32_t EditorObjectMgr::getTacMapColor(int32_t ID) const
+inline uint32_t
+EditorObjectMgr::getTacMapColor(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].writeOnTacMap;
 }
 
-inline float EditorObjectMgr::getScale(int32_t ID)
+inline float
+EditorObjectMgr::getScale(int32_t ID)
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].scale;
 }

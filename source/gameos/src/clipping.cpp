@@ -52,7 +52,8 @@
 /// </remarks>
 /// <param name="pVertices"></param>
 /// <returns></returns>
-MECH_IMPEXP void MECH_CALL gos_ClipDrawQuad(pgos_VERTEX pVertices)
+MECH_IMPEXP void MECH_CALL
+gos_ClipDrawQuad(pgos_VERTEX pVertices)
 {
 	double fWidth;
 	double fHeight;
@@ -61,8 +62,8 @@ MECH_IMPEXP void MECH_CALL gos_ClipDrawQuad(pgos_VERTEX pVertices)
 	{
 		if (RenderStates[1])
 		{
-			fWidth		   = 0.0625 / (double)CTexInfo::Width();
-			fHeight		   = 0.0625 / (double)CTexInfo::Height();
+			fWidth = 0.0625 / (double)CTexInfo::Width();
+			fHeight = 0.0625 / (double)CTexInfo::Height();
 			pVertices[0].u = (float)((double)pVertices[0].u + fWidth);
 			pVertices[0].v = (float)((double)pVertices[0].v + fHeight);
 			pVertices[1].u = (float)((double)pVertices[1].u + fWidth);
@@ -84,20 +85,18 @@ MECH_IMPEXP void MECH_CALL gos_ClipDrawQuad(pgos_VERTEX pVertices)
 		pVertices[3].x = (float)((double)pVertices[3].x - 0.4375);
 		pVertices[3].y = (float)((double)pVertices[3].y - 0.4375);
 	}
-	fWidth  = (double)Environment.screenWidth;
+	fWidth = (double)Environment.screenWidth;
 	fHeight = (double)Environment.screenHeight;
 	if (Environment.Renderer == 3 && RenderStates[19] & 0x100)
 	{
-		fWidth  = fWidth / 2.0;
+		fWidth = fWidth / 2.0;
 		fHeight = fHeight / 2.0;
 	}
-	if (fWidth > (double)pVertices[1].x && pVertices[3].x > 0.0 &&
-		fHeight > (double)pVertices[3].y && pVertices[1].y > 0.0)
+	if (fWidth > (double)pVertices[1].x && pVertices[3].x > 0.0 && fHeight > (double)pVertices[3].y && pVertices[1].y > 0.0)
 	{
 		if (DirtyStates)
 			FlushRenderStates();
-		if (pVertices[1].x < 0.0 || fWidth < (double)pVertices[3].x || pVertices[3].y < 0.0 ||
-			fHeight < (double)pVertices[1].y)
+		if (pVertices[1].x < 0.0 || fWidth < (double)pVertices[3].x || pVertices[3].y < 0.0 || fHeight < (double)pVertices[1].y)
 		{
 			PrimitivesRendered += 2;
 			++QuadsRendered;

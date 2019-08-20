@@ -24,27 +24,30 @@
 #include <gameos.hpp>
 
 //-----------------------------------------------------------------------
-cuint32_t MAX_TEXTURE_WIDTH	= 256;
-cuint32_t MAX_TEXTURE_HEIGHT   = 256;
-cuint32_t MAX_MOVIE_WIDTH	  = 640;
-cuint32_t MAX_MOVIE_HEIGHT	 = 480;
+cuint32_t MAX_TEXTURE_WIDTH = 256;
+cuint32_t MAX_TEXTURE_HEIGHT = 256;
+cuint32_t MAX_MOVIE_WIDTH = 640;
+cuint32_t MAX_MOVIE_HEIGHT = 480;
 const float TEXTURE_ADJUST_MIN = (0.4f / MAX_TEXTURE_WIDTH);
 const float TEXTURE_ADJUST_MAX = (1.0f - TEXTURE_ADJUST_MIN);
 
-float averageFrameRate  = 0.0f;
+float averageFrameRate = 0.0f;
 int32_t currentFrameNum = 0;
-float last30Frames[30]  = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+float last30Frames[30] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 0.0f};
 
 extern char CDInstallPath[];
-void EnterWindowMode();
-void EnterFullScreenMode();
+void
+EnterWindowMode();
+void
+EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
 //-----------------------------------------------------------------------
 // Class MC2Movie
-void MC2Movie::init(PSTR MC2Name, RECT mRect, bool useWaveFile)
+void
+MC2Movie::init(PSTR MC2Name, RECT mRect, bool useWaveFile)
 {
 	char MOVIEName[1024];
 	_splitpath(MC2Name, nullptr, nullptr, MOVIEName, nullptr);
@@ -63,7 +66,7 @@ void MC2Movie::init(PSTR MC2Name, RECT mRect, bool useWaveFile)
 		memset(waveName, 0, strlen(MOVIEName) + 1);
 		strcpy(waveName, MOVIEName);
 	}
-	numHigh			  = 1;
+	numHigh = 1;
 	totalTexturesUsed = numWide * numHigh;
 }
 
@@ -71,10 +74,10 @@ void MC2Movie::init(PSTR MC2Name, RECT mRect, bool useWaveFile)
 // Changes rect.  If resize, calls malloc which will be QUITE painful during a
 // MC2 playback
 // If just move, its awfully fast.
-void MC2Movie::setRect(RECT vRect)
+void
+MC2Movie::setRect(RECT vRect)
 {
-	if (((vRect.right - vRect.left) != (MC2Rect.right - MC2Rect.left)) ||
-		((vRect.bottom - vRect.top) != (MC2Rect.bottom - MC2Rect.top)))
+	if (((vRect.right - vRect.left) != (MC2Rect.right - MC2Rect.left)) || ((vRect.bottom - vRect.top) != (MC2Rect.bottom - MC2Rect.top)))
 	{
 		// Size changed.  STOP for now to tell people this is bad!
 		// May be impossible to do when MC2 is running because MC2 counts on
@@ -91,7 +94,8 @@ void MC2Movie::setRect(RECT vRect)
 
 //-----------------------------------------------------------------------
 // Handles tickling MC2 to make sure we keep playing back
-bool MC2Movie::update(void)
+bool
+MC2Movie::update(void)
 {
 	if (!soundStarted && separateWAVE)
 	{
@@ -114,11 +118,15 @@ bool MC2Movie::update(void)
 
 //-----------------------------------------------------------------------
 // Actually moves frame data from MC2 to surface and/or texture(s)
-void MC2Movie::BltMovieFrame(void) {}
+void
+MC2Movie::BltMovieFrame(void)
+{
+}
 
 //-----------------------------------------------------------------------
 // Actually draws the MC2 texture using gos_DrawTriangle.
-void MC2Movie::render(void)
+void
+MC2Movie::render(void)
 {
 	if (!stillPlaying)
 		return;

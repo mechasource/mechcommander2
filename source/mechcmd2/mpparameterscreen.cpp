@@ -57,8 +57,8 @@ extern bool quitGame;
 #define MP_INCREMENT_PLAYER_CBILLS 250
 #define MP_DECREMENT_PLAYER_CBILLS 251
 
-static cint32_t FIRST_BUTTON_ID  = 1000010;
-static cint32_t OK_BUTTON_ID	 = 1000001;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPParameterScreen* MPParameterScreen::s_instance = nullptr;
@@ -72,16 +72,16 @@ PCSTR pPurchaseFiles[5] = {
 
 MPParameterScreen::MPParameterScreen()
 {
-	status			= RUNNING;
+	status = RUNNING;
 	helpTextArrayID = 12;
-	bMapInfoDlg		= 0;
-	bShowNoMapDlg   = 0;
-	bBootDlg		= 0;
-	bErrorDlg		= 0;
-	bHostLeftDlg	= 0;
-	bDisconnectDlg  = 0;
-	chatToSend		= IDS_MP_PARAMETER_NO_MAP_CHAT;
-	s_instance		= this;
+	bMapInfoDlg = 0;
+	bShowNoMapDlg = 0;
+	bBootDlg = 0;
+	bErrorDlg = 0;
+	bHostLeftDlg = 0;
+	bDisconnectDlg = 0;
+	chatToSend = IDS_MP_PARAMETER_NO_MAP_CHAT;
+	s_instance = this;
 }
 
 MPParameterScreen::~MPParameterScreen()
@@ -99,7 +99,8 @@ MPParameterScreen::~MPParameterScreen()
 	}
 }
 
-int32_t MPParameterScreen::indexOfButtonWithID(int32_t id)
+int32_t
+MPParameterScreen::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -112,7 +113,8 @@ int32_t MPParameterScreen::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void MPParameterScreen::init(FitIniFile* file)
+void
+MPParameterScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -120,15 +122,13 @@ void MPParameterScreen::init(FitIniFile* file)
 		for (size_t i = 0; i < buttonCount; i++)
 		{
 			int32_t id = buttons[i].getID();
-			if ((id < MP_INCREMENT_DROPWEIGHT || id > MP_DECREMENT_RP) && id != MP_LOCKGAME &&
-				id != MP_BOOTPLAYER)
+			if ((id < MP_INCREMENT_DROPWEIGHT || id > MP_DECREMENT_RP) && id != MP_LOCKGAME && id != MP_BOOTPLAYER)
 				buttons[i].setMessageOnRelease();
 			if (buttons[i].getID() == 0)
 			{
 				buttons[i].setID(FIRST_BUTTON_ID + i);
 			}
-			if (id != MB_MSG_NEXT && id != MB_MSG_PREV && id != MP_PLAYER_PREFS &&
-				id != MB_MSG_MAINMENU)
+			if (id != MB_MSG_NEXT && id != MB_MSG_PREV && id != MP_PLAYER_PREFS && id != MB_MSG_MAINMENU)
 			{
 				buttons[i].setPressFX(LOG_VIDEOBUTTONS);
 				buttons[i].setHighlightFX(LOG_DIGITALHIGHLIGHT);
@@ -141,7 +141,7 @@ void MPParameterScreen::init(FitIniFile* file)
 	for (size_t i = 1; i < MAX_MC_PLAYERS; i++)
 	{
 		playerParameters[i] = playerParameters[0];
-		curY				= i * (playerParameters[i].bottom() - playerParameters[i].top() + 5);
+		curY = i * (playerParameters[i].bottom() - playerParameters[i].top() + 5);
 		playerParameters[i].move(0, curY);
 	}
 	FullPathFileName path;
@@ -167,25 +167,26 @@ void MPParameterScreen::init(FitIniFile* file)
 	edits[3].limitEntry(6);
 }
 
-void MPParameterScreen::begin()
+void
+MPParameterScreen::begin()
 {
 	fadeOutTime = 0.f;
-	fadeTime	= 0.f;
+	fadeTime = 0.f;
 	MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
-	playerCount	= 0;
-	bLoading	   = 0;
-	bMapInfoDlg	= 0;
-	bShowNoMapDlg  = 0;
-	bBootDlg	   = 0;
-	bErrorDlg	  = 0;
+	playerCount = 0;
+	bLoading = 0;
+	bMapInfoDlg = 0;
+	bShowNoMapDlg = 0;
+	bBootDlg = 0;
+	bErrorDlg = 0;
 	bDisconnectDlg = 0;
 	MPlayer->initParametersScreen();
 	if (MPlayer->isHost())
 		setMission(MPlayer->missionSettings.map, (status != UP && status != NEXT) ? 1 : 0);
 	else
 		setMissionClientOnly(MPlayer->missionSettings.map);
-	delayTime	= 0.f;
-	status		 = RUNNING;
+	delayTime = 0.f;
+	status = RUNNING;
 	bHostLeftDlg = 0;
 	bootPlayerID = -1;
 	for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
@@ -195,7 +196,8 @@ void MPParameterScreen::begin()
 	bWaitingToStart = 0;
 }
 
-void MPParameterScreen::end()
+void
+MPParameterScreen::end()
 {
 	if (status == PREVIOUS)
 		MPlayer->closeSession();
@@ -207,11 +209,12 @@ void MPParameterScreen::end()
 	}
 	bLoading = 0;
 	statics[15].setTexture((uint32_t)0);
-	delayTime	= 0.f;
+	delayTime = 0.f;
 	bHostLeftDlg = 0;
 }
 
-void MPParameterScreen::render(int32_t xOffset, int32_t yOffset)
+void
+MPParameterScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	if (VERSION_STATUS_UNKNOWN == MPlayer->getVersionStatus())
 	{
@@ -262,9 +265,14 @@ void MPParameterScreen::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void MPParameterScreen::render() { render(0, 0); }
+void
+MPParameterScreen::render()
+{
+	render(0, 0);
+}
 
-int32_t MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 {
 	if (RUNNING == status)
 	{
@@ -363,15 +371,14 @@ int32_t MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 					char finalStr[256];
 					for (size_t j = 0; j < MAX_MC_PLAYERS; j++)
 					{
-						if (MPlayer->playerList[j].commanderID ==
-							playerParameters[i].getCommanderID())
+						if (MPlayer->playerList[j].commanderID == playerParameters[i].getCommanderID())
 						{
 							sprintf(finalStr, str, MPlayer->playerList[j].name);
 							LogisticsOKDialog::instance()->setText(
 								IDS_DIALOG_OK, IDS_DIALOG_NO, IDS_DIALOG_YES);
 							LogisticsOKDialog::instance()->setText(finalStr);
 							LogisticsOKDialog::instance()->begin();
-							bBootDlg	 = true;
+							bBootDlg = true;
 							bootPlayerID = MPlayer->playerList[j].commanderID;
 							return 0;
 						}
@@ -496,9 +503,14 @@ int32_t MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void MPParameterScreen::initializeMap(PCSTR fileName) { s_instance->setMission(fileName, true); }
+void
+MPParameterScreen::initializeMap(PCSTR fileName)
+{
+	s_instance->setMission(fileName, true);
+}
 
-void MPParameterScreen::setMission(PCSTR fileName, bool resetData)
+void
+MPParameterScreen::setMission(PCSTR fileName, bool resetData)
 {
 	FullPathFileName path;
 	path.init(missionPath, fileName, ".fit");
@@ -540,7 +552,7 @@ void MPParameterScreen::setMission(PCSTR fileName, bool resetData)
 		if (MPlayer->isHost())
 			MPlayer->redistributeRP();
 		float fTmp;
-		result								= missionFile.readIdFloat("DropWeightLimit", fTmp);
+		result = missionFile.readIdFloat("DropWeightLimit", fTmp);
 		MPlayer->missionSettings.dropWeight = fTmp;
 		result = missionFile.readIdFloat("TimeLimit", MPlayer->missionSettings.timeLimit);
 		if (result != NO_ERROR)
@@ -583,7 +595,7 @@ void MPParameterScreen::setMission(PCSTR fileName, bool resetData)
 		else
 			MPlayer->missionSettings.maxPlayers = 8;
 		uint32_t tmp;
-		result								 = missionFile.readIdULong("MissionType", tmp);
+		result = missionFile.readIdULong("MissionType", tmp);
 		MPlayer->missionSettings.missionType = tmp;
 		// divvy up the cBills!
 		mapName = MPlayer->missionSettings.map;
@@ -593,7 +605,7 @@ void MPParameterScreen::setMission(PCSTR fileName, bool resetData)
 	statics[15].setUVs(0, 127, 127, 0);
 	statics[15].setColor(0xffffffff);
 	getButton(MAP_INFO)->disable(false);
-	GUID tmpGuid					 = getGUIDFromFile(fileName);
+	GUID tmpGuid = getGUIDFromFile(fileName);
 	MPlayer->missionSettings.mapGuid = tmpGuid;
 }
 
@@ -610,7 +622,8 @@ int32_t __cdecl sortPlayers(PCVOID p1, PCVOID p2)
 	return 1;
 }
 
-void MPParameterScreen::update()
+void
+MPParameterScreen::update()
 {
 	if (MPlayer->commanderID < 0) // don't do anything until we've been initalized
 		return;
@@ -627,7 +640,7 @@ void MPParameterScreen::update()
 			{
 				LogisticsOneButtonDialog::instance()->end();
 				bHostLeftDlg = 0;
-				bErrorDlg	= 0;
+				bErrorDlg = 0;
 				// might need to kill the game here
 				quitGame = true;
 			}
@@ -701,7 +714,7 @@ void MPParameterScreen::update()
 		{
 			if (MPlayer->isHost())
 				MPlayer->setInProgress(false);
-			delayTime		= 0.f;
+			delayTime = 0.f;
 			bWaitingToStart = 0;
 		}
 	}
@@ -770,7 +783,7 @@ void MPParameterScreen::update()
 		{
 			LogisticsOneButtonDialog::instance()->end();
 			bHostLeftDlg = 0;
-			bErrorDlg	= 0;
+			bErrorDlg = 0;
 		}
 	}
 	else if (bShowNoMapDlg || bBootDlg || bDisconnectDlg)
@@ -803,8 +816,8 @@ void MPParameterScreen::update()
 				sprintf(final, chatStr, prefs.playerName[0]);
 				MPlayer->sendChat(nullptr, -1, final);
 			}
-			bShowNoMapDlg  = false;
-			bBootDlg	   = false;
+			bShowNoMapDlg = false;
+			bBootDlg = false;
 			bDisconnectDlg = false;
 		}
 		return;
@@ -880,8 +893,7 @@ void MPParameterScreen::update()
 				status = NEXT;
 				return;
 			}
-			if (mapName != MPlayer->missionSettings.map &&
-				strlen(MPlayer->missionSettings.map)) // check for new map
+			if (mapName != MPlayer->missionSettings.map && strlen(MPlayer->missionSettings.map)) // check for new map
 			{
 				//
 				setMissionClientOnly(MPlayer->missionSettings.map);
@@ -890,10 +902,7 @@ void MPParameterScreen::update()
 		else
 		{
 			// make sure King of the hill missions have a time limit
-			if (MPlayer->missionSettings.timeLimit < 60 &&
-				(MPlayer->missionSettings.missionType == MISSION_TYPE_KING_OF_THE_HILL ||
-					MPlayer->missionSettings.missionType == MISSION_TYPE_LAST_MAN_ON_THE_HILL ||
-					MPlayer->missionSettings.missionType == MISSION_TYPE_TERRITORIES))
+			if (MPlayer->missionSettings.timeLimit < 60 && (MPlayer->missionSettings.missionType == MISSION_TYPE_KING_OF_THE_HILL || MPlayer->missionSettings.missionType == MISSION_TYPE_LAST_MAN_ON_THE_HILL || MPlayer->missionSettings.missionType == MISSION_TYPE_TERRITORIES))
 			{
 				MPlayer->missionSettings.timeLimit = 300;
 			}
@@ -921,9 +930,7 @@ void MPParameterScreen::update()
 			// players
 			if (playerCount > MPlayer->missionSettings.maxPlayers)
 			{
-				if (userInput->isLeftClick() &&
-					getButton(MB_MSG_NEXT)
-						->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+				if (userInput->isLeftClick() && getButton(MB_MSG_NEXT)->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 				{
 					char errorStr[256];
 					LogisticsOneButtonDialog::instance()->setText(
@@ -938,7 +945,7 @@ void MPParameterScreen::update()
 			{
 				if (data)
 					data->ready = true; // default to ready for host since they
-										// have to press launch anyway
+						// have to press launch anyway
 				else
 					return;
 			}
@@ -1026,19 +1033,19 @@ void MPParameterScreen::update()
 		getButton(MP_QUICKSTART)->disable(0);
 		if (MPlayer)
 		{
-			int32_t oldPlayerCount   = playerCount;
+			int32_t oldPlayerCount = playerCount;
 			const MC2Player* players = MPlayer->getPlayers(playerCount);
 			if (oldPlayerCount != playerCount)
 			{
 				// new player... need to redistribute rp
 				int32_t maxCommander = -1;
-				int32_t teamID		 = -1;
+				int32_t teamID = -1;
 				for (size_t i = 0; i < playerCount; i++)
 				{
 					if (players[i].commanderID > maxCommander)
 					{
 						maxCommander = players[i].commanderID;
-						teamID		 = players[i].team;
+						teamID = players[i].team;
 					}
 				}
 			}
@@ -1146,7 +1153,7 @@ void MPParameterScreen::update()
 					char text[256];
 					cLoadString(IDS_MP_LAUNCH_ABORTED, text, 255);
 					MPlayer->sendChat(0, -1, text);
-					delayTime		= 0.f;
+					delayTime = 0.f;
 					bWaitingToStart = 0;
 					MPlayer->setInProgress(0);
 				}
@@ -1155,7 +1162,7 @@ void MPParameterScreen::update()
 		if (!bEditHasFocus)
 			ChatWindow::instance()->update();
 	}
-	helpTextID		 = 0;
+	helpTextID = 0;
 	helpTextHeaderID = 0;
 	/*
 	for ( int32_t i = 0; i < buttonCount; i++ )
@@ -1172,7 +1179,8 @@ void MPParameterScreen::update()
 	*/
 }
 
-GUID MPParameterScreen::getGUIDFromFile(PCSTR pNewMapName)
+GUID
+MPParameterScreen::getGUIDFromFile(PCSTR pNewMapName)
 {
 	GUID retVal;
 	memset(&retVal, 0xff, sizeof(GUID));
@@ -1197,7 +1205,8 @@ GUID MPParameterScreen::getGUIDFromFile(PCSTR pNewMapName)
 	}
 }
 
-void MPParameterScreen::setMissionClientOnly(PCSTR pNewMapName)
+void
+MPParameterScreen::setMissionClientOnly(PCSTR pNewMapName)
 {
 	FullPathFileName path;
 	path.init(missionPath, pNewMapName, ".fit");
@@ -1229,14 +1238,13 @@ void MPParameterScreen::setMissionClientOnly(PCSTR pNewMapName)
 	mapName = MPlayer->missionSettings.map;
 }
 
-void MPParameterScreen::checkVersionClientOnly(PCSTR pNewMapName)
+void
+MPParameterScreen::checkVersionClientOnly(PCSTR pNewMapName)
 {
 	GUID version = getGUIDFromFile(pNewMapName);
-	if (MPlayer->missionSettings.mapGuid != NO_VERSION_GUID &&
-		version != MPlayer->missionSettings.mapGuid &&
-		version != NO_VERSION_GUID) // if 0 it simply wasn't in the file at all,
-									// should take this out as soon as maps are
-									// resaved
+	if (MPlayer->missionSettings.mapGuid != NO_VERSION_GUID && version != MPlayer->missionSettings.mapGuid && version != NO_VERSION_GUID) // if 0 it simply wasn't in the file at all,
+		// should take this out as soon as maps are
+		// resaved
 	{
 		char tmp[256];
 		char final[1024];
@@ -1261,11 +1269,12 @@ void MPParameterScreen::checkVersionClientOnly(PCSTR pNewMapName)
 	}
 }
 
-void MPParameterScreen::resetCheckBoxes()
+void
+MPParameterScreen::resetCheckBoxes()
 {
 	if (MPlayer->isHost())
 	{
-		int32_t playerCount		 = 0;
+		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		for (size_t i = 0; i < playerCount; i++)
 		{
@@ -1276,7 +1285,8 @@ void MPParameterScreen::resetCheckBoxes()
 	}
 }
 
-void MPParameterScreen::setHostLeftDlg(PCSTR playerName)
+void
+MPParameterScreen::setHostLeftDlg(PCSTR playerName)
 {
 	char leaveStr[256];
 	char formatStr[256];
@@ -1290,29 +1300,33 @@ void MPParameterScreen::setHostLeftDlg(PCSTR playerName)
 
 aPlayerParams::aPlayerParams()
 {
-	statics		= 0;
-	rects		= 0;
+	statics = 0;
+	rects = 0;
 	textObjects = 0;
 	staticCount = rectCount = textCount = 0;
-	bHasFocus							= 0;
+	bHasFocus = 0;
 }
 
-aPlayerParams::~aPlayerParams() { destroy(); }
+aPlayerParams::~aPlayerParams()
+{
+	destroy();
+}
 
-aPlayerParams& aPlayerParams::operator=(const aPlayerParams& src)
+aPlayerParams&
+aPlayerParams::operator=(const aPlayerParams& src)
 {
 	aObject::operator=(src);
 	addChild(&ReadyButton);
 	addChild(&CBillsSpinnerDownButton);
 	addChild(&CBillsSpinnerUpButton);
 	addChild(&edit);
-	ReadyButton				= src.ReadyButton;
+	ReadyButton = src.ReadyButton;
 	CBillsSpinnerDownButton = src.CBillsSpinnerDownButton;
-	CBillsSpinnerUpButton   = src.CBillsSpinnerUpButton;
-	edit					= src.edit;
-	insigniaName			= src.insigniaName;
-	templateItem			= src.templateItem;
-	staticCount				= src.staticCount;
+	CBillsSpinnerUpButton = src.CBillsSpinnerUpButton;
+	edit = src.edit;
+	insigniaName = src.insigniaName;
+	templateItem = src.templateItem;
+	staticCount = src.staticCount;
 	if (staticCount)
 	{
 		statics = new aObject[staticCount];
@@ -1349,7 +1363,8 @@ aPlayerParams& aPlayerParams::operator=(const aPlayerParams& src)
 	return *this;
 }
 
-int32_t aPlayerParams::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
+int32_t
+aPlayerParams::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
 	int32_t err;
 	err = aObject::init(xPos, yPos, w, h);
@@ -1363,7 +1378,8 @@ int32_t aPlayerParams::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
+void
+aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 {
 	FitIniFile& file = (*pFile);
 	pFile->seekBlock(blockNameParam);
@@ -1388,8 +1404,8 @@ void aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 	CBillsSpinnerUpButton.setDisabledFX(LOG_WRONGBUTTON);
 	ReadyButton.setDisabledFX(LOG_WRONGBUTTON);
 	PCSTR staticName = "PlayerParamsStatic";
-	PCSTR textName   = "PlayerParamsText";
-	PCSTR rectName   = "PlayerParamsRect";
+	PCSTR textName = "PlayerParamsText";
+	PCSTR rectName = "PlayerParamsRect";
 	char blockName[256];
 	// init statics
 	if (staticName)
@@ -1488,7 +1504,7 @@ void aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 		for (i = 0; i < 4; i += 1)
 		{
 			aStyle2TextListItem* pTmp2;
-			pTmp2  = new aStyle2TextListItem;
+			pTmp2 = new aStyle2TextListItem;
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + i);
 			pTmp2->resize(
@@ -1533,7 +1549,8 @@ void aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 	}
 }
 
-bool aPlayerParams::hasFocus()
+bool
+aPlayerParams::hasFocus()
 {
 	if (edit.hasFocus())
 		return true;
@@ -1544,7 +1561,8 @@ bool aPlayerParams::hasFocus()
 	return false;
 }
 
-void aPlayerParams::destroy()
+void
+aPlayerParams::destroy()
 {
 	removeAllChildren();
 	if (statics)
@@ -1553,13 +1571,14 @@ void aPlayerParams::destroy()
 		delete[] rects;
 	if (textObjects)
 		delete[] textObjects;
-	statics		= 0;
-	rects		= 0;
+	statics = 0;
+	rects = 0;
 	textObjects = 0;
 	aObject::destroy();
 }
 
-void aPlayerParams::update()
+void
+aPlayerParams::update()
 {
 	if (!MPlayer->isHost())
 	{
@@ -1568,9 +1587,7 @@ void aPlayerParams::update()
 	}
 	if (userInput->isLeftClick())
 	{
-		if (pointInside(userInput->getMouseX(), userInput->getMouseY()) ||
-			factionDropList.pointInside(userInput->getMouseX(), userInput->getMouseY()) ||
-			teamNumberDropList.pointInside(userInput->getMouseX(), userInput->getMouseY()))
+		if (pointInside(userInput->getMouseX(), userInput->getMouseY()) || factionDropList.pointInside(userInput->getMouseX(), userInput->getMouseY()) || teamNumberDropList.pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			bHasFocus = true;
 		else
 			bHasFocus = false;
@@ -1582,7 +1599,7 @@ void aPlayerParams::update()
 			factionDropList.SelectItem(-1);
 			factionDropList.ListBox().removeAllItems(true);
 			aStyle2TextListItem* pTmp2;
-			pTmp2  = new aStyle2TextListItem;
+			pTmp2 = new aStyle2TextListItem;
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + 5);
 			pTmp2->resize(
@@ -1600,7 +1617,7 @@ void aPlayerParams::update()
 		for (size_t i = 0; i < 4; i += 1)
 		{
 			aStyle2TextListItem* pTmp2;
-			pTmp2  = new aStyle2TextListItem;
+			pTmp2 = new aStyle2TextListItem;
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + i);
 			pTmp2->resize(
@@ -1649,11 +1666,9 @@ void aPlayerParams::update()
 		{
 			FullPathFileName path;
 			path.init(missionPath, MPlayer->missionSettings.map, ".fit");
-			if (!fileExists(path) ||
-				MPParameterScreen::getGUIDFromFile(MPlayer->missionSettings.map) !=
-					MPlayer->missionSettings.mapGuid) // disable the ready
-													  // button if the map isn't
-													  // around...
+			if (!fileExists(path) || MPParameterScreen::getGUIDFromFile(MPlayer->missionSettings.map) != MPlayer->missionSettings.mapGuid) // disable the ready
+				// button if the map isn't
+				// around...
 			{
 				ReadyButton.disable(false);
 				ReadyButton.press(0);
@@ -1671,10 +1686,10 @@ void aPlayerParams::update()
 		ReadyButton.update();
 	}
 	// need to check for changes
-	int32_t oldSel	 = teamNumberDropList.GetSelectedItem();
+	int32_t oldSel = teamNumberDropList.GetSelectedItem();
 	int32_t oldFaction = factionDropList.GetSelectedItem();
-	PCSTR pText		   = textObjects[1].text;
-	int32_t oldCBills  = 0;
+	PCSTR pText = textObjects[1].text;
+	int32_t oldCBills = 0;
 	if (pText)
 	{
 		oldCBills = atoi(pText) * 1000;
@@ -1699,9 +1714,9 @@ void aPlayerParams::update()
 	}
 	else
 		edit.setReadOnly(1);
-	int32_t newSel	 = teamNumberDropList.GetSelectedItem();
+	int32_t newSel = teamNumberDropList.GetSelectedItem();
 	int32_t newFaction = factionDropList.GetSelectedItem();
-	bool bNewReady	 = ReadyButton.isPressed();
+	bool bNewReady = ReadyButton.isPressed();
 	std::wstring cBillsText;
 	edit.getEntry(cBillsText);
 	int32_t newCBills = 0;
@@ -1712,7 +1727,7 @@ void aPlayerParams::update()
 	if (bCBillsChanged)
 	{
 		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderID);
-		pInfo->cBills	= newCBills;
+		pInfo->cBills = newCBills;
 		MPlayer->sendPlayerUpdate(0, 5, commanderID);
 		char text[256];
 		sprintf(text, "%ld",
@@ -1726,7 +1741,7 @@ void aPlayerParams::update()
 		if (MPlayer)
 		{
 			MC2Player* pInfo = MPlayer->getPlayerInfo(commanderID);
-			pInfo->cBills	= newCBills;
+			pInfo->cBills = newCBills;
 			if (MPlayer->isHost())
 				pInfo->ready = 0;
 			else
@@ -1749,9 +1764,14 @@ void aPlayerParams::update()
 		bHasFocus = false;
 }
 
-void aPlayerParams::disableReadyButton() { ReadyButton.disable(true); }
+void
+aPlayerParams::disableReadyButton()
+{
+	ReadyButton.disable(true);
+}
 
-void aPlayerParams::setData(const _MC2Player* data)
+void
+aPlayerParams::setData(const _MC2Player* data)
 {
 	bool bDisable = (data->cBills <= 0);
 	CBillsSpinnerDownButton.disable(bDisable);
@@ -1769,9 +1789,9 @@ void aPlayerParams::setData(const _MC2Player* data)
 			soundSystem->playDigitalSample(LOG_UNREADY);
 		ReadyButton.press(0);
 	}
-	commanderID		  = data->commanderID;
+	commanderID = data->commanderID;
 	int32_t textColor = 0xff000000;
-	int32_t newColor  = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
+	int32_t newColor = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
 	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) + ((newColor & 0xff0000) >> 16)) / 3 < 85)
 		textColor = 0xffffffff;
 	if (textObjects)
@@ -1799,7 +1819,7 @@ void aPlayerParams::setData(const _MC2Player* data)
 		{
 			statics[0].setTexture(path);
 			statics[0].setUVs(0, 0, 32, 32);
-			insigniaName							 = pFileName;
+			insigniaName = pFileName;
 			MPlayer->insigniaList[data->commanderID] = 1;
 		}
 	}
@@ -1816,8 +1836,7 @@ void aPlayerParams::setData(const _MC2Player* data)
 				sprintf(tmpStr, "%ld", i + 1);
 				*pTmp2 = templateItem;
 				pTmp2->setText(tmpStr);
-				pTmp2->resize(teamNumberDropList.width() -
-						teamNumberDropList.ListBox().getScrollBarWidth() - 8,
+				pTmp2->resize(teamNumberDropList.width() - teamNumberDropList.ListBox().getScrollBarWidth() - 8,
 					pTmp2->height());
 				pTmp2->sizeToText();
 				teamNumberDropList.AddItem(pTmp2);
@@ -1835,7 +1854,8 @@ void aPlayerParams::setData(const _MC2Player* data)
 	}
 }
 
-int32_t aPlayerParams::handleMessage(uint32_t message, uint32_t who)
+int32_t
+aPlayerParams::handleMessage(uint32_t message, uint32_t who)
 {
 	float increment = 5000;
 	if (message == aMSG_LEFTMOUSEHELD)
@@ -1869,11 +1889,20 @@ int32_t aPlayerParams::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void aPlayerParams::render() { aObject::render(); }
+void
+aPlayerParams::render()
+{
+	aObject::render();
+}
 
-void aPlayerParams::move(float offsetX, float offsetY) { aObject::move(offsetX, offsetY); }
+void
+aPlayerParams::move(float offsetX, float offsetY)
+{
+	aObject::move(offsetX, offsetY);
+}
 
-int32_t aStyle2TextListItem::init(FitIniFile* file, PCSTR blockName)
+int32_t
+aStyle2TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
 	int32_t fontResID = 0;
@@ -1901,7 +1930,8 @@ int32_t aStyle2TextListItem::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aStyle2TextListItem::render()
+void
+aStyle2TextListItem::render()
 {
 	int32_t color = normalColor;
 	if (hasAnimation)
@@ -1929,27 +1959,34 @@ void aStyle2TextListItem::render()
 	aTextListItem::render();
 }
 
-CFocusManager::CFocusManager() { clear(); }
+CFocusManager::CFocusManager()
+{
+	clear();
+}
 
-void CFocusManager::clear()
+void
+CFocusManager::clear()
 {
 	speciesOfTheControlWhichHasTheFocus = CS_NONE;
-	pDropListThatHasTheFocus			= nullptr;
+	pDropListThatHasTheFocus = nullptr;
 	listOfDropListPointers.Clear();
 }
 
-PVOID CFocusManager::registerDropList(aDropList& DropList)
+PVOID
+CFocusManager::registerDropList(aDropList& DropList)
 {
 	listOfDropListPointers.Append(&DropList);
 	return ((PVOID)&DropList);
 }
 
-void CFocusManager::unregisterDropList(aDropList& DropList)
+void
+CFocusManager::unregisterDropList(aDropList& DropList)
 {
 	listOfDropListPointers.Delete(listOfDropListPointers.Find(&DropList));
 }
 
-void CFocusManager::update()
+void
+CFocusManager::update()
 {
 	if (userInput->isLeftClick())
 	{
@@ -1978,7 +2015,7 @@ void CFocusManager::update()
 		{
 			if ((*DropListIter)->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
-				pDropListThatHasTheFocus			= (*DropListIter);
+				pDropListThatHasTheFocus = (*DropListIter);
 				speciesOfTheControlWhichHasTheFocus = CS_DROPLIST;
 				break;
 			}
@@ -1992,8 +2029,7 @@ void CFocusManager::update()
 		DropListIter = listOfDropListPointers.Begin();
 		while (!DropListIter.IsDone())
 		{
-			if ((CS_DROPLIST != speciesOfTheControlWhichHasTheFocus) ||
-				((*DropListIter) != pDropListThatHasTheFocus))
+			if ((CS_DROPLIST != speciesOfTheControlWhichHasTheFocus) || ((*DropListIter) != pDropListThatHasTheFocus))
 			{
 				(*DropListIter)->IsExpanded(false);
 			}
@@ -2002,7 +2038,8 @@ void CFocusManager::update()
 	}
 }
 
-bool CFocusManager::somebodyHasTheFocus()
+bool
+CFocusManager::somebodyHasTheFocus()
 {
 	if (CS_NONE == speciesOfTheControlWhichHasTheFocus)
 	{
@@ -2014,7 +2051,8 @@ bool CFocusManager::somebodyHasTheFocus()
 	}
 }
 
-aObject* CFocusManager::pControlThatHasTheFocus()
+aObject*
+CFocusManager::pControlThatHasTheFocus()
 {
 	if (CS_NONE != speciesOfTheControlWhichHasTheFocus)
 	{

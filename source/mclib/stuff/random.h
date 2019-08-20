@@ -28,7 +28,7 @@ public:
 
 private:
 	static int32_t Numbers[250]; // the random number table
-	static int32_t Index;		 // the current entry within the table
+	static int32_t Index; // the current entry within the table
 	static void Init(void);
 	static int32_t GetRandomInt(void);
 	Random(void)
@@ -50,7 +50,7 @@ public:
 	{
 		return GetRandomInt();
 	}
-	static float GetFraction(void);			   // returns 0.0f <= x < 1.0f
+	static float GetFraction(void); // returns 0.0f <= x < 1.0f
 	static int32_t GetLessThan(int32_t Range); // returns 0 .. Range-1
 
 	static bool TestClass(void);
@@ -65,7 +65,7 @@ class Die
 {
 private:
 	int32_t highestRandom; // the highest random number giving a uniform dist.
-	int32_t dieSides;	  // the number of sides on the die (starting from 1)
+	int32_t dieSides; // the number of sides on the die (starting from 1)
 
 public:
 	Die(int32_t sides);

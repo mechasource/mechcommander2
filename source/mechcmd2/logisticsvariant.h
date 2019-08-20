@@ -23,9 +23,9 @@ class FitIniFile;
 
 enum LOGISTICS_COMPONENT_LOCATION
 {
-	HEAD  = 0,
+	HEAD = 0,
 	CHEST = 1,
-	LEGS  = 2
+	LEGS = 2
 };
 
 class LogisticsChassis
@@ -73,11 +73,11 @@ protected:
 	int32_t componentAreaWidth;
 	int32_t componentAreaHeight;
 
-	bool canHaveAdvSensor;	// can Mech Have Advanced Sensor installed.
-	bool canHaveOptics;		  // can Mech Have Optics Installed.
+	bool canHaveAdvSensor; // can Mech Have Advanced Sensor installed.
+	bool canHaveOptics; // can Mech Have Optics Installed.
 	bool canHaveGlobalSensor; // can Mech have Global Sensor installed.
-	bool canHaveECM;		  // can Mech have ECM Installed.
-	bool canHaveActiveProbe;  // can Mech have Active Probe Installed.
+	bool canHaveECM; // can Mech have ECM Installed.
+	bool canHaveActiveProbe; // can Mech have Active Probe Installed.
 	bool canHaveJumpJets;
 	bool canHaveExtendedSensor;
 
@@ -188,7 +188,7 @@ public:
 protected:
 	const LogisticsChassis::ComponentInfo* getComponentAtLocation(int32_t x, int32_t y) const;
 
-	uint32_t ID;	// bottom 8 bits = mech chassis, next 8 = number within
+	uint32_t ID; // bottom 8 bits = mech chassis, next 8 = number within
 	int32_t fileID; // in csv file
 
 	LogisticsChassis* chassis;
@@ -196,8 +196,8 @@ protected:
 
 	int32_t componentCount;
 	LogisticsChassis::ComponentInfo components[54]; // I count a max of 54
-													// components, might want to
-													// check though
+		// components, might want to
+		// check though
 
 	bool availableToUser;
 	bool bDesignerMech;
@@ -223,7 +223,7 @@ public:
 protected:
 	int32_t componentCount;
 	ComponentInfo components[54]; // I count a max of 54 components, might want
-								  // to check though
+		// to check though
 };
 
 //*************************************************************************************************

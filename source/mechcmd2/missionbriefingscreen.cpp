@@ -26,7 +26,7 @@
 
 MissionBriefingScreen::MissionBriefingScreen()
 {
-	status							 = RUNNING;
+	status = RUNNING;
 	LogisticsScreen::helpTextArrayID = 4;
 	for (size_t i = 0; i < MAX_OBJECTIVES; i++)
 		objectiveButtons[i] = nullptr;
@@ -47,7 +47,8 @@ MissionBriefingScreen::~MissionBriefingScreen()
 
 //-------------------------------------------------------------------------------------------------
 
-void MissionBriefingScreen::init(FitIniFile* file)
+void
+MissionBriefingScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	for (size_t i = 0; i < buttonCount; i++)
@@ -63,7 +64,8 @@ void MissionBriefingScreen::init(FitIniFile* file)
 		statics[VIDEO_SCREEN].right(), statics[VIDEO_SCREEN].bottom());
 }
 
-void MissionBriefingScreen::render(int32_t xOffset, int32_t yOffset)
+void
+MissionBriefingScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	missionListBox.move(xOffset, yOffset);
 	missionListBox.render();
@@ -81,7 +83,8 @@ void MissionBriefingScreen::render(int32_t xOffset, int32_t yOffset)
 		ChatWindow::instance()->render(xOffset, yOffset);
 }
 
-void MissionBriefingScreen::update()
+void
+MissionBriefingScreen::update()
 {
 	if (MPlayer || LogisticsData::instance->isSingleMission())
 	{
@@ -96,8 +99,7 @@ void MissionBriefingScreen::update()
 		bClicked = true;
 		for (size_t i = 0; i < MAX_OBJECTIVES; i++)
 		{
-			if (objectiveButtons[i] &&
-				objectiveButtons[i]->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+			if (objectiveButtons[i] && objectiveButtons[i]->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
 				// find the item that has this objective
 				for (size_t j = 0; j < missionListBox.GetItemCount(); j++)
@@ -113,7 +115,7 @@ void MissionBriefingScreen::update()
 	}
 	runTime += frameLength;
 	int32_t selItem = missionListBox.GetSelectedItem();
-	int32_t ID		= -1;
+	int32_t ID = -1;
 	if (selItem != -1)
 		ID = missionListBox.GetItem(selItem)->getID();
 	if (selItem != -1 && oldSel != selItem)
@@ -201,8 +203,7 @@ void MissionBriefingScreen::update()
 		}
 	}
 	camera.update();
-	if (!MPlayer ||
-		!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+	if (!MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
 	if (MPlayer && ChatWindow::instance())
 	{
@@ -212,7 +213,8 @@ void MissionBriefingScreen::update()
 	}
 }
 
-int32_t MissionBriefingScreen::getMissionTGA(PCSTR missionName)
+int32_t
+MissionBriefingScreen::getMissionTGA(PCSTR missionName)
 {
 	if (!missionName)
 		return 0;
@@ -224,7 +226,7 @@ int32_t MissionBriefingScreen::getMissionTGA(PCSTR missionName)
 	{
 		// big hack here for some reason we can open files while they're being
 		// transferred.
-		HANDLE hFile  = CreateFile(path, GENERIC_READ, 0, nullptr, OPEN_EXISTING, 0, 0);
+		HANDLE hFile = CreateFile(path, GENERIC_READ, 0, nullptr, OPEN_EXISTING, 0, 0);
 		int32_t error = GetLastError();
 		if (hFile == INVALID_HANDLE_VALUE)
 			return 0;
@@ -241,8 +243,8 @@ int32_t MissionBriefingScreen::getMissionTGA(PCSTR missionName)
 			puint8_t mem = new uint8_t[size];
 			file.readPacket(3, mem);
 			TGAFileHeader* pHeader = (TGAFileHeader*)mem;
-			int32_t bmpWidth	   = pHeader->width;
-			int32_t bmpHeight	  = pHeader->height;
+			int32_t bmpWidth = pHeader->width;
+			int32_t bmpHeight = pHeader->height;
 			flipTopToBottom((puint8_t)(pHeader + 1), pHeader->pixel_depth, bmpWidth, bmpHeight);
 			// set up the texture
 			int32_t tmpMapTextureHandle = mcTextureManager->textureFromMemory(
@@ -254,15 +256,16 @@ int32_t MissionBriefingScreen::getMissionTGA(PCSTR missionName)
 	return 0;
 }
 
-void MissionBriefingScreen::begin()
+void
+MissionBriefingScreen::begin()
 {
 	missionListBox.removeAllItems(true);
-	runTime  = 0;
+	runTime = 0;
 	bClicked = 0;
 	statics[VIDEO_SCREEN].setColor(0);
 	memset(objectiveButtons, 0, sizeof(aObject*) * MAX_OBJECTIVES);
 	// need to set up all pertinent mission info
-	std::wstring missionName	= LogisticsData::instance->getCurrentMission();
+	std::wstring missionName = LogisticsData::instance->getCurrentMission();
 	int32_t tmpMapTextureHandle = getMissionTGA(missionName);
 	statics[MAP_INDEX].setTexture(tmpMapTextureHandle);
 	statics[MAP_INDEX].setUVs(0, 127, 127, 0);
@@ -301,7 +304,7 @@ void MissionBriefingScreen::begin()
 	uint32_t objectiveCount;
 	fitFile.readIdULong("NumObjectives", objectiveCount);
 	bool bHasSecondary = 0;
-	int32_t count	  = 0;
+	int32_t count = 0;
 	fitFile.seekBlock("Terrain");
 	float terrainExtentX;
 	float terrainExtentY;
@@ -321,7 +324,7 @@ void MissionBriefingScreen::begin()
 	for (size_t j = 1; j < 3; j++)
 	{
 		CObjectives::EIterator it = Objectives.Begin();
-		buttonCount				  = 0;
+		buttonCount = 0;
 		for (size_t i = 0; i < Objectives.Count(); i++, it++)
 		{
 			CObjective* pObjective = (*it);
@@ -340,11 +343,11 @@ void MissionBriefingScreen::begin()
 					}
 					addLBItem((pObjective->LocalizedDescription()).Data(), 0xffffffff, count);
 					objectiveModels[count] = (pObjective->ModelName()).Data();
-					modelTypes[count]	  = pObjective->ModelType();
-					modelColors[count][0]  = pObjective->ModelBaseColor();
-					modelColors[count][1]  = pObjective->ModelHighlightColor();
-					modelColors[count][2]  = pObjective->ModelHighlightColor2();
-					modelScales[count]	 = pObjective->ModelScale();
+					modelTypes[count] = pObjective->ModelType();
+					modelColors[count][0] = pObjective->ModelBaseColor();
+					modelColors[count][1] = pObjective->ModelHighlightColor();
+					modelColors[count][2] = pObjective->ModelHighlightColor2();
+					modelScales[count] = pObjective->ModelScale();
 					count++;
 					buttonCount++;
 				}
@@ -354,13 +357,13 @@ void MissionBriefingScreen::begin()
 	addItem(IDS_MN_DIVIDER, 0xff005392, -1);
 	fitFile.seekBlock("MissionSettings");
 	char blurb[4096];
-	result		 = fitFile.readIdString("Blurb", blurb, 4095);
+	result = fitFile.readIdString("Blurb", blurb, 4095);
 	bool tmpBool = false;
-	result		 = fitFile.readIdBoolean("BlurbUseResourceString", tmpBool);
+	result = fitFile.readIdBoolean("BlurbUseResourceString", tmpBool);
 	if (NO_ERROR == result && tmpBool)
 	{
 		uint32_t tmpInt = 0;
-		result			= fitFile.readIdULong("BlurbResourceStringID", tmpInt);
+		result = fitFile.readIdULong("BlurbResourceStringID", tmpInt);
 		if (NO_ERROR == result)
 		{
 			cLoadString(tmpInt, blurb, 2047);
@@ -397,11 +400,12 @@ void MissionBriefingScreen::begin()
 	status = RUNNING;
 }
 
-void MissionBriefingScreen::setupDropZone(float fX, float fY, float mapWidth, float mapHeight)
+void
+MissionBriefingScreen::setupDropZone(float fX, float fY, float mapWidth, float mapHeight)
 {
 	dropZoneButton = statics[BUTTON_TEXT];
-	float bmpX	 = statics[MAP_INDEX].width();
-	float bmpY	 = statics[MAP_INDEX].height();
+	float bmpX = statics[MAP_INDEX].width();
+	float bmpY = statics[MAP_INDEX].height();
 	// in terms of map, this is where the button goes
 	float xLoc = fX / mapWidth * bmpX / 2.f;
 	float yLoc = -fY / mapHeight * bmpY / 2.f;
@@ -414,7 +418,8 @@ void MissionBriefingScreen::setupDropZone(float fX, float fY, float mapWidth, fl
 	dropZoneButton.showGUIWindow(true);
 }
 
-void MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int32_t priority,
+void
+MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int32_t priority,
 	float mapWidth, float mapHeight, bool display)
 {
 	float lineOffset = 0;
@@ -431,18 +436,18 @@ void MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count
 	xLoc += statics[MAP_INDEX].globalX() + bmpX / 2.f;
 	yLoc += statics[MAP_INDEX].globalY() + bmpY / 2.f;
 	aObject* pButtonText = new aObject;
-	*pButtonText		 = statics[BUTTON_TEXT];
+	*pButtonText = statics[BUTTON_TEXT];
 	if (display)
 		pButtonText->showGUIWindow(true);
 	else
 		pButtonText->showGUIWindow(false);
 	// need to reset the uv's based on count....
-	float textWidth  = pButtonText->width();
+	float textWidth = pButtonText->width();
 	float textHeight = pButtonText->height();
 	lineOffset *= textHeight;
 	int32_t itemsPerLine = 128 / textWidth;
-	int32_t iIndex		 = count % itemsPerLine;
-	int32_t jIndex		 = count / itemsPerLine;
+	int32_t iIndex = count % itemsPerLine;
+	int32_t jIndex = count / itemsPerLine;
 	pButtonText->setUVs(iIndex * textWidth, jIndex * textHeight + lineOffset,
 		(iIndex + 1) * textWidth, (jIndex + 1) * textHeight + lineOffset);
 	pButtonText->moveTo(xLoc, yLoc);
@@ -470,7 +475,8 @@ uint32_t color, int32_t ID)
 	return addLBItem( buffer, color, ID);
 }*/
 
-int32_t MissionBriefingScreen::addLBItem(PCSTR text, uint32_t color, int32_t ID)
+int32_t
+MissionBriefingScreen::addLBItem(PCSTR text, uint32_t color, int32_t ID)
 {
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->setID(ID);
@@ -483,7 +489,8 @@ int32_t MissionBriefingScreen::addLBItem(PCSTR text, uint32_t color, int32_t ID)
 	return missionListBox.AddItem(pEntry);
 }
 
-int32_t MissionBriefingScreen::addItem(int32_t ID, uint32_t color, int32_t LBid)
+int32_t
+MissionBriefingScreen::addItem(int32_t ID, uint32_t color, int32_t LBid)
 {
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->setID(LBid);
@@ -494,14 +501,16 @@ int32_t MissionBriefingScreen::addItem(int32_t ID, uint32_t color, int32_t LBid)
 	return missionListBox.AddItem(pEntry);
 }
 
-void MissionBriefingScreen::end()
+void
+MissionBriefingScreen::end()
 {
 	//	statics[MAP_INDEX].setTexture( (int32_t)0 );
 	// 	statics[MAP_INDEX].setColor( 0 );
 	camera.setMech(nullptr);
 }
 
-int32_t MissionBriefingScreen::handleMessage(uint32_t msg, uint32_t who)
+int32_t
+MissionBriefingScreen::handleMessage(uint32_t msg, uint32_t who)
 {
 	switch (who)
 	{

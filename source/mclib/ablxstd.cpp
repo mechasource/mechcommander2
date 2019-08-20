@@ -19,7 +19,8 @@
 #include "abl.h"
 #endif
 
-inline int32_t double2long(double _in)
+inline int32_t
+double2long(double _in)
 {
 	_in += 6755399441055744.0;
 	return (*(int32_t*)&_in);
@@ -54,19 +55,20 @@ extern bool NewStateSet;
 // GLOBALS
 
 StackItem returnValue;
-bool eofFlag							= false;
-bool ExitWithReturn						= false;
-bool ExitFromTacOrder					= false;
-bool SkipOrder							= false;
+bool eofFlag = false;
+bool ExitWithReturn = false;
+bool ExitFromTacOrder = false;
+bool SkipOrder = false;
 TokenCodeType ExitRoutineCodeSegment[2] = {TKN_END_FUNCTION, TKN_SEMICOLON};
-TokenCodeType ExitOrderCodeSegment[2]   = {TKN_END_ORDER, TKN_SEMICOLON};
-TokenCodeType ExitStateCodeSegment[2]   = {TKN_END_STATE, TKN_SEMICOLON};
+TokenCodeType ExitOrderCodeSegment[2] = {TKN_END_ORDER, TKN_SEMICOLON};
+TokenCodeType ExitStateCodeSegment[2] = {TKN_END_STATE, TKN_SEMICOLON};
 
 //***************************************************************************
 // USEFUL ABL HELP ROUTINES
 //***************************************************************************
 
-char ABLi_popChar(void)
+char
+ABLi_popChar(void)
 {
 	getCodeToken();
 	execExpression();
@@ -77,7 +79,8 @@ char ABLi_popChar(void)
 
 //---------------------------------------------------------------------------
 
-int32_t ABLi_popInteger(void)
+int32_t
+ABLi_popInteger(void)
 {
 	getCodeToken();
 	execExpression();
@@ -88,7 +91,8 @@ int32_t ABLi_popInteger(void)
 
 //---------------------------------------------------------------------------
 
-float ABLi_popReal(void)
+float
+ABLi_popReal(void)
 {
 	getCodeToken();
 	execExpression();
@@ -99,11 +103,12 @@ float ABLi_popReal(void)
 
 //---------------------------------------------------------------------------
 
-float ABLi_popIntegerReal(void)
+float
+ABLi_popIntegerReal(void)
 {
 	getCodeToken();
 	TypePtr paramTypePtr = execExpression();
-	float val			 = 0.0;
+	float val = 0.0;
 	if (paramTypePtr == IntegerTypePtr)
 		val = (float)tos->integer;
 	else
@@ -114,7 +119,8 @@ float ABLi_popIntegerReal(void)
 
 //---------------------------------------------------------------------------
 
-bool ABLi_popBoolean(void)
+bool
+ABLi_popBoolean(void)
 {
 	getCodeToken();
 	execExpression();
@@ -125,7 +131,8 @@ bool ABLi_popBoolean(void)
 
 //---------------------------------------------------------------------------
 
-PSTR ABLi_popCharPtr(void)
+PSTR
+ABLi_popCharPtr(void)
 {
 	//--------------------------
 	// Get destination string...
@@ -138,7 +145,8 @@ PSTR ABLi_popCharPtr(void)
 
 //---------------------------------------------------------------------------
 
-int32_t* ABLi_popIntegerPtr(void)
+int32_t*
+ABLi_popIntegerPtr(void)
 {
 	getCodeToken();
 	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
@@ -150,7 +158,8 @@ int32_t* ABLi_popIntegerPtr(void)
 
 //---------------------------------------------------------------------------
 
-float* ABLi_popRealPtr(void)
+float*
+ABLi_popRealPtr(void)
 {
 	getCodeToken();
 	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
@@ -162,7 +171,8 @@ float* ABLi_popRealPtr(void)
 
 //---------------------------------------------------------------------------
 
-PSTR ABLi_popBooleanPtr(void)
+PSTR
+ABLi_popBooleanPtr(void)
 {
 	//--------------------------
 	// Get destination string...
@@ -175,51 +185,52 @@ PSTR ABLi_popBooleanPtr(void)
 
 //---------------------------------------------------------------------------
 
-int32_t ABLi_popAnything(ABLStackItem* value)
+int32_t
+ABLi_popAnything(ABLStackItem* value)
 {
 	getCodeToken();
 	TypePtr paramTypePtr = execExpression();
-	int32_t type		 = -1;
+	int32_t type = -1;
 	if (paramTypePtr == IntegerTypePtr)
 	{
-		value->type = type  = ABL_STACKITEM_INTEGER;
+		value->type = type = ABL_STACKITEM_INTEGER;
 		value->data.integer = tos->integer;
 	}
 	else if (paramTypePtr == BooleanTypePtr)
 	{
-		value->type = type  = ABL_STACKITEM_BOOLEAN;
+		value->type = type = ABL_STACKITEM_BOOLEAN;
 		value->data.boolean = (tos->integer ? true : false);
 	}
 	else if (paramTypePtr == CharTypePtr)
 	{
-		value->type = type	= ABL_STACKITEM_CHAR;
+		value->type = type = ABL_STACKITEM_CHAR;
 		value->data.character = tos->byte;
 	}
 	else if (paramTypePtr == RealTypePtr)
 	{
 		value->type = type = ABL_STACKITEM_REAL;
-		value->data.real   = tos->real;
+		value->data.real = tos->real;
 	}
 	else if (paramTypePtr->form == FRM_ARRAY)
 	{
 		if (paramTypePtr->info.array.elementTypePtr == CharTypePtr)
 		{
-			value->type = type		 = ABL_STACKITEM_CHAR_PTR;
+			value->type = type = ABL_STACKITEM_CHAR_PTR;
 			value->data.characterPtr = (PSTR)tos->address;
 		}
 		else if (paramTypePtr->info.array.elementTypePtr == IntegerTypePtr)
 		{
-			value->type = type	 = ABL_STACKITEM_INTEGER_PTR;
+			value->type = type = ABL_STACKITEM_INTEGER_PTR;
 			value->data.integerPtr = (int32_t*)tos->address;
 		}
 		else if (paramTypePtr->info.array.elementTypePtr == RealTypePtr)
 		{
-			value->type = type  = ABL_STACKITEM_REAL_PTR;
+			value->type = type = ABL_STACKITEM_REAL_PTR;
 			value->data.realPtr = (float*)tos->address;
 		}
 		else if (paramTypePtr->info.array.elementTypePtr == BooleanTypePtr)
 		{
-			value->type = type	 = ABL_STACKITEM_BOOLEAN_PTR;
+			value->type = type = ABL_STACKITEM_BOOLEAN_PTR;
 			value->data.booleanPtr = (bool*)tos->address;
 		}
 	}
@@ -229,7 +240,8 @@ int32_t ABLi_popAnything(ABLStackItem* value)
 
 //---------------------------------------------------------------------------
 
-void ABLi_pushBoolean(bool value)
+void
+ABLi_pushBoolean(bool value)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -239,7 +251,8 @@ void ABLi_pushBoolean(bool value)
 
 //---------------------------------------------------------------------------
 
-void ABLi_pushInteger(int32_t value)
+void
+ABLi_pushInteger(int32_t value)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -249,7 +262,8 @@ void ABLi_pushInteger(int32_t value)
 
 //---------------------------------------------------------------------------
 
-void ABLi_pushReal(float value)
+void
+ABLi_pushReal(float value)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -259,7 +273,8 @@ void ABLi_pushReal(float value)
 
 //---------------------------------------------------------------------------
 
-void ABLi_pushChar(char value)
+void
+ABLi_pushChar(char value)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -269,7 +284,8 @@ void ABLi_pushChar(char value)
 
 //---------------------------------------------------------------------------
 
-int32_t ABLi_peekInteger(void)
+int32_t
+ABLi_peekInteger(void)
 {
 	getCodeToken();
 	execExpression();
@@ -278,7 +294,8 @@ int32_t ABLi_peekInteger(void)
 
 //---------------------------------------------------------------------------
 
-float ABLi_peekReal(void)
+float
+ABLi_peekReal(void)
 {
 	getCodeToken();
 	execExpression();
@@ -287,7 +304,8 @@ float ABLi_peekReal(void)
 
 //---------------------------------------------------------------------------
 
-bool ABLi_peekBoolean(void)
+bool
+ABLi_peekBoolean(void)
 {
 	getCodeToken();
 	execExpression();
@@ -296,7 +314,8 @@ bool ABLi_peekBoolean(void)
 
 //---------------------------------------------------------------------------
 
-PSTR ABLi_peekCharPtr(void)
+PSTR
+ABLi_peekCharPtr(void)
 {
 	getCodeToken();
 	execExpression();
@@ -305,7 +324,8 @@ PSTR ABLi_peekCharPtr(void)
 
 //---------------------------------------------------------------------------
 
-int32_t* ABLi_peekIntegerPtr(void)
+int32_t*
+ABLi_peekIntegerPtr(void)
 {
 	getCodeToken();
 	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
@@ -315,7 +335,8 @@ int32_t* ABLi_peekIntegerPtr(void)
 
 //---------------------------------------------------------------------------
 
-float* ABLi_peekRealPtr(void)
+float*
+ABLi_peekRealPtr(void)
 {
 	getCodeToken();
 	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
@@ -325,28 +346,45 @@ float* ABLi_peekRealPtr(void)
 
 //---------------------------------------------------------------------------
 
-void ABLi_pokeChar(int32_t val) { tos->integer = val; }
+void
+ABLi_pokeChar(int32_t val)
+{
+	tos->integer = val;
+}
 
 //---------------------------------------------------------------------------
 
-void ABLi_pokeInteger(int32_t val) { tos->integer = val; }
+void
+ABLi_pokeInteger(int32_t val)
+{
+	tos->integer = val;
+}
 
 //---------------------------------------------------------------------------
 
-void ABLi_pokeReal(float val) { tos->real = val; }
+void
+ABLi_pokeReal(float val)
+{
+	tos->real = val;
+}
 
 //---------------------------------------------------------------------------
 
-void ABLi_pokeBoolean(bool val) { tos->integer = val ? 1 : 0; }
+void
+ABLi_pokeBoolean(bool val)
+{
+	tos->integer = val ? 1 : 0;
+}
 
 //***************************************************************************
 
-void execOrderReturn(int32_t returnVal)
+void
+execOrderReturn(int32_t returnVal)
 {
 	//-----------------------------
 	// Assignment to function id...
 	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
-	int32_t delta				  = level - CurRoutineIdPtr->level - 1;
+	int32_t delta = level - CurRoutineIdPtr->level - 1;
 	while (delta-- > 0)
 		headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
 	if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
@@ -356,7 +394,7 @@ void execOrderReturn(int32_t returnVal)
 		if (debugger)
 			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->typePtr,
 				(StackItemPtr)headerPtr, CurRoutineIdPtr->typePtr);
-		ExitWithReturn   = true;
+		ExitWithReturn = true;
 		ExitFromTacOrder = true;
 		if (returnVal == 0)
 		{
@@ -373,14 +411,14 @@ void execOrderReturn(int32_t returnVal)
 		// return an integer error code, so we assume the return type is
 		// IntegerTypePtr...
 		StackItemPtr targetPtr = (StackItemPtr)headerPtr;
-		targetPtr->integer	 = returnVal;
+		targetPtr->integer = returnVal;
 		//----------------------------------------------------------------------
 		// Preserve the return value, in case we need it for the calling user...
 		memcpy(&returnValue, targetPtr, sizeof(StackItem));
 		if (debugger)
 			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->typePtr,
 				(StackItemPtr)headerPtr, CurRoutineIdPtr->typePtr);
-		ExitWithReturn   = true;
+		ExitWithReturn = true;
 		ExitFromTacOrder = true;
 		if (returnVal == 0)
 		{
@@ -394,7 +432,8 @@ void execOrderReturn(int32_t returnVal)
 
 //***************************************************************************
 
-void execStdReturn(void)
+void
+execStdReturn(void)
 {
 	memset(&returnValue, 0, sizeof(StackItem));
 	if (CurRoutineIdPtr->typePtr)
@@ -402,11 +441,11 @@ void execStdReturn(void)
 		//-----------------------------
 		// Assignment to function id...
 		StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
-		int32_t delta				  = level - CurRoutineIdPtr->level - 1;
+		int32_t delta = level - CurRoutineIdPtr->level - 1;
 		while (delta-- > 0)
 			headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
 		StackItemPtr targetPtr = (StackItemPtr)headerPtr;
-		TypePtr targetTypePtr  = (TypePtr)(CurRoutineIdPtr->typePtr);
+		TypePtr targetTypePtr = (TypePtr)(CurRoutineIdPtr->typePtr);
 		getCodeToken();
 		//---------------------------------------------------------------
 		// Routine execExpression() leaves the expression value on top of
@@ -425,8 +464,8 @@ void execStdReturn(void)
 		{
 			//-------------------------
 			// Copy the array/record...
-			PSTR dest	= (PSTR)targetPtr;
-			PSTR src	 = tos->address;
+			PSTR dest = (PSTR)targetPtr;
+			PSTR src = tos->address;
 			int32_t size = targetTypePtr->size;
 			memcpy(dest, src, size);
 		}
@@ -467,7 +506,8 @@ void execStdReturn(void)
 
 //***************************************************************************
 
-void execStdPrint(void)
+void
+execStdPrint(void)
 {
 	//---------------------------
 	// Grab the opening LPAREN...
@@ -486,8 +526,7 @@ void execStdPrint(void)
 		sprintf(buffer, "%c", tos->byte);
 	else if (paramTypePtr == RealTypePtr)
 		sprintf(buffer, "%.4f", tos->real);
-	else if ((paramTypePtr->form == FRM_ARRAY) &&
-		(paramTypePtr->info.array.elementTypePtr == CharTypePtr))
+	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
 		s = (PSTR)tos->address;
 	pop();
 	if (debugger)
@@ -526,7 +565,8 @@ void execStdPrint(void)
 
 //***************************************************************************
 
-TypePtr execStdConcat(void)
+TypePtr
+execStdConcat(void)
 {
 	//-------------------
 	// Grab the LPAREN...
@@ -562,8 +602,7 @@ TypePtr execStdConcat(void)
 		sprintf(buffer, "%s", tos->integer ? "true" : "false");
 		strcat(dest, buffer);
 	}
-	else if ((paramTypePtr->form == FRM_ARRAY) &&
-		(paramTypePtr->info.array.elementTypePtr == CharTypePtr))
+	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
 		strcat(dest, (PSTR)tos->address);
 	tos->integer = 0;
 	getCodeToken();
@@ -572,7 +611,8 @@ TypePtr execStdConcat(void)
 
 //***************************************************************************
 
-void execStdAbs(void)
+void
+execStdAbs(void)
 {
 	float val = ABLi_popIntegerReal();
 	if (val < 0.0)
@@ -582,7 +622,8 @@ void execStdAbs(void)
 
 //*****************************************************************************
 
-void execStdRound(void)
+void
+execStdRound(void)
 {
 	float val = ABLi_popReal();
 	if (val > 0.0)
@@ -593,7 +634,8 @@ void execStdRound(void)
 
 //***************************************************************************
 
-void execStdSqrt(void)
+void
+execStdSqrt(void)
 {
 	float val = ABLi_popIntegerReal();
 	if (val < 0.0)
@@ -604,7 +646,8 @@ void execStdSqrt(void)
 
 //***************************************************************************
 
-void execStdTrunc(void)
+void
+execStdTrunc(void)
 {
 	float val = ABLi_popReal();
 	ABLi_pushInteger((int32_t)val);
@@ -612,9 +655,10 @@ void execStdTrunc(void)
 
 //***************************************************************************
 
-void execStdFileOpen(void)
+void
+execStdFileOpen(void)
 {
-	PSTR fileName	  = ABLi_popCharPtr();
+	PSTR fileName = ABLi_popCharPtr();
 	int32_t fileHandle = -1;
 	UserFile* userFile = UserFile::getNewFile();
 	if (userFile)
@@ -628,10 +672,11 @@ void execStdFileOpen(void)
 
 //---------------------------------------------------------------------------
 
-void execStdFileWrite(void)
+void
+execStdFileWrite(void)
 {
 	int32_t fileHandle = ABLi_popInteger();
-	PSTR string		   = ABLi_popCharPtr();
+	PSTR string = ABLi_popCharPtr();
 	UserFile* userFile = UserFile::files[fileHandle];
 	if (userFile->inUse)
 		userFile->write(string);
@@ -639,7 +684,8 @@ void execStdFileWrite(void)
 
 //---------------------------------------------------------------------------
 
-void execStdFileClose(void)
+void
+execStdFileClose(void)
 {
 	int32_t fileHandle = ABLi_popInteger();
 	UserFile* userFile = UserFile::files[fileHandle];
@@ -649,7 +695,8 @@ void execStdFileClose(void)
 
 //***************************************************************************
 
-void execStdGetModule(void)
+void
+execStdGetModule(void)
 {
 	//----------------------------------------------------------
 	// Return the handle of the current module being executed...
@@ -662,7 +709,8 @@ void execStdGetModule(void)
 
 //***************************************************************************
 
-void execStdSetMaxLoops(void)
+void
+execStdSetMaxLoops(void)
 {
 	//----------------------------------------------------------------------
 	//
@@ -681,7 +729,8 @@ void execStdSetMaxLoops(void)
 
 //---------------------------------------------------------------------------
 
-void execStdFatal(void)
+void
+execStdFatal(void)
 {
 	//----------------------------------------------------------------------
 	//
@@ -699,7 +748,7 @@ void execStdFatal(void)
 	//
 	//----------------------------------------------------------------------
 	int32_t code = ABLi_popInteger();
-	PSTR s		 = ABLi_popCharPtr();
+	PSTR s = ABLi_popCharPtr();
 	char message[512];
 	if (debugger)
 	{
@@ -722,7 +771,8 @@ void execStdFatal(void)
 
 //---------------------------------------------------------------------------
 
-void execStdAssert(void)
+void
+execStdAssert(void)
 {
 	//----------------------------------------------------------------------
 	//
@@ -744,8 +794,8 @@ void execStdAssert(void)
 	//
 	//----------------------------------------------------------------------
 	int32_t expression = ABLi_popInteger();
-	int32_t code	   = ABLi_popInteger();
-	PSTR s			   = ABLi_popCharPtr();
+	int32_t code = ABLi_popInteger();
+	PSTR s = ABLi_popCharPtr();
 	if (!expression)
 	{
 		char message[512];
@@ -771,7 +821,8 @@ void execStdAssert(void)
 
 //-----------------------------------------------------------------------------
 
-void execStdRandom(void)
+void
+execStdRandom(void)
 {
 	int32_t n = ABLi_peekInteger();
 	//---------------------------------------------------------------------
@@ -784,7 +835,8 @@ void execStdRandom(void)
 
 //-----------------------------------------------------------------------------
 
-void execStdSeedRandom(void)
+void
+execStdSeedRandom(void)
 {
 	int32_t seed = ABLi_popInteger();
 	if (seed == -1)
@@ -795,7 +847,8 @@ void execStdSeedRandom(void)
 
 //-----------------------------------------------------------------------------
 
-void execStdResetOrders(void)
+void
+execStdResetOrders(void)
 {
 	int32_t scope = ABLi_popInteger();
 	if (scope == 0)
@@ -803,10 +856,10 @@ void execStdResetOrders(void)
 	else if (scope == 1)
 	{
 		int32_t startIndex = CurRoutineIdPtr->defn.info.routine.orderCallIndex;
-		int32_t endIndex   = startIndex + CurRoutineIdPtr->defn.info.routine.numOrderCalls;
+		int32_t endIndex = startIndex + CurRoutineIdPtr->defn.info.routine.numOrderCalls;
 		for (size_t i = startIndex; i < endIndex; i++)
 		{
-			uint8_t orderDWord   = (uint8_t)(i / 32);
+			uint8_t orderDWord = (uint8_t)(i / 32);
 			uint8_t orderBitMask = (uint8_t)(i % 32);
 			CurModule->clearOrderCallFlag(orderDWord, orderBitMask);
 		}
@@ -815,16 +868,18 @@ void execStdResetOrders(void)
 
 //---------------------------------------------------------------------------
 
-void execStdGetStateHandle(void)
+void
+execStdGetStateHandle(void)
 {
-	PSTR name			= ABLi_popCharPtr();
+	PSTR name = ABLi_popCharPtr();
 	int32_t stateHandle = CurFSM->findStateHandle(_strlwr(name));
 	ABLi_pushInteger(stateHandle);
 }
 
 //---------------------------------------------------------------------------
 
-void execStdGetCurrentStateHandle(void)
+void
+execStdGetCurrentStateHandle(void)
 {
 	int32_t stateHandle = CurFSM->getStateHandle();
 	ABLi_pushInteger(stateHandle);
@@ -836,7 +891,8 @@ extern ModuleEntryPtr ModuleRegistry;
 
 extern char SetStateDebugStr[256];
 
-void execStdSetState(void)
+void
+execStdSetState(void)
 {
 	uint32_t stateHandle = ABLi_popInteger();
 	if (stateHandle > 0)
@@ -853,9 +909,10 @@ void execStdSetState(void)
 
 //---------------------------------------------------------------------------
 
-void execStdGetFunctionHandle(void)
+void
+execStdGetFunctionHandle(void)
 {
-	PSTR name				 = ABLi_popCharPtr();
+	PSTR name = ABLi_popCharPtr();
 	SymTableNodePtr function = CurModule->findFunction(name, false);
 	if (function)
 		ABLi_pushInteger((uint32_t)function);
@@ -865,11 +922,12 @@ void execStdGetFunctionHandle(void)
 
 //---------------------------------------------------------------------------
 
-void execStdSetFlag(void)
+void
+execStdSetFlag(void)
 {
 	uint32_t bits = (uint32_t)ABLi_popInteger();
 	uint32_t flag = (uint32_t)ABLi_popInteger();
-	bool set	  = ABLi_popBoolean();
+	bool set = ABLi_popBoolean();
 	bits &= (flag ^ 0xFFFFFFFF);
 	if (set)
 		bits |= flag;
@@ -878,17 +936,19 @@ void execStdSetFlag(void)
 
 //---------------------------------------------------------------------------
 
-void execStdGetFlag(void)
+void
+execStdGetFlag(void)
 {
 	uint32_t bits = (uint32_t)ABLi_popInteger();
 	uint32_t flag = (uint32_t)ABLi_popInteger();
-	bool set	  = ((bits & flag) != 0);
+	bool set = ((bits & flag) != 0);
 	ABLi_pushInteger(set);
 }
 
 //---------------------------------------------------------------------------
 
-void execStdCallFunction(void)
+void
+execStdCallFunction(void)
 {
 	uint32_t address = ABLi_popInteger();
 	if (address)
@@ -899,7 +959,8 @@ void execStdCallFunction(void)
 
 //***************************************************************************
 
-void initStandardRoutines(void)
+void
+initStandardRoutines(void)
 {
 	//-------------------------------------------------------------
 	// Fatal and Assert will have hardcoded keys so we can look for
@@ -932,7 +993,8 @@ void initStandardRoutines(void)
 
 //-----------------------------------------------------------------------------
 
-TypePtr execStandardRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
+TypePtr
+execStandardRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 {
 	int32_t key = routineIdPtr->defn.info.routine.key;
 	switch (key)

@@ -91,13 +91,13 @@ void __stdcall RegistryManagerInstall(void)
 		uint32_t time;
 
 		cbdata = 4;
-		data   = 0;
+		data = 0;
 
 		GetLocalTime(&SystemTime);
 		SystemTimeToFileTime(&SystemTime, &FileTime);
 		*(uint64_t*)&FileTime -= 10000i64 * timeGetTime();
 		FileTimeToSystemTime(&FileTime, &SystemTime);
-		SystemTime.wSecond		 = 0;
+		SystemTime.wSecond = 0;
 		SystemTime.wMilliseconds = 0;
 		SystemTimeToFileTime(&SystemTime, &FileTime);
 		time = LOWORD(FileTime.dwLowDateTime);
@@ -116,11 +116,10 @@ void __stdcall RegistryManagerInstall(void)
 	}
 
 	cbdata = 4;
-	data   = 0;
-	pdata  = reinterpret_cast<PBYTE>(&data);
+	data = 0;
+	pdata = reinterpret_cast<PBYTE>(&data);
 
-	if ((Environment.version != nullptr) && (*Environment.version) /* ! */ &&
-		(Environment.dontClearRegistry == false))
+	if ((Environment.version != nullptr) && (*Environment.version) /* ! */ && (Environment.dontClearRegistry == false))
 	{
 		status = ::RegOpenKeyA(HKEY_LOCAL_MACHINE, RegistryKey, &hkey);
 		if (status == ERROR_SUCCESS)
@@ -136,8 +135,8 @@ void __stdcall RegistryManagerInstall(void)
 	}
 
 	cbdata = 4;
-	data   = 0;
-	pdata  = reinterpret_cast<PBYTE>(&data);
+	data = 0;
+	pdata = reinterpret_cast<PBYTE>(&data);
 
 	hFile =
 		::CreateFileA(_pgmptr, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
@@ -155,11 +154,9 @@ void __stdcall RegistryManagerInstall(void)
 	// cbdata = 4;
 	WindowStartY = 0x80000000;
 	gos_LoadDataFromRegistry("Window_Y", reinterpret_cast<PBYTE>(&WindowStartY), &cbdata, false);
-	if (WindowStartX >
-		GetDeviceCaps(DesktopDC, HORZRES)) // Width, in millimeters, of the physical screen
+	if (WindowStartX > GetDeviceCaps(DesktopDC, HORZRES)) // Width, in millimeters, of the physical screen
 		WindowStartX = 0x80000000;
-	if (WindowStartY >
-		GetDeviceCaps(DesktopDC, VERTRES)) // Height, in millimeters, of the physical screen
+	if (WindowStartY > GetDeviceCaps(DesktopDC, VERTRES)) // Height, in millimeters, of the physical screen
 		WindowStartY = 0x80000000;
 
 	PerfCounterSelected = static_cast<uint32_t>(-1); // 0xffffffff
@@ -187,22 +184,22 @@ void __stdcall RegistryManagerInstall(void)
 	}
 
 	cbdata = 32;
-	data   = 0x1231;
-	pdata  = reinterpret_cast<PBYTE>(&data);
+	data = 0x1231;
+	pdata = reinterpret_cast<PBYTE>(&data);
 	gos_LoadDataFromRegistry("DebuggerOptions", pdata, &cbdata, false);
 
-	gGameLogicActive	 = data & 1;
-	gControlsActive		 = (data >> 1) & 1;
-	gStopSystem			 = (data >> 2) & 1;
-	gFrameGraph			 = (data >> 3) & 1;
-	gEnableParallel		 = (data >> 4) & 1;
-	NoDebuggerStats		 = (data >> 5) & 1;
-	gShowGraphsAsTime	= (data >> 6) & 1;
+	gGameLogicActive = data & 1;
+	gControlsActive = (data >> 1) & 1;
+	gStopSystem = (data >> 2) & 1;
+	gFrameGraph = (data >> 3) & 1;
+	gEnableParallel = (data >> 4) & 1;
+	NoDebuggerStats = (data >> 5) & 1;
+	gShowGraphsAsTime = (data >> 6) & 1;
 	gShowGraphBackground = (uint8_t)data >> 8;
-	gShowLFControls		 = (data >> 9) & 1;
-	gNoGraph			 = (data >> 10) & 1;
-	gTextureOverrun		 = (data >> 11) & 1;
-	gShowAverage		 = (data >> 12) & 1;
+	gShowLFControls = (data >> 9) & 1;
+	gNoGraph = (data >> 10) & 1;
+	gTextureOverrun = (data >> 11) & 1;
+	gShowAverage = (data >> 12) & 1;
 }
 
 /******************************************************************************/
@@ -225,18 +222,18 @@ void __stdcall RegistryManagerUninstall(void)
 	gos_SaveDataToRegistry("BadShutDown", reinterpret_cast<PBYTE>(&data), 4u);
 
 	RegDebuggerOptions debugoptions;
-	debugoptions.GameLogicActive	 = gGameLogicActive != 0 ? 0x0001 : 0;
-	debugoptions.ControlsActive		 = gControlsActive != 0 ? 0x0002 : 0;
-	debugoptions.StopSystem			 = gStopSystem != 0 ? 0x0004 : 0;
-	debugoptions.FrameGraph			 = gFrameGraph != 0 ? 0x0008 : 0;
-	debugoptions.EnableParallel		 = gEnableParallel != 0 ? 0x0010 : 0;
-	debugoptions.NoDebuggerStats	 = NoDebuggerStats != 0 ? 0x0020 : 0;
-	debugoptions.ShowGraphsAsTime	= gShowGraphsAsTime != 0 ? 0x0040 : 0;
+	debugoptions.GameLogicActive = gGameLogicActive != 0 ? 0x0001 : 0;
+	debugoptions.ControlsActive = gControlsActive != 0 ? 0x0002 : 0;
+	debugoptions.StopSystem = gStopSystem != 0 ? 0x0004 : 0;
+	debugoptions.FrameGraph = gFrameGraph != 0 ? 0x0008 : 0;
+	debugoptions.EnableParallel = gEnableParallel != 0 ? 0x0010 : 0;
+	debugoptions.NoDebuggerStats = NoDebuggerStats != 0 ? 0x0020 : 0;
+	debugoptions.ShowGraphsAsTime = gShowGraphsAsTime != 0 ? 0x0040 : 0;
 	debugoptions.ShowGraphBackground = gShowGraphBackground != 0 ? 0x0100 : 0;
-	debugoptions.ShowLFControls		 = gShowLFControls != 0 ? 0x0200 : 0;
-	debugoptions.NoGraph			 = gNoGraph != 0 ? 0x0400 : 0;
-	debugoptions.TextureOverrun		 = gTextureOverrun != 0 ? 0x0800 : 0;
-	debugoptions.ShowAverage		 = gShowAverage != 0 ? 0x1000 : 0;
+	debugoptions.ShowLFControls = gShowLFControls != 0 ? 0x0200 : 0;
+	debugoptions.NoGraph = gNoGraph != 0 ? 0x0400 : 0;
+	debugoptions.TextureOverrun = gTextureOverrun != 0 ? 0x0800 : 0;
+	debugoptions.ShowAverage = gShowAverage != 0 ? 0x1000 : 0;
 	gos_SaveDataToRegistry("DebuggerOptions", reinterpret_cast<PBYTE>(&debugoptions), 4u); // ?
 
 	memset(&ProfileFlags, 0, 0x20u);
@@ -371,7 +368,7 @@ PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, bool ishklm)
 	HKEY hkey;
 	static uint8_t Buffer[0x200];
 
-	cbdata	= 0x200;
+	cbdata = 0x200;
 	Buffer[0] = 0;
 
 	status = ::RegOpenKeyA(HKEY_LOCAL_MACHINE, keyname, &hkey);
@@ -402,7 +399,7 @@ PSTR __stdcall ReadRegistryHKCU(PSTR keyname, PSTR valuename, bool ishklm)
 
 	static uint8_t Buffer[0x200];
 
-	cbdata	= 0x200;
+	cbdata = 0x200;
 	Buffer[0] = 0;
 
 	status = ::RegOpenKeyA(HKEY_CURRENT_USER, keyname, &hkey);

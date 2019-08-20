@@ -85,7 +85,7 @@ public:
 	void setResourcePoints(int32_t rp)
 	{
 		resourcePoints = rp;
-		rpJustAdded	= 0;
+		rpJustAdded = 0;
 	}
 	int32_t getResourcePoints() { return resourcePoints; }
 	void addResourcePoints(int32_t amount)

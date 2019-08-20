@@ -20,8 +20,8 @@ MPGameBrowser.cpp			: Implementation of the MPGameBrowser component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID  = 1000010;
-static cint32_t OK_BUTTON_ID	 = 1000001;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 #define SORT_ORDER_NAME 200
@@ -33,13 +33,13 @@ extern CPrefs prefs;
 
 MPGameBrowser::MPGameBrowser()
 {
-	status			= NEXT;
+	status = NEXT;
 	helpTextArrayID = 5;
-	bShowErrorDlg   = 0;
-	sortOrder		= SORT_ORDER_NAME;
-	bSortUpward		= 1;
-	bHosting		= 0;
-	bShowErrorDlg   = 0;
+	bShowErrorDlg = 0;
+	sortOrder = SORT_ORDER_NAME;
+	bSortUpward = 1;
+	bHosting = 0;
+	bShowErrorDlg = 0;
 }
 
 MPGameBrowser::~MPGameBrowser()
@@ -47,7 +47,8 @@ MPGameBrowser::~MPGameBrowser()
 	//	gameList.destroy();
 }
 
-int32_t MPGameBrowser::indexOfButtonWithID(int32_t id)
+int32_t
+MPGameBrowser::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -60,7 +61,8 @@ int32_t MPGameBrowser::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void MPGameBrowser::init(FitIniFile* file)
+void
+MPGameBrowser::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -104,10 +106,11 @@ void MPGameBrowser::init(FitIniFile* file)
 	hostDlg.init();
 }
 
-void MPGameBrowser::begin()
+void
+MPGameBrowser::begin()
 {
-	status		  = RUNNING;
-	bHosting	  = 0;
+	status = RUNNING;
+	bHosting = 0;
 	bShowErrorDlg = 0;
 	if (MPlayer)
 	{
@@ -119,14 +122,16 @@ void MPGameBrowser::begin()
 	}
 }
 
-void MPGameBrowser::end()
+void
+MPGameBrowser::end()
 {
 	if (MPlayer)
 		MPlayer->endSessionScan();
 	bHosting = 0;
 }
 
-void MPGameBrowser::render(int32_t xOffset, int32_t yOffset)
+void
+MPGameBrowser::render(int32_t xOffset, int32_t yOffset)
 {
 	if ((0 == xOffset) && (0 == yOffset))
 	{
@@ -144,9 +149,14 @@ void MPGameBrowser::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void MPGameBrowser::render() { render(0, 0); }
+void
+MPGameBrowser::render()
+{
+	render(0, 0);
+}
 
-int32_t MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 {
 	if (RUNNING == status)
 	{
@@ -195,33 +205,33 @@ int32_t MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 						else
 						{
 							int32_t errorID = IDS_MP_CONNECT_NO_SESSION;
-							int32_t fontID  = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
+							int32_t fontID = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
 							// display a dialog about why this can't happen....
 							switch (retVal)
 							{
 							case MPLAYER_ERR_HOST_NOT_FOUND:
 								errorID = IDS_MP_CONNECT_ERROR_NO_HOST;
-								fontID  = IDS_MP_CONNECT_ERROR_NO_HOST_FONT;
+								fontID = IDS_MP_CONNECT_ERROR_NO_HOST_FONT;
 								break;
 							case MPLAYER_ERR_NO_CONNECTION:
 								errorID = IDS_MP_CONNECT_ERROR_NO_CONNECTION;
-								fontID  = IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT;
+								fontID = IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT;
 								break;
 							case MPLAYER_ERR_SESSION_IN_PROGRESS:
 								errorID = IDS_MP_CONNECT_ERROR_IN_PROGRESS;
-								fontID  = IDS_MP_CONNECT_ERROR_IN_PROGRESS_FONT;
+								fontID = IDS_MP_CONNECT_ERROR_IN_PROGRESS_FONT;
 								break;
 							case MPLAYER_ERR_SESSION_LOCKED:
 								errorID = IDS_MP_CONNECT_ERROR_LOCKED;
-								fontID  = IDS_MP_CONNECT_ERROR_LOCKED_FONT;
+								fontID = IDS_MP_CONNECT_ERROR_LOCKED_FONT;
 								break;
 							case MPLAYER_ERR_BAD_VERSION:
 								errorID = IDS_MP_CONNECTION_ERROR_WRONG_VERSION;
-								fontID  = IDS_MP_CONNECTION_ERROR_WRONG_VERSION_FONT;
+								fontID = IDS_MP_CONNECTION_ERROR_WRONG_VERSION_FONT;
 								break;
 							case MPLAYER_ERR_SESSION_FULL:
 								errorID = IDS_MP_CONNECTION_ERROR_FULL;
-								fontID  = IDS_MP_CONNECTION_ERROR_FULL_FONT;
+								fontID = IDS_MP_CONNECTION_ERROR_FULL_FONT;
 								break;
 							}
 							LogisticsOneButtonDialog::instance()->begin();
@@ -257,9 +267,14 @@ int32_t MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool MPGameBrowser::isDone() { return status != RUNNING; }
+bool
+MPGameBrowser::isDone()
+{
+	return status != RUNNING;
+}
 
-void MPGameBrowser::update()
+void
+MPGameBrowser::update()
 {
 	if (bHosting)
 	{
@@ -295,15 +310,15 @@ void MPGameBrowser::update()
 			return;
 		}
 	}
-	int32_t oldSel		 = gameList.GetSelectedItem();
+	int32_t oldSel = gameList.GetSelectedItem();
 	int32_t oldHighlight = -1;
 	for (size_t i = 0; i < gameList.GetItemCount(); i++)
 	{
 		if (gameList.GetItem(i)->getState() == aListItem::HIGHLITE)
 			oldHighlight = i;
 	}
-	helpTextID			 = 0;
-	helpTextHeaderID	 = 0;
+	helpTextID = 0;
+	helpTextHeaderID = 0;
 	int32_t sessionCount = 0;
 	if (MPlayer)
 	{
@@ -347,7 +362,8 @@ void MPGameBrowser::update()
 	gameList.setScrollPos(oldScrollPos);
 }
 
-int32_t aStyle3TextListItem::init(FitIniFile* file, PCSTR blockName)
+int32_t
+aStyle3TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x = 0;
@@ -380,7 +396,8 @@ int32_t aStyle3TextListItem::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aStyle3TextListItem::render()
+void
+aStyle3TextListItem::render()
 {
 	uint32_t color;
 	animGroup.update();
@@ -408,22 +425,23 @@ void aStyle3TextListItem::render()
 	aTextListItem::render();
 }
 
-aGameListItem& aGameListItem::operator=(const aGameListItem& src)
+aGameListItem&
+aGameListItem::operator=(const aGameListItem& src)
 {
 	removeAllChildren();
 	aObject::operator=(src);
-	session			 = src.session;
-	allTechGraphic   = src.allTechGraphic;
-	gameName		 = src.gameName;
-	numPlayers		 = src.numPlayers;
-	mapName			 = src.mapName;
-	latency			 = src.latency;
-	allTechRect		 = src.allTechRect;
-	gameNameRect	 = src.gameNameRect;
-	numPlayersRect   = src.numPlayersRect;
-	mapNameRect		 = src.mapNameRect;
-	latencyRect		 = src.latencyRect;
-	pingIcon		 = src.pingIcon;
+	session = src.session;
+	allTechGraphic = src.allTechGraphic;
+	gameName = src.gameName;
+	numPlayers = src.numPlayers;
+	mapName = src.mapName;
+	latency = src.latency;
+	allTechRect = src.allTechRect;
+	gameNameRect = src.gameNameRect;
+	numPlayersRect = src.numPlayersRect;
+	mapNameRect = src.mapNameRect;
+	latencyRect = src.latencyRect;
+	pingIcon = src.pingIcon;
 	addChild(&allTechGraphic);
 	addChild(&gameName);
 	addChild(&numPlayers);
@@ -437,11 +455,13 @@ aGameListItem& aGameListItem::operator=(const aGameListItem& src)
 	addChild(&pingIcon);
 	return *this;
 }
-aGameListItem::aGameListItem() : latency(IDS_MP_LANBROW_PING_FONT) {}
-int32_t aGameListItem::init(FitIniFile* file, PCSTR blockName)
+aGameListItem::aGameListItem() :
+	latency(IDS_MP_LANBROW_PING_FONT) {}
+int32_t
+aGameListItem::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
-	int32_t width  = 0;
+	int32_t width = 0;
 	int32_t height = 0;
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
@@ -564,7 +584,8 @@ int32_t aGameListItem::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aGameListItem::setSessionInfo(MC2Session* pSession)
+void
+aGameListItem::setSessionInfo(MC2Session* pSession)
 {
 	memcpy(&session, pSession, sizeof(MC2Session));
 	gameName.setText(pSession->name);
@@ -599,7 +620,8 @@ void aGameListItem::setSessionInfo(MC2Session* pSession)
 	//>501ms	 - 	red
 }
 
-PCSTR aGameListItem::getText(int32_t which)
+PCSTR
+aGameListItem::getText(int32_t which)
 {
 	if (which == SORT_ORDER_NAME)
 		return gameName.getText();
@@ -612,9 +634,14 @@ PCSTR aGameListItem::getText(int32_t which)
 	return nullptr;
 }
 
-PCSTR aGameListItem::getSessionName() { return gameName.getText(); }
+PCSTR
+aGameListItem::getSessionName()
+{
+	return gameName.getText();
+}
 
-void aGameListItem::update()
+void
+aGameListItem::update()
 {
 	gameName.setState(getState());
 	numPlayers.setState(getState());

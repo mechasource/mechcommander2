@@ -76,7 +76,8 @@ extern int32_t ObjectTextureSize;
 extern bool reloadBounds;
 //-----------------------------------------------------------------------------
 // class GenericAppearanceType
-void GenericAppearanceType::init(PSTR fileName)
+void
+GenericAppearanceType::init(PSTR fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -186,7 +187,8 @@ void GenericAppearanceType::init(PSTR fileName)
 }
 
 //----------------------------------------------------------------------------
-void GenericAppearanceType::destroy(void)
+void
+GenericAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	if (genShape)
@@ -202,7 +204,8 @@ void GenericAppearanceType::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
+void
+GenericAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -215,32 +218,33 @@ void GenericAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animat
 
 //-----------------------------------------------------------------------------
 // class GenericAppearance
-void GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void
+GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (GenericAppearanceType*)tree;
 	shapeMin.x = shapeMin.y = -25;
 	shapeMax.x = shapeMax.y = 50;
-	genAnimationState		= -1;
-	currentFrame			= 0.0f;
-	genFrameRate			= 0.0f;
-	isReversed				= false;
-	isLooping				= false;
-	setFirstFrame			= false;
-	canTransition			= true;
-	paintScheme				= -1;
-	objectNameId			= 30469;
-	hazeFactor				= 0.0f;
-	skyNumber				= 0;
+	genAnimationState = -1;
+	currentFrame = 0.0f;
+	genFrameRate = 0.0f;
+	isReversed = false;
+	isLooping = false;
+	setFirstFrame = false;
+	canTransition = true;
+	paintScheme = -1;
+	objectNameId = 30469;
+	hazeFactor = 0.0f;
+	skyNumber = 0;
 	screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 	position.Zero();
-	rotation			 = 0.0f;
-	pitch				 = 0.0f;
-	selected			 = 0;
-	teamId				 = -1;
+	rotation = 0.0f;
+	pitch = 0.0f;
+	selected = 0;
+	teamId = -1;
 	homeTeamRelationship = 0;
-	actualRotation		 = rotation;
-	OBBRadius			 = -1.0f;
+	actualRotation = rotation;
+	OBBRadius = -1.0f;
 	if (appearType)
 	{
 		genShape = appearType->genShape->CreateFrom();
@@ -283,51 +287,52 @@ void GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D nodeCenter = genShape->GetRootNodeCenter();
-		boxCoords[0].x			   = position.x + genShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[0].y			   = position.y + genShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[0].z			   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[1].x			   = position.x + genShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[1].y			   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[1].z			   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[2].x			   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[2].y			   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[2].z			   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[3].x			   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[3].y			   = position.y + genShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[3].z			   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[4].x			   = position.x + genShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[4].y			   = position.y + genShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[4].z			   = position.z + genShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[5].x			   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[5].y			   = position.y + genShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[5].z			   = position.z + genShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[6].x			   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[6].y			   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[6].z			   = position.z + genShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[7].x			   = position.x + genShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[7].y			   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[7].z			   = position.z + genShape->GetMinBox().y + nodeCenter.y;
-		float testRadius		   = 0.0;
+		boxCoords[0].x = position.x + genShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[0].y = position.y + genShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[0].z = position.z + genShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[1].x = position.x + genShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[1].y = position.y + genShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[1].z = position.z + genShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[2].x = position.x + genShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[2].y = position.y + genShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[2].z = position.z + genShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[3].x = position.x + genShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[3].y = position.y + genShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[3].z = position.z + genShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[4].x = position.x + genShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[4].y = position.y + genShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[4].z = position.z + genShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[5].x = position.x + genShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[5].y = position.y + genShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[5].z = position.z + genShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[6].x = position.x + genShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[6].y = position.y + genShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[6].z = position.z + genShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[7].x = position.x + genShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[7].y = position.y + genShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[7].z = position.z + genShape->GetMinBox().y + nodeCenter.y;
+		float testRadius = 0.0;
 		for (i = 0; i < 8; i++)
 		{
 			testRadius = boxCoords[i].GetLength();
 			if (OBBRadius < testRadius)
 				OBBRadius = testRadius;
 		}
-		appearType->boundsUpperLeftX  = (-OBBRadius * 2.0);
-		appearType->boundsUpperLeftY  = (-OBBRadius * 2.0);
+		appearType->boundsUpperLeftX = (-OBBRadius * 2.0);
+		appearType->boundsUpperLeftY = (-OBBRadius * 2.0);
 		appearType->boundsLowerRightX = (OBBRadius * 2.0);
 		appearType->boundsLowerRightY = (OBBRadius);
 		if (!appearType->getDesignerTypeBounds())
 		{
-			appearType->typeUpperLeft  = genShape->GetMinBox();
+			appearType->typeUpperLeft = genShape->GetMinBox();
 			appearType->typeLowerRight = genShape->GetMaxBox();
 		}
 	}
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setObjStatus(int32_t oStatus)
+void
+GenericAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -369,7 +374,8 @@ void GenericAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setGesture(uint32_t gestureId)
+void
+GenericAppearance::setGesture(uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -384,46 +390,49 @@ void GenericAppearance::setGesture(uint32_t gestureId)
 	// reverse flag, and start it going until you hear otherwise.
 	appearType->setAnimation(genShape, gestureId);
 	genAnimationState = gestureId;
-	currentFrame	  = 0.0f;
+	currentFrame = 0.0f;
 	if (appearType->genStartF[gestureId])
 		currentFrame = appearType->genStartF[gestureId];
 	isReversed = false;
 	if (appearType->isReversed(genAnimationState))
 	{
 		currentFrame = appearType->getNumFrames(genAnimationState) - 1;
-		isReversed   = true;
+		isReversed = true;
 	}
 	if (appearType->isRandom(genAnimationState))
 	{
 		currentFrame = RandomNumber(appearType->getNumFrames(genAnimationState) - 1);
 	}
-	isLooping	 = appearType->isLooped(genAnimationState);
-	genFrameRate  = appearType->getFrameRate(genAnimationState);
+	isLooping = appearType->isLooped(genAnimationState);
+	genFrameRate = appearType->getFrameRate(genAnimationState);
 	setFirstFrame = true;
 	canTransition = false;
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setMoverParameters(
+void
+GenericAppearance::setMoverParameters(
 	float turretRot, float lArmRot, float rArmRot, bool isAirborne)
 {
 	pitch = turretRot;
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setObjectParameters(
+void
+GenericAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
-	rotation			 = Rot;
-	position			 = pos;
-	selected			 = sel;
-	actualRotation		 = Rot;
-	teamId				 = team;
+	rotation = Rot;
+	position = pos;
+	selected = sel;
+	actualRotation = Rot;
+	teamId = team;
 	homeTeamRelationship = homeRelations;
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::changeSkyToSkyNum(PSTR txmName, PSTR newName)
+void
+GenericAppearance::changeSkyToSkyNum(PSTR txmName, PSTR newName)
 {
 	if (strnicmp(txmName, "sky", 3) != 0)
 	{
@@ -438,7 +447,8 @@ void GenericAppearance::changeSkyToSkyNum(PSTR txmName, PSTR newName)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setSkyNumber(int32_t skyNum)
+void
+GenericAppearance::setSkyNumber(int32_t skyNum)
 {
 	//-------------------------------------------------
 	// Load the texture and store its handle.
@@ -483,12 +493,12 @@ void GenericAppearance::setSkyNumber(int32_t skyNum)
 }
 
 //-----------------------------------------------------------------------------
-bool GenericAppearance::isMouseOver(float px, float py)
+bool
+GenericAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
-			(py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) && (py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -501,7 +511,8 @@ bool GenericAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool GenericAppearance::recalcBounds(void)
+bool
+GenericAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
 	inView = false;
@@ -522,7 +533,7 @@ bool GenericAppearance::recalcBounds(void)
 			if (eyeDistance > Camera::MaxClipDistance)
 			{
 				hazeFactor = 1.0f;
-				inView	 = false;
+				inView = false;
 			}
 			else if (eyeDistance > Camera::MinHazeDistance)
 			{
@@ -533,7 +544,7 @@ bool GenericAppearance::recalcBounds(void)
 			else
 			{
 				Camera::HazeFactor = 0.0f;
-				inView			   = true;
+				inView = true;
 			}
 			//-----------------------------------------------------------------
 			// If inside farClip plane, check if behind camera.
@@ -559,7 +570,7 @@ bool GenericAppearance::recalcBounds(void)
 		else
 		{
 			Camera::HazeFactor = 0.0f;
-			inView			   = true;
+			inView = true;
 		}
 		if (inView)
 		{
@@ -572,17 +583,16 @@ bool GenericAppearance::recalcBounds(void)
 			// do a rough check if on screen.  If no where near, do NOT do the
 			// below. Mighty mighty slow!!!! Use the original check done before
 			// all this 3D madness.  Dig out sourceSafe tomorrow!
-			tempPos		 = screenPos;
-			upperLeft.x  = tempPos.x;
-			upperLeft.y  = tempPos.y;
+			tempPos = screenPos;
+			upperLeft.x = tempPos.x;
+			upperLeft.y = tempPos.y;
 			lowerRight.x = tempPos.x;
 			lowerRight.y = tempPos.y;
 			upperLeft.x += (appearType->boundsUpperLeftX * eye->getScaleFactor());
 			upperLeft.y += (appearType->boundsUpperLeftY * eye->getScaleFactor());
 			lowerRight.x += (appearType->boundsLowerRightX * eye->getScaleFactor());
 			lowerRight.y += (appearType->boundsLowerRightY * eye->getScaleFactor());
-			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-				(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 			{
 				// We are on screen.  Figure out selection box.
 				Stuff::Vector3D boxCoords[8];
@@ -633,19 +643,18 @@ bool GenericAppearance::recalcBounds(void)
 							minY = bcsp[i].y;
 					}
 				}
-				upperLeft.x  = minX;
-				upperLeft.y  = minY;
+				upperLeft.x = minX;
+				upperLeft.y = minY;
 				lowerRight.x = maxX;
 				lowerRight.y = maxY;
-				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-					(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 				{
 					inView = true;
 				}
 				else
 				{
 					inView = false; // Did alot of extra work checking this, but
-									// WHY draw and insult to injury?
+						// WHY draw and insult to injury?
 				}
 			}
 			else
@@ -658,18 +667,19 @@ bool GenericAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t GenericAppearance::render(int32_t depthFixup)
+int32_t
+GenericAppearance::render(int32_t depthFixup)
 {
 	if (inView)
 	{
-		int32_t color	  = SD_BLUE;
+		int32_t color = SD_BLUE;
 		uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8))
 		{
 			static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
-			static int32_t colorTable[3]	  = {
-				 SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
-			color	 = colorTable[homeTeamRelationship];
+			static int32_t colorTable[3] = {
+				SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
 		}
 		if (selected & DRAW_COLORED)
@@ -695,10 +705,10 @@ int32_t GenericAppearance::render(int32_t depthFixup)
 		else
 		{
 			gos_VERTEX planetPoint;
-			planetPoint.x	= screenPos.x;
-			planetPoint.y	= screenPos.y;
-			planetPoint.z	= screenPos.z;
-			planetPoint.rhw  = screenPos.w;
+			planetPoint.x = screenPos.x;
+			planetPoint.y = screenPos.y;
+			planetPoint.z = screenPos.z;
+			planetPoint.rhw = screenPos.w;
 			planetPoint.argb = appearType->dotRGB;
 			planetPoint.frgb = 0xff000000;
 			planetPoint.u = planetPoint.v = 0.0;
@@ -741,9 +751,9 @@ int32_t GenericAppearance::render(int32_t depthFixup)
 		boxStart.x = -(bldgShape->GetMinBox().x + nodeCenter.x);
 		boxStart.z = bldgShape->GetMinBox().y + nodeCenter.y;
 		boxStart.y = bldgShape->GetMinBox().z + nodeCenter.z;
-		boxEnd.x   = -(bldgShape->GetMaxBox().x + nodeCenter.x);
-		boxEnd.z   = bldgShape->GetMaxBox().y + nodeCenter.y;
-		boxEnd.y   = bldgShape->GetMaxBox().z + nodeCenter.z;
+		boxEnd.x = -(bldgShape->GetMaxBox().x + nodeCenter.x);
+		boxEnd.z = bldgShape->GetMaxBox().y + nodeCenter.y;
+		boxEnd.y = bldgShape->GetMaxBox().z + nodeCenter.z;
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D addCoords;
 		addCoords.x = boxStart.x;
@@ -854,7 +864,8 @@ int32_t GenericAppearance::render(int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-int32_t GenericAppearance::renderShadows(void)
+int32_t
+GenericAppearance::renderShadows(void)
 {
 	if (inView && visible)
 	{
@@ -866,7 +877,8 @@ int32_t GenericAppearance::renderShadows(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t GenericAppearance::update(bool animate)
+int32_t
+GenericAppearance::update(bool animate)
 {
 	Stuff::Point3D xlatPosition;
 	Stuff::UnitQuaternion rot;
@@ -880,28 +892,28 @@ int32_t GenericAppearance::update(bool animate)
 			rotation += 360;
 		//-------------------------------------------
 		// Does math necessary to draw Tree
-		float yaw  = rotation * DEGREES_TO_RADS;
-		float p	= pitch * DEGREES_TO_RADS;
+		float yaw = rotation * DEGREES_TO_RADS;
+		float p = pitch * DEGREES_TO_RADS;
 		pitchAngle = Stuff::EulerAngles(p, 0.0f, 0.0f);
-		yawAngle   = Stuff::EulerAngles(0.0f, yaw, 0.0f);
-		rot		   = pitchAngle;
+		yawAngle = Stuff::EulerAngles(0.0f, yaw, 0.0f);
+		rot = pitchAngle;
 		rot.Multiply(pitchAngle, yawAngle);
 		uint8_t lightr, lightg, lightb;
 		float lightIntensity = 1.0f;
 		if (land)
 			land->getTerrainLight(position);
-		lightr			  = eye->getLightRed(lightIntensity);
-		lightg			  = eye->getLightGreen(lightIntensity);
-		lightb			  = eye->getLightBlue(lightIntensity);
+		lightr = eye->getLightRed(lightIntensity);
+		lightg = eye->getLightGreen(lightIntensity);
+		lightb = eye->getLightBlue(lightIntensity);
 		uint32_t lightRGB = (lightr << 16) + (lightg << 8) + lightb;
 		eye->setLightColor(0, lightRGB);
 		eye->setLightIntensity(0, 1.0);
 		uint32_t fogRGB = 0xff << 24;
-		float fogStart  = eye->fogStart;
-		float fogFull   = eye->fogFull;
-		xlatPosition.x  = -position.x;
-		xlatPosition.y  = position.z;
-		xlatPosition.z  = position.y;
+		float fogStart = eye->fogStart;
+		float fogFull = eye->fogFull;
+		xlatPosition.x = -position.x;
+		xlatPosition.y = position.z;
+		xlatPosition.z = position.y;
 		if (xlatPosition.y < fogStart)
 		{
 			float fogFactor = fogStart - xlatPosition.y;
@@ -921,7 +933,7 @@ int32_t GenericAppearance::update(bool animate)
 					fogFactor = 256.0;
 				}
 				uint8_t fogResult = float2long(fogFactor);
-				fogRGB			  = fogResult << 24;
+				fogRGB = fogResult << 24;
 			}
 		}
 		else
@@ -962,7 +974,7 @@ int32_t GenericAppearance::update(bool animate)
 				else
 					currentFrame = appearType->getNumFrames(genAnimationState) - 1;
 				canTransition = true; // Whenever we have completed one cycle or
-									  // at last frame, OK to move on!
+					// at last frame, OK to move on!
 			}
 			//--------------------------------------
 			// Check negative overflow of gesture
@@ -973,7 +985,7 @@ int32_t GenericAppearance::update(bool animate)
 				else
 					currentFrame = 0.0f;
 				canTransition = true; // Whenever we have completed one cycle or
-									  // at last frame, OK to move on!
+					// at last frame, OK to move on!
 			}
 		}
 		genShape->SetFrameNum(currentFrame);
@@ -988,7 +1000,8 @@ int32_t GenericAppearance::update(bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::destroy(void)
+void
+GenericAppearance::destroy(void)
 {
 	if (genShape)
 	{
@@ -1000,9 +1013,15 @@ void GenericAppearance::destroy(void)
 
 #define HEIGHT_THRESHOLD 10.0f
 //-----------------------------------------------------------------------------
-void GenericAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter) {}
+void
+GenericAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
+{
+}
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::markMoveMap(bool passable) {}
+void
+GenericAppearance::markMoveMap(bool passable)
+{
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////

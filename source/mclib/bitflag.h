@@ -20,8 +20,8 @@
 
 enum bitflag_const : uint32_t
 {
-	BITS_PER_BYTE		   = 8,
-	NO_RAM_FOR_FLAG_HEAP   = 0xFFFA0000,
+	BITS_PER_BYTE = 8,
+	NO_RAM_FOR_FLAG_HEAP = 0xFFFA0000,
 	NUM_BITS_NOT_SUPPORTED = 0xFFFA0001
 };
 
@@ -48,9 +48,9 @@ protected:
 	uint32_t totalRAM;
 
 public:
-	BitFlag(void)
-		: flagHeap(nullptr), numBitsPerFlag(0), rows(0), columns(0), maskValue(0), divValue(1),
-		  colWidth(1)
+	BitFlag(void) :
+		flagHeap(nullptr), numBitsPerFlag(0), rows(0), columns(0), maskValue(0), divValue(1),
+		colWidth(1)
 	{
 	}
 	~BitFlag(void) { destroy(); }
@@ -82,7 +82,8 @@ protected:
 	WINDOW* flagWindow;
 
 public:
-	ByteFlag(void) : flagHeap(nullptr), rows(0), columns(0), flagPane(nullptr), flagWindow(nullptr)
+	ByteFlag(void) :
+		flagHeap(nullptr), rows(0), columns(0), flagPane(nullptr), flagWindow(nullptr)
 	{
 	}
 	~ByteFlag(void) { destroy(); }

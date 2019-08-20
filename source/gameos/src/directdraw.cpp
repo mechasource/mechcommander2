@@ -78,7 +78,6 @@ HRESULT __stdcall wSetClipper(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWCLIPPER pDD
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
 
-
 /*
 Note: The InternalFunctionPause variadic variables often seem to be messed up,
 missing or in wrong order. I corrected a few to what I think was intended
@@ -134,8 +133,7 @@ HRESULT __stdcall wDirectDrawEnumerate(
 	if (_DirectDrawEnumerateEx != nullptr)
 	{
 		// InternalFunctionSpew("GameOS_DirectDraw", "DirectDrawEnumerateEx()");
-		uint32_t dwFlags = DDENUM_NONDISPLAYDEVICES | DDENUM_DETACHEDSECONDARYDEVICES |
-			DDENUM_ATTACHEDSECONDARYDEVICES;
+		uint32_t dwFlags = DDENUM_NONDISPLAYDEVICES | DDENUM_DETACHEDSECONDARYDEVICES | DDENUM_ATTACHEDSECONDARYDEVICES;
 		hResult = _DirectDrawEnumerateEx(pCallbackEx, pContext, dwFlags);
 	}
 	else
@@ -146,8 +144,8 @@ HRESULT __stdcall wDirectDrawEnumerate(
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - DirectDrawEnumerate()", 
-			hResult, errormessage))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - DirectDrawEnumerate()",
+				hResult, errormessage))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -177,7 +175,7 @@ HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t dwFlags, HWND hWnd
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetHWnd(Flags=0x%x Window=0x%x)",
-			hResult, errormessage, dwFlags, hWnd))
+				hResult, errormessage, dwFlags, hWnd))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -210,8 +208,8 @@ HRESULT __stdcall wGetAvailableVidMem(
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - GetAvailableVidMem( 0x%x,%s)", 
-			hResult, errormessage, pdd7, GetSurfaceCaps(pDDSCaps2)))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - GetAvailableVidMem( 0x%x,%s)",
+				hResult, errormessage, pdd7, GetSurfaceCaps(pDDSCaps2)))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -241,7 +239,7 @@ HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, pulong32_t pNumCodes, pulo
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetFourCCCodes(0x%x)",
-			hResult, errormessage, pdd7))
+				hResult, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -302,8 +300,8 @@ HRESULT __stdcall wGetCaps(LPDIRECTDRAW7 pdd7, LPDDCAPS lpDDDriverCaps, LPDDCAPS
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - GetCaps(0x%x)", 
-			hResult, errormessage, pdd7))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - GetCaps(0x%x)",
+				hResult, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -337,8 +335,8 @@ HRESULT __stdcall wCreatePalette(LPDIRECTDRAW7 pdd7, uint32_t dwFlags, LPPALETTE
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - CreatePalette(%s)", 
-			hResult, errormessage, GetCreatePaletteFlags(dwFlags)))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - CreatePalette(%s)",
+				hResult, errormessage, GetCreatePaletteFlags(dwFlags)))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -371,8 +369,8 @@ HRESULT __stdcall wEnumDisplayModes(LPDIRECTDRAW7 pdd7, uint32_t dwFlags,
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - EnumDisplayModes( %s)", 
-			hResult, errormessage, GetEnumDisplayModeFlags(dwFlags)))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - EnumDisplayModes( %s)",
+				hResult, errormessage, GetEnumDisplayModeFlags(dwFlags)))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -399,8 +397,8 @@ HRESULT __stdcall wGetDisplayMode(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurfac
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - GetDisplayMode()", 
-			hResult, errormessage))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - GetDisplayMode()",
+				hResult, errormessage))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -434,7 +432,7 @@ HRESULT __stdcall wSetDisplayMode(LPDIRECTDRAW7 pdd7, uint32_t dwWidth, uint32_t
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetDisplayMode(%dx%d %dbpp %dHz)",
-			hResult, errormessage, dwWidth, dwHeight, dwBPP, dwRefreshRate))
+				hResult, errormessage, dwWidth, dwHeight, dwBPP, dwRefreshRate))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -460,8 +458,8 @@ HRESULT __stdcall wRestoreDisplayMode(LPDIRECTDRAW7 pdd7)
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - RestoreDisplayMode()", 
-			hResult, errormessage))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - RestoreDisplayMode()",
+				hResult, errormessage))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -493,7 +491,7 @@ HRESULT __stdcall wCreateClipper(
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateClipper()",
-			hResult, errormessage))
+				hResult, errormessage))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -525,8 +523,8 @@ HRESULT __stdcall wCreateSurface(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurface
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateSurface( 0x%x:%s)", 
-			hResult, errormessage, pdd7, GetSurfaceDescription(pDDSurfaceDesc)))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateSurface( 0x%x:%s)",
+				hResult, errormessage, pdd7, GetSurfaceDescription(pDDSurfaceDesc)))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -556,7 +554,7 @@ HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hWnd, uint32_t d
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetCooperativeLevel( 0x%x,%s)",
-			hResult, errormessage, pdd7, GetSetCooperativeLevelFlags(dwFlags)))
+				hResult, errormessage, pdd7, GetSetCooperativeLevelFlags(dwFlags)))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -585,7 +583,7 @@ HRESULT __stdcall wIsLost(LPDIRECTDRAWSURFACE7 pdds7)
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - IsLost(0x%x)",
-			hResult, errormessage, pdds7))
+				hResult, errormessage, pdds7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -613,7 +611,7 @@ HRESULT __stdcall wGetDC(LPDIRECTDRAWSURFACE7 pdds7, HDC* phDC)
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetDC(0x%x)",
-			hResult, errormessage, pdds7))
+				hResult, errormessage, pdds7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -641,7 +639,7 @@ HRESULT __stdcall wReleaseDC(LPDIRECTDRAWSURFACE7 pdds7, HDC hDC)
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - ReleaseDC(0x%x, 0x%x)",
-			hResult, errormessage, pdds7, hDC))
+				hResult, errormessage, pdds7, hDC))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -672,8 +670,8 @@ HRESULT __stdcall wSetColorKey(
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetColorKey(0x%x,%s(0x%x,0x%x))",
-			hResult, errormessage, pdds7, GetSetColorKeyFlags(dwFlags),
-			pDDColorKey->dwColorSpaceLowValue, pDDColorKey->dwColorSpaceHighValue))
+				hResult, errormessage, pdds7, GetSetColorKeyFlags(dwFlags),
+				pDDColorKey->dwColorSpaceLowValue, pDDColorKey->dwColorSpaceHighValue))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -707,7 +705,7 @@ HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect,
 		// unused = GetLockFlags(dwFlags);
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Lock(0x%x,%s)",
-			hResult, errormessage, pdd7))
+				hResult, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -736,10 +734,10 @@ HRESULT __stdcall wUnlock(LPDIRECTDRAWSURFACE7 pdds7, LPRECT prect)
 
 	if (FAILED(hResult))
 	{
-		PSTR rectangle	= GetRectangle(buffer, prect);
+		PSTR rectangle = GetRectangle(buffer, prect);
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Unlock(0x%x,%s)",
-			hResult, errormessage, pdds7, rectangle))
+				hResult, errormessage, pdds7, rectangle))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -773,7 +771,7 @@ HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE pdds, LPRECT pDestRect, LPDDSURFACED
 		// unused = GetLockFlags(dwFlags);
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Lock(0x%x,%s)",
-			hResult, errormessage, pdds))
+				hResult, errormessage, pdds))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -802,10 +800,10 @@ HRESULT __stdcall wUnlock(LPDIRECTDRAWSURFACE pdds, LPRECT prect)
 
 	if (FAILED(hResult))
 	{
-		PSTR rectangle	= GetRectangle(buffer, prect);
+		PSTR rectangle = GetRectangle(buffer, prect);
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Unlock(0x%x,%s)",
-			hResult, errormessage, pdds, rectangle))
+				hResult, errormessage, pdds, rectangle))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -834,7 +832,7 @@ HRESULT __stdcall wSetPalette(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWPALETTE pDD
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetPalette(0x%x,0x%x)",
-			hResult, errormessage, pdd7, pDDPalette))
+				hResult, errormessage, pdd7, pDDPalette))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -861,8 +859,8 @@ HRESULT __stdcall wRestore(LPDIRECTDRAWSURFACE7 pdd7)
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - Restore(0x%x)", 
-			hResult, errormessage, pdd7))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - Restore(0x%x)",
+				hResult, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -896,9 +894,9 @@ HRESULT __stdcall wBlt(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect,
 	if (FAILED(hResult) && hResult != DDERR_SURFACELOST)
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - Blt(%s)", 
-			hResult, errormessage,
-			GetBltInformation(pdd7, pDestRect, lpDDSrcSurface, lpSrcRect, dwFlags, lpDDBltFx)))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - Blt(%s)",
+				hResult, errormessage,
+				GetBltInformation(pdd7, pDestRect, lpDDSrcSurface, lpSrcRect, dwFlags, lpDDBltFx)))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -932,9 +930,9 @@ HRESULT __stdcall wBltFast(LPDIRECTDRAWSURFACE7 pdd7, uint32_t dwX, uint32_t dwY
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - BltFast(%s)", 
-			hResult, errormessage,
-			GetBltFastInformation(pdd7, dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans)))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - BltFast(%s)",
+				hResult, errormessage,
+				GetBltFastInformation(pdd7, dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans)))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -966,8 +964,8 @@ HRESULT __stdcall wFlip(
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Flip( 0x%x,0x%x,%s)",
-			hResult, errormessage,
-			pdd7, pDDSurfaceTargetOverride, GetFlipFlags(dwFlags)))
+				hResult, errormessage,
+				pdd7, pDDSurfaceTargetOverride, GetFlipFlags(dwFlags)))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -996,7 +994,7 @@ HRESULT __stdcall wGetSurfaceDesc(LPDIRECTDRAWSURFACE7 pdd7, LPDDSURFACEDESC2 pD
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetSurfaceDesc(0x%x)",
-			hResult, errormessage, pdd7))
+				hResult, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -1027,7 +1025,7 @@ HRESULT __stdcall wGetSurfaceDesc(LPDIRECTDRAWSURFACE pdds, LPDDSURFACEDESC pDDS
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetSurfaceDesc(0x%x)",
-			hResult, errormessage, pdds))
+				hResult, errormessage, pdds))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -1057,7 +1055,7 @@ HRESULT __stdcall wGetPixelFormat(LPDIRECTDRAWSURFACE7 pdds7, LPDDPIXELFORMAT pD
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetPixelFormat(0x%x)",
-			hResult, errormessage, pdds7))
+				hResult, errormessage, pdds7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -1088,8 +1086,8 @@ HRESULT __stdcall wGetAttachedSurface(
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - GetAttachedSurface(0x%x)", 
-			hResult, errormessage, pdds7))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - GetAttachedSurface(0x%x)",
+				hResult, errormessage, pdds7))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -1120,7 +1118,7 @@ HRESULT __stdcall wAddAttachedSurface(
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - AddAttachedSurface(0x%x- 0x%x)",
-			hResult, errormessage, pdd7, pDDSAttachedSurface))
+				hResult, errormessage, pdd7, pDDSAttachedSurface))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -1152,7 +1150,7 @@ HRESULT __stdcall wDeleteAttachedSurface(
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - DeleteAttachedSurface(0x%x,0x%x)",
-			hResult, errormessage, pdds7, pDDSAttachedSurface))
+				hResult, errormessage, pdds7, pDDSAttachedSurface))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -1180,7 +1178,7 @@ HRESULT __stdcall wSetClipper(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWCLIPPER pDD
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetClipper(0x%x- 0x%x)",
-			hResult, errormessage, pdd7, pDDClipper))
+				hResult, errormessage, pdd7, pDDClipper))
 		{
 			ENTER_DEBUGGER;
 		}

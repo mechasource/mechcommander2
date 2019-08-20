@@ -32,7 +32,7 @@ extern uint32_t StackDepth;
 //
 typedef struct _VertexBuffer
 {
-	uint32_t Magic;			  // Magic number to verify handle valid
+	uint32_t Magic; // Magic number to verify handle valid
 	gosVERTEXTYPE VertexType; // Type of vertex the buffer contains
 	struct _VertexBuffer* pNext;
 	LPDIRECT3DVERTEXBUFFER7 vBuffer; // D3D handle
@@ -40,14 +40,14 @@ typedef struct _VertexBuffer
 	LPDIRECT3DVERTEXBUFFER7
 	DebugvBuffer; // D3D handle to a system memory vertex buffer for debugging D3DTLVERTEX data
 	LPDIRECT3DVERTEXBUFFER7 CopyvBuffer; // D3D handle to a system memory vertex buffer for
-										 // debugging (Readable copy of D3DVERTEX data)
+		// debugging (Readable copy of D3DVERTEX data)
 #endif
 	uint32_t NumberVertices; // Number of vertices when created
-	uint8_t Locked;			 // True when locked
-	uint8_t WantOptimize;	// True to optimize after the next unlock
-	uint8_t Optimized;		 // True once buffer is optimized
-	uint8_t Lost;			 // True when mode changed and buffer invalid
-	PVOID Pointer;			 // Pointer to start of data when locked
+	uint8_t Locked; // True when locked
+	uint8_t WantOptimize; // True to optimize after the next unlock
+	uint8_t Optimized; // True once buffer is optimized
+	uint8_t Lost; // True when mode changed and buffer invalid
+	PVOID Pointer; // Pointer to start of data when locked
 } VertexBuffer;
 typedef VertexBuffer* PVertexBuffer;
 
@@ -57,10 +57,10 @@ typedef VertexBuffer* PVertexBuffer;
 extern uint16_t QuadIndex[192];
 extern uint32_t AlphaInvAlpha; // Set when alpha blend mode is AlphaInvAlpha
 
-extern uint8_t ViewPortChanged;	// Set when game changes viewport
+extern uint8_t ViewPortChanged; // Set when game changes viewport
 extern uint32_t InUpdateRenderers; // True when in 'Update Renderers'
-extern uint32_t DrawingPolys;	  // Current polygon
-extern uint32_t gCulledTriangles;  // Number of culled triangles
+extern uint32_t DrawingPolys; // Current polygon
+extern uint32_t gCulledTriangles; // Number of culled triangles
 extern uint32_t CulledMax;
 extern uint32_t DrawingMax; // Maximum polys to draw
 extern uint32_t DrawingHighest;
@@ -151,57 +151,57 @@ extern gos_VERTEX PickZoom[3];
 
 // Capabilities of the mode
 extern int32_t HasGuardBandClipping;
-extern float MinGuardBandClip;   // Minimum guard band clip
-extern float MaxGuardBandClip;   // Maximum guard band clip
-extern int32_t HasAGP;			 // AGP memory available?
-extern int32_t HasSpecular;		 // Specular available
-extern int32_t HasDither;		 // Dithering available
-extern int32_t HasAntiAlias;	 // Can do sort independant antialias
-extern int32_t HasMipLodBias;	// MipMap LOD bias can be altered
-extern int32_t HasDecal;		 // Can DECAL
+extern float MinGuardBandClip; // Minimum guard band clip
+extern float MaxGuardBandClip; // Maximum guard band clip
+extern int32_t HasAGP; // AGP memory available?
+extern int32_t HasSpecular; // Specular available
+extern int32_t HasDither; // Dithering available
+extern int32_t HasAntiAlias; // Can do sort independant antialias
+extern int32_t HasMipLodBias; // MipMap LOD bias can be altered
+extern int32_t HasDecal; // Can DECAL
 extern int32_t HasModulateAlpha; // Can MODULATEALPHA
-extern int32_t HasAdd;			 // Can ADD
-extern int32_t HasMipMap;		 // Can do mip mapping
+extern int32_t HasAdd; // Can ADD
+extern int32_t HasMipMap; // Can do mip mapping
 
 extern int32_t HasMaxUV; // There is a maximum UV coord for this render mode (and texture)
-extern float MaxUCoord;  // The maximum u coord (for current texture)//
-extern float MinUCoord;  // The minimum u coord (for current texture)// Various
-						 // renderstates based on the capabilities of the current
-						 // video card
-extern float MaxVCoord;  // The maximum v coord (for current texture)//
-extern float MinVCoord;  // The minimum v coord (for current texture)// Various
-						 // renderstates based on the capabilities of the current
-						 // video card
+extern float MaxUCoord; // The maximum u coord (for current texture)//
+extern float MinUCoord; // The minimum u coord (for current texture)// Various
+	// renderstates based on the capabilities of the current
+	// video card
+extern float MaxVCoord; // The maximum v coord (for current texture)//
+extern float MinVCoord; // The minimum v coord (for current texture)// Various
+	// renderstates based on the capabilities of the current
+	// video card
 
 // Various modes the renderer can be in
 typedef enum RenderModeType
 {
-	Normal = 0,				// Normal rendering
-	WireframeGlobalColor,   // Only wireframe, no texture, global wireframe color
+	Normal = 0, // Normal rendering
+	WireframeGlobalColor, // Only wireframe, no texture, global wireframe color
 	WireframeGlobalTexture, // Global wireframe color ontop of texture
-	ExamineScene,			// Examine, zoom into scene mode
-	ExamineMipmaps,			// Examine Mipmaps mode
-	ExamineRenderer,		// Compare with reference rasterizer
-	ExamineDepth,			// Examine depth complexity
-	ExamineTriangleSize,	// Examine triangle size
-	ExamineTriangleSize1,   // Examine triangle size and only draw 1 or 2 pixel
-							// triangles
-	ExamineArea,			// Examine an area of the screen
-	ExamineDrawing,			// Examine scnene being drawn
-	ShowTriangleColors,		// Show each triangle as a different color
-	ExamineColor,			// Examine scene, show color information
-	ExamineMipmaps2,		// Examine mipmaps using colored mipmap (alter u,v)
+	ExamineScene, // Examine, zoom into scene mode
+	ExamineMipmaps, // Examine Mipmaps mode
+	ExamineRenderer, // Compare with reference rasterizer
+	ExamineDepth, // Examine depth complexity
+	ExamineTriangleSize, // Examine triangle size
+	ExamineTriangleSize1, // Examine triangle size and only draw 1 or 2 pixel
+	// triangles
+	ExamineArea, // Examine an area of the screen
+	ExamineDrawing, // Examine scnene being drawn
+	ShowTriangleColors, // Show each triangle as a different color
+	ExamineColor, // Examine scene, show color information
+	ExamineMipmaps2, // Examine mipmaps using colored mipmap (alter u,v)
 } RenderModeType;
 
 extern RenderModeType RenderMode; // In a special debugger mode
 
-extern uint32_t RenderStates[gos_MaxState];   // Current User settings
+extern uint32_t RenderStates[gos_MaxState]; // Current User settings
 extern uint32_t PreviousStates[gos_MaxState]; // Previously set renderstates
 
 // Various renderstates based on the capabilities of the current video card
-extern uint32_t ModeMagBiLinear;  // MAG mode for Bilinear
-extern uint32_t ModeMinNone;	  // MIN mode for non filtering
-extern uint32_t ModeMinBiLinear;  // MIN mode for bilinear
+extern uint32_t ModeMagBiLinear; // MAG mode for Bilinear
+extern uint32_t ModeMinNone; // MIN mode for non filtering
+extern uint32_t ModeMinBiLinear; // MIN mode for bilinear
 extern uint32_t ModeMinTriLinear; // MIN mode for trilinear
 
 #endif

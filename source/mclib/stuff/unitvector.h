@@ -26,8 +26,10 @@ public:
 	// Constructors
 	//
 	UnitVector3D() {}
-	UnitVector3D(float x, float y, float z) : Vector3D(x, y, z) {}
-	UnitVector3D(const UnitVector3D& v) : Vector3D(v) {}
+	UnitVector3D(float x, float y, float z) :
+		Vector3D(x, y, z) {}
+	UnitVector3D(const UnitVector3D& v) :
+		Vector3D(v) {}
 	explicit UnitVector3D(const Vector3D& v) { *this = v; }
 
 	static const UnitVector3D Forward;
@@ -105,14 +107,16 @@ private:
 	UnitVector3D& Combine(const Vector3D& V1, float t1, const Vector3D& V2, float t2);
 };
 
-inline UnitVector3D& UnitVector3D::Multiply(const UnitVector3D& v, const LinearMatrix4D& m)
+inline UnitVector3D&
+UnitVector3D::Multiply(const UnitVector3D& v, const LinearMatrix4D& m)
 {
 	Check_Object(&v);
 	Vector3D::Multiply((Vector3D&)v, (AffineMatrix4D&)m);
 	return *this;
 }
 
-inline UnitVector3D& UnitVector3D::operator*=(const LinearMatrix4D& m)
+inline UnitVector3D&
+UnitVector3D::operator*=(const LinearMatrix4D& m)
 {
 	UnitVector3D src(*this);
 	return Multiply(src, m);

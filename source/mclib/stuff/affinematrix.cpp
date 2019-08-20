@@ -21,19 +21,20 @@ const AffineMatrix4D AffineMatrix4D::Identity(true);
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::BuildIdentity()
+AffineMatrix4D&
+AffineMatrix4D::BuildIdentity()
 {
 	// Check_Pointer(this);
-	entries[0]  = 1.0f;
-	entries[1]  = 0.0f;
-	entries[2]  = 0.0f;
-	entries[3]  = 0.0f;
-	entries[4]  = 0.0f;
-	entries[5]  = 1.0f;
-	entries[6]  = 0.0f;
-	entries[7]  = 0.0f;
-	entries[8]  = 0.0f;
-	entries[9]  = 0.0f;
+	entries[0] = 1.0f;
+	entries[1] = 0.0f;
+	entries[2] = 0.0f;
+	entries[3] = 0.0f;
+	entries[4] = 0.0f;
+	entries[5] = 1.0f;
+	entries[6] = 0.0f;
+	entries[7] = 0.0f;
+	entries[8] = 0.0f;
+	entries[9] = 0.0f;
 	entries[10] = 1.0f;
 	entries[11] = 0.0f;
 	return *this;
@@ -43,7 +44,8 @@ AffineMatrix4D& AffineMatrix4D::BuildIdentity()
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::operator=(const Matrix4D& m)
+AffineMatrix4D&
+AffineMatrix4D::operator=(const Matrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
@@ -59,7 +61,8 @@ AffineMatrix4D& AffineMatrix4D::operator=(const Matrix4D& m)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::operator=(const Origin3D& p)
+AffineMatrix4D&
+AffineMatrix4D::operator=(const Origin3D& p)
 {
 	// Check_Pointer(this);
 	Check_Object(&p);
@@ -72,7 +75,8 @@ AffineMatrix4D& AffineMatrix4D::operator=(const Origin3D& p)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::operator=(const EulerAngles& angles)
+AffineMatrix4D&
+AffineMatrix4D::operator=(const EulerAngles& angles)
 {
 	// Check_Pointer(this);
 	Check_Object(&angles);
@@ -88,7 +92,8 @@ AffineMatrix4D& AffineMatrix4D::operator=(const EulerAngles& angles)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::operator=(const YawPitchRoll& angles)
+AffineMatrix4D&
+AffineMatrix4D::operator=(const YawPitchRoll& angles)
 {
 	// Check_Pointer(this);
 	Check_Object(&angles);
@@ -104,7 +109,8 @@ AffineMatrix4D& AffineMatrix4D::operator=(const YawPitchRoll& angles)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::operator=(const UnitQuaternion& q)
+AffineMatrix4D&
+AffineMatrix4D::operator=(const UnitQuaternion& q)
 {
 	// Check_Pointer(this);
 	Check_Object(&q);
@@ -120,7 +126,8 @@ AffineMatrix4D& AffineMatrix4D::operator=(const UnitQuaternion& q)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::operator=(const Point3D& p)
+AffineMatrix4D&
+AffineMatrix4D::operator=(const Point3D& p)
 {
 	// Check_Pointer(this);
 	Check_Object(&p);
@@ -142,16 +149,16 @@ AffineMatrix4D& AffineMatrix4D::operator=(const Point3D& p)
 //#############################################################################
 //#############################################################################
 //
-AffineMatrix4D& AffineMatrix4D::BuildRotation(const EulerAngles& angles)
+AffineMatrix4D&
+AffineMatrix4D::BuildRotation(const EulerAngles& angles)
 {
 	// Check_Pointer(this);
 	Check_Object(&angles);
-	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f ||
-		Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f);
+	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f || Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f);
 	SinCosPair x, y, z;
-	x			  = angles.pitch;
-	y			  = angles.yaw;
-	z			  = angles.roll;
+	x = angles.pitch;
+	y = angles.yaw;
+	z = angles.roll;
 	(*this)(0, 0) = y.cosine * z.cosine;
 	(*this)(0, 1) = y.cosine * z.sine;
 	(*this)(0, 2) = -y.sine;
@@ -169,16 +176,16 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const EulerAngles& angles)
 //#############################################################################
 //#############################################################################
 //
-AffineMatrix4D& AffineMatrix4D::BuildRotation(const YawPitchRoll& angles)
+AffineMatrix4D&
+AffineMatrix4D::BuildRotation(const YawPitchRoll& angles)
 {
 	// Check_Pointer(this);
 	Check_Object(&angles);
-	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f ||
-		Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f);
+	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f || Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f);
 	SinCosPair x, y, z;
-	x			  = angles.pitch;
-	y			  = angles.yaw;
-	z			  = angles.roll;
+	x = angles.pitch;
+	y = angles.yaw;
+	z = angles.roll;
 	(*this)(0, 0) = y.cosine * z.cosine + x.sine * y.sine * z.sine;
 	(*this)(0, 1) = x.cosine * z.sine;
 	(*this)(0, 2) = x.sine * y.cosine * z.sine - y.sine * z.cosine;
@@ -196,7 +203,8 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const YawPitchRoll& angles)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::BuildRotation(const UnitQuaternion& q)
+AffineMatrix4D&
+AffineMatrix4D::BuildRotation(const UnitQuaternion& q)
 {
 	// Check_Pointer(this);
 	Check_Object(&q);
@@ -218,7 +226,8 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const UnitQuaternion& q)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::BuildRotation(const Vector3D& v)
+AffineMatrix4D&
+AffineMatrix4D::BuildRotation(const Vector3D& v)
 {
 	// Check_Pointer(this);
 	Check_Object(&v);
@@ -255,7 +264,7 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const Vector3D& v)
 #else
 	UnitQuaternion temp_quat;
 	temp_quat = v;
-	operator  =(temp_quat);
+	operator=(temp_quat);
 	return *this;
 #endif
 }
@@ -264,7 +273,8 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const Vector3D& v)
 //###########################################################################
 //###########################################################################
 //
-bool Stuff::Close_Enough(const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e)
+bool
+Stuff::Close_Enough(const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e)
 {
 	Check_Object(&m2);
 	Check_Object(&m1);
@@ -596,7 +606,8 @@ AffineMatrix4D::Multiply(
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::Invert(const AffineMatrix4D& Source)
+AffineMatrix4D&
+AffineMatrix4D::Invert(const AffineMatrix4D& Source)
 {
 	// Check_Pointer(this);
 	Check_Object(&Source);
@@ -631,7 +642,8 @@ AffineMatrix4D& AffineMatrix4D::Invert(const AffineMatrix4D& Source)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Vector3D& v)
+AffineMatrix4D&
+AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Vector3D& v)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
@@ -655,7 +667,8 @@ AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Vector3D
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const UnitQuaternion& q)
+AffineMatrix4D&
+AffineMatrix4D::Multiply(const AffineMatrix4D& m, const UnitQuaternion& q)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
@@ -669,7 +682,8 @@ AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const UnitQuat
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Point3D& p)
+AffineMatrix4D&
+AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Point3D& p)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
@@ -684,19 +698,19 @@ AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Point3D&
 //###########################################################################
 //###########################################################################
 //
-float AffineMatrix4D::Determinant(void) const
+float
+AffineMatrix4D::Determinant(void) const
 {
 	// Check_Object(this);
-	return (*this)(0, 0) * ((*this)(1, 1) * (*this)(2, 2) - (*this)(1, 2) * (*this)(2, 1)) +
-		(*this)(0, 1) * ((*this)(1, 2) * (*this)(2, 0) - (*this)(1, 0) * (*this)(2, 2)) +
-		(*this)(0, 2) * ((*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0));
+	return (*this)(0, 0) * ((*this)(1, 1) * (*this)(2, 2) - (*this)(1, 2) * (*this)(2, 1)) + (*this)(0, 1) * ((*this)(1, 2) * (*this)(2, 0) - (*this)(1, 0) * (*this)(2, 2)) + (*this)(0, 2) * ((*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0));
 }
 
 //
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::Solve()
+AffineMatrix4D&
+AffineMatrix4D::Solve()
 {
 	// Check_Object(this);
 	size_t column;
@@ -717,17 +731,17 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 		// Swap the columns
 		//--------------
 		//
-		temp			   = (*this)(0, 0);
-		(*this)(0, 0)	  = (*this)(0, column);
+		temp = (*this)(0, 0);
+		(*this)(0, 0) = (*this)(0, column);
 		(*this)(0, column) = temp;
-		temp			   = (*this)(1, 0);
-		(*this)(1, 0)	  = (*this)(1, column);
+		temp = (*this)(1, 0);
+		(*this)(1, 0) = (*this)(1, column);
 		(*this)(1, column) = temp;
-		temp			   = (*this)(2, 0);
-		(*this)(2, 0)	  = (*this)(2, column);
+		temp = (*this)(2, 0);
+		(*this)(2, 0) = (*this)(2, column);
 		(*this)(2, column) = temp;
-		temp			   = (*this)(3, 0);
-		(*this)(3, 0)	  = (*this)(3, column);
+		temp = (*this)(3, 0);
+		(*this)(3, 0) = (*this)(3, column);
 		(*this)(3, column) = temp;
 	}
 	//
@@ -735,7 +749,7 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 	// Make sure the diagonal entry is 1.0
 	//------------------------------------
 	//
-	temp		  = (*this)(0, 0);
+	temp = (*this)(0, 0);
 	(*this)(0, 0) = 1.0f;
 	(*this)(1, 0) /= temp;
 	(*this)(2, 0) /= temp;
@@ -745,12 +759,12 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 	// Make the first row zero
 	//------------------------
 	//
-	temp		  = (*this)(0, 1);
+	temp = (*this)(0, 1);
 	(*this)(0, 1) = 0.0f;
 	(*this)(1, 1) -= temp * (*this)(1, 0);
 	(*this)(2, 1) -= temp * (*this)(2, 0);
 	(*this)(3, 1) -= temp * (*this)(3, 0);
-	temp		  = (*this)(0, 2);
+	temp = (*this)(0, 2);
 	(*this)(0, 2) = 0.0f;
 	(*this)(1, 2) -= temp * (*this)(1, 0);
 	(*this)(2, 2) -= temp * (*this)(2, 0);
@@ -768,13 +782,13 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 		// Swap the (*this) columns
 		//---------------------
 		//
-		temp		  = (*this)(1, 1);
+		temp = (*this)(1, 1);
 		(*this)(1, 1) = (*this)(1, 2);
 		(*this)(1, 2) = temp;
-		temp		  = (*this)(2, 1);
+		temp = (*this)(2, 1);
 		(*this)(2, 1) = (*this)(2, 2);
 		(*this)(2, 2) = temp;
-		temp		  = (*this)(3, 1);
+		temp = (*this)(3, 1);
 		(*this)(3, 1) = (*this)(3, 2);
 		(*this)(3, 2) = temp;
 	}
@@ -783,7 +797,7 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 	// Make the second diaginal entry 1.0
 	//-----------------------------------
 	//
-	temp		  = (*this)(1, 1);
+	temp = (*this)(1, 1);
 	(*this)(1, 1) = 1.0f;
 	(*this)(2, 1) /= temp;
 	(*this)(3, 1) /= temp;
@@ -792,11 +806,11 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 	// Make the second row zeros otherwise
 	//------------------------------------
 	//
-	temp		  = (*this)(1, 0);
+	temp = (*this)(1, 0);
 	(*this)(1, 0) = 0.0f;
 	(*this)(2, 0) -= temp * (*this)(2, 1);
 	(*this)(3, 0) -= temp * (*this)(3, 1);
-	temp		  = (*this)(1, 2);
+	temp = (*this)(1, 2);
 	(*this)(1, 2) = 0.0f;
 	(*this)(2, 2) -= temp * (*this)(2, 1);
 	(*this)(3, 2) -= temp * (*this)(3, 1);
@@ -806,7 +820,7 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 	//---------------------------
 	//
 	_ASSERT((*this)(2, 2));
-	temp		  = (*this)(2, 2);
+	temp = (*this)(2, 2);
 	(*this)(2, 2) = 1.0f;
 	(*this)(3, 2) /= temp;
 	//
@@ -814,10 +828,10 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 	// Make the third row zeros otherwise
 	//------------------------------------
 	//
-	temp		  = (*this)(2, 0);
+	temp = (*this)(2, 0);
 	(*this)(2, 0) = 0.0f;
 	(*this)(3, 0) -= temp * (*this)(3, 2);
-	temp		  = (*this)(2, 1);
+	temp = (*this)(2, 1);
 	(*this)(2, 1) = 0.0f;
 	(*this)(3, 1) -= temp * (*this)(3, 2);
 	//
@@ -833,7 +847,8 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 //############################################################################
 //
 #if !defined(Spew)
-void Spew(PCSTR group, const AffineMatrix4D& matrix)
+void
+Spew(PCSTR group, const AffineMatrix4D& matrix)
 {
 	Check_Object(&matrix);
 	SPEW((group, "\n\t| %9f, %9f, %9f, 0 |", matrix(0, 0), matrix(0, 1), matrix(0, 2)));

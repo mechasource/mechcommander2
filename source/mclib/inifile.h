@@ -26,21 +26,21 @@
 // enums
 enum __inifile_constants : uint32_t
 {
-	BLOCK_NOT_FOUND				  = 0xFADA0000,
-	ID_NOT_FOUND				  = 0xFADA0001,
-	DATA_NOT_CORRECT_TYPE		  = 0xFADA0002,
-	BUFFER_TOO_SMALL			  = 0xFADA0003,
-	NOT_A_FITINIFILE			  = 0xFADA0004,
-	NO_RAM_FOR_INI_BLOCKS		  = 0xFADA0005,
-	NO_MORE_BLOCKS				  = 0xFADA0006,
-	TOO_MANY_BLOCKS				  = 0xFADA0007,
-	NOT_ENOUGH_BLOCKS			  = 0xFADA0008,
-	VARIABLE_NOT_FOUND			  = 0xFADA0009,
-	SYNTAX_ERROR				  = 0xFADA000A,
+	BLOCK_NOT_FOUND = 0xFADA0000,
+	ID_NOT_FOUND = 0xFADA0001,
+	DATA_NOT_CORRECT_TYPE = 0xFADA0002,
+	BUFFER_TOO_SMALL = 0xFADA0003,
+	NOT_A_FITINIFILE = 0xFADA0004,
+	NO_RAM_FOR_INI_BLOCKS = 0xFADA0005,
+	NO_MORE_BLOCKS = 0xFADA0006,
+	TOO_MANY_BLOCKS = 0xFADA0007,
+	NOT_ENOUGH_BLOCKS = 0xFADA0008,
+	VARIABLE_NOT_FOUND = 0xFADA0009,
+	SYNTAX_ERROR = 0xFADA000A,
 	NOT_ENOUGH_ELEMENTS_FOR_ARRAY = 0xFADA000B,
-	GET_NEXT_LINE				  = 0xFADA000C,
-	USER_ARRAY_TOO_SMALL		  = 0xFADA000D,
-	TOO_MANY_ELEMENTS			  = 0xFADA000E,
+	GET_NEXT_LINE = 0xFADA000C,
+	USER_ARRAY_TOO_SMALL = 0xFADA000D,
+	TOO_MANY_ELEMENTS = 0xFADA000E,
 };
 
 /*
@@ -66,15 +66,15 @@ class FitIniFile : public MechFile
 	//--------------
 protected:
 	std::unique_ptr<IniBlockNode> m_fileBlocks; // Data for blocks to speed up file
-	PSTR m_currentBlockId;						// Id of current block
-	size_t m_totalBlocks;						// Total number of blocks in file
-	size_t m_currentBlockOffset;				// Offset into file of block start
-	size_t m_currentBlockSize;					// Length of current block
+	PSTR m_currentBlockId; // Id of current block
+	size_t m_totalBlocks; // Total number of blocks in file
+	size_t m_currentBlockOffset; // Offset into file of block start
+	size_t m_currentBlockSize; // Length of current block
 
 public:
-	FitIniFile(void)
-		: m_currentBlockId(nullptr), m_totalBlocks(0), m_currentBlockOffset(0),
-		  m_currentBlockSize(0)
+	FitIniFile(void) :
+		m_currentBlockId(nullptr), m_totalBlocks(0), m_currentBlockOffset(0),
+		m_currentBlockSize(0)
 	{
 	}
 	virtual ~FitIniFile(void) { close(); }

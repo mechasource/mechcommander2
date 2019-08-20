@@ -109,10 +109,14 @@ typedef enum RuntimeErrorType : uint32_t
 
 //***************************************************************************
 
-void syntaxError(int32_t errCode);
-void runtimeError(int32_t errCode);
-void ABL_Fatal(int32_t errCode, PSTR s);
-void ABL_Assert(bool test, int32_t errCode, PSTR s);
+void
+syntaxError(int32_t errCode);
+void
+runtimeError(int32_t errCode);
+void
+ABL_Fatal(int32_t errCode, PSTR s);
+void
+ABL_Assert(bool test, int32_t errCode, PSTR s);
 
 //***************************************************************************
 

@@ -137,7 +137,8 @@ protected:
 		extraMultiTexCoords; // Max_Number_Vertices_Per_Mesh
 };
 
-MLRShape* CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
+MLRShape*
+CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
 	IcoInfo&, std::vector<MLRState>*);
 } // namespace MidLevelRenderer
 #endif

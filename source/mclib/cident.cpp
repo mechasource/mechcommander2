@@ -34,7 +34,8 @@
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-void FullPathFileName::destroy(void)
+void
+FullPathFileName::destroy(void)
 {
 	if (fullName)
 		systemHeap->Free(fullName);
@@ -42,7 +43,8 @@ void FullPathFileName::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void FullPathFileName::init(PSTR dir_path, PCSTR name, PSTR ext)
+void
+FullPathFileName::init(PSTR dir_path, PCSTR name, PSTR ext)
 {
 	destroy();
 	size_t total_length = strlen(dir_path);
@@ -65,7 +67,8 @@ void FullPathFileName::init(PSTR dir_path, PCSTR name, PSTR ext)
 	_strlwr_s(fullName, total_length);
 }
 
-void FullPathFileName::changeExt(PSTR from, PSTR to)
+void
+FullPathFileName::changeExt(PSTR from, PSTR to)
 {
 	if (strlen(from) != strlen(to))
 		return;

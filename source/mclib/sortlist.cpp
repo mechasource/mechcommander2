@@ -30,12 +30,13 @@
 // Class SortList
 //***************************************************************************
 
-int32_t SortList::init(int32_t _numItems)
+int32_t
+SortList::init(int32_t _numItems)
 {
 	//-------------------------
 	// Create the sort list...
 	numItems = _numItems;
-	list	 = (SortListNode*)systemHeap->Malloc(sizeof(SortListNode) * numItems);
+	list = (SortListNode*)systemHeap->Malloc(sizeof(SortListNode) * numItems);
 	if (!list)
 		Fatal(0, " Unable to init sortList ");
 	return (list == nullptr);
@@ -43,7 +44,8 @@ int32_t SortList::init(int32_t _numItems)
 
 //---------------------------------------------------------------------------
 
-void SortList::clear(bool setToMin)
+void
+SortList::clear(bool setToMin)
 {
 	int32_t i;
 	for (i = 0; i < numItems; i++)
@@ -58,7 +60,8 @@ void SortList::clear(bool setToMin)
 
 //---------------------------------------------------------------------------
 
-int32_t cdecl descendingCompare(PCVOID arg1, PCVOID arg2)
+int32_t cdecl
+descendingCompare(PCVOID arg1, PCVOID arg2)
 {
 	float value1 = ((SortListNode*)arg1)->value;
 	float value2 = ((SortListNode*)arg2)->value;
@@ -72,7 +75,8 @@ int32_t cdecl descendingCompare(PCVOID arg1, PCVOID arg2)
 
 //---------------------------------------------------------------------------
 
-int32_t cdecl ascendingCompare(PCVOID arg1, PCVOID arg2)
+int32_t cdecl
+ascendingCompare(PCVOID arg1, PCVOID arg2)
 {
 	float value1 = ((SortListNode*)arg1)->value;
 	float value2 = ((SortListNode*)arg2)->value;
@@ -86,7 +90,8 @@ int32_t cdecl ascendingCompare(PCVOID arg1, PCVOID arg2)
 
 //---------------------------------------------------------------------------
 
-void SortList::sort(bool descendingOrder)
+void
+SortList::sort(bool descendingOrder)
 {
 	//------------------------------------------------------------------
 	// For now, just use ANSI C's built-in qsort (ugly, but functional).
@@ -98,7 +103,8 @@ void SortList::sort(bool descendingOrder)
 
 //---------------------------------------------------------------------------
 
-void SortList::destroy(void)
+void
+SortList::destroy(void)
 {
 	systemHeap->Free(list);
 	list = nullptr;

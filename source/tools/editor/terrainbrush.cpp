@@ -10,7 +10,8 @@ terrainBrush.cpp			: Implementation of the terrainBrush component.
 
 int32_t TerrainBrush::s_lastType = 0;
 
-Action* TerrainBrush::applyToSelection()
+Action*
+TerrainBrush::applyToSelection()
 {
 	ActionPaintTile* pRetAction = new ActionPaintTile();
 	for (size_t i = 0; i < land->realVerticesMapSide; ++i)

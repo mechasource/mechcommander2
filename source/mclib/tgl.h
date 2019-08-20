@@ -36,8 +36,8 @@ typedef struct _TG_TypeVertex
 {
 	// Only changes at load time.
 	Stuff::Point3D position; // Position of vertex relative to base position of shape.
-	Stuff::Vector3D normal;  // Vertex Normal
-	uint32_t aRGBLight;		 // Vertex Light and Alpha
+	Stuff::Vector3D normal; // Vertex Normal
+	uint32_t aRGBLight; // Vertex Light and Alpha
 
 } TG_TypeVertex;
 
@@ -67,7 +67,7 @@ typedef TG_Vertex* TG_VertexPtr;
 typedef struct _TG_ShadowVertex
 {
 	// Changes every frame if local light.  Rarely for the sun.  Moves slowly!
-	bool bDataIsNotValid;	// Indicates that the struct contains unitialized data
+	bool bDataIsNotValid; // Indicates that the struct contains unitialized data
 	Stuff::Point3D position; // Position of vertex relative to base position of shape.
 } TG_ShadowVertex;
 
@@ -84,7 +84,7 @@ typedef struct _TG_ShadowVertexTemp
 
 	// Changes each call to Transform.
 	Stuff::Vector4D transformedPosition; // ScreenCoords with Z depth.  Valid
-										 // after Transform called.
+		// after Transform called.
 } TG_ShadowVertexTemp;
 
 typedef TG_ShadowVertexTemp* TG_ShadowVertexTempPtr;
@@ -110,11 +110,11 @@ typedef TG_UVData* TG_UVDataPtr;
 // NOT change per instance
 typedef struct _TG_TypeTriangle
 {
-	uint32_t Vertices[3];		 // Indices into Vertex List.
+	uint32_t Vertices[3]; // Indices into Vertex List.
 	uint32_t localTextureHandle; // Index into texture List.
-	uint32_t renderStateFlags;   // Flags about render for this face.
+	uint32_t renderStateFlags; // Flags about render for this face.
 	// Bit 0 -- backFacing
-	TG_UVData uvdata;			// Texture UVs for this face.
+	TG_UVData uvdata; // Texture UVs for this face.
 	Stuff::Vector3D faceNormal; // Normal Vector to face
 } TG_TypeTriangle;
 
@@ -173,23 +173,23 @@ typedef TG_ShadowTriangle* TG_ShadowTrianglePtr;
 typedef struct _TG_Light
 {
 	uint32_t lightType; // Ambient, directional, etc.
-	bool active;		// Should this light be considered on?
+	bool active; // Should this light be considered on?
 
 protected:
 	uint32_t aRGB; // Color
 	uint32_t OEMaRGB;
 
 public:
-	float intensity;					// How Bright
-	float closeDistance;				// Distance out light is constant
-	float farDistance;					// Distance at which light is off
-	float oneOverDistance;				// Used for falloff calc
-	Stuff::Point3D direction;			// Direction in world of light source.  This is
-										// the light spot center for POINT and SPOT
+	float intensity; // How Bright
+	float closeDistance; // Distance out light is constant
+	float farDistance; // Distance at which light is off
+	float oneOverDistance; // Used for falloff calc
+	Stuff::Point3D direction; // Direction in world of light source.  This is
+		// the light spot center for POINT and SPOT
 	Stuff::LinearMatrix4D lightToWorld; // Transformation Matrix
-	Stuff::Vector3D position;			// Explicit position to aid terrain code with point sources.
+	Stuff::Vector3D position; // Explicit position to aid terrain code with point sources.
 	Stuff::Point3D spotDir; // Direction of the actual Spotlight to help with shadows, etc.
-	float maxSpotLength;	// Maximum length spotlight can be from target.
+	float maxSpotLength; // Maximum length spotlight can be from target.
 
 	void init(uint32_t lType)
 	{
@@ -197,15 +197,15 @@ public:
 			(lType != TG_LIGHT_NONE) && (lType >= TG_LIGHT_AMBIENT) && (lType <= TG_LIGHT_TERRAIN));
 		lightType = lType;
 		aRGB = OEMaRGB = 0xffffffff;
-		intensity	  = 1.0f;
+		intensity = 1.0f;
 		direction.x = direction.y = direction.z = 0.0f;
-		closeDistance							= 0.0f;
-		farDistance								= 0.0f;
-		oneOverDistance							= 0.0f;
+		closeDistance = 0.0f;
+		farDistance = 0.0f;
+		oneOverDistance = 0.0f;
 		position.x = position.y = position.z = -999999.0f;
 		spotDir.x = spotDir.y = spotDir.z = 0.0f;
-		maxSpotLength					  = 0.0f;
-		active							  = false;
+		maxSpotLength = 0.0f;
+		active = false;
 	}
 
 	void SetaRGB(uint32_t newaRGB) { OEMaRGB = aRGB = newaRGB; }
@@ -218,8 +218,8 @@ public:
 
 	void SetFalloffDistances(float inner, float outer)
 	{
-		closeDistance   = inner;
-		farDistance		= outer;
+		closeDistance = inner;
+		farDistance = outer;
 		oneOverDistance = 1.0f / (outer - inner);
 	}
 
@@ -229,9 +229,9 @@ public:
 			intensity = 1.0f;
 		// Scale aRGB by intensity
 		uint32_t r, g, b;
-		r	= (uint32_t)(intensity * ((OEMaRGB >> 16) & 0x000000ff));
-		g	= (uint32_t)(intensity * ((OEMaRGB >> 8) & 0x000000ff));
-		b	= (uint32_t)(intensity * ((OEMaRGB)&0x000000ff));
+		r = (uint32_t)(intensity * ((OEMaRGB >> 16) & 0x000000ff));
+		g = (uint32_t)(intensity * ((OEMaRGB >> 8) & 0x000000ff));
+		b = (uint32_t)(intensity * ((OEMaRGB)&0x000000ff));
 		aRGB = (0xff << 24) + (r << 16) + (g << 8) + (b);
 	}
 
@@ -282,14 +282,14 @@ class TG_Shape;
 // TG_Animation
 typedef struct _TG_Animation
 {
-	char nodeId[TG_NODE_ID];	 // Node ID
-	uint32_t shapeId;			 // DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this
-								 // first time through and its simple.
-	uint32_t numFrames;			 // Number of Frames of animation.
-	float frameRate;			 // Number of Frames Per Second.
-	float tickRate;				 // Number of Ticks Per Second.
+	char nodeId[TG_NODE_ID]; // Node ID
+	uint32_t shapeId; // DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this
+		// first time through and its simple.
+	uint32_t numFrames; // Number of Frames of animation.
+	float frameRate; // Number of Frames Per Second.
+	float tickRate; // Number of Ticks Per Second.
 	Stuff::UnitQuaternion* quat; // Stores animation offset in Quaternion rotation.
-	Stuff::Point3D* pos;		 // Stores Positional offsets if present.  OTHERWISE nullptr!!!!!!!!
+	Stuff::Point3D* pos; // Stores Positional offsets if present.  OTHERWISE nullptr!!!!!!!!
 
 	void SaveBinaryCopy(MechFile* binFile);
 	void LoadBinaryCopy(MechFile* binFile);
@@ -302,27 +302,27 @@ typedef TG_Animation* TG_AnimationPtr;
 // TG_ShapeRec
 typedef struct _TG_ShapeRec
 {
-	TG_Shape* node;							 // Pointer to the actual TG_Shape for this piece
+	TG_Shape* node; // Pointer to the actual TG_Shape for this piece
 	Stuff::LinearMatrix4D localShapeToWorld; // Matrix to transform this TG_Shape.
-	Stuff::LinearMatrix4D shapeToWorld;		 // Matrix to transform this TG_Shape.
-	Stuff::LinearMatrix4D worldToShape;		 // Inverse of above Matrix.
-	int32_t calcedThisFrame;				 // Turn number this matrix is current for.
+	Stuff::LinearMatrix4D shapeToWorld; // Matrix to transform this TG_Shape.
+	Stuff::LinearMatrix4D worldToShape; // Inverse of above Matrix.
+	int32_t calcedThisFrame; // Turn number this matrix is current for.
 	bool processMe; // Flag indicating if I should transform/draw this.  Used
-					// for arms off.
-	TG_AnimationPtr currentAnimation;   // Animation data being applied to this
-										// shape.  OK if nullptr
-	_TG_ShapeRec* parentNode;			// Parent Node.  OK if nullptr but only for ROOT node!
+		// for arms off.
+	TG_AnimationPtr currentAnimation; // Animation data being applied to this
+		// shape.  OK if nullptr
+	_TG_ShapeRec* parentNode; // Parent Node.  OK if nullptr but only for ROOT node!
 	Stuff::UnitQuaternion baseRotation; // Always ZERO unless set by appearance
-										// controlling this shape.
+		// controlling this shape.
 
 	_TG_ShapeRec& operator=(const _TG_ShapeRec& rec)
 	{
-		node			 = rec.node;
-		calcedThisFrame  = -1;
-		processMe		 = true;
+		node = rec.node;
+		calcedThisFrame = -1;
+		processMe = true;
 		currentAnimation = nullptr;
-		parentNode		 = rec.parentNode;
-		baseRotation	 = rec.baseRotation;
+		parentNode = rec.parentNode;
+		baseRotation = rec.baseRotation;
 		return *this;
 	}
 
@@ -460,22 +460,22 @@ class TG_TypeShape : public TG_TypeNode
 	//-------------
 	// Data Members
 protected:
-	uint32_t numTypeVertices;  // Number of vertices in Shape
+	uint32_t numTypeVertices; // Number of vertices in Shape
 	uint32_t numTypeTriangles; // NUmber of triangles in Shape
-	uint32_t numTextures;	  // Number of textures in Shape
+	uint32_t numTextures; // Number of textures in Shape
 
-	TG_TypeVertexPtr listOfTypeVertices;	// Memory holding all vertex data
+	TG_TypeVertexPtr listOfTypeVertices; // Memory holding all vertex data
 	TG_TypeTrianglePtr listOfTypeTriangles; // Memory holding all triangle data
-	TG_TinyTexturePtr listOfTextures;		// List of texture Structures for this shape.
+	TG_TinyTexturePtr listOfTextures; // List of texture Structures for this shape.
 
-	uint32_t hotPinkRGB;   // Stores the value for this shape to replace hot Pink With
+	uint32_t hotPinkRGB; // Stores the value for this shape to replace hot Pink With
 	uint32_t hotYellowRGB; // Stores the value for this shape to replace hot
-						   // Yellow With
-	uint32_t hotGreenRGB;  // Stores the value for this shape to replace hot
-						   // Green With
+		// Yellow With
+	uint32_t hotGreenRGB; // Stores the value for this shape to replace hot
+		// Green With
 
 	bool alphaTestOn; // Decides if we should draw alphaTest On or not!
-	bool filterOn;	// Decides if we should filter the shape or not!
+	bool filterOn; // Decides if we should filter the shape or not!
 
 	//-----------------
 	// Member Functions
@@ -484,16 +484,16 @@ public:
 	virtual void init(void)
 	{
 		numTypeVertices = numTypeTriangles = numTextures = 0;
-		listOfTypeVertices								 = nullptr;
-		listOfTypeTriangles								 = nullptr;
-		listOfTextures									 = nullptr;
-		alphaTestOn										 = false;
-		filterOn										 = true;
+		listOfTypeVertices = nullptr;
+		listOfTypeTriangles = nullptr;
+		listOfTextures = nullptr;
+		alphaTestOn = false;
+		filterOn = true;
 		relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z = 0.0f;
 		nodeCenter.x = nodeCenter.y = nodeCenter.z = 0.0f;
-		hotPinkRGB								   = 0x00cbf0ff;
-		hotYellowRGB							   = 0x00FEfF91;
-		hotGreenRGB								   = 0x000081b6;
+		hotPinkRGB = 0x00cbf0ff;
+		hotYellowRGB = 0x00FEfF91;
+		hotGreenRGB = 0x000081b6;
 	}
 
 	TG_TypeShape(void) { init(void); }
@@ -558,8 +558,8 @@ public:
 
 	virtual void SetLightRGBs(uint32_t hPink, uint32_t hGreen, uint32_t hYellow)
 	{
-		hotPinkRGB   = hPink;
-		hotGreenRGB  = hGreen;
+		hotPinkRGB = hPink;
+		hotGreenRGB = hGreen;
 		hotYellowRGB = hYellow;
 	}
 
@@ -588,17 +588,17 @@ class TG_Shape
 	//-------------
 	// Data Members
 protected:
-	TG_TypeNodePtr myType;		// Pointer to the instance of the shape.
-	uint32_t numVertices;		// Number of vertices in Shape
-	uint32_t numTriangles;		// NUmber of triangles in Shape
-	uint32_t numVisibleFaces;   // Number of non-backfaced non-clipped faces.
+	TG_TypeNodePtr myType; // Pointer to the instance of the shape.
+	uint32_t numVertices; // Number of vertices in Shape
+	uint32_t numTriangles; // NUmber of triangles in Shape
+	uint32_t numVisibleFaces; // Number of non-backfaced non-clipped faces.
 	uint32_t numVisibleShadows; // Number of visible Shadow Faces.
 
-	TG_Vertex* listOfColors;		// Memory holding all unchanged or rarely changed
-									// color data.
-	gos_VERTEX* listOfVertices;		// Memory holding all vertex data
+	TG_Vertex* listOfColors; // Memory holding all unchanged or rarely changed
+		// color data.
+	gos_VERTEX* listOfVertices; // Memory holding all vertex data
 	TG_TrianglePtr listOfTriangles; // Memory holding all triangle data
-	DWORDPtr listOfVisibleFaces;	// Memory holding indices into listOfTriangles
+	DWORDPtr listOfVisibleFaces; // Memory holding indices into listOfTriangles
 	// Draw in this order.  First entry with value 0xffffffff
 	// Means all done, no more to draw.
 
@@ -606,17 +606,17 @@ protected:
 	// We just use existing listOfTriangles to draw!
 
 	TG_ShadowVertexTempPtr listOfShadowTVertices; // Stores just the Volatile
-												  // data.  Comes from a pool!!
+		// data.  Comes from a pool!!
 
 	DWORDPtr listOfVisibleShadows; // Memory holding indices into
-								   // listOfTriangles
+		// listOfTriangles
 	// Draw in this order.  First entry with value 0xffffffff
 	// Means all done, no more to draw.
 
 	bool shadowsVisible[MAX_SHADOWS]; // Is this shadow worth drawing?
 
 	uint32_t aRGBHighlight; // Color to add to vertices to make building stand out.
-	uint32_t fogRGB;		// Color to make fog.
+	uint32_t fogRGB; // Color to make fog.
 
 	float shapeScalar;
 
@@ -631,8 +631,8 @@ protected:
 public:
 	// Matrices used to transform the shapes.
 	static Stuff::LinearMatrix4D* cameraOrigin;
-	static XMMATRIX*	cameraToClip;
-	static XMMATRIX		worldToClip;
+	static XMMATRIX* cameraToClip;
+	static XMMATRIX worldToClip;
 	static Stuff::LinearMatrix4D worldToCamera;
 	static TG_LightPtr* listOfLights; // List passed in a transform time
 	static uint32_t numLights;
@@ -652,7 +652,7 @@ public:
 	static Stuff::Vector3D rootLightDir[MAX_LIGHTS_IN_WORLD];
 
 	static UserHeapPtr tglHeap; // Stores all TGL data so we don't need to go
-								// through the FREE merry go round of GOS!
+		// through the FREE merry go round of GOS!
 
 	static uint32_t lighteningLevel;
 
@@ -666,17 +666,17 @@ public:
 	void init(void)
 	{
 		numVertices = numTriangles = numVisibleFaces = 0;
-		listOfVertices								 = nullptr;
-		listOfTriangles								 = nullptr;
-		listOfLights								 = nullptr;
-		listOfVisibleFaces							 = nullptr;
-		listOfShadowVertices						 = nullptr;
-		listOfVisibleShadows						 = nullptr;
-		aRGBHighlight								 = 0x00000000;
-		shapeScalar									 = 0.0f;
-		lightsOut									 = false;
-		noShadow									 = false;
-		recalcShadows								 = true;
+		listOfVertices = nullptr;
+		listOfTriangles = nullptr;
+		listOfLights = nullptr;
+		listOfVisibleFaces = nullptr;
+		listOfShadowVertices = nullptr;
+		listOfVisibleShadows = nullptr;
+		aRGBHighlight = 0x00000000;
+		shapeScalar = 0.0f;
+		lightsOut = false;
+		noShadow = false;
+		recalcShadows = true;
 		isWindow = isSpotlight = false;
 		for (size_t i = 0; i < MAX_SHADOWS; i++)
 			shadowsVisible[i] = false;
@@ -779,14 +779,14 @@ public:
 	{
 		tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Vertex) * maxVertices);
 		gosASSERT(tgVertexPool != nullptr);
-		nextVertex	= tgVertexPool;
+		nextVertex = tgVertexPool;
 		totalVertices = maxVertices;
-		numVertices   = 0;
+		numVertices = 0;
 	}
 
 	void reset(void)
 	{
-		nextVertex  = tgVertexPool;
+		nextVertex = tgVertexPool;
 		numVertices = 0;
 	}
 
@@ -832,14 +832,14 @@ public:
 	{
 		gVertexPool = (gos_VERTEX*)TG_Shape::tglHeap->Malloc(sizeof(gos_VERTEX) * maxVertices);
 		gosASSERT(gVertexPool != nullptr);
-		nextVertex	= gVertexPool;
+		nextVertex = gVertexPool;
 		totalVertices = maxVertices;
-		numVertices   = 0;
+		numVertices = 0;
 	}
 
 	void reset(void)
 	{
-		nextVertex  = gVertexPool;
+		nextVertex = gVertexPool;
 		numVertices = 0;
 	}
 
@@ -885,9 +885,9 @@ public:
 	{
 		trianglePool = (TG_Triangle*)TG_Shape::tglHeap->Malloc(sizeof(TG_Triangle) * maxTriangles);
 		gosASSERT(trianglePool != nullptr);
-		nextTriangle   = trianglePool;
+		nextTriangle = trianglePool;
 		totalTriangles = maxTriangles;
-		numTriangles   = 0;
+		numTriangles = 0;
 	}
 
 	void reset(void)
@@ -939,14 +939,14 @@ public:
 		tVertexPool = (TG_ShadowVertexTempPtr)TG_Shape::tglHeap->Malloc(
 			sizeof(TG_ShadowVertexTemp) * maxVertices);
 		gosASSERT(tVertexPool != nullptr);
-		nextVertex	= tVertexPool;
+		nextVertex = tVertexPool;
 		totalVertices = maxVertices;
-		numVertices   = 0;
+		numVertices = 0;
 	}
 
 	void reset(void)
 	{
-		nextVertex  = tVertexPool;
+		nextVertex = tVertexPool;
 		numVertices = 0;
 	}
 
@@ -992,14 +992,14 @@ public:
 	{
 		triPool = (uint32_t*)TG_Shape::tglHeap->Malloc(sizeof(uint32_t) * maxTriangles);
 		gosASSERT(triPool != nullptr);
-		nextTri		   = triPool;
+		nextTri = triPool;
 		totalTriangles = maxTriangles;
-		numTriangles   = 0;
+		numTriangles = 0;
 	}
 
 	void reset(void)
 	{
-		nextTri		 = triPool;
+		nextTri = triPool;
 		numTriangles = 0;
 	}
 

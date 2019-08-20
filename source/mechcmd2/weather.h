@@ -69,26 +69,26 @@ protected:
 	//		>=3.0f				Storm.  Lots of thunder/lightening.  Full Night
 	// Conditions.
 
-	float lighteningLevel;		// Brightness of lightening this frame.  Effects
-								// Ambient/sun lighting.
-	float thunderTime;			// Time until crack of thunder is heard.
-	uint32_t thunderSFX;		// Sound Effect of thunder to play
-	float lighteningCheck;		// Interval between checks of lightening.
+	float lighteningLevel; // Brightness of lightening this frame.  Effects
+		// Ambient/sun lighting.
+	float thunderTime; // Time until crack of thunder is heard.
+	uint32_t thunderSFX; // Sound Effect of thunder to play
+	float lighteningCheck; // Interval between checks of lightening.
 	float baseLighteningChance; // Base chance lightening will flash at each
-								// check.
+		// check.
 
-	uint32_t totalRainDrops;   // Total number of drops I can draw.
+	uint32_t totalRainDrops; // Total number of drops I can draw.
 	uint32_t currentRainDrops; // Current number of drops in use.
 
 	RainDrops* rainDrops; // Pointer to data for the drops.
 
-	float rainTrend;		// Either plus 1.0f or minus 1.0f.  Based on raining more
-							// or less then it was.
-	float rainFactor;		// Increase/decrease in rainLevel per second based on
-							// rainTrend.
-	float rainLightLevel;   // Matches the rainLevel but moves slowly per frame
-							// slow light fades out.
-	float rainUpdateTime;   // Time until next RainTrend check in seconds.
+	float rainTrend; // Either plus 1.0f or minus 1.0f.  Based on raining more
+		// or less then it was.
+	float rainFactor; // Increase/decrease in rainLevel per second based on
+		// rainTrend.
+	float rainLightLevel; // Matches the rainLevel but moves slowly per frame
+		// slow light fades out.
+	float rainUpdateTime; // Time until next RainTrend check in seconds.
 	int32_t baseRainChance; // Chance of it raining on any given rainUpdateTime.
 
 	float oldFog; // Original FOGFull Height value.
@@ -99,17 +99,17 @@ public:
 	void init(void)
 	{
 		rainLevel = lighteningLevel = rainLightLevel = 0.0f;
-		lighteningCheck								 = 1.0f;
+		lighteningCheck = 1.0f;
 		totalRainDrops = currentRainDrops = 0;
-		rainTrend						  = 1.0f;
-		rainFactor						  = 0.0f;
-		rainUpdateTime					  = BASE_RAIN_UPDATE_TIME;
-		baseRainChance					  = 0;
-		rainDrops						  = nullptr;
-		thunderSFX						  = 0xffffffff;
-		thunderTime						  = 0.0f;
-		oldFog							  = 0.0f;
-		weatherActive					  = false;
+		rainTrend = 1.0f;
+		rainFactor = 0.0f;
+		rainUpdateTime = BASE_RAIN_UPDATE_TIME;
+		baseRainChance = 0;
+		rainDrops = nullptr;
+		thunderSFX = 0xffffffff;
+		thunderTime = 0.0f;
+		oldFog = 0.0f;
+		weatherActive = false;
 	}
 
 	void destroy(void);

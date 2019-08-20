@@ -63,7 +63,7 @@ public:
 	{
 		maxWatches = 0;
 		maxWatches = 0;
-		watches	= nullptr;
+		watches = nullptr;
 	}
 
 	int32_t init(int32_t max);
@@ -110,7 +110,7 @@ public:
 	{
 		maxBreakPoints = 0;
 		numBreakPoints = 0;
-		breakPoints	= nullptr;
+		breakPoints = nullptr;
 	}
 
 	int32_t init(int32_t max);
@@ -144,8 +144,8 @@ class Debugger
 {
 
 protected:
-	ABLModulePtr module;					// Current executing module
-	WatchManagerPtr watchManager;			// Current executing watch manager
+	ABLModulePtr module; // Current executing module
+	WatchManagerPtr watchManager; // Current executing watch manager
 	BreakPointManagerPtr breakPointManager; // Current executing breakpt manager
 
 	ABLModulePtr debugModule; // Current module being debugged
@@ -169,18 +169,18 @@ public:
 
 	void init(void)
 	{
-		module			  = nullptr;
-		watchManager	  = nullptr;
+		module = nullptr;
+		watchManager = nullptr;
 		breakPointManager = nullptr;
-		debugModule		  = module;
-		enabled			  = false;
-		debugCommand	  = false;
-		halt			  = false;
-		trace			  = false;
-		step			  = false;
-		traceEntry		  = false;
-		traceExit		  = false;
-		printCallback	 = nullptr;
+		debugModule = module;
+		enabled = false;
+		debugCommand = false;
+		halt = false;
+		trace = false;
+		step = false;
+		traceEntry = false;
+		traceExit = false;
+		printCallback = nullptr;
 	}
 
 	int32_t init(void (*callback)(PSTR s), ABLModulePtr _module);

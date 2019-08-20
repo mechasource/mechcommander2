@@ -38,14 +38,19 @@ char MissingTitleString[256];
 //	class FastFile member functions
 //---------------------------------------------------------------------------
 #if _CONSIDERED_DISABLED
-PVOID FastFile::operator new(size_t mySize)
+PVOID
+FastFile::operator new(size_t mySize)
 {
 	PVOID result = ::malloc(mySize);
 	return (result);
 }
 
 //---------------------------------------------------------------------------
-void FastFile::operator delete(PVOID us) { ::free(us); }
+void
+FastFile::operator delete(PVOID us)
+{
+	::free(us);
+}
 #endif
 
 //---------------------------------------------------------------------------
@@ -72,7 +77,8 @@ void FastFile::operator delete(PVOID us) { ::free(us); }
 //}
 
 //---------------------------------------------------------------------------
-HRESULT FastFile::open(std::wstring& fileName)
+HRESULT
+FastFile::open(std::wstring& fileName)
 {
 	//---------------------------------------------
 	//-- Read in ALL of the file names and offsets
@@ -136,7 +142,8 @@ HRESULT FastFile::open(std::wstring& fileName)
 //}
 
 //---------------------------------------------------------------------------
-HRESULT FastFile::openFast(uint32_t hash, std::wstring& fileName, ffindex& index)
+HRESULT
+FastFile::openFast(uint32_t hash, std::wstring& fileName, ffindex& index)
 {
 	//------------------------------------------------------------------
 	//-- In order to use this, the file name must be part of the index.
@@ -147,8 +154,8 @@ HRESULT FastFile::openFast(uint32_t hash, std::wstring& fileName, ffindex& index
 		if ((m_files[i].fentry.hash == hash) && (fileName.compare(m_files[i].fentry.name) == 0))
 		{
 			m_files[i].inuse = true;
-			m_files[i].pos   = 0;
-			index			 = i;
+			m_files[i].pos = 0;
+			index = i;
 
 			return S_OK;
 		}
@@ -161,18 +168,20 @@ HRESULT FastFile::openFast(uint32_t hash, std::wstring& fileName, ffindex& index
 }
 
 //---------------------------------------------------------------------------
-HRESULT FastFile::closeFast(ffindex index)
+HRESULT
+FastFile::closeFast(ffindex index)
 {
 	_ASSERT(index < m_files.size());
 	// if ((index >= 0) && (index < m_files.size()) && (m_files[index].inuse == true))
 	{
 		m_files[index].inuse = false;
-		m_files[index].pos   = 0;
+		m_files[index].pos = 0;
 	}
 }
 
 //---------------------------------------------------------------------------
-HRESULT FastFile::seekFast(ffindex index, size_t position, int32_t how)
+HRESULT
+FastFile::seekFast(ffindex index, size_t position, int32_t how)
 {
 	if (index < m_files.size())
 		throw std::system_error(EINVAL, std::system_category(), __func__);
@@ -212,7 +221,8 @@ HRESULT FastFile::seekFast(ffindex index, size_t position, int32_t how)
 }
 
 //---------------------------------------------------------------------------
-int32_t FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
+int32_t
+FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 {
 	size;
 	int32_t result = 0;
@@ -261,7 +271,7 @@ int32_t FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 				if (result != m_files[fastFileHandle].fentry.size)
 				{
 					// READ Error.  Maybe the CD is missing?
-					bool openFailed		   = false;
+					bool openFailed = false;
 					bool alreadyFullScreen = (Environment.fullScreen != 0);
 					while (result != m_files[fastFileHandle].fentry.size)
 					{
@@ -275,7 +285,7 @@ int32_t FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 						{
 							ExitGameOS();
 							return (2); // File not found.  Never returns
-										// though!
+								// though!
 						}
 						logicalPosition = fseek(m_stream,
 							m_files[fastFileHandle].pos + m_files[fastFileHandle].fentry->position,
@@ -299,7 +309,7 @@ int32_t FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 				}
 				else
 				{
-					decompLength  = m_files[fastFileHandle].fentry->realSize;
+					decompLength = m_files[fastFileHandle].fentry->realSize;
 					int32_t error = uncompress((puint8_t)bfr, &decompLength, LZPacketBuffer,
 						m_files[fastFileHandle].fentry.size);
 					if (error != Z_OK)
@@ -321,7 +331,8 @@ int32_t FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 // This function pulls the raw compressed data out of the file and sticks it in
 // the buffer passed in.  This way, we can load the textures directly from file
 // to RAM and not have to decompress them!!
-int32_t FastFile::readFastRAW(int32_t fastFileHandle, PVOIDbfr, int32_t size)
+int32_t
+FastFile::readFastRAW(int32_t fastFileHandle, PVOIDbfr, int32_t size)
 {
 	size;
 	int32_t result = 0;
@@ -337,7 +348,7 @@ int32_t FastFile::readFastRAW(int32_t fastFileHandle, PVOIDbfr, int32_t size)
 		if (result != m_files[fastFileHandle].fentry.size)
 		{
 			// READ Error.  Maybe the CD is missing?
-			bool openFailed		   = false;
+			bool openFailed = false;
 			bool alreadyFullScreen = (Environment.fullScreen != 0);
 			while (result != m_files[fastFileHandle].fentry.size)
 			{
@@ -355,7 +366,7 @@ int32_t FastFile::readFastRAW(int32_t fastFileHandle, PVOIDbfr, int32_t size)
 				logicalPosition = fseek(m_stream,
 					m_files[fastFileHandle].pos + m_files[fastFileHandle].fentry->position,
 					SEEK_SET);
-				result			= fread(bfr, 1, m_files[fastFileHandle].fentry.size, m_stream);
+				result = fread(bfr, 1, m_files[fastFileHandle].fentry.size, m_stream);
 				logicalPosition += m_files[fastFileHandle].fentry.size;
 			}
 			if (openFailed && (Environment.fullScreen == 0) && alreadyFullScreen)
@@ -367,7 +378,8 @@ int32_t FastFile::readFastRAW(int32_t fastFileHandle, PVOIDbfr, int32_t size)
 }
 
 //---------------------------------------------------------------------------
-int32_t FastFile::tellFast(int32_t fastFileHandle)
+int32_t
+FastFile::tellFast(int32_t fastFileHandle)
 {
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && m_files[fastFileHandle].inuse)
 		return m_files[fastFileHandle].pos;
@@ -375,7 +387,8 @@ int32_t FastFile::tellFast(int32_t fastFileHandle)
 }
 
 //---------------------------------------------------------------------------
-int32_t FastFile::sizeFast(int32_t fastFileHandle)
+int32_t
+FastFile::sizeFast(int32_t fastFileHandle)
 {
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && m_files[fastFileHandle].inuse)
 		return m_files[fastFileHandle].fentry->realSize;
@@ -383,7 +396,8 @@ int32_t FastFile::sizeFast(int32_t fastFileHandle)
 }
 
 //---------------------------------------------------------------------------
-int32_t FastFile::lzSizeFast(int32_t fastFileHandle)
+int32_t
+FastFile::lzSizeFast(int32_t fastFileHandle)
 {
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && m_files[fastFileHandle].inuse)
 		return m_files[fastFileHandle].fentry.size;

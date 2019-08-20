@@ -49,12 +49,12 @@ public:
 
 	enum : uint32_t
 	{
-		TopClipFlag	= 1 << TopClipBit,
+		TopClipFlag = 1 << TopClipBit,
 		BottomClipFlag = 1 << BottomClipBit,
-		LeftClipFlag   = 1 << LeftClipBit,
-		RightClipFlag  = 1 << RightClipBit,
-		NearClipFlag   = 1 << NearClipBit,
-		FarClipFlag	= 1 << FarClipBit,
+		LeftClipFlag = 1 << LeftClipBit,
+		RightClipFlag = 1 << RightClipBit,
+		NearClipFlag = 1 << NearClipBit,
+		FarClipFlag = 1 << FarClipBit,
 		ClipMask =
 			TopClipFlag | BottomClipFlag | LeftClipFlag | RightClipFlag | NearClipFlag | FarClipFlag
 	};
@@ -266,7 +266,8 @@ private:
 	static uint32_t numberBitsLookUpTable[ClipMask + 1];
 };
 
-inline void MLRClippingState::Clip4dVertex(Stuff::Vector4D* v4d)
+inline void
+MLRClippingState::Clip4dVertex(Stuff::Vector4D* v4d)
 {
 #if USE_INLINE_ASSEMBLER_CODE
 	uint32_t _ret = 0;

@@ -25,7 +25,7 @@
 //---------------------------------------------------------------------------
 enum fastfile_versions : uint32_t
 {
-	FASTFILE_VERSION	= 0xCADDECAF,
+	FASTFILE_VERSION = 0xCADDECAF,
 	FASTFILE_VERSION_LZ = 0xFADDECAF
 };
 
@@ -33,9 +33,9 @@ enum fastfile_versions : uint32_t
 typedef struct FILEENTRY
 {
 	size_t position;
-	size_t size;	 // LZ Compressed Size
+	size_t size; // LZ Compressed Size
 	size_t realSize; // Uncompressed Size
-	size_t hash;	 // Hash Compare to weed out stinky files faster then StrCmp
+	size_t hash; // Hash Compare to weed out stinky files faster then StrCmp
 	// std::wstring name;
 	wchar_t name[UCHAR_MAX];
 } FILEENTRY;
@@ -65,7 +65,8 @@ protected:
 	bool m_useLZCompress;
 
 public:
-	FastFile(void) : numFiles(0), length(0), logicalPosition(0), m_useLZCompress(false) {}
+	FastFile(void) :
+		numFiles(0), length(0), logicalPosition(0), m_useLZCompress(false) {}
 	~FastFile(void)
 	{
 		close();

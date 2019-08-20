@@ -22,7 +22,7 @@ uint32_t gosFX::Profile_Count;
 
 static Stuff::LinearMatrix4D Effect_Into_Motion_data(true);
 static Stuff::LinearMatrix4D Effect_Against_Motion_data(true);
-const Stuff::LinearMatrix4D& gosFX::Effect_Into_Motion	= Effect_Into_Motion_data;
+const Stuff::LinearMatrix4D& gosFX::Effect_Into_Motion = Effect_Into_Motion_data;
 const Stuff::LinearMatrix4D& gosFX::Effect_Against_Motion = Effect_Against_Motion_data;
 
 //-----------------------------------------------------------------------------
@@ -52,10 +52,10 @@ void __stdcall gosFX::InitializeClasses(void)
 	DebrisCloud::InitializeClass();
 	PointLight::InitializeClass();
 	EffectLibrary::InitializeClass();
-	Effect_Into_Motion_data(1, 1)	= 0.0f;
-	Effect_Into_Motion_data(1, 2)	= 1.0f;
-	Effect_Into_Motion_data(2, 1)	= -1.0f;
-	Effect_Into_Motion_data(2, 2)	= 0.0f;
+	Effect_Into_Motion_data(1, 1) = 0.0f;
+	Effect_Into_Motion_data(1, 2) = 1.0f;
+	Effect_Into_Motion_data(2, 1) = -1.0f;
+	Effect_Into_Motion_data(2, 2) = 0.0f;
 	Effect_Against_Motion_data(1, 1) = 0.0f;
 	Effect_Against_Motion_data(1, 2) = -1.0f;
 	Effect_Against_Motion_data(2, 1) = 1.0f;
@@ -105,7 +105,8 @@ void __stdcall gosFX::TerminateClasses(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t gosFX::ReadGFXVersion(std::iostream erf_stream)
+int32_t
+gosFX::ReadGFXVersion(std::iostream erf_stream)
 {
 	Check_Object(erf_stream);
 	int32_t erf_signature;
@@ -120,7 +121,8 @@ int32_t gosFX::ReadGFXVersion(std::iostream erf_stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::WriteGFXVersion(std::iostream erf_stream)
+void
+gosFX::WriteGFXVersion(std::iostream erf_stream)
 {
 	Check_Object(erf_stream);
 	*erf_stream << 'GFX#' << static_cast<int32_t>(CurrentGFXVersion);

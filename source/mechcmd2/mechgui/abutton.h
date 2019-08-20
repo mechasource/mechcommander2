@@ -82,9 +82,9 @@ protected:
 		int32_t fileWidth;
 		int32_t fileHeight;
 		bool textureRotated;
-		RECT textRect;	// center text in here
+		RECT textRect; // center text in here
 		bool outlineText; // draw empty square around text rect
-		bool outline;	 // draw empty square around button
+		bool outline; // draw empty square around button
 		int32_t textAlign;
 	};
 

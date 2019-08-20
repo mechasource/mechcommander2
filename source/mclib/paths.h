@@ -45,4 +45,5 @@ enum class data_paths : uint32_t
 	transcriptsPath,
 };
 
-void GetMcDataPath(std::wstring& path, uint32_t id);
+void
+GetMcDataPath(std::wstring& path, uint32_t id);

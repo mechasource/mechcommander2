@@ -26,7 +26,8 @@ MLR_I_DeT_TMesh::ClassData* MLR_I_DeT_TMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_TMesh::InitializeClass()
+void
+MLR_I_DeT_TMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -41,7 +42,8 @@ void MLR_I_DeT_TMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_TMesh::TerminateClass()
+void
+MLR_I_DeT_TMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -54,8 +56,8 @@ void MLR_I_DeT_TMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data, std::iostream stream, uint32_t version)
-	: MLR_I_TMesh(class_data, stream, version)
+MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
+	MLR_I_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -73,25 +75,27 @@ MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data, std::iostream stream, ui
 	referenceState.SetAlphaMode(MLRState::AlphaInvAlphaMode);
 #endif
 	detTextureVisible = true;
-	passes			  = 2;
+	passes = 2;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data) : MLR_I_TMesh(class_data)
+MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data) :
+	MLR_I_TMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	fadeDetailStart   = 0.0f;
-	fadeDetailEnd	 = 1.0f;
+	fadeDetailStart = 0.0f;
+	fadeDetailEnd = 1.0f;
 	fadeMultiplicator = 0.0f;
 	detTextureVisible = true;
-	passes			  = 2;
+	passes = 2;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_TMesh::Copy(
+void
+MLR_I_DeT_TMesh::Copy(
 	MLR_I_TMesh* tMesh, MLRState detailState, float xOff, float yOff, float xFac, float yFac)
 {
 	(void)yOff;
@@ -113,7 +117,7 @@ void MLR_I_DeT_TMesh::Copy(
 	FindFacePlanes();
 	tMesh->GetTexCoordData(&_texCoords, &len);
 	SetTexCoordData(_texCoords, len);
-	referenceState			  = tMesh->GetReferenceState();
+	referenceState = tMesh->GetReferenceState();
 	visibleIndexedVerticesKey = false;
 	visibleIndexedVertices.SetLength(coords.GetLength());
 	referenceState2 = detailState;
@@ -130,7 +134,8 @@ MLR_I_DeT_TMesh::~MLR_I_DeT_TMesh()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_TMesh* MLR_I_DeT_TMesh::Make(std::iostream stream, uint32_t version)
+MLR_I_DeT_TMesh*
+MLR_I_DeT_TMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -146,7 +151,8 @@ MLR_I_DeT_TMesh* MLR_I_DeT_TMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_TMesh::Save(std::iostream stream)
+void
+MLR_I_DeT_TMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -158,16 +164,17 @@ void MLR_I_DeT_TMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_TMesh::SetDetailData(
+void
+MLR_I_DeT_TMesh::SetDetailData(
 	float xOff, float yOff, float xFac, float yFac, float detailStart, float detailEnd
 
 )
 {
 	// Check_Object(this);
-	xOffset			= xOff;
-	yOffset			= yOff;
-	xScale			= xFac;
-	yScale			= yFac;
+	xOffset = xOff;
+	yOffset = yOff;
+	xScale = xFac;
+	yScale = yFac;
 	fadeDetailStart = 1.0f / detailStart;
 	_ASSERT(detailEnd > 0.0f);
 	fadeDetailEnd = 1.0f / detailEnd;
@@ -177,7 +184,8 @@ void MLR_I_DeT_TMesh::SetDetailData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t MLR_I_DeT_TMesh::GetNumPasses(void)
+uint32_t
+MLR_I_DeT_TMesh::GetNumPasses(void)
 {
 	// Check_Object(this);
 	// Check_Object(this);
@@ -185,8 +193,7 @@ uint32_t MLR_I_DeT_TMesh::GetNumPasses(void)
 	{
 		return 1;
 	}
-	if (MLRState::GetMultitextureLightMap() == true &&
-		state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
+	if (MLRState::GetMultitextureLightMap() == true && state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
 	{
 		return 1;
 	}
@@ -195,7 +202,11 @@ uint32_t MLR_I_DeT_TMesh::GetNumPasses(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_TMesh::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLR_I_DeT_TMesh::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 #define I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_DUAL_TEXTURES
@@ -225,7 +236,8 @@ void MLR_I_DeT_TMesh::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultDa
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_TMesh* MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
+MLR_I_DeT_TMesh*
+MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
 	float half, MLRState* state, MLRState* state1)
 {
 	(void)half;
@@ -325,7 +337,8 @@ MLR_I_DeT_TMesh* MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
+MLRShape*
+MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* stateDet)
 {
 #ifdef _GAMEOS_HPP_
@@ -355,7 +368,7 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
 	uint32_t uniquePoints = 0;
 	for (k = 0; k < 20; k++)
 	{
-		triDrawn			  = 0;
+		triDrawn = 0;
 		MLR_I_DeT_TMesh* mesh = new MLR_I_DeT_TMesh();
 		Register_Object(mesh);
 		// setup vertex position information
@@ -369,9 +382,9 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
 		mesh->SetSubprimitiveLengths(nullptr, nrTri);
 		if (icoInfo.indexed == true)
 		{
-			uniquePoints	   = 1;
+			uniquePoints = 1;
 			collapsedCoords[0] = coords[0];
-			index[0]		   = 0;
+			index[0] = 0;
 			for (i = 1; i < nrTri * 3; i++)
 			{
 				for (j = 0; j < uniquePoints; j++)

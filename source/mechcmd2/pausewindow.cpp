@@ -35,14 +35,14 @@ MoveInfo PauseWindow::moveInfo[8] = {0.0f, 820.f, 0.04f, 820.f, 0.28f, 661.f, .3
 
 PauseWindow::PauseWindow()
 {
-	buttons				= 0;
-	buttonData			= 0;
-	buttonCount			= 0;
-	statics				= 0;
-	staticCount			= 0;
-	finalReference		= 0;
-	currentTime			= 0;
-	wasDragging			= 0;
+	buttons = 0;
+	buttonData = 0;
+	buttonCount = 0;
+	statics = 0;
+	staticCount = 0;
+	finalReference = 0;
+	currentTime = 0;
+	wasDragging = 0;
 	objectivesAlreadyOn = 0;
 	bPromptToQuit = bPromptToAbort = 0;
 }
@@ -59,7 +59,8 @@ PauseWindow::~PauseWindow()
 		delete[] statics;
 }
 
-void PauseWindow::update()
+void
+PauseWindow::update()
 {
 	if (bPromptToQuit || bPromptToAbort)
 	{
@@ -75,7 +76,7 @@ void PauseWindow::update()
 				//	}
 				// else
 				scenarioResult = mis_PLAYER_LOST_BIG;
-				aborted		   = true;
+				aborted = true;
 			}
 			bPromptToQuit = bPromptToAbort = 0;
 		}
@@ -117,9 +118,9 @@ void PauseWindow::update()
 		}
 		if (p1)
 		{
-			float dT			  = currentTime - t0;
+			float dT = currentTime - t0;
 			float currentPosition = p0 + dT * ((p1 - p0) / (t1 - t0));
-			float delta			  = currentPosition - currentPos;
+			float delta = currentPosition - currentPos;
 			currentPos += delta;
 			for (size_t i = 0; i < buttonCount; i++)
 			{
@@ -131,25 +132,23 @@ void PauseWindow::update()
 			}
 			for (i = 0; i < 2; i++)
 			{
-				float dif			 = backgrounds[i].right - backgrounds[i].left;
-				backgrounds[i].left  = .5 + currentPos;
+				float dif = backgrounds[i].right - backgrounds[i].left;
+				backgrounds[i].left = .5 + currentPos;
 				backgrounds[i].right = .5 + currentPos + dif;
 			}
 		}
 	}
 	for (size_t i = 0; i < buttonCount; i++)
 	{
-		if (buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x &&
-			mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y)
+		if (buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x && mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y)
 		{
 			if (buttons[i].isEnabled())
 			{
 				helpTextHeaderID = buttonData[i].helpTextHeader;
-				helpTextID		 = buttonData[i].helpTextID;
-				int32_t lastX	= mouseX - userInput->getMouseXDelta();
-				int32_t lastY	= mouseY - userInput->getMouseYDelta();
-				if (buttons[i].location[0].x >= lastX || lastX >= buttons[i].location[2].x ||
-					lastY <= buttons[i].location[0].y || lastY >= buttons[i].location[1].y)
+				helpTextID = buttonData[i].helpTextID;
+				int32_t lastX = mouseX - userInput->getMouseXDelta();
+				int32_t lastY = mouseY - userInput->getMouseYDelta();
+				if (buttons[i].location[0].x >= lastX || lastX >= buttons[i].location[2].x || lastY <= buttons[i].location[0].y || lastY >= buttons[i].location[1].y)
 				{
 					soundSystem->playDigitalSample(LOG_HIGHLIGHTBUTTONS);
 				}
@@ -159,7 +158,7 @@ void PauseWindow::update()
 			else
 			{
 				helpTextHeaderID = 0;
-				helpTextID		 = 0;
+				helpTextID = 0;
 				continue;
 			}
 			if (userInput->leftMouseReleased() && !wasDragging)
@@ -175,7 +174,7 @@ void PauseWindow::update()
 	if (currentTime == 0)
 	{
 		currentTime = .0001f;
-		currentPos  = -(800 - PauseWindow::moveInfo[0].position) + ((float)Environment.screenWidth);
+		currentPos = -(800 - PauseWindow::moveInfo[0].position) + ((float)Environment.screenWidth);
 		float delta = backgrounds[0].left - currentPos;
 		for (size_t i = 0; i < buttonCount; i++)
 		{
@@ -193,17 +192,16 @@ void PauseWindow::update()
 		}
 		for (i = 0; i < 2; i++)
 		{
-			float dif			 = backgrounds[i].right - backgrounds[i].left;
-			backgrounds[i].left  = .5 + currentPos;
+			float dif = backgrounds[i].right - backgrounds[i].left;
+			backgrounds[i].left = .5 + currentPos;
 			backgrounds[i].right = .5 + currentPos + dif;
 		}
 	}
-	wasDragging		   = userInput->wasLeftDrag();
+	wasDragging = userInput->wasLeftDrag();
 	PCSTR campaignName = LogisticsData::instance->getCampaignName().Data();
 	char campName[1024];
 	_splitpath(campaignName, nullptr, nullptr, campName, nullptr);
-	if (MPlayer || LogisticsData::instance->isSingleMission() ||
-		(_stricmp("tutorial", campName) == 0))
+	if (MPlayer || LogisticsData::instance->isSingleMission() || (_stricmp("tutorial", campName) == 0))
 	{
 		buttons[SAVE].disable(true);
 		buttons[LOAD].disable(true);
@@ -214,7 +212,8 @@ void PauseWindow::update()
 	}
 }
 
-void PauseWindow::render()
+void
+PauseWindow::render()
 {
 	if (!currentTime)
 		return;
@@ -239,7 +238,8 @@ void PauseWindow::render()
 	}
 }
 
-void PauseWindow::init(FitIniFile& file)
+void
+PauseWindow::init(FitIniFile& file)
 {
 	file.seekBlock("PauseWindow");
 	file.readIdLong("ButtonCount", buttonCount);
@@ -251,11 +251,11 @@ void PauseWindow::init(FitIniFile& file)
 	if (statics)
 		delete[] statics;
 	buttonData = 0;
-	buttons	= 0;
-	statics	= 0;
+	buttons = 0;
+	statics = 0;
 	if (buttonCount)
 	{
-		buttons	= new ControlButton[buttonCount];
+		buttons = new ControlButton[buttonCount];
 		buttonData = new ButtonData[buttonCount];
 		font.init(IDS_PAUSEBUTTON800);
 		headerFont.init(IDS_PAUSEDFONT_800);
@@ -299,7 +299,8 @@ void PauseWindow::init(FitIniFile& file)
 	}
 }
 
-void PauseWindow::handleClick(int32_t id)
+void
+PauseWindow::handleClick(int32_t id)
 {
 	int32_t sound = LOG_SELECT;
 	switch (id)
@@ -347,7 +348,7 @@ void PauseWindow::handleClick(int32_t id)
 	case OPTIONS:
 		if (!MPlayer)
 		{
-			sound					 = LOG_CLICKONBUTTON;
+			sound = LOG_CLICKONBUTTON;
 			bInvokeOptionsScreenFlag = true;
 		}
 		else
@@ -368,13 +369,14 @@ void PauseWindow::handleClick(int32_t id)
 	soundSystem->playDigitalSample(sound);
 }
 
-bool PauseWindow::inRect(int32_t mouseX, int32_t mouseY)
+bool
+PauseWindow::inRect(int32_t mouseX, int32_t mouseY)
 {
-	return (mouseX >= backgrounds[0].left && mouseX <= backgrounds[0].right &&
-		mouseY >= backgrounds[0].top && mouseY <= backgrounds[0].bottom);
+	return (mouseX >= backgrounds[0].left && mouseX <= backgrounds[0].right && mouseY >= backgrounds[0].top && mouseY <= backgrounds[0].bottom);
 }
 
-void PauseWindow::end()
+void
+PauseWindow::end()
 {
 	currentTime = 5.f;
 	if (buttons[OBJECTIVES].state & ControlButton::PRESSED && !objectivesAlreadyOn)
@@ -384,9 +386,10 @@ void PauseWindow::end()
 	}
 }
 
-void PauseWindow::begin(bool objectivesOn)
+void
+PauseWindow::begin(bool objectivesOn)
 {
-	currentTime			= 0.f;
+	currentTime = 0.f;
 	objectivesAlreadyOn = objectivesOn;
 	if (!objectivesAlreadyOn)
 		buttons[OBJECTIVES].press(0);

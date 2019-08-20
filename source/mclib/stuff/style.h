@@ -45,24 +45,27 @@ enum
 #define DEFINE_TIMER(c, t) int64_t c::t##FrameTime
 
 #if defined(LAB_ONLY)
-#define Initialize_Timer(t, name)                                                                  \
-	do                                                                                             \
-	{                                                                                              \
-		AddStatistic(name, "%", gos_timedata, &t##FrameTime, 0);                                   \
-	}                                                                                              \
-	SUPPRESS_WARNING(4127) while (0);
-#define Start_Timer(t)                                                                             \
-	do                                                                                             \
-	{                                                                                              \
-		t##FrameTime -= GetCycles();                                                               \
-	}                                                                                              \
-	SUPPRESS_WARNING(4127) while (0);
-#define Stop_Timer(t)                                                                              \
-	do                                                                                             \
-	{                                                                                              \
-		t##FrameTime += GetCycles();                                                               \
-	}                                                                                              \
-	SUPPRESS_WARNING(4127) while (0);
+#define Initialize_Timer(t, name)                                \
+	do                                                           \
+	{                                                            \
+		AddStatistic(name, "%", gos_timedata, &t##FrameTime, 0); \
+	}                                                            \
+	SUPPRESS_WARNING(4127)                                       \
+	while (0);
+#define Start_Timer(t)               \
+	do                               \
+	{                                \
+		t##FrameTime -= GetCycles(); \
+	}                                \
+	SUPPRESS_WARNING(4127)           \
+	while (0);
+#define Stop_Timer(t)                \
+	do                               \
+	{                                \
+		t##FrameTime += GetCycles(); \
+	}                                \
+	SUPPRESS_WARNING(4127)           \
+	while (0);
 #define Set_Statistic(s, v) (s = v)
 #else
 #define Initialize_Timer(t, name)
@@ -73,11 +76,11 @@ enum
 
 void __stdcall Flood_Memory_With_NAN(PVOID where, size_t how_much);
 
-#define Test_Assumption(c)                                                                         \
-	while (!(c))                                                                                   \
-	{                                                                                              \
-		SPEW((GROUP_STUFF_TEST, #c " failed!"));                                                   \
-		return false;                                                                              \
+#define Test_Assumption(c)                       \
+	while (!(c))                                 \
+	{                                            \
+		SPEW((GROUP_STUFF_TEST, #c " failed!")); \
+		return false;                            \
 	}
 
 #define Test_Message(m) SPEW((GROUP_STUFF_TEST, m));
@@ -92,7 +95,7 @@ class Signature
 private:
 	enum Mark
 	{
-		Valid	 = 0x7B135795L,
+		Valid = 0x7B135795L,
 		Destroyed = 0x4FED1231L
 	} mark;
 
@@ -104,7 +107,12 @@ public:
 	friend void Is_Signature_Bad(const volatile Signature* p);
 };
 
-inline void Is_Signature_Bad(const volatile void* p) { (void)p; Check_Pointer(p); }
+inline void
+Is_Signature_Bad(const volatile void* p)
+{
+	(void)p;
+	Check_Pointer(p);
+}
 #endif
 
 //##########~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,11 +130,23 @@ inline void Is_Signature_Bad(const volatile void* p) { (void)p; Check_Pointer(p)
 // Spews
 //
 #if !defined(Spew)
-inline void Spew(PCSTR group, int32_t value) { SPEW((group, "%d+", value)); }
+inline void
+Spew(PCSTR group, int32_t value)
+{
+	SPEW((group, "%d+", value));
+}
 
-inline void Spew(PCSTR group, float value) { SPEW((group, "%f+", value)); }
+inline void
+Spew(PCSTR group, float value)
+{
+	SPEW((group, "%f+", value));
+}
 
-inline void Spew(PCSTR group, PCSTR value) { SPEW((group, "%s+", value)); }
+inline void
+Spew(PCSTR group, PCSTR value)
+{
+	SPEW((group, "%s+", value));
+}
 #endif
 
 //#############~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,24 +156,24 @@ inline void Spew(PCSTR group, PCSTR value) { SPEW((group, "%s+", value)); }
 extern float SMALL;
 
 //#define abs(value) ((value>0) ? value : -value)
-#define Clamp(v, f, c)                                                                             \
-	if (v < f)                                                                                     \
-		v = f;                                                                                     \
-	else if (v > c)                                                                                \
-		v = c;                                                                                     \
-	else                                                                                           \
+#define Clamp(v, f, c) \
+	if (v < f)         \
+		v = f;         \
+	else if (v > c)    \
+		v = c;         \
+	else               \
 		(void)0
-#define Max_Clamp(v, c)                                                                            \
-	if (v > c)                                                                                     \
-		v = c;                                                                                     \
-	else                                                                                           \
+#define Max_Clamp(v, c) \
+	if (v > c)          \
+		v = c;          \
+	else                \
 		(void)0
 #define Is_Many_Bits(value) (Lowbit(value) ^ value)
 #define Low_Bit(value) (value & (-value))
-#define Min_Clamp(v, f)                                                                            \
-	if (v < f)                                                                                     \
-		v = f;                                                                                     \
-	else                                                                                           \
+#define Min_Clamp(v, f) \
+	if (v < f)          \
+		v = f;          \
+	else                \
 		(void)0
 #define Max(a, b) ((a > b) ? a : b)
 #define Min(a, b) ((a < b) ? a : b)
@@ -171,7 +191,8 @@ enum
 
 #ifndef __PLACEMENT_NEW_INLINE
 #define __PLACEMENT_NEW_INLINE
-inline PVOID operator new(size_t size, PVOID where)
+inline PVOID
+operator new(size_t size, PVOID where)
 {
 	Check_Pointer(where);
 	return where;

@@ -80,31 +80,31 @@
 struct OldObjData
 {
 	ObjectTypeNumber objTypeNum; // Type number of object
-	int16_t pixelOffsetX;		 // Distance from vertex 0 of tile.
-	int16_t pixelOffsetY;		 // Distance from vertex 0 of tile.
-	int16_t vertexNumber;		 // Vertex Number in Block.
-	int16_t blockNumber;		 // Which terrain Block.
-	uint32_t damage;			 // Damage
-	float positionX;			 // Where, physically is object.  TOO DAMNED HARD TO
-								 // CALCULATE!!!!!!!!
+	int16_t pixelOffsetX; // Distance from vertex 0 of tile.
+	int16_t pixelOffsetY; // Distance from vertex 0 of tile.
+	int16_t vertexNumber; // Vertex Number in Block.
+	int16_t blockNumber; // Which terrain Block.
+	uint32_t damage; // Damage
+	float positionX; // Where, physically is object.  TOO DAMNED HARD TO
+		// CALCULATE!!!!!!!!
 	float positionY;
 };
 #endif
 
 struct ObjData
 {
-	int16_t objTypeNum;	// Type number of object
+	int16_t objTypeNum; // Type number of object
 	uint16_t vertexNumber; // Vertex Number in Block.
-	uint16_t blockNumber;  // Which terrain Block.
-	uint8_t damage;		   // Damage
+	uint16_t blockNumber; // Which terrain Block.
+	uint8_t damage; // Damage
 };
 
 struct MiscObjectData
 {
-	int32_t blockNumber;   // Terrain Block I occupy
-	int32_t vertexNumber;  // Terrain Vertex I occupy
+	int32_t blockNumber; // Terrain Block I occupy
+	int32_t vertexNumber; // Terrain Vertex I occupy
 	int32_t objectTypeNum; // ObjectTypeNumber for this overlay tile
-	int32_t damaged;	   // Is this overlay tile damaged or not
+	int32_t damaged; // Is this overlay tile damaged or not
 };
 
 #pragma pack()
@@ -117,13 +117,13 @@ class ObjectBlockManager
 	//-------------
 protected:
 	uint32_t terrainObjectHeapSize; // Size of TerrainObject Heap
-	UserHeapPtr terrainObjectHeap;  // Pointer to Heap.
+	UserHeapPtr terrainObjectHeap; // Pointer to Heap.
 
 	ObjectQueueNodePtr* objectQueues; // Array of QueueNode Ptrs for each
 	// Active block of terrain.
 
 	uint32_t numObjectsInDataBlock; // Number of objects to be read/written
-	ObjDataPtr objDataBlock;		// Block of object data to read/write
+	ObjDataPtr objDataBlock; // Block of object data to read/write
 
 	PacketFilePtr objectDataFile; // Packet file with blocks in it.
 
@@ -136,11 +136,11 @@ public:
 	void init(void)
 	{
 		terrainObjectHeapSize = 0;
-		terrainObjectHeap	 = nullptr;
-		objectQueues		  = nullptr;
+		terrainObjectHeap = nullptr;
+		objectQueues = nullptr;
 		numObjectsInDataBlock = 0;
-		objDataBlock		  = nullptr;
-		objectDataFile		  = nullptr;
+		objDataBlock = nullptr;
+		objectDataFile = nullptr;
 	}
 
 	ObjectBlockManager(void) { init(void); }

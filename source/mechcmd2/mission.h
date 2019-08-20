@@ -44,28 +44,28 @@ extern uint32_t scenarioResult;
 struct Part
 {
 	GameObjectWatchID objectWID; // Pointer to my physical incarnation
-	uint32_t objNumber;			 // What kind of object am I?
-	uint32_t baseColor;			 // Base color of mech -- Overrides the RED in RGB
-	uint32_t highlightColor1;	// First Highlight Color -- Overrides the GREEN in RGB
-	uint32_t highlightColor2;	// Second Highlight Color -- Overrides the BLUE in RGB
-	int32_t active;				 // Am I currently awake?
-	int32_t exists;				 // Am I currently in Existance?
-	bool destroyed;				 // Have I been destroyed for this scenario?
-	Stuff::Vector3D position;	// Where do I start?  (relative to area)
-	float velocity;				 // How fast am I going?
-	float rotation;				 // Which direction am I facing?
-	uint32_t gestureId;			 // What gesture do I start in?
-	char alignment;				 // Who do I fight for?
-	char teamId;				 // Which team am I on?
-	int32_t commanderID;		 // Used when setting up multiplayer
-	char squadId;				 // Which team am I on?
-	char myIcon;				 // If set, start with Icon on Screen for this part.
-	uint32_t controlType;		 // How am I controlled?
-	uint32_t controlDataType;	// What data do you need to control me?
-	char profileName[9];		 // Name of Object Profile file.
-	uint32_t pilot;				 // Name of Pilot File.
-	bool captureable;			 // Is this a capturable "enemy" mech?
-	uint32_t variantNum;		 // Variant number of the Part.
+	uint32_t objNumber; // What kind of object am I?
+	uint32_t baseColor; // Base color of mech -- Overrides the RED in RGB
+	uint32_t highlightColor1; // First Highlight Color -- Overrides the GREEN in RGB
+	uint32_t highlightColor2; // Second Highlight Color -- Overrides the BLUE in RGB
+	int32_t active; // Am I currently awake?
+	int32_t exists; // Am I currently in Existance?
+	bool destroyed; // Have I been destroyed for this scenario?
+	Stuff::Vector3D position; // Where do I start?  (relative to area)
+	float velocity; // How fast am I going?
+	float rotation; // Which direction am I facing?
+	uint32_t gestureId; // What gesture do I start in?
+	char alignment; // Who do I fight for?
+	char teamId; // Which team am I on?
+	int32_t commanderID; // Used when setting up multiplayer
+	char squadId; // Which team am I on?
+	char myIcon; // If set, start with Icon on Screen for this part.
+	uint32_t controlType; // How am I controlled?
+	uint32_t controlDataType; // What data do you need to control me?
+	char profileName[9]; // Name of Object Profile file.
+	uint32_t pilot; // Name of Pilot File.
+	bool captureable; // Is this a capturable "enemy" mech?
+	uint32_t variantNum; // Variant number of the Part.
 
 	void Save(FitIniFilePtr file, int32_t partNum);
 	void Load(FitIniFilePtr file, int32_t partNum);
@@ -145,7 +145,7 @@ protected:
 	FitIniFilePtr missionFile;
 
 	int32_t operationId; // aka operation id
-	int32_t missionId;   // aka mission id
+	int32_t missionId; // aka mission id
 
 	char missionFileName[80];
 	char missionScriptName[80];
@@ -202,24 +202,24 @@ public:
 	{
 		missionFile = nullptr;
 		operationId = missionId = -1;
-		missionBrain			= nullptr;
-		missionParams			= nullptr;
-		missionBrainCallback	= nullptr;
-		numParts				= 0;
-		parts					= nullptr;
-		numObjectives			= 0;
-		objectives				= nullptr;
-		duration				= 0;
-		active					= FALSE;
-		numSmallStrikes			= 0;
-		numLargeStrikes			= 0;
-		numSensorStrikes		= 0;
-		numCameraStrikes		= 0;
-		missionTuneNum			= 0;
-		missionScriptHandle		= -1;
-		missionInterface		= nullptr;
-		missionFileName[0]		= 0;
-		missionBrainParams		= nullptr;
+		missionBrain = nullptr;
+		missionParams = nullptr;
+		missionBrainCallback = nullptr;
+		numParts = 0;
+		parts = nullptr;
+		numObjectives = 0;
+		objectives = nullptr;
+		duration = 0;
+		active = FALSE;
+		numSmallStrikes = 0;
+		numLargeStrikes = 0;
+		numSensorStrikes = 0;
+		numCameraStrikes = 0;
+		missionTuneNum = 0;
+		missionScriptHandle = -1;
+		missionInterface = nullptr;
+		missionFileName[0] = 0;
+		missionBrainParams = nullptr;
 	}
 
 	Mission(void) { init(void); }

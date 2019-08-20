@@ -26,16 +26,16 @@ typedef struct _gos_VERTEX_2UV
 {
 	float x,
 		y; // Screen coords	- must be 0.0 to Environment.screenWidth/Height (no
-		   // clipping occurs unless gos_State_Clipping is true)
-	float z;	   // 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is
-				   // not valid)
-	float rhw;	 // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
-				   // perspective correct textures, fog and clipping
+		// clipping occurs unless gos_State_Clipping is true)
+	float z; // 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is
+		// not valid)
+	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
+		// perspective correct textures, fog and clipping
 	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid,
-				   // 0=transparent)
+		// 0=transparent)
 	uint32_t frgb; // Specular color and fog
-	float u1, v1;  // Texture coordinates
-	float u2, v2;  // Texture coordinates
+	float u1, v1; // Texture coordinates
+	float u2, v2; // Texture coordinates
 } gos_VERTEX_2UV;
 typedef gos_VERTEX_2UV* pgos_VERTEX_2UV;
 #endif
@@ -54,16 +54,16 @@ public:
 	inline GOSVertex2UV& operator=(const GOSVertex2UV& V)
 	{
 		// Check_Pointer(this);
-		x	= V.x;
-		y	= V.y;
-		z	= V.z;
-		rhw  = V.rhw;
+		x = V.x;
+		y = V.y;
+		z = V.z;
+		rhw = V.rhw;
 		argb = V.argb;
 		frgb = V.frgb;
-		u1   = V.u1;
-		v1   = V.v1;
-		u2   = V.u2;
-		v2   = V.v2;
+		u1 = V.u1;
+		v1 = V.v1;
+		u2 = V.u2;
+		v2 = V.v2;
 		return *this;
 	};
 
@@ -73,7 +73,7 @@ public:
 		_ASSERT(!Stuff::Small_Enough(v.w));
 		//					Tell_Value(v);
 		rhw = 1.0f / v.w;
-		x   = v.x * rhw;
+		x = v.x * rhw;
 		_ASSERT(x >= 0.0f && x <= 1.0f);
 		y = v.y * rhw;
 		_ASSERT(y >= 0.0f && y <= 1.0f);
@@ -93,13 +93,13 @@ public:
 		f = c.alpha * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = Stuff::Round_Float_To_Byte(f);
-		f	= c.red * 255.99f;
+		f = c.red * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = (argb << 8) | Stuff::Round_Float_To_Byte(f);
-		f	= c.green * 255.99f;
+		f = c.green * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = (argb << 8) | Stuff::Round_Float_To_Byte(f);
-		f	= c.blue * 255.99f;
+		f = c.blue * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = (argb << 8) | Stuff::Round_Float_To_Byte(f);
 		//					DEBUG_STREAM << "0x" << hex << argb << dec << endl;
@@ -125,7 +125,8 @@ protected:
 
 //#pragma warning (disable : 4725)
 
-void GOSVertex2UV::GOSTransformNoClip(
+void
+GOSVertex2UV::GOSTransformNoClip(
 	const Stuff::Point3D& _v, const Stuff::Matrix4D& m, float* uv1, float* uv2
 #if FOG_HACK
 	,
@@ -240,9 +241,9 @@ void GOSVertex2UV::GOSTransformNoClip(
 
 	}
 #else
-	x   = _v.x * m(0, 0) + _v.y * m(1, 0) + _v.z * m(2, 0) + m(3, 0);
-	y   = _v.x * m(0, 1) + _v.y * m(1, 1) + _v.z * m(2, 1) + m(3, 1);
-	z   = _v.x * m(0, 2) + _v.y * m(1, 2) + _v.z * m(2, 2) + m(3, 2);
+	x = _v.x * m(0, 0) + _v.y * m(1, 0) + _v.z * m(2, 0) + m(3, 0);
+	y = _v.x * m(0, 1) + _v.y * m(1, 1) + _v.z * m(2, 1) + m(3, 1);
+	z = _v.x * m(0, 2) + _v.y * m(1, 2) + _v.z * m(2, 2) + m(3, 2);
 	rhw = _v.x * m(0, 3) + _v.y * m(1, 3) + _v.z * m(2, 3) + m(3, 3);
 #endif
 #if 0 // USE_INLINE_ASSEMBLER_CODE
@@ -308,9 +309,9 @@ void GOSVertex2UV::GOSTransformNoClip(
 	v1 = uv1[1];
 	u2 = uv2[0];
 	v2 = uv2[1];
-	x  = x * rhw;
-	y  = y * rhw;
-	z  = z * rhw;
+	x = x * rhw;
+	y = y * rhw;
+	z = z * rhw;
 #endif
 	_ASSERT(rhw > Stuff::SMALL);
 	_ASSERT(x >= 0.0f);

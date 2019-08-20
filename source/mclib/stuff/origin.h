@@ -19,7 +19,8 @@ class Origin3D;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::Origin3D& origin);
+void
+Spew(PCSTR group, const Stuff::Origin3D& origin);
 #endif
 
 namespace Stuff
@@ -45,14 +46,14 @@ public:
 	{
 		Check_Object(&t);
 		Check_Object(&q);
-		linearPosition  = t;
+		linearPosition = t;
 		angularPosition = q;
 	}
 	Origin3D(const Point3D& t, const UnitQuaternion& q)
 	{
 		Check_Object(&t);
 		Check_Object(&q);
-		linearPosition  = t;
+		linearPosition = t;
 		angularPosition = q;
 	}
 	Origin3D(const Origin3D& origin) { *this = origin; }
@@ -122,14 +123,20 @@ public:
 	static bool TestClass(void);
 };
 
-inline Point3D& Point3D::operator=(const Origin3D& p) { return operator=(p.linearPosition); }
+inline Point3D&
+Point3D::operator=(const Origin3D& p)
+{
+	return operator=(p.linearPosition);
+}
 
-inline EulerAngles& EulerAngles::operator=(const Origin3D& p)
+inline EulerAngles&
+EulerAngles::operator=(const Origin3D& p)
 {
 	return operator=(p.angularPosition);
 }
 
-inline UnitQuaternion& UnitQuaternion::operator=(const Origin3D& p)
+inline UnitQuaternion&
+UnitQuaternion::operator=(const Origin3D& p)
 {
 	return operator=(p.angularPosition);
 }
@@ -138,11 +145,13 @@ inline UnitQuaternion& UnitQuaternion::operator=(const Origin3D& p)
 namespace MemoryStreamIO
 {
 #if _CONSIDERED_TEMPORARILY_DISABLED
-inline std::istream& Read(std::istream& stream, Stuff::Origin3D* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::Origin3D* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::Origin3D* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::Origin3D* input)
 {
 	return stream.write(input, sizeof(*input));
 }

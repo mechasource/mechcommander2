@@ -22,31 +22,31 @@
 //---------------------------------------------------------------------------
 struct PolyElementData
 {
-	uint32_t numVertices;   // Actually num_vertices + extras for clipping
+	uint32_t numVertices; // Actually num_vertices + extras for clipping
 	SCRNVERTEX vertices[6]; // Draw Vertices
 
-	bool correctTexture;  // Should we Correctly Texture?
-	bool isClipped;		  // Set by zclip to let me know
+	bool correctTexture; // Should we Correctly Texture?
+	bool isClipped; // Set by zclip to let me know
 	bool drawTranslucent; // Used for FX
-	bool StatusBar;		  // Is this a status bar?
-	int32_t BarWidth;	 // Width of status bar
-	int32_t BarColor;	 // Color of status bar
+	bool StatusBar; // Is this a status bar?
+	int32_t BarWidth; // Width of status bar
+	int32_t BarColor; // Color of status bar
 
 	puint8_t textureMap; // Pointer to Bitmap for Texture
-	int32_t width;		 // Width of texture
-	int32_t height;		 // Height of texture
-	char* hazePalette;   // Translucency/haze table
+	int32_t width; // Width of texture
+	int32_t height; // Height of texture
+	char* hazePalette; // Translucency/haze table
 
 	void init(void)
 	{
-		numVertices		= 0;
-		correctTexture  = false;
-		isClipped		= false;
-		StatusBar		= false;
-		textureMap		= 0;
-		width			= 0;
-		height			= 0;
-		hazePalette		= nullptr;
+		numVertices = 0;
+		correctTexture = false;
+		isClipped = false;
+		StatusBar = false;
+		textureMap = 0;
+		width = 0;
+		height = 0;
+		hazePalette = nullptr;
 		drawTranslucent = false;
 	}
 

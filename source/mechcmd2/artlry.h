@@ -56,12 +56,12 @@ public:
 
 	void init(void)
 	{
-		commanderId		= -1;
-		strikeType		= -1;
-		cellRC[0]		= -1;
-		cellRC[1]		= -1;
+		commanderId = -1;
+		strikeType = -1;
+		cellRC[0] = -1;
+		cellRC[1] = -1;
 		secondsToImpact = -1;
-		data			= 0;
+		data = 0;
 	}
 
 	void destroy(void) {}
@@ -85,10 +85,10 @@ class ArtilleryType : public ObjectType
 {
 
 public:
-	puint8_t frameList;  // Pointer to JMiles shape file binary
+	puint8_t frameList; // Pointer to JMiles shape file binary
 	uint32_t frameCount; // Number of frames in shape file
 	uint32_t startFrame; // Frame in List to start with.
-	float frameRate;	 // Speed at which frames playback
+	float frameRate; // Speed at which frames playback
 
 	float nominalTimeToImpact;
 	float nominalTimeToLaunch;
@@ -145,8 +145,8 @@ typedef union _ArtilleryInfo {
 	{
 		float timeToImpact; // Time until strike goes off.
 		float timeToLaunch; // Time until strike is launched (and unmoveable).
-		float sensorRange;  // If I am a sensor round, how big a range.
-		float timeToBlind;  // How int32_t do I return sensor data.
+		float sensorRange; // If I am a sensor round, how big a range.
+		float timeToBlind; // How int32_t do I return sensor data.
 		int16_t sensorSystemIndex;
 		float contactUpdate;
 		char timeString[5];
@@ -198,7 +198,8 @@ public:
 
 	virtual void init(bool create, int32_t _artilleryType);
 
-	Artillery(void) : GameObject() { init(true); }
+	Artillery(void) :
+		GameObject() { init(true); }
 
 	~Artillery(void) { destroy(void); }
 
@@ -275,10 +276,12 @@ public:
 };
 
 //---------------------------------------------------------------------------
-extern void CallArtillery(int32_t commanderId, int32_t strikeType, Stuff::Vector3D strikeLoc,
+extern void
+CallArtillery(int32_t commanderId, int32_t strikeType, Stuff::Vector3D strikeLoc,
 	int32_t secondsToImpact, bool randomOffset);
 
-extern void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc,
+extern void
+IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc,
 	GameObjectPtr strikeTarget, bool playerStrike = true, bool clanStrike = false,
 	float timeToImpact = -1.00);
 

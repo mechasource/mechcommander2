@@ -89,7 +89,8 @@ extern bool MLRVertexLimitReached;
 #define MAX_WEAPON_NODES 4
 //-----------------------------------------------------------------------------
 // class BldgAppearanceType
-void BldgAppearanceType::init(PSTR fileName)
+void
+BldgAppearanceType::init(PSTR fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -106,7 +107,7 @@ void BldgAppearanceType::init(PSTR fileName)
 	if (result != NO_ERROR)
 		spinMe = false;
 	float nFrameRate = 0.0f;
-	result			 = iniFile.readIdFloat("FrameRate", nFrameRate);
+	result = iniFile.readIdFloat("FrameRate", nFrameRate);
 	if (result != NO_ERROR)
 		nFrameRate = 0.0f;
 	result = iniFile.readIdBoolean("ForestClump", isForestClump);
@@ -229,7 +230,7 @@ void BldgAppearanceType::init(PSTR fileName)
 	}
 	else
 	{
-		bldgDmgShape	   = nullptr;
+		bldgDmgShape = nullptr;
 		bldgDmgShadowShape = nullptr;
 	}
 	result = iniFile.seekBlock("TGLDestructEffect");
@@ -309,8 +310,8 @@ void BldgAppearanceType::init(PSTR fileName)
 	//-----------------------------------------------
 	// Load up the Weapon Node Data.
 	numWeaponNodes = 0;
-	nodeData	   = nullptr;
-	result		   = iniFile.seekBlock("WeaponNode");
+	nodeData = nullptr;
+	result = iniFile.seekBlock("WeaponNode");
 	if (result == NO_ERROR)
 	{
 		nodeData = (NodeData*)AppearanceTypeList::appearanceHeap->Malloc(
@@ -342,7 +343,8 @@ void BldgAppearanceType::init(PSTR fileName)
 }
 
 //----------------------------------------------------------------------------
-void BldgAppearanceType::destroy(void)
+void
+BldgAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	int32_t i;
@@ -380,7 +382,8 @@ void BldgAppearanceType::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
+void
+BldgAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -393,7 +396,8 @@ void BldgAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animation
 
 //-----------------------------------------------------------------------------
 // class BldgAppearance
-void BldgAppearance::setWeaponNodeUsed(int32_t weaponNode)
+void
+BldgAppearance::setWeaponNodeUsed(int32_t weaponNode)
 {
 	weaponNode -= appearType->numWeaponNodes;
 	if ((weaponNode >= 0) && (weaponNode < appearType->numWeaponNodes))
@@ -404,7 +408,8 @@ void BldgAppearance::setWeaponNodeUsed(int32_t weaponNode)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D BldgAppearance::getWeaponNodePosition(int32_t nodeId)
+Stuff::Vector3D
+BldgAppearance::getWeaponNodePosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if ((nodeId < 0) || (nodeId >= appearType->numWeaponNodes))
@@ -439,7 +444,8 @@ Stuff::Vector3D BldgAppearance::getWeaponNodePosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D BldgAppearance::getHitNode(void)
+Stuff::Vector3D
+BldgAppearance::getHitNode(void)
 {
 	if (hitNodeId == -1)
 		hitNodeId = bldgShape->GetNodeNameId("hitnode");
@@ -448,18 +454,19 @@ Stuff::Vector3D BldgAppearance::getHitNode(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t BldgAppearance::getWeaponNode(int32_t weaponType)
+int32_t
+BldgAppearance::getWeaponNode(int32_t weaponType)
 {
 	//------------------------------------------------
 	// Scan all weapon nodes and find least used one.
 	int32_t leastUsed = 999999999;
-	int32_t bestNode  = -1;
+	int32_t bestNode = -1;
 	for (size_t i = 0; i < appearType->numWeaponNodes; i++)
 	{
 		if (nodeUsed[i] < leastUsed)
 		{
 			leastUsed = nodeUsed[i];
-			bestNode  = i;
+			bestNode = i;
 		}
 	}
 	if ((bestNode < 0) || (bestNode >= appearType->numWeaponNodes))
@@ -468,7 +475,8 @@ int32_t BldgAppearance::getWeaponNode(int32_t weaponType)
 }
 
 //-----------------------------------------------------------------------------
-float BldgAppearance::getWeaponNodeRecycle(int32_t node)
+float
+BldgAppearance::getWeaponNodeRecycle(int32_t node)
 {
 	if ((node >= 0) && (node < appearType->numWeaponNodes))
 		return nodeRecycle[node];
@@ -476,49 +484,50 @@ float BldgAppearance::getWeaponNodeRecycle(int32_t node)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void
+BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (BldgAppearanceType*)tree;
 	shapeMin.x = shapeMin.y = -25;
 	shapeMax.x = shapeMax.y = 50;
-	bdAnimationState		= -1;
-	currentFrame			= 0.0f;
-	bdFrameRate				= 0.0f;
-	isReversed				= false;
-	isLooping				= false;
-	setFirstFrame			= false;
-	canTransition			= true;
-	paintScheme				= -1;
-	objectNameId			= 30469;
-	hazeFactor				= 0.0f;
-	rotationalNodeId		= -1;
+	bdAnimationState = -1;
+	currentFrame = 0.0f;
+	bdFrameRate = 0.0f;
+	isReversed = false;
+	isLooping = false;
+	setFirstFrame = false;
+	canTransition = true;
+	paintScheme = -1;
+	objectNameId = 30469;
+	hazeFactor = 0.0f;
+	rotationalNodeId = -1;
 	hitNodeId = activityNodeId = activityNode1Id = -1;
 	currentFlash = duration = flashDuration = 0.0f;
-	flashColor								= 0x00000000;
-	drawFlash								= false;
-	pointLight								= nullptr;
-	lightId									= 0xffffffff;
-	forceLightsOut							= false;
+	flashColor = 0x00000000;
+	drawFlash = false;
+	pointLight = nullptr;
+	lightId = 0xffffffff;
+	forceLightsOut = false;
 	screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 	position.Zero();
-	rotation			 = 0.0f;
-	selected			 = 0;
-	teamId				 = -1;
+	rotation = 0.0f;
+	selected = 0;
+	teamId = -1;
 	homeTeamRelationship = 0;
-	actualRotation		 = rotation;
-	currentLOD			 = 0;
+	actualRotation = rotation;
+	currentLOD = 0;
 	turretYaw = turretPitch = 0.0f;
-	destructFX				= nullptr;
-	activity				= nullptr;
-	activity1				= nullptr;
-	isActivitying			= false;
-	OBBRadius				= -1.0f;
-	highZ					= -1.0f;
-	nodeUsed				= nullptr;
-	nodeRecycle				= nullptr;
-	beenInView				= false;
-	fogLightSet				= false;
+	destructFX = nullptr;
+	activity = nullptr;
+	activity1 = nullptr;
+	isActivitying = false;
+	OBBRadius = -1.0f;
+	highZ = -1.0f;
+	nodeUsed = nullptr;
+	nodeRecycle = nullptr;
+	beenInView = false;
+	fogLightSet = false;
 	if (appearType)
 	{
 		bldgShape = appearType->bldgShape[0]->CreateFrom();
@@ -602,31 +611,31 @@ void BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D nodeCenter = bldgShape->GetRootNodeCenter();
-		boxCoords[0].x			   = position.x + bldgShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[0].y			   = position.y + bldgShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[0].z			   = position.z + bldgShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[1].x			   = position.x + bldgShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[1].y			   = position.y + bldgShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[1].z			   = position.z + bldgShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[2].x			   = position.x + bldgShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[2].y			   = position.y + bldgShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[2].z			   = position.z + bldgShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[3].x			   = position.x + bldgShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[3].y			   = position.y + bldgShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[3].z			   = position.z + bldgShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[4].x			   = position.x + bldgShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[4].y			   = position.y + bldgShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[4].z			   = position.z + bldgShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[5].x			   = position.x + bldgShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[5].y			   = position.y + bldgShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[5].z			   = position.z + bldgShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[6].x			   = position.x + bldgShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[6].y			   = position.y + bldgShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[6].z			   = position.z + bldgShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[7].x			   = position.x + bldgShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[7].y			   = position.y + bldgShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[7].z			   = position.z + bldgShape->GetMinBox().y + nodeCenter.y;
-		float testRadius		   = 0.0;
+		boxCoords[0].x = position.x + bldgShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[0].y = position.y + bldgShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[0].z = position.z + bldgShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[1].x = position.x + bldgShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[1].y = position.y + bldgShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[1].z = position.z + bldgShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[2].x = position.x + bldgShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[2].y = position.y + bldgShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[2].z = position.z + bldgShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[3].x = position.x + bldgShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[3].y = position.y + bldgShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[3].z = position.z + bldgShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[4].x = position.x + bldgShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[4].y = position.y + bldgShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[4].z = position.z + bldgShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[5].x = position.x + bldgShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[5].y = position.y + bldgShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[5].z = position.z + bldgShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[6].x = position.x + bldgShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[6].y = position.y + bldgShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[6].z = position.z + bldgShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[7].x = position.x + bldgShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[7].y = position.y + bldgShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[7].z = position.z + bldgShape->GetMinBox().y + nodeCenter.y;
+		float testRadius = 0.0;
 		for (i = 0; i < 8; i++)
 		{
 			testRadius = boxCoords[i].GetLength();
@@ -635,8 +644,8 @@ void BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			if (boxCoords[i].z > highZ)
 				highZ = boxCoords[i].z;
 		}
-		appearType->boundsUpperLeftX  = (-OBBRadius * 2.0);
-		appearType->boundsUpperLeftY  = (-OBBRadius * 2.0);
+		appearType->boundsUpperLeftX = (-OBBRadius * 2.0);
+		appearType->boundsUpperLeftY = (-OBBRadius * 2.0);
 		appearType->boundsLowerRightX = (OBBRadius * 2.0);
 		appearType->boundsLowerRightY = (OBBRadius);
 		if (!appearType->getDesignerTypeBounds())
@@ -661,7 +670,8 @@ void BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::setObjStatus(int32_t oStatus)
+void
+BldgAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -808,7 +818,8 @@ void BldgAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D BldgAppearance::getNodeNamePosition(PSTR nodeName)
+Stuff::Vector3D
+BldgAppearance::getNodeNamePosition(PSTR nodeName)
 {
 	Stuff::Vector3D result = position;
 	//-------------------------------------------
@@ -820,14 +831,15 @@ Stuff::Vector3D BldgAppearance::getNodeNamePosition(PSTR nodeName)
 	xlatPosition.x = -position.x;
 	xlatPosition.y = position.z;
 	xlatPosition.z = position.y;
-	result		   = bldgShape->GetTransformedNodePosition(&xlatPosition, &qRotation, nodeName);
+	result = bldgShape->GetTransformedNodePosition(&xlatPosition, &qRotation, nodeName);
 	if ((result.x == 0.0f) && (result.y == 0.0f) && (result.z == 0.0f))
 		result = position;
 	return result;
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D BldgAppearance::getNodeIdPosition(int32_t nodeId)
+Stuff::Vector3D
+BldgAppearance::getNodeIdPosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	//-------------------------------------------
@@ -839,20 +851,22 @@ Stuff::Vector3D BldgAppearance::getNodeIdPosition(int32_t nodeId)
 	xlatPosition.x = -position.x;
 	xlatPosition.y = position.z;
 	xlatPosition.z = position.y;
-	result		   = bldgShape->GetTransformedNodePosition(&xlatPosition, &qRotation, nodeId);
+	result = bldgShape->GetTransformedNodePosition(&xlatPosition, &qRotation, nodeId);
 	if ((result.x == 0.0f) && (result.y == 0.0f) && (result.z == 0.0f))
 		result = position;
 	return result;
 }
 
 //-----------------------------------------------------------------------------
-bool BldgAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
+bool
+BldgAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
 {
 	return bldgShape->PerPolySelect(mouseX, mouseY);
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::setGesture(uint32_t gestureId)
+void
+BldgAppearance::setGesture(uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -869,56 +883,58 @@ void BldgAppearance::setGesture(uint32_t gestureId)
 	// reverse flag, and start it going until you hear otherwise.
 	appearType->setAnimation(bldgShape, gestureId);
 	bdAnimationState = gestureId;
-	currentFrame	 = 0.0f;
+	currentFrame = 0.0f;
 	if (appearType->bdStartF[gestureId])
 		currentFrame = appearType->bdStartF[gestureId];
 	isReversed = false;
 	if (appearType->isReversed(bdAnimationState))
 	{
 		currentFrame = appearType->getNumFrames(bdAnimationState) - 1;
-		isReversed   = true;
+		isReversed = true;
 	}
 	if (appearType->isRandom(bdAnimationState))
 	{
 		currentFrame = RandomNumber(appearType->getNumFrames(bdAnimationState) - 1);
 	}
-	isLooping	 = appearType->isLooped(bdAnimationState);
-	bdFrameRate   = appearType->getFrameRate(bdAnimationState);
+	isLooping = appearType->isLooped(bdAnimationState);
+	bdFrameRate = appearType->getFrameRate(bdAnimationState);
 	setFirstFrame = true;
 	if (bdFrameRate > Stuff::SMALL)
 		canTransition = false;
 	else
 		canTransition = true; // We can change immediately to another animation
-							  // because we have no animation for this state!
+			// because we have no animation for this state!
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::setMoverParameters(
+void
+BldgAppearance::setMoverParameters(
 	float turretRot, float lArmRot, float rArmRot, bool isAirborne)
 {
-	turretYaw   = turretRot;
+	turretYaw = turretRot;
 	turretPitch = lArmRot;
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::setObjectParameters(
+void
+BldgAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
-	rotation			 = Rot;
-	position			 = pos;
-	selected			 = sel;
-	actualRotation		 = Rot;
-	teamId				 = team;
+	rotation = Rot;
+	position = pos;
+	selected = sel;
+	actualRotation = Rot;
+	teamId = team;
 	homeTeamRelationship = homeRelations;
 }
 
 //-----------------------------------------------------------------------------
-bool BldgAppearance::isMouseOver(float px, float py)
+bool
+BldgAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
-			(py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) && (py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -931,10 +947,11 @@ bool BldgAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool BldgAppearance::recalcBounds(void)
+bool
+BldgAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
-	inView				= false;
+	inView = false;
 	float distanceToEye = 0.0f;
 	if (eye)
 	{
@@ -944,15 +961,15 @@ bool BldgAppearance::recalcBounds(void)
 		if (eye->usePerspective)
 		{
 			Stuff::Vector3D cameraPos;
-			cameraPos.x			= -eye->getCameraOrigin().x;
-			cameraPos.y			= eye->getCameraOrigin().z;
-			cameraPos.z			= eye->getCameraOrigin().y;
+			cameraPos.x = -eye->getCameraOrigin().x;
+			cameraPos.y = eye->getCameraOrigin().z;
+			cameraPos.z = eye->getCameraOrigin().y;
 			float vClipConstant = eye->verticalSphereClipConstant;
 			float hClipConstant = eye->horizontalSphereClipConstant;
 			Stuff::Vector3D objectCenter;
 			objectCenter.Subtract(position, cameraPos);
 			Camera::cameraFrame.trans_to_frame(objectCenter);
-			distanceToEye		= objectCenter.GetApproximateLength();
+			distanceToEye = objectCenter.GetApproximateLength();
 			float clip_distance = fabs(1.0f / objectCenter.y);
 			// Is vertex on Screen OR close enough to screen that its triangle
 			// MAY be visible?
@@ -988,7 +1005,7 @@ bool BldgAppearance::recalcBounds(void)
 				if (distanceToEye > Camera::MaxClipDistance)
 				{
 					hazeFactor = 1.0f;
-					inView	 = false;
+					inView = false;
 				}
 				else if (distanceToEye > Camera::MinHazeDistance)
 				{
@@ -999,13 +1016,13 @@ bool BldgAppearance::recalcBounds(void)
 				else
 				{
 					Camera::HazeFactor = 0.0f;
-					inView			   = true;
+					inView = true;
 				}
 			}
 			else
 			{
 				Camera::HazeFactor = 0.0f;
-				inView			   = true;
+				inView = true;
 			}
 		}
 		// If we were not behind fog plane, do a bunch O math we need later!!
@@ -1018,17 +1035,16 @@ bool BldgAppearance::recalcBounds(void)
 			// do a rough check if on screen.  If no where near, do NOT do the
 			// below. Mighty mighty slow!!!! Use the original check done before
 			// all this 3D madness.  Dig out sourceSafe tomorrow!
-			tempPos		 = screenPos;
-			upperLeft.x  = tempPos.x;
-			upperLeft.y  = tempPos.y;
+			tempPos = screenPos;
+			upperLeft.x = tempPos.x;
+			upperLeft.y = tempPos.y;
 			lowerRight.x = tempPos.x;
 			lowerRight.y = tempPos.y;
 			upperLeft.x += (appearType->boundsUpperLeftX * eye->getScaleFactor());
 			upperLeft.y += (appearType->boundsUpperLeftY * eye->getScaleFactor());
 			lowerRight.x += (appearType->boundsLowerRightX * eye->getScaleFactor());
 			lowerRight.y += (appearType->boundsLowerRightY * eye->getScaleFactor());
-			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-				(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 			{
 				// We are on screen.  Figure out selection box.
 				Stuff::Vector3D boxCoords[8];
@@ -1112,12 +1128,11 @@ bool BldgAppearance::recalcBounds(void)
 							minY = bcsp[i].y;
 					}
 				}
-				upperLeft.x  = minX;
-				upperLeft.y  = minY;
+				upperLeft.x = minX;
+				upperLeft.y = minY;
 				lowerRight.x = maxX;
 				lowerRight.y = maxY;
-				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-					(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 				{
 					inView = true;
 					if ((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED))
@@ -1125,16 +1140,15 @@ bool BldgAppearance::recalcBounds(void)
 						//-------------------------------------------------------------------------------
 						// Set LOD of Model here because we have the distance
 						// and we KNOW we can see it!
-						bool baseLOD	   = true;
+						bool baseLOD = true;
 						uint32_t selectLOD = 0;
 						if (useHighObjectDetail)
 						{
 							for (size_t i = 1; i < MAX_LODS; i++)
 							{
-								if (appearType->bldgShape[i] &&
-									(distanceToEye > appearType->lodDistance[i]))
+								if (appearType->bldgShape[i] && (distanceToEye > appearType->lodDistance[i]))
 								{
-									baseLOD   = false;
+									baseLOD = false;
 									selectLOD = i;
 								}
 							}
@@ -1143,7 +1157,7 @@ bool BldgAppearance::recalcBounds(void)
 						{
 							if (appearType->bldgShape[1])
 							{
-								baseLOD   = false;
+								baseLOD = false;
 								selectLOD = 1;
 							}
 						}
@@ -1251,7 +1265,7 @@ bool BldgAppearance::recalcBounds(void)
 				else
 				{
 					inView = false; // Did alot of extra work checking this, but
-									// WHY draw and insult to injury?
+						// WHY draw and insult to injury?
 				}
 			}
 			else
@@ -1264,7 +1278,8 @@ bool BldgAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-bool BldgAppearance::playDestruction(void)
+bool
+BldgAppearance::playDestruction(void)
 {
 	// Check if there is a Destruct FX
 	if (appearType->destructEffect[0])
@@ -1294,7 +1309,7 @@ bool BldgAppearance::playDestruction(void)
 			tPosition.x = -actualPosition.x;
 			tPosition.y = actualPosition.z;
 			tPosition.z = actualPosition.y;
-			float yaw   = (180.0f + rotation) * DEGREES_TO_RADS;
+			float yaw = (180.0f + rotation) * DEGREES_TO_RADS;
 			Stuff::UnitQuaternion rot;
 			rot = Stuff::EulerAngles(0.0f, yaw, 0.0f);
 			shapeOrigin.BuildRotation(rot);
@@ -1306,22 +1321,23 @@ bool BldgAppearance::playDestruction(void)
 		return false;
 	}
 	return false; // We didn't have a destruct effect.  Tell the object to play
-				  // its default.
+		// its default.
 }
 
 //-----------------------------------------------------------------------------
-int32_t BldgAppearance::render(int32_t depthFixup)
+int32_t
+BldgAppearance::render(int32_t depthFixup)
 {
 	if (inView)
 	{
-		int32_t color	  = SD_BLUE;
+		int32_t color = SD_BLUE;
 		uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8))
 		{
 			static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
-			static int32_t colorTable[3]	  = {
-				 SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
-			color	 = colorTable[homeTeamRelationship];
+			static int32_t colorTable[3] = {
+				SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
 		}
 		if (selected & DRAW_COLORED)
@@ -1374,7 +1390,7 @@ int32_t BldgAppearance::render(int32_t depthFixup)
 			mlrState.SetTextureCorrectionOn();
 			mlrState.SetZBufferCompareOn();
 			mlrState.SetZBufferWriteOn();
-			drawInfo.m_state		 = mlrState;
+			drawInfo.m_state = mlrState;
 			drawInfo.m_clippingFlags = 0x0;
 			Stuff::LinearMatrix4D shapeOrigin;
 			Stuff::LinearMatrix4D localToWorld;
@@ -1389,7 +1405,7 @@ int32_t BldgAppearance::render(int32_t depthFixup)
 			tPosition.x = -actualPosition.x;
 			tPosition.y = actualPosition.z;
 			tPosition.z = actualPosition.y;
-			float yaw   = (180.0f + rotation) * DEGREES_TO_RADS;
+			float yaw = (180.0f + rotation) * DEGREES_TO_RADS;
 			Stuff::UnitQuaternion rot;
 			rot = Stuff::EulerAngles(0.0f, yaw, 0.0f);
 			shapeOrigin.BuildRotation(rot);
@@ -1407,7 +1423,7 @@ int32_t BldgAppearance::render(int32_t depthFixup)
 			mlrState.SetTextureCorrectionOn();
 			mlrState.SetZBufferCompareOn();
 			mlrState.SetZBufferWriteOn();
-			drawInfo.m_state		 = mlrState;
+			drawInfo.m_state = mlrState;
 			drawInfo.m_clippingFlags = 0x0;
 			Stuff::LinearMatrix4D shapeOrigin;
 			Stuff::LinearMatrix4D localToWorld;
@@ -1483,9 +1499,9 @@ int32_t BldgAppearance::render(int32_t depthFixup)
 		boxStart.x = -(bldgShape->GetMinBox().x + nodeCenter.x);
 		boxStart.z = bldgShape->GetMinBox().y + nodeCenter.y;
 		boxStart.y = bldgShape->GetMinBox().z + nodeCenter.z;
-		boxEnd.x   = -(bldgShape->GetMaxBox().x + nodeCenter.x);
-		boxEnd.z   = bldgShape->GetMaxBox().y + nodeCenter.y;
-		boxEnd.y   = bldgShape->GetMaxBox().z + nodeCenter.z;
+		boxEnd.x = -(bldgShape->GetMaxBox().x + nodeCenter.x);
+		boxEnd.z = bldgShape->GetMaxBox().y + nodeCenter.y;
+		boxEnd.y = bldgShape->GetMaxBox().z + nodeCenter.z;
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D addCoords;
 		addCoords.x = boxStart.x;
@@ -1596,7 +1612,8 @@ int32_t BldgAppearance::render(int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-int32_t BldgAppearance::renderShadows(void)
+int32_t
+BldgAppearance::renderShadows(void)
 {
 	if (inView && visible && !appearType->spinMe)
 	{
@@ -1611,7 +1628,8 @@ int32_t BldgAppearance::renderShadows(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t BldgAppearance::update(bool animate)
+int32_t
+BldgAppearance::update(bool animate)
 {
 	Stuff::Point3D xlatPosition;
 	Stuff::UnitQuaternion rot;
@@ -1644,9 +1662,9 @@ int32_t BldgAppearance::update(bool animate)
 		if (pointLight)
 		{
 			Stuff::Point3D ourPosition;
-			ourPosition.x		  = -position.x;
-			ourPosition.y		  = position.z;
-			ourPosition.z		  = position.y;
+			ourPosition.x = -position.x;
+			ourPosition.y = position.z;
+			ourPosition.z = position.y;
 			pointLight->direction = ourPosition;
 			Stuff::LinearMatrix4D lightToWorldMatrix;
 			lightToWorldMatrix.BuildTranslation(ourPosition);
@@ -1695,7 +1713,7 @@ int32_t BldgAppearance::update(bool animate)
 		//-------------------------------------------
 		// Does math necessary to draw Tree
 		float yaw = rotation * DEGREES_TO_RADS;
-		rot		  = Stuff::EulerAngles(0.0f, yaw, 0.0f);
+		rot = Stuff::EulerAngles(0.0f, yaw, 0.0f);
 		if (appearType->spinMe && land)
 		{
 			// Make sure we are above the water level
@@ -1711,13 +1729,13 @@ int32_t BldgAppearance::update(bool animate)
 			float lightIntensity = 1.0f;
 			if (land)
 				lightIntensity = land->getTerrainLight(position);
-			lightr		   = eye->getLightRed(lightIntensity);
-			lightg		   = eye->getLightGreen(lightIntensity);
-			lightb		   = eye->getLightBlue(lightIntensity);
-			lightRGB	   = (lightr << 16) + (lightg << 8) + lightb;
-			fogRGB		   = 0xff << 24;
+			lightr = eye->getLightRed(lightIntensity);
+			lightg = eye->getLightGreen(lightIntensity);
+			lightb = eye->getLightBlue(lightIntensity);
+			lightRGB = (lightr << 16) + (lightg << 8) + lightb;
+			fogRGB = 0xff << 24;
 			float fogStart = eye->fogStart;
-			float fogFull  = eye->fogFull;
+			float fogFull = eye->fogFull;
 			if (xlatPosition.y < fogStart)
 			{
 				float fogFactor = fogStart - xlatPosition.y;
@@ -1737,7 +1755,7 @@ int32_t BldgAppearance::update(bool animate)
 						fogFactor = 256.0;
 					}
 					uint8_t fogResult = float2long(fogFactor);
-					fogRGB			  = fogResult << 24;
+					fogRGB = fogResult << 24;
 				}
 			}
 			else
@@ -1789,7 +1807,7 @@ int32_t BldgAppearance::update(bool animate)
 				else
 					currentFrame = appearType->getNumFrames(bdAnimationState) - 1;
 				canTransition = true; // Whenever we have completed one cycle or
-									  // at last frame, OK to move on!
+					// at last frame, OK to move on!
 			}
 			//--------------------------------------
 			// Check negative overflow of gesture
@@ -1800,15 +1818,14 @@ int32_t BldgAppearance::update(bool animate)
 				else
 					currentFrame = 0.0f;
 				canTransition = true; // Whenever we have completed one cycle or
-									  // at last frame, OK to move on!
+					// at last frame, OK to move on!
 			}
 		}
 		bldgShape->SetFrameNum(currentFrame);
 	}
 	if (inView)
 	{
-		bool checkShadows = ((!beenInView) || (appearType->spinMe) || (eye->forceShadowRecalc) ||
-			(currentFrame != oldFrame));
+		bool checkShadows = ((!beenInView) || (appearType->spinMe) || (eye->forceShadowRecalc) || (currentFrame != oldFrame));
 		if (bldgShadowShape)
 			bldgShape->SetUseShadow(false);
 		else
@@ -1840,7 +1857,7 @@ int32_t BldgAppearance::update(bool animate)
 			tPosition.x = -actualPosition.x;
 			tPosition.y = actualPosition.z;
 			tPosition.z = actualPosition.y;
-			float yaw   = (180.0f + rotation) * DEGREES_TO_RADS;
+			float yaw = (180.0f + rotation) * DEGREES_TO_RADS;
 			Stuff::UnitQuaternion rot;
 			rot = Stuff::EulerAngles(0.0f, yaw, 0.0f);
 			shapeOrigin.BuildRotation(rot);
@@ -1926,7 +1943,8 @@ int32_t BldgAppearance::update(bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::startActivity(int32_t effectId, bool loop)
+void
+BldgAppearance::startActivity(int32_t effectId, bool loop)
 {
 	// Check if we are already playing one.  If not, be active!
 	// First, check if its even loaded.
@@ -2026,7 +2044,8 @@ void BldgAppearance::startActivity(int32_t effectId, bool loop)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::stopActivity(void)
+void
+BldgAppearance::stopActivity(void)
 {
 	if (isActivitying) // Stop the effect if we are running it!!
 	{
@@ -2038,17 +2057,19 @@ void BldgAppearance::stopActivity(void)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
+void
+BldgAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
-	duration	  = dur;
+	duration = dur;
 	flashDuration = fDuration;
-	flashColor	= color;
-	drawFlash	 = true;
-	currentFlash  = flashDuration;
+	flashColor = color;
+	drawFlash = true;
+	currentFlash = flashDuration;
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::destroy(void)
+void
+BldgAppearance::destroy(void)
 {
 	if (bldgShape)
 	{
@@ -2082,7 +2103,8 @@ void BldgAppearance::destroy(void)
 
 //-----------------------------------------------------------------------------
 
-int32_t BldgAppearance::calcCellsCovered(Stuff::Vector3D& pos, pint16_t cellList)
+int32_t
+BldgAppearance::calcCellsCovered(Stuff::Vector3D& pos, pint16_t cellList)
 {
 	gosASSERT((Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM) == GameMap->width);
 	int32_t numCoords = 0;
@@ -2121,10 +2143,7 @@ int32_t BldgAppearance::calcCellsCovered(Stuff::Vector3D& pos, pint16_t cellList
 				{
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
-					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+					if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						// gosASSERT(false);
 						continue;
@@ -2148,10 +2167,11 @@ int32_t BldgAppearance::calcCellsCovered(Stuff::Vector3D& pos, pint16_t cellList
 
 //-----------------------------------------------------------------------------
 
-void BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
+void
+BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 {
 	if (appearType->spinMe) // We are a marker
-		return;				// Do not mark impassable
+		return; // Do not mark impassable
 	// MUST force building to HIGHEST LOD!!!  IMpassability data is only valid
 	// at this LOD!!
 	// Building will reset its LOD on next draw!!
@@ -2184,21 +2204,17 @@ void BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 					worldPos.Add(position, vertexPos);
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
-					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+					if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
 					_ScenarioMapCellInfo* pTmp =
-						&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM +
-							cellC]);
+						&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM + cellC]);
 					if (vertexPos.z <= 1.0f)
 					{
 						pTmp->passable = true;
-						pTmp->gate	 = false;
-						pTmp->forest   = true;
+						pTmp->gate = false;
+						pTmp->forest = true;
 						// pTmp->specialType = type;
 						// pTmp->specialID = counter;
 					}
@@ -2255,42 +2271,38 @@ void BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 					worldPos.Add(position, vertexPos);
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
-					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+					if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
 					_ScenarioMapCellInfo* pTmp =
-						&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM +
-							cellC]);
+						&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM + cellC]);
 					if (vertexPos.z >= 1.0f)
 					{
 						pTmp->passable = false;
 						if (((type == SPECIAL_GATE) || (type == SPECIAL_WALL)))
 						{
-							pTmp->passable	= true;
-							pTmp->specialID   = counter;
+							pTmp->passable = true;
+							pTmp->specialID = counter;
 							pTmp->specialType = type;
 							if (type == SPECIAL_GATE)
 								pTmp->gate = true;
 						}
 						else if (type == SPECIAL_LAND_BRIDGE)
 						{
-							pTmp->passable	= true;
-							pTmp->specialID   = counter;
+							pTmp->passable = true;
+							pTmp->specialID = counter;
 							pTmp->specialType = type;
 						}
 						else if (type == 18)
 						{
-							pTmp->specialID   = 0;
+							pTmp->specialID = 0;
 							pTmp->specialType = SPECIAL_NONE;
-							pTmp->passable	= true;
+							pTmp->passable = true;
 						}
 						else
 						{
-							pTmp->specialID   = 0;
+							pTmp->specialID = 0;
 							pTmp->specialType = SPECIAL_NONE;
 						}
 						if (type != 18)
@@ -2348,31 +2360,27 @@ void BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 					worldPos.Add(position, vertexPos);
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
-					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+					if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
 					_ScenarioMapCellInfo* pTmp =
-						&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM +
-							cellC]);
+						&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM + cellC]);
 					if (vertexPos.z >= 1.0f)
 					{
 						if (type == 18)
 						{
-							pTmp->passable	= true;
-							pTmp->specialID   = 0;
+							pTmp->passable = true;
+							pTmp->specialID = 0;
 							pTmp->specialType = SPECIAL_NONE;
 						}
 						else
 						{
 							pTmp->passable = false;
-							pTmp->gate	 = false; // Perfectly OK to mark these
-													// again,  They are no longer
-													// special!!
-							pTmp->specialID   = 0;
+							pTmp->gate = false; // Perfectly OK to mark these
+								// again,  They are no longer
+								// special!!
+							pTmp->specialID = 0;
 							pTmp->specialType = SPECIAL_NONE;
 						}
 					}
@@ -2402,7 +2410,8 @@ void BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 
 //-----------------------------------------------------------------------------
 
-int32_t BldgAppearance::markMoveMap(
+int32_t
+BldgAppearance::markMoveMap(
 	bool passable, int32_t* lineOfSightRect, bool useHeight, pint16_t cellList)
 {
 	int32_t minRow = 9999;
@@ -2442,10 +2451,7 @@ int32_t BldgAppearance::markMoveMap(
 					worldPos.Add(position, vertexPos);
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
-					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+					if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
@@ -2488,10 +2494,7 @@ int32_t BldgAppearance::markMoveMap(
 					worldPos.Add(position, vertexPos);
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
-					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+					if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
@@ -2540,7 +2543,8 @@ int32_t BldgAppearance::markMoveMap(
 
 //-----------------------------------------------------------------------------
 
-void BldgAppearance::markLOS(bool clearIt)
+void
+BldgAppearance::markLOS(bool clearIt)
 {
 	// MUST force building to HIGHEST LOD!!!  IMpassability data is only valid
 	// at this LOD!!
@@ -2558,8 +2562,7 @@ void BldgAppearance::markLOS(bool clearIt)
 	{
 		// Check if the artists meant for this piece to NOT block LOS!!
 		// Probably should check for light cones,too!
-		if ((strnicmp(tempBldgShape->GetNodeId(i), "LOS_", 4) != 0) &&
-			(strnicmp(tempBldgShape->GetNodeId(i), "SpotLight_", 10) != 0))
+		if ((strnicmp(tempBldgShape->GetNodeId(i), "LOS_", 4) != 0) && (strnicmp(tempBldgShape->GetNodeId(i), "SpotLight_", 10) != 0))
 		{
 			for (size_t j = 0; j < tempBldgShape->GetNumVerticesInShape(i); j++)
 			{
@@ -2570,10 +2573,7 @@ void BldgAppearance::markLOS(bool clearIt)
 				worldPos.Add(position, vertexPos);
 				int32_t cellR, cellC;
 				land->worldToCell(worldPos, cellR, cellC);
-				if ((0 > cellR) ||
-					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-					(0 > cellC) ||
-					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+				if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 				{
 					continue;
 				}
@@ -2583,14 +2583,14 @@ void BldgAppearance::markLOS(bool clearIt)
 				if (!clearIt)
 				{
 					float currentCellHeight = curCell->getLocalHeight();
-					float cellLocalHeight   = vertexPos.z * metersPerWorldUnit * 0.25f;
+					float cellLocalHeight = vertexPos.z * metersPerWorldUnit * 0.25f;
 					if (cellLocalHeight > 15.0f)
 						cellLocalHeight = 15.0f;
 					if (cellLocalHeight > currentCellHeight)
 						curCell->setLocalHeight(cellLocalHeight + 0.5f);
 				}
 				else // We want to clear all LOS height INFO.  We're about to
-					 // change shape!!
+					// change shape!!
 				{
 					curCell->setLocalHeight(0.0f);
 				}
@@ -2607,7 +2607,8 @@ void BldgAppearance::markLOS(bool clearIt)
 
 //-----------------------------------------------------------------------------
 
-void BldgAppearance::calcAdjCell(int32_t& row, int32_t& col)
+void
+BldgAppearance::calcAdjCell(int32_t& row, int32_t& col)
 {
 	// MUST force building to HIGHEST LOD!!!  IMpassability data is only valid
 	// at this LOD!!
@@ -2645,7 +2646,8 @@ void BldgAppearance::calcAdjCell(int32_t& row, int32_t& col)
 
 //-----------------------------------------------------------------------------
 // class TreeAppearanceType
-void TreeAppearanceType::init(PSTR fileName)
+void
+TreeAppearanceType::init(PSTR fileName)
 {
 	AppearanceType::init(fileName);
 	FullPathFileName iniName;
@@ -2760,14 +2762,15 @@ void TreeAppearanceType::init(PSTR fileName)
 	}
 	else
 	{
-		treeDmgShape	   = nullptr;
+		treeDmgShape = nullptr;
 		treeDmgShadowShape = nullptr;
 	}
 	// No Animations at present.
 }
 
 //----------------------------------------------------------------------------
-void TreeAppearanceType::destroy(void)
+void
+TreeAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	for (size_t i = 0; i < MAX_LODS; i++)
@@ -2799,27 +2802,28 @@ void TreeAppearanceType::destroy(void)
 
 //-----------------------------------------------------------------------------
 // class TreeAppearance
-void TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void
+TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (TreeAppearanceType*)tree;
 	shapeMin.x = shapeMin.y = -25;
 	shapeMax.x = shapeMax.y = 50;
-	paintScheme				= -1;
-	objectNameId			= 30862;
-	hazeFactor				= 0.0f;
+	paintScheme = -1;
+	objectNameId = 30862;
+	hazeFactor = 0.0f;
 	screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 	position.Zero();
 	rotation = 0.0;
 	;
-	selected			 = 0;
-	teamId				 = 0;
+	selected = 0;
+	teamId = 0;
 	homeTeamRelationship = 0;
-	actualRotation		 = rotation;
-	OBBRadius			 = -1.0f;
-	currentLOD			 = 0;
-	beenInView			 = false;
-	fogLightSet			 = false;
+	actualRotation = rotation;
+	OBBRadius = -1.0f;
+	currentLOD = 0;
+	beenInView = false;
+	fogLightSet = false;
 	lightRGB = fogRGB = 0xffffffff;
 	if (appearType)
 	{
@@ -2904,44 +2908,44 @@ void TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D nodeCenter = treeShape->GetRootNodeCenter();
-		boxCoords[0].x			   = position.x + treeShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[0].y			   = position.y + treeShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[0].z			   = position.z + treeShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[1].x			   = position.x + treeShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[1].y			   = position.y + treeShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[1].z			   = position.z + treeShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[2].x			   = position.x + treeShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[2].y			   = position.y + treeShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[2].z			   = position.z + treeShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[3].x			   = position.x + treeShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[3].y			   = position.y + treeShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[3].z			   = position.z + treeShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[4].x			   = position.x + treeShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[4].y			   = position.y + treeShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[4].z			   = position.z + treeShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[5].x			   = position.x + treeShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[5].y			   = position.y + treeShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[5].z			   = position.z + treeShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[6].x			   = position.x + treeShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[6].y			   = position.y + treeShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[6].z			   = position.z + treeShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[7].x			   = position.x + treeShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[7].y			   = position.y + treeShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[7].z			   = position.z + treeShape->GetMinBox().y + nodeCenter.y;
-		float testRadius		   = 0.0;
+		boxCoords[0].x = position.x + treeShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[0].y = position.y + treeShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[0].z = position.z + treeShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[1].x = position.x + treeShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[1].y = position.y + treeShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[1].z = position.z + treeShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[2].x = position.x + treeShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[2].y = position.y + treeShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[2].z = position.z + treeShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[3].x = position.x + treeShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[3].y = position.y + treeShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[3].z = position.z + treeShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[4].x = position.x + treeShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[4].y = position.y + treeShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[4].z = position.z + treeShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[5].x = position.x + treeShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[5].y = position.y + treeShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[5].z = position.z + treeShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[6].x = position.x + treeShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[6].y = position.y + treeShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[6].z = position.z + treeShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[7].x = position.x + treeShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[7].y = position.y + treeShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[7].z = position.z + treeShape->GetMinBox().y + nodeCenter.y;
+		float testRadius = 0.0;
 		for (i = 0; i < 8; i++)
 		{
 			testRadius = boxCoords[i].GetLength();
 			if (OBBRadius < testRadius)
 				OBBRadius = testRadius;
 		}
-		appearType->boundsUpperLeftX  = (-OBBRadius * 2.0);
-		appearType->boundsUpperLeftY  = (-OBBRadius * 2.0);
+		appearType->boundsUpperLeftX = (-OBBRadius * 2.0);
+		appearType->boundsUpperLeftY = (-OBBRadius * 2.0);
 		appearType->boundsLowerRightX = (OBBRadius * 2.0);
 		appearType->boundsLowerRightY = (OBBRadius);
 		if (!appearType->getDesignerTypeBounds())
 		{
-			appearType->typeUpperLeft  = treeShape->GetMinBox();
+			appearType->typeUpperLeft = treeShape->GetMinBox();
 			appearType->typeLowerRight = treeShape->GetMaxBox();
 		}
 	}
@@ -2949,7 +2953,8 @@ void TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void TreeAppearance::setObjStatus(int32_t oStatus)
+void
+TreeAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -2963,7 +2968,7 @@ void TreeAppearance::setObjStatus(int32_t oStatus)
 					delete treeShape;
 					treeShape = nullptr;
 				}
-				treeShape  = appearType->treeDmgShape->CreateFrom();
+				treeShape = appearType->treeDmgShape->CreateFrom();
 				beenInView = false;
 			}
 			if (appearType->treeDmgShadowShape)
@@ -2975,7 +2980,7 @@ void TreeAppearance::setObjStatus(int32_t oStatus)
 					treeShadowShape = nullptr;
 				}
 				treeShadowShape = appearType->treeDmgShadowShape->CreateFrom();
-				beenInView		= false;
+				beenInView = false;
 			}
 		}
 		if (oStatus == OBJECT_STATUS_NORMAL)
@@ -2988,7 +2993,7 @@ void TreeAppearance::setObjStatus(int32_t oStatus)
 					delete treeShape;
 					treeShape = nullptr;
 				}
-				treeShape  = appearType->treeShape[0]->CreateFrom();
+				treeShape = appearType->treeShape[0]->CreateFrom();
 				beenInView = false;
 			}
 			if (appearType->treeShadowShape)
@@ -3000,7 +3005,7 @@ void TreeAppearance::setObjStatus(int32_t oStatus)
 					treeShadowShape = nullptr;
 				}
 				treeShadowShape = appearType->treeShadowShape->CreateFrom();
-				beenInView		= false;
+				beenInView = false;
 			}
 		}
 		//-------------------------------------------------
@@ -3086,31 +3091,33 @@ void TreeAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void TreeAppearance::setObjectParameters(
+void
+TreeAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
-	rotation			 = Rot;
-	position			 = pos;
-	selected			 = sel;
-	actualRotation		 = Rot;
-	teamId				 = team;
+	rotation = Rot;
+	position = pos;
+	selected = sel;
+	actualRotation = Rot;
+	teamId = team;
 	homeTeamRelationship = homeRelations;
 }
 
 //-----------------------------------------------------------------------------
-void TreeAppearance::setMoverParameters(
+void
+TreeAppearance::setMoverParameters(
 	float pitchAngle, float lArmRot, float rArmRot, bool isAirborne)
 {
 	pitch = pitchAngle;
 }
 
 //-----------------------------------------------------------------------------
-bool TreeAppearance::isMouseOver(float px, float py)
+bool
+TreeAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
-			(py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) && (py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -3123,10 +3130,11 @@ bool TreeAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool TreeAppearance::recalcBounds(void)
+bool
+TreeAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
-	inView				= false;
+	inView = false;
 	float distanceToEye = 0.0f;
 	if (eye)
 	{
@@ -3136,15 +3144,15 @@ bool TreeAppearance::recalcBounds(void)
 		if (eye->usePerspective)
 		{
 			Stuff::Vector3D cameraPos;
-			cameraPos.x			= -eye->getCameraOrigin().x;
-			cameraPos.y			= eye->getCameraOrigin().z;
-			cameraPos.z			= eye->getCameraOrigin().y;
+			cameraPos.x = -eye->getCameraOrigin().x;
+			cameraPos.y = eye->getCameraOrigin().z;
+			cameraPos.z = eye->getCameraOrigin().y;
 			float vClipConstant = eye->verticalSphereClipConstant;
 			float hClipConstant = eye->horizontalSphereClipConstant;
 			Stuff::Vector3D objectCenter;
 			objectCenter.Subtract(position, cameraPos);
 			Camera::cameraFrame.trans_to_frame(objectCenter);
-			distanceToEye		= objectCenter.GetApproximateLength();
+			distanceToEye = objectCenter.GetApproximateLength();
 			float clip_distance = fabs(1.0f / objectCenter.y);
 			// Is vertex on Screen OR close enough to screen that its triangle
 			// MAY be visible?
@@ -3180,7 +3188,7 @@ bool TreeAppearance::recalcBounds(void)
 				if (distanceToEye > Camera::MaxClipDistance)
 				{
 					hazeFactor = 1.0f;
-					inView	 = false;
+					inView = false;
 				}
 				else if (distanceToEye > Camera::MinHazeDistance)
 				{
@@ -3191,13 +3199,13 @@ bool TreeAppearance::recalcBounds(void)
 				else
 				{
 					Camera::HazeFactor = 0.0f;
-					inView			   = true;
+					inView = true;
 				}
 			}
 			else
 			{
 				Camera::HazeFactor = 0.0f;
-				inView			   = true;
+				inView = true;
 			}
 		}
 		// If we were not behind fog plane, do a bunch O math we need later!!
@@ -3264,12 +3272,11 @@ bool TreeAppearance::recalcBounds(void)
 						minY = bcsp[i].y;
 				}
 			}
-			upperLeft.x  = minX;
-			upperLeft.y  = minY;
+			upperLeft.x = minX;
+			upperLeft.y = minY;
 			lowerRight.x = maxX;
 			lowerRight.y = maxY;
-			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-				(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 			{
 				inView = true;
 				if ((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED))
@@ -3277,16 +3284,15 @@ bool TreeAppearance::recalcBounds(void)
 					//-------------------------------------------------------------------------------
 					// Set LOD of Model here because we have the distance and we
 					// KNOW we can see it!
-					bool baseLOD	   = true;
+					bool baseLOD = true;
 					uint32_t selectLOD = 0;
 					if (useHighObjectDetail)
 					{
 						for (size_t i = 1; i < MAX_LODS; i++)
 						{
-							if (appearType->treeShape[i] &&
-								(distanceToEye > appearType->lodDistance[i]))
+							if (appearType->treeShape[i] && (distanceToEye > appearType->lodDistance[i]))
 							{
-								baseLOD   = false;
+								baseLOD = false;
 								selectLOD = i;
 							}
 						}
@@ -3295,7 +3301,7 @@ bool TreeAppearance::recalcBounds(void)
 					{
 						if (appearType->treeShape[1])
 						{
-							baseLOD   = false;
+							baseLOD = false;
 							selectLOD = 1;
 						}
 					}
@@ -3399,7 +3405,7 @@ bool TreeAppearance::recalcBounds(void)
 			else
 			{
 				inView = false; // Did alot of extra work checking this, but WHY
-								// draw and insult to injury?
+					// draw and insult to injury?
 			}
 		}
 	}
@@ -3407,7 +3413,8 @@ bool TreeAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t TreeAppearance::render(int32_t depthFixup)
+int32_t
+TreeAppearance::render(int32_t depthFixup)
 {
 	if (inView)
 	{
@@ -3448,30 +3455,30 @@ int32_t TreeAppearance::render(int32_t depthFixup)
 // Render the Bounding Box to see if it is OK.
 #ifdef DRAW_BOX
 		Stuff::Vector3D nodeCenter = treeShape->GetRootNodeCenter();
-		boxCoords[0].x			   = position.x + treeShape->minBox.x + nodeCenter.x;
-		boxCoords[0].y			   = position.y + treeShape->minBox.z + nodeCenter.z;
-		boxCoords[0].z			   = position.z + treeShape->maxBox.y + nodeCenter.y;
-		boxCoords[1].x			   = position.x + treeShape->minBox.x + nodeCenter.x;
-		boxCoords[1].y			   = position.y + treeShape->maxBox.z + nodeCenter.z;
-		boxCoords[1].z			   = position.z + treeShape->maxBox.y + nodeCenter.y;
-		boxCoords[2].x			   = position.x + treeShape->maxBox.x + nodeCenter.x;
-		boxCoords[2].y			   = position.y + treeShape->maxBox.z + nodeCenter.z;
-		boxCoords[2].z			   = position.z + treeShape->maxBox.y + nodeCenter.y;
-		boxCoords[3].x			   = position.x + treeShape->maxBox.x + nodeCenter.x;
-		boxCoords[3].y			   = position.y + treeShape->minBox.z + nodeCenter.z;
-		boxCoords[3].z			   = position.z + treeShape->maxBox.y + nodeCenter.y;
-		boxCoords[4].x			   = position.x + treeShape->minBox.x + nodeCenter.x;
-		boxCoords[4].y			   = position.y + treeShape->minBox.z + nodeCenter.z;
-		boxCoords[4].z			   = position.z + treeShape->minBox.y + nodeCenter.y;
-		boxCoords[5].x			   = position.x + treeShape->maxBox.x + nodeCenter.x;
-		boxCoords[5].y			   = position.y + treeShape->minBox.z + nodeCenter.z;
-		boxCoords[5].z			   = position.z + treeShape->minBox.y + nodeCenter.y;
-		boxCoords[6].x			   = position.x + treeShape->maxBox.x + nodeCenter.x;
-		boxCoords[6].y			   = position.y + treeShape->maxBox.z + nodeCenter.z;
-		boxCoords[6].z			   = position.z + treeShape->minBox.y + nodeCenter.y;
-		boxCoords[7].x			   = position.x + treeShape->minBox.x + nodeCenter.x;
-		boxCoords[7].y			   = position.y + treeShape->maxBox.z + nodeCenter.z;
-		boxCoords[7].z			   = position.z + treeShape->minBox.y + nodeCenter.y;
+		boxCoords[0].x = position.x + treeShape->minBox.x + nodeCenter.x;
+		boxCoords[0].y = position.y + treeShape->minBox.z + nodeCenter.z;
+		boxCoords[0].z = position.z + treeShape->maxBox.y + nodeCenter.y;
+		boxCoords[1].x = position.x + treeShape->minBox.x + nodeCenter.x;
+		boxCoords[1].y = position.y + treeShape->maxBox.z + nodeCenter.z;
+		boxCoords[1].z = position.z + treeShape->maxBox.y + nodeCenter.y;
+		boxCoords[2].x = position.x + treeShape->maxBox.x + nodeCenter.x;
+		boxCoords[2].y = position.y + treeShape->maxBox.z + nodeCenter.z;
+		boxCoords[2].z = position.z + treeShape->maxBox.y + nodeCenter.y;
+		boxCoords[3].x = position.x + treeShape->maxBox.x + nodeCenter.x;
+		boxCoords[3].y = position.y + treeShape->minBox.z + nodeCenter.z;
+		boxCoords[3].z = position.z + treeShape->maxBox.y + nodeCenter.y;
+		boxCoords[4].x = position.x + treeShape->minBox.x + nodeCenter.x;
+		boxCoords[4].y = position.y + treeShape->minBox.z + nodeCenter.z;
+		boxCoords[4].z = position.z + treeShape->minBox.y + nodeCenter.y;
+		boxCoords[5].x = position.x + treeShape->maxBox.x + nodeCenter.x;
+		boxCoords[5].y = position.y + treeShape->minBox.z + nodeCenter.z;
+		boxCoords[5].z = position.z + treeShape->minBox.y + nodeCenter.y;
+		boxCoords[6].x = position.x + treeShape->maxBox.x + nodeCenter.x;
+		boxCoords[6].y = position.y + treeShape->maxBox.z + nodeCenter.z;
+		boxCoords[6].z = position.z + treeShape->minBox.y + nodeCenter.y;
+		boxCoords[7].x = position.x + treeShape->minBox.x + nodeCenter.x;
+		boxCoords[7].y = position.y + treeShape->maxBox.z + nodeCenter.z;
+		boxCoords[7].z = position.z + treeShape->minBox.y + nodeCenter.y;
 		Stuff::Vector4D screenPos[8];
 		for (size_t i = 0; i < 8; i++)
 		{
@@ -3531,7 +3538,8 @@ int32_t TreeAppearance::render(int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-int32_t TreeAppearance::renderShadows(void)
+int32_t
+TreeAppearance::renderShadows(void)
 {
 	if (inView && visible)
 	{
@@ -3546,7 +3554,8 @@ int32_t TreeAppearance::renderShadows(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t TreeAppearance::update(bool animate)
+int32_t
+TreeAppearance::update(bool animate)
 {
 	if (rotation > 180)
 		rotation -= 360;
@@ -3555,9 +3564,9 @@ int32_t TreeAppearance::update(bool animate)
 	//-------------------------------------------
 	// Does math necessary to draw Tree
 	Stuff::UnitQuaternion rot;
-	float yawAngle   = (rotation * DEGREES_TO_RADS) + (yaw * DEGREES_TO_RADS);
+	float yawAngle = (rotation * DEGREES_TO_RADS) + (yaw * DEGREES_TO_RADS);
 	float pitchAngle = (pitch * DEGREES_TO_RADS);
-	rot				 = Stuff::EulerAngles(pitchAngle, yawAngle, 0.0f);
+	rot = Stuff::EulerAngles(pitchAngle, yawAngle, 0.0f);
 	Stuff::Point3D xlatPosition;
 	xlatPosition.x = -position.x;
 	xlatPosition.y = position.z;
@@ -3568,13 +3577,13 @@ int32_t TreeAppearance::update(bool animate)
 		float lightIntensity = 1.0f;
 		if (land)
 			lightIntensity = land->getTerrainLight(position);
-		lightr		   = eye->getLightRed(lightIntensity);
-		lightg		   = eye->getLightGreen(lightIntensity);
-		lightb		   = eye->getLightBlue(lightIntensity);
-		lightRGB	   = (lightr << 16) + (lightg << 8) + lightb;
-		fogRGB		   = 0xff << 24;
+		lightr = eye->getLightRed(lightIntensity);
+		lightg = eye->getLightGreen(lightIntensity);
+		lightb = eye->getLightBlue(lightIntensity);
+		lightRGB = (lightr << 16) + (lightg << 8) + lightb;
+		fogRGB = 0xff << 24;
 		float fogStart = eye->fogStart;
-		float fogFull  = eye->fogFull;
+		float fogFull = eye->fogFull;
 		if (xlatPosition.y < fogStart)
 		{
 			float fogFactor = fogStart - xlatPosition.y;
@@ -3594,7 +3603,7 @@ int32_t TreeAppearance::update(bool animate)
 					fogFactor = 256.0;
 				}
 				uint8_t fogResult = float2long(fogFactor);
-				fogRGB			  = fogResult << 24;
+				fogRGB = fogResult << 24;
 			}
 		}
 		else
@@ -3620,7 +3629,7 @@ int32_t TreeAppearance::update(bool animate)
 		else
 			treeShape->SetRecalcShadows(checkShadows);
 		TG_LightPtr light = eye->getWorldLight(0);
-		light->active	 = false;
+		light->active = false;
 		treeShape->SetLightList(eye->getWorldLights(), eye->getNumLights());
 		treeShape->TransformMultiShape(&xlatPosition, &rot);
 		light->active = true;
@@ -3640,7 +3649,8 @@ int32_t TreeAppearance::update(bool animate)
 
 //-----------------------------------------------------------------------------
 
-void TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
+void
+TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 {
 	// MUST force tree to HIGHEST LOD!!!  Impassability data is only valid at
 	// this LOD!!
@@ -3667,19 +3677,15 @@ void TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 				worldPos.Add(position, vertexPos);
 				int32_t cellR, cellC;
 				land->worldToCell(worldPos, cellR, cellC);
-				if ((0 > cellR) ||
-					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-					(0 > cellC) ||
-					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+				if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 				{
 					continue;
 				}
 				_ScenarioMapCellInfo* pTmp =
-					&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM +
-						cellC]);
+					&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM + cellC]);
 				if (vertexPos.z >= 1.0f)
 				{
-					pTmp->forest		  = true;
+					pTmp->forest = true;
 					float cellLocalHeight = vertexPos.z * metersPerWorldUnit * 0.25f;
 					if (cellLocalHeight > 15.0f)
 						cellLocalHeight = 15.0f;
@@ -3692,7 +3698,8 @@ void TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 }
 
 //-----------------------------------------------------------------------------
-void TreeAppearance::markLOS(bool clearIt)
+void
+TreeAppearance::markLOS(bool clearIt)
 {
 	// MUST force building to HIGHEST LOD!!!  IMpassability data is only valid
 	// at this LOD!!
@@ -3711,8 +3718,7 @@ void TreeAppearance::markLOS(bool clearIt)
 	{
 		// Check if the artists meant for this piece to NOT block LOS!!
 		// Probably should check for light cones,too!
-		if ((strnicmp(treeShape->GetNodeId(i), "LOS_", 4) != 0) &&
-			(strnicmp(treeShape->GetNodeId(i), "SpotLight_", 10) != 0))
+		if ((strnicmp(treeShape->GetNodeId(i), "LOS_", 4) != 0) && (strnicmp(treeShape->GetNodeId(i), "SpotLight_", 10) != 0))
 		{
 			for (size_t j = 0; j < treeShape->GetNumVerticesInShape(i); j++)
 			{
@@ -3723,18 +3729,15 @@ void TreeAppearance::markLOS(bool clearIt)
 				worldPos.Add(position, vertexPos);
 				int32_t cellR, cellC;
 				land->worldToCell(worldPos, cellR, cellC);
-				if ((0 > cellR) ||
-					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
-					(0 > cellC) ||
-					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
+				if ((0 > cellR) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) || (0 > cellC) || (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 				{
 					continue;
 				}
 				//----------------
 				// Mark the map...
-				MapCellPtr curCell		= GameMap->getCell(cellR, cellC);
+				MapCellPtr curCell = GameMap->getCell(cellR, cellC);
 				float currentCellHeight = curCell->getLocalHeight();
-				float cellLocalHeight   = vertexPos.z * metersPerWorldUnit * 0.25f;
+				float cellLocalHeight = vertexPos.z * metersPerWorldUnit * 0.25f;
 				if (cellLocalHeight > 15.0f)
 					cellLocalHeight = 15.0f;
 				if (!clearIt)
@@ -3743,7 +3746,7 @@ void TreeAppearance::markLOS(bool clearIt)
 						curCell->setLocalHeight(cellLocalHeight + 0.5f);
 				}
 				else // We want to clear all LOS height INFO.  We're about to
-					 // change shape!!
+					// change shape!!
 				{
 					curCell->setLocalHeight(0.0f);
 				}
@@ -3754,7 +3757,8 @@ void TreeAppearance::markLOS(bool clearIt)
 
 //-----------------------------------------------------------------------------
 
-void TreeAppearance::destroy(void)
+void
+TreeAppearance::destroy(void)
 {
 	if (treeShape)
 	{

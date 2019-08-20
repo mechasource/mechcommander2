@@ -18,7 +18,8 @@ class Vector3D;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::Vector3D& vector);
+void
+Spew(PCSTR group, const Stuff::Vector3D& vector);
 #endif
 
 namespace Stuff
@@ -120,8 +121,10 @@ public:
 		y = 0.f;
 		z = 0.f;
 	}
-	Vector3D(float x, float y, float z) : x(x), y(y), z(z) {}
-	Vector3D(const Vector3D& v) : x(v.x), y(v.y), z(v.z) {}
+	Vector3D(float x, float y, float z) :
+		x(x), y(y), z(z) {}
+	Vector3D(const Vector3D& v) :
+		x(v.x), y(v.y), z(v.z) {}
 	explicit Vector3D(const UnitQuaternion& q) { *this = q; }
 	explicit Vector3D(const YawPitchRange& p) { *this = p; }
 
@@ -281,7 +284,7 @@ public:
 	}
 
 	Vector3D& Cross(const Vector3D& p1, // v1 = p1 - p2
-		const Vector3D& p2,				// v2 = p3 - p2
+		const Vector3D& p2, // v2 = p3 - p2
 		const Vector3D& p3)
 	{
 		// Check_Pointer(this);
@@ -332,9 +335,9 @@ public:
 		Check_Object(&v);
 		_ASSERT(!Small_Enough(scale));
 		scale = 1.0f / scale;
-		x	 = v.x * scale;
-		y	 = v.y * scale;
-		z	 = v.z * scale;
+		x = v.x * scale;
+		y = v.y * scale;
+		z = v.z * scale;
 		return *this;
 	}
 	Vector3D& operator/=(float v) { return Divide(*this, v); }
@@ -384,9 +387,9 @@ public:
 		float len = v.GetLength();
 		_ASSERT(!Small_Enough(len));
 		len = 1.0f / len;
-		x   = v.x * len;
-		y   = v.y * len;
-		z   = v.z * len;
+		x = v.x * len;
+		y = v.y * len;
+		z = v.z * len;
 		return *this;
 	}
 
@@ -428,17 +431,20 @@ public:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector3D functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void Convert_From_Ascii(PCSTR str, Vector3D* vector_3D);
+void
+Convert_From_Ascii(PCSTR str, Vector3D* vector_3D);
 } // namespace Stuff
 
 namespace MemoryStreamIO
 {
 #if _CONSIDERED_TEMPORARILY_DISABLED
-inline std::istream& Read(std::istream& stream, Stuff::Vector3D* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::Vector3D* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::Vector3D* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::Vector3D* input)
 {
 	return stream.write(input, sizeof(*input));
 }

@@ -8,9 +8,10 @@
 #define STRICT
 #endif
 
-#define DISABLE_WARNING_PUSH(x)                                                                    \
-	__pragma(warning(push));                                                                       \
-	__pragma(warning(disable : x))
+#define DISABLE_WARNING_PUSH(x) \
+	__pragma(warning(push));    \
+	__pragma(warning(disable    \
+					 : x))
 #define DISABLE_WARNING_POP __pragma(warning(pop))
 #define ATL_ADD_LIBRARY(x) __pragma(comment(lib, x))
 
@@ -66,7 +67,8 @@ namespace Utilities
 // from WTL)
 namespace ModuleHelper
 {
-inline HINSTANCE GetModuleInstance(void)
+inline HINSTANCE
+GetModuleInstance(void)
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::_AtlBaseModule.GetModuleInstance();
@@ -75,7 +77,8 @@ inline HINSTANCE GetModuleInstance(void)
 #endif
 }
 
-inline HINSTANCE GetResourceInstance(void)
+inline HINSTANCE
+GetResourceInstance(void)
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::_AtlBaseModule.GetResourceInstance();
@@ -84,7 +87,8 @@ inline HINSTANCE GetResourceInstance(void)
 #endif
 }
 
-inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
+inline HINSTANCE
+SetResourceInstance(_In_ HINSTANCE hInstance)
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::_AtlBaseModule.SetResourceInstance(hInstance);
@@ -93,7 +97,8 @@ inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
 #endif
 }
 
-inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData, _In_ void* pObject)
+inline void
+AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData, _In_ void* pObject)
 {
 #if (_ATL_VER >= 0x0700)
 	ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
@@ -102,7 +107,8 @@ inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData, _In_ void* p
 #endif
 }
 
-inline void* ExtractCreateWndData(void)
+inline void*
+ExtractCreateWndData(void)
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::_AtlWinModule.ExtractCreateWndData();
@@ -111,7 +117,8 @@ inline void* ExtractCreateWndData(void)
 #endif
 }
 
-inline void AtlTerminate(void)
+inline void
+AtlTerminate(void)
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::_AtlWinModule.Term();
@@ -121,12 +128,21 @@ inline void AtlTerminate(void)
 }
 
 #if (_ATL_VER >= 0x0700)
-inline ATL::CAtlModule* GetModulePtr(void) { return ATL::_pAtlModule; }
+inline ATL::CAtlModule*
+GetModulePtr(void)
+{
+	return ATL::_pAtlModule;
+}
 #else
-inline ATL::CComModule* GetModulePtr(void) { return ATL::_pModule; }
+inline ATL::CComModule*
+GetModulePtr(void)
+{
+	return ATL::_pModule;
+}
 #endif
 
-inline bool AtlInitFailed(void)
+inline bool
+AtlInitFailed(void)
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::CAtlBaseModule::m_bInitFailed;
@@ -135,7 +151,8 @@ inline bool AtlInitFailed(void)
 #endif
 }
 
-inline void AtlSetTraceLevel(_In_ UINT nLevel)
+inline void
+AtlSetTraceLevel(_In_ UINT nLevel)
 {
 #if defined _DEBUG && (_ATL_VER >= 0x0700)
 	ATL::CTrace::SetLevel(nLevel);

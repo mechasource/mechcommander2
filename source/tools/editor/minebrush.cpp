@@ -10,14 +10,16 @@ MineBrush.cpp			: Implementation of the MineBrush component.
 #include "editorobjectmgr.h"
 #include "Move.h"
 
-bool MineBrush::beginPaint()
+bool
+MineBrush::beginPaint()
 {
 	if (!pAction)
 		pAction = new MineAction();
 	return true;
 }
 
-Action* MineBrush::endPaint()
+Action*
+MineBrush::endPaint()
 {
 	Action* pRetAction = nullptr;
 	if (pAction)
@@ -33,13 +35,13 @@ Action* MineBrush::endPaint()
 	return pRetAction;
 }
 
-bool MineBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool
+MineBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	int32_t tileC;
 	int32_t tileR;
 	land->worldToTile(worldPos, tileR, tileC);
-	if (!(tileR < Terrain::realVerticesMapSide || tileR > -1 ||
-			tileC < Terrain::realVerticesMapSide || tileC > -1))
+	if (!(tileR < Terrain::realVerticesMapSide || tileR > -1 || tileC < Terrain::realVerticesMapSide || tileC > -1))
 	{
 		return false;
 	}
@@ -51,22 +53,28 @@ bool MineBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screen
 		return true;
 	}
 	MineAction::CTileMineInfo info;
-	info.row	   = tileR;
-	info.column	= tileC;
+	info.row = tileR;
+	info.column = tileC;
 	info.mineState = GameMap->getMine(tileR, tileC);
 	pAction->AddChangedTileMineInfo(info);
 	GameMap->setMine(cellRow, cellCol, 1);
 	return true;
 }
 
-bool MineBrush::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool
+MineBrush::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	return true;
 }
 
-bool MineBrush::canPaintSelection() { return land->hasSelection(); }
+bool
+MineBrush::canPaintSelection()
+{
+	return land->hasSelection();
+}
 
-Action* MineBrush::applyToSelection()
+Action*
+MineBrush::applyToSelection()
 {
 	MineAction* pRetAction = new MineAction();
 	for (size_t i = 0; i < land->realVerticesMapSide; ++i)
@@ -76,8 +84,8 @@ Action* MineBrush::applyToSelection()
 			if (land->isVertexSelected(j, i))
 			{
 				MineAction::CTileMineInfo info;
-				info.row	   = j;
-				info.column	= i;
+				info.row = j;
+				info.column = i;
 				info.mineState = GameMap->getMine(j, i);
 				pRetAction->AddChangedTileMineInfo(info);
 				GameMap->setMine(j, i, 1);
@@ -87,7 +95,8 @@ Action* MineBrush::applyToSelection()
 	return pRetAction;
 }
 
-bool MineBrush::MineAction::undo()
+bool
+MineBrush::MineAction::undo()
 {
 	for (MINE_INFO_LIST::EIterator iter = mineInfoList.Begin(); !iter.IsDone(); iter++)
 	{
@@ -101,9 +110,14 @@ bool MineBrush::MineAction::undo()
 	return true;
 }
 
-bool MineBrush::MineAction::redo() { return undo(); }
+bool
+MineBrush::MineAction::redo()
+{
+	return undo();
+}
 
-void MineBrush::MineAction::AddChangedTileMineInfo(CTileMineInfo& info)
+void
+MineBrush::MineAction::AddChangedTileMineInfo(CTileMineInfo& info)
 {
 	for (MINE_INFO_LIST::EIterator iter = mineInfoList.Begin(); !iter.IsDone(); iter++)
 	{

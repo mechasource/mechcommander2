@@ -14,16 +14,16 @@
 #include "editorinterface.h"
 
 MainMenu* pMainMenu = nullptr;
-MainMenu::MainMenu(EditorInterface* pEditorInterface)
-	: Window(L"MainMenu", 0, 0, Environment.screenWidth, Environment.screenHeight,
-		  pEditorInterface /*pgWinMan->Root()*/, 0, 0)
+MainMenu::MainMenu(EditorInterface* pEditorInterface) :
+	Window(L"MainMenu", 0, 0, Environment.screenWidth, Environment.screenHeight,
+		pEditorInterface /*pgWinMan->Root()*/, 0, 0)
 {
-	pMenu	 = nullptr;
+	pMenu = nullptr;
 	bEndModal = false;
-	pMenu	 = new Menu(this, 0, 0, 0, 0, IDR_EDITOR_MENU, pgRes);
+	pMenu = new Menu(this, 0, 0, 0, 0, IDR_EDITOR_MENU, pgRes);
 	WindowRect(pMenu->WindowRect());
 	Show();
-	pMainMenu		   = this;
+	pMainMenu = this;
 	m_pEditorInterface = pEditorInterface;
 	assert(m_pEditorInterface);
 	/*
@@ -40,10 +40,12 @@ MainMenu::MainMenu(EditorInterface* pEditorInterface)
 	*/
 }
 
-extern bool gos_RunMainLoop(void (*DoGameLogic)());
+extern bool
+gos_RunMainLoop(void (*DoGameLogic)());
 extern uint32_t TerminateGame; // BUGBUG exported function handles this with return value
 
-void MainMenu::DoModal()
+void
+MainMenu::DoModal()
 {
 	while (!TerminateGame && !bEndModal)
 	{
@@ -52,7 +54,8 @@ void MainMenu::DoModal()
 	}
 }
 
-void MainMenu::OnCommand(Window* wnd, int32_t nCommand)
+void
+MainMenu::OnCommand(Window* wnd, int32_t nCommand)
 {
 	if (MC_CLICKED == nCommand)
 	{

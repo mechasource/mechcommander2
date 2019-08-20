@@ -192,10 +192,10 @@ typedef enum
 
 enum SpecialtySkillType
 {
-	WEAPON_SPECIALTY  = 0,
+	WEAPON_SPECIALTY = 0,
 	CHASSIS_SPECIALTY = 1,
-	RANGE_SPECIALTY   = 2,
-	OTHER_SPECIALTY   = 3
+	RANGE_SPECIALTY = 2,
+	OTHER_SPECIALTY = 3
 
 };
 
@@ -282,13 +282,13 @@ typedef struct
 
 typedef struct
 {
-	float lastUnderFire;			  // time of last under fire message
-	bool weaponsIneffective;		  // true if already informed player
-	bool weaponsOut;				  // true if already informed player
-	float lastContact;				  // time of last contact message
+	float lastUnderFire; // time of last under fire message
+	bool weaponsIneffective; // true if already informed player
+	bool weaponsOut; // true if already informed player
+	float lastContact; // time of last contact message
 	RadioMessageType lastMessageType; // e.g. RADIO_WEAPONS_OUT
-	uint32_t lastMessage;			  // PacketNumber of message
-	float lastMessageTime;			  // time of last message (of any type)
+	uint32_t lastMessage; // PacketNumber of message
+	float lastMessageTime; // time of last message (of any type)
 } RadioLog;
 
 //---------------------------------------------------------------------------
@@ -393,31 +393,31 @@ typedef struct _MoveOrders
 	// order parameters
 	float time;
 	char origin;
-	int32_t speedType;					// best, max, slow, moderate
-	float speedVelocity;				// based upon speedType (m/s)
-	char speedState;					// based upon speedVelocity (walk, etc.)
-	char speedThrottle;					// if speedState is walk, else ignored
-	uint32_t goalType;					// is there no goal, a location or object?
-	GameObjectWatchID goalObjectWID;	// if our goal is an object...
+	int32_t speedType; // best, max, slow, moderate
+	float speedVelocity; // based upon speedType (m/s)
+	char speedState; // based upon speedVelocity (walk, etc.)
+	char speedThrottle; // if speedState is walk, else ignored
+	uint32_t goalType; // is there no goal, a location or object?
+	GameObjectWatchID goalObjectWID; // if our goal is an object...
 	Stuff::Vector3D goalObjectPosition; // object's position at time of path calc
-	Stuff::Vector3D goalLocation;		// goal location, if any
+	Stuff::Vector3D goalLocation; // goal location, if any
 	//----------------------
 	// pathfinding guts/data
 	float nextUpdate;
 	bool newGoal;
-	Stuff::Vector3D wayPath[MAX_WAYPTS];   // if this move order has a way path...
-	char numWayPts;						   // how many way points?
-	char curWayPt;						   // current goal waypoint
-	char curWayDir;						   // waypath direction: 1 = forward, -1 = backward
-	char pathType;						   // "quick" path or global/int32_t-range?
+	Stuff::Vector3D wayPath[MAX_WAYPTS]; // if this move order has a way path...
+	char numWayPts; // how many way points?
+	char curWayPt; // current goal waypoint
+	char curWayDir; // waypath direction: 1 = forward, -1 = backward
+	char pathType; // "quick" path or global/int32_t-range?
 	Stuff::Vector3D originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
 	Stuff::Vector3D globalGoalLocation;
 	GlobalPathStep globalPath[MAX_GLOBAL_PATH];
 	char numGlobalSteps;
 	char curGlobalStep;
-	MovePathPtr path[2];  // 0 = current path, 1 = next path
+	MovePathPtr path[2]; // 0 = current path, 1 = next path
 	float timeOfLastStep; // last time a step was reached for this order
-	int32_t moveState;	// forward, reverse, paused, etc.
+	int32_t moveState; // forward, reverse, paused, etc.
 	int32_t moveStateGoal;
 	bool twisting;
 	float yieldTime;
@@ -435,31 +435,31 @@ typedef struct _SaveableMoveOrders
 	// order parameters
 	float time;
 	char origin;
-	int32_t speedType;					// best, max, slow, moderate
-	float speedVelocity;				// based upon speedType (m/s)
-	char speedState;					// based upon speedVelocity (walk, etc.)
-	char speedThrottle;					// if speedState is walk, else ignored
-	uint32_t goalType;					// is there no goal, a location or object?
-	GameObjectWatchID goalObjectWID;	// if our goal is an object...
+	int32_t speedType; // best, max, slow, moderate
+	float speedVelocity; // based upon speedType (m/s)
+	char speedState; // based upon speedVelocity (walk, etc.)
+	char speedThrottle; // if speedState is walk, else ignored
+	uint32_t goalType; // is there no goal, a location or object?
+	GameObjectWatchID goalObjectWID; // if our goal is an object...
 	Stuff::Vector3D goalObjectPosition; // object's position at time of path calc
-	Stuff::Vector3D goalLocation;		// goal location, if any
+	Stuff::Vector3D goalLocation; // goal location, if any
 	//----------------------
 	// pathfinding guts/data
 	float nextUpdate;
 	bool newGoal;
-	Stuff::Vector3D wayPath[MAX_WAYPTS];   // if this move order has a way path...
-	char numWayPts;						   // how many way points?
-	char curWayPt;						   // current goal waypoint
-	char curWayDir;						   // waypath direction: 1 = forward, -1 = backward
-	char pathType;						   // "quick" path or global/int32_t-range?
+	Stuff::Vector3D wayPath[MAX_WAYPTS]; // if this move order has a way path...
+	char numWayPts; // how many way points?
+	char curWayPt; // current goal waypoint
+	char curWayDir; // waypath direction: 1 = forward, -1 = backward
+	char pathType; // "quick" path or global/int32_t-range?
 	Stuff::Vector3D originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
 	Stuff::Vector3D globalGoalLocation;
 	GlobalPathStep globalPath[MAX_GLOBAL_PATH];
 	char numGlobalSteps;
 	char curGlobalStep;
-	MovePath path[2];	 // 0 = current path, 1 = next path
+	MovePath path[2]; // 0 = current path, 1 = next path
 	float timeOfLastStep; // last time a step was reached for this order
-	int32_t moveState;	// forward, reverse, paused, etc.
+	int32_t moveState; // forward, reverse, paused, etc.
 	int32_t moveStateGoal;
 	bool twisting;
 	float yieldTime;
@@ -469,62 +469,62 @@ typedef struct _SaveableMoveOrders
 
 	void copy(MoveOrders& orders)
 	{
-		time			   = orders.time;
-		origin			   = orders.origin;
-		speedType		   = orders.speedType;
-		speedVelocity	  = orders.speedVelocity;
-		speedState		   = orders.speedState;
-		goalType		   = orders.goalType;
-		goalObjectWID	  = orders.goalObjectWID;
+		time = orders.time;
+		origin = orders.origin;
+		speedType = orders.speedType;
+		speedVelocity = orders.speedVelocity;
+		speedState = orders.speedState;
+		goalType = orders.goalType;
+		goalObjectWID = orders.goalObjectWID;
 		goalObjectPosition = orders.goalObjectPosition;
-		goalLocation	   = orders.goalLocation;
-		nextUpdate		   = orders.nextUpdate;
-		newGoal			   = orders.newGoal;
+		goalLocation = orders.goalLocation;
+		nextUpdate = orders.nextUpdate;
+		newGoal = orders.newGoal;
 		memcpy(wayPath, orders.wayPath, sizeof(Stuff::Vector3D) * MAX_WAYPTS);
-		numWayPts			  = orders.numWayPts;
-		curWayPt			  = orders.curWayPt;
-		pathType			  = orders.pathType;
+		numWayPts = orders.numWayPts;
+		curWayPt = orders.curWayPt;
+		pathType = orders.pathType;
 		originalGlobalGoal[0] = orders.originalGlobalGoal[0];
 		originalGlobalGoal[1] = orders.originalGlobalGoal[1];
-		globalGoalLocation	= orders.globalGoalLocation;
+		globalGoalLocation = orders.globalGoalLocation;
 		memcpy(globalPath, orders.globalPath, sizeof(GlobalPathStep) * MAX_GLOBAL_PATH);
-		numGlobalSteps   = orders.numGlobalSteps;
-		curGlobalStep	= orders.curGlobalStep;
-		path[0]			 = *(orders.path[0]);
-		path[1]			 = *(orders.path[1]);
-		timeOfLastStep   = orders.timeOfLastStep;
-		moveState		 = orders.moveState;
-		moveStateGoal	= orders.moveStateGoal;
-		twisting		 = orders.twisting;
-		yieldTime		 = orders.yieldTime;
-		yieldState		 = orders.yieldState;
+		numGlobalSteps = orders.numGlobalSteps;
+		curGlobalStep = orders.curGlobalStep;
+		path[0] = *(orders.path[0]);
+		path[1] = *(orders.path[1]);
+		timeOfLastStep = orders.timeOfLastStep;
+		moveState = orders.moveState;
+		moveStateGoal = orders.moveStateGoal;
+		twisting = orders.twisting;
+		yieldTime = orders.yieldTime;
+		yieldState = orders.yieldState;
 		waitForPointTime = orders.waitForPointTime;
-		run				 = orders.run;
+		run = orders.run;
 	}
 
 	void copyTo(MoveOrders& orders)
 	{
-		orders.time				  = time;
-		orders.origin			  = origin;
-		orders.speedType		  = speedType;
-		orders.speedVelocity	  = speedVelocity;
-		orders.speedState		  = speedState;
-		orders.goalType			  = goalType;
-		orders.goalObjectWID	  = goalObjectWID;
+		orders.time = time;
+		orders.origin = origin;
+		orders.speedType = speedType;
+		orders.speedVelocity = speedVelocity;
+		orders.speedState = speedState;
+		orders.goalType = goalType;
+		orders.goalObjectWID = goalObjectWID;
 		orders.goalObjectPosition = goalObjectPosition;
-		orders.goalLocation		  = goalLocation;
-		orders.nextUpdate		  = nextUpdate;
-		orders.newGoal			  = newGoal;
+		orders.goalLocation = goalLocation;
+		orders.nextUpdate = nextUpdate;
+		orders.newGoal = newGoal;
 		memcpy(orders.wayPath, wayPath, sizeof(Stuff::Vector3D) * MAX_WAYPTS);
-		orders.numWayPts			 = numWayPts;
-		orders.curWayPt				 = curWayPt;
-		orders.pathType				 = pathType;
+		orders.numWayPts = numWayPts;
+		orders.curWayPt = curWayPt;
+		orders.pathType = pathType;
 		orders.originalGlobalGoal[0] = originalGlobalGoal[0];
 		orders.originalGlobalGoal[1] = originalGlobalGoal[1];
-		orders.globalGoalLocation	= globalGoalLocation;
+		orders.globalGoalLocation = globalGoalLocation;
 		memcpy(orders.globalPath, globalPath, sizeof(GlobalPathStep) * MAX_GLOBAL_PATH);
 		orders.numGlobalSteps = numGlobalSteps;
-		orders.curGlobalStep  = curGlobalStep;
+		orders.curGlobalStep = curGlobalStep;
 		for (size_t i = 0; i < 2; i++)
 		{
 			// orders.path[i] = new MovePath;
@@ -532,14 +532,14 @@ typedef struct _SaveableMoveOrders
 				Fatal(0, " No RAM for warrior path ");
 			*(orders.path[i]) = path[i];
 		}
-		orders.timeOfLastStep   = timeOfLastStep;
-		orders.moveState		= moveState;
-		orders.moveStateGoal	= moveStateGoal;
-		orders.twisting			= twisting;
-		orders.yieldTime		= yieldTime;
-		orders.yieldState		= yieldState;
+		orders.timeOfLastStep = timeOfLastStep;
+		orders.moveState = moveState;
+		orders.moveStateGoal = moveStateGoal;
+		orders.twisting = twisting;
+		orders.yieldTime = yieldTime;
+		orders.yieldState = yieldState;
 		orders.waitForPointTime = waitForPointTime;
-		orders.run				= run;
+		orders.run = run;
 	}
 
 } SaveableMoveOrders;
@@ -548,7 +548,7 @@ typedef struct _AttackOrders
 {
 	float time;
 	char origin;
-	int32_t type;				 // to kill, to disable, etc.
+	int32_t type; // to kill, to disable, etc.
 	GameObjectWatchID targetWID; // current object targeted for attack, if attacking object
 	Stuff::Vector3D targetPoint; // target location targeted for attack, if attacking point
 	int32_t aimLocation;
@@ -680,10 +680,10 @@ typedef struct _MechWarriorData
 	GameObjectWatchID killed[MAX_MOVERS / 3];
 	int32_t numKilled;
 
-	int32_t descID;	// Used by Logistics to Desc.
+	int32_t descID; // Used by Logistics to Desc.
 	int32_t nameIndex; // Used by Logistics to Desc.
 
-	float timeOfLastOrders;				  // when I ask for orders
+	float timeOfLastOrders; // when I ask for orders
 	AttackerRec attackers[MAX_ATTACKERS]; // should never have more than 12 attackers...
 	int32_t numAttackers;
 	float attackRadius;
@@ -738,7 +738,7 @@ typedef struct _MechWarriorData
 	bool lastTargetFriendly;
 	bool lastTargetConserveAmmo;
 	bool keepMoving; // If true, he won't find his "optimal" spot and stand
-					 // there.
+		// there.
 
 	char orderState;
 
@@ -814,13 +814,13 @@ public:
 	GameObjectWatchID killed[MAX_MOVERS / 3];
 	int32_t numKilled;
 
-	int32_t descID;	// Used by Logistics to Desc.
+	int32_t descID; // Used by Logistics to Desc.
 	int32_t nameIndex; // Used by Logistics to Desc.
 	static SpecialtySkillType skillTypes[NUM_SPECIALTY_SKILLS];
 
 protected:
 	// AI
-	float timeOfLastOrders;				  // when I ask for orders
+	float timeOfLastOrders; // when I ask for orders
 	AttackerRec attackers[MAX_ATTACKERS]; // should never have more than 12 attackers...
 	int32_t numAttackers;
 	float attackRadius;
@@ -882,7 +882,7 @@ protected:
 	bool lastTargetFriendly;
 	bool lastTargetConserveAmmo;
 	bool keepMoving; // If true, he won't find his "optimal" spot and stand
-					 // there.
+		// there.
 
 	char orderState;
 
@@ -1023,8 +1023,7 @@ public:
 
 	bool hasEjected(void)
 	{
-		return (status == WARRIOR_STATUS_EJECTED || status == WARRIOR_STATUS_MIA ||
-			status == WARRIOR_STATUS_CAPTURED);
+		return (status == WARRIOR_STATUS_EJECTED || status == WARRIOR_STATUS_MIA || status == WARRIOR_STATUS_CAPTURED);
 	}
 
 	void setEscapesThruEjection(bool escapes) { escapesThruEjection = escapes; }
@@ -1339,9 +1338,9 @@ public:
 
 	void clearMoveGoal(void)
 	{
-		moveOrders.origin		  = ORDER_ORIGIN_COMMANDER;
-		moveOrders.goalType		  = MOVEGOAL_NONE;
-		moveOrders.goalObjectWID  = 0;
+		moveOrders.origin = ORDER_ORIGIN_COMMANDER;
+		moveOrders.goalType = MOVEGOAL_NONE;
+		moveOrders.goalObjectWID = 0;
 		moveOrders.goalLocation.x = -999999.0;
 		moveOrders.goalLocation.y = -999999.0;
 		moveOrders.goalLocation.z = -999999.0;
@@ -1826,11 +1825,16 @@ public:
 
 extern MovePathManagerPtr PathManager;
 
-void SeedRandomNumbers(void);
-int32_t RandomNumber(int32_t range);
-bool RollDice(int32_t percent);
-int32_t SignedRandomNumber(int32_t range);
-int32_t GetMissionTurn(void);
+void
+SeedRandomNumbers(void);
+int32_t
+RandomNumber(int32_t range);
+bool
+RollDice(int32_t percent);
+int32_t
+SignedRandomNumber(int32_t range);
+int32_t
+GetMissionTurn(void);
 
 //***************************************************************************
 

@@ -85,7 +85,7 @@
 using namespace Microsoft::Xna::Arm;
 
 EditorObjectMgr* EditorObjectMgr::s_instance = nullptr;
-uint32_t gameResourceHandle					 = 0;
+uint32_t gameResourceHandle = 0;
 
 extern bool renderObjects;
 extern bool renderTrees;
@@ -94,7 +94,11 @@ extern bool justResaveAllMaps;
 
 #define TREE_GROUP 1
 
-inline float agsqrt(float _a, float _b) { return sqrt(_a * _a + _b * _b); }
+inline float
+agsqrt(float _a, float _b)
+{
+	return sqrt(_a * _a + _b * _b);
+}
 
 EditorObjectMgr::EditorObjectMgr()
 {
@@ -136,7 +140,8 @@ EditorObjectMgr::~EditorObjectMgr()
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::clear()
+void
+EditorObjectMgr::clear()
 {
 	for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 	{
@@ -174,7 +179,8 @@ void EditorObjectMgr::clear()
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
+void
+EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 {
 	File lstFile;
 	lstFile.open(const_cast<PSTR>(bldgListFileName));
@@ -190,12 +196,12 @@ void EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 			break;
 		Building bldg;
 		bldg.appearanceType = nullptr;
-		bldg.specialType	= UNSPECIAL;
-		bldg.varNames		= 0;
-		bldg.forestId		= 0;
+		bldg.specialType = UNSPECIAL;
+		bldg.varNames = 0;
+		bldg.forestId = 0;
 		char tmpBuffer[64];
 		int32_t bufferLength = 64;
-		puint8_t pCur		 = buffer;
+		puint8_t pCur = buffer;
 		char GroupName[64];
 		// extract the file name
 		if (ExtractNextString(pCur, tmpBuffer, bufferLength))
@@ -210,7 +216,7 @@ void EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 		if (ExtractNextString(pCur, tmpBuffer, bufferLength))
 		{
 			int32_t strId = atoi(tmpBuffer);
-			bldg.nameID   = strId;
+			bldg.nameID = strId;
 			cLoadString(strId, tmpBuffer, 64);
 			strcpy(bldg.name, tmpBuffer);
 		}
@@ -298,8 +304,8 @@ void EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 			else if (_stricmp(tmpBuffer, "HELICOPTER") == 0)
 				bldg.specialType = HELICOPTER;
 		}
-		bldg.capturable	= ExtractNextInt(pCur) ? true : false;
-		bldg.alignable	 = ExtractNextInt(pCur) ? true : false;
+		bldg.capturable = ExtractNextInt(pCur) ? true : false;
+		bldg.alignable = ExtractNextInt(pCur) ? true : false;
 		bldg.writeOnTacMap = ExtractNextInt(pCur);
 		if (ExtractNextString(pCur, tmpBuffer, bufferLength))
 			strcpy(bldg.tgaName, tmpBuffer);
@@ -354,7 +360,8 @@ void EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 	}
 }
 
-int32_t EditorObjectMgr::ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength)
+int32_t
+EditorObjectMgr::ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength)
 {
 	for (size_t i = 0; i < 512; ++i)
 	{
@@ -369,14 +376,15 @@ int32_t EditorObjectMgr::ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, in
 		return false;
 	gosASSERT(i < bufferLength);
 	memcpy(pBuffer, pFileLine, i);
-	pBuffer[i]   = nullptr;
+	pBuffer[i] = nullptr;
 	bufferLength = i + 1;
 	pFileLine += i + 1;
 	return i;
 }
 
 //---------------------------------------------------------------------------
-int32_t textToLong(PCSTR num)
+int32_t
+textToLong(PCSTR num)
 {
 	int32_t result = 0;
 	//------------------------------------
@@ -395,12 +403,12 @@ int32_t textToLong(PCSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -425,7 +433,8 @@ int32_t textToLong(PCSTR num)
 	return (result);
 }
 
-int32_t EditorObjectMgr::ExtractNextInt(puint8_t& pFileLine)
+int32_t
+EditorObjectMgr::ExtractNextInt(puint8_t& pFileLine)
 {
 	char buffer[1024];
 	int32_t count = ExtractNextString(pFileLine, buffer, 1024);
@@ -436,7 +445,8 @@ int32_t EditorObjectMgr::ExtractNextInt(puint8_t& pFileLine)
 	return -1;
 }
 
-float EditorObjectMgr::ExtractNextFloat(puint8_t& pFileLine)
+float
+EditorObjectMgr::ExtractNextFloat(puint8_t& pFileLine)
 {
 	char buffer[1024];
 	int32_t count = ExtractNextString(pFileLine, buffer, 1024);
@@ -448,7 +458,8 @@ float EditorObjectMgr::ExtractNextFloat(puint8_t& pFileLine)
 }
 
 //-------------------------------------------------------------------------------------------------
-bool EditorObjectMgr::canAddBuilding(
+bool
+EditorObjectMgr::canAddBuilding(
 	const Stuff::Vector3D& position, float rotation, uint32_t group, uint32_t indexWithinGroup)
 {
 	int32_t realCellI, realCellJ;
@@ -463,7 +474,8 @@ bool EditorObjectMgr::canAddBuilding(
 	return land->IsEditorSelectTerrainPosition(position);
 }
 
-bool EditorObjectMgr::canAddDropZone(const Stuff::Vector3D& position, int32_t alignment, bool bVTol)
+bool
+EditorObjectMgr::canAddDropZone(const Stuff::Vector3D& position, int32_t alignment, bool bVTol)
 {
 	int32_t alignmentCount = 0;
 	for (DROP_LIST::EIterator iter = dropZones.Begin(); !iter.IsDone(); iter++)
@@ -485,7 +497,8 @@ bool EditorObjectMgr::canAddDropZone(const Stuff::Vector3D& position, int32_t al
 }
 
 //-------------------------------------------------------------------------------------------------
-bool EditorObjectMgr::addBuilding(EditorObject* pObj)
+bool
+EditorObjectMgr::addBuilding(EditorObject* pObj)
 {
 	return addBuilding(pObj->appearance()->position, getGroup(pObj->id), getIndexInGroup(pObj->id),
 			   pObj->appearance()->teamId, pObj->appearance()->rotation)
@@ -493,13 +506,14 @@ bool EditorObjectMgr::addBuilding(EditorObject* pObj)
 		: false;
 }
 
-EditorObject* EditorObjectMgr::addDropZone(
+EditorObject*
+EditorObjectMgr::addDropZone(
 	const Stuff::Vector3D& position, int32_t alignment, bool bVTol)
 {
 	gosASSERT((canAddDropZone(position, alignment, bVTol)));
 	DropZone* pLast = new DropZone(position, alignment, bVTol);
 	dropZones.Append(pLast);
-	ObjectAppearance* pAppear	 = getAppearance(&dropZoneGroup.buildings.GetHead());
+	ObjectAppearance* pAppear = getAppearance(&dropZoneGroup.buildings.GetHead());
 	pLast->appearInfo->appearance = pAppear;
 	land->worldToCell(position, pLast->cellRow, pLast->cellColumn);
 	pLast->id = DROPZONE << 24 | -1 << 16 | -1 << 8;
@@ -513,12 +527,13 @@ EditorObject* EditorObjectMgr::addDropZone(
 	pLast->appearance()->update();
 	pLast->appearance()->setInView(true);
 	pLast->appearance()->rotation = 0;
-	pLast->appearance()->teamId   = alignment;
+	pLast->appearance()->teamId = alignment;
 	return pLast;
 }
 
 //-------------------------------------------------------------------------------------------------
-EditorObject* EditorObjectMgr::getObjectAtPosition(const Stuff::Vector3D& position)
+EditorObject*
+EditorObjectMgr::getObjectAtPosition(const Stuff::Vector3D& position)
 {
 	Stuff::Vector4D screenPos;
 	Stuff::Vector4D tmpPos;
@@ -529,13 +544,12 @@ EditorObject* EditorObjectMgr::getObjectAtPosition(const Stuff::Vector3D& positi
 		if (pAppearance->canBeSeen())
 		{
 			int32_t left, top, right, bottom;
-			left   = pAppearance->upperLeft.x;
-			top	= pAppearance->upperLeft.y;
-			right  = pAppearance->lowerRight.x;
+			left = pAppearance->upperLeft.x;
+			top = pAppearance->upperLeft.y;
+			right = pAppearance->lowerRight.x;
 			bottom = pAppearance->lowerRight.y;
 			eye->projectZ(pAppearance->position, tmpPos);
-			if (screenPos.x >= left && screenPos.x <= right && screenPos.y >= top &&
-				screenPos.y <= bottom && pAppearance->PerPolySelect(screenPos.x, screenPos.y))
+			if (screenPos.x >= left && screenPos.x <= right && screenPos.y >= top && screenPos.y <= bottom && pAppearance->PerPolySelect(screenPos.x, screenPos.y))
 			{
 				return (*iter);
 			}
@@ -547,13 +561,12 @@ EditorObject* EditorObjectMgr::getObjectAtPosition(const Stuff::Vector3D& positi
 		if (pAppearance->canBeSeen())
 		{
 			int32_t left, top, right, bottom;
-			left   = pAppearance->upperLeft.x;
-			top	= pAppearance->upperLeft.y;
-			right  = pAppearance->lowerRight.x;
+			left = pAppearance->upperLeft.x;
+			top = pAppearance->upperLeft.y;
+			right = pAppearance->lowerRight.x;
 			bottom = pAppearance->lowerRight.y;
 			eye->projectZ(pAppearance->position, tmpPos);
-			if (screenPos.x >= left && screenPos.x <= right && screenPos.y >= top &&
-				screenPos.y <= bottom)
+			if (screenPos.x >= left && screenPos.x <= right && screenPos.y >= top && screenPos.y <= bottom)
 			{
 				return (*mIter);
 			}
@@ -564,18 +577,18 @@ EditorObject* EditorObjectMgr::getObjectAtPosition(const Stuff::Vector3D& positi
 		// need to change this when we get drop zone art
 		Stuff::Vector3D position = (*dIter)->getPosition();
 		eye->projectZ(position, tmpPos);
-		if (screenPos.x >= tmpPos.x - 3 && screenPos.x <= tmpPos.x + 3 &&
-			screenPos.y <= tmpPos.y + 3 && screenPos.y >= tmpPos.y - 3)
+		if (screenPos.x >= tmpPos.x - 3 && screenPos.x <= tmpPos.x + 3 && screenPos.y <= tmpPos.y + 3 && screenPos.y >= tmpPos.y - 3)
 			return *dIter;
 	}
 	return nullptr;
 }
 
 //-------------------------------------------------------------------------------------------------
-static bool areCloseEnough(float f1, float f2)
+static bool
+areCloseEnough(float f1, float f2)
 {
-	bool retval  = false;
-	float diff   = fabs(f1 - f2);
+	bool retval = false;
+	float diff = fabs(f1 - f2);
 	float bigger = fabs(f1);
 	if (fabs(f2) > bigger)
 	{
@@ -593,20 +606,19 @@ static bool areCloseEnough(float f1, float f2)
 	return retval;
 }
 
-EditorObject* EditorObjectMgr::getObjectAtLocation(float x, float y)
+EditorObject*
+EditorObjectMgr::getObjectAtLocation(float x, float y)
 {
 	for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 	{
-		if (areCloseEnough((*iter)->getPosition().x, x) &&
-			areCloseEnough((*iter)->getPosition().y, y))
+		if (areCloseEnough((*iter)->getPosition().x, x) && areCloseEnough((*iter)->getPosition().y, y))
 		{
 			return (*iter);
 		}
 	}
 	for (UNIT_LIST::EIterator mIter = units.Begin(); !mIter.IsDone(); mIter++)
 	{
-		if (areCloseEnough((*mIter)->getPosition().x, x) &&
-			areCloseEnough((*mIter)->getPosition().y, y))
+		if (areCloseEnough((*mIter)->getPosition().x, x) && areCloseEnough((*mIter)->getPosition().y, y))
 		{
 			return (*mIter);
 		}
@@ -614,8 +626,7 @@ EditorObject* EditorObjectMgr::getObjectAtLocation(float x, float y)
 	for (DROP_LIST::EIterator dIter = dropZones.Begin(); !dIter.IsDone(); dIter++)
 	{
 		// need to change this when we get drop zone art
-		if (areCloseEnough((*dIter)->getPosition().x, x) &&
-			areCloseEnough((*dIter)->getPosition().y, y))
+		if (areCloseEnough((*dIter)->getPosition().x, x) && areCloseEnough((*dIter)->getPosition().y, y))
 		{
 			return (*dIter);
 		}
@@ -624,14 +635,15 @@ EditorObject* EditorObjectMgr::getObjectAtLocation(float x, float y)
 }
 
 //-------------------------------------------------------------------------------------------------
-EditorObject* EditorObjectMgr::addBuilding(const Stuff::Vector3D& position, uint32_t group,
+EditorObject*
+EditorObjectMgr::addBuilding(const Stuff::Vector3D& position, uint32_t group,
 	uint32_t indexWithinGroup, int32_t alignment, float rotation, float scale, bool bSnapToCell)
 {
 	if (group == 255)
 		return addDropZone(position, alignment, 0);
-	int32_t type		= getType(group, indexWithinGroup);
+	int32_t type = getType(group, indexWithinGroup);
 	int32_t specialType = getSpecialType(getID(group, indexWithinGroup));
-	EditorObject* info  = nullptr;
+	EditorObject* info = nullptr;
 	if (specialType == NAV_MARKER)
 	{
 		info = new NavMarker;
@@ -648,7 +660,7 @@ EditorObject* EditorObjectMgr::addBuilding(const Stuff::Vector3D& position, uint
 	{
 		Unit* tmp = new Unit(alignment);
 		units.Append(tmp);
-		info						 = tmp;
+		info = tmp;
 		info->appearInfo->appearance = getAppearance(group, indexWithinGroup);
 		uint32_t c1, c2, c3;
 		tmp->getColors(c1, c2, c3);
@@ -666,14 +678,15 @@ EditorObject* EditorObjectMgr::addBuilding(const Stuff::Vector3D& position, uint
 	info->appearance()->update();
 	info->appearance()->setInView(true);
 	info->appearance()->rotation = rotation;
-	info->appearance()->teamId   = isAlignable(info->id) ? alignment : EDITOR_TEAMNONE;
+	info->appearance()->teamId = isAlignable(info->id) ? alignment : EDITOR_TEAMNONE;
 	if (scale != 1.0)
 		info->appearance()->scale(scale);
 	return info;
 }
 
 //*************************************************************************************************
-bool EditorObjectMgr::deleteBuilding(const EditorObject* pInfo)
+bool
+EditorObjectMgr::deleteBuilding(const EditorObject* pInfo)
 {
 	BuildingLink* pLink = getLinkWithParent(pInfo);
 	if (pLink)
@@ -691,8 +704,7 @@ bool EditorObjectMgr::deleteBuilding(const EditorObject* pInfo)
 	{
 		for (BUILDING_LIST::EIterator iter = buildings.End(); !iter.IsDone(); iter--)
 		{
-			if (pInfo->cellColumn == (*iter)->cellColumn && pInfo->cellRow == (*iter)->cellRow &&
-				pInfo->appearance() == (*iter)->appearance())
+			if (pInfo->cellColumn == (*iter)->cellColumn && pInfo->cellRow == (*iter)->cellRow && pInfo->appearance() == (*iter)->appearance())
 			{
 				delete (*iter);
 				selectedObjects.RemoveIfThere(*iter);
@@ -731,16 +743,22 @@ bool EditorObjectMgr::deleteBuilding(const EditorObject* pInfo)
 }
 
 //*************************************************************************************************
-int32_t EditorObjectMgr::getBuildingGroupCount(void) const { return groups.Count(); }
+int32_t
+EditorObjectMgr::getBuildingGroupCount(void) const
+{
+	return groups.Count();
+}
 
 //*************************************************************************************************
-int32_t EditorObjectMgr::getNumberBuildingsInGroup(int32_t group) const
+int32_t
+EditorObjectMgr::getNumberBuildingsInGroup(int32_t group) const
 {
 	return groups[group].buildings.Count();
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::getBuildingGroupNames(PCSTR* names, int32_t& NumberOfNames) const
+void
+EditorObjectMgr::getBuildingGroupNames(PCSTR* names, int32_t& NumberOfNames) const
 {
 	if (NumberOfNames < groups.Count())
 		NumberOfNames = groups.Count();
@@ -754,7 +772,8 @@ void EditorObjectMgr::getBuildingGroupNames(PCSTR* names, int32_t& NumberOfNames
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::getBuildingNamesInGroup(
+void
+EditorObjectMgr::getBuildingNamesInGroup(
 	int32_t group, PCSTR* names, int32_t& NumberOfNames) const
 {
 	Group* pGroup = &groups[group];
@@ -772,7 +791,8 @@ void EditorObjectMgr::getBuildingNamesInGroup(
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::update()
+void
+EditorObjectMgr::update()
 {
 	static int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 	if (renderObjects)
@@ -780,8 +800,7 @@ void EditorObjectMgr::update()
 		for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 		{
 			currentFloatHelp = 0;
-			if (renderTrees ||
-				(!renderTrees && ((*iter)->appearance()->getAppearanceClass() != TREE_APPR_TYPE)))
+			if (renderTrees || (!renderTrees && ((*iter)->appearance()->getAppearanceClass() != TREE_APPR_TYPE)))
 			{
 				if ((*iter)->appearance()->recalcBounds())
 				{
@@ -795,8 +814,7 @@ void EditorObjectMgr::update()
 					building might be a part of.*/
 					moveBuilding((*iter), cellR, cellC);
 					pos = (*iter)->appearance()->position;
-					gosASSERT((8 > (*iter)->appearance()->teamId) &&
-						(-1 <= (*iter)->appearance()->teamId));
+					gosASSERT((8 > (*iter)->appearance()->teamId) && (-1 <= (*iter)->appearance()->teamId));
 					(*iter)->appearance()->setObjectParameters(pos, (*iter)->appearance()->rotation,
 						(*iter)->appearance()->selected, (*iter)->appearance()->teamId,
 						homeRelations[(*iter)->appearance()->teamId + 1]);
@@ -810,14 +828,14 @@ void EditorObjectMgr::update()
 	for (UNIT_LIST::EIterator mIter = units.Begin(); !mIter.IsDone(); mIter++)
 	{
 		EditorObject* pObj = (*mIter);
-		currentFloatHelp   = 0;
+		currentFloatHelp = 0;
 		if (pObj->appearance()->recalcBounds())
 		{
 			// Vehicles and mech forced to ground in Object classes in game now.
 			// NOT in the appearance anymore since they can fly when the die!
 			// Must force here as well.
 			Stuff::Vector3D pos = pObj->appearance()->position;
-			pos.z				= land->getTerrainElevation(pos);
+			pos.z = land->getTerrainElevation(pos);
 			if (getIsHoverCraft(pObj->id))
 			{
 				float waterElevation = land->getWaterElevation();
@@ -839,7 +857,8 @@ void EditorObjectMgr::update()
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::render()
+void
+EditorObjectMgr::render()
 {
 	//--------------------------------
 	// Set States for Software Renderer
@@ -879,8 +898,7 @@ void EditorObjectMgr::render()
 		for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 		{
 			currentFloatHelp = 0;
-			if (renderTrees ||
-				(!renderTrees && ((*iter)->appearance()->getAppearanceClass() != TREE_APPR_TYPE)))
+			if (renderTrees || (!renderTrees && ((*iter)->appearance()->getAppearanceClass() != TREE_APPR_TYPE)))
 			{
 				if ((*iter)->appearance()->recalcBounds())
 				{
@@ -897,7 +915,7 @@ void EditorObjectMgr::render()
 	for (UNIT_LIST::EIterator mIter = units.Begin(); !mIter.IsDone(); mIter++)
 	{
 		EditorObject* pObj = (*mIter);
-		currentFloatHelp   = 0;
+		currentFloatHelp = 0;
 		if (pObj->appearance()->recalcBounds())
 		{
 			pObj->appearance()->render();
@@ -919,16 +937,17 @@ void EditorObjectMgr::render()
 		Stuff::Vector4D screen;
 		eye->projectZ(pos, screen);
 		RECT Rect;
-		Rect.top	= screen.y - 3;
-		Rect.left   = screen.x - 3;
+		Rect.top = screen.y - 3;
+		Rect.left = screen.x - 3;
 		Rect.bottom = screen.y + 3;
-		Rect.right  = screen.x + 3;
+		Rect.right = screen.x + 3;
 		drawRect(Rect, (*dIter)->isVTol() ? 0xff0000ff : 0xffffff00);
 	}
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::renderShadows()
+void
+EditorObjectMgr::renderShadows()
 {
 	//-----------------------------------------------------
 	// Set render states as few times as possible.
@@ -972,8 +991,7 @@ void EditorObjectMgr::renderShadows()
 	{
 		for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 		{
-			if (renderTrees ||
-				(!renderTrees && ((*iter)->appearance()->getAppearanceClass() != TREE_APPR_TYPE)))
+			if (renderTrees || (!renderTrees && ((*iter)->appearance()->getAppearanceClass() != TREE_APPR_TYPE)))
 			{
 				if ((*iter)->appearance()->recalcBounds())
 				{
@@ -996,7 +1014,8 @@ void EditorObjectMgr::renderShadows()
 }
 
 //*************************************************************************************************
-bool EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
+bool
+EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 {
 	File file;
 	if (!buildings.Count())
@@ -1006,16 +1025,16 @@ bool EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 	}
 	int32_t bufferSize =
 		buildings.Count() * (4 * sizeof(float) + 6 * sizeof(int32_t)) + 2 * sizeof(int32_t);
-	PSTR pBuffer		   = (PSTR)malloc(bufferSize);
+	PSTR pBuffer = (PSTR)malloc(bufferSize);
 	int32_t* pTacMapPoints = (int32_t*)malloc(sizeof(int32_t) * (buildings.Count() * 2 + 1));
-	int32_t* pPoints	   = pTacMapPoints + 1;
-	int32_t pointCounter   = 0;
+	int32_t* pPoints = pTacMapPoints + 1;
+	int32_t pointCounter = 0;
 	file.open(pBuffer, bufferSize);
 	file.writeLong(buildings.Count());
 	gos_VERTEX point;
 	for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 	{
-		int32_t id	 = (*iter)->id;
+		int32_t id = (*iter)->id;
 		Building& bldg = groups[(id >> 16) & 0x000000ff].buildings[(id >> 8) & 0x000000ff];
 		if (bldg.writeOnTacMap)
 		{
@@ -1096,7 +1115,8 @@ bool EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 	return true;
 }
 
-bool EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
+bool
+EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 {
 	PakFile.seekPacket(whichPacket);
 	int32_t size = PakFile.getPacketSize();
@@ -1118,9 +1138,9 @@ bool EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 			continue;
 		}
 		Stuff::Vector3D vector;
-		vector.x	   = file.readFloat();
-		vector.y	   = file.readFloat();
-		vector.z	   = file.readFloat();
+		vector.x = file.readFloat();
+		vector.y = file.readFloat();
+		vector.z = file.readFloat();
 		float rotation = file.readFloat();
 		EditorObject* pInfo =
 			(EditorObject*)addBuilding(vector, group, index, EDITOR_TEAMNONE, rotation);
@@ -1141,7 +1161,7 @@ bool EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 			int32_t cellI = cells & 0x0000ffff;
 			Stuff::Vector3D pos;
 			land->cellToWorld(cellJ, cellI, pos);
-			pos.z		= land->getTerrainElevation(pos);
+			pos.z = land->getTerrainElevation(pos);
 			bool bFound = false;
 			for (LINK_LIST::EIterator iter = links.Begin(); !iter.IsDone(); iter++)
 			{
@@ -1196,7 +1216,8 @@ bool EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 
 //*************************************************************************************************
 // this will NOT RETURN MECHS AND VEHICLES
-bool EditorObjectMgr::getBuildingFromID(
+bool
+EditorObjectMgr::getBuildingFromID(
 	int32_t fitID, uint32_t& group, uint32_t& index, bool canBeMech)
 {
 	group = 0;
@@ -1207,8 +1228,7 @@ bool EditorObjectMgr::getBuildingFromID(
 		for (EList<Building, Building&>::EIterator buildIter = (*groupIter).buildings.Begin();
 			 !buildIter.IsDone(); buildIter++)
 		{
-			if ((*buildIter).fitID == fitID &&
-				(canBeMech || (*buildIter).type != GV_TYPE && (*buildIter).type != MECH_TYPE))
+			if ((*buildIter).fitID == fitID && (canBeMech || (*buildIter).type != GV_TYPE && (*buildIter).type != MECH_TYPE))
 			{
 				return true;
 			}
@@ -1220,28 +1240,33 @@ bool EditorObjectMgr::getBuildingFromID(
 }
 
 //*************************************************************************************************
-int32_t EditorObjectMgr::getFitID(int32_t id) const
+int32_t
+EditorObjectMgr::getFitID(int32_t id) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].fitID;
 }
 
 //*************************************************************************************************
-bool EditorObjectMgr::getBlocksLineOfFire(int32_t id) const
+bool
+EditorObjectMgr::getBlocksLineOfFire(int32_t id) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].blocksLineOfFire;
 }
 //*************************************************************************************************
-bool EditorObjectMgr::getIsHoverCraft(int32_t id) const
+bool
+EditorObjectMgr::getIsHoverCraft(int32_t id) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].isHoverCraft;
 }
 //*************************************************************************************************
-int64_t EditorObjectMgr::getImpassability(int32_t id)
+int64_t
+EditorObjectMgr::getImpassability(int32_t id)
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].impassability;
 }
 
-void EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2)
+void
+EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2)
 {
 	int32_t xMin, xMax;
 	int32_t yMin, yMax;
@@ -1269,8 +1294,7 @@ void EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D&
 	for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 	{
 		eye->projectZ((*iter)->appearance()->position, screenPos);
-		if (screenPos.x >= xMin && screenPos.x <= xMax && screenPos.y >= yMin &&
-			screenPos.y <= yMax)
+		if (screenPos.x >= xMin && screenPos.x <= xMax && screenPos.y >= yMin && screenPos.y <= yMax)
 		{
 			(*iter)->appearance()->selected = true;
 			selectedObjects.AddUnique(*iter);
@@ -1279,8 +1303,7 @@ void EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D&
 	for (UNIT_LIST::EIterator mIter = units.Begin(); !mIter.IsDone(); mIter++)
 	{
 		eye->projectZ((*mIter)->appearance()->position, screenPos);
-		if (screenPos.x >= xMin && screenPos.x <= xMax && screenPos.y >= yMin &&
-			screenPos.y <= yMax)
+		if (screenPos.x >= xMin && screenPos.x <= xMax && screenPos.y >= yMin && screenPos.y <= yMax)
 		{
 			(*mIter)->appearance()->selected = true;
 			selectedObjects.AddUnique(*mIter);
@@ -1290,8 +1313,7 @@ void EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D&
 	{
 		Stuff::Vector3D pos = (*dIter)->getPosition();
 		eye->projectZ(pos, screenPos);
-		if (screenPos.x >= xMin && screenPos.x <= xMax && screenPos.y >= yMin &&
-			screenPos.y <= yMax)
+		if (screenPos.x >= xMin && screenPos.x <= xMax && screenPos.y >= yMin && screenPos.y <= yMax)
 		{
 			(*dIter)->appearance()->selected = true;
 			selectedObjects.AddUnique(*dIter);
@@ -1299,7 +1321,8 @@ void EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D&
 	}
 }
 
-void EditorObjectMgr::select(EditorObject& object, bool bSelect)
+void
+EditorObjectMgr::select(EditorObject& object, bool bSelect)
 {
 	// we'll just assume it's valid
 	object.appearance()->selected =
@@ -1314,7 +1337,8 @@ void EditorObjectMgr::select(EditorObject& object, bool bSelect)
 	}
 }
 
-void EditorObjectMgr::unselectAll()
+void
+EditorObjectMgr::unselectAll()
 {
 	// mh: at somepoint we can change the code so that it iterates over the
 	// selectedObjects list instead of the lists of all the buildings and units
@@ -1331,7 +1355,8 @@ void EditorObjectMgr::unselectAll()
 	selectedObjects.Clear();
 }
 
-bool EditorObjectMgr::hasSelection()
+bool
+EditorObjectMgr::hasSelection()
 {
 #if 1
 	syncSelectedObjectPointerList();
@@ -1354,7 +1379,8 @@ bool EditorObjectMgr::hasSelection()
 	return false;
 }
 
-int32_t EditorObjectMgr::getSelectionCount()
+int32_t
+EditorObjectMgr::getSelectionCount()
 {
 #if 1
 	syncSelectedObjectPointerList();
@@ -1375,13 +1401,15 @@ int32_t EditorObjectMgr::getSelectionCount()
 #endif
 }
 
-EditorObjectMgr::EDITOR_OBJECT_LIST EditorObjectMgr::getSelectedObjectList()
+EditorObjectMgr::EDITOR_OBJECT_LIST
+EditorObjectMgr::getSelectedObjectList()
 {
 	syncSelectedObjectPointerList();
 	return selectedObjects;
 }
 
-void EditorObjectMgr::syncSelectedObjectPointerList()
+void
+EditorObjectMgr::syncSelectedObjectPointerList()
 {
 	if (!selectedObjectsNeedsToBeSynched)
 	{
@@ -1406,7 +1434,8 @@ void EditorObjectMgr::syncSelectedObjectPointerList()
 	selectedObjectsNeedsToBeSynched = false;
 }
 
-void EditorObjectMgr::deleteSelectedObjects()
+void
+EditorObjectMgr::deleteSelectedObjects()
 {
 	for (BUILDING_LIST::EIterator iter = buildings.End(); !iter.IsDone();)
 	{
@@ -1444,7 +1473,8 @@ void EditorObjectMgr::deleteSelectedObjects()
 	selectedObjects.Clear();
 }
 
-void EditorObjectMgr::adjustObjectsToNewTerrainHeights()
+void
+EditorObjectMgr::adjustObjectsToNewTerrainHeights()
 {
 	for (BUILDING_LIST::EIterator iter = buildings.End(); !iter.IsDone(); iter++)
 	{
@@ -1464,7 +1494,8 @@ void EditorObjectMgr::adjustObjectsToNewTerrainHeights()
 	}
 }
 
-ObjectAppearance* EditorObjectMgr::getAppearance(EditorObjectMgr::Building* pBuilding)
+ObjectAppearance*
+EditorObjectMgr::getAppearance(EditorObjectMgr::Building* pBuilding)
 {
 	ObjectAppearance* appearance = nullptr;
 	if (!appearanceTypeList)
@@ -1490,7 +1521,8 @@ ObjectAppearance* EditorObjectMgr::getAppearance(EditorObjectMgr::Building* pBui
 	return appearance;
 }
 
-ObjectAppearance* EditorObjectMgr::getAppearance(uint32_t group, uint32_t indexWithinGroup)
+ObjectAppearance*
+EditorObjectMgr::getAppearance(uint32_t group, uint32_t indexWithinGroup)
 {
 	gosASSERT(group >= 0 && group < groups.Count());
 	Group* pGroup = &groups[group];
@@ -1499,7 +1531,8 @@ ObjectAppearance* EditorObjectMgr::getAppearance(uint32_t group, uint32_t indexW
 	return getAppearance(pBuilding);
 }
 
-bool EditorObjectMgr::loadMechs(FitIniFile& file)
+bool
+EditorObjectMgr::loadMechs(FitIniFile& file)
 {
 	// disable animation loading to decrease loading time
 	Mech3DAppearanceType::disableAnimationLoading();
@@ -1547,7 +1580,8 @@ bool EditorObjectMgr::loadMechs(FitIniFile& file)
 	return true;
 }
 
-bool EditorObjectMgr::saveMechs(FitIniFile& file)
+bool
+EditorObjectMgr::saveMechs(FitIniFile& file)
 {
 	file.writeBlock("Warriors");
 	UNIT_LIST unitsByPlayer[8 /*max players*/];
@@ -1614,7 +1648,7 @@ bool EditorObjectMgr::saveMechs(FitIniFile& file)
 		for (size_t playerNum = 0; 8 /*max players*/ > playerNum; playerNum += 1)
 		{
 			int32_t lanceGroup = 0;
-			int32_t mateIndex  = 0;
+			int32_t mateIndex = 0;
 			UNIT_LIST::EIterator iter;
 			for (iter = reorderedUnitsByPlayer[playerNum].Begin(); !iter.IsDone(); iter++)
 			{
@@ -1643,8 +1677,7 @@ bool EditorObjectMgr::saveMechs(FitIniFile& file)
 			for (size_t playerNum = 1 /*first non-user player*/; 8 /*max players*/ > playerNum;
 				 playerNum += 1)
 			{
-				if (0 /*player1's (user's) team*/ !=
-					EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam())
+				if (0 /*player1's (user's) team*/ != EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam())
 				{
 					if (0 < reorderedUnitsByPlayer[playerNum].Count())
 					{
@@ -1684,7 +1717,7 @@ bool EditorObjectMgr::saveMechs(FitIniFile& file)
 	file.writeIdULong("NumParts", units.Count());
 	// file.writeIdBoolean( "AlliedTeam", alignmentCount[NONE] ? true : false );
 	char buffer[256];
-	int32_t counter						= 1; // for some unknown reason we index from 1
+	int32_t counter = 1; // for some unknown reason we index from 1
 	int32_t alternativeInstancesCounter = reorderedUnits.Count() + 1;
 	UNIT_LIST::EIterator iter;
 	for (iter = reorderedUnits.Begin(); !iter.IsDone(); counter++, iter++)
@@ -1697,7 +1730,7 @@ bool EditorObjectMgr::saveMechs(FitIniFile& file)
 		strcpy(armName, file.getFilename());
 		_strlwr(armName);
 		PSTR fitExt = strstr(armName, ".fit");
-		*fitExt		= '_';
+		*fitExt = '_';
 		sprintf(fitExt + 1, "warrior%02d", counter);
 		mapAsset->AddRelationship("warrior", armName);
 		IProviderAssetPtr mechAssetPtr =
@@ -1706,7 +1739,7 @@ bool EditorObjectMgr::saveMechs(FitIniFile& file)
 		(*iter)->save(&file, counter);
 		mechAssetPtr->Close();
 		mechAssetPtr = nullptr;
-		mechAsset	= nullptr;
+		mechAsset = nullptr;
 		file.writeIdULong("AlternativeStartIndex", alternativeInstancesCounter + 1);
 		int32_t IndicesOfAlternatives[15 /*max alternatives*/] = {
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
@@ -1745,7 +1778,7 @@ bool EditorObjectMgr::saveMechs(FitIniFile& file)
 		for (size_t playerNum = 0; 8 /*max players*/ > playerNum; playerNum += 1)
 		{
 			int32_t reorderedUnitByPlayerIndex = 0;
-			int32_t lanceGroup				   = 0;
+			int32_t lanceGroup = 0;
 			for (lanceGroup = 0;
 				 lanceGroup * (12 /*just twelve*/) < reorderedUnitsByPlayer[playerNum].Count();
 				 lanceGroup += 1)
@@ -1775,7 +1808,8 @@ bool EditorObjectMgr::saveMechs(FitIniFile& file)
 	return true;
 }
 
-bool EditorObjectMgr::saveForests(FitIniFile& file)
+bool
+EditorObjectMgr::saveForests(FitIniFile& file)
 {
 	int32_t counter = 0;
 	char header[256];
@@ -1788,7 +1822,8 @@ bool EditorObjectMgr::saveForests(FitIniFile& file)
 	return true;
 }
 
-bool EditorObjectMgr::loadForests(FitIniFile& file)
+bool
+EditorObjectMgr::loadForests(FitIniFile& file)
 {
 	int32_t counter = 0;
 	char header[256];
@@ -1810,7 +1845,8 @@ bool EditorObjectMgr::loadForests(FitIniFile& file)
 	return true;
 }
 
-int32_t EditorObjectMgr::getNextAvailableForestID()
+int32_t
+EditorObjectMgr::getNextAvailableForestID()
 {
 	int32_t max = -1;
 	for (FOREST_LIST::EIterator iter = forests.Begin(); !iter.IsDone(); iter++)
@@ -1824,13 +1860,14 @@ int32_t EditorObjectMgr::getNextAvailableForestID()
 	return ID;
 }
 
-int32_t EditorObjectMgr::createForest(const Forest& forest)
+int32_t
+EditorObjectMgr::createForest(const Forest& forest)
 {
-	int32_t ID			  = getNextAvailableForestID();
-	Forest* pForest		  = new Forest(ID);
+	int32_t ID = getNextAvailableForestID();
+	Forest* pForest = new Forest(ID);
 	CString oldForestName = pForest->getFileName();
-	*pForest			  = forest;
-	pForest->ID			  = ID;
+	*pForest = forest;
+	pForest->ID = ID;
 	if (!strstr(pForest->getFileName(), ".fit"))
 		pForest->setFileName(oldForestName);
 	forests.Append(pForest);
@@ -1839,7 +1876,8 @@ int32_t EditorObjectMgr::createForest(const Forest& forest)
 	return ID;
 }
 
-void EditorObjectMgr::editForest(int32_t& oldID, const Forest& forest)
+void
+EditorObjectMgr::editForest(int32_t& oldID, const Forest& forest)
 {
 	land->unselectAll();
 	for (BUILDING_LIST::EIterator bIter = buildings.End(); !bIter.IsDone();)
@@ -1872,7 +1910,8 @@ void EditorObjectMgr::editForest(int32_t& oldID, const Forest& forest)
 	land->unselectAll();
 }
 
-void EditorObjectMgr::removeForest(const Forest& forest)
+void
+EditorObjectMgr::removeForest(const Forest& forest)
 {
 	unselectAll();
 	for (BUILDING_LIST::EIterator bIter = buildings.End(); !bIter.IsDone();)
@@ -1901,7 +1940,8 @@ void EditorObjectMgr::removeForest(const Forest& forest)
 	}
 }
 
-void EditorObjectMgr::selectForest(int32_t ID)
+void
+EditorObjectMgr::selectForest(int32_t ID)
 {
 	unselectAll();
 	for (BUILDING_LIST::EIterator bIter = buildings.Begin(); !bIter.IsDone(); bIter++)
@@ -1913,10 +1953,11 @@ void EditorObjectMgr::selectForest(int32_t ID)
 	}
 }
 
-void EditorObjectMgr::doForest(const Forest& forest)
+void
+EditorObjectMgr::doForest(const Forest& forest)
 {
-	float centerX	= forest.centerX;
-	float centerY	= forest.centerY;
+	float centerX = forest.centerX;
+	float centerY = forest.centerY;
 	float maxDensity = forest.maxDensity / 9;
 	float minDensity = forest.minDensity / 9;
 	int32_t probabilities[FOREST_TYPES];
@@ -1934,7 +1975,7 @@ void EditorObjectMgr::doForest(const Forest& forest)
 		}
 	}
 	float r2 = forest.radius; // temporary... calc real radius at some point
-	r2 *= r2;				  // square it
+	r2 *= r2; // square it
 	for (size_t j = 0; j < land->realVerticesMapSide; j++)
 	{
 		for (size_t i = 0; i < land->realVerticesMapSide; i++)
@@ -1953,8 +1994,7 @@ void EditorObjectMgr::doForest(const Forest& forest)
 						if (cellI + m < 0 || cellI + m > land->realVerticesMapSide * 3)
 							continue;
 						EditorObject* pObject = getObjectAtCell(cellJ + l, cellI + m);
-						if (pObject &&
-							pObject->getForestID() == -1) // only forests allow multiples in a cell
+						if (pObject && pObject->getForestID() == -1) // only forests allow multiples in a cell
 						{
 							continue;
 						}
@@ -1962,14 +2002,14 @@ void EditorObjectMgr::doForest(const Forest& forest)
 						land->cellToWorld(cellJ + l, cellI + m, pos);
 						pos.z = land->getTerrainElevation(pos);
 						// distance
-						float deltaX	 = centerX - pos.x;
-						float deltaY	 = centerY - pos.y;
-						float tmpR		 = deltaX * deltaX + deltaY * deltaY;
-						tmpR			 = sqrt(tmpR);
-						float fm		 = (minDensity - maxDensity) / forest.radius;
-						float density	= maxDensity + fm * (tmpR);
+						float deltaX = centerX - pos.x;
+						float deltaY = centerY - pos.y;
+						float tmpR = deltaX * deltaX + deltaY * deltaY;
+						tmpR = sqrt(tmpR);
+						float fm = (minDensity - maxDensity) / forest.radius;
+						float density = maxDensity + fm * (tmpR);
 						int32_t lDensity = (int32_t)density;
-						float remainder  = density - (float)lDensity;
+						float remainder = density - (float)lDensity;
 						int32_t count =
 							(int32_t)density + (RandomNumber(100) < remainder * 100 ? 1 : 0);
 						// OK, now we have the density randomly (if possible)
@@ -1979,8 +2019,8 @@ void EditorObjectMgr::doForest(const Forest& forest)
 						{
 							// oh god, now we need to pick a tree
 							int32_t random = RandomNumber(100);
-							int32_t group  = -1;
-							int32_t index  = -1;
+							int32_t group = -1;
+							int32_t index = -1;
 							for (size_t k = 0; k < FOREST_TYPES; k++)
 							{
 								if (random < probabilities[k])
@@ -1995,18 +2035,12 @@ void EditorObjectMgr::doForest(const Forest& forest)
 							}
 							Stuff::Vector3D treePos = pos;
 							// now place equally randomly.
-							treePos.x += (float)RandomNumber(Terrain::worldUnitsPerCell) -
-								Terrain::worldUnitsPerCell / 2;
-							treePos.y += (float)RandomNumber(Terrain::worldUnitsPerCell) -
-								Terrain::worldUnitsPerCell / 2;
+							treePos.x += (float)RandomNumber(Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
+							treePos.y += (float)RandomNumber(Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 							int32_t rotation = RandomNumber(32);
 							float scale = RandomNumber(100 * (forest.maxHeight - forest.minHeight));
-							scale		= forest.minHeight + (scale) / 100.f;
-							if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() <
-									1000 /*arbitrary*/) ||
-								(AppearanceTypeList::appearanceHeap->totalCoreLeft() <
-									0.01 /*arbitrary*/ *
-										AppearanceTypeList::appearanceHeap->size()))
+							scale = forest.minHeight + (scale) / 100.f;
+							if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() < 1000 /*arbitrary*/) || (AppearanceTypeList::appearanceHeap->totalCoreLeft() < 0.01 /*arbitrary*/ * AppearanceTypeList::appearanceHeap->size()))
 							{
 								AfxMessageBox(IDS_APPEARANCE_HEAP_EXHAUSTED);
 								/*exit all loops*/
@@ -2030,7 +2064,8 @@ void EditorObjectMgr::doForest(const Forest& forest)
 	}
 }
 
-const Forest* EditorObjectMgr::getForest(int32_t ID)
+const Forest*
+EditorObjectMgr::getForest(int32_t ID)
 {
 	for (FOREST_LIST::EIterator iter = forests.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2041,7 +2076,8 @@ const Forest* EditorObjectMgr::getForest(int32_t ID)
 	return nullptr;
 }
 
-int32_t EditorObjectMgr::getForests(Forest** pForests, int32_t& count)
+int32_t
+EditorObjectMgr::getForests(Forest** pForests, int32_t& count)
 {
 	if (forests.Count() > count)
 	{
@@ -2056,10 +2092,11 @@ int32_t EditorObjectMgr::getForests(Forest** pForests, int32_t& count)
 	return count;
 }
 
-void EditorObjectMgr::getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, int32_t& index)
+void
+EditorObjectMgr::getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, int32_t& index)
 {
-	group			  = TREE_GROUP;
-	index			  = 0;
+	group = TREE_GROUP;
+	index = 0;
 	int32_t treeCount = 0;
 	// figure out how many trees are in the group
 	Group* pGroup = &groups[TREE_GROUP];
@@ -2072,8 +2109,8 @@ void EditorObjectMgr::getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, 
 				treeCount++;
 		}
 		int32_t whichOne = RandomNumber(treeCount);
-		treeCount		 = 0;
-		int32_t counter  = 0;
+		treeCount = 0;
+		int32_t counter = 0;
 		for (buildIter = groups[group].buildings.Begin(); !buildIter.IsDone();
 			 buildIter++, counter++)
 		{
@@ -2089,7 +2126,8 @@ void EditorObjectMgr::getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, 
 	}
 }
 
-bool EditorObjectMgr::saveDropZones(FitIniFile& file)
+bool
+EditorObjectMgr::saveDropZones(FitIniFile& file)
 {
 	int32_t counter = 0;
 	char Header[256];
@@ -2102,7 +2140,7 @@ bool EditorObjectMgr::saveDropZones(FitIniFile& file)
 	// going to do nav markers here
 	// need to sort this list first.  ick.
 	EditorObject** pObjects = (EditorObject**)_alloca(sizeof(EditorObject*) * buildings.Count());
-	int32_t i				= 0;
+	int32_t i = 0;
 	for (BUILDING_LIST::EIterator bIter = buildings.Begin(); !bIter.IsDone(); bIter++)
 	{
 		pObjects[i++] = *bIter;
@@ -2133,7 +2171,8 @@ bool EditorObjectMgr::saveDropZones(FitIniFile& file)
 	return true;
 }
 
-bool EditorObjectMgr::loadDropZones(FitIniFile& file)
+bool
+EditorObjectMgr::loadDropZones(FitIniFile& file)
 {
 	int32_t counter = 0;
 	char Header[256];
@@ -2157,7 +2196,8 @@ bool EditorObjectMgr::loadDropZones(FitIniFile& file)
 	return true;
 }
 
-int32_t EditorObjectMgr::getType(uint32_t group, uint32_t indexWithinGroup)
+int32_t
+EditorObjectMgr::getType(uint32_t group, uint32_t indexWithinGroup)
 {
 	Group* pGroup = &groups[group];
 	gosASSERT(pGroup->buildings.Count() > indexWithinGroup);
@@ -2167,7 +2207,8 @@ int32_t EditorObjectMgr::getType(uint32_t group, uint32_t indexWithinGroup)
 
 EditorObjectMgr::Building::~Building() {}
 
-bool EditorObjectMgr::moveBuilding(EditorObject* pInfo, int32_t cellJ, int32_t cellI)
+bool
+EditorObjectMgr::moveBuilding(EditorObject* pInfo, int32_t cellJ, int32_t cellI)
 {
 	if (getObjectAtCell(cellJ, cellI) && (getObjectAtCell(cellJ, cellI) != pInfo))
 	{
@@ -2189,37 +2230,36 @@ bool EditorObjectMgr::moveBuilding(EditorObject* pInfo, int32_t cellJ, int32_t c
 	}
 	Stuff::Vector3D position;
 	land->cellToWorld(cellJ, cellI, position);
-	position.z					  = land->getTerrainElevation(position);
+	position.z = land->getTerrainElevation(position);
 	pInfo->appearance()->position = position;
-	pInfo->cellRow				  = cellJ;
-	pInfo->cellColumn			  = cellI;
+	pInfo->cellRow = cellJ;
+	pInfo->cellColumn = cellI;
 	if (pLink)
 		pLink->AddChild(pInfo);
 	return true;
 }
 
-EditorObject* EditorObjectMgr::getObjectAtCell(int32_t realCellJ, int32_t realCellI)
+EditorObject*
+EditorObjectMgr::getObjectAtCell(int32_t realCellJ, int32_t realCellI)
 {
 	for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 	{
-		if (labs(realCellI - ((*iter)->cellColumn - 4)) <= 8 &&
-			labs(realCellJ - ((*iter)->cellRow - 4)) <= 8)
+		if (labs(realCellI - ((*iter)->cellColumn - 4)) <= 8 && labs(realCellJ - ((*iter)->cellRow - 4)) <= 8)
 		{
 			int64_t FootPrint = getImpassability((*iter)->id);
-			int32_t i		  = realCellI - ((*iter)->cellColumn - 4);
-			int32_t j		  = realCellJ - ((*iter)->cellRow - 4);
+			int32_t i = realCellI - ((*iter)->cellColumn - 4);
+			int32_t j = realCellJ - ((*iter)->cellRow - 4);
 			if ((FootPrint >> (j * 8 + i)) & 0x00000001 || (i == 4 && j == 4))
 				return (*iter);
 		}
 	}
 	for (UNIT_LIST::EIterator uIter = units.Begin(); !uIter.IsDone(); uIter++)
 	{
-		if (labs(realCellI - ((*uIter)->cellColumn - 4)) <= 8 &&
-			labs(realCellJ - ((*uIter)->cellRow - 4)) <= 8)
+		if (labs(realCellI - ((*uIter)->cellColumn - 4)) <= 8 && labs(realCellJ - ((*uIter)->cellRow - 4)) <= 8)
 		{
 			int64_t FootPrint = getImpassability((*uIter)->id);
-			int32_t i		  = realCellI - ((*uIter)->cellColumn - 4);
-			int32_t j		  = realCellJ - ((*uIter)->cellRow - 4);
+			int32_t i = realCellI - ((*uIter)->cellColumn - 4);
+			int32_t j = realCellJ - ((*uIter)->cellRow - 4);
 			if ((FootPrint >> (j * 8 + i)) & 0x00000001 || (i == 4 && j == 4))
 				return (*uIter);
 		}
@@ -2227,7 +2267,8 @@ EditorObject* EditorObjectMgr::getObjectAtCell(int32_t realCellJ, int32_t realCe
 	return nullptr;
 }
 
-EditorObject* EditorObjectMgr::getBuilding(const EditorObject& building)
+EditorObject*
+EditorObjectMgr::getBuilding(const EditorObject& building)
 {
 	for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2239,7 +2280,8 @@ EditorObject* EditorObjectMgr::getBuilding(const EditorObject& building)
 	return nullptr;
 }
 
-BuildingLink* EditorObjectMgr::getLinkWithBuilding(const EditorObject* pObj)
+BuildingLink*
+EditorObjectMgr::getLinkWithBuilding(const EditorObject* pObj)
 {
 	for (LINK_LIST::EIterator iter = links.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2249,7 +2291,8 @@ BuildingLink* EditorObjectMgr::getLinkWithBuilding(const EditorObject* pObj)
 	return nullptr;
 }
 
-BuildingLink* EditorObjectMgr::getLinkWithParent(const EditorObject* pObj)
+BuildingLink*
+EditorObjectMgr::getLinkWithParent(const EditorObject* pObj)
 {
 	for (LINK_LIST::EIterator iter = links.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2259,7 +2302,8 @@ BuildingLink* EditorObjectMgr::getLinkWithParent(const EditorObject* pObj)
 	return nullptr;
 }
 
-BuildingLink* EditorObjectMgr::getLinkWithChild(const EditorObject* pObj)
+BuildingLink*
+EditorObjectMgr::getLinkWithChild(const EditorObject* pObj)
 {
 	for (LINK_LIST::EIterator iter = links.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2269,7 +2313,8 @@ BuildingLink* EditorObjectMgr::getLinkWithChild(const EditorObject* pObj)
 	return nullptr;
 }
 
-void EditorObjectMgr::addLink(BuildingLink* pLink)
+void
+EditorObjectMgr::addLink(BuildingLink* pLink)
 {
 	for (LINK_LIST::EIterator iter = links.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2279,7 +2324,8 @@ void EditorObjectMgr::addLink(BuildingLink* pLink)
 	links.Append(pLink);
 }
 
-void EditorObjectMgr::deleteLink(BuildingLink* pLink)
+void
+EditorObjectMgr::deleteLink(BuildingLink* pLink)
 {
 	for (LINK_LIST::EIterator iter = links.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2292,27 +2338,31 @@ void EditorObjectMgr::deleteLink(BuildingLink* pLink)
 	}
 }
 
-PCSTR EditorObjectMgr::getObjectName(int32_t ID) const
+PCSTR
+EditorObjectMgr::getObjectName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].name;
 }
 
-PCSTR EditorObjectMgr::getGroupName(int32_t ID) const { return groups[ID].name; }
+PCSTR
+EditorObjectMgr::getGroupName(int32_t ID) const
+{
+	return groups[ID].name;
+}
 
-void EditorObjectMgr::getUnitGroupNames(PCSTR* names, pint32_t ids, int32_t& numberOfEm) const
+void
+EditorObjectMgr::getUnitGroupNames(PCSTR* names, pint32_t ids, int32_t& numberOfEm) const
 {
 	int32_t counter = 0;
-	int32_t index   = 0;
+	int32_t index = 0;
 	for (GROUP_LIST::EConstIterator iter = groups.Begin(); !iter.IsDone(); index++, iter++)
 	{
-		if ((*iter).buildings.Count() &&
-			((*iter).buildings.GetHead().type == MECH_TYPE ||
-				(*iter).buildings.GetHead().type == GV_TYPE))
+		if ((*iter).buildings.Count() && ((*iter).buildings.GetHead().type == MECH_TYPE || (*iter).buildings.GetHead().type == GV_TYPE))
 		{
 			if (counter < numberOfEm)
 			{
 				names[counter] = (*iter).name;
-				ids[counter]   = index;
+				ids[counter] = index;
 			}
 			counter++;
 		}
@@ -2320,14 +2370,13 @@ void EditorObjectMgr::getUnitGroupNames(PCSTR* names, pint32_t ids, int32_t& num
 	numberOfEm = counter;
 }
 
-int32_t EditorObjectMgr::getUnitGroupCount() const
+int32_t
+EditorObjectMgr::getUnitGroupCount() const
 {
 	int32_t counter = 0;
 	for (GROUP_LIST::EConstIterator iter = groups.Begin(); !iter.IsDone(); iter++)
 	{
-		if ((*iter).buildings.Count() &&
-			((*iter).buildings.GetHead().type == MECH_TYPE ||
-				(*iter).buildings.GetHead().type == GV_TYPE))
+		if ((*iter).buildings.Count() && ((*iter).buildings.GetHead().type == MECH_TYPE || (*iter).buildings.GetHead().type == GV_TYPE))
 		{
 			counter++;
 		}
@@ -2335,7 +2384,8 @@ int32_t EditorObjectMgr::getUnitGroupCount() const
 	return counter;
 }
 
-void EditorObjectMgr::getSelectedUnits(UNIT_LIST& selUnits)
+void
+EditorObjectMgr::getSelectedUnits(UNIT_LIST& selUnits)
 {
 	for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2344,7 +2394,8 @@ void EditorObjectMgr::getSelectedUnits(UNIT_LIST& selUnits)
 	}
 }
 
-int32_t EditorObjectMgr::getNumberOfVariants(int32_t group, int32_t indexInGroup) const
+int32_t
+EditorObjectMgr::getNumberOfVariants(int32_t group, int32_t indexInGroup) const
 {
 	Building bldg = groups[group].buildings[indexInGroup];
 	if (!bldg.varNames)
@@ -2357,7 +2408,8 @@ int32_t EditorObjectMgr::getNumberOfVariants(int32_t group, int32_t indexInGroup
 	return i + 1;
 }
 
-void EditorObjectMgr::getVariantNames(
+void
+EditorObjectMgr::getVariantNames(
 	int32_t group, int32_t indexInGroup, PCSTR* names, int32_t& numberOfNames) const
 {
 	Building bldg = groups[group].buildings[indexInGroup];
@@ -2370,7 +2422,8 @@ void EditorObjectMgr::getVariantNames(
 	numberOfNames = i;
 }
 
-void EditorObjectMgr::registerSquadNum(uint32_t squadNum)
+void
+EditorObjectMgr::registerSquadNum(uint32_t squadNum)
 {
 	if (squadNum >= nextAvailableSquadNum)
 	{

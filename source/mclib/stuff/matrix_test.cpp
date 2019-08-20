@@ -8,7 +8,8 @@
 #include "stdinc.h"
 #include "stuffheaders.hpp"
 
-bool Matrix4D::TestClass()
+bool
+Matrix4D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Matrix4D test...\n"));
 	SPEW((GROUP_STUFF_TEST, "  Matrix4D::TestClass() is stubbed out!"));

@@ -30,14 +30,15 @@
 #include <gameos.hpp>
 
 //---------------------------------------------------------------------------------------------------
-inline void xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float leftEdge)
+inline void
+xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float leftEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
 	gos_VERTEX points[6];
 	memcpy(points, vertices, sizeof(gos_VERTEX) * numVertices);
 	//------------------------------------------
-	uint32_t first  = numVertices - 1;
+	uint32_t first = numVertices - 1;
 	uint32_t second = 0;
 	//----------------------------------------------
 	// Index to current vertex in clipped polygon.
@@ -69,26 +70,25 @@ inline void xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float lef
 		// if the line defined by first and second intersects the
 		// clipping plane, generate a new point and calculate its info.
 		//------------------------------------------------------------
-		if (((clipEdgeTest < leftEdge) && (points[second].x >= leftEdge)) ||
-			((clipEdgeTest >= leftEdge) && (points[second].x < leftEdge)))
+		if (((clipEdgeTest < leftEdge) && (points[second].x >= leftEdge)) || ((clipEdgeTest >= leftEdge) && (points[second].x < leftEdge)))
 		{
 			gos_VERTEX* workv = &(vertices[work]);
-			float sry		  = points[second].y;
-			float srx		  = points[second].x;
-			float srz		  = points[second].z;
-			float srw		  = points[second].rhw;
-			float sru		  = points[second].u;
-			float srv		  = points[second].v;
-			float fry		  = points[first].y;
-			float frx		  = points[first].x;
-			float frz		  = points[first].z;
-			float frw		  = points[first].rhw;
-			float fru		  = points[first].u;
-			float frv		  = points[first].v;
-			float mu		  = (leftEdge - srx) / (frx - srx);
-			workv->x		  = leftEdge;
-			workv->y		  = ((fry - sry) * mu) + sry;
-			workv->z		  = ((frz - srz) * mu) + srz;
+			float sry = points[second].y;
+			float srx = points[second].x;
+			float srz = points[second].z;
+			float srw = points[second].rhw;
+			float sru = points[second].u;
+			float srv = points[second].v;
+			float fry = points[first].y;
+			float frx = points[first].x;
+			float frz = points[first].z;
+			float frw = points[first].rhw;
+			float fru = points[first].u;
+			float frv = points[first].v;
+			float mu = (leftEdge - srx) / (frx - srx);
+			workv->x = leftEdge;
+			workv->y = ((fry - sry) * mu) + sry;
+			workv->z = ((frz - srz) * mu) + srz;
 			// Clipping color is HUGELY painful at this point.  Try cheating
 			// first!
 			if (clipEdgeTest < leftEdge)
@@ -102,8 +102,8 @@ inline void xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float lef
 				workv->frgb = points[second].frgb;
 			}
 			workv->rhw = ((frw - srw) * mu) + srw;
-			workv->u   = ((fru - sru) * mu) + sru;
-			workv->v   = ((frv - srv) * mu) + srv;
+			workv->u = ((fru - sru) * mu) + sru;
+			workv->v = ((frv - srv) * mu) + srv;
 			work++;
 			n_points++;
 		}
@@ -113,14 +113,15 @@ inline void xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float lef
 }
 
 //---------------------------------------------------------------------------------------------------
-inline void xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float rightEdge)
+inline void
+xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float rightEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
 	gos_VERTEX points[6];
 	memcpy(points, vertices, sizeof(gos_VERTEX) * numVertices);
 	//------------------------------------------
-	uint32_t first  = numVertices - 1;
+	uint32_t first = numVertices - 1;
 	uint32_t second = 0;
 	//----------------------------------------------
 	// Index to current vertex in clipped polygon.
@@ -152,26 +153,25 @@ inline void xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float ri
 		// if the line defined by first and second intersects the
 		// clipping plane, generate a new point and calculate its info.
 		//------------------------------------------------------------
-		if (((clipEdgeTest >= rightEdge) && (points[second].x < rightEdge)) ||
-			((clipEdgeTest < rightEdge) && (points[second].x >= rightEdge)))
+		if (((clipEdgeTest >= rightEdge) && (points[second].x < rightEdge)) || ((clipEdgeTest < rightEdge) && (points[second].x >= rightEdge)))
 		{
 			gos_VERTEX* workv = &(vertices[work]);
-			float sry		  = points[second].y;
-			float srx		  = points[second].x;
-			float srz		  = points[second].z;
-			float srw		  = points[second].rhw;
-			float sru		  = points[second].u;
-			float srv		  = points[second].v;
-			float fry		  = points[first].y;
-			float frx		  = points[first].x;
-			float frz		  = points[first].z;
-			float frw		  = points[first].rhw;
-			float fru		  = points[first].u;
-			float frv		  = points[first].v;
-			float mu		  = (rightEdge - srx) / (frx - srx);
-			workv->x		  = rightEdge - 1.0f;
-			workv->y		  = ((fry - sry) * mu) + sry;
-			workv->z		  = ((frz - srz) * mu) + srz;
+			float sry = points[second].y;
+			float srx = points[second].x;
+			float srz = points[second].z;
+			float srw = points[second].rhw;
+			float sru = points[second].u;
+			float srv = points[second].v;
+			float fry = points[first].y;
+			float frx = points[first].x;
+			float frz = points[first].z;
+			float frw = points[first].rhw;
+			float fru = points[first].u;
+			float frv = points[first].v;
+			float mu = (rightEdge - srx) / (frx - srx);
+			workv->x = rightEdge - 1.0f;
+			workv->y = ((fry - sry) * mu) + sry;
+			workv->z = ((frz - srz) * mu) + srz;
 			// Clipping color is HUGELY painful at this point.  Try cheating
 			// first!
 			if (clipEdgeTest >= rightEdge)
@@ -185,8 +185,8 @@ inline void xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float ri
 				workv->frgb = points[second].frgb;
 			}
 			workv->rhw = ((frw - srw) * mu) + srw;
-			workv->u   = ((fru - sru) * mu) + sru;
-			workv->v   = ((frv - srv) * mu) + srv;
+			workv->u = ((fru - sru) * mu) + sru;
+			workv->v = ((frv - srv) * mu) + srv;
 			work++;
 			n_points++;
 		}
@@ -196,14 +196,15 @@ inline void xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float ri
 }
 
 //---------------------------------------------------------------------------------------------------
-inline void yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topEdge)
+inline void
+yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
 	gos_VERTEX points[6];
 	memcpy(points, vertices, sizeof(gos_VERTEX) * numVertices);
 	//------------------------------------------
-	int32_t first  = numVertices - 1;
+	int32_t first = numVertices - 1;
 	int32_t second = 0;
 	//----------------------------------------------
 	// Index to current vertex in clipped polygon.
@@ -235,26 +236,25 @@ inline void yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topE
 		// if the line defined by first and second intersects the
 		// clipping plane, generate a new point and calculate its info.
 		//------------------------------------------------------------
-		if (((clipEdgeTest < topEdge) && (points[second].y >= topEdge)) ||
-			((clipEdgeTest >= topEdge) && (points[second].y < topEdge)))
+		if (((clipEdgeTest < topEdge) && (points[second].y >= topEdge)) || ((clipEdgeTest >= topEdge) && (points[second].y < topEdge)))
 		{
 			gos_VERTEX* workv = &(vertices[work]);
-			float sry		  = points[second].y;
-			float srx		  = points[second].x;
-			float srz		  = points[second].z;
-			float srw		  = points[second].rhw;
-			float sru		  = points[second].u;
-			float srv		  = points[second].v;
-			float fry		  = points[first].y;
-			float frx		  = points[first].x;
-			float frz		  = points[first].z;
-			float frw		  = points[first].rhw;
-			float fru		  = points[first].u;
-			float frv		  = points[first].v;
-			float mu		  = (topEdge - sry) / (fry - sry);
-			workv->y		  = topEdge;
-			workv->x		  = ((frx - srx) * mu) + srx;
-			workv->z		  = ((frz - srz) * mu) + srz;
+			float sry = points[second].y;
+			float srx = points[second].x;
+			float srz = points[second].z;
+			float srw = points[second].rhw;
+			float sru = points[second].u;
+			float srv = points[second].v;
+			float fry = points[first].y;
+			float frx = points[first].x;
+			float frz = points[first].z;
+			float frw = points[first].rhw;
+			float fru = points[first].u;
+			float frv = points[first].v;
+			float mu = (topEdge - sry) / (fry - sry);
+			workv->y = topEdge;
+			workv->x = ((frx - srx) * mu) + srx;
+			workv->z = ((frz - srz) * mu) + srz;
 			// Clipping color is HUGELY painful at this point.  Try cheating
 			// first!
 			if (clipEdgeTest < topEdge)
@@ -268,8 +268,8 @@ inline void yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topE
 				workv->frgb = points[second].frgb;
 			}
 			workv->rhw = ((frw - srw) * mu) + srw;
-			workv->u   = ((fru - sru) * mu) + sru;
-			workv->v   = ((frv - srv) * mu) + srv;
+			workv->u = ((fru - sru) * mu) + sru;
+			workv->v = ((frv - srv) * mu) + srv;
 			work++;
 			n_points++;
 		}
@@ -279,14 +279,15 @@ inline void yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topE
 }
 
 //---------------------------------------------------------------------------------------------------
-inline void yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float bottomEdge)
+inline void
+yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float bottomEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
 	gos_VERTEX points[6];
 	memcpy(points, vertices, sizeof(gos_VERTEX) * numVertices);
 	//------------------------------------------
-	int32_t first  = numVertices - 1;
+	int32_t first = numVertices - 1;
 	int32_t second = 0;
 	//----------------------------------------------
 	// Index to current vertex in clipped polygon.
@@ -318,26 +319,25 @@ inline void yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float b
 		// if the line defined by first and second intersects the
 		// clipping plane, generate a new point and calculate its info.
 		//------------------------------------------------------------
-		if (((clipEdgeTest >= bottomEdge) && (points[second].y < bottomEdge)) ||
-			((clipEdgeTest < bottomEdge) && (points[second].y >= bottomEdge)))
+		if (((clipEdgeTest >= bottomEdge) && (points[second].y < bottomEdge)) || ((clipEdgeTest < bottomEdge) && (points[second].y >= bottomEdge)))
 		{
 			gos_VERTEX* workv = &(vertices[work]);
-			float sry		  = points[second].y;
-			float srx		  = points[second].x;
-			float srz		  = points[second].z;
-			float srw		  = points[second].rhw;
-			float sru		  = points[second].u;
-			float srv		  = points[second].v;
-			float fry		  = points[first].y;
-			float frx		  = points[first].x;
-			float frz		  = points[first].z;
-			float frw		  = points[first].rhw;
-			float fru		  = points[first].u;
-			float frv		  = points[first].v;
-			float mu		  = (bottomEdge - sry) / (fry - sry);
-			workv->y		  = bottomEdge - 1.0f;
-			workv->x		  = ((frx - srx) * mu) + srx;
-			workv->z		  = ((frz - srz) * mu) + srz;
+			float sry = points[second].y;
+			float srx = points[second].x;
+			float srz = points[second].z;
+			float srw = points[second].rhw;
+			float sru = points[second].u;
+			float srv = points[second].v;
+			float fry = points[first].y;
+			float frx = points[first].x;
+			float frz = points[first].z;
+			float frw = points[first].rhw;
+			float fru = points[first].u;
+			float frv = points[first].v;
+			float mu = (bottomEdge - sry) / (fry - sry);
+			workv->y = bottomEdge - 1.0f;
+			workv->x = ((frx - srx) * mu) + srx;
+			workv->z = ((frz - srz) * mu) + srz;
 			// Clipping color is HUGELY painful at this point.  Try cheating
 			// first!
 			if (clipEdgeTest >= bottomEdge)
@@ -351,8 +351,8 @@ inline void yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float b
 				workv->frgb = points[second].frgb;
 			}
 			workv->rhw = ((frw - srw) * mu) + srw;
-			workv->u   = ((fru - sru) * mu) + sru;
-			workv->v   = ((frv - srv) * mu) + srv;
+			workv->u = ((fru - sru) * mu) + sru;
+			workv->v = ((frv - srv) * mu) + srv;
 			work++;
 			n_points++;
 		}

@@ -42,15 +42,23 @@
 
 //---------------------------------------------------------------------------
 // class CSVIniFile
-CSVFile::CSVFile(void) : MechFile() { totalRows = totalCols = 0L; }
-
-//---------------------------------------------------------------------------
-CSVFile::~CSVFile(void) { close(); }
-
-//---------------------------------------------------------------------------
-int32_t CSVFile::countRows(void)
+CSVFile::CSVFile(void) :
+	MechFile()
 {
-	int32_t count		= 0;
+	totalRows = totalCols = 0L;
+}
+
+//---------------------------------------------------------------------------
+CSVFile::~CSVFile(void)
+{
+	close();
+}
+
+//---------------------------------------------------------------------------
+int32_t
+CSVFile::countRows(void)
+{
+	int32_t count = 0;
 	int32_t oldPosition = logicalPosition;
 	seek(0); // Start at the top.
 	char tmp[2048];
@@ -67,7 +75,8 @@ int32_t CSVFile::countRows(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::countCols(void)
+int32_t
+CSVFile::countCols(void)
 {
 	int32_t count = 0, maxCols = 0;
 	int32_t oldPosition = logicalPosition;
@@ -92,7 +101,8 @@ int32_t CSVFile::countCols(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::getNextWord(PSTR& line, PSTR buffer, uint32_t bufLen)
+int32_t
+CSVFile::getNextWord(PSTR& line, PSTR buffer, uint32_t bufLen)
 {
 	//--------------------------------------------------
 	// Check to see if we are at end of line
@@ -120,7 +130,7 @@ int32_t CSVFile::getNextWord(PSTR& line, PSTR buffer, uint32_t bufLen)
 		return (-1);
 	//-------------------------------------------
 	// Find length of word from current location
-	PSTR startOfWord	= line;
+	PSTR startOfWord = line;
 	uint32_t wordLength = 0;
 	while ((*line != '\0') && ((*line != ',')))
 	{
@@ -135,7 +145,8 @@ int32_t CSVFile::getNextWord(PSTR& line, PSTR buffer, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::afterOpen(void)
+int32_t
+CSVFile::afterOpen(void)
 {
 	//-------------------------------------------------------
 	// Check if we opened this with CREATE and write the
@@ -155,7 +166,8 @@ int32_t CSVFile::afterOpen(void)
 }
 
 //---------------------------------------------------------------------------
-void CSVFile::atClose(void)
+void
+CSVFile::atClose(void)
 {
 	//------------------------------------------------------------
 	// Check if we are in create mode and if so, write the footer
@@ -167,14 +179,16 @@ void CSVFile::atClose(void)
 }
 
 //---------------------------------------------------------------------------
-float CSVFile::textToFloat(PSTR num)
+float
+CSVFile::textToFloat(PSTR num)
 {
 	float result = atof(num);
 	return (result);
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::textToLong(PSTR num)
+int32_t
+CSVFile::textToLong(PSTR num)
 {
 	int32_t result = 0;
 	//------------------------------------
@@ -193,12 +207,12 @@ int32_t CSVFile::textToLong(PSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -224,7 +238,8 @@ int32_t CSVFile::textToLong(PSTR num)
 }
 
 //---------------------------------------------------------------------------
-int16_t CSVFile::textToShort(PSTR num)
+int16_t
+CSVFile::textToShort(PSTR num)
 {
 	int16_t result = 0;
 	//------------------------------------
@@ -243,12 +258,12 @@ int16_t CSVFile::textToShort(PSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -274,7 +289,8 @@ int16_t CSVFile::textToShort(PSTR num)
 }
 
 //---------------------------------------------------------------------------
-char CSVFile::textToChar(PSTR num)
+char
+CSVFile::textToChar(PSTR num)
 {
 	char result = 0;
 	//------------------------------------
@@ -293,12 +309,12 @@ char CSVFile::textToChar(PSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -324,7 +340,8 @@ char CSVFile::textToChar(PSTR num)
 }
 
 //---------------------------------------------------------------------------
-uint32_t CSVFile::textToULong(PSTR num)
+uint32_t
+CSVFile::textToULong(PSTR num)
 {
 	uint32_t result = 0;
 	//------------------------------------
@@ -343,12 +360,12 @@ uint32_t CSVFile::textToULong(PSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -374,7 +391,8 @@ uint32_t CSVFile::textToULong(PSTR num)
 }
 
 //---------------------------------------------------------------------------
-uint16_t CSVFile::textToUShort(PSTR num)
+uint16_t
+CSVFile::textToUShort(PSTR num)
 {
 	uint16_t result = 0;
 	//------------------------------------
@@ -393,12 +411,12 @@ uint16_t CSVFile::textToUShort(PSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -424,7 +442,8 @@ uint16_t CSVFile::textToUShort(PSTR num)
 }
 
 //---------------------------------------------------------------------------
-uint8_t CSVFile::textToUCHAR(PSTR num)
+uint8_t
+CSVFile::textToUCHAR(PSTR num)
 {
 	uint8_t result = 0;
 	//------------------------------------
@@ -443,12 +462,12 @@ uint8_t CSVFile::textToUCHAR(PSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -474,21 +493,22 @@ uint8_t CSVFile::textToUCHAR(PSTR num)
 }
 
 //---------------------------------------------------------------------------
-bool CSVFile::booleanToLong(PSTR num)
+bool
+CSVFile::booleanToLong(PSTR num)
 {
 	char testChar = 0;
 	while (num[testChar] && isspace(num[testChar]))
 		testChar++;
 	// 'N' == NO if you can believe that
-	if ((toupper(num[testChar]) == 'F') || (toupper(num[testChar]) == '0') ||
-		(toupper(num[testChar]) == 'N'))
+	if ((toupper(num[testChar]) == 'F') || (toupper(num[testChar]) == '0') || (toupper(num[testChar]) == 'N'))
 		return false;
 	else
 		return (TRUE);
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::floatToText(PSTR result, float num, uint32_t bufLen)
+int32_t
+CSVFile::floatToText(PSTR result, float num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%f4", num);
@@ -501,7 +521,8 @@ int32_t CSVFile::floatToText(PSTR result, float num, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::longToTextDec(PSTR result, int32_t num, uint32_t bufLen)
+int32_t
+CSVFile::longToTextDec(PSTR result, int32_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%d", num);
@@ -514,7 +535,8 @@ int32_t CSVFile::longToTextDec(PSTR result, int32_t num, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::longToTextHex(PSTR result, int32_t num, uint32_t bufLen)
+int32_t
+CSVFile::longToTextHex(PSTR result, int32_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "0x%x", num);
@@ -527,7 +549,8 @@ int32_t CSVFile::longToTextHex(PSTR result, int32_t num, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::shortToTextDec(PSTR result, int16_t num, uint32_t bufLen)
+int32_t
+CSVFile::shortToTextDec(PSTR result, int16_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%d", num);
@@ -540,7 +563,8 @@ int32_t CSVFile::shortToTextDec(PSTR result, int16_t num, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::shortToTextHex(PSTR result, int16_t num, uint32_t bufLen)
+int32_t
+CSVFile::shortToTextHex(PSTR result, int16_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "0x%x", num);
@@ -553,7 +577,8 @@ int32_t CSVFile::shortToTextHex(PSTR result, int16_t num, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::byteToTextDec(PSTR result, byte num, uint32_t bufLen)
+int32_t
+CSVFile::byteToTextDec(PSTR result, byte num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%d", num);
@@ -566,7 +591,8 @@ int32_t CSVFile::byteToTextDec(PSTR result, byte num, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::byteToTextHex(PSTR result, byte num, uint32_t bufLen)
+int32_t
+CSVFile::byteToTextHex(PSTR result, byte num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "0x%x", num);
@@ -579,7 +605,8 @@ int32_t CSVFile::byteToTextHex(PSTR result, byte num, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::open(PCSTR fName, FileMode _mode, int32_t numChild)
+int32_t
+CSVFile::open(PCSTR fName, FileMode _mode, int32_t numChild)
 {
 	int32_t result = MechFile::open(fName, _mode, numChild);
 	if (result != NO_ERROR)
@@ -590,9 +617,10 @@ int32_t CSVFile::open(PCSTR fName, FileMode _mode, int32_t numChild)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
+int32_t
+CSVFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 {
-	numChild	   = -1; // Force all parented CSVs to load from RAM.
+	numChild = -1; // Force all parented CSVs to load from RAM.
 	int32_t result = MechFile::open(_parent, fileSize, numChild);
 	if (result != NO_ERROR)
 		return (result);
@@ -601,7 +629,8 @@ int32_t CSVFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::create(PSTR fName)
+int32_t
+CSVFile::create(PSTR fName)
 {
 	fName;
 	// STOP(("CSV file write is not supported %s",fName));
@@ -609,7 +638,8 @@ int32_t CSVFile::create(PSTR fName)
 }
 
 //---------------------------------------------------------------------------
-void CSVFile::close(void)
+void
+CSVFile::close(void)
 {
 	if (isOpen())
 	{
@@ -619,7 +649,8 @@ void CSVFile::close(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::seekRowCol(uint32_t row, uint32_t col)
+int32_t
+CSVFile::seekRowCol(uint32_t row, uint32_t col)
 {
 	if ((row > totalRows) || (col > totalCols))
 		return -1;
@@ -661,7 +692,8 @@ int32_t CSVFile::seekRowCol(uint32_t row, uint32_t col)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readFloat(uint32_t row, uint32_t col, float& value)
+int32_t
+CSVFile::readFloat(uint32_t row, uint32_t col, float& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)
@@ -674,7 +706,8 @@ int32_t CSVFile::readFloat(uint32_t row, uint32_t col, float& value)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readLong(uint32_t row, uint32_t col, int32_t& value)
+int32_t
+CSVFile::readLong(uint32_t row, uint32_t col, int32_t& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)
@@ -687,7 +720,8 @@ int32_t CSVFile::readLong(uint32_t row, uint32_t col, int32_t& value)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readBoolean(uint32_t row, uint32_t col, bool& value)
+int32_t
+CSVFile::readBoolean(uint32_t row, uint32_t col, bool& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)
@@ -700,7 +734,8 @@ int32_t CSVFile::readBoolean(uint32_t row, uint32_t col, bool& value)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readShort(uint32_t row, uint32_t col, int16_t& value)
+int32_t
+CSVFile::readShort(uint32_t row, uint32_t col, int16_t& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)
@@ -713,7 +748,8 @@ int32_t CSVFile::readShort(uint32_t row, uint32_t col, int16_t& value)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readChar(uint32_t row, uint32_t col, char& value)
+int32_t
+CSVFile::readChar(uint32_t row, uint32_t col, char& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)
@@ -726,7 +762,8 @@ int32_t CSVFile::readChar(uint32_t row, uint32_t col, char& value)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readULong(uint32_t row, uint32_t col, uint32_t& value)
+int32_t
+CSVFile::readULong(uint32_t row, uint32_t col, uint32_t& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)
@@ -739,7 +776,8 @@ int32_t CSVFile::readULong(uint32_t row, uint32_t col, uint32_t& value)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readUShort(uint32_t row, uint32_t col, uint16_t& value)
+int32_t
+CSVFile::readUShort(uint32_t row, uint32_t col, uint16_t& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)
@@ -752,7 +790,8 @@ int32_t CSVFile::readUShort(uint32_t row, uint32_t col, uint16_t& value)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readUCHAR(uint32_t row, uint32_t col, uint8_t& value)
+int32_t
+CSVFile::readUCHAR(uint32_t row, uint32_t col, uint8_t& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)
@@ -765,7 +804,8 @@ int32_t CSVFile::readUCHAR(uint32_t row, uint32_t col, uint8_t& value)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::copyString(PSTR dest, PSTR src, uint32_t bufLen)
+int32_t
+CSVFile::copyString(PSTR dest, PSTR src, uint32_t bufLen)
 {
 	uint32_t offset = 0;
 	//---------------------------------------
@@ -789,7 +829,8 @@ int32_t CSVFile::copyString(PSTR dest, PSTR src, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readString(uint32_t row, uint32_t col, PSTR result, uint32_t bufferSize)
+int32_t
+CSVFile::readString(uint32_t row, uint32_t col, PSTR result, uint32_t bufferSize)
 {
 	int32_t res = seekRowCol(row, col);
 	if (res == NO_ERROR)

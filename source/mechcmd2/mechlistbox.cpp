@@ -20,15 +20,15 @@ MechListBox.cpp			: Implementation of the MechListBox component.
 
 MechListBoxItem* MechListBoxItem::s_templateItem = nullptr;
 
-bool MechListBox::s_DrawCBills			  = true;
+bool MechListBox::s_DrawCBills = true;
 bool MechListBoxItem::bAddCalledThisFrame = 0;
 
 MechListBox::MechListBox(bool bDel, bool bInclude)
 {
 	bDeleteIfNoInventory = bDel;
-	bIncludeForceGroup   = bInclude;
-	bOrange				 = 0;
-	skipAmount			 = 5;
+	bIncludeForceGroup = bInclude;
+	bOrange = 0;
+	skipAmount = 5;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -40,12 +40,25 @@ MechListBox::~MechListBox()
 	MechListBoxItem::s_templateItem = nullptr;
 }
 
-void MechListBox::setScrollBarOrange() { scrollBar->setOrange(); }
-void MechListBox::setScrollBarGreen() { scrollBar->setGreen(); }
+void
+MechListBox::setScrollBarOrange()
+{
+	scrollBar->setOrange();
+}
+void
+MechListBox::setScrollBarGreen()
+{
+	scrollBar->setGreen();
+}
 
-void MechListBox::drawCBills(bool bDraw) { s_DrawCBills = bDraw; }
+void
+MechListBox::drawCBills(bool bDraw)
+{
+	s_DrawCBills = bDraw;
+}
 
-void MechListBox::update()
+void
+MechListBox::update()
 {
 	aListBox::update();
 	MechListBoxItem::bAddCalledThisFrame = false;
@@ -59,8 +72,7 @@ void MechListBox::update()
 				i--;
 				disableItemsThatCanNotGoInFG();
 				// find better thing to select if necessary
-				if (itemSelected >= itemCount || itemSelected == -1 ||
-					items[itemSelected]->getState() == aListItem::DISABLED
+				if (itemSelected >= itemCount || itemSelected == -1 || items[itemSelected]->getState() == aListItem::DISABLED
 					//	|| !LogisticsData::instance->canAddMechToForceGroup(
 					//((MechListBoxItem*)items[itemSelected])->getMech()  )
 				)
@@ -82,7 +94,8 @@ void MechListBox::update()
 	}
 }
 
-LogisticsMech* MechListBox::getCurrentMech()
+LogisticsMech*
+MechListBox::getCurrentMech()
 {
 	if (itemSelected != -1)
 	{
@@ -91,7 +104,8 @@ LogisticsMech* MechListBox::getCurrentMech()
 	return 0;
 }
 
-int32_t MechListBox::init()
+int32_t
+MechListBox::init()
 {
 	if (MechListBoxItem::s_templateItem)
 		return 0;
@@ -111,7 +125,8 @@ int32_t MechListBox::init()
 }
 
 //-------------------------------------------------------------------------------------------------
-bool MechListBoxItem::pointInside(int32_t xPos, int32_t yPos) const
+bool
+MechListBoxItem::pointInside(int32_t xPos, int32_t yPos) const
 {
 	int32_t minX = location[0].x + outline.globalX();
 	int32_t minY = location[0].y + outline.globalY();
@@ -124,13 +139,13 @@ bool MechListBoxItem::pointInside(int32_t xPos, int32_t yPos) const
 MechListBoxItem::MechListBoxItem(LogisticsMech* pRefMech, int32_t count)
 {
 	bIncludeForceGroup = 0;
-	bOrange			   = 0;
+	bOrange = 0;
 	if (s_templateItem)
 	{
 		*this = *s_templateItem;
 	}
 	animTime = 0.f;
-	pMech	= pRefMech;
+	pMech = pRefMech;
 	if (!pMech)
 		return;
 	aObject::init(0, outline.top(), outline.width(), outline.height());
@@ -160,9 +175,13 @@ MechListBoxItem::MechListBoxItem(LogisticsMech* pRefMech, int32_t count)
 	bDim = 0;
 }
 
-MechListBoxItem::~MechListBoxItem() { removeAllChildren(false); }
+MechListBoxItem::~MechListBoxItem()
+{
+	removeAllChildren(false);
+}
 
-void MechListBoxItem::init(FitIniFile& file)
+void
+MechListBoxItem::init(FitIniFile& file)
 {
 	if (!s_templateItem)
 	{
@@ -206,7 +225,8 @@ void MechListBoxItem::init(FitIniFile& file)
 	}
 }
 
-void MechListBoxItem::assignAnimation(FitIniFile& file, int32_t& curAnim)
+void
+MechListBoxItem::assignAnimation(FitIniFile& file, int32_t& curAnim)
 {
 	char tmpStr[64];
 	s_templateItem->animationIDs[curAnim] = -1;
@@ -216,27 +236,28 @@ void MechListBoxItem::assignAnimation(FitIniFile& file, int32_t& curAnim)
 		{
 			if (isdigit(tmpStr[j]))
 			{
-				tmpStr[j + 1]						  = 0;
+				tmpStr[j + 1] = 0;
 				s_templateItem->animationIDs[curAnim] = atoi(&tmpStr[j]);
 			}
 		}
 	}
 	curAnim++;
 }
-MechListBoxItem& MechListBoxItem::operator=(const MechListBoxItem& src)
+MechListBoxItem&
+MechListBoxItem::operator=(const MechListBoxItem& src)
 {
 	if (&src != this)
 	{
 		chassisName = src.chassisName;
-		costIcon	= src.costIcon;
-		costText	= src.costText;
-		line		= src.line;
-		mechIcon	= src.mechIcon;
-		outline		= src.outline;
+		costIcon = src.costIcon;
+		costText = src.costText;
+		line = src.line;
+		mechIcon = src.mechIcon;
+		outline = src.outline;
 		variantName = src.variantName;
-		weightIcon  = src.weightIcon;
-		weightText  = src.weightText;
-		countText   = src.countText;
+		weightIcon = src.weightIcon;
+		weightText = src.weightText;
+		countText = src.countText;
 		for (size_t i = 0; i < ANIMATION_COUNT; i++)
 		{
 			animations[0][i] = src.animations[0][i];
@@ -250,7 +271,8 @@ MechListBoxItem& MechListBoxItem::operator=(const MechListBoxItem& src)
 	return *this;
 }
 
-void MechListBoxItem::update()
+void
+MechListBoxItem::update()
 {
 	char text[32];
 	int32_t oldMechCount = mechCount;
@@ -288,8 +310,7 @@ void MechListBoxItem::update()
 			animations[bOrange][i].setState(aAnimGroup::PRESSED);
 		//	if ( userInput->isLeftClick() && isInside )
 		//		setMech();
-		if (userInput->isLeftDrag() &&
-			pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		if (userInput->isLeftDrag() && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 			startDrag();
 	}
 	else if (state == aListItem::HIGHLITE)
@@ -317,7 +338,8 @@ void MechListBoxItem::update()
 	aObject::update();
 }
 
-void MechListBoxItem::render()
+void
+MechListBoxItem::render()
 {
 	if (!MechListBox::s_DrawCBills)
 	{
@@ -357,13 +379,15 @@ void MechListBoxItem::render()
 	line.render(location[0].x, location[0].y);
 }
 
-void MechListBoxItem::setMech()
+void
+MechListBoxItem::setMech()
 {
 	MechBayScreen::instance()->setMech(pMech);
 	MechPurchaseScreen::instance()->setMech(pMech, true);
 }
 
-void MechListBoxItem::startDrag()
+void
+MechListBoxItem::startDrag()
 {
 	if (state != DISABLED)
 	{
@@ -372,10 +396,11 @@ void MechListBoxItem::startDrag()
 	}
 }
 
-void MechListBoxItem::doAdd()
+void
+MechListBoxItem::doAdd()
 {
 	if (!bAddCalledThisFrame) // only select one, sometimes we auto scroll,
-							  // don't want to be selecting each time
+		// don't want to be selecting each time
 	{
 		MechBayScreen::instance()->handleMessage(ID, MB_MSG_ADD);
 		MechPurchaseScreen::instance()->handleMessage(ID, MB_MSG_ADD);
@@ -383,18 +408,19 @@ void MechListBoxItem::doAdd()
 	}
 }
 
-void MechListBox::initIcon(LogisticsMech* pMech, aObject& mechIcon)
+void
+MechListBox::initIcon(LogisticsMech* pMech, aObject& mechIcon)
 {
-	mechIcon	   = (MechListBoxItem::s_templateItem->mechIcon);
-	int32_t index  = pMech->getIconIndex();
+	mechIcon = (MechListBoxItem::s_templateItem->mechIcon);
+	int32_t index = pMech->getIconIndex();
 	int32_t xIndex = index % 10;
 	int32_t yIndex = index / 10;
-	float fX	   = xIndex;
-	float fY	   = yIndex;
-	float width	= mechIcon.width();
-	float height   = mechIcon.height();
-	float u		   = (fX * width);
-	float v		   = (fY * height);
+	float fX = xIndex;
+	float fY = yIndex;
+	float width = mechIcon.width();
+	float height = mechIcon.height();
+	float u = (fX * width);
+	float v = (fY * height);
 	fX += 1.f;
 	fY += 1.f;
 	float u2 = (fX * width);
@@ -403,7 +429,8 @@ void MechListBox::initIcon(LogisticsMech* pMech, aObject& mechIcon)
 	mechIcon.setUVs(u, v, u2, v2);
 }
 
-int32_t MechListBox::AddItem(aListItem* itemString)
+int32_t
+MechListBox::AddItem(aListItem* itemString)
 {
 	itemString->setID(ID);
 	MechListBoxItem* pItem = dynamic_cast<MechListBoxItem*>(itemString);
@@ -413,7 +440,7 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 	addedName = tmp;
 	if (pItem)
 	{
-		pItem->bOrange			  = bOrange;
+		pItem->bOrange = bOrange;
 		pItem->bIncludeForceGroup = bIncludeForceGroup;
 		if (!bDeleteIfNoInventory)
 		{
@@ -432,24 +459,15 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 				return InsertItem(itemString, i);
 				break;
 			}
-			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() ==
-					pItem->pMech->getMaxWeight() &&
-				chassisName.Compare(addedName) > 0)
+			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() == pItem->pMech->getMaxWeight() && chassisName.Compare(addedName) > 0)
 			{
 				return InsertItem(itemString, i);
 			}
-			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() ==
-					pItem->pMech->getMaxWeight() &&
-				chassisName.Compare(addedName) == 0 &&
-				((MechListBoxItem*)itemString)->pMech->getName().Find("Prime") != -1)
+			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() == pItem->pMech->getMaxWeight() && chassisName.Compare(addedName) == 0 && ((MechListBoxItem*)itemString)->pMech->getName().Find("Prime") != -1)
 			{
 				return InsertItem(itemString, i);
 			}
-			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() ==
-					pItem->pMech->getMaxWeight() &&
-				chassisName.Compare(addedName) == 0 &&
-				(((MechListBoxItem*)items[i])->pMech->getName().Find("Prime") == -1) &&
-				((MechListBoxItem*)items[i])->pMech->getName().Compare(pItem->pMech->getName()) > 0)
+			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() == pItem->pMech->getMaxWeight() && chassisName.Compare(addedName) == 0 && (((MechListBoxItem*)items[i])->pMech->getName().Find("Prime") == -1) && ((MechListBoxItem*)items[i])->pMech->getName().Compare(pItem->pMech->getName()) > 0)
 			{
 				return InsertItem(itemString, i);
 			}
@@ -458,7 +476,8 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 	return aListBox::AddItem(itemString);
 }
 
-void MechListBox::dimItem(LogisticsMech* pMech, bool bDim)
+void
+MechListBox::dimItem(LogisticsMech* pMech, bool bDim)
 {
 	for (size_t i = 0; i < itemCount; i++)
 	{
@@ -469,7 +488,8 @@ void MechListBox::dimItem(LogisticsMech* pMech, bool bDim)
 	}
 }
 
-void MechListBox::undimAll()
+void
+MechListBox::undimAll()
 {
 	for (size_t i = 0; i < itemCount; i++)
 	{
@@ -477,7 +497,8 @@ void MechListBox::undimAll()
 	}
 }
 
-void MechListBox::disableItemsThatCostMoreThanRP()
+void
+MechListBox::disableItemsThatCostMoreThanRP()
 {
 	bool bDisabledSel = 0;
 	for (size_t i = 0; i < itemCount; i++)
@@ -510,7 +531,8 @@ void MechListBox::disableItemsThatCostMoreThanRP()
 	}
 }
 
-void MechListBox::disableItemsThatCanNotGoInFG()
+void
+MechListBox::disableItemsThatCanNotGoInFG()
 {
 	bool bDisabledSel = 0;
 	for (size_t i = 0; i < itemCount; i++)
@@ -543,7 +565,8 @@ void MechListBox::disableItemsThatCanNotGoInFG()
 	}
 }
 
-void MechListBox::setOrange(bool bNewOrange)
+void
+MechListBox::setOrange(bool bNewOrange)
 {
 	bOrange = bNewOrange ? 1 : 0;
 	for (size_t i = 0; i < itemCount; i++)

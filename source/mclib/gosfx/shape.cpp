@@ -15,8 +15,8 @@
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape__Specification::Shape__Specification(std::iostream stream, uint32_t gfx_version)
-	: Singleton__Specification(gosFX::ShapeClassID, stream, gfx_version)
+gosFX::Shape__Specification::Shape__Specification(std::iostream stream, uint32_t gfx_version) :
+	Singleton__Specification(gosFX::ShapeClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	_ASSERT(m_class == ShapeClassID);
@@ -33,8 +33,8 @@ gosFX::Shape__Specification::Shape__Specification(std::iostream stream, uint32_t
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape__Specification::Shape__Specification(MidLevelRenderer::MLRShape* shape)
-	: Singleton__Specification(gosFX::ShapeClassID)
+gosFX::Shape__Specification::Shape__Specification(MidLevelRenderer::MLRShape* shape) :
+	Singleton__Specification(gosFX::ShapeClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -56,7 +56,8 @@ gosFX::Shape__Specification::~Shape__Specification()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape__Specification* gosFX::Shape__Specification::Make(
+gosFX::Shape__Specification*
+gosFX::Shape__Specification::Make(
 	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
@@ -70,7 +71,8 @@ gosFX::Shape__Specification* gosFX::Shape__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape__Specification::Save(std::iostream stream)
+void
+gosFX::Shape__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -82,7 +84,8 @@ void gosFX::Shape__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape__Specification::Copy(Shape__Specification* spec)
+void
+gosFX::Shape__Specification::Copy(Shape__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -91,7 +94,7 @@ void gosFX::Shape__Specification::Copy(Shape__Specification* spec)
 	// gos_PushCurrentHeap(Heap);
 #endif
 	m_radius = spec->m_radius;
-	m_shape  = spec->m_shape;
+	m_shape = spec->m_shape;
 	// gos_PopCurrentHeap();
 	Check_Object(m_shape);
 	m_shape->AttachReference();
@@ -99,7 +102,8 @@ void gosFX::Shape__Specification::Copy(Shape__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
+void
+gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 {
 	// Check_Object(this);
 	//
@@ -128,7 +132,7 @@ void gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 		// distance any point is from the origin
 		//-----------------------------------------------------------------
 		//
-		m_radius	  = 0.0f;
+		m_radius = 0.0f;
 		int32_t count = m_shape->GetNum();
 		for (size_t i = 0; i < count; ++i)
 		{
@@ -156,7 +160,8 @@ gosFX::Shape::ClassData* gosFX::Shape::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape::InitializeClass()
+void
+gosFX::Shape::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -167,7 +172,8 @@ void gosFX::Shape::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape::TerminateClass()
+void
+gosFX::Shape::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -176,7 +182,8 @@ void gosFX::Shape::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape::Shape(Specification* spec, uint32_t flags) : Singleton(DefaultData, spec, flags)
+gosFX::Shape::Shape(Specification* spec, uint32_t flags) :
+	Singleton(DefaultData, spec, flags)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_radius = spec->m_radius;
@@ -184,7 +191,8 @@ gosFX::Shape::Shape(Specification* spec, uint32_t flags) : Singleton(DefaultData
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape* gosFX::Shape::Make(Specification* spec, uint32_t flags)
+gosFX::Shape*
+gosFX::Shape::Make(Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
 #ifdef _GAMEOS_HPP_
@@ -197,7 +205,8 @@ gosFX::Shape* gosFX::Shape::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape::Draw(DrawInfo* info)
+void
+gosFX::Shape::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -210,13 +219,13 @@ void gosFX::Shape::Draw(DrawInfo* info)
 	MidLevelRenderer::DrawScalableShapeInformation dinfo;
 	MidLevelRenderer::MLRShape* shape = GetSpecification()->m_shape;
 	dinfo.clippingFlags.SetClippingState(0x3f);
-	dinfo.worldToShape  = nullptr;
+	dinfo.worldToShape = nullptr;
 	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	dinfo.state.Combine(info->m_state, spec->m_state);
-	dinfo.activeLights	 = nullptr;
+	dinfo.activeLights = nullptr;
 	dinfo.nrOfActiveLights = 0;
-	dinfo.shape			   = shape;
+	dinfo.shape = shape;
 	Stuff::Vector3D scale(m_scale, m_scale, m_scale);
 	dinfo.scaling = &scale;
 	dinfo.paintMe = &m_color;
@@ -264,4 +273,8 @@ void gosFX::Shape::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::Shape::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

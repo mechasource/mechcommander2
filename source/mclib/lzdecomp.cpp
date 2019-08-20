@@ -13,11 +13,11 @@
 
 typedef enum __lzdecomp_const
 {
-	HASH_CLEAR			 = 256, // clear hash table command code
-	HASH_EOF			 = 257, // End Of Data command code
-	HASH_FREE			 = 258, // First Hash Table Chain Offset Value
-	BASE_BITS			 = 9,
-	MAX_BIT_INDEX		 = (1 << BASE_BITS),
+	HASH_CLEAR = 256, // clear hash table command code
+	HASH_EOF = 257, // End Of Data command code
+	HASH_FREE = 258, // First Hash Table Chain Offset Value
+	BASE_BITS = 9,
+	MAX_BIT_INDEX = (1 << BASE_BITS),
 	NO_RAM_FOR_LZ_DECOMP = 0xCBCB0002,
 };
 
@@ -35,12 +35,12 @@ typedef struct HashStruct
 typedef HashStruct* HashStructPtr;
 
 HashStructPtr LZOldChain = nullptr; // Old Chain Value Found
-HashStructPtr LZChain	= nullptr; // Current Chain Value Found
-uint32_t LZMaxIndex		 = 0;		// Max index value in Hash Table
-uint32_t LZCodeMask		 = 0;
-uint32_t LZFreeIndex	 = 0;		// Current Free index into Hash Table
-puint8_t LZSrcBufEnd	 = nullptr; // ptr to 3rd from last byte in src buffer
-puint8_t LZOrigDOSBuf	= nullptr; // original offset to start of src buffer
+HashStructPtr LZChain = nullptr; // Current Chain Value Found
+uint32_t LZMaxIndex = 0; // Max index value in Hash Table
+uint32_t LZCodeMask = 0;
+uint32_t LZFreeIndex = 0; // Current Free index into Hash Table
+puint8_t LZSrcBufEnd = nullptr; // ptr to 3rd from last byte in src buffer
+puint8_t LZOrigDOSBuf = nullptr; // original offset to start of src buffer
 char LZHashBuffer[16384];
 char LZOldSuffix = 0; // Current Suffix Value found
 
@@ -50,7 +50,8 @@ char LZOldSuffix = 0; // Current Suffix Value found
 // LZ DeCompress Routine
 // Takes a pointer to dest buffer, a pointer to source buffer and len of source.
 // returns length of decompressed image.
-size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
+size_t
+LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 {
 	size_t result = 0;
 	__asm {
@@ -81,13 +82,13 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		mov		ch, BASE_BITS
 		jmp		GetCode
 
-			//--------------------------------------------------------------------------
-			//
-			// ClearHash restarts decompression assuming that it is starting
-			// from the
-			//           beginning
-			//
-			//--------------------------------------------------------------------------
+				//--------------------------------------------------------------------------
+				//
+				// ClearHash restarts decompression assuming that it is starting
+				// from the
+				//           beginning
+				//
+				//--------------------------------------------------------------------------
 
 		ClearHash:
 		mov		ch, BASE_BITS // set up for nine bit codes
@@ -116,15 +117,15 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		add		esi, ebx
 		nop
 
-		mov		LZOldChain, eax		   // previous Chain Offset.
+		mov		LZOldChain, eax // previous Chain Offset.
 		mov		LZOldSuffix, al
 
 		mov		[edi], al
 		inc		edi
-				   //-------------------------------------------------------------------------
-				   // ReadCode gets the next hash code (9 BITS) from LZDOSBuff
-				   //         this WILL ReadFile more data if the buffer is empty
-			//-------------------------------------------------------------------------
+				//-------------------------------------------------------------------------
+				// ReadCode gets the next hash code (9 BITS) from LZDOSBuff
+				//         this WILL ReadFile more data if the buffer is empty
+				//-------------------------------------------------------------------------
 		GetCode:
 		cmp		esi, LZSrcBufEnd
 		ja		error // Read Passed End?
@@ -151,17 +152,17 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 
 		cmp		eax, HASH_CLEAR // are we to clear out hash table?
 		je		ClearHash
-				   //---------------------------------------------------------------------------
-				   //
-				   // Handle Chain acts on two types of Codes, A previously tabled
-				   // one and a new one. On a previously tabled one, the chain
-				   // value and suffix for that code are preserved into OldSuffix
-				   // and OldChain. The block operates on searching backward in the
-				   // chains until a chain offset of 0-255 is found (meaning the
-				   // terminal character has been reached.) Each character in the
-				   // chain is saved on the stack.
-				   //
-				   //---------------------------------------------------------------------------
+				//---------------------------------------------------------------------------
+				//
+				// Handle Chain acts on two types of Codes, A previously tabled
+				// one and a new one. On a previously tabled one, the chain
+				// value and suffix for that code are preserved into OldSuffix
+				// and OldChain. The block operates on searching backward in the
+				// chains until a chain offset of 0-255 is found (meaning the
+				// terminal character has been reached.) Each character in the
+				// chain is saved on the stack.
+				//
+				//---------------------------------------------------------------------------
 
 				// HandleChain:
 		mov		edx, esp
@@ -210,12 +211,12 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		dec		edx
 		jnz		send_bytes
 
-				//---------------------------------------------------------------------------
-				//
-				// Here we add another chain to the hash table so that we
-				// continually use it for more decompressions.
-				//
-				//---------------------------------------------------------------------------
+						//---------------------------------------------------------------------------
+						//
+						// Here we add another chain to the hash table so that we
+						// continually use it for more decompressions.
+						//
+						//---------------------------------------------------------------------------
 
 		mov		al, LZOldSuffix
 		mov		edx, LZOldChain

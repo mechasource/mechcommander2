@@ -17,13 +17,13 @@ struct DetailTextureInfo
 {
 	DetailTextureInfo(void)
 	{
-		name	  = nullptr;
-		xOff	  = 0.0f;
-		xFac	  = 8.0f;
-		zOff	  = 0.0f;
-		zFac	  = 8.0f;
-		dStart	= 32.0f;
-		dEnd	  = 64.0f;
+		name = nullptr;
+		xOff = 0.0f;
+		xFac = 8.0f;
+		zOff = 0.0f;
+		zFac = 8.0f;
+		dStart = 32.0f;
+		dEnd = 64.0f;
 		alphaMode = MLRState::AlphaInvAlphaMode;
 	}
 	PCSTR name;
@@ -67,8 +67,8 @@ public:
 		// Check_Object(this);
 		xOffset = xOff;
 		yOffset = yOff;
-		xScale  = xFac;
-		yScale  = yFac;
+		xScale = xFac;
+		yScale = yFac;
 	}
 
 	void GetDetailData(float& xOff, float& yOff, float& xFac, float& yFac)
@@ -95,7 +95,7 @@ public:
 		}
 		else
 		{
-			passes			= 2;
+			passes = 2;
 			referenceState2 = _state;
 		}
 	}
@@ -160,8 +160,10 @@ protected:
 	float xOffset, yOffset, xScale, yScale;
 };
 
-MLR_I_DeT_PMesh* CreateIndexedCube_NoColor_NoLit_DetTex(
+MLR_I_DeT_PMesh*
+CreateIndexedCube_NoColor_NoLit_DetTex(
 	float radius, MLRState*, MLRState*, float xOff, float yOff, float xFac, float yFac);
-MLRShape* CreateIndexedIcosahedron_NoColor_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
+MLRShape*
+CreateIndexedIcosahedron_NoColor_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

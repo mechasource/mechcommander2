@@ -67,7 +67,7 @@ public:
 	aStyle1TextListItem()
 	{
 		hasAnimation = false;
-		normalColor  = 0xff808080;
+		normalColor = 0xff808080;
 	}
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void render(void);

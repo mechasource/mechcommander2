@@ -65,19 +65,19 @@ public:
 	{
 		ObjectType::init(void);
 		objectTypeClass = TURRET_TYPE;
-		objectClass		= TURRET;
-		damageLevel		= 0.0;
-		blownEffectId   = 0xFFFFFFFF;
-		normalEffectId  = 0xFFFFFFFF;
-		damageEffectId  = 0xFFFFFFFF;
+		objectClass = TURRET;
+		damageLevel = 0.0;
+		blownEffectId = 0xFFFFFFFF;
+		normalEffectId = 0xFFFFFFFF;
+		damageEffectId = 0xFFFFFFFF;
 		explDmg = explRad = 0.0;
-		baseTonnage		  = 0.0;
+		baseTonnage = 0.0;
 		weaponMasterId[0] = weaponMasterId[1] = weaponMasterId[2] = weaponMasterId[3] = -1;
-		pilotSkill																	  = 0;
-		punch																		  = 0.0;
-		turretYawRate																  = 0.0;
-		turretTypeName																  = 0;
-		LOSFactor																	  = 1.0f;
+		pilotSkill = 0;
+		punch = 0.0;
+		turretYawRate = 0.0;
+		turretTypeName = 0;
+		LOSFactor = 1.0f;
 	}
 
 	TurretType(void) { init(void); }
@@ -108,8 +108,8 @@ typedef struct _TurretData : public TerrainObjectData
 	GameObjectWatchID targetWID;
 	float readyTime[MAX_TURRET_WEAPONS];
 	float lastFireTime[MAX_TURRET_WEAPONS];
-	float minRange;				  // current min attack range
-	float maxRange;				  // current max attack range
+	float minRange; // current min attack range
+	float maxRange; // current max attack range
 	int32_t numFunctionalWeapons; // takes into account damage, etc.
 
 	float idleWait;
@@ -130,8 +130,8 @@ public:
 	GameObjectWatchID targetWID;
 	float readyTime[MAX_TURRET_WEAPONS];
 	float lastFireTime[MAX_TURRET_WEAPONS];
-	float minRange;				  // current min attack range
-	float maxRange;				  // current max attack range
+	float minRange; // current min attack range
+	float maxRange; // current max attack range
 	int32_t numFunctionalWeapons; // takes into account damage, etc.
 
 	int32_t netRosterIndex;
@@ -152,7 +152,8 @@ public:
 public:
 	void init(bool create);
 
-	Turret(void) : TerrainObject() { init(true); }
+	Turret(void) :
+		TerrainObject() { init(true); }
 
 	~Turret(void) { destroy(void); }
 
@@ -196,7 +197,7 @@ public:
 
 	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
 	{
-		blockNum  = blockNumber;
+		blockNum = blockNumber;
 		vertexNum = vertexNumber;
 	}
 

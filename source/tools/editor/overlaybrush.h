@@ -22,8 +22,8 @@ class OverlayBrush : public Brush
 public:
 	OverlayBrush(int32_t Type, int32_t Offset = 0)
 	{
-		type	= (Overlays)Type;
-		offset  = Offset;
+		type = (Overlays)Type;
+		offset = Offset;
 		pAction = nullptr;
 	}
 	virtual ~OverlayBrush() {}

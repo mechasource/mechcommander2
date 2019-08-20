@@ -93,7 +93,7 @@ public:
 		else
 		{
 			textureMatrixIsIdentity = true;
-			textureMatrix			= Stuff::AffineMatrix4D::Identity;
+			textureMatrix = Stuff::AffineMatrix4D::Identity;
 		}
 	}
 

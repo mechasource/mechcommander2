@@ -24,9 +24,9 @@ bool MissionResults::FirstTimeResults = true;
 MissionResults::MissionResults()
 {
 	pSalvageScreen = 0;
-	pPilotScreen   = 0;
-	bDone		   = 0;
-	bPilotStarted  = 0;
+	pPilotScreen = 0;
+	bDone = 0;
+	bPilotStarted = 0;
 }
 
 MissionResults::~MissionResults()
@@ -39,7 +39,8 @@ MissionResults::~MissionResults()
 	pPilotScreen = nullptr;
 }
 
-void MissionResults::begin()
+void
+MissionResults::begin()
 {
 	if (soundSystem)
 		soundSystem->stopSupportSample();
@@ -95,16 +96,19 @@ void MissionResults::begin()
 	}
 }
 
-void MissionResults::init() {}
+void
+MissionResults::init()
+{
+}
 
-void MissionResults::end()
+void
+MissionResults::end()
 {
 	// Need to save the game here so salvage and pilot promotion get saved as
 	// well!
 	// Pity we never call ::end!
 	PCSTR pMissionName = LogisticsData::instance->getLastMission();
-	if (pMissionName && !LogisticsData::instance->isSingleMission() &&
-		!LogisticsData::instance->campaignOver() && !MPlayer)
+	if (pMissionName && !LogisticsData::instance->isSingleMission() && !LogisticsData::instance->campaignOver() && !MPlayer)
 	{
 		FitIniFile file;
 		char name[256];
@@ -118,7 +122,8 @@ void MissionResults::end()
 	}
 }
 
-void MissionResults::update()
+void
+MissionResults::update()
 {
 	userInput->setMouseCursor(mState_NORMAL);
 	userInput->mouseOn();
@@ -170,7 +175,8 @@ void MissionResults::update()
 	}
 }
 
-void MissionResults::render()
+void
+MissionResults::render()
 {
 	if (MPlayer)
 	{
@@ -190,7 +196,8 @@ void MissionResults::render()
 		pPilotScreen->render();
 }
 
-void MissionResults::setHostLeftDlg(PCSTR pName)
+void
+MissionResults::setHostLeftDlg(PCSTR pName)
 {
 	if (MPlayer && mpStats.getStatus() == LogisticsScreen::RUNNING)
 	{

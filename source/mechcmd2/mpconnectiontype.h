@@ -19,8 +19,8 @@ MPConnectionType.h			: Interface for the MPConnectionType component.
 
 typedef enum __mpconnectiontype_const
 {
-	ZONE_PANEL_FIRST_BUTTON_ID  = 1000100,
-	LAN_PANEL_FIRST_BUTTON_ID   = 1000200,
+	ZONE_PANEL_FIRST_BUTTON_ID = 1000100,
+	LAN_PANEL_FIRST_BUTTON_ID = 1000200,
 	TCPIP_PANEL_FIRST_BUTTON_ID = 1000300,
 };
 
@@ -61,7 +61,7 @@ class aTcpipPanel : public aObject
 public:
 	aTcpipPanel(LogisticsScreen& refParentScreenParam)
 	{
-		pParentScreen  = &refParentScreenParam;
+		pParentScreen = &refParentScreenParam;
 		connectingTime = 0.f;
 	}
 	void init(FitIniFile* pFile);

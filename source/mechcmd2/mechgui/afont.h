@@ -30,10 +30,10 @@ private:
 public:
 	aFont(void)
 	{
-		gosFont		= 0;
+		gosFont = 0;
 		fontName[0] = 0;
-		resID		= 0;
-		size		= 1;
+		resID = 0;
+		size = 1;
 	}
 
 	~aFont(void);

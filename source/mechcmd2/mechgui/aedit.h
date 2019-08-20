@@ -23,12 +23,12 @@ namespace mechgui
 
 //*************************************************************************************************
 // Entry field styles
-#define ES_EDITALPHA 0x00020000	// Entry field alpha only
-#define ES_EDITNUM 0x00040000	  // Entry field numeric only
+#define ES_EDITALPHA 0x00020000 // Entry field alpha only
+#define ES_EDITNUM 0x00040000 // Entry field numeric only
 #define ES_EDITALPHANUM 0x00080000 // Entry field alpha or numeric
-#define ES_EDITUPPER 0x00100000	// Entry field convert to uppercase
+#define ES_EDITUPPER 0x00100000 // Entry field convert to uppercase
 #define ES_EDITREADONLY 0x00200000 // Read only
-#define ES_EDITNOBLANK 0x00400000  // Ignore ' '
+#define ES_EDITNOBLANK 0x00400000 // Ignore ' '
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -123,8 +123,8 @@ private:
 	int32_t outlineColor;
 	int32_t nLimit;
 	int32_t nInsertion1, nInsertion2; // beginning and ending highlight
-									  // positions (when equal there is no
-									  // highlight)
+		// positions (when equal there is no
+		// highlight)
 	bool bCursorVisible;
 	int32_t nLeftOffset;
 	float cursorTime;

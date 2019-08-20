@@ -31,7 +31,7 @@ public:
 	friend class SafeChainIterator;
 
 	static void InitializeClass(size_t block_count = SafeChainLink_MemoryBlock_Allocation,
-		size_t block_delta						   = SafeChainLink_MemoryBlock_Allocation);
+		size_t block_delta = SafeChainLink_MemoryBlock_Allocation);
 	static void __stdcall TerminateClass(void);
 
 public:
@@ -110,7 +110,8 @@ private:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-template <class T> class SafeChainOf : public SafeChain
+template <class T>
+class SafeChainOf : public SafeChain
 {
 public:
 	//
@@ -134,9 +135,16 @@ public:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-template <class T> SafeChainOf<T>::SafeChainOf(Node* node) : SafeChain(node) {}
+template <class T>
+SafeChainOf<T>::SafeChainOf(Node* node) :
+	SafeChain(node)
+{
+}
 
-template <class T> SafeChainOf<T>::~SafeChainOf() {}
+template <class T>
+SafeChainOf<T>::~SafeChainOf()
+{
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -213,7 +221,8 @@ private:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-template <class T> class SafeChainIteratorOf : public SafeChainIterator
+template <class T>
+class SafeChainIteratorOf : public SafeChainIterator
 {
 public:
 	//
@@ -250,23 +259,28 @@ public:
 //~~~~~~~~~~~~~~~~~~~~~~~ SafeChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class T>
-SafeChainIteratorOf<T>::SafeChainIteratorOf(SafeChainOf<T>* chain, bool move_next_on_remove)
-	: SafeChainIterator(chain, move_next_on_remove)
+SafeChainIteratorOf<T>::SafeChainIteratorOf(SafeChainOf<T>* chain, bool move_next_on_remove) :
+	SafeChainIterator(chain, move_next_on_remove)
 {
 }
 
 template <class T>
-SafeChainIteratorOf<T>::SafeChainIteratorOf(const SafeChainIteratorOf<T>& iterator)
-	: SafeChainIterator(iterator)
+SafeChainIteratorOf<T>::SafeChainIteratorOf(const SafeChainIteratorOf<T>& iterator) :
+	SafeChainIterator(iterator)
 {
 }
 
-template <class T> Iterator* SafeChainIteratorOf<T>::MakeClone()
+template <class T>
+Iterator*
+SafeChainIteratorOf<T>::MakeClone()
 {
 	return new SafeChainIteratorOf<T>(*this);
 }
 
-template <class T> SafeChainIteratorOf<T>::~SafeChainIteratorOf() {}
+template <class T>
+SafeChainIteratorOf<T>::~SafeChainIteratorOf()
+{
+}
 } // namespace Stuff
 
 #endif

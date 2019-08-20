@@ -76,7 +76,9 @@ public:
 		MLRLight* const* activeLights;
 		int32_t	nrOfActiveLights;
 #endif
-	void TestInstance(void) const {}
+	void TestInstance(void) const
+	{
+	}
 };
 
 class DrawScreenQuadsInformation

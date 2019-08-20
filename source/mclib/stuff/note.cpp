@@ -21,7 +21,8 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::WriteNotation(std::iostream& stream)
+void
+Note::WriteNotation(std::iostream& stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -34,7 +35,8 @@ void Note::WriteNotation(std::iostream& stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(pint32_t value)
+void
+Note::GetEntry(pint32_t value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -46,7 +48,8 @@ void Note::GetEntry(pint32_t value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(int32_t value)
+void
+Note::SetEntry(int32_t value)
 {
 	// Check_Object(this);
 	char contents[12];
@@ -57,7 +60,8 @@ void Note::SetEntry(int32_t value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(float* value)
+void
+Note::GetEntry(float* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -69,7 +73,8 @@ void Note::GetEntry(float* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(float value)
+void
+Note::SetEntry(float value)
 {
 	// Check_Object(this);
 	char contents[32];
@@ -80,7 +85,8 @@ void Note::SetEntry(float value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(bool* value)
+void
+Note::GetEntry(bool* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -92,7 +98,8 @@ void Note::GetEntry(bool* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(bool value)
+void
+Note::SetEntry(bool value)
 {
 	// Check_Object(this);
 	SetEntry((value) ? "true" : "false");
@@ -100,7 +107,8 @@ void Note::SetEntry(bool value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(Vector3D* value)
+void
+Note::GetEntry(Vector3D* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -121,7 +129,8 @@ void Note::GetEntry(Vector3D* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(const Vector3D& value)
+void
+Note::SetEntry(const Vector3D& value)
 {
 	// Check_Object(this);
 	static char contents[64];
@@ -133,7 +142,8 @@ void Note::SetEntry(const Vector3D& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(YawPitchRoll* value)
+void
+Note::GetEntry(YawPitchRoll* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -141,9 +151,9 @@ void Note::GetEntry(YawPitchRoll* value)
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	// AFAIU we need pointers to float to avoid warning C6272
-	float fyaw	= value->yaw;
-	float fpitch  = value->pitch;
-	float froll   = value->roll;
+	float fyaw = value->yaw;
+	float fpitch = value->pitch;
+	float froll = value->roll;
 	int32_t count = sscanf_s(contents, "%f %f %f", &fyaw, &fpitch, &froll);
 	if (count != 3)
 	{
@@ -161,7 +171,8 @@ void Note::GetEntry(YawPitchRoll* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(const YawPitchRoll& value)
+void
+Note::SetEntry(const YawPitchRoll& value)
 {
 	// Check_Object(this);
 	static char contents[32];
@@ -173,7 +184,8 @@ void Note::SetEntry(const YawPitchRoll& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(UnitQuaternion* value)
+void
+Note::GetEntry(UnitQuaternion* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -182,9 +194,9 @@ void Note::GetEntry(UnitQuaternion* value)
 	Check_Pointer(contents);
 	// AFAIU we need pointers to float to avoid warning C6272
 	YawPitchRoll ypr;
-	float fyaw	= ypr.yaw;
-	float fpitch  = ypr.pitch;
-	float froll   = ypr.roll;
+	float fyaw = ypr.yaw;
+	float fpitch = ypr.pitch;
+	float froll = ypr.roll;
 	int32_t count = sscanf_s(contents, "%f %f %f", &fyaw, &fpitch, &froll);
 	if (count != 3)
 	{
@@ -203,7 +215,8 @@ void Note::GetEntry(UnitQuaternion* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(const UnitQuaternion& value)
+void
+Note::SetEntry(const UnitQuaternion& value)
 {
 	// Check_Object(this);
 	static char contents[32] = {0};
@@ -216,7 +229,8 @@ void Note::SetEntry(const UnitQuaternion& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(Motion3D* value)
+void
+Note::GetEntry(Motion3D* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -239,7 +253,8 @@ void Note::GetEntry(Motion3D* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(const Motion3D& value)
+void
+Note::SetEntry(const Motion3D& value)
 {
 	// Check_Object(this);
 	static char contents[64];
@@ -252,7 +267,8 @@ void Note::SetEntry(const Motion3D& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(RGBColor* value)
+void
+Note::GetEntry(RGBColor* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -273,7 +289,8 @@ void Note::GetEntry(RGBColor* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(const RGBColor& value)
+void
+Note::SetEntry(const RGBColor& value)
 {
 	// Check_Object(this);
 	static char contents[32];
@@ -284,7 +301,8 @@ void Note::SetEntry(const RGBColor& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(RGBAColor* value)
+void
+Note::GetEntry(RGBAColor* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -308,7 +326,8 @@ void Note::GetEntry(RGBAColor* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(const RGBAColor& value)
+void
+Note::SetEntry(const RGBAColor& value)
 {
 	// Check_Object(this);
 	static char contents[48];
@@ -320,7 +339,8 @@ void Note::SetEntry(const RGBAColor& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::GetEntry(NotationFile* value)
+void
+Note::GetEntry(NotationFile* value)
 {
 	// Check_Object(this);
 	Check_Object(value);
@@ -374,7 +394,8 @@ void Note::GetEntry(NotationFile* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::SetEntry(NotationFile* value)
+void
+Note::SetEntry(NotationFile* value)
 {
 	// Check_Object(this);
 	Check_Object(value);
@@ -406,4 +427,7 @@ void Note::SetEntry(NotationFile* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::TestInstance(void) const {}
+void
+Note::TestInstance(void) const
+{
+}

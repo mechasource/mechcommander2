@@ -84,9 +84,15 @@ public:
 	virtual void LightMapLighting(MLRLight*);
 
 #if COLOR_AS_DWORD
-	virtual void PaintMe(pcuint32_t paintMe) { (void)paintMe; };
+	virtual void PaintMe(pcuint32_t paintMe)
+	{
+		(void)paintMe;
+	};
 #else
-	virtual void PaintMe(const Stuff::RGBAColor* paintMe) { (void)paintMe; };
+	virtual void PaintMe(const Stuff::RGBAColor* paintMe)
+	{
+		(void)paintMe;
+	};
 #endif
 
 	virtual uint32_t TransformAndClip(
@@ -141,7 +147,9 @@ protected:
 extern float vdata[12][3];
 extern uint32_t tindices[20][3];
 extern uint32_t triDrawn;
-MLR_I_TMesh* CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
-MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
+MLR_I_TMesh*
+CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
+MLRShape*
+CreateIndexedTriIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 #endif

@@ -20,19 +20,20 @@ MechBayScreen.cpp			: Implementation of the MechBayScreen component.
 
 MechBayScreen* MechBayScreen::s_instance = nullptr;
 
-MechBayScreen::MechBayScreen() : mechListBox(1, 0)
+MechBayScreen::MechBayScreen() :
+	mechListBox(1, 0)
 {
-	pCurMech		   = nullptr;
-	pIcons			   = nullptr;
-	status			   = LogisticsScreen::RUNNING;
-	s_instance		   = this;
-	forceGroupCount	= 0;
-	mechCamera		   = new SimpleCamera;
-	addWeightAmount	= 0;
+	pCurMech = nullptr;
+	pIcons = nullptr;
+	status = LogisticsScreen::RUNNING;
+	s_instance = this;
+	forceGroupCount = 0;
+	mechCamera = new SimpleCamera;
+	addWeightAmount = 0;
 	removeWeightAmount = 0;
-	pDragMech		   = 0;
-	dragLeft		   = 0;
-	helpTextArrayID	= 13;
+	pDragMech = 0;
+	dragLeft = 0;
+	helpTextArrayID = 13;
 }
 
 MechBayScreen::~MechBayScreen()
@@ -43,7 +44,8 @@ MechBayScreen::~MechBayScreen()
 		delete[] pIcons;
 	mechListBox.destroy();
 }
-void MechBayScreen::init(FitIniFile* file)
+void
+MechBayScreen::init(FitIniFile* file)
 {
 	// init button, texts, statics, rects
 	LogisticsScreen::init(
@@ -67,10 +69,10 @@ void MechBayScreen::init(FitIniFile* file)
 		return;
 	}
 	LogisticsMechIcon::init(iconFile);
-	pIcons		  = new LogisticsMechIcon[ICON_COUNT];
+	pIcons = new LogisticsMechIcon[ICON_COUNT];
 	int32_t count = 0;
-	int32_t x	 = 0;
-	int32_t y	 = 0;
+	int32_t x = 0;
+	int32_t y = 0;
 	for (size_t j = 0; j < ICON_COUNT_Y; j++)
 	{
 		for (size_t i = 0; i < ICON_COUNT_X; i++)
@@ -118,9 +120,10 @@ void MechBayScreen::init(FitIniFile* file)
 	setMech(nullptr, 0);
 }
 
-void MechBayScreen::begin()
+void
+MechBayScreen::begin()
 {
-	status	= RUNNING;
+	status = RUNNING;
 	pDragMech = nullptr;
 	mechListBox.removeAllItems(true);
 	reinitMechs();
@@ -140,8 +143,7 @@ void MechBayScreen::begin()
 			bool bFound = 0;
 			for (size_t i = 0; i < mechListBox.GetItemCount(); i++)
 			{
-				if (((MechListBoxItem*)mechListBox.GetItem(i))->getMech()->getVariant() ==
-					(*iter)->getVariant())
+				if (((MechListBoxItem*)mechListBox.GetItem(i))->getMech()->getVariant() == (*iter)->getVariant())
 					bFound = true;
 			}
 			if (!bFound)
@@ -190,7 +192,8 @@ void MechBayScreen::begin()
 		}
 	}
 }
-void MechBayScreen::render(int32_t xOffset, int32_t yOffset)
+void
+MechBayScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	mechListBox.move(xOffset, yOffset);
 	mechListBox.render();
@@ -216,17 +219,18 @@ void MechBayScreen::render(int32_t xOffset, int32_t yOffset)
 		dragIcon.render();
 }
 
-void MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
+void
+MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 {
 	// there are 20 rays, each 9 degrees
 	// they should be 50 pixels int32_t
 	float currentDropWeight = LogisticsData::instance->getCurrentDropWeight();
-	float maxDropWeight		= LogisticsData::instance->getMaxDropWeight();
-	int32_t numAddBars		= 0;
-	int32_t numRemoveBars   = 0;
-	int32_t addColor		= 0;
-	int32_t removeColor		= 0;
-	int32_t numberOfBars	= 20;
+	float maxDropWeight = LogisticsData::instance->getMaxDropWeight();
+	int32_t numAddBars = 0;
+	int32_t numRemoveBars = 0;
+	int32_t addColor = 0;
+	int32_t removeColor = 0;
+	int32_t numberOfBars = 20;
 	if (maxDropWeight != 0)
 	{
 		float percent = currentDropWeight / maxDropWeight;
@@ -235,7 +239,7 @@ void MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 	}
 	if (addWeightAnim.isAnimating() && !addWeightAnim.isDone())
 	{
-		addColor	  = addWeightAnim.getColor();
+		addColor = addWeightAnim.getColor();
 		float percent = (currentDropWeight - addWeightAmount) / maxDropWeight;
 		percent *= 20.f;
 		numAddBars = percent + .5;
@@ -243,7 +247,7 @@ void MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 	}
 	if (removeWeightAnim.isAnimating() && !removeWeightAnim.isDone())
 	{
-		addColor	  = removeWeightAnim.getColor();
+		addColor = removeWeightAnim.getColor();
 		float percent = removeWeightAmount / maxDropWeight;
 		percent *= 20.f;
 		numRemoveBars = percent + .5;
@@ -251,25 +255,25 @@ void MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 	gos_VERTEX v[3];
 	for (size_t i = 0; i < 3; i++)
 	{
-		v[i].u	= 0.f;
-		v[i].v	= 0.f;
-		v[i].rhw  = .5;
-		v[i].z	= 0.f;
+		v[i].u = 0.f;
+		v[i].v = 0.f;
+		v[i].rhw = .5;
+		v[i].z = 0.f;
 		v[i].argb = 0;
 		v[i].frgb = 0;
-		v[i].x	= weightCenterX + xOffset;
-		v[i].y	= weightCenterY + yOffset;
+		v[i].x = weightCenterX + xOffset;
+		v[i].y = weightCenterY + yOffset;
 	}
 	float curArc = 180.f;
-	float curX   = 50.f * cos(DEGREES_TO_RADS * curArc);
-	float curY   = 50.f * sin(DEGREES_TO_RADS * curArc);
+	float curX = 50.f * cos(DEGREES_TO_RADS * curArc);
+	float curY = 50.f * sin(DEGREES_TO_RADS * curArc);
 	for (i = 0; i < numberOfBars + numRemoveBars; i++)
 	{
 		v[1].x = curX + weightCenterX + xOffset;
 		v[1].y = curY + weightCenterY + yOffset;
 		curArc += 9.f;
-		curX   = 50.f * cos(DEGREES_TO_RADS * curArc);
-		curY   = 50.f * sin(DEGREES_TO_RADS * curArc);
+		curX = 50.f * cos(DEGREES_TO_RADS * curArc);
+		curY = 50.f * sin(DEGREES_TO_RADS * curArc);
 		v[2].x = curX + weightCenterX + xOffset;
 		v[2].y = curY + weightCenterY + yOffset;
 		if (i >= numberOfBars - numAddBars)
@@ -284,7 +288,8 @@ void MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 	dropWeightMeter.render(xOffset, yOffset);
 }
 
-void MechBayScreen::update()
+void
+MechBayScreen::update()
 {
 	mechListBox.disableItemsThatCanNotGoInFG();
 	if (!pIcons[0].getMech())
@@ -304,7 +309,7 @@ void MechBayScreen::update()
 	char tmpStr[128];
 	cLoadString(IDS_MB_WEIGHT, tmpStr, 63);
 	int32_t currentDropWeight = LogisticsData::instance->getCurrentDropWeight();
-	int32_t maxDropWeight	 = LogisticsData::instance->getMaxDropWeight();
+	int32_t maxDropWeight = LogisticsData::instance->getMaxDropWeight();
 	sprintf(str, tmpStr, currentDropWeight, maxDropWeight);
 	textObjects[6].setText(str);
 	// update drag and drop
@@ -313,21 +318,21 @@ void MechBayScreen::update()
 	{
 		dragIcon.moveTo(userInput->getMouseX() - dragIcon.width() / 2,
 			userInput->getMouseY() - dragIcon.height() / 2);
-		bool bLeft  = 0;
+		bool bLeft = 0;
 		bool bRight = 0;
 		RECT testRect;
-		testRect.left   = mechListBox.globalX();
-		testRect.right  = mechListBox.globalX() + mechListBox.width();
-		testRect.top	= mechListBox.globalY();
+		testRect.left = mechListBox.globalX();
+		testRect.right = mechListBox.globalX() + mechListBox.width();
+		testRect.top = mechListBox.globalY();
 		testRect.bottom = mechListBox.globalY() + mechListBox.height();
 		if (dragIcon.rectIntersect(testRect))
 		{
 			// set the focus
 		}
-		bRight			= true;
-		testRect.left   = pIcons[0].globalX();
-		testRect.right  = pIcons[ICON_COUNT - 1].globalX() + pIcons[0].width();
-		testRect.top	= pIcons[0].globalY();
+		bRight = true;
+		testRect.left = pIcons[0].globalX();
+		testRect.right = pIcons[ICON_COUNT - 1].globalX() + pIcons[0].width();
+		testRect.top = pIcons[0].globalY();
 		testRect.bottom = pIcons[ICON_COUNT - 1].globalY() + pIcons[0].height();
 		if (dragIcon.rectIntersect(testRect))
 		{
@@ -348,11 +353,10 @@ void MechBayScreen::update()
 				}
 				else
 				{
-					if (0 ==
-						LogisticsData::instance->getVariantsInInventory(pDragMech->getVariant(), 0))
+					if (0 == LogisticsData::instance->getVariantsInInventory(pDragMech->getVariant(), 0))
 					{
 						MechListBoxItem* item = new MechListBoxItem(pDragMech, 0);
-						int32_t index		  = mechListBox.AddItem(item);
+						int32_t index = mechListBox.AddItem(item);
 						mechListBox.SelectItem(index);
 					}
 					LogisticsData::instance->removeMechFromForceGroup(pDragMech, true);
@@ -374,11 +378,10 @@ void MechBayScreen::update()
 				}
 				else
 				{
-					if (0 ==
-						LogisticsData::instance->getVariantsInInventory(pDragMech->getVariant(), 0))
+					if (0 == LogisticsData::instance->getVariantsInInventory(pDragMech->getVariant(), 0))
 					{
 						MechListBoxItem* item = new MechListBoxItem(pDragMech, 0);
-						int32_t index		  = mechListBox.AddItem(item);
+						int32_t index = mechListBox.AddItem(item);
 						mechListBox.SelectItem(index);
 					}
 					LogisticsData::instance->removeMechFromForceGroup(pDragMech, true);
@@ -389,8 +392,8 @@ void MechBayScreen::update()
 		}
 	}
 	// update icon selection
-	int32_t newSel	 = -1;
-	int32_t oldSel	 = -1;
+	int32_t newSel = -1;
+	int32_t oldSel = -1;
 	int32_t removeMech = -1;
 	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
@@ -404,8 +407,7 @@ void MechBayScreen::update()
 		{
 			removeMech = i;
 		}
-		else if (userInput->isLeftDrag() &&
-			pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		else if (userInput->isLeftDrag() && pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 		{
 			beginDrag(pIcons[i].getMech());
 		}
@@ -420,8 +422,7 @@ void MechBayScreen::update()
 	{
 		removeSelectedMech();
 	}
-	if (!MPlayer ||
-		!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+	if (!MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
 	if (newSel == -1 && oldSel == -1)
 	{
@@ -451,8 +452,7 @@ void MechBayScreen::update()
 	if (pTmp)
 		setMech(pTmp, 0);
 	// update buttons!
-	if (newSel == -1 ||
-		!LogisticsData::instance->canAddMechToForceGroup(mechListBox.getCurrentMech()))
+	if (newSel == -1 || !LogisticsData::instance->canAddMechToForceGroup(mechListBox.getCurrentMech()))
 	{
 		// disable the add button
 		getButton(MB_MSG_ADD)->disable(1);
@@ -484,7 +484,8 @@ void MechBayScreen::update()
 		ChatWindow::instance()->update();
 }
 
-int32_t MechBayScreen::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MechBayScreen::handleMessage(uint32_t message, uint32_t who)
 {
 	if (status != RUNNING)
 		return 0;
@@ -522,15 +523,14 @@ int32_t MechBayScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void MechBayScreen::addSelectedMech()
+void
+MechBayScreen::addSelectedMech()
 {
 	if (mechListBox.getCurrentMech())
 	{
 		if (!LogisticsData::instance->canAddMechToForceGroup(mechListBox.getCurrentMech()))
 			return;
-		if (NO_ERROR !=
-			LogisticsData::instance->addMechToForceGroup(
-				mechListBox.getCurrentMech(), forceGroupCount + 1))
+		if (NO_ERROR != LogisticsData::instance->addMechToForceGroup(mechListBox.getCurrentMech(), forceGroupCount + 1))
 		{
 			// its already in the force group, add probably called 2x'2
 			return;
@@ -560,7 +560,8 @@ void MechBayScreen::addSelectedMech()
 	}
 }
 
-void MechBayScreen::removeSelectedMech()
+void
+MechBayScreen::removeSelectedMech()
 {
 	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
@@ -601,9 +602,14 @@ void MechBayScreen::removeSelectedMech()
 		selectFirstViableLBMech();
 }
 
-void MechBayScreen::end() { mechCamera->setMech(nullptr); }
+void
+MechBayScreen::end()
+{
+	mechCamera->setMech(nullptr);
+}
 
-void MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
+void
+MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 {
 	if (pMech == pCurMech || status != RUNNING)
 		return;
@@ -612,10 +618,10 @@ void MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 	{
 		loadoutListBox.setMech(pMech->getVariant());
 		std::wstring fileName = pMech->getFileName();
-		int32_t index		  = fileName.Find('.');
-		fileName			  = fileName.Left(index);
-		index				  = fileName.ReverseFind('\\');
-		fileName			  = fileName.Right(fileName.Length() - index - 1);
+		int32_t index = fileName.Find('.');
+		fileName = fileName.Left(index);
+		index = fileName.ReverseFind('\\');
+		fileName = fileName.Right(fileName.Length() - index - 1);
 		mechCamera->setMech(fileName, prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
 		mechCamera->setScale(pMech->getVariant()->getChassis()->getScale());
 	}
@@ -673,7 +679,8 @@ void MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 	}
 }
 
-void MechBayScreen::beginDrag(LogisticsMech* pMech)
+void
+MechBayScreen::beginDrag(LogisticsMech* pMech)
 {
 	if (pDragMech || status != RUNNING)
 		return;
@@ -735,9 +742,10 @@ void MechBayScreen::beginDrag(LogisticsMech* pMech)
 	}
 }
 
-void MechBayScreen::reinitMechs()
+void
+MechBayScreen::reinitMechs()
 {
-	int32_t count	= 0;
+	int32_t count = 0;
 	int32_t maxUnits = 12;
 	if (MPlayer)
 	{
@@ -782,7 +790,8 @@ void MechBayScreen::reinitMechs()
 	}
 }
 
-void MechBayScreen::unselectDeploymentTeam()
+void
+MechBayScreen::unselectDeploymentTeam()
 {
 	int32_t count = 0;
 	for (size_t j = 0; j < ICON_COUNT_Y; j++)
@@ -795,7 +804,8 @@ void MechBayScreen::unselectDeploymentTeam()
 	}
 }
 
-bool MechBayScreen::selectFirstFGItem()
+bool
+MechBayScreen::selectFirstFGItem()
 {
 	bool bRetVal = false;
 	for (size_t i = 0; i < ICON_COUNT_X * ICON_COUNT_Y; i++)
@@ -810,7 +820,8 @@ bool MechBayScreen::selectFirstFGItem()
 	}
 	return bRetVal;
 }
-bool MechBayScreen::selectFirstViableLBMech()
+bool
+MechBayScreen::selectFirstViableLBMech()
 {
 	for (size_t i = 0; i < mechListBox.GetItemCount(); i++)
 	{
@@ -823,7 +834,8 @@ bool MechBayScreen::selectFirstViableLBMech()
 	return 0;
 }
 
-LogisticsMech* MechBayScreen::getFGSelMech()
+LogisticsMech*
+MechBayScreen::getFGSelMech()
 {
 	for (size_t i = 0; i < ICON_COUNT_X * ICON_COUNT_Y; i++)
 	{

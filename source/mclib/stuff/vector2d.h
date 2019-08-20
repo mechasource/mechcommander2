@@ -17,7 +17,8 @@ namespace Stuff
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector2D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-template <class T> class Vector2DOf
+template <class T>
+class Vector2DOf
 {
 public:
 	// static const Vector2DOf<T>
@@ -27,7 +28,8 @@ public:
 	T y;
 
 	Vector2DOf(void) {}
-	Vector2DOf(T x, T y) : x(x), y(y) {}
+	Vector2DOf(T x, T y) :
+		x(x), y(y) {}
 	Vector2DOf(const Vector2DOf<T>& v)
 	{
 		x = v.x;
@@ -197,31 +199,38 @@ public:
 #if !defined(Spew)
 	friend void Spew(PCSTR group, const Vector2DOf<T>& vector);
 #endif
-	void TestInstance(void) const {}
+	void TestInstance(void) const
+	{
+	}
 };
 
 // template <class T> const Vector2DOf<T>
 // Vector2DOf<T>::Identity(0.0f,0.0f);
 
-template <class T> bool Small_Enough(const Vector2DOf<T>& v, float e)
+template <class T>
+bool
+Small_Enough(const Vector2DOf<T>& v, float e)
 {
 	Check_Object(&v);
 	return Small_Enough(static_cast<float>(v.x), e) && Small_Enough(static_cast<float>(v.y), e);
 }
 
-template <class T> bool Close_Enough(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e)
+template <class T>
+bool
+Close_Enough(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e)
 {
 	Check_Object(&v1);
 	Check_Object(&v2);
-	return Close_Enough(static_cast<float>(v1.x), static_cast<float>(v2.x), e) &&
-		Close_Enough(static_cast<float>(v1.y), static_cast<float>(v2.y), e);
+	return Close_Enough(static_cast<float>(v1.x), static_cast<float>(v2.x), e) && Close_Enough(static_cast<float>(v1.y), static_cast<float>(v2.y), e);
 }
 
 typedef Vector2DOf<float> Vector2DScalar;
 } // namespace Stuff
 
 #if !defined(Spew)
-template <class T> void Spew(PCSTR group, const Stuff::Vector2DOf<T>& vector)
+template <class T>
+void
+Spew(PCSTR group, const Stuff::Vector2DOf<T>& vector)
 {
 	// Check_Object(this);
 	SPEW((group, "<+"));

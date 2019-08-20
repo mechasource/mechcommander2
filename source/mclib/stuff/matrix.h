@@ -18,7 +18,8 @@ class Matrix4D;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::Matrix4D& matrix);
+void
+Spew(PCSTR group, const Stuff::Matrix4D& matrix);
 #endif
 
 namespace Stuff
@@ -452,38 +453,22 @@ public:
 				pop         esi
 		}
 #else
-		(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
-			Source1(0, 2) * Source2(2, 0);
-		(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
-			Source1(1, 2) * Source2(2, 0);
-		(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
-			Source1(2, 2) * Source2(2, 0);
-		(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
-			Source1(3, 2) * Source2(2, 0) + Source2(3, 0);
-		(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
-			Source1(0, 2) * Source2(2, 1);
-		(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
-			Source1(1, 2) * Source2(2, 1);
-		(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
-			Source1(2, 2) * Source2(2, 1);
-		(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
-			Source1(3, 2) * Source2(2, 1) + Source2(3, 1);
-		(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
-			Source1(0, 2) * Source2(2, 2);
-		(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
-			Source1(1, 2) * Source2(2, 2);
-		(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
-			Source1(2, 2) * Source2(2, 2);
-		(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
-			Source1(3, 2) * Source2(2, 2) + Source2(3, 2);
-		(*this)(0, 3) = Source1(0, 0) * Source2(0, 3) + Source1(0, 1) * Source2(1, 3) +
-			Source1(0, 2) * Source2(2, 3);
-		(*this)(1, 3) = Source1(1, 0) * Source2(0, 3) + Source1(1, 1) * Source2(1, 3) +
-			Source1(1, 2) * Source2(2, 3);
-		(*this)(2, 3) = Source1(2, 0) * Source2(0, 3) + Source1(2, 1) * Source2(1, 3) +
-			Source1(2, 2) * Source2(2, 3);
-		(*this)(3, 3) = Source1(3, 0) * Source2(0, 3) + Source1(3, 1) * Source2(1, 3) +
-			Source1(3, 2) * Source2(2, 3) + Source2(3, 3);
+		(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) + Source1(0, 2) * Source2(2, 0);
+		(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) + Source1(1, 2) * Source2(2, 0);
+		(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) + Source1(2, 2) * Source2(2, 0);
+		(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) + Source1(3, 2) * Source2(2, 0) + Source2(3, 0);
+		(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) + Source1(0, 2) * Source2(2, 1);
+		(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) + Source1(1, 2) * Source2(2, 1);
+		(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) + Source1(2, 2) * Source2(2, 1);
+		(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) + Source1(3, 2) * Source2(2, 1) + Source2(3, 1);
+		(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) + Source1(0, 2) * Source2(2, 2);
+		(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) + Source1(1, 2) * Source2(2, 2);
+		(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) + Source1(2, 2) * Source2(2, 2);
+		(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) + Source1(3, 2) * Source2(2, 2) + Source2(3, 2);
+		(*this)(0, 3) = Source1(0, 0) * Source2(0, 3) + Source1(0, 1) * Source2(1, 3) + Source1(0, 2) * Source2(2, 3);
+		(*this)(1, 3) = Source1(1, 0) * Source2(0, 3) + Source1(1, 1) * Source2(1, 3) + Source1(1, 2) * Source2(2, 3);
+		(*this)(2, 3) = Source1(2, 0) * Source2(0, 3) + Source1(2, 1) * Source2(1, 3) + Source1(2, 2) * Source2(2, 3);
+		(*this)(3, 3) = Source1(3, 0) * Source2(0, 3) + Source1(3, 1) * Source2(1, 3) + Source1(3, 2) * Source2(2, 3) + Source2(3, 3);
 #endif
 		return *this;
 	};

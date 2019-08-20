@@ -30,24 +30,25 @@
 //---------------------------------------------------------------------------
 // Static Globals
 static char CorruptMsg[] = "Heap check failed.\n";
-static char pformat[]	= "%s %s\n";
+static char pformat[] = "%s %s\n";
 
 GlobalHeapRec HeapList::heapRecords[MAX_HEAPS];
 HeapListPtr globalHeapList = nullptr;
 
-uint32_t memCoreLeft  = 0;
+uint32_t memCoreLeft = 0;
 uint32_t memTotalLeft = 0;
 
-uint32_t totalSize	 = 0;
+uint32_t totalSize = 0;
 uint32_t totalCoreLeft = 0;
-uint32_t totalLeft	 = 0;
+uint32_t totalLeft = 0;
 
 bool HeapList::heapInstrumented = 0;
 
 //
 // Returns a context ready for stack walking from current address
 //
-void GetCurrentContext(CONTEXT* Context)
+void
+GetCurrentContext(CONTEXT* Context)
 {
 	memset(Context, 0, sizeof(CONTEXT));
 	_asm {
@@ -65,9 +66,12 @@ void GetCurrentContext(CONTEXT* Context)
 	}
 }
 
-void InitStackWalk(STACKFRAME* sf, CONTEXT* Context);
-int32_t WalkStack(STACKFRAME* sf);
-PSTR DecodeAddress(uint32_t Address, bool brief);
+void
+InitStackWalk(STACKFRAME* sf, CONTEXT* Context);
+int32_t
+WalkStack(STACKFRAME* sf);
+PSTR
+DecodeAddress(uint32_t Address, bool brief);
 
 //---------------------------------------------------------------------------
 // Macro definitions
@@ -93,7 +97,8 @@ PSTR DecodeAddress(uint32_t Address, bool brief);
 //}
 
 //---------------------------------------------------------------------------
-void HeapManager::destroy(void)
+void
+HeapManager::destroy(void)
 {
 	int32_t result = 0;
 	//-----------------------------
@@ -123,20 +128,25 @@ void HeapManager::destroy(void)
 //}
 
 //---------------------------------------------------------------------------
-void HeapManager::init(void)
+void
+HeapManager::init(void)
 {
-	heap		  = nullptr;
-	memReserved   = false;
-	totalSize	 = 0;
+	heap = nullptr;
+	memReserved = false;
+	totalSize = 0;
 	committedSize = 0;
-	nxt			  = nullptr;
+	nxt = nullptr;
 }
 
 //---------------------------------------------------------------------------
-HeapManager::operator puint8_t(void) { return getHeapPtr(); }
+HeapManager::operator puint8_t(void)
+{
+	return getHeapPtr();
+}
 
 //---------------------------------------------------------------------------
-puint8_t HeapManager::getHeapPtr(void)
+puint8_t
+HeapManager::getHeapPtr(void)
 {
 	if (memReserved && totalSize && committedSize && heap)
 		return heap;
@@ -144,20 +154,22 @@ puint8_t HeapManager::getHeapPtr(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t HeapManager::createHeap(uint32_t memSize)
+int32_t
+HeapManager::createHeap(uint32_t memSize)
 {
 	heap = (puint8_t)VirtualAlloc(nullptr, memSize, MEM_RESERVE, PAGE_READWRITE);
 	if (heap)
 	{
 		memReserved = TRUE;
-		totalSize   = memSize;
+		totalSize = memSize;
 		return NO_ERROR;
 	}
 	return COULDNT_CREATE;
 }
 
 //---------------------------------------------------------------------------
-int32_t HeapManager::commitHeap(uint32_t commitSize)
+int32_t
+HeapManager::commitHeap(uint32_t commitSize)
 {
 	if (commitSize == 0)
 		commitSize = totalSize;
@@ -196,8 +208,8 @@ int32_t HeapManager::commitHeap(uint32_t commitSize)
 			{
 			mov currentEbp, esp
 			}
-		prevEbp   = *((uint32_t*)currentEbp);
-		retAddr   = *((uint32_t*)(currentEbp + 4));
+		prevEbp = *((uint32_t*)currentEbp);
+		retAddr = *((uint32_t*)(currentEbp + 4));
 		whoMadeMe = retAddr;
 		return NO_ERROR;
 	}
@@ -206,7 +218,8 @@ int32_t HeapManager::commitHeap(uint32_t commitSize)
 }
 
 //---------------------------------------------------------------------------
-int32_t HeapManager::decommitHeap(uint32_t decommitSize)
+int32_t
+HeapManager::decommitHeap(uint32_t decommitSize)
 {
 	int32_t result = 0;
 	if (decommitSize == 0)
@@ -227,12 +240,13 @@ int32_t HeapManager::decommitHeap(uint32_t decommitSize)
 
 //---------------------------------------------------------------------------
 // Class UserHeap Member Functions
-UserHeap::UserHeap(void) : HeapManager()
+UserHeap::UserHeap(void) :
+	HeapManager()
 {
-	heapStart	  = nullptr;
-	heapEnd		   = nullptr;
+	heapStart = nullptr;
+	heapEnd = nullptr;
 	firstNearBlock = nullptr;
-	heapSize	   = 0;
+	heapSize = 0;
 #ifdef CHECK_HEAP
 	mallocFatals = TRUE;
 #else
@@ -242,7 +256,8 @@ UserHeap::UserHeap(void) : HeapManager()
 }
 
 //---------------------------------------------------------------------------
-int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
+int32_t
+UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 {
 	if (heapId)
 	{
@@ -271,8 +286,8 @@ int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 			{
 			mov currentEbp, esp
 			}
-		prevEbp   = *((uint32_t*)currentEbp);
-		retAddr   = *((uint32_t*)(currentEbp + 4));
+		prevEbp = *((uint32_t*)currentEbp);
+		retAddr = *((uint32_t*)(currentEbp + 4));
 		whoMadeMe = retAddr;
 		//------------------------------------------------------------------------
 		// Now that we have a pointer to the memory, setup the HEAP.
@@ -280,14 +295,14 @@ int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 		heapTop += memSize;
 		heapTop -= 16;
 		heapTop &= ~3; // Force top to be uint32_t boundary.
-		uint32_t heapBottom   = (uint32_t)heap;
-		heapStart			  = (HeapBlockPtr)heapBottom;
-		heapEnd				  = (HeapBlockPtr)heapTop;
-		heapStart->blockSize  = heapTop - heapBottom;
-		heapStart->upperBlock = 0;					  // Nothing above this in memory.
-		heapEnd->blockSize	= 1;					  // Mark as last block.
-		heapEnd->previous	 = (HeapBlockPtr)0x1572; // Mark as last block.
-		heapEnd->upperBlock   = (HeapBlockPtr)heapBottom;
+		uint32_t heapBottom = (uint32_t)heap;
+		heapStart = (HeapBlockPtr)heapBottom;
+		heapEnd = (HeapBlockPtr)heapTop;
+		heapStart->blockSize = heapTop - heapBottom;
+		heapStart->upperBlock = 0; // Nothing above this in memory.
+		heapEnd->blockSize = 1; // Mark as last block.
+		heapEnd->previous = (HeapBlockPtr)0x1572; // Mark as last block.
+		heapEnd->upperBlock = (HeapBlockPtr)heapBottom;
 		//--------------------------------
 		//	Set all free memory to -1.
 		// Any access before ready and Exception city.
@@ -304,20 +319,20 @@ int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 #ifdef _DEBUG
 		recordArray = nullptr;
 		recordCount = 0;
-		logMallocs  = false;
+		logMallocs = false;
 #endif;
 		gosHeap = 0;
 	}
 	else
 	{
-		gosHeap			= gos_CreateMemoryHeap(heapId, memSize, ParentClientHeap);
+		gosHeap = gos_CreateMemoryHeap(heapId, memSize, ParentClientHeap);
 		useGOSGuardPage = true;
-		heapStart		= nullptr;
-		heapEnd			= nullptr;
-		firstNearBlock  = nullptr;
-		heapSize		= 0;
-		heapName		= nullptr;
-		heapState		= NO_ERROR;
+		heapStart = nullptr;
+		heapEnd = nullptr;
+		firstNearBlock = nullptr;
+		heapSize = 0;
+		heapName = nullptr;
+		heapState = NO_ERROR;
 #ifdef _DEBUG
 		recordArray = nullptr;
 #endif
@@ -327,7 +342,8 @@ int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 
 #ifdef _DEBUG
 //---------------------------------------------------------------------------
-void UserHeap::startHeapMallocLog(void)
+void
+UserHeap::startHeapMallocLog(void)
 {
 	if (!recordArray)
 	{
@@ -339,10 +355,15 @@ void UserHeap::startHeapMallocLog(void)
 }
 
 //---------------------------------------------------------------------------
-void UserHeap::stopHeapMallocLog(void) { logMallocs = false; }
+void
+UserHeap::stopHeapMallocLog(void)
+{
+	logMallocs = false;
+}
 
 //---------------------------------------------------------------------------
-void UserHeap::dumpRecordLog(void)
+void
+UserHeap::dumpRecordLog(void)
 {
 	if (recordArray)
 	{
@@ -377,18 +398,22 @@ void UserHeap::dumpRecordLog(void)
 #endif
 
 //---------------------------------------------------------------------------
-UserHeap::~UserHeap(void) { destroy(); }
+UserHeap::~UserHeap(void)
+{
+	destroy();
+}
 
 //---------------------------------------------------------------------------
-void UserHeap::destroy(void)
+void
+UserHeap::destroy(void)
 {
 	HeapManager::destroy();
 	if (!gosHeap)
 	{
-		heapStart	  = nullptr;
-		heapEnd		   = nullptr;
+		heapStart = nullptr;
+		heapEnd = nullptr;
 		firstNearBlock = nullptr;
-		heapSize	   = 0;
+		heapSize = 0;
 		if (heapName)
 		{
 			::gos_Free(heapName);
@@ -411,7 +436,8 @@ void UserHeap::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t UserHeap::totalCoreLeft(void)
+uint32_t
+UserHeap::totalCoreLeft(void)
 {
 	uint32_t result = 0;
 	if (gosHeap)
@@ -420,7 +446,7 @@ uint32_t UserHeap::totalCoreLeft(void)
 	int32_t localHeapState = heapState;
 #endif
 	HeapBlockPtr localFirst = firstNearBlock;
-	int32_t heapBlockSize   = -(int32_t)allocatedBlockSize;
+	int32_t heapBlockSize = -(int32_t)allocatedBlockSize;
 	if (!firstNearBlock)
 	{
 #ifdef _DEBUG
@@ -443,9 +469,8 @@ uint32_t UserHeap::totalCoreLeft(void)
 		mov     ebx, localFirst
 		mov     edx, ebx // edx = is place holder for first node
 		}
-	BytesLoop
-		: __asm
-		  {
+	BytesLoop : __asm
+				{
 		mov     ebx, [ebx].next
 		add     eax, [ebx].blockSize
 		add		eax, ecx
@@ -454,12 +479,12 @@ uint32_t UserHeap::totalCoreLeft(void)
 		cmp     ebx, edx
 		jne     int16_t BytesLoop
 		jmp		int16_t DoneTC
-		  }
-		  error1 : __asm
-				   {
+				}
+				error1 : __asm
+						 {
 		xor		eax, eax
-				   }
-				   DoneTC : __asm
+						 }
+						 DoneTC : __asm
 	{
 		mov		result, eax
 	}
@@ -467,7 +492,8 @@ uint32_t UserHeap::totalCoreLeft(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t UserHeap::coreLeft(void)
+uint32_t
+UserHeap::coreLeft(void)
 {
 	uint32_t result = 0;
 	if (gosHeap)
@@ -476,14 +502,17 @@ uint32_t UserHeap::coreLeft(void)
 	int32_t localHeapState = heapState;
 #endif
 	HeapBlockPtr localFirst = firstNearBlock;
-	int32_t heapBlockSize   = -(int32_t)allocatedBlockSize;
+	int32_t heapBlockSize = -(int32_t)allocatedBlockSize;
 #ifdef USE_BEST_FIT
 	__asm
 	{
 		xor		eax, eax
 	}
 #ifdef SAFE_HEAP
-	__asm { cmp localHeapState, 0 jne int16_t DoneCL }
+	__asm
+	{
+		cmp localHeapState, 0 jne int16_t DoneCL
+	}
 #endif
 	__asm
 		{
@@ -505,7 +534,10 @@ DoneCL:
 		xor		eax, eax
 	}
 #ifdef SAFE_HEAP
-	__asm { cmp localHeapState, 0 jne int16_t DoneCL }
+	__asm
+	{
+		cmp localHeapState, 0 jne int16_t DoneCL
+	}
 #endif
 	__asm
 		{
@@ -540,7 +572,8 @@ DoneCL:
 }
 
 //---------------------------------------------------------------------------
-PVOID UserHeap::Malloc(uint32_t memSize)
+PVOID
+UserHeap::Malloc(uint32_t memSize)
 {
 	PVOID result = nullptr;
 	if (gosHeap)
@@ -553,10 +586,10 @@ PVOID UserHeap::Malloc(uint32_t memSize)
 
 		return result;
 	}
-	HeapBlockPtr blockOffs  = nullptr;
+	HeapBlockPtr blockOffs = nullptr;
 	HeapBlockPtr localFirst = firstNearBlock;
-	int32_t heapBlockSize   = sizeof(HeapBlock);
-	bool mf					= mallocFatals;
+	int32_t heapBlockSize = sizeof(HeapBlock);
+	bool mf = mallocFatals;
 #ifdef _DEBUG
 	heapBlockSize += 4;
 #endif
@@ -587,7 +620,7 @@ SizeDone:
 		cmp		eax, memSize
 		jb      Alloc_Overflow
 
-				// search free list for first available block
+						 // search free list for first available block
 
 		mov     ebx, localFirst
 		or	    ebx, ebx
@@ -604,7 +637,7 @@ SearchLoop:
 		cmp     edx, ebx
 		jne     SearchLoop // have we come back to first node?
 
-				// else block was not found
+					// else block was not found
 
 		add		ecx, eax // ECX = biggest block
 		mov		edx, [memSize] // EDX = bytes asked for
@@ -623,40 +656,39 @@ FoundBlock:
 	}
 	// This code is the unlink macro.
 	__asm
-	{
+		{
 		cmp		[ebx].next, ebx
 		jne		int16_t ULine1
 
-		//else list is now empty
+							   //else list is now empty
 
 		mov		localFirst, 0
 		jmp		int16_t ULine3
-	}
-	ULine1:
-	__asm
-	{
+		}
+	ULine1 :
+		__asm
+		{
 		mov     edx, localFirst
 		cmp     ebx, edx
-		jne     int16_t ULine2					//unlinking first element?
+		jne     int16_t ULine2 //unlinking first element?
 		mov     eax, [ebx].next
 		mov     localFirst, eax
-	}
-	ULine2:
-	__asm
-	{
-		mov		edi, [ebx].next					//edi = ebx.next
+		}
+		ULine2 :
+		__asm
+		{
+		mov		edi, [ebx].next //edi = ebx.next
 		mov		ebx, [ebx].previous
-		mov		[edi].previous, ebx   		//ebx.next.prev = ebx.prev
-		mov		[ebx].next, edi					//ebx.prev.next = ebx.next
-	}
-	ULine3:											//End of Unlink code
-	__asm
-	{
+		mov		[edi].previous, ebx //ebx.next.prev = ebx.prev
+		mov		[ebx].next, edi //ebx.prev.next = ebx.next
+		}
+		ULine3 : //End of Unlink code
+				 __asm
+				 {
 		mov		eax, blockOffs
 		jmp		int16_t Alloc_Done
-	}
-	UnlinkNormal:
-	__asm
+				 }
+				 UnlinkNormal : __asm
 	{
 		mov		edi, ebx
 		add		edi, [ebx].blockSize // edi -> lower block
@@ -690,7 +722,7 @@ FoundBlock:
 		cmp		edi, ebx
 		je		__Done // only one member in list
 
-				// else there are only two
+					// else there are only two
 
 		mov		localFirstSort, ebx // assume we are the smaller block
 		cmp		ecx, [edi].blockSize
@@ -704,7 +736,7 @@ __Line1: // else see if we are not in the correct order
 		cmp		ecx, [edi].blockSize
 		jbe		int16_t __Line2
 
-				// else see if next guy in line is the localFirst
+						 // else see if next guy in line is the localFirst
 
 		cmp		edi, edx // did we just compare with Beginning of list?
 		jne		int16_t __Line3 // no
@@ -715,23 +747,23 @@ __Line2:
 		cmp	    ecx, [edi].blockSize
 		jae		int16_t __Done
 
-			// else we are less than guy to our left
+				// else we are less than guy to our left
 
 		cmp		ebx, edx // are we the first block in list?
 		je		int16_t __Done
 
 		__Line3: // else we must unlink our block, saving a pointer to lower
-				 // neighbor
+			// neighbor
 
 		push	edi
 		push	ebx
 
-				// Unlink Routine inline here
+					// Unlink Routine inline here
 
 		cmp		[ebx].next, ebx
 		jne		int16_t _ULine1
 
-			// else list is now empty
+				// else list is now empty
 
 		mov		localFirstSort, 0
 		jmp		int16_t _ULine3
@@ -820,20 +852,17 @@ __Done:
 #endif
 	__asm {mov eax, edi jmp int16_t Alloc_Done}
 	//-----------------------------------------error handling
-	Alloc_zero : __asm {mov eax, ALLOC_ZERO jmp int16_t Alloc_error} Zero_Free
-		: __asm {mov eax, NULL_FREE_LIST jmp int16_t Alloc_error} Alloc_Overflow
-		: __asm {mov eax, ALLOC_OVERFLOW} Alloc_error : __asm {mov errorResult, eax cmp mf,
-															0
+	Alloc_zero : __asm {mov eax, ALLOC_ZERO jmp int16_t Alloc_error} Zero_Free : __asm {mov eax, NULL_FREE_LIST jmp int16_t Alloc_error} Alloc_Overflow : __asm {mov eax, ALLOC_OVERFLOW} Alloc_error : __asm {mov errorResult, eax cmp mf, 0
 	//		cmp		[this].mallocFatals,0
 
 #ifdef CHECK_HEAP
-															je noFatal
+																																																			je noFatal
 #else
-															jmp noFatal
+																																																			jmp noFatal
 #endif
 
-														} memCoreLeft = totalCoreLeft();
-	memTotalLeft													  = coreLeft();
+																																																		} memCoreLeft = totalCoreLeft();
+	memTotalLeft = coreLeft();
 	walkHeap(TRUE, false);
 	if (memSize)
 		STOP(("Heap %s is Out Of RAM.  HeapSize %d, CoreLeft %d, TotalLeft %d, "
@@ -879,7 +908,7 @@ Alloc_Done:
 	{
 		recordCount++;
 		gosASSERT(recordCount < NUMMEMRECORDS);
-		recordArray[recordCount].ptr  = result;
+		recordArray[recordCount].ptr = result;
 		recordArray[recordCount].size = memSize;
 		CONTEXT ourContext;
 		STACKFRAME sf;
@@ -908,7 +937,7 @@ int32_t UserHeap::Free(PVOIDmemBlock)
 		return 0;
 	}
 	HeapBlockPtr blockOffs = (HeapBlockPtr)memBlock;
-	int32_t result		   = 0;
+	int32_t result = 0;
 	HeapBlockPtr sortBlock = nullptr;
 	//------------------------------------------
 	// If freeing a nullptr, we do nothing
@@ -977,7 +1006,7 @@ int32_t UserHeap::Free(PVOIDmemBlock)
 	//-------------------------------------------------------------------------------------
 	// SORT Routine
 	__asm {pushad} //-------------------------------------
-				   // see if we have to do any work at all
+	// see if we have to do any work at all
 	HeapBlockPtr localFirstSort = firstNearBlock;
 	__asm
 		{
@@ -990,7 +1019,7 @@ int32_t UserHeap::Free(PVOIDmemBlock)
 		cmp		edi, ebx
 		je		__Done // only one member in list
 
-				// else there are only two
+					// else there are only two
 
 		mov		localFirstSort, ebx // assume we are the smaller block
 		cmp		ecx, [edi].blockSize
@@ -1004,7 +1033,7 @@ __Line1: // else see if we are not in the correct order
 		cmp		ecx, [edi].blockSize
 		jbe		int16_t __Line2
 
-				// else see if next guy in line is the localFirst
+						 // else see if next guy in line is the localFirst
 
 		cmp		edi, edx // did we just compare with Beginning of list?
 		jne		int16_t __Line3 // no
@@ -1015,23 +1044,23 @@ __Line2:
 		cmp	    ecx, [edi].blockSize
 		jae		int16_t __Done
 
-			// else we are less than guy to our left
+				// else we are less than guy to our left
 
 		cmp		ebx, edx // are we the first block in list?
 		je		int16_t __Done
 
 		__Line3: // else we must unlink our block, saving a pointer to lower
-				 // neighbor
+			// neighbor
 
 		push	edi
 		push	ebx
 
-				// Unlink Routine inline here
+					// Unlink Routine inline here
 
 		cmp		[ebx].next, ebx
 		jne		int16_t _ULine1
 
-			// else list is now empty
+				// else list is now empty
 
 		mov		localFirstSort, 0
 		jmp		int16_t _ULine3
@@ -1143,7 +1172,7 @@ Dealloc_Done:
 			count++;
 		// This may be OK?  Not logging when allocated!
 		// gosASSERT (count < NUMMEMRECORDS);
-		recordArray[count].ptr  = nullptr;
+		recordArray[count].ptr = nullptr;
 		recordArray[count].size = 0;
 		for (size_t i = 0; i < 12; i++)
 			recordArray[count].stack[i] = 0;
@@ -1153,7 +1182,8 @@ Dealloc_Done:
 }
 
 //---------------------------------------------------------------------------
-PVOID UserHeap::calloc(uint32_t memSize)
+PVOID
+UserHeap::calloc(uint32_t memSize)
 {
 	PVOID result = malloc(memSize);
 	memset(result, 0, memSize);
@@ -1161,7 +1191,8 @@ PVOID UserHeap::calloc(uint32_t memSize)
 }
 
 //---------------------------------------------------------------------------
-void UserHeap::walkHeap(bool printIt, bool skipAllocated)
+void
+UserHeap::walkHeap(bool printIt, bool skipAllocated)
 {
 	if (gosHeap)
 	{
@@ -1267,10 +1298,15 @@ void UserHeap::walkHeap(bool printIt, bool skipAllocated)
 }
 
 //---------------------------------------------------------------------------
-int32_t UserHeap::getLastError(void) { return heapState; }
+int32_t
+UserHeap::getLastError(void)
+{
+	return heapState;
+}
 
 //---------------------------------------------------------------------------
-void UserHeap::relink(HeapBlockPtr newBlock)
+void
+UserHeap::relink(HeapBlockPtr newBlock)
 {
 	HeapBlockPtr localFirst = firstNearBlock;
 	// empty list?
@@ -1280,7 +1316,7 @@ void UserHeap::relink(HeapBlockPtr newBlock)
 		cmp		localFirst, 0
 		jne		int16_t Line1
 
-				// else this is the only block in the list
+												  // else this is the only block in the list
 
 		mov     localFirst, ebx
 		mov     [ebx].previous, ebx
@@ -1327,7 +1363,8 @@ Line2:
 }
 
 //---------------------------------------------------------------------------
-void UserHeap::unlink(HeapBlockPtr oldBlock)
+void
+UserHeap::unlink(HeapBlockPtr oldBlock)
 {
 	HeapBlockPtr localFirst = firstNearBlock;
 	__asm
@@ -1336,7 +1373,7 @@ void UserHeap::unlink(HeapBlockPtr oldBlock)
 		cmp		[ebx].next, ebx
 		jne		int16_t ULine1
 
-				// else list is now empty
+												 // else list is now empty
 
 		mov		localFirst, 0
 		jmp		int16_t ULine3
@@ -1363,10 +1400,11 @@ ULine3:
 }
 
 //---------------------------------------------------------------------------
-bool UserHeap::mergeWithLower(HeapBlockPtr block)
+bool
+UserHeap::mergeWithLower(HeapBlockPtr block)
 {
 	HeapBlockPtr localFirst = firstNearBlock;
-	bool result				= FALSE;
+	bool result = FALSE;
 	__asm
 	{
 		mov     edi, block
@@ -1408,35 +1446,35 @@ check_ok:
 	}
 	// This is the UNLINK routine directly.
 	__asm
-	{
+		{
 		cmp		[ebx].next, ebx
 		jne		int16_t ULine1
 
-		//else list is now empty
+							   //else list is now empty
 
 		mov     localFirst, 0
 		jmp     int16_t ULine3
-	}
-	ULine1:
-	__asm
-	{
+		}
+	ULine1 :
+		__asm
+		{
 		mov     edx, localFirst
 		cmp     ebx, edx
-		jne     int16_t ULine2						//unlinking first element?
+		jne     int16_t ULine2 //unlinking first element?
 		mov     eax, [ebx].next
 		mov     localFirst, eax
-	}
-	ULine2:
-	__asm
-	{
-		mov		edi, [ebx].next				//edi = bx.next
+		}
+		ULine2 :
+		__asm
+		{
+		mov		edi, [ebx].next //edi = bx.next
 		mov		ebx, [ebx].previous
-		mov		[edi].previous, ebx   	//ebx.next.prev = ebx.prev
-		mov		[ebx].next, edi				//ebx.prev.next = bx.next
-	}
-	ULine3:
-	NoMerge:
-	__asm
+		mov		[edi].previous, ebx //ebx.next.prev = ebx.prev
+		mov		[ebx].next, edi //ebx.prev.next = bx.next
+		}
+		ULine3 :
+		NoMerge :
+		__asm
 	{
 		mov		eax, 1 // Return TRUE
 	}
@@ -1452,7 +1490,8 @@ DoneML:
 }
 
 //---------------------------------------------------------------------------
-void HeapList::addHeap(HeapManagerPtr newHeap)
+void
+HeapList::addHeap(HeapManagerPtr newHeap)
 {
 	for (size_t i = 0; i < MAX_HEAPS; i++)
 	{
@@ -1466,7 +1505,8 @@ void HeapList::addHeap(HeapManagerPtr newHeap)
 }
 
 //---------------------------------------------------------------------------
-void HeapList::removeHeap(HeapManagerPtr oldHeap)
+void
+HeapList::removeHeap(HeapManagerPtr oldHeap)
 {
 	for (size_t i = 0; i < MAX_HEAPS; i++)
 	{
@@ -1479,7 +1519,8 @@ void HeapList::removeHeap(HeapManagerPtr oldHeap)
 	}
 }
 
-void HeapList::initializeStatistics()
+void
+HeapList::initializeStatistics()
 {
 	if (heapInstrumented == 0)
 	{
@@ -1513,7 +1554,8 @@ void HeapList::initializeStatistics()
 }
 
 //---------------------------------------------------------------------------
-void HeapList::update(void)
+void
+HeapList::update(void)
 {
 	totalSize = totalCoreLeft = totalLeft = 0;
 	for (size_t i = 0; i < 50; i++)
@@ -1531,20 +1573,21 @@ void HeapList::update(void)
 		{
 			heapRecords[i].heapSize = heapRecords[i].thisHeap->tSize();
 			totalSize += heapRecords[i].heapSize;
-			heapRecords[i].coreLeft		 = 0;
+			heapRecords[i].coreLeft = 0;
 			heapRecords[i].totalCoreLeft = 0;
 		}
 	}
 }
 
 //---------------------------------------------------------------------------
-uint32_t textToLong(PSTR num)
+uint32_t
+textToLong(PSTR num)
 {
 	int32_t result = 0;
 	PSTR hexOffset = num;
 	hexOffset += 2;
 	int32_t numDigits = strlen(hexOffset) - 1;
-	int32_t power	 = 0;
+	int32_t power = 0;
 	for (size_t count = numDigits; count >= 0; count--, power++)
 	{
 		uint8_t currentDigit = toupper(hexOffset[count]);
@@ -1568,7 +1611,8 @@ uint32_t textToLong(PSTR num)
 }
 
 //-----------------------------------------------------------
-int32_t longToText(PSTR result, int32_t num, uint32_t bufLen)
+int32_t
+longToText(PSTR result, int32_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%08X", num);
@@ -1581,7 +1625,8 @@ int32_t longToText(PSTR result, int32_t num, uint32_t bufLen)
 }
 
 //--------------------------------------------------------------------------
-int32_t getStringFromMap(MechFile& mapFile, uint32_t addr, PSTR result)
+int32_t
+getStringFromMap(MechFile& mapFile, uint32_t addr, PSTR result)
 {
 	//----------------------------------------
 	// Convert function address to raw offset
@@ -1630,7 +1675,8 @@ int32_t getStringFromMap(MechFile& mapFile, uint32_t addr, PSTR result)
 }
 
 //---------------------------------------------------------------------------
-void HeapList::dumpLog(void)
+void
+HeapList::dumpLog(void)
 {
 	//----------------------------------------------
 	// This function dumps information on each heap
@@ -1647,12 +1693,12 @@ void HeapList::dumpLog(void)
 #endif
 #endif
 	HeapManagerPtr currentHeap = nullptr;
-	uint32_t heapNumber		   = 1;
-	uint32_t mapStringSize	 = 0;
+	uint32_t heapNumber = 1;
+	uint32_t mapStringSize = 0;
 	char msg[1024];
 	char mapInfo[513];
 	uint32_t totalCommit = 0;
-	uint32_t totalFree   = 0;
+	uint32_t totalFree = 0;
 	for (size_t i = 0; i < MAX_HEAPS; i++)
 	{
 		currentHeap = heapRecords[i].thisHeap;
@@ -1682,9 +1728,7 @@ void HeapList::dumpLog(void)
 				logFile.writeLine(msg);
 				sprintf(msg, "Frag Level: %f       PercentFree: %f",
 					(float(userHeap->coreLeft()) / float(userHeap->totalCoreLeft())),
-					1.0 -
-						(float(currentHeap->tSize() - userHeap->coreLeft()) /
-							float(currentHeap->tSize())));
+					1.0 - (float(currentHeap->tSize() - userHeap->coreLeft()) / float(currentHeap->tSize())));
 				logFile.writeLine(msg);
 				totalFree += userHeap->coreLeft();
 			}

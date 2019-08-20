@@ -18,7 +18,8 @@ TerrainDlg:
 class MapSizeDlg : public CDialog
 {
 public:
-	MapSizeDlg() : CDialog(IDD_MAPSIZE) { mapSize = 0; }
+	MapSizeDlg() :
+		CDialog(IDD_MAPSIZE) { mapSize = 0; }
 	virtual ~MapSizeDlg() {}
 	virtual void Init(void);
 	virtual BOOL OnInitDialog()

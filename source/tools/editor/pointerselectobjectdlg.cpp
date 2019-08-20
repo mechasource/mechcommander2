@@ -19,20 +19,22 @@ PointerSelectObjectDlg component.
 static cint32_t WM_DOTICK = WM_USER + 1;
 
 //-------------------------------------------------------------------------------------------------
-PointerSelectObjectDlg::PointerSelectObjectDlg() : CDialog(IDD_POINTER_SELECT_OBJECT)
+PointerSelectObjectDlg::PointerSelectObjectDlg() :
+	CDialog(IDD_POINTER_SELECT_OBJECT)
 {
-	m_pButton		= 0;
+	m_pButton = 0;
 	m_bTimerIsReset = true;
 }
 
-PointerSelectObjectDlg::PointerSelectObjectDlg(int32_t x, int32_t y)
-	: CDialog(IDD_POINTER_SELECT_OBJECT)
+PointerSelectObjectDlg::PointerSelectObjectDlg(int32_t x, int32_t y) :
+	CDialog(IDD_POINTER_SELECT_OBJECT)
 {
-	m_pButton		= 0;
+	m_pButton = 0;
 	m_bTimerIsReset = true;
 }
 
-BOOL PointerSelectObjectDlg::OnInitDialog()
+BOOL
+PointerSelectObjectDlg::OnInitDialog()
 {
 	// m_pButton = (CButton *)GetDlgItem(IDC_POINTER_SELECT_OBJECT_BUTTON);
 	// assert( m_pButton );
@@ -43,9 +45,14 @@ BOOL PointerSelectObjectDlg::OnInitDialog()
 	return 1;
 }
 
-uint32_t PointerSelectObjectDlg::OnNcHitTest(CPoint point) { return HTCLIENT; }
+uint32_t
+PointerSelectObjectDlg::OnNcHitTest(CPoint point)
+{
+	return HTCLIENT;
+}
 
-BOOL PointerSelectObjectDlg::OnCommand(WPARAM wParam,
+BOOL
+PointerSelectObjectDlg::OnCommand(WPARAM wParam,
 	LPARAM lParam) // called by child controls to inform of an event
 {
 	//	HWND hWndCtrl = (HWND)lParam;
@@ -56,8 +63,8 @@ BOOL PointerSelectObjectDlg::OnCommand(WPARAM wParam,
 	return inherited::OnCommand(wParam, lParam);
 }
 
-
-BOOL PointerSelectObjectDlg::OnWndMsg(
+BOOL
+PointerSelectObjectDlg::OnWndMsg(
 	uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
 	switch (message)

@@ -9,8 +9,10 @@
 
 //#include "string.h"
 
-void initABL(void);
-void closeABL(void);
+void
+initABL(void);
+void
+closeABL(void);
 
 extern "C" int __cdecl main(
 	_In_ int argc, _In_reads_(argc) _Pre_z_ char* argv[], _In_z_ char** envp)
@@ -28,7 +30,7 @@ extern "C" int __cdecl main(
 	initABL();
 	uint8_t s[256];
 	int32_t handle;
-	int32_t numErrs  = 0;
+	int32_t numErrs = 0;
 	int32_t numLines = 0;
 	int32_t numFiles = 0;
 	if (argc == 3)
@@ -48,7 +50,7 @@ extern "C" int __cdecl main(
 			bFile->readString(s);
 			if (s[strlen((PSTR)s) - 1] == 10)
 				s[strlen((PSTR)s) - 1] = nullptr;
-			numErrs  = 0;
+			numErrs = 0;
 			numLines = 0;
 			numFiles = 0;
 			if ((s[0] == 'l') && (s[1] == ' '))
@@ -68,10 +70,10 @@ extern "C" int __cdecl main(
 		bFile = nullptr;
 		printf("\n");
 	}
-	numErrs  = 0;
+	numErrs = 0;
 	numLines = 0;
 	numFiles = 0;
-	handle   = ABLi_preProcess(argv[argc - 1], &numErrs, &numLines, &numFiles, false);
+	handle = ABLi_preProcess(argv[argc - 1], &numErrs, &numLines, &numFiles, false);
 	printf("SUCCESS: %s [%d lines, %d files]\n", argv[argc - 1], numLines, numFiles);
 	scanf(" ");
 	closeABL();

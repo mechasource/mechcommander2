@@ -115,21 +115,21 @@
 //---------------------------------------------------------------------------
 // Static Globals
 #if 1 // ids can be 8 int32_t, INCLUDING TERMINATOR!!!!!
-char DEFAULT_LIST_ID[]  = "DEFAULT";
+char DEFAULT_LIST_ID[] = "DEFAULT";
 char CLANMECH_LIST_ID[] = "CLANMEC";
-char ISMECH_LIST_ID[]   = "ISMECH";
-char ICON_LIST_ID[]		= "ICONS";
-char WEAPON_LIST_ID[]   = "WEAPON";
+char ISMECH_LIST_ID[] = "ISMECH";
+char ICON_LIST_ID[] = "ICONS";
+char WEAPON_LIST_ID[] = "WEAPON";
 #else
-char DEFAULT_LIST_ID[]  = "DEFAULT!";
+char DEFAULT_LIST_ID[] = "DEFAULT!";
 char CLANMECH_LIST_ID[] = "CLANMECH";
-char ISMECH_LIST_ID[]   = "ISMECH";
-char ICON_LIST_ID[]		= "ICONS";
-char WEAPON_LIST_ID[]   = "WEAPON";
+char ISMECH_LIST_ID[] = "ISMECH";
+char ICON_LIST_ID[] = "ICONS";
+char WEAPON_LIST_ID[] = "WEAPON";
 #endif
 // int32_t ObjectQueue::objectsInList = 0;
 
-extern int32_t usedBlockList[];  // Trust ME~~!!!!!!!!!!!!!!!!!!!!!!!!
+extern int32_t usedBlockList[]; // Trust ME~~!!!!!!!!!!!!!!!!!!!!!!!!
 extern int32_t moverBlockList[]; // Trust ME~~!!!!!!!!!!!!!!!!!!!!!!!!  AGAIN
 extern bool updateTerrainObjects;
 extern bool updateObjects;
@@ -150,13 +150,14 @@ ObjectQueueNodePtr weaponList = nullptr;
 #define VISIBLE_THRESHOLD 1
 
 GameObjectManagerPtr ObjectManager = nullptr;
-GameObjectPtr* collisionList	   = nullptr;
-int32_t numCollidables			   = 0;
+GameObjectPtr* collisionList = nullptr;
+int32_t numCollidables = 0;
 //***************************************************************************
 //* MISC routines
 //***************************************************************************
 
-bool blockInList(int32_t blockNum)
+bool
+blockInList(int32_t blockNum)
 {
 	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	for (size_t i = 0; i < totalBlocks; i++)
@@ -171,7 +172,8 @@ bool blockInList(int32_t blockNum)
 
 //---------------------------------------------------------------------------
 
-bool moverInList(int32_t blockNum)
+bool
+moverInList(int32_t blockNum)
 {
 	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	for (size_t i = 0; i < totalBlocks; i++)
@@ -188,7 +190,8 @@ bool moverInList(int32_t blockNum)
 //* GAMEOBJECT MANAGER class
 //***************************************************************************
 
-PVOID GameObjectManager::operator new(size_t ourSize)
+PVOID
+GameObjectManager::operator new(size_t ourSize)
 {
 	PVOID result = systemHeap->Malloc(ourSize);
 	if (!result)
@@ -200,66 +203,72 @@ PVOID GameObjectManager::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::operator delete(PVOID us) { systemHeap->Free(us); }
+void
+GameObjectManager::operator delete(PVOID us)
+{
+	systemHeap->Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::init(void)
+void
+GameObjectManager::init(void)
 {
-	objTypeManager		= nullptr;
-	numMechs			= 0;
-	numVehicles			= 0;
-	numElementals		= 0;
-	numTerrainObjects   = 0;
-	numBuildings		= 0;
-	numTurrets			= 0;
-	numWeapons			= 0;
-	numCarnage			= 0;
-	numLights			= 0;
-	numGates			= 0;
-	numArtillery		= 0;
-	numGateControls		= 0;
-	numTurretControls   = 0;
-	numPowerGenerators  = 0;
+	objTypeManager = nullptr;
+	numMechs = 0;
+	numVehicles = 0;
+	numElementals = 0;
+	numTerrainObjects = 0;
+	numBuildings = 0;
+	numTurrets = 0;
+	numWeapons = 0;
+	numCarnage = 0;
+	numLights = 0;
+	numGates = 0;
+	numArtillery = 0;
+	numGateControls = 0;
+	numTurretControls = 0;
+	numPowerGenerators = 0;
 	numSpecialBuildings = 0;
 	// carnageCount = 0;
-	Terrain::numObjBlocks   = 0;
-	mechs					= nullptr;
-	vehicles				= nullptr;
-	elementals				= nullptr;
-	terrainObjects			= nullptr;
-	buildings				= nullptr;
-	turrets					= 0;
-	weapons					= nullptr;
-	carnage					= nullptr;
-	lights					= nullptr;
-	artillery				= nullptr;
-	gates					= nullptr;
-	objList					= nullptr;
-	collidableList			= nullptr;
-	numCollidables			= 0;
-	numGoodMovers			= 0;
-	numBadMovers			= 0;
-	numMovers				= 0;
+	Terrain::numObjBlocks = 0;
+	mechs = nullptr;
+	vehicles = nullptr;
+	elementals = nullptr;
+	terrainObjects = nullptr;
+	buildings = nullptr;
+	turrets = 0;
+	weapons = nullptr;
+	carnage = nullptr;
+	lights = nullptr;
+	artillery = nullptr;
+	gates = nullptr;
+	objList = nullptr;
+	collidableList = nullptr;
+	numCollidables = 0;
+	numGoodMovers = 0;
+	numBadMovers = 0;
+	numMovers = 0;
 	nextReinforcementPartId = MIN_REINFORCEMENT_PART_ID;
-	numRemoved				= 0;
-	nextWatchID				= 1;
-	currentWeaponsIndex		= 0;
-	currentCarnageIndex		= 0;
-	currentLightIndex		= 0;
-	currentArtilleryIndex   = 0;
-	int32_t totalBlocks		= Terrain::blocksMapSide * Terrain::blocksMapSide;
+	numRemoved = 0;
+	nextWatchID = 1;
+	currentWeaponsIndex = 0;
+	currentCarnageIndex = 0;
+	currentLightIndex = 0;
+	currentArtilleryIndex = 0;
+	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	for (size_t i = 0; i < totalBlocks; i++)
 	{
-		Terrain::objBlockInfo[i].active		 = false;
+		Terrain::objBlockInfo[i].active = false;
 		Terrain::objBlockInfo[i].firstHandle = 0;
-		Terrain::objBlockInfo[i].numObjects  = 0;
+		Terrain::objBlockInfo[i].numObjects = 0;
 	}
 }
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::init(PSTR objTypeDataFile, int32_t objTypeHeapSize, int32_t objHeapSize)
+void
+GameObjectManager::init(PSTR objTypeDataFile, int32_t objTypeHeapSize, int32_t objHeapSize)
 {
 	if (objTypeManager)
 		delete objTypeManager;
@@ -273,22 +282,23 @@ void GameObjectManager::init(PSTR objTypeDataFile, int32_t objTypeHeapSize, int3
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t nElementals,
+void
+GameObjectManager::setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t nElementals,
 	int32_t nTerrainObjects, int32_t nBuildings, int32_t nTurrets, int32_t nWeapons,
 	int32_t nCarnage, int32_t nLights, int32_t nArtillery, int32_t nGates)
 {
-	int32_t i	 = 0;
-	numMechs	  = nMechs;
-	numVehicles   = nVehicles;
+	int32_t i = 0;
+	numMechs = nMechs;
+	numVehicles = nVehicles;
 	numElementals = nElementals;
 	//-------------------------------------------------------------------------
 	// We need to make room for a potential max # of reinforcements per team...
 	//
 	// Please DONT add 2 to each of these.   You wind up pointing into the next
 	// list!!!! -fs   6/14/2000
-	maxMechs	= numMechs + MAX_TEAMS * MAX_REINFORCEMENTS_PER_TEAM;
+	maxMechs = numMechs + MAX_TEAMS * MAX_REINFORCEMENTS_PER_TEAM;
 	maxVehicles = numVehicles + MAX_TEAMS * MAX_REINFORCEMENTS_PER_TEAM;
-	maxMovers   = maxMechs + maxVehicles + numElementals;
+	maxMovers = maxMechs + maxVehicles + numElementals;
 	if (nTerrainObjects > -1)
 		numTerrainObjects = nTerrainObjects;
 	if (nBuildings > -1)
@@ -471,7 +481,7 @@ void GameObjectManager::setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t
 		}
 	}
 	useMoverLineOfSightTable = true;
-	moverLineOfSightTable	= (PSTR)systemHeap->Malloc(maxMovers * maxMovers);
+	moverLineOfSightTable = (PSTR)systemHeap->Malloc(maxMovers * maxMovers);
 	if (!moverLineOfSightTable)
 		Fatal(numGates,
 			" GameObjectManager.setNumObjects: cannot malloc "
@@ -481,7 +491,8 @@ void GameObjectManager::setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t
 
 //---------------------------------------------------------------------------
 
-BattleMechPtr GameObjectManager::getMech(int32_t mechIndex)
+BattleMechPtr
+GameObjectManager::getMech(int32_t mechIndex)
 {
 	if (!mechs || (mechIndex < 0) || (mechIndex >= numMechs))
 		return (nullptr);
@@ -490,7 +501,8 @@ BattleMechPtr GameObjectManager::getMech(int32_t mechIndex)
 
 //---------------------------------------------------------------------------
 
-GroundVehiclePtr GameObjectManager::getVehicle(int32_t vehicleIndex)
+GroundVehiclePtr
+GameObjectManager::getVehicle(int32_t vehicleIndex)
 {
 	if (!vehicles || (vehicleIndex < 0) || (vehicleIndex >= numVehicles))
 		return (nullptr);
@@ -499,7 +511,8 @@ GroundVehiclePtr GameObjectManager::getVehicle(int32_t vehicleIndex)
 
 //---------------------------------------------------------------------------
 
-GroundVehiclePtr GameObjectManager::getOpenVehicle(void)
+GroundVehiclePtr
+GameObjectManager::getOpenVehicle(void)
 {
 	for (size_t i = 0; i < maxVehicles; i++)
 	{
@@ -515,7 +528,8 @@ GroundVehiclePtr GameObjectManager::getOpenVehicle(void)
 
 //---------------------------------------------------------------------------
 
-ElementalPtr GameObjectManager::getElemental(int32_t elementalIndex)
+ElementalPtr
+GameObjectManager::getElemental(int32_t elementalIndex)
 {
 	if (!elementals || (elementalIndex < 0) || (elementalIndex >= numElementals))
 		return (nullptr);
@@ -524,7 +538,8 @@ ElementalPtr GameObjectManager::getElemental(int32_t elementalIndex)
 
 //---------------------------------------------------------------------------
 
-BattleMechPtr GameObjectManager::newMech(void)
+BattleMechPtr
+GameObjectManager::newMech(void)
 {
 	if (numMechs < maxMechs)
 	{
@@ -542,7 +557,8 @@ BattleMechPtr GameObjectManager::newMech(void)
 
 //---------------------------------------------------------------------------
 
-GroundVehiclePtr GameObjectManager::newVehicle(void)
+GroundVehiclePtr
+GameObjectManager::newVehicle(void)
 {
 	if (numVehicles < maxVehicles)
 	{
@@ -560,18 +576,20 @@ GroundVehiclePtr GameObjectManager::newVehicle(void)
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::setWatchID(GameObjectPtr obj)
+void
+GameObjectManager::setWatchID(GameObjectPtr obj)
 {
 	if (obj->watchID == 0)
 	{
 		watchList[nextWatchID] = obj;
-		obj->watchID		   = nextWatchID++;
+		obj->watchID = nextWatchID++;
 	}
 }
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::freeMover(MoverPtr mover)
+void
+GameObjectManager::freeMover(MoverPtr mover)
 {
 	bool foundIt = modifyMoverLists(mover, MOVERLIST_DELETE);
 	if (foundIt)
@@ -581,13 +599,14 @@ void GameObjectManager::freeMover(MoverPtr mover)
 		mover->setFlag(OBJECT_FLAG_REMOVED, true);
 		mover->setPartId(0);
 		watchList[mover->watchID] = nullptr;
-		mover->watchID			  = 0;
+		mover->watchID = 0;
 	}
 }
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID)
+void
+GameObjectManager::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID)
 {
 	if (newTeamID > -1)
 	{
@@ -596,7 +615,7 @@ void GameObjectManager::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t ne
 		if (mover->getObjectClass() == BATTLEMECH)
 		{
 			((BattleMech*)mover)->killed = false;
-			((BattleMech*)mover)->lost   = false;
+			((BattleMech*)mover)->lost = false;
 		}
 		mover->tradeRefresh();
 	}
@@ -614,7 +633,8 @@ void GameObjectManager::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t ne
 
 #ifdef USE_ELEMENTALS
 
-ElementalPtr GameObjectManager::addElemental(void)
+ElementalPtr
+GameObjectManager::addElemental(void)
 {
 	if (numMechs < maxMechs)
 	{
@@ -629,7 +649,8 @@ ElementalPtr GameObjectManager::addElemental(void)
 
 //---------------------------------------------------------------------------
 
-TerrainObjectPtr GameObjectManager::getTerrainObject(int32_t terrainObjectIndex)
+TerrainObjectPtr
+GameObjectManager::getTerrainObject(int32_t terrainObjectIndex)
 {
 	if (!terrainObjects || (terrainObjectIndex < 0) || (terrainObjectIndex >= numTerrainObjects))
 		return (nullptr);
@@ -638,7 +659,8 @@ TerrainObjectPtr GameObjectManager::getTerrainObject(int32_t terrainObjectIndex)
 
 //---------------------------------------------------------------------------
 
-BuildingPtr GameObjectManager::getBuilding(int32_t buildingIndex)
+BuildingPtr
+GameObjectManager::getBuilding(int32_t buildingIndex)
 {
 	if (!buildings || (buildingIndex < 0) || (buildingIndex >= numBuildings))
 		return (nullptr);
@@ -647,7 +669,8 @@ BuildingPtr GameObjectManager::getBuilding(int32_t buildingIndex)
 
 //---------------------------------------------------------------------------
 
-TurretPtr GameObjectManager::getTurret(int32_t turretIndex)
+TurretPtr
+GameObjectManager::getTurret(int32_t turretIndex)
 {
 	if (!turrets || (turretIndex < 0) || (turretIndex >= numTurrets))
 		return (nullptr);
@@ -656,7 +679,8 @@ TurretPtr GameObjectManager::getTurret(int32_t turretIndex)
 
 //---------------------------------------------------------------------------
 
-GatePtr GameObjectManager::getGate(int32_t gateIndex)
+GatePtr
+GameObjectManager::getGate(int32_t gateIndex)
 {
 	if (!gates || (gateIndex < 0) || (gateIndex >= numGates))
 		return (nullptr);
@@ -665,7 +689,8 @@ GatePtr GameObjectManager::getGate(int32_t gateIndex)
 
 //---------------------------------------------------------------------------
 
-WeaponBoltPtr GameObjectManager::getWeapon(void)
+WeaponBoltPtr
+GameObjectManager::getWeapon(void)
 {
 	if (!weapons || (currentWeaponsIndex < 0) || (currentWeaponsIndex >= numWeapons))
 		return (nullptr);
@@ -679,7 +704,8 @@ WeaponBoltPtr GameObjectManager::getWeapon(void)
 
 //---------------------------------------------------------------------------
 
-CarnagePtr GameObjectManager::getCarnage(CarnageEnumType carnageType)
+CarnagePtr
+GameObjectManager::getCarnage(CarnageEnumType carnageType)
 {
 	if (!carnage || (currentCarnageIndex < 0) || (currentCarnageIndex >= numCarnage))
 		return (nullptr);
@@ -693,7 +719,8 @@ CarnagePtr GameObjectManager::getCarnage(CarnageEnumType carnageType)
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::releaseCarnage(CarnagePtr obj)
+void
+GameObjectManager::releaseCarnage(CarnagePtr obj)
 {
 	obj->setExists(false);
 	obj->setOwner(nullptr);
@@ -701,7 +728,8 @@ void GameObjectManager::releaseCarnage(CarnagePtr obj)
 
 //---------------------------------------------------------------------------
 
-LightPtr GameObjectManager::getLight(void)
+LightPtr
+GameObjectManager::getLight(void)
 {
 	if (!lights || (currentLightIndex < 0) || (currentLightIndex >= numLights))
 		return (nullptr);
@@ -715,7 +743,8 @@ LightPtr GameObjectManager::getLight(void)
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::releaseLight(LightPtr obj)
+void
+GameObjectManager::releaseLight(LightPtr obj)
 {
 	obj->setExists(false);
 	//	obj->setOwner(nullptr);
@@ -723,7 +752,8 @@ void GameObjectManager::releaseLight(LightPtr obj)
 
 //---------------------------------------------------------------------------
 
-ArtilleryPtr GameObjectManager::getArtillery(void)
+ArtilleryPtr
+GameObjectManager::getArtillery(void)
 {
 	if (!artillery || (currentArtilleryIndex < 0) || (currentArtilleryIndex >= numArtillery))
 		STOP(("Artillery Strikes are out of range in ObjectManager %d", currentArtilleryIndex));
@@ -744,10 +774,11 @@ ArtilleryPtr GameObjectManager::getArtillery(void)
 
 #define OLD_FILE_SIZE 2200
 
-void GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHandle)
+void
+GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHandle)
 {
-	int32_t packet   = terrainFile->getCurrentPacket();
-	int32_t size	 = terrainFile->getPacketSize();
+	int32_t packet = terrainFile->getCurrentPacket();
+	int32_t size = terrainFile->getPacketSize();
 	puint8_t pBuffer = new uint8_t[size];
 #ifdef _DEBUG
 	int32_t bytesRead =
@@ -770,13 +801,13 @@ void GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t fir
 	for (size_t i = 0; i < totalObjCount; ++i)
 	{
 		data->objTypeNum = terrainObjectFile->readLong();
-		data->vector.x   = terrainObjectFile->readFloat();
-		data->vector.y   = terrainObjectFile->readFloat();
-		data->vector.z   = terrainObjectFile->readFloat();
-		data->rotation   = terrainObjectFile->readFloat();
-		data->damage	 = terrainObjectFile->readLong();
-		data->teamId	 = terrainObjectFile->readLong();
-		data->parentId   = terrainObjectFile->readLong();
+		data->vector.x = terrainObjectFile->readFloat();
+		data->vector.y = terrainObjectFile->readFloat();
+		data->vector.z = terrainObjectFile->readFloat();
+		data->rotation = terrainObjectFile->readFloat();
+		data->damage = terrainObjectFile->readLong();
+		data->teamId = terrainObjectFile->readLong();
+		data->parentId = terrainObjectFile->readLong();
 		// padding
 		terrainObjectFile->readLong();
 		terrainObjectFile->readLong();
@@ -784,8 +815,8 @@ void GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t fir
 		int32_t tileCol;
 		int32_t tileRow;
 		land->worldToTile(data->vector, tileRow, tileCol);
-		int32_t blockI	= tileCol / 20;
-		int32_t blockJ	= tileRow / 20;
+		int32_t blockI = tileCol / 20;
+		int32_t blockJ = tileRow / 20;
 		data->blockNumber = blockJ * land->blocksMapSide + blockI;
 		tileCol -= blockI * 20;
 		tileRow -= blockJ * 20;
@@ -804,7 +835,8 @@ void GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t fir
 	delete pBuffer;
 }
 
-void GameObjectManager::countObject(ObjDataLoader* data)
+void
+GameObjectManager::countObject(ObjDataLoader* data)
 {
 	ObjectTypePtr objType = objTypeManager->get(data->objTypeNum);
 	if (!objType)
@@ -830,10 +862,7 @@ void GameObjectManager::countObject(ObjDataLoader* data)
 		break;
 	case BUILDING:
 	case TREEBUILDING:
-		if (((((BuildingTypePtr)objType)->perimeterAlarmRange > 0.0f) &&
-				(((BuildingTypePtr)objType)->perimeterAlarmTimer > 0.0f)) ||
-			(((BuildingTypePtr)objType)->lookoutTowerRange > 0.0f) ||
-			(((BuildingTypePtr)objType)->sensorRange > 0.0f))
+		if (((((BuildingTypePtr)objType)->perimeterAlarmRange > 0.0f) && (((BuildingTypePtr)objType)->perimeterAlarmTimer > 0.0f)) || (((BuildingTypePtr)objType)->lookoutTowerRange > 0.0f) || (((BuildingTypePtr)objType)->sensorRange > 0.0f))
 		{
 			Terrain::objBlockInfo[data->blockNumber].numCollidableObjects++;
 		}
@@ -852,19 +881,23 @@ void GameObjectManager::countObject(ObjDataLoader* data)
 
 //---------------------------------------------------------------------------
 
-inline bool isLandMine(int32_t objTypeNum) { return false; }
+inline bool
+isLandMine(int32_t objTypeNum)
+{
+	return false;
+}
 
 //---------------------------------------------------------------------------
 
-int32_t GameObjectManager::getSpecificObjects(
+int32_t
+GameObjectManager::getSpecificObjects(
 	int32_t objClass, int32_t objSubType, GameObjectPtr* objects, int32_t maxObjects)
 {
 	int32_t numValidObjects = 0;
 	for (size_t i = 0; i < getNumObjects(); i++)
 	{
 		GameObjectPtr obj = objList[i];
-		if (obj && (obj->getObjectClass() == objClass) &&
-			(obj->getObjectType()->getSubType() == objSubType))
+		if (obj && (obj->getObjectClass() == objClass) && (obj->getObjectType()->getSubType() == objSubType))
 		{
 			if (numValidObjects == maxObjects)
 				Fatal(objClass, " GameObjectManager.getSpecificObjects: too many ");
@@ -876,13 +909,14 @@ int32_t GameObjectManager::getSpecificObjects(
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::loadTerrainObjects(
+void
+GameObjectManager::loadTerrainObjects(
 	PacketFile* terrainFile, volatile float& progress, float progressRange)
 {
 	int32_t curTerrainObjectIndex = 0;
-	int32_t curBuildingIndex	  = 0;
-	int32_t curTurretIndex		  = 0;
-	int32_t curGateIndex		  = 0;
+	int32_t curBuildingIndex = 0;
+	int32_t curTurretIndex = 0;
+	int32_t curGateIndex = 0;
 	//------------------------------------------------------------------
 	int32_t* handles = new int32_t[2 * Terrain::numObjBlocks];
 	for (size_t i = 0; i < Terrain::numObjBlocks; ++i)
@@ -892,7 +926,7 @@ void GameObjectManager::loadTerrainObjects(
 			Terrain::objBlockInfo[i].firstHandle + Terrain::objBlockInfo[i].numCollidableObjects;
 	}
 	ObjDataLoader* data = objData;
-	float increment		= 0.0f;
+	float increment = 0.0f;
 	if (totalObjCount)
 		increment = progressRange / totalObjCount;
 	for (i = 0; i < totalObjCount; ++i)
@@ -919,7 +953,7 @@ void GameObjectManager::loadTerrainObjects(
 			{
 				controlBuilding->setFlag(OBJECT_FLAG_CAPTURABLE, true);
 				controlBuilding->setFlag(OBJECT_FLAG_CONTROLBUILDING, true);
-				controlBuilding->listID				= numTurretControls;
+				controlBuilding->listID = numTurretControls;
 				turretControls[numTurretControls++] = controlBuilding;
 			}
 			else if (!controlBuilding)
@@ -945,7 +979,7 @@ void GameObjectManager::loadTerrainObjects(
 			if (controlBuilding && !controlBuilding->getFlag(OBJECT_FLAG_CONTROLBUILDING))
 			{
 				controlBuilding->setFlag(OBJECT_FLAG_CONTROLBUILDING, true);
-				controlBuilding->listID			= numGateControls;
+				controlBuilding->listID = numGateControls;
 				gateControls[numGateControls++] = controlBuilding;
 			}
 			else if (!controlBuilding)
@@ -993,7 +1027,7 @@ void GameObjectManager::loadTerrainObjects(
 				if (newDistance < minDistance)
 				{
 					generatorIndex = j;
-					minDistance	= newDistance;
+					minDistance = newDistance;
 				}
 			}
 			buildings[i]->setPowerSupply(powerGenerators[generatorIndex]);
@@ -1012,7 +1046,7 @@ void GameObjectManager::loadTerrainObjects(
 				if (newDistance < minDistance)
 				{
 					generatorIndex = j;
-					minDistance	= newDistance;
+					minDistance = newDistance;
 				}
 			}
 			terrainObjects[i]->setPowerSupply(powerGenerators[generatorIndex]);
@@ -1023,7 +1057,8 @@ void GameObjectManager::loadTerrainObjects(
 extern GameObjectFootPrint* tempSpecialAreaFootPrints;
 extern int32_t tempNumSpecialAreas;
 
-void GameObjectManager::addObject(ObjDataLoader* objData, int32_t& curTerrainObjectIndex,
+void
+GameObjectManager::addObject(ObjDataLoader* objData, int32_t& curTerrainObjectIndex,
 	int32_t& curBuildingIndex, int32_t& curTurretIndex, int32_t& curGateIndex,
 	int32_t& curCollidableHandle, int32_t& curNonCollidableHandle)
 {
@@ -1033,13 +1068,13 @@ void GameObjectManager::addObject(ObjDataLoader* objData, int32_t& curTerrainObj
 	if (!isLandMine(objTypeNum))
 	{
 		ObjectTypePtr objType = getObjectType(objTypeNum);
-		GameObjectPtr obj	 = nullptr;
+		GameObjectPtr obj = nullptr;
 		if (!objType)
 			return;
 		// Fatal();
 		Stuff::Vector2DOf<int32_t> numbers;
-		numbers.x		= objData->vertexNumber;
-		numbers.y		= objData->blockNumber;
+		numbers.x = objData->vertexNumber;
+		numbers.y = objData->blockNumber;
 		uint8_t realDmg = objData->damage & 0x0f;
 		switch (objType->getObjectClass())
 		{
@@ -1220,7 +1255,8 @@ void GameObjectManager::addObject(ObjDataLoader* objData, int32_t& curTerrainObj
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::destroy(void)
+void
+GameObjectManager::destroy(void)
 {
 	//--------------------------------------------------------------
 	// Free 'em all up!!
@@ -1338,7 +1374,8 @@ void GameObjectManager::destroy(void)
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::render(bool terrain, bool movers, bool other)
+void
+GameObjectManager::render(bool terrain, bool movers, bool other)
 {
 	//-----------------------------------------------------
 	// Set render states as few times as possible.
@@ -1384,12 +1421,11 @@ void GameObjectManager::render(bool terrain, bool movers, bool other)
 		{
 			if (Terrain::objBlockInfo[terrainBlock].active)
 			{
-				int32_t numObjs  = Terrain::objBlockInfo[terrainBlock].numObjects;
+				int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 				int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
 				for (size_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
 				{
-					if (objList[objIndex] &&
-						Terrain::objVertexActive[objList[objIndex]->getVertexNum()])
+					if (objList[objIndex] && Terrain::objVertexActive[objList[objIndex]->getVertexNum()])
 					{
 						objList[objIndex]->render();
 						if (MaxObjectsDrawn)
@@ -1472,7 +1508,8 @@ void GameObjectManager::render(bool terrain, bool movers, bool other)
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::renderShadows(bool terrain, bool movers, bool other)
+void
+GameObjectManager::renderShadows(bool terrain, bool movers, bool other)
 {
 	//-----------------------------------------------------
 	// Set render states as few times as possible.
@@ -1518,12 +1555,11 @@ void GameObjectManager::renderShadows(bool terrain, bool movers, bool other)
 		{
 			if (Terrain::objBlockInfo[terrainBlock].active)
 			{
-				int32_t numObjs  = Terrain::objBlockInfo[terrainBlock].numObjects;
+				int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 				int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
 				for (size_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
 				{
-					if (objList[objIndex] &&
-						Terrain::objVertexActive[objList[objIndex]->getVertexNum()])
+					if (objList[objIndex] && Terrain::objVertexActive[objList[objIndex]->getVertexNum()])
 					{
 						objList[objIndex]->renderShadows();
 						if (MaxObjectsDrawn)
@@ -1577,16 +1613,16 @@ void GameObjectManager::renderShadows(bool terrain, bool movers, bool other)
 //---------------------------------------------------------------------------
 #ifdef LAB_ONLY
 int64_t MCTimeTerrainObjectsUpdate = 0;
-int64_t MCTimeMechsUpdate		   = 0;
-int64_t MCTimeVehiclesUpdate	   = 0;
-int64_t MCTimeTurretsUpdate		   = 0;
+int64_t MCTimeMechsUpdate = 0;
+int64_t MCTimeVehiclesUpdate = 0;
+int64_t MCTimeTurretsUpdate = 0;
 
 int64_t MCTimeTerrainObjectsTL = 0;
-int64_t MCTimeMechsTL		   = 0;
-int64_t MCTimeVehiclesTL	   = 0;
-int64_t MCTimeTurretsTL		   = 0;
+int64_t MCTimeMechsTL = 0;
+int64_t MCTimeVehiclesTL = 0;
+int64_t MCTimeTurretsTL = 0;
 
-int64_t MCTimeAllElseUpdate		= 0;
+int64_t MCTimeAllElseUpdate = 0;
 int64_t MCTimeCaptureListUpdate = 0;
 extern int64_t MCTimeTransformandLight;
 extern int64_t MCTimeAnimationandMatrix;
@@ -1595,7 +1631,8 @@ extern int64_t MCTimePerShapeTransform;
 uint32_t bldgCount = 0;
 #endif
 
-void GameObjectManager::update(bool terrain, bool movers, bool other)
+void
+GameObjectManager::update(bool terrain, bool movers, bool other)
 {
 	//----------------------------
 	// Now, update game objects...
@@ -1605,9 +1642,9 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 #endif
 	updateCaptureList();
 #ifdef LAB_ONLY
-	x						= GetCycles() - x;
+	x = GetCycles() - x;
 	MCTimeCaptureListUpdate = x;
-	x						= GetCycles();
+	x = GetCycles();
 #endif
 	if (terrain && renderObjects)
 	{
@@ -1661,18 +1698,15 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 		{
 			if (Terrain::objBlockInfo[terrainBlock].active || (turn < 3))
 			{
-				int32_t numObjs  = Terrain::objBlockInfo[terrainBlock].numObjects;
+				int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 				int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
 				for (size_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
 				{
-					if (objList[objIndex] &&
-						(Terrain::objVertexActive[objList[objIndex]->getVertexNum()] ||
-							(turn < 3)) &&
-						objList[objIndex]->getExists())
+					if (objList[objIndex] && (Terrain::objVertexActive[objList[objIndex]->getVertexNum()] || (turn < 3)) && objList[objIndex]->getExists())
 					{
 #ifdef LAB_ONLY
 						bldgCount++;
-						MCTimeAnimationandMatrix	= MCTimePerShapeTransform =
+						MCTimeAnimationandMatrix = MCTimePerShapeTransform =
 							MCTimeTransformandLight = 0;
 #endif
 						if (!objList[objIndex]->update())
@@ -1690,7 +1724,7 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 		}
 	}
 #ifdef LAB_ONLY
-	x						   = GetCycles() - x;
+	x = GetCycles() - x;
 	MCTimeTerrainObjectsUpdate = x;
 #endif
 	if (movers)
@@ -1722,9 +1756,9 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 			}
 		}
 #ifdef LAB_ONLY
-		x				  = GetCycles() - x;
+		x = GetCycles() - x;
 		MCTimeMechsUpdate = x;
-		x				  = GetCycles();
+		x = GetCycles();
 #endif
 		if (vehicles)
 		{
@@ -1748,7 +1782,7 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 			}
 		}
 #ifdef LAB_ONLY
-		x					 = GetCycles() - x;
+		x = GetCycles() - x;
 		MCTimeVehiclesUpdate = x;
 #endif
 		for (size_t i = 0; i < numRemoved; i++)
@@ -1781,9 +1815,9 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 			}
 		}
 #ifdef LAB_ONLY
-		x					= GetCycles() - x;
+		x = GetCycles() - x;
 		MCTimeTurretsUpdate = x;
-		x					= GetCycles();
+		x = GetCycles();
 #endif
 		if (weapons)
 		{
@@ -1830,7 +1864,7 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 			}
 		}
 #ifdef LAB_ONLY
-		x					= GetCycles() - x;
+		x = GetCycles() - x;
 		MCTimeAllElseUpdate = x;
 #endif
 	}
@@ -1838,7 +1872,8 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::get(GameObjectHandle handle)
+GameObjectPtr
+GameObjectManager::get(GameObjectHandle handle)
 {
 	if ((handle < 1) || (handle > getMaxObjects()))
 		return (nullptr);
@@ -1847,11 +1882,12 @@ GameObjectPtr GameObjectManager::get(GameObjectHandle handle)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObjectManager::buildMoverLists(void)
+int32_t
+GameObjectManager::buildMoverLists(void)
 {
-	numMovers	 = 0;
+	numMovers = 0;
 	numGoodMovers = 0;
-	numBadMovers  = 0;
+	numBadMovers = 0;
 	for (size_t i = 0; i < numMechs; i++)
 	{
 		MoverPtr mover = dynamic_cast<MoverPtr>(mechs[i]);
@@ -1879,7 +1915,8 @@ int32_t GameObjectManager::buildMoverLists(void)
 
 //---------------------------------------------------------------------------
 
-bool GameObjectManager::modifyMoverLists(MoverPtr mover, int32_t action)
+bool
+GameObjectManager::modifyMoverLists(MoverPtr mover, int32_t action)
 {
 	switch (action)
 	{
@@ -1896,7 +1933,7 @@ bool GameObjectManager::modifyMoverLists(MoverPtr mover, int32_t action)
 			}
 			if (i < numMechs)
 			{
-				foundIt			   = true;
+				foundIt = true;
 				BattleMechPtr mech = mechs[i];
 				memmove(&mechs[i], &mechs[i + 1], (maxMechs - i - 1) * sizeof(BattleMechPtr));
 				mechs[maxMechs - 1] = mech;
@@ -1913,7 +1950,7 @@ bool GameObjectManager::modifyMoverLists(MoverPtr mover, int32_t action)
 			}
 			if (i < numVehicles)
 			{
-				foundIt					 = true;
+				foundIt = true;
 				GroundVehiclePtr vehicle = vehicles[i];
 				memmove(&vehicles[i], &vehicles[i + 1],
 					(maxVehicles - i - 1) * sizeof(GroundVehiclePtr));
@@ -1993,11 +2030,12 @@ bool GameObjectManager::modifyMoverLists(MoverPtr mover, int32_t action)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findObject(Stuff::Vector3D position)
+GameObjectPtr
+GameObjectManager::findObject(Stuff::Vector3D position)
 {
-	float closestDistance	= 10000.0;
+	float closestDistance = 10000.0;
 	GameObjectPtr closestObj = nullptr;
-	int32_t numObjects		 = getMaxObjects();
+	int32_t numObjects = getMaxObjects();
 	for (size_t objIndex = 1; objIndex <= numObjects; objIndex++)
 	{
 		GameObjectPtr obj = objList[objIndex];
@@ -2008,7 +2046,7 @@ GameObjectPtr GameObjectManager::findObject(Stuff::Vector3D position)
 			if (distanceFromObject < closestDistance)
 				if (distanceFromObject < obj->getExtentRadius())
 				{
-					closestObj		= obj;
+					closestObj = obj;
 					closestDistance = distanceFromObject;
 				}
 		}
@@ -2018,7 +2056,8 @@ GameObjectPtr GameObjectManager::findObject(Stuff::Vector3D position)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findObjectByTypeHandle(int32_t typeHandle)
+GameObjectPtr
+GameObjectManager::findObjectByTypeHandle(int32_t typeHandle)
 {
 	//-------------------------------------------------
 	// This function was called findObjectId() in MC...
@@ -2034,7 +2073,8 @@ GameObjectPtr GameObjectManager::findObjectByTypeHandle(int32_t typeHandle)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findByPartId(int32_t partId)
+GameObjectPtr
+GameObjectManager::findByPartId(int32_t partId)
 {
 	if (partId == 0)
 		return (nullptr);
@@ -2050,7 +2090,8 @@ GameObjectPtr GameObjectManager::findByPartId(int32_t partId)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findByBlockVertex(int32_t blockNum, int32_t vertex)
+GameObjectPtr
+GameObjectManager::findByBlockVertex(int32_t blockNum, int32_t vertex)
 {
 	//----------------------------------------
 	// SLOW compared to using object handle...
@@ -2060,7 +2101,8 @@ GameObjectPtr GameObjectManager::findByBlockVertex(int32_t blockNum, int32_t ver
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findByCellPosition(int32_t row, int32_t col)
+GameObjectPtr
+GameObjectManager::findByCellPosition(int32_t row, int32_t col)
 {
 	//-------------------------------------------------------------------------------------
 	// Must implement for Linkage code.  10/20/99 -fs
@@ -2084,7 +2126,8 @@ GameObjectPtr GameObjectManager::findByCellPosition(int32_t row, int32_t col)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findByUnitInfo(int32_t commander, int32_t group, int32_t mate)
+GameObjectPtr
+GameObjectManager::findByUnitInfo(int32_t commander, int32_t group, int32_t mate)
 {
 	//----------------------------------------
 	// SLOW compared to using object handle...
@@ -2094,7 +2137,8 @@ GameObjectPtr GameObjectManager::findByUnitInfo(int32_t commander, int32_t group
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findObjectByMouse(
+GameObjectPtr
+GameObjectManager::findObjectByMouse(
 	int32_t mouseX, int32_t mouseY, GameObjectPtr* searchList, int32_t listSize, bool skipDisabled)
 {
 	if (!searchList)
@@ -2119,23 +2163,18 @@ GameObjectPtr GameObjectManager::findObjectByMouse(
 					{
 						//---------------------------
 						// We're on it, so save it...
-						if (!obj->isMover() ||
-							(obj->isMover() && obj->isOnGUI() &&
-								Terrain::IsGameSelectTerrainPosition(obj->getPosition())))
+						if (!obj->isMover() || (obj->isMover() && obj->isOnGUI() && Terrain::IsGameSelectTerrainPosition(obj->getPosition())))
 						{
 							if (skipDisabled)
 							{
-								if (!obj->isDisabled() && (obj->getObjectClass() != TREE) &&
-									(obj->getDamageLevel() != 36000000) && // We are a rock clump
+								if (!obj->isDisabled() && (obj->getObjectClass() != TREE) && (obj->getDamageLevel() != 36000000) && // We are a rock clump
 									objAppearance->PerPolySelect(mouseX, mouseY))
 									return (obj);
 							}
 							else
 							{
 								// Do not target trees or artillery strikes!!
-								if ((obj->getObjectClass() != TREE) &&
-									(obj->getObjectClass() != ARTILLERY) &&
-									(obj->getDamageLevel() != 36000000) && // We are a rock clump
+								if ((obj->getObjectClass() != TREE) && (obj->getObjectClass() != ARTILLERY) && (obj->getDamageLevel() != 36000000) && // We are a rock clump
 									(obj->getDamageLevel() != 36000000) && // We are a rock clump
 									objAppearance->PerPolySelect(mouseX, mouseY))
 									return (obj);
@@ -2151,11 +2190,12 @@ GameObjectPtr GameObjectManager::findObjectByMouse(
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findMoverByMouse(
+GameObjectPtr
+GameObjectManager::findMoverByMouse(
 	int32_t mouseX, int32_t mouseY, int32_t commanderId, bool skipDisabled)
 {
 	GameObjectPtr* searchList = nullptr;
-	int32_t numMovers		  = getMaxMovers();
+	int32_t numMovers = getMaxMovers();
 	if (objList)
 		searchList = &objList[1];
 	if (!searchList)
@@ -2178,15 +2218,12 @@ GameObjectPtr GameObjectManager::findMoverByMouse(
 						float tly = objAppearance->upperLeft.y;
 						float brx = objAppearance->lowerRight.x;
 						float bry = objAppearance->lowerRight.y;
-						if ((mouseX >= tlx) && (mouseX <= brx) && (mouseY >= tly) &&
-							(mouseY <= bry))
+						if ((mouseX >= tlx) && (mouseX <= brx) && (mouseY >= tly) && (mouseY <= bry))
 						{
 							//---------------------------
 							// We're on it, so save it...
 							// Movers are NOT per poly!!
-							if (!obj->isMover() ||
-								(obj->isMover() && obj->isOnGUI() &&
-									Terrain::IsGameSelectTerrainPosition(obj->getPosition())))
+							if (!obj->isMover() || (obj->isMover() && obj->isOnGUI() && Terrain::IsGameSelectTerrainPosition(obj->getPosition())))
 							{
 								if (skipDisabled)
 								{
@@ -2221,12 +2258,9 @@ GameObjectPtr GameObjectManager::findMoverByMouse(
 						float tly = objAppearance->upperLeft.y;
 						float brx = objAppearance->lowerRight.x;
 						float bry = objAppearance->lowerRight.y;
-						if ((mouseX >= tlx) && (mouseX <= brx) && (mouseY >= tly) &&
-							(mouseY <= bry))
+						if ((mouseX >= tlx) && (mouseX <= brx) && (mouseY >= tly) && (mouseY <= bry))
 						{
-							if (!obj->isMover() ||
-								(obj->isMover() && obj->isOnGUI() &&
-									Terrain::IsGameSelectTerrainPosition(obj->getPosition())))
+							if (!obj->isMover() || (obj->isMover() && obj->isOnGUI() && Terrain::IsGameSelectTerrainPosition(obj->getPosition())))
 							{
 								//---------------------------
 								// We're on it, so save it...
@@ -2248,14 +2282,15 @@ GameObjectPtr GameObjectManager::findMoverByMouse(
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findTerrainObjectByMouse(
+GameObjectPtr
+GameObjectManager::findTerrainObjectByMouse(
 	int32_t mouseX, int32_t mouseY, bool skipDisabled)
 {
 	for (size_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
 	{
 		if (Terrain::objBlockInfo[terrainBlock].active)
 		{
-			int32_t numObjs  = Terrain::objBlockInfo[terrainBlock].numObjects;
+			int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 			int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
 			GameObjectPtr obj =
 				findObjectByMouse(mouseX, mouseY, &objList[objIndex], numObjs, skipDisabled);
@@ -2268,7 +2303,8 @@ GameObjectPtr GameObjectManager::findTerrainObjectByMouse(
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr GameObjectManager::findObjectByMouse(int32_t mouseX, int32_t mouseY)
+GameObjectPtr
+GameObjectManager::findObjectByMouse(int32_t mouseX, int32_t mouseY)
 {
 	GameObjectPtr obj = nullptr;
 	//-------------------------------------------------------------
@@ -2276,7 +2312,7 @@ GameObjectPtr GameObjectManager::findObjectByMouse(int32_t mouseX, int32_t mouse
 	// near the mouse, we're done...
 	// Mitch wants to find live ones before dead ones
 	int32_t homeCommanderId = Commander::home->getId();
-	obj						= findMoverByMouse(mouseX, mouseY, homeCommanderId, true);
+	obj = findMoverByMouse(mouseX, mouseY, homeCommanderId, true);
 	if (obj)
 		return (obj);
 	obj = findMoverByMouse(mouseX, mouseY, homeCommanderId, false);
@@ -2301,7 +2337,8 @@ GameObjectPtr GameObjectManager::findObjectByMouse(int32_t mouseX, int32_t mouse
 }
 
 //---------------------------------------------------------------------------
-bool GameObjectManager::moverInRect(int32_t index, Stuff::Vector3D& dStart, Stuff::Vector3D& dEnd)
+bool
+GameObjectManager::moverInRect(int32_t index, Stuff::Vector3D& dStart, Stuff::Vector3D& dEnd)
 {
 	//------------------------------------------------------------------------------
 	// This function checks the mover passed in to see if it
@@ -2323,14 +2360,11 @@ bool GameObjectManager::moverInRect(int32_t index, Stuff::Vector3D& dStart, Stuf
 				// windowsVisible only gets set when not inTransport...
 				// objAppearance->recalcBounds();	//Shouldn't need to do this.
 				// They should already be correct!
-				int32_t left   = fmin(dStart.x, dEnd.x);
-				int32_t right  = fmax(dStart.x, dEnd.x);
-				int32_t top	= fmin(dStart.y, dEnd.y);
+				int32_t left = fmin(dStart.x, dEnd.x);
+				int32_t right = fmax(dStart.x, dEnd.x);
+				int32_t top = fmin(dStart.y, dEnd.y);
 				int32_t bottom = fmax(dStart.y, dEnd.y);
-				if ((left <= objAppearance->getScreenPos().x) &&
-					(right >= objAppearance->getScreenPos().x) &&
-					(top <= objAppearance->getScreenPos().y) &&
-					(bottom >= objAppearance->getScreenPos().y))
+				if ((left <= objAppearance->getScreenPos().x) && (right >= objAppearance->getScreenPos().x) && (top <= objAppearance->getScreenPos().y) && (bottom >= objAppearance->getScreenPos().y))
 				{
 					return (true);
 				}
@@ -2342,28 +2376,32 @@ bool GameObjectManager::moverInRect(int32_t index, Stuff::Vector3D& dStart, Stuf
 
 //---------------------------------------------------------------------------
 
-ObjectTypePtr GameObjectManager::loadObjectType(ObjectTypeNumber typeHandle)
+ObjectTypePtr
+GameObjectManager::loadObjectType(ObjectTypeNumber typeHandle)
 {
 	return (objTypeManager->load(typeHandle));
 }
 
 //---------------------------------------------------------------------------
 
-ObjectTypePtr GameObjectManager::getObjectType(ObjectTypeNumber typeHandle)
+ObjectTypePtr
+GameObjectManager::getObjectType(ObjectTypeNumber typeHandle)
 {
 	return (objTypeManager->get(typeHandle));
 }
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::removeObjectType(ObjectTypeNumber typeHandle)
+void
+GameObjectManager::removeObjectType(ObjectTypeNumber typeHandle)
 {
 	objTypeManager->remove(typeHandle);
 }
 
 //---------------------------------------------------------------------------
 
-GameObjectHandle GameObjectManager::getHandle(GameObjectPtr obj)
+GameObjectHandle
+GameObjectManager::getHandle(GameObjectPtr obj)
 {
 	for (size_t i = 1; i <= getMaxObjects(); i++)
 		if (objList[i] == obj)
@@ -2373,7 +2411,8 @@ GameObjectHandle GameObjectManager::getHandle(GameObjectPtr obj)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObjectManager::calcPartId(
+int32_t
+GameObjectManager::calcPartId(
 	int32_t objectClass, int32_t param1, int32_t param2, int32_t param3)
 {
 	//-------------------------------------------------------------------
@@ -2394,8 +2433,7 @@ int32_t GameObjectManager::calcPartId(
 			partId = nextReinforcementPartId++;
 		}
 		else
-			partId = MIN_MOVER_PART_ID + param1 * MAX_MOVERGROUPS * MAX_MOVERGROUP_COUNT_START +
-				param2 * MAX_MOVERGROUP_COUNT_START + param3;
+			partId = MIN_MOVER_PART_ID + param1 * MAX_MOVERGROUPS * MAX_MOVERGROUP_COUNT_START + param2 * MAX_MOVERGROUP_COUNT_START + param3;
 		break;
 	case TERRAINOBJECT:
 	case TREE:
@@ -2414,7 +2452,8 @@ int32_t GameObjectManager::calcPartId(
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::setPartId(GameObjectPtr obj, int32_t param1, int32_t param2, int32_t param3)
+void
+GameObjectManager::setPartId(GameObjectPtr obj, int32_t param1, int32_t param2, int32_t param3)
 {
 	//------------------------------------------------------------------------
 	// ALL game objects should have their partIds set through this function.
@@ -2426,7 +2465,8 @@ void GameObjectManager::setPartId(GameObjectPtr obj, int32_t param1, int32_t par
 
 //---------------------------------------------------------------------------
 
-int32_t GameObjectManager::initCollisionSystem(FitIniFile* missionFile)
+int32_t
+GameObjectManager::initCollisionSystem(FitIniFile* missionFile)
 {
 	collisionSystem = new CollisionSystem;
 	gosASSERT(collisionSystem != nullptr);
@@ -2436,7 +2476,8 @@ int32_t GameObjectManager::initCollisionSystem(FitIniFile* missionFile)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObjectManager::buildCollidableList(void)
+int32_t
+GameObjectManager::buildCollidableList(void)
 {
 	rebuildCollidableList = false;
 	if (collidableList)
@@ -2470,7 +2511,8 @@ int32_t GameObjectManager::buildCollidableList(void)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObjectManager::getCollidableList(GameObjectPtr*& objList)
+int32_t
+GameObjectManager::getCollidableList(GameObjectPtr*& objList)
 {
 	if (rebuildCollidableList)
 		buildCollidableList();
@@ -2480,7 +2522,8 @@ int32_t GameObjectManager::getCollidableList(GameObjectPtr*& objList)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObjectManager::updateCollisions(void)
+int32_t
+GameObjectManager::updateCollisions(void)
 {
 	if (!collidableList)
 		buildCollidableList();
@@ -2490,14 +2533,16 @@ int32_t GameObjectManager::updateCollisions(void)
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2)
+void
+GameObjectManager::detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 {
 	collisionSystem->detectStaticCollision(obj1, obj2);
 }
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::updateCaptureList(void)
+void
+GameObjectManager::updateCaptureList(void)
 {
 	for (size_t i = 0; i < MAX_TEAMS; i++)
 		numCaptures[i] = 0;
@@ -2522,7 +2567,8 @@ void GameObjectManager::updateCaptureList(void)
 
 //---------------------------------------------------------------------------
 
-bool GameObjectManager::isTeamCapturing(TeamPtr team, GameObjectWatchID targetWID)
+bool
+GameObjectManager::isTeamCapturing(TeamPtr team, GameObjectWatchID targetWID)
 {
 	if (team)
 	{
@@ -2543,7 +2589,8 @@ bool GameObjectManager::isTeamCapturing(TeamPtr team, GameObjectWatchID targetWI
 
 //---------------------------------------------------------------------------
 
-CarnagePtr GameObjectManager::createFire(ObjectTypeNumber fireObjTypeHandle, GameObjectPtr owner,
+CarnagePtr
+GameObjectManager::createFire(ObjectTypeNumber fireObjTypeHandle, GameObjectPtr owner,
 	Stuff::Vector3D& position, float tonnage)
 {
 	CarnagePtr fire = getCarnage(CARNAGE_FIRE);
@@ -2569,7 +2616,8 @@ CarnagePtr GameObjectManager::createFire(ObjectTypeNumber fireObjTypeHandle, Gam
 
 //---------------------------------------------------------------------------
 
-CarnagePtr GameObjectManager::createExplosion(
+CarnagePtr
+GameObjectManager::createExplosion(
 	int32_t effectId, GameObjectPtr owner, Stuff::Vector3D& position, float damage, float radius)
 {
 	int32_t explosionObjTypeHandle = weaponEffects->GetEffectObjNum(effectId);
@@ -2621,7 +2669,8 @@ CarnagePtr GameObjectManager::createExplosion(
 
 //---------------------------------------------------------------------------
 
-LightPtr GameObjectManager::createLight(ObjectTypeNumber lightObjTypeHandle)
+LightPtr
+GameObjectManager::createLight(ObjectTypeNumber lightObjTypeHandle)
 {
 	LightPtr light = getLight();
 	if (light)
@@ -2639,13 +2688,14 @@ LightPtr GameObjectManager::createLight(ObjectTypeNumber lightObjTypeHandle)
 }
 
 //---------------------------------------------------------------------------
-WeaponBoltPtr GameObjectManager::createWeaponBolt(int32_t effectId)
+WeaponBoltPtr
+GameObjectManager::createWeaponBolt(int32_t effectId)
 {
 	WeaponBoltPtr weaponBolt = getWeapon();
 	if (weaponBolt)
 	{
 		ObjectTypeNumber weaponBoltObjTypeHandle = weaponEffects->GetEffectObjNum(effectId);
-		ObjectTypePtr objectType				 = getObjectType(weaponBoltObjTypeHandle);
+		ObjectTypePtr objectType = getObjectType(weaponBoltObjTypeHandle);
 		if (!objectType)
 			STOP(("Object Type for a weapon Bolt was nullptr.  EffectId: %d  "
 				  "ObjType: %d",
@@ -2662,7 +2712,8 @@ WeaponBoltPtr GameObjectManager::createWeaponBolt(int32_t effectId)
 
 //---------------------------------------------------------------------------
 
-ArtilleryPtr GameObjectManager::createArtillery(int32_t artilleryType, Stuff::Vector3D& position)
+ArtilleryPtr
+GameObjectManager::createArtillery(int32_t artilleryType, Stuff::Vector3D& position)
 {
 	ArtilleryPtr artillery = getArtillery();
 	if (artillery)
@@ -2677,7 +2728,8 @@ ArtilleryPtr GameObjectManager::createArtillery(int32_t artilleryType, Stuff::Ve
 	return (artillery);
 }
 
-void GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool other)
+void
+GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool other)
 {
 	if (terrain && renderObjects)
 	{
@@ -2685,23 +2737,20 @@ void GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool ot
 		{
 			if (Terrain::objBlockInfo[terrainBlock].active)
 			{
-				int32_t numObjs  = Terrain::objBlockInfo[terrainBlock].numObjects;
+				int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 				int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
 				for (size_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
 				{
-					if (objList[objIndex] &&
-						(Terrain::objVertexActive[objList[objIndex]->getVertexNum()] ||
-							(turn < 3)) &&
-						objList[objIndex]->getExists())
+					if (objList[objIndex] && (Terrain::objVertexActive[objList[objIndex]->getVertexNum()] || (turn < 3)) && objList[objIndex]->getExists())
 					{
 						if (objList[objIndex]->getAppearance()->recalcBounds())
 						{
 							// Must force here as well.
 							Stuff::Vector3D pos = objList[objIndex]->getPosition();
-							float rot			= objList[objIndex]->getRotation();
-							pos.z				= land->getTerrainElevation(pos);
-							int32_t drawFlags   = objList[objIndex]->drawFlags;
-							int32_t teamID		= objList[objIndex]->getTeamId();
+							float rot = objList[objIndex]->getRotation();
+							pos.z = land->getTerrainElevation(pos);
+							int32_t drawFlags = objList[objIndex]->drawFlags;
+							int32_t teamID = objList[objIndex]->getTeamId();
 							objList[objIndex]->getAppearance()->setObjectParameters(pos, rot,
 								drawFlags, teamID, Team::getRelation(teamID, Team::home->getId()));
 							objList[objIndex]->getAppearance()->update(false);
@@ -2724,10 +2773,10 @@ void GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool ot
 						mechs[i]->windowsVisible = turn;
 					// Must force here as well.
 					Stuff::Vector3D pos = mechs[i]->getPosition();
-					float rot			= mechs[i]->getRotation();
-					pos.z				= land->getTerrainElevation(pos);
-					bool selected		= mechs[i]->isSelected();
-					int32_t teamID		= mechs[i]->getTeamId();
+					float rot = mechs[i]->getRotation();
+					pos.z = land->getTerrainElevation(pos);
+					bool selected = mechs[i]->isSelected();
+					int32_t teamID = mechs[i]->getTeamId();
 					mechs[i]->getAppearance()->setObjectParameters(pos, rot, mechs[i]->drawFlags,
 						teamID, Team::getRelation(teamID, Team::home->getId()));
 					mechs[i]->getAppearance()->update(false);
@@ -2739,15 +2788,15 @@ void GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool ot
 			for (size_t i = 0; i < numVehicles; i++)
 				if (vehicles[i] && vehicles[i]->getExists())
 				{
-					bool inView					= vehicles[i]->getAppearance()->recalcBounds();
+					bool inView = vehicles[i]->getAppearance()->recalcBounds();
 					vehicles[i]->windowsVisible = turn;
 					// Must force here as well.
 					Stuff::Vector3D pos = vehicles[i]->getPosition();
-					float rot			= vehicles[i]->getRotation();
-					pos.z				= land->getTerrainElevation(pos);
+					float rot = vehicles[i]->getRotation();
+					pos.z = land->getTerrainElevation(pos);
 					if ((pos.z < MapData::waterDepth))
 						pos.z = MapData::waterDepth;
-					bool selected  = vehicles[i]->isSelected();
+					bool selected = vehicles[i]->isSelected();
 					int32_t teamID = vehicles[i]->getTeamId();
 					vehicles[i]->getAppearance()->setObjectParameters(pos, rot,
 						vehicles[i]->drawFlags, teamID,
@@ -2771,10 +2820,10 @@ void GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool ot
 					{
 						// Must force here as well.
 						Stuff::Vector3D pos = turrets[i]->getPosition();
-						float rot			= turrets[i]->getRotation();
-						pos.z				= land->getTerrainElevation(pos);
-						bool selected		= turrets[i]->isSelected();
-						int32_t teamID		= turrets[i]->getTeamId();
+						float rot = turrets[i]->getRotation();
+						pos.z = land->getTerrainElevation(pos);
+						bool selected = turrets[i]->isSelected();
+						int32_t teamID = turrets[i]->getTeamId();
 						turrets[i]->getAppearance()->setObjectParameters(pos, rot, selected, teamID,
 							Team::getRelation(teamID, Team::home->getId()));
 						turrets[i]->getAppearance()->update(false);
@@ -2837,46 +2886,49 @@ void GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool ot
 }
 
 //-------------------------------------------------------------------
-void GameObjectManager::CopyTo(ObjectManagerData* data)
+void
+GameObjectManager::CopyTo(ObjectManagerData* data)
 {
-	data->maxObjects		= getMaxObjects();
-	data->numElementals		= numElementals;
+	data->maxObjects = getMaxObjects();
+	data->numElementals = numElementals;
 	data->numTerrainObjects = numTerrainObjects;
-	data->numBuildings		= numBuildings;
-	data->numTurrets		= numTurrets;
-	data->numWeapons		= numWeapons;
-	data->numCarnage		= numCarnage;
-	data->numLights			= numLights;
-	data->numArtillery		= numArtillery;
-	data->numGates			= numGates;
-	data->maxMechs			= maxMechs;
-	data->maxVehicles		= maxVehicles;
-	data->numMechs			= numMechs;
-	data->numVehicles		= numVehicles;
-	data->nextWatchId		= nextWatchID;
+	data->numBuildings = numBuildings;
+	data->numTurrets = numTurrets;
+	data->numWeapons = numWeapons;
+	data->numCarnage = numCarnage;
+	data->numLights = numLights;
+	data->numArtillery = numArtillery;
+	data->numGates = numGates;
+	data->maxMechs = maxMechs;
+	data->maxVehicles = maxVehicles;
+	data->numMechs = numMechs;
+	data->numVehicles = numVehicles;
+	data->nextWatchId = nextWatchID;
 }
 
 //-------------------------------------------------------------------
-void GameObjectManager::CopyFrom(ObjectManagerData* data)
+void
+GameObjectManager::CopyFrom(ObjectManagerData* data)
 {
-	numElementals	 = data->numElementals;
+	numElementals = data->numElementals;
 	numTerrainObjects = data->numTerrainObjects;
-	numBuildings	  = data->numBuildings;
-	numTurrets		  = data->numTurrets;
-	numWeapons		  = data->numWeapons;
-	numCarnage		  = data->numCarnage;
-	numLights		  = data->numLights;
-	numArtillery	  = data->numArtillery;
-	numGates		  = data->numGates;
-	maxMechs		  = data->maxMechs;
-	maxVehicles		  = data->maxVehicles;
-	numMechs		  = data->numMechs;
-	numVehicles		  = data->numVehicles;
-	nextWatchID		  = data->nextWatchId;
+	numBuildings = data->numBuildings;
+	numTurrets = data->numTurrets;
+	numWeapons = data->numWeapons;
+	numCarnage = data->numCarnage;
+	numLights = data->numLights;
+	numArtillery = data->numArtillery;
+	numGates = data->numGates;
+	maxMechs = data->maxMechs;
+	maxVehicles = data->maxVehicles;
+	numMechs = data->numMechs;
+	numVehicles = data->numVehicles;
+	nextWatchID = data->nextWatchId;
 }
 
 //-------------------------------------------------------------------
-int32_t GameObjectManager::Save(PacketFilePtr file, int32_t packetNum)
+int32_t
+GameObjectManager::Save(PacketFilePtr file, int32_t packetNum)
 {
 	int32_t* watchSave = (int32_t*)malloc(sizeof(int32_t) * (getMaxObjects() + 1));
 	memset(watchSave, 0, sizeof(int32_t) * (getMaxObjects() + 1));
@@ -2916,7 +2968,8 @@ int32_t GameObjectManager::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //-------------------------------------------------------------------
-int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
+int32_t
+GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 {
 	ObjectManagerData data;
 	file->readPacket(packetNum, (puint8_t)&data);
@@ -2933,9 +2986,9 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 	watchList = (GameObjectPtr*)ObjectTypeManager::objectCache->Malloc(
 		sizeof(GameObjectPtr) * (getMaxObjects() + 1));
 	memset(watchList, 0, sizeof(GameObjectPtr) * (getMaxObjects() + 1));
-	int32_t i		  = 0;
+	int32_t i = 0;
 	int32_t curHandle = 1;
-	maxMovers		  = maxMechs + maxVehicles + numElementals;
+	maxMovers = maxMechs + maxVehicles + numElementals;
 	//--------------------------------------------------------------
 	// For now, we'll use an array of pointers due to the irritating
 	// 'new' for arrays problem...
@@ -3016,21 +3069,21 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 			Fatal(numArtillery, " GameObjectManager.setNumObjects: cannot malloc artillery ");
 	}
 	useMoverLineOfSightTable = true;
-	moverLineOfSightTable	= (PSTR)systemHeap->Malloc(maxMovers * maxMovers);
+	moverLineOfSightTable = (PSTR)systemHeap->Malloc(maxMovers * maxMovers);
 	if (!moverLineOfSightTable)
 		Fatal(numGates,
 			" GameObjectManager.setNumObjects: cannot malloc "
 			"moverLineOfSightTable ");
-	int32_t curTerrObjNum   = 0;
-	int32_t curBuildingNum  = 0;
-	int32_t curTurretNum	= 0;
-	int32_t curGateNum		= 0;
+	int32_t curTerrObjNum = 0;
+	int32_t curBuildingNum = 0;
+	int32_t curTurretNum = 0;
+	int32_t curGateNum = 0;
 	int32_t curArtilleryNum = 0;
-	int32_t curCarnageNum   = 0;
-	int32_t curMechNum		= 0;
-	int32_t curVehicleNum   = 0;
-	int32_t curBoltNum		= 0;
-	int32_t oldBlockNum		= -1;
+	int32_t curCarnageNum = 0;
+	int32_t curMechNum = 0;
+	int32_t curVehicleNum = 0;
+	int32_t curBoltNum = 0;
+	int32_t oldBlockNum = -1;
 	for (i = 0; i <= getMaxObjects(); i++)
 	{
 		// OK.
@@ -3077,7 +3130,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 				obj->setRotation(data.rotation);
 				if (data.blockNumber != oldBlockNum)
 				{
-					oldBlockNum											= data.blockNumber;
+					oldBlockNum = data.blockNumber;
 					Terrain::objBlockInfo[data.blockNumber].firstHandle = i;
 				}
 				Terrain::objBlockInfo[data.blockNumber].numCollidableObjects++;
@@ -3111,13 +3164,10 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 				obj->setRotation(data.rotation);
 				if (data.blockNumber != oldBlockNum)
 				{
-					oldBlockNum											= data.blockNumber;
+					oldBlockNum = data.blockNumber;
 					Terrain::objBlockInfo[data.blockNumber].firstHandle = i;
 				}
-				if (((((BuildingTypePtr)objType)->perimeterAlarmRange > 0.0f) &&
-						(((BuildingTypePtr)objType)->perimeterAlarmTimer > 0.0f)) ||
-					(((BuildingTypePtr)objType)->lookoutTowerRange > 0.0f) ||
-					(((BuildingTypePtr)objType)->sensorRange > 0.0f))
+				if (((((BuildingTypePtr)objType)->perimeterAlarmRange > 0.0f) && (((BuildingTypePtr)objType)->perimeterAlarmTimer > 0.0f)) || (((BuildingTypePtr)objType)->lookoutTowerRange > 0.0f) || (((BuildingTypePtr)objType)->sensorRange > 0.0f))
 				{
 					Terrain::objBlockInfo[data.blockNumber].numCollidableObjects++;
 				}
@@ -3151,7 +3201,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 				obj->setRotation(data.rotation);
 				if (data.blockNumber != oldBlockNum)
 				{
-					oldBlockNum											= data.blockNumber;
+					oldBlockNum = data.blockNumber;
 					Terrain::objBlockInfo[data.blockNumber].firstHandle = i;
 				}
 				Terrain::objBlockInfo[data.blockNumber].numCollidableObjects++;
@@ -3185,7 +3235,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 				obj->setRotation(data.rotation);
 				if (data.blockNumber != oldBlockNum)
 				{
-					oldBlockNum											= data.blockNumber;
+					oldBlockNum = data.blockNumber;
 					Terrain::objBlockInfo[data.blockNumber].firstHandle = i;
 				}
 				Terrain::objBlockInfo[data.blockNumber].numCollidableObjects++;
@@ -3354,7 +3404,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 			{
 				controlBuilding->setFlag(OBJECT_FLAG_CAPTURABLE, true);
 				controlBuilding->setFlag(OBJECT_FLAG_CONTROLBUILDING, true);
-				controlBuilding->listID				= numTurretControls;
+				controlBuilding->listID = numTurretControls;
 				turretControls[numTurretControls++] = controlBuilding;
 			}
 			else if (!controlBuilding)
@@ -3380,7 +3430,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 			if (controlBuilding && !controlBuilding->getFlag(OBJECT_FLAG_CONTROLBUILDING))
 			{
 				controlBuilding->setFlag(OBJECT_FLAG_CONTROLBUILDING, true);
-				controlBuilding->listID			= numGateControls;
+				controlBuilding->listID = numGateControls;
 				gateControls[numGateControls++] = controlBuilding;
 			}
 			else if (!controlBuilding)
@@ -3428,7 +3478,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 				if (newDistance < minDistance)
 				{
 					generatorIndex = j;
-					minDistance	= newDistance;
+					minDistance = newDistance;
 				}
 			}
 			buildings[i]->setPowerSupply(powerGenerators[generatorIndex]);
@@ -3447,7 +3497,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 				if (newDistance < minDistance)
 				{
 					generatorIndex = j;
-					minDistance	= newDistance;
+					minDistance = newDistance;
 				}
 			}
 			terrainObjects[i]->setPowerSupply(powerGenerators[generatorIndex]);

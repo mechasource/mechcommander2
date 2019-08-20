@@ -25,16 +25,17 @@ int32_t LogisticsChassis::weightClasses[5] = {0, 35, 55, 75, 100};
 
 LogisticsChassis::LogisticsChassis()
 {
-	appearance		   = 0;
-	chassisNameID	  = 0;
-	baseCost		   = 0;
-	maxWeight		   = 0;
-	refCount		   = 0;
+	appearance = 0;
+	chassisNameID = 0;
+	baseCost = 0;
+	maxWeight = 0;
+	refCount = 0;
 	canHaveActiveProbe = canHaveAdvSensor = canHaveExtendedSensor = canHaveECM =
 		canHaveGlobalSensor = canHaveOptics = canHaveJumpJets = 0;
 }
 
-int32_t LogisticsChassis::init(CSVFile* file, int32_t chassisID)
+int32_t
+LogisticsChassis::init(CSVFile* file, int32_t chassisID)
 {
 	ID = chassisID;
 	char buffer[256];
@@ -103,7 +104,8 @@ int32_t LogisticsChassis::init(CSVFile* file, int32_t chassisID)
 	return 0;
 }
 
-int32_t LogisticsChassis::getArmorClass(void) const
+int32_t
+LogisticsChassis::getArmorClass(void) const
 {
 	if (baseArmor < 96)
 		return IDS_ARMOR0;
@@ -117,7 +119,8 @@ int32_t LogisticsChassis::getArmorClass(void) const
 		return IDS_ARMOR4;
 }
 
-int32_t LogisticsChassis::getDisplaySpeed(void) const
+int32_t
+LogisticsChassis::getDisplaySpeed(void) const
 {
 	switch ((int32_t)speed)
 	{
@@ -149,7 +152,8 @@ int32_t LogisticsChassis::getDisplaySpeed(void) const
 	return -1;
 }
 
-int32_t LogisticsChassis::getSensorID(void) const
+int32_t
+LogisticsChassis::getSensorID(void) const
 {
 	if (canHaveAdvSensor)
 		return 15;
@@ -162,7 +166,8 @@ int32_t LogisticsChassis::getSensorID(void) const
 	return -1;
 }
 
-int32_t LogisticsChassis::getECM(void) const
+int32_t
+LogisticsChassis::getECM(void) const
 {
 	if (canHaveECM)
 		return 38;
@@ -171,26 +176,26 @@ int32_t LogisticsChassis::getECM(void) const
 
 LogisticsVariant::LogisticsVariant()
 {
-	componentCount  = 0;
-	ID				= -1;
-	chassis			= 0;
+	componentCount = 0;
+	ID = -1;
+	chassis = 0;
 	availableToUser = 0;
 	memset(components, 0, sizeof(components));
 	bDesignerMech = 0;
-	bHidden		  = 0;
-	fileID		  = 0;
+	bHidden = 0;
+	fileID = 0;
 }
 
 LogisticsVariant::LogisticsVariant(const LogisticsChassis* pChassis, bool Designer)
 {
-	chassis			= const_cast<LogisticsChassis*>(pChassis);
+	chassis = const_cast<LogisticsChassis*>(pChassis);
 	availableToUser = 1;
-	componentCount  = 0;
-	ID				= (pChassis->refCount << 16) | pChassis->ID;
+	componentCount = 0;
+	ID = (pChassis->refCount << 16) | pChassis->ID;
 	chassis->refCount++;
 	bDesignerMech = Designer;
-	bHidden		  = 0;
-	fileID		  = 0;
+	bHidden = 0;
+	fileID = 0;
 }
 LogisticsVariant::~LogisticsVariant()
 {
@@ -202,42 +207,44 @@ LogisticsVariant::~LogisticsVariant()
 
 LogisticsVariant::LogisticsVariant(const LogisticsVariant& src)
 {
-	chassis			= src.chassis;
+	chassis = src.chassis;
 	availableToUser = src.availableToUser;
-	componentCount  = src.componentCount;
+	componentCount = src.componentCount;
 	for (size_t i = 0; i < componentCount; ++i)
 	{
 		components[i] = src.components[i];
 	}
 	variantName = src.variantName;
-	ID			= (chassis->refCount << 16) | chassis->ID;
+	ID = (chassis->refCount << 16) | chassis->ID;
 	chassis->refCount++;
 	bDesignerMech = 0;
-	bHidden		  = 0;
-	fileID		  = src.fileID;
+	bHidden = 0;
+	fileID = src.fileID;
 }
 
-LogisticsVariant& LogisticsVariant::operator=(const LogisticsVariant& src)
+LogisticsVariant&
+LogisticsVariant::operator=(const LogisticsVariant& src)
 {
 	if (&src != this)
 	{
-		chassis			= src.chassis;
+		chassis = src.chassis;
 		availableToUser = src.availableToUser;
-		componentCount  = src.componentCount;
+		componentCount = src.componentCount;
 		for (size_t i = 0; i < componentCount; ++i)
 		{
 			components[i] = src.components[i];
 		}
 		variantName = src.variantName;
-		ID			= (chassis->refCount << 16) | chassis->ID;
+		ID = (chassis->refCount << 16) | chassis->ID;
 		chassis->refCount++;
 		bDesignerMech = 0;
-		fileID		  = src.fileID;
+		fileID = src.fileID;
 	}
 	return *this;
 }
 
-bool LogisticsVariant::operator==(const LogisticsVariant& src)
+bool
+LogisticsVariant::operator==(const LogisticsVariant& src)
 {
 	if (chassis->chassisNameID != src.chassis->chassisNameID)
 		return 0;
@@ -257,14 +264,15 @@ bool LogisticsVariant::operator==(const LogisticsVariant& src)
 	return 1;
 }
 
-int32_t LogisticsVariant::init(CSVFile* file, LogisticsChassis* pChassis, int32_t Variant)
+int32_t
+LogisticsVariant::init(CSVFile* file, LogisticsChassis* pChassis, int32_t Variant)
 {
-	bDesignerMech  = true;
+	bDesignerMech = true;
 	int32_t offset = 97 * Variant;
-	fileID		   = Variant;
+	fileID = Variant;
 	gosASSERT(pChassis);
 	chassis = pChassis;
-	ID		= (pChassis->refCount << 16) | pChassis->ID;
+	ID = (pChassis->refCount << 16) | pChassis->ID;
 
 	pChassis->refCount++;
 	file->readBoolean(21 + offset, 4, bHidden);
@@ -300,8 +308,7 @@ int32_t LogisticsVariant::init(CSVFile* file, LogisticsChassis* pChassis, int32_
 			for (i = 0; i < componentCount; i++)
 			{
 				LogisticsComponent* pComponent = pComps[i];
-				if (pComponent && pComponent->getComponentWidth() == k &&
-					pComponent->getComponentHeight() == j)
+				if (pComponent && pComponent->getComponentWidth() == k && pComponent->getComponentHeight() == j)
 				{
 					if (!addComponent(pComps[i]->getID(), xLocs[i], yLocs[i]))
 					{
@@ -316,7 +323,8 @@ int32_t LogisticsVariant::init(CSVFile* file, LogisticsChassis* pChassis, int32_
 	return 0;
 }
 
-bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y)
+bool
+LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y)
 {
 	LogisticsComponent* pComponent = LogisticsData::instance->getComponent(idFromFitFile);
 	if (!pComponent)
@@ -331,8 +339,7 @@ bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& 
 		components[componentCount].location = LEGS;
 		x = y = -2;
 	}
-	else if (pComponent->getType() == COMPONENT_FORM_ECM ||
-		pComponent->getType() == COMPONENT_FORM_SENSOR)
+	else if (pComponent->getType() == COMPONENT_FORM_ECM || pComponent->getType() == COMPONENT_FORM_SENSOR)
 	{
 		components[componentCount].location = HEAD;
 		x = y = -3;
@@ -340,7 +347,7 @@ bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& 
 	else
 	{
 		// need to see if this thing will fit
-		int32_t componentWidth  = pComponent->getComponentWidth();
+		int32_t componentWidth = pComponent->getComponentWidth();
 		int32_t componentHeight = pComponent->getComponentHeight();
 		if (x == -1 && y == -1)
 		{
@@ -353,9 +360,7 @@ bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& 
 					{
 						for (size_t k = 0; k < componentWidth; ++k)
 						{
-							if (getComponentAtLocation(i + k, j + l) ||
-								(i + k >= chassis->componentAreaWidth) ||
-								(j + l >= chassis->componentAreaHeight))
+							if (getComponentAtLocation(i + k, j + l) || (i + k >= chassis->componentAreaWidth) || (j + l >= chassis->componentAreaHeight))
 							{
 								bAdd = false;
 								break;
@@ -395,13 +400,14 @@ bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& 
 		components[componentCount].location = CHEST;
 	}
 	components[componentCount].component = pComponent;
-	components[componentCount].xCoord	= x;
-	components[componentCount].yCoord	= y;
+	components[componentCount].xCoord = x;
+	components[componentCount].yCoord = y;
 	componentCount++;
 	return true;
 }
 
-int32_t LogisticsVariant::getCost() const
+int32_t
+LogisticsVariant::getCost() const
 {
 	int32_t cost = chassis->baseCost;
 	for (size_t i = 0; i < componentCount; ++i)
@@ -411,7 +417,8 @@ int32_t LogisticsVariant::getCost() const
 	return cost;
 }
 
-int32_t LogisticsVariant::getWeight(void) const
+int32_t
+LogisticsVariant::getWeight(void) const
 {
 	// Yup.  20% of base weight Plus 7 tons is used by armor and misc components
 	// which we do not explicitly track.
@@ -423,12 +430,21 @@ int32_t LogisticsVariant::getWeight(void) const
 	return baseWeight;
 }
 
-const std::wstring& LogisticsVariant::getMechClass(void) const { return chassis->mechClass; }
+const std::wstring&
+LogisticsVariant::getMechClass(void) const
+{
+	return chassis->mechClass;
+}
 
-int32_t LogisticsVariant::getMaxJumpRange(void) const { return 5; }
+int32_t
+LogisticsVariant::getMaxJumpRange(void) const
+{
+	return 5;
+}
 
 // BOGUS, this is entirely made up.  There is no real spec for jumpranges yet
-int32_t LogisticsVariant::getJumpRange(void) const
+int32_t
+LogisticsVariant::getJumpRange(void) const
 {
 	int32_t jumpJetCount = 0;
 	for (size_t i = 0; i < componentCount; ++i)
@@ -441,7 +457,8 @@ int32_t LogisticsVariant::getJumpRange(void) const
 	return 0;
 }
 
-int32_t LogisticsVariant::getHeat(void) const
+int32_t
+LogisticsVariant::getHeat(void) const
 {
 	int32_t retVal = 0;
 	for (size_t i = 0; i < componentCount; ++i)
@@ -452,7 +469,8 @@ int32_t LogisticsVariant::getHeat(void) const
 }
 
 // BOGUS -- range isn't really the right thing to add...
-int32_t LogisticsVariant::getArmor() const
+int32_t
+LogisticsVariant::getArmor() const
 {
 	int32_t retArmor = chassis->baseArmor;
 	for (size_t i = 0; i < componentCount; ++i)
@@ -465,10 +483,19 @@ int32_t LogisticsVariant::getArmor() const
 	return retArmor;
 }
 
-int32_t LogisticsVariant::getSpeed(void) const { return chassis->speed; }
+int32_t
+LogisticsVariant::getSpeed(void) const
+{
+	return chassis->speed;
+}
 
-int32_t LogisticsVariant::getDisplaySpeed(void) const { return chassis->getDisplaySpeed(); }
-int32_t LogisticsVariant::getMaxHeat(void) const
+int32_t
+LogisticsVariant::getDisplaySpeed(void) const
+{
+	return chassis->getDisplaySpeed();
+}
+int32_t
+LogisticsVariant::getMaxHeat(void) const
 {
 	int32_t heat = 0;
 	for (size_t i = 0; i < componentCount; i++)
@@ -482,7 +509,8 @@ int32_t LogisticsVariant::getMaxHeat(void) const
 }
 // if you pass in -1's for x and y, we'll figure out where it can go, and return
 // where it went
-int32_t LogisticsVariant::canAddComponent(
+int32_t
+LogisticsVariant::canAddComponent(
 	LogisticsComponent* pComponent, int32_t& x, int32_t& y) const
 {
 	/*  weight no longer matters
@@ -509,8 +537,7 @@ int32_t LogisticsVariant::canAddComponent(
 		{
 			for (size_t j = 0; j < pComponent->getComponentHeight(); j++)
 			{
-				if (getComponentAtLocation(x + i, y + j) || x + i >= chassis->componentAreaWidth ||
-					j + y >= chassis->componentAreaHeight)
+				if (getComponentAtLocation(x + i, y + j) || x + i >= chassis->componentAreaWidth || j + y >= chassis->componentAreaHeight)
 					return COMPONENT_SLOT_FULL;
 			}
 		}
@@ -528,9 +555,7 @@ int32_t LogisticsVariant::canAddComponent(
 					{
 						for (size_t k = 0; k < pComponent->getComponentWidth(); ++k)
 						{
-							if (getComponentAtLocation(i + k, j + l) ||
-								(i + k >= chassis->componentAreaWidth) ||
-								(j + l >= chassis->componentAreaHeight))
+							if (getComponentAtLocation(i + k, j + l) || (i + k >= chassis->componentAreaWidth) || (j + l >= chassis->componentAreaHeight))
 							{
 								bAdd = false;
 								break;
@@ -573,7 +598,8 @@ int32_t LogisticsVariant::canAddComponent(
 	return 0;
 }
 
-const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation(
+const LogisticsChassis::ComponentInfo*
+LogisticsVariant::getComponentAtLocation(
 	int32_t x, int32_t y) const
 {
 	if (x == -1 && y == -1)
@@ -595,7 +621,8 @@ const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation(
 	return nullptr;
 }
 
-bool LogisticsVariant::hasJumpJets(void) const
+bool
+LogisticsVariant::hasJumpJets(void) const
 {
 	for (size_t i = 0; i < componentCount; i++)
 	{
@@ -604,7 +631,8 @@ bool LogisticsVariant::hasJumpJets(void) const
 	}
 	return false;
 }
-bool LogisticsVariant::hasECM(void) const
+bool
+LogisticsVariant::hasECM(void) const
 {
 	for (size_t i = 0; i < componentCount; i++)
 	{
@@ -613,7 +641,8 @@ bool LogisticsVariant::hasECM(void) const
 	}
 	return false;
 }
-bool LogisticsVariant::hasSensor(void) const
+bool
+LogisticsVariant::hasSensor(void) const
 {
 	for (size_t i = 0; i < componentCount; i++)
 	{
@@ -623,14 +652,15 @@ bool LogisticsVariant::hasSensor(void) const
 	return false;
 }
 
-int32_t LogisticsVariant::getComponentsWithLocation(
+int32_t
+LogisticsVariant::getComponentsWithLocation(
 	int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray)
 {
 	if (count < componentCount)
 		return NEED_BIGGER_ARRAY;
 	for (size_t i = 0; i < componentCount; ++i)
 	{
-		IDArray[i]		  = components[i].component->getID();
+		IDArray[i] = components[i].component->getID();
 		xLocationArray[i] = components[i].xCoord;
 		yLocationArray[i] = components[i].yCoord;
 	}
@@ -638,7 +668,8 @@ int32_t LogisticsVariant::getComponentsWithLocation(
 	return 0;
 }
 
-int32_t LogisticsVariant::getComponents(int32_t& count, int32_t* array)
+int32_t
+LogisticsVariant::getComponents(int32_t& count, int32_t* array)
 {
 	for (size_t i = 0; i < componentCount; ++i)
 	{
@@ -648,7 +679,8 @@ int32_t LogisticsVariant::getComponents(int32_t& count, int32_t* array)
 	return count;
 }
 
-int32_t LogisticsVariant::removeComponent(int32_t xCoord, int32_t yCoord)
+int32_t
+LogisticsVariant::removeComponent(int32_t xCoord, int32_t yCoord)
 {
 	LogisticsChassis::ComponentInfo* info =
 		const_cast<LogisticsChassis::ComponentInfo*>(getComponentAtLocation(xCoord, yCoord));
@@ -676,7 +708,8 @@ int32_t LogisticsVariant::removeComponent(int32_t xCoord, int32_t yCoord)
 
 // if you pass in -1's for x and y, we'll figure out where it can go, and return
 // where it went
-int32_t LogisticsVariant::addComponent(
+int32_t
+LogisticsVariant::addComponent(
 	LogisticsComponent* pComponent, int32_t& xCoord, int32_t& yCoord)
 {
 	int32_t retVal = canAddComponent(pComponent, xCoord, yCoord);
@@ -690,7 +723,8 @@ int32_t LogisticsVariant::addComponent(
 	return retVal;
 }
 
-int32_t LogisticsVariant::save(FitIniFile& file, int32_t counter)
+int32_t
+LogisticsVariant::save(FitIniFile& file, int32_t counter)
 {
 	char tmp[256];
 	char tmp2[256];
@@ -716,9 +750,14 @@ int32_t LogisticsVariant::save(FitIniFile& file, int32_t counter)
 	return 0;
 }
 
-void LogisticsVariant::setName(PCSTR pName) { variantName = pName; }
+void
+LogisticsVariant::setName(PCSTR pName)
+{
+	variantName = pName;
+}
 
-int32_t LogisticsVariant::getComponents(int32_t& count, LogisticsComponent** array)
+int32_t
+LogisticsVariant::getComponents(int32_t& count, LogisticsComponent** array)
 {
 	if (count < componentCount)
 		return NEED_BIGGER_ARRAY;
@@ -730,10 +769,11 @@ int32_t LogisticsVariant::getComponents(int32_t& count, LogisticsComponent** arr
 	return 0;
 }
 
-LogisticsComponent* LogisticsVariant::getCompAtLocation(
+LogisticsComponent*
+LogisticsVariant::getCompAtLocation(
 	int32_t i, int32_t j, int32_t& realI, int32_t& realJ)
 {
-	realI = realJ								 = -1;
+	realI = realJ = -1;
 	const LogisticsChassis::ComponentInfo* pInfo = getComponentAtLocation(i, j);
 	if (pInfo)
 	{
@@ -744,7 +784,8 @@ LogisticsComponent* LogisticsVariant::getCompAtLocation(
 	return 0;
 }
 
-int32_t LogisticsVariant::getComponentLocation(LogisticsComponent* pComp, int32_t& x, int32_t& y)
+int32_t
+LogisticsVariant::getComponentLocation(LogisticsComponent* pComp, int32_t& x, int32_t& y)
 {
 	const LogisticsChassis::ComponentInfo* pInfo = getComponentAtLocation(x, y);
 	x = y = -1;
@@ -769,7 +810,8 @@ int32_t LogisticsVariant::getComponentLocation(LogisticsComponent* pComp, int32_
 	return 0;
 }
 
-int32_t LogisticsVariant::getOptimalRangeString(int32_t& color) const
+int32_t
+LogisticsVariant::getOptimalRangeString(int32_t& color) const
 {
 	float rangeDamage[3];
 	int32_t rangeColors[3] = {0xff6e7c00, 0xff005392, 0xffa21600};
@@ -782,8 +824,7 @@ int32_t LogisticsVariant::getOptimalRangeString(int32_t& color) const
 		{
 			float damageTimeRating = components[i].component->getDamage();
 			if (components[i].component->getRecycleTime())
-				damageTimeRating = components[i].component->getDamage() /
-					components[i].component->getRecycleTime();
+				damageTimeRating = components[i].component->getDamage() / components[i].component->getRecycleTime();
 			rangeDamage[components[i].component->getRangeType()] += damageTimeRating;
 			if (rangeDamage[components[i].component->getRangeType()] > maxDamage)
 				maxDamage = rangeDamage[components[i].component->getRangeType()];
@@ -800,7 +841,8 @@ int32_t LogisticsVariant::getOptimalRangeString(int32_t& color) const
 	return IDS_HOTKEY1;
 }
 
-bool LogisticsVariant::allComponentsAvailable(void) const
+bool
+LogisticsVariant::allComponentsAvailable(void) const
 {
 	// 06/05/01 hack, we wan't to hide this atlas for the whole game.
 	if (_stricmp("Renard's Atlas", variantName) == 0)
@@ -813,7 +855,8 @@ bool LogisticsVariant::allComponentsAvailable(void) const
 	return true;
 }
 
-void LogisticsVariant::setAvailable(bool available)
+void
+LogisticsVariant::setAvailable(bool available)
 {
 	// 06/05/01 hack, we wan't to hide this atlas for the whole game.
 	if (_stricmp("Renard's Atlas", variantName) == 0)
@@ -822,7 +865,8 @@ void LogisticsVariant::setAvailable(bool available)
 		availableToUser = available;
 }
 
-void LogisticsVehicle::init(FitIniFile& file)
+void
+LogisticsVehicle::init(FitIniFile& file)
 {
 	componentCount = 0;
 	file.seekBlock("ObjectType");
@@ -846,7 +890,7 @@ void LogisticsVehicle::init(FitIniFile& file)
 	file.seekBlock("VehicleDynamics");
 	file.readIdFloat("MaxVelocity", speed);
 	PSTR parts[5] = {"Front", "Left", "Right", "Rear", "Turret"};
-	baseArmor	 = 0;
+	baseArmor = 0;
 	uint8_t pts;
 	int32_t i;
 	for (i = 0; i < 5; i++)
@@ -871,15 +915,16 @@ void LogisticsVehicle::init(FitIniFile& file)
 			if (pComponent)
 			{
 				components[componentCount].component = pComponent;
-				components[componentCount].xCoord	= 0;
-				components[componentCount].yCoord	= 0;
+				components[componentCount].xCoord = 0;
+				components[componentCount].yCoord = 0;
 				componentCount++;
 			}
 		}
 	}
 }
 
-int32_t LogisticsVehicle::getComponents(int32_t& count, LogisticsComponent** array)
+int32_t
+LogisticsVehicle::getComponents(int32_t& count, LogisticsComponent** array)
 {
 	gosASSERT(componentCount <= count);
 	for (size_t i = 0; i < componentCount; ++i)

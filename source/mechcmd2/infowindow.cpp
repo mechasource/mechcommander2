@@ -17,57 +17,57 @@ InfoWindow.cpp			: Implementation of the InfoWindow component.
 #include "txmmgr.h"
 #include <estring.h>
 
-int32_t InfoWindow::SCROLLLEFT		   = 0;
-int32_t InfoWindow::SCROLLRIGHT		   = 0;
-int32_t InfoWindow::SCROLLTOP		   = 0;
-int32_t InfoWindow::SCROLLBOTTOM	   = 0;
-int32_t InfoWindow::SECTIONSKIP		   = 0;
-int32_t InfoWindow::NAMELEFT		   = 0;
-int32_t InfoWindow::NAMERIGHT		   = 0;
-int32_t InfoWindow::NAMETOP			   = 0;
-int32_t InfoWindow::NAMEBOTTOM		   = 0;
-int32_t InfoWindow::HEALTHLEFT		   = 0;
-int32_t InfoWindow::HEALTHRIGHT		   = 0;
-int32_t InfoWindow::HEALTHTOP		   = 0;
-int32_t InfoWindow::HEALTHBOTTOM	   = 0;
-int32_t InfoWindow::DIVIDERCOLOR	   = 0;
-int32_t InfoWindow::DIVIDERLEFT		   = 0;
-int32_t InfoWindow::DIVIDERRIGHT	   = 0;
-int32_t InfoWindow::PILOTLEFT		   = 0;
-int32_t InfoWindow::PILOTRIGHT		   = 0;
-int32_t InfoWindow::PILOTHEIGHT		   = 0;
-int32_t InfoWindow::MECHLEFT		   = 0;
-int32_t InfoWindow::MECHRIGHT		   = 0;
-int32_t InfoWindow::MECHHEIGHT		   = 0;
-int32_t InfoWindow::MECHBACKLEFT	   = 0;
-int32_t InfoWindow::MECHBACKRIGHT	  = 0;
-int32_t InfoWindow::MECHBACKHEIGHT	 = 0;
-int32_t InfoWindow::SCROLLBUTTONV	  = 0;
-StaticInfo* InfoWindow::skillInfos	 = 0;
-int32_t InfoWindow::SCROLLBUTTONU	  = 0;
+int32_t InfoWindow::SCROLLLEFT = 0;
+int32_t InfoWindow::SCROLLRIGHT = 0;
+int32_t InfoWindow::SCROLLTOP = 0;
+int32_t InfoWindow::SCROLLBOTTOM = 0;
+int32_t InfoWindow::SECTIONSKIP = 0;
+int32_t InfoWindow::NAMELEFT = 0;
+int32_t InfoWindow::NAMERIGHT = 0;
+int32_t InfoWindow::NAMETOP = 0;
+int32_t InfoWindow::NAMEBOTTOM = 0;
+int32_t InfoWindow::HEALTHLEFT = 0;
+int32_t InfoWindow::HEALTHRIGHT = 0;
+int32_t InfoWindow::HEALTHTOP = 0;
+int32_t InfoWindow::HEALTHBOTTOM = 0;
+int32_t InfoWindow::DIVIDERCOLOR = 0;
+int32_t InfoWindow::DIVIDERLEFT = 0;
+int32_t InfoWindow::DIVIDERRIGHT = 0;
+int32_t InfoWindow::PILOTLEFT = 0;
+int32_t InfoWindow::PILOTRIGHT = 0;
+int32_t InfoWindow::PILOTHEIGHT = 0;
+int32_t InfoWindow::MECHLEFT = 0;
+int32_t InfoWindow::MECHRIGHT = 0;
+int32_t InfoWindow::MECHHEIGHT = 0;
+int32_t InfoWindow::MECHBACKLEFT = 0;
+int32_t InfoWindow::MECHBACKRIGHT = 0;
+int32_t InfoWindow::MECHBACKHEIGHT = 0;
+int32_t InfoWindow::SCROLLBUTTONV = 0;
+StaticInfo* InfoWindow::skillInfos = 0;
+int32_t InfoWindow::SCROLLBUTTONU = 0;
 int32_t InfoWindow::SCROLLBUTTONHEIGHT = 0;
-int32_t InfoWindow::SCROLLBUTTONWIDTH  = 0;
-int32_t InfoWindow::SCROLLBUTTONX	  = 0;
-int32_t InfoWindow::SCROLLMAX		   = 0;
-int32_t InfoWindow::SCROLLMIN		   = 0;
-int32_t InfoWindow::NUMBERSKILLBARS	= 0;
-int32_t InfoWindow::SKILLUNITWIDTH	 = 0;
-int32_t InfoWindow::SKILLSKIP		   = 0;
-int32_t InfoWindow::SKILLHEIGHT		   = 0;
-int32_t InfoWindow::SKILLRIGHT		   = 0;
-int32_t InfoWindow::SKILLLEFT		   = 0;
-int32_t InfoWindow::SCROLLCOLOR		   = -1;
-int32_t InfoWindow::INFOHEIGHT		   = 0;
-int32_t InfoWindow::INFOWIDTH		   = 0;
-int32_t InfoWindow::INFOTOP			   = 0;
-int32_t InfoWindow::INFOLEFT		   = 0;
-int32_t InfoWindow::COMPONENTLEFT	  = 0;
+int32_t InfoWindow::SCROLLBUTTONWIDTH = 0;
+int32_t InfoWindow::SCROLLBUTTONX = 0;
+int32_t InfoWindow::SCROLLMAX = 0;
+int32_t InfoWindow::SCROLLMIN = 0;
+int32_t InfoWindow::NUMBERSKILLBARS = 0;
+int32_t InfoWindow::SKILLUNITWIDTH = 0;
+int32_t InfoWindow::SKILLSKIP = 0;
+int32_t InfoWindow::SKILLHEIGHT = 0;
+int32_t InfoWindow::SKILLRIGHT = 0;
+int32_t InfoWindow::SKILLLEFT = 0;
+int32_t InfoWindow::SCROLLCOLOR = -1;
+int32_t InfoWindow::INFOHEIGHT = 0;
+int32_t InfoWindow::INFOWIDTH = 0;
+int32_t InfoWindow::INFOTOP = 0;
+int32_t InfoWindow::INFOLEFT = 0;
+int32_t InfoWindow::COMPONENTLEFT = 0;
 
-int32_t InfoWindow::SCROLLBOXLEFT   = 0;
-int32_t InfoWindow::SCROLLBOXRIGHT  = 0;
-int32_t InfoWindow::SCROLLBOXTOP	= 0;
+int32_t InfoWindow::SCROLLBOXLEFT = 0;
+int32_t InfoWindow::SCROLLBOXRIGHT = 0;
+int32_t InfoWindow::SCROLLBOXTOP = 0;
 int32_t InfoWindow::SCROLLBOXBOTTOM = 0;
-int32_t InfoWindow::PILOTNAMELEFT   = 0;
+int32_t InfoWindow::PILOTNAMELEFT = 0;
 
 RECT InfoWindow::NameRect = {0};
 
@@ -86,20 +86,21 @@ extern bool useUnlimitedAmmo;
 
 InfoWindow::InfoWindow()
 {
-	pUnit			  = nullptr;
-	scrollLength	  = 0;
-	scrollPos		  = 0;
+	pUnit = nullptr;
+	scrollLength = 0;
+	scrollPos = 0;
 	backgroundTexture = 0;
-	icon			  = nullptr;
-	infoLength		  = 0;
-	skillInfos		  = new StaticInfo[7];
+	icon = nullptr;
+	infoLength = 0;
+	skillInfos = new StaticInfo[7];
 	memset(skillInfos, 0, sizeof(StaticInfo) * 7);
 	memset(buttonData, 0, sizeof(buttonData));
 	lastYClick = -1.f;
 	s_instance = this;
 }
 
-void InfoWindow::init(FitIniFile& file)
+void
+InfoWindow::init(FitIniFile& file)
 {
 	if (NO_ERROR != file.seekBlock("Fonts"))
 		Assert(0, 0, "couldn't find the font block");
@@ -236,28 +237,29 @@ void InfoWindow::init(FitIniFile& file)
 	InfoWindow::COMPONENTLEFT = InfoWindow::PILOTLEFT;
 }
 
-InfoWindow::~InfoWindow() { delete[] skillInfos; }
-
-void InfoWindow::setUnit(Mover* pNewMover)
+InfoWindow::~InfoWindow()
 {
-	if (pNewMover &&
-		(pNewMover->getTeamId() != Team::home->getId() &&
-			(CONTACT_VISUAL != pNewMover->getContactStatus(Team::home->getId(), true)) &&
-			!pNewMover->isDisabled()))
+	delete[] skillInfos;
+}
+
+void
+InfoWindow::setUnit(Mover* pNewMover)
+{
+	if (pNewMover && (pNewMover->getTeamId() != Team::home->getId() && (CONTACT_VISUAL != pNewMover->getContactStatus(Team::home->getId(), true)) && !pNewMover->isDisabled()))
 	{
 		return;
 	}
 	if (pUnit != pNewMover)
 	{
-		pUnit		 = pNewMover;
+		pUnit = pNewMover;
 		bUnitChanged = true;
 		if (icon)
 		{
 			delete icon;
 			icon = nullptr;
 		}
-		icon	   = nullptr;
-		scrollPos  = 0;
+		icon = nullptr;
+		scrollPos = 0;
 		infoLength = 0;
 		if (pNewMover)
 		{
@@ -281,7 +283,8 @@ void InfoWindow::setUnit(Mover* pNewMover)
 	}
 }
 
-void InfoWindow::drawName(PCSTR name)
+void
+InfoWindow::drawName(PCSTR name)
 {
 	RECT rect = {NAMELEFT, NAMETOP, NAMERIGHT, SCROLLTOP};
 	drawRect(rect, 0xff000000);
@@ -290,7 +293,8 @@ void InfoWindow::drawName(PCSTR name)
 		name, NAMELEFT, NAMETOP, NAMERIGHT - NAMELEFT, NAMEBOTTOM - NAMETOP, 0xff5c96c2, 0, 3);
 }
 
-void InfoWindow::render()
+void
+InfoWindow::render()
 {
 	drawScrollingStuff();
 	RECT tmpRect = {SCROLLBOXLEFT, SCROLLBOXBOTTOM, SCROLLBOXRIGHT, INFOTOP + INFOHEIGHT};
@@ -307,10 +311,10 @@ void InfoWindow::render()
 	{
 		v[i].argb = 0xff5c96c2;
 		v[i].frgb = 0;
-		v[i].rhw  = .5;
-		v[i].x	= SCROLLBUTTONX;
-		v[i].y	= SCROLLMIN + scrollPos;
-		v[i].z	= 0.f;
+		v[i].rhw = .5;
+		v[i].x = SCROLLBUTTONX;
+		v[i].y = SCROLLMIN + scrollPos;
+		v[i].z = 0.f;
 		v[i].u = v[i].v = 0.f;
 		//		v[i].u = ((float)SCROLLBUTTONU)/256.f + .1/256.f;
 		//		v[i].v = ((float)SCROLLBUTTONV)/256.f + .1/256.f ;
@@ -326,9 +330,9 @@ void InfoWindow::render()
 		buttons[0].disable(0);
 		buttons[1].disable(0);
 		float physicalRange = buttons[1].location[0].y - buttons[0].location[2].y;
-		float buttonHeight  = SCROLLBUTTONHEIGHT;
-		float RealRange		= infoLength;
-		buttonHeight		= physicalRange * physicalRange / (physicalRange + RealRange);
+		float buttonHeight = SCROLLBUTTONHEIGHT;
+		float RealRange = infoLength;
+		buttonHeight = physicalRange * physicalRange / (physicalRange + RealRange);
 		if (buttonHeight < SCROLLBUTTONHEIGHT)
 			buttonHeight = SCROLLBUTTONHEIGHT;
 		SCROLLMAX = buttons[1].location[0].y - buttonHeight - 2;
@@ -360,7 +364,7 @@ void InfoWindow::render()
 		v[0].x = v[1].x = HEALTHLEFT;
 		v[2].x = v[3].x = HEALTHRIGHT;
 		v[0].y = v[3].y = HEALTHTOP;
-		v[1].y = v[2].y   = HEALTHBOTTOM;
+		v[1].y = v[2].y = HEALTHBOTTOM;
 		uint32_t dimColor = (color & 0xff7f7f7f);
 		for (size_t i = 0; i < 4; i++)
 			v[i].argb = dimColor;
@@ -382,12 +386,10 @@ void InfoWindow::render()
 	drawEmptyRect(rect, SCROLLCOLOR, SCROLLCOLOR);
 }
 
-void InfoWindow::update()
+void
+InfoWindow::update()
 {
-	if (pUnit &&
-		(pUnit->getTeamId() != Team::home->getId() &&
-			(CONTACT_VISUAL != (pUnit->getContactStatus(Team::home->getId(), true)) &&
-				!pUnit->isDisabled())))
+	if (pUnit && (pUnit->getTeamId() != Team::home->getId() && (CONTACT_VISUAL != (pUnit->getContactStatus(Team::home->getId(), true)) && !pUnit->isDisabled())))
 	{
 		setUnit(0);
 		return;
@@ -398,8 +400,7 @@ void InfoWindow::update()
 		icon->update();
 	for (size_t i = 0; i < 2; i++)
 	{
-		if (buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x &&
-			mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y)
+		if (buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x && mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y)
 		{
 			if (userInput->getMouseLeftButtonState() == MC2_MOUSE_DOWN && buttons[i].isEnabled())
 			{
@@ -421,16 +422,13 @@ void InfoWindow::update()
 		}
 	}
 	// see if its in the scroll bar area
-	else if (mouseX > SCROLLLEFT && mouseX < SCROLLRIGHT && mouseY > SCROLLTOP &&
-		mouseY < SCROLLBOTTOM && buttons[0].isEnabled() &&
-		userInput->getMouseDragX() > SCROLLLEFT && userInput->getMouseDragX() < SCROLLRIGHT &&
-		userInput->getMouseDragY() > SCROLLTOP && userInput->getMouseDragY() < SCROLLBOTTOM)
+	else if (mouseX > SCROLLLEFT && mouseX < SCROLLRIGHT && mouseY > SCROLLTOP && mouseY < SCROLLBOTTOM && buttons[0].isEnabled() && userInput->getMouseDragX() > SCROLLLEFT && userInput->getMouseDragX() < SCROLLRIGHT && userInput->getMouseDragY() > SCROLLTOP && userInput->getMouseDragY() < SCROLLBOTTOM)
 	{
 		// if its in the thumbdrag thingie, save the y
 		float physicalRange = buttons[1].location[0].y - buttons[0].location[2].y;
-		float buttonHeight  = SCROLLBUTTONHEIGHT;
-		float RealRange		= infoLength;
-		buttonHeight		= physicalRange * physicalRange / (physicalRange + RealRange);
+		float buttonHeight = SCROLLBUTTONHEIGHT;
+		float RealRange = infoLength;
+		buttonHeight = physicalRange * physicalRange / (physicalRange + RealRange);
 		if (buttonHeight < SCROLLBUTTONHEIGHT)
 			buttonHeight = SCROLLBUTTONHEIGHT;
 		if (mouseY > scrollPos + SCROLLMIN && mouseY < scrollPos + SCROLLMIN + buttonHeight)
@@ -464,7 +462,8 @@ void InfoWindow::update()
 		lastYClick = -1;
 }
 
-void InfoWindow::drawScrollingStuff()
+void
+InfoWindow::drawScrollingStuff()
 {
 	if (!pUnit)
 		return;
@@ -472,7 +471,7 @@ void InfoWindow::drawScrollingStuff()
 	if (infoLength)
 	{
 		float increment = infoLength / (SCROLLMAX - SCROLLMIN);
-		offset			= -increment * scrollPos;
+		offset = -increment * scrollPos;
 	}
 	float curY = SCROLLBOXTOP + SECTIONSKIP + offset;
 	if (icon)
@@ -498,20 +497,18 @@ void InfoWindow::drawScrollingStuff()
 	bool bDraw[4];
 	memset(bDraw, 0, sizeof(bool) * 4);
 	int32_t curComponentCount = 60;
-	int32_t i				  = 0;
+	int32_t i = 0;
 	for (size_t curWeapon = pUnit->numOther; curWeapon < (pUnit->numOther + pUnit->numWeapons);
 		 curWeapon++)
 	{
 		int32_t nName = pUnit->inventory[curWeapon].masterID;
-		bool bFound   = 0;
+		bool bFound = 0;
 		for (size_t j = 0; j < i; j++)
 		{
 			if (nName == names[j])
 			{
 				disabledCount[j][1]++;
-				if (!pUnit->inventory[curWeapon].disabled &&
-					(pUnit->getWeaponShots(curWeapon) > 0) &&
-					pUnit->inventory[curWeapon].health > 0)
+				if (!pUnit->inventory[curWeapon].disabled && (pUnit->getWeaponShots(curWeapon) > 0) && pUnit->inventory[curWeapon].health > 0)
 				{
 					disabledCount[j][0]++;
 				}
@@ -524,18 +521,15 @@ void InfoWindow::drawScrollingStuff()
 		// ONly need to add in the AMMO once!!
 		// Glenn has taken the liberty of combining all shots of this type
 		// into one master ammo list!!
-		if (MasterComponent::masterList[pUnit->inventory[curWeapon].masterID].getWeaponAmmoType() ==
-				WEAPON_AMMO_NONE ||
-			useUnlimitedAmmo)
+		if (MasterComponent::masterList[pUnit->inventory[curWeapon].masterID].getWeaponAmmoType() == WEAPON_AMMO_NONE || useUnlimitedAmmo)
 			ammo[i] = -1;
 		else
 			ammo[i] += pUnit->getWeaponShots(curWeapon);
 		int32_t range =
 			MasterComponent::masterList[pUnit->inventory[curWeapon].masterID].getWeaponRange();
-		ranges[i]	= range;
+		ranges[i] = range;
 		bDraw[range] = true;
-		if (!pUnit->inventory[curWeapon].disabled && (pUnit->getWeaponShots(curWeapon) > 0) &&
-			pUnit->inventory[curWeapon].health > 0)
+		if (!pUnit->inventory[curWeapon].disabled && (pUnit->getWeaponShots(curWeapon) > 0) && pUnit->inventory[curWeapon].health > 0)
 		{
 			disabledCount[i][0]++;
 		}
@@ -640,8 +634,7 @@ void InfoWindow::drawScrollingStuff()
 		drawDivider(curY);
 	curY += SECTIONSKIP;
 	// DON'T DO PILOT INFO if ENEMY OR mech is destroyed or disabled.
-	if (pUnit->getTeam() && !Team::home->isEnemy(pUnit->getTeam()) && pUnit->isMech() &&
-		!pUnit->isDisabled() && !pUnit->isDestroyed())
+	if (pUnit->getTeam() && !Team::home->isEnemy(pUnit->getTeam()) && pUnit->isMech() && !pUnit->isDisabled() && !pUnit->isDestroyed())
 	{
 		MechWarrior* pWarrior = pUnit->getPilot();
 		if (icon)
@@ -652,8 +645,8 @@ void InfoWindow::drawScrollingStuff()
 					icon->renderPilotIcon(PILOTLEFT, curY, PILOTRIGHT, curY + PILOTHEIGHT);
 				RECT tmpRect = {PILOTLEFT, curY, PILOTRIGHT + 1, curY + PILOTHEIGHT + 1};
 				drawEmptyRect(tmpRect, SCROLLCOLOR, SCROLLCOLOR);
-				float right  = SCROLLLEFT;
-				float top	= curY + PILOTHEIGHT / 2 - height / 2;
+				float right = SCROLLLEFT;
+				float top = curY + PILOTHEIGHT / 2 - height / 2;
 				float bottom = top + height;
 				// draw the name of the pilot
 				char deadPilotName[256];
@@ -666,7 +659,7 @@ void InfoWindow::drawScrollingStuff()
 			curY += SECTIONSKIP;
 		}
 		curY += SECTIONSKIP;
-		int32_t rank	  = pWarrior->getRank();
+		int32_t rank = pWarrior->getRank();
 		int32_t skills[2] = {MWS_GUNNERY, MWS_PILOTING};
 		char buffer[256];
 		// ACE not continguous with other ranks.  Added too late!
@@ -687,8 +680,8 @@ void InfoWindow::drawScrollingStuff()
 				skillInfos[currentSkill].location[1].y - skillInfos[currentSkill].location[0].y;
 			for (i = 0; i < 4; i++)
 			{
-				v[i]	 = skillInfos[currentSkill].location[i];
-				v[i].y   = curY;
+				v[i] = skillInfos[currentSkill].location[i];
+				v[i].y = curY;
 				v[i].rhw = .5;
 			}
 			v[1].y = v[2].y = curY + height;
@@ -730,7 +723,8 @@ void InfoWindow::drawScrollingStuff()
 		infoLength = curY - SCROLLTOP - (SCROLLBOTTOM - SCROLLTOP);
 }
 
-void InfoWindow::handleClick(int32_t ID)
+void
+InfoWindow::handleClick(int32_t ID)
 {
 	switch (ID)
 	{
@@ -743,7 +737,8 @@ void InfoWindow::handleClick(int32_t ID)
 	}
 }
 
-void InfoWindow::drawDivider(float yVal)
+void
+InfoWindow::drawDivider(float yVal)
 {
 	gos_VERTEX v[2];
 	//	gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
@@ -756,26 +751,27 @@ void InfoWindow::drawDivider(float yVal)
 		v[i].rhw = .5f;
 	v[0].x = DIVIDERLEFT;
 	v[0].y = v[1].y = yVal;
-	v[1].x			= DIVIDERRIGHT;
+	v[1].x = DIVIDERRIGHT;
 	v[0].argb = v[1].argb = DIVIDERCOLOR;
 	gos_DrawLines(v, 2);
 }
 
-void InfoWindow::drawSkillBar(int32_t skill, float yVal, float height)
+void
+InfoWindow::drawSkillBar(int32_t skill, float yVal, float height)
 {
-	float left			   = InfoWindow::SKILLLEFT;
-	float right			   = InfoWindow::SKILLRIGHT;
-	int32_t barCount	   = skill / InfoWindow::NUMBERSKILLBARS;
-	int32_t redIncrement   = 0;
+	float left = InfoWindow::SKILLLEFT;
+	float right = InfoWindow::SKILLRIGHT;
+	int32_t barCount = skill / InfoWindow::NUMBERSKILLBARS;
+	int32_t redIncrement = 0;
 	int32_t greenIncrement = 0;
-	int32_t blueIncrement  = 0;
+	int32_t blueIncrement = 0;
 	if (barCount)
 	{
-		redIncrement   = (205 / barCount) << 16;
+		redIncrement = (205 / barCount) << 16;
 		greenIncrement = ((234 - 83) / barCount) << 8;
-		blueIncrement  = (255 - 146) / barCount;
+		blueIncrement = (255 - 146) / barCount;
 	}
-	uint32_t color   = 0xff005392;
+	uint32_t color = 0xff005392;
 	RECT outSideRect = {
 		left - SKILLSKIP + .5, yVal - .5, right + SKILLSKIP + .5, yVal + height + 1.5};
 	drawRect(outSideRect, 0xff000000);
@@ -797,7 +793,8 @@ void InfoWindow::drawSkillBar(int32_t skill, float yVal, float height)
 		buffer, SKILLRIGHT + 2, yVal, SCROLLLEFT - SKILLRIGHT - 2, SKILLHEIGHT, 0xff005392, 0, 0);
 }
 
-void InfoWindow::setScrollPos(int32_t where)
+void
+InfoWindow::setScrollPos(int32_t where)
 {
 	if (where < 0)
 		scrollPos = 0;

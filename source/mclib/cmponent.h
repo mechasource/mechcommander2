@@ -136,21 +136,21 @@ typedef union {
 	} heatsink;
 	struct
 	{
-		float heat;			  // how much heat does it generate?
-		float damage;		  // amount of damage
-		float recycleTime;	// in seconds
-		int32_t ammoAmount;   // amount of ammo per shot
-		uint8_t ammoType;	 // 0 = unlimited, 1 = finite amount (e.g. bullets)
+		float heat; // how much heat does it generate?
+		float damage; // amount of damage
+		float recycleTime; // in seconds
+		int32_t ammoAmount; // amount of ammo per shot
+		uint8_t ammoType; // 0 = unlimited, 1 = finite amount (e.g. bullets)
 		uint8_t ammoMasterId; // ammo used by this weapon
-		uint8_t range;		  // int16_t, med or int32_t
+		uint8_t range; // int16_t, med or int32_t
 		uint8_t flags;
-		int16_t type;		// which weapon type is this
+		int16_t type; // which weapon type is this
 		char specialEffect; // used to cue whatever visual/sound effects this
-							// needs
+			// needs
 	} weapon;
 	struct
 	{
-		int32_t ammoPerTon;	// ammo per ton
+		int32_t ammoPerTon; // ammo per ton
 		float explosiveDamage; // damage done (per missile) if it explodes
 	} ammo;
 	struct
@@ -168,17 +168,17 @@ class MasterComponent
 {
 
 private:
-	int32_t masterID;							// unique ID for component
-	int32_t resourcePoints;						// resource cost of object
-	ComponentFormType form;						// form of component
-	char name[MAXLEN_COMPONENT_NAME];			// name string/description
+	int32_t masterID; // unique ID for component
+	int32_t resourcePoints; // resource cost of object
+	ComponentFormType form; // form of component
+	char name[MAXLEN_COMPONENT_NAME]; // name string/description
 	char abbreviation[MAXLEN_COMPONENT_ABBREV]; // abbreviated name
-	float tonnage;								// in tons
-	char size;									// # of total spaces used
-	char health;								// # of hits before destroyed
+	float tonnage; // in tons
+	char size; // # of total spaces used
+	char health; // # of hits before destroyed
 	char criticalSpacesReq[NUM_BODY_LOCATIONS]; // # of critical spaces required
-												// in specific location
-	char disableLevel;							// # of critical spaces to disable
+		// in specific location
+	char disableLevel; // # of critical spaces to disable
 	uint8_t uses;
 	uint8_t techBase;
 	float CV; // CV for this component
@@ -204,8 +204,8 @@ public:
 
 	void init(void)
 	{
-		masterID		= -1;
-		name[0]			= nullptr;
+		masterID = -1;
+		name[0] = nullptr;
 		abbreviation[0] = nullptr;
 	}
 

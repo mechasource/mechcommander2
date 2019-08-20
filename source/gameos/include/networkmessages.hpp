@@ -25,15 +25,15 @@ public:
 
 	enum
 	{
-		TypeBits	 = 0,
+		TypeBits = 0,
 		MulticastBit = TypeBits + 11,
 		GuaranteedBit
 	};
 
 	enum
 	{
-		TypeMask	   = 0x3FF, // 1st 10 bits
-		MulticastFlag  = 1 << MulticastBit,
+		TypeMask = 0x3FF, // 1st 10 bits
+		MulticastFlag = 1 << MulticastBit,
 		GuaranteedFlag = 1 << GuaranteedBit
 	};
 
@@ -99,7 +99,8 @@ class FIGuaranteedMessageHeader : public FIMessageHeader, public MessageTagger
 {
 public:
 	// Constructor just calls Clear
-	FIGuaranteedMessageHeader() : FIMessageHeader(), MessageTagger()
+	FIGuaranteedMessageHeader() :
+		FIMessageHeader(), MessageTagger()
 	{
 		SetGuaranteed(void);
 		Clear(void);
@@ -120,7 +121,8 @@ private:
 	// Keep the constructor private because we don't want
 	// anyone to call it when there is an undefined size
 	// for the class.
-	FIGenericGuaranteedMessage() : FIGuaranteedMessageHeader() {}
+	FIGenericGuaranteedMessage() :
+		FIGuaranteedMessageHeader() {}
 
 public:
 	uint8_t buffer[0];
@@ -132,7 +134,8 @@ private:
 	// Keep the constructor private because we don't want
 	// anyone to call it when there is an undefined size
 	// for the class.
-	FIGenericMessage() : FIMessageHeader() {}
+	FIGenericMessage() :
+		FIMessageHeader() {}
 
 public:
 	uint8_t buffer[0];
@@ -141,7 +144,8 @@ public:
 class FIVerifyCluster : public FIMessageHeader
 {
 protected:
-	FIVerifyCluster() : FIMessageHeader() {}
+	FIVerifyCluster() :
+		FIMessageHeader() {}
 
 public:
 	uint8_t n_messages;
@@ -161,7 +165,8 @@ public:
 	uint32_t playerID[MAXPLAYERS];
 	uint8_t serverIndex;
 
-	FIPlayerIDMessage() : FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERID); }
+	FIPlayerIDMessage() :
+		FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERID); }
 
 	int32_t GetPlayerNumber(uint32_t player_id)
 	{
@@ -185,7 +190,8 @@ public:
 	uint32_t groupID;
 	uint32_t playerID[MAXPLAYERS];
 
-	FIPlayersInGroupMessage() : FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERS_IN_GROUP); }
+	FIPlayersInGroupMessage() :
+		FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERS_IN_GROUP); }
 };
 
 class FIServerIDMessage : public FIGuaranteedMessageHeader
@@ -193,7 +199,8 @@ class FIServerIDMessage : public FIGuaranteedMessageHeader
 public:
 	uint32_t serverID;
 
-	FIServerIDMessage(uint32_t server_id) : FIGuaranteedMessageHeader()
+	FIServerIDMessage(uint32_t server_id) :
+		FIGuaranteedMessageHeader()
 	{
 		serverID = server_id;
 		SetType(FIDP_MSG_SERVERID);

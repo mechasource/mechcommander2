@@ -22,7 +22,8 @@ TerrainDlg:
 class TerrainDlg : public CDialog
 {
 public:
-	TerrainDlg() : CDialog(IDD_TERRAINS) { terrain = 0; }
+	TerrainDlg() :
+		CDialog(IDD_TERRAINS) { terrain = 0; }
 	virtual ~TerrainDlg() {}
 	virtual void Init(void);
 	virtual BOOL OnInitDialog()

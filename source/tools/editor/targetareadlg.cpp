@@ -14,20 +14,21 @@ TargetAreaDlg.cpp			: Implementation of the TargetAreaDlg component.
 //#include "editorinterface.h"
 
 //-------------------------------------------------------------------------------------------------
-TargetAreaDlg::TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius)
-	: CDialog(IDD_TARGET_AREA)
+TargetAreaDlg::TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius) :
+	CDialog(IDD_TARGET_AREA)
 {
-	m_pTargetCenterX		= &targetCenterX;
-	m_pTargetCenterY		= &targetCenterY;
-	m_pTargetRadius			= &targetRadius;
+	m_pTargetCenterX = &targetCenterX;
+	m_pTargetCenterY = &targetCenterY;
+	m_pTargetRadius = &targetRadius;
 	m_pTargetCenterXEditBox = 0;
 	m_pTargetCenterYEditBox = 0;
-	m_pTargetRadiusEditBox  = 0;
-	m_pCancelButton			= 0;
-	m_pOKButton				= 0;
+	m_pTargetRadiusEditBox = 0;
+	m_pCancelButton = 0;
+	m_pOKButton = 0;
 }
 
-BOOL TargetAreaDlg::OnInitDialog()
+BOOL
+TargetAreaDlg::OnInitDialog()
 {
 	m_pTargetCenterXEditBox = (CEdit*)GetDlgItem(IDC_TARGET_AREA_CENTER_X_EDIT);
 	assert(m_pTargetCenterXEditBox);
@@ -49,7 +50,8 @@ BOOL TargetAreaDlg::OnInitDialog()
 	return 1;
 }
 
-BOOL TargetAreaDlg::OnCommand(WPARAM wParam,
+BOOL
+TargetAreaDlg::OnCommand(WPARAM wParam,
 	LPARAM lParam) // called by child controls to inform of an event
 {
 	assert(m_pCancelButton);
@@ -57,9 +59,14 @@ BOOL TargetAreaDlg::OnCommand(WPARAM wParam,
 	return inherited::OnCommand(wParam, lParam);
 }
 
-void TargetAreaDlg::OnCancel() { EndDialog(IDCANCEL); }
+void
+TargetAreaDlg::OnCancel()
+{
+	EndDialog(IDCANCEL);
+}
 
-void TargetAreaDlg::OnOK()
+void
+TargetAreaDlg::OnOK()
 {
 	CString tmpCStr;
 	int32_t result;

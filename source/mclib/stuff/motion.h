@@ -18,7 +18,8 @@ class Motion3D;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::Motion3D& motion);
+void
+Spew(PCSTR group, const Stuff::Motion3D& motion);
 #endif
 
 namespace Stuff
@@ -43,7 +44,7 @@ public:
 	{
 		Check_Object(&t);
 		Check_Object(&q);
-		linearMotion  = t;
+		linearMotion = t;
 		angularMotion = q;
 	}
 
@@ -75,11 +76,13 @@ public:
 namespace MemoryStreamIO
 {
 #if _CONSIDERED_TEMPORARILY_DISABLED
-inline std::istream& Read(std::istream& stream, Stuff::Motion3D* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::Motion3D* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::Motion3D* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::Motion3D* input)
 {
 	return stream.write(input, sizeof(*input));
 }

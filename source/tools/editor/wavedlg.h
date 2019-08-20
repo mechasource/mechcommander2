@@ -18,7 +18,8 @@ WaveDlg:
 class WaveDlg : public CDialog
 {
 public:
-	WaveDlg() : CDialog(IDD_WAVES) {}
+	WaveDlg() :
+		CDialog(IDD_WAVES) {}
 	virtual BOOL OnInitDialog()
 	{
 		Init(void);

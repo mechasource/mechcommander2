@@ -24,7 +24,8 @@ const Vector4D Vector4D::Identity(0.0f, 0.0f, 0.0f, 0.0f);
 //###########################################################################
 //###########################################################################
 //
-bool Stuff::Small_Enough(const Vector4D& V, float e)
+bool
+Stuff::Small_Enough(const Vector4D& V, float e)
 {
 	Check_Object(&V);
 	return V.x * V.x + V.y * V.y + V.z * V.z + V.w * V.w <= e;
@@ -34,7 +35,8 @@ bool Stuff::Small_Enough(const Vector4D& V, float e)
 //###########################################################################
 //###########################################################################
 //
-bool Stuff::Close_Enough(const Vector4D& V1, const Vector4D& V2, float e)
+bool
+Stuff::Close_Enough(const Vector4D& V1, const Vector4D& V2, float e)
 {
 	Check_Object(&V1);
 	Check_Object(&V2);
@@ -46,7 +48,8 @@ bool Stuff::Close_Enough(const Vector4D& V1, const Vector4D& V2, float e)
 //###########################################################################
 //###########################################################################
 //
-Vector4D& Vector4D::Multiply(const Vector4D& v, const AffineMatrix4D& m)
+Vector4D&
+Vector4D::Multiply(const Vector4D& v, const AffineMatrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&v);
@@ -63,7 +66,8 @@ Vector4D& Vector4D::Multiply(const Vector4D& v, const AffineMatrix4D& m)
 //###########################################################################
 //###########################################################################
 //
-Vector4D& Vector4D::Multiply(const Vector4D& v, const Matrix4D& m)
+Vector4D&
+Vector4D::Multiply(const Vector4D& v, const Matrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&v);
@@ -80,7 +84,8 @@ Vector4D& Vector4D::Multiply(const Vector4D& v, const Matrix4D& m)
 //###########################################################################
 //###########################################################################
 //
-Vector4D& Vector4D::Multiply(const Vector3D& v, const Matrix4D& m)
+Vector4D&
+Vector4D::Multiply(const Vector3D& v, const Matrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&v);
@@ -119,14 +124,16 @@ Vector4D::Multiply(
 //###########################################################################
 //
 #if !defined(Spew)
-void Spew(PCSTR group, const Vector4D& vector)
+void
+Spew(PCSTR group, const Vector4D& vector)
 {
 	Check_Object(&vector);
 	SPEW((group, "<%4f,%4f,%4f,%4f>", vector.x, vector.y, vector.z, vector.w));
 }
 #endif
 
-Vector4D& Vector4D::MultiplySetClip(const Point3D& v, const Matrix4D& m, puint32_t clipper)
+Vector4D&
+Vector4D::MultiplySetClip(const Point3D& v, const Matrix4D& m, puint32_t clipper)
 {
 	// Check_Pointer(this);
 	Check_Object(&v);

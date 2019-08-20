@@ -17,7 +17,7 @@ component.
 
 LogisticsMechDisplay::LogisticsMechDisplay()
 {
-	pCurMech		= nullptr;
+	pCurMech = nullptr;
 	helpTextArrayID = 7;
 }
 
@@ -27,7 +27,8 @@ LogisticsMechDisplay::LogisticsMechDisplay()
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsMechDisplay::update()
+void
+LogisticsMechDisplay::update()
 {
 	componentListBox.update();
 	LogisticsScreen::update();
@@ -39,7 +40,8 @@ LogisticsMechDisplay::~LogisticsMechDisplay() {}
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsMechDisplay::render(int32_t xOffset, int32_t yOffset)
+void
+LogisticsMechDisplay::render(int32_t xOffset, int32_t yOffset)
 {
 	componentListBox.move(xOffset, yOffset);
 	componentListBox.render();
@@ -55,7 +57,8 @@ void LogisticsMechDisplay::render(int32_t xOffset, int32_t yOffset)
 
 //-------------------------------------------------------------------------------------------------
 
-int32_t LogisticsMechDisplay::init()
+int32_t
+LogisticsMechDisplay::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -79,7 +82,8 @@ int32_t LogisticsMechDisplay::init()
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
+void
+LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 {
 	if (pMech != pCurMech)
 	{
@@ -106,10 +110,10 @@ void LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 			attributeMeters[1].setValue(pCurMech->getSpeed() / MAX_SPEED_RANGE);
 			attributeMeters[2].setValue(pCurMech->getJumpRange() * 25 / MAX_JUMP_RANGE);
 			std::wstring fileName = pMech->getFileName();
-			int32_t index		  = fileName.Find('.');
-			fileName			  = fileName.Left(index);
-			index				  = fileName.ReverseFind('\\');
-			fileName			  = fileName.Right(fileName.Length() - index - 1);
+			int32_t index = fileName.Find('.');
+			fileName = fileName.Left(index);
+			index = fileName.ReverseFind('\\');
+			fileName = fileName.Right(fileName.Length() - index - 1);
 			mechCamera.setMech(
 				fileName, prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
 			mechCamera.setScale(pMech->getVariant()->getChassis()->getScale());

@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::PointCloud__Specification::PointCloud__Specification(
-	std::iostream stream, uint32_t gfx_version)
-	: ParticleCloud__Specification(gosFX::PointCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version) :
+	ParticleCloud__Specification(gosFX::PointCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	_ASSERT(m_class == PointCloudClassID);
@@ -29,8 +29,8 @@ gosFX::PointCloud__Specification::PointCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::PointCloud__Specification::PointCloud__Specification()
-	: ParticleCloud__Specification(gosFX::PointCloudClassID)
+gosFX::PointCloud__Specification::PointCloud__Specification() :
+	ParticleCloud__Specification(gosFX::PointCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -40,7 +40,8 @@ gosFX::PointCloud__Specification::PointCloud__Specification()
 
 //------------------------------------------------------------------------------
 //
-gosFX::PointCloud__Specification* gosFX::PointCloud__Specification::Make(
+gosFX::PointCloud__Specification*
+gosFX::PointCloud__Specification::Make(
 	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
@@ -61,7 +62,8 @@ gosFX::PointCloud::ClassData* gosFX::PointCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::InitializeClass()
+void
+gosFX::PointCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -72,7 +74,8 @@ void gosFX::PointCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::TerminateClass()
+void
+gosFX::PointCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -81,8 +84,8 @@ void gosFX::PointCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::PointCloud::PointCloud(Specification* spec, uint32_t flags)
-	: ParticleCloud(DefaultData, spec, flags)
+gosFX::PointCloud::PointCloud(Specification* spec, uint32_t flags) :
+	ParticleCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -90,7 +93,7 @@ gosFX::PointCloud::PointCloud(Specification* spec, uint32_t flags)
 	m_cloudImplementation = new MidLevelRenderer::MLRPointCloud(spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
 	// gos_PopCurrentHeap();
-	uint32_t index		 = spec->m_maxParticleCount * sizeof(Particle);
+	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_localTranslation = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += spec->m_maxParticleCount * sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
@@ -108,7 +111,8 @@ gosFX::PointCloud::~PointCloud()
 
 //------------------------------------------------------------------------------
 //
-gosFX::PointCloud* gosFX::PointCloud::Make(Specification* spec, uint32_t flags)
+gosFX::PointCloud*
+gosFX::PointCloud::Make(Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
 #ifdef _GAMEOS_HPP_
@@ -121,7 +125,8 @@ gosFX::PointCloud* gosFX::PointCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::PointCloud::Execute(ExecuteInfo* info)
+bool
+gosFX::PointCloud::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -149,7 +154,7 @@ bool gosFX::PointCloud::Execute(ExecuteInfo* info)
 	{
 		Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
 		Stuff::Point3D* vertex = &m_P_localTranslation[0];
-		uint32_t i			   = 0;
+		uint32_t i = 0;
 		//
 		//-------------------------------------------------------------------
 		// If there is no bounds yet, we need to create our extent box around
@@ -212,14 +217,14 @@ bool gosFX::PointCloud::Execute(ExecuteInfo* info)
 		_ASSERT(box.maxX >= box.minX);
 		_ASSERT(box.maxY >= box.minY);
 		_ASSERT(box.maxZ >= box.minZ);
-		Stuff::OBB local_bounds			 = Stuff::OBB::Identity;
-		local_bounds.axisExtents.x		 = 0.5f * (box.maxX - box.minX);
-		local_bounds.axisExtents.y		 = 0.5f * (box.maxY - box.minY);
-		local_bounds.axisExtents.z		 = 0.5f * (box.maxZ - box.minZ);
+		Stuff::OBB local_bounds = Stuff::OBB::Identity;
+		local_bounds.axisExtents.x = 0.5f * (box.maxX - box.minX);
+		local_bounds.axisExtents.y = 0.5f * (box.maxY - box.minY);
+		local_bounds.axisExtents.z = 0.5f * (box.maxZ - box.minZ);
 		local_bounds.localToParent(3, 0) = box.minX + local_bounds.axisExtents.x;
 		local_bounds.localToParent(3, 1) = box.minY + local_bounds.axisExtents.y;
 		local_bounds.localToParent(3, 2) = box.minZ + local_bounds.axisExtents.z;
-		local_bounds.sphereRadius		 = local_bounds.axisExtents.GetLength();
+		local_bounds.sphereRadius = local_bounds.axisExtents.GetLength();
 		if (local_bounds.sphereRadius < Stuff::SMALL)
 			local_bounds.sphereRadius = 0.01f;
 		Stuff::OBB parent_bounds;
@@ -236,7 +241,8 @@ bool gosFX::PointCloud::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void
+gosFX::PointCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	Check_Pointer(translation);
@@ -254,7 +260,8 @@ void gosFX::PointCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* transl
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::PointCloud::AnimateParticle(
+bool
+gosFX::PointCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -271,9 +278,9 @@ bool gosFX::PointCloud::AnimateParticle(
 	if (age >= 1.0f)
 		return false;
 	Set_Statistic(Point_Count, Point_Count + 1);
-	Stuff::Vector3D* velocity   = &particle->m_localLinearVelocity;
+	Stuff::Vector3D* velocity = &particle->m_localLinearVelocity;
 	Stuff::Point3D* translation = &m_P_localTranslation[index];
-	int32_t sim_mode			= GetSimulationMode();
+	int32_t sim_mode = GetSimulationMode();
 	if (sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		Check_Object(translation);
@@ -281,7 +288,7 @@ bool gosFX::PointCloud::AnimateParticle(
 		particle->m_worldLinearVelocity.Multiply(*velocity, m_localToWorld);
 		particle->m_worldTranslation.Multiply(*translation, m_localToWorld);
 		translation = &particle->m_worldTranslation;
-		velocity	= &particle->m_worldLinearVelocity;
+		velocity = &particle->m_worldLinearVelocity;
 	}
 	Check_Object(translation);
 	Check_Object(velocity);
@@ -291,7 +298,7 @@ bool gosFX::PointCloud::AnimateParticle(
 	// velocity
 	//------------------------------------------------------------------
 	//
-	float seed			= particle->m_seed;
+	float seed = particle->m_seed;
 	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	Stuff::Vector3D ether;
@@ -376,16 +383,17 @@ bool gosFX::PointCloud::AnimateParticle(
 	//------------------
 	//
 	Check_Pointer(m_P_color);
-	m_P_color[index].red   = spec->m_pRed.ComputeValue(age, seed);
+	m_P_color[index].red = spec->m_pRed.ComputeValue(age, seed);
 	m_P_color[index].green = spec->m_pGreen.ComputeValue(age, seed);
-	m_P_color[index].blue  = spec->m_pBlue.ComputeValue(age, seed);
+	m_P_color[index].blue = spec->m_pBlue.ComputeValue(age, seed);
 	m_P_color[index].alpha = spec->m_pAlpha.ComputeValue(age, seed);
 	return true;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::DestroyParticle(uint32_t index)
+void
+gosFX::PointCloud::DestroyParticle(uint32_t index)
 {
 	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
@@ -395,14 +403,15 @@ void gosFX::PointCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::Draw(DrawInfo* info)
+void
+gosFX::PointCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
 	if (m_activeParticleCount)
 	{
 		MidLevelRenderer::DrawEffectInformation dInfo;
-		dInfo.effect		= m_cloudImplementation;
+		dInfo.effect = m_cloudImplementation;
 		Specification* spec = GetSpecification();
 		Check_Object(spec);
 		dInfo.state.Combine(info->m_state, spec->m_state);
@@ -417,4 +426,8 @@ void gosFX::PointCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::PointCloud::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

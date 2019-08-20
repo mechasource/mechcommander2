@@ -82,7 +82,7 @@ extern bool useShadows;
 
 extern int32_t ObjectTextureSize;
 TG_TypeMultiShapePtr GVAppearanceType::SensorTriangleShape = nullptr;
-TG_TypeMultiShapePtr GVAppearanceType::SensorCircleShape   = nullptr;
+TG_TypeMultiShapePtr GVAppearanceType::SensorCircleShape = nullptr;
 
 extern bool reloadBounds;
 
@@ -102,7 +102,8 @@ extern bool useNonWeaponEffects;
 extern bool useHighObjectDetail;
 //-----------------------------------------------------------------------------
 // class GVAppearanceType
-void GVAppearanceType::init(PSTR fileName)
+void
+GVAppearanceType::init(PSTR fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -261,11 +262,11 @@ void GVAppearanceType::init(PSTR fileName)
 	//-----------------------------------------------
 	// Load up the Node Data.
 	// Automatic for vehicles now.
-	numSmokeNodes  = MAX_SMOKE_NODES;
+	numSmokeNodes = MAX_SMOKE_NODES;
 	numWeaponNodes = MAX_WEAPON_NODES;
-	numFootNodes   = MAX_FOOT_NODES;
-	nodeData	   = (NodeData*)AppearanceTypeList::appearanceHeap->Malloc(
-		  sizeof(NodeData) * (numWeaponNodes + numSmokeNodes + numFootNodes));
+	numFootNodes = MAX_FOOT_NODES;
+	nodeData = (NodeData*)AppearanceTypeList::appearanceHeap->Malloc(
+		sizeof(NodeData) * (numWeaponNodes + numSmokeNodes + numFootNodes));
 	gosASSERT(nodeData != nullptr);
 	memset(nodeData, 0, sizeof(NodeData) * (numWeaponNodes + numSmokeNodes + numFootNodes));
 	for (i = 1; i <= numSmokeNodes; i++)
@@ -319,7 +320,8 @@ void GVAppearanceType::init(PSTR fileName)
 }
 
 //----------------------------------------------------------------------------
-void GVAppearanceType::destroy(void)
+void
+GVAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	int32_t i;
@@ -359,7 +361,8 @@ void GVAppearanceType::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
+void
+GVAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -374,12 +377,13 @@ void GVAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNu
 
 Stuff::Vector3D debugGVActorPosition;
 float vehicleDebugAngle = 0.0;
-float turretDebugAngle  = 0.0;
-float debugVelMag		= 0.0;
+float turretDebugAngle = 0.0;
+float debugVelMag = 0.0;
 #define BASE_NODE_RECYCLE_TIME 0.25f
 //-----------------------------------------------------------------------------
 // class GVAppearance
-void GVAppearance::setWeaponNodeUsed(int32_t weaponNode)
+void
+GVAppearance::setWeaponNodeUsed(int32_t weaponNode)
 {
 	weaponNode -= appearType->numSmokeNodes;
 	if ((weaponNode >= 0) && (weaponNode < appearType->numWeaponNodes))
@@ -390,11 +394,11 @@ void GVAppearance::setWeaponNodeUsed(int32_t weaponNode)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D GVAppearance::getWeaponNodePosition(int32_t nodeId)
+Stuff::Vector3D
+GVAppearance::getWeaponNodePosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
-	if ((nodeId < appearType->numSmokeNodes) ||
-		(nodeId >= (appearType->numSmokeNodes + appearType->numWeaponNodes)))
+	if ((nodeId < appearType->numSmokeNodes) || (nodeId >= (appearType->numSmokeNodes + appearType->numWeaponNodes)))
 		return result;
 	if (!inView)
 		return result;
@@ -430,7 +434,8 @@ Stuff::Vector3D GVAppearance::getWeaponNodePosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D GVAppearance::getSmokeNodePosition(int32_t nodeId)
+Stuff::Vector3D
+GVAppearance::getSmokeNodePosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if ((nodeId < 0) || (nodeId >= appearType->numSmokeNodes))
@@ -457,7 +462,8 @@ Stuff::Vector3D GVAppearance::getSmokeNodePosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D GVAppearance::getDustNodePosition(int32_t nodeId)
+Stuff::Vector3D
+GVAppearance::getDustNodePosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if ((nodeId < 0) || (nodeId >= appearType->numFootNodes))
@@ -485,21 +491,22 @@ Stuff::Vector3D GVAppearance::getDustNodePosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-int32_t GVAppearance::getLowestWeaponNode(void)
+int32_t
+GVAppearance::getLowestWeaponNode(void)
 {
 	//------------------------------------------------
 	// Scan all weapon nodes and find least used one.
 	int32_t bestNode = -1;
 	float lowestPosZ;
 	int32_t numSmokeNodes = appearType->numSmokeNodes;
-	lowestPosZ			  = 9999999999999.0f;
+	lowestPosZ = 9999999999999.0f;
 	for (size_t i = 0; i < appearType->numWeaponNodes; i++)
 	{
 		Stuff::Vector3D nodePosition = getWeaponNodePosition(i + numSmokeNodes);
 		if (((nodePosition.z - position.z) < lowestPosZ) && (nodePosition.z != position.z))
 		{
 			lowestPosZ = nodePosition.z - position.z;
-			bestNode   = i + numSmokeNodes;
+			bestNode = i + numSmokeNodes;
 		}
 	}
 	if ((lowestPosZ == 0.0f) || (bestNode < 0) || (bestNode >= appearType->getTotalNodes()))
@@ -508,12 +515,13 @@ int32_t GVAppearance::getLowestWeaponNode(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t GVAppearance::getWeaponNode(int32_t weaponType)
+int32_t
+GVAppearance::getWeaponNode(int32_t weaponType)
 {
 	//------------------------------------------------
 	// Scan all weapon nodes and find least used one.
-	int32_t leastUsed	 = 999999999;
-	int32_t bestNode	  = -1;
+	int32_t leastUsed = 999999999;
+	int32_t bestNode = -1;
 	int32_t numSmokeNodes = appearType->numSmokeNodes;
 	for (size_t i = 0; i < appearType->numWeaponNodes; i++)
 	{
@@ -523,9 +531,7 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 		switch (weaponType)
 		{
 		case MECH3D_WEAPONTYPE_MISSILE:
-			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
+			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) || (appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) || (appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
 			{
 				//					if (getWeaponNodePosition(i + numSmokeNodes).z !=
 				// position.z)
@@ -533,15 +539,13 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 				if (nodeUsed[i] < leastUsed)
 				{
 					leastUsed = nodeUsed[i];
-					bestNode  = i + numSmokeNodes;
+					bestNode = i + numSmokeNodes;
 				}
 				//					}
 			}
 			break;
 		case MECH3D_WEAPONTYPE_BALLISTIC:
-			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
+			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) || (appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) || (appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
 			{
 				//					if (getWeaponNodePosition(i + numSmokeNodes).z !=
 				// position.z)
@@ -549,14 +553,13 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 				if (nodeUsed[i] < leastUsed)
 				{
 					leastUsed = nodeUsed[i];
-					bestNode  = i + numSmokeNodes;
+					bestNode = i + numSmokeNodes;
 				}
 				//					}
 			}
 			break;
 		case MECH3D_WEAPONTYPE_ENERGY:
-			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY))
+			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) || (appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY))
 			{
 				//					if (getWeaponNodePosition(i + numSmokeNodes).z !=
 				// position.z)
@@ -564,7 +567,7 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 				if (nodeUsed[i] < leastUsed)
 				{
 					leastUsed = nodeUsed[i];
-					bestNode  = i + numSmokeNodes;
+					bestNode = i + numSmokeNodes;
 				}
 				//					}
 			}
@@ -576,7 +579,7 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 			if (nodeUsed[i] < leastUsed)
 			{
 				leastUsed = nodeUsed[i];
-				bestNode  = i + numSmokeNodes;
+				bestNode = i + numSmokeNodes;
 			}
 			//				}
 			break;
@@ -590,7 +593,8 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 }
 
 //-----------------------------------------------------------------------------
-float GVAppearance::getWeaponNodeRecycle(int32_t node)
+float
+GVAppearance::getWeaponNodeRecycle(int32_t node)
 {
 	node -= appearType->numSmokeNodes;
 	if ((node >= 0) && (node < appearType->numWeaponNodes))
@@ -599,57 +603,58 @@ float GVAppearance::getWeaponNodeRecycle(int32_t node)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void
+GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (GVAppearanceType*)tree;
 	shapeMin.x = shapeMin.y = -25;
 	shapeMax.x = shapeMax.y = 50;
-	paintScheme				= -1;
-	objectNameId			= 30862;
-	pilotNameID				= -1;
-	hazeFactor				= 0.0f;
+	paintScheme = -1;
+	objectNameId = 30862;
+	pilotNameID = -1;
+	hazeFactor = 0.0f;
 	currentFlash = duration = flashDuration = 0.0f;
-	flashColor								= 0x00000000;
-	drawFlash								= false;
-	rotationalNodeIndex						= -1;
+	flashColor = 0x00000000;
+	drawFlash = false;
+	rotationalNodeIndex = -1;
 	dustNodeIndex = activityNodeIndex = hitNodeId = weaponNodeId[0] = weaponNodeId[1] =
 		weaponNodeId[2] = weaponNodeId[3] = -1;
 	screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 	position.Zero();
 	rotation = 0.0;
 	;
-	turretRotation		 = 0.0;
-	selected			 = 0;
-	teamId				 = -1;
+	turretRotation = 0.0;
+	selected = 0;
+	teamId = -1;
 	homeTeamRelationship = 0;
-	actualRotation		 = rotation;
+	actualRotation = rotation;
 	actualTurretRotation = turretRotation;
-	inDebugMoveMode		 = false;
-	sensorLevel			 = 0;
-	destructFX			 = nullptr;
-	status				 = 0;
-	roll = pitch	   = 0.0f;
-	currentLOD		   = 0;
-	OBBRadius		   = 0.0f;
-	sensorSpin		   = 0.0f;
-	gvAnimationState   = -1;
-	currentFrame	   = 0.0f;
-	gvFrameRate		   = 0.0f;
-	isReversed		   = false;
-	isLooping		   = false;
-	setFirstFrame	  = false;
-	canTransition	  = true;
+	inDebugMoveMode = false;
+	sensorLevel = 0;
+	destructFX = nullptr;
+	status = 0;
+	roll = pitch = 0.0f;
+	currentLOD = 0;
+	OBBRadius = 0.0f;
+	sensorSpin = 0.0f;
+	gvAnimationState = -1;
+	currentFrame = 0.0f;
+	gvFrameRate = 0.0f;
+	isReversed = false;
+	isLooping = false;
+	setFirstFrame = false;
+	canTransition = true;
 	localTextureHandle = 0xffffffff;
-	nodeUsed		   = nullptr;
-	nodeRecycle		   = nullptr;
-	waterWake		   = nullptr;
-	dustCloud		   = nullptr;
-	activity		   = nullptr;
-	isWaking		   = nullptr;
-	movedThisFrame	 = false;
-	dustCloudStart	 = false;
-	isActivitying	  = false;
+	nodeUsed = nullptr;
+	nodeRecycle = nullptr;
+	waterWake = nullptr;
+	dustCloud = nullptr;
+	activity = nullptr;
+	isWaking = nullptr;
+	movedThisFrame = false;
+	dustCloudStart = false;
+	isActivitying = false;
 	if (appearType)
 	{
 		gvShape = appearType->gvShape[0]->CreateFrom();
@@ -821,44 +826,44 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D nodeCenter = gvShape->GetRootNodeCenter();
-		boxCoords[0].x			   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[0].y			   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[0].z			   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[1].x			   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[1].y			   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[1].z			   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[2].x			   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[2].y			   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[2].z			   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[3].x			   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[3].y			   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[3].z			   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[4].x			   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[4].y			   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[4].z			   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[5].x			   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[5].y			   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[5].z			   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[6].x			   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[6].y			   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[6].z			   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[7].x			   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[7].y			   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[7].z			   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
-		float testRadius		   = 0.0;
+		boxCoords[0].x = position.x + gvShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[0].y = position.y + gvShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[0].z = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[1].x = position.x + gvShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[1].y = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[1].z = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[2].x = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[2].y = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[2].z = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[3].x = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[3].y = position.y + gvShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[3].z = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[4].x = position.x + gvShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[4].y = position.y + gvShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[4].z = position.z + gvShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[5].x = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[5].y = position.y + gvShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[5].z = position.z + gvShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[6].x = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[6].y = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[6].z = position.z + gvShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[7].x = position.x + gvShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[7].y = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[7].z = position.z + gvShape->GetMinBox().y + nodeCenter.y;
+		float testRadius = 0.0;
 		for (i = 0; i < 8; i++)
 		{
 			testRadius = boxCoords[i].GetLength();
 			if (OBBRadius < testRadius)
 				OBBRadius = testRadius;
 		}
-		appearType->boundsUpperLeftX  = (-OBBRadius * 2.0);
-		appearType->boundsUpperLeftY  = (-OBBRadius * 2.0);
+		appearType->boundsUpperLeftX = (-OBBRadius * 2.0);
+		appearType->boundsUpperLeftY = (-OBBRadius * 2.0);
 		appearType->boundsLowerRightX = (OBBRadius * 2.0);
 		appearType->boundsLowerRightY = (OBBRadius);
 		if (!appearType->getDesignerTypeBounds())
 		{
-			appearType->typeUpperLeft  = gvShape->GetMinBox();
+			appearType->typeUpperLeft = gvShape->GetMinBox();
 			appearType->typeLowerRight = gvShape->GetMaxBox();
 			// Now expand box by some percentage to make selection easier.
 			appearType->typeUpperLeft.x *= EXPAND_FACTOR;
@@ -907,7 +912,8 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setObjStatus(int32_t oStatus)
+void
+GVAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -993,7 +999,8 @@ void GVAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setPaintScheme(void)
+void
+GVAppearance::setPaintScheme(void)
 {
 	//----------------------------------------------------------------------------
 	// Simple really.  Get the texture memory, apply the paint scheme, let it
@@ -1013,62 +1020,62 @@ void GVAppearance::setPaintScheme(void)
 			{
 				//---------------------------------------------
 				// Make Color from PaintScheme.
-				uint32_t baseColor	 = *textureMemory;
+				uint32_t baseColor = *textureMemory;
 				uint8_t baseColorAlpha = ((baseColor & 0xff000000) >> 24);
-				float baseColorRed	 = float((baseColor & 0x00ff0000) >> 16);
-				float baseColorGreen   = float((baseColor & 0x0000ff00) >> 8);
-				float baseColorBlue	= float(baseColor & 0x000000ff);
-				uint32_t newColor	  = *textureMemory; // Black by default.
+				float baseColorRed = float((baseColor & 0x00ff0000) >> 16);
+				float baseColorGreen = float((baseColor & 0x0000ff00) >> 8);
+				float baseColorBlue = float(baseColor & 0x000000ff);
+				uint32_t newColor = *textureMemory; // Black by default.
 				if ((!baseColorGreen) && (!baseColorBlue))
 				{
 					baseColorRed *= 0.00390625f; // Divide by 256;
 					baseColorRed = 1.0 - baseColorRed;
 					baseColorRed *= baseColorRed; // Log colors
-					baseColorRed	  = 1.0 - baseColorRed;
+					baseColorRed = 1.0 - baseColorRed;
 					float newColorRed = float((psRed & 0x00ff0000) >> 16);
 					newColorRed *= baseColorRed;
-					uint8_t red			= (uint8_t)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 					float newColorGreen = float((psRed & 0x0000ff00) >> 8);
 					newColorGreen *= baseColorRed;
-					uint8_t green	  = (uint8_t)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 					float newColorBlue = float(psRed & 0x000000ff);
 					newColorBlue *= baseColorRed;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
+					newColor = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				else if ((!baseColorRed) && (!baseColorBlue))
 				{
 					baseColorGreen *= 0.00390625f; // Divide by 256;
 					baseColorGreen = 1.0 - baseColorGreen;
 					baseColorGreen *= baseColorGreen; // Log colors
-					baseColorGreen	= 1.0 - baseColorGreen;
+					baseColorGreen = 1.0 - baseColorGreen;
 					float newColorRed = float((psGreen & 0x00ff0000) >> 16);
 					newColorRed *= baseColorGreen;
-					uint8_t red			= (uint8_t)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 					float newColorGreen = float((psGreen & 0x0000ff00) >> 8);
 					newColorGreen *= baseColorGreen;
-					uint8_t green	  = (uint8_t)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 					float newColorBlue = float(psGreen & 0x000000ff);
 					newColorBlue *= baseColorGreen;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
+					newColor = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				else if ((!baseColorRed) && (!baseColorGreen))
 				{
 					baseColorBlue *= 0.00390625f; // Divide by 256;
 					baseColorBlue = 1.0 - baseColorBlue;
 					baseColorBlue *= baseColorBlue; // Log colors
-					baseColorBlue	 = 1.0 - baseColorBlue;
+					baseColorBlue = 1.0 - baseColorBlue;
 					float newColorRed = float((psBlue & 0x00ff0000) >> 16);
 					newColorRed *= baseColorBlue;
-					uint8_t red			= (uint8_t)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 					float newColorGreen = float((psBlue & 0x0000ff00) >> 8);
 					newColorGreen *= baseColorBlue;
-					uint8_t green	  = (uint8_t)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 					float newColorBlue = float(psBlue & 0x000000ff);
 					newColorBlue *= baseColorBlue;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
+					newColor = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				*textureMemory = newColor;
 				textureMemory++;
@@ -1081,40 +1088,44 @@ void GVAppearance::setPaintScheme(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t bgrTorgb(uint32_t frontRGB);
+uint32_t
+bgrTorgb(uint32_t frontRGB);
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
+void
+GVAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
 {
 #ifdef BGR
 	// These come into here bgr instead of RGB.  CONVERT!
-	psRed   = bgrTorgb(mcRed);
-	psBlue  = bgrTorgb(mcBlue);
+	psRed = bgrTorgb(mcRed);
+	psBlue = bgrTorgb(mcBlue);
 	psGreen = bgrTorgb(mcGreen);
-#else  /*BGR*/
-	psRed   = mcRed;
-	psBlue  = mcBlue;
+#else /*BGR*/
+	psRed = mcRed;
+	psBlue = mcBlue;
 	psGreen = mcGreen;
 #endif /*BGR*/
 	setPaintScheme();
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
+void
+GVAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
 {
 #ifdef BGR
-	red   = bgrTorgb(psRed);
-	blue  = bgrTorgb(psBlue);
+	red = bgrTorgb(psRed);
+	blue = bgrTorgb(psBlue);
 	green = bgrTorgb(psGreen);
-#else  /*BGR*/
-	red		= psRed;
-	blue	= psBlue;
-	green   = psGreen;
+#else /*BGR*/
+	red = psRed;
+	blue = psBlue;
+	green = psGreen;
 #endif /*BGR*/
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
+void
+GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 {
 	//---------------------------------------------------------------------------------
 	// Simple really.  Toss the current texture, reload the RGB and reapply the
@@ -1166,9 +1177,9 @@ void GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 				/* In this case, the texture returned should already have the
 				paint scheme applied. */
 				// Still need to store psRed/psGreen/psBlue!!!!
-				psRed   = red;
+				psRed = red;
 				psGreen = green;
-				psBlue  = blue;
+				psBlue = blue;
 				return;
 			}
 		}
@@ -1189,9 +1200,9 @@ void GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 				/* In this case, the texture returned should already have the
 				paint scheme applied. */
 				// Still need to store psRed/psGreen/psBlue!!!!
-				psRed   = red;
+				psRed = red;
 				psGreen = green;
-				psBlue  = blue;
+				psBlue = blue;
 				return;
 			}
 		}
@@ -1205,7 +1216,8 @@ void GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setGesture(uint32_t gestureId)
+void
+GVAppearance::setGesture(uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -1220,27 +1232,28 @@ void GVAppearance::setGesture(uint32_t gestureId)
 	// reverse flag, and start it going until you hear otherwise.
 	appearType->setAnimation(gvShape, gestureId);
 	gvAnimationState = gestureId;
-	currentFrame	 = 0.0f;
+	currentFrame = 0.0f;
 	if (appearType->gvStartF[gestureId])
 		currentFrame = appearType->gvStartF[gestureId];
 	isReversed = false;
 	if (appearType->isReversed(gvAnimationState))
 	{
 		currentFrame = appearType->getNumFrames(gvAnimationState) - 1;
-		isReversed   = true;
+		isReversed = true;
 	}
 	if (appearType->isRandom(gvAnimationState))
 	{
 		currentFrame = RandomNumber(appearType->getNumFrames(gvAnimationState) - 1);
 	}
-	isLooping	 = appearType->isLooped(gvAnimationState);
-	gvFrameRate   = appearType->getFrameRate(gvAnimationState);
+	isLooping = appearType->isLooped(gvAnimationState);
+	gvFrameRate = appearType->getFrameRate(gvAnimationState);
 	setFirstFrame = true;
 	canTransition = false;
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D GVAppearance::getHitNode(void)
+Stuff::Vector3D
+GVAppearance::getHitNode(void)
 {
 	if (hitNodeId == -1)
 		hitNodeId = gvShape->GetNodeNameId("hitnode");
@@ -1249,33 +1262,36 @@ Stuff::Vector3D GVAppearance::getHitNode(void)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setObjectParameters(
+void
+GVAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	movedThisFrame = false;
 	if ((rotation != Rot) || (pos != position))
 		movedThisFrame = true;
-	rotation			 = Rot;
-	turretRotation		 = Rot;
-	position			 = pos;
-	selected			 = sel;
-	actualRotation		 = Rot;
-	teamId				 = team;
+	rotation = Rot;
+	turretRotation = Rot;
+	position = pos;
+	selected = sel;
+	actualRotation = Rot;
+	teamId = team;
 	homeTeamRelationship = homeRelations;
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setMoverParameters(
+void
+GVAppearance::setMoverParameters(
 	float turretRot, float lArmRot, float rArmRot, bool isAirborne)
 {
 	turretRotation = turretRot;
-	pitch		   = lArmRot;
-	roll		   = rArmRot;
-	isInfantry	 = isAirborne;
+	pitch = lArmRot;
+	roll = rArmRot;
+	isInfantry = isAirborne;
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::debugUpdate(void)
+void
+GVAppearance::debugUpdate(void)
 {
 	if (!inDebugMoveMode)
 		return;
@@ -1333,7 +1349,7 @@ void GVAppearance::debugUpdate(void)
 	// Take slope being walked on into account.
 	// Use for ground vehicles for sure.
 	Stuff::Vector3D currentNormal = land->getTerrainNormal(debugGVActorPosition);
-	float angle					  = angle_from(velocity, currentNormal);
+	float angle = angle_from(velocity, currentNormal);
 	if (angle != 90.0)
 	{
 		float hillFactor = cos(angle * DEGREES_TO_RADS) * velMag;
@@ -1349,12 +1365,12 @@ void GVAppearance::debugUpdate(void)
 }
 
 //-----------------------------------------------------------------------------
-bool GVAppearance::isMouseOver(float px, float py)
+bool
+GVAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
-			(py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) && (py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -1367,10 +1383,11 @@ bool GVAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool GVAppearance::recalcBounds(void)
+bool
+GVAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
-	inView			  = false;
+	inView = false;
 	float eyeDistance = 0.0f;
 	if (eye)
 	{
@@ -1392,7 +1409,7 @@ bool GVAppearance::recalcBounds(void)
 			if (eyeDistance > Camera::MaxClipDistance)
 			{
 				hazeFactor = 1.0f;
-				inView	 = false;
+				inView = false;
 			}
 			else if (eyeDistance > Camera::MinHazeDistance)
 			{
@@ -1403,7 +1420,7 @@ bool GVAppearance::recalcBounds(void)
 			else
 			{
 				Camera::HazeFactor = 0.0f;
-				inView			   = true;
+				inView = true;
 			}
 			//-----------------------------------------------------------------
 			// If inside farClip plane, check if behind camera.
@@ -1429,7 +1446,7 @@ bool GVAppearance::recalcBounds(void)
 		else
 		{
 			Camera::HazeFactor = 0.0f;
-			inView			   = true;
+			inView = true;
 		}
 		if (inView)
 		{
@@ -1440,17 +1457,16 @@ bool GVAppearance::recalcBounds(void)
 			// do a rough check if on screen.  If no where near, do NOT do the
 			// below. Mighty mighty slow!!!! Use the original check done before
 			// all this 3D madness.  Dig out sourceSafe tomorrow!
-			tempPos		 = screenPos;
-			upperLeft.x  = tempPos.x;
-			upperLeft.y  = tempPos.y;
+			tempPos = screenPos;
+			upperLeft.x = tempPos.x;
+			upperLeft.y = tempPos.y;
 			lowerRight.x = tempPos.x;
 			lowerRight.y = tempPos.y;
 			upperLeft.x += (appearType->boundsUpperLeftX * eye->getScaleFactor());
 			upperLeft.y += (appearType->boundsUpperLeftY * eye->getScaleFactor());
 			lowerRight.x += (appearType->boundsLowerRightX * eye->getScaleFactor());
 			lowerRight.y += (appearType->boundsLowerRightY * eye->getScaleFactor());
-			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-				(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 			{
 				// We are on screen.  Figure out selection box.
 				Stuff::Vector3D boxCoords[8];
@@ -1513,12 +1529,11 @@ bool GVAppearance::recalcBounds(void)
 							minY = bcsp[i].y;
 					}
 				}
-				upperLeft.x  = minX;
-				upperLeft.y  = minY;
+				upperLeft.x = minX;
+				upperLeft.y = minY;
 				lowerRight.x = maxX;
 				lowerRight.y = maxY;
-				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-					(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 				{
 					inView = true;
 					if ((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED))
@@ -1526,16 +1541,15 @@ bool GVAppearance::recalcBounds(void)
 						//-------------------------------------------------------------------------------
 						// Set LOD of Model here because we have the distance
 						// and we KNOW we can see it!
-						bool baseLOD	   = true;
+						bool baseLOD = true;
 						uint32_t selectLOD = 0;
 						if (useHighObjectDetail)
 						{
 							for (size_t i = 1; i < MAX_LODS; i++)
 							{
-								if (appearType->gvShape[i] &&
-									(eyeDistance > appearType->lodDistance[i]))
+								if (appearType->gvShape[i] && (eyeDistance > appearType->lodDistance[i]))
 								{
-									baseLOD   = false;
+									baseLOD = false;
 									selectLOD = i;
 								}
 							}
@@ -1544,14 +1558,14 @@ bool GVAppearance::recalcBounds(void)
 						{
 							if (appearType->gvShape[1])
 							{
-								baseLOD   = false;
+								baseLOD = false;
 								selectLOD = 1;
 							}
 						}
 						// we are at this LOD level.
 						if (selectLOD != (uint32_t)currentLOD)
 						{
-							currentLOD		   = selectLOD;
+							currentLOD = selectLOD;
 							uint8_t alphaValue = gvShape->GetAlphaValue();
 							gvShape->ClearAnimation();
 							delete gvShape;
@@ -1604,7 +1618,7 @@ bool GVAppearance::recalcBounds(void)
 						if (currentLOD && baseLOD)
 						{
 							// we are at the Base LOD level.
-							currentLOD		   = 0;
+							currentLOD = 0;
 							uint8_t alphaValue = gvShape->GetAlphaValue();
 							gvShape->ClearAnimation();
 							delete gvShape;
@@ -1656,7 +1670,7 @@ bool GVAppearance::recalcBounds(void)
 				else
 				{
 					inView = false; // Did alot of extra work checking this, but
-									// WHY draw and insult to injury?
+						// WHY draw and insult to injury?
 				}
 			}
 			else
@@ -1669,7 +1683,8 @@ bool GVAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-bool GVAppearance::playDestruction(void)
+bool
+GVAppearance::playDestruction(void)
 {
 	// Check if there is a Destruct FX
 	if (appearType->destructEffect[0])
@@ -1701,11 +1716,12 @@ bool GVAppearance::playDestruction(void)
 		return false;
 	}
 	return false; // We didn't have a destruct effect.  Tell the object to play
-				  // its default.
+		// its default.
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D GVAppearance::getNodeNamePosition(PSTR nodeName)
+Stuff::Vector3D
+GVAppearance::getNodeNamePosition(PSTR nodeName)
 {
 	Stuff::Vector3D result = position;
 	if (!inView)
@@ -1731,7 +1747,8 @@ Stuff::Vector3D GVAppearance::getNodeNamePosition(PSTR nodeName)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D GVAppearance::getNodeIdPosition(int32_t nodeId)
+Stuff::Vector3D
+GVAppearance::getNodeIdPosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if (!inView)
@@ -1757,7 +1774,8 @@ Stuff::Vector3D GVAppearance::getNodeIdPosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-int32_t GVAppearance::renderShadows(void)
+int32_t
+GVAppearance::renderShadows(void)
 {
 	gvShape->SetTextureHandle(0, localTextureHandle);
 	if (inView && visible)
@@ -1773,19 +1791,20 @@ int32_t GVAppearance::renderShadows(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t GVAppearance::render(int32_t depthFixup)
+int32_t
+GVAppearance::render(int32_t depthFixup)
 {
 	gvShape->SetTextureHandle(0, localTextureHandle);
 	if (inView)
 	{
-		int32_t color	  = SD_BLUE;
+		int32_t color = SD_BLUE;
 		uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8))
 		{
 			static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
-			static int32_t colorTable[3]	  = {
-				 SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
-			color	 = colorTable[homeTeamRelationship];
+			static int32_t colorTable[3] = {
+				SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
 		}
 		if (visible)
@@ -1848,7 +1867,7 @@ int32_t GVAppearance::render(int32_t depthFixup)
 				mlrState.SetTextureCorrectionOn();
 				mlrState.SetZBufferCompareOn();
 				mlrState.SetZBufferWriteOn();
-				drawInfo.m_state		 = mlrState;
+				drawInfo.m_state = mlrState;
 				drawInfo.m_clippingFlags = 0x0;
 				Stuff::LinearMatrix4D shapeOrigin;
 				Stuff::LinearMatrix4D localToWorld;
@@ -1873,7 +1892,7 @@ int32_t GVAppearance::render(int32_t depthFixup)
 					mlrState.SetTextureCorrectionOn();
 					mlrState.SetZBufferCompareOn();
 					mlrState.SetZBufferWriteOn();
-					drawInfo.m_state		 = mlrState;
+					drawInfo.m_state = mlrState;
 					drawInfo.m_clippingFlags = 0x0;
 					Stuff::LinearMatrix4D shapeOrigin;
 					Stuff::LinearMatrix4D localToWorld;
@@ -1902,7 +1921,7 @@ int32_t GVAppearance::render(int32_t depthFixup)
 					mlrState.SetTextureCorrectionOn();
 					mlrState.SetZBufferCompareOn();
 					mlrState.SetZBufferWriteOn();
-					drawInfo.m_state		 = mlrState;
+					drawInfo.m_state = mlrState;
 					drawInfo.m_clippingFlags = 0x0;
 					Stuff::LinearMatrix4D shapeOrigin;
 					Stuff::LinearMatrix4D localToWorld;
@@ -1933,7 +1952,7 @@ int32_t GVAppearance::render(int32_t depthFixup)
 					mlrState.SetTextureCorrectionOn();
 					mlrState.SetZBufferCompareOn();
 					mlrState.SetZBufferWriteOn();
-					drawInfo.m_state		 = mlrState;
+					drawInfo.m_state = mlrState;
 					drawInfo.m_clippingFlags = 0x0;
 					Stuff::LinearMatrix4D shapeOrigin;
 					Stuff::LinearMatrix4D localToWorld;
@@ -1978,7 +1997,8 @@ int32_t GVAppearance::render(int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::updateGeometry(void)
+void
+GVAppearance::updateGeometry(void)
 {
 	// if (visible)
 	//{
@@ -1991,14 +2011,12 @@ void GVAppearance::updateGeometry(void)
 	if (turretRotation < -180)
 		turretRotation += 360;
 	float pitchAngle = pitch;
-	float rollAngle  = roll;
-	if ((status == OBJECT_STATUS_NORMAL || status == OBJECT_STATUS_SHUTDOWN) &&
-		land) // Are we still oK?
+	float rollAngle = roll;
+	if ((status == OBJECT_STATUS_NORMAL || status == OBJECT_STATUS_SHUTDOWN) && land) // Are we still oK?
 	{
 		int32_t cellR, cellC;
 		land->worldToCell(position, cellR, cellC);
-		if (GameMap && !GameMap->getDeepWater(cellR, cellC) &&
-			!GameMap->getShallowWater(cellR, cellC))
+		if (GameMap && !GameMap->getDeepWater(cellR, cellC) && !GameMap->getShallowWater(cellR, cellC))
 		{
 			Stuff::Vector3D worldK;
 			land->getTerrainAngle(position, &worldK);
@@ -2008,18 +2026,18 @@ void GVAppearance::updateGeometry(void)
 			//------------------------------------------------
 			// Find Pitch first.
 			Stuff::Vector3D pitchK;
-			pitchK   = worldK;
+			pitchK = worldK;
 			pitchK.x = 0.0f;
 			pitchK.Normalize(pitchK);
 			Stuff::Vector3D rollK;
-			rollK   = worldK;
+			rollK = worldK;
 			rollK.y = 0.0f;
 			rollK.Normalize(rollK);
 			Stuff::Vector3D up;
 			up.x = up.y = 0.0f;
-			up.z		= 1.0f;
-			pitchAngle  = up * pitchK;
-			pitchAngle  = acos(pitchAngle) * RADS_TO_DEGREES;
+			up.z = 1.0f;
+			pitchAngle = up * pitchK;
+			pitchAngle = acos(pitchAngle) * RADS_TO_DEGREES;
 			if (pitchK.y < 0.0f)
 				pitchAngle = -pitchAngle;
 			rollAngle = up * rollK;
@@ -2035,22 +2053,22 @@ void GVAppearance::updateGeometry(void)
 	pitchAngle *= DEGREES_TO_RADS;
 	rollAngle *= DEGREES_TO_RADS;
 	Stuff::UnitQuaternion totalRotation;
-	rot		  = Stuff::EulerAngles(0.0f, yaw, 0.0f);
+	rot = Stuff::EulerAngles(0.0f, yaw, 0.0f);
 	pitchRoll = Stuff::EulerAngles(pitchAngle, 0.0f, rollAngle);
 	totalRotation.Multiply(pitchRoll, rot);
 	uint8_t lightr, lightg, lightb;
 	float lightIntensity = 1.0f;
 	if (land)
 		lightIntensity = land->getTerrainLight(position);
-	lightr			  = eye->getLightRed(lightIntensity);
-	lightg			  = eye->getLightGreen(lightIntensity);
-	lightb			  = eye->getLightBlue(lightIntensity);
+	lightr = eye->getLightRed(lightIntensity);
+	lightg = eye->getLightGreen(lightIntensity);
+	lightb = eye->getLightBlue(lightIntensity);
 	uint32_t lightRGB = (lightr << 16) + (lightg << 8) + lightb;
 	eye->setLightColor(0, lightRGB);
 	eye->setLightIntensity(0, 1.0);
 	uint32_t fogRGB = 0xff << 24;
-	float fogStart  = eye->fogStart;
-	float fogFull   = eye->fogFull;
+	float fogStart = eye->fogStart;
+	float fogFull = eye->fogFull;
 	Stuff::Point3D xlatPosition;
 	xlatPosition.x = -position.x;
 	xlatPosition.y = position.z;
@@ -2074,7 +2092,7 @@ void GVAppearance::updateGeometry(void)
 				fogFactor = 256.0;
 			}
 			uint8_t fogResult = fogFactor;
-			fogRGB			  = fogResult << 24;
+			fogRGB = fogResult << 24;
 		}
 	}
 	else
@@ -2239,7 +2257,8 @@ void GVAppearance::updateGeometry(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t GVAppearance::update(bool animate)
+int32_t
+GVAppearance::update(bool animate)
 {
 	//----------------------------------------
 	// Recycle the weapon Nodes
@@ -2305,7 +2324,7 @@ int32_t GVAppearance::update(bool animate)
 				else
 					currentFrame = appearType->getNumFrames(gvAnimationState) - 1;
 				canTransition = true; // Whenever we have completed one cycle or
-									  // at last frame, OK to move on!
+					// at last frame, OK to move on!
 			}
 			//--------------------------------------
 			// Check negative overflow of gesture
@@ -2316,7 +2335,7 @@ int32_t GVAppearance::update(bool animate)
 				else
 					currentFrame = 0.0f;
 				canTransition = true; // Whenever we have completed one cycle or
-									  // at last frame, OK to move on!
+					// at last frame, OK to move on!
 			}
 		}
 		gvShape->SetFrameNum(currentFrame);
@@ -2327,7 +2346,8 @@ int32_t GVAppearance::update(bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::destroy(void)
+void
+GVAppearance::destroy(void)
 {
 	if (gvShape)
 	{
@@ -2377,7 +2397,8 @@ void GVAppearance::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::startWaterWake(void)
+void
+GVAppearance::startWaterWake(void)
 {
 	// Check if we are already playing one.  If not, wake city.
 	// First, check if its even loaded.
@@ -2423,7 +2444,8 @@ void GVAppearance::startWaterWake(void)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::stopWaterWake(void)
+void
+GVAppearance::stopWaterWake(void)
 {
 	if (waterWake && isWaking) // Stop the effect if we are running it!!
 	{
@@ -2433,7 +2455,8 @@ void GVAppearance::stopWaterWake(void)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::startActivity(int32_t effectId, bool loop)
+void
+GVAppearance::startActivity(int32_t effectId, bool loop)
 {
 	// Check if we are already playing one.  If not, be active!
 	// First, check if its even loaded.
@@ -2487,7 +2510,8 @@ void GVAppearance::startActivity(int32_t effectId, bool loop)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::stopActivity(void)
+void
+GVAppearance::stopActivity(void)
 {
 	if (activity && isActivitying) // Stop the effect if we are running it!!
 	{
@@ -2497,19 +2521,21 @@ void GVAppearance::stopActivity(void)
 }
 
 //-----------------------------------------------------------------------------
-bool GVAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
+bool
+GVAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
 {
 	return gvShape->PerPolySelect(mouseX, mouseY);
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
+void
+GVAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
-	duration	  = dur;
+	duration = dur;
 	flashDuration = fDuration;
-	flashColor	= color;
-	drawFlash	 = true;
-	currentFlash  = flashDuration;
+	flashColor = color;
+	drawFlash = true;
+	currentFlash = flashDuration;
 }
 
 //*****************************************************************************

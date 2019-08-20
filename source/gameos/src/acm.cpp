@@ -224,8 +224,8 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFO
 	hResult = acmStreamOpen(phas, had, pwfxSrc, pwfxDst, pwfltr, dwCallback, dwInstance, 1u);
 	if (MMFAILED(hResult))
 	{
-		pszwfDst		= GetWaveFormat(Buffer, pwfxDst);
-		pszwfSrc		= GetWaveFormat(BUffer2, pwfxSrc);
+		pszwfDst = GetWaveFormat(Buffer, pwfxDst);
+		pszwfSrc = GetWaveFormat(BUffer2, pwfxSrc);
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamOpen(0x%x, "
 								  "0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
@@ -236,8 +236,8 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFO
 	hResult = acmStreamOpen(phas, had, pwfxSrc, pwfxDst, pwfltr, dwCallback, dwInstance, fdwOpen);
 	if (MMFAILED(hResult))
 	{
-		pszwfDst		= GetWaveFormat(Buffer, pwfxDst);
-		pszwfSrc		= GetWaveFormat(BUffer2, pwfxSrc);
+		pszwfDst = GetWaveFormat(Buffer, pwfxDst);
+		pszwfSrc = GetWaveFormat(BUffer2, pwfxSrc);
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamOpen(0x%x, "
 								  "0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
@@ -313,8 +313,8 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
 	hResult = acmFormatSuggest(had, pwfxSrc, pwfxDst, cbwfxDst, fdwSuggest);
 	if (MMFAILED(hResult))
 	{
-		pszwfDst		= GetWaveFormat(Buffer1, pwfxDst);
-		pszwfSrc		= GetWaveFormat(Buffer2, pwfxSrc);
+		pszwfDst = GetWaveFormat(Buffer1, pwfxDst);
+		pszwfSrc = GetWaveFormat(Buffer2, pwfxSrc);
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmFormatSuggest(0x%x, "
 								  "%s, %s, 0x%x, 0x%x)",

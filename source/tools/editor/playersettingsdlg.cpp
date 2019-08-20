@@ -19,17 +19,18 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // PlayerSettingsDlg dialog
 
-PlayerSettingsDlg::PlayerSettingsDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(PlayerSettingsDlg::IDD, pParent)
+PlayerSettingsDlg::PlayerSettingsDlg(CWnd* pParent /*=nullptr*/) :
+	CDialog(PlayerSettingsDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(PlayerSettingsDlg)
 	m_playerEdit = 0;
 	//}}AFX_DATA_INIT
 	m_oldDefaultTeam = 0;
-	m_numTeams		 = 8 /*hardcoded*/;
+	m_numTeams = 8 /*hardcoded*/;
 }
 
-void PlayerSettingsDlg::DoDataExchange(CDataExchange* pDX)
+void
+PlayerSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(PlayerSettingsDlg)
@@ -56,7 +57,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // PlayerSettingsDlg message handlers
 
-BOOL PlayerSettingsDlg::OnInitDialog()
+BOOL
+PlayerSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_defaultTeamComboBox.SetCurSel(m_oldDefaultTeam);
@@ -78,5 +80,5 @@ BOOL PlayerSettingsDlg::OnInitDialog()
 	}
 	// TODO: Add extra initialization here
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }

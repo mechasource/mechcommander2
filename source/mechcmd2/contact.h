@@ -33,8 +33,8 @@ public:
 	uint8_t contactStatus[MAX_TEAMS];
 	// uint8_t				allContactStatus[MAX_TEAMS];
 	uint8_t contactCount[MAX_TEAMS]; // How many mechs/vehicles have me on sensors?
-	uint8_t sensors[MAX_SENSORS];	// index into sensor's contact list
-	uint16_t teams[MAX_TEAMS];		 // index into team's contact list
+	uint8_t sensors[MAX_SENSORS]; // index into sensor's contact list
+	uint16_t teams[MAX_TEAMS]; // index into team's contact list
 	uint8_t teamSpotter[MAX_TEAMS];
 
 public:
@@ -52,8 +52,8 @@ public:
 			contactStatus[i] = CONTACT_NONE;
 			// allContactStatus[i] = CONTACT_NONE;
 			contactCount[i] = 0;
-			teams[i]		= 0;
-			teamSpotter[i]  = 0;
+			teams[i] = 0;
+			teamSpotter[i] = 0;
 		}
 		for (i = 0; i < MAX_SENSORS; i++)
 			sensors[i] = 255;
@@ -291,9 +291,9 @@ class SensorSystemManager
 	// Data Members
 
 protected:
-	int32_t freeSensors;		 // How many sensors are currently free
+	int32_t freeSensors; // How many sensors are currently free
 	SensorSystemPtr* sensorPool; // Pool of ALL sensors
-	SensorSystemPtr freeList;	// List of available sensors
+	SensorSystemPtr freeList; // List of available sensors
 	TeamSensorSystemPtr teamSensors[MAX_TEAMS];
 	ECMInfo ecms[MAX_ECMS];
 	int32_t numEcms;
@@ -302,7 +302,7 @@ protected:
 
 public:
 	static bool enemyInLOS; // Flag is set every frame that I can see someone on
-							// sensors or visually.
+		// sensors or visually.
 
 	//-----------------
 	// Member Functions
@@ -320,11 +320,11 @@ public:
 	void init(void)
 	{
 		freeSensors = 0;
-		sensorPool  = nullptr;
-		freeList	= nullptr;
+		sensorPool = nullptr;
+		freeList = nullptr;
 		for (size_t i = 0; i < MAX_TEAMS; i++)
 			teamSensors[i] = nullptr;
-		numEcms		 = 0;
+		numEcms = 0;
 		teamToUpdate = 0;
 	}
 

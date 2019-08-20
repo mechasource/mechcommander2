@@ -37,7 +37,7 @@ public:
 	//{{AFX_VIRTUAL(CMissionDialog)
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
-													 //}}AFX_VIRTUAL
+		//}}AFX_VIRTUAL
 
 	// Implementation
 protected:

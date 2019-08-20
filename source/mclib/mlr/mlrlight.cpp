@@ -16,7 +16,8 @@ MLRLight::ClassData* MLRLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::InitializeClass()
+void
+MLRLight::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -27,7 +28,8 @@ void MLRLight::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::TerminateClass()
+void
+MLRLight::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -36,19 +38,20 @@ void MLRLight::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight::MLRLight(ClassData* class_data) : RegisteredClass(class_data)
+MLRLight::MLRLight(ClassData* class_data) :
+	RegisteredClass(class_data)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	intensity	= 1.0f;
+	intensity = 1.0f;
 	lightToWorld = LinearMatrix4D::Identity;
 	lightToShape = LinearMatrix4D::Identity;
-	color		 = RGBColor(0.0f, 0.0f, 0.0f);
+	color = RGBColor(0.0f, 0.0f, 0.0f);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight::MLRLight(ClassData* class_data, std::iostream stream, uint32_t version)
-	: RegisteredClass(class_data)
+MLRLight::MLRLight(ClassData* class_data, std::iostream stream, uint32_t version) :
+	RegisteredClass(class_data)
 {
 	Check_Object(stream);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -67,7 +70,8 @@ MLRLight::MLRLight(ClassData* class_data, std::iostream stream, uint32_t version
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight::MLRLight(ClassData* class_data, Stuff::Page* page) : RegisteredClass(class_data)
+MLRLight::MLRLight(ClassData* class_data, Stuff::Page* page) :
+	RegisteredClass(class_data)
 {
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -92,7 +96,8 @@ MLRLight::~MLRLight() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight* MLRLight::Make(std::iostream stream, uint32_t version)
+MLRLight*
+MLRLight::Make(std::iostream stream, uint32_t version)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
@@ -126,7 +131,8 @@ MLRLight* MLRLight::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight* MLRLight::Make(Stuff::Page* page)
+MLRLight*
+MLRLight::Make(Stuff::Page* page)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
@@ -152,7 +158,8 @@ MLRLight* MLRLight::Make(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::Save(std::iostream stream)
+void
+MLRLight::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -163,7 +170,8 @@ void MLRLight::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::Write(Stuff::Page* page)
+void
+MLRLight::Write(Stuff::Page* page)
 {
 	// Check_Object(this);
 	Check_Object(page);
@@ -196,11 +204,16 @@ void MLRLight::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLRLight::TestInstance()
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
+void
+MLRLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 {
 	// Check_Object(this);
 	lightToShape.Multiply(lightToWorld, worldToShape);
@@ -208,7 +221,8 @@ void MLRLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
+void
+MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
 {
 	// Check_Object(this);
 	lightToWorld = matrix;
@@ -216,11 +230,16 @@ void MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::SetColor(float r, float g, float b) { SetColor(RGBColor(r, b, b)); }
+void
+MLRLight::SetColor(float r, float g, float b)
+{
+	SetColor(RGBColor(r, b, b));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::GetColor(float& r, float& g, float& b)
+void
+MLRLight::GetColor(float& r, float& g, float& b)
 {
 	// Check_Object(this);
 	r = color.red;

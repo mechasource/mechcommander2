@@ -8,7 +8,8 @@ WaveDlg.cpp			: Implementation of the WaveDlg component.
 #include "resource.h"
 #include "WaveDlg.h"
 
-void WaveDlg::Init()
+void
+WaveDlg::Init()
 {
 	char buffer[256];
 	itoa((alphaDeep >> 24) & 0x000000ff, buffer, 10);
@@ -29,13 +30,15 @@ void WaveDlg::Init()
 	((CEdit*)GetDlgItem(IDC_SHALLOW_ELEVATION))->SetWindowText(buffer);
 }
 
-void WaveDlg::OnOK()
+void
+WaveDlg::OnOK()
 {
 	UpdateData();
 	CDialog::OnOK();
 }
 
-void WaveDlg::UpdateData()
+void
+WaveDlg::UpdateData()
 {
 	char buffer[256];
 	((CEdit*)GetDlgItem(IDC_ALPHA_DEEP))->GetWindowText(buffer, 256);

@@ -21,19 +21,19 @@ LoadScreen.cpp			: Implementation of the LoadScreen component.
 
 float loadProgress = 0.0f;
 
-int32_t LoadScreen::xProgressLoc   = 0;
-int32_t LoadScreen::yProgressLoc   = 0;
-int32_t LoadScreen::xWaitLoc	   = 0;
-int32_t LoadScreen::yWaitLoc	   = 0;
+int32_t LoadScreen::xProgressLoc = 0;
+int32_t LoadScreen::yProgressLoc = 0;
+int32_t LoadScreen::xWaitLoc = 0;
+int32_t LoadScreen::yWaitLoc = 0;
 bool LoadScreen::turnOffAsyncMouse = false;
 
-TGAFileHeader* LoadScreen::progressTextureMemory   = 0;
-TGAFileHeader* LoadScreen::progressBackground	  = 0;
-TGAFileHeader* LoadScreen::mergedTexture		   = 0;
+TGAFileHeader* LoadScreen::progressTextureMemory = 0;
+TGAFileHeader* LoadScreen::progressBackground = 0;
+TGAFileHeader* LoadScreen::mergedTexture = 0;
 TGAFileHeader* LoadScreen::waitingForPlayersMemory = 0;
 
 LoadScreen* LoadScreenWrapper::enterScreen = nullptr;
-LoadScreen* LoadScreenWrapper::exitScreen  = nullptr;
+LoadScreen* LoadScreenWrapper::exitScreen = nullptr;
 
 extern volatile bool mc2IsInMouseTimer;
 extern volatile bool mc2IsInDisplayBackBuffer;
@@ -44,10 +44,13 @@ extern CPrefs prefs;
 //
 // Returns the number of bits in a given mask.  Used to determine if we are in
 // 555 mode vs 565 mode.
-uint16_t GetNumberOfBits(uint32_t dwMask);
+uint16_t
+GetNumberOfBits(uint32_t dwMask);
 
-void MouseTimerInit();
-void MouseTimerKill();
+void
+MouseTimerInit();
+void
+MouseTimerKill();
 
 LoadScreenWrapper::LoadScreenWrapper()
 {
@@ -59,9 +62,9 @@ LoadScreenWrapper::LoadScreenWrapper()
 	if (exitScreen)
 		delete exitScreen;
 	enterScreen = exitScreen = nullptr;
-	enterScreen				 = new LoadScreen;
-	exitScreen				 = new LoadScreen;
-	bFirstTime				 = 0;
+	enterScreen = new LoadScreen;
+	exitScreen = new LoadScreen;
+	bFirstTime = 0;
 }
 
 LoadScreenWrapper::~LoadScreenWrapper()
@@ -73,14 +76,16 @@ LoadScreenWrapper::~LoadScreenWrapper()
 	enterScreen = exitScreen = nullptr;
 }
 
-void LoadScreenWrapper::init(FitIniFile& file)
+void
+LoadScreenWrapper::init(FitIniFile& file)
 {
 	enterScreen->init(file);
 	//	changeRes();
 	bFirstTime = 0;
 }
 
-void LoadScreenWrapper::changeRes()
+void
+LoadScreenWrapper::changeRes()
 {
 	PCSTR Appendix = nullptr;
 	switch (prefs.resolution)
@@ -126,7 +131,8 @@ void LoadScreenWrapper::changeRes()
 	LoadScreen::changeRes(outFile);
 }
 
-void LoadScreen::changeRes(FitIniFile& outFile)
+void
+LoadScreen::changeRes(FitIniFile& outFile)
 {
 	if (progressBackground)
 		delete[] progressBackground;
@@ -154,7 +160,7 @@ void LoadScreen::changeRes(FitIniFile& outFile)
 			Assert(0, 0, error);
 			return;
 		}
-		int32_t size	   = tgaFile.fileSize();
+		int32_t size = tgaFile.fileSize();
 		progressBackground = (TGAFileHeader*)new char[size];
 		tgaFile.read((puint8_t)progressBackground, tgaFile.fileSize());
 		tgaFile.close();
@@ -166,7 +172,7 @@ void LoadScreen::changeRes(FitIniFile& outFile)
 			Assert(0, 0, error);
 			return;
 		}
-		size				  = tgaFile.fileSize();
+		size = tgaFile.fileSize();
 		progressTextureMemory = (TGAFileHeader*)new char[size];
 		tgaFile.read((puint8_t)progressTextureMemory, tgaFile.fileSize());
 		mergedTexture = (TGAFileHeader*)new char[size];
@@ -185,7 +191,7 @@ void LoadScreen::changeRes(FitIniFile& outFile)
 			Assert(0, 0, error);
 			return;
 		}
-		size					= tgaFile.fileSize();
+		size = tgaFile.fileSize();
 		waitingForPlayersMemory = (TGAFileHeader*)new char[size];
 		tgaFile.read((puint8_t)waitingForPlayersMemory, tgaFile.fileSize());
 		flipTopToBottom((puint8_t)(waitingForPlayersMemory + 1),
@@ -194,14 +200,16 @@ void LoadScreen::changeRes(FitIniFile& outFile)
 	}
 }
 
-void LoadScreenWrapper::begin()
+void
+LoadScreenWrapper::begin()
 {
 	waitForResChange = 0;
-	bFirstTime		 = true;
+	bFirstTime = true;
 	enterScreen->begin();
 }
 
-void LoadScreenWrapper::update()
+void
+LoadScreenWrapper::update()
 {
 	if (loadProgress > 99)
 		soundSystem->playDigitalSample(LOAD_DOORS_OPENING);
@@ -210,7 +218,7 @@ void LoadScreenWrapper::update()
 	bFirstTime = 0;
 	if (waitForResChange) // waiting one more render to force
 	{
-		status			 = READYTOLOAD;
+		status = READYTOLOAD;
 		waitForResChange = 0;
 	}
 	else
@@ -234,7 +242,8 @@ void LoadScreenWrapper::update()
 	}
 }
 
-void LoadScreenWrapper::render(int32_t xOffset, int32_t yOffset)
+void
+LoadScreenWrapper::render(int32_t xOffset, int32_t yOffset)
 {
 	if (Environment.screenWidth == 800)
 	{
@@ -249,9 +258,9 @@ void LoadScreenWrapper::render(int32_t xOffset, int32_t yOffset)
 //-------------------------------------------------------------------------------------------------
 LoadScreen::LoadScreen()
 {
-	progressBackground	= 0;
+	progressBackground = 0;
 	progressTextureMemory = 0;
-	animIndices			  = 0;
+	animIndices = 0;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -268,11 +277,12 @@ LoadScreen::~LoadScreen()
 		delete[] animIndices;
 	if (waitingForPlayersMemory)
 		delete[] waitingForPlayersMemory;
-	animIndices				= nullptr;
+	animIndices = nullptr;
 	waitingForPlayersMemory = progressBackground = progressTextureMemory = mergedTexture = nullptr;
 }
 
-void LoadScreen::begin()
+void
+LoadScreen::begin()
 {
 	for (size_t i = 0; i < animObjectsCount; i++)
 	{
@@ -289,7 +299,8 @@ void LoadScreen::begin()
 	// This will be keep ghost images from occuring.
 	userInput->mouseOff();
 }
-void LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
+void
+LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 {
 	LogisticsScreen::init(
 		file, "Static", "Text", "Rect", "Button", "Edit", "AnimObject", neverFlush);
@@ -337,7 +348,8 @@ void LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 	}
 }
 
-void LoadScreen::update()
+void
+LoadScreen::update()
 {
 	status = RUNNING;
 	LogisticsScreen::update();
@@ -365,12 +377,12 @@ void LoadScreen::update()
 			if (!mc2UseAsyncMouse)
 				MouseTimerInit();
 			mc2UseAsyncMouse = true;
-			AsynFunc		 = ProgressTimer;
+			AsynFunc = ProgressTimer;
 		}
 		else
 		{
 			loadProgress = 0;
-			status		 = NEXT;
+			status = NEXT;
 			// YIKES!!  We could be checking the if before the null and
 			// executing after!!  Block the thread!  Wait for thread to finish.
 			while (mc2IsInMouseTimer)
@@ -379,8 +391,8 @@ void LoadScreen::update()
 			// FLICKERING THEN!!!
 			// BLOCK THREAD WHILE THIS IS HAPPENING
 			mc2IsInDisplayBackBuffer = true;
-			AsynFunc				 = nullptr;
-			mc2UseAsyncMouse		 = turnOffAsyncMouse;
+			AsynFunc = nullptr;
+			mc2UseAsyncMouse = turnOffAsyncMouse;
 			if (!mc2UseAsyncMouse)
 				MouseTimerKill();
 			mc2IsInDisplayBackBuffer = false;
@@ -396,7 +408,8 @@ void LoadScreen::update()
 	}
 }
 
-void LoadScreen::render(int32_t x, int32_t y)
+void
+LoadScreen::render(int32_t x, int32_t y)
 {
 	// ignoring animation information...
 	LogisticsScreen::render();
@@ -407,26 +420,27 @@ void LoadScreen::render(int32_t x, int32_t y)
 	text.move(-x - curX, -y - curY);
 }
 
-void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
+void
+ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 {
 	if (!LoadScreen::progressBackground)
 		return;
-	int32_t destX	  = 0;
-	int32_t destY	  = 0;
-	puint8_t pMem	  = (puint8_t)(LoadScreen::mergedTexture + 1);
-	int32_t destRight  = 0;
+	int32_t destX = 0;
+	int32_t destY = 0;
+	puint8_t pMem = (puint8_t)(LoadScreen::mergedTexture + 1);
+	int32_t destRight = 0;
 	int32_t destBottom = 0;
-	int32_t srcWidth   = 0;
-	int32_t srcDepth   = 0;
+	int32_t srcWidth = 0;
+	int32_t srcDepth = 0;
 	if (loadProgress > 0 && loadProgress < 100)
 	{
-		destX					  = 0;
-		destY					  = 0;
-		int32_t destWidth		  = LoadScreen::progressBackground->width;
-		int32_t destHeight		  = LoadScreen::progressBackground->height;
+		destX = 0;
+		destY = 0;
+		int32_t destWidth = LoadScreen::progressBackground->width;
+		int32_t destHeight = LoadScreen::progressBackground->height;
 		float widthIncPerProgress = (float)destWidth * 0.01f;
-		int32_t* pLSrc			  = (int32_t*)(LoadScreen::progressBackground + 1);
-		int32_t* pLDest			  = (int32_t*)(LoadScreen::mergedTexture + 1);
+		int32_t* pLSrc = (int32_t*)(LoadScreen::progressBackground + 1);
+		int32_t* pLDest = (int32_t*)(LoadScreen::mergedTexture + 1);
 		// merge background and current progress together...
 		for (size_t i = 0; i < 2; i++)
 		{
@@ -443,48 +457,46 @@ void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 					}
 				}
 			}
-			pLSrc	 = (int32_t*)(LoadScreen::progressTextureMemory + 1);
-			pLDest	= (int32_t*)(LoadScreen::mergedTexture + 1);
+			pLSrc = (int32_t*)(LoadScreen::progressTextureMemory + 1);
+			pLDest = (int32_t*)(LoadScreen::mergedTexture + 1);
 			destWidth = loadProgress * widthIncPerProgress;
 		}
-		destX	  = WinRect.left + (LoadScreen::xProgressLoc);
-		destY	  = WinRect.top + (LoadScreen::yProgressLoc);
-		pMem	   = (puint8_t)(LoadScreen::mergedTexture + 1);
-		destRight  = destX + LoadScreen::progressBackground->width;
+		destX = WinRect.left + (LoadScreen::xProgressLoc);
+		destY = WinRect.top + (LoadScreen::yProgressLoc);
+		pMem = (puint8_t)(LoadScreen::mergedTexture + 1);
+		destRight = destX + LoadScreen::progressBackground->width;
 		destBottom = (destY + LoadScreen::progressBackground->height);
-		srcWidth   = LoadScreen::progressBackground->width;
-		srcDepth   = LoadScreen::progressBackground->pixel_depth / 8;
+		srcWidth = LoadScreen::progressBackground->width;
+		srcDepth = LoadScreen::progressBackground->pixel_depth / 8;
 	}
 	else if (loadProgress == 1000)
 	{
-		destX	  = WinRect.left + LoadScreen::xWaitLoc;
-		destY	  = WinRect.top + LoadScreen::yWaitLoc;
-		pMem	   = (puint8_t)(LoadScreen::waitingForPlayersMemory + 1);
-		destRight  = destX + LoadScreen::waitingForPlayersMemory->width;
+		destX = WinRect.left + LoadScreen::xWaitLoc;
+		destY = WinRect.top + LoadScreen::yWaitLoc;
+		pMem = (puint8_t)(LoadScreen::waitingForPlayersMemory + 1);
+		destRight = destX + LoadScreen::waitingForPlayersMemory->width;
 		destBottom = (destY + LoadScreen::waitingForPlayersMemory->height);
-		destRight  = destRight > WinRect.right ? WinRect.right : destRight;
+		destRight = destRight > WinRect.right ? WinRect.right : destRight;
 		destBottom = destBottom > WinRect.bottom ? WinRect.top : destBottom;
-		srcWidth   = LoadScreen::waitingForPlayersMemory->width;
-		srcDepth   = LoadScreen::waitingForPlayersMemory->pixel_depth / 8;
+		srcWidth = LoadScreen::waitingForPlayersMemory->width;
+		srcDepth = LoadScreen::waitingForPlayersMemory->pixel_depth / 8;
 	}
 	else
 		return;
 	// now put it on the screen...
-	int32_t destWidth  = destRight - destX;
+	int32_t destWidth = destRight - destX;
 	int32_t destHeight = destBottom - destY;
 	for (size_t y = 0; y < destHeight; y++)
 	{
-		puint8_t pSrc  = pMem + y * srcWidth * srcDepth;
-		puint8_t pDest = (puint8_t)mouseSurfaceDesc.lpSurface +
-			destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount / 8 +
-			((destY + y) * mouseSurfaceDesc.lPitch);
+		puint8_t pSrc = pMem + y * srcWidth * srcDepth;
+		puint8_t pDest = (puint8_t)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount / 8 + ((destY + y) * mouseSurfaceDesc.lPitch);
 		for (size_t x = 0; x < destWidth; x++)
 		{
-			uint32_t mColor		   = *(int32_t*)pSrc;
-			uint8_t baseAlpha	  = 0;
-			uint8_t baseColorRed   = (mColor & 0x00ff0000) >> 16;
+			uint32_t mColor = *(int32_t*)pSrc;
+			uint8_t baseAlpha = 0;
+			uint8_t baseColorRed = (mColor & 0x00ff0000) >> 16;
 			uint8_t baseColorGreen = (mColor & 0x0000ff00) >> 8;
-			uint8_t baseColorBlue  = (mColor & 0x000000ff);
+			uint8_t baseColorBlue = (mColor & 0x000000ff);
 			pSrc += 4;
 			if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32)
 			{
@@ -536,7 +548,8 @@ void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 	}
 }
 
-void LoadScreen::setupOutAnims()
+void
+LoadScreen::setupOutAnims()
 {
 	for (size_t i = 0; i < animObjectsCount; i++)
 	{

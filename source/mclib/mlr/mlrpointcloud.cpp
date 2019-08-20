@@ -18,7 +18,8 @@ MLRPointCloud::ClassData* MLRPointCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointCloud::InitializeClass()
+void
+MLRPointCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -29,7 +30,8 @@ void MLRPointCloud::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointCloud::TerminateClass()
+void
+MLRPointCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -38,7 +40,8 @@ void MLRPointCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPointCloud::MLRPointCloud(uint32_t nr, uint32_t _type) : MLREffect(nr, DefaultData), type(_type)
+MLRPointCloud::MLRPointCloud(uint32_t nr, uint32_t _type) :
+	MLREffect(nr, DefaultData), type(_type)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
@@ -55,7 +58,8 @@ MLRPointCloud::~MLRPointCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointCloud::SetData(
+void
+MLRPointCloud::SetData(
 	pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data)
 {
 	// Check_Pointer(this);
@@ -67,7 +71,8 @@ void MLRPointCloud::SetData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointCloud::Draw(
+void
+MLRPointCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -102,7 +107,8 @@ void MLRPointCloud::Transform(size_t, size_t)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
+uint32_t
+MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 {
 	//--------------------------------------
 	// See if we don't have to draw anything
@@ -136,7 +142,7 @@ uint32_t MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		return visible;
 	}
 	Check_Object(vt);
-	gos_vertices		 = vt->GetActualVertexPool();
+	gos_vertices = vt->GetActualVertexPool();
 	Stuff::Vector4D* v4d = transformedCoords->GetData();
 	for (i = 0; i < *usedNrOfVertices; i++, v4d++)
 	{
@@ -202,7 +208,8 @@ uint32_t MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointCloud::TestInstance(void) const
+void
+MLRPointCloud::TestInstance(void) const
 {
 	if (usedNrOfVertices)
 	{

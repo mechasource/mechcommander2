@@ -112,9 +112,12 @@
 #define DEFAULT_SKY 1
 extern float loadProgress;
 
-void MouseTimerInit();
-void MouseTimerKill();
-void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc);
+void
+MouseTimerInit();
+void
+MouseTimerKill();
+void
+ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc);
 
 extern volatile bool mc2IsInDisplayBackBuffer;
 extern volatile bool mc2UseAsyncMouse;
@@ -123,8 +126,10 @@ extern void (*AsynFunc)(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc);
 
 #define USE_ABL_LOAD
 
-void initABL();
-void closeABL();
+void
+initABL();
+void
+closeABL();
 
 extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 extern float OptimalRangePoints[NUM_WEAPON_RANGE_TYPES];
@@ -180,27 +185,35 @@ extern float BaseHeadShotElevation;
 extern float CheatHitDamage;
 #endif
 
-void InitDifficultySettings(FitIniFile* gameSystemFile);
+void
+InitDifficultySettings(FitIniFile* gameSystemFile);
 
 extern int32_t GameVisibleVertices;
 
-void GetBlockedDoorCells(int32_t moveLevel, int32_t door, PSTR openCells);
-void PlaceStationaryMovers(MoveMap* map);
-void PlaceMovers();
+void
+GetBlockedDoorCells(int32_t moveLevel, int32_t door, PSTR openCells);
+void
+PlaceStationaryMovers(MoveMap* map);
+void
+PlaceMovers();
 
 extern GameObjectFootPrint* tempSpecialAreaFootPrints;
 extern int32_t tempNumSpecialAreas;
 extern GameLog* CombatLog;
 
-bool IsGateDisabled(int32_t objectWID);
-bool IsGateOpen(int32_t objectWID);
+bool
+IsGateDisabled(int32_t objectWID);
+bool
+IsGateOpen(int32_t objectWID);
 
-uint32_t elfHash(PSTR name);
+uint32_t
+elfHash(PSTR name);
 
 extern char versionStamp[];
 //----------------------------------------------------------------------------------------------------
 // Save.
-void Part::Save(FitIniFilePtr file, int32_t partNum)
+void
+Part::Save(FitIniFilePtr file, int32_t partNum)
 {
 	char partId[1024];
 	sprintf(partId, "Part%d", partNum + 1);
@@ -232,7 +245,8 @@ void Part::Save(FitIniFilePtr file, int32_t partNum)
 	file->writeIdULong("VariantNum", variantNum);
 }
 
-void Mission::save(PCSTR saveFileName)
+void
+Mission::save(PCSTR saveFileName)
 {
 	// Check for sufficient hard Drive space on drive game is running from
 	char currentPath[1024];
@@ -244,23 +258,23 @@ void Mission::save(PCSTR saveFileName)
 		return;
 	}
 	userInput->mouseOff();
-	uint32_t oldXLoc		 = LoadScreen::xProgressLoc;
-	uint32_t oldYLoc		 = LoadScreen::yProgressLoc;
+	uint32_t oldXLoc = LoadScreen::xProgressLoc;
+	uint32_t oldYLoc = LoadScreen::yProgressLoc;
 	LoadScreen::xProgressLoc = 0;
 	LoadScreen::yProgressLoc = 0;
-	bool turnOffAsyncMouse   = mc2UseAsyncMouse;
+	bool turnOffAsyncMouse = mc2UseAsyncMouse;
 	if (!mc2UseAsyncMouse)
 		MouseTimerInit();
 	mc2UseAsyncMouse = true;
-	AsynFunc		 = ProgressTimer;
+	AsynFunc = ProgressTimer;
 	// Get the campaign name for the campaign we are currently playing.
 	std::wstring campaignName = LogisticsData::instance->getCampaignName();
-	PCSTR cmpName			  = campaignName.Data();
+	PCSTR cmpName = campaignName.Data();
 	// Open the Save File.
 	// Assume path is correct when we get here.
 	PacketFile saveFile;
 	int32_t result = saveFile.create((PSTR)saveFileName);
-	loadProgress   = 1.0f;
+	loadProgress = 1.0f;
 	// A thousand packets ought to get it!!
 	saveFile.reserve(20000);
 	uint32_t currentPacket = 0;
@@ -323,7 +337,7 @@ void Mission::save(PCSTR saveFileName)
 	tempFile.writeIdString("ScenarioScript", missionScriptName);
 	tempFile.close();
 	File dmyFile;
-	result			= dmyFile.open(tmpName);
+	result = dmyFile.open(tmpName);
 	uint32_t fileSz = dmyFile.fileSize();
 	puint8_t tmpRAM = (puint8_t)malloc(fileSz);
 	dmyFile.read(tmpRAM, fileSz);
@@ -364,7 +378,7 @@ void Mission::save(PCSTR saveFileName)
 	// Save Number of Warriors.
 	// Call Save for each Warrior on list.
 	currentPacket = MechWarrior::Save(&saveFile, currentPacket);
-	loadProgress  = 85.0f;
+	loadProgress = 85.0f;
 	// Team Manager
 	// Save Number of Teams
 	// Save which number is HOME
@@ -379,7 +393,7 @@ void Mission::save(PCSTR saveFileName)
 	// 			Call Save DOWN the heirarchy.
 	//
 	currentPacket = ObjectManager->Save(&saveFile, currentPacket);
-	loadProgress  = 95.0f;
+	loadProgress = 95.0f;
 	// Commander Manager
 	// Save Number of Commanders.
 	// Save which number is HOME.
@@ -421,8 +435,8 @@ void Mission::save(PCSTR saveFileName)
 	// FLICKERING THEN!!!
 	// BLOCK THREAD WHILE THIS IS HAPPENING
 	mc2IsInDisplayBackBuffer = true;
-	AsynFunc				 = nullptr;
-	mc2UseAsyncMouse		 = turnOffAsyncMouse;
+	AsynFunc = nullptr;
+	mc2UseAsyncMouse = turnOffAsyncMouse;
 	if (!mc2UseAsyncMouse)
 		MouseTimerKill();
 	mc2IsInDisplayBackBuffer = false;
@@ -433,7 +447,8 @@ void Mission::save(PCSTR saveFileName)
 
 //----------------------------------------------------------------------------------------------------
 // Load.
-void Part::Load(FitIniFilePtr file, int32_t partNum)
+void
+Part::Load(FitIniFilePtr file, int32_t partNum)
 {
 	char partId[1024];
 	sprintf(partId, "Part%d", partNum);
@@ -517,19 +532,20 @@ void Part::Load(FitIniFilePtr file, int32_t partNum)
 		STOP(("Part %d VeriantNum missing from In-Mission Save", partNum));
 }
 
-void Mission::load(PCSTR loadFileName)
+void
+Mission::load(PCSTR loadFileName)
 {
 	userInput->mouseOff();
-	loadProgress			 = 0.0f;
-	uint32_t oldXLoc		 = LoadScreen::xProgressLoc;
-	uint32_t oldYLoc		 = LoadScreen::yProgressLoc;
+	loadProgress = 0.0f;
+	uint32_t oldXLoc = LoadScreen::xProgressLoc;
+	uint32_t oldYLoc = LoadScreen::yProgressLoc;
 	LoadScreen::xProgressLoc = 0;
 	LoadScreen::yProgressLoc = 0;
-	bool turnOffAsyncMouse   = mc2UseAsyncMouse;
+	bool turnOffAsyncMouse = mc2UseAsyncMouse;
 	if (!mc2UseAsyncMouse)
 		MouseTimerInit();
 	mc2UseAsyncMouse = true;
-	AsynFunc		 = ProgressTimer;
+	AsynFunc = ProgressTimer;
 	// Open the In-Mission Save packet file.
 	PacketFile loadFile;
 	int32_t result = loadFile.open((PSTR)loadFileName);
@@ -552,7 +568,7 @@ void Mission::load(PCSTR loadFileName)
 	currentPacket++;
 	// Get the campaign name for the campaign we are currently playing.
 	std::wstring campaignName = LogisticsData::instance->getCampaignName();
-	PCSTR cmpName			  = campaignName.Data();
+	PCSTR cmpName = campaignName.Data();
 	/*
 	if (_stricmp(campName,cmpName) != 0)
 	{
@@ -573,7 +589,7 @@ void Mission::load(PCSTR loadFileName)
 	// Relationships saved with TEAMs!
 	//-------------------------------------------
 	// Always reset turn at scenario start
-	turn					  = 0;
+	turn = 0;
 	terminationCounterStarted = 0;
 	//-----------------------
 	// Init the ABL system...
@@ -601,11 +617,11 @@ void Mission::load(PCSTR loadFileName)
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_SHORT][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_SHORT][1] = span[1];
-	result								= gameSystemFile->readIdFloatArray("Medium", span, 2);
+	result = gameSystemFile->readIdFloatArray("Medium", span, 2);
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_MEDIUM][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_MEDIUM][1] = span[1];
-	result								 = gameSystemFile->readIdFloatArray("Long", span, 2);
+	result = gameSystemFile->readIdFloatArray("Long", span, 2);
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_LONG][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_LONG][1] = span[1];
@@ -624,7 +640,7 @@ void Mission::load(PCSTR loadFileName)
 	result = gameSystemFile->readIdFloat("MaxVisualRange", maxVisualRange);
 	gosASSERT(result == NO_ERROR);
 	MaxVisualRadius = maxVisualRange * 1.4142;
-	result			= gameSystemFile->readIdFloat("FireVisualRange", fireVisualRange);
+	result = gameSystemFile->readIdFloat("FireVisualRange", fireVisualRange);
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->readIdFloatArray("WeaponRange", WeaponRange, NUM_FIRERANGES);
 	gosASSERT(result == NO_ERROR);
@@ -726,7 +742,7 @@ void Mission::load(PCSTR loadFileName)
 	{
 		// Create a dummy file to read the packet into.
 		File dmyFile;
-		result			= dmyFile.create(tmpName);
+		result = dmyFile.create(tmpName);
 		uint32_t fileSz = loadFile.getPacketSize();
 		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
 		loadFile.readPacket(currentPacket, tmpRAM);
@@ -868,7 +884,7 @@ void Mission::load(PCSTR loadFileName)
 	gosASSERT(result == NO_ERROR);
 	land = new Terrain;
 	gosASSERT(land != nullptr);
-	loadProgress			  = 15.0f;
+	loadProgress = 15.0f;
 	int32_t terrainInitResult = land->init(&pakFile, 0, GameVisibleVertices, loadProgress, 15.0);
 	if (terrainInitResult != NO_ERROR)
 	{
@@ -889,24 +905,24 @@ void Mission::load(PCSTR loadFileName)
 			if (GlobalMoveMap[0]->badLoad)
 				STOP((" Mission.Load: old version of move data In-Mission Save "
 					  "Obsolete."));
-			GameMap->placeMoversCallback			 = PlaceMovers;
+			GameMap->placeMoversCallback = PlaceMovers;
 			GlobalMoveMap[0]->isGateDisabledCallback = IsGateDisabled;
 			GlobalMoveMap[1]->isGateDisabledCallback = IsGateDisabled;
 			GlobalMoveMap[2]->isGateDisabledCallback = IsGateDisabled;
-			GlobalMoveMap[0]->isGateOpenCallback	 = IsGateOpen;
-			GlobalMoveMap[1]->isGateOpenCallback	 = IsGateOpen;
-			GlobalMoveMap[2]->isGateOpenCallback	 = IsGateOpen;
+			GlobalMoveMap[0]->isGateOpenCallback = IsGateOpen;
+			GlobalMoveMap[1]->isGateOpenCallback = IsGateOpen;
+			GlobalMoveMap[2]->isGateOpenCallback = IsGateOpen;
 		}
 		else
 			STOP(("Mission has no movement Data.  QuickSaved Map"));
 	}
-	PathFindMap[SECTOR_PATHMAP]->blockedDoorCallback		   = GetBlockedDoorCells;
+	PathFindMap[SECTOR_PATHMAP]->blockedDoorCallback = GetBlockedDoorCells;
 	PathFindMap[SECTOR_PATHMAP]->placeStationaryMoversCallback = PlaceStationaryMovers;
 	PathFindMap[SIMPLE_PATHMAP]->placeStationaryMoversCallback = PlaceStationaryMovers;
-	PathFindMap[SECTOR_PATHMAP]->forestCost					   = forestMoveCost;
-	PathFindMap[SIMPLE_PATHMAP]->forestCost					   = forestMoveCost;
-	PathManager												   = new MovePathManager;
-	loadProgress											   = 40.0f;
+	PathFindMap[SECTOR_PATHMAP]->forestCost = forestMoveCost;
+	PathFindMap[SIMPLE_PATHMAP]->forestCost = forestMoveCost;
+	PathManager = new MovePathManager;
+	loadProgress = 40.0f;
 	//----------------------
 	// Load ABL Libraries...
 	// ASS U ME that these are loaded when I call ABLi_Load
@@ -920,7 +936,7 @@ void Mission::load(PCSTR loadFileName)
 	{
 		// Create a dummy file to read the packet into.
 		File dmyFile;
-		result			= dmyFile.create(dmpName);
+		result = dmyFile.create(dmpName);
 		uint32_t fileSz = loadFile.getPacketSize();
 		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
 		loadFile.readPacket(currentPacket, tmpRAM);
@@ -951,7 +967,7 @@ void Mission::load(PCSTR loadFileName)
 	// Load all MechWarriors for this mission...
 	MechWarrior::setup();
 	currentPacket = MechWarrior::Load(&loadFile, currentPacket);
-	loadProgress  = 45.0f;
+	loadProgress = 45.0f;
 	//-----------------------------------------------------------------
 	// All systems are GO if we reach this point.  Now we need to
 	// parse the scenario file for the Objects we need for this scenario
@@ -1010,12 +1026,12 @@ void Mission::load(PCSTR loadFileName)
 			result = missionFile.readIdFloat("PositionY", parts[i].position.y);
 			gosASSERT(result == NO_ERROR);
 			parts[i].position.z = -1.0;
-			result				= missionFile.readIdFloat("Rotation", parts[i].rotation);
+			result = missionFile.readIdFloat("Rotation", parts[i].rotation);
 			gosASSERT(result == NO_ERROR);
 			result = missionFile.readIdChar("TeamId", parts[i].teamId);
 			gosASSERT(result == NO_ERROR);
 			char cmdId = 0;
-			result	 = missionFile.readIdChar("CommanderId", cmdId);
+			result = missionFile.readIdChar("CommanderId", cmdId);
 			if (result != NO_ERROR)
 			{
 				result = missionFile.readIdLong("CommanderId", parts[i].commanderID);
@@ -1026,7 +1042,7 @@ void Mission::load(PCSTR loadFileName)
 				parts[i].commanderID = cmdId;
 			}
 			parts[i].gestureId = 2; // this has never changed
-			result			   = missionFile.readIdULong("BaseColor", parts[i].baseColor);
+			result = missionFile.readIdULong("BaseColor", parts[i].baseColor);
 			if (result != NO_ERROR)
 				parts[i].baseColor = 0xffffffff;
 			result = missionFile.readIdULong("HighlightColor1", parts[i].highlightColor1);
@@ -1036,12 +1052,12 @@ void Mission::load(PCSTR loadFileName)
 			if (result != NO_ERROR)
 				parts[i].highlightColor2 = 0xffffffff;
 			parts[i].velocity = 0;
-			result			  = missionFile.readIdLong("Active", parts[i].active);
+			result = missionFile.readIdLong("Active", parts[i].active);
 			gosASSERT(result == NO_ERROR);
 			result = missionFile.readIdLong("Exists", parts[i].exists);
 			gosASSERT(result == NO_ERROR);
 			float fDamage = 0.0f;
-			result		  = missionFile.readIdFloat("Damage", fDamage);
+			result = missionFile.readIdFloat("Damage", fDamage);
 			if (result == NO_ERROR)
 			{
 				if (fDamage >= 1.0)
@@ -1084,13 +1100,13 @@ void Mission::load(PCSTR loadFileName)
 	// Read in the Objectives.  Safe to have none.
 	{
 		numObjectives = 0; // this refers to the number of *old* objectives
-		objectives	= 0;
-		warning1	  = FALSE;
-		warning2	  = FALSE;
+		objectives = 0;
+		warning1 = FALSE;
+		warning2 = FALSE;
 		Team::home->objectives.Clear();
 		Team::home->objectives.Read(&missionFile);
 		Team::home->numPrimaryObjectives = 0;
-		CObjectives::EIterator it		 = Team::home->objectives.Begin();
+		CObjectives::EIterator it = Team::home->objectives.Begin();
 		while (!it.IsDone())
 		{
 			if (1 == (*it)->Priority())
@@ -1126,7 +1142,7 @@ void Mission::load(PCSTR loadFileName)
 	//----------------------------
 	// Create and load the Weather
 	loadProgress = 92.f;
-	weather		 = new Weather;
+	weather = new Weather;
 	weather->init(&missionFile);
 	loadProgress = 95.0;
 	//---------------------------------------------------------------
@@ -1143,7 +1159,7 @@ void Mission::load(PCSTR loadFileName)
 	// loaded for it!!
 	// ITS been flushed up top.  NO leakage!
 	PilotIcon::s_pilotTextureHandle = 0;
-	missionInterface				= new MissionInterfaceManager;
+	missionInterface = new MissionInterfaceManager;
 	gosASSERT(missionInterface != nullptr);
 	missionInterface->initTacMap(&pakFile, 2);
 	FullPathFileName missionScreenName;
@@ -1163,7 +1179,7 @@ void Mission::load(PCSTR loadFileName)
 	{
 		systemHeap->Free(tempSpecialAreaFootPrints);
 		tempSpecialAreaFootPrints = nullptr;
-		tempNumSpecialAreas		  = 0;
+		tempNumSpecialAreas = 0;
 	}
 	Mover::initOptimalCells(32);
 	if (CombatLog)
@@ -1175,7 +1191,7 @@ void Mission::load(PCSTR loadFileName)
 	{
 		// Create a dummy file to read the packet into.
 		File dmyFile;
-		result			= dmyFile.create(tmpName);
+		result = dmyFile.create(tmpName);
 		uint32_t fileSz = loadFile.getPacketSize();
 		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
 		loadFile.readPacket(currentPacket, tmpRAM);
@@ -1204,7 +1220,7 @@ void Mission::load(PCSTR loadFileName)
 	loadFile.close();
 	eye->activate();
 	eye->update();
-	loadProgress	   = 100.f;
+	loadProgress = 100.f;
 	DebugGameObject[0] = DebugGameObject[1] = DebugGameObject[2] = nullptr;
 	// YIKES!!  We could be checking the if before the null and executing
 	// after!!  Block the thread!  Wait for thread to finish.
@@ -1214,8 +1230,8 @@ void Mission::load(PCSTR loadFileName)
 	// FLICKERING THEN!!!
 	// BLOCK THREAD WHILE THIS IS HAPPENING
 	mc2IsInDisplayBackBuffer = true;
-	AsynFunc				 = nullptr;
-	mc2UseAsyncMouse		 = turnOffAsyncMouse;
+	AsynFunc = nullptr;
+	mc2UseAsyncMouse = turnOffAsyncMouse;
 	if (!mc2UseAsyncMouse)
 		MouseTimerKill();
 	mc2IsInDisplayBackBuffer = false;
@@ -1225,7 +1241,7 @@ void Mission::load(PCSTR loadFileName)
 	// Reset so the LastTimeGetTime is RIGHT NOW!!!
 	//  So quickLoad works!!
 	uint32_t currentTimeGetTime = timeGetTime();
-	LastTimeGetTime				= currentTimeGetTime;
+	LastTimeGetTime = currentTimeGetTime;
 }
 
 //----------------------------------------------------------------------------------------------------

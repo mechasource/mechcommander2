@@ -22,41 +22,41 @@
 
 //--------
 // GLOBALS
-PSTR codeBuffer		   = nullptr;
-PSTR codeBufferPtr	 = nullptr;
-PSTR codeSegmentPtr	= nullptr;
-PSTR codeSegmentLimit  = nullptr;
+PSTR codeBuffer = nullptr;
+PSTR codeBufferPtr = nullptr;
+PSTR codeSegmentPtr = nullptr;
+PSTR codeSegmentLimit = nullptr;
 PSTR statementStartPtr = nullptr;
 
 TokenCodeType codeToken;
 int32_t execLineNumber;
 int32_t execStatementCount = 0;
 
-StackItem* stack			   = nullptr;
-StackItemPtr tos			   = nullptr;
+StackItem* stack = nullptr;
+StackItemPtr tos = nullptr;
 StackItemPtr stackFrameBasePtr = nullptr;
-StackItemPtr StaticDataPtr	 = nullptr;
-int32_t* StaticVariablesSizes  = nullptr;
+StackItemPtr StaticDataPtr = nullptr;
+int32_t* StaticVariablesSizes = nullptr;
 int32_t* EternalVariablesSizes = nullptr;
-int32_t eternalOffset		   = 0;
-int32_t MaxStaticVariables	 = 0;
-int32_t MaxEternalVariables	= 0;
-int32_t NumStaticVariables	 = 0;
-int32_t NumOrderCalls		   = 1;
-int32_t NumStateHandles		   = 0;
+int32_t eternalOffset = 0;
+int32_t MaxStaticVariables = 0;
+int32_t MaxEternalVariables = 0;
+int32_t NumStaticVariables = 0;
+int32_t NumOrderCalls = 1;
+int32_t NumStateHandles = 0;
 StateHandleInfo StateHandleList[MAX_STATE_HANDLES_PER_MODULE];
-int32_t CurModuleHandle		= 0;
-int32_t MaxCodeBufferSize   = 0;
-bool CallModuleInit			= false;
-bool AutoReturnFromOrders   = false;
-int32_t MaxLoopIterations   = 100001;
-bool AssertEnabled			= false;
-bool PrintEnabled			= true;
+int32_t CurModuleHandle = 0;
+int32_t MaxCodeBufferSize = 0;
+bool CallModuleInit = false;
+bool AutoReturnFromOrders = false;
+int32_t MaxLoopIterations = 100001;
+bool AssertEnabled = false;
+bool PrintEnabled = true;
 bool StringFunctionsEnabled = true;
-bool DebugCodeEnabled		= false;
-bool IncludeDebugInfo		= true;
-bool ProfileABL				= false;
-bool Crunch					= true;
+bool DebugCodeEnabled = false;
+bool IncludeDebugInfo = true;
+bool ProfileABL = false;
+bool Crunch = true;
 
 char SetStateDebugStr[256];
 
@@ -94,7 +94,8 @@ extern void (*ABLEndlessStateCallback)(UserFile* log);
 // CRUNCH/DECRUNCH routines
 //***************************************************************************
 
-void crunchToken(void)
+void
+crunchToken(void)
 {
 	if (!Crunch)
 		return;
@@ -109,7 +110,8 @@ void crunchToken(void)
 
 //***************************************************************************
 
-void crunchSymTableNodePtr(SymTableNodePtr nodePtr)
+void
+crunchSymTableNodePtr(SymTableNodePtr nodePtr)
 {
 	if (!Crunch)
 		return;
@@ -118,14 +120,15 @@ void crunchSymTableNodePtr(SymTableNodePtr nodePtr)
 	else
 	{
 		SymTableNodePtr* nodePtrPtr = (SymTableNodePtr*)codeBufferPtr;
-		*nodePtrPtr					= nodePtr;
+		*nodePtrPtr = nodePtr;
 		codeBufferPtr += sizeof(SymTableNodePtr);
 	}
 }
 
 //***************************************************************************
 
-void crunchStatementMarker(void)
+void
+crunchStatementMarker(void)
 {
 	if (!Crunch)
 		return;
@@ -133,7 +136,7 @@ void crunchStatementMarker(void)
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
 	{
-		char saveCode  = *(--codeBufferPtr);
+		char saveCode = *(--codeBufferPtr);
 		*codeBufferPtr = (char)TKN_STATEMENT_MARKER;
 		codeBufferPtr++;
 		if (IncludeDebugInfo)
@@ -150,7 +153,8 @@ void crunchStatementMarker(void)
 
 //***************************************************************************
 
-void uncrunchStatementMarker(void)
+void
+uncrunchStatementMarker(void)
 {
 	//-------------------------
 	// Pull code off the buffer
@@ -166,7 +170,8 @@ void uncrunchStatementMarker(void)
 
 //***************************************************************************
 
-PSTR crunchAddressMarker(Address address)
+PSTR
+crunchAddressMarker(Address address)
 {
 	if (!Crunch)
 		return (nullptr);
@@ -175,10 +180,10 @@ PSTR crunchAddressMarker(Address address)
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
 	{
-		char saveCode  = *(--codeBufferPtr);
+		char saveCode = *(--codeBufferPtr);
 		*codeBufferPtr = (char)TKN_ADDRESS_MARKER;
 		codeBufferPtr++;
-		saveCodeBufferPtr		   = codeBufferPtr;
+		saveCodeBufferPtr = codeBufferPtr;
 		*((Address*)codeBufferPtr) = address;
 		codeBufferPtr += sizeof(Address);
 		*codeBufferPtr = saveCode;
@@ -189,18 +194,20 @@ PSTR crunchAddressMarker(Address address)
 
 //***************************************************************************
 
-PSTR fixupAddressMarker(Address address)
+PSTR
+fixupAddressMarker(Address address)
 {
 	if (!Crunch)
 		return (nullptr);
-	PSTR oldAddress		 = *((Address*)address);
+	PSTR oldAddress = *((Address*)address);
 	*((int32_t*)address) = codeBufferPtr - address;
 	return (oldAddress);
 }
 
 //***************************************************************************
 
-void crunchInteger(int32_t value)
+void
+crunchInteger(int32_t value)
 {
 	if (!Crunch)
 		return;
@@ -215,7 +222,8 @@ void crunchInteger(int32_t value)
 
 //***************************************************************************
 
-void crunchByte(uint8_t value)
+void
+crunchByte(uint8_t value)
 {
 	if (!Crunch)
 		return;
@@ -230,7 +238,8 @@ void crunchByte(uint8_t value)
 
 //***************************************************************************
 
-void crunchOffset(Address address)
+void
+crunchOffset(Address address)
 {
 	if (!Crunch)
 		return;
@@ -245,9 +254,10 @@ void crunchOffset(Address address)
 
 //***************************************************************************
 
-PSTR createCodeSegment(int32_t& codeSegmentSize)
+PSTR
+createCodeSegment(int32_t& codeSegmentSize)
 {
-	codeSegmentSize  = codeBufferPtr - codeBuffer + 1;
+	codeSegmentSize = codeBufferPtr - codeBuffer + 1;
 	PSTR codeSegment = (PSTR)ABLCodeMallocCallback(codeSegmentSize);
 	if (!codeSegment)
 		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc code segment ");
@@ -259,17 +269,19 @@ PSTR createCodeSegment(int32_t& codeSegmentSize)
 
 //***************************************************************************
 
-SymTableNodePtr getCodeSymTableNodePtr(void)
+SymTableNodePtr
+getCodeSymTableNodePtr(void)
 {
 	SymTableNodePtr* nodePtrPtr = (SymTableNodePtr*)codeSegmentPtr;
-	SymTableNodePtr nodePtr		= *nodePtrPtr;
+	SymTableNodePtr nodePtr = *nodePtrPtr;
 	codeSegmentPtr += sizeof(SymTableNodePtr);
 	return (nodePtr);
 }
 
 //***************************************************************************
 
-int32_t getCodeStatementMarker(void)
+int32_t
+getCodeStatementMarker(void)
 {
 	//------------------------------------------
 	// NOTE: If there's a problem, we return -1.
@@ -289,7 +301,8 @@ int32_t getCodeStatementMarker(void)
 
 //***************************************************************************
 
-PSTR getCodeAddressMarker(void)
+PSTR
+getCodeAddressMarker(void)
 {
 	Address address = nullptr;
 	if (codeToken == TKN_ADDRESS_MARKER)
@@ -302,7 +315,8 @@ PSTR getCodeAddressMarker(void)
 
 //***************************************************************************
 
-int32_t getCodeInteger(void)
+int32_t
+getCodeInteger(void)
 {
 	int32_t value = *((int32_t*)codeSegmentPtr);
 	codeSegmentPtr += sizeof(int32_t);
@@ -311,7 +325,8 @@ int32_t getCodeInteger(void)
 
 //***************************************************************************
 
-uint8_t getCodeByte(void)
+uint8_t
+getCodeByte(void)
 {
 	uint8_t value = *((puint8_t)codeSegmentPtr);
 	codeSegmentPtr += sizeof(uint8_t);
@@ -320,7 +335,8 @@ uint8_t getCodeByte(void)
 
 //***************************************************************************
 
-PSTR getCodeAddress(void)
+PSTR
+getCodeAddress(void)
 {
 	Address address = *((int32_t*)codeSegmentPtr) + codeSegmentPtr - 1;
 	codeSegmentPtr += sizeof(int32_t);
@@ -331,11 +347,16 @@ PSTR getCodeAddress(void)
 // STACK routines
 //***************************************************************************
 
-void pop(void) { --tos; }
+void
+pop(void)
+{
+	--tos;
+}
 
 //***************************************************************************
 
-void getCodeToken(void)
+void
+getCodeToken(void)
 {
 	codeToken = (TokenCodeType)*codeSegmentPtr;
 	codeSegmentPtr++;
@@ -343,7 +364,8 @@ void getCodeToken(void)
 
 //***************************************************************************
 
-void pushInteger(int32_t value)
+void
+pushInteger(int32_t value)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -353,7 +375,8 @@ void pushInteger(int32_t value)
 
 //***************************************************************************
 
-void pushReal(float value)
+void
+pushReal(float value)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -363,7 +386,8 @@ void pushReal(float value)
 
 //***************************************************************************
 
-void pushByte(char value)
+void
+pushByte(char value)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -373,7 +397,8 @@ void pushByte(char value)
 
 //***************************************************************************
 
-void pushAddress(Address address)
+void
+pushAddress(Address address)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -383,7 +408,8 @@ void pushAddress(Address address)
 
 //***************************************************************************
 
-void pushBoolean(bool value)
+void
+pushBoolean(bool value)
 {
 	StackItemPtr valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -392,7 +418,8 @@ void pushBoolean(bool value)
 }
 
 //***************************************************************************
-void pushStackFrameHeader(int32_t oldLevel, int32_t newLevel)
+void
+pushStackFrameHeader(int32_t oldLevel, int32_t newLevel)
 {
 	//-----------------------------------
 	// Make space for the return value...
@@ -442,7 +469,8 @@ void pushStackFrameHeader(int32_t oldLevel, int32_t newLevel)
 
 //***************************************************************************
 
-void allocLocal(TypePtr typePtr)
+void
+allocLocal(TypePtr typePtr)
 {
 	if (typePtr == IntegerTypePtr)
 		pushInteger(0);
@@ -474,14 +502,14 @@ void allocLocal(TypePtr typePtr)
 
 //***************************************************************************
 
-void freeLocal(SymTableNodePtr idPtr)
+void
+freeLocal(SymTableNodePtr idPtr)
 {
 	//---------------------------------------
 	// Frees data allocated on local stack...
-	TypePtr typePtr		 = (TypePtr)(idPtr->typePtr);
+	TypePtr typePtr = (TypePtr)(idPtr->typePtr);
 	StackItemPtr itemPtr = nullptr;
-	if (((typePtr->form == FRM_ARRAY) /* || (typePtr->form == FRM_RECORD)*/) &&
-		(idPtr->defn.key != DFN_REFPARAM))
+	if (((typePtr->form == FRM_ARRAY) /* || (typePtr->form == FRM_RECORD)*/) && (idPtr->defn.key != DFN_REFPARAM))
 	{
 		switch (idPtr->defn.info.data.varType)
 		{
@@ -506,7 +534,8 @@ void freeLocal(SymTableNodePtr idPtr)
 // FUNCTION ENTRY/EXIT routines
 //***************************************************************************
 
-void routineEntry(SymTableNodePtr routineIdPtr)
+void
+routineEntry(SymTableNodePtr routineIdPtr)
 {
 	if (debugger)
 		debugger->traceRoutineEntry(routineIdPtr);
@@ -516,7 +545,7 @@ void routineEntry(SymTableNodePtr routineIdPtr)
 	codeSegmentPtr = routineIdPtr->defn.info.routine.codeSegment;
 	//----------------------------------------------
 	// Allocate local variables onto system stack...
-	for (SymTableNodePtr varIdPtr	  = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals);
+	for (SymTableNodePtr varIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals);
 		 varIdPtr != nullptr; varIdPtr = varIdPtr->next)
 		if (varIdPtr->defn.info.data.varType == VAR_TYPE_NORMAL)
 			allocLocal((TypePtr)(varIdPtr->typePtr));
@@ -524,7 +553,8 @@ void routineEntry(SymTableNodePtr routineIdPtr)
 
 //***************************************************************************
 
-void routineExit(SymTableNodePtr routineIdPtr)
+void
+routineExit(SymTableNodePtr routineIdPtr)
 {
 	if (debugger)
 		debugger->traceRoutineExit(routineIdPtr);
@@ -539,7 +569,7 @@ void routineExit(SymTableNodePtr routineIdPtr)
 		if (idPtr->defn.info.data.varType == VAR_TYPE_NORMAL)
 			freeLocal(idPtr);
 	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
-	codeSegmentPtr				  = headerPtr->returnAddress.address;
+	codeSegmentPtr = headerPtr->returnAddress.address;
 	if (routineIdPtr->typePtr == nullptr)
 		tos = stackFrameBasePtr - 1;
 	else
@@ -549,16 +579,17 @@ void routineExit(SymTableNodePtr routineIdPtr)
 
 //***************************************************************************
 
-void execute(SymTableNodePtr routineIdPtr)
+void
+execute(SymTableNodePtr routineIdPtr)
 {
 	SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
-	CurRoutineIdPtr					 = routineIdPtr;
+	CurRoutineIdPtr = routineIdPtr;
 	routineEntry(routineIdPtr);
 	//----------------------------------------------------
 	// Now, search this module for the function we want...
 	if (CallModuleInit)
 	{
-		CallModuleInit					  = false;
+		CallModuleInit = false;
 		SymTableNodePtr initFunctionIdPtr = searchSymTable("init",
 			ModuleRegistry[CurModule->getHandle()].moduleIdPtr->defn.info.routine.localSymTable);
 		if (initFunctionIdPtr)
@@ -613,7 +644,7 @@ void execute(SymTableNodePtr routineIdPtr)
 			}
 			else
 			{
-				NewStateSet				 = false;
+				NewStateSet = false;
 				SymTableNodePtr curState = CurModule->getState();
 				if (!curState)
 					ABL_Fatal(0, " ABL.execute: nullptr state in FSM ");
@@ -622,7 +653,7 @@ void execute(SymTableNodePtr routineIdPtr)
 			}
 			//---------------------------------------------
 			// In case we exited with a return statement...
-			ExitWithReturn   = false;
+			ExitWithReturn = false;
 			ExitFromTacOrder = false;
 		}
 	}
@@ -632,7 +663,7 @@ void execute(SymTableNodePtr routineIdPtr)
 		execStatement();
 		//---------------------------------------------
 		// In case we exited with a return statement...
-		ExitWithReturn   = false;
+		ExitWithReturn = false;
 		ExitFromTacOrder = false;
 	}
 	routineExit(routineIdPtr);
@@ -641,18 +672,19 @@ void execute(SymTableNodePtr routineIdPtr)
 
 //***************************************************************************
 
-void executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr)
+void
+executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr)
 {
 	// THIS DOES NOT SUPPORT CALLING FUNCTIONS WITH PARAMETERS YET!
 	SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
-	CurRoutineIdPtr					 = routineIdPtr;
+	CurRoutineIdPtr = routineIdPtr;
 	routineEntry(routineIdPtr);
 	//----------------------------------------------------
 	// Now, search this module for the function we want...
 	SymTableNodePtr initFunctionIdPtr = nullptr;
 	if (CallModuleInit)
 	{
-		CallModuleInit	= false;
+		CallModuleInit = false;
 		initFunctionIdPtr = searchSymTable("init", routineIdPtr->defn.info.routine.localSymTable);
 		if (initFunctionIdPtr)
 		{
@@ -679,7 +711,7 @@ void executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPt
 	}
 	//---------------------------------------------
 	// In case we exited with a return statement...
-	ExitWithReturn   = false;
+	ExitWithReturn = false;
 	ExitFromTacOrder = false;
 	routineExit(routineIdPtr);
 	CurRoutineIdPtr = thisRoutineIdPtr;

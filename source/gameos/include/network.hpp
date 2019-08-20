@@ -107,7 +107,8 @@ void __stdcall gos_Disconnect(void);
 //
 bool __stdcall gos_NetSetAdvertItem(uint32_t player, PCSTR Name, PCSTR Value);
 
-void NGStatsSetPlayerId(PSTR name, PSTR passwd);
+void
+NGStatsSetPlayerId(PSTR name, PSTR passwd);
 
 extern GUID NGStatsPlayerId;
 
@@ -134,8 +135,8 @@ void __stdcall GetGUNDownloadStats(pint32_t tableSize, pint32_t progress);
 
 typedef struct
 {
-	uint32_t state[4];  /* state (ABCD) */
-	uint32_t count[2];  /* number of bits, modulo 2^64 (lsb first) */
+	uint32_t state[4]; /* state (ABCD) */
+	uint32_t count[2]; /* number of bits, modulo 2^64 (lsb first) */
 	uint8_t buffer[64]; /* input buffer */
 } MD5_CTX;
 
@@ -189,12 +190,13 @@ public:
 	//
 	enum GUN_NET_STATUS
 	{
-		GNS_NONE				= 0x0000,
+		GNS_NONE = 0x0000,
 		GNS_DOWNLOADING_PLAYERS = 0x0002,
 		GNS_DOWNLOADING_SERVERS = 0x0004
 	};
 
-	ServerBrowser() : m_bDelete(false) { ; }
+	ServerBrowser() :
+		m_bDelete(false) { ; }
 
 protected:
 	//
@@ -203,20 +205,20 @@ protected:
 	//
 
 	// general use
-	virtual bool __stdcall Initialize(void)		 = 0;
-	virtual bool __stdcall Disconnect(void)		 = 0;
-	virtual bool __stdcall Release(void)		 = 0; // disconnect, unregister, and free
-	virtual int32_t __stdcall GetStatus(void)	= 0;
+	virtual bool __stdcall Initialize(void) = 0;
+	virtual bool __stdcall Disconnect(void) = 0;
+	virtual bool __stdcall Release(void) = 0; // disconnect, unregister, and free
+	virtual int32_t __stdcall GetStatus(void) = 0;
 	virtual PCSTR __stdcall GetDescription(void) = 0;
-	virtual bool __stdcall Synchronize(void)	 = 0; // called every frame
+	virtual bool __stdcall Synchronize(void) = 0; // called every frame
 	// for every active
 	// browser or server
-	virtual bool __stdcall PrepareRefresh(void)			  = 0;
-	virtual bool __stdcall Refresh(PSTR gameID)			  = 0;
+	virtual bool __stdcall PrepareRefresh(void) = 0;
+	virtual bool __stdcall Refresh(PSTR gameID) = 0;
 	virtual bool __stdcall RefreshServerInfo(PSTR gameID) = 0;
-	virtual bool __stdcall StartUpdate(void)			  = 0;
-	virtual bool __stdcall CancelActivity(void)			  = 0;
-	virtual bool __stdcall GetNetStatus(void)			  = 0;
+	virtual bool __stdcall StartUpdate(void) = 0;
+	virtual bool __stdcall CancelActivity(void) = 0;
+	virtual bool __stdcall GetNetStatus(void) = 0;
 
 	// for browsers
 	virtual bool __stdcall PrepareJoinGame(PCSTR szGameName, PVOID* ppDPlay) = 0;
@@ -244,8 +246,8 @@ private:
 	ServerBrowser* m_pNext;
 	ServerBrowser* m_pPrev;
 	static bool s_bCancelActivityPending; // true if we have not yet called
-										  // cancelactivity for browsers during
-										  // current update cycle.
+		// cancelactivity for browsers during
+		// current update cycle.
 	int32_t m_handle;
 	char m_szHandle[10];
 };
@@ -281,15 +283,16 @@ public:
 
 	static bool __stdcall GetAdvertiseOK(void);
 
-	ServerAdvertiser() : m_bDelete(false) { ; }
+	ServerAdvertiser() :
+		m_bDelete(false) { ; }
 
 protected:
 	// general use
-	virtual bool __stdcall Initialize(void)		 = 0;
-	virtual bool __stdcall Disconnect(void)		 = 0;
-	virtual bool __stdcall Release(void)		 = 0; // disconnect, unregister, and free
+	virtual bool __stdcall Initialize(void) = 0;
+	virtual bool __stdcall Disconnect(void) = 0;
+	virtual bool __stdcall Release(void) = 0; // disconnect, unregister, and free
 	virtual PCSTR __stdcall GetDescription(void) = 0;
-	virtual bool __stdcall Synchronize(void)	 = 0; // called every frame
+	virtual bool __stdcall Synchronize(void) = 0; // called every frame
 	// for every active
 	// browser or server
 
@@ -299,9 +302,9 @@ protected:
 	virtual bool __stdcall CreatePlayer(
 		uint32_t dwItemID, PCSTR szPlayerName, bool bBot = false) = 0;
 	virtual bool __stdcall RemovePlayer(
-		uint32_t dwItemID, PCSTR szPlayerName, bool bBot = false)						= 0;
+		uint32_t dwItemID, PCSTR szPlayerName, bool bBot = false) = 0;
 	virtual bool __stdcall SetItemValue(uint32_t dwPlayer, PCSTR szName, PCSTR szValue) = 0;
-	virtual bool __stdcall SetFlags(uint32_t dwFlags)									= 0;
+	virtual bool __stdcall SetFlags(uint32_t dwFlags) = 0;
 
 	//
 	// server browsers can call these members

@@ -360,7 +360,7 @@ MECH_IMPEXP HRESULT __stdcall gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVer
 	if (!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered = PrimitivesRendered + NumVertices - 2;
-		FanLength		   = (float)((double)NumVertices - 2 + FanLength);
+		FanLength = (float)((double)NumVertices - 2 + FanLength);
 		++FanCalls;
 		if (RenderMode)
 		{
@@ -460,8 +460,7 @@ MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArr
 {
 	size_t j;
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 &&
-		(NumberIndices % 3) == 0);
+	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
 	if (DirtyStates)
 		FlushRenderStates();
 	for (i = 0; i < NumberIndices; ++i)
@@ -499,8 +498,7 @@ MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArr
 {
 	size_t j;
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 &&
-		(NumberIndices % 3) == 0);
+	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
 	if (DirtyStates)
 		FlushRenderStates();
 	for (i = 0; i < NumberIndices; ++i)

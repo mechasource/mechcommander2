@@ -52,7 +52,8 @@ extern bool MLRVertexLimitReached;
 //---------------------------------------------------------------------------
 // class WeaponBoltType
 //---------------------------------------------------------------------------
-GameObjectPtr WeaponBoltType::createInstance(void)
+GameObjectPtr
+WeaponBoltType::createInstance(void)
 {
 	WeaponBoltPtr result = new WeaponBolt;
 	if (!result)
@@ -62,7 +63,8 @@ GameObjectPtr WeaponBoltType::createInstance(void)
 }
 
 //---------------------------------------------------------------------------
-void WeaponBoltType::destroy(void)
+void
+WeaponBoltType::destroy(void)
 {
 	if (textureName)
 		ObjectTypeManager::objectCache->Free(textureName);
@@ -71,10 +73,12 @@ void WeaponBoltType::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t bgrTorgb(uint32_t frontRGB);
+uint32_t
+bgrTorgb(uint32_t frontRGB);
 
 //---------------------------------------------------------------------------
-int32_t WeaponBoltType::init(FilePtr objFile, uint32_t fileSize)
+int32_t
+WeaponBoltType::init(FilePtr objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile bullFile;
@@ -142,7 +146,7 @@ int32_t WeaponBoltType::init(FilePtr objFile, uint32_t fileSize)
 		if (result != NO_ERROR)
 			boltAlpha = 0xff;
 		projLength = 1.0f;
-		velocity   = 1.0f;
+		velocity = 1.0f;
 		if (lightSource)
 		{
 			result = bullFile.readIdULong("LightRGB", lightRGB);
@@ -244,11 +248,11 @@ int32_t WeaponBoltType::init(FilePtr objFile, uint32_t fileSize)
 		}
 		//------------------------------------------------------------------
 		// Editor writes RGBs as BGRs.  Change over here.
-		frontRGB   = bgrTorgb(frontRGB);
-		backRGB	= bgrTorgb(backRGB);
-		middleRGB  = bgrTorgb(middleRGB);
+		frontRGB = bgrTorgb(frontRGB);
+		backRGB = bgrTorgb(backRGB);
+		middleRGB = bgrTorgb(middleRGB);
 		midEdgeRGB = bgrTorgb(midEdgeRGB);
-		lightRGB   = bgrTorgb(lightRGB);
+		lightRGB = bgrTorgb(lightRGB);
 	}
 	//------------------------------------------------------------------
 	// Initialize the base object Type from the current file.
@@ -257,7 +261,8 @@ int32_t WeaponBoltType::init(FilePtr objFile, uint32_t fileSize)
 }
 
 //---------------------------------------------------------------------------
-bool WeaponBoltType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+WeaponBoltType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// The bolt ceases to exist when its effect is done.
@@ -267,7 +272,8 @@ bool WeaponBoltType::handleCollision(GameObjectPtr collidee, GameObjectPtr colli
 }
 
 //---------------------------------------------------------------------------
-bool WeaponBoltType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+WeaponBoltType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// The bolt ceases to exist when its effect is done.
@@ -277,7 +283,8 @@ bool WeaponBoltType::handleDestruction(GameObjectPtr collidee, GameObjectPtr col
 }
 
 //---------------------------------------------------------------------------
-TG_LightPtr WeaponBoltType::getLight(void)
+TG_LightPtr
+WeaponBoltType::getLight(void)
 {
 	TG_LightPtr pointLight = nullptr;
 	if (lightSource)
@@ -294,7 +301,8 @@ TG_LightPtr WeaponBoltType::getLight(void)
 //---------------------------------------------------------------------------
 // class WeaponBolt
 //---------------------------------------------------------------------------
-bool WeaponBolt::isVisible(void)
+bool
+WeaponBolt::isVisible(void)
 {
 	//----------------------------------------------------------------------
 	// This function checks to see if this weaponBolt is visible on screen
@@ -307,7 +315,8 @@ bool WeaponBolt::isVisible(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t WeaponBolt::update(void)
+int32_t
+WeaponBolt::update(void)
 {
 	Stuff::Vector3D laserDirection;
 	bool moveThisFrame = true;
@@ -315,7 +324,7 @@ int32_t WeaponBolt::update(void)
 	{
 		setFlag(OBJECT_FLAG_JUSTCREATED, false);
 		setFlag(OBJECT_FLAG_TANGIBLE, false);
-		hitTarget	 = false;
+		hitTarget = false;
 		moveThisFrame = false;
 		//-------------------------------------------------------------
 		// Update position relative to my owner
@@ -329,12 +338,12 @@ int32_t WeaponBolt::update(void)
 		if (((WeaponBoltTypePtr)getObjectType())->fireSoundFX != 0)
 			soundSystem->playDigitalSample(
 				((WeaponBoltTypePtr)getObjectType())->fireSoundFX, position, true);
-		laserPosition				  = position;
+		laserPosition = position;
 		Stuff::Vector3D ownerPosition = laserPosition;
 		Stuff::Point3D actualPosition;
-		actualPosition.x	 = -laserPosition.x;
-		actualPosition.y	 = laserPosition.z;
-		actualPosition.z	 = laserPosition.y;
+		actualPosition.x = -laserPosition.x;
+		actualPosition.y = laserPosition.z;
+		actualPosition.z = laserPosition.y;
 		GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 		Stuff::Vector3D targetPos;
 		targetPos.Zero();
@@ -417,10 +426,10 @@ int32_t WeaponBolt::update(void)
 		}
 		Stuff::Vector3D laserVelocity;
 		laserVelocity.Subtract(targetPos, ownerPosition);
-		float distance   = laserVelocity.x * laserVelocity.x + laserVelocity.y * laserVelocity.y;
+		float distance = laserVelocity.x * laserVelocity.x + laserVelocity.y * laserVelocity.y;
 		distanceToTarget = distance;
 		halfDistanceToTarget = distance / 2.0f;
-		goalHeight			 = ((WeaponBoltTypePtr)getObjectType())->arcHeight;
+		goalHeight = ((WeaponBoltTypePtr)getObjectType())->arcHeight;
 		goalHeight *= 10.0f;
 	}
 	//-------------------------------------------------------------
@@ -454,7 +463,7 @@ int32_t WeaponBolt::update(void)
 	//---------------------------------------------------------------
 	// Keep projectile flying toward target.  Even if Target Moves!!
 	Stuff::Vector3D ownerPosition = laserPosition;
-	GameObjectPtr target		  = ObjectManager->getByWatchID(targetWID);
+	GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 	Stuff::Vector3D targetPos;
 	targetPos.Zero();
 	if (target && (!hitTarget || ((WeaponBoltTypePtr)getObjectType())->isBeam))
@@ -493,7 +502,7 @@ int32_t WeaponBolt::update(void)
 			if (goalHeight >= 0.0f)
 			{
 				laserVelocity.z = goalHeight;
-				isArcing		= true;
+				isArcing = true;
 			}
 		}
 	}
@@ -506,11 +515,11 @@ int32_t WeaponBolt::update(void)
 		if (!((WeaponBoltTypePtr)getObjectType())->isBeam)
 		{
 			float lastDistanceMoved = distanceToTarget - distance;
-			distanceToTarget		= distance;
+			distanceToTarget = distance;
 			if (lastDistanceMoved >= distance)
 			{
 				hitTarget = TRUE;
-				hitLeft   = ((WeaponBoltTypePtr)getObjectType())->afterHitTime;
+				hitLeft = ((WeaponBoltTypePtr)getObjectType())->afterHitTime;
 				if (target)
 				{
 					Stuff::Vector3D hotSpot = target->getPositionFromHS(targetHotSpot);
@@ -555,8 +564,7 @@ int32_t WeaponBolt::update(void)
 					Stuff::Vector3D hotSpot = *targetPosition;
 					int32_t cellR, cellC;
 					land->worldToCell(hotSpot, cellR, cellC);
-					if (GameMap->getDeepWater(cellR, cellC) ||
-						GameMap->getShallowWater(cellR, cellC))
+					if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
 					{
 						if (waterMissEffect && waterMissEffect->IsExecuted())
 						{
@@ -624,22 +632,20 @@ int32_t WeaponBolt::update(void)
 						if (target->getPosition().z < owner->getPosition().z)
 						{
 							Stuff::Vector3D targetPos = target->getPosition();
-							Stuff::Vector3D ownerPos  = owner->getPosition();
-							float zDistance			  = ownerPos.z - targetPos.z;
+							Stuff::Vector3D ownerPos = owner->getPosition();
+							float zDistance = ownerPos.z - targetPos.z;
 							targetPos.z = ownerPos.z = 0.0f;
 							Stuff::Vector3D distance;
 							distance.Subtract(ownerPos, targetPos);
 							float yDistance = distance.GetApproximateLength();
-							float angle		= mc2_atan2(zDistance, yDistance) * RADS_TO_DEGREES;
+							float angle = mc2_atan2(zDistance, yDistance) * RADS_TO_DEGREES;
 							if (RollDice(angle * BaseHeadShotElevation))
 							{
 								weaponShot.hitLocation = 0; // Make it a head shot!
 							}
 						}
 					}
-					if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum &&
-						(((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) &&
-						(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
+					if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum && (((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) && (((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
 					{
 						// This is an area effect weapon. Hit or MISS, its the
 						// same!
@@ -690,7 +696,7 @@ int32_t WeaponBolt::update(void)
 					else if (weaponShot.damage > 3)
 						randomCrater = 1;
 					if (missEffect) // We missed and hit land.  Otherwise, we
-									// hit water, do NOT add crater
+						// hit water, do NOT add crater
 						craterManager->addCrater(
 							CRATER_1 + randomCrater, *targetPosition, RandomNumber(180));
 					// if
@@ -709,9 +715,7 @@ int32_t WeaponBolt::update(void)
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
 					}
-					if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum &&
-						(((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) &&
-						(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
+					if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum && (((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) && (((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
 					{
 						// This is an area effect weapon. Hit or MISS, its the
 						// same!
@@ -791,8 +795,7 @@ int32_t WeaponBolt::update(void)
 					Stuff::Vector3D hotSpot = *targetPosition;
 					int32_t cellR, cellC;
 					land->worldToCell(hotSpot, cellR, cellC);
-					if (GameMap->getDeepWater(cellR, cellC) ||
-						GameMap->getShallowWater(cellR, cellC))
+					if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
 					{
 						if (waterMissEffect && waterMissEffect->IsExecuted())
 						{
@@ -858,22 +861,20 @@ int32_t WeaponBolt::update(void)
 						if (target->getPosition().z < owner->getPosition().z)
 						{
 							Stuff::Vector3D targetPos = target->getPosition();
-							Stuff::Vector3D ownerPos  = owner->getPosition();
-							float zDistance			  = ownerPos.z - targetPos.z;
+							Stuff::Vector3D ownerPos = owner->getPosition();
+							float zDistance = ownerPos.z - targetPos.z;
 							targetPos.z = ownerPos.z = 0.0f;
 							Stuff::Vector3D distance;
 							distance.Subtract(ownerPos, targetPos);
 							float yDistance = distance.GetApproximateLength();
-							float angle		= mc2_atan2(zDistance, yDistance) * RADS_TO_DEGREES;
+							float angle = mc2_atan2(zDistance, yDistance) * RADS_TO_DEGREES;
 							if (RollDice(angle * BaseHeadShotElevation))
 							{
 								weaponShot.hitLocation = 0; // Make it a head shot!
 							}
 						}
 					}
-					if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum &&
-						(((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) &&
-						(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
+					if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum && (((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) && (((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
 					{
 						// This is an area effect weapon. Hit or MISS, its the
 						// same!
@@ -942,9 +943,7 @@ int32_t WeaponBolt::update(void)
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
 					}
-					if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum &&
-						(((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) &&
-						(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
+					if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum && (((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) && (((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
 					{
 						// This is an area effect weapon. Hit or MISS, its the
 						// same!
@@ -1089,7 +1088,7 @@ int32_t WeaponBolt::update(void)
 		if (((WeaponBoltTypePtr)getObjectType())->lightSource && !pointLight && (lightId != -1))
 		{
 			pointLight = ((WeaponBoltTypePtr)getObjectType())->getLight();
-			lightId	= eye->addWorldLight(pointLight);
+			lightId = eye->addWorldLight(pointLight);
 			if (lightId == -1)
 			{
 				// NO LIGHT ALLOWED!  TOO Many in World!
@@ -1106,8 +1105,8 @@ int32_t WeaponBolt::update(void)
 		// For beam we need 4 vertices for the two faces.
 		laserVertices[0] = position;
 		laserVertices[1] = position;
-		laserSide[0]	 = position;
-		laserSide[1]	 = position;
+		laserSide[0] = position;
+		laserSide[1] = position;
 		laserVertices[0].x -= laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
 		laserVertices[0].y += laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
 		laserVertices[1].x += laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
@@ -1139,8 +1138,8 @@ int32_t WeaponBolt::update(void)
 		hsPos += offset;
 		laserVertices[2] = hsPos;
 		laserVertices[3] = hsPos;
-		laserSide[2]	 = hsPos;
-		laserSide[3]	 = hsPos;
+		laserSide[2] = hsPos;
+		laserSide[3] = hsPos;
 		laserVertices[2].x -= laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
 		laserVertices[2].y += laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
 		laserVertices[3].x += laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
@@ -1151,9 +1150,9 @@ int32_t WeaponBolt::update(void)
 	if (pointLight)
 	{
 		Stuff::Point3D ourPosition;
-		ourPosition.x		  = -laserPosition.x;
-		ourPosition.y		  = laserPosition.z;
-		ourPosition.z		  = laserPosition.y;
+		ourPosition.x = -laserPosition.x;
+		ourPosition.y = laserPosition.z;
+		ourPosition.z = laserPosition.y;
 		pointLight->direction = ourPosition;
 		Stuff::LinearMatrix4D lightToWorldMatrix;
 		lightToWorldMatrix.BuildTranslation(ourPosition);
@@ -1234,7 +1233,7 @@ int32_t WeaponBolt::update(void)
 			if (hitEffect)
 			{
 				hitEffect->Kill(); // Effect is over.  Otherwise, wait until
-								   // hit!
+					// hit!
 				delete hitEffect;
 				hitEffect = nullptr;
 			}
@@ -1386,7 +1385,8 @@ int32_t WeaponBolt::update(void)
 }
 
 //---------------------------------------------------------------------------
-void WeaponBolt::render(void)
+void
+WeaponBolt::render(void)
 {
 	if (!getFlag(OBJECT_FLAG_JUSTCREATED) && !isTargeted()) // can we be seen by the enemy?
 	{
@@ -1400,7 +1400,7 @@ void WeaponBolt::render(void)
 		mlrState.SetZBufferWriteOn();
 		// mlrState.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 		// mlrState.SetAlphaMode(MidLevelRenderer::MLRState::AlphaInvAlphaMode);
-		drawInfo.m_state		 = mlrState;
+		drawInfo.m_state = mlrState;
 		drawInfo.m_clippingFlags = 0x0;
 		if (!gosEffect && !hitTarget && !((WeaponBoltTypePtr)getObjectType())->isBeam)
 		{
@@ -1413,100 +1413,95 @@ void WeaponBolt::render(void)
 			uint32_t edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
 			edgeMode <<= 24;
 			eye->projectZ(laserPosition, screenPos);
-			lq1Vertices[0].x	= screenPos.x;
-			lq1Vertices[0].y	= screenPos.y;
-			lq1Vertices[0].z	= 0.1f;
-			lq1Vertices[0].rhw  = screenPos.w;
-			lq1Vertices[0].u	= 0.0f;
-			lq1Vertices[0].v	= 0.0f;
+			lq1Vertices[0].x = screenPos.x;
+			lq1Vertices[0].y = screenPos.y;
+			lq1Vertices[0].z = 0.1f;
+			lq1Vertices[0].rhw = screenPos.w;
+			lq1Vertices[0].u = 0.0f;
+			lq1Vertices[0].v = 0.0f;
 			lq1Vertices[0].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->frontRGB;
-			lq2Vertices[0].x	= screenPos.x;
-			lq2Vertices[0].y	= screenPos.y;
-			lq2Vertices[0].z	= 0.1f;
-			lq2Vertices[0].rhw  = screenPos.w;
-			lq2Vertices[0].u	= 0.0f;
-			lq2Vertices[0].v	= 0.0f;
+			lq2Vertices[0].x = screenPos.x;
+			lq2Vertices[0].y = screenPos.y;
+			lq2Vertices[0].z = 0.1f;
+			lq2Vertices[0].rhw = screenPos.w;
+			lq2Vertices[0].u = 0.0f;
+			lq2Vertices[0].v = 0.0f;
 			lq2Vertices[0].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->frontRGB;
 			eye->projectZ(laserVertices[0], screenPos);
-			lq1Vertices[1].x	= screenPos.x;
-			lq1Vertices[1].y	= screenPos.y;
-			lq1Vertices[1].z	= 0.1f;
-			lq1Vertices[1].rhw  = screenPos.w;
-			lq1Vertices[1].u	= 0.0f;
-			lq1Vertices[1].v	= 0.0f;
+			lq1Vertices[1].x = screenPos.x;
+			lq1Vertices[1].y = screenPos.y;
+			lq1Vertices[1].z = 0.1f;
+			lq1Vertices[1].rhw = screenPos.w;
+			lq1Vertices[1].u = 0.0f;
+			lq1Vertices[1].v = 0.0f;
 			lq1Vertices[1].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
-			lq3Vertices[1].x	= screenPos.x;
-			lq3Vertices[1].y	= screenPos.y;
-			lq3Vertices[1].z	= 0.1f;
-			lq3Vertices[1].rhw  = screenPos.w;
-			lq3Vertices[1].u	= 0.0f;
-			lq3Vertices[1].v	= 0.0f;
+			lq3Vertices[1].x = screenPos.x;
+			lq3Vertices[1].y = screenPos.y;
+			lq3Vertices[1].z = 0.1f;
+			lq3Vertices[1].rhw = screenPos.w;
+			lq3Vertices[1].u = 0.0f;
+			lq3Vertices[1].v = 0.0f;
 			lq3Vertices[1].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
 			eye->projectZ(laserVertices[3], screenPos);
-			lq1Vertices[2].x	= screenPos.x;
-			lq1Vertices[2].y	= screenPos.y;
-			lq1Vertices[2].z	= 0.1f;
-			lq1Vertices[2].rhw  = screenPos.w;
-			lq1Vertices[2].u	= 0.0f;
-			lq1Vertices[2].v	= 0.0f;
+			lq1Vertices[2].x = screenPos.x;
+			lq1Vertices[2].y = screenPos.y;
+			lq1Vertices[2].z = 0.1f;
+			lq1Vertices[2].rhw = screenPos.w;
+			lq1Vertices[2].u = 0.0f;
+			lq1Vertices[2].v = 0.0f;
 			lq1Vertices[2].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
-			lq2Vertices[2].x	= screenPos.x;
-			lq2Vertices[2].y	= screenPos.y;
-			lq2Vertices[2].z	= 0.1f;
-			lq2Vertices[2].rhw  = screenPos.w;
-			lq2Vertices[2].u	= 0.0f;
-			lq2Vertices[2].v	= 0.0f;
+			lq2Vertices[2].x = screenPos.x;
+			lq2Vertices[2].y = screenPos.y;
+			lq2Vertices[2].z = 0.1f;
+			lq2Vertices[2].rhw = screenPos.w;
+			lq2Vertices[2].u = 0.0f;
+			lq2Vertices[2].v = 0.0f;
 			lq2Vertices[2].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
-			lq3Vertices[0].x	= screenPos.x;
-			lq3Vertices[0].y	= screenPos.y;
-			lq3Vertices[0].z	= 0.1f;
-			lq3Vertices[0].rhw  = screenPos.w;
-			lq3Vertices[0].u	= 0.0f;
-			lq3Vertices[0].v	= 0.0f;
+			lq3Vertices[0].x = screenPos.x;
+			lq3Vertices[0].y = screenPos.y;
+			lq3Vertices[0].z = 0.1f;
+			lq3Vertices[0].rhw = screenPos.w;
+			lq3Vertices[0].u = 0.0f;
+			lq3Vertices[0].v = 0.0f;
 			lq3Vertices[0].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
-			lq4Vertices[0].x	= screenPos.x;
-			lq4Vertices[0].y	= screenPos.y;
-			lq4Vertices[0].z	= 0.1f;
-			lq4Vertices[0].rhw  = screenPos.w;
-			lq4Vertices[0].u	= 0.0f;
-			lq4Vertices[0].v	= 0.0f;
+			lq4Vertices[0].x = screenPos.x;
+			lq4Vertices[0].y = screenPos.y;
+			lq4Vertices[0].z = 0.1f;
+			lq4Vertices[0].rhw = screenPos.w;
+			lq4Vertices[0].u = 0.0f;
+			lq4Vertices[0].v = 0.0f;
 			lq4Vertices[0].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
 			eye->projectZ(laserVertices[2], screenPos);
-			lq3Vertices[2].x	= screenPos.x;
-			lq3Vertices[2].y	= screenPos.y;
-			lq3Vertices[2].z	= 0.1f;
-			lq3Vertices[2].rhw  = screenPos.w;
-			lq3Vertices[2].u	= 0.0f;
-			lq3Vertices[2].v	= 0.0f;
+			lq3Vertices[2].x = screenPos.x;
+			lq3Vertices[2].y = screenPos.y;
+			lq3Vertices[2].z = 0.1f;
+			lq3Vertices[2].rhw = screenPos.w;
+			lq3Vertices[2].u = 0.0f;
+			lq3Vertices[2].v = 0.0f;
 			lq3Vertices[2].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->backRGB;
-			lq4Vertices[2].x	= screenPos.x;
-			lq4Vertices[2].y	= screenPos.y;
-			lq4Vertices[2].z	= 0.1f;
-			lq4Vertices[2].rhw  = screenPos.w;
-			lq4Vertices[2].u	= 0.0f;
-			lq4Vertices[2].v	= 0.0f;
+			lq4Vertices[2].x = screenPos.x;
+			lq4Vertices[2].y = screenPos.y;
+			lq4Vertices[2].z = 0.1f;
+			lq4Vertices[2].rhw = screenPos.w;
+			lq4Vertices[2].u = 0.0f;
+			lq4Vertices[2].v = 0.0f;
 			lq4Vertices[2].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->backRGB;
 			eye->projectZ(laserVertices[1], screenPos);
-			lq2Vertices[1].x	= screenPos.x;
-			lq2Vertices[1].y	= screenPos.y;
-			lq2Vertices[1].z	= 0.1f;
-			lq2Vertices[1].rhw  = screenPos.w;
-			lq2Vertices[1].u	= 0.0f;
-			lq2Vertices[1].v	= 0.0f;
+			lq2Vertices[1].x = screenPos.x;
+			lq2Vertices[1].y = screenPos.y;
+			lq2Vertices[1].z = 0.1f;
+			lq2Vertices[1].rhw = screenPos.w;
+			lq2Vertices[1].u = 0.0f;
+			lq2Vertices[1].v = 0.0f;
 			lq2Vertices[1].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
-			lq4Vertices[1].x	= screenPos.x;
-			lq4Vertices[1].y	= screenPos.y;
-			lq4Vertices[1].z	= 0.1f;
-			lq4Vertices[1].rhw  = screenPos.w;
-			lq4Vertices[1].u	= 0.0f;
-			lq4Vertices[1].v	= 0.0f;
+			lq4Vertices[1].x = screenPos.x;
+			lq4Vertices[1].y = screenPos.y;
+			lq4Vertices[1].z = 0.1f;
+			lq4Vertices[1].rhw = screenPos.w;
+			lq4Vertices[1].u = 0.0f;
+			lq4Vertices[1].v = 0.0f;
 			lq4Vertices[1].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
-			if (((lq1Vertices[0].x > eye->viewMulX) || (lq1Vertices[0].y > eye->viewMulY) ||
-					(lq1Vertices[0].x < eye->viewAddX) || (lq1Vertices[0].y < eye->viewAddY) ||
-					(lq1Vertices[1].x > eye->viewMulX) || (lq1Vertices[1].y > eye->viewMulY) ||
-					(lq1Vertices[1].x < eye->viewAddX) || (lq1Vertices[1].y < eye->viewAddY) ||
-					(lq1Vertices[2].x > eye->viewMulX) || (lq1Vertices[2].y > eye->viewMulY) ||
-					(lq1Vertices[2].x < eye->viewAddX) || (lq1Vertices[2].y < eye->viewAddY)))
+			if (((lq1Vertices[0].x > eye->viewMulX) || (lq1Vertices[0].y > eye->viewMulY) || (lq1Vertices[0].x < eye->viewAddX) || (lq1Vertices[0].y < eye->viewAddY) || (lq1Vertices[1].x > eye->viewMulX) || (lq1Vertices[1].y > eye->viewMulY) || (lq1Vertices[1].x < eye->viewAddX) || (lq1Vertices[1].y < eye->viewAddY) || (lq1Vertices[2].x > eye->viewMulX) || (lq1Vertices[2].y > eye->viewMulY) || (lq1Vertices[2].x < eye->viewAddX) || (lq1Vertices[2].y < eye->viewAddY)))
 			{
 			}
 			else
@@ -1555,12 +1550,7 @@ void WeaponBolt::render(void)
 					mcTextureManager->addVertices(0xffffffff, lq1Vertices, MC2_DRAWALPHA);
 				}
 			}
-			if (((lq2Vertices[0].x > eye->viewMulX) || (lq2Vertices[0].y > eye->viewMulY) ||
-					(lq2Vertices[0].x < eye->viewAddX) || (lq2Vertices[0].y < eye->viewAddY) ||
-					(lq2Vertices[1].x > eye->viewMulX) || (lq2Vertices[1].y > eye->viewMulY) ||
-					(lq2Vertices[1].x < eye->viewAddX) || (lq2Vertices[1].y < eye->viewAddY) ||
-					(lq2Vertices[2].x > eye->viewMulX) || (lq2Vertices[2].y > eye->viewMulY) ||
-					(lq2Vertices[2].x < eye->viewAddX) || (lq2Vertices[2].y < eye->viewAddY)))
+			if (((lq2Vertices[0].x > eye->viewMulX) || (lq2Vertices[0].y > eye->viewMulY) || (lq2Vertices[0].x < eye->viewAddX) || (lq2Vertices[0].y < eye->viewAddY) || (lq2Vertices[1].x > eye->viewMulX) || (lq2Vertices[1].y > eye->viewMulY) || (lq2Vertices[1].x < eye->viewAddX) || (lq2Vertices[1].y < eye->viewAddY) || (lq2Vertices[2].x > eye->viewMulX) || (lq2Vertices[2].y > eye->viewMulY) || (lq2Vertices[2].x < eye->viewAddX) || (lq2Vertices[2].y < eye->viewAddY)))
 			{
 			}
 			else
@@ -1574,12 +1564,7 @@ void WeaponBolt::render(void)
 					mcTextureManager->addVertices(0xffffffff, lq2Vertices, MC2_DRAWALPHA);
 				}
 			}
-			if (((lq3Vertices[0].x > eye->viewMulX) || (lq3Vertices[0].y > eye->viewMulY) ||
-					(lq3Vertices[0].x < eye->viewAddX) || (lq3Vertices[0].y < eye->viewAddY) ||
-					(lq3Vertices[1].x > eye->viewMulX) || (lq3Vertices[1].y > eye->viewMulY) ||
-					(lq3Vertices[1].x < eye->viewAddX) || (lq3Vertices[1].y < eye->viewAddY) ||
-					(lq3Vertices[2].x > eye->viewMulX) || (lq3Vertices[2].y > eye->viewMulY) ||
-					(lq3Vertices[2].x < eye->viewAddX) || (lq3Vertices[2].y < eye->viewAddY)))
+			if (((lq3Vertices[0].x > eye->viewMulX) || (lq3Vertices[0].y > eye->viewMulY) || (lq3Vertices[0].x < eye->viewAddX) || (lq3Vertices[0].y < eye->viewAddY) || (lq3Vertices[1].x > eye->viewMulX) || (lq3Vertices[1].y > eye->viewMulY) || (lq3Vertices[1].x < eye->viewAddX) || (lq3Vertices[1].y < eye->viewAddY) || (lq3Vertices[2].x > eye->viewMulX) || (lq3Vertices[2].y > eye->viewMulY) || (lq3Vertices[2].x < eye->viewAddX) || (lq3Vertices[2].y < eye->viewAddY)))
 			{
 			}
 			else
@@ -1593,12 +1578,7 @@ void WeaponBolt::render(void)
 					mcTextureManager->addVertices(0xffffffff, lq3Vertices, MC2_DRAWALPHA);
 				}
 			}
-			if (((lq4Vertices[0].x > eye->viewMulX) || (lq4Vertices[0].y > eye->viewMulY) ||
-					(lq4Vertices[0].x < eye->viewAddX) || (lq4Vertices[0].y < eye->viewAddY) ||
-					(lq4Vertices[1].x > eye->viewMulX) || (lq4Vertices[1].y > eye->viewMulY) ||
-					(lq4Vertices[1].x < eye->viewAddX) || (lq4Vertices[1].y < eye->viewAddY) ||
-					(lq4Vertices[2].x > eye->viewMulX) || (lq4Vertices[2].y > eye->viewMulY) ||
-					(lq4Vertices[2].x < eye->viewAddX) || (lq4Vertices[2].y < eye->viewAddY)))
+			if (((lq4Vertices[0].x > eye->viewMulX) || (lq4Vertices[0].y > eye->viewMulY) || (lq4Vertices[0].x < eye->viewAddX) || (lq4Vertices[0].y < eye->viewAddY) || (lq4Vertices[1].x > eye->viewMulX) || (lq4Vertices[1].y > eye->viewMulY) || (lq4Vertices[1].x < eye->viewAddX) || (lq4Vertices[1].y < eye->viewAddY) || (lq4Vertices[2].x > eye->viewMulX) || (lq4Vertices[2].y > eye->viewMulY) || (lq4Vertices[2].x < eye->viewAddX) || (lq4Vertices[2].y < eye->viewAddY)))
 			{
 			}
 			else
@@ -1625,7 +1605,7 @@ void WeaponBolt::render(void)
 			edgeMode <<= 24;
 			Stuff::Point3D actualPosition;
 			Stuff::Vector3D hotSpot = *targetPosition;
-			GameObjectPtr target	= ObjectManager->getByWatchID(targetWID);
+			GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 			if (target)
 			{
 				if (!target->isMech())
@@ -1642,100 +1622,99 @@ void WeaponBolt::render(void)
 			}
 			Stuff::Vector3D length;
 			length.Subtract(hotSpot, position);
-			float dist		   = length.GetApproximateLength();
-			float realUVRepeat = ((WeaponBoltTypePtr)getObjectType())->uvRepeat * dist /
-				((WeaponBoltTypePtr)getObjectType())->unitLength;
+			float dist = length.GetApproximateLength();
+			float realUVRepeat = ((WeaponBoltTypePtr)getObjectType())->uvRepeat * dist / ((WeaponBoltTypePtr)getObjectType())->unitLength;
 			eye->projectZ(laserVertices[0], screenPos);
-			lq1Vertices[0].x	= screenPos.x;
-			lq1Vertices[0].y	= screenPos.y;
-			lq1Vertices[0].z	= screenPos.z;
-			lq1Vertices[0].rhw  = screenPos.w;
-			lq1Vertices[0].u	= startUV;
-			lq1Vertices[0].v	= 0.0f;
+			lq1Vertices[0].x = screenPos.x;
+			lq1Vertices[0].y = screenPos.y;
+			lq1Vertices[0].z = screenPos.z;
+			lq1Vertices[0].rhw = screenPos.w;
+			lq1Vertices[0].u = startUV;
+			lq1Vertices[0].v = 0.0f;
 			lq1Vertices[0].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
-			lq2Vertices[0].x	= screenPos.x;
-			lq2Vertices[0].y	= screenPos.y;
-			lq2Vertices[0].z	= screenPos.z;
-			lq2Vertices[0].rhw  = screenPos.w;
-			lq2Vertices[0].u	= startUV;
-			lq2Vertices[0].v	= 0.0f;
+			lq2Vertices[0].x = screenPos.x;
+			lq2Vertices[0].y = screenPos.y;
+			lq2Vertices[0].z = screenPos.z;
+			lq2Vertices[0].rhw = screenPos.w;
+			lq2Vertices[0].u = startUV;
+			lq2Vertices[0].v = 0.0f;
 			lq2Vertices[0].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
 			eye->projectZ(laserVertices[1], screenPos);
-			lq2Vertices[1].x	= screenPos.x;
-			lq2Vertices[1].y	= screenPos.y;
-			lq2Vertices[1].z	= screenPos.z;
-			lq2Vertices[1].rhw  = screenPos.w;
-			lq2Vertices[1].u	= startUV;
-			lq2Vertices[1].v	= 0.999999f;
+			lq2Vertices[1].x = screenPos.x;
+			lq2Vertices[1].y = screenPos.y;
+			lq2Vertices[1].z = screenPos.z;
+			lq2Vertices[1].rhw = screenPos.w;
+			lq2Vertices[1].u = startUV;
+			lq2Vertices[1].v = 0.999999f;
 			lq2Vertices[1].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
 			eye->projectZ(laserVertices[2], screenPos);
-			lq1Vertices[1].x	= screenPos.x;
-			lq1Vertices[1].y	= screenPos.y;
-			lq1Vertices[1].z	= screenPos.z;
-			lq1Vertices[1].rhw  = screenPos.w;
-			lq1Vertices[1].u	= startUV + realUVRepeat;
-			lq1Vertices[1].v	= 0.0f;
+			lq1Vertices[1].x = screenPos.x;
+			lq1Vertices[1].y = screenPos.y;
+			lq1Vertices[1].z = screenPos.z;
+			lq1Vertices[1].rhw = screenPos.w;
+			lq1Vertices[1].u = startUV + realUVRepeat;
+			lq1Vertices[1].v = 0.0f;
 			lq1Vertices[1].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
 			eye->projectZ(laserVertices[3], screenPos);
-			lq1Vertices[2].x	= screenPos.x;
-			lq1Vertices[2].y	= screenPos.y;
-			lq1Vertices[2].z	= screenPos.z;
-			lq1Vertices[2].rhw  = screenPos.w;
-			lq1Vertices[2].u	= startUV + realUVRepeat;
-			lq1Vertices[2].v	= 0.999999f;
+			lq1Vertices[2].x = screenPos.x;
+			lq1Vertices[2].y = screenPos.y;
+			lq1Vertices[2].z = screenPos.z;
+			lq1Vertices[2].rhw = screenPos.w;
+			lq1Vertices[2].u = startUV + realUVRepeat;
+			lq1Vertices[2].v = 0.999999f;
 			lq1Vertices[2].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
-			lq2Vertices[2].x	= screenPos.x;
-			lq2Vertices[2].y	= screenPos.y;
-			lq2Vertices[2].z	= screenPos.z;
-			lq2Vertices[2].rhw  = screenPos.w;
-			lq2Vertices[2].u	= startUV + realUVRepeat;
-			lq2Vertices[2].v	= 0.999999f;
+			lq2Vertices[2].x = screenPos.x;
+			lq2Vertices[2].y = screenPos.y;
+			lq2Vertices[2].z = screenPos.z;
+			lq2Vertices[2].rhw = screenPos.w;
+			lq2Vertices[2].u = startUV + realUVRepeat;
+			lq2Vertices[2].v = 0.999999f;
 			lq2Vertices[2].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
 			eye->projectZ(laserSide[0], screenPos);
-			lq3Vertices[0].x	= screenPos.x;
-			lq3Vertices[0].y	= screenPos.y;
-			lq3Vertices[0].z	= screenPos.z;
-			lq3Vertices[0].rhw  = screenPos.w;
-			lq3Vertices[0].u	= startUV;
-			lq3Vertices[0].v	= 0.0f;
+			lq3Vertices[0].x = screenPos.x;
+			lq3Vertices[0].y = screenPos.y;
+			lq3Vertices[0].z = screenPos.z;
+			lq3Vertices[0].rhw = screenPos.w;
+			lq3Vertices[0].u = startUV;
+			lq3Vertices[0].v = 0.0f;
 			lq3Vertices[0].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
-			lq4Vertices[0].x	= screenPos.x;
-			lq4Vertices[0].y	= screenPos.y;
-			lq4Vertices[0].z	= screenPos.z;
-			lq4Vertices[0].rhw  = screenPos.w;
-			lq4Vertices[0].u	= startUV;
-			lq4Vertices[0].v	= 0.0f;
+			lq4Vertices[0].x = screenPos.x;
+			lq4Vertices[0].y = screenPos.y;
+			lq4Vertices[0].z = screenPos.z;
+			lq4Vertices[0].rhw = screenPos.w;
+			lq4Vertices[0].u = startUV;
+			lq4Vertices[0].v = 0.0f;
 			lq4Vertices[0].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
 			eye->projectZ(laserSide[1], screenPos);
-			lq4Vertices[1].x	= screenPos.x;
-			lq4Vertices[1].y	= screenPos.y;
-			lq4Vertices[1].z	= screenPos.z;
-			lq4Vertices[1].rhw  = screenPos.w;
-			lq4Vertices[1].u	= startUV;
-			lq4Vertices[1].v	= 0.999999f;
+			lq4Vertices[1].x = screenPos.x;
+			lq4Vertices[1].y = screenPos.y;
+			lq4Vertices[1].z = screenPos.z;
+			lq4Vertices[1].rhw = screenPos.w;
+			lq4Vertices[1].u = startUV;
+			lq4Vertices[1].v = 0.999999f;
 			lq4Vertices[1].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->midEdgeRGB;
 			eye->projectZ(laserSide[2], screenPos);
-			lq3Vertices[1].x	= screenPos.x;
-			lq3Vertices[1].y	= screenPos.y;
-			lq3Vertices[1].z	= screenPos.z;
-			lq3Vertices[1].rhw  = screenPos.w;
-			lq3Vertices[1].u	= startUV + realUVRepeat;
-			lq3Vertices[1].v	= 0.0f;
+			lq3Vertices[1].x = screenPos.x;
+			lq3Vertices[1].y = screenPos.y;
+			lq3Vertices[1].z = screenPos.z;
+			lq3Vertices[1].rhw = screenPos.w;
+			lq3Vertices[1].u = startUV + realUVRepeat;
+			lq3Vertices[1].v = 0.0f;
 			lq3Vertices[1].argb = edgeMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
 			eye->projectZ(laserSide[3], screenPos);
-			lq3Vertices[2].x	= screenPos.x;
-			lq3Vertices[2].y	= screenPos.y;
-			lq3Vertices[2].z	= screenPos.z;
-			lq3Vertices[2].rhw  = screenPos.w;
-			lq3Vertices[2].u	= startUV + realUVRepeat;
-			lq3Vertices[2].v	= 0.999999f;
+			lq3Vertices[2].x = screenPos.x;
+			lq3Vertices[2].y = screenPos.y;
+			lq3Vertices[2].z = screenPos.z;
+			lq3Vertices[2].rhw = screenPos.w;
+			lq3Vertices[2].u = startUV + realUVRepeat;
+			lq3Vertices[2].v = 0.999999f;
 			lq3Vertices[2].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
-			lq4Vertices[2].x	= screenPos.x;
-			lq4Vertices[2].y	= screenPos.y;
-			lq4Vertices[2].z	= screenPos.z;
-			lq4Vertices[2].rhw  = screenPos.w;
-			lq4Vertices[2].u	= startUV + realUVRepeat;
-			lq4Vertices[2].v	= 0.999999f;
+			lq4Vertices[2].x = screenPos.x;
+			lq4Vertices[2].y = screenPos.y;
+			lq4Vertices[2].z = screenPos.z;
+			lq4Vertices[2].rhw = screenPos.w;
+			lq4Vertices[2].u = startUV + realUVRepeat;
+			lq4Vertices[2].v = 0.999999f;
 			lq4Vertices[2].argb = alphaMode + ((WeaponBoltTypePtr)getObjectType())->middleRGB;
 			if (drawOldWay)
 			{
@@ -1789,30 +1768,22 @@ void WeaponBolt::render(void)
 			}
 			else
 			{
-				if ((lq1Vertices[0].z >= 0.0f) && (lq1Vertices[0].z < 1.0f) &&
-					(lq1Vertices[1].z >= 0.0f) && (lq1Vertices[1].z < 1.0f) &&
-					(lq1Vertices[2].z >= 0.0f) && (lq1Vertices[2].z < 1.0f))
+				if ((lq1Vertices[0].z >= 0.0f) && (lq1Vertices[0].z < 1.0f) && (lq1Vertices[1].z >= 0.0f) && (lq1Vertices[1].z < 1.0f) && (lq1Vertices[2].z >= 0.0f) && (lq1Vertices[2].z < 1.0f))
 				{
 					mcTextureManager->addVertices(
 						mcTextureHandle, lq1Vertices, MC2_ISEFFECTS | MC2_DRAWONEIN);
 				}
-				if ((lq2Vertices[0].z >= 0.0f) && (lq2Vertices[0].z < 1.0f) &&
-					(lq2Vertices[1].z >= 0.0f) && (lq2Vertices[1].z < 1.0f) &&
-					(lq2Vertices[2].z >= 0.0f) && (lq2Vertices[2].z < 1.0f))
+				if ((lq2Vertices[0].z >= 0.0f) && (lq2Vertices[0].z < 1.0f) && (lq2Vertices[1].z >= 0.0f) && (lq2Vertices[1].z < 1.0f) && (lq2Vertices[2].z >= 0.0f) && (lq2Vertices[2].z < 1.0f))
 				{
 					mcTextureManager->addVertices(
 						mcTextureHandle, lq2Vertices, MC2_ISEFFECTS | MC2_DRAWONEIN);
 				}
-				if ((lq3Vertices[0].z >= 0.0f) && (lq3Vertices[0].z < 1.0f) &&
-					(lq3Vertices[1].z >= 0.0f) && (lq3Vertices[1].z < 1.0f) &&
-					(lq3Vertices[2].z >= 0.0f) && (lq3Vertices[2].z < 1.0f))
+				if ((lq3Vertices[0].z >= 0.0f) && (lq3Vertices[0].z < 1.0f) && (lq3Vertices[1].z >= 0.0f) && (lq3Vertices[1].z < 1.0f) && (lq3Vertices[2].z >= 0.0f) && (lq3Vertices[2].z < 1.0f))
 				{
 					mcTextureManager->addVertices(
 						mcTextureHandle, lq3Vertices, MC2_ISEFFECTS | MC2_DRAWONEIN);
 				}
-				if ((lq4Vertices[0].z >= 0.0f) && (lq4Vertices[0].z < 1.0f) &&
-					(lq4Vertices[1].z >= 0.0f) && (lq4Vertices[1].z < 1.0f) &&
-					(lq4Vertices[2].z >= 0.0f) && (lq4Vertices[2].z < 1.0f))
+				if ((lq4Vertices[0].z >= 0.0f) && (lq4Vertices[0].z < 1.0f) && (lq4Vertices[1].z >= 0.0f) && (lq4Vertices[1].z < 1.0f) && (lq4Vertices[2].z >= 0.0f) && (lq4Vertices[2].z < 1.0f))
 				{
 					mcTextureManager->addVertices(
 						mcTextureHandle, lq4Vertices, MC2_ISEFFECTS | MC2_DRAWONEIN);
@@ -1822,7 +1793,7 @@ void WeaponBolt::render(void)
 			{
 				Stuff::Point3D actualPosition;
 				Stuff::Vector3D hotSpot = *targetPosition;
-				GameObjectPtr target	= ObjectManager->getByWatchID(targetWID);
+				GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 				if (target)
 				{
 					if (!target->isMech())
@@ -1900,7 +1871,7 @@ void WeaponBolt::render(void)
 		if (hitEffect && hitTarget && hitEffect->IsExecuted())
 		{
 			Stuff::Vector3D hotSpot = *targetPosition;
-			GameObjectPtr target	= ObjectManager->getByWatchID(targetWID);
+			GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 			if (target)
 			{
 				if (!target->isMech())
@@ -1961,7 +1932,8 @@ void WeaponBolt::render(void)
 }
 
 //---------------------------------------------------------------------------
-void WeaponBolt::destroy(void)
+void
+WeaponBolt::destroy(void)
 {
 	if (targetPosition)
 	{
@@ -2010,12 +1982,13 @@ void WeaponBolt::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void WeaponBolt::init(bool create, ObjectTypePtr _type)
+void
+WeaponBolt::init(bool create, ObjectTypePtr _type)
 {
 	GameObject::init(create, _type);
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
 	objectClass = WEAPONBOLT;
-	lightId		= -9; // Tell it to make one!
+	lightId = -9; // Tell it to make one!
 	// Make SURE all of the old Effects are GONE!!
 	destroy();
 	//-----------------------------------------
@@ -2039,8 +2012,7 @@ void WeaponBolt::init(bool create, ObjectTypePtr _type)
 				// gosEffect->SetScalar(BASE_EFFECT_SCALAR);
 			}
 		}
-		if ((strcmp(weaponEffects->GetEffectMuzzleFlashName(effectId), "NONE") != 0) &&
-			useNonWeaponEffects)
+		if ((strcmp(weaponEffects->GetEffectMuzzleFlashName(effectId), "NONE") != 0) && useNonWeaponEffects)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
@@ -2074,8 +2046,7 @@ void WeaponBolt::init(bool create, ObjectTypePtr _type)
 				// hitEffect->SetScalar(BASE_EFFECT_SCALAR);
 			}
 		}
-		if ((strcmp(weaponEffects->GetEffectMissName(effectId), "NONE") != 0) &&
-			useNonWeaponEffects)
+		if ((strcmp(weaponEffects->GetEffectMissName(effectId), "NONE") != 0) && useNonWeaponEffects)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
@@ -2093,8 +2064,7 @@ void WeaponBolt::init(bool create, ObjectTypePtr _type)
 			}
 		}
 		// No water miss for machine guns
-		if (useNonWeaponEffects && (effectId != 11) &&
-			(strcmp(weaponEffects->GetEffectName(WATER_MISS_FX), "NONE") != 0))
+		if (useNonWeaponEffects && (effectId != 11) && (strcmp(weaponEffects->GetEffectName(WATER_MISS_FX), "NONE") != 0))
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
@@ -2119,8 +2089,7 @@ void WeaponBolt::init(bool create, ObjectTypePtr _type)
 	//----------------------------------------------
 	// Get a texture Handle from the textureManager
 	// Assume ALPHA!
-	if (((WeaponBoltTypePtr)_type)->textureName &&
-		_stricmp(((WeaponBoltTypePtr)_type)->textureName, "NONE") != 0)
+	if (((WeaponBoltTypePtr)_type)->textureName && _stricmp(((WeaponBoltTypePtr)_type)->textureName, "NONE") != 0)
 	{
 		char tPath[1024];
 		sprintf(tPath, "%s128\\", tglPath);
@@ -2134,13 +2103,14 @@ void WeaponBolt::init(bool create, ObjectTypePtr _type)
 	}
 	else
 	{
-		mcTextureHandle  = 0;
+		mcTextureHandle = 0;
 		gosTextureHandle = 0xffffffff;
 	}
 }
 
 //---------------------------------------------------------------------------
-void WeaponBolt::setOwner(GameObjectPtr who)
+void
+WeaponBolt::setOwner(GameObjectPtr who)
 {
 	if (who)
 		ownerWID = who->getWatchID();
@@ -2149,7 +2119,8 @@ void WeaponBolt::setOwner(GameObjectPtr who)
 }
 
 //---------------------------------------------------------------------------
-void WeaponBolt::setTarget(GameObjectPtr who)
+void
+WeaponBolt::setTarget(GameObjectPtr who)
 {
 	if (who)
 		targetWID = who->getWatchID();
@@ -2158,7 +2129,8 @@ void WeaponBolt::setTarget(GameObjectPtr who)
 }
 
 //---------------------------------------------------------------------------
-void WeaponBolt::setTargetPosition(Stuff::Vector3D pos)
+void
+WeaponBolt::setTargetPosition(Stuff::Vector3D pos)
 {
 	if (!targetPosition)
 		targetPosition = new Stuff::Vector3D;
@@ -2166,7 +2138,8 @@ void WeaponBolt::setTargetPosition(Stuff::Vector3D pos)
 }
 
 //***************************************************************************
-void WeaponBolt::Save(PacketFilePtr file, int32_t packetNum)
+void
+WeaponBolt::Save(PacketFilePtr file, int32_t packetNum)
 {
 	WeaponBoltData data;
 	CopyTo(&data);
@@ -2175,11 +2148,12 @@ void WeaponBolt::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void WeaponBolt::CopyTo(WeaponBoltData* data)
+void
+WeaponBolt::CopyTo(WeaponBoltData* data)
 {
-	data->ownerWID		= ownerWID;
+	data->ownerWID = ownerWID;
 	data->hotSpotNumber = hotSpotNumber;
-	data->targetWID		= targetWID;
+	data->targetWID = targetWID;
 	data->targetHotSpot = targetHotSpot;
 	Stuff::Vector3D dmy;
 	dmy.Zero();
@@ -2187,57 +2161,58 @@ void WeaponBolt::CopyTo(WeaponBoltData* data)
 		data->targetPosition = *targetPosition;
 	else
 		data->targetPosition = dmy;
-	data->distanceToTarget	 = distanceToTarget;
+	data->distanceToTarget = distanceToTarget;
 	data->halfDistanceToTarget = halfDistanceToTarget;
-	data->weaponShot		   = weaponShot;
-	data->laserPosition		   = laserPosition;
+	data->weaponShot = weaponShot;
+	data->laserPosition = laserPosition;
 	memcpy(data->laserVertices, laserVertices, sizeof(Stuff::Vector3D) * 4);
 	memcpy(data->laserSide, laserSide, sizeof(Stuff::Vector3D) * 4);
-	data->effectId		   = effectId;
-	data->hitTarget		   = hitTarget;
-	data->timeLeft		   = timeLeft;
-	data->hsPos			   = hsPos;
-	data->hitLeft		   = hitLeft;
-	data->mcTextureHandle  = mcTextureHandle;
+	data->effectId = effectId;
+	data->hitTarget = hitTarget;
+	data->timeLeft = timeLeft;
+	data->hsPos = hsPos;
+	data->hitLeft = hitLeft;
+	data->mcTextureHandle = mcTextureHandle;
 	data->gosTextureHandle = gosTextureHandle;
-	data->startUV		   = startUV;
-	data->goalHeight	   = goalHeight;
+	data->startUV = startUV;
+	data->goalHeight = goalHeight;
 	GameObject::CopyTo(dynamic_cast<GameObjectData*>(data));
 }
 
 //---------------------------------------------------------------------------
-void WeaponBolt::Load(WeaponBoltData* data)
+void
+WeaponBolt::Load(WeaponBoltData* data)
 {
 	GameObject::Load(dynamic_cast<GameObjectData*>(data));
-	ownerWID	  = data->ownerWID;
+	ownerWID = data->ownerWID;
 	hotSpotNumber = data->hotSpotNumber;
-	targetWID	 = data->targetWID;
+	targetWID = data->targetWID;
 	targetHotSpot = data->targetHotSpot;
-	if ((data->targetPosition.x == data->targetPosition.y) &&
-		(data->targetPosition.x == data->targetPosition.z))
+	if ((data->targetPosition.x == data->targetPosition.y) && (data->targetPosition.x == data->targetPosition.z))
 		targetPosition = nullptr;
 	else
 	{
-		targetPosition  = new Stuff::Vector3D;
+		targetPosition = new Stuff::Vector3D;
 		*targetPosition = data->targetPosition;
 	}
-	distanceToTarget	 = data->distanceToTarget;
+	distanceToTarget = data->distanceToTarget;
 	halfDistanceToTarget = data->halfDistanceToTarget;
-	weaponShot			 = data->weaponShot;
-	laserPosition		 = data->laserPosition;
+	weaponShot = data->weaponShot;
+	laserPosition = data->laserPosition;
 	memcpy(laserVertices, data->laserVertices, sizeof(Stuff::Vector3D) * 4);
 	memcpy(laserSide, data->laserSide, sizeof(Stuff::Vector3D) * 4);
-	effectId   = data->effectId;
-	hitTarget  = data->hitTarget;
-	timeLeft   = data->timeLeft;
-	hsPos	  = data->hsPos;
-	hitLeft	= data->hitLeft;
-	startUV	= data->startUV;
+	effectId = data->effectId;
+	hitTarget = data->hitTarget;
+	timeLeft = data->timeLeft;
+	hsPos = data->hsPos;
+	hitLeft = data->hitLeft;
+	startUV = data->startUV;
 	goalHeight = data->goalHeight;
 }
 
 //---------------------------------------------------------------------------
-void WeaponBolt::finishNow(void)
+void
+WeaponBolt::finishNow(void)
 {
 	if (getExists())
 	{
@@ -2294,9 +2269,7 @@ void WeaponBolt::finishNow(void)
 			else
 				target->handleWeaponHit(&weaponShot);
 		}
-		if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum &&
-			(((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) &&
-			(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
+		if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum && (((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) && (((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
 		{
 			// Create the explosion here.  HIT or MISS, its the same one!!
 			// Damage is done by explosion NOT by hit!

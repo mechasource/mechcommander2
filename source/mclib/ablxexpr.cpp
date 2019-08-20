@@ -63,7 +63,8 @@ extern DebuggerPtr debugger;
 
 //***************************************************************************
 
-inline void promoteOperandsToReal(
+inline void
+promoteOperandsToReal(
 	StackItemPtr operand1Ptr, TypePtr type1Ptr, StackItemPtr operand2Ptr, TypePtr type2Ptr)
 {
 	if (type1Ptr == IntegerTypePtr)
@@ -74,7 +75,8 @@ inline void promoteOperandsToReal(
 
 //***************************************************************************
 
-TypePtr execSubscripts(TypePtr typePtr)
+TypePtr
+execSubscripts(TypePtr typePtr)
 {
 	//----------------------------------------
 	// Loop to execute bracketed subscripts...
@@ -103,7 +105,8 @@ TypePtr execSubscripts(TypePtr typePtr)
 
 //***************************************************************************
 
-TypePtr execConstant(SymTableNodePtr idPtr)
+TypePtr
+execConstant(SymTableNodePtr idPtr)
 {
 	TypePtr typePtr = idPtr->typePtr;
 	if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
@@ -122,7 +125,8 @@ TypePtr execConstant(SymTableNodePtr idPtr)
 
 //***************************************************************************
 
-TypePtr execVariable(SymTableNodePtr idPtr, UseType use)
+TypePtr
+execVariable(SymTableNodePtr idPtr, UseType use)
 {
 	TypePtr typePtr = (TypePtr)(idPtr->typePtr);
 	// First, point to the variable's stack item. If the variable's scope
@@ -135,7 +139,7 @@ TypePtr execVariable(SymTableNodePtr idPtr, UseType use)
 	case VAR_TYPE_NORMAL:
 	{
 		StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
-		int32_t delta				  = level - idPtr->level;
+		int32_t delta = level - idPtr->level;
 		while (delta-- > 0)
 			headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
 		dataPtr = (StackItemPtr)headerPtr + idPtr->defn.info.data.offset;
@@ -156,7 +160,7 @@ TypePtr execVariable(SymTableNodePtr idPtr, UseType use)
 		break;
 	case VAR_TYPE_REGISTERED:
 		tempStackItem.address = (PSTR)idPtr->defn.info.data.registeredData;
-		dataPtr				  = &tempStackItem;
+		dataPtr = &tempStackItem;
 		break;
 	}
 	//---------------------------------------------------------------
@@ -221,7 +225,8 @@ TypePtr execVariable(SymTableNodePtr idPtr, UseType use)
 
 //***************************************************************************
 
-TypePtr execFactor(void)
+TypePtr
+execFactor(void)
 {
 	TypePtr resultTypePtr = nullptr;
 	switch (codeToken)
@@ -232,8 +237,8 @@ TypePtr execFactor(void)
 		if (idPtr->defn.key == DFN_FUNCTION)
 		{
 			SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
-			resultTypePtr					 = execRoutineCall(idPtr, false);
-			CurRoutineIdPtr					 = thisRoutineIdPtr;
+			resultTypePtr = execRoutineCall(idPtr, false);
+			CurRoutineIdPtr = thisRoutineIdPtr;
 		}
 		else if (idPtr->defn.key == DFN_CONST)
 			resultTypePtr = execConstant(idPtr);
@@ -260,7 +265,7 @@ TypePtr execFactor(void)
 	case TKN_STRING:
 	{
 		SymTableNodePtr nodePtr = getCodeSymTableNodePtr();
-		int32_t length			= strlen(nodePtr->name);
+		int32_t length = strlen(nodePtr->name);
 		if (length > 1)
 		{
 			//-----------------------------------------------------------------------
@@ -297,7 +302,8 @@ TypePtr execFactor(void)
 
 //***************************************************************************
 
-TypePtr execTerm(void)
+TypePtr
+execTerm(void)
 {
 	StackItemPtr operand1Ptr;
 	StackItemPtr operand2Ptr;
@@ -306,18 +312,17 @@ TypePtr execTerm(void)
 	TypePtr resultTypePtr = execFactor();
 	//----------------------------------------------
 	// Process the factors separated by operators...
-	while ((codeToken == TKN_STAR) || (codeToken == TKN_FSLASH) || (codeToken == TKN_DIV) ||
-		(codeToken == TKN_MOD) || (codeToken == TKN_AND))
+	while ((codeToken == TKN_STAR) || (codeToken == TKN_FSLASH) || (codeToken == TKN_DIV) || (codeToken == TKN_MOD) || (codeToken == TKN_AND))
 	{
 		op = codeToken;
 		getCodeToken();
-		type2Ptr	= execFactor();
+		type2Ptr = execFactor();
 		operand1Ptr = tos - 1;
 		operand2Ptr = tos;
 		if (op == TKN_AND)
 		{
 			operand1Ptr->integer = operand1Ptr->integer && operand2Ptr->integer;
-			resultTypePtr		 = BooleanTypePtr;
+			resultTypePtr = BooleanTypePtr;
 		}
 		else
 			switch (op)
@@ -328,7 +333,7 @@ TypePtr execTerm(void)
 					//-----------------------------
 					// Both operands are integer...
 					operand1Ptr->integer = operand1Ptr->integer * operand2Ptr->integer;
-					resultTypePtr		 = IntegerTypePtr;
+					resultTypePtr = IntegerTypePtr;
 				}
 				else
 				{
@@ -337,7 +342,7 @@ TypePtr execTerm(void)
 					// integer...
 					promoteOperandsToReal(operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
 					operand1Ptr->real = operand1Ptr->real * operand2Ptr->real;
-					resultTypePtr	 = RealTypePtr;
+					resultTypePtr = RealTypePtr;
 				}
 				break;
 			case TKN_FSLASH:
@@ -410,7 +415,8 @@ TypePtr execTerm(void)
 
 //***************************************************************************
 
-TypePtr execSimpleExpression(void)
+TypePtr
+execSimpleExpression(void)
 {
 	TokenCodeType unaryOp = TKN_PLUS;
 	//------------------------------------------------------
@@ -434,13 +440,13 @@ TypePtr execSimpleExpression(void)
 	{
 		TokenCodeType op = codeToken;
 		getCodeToken();
-		TypePtr type2Ptr		 = execTerm();
+		TypePtr type2Ptr = execTerm();
 		StackItemPtr operand1Ptr = tos - 1;
 		StackItemPtr operand2Ptr = tos;
 		if (op == TKN_OR)
 		{
 			operand1Ptr->integer = operand1Ptr->integer || operand2Ptr->integer;
-			resultTypePtr		 = BooleanTypePtr;
+			resultTypePtr = BooleanTypePtr;
 		}
 		else if ((resultTypePtr == IntegerTypePtr) && (type2Ptr == IntegerTypePtr))
 		{
@@ -471,7 +477,8 @@ TypePtr execSimpleExpression(void)
 
 //***************************************************************************
 
-TypePtr execExpression(void)
+TypePtr
+execExpression(void)
 {
 	StackItemPtr operand1Ptr;
 	StackItemPtr operand2Ptr;
@@ -480,24 +487,22 @@ TypePtr execExpression(void)
 	//-----------------------------------
 	// Get the first simple expression...
 	TypePtr resultTypePtr = execSimpleExpression();
-	TypePtr type2Ptr	  = nullptr;
+	TypePtr type2Ptr = nullptr;
 	//-----------------------------------------------------------
 	// If there is a relational operator, save it and process the
 	// second simple expression...
-	if ((codeToken == TKN_EQUALEQUAL) || (codeToken == TKN_LT) || (codeToken == TKN_GT) ||
-		(codeToken == TKN_NE) || (codeToken == TKN_LE) || (codeToken == TKN_GE))
+	if ((codeToken == TKN_EQUALEQUAL) || (codeToken == TKN_LT) || (codeToken == TKN_GT) || (codeToken == TKN_NE) || (codeToken == TKN_LE) || (codeToken == TKN_GE))
 	{
 		op = codeToken;
 		getCodeToken();
 		//---------------------------------
 		// Get the 2nd simple expression...
-		type2Ptr	= execSimpleExpression();
+		type2Ptr = execSimpleExpression();
 		operand1Ptr = tos - 1;
 		operand2Ptr = tos;
 		//-----------------------------------------------------
 		// Both operands are integer, boolean or enumeration...
-		if (((resultTypePtr == IntegerTypePtr) && (type2Ptr == IntegerTypePtr)) ||
-			(resultTypePtr->form == FRM_ENUM))
+		if (((resultTypePtr == IntegerTypePtr) && (type2Ptr == IntegerTypePtr)) || (resultTypePtr->form == FRM_ENUM))
 		{
 			switch (op)
 			{
@@ -545,8 +550,7 @@ TypePtr execExpression(void)
 				break;
 			}
 		}
-		else if ((resultTypePtr->form == FRM_ARRAY) &&
-			(resultTypePtr->info.array.elementTypePtr == CharTypePtr))
+		else if ((resultTypePtr->form == FRM_ARRAY) && (resultTypePtr->info.array.elementTypePtr == CharTypePtr))
 		{
 			//----------------------------------------
 			// Strings. For now, always return true...

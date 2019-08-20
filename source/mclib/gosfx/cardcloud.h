@@ -85,8 +85,7 @@ public:
 public:
 	enum
 	{
-		ParticleSize = sizeof(Particle) + 4 * sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAColor) +
-			4 * sizeof(Stuff::Vector2DOf<float>)
+		ParticleSize = sizeof(Particle) + 4 * sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAColor) + 4 * sizeof(Stuff::Vector2DOf<float>)
 	};
 
 protected:

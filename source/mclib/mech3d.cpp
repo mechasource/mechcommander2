@@ -78,7 +78,7 @@ extern float metersPerWorldUnit;
 extern MidLevelRenderer::MLRClipper* theClipper;
 bool useNonWeaponEffects = true;
 bool useHighObjectDetail = true;
-bool InEditor			 = false;
+bool InEditor = false;
 
 extern bool MLRVertexLimitReached;
 extern bool useShadows;
@@ -94,37 +94,37 @@ extern bool useShadows;
 #define HELICOPTER_FACTOR (25.0f)
 
 char MechStateByGesture[MAX_MECH_ANIMATIONS] = {
-	BODYSTATE_PARKED,		   // GesturePark					 0 -- Park
-	BODYSTATE_STANDING,		   // GestureParkToStand			 1 -- ParkToStand
-	BODYSTATE_STANDING,		   // GestureStand					 2 -- Stand
-	BODYSTATE_NORMAL,		   // GestureStandToWalk			 3 -- StandToWalk
-	BODYSTATE_NORMAL,		   // GestureWalk					 4 -- Walk
-	BODYSTATE_PARKED,		   // GestureStandToPark			 5 -- StandToPark
-	BODYSTATE_NORMAL,		   // GestureWalkToRun				 6 -- WalkToRun
-	BODYSTATE_NORMAL,		   // GestureRun					 7 -- Run
-	BODYSTATE_NORMAL,		   // GestureRunToWalk				 8 -- RunToWalk
-	BODYSTATE_NORMAL,		   // GestureReverse				 9 -- Reverse
-	BODYSTATE_NORMAL,		   // GestureStandToReverse		10 -- StandToReverse
-	BODYSTATE_NORMAL,		   // GestureLimpLeft				11 -- LimpLeft
-	BODYSTATE_NORMAL,		   // GestureLimpRight				12 -- LimpRight
-	BODYSTATE_STANDING,		   // GestureIdle					13 -- Idle
+	BODYSTATE_PARKED, // GesturePark					 0 -- Park
+	BODYSTATE_STANDING, // GestureParkToStand			 1 -- ParkToStand
+	BODYSTATE_STANDING, // GestureStand					 2 -- Stand
+	BODYSTATE_NORMAL, // GestureStandToWalk			 3 -- StandToWalk
+	BODYSTATE_NORMAL, // GestureWalk					 4 -- Walk
+	BODYSTATE_PARKED, // GestureStandToPark			 5 -- StandToPark
+	BODYSTATE_NORMAL, // GestureWalkToRun				 6 -- WalkToRun
+	BODYSTATE_NORMAL, // GestureRun					 7 -- Run
+	BODYSTATE_NORMAL, // GestureRunToWalk				 8 -- RunToWalk
+	BODYSTATE_NORMAL, // GestureReverse				 9 -- Reverse
+	BODYSTATE_NORMAL, // GestureStandToReverse		10 -- StandToReverse
+	BODYSTATE_NORMAL, // GestureLimpLeft				11 -- LimpLeft
+	BODYSTATE_NORMAL, // GestureLimpRight				12 -- LimpRight
+	BODYSTATE_STANDING, // GestureIdle					13 -- Idle
 	BODYSTATE_FALLEN_BACKWARD, // GestureFallBackward			14 --
-							   // FallBackward
-	BODYSTATE_FALLEN_FORWARD,  // GestureFallForward			15 --
-							   // FallForward
-	BODYSTATE_NORMAL,		   // GestureHitFront				16 -- HitFront
-	BODYSTATE_NORMAL,		   // GestureHitBack				17 -- HitBack
-	BODYSTATE_NORMAL,		   // GestureHitLeft				18 -- HitLeft
-	BODYSTATE_NORMAL,		   // GestureHitRight				19 -- HitRight
-	BODYSTATE_NORMAL,		   // GestureJump					20 -- Jump
-	BODYSTATE_FALLEN_FORWARD,  // GestureRollover				21 -- Rollover
-							   // from FallBack to FallForward
-	BODYSTATE_FALLEN_FORWARD,  // GestureGetup					22 -- Get up
-							   // from FallForward
-	BODYSTATE_FALLEN_FORWARD,  // GestureFallenForward			23 -- Fallen
-							   // Forward (Single Frame, mech on ground)
-	BODYSTATE_FALLEN_FORWARD,  // GestureFallenBackward		24 -- Fallen
-							   // Backward (Single Frame, mech on ground)
+	// FallBackward
+	BODYSTATE_FALLEN_FORWARD, // GestureFallForward			15 --
+	// FallForward
+	BODYSTATE_NORMAL, // GestureHitFront				16 -- HitFront
+	BODYSTATE_NORMAL, // GestureHitBack				17 -- HitBack
+	BODYSTATE_NORMAL, // GestureHitLeft				18 -- HitLeft
+	BODYSTATE_NORMAL, // GestureHitRight				19 -- HitRight
+	BODYSTATE_NORMAL, // GestureJump					20 -- Jump
+	BODYSTATE_FALLEN_FORWARD, // GestureRollover				21 -- Rollover
+	// from FallBack to FallForward
+	BODYSTATE_FALLEN_FORWARD, // GestureGetup					22 -- Get up
+	// from FallForward
+	BODYSTATE_FALLEN_FORWARD, // GestureFallenForward			23 -- Fallen
+	// Forward (Single Frame, mech on ground)
+	BODYSTATE_FALLEN_FORWARD, // GestureFallenBackward		24 -- Fallen
+	// Backward (Single Frame, mech on ground)
 };
 
 #define MAX_ANIMATION_FILES 25
@@ -139,45 +139,45 @@ char MechStateByGesture[MAX_MECH_ANIMATIONS] = {
 
 extern bool reloadBounds;
 PSTR MechAnimationNames[MaxGestures + 2] = {
-	"StandToPark",  // GesturePark							 0 -- Park
-	"ParkToStand",  // GestureParkToStand					 1 --
-					// ParkToStand
-	"",				// GestureStand							 2 -- Stand
-	"STtoWK",		// GestureStandToWalk					 3 -- StandToWalk
-	"Walk",			// GestureWalk							 4 -- Walk
-	"StandToPark",  // GestureStandToPark					 5 --
-					// StandToPark
-	"WKtoRN",		// GestureWalkToRun						 6 -- WalkToRun
-	"Run",			// GestureRun							 7 -- Run
-	"RNToWK",		// GestureRunToWalk						 8 -- RunToWalk
-	"Walk",			// GestureReverse						 9 -- Reverse
-	"WKtoST",		// GestureStandToReverse					10 -- StandToReverse
-	"LimpLeft",		// GestureLimpLeft						11 -- LimpLeft
-	"LimpRight",	// GestureLimpRight						12 -- LimpRight
-	"Idle",			// GestureIdle							13 -- Idle
+	"StandToPark", // GesturePark							 0 -- Park
+	"ParkToStand", // GestureParkToStand					 1 --
+	// ParkToStand
+	"", // GestureStand							 2 -- Stand
+	"STtoWK", // GestureStandToWalk					 3 -- StandToWalk
+	"Walk", // GestureWalk							 4 -- Walk
+	"StandToPark", // GestureStandToPark					 5 --
+	// StandToPark
+	"WKtoRN", // GestureWalkToRun						 6 -- WalkToRun
+	"Run", // GestureRun							 7 -- Run
+	"RNToWK", // GestureRunToWalk						 8 -- RunToWalk
+	"Walk", // GestureReverse						 9 -- Reverse
+	"WKtoST", // GestureStandToReverse					10 -- StandToReverse
+	"LimpLeft", // GestureLimpLeft						11 -- LimpLeft
+	"LimpRight", // GestureLimpRight						12 -- LimpRight
+	"Idle", // GestureIdle							13 -- Idle
 	"FallBackward", // GestureFallBackward					14 --
-					// FallBackward
+	// FallBackward
 	"FallForward", // GestureFallForward					15 --
-				   // FallForward
-	"HitFront",	// GestureHitFront						16 -- HitFront
-	"HitBack",	 // GestureHitBack						17 -- HitBack
-	"HitLeft",	 // GestureHitLeft						18 -- HitLeft
-	"HitRight",	// GestureHitRight						19 -- HitRight
-	"Jump",		   // GestureJump							20 -- Jump
-	"GetupBack",   // GestureRollover						21 -- Getup from
-				 // FallBack
-	"GetupFront",   // GestureGetup							22 -- Getup from
-					// FallForward
-	"FallForward",  // GestureFallenForward					23 -- Fallen Forward
-					// (Single Frame, mech on ground)
+	// FallForward
+	"HitFront", // GestureHitFront						16 -- HitFront
+	"HitBack", // GestureHitBack						17 -- HitBack
+	"HitLeft", // GestureHitLeft						18 -- HitLeft
+	"HitRight", // GestureHitRight						19 -- HitRight
+	"Jump", // GestureJump							20 -- Jump
+	"GetupBack", // GestureRollover						21 -- Getup from
+	// FallBack
+	"GetupFront", // GestureGetup							22 -- Getup from
+	// FallForward
+	"FallForward", // GestureFallenForward					23 -- Fallen Forward
+	// (Single Frame, mech on ground)
 	"FallBackward", // GestureFallenBackward					24 -- Fallen Backward
-					// (Single Frame, mech on ground)
+	// (Single Frame, mech on ground)
 	"FallBackwardDam", // Destroyed States
-	"FallForwardDam"   // Destroyed States
+	"FallForwardDam" // Destroyed States
 };
 
 PaintSchemataPtr Mech3DAppearance::paintSchemata = nullptr;
-uint32_t Mech3DAppearance::numPaintSchemata		 = 0;
+uint32_t Mech3DAppearance::numPaintSchemata = 0;
 
 TG_TypeMultiShapePtr Mech3DAppearanceType::SensorSquareShape = nullptr;
 
@@ -189,7 +189,8 @@ bool Mech3DAppearanceType::animationLoadingEnabled = true;
 
 //-------------------------------------------------------------------------------
 // class Mech3DAppearanceType
-void Mech3DAppearanceType::init(PSTR fileName)
+void
+Mech3DAppearanceType::init(PSTR fileName)
 {
 	AppearanceType::init(fileName);
 	//---------------------------------------------------
@@ -376,7 +377,7 @@ void Mech3DAppearanceType::init(PSTR fileName)
 	result = mechFile.seekBlock("FootPrint");
 	if (result != NO_ERROR)
 	{
-		leftFootprintType  = 0;
+		leftFootprintType = 0;
 		rightFootprintType = 0;
 	}
 	result = mechFile.readIdLong("FootprintType", rightFootprintType);
@@ -385,7 +386,7 @@ void Mech3DAppearanceType::init(PSTR fileName)
 		result = mechFile.readIdLong("RightFootprintType", rightFootprintType);
 		if (result != NO_ERROR)
 		{
-			leftFootprintType  = 0;
+			leftFootprintType = 0;
 			rightFootprintType = 0;
 		}
 		result = mechFile.readIdLong("LeftFootprintType", leftFootprintType);
@@ -514,7 +515,8 @@ void Mech3DAppearanceType::init(PSTR fileName)
 }
 
 //----------------------------------------------------------------------------
-void Mech3DAppearanceType::destroy(void)
+void
+Mech3DAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	int32_t i = 0;
@@ -562,12 +564,13 @@ void Mech3DAppearanceType::destroy(void)
 		nodeData[i].nodeId = nullptr;
 	}
 	AppearanceTypeList::appearanceHeap->Free(nodeData);
-	nodeData	  = nullptr;
+	nodeData = nullptr;
 	numSmokeNodes = numWeaponNodes = numJumpNodes = 0;
 }
 
 //----------------------------------------------------------------------------
-void Mech3DAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
+void
+Mech3DAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -586,18 +589,20 @@ float mechDebugAngle[MAX_MECHS];
 float torsoDebugAngle[MAX_MECHS];
 //-----------------------------------------------------------------------------
 // class Mech3DAppearance
-void Mech3DAppearance::resetWeaponNodes(void)
+void
+Mech3DAppearance::resetWeaponNodes(void)
 {
 	// THis should never be called after the game inits!!
 	for (size_t i = 0; i < mechType->numWeaponNodes; i++)
 	{
-		nodeUsed[i]	= 0;
+		nodeUsed[i] = 0;
 		nodeRecycle[i] = BASE_NODE_RECYCLE_TIME;
 	}
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setWeaponNodeUsed(int32_t weaponNode)
+void
+Mech3DAppearance::setWeaponNodeUsed(int32_t weaponNode)
 {
 	// THis should never be called after the game inits!!
 	weaponNode -= mechType->numSmokeNodes;
@@ -609,7 +614,8 @@ void Mech3DAppearance::setWeaponNodeUsed(int32_t weaponNode)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setWeaponNodeRecycle(int32_t nodeId, float time)
+void
+Mech3DAppearance::setWeaponNodeRecycle(int32_t nodeId, float time)
 {
 	nodeId -= mechType->numSmokeNodes;
 	if ((nodeId >= 0) && (nodeId < mechType->numWeaponNodes))
@@ -617,11 +623,11 @@ void Mech3DAppearance::setWeaponNodeRecycle(int32_t nodeId, float time)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D Mech3DAppearance::getWeaponNodePosition(int32_t nodeId)
+Stuff::Vector3D
+Mech3DAppearance::getWeaponNodePosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
-	if ((nodeId < mechType->numSmokeNodes) ||
-		(nodeId >= (mechType->numSmokeNodes + mechType->numWeaponNodes)))
+	if ((nodeId < mechType->numSmokeNodes) || (nodeId >= (mechType->numSmokeNodes + mechType->numWeaponNodes)))
 		return result;
 	if (!inView)
 		return result;
@@ -649,7 +655,8 @@ Stuff::Vector3D Mech3DAppearance::getWeaponNodePosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D Mech3DAppearance::getNodeNamePosition(PSTR nodeName)
+Stuff::Vector3D
+Mech3DAppearance::getNodeNamePosition(PSTR nodeName)
 {
 	Stuff::Vector3D result = position;
 	if (!inView)
@@ -675,7 +682,8 @@ Stuff::Vector3D Mech3DAppearance::getNodeNamePosition(PSTR nodeName)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D Mech3DAppearance::getNodeIdPosition(int32_t nodeId)
+Stuff::Vector3D
+Mech3DAppearance::getNodeIdPosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if (!inView)
@@ -701,7 +709,8 @@ Stuff::Vector3D Mech3DAppearance::getNodeIdPosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D Mech3DAppearance::getNodePosition(int32_t nodeId)
+Stuff::Vector3D
+Mech3DAppearance::getNodePosition(int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if ((nodeId < 0) || (nodeId >= mechType->getTotalNodes()))
@@ -728,21 +737,22 @@ Stuff::Vector3D Mech3DAppearance::getNodePosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-int32_t Mech3DAppearance::getLowestWeaponNode(void)
+int32_t
+Mech3DAppearance::getLowestWeaponNode(void)
 {
 	//------------------------------------------------
 	// Scan all weapon nodes and find least used one.
 	int32_t bestNode = -1;
 	float lowestPosZ;
 	int32_t numSmokeNodes = mechType->numSmokeNodes;
-	lowestPosZ			  = 9999999999999.0f;
+	lowestPosZ = 9999999999999.0f;
 	for (size_t i = 0; i < mechType->numWeaponNodes; i++)
 	{
 		Stuff::Vector3D nodePosition = getNodePosition(i + numSmokeNodes);
 		if (nodePosition.z < lowestPosZ)
 		{
 			lowestPosZ = nodePosition.z;
-			bestNode   = i + numSmokeNodes;
+			bestNode = i + numSmokeNodes;
 		}
 	}
 	if ((lowestPosZ == 0.0f) || (bestNode < 0) || (bestNode >= mechType->getTotalNodes()))
@@ -751,24 +761,23 @@ int32_t Mech3DAppearance::getLowestWeaponNode(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t Mech3DAppearance::getWeaponNode(int32_t weaponType)
+int32_t
+Mech3DAppearance::getWeaponNode(int32_t weaponType)
 {
 	//------------------------------------------------
 	// Scan all weapon nodes and find least used one.
 	// BIG change here.  This is ONLY called at load time.
 	// NEVER during actual game execution.  In this way,
 	// Weapons always fire from the same nodes!!
-	int32_t leastUsed	 = 999999999;
-	int32_t bestNode	  = -1;
+	int32_t leastUsed = 999999999;
+	int32_t bestNode = -1;
 	int32_t numSmokeNodes = mechType->numSmokeNodes;
 	for (size_t i = 0; i < mechType->numWeaponNodes; i++)
 	{
 		switch (weaponType)
 		{
 		case MECH3D_WEAPONTYPE_MISSILE:
-			if ((mechType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
-				(mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) ||
-				(mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
+			if ((mechType->nodeData[numSmokeNodes + i].weaponType == weaponType) || (mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) || (mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
 			{
 				// This node is blown off.
 				if (rightArmOff && mechType->nodeData[i + numSmokeNodes].isRArmNode)
@@ -779,15 +788,12 @@ int32_t Mech3DAppearance::getWeaponNode(int32_t weaponType)
 				if (nodeUsed[i] < leastUsed)
 				{
 					leastUsed = nodeUsed[i];
-					bestNode  = i + numSmokeNodes;
+					bestNode = i + numSmokeNodes;
 				}
 			}
 			break;
 		case MECH3D_WEAPONTYPE_BALLISTIC:
-			if ((mechType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
-				(mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) ||
-				(mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_DIRECT) ||
-				(mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
+			if ((mechType->nodeData[numSmokeNodes + i].weaponType == weaponType) || (mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) || (mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_DIRECT) || (mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
 			{
 				// This node is blown off.
 				if (rightArmOff && mechType->nodeData[i + numSmokeNodes].isRArmNode)
@@ -798,14 +804,12 @@ int32_t Mech3DAppearance::getWeaponNode(int32_t weaponType)
 				if (nodeUsed[i] < leastUsed)
 				{
 					leastUsed = nodeUsed[i];
-					bestNode  = i + numSmokeNodes;
+					bestNode = i + numSmokeNodes;
 				}
 			}
 			break;
 		case MECH3D_WEAPONTYPE_ENERGY:
-			if ((mechType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
-				(mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_DIRECT) ||
-				(mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY))
+			if ((mechType->nodeData[numSmokeNodes + i].weaponType == weaponType) || (mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_DIRECT) || (mechType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY))
 			{
 				// This node is blown off.
 				if (rightArmOff && mechType->nodeData[i + numSmokeNodes].isRArmNode)
@@ -816,7 +820,7 @@ int32_t Mech3DAppearance::getWeaponNode(int32_t weaponType)
 				if (nodeUsed[i] < leastUsed)
 				{
 					leastUsed = nodeUsed[i];
-					bestNode  = i + numSmokeNodes;
+					bestNode = i + numSmokeNodes;
 				}
 			}
 			break;
@@ -830,7 +834,7 @@ int32_t Mech3DAppearance::getWeaponNode(int32_t weaponType)
 			if (nodeUsed[i] < leastUsed)
 			{
 				leastUsed = nodeUsed[i];
-				bestNode  = i + numSmokeNodes;
+				bestNode = i + numSmokeNodes;
 			}
 			break;
 		default:
@@ -845,7 +849,8 @@ int32_t Mech3DAppearance::getWeaponNode(int32_t weaponType)
 }
 
 //-----------------------------------------------------------------------------
-float Mech3DAppearance::getWeaponNodeRecycle(int32_t node)
+float
+Mech3DAppearance::getWeaponNodeRecycle(int32_t node)
 {
 	node -= mechType->numSmokeNodes;
 	if ((node >= 0) && (node < mechType->numWeaponNodes))
@@ -854,65 +859,66 @@ float Mech3DAppearance::getWeaponNodeRecycle(int32_t node)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void
+Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
-	mechType			   = (Mech3DAppearanceType*)tree;
-	mechName[0]			   = 0;
-	pilotNameID			   = -1;
-	paintScheme			   = -1;
-	objectNameId		   = 30862;
-	baseRootNodeHeight	 = -99999.9f;
+	mechType = (Mech3DAppearanceType*)tree;
+	mechName[0] = 0;
+	pilotNameID = -1;
+	paintScheme = -1;
+	objectNameId = 30862;
+	baseRootNodeHeight = -99999.9f;
 	baseRootNodeDifference = 0.0f;
-	rotationalNodeIndex	= -1;
+	rotationalNodeIndex = -1;
 	hitLeftNodeIndex = hitRightNodeIndex = -1;
 	rootNodeIndex = lightCircleNodeIndex = -1;
 	leftArmNodeIndex = rightArmNodeIndex = -1;
 	screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
-	frameNum											  = 0.0f;
+	frameNum = 0.0f;
 	rightShoulderPos.x = rightShoulderPos.y = rightShoulderPos.z = -99999.9f;
 	leftShoulderPos.x = leftShoulderPos.y = leftShoulderPos.z = -99999.9f;
-	idleTime												  = RandomNumber(idleMAX);
-	hazeFactor												  = 0.0f;
+	idleTime = RandomNumber(idleMAX);
+	hazeFactor = 0.0f;
 	rotation = torsoRotation = leftArmRotation = rightArmRotation = 0;
 	leftArmOff = rightArmOff = fallen = false;
 	position.x = position.y = position.z = 0.0f;
-	velocity							 = 0.0f;
+	velocity = 0.0f;
 	teamId = paintScheme = -1;
 	homeTeamRelationship = 0;
-	selected			 = 0;
-	status				 = 0;
+	selected = 0;
+	status = 0;
 	lockRotation = oncePerFrame = false;
-	sensorLevel					= 0;
-	sensorSpin					= 0.0f;
-	OBBRadius					= 0.0f;
-	currentLOD					= 0;
+	sensorLevel = 0;
+	sensorSpin = 0.0f;
+	OBBRadius = 0.0f;
+	currentLOD = 0;
 	jumpVelocity.Zero();
-	jumpFXSetup		 = false;
-	nodeUsed		 = nullptr;
-	nodeRecycle		 = nullptr;
+	jumpFXSetup = false;
+	nodeUsed = nullptr;
+	nodeRecycle = nullptr;
 	currentRightPoof = currentLeftPoof = 0;
-	localTextureHandle				   = 0xffffffff;
-	isSmoking						   = -1;
-	isWaking						   = false;
-	isDusting						   = false;
-	movedThisFrame					   = false;
-	fallDust						   = false;
-	criticalSmoke					   = nullptr;
-	smokeEffect						   = nullptr;
-	waterWake						   = nullptr;
-	helicopterDustCloud				   = nullptr;
-	isHelicopter					   = false;
+	localTextureHandle = 0xffffffff;
+	isSmoking = -1;
+	isWaking = false;
+	isDusting = false;
+	movedThisFrame = false;
+	fallDust = false;
+	criticalSmoke = nullptr;
+	smokeEffect = nullptr;
+	waterWake = nullptr;
+	helicopterDustCloud = nullptr;
+	isHelicopter = false;
 	leftArm = rightArm = nullptr;
 	rightArmSmoke = leftArmSmoke = nullptr;
 	currentFlash = duration = flashDuration = 0.0f;
-	flashColor								= 0x00000000;
-	drawFlash								= false;
+	flashColor = 0x00000000;
+	drawFlash = false;
 	// Default to Bright RGB.
 	psRed = psGreen = psBlue = 0xffffffff;
 	if (mechType)
 	{
-		mechShape			= mechType->mechShape[0]->CreateFrom();
+		mechShape = mechType->mechShape[0]->CreateFrom();
 		sensorTriangleShape = GVAppearanceType::SensorTriangleShape->CreateFrom();
 		if (mechType->leftArm)
 			leftArm = mechType->leftArm->CreateFrom();
@@ -1053,46 +1059,46 @@ void Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D nodeCenter = mechShape->GetRootNodeCenter();
-		boxCoords[0].x			   = position.x + mechShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[0].y			   = position.y + mechShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[0].z			   = position.z + mechShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[1].x			   = position.x + mechShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[1].y			   = position.y + mechShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[1].z			   = position.z + mechShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[2].x			   = position.x + mechShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[2].y			   = position.y + mechShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[2].z			   = position.z + mechShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[3].x			   = position.x + mechShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[3].y			   = position.y + mechShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[3].z			   = position.z + mechShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[4].x			   = position.x + mechShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[4].y			   = position.y + mechShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[4].z			   = position.z + mechShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[5].x			   = position.x + mechShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[5].y			   = position.y + mechShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[5].z			   = position.z + mechShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[6].x			   = position.x + mechShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[6].y			   = position.y + mechShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[6].z			   = position.z + mechShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[7].x			   = position.x + mechShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[7].y			   = position.y + mechShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[7].z			   = position.z + mechShape->GetMinBox().y + nodeCenter.y;
-		float testRadius		   = 0.0;
+		boxCoords[0].x = position.x + mechShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[0].y = position.y + mechShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[0].z = position.z + mechShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[1].x = position.x + mechShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[1].y = position.y + mechShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[1].z = position.z + mechShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[2].x = position.x + mechShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[2].y = position.y + mechShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[2].z = position.z + mechShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[3].x = position.x + mechShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[3].y = position.y + mechShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[3].z = position.z + mechShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[4].x = position.x + mechShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[4].y = position.y + mechShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[4].z = position.z + mechShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[5].x = position.x + mechShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[5].y = position.y + mechShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[5].z = position.z + mechShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[6].x = position.x + mechShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[6].y = position.y + mechShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[6].z = position.z + mechShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[7].x = position.x + mechShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[7].y = position.y + mechShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[7].z = position.z + mechShape->GetMinBox().y + nodeCenter.y;
+		float testRadius = 0.0;
 		for (i = 0; i < 8; i++)
 		{
 			testRadius = boxCoords[i].GetLength();
 			if (OBBRadius < testRadius)
 				OBBRadius = testRadius;
 		}
-		mechType->boundsUpperLeftX  = (-OBBRadius);
-		mechType->boundsUpperLeftY  = (-OBBRadius * 2.0);
+		mechType->boundsUpperLeftX = (-OBBRadius);
+		mechType->boundsUpperLeftY = (-OBBRadius * 2.0);
 		mechType->boundsLowerRightX = (OBBRadius);
 		mechType->boundsLowerRightY = (OBBRadius);
 		if (!mechType->getDesignerTypeBounds())
 		{
-			mechType->typeUpperLeft.x  = mechShape->GetMaxBox().x + nodeCenter.x;
-			mechType->typeUpperLeft.y  = mechShape->GetMaxBox().z + nodeCenter.z;
-			mechType->typeUpperLeft.z  = mechShape->GetMaxBox().y + nodeCenter.y;
+			mechType->typeUpperLeft.x = mechShape->GetMaxBox().x + nodeCenter.x;
+			mechType->typeUpperLeft.y = mechShape->GetMaxBox().z + nodeCenter.z;
+			mechType->typeUpperLeft.z = mechShape->GetMaxBox().y + nodeCenter.y;
 			mechType->typeLowerRight.x = mechShape->GetMinBox().x + nodeCenter.x;
 			mechType->typeLowerRight.y = mechShape->GetMinBox().z + nodeCenter.z;
 			mechType->typeLowerRight.z = mechShape->GetMinBox().y + nodeCenter.y;
@@ -1109,24 +1115,24 @@ void Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 	forceStop = atTransitionToNextGesture = inReverse = inJump = false;
 	inDebugMoveMode = singleStepMode = nextStep = prevStep = false;
 	currentStateGoal = -1; // Always start ready to change gestures
-	currentGestureId = 2;  // Always start in Stand Mode
-	transitionState  = 0;
-	oldStateGoal	 = 1; // Always start in Stand Mode
-	currentFrame	 = 0.0f;
-	pointLight		 = nullptr;
-	lightId			 = 0xffffffff;
-	hitGestureId	 = -1;
-	jumpSetup		 = false;
+	currentGestureId = 2; // Always start in Stand Mode
+	transitionState = 0;
+	oldStateGoal = 1; // Always start in Stand Mode
+	currentFrame = 0.0f;
+	pointLight = nullptr;
+	lightId = 0xffffffff;
+	hitGestureId = -1;
+	jumpSetup = false;
 	jumpAirborne = inJump = false;
 	footPos[0].x = footPos[0].y = footPos[0].z = 1000.0f;
 	footPos[1].x = footPos[1].y = footPos[1].z = 1000.0f;
 	for (size_t i = 0; i < MAX_DUST_POOFS; i++)
 	{
 		rightDustPoofEffect[i] = nullptr;
-		leftDustPoofEffect[i]  = nullptr;
+		leftDustPoofEffect[i] = nullptr;
 	}
-	smokeEffect		  = nullptr;
-	jumpJetEffect	 = nullptr;
+	smokeEffect = nullptr;
+	jumpJetEffect = nullptr;
 	rightShoulderBoom = leftShoulderBoom = nullptr;
 	leftFootDone0 = rightFootDone0 = leftFootDone1 = rightFootDone1 = false;
 	leftFootPoofDraw[0] = leftFootPoofDraw[1] = leftFootPoofDraw[2] = rightFootPoofDraw[0] =
@@ -1175,7 +1181,8 @@ void Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 	}
 }
 
-void Mech3DAppearance::initFX(void)
+void
+Mech3DAppearance::initFX(void)
 {
 	//-----------------------------------------------
 	// Create FX here so they are always ready to go!
@@ -1259,77 +1266,75 @@ void Mech3DAppearance::initFX(void)
 // reversing, running or limping.
 // NO OTHER GESTURE IS
 // VALID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-void Mech3DAppearance::hitFront(void)
+void
+Mech3DAppearance::hitFront(void)
 {
-	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) ||
-		(currentGestureId == GestureReverse) || (currentGestureId == GestureRun) ||
-		(currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
+	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) || (currentGestureId == GestureReverse) || (currentGestureId == GestureRun) || (currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
 	{
-		hitGestureId			  = currentGestureId;
-		currentGestureId		  = GestureHitFront;
-		int32_t firstFrame		  = mechType->gestures[currentGestureId].frameStart;
+		hitGestureId = currentGestureId;
+		currentGestureId = GestureHitFront;
+		int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 		atTransitionToNextGesture = false;
-		inReverse				  = false;
-		currentFrame			  = firstFrame;
+		inReverse = false;
+		currentFrame = firstFrame;
 	}
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::hitBack(void)
+void
+Mech3DAppearance::hitBack(void)
 {
-	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) ||
-		(currentGestureId == GestureReverse) || (currentGestureId == GestureRun) ||
-		(currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
+	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) || (currentGestureId == GestureReverse) || (currentGestureId == GestureRun) || (currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
 	{
-		hitGestureId			  = currentGestureId;
-		currentGestureId		  = GestureHitBack;
-		int32_t firstFrame		  = mechType->gestures[currentGestureId].frameStart;
+		hitGestureId = currentGestureId;
+		currentGestureId = GestureHitBack;
+		int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 		atTransitionToNextGesture = false;
-		inReverse				  = false;
-		currentFrame			  = firstFrame;
+		inReverse = false;
+		currentFrame = firstFrame;
 	}
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::hitLeft(void)
+void
+Mech3DAppearance::hitLeft(void)
 {
-	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) ||
-		(currentGestureId == GestureReverse) || (currentGestureId == GestureRun) ||
-		(currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
+	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) || (currentGestureId == GestureReverse) || (currentGestureId == GestureRun) || (currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
 	{
-		hitGestureId			  = currentGestureId;
-		currentGestureId		  = GestureHitLeft;
-		int32_t firstFrame		  = mechType->gestures[currentGestureId].frameStart;
+		hitGestureId = currentGestureId;
+		currentGestureId = GestureHitLeft;
+		int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 		atTransitionToNextGesture = false;
-		inReverse				  = false;
-		currentFrame			  = firstFrame;
+		inReverse = false;
+		currentFrame = firstFrame;
 	}
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::hitRight(void)
+void
+Mech3DAppearance::hitRight(void)
 {
-	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) ||
-		(currentGestureId == GestureReverse) || (currentGestureId == GestureRun) ||
-		(currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
+	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) || (currentGestureId == GestureReverse) || (currentGestureId == GestureRun) || (currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
 	{
-		hitGestureId			  = currentGestureId;
-		currentGestureId		  = GestureHitRight;
-		int32_t firstFrame		  = mechType->gestures[currentGestureId].frameStart;
+		hitGestureId = currentGestureId;
+		currentGestureId = GestureHitRight;
+		int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 		atTransitionToNextGesture = false;
-		inReverse				  = false;
-		currentFrame			  = firstFrame;
+		inReverse = false;
+		currentFrame = firstFrame;
 	}
 }
 
 //-----------------------------------------------------------------------------
-bool Mech3DAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
+bool
+Mech3DAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
 {
 	return mechShape->PerPolySelect(mouseX, mouseY);
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::LoadPaintSchemata(void)
+void
+Mech3DAppearance::LoadPaintSchemata(void)
 {
 	FullPathFileName paintName;
 	paintName.init(tglPath, "paintSchemata", ".fit");
@@ -1361,7 +1366,8 @@ void Mech3DAppearance::LoadPaintSchemata(void)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setPaintScheme(void)
+void
+Mech3DAppearance::setPaintScheme(void)
 {
 	//----------------------------------------------------------------------------
 	// Simple really.  Get the texture memory, apply the paint scheme, let it
@@ -1381,61 +1387,61 @@ void Mech3DAppearance::setPaintScheme(void)
 			{
 				//---------------------------------------------
 				// Make Color from PaintScheme.
-				uint32_t baseColor   = *textureMemory;
-				float baseColorRed   = float((baseColor & 0x00ff0000) >> 16);
+				uint32_t baseColor = *textureMemory;
+				float baseColorRed = float((baseColor & 0x00ff0000) >> 16);
 				float baseColorGreen = float((baseColor & 0x0000ff00) >> 8);
-				float baseColorBlue  = float(baseColor & 0x000000ff);
-				uint32_t newColor	= *textureMemory; // Black by default.
+				float baseColorBlue = float(baseColor & 0x000000ff);
+				uint32_t newColor = *textureMemory; // Black by default.
 				if ((!baseColorGreen) && (!baseColorBlue))
 				{
 					baseColorRed *= 0.00390625f; // Divide by 256;
 					baseColorRed = 1.0 - baseColorRed;
 					baseColorRed *= baseColorRed; // Log colors
-					baseColorRed	  = 1.0 - baseColorRed;
+					baseColorRed = 1.0 - baseColorRed;
 					float newColorRed = float((psRed & 0x00ff0000) >> 16);
 					newColorRed *= baseColorRed;
-					uint8_t red			= (uint8_t)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 					float newColorGreen = float((psRed & 0x0000ff00) >> 8);
 					newColorGreen *= baseColorRed;
-					uint8_t green	  = (uint8_t)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 					float newColorBlue = float(psRed & 0x000000ff);
 					newColorBlue *= baseColorRed;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (0xff << 24) + (red << 16) + (green << 8) + (blue);
+					newColor = (0xff << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				else if ((!baseColorRed) && (!baseColorBlue))
 				{
 					baseColorGreen *= 0.00390625f; // Divide by 256;
 					baseColorGreen = 1.0 - baseColorGreen;
 					baseColorGreen *= baseColorGreen; // Log colors
-					baseColorGreen	= 1.0 - baseColorGreen;
+					baseColorGreen = 1.0 - baseColorGreen;
 					float newColorRed = float((psGreen & 0x00ff0000) >> 16);
 					newColorRed *= baseColorGreen;
-					uint8_t red			= (uint8_t)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 					float newColorGreen = float((psGreen & 0x0000ff00) >> 8);
 					newColorGreen *= baseColorGreen;
-					uint8_t green	  = (uint8_t)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 					float newColorBlue = float(psGreen & 0x000000ff);
 					newColorBlue *= baseColorGreen;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (0xff << 24) + (red << 16) + (green << 8) + (blue);
+					newColor = (0xff << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				else if ((!baseColorRed) && (!baseColorGreen))
 				{
 					baseColorBlue *= 0.00390625f; // Divide by 256;
 					baseColorBlue = 1.0 - baseColorBlue;
 					baseColorBlue *= baseColorBlue; // Log colors
-					baseColorBlue	 = 1.0 - baseColorBlue;
+					baseColorBlue = 1.0 - baseColorBlue;
 					float newColorRed = float((psBlue & 0x00ff0000) >> 16);
 					newColorRed *= baseColorBlue;
-					uint8_t red			= (uint8_t)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 					float newColorGreen = float((psBlue & 0x0000ff00) >> 8);
 					newColorGreen *= baseColorBlue;
-					uint8_t green	  = (uint8_t)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 					float newColorBlue = float(psBlue & 0x000000ff);
 					newColorBlue *= baseColorBlue;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (0xff << 24) + (red << 16) + (green << 8) + (blue);
+					newColor = (0xff << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				*textureMemory = newColor;
 				textureMemory++;
@@ -1448,46 +1454,49 @@ void Mech3DAppearance::setPaintScheme(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t bgrTorgb(uint32_t frontRGB)
+uint32_t
+bgrTorgb(uint32_t frontRGB)
 {
 	uint32_t tmp;
-	tmp = (((0x00ff0000) & frontRGB) >> 16) + ((0x0000ff00) & frontRGB) +
-		(((0x000000ff) & frontRGB) << 16);
+	tmp = (((0x00ff0000) & frontRGB) >> 16) + ((0x0000ff00) & frontRGB) + (((0x000000ff) & frontRGB) << 16);
 	return (tmp);
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
+void
+Mech3DAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
 {
 #ifdef BGR
 	// These come into here bgr instead of RGB.  CONVERT!
-	psRed   = bgrTorgb(mcRed);
-	psBlue  = bgrTorgb(mcBlue);
+	psRed = bgrTorgb(mcRed);
+	psBlue = bgrTorgb(mcBlue);
 	psGreen = bgrTorgb(mcGreen);
-#else  /*BGR*/
-	psRed   = mcRed;
-	psBlue  = mcBlue;
+#else /*BGR*/
+	psRed = mcRed;
+	psBlue = mcBlue;
 	psGreen = mcGreen;
 #endif /*BGR*/
 	setPaintScheme();
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
+void
+Mech3DAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
 {
 #ifdef BGR
-	red   = bgrTorgb(psRed);
-	blue  = bgrTorgb(psBlue);
+	red = bgrTorgb(psRed);
+	blue = bgrTorgb(psBlue);
 	green = bgrTorgb(psGreen);
-#else  /*BGR*/
-	red		= psRed;
-	blue	= psBlue;
-	green   = psGreen;
+#else /*BGR*/
+	red = psRed;
+	blue = psBlue;
+	green = psGreen;
 #endif /*BGR*/
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
+void
+Mech3DAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 {
 	//---------------------------------------------------------------------------------
 	// Simple really.  Toss the current texture, reload the RGB and reapply the
@@ -1547,9 +1556,9 @@ void Mech3DAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t b
 			/* In this case, the texture returned should already have the paint
 			scheme applied. */
 			// Still need to store psRed/psGreen/psBlue!!!!
-			psRed   = red;
+			psRed = red;
 			psGreen = green;
-			psBlue  = blue;
+			psBlue = blue;
 			return;
 		}
 	}
@@ -1566,14 +1575,14 @@ void Mech3DAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t b
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setObjectParameters(
+void
+Mech3DAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	movedThisFrame = false;
 	if ((rotation != Rot) || (pos != position))
 		movedThisFrame = true;
-	if ((currentGestureId == 23) || (currentGestureId == 24) || (currentGestureId == 21) ||
-		(currentGestureId == 22) || (currentGestureId == 14) || (currentGestureId == 15))
+	if ((currentGestureId == 23) || (currentGestureId == 24) || (currentGestureId == 21) || (currentGestureId == 22) || (currentGestureId == 14) || (currentGestureId == 15))
 	{
 	}
 	else
@@ -1584,25 +1593,25 @@ void Mech3DAppearance::setObjectParameters(
 		if (rotation < -180)
 			rotation += 360;
 	}
-	position			 = pos;
-	selected			 = sel;
-	teamId				 = team;
+	position = pos;
+	selected = sel;
+	teamId = team;
 	homeTeamRelationship = homeRelations;
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setMoverParameters(
+void
+Mech3DAppearance::setMoverParameters(
 	float turretRot, float lArmRot, float rArmRot, bool isAirborne)
 {
 	isHelicopter = isAirborne;
-	if ((currentGestureId == 23) || (currentGestureId == 24) || (currentGestureId == 21) ||
-		(currentGestureId == 22) || (currentGestureId == 14) || (currentGestureId == 15))
+	if ((currentGestureId == 23) || (currentGestureId == 24) || (currentGestureId == 21) || (currentGestureId == 22) || (currentGestureId == 14) || (currentGestureId == 15))
 	{
 	}
 	else
 	{
-		torsoRotation	= turretRot;
-		leftArmRotation  = lArmRot;
+		torsoRotation = turretRot;
+		leftArmRotation = lArmRot;
 		rightArmRotation = rArmRot;
 		if (torsoRotation > 180)
 			torsoRotation -= 360;
@@ -1612,10 +1621,14 @@ void Mech3DAppearance::setMoverParameters(
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::updateFootprints(void) {}
+void
+Mech3DAppearance::updateFootprints(void)
+{
+}
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::debugUpdate(int32_t whichOne)
+void
+Mech3DAppearance::debugUpdate(int32_t whichOne)
 {
 	if (!inDebugMoveMode)
 		return;
@@ -1717,12 +1730,12 @@ void Mech3DAppearance::debugUpdate(int32_t whichOne)
 }
 
 //-----------------------------------------------------------------------------
-bool Mech3DAppearance::isMouseOver(float px, float py)
+bool
+Mech3DAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
-			(py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) && (py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -1735,11 +1748,12 @@ bool Mech3DAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool Mech3DAppearance::recalcBounds(void)
+bool
+Mech3DAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
-	bool wasInView	= inView;
-	inView			  = false;
+	bool wasInView = inView;
+	inView = false;
 	float eyeDistance = 0.0f;
 	if (eye)
 	{
@@ -1761,7 +1775,7 @@ bool Mech3DAppearance::recalcBounds(void)
 			if (eyeDistance > Camera::MaxClipDistance)
 			{
 				hazeFactor = 1.0f;
-				inView	 = false;
+				inView = false;
 			}
 			else if (eyeDistance > Camera::MinHazeDistance)
 			{
@@ -1772,7 +1786,7 @@ bool Mech3DAppearance::recalcBounds(void)
 			else
 			{
 				Camera::HazeFactor = 0.0f;
-				inView			   = true;
+				inView = true;
 			}
 			//-----------------------------------------------------------------
 			// If inside farClip plane, check if behind camera.
@@ -1798,7 +1812,7 @@ bool Mech3DAppearance::recalcBounds(void)
 		else
 		{
 			Camera::HazeFactor = 0.0f;
-			inView			   = true;
+			inView = true;
 		}
 		if (inView)
 		{
@@ -1810,17 +1824,16 @@ bool Mech3DAppearance::recalcBounds(void)
 			// do a rough check if on screen.  If no where near, do NOT do the
 			// below. Mighty mighty slow!!!! Use the original check done before
 			// all this 3D madness.  Dig out sourceSafe tomorrow!
-			tempPos		 = screenPos;
-			upperLeft.x  = tempPos.x;
-			upperLeft.y  = tempPos.y;
+			tempPos = screenPos;
+			upperLeft.x = tempPos.x;
+			upperLeft.y = tempPos.y;
 			lowerRight.x = tempPos.x;
 			lowerRight.y = tempPos.y;
 			upperLeft.x += (mechType->boundsUpperLeftX * eye->getScaleFactor());
 			upperLeft.y += (mechType->boundsUpperLeftY * eye->getScaleFactor());
 			lowerRight.x += (mechType->boundsLowerRightX * eye->getScaleFactor());
 			lowerRight.y += (mechType->boundsLowerRightY * eye->getScaleFactor());
-			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-				(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 			{
 				// We are on screen.  Figure out selection box.
 				Stuff::Vector3D boxCoords[8];
@@ -1892,17 +1905,16 @@ bool Mech3DAppearance::recalcBounds(void)
 							minY = bcsp[i].y;
 					}
 				}
-				upperLeft.x  = minX;
-				upperLeft.y  = minY;
+				upperLeft.x = minX;
+				upperLeft.y = minY;
 				lowerRight.x = maxX;
 				lowerRight.y = maxY;
-				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-					(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
+				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 				{
 					inView = true;
 					if (status != OBJECT_STATUS_DESTROYED)
 					{
-						bool baseLOD	   = true;
+						bool baseLOD = true;
 						uint32_t selectLOD = 0;
 						if (useHighObjectDetail)
 						{
@@ -1911,11 +1923,9 @@ bool Mech3DAppearance::recalcBounds(void)
 							// distance and we KNOW we can see it!
 							for (size_t i = 1; i < MAX_LODS; i++)
 							{
-								if (mechType->mechShape[i] &&
-									mechType->mechShape[i]->GetNumShapes() &&
-									(eyeDistance > mechType->lodDistance[i]))
+								if (mechType->mechShape[i] && mechType->mechShape[i]->GetNumShapes() && (eyeDistance > mechType->lodDistance[i]))
 								{
-									baseLOD   = false;
+									baseLOD = false;
 									selectLOD = i;
 								}
 							}
@@ -1924,14 +1934,14 @@ bool Mech3DAppearance::recalcBounds(void)
 						{
 							if (mechType->mechShape[1] && mechType->mechShape[1]->GetNumShapes())
 							{
-								baseLOD   = false;
+								baseLOD = false;
 								selectLOD = 1;
 							}
 						}
 						// we are at this LOD level.
 						if (selectLOD != (uint32_t)currentLOD)
 						{
-							currentLOD		   = selectLOD;
+							currentLOD = selectLOD;
 							uint8_t alphaValue = mechShape->GetAlphaValue();
 							// mechShape->ClearAnimation();	//DO NOT do this
 							// with animating things!!
@@ -1948,7 +1958,7 @@ bool Mech3DAppearance::recalcBounds(void)
 						if (currentLOD && baseLOD)
 						{
 							// we are at the Base LOD level.
-							currentLOD		   = 0;
+							currentLOD = 0;
 							uint8_t alphaValue = mechShape->GetAlphaValue();
 							// treeShape->ClearAnimation();
 							delete mechShape;
@@ -1968,7 +1978,7 @@ bool Mech3DAppearance::recalcBounds(void)
 				else
 				{
 					inView = false; // Did alot of extra work checking this, but
-									// WHY draw and insult to injury?
+						// WHY draw and insult to injury?
 				}
 			}
 			else
@@ -1981,7 +1991,8 @@ bool Mech3DAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t Mech3DAppearance::render(int32_t depthFixup)
+int32_t
+Mech3DAppearance::render(int32_t depthFixup)
 {
 	// Force textures to reload due to unique instance.
 	mechShape->SetTextureHandle(0, localTextureHandle);
@@ -1993,14 +2004,14 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 	{
 		if (visible)
 		{
-			int32_t color	  = SD_BLUE;
+			int32_t color = SD_BLUE;
 			uint32_t highLight = 0x007f7f7f;
 			if ((teamId > -1) && (teamId < 8))
 			{
 				static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
-				static int32_t colorTable[3]	  = {
-					 SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
-				color	 = colorTable[homeTeamRelationship];
+				static int32_t colorTable[3] = {
+					SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+				color = colorTable[homeTeamRelationship];
 				highLight = highLightTable[homeTeamRelationship];
 			}
 			if (selected & DRAW_COLORED && duration <= 0)
@@ -2062,14 +2073,13 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 				mlrState.SetTextureCorrectionOn();
 				mlrState.SetZBufferCompareOn();
 				mlrState.SetZBufferWriteOn();
-				drawInfo.m_state		 = mlrState;
+				drawInfo.m_state = mlrState;
 				drawInfo.m_clippingFlags = 0x0;
 				if (!isWaking && useNonWeaponEffects)
 				{
 					for (size_t i = 0; i < MAX_DUST_POOFS; i++)
 					{
-						if (rightFootPoofDraw[i] && rightDustPoofEffect[i] &&
-							rightDustPoofEffect[i]->IsExecuted())
+						if (rightFootPoofDraw[i] && rightDustPoofEffect[i] && rightDustPoofEffect[i]->IsExecuted())
 						{
 							Stuff::LinearMatrix4D shapeOrigin;
 							Stuff::LinearMatrix4D localToWorld;
@@ -2079,8 +2089,7 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 							if (!MLRVertexLimitReached)
 								rightDustPoofEffect[i]->Draw(&drawInfo);
 						}
-						if (leftFootPoofDraw[i] && leftDustPoofEffect[i] &&
-							leftDustPoofEffect[i]->IsExecuted())
+						if (leftFootPoofDraw[i] && leftDustPoofEffect[i] && leftDustPoofEffect[i]->IsExecuted())
 						{
 							Stuff::LinearMatrix4D shapeOrigin;
 							Stuff::LinearMatrix4D localToWorld;
@@ -2092,8 +2101,7 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 						}
 					}
 				}
-				if ((currentGestureId == GestureJump) && inJump && jumpJetEffect &&
-					jumpJetEffect->IsExecuted())
+				if ((currentGestureId == GestureJump) && inJump && jumpJetEffect && jumpJetEffect->IsExecuted())
 				{
 					int32_t jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
 					Stuff::Vector3D jumpNodePos = getNodePosition(jumpNodeId);
@@ -2125,9 +2133,9 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 					if (leftArmNodeIndex == -1)
 						leftArmNodeIndex = mechShape->GetNodeNameId("joint_luarm");
 					Stuff::Vector3D leftNodePos = getNodeIdPosition(leftArmNodeIndex);
-					leftShoulderPos.x			= -leftNodePos.x;
-					leftShoulderPos.y			= leftNodePos.z;
-					leftShoulderPos.z			= leftNodePos.y;
+					leftShoulderPos.x = -leftNodePos.x;
+					leftShoulderPos.y = leftNodePos.z;
+					leftShoulderPos.z = leftNodePos.y;
 					shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 					shapeOrigin.BuildTranslation(leftShoulderPos);
 					Stuff::UnitQuaternion effectRot;
@@ -2146,9 +2154,9 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 					if (rightArmNodeIndex == -1)
 						rightArmNodeIndex = mechShape->GetNodeNameId("joint_ruarm");
 					Stuff::Vector3D rightNodePos = getNodeIdPosition(rightArmNodeIndex);
-					rightShoulderPos.x			 = -rightNodePos.x;
-					rightShoulderPos.y			 = rightNodePos.z;
-					rightShoulderPos.z			 = rightNodePos.y;
+					rightShoulderPos.x = -rightNodePos.x;
+					rightShoulderPos.y = rightNodePos.z;
+					rightShoulderPos.z = rightNodePos.y;
 					shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 					shapeOrigin.BuildTranslation(rightShoulderPos);
 					Stuff::UnitQuaternion effectRot;
@@ -2186,8 +2194,8 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 					}
 				}
 				if (waterWake && isWaking && (currentGestureId != 20)) // Do NOT draw wake if we are
-																	   // jumping.  keep calcing it,
-																	   // though!
+					// jumping.  keep calcing it,
+					// though!
 				{
 					Stuff::LinearMatrix4D shapeOrigin;
 					Stuff::LinearMatrix4D localToWorld;
@@ -2344,7 +2352,7 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 			mlrState.SetTextureCorrectionOn();
 			mlrState.SetZBufferCompareOn();
 			mlrState.SetZBufferWriteOn();
-			drawInfo.m_state		 = mlrState;
+			drawInfo.m_state = mlrState;
 			drawInfo.m_clippingFlags = 0x0;
 			Stuff::LinearMatrix4D shapeOrigin;
 			Stuff::LinearMatrix4D localToWorld;
@@ -2376,7 +2384,7 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 			mlrState.SetTextureCorrectionOn();
 			mlrState.SetZBufferCompareOn();
 			mlrState.SetZBufferWriteOn();
-			drawInfo.m_state		 = mlrState;
+			drawInfo.m_state = mlrState;
 			drawInfo.m_clippingFlags = 0x0;
 			Stuff::LinearMatrix4D shapeOrigin;
 			Stuff::LinearMatrix4D localToWorld;
@@ -2399,7 +2407,8 @@ int32_t Mech3DAppearance::render(int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-int32_t Mech3DAppearance::renderShadows(void)
+int32_t
+Mech3DAppearance::renderShadows(void)
 {
 	mechShape->SetTextureHandle(0, localTextureHandle);
 	if (inView && visible)
@@ -2424,7 +2433,8 @@ int64_t x;
 #endif
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setObjStatus(int32_t oStatus)
+void
+Mech3DAppearance::setObjStatus(int32_t oStatus)
 {
 	if ((status != oStatus) && (!InEditor))
 	{
@@ -2519,7 +2529,8 @@ void Mech3DAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::updateGeometry(void)
+void
+Mech3DAppearance::updateGeometry(void)
 {
 #ifdef LAB_ONLY
 	x = GetCycles();
@@ -2530,8 +2541,7 @@ void Mech3DAppearance::updateGeometry(void)
 		rightArm->SetTextureHandle(0, localTextureHandle);
 	if (leftArm)
 		leftArm->SetTextureHandle(0, localTextureHandle);
-	if ((status == OBJECT_STATUS_DESTROYED) || (status == OBJECT_STATUS_DISABLED) ||
-		(status == OBJECT_STATUS_SHUTDOWN))
+	if ((status == OBJECT_STATUS_DESTROYED) || (status == OBJECT_STATUS_DISABLED) || (status == OBJECT_STATUS_SHUTDOWN))
 	{
 		mechShape->SetLightsOut(true);
 	}
@@ -2569,15 +2579,15 @@ void Mech3DAppearance::updateGeometry(void)
 		float lightIntensity = 1.0f;
 		if (land)
 			lightIntensity = land->getTerrainLight(position);
-		lightr			  = eye->getLightRed(lightIntensity);
-		lightg			  = eye->getLightGreen(lightIntensity);
-		lightb			  = eye->getLightBlue(lightIntensity);
+		lightr = eye->getLightRed(lightIntensity);
+		lightg = eye->getLightGreen(lightIntensity);
+		lightb = eye->getLightBlue(lightIntensity);
 		uint32_t lightRGB = (lightr << 16) + (lightg << 8) + lightb;
 		eye->setLightColor(0, lightRGB);
 		eye->setLightIntensity(0, 1.0);
 		uint32_t fogRGB = 0xff << 24;
-		float fogStart  = eye->fogStart;
-		float fogFull   = eye->fogFull;
+		float fogStart = eye->fogStart;
+		float fogFull = eye->fogFull;
 		if (useFog && (xlatPosition.y < fogStart))
 		{
 			float fogFactor = fogStart - xlatPosition.y;
@@ -2597,7 +2607,7 @@ void Mech3DAppearance::updateGeometry(void)
 					fogFactor = 256.0;
 				}
 				uint8_t fogResult = fogFactor;
-				fogRGB			  = fogResult << 24;
+				fogRGB = fogResult << 24;
 			}
 		}
 		else
@@ -2633,13 +2643,13 @@ void Mech3DAppearance::updateGeometry(void)
 					lightCircleNodeIndex = mechShape->GetNodeNameId("SLCircle_anubis");
 				Stuff::Vector3D lightPos = getNodeIdPosition(lightCircleNodeIndex);
 				Stuff::Point3D ourPosition;
-				ourPosition.x			  = -lightPos.x;
-				ourPosition.y			  = lightPos.z;
-				ourPosition.z			  = lightPos.y;
-				pointLight->direction	 = ourPosition;
-				pointLight->spotDir.x	 = -position.x;
-				pointLight->spotDir.y	 = position.z;
-				pointLight->spotDir.z	 = position.y;
+				ourPosition.x = -lightPos.x;
+				ourPosition.y = lightPos.z;
+				ourPosition.z = lightPos.y;
+				pointLight->direction = ourPosition;
+				pointLight->spotDir.x = -position.x;
+				pointLight->spotDir.y = position.z;
+				pointLight->spotDir.z = position.y;
 				pointLight->maxSpotLength = 50.0f;
 				Stuff::LinearMatrix4D lightToWorldMatrix;
 				lightToWorldMatrix.BuildTranslation(ourPosition);
@@ -2694,13 +2704,9 @@ void Mech3DAppearance::updateGeometry(void)
 		Stuff::Vector3D rFootPos, lFootPos;
 		int32_t footId1 = mechType->getTotalNodes() - 2;
 		int32_t footId0 = mechType->getTotalNodes() - 1;
-		rFootPos		= getNodePosition(footId1);
-		lFootPos		= getNodePosition(footId0);
-		if (!rightFootDone0 &&
-			(currentFrame >=
-				(mechType->gestures[currentGestureId].rightFootDownFrame0 - FOOTPRINT_SLOP)) &&
-			(currentFrame <=
-				(mechType->gestures[currentGestureId].rightFootDownFrame0 + FOOTPRINT_SLOP)))
+		rFootPos = getNodePosition(footId1);
+		lFootPos = getNodePosition(footId0);
+		if (!rightFootDone0 && (currentFrame >= (mechType->gestures[currentGestureId].rightFootDownFrame0 - FOOTPRINT_SLOP)) && (currentFrame <= (mechType->gestures[currentGestureId].rightFootDownFrame0 + FOOTPRINT_SLOP)))
 		{
 			// Foot is on ground.  Poof and footprint.
 			rightFootDone0 = true;
@@ -2725,11 +2731,7 @@ void Mech3DAppearance::updateGeometry(void)
 			if (craterManager && !isWaking)
 				craterManager->addCrater(mechType->rightFootprintType, rFootPos, rotation);
 		}
-		if (!rightFootDone1 &&
-			(currentFrame >=
-				(mechType->gestures[currentGestureId].rightFootDownFrame1 - FOOTPRINT_SLOP)) &&
-			(currentFrame <=
-				(mechType->gestures[currentGestureId].rightFootDownFrame1 + FOOTPRINT_SLOP)))
+		if (!rightFootDone1 && (currentFrame >= (mechType->gestures[currentGestureId].rightFootDownFrame1 - FOOTPRINT_SLOP)) && (currentFrame <= (mechType->gestures[currentGestureId].rightFootDownFrame1 + FOOTPRINT_SLOP)))
 		{
 			// Foot is on ground.  Poof and footprint.
 			rightFootDone1 = true;
@@ -2754,27 +2756,15 @@ void Mech3DAppearance::updateGeometry(void)
 			if (craterManager && !isWaking)
 				craterManager->addCrater(mechType->rightFootprintType, rFootPos, rotation);
 		}
-		if (rightFootDone0 &&
-				(currentFrame <
-					(mechType->gestures[currentGestureId].rightFootDownFrame0 - FOOTPRINT_SLOP)) ||
-			(currentFrame >
-				(mechType->gestures[currentGestureId].rightFootDownFrame0 + FOOTPRINT_SLOP)))
+		if (rightFootDone0 && (currentFrame < (mechType->gestures[currentGestureId].rightFootDownFrame0 - FOOTPRINT_SLOP)) || (currentFrame > (mechType->gestures[currentGestureId].rightFootDownFrame0 + FOOTPRINT_SLOP)))
 		{
 			rightFootDone0 = false;
 		}
-		if (rightFootDone1 &&
-				(currentFrame <
-					(mechType->gestures[currentGestureId].rightFootDownFrame1 - FOOTPRINT_SLOP)) ||
-			(currentFrame >
-				(mechType->gestures[currentGestureId].rightFootDownFrame1 + FOOTPRINT_SLOP)))
+		if (rightFootDone1 && (currentFrame < (mechType->gestures[currentGestureId].rightFootDownFrame1 - FOOTPRINT_SLOP)) || (currentFrame > (mechType->gestures[currentGestureId].rightFootDownFrame1 + FOOTPRINT_SLOP)))
 		{
 			rightFootDone1 = false;
 		}
-		if (!leftFootDone0 &&
-			(currentFrame >=
-				(mechType->gestures[currentGestureId].leftFootDownFrame0 - FOOTPRINT_SLOP)) &&
-			(currentFrame <=
-				(mechType->gestures[currentGestureId].leftFootDownFrame0 + FOOTPRINT_SLOP)))
+		if (!leftFootDone0 && (currentFrame >= (mechType->gestures[currentGestureId].leftFootDownFrame0 - FOOTPRINT_SLOP)) && (currentFrame <= (mechType->gestures[currentGestureId].leftFootDownFrame0 + FOOTPRINT_SLOP)))
 		{
 			// Foot is on ground.  Poof and footprint.
 			leftFootDone0 = true;
@@ -2799,11 +2789,7 @@ void Mech3DAppearance::updateGeometry(void)
 			if (craterManager && !isWaking)
 				craterManager->addCrater(mechType->leftFootprintType, lFootPos, rotation);
 		}
-		if (!leftFootDone1 &&
-			(currentFrame >=
-				(mechType->gestures[currentGestureId].leftFootDownFrame1 - FOOTPRINT_SLOP)) &&
-			(currentFrame <=
-				(mechType->gestures[currentGestureId].leftFootDownFrame1 + FOOTPRINT_SLOP)))
+		if (!leftFootDone1 && (currentFrame >= (mechType->gestures[currentGestureId].leftFootDownFrame1 - FOOTPRINT_SLOP)) && (currentFrame <= (mechType->gestures[currentGestureId].leftFootDownFrame1 + FOOTPRINT_SLOP)))
 		{
 			// Foot is on ground.  Poof and footprint.
 			leftFootDone1 = true;
@@ -2828,19 +2814,11 @@ void Mech3DAppearance::updateGeometry(void)
 			if (craterManager && !isWaking)
 				craterManager->addCrater(mechType->leftFootprintType, lFootPos, rotation);
 		}
-		if (leftFootDone0 &&
-				(currentFrame <
-					(mechType->gestures[currentGestureId].leftFootDownFrame0 - FOOTPRINT_SLOP)) ||
-			(currentFrame >
-				(mechType->gestures[currentGestureId].leftFootDownFrame0 + FOOTPRINT_SLOP)))
+		if (leftFootDone0 && (currentFrame < (mechType->gestures[currentGestureId].leftFootDownFrame0 - FOOTPRINT_SLOP)) || (currentFrame > (mechType->gestures[currentGestureId].leftFootDownFrame0 + FOOTPRINT_SLOP)))
 		{
 			leftFootDone0 = false;
 		}
-		if (leftFootDone1 &&
-				(currentFrame <
-					(mechType->gestures[currentGestureId].leftFootDownFrame1 - FOOTPRINT_SLOP)) ||
-			(currentFrame >
-				(mechType->gestures[currentGestureId].leftFootDownFrame1 + FOOTPRINT_SLOP)))
+		if (leftFootDone1 && (currentFrame < (mechType->gestures[currentGestureId].leftFootDownFrame1 - FOOTPRINT_SLOP)) || (currentFrame > (mechType->gestures[currentGestureId].leftFootDownFrame1 + FOOTPRINT_SLOP)))
 		{
 			leftFootDone1 = false;
 		}
@@ -2851,7 +2829,7 @@ void Mech3DAppearance::updateGeometry(void)
 		sensorSpin -= 360;
 	if (sensorSpin < -180)
 		sensorSpin += 360;
-	totalRotation				 = Stuff::EulerAngles(0.0f, sensorSpin * DEGREES_TO_RADS, 0.0f);
+	totalRotation = Stuff::EulerAngles(0.0f, sensorSpin * DEGREES_TO_RADS, 0.0f);
 	float baseRootNodeDifference = baseRootNodeHeight;
 	if (isHelicopter)
 		baseRootNodeDifference -= HELICOPTER_FACTOR;
@@ -2870,7 +2848,7 @@ void Mech3DAppearance::updateGeometry(void)
 	// Create Jump FX Here.
 	if (!jumpFXSetup && (currentGestureId == GestureJump) && inJump && jumpJetEffect)
 	{
-		int32_t jumpNodeId			= mechType->numSmokeNodes + mechType->numWeaponNodes;
+		int32_t jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
 		Stuff::Vector3D jumpNodePos = getNodePosition(jumpNodeId);
 		Stuff::Point3D actualPosition;
 		Stuff::LinearMatrix4D shapeOrigin;
@@ -2925,7 +2903,7 @@ void Mech3DAppearance::updateGeometry(void)
 	}
 	if ((currentGestureId == GestureJump) && inJump && jumpJetEffect && jumpJetEffect->IsExecuted())
 	{
-		int32_t jumpNodeId			= mechType->numSmokeNodes + mechType->numWeaponNodes;
+		int32_t jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
 		Stuff::Vector3D jumpNodePos = getNodePosition(jumpNodeId);
 		Stuff::Point3D actualPosition;
 		Stuff::LinearMatrix4D shapeOrigin;
@@ -2960,9 +2938,9 @@ void Mech3DAppearance::updateGeometry(void)
 		if (leftArmNodeIndex == -1)
 			leftArmNodeIndex = mechShape->GetNodeNameId("joint_luarm");
 		Stuff::Vector3D leftNodePos = getNodeIdPosition(leftArmNodeIndex);
-		leftShoulderPos.x			= -leftNodePos.x;
-		leftShoulderPos.y			= leftNodePos.z;
-		leftShoulderPos.z			= leftNodePos.y;
+		leftShoulderPos.x = -leftNodePos.x;
+		leftShoulderPos.y = leftNodePos.z;
+		leftShoulderPos.z = leftNodePos.y;
 		shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 		shapeOrigin.BuildTranslation(leftShoulderPos);
 		Stuff::UnitQuaternion effectRot;
@@ -2987,9 +2965,9 @@ void Mech3DAppearance::updateGeometry(void)
 		if (rightArmNodeIndex == -1)
 			rightArmNodeIndex = mechShape->GetNodeNameId("joint_ruarm");
 		Stuff::Vector3D rightNodePos = getNodeIdPosition(rightArmNodeIndex);
-		rightShoulderPos.x			 = -rightNodePos.x;
-		rightShoulderPos.y			 = rightNodePos.z;
-		rightShoulderPos.z			 = rightNodePos.y;
+		rightShoulderPos.x = -rightNodePos.x;
+		rightShoulderPos.y = rightNodePos.z;
+		rightShoulderPos.z = rightNodePos.y;
 		shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 		shapeOrigin.BuildTranslation(rightShoulderPos);
 		Stuff::UnitQuaternion effectRot;
@@ -3100,11 +3078,12 @@ FilePtr logFile = nullptr;
 #endif
 
 //-----------------------------------------------------------------------------
-bool Mech3DAppearance::setJumpParameters(Stuff::Vector3D& end)
+bool
+Mech3DAppearance::setJumpParameters(Stuff::Vector3D& end)
 {
 	if (!inJump)
 	{
-		jumpSetup		= true;
+		jumpSetup = true;
 		jumpDestination = end;
 		return true;
 	}
@@ -3112,11 +3091,12 @@ bool Mech3DAppearance::setJumpParameters(Stuff::Vector3D& end)
 }
 
 //-----------------------------------------------------------------------------
-bool Mech3DAppearance::leftArmRecalc(void)
+bool
+Mech3DAppearance::leftArmRecalc(void)
 {
 	if (!leftArm)
 		return false;
-	leftArmInView	 = false;
+	leftArmInView = false;
 	float eyeDistance = 0.0f;
 	//--------------------------------------------------
 	// First, if we are using perspective, figure out
@@ -3134,17 +3114,17 @@ bool Mech3DAppearance::leftArmRecalc(void)
 		if (eyeDistance > Camera::MaxClipDistance)
 		{
 			leftArmHazeFactor = 1.0f;
-			leftArmInView	 = false;
+			leftArmInView = false;
 		}
 		else if (eyeDistance > Camera::MinHazeDistance)
 		{
 			leftArmHazeFactor = (eyeDistance - Camera::MinHazeDistance) * Camera::DistanceFactor;
-			leftArmInView	 = true;
+			leftArmInView = true;
 		}
 		else
 		{
 			leftArmHazeFactor = 0.0f;
-			leftArmInView	 = true;
+			leftArmInView = true;
 		}
 		//-----------------------------------------------------------------
 		// If inside farClip plane, check if behind camera.
@@ -3164,11 +3144,12 @@ bool Mech3DAppearance::leftArmRecalc(void)
 }
 
 //-----------------------------------------------------------------------------
-bool Mech3DAppearance::rightArmRecalc(void)
+bool
+Mech3DAppearance::rightArmRecalc(void)
 {
 	if (!rightArm)
 		return false;
-	rightArmInView	= false;
+	rightArmInView = false;
 	float eyeDistance = 0.0f;
 	//--------------------------------------------------
 	// First, if we are using perspective, figure out
@@ -3186,17 +3167,17 @@ bool Mech3DAppearance::rightArmRecalc(void)
 		if (eyeDistance > Camera::MaxClipDistance)
 		{
 			rightArmHazeFactor = 1.0f;
-			rightArmInView	 = false;
+			rightArmInView = false;
 		}
 		else if (eyeDistance > Camera::MinHazeDistance)
 		{
 			rightArmHazeFactor = (eyeDistance - Camera::MinHazeDistance) * Camera::DistanceFactor;
-			rightArmInView	 = true;
+			rightArmInView = true;
 		}
 		else
 		{
 			rightArmHazeFactor = 0.0f;
-			rightArmInView	 = true;
+			rightArmInView = true;
 		}
 		//-----------------------------------------------------------------
 		// If inside farClip plane, check if behind camera.
@@ -3216,12 +3197,13 @@ bool Mech3DAppearance::rightArmRecalc(void)
 }
 
 //-----------------------------------------------------------------------------
-int32_t Mech3DAppearance::update(bool animate)
+int32_t
+Mech3DAppearance::update(bool animate)
 {
 #ifdef _DEBUG
 	if (!logFile)
 	{
-		logFile		   = new MechFile;
+		logFile = new MechFile;
 		int32_t result = logFile->create("gesture.log");
 		if (result != NO_ERROR)
 		{
@@ -3244,25 +3226,24 @@ int32_t Mech3DAppearance::update(bool animate)
 			}
 		}
 	}
-	oncePerFrame	   = false;
+	oncePerFrame = false;
 	bool setFirstFrame = false;
-	if ((currentGestureId == GestureHitFront) || (currentGestureId == GestureHitBack) ||
-		(currentGestureId == GestureHitLeft) || (currentGestureId == GestureHitRight))
+	if ((currentGestureId == GestureHitFront) || (currentGestureId == GestureHitBack) || (currentGestureId == GestureHitLeft) || (currentGestureId == GestureHitRight))
 	{
 		if (atTransitionToNextGesture)
 		{
-			currentGestureId   = hitGestureId;
-			hitGestureId	   = -1;
-			setFirstFrame	  = true;
+			currentGestureId = hitGestureId;
+			hitGestureId = -1;
+			setFirstFrame = true;
 			int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 			if (firstFrame < 0) // Start at end of animation.  Probably to
-								// reverse.  Like StandToPark
+				// reverse.  Like StandToPark
 				firstFrame = mechType->getNumFrames(currentGestureId) - 1;
 			inReverse = false;
 			if (mechType->getFrameRate(currentGestureId) < 0.0)
 				inReverse = true;
 			atTransitionToNextGesture = false;
-			currentFrame			  = firstFrame;
+			currentFrame = firstFrame;
 		}
 	}
 	//----------------------------------------------
@@ -3283,23 +3264,22 @@ int32_t Mech3DAppearance::update(bool animate)
 	if ((currentGestureId == 13) && atTransitionToNextGesture)
 	{
 		currentGestureId = 2;
-		currentFrame	 = 0;
+		currentFrame = 0;
 	}
 	//--------------------------------------------------------------
 	// Check to see if we need to stop NOW!!!!!!!!!
-	if (checkStop() && !inDebugMoveMode && !jumpSetup && (getVelocityMagnitude() != 0.0f) &&
-		(currentGestureId != GestureJump))
+	if (checkStop() && !inDebugMoveMode && !jumpSetup && (getVelocityMagnitude() != 0.0f) && (currentGestureId != GestureJump))
 	{
 		//--------------------------------
 		// We are at the goal.  Store off
 		// our current gesture state.
-		currentGestureId = 2;  // Force us to the stand gesture
-		oldStateGoal	 = 1;  // We always came FROM STAND
+		currentGestureId = 2; // Force us to the stand gesture
+		oldStateGoal = 1; // We always came FROM STAND
 		currentStateGoal = -1; // Not going anywhere
-		transitionState  = 0;  // No Transition necessary.  So be ready at
-							   // beginning if we need one!
-		currentFrame = 0;	  // In the "how did this ever work file"  Duh, need to
-							   // reset the frame!
+		transitionState = 0; // No Transition necessary.  So be ready at
+			// beginning if we need one!
+		currentFrame = 0; // In the "how did this ever work file"  Duh, need to
+			// reset the frame!
 	}
 	int32_t newGestureId = -1; // Assume we do not need to transition.
 	//--------------------------------------------------------------
@@ -3312,14 +3292,13 @@ int32_t Mech3DAppearance::update(bool animate)
 		//--------------------------------------------
 		// Find out how we get to Goal.  If result is
 		// -1, we are already at goal.
-		int32_t arrayIdx = (oldStateGoal * GESTURE_OFFSET_SIZE) +
-			(currentStateGoal * MAX_TRANSITION_GESTURES) + transitionState;
+		int32_t arrayIdx = (oldStateGoal * GESTURE_OFFSET_SIZE) + (currentStateGoal * MAX_TRANSITION_GESTURES) + transitionState;
 		newGestureId = transitionArray[arrayIdx];
 		if (atTransitionToNextGesture) // This is only set when we are ready for
-									   // the next gesture if these is one!
+			// the next gesture if these is one!
 		{
 			transitionState++; // Ready to go to next state.  Increment the
-							   // transition counter for next frame!
+				// transition counter for next frame!
 			int32_t firstFrame = currentFrame;
 			if (newGestureId == -1) // We have reached our goal.
 			{
@@ -3329,8 +3308,8 @@ int32_t Mech3DAppearance::update(bool animate)
 				oldStateGoal = currentStateGoal;
 				if (oldStateGoal == MECH_STATE_JUMPING)
 					oldStateGoal = 1; // We are always standing AFTER a jump or a fall!
-				currentStateGoal		  = -1;
-				transitionState			  = 0;
+				currentStateGoal = -1;
+				transitionState = 0;
 				atTransitionToNextGesture = false;
 				if (mechType->getFrameRate(currentGestureId) < 0.0)
 					inReverse = true;
@@ -3346,13 +3325,13 @@ int32_t Mech3DAppearance::update(bool animate)
 				// Now actually reset everything and setup flags
 				// to facilitate the playing of the new gesture
 				currentGestureId = newGestureId;
-				setFirstFrame	= true;
-				firstFrame		 = mechType->gestures[currentGestureId].frameStart;
+				setFirstFrame = true;
+				firstFrame = mechType->gestures[currentGestureId].frameStart;
 				if (currentGestureId == GestureJump)
 					firstFrame = 0; // We store information in the firstFrame of
-									// the jump.  They always start at 0!
+						// the jump.  They always start at 0!
 				if (firstFrame < 0) // Start at end of animation.  Probably to
-									// reverse.  Like StandToPark
+					// reverse.  Like StandToPark
 					firstFrame = mechType->getNumFrames(currentGestureId) - 1;
 				inReverse = false;
 				if (mechType->getFrameRate(currentGestureId) < 0.0)
@@ -3387,7 +3366,7 @@ int32_t Mech3DAppearance::update(bool animate)
 	// Do jump magic here.
 	if ((currentGestureId == GestureJump) && !inJump)
 	{
-		inJump	= true;
+		inJump = true;
 		jumpSetup = false;
 		//-----------------------------------------------------
 		// Distance is straight line distance.  This is only
@@ -3397,7 +3376,7 @@ int32_t Mech3DAppearance::update(bool animate)
 		float landingFrame = mechType->getJumpLandFrame();
 		//-----------------------------------------
 		// Get mech flying toward targetPosition.
-		Stuff::Vector3D ownerPosition  = position;
+		Stuff::Vector3D ownerPosition = position;
 		Stuff::Vector3D targetPosition = jumpDestination;
 		jumpVelocity.Subtract(targetPosition, ownerPosition);
 		float velMag = jumpVelocity.GetLength() / ((landingFrame - takeoffFrame) / 30.0f);
@@ -3474,7 +3453,7 @@ int32_t Mech3DAppearance::update(bool animate)
 			if ((frameInc != 0.0f) || (singleStepMode))
 			{
 				if (!setFirstFrame) // DO NOT ANIMATE ON FIRST FRAME!  Wait a
-									// bit!
+					// bit!
 				{
 					if (inReverse)
 						currentFrame -= frameInc;
@@ -3485,10 +3464,9 @@ int32_t Mech3DAppearance::update(bool animate)
 				// Check Positive overflow of gesture
 				if (currentFrame >= mechType->getNumFrames(currentGestureId))
 				{
-					if ((currentStateGoal == -1) && (hitGestureId == -1) &&
-						(currentGestureId != GestureIdle)) // Are we just
-														   // Looping or
-														   // transitioning?
+					if ((currentStateGoal == -1) && (hitGestureId == -1) && (currentGestureId != GestureIdle)) // Are we just
+						// Looping or
+						// transitioning?
 					{
 						currentFrame -= mechType->getNumFrames(currentGestureId);
 					}
@@ -3499,11 +3477,11 @@ int32_t Mech3DAppearance::update(bool animate)
 						// Force us back to the previous frame so draw
 						// doesn't go off into lala land.
 						atTransitionToNextGesture = TRUE;
-						currentFrame			  = mechType->getNumFrames(currentGestureId) - 1.0f;
+						currentFrame = mechType->getNumFrames(currentGestureId) - 1.0f;
 						if (currentGestureId == GestureJump)
 						{
-							inJump		 = false;
-							jumpSetup	= false;
+							inJump = false;
+							jumpSetup = false;
 							oldStateGoal = 1; // We always started a Jump standing!
 						}
 					}
@@ -3523,12 +3501,12 @@ int32_t Mech3DAppearance::update(bool animate)
 						// Force us back to the previous frame so draw
 						// doesn't go off into lala land.
 						atTransitionToNextGesture = TRUE;
-						currentFrame			  = 0.0f;
+						currentFrame = 0.0f;
 					}
 				}
 			}
 			else // This is a  single frame gesture.  We are ALWAYS ready to
-				 // transition in this case!
+				// transition in this case!
 			{
 				if (currentStateGoal != -1)
 					atTransitionToNextGesture = TRUE;
@@ -3554,8 +3532,7 @@ int32_t Mech3DAppearance::update(bool animate)
 		logFile->writeLine(msg);
 	}
 #endif
-	if ((turn < 3) || inView ||
-		(currentGestureId == GestureJump)) // Gotta get the weapon nodes working!!
+	if ((turn < 3) || inView || (currentGestureId == GestureJump)) // Gotta get the weapon nodes working!!
 		updateGeometry();
 	//----------------------------------------------------------------------
 	// If currentGestureId is 2 and baseRootNodeHeight is not set, set it!!
@@ -3563,10 +3540,10 @@ int32_t Mech3DAppearance::update(bool animate)
 	{
 		if (rootNodeIndex == -1)
 			rootNodeIndex = mechShape->GetNodeNameId("joint_root");
-		bool oldInView	 = inView;
-		inView			   = true;
+		bool oldInView = inView;
+		inView = true;
 		baseRootNodeHeight = (getNodeIdPosition(rootNodeIndex).z - position.z);
-		inView			   = oldInView;
+		inView = oldInView;
 	}
 	//------------------------------------------------
 	// If arms are off, process their geometry here!
@@ -3611,8 +3588,8 @@ int32_t Mech3DAppearance::update(bool animate)
 		xlatPosition.x = -leftArmPos.x;
 		xlatPosition.y = leftArmPos.z;
 		xlatPosition.z = leftArmPos.y;
-		qRotation	  = Stuff::EulerAngles(
-			 dRot[1].x * DEGREES_TO_RADS, dRot[1].y * DEGREES_TO_RADS, dRot[1].z * DEGREES_TO_RADS);
+		qRotation = Stuff::EulerAngles(
+			dRot[1].x * DEGREES_TO_RADS, dRot[1].y * DEGREES_TO_RADS, dRot[1].z * DEGREES_TO_RADS);
 		leftArm->SetFogRGB(0xffffffff);
 		leftArm->SetLightList(eye->getWorldLights(), eye->getNumLights());
 		leftArm->TransformMultiShape(&xlatPosition, &qRotation);
@@ -3679,8 +3656,8 @@ int32_t Mech3DAppearance::update(bool animate)
 		xlatPosition.x = -rightArmPos.x;
 		xlatPosition.y = rightArmPos.z;
 		xlatPosition.z = rightArmPos.y;
-		qRotation	  = Stuff::EulerAngles(
-			 dRot[0].x * DEGREES_TO_RADS, dRot[0].y * DEGREES_TO_RADS, dRot[0].z * DEGREES_TO_RADS);
+		qRotation = Stuff::EulerAngles(
+			dRot[0].x * DEGREES_TO_RADS, dRot[0].y * DEGREES_TO_RADS, dRot[0].z * DEGREES_TO_RADS);
 		rightArm->SetFogRGB(0xffffffff);
 		rightArm->SetLightList(eye->getWorldLights(), eye->getNumLights());
 		rightArm->TransformMultiShape(&xlatPosition, &qRotation);
@@ -3714,7 +3691,8 @@ int32_t Mech3DAppearance::update(bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::blowLeftArm(void)
+void
+Mech3DAppearance::blowLeftArm(void)
 {
 	if (leftArmOff)
 		return;
@@ -3756,7 +3734,7 @@ void Mech3DAppearance::blowLeftArm(void)
 	if (leftArmNodeIndex == -1)
 		leftArmNodeIndex = mechShape->GetNodeNameId("joint_luarm");
 	Stuff::Vector3D leftNodePos = getNodeIdPosition(leftArmNodeIndex);
-	leftArmPos					= leftNodePos;
+	leftArmPos = leftNodePos;
 	if (leftShoulderBoom)
 	{
 		Stuff::LinearMatrix4D shapeOrigin;
@@ -3794,14 +3772,14 @@ void Mech3DAppearance::blowLeftArm(void)
 	leftArmOff = true;
 	// Calc initial Velocity, rotation and set Acceleration to down in World.
 	int32_t xlatBase = 12.0f + 50.0 / 2.0f;
-	int32_t upBase   = 25.0f + 100.0;
-	int32_t rotBase  = 25.0f + 100.0;
-	dVel[1].x		 = RandomNumber(xlatBase * 2.0) - xlatBase;
-	dVel[1].y		 = RandomNumber(xlatBase * 2.0) - xlatBase;
-	dVel[1].z		 = RandomNumber(upBase) + upBase;
-	dRVel[1].x		 = RandomNumber(rotBase * 2.0) - rotBase;
-	dRVel[1].y		 = RandomNumber(rotBase * 2.0) - rotBase;
-	dRVel[1].z		 = RandomNumber(rotBase * 2.0) - rotBase;
+	int32_t upBase = 25.0f + 100.0;
+	int32_t rotBase = 25.0f + 100.0;
+	dVel[1].x = RandomNumber(xlatBase * 2.0) - xlatBase;
+	dVel[1].y = RandomNumber(xlatBase * 2.0) - xlatBase;
+	dVel[1].z = RandomNumber(upBase) + upBase;
+	dRVel[1].x = RandomNumber(rotBase * 2.0) - rotBase;
+	dRVel[1].y = RandomNumber(rotBase * 2.0) - rotBase;
+	dRVel[1].z = RandomNumber(rotBase * 2.0) - rotBase;
 	dRot[1].Zero();
 	dAcc[1].x = dVel[1].x * 0.1f;
 	dAcc[1].y = dVel[1].y * 0.1f;
@@ -3816,7 +3794,8 @@ void Mech3DAppearance::blowLeftArm(void)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::blowRightArm(void)
+void
+Mech3DAppearance::blowRightArm(void)
 {
 	if (rightArmOff)
 		return;
@@ -3858,7 +3837,7 @@ void Mech3DAppearance::blowRightArm(void)
 	if (rightArmNodeIndex == -1)
 		rightArmNodeIndex = mechShape->GetNodeNameId("joint_ruarm");
 	Stuff::Vector3D rightNodePos = getNodeIdPosition(rightArmNodeIndex);
-	rightArmPos					 = rightNodePos;
+	rightArmPos = rightNodePos;
 	if (rightShoulderBoom)
 	{
 		Stuff::LinearMatrix4D shapeOrigin;
@@ -3896,14 +3875,14 @@ void Mech3DAppearance::blowRightArm(void)
 	rightArmOff = true;
 	// Calc initial Velocity, rotation and set Acceleration to down in World.
 	int32_t xlatBase = 12.0f + 50.0 / 2.0f;
-	int32_t upBase   = 25.0f + 100.0;
-	int32_t rotBase  = 25.0f + 100.0;
-	dVel[0].x		 = RandomNumber(xlatBase * 2.0) - xlatBase;
-	dVel[0].y		 = RandomNumber(xlatBase * 2.0) - xlatBase;
-	dVel[0].z		 = RandomNumber(upBase) + upBase;
-	dRVel[0].x		 = RandomNumber(rotBase * 2.0) - rotBase;
-	dRVel[0].y		 = RandomNumber(rotBase * 2.0) - rotBase;
-	dRVel[0].z		 = RandomNumber(rotBase * 2.0) - rotBase;
+	int32_t upBase = 25.0f + 100.0;
+	int32_t rotBase = 25.0f + 100.0;
+	dVel[0].x = RandomNumber(xlatBase * 2.0) - xlatBase;
+	dVel[0].y = RandomNumber(xlatBase * 2.0) - xlatBase;
+	dVel[0].z = RandomNumber(upBase) + upBase;
+	dRVel[0].x = RandomNumber(rotBase * 2.0) - rotBase;
+	dRVel[0].y = RandomNumber(rotBase * 2.0) - rotBase;
+	dRVel[0].z = RandomNumber(rotBase * 2.0) - rotBase;
 	dRot[0].Zero();
 	dAcc[0].x = dVel[0].x * 0.1f;
 	dAcc[0].y = dVel[0].y * 0.1f;
@@ -3918,7 +3897,8 @@ void Mech3DAppearance::blowRightArm(void)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::startSmoking(int32_t smokeLvl)
+void
+Mech3DAppearance::startSmoking(int32_t smokeLvl)
 {
 	// Check if we are already playing one.  If not, smoke away
 	// First, check if its even loaded.
@@ -3994,7 +3974,8 @@ void Mech3DAppearance::startSmoking(int32_t smokeLvl)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::startWaterWake(void)
+void
+Mech3DAppearance::startWaterWake(void)
 {
 	// Check if we are already playing one.  If not, wake city.
 	// Check if we are a helicopter OR we are jumping.  No WAKE if either is
@@ -4049,7 +4030,8 @@ void Mech3DAppearance::startWaterWake(void)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::stopWaterWake(void)
+void
+Mech3DAppearance::stopWaterWake(void)
 {
 	if (waterWake && isWaking) // Stop the effect if we are running it!!
 		waterWake->Kill();
@@ -4057,7 +4039,8 @@ void Mech3DAppearance::stopWaterWake(void)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::playEjection(void)
+void
+Mech3DAppearance::playEjection(void)
 {
 	if (InEditor)
 		return;
@@ -4107,7 +4090,8 @@ void Mech3DAppearance::playEjection(void)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::destroy(void)
+void
+Mech3DAppearance::destroy(void)
 {
 	AppearanceTypeList::appearanceHeap->Free(paintSchemata);
 	paintSchemata = nullptr;
@@ -4192,73 +4176,75 @@ void Mech3DAppearance::destroy(void)
 }
 
 //*****************************************************************************
-void Mech3DAppearance::copyTo(MechAppearanceData* data)
+void
+Mech3DAppearance::copyTo(MechAppearanceData* data)
 {
-	data->frameNum					= frameNum;
-	data->mechFrameRate				= mechFrameRate;
-	data->leftArmOff				= leftArmOff;
-	data->rightArmOff				= rightArmOff;
-	data->fallen					= fallen;
-	data->forceStop					= forceStop;
+	data->frameNum = frameNum;
+	data->mechFrameRate = mechFrameRate;
+	data->leftArmOff = leftArmOff;
+	data->rightArmOff = rightArmOff;
+	data->fallen = fallen;
+	data->forceStop = forceStop;
 	data->atTransitionToNextGesture = atTransitionToNextGesture;
-	data->inReverse					= inReverse;
-	data->inJump					= inJump;
-	data->jumpSetup					= jumpSetup;
-	data->jumpFXSetup				= jumpFXSetup;
-	data->jumpAirborne				= jumpAirborne;
-	data->oncePerFrame				= oncePerFrame;
-	data->lockRotation				= lockRotation;
-	data->velocity					= velocity;
-	data->status					= status;
-	data->currentStateGoal			= currentStateGoal;
-	data->currentGestureId			= currentGestureId;
-	data->transitionState			= transitionState;
-	data->oldStateGoal				= oldStateGoal;
-	data->hitGestureId				= hitGestureId;
-	data->currentFrame				= currentFrame;
-	data->currentLOD				= currentLOD;
+	data->inReverse = inReverse;
+	data->inJump = inJump;
+	data->jumpSetup = jumpSetup;
+	data->jumpFXSetup = jumpFXSetup;
+	data->jumpAirborne = jumpAirborne;
+	data->oncePerFrame = oncePerFrame;
+	data->lockRotation = lockRotation;
+	data->velocity = velocity;
+	data->status = status;
+	data->currentStateGoal = currentStateGoal;
+	data->currentGestureId = currentGestureId;
+	data->transitionState = transitionState;
+	data->oldStateGoal = oldStateGoal;
+	data->hitGestureId = hitGestureId;
+	data->currentFrame = currentFrame;
+	data->currentLOD = currentLOD;
 	if (mechType->numWeaponNodes > 10)
 		STOP(("Mech Has too many weapon nodes to save %d", mechType->numWeaponNodes));
 	memcpy(data->nodeUsed, nodeUsed, 10);
 	memcpy(data->nodeRecycle, nodeRecycle, 10);
-	data->isSmoking			 = isSmoking;
-	data->isWaking			 = isWaking;
-	data->isDusting			 = isDusting;
-	data->fallDust			 = fallDust;
-	data->isHelicopter		 = isHelicopter;
+	data->isSmoking = isSmoking;
+	data->isWaking = isWaking;
+	data->isDusting = isDusting;
+	data->fallDust = fallDust;
+	data->isHelicopter = isHelicopter;
 	data->baseRootNodeHeight = baseRootNodeHeight;
-	data->jumpDestination	= jumpDestination;
-	data->jumpVelocity		 = jumpVelocity;
+	data->jumpDestination = jumpDestination;
+	data->jumpVelocity = jumpVelocity;
 }
 
 //*****************************************************************************
-void Mech3DAppearance::copyFrom(MechAppearanceData* data)
+void
+Mech3DAppearance::copyFrom(MechAppearanceData* data)
 {
-	frameNum				  = data->frameNum;
-	mechFrameRate			  = data->mechFrameRate;
-	leftArmOff				  = data->leftArmOff;
-	rightArmOff				  = data->rightArmOff;
-	fallen					  = data->fallen;
-	forceStop				  = data->forceStop;
+	frameNum = data->frameNum;
+	mechFrameRate = data->mechFrameRate;
+	leftArmOff = data->leftArmOff;
+	rightArmOff = data->rightArmOff;
+	fallen = data->fallen;
+	forceStop = data->forceStop;
 	atTransitionToNextGesture = data->atTransitionToNextGesture;
-	inReverse				  = data->inReverse;
-	inJump					  = data->inJump;
-	jumpSetup				  = data->jumpSetup;
-	jumpFXSetup				  = data->jumpFXSetup;
-	jumpAirborne			  = data->jumpAirborne;
-	oncePerFrame			  = data->oncePerFrame;
-	lockRotation			  = data->lockRotation;
-	velocity				  = data->velocity;
+	inReverse = data->inReverse;
+	inJump = data->inJump;
+	jumpSetup = data->jumpSetup;
+	jumpFXSetup = data->jumpFXSetup;
+	jumpAirborne = data->jumpAirborne;
+	oncePerFrame = data->oncePerFrame;
+	lockRotation = data->lockRotation;
+	velocity = data->velocity;
 	// Let mech reset status when it reloads so that the destroyed shapes come
 	// up.
 	//	status = data->status;
 	currentStateGoal = data->currentStateGoal;
 	currentGestureId = data->currentGestureId;
-	transitionState  = data->transitionState;
-	oldStateGoal	 = data->oldStateGoal;
-	hitGestureId	 = data->hitGestureId;
-	currentFrame	 = data->currentFrame;
-	currentLOD		 = data->currentLOD;
+	transitionState = data->transitionState;
+	oldStateGoal = data->oldStateGoal;
+	hitGestureId = data->hitGestureId;
+	currentFrame = data->currentFrame;
+	currentLOD = data->currentLOD;
 	memcpy(nodeUsed, data->nodeUsed, 10);
 	memcpy(nodeRecycle, data->nodeRecycle, 10);
 	isSmoking = -1;
@@ -4275,7 +4261,7 @@ void Mech3DAppearance::copyFrom(MechAppearanceData* data)
 		playEjection();
 	if (data->inJump)
 	{
-		int32_t jumpNodeId			= mechType->numSmokeNodes + mechType->numWeaponNodes;
+		int32_t jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
 		Stuff::Vector3D jumpNodePos = getNodePosition(jumpNodeId);
 		Stuff::Point3D actualPosition;
 		Stuff::LinearMatrix4D shapeOrigin;
@@ -4294,22 +4280,24 @@ void Mech3DAppearance::copyFrom(MechAppearanceData* data)
 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &localResult, nullptr);
 		jumpJetEffect->Start(&info);
 	}
-	isHelicopter	   = data->isHelicopter;
+	isHelicopter = data->isHelicopter;
 	baseRootNodeHeight = data->baseRootNodeHeight;
-	jumpDestination	= data->jumpDestination;
-	jumpVelocity	   = data->jumpVelocity;
+	jumpDestination = data->jumpDestination;
+	jumpVelocity = data->jumpVelocity;
 }
 
-void Mech3DAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
+void
+Mech3DAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
-	duration	  = dur;
+	duration = dur;
 	flashDuration = fDuration;
-	flashColor	= color;
-	drawFlash	 = true;
-	currentFlash  = flashDuration;
+	flashColor = color;
+	drawFlash = true;
+	currentFlash = flashDuration;
 }
 
-Stuff::Vector3D Mech3DAppearance::getHitNodeLeft(void)
+Stuff::Vector3D
+Mech3DAppearance::getHitNodeLeft(void)
 {
 	if (hitLeftNodeIndex == -1)
 		hitLeftNodeIndex = mechShape->GetNodeNameId("hit_left");
@@ -4336,7 +4324,8 @@ Stuff::Vector3D Mech3DAppearance::getHitNodeLeft(void)
 	return result;
 }
 
-Stuff::Vector3D Mech3DAppearance::getHitNodeRight(void)
+Stuff::Vector3D
+Mech3DAppearance::getHitNodeRight(void)
 {
 	if (hitRightNodeIndex == -1)
 		hitRightNodeIndex = mechShape->GetNodeNameId("hit_right");

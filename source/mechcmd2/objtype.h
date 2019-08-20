@@ -29,19 +29,19 @@ class ObjectType
 {
 
 protected:
-	ObjectTypeNumber objTypeNum;	  // What exactly am I?
-	int32_t numUsers;				  // How many people love me?
-	int32_t objectTypeClass;		  // What type am I?
-	ObjectClass objectClass;		  // What object class am i?
+	ObjectTypeNumber objTypeNum; // What exactly am I?
+	int32_t numUsers; // How many people love me?
+	int32_t objectTypeClass; // What type am I?
+	ObjectClass objectClass; // What object class am i?
 	ObjectTypeNumber destroyedObject; // What I turn into when I die.
 	ObjectTypeNumber explosionObject; // How I blow up
-	bool potentialContact;			  // Can I can be a contact?
-	char* appearName;				  // Base Name of appearance Files.
-	float extentRadius;				  // Smallest sphere which will hold me.
-	bool keepMe;					  // Do not EVER cache this objType out.
-	int32_t iconNumber;				  // my index into the big strip o' icons
-	int32_t teamId;					  // DEfault for this type
-	uint8_t subType;				  // if building, what type of building? etc.
+	bool potentialContact; // Can I can be a contact?
+	char* appearName; // Base Name of appearance Files.
+	float extentRadius; // Smallest sphere which will hold me.
+	bool keepMe; // Do not EVER cache this objType out.
+	int32_t iconNumber; // my index into the big strip o' icons
+	int32_t teamId; // DEfault for this type
+	uint8_t subType; // if building, what type of building? etc.
 
 public:
 	PVOID operator new(size_t ourSize);
@@ -49,16 +49,16 @@ public:
 
 	void init(void)
 	{
-		objectClass		 = INVALID;
-		objectTypeClass  = -1; // This is an invalid_object
-		destroyedObject  = -1;
-		explosionObject  = -1;
+		objectClass = INVALID;
+		objectTypeClass = -1; // This is an invalid_object
+		destroyedObject = -1;
+		explosionObject = -1;
 		potentialContact = false;
-		extentRadius	 = 0; // Nothing can hit me if this is zero.
-		keepMe			 = false;
-		iconNumber		 = -1; // defaults to no icon
-		appearName		 = nullptr;
-		subType			 = 0;
+		extentRadius = 0; // Nothing can hit me if this is zero.
+		keepMe = false;
+		iconNumber = -1; // defaults to no icon
+		appearName = nullptr;
+		subType = 0;
 	}
 
 	ObjectType(void) { init(void); }

@@ -41,7 +41,8 @@ extern CPrefs prefs;
 extern volatile bool mc2IsInMouseTimer;
 extern volatile bool mc2IsInDisplayBackBuffer;
 
-void MouseTimerKill();
+void
+MouseTimerKill();
 
 extern void (*AsynFunc)(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc);
 
@@ -49,7 +50,8 @@ extern bool bInvokeOptionsScreenFlag;
 bool MainMenu::bDrawMechlopedia = false;
 ;
 
-void SplashIntro::init()
+void
+SplashIntro::init()
 {
 	FullPathFileName path;
 	path.init(artPath, "mcl_splashscreenintro", ".fit");
@@ -66,17 +68,17 @@ void SplashIntro::init()
 MainMenu::MainMenu()
 {
 	optionsScreenWrapper = nullptr;
-	bOptions			 = 0;
-	bSave = bLoad	= 0;
-	helpTextArrayID  = 0;
-	mechlopedia		 = 0;
+	bOptions = 0;
+	bSave = bLoad = 0;
+	helpTextArrayID = 0;
+	mechlopedia = 0;
 	bDrawMechlopedia = 0;
-	tuneId			 = -1;
-	bLoadSingle		 = 0;
-	bLoadCampaign	= 0;
-	introOver		 = 0;
-	bHostLeftDlg	 = 0;
-	introMovie		 = 0;
+	tuneId = -1;
+	bLoadSingle = 0;
+	bLoadCampaign = 0;
+	introOver = 0;
+	bHostLeftDlg = 0;
+	introMovie = 0;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -87,7 +89,8 @@ MainMenu::~MainMenu()
 		delete optionsScreenWrapper;
 }
 
-int32_t MainMenu::init(FitIniFile& file)
+int32_t
+MainMenu::init(FitIniFile& file)
 {
 	file.seekBlock("Tunes");
 	file.readIdLong("TuneId", tuneId);
@@ -125,29 +128,30 @@ int32_t MainMenu::init(FitIniFile& file)
 	introMovie = 0;
 	path.init(moviePath, "msft", ".bik");
 	RECT movieRect;
-	movieRect.top	= 0;
-	movieRect.left   = 0;
-	movieRect.right  = Environment.screenWidth;
+	movieRect.top = 0;
+	movieRect.left = 0;
+	movieRect.right = Environment.screenWidth;
 	movieRect.bottom = Environment.screenHeight;
-	introMovie		 = new MC2Movie;
+	introMovie = new MC2Movie;
 	introMovie->init(path, movieRect, true);
 	return 0;
 }
 
-void MainMenu::begin()
+void
+MainMenu::begin()
 {
-	status		 = RUNNING;
+	status = RUNNING;
 	promptToQuit = 0;
 	beginAnim.begin();
 	beginFadeIn(0);
 	endAnim.end();
 	background.beginFadeIn(0);
-	endResult		   = RUNNING;
-	musicStarted	   = false;
-	bLoadSingle		   = 0;
-	bLoadCampaign	  = 0;
+	endResult = RUNNING;
+	musicStarted = false;
+	bLoadSingle = 0;
+	bLoadCampaign = 0;
 	promptToDisconnect = 0;
-	bLegal			   = 0;
+	bLegal = 0;
 	// no host left dlg, sometimes we get this begin call 2x's due to netlib
 	// weirdness
 	if (!introMovie)
@@ -158,11 +162,11 @@ void MainMenu::begin()
 		// FLICKERING THEN!!!
 		// BLOCK THREAD WHILE THIS IS HAPPENING
 		mc2IsInDisplayBackBuffer = true;
-		mc2UseAsyncMouse		 = prefs.asyncMouse;
+		mc2UseAsyncMouse = prefs.asyncMouse;
 		if (!mc2UseAsyncMouse)
 			MouseTimerKill();
 		mc2IsInDisplayBackBuffer = false;
-		AsynFunc				 = nullptr;
+		AsynFunc = nullptr;
 		// Force mouse Cursors to smaller or larger depending on new video mode.
 		userInput->initMouseCursors("cursors");
 		userInput->mouseOn();
@@ -171,7 +175,7 @@ void MainMenu::begin()
 		if (prefs.renderer != 0 && prefs.renderer != 3)
 			localRenderer = 0;
 		bool localFullScreen = prefs.fullScreen;
-		bool localWindow	 = !prefs.fullScreen;
+		bool localWindow = !prefs.fullScreen;
 		if (Environment.fullScreen && prefs.fullScreen)
 			localFullScreen = false;
 		// make sure we get into 800 x 600 mode
@@ -187,13 +191,15 @@ void MainMenu::begin()
 	}
 }
 
-void MainMenu::end()
+void
+MainMenu::end()
 {
 	endAnim.end();
 	bHostLeftDlg = 0;
 }
 
-void MainMenu::setDrawBackground(bool bNewDrawBackground)
+void
+MainMenu::setDrawBackground(bool bNewDrawBackground)
 {
 	bDrawBackground = bNewDrawBackground;
 	if (bDrawBackground && !introOver)
@@ -202,7 +208,8 @@ void MainMenu::setDrawBackground(bool bNewDrawBackground)
 	}
 }
 
-int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
+int32_t
+MainMenu::handleMessage(uint32_t what, uint32_t who)
 {
 	switch (who)
 	{
@@ -212,7 +219,7 @@ int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
 			LogisticsOKDialog::instance()->setText(
 				IDS_PROMPT_TO_DISCONNECT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 			LogisticsOKDialog::instance()->begin();
-			endResult		   = MM_MSG_NEW_CAMPAIGN;
+			endResult = MM_MSG_NEW_CAMPAIGN;
 			promptToDisconnect = true;
 		}
 		else
@@ -235,7 +242,7 @@ int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
 			LogisticsOKDialog::instance()->setText(
 				IDS_PROMPT_TO_DISCONNECT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 			LogisticsOKDialog::instance()->begin();
-			endResult		   = who;
+			endResult = who;
 			promptToDisconnect = true;
 		}
 		else
@@ -253,7 +260,7 @@ int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
 			LogisticsOKDialog::instance()->setText(
 				IDS_PROMPT_TO_DISCONNECT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 			LogisticsOKDialog::instance()->begin();
-			endResult		   = who;
+			endResult = who;
 			promptToDisconnect = true;
 		}
 		else
@@ -271,7 +278,7 @@ int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
 			LogisticsOKDialog::instance()->setText(
 				IDS_PROMPT_TO_DISCONNECT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 			LogisticsOKDialog::instance()->begin();
-			endResult		   = who;
+			endResult = who;
 			promptToDisconnect = true;
 		}
 		else
@@ -328,7 +335,7 @@ int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
 			LogisticsOKDialog::instance()->setText(
 				IDS_PROMPT_TO_DISCONNECT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 			LogisticsOKDialog::instance()->begin();
-			endResult		   = who;
+			endResult = who;
 			promptToDisconnect = true;
 		}
 		else
@@ -376,7 +383,8 @@ int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
 	return 0;
 }
 
-void MainMenu::skipIntro()
+void
+MainMenu::skipIntro()
 {
 	if (introMovie)
 	{
@@ -386,7 +394,8 @@ void MainMenu::skipIntro()
 	}
 }
 
-void MainMenu::update()
+void
+MainMenu::update()
 {
 	if (bDrawBackground || MPlayer || LogisticsData::instance->isSingleMission())
 	{
@@ -398,8 +407,7 @@ void MainMenu::update()
 	if (introMovie)
 	{
 		userInput->mouseOff();
-		if (userInput->getKeyDown(KEY_SPACE) || userInput->getKeyDown(KEY_ESCAPE) ||
-			userInput->getKeyDown(KEY_LMOUSE))
+		if (userInput->getKeyDown(KEY_SPACE) || userInput->getKeyDown(KEY_ESCAPE) || userInput->getKeyDown(KEY_LMOUSE))
 		{
 			introMovie->stop();
 		}
@@ -448,8 +456,7 @@ void MainMenu::update()
 	if ((bSave || bLoad || bLoadCampaign) && endAnim.isDone())
 	{
 		LogisticsSaveDialog::instance()->update();
-		if (LogisticsSaveDialog::instance()->getStatus() == LogisticsScreen::YES &&
-			LogisticsSaveDialog::instance()->isDone())
+		if (LogisticsSaveDialog::instance()->getStatus() == LogisticsScreen::YES && LogisticsSaveDialog::instance()->isDone())
 		{
 			char name[1024];
 			strcpy(name, savePath);
@@ -475,7 +482,7 @@ void MainMenu::update()
 					file.close();
 				}
 				bSave = bLoad = 0;
-				status		  = NEXT;
+				status = NEXT;
 			}
 			else if (bLoadCampaign)
 			{
@@ -498,12 +505,11 @@ void MainMenu::update()
 					LogisticsData::instance->load(file);
 				LogisticsSaveDialog::instance()->end();
 				bSave = bLoad = 0;
-				status		  = RESTART;
+				status = RESTART;
 				file.close();
 			}
 		}
-		else if (LogisticsSaveDialog::instance()->getStatus() == LogisticsScreen::NO &&
-			LogisticsSaveDialog::instance()->isDone())
+		else if (LogisticsSaveDialog::instance()->getStatus() == LogisticsScreen::NO && LogisticsSaveDialog::instance()->isDone())
 		{
 			LogisticsSaveDialog::instance()->end();
 			bSave = bLoad = bLoadCampaign = 0;
@@ -591,7 +597,7 @@ void MainMenu::update()
 					MPlayer = nullptr;
 				}
 				int32_t oldRes = endResult;
-				endResult	  = 0;
+				endResult = 0;
 				handleMessage(oldRes, oldRes);
 				setDrawBackground(true);
 			}
@@ -629,15 +635,15 @@ void MainMenu::update()
 		beginAnim.update();
 		endAnim.update();
 		LogisticsScreen::update();
-		if ((!bLoadSingle) && userInput->isLeftClick() &&
-			!inside(userInput->getMouseX(), userInput->getMouseY()))
+		if ((!bLoadSingle) && userInput->isLeftClick() && !inside(userInput->getMouseX(), userInput->getMouseY()))
 		{
 			handleMessage(0, MM_MSG_RETURN_TO_GAME);
 		}
 	}
 }
 
-void MainMenu::render()
+void
+MainMenu::render()
 {
 	if (introMovie)
 	{
@@ -656,16 +662,16 @@ void MainMenu::render()
 	}
 	// DO NOT play the splash screen animation in software.
 	// WOW does it beat up the framerate!
-	float xDelta  = 0.f;
-	float yDelta  = 0.f;
+	float xDelta = 0.f;
+	float yDelta = 0.f;
 	int32_t color = 0xff000000;
 	if (Environment.Renderer != 3)
 	{
 		if (beginAnim.isAnimating() && !beginAnim.isDone())
 		{
-			xDelta		  = beginAnim.getXDelta();
-			yDelta		  = beginAnim.getYDelta();
-			float time	= beginAnim.getCurrentTime();
+			xDelta = beginAnim.getXDelta();
+			yDelta = beginAnim.getYDelta();
+			float time = beginAnim.getCurrentTime();
 			float endTime = beginAnim.getMaxTime();
 			if (endTime)
 			{
@@ -674,9 +680,9 @@ void MainMenu::render()
 		}
 		else if (endAnim.isAnimating() /*&& !endAnim.isDone()*/)
 		{
-			xDelta		  = endAnim.getXDelta();
-			yDelta		  = endAnim.getYDelta();
-			float time	= endAnim.getCurrentTime();
+			xDelta = endAnim.getXDelta();
+			yDelta = endAnim.getYDelta();
+			float time = endAnim.getCurrentTime();
 			float endTime = endAnim.getMaxTime();
 			if (endTime && (time <= endTime))
 			{
@@ -706,8 +712,7 @@ void MainMenu::render()
 			textObjects[1].font.getSize(), 1, 1);
 	}
 	textObjects[1].showGUIWindow(false);
-	if ((!bSave && !bLoad && !bLoadSingle && !bLoadCampaign) ||
-		(!endAnim.isDone() && endResult != RESTART))
+	if ((!bSave && !bLoad && !bLoadSingle && !bLoadCampaign) || (!endAnim.isDone() && endResult != RESTART))
 		LogisticsScreen::render(xDelta, yDelta);
 	else if (bLoadSingle)
 		singleLoadDlg.render();
@@ -727,7 +732,8 @@ void MainMenu::render()
 	}
 }
 
-void MainMenu::setHostLeftDlg(PCSTR playerName)
+void
+MainMenu::setHostLeftDlg(PCSTR playerName)
 {
 	char leaveStr[256];
 	char formatStr[256];

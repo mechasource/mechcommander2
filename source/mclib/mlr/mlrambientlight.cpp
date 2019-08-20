@@ -16,7 +16,8 @@ MLRAmbientLight::ClassData* MLRAmbientLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRAmbientLight::InitializeClass()
+void
+MLRAmbientLight::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -27,7 +28,8 @@ void MLRAmbientLight::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRAmbientLight::TerminateClass()
+void
+MLRAmbientLight::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -36,7 +38,8 @@ void MLRAmbientLight::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRAmbientLight::MLRAmbientLight() : MLRLight(DefaultData)
+MLRAmbientLight::MLRAmbientLight() :
+	MLRLight(DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
@@ -44,8 +47,8 @@ MLRAmbientLight::MLRAmbientLight() : MLRLight(DefaultData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRAmbientLight::MLRAmbientLight(std::iostream stream, uint32_t version)
-	: MLRLight(DefaultData, stream, version)
+MLRAmbientLight::MLRAmbientLight(std::iostream stream, uint32_t version) :
+	MLRLight(DefaultData, stream, version)
 {
 	Check_Object(stream);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -54,7 +57,8 @@ MLRAmbientLight::MLRAmbientLight(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRAmbientLight::MLRAmbientLight(Stuff::Page* page) : MLRLight(DefaultData, page)
+MLRAmbientLight::MLRAmbientLight(Stuff::Page* page) :
+	MLRLight(DefaultData, page)
 {
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -67,11 +71,16 @@ MLRAmbientLight::~MLRAmbientLight() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRAmbientLight::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLRAmbientLight::TestInstance()
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRAmbientLight::LightVertex(const MLRVertexData& vertexData)
+void
+MLRAmbientLight::LightVertex(const MLRVertexData& vertexData)
 {
 #if COLOR_AS_DWORD
 	TO_DO;

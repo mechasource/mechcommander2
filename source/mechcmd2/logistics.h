@@ -48,11 +48,11 @@ public:
 
 	void init(void)
 	{
-		active		   = FALSE;
+		active = FALSE;
 		missionResults = 0;
-		missionBegin   = 0;
+		missionBegin = 0;
 		logisticsState = log_SPLASH;
-		bMovie		   = nullptr;
+		bMovie = nullptr;
 	}
 
 	void destroy(void);
@@ -61,8 +61,8 @@ public:
 	void destroySplashScreen(void);
 
 	void start(int32_t logState); // Actually Starts execution of logistics in
-								  // state Specified
-	void stop(void);			  // Guess what this does!
+		// state Specified
+	void stop(void); // Guess what this does!
 
 	int32_t update(void);
 
@@ -72,7 +72,7 @@ public:
 
 	void setLogisticsState(int32_t state)
 	{
-		prevState	  = logisticsState;
+		prevState = logisticsState;
 		logisticsState = state;
 	}
 

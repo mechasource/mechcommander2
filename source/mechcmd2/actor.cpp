@@ -32,13 +32,14 @@
 
 //-----------------------------------------------------------------------------
 // class VFXAppearanceType
-void VFXAppearanceType::init(FilePtr apprFile, uint32_t fileSize)
+void
+VFXAppearanceType::init(FilePtr apprFile, uint32_t fileSize)
 {
 	loadIniFile(apprFile, fileSize);
 	//------------------------------------------------------------------------------------
 	// Once the Ini File is loaded, we need to create the Shape set for this
 	// type.
-	numPackets  = spriteManager->getShapePackets(getAppearanceFileNum());
+	numPackets = spriteManager->getShapePackets(getAppearanceFileNum());
 	textureList = (TGATexturePtr*)spriteManager->mallocDataRAM(sizeof(TGATexture*) * numPackets);
 	gosASSERT(textureList != nullptr);
 	// memclear(textureList,sizeof(TGATexture *)*numPackets);
@@ -46,8 +47,9 @@ void VFXAppearanceType::init(FilePtr apprFile, uint32_t fileSize)
 }
 
 //---------------------------------------------------------------------------
-void VFXAppearanceType::removeTexture(TGATexturePtr texture) // Cache texture
-															 // out
+void
+VFXAppearanceType::removeTexture(TGATexturePtr texture) // Cache texture
+	// out
 {
 	for (size_t i = 0; i < numPackets; i++)
 	{
@@ -69,7 +71,8 @@ void VFXAppearanceType::removeTexture(TGATexturePtr texture) // Cache texture
 }
 
 //---------------------------------------------------------------------------
-int32_t VFXAppearanceType::loadIniFile(FilePtr apprFile, uint32_t fileSize)
+int32_t
+VFXAppearanceType::loadIniFile(FilePtr apprFile, uint32_t fileSize)
 {
 	FitIniFile VFXAppearanceFile;
 	int32_t result = VFXAppearanceFile.open(apprFile, fileSize);
@@ -119,11 +122,12 @@ int32_t VFXAppearanceType::loadIniFile(FilePtr apprFile, uint32_t fileSize)
 // This function is the meat and potatoes of this class.  The Mech actor class
 // will use this function to find the gesture it is currently interested in
 // drawing.  This function will handle ALL caching.
-TGATexturePtr VFXAppearanceType::getTexture(
+TGATexturePtr
+VFXAppearanceType::getTexture(
 	ActorState shapeId, int32_t rot, int32_t currFrame, float& frameRate, bool& mirror)
 {
 	bool mirrorOn = FALSE;
-	mirror		  = FALSE;
+	mirror = FALSE;
 	//---------------------------------------------------------------------------------
 	// If the NewShape does not exist for this sprite, it's frame count should
 	// be set to zero.  This is probably bad, since the sprite will disappear
@@ -132,14 +136,14 @@ TGATexturePtr VFXAppearanceType::getTexture(
 		return (nullptr);
 	if (rot < 0.0 && actorStateData[shapeId].symmetrical)
 	{
-		rot		 = -rot;
+		rot = -rot;
 		mirrorOn = TRUE;
 	}
 	else if (rot < 0.0 && !actorStateData[shapeId].symmetrical)
 	{
 		rot += 360;
 	}
-	mirror	= mirrorOn;
+	mirror = mirrorOn;
 	frameRate = actorStateData[shapeId].frameRate;
 	//---------------------------------------------------------------------------------------
 	// Remember: sprites use 0 degrees as facing camera, and degrees rotate
@@ -177,7 +181,8 @@ TGATexturePtr VFXAppearanceType::getTexture(
 }
 
 //----------------------------------------------------------------------------
-void VFXAppearanceType::destroy(void)
+void
+VFXAppearanceType::destroy(void)
 {
 	//---------------------------------------------------------------------------------------------
 	//-- If we are going away, inform ALL of the shapes in the cache that their
@@ -202,34 +207,35 @@ void VFXAppearanceType::destroy(void)
 
 //-----------------------------------------------------------------------------
 // class VFXAppearance
-void VFXAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void
+VFXAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (VFXAppearanceType*)tree;
 	if (appearType)
 		appearType->addUsers(this);
-	currentTexture	 = nullptr;
-	currentFrame	   = -1;
-	currentRotation	= 0;
-	inView			   = FALSE;
-	lastInView		   = 0.0;
-	timeInFrame		   = 0.0;
-	lastWholeFrame	 = 0;
-	fadeTable		   = nullptr;
+	currentTexture = nullptr;
+	currentFrame = -1;
+	currentRotation = 0;
+	inView = FALSE;
+	lastInView = 0.0;
+	timeInFrame = 0.0;
+	lastWholeFrame = 0;
+	fadeTable = nullptr;
 	currentShapeTypeId = ACTOR_STATE_NORMAL;
 	startFrame = endFrame = -1;
 	shapeMin.x = shapeMin.y = -15.0;
 	shapeMax.x = shapeMax.y = 15.0;
-	changedTypeId			= TRUE;
+	changedTypeId = TRUE;
 }
 
 //-----------------------------------------------------------------------------
-bool VFXAppearance::isMouseOver(float px, float py)
+bool
+VFXAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
-			(py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) && (py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -245,7 +251,8 @@ bool VFXAppearance::isMouseOver(float px, float py)
 #define TARGET_COLOR 207
 extern float currentScaleFactor;
 //-----------------------------------------------------------------------------
-bool VFXAppearance::recalcBounds(void)
+bool
+VFXAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
 	inView = FALSE;
@@ -256,10 +263,10 @@ bool VFXAppearance::recalcBounds(void)
 		eye->projectZ(topPosition, tempPos);
 		topZ = tempPos.z;
 		eye->projectZ(position, screenPos);
-		tempPos		 = screenPos;
-		float scale  = eye->getScaleFactor();
-		upperLeft.x  = tempPos.x;
-		upperLeft.y  = tempPos.y;
+		tempPos = screenPos;
+		float scale = eye->getScaleFactor();
+		upperLeft.x = tempPos.x;
+		upperLeft.y = tempPos.y;
 		lowerRight.x = upperLeft.x;
 		lowerRight.y = upperLeft.y;
 		if (currentTexture && currentTexture->textureHandle != 0xffffffff)
@@ -269,25 +276,24 @@ bool VFXAppearance::recalcBounds(void)
 				//------------------------------------------------------------------------
 				// Now, figure out what the upperLeft and lowerRight coordinates
 				// are and draw these as extents if we are selected.
-				shapeMin.x   = -(appearType->actorStateData[currentShapeTypeId].textureSize >> 1);
-				shapeMin.y   = shapeMin.x;
-				shapeMax.x   = -(shapeMin.x);
-				shapeMax.y   = shapeMax.x;
-				upperLeft.x  = tempPos.x + (shapeMin.x * scale);
-				upperLeft.y  = tempPos.y + (shapeMin.y * scale);
+				shapeMin.x = -(appearType->actorStateData[currentShapeTypeId].textureSize >> 1);
+				shapeMin.y = shapeMin.x;
+				shapeMax.x = -(shapeMin.x);
+				shapeMax.y = shapeMax.x;
+				upperLeft.x = tempPos.x + (shapeMin.x * scale);
+				upperLeft.y = tempPos.y + (shapeMin.y * scale);
 				lowerRight.x = upperLeft.x + (shapeMax.x * scale);
 				lowerRight.y = upperLeft.y + (shapeMax.y * scale);
 			}
 			else
 			{
-				upperLeft.x  = tempPos.x + (appearType->typeUpperLeftX * scale);
-				upperLeft.y  = tempPos.y + (appearType->typeUpperLeftY * scale);
+				upperLeft.x = tempPos.x + (appearType->typeUpperLeftX * scale);
+				upperLeft.y = tempPos.y + (appearType->typeUpperLeftY * scale);
 				lowerRight.x = tempPos.x + (appearType->typeLowerRightX * scale);
 				lowerRight.y = tempPos.y + (appearType->typeLowerRightY * scale);
 			}
 		}
-		if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) &&
-			(upperLeft.y <= eye->getScreenResY()))
+		if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 		{
 			inView = TRUE;
 		}
@@ -296,7 +302,8 @@ bool VFXAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-void VFXAppearance::setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t sel)
+void
+VFXAppearance::setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t sel)
 {
 	position = pos;
 	rotation = rot;
@@ -305,11 +312,12 @@ void VFXAppearance::setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t
 
 extern int32_t mechCmdr1PaletteLookup[];
 //-----------------------------------------------------------------------------
-int32_t VFXAppearance::render(int32_t depthFixup)
+int32_t
+VFXAppearance::render(int32_t depthFixup)
 {
 	//-------------------------------------------------------------------------
 	// First step is figure out where we are and cache the appropriate shapes
-	bool oldMirror   = FALSE;
+	bool oldMirror = FALSE;
 	float tFrameRate = 0.0;
 	currentTexture =
 		appearType->getTexture(currentShapeTypeId, rotation, currentFrame, tFrameRate, oldMirror);
@@ -326,10 +334,10 @@ int32_t VFXAppearance::render(int32_t depthFixup)
 			(appearType->actorStateData[currentShapeTypeId].textureHS & 0x0000ffff),
 			appearType->actorStateData[currentShapeTypeId].textureSize, topZ, screenPos.z);
 		uint8_t lightr, lightg, lightb, visible, seen;
-		lightIntensity	= land->getTerrainLight(position, visible, seen);
-		lightr			  = eye->getLightRed(lightIntensity, visible, seen);
-		lightg			  = eye->getLightGreen(lightIntensity, visible, seen);
-		lightb			  = eye->getLightBlue(lightIntensity, visible, seen);
+		lightIntensity = land->getTerrainLight(position, visible, seen);
+		lightr = eye->getLightRed(lightIntensity, visible, seen);
+		lightg = eye->getLightGreen(lightIntensity, visible, seen);
+		lightb = eye->getLightBlue(lightIntensity, visible, seen);
 		uint32_t lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
 		newElement.setLight(lightRGB);
 		newElement.draw();
@@ -348,7 +356,8 @@ int32_t VFXAppearance::render(int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-void VFXAppearance::setDamageLvl(uint32_t dmg)
+void
+VFXAppearance::setDamageLvl(uint32_t dmg)
 {
 	realBuildingDamage = TRUE;
 	if (dmg)
@@ -377,14 +386,16 @@ void VFXAppearance::setDamageLvl(uint32_t dmg)
 }
 
 //-----------------------------------------------------------------------------
-void VFXAppearance::debugUpdate(void)
+void
+VFXAppearance::debugUpdate(void)
 {
 	update();
 	recalcBounds();
 }
 
 //-----------------------------------------------------------------------------
-int32_t VFXAppearance::update(void)
+int32_t
+VFXAppearance::update(void)
 {
 	//--------------------------------------------------------
 	// Check if we are just starting out.  If so, set
@@ -392,7 +403,7 @@ int32_t VFXAppearance::update(void)
 	bool startingAnimation = FALSE;
 	if (currentFrame == -1)
 	{
-		currentFrame	  = 0;
+		currentFrame = 0;
 		startingAnimation = TRUE;
 	}
 	//--------------------------------------------------------------
@@ -403,27 +414,27 @@ int32_t VFXAppearance::update(void)
 	if (anyFrames > 1)
 	{
 		int32_t frameInc = 0;
-		float frameRate  = appearType->actorStateData[currentShapeTypeId].frameRate;
+		float frameRate = appearType->actorStateData[currentShapeTypeId].frameRate;
 		//------------------------------------------------------
 		// Make sure animation runs no faster than frameRate fps.
 		float frameRateOverOne = (1.0 / frameRate);
 		timeInFrame += frameLength;
 		if (timeInFrame >= frameRateOverOne)
 		{
-			frameInc		= timeInFrame * frameRate;
+			frameInc = timeInFrame * frameRate;
 			float remainder = timeInFrame / frameInc - frameRateOverOne;
-			timeInFrame		= remainder;
+			timeInFrame = remainder;
 		}
 		if (frameInc)
 		{
 			currentFrame += frameInc;
 			uint32_t totalFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
-			uint8_t loop		 = 1;
+			uint8_t loop = 1;
 			if ((currentFrame >= totalFrames) && (loop) && (endFrame == -1))
 			{
 				currentFrame %= totalFrames;
 				return (FALSE); // Let the object know we have completed a
-								// cycle.
+					// cycle.
 			}
 			else if ((currentFrame >= totalFrames) && (!loop))
 			{
@@ -433,7 +444,7 @@ int32_t VFXAppearance::update(void)
 			{
 				currentFrame = startFrame;
 				return (FALSE); // Let the object know we have completed a
-								// cycle.
+					// cycle.
 			}
 		}
 	}
@@ -441,14 +452,16 @@ int32_t VFXAppearance::update(void)
 }
 
 //-----------------------------------------------------------------------------
-void VFXAppearance::destroy(void)
+void
+VFXAppearance::destroy(void)
 {
 	appearType->removeUsers(this);
 	appearanceTypeList->removeAppearance(appearType);
 }
 
 //-----------------------------------------------------------------------------
-int32_t VFXAppearance::stateExists(ActorState typeId)
+int32_t
+VFXAppearance::stateExists(ActorState typeId)
 {
 	if ((typeId < appearType->numStates) && (typeId >= 0))
 		return (appearType->actorStateData[typeId].numFrames);

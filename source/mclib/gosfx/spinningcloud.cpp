@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
-	: ParticleCloud__Specification(class_id, stream, gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version) :
+	ParticleCloud__Specification(class_id, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -44,20 +44,21 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 //------------------------------------------------------------------------------
 //
 gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id)
-	: ParticleCloud__Specification(class_id)
+	Stuff::RegisteredClass::ClassID class_id) :
+	ParticleCloud__Specification(class_id)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_randomStartingRotation = false;
-	m_alignZUsingX			 = false;
-	m_alignZUsingY			 = false;
-	m_alignYUsingVelocity	= false;
+	m_alignZUsingX = false;
+	m_alignZUsingY = false;
+	m_alignYUsingVelocity = false;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud__Specification::Save(std::iostream stream)
+void
+gosFX::SpinningCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -70,14 +71,15 @@ void gosFX::SpinningCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud__Specification::BuildDefaults()
+void
+gosFX::SpinningCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	ParticleCloud__Specification::BuildDefaults();
 	m_randomStartingRotation = false;
-	m_alignZUsingX			 = false;
-	m_alignZUsingY			 = false;
-	m_alignYUsingVelocity	= false;
+	m_alignZUsingX = false;
+	m_alignZUsingY = false;
+	m_alignYUsingVelocity = false;
 	m_pSpin.m_ageCurve.SetCurve(0.0f);
 	m_pSpin.m_seeded = false;
 	m_pSpin.m_seedCurve.SetCurve(1.0f);
@@ -88,7 +90,8 @@ void gosFX::SpinningCloud__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float min, max;
@@ -109,7 +112,8 @@ bool gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud__Specification::Copy(SpinningCloud__Specification* spec)
+void
+gosFX::SpinningCloud__Specification::Copy(SpinningCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -117,12 +121,12 @@ void gosFX::SpinningCloud__Specification::Copy(SpinningCloud__Specification* spe
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	m_pSpin					 = spec->m_pSpin;
-	m_pScale				 = spec->m_pScale;
+	m_pSpin = spec->m_pSpin;
+	m_pScale = spec->m_pScale;
 	m_randomStartingRotation = spec->m_randomStartingRotation;
-	m_alignZUsingX			 = spec->m_alignZUsingX;
-	m_alignZUsingY			 = spec->m_alignZUsingY;
-	m_alignYUsingVelocity	= spec->m_alignYUsingVelocity;
+	m_alignZUsingX = spec->m_alignZUsingX;
+	m_alignZUsingY = spec->m_alignZUsingY;
+	m_alignYUsingVelocity = spec->m_alignYUsingVelocity;
 	// gos_PopCurrentHeap();
 }
 
@@ -135,7 +139,8 @@ gosFX::SpinningCloud::ClassData* gosFX::SpinningCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud::InitializeClass()
+void
+gosFX::SpinningCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -146,7 +151,8 @@ void gosFX::SpinningCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud::TerminateClass()
+void
+gosFX::SpinningCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -155,15 +161,16 @@ void gosFX::SpinningCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::SpinningCloud::SpinningCloud(ClassData* class_data, Specification* spec, uint32_t flags)
-	: ParticleCloud(class_data, spec, flags)
+gosFX::SpinningCloud::SpinningCloud(ClassData* class_data, Specification* spec, uint32_t flags) :
+	ParticleCloud(class_data, spec, flags)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
+bool
+gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -252,14 +259,14 @@ bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 		_ASSERT(box.maxX >= box.minX);
 		_ASSERT(box.maxY >= box.minY);
 		_ASSERT(box.maxZ >= box.minZ);
-		Stuff::OBB local_bounds			 = Stuff::OBB::Identity;
-		local_bounds.axisExtents.x		 = 0.5f * (box.maxX - box.minX);
-		local_bounds.axisExtents.y		 = 0.5f * (box.maxY - box.minY);
-		local_bounds.axisExtents.z		 = 0.5f * (box.maxZ - box.minZ);
+		Stuff::OBB local_bounds = Stuff::OBB::Identity;
+		local_bounds.axisExtents.x = 0.5f * (box.maxX - box.minX);
+		local_bounds.axisExtents.y = 0.5f * (box.maxY - box.minY);
+		local_bounds.axisExtents.z = 0.5f * (box.maxZ - box.minZ);
 		local_bounds.localToParent(3, 0) = box.minX + local_bounds.axisExtents.x;
 		local_bounds.localToParent(3, 1) = box.minY + local_bounds.axisExtents.y;
 		local_bounds.localToParent(3, 2) = box.minZ + local_bounds.axisExtents.z;
-		local_bounds.sphereRadius		 = local_bounds.axisExtents.GetLength();
+		local_bounds.sphereRadius = local_bounds.axisExtents.GetLength();
 		if (local_bounds.sphereRadius < Stuff::SMALL)
 			local_bounds.sphereRadius = 0.01f;
 		Stuff::OBB parent_bounds;
@@ -276,7 +283,8 @@ bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void
+gosFX::SpinningCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	//
 	//---------------------------
@@ -293,8 +301,8 @@ void gosFX::SpinningCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* tra
 	Check_Object(spec);
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
-	float seed					 = particle->m_seed;
-	float age					 = m_age;
+	float seed = particle->m_seed;
+	float age = m_age;
 	particle->m_localTranslation = *translation;
 	//
 	//---------------------------------
@@ -328,7 +336,8 @@ void gosFX::SpinningCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* tra
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::SpinningCloud::AnimateParticle(
+bool
+gosFX::SpinningCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -344,10 +353,10 @@ bool gosFX::SpinningCloud::AnimateParticle(
 	float age = particle->m_age;
 	if (age >= 1.0f)
 		return false;
-	Stuff::Point3D* translation		= &particle->m_localTranslation;
+	Stuff::Point3D* translation = &particle->m_localTranslation;
 	Stuff::UnitQuaternion* rotation = &particle->m_localRotation;
-	Stuff::Vector3D* velocity		= &particle->m_localLinearVelocity;
-	int32_t sim_mode				= GetSimulationMode();
+	Stuff::Vector3D* velocity = &particle->m_localLinearVelocity;
+	int32_t sim_mode = GetSimulationMode();
 	if (sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		particle->m_worldTranslation.Multiply(*translation, m_localToWorld);
@@ -357,8 +366,8 @@ bool gosFX::SpinningCloud::AnimateParticle(
 		particle->m_worldRotation = world_rot;
 		particle->m_worldLinearVelocity.Multiply(*velocity, m_localToWorld);
 		translation = &particle->m_worldTranslation;
-		rotation	= &particle->m_worldRotation;
-		velocity	= &particle->m_worldLinearVelocity;
+		rotation = &particle->m_worldRotation;
+		velocity = &particle->m_worldLinearVelocity;
 	}
 	Check_Object(translation);
 	Check_Object(rotation);
@@ -369,7 +378,7 @@ bool gosFX::SpinningCloud::AnimateParticle(
 	// velocity
 	//------------------------------------------------------------------
 	//
-	float seed			= particle->m_seed;
+	float seed = particle->m_seed;
 	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	float drag = -spec->m_pDrag.ComputeValue(age, seed);
@@ -488,4 +497,8 @@ bool gosFX::SpinningCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::SpinningCloud::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

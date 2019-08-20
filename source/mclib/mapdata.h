@@ -38,25 +38,25 @@
 //---------------------------------------------------------------------------
 enum Overlays
 {
-	INVALID_OVERLAY				  = -1,
-	DIRT_ROAD					  = 0,
-	PAVED_ROAD					  = 1,
-	ROUGH						  = 2,
-	DIRT_ROAD_TO_PAVED_ROAD		  = 3,
+	INVALID_OVERLAY = -1,
+	DIRT_ROAD = 0,
+	PAVED_ROAD = 1,
+	ROUGH = 2,
+	DIRT_ROAD_TO_PAVED_ROAD = 3,
 	PAVED_ROAD_CROSSING_DIRT_ROAD = 4,
-	TWO_LANE_DIRT_ROAD			  = 5,
-	DAMAGED_ROAD				  = 6,
-	RUNWAY						  = 7,
-	X_DIRT_PAVED				  = 8,
-	X_DIRT_2LANEDIRT			  = 9,
-	X_DIRT_DAMAGED				  = 10,
-	X_2LANEDIRT_PAVED			  = 11,
-	X_DAMAGED_PAVED				  = 12,
-	X_2LANEDIRT_DAMAGED			  = 13,
-	OBRIDGE						  = 14,
-	X_PAVED_ROAD_BRIDGE			  = 15,
-	DAMAGED_BRIDGE				  = 16,
-	NUM_OVERLAY_TYPES			  = 17
+	TWO_LANE_DIRT_ROAD = 5,
+	DAMAGED_ROAD = 6,
+	RUNWAY = 7,
+	X_DIRT_PAVED = 8,
+	X_DIRT_2LANEDIRT = 9,
+	X_DIRT_DAMAGED = 10,
+	X_2LANEDIRT_PAVED = 11,
+	X_DAMAGED_PAVED = 12,
+	X_2LANEDIRT_DAMAGED = 13,
+	OBRIDGE = 14,
+	X_PAVED_ROAD_BRIDGE = 15,
+	DAMAGED_BRIDGE = 16,
+	NUM_OVERLAY_TYPES = 17
 };
 
 //---------------------------------------------------------------------------
@@ -88,16 +88,17 @@ public:
 	{
 		HeapManager::init(void);
 		topLeftVertex.Zero(void);
-		blocks		 = nullptr;
-		blankVertex  = nullptr;
+		blocks = nullptr;
+		blankVertex = nullptr;
 		hasSelection = false;
 		shallowDepth = 0.0f;
-		waterDepth   = 0.0f;
-		alphaDepth   = 0.0f;
+		waterDepth = 0.0f;
+		alphaDepth = 0.0f;
 		WaterTXMData = 0xffffffff;
 	}
 
-	MapData(void) : HeapManager() { init(void); }
+	MapData(void) :
+		HeapManager() { init(void); }
 
 	void destroy(void);
 

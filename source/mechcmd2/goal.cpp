@@ -39,7 +39,8 @@ int32_t recurseCount = 0;
 
 //***************************************************************************
 
-PVOID GoalObject::operator new(size_t ourSize)
+PVOID
+GoalObject::operator new(size_t ourSize)
 {
 	PVOID result = missionHeap->Malloc(ourSize);
 	return (result);
@@ -47,30 +48,39 @@ PVOID GoalObject::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void GoalObject::operator delete(PVOID us) { missionHeap->Free(us); }
-
-//---------------------------------------------------------------------------
-
-void GoalObject::init(void)
+void
+GoalObject::operator delete(PVOID us)
 {
-	used			= false;
-	type			= GOAL_OBJECT;
-	id				= -1;
-	name[0]			= nullptr;
-	links			= nullptr;
-	controller		= nullptr;
-	info.object.WID = 0;
-	next			= nullptr;
-	prev			= nullptr;
+	missionHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void GoalObject::initObject(PSTR name, GameObjectPtr obj) {}
+void
+GoalObject::init(void)
+{
+	used = false;
+	type = GOAL_OBJECT;
+	id = -1;
+	name[0] = nullptr;
+	links = nullptr;
+	controller = nullptr;
+	info.object.WID = 0;
+	next = nullptr;
+	prev = nullptr;
+}
 
 //---------------------------------------------------------------------------
 
-void GoalObject::initRegion(
+void
+GoalObject::initObject(PSTR name, GameObjectPtr obj)
+{
+}
+
+//---------------------------------------------------------------------------
+
+void
+GoalObject::initRegion(
 	PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol)
 {
 	init();
@@ -82,18 +92,25 @@ void GoalObject::initRegion(
 
 //---------------------------------------------------------------------------
 
-void GoalObject::destroy(void) {}
+void
+GoalObject::destroy(void)
+{
+}
 
 //---------------------------------------------------------------------------
 
-void GoalObject::addLink(GoalObjectPtr gobject, GoalLinkType type)
+void
+GoalObject::addLink(GoalObjectPtr gobject, GoalLinkType type)
 {
 	GoalLinkPtr newLink = (GoalLink*)missionHeap->Malloc(sizeof(GoalLink));
 }
 
 //---------------------------------------------------------------------------
 
-void GoalObject::addController(GoalObjectPtr gobject) {}
+void
+GoalObject::addController(GoalObjectPtr gobject)
+{
+}
 
 //***************************************************************************
 // ACTION GOAL MANAGER
@@ -101,7 +118,8 @@ void GoalObject::addController(GoalObjectPtr gobject) {}
 
 //#ifdef USE_REGION_MAP
 
-PVOID GoalManager::operator new(size_t ourSize)
+PVOID
+GoalManager::operator new(size_t ourSize)
 {
 	PVOID result = missionHeap->Malloc(ourSize);
 	return (result);
@@ -109,44 +127,51 @@ PVOID GoalManager::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void GoalManager::operator delete(PVOID us) { missionHeap->Free(us); }
+void
+GoalManager::operator delete(PVOID us)
+{
+	missionHeap->Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void GoalManager::init(void)
+void
+GoalManager::init(void)
 {
-	numGoalObjects	 = 0;
+	numGoalObjects = 0;
 	goalObjectPoolSize = 0;
-	goalObjects		   = nullptr;
-	goalObjectPool	 = nullptr;
+	goalObjects = nullptr;
+	goalObjectPool = nullptr;
 #ifdef USE_REGION_MAP
 	for (size_t r = 0; r < GameMap->height; r++)
 		for (size_t c = 0; c < GameMap->width; c++)
 			regionMap[r][c] = -1;
 #endif
-	numRegions	 = 0;
-	fillStack	  = nullptr;
+	numRegions = 0;
+	fillStack = nullptr;
 	fillStackIndex = 0;
 }
 
 //---------------------------------------------------------------------------
 
-void GoalManager::destroy(void)
+void
+GoalManager::destroy(void)
 {
 	if (goalObjectPool)
 	{
 		missionHeap->Free(goalObjectPool);
 		goalObjectPool = nullptr;
 	}
-	numGoalObjects	 = 0;
+	numGoalObjects = 0;
 	goalObjectPoolSize = 0;
 }
 
 //---------------------------------------------------------------------------
 
-void GoalManager::clear(void)
+void
+GoalManager::clear(void)
 {
-	goalObjects	= nullptr;
+	goalObjects = nullptr;
 	numGoalObjects = 0;
 	for (size_t i = 0; i < goalObjectPoolSize; i++)
 		goalObjectPool[i].used = false;
@@ -160,14 +185,15 @@ void GoalManager::clear(void)
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::newGoalObject(void)
+GoalObjectPtr
+GoalManager::newGoalObject(void)
 {
 	GoalObjectPtr goalObject = nullptr;
 	for (size_t i = 0; i < goalObjectPoolSize; i++)
 		if (!goalObjectPool[i].used)
 		{
 			goalObjectPool[i].used = true;
-			goalObject			   = &goalObjectPool[i];
+			goalObject = &goalObjectPool[i];
 			break;
 		}
 	if (!goalObject)
@@ -177,7 +203,8 @@ GoalObjectPtr GoalManager::newGoalObject(void)
 
 //---------------------------------------------------------------------------
 
-void GoalManager::setup(int32_t poolSize)
+void
+GoalManager::setup(int32_t poolSize)
 {
 	goalObjectPoolSize = poolSize;
 	if (goalObjectPoolSize < 10)
@@ -252,7 +279,8 @@ bool GlobalMap::fillEastWestBridgeArea(int32_t row, int32_t col, int32_t area)
 
 #endif
 
-bool GoalManager::fillWallGateRegion(int32_t row, int32_t col, int32_t region)
+bool
+GoalManager::fillWallGateRegion(int32_t row, int32_t col, int32_t region)
 {
 	recurseCount++;
 	//----------------------------------------------------------------------
@@ -275,7 +303,8 @@ bool GoalManager::fillWallGateRegion(int32_t row, int32_t col, int32_t region)
 
 //------------------------------------------------------------------------------------------
 
-bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
+bool
+GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 {
 #if 1
 	//	int32_t overlay = GameMap->getOverlay(row, col);
@@ -294,8 +323,8 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 	{
 		//--------------------------------
 		// Pop 'em in the reverse order...
-		int32_t col  = fillStack[--fillStackIndex];
-		int32_t row  = fillStack[--fillStackIndex];
+		int32_t col = fillStack[--fillStackIndex];
+		int32_t row = fillStack[--fillStackIndex];
 		bool filling = true;
 		if ((row < 0) || (row >= GameMap->height) || (col < 0) || (col >= GameMap->width))
 			filling = false;
@@ -307,7 +336,7 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 		if (!GameMap->getPassable(row, col))
 		{
 			regionMap[row][col] = -2;
-			filling				= false;
+			filling = false;
 		}
 		if (filling)
 		{
@@ -316,8 +345,7 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 			{
 				int32_t adjR = row + adjCell[dir][0];
 				int32_t adjC = col + adjCell[dir][1];
-				if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) &&
-					(adjC < GameMap->width))
+				if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) && (adjC < GameMap->width))
 					if (regionMap[adjR][adjC] == -1)
 					{
 						//--------------------------------------------
@@ -363,7 +391,8 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 
 //------------------------------------------------------------------------------------------
 
-void GoalManager::calcRegions(void)
+void
+GoalManager::calcRegions(void)
 {
 	//----------------------------------------------------------------------
 	// This is the same method used in GlobalMap::calcAreas, so see notes...
@@ -397,7 +426,8 @@ void GoalManager::calcRegions(void)
 
 //------------------------------------------------------------------------------------------
 
-void GoalManager::build(void)
+void
+GoalManager::build(void)
 {
 	// For temps, pull 'em off the windows heap.  IT can resize.  OURS
 	// cannot!!!!
@@ -434,7 +464,7 @@ void GoalManager::build(void)
 		}
 	*/
 	free(fillStack);
-	fillStack	  = nullptr;
+	fillStack = nullptr;
 	fillStackIndex = 0;
 }
 
@@ -458,7 +488,8 @@ int32_t GoalManager::setControl (ObstaclePtr controller, ObstaclePtr controllee)
 */
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::addRegion(GoalObjectPtr parent, GoalLinkType linkType, PSTR name,
+GoalObjectPtr
+GoalManager::addRegion(GoalObjectPtr parent, GoalLinkType linkType, PSTR name,
 	int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol)
 {
 	GoalObjectPtr newRegion = newGoalObject();
@@ -472,7 +503,8 @@ GoalObjectPtr GoalManager::addRegion(GoalObjectPtr parent, GoalLinkType linkType
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::addObject(
+GoalObjectPtr
+GoalManager::addObject(
 	GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object)
 {
 	GoalObjectPtr newObject = newGoalObject();
@@ -495,7 +527,8 @@ controller) {
 */
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::calcGoal(int32_t startCell[2], int32_t goalCell[2])
+GoalObjectPtr
+GoalManager::calcGoal(int32_t startCell[2], int32_t goalCell[2])
 {
 	// No Warnings!
 	// ObstaclePtr startObstacle =
@@ -507,21 +540,24 @@ GoalObjectPtr GoalManager::calcGoal(int32_t startCell[2], int32_t goalCell[2])
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::calcGoal(GameObjectPtr attacker, GameObjectPtr target)
+GoalObjectPtr
+GoalManager::calcGoal(GameObjectPtr attacker, GameObjectPtr target)
 {
 	return (nullptr);
 }
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::calcGoal(GameObjectPtr attacker, Stuff::Vector3D location)
+GoalObjectPtr
+GoalManager::calcGoal(GameObjectPtr attacker, Stuff::Vector3D location)
 {
 	return (nullptr);
 }
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::calcGoal(Stuff::Vector3D start, Stuff::Vector3D location)
+GoalObjectPtr
+GoalManager::calcGoal(Stuff::Vector3D start, Stuff::Vector3D location)
 {
 	int32_t startCell[2], locationCell[2];
 	land->worldToCell(start, startCell[0], startCell[1]);

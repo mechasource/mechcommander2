@@ -56,10 +56,10 @@ typedef enum
 typedef struct _WeaponShotInfo
 {
 	GameObjectWatchID attackerWID;
-	int32_t masterId;	// attack weapon master ID
-	float damage;		 // damage caused by this shot
+	int32_t masterId; // attack weapon master ID
+	float damage; // damage caused by this shot
 	int32_t hitLocation; // hit location on target
-	float entryAngle;	// angle from which target was hit
+	float entryAngle; // angle from which target was hit
 
 	void init(GameObjectWatchID _attackerWID, int32_t _masterId, float _damage,
 		int32_t _hitLocation, float _entryAngle);
@@ -79,8 +79,8 @@ typedef struct _WeaponShotInfo
 
 typedef struct _SalvageItem
 {
-	uint8_t itemID;		  // id from MasterComponentList;
-	uint8_t numItems;	 // how many are there?
+	uint8_t itemID; // id from MasterComponentList;
+	uint8_t numItems; // how many are there?
 	uint8_t numSalvagers; // how many are salvagers are going for this item?
 } SalavageItem;
 
@@ -110,18 +110,18 @@ public:
 
 	void init(void)
 	{
-		targetType	= 0;
-		targetId	  = 0;
+		targetType = 0;
+		targetId = 0;
 		targetCell[0] = 0;
 		targetCell[1] = 0;
-		specialType   = -1;
-		specialId	 = -1;
-		weaponIndex   = 0;
-		hit			  = false;
-		entryAngle	= 0;
-		numMissiles   = 0;
-		hitLocation   = -1;
-		data		  = 0;
+		specialType = -1;
+		specialId = -1;
+		weaponIndex = 0;
+		hit = false;
+		entryAngle = 0;
+		numMissiles = 0;
+		hitLocation = -1;
+		data = 0;
 	}
 
 	void destroy(void) {}
@@ -175,18 +175,18 @@ public:
 
 	void init(void)
 	{
-		targetType	= 0;
-		targetId	  = 0;
+		targetType = 0;
+		targetId = 0;
 		targetCell[0] = 0;
 		targetCell[1] = 0;
-		specialType   = -1;
-		specialId	 = -1;
-		cause		  = 0;
-		damage		  = 0.0;
-		hitLocation   = -1;
-		entryAngle	= 0;
-		refit		  = false;
-		data		  = 0;
+		specialType = -1;
+		specialId = -1;
+		cause = 0;
+		damage = 0.0;
+		hitLocation = -1;
+		entryAngle = 0;
+		refit = false;
+		data = 0;
 	}
 
 	void destroy(void) {}
@@ -256,33 +256,33 @@ class GameObject
 public:
 	ObjectClass objectClass; // What kind of object is this.
 	GameObjectHandle handle; // Used to reference into master obj table
-	int32_t partId;			 // What is my unique part number.
-	uint32_t watchID;		 // Used to reference in the game engine
+	int32_t partId; // What is my unique part number.
+	uint32_t watchID; // Used to reference in the game engine
 
 	GameObjectTypeHandle typeHandle; // Who made me?
-	Stuff::Vector3D position;		 // Where am I?
-	uint16_t cellPositionRow;		 // Cell RC position
+	Stuff::Vector3D position; // Where am I?
+	uint16_t cellPositionRow; // Cell RC position
 	uint16_t cellPositionCol;
 	int32_t d_vertexNum; // Physical Vertex in mapData array that I'm lower
-						 // right from
-	uint32_t flags;		 // See GAMEOBJECT_FLAGS_ defines
+		// right from
+	uint32_t flags; // See GAMEOBJECT_FLAGS_ defines
 	uint16_t debugFlags; // use ONLY for debugging purposes...
-	uint8_t status;		 // Am I normal, disabled, destroyed, etc..?
+	uint8_t status; // Am I normal, disabled, destroyed, etc..?
 
-	float tonnage;  // How hefty am I?
+	float tonnage; // How hefty am I?
 	float rotation; // everything's base facing
 	AppearancePtr appearance;
 	GameObjectWatchID collisionFreeFromWID; // Index into GameObject Table
 	float collisionFreeTime;
 	Stuff::Vector4D screenPos; // Actual Screen position
-	int32_t windowsVisible;	// Which Windows can see me.
-	float explRadius;		   // How big is my explosion.
-	float explDamage;		   // How much damage does it do?
+	int32_t windowsVisible; // Which Windows can see me.
+	float explRadius; // How big is my explosion.
+	float explDamage; // How much damage does it do?
 	int16_t maxCV;
 	int16_t curCV;
 	int16_t threatRating;
 	float lastFrameTime; // Time elapsed since last frame was drawn.  (Replaces
-						 // HEAT.  No net gain in size!)
+		// HEAT.  No net gain in size!)
 	uint8_t blipFrame;
 	uint8_t numAttackers;
 
@@ -357,8 +357,7 @@ public:
 
 	bool isMover(void)
 	{
-		return ((objectClass == BATTLEMECH) || (objectClass == GROUNDVEHICLE) ||
-			(objectClass == ELEMENTAL) || (objectClass == MOVER));
+		return ((objectClass == BATTLEMECH) || (objectClass == GROUNDVEHICLE) || (objectClass == ELEMENTAL) || (objectClass == MOVER));
 	}
 
 	bool isMech(void) { return ((objectClass == BATTLEMECH)); }
@@ -462,8 +461,7 @@ public:
 	// NEVER call this with forceStatus UNLESS you are recovering a mech!!!
 	void setStatus(int32_t newStatus, bool forceStatus = false)
 	{
-		if (((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED)) ||
-			forceStatus)
+		if (((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED)) || forceStatus)
 			status = (uint8_t)newStatus;
 		if (newStatus == OBJECT_STATUS_DESTROYED)
 			status = (uint8_t)newStatus;
@@ -741,10 +739,16 @@ public:
 	virtual GameObjectWatchID getCollisionFreeFromWID(void) { return (collisionFreeFromWID); }
 
 #ifdef USE_COLLISION
-	virtual GameObjectHandle getCollisionFreeFromObject(void) { return (...); }
+	virtual GameObjectHandle getCollisionFreeFromObject(void)
+	{
+		return (...);
+	}
 #endif
 
-	virtual void setCollisionFreeTime(float time) { collisionFreeTime = time; }
+	virtual void setCollisionFreeTime(float time)
+	{
+		collisionFreeTime = time;
+	}
 
 	virtual float getCollisionFreeTime(void) { return (collisionFreeTime); }
 

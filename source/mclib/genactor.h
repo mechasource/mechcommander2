@@ -65,7 +65,7 @@ public:
 		for (size_t i = 0; i < MAX_GEN_ANIMATIONS; i++)
 			genAnimData[i] = nullptr;
 		textureName[0] = 0;
-		dotRGB		   = 0x00ffffff;
+		dotRGB = 0x00ffffff;
 	}
 
 	GenericAppearanceType(void) { init(void); }
@@ -76,40 +76,35 @@ public:
 
 	int32_t getNumFrames(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) &&
-			(genAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
 			return genAnimData[animationNum]->GetNumFrames(void);
 		return 0.0f;
 	}
 
 	float getFrameRate(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) &&
-			(genAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
 			return genAnimData[animationNum]->GetFrameRate(void);
 		return 0.0f;
 	}
 
 	bool isReversed(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) &&
-			(genAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
 			return genReverse[animationNum];
 		return false;
 	}
 
 	bool isLooped(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) &&
-			(genAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
 			return genAnimLoop[animationNum];
 		return false;
 	}
 
 	bool isRandom(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) &&
-			(genAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
 			return genRandom[animationNum];
 		return false;
 	}

@@ -37,7 +37,7 @@ typedef struct _GoalMapNode
 	// int32_t				parent;								// where we came
 	// from (parent cell)
 	uint8_t flags; // CLOSED, OPEN, STEP flags
-	int32_t g;	 // known cost from START to this node
+	int32_t g; // known cost from START to this node
 	// int32_t				hPrime;								// estimated cost from this
 	// node to GOAL  int32_t				fPrime;
 	// // = g + hPrime
@@ -76,11 +76,11 @@ public:
 
 	virtual void init(void)
 	{
-		id				 = -1;
-		numMovers		 = 0;
-		pointWID		 = 0;
+		id = -1;
+		numMovers = 0;
+		pointWID = 0;
 		disbandOnNoPoint = false;
-		goalMap			 = nullptr;
+		goalMap = nullptr;
 	}
 
 	void init(MoverGroupData& data);

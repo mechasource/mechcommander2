@@ -66,11 +66,11 @@ protected:
 public:
 	static PacketFilePtr noiseFile;
 	static RadioPtr radioList[MAX_RADIOS]; // Warriors no longer delete their
-										   // radios.  We do when the
+		// radios.  We do when the
 	// SoundSystem Shutdown occurs.
 
 	static PacketFilePtr messagesFile[MAX_RADIOS]; // Do these when the shutdown
-												   // occurs too to avoid leaks
+		// occurs too to avoid leaks
 
 	static bool messageInfoLoaded;
 	static bool radioListGo;
@@ -85,9 +85,9 @@ public:
 
 	void init(void)
 	{
-		enabled		  = TRUE;
+		enabled = TRUE;
 		ammoOutPlayed = false;
-		radioID		  = -1;
+		radioID = -1;
 	}
 
 	void destroy(void) {}

@@ -14,7 +14,6 @@
 #include <mlr/mlrstate.hpp>
 #include <mlr/mlr.hpp>
 
-
 namespace Stuff
 {
 class Point3D;
@@ -72,7 +71,7 @@ public:
 		LookUpLight
 	};
 
-	virtual LightType GetLightType(void)		   = 0;
+	virtual LightType GetLightType(void) = 0;
 	virtual void LightVertex(const MLRVertexData&) = 0;
 
 	void SetIntensity(float _int)

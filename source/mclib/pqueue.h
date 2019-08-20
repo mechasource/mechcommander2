@@ -41,7 +41,7 @@ protected:
 public:
 	void init(void)
 	{
-		pqList   = nullptr;
+		pqList = nullptr;
 		numItems = 0;
 	}
 

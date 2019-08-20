@@ -8,7 +8,8 @@
 #include "stdinc.h"
 #include "stuffheaders.hpp"
 
-bool Random::TestClass()
+bool
+Random::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Random::Instance test..."));
 #define RANDOM_TEST_COUNT 10000

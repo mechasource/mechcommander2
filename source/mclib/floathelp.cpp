@@ -20,39 +20,42 @@
 #endif
 
 //-----------------------------------------------------------------------------------------
-uint32_t FloatHelp::currentFloatHelp = 0;		// How many of them are we using at present
-FloatHelp* FloatHelp::floatHelps	 = nullptr; // POinters to all of them.
+uint32_t FloatHelp::currentFloatHelp = 0; // How many of them are we using at present
+FloatHelp* FloatHelp::floatHelps = nullptr; // POinters to all of them.
 
 //-----------------------------------------------------------------------------------------
 // class FloatHelp
-void FloatHelp::init(int32_t maxHelps)
+void
+FloatHelp::init(int32_t maxHelps)
 {
 	floatHelps = (FloatHelp*)systemHeap->Malloc(sizeof(FloatHelp) * MAX_FLOAT_HELPS);
 	gosASSERT(floatHelps != nullptr);
 	FloatHelp* tmp = floatHelps;
 	for (size_t i = 0; i < MAX_FLOAT_HELPS; i++, tmp++)
 	{
-		tmp->text[0]	 = 0;
+		tmp->text[0] = 0;
 		tmp->screenPos.x = tmp->screenPos.y = tmp->screenPos.z = tmp->screenPos.w = 0.0f;
-		tmp->foregroundColor													  = SD_WHITE;
-		tmp->backgroundColor													  = SD_BLACK;
-		tmp->scale																  = 1.0f;
-		tmp->proportional														  = true;
+		tmp->foregroundColor = SD_WHITE;
+		tmp->backgroundColor = SD_BLACK;
+		tmp->scale = 1.0f;
+		tmp->proportional = true;
 		tmp->bold = tmp->italic = tmp->wordWrap = false;
 	}
 	currentFloatHelp = 0;
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::destroy(void)
+void
+FloatHelp::destroy(void)
 {
 	systemHeap->Free(floatHelps);
-	floatHelps		 = nullptr;
+	floatHelps = nullptr;
 	currentFloatHelp = 0;
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::resetAll(void)
+void
+FloatHelp::resetAll(void)
 {
 	currentFloatHelp = 0;
 	for (size_t i = 0; i < MAX_FLOAT_HELPS; i++)
@@ -60,14 +63,16 @@ void FloatHelp::resetAll(void)
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::renderAll(void)
+void
+FloatHelp::renderAll(void)
 {
 	for (size_t i = 0; i < MAX_FLOAT_HELPS; i++)
 		floatHelps[i].render();
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::setFloatHelp(PSTR txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
+void
+FloatHelp::setFloatHelp(PSTR txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
 	float scl, bool proportional, bool bold, bool italic, bool wordWrap)
 {
 	if (currentFloatHelp < MAX_FLOAT_HELPS)
@@ -86,7 +91,8 @@ void FloatHelp::setFloatHelp(PSTR txt, Stuff::Vector4D screenPos, uint32_t fClr,
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::getTextStringLength(PSTR txt, uint32_t fColor, float scl, bool proportional,
+void
+FloatHelp::getTextStringLength(PSTR txt, uint32_t fColor, float scl, bool proportional,
 	bool bold, bool italic, bool wordWrap, uint32_t& width, uint32_t& height)
 {
 	// must use globalFloat Scale because of true type fonts
@@ -97,7 +103,7 @@ void FloatHelp::getTextStringLength(PSTR txt, uint32_t fColor, float scl, bool p
 	{
 		gos_TextStringLength(&gWidth, &gHeight, txt);
 	}
-	width  = gWidth;
+	width = gWidth;
 	height = gHeight;
 }
 

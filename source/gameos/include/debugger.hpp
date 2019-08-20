@@ -31,9 +31,9 @@ extern uint32_t WantRVRAM;
 extern uint32_t WantSW;
 extern uint32_t WantSW1;
 extern uint32_t WantHW;
-extern uint32_t FrameAdvance;			// Used to step or fast forward through scripts
-extern uint32_t OldFreeze;				// Old value of gFreezeLogic
-extern uint32_t OldRender;				// Old value of gStopRendering;
+extern uint32_t FrameAdvance; // Used to step or fast forward through scripts
+extern uint32_t OldFreeze; // Old value of gFreezeLogic
+extern uint32_t OldRender; // Old value of gStopRendering;
 extern uint32_t PerfCounterSelected;
 extern int32_t PerfYStart, PerfYEnd;
 extern uint32_t DoUpdateWindow;
@@ -50,9 +50,9 @@ extern uint32_t PolygonsInArea;
 extern float DebuggerTexelOffset;
 extern int32_t DBWheelDelta;
 extern uint32_t gShowMemoryUseage; // 2=Enable at next frame, 1=show data, 0=Do
-								   // not show data
-extern uint32_t gShowWSUseage;	 // 2=Enable at next frame, 1=show data, 0=Do not show data
-extern uint32_t gShowFTOLUseage;   // 2=Enable at next frame, 1=show data, 0=Do not show data
+	// not show data
+extern uint32_t gShowWSUseage; // 2=Enable at next frame, 1=show data, 0=Do not show data
+extern uint32_t gShowFTOLUseage; // 2=Enable at next frame, 1=show data, 0=Do not show data
 extern uint32_t gShowALLUseage;
 extern gos_VERTEX Graph[512];
 extern uint32_t gScreenBMP;
@@ -117,29 +117,29 @@ uint8_t __stdcall CheckWindow(void);
 
 typedef enum EDbgScreen
 {
-	DbgS_Stat,				  // 0
-	DbgS_Spew,				  // 1
-	DbgS_Texture,			  // 2
-	DbgS_Network,			  // 3
-	DbgS_Sound,				  // 4
-	DbgS_Control,			  // 5
-	DbgS_UsedTextures,		  // 6
-	DbgS_UnusedTextures,	  // 7
-	DbgS_Memory,			  // 8
-	DbgS_CPUStats,			  // 9
-	DbgS_PlayHistory,		  // 10
-	DbgS_SoundResource,		  // 11
-	DbgS_NetworkX,			  // 12
-	DbgS_File,				  // 13
-	DbgS_SoundSpatial,		  // 14
-	DbgS_LoadedTextures,	  // 15
-	DbgS_AllTextures,		  // 16
-	DbgS_UsedTextureDetail,   // 17
+	DbgS_Stat, // 0
+	DbgS_Spew, // 1
+	DbgS_Texture, // 2
+	DbgS_Network, // 3
+	DbgS_Sound, // 4
+	DbgS_Control, // 5
+	DbgS_UsedTextures, // 6
+	DbgS_UnusedTextures, // 7
+	DbgS_Memory, // 8
+	DbgS_CPUStats, // 9
+	DbgS_PlayHistory, // 10
+	DbgS_SoundResource, // 11
+	DbgS_NetworkX, // 12
+	DbgS_File, // 13
+	DbgS_SoundSpatial, // 14
+	DbgS_LoadedTextures, // 15
+	DbgS_AllTextures, // 16
+	DbgS_UsedTextureDetail, // 17
 	DbgS_UnusedTextureDetail, // 18
 	DbgS_LoadedTextureDetail, // 19
-	DbgS_AllTextureDetail,	// 20
-	DbgS_AllTextureNoUpload,  // 21
-	DbgS_TextureLog,		  // 22
+	DbgS_AllTextureDetail, // 20
+	DbgS_AllTextureNoUpload, // 21
+	DbgS_TextureLog, // 22
 } EDbgScreen;
 extern EDbgScreen DebugDisplay;
 
@@ -162,11 +162,11 @@ extern uint32_t ShowColorInfo;
 // True when the debugger window is visible on the display
 //
 extern uint8_t DebuggerActive;
-extern uint8_t InDebugger;		  // During debugger rendering
+extern uint8_t InDebugger; // During debugger rendering
 extern uint8_t ProcessMemorySize; // When true will calculate each processes
-								  // memory size in the exception handler (can
-								  // take about 1 second!)
-extern int32_t ZoomMode;		  // Zoom screen around cursor
+	// memory size in the exception handler (can
+	// take about 1 second!)
+extern int32_t ZoomMode; // Zoom screen around cursor
 extern int32_t BaseZoom;
 extern uint32_t gForceNoFlip; // Force blt instead of flip in fullscreen
 extern uint32_t gShowAverage;
@@ -178,7 +178,7 @@ extern uint32_t WhichImage; // Original / Special mode image?
 // Scroll back buffer for Dumplog (128K)
 //
 extern char DebuggerBuffer[DebuggerBufferSize];
-extern uint32_t CurrentDebugSpewPos;	 // Current position in buffer
+extern uint32_t CurrentDebugSpewPos; // Current position in buffer
 extern uint32_t CurrentDebugTopOfScreen; // Current top of screen
 //
 // Alpha values to added to debugger window
@@ -214,19 +214,19 @@ extern uint32_t gForceDithering;
 extern uint32_t gForceChessTexture;
 extern uint32_t gForceNoAlphaTest;
 extern uint32_t gForceAlphaTest;
-extern uint32_t ChessTexture;	// The chess texture
+extern uint32_t ChessTexture; // The chess texture
 extern uint32_t MipColorTexture; // The mipmap colored texture
 extern uint32_t gForceAlphaBlending;
 extern uint32_t gUseGameSpew;
-extern uint32_t gControlsActive;  // Allow controls for the game during the debugger
+extern uint32_t gControlsActive; // Allow controls for the game during the debugger
 extern uint32_t gGameLogicActive; // Allow game logic to run when debugger up
-extern uint32_t gStopSystem;	  // Stop whole system in debugger
+extern uint32_t gStopSystem; // Stop whole system in debugger
 extern uint32_t gFrameGraph;
 extern uint32_t gStopGameRendering;
 extern uint32_t gStopRendering; // Stop rendering
-extern uint32_t gFreezeLogic;   // Stop rendering
+extern uint32_t gFreezeLogic; // Stop rendering
 extern uint32_t gShowLFControls;
-extern bool		NoDebuggerStats; // When 0 Stats and spews are active during GameOS functions like debugger
+extern bool NoDebuggerStats; // When 0 Stats and spews are active during GameOS functions like debugger
 extern uint32_t gEnableRS;
 extern uint32_t gTextureOverrun;
 extern uint32_t gDisableLighting;
@@ -252,8 +252,8 @@ typedef enum __debugger_window_constants
 };
 
 extern int32_t CurrentX, CurrentY; // Current pixel position
-extern int32_t DbChrX, DbChrY;	 // Current character x,y
-extern int32_t StartX, StartY;	 // Current start of line
+extern int32_t DbChrX, DbChrY; // Current character x,y
+extern int32_t StartX, StartY; // Current start of line
 
 void __stdcall UpdateDebugger(void);
 void __stdcall InitDebugger(void);

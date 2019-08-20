@@ -18,19 +18,20 @@ ChooseUnitDlg.cpp			: Implementation of the ChooseUnitDlg component.
 //#include "editorobjectmgr.h"
 
 //-------------------------------------------------------------------------------------------------
-ChooseUnitDlg::ChooseUnitDlg(unit_ptr_type& unitPtr, int32_t alignmentToExclude)
-	: CDialog(IDD_CHOOSE_UNIT)
+ChooseUnitDlg::ChooseUnitDlg(unit_ptr_type& unitPtr, int32_t alignmentToExclude) :
+	CDialog(IDD_CHOOSE_UNIT)
 {
-	m_alignmentToExclude  = alignmentToExclude;
-	m_pUnitPtr			  = &unitPtr;
-	m_pModifiedUnitPtr	= 0;
-	m_pComboBox			  = 0;
+	m_alignmentToExclude = alignmentToExclude;
+	m_pUnitPtr = &unitPtr;
+	m_pModifiedUnitPtr = 0;
+	m_pComboBox = 0;
 	m_pUsingPointerButton = 0;
-	m_pCancelButton		  = 0;
-	m_pOKButton			  = 0;
+	m_pCancelButton = 0;
+	m_pOKButton = 0;
 }
 
-BOOL ChooseUnitDlg::OnInitDialog()
+BOOL
+ChooseUnitDlg::OnInitDialog()
 {
 	m_pComboBox = (CComboBox*)GetDlgItem(IDC_CHOOSE_UNIT_COMBO);
 	assert(m_pComboBox);
@@ -47,7 +48,7 @@ BOOL ChooseUnitDlg::OnInitDialog()
 	}
 	else
 	{
-		m_pModifiedUnitPtr	= new unit_ptr_type;
+		m_pModifiedUnitPtr = new unit_ptr_type;
 		(*m_pModifiedUnitPtr) = (*m_pUnitPtr);
 	}
 	EditorObjectMgr::UNIT_LIST completeUnitList = EditorObjectMgr::instance()->getUnits();
@@ -92,7 +93,8 @@ BOOL ChooseUnitDlg::OnInitDialog()
 	return 1;
 }
 
-BOOL ChooseUnitDlg::OnCommand(WPARAM wParam,
+BOOL
+ChooseUnitDlg::OnCommand(WPARAM wParam,
 	LPARAM lParam) // called by child controls to inform of an event
 {
 	assert(m_pCancelButton);
@@ -122,7 +124,8 @@ BOOL ChooseUnitDlg::OnCommand(WPARAM wParam,
 	return inherited::OnCommand(wParam, lParam);
 }
 
-void ChooseUnitDlg::OnUsePointer()
+void
+ChooseUnitDlg::OnUsePointer()
 {
 	if (!EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -135,12 +138,12 @@ void ChooseUnitDlg::OnUsePointer()
 		EditorInterface::instance()->ObjectSelectOnlyMode(false);
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects =
 			EditorObjectMgr::instance()->getSelectedObjectList();
-		int32_t num_units_selected							   = 0;
-		int32_t validObjectIndex							   = -1;
+		int32_t num_units_selected = 0;
+		int32_t validObjectIndex = -1;
 		EditorObjectMgr::EDITOR_OBJECT_LIST::EConstIterator it = selectedObjects.Begin();
 		while (!it.IsDone())
 		{
-			int32_t index								   = 0;
+			int32_t index = 0;
 			EditorObjectMgr::UNIT_LIST::EConstIterator it2 = m_unitList.Begin();
 			while (!it2.IsDone())
 			{
@@ -169,20 +172,22 @@ void ChooseUnitDlg::OnUsePointer()
 	}
 }
 
-void ChooseUnitDlg::OnCancel()
+void
+ChooseUnitDlg::OnCancel()
 {
 	// assert(false); // haven't decided what to do on cancel yet
 	delete m_pModifiedUnitPtr;
 	EndDialog(IDCANCEL);
 }
 
-void ChooseUnitDlg::OnOK()
+void
+ChooseUnitDlg::OnOK()
 {
 	int32_t nSelectionIndex = m_pComboBox->GetCurSel();
 	assert(0 <= nSelectionIndex);
 	//(*m_pModifiedUnitPtr) = m_unitList[nSelectionIndex];
 	(*m_pModifiedUnitPtr) = *(m_unitList.Iterator(nSelectionIndex));
-	(*m_pUnitPtr)		  = (*m_pModifiedUnitPtr);
+	(*m_pUnitPtr) = (*m_pModifiedUnitPtr);
 	delete m_pModifiedUnitPtr;
 	EndDialog(IDOK);
 }

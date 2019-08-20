@@ -37,11 +37,11 @@ and tree appearance keep their common elements here
 
 typedef struct _NodeData
 {
-	char* nodeId;		// Used to determine where jumpjets, smoke and weapon fire
-						// come from.
+	char* nodeId; // Used to determine where jumpjets, smoke and weapon fire
+		// come from.
 	int32_t weaponType; // What kind of weapon can use this node
-	bool isRArmNode;	// Used to stop firing from node when RArm is gone.
-	bool isLArmNode;	// Used to stop firing from node when LArm is gone.
+	bool isRArmNode; // Used to stop firing from node when RArm is gone.
+	bool isLArmNode; // Used to stop firing from node when LArm is gone.
 } NodeData;
 
 /**************************************************************************************************
@@ -72,7 +72,7 @@ public:
 
 	void setDamage(int32_t Damage) // editor uses this... nobody else should
 	{
-		damage	= Damage;
+		damage = Damage;
 		barStatus = Damage ? 0 : 1;
 		if (Damage)
 			setObjStatus(OBJECT_STATUS_DESTROYED); // Change the shape!!
@@ -91,10 +91,10 @@ protected:
 	ObjectAppearance()
 	{
 		highlightColor = 0;
-		damage		   = 0;
+		damage = 0;
 		lightIntensity = rotation = 0.0;
-		selected				  = 0;
-		pilotName[0]			  = 0;
+		selected = 0;
+		pilotName[0] = 0;
 	}
 
 	/*

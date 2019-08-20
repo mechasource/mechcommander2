@@ -65,14 +65,14 @@
 
 //---------------------------------------------------------------------------
 
-PacketFilePtr ObjectTypeManager::objectFile		= nullptr;
-UserHeapPtr ObjectTypeManager::objectTypeCache  = nullptr;
-UserHeapPtr ObjectTypeManager::objectCache		= nullptr;
-int32_t ObjectTypeManager::bridgeTypeHandle		= 0xFFFFFFFF;
-int32_t ObjectTypeManager::forestTypeHandle		= 0xFFFFFFFF;
-int32_t ObjectTypeManager::wallHeavyTypeHandle  = 0xFFFFFFFF;
+PacketFilePtr ObjectTypeManager::objectFile = nullptr;
+UserHeapPtr ObjectTypeManager::objectTypeCache = nullptr;
+UserHeapPtr ObjectTypeManager::objectCache = nullptr;
+int32_t ObjectTypeManager::bridgeTypeHandle = 0xFFFFFFFF;
+int32_t ObjectTypeManager::forestTypeHandle = 0xFFFFFFFF;
+int32_t ObjectTypeManager::wallHeavyTypeHandle = 0xFFFFFFFF;
 int32_t ObjectTypeManager::wallMediumTypeHandle = 0xFFFFFFFF;
-int32_t ObjectTypeManager::wallLightTypeHandle  = 0xFFFFFFFF;
+int32_t ObjectTypeManager::wallLightTypeHandle = 0xFFFFFFFF;
 
 uint32_t NextIdNumber = 0x30000001; // Big number to indicate
 // This object is NOT a mission
@@ -82,7 +82,8 @@ uint32_t NextIdNumber = 0x30000001; // Big number to indicate
 //* OBJECTTYPE class
 //***************************************************************************
 
-PVOID ObjectType::operator new(size_t ourSize)
+PVOID
+ObjectType::operator new(size_t ourSize)
 {
 	PVOID result = ObjectTypeManager::objectTypeCache->Malloc(ourSize);
 	return (result);
@@ -90,7 +91,8 @@ PVOID ObjectType::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void ObjectType::operator delete(PVOID us)
+void
+ObjectType::operator delete(PVOID us)
 {
 	if (!((ObjectTypePtr)us)->inUse())
 	{
@@ -100,7 +102,8 @@ void ObjectType::operator delete(PVOID us)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr ObjectType::createInstance(void)
+GameObjectPtr
+ObjectType::createInstance(void)
 {
 	GameObjectPtr result = new GameObject;
 	result->init(true, this);
@@ -110,7 +113,8 @@ GameObjectPtr ObjectType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void ObjectType::destroy(void)
+void
+ObjectType::destroy(void)
 {
 	// Nothing at the moment!
 	ObjectTypeManager::objectTypeCache->Free(appearName);
@@ -119,13 +123,18 @@ void ObjectType::destroy(void)
 
 //---------------------------------------------------------------------------
 
-int32_t ObjectType::init(FilePtr objFile, uint32_t fileSize) { return (NO_ERROR); }
+int32_t
+ObjectType::init(FilePtr objFile, uint32_t fileSize)
+{
+	return (NO_ERROR);
+}
 
 //---------------------------------------------------------------------------
-int32_t ObjectType::init(FitIniFilePtr objFile)
+int32_t
+ObjectType::init(FitIniFilePtr objFile)
 {
 	int32_t result = 0;
-	result		   = objFile->seekBlock("ObjectType");
+	result = objFile->seekBlock("ObjectType");
 	if (result != NO_ERROR)
 		return (result);
 	numUsers = 0;
@@ -152,13 +161,14 @@ int32_t ObjectType::init(FitIniFilePtr objFile)
 	if (result != NO_ERROR)
 		iconNumber = -1;
 	keepMe = true; // Never cache out anymore!
-	teamId = -1;   // Everything starts out Neutral now.
+	teamId = -1; // Everything starts out Neutral now.
 	return (NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-void ObjectType::createExplosion(Stuff::Vector3D& position, float dmg, float rad)
+void
+ObjectType::createExplosion(Stuff::Vector3D& position, float dmg, float rad)
 {
 	int32_t effectId = weaponEffects->GetEffectObjNum(explosionObject);
 	if (explosionObject >= 0)
@@ -171,7 +181,8 @@ void ObjectType::createExplosion(Stuff::Vector3D& position, float dmg, float rad
 
 //---------------------------------------------------------------------------
 
-bool ObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+ObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------
 	// The default reaction of any object in the world
@@ -182,7 +193,8 @@ bool ObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool ObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool
+ObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------
 	// The default reaction of any object in the world
@@ -201,7 +213,8 @@ bool ObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collide
 //* GAMEOBJECT TYPE MANAGER class
 //***************************************************************************
 
-int32_t ObjectTypeManager::init(PSTR objectFileName, int32_t objectTypeCacheSize,
+int32_t
+ObjectTypeManager::init(PSTR objectFileName, int32_t objectTypeCacheSize,
 	int32_t objectCacheSize, int32_t maxObjectTypes)
 {
 	FullPathFileName objectName;
@@ -236,22 +249,23 @@ int32_t ObjectTypeManager::init(PSTR objectFileName, int32_t objectTypeCacheSize
 	// logically managed. If we never have to load MC1/MCX missions, we can
 	// simply init the objectType packfile with 5 sep. types to begin with and
 	// avoid this hack-like "fix"...
-	bridgeTypeHandle	 = numObjectTypes - 5;
-	forestTypeHandle	 = numObjectTypes - 4;
-	wallHeavyTypeHandle  = numObjectTypes - 3;
+	bridgeTypeHandle = numObjectTypes - 5;
+	forestTypeHandle = numObjectTypes - 4;
+	wallHeavyTypeHandle = numObjectTypes - 3;
 	wallMediumTypeHandle = numObjectTypes - 2;
-	wallLightTypeHandle  = numObjectTypes - 1;
+	wallLightTypeHandle = numObjectTypes - 1;
 	return (NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-void ObjectTypeManager::destroy(void)
+void
+ObjectTypeManager::destroy(void)
 {
 	if (table)
 	{
 		objectTypeCache->Free(table);
-		table		   = nullptr;
+		table = nullptr;
 		numObjectTypes = 0;
 	}
 	if (objectFile)
@@ -274,7 +288,8 @@ void ObjectTypeManager::destroy(void)
 
 //---------------------------------------------------------------------------
 
-ObjectTypePtr ObjectTypeManager::load(ObjectTypeNumber objTypeNum, bool noCacheOut, bool forceLoad)
+ObjectTypePtr
+ObjectTypeManager::load(ObjectTypeNumber objTypeNum, bool noCacheOut, bool forceLoad)
 {
 	//-----------------------------------------------------------------------
 	// NOTE: This function attempts to load the objectType into the table. If
@@ -294,12 +309,10 @@ ObjectTypePtr ObjectTypeManager::load(ObjectTypeNumber objTypeNum, bool noCacheO
 		return nullptr;
 	if (!forceLoad && get(objTypeNum, false))
 		return (nullptr);
-	bool isMiscTerrObj	= false;
+	bool isMiscTerrObj = false;
 	int32_t objectTypeNum = -1;
 	ObjectTypePtr objType = nullptr;
-	if ((objTypeNum == bridgeTypeHandle) || (objTypeNum == forestTypeHandle) ||
-		(objTypeNum == wallHeavyTypeHandle) || (objTypeNum == wallMediumTypeHandle) ||
-		(objTypeNum == wallLightTypeHandle))
+	if ((objTypeNum == bridgeTypeHandle) || (objTypeNum == forestTypeHandle) || (objTypeNum == wallHeavyTypeHandle) || (objTypeNum == wallMediumTypeHandle) || (objTypeNum == wallLightTypeHandle))
 	{
 		//----------------------------------------------------------
 		// MiscTerrainObject "hack" to maintain MC1 compatibility...
@@ -455,7 +468,8 @@ ObjectTypePtr ObjectTypeManager::load(ObjectTypeNumber objTypeNum, bool noCacheO
 
 //---------------------------------------------------------------------------
 
-void ObjectTypeManager::remove(int32_t objTypeNum)
+void
+ObjectTypeManager::remove(int32_t objTypeNum)
 {
 	if ((objTypeNum <= 0) || (objTypeNum >= numObjectTypes))
 		Fatal(objTypeNum, " ObjectTypeManager.remove: bad objTypeNum ");
@@ -472,11 +486,16 @@ void ObjectTypeManager::remove(int32_t objTypeNum)
 
 //---------------------------------------------------------------------------
 
-void ObjectTypeManager::remove(ObjectTypePtr objTypePtr) { remove(objTypePtr->whatAmI()); }
+void
+ObjectTypeManager::remove(ObjectTypePtr objTypePtr)
+{
+	remove(objTypePtr->whatAmI());
+}
 
 //---------------------------------------------------------------------------
 
-ObjectTypePtr ObjectTypeManager::get(ObjectTypeNumber objTypeNum, bool loadIt)
+ObjectTypePtr
+ObjectTypeManager::get(ObjectTypeNumber objTypeNum, bool loadIt)
 {
 	if ((objTypeNum < 0) || (objTypeNum >= numObjectTypes))
 		Fatal(objTypeNum, " ObjectTypeManager.find: bad objTypeNum ");
@@ -495,7 +514,8 @@ ObjectTypePtr ObjectTypeManager::get(ObjectTypeNumber objTypeNum, bool loadIt)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr ObjectTypeManager::create(ObjectTypeNumber objTypeNum)
+GameObjectPtr
+ObjectTypeManager::create(ObjectTypeNumber objTypeNum)
 {
 	if ((objTypeNum < 0) || (objTypeNum >= numObjectTypes))
 		Fatal(objTypeNum, " ObjectTypeManager.get: bad objTypeNum ");

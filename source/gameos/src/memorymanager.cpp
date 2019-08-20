@@ -74,7 +74,7 @@ HGOSHEAP AllHeaps;
 PLARGEBLOCKHEADER gMemoryBigAllocList;
 size_t gCurrentHeapStackLevel;
 size_t gMemoryStackWalkLevel;
-HGOSHEAP gExaminingHeap;	// not used
+HGOSHEAP gExaminingHeap; // not used
 PMEMORYPOOL gExaminingPool; // not used
 size_t VirtualMemoryAllocated;
 size_t MemoryUsed;
@@ -82,7 +82,7 @@ size_t MemoryAllocations;
 PPSAPI_WS_WATCH_INFORMATION pMemBlockInfo;
 
 // initialized data
-uint16_t AgressiveManager			   = 1; // unknown purpose
+uint16_t AgressiveManager = 1; // unknown purpose
 extern uint16_t PoolSizes[MemoryPools] = {
 	0x000C,
 	0x0010,

@@ -26,22 +26,22 @@ LogisticsPilot:
 enum Medals
 {
 
-	CAMPAIGN_RIBBON1	 = 0,
-	CAMPAIGN_RIBBON2	 = 1,
-	CAMPAIGN_RIBBON3	 = 2,
+	CAMPAIGN_RIBBON1 = 0,
+	CAMPAIGN_RIBBON2 = 1,
+	CAMPAIGN_RIBBON3 = 2,
 	CAMPAIGN_FULLRIBBON1 = 3,
 	CAMPAIGN_FULLRIBBON2 = 4,
 	CAMPAIGN_FULLRIBBON3 = 5,
-	PURPLE_HEART		 = 6,
-	VALOR				 = 7,
-	UNCOMMON_VALOR		 = 8,
-	MISSION_SPEC1		 = 9,
-	MISSION_SPEC2		 = 10,
-	MISSION_SPEC3		 = 11,
-	MISSION_SPEC4		 = 12,
-	LIAO_MEDAL			 = 13,
-	DAVION_MEDAL		 = 14,
-	STEINER_MEDAL		 = 15,
+	PURPLE_HEART = 6,
+	VALOR = 7,
+	UNCOMMON_VALOR = 8,
+	MISSION_SPEC1 = 9,
+	MISSION_SPEC2 = 10,
+	MISSION_SPEC3 = 11,
+	MISSION_SPEC4 = 12,
+	LIAO_MEDAL = 13,
+	DAVION_MEDAL = 14,
+	STEINER_MEDAL = 15,
 	MAX_MEDAL
 
 };
@@ -82,7 +82,7 @@ public:
 	bool isAvailable()
 	{
 		return (bAvailable && !bDead); // depends on purchasing file .... maybe
-									   // should put dead checks and stuff
+			// should put dead checks and stuff
 	}
 	void setAvailable(bool available) { bAvailable = available; }
 	bool isDead(void) const { return bDead; }

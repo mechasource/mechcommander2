@@ -20,14 +20,15 @@
 
 extern UserHeapPtr systemHeap;
 
-HGOSFONT3D GameDebugWindow::font	= nullptr;
+HGOSFONT3D GameDebugWindow::font = nullptr;
 int32_t GameDebugWindow::fontHeight = 0;
 
 //***************************************************************************
 //	GAME DEBUG WINDOW class
 //***************************************************************************
 
-PVOID GameDebugWindow::operator new(size_t ourSize)
+PVOID
+GameDebugWindow::operator new(size_t ourSize)
 {
 	PVOID result = systemHeap->Malloc(ourSize);
 	return (result);
@@ -35,11 +36,16 @@ PVOID GameDebugWindow::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::operator delete(PVOID us) { systemHeap->Free(us); }
+void
+GameDebugWindow::operator delete(PVOID us)
+{
+	systemHeap->Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::setFont(PSTR fontFile)
+void
+GameDebugWindow::setFont(PSTR fontFile)
 {
 	if (font)
 	{
@@ -58,7 +64,8 @@ void GameDebugWindow::setFont(PSTR fontFile)
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::print(PSTR s)
+void
+GameDebugWindow::print(PSTR s)
 {
 	if (numLines < MAX_DEBUG_WINDOW_LINES)
 		strcpy(textBuffer[numLines++], s);
@@ -73,7 +80,8 @@ void GameDebugWindow::print(PSTR s)
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::render(void)
+void
+GameDebugWindow::render(void)
 {
 	if (!display)
 		return;

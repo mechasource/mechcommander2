@@ -22,10 +22,14 @@ class HSVAColor;
 } // namespace Stuff
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::RGBColor& color);
-void Spew(PCSTR group, const Stuff::RGBAColor& color);
-void Spew(PCSTR group, const Stuff::HSVColor& color);
-void Spew(PCSTR group, const Stuff::HSVAColor& color);
+void
+Spew(PCSTR group, const Stuff::RGBColor& color);
+void
+Spew(PCSTR group, const Stuff::RGBAColor& color);
+void
+Spew(PCSTR group, const Stuff::HSVColor& color);
+void
+Spew(PCSTR group, const Stuff::HSVAColor& color);
 #endif
 
 namespace Stuff
@@ -37,16 +41,16 @@ namespace Stuff
 
 class RGBColor
 {
-//	friend class RGBAColor;
+	//	friend class RGBAColor;
 
 public:
 	RGBColor(void) { red = green = blue = -1.0f; }
 
 	RGBColor(float r, float g, float b)
 	{
-		red   = r;
+		red = r;
 		green = g;
-		blue  = b;
+		blue = b;
 	}
 
 	friend bool Close_Enough(const RGBColor& c1, const RGBColor& c2, float e = SMALL);
@@ -64,9 +68,9 @@ public:
 	{
 		// Check_Object(this);
 		Check_Object(&color);
-		red   = color.red;
+		red = color.red;
 		green = color.green;
-		blue  = color.blue;
+		blue = color.blue;
 		return *this;
 	}
 	RGBColor& operator=(const HSVColor& color);
@@ -84,9 +88,9 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&c1);
 		Check_Object(&c2);
-		red   = c1.red * t1 + c2.red * t2;
+		red = c1.red * t1 + c2.red * t2;
 		green = c1.green * t1 + c2.green * t2;
-		blue  = c1.blue * t1 + c2.blue * t2;
+		blue = c1.blue * t1 + c2.blue * t2;
 		return *this;
 	}
 
@@ -95,9 +99,9 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&c1);
 		Check_Object(&c2);
-		red   = c1.red + t * (c2.red - c1.red);
+		red = c1.red + t * (c2.red - c1.red);
 		green = c1.green + t * (c2.green - c1.green);
-		blue  = c1.blue + t * (c2.blue - c1.blue);
+		blue = c1.blue + t * (c2.blue - c1.blue);
 		return *this;
 	}
 
@@ -115,7 +119,8 @@ protected:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void Convert_From_Ascii(PCSTR str, RGBColor* color);
+void
+Convert_From_Ascii(PCSTR str, RGBColor* color);
 
 //##########################################################################
 //############## RGBAColor ###########################################
@@ -124,8 +129,10 @@ void Convert_From_Ascii(PCSTR str, RGBColor* color);
 class RGBAColor : public RGBColor
 {
 public:
-	RGBAColor(void) : RGBColor() { alpha = -1.0f; }
-	RGBAColor(float r, float g, float b, float a) : RGBColor(r, g, b) { alpha = a; }
+	RGBAColor(void) :
+		RGBColor() { alpha = -1.0f; }
+	RGBAColor(float r, float g, float b, float a) :
+		RGBColor(r, g, b) { alpha = a; }
 
 	friend bool Close_Enough(const RGBAColor& c1, const RGBAColor& c2, float e = SMALL);
 	bool operator==(const RGBAColor& color) const { return Close_Enough(*this, color, SMALL); }
@@ -135,9 +142,9 @@ public:
 	{
 		// Check_Object(this);
 		Check_Object(&color);
-		red   = color.red;
+		red = color.red;
 		green = color.green;
-		blue  = color.blue;
+		blue = color.blue;
 		alpha = color.alpha;
 		return *this;
 	}
@@ -148,9 +155,9 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&c1);
 		Check_Object(&c2);
-		red   = c1.red * t1 + c2.red * t2;
+		red = c1.red * t1 + c2.red * t2;
 		green = c1.green * t1 + c2.green * t2;
-		blue  = c1.blue * t1 + c2.blue * t2;
+		blue = c1.blue * t1 + c2.blue * t2;
 		alpha = c1.alpha * t1 + c2.alpha * t2;
 		return *this;
 	}
@@ -160,9 +167,9 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&c1);
 		Check_Object(&c2);
-		red   = c1.red + t * (c2.red - c1.red);
+		red = c1.red + t * (c2.red - c1.red);
 		green = c1.green + t * (c2.green - c1.green);
-		blue  = c1.blue + t * (c2.blue - c1.blue);
+		blue = c1.blue + t * (c2.blue - c1.blue);
 		alpha = c1.alpha + t * (c2.alpha - c1.alpha);
 		return *this;
 	}
@@ -186,7 +193,8 @@ protected:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBAColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void Convert_From_Ascii(PCSTR str, RGBAColor* color);
+void
+Convert_From_Ascii(PCSTR str, RGBAColor* color);
 
 //##########################################################################
 //############## HSVColor ############################################
@@ -201,9 +209,9 @@ public:
 
 	HSVColor(float h, float s, float v)
 	{
-		hue		   = h;
+		hue = h;
 		saturation = s;
-		value	  = v;
+		value = v;
 	}
 
 	friend bool Close_Enough(const HSVColor& c1, const HSVColor& c2, float e = SMALL);
@@ -223,9 +231,9 @@ public:
 	{
 		// Check_Object(this);
 		Check_Object(&color);
-		hue		   = color.hue;
+		hue = color.hue;
 		saturation = color.saturation;
-		value	  = color.value;
+		value = color.value;
 		return *this;
 	}
 
@@ -236,9 +244,9 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&c1);
 		Check_Object(&c2);
-		hue		   = c1.hue * t1 + c2.hue * t2;
+		hue = c1.hue * t1 + c2.hue * t2;
 		saturation = c1.saturation * t1 + c2.saturation * t2;
-		value	  = c1.value * t1 + c2.value * t2;
+		value = c1.value * t1 + c2.value * t2;
 		return *this;
 	}
 
@@ -247,9 +255,9 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&c1);
 		Check_Object(&c2);
-		hue		   = c1.hue + t * (c2.hue - c1.hue);
+		hue = c1.hue + t * (c2.hue - c1.hue);
 		saturation = c1.saturation + t * (c2.saturation - c1.saturation);
-		value	  = c1.value + t * (c2.value - c1.value);
+		value = c1.value + t * (c2.value - c1.value);
 		return *this;
 	}
 
@@ -267,7 +275,8 @@ protected:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void Convert_From_Ascii(PCSTR str, HSVColor* color);
+void
+Convert_From_Ascii(PCSTR str, HSVColor* color);
 
 //##########################################################################
 //############## HSVAColor ###########################################
@@ -280,8 +289,10 @@ public:
 
 	float alpha;
 
-	HSVAColor(void) : HSVColor() { alpha = -1.0f; }
-	HSVAColor(float h, float s, float v, float a) : HSVColor(h, s, v) { alpha = a; }
+	HSVAColor(void) :
+		HSVColor() { alpha = -1.0f; }
+	HSVAColor(float h, float s, float v, float a) :
+		HSVColor(h, s, v) { alpha = a; }
 
 	friend bool Close_Enough(const HSVAColor& c1, const HSVAColor& c2, float e = SMALL);
 	bool operator==(const HSVAColor& color) const { return Close_Enough(*this, color, SMALL); }
@@ -299,10 +310,10 @@ public:
 	{
 		// Check_Object(this);
 		Check_Object(&color);
-		hue		   = color.hue;
+		hue = color.hue;
 		saturation = color.saturation;
-		value	  = color.value;
-		alpha	  = color.alpha;
+		value = color.value;
+		alpha = color.alpha;
 		return *this;
 	}
 
@@ -311,10 +322,10 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&c1);
 		Check_Object(&c2);
-		hue		   = c1.hue * t1 + c2.hue * t2;
+		hue = c1.hue * t1 + c2.hue * t2;
 		saturation = c1.saturation * t1 + c2.saturation * t2;
-		value	  = c1.value * t1 + c2.value * t2;
-		alpha	  = c1.alpha * t1 + c2.alpha * t2;
+		value = c1.value * t1 + c2.value * t2;
+		alpha = c1.alpha * t1 + c2.alpha * t2;
 		return *this;
 	}
 
@@ -323,10 +334,10 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&c1);
 		Check_Object(&c2);
-		hue		   = c1.hue + t * (c2.hue - c1.hue);
+		hue = c1.hue + t * (c2.hue - c1.hue);
 		saturation = c1.saturation + t * (c2.saturation - c1.saturation);
-		value	  = c1.value + t * (c2.value - c1.value);
-		alpha	  = c1.alpha + t * (c2.alpha - c1.alpha);
+		value = c1.value + t * (c2.value - c1.value);
+		alpha = c1.alpha + t * (c2.alpha - c1.alpha);
 		return *this;
 	}
 
@@ -340,14 +351,16 @@ public:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVAColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void Convert_From_Ascii(PCSTR str, HSVAColor* color);
+void
+Convert_From_Ascii(PCSTR str, HSVAColor* color);
 
-inline RGBAColor& RGBAColor::operator=(const HSVAColor& color)
+inline RGBAColor&
+RGBAColor::operator=(const HSVAColor& color)
 {
 	// Check_Object(this);
 	Check_Object(&color);
 	RGBColor::operator=(color);
-	alpha			  = color.alpha;
+	alpha = color.alpha;
 	return *this;
 }
 } // namespace Stuff
@@ -355,38 +368,46 @@ inline RGBAColor& RGBAColor::operator=(const HSVAColor& color)
 namespace MemoryStreamIO
 {
 #if _CONSIDERED_TEMPORARILY_DISABLED
-inline std::istream& Read(std::istream& stream, Stuff::RGBColor* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::RGBColor* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::RGBColor* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::RGBColor* input)
 {
 	return stream.write(input, sizeof(*input));
 }
 
-inline std::istream& Read(std::istream& stream, Stuff::RGBAColor* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::RGBAColor* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::RGBAColor* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::RGBAColor* input)
 {
 	return stream.write(input, sizeof(*input));
 }
 
-inline std::istream& Read(std::istream& stream, Stuff::HSVColor* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::HSVColor* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::HSVColor* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::HSVColor* input)
 {
 	return stream.write(input, sizeof(*input));
 }
 
-inline std::istream& Read(std::istream& stream, Stuff::HSVAColor* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::HSVAColor* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::HSVAColor* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::HSVAColor* input)
 {
 	return stream.write(input, sizeof(*input));
 }

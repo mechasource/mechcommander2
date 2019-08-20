@@ -15,19 +15,20 @@
 /////////////////////////////////////////////////////////////////////////////
 // UnitSettingsDlg dialog
 
-UnitSettingsDlg::UnitSettingsDlg(EList<Unit*, Unit*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr)
-	: CDialog(UnitSettingsDlg::IDD), units(newList)
+UnitSettingsDlg::UnitSettingsDlg(EList<Unit*, Unit*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr) :
+	CDialog(UnitSettingsDlg::IDD), units(newList)
 {
 	//{{AFX_DATA_INIT(UnitSettingsDlg)
-	m_Alignment			 = -1;
-	m_SquadEdit			 = _T("");
+	m_Alignment = -1;
+	m_SquadEdit = _T("");
 	m_SelfRepairBehavior = -1;
 	//}}AFX_DATA_INIT
 	pUndoMgr = &undoMgr;
-	pAction  = nullptr;
+	pAction = nullptr;
 }
 
-void UnitSettingsDlg::DoDataExchange(CDataExchange* pDX)
+void
+UnitSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(UnitSettingsDlg)
@@ -60,11 +61,12 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // UnitSettingsDlg message handlers
 
-void UnitSettingsDlg::OnSelchangeGroup()
+void
+UnitSettingsDlg::OnSelchangeGroup()
 {
 	m_Mech.ResetContent();
 	int32_t group = m_Group.GetCurSel();
-	group		  = m_Group.GetItemData(group);
+	group = m_Group.GetItemData(group);
 	PCSTR MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
@@ -75,13 +77,15 @@ void UnitSettingsDlg::OnSelchangeGroup()
 	m_Mech.SetCurSel(0);
 }
 
-void UnitSettingsDlg::OnHighilight2edit()
+void
+UnitSettingsDlg::OnHighilight2edit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT2);
 	DoColorBox(pWnd);
 }
 
-void UnitSettingsDlg::OnChangeHighlight1()
+void
+UnitSettingsDlg::OnChangeHighlight1()
 {
 	// TODO: If this is a RICHEDIT control, the control will not
 	// send this notification unless you override the CDialog::OnInitDialog()
@@ -90,7 +94,7 @@ void UnitSettingsDlg::OnChangeHighlight1()
 	CString text;
 	GetDlgItem(IDC_HIGHLIGHT1)->GetWindowText(text);
 	bool bChanged = false;
-	int32_t i	 = 0;
+	int32_t i = 0;
 	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
@@ -106,18 +110,20 @@ void UnitSettingsDlg::OnChangeHighlight1()
 	GetDlgItem(IDC_HIGHLIGHT1)->RedrawWindow();
 }
 
-void UnitSettingsDlg::OnHighlight1edit()
+void
+UnitSettingsDlg::OnHighlight1edit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT1);
 	DoColorBox(pWnd);
 }
 
-void UnitSettingsDlg::OnChangeHighlight2()
+void
+UnitSettingsDlg::OnChangeHighlight2()
 {
 	CString text;
 	GetDlgItem(IDC_HIGHLIGHT2)->GetWindowText(text);
 	bool bChanged = false;
-	int32_t i	 = 0;
+	int32_t i = 0;
 	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
@@ -133,12 +139,13 @@ void UnitSettingsDlg::OnChangeHighlight2()
 	GetDlgItem(IDC_HIGHLIGHT2)->RedrawWindow();
 }
 
-void UnitSettingsDlg::OnChangeBase()
+void
+UnitSettingsDlg::OnChangeBase()
 {
 	CString text;
 	GetDlgItem(IDC_BASE)->GetWindowText(text);
 	bool bChanged = false;
-	int32_t i	 = 0;
+	int32_t i = 0;
 	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
@@ -154,13 +161,15 @@ void UnitSettingsDlg::OnChangeBase()
 	GetDlgItem(IDC_BASE)->RedrawWindow();
 }
 
-void UnitSettingsDlg::OnBaseedit()
+void
+UnitSettingsDlg::OnBaseedit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_BASE);
 	DoColorBox(pWnd);
 }
 
-void UnitSettingsDlg::DoColorBox(CWnd* pWnd)
+void
+UnitSettingsDlg::DoColorBox(CWnd* pWnd)
 {
 	if (pWnd)
 	{
@@ -180,13 +189,14 @@ void UnitSettingsDlg::DoColorBox(CWnd* pWnd)
 	}
 }
 
-void UnitSettingsDlg::applyChanges()
+void
+UnitSettingsDlg::applyChanges()
 {
 	// get the type info from the dlg box
 	int32_t index = m_Group.GetCurSel();
 	if (index != -1)
 	{
-		int32_t group		 = m_Group.GetItemData(index);
+		int32_t group = m_Group.GetItemData(index);
 		int32_t indexInGroup = m_Mech.GetCurSel();
 		if (indexInGroup != -1)
 		{
@@ -250,7 +260,7 @@ void UnitSettingsDlg::applyChanges()
 		(*iter)->setSelfRepairBehaviorEnabled(bSelfRepairBehavior);
 	}
 	uint32_t base = 0, color1 = 0, color2 = 0;
-	bool bBase   = false;
+	bool bBase = false;
 	bool bColor1 = false;
 	bool bColor2 = false;
 	// now figure out the colors
@@ -302,7 +312,8 @@ void UnitSettingsDlg::applyChanges()
 	}
 }
 
-void UnitSettingsDlg::OnOK()
+void
+UnitSettingsDlg::OnOK()
 {
 	if (nullptr != pUndoMgr)
 	{
@@ -317,7 +328,8 @@ void UnitSettingsDlg::OnOK()
 	CDialog::OnOK();
 }
 
-BOOL UnitSettingsDlg::OnInitDialog()
+BOOL
+UnitSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	pAction = new ModifyBuildingAction;
@@ -337,12 +349,17 @@ BOOL UnitSettingsDlg::OnInitDialog()
 	}
 	updatePossibiltyControls();
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void UnitSettingsDlg::updatePossibiltyControls() { updateMemberVariables(); }
+void
+UnitSettingsDlg::updatePossibiltyControls()
+{
+	updateMemberVariables();
+}
 
-HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
+HBRUSH
+UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 	if (GetDlgItem(IDC_BASE)->m_hWnd == pWnd->m_hWnd)
@@ -400,14 +417,15 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 	return hbr;
 }
 
-void UnitSettingsDlg::OnSelchangeMech()
+void
+UnitSettingsDlg::OnSelchangeMech()
 {
 	m_Variant.ResetContent();
-	int32_t group		 = m_Group.GetCurSel();
-	group				 = m_Group.GetItemData(group);
+	int32_t group = m_Group.GetCurSel();
+	group = m_Group.GetItemData(group);
 	int32_t indexInGroup = m_Mech.GetCurSel();
-	int32_t varCount	 = EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
-	PCSTR* VariantNames  = 0;
+	int32_t varCount = EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
+	PCSTR* VariantNames = 0;
 	if (0 < varCount)
 	{
 		VariantNames = new PCSTR[varCount];
@@ -422,7 +440,8 @@ void UnitSettingsDlg::OnSelchangeMech()
 	}
 }
 
-int32_t UnitSettingsDlg::getPossibilityIndex()
+int32_t
+UnitSettingsDlg::getPossibilityIndex()
 {
 	if (!pFirstPossibility)
 	{
@@ -445,16 +464,17 @@ int32_t UnitSettingsDlg::getPossibilityIndex()
 	return -1;
 }
 
-void UnitSettingsDlg::updateMemberVariables()
+void
+UnitSettingsDlg::updateMemberVariables()
 {
 	// now need to check all of the colors
 	uint32_t tmpBase, tmpHighlight1, tmpHighlight2;
 	uint32_t base, highlight1, highlight2;
-	bool bBase		 = true;
-	bool bHighlight  = true;
+	bool bBase = true;
+	bool bHighlight = true;
 	bool bHighlight2 = true;
-	Unit* pUnit		 = units.GetHead();
-	m_Alignment		 = pUnit->getAlignment();
+	Unit* pUnit = units.GetHead();
+	m_Alignment = pUnit->getAlignment();
 	for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 	{
 		if ((*iter)->getAlignment() != m_Alignment)
@@ -516,9 +536,9 @@ void UnitSettingsDlg::updateMemberVariables()
 	if (bHighlight2)
 		GetDlgItem(IDC_HIGHLIGHT2)->SetWindowText(pH2);
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
-	int32_t groupCount	= pMgr->getUnitGroupCount();
-	PCSTR* pGroups		  = new PCSTR[groupCount];
-	pint32_t groupIDs	 = new int32_t[groupCount];
+	int32_t groupCount = pMgr->getUnitGroupCount();
+	PCSTR* pGroups = new PCSTR[groupCount];
+	pint32_t groupIDs = new int32_t[groupCount];
 	m_Group.ResetContent();
 	pMgr->getUnitGroupNames(pGroups, groupIDs, groupCount);
 	for (size_t i = 0; i < groupCount; ++i)
@@ -541,7 +561,7 @@ void UnitSettingsDlg::updateMemberVariables()
 	if (group != -1) // we found a valid group
 	{
 		PCSTR pGroupName = pMgr->getGroupName(group);
-		int32_t index	= m_Group.FindString(-1, pGroupName);
+		int32_t index = m_Group.FindString(-1, pGroupName);
 		m_Group.SetCurSel(index);
 		// OK, now fill in the index....
 		PCSTR MechNames[256];
@@ -565,7 +585,7 @@ void UnitSettingsDlg::updateMemberVariables()
 		if (indexInGroup != -1)
 		{
 			PCSTR pName = units.GetHead()->getDisplayName();
-			index		= m_Mech.FindString(-1, pName);
+			index = m_Mech.FindString(-1, pName);
 			if (index != -1)
 			{
 				m_Mech.SetCurSel(index);
@@ -602,7 +622,7 @@ void UnitSettingsDlg::updateMemberVariables()
 		}
 	}
 	Pilot::PilotInfo* pInfo = Pilot::s_BadPilots;
-	int32_t* count			= &Pilot::badCount;
+	int32_t* count = &Pilot::badCount;
 	if ((m_Alignment == 0) || (!EditorData::instance->IsSinglePlayer()))
 	{
 		pInfo = Pilot::s_GoodPilots;
@@ -619,11 +639,11 @@ void UnitSettingsDlg::updateMemberVariables()
 			m_Pilot.SetItemDataPtr(i, (PVOID)pInfo[i].fileName);
 		}
 	}
-	Pilot* pPilot	  = pUnit->getPilot();
+	Pilot* pPilot = pUnit->getPilot();
 	PCSTR defaultPilot = pPilot->info->fileName;
 	for (iter = units.Begin(); !iter.IsDone(); iter++)
 	{
-		pPilot		  = (*iter)->getPilot();
+		pPilot = (*iter)->getPilot();
 		PCSTR tmpName = pPilot->info->fileName;
 		if (_stricmp(tmpName, defaultPilot) != 0)
 		{
@@ -650,7 +670,8 @@ void UnitSettingsDlg::updateMemberVariables()
 	}
 }
 
-void UnitSettingsDlg::OnCancel()
+void
+UnitSettingsDlg::OnCancel()
 {
 	pAction->undo();
 	delete pAction;
@@ -658,11 +679,12 @@ void UnitSettingsDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
-void UnitSettingsDlg::OnAlign1(uint32_t whichID)
+void
+UnitSettingsDlg::OnAlign1(uint32_t whichID)
 {
 	UpdateData();
 	Pilot::PilotInfo* pInfo = Pilot::s_BadPilots;
-	int32_t* count			= &Pilot::badCount;
+	int32_t* count = &Pilot::badCount;
 	if (m_Alignment == 0)
 	{
 		pInfo = Pilot::s_GoodPilots;
@@ -678,12 +700,12 @@ void UnitSettingsDlg::OnAlign1(uint32_t whichID)
 			m_Pilot.AddString(pInfo[i].name);
 		}
 	}
-	Unit* pUnit		   = (*(units.Begin()));
-	Pilot* pPilot	  = pUnit->getPilot();
+	Unit* pUnit = (*(units.Begin()));
+	Pilot* pPilot = pUnit->getPilot();
 	PCSTR defaultPilot = pPilot->getName();
 	for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 	{
-		pPilot		  = (*iter)->getPilot();
+		pPilot = (*iter)->getPilot();
 		PCSTR tmpName = pPilot->getName();
 		if (_stricmp(tmpName, defaultPilot) != 0)
 		{

@@ -30,50 +30,55 @@
 
 //---------------------------------------------------------------------------
 PaneElement::PaneElement(PANE* _shapePane, int32_t _x, int32_t _y, int32_t _midx, int32_t _midy,
-	int32_t _SizeX, int32_t _SizeY)
-	: Element(-_y)
+	int32_t _SizeX, int32_t _SizeY) :
+	Element(-_y)
 {
 	shapePane = _shapePane;
-	x		  = _x;
-	y		  = _y;
-	midx	  = _midx;
-	midy	  = _midy;
-	SizeX	 = _SizeX;
-	SizeY	 = _SizeY;
+	x = _x;
+	y = _y;
+	midx = _midx;
+	midy = _midy;
+	SizeX = _SizeX;
+	SizeY = _SizeY;
 }
 
-extern int32_t DrawTransparent(
+extern int32_t
+DrawTransparent(
 	PANE* pane, WINDOW* texture, int32_t X, int32_t Y, int32_t Width, int32_t Height);
 
 //---------------------------------------------------------------------------
-void PaneElement::draw(void)
+void
+PaneElement::draw(void)
 {
 	DrawTransparent(globalPane, shapePane->window, x - midx, y - midy, SizeX, SizeY);
 }
 
 //---------------------------------------------------------------------------
 
-extern void AG_shape_draw(
+extern void
+AG_shape_draw(
 	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
-extern void AG_shape_translate_draw(
+extern void
+AG_shape_translate_draw(
 	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
-extern void AG_shape_lookaside(puint8_t table);
+extern void
+AG_shape_lookaside(puint8_t table);
 //---------------------------------------------------------------------------
 // Static Globals
 
 //---------------------------------------------------------------------------
 DeltaElement::DeltaElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
-	puint8_t fTable, bool noScale, bool upScale)
-	: Element(-_y)
+	puint8_t fTable, bool noScale, bool upScale) :
+	Element(-_y)
 {
-	shapeTable  = _shape;
-	x			= _x;
-	y			= _y;
-	frameNum	= frame;
-	reverse		= rev;
-	fadeTable   = fTable;
+	shapeTable = _shape;
+	x = _x;
+	y = _y;
+	frameNum = frame;
+	reverse = rev;
+	fadeTable = fTable;
 	noScaleDraw = noScale;
-	scaleUp		= upScale;
+	scaleUp = upScale;
 	//-------------------------------------
 	// Integrity Check here.
 #ifdef _DEBUG
@@ -82,7 +87,7 @@ DeltaElement::DeltaElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t fram
 	{
 		frameNum = result - 1;
 	}
-	result		 = VFX_shape_bounds(shapeTable, frameNum);
+	result = VFX_shape_bounds(shapeTable, frameNum);
 	int32_t xMax = result >> 16;
 	int32_t yMax = result & 0x0000ffff;
 #define MAX_X 360
@@ -95,7 +100,8 @@ DeltaElement::DeltaElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t fram
 }
 
 //---------------------------------------------------------------------------
-void DeltaElement::draw(void)
+void
+DeltaElement::draw(void)
 {
 	{
 		//----------------------------------------------------------------

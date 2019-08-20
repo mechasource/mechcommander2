@@ -26,9 +26,12 @@
 
 #ifdef _MSC_VER
 #define DISABLE_WARNING_PUSH(x) \
-	__pragma(warning(push)); __pragma(warning(disable : x))
+	__pragma(warning(push));    \
+	__pragma(warning(disable    \
+					 : x))
 #define DISABLE_WARNING_POP __pragma(warning(pop))
-#define SUPPRESS_WARNING(x) __pragma(warning(suppress : x))
+#define SUPPRESS_WARNING(x) __pragma(warning(suppress \
+											 : x))
 #define ADD_LIBRARY(x) __pragma(comment(lib, x))
 #else
 #define DISABLE_WARNING_PUSH
@@ -113,9 +116,9 @@ DISABLE_WARNING_POP
 // comment out for diagnostic messages
 //#pragma warning(disable : 4266 4625 4820)
 
-#pragma warning(disable : 4514)	// unreferenced inline function has been removed
-#pragma warning(disable : 4626)	// assignment operator was implicitly defined as deleted
-#pragma warning(disable : 4820) // bytes padding added 
+#pragma warning(disable : 4514) // unreferenced inline function has been removed
+#pragma warning(disable : 4626) // assignment operator was implicitly defined as deleted
+#pragma warning(disable : 4820) // bytes padding added
 #pragma warning(disable : 5027) // move assignment operator was implicitly defined as deleted
 
 #ifdef _DEBUG
@@ -144,7 +147,7 @@ DISABLE_WARNING_POP
 #endif
 
 #define USE_INLINE_ASSEMBLER_CODE 0
-#define _CONSIDERED_TEMPORARILY_DISABLED  0
+#define _CONSIDERED_TEMPORARILY_DISABLED 0
 #define _CONSIDERED_OBSOLETE 0
 #define _CONSIDERED_UNSUPPORTED 0
 #define _CONSIDERED_DISABLED 0

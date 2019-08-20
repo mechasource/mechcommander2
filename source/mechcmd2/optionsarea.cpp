@@ -19,16 +19,16 @@ OptionsArea.cpp			: Implementation of the OptionsArea component.
 #include "LoadScreen.h"
 
 #include "gamesound.h"
-static bool bShadows			   = true;
-static bool bDetailTexture		   = true;
-static int32_t objectDetail		   = 0;
-static int32_t difficulty		   = 0;
-static bool bUnLimitedAmmo		   = false;
+static bool bShadows = true;
+static bool bDetailTexture = true;
+static int32_t objectDetail = 0;
+static int32_t difficulty = 0;
+static bool bUnLimitedAmmo = false;
 static int32_t DigitalMasterVolume = 255;
-static int32_t MusicVolume		   = 64;
-static int32_t sfxVolume		   = 64;
-static int32_t RadioVolume		   = 64;
-static int32_t BettyVolume		   = 64;
+static int32_t MusicVolume = 64;
+static int32_t sfxVolume = 64;
+static int32_t RadioVolume = 64;
+static int32_t BettyVolume = 64;
 CPrefs prefs;
 CPrefs originalSettings;
 
@@ -77,14 +77,14 @@ HotKeyListItem* HotKeyListItem::s_item = nullptr;
 
 OptionsXScreen::OptionsXScreen()
 {
-	statics		= 0;
-	rects		= 0;
+	statics = 0;
+	rects = 0;
 	staticCount = rectCount = buttonCount = textCount = 0;
-	buttons											  = 0;
-	textObjects										  = 0;
-	bDone											  = 0;
-	curTab											  = 0;
-	helpTextArrayID									  = 1;
+	buttons = 0;
+	textObjects = 0;
+	bDone = 0;
+	curTab = 0;
+	helpTextArrayID = 1;
 }
 
 OptionsXScreen::~OptionsXScreen()
@@ -93,7 +93,8 @@ OptionsXScreen::~OptionsXScreen()
 		delete tabAreas[i];
 }
 
-int32_t OptionsXScreen::indexOfButtonWithID(int32_t id)
+int32_t
+OptionsXScreen::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -106,19 +107,20 @@ int32_t OptionsXScreen::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void OptionsXScreen::init(FitIniFile* file)
+void
+OptionsXScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button", "Edit");
 	PCSTR fileNames[4] = {
 		"mcl_optionsgraphics", "mcl_optionsaudio", "mcl_optionsgameplay", "mcl_optionshotkeys"};
 	OptionsGraphics* pGraphics = new OptionsGraphics;
-	tabAreas[0]				   = pGraphics;
-	OptionsAudio* pAudio	   = new OptionsAudio;
-	tabAreas[1]				   = pAudio;
-	OptionsGamePlay* pPlay	 = new OptionsGamePlay;
-	tabAreas[2]				   = pPlay;
-	OptionsHotKeys* pKeys	  = new OptionsHotKeys;
-	tabAreas[3]				   = pKeys;
+	tabAreas[0] = pGraphics;
+	OptionsAudio* pAudio = new OptionsAudio;
+	tabAreas[1] = pAudio;
+	OptionsGamePlay* pPlay = new OptionsGamePlay;
+	tabAreas[2] = pPlay;
+	OptionsHotKeys* pKeys = new OptionsHotKeys;
+	tabAreas[3] = pKeys;
 	FullPathFileName path;
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -183,7 +185,8 @@ void OptionsXScreen::init(FitIniFile* file)
 	bShowWarning = 0;
 }
 
-void OptionsXScreen::render()
+void
+OptionsXScreen::render()
 {
 	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 	drawRect(rect, 0xff000000);
@@ -202,7 +205,8 @@ void OptionsXScreen::render()
 	}
 }
 
-int32_t OptionsXScreen::handleMessage(uint32_t message, uint32_t who)
+int32_t
+OptionsXScreen::handleMessage(uint32_t message, uint32_t who)
 {
 	if (aMSG_LEFTMOUSEDOWN == message)
 	{
@@ -221,14 +225,14 @@ int32_t OptionsXScreen::handleMessage(uint32_t message, uint32_t who)
 		break;
 		case YES:
 		{
-			int32_t oldRes   = prefs.resolution;
+			int32_t oldRes = prefs.resolution;
 			int32_t oldDepth = prefs.bitDepth;
 			for (size_t i = 0; i < 4; i++)
 				tabAreas[i]->end();
 			prefs.save();
 			prefs.applyPrefs(0);
 			LoadScreenWrapper::changeRes();
-			int32_t newRes   = prefs.resolution;
+			int32_t newRes = prefs.resolution;
 			int32_t newDepth = prefs.bitDepth;
 			if (newRes != oldRes || newDepth != oldDepth)
 			{
@@ -256,9 +260,14 @@ int32_t OptionsXScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool OptionsXScreen::isDone() { return bDone; }
+bool
+OptionsXScreen::isDone()
+{
+	return bDone;
+}
 
-void OptionsXScreen::update()
+void
+OptionsXScreen::update()
 {
 	if (bShowWarning)
 	{
@@ -274,7 +283,10 @@ void OptionsXScreen::update()
 	}
 }
 
-void OptionsXScreen::updateOptions() {}
+void
+OptionsXScreen::updateOptions()
+{
+}
 
 //////////////////////////////////////////////
 typedef struct
@@ -289,7 +301,8 @@ ResModes resModes[10] = {640, 480, 16, 640, 480, 32, 800, 600, 16, 800, 600, 32,
 
 bool availableMode[10] = {true, true, true, true, true, true, true, true, true, true};
 
-void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
+void
+OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 {
 	FullPathFileName path;
 	path.init(artPath, "mcl_options_combobox0", ".fit");
@@ -308,10 +321,7 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	resolutionList.ListBox().setOrange(true);
 	for (size_t i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++)
 	{
-		if (1 !=
-			gos_GetMachineInformation(gos_Info_ValidMode, Environment.FullScreenDevice,
-				resModes[i - IDS_RESOLUTION0].xRes, resModes[i - IDS_RESOLUTION0].yRes,
-				resModes[i - IDS_RESOLUTION0].bitDepth))
+		if (1 != gos_GetMachineInformation(gos_Info_ValidMode, Environment.FullScreenDevice, resModes[i - IDS_RESOLUTION0].xRes, resModes[i - IDS_RESOLUTION0].yRes, resModes[i - IDS_RESOLUTION0].bitDepth))
 		{
 			availableMode[i - IDS_RESOLUTION0] = false;
 		}
@@ -337,7 +347,7 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	cardList.move(xOffset, yOffset);
 	cardList.ListBox().setOrange(true);
 	uint32_t numDevices = 0;
-	numDevices			= gos_GetMachineInformation(gos_Info_NumberDevices);
+	numDevices = gos_GetMachineInformation(gos_Info_NumberDevices);
 	// Theoretically impossible but config would probably like to know if it
 	// happens!
 	if (numDevices <= 0)
@@ -384,21 +394,24 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	helpTextArrayID = 1;
 }
 
-int32_t OptionsGraphics::handleMessage(uint32_t message, uint32_t fromWho)
+int32_t
+OptionsGraphics::handleMessage(uint32_t message, uint32_t fromWho)
 {
 	if (fromWho == MSG_RESET)
 		reset(originalSettings);
 	return 1;
 }
 
-void OptionsGraphics::render()
+void
+OptionsGraphics::render()
 {
 	LogisticsScreen::render();
 	resolutionList.render();
 	cardList.render();
 }
 
-void OptionsGraphics::update()
+void
+OptionsGraphics::update()
 {
 	if (resolutionList.IsExpanded())
 	{
@@ -425,29 +438,30 @@ void OptionsGraphics::update()
 		if (!bExpanded)
 			resolutionList.update(); // don't want to call 2x's
 	}
-	else if (userInput->isLeftClick() &&
-		resolutionList.pointInside(userInput->getMouseX(), userInput->getMouseY()))
+	else if (userInput->isLeftClick() && resolutionList.pointInside(userInput->getMouseX(), userInput->getMouseY()))
 	{
 		soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 	}
 }
 
-void OptionsGraphics::begin()
+void
+OptionsGraphics::begin()
 {
 	helpTextArrayID = 1;
 	reset(prefs);
 }
-void OptionsGraphics::end()
+void
+OptionsGraphics::end()
 {
 	prefs.useWaterInterestTexture = getButton(MSG_TERRAIN_DETAIL)->isPressed();
-	prefs.pilotVideos			  = getButton(MSG_PILOT_VIDS)->isPressed();
-	prefs.useHighObjectDetail	 = getButton(MSG_OBJECT_DETAIL)->isPressed();
-	prefs.useShadows			  = getButton(MSG_SHADOWS)->isPressed();
-	prefs.useNonWeaponEffects	 = getButton(MSG_NON_WEAPON)->isPressed();
-	prefs.useLocalShadows		  = getButton(MSG_LOCAL_SHADOWS)->isPressed();
-	prefs.asyncMouse			  = getButton(MSG_ASYNC_MOUSE)->isPressed();
-	prefs.renderer				  = getButton(MSG_HARDWARE_RASTERIZER)->isPressed() ? 0 : 3;
-	int32_t sel					  = resolutionList.GetSelectedItem();
+	prefs.pilotVideos = getButton(MSG_PILOT_VIDS)->isPressed();
+	prefs.useHighObjectDetail = getButton(MSG_OBJECT_DETAIL)->isPressed();
+	prefs.useShadows = getButton(MSG_SHADOWS)->isPressed();
+	prefs.useNonWeaponEffects = getButton(MSG_NON_WEAPON)->isPressed();
+	prefs.useLocalShadows = getButton(MSG_LOCAL_SHADOWS)->isPressed();
+	prefs.asyncMouse = getButton(MSG_ASYNC_MOUSE)->isPressed();
+	prefs.renderer = getButton(MSG_HARDWARE_RASTERIZER)->isPressed() ? 0 : 3;
+	int32_t sel = resolutionList.GetSelectedItem();
 	if (sel > -1)
 	{
 		int32_t actualSel = -1;
@@ -492,7 +506,8 @@ void OptionsGraphics::end()
 	if ((index != -1) && (prefs.renderer != 3))
 		prefs.renderer = index;
 }
-void OptionsGraphics::reset(const CPrefs& newPrefs)
+void
+OptionsGraphics::reset(const CPrefs& newPrefs)
 {
 	getButton(MSG_TERRAIN_DETAIL)->press(newPrefs.useWaterInterestTexture);
 	getButton(MSG_PILOT_VIDS)->press(newPrefs.pilotVideos);
@@ -507,7 +522,7 @@ void OptionsGraphics::reset(const CPrefs& newPrefs)
 		resolutionList.SelectItem(newPrefs.resolution * 2 + newPrefs.bitDepth);
 	}
 	else // Assume there are no 32-bit modes available.  Not ideal, but all we
-		 // can do
+		// can do
 	{
 		resolutionList.SelectItem(newPrefs.resolution);
 	}
@@ -517,7 +532,8 @@ void OptionsGraphics::reset(const CPrefs& newPrefs)
 
 //////////////////////////////////////////////
 
-void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
+void
+OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 {
 	getButton(MSG_RESET)->setMessageOnRelease();
 	for (size_t i = 0; i < buttonCount; i++)
@@ -544,14 +560,16 @@ void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 	helpTextArrayID = 15;
 }
 
-int32_t OptionsAudio::handleMessage(uint32_t message, uint32_t fromWho)
+int32_t
+OptionsAudio::handleMessage(uint32_t message, uint32_t fromWho)
 {
 	if (fromWho == MSG_RESET)
 		reset(originalSettings);
 	return 1;
 }
 
-void OptionsAudio::render()
+void
+OptionsAudio::render()
 {
 	LogisticsScreen::render();
 	for (size_t i = 0; i < 5; i++)
@@ -560,7 +578,8 @@ void OptionsAudio::render()
 	}
 }
 
-void OptionsAudio::update()
+void
+OptionsAudio::update()
 {
 	LogisticsScreen::update();
 	for (size_t i = 0; i < 5; i++)
@@ -569,10 +588,10 @@ void OptionsAudio::update()
 	}
 	// Lets update these on the fly so they can hear how much better it sounds.
 	prefs.DigitalMasterVolume = scrollBars[0].GetScrollPos();
-	prefs.MusicVolume		  = scrollBars[1].GetScrollPos();
-	prefs.sfxVolume			  = scrollBars[2].GetScrollPos();
-	prefs.RadioVolume		  = scrollBars[3].GetScrollPos();
-	prefs.BettyVolume		  = scrollBars[4].GetScrollPos();
+	prefs.MusicVolume = scrollBars[1].GetScrollPos();
+	prefs.sfxVolume = scrollBars[2].GetScrollPos();
+	prefs.RadioVolume = scrollBars[3].GetScrollPos();
+	prefs.BettyVolume = scrollBars[4].GetScrollPos();
 	if (sndSystem)
 	{
 		sndSystem->setDigitalMasterVolume(prefs.DigitalMasterVolume);
@@ -583,20 +602,23 @@ void OptionsAudio::update()
 	}
 }
 
-void OptionsAudio::begin()
+void
+OptionsAudio::begin()
 {
 	helpTextArrayID = 15;
 	reset(prefs);
 }
-void OptionsAudio::end()
+void
+OptionsAudio::end()
 {
 	prefs.DigitalMasterVolume = scrollBars[0].GetScrollPos();
-	prefs.MusicVolume		  = scrollBars[1].GetScrollPos();
-	prefs.sfxVolume			  = scrollBars[2].GetScrollPos();
-	prefs.RadioVolume		  = scrollBars[3].GetScrollPos();
-	prefs.BettyVolume		  = scrollBars[4].GetScrollPos();
+	prefs.MusicVolume = scrollBars[1].GetScrollPos();
+	prefs.sfxVolume = scrollBars[2].GetScrollPos();
+	prefs.RadioVolume = scrollBars[3].GetScrollPos();
+	prefs.BettyVolume = scrollBars[4].GetScrollPos();
 }
-void OptionsAudio::reset(const CPrefs& newPrefs)
+void
+OptionsAudio::reset(const CPrefs& newPrefs)
 {
 	scrollBars[0].SetScrollPos(newPrefs.DigitalMasterVolume);
 	scrollBars[1].SetScrollPos(newPrefs.MusicVolume);
@@ -606,7 +628,8 @@ void OptionsAudio::reset(const CPrefs& newPrefs)
 }
 
 //////////////////////////////////////////////
-void OptionsGamePlay::resetCamera()
+void
+OptionsGamePlay::resetCamera()
 {
 	// Do NOT setup a camera in mission.
 	// A.  We don't need it cause the option is greyed out.
@@ -622,7 +645,8 @@ void OptionsGamePlay::resetCamera()
 	}
 }
 
-void OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
+void
+OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
 {
 	camera.init(rects[1].globalX() + xOffset, rects[1].globalY() + yOffset,
 		rects[1].globalRight() + xOffset, rects[1].globalBottom() + yOffset);
@@ -639,7 +663,8 @@ void OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
 	helpTextArrayID = 2;
 }
 
-int32_t OptionsGamePlay::handleMessage(uint32_t message, uint32_t fromWho)
+int32_t
+OptionsGamePlay::handleMessage(uint32_t message, uint32_t fromWho)
 {
 	if (fromWho >= MSG_GREEN && fromWho < MSG_ELITE + 1)
 	{
@@ -664,7 +689,8 @@ int32_t OptionsGamePlay::handleMessage(uint32_t message, uint32_t fromWho)
 	return 1;
 }
 
-void OptionsGamePlay::render()
+void
+OptionsGamePlay::render()
 {
 	LogisticsScreen::render();
 	int32_t colorToMatch =
@@ -684,11 +710,12 @@ void OptionsGamePlay::render()
 	camera.render();
 }
 
-void OptionsGamePlay::update()
+void
+OptionsGamePlay::update()
 {
 	camera.update();
 	LogisticsScreen::update();
-	aRect* pRect  = getButton(MSG_BASE)->isPressed() ? &rects[36] : &rects[37];
+	aRect* pRect = getButton(MSG_BASE)->isPressed() ? &rects[36] : &rects[37];
 	bool bChanged = 0;
 	if (userInput->isLeftClick())
 	{
@@ -707,7 +734,8 @@ void OptionsGamePlay::update()
 			"Bushwacker", rects[36].getColor(), rects[37].getColor(), rects[37].getColor());
 }
 
-void OptionsGamePlay::begin()
+void
+OptionsGamePlay::begin()
 {
 	helpTextArrayID = 2;
 	reset(prefs);
@@ -725,16 +753,17 @@ void OptionsGamePlay::begin()
 	}
 }
 
-void OptionsGamePlay::end()
+void
+OptionsGamePlay::end()
 {
 	for (size_t i = MSG_GREEN; i < MSG_ELITE + 1; i++)
 	{
 		if (getButton(i)->isPressed())
 			prefs.GameDifficulty = i - MSG_GREEN;
 	}
-	prefs.baseColor				   = rects[36].getColor();
-	prefs.highlightColor		   = rects[37].getColor();
-	prefs.useUnlimitedAmmo		   = getButton(MSG_UNLIMITED_AMMO)->isPressed();
+	prefs.baseColor = rects[36].getColor();
+	prefs.highlightColor = rects[37].getColor();
+	prefs.useUnlimitedAmmo = getButton(MSG_UNLIMITED_AMMO)->isPressed();
 	prefs.useLeftRightMouseProfile = getButton(MSG_LEFT_CLICK)->isPressed();
 	// prefs.tutorials = getButton( MSG_TUTORIALS )->isPressed();
 	// Do NOT setup a camera in mission.
@@ -750,7 +779,8 @@ void OptionsGamePlay::end()
 		camera.setMech(nullptr);
 	}
 }
-void OptionsGamePlay::reset(const CPrefs& newPrefs)
+void
+OptionsGamePlay::reset(const CPrefs& newPrefs)
 {
 	for (size_t i = MSG_GREEN; i < MSG_ELITE + 1; i++)
 	{
@@ -768,7 +798,8 @@ void OptionsGamePlay::reset(const CPrefs& newPrefs)
 
 //////////////////////////////////////////////
 
-void OptionsHotKeys::init(int32_t xOffset, int32_t yOffset)
+void
+OptionsHotKeys::init(int32_t xOffset, int32_t yOffset)
 {
 	hotKeyList.init(rects[0].x(), rects[0].y(), rects[0].width(), rects[0].height());
 	helpTextArrayID = 2;
@@ -780,7 +811,8 @@ void OptionsHotKeys::init(int32_t xOffset, int32_t yOffset)
 	helpTextArrayID = 2;
 }
 
-int32_t OptionsHotKeys::handleMessage(uint32_t message, uint32_t fromWho)
+int32_t
+OptionsHotKeys::handleMessage(uint32_t message, uint32_t fromWho)
 {
 	switch (fromWho)
 	{
@@ -791,7 +823,8 @@ int32_t OptionsHotKeys::handleMessage(uint32_t message, uint32_t fromWho)
 	return 1;
 }
 
-void OptionsHotKeys::render()
+void
+OptionsHotKeys::render()
 {
 	hotKeyList.render();
 	LogisticsScreen::render();
@@ -801,7 +834,8 @@ void OptionsHotKeys::render()
 	}
 }
 
-void OptionsHotKeys::update()
+void
+OptionsHotKeys::update()
 {
 	if (bShowDlg)
 	{
@@ -814,7 +848,7 @@ void OptionsHotKeys::update()
 				char keysString[256];
 				keysString[0] = 0;
 				makeKeyString(curHotKey, keysString);
-				int32_t index  = hotKeyList.GetSelectedItem();
+				int32_t index = hotKeyList.GetSelectedItem();
 				int32_t oldKey = -1;
 				if (index > -1)
 				{
@@ -829,7 +863,7 @@ void OptionsHotKeys::update()
 							// first we've got to see if we can set to the
 							// default
 							int32_t* defaultKeys = MissionInterfaceManager::getOldKeys();
-							int32_t defaultKey   = defaultKeys[pTmpItem->getCommand()];
+							int32_t defaultKey = defaultKeys[pTmpItem->getCommand()];
 							for (size_t j = 0; j < hotKeyList.GetItemCount(); j++)
 							{
 								HotKeyListItem* pCheckItem = (HotKeyListItem*)hotKeyList.GetItem(j);
@@ -864,11 +898,11 @@ void OptionsHotKeys::update()
 	while (tmpKey) // empty out keyboard buffers...
 	{
 		int32_t index = hotKeyList.GetSelectedItem();
-		tmpKey		  = 0;
+		tmpKey = 0;
 		if (index > -1)
 		{
 			HotKeyListItem* pItem = (HotKeyListItem*)hotKeyList.GetItem(index);
-			tmpKey				  = gos_GetKey();
+			tmpKey = gos_GetKey();
 			if (tmpKey)
 			{
 				char hotKeyString[256];
@@ -899,7 +933,8 @@ void OptionsHotKeys::update()
 	}
 }
 
-void OptionsHotKeys::makeKeyString(int32_t newKey, PSTR keysString)
+void
+OptionsHotKeys::makeKeyString(int32_t newKey, PSTR keysString)
 {
 	char shift[32];
 	char control[32];
@@ -908,7 +943,7 @@ void OptionsHotKeys::makeKeyString(int32_t newKey, PSTR keysString)
 	cLoadString(IDS_CONTROL, control, 31);
 	cLoadString(IDS_ALT, alt, 31);
 	int32_t key = newKey;
-	PSTR pKey   = gos_DescribeKey((key & 0x000fffff) << 8);
+	PSTR pKey = gos_DescribeKey((key & 0x000fffff) << 8);
 	if (((key & SHIFT)))
 	{
 		strcat(keysString, shift);
@@ -927,14 +962,15 @@ void OptionsHotKeys::makeKeyString(int32_t newKey, PSTR keysString)
 	strcat(keysString, pKey);
 }
 
-int32_t OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, PSTR hotKeyString)
+int32_t
+OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, PSTR hotKeyString)
 {
 	PCSTR pText = gos_DescribeKey(tmpKey & 0x0001ff00);
 	int32_t tmp = (tmpKey >> 8) & 0x01ff;
 	if (tmp == KEY_LSHIFT || tmp == KEY_LMENU || tmp == KEY_LCONTROL)
 		return -1;
 	int32_t hotKey = tmp;
-	bool shiftDn   = userInput->shift();
+	bool shiftDn = userInput->shift();
 	if (shiftDn)
 	{
 		char shift[32];
@@ -966,12 +1002,14 @@ int32_t OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, PSTR hotKeyString)
 	return 0;
 }
 
-void OptionsHotKeys::begin()
+void
+OptionsHotKeys::begin()
 {
 	helpTextArrayID = 2;
 	reset(0);
 }
-void OptionsHotKeys::end()
+void
+OptionsHotKeys::end()
 {
 	for (size_t i = 0; i < hotKeyList.GetItemCount(); i++)
 	{
@@ -979,7 +1017,7 @@ void OptionsHotKeys::end()
 		if (pItem)
 		{
 			int32_t Command = pItem->getCommand();
-			int32_t Key		= pItem->getHotKey();
+			int32_t Key = pItem->getHotKey();
 			MissionInterfaceManager::setHotKey(
 				Command, (gosEnum_KeyIndex)(Key & 0x000ffff), Key & SHIFT, Key & CTRL, Key & ALT);
 		}
@@ -988,7 +1026,8 @@ void OptionsHotKeys::end()
 	hotKeyList.removeAllItems(true);
 	//	MissionInterfaceManager::setHotKey(
 }
-void OptionsHotKeys::reset(bool useOld)
+void
+OptionsHotKeys::reset(bool useOld)
 {
 	hotKeyList.removeAllItems(true);
 	char shift[32];
@@ -1000,7 +1039,7 @@ void OptionsHotKeys::reset(bool useOld)
 	cLoadString(IDS_CONTROL, control, 31);
 	cLoadString(IDS_ALT, alt, 31);
 	MissionInterfaceManager::Command* commands = MissionInterfaceManager::getCommands();
-	int32_t* oldKeys						   = MissionInterfaceManager::getOldKeys();
+	int32_t* oldKeys = MissionInterfaceManager::getOldKeys();
 	for (size_t i = 0; i < MAX_COMMAND; i++)
 	{
 		if (commands[i].hotKeyDescriptionText != -1)
@@ -1025,12 +1064,13 @@ ScrollX::ScrollX()
 {
 	scrollMax = 0;
 	scrollPos = 0;
-	lastX	 = 0;
+	lastX = 0;
 	scrollInc = 1;
-	pageInc   = 5;
+	pageInc = 5;
 }
 
-int32_t ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
+int32_t
+ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 {
 	aObject::init(pLeft->globalX(), pLeft->top(), pRight->globalRight() - pLeft->globalX(),
 		pRight->bottom() - pRight->top());
@@ -1052,14 +1092,16 @@ int32_t ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 	return (NO_ERROR);
 }
 
-void ScrollX::SetScrollMax(float newMax)
+void
+ScrollX::SetScrollMax(float newMax)
 {
 	scrollMax = newMax;
 	buttons[2]->showGUIWindow(newMax != 0);
 	ResizeAreas();
 }
 
-void ScrollX::SetScrollPos(float newPos)
+void
+ScrollX::SetScrollPos(float newPos)
 {
 	if (newPos < 0)
 		newPos = 0;
@@ -1069,7 +1111,8 @@ void ScrollX::SetScrollPos(float newPos)
 	ResizeAreas();
 }
 
-void ScrollX::SetScroll(int32_t newScrollPos)
+void
+ScrollX::SetScroll(int32_t newScrollPos)
 {
 	if (newScrollPos < 0)
 		newScrollPos = 0;
@@ -1079,7 +1122,8 @@ void ScrollX::SetScroll(int32_t newScrollPos)
 		getParent()->handleMessage(aMSG_SCROLLTO, newScrollPos);
 	SetScrollPos(newScrollPos);
 }
-void ScrollX::update()
+void
+ScrollX::update()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
@@ -1105,20 +1149,17 @@ void ScrollX::update()
 		if (userInput->isLeftClick() || gos_GetKeyStatus(KEY_LMOUSE) == KEY_HELD)
 		{
 			lastX = 0;
-			if (buttons[2]->pointInside(mouseX, mouseY) &&
-				buttons[2]->pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+			if (buttons[2]->pointInside(mouseX, mouseY) && buttons[2]->pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 				lastX = mouseX;
 			else if (getParent())
 			{
 				buttons[2]->press(0);
-				if (!buttons[0]->pointInside(mouseX, mouseY) &&
-					!buttons[1]->pointInside(mouseX, mouseY) &&
-					pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+				if (!buttons[0]->pointInside(mouseX, mouseY) && !buttons[1]->pointInside(mouseX, mouseY) && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 				{
 					float physicalRange =
 						width() - buttons[0]->width() - buttons[1]->width() - buttons[2]->width();
 					float RealRange = scrollMax;
-					float delta		= (float)mouseX - (buttons[0]->globalX() + buttons[0]->width());
+					float delta = (float)mouseX - (buttons[0]->globalX() + buttons[0]->width());
 					// if above the thumb, page up, otherwise page down
 					if (mouseY < buttons[2]->top())
 					{
@@ -1153,7 +1194,8 @@ void ScrollX::update()
 	aObject::update();
 }
 
-int32_t ScrollX::handleMessage(uint32_t message, uint32_t who)
+int32_t
+ScrollX::handleMessage(uint32_t message, uint32_t who)
 {
 	switch (who)
 	{
@@ -1167,26 +1209,28 @@ int32_t ScrollX::handleMessage(uint32_t message, uint32_t who)
 	return getParent()->handleMessage(who, who);
 }
 
-void ScrollX::ResizeAreas(void)
+void
+ScrollX::ResizeAreas(void)
 {
 	float range, position;
 	if (scrollMax == 0)
 		return;
-	range = width() - buttons[0]->width() - buttons[1]->width() - buttons[2]->width() -
-		4.f;								  // one scrollwidth for buttons, one for
-											  // tab. 2 for lines at either end.
+	range = width() - buttons[0]->width() - buttons[1]->width() - buttons[2]->width() - 4.f; // one scrollwidth for buttons, one for
+		// tab. 2 for lines at either end.
 	position = range * scrollPos / scrollMax; //	center of scroll tab;
 	buttons[2]->moveTo(globalX() + position + buttons[0]->width() + 2, globalY() + 1);
 }
 
-void ScrollX::Enable(bool enable)
+void
+ScrollX::Enable(bool enable)
 {
 	buttons[2]->disable(!enable);
 	buttons[0]->disable(!enable);
 	buttons[1]->disable(!enable);
 }
 
-void HotKeyListItem::init()
+void
+HotKeyListItem::init()
 {
 	if (s_item)
 		return;
@@ -1209,7 +1253,8 @@ void HotKeyListItem::init()
 	s_item->rects[0].init(&file, "Rect0");
 	s_item->rects[1].init(&file, "Rect1");
 }
-void HotKeyListItem::render()
+void
+HotKeyListItem::render()
 {
 	aAnimGroup::STATE curState = (aAnimGroup::STATE)getState();
 	for (size_t i = 0; i < 3; i++)
@@ -1223,17 +1268,31 @@ void HotKeyListItem::render()
 	aObject::render();
 }
 
-void HotKeyListItem::update() {}
+void
+HotKeyListItem::update()
+{
+}
 
-void HotKeyListItem::setDescription(PCSTR pText) { description.setText(pText); }
-void HotKeyListItem::setKey(PCSTR pText) { text.setText(pText); }
-HotKeyListItem::~HotKeyListItem() { removeAllChildren(0); }
+void
+HotKeyListItem::setDescription(PCSTR pText)
+{
+	description.setText(pText);
+}
+void
+HotKeyListItem::setKey(PCSTR pText)
+{
+	text.setText(pText);
+}
+HotKeyListItem::~HotKeyListItem()
+{
+	removeAllChildren(0);
+}
 HotKeyListItem::HotKeyListItem()
 {
 	if (s_item)
 	{
 		description = s_item->description;
-		text		= s_item->text;
+		text = s_item->text;
 		for (size_t i = 0; i < 3; i++)
 			animations[i] = s_item->animations[i];
 		rects[0] = s_item->rects[0];

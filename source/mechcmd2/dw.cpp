@@ -14,7 +14,8 @@
 
 int32_t _stdcall ProcessException(EXCEPTION_POINTERS* ep);
 extern HWND hWindow;
-void EnterWindowMode();
+void
+EnterWindowMode();
 
 #define EXTERNAL
 //--------------------------------------------------------------------------------------------
@@ -77,7 +78,8 @@ HRESULT __fastcall AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
 //	Calls GameOS exception handler AFTER DW has had a crack at it.
 //----------------------------------------------------------------------------
 
-int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
+int32_t WINAPI
+DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 {
 	EXCEPTION_RECORD* per;
 	HANDLE hFileMap;
@@ -86,9 +88,9 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	//------------------------------------------------------------------------------------------------------------
 	// we keep local copies of these in case another thread is trashing memory
 	// it much more likely to trash the heap than our stack
-	HANDLE hEventDone;  // event DW signals when done
+	HANDLE hEventDone; // event DW signals when done
 	HANDLE hEventAlive; // heartbeat event DW signals per EVENT_TIMEOUT
-	HANDLE hMutex;		// to protect the signaling of EventDone
+	HANDLE hMutex; // to protect the signaling of EventDone
 	char szCommandLine[MAX_PATH * 2];
 	uint32_t dw;
 	BOOL fDwRunning;
@@ -103,10 +105,10 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	//------------------------------------------------------------------------------------------------------------
 	// create shared memory
 	memset(&sa, 0, sizeof(SECURITY_ATTRIBUTES));
-	sa.nLength		  = sizeof(SECURITY_ATTRIBUTES);
+	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
 	sa.bInheritHandle = TRUE;
-	hFileMap		  = CreateFileMapping(
-		 INVALID_HANDLE_VALUE, &sa, PAGE_READWRITE, 0, sizeof(DWSharedMem), nullptr);
+	hFileMap = CreateFileMapping(
+		INVALID_HANDLE_VALUE, &sa, PAGE_READWRITE, 0, sizeof(DWSharedMem), nullptr);
 	if (hFileMap == nullptr)
 	{
 		// At this point, call the GameOS exception handler and convert the pep
@@ -124,8 +126,8 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	}
 	memset(pdwsm, 0, sizeof(DWSharedMem));
 	hEventAlive = CreateEvent(&sa, FALSE, FALSE, nullptr);
-	hEventDone  = CreateEvent(&sa, FALSE, FALSE, nullptr);
-	hMutex		= CreateMutex(&sa, FALSE, nullptr);
+	hEventDone = CreateEvent(&sa, FALSE, FALSE, nullptr);
+	hMutex = CreateMutex(&sa, FALSE, nullptr);
 	if (!DuplicateHandle(GetCurrentProcess(), GetCurrentProcess(), GetCurrentProcess(),
 			&pdwsm->hProc, PROCESS_ALL_ACCESS, TRUE, 0))
 	{
@@ -134,8 +136,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 		ProcessException(pep);
 		return 1;
 	}
-	if (hEventAlive == nullptr || hEventDone == nullptr || hMutex == nullptr ||
-		pdwsm->hProc == nullptr)
+	if (hEventAlive == nullptr || hEventDone == nullptr || hMutex == nullptr || pdwsm->hProc == nullptr)
 	{
 		// At this point, call the GameOS exception handler and convert the pep
 		// to the data they need!
@@ -144,16 +145,16 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	}
 	//------------------------------------------------------------------------------------------------------------
 	// setup interface structure
-	pdwsm->pid				 = GetCurrentProcessId();
-	pdwsm->tid				 = GetCurrentThreadId();
-	pdwsm->hEventAlive		 = hEventAlive;
-	pdwsm->hEventDone		 = hEventDone;
-	pdwsm->hMutex			 = hMutex;
-	pdwsm->dwSize			 = sizeof(DWSharedMem);
-	pdwsm->pep				 = pep;
-	pdwsm->eip				 = (uint32_t)pep->ExceptionRecord->ExceptionAddress;
-	pdwsm->bfmsoctdsOffer	= msoctdsQuit;
-	pdwsm->bfmsoctdsLetRun   = msoctdsQuit;
+	pdwsm->pid = GetCurrentProcessId();
+	pdwsm->tid = GetCurrentThreadId();
+	pdwsm->hEventAlive = hEventAlive;
+	pdwsm->hEventDone = hEventDone;
+	pdwsm->hMutex = hMutex;
+	pdwsm->dwSize = sizeof(DWSharedMem);
+	pdwsm->pep = pep;
+	pdwsm->eip = (uint32_t)pep->ExceptionRecord->ExceptionAddress;
+	pdwsm->bfmsoctdsOffer = msoctdsQuit;
+	pdwsm->bfmsoctdsLetRun = msoctdsQuit;
 	pdwsm->bfDWBehaviorFlags = fDwCheckSig;
 	strcpy(pdwsm->szFormalAppName, Environment.applicationName);
 	strcpy(pdwsm->szInformalAppName, "MechCommander 2");
@@ -255,7 +256,8 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 }
 
 //----------------------------------------------------------------------------
-void InitDW(void)
+void
+InitDW(void)
 {
 	cLoadString(IDS_WATSON_CRASH_MSG, WatsonCrashMessage, 4095);
 	AnsiToUnicode(WatsonCrashMessage, &WatsonCrashMessageUnicode);

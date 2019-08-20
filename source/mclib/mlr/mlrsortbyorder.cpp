@@ -18,7 +18,8 @@ MLRSortByOrder::ClassData* MLRSortByOrder::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::InitializeClass()
+void
+MLRSortByOrder::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -29,7 +30,8 @@ void MLRSortByOrder::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::TerminateClass()
+void
+MLRSortByOrder::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -38,7 +40,8 @@ void MLRSortByOrder::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSortByOrder::MLRSortByOrder(MLRTexturePool* tp) : MLRSorter(DefaultData, tp)
+MLRSortByOrder::MLRSortByOrder(MLRTexturePool* tp) :
+	MLRSorter(DefaultData, tp)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	int32_t i;
@@ -73,7 +76,8 @@ MLRSortByOrder::~MLRSortByOrder()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::Reset()
+void
+MLRSortByOrder::Reset()
 {
 	// Check_Object(this);
 	int32_t i;
@@ -86,7 +90,8 @@ void MLRSortByOrder::Reset()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
+void
+MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 {
 	// Check_Object(this);
 	Check_Object(pt);
@@ -107,7 +112,8 @@ void MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
+void
+MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
 {
 	// Check_Object(this);
 	Check_Object(ef);
@@ -142,7 +148,8 @@ void MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::AddScreenQuads(GOSVertex* vertices, const DrawScreenQuadsInformation* dInfo)
+void
+MLRSortByOrder::AddScreenQuads(GOSVertex* vertices, const DrawScreenQuadsInformation* dInfo)
 {
 	_ASSERT(dInfo->currentNrOfQuads != 0 && (dInfo->currentNrOfQuads & 3) == 0);
 	SortData* sd = SetRawData(vertices, dInfo->currentNrOfQuads, dInfo->state, SortData::Quads);
@@ -155,20 +162,22 @@ void MLRSortByOrder::AddScreenQuads(GOSVertex* vertices, const DrawScreenQuadsIn
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::AddSortRawData(SortData* sd)
+void
+MLRSortByOrder::AddSortRawData(SortData* sd)
 {
 	// Check_Object(this);
 	if (sd == nullptr)
 	{
 		return;
 	}
-	uint32_t priority										= sd->state.GetPriority();
+	uint32_t priority = sd->state.GetPriority();
 	priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::RenderNow()
+void
+MLRSortByOrder::RenderNow()
 {
 	// Check_Object(this);
 	//
@@ -189,8 +198,7 @@ void MLRSortByOrder::RenderNow()
 		int32_t alphaToSort = 0;
 		if (lastUsedInBucketNotDrawn[i])
 		{
-			_ASSERT(lastUsedInBucketNotDrawn[i] <=
-				Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
+			_ASSERT(lastUsedInBucketNotDrawn[i] <= Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
 			if (gEnableTextureSort && i != MLRState::AlphaPriority)
 			{
 				Start_Timer(Texture_Sorting_Time);
@@ -205,10 +213,8 @@ void MLRSortByOrder::RenderNow()
 					for (ii = hh; ii < lastUsedInBucketNotDrawn[i]; ii++)
 					{
 						tempSortData = (*priorityBucketNotDrawn)[ii];
-						jj			 = ii;
-						while (jj >= hh &&
-							(*priorityBucketNotDrawn)[jj - hh]->state.GetTextureHandle() >
-								tempSortData->state.GetTextureHandle())
+						jj = ii;
+						while (jj >= hh && (*priorityBucketNotDrawn)[jj - hh]->state.GetTextureHandle() > tempSortData->state.GetTextureHandle())
 						{
 							(*priorityBucketNotDrawn)[jj] = (*priorityBucketNotDrawn)[jj - hh];
 							jj -= hh;
@@ -297,7 +303,7 @@ void MLRSortByOrder::RenderNow()
 				SortData* sd = nullptr;
 				for (j = 0; j < lastUsedInBucketNotDrawn[i]; j++)
 				{
-					tbdp	  = priorityBucketsNotDrawn[i][j];
+					tbdp = priorityBucketsNotDrawn[i][j];
 					primitive = tbdp->primitive;
 					if (primitive->FindBackFace(tbdp->cameraPosition))
 					{
@@ -345,13 +351,10 @@ void MLRSortByOrder::RenderNow()
 						{
 							sd = SetRawData(primitive, k);
 							Check_Pointer(sd);
-							if (gEnableAlphaSort &&
-								(sd->type == SortData::TriList ||
-									sd->type == SortData::TriIndexedList))
+							if (gEnableAlphaSort && (sd->type == SortData::TriList || sd->type == SortData::TriIndexedList))
 							{
 								SortData::LoadSortAlphaFunc alphaFunc = sd->LoadSortAlpha[sd->type];
-								_ASSERT(alphaToSort + sd->numVertices / 3 <
-									2 * Limits::Max_Number_Vertices_Per_Frame);
+								_ASSERT(alphaToSort + sd->numVertices / 3 < 2 * Limits::Max_Number_Vertices_Per_Frame);
 								alphaToSort += (sd->*alphaFunc)(alphaSort.GetData() + alphaToSort);
 							}
 							else
@@ -371,8 +374,7 @@ void MLRSortByOrder::RenderNow()
 #endif
 		if (lastUsedInBucket[i])
 		{
-			_ASSERT(lastUsedInBucket[i] <=
-				Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
+			_ASSERT(lastUsedInBucket[i] <= Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
 			if (gEnableTextureSort && i != MLRState::AlphaPriority)
 			{
 				Start_Timer(Texture_Sorting_Time);
@@ -387,10 +389,8 @@ void MLRSortByOrder::RenderNow()
 					for (ii = hh; ii < lastUsedInBucket[i]; ii++)
 					{
 						tempSortData = (*priorityBucket)[ii];
-						jj			 = ii;
-						while (jj >= hh &&
-							(*priorityBucket)[jj - hh]->state.GetTextureHandle() >
-								tempSortData->state.GetTextureHandle())
+						jj = ii;
+						while (jj >= hh && (*priorityBucket)[jj - hh]->state.GetTextureHandle() > tempSortData->state.GetTextureHandle())
 						{
 							(*priorityBucket)[jj] = (*priorityBucket)[jj - hh];
 							jj -= hh;
@@ -423,12 +423,10 @@ void MLRSortByOrder::RenderNow()
 				{
 					SortData* sd = priorityBuckets[i][j];
 					Check_Pointer(sd);
-					if (gEnableAlphaSort &&
-						(sd->type == SortData::TriList || sd->type == SortData::TriIndexedList))
+					if (gEnableAlphaSort && (sd->type == SortData::TriList || sd->type == SortData::TriIndexedList))
 					{
 						SortData::LoadSortAlphaFunc alphaFunc = sd->LoadSortAlpha[sd->type];
-						_ASSERT(alphaToSort + sd->numVertices / 3 <
-							2 * Limits::Max_Number_Vertices_Per_Frame);
+						_ASSERT(alphaToSort + sd->numVertices / 3 < 2 * Limits::Max_Number_Vertices_Per_Frame);
 						alphaToSort += (sd->*alphaFunc)(alphaSort.GetData() + alphaToSort);
 					}
 					else
@@ -459,7 +457,7 @@ void MLRSortByOrder::RenderNow()
 				for (ii = hh; ii < alphaToSort; ii++)
 				{
 					tempSortAlpha = (*alphaArray)[ii];
-					jj			  = ii;
+					jj = ii;
 					while (jj >= hh && (*alphaArray)[jj - hh]->distance < tempSortAlpha->distance)
 					{
 						(*alphaArray)[jj] = (*alphaArray)[jj - hh];
@@ -477,11 +475,7 @@ void MLRSortByOrder::RenderNow()
 					theCurrentState = *alphaSort[ii]->state;
 				}
 				Start_Timer(GOS_Draw_Time);
-				if ((alphaSort[ii]->triangle[0].z >= 0.0f) &&
-					(alphaSort[ii]->triangle[0].z < 1.0f) &&
-					(alphaSort[ii]->triangle[1].z >= 0.0f) &&
-					(alphaSort[ii]->triangle[1].z < 1.0f) &&
-					(alphaSort[ii]->triangle[2].z >= 0.0f) && (alphaSort[ii]->triangle[2].z < 1.0f))
+				if ((alphaSort[ii]->triangle[0].z >= 0.0f) && (alphaSort[ii]->triangle[0].z < 1.0f) && (alphaSort[ii]->triangle[1].z >= 0.0f) && (alphaSort[ii]->triangle[1].z < 1.0f) && (alphaSort[ii]->triangle[2].z >= 0.0f) && (alphaSort[ii]->triangle[2].z < 1.0f))
 				{
 					gos_DrawTriangles(&(alphaSort[ii]->triangle[0]), 3);
 				}
@@ -494,4 +488,8 @@ void MLRSortByOrder::RenderNow()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSortByOrder::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLRSortByOrder::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

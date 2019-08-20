@@ -22,7 +22,7 @@
 typedef enum __net_header_const
 {
 	PACKET_OVERHEAD = 42,
-	MAX_DP_OBJECTS  = 8
+	MAX_DP_OBJECTS = 8
 };
 
 //
@@ -52,10 +52,10 @@ typedef struct _PacketBuffer
 typedef struct _ListOfNames
 {
 	struct _ListOfNames* pNext; // Pointer to next in chain
-	uint32_t Data;				// Data that is list dependent
-	uint32_t PacketsReceived;   // NUmber of packets received from a player
-	uint64_t LastTime;			// Time last packet received
-	char Name[1];				// Name
+	uint32_t Data; // Data that is list dependent
+	uint32_t PacketsReceived; // NUmber of packets received from a player
+	uint64_t LastTime; // Time last packet received
+	char Name[1]; // Name
 } ListOfNames;
 typedef ListOfNames* PListOfNames;
 
@@ -64,11 +64,11 @@ typedef ListOfNames* PListOfNames;
 //
 typedef struct _ListOfGames
 {
-	struct _ListOfGames* pNext;		  // Pointer to next in chain
+	struct _ListOfGames* pNext; // Pointer to next in chain
 	DPSESSIONDESC2 SessionDescriptor; // Session description
-	ListOfNames* pPlayers;			  // Pointer to list of player names
-	bool bIPX;						  // whether the game is hosted with IPX or not (TCP/IP)
-	char Name[1];					  // Name
+	ListOfNames* pPlayers; // Pointer to list of player names
+	bool bIPX; // whether the game is hosted with IPX or not (TCP/IP)
+	char Name[1]; // Name
 } ListOfGames;
 
 //
@@ -89,7 +89,7 @@ extern HGOSHEAP Heap_Network;
 // Interfaces
 //
 extern IDirectPlayLobby3* dplobby3; // Lobby interface
-extern IDirectPlay4* dplay4;		// Direct Play interface
+extern IDirectPlay4* dplay4; // Direct Play interface
 
 //
 // Current joined or opened session description
@@ -195,14 +195,14 @@ extern Messages* pLastMessage;
 typedef struct _PacketLogging
 {
 	_PacketLogging* pNext;
-	double TimeStamp;	 // When packet was added to list
+	double TimeStamp; // When packet was added to list
 	uint32_t FrameNumber; // Frame number added
-	char Type[11];		  // Type of packet
-	char Player[11];	  // From or To player name
-	uint32_t FromID;	  // ID of FROM player
-	uint32_t ToID;		  // ID of TO player
-	uint32_t Size;		  // Size of packet
-	uint8_t Data[8];	  // 1st 8 bytes
+	char Type[11]; // Type of packet
+	char Player[11]; // From or To player name
+	uint32_t FromID; // ID of FROM player
+	uint32_t ToID; // ID of TO player
+	uint32_t Size; // Size of packet
+	uint8_t Data[8]; // 1st 8 bytes
 
 } PacketLogging;
 //
@@ -288,24 +288,31 @@ extern uint32_t __stdcall EnumThread(PVOID);
 //
 // Used to hold list of packets to pass data between threads
 //
-extern PacketBuffer* pEmptyList;  // List of spare blocks
-extern PacketBuffer* pPackets;	// List of received packets
+extern PacketBuffer* pEmptyList; // List of spare blocks
+extern PacketBuffer* pPackets; // List of received packets
 extern PacketBuffer* pLastPacket; // End of list of received packets
 
 //
 // Functions used initialize game list drivers
 //
 
-int32_t InitLanGames(void);
-int32_t InitGUNGames(void);
-void GUNDestroyNetworking(void);
-void CheckForInternet(void);
+int32_t
+InitLanGames(void);
+int32_t
+InitGUNGames(void);
+void
+GUNDestroyNetworking(void);
+void
+CheckForInternet(void);
 
 // InternalJoinGame(void) needs this for joining GUN Games.
-void PushGameList(void);
-bool GUNPrepareDPlay(PCSTR GameName);
+void
+PushGameList(void);
+bool
+GUNPrepareDPlay(PCSTR GameName);
 
-HRESULT QuickEnum(bool async); // quickly begin dplay enumeration of sessions.
+HRESULT
+QuickEnum(bool async); // quickly begin dplay enumeration of sessions.
 
 #ifdef OUTBOUND_WINDOW
 typedef struct tagPACKETQUEUE

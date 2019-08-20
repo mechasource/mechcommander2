@@ -12,12 +12,14 @@
 // defined in mlrprimitivebase.cpp
 extern size_t clipTrick[6][2];
 
-inline void DoClipTrick(Stuff::Vector4D& v, size_t ct)
+inline void
+DoClipTrick(Stuff::Vector4D& v, size_t ct)
 {
 	v[clipTrick[ct][0]] = clipTrick[ct][1] ? v.w - Stuff::SMALL : Stuff::SMALL;
 }
 
-inline void DoCleanClipTrick(Stuff::Vector4D& v, size_t ct)
+inline void
+DoCleanClipTrick(Stuff::Vector4D& v, size_t ct)
 {
 	v[clipTrick[ct][0]] = clipTrick[ct][1] ? v.w : 0.0f;
 }

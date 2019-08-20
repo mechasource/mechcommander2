@@ -32,38 +32,38 @@ uint32_t FontIndex;
 
 // local data
 
-float flt_30;	  // weak
-float flt_34;	  // weak
-int dword_40;	  // weak
-float flt_50;	  // weak
-float flt_54;	  // weak
-int dword_60;	  // weak
-float flt_70;	  // weak
-float flt_74;	  // weak
+float flt_30; // weak
+float flt_34; // weak
+int dword_40; // weak
+float flt_50; // weak
+float flt_54; // weak
+int dword_60; // weak
+float flt_70; // weak
+float flt_74; // weak
 int dword_80[996]; // weak
 
 uint32_t FontClipping;
-float TexOffset;	  // weak
-bool FontNoCache;	 // weak
+float TexOffset; // weak
+bool FontNoCache; // weak
 bool FontStartOfLine; // weak
-bool OddSize;		  // weak
-bool FontWordWrap;	// weak
+bool OddSize; // weak
+bool FontWordWrap; // weak
 struct _FontInfo* Fonts;
 struct _FontInfo* FontHandle;
-uint32_t FontColor;									// weak
-float FontSize;										// weak
-uint32_t FontWrapType;								// weak
-bool FontProportional;								// weak
-bool FontBold;										// weak
-bool FontItalic;									// weak
-bool FontDisableCodes;								// weak
-uint32_t MarginBuffer;								// weak
-int LargestHeight;									// idb
-float MagicOffset		   = 0.4375;				// weak
-int32_t CurrentFontTexture = 4294967295;			// idb
-float FontScale			   = 1.0;					// weak
+uint32_t FontColor; // weak
+float FontSize; // weak
+uint32_t FontWrapType; // weak
+bool FontProportional; // weak
+bool FontBold; // weak
+bool FontItalic; // weak
+bool FontDisableCodes; // weak
+uint32_t MarginBuffer; // weak
+int LargestHeight; // idb
+float MagicOffset = 0.4375; // weak
+int32_t CurrentFontTexture = 4294967295; // idb
+float FontScale = 1.0; // weak
 char `gos_TextDrawV '::`4' ::textBufferArray[8191]; // idb
-char byte_68F3;										// weak
+char byte_68F3; // weak
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers

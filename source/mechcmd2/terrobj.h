@@ -139,28 +139,29 @@ public:
 	{
 		objectClass = TERRAINOBJECT;
 		setFlag(OBJECT_FLAG_JUSTCREATED, true);
-		appearance		   = nullptr;
-		vertexNumber	   = 0;
-		blockNumber		   = 0;
-		damage			   = 0.0;
-		pitchAngle		   = 0.0f;
-		fallRate		   = 0.0f;
-		powerSupply		   = nullptr;
-		cellFootprint[0]   = -1;
-		cellFootprint[1]   = -1;
-		cellFootprint[2]   = -1;
-		cellFootprint[3]   = -1;
-		numSubAreas0	   = 0;
-		numSubAreas1	   = 0;
-		subAreas0		   = nullptr;
-		subAreas1		   = nullptr;
-		listID			   = 255;
-		numCellsCovered	= 0;
-		cellsCovered	   = nullptr;
+		appearance = nullptr;
+		vertexNumber = 0;
+		blockNumber = 0;
+		damage = 0.0;
+		pitchAngle = 0.0f;
+		fallRate = 0.0f;
+		powerSupply = nullptr;
+		cellFootprint[0] = -1;
+		cellFootprint[1] = -1;
+		cellFootprint[2] = -1;
+		cellFootprint[3] = -1;
+		numSubAreas0 = 0;
+		numSubAreas1 = 0;
+		subAreas0 = nullptr;
+		subAreas1 = nullptr;
+		listID = 255;
+		numCellsCovered = 0;
+		cellsCovered = nullptr;
 		bldgDustPoofEffect = nullptr;
 	}
 
-	TerrainObject(void) : GameObject() { init(true); }
+	TerrainObject(void) :
+		GameObject() { init(true); }
 
 	~TerrainObject(void) { destroy(void); }
 
@@ -218,7 +219,7 @@ public:
 
 	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
 	{
-		blockNum  = blockNumber;
+		blockNum = blockNumber;
 		vertexNum = vertexNumber;
 	}
 

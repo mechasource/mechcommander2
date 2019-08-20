@@ -20,7 +20,8 @@ class Plane;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::Plane& plane);
+void
+Spew(PCSTR group, const Stuff::Plane& plane);
 #endif
 
 namespace Stuff
@@ -46,8 +47,10 @@ public:
 	// Constructors
 	//
 	Plane(void) {}
-	Plane(float x, float y, float z, float offset) : normal(x, y, z), offset(offset) {}
-	Plane(const Normal3D& n, float offset) : normal(n), offset(offset) {}
+	Plane(float x, float y, float z, float offset) :
+		normal(x, y, z), offset(offset) {}
+	Plane(const Normal3D& n, float offset) :
+		normal(n), offset(offset) {}
 	Plane(const Point3D& p0, const Point3D& p1, const Point3D& p2) { BuildPlane(p0, p1, p2); }
 
 	void BuildPlane(const Point3D& p0, const Point3D& p1, const Point3D& p2);
@@ -105,7 +108,9 @@ public:
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const Plane& plane);
 #endif
-	void TestInstance(void) const {}
+	void TestInstance(void) const
+	{
+	}
 	static bool TestClass(void);
 
 	//

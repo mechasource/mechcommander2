@@ -47,6 +47,6 @@ public:
 	virtual void SetDistanceFactor(float df);
 	virtual void SetReverbFactor(float rf);
 	virtual void SetDecayFactor(float df);
-	virtual void SetSpeakerConfig(uint32_t)  = 0;
+	virtual void SetSpeakerConfig(uint32_t) = 0;
 	virtual void GetSpeakerConfig(uint32_t*) = 0;
 };

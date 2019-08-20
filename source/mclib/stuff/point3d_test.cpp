@@ -12,7 +12,8 @@
 //###########################################################################
 //###########################################################################
 //
-bool Point3D::TestClass()
+bool
+Point3D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Point3D test...\n"));
 	const Point3D a(Identity);
@@ -81,14 +82,10 @@ bool Point3D::TestClass()
 	b = m;
 	Test_Assumption(b == c);
 	b.Multiply(c, m);
-	Test_Assumption(b ==
-		Point3D(c.x + m(3, 0), c.y * m(1, 1) + c.z * m(2, 1) + m(3, 1),
-			c.y * m(1, 2) + c.z * m(2, 2) + m(3, 2)));
+	Test_Assumption(b == Point3D(c.x + m(3, 0), c.y * m(1, 1) + c.z * m(2, 1) + m(3, 1), c.y * m(1, 2) + c.z * m(2, 2) + m(3, 2)));
 	b = c;
 	b *= m;
-	Test_Assumption(b ==
-		Point3D(c.x + m(3, 0), c.y * m(1, 1) + c.z * m(2, 1) + m(3, 1),
-			c.y * m(1, 2) + c.z * m(2, 2) + m(3, 2)));
+	Test_Assumption(b == Point3D(c.x + m(3, 0), c.y * m(1, 1) + c.z * m(2, 1) + m(3, 1), c.y * m(1, 2) + c.z * m(2, 2) + m(3, 2)));
 	Test_Assumption(!a.GetLengthSquared());
 	f = c.GetLengthSquared();
 	Test_Assumption(f == c.x * c.x + c.y * c.y + c.z * c.z);
@@ -104,9 +101,9 @@ bool Point3D::TestClass()
 	b = v;
 	Test_Assumption(b == Point3D(v.x / v.w, v.y / v.w, v.z / v.w));
 	Origin3D t;
-	t.linearPosition  = Point3D(2.0f, 3.0f, 4.0f);
+	t.linearPosition = Point3D(2.0f, 3.0f, 4.0f);
 	t.angularPosition = EulerAngles(0.0f, 0.0f, 0.0f);
-	b				  = t;
+	b = t;
 	Test_Assumption(b == Point3D(t.linearPosition.x, t.linearPosition.y, t.linearPosition.z));
 	return true;
 }

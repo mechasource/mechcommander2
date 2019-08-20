@@ -90,11 +90,16 @@ extern DebuggerPtr debugger;
 
 //***************************************************************************
 
-void ABL_Fatal(int32_t errCode, PSTR s) { ABLFatalCallback(errCode, s); }
+void
+ABL_Fatal(int32_t errCode, PSTR s)
+{
+	ABLFatalCallback(errCode, s);
+}
 
 //---------------------------------------------------------------------------
 
-void ABL_Assert(bool test, int32_t errCode, PSTR s)
+void
+ABL_Assert(bool test, int32_t errCode, PSTR s)
 {
 	test;
 	errCode;
@@ -107,7 +112,8 @@ void ABL_Assert(bool test, int32_t errCode, PSTR s)
 
 //***************************************************************************
 
-void syntaxError(int32_t errCode)
+void
+syntaxError(int32_t errCode)
 {
 	char errMessage[MAXLEN_ERROR_MESSAGE];
 	sprintf(errMessage, "SYNTAX ERROR %s [line %d] - (type %d) %s \"%s\"\n",
@@ -124,7 +130,8 @@ void syntaxError(int32_t errCode)
 
 //---------------------------------------------------------------------------
 
-void runtimeError(int32_t errCode)
+void
+runtimeError(int32_t errCode)
 {
 	char message[512];
 	if (debugger)

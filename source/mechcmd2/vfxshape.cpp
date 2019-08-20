@@ -33,7 +33,8 @@
 // class Shape member functions
 //
 //****************************************************************************
-void Shape::destroy(void)
+void
+Shape::destroy(void)
 {
 	//----------------------------------------------------------------
 	//-- First, tell our owner that we've gone away.
@@ -56,7 +57,8 @@ void Shape::destroy(void)
 
 #define STUPID_OFFSET 6
 //----------------------------------------------------------------------------
-int32_t Shape::init(puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
+int32_t
+Shape::init(puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
 {
 	//-----------------------------------------------------------------
 	// Everything in the below comment is a LIE!!!
@@ -72,12 +74,12 @@ int32_t Shape::init(puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shape
 	if ((*(pint32_t)fileBlock != *(pint32_t) "1.10"))
 	{
 		stupidHeader = fileBlock;
-		frameList	= fileBlock + STUPID_OFFSET; // You can talk to GDoren about this one!!!
+		frameList = fileBlock + STUPID_OFFSET; // You can talk to GDoren about this one!!!
 	}
 	else
 	{
 		stupidHeader = nullptr;
-		frameList	= fileBlock;
+		frameList = fileBlock;
 	}
 	int32_t numFrames = VFX_shape_count(frameList);
 	if (!numFrames)

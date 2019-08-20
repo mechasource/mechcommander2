@@ -41,29 +41,29 @@ extern uint32_t gEnableDetailTexture;
 
 CPrefs::CPrefs()
 {
-	DigitalMasterVolume		 = 255;
-	MusicVolume				 = 64;
-	sfxVolume				 = 64;
-	RadioVolume				 = 64;
-	BettyVolume				 = 64;
-	useShadows				 = true;
-	useWaterInterestTexture  = true;
-	useHighObjectDetail		 = true;
-	GameDifficulty			 = 0;
-	useUnlimitedAmmo		 = true;
-	renderer				 = 0;
-	resolution				 = 1;
-	fullScreen				 = false;
-	gammaLevel				 = 0;
+	DigitalMasterVolume = 255;
+	MusicVolume = 64;
+	sfxVolume = 64;
+	RadioVolume = 64;
+	BettyVolume = 64;
+	useShadows = true;
+	useWaterInterestTexture = true;
+	useHighObjectDetail = true;
+	GameDifficulty = 0;
+	useUnlimitedAmmo = true;
+	renderer = 0;
+	resolution = 1;
+	fullScreen = false;
+	gammaLevel = 0;
 	useLeftRightMouseProfile = true; // if false, use old style commands
 	int32_t i;
 	for (i = 0; i < 10; i++)
 		playerName[i][0] = 0;
 	for (i = 0; i < 10; i++)
 		ipAddresses[i][0] = 0;
-	baseColor		= 0xffff7e00;
-	highlightColor  = 0xffff7e00;
-	faction			= 0;
+	baseColor = 0xffff7e00;
+	highlightColor = 0xffff7e00;
+	faction = 0;
 	insigniaFile[0] = 0;
 	for (i = 0; i < 10; i++)
 		unitName[i][0] = 0;
@@ -78,7 +78,8 @@ CPrefs::CPrefs()
 #endif
 }
 
-int32_t CPrefs::load(PCSTR pFileName)
+int32_t
+CPrefs::load(PCSTR pFileName)
 {
 	int32_t result = 0;
 	FullPathFileName prefsPathname;
@@ -136,16 +137,12 @@ int32_t CPrefs::load(PCSTR pFileName)
 			// Force use of video card which is above min spec.
 			// Used ONLY if they are using a below minSpec Primary with an above
 			// minSpec secondary.
-			if ((renderer >= 0) && (renderer < 3) &&
-				(gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, renderer) +
-					gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, renderer)) < 6291456)
+			if ((renderer >= 0) && (renderer < 3) && (gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, renderer) + gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, renderer)) < 6291456)
 			{
 				int32_t testRender = 0;
 				while (testRender < 3)
 				{
-					if ((gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, testRender) +
-							gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, testRender)) >=
-						6291456)
+					if ((gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, testRender) + gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, testRender)) >= 6291456)
 						break;
 					testRender++;
 				}
@@ -235,7 +232,8 @@ int32_t CPrefs::load(PCSTR pFileName)
 	return 0;
 }
 
-int32_t CPrefs::save()
+int32_t
+CPrefs::save()
 {
 	char backupPath[256];
 	char originalPath[256];
@@ -249,7 +247,7 @@ int32_t CPrefs::save()
 	// MoveFileEx(originalPath, backupPath, MOVEFILE_COPY_ALLOWED |
 	// MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 	FitIniFilePtr prefsFile = new FitIniFile;
-	int32_t result			= prefsFile->create((PSTR)originalPath);
+	int32_t result = prefsFile->create((PSTR)originalPath);
 	if (result != NO_ERROR)
 	{
 		gosASSERT(false);
@@ -311,7 +309,8 @@ int32_t CPrefs::save()
 	return 0;
 }
 
-int32_t CPrefs::applyPrefs(bool applyRes)
+int32_t
+CPrefs::applyPrefs(bool applyRes)
 {
 	if (soundSystem)
 	{
@@ -330,24 +329,24 @@ int32_t CPrefs::applyPrefs(bool applyRes)
 		sndSystem->setMusicVolume(this->MusicVolume);
 		sndSystem->setBettyVolume(this->BettyVolume);
 	}
-	::useShadows			   = this->useShadows;
-	::useLocalShadows		   = this->useLocalShadows;
-	::useWaterInterestTexture  = this->useWaterInterestTexture;
-	::GameDifficulty		   = this->GameDifficulty;
-	::useUnlimitedAmmo		   = this->useUnlimitedAmmo;
-	::renderer				   = this->renderer;
-	::resolution			   = this->resolution;
-	::gammaLevel			   = this->gammaLevel;
-	mc2UseAsyncMouse		   = this->asyncMouse;
+	::useShadows = this->useShadows;
+	::useLocalShadows = this->useLocalShadows;
+	::useWaterInterestTexture = this->useWaterInterestTexture;
+	::GameDifficulty = this->GameDifficulty;
+	::useUnlimitedAmmo = this->useUnlimitedAmmo;
+	::renderer = this->renderer;
+	::resolution = this->resolution;
+	::gammaLevel = this->gammaLevel;
+	mc2UseAsyncMouse = this->asyncMouse;
 	::useLeftRightMouseProfile = this->useLeftRightMouseProfile;
-	::useNonWeaponEffects	  = this->useNonWeaponEffects;
-	::useHighObjectDetail	  = this->useHighObjectDetail;
-	int32_t bitDepth		   = this->bitDepth ? 32 : 16;
+	::useNonWeaponEffects = this->useNonWeaponEffects;
+	::useHighObjectDetail = this->useHighObjectDetail;
+	int32_t bitDepth = this->bitDepth ? 32 : 16;
 	// Play with the fog distance.
-	float fogPercent		= float(fogPos) / 100.0f;
+	float fogPercent = float(fogPos) / 100.0f;
 	Camera::MaxClipDistance = 3000.0f + (2000.0f * fogPercent);
 	Camera::MinHazeDistance = 2000.0f + (2000.0f * fogPercent);
-	::GameVisibleVertices   = 30 + (30 * fogPercent);
+	::GameVisibleVertices = 30 + (30 * fogPercent);
 	if (land)
 	{
 		land->resetVisibleVertices(::GameVisibleVertices);
@@ -359,15 +358,13 @@ int32_t CPrefs::applyPrefs(bool applyRes)
 		if ((renderer != 0) && (renderer != 3))
 			localRenderer = 0;
 		bool localFullScreen = fullScreen;
-		bool localWindow	 = !fullScreen;
+		bool localWindow = !fullScreen;
 		if (Environment.fullScreen && fullScreen)
 			localFullScreen = false;
 		switch (resolution)
 		{
 		case 0: // 640by480
-			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 640, 480, bitDepth) ==
-					0) &&
-				(bitDepth == 32))
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 640, 480, bitDepth) == 0) && (bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
 				gos_SetScreenMode(640, 480, bitDepth, 0, 0, 0, true, localFullScreen, 0,
@@ -377,9 +374,7 @@ int32_t CPrefs::applyPrefs(bool applyRes)
 					localWindow, 0, localRenderer);
 			break;
 		case 1: // 800by600
-			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 800, 600, bitDepth) ==
-					0) &&
-				(bitDepth == 32))
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 800, 600, bitDepth) == 0) && (bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
 				gos_SetScreenMode(800, 600, bitDepth, 0, 0, 0, true, localFullScreen, 0,
@@ -389,9 +384,7 @@ int32_t CPrefs::applyPrefs(bool applyRes)
 					localWindow, 0, localRenderer);
 			break;
 		case 2: // 1024by768
-			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1024, 768, bitDepth) ==
-					0) &&
-				(bitDepth == 32))
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1024, 768, bitDepth) == 0) && (bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
 				gos_SetScreenMode(1024, 768, bitDepth, 0, 0, 0, true, localFullScreen, 0,
@@ -401,9 +394,7 @@ int32_t CPrefs::applyPrefs(bool applyRes)
 					localWindow, 0, localRenderer);
 			break;
 		case 3: // 1280by1024
-			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1280, 1024, bitDepth) ==
-					0) &&
-				(bitDepth == 32))
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1280, 1024, bitDepth) == 0) && (bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
 				gos_SetScreenMode(1280, 1024, bitDepth, 0, 0, 0, true, localFullScreen, 0,
@@ -413,9 +404,7 @@ int32_t CPrefs::applyPrefs(bool applyRes)
 					localWindow, 0, localRenderer);
 			break;
 		case 4: // 1600by1200
-			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1600, 1200, bitDepth) ==
-					0) &&
-				(bitDepth == 32))
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1600, 1200, bitDepth) == 0) && (bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
 				gos_SetScreenMode(1600, 1200, 16, 0, 0, 0, true, localFullScreen, 0, localWindow, 0,
@@ -429,7 +418,8 @@ int32_t CPrefs::applyPrefs(bool applyRes)
 	return 0;
 }
 
-void CPrefs::setNewName(PCSTR pNewName)
+void
+CPrefs::setNewName(PCSTR pNewName)
 {
 	if (!pNewName)
 		return;
@@ -463,7 +453,8 @@ void CPrefs::setNewName(PCSTR pNewName)
 	}
 }
 
-void CPrefs::setNewIP(PCSTR pNewIP)
+void
+CPrefs::setNewIP(PCSTR pNewIP)
 {
 	if (!pNewIP)
 		return;
@@ -492,7 +483,8 @@ void CPrefs::setNewIP(PCSTR pNewIP)
 	}
 }
 
-void CPrefs::setNewUnit(PCSTR pNewUnit)
+void
+CPrefs::setNewUnit(PCSTR pNewUnit)
 {
 	if (!pNewUnit)
 		return;

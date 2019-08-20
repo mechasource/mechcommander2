@@ -30,7 +30,8 @@ class Note : public Plug
 	// Constructors
 	//
 protected:
-	Note(Page* page) : Plug(DefaultData) { m_page = page; }
+	Note(Page* page) :
+		Plug(DefaultData) { m_page = page; }
 
 	Page* m_page;
 

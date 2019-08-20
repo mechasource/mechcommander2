@@ -133,29 +133,30 @@ public:
 	{
 		sensorSystem = nullptr;
 		setFlag(OBJECT_FLAG_JUSTCREATED, true);
-		appearance		 = nullptr;
-		vertexNumber	 = 0;
-		blockNumber		 = 0;
-		baseTileId		 = 0;
-		commanderId		 = -1;
-		teamId			 = -1;
-		refitBuddyWID	= 0;
-		parentId		 = 0xffffffff;
-		parent			 = nullptr;
-		powerSupply		 = nullptr;
-		numSubAreas0	 = 0;
-		numSubAreas1	 = 0;
-		subAreas0		 = nullptr;
-		subAreas1		 = nullptr;
-		listID			 = 255;
-		captureTime		 = 0.0;
-		scoreTime		 = 0.0;
+		appearance = nullptr;
+		vertexNumber = 0;
+		blockNumber = 0;
+		baseTileId = 0;
+		commanderId = -1;
+		teamId = -1;
+		refitBuddyWID = 0;
+		parentId = 0xffffffff;
+		parent = nullptr;
+		powerSupply = nullptr;
+		numSubAreas0 = 0;
+		numSubAreas1 = 0;
+		subAreas0 = nullptr;
+		subAreas1 = nullptr;
+		listID = 255;
+		captureTime = 0.0;
+		scoreTime = 0.0;
 		moverInProximity = false;
-		proximityTimer   = 0.0f;
-		updatedTurn		 = -1;
+		proximityTimer = 0.0f;
+		updatedTurn = -1;
 	}
 
-	Building(void) : TerrainObject() { init(true); }
+	Building(void) :
+		TerrainObject() { init(true); }
 
 	~Building(void) { destroy(void); }
 
@@ -256,7 +257,7 @@ public:
 
 	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
 	{
-		blockNum  = blockNumber;
+		blockNum = blockNumber;
 		vertexNum = vertexNumber;
 	}
 
@@ -299,8 +300,7 @@ public:
 		//				(bldgType->getObjTypeNum() ==
 		// GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM))
 		//				return(true);
-		if ((bldgType->perimeterAlarmRange > 0.0f) && (bldgType->perimeterAlarmTimer > 0.0f) ||
-			(bldgType->lookoutTowerRange > 0.0f) || (bldgType->sensorRange > 0.0f))
+		if ((bldgType->perimeterAlarmRange > 0.0f) && (bldgType->perimeterAlarmTimer > 0.0f) || (bldgType->lookoutTowerRange > 0.0f) || (bldgType->sensorRange > 0.0f))
 		{
 			return true;
 		}

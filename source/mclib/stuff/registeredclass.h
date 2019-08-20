@@ -154,8 +154,6 @@ protected:
 		RegisteredClass::ClassID classID;
 		size_t padding;
 	};
-	
-
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Test support
@@ -166,7 +164,8 @@ public:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-inline bool RegisteredClass::IsDerivedFrom(RegisteredClass__ClassData* parent) const
+inline bool
+RegisteredClass::IsDerivedFrom(RegisteredClass__ClassData* parent) const
 {
 	// Check_Object(this);
 	// Check_Object(classData);
@@ -175,7 +174,8 @@ inline bool RegisteredClass::IsDerivedFrom(RegisteredClass__ClassData* parent) c
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-inline bool RegisteredClass::IsDerivedFrom(ClassID class_id) const
+inline bool
+RegisteredClass::IsDerivedFrom(ClassID class_id) const
 {
 	// Check_Object(this);
 	// Check_Object(classData);
@@ -184,7 +184,8 @@ inline bool RegisteredClass::IsDerivedFrom(ClassID class_id) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-inline bool RegisteredClass::IsDerivedFrom(PCSTR parent) const
+inline bool
+RegisteredClass::IsDerivedFrom(PCSTR parent) const
 {
 	// Check_Object(this);
 	// Check_Object(classData);
@@ -193,7 +194,8 @@ inline bool RegisteredClass::IsDerivedFrom(PCSTR parent) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-inline RegisteredClass::ClassID RegisteredClass::GetClassID(void) const
+inline RegisteredClass::ClassID
+RegisteredClass::GetClassID(void) const
 {
 	// Check_Object(this);
 	RegisteredClass__ClassData* data = GetClassData();
@@ -203,7 +205,8 @@ inline RegisteredClass::ClassID RegisteredClass::GetClassID(void) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-inline RegisteredClass::ClassData* RegisteredClass::FindClassData(PCSTR name)
+inline RegisteredClass::ClassData*
+RegisteredClass::FindClassData(PCSTR name)
 {
 	return DefaultData->FindClassData(name);
 }

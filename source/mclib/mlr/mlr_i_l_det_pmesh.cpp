@@ -30,7 +30,8 @@ MLR_I_L_DeT_PMesh::ClassData* MLR_I_L_DeT_PMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_L_DeT_PMesh::InitializeClass()
+void
+MLR_I_L_DeT_PMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -45,7 +46,8 @@ void MLR_I_L_DeT_PMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_L_DeT_PMesh::TerminateClass()
+void
+MLR_I_L_DeT_PMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -58,8 +60,8 @@ void MLR_I_L_DeT_PMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
-	: MLR_I_C_DeT_PMesh(DefaultData, stream, version)
+MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
+	MLR_I_C_DeT_PMesh(DefaultData, stream, version)
 {
 	// Check_Pointer(this);
 	(void)class_data;
@@ -85,8 +87,8 @@ MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(ClassData* class_data, std::iostream stream
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(ClassData* class_data)
-	: MLR_I_C_DeT_PMesh(class_data), normals(0)
+MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(ClassData* class_data) :
+	MLR_I_C_DeT_PMesh(class_data), normals(0)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -102,7 +104,8 @@ MLR_I_L_DeT_PMesh::~MLR_I_L_DeT_PMesh()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_L_DeT_PMesh* MLR_I_L_DeT_PMesh::Make(std::iostream stream, uint32_t version)
+MLR_I_L_DeT_PMesh*
+MLR_I_L_DeT_PMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -115,7 +118,8 @@ MLR_I_L_DeT_PMesh* MLR_I_L_DeT_PMesh::Make(std::iostream stream, uint32_t versio
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_L_DeT_PMesh::Save(std::iostream stream)
+void
+MLR_I_L_DeT_PMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -125,11 +129,16 @@ void MLR_I_L_DeT_PMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_L_DeT_PMesh::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLR_I_L_DeT_PMesh::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_L_DeT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
+void
+MLR_I_L_DeT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
@@ -141,16 +150,18 @@ void MLR_I_L_DeT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSi
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_L_DeT_PMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
+void
+MLR_I_L_DeT_PMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
 {
 	// Check_Object(this);
-	*data	 = normals.GetData();
+	*data = normals.GetData();
 	*dataSize = normals.GetLength();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_L_DeT_PMesh::SetColorData(
+void
+MLR_I_L_DeT_PMesh::SetColorData(
 #if COLOR_AS_DWORD
 	pcuint32_t data,
 #else
@@ -162,15 +173,15 @@ void MLR_I_L_DeT_PMesh::SetColorData(
 	Check_Pointer(data);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	_ASSERT(coords.GetLength() == 0 || dataSize == coords.GetLength());
-	_ASSERT(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength() ||
-		dataSize == 2 * texCoords.GetLength());
+	_ASSERT(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength() || dataSize == 2 * texCoords.GetLength());
 	litColors.SetLength(dataSize);
 	colors.AssignData(data, dataSize);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_L_DeT_PMesh::PaintMe(
+void
+MLR_I_L_DeT_PMesh::PaintMe(
 #if COLOR_AS_DWORD
 	pcuint32_t paintMe
 #else
@@ -237,7 +248,8 @@ void MLR_I_L_DeT_PMesh::PaintMe(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_DetTex(
+MLRShape*
+MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_DetTex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* stateDet)
 {
 #ifdef _GAMEOS_HPP_
@@ -278,7 +290,7 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_DetTex(
 	for (k = 0; k < 20; k++)
 	{
 		MidLevelRenderer::triDrawn = 0;
-		MLR_I_L_DeT_PMesh* mesh	= new MLR_I_L_DeT_PMesh();
+		MLR_I_L_DeT_PMesh* mesh = new MLR_I_L_DeT_PMesh();
 		Register_Object(mesh);
 		// setup vertex position information
 		for (j = 0; j < 3; j++)
@@ -291,9 +303,9 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_DetTex(
 		mesh->SetSubprimitiveLengths(lengths, nrTri);
 		if (icoInfo.indexed == true)
 		{
-			uniquePoints	   = 1;
+			uniquePoints = 1;
 			collapsedCoords[0] = coords[0];
-			index[0]		   = 0;
+			index[0] = 0;
 			for (i = 1; i < nrTri * 3; i++)
 			{
 				for (j = 0; j < uniquePoints; j++)

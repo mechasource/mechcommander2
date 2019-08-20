@@ -27,7 +27,7 @@ class FitIniFile;
 
 struct MoveInfo
 {
-	float time;		// in seconds
+	float time; // in seconds
 	float position; // x pixels
 };
 
@@ -53,12 +53,12 @@ public:
 	enum PAUSEBUTTONS
 	{
 		OBJECTIVES = 0,
-		SAVE	   = 1,
-		LOAD	   = 2,
-		OPTIONS	= 3,
-		RESTART	= 4,
-		EXIT	   = 5,
-		RETURN	 = 6
+		SAVE = 1,
+		LOAD = 2,
+		OPTIONS = 3,
+		RESTART = 4,
+		EXIT = 5,
+		RETURN = 6
 	};
 
 private:

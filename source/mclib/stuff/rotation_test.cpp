@@ -14,7 +14,8 @@
 //#############################################################################
 //#############################################################################
 //
-bool EulerAngles::TestClass()
+bool
+EulerAngles::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting EulerAngle test..."));
 	const EulerAngles a(Identity);
@@ -29,9 +30,7 @@ bool EulerAngles::TestClass()
 	Test_Assumption(b[Y_Axis] == b.yaw);
 	Test_Assumption(c[Z_Axis] == c.roll);
 	b.Lerp(a, c, 0.5f);
-	Test_Assumption(b ==
-		EulerAngles(Stuff::Lerp(a.pitch, c.pitch, 0.5f), Stuff::Lerp(a.yaw, c.yaw, 0.5f),
-			Stuff::Lerp(a.roll, c.roll, 0.5f)));
+	Test_Assumption(b == EulerAngles(Stuff::Lerp(a.pitch, c.pitch, 0.5f), Stuff::Lerp(a.yaw, c.yaw, 0.5f), Stuff::Lerp(a.roll, c.roll, 0.5f)));
 	LinearMatrix4D m;
 	m.BuildRotation(c);
 	b = m;
@@ -50,7 +49,8 @@ bool EulerAngles::TestClass()
 #include <stuff/random.hpp>
 
 class fstream;
-bool UnitQuaternion::TestClass()
+bool
+UnitQuaternion::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting UnitQuaternion Test..."));
 #if 0

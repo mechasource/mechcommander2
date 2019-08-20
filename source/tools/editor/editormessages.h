@@ -31,7 +31,7 @@ EditorMessages.h			: Interface for the EditorMessages component.
 #define PAINT_CURSOR 1
 #define SELECT_AREA_CURSOR 2
 #define ERASER_CURSOR 3
-#define TERRAIN_CURSORS 4  // don't use next 12, those are for the terrains
+#define TERRAIN_CURSORS 4 // don't use next 12, those are for the terrains
 #define OVERLAY_CURSORS 17 // don't use next 10, reserving those for overlays
 #define FLATTEN_CURSOR 28
 #define DRAG_SMOOTH 29

@@ -93,7 +93,7 @@ protected:
 		PVOID operator new(size_t mySize)
 		{
 			PVOID result = nullptr;
-			result		 = systemHeap->Malloc(mySize);
+			result = systemHeap->Malloc(mySize);
 			return (result);
 		}
 
@@ -110,7 +110,7 @@ protected:
 	int32_t scale; // forest only
 
 	friend class EditorObjectMgr; // the only thing that can move and change
-								  // these things
+		// these things
 };
 
 // THIS CLASS CLEARLY NEEDS FLESHING OUT!
@@ -163,8 +163,8 @@ public:
 	{
 		numStaticVars = numCells = 0;
 		cellNum = cellType = nullptr;
-		cellData		   = nullptr;
-		brainName[0]	   = 0;
+		cellData = nullptr;
+		brainName[0] = 0;
 	}
 
 	~Brain(void)
@@ -174,8 +174,8 @@ public:
 		free(cellData);
 		numStaticVars = numCells = 0;
 		cellNum = cellType = nullptr;
-		cellData		   = nullptr;
-		brainName[0]	   = 0;
+		cellData = nullptr;
+		brainName[0] = 0;
 	}
 
 	Brain(const Brain&);
@@ -201,13 +201,13 @@ public:
 
 	void setLanceInfo(int32_t newLance, int32_t index)
 	{
-		lance	  = newLance;
+		lance = newLance;
 		lanceIndex = index;
 	}
 	void getLanceInfo(int32_t& newLance, int32_t& index)
 	{
 		newLance = lance;
-		index	= lanceIndex;
+		index = lanceIndex;
 	}
 	virtual int32_t getType(void) const { return GV_TYPE; }
 
@@ -237,7 +237,7 @@ protected:
 
 	Brain brain;
 	bool selfRepairBehaviorEnabled;
-	int32_t lance;		// which lance
+	int32_t lance; // which lance
 	int32_t lanceIndex; // number within lance 1 to 12
 	uint32_t squad;
 	Pilot pilot;
@@ -258,7 +258,7 @@ public:
 	DropZone(const Stuff::Vector3D& position, int32_t alignment, bool bVTol);
 	DropZone& operator=(const DropZone& src)
 	{
-		bVTol				  = src.bVTol;
+		bVTol = src.bVTol;
 		EditorObject::operator=(src);
 		return *this;
 	}

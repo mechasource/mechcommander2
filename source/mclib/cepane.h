@@ -55,12 +55,12 @@ public:
 	DeltaElement(void)
 	{
 		shapeTable = nullptr;
-		frameNum   = 0;
-		x = y		= 0;
-		reverse		= false;
-		fadeTable   = nullptr;
+		frameNum = 0;
+		x = y = 0;
+		reverse = false;
+		fadeTable = nullptr;
 		noScaleDraw = false;
-		scaleUp		= false;
+		scaleUp = false;
 	}
 
 	DeltaElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,

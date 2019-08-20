@@ -207,7 +207,7 @@ typedef struct _Type
 		} enumeration;
 		struct
 		{
-			TypePtr indexTypePtr;   // should be Integer
+			TypePtr indexTypePtr; // should be Integer
 			TypePtr elementTypePtr; // should be Real, Integer, Char or array
 			int32_t elementCount;
 		} array;
@@ -220,34 +220,59 @@ typedef struct _Type
 
 //***************************************************************************
 
-void searchLocalSymTable(SymTableNodePtr& IdPtr);
-SymTableNodePtr searchLocalSymTableForFunction(PSTR name);
-void searchThisSymTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
-void searchAllSymTables(SymTableNodePtr& IdPtr);
-void enterLocalSymTable(SymTableNodePtr& IdPtr);
-void enterNameLocalSymTable(SymTableNodePtr& IdPtr, PSTR name);
-void searchAndFindAllSymTables(SymTableNodePtr& IdPtr);
-void searchAndEnterLocalSymTable(SymTableNodePtr& IdPtr);
-/*inline*/ void searchAndEnterThisTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
-inline SymTableNodePtr symTableSuccessor(SymTableNodePtr nodeX);
+void
+searchLocalSymTable(SymTableNodePtr& IdPtr);
+SymTableNodePtr
+searchLocalSymTableForFunction(PSTR name);
+void
+searchThisSymTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
+void
+searchAllSymTables(SymTableNodePtr& IdPtr);
+void
+enterLocalSymTable(SymTableNodePtr& IdPtr);
+void
+enterNameLocalSymTable(SymTableNodePtr& IdPtr, PSTR name);
+void
+searchAndFindAllSymTables(SymTableNodePtr& IdPtr);
+void
+searchAndEnterLocalSymTable(SymTableNodePtr& IdPtr);
+/*inline*/ void
+searchAndEnterThisTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
+inline SymTableNodePtr
+symTableSuccessor(SymTableNodePtr nodeX);
 
-SymTableNodePtr searchSymTable(PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForFunction(PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForState(PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForString(PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableDisplay(PSTR name);
-SymTableNodePtr enterSymTable(PSTR name, SymTableNodePtr* ptrToNodePtr);
-SymTableNodePtr insertSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
-SymTableNodePtr extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
-void enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList,
+SymTableNodePtr
+searchSymTable(PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr
+searchSymTableForFunction(PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr
+searchSymTableForState(PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr
+searchSymTableForString(PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr
+searchSymTableDisplay(PSTR name);
+SymTableNodePtr
+enterSymTable(PSTR name, SymTableNodePtr* ptrToNodePtr);
+SymTableNodePtr
+insertSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
+SymTableNodePtr
+extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
+void
+enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList,
 	PSTR returnType, void (*callback)(void));
-void enterScope(SymTableNodePtr symTableRoot);
-SymTableNodePtr exitScope(void);
-void initSymTable(void);
+void
+enterScope(SymTableNodePtr symTableRoot);
+SymTableNodePtr
+exitScope(void);
+void
+initSymTable(void);
 
-TypePtr createType(void);
-TypePtr setType(TypePtr type);
-void clearType(TypePtr& type);
+TypePtr
+createType(void);
+TypePtr
+setType(TypePtr type);
+void
+clearType(TypePtr& type);
 
 //***************************************************************************
 

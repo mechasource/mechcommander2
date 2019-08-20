@@ -22,8 +22,8 @@ public:
 		if (Type == -1)
 			Type = s_lastType;
 		terrainType = Type;
-		s_lastType  = Type;
-		pAction		= nullptr;
+		s_lastType = Type;
+		pAction = nullptr;
 	}
 	virtual ~TerrainBrush() {}
 
@@ -40,7 +40,7 @@ public:
 	Action* endPaint()
 	{
 		Action* pRetAction = pAction;
-		pAction			   = nullptr;
+		pAction = nullptr;
 		return pRetAction;
 	}
 	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
@@ -49,8 +49,7 @@ public:
 		int32_t tileR;
 		Stuff::Vector2DOf<int32_t> screenPos(screenX, screenY);
 		eye->getClosestVertex(screenPos, tileR, tileC);
-		if (tileR < Terrain::realVerticesMapSide && tileR > -1 &&
-			tileC < Terrain::realVerticesMapSide && tileC > -1)
+		if (tileR < Terrain::realVerticesMapSide && tileR > -1 && tileC < Terrain::realVerticesMapSide && tileC > -1)
 		{
 			pAction->addChangedVertexInfo(tileR, tileC); // for undo
 			land->setTerrain(tileR, tileC, terrainType);

@@ -34,12 +34,12 @@ public:
 		MC2Rect.bottom = MC2Rect.top = MC2Rect.left = MC2Rect.right = 0;
 		numWide = numHigh = 0;
 		totalTexturesUsed = 0;
-		forceStop		  = false;
-		stillPlaying	  = false;
-		separateWAVE	  = false;
-		soundStarted	  = false;
-		waveName		  = nullptr;
-		m_MC2Name		  = nullptr;
+		forceStop = false;
+		stillPlaying = false;
+		separateWAVE = false;
+		soundStarted = false;
+		waveName = nullptr;
+		m_MC2Name = nullptr;
 	}
 
 	~MC2Movie(void)
@@ -88,7 +88,7 @@ public:
 	void restart(void)
 	{
 		stillPlaying = true;
-		forceStop	= false;
+		forceStop = false;
 	}
 
 	// Changes rect.  If resize, calls malloc which will be QUITE painful during
@@ -103,27 +103,27 @@ public:
 protected:
 	uint32_t* MC2Surface; // Extra surface used if MC2 Movie is larger then 256x256
 	uint32_t mc2TextureNodeIndex[MAX_TEXTURES_NEEDED]; // Handles to textures
-													   // for MC2 movie data.
-	RECT MC2Rect;									   // Physical Location on screen for MC2 movie.
+		// for MC2 movie data.
+	RECT MC2Rect; // Physical Location on screen for MC2 movie.
 
-	uint32_t numWide;			// Number of textures wide display is
-	uint32_t numHigh;			// Number of textures high the display is
+	uint32_t numWide; // Number of textures wide display is
+	uint32_t numHigh; // Number of textures high the display is
 	uint32_t totalTexturesUsed; // total Number of texture used to display
 
 	bool forceStop; // Should MC2 movie end now?
 
 	uint32_t singleTextureSize; // Size of the single texture.  Fit it to
-								// smallest texture we can use.
-	bool stillPlaying;			// Is MC2 movie over?
+		// smallest texture we can use.
+	bool stillPlaying; // Is MC2 movie over?
 
 	bool separateWAVE; // Tells us if this MC2 movie has a separate soundtrack.
 	bool soundStarted; // If this MC2 movie has a separate soundtrack, this
-					   // tells us when to start it.
-	char* waveName;	// Name of the wavefile.
-	char* m_MC2Name;   // Name of the Movie.
+		// tells us when to start it.
+	char* waveName; // Name of the wavefile.
+	char* m_MC2Name; // Name of the Movie.
 
 	void BltMovieFrame(void); // Actually moves frame data from MC2 movie to
-							  // surface and/or texture(s)
+		// surface and/or texture(s)
 };
 
 typedef MC2Movie* MC2MoviePtr;

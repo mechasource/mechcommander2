@@ -25,10 +25,10 @@ struct EffectClipPolygon
 	void Init(void);
 	void Destroy(void);
 
-	std::vector<Stuff::Vector4D> coords;			//[Max_Number_Vertices_Per_Polygon];
-	std::vector<Stuff::RGBAColor> colors;			//[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::Vector4D> coords; //[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::RGBAColor> colors; //[Max_Number_Vertices_Per_Polygon];
 	std::vector<Stuff::Vector2DScalar> texCoords; //[Max_Number_Vertices_Per_Polygon];
-	std::vector<MLRClippingState> clipPerVertex;  //[Max_Number_Vertices_Per_Polygon];
+	std::vector<MLRClippingState> clipPerVertex; //[Max_Number_Vertices_Per_Polygon];
 };
 
 class DrawEffectInformation;

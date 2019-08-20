@@ -17,7 +17,8 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Line3D& Line3D::SetDirection(const Vector3D& vector)
+Line3D&
+Line3D::SetDirection(const Vector3D& vector)
 {
 	// Check_Pointer(this);
 	Check_Object(&vector);
@@ -42,7 +43,8 @@ Line3D& Line3D::SetDirection(const Vector3D& vector)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float Line3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
+float
+Line3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 {
 	// Check_Object(this);
 	Check_Object(&sphere);
@@ -99,7 +101,8 @@ float Line3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float Line3D::GetDistanceTo(const OBB& box)
+float
+Line3D::GetDistanceTo(const OBB& box)
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -149,9 +152,9 @@ float Line3D::GetDistanceTo(const OBB& box)
 		// how far from the origin to the centerplane of the OBB
 		//--------------------------------------------------------------------
 		//
-		drift	  = 1.0f / drift;
+		drift = 1.0f / drift;
 		float span = box.axisExtents[axis] * Fabs(drift);
-		distance   = (delta * normal) * drift;
+		distance = (delta * normal) * drift;
 		//
 		//--------------------------------------------------------------------
 		// Now adjust where the line can enter and leave the OBB, and if it is
@@ -181,7 +184,8 @@ float Line3D::GetDistanceTo(const OBB& box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float Line3D::GetDistanceTo(const OBB& box, size_t* first_axis)
+float
+Line3D::GetDistanceTo(const OBB& box, size_t* first_axis)
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -232,9 +236,9 @@ float Line3D::GetDistanceTo(const OBB& box, size_t* first_axis)
 		// how far from the origin to the centerplane of the OBB
 		//--------------------------------------------------------------------
 		//
-		drift	  = 1.0f / drift;
+		drift = 1.0f / drift;
 		float span = box.axisExtents[axis] * Fabs(drift);
-		distance   = (delta * normal) * drift;
+		distance = (delta * normal) * drift;
 		//
 		//--------------------------------------------------------------------
 		// Now adjust where the line can enter and leave the OBB, and if it is
@@ -246,7 +250,7 @@ float Line3D::GetDistanceTo(const OBB& box, size_t* first_axis)
 		if (enter > enters)
 		{
 			*first_axis = axis;
-			enters		= enter;
+			enters = enter;
 		}
 		if (leave < leaves)
 			leaves = leave;

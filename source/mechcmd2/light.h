@@ -59,7 +59,8 @@ class Light : public GameObject
 public:
 	virtual void init(bool create);
 
-	Light(void) : GameObject() { init(true); }
+	Light(void) :
+		GameObject() { init(true); }
 
 	~Light(void) { destroy(void); }
 

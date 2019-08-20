@@ -155,10 +155,10 @@ public:
 	uint32_t threadID;
 
 	BOOL launchedFromLobby; // TRUE if this app was launched through a DPlay
-							// lobby.
-	BOOL lobbyChecked;		// TRUE if we have initialized launchedFromLobby.
-	BOOL inReceiveThread;   // TRUE while in ReceiveThread, FALSE while in another
-							// thread.
+		// lobby.
+	BOOL lobbyChecked; // TRUE if we have initialized launchedFromLobby.
+	BOOL inReceiveThread; // TRUE while in ReceiveThread, FALSE while in another
+		// thread.
 	BOOL DisabledCallerID;
 	BOOL CallerIDChanged[6];
 

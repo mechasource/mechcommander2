@@ -100,6 +100,7 @@ protected:
 
 //	MLR_I_L_DT_TMesh*
 //		CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
-MLRShape* CreateIndexedTriIcosahedron_Color_Lit_2Tex(IcoInfo&, MLRState*, MLRState*);
+MLRShape*
+CreateIndexedTriIcosahedron_Color_Lit_2Tex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

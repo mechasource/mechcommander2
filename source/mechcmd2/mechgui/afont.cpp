@@ -8,7 +8,8 @@
 //#include <mclib.h>
 //#include <mbstring.h>
 
-int32_t aFont::init(PCSTR newFontName)
+int32_t
+aFont::init(PCSTR newFontName)
 {
 	destroy();
 	gosFont = 0;
@@ -28,20 +29,25 @@ int32_t aFont::init(PCSTR newFontName)
 	return FONT_NOT_LOADED;
 }
 
-int32_t aFont::init(int32_t resourceID)
+int32_t
+aFont::init(int32_t resourceID)
 {
 	destroy();
 	gosFont = 0;
 	gosFont = loadFont(resourceID, size);
-	resID   = resourceID;
+	resID = resourceID;
 	if (gosFont)
 		return 0;
 	return FONT_NOT_LOADED;
 }
 
-aFont::~aFont() { destroy(); }
+aFont::~aFont()
+{
+	destroy();
+}
 
-uint32_t aFont::height() const
+uint32_t
+aFont::height() const
 {
 	uint32_t width, height;
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
@@ -49,13 +55,15 @@ uint32_t aFont::height() const
 	return height;
 }
 
-void aFont::getSize(uint32_t& width, uint32_t& height, PCSTR pText)
+void
+aFont::getSize(uint32_t& width, uint32_t& height, PCSTR pText)
 {
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width, &height, pText);
 }
 
-uint32_t aFont::height(PCSTR st, int32_t areaWidth) const
+uint32_t
+aFont::height(PCSTR st, int32_t areaWidth) const
 {
 	uint32_t width, height;
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
@@ -67,11 +75,11 @@ uint32_t aFont::height(PCSTR st, int32_t areaWidth) const
 		uint32_t curLineWidth = 0;
 		gosASSERT(strlen(st) < 2048);
 		char pLine[2048]; // should be more than adequate
-		PSTR pLastWord				 = (PSTR)st;
-		PSTR pTmp					 = (PSTR)st;
-		PSTR pTmpLine				 = (PSTR)pLine;
+		PSTR pLastWord = (PSTR)st;
+		PSTR pTmp = (PSTR)st;
+		PSTR pTmpLine = (PSTR)pLine;
 		int32_t numberOfWordsPerLine = 0;
-		bool bHasSpaces				 = true;
+		bool bHasSpaces = true;
 		if (!strstr(st, " "))
 		{
 			if (!strstr(st, "\n"))
@@ -83,9 +91,9 @@ uint32_t aFont::height(PCSTR st, int32_t areaWidth) const
 			{
 				lineCount++;
 				numberOfWordsPerLine = 0;
-				curLineWidth		 = 0;
-				pTmpLine			 = pLine;
-				pLastWord			 = pTmp + 1;
+				curLineWidth = 0;
+				pTmpLine = pLine;
+				pLastWord = pTmp + 1;
 			}
 			else if (!bHasSpaces)
 			{
@@ -100,8 +108,8 @@ uint32_t aFont::height(PCSTR st, int32_t areaWidth) const
 						{
 							lineCount++;
 							pTmp--;
-							pTmpLine			 = pLine;
-							curLineWidth		 = 0;
+							pTmpLine = pLine;
+							curLineWidth = 0;
 							numberOfWordsPerLine = 0;
 						}
 					}
@@ -131,9 +139,9 @@ uint32_t aFont::height(PCSTR st, int32_t areaWidth) const
 						pLastWord = pTmp;
 					}
 					lineCount++;
-					pTmpLine			 = pLine;
-					pTmp				 = pLastWord - 1;
-					curLineWidth		 = 0;
+					pTmpLine = pLine;
+					pTmp = pLastWord - 1;
+					curLineWidth = 0;
 					numberOfWordsPerLine = 0;
 				}
 				pLastWord = pTmp;
@@ -145,7 +153,7 @@ uint32_t aFont::height(PCSTR st, int32_t areaWidth) const
 				*(pTmpLine + 1) = *(pTmp + 1);
 			}
 			pTmpLine = (PSTR)_mbsinc((puint8_t)pTmpLine);
-			pTmp	 = (PSTR)_mbsinc((puint8_t)pTmp);
+			pTmp = (PSTR)_mbsinc((puint8_t)pTmp);
 		}
 		// one last check
 		*pTmpLine = nullptr;
@@ -161,7 +169,8 @@ uint32_t aFont::height(PCSTR st, int32_t areaWidth) const
 	return (height)*lineCount;
 }
 
-uint32_t aFont::width(PCSTR st) const
+uint32_t
+aFont::width(PCSTR st) const
 {
 	uint32_t width, height;
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
@@ -169,22 +178,25 @@ uint32_t aFont::width(PCSTR st) const
 	return width;
 }
 
-int32_t aFont::load(PCSTR fontName)
+int32_t
+aFont::load(PCSTR fontName)
 {
 	destroy();
 	return init(fontName);
 }
 
-void aFont::destroy()
+void
+aFont::destroy()
 {
 	if (gosFont)
 		gos_DeleteFont(gosFont);
-	gosFont		= 0;
-	resID		= 0;
+	gosFont = 0;
+	resID = 0;
 	fontName[0] = 0;
 }
 
-void aFont::render(PCSTR text, int32_t xPos, int32_t yPos, int32_t areaWidth, int32_t areaHeight,
+void
+aFont::render(PCSTR text, int32_t xPos, int32_t yPos, int32_t areaWidth, int32_t areaHeight,
 	uint32_t color, bool bBold, int32_t alignment)
 {
 	gos_TextSetAttributes(gosFont, color, size, true, true, bBold, false, alignment);
@@ -217,7 +229,8 @@ void aFont::render(PCSTR text, int32_t xPos, int32_t yPos, int32_t areaWidth, in
 	gos_TextDraw(text);
 }
 
-HGOSFONT3D aFont::loadFont(int32_t resourceID, int32_t& size)
+HGOSFONT3D
+aFont::loadFont(int32_t resourceID, int32_t& size)
 {
 	size = 1;
 	char buffer[256];
@@ -225,7 +238,7 @@ HGOSFONT3D aFont::loadFont(int32_t resourceID, int32_t& size)
 	PSTR pStr = strstr(buffer, ",");
 	if (pStr)
 	{
-		size  = -atoi(pStr + 1);
+		size = -atoi(pStr + 1);
 		*pStr = nullptr;
 	}
 	char path[256];
@@ -236,15 +249,20 @@ HGOSFONT3D aFont::loadFont(int32_t resourceID, int32_t& size)
 	return retFont;
 }
 
-aFont::aFont(const aFont& src) { copyData(src); }
+aFont::aFont(const aFont& src)
+{
+	copyData(src);
+}
 
-aFont& aFont::operator=(const aFont& src)
+aFont&
+aFont::operator=(const aFont& src)
 {
 	copyData(src);
 	return *this;
 }
 
-void aFont::copyData(const aFont& src)
+void
+aFont::copyData(const aFont& src)
 {
 	if (&src != this)
 	{

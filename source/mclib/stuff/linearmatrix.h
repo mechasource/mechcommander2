@@ -279,7 +279,8 @@ private:
 	LinearMatrix4D& Solve(void);
 };
 
-inline UnitQuaternion& UnitQuaternion::operator*=(const LinearMatrix4D& m)
+inline UnitQuaternion&
+UnitQuaternion::operator*=(const LinearMatrix4D& m)
 {
 	UnitQuaternion t(*this);
 	return Multiply(t, m);

@@ -90,11 +90,14 @@ protected:
 #endif
 };
 
-MLR_I_C_PMesh* CreateIndexedCube_Color_NoLit(float, Stuff::RGBAColor*, MLRState*);
+MLR_I_C_PMesh*
+CreateIndexedCube_Color_NoLit(float, Stuff::RGBAColor*, MLRState*);
 
-MLR_I_PMesh* CreateIndexedViewFrustrum_Color_NoLit(float near_clip, float far_clip, float left_clip,
+MLR_I_PMesh*
+CreateIndexedViewFrustrum_Color_NoLit(float near_clip, float far_clip, float left_clip,
 	float right_clip, float top_clip, float bottom_clip, Stuff::RGBAColor&, MLRState*);
 
-MLRShape* CreateIndexedIcosahedron_Color_NoLit(IcoInfo&, MLRState*);
+MLRShape*
+CreateIndexedIcosahedron_Color_NoLit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 #endif

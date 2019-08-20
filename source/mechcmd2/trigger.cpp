@@ -10,7 +10,8 @@
 #include "mover.h"
 //***************************************************************************
 
-PVOID TriggerAreaManager::operator new(size_t ourSize)
+PVOID
+TriggerAreaManager::operator new(size_t ourSize)
 {
 	PVOID result = systemHeap->Malloc(ourSize);
 	return (result);
@@ -18,15 +19,23 @@ PVOID TriggerAreaManager::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void TriggerAreaManager::operator delete(PVOID us) { systemHeap->Free(us); }
+void
+TriggerAreaManager::operator delete(PVOID us)
+{
+	systemHeap->Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void TriggerAreaManager::destroy(void) {}
+void
+TriggerAreaManager::destroy(void)
+{
+}
 
 //---------------------------------------------------------------------------
 
-int32_t TriggerAreaManager::add(
+int32_t
+TriggerAreaManager::add(
 	int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param)
 {
 	for (size_t i = 1; i < MAX_TRIGGER_AREAS; i++)
@@ -38,9 +47,9 @@ int32_t TriggerAreaManager::add(
 		triggerAreas[i].dim[1] = ULcol;
 		triggerAreas[i].dim[2] = LRrow;
 		triggerAreas[i].dim[3] = LRcol;
-		triggerAreas[i].type   = type;
-		triggerAreas[i].param  = param;
-		triggerAreas[i].hit	= false;
+		triggerAreas[i].type = type;
+		triggerAreas[i].param = param;
+		triggerAreas[i].hit = false;
 		int32_t tileDims[4];
 		tileDims[0] = ULrow / 3;
 		tileDims[1] = ULcol / 3 + 1;
@@ -60,7 +69,8 @@ int32_t TriggerAreaManager::add(
 
 //---------------------------------------------------------------------------
 
-void TriggerAreaManager::remove(int32_t areaHandle)
+void
+TriggerAreaManager::remove(int32_t areaHandle)
 {
 	if (triggerAreas[areaHandle].param == TRIGGER_AREA_NONE)
 		return;
@@ -74,16 +84,21 @@ void TriggerAreaManager::remove(int32_t areaHandle)
 			if (map[r][c] == areaHandle)
 				map[r][c] = 0;
 	triggerAreas[areaHandle].type = TRIGGER_AREA_NONE;
-	triggerAreas[areaHandle].hit  = false;
+	triggerAreas[areaHandle].hit = false;
 }
 
 //---------------------------------------------------------------------------
 
-void TriggerAreaManager::reset(int32_t areaHandle) { triggerAreas[areaHandle].hit = false; }
+void
+TriggerAreaManager::reset(int32_t areaHandle)
+{
+	triggerAreas[areaHandle].hit = false;
+}
 
 //---------------------------------------------------------------------------
 
-bool TriggerAreaManager::isHit(int32_t areaHandle)
+bool
+TriggerAreaManager::isHit(int32_t areaHandle)
 {
 	if (triggerAreas[areaHandle].type == TRIGGER_AREA_NONE)
 		return (false);
@@ -91,9 +106,11 @@ bool TriggerAreaManager::isHit(int32_t areaHandle)
 }
 
 //---------------------------------------------------------------------------
-void DEBUGWINS_print(PSTR s, int32_t window);
+void
+DEBUGWINS_print(PSTR s, int32_t window);
 
-void TriggerAreaManager::setHit(MoverPtr mover)
+void
+TriggerAreaManager::setHit(MoverPtr mover)
 {
 #if 1
 	for (size_t i = 0; i < MAX_TRIGGER_AREAS; i++)

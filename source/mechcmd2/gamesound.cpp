@@ -24,28 +24,30 @@
 //---------------------------------------------------------------------------
 GameSoundSystem* soundSystem = nullptr;
 
-extern bool wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
+extern bool
+wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
 	puint8_t* lplpWaveSamples, uint32_t* lpcbWaveSize);
 
 bool friendlyDestroyed = false;
-bool enemyDestroyed	= false;
+bool enemyDestroyed = false;
 extern bool GeneralAlarm;
 
 #define ALARM_TIME 5.0f
 
 //---------------------------------------------------------------------------
-void GameSoundSystem::purgeSoundSystem(void)
+void
+GameSoundSystem::purgeSoundSystem(void)
 {
-	wholeMsgDone	= true;
-	currentMessage  = nullptr;
+	wholeMsgDone = true;
+	currentMessage = nullptr;
 	messagesInQueue = 0;
 	currentFragment = 0;
-	playingNoise	= false;
-	radioHandle		= nullptr;
+	playingNoise = false;
+	radioHandle = nullptr;
 	//------------------------------------------------------------
 	// dump the Radio Message Queue.
 	messagesInQueue = 0;
-	wholeMsgDone	= true;
+	wholeMsgDone = true;
 	int32_t i;
 	for (i = 0; i < MAX_QUEUED_MESSAGES; i++)
 		queue[i] = nullptr;
@@ -63,12 +65,12 @@ void GameSoundSystem::purgeSoundSystem(void)
 	delete Radio::radioHeap;
 	Radio::radioHeap = nullptr;
 	delete Radio::noiseFile;
-	Radio::noiseFile		 = nullptr;
-	Radio::currentRadio		 = 0;
-	Radio::radioListGo		 = FALSE;
+	Radio::noiseFile = nullptr;
+	Radio::currentRadio = 0;
+	Radio::radioListGo = FALSE;
 	Radio::messageInfoLoaded = FALSE;
 	isRaining = oldRaining = false;
-	largestSensorContact   = -1;
+	largestSensorContact = -1;
 	//-----------------------------------------------
 	// Check all samples to see if one should end.
 	for (i = 0; i < MAX_DIGITAL_SAMPLES; i++)
@@ -76,15 +78,16 @@ void GameSoundSystem::purgeSoundSystem(void)
 		if (i != BETTY_CHANNEL)
 		{
 			gosAudio_SetChannelPlayMode(i, gosAudio_Stop);
-			fadeDown[i]		   = FALSE;
+			fadeDown[i] = FALSE;
 			channelSampleId[i] = -1;
-			channelInUse[i]	= FALSE;
+			channelInUse[i] = FALSE;
 		}
 	}
 }
 
 //---------------------------------------------------------------------------
-void GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
+void
+GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 {
 	int32_t i;
 	if (msgNumber < 0 || msgNumber >= MAX_QUEUED_MESSAGES)
@@ -129,27 +132,27 @@ void GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 }
 
 //---------------------------------------------------------------------------
-bool GameSoundSystem::checkMessage(MechWarriorPtr pilot, byte priority, uint32_t messageType)
+bool
+GameSoundSystem::checkMessage(MechWarriorPtr pilot, byte priority, uint32_t messageType)
 {
 	for (size_t i = 0; i < MAX_QUEUED_MESSAGES; i++)
 	{
 		if (queue[i])
 			if ((queue[i]->pilot == pilot && priority > queue[i]->priority) || // I'm already saying
-																			   // something more
-																			   // important, or
-				(queue[i]->priority > 1 &&
-					queue[i]->msgType == messageType)) // someone else is saying this
+				// something more
+				// important, or
+				(queue[i]->priority > 1 && queue[i]->msgType == messageType)) // someone else is saying this
 				return FALSE;
 	}
 	return TRUE;
 }
 
 //---------------------------------------------------------------------------
-void GameSoundSystem::moveFromQueueToPlaying(void)
+void
+GameSoundSystem::moveFromQueueToPlaying(void)
 {
 	removeCurrentMessage();
-	while (queue[0] && queue[0]->pilot && !(queue[0]->pilot->active()) &&
-		(queue[0]->msgType != RADIO_DEATH) && (queue[0]->msgType != RADIO_EJECTING))
+	while (queue[0] && queue[0]->pilot && !(queue[0]->pilot->active()) && (queue[0]->msgType != RADIO_DEATH) && (queue[0]->msgType != RADIO_EJECTING))
 	{
 		removeQueuedMessage(0);
 	}
@@ -162,7 +165,8 @@ void GameSoundSystem::moveFromQueueToPlaying(void)
 }
 
 //---------------------------------------------------------------------------
-void GameSoundSystem::removeCurrentMessage(void)
+void
+GameSoundSystem::removeCurrentMessage(void)
 {
 	if (currentMessage)
 	{
@@ -184,7 +188,8 @@ void GameSoundSystem::removeCurrentMessage(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t GameSoundSystem::queueRadioMessage(RadioData* msgData)
+int32_t
+GameSoundSystem::queueRadioMessage(RadioData* msgData)
 {
 	int32_t i;
 	//-------------------------------------------------
@@ -196,8 +201,7 @@ int32_t GameSoundSystem::queueRadioMessage(RadioData* msgData)
 		{
 			if (queue[i])
 			{
-				if ((msgData->turnQueued == queue[i]->turnQueued) &&
-					(msgData->msgId == queue[i]->msgId))
+				if ((msgData->turnQueued == queue[i]->turnQueued) && (msgData->msgId == queue[i]->msgId))
 				{
 					removeQueuedMessage(i);
 				}
@@ -221,8 +225,8 @@ int32_t GameSoundSystem::queueRadioMessage(RadioData* msgData)
 		if (!queue[i])
 			break;
 		if (queue[i]->priority > msgData->priority) // if this messages priority
-													// higher (a lower number: 1
-													// is top priority)
+			// higher (a lower number: 1
+			// is top priority)
 		{
 			// push things down to make room.
 			for (size_t j = MAX_QUEUED_MESSAGES - 1; j > i; j--)
@@ -260,7 +264,8 @@ int32_t GameSoundSystem::queueRadioMessage(RadioData* msgData)
 }
 
 //---------------------------------------------------------------------------
-void GameSoundSystem::update(void)
+void
+GameSoundSystem::update(void)
 {
 	//---------------------------------------------
 	// Dynamic Music Code goes here!!!
@@ -272,13 +277,12 @@ void GameSoundSystem::update(void)
 		playDigitalSample(BUZZER1);
 		generalAlarmTimer += frameLength;
 	}
-	if (useSound && currentMessage &&
-		(gosAudio_GetChannelPlayMode(RADIO_CHANNEL) != gosAudio_PlayOnce))
+	if (useSound && currentMessage && (gosAudio_GetChannelPlayMode(RADIO_CHANNEL) != gosAudio_PlayOnce))
 	{
 		if (radioHandle)
 		{
 			gosAudio_DestroyResource(&radioHandle); // Toss the current radio
-													// data which just completed!
+				// data which just completed!
 			radioHandle = nullptr;
 		}
 		if (!wholeMsgDone)
@@ -294,20 +298,20 @@ void GameSoundSystem::update(void)
 					// Hand GOS sound the data it needs to create the resource
 					// Handle
 					gosAudio_Format soundFormat;
-					soundFormat.wFormatTag		 = 1; // PCM
+					soundFormat.wFormatTag = 1; // PCM
 					MC2_WAVEFORMATEX* waveFormat = nullptr;
-					puint8_t dataOffset			 = nullptr;
-					uint32_t length				 = 0;
-					uint32_t bitsPerSec			 = 0;
+					puint8_t dataOffset = nullptr;
+					uint32_t length = 0;
+					uint32_t bitsPerSec = 0;
 					wave_ParseWaveMemory(
 						currentMessage->data[currentFragment], &waveFormat, &dataOffset, &length);
-					bitsPerSec			  = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
+					bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
 					soundFormat.nChannels = waveFormat->nChannels;
-					soundFormat.nSamplesPerSec  = waveFormat->nSamplesPerSec;
+					soundFormat.nSamplesPerSec = waveFormat->nSamplesPerSec;
 					soundFormat.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
-					soundFormat.nBlockAlign		= waveFormat->nBlockAlign;
-					soundFormat.wBitsPerSample  = bitsPerSec;
-					soundFormat.cbSize			= 0;
+					soundFormat.nBlockAlign = waveFormat->nBlockAlign;
+					soundFormat.wBitsPerSample = bitsPerSec;
+					soundFormat.cbSize = 0;
 					gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
 						&soundFormat, dataOffset, length);
 					if (isChannelPlaying(BETTY_CHANNEL))
@@ -333,20 +337,20 @@ void GameSoundSystem::update(void)
 					// Hand GOS sound the data it needs to create the resource
 					// Handle
 					gosAudio_Format soundFormat;
-					soundFormat.wFormatTag		 = 1; // PCM
+					soundFormat.wFormatTag = 1; // PCM
 					MC2_WAVEFORMATEX* waveFormat = nullptr;
-					puint8_t dataOffset			 = nullptr;
-					uint32_t length				 = 0;
-					uint32_t bitsPerSec			 = 0;
+					puint8_t dataOffset = nullptr;
+					uint32_t length = 0;
+					uint32_t bitsPerSec = 0;
 					wave_ParseWaveMemory(
 						currentMessage->noise[currentFragment], &waveFormat, &dataOffset, &length);
-					bitsPerSec			  = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
+					bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
 					soundFormat.nChannels = waveFormat->nChannels;
-					soundFormat.nSamplesPerSec  = waveFormat->nSamplesPerSec;
+					soundFormat.nSamplesPerSec = waveFormat->nSamplesPerSec;
 					soundFormat.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
-					soundFormat.nBlockAlign		= waveFormat->nBlockAlign;
-					soundFormat.wBitsPerSample  = bitsPerSec;
-					soundFormat.cbSize			= 0;
+					soundFormat.nBlockAlign = waveFormat->nBlockAlign;
+					soundFormat.wBitsPerSample = bitsPerSec;
+					soundFormat.cbSize = 0;
 					gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
 						&soundFormat, dataOffset, length);
 					if (isChannelPlaying(BETTY_CHANNEL))
@@ -370,20 +374,20 @@ void GameSoundSystem::update(void)
 						// Hand GOS sound the data it needs to create the
 						// resource Handle
 						gosAudio_Format soundFormat;
-						soundFormat.wFormatTag		 = 1; // PCM
+						soundFormat.wFormatTag = 1; // PCM
 						MC2_WAVEFORMATEX* waveFormat = nullptr;
-						puint8_t dataOffset			 = nullptr;
-						uint32_t length				 = 0;
-						uint32_t bitsPerSec			 = 0;
+						puint8_t dataOffset = nullptr;
+						uint32_t length = 0;
+						uint32_t bitsPerSec = 0;
 						wave_ParseWaveMemory(currentMessage->data[currentFragment], &waveFormat,
 							&dataOffset, &length);
-						bitsPerSec			  = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
+						bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
 						soundFormat.nChannels = waveFormat->nChannels;
-						soundFormat.nSamplesPerSec  = waveFormat->nSamplesPerSec;
+						soundFormat.nSamplesPerSec = waveFormat->nSamplesPerSec;
 						soundFormat.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
-						soundFormat.nBlockAlign		= waveFormat->nBlockAlign;
-						soundFormat.wBitsPerSample  = bitsPerSec;
-						soundFormat.cbSize			= 0;
+						soundFormat.nBlockAlign = waveFormat->nBlockAlign;
+						soundFormat.wBitsPerSample = bitsPerSec;
+						soundFormat.cbSize = 0;
 						gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
 							&soundFormat, dataOffset, length);
 						if (isChannelPlaying(BETTY_CHANNEL))
@@ -423,7 +427,7 @@ void GameSoundSystem::update(void)
 		if (radioHandle)
 		{
 			gosAudio_DestroyResource(&radioHandle); // Toss the current radio
-													// data which just completed!
+				// data which just completed!
 			radioHandle = nullptr;
 		}
 		//-----------------------------------------------------
@@ -431,8 +435,8 @@ void GameSoundSystem::update(void)
 		currentFragment = 0;
 		moveFromQueueToPlaying();
 		if (!currentMessage && !messagesInQueue) // It is now possible for ALL
-												 // remaining messages to go away
-												 // because the pilot/mech died!
+			// remaining messages to go away
+			// because the pilot/mech died!
 			return;
 #ifndef VIEWER
 		if (currentMessage->movieCode)
@@ -445,20 +449,20 @@ void GameSoundSystem::update(void)
 			//--------------------------------------------------------------------
 			// Hand GOS sound the data it needs to create the resource Handle
 			gosAudio_Format soundFormat;
-			soundFormat.wFormatTag		 = 1; // PCM
+			soundFormat.wFormatTag = 1; // PCM
 			MC2_WAVEFORMATEX* waveFormat = nullptr;
-			puint8_t dataOffset			 = nullptr;
-			uint32_t length				 = 0;
-			uint32_t bitsPerSec			 = 0;
+			puint8_t dataOffset = nullptr;
+			uint32_t length = 0;
+			uint32_t bitsPerSec = 0;
 			wave_ParseWaveMemory(
 				currentMessage->noise[currentFragment], &waveFormat, &dataOffset, &length);
-			bitsPerSec					= waveFormat->nBlockAlign / waveFormat->nChannels * 8;
-			soundFormat.nChannels		= waveFormat->nChannels;
-			soundFormat.nSamplesPerSec  = waveFormat->nSamplesPerSec;
+			bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
+			soundFormat.nChannels = waveFormat->nChannels;
+			soundFormat.nSamplesPerSec = waveFormat->nSamplesPerSec;
 			soundFormat.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
-			soundFormat.nBlockAlign		= waveFormat->nBlockAlign;
-			soundFormat.wBitsPerSample  = bitsPerSec;
-			soundFormat.cbSize			= 0;
+			soundFormat.nBlockAlign = waveFormat->nBlockAlign;
+			soundFormat.wBitsPerSample = bitsPerSec;
+			soundFormat.cbSize = 0;
 			gosAudio_CreateResource(
 				&radioHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
 			if (isChannelPlaying(BETTY_CHANNEL))
@@ -482,20 +486,20 @@ void GameSoundSystem::update(void)
 				// Hand GOS sound the data it needs to create the resource
 				// Handle
 				gosAudio_Format soundFormat;
-				soundFormat.wFormatTag		 = 1; // PCM
+				soundFormat.wFormatTag = 1; // PCM
 				MC2_WAVEFORMATEX* waveFormat = nullptr;
-				puint8_t dataOffset			 = nullptr;
-				uint32_t length				 = 0;
-				uint32_t bitsPerSec			 = 0;
+				puint8_t dataOffset = nullptr;
+				uint32_t length = 0;
+				uint32_t bitsPerSec = 0;
 				wave_ParseWaveMemory(
 					currentMessage->data[currentFragment], &waveFormat, &dataOffset, &length);
-				bitsPerSec					= waveFormat->nBlockAlign / waveFormat->nChannels * 8;
-				soundFormat.nChannels		= waveFormat->nChannels;
-				soundFormat.nSamplesPerSec  = waveFormat->nSamplesPerSec;
+				bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
+				soundFormat.nChannels = waveFormat->nChannels;
+				soundFormat.nSamplesPerSec = waveFormat->nSamplesPerSec;
 				soundFormat.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
-				soundFormat.nBlockAlign		= waveFormat->nBlockAlign;
-				soundFormat.wBitsPerSample  = bitsPerSec;
-				soundFormat.cbSize			= 0;
+				soundFormat.nBlockAlign = waveFormat->nBlockAlign;
+				soundFormat.wBitsPerSample = bitsPerSec;
+				soundFormat.cbSize = 0;
 				gosAudio_CreateResource(
 					&radioHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
 				if (isChannelPlaying(BETTY_CHANNEL))

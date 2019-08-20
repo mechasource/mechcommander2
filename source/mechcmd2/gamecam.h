@@ -33,10 +33,10 @@ public:
 	virtual void init(void)
 	{
 		Camera::init(void);
-		targetObject		 = nullptr;
-		compass				 = nullptr;
+		targetObject = nullptr;
+		compass = nullptr;
 		lastShadowLightPitch = 0.0f;
-		uint32_t szData		 = sizeof(drawCompass);
+		uint32_t szData = sizeof(drawCompass);
 		gos_LoadDataFromRegistry("CompassStatus", &drawCompass, &szData);
 		// Check if data not in registry yet.  Goober!
 		if (!szData)
@@ -89,7 +89,7 @@ public:
 
 	virtual void allTight(void)
 	{
-		int32_t i		  = 0;
+		int32_t i = 0;
 		GameObjectPtr mvt = nullptr;
 		while (i < ObjectManager->getNumGoodMovers())
 		{

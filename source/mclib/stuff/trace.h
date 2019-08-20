@@ -41,7 +41,8 @@ struct TraceSample
 	void TestInstance() {}
 };
 
-template <class T> struct SnapshotOf : public TraceSample
+template <class T>
+struct SnapshotOf : public TraceSample
 {
 	T snapShot;
 };
@@ -78,10 +79,10 @@ protected:
 	void IncrementSampleCount(void);
 
 	virtual void DumpTraceStatus() = 0;
-	virtual void ResetTrace()	  = 0;
+	virtual void ResetTrace() = 0;
 
 #if defined(USE_TIME_ANALYSIS)
-	virtual void StartTiming()										= 0;
+	virtual void StartTiming() = 0;
 	virtual float CalculateUsage(int64_t when, int64_t sample_time) = 0;
 	virtual void PrintUsage(float usage);
 #endif
@@ -139,7 +140,8 @@ public:
 //########################    TraceOf    ################################
 //#######################################################################
 
-template <class T> class TraceOf : public Trace
+template <class T>
+class TraceOf : public Trace
 {
 protected:
 	int64_t weightedSum;
@@ -165,17 +167,19 @@ public:
 //
 template <class T>
 TraceOf<T>::TraceOf(
-	PCSTR name, const T& initial_value, Type trace_type, TraceSample::Type sample_type)
-	: Trace(name, trace_type)
+	PCSTR name, const T& initial_value, Type trace_type, TraceSample::Type sample_type) :
+	Trace(name, trace_type)
 {
 	currentValue = initial_value;
-	sampleType   = sample_type;
+	sampleType = sample_type;
 	TraceOf<T>::ResetTrace(void);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-template <class T> void TraceOf<T>::DumpTraceStatus()
+template <class T>
+void
+TraceOf<T>::DumpTraceStatus()
 {
 	// Check_Object(this);
 	Spew(GROUP_STUFF_TRACE, currentValue);
@@ -183,7 +187,9 @@ template <class T> void TraceOf<T>::DumpTraceStatus()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-template <class T> void TraceOf<T>::ResetTrace()
+template <class T>
+void
+TraceOf<T>::ResetTrace()
 {
 #if defined(USE_TIME_ANALYSIS)
 	weightedSum = 0.0;
@@ -194,7 +200,9 @@ template <class T> void TraceOf<T>::ResetTrace()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-template <class T> void TraceOf<T>::StartTiming()
+template <class T>
+void
+TraceOf<T>::StartTiming()
 {
 	// Check_Object(this);
 	weightedSum = 0.0;
@@ -202,18 +210,22 @@ template <class T> void TraceOf<T>::StartTiming()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-template <class T> float TraceOf<T>::CalculateUsage(int64_t when, int64_t sample_time)
+template <class T>
+float
+TraceOf<T>::CalculateUsage(int64_t when, int64_t sample_time)
 {
 	int64_t last_part = when - lastActivity;
 	weightedSum += last_part * currentValue;
 	float result = static_cast<float>(weightedSum / sample_time);
-	weightedSum  = 0.0;
+	weightedSum = 0.0;
 	return result;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-template <class T> void TraceOf<T>::PrintUsage(float usage)
+template <class T>
+void
+TraceOf<T>::PrintUsage(float usage)
 {
 	// Check_Object(this);
 	Spew(GROUP_STUFF_TRACE, usage);
@@ -223,7 +235,9 @@ template <class T> void TraceOf<T>::PrintUsage(float usage)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-template <class T> void TraceOf<T>::TakeSnapshot(const T& value)
+template <class T>
+void
+TraceOf<T>::TakeSnapshot(const T& value)
 {
 	// Check_Object(this);
 #if defined(USE_TIME_ANALYSIS) || defined(USE_TRACE_LOG)
@@ -242,11 +256,11 @@ template <class T> void TraceOf<T>::TakeSnapshot(const T& value)
 	{
 		Check_Object(log);
 		SnapshotOf<T>* sample = Cast_Pointer(SnapshotOf<T>*, log->GetPointer());
-		sample->sampleLength  = sizeof(*sample);
-		sample->sampleType	= (uint8_t)sampleType;
-		sample->traceNumber   = traceNumber;
-		sample->sampleTime	= now;
-		sample->snapShot	  = currentValue;
+		sample->sampleLength = sizeof(*sample);
+		sample->sampleType = (uint8_t)sampleType;
+		sample->traceNumber = traceNumber;
+		sample->sampleTime = now;
+		sample->snapShot = currentValue;
 		log->AdvancePointer(sample->sampleLength);
 	}
 #endif
@@ -320,17 +334,21 @@ public:
 	virtual bool IsLineValidImplementation(uint8_t line);
 #endif
 
-	void TestInstance(void) {}
+	void TestInstance(void)
+	{
+	}
 };
 
-inline std::iostream& Trace::GetTraceLog()
+inline std::iostream&
+Trace::GetTraceLog()
 {
 	// Check_Object(this);
 	Check_Object(TraceManager::Instance);
 	return TraceManager::Instance->activeTraceLog;
 }
 
-inline void Trace::IncrementSampleCount()
+inline void
+Trace::IncrementSampleCount()
 {
 	// Check_Object(this);
 	Check_Object(TraceManager::Instance);

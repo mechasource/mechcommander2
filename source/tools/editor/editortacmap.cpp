@@ -14,14 +14,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // EditorTacMap dialog
 
-EditorTacMap::EditorTacMap(CWnd* pParent /*=nullptr*/) : CDialog(EditorTacMap::IDD, pParent)
+EditorTacMap::EditorTacMap(CWnd* pParent /*=nullptr*/) :
+	CDialog(EditorTacMap::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(EditorTacMap)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
-void EditorTacMap::DoDataExchange(CDataExchange* pDX)
+void
+EditorTacMap::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(EditorTacMap)
@@ -39,7 +41,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // EditorTacMap message handlers
 
-BOOL EditorTacMap::OnInitDialog()
+BOOL
+EditorTacMap::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	int32_t borderSize = GetSystemMetrics(SM_CYSMCAPTION);
@@ -50,10 +53,11 @@ BOOL EditorTacMap::OnInitDialog()
 		(int32_t)TACMAP_SIZE + borderSize, /*SWP_NOMOVE | */ SWP_NOZORDER);
 	picture.SetWindowPos(nullptr, 0, 0, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, SWP_NOZORDER);
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void EditorTacMap::OnTga()
+void
+EditorTacMap::OnTga()
 {
 	POINT pt;
 	GetCursorPos(&pt);
@@ -73,9 +77,14 @@ void EditorTacMap::OnTga()
 	EditorInterface::instance()->SetFocus();
 }
 
-BOOL EditorTacMap::OnEraseBkgnd(CDC* pDC) { return 1; }
+BOOL
+EditorTacMap::OnEraseBkgnd(CDC* pDC)
+{
+	return 1;
+}
 
-void EditorTacMap::ReleaseFocus()
+void
+EditorTacMap::ReleaseFocus()
 {
 	if (EditorInterface::instance() && EditorInterface::instance()->m_hWnd)
 	{
@@ -90,11 +99,12 @@ void EditorTacMap::ReleaseFocus()
 	return;
 }
 
-LRESULT EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
+LRESULT
+EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	/* if the left mouse button is not down, then we don't want focus */
 	CWnd* pCWnd = GetFocus();
-	HWND hwnd   = ::GetFocus();
+	HWND hwnd = ::GetFocus();
 	int16_t val = GetAsyncKeyState(VK_LBUTTON);
 	if (/*(GetFocus() == this) &&*/ !(0x8000 && GetAsyncKeyState(VK_LBUTTON)))
 	{

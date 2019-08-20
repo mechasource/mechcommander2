@@ -13,19 +13,20 @@ extern SoundSystem* sndSystem;
 
 aButton::aButton()
 {
-	toggleButton	 = 0;
-	singlePress		 = 0;
+	toggleButton = 0;
+	singlePress = 0;
 	messageOnRelease = 0;
-	state			 = ENABLED;
+	state = ENABLED;
 	memset(&data, 0, sizeof(data));
-	clickSFX	   = LOG_CLICKONBUTTON;
-	highlightSFX   = LOG_HIGHLIGHTBUTTONS;
-	disabledSFX	= LOG_WRONGBUTTON;
+	clickSFX = LOG_CLICKONBUTTON;
+	highlightSFX = LOG_HIGHLIGHTBUTTONS;
+	disabledSFX = LOG_WRONGBUTTON;
 	data.textAlign = 2;
-	holdTime	   = .5f;
+	holdTime = .5f;
 }
 
-int32_t aButton::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
+int32_t
+aButton::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
 	int32_t err;
 	err = aObject::init(xPos, yPos, w, h);
@@ -34,25 +35,36 @@ int32_t aButton::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void aButton::destroy() { aObject::destroy(); }
+void
+aButton::destroy()
+{
+	aObject::destroy();
+}
 
-aButton& aButton::operator=(const aButton& src)
+aButton&
+aButton::operator=(const aButton& src)
 {
 	copyData(src);
 	aObject::operator=(src);
 	return *this;
 }
-aButton::aButton(const aButton& src) : aObject(src) { copyData(src); }
-void aButton::copyData(const aButton& src)
+aButton::aButton(const aButton& src) :
+	aObject(src)
+{
+	copyData(src);
+}
+void
+aButton::copyData(const aButton& src)
 {
 	if (&src != this)
 	{
-		data  = src.data;
+		data = src.data;
 		state = src.state;
 	}
 }
 
-void aButton::update()
+void
+aButton::update()
 {
 	if (!isShowing())
 		return;
@@ -62,8 +74,7 @@ void aButton::update()
 	{
 		int32_t mouseDragX = userInput->getMouseDragX();
 		int32_t mouseDragY = userInput->getMouseDragY();
-		if (messageOnRelease && userInput->leftMouseReleased() &&
-			pointInside(mouseDragX, mouseDragY))
+		if (messageOnRelease && userInput->leftMouseReleased() && pointInside(mouseDragX, mouseDragY))
 		{
 			press(false);
 			if (getParent())
@@ -76,16 +87,14 @@ void aButton::update()
 		if (userInput->isLeftClick())
 		{
 			press(true);
-			if (getParent() && !messageOnRelease &&
-				pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+			if (getParent() && !messageOnRelease && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 				getParent()->handleMessage(aMSG_LEFTMOUSEDOWN, data.ID);
 			if (state != DISABLED)
 				sndSystem->playDigitalSample(clickSFX);
 			else
 				sndSystem->playDigitalSample(disabledSFX);
 		}
-		else if (userInput->getMouseLeftHeld() > holdTime && !messageOnRelease &&
-			pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		else if (userInput->getMouseLeftHeld() > holdTime && !messageOnRelease && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 			handleMessage(aMSG_LEFTMOUSEHELD, data.ID);
 		else
 		{
@@ -100,12 +109,12 @@ void aButton::update()
 	aObject::update();
 }
 
-bool aButton::pointInside(int32_t xPos, int32_t yPos) const
+bool
+aButton::pointInside(int32_t xPos, int32_t yPos) const
 {
 	if (aObject::pointInside(xPos, yPos))
 		return true;
-	if (data.textRect.left <= xPos && data.textRect.right >= xPos && data.textRect.top <= yPos &&
-		data.textRect.bottom >= yPos)
+	if (data.textRect.left <= xPos && data.textRect.right >= xPos && data.textRect.top <= yPos && data.textRect.bottom >= yPos)
 	{
 		return true;
 	}
@@ -113,7 +122,8 @@ bool aButton::pointInside(int32_t xPos, int32_t yPos) const
 }
 
 /////////////////////////////////////////////////
-void aButton::render()
+void
+aButton::render()
 {
 	if (state != HIDDEN)
 	{
@@ -151,9 +161,9 @@ void aButton::render()
 		if (data.outline)
 		{
 			RECT tmp;
-			tmp.left   = location[0].x;
-			tmp.top	= location[0].y;
-			tmp.right  = location[2].x;
+			tmp.left = location[0].x;
+			tmp.top = location[0].y;
+			tmp.right = location[2].x;
 			tmp.bottom = location[2].y;
 			drawEmptyRect(tmp, location[0].argb, location[0].argb);
 		}
@@ -163,7 +173,8 @@ void aButton::render()
 		}
 	}
 }
-void aButton::press(bool bPress)
+void
+aButton::press(bool bPress)
 {
 	if (!isEnabled())
 		return;
@@ -173,13 +184,15 @@ void aButton::press(bool bPress)
 	makeUVs(location, state, data);
 }
 
-void aButton::makeAmbiguous(bool bAmbiguous)
+void
+aButton::makeAmbiguous(bool bAmbiguous)
 {
 	state = bAmbiguous ? AMBIGUOUS : ENABLED;
 	makeUVs(location, state, data);
 }
 
-void aButton::disable(bool bDisable)
+void
+aButton::disable(bool bDisable)
 {
 	if (!bDisable)
 	{
@@ -191,33 +204,44 @@ void aButton::disable(bool bDisable)
 	makeUVs(location, state, data);
 }
 
-void aButton::hide(bool bHide)
+void
+aButton::hide(bool bHide)
 {
 	state = bHide ? HIDDEN : ENABLED;
 	if (state != HIDDEN)
 		aButton::makeUVs(location, state, data);
 }
 
-bool aButton::isEnabled()
+bool
+aButton::isEnabled()
 {
 	return state == ENABLED || state == PRESSED || state == AMBIGUOUS || state == HIGHLIGHT;
 }
 
-int32_t aButton::getID() { return data.ID; }
+int32_t
+aButton::getID()
+{
+	return data.ID;
+}
 
-void aButton::setID(int32_t newID) { data.ID = newID; }
+void
+aButton::setID(int32_t newID)
+{
+	data.ID = newID;
+}
 
-void aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data)
+void
+aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data)
 {
 	float left = data.stateCoords[State][0];
-	float top  = data.stateCoords[State][1];
+	float top = data.stateCoords[State][1];
 	if (left == -1 || top == -1)
 	{
 		SPEW((0, "makeUVs given an Invalid state\n"));
 	}
-	float width  = data.textureWidth;
+	float width = data.textureWidth;
 	float height = data.textureHeight;
-	float right  = left + width;
+	float right = left + width;
 	float bottom = top + height;
 	if (data.fileWidth && data.fileHeight) // will crash if 0
 	{
@@ -256,9 +280,10 @@ void aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData&
 	}
 }
 
-void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
+void
+aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 {
-	textureHandle  = 0;
+	textureHandle = 0;
 	int32_t result = buttonFile.seekBlock(str);
 	if (result != NO_ERROR)
 	{
@@ -301,10 +326,10 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 	{
 		location[j].argb = 0xffffffff;
 		location[j].frgb = 0;
-		location[j].rhw  = .5;
-		location[j].u	= 0.f;
-		location[j].v	= 0.f;
-		location[j].z	= 0.f;
+		location[j].rhw = .5;
+		location[j].u = 0.f;
+		location[j].v = 0.f;
+		location[j].z = 0.f;
 	}
 	if (0 == textureHandle && data.fileName && strlen(data.fileName))
 	{
@@ -314,13 +339,13 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 		_strlwr(file);
 		if (!strstr(data.fileName, ".tga"))
 			strcat(file, ".tga");
-		int32_t ID	= mcTextureManager->loadTexture(file, gos_Texture_Alpha, 0, 0, 0x2);
+		int32_t ID = mcTextureManager->loadTexture(file, gos_Texture_Alpha, 0, 0, 0x2);
 		int32_t gosID = mcTextureManager->get_gosTextureHandle(ID);
 		TEXTUREPTR textureData;
 		gos_LockTexture(gosID, 0, 0, &textureData);
 		gos_UnLockTexture(gosID);
-		textureHandle   = ID;
-		data.fileWidth  = textureData.Width;
+		textureHandle = ID;
+		data.fileWidth = textureData.Width;
 		data.fileHeight = data.fileWidth;
 	}
 	if (NO_ERROR != buttonFile.readIdLong("UNormal", data.stateCoords[0][0]))
@@ -356,15 +381,15 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 		buttonFile.readIdLong("YTextLocation", data.textRect.top);
 		buttonFile.readIdLong("TextWidth", width);
 		buttonFile.readIdLong("TextHeight", height);
-		data.textRect.right  = data.textRect.left + width;
+		data.textRect.right = data.textRect.left + width;
 		data.textRect.bottom = data.textRect.top + height;
 		buttonFile.readIdBoolean("TextOutline", data.outlineText);
 	}
 	else
 	{
-		data.textRect.left   = x;
-		data.textRect.right  = x + width;
-		data.textRect.top	= y;
+		data.textRect.left = x;
+		data.textRect.right = x + width;
+		data.textRect.top = y;
 		data.textRect.bottom = y + height;
 	}
 	char bmpName[256];
@@ -391,34 +416,41 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 
 aAnimButton::aAnimButton()
 {
-	animateText		 = 1;
-	animateBmp		 = 1;
+	animateText = 1;
+	animateBmp = 1;
 	bAnimateChildren = 1;
 }
 
-aAnimButton& aAnimButton::operator=(const aAnimButton& src)
+aAnimButton&
+aAnimButton::operator=(const aAnimButton& src)
 {
 	copyData(src);
 	aButton::operator=(src);
 	return *this;
 }
-aAnimButton::aAnimButton(const aAnimButton& src) : aButton(src) { copyData(src); }
+aAnimButton::aAnimButton(const aAnimButton& src) :
+	aButton(src)
+{
+	copyData(src);
+}
 
-void aAnimButton::copyData(const aAnimButton& src)
+void
+aAnimButton::copyData(const aAnimButton& src)
 {
 	if (&src != this)
 	{
-		animateBmp		 = src.animateBmp;
-		animateText		 = src.animateText;
-		highlightData	= src.highlightData;
-		disabledData	 = src.disabledData;
-		pressedData		 = src.pressedData;
-		normalData		 = src.normalData;
-		toggleButton	 = src.toggleButton;
+		animateBmp = src.animateBmp;
+		animateText = src.animateText;
+		highlightData = src.highlightData;
+		disabledData = src.disabledData;
+		pressedData = src.pressedData;
+		normalData = src.normalData;
+		toggleButton = src.toggleButton;
 		bAnimateChildren = src.bAnimateChildren;
 	}
 }
-void aAnimButton::destroy()
+void
+aAnimButton::destroy()
 {
 	normalData.destroy();
 	highlightData.destroy();
@@ -427,14 +459,15 @@ void aAnimButton::destroy()
 	aButton::destroy();
 }
 
-void aAnimButton::init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font)
+void
+aAnimButton::init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font)
 {
 	if (NO_ERROR != file.seekBlock(headerName))
 	{
 		char errorStr[256];
 		sprintf(errorStr, "couldn't find block %s in file %s", headerName, file.getFilename());
 		Assert(0, 0, errorStr);
-		animateBmp  = 0;
+		animateBmp = 0;
 		animateText = 0;
 		return;
 	}
@@ -455,21 +488,22 @@ void aAnimButton::init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font)
 	}
 }
 
-void aAnimButton::update()
+void
+aAnimButton::update()
 {
 	if (!isShowing())
 		return;
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
-	bool bInside   = pointInside(mouseX, mouseY);
+	bool bInside = pointInside(mouseX, mouseY);
 	if (bInside && state == DISABLED)
 	{
-		::helpTextID	   = this->helpID;
+		::helpTextID = this->helpID;
 		::helpTextHeaderID = this->helpHeader;
 	}
 	if (bInside && state != DISABLED && state != HIDDEN)
 	{
-		::helpTextID	   = this->helpID;
+		::helpTextID = this->helpID;
 		::helpTextHeaderID = this->helpHeader;
 		if (userInput->isLeftClick())
 		{
@@ -495,12 +529,10 @@ void aAnimButton::update()
 				highlightData.end();
 				sndSystem->playDigitalSample(clickSFX);
 			}
-			if (getParent() && !messageOnRelease &&
-				pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+			if (getParent() && !messageOnRelease && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 				getParent()->handleMessage(aMSG_LEFTMOUSEDOWN, data.ID);
 		}
-		else if (userInput->getMouseLeftHeld() > holdTime && getParent() && !messageOnRelease &&
-			pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		else if (userInput->getMouseLeftHeld() > holdTime && getParent() && !messageOnRelease && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 			getParent()->handleMessage(aMSG_LEFTMOUSEHELD, data.ID);
 		else if (userInput->leftMouseReleased() && getParent() && messageOnRelease)
 		{
@@ -527,8 +559,7 @@ void aAnimButton::update()
 	else if (state == PRESSED)
 	{
 		// if clicked inside and release outside
-		if (userInput->leftMouseReleased() && (messageOnRelease || singlePress) &&
-			pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		if (userInput->leftMouseReleased() && (messageOnRelease || singlePress) && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 		{
 			state = ENABLED;
 		}
@@ -568,7 +599,8 @@ void aAnimButton::update()
 	pressedData.update();
 	normalData.update();
 }
-void aAnimButton::render()
+void
+aAnimButton::render()
 {
 	if (!isShowing())
 		return;
@@ -590,7 +622,8 @@ void aAnimButton::render()
 	}
 }
 
-void aAnimButton::update(const aAnimation& animData)
+void
+aAnimButton::update(const aAnimation& animData)
 {
 	if (!isShowing())
 		return;
@@ -611,16 +644,16 @@ void aAnimButton::update(const aAnimation& animData)
 	float fScaleY = animData.getScaleX();
 	if (fXcaleX != 1.0 && fScaleY != 1.0)
 	{
-		float oldWidth  = width();
+		float oldWidth = width();
 		float oldHeight = height();
-		float oldLeft   = globalX();
-		float oldTop	= globalY();
-		float scaleX	= .5 * fXcaleX * width();
-		float scaleY	= .5 * fScaleY * height();
-		float midX		= globalX() + .5 * width();
-		float midY		= globalY() + .5 * height();
-		float newLeft   = midX - scaleX;
-		float newTop	= midY - scaleY;
+		float oldLeft = globalX();
+		float oldTop = globalY();
+		float scaleX = .5 * fXcaleX * width();
+		float scaleY = .5 * fScaleY * height();
+		float midX = globalX() + .5 * width();
+		float midY = globalY() + .5 * height();
+		float newLeft = midX - scaleX;
+		float newTop = midY - scaleY;
 		moveToNoRecurse(newLeft, newTop);
 		resize(width() * scaleX, height() * scaleY);
 		aButton::render();
@@ -631,7 +664,8 @@ void aAnimButton::update(const aAnimation& animData)
 		aButton::render();
 }
 
-void aButton::move(float offsetX, float offsetY)
+void
+aButton::move(float offsetX, float offsetY)
 {
 	aObject::move(offsetX, offsetY);
 	data.textRect.left += offsetX;
@@ -640,7 +674,8 @@ void aButton::move(float offsetX, float offsetY)
 	data.textRect.bottom += offsetY;
 }
 
-void aAnimButton::setAnimationInfo(
+void
+aAnimButton::setAnimationInfo(
 	aAnimation* normal, aAnimation* highlight, aAnimation* pressed, aAnimation* disabled)
 {
 	if (normal)

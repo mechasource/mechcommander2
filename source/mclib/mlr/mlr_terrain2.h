@@ -56,7 +56,7 @@ public:
 	void SetDepthData(uint8_t md, uint8_t mad)
 	{
 		// Check_Object(this);
-		maxDepth	= md;
+		maxDepth = md;
 		maxAllDepth = mad;
 	}
 

@@ -14,18 +14,20 @@
 //---------------------------------------------------------------------------------
 // weapon FX Equivalancy.  Stores names now for GOS FX
 WeaponEffects* weaponEffects = nullptr;
-char mc2_word_none[5]		 = "NONE";
+char mc2_word_none[5] = "NONE";
 
 //---------------------------------------------------------------------------------
-void WeaponEffects::destroy(void)
+void
+WeaponEffects::destroy(void)
 {
 	systemHeap->Free(effects);
-	effects	= nullptr;
+	effects = nullptr;
 	numEffects = 0;
 }
 
 //---------------------------------------------------------------------------------
-void WeaponEffects::init(PSTR effectCSVFileName)
+void
+WeaponEffects::init(PSTR effectCSVFileName)
 {
 	FullPathFileName effectsName;
 	effectsName.init(objectPath, effectCSVFileName, ".csv");
@@ -34,7 +36,7 @@ void WeaponEffects::init(PSTR effectCSVFileName)
 	if (result != NO_ERROR)
 		STOP(("Unable to open Effects File %s", effectsName));
 	numEffects = effectFile.getNumLines() - 1; // Always subtract one for the column headers
-	effects	= (EffectData*)systemHeap->Malloc(sizeof(EffectData) * numEffects);
+	effects = (EffectData*)systemHeap->Malloc(sizeof(EffectData) * numEffects);
 	gosASSERT(effects != nullptr);
 	for (size_t i = 0; i < numEffects; i++)
 	{

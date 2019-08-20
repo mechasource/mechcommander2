@@ -81,14 +81,15 @@ extern float MechClassWeights[NUM_MECH_CLASSES];
 extern PSTR ExceptionGameMsg;
 char ChunkDebugMsg[5120];
 
-uint32_t GameObject::spanMask		= 0;
+uint32_t GameObject::spanMask = 0;
 float GameObject::blockCaptureRange = 0.0;
-bool GameObject::initialize			= false;
+bool GameObject::initialize = false;
 
 extern float maxVisualRange;
 extern int32_t visualRangeTable[];
 
-float applyDifficultyWeapon(float dmg, bool isPlayer);
+float
+applyDifficultyWeapon(float dmg, bool isPlayer);
 
 //***************************************************************************
 // WEAPONFIRECHUNK class
@@ -132,14 +133,15 @@ float applyDifficultyWeapon(float dmg, bool isPlayer);
 
 //---------------------------------------------------------------------------
 
-void WeaponShotInfo::init(GameObjectWatchID _attackerWID, int32_t _masterId, float _damage,
+void
+WeaponShotInfo::init(GameObjectWatchID _attackerWID, int32_t _masterId, float _damage,
 	int32_t _hitLocation, float _entryAngle)
 {
 	attackerWID = _attackerWID;
-	masterId	= _masterId;
-	damage		= _damage;
+	masterId = _masterId;
+	damage = _damage;
 	hitLocation = _hitLocation;
-	entryAngle  = _entryAngle;
+	entryAngle = _entryAngle;
 	if (!MPlayer && _attackerWID) // No Multiplayer skill levels
 	{
 		//---------------------------------------------------
@@ -148,10 +150,10 @@ void WeaponShotInfo::init(GameObjectWatchID _attackerWID, int32_t _masterId, flo
 		if (_attacker)
 		{
 			ObjectClass objClass = _attacker->getObjectClass();
-			int32_t commanderId  = _attacker->getCommanderId();
-			bool isPlayer		 = commanderId == Commander::home->getId();
+			int32_t commanderId = _attacker->getCommanderId();
+			bool isPlayer = commanderId == Commander::home->getId();
 			if (!isPlayer) // Only enemy Mechs, vehicles, elementals and turrets
-						   // get modified
+				// get modified
 			{
 				if ((objClass == BATTLEMECH) || (objClass == GROUNDVEHICLE) || (objClass == TURRET))
 				{
@@ -182,7 +184,8 @@ void WeaponShotInfo::init(GameObjectWatchID _attackerWID, int32_t _masterId, flo
 
 //---------------------------------------------------------------------------
 
-void WeaponShotInfo::setDamage(float _damage)
+void
+WeaponShotInfo::setDamage(float _damage)
 {
 	damage = _damage;
 	if (MPlayer && MPlayer->isServer())
@@ -191,7 +194,8 @@ void WeaponShotInfo::setDamage(float _damage)
 
 //---------------------------------------------------------------------------
 
-void WeaponShotInfo::setEntryAngle(float _entryAngle)
+void
+WeaponShotInfo::setEntryAngle(float _entryAngle)
 {
 	entryAngle = _entryAngle;
 	if (MPlayer && MPlayer->isServer())
@@ -209,7 +213,8 @@ void WeaponShotInfo::setEntryAngle(float _entryAngle)
 
 //---------------------------------------------------------------------------
 
-PVOID WeaponFireChunk::operator new(size_t ourSize)
+PVOID
+WeaponFireChunk::operator new(size_t ourSize)
 {
 	PVOID result;
 	result = systemHeap->Malloc(ourSize);
@@ -218,11 +223,16 @@ PVOID WeaponFireChunk::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void WeaponFireChunk::operator delete(PVOID us) { systemHeap->Free(us); }
+void
+WeaponFireChunk::operator delete(PVOID us)
+{
+	systemHeap->Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void DebugWeaponFireChunk(
+void
+DebugWeaponFireChunk(
 	WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker)
 {
 	ChunkDebugMsg[0] = nullptr;
@@ -258,11 +268,8 @@ void DebugWeaponFireChunk(
 			target = ObjectManager->findByPartId(chunk1->targetId);
 		else if (chunk1->targetType == WEAPONFIRECHUNK_TARGET_LOCATION)
 		{
-			targetPoint.x = (float)chunk1->targetCell[1] * Terrain::worldUnitsPerCell +
-				Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-			targetPoint.y = (Terrain::worldUnitsMapSide / 2) -
-				((float)chunk1->targetCell[0] * Terrain::worldUnitsPerCell) -
-				Terrain::worldUnitsPerCell / 2;
+			targetPoint.x = (float)chunk1->targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk1->targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 			targetPoint.z = (float)land->getTerrainElevation(targetPoint);
 			isTargetPoint = true;
 		}
@@ -328,11 +335,8 @@ void DebugWeaponFireChunk(
 			target = ObjectManager->findByPartId(chunk2->targetId);
 		else if (chunk2->targetType == WEAPONFIRECHUNK_TARGET_LOCATION)
 		{
-			targetPoint.x = (float)chunk2->targetCell[1] * Terrain::worldUnitsPerCell +
-				Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-			targetPoint.y = (Terrain::worldUnitsMapSide / 2) -
-				((float)chunk2->targetCell[0] * Terrain::worldUnitsPerCell) -
-				Terrain::worldUnitsPerCell / 2;
+			targetPoint.x = (float)chunk2->targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk2->targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 			targetPoint.z = (float)land->getTerrainElevation(targetPoint);
 			isTargetPoint = true;
 		}
@@ -388,7 +392,7 @@ void DebugWeaponFireChunk(
 	debugFile->writeString(ChunkDebugMsg);
 	debugFile->close();
 	delete debugFile;
-	debugFile		 = nullptr;
+	debugFile = nullptr;
 	ExceptionGameMsg = ChunkDebugMsg;
 }
 
@@ -398,7 +402,7 @@ void DebugWeaponFireChunk(
 #define LOGWEAPONFIRECHUNKS
 #define WEAPONFIRELOG_SIZE 256
 
-int32_t NumWeaponFiresInLog		 = 0;
+int32_t NumWeaponFiresInLog = 0;
 int32_t NumWeaponFiresInLogQueue = 0;
 GameObjectPtr WeaponFireAttackerLog[WEAPONFIRELOG_SIZE];
 GameObjectPtr WeaponFireTargetLog[WEAPONFIRELOG_SIZE];
@@ -409,15 +413,16 @@ File* WeaponFireLog = nullptr;
 //---------------------------------------------------------------------------
 
 #ifdef LOGWEAPONFIRECHUNKS
-void DumpWeaponFireLog(void)
+void
+DumpWeaponFireLog(void)
 {
 	//----------------
 	// Dump to file...
 	for (size_t i = 0; i < NumWeaponFiresInLogQueue; i++)
 	{
 		GameObjectPtr attacker = WeaponFireAttackerLog[i];
-		GameObjectPtr target   = WeaponFireTargetLog[i];
-		uint32_t data		   = WeaponFireDataLog[i];
+		GameObjectPtr target = WeaponFireTargetLog[i];
+		uint32_t data = WeaponFireDataLog[i];
 		WeaponFireChunk chunk;
 		chunk.init();
 		chunk.data = data;
@@ -449,7 +454,8 @@ void DumpWeaponFireLog(void)
 
 //---------------------------------------------------------------------------
 
-void CloseWeaponFireLog(void)
+void
+CloseWeaponFireLog(void)
 {
 	if (WeaponFireLog)
 	{
@@ -459,8 +465,8 @@ void CloseWeaponFireLog(void)
 		WeaponFireLog->writeString(s);
 		WeaponFireLog->close();
 		delete WeaponFireLog;
-		WeaponFireLog			 = nullptr;
-		NumWeaponFiresInLog		 = 0;
+		WeaponFireLog = nullptr;
+		NumWeaponFiresInLog = 0;
 		NumWeaponFiresInLogQueue = 0;
 	}
 }
@@ -468,14 +474,15 @@ void CloseWeaponFireLog(void)
 
 //---------------------------------------------------------------------------
 
-void OpenWeaponFireLog(void)
+void
+OpenWeaponFireLog(void)
 {
 #ifdef LOGWEAPONFIRECHUNKS
 	if (WeaponFireLog)
 		CloseWeaponFireLog();
-	NumWeaponFiresInLog		 = 0;
+	NumWeaponFiresInLog = 0;
 	NumWeaponFiresInLogQueue = 0;
-	WeaponFireLog			 = new File;
+	WeaponFireLog = new File;
 	if (!WeaponFireLog)
 		Fatal(0, " unable to malloc WeaponFireLog ");
 	if (WeaponFireLog->create("wf.log") != NO_ERROR)
@@ -485,7 +492,8 @@ void OpenWeaponFireLog(void)
 
 //---------------------------------------------------------------------------
 
-void LogWeaponFireChunk(WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameObjectPtr target)
+void
+LogWeaponFireChunk(WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameObjectPtr target)
 {
 #ifdef LOGWEAPONFIRECHUNKS
 	if (!WeaponFireLog)
@@ -493,8 +501,8 @@ void LogWeaponFireChunk(WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameOb
 	if (NumWeaponFiresInLogQueue == WEAPONFIRELOG_SIZE)
 		DumpWeaponFireLog();
 	WeaponFireAttackerLog[NumWeaponFiresInLogQueue] = attacker;
-	WeaponFireTargetLog[NumWeaponFiresInLogQueue]   = target;
-	WeaponFireDataLog[NumWeaponFiresInLogQueue]		= chunk->data;
+	WeaponFireTargetLog[NumWeaponFiresInLogQueue] = target;
+	WeaponFireDataLog[NumWeaponFiresInLogQueue] = chunk->data;
 	NumWeaponFiresInLog++;
 	NumWeaponFiresInLogQueue++;
 #endif
@@ -502,13 +510,14 @@ void LogWeaponFireChunk(WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameOb
 
 //---------------------------------------------------------------------------
 
-void WeaponFireChunk::buildMoverTarget(GameObjectPtr target, int32_t _weaponIndex, bool _hit,
+void
+WeaponFireChunk::buildMoverTarget(GameObjectPtr target, int32_t _weaponIndex, bool _hit,
 	float _entryAngle, int32_t _numMissiles, int32_t _hitLocation)
 {
-	targetType  = WEAPONFIRECHUNK_TARGET_MOVER;
-	targetId	= ((MoverPtr)target)->getNetRosterIndex();
+	targetType = WEAPONFIRECHUNK_TARGET_MOVER;
+	targetId = ((MoverPtr)target)->getNetRosterIndex();
 	weaponIndex = _weaponIndex;
-	hit			= _hit;
+	hit = _hit;
 	if ((_entryAngle >= -45.0) && (_entryAngle <= 45.0))
 		entryAngle = 0; // MECH_HIT_ARC_FRONT;
 	else if ((_entryAngle > -135.0) && (_entryAngle < -45.0))
@@ -532,14 +541,15 @@ void WeaponFireChunk::buildMoverTarget(GameObjectPtr target, int32_t _weaponInde
 
 //---------------------------------------------------------------------------
 
-void WeaponFireChunk::buildTerrainTarget(
+void
+WeaponFireChunk::buildTerrainTarget(
 	GameObjectPtr target, int32_t _weaponIndex, bool _hit, int32_t _numMissiles)
 {
 	targetType = WEAPONFIRECHUNK_TARGET_TERRAIN;
-	targetId   = target->getPartId();
+	targetId = target->getPartId();
 	// target->getCellPosition(targetCell[0], targetCell[1]);
 	weaponIndex = _weaponIndex;
-	hit			= _hit;
+	hit = _hit;
 	numMissiles = _numMissiles;
 	Assert(target->getPartId() != -1, target->getObjectClass(),
 		" WeaponFireChunk.buildTerrainTarget: -1 partId ");
@@ -548,15 +558,16 @@ void WeaponFireChunk::buildTerrainTarget(
 
 //---------------------------------------------------------------------------
 
-void WeaponFireChunk::buildCameraDroneTarget(
+void
+WeaponFireChunk::buildCameraDroneTarget(
 	GameObjectPtr target, int32_t _weaponIndex, bool _hit, float _entryAngle, int32_t _numMissiles)
 {
-	targetType	= WEAPONFIRECHUNK_TARGET_SPECIAL;
-	targetId	  = target->getPartId();
+	targetType = WEAPONFIRECHUNK_TARGET_SPECIAL;
+	targetId = target->getPartId();
 	targetCell[0] = 128;
 	targetCell[1] = targetId - MIN_CAMERA_DRONE_ID;
-	weaponIndex   = _weaponIndex;
-	hit			  = _hit;
+	weaponIndex = _weaponIndex;
+	hit = _hit;
 	if ((_entryAngle >= -45.0) && (_entryAngle <= 45.0))
 		entryAngle = 0; // MECH_HIT_ARC_FRONT;
 	else if ((_entryAngle > -135.0) && (_entryAngle < -45.0))
@@ -566,20 +577,21 @@ void WeaponFireChunk::buildCameraDroneTarget(
 	else
 		entryAngle = 1; // MECH_HIT_ARC_REAR;
 	numMissiles = _numMissiles;
-	data		= 0;
+	data = 0;
 }
 
 //---------------------------------------------------------------------------
 
-void WeaponFireChunk::buildLocationTarget(
+void
+WeaponFireChunk::buildLocationTarget(
 	Stuff::Vector3D location, int32_t _weaponIndex, bool _hit, int32_t _numMissiles)
 {
 	targetType = WEAPONFIRECHUNK_TARGET_LOCATION;
 	land->worldToCell(location, targetCell[0], targetCell[1]);
 	weaponIndex = _weaponIndex;
-	hit			= _hit;
+	hit = _hit;
 	numMissiles = _numMissiles;
-	data		= 0;
+	data = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -588,7 +600,8 @@ void WeaponFireChunk::buildLocationTarget(
 #define DEBUG_WEAPONFIRECHUNK
 #endif
 
-void WeaponFireChunk::pack(GameObjectPtr attacker)
+void
+WeaponFireChunk::pack(GameObjectPtr attacker)
 {
 	data = 0;
 	switch (targetType)
@@ -716,10 +729,11 @@ void WeaponFireChunk::pack(GameObjectPtr attacker)
 
 //---------------------------------------------------------------------------
 
-void WeaponFireChunk::unpack(GameObjectPtr attacker)
+void
+WeaponFireChunk::unpack(GameObjectPtr attacker)
 {
 	uint32_t tempData = data;
-	targetType		  = (tempData & WEAPONFIRECHUNK_TARGETTYPE_MASK);
+	targetType = (tempData & WEAPONFIRECHUNK_TARGETTYPE_MASK);
 	tempData >>= WEAPONFIRECHUNK_TARGETTYPE_BITS;
 	weaponIndex = (tempData & WEAPONFIRECHUNK_WEAPON_MASK);
 	tempData >>= WEAPONFIRECHUNK_WEAPON_BITS;
@@ -729,7 +743,7 @@ void WeaponFireChunk::unpack(GameObjectPtr attacker)
 	if (attacker->isMover())
 	{
 		int32_t itemIndex = ((MoverPtr)attacker)->numOther + weaponIndex;
-		isMissileWeapon   = ((MoverPtr)attacker)->isWeaponMissile(itemIndex);
+		isMissileWeapon = ((MoverPtr)attacker)->isWeaponMissile(itemIndex);
 	}
 	else if (attacker->getObjectClass() == TURRET)
 	{
@@ -923,7 +937,8 @@ void WeaponFireChunk::unpack(GameObjectPtr attacker)
 
 //---------------------------------------------------------------------------
 
-bool WeaponFireChunk::equalTo(WeaponFireChunkPtr chunk)
+bool
+WeaponFireChunk::equalTo(WeaponFireChunkPtr chunk)
 {
 	if (targetType != chunk->targetType)
 	{
@@ -987,7 +1002,8 @@ bool WeaponFireChunk::equalTo(WeaponFireChunkPtr chunk)
 // WEAPONHITCHUNK class
 //***************************************************************************
 
-void DebugWeaponHitChunk(WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2)
+void
+DebugWeaponHitChunk(WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2)
 {
 	ChunkDebugMsg[0] = nullptr;
 	char outString[512];
@@ -995,7 +1011,7 @@ void DebugWeaponHitChunk(WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2)
 	{
 		strcat(ChunkDebugMsg, "\nCHUNK1\n");
 		GameObjectPtr target = nullptr;
-		bool isTargetPoint   = false;
+		bool isTargetPoint = false;
 		if (chunk1->targetType == WEAPONHITCHUNK_TARGET_MOVER)
 			target = (GameObjectPtr)MPlayer->moverRoster[chunk1->targetId];
 		else if (chunk1->targetType == WEAPONHITCHUNK_TARGET_TERRAIN)
@@ -1045,7 +1061,7 @@ void DebugWeaponHitChunk(WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2)
 	{
 		strcat(ChunkDebugMsg, "\nCHUNK2\n");
 		GameObjectPtr target = nullptr;
-		bool isTargetPoint   = false;
+		bool isTargetPoint = false;
 		if (chunk2->targetType == WEAPONHITCHUNK_TARGET_MOVER)
 			target = (GameObjectPtr)MPlayer->moverRoster[chunk2->targetId];
 		else if (chunk2->targetType == WEAPONHITCHUNK_TARGET_TERRAIN)
@@ -1096,13 +1112,14 @@ void DebugWeaponHitChunk(WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2)
 	debugFile->writeString(ChunkDebugMsg);
 	debugFile->close();
 	delete debugFile;
-	debugFile		 = nullptr;
+	debugFile = nullptr;
 	ExceptionGameMsg = ChunkDebugMsg;
 }
 
 //---------------------------------------------------------------------------
 
-PVOID WeaponHitChunk::operator new(size_t ourSize)
+PVOID
+WeaponHitChunk::operator new(size_t ourSize)
 {
 	PVOID result = systemHeap->Malloc(ourSize);
 	return (result);
@@ -1110,15 +1127,20 @@ PVOID WeaponHitChunk::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void WeaponHitChunk::operator delete(PVOID us) { systemHeap->Free(us); }
+void
+WeaponHitChunk::operator delete(PVOID us)
+{
+	systemHeap->Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void WeaponHitChunk::buildMoverTarget(GameObjectPtr target, int32_t _cause, float _damage,
+void
+WeaponHitChunk::buildMoverTarget(GameObjectPtr target, int32_t _cause, float _damage,
 	int32_t _hitLocation, float _entryAngle, bool isRefit)
 {
 	targetType = WEAPONHITCHUNK_TARGET_MOVER;
-	targetId   = ((MoverPtr)target)->getNetRosterIndex();
+	targetId = ((MoverPtr)target)->getNetRosterIndex();
 	// Assert((targetId > -1) && (targetId < MPlayer->numMovers), targetId, "
 	// WeaponHitChunk.buildMoverTarget: bad targetId ");
 	cause = _cause;
@@ -1138,28 +1160,30 @@ void WeaponHitChunk::buildMoverTarget(GameObjectPtr target, int32_t _cause, floa
 	else
 		entryAngle = 1; // MECH_HIT_ARC_REAR;
 	refit = isRefit;
-	data  = 0;
+	data = 0;
 }
 
 //---------------------------------------------------------------------------
 
-void WeaponHitChunk::buildTerrainTarget(GameObjectPtr target, float _damage)
+void
+WeaponHitChunk::buildTerrainTarget(GameObjectPtr target, float _damage)
 {
 	targetType = WEAPONHITCHUNK_TARGET_TERRAIN;
-	targetId   = target->getPartId();
-	damage	 = _damage;
-	data	   = 0;
+	targetId = target->getPartId();
+	damage = _damage;
+	data = 0;
 }
 
 //---------------------------------------------------------------------------
 
-void WeaponHitChunk::buildCameraDroneTarget(GameObjectPtr target, float _damage, float _entryAngle)
+void
+WeaponHitChunk::buildCameraDroneTarget(GameObjectPtr target, float _damage, float _entryAngle)
 {
-	targetType  = WEAPONHITCHUNK_TARGET_SPECIAL;
-	targetId	= target->getPartId();
+	targetType = WEAPONHITCHUNK_TARGET_SPECIAL;
+	targetId = target->getPartId();
 	specialType = WEAPONFIRECHUNK_SPECIAL_CAMERADRONE;
-	specialId   = targetId - MIN_CAMERA_DRONE_ID;
-	damage		= _damage;
+	specialId = targetId - MIN_CAMERA_DRONE_ID;
+	damage = _damage;
 	// Assert((damage >= ) && (damage < 1024), damage, "
 	// WeaponHitChunk.buildMoverTarget: bad damage ");
 	if ((_entryAngle >= -45.0) && (_entryAngle <= 45.0))
@@ -1175,7 +1199,8 @@ void WeaponHitChunk::buildCameraDroneTarget(GameObjectPtr target, float _damage,
 
 //---------------------------------------------------------------------------
 
-void WeaponHitChunk::build(GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit)
+void
+WeaponHitChunk::build(GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit)
 {
 	if (!target)
 		Fatal(0, " WeaponHitChunk.build: nullptr target ");
@@ -1221,7 +1246,8 @@ void WeaponHitChunk::build(GameObjectPtr target, WeaponShotInfoPtr shotInfo, boo
 
 //---------------------------------------------------------------------------
 
-void WeaponHitChunk::pack(void)
+void
+WeaponHitChunk::pack(void)
 {
 	data = 0;
 	switch (targetType)
@@ -1266,10 +1292,11 @@ void WeaponHitChunk::pack(void)
 
 //---------------------------------------------------------------------------
 
-void WeaponHitChunk::unpack(void)
+void
+WeaponHitChunk::unpack(void)
 {
 	uint32_t tempData = data;
-	targetType		  = (tempData & WEAPONHITCHUNK_TARGETTYPE_MASK);
+	targetType = (tempData & WEAPONHITCHUNK_TARGETTYPE_MASK);
 	tempData >>= WEAPONHITCHUNK_TARGETTYPE_BITS;
 	damage = (float)(tempData & WEAPONHITCHUNK_DAMAGE_MASK) * 0.25;
 	tempData >>= WEAPONHITCHUNK_DAMAGE_BITS;
@@ -1327,7 +1354,8 @@ void WeaponHitChunk::unpack(void)
 
 //---------------------------------------------------------------------------
 
-bool WeaponHitChunk::equalTo(WeaponHitChunkPtr chunk)
+bool
+WeaponHitChunk::equalTo(WeaponHitChunkPtr chunk)
 {
 	if (targetType != chunk->targetType)
 	{
@@ -1379,7 +1407,8 @@ bool WeaponHitChunk::equalTo(WeaponHitChunkPtr chunk)
 
 //---------------------------------------------------------------------------
 
-bool WeaponHitChunk::valid(int32_t from)
+bool
+WeaponHitChunk::valid(int32_t from)
 {
 	if (refit)
 	{
@@ -1400,8 +1429,8 @@ bool WeaponHitChunk::valid(int32_t from)
 	{
 		WeaponShotInfo shotInfo;
 		shotInfo.attackerWID = 0;
-		shotInfo.masterId	= cause;
-		shotInfo.damage		 = damage;
+		shotInfo.masterId = cause;
+		shotInfo.damage = damage;
 		shotInfo.hitLocation = hitLocation;
 		// shotInfo.entryAngle = entryQuadTable[entryAngle];
 		switch (targetType)
@@ -1458,7 +1487,8 @@ bool WeaponHitChunk::valid(int32_t from)
 // class GameObject
 //---------------------------------------------------------------------------
 
-PVOID GameObject::operator new(size_t ourSize)
+PVOID
+GameObject::operator new(size_t ourSize)
 {
 	PVOID result = ObjectTypeManager::objectCache->Malloc(ourSize);
 	return (result);
@@ -1466,87 +1496,98 @@ PVOID GameObject::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void GameObject::operator delete(PVOID us) { ObjectTypeManager::objectCache->Free(us); }
+void
+GameObject::operator delete(PVOID us)
+{
+	ObjectTypeManager::objectCache->Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void GameObject::init(bool create)
+void
+GameObject::init(bool create)
 {
 	objectClass = GAMEOBJECT;
 	if (initialize)
 	{
-		handle		 = 0;
-		appearance   = nullptr;
+		handle = 0;
+		appearance = nullptr;
 		threatRating = 0;
 	}
-	partId	 = 0;
-	watchID	= 0;
+	partId = 0;
+	watchID = 0;
 	typeHandle = 0;
 	position.Zero();
 	cellPositionRow = 0;
 	cellPositionCol = 0;
-	flags			= OBJECT_FLAG_USEME | OBJECT_FLAG_AWAKE;
-	debugFlags		= 0;
-	status			= OBJECT_STATUS_NORMAL;
-	tonnage			= 0.0;
-	d_vertexNum		= -1;
+	flags = OBJECT_FLAG_USEME | OBJECT_FLAG_AWAKE;
+	debugFlags = 0;
+	status = OBJECT_STATUS_NORMAL;
+	tonnage = 0.0;
+	d_vertexNum = -1;
 	// team = 255;
 	collisionFreeFromWID = 0;
-	collisionFreeTime	= 0.0;
-	screenPos.x			 = 0.0f;
-	screenPos.y			 = 0.0f;
-	screenPos.z			 = 0.0f;
-	screenPos.w			 = 0.0f;
-	windowsVisible		 = 0;
-	explDamage			 = 0.0;
-	explRadius			 = 0.0;
-	maxCV				 = 0;
-	curCV				 = 0;
-	lastFrameTime		 = 0.0;
-	blipFrame			 = 0;
-	numAttackers		 = 0;
-	rotation			 = 0.0;
-	drawFlags			 = 0;
+	collisionFreeTime = 0.0;
+	screenPos.x = 0.0f;
+	screenPos.y = 0.0f;
+	screenPos.z = 0.0f;
+	screenPos.w = 0.0f;
+	windowsVisible = 0;
+	explDamage = 0.0;
+	explRadius = 0.0;
+	maxCV = 0;
+	curCV = 0;
+	lastFrameTime = 0.0;
+	blipFrame = 0;
+	numAttackers = 0;
+	rotation = 0.0;
+	drawFlags = 0;
 }
 
 //---------------------------------------------------------------------------
 
-void GameObject::set(GameObject copy)
+void
+GameObject::set(GameObject copy)
 {
-	objectClass			 = copy.objectClass;
-	handle				 = copy.handle;
-	partId				 = copy.partId;
-	watchID				 = copy.watchID;
-	typeHandle			 = copy.typeHandle;
-	position			 = copy.position;
-	cellPositionRow		 = copy.cellPositionRow;
-	cellPositionCol		 = copy.cellPositionCol;
-	flags				 = copy.flags;
-	debugFlags			 = copy.debugFlags;
-	status				 = copy.status;
-	tonnage				 = copy.tonnage;
-	appearance			 = copy.appearance;
-	d_vertexNum			 = copy.d_vertexNum;
+	objectClass = copy.objectClass;
+	handle = copy.handle;
+	partId = copy.partId;
+	watchID = copy.watchID;
+	typeHandle = copy.typeHandle;
+	position = copy.position;
+	cellPositionRow = copy.cellPositionRow;
+	cellPositionCol = copy.cellPositionCol;
+	flags = copy.flags;
+	debugFlags = copy.debugFlags;
+	status = copy.status;
+	tonnage = copy.tonnage;
+	appearance = copy.appearance;
+	d_vertexNum = copy.d_vertexNum;
 	collisionFreeFromWID = copy.collisionFreeFromWID;
-	collisionFreeTime	= copy.collisionFreeTime;
-	screenPos			 = copy.screenPos;
-	windowsVisible		 = copy.windowsVisible;
-	explRadius			 = copy.explRadius;
-	explDamage			 = copy.explDamage;
-	maxCV				 = copy.maxCV;
-	curCV				 = copy.curCV;
-	lastFrameTime		 = copy.lastFrameTime;
-	blipFrame			 = copy.blipFrame;
-	numAttackers		 = copy.numAttackers;
+	collisionFreeTime = copy.collisionFreeTime;
+	screenPos = copy.screenPos;
+	windowsVisible = copy.windowsVisible;
+	explRadius = copy.explRadius;
+	explDamage = copy.explDamage;
+	maxCV = copy.maxCV;
+	curCV = copy.curCV;
+	lastFrameTime = copy.lastFrameTime;
+	blipFrame = copy.blipFrame;
+	numAttackers = copy.numAttackers;
 }
 
 //---------------------------------------------------------------------------
 
-ObjectTypePtr GameObject::getObjectType(void) { return (ObjectManager->getObjectType(typeHandle)); }
+ObjectTypePtr
+GameObject::getObjectType(void)
+{
+	return (ObjectManager->getObjectType(typeHandle));
+}
 
 //---------------------------------------------------------------------------
 
-void GameObject::init(bool create, ObjectTypePtr _type)
+void
+GameObject::init(bool create, ObjectTypePtr _type)
 {
 	typeHandle = _type->whatAmI();
 #ifdef _DEBUG
@@ -1557,7 +1598,8 @@ void GameObject::init(bool create, ObjectTypePtr _type)
 
 //---------------------------------------------------------------------------
 
-uint32_t GameObject::getWatchID(bool assign)
+uint32_t
+GameObject::getWatchID(bool assign)
 {
 	if ((watchID == 0) && assign)
 		ObjectManager->setWatchID(this);
@@ -1566,23 +1608,25 @@ uint32_t GameObject::getWatchID(bool assign)
 
 //---------------------------------------------------------------------------
 
-void GameObject::getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
+void
+GameObject::getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
 {
 	Assert(Terrain::worldUnitsPerVertex == 128, 0, " Optimizations now broken ");
 	// What is our block and vertex number?
-	int32_t mx		= (float2long(position.x) >> 7) + Terrain::halfVerticesMapSide;
-	int32_t blockX  = float2long(mx * Terrain::oneOverVerticesBlockSide);
-	int32_t my		= Terrain::halfVerticesMapSide - ((float2long(position.y) >> 7) + 1);
-	int32_t blockY  = float2long(my * Terrain::oneOverVerticesBlockSide);
-	blockNum		= blockX + (blockY * Terrain::blocksMapSide);
+	int32_t mx = (float2long(position.x) >> 7) + Terrain::halfVerticesMapSide;
+	int32_t blockX = float2long(mx * Terrain::oneOverVerticesBlockSide);
+	int32_t my = Terrain::halfVerticesMapSide - ((float2long(position.y) >> 7) + 1);
+	int32_t blockY = float2long(my * Terrain::oneOverVerticesBlockSide);
+	blockNum = blockX + (blockY * Terrain::blocksMapSide);
 	int32_t vertexX = mx - (blockX * Terrain::verticesBlockSide);
 	int32_t vertexY = my - (blockY * Terrain::verticesBlockSide);
-	vertexNum		= vertexX + (vertexY * Terrain::verticesBlockSide);
+	vertexNum = vertexX + (vertexY * Terrain::verticesBlockSide);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t GameObject::kill(void)
+int32_t
+GameObject::kill(void)
 {
 	//------------------------------------------------------------
 	// Once new MC II ObjMgr is up and running, put this back in...
@@ -1593,7 +1637,8 @@ int32_t GameObject::kill(void)
 
 //---------------------------------------------------------------------------
 
-float GameObject::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
+float
+GameObject::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 {
 	Stuff::Vector3D facingVec = getRotationVector();
 	Stuff::Vector3D goalVec;
@@ -1609,7 +1654,8 @@ float GameObject::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 
 //---------------------------------------------------------------------------
 
-Stuff::Vector3D GameObject::relativePosition(float angle, float distance, uint32_t flags)
+Stuff::Vector3D
+GameObject::relativePosition(float angle, float distance, uint32_t flags)
 {
 	//--------------------------------------------------------
 	// Note that the angle should be -180 <= angle <= 180, and
@@ -1622,10 +1668,10 @@ Stuff::Vector3D GameObject::relativePosition(float angle, float distance, uint32
 	Stuff::Vector2DOf<float> shiftVect;
 	//--------------------------------------------
 	// Absolute facing, based upon north facing...
-	shiftVect.x  = 0.0;
-	shiftVect.y  = 1.0;
-	float tx	 = shiftVect.x;
-	float sine   = sin(angle);
+	shiftVect.x = 0.0;
+	shiftVect.y = 1.0;
+	float tx = shiftVect.x;
+	float sine = sin(angle);
 	float cosine = cos(angle);
 	shiftVect.x *= cosine;
 	shiftVect.x += (shiftVect.y * sine);
@@ -1642,12 +1688,12 @@ Stuff::Vector3D GameObject::relativePosition(float angle, float distance, uint32
 	if (flags & RELPOS_FLAG_PASSABLE_START)
 	{
 		start2d = curPos;
-		goal2d  = relPos;
+		goal2d = relPos;
 	}
 	else
 	{
 		start2d = relPos;
-		goal2d  = curPos;
+		goal2d = curPos;
 	}
 	deltaVector.x = goal2d.x - start2d.x;
 	deltaVector.y = goal2d.y - start2d.y;
@@ -1675,14 +1721,14 @@ Stuff::Vector3D GameObject::relativePosition(float angle, float distance, uint32
 	Stuff::Vector3D curPoint3d;
 	curPoint3d.init(curPoint.x, curPoint.y, 0.0);
 	GameMap->worldToMapPos(curPoint3d, tileR, tileC, cellR, cellC);
-	bool cellClear						   = GameMap->cellPassable(tileR, tileC, cellR, cellC);
+	bool cellClear = GameMap->cellPassable(tileR, tileC, cellR, cellC);
 	Stuff::Vector2DOf<float> lastGoodPoint = curPoint;
 	if (flags & RELPOS_FLAG_PASSABLE_START)
 		while (cellClear && (rayLength < maxLength))
 		{
 			lastGoodPoint = curPoint;
 			curPoint += deltaVector;
-			curRay	= curPoint - start2d;
+			curRay = curPoint - start2d;
 			rayLength = curRay.magnitude();
 			curPoint3d.init(curPoint.x, curPoint.y, 0.0);
 			GameMap->worldToMapPos(curPoint3d, tileR, tileC, cellR, cellC);
@@ -1693,7 +1739,7 @@ Stuff::Vector3D GameObject::relativePosition(float angle, float distance, uint32
 		{
 			lastGoodPoint = curPoint;
 			curPoint += deltaVector;
-			curRay	= curPoint - start2d;
+			curRay = curPoint - start2d;
 			rayLength = curRay.magnitude();
 			curPoint3d.init(curPoint.x, curPoint.y, 0.0);
 			GameMap->worldToMapPos(curPoint3d, tileR, tileC, cellR, cellC);
@@ -1709,19 +1755,20 @@ Stuff::Vector3D GameObject::relativePosition(float angle, float distance, uint32
 
 //---------------------------------------------------------------------------
 
-void GameObject::setPosition(const Stuff::Vector3D& newPosition, bool calcPositions)
+void
+GameObject::setPosition(const Stuff::Vector3D& newPosition, bool calcPositions)
 {
 	position = newPosition;
 	if (calcPositions)
 	{
 		int32_t newCellRow = 0;
 		int32_t newCellCol = 0;
-		int32_t tileRow	= 0;
-		int32_t tileCol	= 0;
+		int32_t tileRow = 0;
+		int32_t tileCol = 0;
 		land->worldToTileCell(position, tileRow, tileCol, newCellRow, newCellCol);
 		cellPositionRow = newCellRow + tileRow * terrain_const::MAPCELL_DIM;
 		cellPositionCol = newCellCol + tileCol * terrain_const::MAPCELL_DIM;
-		d_vertexNum		= tileRow * Terrain::realVerticesMapSide + tileCol;
+		d_vertexNum = tileRow * Terrain::realVerticesMapSide + tileCol;
 	}
 	Assert((cellPositionRow >= 0) && (cellPositionRow < GameMap->getHeight()), 0,
 		" Object moved off map ");
@@ -1731,7 +1778,8 @@ void GameObject::setPosition(const Stuff::Vector3D& newPosition, bool calcPositi
 
 //---------------------------------------------------------------------------
 
-float GameObject::distanceFrom(Stuff::Vector3D goal)
+float
+GameObject::distanceFrom(Stuff::Vector3D goal)
 {
 	Stuff::Vector3D result;
 	result.x = position.x - goal.x;
@@ -1742,7 +1790,8 @@ float GameObject::distanceFrom(Stuff::Vector3D goal)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObject::cellDistanceFrom(Stuff::Vector3D goal)
+int32_t
+GameObject::cellDistanceFrom(Stuff::Vector3D goal)
 {
 	int32_t cellRow = 0;
 	int32_t cellCol = 0;
@@ -1762,7 +1811,8 @@ int32_t GameObject::cellDistanceFrom(Stuff::Vector3D goal)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObject::cellDistanceFrom(GameObjectPtr obj)
+int32_t
+GameObject::cellDistanceFrom(GameObjectPtr obj)
 {
 	int32_t rowDelta = 0;
 	if (cellPositionRow > obj->cellPositionRow)
@@ -1779,7 +1829,8 @@ int32_t GameObject::cellDistanceFrom(GameObjectPtr obj)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObject::getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells)
+int32_t
+GameObject::getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells)
 {
 	cells[0] = cellPositionRow;
 	cells[1] = cellPositionCol;
@@ -1788,7 +1839,8 @@ int32_t GameObject::getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, 
 
 //---------------------------------------------------------------------------
 
-bool GameObject::lineOfSight(int32_t cellRow, int32_t cellCol, bool checkVisibleBits)
+bool
+GameObject::lineOfSight(int32_t cellRow, int32_t cellCol, bool checkVisibleBits)
 {
 	bool LOSclear = Team::lineOfSight(0.0f, cellPositionRow, cellPositionCol, cellRow, cellCol,
 		getTeamId(), 15.0, checkVisibleBits);
@@ -1797,11 +1849,12 @@ bool GameObject::lineOfSight(int32_t cellRow, int32_t cellCol, bool checkVisible
 
 //---------------------------------------------------------------------------
 
-bool GameObject::lineOfSight(Stuff::Vector3D point, bool checkVisibleBits)
+bool
+GameObject::lineOfSight(Stuff::Vector3D point, bool checkVisibleBits)
 {
 	Stuff::Vector3D firingPosition = getLOSPosition();
 	Stuff::Vector3D targetPosition = point;
-	bool LOSclear				   = false;
+	bool LOSclear = false;
 	if (land->IsGameSelectTerrainPosition(point))
 		LOSclear =
 			Team::lineOfSight(firingPosition, targetPosition, getTeamId(), 15.0, checkVisibleBits);
@@ -1814,7 +1867,8 @@ bool GameObject::lineOfSight(Stuff::Vector3D point, bool checkVisibleBits)
 extern int64_t MCTimeLOSUpdate;
 #endif
 
-inline bool GameObject::lineOfSight(GameObjectPtr target, float startExtRad, bool checkVisibleBits)
+inline bool
+GameObject::lineOfSight(GameObjectPtr target, float startExtRad, bool checkVisibleBits)
 {
 	int64_t timeStart = GetCycles();
 	// If we call this without a target, we have no LOS!!
@@ -1834,9 +1888,9 @@ inline bool GameObject::lineOfSight(GameObjectPtr target, float startExtRad, boo
 	float baseElevation = MapData::waterDepth;
 	if (MapData::waterDepth < Terrain::userMin)
 		baseElevation = Terrain::userMin;
-	float altitude			   = position.z - baseElevation;
+	float altitude = position.z - baseElevation;
 	float altitudeIntegerRange = (Terrain::userMax - baseElevation) * 0.00390625f;
-	int32_t altLevel		   = 0;
+	int32_t altLevel = 0;
 	if (altitudeIntegerRange > Stuff::SMALL)
 		altLevel = altitude / altitudeIntegerRange;
 	if (altLevel < 0)
@@ -1866,7 +1920,7 @@ inline bool GameObject::lineOfSight(GameObjectPtr target, float startExtRad, boo
 	{
 		if (isMover() && ObjectManager->useMoverLineOfSightTable)
 		{
-			int32_t index  = (handle * ObjectManager->maxMovers) + target->handle;
+			int32_t index = (handle * ObjectManager->maxMovers) + target->handle;
 			char losStatus = ObjectManager->moverLineOfSightTable[index];
 			if (losStatus == -1)
 			{
@@ -1929,8 +1983,8 @@ inline bool GameObject::lineOfSight(GameObjectPtr target, float startExtRad, boo
 	//	{
 	//		if (land->IsGameSelectTerrainPosition(getLOSPosition()))
 	//		{
-	float elev					   = land->getTerrainElevation(getLOSPosition());
-	float localStart			   = getLOSPosition().z - elev;
+	float elev = land->getTerrainElevation(getLOSPosition());
+	float localStart = getLOSPosition().z - elev;
 	Stuff::Vector3D targetPosition = target->getLOSPosition();
 	if (Team::lineOfSight(getLOSPosition(), target->getLOSPosition(), getTeamId(),
 			target->getAppearRadius(), startExtRad, checkVisibleBits))
@@ -1950,7 +2004,8 @@ inline bool GameObject::lineOfSight(GameObjectPtr target, float startExtRad, boo
 
 //---------------------------------------------------------------------------
 
-void GameObject::destroy(void)
+void
+GameObject::destroy(void)
 {
 	// Never need to call this.  Heap destruct will get this!!
 	//	ObjectManager->removeObjectType(typeHandle);
@@ -1958,7 +2013,8 @@ void GameObject::destroy(void)
 
 //---------------------------------------------------------------------------
 
-bool GameObject::onScreen(void)
+bool
+GameObject::onScreen(void)
 {
 	//----------------------------------------------------------------------
 	// This function is the meat and potatoes of the object cull system.
@@ -1971,7 +2027,7 @@ bool GameObject::onScreen(void)
 	if (eye)
 	{
 		Stuff::Vector3D objPosition = position;
-		isVisible					= eye->projectZ(objPosition, screenPos);
+		isVisible = eye->projectZ(objPosition, screenPos);
 	}
 	if (isVisible)
 	{
@@ -1983,7 +2039,8 @@ bool GameObject::onScreen(void)
 
 //---------------------------------------------------------------------------
 
-float GameObject::getExtentRadius(void)
+float
+GameObject::getExtentRadius(void)
 {
 	//---------------------------------------------------------------------
 	// Can be overridden by explosions to return an instance based value.
@@ -1995,7 +2052,8 @@ float GameObject::getExtentRadius(void)
 
 //---------------------------------------------------------------------------
 
-void GameObject::setExtentRadius(float newRadius)
+void
+GameObject::setExtentRadius(float newRadius)
 {
 	//---------------------------------------------------------------------
 	// Can be overridden by explosions to set an instance based value.
@@ -2006,7 +2064,8 @@ void GameObject::setExtentRadius(float newRadius)
 
 //---------------------------------------------------------------------------
 
-MechClass GameObject::getMechClass(void)
+MechClass
+GameObject::getMechClass(void)
 {
 	if (getObjectClass() != BATTLEMECH)
 		return (MECH_CLASS_NONE);
@@ -2021,9 +2080,10 @@ MechClass GameObject::getMechClass(void)
 
 //---------------------------------------------------------------------------
 
-int32_t GameObject::getCaptureBlocker(GameObjectPtr capturingMover, GameObjectPtr* blockerList)
+int32_t
+GameObject::getCaptureBlocker(GameObjectPtr capturingMover, GameObjectPtr* blockerList)
 {
-	int32_t numBlockers   = 0;
+	int32_t numBlockers = 0;
 	TeamPtr capturingTeam = capturingMover->getTeam();
 	if (!capturingTeam)
 		STOP(("GameObject.getCaptureBlocker: nullptr capturingTeam"));
@@ -2034,8 +2094,7 @@ int32_t GameObject::getCaptureBlocker(GameObjectPtr capturingMover, GameObjectPt
 			MoverPtr mover = ObjectManager->getMover(i);
 			if (capturingTeam->isEnemy(mover->getTeam()))
 				if (!mover->isMarine() && (mover->numWeapons > 0))
-					if ((distanceFrom(mover->getPosition()) < blockCaptureRange) &&
-						!mover->isDisabled() && mover->getAwake())
+					if ((distanceFrom(mover->getPosition()) < blockCaptureRange) && !mover->isDisabled() && mover->getAwake())
 						if (blockerList)
 							blockerList[numBlockers++] = mover;
 						else
@@ -2049,11 +2108,9 @@ int32_t GameObject::getCaptureBlocker(GameObjectPtr capturingMover, GameObjectPt
 			MoverPtr mover = ObjectManager->getMover(i);
 			if (!mover->getTeam() || capturingTeam->isEnemy(mover->getTeam()))
 				if (!mover->isMarine() && (mover->numWeapons > 0))
-					if ((distanceFrom(mover->getPosition()) < blockCaptureRange) &&
-						!mover->isDisabled() && mover->getAwake())
+					if ((distanceFrom(mover->getPosition()) < blockCaptureRange) && !mover->isDisabled() && mover->getAwake())
 						if (capturingMover->getTeam()->isContact(capturingMover, mover,
-								CONTACT_CRITERIA_VISUAL_OR_SENSOR + CONTACT_CRITERIA_ENEMY +
-									CONTACT_CRITERIA_NOT_DISABLED))
+								CONTACT_CRITERIA_VISUAL_OR_SENSOR + CONTACT_CRITERIA_ENEMY + CONTACT_CRITERIA_NOT_DISABLED))
 							if (blockerList)
 								blockerList[numBlockers++] = mover;
 							else
@@ -2065,9 +2122,10 @@ int32_t GameObject::getCaptureBlocker(GameObjectPtr capturingMover, GameObjectPt
 
 //---------------------------------------------------------------------------
 
-bool GameObject::isFriendly(GameObjectPtr obj)
+bool
+GameObject::isFriendly(GameObjectPtr obj)
 {
-	TeamPtr myTeam  = getTeam();
+	TeamPtr myTeam = getTeam();
 	TeamPtr objTeam = obj->getTeam();
 	if (myTeam && objTeam)
 		return (myTeam->isFriendly(objTeam));
@@ -2076,9 +2134,10 @@ bool GameObject::isFriendly(GameObjectPtr obj)
 
 //---------------------------------------------------------------------------
 
-bool GameObject::isEnemy(GameObjectPtr obj)
+bool
+GameObject::isEnemy(GameObjectPtr obj)
 {
-	TeamPtr myTeam  = getTeam();
+	TeamPtr myTeam = getTeam();
 	TeamPtr objTeam = obj->getTeam();
 	if (myTeam && objTeam)
 		return (myTeam->isEnemy(objTeam));
@@ -2087,9 +2146,10 @@ bool GameObject::isEnemy(GameObjectPtr obj)
 
 //---------------------------------------------------------------------------
 
-bool GameObject::isNeutral(GameObjectPtr obj)
+bool
+GameObject::isNeutral(GameObjectPtr obj)
 {
-	TeamPtr myTeam  = getTeam();
+	TeamPtr myTeam = getTeam();
 	TeamPtr objTeam = obj->getTeam();
 	if (myTeam && objTeam)
 		return (myTeam->isNeutral(objTeam));
@@ -2097,26 +2157,27 @@ bool GameObject::isNeutral(GameObjectPtr obj)
 }
 
 //---------------------------------------------------------------------------
-void GameObject::CopyTo(GameObjectData* data)
+void
+GameObject::CopyTo(GameObjectData* data)
 {
 	if (getObjectType())
 		data->objectTypeNum = getObjectType()->getObjTypeNum();
 	else
 		data->objectTypeNum = 0;
-	data->objectClass	 = objectClass;
-	data->handle		  = handle;
-	data->partId		  = partId;
-	data->watchID		  = watchID;
-	data->typeHandle	  = typeHandle;
-	data->position		  = position;
+	data->objectClass = objectClass;
+	data->handle = handle;
+	data->partId = partId;
+	data->watchID = watchID;
+	data->typeHandle = typeHandle;
+	data->position = position;
 	data->cellPositionRow = cellPositionRow;
 	data->cellPositionCol = cellPositionCol;
-	data->d_vertexNum	 = d_vertexNum;
-	data->flags			  = flags;
-	data->debugFlags	  = debugFlags;
-	data->status		  = status;
-	data->tonnage		  = tonnage;
-	data->rotation		  = rotation;
+	data->d_vertexNum = d_vertexNum;
+	data->flags = flags;
+	data->debugFlags = debugFlags;
+	data->status = status;
+	data->tonnage = tonnage;
+	data->rotation = rotation;
 	if (getObjectType() && getObjectType()->getAppearanceTypeName())
 	{
 		if (strlen(getObjectType()->getAppearanceTypeName()) <= 255)
@@ -2130,55 +2191,57 @@ void GameObject::CopyTo(GameObjectData* data)
 		strcpy(data->appearanceTypeID, "NONE");
 	}
 	data->collisionFreeFromWID = collisionFreeFromWID;
-	data->collisionFreeTime	= collisionFreeTime;
-	data->screenPos			   = screenPos;
-	data->windowsVisible	   = windowsVisible;
-	data->explRadius		   = explRadius;
-	data->explDamage		   = explDamage;
-	data->maxCV				   = maxCV;
-	data->curCV				   = curCV;
-	data->threatRating		   = threatRating;
-	data->lastFrameTime		   = lastFrameTime;
-	data->blipFrame			   = blipFrame;
-	data->numAttackers		   = numAttackers;
-	data->drawFlags			   = drawFlags;
+	data->collisionFreeTime = collisionFreeTime;
+	data->screenPos = screenPos;
+	data->windowsVisible = windowsVisible;
+	data->explRadius = explRadius;
+	data->explDamage = explDamage;
+	data->maxCV = maxCV;
+	data->curCV = curCV;
+	data->threatRating = threatRating;
+	data->lastFrameTime = lastFrameTime;
+	data->blipFrame = blipFrame;
+	data->numAttackers = numAttackers;
+	data->drawFlags = drawFlags;
 }
 
 //---------------------------------------------------------------------------
-void GameObject::Save(PacketFilePtr file, int32_t packetNum)
+void
+GameObject::Save(PacketFilePtr file, int32_t packetNum)
 {
 	STOP(("Should never save a gameObj!!"));
 }
 
 //---------------------------------------------------------------------------
-void GameObject::Load(GameObjectData* data)
+void
+GameObject::Load(GameObjectData* data)
 {
-	objectClass			 = data->objectClass;
-	handle				 = data->handle;
-	partId				 = data->partId;
-	watchID				 = data->watchID;
-	position			 = data->position;
-	cellPositionRow		 = data->cellPositionRow;
-	cellPositionCol		 = data->cellPositionCol;
-	d_vertexNum			 = data->d_vertexNum;
-	flags				 = data->flags;
-	debugFlags			 = data->debugFlags;
-	status				 = data->status;
-	tonnage				 = data->tonnage;
-	rotation			 = data->rotation;
+	objectClass = data->objectClass;
+	handle = data->handle;
+	partId = data->partId;
+	watchID = data->watchID;
+	position = data->position;
+	cellPositionRow = data->cellPositionRow;
+	cellPositionCol = data->cellPositionCol;
+	d_vertexNum = data->d_vertexNum;
+	flags = data->flags;
+	debugFlags = data->debugFlags;
+	status = data->status;
+	tonnage = data->tonnage;
+	rotation = data->rotation;
 	collisionFreeFromWID = data->collisionFreeFromWID;
-	collisionFreeTime	= data->collisionFreeTime;
-	screenPos			 = data->screenPos;
-	windowsVisible		 = 0; // Force back to zero so I don't have to save the turn.
-	explRadius			 = data->explRadius;
-	explDamage			 = data->explDamage;
-	maxCV				 = data->maxCV;
-	curCV				 = data->curCV;
-	threatRating		 = data->threatRating;
-	lastFrameTime		 = data->lastFrameTime;
-	blipFrame			 = data->blipFrame;
-	numAttackers		 = data->numAttackers;
-	drawFlags			 = data->drawFlags;
+	collisionFreeTime = data->collisionFreeTime;
+	screenPos = data->screenPos;
+	windowsVisible = 0; // Force back to zero so I don't have to save the turn.
+	explRadius = data->explRadius;
+	explDamage = data->explDamage;
+	maxCV = data->maxCV;
+	curCV = data->curCV;
+	threatRating = data->threatRating;
+	lastFrameTime = data->lastFrameTime;
+	blipFrame = data->blipFrame;
+	numAttackers = data->numAttackers;
+	drawFlags = data->drawFlags;
 }
 
 //***************************************************************************

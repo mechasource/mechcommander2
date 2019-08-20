@@ -54,7 +54,8 @@ extern bool drawOldWay;
 extern bool useNonWeaponEffects;
 GenericAppearance* theSky = nullptr;
 //---------------------------------------------------------------------------
-void GameCamera::destroy(void)
+void
+GameCamera::destroy(void)
 {
 	if (theSky)
 	{
@@ -70,7 +71,8 @@ void GameCamera::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void GameCamera::render(void)
+void
+GameCamera::render(void)
 {
 	//------------------------------------------------------
 	// At present, these actually draw.  Later they will
@@ -94,9 +96,9 @@ void GameCamera::render(void)
 	default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 	float z = 1.0f;
 	Stuff::RGBAColor fColor;
-	fColor.red   = ((fogColor >> 16) & 0xff);
+	fColor.red = ((fogColor >> 16) & 0xff);
 	fColor.green = ((fogColor >> 8) & 0xff);
-	fColor.blue  = ((fogColor)&0xff);
+	fColor.blue = ((fogColor)&0xff);
 	//--------------------------------------------------------
 	// Get new viewport values to scale stuff.  No longer uses
 	// VFX stuff for this.  ALL GOS NOW!
@@ -131,9 +133,9 @@ void GameCamera::render(void)
 			theSky->render(1);
 		land->render(); // render the Terrain
 		if (Environment.Renderer != 3)
-			craterManager->render();			 // render the craters and footprints
+			craterManager->render(); // render the craters and footprints
 		ObjectManager->render(true, true, true); // render all other objects
-		land->renderWater();					 // Draw Water Last!
+		land->renderWater(); // Draw Water Last!
 		if (useShadows && Environment.Renderer != 3)
 			ObjectManager->renderShadows(true, true, true);
 		if (mission && mission->missionInterface)
@@ -145,9 +147,9 @@ void GameCamera::render(void)
 		}
 		if (!drawOldWay)
 			mcTextureManager->renderLists(); // This sends triangles down to the
-											 // card.  All "rendering" to this
-											 // point has been setting up tri
-											 // lists
+				// card.  All "rendering" to this
+				// point has been setting up tri
+				// lists
 		if (drawOldWay)
 		{
 			// Last thing drawn were shadows which are not Gouraud Shaded!!!
@@ -192,69 +194,69 @@ void GameCamera::render(void)
 		gos_SetRenderState(gos_State_Texture, 0);
 		//------------------------------------
 		gos_VERTEX gVertex[4];
-		gVertex[0].x	= 0.0f;
-		gVertex[0].y	= 0.0f;
-		gVertex[0].z	= 0.00001f;
-		gVertex[0].rhw  = 0.00001f;
-		gVertex[0].u	= 0.0f;
-		gVertex[0].v	= 0.0f;
+		gVertex[0].x = 0.0f;
+		gVertex[0].y = 0.0f;
+		gVertex[0].z = 0.00001f;
+		gVertex[0].rhw = 0.00001f;
+		gVertex[0].u = 0.0f;
+		gVertex[0].v = 0.0f;
 		gVertex[0].argb = (letterBoxAlpha << 24);
 		gVertex[0].frgb = 0xff000000;
-		gVertex[1].x	= 0.0f;
-		gVertex[1].y	= barTopX;
-		gVertex[1].z	= 0.00001f;
-		gVertex[1].rhw  = 0.00001f;
-		gVertex[1].u	= 0.0f;
-		gVertex[1].v	= 0.0f;
+		gVertex[1].x = 0.0f;
+		gVertex[1].y = barTopX;
+		gVertex[1].z = 0.00001f;
+		gVertex[1].rhw = 0.00001f;
+		gVertex[1].u = 0.0f;
+		gVertex[1].v = 0.0f;
 		gVertex[1].argb = (letterBoxAlpha << 24);
 		gVertex[1].frgb = 0xff000000;
-		gVertex[2].x	= screenResolution.x;
-		gVertex[2].y	= barTopX;
-		gVertex[2].z	= 0.00001f;
-		gVertex[2].rhw  = 0.00001f;
-		gVertex[2].u	= 0.0f;
-		gVertex[2].v	= 0.0f;
+		gVertex[2].x = screenResolution.x;
+		gVertex[2].y = barTopX;
+		gVertex[2].z = 0.00001f;
+		gVertex[2].rhw = 0.00001f;
+		gVertex[2].u = 0.0f;
+		gVertex[2].v = 0.0f;
 		gVertex[2].argb = (letterBoxAlpha << 24);
 		gVertex[2].frgb = 0xff000000;
-		gVertex[3].x	= screenResolution.x;
-		gVertex[3].y	= 0.0f;
-		gVertex[3].z	= 0.00001f;
-		gVertex[3].rhw  = 0.00001f;
-		gVertex[3].u	= 0.0f;
-		gVertex[3].v	= 0.0f;
+		gVertex[3].x = screenResolution.x;
+		gVertex[3].y = 0.0f;
+		gVertex[3].z = 0.00001f;
+		gVertex[3].rhw = 0.00001f;
+		gVertex[3].u = 0.0f;
+		gVertex[3].v = 0.0f;
 		gVertex[3].argb = (letterBoxAlpha << 24);
 		gVertex[3].frgb = 0xff000000;
 		gos_DrawQuads(gVertex, 4);
-		gVertex[0].x	= 0.0f;
-		gVertex[0].y	= barBotX;
-		gVertex[0].z	= 0.00001f;
-		gVertex[0].rhw  = 0.00001f;
-		gVertex[0].u	= 0.0f;
-		gVertex[0].v	= 0.0f;
+		gVertex[0].x = 0.0f;
+		gVertex[0].y = barBotX;
+		gVertex[0].z = 0.00001f;
+		gVertex[0].rhw = 0.00001f;
+		gVertex[0].u = 0.0f;
+		gVertex[0].v = 0.0f;
 		gVertex[0].argb = (letterBoxAlpha << 24);
 		gVertex[0].frgb = 0xff000000;
-		gVertex[1].x	= screenResolution.x;
-		gVertex[1].y	= barBotX;
-		gVertex[1].z	= 0.00001f;
-		gVertex[1].rhw  = 0.00001f;
-		gVertex[1].u	= 0.0f;
-		gVertex[1].v	= 0.0f;
+		gVertex[1].x = screenResolution.x;
+		gVertex[1].y = barBotX;
+		gVertex[1].z = 0.00001f;
+		gVertex[1].rhw = 0.00001f;
+		gVertex[1].u = 0.0f;
+		gVertex[1].v = 0.0f;
 		gVertex[1].argb = (letterBoxAlpha << 24);
 		gVertex[1].frgb = 0xff000000;
-		gVertex[2].x	= screenResolution.x;
-		gVertex[2].y	= screenResolution.y;
-		gVertex[2].z	= 0.00001f;
-		gVertex[2].rhw  = 0.00001f;
-		gVertex[2].u	= 0.0f;
-		gVertex[2].v	= 0.0f;
+		gVertex[2].x = screenResolution.x;
+		gVertex[2].y = screenResolution.y;
+		gVertex[2].z = 0.00001f;
+		gVertex[2].rhw = 0.00001f;
+		gVertex[2].u = 0.0f;
+		gVertex[2].v = 0.0f;
 		gVertex[2].argb = (letterBoxAlpha << 24);
 		gVertex[2].frgb = 0xff000000;
-		gVertex[3].x	= 0.0f;
-		gVertex[3].y	= screenResolution.y;
-		gVertex[3].z	= 0.00001f;
-		gVertex[3].rhw  = 0.00001f;
-		gVertex[3].u	= 0.0f;
-		gVertex[3].v	= 0.0f;
+		gVertex[3].x = 0.0f;
+		gVertex[3].y = screenResolution.y;
+		gVertex[3].z = 0.00001f;
+		gVertex[3].rhw = 0.00001f;
+		gVertex[3].u = 0.0f;
+		gVertex[3].v = 0.0f;
 		gVertex[3].argb = (letterBoxAlpha << 24);
 		gVertex[3].frgb = 0xff000000;
 		gos_DrawQuads(gVertex, 4);
@@ -278,36 +280,36 @@ void GameCamera::render(void)
 		gos_SetRenderState(gos_State_Texture, 0);
 		//------------------------------------
 		gos_VERTEX gVertex[4];
-		gVertex[0].x	= 0.0f;
-		gVertex[0].y	= 0.0f;
-		gVertex[0].z	= 0.00001f;
-		gVertex[0].rhw  = 0.00001f;
-		gVertex[0].u	= 0.0f;
-		gVertex[0].v	= 0.0f;
+		gVertex[0].x = 0.0f;
+		gVertex[0].y = 0.0f;
+		gVertex[0].z = 0.00001f;
+		gVertex[0].rhw = 0.00001f;
+		gVertex[0].u = 0.0f;
+		gVertex[0].v = 0.0f;
 		gVertex[0].argb = (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
 		gVertex[0].frgb = 0xff000000;
-		gVertex[1].x	= 0.0f;
-		gVertex[1].y	= screenResolution.y;
-		gVertex[1].z	= 0.00001f;
-		gVertex[1].rhw  = 0.00001f;
-		gVertex[1].u	= 0.0f;
-		gVertex[1].v	= 0.0f;
+		gVertex[1].x = 0.0f;
+		gVertex[1].y = screenResolution.y;
+		gVertex[1].z = 0.00001f;
+		gVertex[1].rhw = 0.00001f;
+		gVertex[1].u = 0.0f;
+		gVertex[1].v = 0.0f;
 		gVertex[1].argb = (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
 		gVertex[1].frgb = 0xff000000;
-		gVertex[2].x	= screenResolution.x;
-		gVertex[2].y	= screenResolution.y;
-		gVertex[2].z	= 0.00001f;
-		gVertex[2].rhw  = 0.00001f;
-		gVertex[2].u	= 0.0f;
-		gVertex[2].v	= 0.0f;
+		gVertex[2].x = screenResolution.x;
+		gVertex[2].y = screenResolution.y;
+		gVertex[2].z = 0.00001f;
+		gVertex[2].rhw = 0.00001f;
+		gVertex[2].u = 0.0f;
+		gVertex[2].v = 0.0f;
 		gVertex[2].argb = (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
 		gVertex[2].frgb = 0xff000000;
-		gVertex[3].x	= screenResolution.x;
-		gVertex[3].y	= 0.0f;
-		gVertex[3].z	= 0.00001f;
-		gVertex[3].rhw  = 0.00001f;
-		gVertex[3].u	= 0.0f;
-		gVertex[3].v	= 0.0f;
+		gVertex[3].x = screenResolution.x;
+		gVertex[3].y = 0.0f;
+		gVertex[3].z = 0.00001f;
+		gVertex[3].rhw = 0.00001f;
+		gVertex[3].u = 0.0f;
+		gVertex[3].v = 0.0f;
 		gVertex[3].argb = (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
 		gVertex[3].frgb = 0xff000000;
 		gos_DrawQuads(gVertex, 4);
@@ -316,7 +318,8 @@ void GameCamera::render(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t GameCamera::activate(void)
+int32_t
+GameCamera::activate(void)
 {
 	//------------------------------------------
 	// If camera is already active, just return
@@ -329,11 +332,9 @@ int32_t GameCamera::activate(void)
 	MoverPtr firstMover = nullptr;
 	if (ObjectManager->getNumMovers() > 0)
 	{
-		int32_t i  = 0;
+		int32_t i = 0;
 		firstMover = ObjectManager->getMover(i);
-		while (firstMover &&
-			((firstMover->getCommander()->getId() != Commander::home->getId()) ||
-				!firstMover->isOnGUI()))
+		while (firstMover && ((firstMover->getCommander()->getId() != Commander::home->getId()) || !firstMover->isOnGUI()))
 		{
 			i++;
 			if (i == ObjectManager->getNumMovers())
@@ -354,7 +355,7 @@ int32_t GameCamera::activate(void)
 	// updateDaylight(true);
 	lastShadowLightPitch = lightPitch;
 	// Startup the SKYBox
-	int32_t appearanceType					= (GENERIC_APPR_TYPE << 24);
+	int32_t appearanceType = (GENERIC_APPR_TYPE << 24);
 	AppearanceTypePtr genericAppearanceType = nullptr;
 	genericAppearanceType = appearanceTypeList->getAppearance(appearanceType, "skybox");
 	if (!genericAppearanceType)
@@ -372,7 +373,8 @@ int32_t GameCamera::activate(void)
 	return NO_ERROR;
 }
 
-inline GameObjectPtr getCamObject(int32_t partId, bool existsOnly)
+inline GameObjectPtr
+getCamObject(int32_t partId, bool existsOnly)
 {
 	GameObjectPtr obj = nullptr;
 	if (partId == -1)
@@ -381,8 +383,7 @@ inline GameObjectPtr getCamObject(int32_t partId, bool existsOnly)
 		obj = ObjectManager->findByPartId(partId);
 	if (existsOnly)
 	{
-		if (obj && obj->getExists() && (obj->getCommanderId() == Commander::home->getId()) ||
-			(Team::home->teamLineOfSight(obj->getLOSPosition(), 0.0f)))
+		if (obj && obj->getExists() && (obj->getCommanderId() == Commander::home->getId()) || (Team::home->teamLineOfSight(obj->getLOSPosition(), 0.0f)))
 			return (obj);
 		return (nullptr);
 	}
@@ -390,16 +391,14 @@ inline GameObjectPtr getCamObject(int32_t partId, bool existsOnly)
 }
 
 int32_t cameraLineChanged = 0;
-bool useLOSAngle		  = true;
+bool useLOSAngle = true;
 //---------------------------------------------------------------------------
-int32_t GameCamera::update(void)
+int32_t
+GameCamera::update(void)
 {
 	if (lookTargetObject != -1)
 		targetObject = getCamObject(lookTargetObject, true);
-	if (targetObject && targetObject->getExists() &&
-		((targetObject->getCommanderId() == Commander::home->getId()) || !targetObject->isMover() ||
-			(targetObject->isMover() &&
-				((Mover*)targetObject)->conStat >= CONTACT_SENSOR_QUALITY_1)))
+	if (targetObject && targetObject->getExists() && ((targetObject->getCommanderId() == Commander::home->getId()) || !targetObject->isMover() || (targetObject->isMover() && ((Mover*)targetObject)->conStat >= CONTACT_SENSOR_QUALITY_1)))
 	{
 		setPosition(targetObject->getPosition(), false);
 	}
@@ -410,35 +409,30 @@ int32_t GameCamera::update(void)
 	// Force CameraAltitude to be less than max based on angle.  This keeps poly
 	// load relatively even
 	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-	float testMax	  = Camera::AltitudeMaximumLo +
-		((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+	float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
 	if (cameraAltitude > testMax)
 		cameraAltitude = testMax;
 	if ((cameraAltitude < testMax) && (cameraAltitudeDesired > testMax))
 		cameraAltitude = testMax;
 	// calculate new near and far plane distance based on
 	// Current altitude above terrain.
-	float altitudePercent	 = (cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
+	float altitudePercent = (cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
 	Camera::NearPlaneDistance = MinNearPlane + ((MaxNearPlane - MinNearPlane) * altitudePercent);
-	Camera::FarPlaneDistance  = MinFarPlane + ((MaxFarPlane - MinFarPlane) * altitudePercent);
-	if (userInput->getKeyDown(KEY_LBRACKET) && userInput->ctrl() && userInput->alt() &&
-		!userInput->shift())
+	Camera::FarPlaneDistance = MinFarPlane + ((MaxFarPlane - MinFarPlane) * altitudePercent);
+	if (userInput->getKeyDown(KEY_LBRACKET) && userInput->ctrl() && userInput->alt() && !userInput->shift())
 	{
 		useLOSAngle ^= true;
 	}
 #ifdef DEBUG_CAMERA
-	if (userInput->getKeyDown(KEY_RBRACKET) && userInput->ctrl() && userInput->alt() &&
-		!userInput->shift())
+	if (userInput->getKeyDown(KEY_RBRACKET) && userInput->ctrl() && userInput->alt() && !userInput->shift())
 	{
 		Camera::NearPlaneDistance += 10.0f;
 	}
-	if (userInput->getKeyDown(KEY_APOSTROPHE) && userInput->ctrl() && userInput->alt() &&
-		!userInput->shift())
+	if (userInput->getKeyDown(KEY_APOSTROPHE) && userInput->ctrl() && userInput->alt() && !userInput->shift())
 	{
 		Camera::FarPlaneDistance -= 1005.00f;
 	}
-	if (userInput->getKeyDown(KEY_SEMICOLON) && userInput->ctrl() && userInput->alt() &&
-		!userInput->shift())
+	if (userInput->getKeyDown(KEY_SEMICOLON) && userInput->ctrl() && userInput->alt() && !userInput->shift())
 	{
 		Camera::FarPlaneDistance += 1005.0f;
 	}
@@ -504,10 +498,10 @@ int32_t GameCamera::update(void)
 	// Always TRUE for right now.  Debugging....
 	//-fs
 	// forceShadowRecalc = true;
-	bool oldFog		= useFog;
+	bool oldFog = useFog;
 	bool oldShadows = useShadows;
-	useFog			= false;
-	useShadows		= false;
+	useFog = false;
+	useShadows = false;
 	if (compass && (turn > 3))
 	{
 		compass->setObjectParameters(getPosition(), 0.0f, false, 0, 0);
@@ -533,7 +527,7 @@ int32_t GameCamera::update(void)
 		theSky->setIsHudElement();
 		theSky->update(); // Force it to try and draw or stuff will not work!
 	}
-	useFog	 = oldFog;
+	useFog = oldFog;
 	useShadows = oldShadows;
 	return result;
 }

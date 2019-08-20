@@ -21,25 +21,33 @@ extern float frameLength;
 
 LogisticsScreen::LogisticsScreen()
 {
-	statics		= 0;
-	rects		= 0;
-	buttons		= 0;
-	edits		= 0;
+	statics = 0;
+	rects = 0;
+	buttons = 0;
+	edits = 0;
 	textObjects = 0;
 	animObjects = 0;
 	staticCount = rectCount = buttonCount = textCount = editCount = animObjectsCount = 0;
-	helpTextArrayID																	 = -1;
+	helpTextArrayID = -1;
 	fadeInTime = fadeOutTime = fadeTime = 0;
-	fadeOutMaxColor						= 0xff000000;
+	fadeOutMaxColor = 0xff000000;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-LogisticsScreen::~LogisticsScreen() { destroy(); }
+LogisticsScreen::~LogisticsScreen()
+{
+	destroy();
+}
 
-void LogisticsScreen::destroy() { clear(); }
+void
+LogisticsScreen::destroy()
+{
+	clear();
+}
 
-void LogisticsScreen::clear()
+void
+LogisticsScreen::clear()
 {
 	if (statics)
 		delete[] statics;
@@ -53,23 +61,24 @@ void LogisticsScreen::clear()
 		delete[] textObjects;
 	if (animObjects)
 		delete[] animObjects;
-	statics			 = 0;
-	rects			 = 0;
-	buttons			 = 0;
-	edits			 = 0;
-	textObjects		 = 0;
-	animObjects		 = 0;
-	staticCount		 = 0;
-	rectCount		 = 0;
-	buttonCount		 = 0;
-	editCount		 = 0;
-	textCount		 = 0;
+	statics = 0;
+	rects = 0;
+	buttons = 0;
+	edits = 0;
+	textObjects = 0;
+	animObjects = 0;
+	staticCount = 0;
+	rectCount = 0;
+	buttonCount = 0;
+	editCount = 0;
+	textCount = 0;
 	animObjectsCount = 0;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName,
+void
+LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName,
 	PCSTR buttonName, PCSTR editName, PCSTR animObjectName, uint32_t neverFlush)
 {
 	clear();
@@ -191,7 +200,8 @@ void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, P
 	}
 }
 
-aButton* LogisticsScreen::getButton(int32_t who)
+aButton*
+LogisticsScreen::getButton(int32_t who)
 {
 	for (size_t i = 0; i < buttonCount; i++)
 	{
@@ -203,7 +213,8 @@ aButton* LogisticsScreen::getButton(int32_t who)
 	return nullptr;
 }
 
-aRect* LogisticsScreen::getRect(int32_t who)
+aRect*
+LogisticsScreen::getRect(int32_t who)
 {
 	if ((who >= 0) && (who < rectCount))
 	{
@@ -213,7 +224,8 @@ aRect* LogisticsScreen::getRect(int32_t who)
 }
 
 //-------------------------------------------------------------------------------------------------
-void LogisticsScreen::update()
+void
+LogisticsScreen::update()
 {
 	int32_t i;
 	for (i = 0; i < staticCount; i++)
@@ -275,7 +287,8 @@ void LogisticsScreen::update()
 }
 
 //-------------------------------------------------------------------------------------------------
-void LogisticsScreen::render()
+void
+LogisticsScreen::render()
 {
 	if (!isShowing())
 		return;
@@ -312,19 +325,20 @@ void LogisticsScreen::render()
 	{
 		fadeTime += frameLength;
 		int32_t color = interpolateColor(0, fadeOutMaxColor, fadeTime / fadeOutTime);
-		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 	else if (fadeInTime && fadeInTime > fadeTime)
 	{
 		fadeTime += frameLength;
 		int32_t color = interpolateColor(fadeOutMaxColor, 0, fadeTime / fadeInTime);
-		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 }
 
-int32_t LogisticsScreen::getStatus()
+int32_t
+LogisticsScreen::getStatus()
 {
 	if (status != RUNNING && fadeOutTime)
 	{
@@ -338,7 +352,8 @@ int32_t LogisticsScreen::getStatus()
 	return status;
 }
 
-void LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
+void
+LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	if (!isShowing())
 		return;
@@ -405,26 +420,31 @@ void LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
 	{
 		fadeTime += frameLength;
 		int32_t color = interpolateColor(0, 0xff000000, fadeTime / fadeOutTime);
-		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 	else if (fadeInTime && fadeInTime > fadeTime)
 	{
 		fadeTime += frameLength;
 		int32_t color = interpolateColor(0xff000000, 0, fadeTime / fadeInTime);
-		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 }
 
-LogisticsScreen::LogisticsScreen(const LogisticsScreen& src) { copyData(src); }
-LogisticsScreen& LogisticsScreen::operator=(const LogisticsScreen& src)
+LogisticsScreen::LogisticsScreen(const LogisticsScreen& src)
+{
+	copyData(src);
+}
+LogisticsScreen&
+LogisticsScreen::operator=(const LogisticsScreen& src)
 {
 	copyData(src);
 	return *this;
 }
 
-void LogisticsScreen::copyData(const LogisticsScreen& src)
+void
+LogisticsScreen::copyData(const LogisticsScreen& src)
 {
 	if (&src != this)
 	{
@@ -482,7 +502,8 @@ void LogisticsScreen::copyData(const LogisticsScreen& src)
 	}
 }
 
-void LogisticsScreen::moveTo(int32_t xPos, int32_t yPos)
+void
+LogisticsScreen::moveTo(int32_t xPos, int32_t yPos)
 {
 	int32_t xOffset = xPos - globalX();
 	int32_t yOffset = yPos - globalY();
@@ -490,7 +511,8 @@ void LogisticsScreen::moveTo(int32_t xPos, int32_t yPos)
 	move(xOffset, yOffset);
 }
 
-void LogisticsScreen::move(int32_t xOffset, int32_t yOffset)
+void
+LogisticsScreen::move(int32_t xOffset, int32_t yOffset)
 {
 	int32_t i;
 	for (i = 0; i < rectCount; i++)
@@ -515,7 +537,8 @@ void LogisticsScreen::move(int32_t xOffset, int32_t yOffset)
 		animObjects[i].move(xOffset, yOffset);
 }
 
-bool LogisticsScreen::inside(int32_t x, int32_t y)
+bool
+LogisticsScreen::inside(int32_t x, int32_t y)
 {
 	int32_t i;
 	for (i = 0; i < staticCount; i++)
@@ -546,7 +569,8 @@ bool LogisticsScreen::inside(int32_t x, int32_t y)
 	return false;
 }
 
-void LogisticsScreen::begin()
+void
+LogisticsScreen::begin()
 {
 	for (size_t i = 0; i < animObjectsCount; i++)
 		animObjects[i].begin();

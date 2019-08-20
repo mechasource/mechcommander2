@@ -21,21 +21,23 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CMissionDialog dialog
 
-CMissionDialog::CMissionDialog(CWnd* pParent /*=nullptr*/) : CDialog(CMissionDialog::IDD, pParent)
+CMissionDialog::CMissionDialog(CWnd* pParent /*=nullptr*/) :
+	CDialog(CMissionDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CMissionDialog)
-	m_MissionFileEdit	  = _T("");
-	m_PurchaseFileEdit	 = _T("");
-	m_LogisticsCheck	   = FALSE;
-	m_MandatoryCheck	   = FALSE;
-	m_PilotPromotionCheck  = FALSE;
-	m_PurchasingCheck	  = FALSE;
-	m_SalvageCheck		   = FALSE;
+	m_MissionFileEdit = _T("");
+	m_PurchaseFileEdit = _T("");
+	m_LogisticsCheck = FALSE;
+	m_MandatoryCheck = FALSE;
+	m_PilotPromotionCheck = FALSE;
+	m_PurchasingCheck = FALSE;
+	m_SalvageCheck = FALSE;
 	m_SelectionScreenCheck = FALSE;
 	//}}AFX_DATA_INIT
 }
 
-void CMissionDialog::DoDataExchange(CDataExchange* pDX)
+void
+CMissionDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CMissionDialog)
@@ -60,7 +62,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMissionDialog message handlers
 
-void CMissionDialog::OnMiMissionFileBrowseButton()
+void
+CMissionDialog::OnMiMissionFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -82,7 +85,8 @@ void CMissionDialog::OnMiMissionFileBrowseButton()
 	UpdateData(FALSE);
 }
 
-void CMissionDialog::OnMiPurchaseFileBrowseButton()
+void
+CMissionDialog::OnMiPurchaseFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -96,7 +100,7 @@ void CMissionDialog::OnMiPurchaseFileBrowseButton()
 			CString purchasePath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			int32_t result = 0;
-			result		   = file.open((PSTR)(PCSTR)purchasePath);
+			result = file.open((PSTR)(PCSTR)purchasePath);
 			if (NO_ERROR != result)
 			{
 				AfxMessageBox(IDS_COULDNT_OPEN_PURCHASE_FILE);
@@ -104,7 +108,7 @@ void CMissionDialog::OnMiPurchaseFileBrowseButton()
 			else
 			{
 				int32_t result = 0;
-				result		   = file.seekBlock("Mechs");
+				result = file.seekBlock("Mechs");
 				if (NO_ERROR != result)
 				{
 					AfxMessageBox(IDS_NOT_A_VALID_PURCHASE_FILE);

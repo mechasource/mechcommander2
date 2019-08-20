@@ -20,10 +20,11 @@ Stuff::Vector3D UnitI(-1.0f, 0.0f, 0.0f);
 Stuff::Vector3D UnitJ(0.0f, -1.0f, 0.0f);
 Stuff::Vector3D UnitK(0.0f, 0.0f, 1.0f);
 
-void Rotate(Stuff::Vector2DOf<float>& vec, float angle)
+void
+Rotate(Stuff::Vector2DOf<float>& vec, float angle)
 {
-	float tx	 = vec.x;
-	float sine   = sin(angle * DEGREES_TO_RADS);
+	float tx = vec.x;
+	float sine = sin(angle * DEGREES_TO_RADS);
 	float cosine = cos(angle * DEGREES_TO_RADS);
 	vec.x *= cosine;
 	vec.x += (vec.y * sine);
@@ -31,10 +32,11 @@ void Rotate(Stuff::Vector2DOf<float>& vec, float angle)
 	vec.y -= (tx * sine);
 }
 
-void Rotate(Stuff::Vector3D& vec, float angle)
+void
+Rotate(Stuff::Vector3D& vec, float angle)
 {
-	float tx	 = vec.x;
-	float sine   = sin(angle * DEGREES_TO_RADS);
+	float tx = vec.x;
+	float sine = sin(angle * DEGREES_TO_RADS);
 	float cosine = cos(angle * DEGREES_TO_RADS);
 	vec.x *= cosine;
 	vec.x += (vec.y * sine);
@@ -42,10 +44,11 @@ void Rotate(Stuff::Vector3D& vec, float angle)
 	vec.y -= (tx * sine);
 }
 
-void RotateLight(Stuff::Vector3D& vec, float angle)
+void
+RotateLight(Stuff::Vector3D& vec, float angle)
 {
-	float tx	 = vec.x;
-	float sine   = sin(angle);
+	float tx = vec.x;
+	float sine = sin(angle);
 	float cosine = cos(angle);
 	vec.x *= cosine;
 	vec.x += (vec.z * sine);
@@ -53,10 +56,11 @@ void RotateLight(Stuff::Vector3D& vec, float angle)
 	vec.z -= (tx * sine);
 }
 
-void OppRotate(Stuff::Vector3D& vec, float angle)
+void
+OppRotate(Stuff::Vector3D& vec, float angle)
 {
-	float tx	 = vec.x;
-	float sine   = sin(angle * DEGREES_TO_RADS);
+	float tx = vec.x;
+	float sine = sin(angle * DEGREES_TO_RADS);
 	float cosine = cos(angle * DEGREES_TO_RADS);
 	vec.x *= cosine;
 	vec.x -= (vec.y * sine);
@@ -64,17 +68,19 @@ void OppRotate(Stuff::Vector3D& vec, float angle)
 	vec.y += (tx * sine);
 }
 
-float distance_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
+float
+distance_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 {
 	Stuff::Vector3D result;
-	result.x   = v2.x - v1.x;
-	result.y   = v2.y - v1.y;
-	result.z   = v2.z - v1.z;
+	result.x = v2.x - v1.x;
+	result.y = v2.y - v1.y;
+	result.z = v2.z - v1.z;
 	float dist = result.GetLength();
 	return (dist);
 }
 
-float my_acos(float val)
+float
+my_acos(float val)
 {
 	//-------------------------------------------------------
 	// Due to floating point round-off error, we may have
@@ -90,7 +96,8 @@ float my_acos(float val)
 	return (acos(val));
 }
 
-float angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2)
+float
+angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2)
 {
 	float mag_product = v1.GetLength() * v2.GetLength();
 	if (mag_product == 0.0)
@@ -102,7 +109,8 @@ float angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2)
 	}
 }
 
-float angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
+float
+angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 {
 	float mag_product = v1.GetLength() * v2.GetLength();
 	if (mag_product == 0.0)
@@ -115,7 +123,8 @@ float angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 }
 
 //---------------------------------------------------------------------------
-float world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
+float
+world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 {
 	Stuff::Vector3D facingVec(0.0f, 1.0f, 0.0f);
 	Stuff::Vector3D goalVec;
@@ -131,9 +140,13 @@ float world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 
 //---------------------------------------------------------------------------
 // Class frameOfRef
-frameOfRef::frameOfRef() { reset_to_world_frame(); }
+frameOfRef::frameOfRef()
+{
+	reset_to_world_frame();
+}
 
-frameOfRef& frameOfRef::reset_to_world_frame()
+frameOfRef&
+frameOfRef::reset_to_world_frame()
 {
 	i = UnitI;
 	j = UnitJ;
@@ -141,7 +154,8 @@ frameOfRef& frameOfRef::reset_to_world_frame()
 	return *this;
 }
 
-frameOfRef& frameOfRef::operator=(frameOfRef& fr)
+frameOfRef&
+frameOfRef::operator=(frameOfRef& fr)
 {
 	i = fr.i;
 	j = fr.j;
@@ -149,7 +163,8 @@ frameOfRef& frameOfRef::operator=(frameOfRef& fr)
 	return *this;
 }
 
-frameOfRef& frameOfRef::rotate(Stuff::Vector3D& rotation_vector)
+frameOfRef&
+frameOfRef::rotate(Stuff::Vector3D& rotation_vector)
 {
 	rotate_about_k(rotation_vector.z);
 	rotate_about_i(rotation_vector.x);
@@ -157,14 +172,15 @@ frameOfRef& frameOfRef::rotate(Stuff::Vector3D& rotation_vector)
 	return *this;
 }
 
-frameOfRef& frameOfRef::rotate_about_i(float& angle)
+frameOfRef&
+frameOfRef::rotate_about_i(float& angle)
 {
 	float cosine, sine;
 	Stuff::Vector3D oldj, oldK;
 	cosine = cos(angle * DEGREES_TO_RADS);
-	sine   = sin(angle * DEGREES_TO_RADS);
-	oldj   = j;
-	oldK   = k;
+	sine = sin(angle * DEGREES_TO_RADS);
+	oldj = j;
+	oldK = k;
 	j *= cosine; // j = J*cos + K*sin
 	oldK *= sine;
 	j += oldK;
@@ -174,14 +190,15 @@ frameOfRef& frameOfRef::rotate_about_i(float& angle)
 	return *this;
 }
 
-frameOfRef& frameOfRef::rotate_about_j(float& angle)
+frameOfRef&
+frameOfRef::rotate_about_j(float& angle)
 {
 	float cosine, sine;
 	Stuff::Vector3D oldi, oldK;
 	cosine = cos(angle * DEGREES_TO_RADS);
-	sine   = sin(angle * DEGREES_TO_RADS);
-	oldi   = i;
-	oldK   = k;
+	sine = sin(angle * DEGREES_TO_RADS);
+	oldi = i;
+	oldK = k;
 	i *= cosine; // i = I*cos - K*sin
 	oldK *= sine;
 	i -= oldK;
@@ -191,14 +208,15 @@ frameOfRef& frameOfRef::rotate_about_j(float& angle)
 	return *this;
 }
 
-frameOfRef& frameOfRef::rotate_about_k(float& angle)
+frameOfRef&
+frameOfRef::rotate_about_k(float& angle)
 {
 	float cosine, sine;
 	Stuff::Vector3D oldi, oldJ;
 	cosine = cos(angle * DEGREES_TO_RADS);
-	sine   = sin(angle * DEGREES_TO_RADS);
-	oldi   = i;
-	oldJ   = j;
+	sine = sin(angle * DEGREES_TO_RADS);
+	oldi = i;
+	oldJ = j;
 	i *= cosine;
 	oldJ *= sine;
 	i += oldJ;
@@ -208,28 +226,32 @@ frameOfRef& frameOfRef::rotate_about_k(float& angle)
 	return *this;
 }
 
-frameOfRef& frameOfRef::rotate_about_i_orthonormal(float& angle)
+frameOfRef&
+frameOfRef::rotate_about_i_orthonormal(float& angle)
 {
 	rotate_about_i(angle);
 	orthonormalize_on_xaxis();
 	return *this;
 }
 
-frameOfRef& frameOfRef::rotate_about_j_orthonormal(float& angle)
+frameOfRef&
+frameOfRef::rotate_about_j_orthonormal(float& angle)
 {
 	rotate_about_j(angle);
 	orthonormalize_on_yaxis();
 	return *this;
 }
 
-frameOfRef& frameOfRef::rotate_about_k_orthonormal(float& angle)
+frameOfRef&
+frameOfRef::rotate_about_k_orthonormal(float& angle)
 {
 	rotate_about_k(angle);
 	orthonormalize_on_zaxis();
 	return *this;
 }
 
-frameOfRef& frameOfRef::rotate(float& i_angle, float& j_angle, float& k_angle)
+frameOfRef&
+frameOfRef::rotate(float& i_angle, float& j_angle, float& k_angle)
 {
 	rotate_about_i_orthonormal(i_angle);
 	rotate_about_j_orthonormal(j_angle);
@@ -237,7 +259,8 @@ frameOfRef& frameOfRef::rotate(float& i_angle, float& j_angle, float& k_angle)
 	return *this;
 }
 
-frameOfRef& frameOfRef::orthonormalize_on_xaxis()
+frameOfRef&
+frameOfRef::orthonormalize_on_xaxis()
 {
 	// DON'T CHANGE THIS ORDER OF OPERATIONS WITHOUT CHANGING THE
 	// ROTATE FUNCTIONS
@@ -251,7 +274,8 @@ frameOfRef& frameOfRef::orthonormalize_on_xaxis()
 	return *this;
 }
 
-frameOfRef& frameOfRef::orthonormalize_on_yaxis()
+frameOfRef&
+frameOfRef::orthonormalize_on_yaxis()
 {
 	// DON'T CHANGE THIS ORDER OF OPERATIONS WITHOUT CHANGING THE
 	// ROTATE FUNCTIONS
@@ -265,7 +289,8 @@ frameOfRef& frameOfRef::orthonormalize_on_yaxis()
 	return *this;
 }
 
-frameOfRef& frameOfRef::orthonormalize_on_zaxis()
+frameOfRef&
+frameOfRef::orthonormalize_on_zaxis()
 {
 	// DON'T CHANGE THIS ORDER OF OPERATIONS WITHOUT CHANGING THE
 	// ROTATE FUNCTIONS

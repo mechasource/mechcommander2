@@ -19,21 +19,22 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID  = 1000010;
-static cint32_t OK_BUTTON_ID	 = 1000001;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 extern CPrefs prefs;
 
 MPHostGame::MPHostGame()
 {
-	bDone  = 0;
+	bDone = 0;
 	status = RUNNING;
 }
 
 MPHostGame::~MPHostGame() {}
 
-int32_t MPHostGame::indexOfButtonWithID(int32_t id)
+int32_t
+MPHostGame::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -46,7 +47,8 @@ int32_t MPHostGame::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void MPHostGame::init()
+void
+MPHostGame::init()
 {
 	FullPathFileName path;
 	FitIniFile file;
@@ -122,20 +124,23 @@ void MPHostGame::init()
 		numPlayersDropList.setReadOnly( 0 );*/
 }
 
-void MPHostGame::begin()
+void
+MPHostGame::begin()
 {
 	status = RUNNING;
 	LogisticsDialog::begin();
 	bShowDlg = 0;
 }
 
-void MPHostGame::end()
+void
+MPHostGame::end()
 {
 	bShowDlg = 0;
 	LogisticsDialog::end();
 }
 
-void MPHostGame::render(int32_t xOffset, int32_t yOffset)
+void
+MPHostGame::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsDialog::render();
 	if ((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() && !exitAnim.isAnimating())
@@ -152,9 +157,14 @@ void MPHostGame::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void MPHostGame::render() { render(0, 0); }
+void
+MPHostGame::render()
+{
+	render(0, 0);
+}
 
-int32_t MPHostGame::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MPHostGame::handleMessage(uint32_t message, uint32_t who)
 {
 	status = who;
 	exitAnim.begin();
@@ -180,9 +190,14 @@ int32_t MPHostGame::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool MPHostGame::isDone() { return bDone; }
+bool
+MPHostGame::isDone()
+{
+	return bDone;
+}
 
-void MPHostGame::update()
+void
+MPHostGame::update()
 {
 	if (bShowDlg)
 	{
@@ -190,12 +205,12 @@ void MPHostGame::update()
 		if (LogisticsOneButtonDialog::instance()->isDone())
 		{
 			bShowDlg = 0;
-			status   = NO;
+			status = NO;
 		}
 		return;
 	}
 	LogisticsDialog::update();
-	helpTextID		 = 0;
+	helpTextID = 0;
 	helpTextHeaderID = 0;
 	std::wstring tmp;
 	edits[0].getEntry(tmp);
@@ -208,7 +223,8 @@ void MPHostGame::update()
 		getButton(YES)->disable(true);
 }
 
-int32_t aStyle5TextListItem::init(FitIniFile* file, PCSTR blockName)
+int32_t
+aStyle5TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
 	int32_t fontResID = 0;
@@ -236,7 +252,8 @@ int32_t aStyle5TextListItem::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aStyle5TextListItem::render()
+void
+aStyle5TextListItem::render()
 {
 	float color;
 	if (aListItem::SELECTED == getState())

@@ -15,22 +15,22 @@
 TGAWnd::TGAWnd()
 {
 	bThisIsInitialized = false;
-	m_bTGAChanged	  = false;
-	m_pImage		   = nullptr;
-	m_pBmi			   = (BITMAPINFO*)malloc(sizeof(BITMAPINFOHEADER));
+	m_bTGAChanged = false;
+	m_pImage = nullptr;
+	m_pBmi = (BITMAPINFO*)malloc(sizeof(BITMAPINFOHEADER));
 	memset(m_pBmi, 0, sizeof(BITMAPINFOHEADER));
-	m_pBmi->bmiHeader.biSize		  = sizeof(BITMAPINFOHEADER);
-	m_pBmi->bmiHeader.biPlanes		  = 1;
-	m_pBmi->bmiHeader.biBitCount	  = 32;
-	m_pBmi->bmiHeader.biCompression   = 0;
+	m_pBmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	m_pBmi->bmiHeader.biPlanes = 1;
+	m_pBmi->bmiHeader.biBitCount = 32;
+	m_pBmi->bmiHeader.biCompression = 0;
 	m_pBmi->bmiHeader.biXPelsPerMeter = 0;
 	m_pBmi->bmiHeader.biYPelsPerMeter = 0;
-	m_pBmi->bmiHeader.biClrUsed		  = 0;
-	m_pBmi->bmiHeader.biClrImportant  = 0;
-	m_pMemDC						  = nullptr;
-	m_hBitmap						  = nullptr;
-	m_hSplashBitMap					  = nullptr;
-	bThisIsInitialized				  = true; /*it may be premature to flag it as initialized here*/
+	m_pBmi->bmiHeader.biClrUsed = 0;
+	m_pBmi->bmiHeader.biClrImportant = 0;
+	m_pMemDC = nullptr;
+	m_hBitmap = nullptr;
+	m_hSplashBitMap = nullptr;
+	bThisIsInitialized = true; /*it may be premature to flag it as initialized here*/
 }
 
 TGAWnd::~TGAWnd()
@@ -50,9 +50,10 @@ TGAWnd::~TGAWnd()
 		DeleteObject(m_hSplashBitMap);
 }
 
-void TGAWnd::SetTGAFileName(const CString& str)
+void
+TGAWnd::SetTGAFileName(const CString& str)
 {
-	m_FileName	= str;
+	m_FileName = str;
 	m_bTGAChanged = true;
 	if (m_pImage)
 	{
@@ -63,7 +64,7 @@ void TGAWnd::SetTGAFileName(const CString& str)
 	if (!File.Open(str, CFile::modeRead | CFile::shareDenyNone))
 	{
 		m_pBmi->bmiHeader.biHeight = 0;
-		m_pBmi->bmiHeader.biWidth  = 0;
+		m_pBmi->bmiHeader.biWidth = 0;
 		return;
 	}
 	if (m_hBitmap)
@@ -78,19 +79,18 @@ void TGAWnd::SetTGAFileName(const CString& str)
 		m_pImage = (PSTR)malloc(header.width * header.height * 4);
 		File.Read(m_pImage, header.width * header.height * 4);
 		m_pBmi->bmiHeader.biHeight = -header.height;
-		m_pBmi->bmiHeader.biWidth  = header.width;
+		m_pBmi->bmiHeader.biWidth = header.width;
 	}
 }
 
-void TGAWnd::SetTGAFileData(puint8_t data, int32_t size)
+void
+TGAWnd::SetTGAFileData(puint8_t data, int32_t size)
 {
-	m_FileName	= "";
+	m_FileName = "";
 	m_bTGAChanged = true;
 	TGAFileHeader* header;
 	header = (TGAFileHeader*)data;
-	if (m_pImage &&
-		(m_pBmi->bmiHeader.biWidth != -header->width ||
-			m_pBmi->bmiHeader.biHeight != header->height))
+	if (m_pImage && (m_pBmi->bmiHeader.biWidth != -header->width || m_pBmi->bmiHeader.biHeight != header->height))
 	{
 		free(m_pImage);
 		m_pImage = nullptr;
@@ -101,7 +101,7 @@ void TGAWnd::SetTGAFileData(puint8_t data, int32_t size)
 	{
 		memcpy(m_pImage, data + sizeof(TGAFileHeader), header->width * header->height * 4);
 		m_pBmi->bmiHeader.biHeight = -header->height;
-		m_pBmi->bmiHeader.biWidth  = header->width;
+		m_pBmi->bmiHeader.biWidth = header->width;
 	}
 }
 
@@ -114,7 +114,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // TGAWnd message handlers
 
-void TGAWnd::OnPaint()
+void
+TGAWnd::OnPaint()
 {
 	if (!bThisIsInitialized)
 	{

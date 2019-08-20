@@ -17,7 +17,8 @@ using namespace Stuff;
 //#############################################################################
 //#############################################################################
 //
-float Radian::Normalize(float Value)
+float
+Radian::Normalize(float Value)
 {
 	float temp = static_cast<float>(fmod(Value, Two_Pi));
 	if (temp > Pi)
@@ -35,7 +36,8 @@ float Radian::Normalize(float Value)
 //#############################################################################
 //#############################################################################
 //
-Radian& Radian::Normalize()
+Radian&
+Radian::Normalize()
 {
 	// Check_Object(this);
 	m_angle = static_cast<float>(fmod(m_angle, Two_Pi));
@@ -54,7 +56,8 @@ Radian& Radian::Normalize()
 //#############################################################################
 //#############################################################################
 //
-Radian& Radian::Lerp(const Radian& a, const Radian& b, float t)
+Radian&
+Radian::Lerp(const Radian& a, const Radian& b, float t)
 {
 	float a1, a2;
 	// Check_Pointer(this);
@@ -112,7 +115,8 @@ SinCosPair::operator=(const Radian& radian)
 //#############################################################################
 //
 #if !defined(Spew)
-void Spew(PCSTR group, const Radian& angle)
+void
+Spew(PCSTR group, const Radian& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "%f rad+", angle.m_angle));
@@ -122,7 +126,8 @@ void Spew(PCSTR group, const Radian& angle)
 //#############################################################################
 //#############################################################################
 //
-void Spew(PCSTR group, const Degree& angle)
+void
+Spew(PCSTR group, const Degree& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "%f deg+", angle.m_angle));
@@ -132,7 +137,8 @@ void Spew(PCSTR group, const Degree& angle)
 //#############################################################################
 //#############################################################################
 //
-void Spew(PCSTR group, const SinCosPair& angle)
+void
+Spew(PCSTR group, const SinCosPair& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "{%f,%f}+", angle.cosine, angle.sine));

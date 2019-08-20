@@ -16,7 +16,8 @@ class OBB;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::OBB& box);
+void
+Spew(PCSTR group, const Stuff::OBB& box);
 #endif
 
 namespace Stuff
@@ -44,17 +45,17 @@ public:
 	//
 public:
 	OBB() {}
-	OBB(const OBB& obb)
-		: localToParent(obb.localToParent), axisExtents(obb.axisExtents),
-		  sphereRadius(obb.sphereRadius)
+	OBB(const OBB& obb) :
+		localToParent(obb.localToParent), axisExtents(obb.axisExtents),
+		sphereRadius(obb.sphereRadius)
 	{
 	}
-	OBB(const LinearMatrix4D& origin, const Vector3D& extents)
-		: localToParent(origin), axisExtents(extents), sphereRadius(extents.GetLength())
+	OBB(const LinearMatrix4D& origin, const Vector3D& extents) :
+		localToParent(origin), axisExtents(extents), sphereRadius(extents.GetLength())
 	{
 	}
-	OBB(const LinearMatrix4D& origin, const Vector3D& extents, float radius)
-		: localToParent(origin), axisExtents(extents), sphereRadius(radius)
+	OBB(const LinearMatrix4D& origin, const Vector3D& extents, float radius) :
+		localToParent(origin), axisExtents(extents), sphereRadius(radius)
 	{
 	}
 
@@ -67,8 +68,8 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&obb);
 		localToParent = obb.localToParent;
-		axisExtents   = obb.axisExtents;
-		sphereRadius  = obb.sphereRadius;
+		axisExtents = obb.axisExtents;
+		sphereRadius = obb.sphereRadius;
 		return *this;
 	}
 
@@ -163,15 +164,9 @@ public:
 				fstp        dword ptr [eax + 02ch] //	localToParent(3,2)
 		}
 #else
-		localToParent(3, 0) = obb.localToParent(3, 0) * matrix(0, 0) +
-			obb.localToParent(3, 1) * matrix(1, 0) + obb.localToParent(3, 2) * matrix(2, 0) +
-			matrix(3, 0);
-		localToParent(3, 1) = obb.localToParent(3, 0) * matrix(0, 1) +
-			obb.localToParent(3, 1) * matrix(1, 1) + obb.localToParent(3, 2) * matrix(2, 1) +
-			matrix(3, 1);
-		localToParent(3, 2) = obb.localToParent(3, 0) * matrix(0, 2) +
-			obb.localToParent(3, 1) * matrix(1, 2) + obb.localToParent(3, 2) * matrix(2, 2) +
-			matrix(3, 2);
+		localToParent(3, 0) = obb.localToParent(3, 0) * matrix(0, 0) + obb.localToParent(3, 1) * matrix(1, 0) + obb.localToParent(3, 2) * matrix(2, 0) + matrix(3, 0);
+		localToParent(3, 1) = obb.localToParent(3, 0) * matrix(0, 1) + obb.localToParent(3, 1) * matrix(1, 1) + obb.localToParent(3, 2) * matrix(2, 1) + matrix(3, 1);
+		localToParent(3, 2) = obb.localToParent(3, 0) * matrix(0, 2) + obb.localToParent(3, 1) * matrix(1, 2) + obb.localToParent(3, 2) * matrix(2, 2) + matrix(3, 2);
 #endif
 		sphereRadius = obb.sphereRadius;
 		return *this;
@@ -211,7 +206,8 @@ public:
 	void Union(const OBB& first, const OBB& second);
 };
 
-inline Sphere& Sphere::operator=(const OBB& obb)
+inline Sphere&
+Sphere::operator=(const OBB& obb)
 {
 	// Check_Pointer(this);
 	Check_Object(&obb);
@@ -224,11 +220,13 @@ inline Sphere& Sphere::operator=(const OBB& obb)
 namespace MemoryStreamIO
 {
 #if _CONSIDERED_TEMPORARILY_DISABLED
-inline std::istream& Read(std::istream& stream, Stuff::OBB* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::OBB* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::OBB* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::OBB* input)
 {
 	return stream.write(input, sizeof(*input));
 }

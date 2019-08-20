@@ -12,8 +12,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::PertCloud__Specification::PertCloud__Specification(
-	std::iostream stream, uint32_t gfx_version)
-	: SpinningCloud__Specification(gosFX::PertCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version) :
+	SpinningCloud__Specification(gosFX::PertCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	_ASSERT(m_class == gosFX::PertCloudClassID);
@@ -27,26 +27,25 @@ gosFX::PertCloud__Specification::PertCloud__Specification(
 	m_particleClassSize = sizeof(gosFX::PertCloud::Particle);
 	_ASSERT(gfx_version > 5);
 	*stream >> m_vertices;
-	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) +
-		2 * sizeof(Stuff::RGBAColor);
+	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) + 2 * sizeof(Stuff::RGBAColor);
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides)
-	: SpinningCloud__Specification(gosFX::PertCloudClassID)
+gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides) :
+	SpinningCloud__Specification(gosFX::PertCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_particleClassSize = sizeof(gosFX::PertCloud::Particle);
-	m_vertices			= sides + 2;
-	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) +
-		2 * sizeof(Stuff::RGBAColor);
+	m_vertices = sides + 2;
+	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) + 2 * sizeof(Stuff::RGBAColor);
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::PertCloud__Specification* gosFX::PertCloud__Specification::Make(
+gosFX::PertCloud__Specification*
+gosFX::PertCloud__Specification::Make(
 	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
@@ -60,7 +59,8 @@ gosFX::PertCloud__Specification* gosFX::PertCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud__Specification::Save(std::iostream stream)
+void
+gosFX::PertCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -76,7 +76,8 @@ void gosFX::PertCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud__Specification::BuildDefaults()
+void
+gosFX::PertCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
@@ -102,7 +103,8 @@ void gosFX::PertCloud__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::PertCloud__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::PertCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	return SpinningCloud__Specification::IsDataValid(fix_data);
@@ -135,7 +137,8 @@ bool gosFX::PertCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud__Specification::Copy(PertCloud__Specification* spec)
+void
+gosFX::PertCloud__Specification::Copy(PertCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -143,13 +146,13 @@ void gosFX::PertCloud__Specification::Copy(PertCloud__Specification* spec)
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	m_size		   = spec->m_size;
+	m_size = spec->m_size;
 	m_perturbation = spec->m_perturbation;
-	m_pCenterRed   = spec->m_pCenterRed;
+	m_pCenterRed = spec->m_pCenterRed;
 	m_pCenterGreen = spec->m_pCenterGreen;
-	m_pCenterBlue  = spec->m_pCenterBlue;
+	m_pCenterBlue = spec->m_pCenterBlue;
 	m_pCenterAlpha = spec->m_pCenterAlpha;
-	m_vertices	 = spec->m_vertices;
+	m_vertices = spec->m_vertices;
 	// gos_PopCurrentHeap();
 }
 
@@ -162,7 +165,8 @@ gosFX::PertCloud::ClassData* gosFX::PertCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::InitializeClass()
+void
+gosFX::PertCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	DefaultData =
@@ -173,7 +177,8 @@ void gosFX::PertCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::TerminateClass()
+void
+gosFX::PertCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -182,8 +187,8 @@ void gosFX::PertCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::PertCloud::PertCloud(Specification* spec, uint32_t flags)
-	: SpinningCloud(DefaultData, spec, flags)
+gosFX::PertCloud::PertCloud(Specification* spec, uint32_t flags) :
+	SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -193,7 +198,7 @@ gosFX::PertCloud::PertCloud(Specification* spec, uint32_t flags)
 	Register_Object(m_cloudImplementation);
 	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
-	m_P_vertices   = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
+	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += spec->m_vertices * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
 	m_cloudImplementation->SetData(
@@ -210,7 +215,8 @@ gosFX::PertCloud::~PertCloud()
 
 //------------------------------------------------------------------------------
 //
-gosFX::PertCloud* gosFX::PertCloud::Make(Specification* spec, uint32_t flags)
+gosFX::PertCloud*
+gosFX::PertCloud::Make(Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
 #ifdef _GAMEOS_HPP_
@@ -223,7 +229,8 @@ gosFX::PertCloud* gosFX::PertCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::PertCloud::AnimateParticle(
+bool
+gosFX::PertCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -240,7 +247,7 @@ bool gosFX::PertCloud::AnimateParticle(
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	float seed = particle->m_seed;
-	float age  = particle->m_age;
+	float age = particle->m_age;
 	//
 	//------------------
 	// Animate the color
@@ -248,21 +255,22 @@ bool gosFX::PertCloud::AnimateParticle(
 	//
 	Check_Pointer(m_P_color);
 	index *= 2;
-	m_P_color[index].red   = spec->m_pCenterRed.ComputeValue(age, seed);
+	m_P_color[index].red = spec->m_pCenterRed.ComputeValue(age, seed);
 	m_P_color[index].green = spec->m_pCenterGreen.ComputeValue(age, seed);
-	m_P_color[index].blue  = spec->m_pCenterBlue.ComputeValue(age, seed);
+	m_P_color[index].blue = spec->m_pCenterBlue.ComputeValue(age, seed);
 	m_P_color[index].alpha = spec->m_pCenterAlpha.ComputeValue(age, seed);
 	++index;
-	m_P_color[index].red   = spec->m_pRed.ComputeValue(age, seed);
+	m_P_color[index].red = spec->m_pRed.ComputeValue(age, seed);
 	m_P_color[index].green = spec->m_pGreen.ComputeValue(age, seed);
-	m_P_color[index].blue  = spec->m_pBlue.ComputeValue(age, seed);
+	m_P_color[index].blue = spec->m_pBlue.ComputeValue(age, seed);
 	m_P_color[index].alpha = spec->m_pAlpha.ComputeValue(age, seed);
 	return true;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void
+gosFX::PertCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -288,30 +296,31 @@ void gosFX::PertCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* transla
 	//----------------------------------------
 	//
 	_ASSERT(spec->m_vertices > 4);
-	float angle_between		= Stuff::Two_Pi / (spec->m_vertices - 2);
-	float radius			= spec->m_size.ComputeValue(m_age, particle->m_seed);
-	int32_t even			= 1;
+	float angle_between = Stuff::Two_Pi / (spec->m_vertices - 2);
+	float radius = spec->m_size.ComputeValue(m_age, particle->m_seed);
+	int32_t even = 1;
 	particle->m_vertices[0] = Stuff::Point3D::Identity;
-	float bound				= 0.0f;
+	float bound = 0.0f;
 	int32_t j;
 	for (j = 1; j < spec->m_vertices - 1; j++)
 	{
-		float perturbance		= even * spec->m_perturbation.ComputeValue(m_age, particle->m_seed);
-		float temp				= perturbance + radius;
+		float perturbance = even * spec->m_perturbation.ComputeValue(m_age, particle->m_seed);
+		float temp = perturbance + radius;
 		particle->m_vertices[j] = Stuff::Point3D(Stuff::Sin(j * angle_between) * temp,
 			Stuff::Cos(j * angle_between) * temp, perturbance);
-		perturbance				= temp * temp + perturbance * perturbance;
+		perturbance = temp * temp + perturbance * perturbance;
 		if (perturbance > bound)
 			bound = perturbance;
 		even = -even;
 	}
-	particle->m_radius		= Stuff::Sqrt(bound);
+	particle->m_radius = Stuff::Sqrt(bound);
 	particle->m_vertices[j] = particle->m_vertices[1];
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::DestroyParticle(uint32_t index)
+void
+gosFX::PertCloud::DestroyParticle(uint32_t index)
 {
 	SpinningCloud::DestroyParticle(index);
 	m_cloudImplementation->TurnOff(index);
@@ -320,7 +329,8 @@ void gosFX::PertCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::Draw(DrawInfo* info)
+void
+gosFX::PertCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -332,7 +342,7 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 	if (m_activeParticleCount)
 	{
 		MidLevelRenderer::DrawEffectInformation dInfo;
-		dInfo.effect		= m_cloudImplementation;
+		dInfo.effect = m_cloudImplementation;
 		Specification* spec = GetSpecification();
 		Check_Object(spec);
 		dInfo.state.Combine(info->m_state, spec->m_state);
@@ -561,4 +571,8 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::PertCloud::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

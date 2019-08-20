@@ -18,8 +18,8 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // SelectSlopeDialog dialog
 
-SelectSlopeDialog::SelectSlopeDialog(CWnd* pParent /*=nullptr*/)
-	: CDialog(SelectSlopeDialog::IDD, pParent)
+SelectSlopeDialog::SelectSlopeDialog(CWnd* pParent /*=nullptr*/) :
+	CDialog(SelectSlopeDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(SelectSlopeDialog)
 	m_MaxEdit = 0.0f;
@@ -27,7 +27,8 @@ SelectSlopeDialog::SelectSlopeDialog(CWnd* pParent /*=nullptr*/)
 	//}}AFX_DATA_INIT
 }
 
-void SelectSlopeDialog::DoDataExchange(CDataExchange* pDX)
+void
+SelectSlopeDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(SelectSlopeDialog)

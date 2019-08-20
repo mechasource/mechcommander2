@@ -59,20 +59,20 @@ class PacketFile;
 
 struct ObjData
 {
-	int16_t objTypeNum;	// Type number of object
+	int16_t objTypeNum; // Type number of object
 	uint16_t vertexNumber; // Vertex Number in Block.
-	uint16_t blockNumber;  // Which terrain Block.
-	uint8_t damage;		   // Damage
+	uint16_t blockNumber; // Which terrain Block.
+	uint8_t damage; // Damage
 	int32_t teamId;
 	uint32_t parentId; // hOW AM i LINKED.
 };
 
 struct MiscObjectData
 {
-	int32_t blockNumber;   // Terrain Block I occupy
-	int32_t vertexNumber;  // Terrain Vertex I occupy
+	int32_t blockNumber; // Terrain Block I occupy
+	int32_t vertexNumber; // Terrain Vertex I occupy
 	int32_t objectTypeNum; // ObjectTypeNumber for this overlay tile
-	int32_t damaged;	   // Is this overlay tile damaged or not
+	int32_t damaged; // Is this overlay tile damaged or not
 };
 
 struct ObjDataLoader
@@ -187,9 +187,9 @@ public:
 	BuildingPtr turretControls[MAX_TURRET_CONTROLS];
 	BuildingPtr powerGenerators[MAX_POWER_GENERATORS];
 	BuildingPtr specialBuildings[MAX_SPECIAL_BUILDINGS]; // These must be
-														 // updated EVERY FRAME.
-														 // Perimeter alarms,
-														 // etc.
+		// updated EVERY FRAME.
+		// Perimeter alarms,
+		// etc.
 	int32_t numGateControls;
 	int32_t numTurretControls;
 	int32_t numPowerGenerators;
@@ -215,7 +215,7 @@ public:
 
 	int32_t currentWeaponsIndex; // points to next entry in rotating weapon array.
 	int32_t currentCarnageIndex; // points to next entry in rotating carnage
-								 // list
+		// list
 	int32_t currentLightIndex;
 	int32_t currentArtilleryIndex;
 
@@ -265,14 +265,12 @@ public:
 
 	int32_t getNumObjects(void)
 	{
-		return (numMechs + numVehicles + numElementals + numTerrainObjects + numBuildings +
-			numTurrets + numWeapons + numCarnage + numLights + numArtillery + numGates);
+		return (numMechs + numVehicles + numElementals + numTerrainObjects + numBuildings + numTurrets + numWeapons + numCarnage + numLights + numArtillery + numGates);
 	}
 
 	int32_t getMaxObjects(void)
 	{
-		return (maxMechs + maxVehicles + numElementals + numTerrainObjects + numBuildings +
-			numTurrets + numWeapons + numCarnage + numLights + numArtillery + numGates);
+		return (maxMechs + maxVehicles + numElementals + numTerrainObjects + numBuildings + numTurrets + numWeapons + numCarnage + numLights + numArtillery + numGates);
 	}
 
 	int32_t load(File* gameFile);

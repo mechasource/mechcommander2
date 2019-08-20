@@ -21,16 +21,17 @@ extern uint32_t gShowBirdView, gEnableDetailTexture, gEnableMultiTexture, gEnabl
 
 DrawShapeInformation::DrawShapeInformation()
 {
-	shape			 = nullptr;
-	state			 = 0;
-	shapeToWorld	 = nullptr;
-	worldToShape	 = nullptr;
-	activeLights	 = nullptr;
+	shape = nullptr;
+	state = 0;
+	shapeToWorld = nullptr;
+	worldToShape = nullptr;
+	activeLights = nullptr;
 	nrOfActiveLights = 0;
 	clippingFlags.SetClippingState(0);
 };
 
-DrawScalableShapeInformation::DrawScalableShapeInformation() : DrawShapeInformation()
+DrawScalableShapeInformation::DrawScalableShapeInformation() :
+	DrawShapeInformation()
 {
 	scaling = nullptr;
 	paintMe = nullptr;
@@ -38,8 +39,8 @@ DrawScalableShapeInformation::DrawScalableShapeInformation() : DrawShapeInformat
 
 DrawEffectInformation::DrawEffectInformation()
 {
-	effect		  = nullptr;
-	state		  = 0;
+	effect = nullptr;
+	state = 0;
 	effectToWorld = nullptr;
 #if 0
 	activeLights = nullptr;
@@ -50,10 +51,10 @@ DrawEffectInformation::DrawEffectInformation()
 
 DrawScreenQuadsInformation::DrawScreenQuadsInformation()
 {
-	coords	= nullptr;
-	colors	= nullptr;
+	coords = nullptr;
+	colors = nullptr;
 	texCoords = nullptr;
-	onOrOff   = nullptr;
+	onOrOff = nullptr;
 	nrOfQuads = 0;
 };
 
@@ -65,7 +66,8 @@ MLRClipper::ClassData* MLRClipper::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClipper::InitializeClass()
+void
+MLRClipper::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -76,7 +78,8 @@ void MLRClipper::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClipper::TerminateClass()
+void
+MLRClipper::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -85,13 +88,14 @@ void MLRClipper::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRClipper::MLRClipper(AndyDisplay* ad, MLRSorter* s) : RegisteredClass(DefaultData), display(ad)
+MLRClipper::MLRClipper(AndyDisplay* ad, MLRSorter* s) :
+	RegisteredClass(DefaultData), display(ad)
 {
 	////_ASSERT(gos_GetCurrentHeap() == Heap);
 	frameRate = 0;
-	usedTime  = 0.0f;
-	nowTime   = 0.0f;
-	sorter	= s;
+	usedTime = 0.0f;
+	nowTime = 0.0f;
+	sorter = s;
 	// camMatrix;
 }
 
@@ -108,7 +112,8 @@ MLRClipper::~MLRClipper()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
+void
+MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	const Stuff::Matrix4D& clip_matrix,
 	const Stuff::RGBAColor& fog_color, // NOT USED ANYMORE
 	const Stuff::RGBAColor* background_color, const MLRState& default_state, const float* z_value)
@@ -147,21 +152,21 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
-	float z				= 1.0f;
+	float z = 1.0f;
 	uint32_t back_color = 0;
-	bool fill			= false;
-	bool clear			= false;
+	bool fill = false;
+	bool clear = false;
 	if (z_value)
 	{
 		Check_Pointer(z_value);
-		z	= *z_value;
+		z = *z_value;
 		fill = true;
 	}
 	if (background_color)
 	{
 		Check_Pointer(background_color);
 		back_color = GOSCopyColor(background_color);
-		clear	  = true;
+		clear = true;
 	}
 	MLRState::fogColor = back_color;
 	/* Already done in MC2
@@ -327,7 +332,8 @@ static Stuff::AffineMatrix4D scaledShapeToWorld;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
+void
+MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 {
 // Check_Object(this);
 //
@@ -336,7 +342,7 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
-	MLRShape* shape				= dInfo->shape;
+	MLRShape* shape = dInfo->shape;
 	MLRPrimitiveBase* primitive = nullptr;
 	if (dInfo->nrOfActiveLights > Limits::Max_Number_Of_Lights_Per_Primitive)
 	{
@@ -382,13 +388,13 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 		{
 			ToBeDrawnPrimitive* tbdp = sorter->GetCurrentTBDP();
 			Check_Pointer(tbdp);
-			tbdp->primitive		 = primitive;
-			tbdp->state			 = primitive->GetCurrentState();
+			tbdp->primitive = primitive;
+			tbdp->state = primitive->GetCurrentState();
 			tbdp->cameraPosition = sp;
-			tbdp->clippingFlags  = dInfo->clippingFlags;
+			tbdp->clippingFlags = dInfo->clippingFlags;
 			Check_Object(&tbdp->shapeToClipMatrix);
 			tbdp->shapeToClipMatrix = shape->shapeToClipMatrix;
-			tbdp->worldToShape		= *shape->worldToShape;
+			tbdp->worldToShape = *shape->worldToShape;
 			_ASSERT(dInfo->nrOfActiveLights <= Limits::Max_Number_Of_Lights_Per_Primitive);
 			tbdp->nrOfActiveLights = dInfo->nrOfActiveLights;
 			for (j = 0; j < tbdp->nrOfActiveLights; j++)
@@ -461,13 +467,14 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
+void
+MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 {
 	// Check_Object(this);
 	//
 	// Statistic timing function
 	//
-	MLRShape* shape				= dInfo->shape;
+	MLRShape* shape = dInfo->shape;
 	MLRPrimitiveBase* primitive = nullptr;
 	size_t i;
 	shape->shapeToClipMatrix.Multiply(*dInfo->shapeToWorld, worldToClipMatrix);
@@ -476,9 +483,9 @@ void MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 	if (dInfo->scaling != nullptr)
 	{
 		Stuff::LinearMatrix4D scale = Stuff::LinearMatrix4D::Identity;
-		scale(0, 0)					= dInfo->scaling->x;
-		scale(1, 1)					= dInfo->scaling->y;
-		scale(2, 2)					= dInfo->scaling->z;
+		scale(0, 0) = dInfo->scaling->x;
+		scale(1, 1) = dInfo->scaling->y;
+		scale(2, 2) = dInfo->scaling->z;
 		scaledShapeToWorld.Multiply(scale, *dInfo->shapeToWorld);
 		shape->shapeToClipMatrix.Multiply(scaledShapeToWorld, worldToClipMatrix);
 	}
@@ -547,7 +554,8 @@ void MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClipper::DrawEffect(DrawEffectInformation* dInfo)
+void
+MLRClipper::DrawEffect(DrawEffectInformation* dInfo)
 {
 	//
 	// Statistic timing function
@@ -572,7 +580,8 @@ void MLRClipper::DrawEffect(DrawEffectInformation* dInfo)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
+void
+MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 {
 	//
 	// Statistic timing function
@@ -592,21 +601,16 @@ void MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 			for (; j < dInfo->currentNrOfQuads; j++)
 			{
 				size_t offset = (i << 2) + (j & 3);
-				_ASSERT(dInfo->coords[offset].x >= 0.0f &&
-					dInfo->coords[offset].x <= dInfo->coords[offset].w);
-				_ASSERT(dInfo->coords[offset].y >= 0.0f &&
-					dInfo->coords[offset].y <= dInfo->coords[offset].w);
-				_ASSERT(dInfo->coords[offset].z >= 0.0f &&
-					dInfo->coords[offset].z <= dInfo->coords[offset].w);
-				vertices[j].x = (1.0f - dInfo->coords[offset].x) * ViewportScalars::MulX +
-					ViewportScalars::AddX;
-				vertices[j].y = (1.0f - dInfo->coords[offset].y) * ViewportScalars::MulY +
-					ViewportScalars::AddY;
-				vertices[j].z	= dInfo->coords[offset].z;
-				vertices[j].rhw  = dInfo->coords[offset].w;
+				_ASSERT(dInfo->coords[offset].x >= 0.0f && dInfo->coords[offset].x <= dInfo->coords[offset].w);
+				_ASSERT(dInfo->coords[offset].y >= 0.0f && dInfo->coords[offset].y <= dInfo->coords[offset].w);
+				_ASSERT(dInfo->coords[offset].z >= 0.0f && dInfo->coords[offset].z <= dInfo->coords[offset].w);
+				vertices[j].x = (1.0f - dInfo->coords[offset].x) * ViewportScalars::MulX + ViewportScalars::AddX;
+				vertices[j].y = (1.0f - dInfo->coords[offset].y) * ViewportScalars::MulY + ViewportScalars::AddY;
+				vertices[j].z = dInfo->coords[offset].z;
+				vertices[j].rhw = dInfo->coords[offset].w;
 				vertices[j].argb = GOSCopyColor(dInfo->colors + offset);
-				vertices[j].u	= dInfo->texCoords[offset][0];
-				vertices[j].v	= dInfo->texCoords[offset][1];
+				vertices[j].u = dInfo->texCoords[offset][0];
+				vertices[j].v = dInfo->texCoords[offset][1];
 			}
 		}
 	}

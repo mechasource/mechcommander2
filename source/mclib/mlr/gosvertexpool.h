@@ -148,13 +148,13 @@ protected:
 	uint32_t vertexAlignment2uv;
 	uint32_t indicesAlignment;
 
-	std::vector<GOSVertex> vertices;		// Max_Number_Vertices_Per_Frame+4*Max_Number_ScreenQuads_Per_Frame
-	std::vector<GOSVertex2UV> vertices2uv;	// , Max_Number_Vertices_Per_Frame+4*Max_Number_ScreenQuads_Per_Frame
-	std::vector<uint16_t> indices;			// , Max_Number_Vertices_Per_Frame
+	std::vector<GOSVertex> vertices; // Max_Number_Vertices_Per_Frame+4*Max_Number_ScreenQuads_Per_Frame
+	std::vector<GOSVertex2UV> vertices2uv; // , Max_Number_Vertices_Per_Frame+4*Max_Number_ScreenQuads_Per_Frame
+	std::vector<uint16_t> indices; // , Max_Number_Vertices_Per_Frame
 
-	std::vector<GOSVertex> verticesDB;		// , Max_Number_Vertices_Per_Mesh
-	std::vector<GOSVertex2UV> vertices2uvDB;// , Max_Number_Vertices_Per_Mesh
-	std::vector<uint16_t> indicesDB;		// , Max_Number_Vertices_Per_Mesh
+	std::vector<GOSVertex> verticesDB; // , Max_Number_Vertices_Per_Mesh
+	std::vector<GOSVertex2UV> vertices2uvDB; // , Max_Number_Vertices_Per_Mesh
+	std::vector<uint16_t> indicesDB; // , Max_Number_Vertices_Per_Mesh
 
 private:
 	GOSVertexPool(const GOSVertexPool&);

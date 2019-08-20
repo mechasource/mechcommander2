@@ -19,15 +19,16 @@ MPStats.cpp			: Implementation of the MPStats component.
 MPStats::MPStats()
 {
 	helpTextArrayID = 8;
-	status			= -1;
-	bHostLeftDlg	= 0;
+	status = -1;
+	bHostLeftDlg = 0;
 }
 
 //-------------------------------------------------------------------------------------------------
 
 MPStats::~MPStats() {}
 
-int32_t MPStats::init()
+int32_t
+MPStats::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -70,17 +71,19 @@ int32_t __cdecl sortStats(PCVOID pPlayer1, PCVOID pPlayer2)
 	return 0;
 }
 
-void MPStats::end()
+void
+MPStats::end()
 {
 	MPlayer->setInProgress(false);
 	bSavingStats = 0;
 }
 
-void MPStats::begin()
+void
+MPStats::begin()
 {
 	MPlayer->setMode(MULTIPLAYER_MODE_RESULTS);
 	bSavingStats = 0;
-	status		 = RUNNING;
+	status = RUNNING;
 	beginFadeIn(.5);
 	for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		entries[i].showGUIWindow(0);
@@ -104,7 +107,8 @@ void MPStats::begin()
 	textObjects[7].setText(text2);
 }
 
-int32_t MPStats::handleMessage(uint32_t what, uint32_t who)
+int32_t
+MPStats::handleMessage(uint32_t what, uint32_t who)
 {
 	if (who == MP_STATS_SAVE)
 	{
@@ -122,7 +126,8 @@ int32_t MPStats::handleMessage(uint32_t what, uint32_t who)
 	return 1;
 }
 
-void MPStats::render(int32_t xOffset, int32_t yOffset)
+void
+MPStats::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
 	for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
@@ -140,7 +145,8 @@ void MPStats::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void MPStats::update()
+void
+MPStats::update()
 {
 	if (status == RUNNING && !statics[15].getColor())
 	{
@@ -148,7 +154,7 @@ void MPStats::update()
 		statics[15].setTexture(textureHandle);
 		statics[15].setUVs(0, 127, 127, 0);
 		statics[15].setColor(0xffffffff);
-		int32_t playerCount		 = 0;
+		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		const MC2Player* sorted[MAX_MC_PLAYERS];
 		int32_t winnerCount = 0;
@@ -211,7 +217,8 @@ void MPStats::update()
 		ChatWindow::instance()->update();
 }
 
-void MPStats::setHostLeftDlg(PCSTR hostName)
+void
+MPStats::setHostLeftDlg(PCSTR hostName)
 {
 	char leaveStr[256];
 	char formatStr[256];
@@ -224,13 +231,21 @@ void MPStats::setHostLeftDlg(PCSTR hostName)
 }
 
 //*************************************************************************************************
-MPStatsEntry::MPStatsEntry() { overlayColor = 0; }
+MPStatsEntry::MPStatsEntry()
+{
+	overlayColor = 0;
+}
 
-void MPStatsEntry::render(int32_t x, int32_t y) { LogisticsScreen::render(x, y); }
+void
+MPStatsEntry::render(int32_t x, int32_t y)
+{
+	LogisticsScreen::render(x, y);
+}
 
 MPStatsEntry::~MPStatsEntry() {}
 
-void MPStatsEntry::init()
+void
+MPStatsEntry::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -248,10 +263,11 @@ void MPStatsEntry::init()
 	overlayColor = 0;
 }
 
-void MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
+void
+MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 {
-	int32_t color	  = data ? MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] : 0x00000000;
-	int32_t color2	 = data ? MPlayer->colors[data->stripeColor] : 0x00000000;
+	int32_t color = data ? MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] : 0x00000000;
+	int32_t color2 = data ? MPlayer->colors[data->stripeColor] : 0x00000000;
 	int32_t scoreColor = 0xffffffff;
 	if (data && MPlayer->allUnitsDestroyed[data->commanderID])
 		scoreColor = 0xff7f7f7f;
@@ -296,17 +312,37 @@ void MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 	}
 }
 
-int32_t MPStatsEntry::getPlayerHeadingX() { return location[0].x; }
-int32_t MPStatsEntry::getRankingX() { return textObjects[0].globalX(); }
-int32_t MPStatsEntry::getKillsX() { return textObjects[1].globalX(); }
-int32_t MPStatsEntry::getLossesX() { return textObjects[2].globalX(); }
+int32_t
+MPStatsEntry::getPlayerHeadingX()
+{
+	return location[0].x;
+}
+int32_t
+MPStatsEntry::getRankingX()
+{
+	return textObjects[0].globalX();
+}
+int32_t
+MPStatsEntry::getKillsX()
+{
+	return textObjects[1].globalX();
+}
+int32_t
+MPStatsEntry::getLossesX()
+{
+	return textObjects[2].globalX();
+}
 
 //*************************************************************************************************
-MPStatsResultsEntry::MPStatsResultsEntry() { overlayColor = 0; }
+MPStatsResultsEntry::MPStatsResultsEntry()
+{
+	overlayColor = 0;
+}
 
 MPStatsResultsEntry::~MPStatsResultsEntry() {}
 
-void MPStatsResultsEntry::render(int32_t x, int32_t y)
+void
+MPStatsResultsEntry::render(int32_t x, int32_t y)
 {
 	LogisticsScreen::render(x, y);
 	// if ( overlayColor )
@@ -316,7 +352,8 @@ void MPStatsResultsEntry::render(int32_t x, int32_t y)
 	//}
 }
 
-void MPStatsResultsEntry::init()
+void
+MPStatsResultsEntry::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -332,7 +369,8 @@ void MPStatsResultsEntry::init()
 	aObject::init(0, 0, rects[0].width(), rects[0].height());
 }
 
-void MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool bShowScore)
+void
+MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool bShowScore)
 {
 	rects[4].setColor(MPlayer->colors[data->baseColor[BASECOLOR_TEAM]]);
 	rects[2].setColor(MPlayer->colors[data->stripeColor]);
@@ -340,7 +378,7 @@ void MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, b
 		overlayColor = 0x7f000000;
 	else
 		overlayColor = 0;
-	int32_t color	 = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
+	int32_t color = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
 	int32_t textColor = 0xff000000;
 	if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
 		textColor = 0xffffffff;
@@ -389,8 +427,8 @@ void MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, b
 		if (pData)
 		{
 			int32_t size = pData->pixel_depth / 8;
-			int32_t ID   = mcTextureManager->textureFromMemory(
-				  (uint32_t*)(pData + 1), gos_Texture_Solid, 0, pData->width, size);
+			int32_t ID = mcTextureManager->textureFromMemory(
+				(uint32_t*)(pData + 1), gos_Texture_Solid, 0, pData->width, size);
 			statics[0].setTexture(ID);
 			statics[0].setUVs(0, 32, 32, 0);
 		}

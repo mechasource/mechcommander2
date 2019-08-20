@@ -33,7 +33,7 @@ class SlotLink : public Link
 
 public:
 	static void InitializeClass(size_t block_count = SlotLink_MemoryBlock_Allocation,
-		size_t block_delta						   = SlotLink_MemoryBlock_Allocation);
+		size_t block_delta = SlotLink_MemoryBlock_Allocation);
 	static void __stdcall TerminateClass(void);
 
 public:
@@ -103,7 +103,8 @@ private:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-template <class T> class SlotOf : public Slot
+template <class T>
+class SlotOf : public Slot
 {
 public:
 	//
@@ -128,8 +129,15 @@ public:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-template <class T> SlotOf<T>::SlotOf(Node* node) : Slot(node) {}
+template <class T>
+SlotOf<T>::SlotOf(Node* node) :
+	Slot(node)
+{
+}
 
-template <class T> SlotOf<T>::~SlotOf() {}
+template <class T>
+SlotOf<T>::~SlotOf()
+{
+}
 } // namespace Stuff
 #endif

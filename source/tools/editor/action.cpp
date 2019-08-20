@@ -28,7 +28,7 @@ ActionUndoMgr* ActionUndoMgr::instance = nullptr;
 //************************************************************************
 ActionUndoMgr::ActionUndoMgr(void)
 {
-	m_CurrentPos	= -1;
+	m_CurrentPos = -1;
 	m_PosOfLastSave = -1;
 	ATLASSERT(instance == nullptr);
 	instance = this;
@@ -40,7 +40,10 @@ ActionUndoMgr::ActionUndoMgr(void)
 // Returns:		nothing
 // Description:	empties list
 //************************************************************************
-ActionUndoMgr::~ActionUndoMgr(void) { Reset(); }
+ActionUndoMgr::~ActionUndoMgr(void)
+{
+	Reset();
+}
 
 //***********************************************************************
 // Function:	AddAction
@@ -49,7 +52,8 @@ ActionUndoMgr::~ActionUndoMgr(void) { Reset(); }
 // Returns:		void
 // Descripition: adds the passed in action to the undo list
 //***********************************************************************
-void ActionUndoMgr::AddAction(Action* pAction)
+void
+ActionUndoMgr::AddAction(Action* pAction)
 {
 	gosASSERT(pAction);
 	if (m_listUndoActions.Count())
@@ -77,14 +81,15 @@ void ActionUndoMgr::AddAction(Action* pAction)
 // Returns:		void
 // Descripition:clears out the undo list
 //***********************************************************************
-void ActionUndoMgr::EmptyUndoList(void)
+void
+ActionUndoMgr::EmptyUndoList(void)
 {
 	for (ACTION_LIST::EIterator pos = m_listUndoActions.Begin(); !pos.IsDone(); pos++)
 	{
 		delete (*pos);
 	}
 	m_listUndoActions.Clear();
-	m_CurrentPos	= -1;
+	m_CurrentPos = -1;
 	m_PosOfLastSave = -1;
 }
 
@@ -95,7 +100,8 @@ void ActionUndoMgr::EmptyUndoList(void)
 // Returns:		string to put in the Undo prompt
 // Descripition: this is the string that should go in the redo prompt
 //***********************************************************************
-PCSTR ActionUndoMgr::GetRedoString(void)
+PCSTR
+ActionUndoMgr::GetRedoString(void)
 {
 	PCSTR strRet = nullptr;
 	if (HaveRedo())
@@ -115,7 +121,8 @@ PCSTR ActionUndoMgr::GetRedoString(void)
 // Returns:		string to put in the Udo prompt
 // Descripition: this is the string that should go in the undo prompt
 //***********************************************************************
-PCSTR ActionUndoMgr::GetUndoString(void)
+PCSTR
+ActionUndoMgr::GetUndoString(void)
 {
 	PCSTR strRet = nullptr;
 	if (HaveUndo())
@@ -133,7 +140,11 @@ PCSTR ActionUndoMgr::GetUndoString(void)
 // Returns:		whether there is a redo action to perform
 // Descripition: call to see wherther you can perform a redo
 //***********************************************************************
-bool ActionUndoMgr::HaveRedo(void) const { return m_CurrentPos + 1 != m_listUndoActions.Count(); }
+bool
+ActionUndoMgr::HaveRedo(void) const
+{
+	return m_CurrentPos + 1 != m_listUndoActions.Count();
+}
 
 //***********************************************************************
 // Function:	HaveUndo
@@ -142,7 +153,11 @@ bool ActionUndoMgr::HaveRedo(void) const { return m_CurrentPos + 1 != m_listUndo
 // Returns:		whether there is undo action to perform
 // Descripition: call to see whether you can perform an undo action
 //***********************************************************************
-bool ActionUndoMgr::HaveUndo(void) const { return m_CurrentPos != -1; }
+bool
+ActionUndoMgr::HaveUndo(void) const
+{
+	return m_CurrentPos != -1;
+}
 
 //************************************************************************
 // Function:	Redo
@@ -152,7 +167,8 @@ bool ActionUndoMgr::HaveUndo(void) const { return m_CurrentPos != -1; }
 // Description:	gets the action at the front of the redo list, performs
 //				it and adds it to the undo list
 //************************************************************************
-bool ActionUndoMgr::Redo(void)
+bool
+ActionUndoMgr::Redo(void)
 {
 	gosASSERT(HaveRedo());
 	m_CurrentPos++;
@@ -167,7 +183,11 @@ bool ActionUndoMgr::Redo(void)
 // Returns:		nothing
 // Description:	Empties all of the actions from the do and undo lists
 //************************************************************************
-void ActionUndoMgr::Reset(void) { EmptyUndoList(); }
+void
+ActionUndoMgr::Reset(void)
+{
+	EmptyUndoList();
+}
 
 //************************************************************************
 // Function:	Undo
@@ -177,12 +197,13 @@ void ActionUndoMgr::Reset(void) { EmptyUndoList(); }
 // Description:	gets the action at the front of the undo list, performs
 //				it and adds it to the redo list
 //************************************************************************
-bool ActionUndoMgr::Undo(void)
+bool
+ActionUndoMgr::Undo(void)
 {
 	bool bRetVal = false;
 	gosASSERT(HaveUndo());
 	ACTION_LIST::EIterator iter = m_listUndoActions.Iterator(m_CurrentPos);
-	bRetVal						= (*iter)->undo();
+	bRetVal = (*iter)->undo();
 	m_CurrentPos--;
 	return bRetVal;
 }
@@ -194,7 +215,11 @@ bool ActionUndoMgr::Undo(void)
 // Returns:
 // Description:
 //************************************************************************
-void ActionUndoMgr::NoteThatASaveHasJustOccurred(void) { m_PosOfLastSave = m_CurrentPos; }
+void
+ActionUndoMgr::NoteThatASaveHasJustOccurred(void)
+{
+	m_PosOfLastSave = m_CurrentPos;
+}
 
 //************************************************************************
 // Function:	ThereHasBeenANetChangeFromWhenLastSaved
@@ -203,7 +228,8 @@ void ActionUndoMgr::NoteThatASaveHasJustOccurred(void) { m_PosOfLastSave = m_Cur
 // Returns:
 // Description:
 //************************************************************************
-bool ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved(void)
+bool
+ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved(void)
 {
 	if (m_PosOfLastSave == m_CurrentPos)
 	{
@@ -222,16 +248,21 @@ bool ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved(void)
 // Returns:		success of operation
 // Description: redoes a smart paint operation
 ////-----------------------------------------------------------------------
-bool ActionPaintTile::redo(void) { return doRedo(); }
+bool
+ActionPaintTile::redo(void)
+{
+	return doRedo();
+}
 
-bool ActionPaintTile::doRedo(void)
+bool
+ActionPaintTile::doRedo(void)
 {
 	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
 	{
 		// get current values
 		int32_t terrain = land->getTerrain((*iter).row, (*iter).column);
 		int32_t texture = land->getTexture((*iter).row, (*iter).column);
-		float elv		= land->getTerrainElevation((*iter).row, (*iter).column);
+		float elv = land->getTerrainElevation((*iter).row, (*iter).column);
 		Overlays overlay;
 		uint32_t offset;
 		// reset to old values
@@ -243,7 +274,7 @@ bool ActionPaintTile::doRedo(void)
 		// save current valuds
 		(*iter).terrainData = terrain;
 		(*iter).textureData = texture;
-		(*iter).elevation   = elv;
+		(*iter).elevation = elv;
 	}
 	return true;
 }
@@ -255,7 +286,8 @@ bool ActionPaintTile::doRedo(void)
 // Returns:		nothing
 // Description: undos a smart paint operation
 ////-----------------------------------------------------------------------
-bool ActionPaintTile::undo(void)
+bool
+ActionPaintTile::undo(void)
 {
 	// actually, undo does the same thing as redo.
 	return doRedo();
@@ -269,7 +301,8 @@ bool ActionPaintTile::undo(void)
 // Description: this function checks to make sure that the object isn't
 //				already in the list before adding it.
 ////-----------------------------------------------------------------------
-void ActionPaintTile::addVertexInfo(VertexInfo& info)
+void
+ActionPaintTile::addVertexInfo(VertexInfo& info)
 {
 	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
 	{
@@ -286,7 +319,8 @@ void ActionPaintTile::addVertexInfo(VertexInfo& info)
 // Returns:		nothing
 // Description:
 ////-----------------------------------------------------------------------
-void ActionPaintTile::addChangedVertexInfo(int32_t row, int32_t column)
+void
+ActionPaintTile::addChangedVertexInfo(int32_t row, int32_t column)
 {
 	// get the info and add it
 	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
@@ -299,7 +333,8 @@ void ActionPaintTile::addChangedVertexInfo(int32_t row, int32_t column)
 	vertexInfoList.Append(info);
 }
 
-bool ActionPaintTile::getOldHeight(int32_t row, int32_t column, float& height)
+bool
+ActionPaintTile::getOldHeight(int32_t row, int32_t column, float& height)
 {
 	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
 	{
@@ -316,9 +351,9 @@ VertexInfo::VertexInfo(int32_t newRow, int32_t newColumn)
 {
 	gosASSERT(newRow > -1 && newColumn > -1);
 	gosASSERT(newRow < land->realVerticesMapSide && newColumn < land->realVerticesMapSide);
-	row			= newRow;
-	column		= newColumn;
-	elevation   = land->getTerrainElevation(row, column);
+	row = newRow;
+	column = newColumn;
+	elevation = land->getTerrainElevation(row, column);
 	terrainData = land->getTerrain(row, column);
 	textureData = land->getTexture(row, column);
 }
@@ -331,12 +366,13 @@ ModifyBuildingAction::~ModifyBuildingAction()
 	}
 }
 
-bool ModifyBuildingAction::doRedo()
+bool
+ModifyBuildingAction::doRedo()
 {
-	bool bRetVal					   = true;
+	bool bRetVal = true;
 	OBJ_INFO_PTR_LIST::EIterator iter2 = buildingPtrs.Begin();
-	OBJ_APPEAR_LIST::EIterator iter3   = buildingAppearanceCopies.Begin();
-	OBJ_ID_LIST::EIterator iter4	   = buildingIDs.Begin();
+	OBJ_APPEAR_LIST::EIterator iter3 = buildingAppearanceCopies.Begin();
+	OBJ_ID_LIST::EIterator iter4 = buildingIDs.Begin();
 	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin(); !iter.IsDone(); iter++)
 	{
 		// EditorObject *pBuilding = (*iter2);
@@ -344,7 +380,7 @@ bool ModifyBuildingAction::doRedo()
 			EditorObjectMgr::instance()->getObjectAtLocation((*iter4).x, (*iter4).y);
 		if (pBuilding)
 		{
-			EditorObject* pBuildingSwap		= (*iter)->Clone();
+			EditorObject* pBuildingSwap = (*iter)->Clone();
 			ObjectAppearance AppearanceSwap = (*iter3);
 			(*iter)->CastAndCopy(*pBuilding);
 			(*iter3) = (*(pBuilding->appearance()));
@@ -374,18 +410,23 @@ bool ModifyBuildingAction::doRedo()
 	return bRetVal;
 }
 
-bool ModifyBuildingAction::redo() { return doRedo(); }
+bool
+ModifyBuildingAction::redo()
+{
+	return doRedo();
+}
 
-bool ModifyBuildingAction::undo()
+bool
+ModifyBuildingAction::undo()
 {
 	// actually, undo does the same thing as redo.
 	return doRedo();
 }
 
-void ModifyBuildingAction::addBuildingInfo(EditorObject& info)
+void
+ModifyBuildingAction::addBuildingInfo(EditorObject& info)
 {
-	if ((0 < buildingPtrs.Count()) &&
-		(OBJ_INFO_PTR_LIST::INVALID_ITERATOR != buildingPtrs.Find(&info)))
+	if ((0 < buildingPtrs.Count()) && (OBJ_INFO_PTR_LIST::INVALID_ITERATOR != buildingPtrs.Find(&info)))
 	{
 		return;
 	}
@@ -400,7 +441,8 @@ void ModifyBuildingAction::addBuildingInfo(EditorObject& info)
 	buildingIDs.Append(id);
 }
 
-void ModifyBuildingAction::updateNotedObjectPositions()
+void
+ModifyBuildingAction::updateNotedObjectPositions()
 {
 	OBJ_ID_LIST::EIterator iter4 = buildingIDs.Begin();
 	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingPtrs.Begin(); !iter.IsDone(); iter++)

@@ -21,7 +21,8 @@ MLRLineCloud::ClassData* MLRLineCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLineCloud::InitializeClass()
+void
+MLRLineCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -32,7 +33,8 @@ void MLRLineCloud::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLineCloud::TerminateClass()
+void
+MLRLineCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -41,8 +43,8 @@ void MLRLineCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLineCloud::MLRLineCloud(uint32_t nr, uint32_t _type)
-	: MLREffect(uint32_t(2 * nr), DefaultData), type(_type)
+MLRLineCloud::MLRLineCloud(uint32_t nr, uint32_t _type) :
+	MLREffect(uint32_t(2 * nr), DefaultData), type(_type)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
@@ -59,7 +61,8 @@ MLRLineCloud::~MLRLineCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLineCloud::SetData(
+void
+MLRLineCloud::SetData(
 	pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data)
 {
 	// Check_Pointer(this);
@@ -71,7 +74,8 @@ void MLRLineCloud::SetData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLineCloud::Draw(
+void
+MLRLineCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -106,7 +110,8 @@ void MLRLineCloud::Transform(size_t, size_t)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
+uint32_t
+MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 {
 	//--------------------------------------
 	// See if we don't have to draw anything
@@ -140,7 +145,7 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		return visible;
 	}
 	Check_Object(vt);
-	gos_vertices		 = vt->GetActualVertexPool();
+	gos_vertices = vt->GetActualVertexPool();
 	Stuff::Vector4D* v4d = transformedCoords->GetData();
 	MLRClippingState theAnd, theOr, startClip, endClip;
 	for (i = 0; i < *usedNrOfVertices; i += 2)
@@ -152,7 +157,7 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		startClip.Clip4dVertex(v4d + i);
 		endClip.Clip4dVertex(v4d + i + 1);
 		theAnd = *(puint32_t)&startClip & *(puint32_t)&endClip;
-		theOr  = *(puint32_t)&startClip | *(puint32_t)&endClip;
+		theOr = *(puint32_t)&startClip | *(puint32_t)&endClip;
 		theAnd = theOr = 0; // ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
 		if (theAnd != 0)
 		{
@@ -174,8 +179,8 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			Stuff::Vector4D p4d;
 			Stuff::RGBAColor cc;
 			mask = 1;
-			ct   = 0;
-			a	= 0.0f;
+			ct = 0;
+			a = 0.0f;
 			for (l = 0; l < MLRClippingState::NextBit; l++)
 			{
 				if (theOr.IsClipped(mask))
@@ -217,11 +222,11 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			Stuff::RGBAColor cc0, cc1;
 			p4d0 = (*transformedCoords)[i];
 			p4d1 = (*transformedCoords)[i + 1];
-			cc0  = colors[i];
-			cc1  = colors[i + 1];
+			cc0 = colors[i];
+			cc1 = colors[i + 1];
 			mask = 1;
-			ct   = 0;
-			a	= 0.0f;
+			ct = 0;
+			a = 0.0f;
 			for (l = 0; l < MLRClippingState::NextBit; l++)
 			{
 				if (theOr.IsClipped(mask))
@@ -272,7 +277,8 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLineCloud::TestInstance(void) const
+void
+MLRLineCloud::TestInstance(void) const
 {
 	if (usedNrOfVertices)
 	{

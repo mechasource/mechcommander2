@@ -20,7 +20,8 @@ const Matrix4D Matrix4D::Identity(true);
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::BuildIdentity()
+Matrix4D&
+Matrix4D::BuildIdentity()
 {
 	(*this)(0, 0) = 1.0f;
 	(*this)(1, 0) = 0.0f;
@@ -45,7 +46,8 @@ Matrix4D& Matrix4D::BuildIdentity()
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::operator=(const AffineMatrix4D& m)
+Matrix4D&
+Matrix4D::operator=(const AffineMatrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
@@ -61,7 +63,8 @@ Matrix4D& Matrix4D::operator=(const AffineMatrix4D& m)
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::operator=(const Origin3D& p)
+Matrix4D&
+Matrix4D::operator=(const Origin3D& p)
 {
 	// Check_Pointer(this);
 	Check_Object(&p);
@@ -78,14 +81,15 @@ Matrix4D& Matrix4D::operator=(const Origin3D& p)
 //#############################################################################
 //#############################################################################
 //
-Matrix4D& Matrix4D::BuildRotation(const EulerAngles& angles)
+Matrix4D&
+Matrix4D::BuildRotation(const EulerAngles& angles)
 {
 	// Check_Pointer(this);
 	Check_Object(&angles);
 	SinCosPair x, y, z;
-	x			  = angles.pitch;
-	y			  = angles.yaw;
-	z			  = angles.roll;
+	x = angles.pitch;
+	y = angles.yaw;
+	z = angles.roll;
 	(*this)(0, 0) = y.cosine * z.cosine;
 	(*this)(0, 1) = y.cosine * z.sine;
 	(*this)(0, 2) = -y.sine;
@@ -103,7 +107,8 @@ Matrix4D& Matrix4D::BuildRotation(const EulerAngles& angles)
 //#############################################################################
 //#############################################################################
 //
-Matrix4D& Matrix4D::operator=(const EulerAngles& angles)
+Matrix4D&
+Matrix4D::operator=(const EulerAngles& angles)
 {
 	// Check_Pointer(this);
 	Check_Object(&angles);
@@ -121,7 +126,8 @@ Matrix4D& Matrix4D::operator=(const EulerAngles& angles)
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::BuildRotation(const UnitQuaternion& q)
+Matrix4D&
+Matrix4D::BuildRotation(const UnitQuaternion& q)
 {
 	// Check_Pointer(this);
 	Check_Object(&q);
@@ -143,7 +149,8 @@ Matrix4D& Matrix4D::BuildRotation(const UnitQuaternion& q)
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::operator=(const Point3D& p)
+Matrix4D&
+Matrix4D::operator=(const Point3D& p)
 {
 	// Check_Pointer(this);
 	Check_Object(&p);
@@ -170,7 +177,8 @@ Matrix4D& Matrix4D::operator=(const Point3D& p)
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::BuildTranslation(const Point3D& p)
+Matrix4D&
+Matrix4D::BuildTranslation(const Point3D& p)
 {
 	// Check_Pointer(this);
 	Check_Object(&p);
@@ -184,7 +192,8 @@ Matrix4D& Matrix4D::BuildTranslation(const Point3D& p)
 //###########################################################################
 //###########################################################################
 //
-bool Stuff::Close_Enough(const Matrix4D& m1, const Matrix4D& m2, float e)
+bool
+Stuff::Close_Enough(const Matrix4D& m1, const Matrix4D& m2, float e)
 {
 	Check_Object(&m2);
 	Check_Object(&m1);
@@ -202,40 +211,25 @@ bool Stuff::Close_Enough(const Matrix4D& m1, const Matrix4D& m2, float e)
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::Multiply(const Matrix4D& Source1, const Matrix4D& Source2)
+Matrix4D&
+Matrix4D::Multiply(const Matrix4D& Source1, const Matrix4D& Source2)
 {
-	(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
-		Source1(0, 2) * Source2(2, 0) + Source1(0, 3) * Source2(3, 0);
-	(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
-		Source1(1, 2) * Source2(2, 0) + Source1(1, 3) * Source2(3, 0);
-	(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
-		Source1(2, 2) * Source2(2, 0) + Source1(2, 3) * Source2(3, 0);
-	(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
-		Source1(3, 2) * Source2(2, 0) + Source1(3, 3) * Source2(3, 0);
-	(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
-		Source1(0, 2) * Source2(2, 1) + Source1(0, 3) * Source2(3, 1);
-	(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
-		Source1(1, 2) * Source2(2, 1) + Source1(1, 3) * Source2(3, 1);
-	(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
-		Source1(2, 2) * Source2(2, 1) + Source1(2, 3) * Source2(3, 1);
-	(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
-		Source1(3, 2) * Source2(2, 1) + Source1(3, 3) * Source2(3, 1);
-	(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
-		Source1(0, 2) * Source2(2, 2) + Source1(0, 3) * Source2(3, 2);
-	(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
-		Source1(1, 2) * Source2(2, 2) + Source1(1, 3) * Source2(3, 2);
-	(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
-		Source1(2, 2) * Source2(2, 2) + Source1(2, 3) * Source2(3, 2);
-	(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
-		Source1(3, 2) * Source2(2, 2) + Source1(3, 3) * Source2(3, 2);
-	(*this)(0, 3) = Source1(0, 0) * Source2(0, 3) + Source1(0, 1) * Source2(1, 3) +
-		Source1(0, 2) * Source2(2, 3) + Source1(0, 3) * Source2(3, 3);
-	(*this)(1, 3) = Source1(1, 0) * Source2(0, 3) + Source1(1, 1) * Source2(1, 3) +
-		Source1(1, 2) * Source2(2, 3) + Source1(1, 3) * Source2(3, 3);
-	(*this)(2, 3) = Source1(2, 0) * Source2(0, 3) + Source1(2, 1) * Source2(1, 3) +
-		Source1(2, 2) * Source2(2, 3) + Source1(2, 3) * Source2(3, 3);
-	(*this)(3, 3) = Source1(3, 0) * Source2(0, 3) + Source1(3, 1) * Source2(1, 3) +
-		Source1(3, 2) * Source2(2, 3) + Source1(3, 3) * Source2(3, 3);
+	(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) + Source1(0, 2) * Source2(2, 0) + Source1(0, 3) * Source2(3, 0);
+	(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) + Source1(1, 2) * Source2(2, 0) + Source1(1, 3) * Source2(3, 0);
+	(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) + Source1(2, 2) * Source2(2, 0) + Source1(2, 3) * Source2(3, 0);
+	(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) + Source1(3, 2) * Source2(2, 0) + Source1(3, 3) * Source2(3, 0);
+	(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) + Source1(0, 2) * Source2(2, 1) + Source1(0, 3) * Source2(3, 1);
+	(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) + Source1(1, 2) * Source2(2, 1) + Source1(1, 3) * Source2(3, 1);
+	(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) + Source1(2, 2) * Source2(2, 1) + Source1(2, 3) * Source2(3, 1);
+	(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) + Source1(3, 2) * Source2(2, 1) + Source1(3, 3) * Source2(3, 1);
+	(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) + Source1(0, 2) * Source2(2, 2) + Source1(0, 3) * Source2(3, 2);
+	(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) + Source1(1, 2) * Source2(2, 2) + Source1(1, 3) * Source2(3, 2);
+	(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) + Source1(2, 2) * Source2(2, 2) + Source1(2, 3) * Source2(3, 2);
+	(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) + Source1(3, 2) * Source2(2, 2) + Source1(3, 3) * Source2(3, 2);
+	(*this)(0, 3) = Source1(0, 0) * Source2(0, 3) + Source1(0, 1) * Source2(1, 3) + Source1(0, 2) * Source2(2, 3) + Source1(0, 3) * Source2(3, 3);
+	(*this)(1, 3) = Source1(1, 0) * Source2(0, 3) + Source1(1, 1) * Source2(1, 3) + Source1(1, 2) * Source2(2, 3) + Source1(1, 3) * Source2(3, 3);
+	(*this)(2, 3) = Source1(2, 0) * Source2(0, 3) + Source1(2, 1) * Source2(1, 3) + Source1(2, 2) * Source2(2, 3) + Source1(2, 3) * Source2(3, 3);
+	(*this)(3, 3) = Source1(3, 0) * Source2(0, 3) + Source1(3, 1) * Source2(1, 3) + Source1(3, 2) * Source2(2, 3) + Source1(3, 3) * Source2(3, 3);
 	return *this;
 }
 
@@ -243,32 +237,21 @@ Matrix4D& Matrix4D::Multiply(const Matrix4D& Source1, const Matrix4D& Source2)
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::Multiply(const Matrix4D& Source1, const AffineMatrix4D& Source2)
+Matrix4D&
+Matrix4D::Multiply(const Matrix4D& Source1, const AffineMatrix4D& Source2)
 {
-	(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
-		Source1(0, 2) * Source2(2, 0) + Source1(0, 3) * Source2(3, 0);
-	(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
-		Source1(1, 2) * Source2(2, 0) + Source1(1, 3) * Source2(3, 0);
-	(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
-		Source1(2, 2) * Source2(2, 0) + Source1(2, 3) * Source2(3, 0);
-	(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
-		Source1(3, 2) * Source2(2, 0) + Source1(3, 3) * Source2(3, 0);
-	(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
-		Source1(0, 2) * Source2(2, 1) + Source1(0, 3) * Source2(3, 1);
-	(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
-		Source1(1, 2) * Source2(2, 1) + Source1(1, 3) * Source2(3, 1);
-	(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
-		Source1(2, 2) * Source2(2, 1) + Source1(2, 3) * Source2(3, 1);
-	(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
-		Source1(3, 2) * Source2(2, 1) + Source1(3, 3) * Source2(3, 1);
-	(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
-		Source1(0, 2) * Source2(2, 2) + Source1(0, 3) * Source2(3, 2);
-	(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
-		Source1(1, 2) * Source2(2, 2) + Source1(1, 3) * Source2(3, 2);
-	(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
-		Source1(2, 2) * Source2(2, 2) + Source1(2, 3) * Source2(3, 2);
-	(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
-		Source1(3, 2) * Source2(2, 2) + Source1(3, 3) * Source2(3, 2);
+	(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) + Source1(0, 2) * Source2(2, 0) + Source1(0, 3) * Source2(3, 0);
+	(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) + Source1(1, 2) * Source2(2, 0) + Source1(1, 3) * Source2(3, 0);
+	(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) + Source1(2, 2) * Source2(2, 0) + Source1(2, 3) * Source2(3, 0);
+	(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) + Source1(3, 2) * Source2(2, 0) + Source1(3, 3) * Source2(3, 0);
+	(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) + Source1(0, 2) * Source2(2, 1) + Source1(0, 3) * Source2(3, 1);
+	(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) + Source1(1, 2) * Source2(2, 1) + Source1(1, 3) * Source2(3, 1);
+	(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) + Source1(2, 2) * Source2(2, 1) + Source1(2, 3) * Source2(3, 1);
+	(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) + Source1(3, 2) * Source2(2, 1) + Source1(3, 3) * Source2(3, 1);
+	(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) + Source1(0, 2) * Source2(2, 2) + Source1(0, 3) * Source2(3, 2);
+	(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) + Source1(1, 2) * Source2(2, 2) + Source1(1, 3) * Source2(3, 2);
+	(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) + Source1(2, 2) * Source2(2, 2) + Source1(2, 3) * Source2(3, 2);
+	(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) + Source1(3, 2) * Source2(2, 2) + Source1(3, 3) * Source2(3, 2);
 	(*this)(0, 3) = Source1(0, 3);
 	(*this)(1, 3) = Source1(1, 3);
 	(*this)(2, 3) = Source1(2, 3);
@@ -688,7 +671,8 @@ Matrix4D::Multiply(
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::Multiply(const AffineMatrix4D& m1, const AffineMatrix4D& m2)
+Matrix4D&
+Matrix4D::Multiply(const AffineMatrix4D& m1, const AffineMatrix4D& m2)
 {
 	PAUSE(("Not safe"));
 	Cast_Pointer(AffineMatrix4D*, this)->Multiply(m1, m2);
@@ -699,7 +683,8 @@ Matrix4D& Matrix4D::Multiply(const AffineMatrix4D& m1, const AffineMatrix4D& m2)
 	return *this;
 }
 
-Matrix4D& Matrix4D::Invert(const Matrix4D& Source)
+Matrix4D&
+Matrix4D::Invert(const Matrix4D& Source)
 {
 	float m3344S3443 = Source(2, 2) * Source(3, 3) - Source(2, 3) * Source(3, 2);
 	float m3244S3442 = Source(2, 1) * Source(3, 3) - Source(2, 3) * Source(3, 1);
@@ -744,11 +729,11 @@ Matrix4D& Matrix4D::Invert(const Matrix4D& Source)
 		-(Source(0, 0) * m2234S2432 - Source(0, 1) * m2134S2431 + Source(0, 3) * m2132S2231);
 	float A44 = Source(0, 0) * m2233S2332 - Source(0, 1) * m2133S2331 + Source(0, 2) * m2132S2231;
 	// Calc out the determinant.
-	float detA		 = Source(0, 0) * A11;
-	float detB		 = Source(0, 1) * A12;
-	float detC		 = Source(0, 2) * A13;
-	float detD		 = Source(0, 3) * A14;
-	float det		 = (detA + detB + detC + detD);
+	float detA = Source(0, 0) * A11;
+	float detB = Source(0, 1) * A12;
+	float detC = Source(0, 2) * A13;
+	float detD = Source(0, 3) * A14;
+	float det = (detA + detB + detC + detD);
 	float oneOverDet = 0.0f;
 	if (det < Stuff::SMALL)
 	{
@@ -783,7 +768,8 @@ Matrix4D& Matrix4D::Invert(const Matrix4D& Source)
 //###########################################################################
 //
 #if !defined(Spew)
-void Spew(PCSTR group, const Matrix4D& matrix)
+void
+Spew(PCSTR group, const Matrix4D& matrix)
 {
 	Check_Object(&matrix);
 	SPEW((group, "\n\t| %9f, %9f, %9f, %9f |", matrix(0, 0), matrix(0, 1), matrix(0, 2),
@@ -801,7 +787,8 @@ void Spew(PCSTR group, const Matrix4D& matrix)
 //###########################################################################
 //###########################################################################
 //
-void Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip, float right_clip,
+void
+Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip, float right_clip,
 	float top_clip, float bottom_clip)
 {
 	_ASSERT(far_clip - near_clip > SMALL);
@@ -813,8 +800,8 @@ void Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip, 
 	//-------------------------------------------------------
 	//
 	float horizontal_range = APPLY_LEFT_SIGN(1.0f) / (left_clip - right_clip);
-	float vertical_range   = APPLY_UP_SIGN(1.0f) / (top_clip - bottom_clip);
-	float depth_range	  = APPLY_FORWARD_SIGN(1.0f) / (far_clip - near_clip);
+	float vertical_range = APPLY_UP_SIGN(1.0f) / (top_clip - bottom_clip);
+	float depth_range = APPLY_FORWARD_SIGN(1.0f) / (far_clip - near_clip);
 	//
 	//------------------------------------------------------------------------
 	// Set up the camera to clip matrix.  This matrix takes camera space
@@ -822,25 +809,26 @@ void Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip, 
 	// X, Y, and Z axis values (when divided by W) will all be between 0 and 1
 	//------------------------------------------------------------------------
 	//
-	(*this)(LEFT_AXIS, LEFT_AXIS)		= near_clip * horizontal_range;
-	(*this)(LEFT_AXIS, UP_AXIS)			= 0.0f;
-	(*this)(LEFT_AXIS, FORWARD_AXIS)	= 0.0f;
-	(*this)(LEFT_AXIS, 3)				= 0.0f;
-	(*this)(UP_AXIS, LEFT_AXIS)			= 0.0f;
-	(*this)(UP_AXIS, UP_AXIS)			= near_clip * vertical_range;
-	(*this)(UP_AXIS, FORWARD_AXIS)		= 0.0f;
-	(*this)(UP_AXIS, 3)					= 0.0f;
-	(*this)(FORWARD_AXIS, LEFT_AXIS)	= -right_clip * horizontal_range;
-	(*this)(FORWARD_AXIS, UP_AXIS)		= -bottom_clip * vertical_range;
+	(*this)(LEFT_AXIS, LEFT_AXIS) = near_clip * horizontal_range;
+	(*this)(LEFT_AXIS, UP_AXIS) = 0.0f;
+	(*this)(LEFT_AXIS, FORWARD_AXIS) = 0.0f;
+	(*this)(LEFT_AXIS, 3) = 0.0f;
+	(*this)(UP_AXIS, LEFT_AXIS) = 0.0f;
+	(*this)(UP_AXIS, UP_AXIS) = near_clip * vertical_range;
+	(*this)(UP_AXIS, FORWARD_AXIS) = 0.0f;
+	(*this)(UP_AXIS, 3) = 0.0f;
+	(*this)(FORWARD_AXIS, LEFT_AXIS) = -right_clip * horizontal_range;
+	(*this)(FORWARD_AXIS, UP_AXIS) = -bottom_clip * vertical_range;
 	(*this)(FORWARD_AXIS, FORWARD_AXIS) = far_clip * depth_range;
-	(*this)(FORWARD_AXIS, 3)			= 1.0f;
-	(*this)(3, LEFT_AXIS)				= 0.0f;
-	(*this)(3, UP_AXIS)					= 0.0f;
-	(*this)(3, FORWARD_AXIS)			= -far_clip * near_clip * depth_range;
-	(*this)(3, 3)						= 0.0f;
+	(*this)(FORWARD_AXIS, 3) = 1.0f;
+	(*this)(3, LEFT_AXIS) = 0.0f;
+	(*this)(3, UP_AXIS) = 0.0f;
+	(*this)(3, FORWARD_AXIS) = -far_clip * near_clip * depth_range;
+	(*this)(3, 3) = 0.0f;
 }
 
-void Matrix4D::GetPerspective(float* near_clip, float* far_clip, float* left_clip,
+void
+Matrix4D::GetPerspective(float* near_clip, float* far_clip, float* left_clip,
 	float* right_clip, float* top_clip, float* bottom_clip) const
 {
 	if (near_clip)
@@ -856,30 +844,27 @@ void Matrix4D::GetPerspective(float* near_clip, float* far_clip, float* left_cli
 	if (left_clip)
 	{
 		_ASSERT(!Small_Enough((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS)));
-		*left_clip = (((*this)(FORWARD_AXIS, LEFT_AXIS) - 1.0f) * (*this)(3, FORWARD_AXIS)) /
-			((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS));
+		*left_clip = (((*this)(FORWARD_AXIS, LEFT_AXIS) - 1.0f) * (*this)(3, FORWARD_AXIS)) / ((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS));
 	}
 	if (right_clip)
 	{
 		_ASSERT(!Small_Enough((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS)));
-		*right_clip = ((*this)(FORWARD_AXIS, LEFT_AXIS) * (*this)(3, FORWARD_AXIS)) /
-			((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS));
+		*right_clip = ((*this)(FORWARD_AXIS, LEFT_AXIS) * (*this)(3, FORWARD_AXIS)) / ((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS));
 	}
 	if (top_clip)
 	{
 		_ASSERT(!Small_Enough((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS)));
-		*top_clip = (((*this)(FORWARD_AXIS, UP_AXIS) - 1.0f) * (*this)(3, FORWARD_AXIS)) /
-			((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS));
+		*top_clip = (((*this)(FORWARD_AXIS, UP_AXIS) - 1.0f) * (*this)(3, FORWARD_AXIS)) / ((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS));
 	}
 	if (bottom_clip)
 	{
 		_ASSERT(!Small_Enough((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS)));
-		*bottom_clip = ((*this)(FORWARD_AXIS, UP_AXIS) * (*this)(3, FORWARD_AXIS)) /
-			((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS));
+		*bottom_clip = ((*this)(FORWARD_AXIS, UP_AXIS) * (*this)(3, FORWARD_AXIS)) / ((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS));
 	}
 }
 
-void Matrix4D::SetPerspective(
+void
+Matrix4D::SetPerspective(
 	float near_clip, float far_clip, const Radian& horizontal_fov, float height_to_width)
 {
 	_ASSERT(far_clip - near_clip > SMALL);
@@ -890,12 +875,13 @@ void Matrix4D::SetPerspective(
 	// Calculate the near plane offsets to the side culling planes
 	//-------------------------------------------------------------
 	//
-	float width  = (float)(near_clip * tan(horizontal_fov * 0.5f));
+	float width = (float)(near_clip * tan(horizontal_fov * 0.5f));
 	float height = width * height_to_width;
 	SetPerspective(near_clip, far_clip, width, -width, height, -height);
 }
 
-void Matrix4D::GetPerspective(
+void
+Matrix4D::GetPerspective(
 	float* nearClip, float* farClip, Radian* horizontal_fov, float* height_to_width) const
 {
 	float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;

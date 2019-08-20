@@ -87,9 +87,12 @@ class aAnimTextListItem : public aTextListItem
 {
 
 public:
-	aAnimTextListItem(HGOSFONT3D newFont) : aTextListItem(newFont) {}
-	aAnimTextListItem(const aFont& newFont) : aTextListItem(newFont) {}
-	aAnimTextListItem(int32_t fontResID) : aTextListItem(fontResID) {}
+	aAnimTextListItem(HGOSFONT3D newFont) :
+		aTextListItem(newFont) {}
+	aAnimTextListItem(const aFont& newFont) :
+		aTextListItem(newFont) {}
+	aAnimTextListItem(int32_t fontResID) :
+		aTextListItem(fontResID) {}
 
 	aAnimTextListItem(const aAnimTextListItem& src);
 	aAnimTextListItem& operator=(const aAnimTextListItem& src);

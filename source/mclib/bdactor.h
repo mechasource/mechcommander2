@@ -67,16 +67,16 @@ public:
 		int32_t i = 0;
 		for (i = 0; i < MAX_LODS; i++)
 		{
-			bldgShape[i]   = nullptr;
+			bldgShape[i] = nullptr;
 			lodDistance[i] = 0.0f;
 		}
-		bldgShadowShape	= nullptr;
-		bldgDmgShape	   = nullptr;
+		bldgShadowShape = nullptr;
+		bldgDmgShape = nullptr;
 		bldgDmgShadowShape = nullptr;
 		for (i = 0; i < MAX_BD_ANIMATIONS; i++)
 			bdAnimData[i] = nullptr;
 		destructEffect[0] = 0;
-		spinMe			  = false;
+		spinMe = false;
 	}
 
 	BldgAppearanceType(void) { init(void); }
@@ -176,9 +176,9 @@ public:
 
 	int32_t currentLOD;
 
-	int32_t* nodeUsed;  // Used to stagger the weapon nodes for firing.
+	int32_t* nodeUsed; // Used to stagger the weapon nodes for firing.
 	float* nodeRecycle; // Used for ripple fire to find out if the node has
-						// fired recently.
+		// fired recently.
 
 	TG_LightPtr pointLight;
 	uint32_t lightId;
@@ -326,13 +326,13 @@ public:
 		int32_t i = 0;
 		for (i = 0; i < MAX_LODS; i++)
 		{
-			treeShape[i]   = nullptr;
+			treeShape[i] = nullptr;
 			lodDistance[i] = 0.0f;
 		}
 		for (i = 0; i < MAX_BD_ANIMATIONS; i++)
 			treeAnimData[i] = nullptr;
-		treeShadowShape	= nullptr;
-		treeDmgShape	   = nullptr;
+		treeShadowShape = nullptr;
+		treeDmgShape = nullptr;
 		treeDmgShadowShape = nullptr;
 	}
 

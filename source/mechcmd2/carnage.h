@@ -80,7 +80,8 @@ public:
 public:
 	virtual void init(bool create);
 
-	Carnage(void) : GameObject() { init(true); }
+	Carnage(void) :
+		GameObject() { init(true); }
 
 	~Carnage(void) { destroy(void); }
 
@@ -181,19 +182,19 @@ public:
 	void init(void)
 	{
 		ObjectType::init(void);
-		objectTypeClass   = FIRE_TYPE;
-		objectClass		  = FIRE;
-		damageLevel		  = 0.0;
-		soundEffectId	 = -1;
-		timeToMax		  = 0.0;
-		maxExtent		  = 0.0;
-		totalFires		  = 1;
-		fireOffsetX		  = nullptr;
-		fireOffsetY		  = nullptr;
-		fireDelay		  = nullptr;
+		objectTypeClass = FIRE_TYPE;
+		objectClass = FIRE;
+		damageLevel = 0.0;
+		soundEffectId = -1;
+		timeToMax = 0.0;
+		maxExtent = 0.0;
+		totalFires = 1;
+		fireOffsetX = nullptr;
+		fireOffsetY = nullptr;
+		fireDelay = nullptr;
 		fireRandomOffsetX = nullptr;
 		fireRandomOffsetY = nullptr;
-		fireRandomDelay   = nullptr;
+		fireRandomDelay = nullptr;
 	}
 
 	FireType(void) { init(void); }
@@ -238,21 +239,21 @@ public:
 	void init(void)
 	{
 		ObjectType::init(void);
-		objectTypeClass		 = EXPLOSION_TYPE;
-		objectClass			 = EXPLOSION;
-		damageLevel			 = 0.0;
-		soundEffectId		 = -1;
-		explRadius			 = 0;
-		chunkSize			 = 0.0;
+		objectTypeClass = EXPLOSION_TYPE;
+		objectClass = EXPLOSION;
+		damageLevel = 0.0;
+		soundEffectId = -1;
+		explRadius = 0;
+		chunkSize = 0.0;
 		delayUntilCollidable = 0.5f;
-		lightMinMaxRadius	= 0.0f;
-		lightMaxMaxRadius	= 0.0f;
-		lightOutMinRadius	= 0.0f;
-		lightOutMaxRadius	= 0.0f;
-		lightRGB			 = 0x00000000;
-		maxIntensity		 = 0.0f;
-		minIntensity		 = 0.0f;
-		duration			 = 0.0f;
+		lightMinMaxRadius = 0.0f;
+		lightMaxMaxRadius = 0.0f;
+		lightOutMinRadius = 0.0f;
+		lightOutMaxRadius = 0.0f;
+		lightRGB = 0x00000000;
+		maxIntensity = 0.0f;
+		minIntensity = 0.0f;
+		duration = 0.0f;
 	}
 
 	ExplosionType(void) { init(void); }

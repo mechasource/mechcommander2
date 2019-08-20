@@ -29,14 +29,14 @@ struct Limits
 
 	enum __mlr_hpp_constants : uint32_t
 	{
-		Max_Number_Vertices_Per_Mesh	   = 1024,
-		Max_Number_Vertices_Per_Polygon	= 32,
-		Max_Number_Of_Texture_Bits		   = 14,
-		Max_Number_Textures				   = 1 << Max_Number_Of_Texture_Bits,
-		Max_Number_Of_NGon_Vertices		   = 9,
-		Max_Number_Of_Multitextures		   = 8,
+		Max_Number_Vertices_Per_Mesh = 1024,
+		Max_Number_Vertices_Per_Polygon = 32,
+		Max_Number_Of_Texture_Bits = 14,
+		Max_Number_Textures = 1 << Max_Number_Of_Texture_Bits,
+		Max_Number_Of_NGon_Vertices = 9,
+		Max_Number_Of_Multitextures = 8,
 		Max_Number_Of_Lights_Per_Primitive = 16,
-		Max_Number_Of_FogStates			   = 4
+		Max_Number_Of_FogStates = 4
 	};
 };
 
@@ -44,8 +44,8 @@ uint32_t __stdcall ReadMLRVersion(std::iostream erf_stream);
 void __stdcall WriteMLRVersion(std::iostream erf_stream);
 
 void __stdcall InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame = 8192,
-	uint32_t Max_Number_Primitives_Per_Frame							= 1024,
-	uint32_t Max_Number_ScreenQuads_Per_Frame							= 512,
+	uint32_t Max_Number_Primitives_Per_Frame = 1024,
+	uint32_t Max_Number_ScreenQuads_Per_Frame = 512,
 	uint32_t Max_Size_Of_LightMap_MemoryStream = 32768, bool Convert_To_Triangle_Meshes = true);
 void __stdcall TerminateClasses(void);
 

@@ -25,14 +25,14 @@ extern uint32_t CurrentFileInfo;
 typedef struct _MemoryMappedFiles
 {
 
-	size_t Magic;			   // Identify this structure
+	size_t Magic; // Identify this structure
 	_MemoryMappedFiles* pNext; // Pointer to next structure
-	HANDLE hFile;			   // File handle
-	HANDLE hFileMapping;	   // Mapping handle
-	puint8_t pFile;			   // Pointer to start of data
-	size_t Size;			   // Size of data
-	size_t RefCount;		   // Reference count (number of times a file is opened)
-	char Name[MAX_PATH];	   // Copy of the file name
+	HANDLE hFile; // File handle
+	HANDLE hFileMapping; // Mapping handle
+	puint8_t pFile; // Pointer to start of data
+	size_t Size; // Size of data
+	size_t RefCount; // Reference count (number of times a file is opened)
+	char Name[MAX_PATH]; // Copy of the file name
 
 } MemoryMappedFiles;
 

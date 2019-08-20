@@ -12,17 +12,17 @@ struct SoundResource
 {
 public:
 	gosAudio_ResourceType m_Type; // Specifies which other structure members are valid
-	PSTR m_FileName;			  // SOUNDTYPE_FILE and SOUNDTYPE_STREAMINGFILE
-	puint8_t m_FileDataPointer;   // SOUNDTYPE_MEMORY
-	puint8_t m_DataPointer;		  // SOUNDTYPE_MEMORY
-	uint32_t m_FileLength,		  // SOUNDTYPE_MEMORY only
-		m_DataLength,			  // SOUNDTYPE_MEMORY only
-		m_Frequency,			  // SOUNDTYPE_MEMORY only
-		m_Flags;				  // SOUNDTYPE_MEMORY only
+	PSTR m_FileName; // SOUNDTYPE_FILE and SOUNDTYPE_STREAMINGFILE
+	puint8_t m_FileDataPointer; // SOUNDTYPE_MEMORY
+	puint8_t m_DataPointer; // SOUNDTYPE_MEMORY
+	uint32_t m_FileLength, // SOUNDTYPE_MEMORY only
+		m_DataLength, // SOUNDTYPE_MEMORY only
+		m_Frequency, // SOUNDTYPE_MEMORY only
+		m_Flags; // SOUNDTYPE_MEMORY only
 
 	WAVEFORMATEX* m_WaveFormatEx;
-	float m_fDuration;		 // duration of sound in msec
-	uint32_t m_nDataSize;	// size of data chunk
+	float m_fDuration; // duration of sound in msec
+	uint32_t m_nDataSize; // size of data chunk
 	uint32_t m_nBytesPlayed; // offset into data chunk
 	uint32_t m_nBytesUncompressed;
 	uint32_t m_totalBytesRead;

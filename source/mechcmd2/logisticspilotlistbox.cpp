@@ -15,7 +15,10 @@ LogisticsPilotListBox component.
 
 LogisticsPilotListBoxItem* LogisticsPilotListBoxItem::s_templateItem = nullptr;
 
-LogisticsPilotListBox::LogisticsPilotListBox() { skipAmount = 5; }
+LogisticsPilotListBox::LogisticsPilotListBox()
+{
+	skipAmount = 5;
+}
 
 LogisticsPilotListBox::~LogisticsPilotListBox()
 {
@@ -24,13 +27,13 @@ LogisticsPilotListBox::~LogisticsPilotListBox()
 	aListBox::destroy();
 }
 
-void LogisticsPilotListBox::update()
+void
+LogisticsPilotListBox::update()
 {
 	aListBox::update();
 	for (size_t i = 0; i < itemCount; i++)
 	{
-		if (((LogisticsPilotListBoxItem*)items[i])->getPilot() &&
-			((LogisticsPilotListBoxItem*)items[i])->getPilot()->isUsed())
+		if (((LogisticsPilotListBoxItem*)items[i])->getPilot() && ((LogisticsPilotListBoxItem*)items[i])->getPilot()->isUsed())
 		{
 			RemoveItem(items[i], true);
 			i--;
@@ -40,21 +43,24 @@ void LogisticsPilotListBox::update()
 
 //-------------------------------------------------------------------------------------------------
 
-LogisticsPilotListBoxItem::~LogisticsPilotListBoxItem() { removeAllChildren(0); }
+LogisticsPilotListBoxItem::~LogisticsPilotListBoxItem()
+{
+	removeAllChildren(0);
+}
 
 LogisticsPilotListBoxItem::LogisticsPilotListBoxItem(LogisticsPilot* pNewPilot)
 {
 	pPilot = pNewPilot;
-	state  = ENABLED;
+	state = ENABLED;
 	if (!s_templateItem)
 		return;
 	aObject::init(0, 0, s_templateItem->outline.width(), s_templateItem->outline.height());
-	outline  = s_templateItem->outline;
-	line	 = s_templateItem->line;
+	outline = s_templateItem->outline;
+	line = s_templateItem->line;
 	nameText = s_templateItem->nameText;
 	rankText = s_templateItem->rankText;
 	rankIcon = s_templateItem->rankIcon;
-	icon	 = s_templateItem->icon;
+	icon = s_templateItem->icon;
 	for (size_t i = 0; i < PILOT_LIST_BOX_CHILD_COUNT; i++)
 	{
 		pChildAnimations[i] = s_templateItem->pChildAnimations[i];
@@ -80,7 +86,8 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem(LogisticsPilot* pNewPilot)
 	rankIcon.setUVs(rank * 15, 96, rank * 15 + 15, 96 + 15);
 	LogisticsPilotListBox::makeUVs(pPilot, icon);
 }
-int32_t LogisticsPilotListBoxItem::init(FitIniFile* file)
+int32_t
+LogisticsPilotListBoxItem::init(FitIniFile* file)
 {
 	if (!s_templateItem)
 		s_templateItem = new LogisticsPilotListBoxItem(nullptr);
@@ -105,7 +112,8 @@ int32_t LogisticsPilotListBoxItem::init(FitIniFile* file)
 	return 0;
 }
 
-void LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
+void
+LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 {
 	char animationText[64];
 	if (NO_ERROR == file.readIdString("Animation", animationText, 63))
@@ -114,7 +122,7 @@ void LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 		{
 			if (isdigit(animationText[i]))
 			{
-				animationText[i + 1]					   = nullptr;
+				animationText[i + 1] = nullptr;
 				s_templateItem->pChildAnimations[whichOne] = atoi(&animationText[i]);
 				return;
 			}
@@ -123,7 +131,8 @@ void LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 	s_templateItem->pChildAnimations[whichOne] = -1;
 }
 
-void LogisticsPilotListBoxItem::render()
+void
+LogisticsPilotListBoxItem::render()
 {
 	for (size_t i = 0; i < this->pNumberOfChildren; i++)
 	{
@@ -143,7 +152,8 @@ void LogisticsPilotListBoxItem::render()
 	   location[0].x, location[0].y );*/
 }
 
-void LogisticsPilotListBoxItem::update()
+void
+LogisticsPilotListBoxItem::update()
 {
 	bool isInside = pointInside(userInput->getMouseX(), userInput->getMouseY());
 	for (size_t i = 0; i < 3; i++)
@@ -162,8 +172,7 @@ void LogisticsPilotListBoxItem::update()
 		}
 		if (userInput->isLeftClick() && isInside)
 			PilotReadyScreen::instance()->setPilot(pPilot);
-		if (userInput->isLeftDrag() && isInside &&
-			pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		if (userInput->isLeftDrag() && isInside && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 		{
 			PilotReadyScreen::instance()->beginDrag(pPilot);
 			icon.setColor(0x7f000000);
@@ -192,19 +201,20 @@ void LogisticsPilotListBoxItem::update()
 	aObject::update();
 }
 
-void LogisticsPilotListBox::makeUVs(LogisticsPilot* pPilot, aObject& icon)
+void
+LogisticsPilotListBox::makeUVs(LogisticsPilot* pPilot, aObject& icon)
 {
 	icon = LogisticsPilotListBoxItem::s_templateItem->icon;
 	// need to set the UV's
-	int32_t index  = pPilot->getPhotoIndex();
+	int32_t index = pPilot->getPhotoIndex();
 	int32_t xIndex = index % 12;
 	int32_t yIndex = index / 12;
-	float fX	   = xIndex;
-	float fY	   = yIndex;
-	float width	= icon.width();
-	float height   = icon.height();
-	float u		   = (fX * width);
-	float v		   = (fY * height);
+	float fX = xIndex;
+	float fY = yIndex;
+	float width = icon.width();
+	float height = icon.height();
+	float u = (fX * width);
+	float v = (fY * height);
 	fX += 1.f;
 	fY += 1.f;
 	float u2 = (fX * width);
@@ -213,7 +223,8 @@ void LogisticsPilotListBox::makeUVs(LogisticsPilot* pPilot, aObject& icon)
 	icon.setUVs(u, v, u2, v2);
 }
 
-int32_t LogisticsPilotListBox::AddItem(aListItem* pNewItem)
+int32_t
+LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 {
 	scrollBar->setOrange();
 	LogisticsPilotListBoxItem* pItem = dynamic_cast<LogisticsPilotListBoxItem*>(pNewItem);
@@ -242,8 +253,7 @@ int32_t LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 					{
 						return InsertItem(pItem, i);
 					}
-					else if (pPilot->getGunnery() == pTmpItem->getPilot()->getGunnery() &&
-						pPilot->getName().Compare(pTmpItem->getPilot()->getName()) < 0)
+					else if (pPilot->getGunnery() == pTmpItem->getPilot()->getGunnery() && pPilot->getName().Compare(pTmpItem->getPilot()->getName()) < 0)
 					{
 						return InsertItem(pItem, i);
 					}
@@ -255,7 +265,8 @@ int32_t LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 	return aListBox::AddItem(pNewItem);
 }
 
-void LogisticsPilotListBox::removePilot(LogisticsPilot* pPilot)
+void
+LogisticsPilotListBox::removePilot(LogisticsPilot* pPilot)
 {
 	for (size_t i = 0; i < itemCount; i++)
 	{

@@ -34,12 +34,16 @@ public:
 	bool RunTest();
 };
 
-HashTestPlug::HashTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
+HashTestPlug::HashTestPlug(int32_t value) :
+	Plug(DefaultData)
+{
+	this->value = value;
+}
 
 HashTestPlug::~HashTestPlug() {}
 
-HashTestNode::HashTestNode()
-	: Node(DefaultData), hash1(TEST_COUNT / 2, this, true), hash2(TEST_COUNT / 2, this, true)
+HashTestNode::HashTestNode() :
+	Node(DefaultData), hash1(TEST_COUNT / 2, this, true), hash2(TEST_COUNT / 2, this, true)
 {
 }
 
@@ -51,7 +55,8 @@ HashTestNode::~HashTestNode() {}
 //###########################################################################
 //
 
-bool Hash::ProfileClass()
+bool
+Hash::ProfileClass()
 {
 	HashTestNode testNode;
 #if defined(_ARMOR)
@@ -69,7 +74,8 @@ bool Hash::ProfileClass()
 //###########################################################################
 //
 
-bool Hash::TestClass()
+bool
+Hash::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Hash test..."));
 	HashTestNode testNode;
@@ -77,7 +83,8 @@ bool Hash::TestClass()
 	return true;
 }
 
-bool HashTestNode::RunProfile()
+bool
+HashTestNode::RunProfile()
 {
 	HashTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -93,8 +100,8 @@ bool HashTestNode::RunProfile()
 	for (i = 0; i < TEST_COUNT; i++)
 	{
 		int32_t tmp;
-		j		  = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp		  = values[j];
+		j = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -170,7 +177,8 @@ bool HashTestNode::RunProfile()
 	return true;
 }
 
-bool HashTestNode::RunTest()
+bool
+HashTestNode::RunTest()
 {
 	HashTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -186,8 +194,8 @@ bool HashTestNode::RunTest()
 	for (i = 0; i < TEST_COUNT; i++)
 	{
 		int32_t tmp;
-		j		  = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp		  = values[j];
+		j = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -312,7 +320,7 @@ bool HashTestNode::RunTest()
 		iterator1.First();
 		while ((size = iterator1.GetSize()) != 0)
 		{
-			index	 = Random::GetLessThan(size);
+			index = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);

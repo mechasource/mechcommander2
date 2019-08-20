@@ -22,12 +22,13 @@ class TOMap : public std::map<Overlays, int32_t>
 };
 static TOMap* pTransitionToOverlaysMapping = 0;
 
-static int32_t UP	= 0;
+static int32_t UP = 0;
 static int32_t RIGHT = 1;
-static int32_t DOWN  = 2;
-static int32_t LEFT  = 3;
+static int32_t DOWN = 2;
+static int32_t LEFT = 3;
 
-static Overlays IntToOverlayType(int32_t i)
+static Overlays
+IntToOverlayType(int32_t i)
 {
 	if (0xff <= i)
 	{
@@ -39,7 +40,8 @@ static Overlays IntToOverlayType(int32_t i)
 	}
 }
 
-static int32_t OverlayTypeToInt(Overlays oOverlayType)
+static int32_t
+OverlayTypeToInt(Overlays oOverlayType)
 {
 	if (INVALID_OVERLAY == oOverlayType)
 	{
@@ -51,7 +53,8 @@ static int32_t OverlayTypeToInt(Overlays oOverlayType)
 	}
 }
 
-static Overlays overlayType(int32_t mask, int32_t direction)
+static Overlays
+overlayType(int32_t mask, int32_t direction)
 {
 	if ((0 <= direction) && (4 > direction))
 	{
@@ -61,7 +64,8 @@ static Overlays overlayType(int32_t mask, int32_t direction)
 	return INVALID_OVERLAY;
 }
 
-static void setOverlayType(int32_t& mask, int32_t direction, Overlays overlayType)
+static void
+setOverlayType(int32_t& mask, int32_t direction, Overlays overlayType)
 {
 	if ((0 <= direction) && (4 > direction))
 	{
@@ -74,21 +78,23 @@ static void setOverlayType(int32_t& mask, int32_t direction, Overlays overlayTyp
 	}
 }
 
-#define CONNECTIVITY_MASK(up, right, down, left)                                                   \
-	((OverlayTypeToInt(up) & 0xff) + ((OverlayTypeToInt(right) & 0xff) << 8) +                     \
-		((OverlayTypeToInt(down) & 0xff) << 16) + ((OverlayTypeToInt(left) & 0xff) << 24))
+#define CONNECTIVITY_MASK(up, right, down, left) \
+	((OverlayTypeToInt(up) & 0xff) + ((OverlayTypeToInt(right) & 0xff) << 8) + ((OverlayTypeToInt(down) & 0xff) << 16) + ((OverlayTypeToInt(left) & 0xff) << 24))
 
-static int32_t connectivityMask(Overlays up, Overlays right, Overlays down, Overlays left)
+static int32_t
+connectivityMask(Overlays up, Overlays right, Overlays down, Overlays left)
 {
 	return CONNECTIVITY_MASK(up, right, down, left);
 }
 
-static int32_t connectivityMask()
+static int32_t
+connectivityMask()
 {
 	return connectivityMask(INVALID_OVERLAY, INVALID_OVERLAY, INVALID_OVERLAY, INVALID_OVERLAY);
 }
 
-static int32_t numberOfOverlayTypes(int32_t mask)
+static int32_t
+numberOfOverlayTypes(int32_t mask)
 {
 	EList<Overlays, Overlays> overlayTypeList;
 	int32_t i;
@@ -97,8 +103,7 @@ static int32_t numberOfOverlayTypes(int32_t mask)
 		Overlays type = overlayType(mask, i);
 		if (INVALID_OVERLAY != type)
 		{
-			if ((0 == overlayTypeList.Count()) ||
-				(EList<Overlays, Overlays>::INVALID_ITERATOR == overlayTypeList.Find(type)))
+			if ((0 == overlayTypeList.Count()) || (EList<Overlays, Overlays>::INVALID_ITERATOR == overlayTypeList.Find(type)))
 			{
 				overlayTypeList.Append(type);
 			}
@@ -170,25 +175,30 @@ static int32_t TransitionIndexOffsetToConnectivityMaskMapping[50] = {TIOM_UP1 + 
 	TIOM_UP1 + TIOM_DOWN1 + TIOM_RIGHT2 + TIOM_LEFT2,
 	TIOM_RIGHT1 + TIOM_LEFT1 + TIOM_UP2 + TIOM_DOWN2};
 
-int32_t texture(Overlays oOverlayType, int32_t indexOffset)
+int32_t
+texture(Overlays oOverlayType, int32_t indexOffset)
 {
 	return ((OverlayTypeToInt(oOverlayType) & 0xffff) << 16) + (indexOffset & 0xffff);
 }
 
-Overlays overlayTypeFromTexture(int32_t iTexture)
+Overlays
+overlayTypeFromTexture(int32_t iTexture)
 {
 	return IntToOverlayType((iTexture >> 16) & 0xffff);
 }
 
-int32_t indexOffsetFromTexture(int32_t iTexture) { return (iTexture & 0xffff); }
+int32_t
+indexOffsetFromTexture(int32_t iTexture)
+{
+	return (iTexture & 0xffff);
+}
 
-static int32_t ConnectivityMaskToTextureMapping(
+static int32_t
+ConnectivityMaskToTextureMapping(
 	int32_t mask, Overlays currentbrush = INVALID_OVERLAY)
 {
 	Overlays tmpType = currentbrush;
-	if (!((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) ||
-			(DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) ||
-			(DAMAGED_BRIDGE == tmpType)))
+	if (!((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) || (DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) || (DAMAGED_BRIDGE == tmpType)))
 	{
 		if (INVALID_OVERLAY != currentbrush)
 		{
@@ -248,7 +258,7 @@ static int32_t ConnectivityMaskToTextureMapping(
 	{
 		Overlays overlayType1 = INVALID_OVERLAY;
 		Overlays overlayType2 = INVALID_OVERLAY;
-		int32_t i			  = 0;
+		int32_t i = 0;
 		while ((INVALID_OVERLAY == overlayType1) || (INVALID_OVERLAY == overlayType2))
 		{
 			gosASSERT(4 > i);
@@ -287,14 +297,14 @@ static int32_t ConnectivityMaskToTextureMapping(
 		OTMap::iterator it;
 		int32_t pair;
 		pair = (OverlayTypeToInt(overlayType1) << 16) + OverlayTypeToInt(overlayType2);
-		it   = pOverlaysToTransitionMapping->find(pair);
+		it = pOverlaysToTransitionMapping->find(pair);
 		if (pOverlaysToTransitionMapping->end() == it)
 		{
 			Overlays swap = overlayType1;
-			overlayType1  = overlayType2;
-			overlayType2  = swap;
-			pair		  = (OverlayTypeToInt(overlayType1) << 16) + OverlayTypeToInt(overlayType2);
-			it			  = pOverlaysToTransitionMapping->find(pair);
+			overlayType1 = overlayType2;
+			overlayType2 = swap;
+			pair = (OverlayTypeToInt(overlayType1) << 16) + OverlayTypeToInt(overlayType2);
+			it = pOverlaysToTransitionMapping->find(pair);
 		}
 		if (pOverlaysToTransitionMapping->end() == it)
 		{
@@ -315,15 +325,15 @@ static int32_t ConnectivityMaskToTextureMapping(
 		}
 		else
 		{
-			Overlays iTextureType  = (*it).second;
+			Overlays iTextureType = (*it).second;
 			int32_t transitionMask = 0;
-			int32_t j			   = 1;
+			int32_t j = 1;
 			{
 				int32_t i;
 				for (i = 0; i < 4; i++)
 				{
 					Overlays oOverlayType = overlayType(mask, i);
-					int32_t a			  = 0;
+					int32_t a = 0;
 					if (overlayType1 == oOverlayType)
 					{
 						a = 1;
@@ -349,7 +359,7 @@ static int32_t ConnectivityMaskToTextureMapping(
 	if (1 == numOverlayTypes)
 	{
 		Overlays oOverlayType = INVALID_OVERLAY;
-		int32_t i			  = 0;
+		int32_t i = 0;
 		while (true)
 		{
 			gosASSERT(4 > i);
@@ -361,10 +371,8 @@ static int32_t ConnectivityMaskToTextureMapping(
 			i++;
 		}
 		int32_t indexOffset = 0;
-		Overlays tmpType	= oOverlayType;
-		if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) ||
-			(DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) ||
-			(DAMAGED_BRIDGE == tmpType))
+		Overlays tmpType = oOverlayType;
+		if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) || (DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) || (DAMAGED_BRIDGE == tmpType))
 		{
 			int32_t nonTransitionMask = 0;
 			if (INVALID_OVERLAY != overlayType(mask, UP))
@@ -397,18 +405,17 @@ static int32_t ConnectivityMaskToTextureMapping(
 	gosASSERT(false);
 }
 
-static int32_t TextureToConnectivityMaskMapping(int32_t iTexture)
+static int32_t
+TextureToConnectivityMaskMapping(int32_t iTexture)
 {
 	Overlays oOverlayType = overlayTypeFromTexture(iTexture);
-	int32_t indexOffset   = indexOffsetFromTexture(iTexture);
-	Overlays tmpType	  = oOverlayType;
-	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) ||
-		(DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) ||
-		(DAMAGED_BRIDGE == tmpType))
+	int32_t indexOffset = indexOffsetFromTexture(iTexture);
+	Overlays tmpType = oOverlayType;
+	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) || (DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) || (DAMAGED_BRIDGE == tmpType))
 	{
 		gosASSERT(15 > indexOffset);
 		int32_t nonTransitionMask = IndexOffsetToConnectivityMaskMapping[indexOffset];
-		int32_t mask			  = connectivityMask();
+		int32_t mask = connectivityMask();
 		int32_t i;
 		for (i = 0; i < 4; i++)
 		{
@@ -419,10 +426,7 @@ static int32_t TextureToConnectivityMaskMapping(int32_t iTexture)
 		}
 		return mask;
 	}
-	else if ((X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) ||
-		(X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) ||
-		(X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) ||
-		(X_PAVED_ROAD_BRIDGE == tmpType))
+	else if ((X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) || (X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) || (X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) || (X_PAVED_ROAD_BRIDGE == tmpType))
 	{
 		if (0 == pTransitionToOverlaysMapping)
 		{
@@ -450,12 +454,12 @@ static int32_t TextureToConnectivityMaskMapping(int32_t iTexture)
 			gosASSERT(false);
 			return connectivityMask();
 		}
-		int32_t pair		  = (*it).second;
+		int32_t pair = (*it).second;
 		Overlays overlayType1 = IntToOverlayType((pair >> 16) & 0xffff);
 		Overlays overlayType2 = IntToOverlayType(pair & 0xffff);
 		gosASSERT(50 > indexOffset);
 		int32_t transitionMask = TransitionIndexOffsetToConnectivityMaskMapping[indexOffset];
-		int32_t mask		   = connectivityMask();
+		int32_t mask = connectivityMask();
 		int32_t i;
 		int32_t j = 1;
 		for (i = 0; i < 4; i++)
@@ -489,72 +493,53 @@ static int32_t TextureToConnectivityMaskMapping(int32_t iTexture)
 	}
 }
 
-static void boundSafeGetOverlay(int32_t tileR, int32_t tileC, Overlays& type, int32_t& Offset)
+static void
+boundSafeGetOverlay(int32_t tileR, int32_t tileC, Overlays& type, int32_t& Offset)
 {
-	if ((0 > tileR) || (0 > tileC) || (Terrain::realVerticesMapSide <= tileR) ||
-		(Terrain::realVerticesMapSide <= tileR))
+	if ((0 > tileR) || (0 > tileC) || (Terrain::realVerticesMapSide <= tileR) || (Terrain::realVerticesMapSide <= tileR))
 	{
-		type   = INVALID_OVERLAY;
+		type = INVALID_OVERLAY;
 		Offset = 0;
 		return;
 	}
 	land->getOverlay(tileR, tileC, type, (uint32_t&)Offset);
 }
 
-static int32_t connectivityMaskBasedOnAdjacentTiles(int32_t tileR, int32_t tileC)
+static int32_t
+connectivityMaskBasedOnAdjacentTiles(int32_t tileR, int32_t tileC)
 {
-	Overlays connectsAbove		= INVALID_OVERLAY;
+	Overlays connectsAbove = INVALID_OVERLAY;
 	Overlays connectsToTheRight = INVALID_OVERLAY;
-	Overlays connectsBelow		= INVALID_OVERLAY;
-	Overlays connectsToTheLeft  = INVALID_OVERLAY;
+	Overlays connectsBelow = INVALID_OVERLAY;
+	Overlays connectsToTheLeft = INVALID_OVERLAY;
 	Overlays tmpType;
 	int32_t tmpOffset;
 	boundSafeGetOverlay(tileR - 1, tileC, tmpType, tmpOffset);
-	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) ||
-		(DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) ||
-		(DAMAGED_BRIDGE == tmpType) || (X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) ||
-		(X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) ||
-		(X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) ||
-		(X_PAVED_ROAD_BRIDGE == tmpType))
+	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) || (DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) || (DAMAGED_BRIDGE == tmpType) || (X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) || (X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) || (X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) || (X_PAVED_ROAD_BRIDGE == tmpType))
 	{
 		int32_t iTexture = texture(tmpType, tmpOffset);
-		int32_t tmpCM	= TextureToConnectivityMaskMapping(iTexture);
-		connectsAbove	= overlayType(tmpCM, DOWN);
+		int32_t tmpCM = TextureToConnectivityMaskMapping(iTexture);
+		connectsAbove = overlayType(tmpCM, DOWN);
 	}
 	boundSafeGetOverlay(tileR, tileC + 1, tmpType, tmpOffset);
-	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) ||
-		(DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) ||
-		(DAMAGED_BRIDGE == tmpType) || (X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) ||
-		(X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) ||
-		(X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) ||
-		(X_PAVED_ROAD_BRIDGE == tmpType))
+	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) || (DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) || (DAMAGED_BRIDGE == tmpType) || (X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) || (X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) || (X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) || (X_PAVED_ROAD_BRIDGE == tmpType))
 	{
-		int32_t iTexture   = texture(tmpType, tmpOffset);
-		int32_t tmpCM	  = TextureToConnectivityMaskMapping(iTexture);
+		int32_t iTexture = texture(tmpType, tmpOffset);
+		int32_t tmpCM = TextureToConnectivityMaskMapping(iTexture);
 		connectsToTheRight = overlayType(tmpCM, LEFT);
 	}
 	boundSafeGetOverlay(tileR + 1, tileC, tmpType, tmpOffset);
-	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) ||
-		(DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) ||
-		(DAMAGED_BRIDGE == tmpType) || (X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) ||
-		(X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) ||
-		(X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) ||
-		(X_PAVED_ROAD_BRIDGE == tmpType))
+	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) || (DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) || (DAMAGED_BRIDGE == tmpType) || (X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) || (X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) || (X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) || (X_PAVED_ROAD_BRIDGE == tmpType))
 	{
 		int32_t iTexture = texture(tmpType, tmpOffset);
-		int32_t tmpCM	= TextureToConnectivityMaskMapping(iTexture);
-		connectsBelow	= overlayType(tmpCM, UP);
+		int32_t tmpCM = TextureToConnectivityMaskMapping(iTexture);
+		connectsBelow = overlayType(tmpCM, UP);
 	}
 	boundSafeGetOverlay(tileR, tileC - 1, tmpType, tmpOffset);
-	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) ||
-		(DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) ||
-		(DAMAGED_BRIDGE == tmpType) || (X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) ||
-		(X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) ||
-		(X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) ||
-		(X_PAVED_ROAD_BRIDGE == tmpType))
+	if ((DIRT_ROAD == tmpType) || (PAVED_ROAD == tmpType) || (TWO_LANE_DIRT_ROAD == tmpType) || (DAMAGED_ROAD == tmpType) || (RUNWAY == tmpType) || (OBRIDGE == tmpType) || (DAMAGED_BRIDGE == tmpType) || (X_DIRT_PAVED == tmpType) || (X_DIRT_2LANEDIRT == tmpType) || (X_DIRT_DAMAGED == tmpType) || (X_2LANEDIRT_PAVED == tmpType) || (X_DAMAGED_PAVED == tmpType) || (X_2LANEDIRT_DAMAGED == tmpType) || (X_PAVED_ROAD_BRIDGE == tmpType))
 	{
-		int32_t iTexture  = texture(tmpType, tmpOffset);
-		int32_t tmpCM	 = TextureToConnectivityMaskMapping(iTexture);
+		int32_t iTexture = texture(tmpType, tmpOffset);
+		int32_t tmpCM = TextureToConnectivityMaskMapping(iTexture);
 		connectsToTheLeft = overlayType(tmpCM, RIGHT);
 	}
 	int32_t iConnectivityMask =
@@ -562,19 +547,15 @@ static int32_t connectivityMaskBasedOnAdjacentTiles(int32_t tileR, int32_t tileC
 	return iConnectivityMask;
 }
 
-bool OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool
+OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	int32_t tileC;
 	int32_t tileR;
 	land->worldToTile(worldPos, tileR, tileC);
-	if (tileR < Terrain::realVerticesMapSide && tileR > -1 &&
-		tileC < Terrain::realVerticesMapSide && tileC > -1)
+	if (tileR < Terrain::realVerticesMapSide && tileR > -1 && tileC < Terrain::realVerticesMapSide && tileC > -1)
 	{
-		if ((DIRT_ROAD == type) || (PAVED_ROAD == type) || (TWO_LANE_DIRT_ROAD == type) ||
-			(DAMAGED_ROAD == type) || (RUNWAY == type) || (OBRIDGE == type) ||
-			(DAMAGED_BRIDGE == type) || (X_DIRT_PAVED == type) || (X_DIRT_2LANEDIRT == type) ||
-			(X_DIRT_DAMAGED == type) || (X_2LANEDIRT_PAVED == type) || (X_DAMAGED_PAVED == type) ||
-			(X_2LANEDIRT_DAMAGED == type) || (X_PAVED_ROAD_BRIDGE == type))
+		if ((DIRT_ROAD == type) || (PAVED_ROAD == type) || (TWO_LANE_DIRT_ROAD == type) || (DAMAGED_ROAD == type) || (RUNWAY == type) || (OBRIDGE == type) || (DAMAGED_BRIDGE == type) || (X_DIRT_PAVED == type) || (X_DIRT_2LANEDIRT == type) || (X_DIRT_DAMAGED == type) || (X_2LANEDIRT_PAVED == type) || (X_DAMAGED_PAVED == type) || (X_2LANEDIRT_DAMAGED == type) || (X_PAVED_ROAD_BRIDGE == type))
 		{
 			if (-1 == lastTileR) /* lastTile has not been set yet */
 			{
@@ -610,14 +591,14 @@ bool OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t scr
 				{
 					/* the brush has been dragged to one of the four adjacent
 					 * tiles */
-					pAction->addChangedVertexInfo(tileR, tileC);		 // for undo
+					pAction->addChangedVertexInfo(tileR, tileC); // for undo
 					pAction->addChangedVertexInfo(lastTileR, lastTileC); // for undo
 					Overlays tmpType;
 					int32_t tmpOffset;
 					/* update last tile */
 					int32_t lastTileConnectivityMask = connectivityMask();
 					boundSafeGetOverlay(lastTileR, lastTileC, tmpType, tmpOffset);
-					int32_t iTexture		 = texture(tmpType, tmpOffset);
+					int32_t iTexture = texture(tmpType, tmpOffset);
 					lastTileConnectivityMask = TextureToConnectivityMaskMapping(iTexture);
 					int32_t tmpCM = connectivityMaskBasedOnAdjacentTiles(lastTileR, lastTileC);
 					int32_t i;
@@ -631,7 +612,7 @@ bool OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t scr
 					setOverlayType(lastTileConnectivityMask, brushMotionDirection, type);
 					int32_t newLastTileTexture =
 						ConnectivityMaskToTextureMapping(lastTileConnectivityMask, type);
-					Overlays newLastTileType	   = overlayTypeFromTexture(newLastTileTexture);
+					Overlays newLastTileType = overlayTypeFromTexture(newLastTileTexture);
 					int32_t newLastTileIndexOffset = indexOffsetFromTexture(newLastTileTexture);
 					land->setOverlay(lastTileR, lastTileC, newLastTileType, newLastTileIndexOffset);
 					/* update current tile */
@@ -639,7 +620,7 @@ bool OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t scr
 						connectivityMaskBasedOnAdjacentTiles(tileR, tileC);
 					int32_t newTileTexture =
 						ConnectivityMaskToTextureMapping(tileConnectivityMask, type);
-					Overlays newTileType	   = overlayTypeFromTexture(newTileTexture);
+					Overlays newTileType = overlayTypeFromTexture(newTileTexture);
 					int32_t newTileIndexOffset = indexOffsetFromTexture(newTileTexture);
 					land->setOverlay(tileR, tileC, newTileType, newTileIndexOffset);
 				}
@@ -660,7 +641,8 @@ bool OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t scr
 	return true;
 }
 
-bool OverlayBrush::beginPaint()
+bool
+OverlayBrush::beginPaint()
 {
 	if (pAction)
 	{
@@ -673,10 +655,11 @@ bool OverlayBrush::beginPaint()
 	return true;
 }
 
-Action* OverlayBrush::endPaint()
+Action*
+OverlayBrush::endPaint()
 {
 	Action* pRetAction = pAction;
-	pAction			   = nullptr;
+	pAction = nullptr;
 	return pRetAction;
 }
 

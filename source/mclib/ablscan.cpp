@@ -107,18 +107,18 @@ PSTR TokenStrings[NUM_TOKENS] = {"{BAD TOKEN}", "{IDENTIFIER}", "{NUMBER}", "{TY
 char curChar;
 TokenCodeType curToken;
 Literal curLiteral;
-int32_t level					= 0;
-int32_t lineNumber				= 0;
-int32_t FileNumber				= 0;
-ABLFile* sourceFile				= nullptr;
-bool printFlag					= true;
-bool blockFlag					= false;
-BlockType blockType				= BLOCK_MODULE;
-SymTableNodePtr CurModuleIdPtr  = nullptr;
+int32_t level = 0;
+int32_t lineNumber = 0;
+int32_t FileNumber = 0;
+ABLFile* sourceFile = nullptr;
+bool printFlag = true;
+bool blockFlag = false;
+BlockType blockType = BLOCK_MODULE;
+SymTableNodePtr CurModuleIdPtr = nullptr;
 SymTableNodePtr CurRoutineIdPtr = nullptr;
-bool DumbGetCharOn				= false;
+bool DumbGetCharOn = false;
 
-int32_t NumOpenFiles   = 0;
+int32_t NumOpenFiles = 0;
 int32_t NumSourceFiles = 0;
 char SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
 SourceFile openFiles[MAX_INCLUDE_DEPTH];
@@ -126,14 +126,14 @@ char sourceBuffer[MAXLEN_SOURCELINE];
 char tokenString[MAXLEN_TOKENSTRING];
 char wordString[MAXLEN_TOKENSTRING];
 int32_t bufferOffset = 0;
-PSTR bufferp		 = sourceBuffer;
-PSTR tokenp			 = tokenString;
+PSTR bufferp = sourceBuffer;
+PSTR tokenp = tokenString;
 
 int32_t digitCount = 0;
-bool countError	= false;
+bool countError = false;
 
 int32_t pageNumber = 0;
-int32_t lineCount  = MAX_LINES_PER_PAGE;
+int32_t lineCount = MAX_LINES_PER_PAGE;
 
 char sourceName[MAXLEN_FILENAME];
 char date[LEN_DATESTRING];
@@ -147,24 +147,25 @@ extern bool DebugCodeEnabled;
 
 extern ABLModulePtr CurLibrary;
 
-int32_t (*ABLFile::createCB)(PVOID* file, PSTR fName)							 = nullptr;
-int32_t (*ABLFile::openCB)(PVOID* file, PSTR fName)								 = nullptr;
-int32_t (*ABLFile::closeCB)(PVOID* file)										 = nullptr;
-bool (*ABLFile::eofCB)(PVOID file)												 = nullptr;
-int32_t (*ABLFile::readCB)(PVOID file, puint8_t buffer, int32_t length)			 = nullptr;
-int32_t (*ABLFile::readLongCB)(PVOID file)										 = nullptr;
-int32_t (*ABLFile::readStringCB)(PVOID file, puint8_t buffer)					 = nullptr;
+int32_t (*ABLFile::createCB)(PVOID* file, PSTR fName) = nullptr;
+int32_t (*ABLFile::openCB)(PVOID* file, PSTR fName) = nullptr;
+int32_t (*ABLFile::closeCB)(PVOID* file) = nullptr;
+bool (*ABLFile::eofCB)(PVOID file) = nullptr;
+int32_t (*ABLFile::readCB)(PVOID file, puint8_t buffer, int32_t length) = nullptr;
+int32_t (*ABLFile::readLongCB)(PVOID file) = nullptr;
+int32_t (*ABLFile::readStringCB)(PVOID file, puint8_t buffer) = nullptr;
 int32_t (*ABLFile::readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength) = nullptr;
-int32_t (*ABLFile::writeCB)(PVOID file, puint8_t buffer, int32_t length)		 = nullptr;
-int32_t (*ABLFile::writeByteCB)(PVOID file, uint8_t byte)						 = nullptr;
-int32_t (*ABLFile::writeLongCB)(PVOID file, int32_t value)						 = nullptr;
-int32_t (*ABLFile::writeStringCB)(PVOID file, PSTR buffer)						 = nullptr;
+int32_t (*ABLFile::writeCB)(PVOID file, puint8_t buffer, int32_t length) = nullptr;
+int32_t (*ABLFile::writeByteCB)(PVOID file, uint8_t byte) = nullptr;
+int32_t (*ABLFile::writeLongCB)(PVOID file, int32_t value) = nullptr;
+int32_t (*ABLFile::writeStringCB)(PVOID file, PSTR buffer) = nullptr;
 
 //***************************************************************************
 // ABL FILE routines
 //***************************************************************************
 
-PVOID ABLFile::operator new(size_t ourSize)
+PVOID
+ABLFile::operator new(size_t ourSize)
 {
 	PVOID result = ABLSystemMallocCallback(ourSize);
 	return (result);
@@ -172,19 +173,25 @@ PVOID ABLFile::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void ABLFile::operator delete(PVOID us) { ABLSystemFreeCallback(us); }
+void
+ABLFile::operator delete(PVOID us)
+{
+	ABLSystemFreeCallback(us);
+}
 
 //---------------------------------------------------------------------------
 
-void ABLFile::init(void)
+void
+ABLFile::init(void)
 {
 	fileName = 0;
-	file	 = nullptr;
+	file = nullptr;
 }
 
 //-----------------------------------------------------------------------------
 
-void ABLFile::destroy(void)
+void
+ABLFile::destroy(void)
 {
 	if (fileName)
 	{
@@ -196,7 +203,8 @@ void ABLFile::destroy(void)
 
 //---------------------------------------------------------------------------
 
-int32_t ABLFile::create(PSTR fName)
+int32_t
+ABLFile::create(PSTR fName)
 {
 	if (fName)
 	{
@@ -209,7 +217,8 @@ int32_t ABLFile::create(PSTR fName)
 
 //---------------------------------------------------------------------------
 
-int32_t ABLFile::open(PSTR fName)
+int32_t
+ABLFile::open(PSTR fName)
 {
 	if (fName)
 	{
@@ -222,7 +231,8 @@ int32_t ABLFile::open(PSTR fName)
 
 //---------------------------------------------------------------------------
 
-int32_t ABLFile::close(void)
+int32_t
+ABLFile::close(void)
 {
 	if (file)
 		return (closeCB(&file));
@@ -231,7 +241,8 @@ int32_t ABLFile::close(void)
 
 //-----------------------------------------------------------------------------
 
-bool ABLFile::eof(void)
+bool
+ABLFile::eof(void)
 {
 	if (file)
 		return (eofCB(file));
@@ -240,7 +251,8 @@ bool ABLFile::eof(void)
 
 //-----------------------------------------------------------------------------
 
-int32_t ABLFile::read(puint8_t buffer, int32_t length)
+int32_t
+ABLFile::read(puint8_t buffer, int32_t length)
 {
 	if (file)
 		return (readCB(file, buffer, length));
@@ -249,7 +261,8 @@ int32_t ABLFile::read(puint8_t buffer, int32_t length)
 
 //-----------------------------------------------------------------------------
 
-int32_t ABLFile::readLong(void)
+int32_t
+ABLFile::readLong(void)
 {
 	if (file)
 		return (readLongCB(file));
@@ -258,7 +271,8 @@ int32_t ABLFile::readLong(void)
 
 //-----------------------------------------------------------------------------
 
-int32_t ABLFile::readString(puint8_t buffer)
+int32_t
+ABLFile::readString(puint8_t buffer)
 {
 	if (file)
 		return (readStringCB(file, buffer));
@@ -267,7 +281,8 @@ int32_t ABLFile::readString(puint8_t buffer)
 
 //-----------------------------------------------------------------------------
 
-int32_t ABLFile::readLineEx(puint8_t buffer, int32_t maxLength)
+int32_t
+ABLFile::readLineEx(puint8_t buffer, int32_t maxLength)
 {
 	if (file)
 		return (readLineExCB(file, buffer, maxLength));
@@ -276,7 +291,8 @@ int32_t ABLFile::readLineEx(puint8_t buffer, int32_t maxLength)
 
 //-----------------------------------------------------------------------------
 
-int32_t ABLFile::write(puint8_t buffer, int32_t length)
+int32_t
+ABLFile::write(puint8_t buffer, int32_t length)
 {
 	if (file)
 		return (writeCB(file, buffer, length));
@@ -285,7 +301,8 @@ int32_t ABLFile::write(puint8_t buffer, int32_t length)
 
 //-----------------------------------------------------------------------------
 
-int32_t ABLFile::writeByte(uint8_t val)
+int32_t
+ABLFile::writeByte(uint8_t val)
 {
 	if (file)
 		return (writeByteCB(file, val));
@@ -294,7 +311,8 @@ int32_t ABLFile::writeByte(uint8_t val)
 
 //-----------------------------------------------------------------------------
 
-int32_t ABLFile::writeLong(int32_t val)
+int32_t
+ABLFile::writeLong(int32_t val)
 {
 	if (file)
 		return (writeLongCB(file, val));
@@ -303,7 +321,8 @@ int32_t ABLFile::writeLong(int32_t val)
 
 //-----------------------------------------------------------------------------
 
-int32_t ABLFile::writeString(PSTR buffer)
+int32_t
+ABLFile::writeString(PSTR buffer)
 {
 	if (file)
 		return (writeStringCB(file, buffer));
@@ -314,15 +333,19 @@ int32_t ABLFile::writeString(PSTR buffer)
 // MISC routines
 //***************************************************************************
 
-inline CharCodeType calcCharCode(int32_t ch) { return (charTable[ch]); }
+inline CharCodeType
+calcCharCode(int32_t ch)
+{
+	return (charTable[ch]);
+}
 
 //***************************************************************************
 
-int32_t isReservedWord(void)
+int32_t
+isReservedWord(void)
 {
 	int32_t wordLength = strlen(wordString);
-	if ((wordLength >= MINLEN_RESERVED_WORD) && (wordLength <= MAXLEN_RESERVED_WORD) &&
-		reservedWordTable[wordLength])
+	if ((wordLength >= MINLEN_RESERVED_WORD) && (wordLength <= MAXLEN_RESERVED_WORD) && reservedWordTable[wordLength])
 	{
 		for (ReservedWord* rwPtr = reservedWordTable[wordLength]; rwPtr->string != nullptr; rwPtr++)
 		{
@@ -340,9 +363,11 @@ int32_t isReservedWord(void)
 // INITIALIZATION routines
 //***************************************************************************
 
-void getChar();
+void
+getChar();
 
-void initScanner(PSTR fileName)
+void
+initScanner(PSTR fileName)
 {
 	int32_t curCh;
 	//----------------------------------
@@ -355,7 +380,7 @@ void initScanner(PSTR fileName)
 		charTable[curCh] = CHR_LETTER;
 	for (curCh = 'a'; curCh <= 'z'; curCh++)
 		charTable[curCh] = CHR_LETTER;
-	charTable['\"']		= CHR_DQUOTE;
+	charTable['\"'] = CHR_DQUOTE;
 	charTable[CHAR_EOF] = CHR_EOF;
 	//---------------------------------------
 	// Now, let's open the ABL source file...
@@ -368,14 +393,15 @@ void initScanner(PSTR fileName)
 			curToken = TKN_ERROR;
 		}
 		sourceBuffer[0] = nullptr;
-		bufferp			= sourceBuffer;
+		bufferp = sourceBuffer;
 		getChar();
 	}
 }
 
 //***************************************************************************
 
-void quitScanner(void)
+void
+quitScanner(void)
 {
 	sourceFile->close();
 	delete sourceFile;
@@ -386,17 +412,19 @@ void quitScanner(void)
 // CHARACTER routines
 //***************************************************************************
 
-void skipLineComment(void)
+void
+skipLineComment(void)
 {
 	//-------------------------------------------------------------------
 	// Just blow off the rest of the current source line we've read in...
 	*bufferp = nullptr;
-	curChar  = ' ';
+	curChar = ' ';
 }
 
 //***************************************************************************
 
-void skipBlockComment(void)
+void
+skipBlockComment(void)
 {
 	//----------------------------------------------------
 	// Snag the asterisk, then continue until we encounter
@@ -415,13 +443,14 @@ void skipBlockComment(void)
 		}
 		getChar();
 	} while (curChar != '/');
-	curChar		  = ' ';
+	curChar = ' ';
 	DumbGetCharOn = false;
 }
 
 //***************************************************************************
 
-void skipBlanks(void)
+void
+skipBlanks(void)
 {
 	while (curChar == ' ')
 		getChar();
@@ -429,7 +458,8 @@ void skipBlanks(void)
 
 //***************************************************************************
 
-void languageDirective(void)
+void
+languageDirective(void)
 {
 	DumbGetCharOn = true;
 	getChar();
@@ -529,49 +559,49 @@ void languageDirective(void)
 	else if (strcmp(directive, "assert_on") == 0)
 	{
 		DumbGetCharOn = false;
-		curChar		  = ' ';
+		curChar = ' ';
 		AssertEnabled = true;
 	}
 	else if (strcmp(directive, "assert_off") == 0)
 	{
 		DumbGetCharOn = false;
-		curChar		  = ' ';
+		curChar = ' ';
 		AssertEnabled = false;
 	}
 	else if (strcmp(directive, "print_on") == 0)
 	{
 		DumbGetCharOn = false;
-		curChar		  = ' ';
-		PrintEnabled  = true;
+		curChar = ' ';
+		PrintEnabled = true;
 	}
 	else if (strcmp(directive, "print_off") == 0)
 	{
 		DumbGetCharOn = false;
-		curChar		  = ' ';
-		PrintEnabled  = false;
+		curChar = ' ';
+		PrintEnabled = false;
 	}
 	else if (strcmp(directive, "stringfuncs_on") == 0)
 	{
-		DumbGetCharOn		   = false;
-		curChar				   = ' ';
+		DumbGetCharOn = false;
+		curChar = ' ';
 		StringFunctionsEnabled = true;
 	}
 	else if (strcmp(directive, "stringfuncs_off") == 0)
 	{
-		DumbGetCharOn		   = false;
-		curChar				   = ' ';
+		DumbGetCharOn = false;
+		curChar = ' ';
 		StringFunctionsEnabled = false;
 	}
 	else if (strcmp(directive, "debug_on") == 0)
 	{
-		DumbGetCharOn	= false;
-		curChar			 = ' ';
+		DumbGetCharOn = false;
+		curChar = ' ';
 		DebugCodeEnabled = true;
 	}
 	else if (strcmp(directive, "debug_off") == 0)
 	{
-		DumbGetCharOn	= false;
-		curChar			 = ' ';
+		DumbGetCharOn = false;
+		curChar = ' ';
 		DebugCodeEnabled = false;
 	}
 	else if (strcmp(directive, "debug_start") == 0)
@@ -590,8 +620,7 @@ void languageDirective(void)
 				{
 					char directive2[32];
 					int32_t directiveLength = 0;
-					while ((curChar != ' ') && (curChar != '\n') && (curChar != '\r') &&
-						(directiveLength < 31))
+					while ((curChar != ' ') && (curChar != '\n') && (curChar != '\r') && (directiveLength < 31))
 					{
 						directive2[directiveLength++] = curChar;
 						getChar();
@@ -616,12 +645,12 @@ void languageDirective(void)
 					getChar();
 			} while (stillCutting);
 		}
-		curChar		  = ' ';
+		curChar = ' ';
 		DumbGetCharOn = false;
 	}
 	else if (strcmp(directive, "debug_end") == 0)
 	{
-		curChar		  = ' ';
+		curChar = ' ';
 		DumbGetCharOn = false;
 	}
 	else
@@ -633,7 +662,8 @@ void languageDirective(void)
 
 //***************************************************************************
 
-void getChar(void)
+void
+getChar(void)
 {
 	if (*bufferp == nullptr)
 	{
@@ -650,7 +680,7 @@ void getChar(void)
 				return;
 			}
 		}
-		bufferp		 = sourceBuffer;
+		bufferp = sourceBuffer;
 		bufferOffset = 0;
 	}
 	curChar = *bufferp;
@@ -695,12 +725,13 @@ void getChar(void)
 // TOKEN routines
 //***************************************************************************
 
-void downShiftWord(void)
+void
+downShiftWord(void)
 {
-	int32_t offset			 = 'a' - 'A';
-	PSTR wp					 = wordString;
-	PSTR tp					 = tokenString;
-	int32_t checkLengthWord  = strlen(wordString);
+	int32_t offset = 'a' - 'A';
+	PSTR wp = wordString;
+	PSTR tp = tokenString;
+	int32_t checkLengthWord = strlen(wordString);
 	int32_t checkLengthToken = strlen(tokenString);
 	if ((checkLengthWord >= MAXLEN_TOKENSTRING) || (checkLengthToken >= MAXLEN_TOKENSTRING))
 		ABL_Fatal(-1, " Boy did Glenn screw the pooch here!! ");
@@ -715,7 +746,8 @@ void downShiftWord(void)
 
 //***************************************************************************
 
-void getToken(void)
+void
+getToken(void)
 {
 	skipBlanks();
 	tokenp = tokenString;
@@ -743,10 +775,10 @@ void getToken(void)
 
 //***************************************************************************
 
-void getWord(void)
+void
+getWord(void)
 {
-	while ((calcCharCode(curChar) == CHR_LETTER) || (calcCharCode(curChar) == CHR_DIGIT) ||
-		(curChar == '_'))
+	while ((calcCharCode(curChar) == CHR_LETTER) || (calcCharCode(curChar) == CHR_DIGIT) || (curChar == '_'))
 	{
 		*tokenp = curChar;
 		tokenp++;
@@ -768,8 +800,7 @@ void getWord(void)
 			*tokenp = curChar;
 			tokenp++;
 			getChar();
-			while ((calcCharCode(curChar) == CHR_LETTER) || (calcCharCode(curChar) == CHR_DIGIT) ||
-				(curChar == '_'))
+			while ((calcCharCode(curChar) == CHR_LETTER) || (calcCharCode(curChar) == CHR_DIGIT) || (curChar == '_'))
 			{
 				*tokenp = curChar;
 				tokenp++;
@@ -785,7 +816,8 @@ void getWord(void)
 
 //***************************************************************************
 
-void accumulateValue(float* valuePtr, SyntaxErrorType errCode)
+void
+accumulateValue(float* valuePtr, SyntaxErrorType errCode)
 {
 	float value = *valuePtr;
 	//--------------------------------------------
@@ -811,17 +843,18 @@ void accumulateValue(float* valuePtr, SyntaxErrorType errCode)
 
 //***************************************************************************
 
-void getNumber(void)
+void
+getNumber(void)
 {
-	int32_t wholeCount	= 0;
+	int32_t wholeCount = 0;
 	int32_t decimalOffset = 0;
-	char exponentSign	 = '+';
-	int32_t exponent	  = 0;
-	float numberValue	 = (float)0.0;
-	float exponentValue   = (float)0.0;
-	digitCount			  = 0;
-	countError			  = false;
-	curToken			  = TKN_NONE;
+	char exponentSign = '+';
+	int32_t exponent = 0;
+	float numberValue = (float)0.0;
+	float exponentValue = (float)0.0;
+	digitCount = 0;
+	countError = false;
+	curToken = TKN_NONE;
 	//------------------------------------
 	// Assume it's an integer, at first...
 	curLiteral.type = LIT_INTEGER;
@@ -833,7 +866,7 @@ void getNumber(void)
 	{
 		getChar();
 		curLiteral.type = LIT_REAL;
-		*tokenp			= '.';
+		*tokenp = '.';
 		tokenp++;
 		accumulateValue(&numberValue, ABL_ERR_SYNTAX_INVALID_FRACTION);
 		if (curToken == TKN_ERROR)
@@ -843,7 +876,7 @@ void getNumber(void)
 	if ((curChar == 'E') || (curChar == 'e'))
 	{
 		curLiteral.type = LIT_REAL;
-		*tokenp			= curChar;
+		*tokenp = curChar;
 		tokenp++;
 		//-------------------
 		// Any exponent sign?
@@ -895,7 +928,7 @@ void getNumber(void)
 	}
 	else
 		curLiteral.value.real = numberValue;
-	*tokenp  = nullptr;
+	*tokenp = nullptr;
 	curToken = TKN_NUMBER;
 }
 
@@ -904,10 +937,11 @@ void getNumber(void)
 //---------------------------------------------------
 // NOTE: Currently, ABL does not have STRING types...
 
-void getString(void)
+void
+getString(void)
 {
 	PSTR stringPtr = curLiteral.value.string;
-	*tokenp		   = '\"';
+	*tokenp = '\"';
 	getChar();
 	while (curChar != CHAR_EOF)
 	{
@@ -919,16 +953,17 @@ void getString(void)
 		stringPtr++;
 		getChar();
 	}
-	curChar			= ' ';
-	*tokenp			= nullptr;
-	*stringPtr		= nullptr;
-	curToken		= TKN_STRING;
+	curChar = ' ';
+	*tokenp = nullptr;
+	*stringPtr = nullptr;
+	curToken = TKN_STRING;
 	curLiteral.type = LIT_STRING;
 }
 
 //***************************************************************************
 
-void getSpecial(void)
+void
+getSpecial(void)
 {
 	*tokenp = curChar;
 	tokenp++;
@@ -1063,7 +1098,8 @@ void getSpecial(void)
 // TOKEN TESTER routines
 //***************************************************************************
 
-bool tokenIn(TokenCodeType* tokenList)
+bool
+tokenIn(TokenCodeType* tokenList)
 {
 	if (!tokenList)
 		return (false);
@@ -1075,7 +1111,8 @@ bool tokenIn(TokenCodeType* tokenList)
 
 //***************************************************************************
 
-void synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3)
+void
+synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3)
 {
 	bool badLists = (!tokenIn(tokenList1) && !tokenIn(tokenList2) && !tokenIn(tokenList3));
 	if (badLists)
@@ -1084,8 +1121,7 @@ void synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCode
 										  : ABL_ERR_SYNTAX_UNEXPECTED_TOKEN);
 		//----------------------------------------------
 		// Now, we need to re-sync by skipping tokens...
-		while (!tokenIn(tokenList1) && !tokenIn(tokenList2) && !tokenIn(tokenList3) &&
-			(curToken != TKN_EOF))
+		while (!tokenIn(tokenList1) && !tokenIn(tokenList2) && !tokenIn(tokenList3) && (curToken != TKN_EOF))
 			getToken();
 	}
 }
@@ -1094,7 +1130,8 @@ void synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCode
 // SOURCE FILE routines
 //***************************************************************************
 
-bool getSourceLine(void)
+bool
+getSourceLine(void)
 {
 	if (!sourceFile->eof())
 	{
@@ -1116,7 +1153,8 @@ bool getSourceLine(void)
 
 //---------------------------------------------------------------------------
 
-int32_t openSourceFile(PSTR sourceFileName)
+int32_t
+openSourceFile(PSTR sourceFileName)
 {
 	//---------------------------------------
 	// Now, let's open the ABL source file...
@@ -1127,35 +1165,36 @@ int32_t openSourceFile(PSTR sourceFileName)
 	if (NumSourceFiles == MAX_SOURCE_FILES)
 		return (-3);
 	ABLFile* sFile = nullptr;
-	sFile		   = new ABLFile;
+	sFile = new ABLFile;
 	if (sFile->open(sourceFileName) != ABL_NO_ERR)
 		return (-3);
 	strcpy(SourceFiles[NumSourceFiles], sourceFileName);
 	FileNumber = NumSourceFiles++;
 	sourceFile = sFile;
 	strcpy(openFiles[NumOpenFiles].fileName, sourceFileName);
-	openFiles[NumOpenFiles].filePtr	= sFile;
+	openFiles[NumOpenFiles].filePtr = sFile;
 	openFiles[NumOpenFiles].fileNumber = (uint8_t)FileNumber;
 	openFiles[NumOpenFiles].lineNumber = 0;
 	if (NumOpenFiles > 0)
 		openFiles[NumOpenFiles - 1].lineNumber = lineNumber;
 	NumOpenFiles++;
-	lineNumber		= 0;
+	lineNumber = 0;
 	sourceBuffer[0] = nullptr;
-	bufferp			= sourceBuffer;
+	bufferp = sourceBuffer;
 	getChar();
 	return (ABL_NO_ERR);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t closeSourceFile(void)
+int32_t
+closeSourceFile(void)
 {
 	if (NumOpenFiles == 0)
 		return (-1);
 	sourceFile->close();
 	delete sourceFile;
-	sourceFile						= nullptr;
+	sourceFile = nullptr;
 	openFiles[NumOpenFiles].filePtr = nullptr;
 	NumOpenFiles--;
 	if (NumOpenFiles > 0)
@@ -1171,7 +1210,8 @@ int32_t closeSourceFile(void)
 // PRINTOUT routines
 //***************************************************************************
 
-void printLine(PSTR line)
+void
+printLine(PSTR line)
 {
 	if (++lineCount > MAX_LINES_PER_PAGE)
 	{
@@ -1179,11 +1219,11 @@ void printLine(PSTR line)
 		lineCount = 1;
 	}
 	PSTR saveChPtr = nullptr;
-	char saveCh	= ' ';
+	char saveCh = ' ';
 	if (strlen(line) > MAXLEN_PRINTLINE)
 	{
-		saveCh	 = line[MAXLEN_PRINTLINE];
-		saveChPtr  = &line[MAXLEN_PRINTLINE];
+		saveCh = line[MAXLEN_PRINTLINE];
+		saveChPtr = &line[MAXLEN_PRINTLINE];
 		*saveChPtr = nullptr;
 	}
 	printf("%s", line);
@@ -1193,7 +1233,8 @@ void printLine(PSTR line)
 
 //***************************************************************************
 
-void initPageHeader(PSTR fileName)
+void
+initPageHeader(PSTR fileName)
 {
 	//--------------------------
 	// Save the source file name
@@ -1207,7 +1248,8 @@ void initPageHeader(PSTR fileName)
 
 //***************************************************************************
 
-void printPageHeader(void)
+void
+printPageHeader(void)
 {
 	// putchar(CHAR_FORMFEED);
 	printf("Page %d   %s   %s\n\n", ++pageNumber, sourceName, date);

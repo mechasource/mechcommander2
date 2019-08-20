@@ -77,21 +77,21 @@ extern float metersPerWorldUnit;
 #define MECH_GESTURE_RUN_TO_WALK 8
 #define MECH_GESTURE_REVERSE 9
 #define MECH_GESTURE_STAND_TO_REVERSE 10
-#define MECH_GESTURE_LIMPING 11		 // Limp
-#define MECH_GESTURE_WALK_HIT_B 12   // WalkToHitBehindToWalk
-#define MECH_GESTURE_WALK_HIT_F 13   // WalkToHitFrontToWalk
-#define MECH_GESTURE_WALK_FALL_B 14  // WalkToFallBackward
-#define MECH_GESTURE_WALK_FALL_F 15  // WalkToFallForward
-#define MECH_GESTURE_RUN_FALL_B 16   // RunToFallBackward
-#define MECH_GESTURE_RUN_FALL_F 17   // RunToFallForward
+#define MECH_GESTURE_LIMPING 11 // Limp
+#define MECH_GESTURE_WALK_HIT_B 12 // WalkToHitBehindToWalk
+#define MECH_GESTURE_WALK_HIT_F 13 // WalkToHitFrontToWalk
+#define MECH_GESTURE_WALK_FALL_B 14 // WalkToFallBackward
+#define MECH_GESTURE_WALK_FALL_F 15 // WalkToFallForward
+#define MECH_GESTURE_RUN_FALL_B 16 // RunToFallBackward
+#define MECH_GESTURE_RUN_FALL_F 17 // RunToFallForward
 #define MECH_GESTURE_STAND_FALL_B 18 // StandToFallBackward
 #define MECH_GESTURE_STAND_FALL_F 19 // StandToFallForward
-#define MECH_GESTURE_JUMP 20		 // Jump
-#define MECH_GESTURE_ROLLOVER 21	 // Rollover from FallBack to FallForward
-#define MECH_GESTURE_GETUP 22		 // Get up from FallForward
-#define MECH_GESTURE_FALLEN_F                                                                      \
-	23 // Fallen Forward (Single Frame, mech on
-	   // ground)
+#define MECH_GESTURE_JUMP 20 // Jump
+#define MECH_GESTURE_ROLLOVER 21 // Rollover from FallBack to FallForward
+#define MECH_GESTURE_GETUP 22 // Get up from FallForward
+#define MECH_GESTURE_FALLEN_F                   \
+	23 // Fallen Forward (Single Frame, mech on \
+		// ground)
 #define MECH_GESTURE_FALLEN_B 24 // Fallen Backward (Single Frame, mech on ground)
 
 #define NO_APPEARANCE_FOR_MECH 0xFFFA0001
@@ -209,8 +209,8 @@ public:
 	// NO MORE HOTSPOT DATA HERE.  ALL RESIDES IN APPEARANCE NOW!  Including
 	// footprint type!
 
-	uint32_t rightArmDebrisId;  // Id of the shot off right arm.
-	uint32_t leftArmDebrisId;   // Id of the shot off left arm.
+	uint32_t rightArmDebrisId; // Id of the shot off right arm.
+	uint32_t leftArmDebrisId; // Id of the shot off left arm.
 	uint32_t destroyedDebrisId; // Id of the destroyed mech piece.
 	int32_t moveType;
 
@@ -326,18 +326,18 @@ public:
 	char chassisClass; // none, light, medium, heavy, assault
 	int32_t chassisBR; // chassis Battle Rating
 
-	int32_t variantID;	// need to store this for logistics
+	int32_t variantID; // need to store this for logistics
 	char variantName[64]; // user defined
 
 	//------------------
 	// Additional status
-	char legStatus;   // normal, hurting, impaired, disabled
+	char legStatus; // normal, hurting, impaired, disabled
 	char torsoStatus; // normal, impaired
 
 	//--------------------------------------
 	// Additional Critical Component Indices
 	uint8_t actuator[NUM_ACTUATORS]; // actuator inventory index
-	uint8_t gyro;					 // gyro inventory index
+	uint8_t gyro; // gyro inventory index
 
 	//------------------
 	// Additional Engine
@@ -354,24 +354,24 @@ public:
 	bool leftArmBlownThisFrame;
 	bool rightArmBlownThisFrame;
 
-	float torsoRotation;	// Current Rotation of Torso in Degrees
+	float torsoRotation; // Current Rotation of Torso in Degrees
 	float rightArmRotation; // Current Rotation of Right Arm in Degrees
-	float leftArmRotation;  // Current Rotation of Left Arm in Degrees
+	float leftArmRotation; // Current Rotation of Left Arm in Degrees
 
 	bool fallen;
 	bool mechRemoved; // Have we removed ourselves from the interface.
 
 	float pivotTurnRate;
 
-	bool playedJumpSFX;		// Have I played the Jump SOund EFfect for this jump?
+	bool playedJumpSFX; // Have I played the Jump SOund EFfect for this jump?
 	bool playedCriticalHit; // Have I played a critical hit explosion this
-							// frame?
+		// frame?
 
 	float maxWeaponDamage; // max total damage possible
 
 	char longName[MAXLEN_MECH_LONGNAME]; // Used by logistics (and the
-										 // interface) to get int32_t name.
-	int32_t pilotNum;					 // Used by logistics to restore pilot on return.
+		// interface) to get int32_t name.
+	int32_t pilotNum; // Used by logistics to restore pilot on return.
 
 	bool captureable;
 	bool notMineYet; // Used by logsitics to drop this mech if mission lost.
@@ -381,7 +381,7 @@ public:
 	// longs  storing  a bytes worth of data well done SJ
 
 	float damageThisFrame; // How much damage have we taken this frame.
-	bool sentCrippledMsg;  // Have I already announced that I'm gimped?
+	bool sentCrippledMsg; // Have I already announced that I'm gimped?
 	bool playedHeloDestruct;
 
 	float rotateValues[6];
@@ -440,8 +440,7 @@ public:
 
 	virtual bool isCrippled(void)
 	{
-		return ((legStatus == LEG_STATUS_IMPAIRED_RIGHT) ||
-			(legStatus == LEG_STATUS_IMPAIRED_LEFT) || (legStatus == LEG_STATUS_DESTROYED));
+		return ((legStatus == LEG_STATUS_IMPAIRED_RIGHT) || (legStatus == LEG_STATUS_IMPAIRED_LEFT) || (legStatus == LEG_STATUS_DESTROYED));
 	}
 
 	virtual int32_t calcHitLocation(
@@ -541,7 +540,7 @@ public:
 	virtual float getDestructLevel(void)
 	{
 		return 5000.0f; // ALWAYS just keep shooting at a mech.  This would be
-						// nearly impossible to calculate.
+			// nearly impossible to calculate.
 	}
 
 	//-----------------------------------
@@ -569,8 +568,7 @@ public:
 
 	bool isTorso(int32_t bodyLocation)
 	{
-		return ((bodyLocation >= MECH_BODY_LOCATION_CTORSO) &&
-			(bodyLocation <= MECH_BODY_LOCATION_RTORSO));
+		return ((bodyLocation >= MECH_BODY_LOCATION_CTORSO) && (bodyLocation <= MECH_BODY_LOCATION_RTORSO));
 	}
 
 	int32_t transferHitLocation(int32_t hitLocation);
@@ -581,8 +579,7 @@ public:
 
 	int32_t getGestureFramesLeft(void)
 	{
-		return (appearance->getNumFramesInGesture(appearance->getCurrentGestureGoal()) -
-			appearance->getFrameNumber());
+		return (appearance->getNumFramesInGesture(appearance->getCurrentGestureGoal()) - appearance->getFrameNumber());
 	}
 
 	bool isStanding(void) { return (appearance->getOldGestureGoal() == MECH_STATE_STANDING); }
@@ -602,8 +599,7 @@ public:
 
 	bool isFallen(void)
 	{
-		return ((appearance->getOldGestureGoal() == MECH_STATE_FALLEN_BACKWARD) ||
-			(appearance->getOldGestureGoal() == MECH_STATE_FALLEN_FORWARD));
+		return ((appearance->getOldGestureGoal() == MECH_STATE_FALLEN_BACKWARD) || (appearance->getOldGestureGoal() == MECH_STATE_FALLEN_FORWARD));
 	}
 
 	bool canRotateTorso(void)

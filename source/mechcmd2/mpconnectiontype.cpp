@@ -33,29 +33,34 @@ static int32_t connectionType = 0;
 
 typedef enum __mpconnectiontype_constants
 {
-	CHECK_BUTTON	 = 200,
-	FIRST_BUTTON_ID  = 1000010,
-	OK_BUTTON_ID	 = 1000001,
+	CHECK_BUTTON = 200,
+	FIRST_BUTTON_ID = 1000010,
+	OK_BUTTON_ID = 1000001,
 	CANCEL_BUTTON_ID = 1000002,
 };
 
-MPConnectionType::MPConnectionType() : lanPanel(*this), tcpipPanel(*this)
+MPConnectionType::MPConnectionType() :
+	lanPanel(*this), tcpipPanel(*this)
 {
-	bDone							 = 0;
-	connectionType					 = 0;
-	pPanel							 = 0;
-	ppConnectionScreen				 = 0;
-	pLocalBrowserScreen				 = 0;
-	pDirectTcpipScreen				 = 0;
-	pMPPlaceHolderScreen			 = 0;
-	status							 = RUNNING;
+	bDone = 0;
+	connectionType = 0;
+	pPanel = 0;
+	ppConnectionScreen = 0;
+	pLocalBrowserScreen = 0;
+	pDirectTcpipScreen = 0;
+	pMPPlaceHolderScreen = 0;
+	status = RUNNING;
 	LogisticsScreen::helpTextArrayID = 2;
-	bHosting						 = 0;
+	bHosting = 0;
 }
 
-MPConnectionType::~MPConnectionType() { tcpipPanel.destroy(); }
+MPConnectionType::~MPConnectionType()
+{
+	tcpipPanel.destroy();
+}
 
-int32_t MPConnectionType::indexOfButtonWithID(int32_t id)
+int32_t
+MPConnectionType::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -68,7 +73,8 @@ int32_t MPConnectionType::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void MPConnectionType::init(FitIniFile* file)
+void
+MPConnectionType::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -150,7 +156,8 @@ void MPConnectionType::init(FitIniFile* file)
 	hostDlg.init();
 }
 
-void MPConnectionType::begin()
+void
+MPConnectionType::begin()
 {
 	status = RUNNING;
 	beginFadeIn(1.0);
@@ -170,9 +177,13 @@ void MPConnectionType::begin()
 	tcpipPanel.begin();
 }
 
-void MPConnectionType::end() {}
+void
+MPConnectionType::end()
+{
+}
 
-void MPConnectionType::render(int32_t xOffset, int32_t yOffset)
+void
+MPConnectionType::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
 	if ((0 == xOffset) && (0 == yOffset))
@@ -188,9 +199,14 @@ void MPConnectionType::render(int32_t xOffset, int32_t yOffset)
 		hostDlg.render();
 }
 
-void MPConnectionType::render() { render(0, 0); }
+void
+MPConnectionType::render()
+{
+	render(0, 0);
+}
 
-int32_t MPConnectionType::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MPConnectionType::handleMessage(uint32_t message, uint32_t who)
 {
 	if (RUNNING == status)
 	{
@@ -240,25 +256,25 @@ int32_t MPConnectionType::handleMessage(uint32_t message, uint32_t who)
 		case FIRST_BUTTON_ID + 1:
 		{
 			connectionType = 0;
-			pPanel		   = &zonePanel;
+			pPanel = &zonePanel;
 		}
 		break;
 		case FIRST_BUTTON_ID + 2:
 		{
 			connectionType = 1;
-			pPanel		   = &lanPanel;
+			pPanel = &lanPanel;
 		}
 		break;
 		case FIRST_BUTTON_ID + 3:
 		{
 			connectionType = 2;
-			pPanel		   = &tcpipPanel;
+			pPanel = &tcpipPanel;
 		}
 		break;
 		case LAN_PANEL_FIRST_BUTTON_ID:
 		{
 			(*ppConnectionScreen) = pLocalBrowserScreen;
-			status				  = NEXT;
+			status = NEXT;
 		}
 		break;
 		case LAN_PANEL_FIRST_BUTTON_ID + 1:
@@ -285,7 +301,7 @@ int32_t MPConnectionType::handleMessage(uint32_t message, uint32_t who)
 			MPlayer->launchBrowser(nullptr);
 			(*ppConnectionScreen) = pMPPlaceHolderScreen;
 			// now I need to pop a connecting dialog...
-			status   = NEXT;
+			status = NEXT;
 			quitGame = true;
 		}
 		break;
@@ -306,9 +322,14 @@ int32_t MPConnectionType::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool MPConnectionType::isDone() { return bDone; }
+bool
+MPConnectionType::isDone()
+{
+	return bDone;
+}
 
-void MPConnectionType::update()
+void
+MPConnectionType::update()
 {
 	if (bHosting)
 	{
@@ -320,7 +341,7 @@ void MPConnectionType::update()
 				bHosting = 0;
 				hostDlg.end();
 				(*ppConnectionScreen) = pMPPlaceHolderScreen;
-				status				  = NEXT;
+				status = NEXT;
 			}
 			else if (hostDlg.getStatus() == NO)
 				bHosting = 0;
@@ -349,7 +370,8 @@ void MPConnectionType::update()
 	*/
 }
 
-void aZonePanel::init(FitIniFile* pFile, LogisticsScreen* pParent)
+void
+aZonePanel::init(FitIniFile* pFile, LogisticsScreen* pParent)
 {
 	FitIniFile& file = (*pFile);
 	button.init(file, "Button0");
@@ -365,10 +387,11 @@ void aZonePanel::init(FitIniFile* pFile, LogisticsScreen* pParent)
 	text.init(&file, "Text0");
 	addChild(&text);
 	pParentScreen = pParent;
-	bShowWarning  = 0;
+	bShowWarning = 0;
 }
 
-void aZonePanel::update()
+void
+aZonePanel::update()
 {
 	if (bShowWarning)
 	{
@@ -389,7 +412,8 @@ void aZonePanel::update()
 		aObject::update();
 }
 
-void aZonePanel::render()
+void
+aZonePanel::render()
 {
 	aObject::render();
 	if (bShowWarning)
@@ -407,9 +431,14 @@ int32_t aZonePanel::handleMessage(uint32_t, uint32_t)
 	return 1;
 }
 
-void aLanPanel::update() { aObject::update(); }
+void
+aLanPanel::update()
+{
+	aObject::update();
+}
 
-void aLanPanel::init(FitIniFile* pFile)
+void
+aLanPanel::init(FitIniFile* pFile)
 {
 	FitIniFile& file = (*pFile);
 	button0.init(file, "Button0");
@@ -436,7 +465,8 @@ void aLanPanel::init(FitIniFile* pFile)
 	addChild(&text);
 }
 
-int32_t aLanPanel::handleMessage(uint32_t message, uint32_t who)
+int32_t
+aLanPanel::handleMessage(uint32_t message, uint32_t who)
 {
 	switch (who)
 	{
@@ -451,7 +481,8 @@ int32_t aLanPanel::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void aTcpipPanel::begin()
+void
+aTcpipPanel::begin()
 {
 	comboBox.ListBox().removeAllItems(true);
 	for (size_t i = 0; i < 10; i++)
@@ -460,18 +491,23 @@ void aTcpipPanel::begin()
 			break;
 		comboBox.AddItem(prefs.ipAddresses[i], 0xffffffff);
 	}
-	bExpanded		 = 0;
+	bExpanded = 0;
 	bFoundConnection = 0;
-	bConnectingDlg   = 0;
-	bErrorDlg		 = 0;
+	bConnectingDlg = 0;
+	bErrorDlg = 0;
 }
 
-void aTcpipPanel::destroy() { comboBox.destroy(); }
+void
+aTcpipPanel::destroy()
+{
+	comboBox.destroy();
+}
 
-void aTcpipPanel::init(FitIniFile* pFile)
+void
+aTcpipPanel::init(FitIniFile* pFile)
 {
 	FitIniFile& file = (*pFile);
-	bConnectingDlg   = 0;
+	bConnectingDlg = 0;
 	helpRect.init(pFile, "Rect0");
 	button0.init(file, "Button0");
 	button0.setMessageOnRelease();
@@ -519,12 +555,13 @@ void aTcpipPanel::init(FitIniFile* pFile)
 		comboBox.AddItem(prefs.ipAddresses[i], 0xffffffff);
 	}
 	addChild(&helpRect);
-	connectingTime   = 0;
+	connectingTime = 0;
 	bFoundConnection = 0;
 	// need to initialize old addresses
 }
 
-void aTcpipPanel::update()
+void
+aTcpipPanel::update()
 {
 	int32_t retVal = 0;
 	if (bConnectingDlg || bErrorDlg)
@@ -541,7 +578,7 @@ void aTcpipPanel::update()
 					if (sessionCount)
 					{
 						bConnectingDlg = 0;
-						retVal		   = MPlayer->joinSession(&pSessions[0], prefs.playerName[0]);
+						retVal = MPlayer->joinSession(&pSessions[0], prefs.playerName[0]);
 						if (!retVal)
 						{
 							pParentScreen->handleMessage(1, TCPIP_PANEL_FIRST_BUTTON_ID);
@@ -554,7 +591,7 @@ void aTcpipPanel::update()
 						}
 					}
 					bFoundConnection = 0;
-					bConnectingDlg   = 0;
+					bConnectingDlg = 0;
 				}
 				// they cancelled
 				MPlayer->endSessionScan();
@@ -581,7 +618,7 @@ void aTcpipPanel::update()
 				bFoundConnection = false;
 				if (connectingTime > 20)
 				{
-					retVal		   = MPLAYER_ERR_NO_CONNECTION;
+					retVal = MPLAYER_ERR_NO_CONNECTION;
 					connectingTime = 0.f;
 				}
 			}
@@ -589,33 +626,33 @@ void aTcpipPanel::update()
 		if (retVal)
 		{
 			int32_t errorID = IDS_MP_CONNECT_NO_SESSION;
-			int32_t fontID  = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
+			int32_t fontID = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
 			// display a dialog about why this can't happen....
 			switch (retVal)
 			{
 			case MPLAYER_ERR_HOST_NOT_FOUND:
 				errorID = IDS_MP_CONNECT_ERROR_NO_HOST;
-				fontID  = IDS_MP_CONNECT_ERROR_NO_HOST_FONT;
+				fontID = IDS_MP_CONNECT_ERROR_NO_HOST_FONT;
 				break;
 			case MPLAYER_ERR_NO_CONNECTION:
 				errorID = IDS_MP_CONNECT_ERROR_NO_CONNECTION;
-				fontID  = IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT;
+				fontID = IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT;
 				break;
 			case MPLAYER_ERR_SESSION_IN_PROGRESS:
 				errorID = IDS_MP_CONNECT_ERROR_IN_PROGRESS;
-				fontID  = IDS_MP_CONNECT_ERROR_IN_PROGRESS_FONT;
+				fontID = IDS_MP_CONNECT_ERROR_IN_PROGRESS_FONT;
 				break;
 			case MPLAYER_ERR_SESSION_LOCKED:
 				errorID = IDS_MP_CONNECT_ERROR_LOCKED;
-				fontID  = IDS_MP_CONNECT_ERROR_LOCKED_FONT;
+				fontID = IDS_MP_CONNECT_ERROR_LOCKED_FONT;
 				break;
 			case MPLAYER_ERR_BAD_VERSION:
 				errorID = IDS_MP_CONNECTION_ERROR_WRONG_VERSION;
-				fontID  = IDS_MP_CONNECTION_ERROR_WRONG_VERSION_FONT;
+				fontID = IDS_MP_CONNECTION_ERROR_WRONG_VERSION_FONT;
 				break;
 			case MPLAYER_ERR_SESSION_FULL:
 				errorID = IDS_MP_CONNECTION_ERROR_FULL;
-				fontID  = IDS_MP_CONNECTION_ERROR_FULL_FONT;
+				fontID = IDS_MP_CONNECTION_ERROR_FULL_FONT;
 				break;
 			}
 			LogisticsOneButtonDialog::instance()->end();
@@ -623,7 +660,7 @@ void aTcpipPanel::update()
 			LogisticsOneButtonDialog::instance()->setFont(fontID);
 			LogisticsOneButtonDialog::instance()->begin();
 			bConnectingDlg = 0;
-			bErrorDlg	  = 1;
+			bErrorDlg = 1;
 		}
 		return;
 	}
@@ -708,7 +745,8 @@ void aTcpipPanel::update()
 	}
 }
 
-void aTcpipPanel::render()
+void
+aTcpipPanel::render()
 {
 	aObject::render();
 	if (bConnectingDlg || bErrorDlg)
@@ -717,19 +755,21 @@ void aTcpipPanel::render()
 	}
 }
 
-int32_t aTcpipPanel::getNum(PSTR pStr, int32_t index1, int32_t index2)
+int32_t
+aTcpipPanel::getNum(PSTR pStr, int32_t index1, int32_t index2)
 {
-	char tmp	 = pStr[index2];
+	char tmp = pStr[index2];
 	pStr[index2] = 0;
 	return atoi(&pStr[index1]);
 }
-int32_t aTcpipPanel::handleMessage(uint32_t message, uint32_t who)
+int32_t
+aTcpipPanel::handleMessage(uint32_t message, uint32_t who)
 {
 	switch (who)
 	{
 	case TCPIP_PANEL_FIRST_BUTTON_ID:
 	{
-		bConnectingDlg   = true;
+		bConnectingDlg = true;
 		bFoundConnection = 0;
 		LogisticsOneButtonDialog::instance()->setText(
 			IDS_MP_CON_MODEM_CONNECTING, IDS_PM_CANCEL, IDS_PM_CANCEL);

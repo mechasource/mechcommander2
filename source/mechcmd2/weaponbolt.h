@@ -79,24 +79,24 @@ public:
 	{
 		ObjectType::init(void);
 		objectTypeClass = WEAPONBOLT_TYPE;
-		objectClass		= WEAPONBOLT;
+		objectClass = WEAPONBOLT;
 		fireSoundFX = hitEffectObjNum = missEffectObjNum = lightEffectObjNum = fireEffect =
-			trailEffect														 = 0;
+			trailEffect = 0;
 		frontRGB = middleRGB = backRGB = midEdgeRGB = 0;
 		projLength = bulgeLength = bulgeWidth = velocity = 0.0;
 		boltAlpha = edgeAlpha = 0xff;
-		lightSource			  = false;
+		lightSource = false;
 		maxRadius = outRadius = 0.0f;
-		lightRGB			  = 0x00000000;
-		intensity			  = 1.0;
-		isBeam				  = false;
-		beamDuration		  = 0.0f;
-		beamWiggle			  = 0.0f;
-		mipTexture			  = false;
-		textureName			  = nullptr;
-		arcEffect			  = false;
-		arcHeight			  = -1.0f;
-		afterHitTime		  = 0.0f;
+		lightRGB = 0x00000000;
+		intensity = 1.0;
+		isBeam = false;
+		beamDuration = 0.0f;
+		beamWiggle = 0.0f;
+		mipTexture = false;
+		textureName = nullptr;
+		arcEffect = false;
+		arcHeight = -1.0f;
+		afterHitTime = 0.0f;
 		areaEffectDmg = areaEffectRad = 0.0f;
 	}
 
@@ -197,31 +197,32 @@ protected:
 public:
 	virtual void init(bool create) {}
 
-	WeaponBolt(void) : GameObject()
+	WeaponBolt(void) :
+		GameObject()
 	{
 		init(true);
-		hotSpotNumber	= 0;
-		targetHotSpot	= 0;
-		targetPosition   = nullptr;
+		hotSpotNumber = 0;
+		targetHotSpot = 0;
+		targetPosition = nullptr;
 		distanceToTarget = 0.0;
 		ownerWID = targetWID = 0;
-		pointLight			 = nullptr;
-		lightId				 = 0xffffffff;
-		gosEffect			 = nullptr;
-		muzzleEffect		 = nullptr;
-		hitEffect			 = nullptr;
-		missEffect			 = nullptr;
-		waterMissEffect		 = nullptr;
-		effectId			 = -1;
-		hitTarget			 = false;
-		timeLeft			 = 0.0;
+		pointLight = nullptr;
+		lightId = 0xffffffff;
+		gosEffect = nullptr;
+		muzzleEffect = nullptr;
+		hitEffect = nullptr;
+		missEffect = nullptr;
+		waterMissEffect = nullptr;
+		effectId = -1;
+		hitTarget = false;
+		timeLeft = 0.0;
 		hsPos.Zero(void);
-		hitLeft			  = 0.0f;
-		startUV			  = 0.0f;
-		mcTextureHandle   = 0;
-		gosTextureHandle  = 0xffffffff;
+		hitLeft = 0.0f;
+		startUV = 0.0f;
+		mcTextureHandle = 0;
+		gosTextureHandle = 0xffffffff;
 		weaponShot.damage = 0.0f;
-		goalHeight		  = 0.0f;
+		goalHeight = 0.0f;
 	}
 
 	~WeaponBolt(void) { destroy(void); }
@@ -254,8 +255,8 @@ public:
 	void connect(GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = nullptr,
 		int32_t sourceHS = 0, int32_t targetHS = 0)
 	{
-		ownerWID	  = source->getWatchID(void);
-		targetWID	 = dest->getWatchID(void);
+		ownerWID = source->getWatchID(void);
+		targetWID = dest->getWatchID(void);
 		hotSpotNumber = sourceHS;
 		targetHotSpot = targetHS;
 		if (dest->isMech())
@@ -265,7 +266,7 @@ public:
 				targetHotSpot = 1;
 		}
 		else // Vehicles need to know to use the hitnode for this hotspot and
-			 // NOT the weaponNode!
+			// NOT the weaponNode!
 		{
 			targetHotSpot = -1;
 		}
@@ -273,9 +274,7 @@ public:
 			weaponShot = *shotInfo;
 		// If this is an AreaEffect weapon, NO target WID, hit the target's
 		// CURRENT LOCATION!!!
-		if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum &&
-			(((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) &&
-			(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
+		if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum && (((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) && (((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
 		{
 			Stuff::Vector3D targetLoc;
 			targetLoc = ObjectManager->getByWatchID(targetWID)->getPosition(void);
@@ -294,8 +293,8 @@ public:
 	void connect(GameObjectPtr source, Stuff::Vector3D targetLoc,
 		WeaponShotInfo* shotInfo = nullptr, int32_t sourceHS = 0)
 	{
-		ownerWID	  = source->getWatchID(void);
-		targetWID	 = 0;
+		ownerWID = source->getWatchID(void);
+		targetWID = 0;
 		hotSpotNumber = sourceHS;
 		setTargetPosition(targetLoc);
 		if (shotInfo)

@@ -18,26 +18,27 @@ MPSetupArea.cpp			: Implementation of the MPSetupArea component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID  = 1000010;
-static cint32_t OK_BUTTON_ID	 = 1000001;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPSetupXScreen::MPSetupXScreen()
 {
-	bDone					= 0;
-	baseColor				= 0xffff0000;
-	stripeColor				= 0xff00ff00;
+	bDone = 0;
+	baseColor = 0xffff0000;
+	stripeColor = 0xff00ff00;
 	bPaintSchemeInitialized = false;
-	ppConnectionScreen		= 0;
-	pLocalBrowserScreen		= 0;
-	pDirectTcpipScreen		= 0;
-	pModem2ModemScreen		= 0;
-	status					= RUNNING;
+	ppConnectionScreen = 0;
+	pLocalBrowserScreen = 0;
+	pDirectTcpipScreen = 0;
+	pModem2ModemScreen = 0;
+	status = RUNNING;
 }
 
 MPSetupXScreen::~MPSetupXScreen() {}
 
-int32_t MPSetupXScreen::indexOfButtonWithID(int32_t id)
+int32_t
+MPSetupXScreen::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -50,7 +51,8 @@ int32_t MPSetupXScreen::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void MPSetupXScreen::init(FitIniFile* file)
+void
+MPSetupXScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -188,16 +190,17 @@ void MPSetupXScreen::init(FitIniFile* file)
 	playerNameComboBox.setFocus(false);
 }
 
-void MPSetupXScreen::begin()
+void
+MPSetupXScreen::begin()
 {
-	status		   = RUNNING;
+	status = RUNNING;
 	connectionType = 0;
 	/* set button states */
 	int32_t buttonIndex;
 	int32_t buttonIndex2;
 	int32_t buttonIndex3;
 	int32_t buttonIndex4;
-	buttonIndex  = indexOfButtonWithID(FIRST_BUTTON_ID + 2);
+	buttonIndex = indexOfButtonWithID(FIRST_BUTTON_ID + 2);
 	buttonIndex2 = indexOfButtonWithID(FIRST_BUTTON_ID + 3);
 	buttonIndex3 = indexOfButtonWithID(FIRST_BUTTON_ID + 4);
 	buttonIndex4 = indexOfButtonWithID(FIRST_BUTTON_ID + 5);
@@ -217,9 +220,14 @@ void MPSetupXScreen::begin()
 	// stripeColor, 0xfff0f0f0);
 }
 
-void MPSetupXScreen::end() { mechCamera.setMech(nullptr); }
+void
+MPSetupXScreen::end()
+{
+	mechCamera.setMech(nullptr);
+}
 
-void MPSetupXScreen::render(int32_t xOffset, int32_t yOffset)
+void
+MPSetupXScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
 	if ((0 == xOffset) && (0 == yOffset))
@@ -238,9 +246,14 @@ void MPSetupXScreen::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void MPSetupXScreen::render() { render(0, 0); }
+void
+MPSetupXScreen::render()
+{
+	render(0, 0);
+}
 
-int32_t MPSetupXScreen::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MPSetupXScreen::handleMessage(uint32_t message, uint32_t who)
 {
 	if (RUNNING == status)
 	{
@@ -331,12 +344,17 @@ int32_t MPSetupXScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool MPSetupXScreen::isDone() { return bDone; }
+bool
+MPSetupXScreen::isDone()
+{
+	return bDone;
+}
 
-void MPSetupXScreen::update()
+void
+MPSetupXScreen::update()
 {
 	LogisticsScreen::update();
-	helpTextID		 = 0;
+	helpTextID = 0;
 	helpTextHeaderID = 0;
 	/*
 	for ( int32_t i = 0; i < buttonCount; i++ )
@@ -357,7 +375,7 @@ void MPSetupXScreen::update()
 	colorPicker.update();
 	if ((colorPicker.getColor0() != baseColor) || (colorPicker.getColor1() != stripeColor))
 	{
-		baseColor   = colorPicker.getColor0();
+		baseColor = colorPicker.getColor0();
 		stripeColor = colorPicker.getColor1();
 		mechCamera.getObjectAppearance()->resetPaintScheme(baseColor, stripeColor, 0xfff0f0f0);
 	}
@@ -379,16 +397,20 @@ void MPSetupXScreen::update()
 	}
 }
 
-void MPSetupXScreen::updateMPSetup() {}
+void
+MPSetupXScreen::updateMPSetup()
+{
+}
 
 aColorPicker::aColorPicker()
 {
-	color0	= 0xffffffff;
-	color1	= 0xff000000;
+	color0 = 0xffffffff;
+	color1 = 0xff000000;
 	activeTab = 0;
 }
 
-int32_t aColorPicker::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
+int32_t
+aColorPicker::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
 	int32_t err;
 	err = aObject::init(xPos, yPos, w, h);
@@ -410,7 +432,8 @@ int32_t aColorPicker::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void aColorPicker::init(FitIniFile* file, PCSTR blockName)
+void
+aColorPicker::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x, y, width, height;
@@ -470,26 +493,31 @@ void aColorPicker::init(FitIniFile* file, PCSTR blockName)
 	colorPlaneCursorStatic.init(file, blockname.Data());
 }
 
-void aColorPicker::destroy() { aObject::destroy(); }
+void
+aColorPicker::destroy()
+{
+	aObject::destroy();
+}
 
-static const float rhatx = 1.0;  // cos(0/*degrees*/ * DEGREES_TO_RADS);
-static const float rhaty = 0.0;  // sin(0/*degrees*/ * DEGREES_TO_RADS);
+static const float rhatx = 1.0; // cos(0/*degrees*/ * DEGREES_TO_RADS);
+static const float rhaty = 0.0; // sin(0/*degrees*/ * DEGREES_TO_RADS);
 static const float ghatx = -0.5; // cos(120/*degrees*/ * DEGREES_TO_RADS);
 static const float ghaty = 0.86602540378443864676372317075294f; // sin(120/*degrees*/ *
-																// DEGREES_TO_RADS);
+	// DEGREES_TO_RADS);
 static const float bhatx = -0.5; // cos(240/*degrees*/ * DEGREES_TO_RADS);
 static const float bhaty = -0.86602540378443864676372317075294f; // sin(240/*degrees*/ *
-																 // DEGREES_TO_RADS);
+	// DEGREES_TO_RADS);
 static const float two_pi = 6.283185307179586476925286766559f;
 
 /* all params range from 0.0 to 1.0 */
-static void rgb2hsi(float r, float g, float b, float& hue, float& saturation, float& intensity)
+static void
+rgb2hsi(float r, float g, float b, float& hue, float& saturation, float& intensity)
 {
 	intensity = (r + g + b) / 3.0;
 	if (0.0 >= intensity)
 	{
 		saturation = 0.0;
-		hue		   = 0.0;
+		hue = 0.0;
 		return;
 	}
 	float min = r;
@@ -502,9 +530,9 @@ static void rgb2hsi(float r, float g, float b, float& hue, float& saturation, fl
 		min = b;
 	}
 	saturation = 1.0 - (min / intensity);
-	float cx   = r * rhatx + g * ghatx + b * bhatx;
-	float cy   = r * rhaty + g * ghaty + b * bhaty;
-	hue		   = atan2(cy, cx);
+	float cx = r * rhatx + g * ghatx + b * bhatx;
+	float cy = r * rhaty + g * ghaty + b * bhaty;
+	hue = atan2(cy, cx);
 	if (0.0 > hue)
 	{
 		hue += two_pi;
@@ -512,7 +540,8 @@ static void rgb2hsi(float r, float g, float b, float& hue, float& saturation, fl
 	hue /= two_pi;
 }
 
-static void hsi2rgb(float hue, float saturation, float intensity, float& r, float& g, float& b)
+static void
+hsi2rgb(float hue, float saturation, float intensity, float& r, float& g, float& b)
 {
 	float thue = hue;
 	if ((1.0f / 3.0f) > hue)
@@ -528,10 +557,10 @@ static void hsi2rgb(float hue, float saturation, float intensity, float& r, floa
 	}
 	float chatx = cos(two_pi * thue);
 	float chaty = sin(two_pi * thue);
-	float ti	= 3.0f * intensity;
+	float ti = 3.0f * intensity;
 	{
-		b				  = (1.0f - saturation) * intensity;
-		float tib		  = ti - b;
+		b = (1.0f - saturation) * intensity;
+		float tib = ti - b;
 		float denominator = (chaty * (ghatx - rhatx) - chatx * (ghaty - rhaty));
 		if (0.0f == denominator)
 		{
@@ -548,20 +577,21 @@ static void hsi2rgb(float hue, float saturation, float intensity, float& r, floa
 	else if ((2.0f / 3.0f) > hue)
 	{
 		float swap = b;
-		b		   = g;
-		g		   = r;
-		r		   = swap;
+		b = g;
+		g = r;
+		r = swap;
 	}
 	else
 	{
 		float swap = b;
-		b		   = r;
-		r		   = g;
-		g		   = swap;
+		b = r;
+		r = g;
+		g = swap;
 	}
 }
 
-void aColorPicker::update()
+void
+aColorPicker::update()
 {
 	aObject::update();
 	if (userInput->isLeftClick() || userInput->isLeftDrag())
@@ -586,7 +616,8 @@ void aColorPicker::update()
 	}
 }
 
-int32_t aColorPicker::handleMessage(uint32_t message, uint32_t who)
+int32_t
+aColorPicker::handleMessage(uint32_t message, uint32_t who)
 {
 	{
 		if ((uint32_t)(&tab0Button) == who)
@@ -611,22 +642,21 @@ int32_t aColorPicker::handleMessage(uint32_t message, uint32_t who)
 		}
 		else if ((uint32_t)(&colorPlaneStatic) == who)
 		{
-			if ((aMSG_LEFTMOUSEDOWN == message) ||
-				((aMSG_MOUSEMOVE == message) && (userInput->isLeftDrag())))
+			if ((aMSG_LEFTMOUSEDOWN == message) || ((aMSG_MOUSEMOVE == message) && (userInput->isLeftDrag())))
 			{
-				int32_t cx				  = userInput->getMouseX();
-				int32_t cy				  = userInput->getMouseY();
-				int32_t colorPlaneRadius  = 0.5 * colorPlaneStatic.width();
+				int32_t cx = userInput->getMouseX();
+				int32_t cy = userInput->getMouseY();
+				int32_t colorPlaneRadius = 0.5 * colorPlaneStatic.width();
 				int32_t colorPlaneCenterX = colorPlaneStatic.x() + colorPlaneRadius;
 				int32_t colorPlaneCenterY = colorPlaneStatic.y() + colorPlaneRadius;
-				float dx				  = cx - colorPlaneCenterX;
-				float dy				  = cy - colorPlaneCenterY;
-				int32_t d2				  = dx * dx + dy * dy;
+				float dx = cx - colorPlaneCenterX;
+				float dy = cy - colorPlaneCenterY;
+				int32_t d2 = dx * dx + dy * dy;
 				if ((colorPlaneRadius * colorPlaneRadius) > d2)
 				{
 					float saturation = sqrt((float)d2) / (float)colorPlaneRadius;
-					float hue		 = (atan2(-dy, dx) / two_pi) + 0.5;
-					float intensity  = 0.99f;
+					float hue = (atan2(-dy, dx) / two_pi) + 0.5;
+					float intensity = 0.99f;
 					float R, G, B;
 					hsi2rgb(hue, saturation, intensity, R, G, B);
 					if (R > 0.99f)
@@ -653,8 +683,7 @@ int32_t aColorPicker::handleMessage(uint32_t message, uint32_t who)
 					{
 						B = 0.0f;
 					}
-					int32_t newColor = 0xff000000 | (((int32_t)(R * 255.0)) << 16) |
-						(((int32_t)(G * 255.0)) << 8) | (((int32_t)(B * 255.0)) << 0);
+					int32_t newColor = 0xff000000 | (((int32_t)(R * 255.0)) << 16) | (((int32_t)(G * 255.0)) << 8) | (((int32_t)(B * 255.0)) << 0);
 					// if (tab0Button.isPressed()) {
 					if (0 == activeTab)
 					{
@@ -672,23 +701,34 @@ int32_t aColorPicker::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void aColorPicker::render() { aObject::render(); }
+void
+aColorPicker::render()
+{
+	aObject::render();
+}
 
-void aColorPicker::move(float offsetX, float offsetY) { aObject::move(offsetX, offsetY); }
+void
+aColorPicker::move(float offsetX, float offsetY)
+{
+	aObject::move(offsetX, offsetY);
+}
 
-void aColorPicker::setColor0(int32_t color)
+void
+aColorPicker::setColor0(int32_t color)
 {
 	color0 = color;
 	tab0ColorRect.setColor(color);
 }
 
-void aColorPicker::setColor1(int32_t color)
+void
+aColorPicker::setColor1(int32_t color)
 {
 	color1 = color;
 	tab1ColorRect.setColor(color);
 }
 
-int32_t aStyle1TextListItem::init(FitIniFile* file, PCSTR blockName)
+int32_t
+aStyle1TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
 	int32_t fontResID = 0;
@@ -716,7 +756,8 @@ int32_t aStyle1TextListItem::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aStyle1TextListItem::render()
+void
+aStyle1TextListItem::render()
 {
 	float color;
 	if (aListItem::SELECTED == getState())
@@ -735,7 +776,8 @@ void aStyle1TextListItem::render()
 	aTextListItem::render();
 }
 
-int32_t aInsigniaListItem::init(FitIniFile* file, PCSTR blockName)
+int32_t
+aInsigniaListItem::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
 	int32_t width, height;
@@ -770,7 +812,8 @@ int32_t aInsigniaListItem::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aInsigniaListItem::update()
+void
+aInsigniaListItem::update()
 {
 	text.setState(getState());
 	aListItem::update();

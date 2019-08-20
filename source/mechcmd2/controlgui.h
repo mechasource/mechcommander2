@@ -146,9 +146,9 @@ public:
 	typedef enum __controlgui_const
 	{
 		OBJECTVE_MOVE_COUNT = 2,
-		RESULTS_MOVE_COUNT  = 3,
-		MAX_CHAT_COUNT		= 5,
-		RPTOTAL_CALLOUT		= 21185,
+		RESULTS_MOVE_COUNT = 3,
+		MAX_CHAT_COUNT = 5,
+		RPTOTAL_CALLOUT = 21185,
 	};
 
 	enum Commands
@@ -228,8 +228,7 @@ public:
 	{
 		for (size_t i = 0; i < LAST_VEHICLE; i++)
 		{
-			if ((vehicleButtons[i].ID == LARGE_AIRSTRIKE) &&
-				!(vehicleButtons[i].state & ControlButton::PRESSED))
+			if ((vehicleButtons[i].ID == LARGE_AIRSTRIKE) && !(vehicleButtons[i].state & ControlButton::PRESSED))
 			{
 				handleVehicleClick(LARGE_AIRSTRIKE);
 			}
@@ -240,8 +239,7 @@ public:
 	{
 		for (size_t i = 0; i < LAST_VEHICLE; i++)
 		{
-			if ((vehicleButtons[i].ID == SENSOR_PROBE) &&
-				!(vehicleButtons[i].state & ControlButton::PRESSED))
+			if ((vehicleButtons[i].ID == SENSOR_PROBE) && !(vehicleButtons[i].state & ControlButton::PRESSED))
 			{
 				handleVehicleClick(SENSOR_PROBE);
 			}

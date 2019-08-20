@@ -28,11 +28,11 @@ PSTR ComponentFormString[] = {"Simple", "Cockpit", "Sensors", "Actuator", "Engin
 
 PSTR WeaponRangeString[] = {"int16_t", "medium", "int32_t"};
 
-MasterComponentPtr MasterComponent::masterList			= nullptr;
-int32_t MasterComponent::numComponents					= 0;
-int32_t MasterComponent::armActuatorID					= 4;
-int32_t MasterComponent::legActuatorID					= 5;
-int32_t MasterComponent::clanAntiMissileSystemID		= 115;
+MasterComponentPtr MasterComponent::masterList = nullptr;
+int32_t MasterComponent::numComponents = 0;
+int32_t MasterComponent::armActuatorID = 4;
+int32_t MasterComponent::legActuatorID = 5;
+int32_t MasterComponent::clanAntiMissileSystemID = 115;
 int32_t MasterComponent::innerSphereAntiMissileSystemID = 106;
 
 #define COMPONENT_NAME_START 32000
@@ -41,7 +41,8 @@ int32_t MasterComponent::innerSphereAntiMissileSystemID = 106;
 // MASTER COMPONENT routines
 //******************************************************************************************
 
-PVOID MasterComponent::operator new(size_t mySize)
+PVOID
+MasterComponent::operator new(size_t mySize)
 {
 	PVOID result = systemHeap->Malloc(mySize);
 	return (result);
@@ -49,23 +50,31 @@ PVOID MasterComponent::operator new(size_t mySize)
 
 //******************************************************************************************
 
-void MasterComponent::operator delete(PVOID us) { systemHeap->Free(us); }
+void
+MasterComponent::operator delete(PVOID us)
+{
+	systemHeap->Free(us);
+}
 
 //******************************************************************************************
 
-void MasterComponent::destroy(void) {}
+void
+MasterComponent::destroy(void)
+{
+}
 
 //******************************************************************************************
-int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
+int32_t
+MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 {
 	//----------------------------------------------------------
 	// Component data was read in, so parse it. First, parse the
 	// fields common to all components...
-	PSTR next_token	= nullptr;
-	PSTR field		   = strtok_s(dataLine, ",", &next_token);
+	PSTR next_token = nullptr;
+	PSTR field = strtok_s(dataLine, ",", &next_token);
 	int32_t ammoAmount = 1;
-	health			   = 1;
-	masterID		   = atoi(field);
+	health = 1;
+	masterID = atoi(field);
 	cLoadString(COMPONENT_NAME_START + masterID, name, MAXLEN_COMPONENT_NAME);
 	cLoadString(COMPONENT_ABBR_START + masterID, abbreviation, MAXLEN_COMPONENT_ABBREV);
 	field = strtok_s(nullptr, ",", &next_token);
@@ -80,23 +89,23 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 		masterID = -1;
 		return (NO_ERROR);
 	}
-	form			  = (ComponentFormType)formIndex;
-	field			  = strtok_s(nullptr, ",", &next_token); // name, ignore
-	field			  = strtok_s(nullptr, ",", &next_token);
-	size			  = atof(field);
-	field			  = strtok_s(nullptr, ",", &next_token);
+	form = (ComponentFormType)formIndex;
+	field = strtok_s(nullptr, ",", &next_token); // name, ignore
+	field = strtok_s(nullptr, ",", &next_token);
+	size = atof(field);
+	field = strtok_s(nullptr, ",", &next_token);
 	float recycleTime = atof(field);
-	field			  = strtok_s(nullptr, ",", &next_token);
-	float heat		  = (uint32_t)atof(field);
-	field			  = strtok_s(nullptr, ",", &next_token);
-	tonnage			  = atof(field);
-	field			  = strtok_s(nullptr, ",", &next_token);
-	float damage	  = atof(field);
-	field			  = strtok_s(nullptr, ",", &next_token);
-	CV				  = atof(field);
-	field			  = strtok_s(nullptr, ",", &next_token);
-	resourcePoints	= atoi(field);
-	field			  = strtok_s(nullptr, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
+	float heat = (uint32_t)atof(field);
+	field = strtok_s(nullptr, ",", &next_token);
+	tonnage = atof(field);
+	field = strtok_s(nullptr, ",", &next_token);
+	float damage = atof(field);
+	field = strtok_s(nullptr, ",", &next_token);
+	CV = atof(field);
+	field = strtok_s(nullptr, ",", &next_token);
+	resourcePoints = atoi(field);
+	field = strtok_s(nullptr, ",", &next_token);
 	uint8_t rangeType = 255;
 	_Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(
 		_Inout_updates_z_(_Size) PSTR _Str, _In_ size_t _Size);
@@ -140,15 +149,15 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 		else if (strcmp(field, "ST") == 0)
 			ammoType = WEAPON_AMMO_ST;
 	}
-	field		  = strtok(nullptr, ",");
+	field = strtok(nullptr, ",");
 	int32_t flags = 0;
 	if (field)
 		flags = atoi(field);
-	field				  = strtok_s(nullptr, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	int32_t specialEffect = 0;
 	if (field)
 		specialEffect = (char)atoi(field);
-	field				 = strtok_s(nullptr, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	int32_t ammoMasterId = 0;
 	if (field)
 		ammoMasterId = (char)atoi(field);
@@ -165,8 +174,8 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 		break;
 	case COMPONENT_FORM_ECM:
 		stats.ecm.effect = damage;
-		field			 = strtok_s(nullptr, ",", &next_token);
-		stats.ecm.range  = recycleTime;
+		field = strtok_s(nullptr, ",", &next_token);
+		stats.ecm.range = recycleTime;
 		break;
 	case COMPONENT_FORM_JAMMER:
 		stats.jammer.effect = damage;
@@ -185,19 +194,19 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 	case COMPONENT_FORM_WEAPON_ENERGY:
 	case COMPONENT_FORM_WEAPON_MISSILE:
 	case COMPONENT_FORM_WEAPON_BALLISTIC:
-		stats.weapon.damage		   = damage;
-		stats.weapon.recycleTime   = recycleTime;
-		stats.weapon.heat		   = heat;
-		stats.weapon.ammoAmount	= 1;
-		stats.weapon.ammoType	  = ammoType;
-		stats.weapon.range		   = rangeType;
+		stats.weapon.damage = damage;
+		stats.weapon.recycleTime = recycleTime;
+		stats.weapon.heat = heat;
+		stats.weapon.ammoAmount = 1;
+		stats.weapon.ammoType = ammoType;
+		stats.weapon.range = rangeType;
 		stats.weapon.specialEffect = specialEffect;
-		stats.weapon.ammoMasterId  = ammoMasterId;
-		stats.weapon.flags		   = ammoType == WEAPON_AMMO_ST ? WEAPON_FLAG_STREAK : 0;
-		stats.weapon.ammoAmount	= ammoAmount;
+		stats.weapon.ammoMasterId = ammoMasterId;
+		stats.weapon.flags = ammoType == WEAPON_AMMO_ST ? WEAPON_FLAG_STREAK : 0;
+		stats.weapon.ammoAmount = ammoAmount;
 		break;
 	case COMPONENT_FORM_AMMO:
-		stats.ammo.ammoPerTon	  = recycleTime;
+		stats.ammo.ammoPerTon = recycleTime;
 		stats.ammo.explosiveDamage = damage;
 		break;
 	case COMPONENT_FORM_JUMPJET:
@@ -221,7 +230,8 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 }
 
 //******************************************************************************************
-int32_t MasterComponent::saveEXCEL(FilePtr componentFile, uint8_t masterId, float baseSensorRange)
+int32_t
+MasterComponent::saveEXCEL(FilePtr componentFile, uint8_t masterId, float baseSensorRange)
 {
 	char dataLine[512];
 	char piece[512];
@@ -500,7 +510,8 @@ int32_t MasterComponent::saveEXCEL(FilePtr componentFile, uint8_t masterId, floa
 
 //---------------------------------------------------------------------------
 
-bool MasterComponent::isOffensiveWeapon(void)
+bool
+MasterComponent::isOffensiveWeapon(void)
 {
 	//----------------------------------------------------------------------
 	// For now, we have just one defensive weapon--the anti-missile system.
@@ -512,7 +523,8 @@ bool MasterComponent::isOffensiveWeapon(void)
 
 //---------------------------------------------------------------------------
 
-bool MasterComponent::isDefensiveWeapon(void)
+bool
+MasterComponent::isDefensiveWeapon(void)
 {
 	//----------------------------------------------------------------------
 	// For now, we have just one defensive weapon--the anti-missile system.
@@ -524,7 +536,8 @@ bool MasterComponent::isDefensiveWeapon(void)
 
 //---------------------------------------------------------------------------
 
-int32_t MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float baseSensorRange)
+int32_t
+MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float baseSensorRange)
 {
 	if (masterList)
 	{
@@ -532,12 +545,12 @@ int32_t MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float b
 		masterList = nullptr;
 	}
 	numComponents = listSize;
-	masterList	= (MasterComponentPtr)systemHeap->Malloc(sizeof(MasterComponent) * numComponents);
+	masterList = (MasterComponentPtr)systemHeap->Malloc(sizeof(MasterComponent) * numComponents);
 	for (size_t curComponent = 0; curComponent < numComponents; curComponent++)
 		masterList[curComponent].init();
-	armActuatorID				   = -1;
-	legActuatorID				   = -1;
-	clanAntiMissileSystemID		   = -1;
+	armActuatorID = -1;
+	legActuatorID = -1;
+	clanAntiMissileSystemID = -1;
 	innerSphereAntiMissileSystemID = -1;
 	//-----------------------------------------------------------------
 	// All components are in one data file. Open it up, and read in the
@@ -565,7 +578,8 @@ int32_t MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float b
 }
 
 //---------------------------------------------------------------------------
-int32_t MasterComponent::saveMasterList(PSTR fileName, int32_t listSize, float baseSensorRange)
+int32_t
+MasterComponent::saveMasterList(PSTR fileName, int32_t listSize, float baseSensorRange)
 {
 	//-----------------------------------------------------------------
 	// All components are in one data file. Save it in CSV format!
@@ -622,12 +636,13 @@ int32_t MasterComponent::saveMasterList(PSTR fileName, int32_t listSize, float b
 
 //---------------------------------------------------------------------------
 
-int32_t MasterComponent::freeMasterList(void)
+int32_t
+MasterComponent::freeMasterList(void)
 {
 	if (masterList)
 	{
 		systemHeap->Free(masterList);
-		masterList	= nullptr;
+		masterList = nullptr;
 		numComponents = 0;
 	}
 	return (NO_ERROR);

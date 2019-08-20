@@ -18,7 +18,8 @@ uint32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask + 1]
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClippingState::Save(std::iostream stream)
+void
+MLRClippingState::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -32,7 +33,8 @@ void MLRClippingState::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClippingState::Load(std::iostream stream)
+void
+MLRClippingState::Load(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);

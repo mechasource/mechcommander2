@@ -19,17 +19,19 @@ component.
 //#include "editorobjectmgr.h"
 
 //-------------------------------------------------------------------------------------------------
-ChooseBuildingDlg::ChooseBuildingDlg(building_ptr_type& buildingPtr) : CDialog(IDD_CHOOSE_BUILDING)
+ChooseBuildingDlg::ChooseBuildingDlg(building_ptr_type& buildingPtr) :
+	CDialog(IDD_CHOOSE_BUILDING)
 {
-	m_pBuildingPtr		   = &buildingPtr;
+	m_pBuildingPtr = &buildingPtr;
 	m_pModifiedBuildingPtr = 0;
-	m_pComboBox			   = 0;
-	m_pUsingPointerButton  = 0;
-	m_pCancelButton		   = 0;
-	m_pOKButton			   = 0;
+	m_pComboBox = 0;
+	m_pUsingPointerButton = 0;
+	m_pCancelButton = 0;
+	m_pOKButton = 0;
 }
 
-BOOL ChooseBuildingDlg::OnInitDialog()
+BOOL
+ChooseBuildingDlg::OnInitDialog()
 {
 	m_pComboBox = (CComboBox*)GetDlgItem(IDC_CHOOSE_BUILDING_COMBO);
 	assert(m_pComboBox);
@@ -46,7 +48,7 @@ BOOL ChooseBuildingDlg::OnInitDialog()
 	}
 	else
 	{
-		m_pModifiedBuildingPtr	= new building_ptr_type;
+		m_pModifiedBuildingPtr = new building_ptr_type;
 		(*m_pModifiedBuildingPtr) = (*m_pBuildingPtr);
 	}
 	m_buildingList.Clear();
@@ -90,7 +92,8 @@ BOOL ChooseBuildingDlg::OnInitDialog()
 	return 1;
 }
 
-BOOL ChooseBuildingDlg::OnCommand(WPARAM wParam,
+BOOL
+ChooseBuildingDlg::OnCommand(WPARAM wParam,
 	LPARAM lParam) // called by child controls to inform of an event
 {
 	assert(m_pCancelButton);
@@ -120,7 +123,8 @@ BOOL ChooseBuildingDlg::OnCommand(WPARAM wParam,
 	return inherited::OnCommand(wParam, lParam);
 }
 
-void ChooseBuildingDlg::OnUsePointer()
+void
+ChooseBuildingDlg::OnUsePointer()
 {
 	if (!EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -133,12 +137,12 @@ void ChooseBuildingDlg::OnUsePointer()
 		EditorInterface::instance()->ObjectSelectOnlyMode(false);
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects =
 			EditorObjectMgr::instance()->getSelectedObjectList();
-		int32_t num_buildings_selected						   = 0;
-		int32_t validObjectIndex							   = -1;
+		int32_t num_buildings_selected = 0;
+		int32_t validObjectIndex = -1;
 		EditorObjectMgr::EDITOR_OBJECT_LIST::EConstIterator it = selectedObjects.Begin();
 		while (!it.IsDone())
 		{
-			int32_t index									   = 0;
+			int32_t index = 0;
 			EditorObjectMgr::BUILDING_LIST::EConstIterator it2 = m_buildingList.Begin();
 			while (!it2.IsDone())
 			{
@@ -167,20 +171,22 @@ void ChooseBuildingDlg::OnUsePointer()
 	}
 }
 
-void ChooseBuildingDlg::OnCancel()
+void
+ChooseBuildingDlg::OnCancel()
 {
 	// assert(false); // haven't decided what to do on cancel yet
 	delete m_pModifiedBuildingPtr;
 	EndDialog(IDCANCEL);
 }
 
-void ChooseBuildingDlg::OnOK()
+void
+ChooseBuildingDlg::OnOK()
 {
 	int32_t nSelectionIndex = m_pComboBox->GetCurSel();
 	assert(0 <= nSelectionIndex);
 	//(*m_pModifiedBuildingPtr) = m_buildingList[nSelectionIndex];
 	(*m_pModifiedBuildingPtr) = *(m_buildingList.Iterator(nSelectionIndex));
-	(*m_pBuildingPtr)		  = (*m_pModifiedBuildingPtr);
+	(*m_pBuildingPtr) = (*m_pModifiedBuildingPtr);
 	delete m_pModifiedBuildingPtr;
 	EndDialog(IDOK);
 }

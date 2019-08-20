@@ -106,12 +106,12 @@ typedef enum
 
 enum DeathCause
 {
-	DEBUGGER_DEATH	 = 0,
-	ENGINE_DEATH	   = 1,
-	PILOT_DEATH		   = 2,
-	EJECTION_DEATH	 = 3,
+	DEBUGGER_DEATH = 0,
+	ENGINE_DEATH = 1,
+	PILOT_DEATH = 2,
+	EJECTION_DEATH = 3,
 	UNDETERMINED_DEATH = 4,
-	POWER_USED_UP	  = 5
+	POWER_USED_UP = 5
 };
 
 //---------------------------------------------------------------------------
@@ -140,10 +140,10 @@ public:
 	{
 		stepPos[0][0] = 0xFFFFFFFF;
 		stepPos[0][1] = 0xFFFFFFFF;
-		numSteps	  = 0;
-		run			  = false;
-		moving		  = false;
-		data		  = 0;
+		numSteps = 0;
+		run = false;
+		moving = false;
+		data = 0;
 	}
 
 	void destroy(void) {}
@@ -181,17 +181,17 @@ typedef union {
 	} elemental;
 	struct
 	{
-		int32_t yawRate;	   // Degrees per sec
+		int32_t yawRate; // Degrees per sec
 		int32_t turretYawRate; // Degrees per sec
-		int32_t pivotRate;	 // Degrees per sec
-		float accel;		   // Meters per sec per sec
-		float speed;		   // Meters per sec
-		int32_t turretYaw;	 // Degrees
+		int32_t pivotRate; // Degrees per sec
+		float accel; // Meters per sec per sec
+		float speed; // Meters per sec
+		int32_t turretYaw; // Degrees
 	} groundVehicle;
 	struct
 	{
 		int32_t torsoYawRate; // Degrees per sec
-		int32_t torsoYaw;	 // Degrees
+		int32_t torsoYaw; // Degrees
 	} mech;
 } DynamicsLimits;
 
@@ -206,7 +206,7 @@ public:
 	void operator=(MoverDynamics copy)
 	{
 		type = copy.type;
-		max  = copy.max;
+		max = copy.max;
 		// cur = copy.cur;
 	}
 
@@ -266,10 +266,10 @@ typedef union {
 	struct
 	{
 		char throttle;
-		float rotate;		// aka mechYaw
+		float rotate; // aka mechYaw
 		float facingRotate; // Direction mech is FACING, NOT MOVING!!!!!
 		float rotateTorso;
-		float rotateLeftArm;  // aka leftArmYaw
+		float rotateLeftArm; // aka leftArmYaw
 		float rotateRightArm; // aka rightArmYaw
 		char gestureGoal;
 		bool blowLeftArm;
@@ -289,14 +289,14 @@ public:
 public:
 	void operator=(MoverControl copy)
 	{
-		type	 = copy.type;
+		type = copy.type;
 		dataType = copy.dataType;
 		settings = copy.settings;
 	}
 
 	virtual void init(void)
 	{
-		type	 = CONTROL_BASE;
+		type = CONTROL_BASE;
 		dataType = CONTROL_DATA_BASE;
 	}
 
@@ -352,18 +352,18 @@ typedef struct _InventoryItem
 	//------------------
 	// general item info
 	uint8_t masterID; // master component ID
-	uint8_t health;   // number of points left before destroyed
-	bool disabled;	// TRUE if effectively destroyed
+	uint8_t health; // number of points left before destroyed
+	bool disabled; // TRUE if effectively destroyed
 
 	//----------------
 	// weapon specific
 	uint8_t facing; // weapon facing in torso: 0 = forward, 1 = rear -- NO
-					// WEAPONS fire rear.  This is the weapon Node ID now!!!!
-	int16_t startAmount;   // ammo's mission-start level
-	int16_t amount;		   // generally for ammo, and weapon's total ammo
-	int16_t ammoIndex;	 // used by ammo to reference ammo pools
-	float readyTime;	   // next time weapon will be ready
-	uint8_t bodyLocation;  // where is the weapon located
+		// WEAPONS fire rear.  This is the weapon Node ID now!!!!
+	int16_t startAmount; // ammo's mission-start level
+	int16_t amount; // generally for ammo, and weapon's total ammo
+	int16_t ammoIndex; // used by ammo to reference ammo pools
+	float readyTime; // next time weapon will be ready
+	uint8_t bodyLocation; // where is the weapon located
 	int16_t effectiveness; // weapon max effectiveness
 } InventoryItem;
 
@@ -373,7 +373,7 @@ typedef struct _InventoryItem
 
 typedef struct _AmmoTally
 {
-	int32_t masterId;  // ammo type's Master Component Id
+	int32_t masterId; // ammo type's Master Component Id
 	int32_t curAmount; // current amount of this ammo type in inventory
 	int32_t maxAmount; // starting amount of this ammo type in inventory
 } AmmoTally;
@@ -388,12 +388,12 @@ typedef struct _CriticalSpace
 {
 
 	uint8_t inventoryID; // indexes into mech's inventory
-	bool hit;			 // TRUE, if this space has been hit
+	bool hit; // TRUE, if this space has been hit
 
 	void operator=(struct _CriticalSpace copy)
 	{
 		inventoryID = copy.inventoryID;
-		hit			= copy.hit;
+		hit = copy.hit;
 	}
 
 } CriticalSpace;
@@ -417,14 +417,14 @@ public:
 public:
 	void operator=(BodyLocation copy)
 	{
-		CASE		= copy.CASE;
+		CASE = copy.CASE;
 		totalSpaces = copy.totalSpaces;
 		for (size_t i = 0; i < MAX_CRITSPACES_PER_BODYLOCATION; i++)
 			criticalSpaces[i] = copy.criticalSpaces[i];
 		curInternalStructure = copy.curInternalStructure;
-		hotSpotNumber		 = copy.hotSpotNumber;
+		hotSpotNumber = copy.hotSpotNumber;
 		maxInternalStructure = copy.maxInternalStructure;
-		damageState			 = copy.damageState;
+		damageState = copy.damageState;
 	}
 };
 
@@ -505,17 +505,17 @@ public:
 
 	void init(void)
 	{
-		bodyState				 = 0;
-		targetType				 = 0;
-		targetId				 = 0;
+		bodyState = 0;
+		targetType = 0;
+		targetId = 0;
 		targetBlockOrTrainNumber = 0;
-		targetVertexOrCarNumber  = 0;
-		targetItemNumber		 = 0;
-		targetCellRC[0]			 = -1;
-		targetCellRC[1]			 = -1;
-		ejectOrderGiven			 = false;
-		jumpOrder				 = false;
-		data					 = 0;
+		targetVertexOrCarNumber = 0;
+		targetItemNumber = 0;
+		targetCellRC[0] = -1;
+		targetCellRC[1] = -1;
+		ejectOrderGiven = false;
+		jumpOrder = false;
+		data = 0;
 	}
 
 	void destroy(void) {}
@@ -710,26 +710,26 @@ class Mover : public GameObject
 
 public:
 	Stuff::Vector3D positionNormal; // normal to terrain at current position
-	Stuff::Vector3D velocity;		// How fast am I going?
-	char name[MAXLEN_MOVER_NAME];   // Name of this particular mover
-	uint8_t chassis;				// type of mover's chassis
+	Stuff::Vector3D velocity; // How fast am I going?
+	char name[MAXLEN_MOVER_NAME]; // Name of this particular mover
+	uint8_t chassis; // type of mover's chassis
 	bool startDisabled;
 	float creationTime;
 
 	bool killed; // used to record when the kill score has been awarded
-	bool lost;   // used to record when the loss score has been awarded
+	bool lost; // used to record when the loss score has been awarded
 	int32_t moveType;
 	int32_t moveLevel;
 	bool followRoads;
 
 	int32_t lastMapCell[2];
 
-	float damageRateTally;		 // damage points taken since last check
-	float damageRateCheckTime;   // time (in game time) of next damage check
+	float damageRateTally; // damage points taken since last check
+	float damageRateCheckTime; // time (in game time) of next damage check
 	float pilotCheckDamageTally; // damage points taken since last pilot check
 
 	BodyLocation body[MAX_MOVER_BODY_LOCATIONS]; // body parts of this mech
-	char numBodyLocations;						 // should be set based upon mover type
+	char numBodyLocations; // should be set based upon mover type
 	int32_t fieldedCV;
 
 	int32_t attackRange; // attack range
@@ -740,7 +740,7 @@ public:
 	ArmorLocation armor[MAX_MOVER_ARMOR_LOCATIONS]; // armor locations of this mover
 	char numArmorLocations;
 	char longName[MAXLEN_MECH_LONGNAME]; // Used by logistics (and the
-										 // interface) to get int32_t name.
+		// interface) to get int32_t name.
 
 	// Inventory
 	InventoryItem inventory[MAX_MOVER_INVENTORY_ITEMS];
@@ -748,30 +748,30 @@ public:
 	uint8_t numWeapons;
 	uint8_t numAmmos;
 	AmmoTally ammoTypeTotal[MAX_AMMO_TYPES]; // tracks total ammo per ammo type
-	char numAmmoTypes;						 // number of different ammo types
+	char numAmmoTypes; // number of different ammo types
 	MechWarriorPtr pilot;
 	int32_t pilotHandle;
 	SensorSystemPtr sensorSystem;
 	ContactInfoPtr contactInfo;
 
 	// Critical Component Indices
-	uint8_t cockpit;			  // cockpit inventory index
-	uint8_t engine;				  // engine inventory index
-	uint8_t lifeSupport;		  // life support inventory index
-	uint8_t sensor;				  // sensor inventory index
-	uint8_t ecm;				  // ecm inventory index
-	uint8_t probe;				  // probe inventory index
-	uint8_t jumpJets;			  // jump jets inventory index
-	uint8_t nullSignature;		  // null signature inventory index
+	uint8_t cockpit; // cockpit inventory index
+	uint8_t engine; // engine inventory index
+	uint8_t lifeSupport; // life support inventory index
+	uint8_t sensor; // sensor inventory index
+	uint8_t ecm; // ecm inventory index
+	uint8_t probe; // probe inventory index
+	uint8_t jumpJets; // jump jets inventory index
+	uint8_t nullSignature; // null signature inventory index
 	float maxWeaponEffectiveness; // max total damage possible
-	float weaponEffectiveness;	// basically, total damage possible
+	float weaponEffectiveness; // basically, total damage possible
 
-	float minRange;				  // current min attack range
-	float maxRange;				  // current max attack range
-	float optimalRange;			  // current optimum attack range
+	float minRange; // current min attack range
+	float maxRange; // current max attack range
+	float optimalRange; // current optimum attack range
 	int32_t numFunctionalWeapons; // takes into account damage, etc.
 
-	char numAntiMissileSystems;							 // number of anti-missile systems
+	char numAntiMissileSystems; // number of anti-missile systems
 	uint8_t antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS]; // anti-missile system list
 
 	// Engine
@@ -787,14 +787,14 @@ public:
 	char teamId;
 	char groupId;
 	int32_t squadId;
-	int32_t selectionIndex;  // > 0 when in selected group
+	int32_t selectionIndex; // > 0 when in selected group
 	int32_t teamRosterIndex; // where am I in my team's roster?
 	char commanderId;
 	int32_t unitGroup; // the thing the user sets by hitting ctrl and a number
 	// this is a field since they can belong to more than one
 	int32_t iconPictureIndex; // the little picture that shows arms and stuff
-							  // falling off
-	bool suppressionFire;	 // is this guy permanently shooting at ground
+		// falling off
+	bool suppressionFire; // is this guy permanently shooting at ground
 	char prevTeamId;
 	char prevCommanderId;
 
@@ -803,29 +803,29 @@ public:
 	int32_t prevPilotCheckModifier;
 	int32_t prevPilotCheckDelta;
 	float prevPilotCheckUpdate;
-	bool failedPilotingCheck;		   // Passed or failed this frame...
-									   //		BaseObjectPtr		collisionFreeFrom;
-									   //		float				collisionFreeTime;
+	bool failedPilotingCheck; // Passed or failed this frame...
+		//		BaseObjectPtr		collisionFreeFrom;
+		//		float				collisionFreeTime;
 	float lastWeaponEffectivenessCalc; // time of last calc
-	float lastOptimalRangeCalc;		   // time of last calc
+	float lastOptimalRangeCalc; // time of last calc
 	GameObjectWatchID challengerWID;
 
 	char lastGesture;
 
 	//		AppearancePtr		appearance;						// pointer to the
 	// Actor  which  is the appearance.
-	MoverControl control;   // control settings for this mover
+	MoverControl control; // control settings for this mover
 	MoverDynamics dynamics; // dynamics settings for this mover
 
 	// Network
 	// uint32_t				netPlayerId;
 	char netPlayerName[MAXLEN_NET_PLAYER_NAME]; // netPlayerName is the player
-												// who owns this mover
-	int32_t localMoverId;						// if >= 0, is locally controlled
-	int32_t netRosterIndex;						// used for mover id in net packets
-	StatusChunk statusChunk;					// last status chunk built/received
-	bool newMoveChunk;							// set if last movechunk not yet processed
-	MoveChunk moveChunk;						// last move chunk built/received
+		// who owns this mover
+	int32_t localMoverId; // if >= 0, is locally controlled
+	int32_t netRosterIndex; // used for mover id in net packets
+	StatusChunk statusChunk; // last status chunk built/received
+	bool newMoveChunk; // set if last movechunk not yet processed
+	MoveChunk moveChunk; // last move chunk built/received
 	int32_t numWeaponFireChunks[2];
 	uint32_t weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
 	int32_t numCriticalHitChunks[2];
@@ -839,10 +839,10 @@ public:
 	bool exploding;
 	bool withdrawing;
 
-	float yieldTimeLeft;			   // How much time do I have left to wait
+	float yieldTimeLeft; // How much time do I have left to wait
 	Stuff::Vector3D lastValidPosition; // Last valid move path point I've been to
-	char pivotDirection;			   // Used in pivotTo(): -1 = not pivoting
-	float lastHustleTime;			   // last time we had to hustle (on bridge, etc.)
+	char pivotDirection; // Used in pivotTo(): -1 = not pivoting
+	float lastHustleTime; // last time we had to hustle (on bridge, etc.)
 
 	static int32_t numMovers;
 	static SortListPtr sortList;
@@ -850,7 +850,7 @@ public:
 	bool salvageVehicle;
 
 	float markDistanceMoved; // Used to track distance object has moved since
-							 // last mark of terrain visible.
+		// last mark of terrain visible.
 
 	GameObjectWatchID refitBuddyWID;
 	GameObjectWatchID recoverBuddyWID;
@@ -903,11 +903,11 @@ public:
 	static TriggerAreaManager* triggerAreaMgr;
 
 	bool pathLocks; // For movers which can be stepped on.  They do NOT lock!
-	bool isOnGui;   // For movers which start out on player team but not on gui.
-					// Like raven in 0103
+	bool isOnGui; // For movers which start out on player team but not on gui.
+		// Like raven in 0103
 
-	int32_t conStat;	// Contact status stored for this frame, for this machine
-	float fadeTime;		// Time between fade from LOS to non-LOS
+	int32_t conStat; // Contact status stored for this frame, for this machine
+	float fadeTime; // Time between fade from LOS to non-LOS
 	uint8_t alphaValue; // Current Fade value;
 	int32_t causeOfDeath;
 
@@ -1104,10 +1104,16 @@ public:
 	virtual int32_t bounceToAdjCell(void);
 
 #ifdef USE_MOVERCONTROLS
-	uint32_t getControlClass(void) { return (control->getControlClass()); }
+	uint32_t getControlClass(void)
+	{
+		return (control->getControlClass());
+	}
 #endif
 
-	virtual void setSquadId(char newSquadId) { squadId = newSquadId; }
+	virtual void setSquadId(char newSquadId)
+	{
+		squadId = newSquadId;
+	}
 
 	virtual char getSquadId(void) { return (squadId); }
 
@@ -1492,7 +1498,7 @@ public:
 
 	virtual int32_t calcSpriteSpeed(float speed, uint32_t flags, int32_t& state, int32_t& throttle)
 	{
-		state	= 0;
+		state = 0;
 		throttle = 100;
 		return (-1);
 	}
@@ -1592,7 +1598,8 @@ typedef struct _MoverInitData
 
 //---------------------------------------------------------------------------
 
-extern MoverPtr getMoverFromHandle(int32_t partId);
+extern MoverPtr
+getMoverFromHandle(int32_t partId);
 
 //******************************************************************************************
 

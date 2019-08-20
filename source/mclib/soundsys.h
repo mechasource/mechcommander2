@@ -145,10 +145,10 @@ protected:
 	int32_t lastSupportId;
 	HGOSAUDIO supportHandle;
 
-	uint32_t isRaining;  // What sound FX should play as an ambient background
-						 // loop.  Rain/Fire/Nothing, etc.
+	uint32_t isRaining; // What sound FX should play as an ambient background
+		// loop.  Rain/Fire/Nothing, etc.
 	uint32_t oldRaining; // Check if the old rain doesn't match new.  If so,
-						 // play new instead!
+		// play new instead!
 
 	float sensorBeepUpdateTime;
 
@@ -176,37 +176,37 @@ public:
 		memset(channelSampleId, -1, sizeof(int32_t) * MAX_DIGITAL_SAMPLES);
 		memset(fadeDown, 0, sizeof(bool) * MAX_DIGITAL_SAMPLES);
 		soundHeapSize = 0;
-		soundHeap	 = nullptr;
+		soundHeap = nullptr;
 		numSoundBites = 0;
-		sounds		  = nullptr;
+		sounds = nullptr;
 		soundDataFile = bettyDataFile = nullptr;
-		numDMS						  = 0;
-		streamFadeDownTime			  = 0.0;
-		digitalStreamBitDepth		  = 0;
-		digitalStreamChannels		  = 0;
-		digitalMusicIds				  = nullptr;
-		digitalMusicLoopFlags		  = nullptr;
-		maxSoundDistance			  = 0.0;
-		bettySoundBite				  = nullptr;
-		lastBettyId					  = -1;
-		currentMusicId				  = -1;
-		stream1Handle				  = 0;
-		stream1Active				  = FALSE;
-		stream1Time					  = 0.0;
-		stream2Handle				  = 0;
-		stream2Active				  = FALSE;
-		stream2Time					  = 0.0;
-		stream3Handle				  = 0;
-		stream3Active				  = false;
-		numBettySamples				  = 0;
-		bettyHandle					  = nullptr;
-		supportSoundBite			  = nullptr;
-		lastSupportId				  = -1;
-		numSupportSamples			  = 0;
-		supportHandle				  = nullptr;
+		numDMS = 0;
+		streamFadeDownTime = 0.0;
+		digitalStreamBitDepth = 0;
+		digitalStreamChannels = 0;
+		digitalMusicIds = nullptr;
+		digitalMusicLoopFlags = nullptr;
+		maxSoundDistance = 0.0;
+		bettySoundBite = nullptr;
+		lastBettyId = -1;
+		currentMusicId = -1;
+		stream1Handle = 0;
+		stream1Active = FALSE;
+		stream1Time = 0.0;
+		stream2Handle = 0;
+		stream2Active = FALSE;
+		stream2Time = 0.0;
+		stream3Handle = 0;
+		stream3Active = false;
+		numBettySamples = 0;
+		bettyHandle = nullptr;
+		supportSoundBite = nullptr;
+		lastSupportId = -1;
+		numSupportSamples = 0;
+		supportHandle = nullptr;
 		isRaining = oldRaining = 0;
-		sensorBeepUpdateTime   = 0.0f;
-		gamePaused			   = false;
+		sensorBeepUpdateTime = 0.0f;
+		gamePaused = false;
 	}
 
 	int32_t init(PSTR soundFileName);
@@ -217,7 +217,7 @@ public:
 
 	int32_t playDigitalSample(uint32_t sampleId,
 		Stuff::Vector3D pos = Stuff::Vector3D(-9999.0f, -9999.0, -9999.0f),
-		bool allowDupes		= false);
+		bool allowDupes = false);
 
 	int32_t playDigitalMusic(int32_t musicId);
 

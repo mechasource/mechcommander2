@@ -24,7 +24,7 @@ typedef Camera* CameraPtr;
 enum CameraClass
 {
 	INVALID_CAMERA = -1,
-	BASE_CAMERA	= 0,
+	BASE_CAMERA = 0,
 	OBJECT_CAMERA
 };
 

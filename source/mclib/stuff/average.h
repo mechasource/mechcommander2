@@ -96,24 +96,31 @@ private:
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ AverageOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> AverageOf<T>::AverageOf() { array = nullptr; }
+template <class T>
+AverageOf<T>::AverageOf()
+{
+	array = nullptr;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> AverageOf<T>::AverageOf(size_t the_size, T initial)
+template <class T>
+AverageOf<T>::AverageOf(size_t the_size, T initial)
 {
 	array = nullptr;
 	SetSize(the_size, initial);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> void AverageOf<T>::SetSize(size_t the_size, T initial)
+template <class T>
+void
+AverageOf<T>::SetSize(size_t the_size, T initial)
 {
 	if (array != nullptr)
 	{
 		Unregister_Pointer(array);
 		delete[] array;
 	}
-	size  = the_size;
+	size = the_size;
 	array = new T[size];
 	Register_Pointer(array);
 	next = 0;
@@ -126,14 +133,17 @@ template <class T> void AverageOf<T>::SetSize(size_t the_size, T initial)
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> AverageOf<T>::~AverageOf()
+template <class T>
+AverageOf<T>::~AverageOf()
 {
 	Unregister_Pointer(array);
 	delete[] array;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> void AverageOf<T>::Add(T value)
+template <class T>
+void
+AverageOf<T>::Add(T value)
 {
 	// Check_Object(this);
 	Check_Pointer(array);
@@ -148,7 +158,9 @@ template <class T> void AverageOf<T>::Add(T value)
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> T AverageOf<T>::CalculateAverage()
+template <class T>
+T
+AverageOf<T>::CalculateAverage()
 {
 	// Check_Object(this);
 	size_t i;
@@ -164,7 +176,9 @@ template <class T> T AverageOf<T>::CalculateAverage()
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> T AverageOf<T>::CalculateOlympicAverage()
+template <class T>
+T
+AverageOf<T>::CalculateOlympicAverage()
 {
 	// Check_Object(this);
 	size_t i;
@@ -187,17 +201,19 @@ template <class T> T AverageOf<T>::CalculateOlympicAverage()
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> float AverageOf<T>::CalculateTrend()
+template <class T>
+float
+AverageOf<T>::CalculateTrend()
 {
 	// Check_Object(this);
 	size_t i;
-	float f  = 0.0f;
+	float f = 0.0f;
 	float fx = 0.0f;
 	float x1 = static_cast<float>(size);
 	float x2 = x1 * x1 / 2.0f;
 	float x3 = x2 + x1 * x1 * x1 / 3.0f + x1 / 6.0f;
 	x2 += x1 / 2.0f;
-	i		= next;
+	i = next;
 	float t = 1.0f;
 	do
 	{
@@ -213,7 +229,9 @@ template <class T> float AverageOf<T>::CalculateTrend()
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> T AverageOf<T>::CalculateLowerBound()
+template <class T>
+T
+AverageOf<T>::CalculateLowerBound()
 {
 	// Check_Object(this);
 	size_t i;
@@ -230,7 +248,9 @@ template <class T> T AverageOf<T>::CalculateLowerBound()
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-template <class T> T AverageOf<T>::CalculateUpperBound()
+template <class T>
+T
+AverageOf<T>::CalculateUpperBound()
 {
 	// Check_Object(this);
 	size_t i;
@@ -264,7 +284,7 @@ public:
 	//
 	StaticAverageOf()
 	{
-		size  = (size_t)(T)0;
+		size = (size_t)(T)0;
 		total = (T)0;
 	}
 	~StaticAverageOf() {}

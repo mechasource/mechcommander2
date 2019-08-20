@@ -16,8 +16,8 @@
 
 //------------------------------------------------------------------------------
 //
-gosFX::Tube__Specification::Tube__Specification(std::iostream stream, uint32_t gfx_version)
-	: Effect__Specification(TubeClassID, stream, gfx_version)
+gosFX::Tube__Specification::Tube__Specification(std::iostream stream, uint32_t gfx_version) :
+	Effect__Specification(TubeClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -60,19 +60,21 @@ gosFX::Tube__Specification::Tube__Specification(std::iostream stream, uint32_t g
 
 //------------------------------------------------------------------------------
 //
-gosFX::Tube__Specification::Tube__Specification() : Effect__Specification(TubeClassID)
+gosFX::Tube__Specification::Tube__Specification() :
+	Effect__Specification(TubeClassID)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_maxProfileCount = 0;
-	m_profileType	 = e_Ribbon;
-	m_insideOut		  = false;
-	m_UBias			  = 0.0f;
+	m_profileType = e_Ribbon;
+	m_insideOut = false;
+	m_UBias = 0.0f;
 	// Check_Pointer(this);
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::Tube__Specification* gosFX::Tube__Specification::Make(
+gosFX::Tube__Specification*
+gosFX::Tube__Specification::Make(
 	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
@@ -86,7 +88,8 @@ gosFX::Tube__Specification* gosFX::Tube__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube__Specification::Save(std::iostream stream)
+void
+gosFX::Tube__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -119,7 +122,8 @@ void gosFX::Tube__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube__Specification::BuildDefaults()
+void
+gosFX::Tube__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
@@ -161,15 +165,16 @@ void gosFX::Tube__Specification::BuildDefaults()
 	m_pVSize.m_seeded = false;
 	m_pVSize.m_seedCurve.SetCurve(1.0f);
 	m_maxProfileCount = 2;
-	m_profileType	 = e_Triangle;
-	m_insideOut		  = false;
+	m_profileType = e_Triangle;
+	m_insideOut = false;
 	CalculateUBias(false);
 	BuildTemplate();
 }
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Tube__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::Tube__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	if (m_maxProfileCount < 2)
@@ -254,7 +259,8 @@ bool gosFX::Tube__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube__Specification::Copy(Tube__Specification* spec)
+void
+gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -269,34 +275,35 @@ void gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 	// gos_PushCurrentHeap(Heap);
 #endif
 	m_profilesPerSecond = spec->m_profilesPerSecond;
-	m_pLifeSpan			= spec->m_pLifeSpan;
-	m_emitterSizeX		= spec->m_emitterSizeX;
-	m_emitterSizeY		= spec->m_emitterSizeY;
-	m_emitterSizeZ		= spec->m_emitterSizeZ;
-	m_minimumDeviation  = spec->m_minimumDeviation;
-	m_maximumDeviation  = spec->m_maximumDeviation;
-	m_pDisplacement		= spec->m_pDisplacement;
-	m_pScale			= spec->m_pScale;
-	m_pRed				= spec->m_pRed;
-	m_pGreen			= spec->m_pGreen;
-	m_pBlue				= spec->m_pBlue;
-	m_pAlpha			= spec->m_pAlpha;
-	m_pUOffset			= spec->m_pUOffset;
-	m_pVOffset			= spec->m_pVOffset;
-	m_pUSize			= spec->m_pUSize;
-	m_pVSize			= spec->m_pVSize;
-	m_maxProfileCount   = spec->m_maxProfileCount;
-	m_profileType		= spec->m_profileType;
-	m_vertices			= spec->m_vertices;
-	m_uvs				= spec->m_uvs;
-	m_insideOut			= spec->m_insideOut;
-	m_UBias				= spec->m_UBias;
+	m_pLifeSpan = spec->m_pLifeSpan;
+	m_emitterSizeX = spec->m_emitterSizeX;
+	m_emitterSizeY = spec->m_emitterSizeY;
+	m_emitterSizeZ = spec->m_emitterSizeZ;
+	m_minimumDeviation = spec->m_minimumDeviation;
+	m_maximumDeviation = spec->m_maximumDeviation;
+	m_pDisplacement = spec->m_pDisplacement;
+	m_pScale = spec->m_pScale;
+	m_pRed = spec->m_pRed;
+	m_pGreen = spec->m_pGreen;
+	m_pBlue = spec->m_pBlue;
+	m_pAlpha = spec->m_pAlpha;
+	m_pUOffset = spec->m_pUOffset;
+	m_pVOffset = spec->m_pVOffset;
+	m_pUSize = spec->m_pUSize;
+	m_pVSize = spec->m_pVSize;
+	m_maxProfileCount = spec->m_maxProfileCount;
+	m_profileType = spec->m_profileType;
+	m_vertices = spec->m_vertices;
+	m_uvs = spec->m_uvs;
+	m_insideOut = spec->m_insideOut;
+	m_UBias = spec->m_UBias;
 	// gos_PopCurrentHeap();
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube__Specification::BuildTemplate()
+void
+gosFX::Tube__Specification::BuildTemplate()
 {
 	// Check_Object(this);
 	switch (m_profileType)
@@ -397,7 +404,8 @@ void gosFX::Tube__Specification::BuildTemplate()
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Tube__Specification::CalculateUBias(bool adjust)
+bool
+gosFX::Tube__Specification::CalculateUBias(bool adjust)
 {
 	// Check_Object(this);
 	//
@@ -426,7 +434,7 @@ Retry:
 	{
 		if (!adjust)
 			return false;
-		lower		= max_offset - min_offset;
+		lower = max_offset - min_offset;
 		float scale = static_cast<float>(floor((198.0f - lower) / max_index));
 		m_pUSize.m_ageCurve.SetCurve(scale);
 		m_pUSize.m_seeded = false;
@@ -456,7 +464,8 @@ gosFX::Tube::ClassData* gosFX::Tube::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::InitializeClass()
+void
+gosFX::Tube::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -467,7 +476,8 @@ void gosFX::Tube::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::TerminateClass()
+void
+gosFX::Tube::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -476,7 +486,8 @@ void gosFX::Tube::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Tube::Tube(Specification* spec, uint32_t flags) : Effect(DefaultData, spec, flags)
+gosFX::Tube::Tube(Specification* spec, uint32_t flags) :
+	Effect(DefaultData, spec, flags)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
@@ -510,11 +521,11 @@ gosFX::Tube::Tube(Specification* spec, uint32_t flags) : Effect(DefaultData, spe
 	//------------------------------------------------
 	//
 	m_triangleCount = 0;
-	m_vertexCount   = 0;
+	m_vertexCount = 0;
 	m_data.SetLength(size);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[0]);
-	size		 = spec->m_maxProfileCount * vertex_count * sizeof(Stuff::Point3D);
-	m_P_colors   = Cast_Pointer(Stuff::RGBAColor*, &m_data[size]);
+	size = spec->m_maxProfileCount * vertex_count * sizeof(Stuff::Point3D);
+	m_P_colors = Cast_Pointer(Stuff::RGBAColor*, &m_data[size]);
 	size += spec->m_maxProfileCount * vertex_count * sizeof(Stuff::RGBAColor);
 	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<float>*, &m_data[size]);
 	size += spec->m_maxProfileCount * vertex_count * sizeof(Stuff::Vector2DOf<float>);
@@ -528,14 +539,15 @@ gosFX::Tube::Tube(Specification* spec, uint32_t flags) : Effect(DefaultData, spe
 	//-------------------------------
 	//
 	m_activeProfileCount = 0;
-	m_headProfile		 = -1;
-	m_tailProfile		 = -1;
-	m_birthAccumulator   = 0.0f;
+	m_headProfile = -1;
+	m_tailProfile = -1;
+	m_birthAccumulator = 0.0f;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::BuildMesh(puint16_t indices)
+void
+gosFX::Tube::BuildMesh(puint16_t indices)
 {
 	// Check_Object(this);
 	Check_Pointer(indices);
@@ -622,7 +634,8 @@ gosFX::Tube::~Tube()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Tube* gosFX::Tube::Make(Specification* spec, uint32_t flags)
+gosFX::Tube*
+gosFX::Tube::Make(Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
 #ifdef _GAMEOS_HPP_
@@ -635,7 +648,8 @@ gosFX::Tube* gosFX::Tube::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::Start(ExecuteInfo* info)
+void
+gosFX::Tube::Start(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -656,7 +670,8 @@ void gosFX::Tube::Start(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Tube::Execute(ExecuteInfo* info)
+bool
+gosFX::Tube::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -739,7 +754,7 @@ bool gosFX::Tube::Execute(ExecuteInfo* info)
 	//----------------------------------
 	//
 	Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
-	int32_t i			  = m_headProfile;
+	int32_t i = m_headProfile;
 	int32_t profile_count = 0;
 	_ASSERT(i >= 0);
 	do
@@ -812,14 +827,14 @@ bool gosFX::Tube::Execute(ExecuteInfo* info)
 	_ASSERT(box.maxX >= box.minX);
 	_ASSERT(box.maxY >= box.minY);
 	_ASSERT(box.maxZ >= box.minZ);
-	Stuff::OBB local_bounds			 = Stuff::OBB::Identity;
-	local_bounds.axisExtents.x		 = 0.5f * (box.maxX - box.minX);
-	local_bounds.axisExtents.y		 = 0.5f * (box.maxY - box.minY);
-	local_bounds.axisExtents.z		 = 0.5f * (box.maxZ - box.minZ);
+	Stuff::OBB local_bounds = Stuff::OBB::Identity;
+	local_bounds.axisExtents.x = 0.5f * (box.maxX - box.minX);
+	local_bounds.axisExtents.y = 0.5f * (box.maxY - box.minY);
+	local_bounds.axisExtents.z = 0.5f * (box.maxZ - box.minZ);
 	local_bounds.localToParent(3, 0) = box.minX + local_bounds.axisExtents.x;
 	local_bounds.localToParent(3, 1) = box.minY + local_bounds.axisExtents.y;
 	local_bounds.localToParent(3, 2) = box.minZ + local_bounds.axisExtents.z;
-	local_bounds.sphereRadius		 = local_bounds.axisExtents.GetLength();
+	local_bounds.sphereRadius = local_bounds.axisExtents.GetLength();
 	Stuff::OBB parent_bounds;
 	parent_bounds.Multiply(local_bounds, m_localToParent);
 	info->m_bounds->Union(*info->m_bounds, parent_bounds);
@@ -828,7 +843,8 @@ bool gosFX::Tube::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::Kill()
+void
+gosFX::Tube::Kill()
 {
 	// Check_Object(this);
 	//
@@ -848,9 +864,9 @@ void gosFX::Tube::Kill()
 		} while (m_headProfile != m_tailProfile);
 	}
 	m_activeProfileCount = 0;
-	m_headProfile		 = -1;
-	m_tailProfile		 = -1;
-	m_birthAccumulator   = 0.0f;
+	m_headProfile = -1;
+	m_tailProfile = -1;
+	m_birthAccumulator = 0.0f;
 	//
 	//----------------------------------------
 	// Now let the base effect handle stopping
@@ -861,7 +877,8 @@ void gosFX::Tube::Kill()
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Tube::HasFinished()
+bool
+gosFX::Tube::HasFinished()
 {
 	// Check_Object(this);
 	return Effect::HasFinished() && (m_activeProfileCount == 0);
@@ -869,7 +886,8 @@ bool gosFX::Tube::HasFinished()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::CreateNewProfile(uint32_t index, const Stuff::LinearMatrix4D& origin)
+void
+gosFX::Tube::CreateNewProfile(uint32_t index, const Stuff::LinearMatrix4D& origin)
 {
 	// Check_Object(this);
 	Check_Object(&origin);
@@ -882,13 +900,13 @@ void gosFX::Tube::CreateNewProfile(uint32_t index, const Stuff::LinearMatrix4D& 
 	Check_Object(spec);
 	Profile* profile = GetProfile(index);
 	Check_Object(profile);
-	profile->m_age   = 0.0f;
-	float min_seed   = spec->m_minimumChildSeed.ComputeValue(m_age, m_seed);
+	profile->m_age = 0.0f;
+	float min_seed = spec->m_minimumChildSeed.ComputeValue(m_age, m_seed);
 	float seed_range = spec->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
-	float seed		 = Stuff::Random::GetFraction() * seed_range + min_seed;
+	float seed = Stuff::Random::GetFraction() * seed_range + min_seed;
 	Clamp(seed, 0.0f, 1.0f);
 	profile->m_seed = seed;
-	float lifetime  = spec->m_pLifeSpan.ComputeValue(m_age, seed);
+	float lifetime = spec->m_pLifeSpan.ComputeValue(m_age, seed);
 	Min_Clamp(lifetime, 0.0333333f);
 	profile->m_ageRate = 1.0f / lifetime;
 	//
@@ -897,8 +915,8 @@ void gosFX::Tube::CreateNewProfile(uint32_t index, const Stuff::LinearMatrix4D& 
 	//------------------------------------------------------------------
 	//
 	profile->m_profileToWorld = origin;
-	float pitch_min			  = spec->m_minimumDeviation.ComputeValue(m_age, seed);
-	float pitch_range		  = spec->m_maximumDeviation.ComputeValue(m_age, seed) - pitch_min;
+	float pitch_min = spec->m_minimumDeviation.ComputeValue(m_age, seed);
+	float pitch_range = spec->m_maximumDeviation.ComputeValue(m_age, seed) - pitch_min;
 	if (pitch_range < 0.0f)
 		pitch_range = 0.0f;
 	Stuff::Radian angle = pitch_min + Stuff::Random::GetFraction() * pitch_range;
@@ -911,7 +929,8 @@ void gosFX::Tube::CreateNewProfile(uint32_t index, const Stuff::LinearMatrix4D& 
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
+bool
+gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
 	const Stuff::LinearMatrix4D& world_to_new_local, Stuff::Time till, Stuff::Sphere* bounds)
 {
 	// Check_Object(this);
@@ -931,7 +950,7 @@ bool gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
 	//--------------------------------------------------------------------
 	//
 	Set_Statistic(Profile_Count, Profile_Count + 1);
-	float seed			= profile->m_seed;
+	float seed = profile->m_seed;
 	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	float scale = spec->m_pScale.ComputeValue(age, seed);
@@ -979,8 +998,8 @@ bool gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
 	//------------------------------
 	//
 	Check_Pointer(m_P_uvs);
-	float u  = spec->m_pUOffset.ComputeValue(age, seed);
-	float v  = spec->m_pVOffset.ComputeValue(age, seed);
+	float u = spec->m_pUOffset.ComputeValue(age, seed);
+	float v = spec->m_pVOffset.ComputeValue(age, seed);
 	float u2 = spec->m_pUSize.ComputeValue(age, seed);
 	float v2 = spec->m_pVSize.ComputeValue(age, seed);
 	u += u2 * profile_index + spec->m_UBias;
@@ -996,9 +1015,9 @@ bool gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
 	//
 	Check_Pointer(m_P_colors);
 	Stuff::RGBAColor color;
-	color.red   = spec->m_pRed.ComputeValue(age, seed);
+	color.red = spec->m_pRed.ComputeValue(age, seed);
 	color.green = spec->m_pGreen.ComputeValue(age, seed);
-	color.blue  = spec->m_pBlue.ComputeValue(age, seed);
+	color.blue = spec->m_pBlue.ComputeValue(age, seed);
 	color.alpha = spec->m_pAlpha.ComputeValue(age, seed);
 	for (i = 0; i < vertex_count; ++i)
 		m_P_colors[vertex_index + i] = color;
@@ -1007,7 +1026,8 @@ bool gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::DestroyProfile(uint32_t index)
+void
+gosFX::Tube::DestroyProfile(uint32_t index)
 {
 	Profile* profile = GetProfile(index);
 	Check_Object(profile);
@@ -1016,7 +1036,8 @@ void gosFX::Tube::DestroyProfile(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::Draw(DrawInfo* info)
+void
+gosFX::Tube::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -1028,17 +1049,17 @@ void gosFX::Tube::Draw(DrawInfo* info)
 	if (m_activeProfileCount > 1)
 	{
 		MidLevelRenderer::DrawEffectInformation dInfo;
-		dInfo.effect		= m_mesh;
+		dInfo.effect = m_mesh;
 		Specification* spec = GetSpecification();
 		Check_Object(spec);
 		dInfo.state.Combine(info->m_state, spec->m_state);
 		dInfo.clippingFlags = info->m_clippingFlags;
 		Stuff::LinearMatrix4D local_to_world;
 		local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
-		dInfo.effectToWorld   = &local_to_world;
+		dInfo.effectToWorld = &local_to_world;
 		uint32_t vertex_count = spec->m_vertices.GetLength();
-		m_vertexCount		  = m_activeProfileCount * vertex_count;
-		m_triangleCount		  = 2 * (m_activeProfileCount - 1) * (vertex_count - 1);
+		m_vertexCount = m_activeProfileCount * vertex_count;
+		m_triangleCount = 2 * (m_activeProfileCount - 1) * (vertex_count - 1);
 		//
 		//-------------------------------------------------------------------
 		// If we are doing the aligned ribbon, we will have to orient each of
@@ -1047,8 +1068,8 @@ void gosFX::Tube::Draw(DrawInfo* info)
 		//
 		if (spec->m_profileType == Specification::e_AlignedRibbon)
 		{
-			int32_t i			  = m_headProfile;
-			int32_t vertex		  = 0;
+			int32_t i = m_headProfile;
+			int32_t vertex = 0;
 			uint32_t vertex_count = spec->m_vertices.GetLength();
 			_ASSERT(vertex_count < 8);
 			Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
@@ -1073,10 +1094,10 @@ void gosFX::Tube::Draw(DrawInfo* info)
 				// profile space
 				//---------------------------------------------------------
 				//
-				float age   = profile->m_age;
-				float seed  = profile->m_seed;
+				float age = profile->m_age;
+				float seed = profile->m_seed;
 				float scale = spec->m_pScale.ComputeValue(age, seed);
-				float disp  = spec->m_pDisplacement.ComputeValue(age, seed);
+				float disp = spec->m_pDisplacement.ComputeValue(age, seed);
 				Stuff::Point3D offset_in_profile;
 				offset_in_profile.Multiply(profile->m_direction, disp);
 				//
@@ -1141,4 +1162,8 @@ void gosFX::Tube::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::Tube::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

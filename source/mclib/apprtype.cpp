@@ -29,7 +29,8 @@
 //---------------------------------------------------------------------------
 // Class AppearanceType
 #if _CONSIDERED_OBSOLETE
-PVOID AppearanceType::operator new(size_t memSize)
+PVOID
+AppearanceType::operator new(size_t memSize)
 {
 	PVOID result = nullptr;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
@@ -40,7 +41,8 @@ PVOID AppearanceType::operator new(size_t memSize)
 }
 
 //---------------------------------------------------------------------------
-void AppearanceType::operator delete(PVOID treePtr)
+void
+AppearanceType::operator delete(PVOID treePtr)
 {
 	int32_t result;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
@@ -51,7 +53,8 @@ void AppearanceType::operator delete(PVOID treePtr)
 #endif
 
 //---------------------------------------------------------------------------
-void AppearanceType::init(PSTR fileName)
+void
+AppearanceType::init(PSTR fileName)
 {
 	name = (PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
 	strcpy(name, fileName);
@@ -102,7 +105,8 @@ void AppearanceType::init(PSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-void AppearanceType::reinit(void)
+void
+AppearanceType::reinit(void)
 {
 	// Dig out the Type Bounds here for selections
 	FullPathFileName iniName;
@@ -152,7 +156,8 @@ void AppearanceType::reinit(void)
 
 //---------------------------------------------------------------------------
 #if _CONSIDERED_OBSOLETE
-void AppearanceType::destroy(void)
+void
+AppearanceType::destroy(void)
 {
 	AppearanceTypeList::appearanceHeap->Free(name);
 	name = nullptr;
@@ -160,7 +165,8 @@ void AppearanceType::destroy(void)
 
 //---------------------------------------------------------------------------
 // class AppearanceTypeList
-void AppearanceTypeList::init(uint32_t heapSize)
+void
+AppearanceTypeList::init(uint32_t heapSize)
 {
 	appearanceHeap = new UserHeap;
 	gosASSERT(appearanceHeap != nullptr);
@@ -171,14 +177,15 @@ void AppearanceTypeList::init(uint32_t heapSize)
 #endif
 
 //---------------------------------------------------------------------------
-AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appearFile)
+AppearanceTypePtr
+AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appearFile)
 {
 	//----------------------------------------------------------------
 	// The type of appearance is stored in the upper 8 bits of the
 	// apprNum.  To get the correct packet we mask off the top 8 bits
 	// and store the number.  To get the appearance type, we right shift
 	// by 24.
-	int32_t appearanceClass			 = apprNum >> 24;
+	int32_t appearanceClass = apprNum >> 24;
 	AppearanceTypePtr appearanceType = nullptr;
 	//----------------------------------------------------
 	// If these top bits are wrong, return nullptr
@@ -217,7 +224,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			//----------------------------------------
 			// We have a new one, add it to the list.
 			appearanceType->numUsers = 1;
-			appearanceType->next	 = nullptr;
+			appearanceType->next = nullptr;
 			if (head == nullptr)
 			{
 				head = appearanceType;
@@ -226,7 +233,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			else
 			{
 				last->next = appearanceType;
-				last	   = appearanceType;
+				last = appearanceType;
 			}
 		}
 		break;
@@ -240,7 +247,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			//----------------------------------------
 			// We have a new one, add it to the list.
 			appearanceType->numUsers = 1;
-			appearanceType->next	 = nullptr;
+			appearanceType->next = nullptr;
 			if (head == nullptr)
 			{
 				head = appearanceType;
@@ -249,7 +256,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			else
 			{
 				last->next = appearanceType;
-				last	   = appearanceType;
+				last = appearanceType;
 			}
 		}
 		break;
@@ -263,7 +270,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			//----------------------------------------
 			// We have a new one, add it to the list.
 			appearanceType->numUsers = 1;
-			appearanceType->next	 = nullptr;
+			appearanceType->next = nullptr;
 			if (head == nullptr)
 			{
 				head = appearanceType;
@@ -272,7 +279,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			else
 			{
 				last->next = appearanceType;
-				last	   = appearanceType;
+				last = appearanceType;
 			}
 		}
 		break;
@@ -286,7 +293,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			//----------------------------------------
 			// We have a new one, add it to the list.
 			appearanceType->numUsers = 1;
-			appearanceType->next	 = nullptr;
+			appearanceType->next = nullptr;
 			if (head == nullptr)
 			{
 				head = appearanceType;
@@ -295,7 +302,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			else
 			{
 				last->next = appearanceType;
-				last	   = appearanceType;
+				last = appearanceType;
 			}
 		}
 		break;
@@ -309,7 +316,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			//----------------------------------------
 			// We have a new one, add it to the list.
 			appearanceType->numUsers = 1;
-			appearanceType->next	 = nullptr;
+			appearanceType->next = nullptr;
 			if (head == nullptr)
 			{
 				head = appearanceType;
@@ -318,7 +325,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 			else
 			{
 				last->next = appearanceType;
-				last	   = appearanceType;
+				last = appearanceType;
 			}
 		}
 		break;
@@ -331,13 +338,14 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 }
 
 //---------------------------------------------------------------------------
-int32_t AppearanceTypeList::removeAppearance(AppearanceTypePtr which)
+int32_t
+AppearanceTypeList::removeAppearance(AppearanceTypePtr which)
 {
 	AppearanceTypePtr appearanceType = head;
-	AppearanceTypePtr previous		 = nullptr;
+	AppearanceTypePtr previous = nullptr;
 	while (appearanceType && (appearanceType != which))
 	{
-		previous	   = appearanceType;
+		previous = appearanceType;
 		appearanceType = appearanceType->next;
 	}
 	if (appearanceType)
@@ -373,7 +381,8 @@ int32_t AppearanceTypeList::removeAppearance(AppearanceTypePtr which)
 }
 
 //---------------------------------------------------------------------------
-void AppearanceTypeList::destroy(void)
+void
+AppearanceTypeList::destroy(void)
 {
 	//---------------------------------------------------------------------
 	// Run through the list and force a destroy call for each list element.

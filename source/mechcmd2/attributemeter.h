@@ -16,7 +16,7 @@ class FifIniFile;
 
 constexpr const float MAX_ARMOR_RANGE = 432.f;
 constexpr const float MAX_SPEED_RANGE = 35.f;
-constexpr const float MAX_JUMP_RANGE  = 125.f;
+constexpr const float MAX_JUMP_RANGE = 125.f;
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -42,10 +42,10 @@ private:
 	bool bShow;
 
 public:
-	AttributeMeter(void)
-		: unitHeight(0), unitWidth(0), unitCount(0), skipWidth(0), rectColor(0),
-		  colorMin(0xff005392), colorMax(0xffcdeaff), addedColorMin(0), addedColorMax(0),
-		  percent(0), addedPercent(0), numBars(0), helpID(0), bShow(true)
+	AttributeMeter(void) :
+		unitHeight(0), unitWidth(0), unitCount(0), skipWidth(0), rectColor(0),
+		colorMin(0xff005392), colorMax(0xffcdeaff), addedColorMin(0), addedColorMax(0),
+		percent(0), addedPercent(0), numBars(0), helpID(0), bShow(true)
 	{
 		outsideRect = {0};
 	}

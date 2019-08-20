@@ -34,11 +34,19 @@ public:
 	bool RunTest();
 };
 
-TreeTestPlug::TreeTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
+TreeTestPlug::TreeTestPlug(int32_t value) :
+	Plug(DefaultData)
+{
+	this->value = value;
+}
 
-TreeTestPlug::~TreeTestPlug() { this->value = -1; }
+TreeTestPlug::~TreeTestPlug()
+{
+	this->value = -1;
+}
 
-TreeTestNode::TreeTestNode() : Node(DefaultData), tree1(this, true), tree2(this, true) {}
+TreeTestNode::TreeTestNode() :
+	Node(DefaultData), tree1(this, true), tree2(this, true) {}
 
 TreeTestNode::~TreeTestNode() {}
 
@@ -48,7 +56,8 @@ TreeTestNode::~TreeTestNode() {}
 //###########################################################################
 //
 
-void Tree::ProfileClass()
+void
+Tree::ProfileClass()
 {
 	TreeTestNode testNode;
 #if defined(_ARMOR)
@@ -65,7 +74,8 @@ void Tree::ProfileClass()
 //###########################################################################
 //
 
-void Tree::TestClass()
+void
+Tree::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Tree test..."));
 	TreeTestNode testNode;
@@ -77,7 +87,8 @@ void Tree::TestClass()
 // TestOrder
 //###########################################################################
 //
-bool TreeTestNode::TestOrder()
+bool
+TreeTestNode::TestOrder()
 {
 	TreeIteratorOf<TreeTestPlug*, int32_t> iterator1(&tree1);
 	TreeIteratorOf<TreeTestPlug*, int32_t> iterator2(&tree2);
@@ -98,7 +109,8 @@ bool TreeTestNode::TestOrder()
 // RunProfile
 //###########################################################################
 //
-bool TreeTestNode::RunProfile()
+bool
+TreeTestNode::RunProfile()
 {
 	TreeTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -114,8 +126,8 @@ bool TreeTestNode::RunProfile()
 	for (i = 0; i < TEST_COUNT; i++)
 	{
 		int32_t tmp;
-		j		  = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp		  = values[j];
+		j = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -208,7 +220,8 @@ bool TreeTestNode::RunProfile()
 // RunTest
 //###########################################################################
 //
-bool TreeTestNode::RunTest()
+bool
+TreeTestNode::RunTest()
 {
 	TreeTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -224,8 +237,8 @@ bool TreeTestNode::RunTest()
 	for (i = 0; i < TEST_COUNT; i++)
 	{
 		int32_t tmp;
-		j		  = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp		  = values[j];
+		j = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -389,7 +402,7 @@ bool TreeTestNode::RunTest()
 		i = 0;
 		while ((size = iterator1.GetSize()) != 0)
 		{
-			index	 = Random::GetLessThan(size);
+			index = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);

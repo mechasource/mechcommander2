@@ -32,19 +32,20 @@
 extern bool hasGuardBand;
 //---------------------------------------------------------------------------
 LineElement::LineElement(
-	Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr, puint8_t fTable, int32_t endClr)
-	: Element(0L)
+	Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr, puint8_t fTable, int32_t endClr) :
+	Element(0L)
 {
 	startPos = pos1;
 	;
-	endPos	= pos2;
-	color	 = clr;
+	endPos = pos2;
+	color = clr;
 	fadeTable = fTable;
-	endColor  = endClr;
+	endColor = endClr;
 }
 
 //---------------------------------------------------------------------------
-void LineElement::draw(void)
+void
+LineElement::draw(void)
 {
 	if (endColor == -1)
 	{
@@ -58,19 +59,19 @@ void LineElement::draw(void)
 			gVertex[0].rhw = 0.00001f;
 		gVertex[0].argb = color;
 		gVertex[0].frgb = 0xff000000;
-		gVertex[0].u	= 0.0;
-		gVertex[0].v	= 0.0;
-		gVertex[1].x	= endPos.x;
-		gVertex[1].y	= endPos.y;
-		gVertex[1].z	= endPos.z;
+		gVertex[0].u = 0.0;
+		gVertex[0].v = 0.0;
+		gVertex[1].x = endPos.x;
+		gVertex[1].y = endPos.y;
+		gVertex[1].z = endPos.z;
 		if (endPos.w > Stuff::SMALL)
 			gVertex[1].rhw = 1.0f / endPos.w;
 		else
 			gVertex[1].rhw = 0.00001f;
 		gVertex[1].argb = color;
 		gVertex[1].frgb = 0xff000000;
-		gVertex[1].u	= 0.0;
-		gVertex[1].v	= 0.0;
+		gVertex[1].u = 0.0;
+		gVertex[1].v = 0.0;
 		//--------------------------------
 		// Set States for Software Renderer
 		if (Environment.Renderer == 3)
@@ -121,8 +122,7 @@ void LineElement::draw(void)
 		// Reject Any triangle which has vertices off screeen in software for
 		// now. Do real cliping in geometry layer for software and hardware that
 		// needs it!
-		if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
-			(gVertex[1].z < 1.0f))
+		if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f))
 		{
 			gos_DrawLines(gVertex, 2);
 		}

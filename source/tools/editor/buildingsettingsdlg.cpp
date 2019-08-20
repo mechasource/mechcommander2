@@ -20,21 +20,23 @@
 // BuildingSettingsDlg dialog
 
 BuildingSettingsDlg::BuildingSettingsDlg(
-	EList<EditorObject*, EditorObject*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr)
-	: CDialog(BuildingSettingsDlg::IDD), units(newList)
+	EList<EditorObject*, EditorObject*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr) :
+	CDialog(BuildingSettingsDlg::IDD),
+	units(newList)
 {
 	//{{AFX_DATA_INIT(BuildingSettingsDlg)
-	m_Alignment  = -1;
-	m_x			 = 0.0f;
-	m_y			 = 0.0f;
-	m_partID	 = 0;
+	m_Alignment = -1;
+	m_x = 0.0f;
+	m_y = 0.0f;
+	m_partID = 0;
 	m_forestName = _T("");
 	//}}AFX_DATA_INIT
 	pUndoMgr = &undoMgr;
-	pAction  = nullptr;
+	pAction = nullptr;
 }
 
-void BuildingSettingsDlg::DoDataExchange(CDataExchange* pDX)
+void
+BuildingSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(BuildingSettingsDlg)
@@ -58,11 +60,12 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // BuildingSettingsDlg message handlers
 
-void BuildingSettingsDlg::OnSelchangeGroup()
+void
+BuildingSettingsDlg::OnSelchangeGroup()
 {
 	m_Mech.ResetContent();
 	int32_t group = m_Group.GetCurSel();
-	group		  = m_Group.GetItemData(group);
+	group = m_Group.GetItemData(group);
 	PCSTR MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
@@ -73,13 +76,14 @@ void BuildingSettingsDlg::OnSelchangeGroup()
 	m_Mech.SetCurSel(0);
 }
 
-void BuildingSettingsDlg::applyChanges()
+void
+BuildingSettingsDlg::applyChanges()
 {
 	// get the type info from the dlg box
 	int32_t index = m_Group.GetCurSel();
 	if (index != -1)
 	{
-		int32_t group		 = m_Group.GetItemData(index);
+		int32_t group = m_Group.GetItemData(index);
 		int32_t indexInGroup = m_Mech.GetCurSel();
 		if (indexInGroup != -1)
 		{
@@ -100,7 +104,7 @@ void BuildingSettingsDlg::applyChanges()
 		}
 	}
 	uint32_t base = 0, color1 = 0, color2 = 0;
-	bool bBase   = false;
+	bool bBase = false;
 	bool bColor1 = false;
 	bool bColor2 = false;
 	// now figure out the colors
@@ -145,7 +149,8 @@ void BuildingSettingsDlg::applyChanges()
 	}
 }
 
-void BuildingSettingsDlg::OnOK()
+void
+BuildingSettingsDlg::OnOK()
 {
 	if (nullptr != pUndoMgr)
 	{
@@ -160,7 +165,8 @@ void BuildingSettingsDlg::OnOK()
 	CDialog::OnOK();
 }
 
-BOOL BuildingSettingsDlg::OnInitDialog()
+BOOL
+BuildingSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	pAction = new ModifyBuildingAction;
@@ -171,22 +177,24 @@ BOOL BuildingSettingsDlg::OnInitDialog()
 	}
 	updateMemberVariables();
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void BuildingSettingsDlg::OnSelchangeMech()
+void
+BuildingSettingsDlg::OnSelchangeMech()
 {
 	int32_t group = m_Group.GetCurSel();
-	group		  = m_Group.GetItemData(group);
+	group = m_Group.GetItemData(group);
 	/*int32_t indexInGroup =*/m_Mech.GetCurSel();
 }
 
-void BuildingSettingsDlg::updateMemberVariables()
+void
+BuildingSettingsDlg::updateMemberVariables()
 {
-	int32_t forest				= -1;
-	bool bForests				= true;
+	int32_t forest = -1;
+	bool bForests = true;
 	EditorObject* pEditorObject = units.GetHead();
-	m_Alignment					= pEditorObject->getAlignment();
+	m_Alignment = pEditorObject->getAlignment();
 	if (m_Alignment == -1)
 		m_Alignment = 8; // Move it to the neutral select button
 	for (EDITOROBJECT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
@@ -213,8 +221,8 @@ void BuildingSettingsDlg::updateMemberVariables()
 		}
 	}
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
-	int32_t groupCount	= pMgr->getBuildingGroupCount();
-	PCSTR* pGroups		  = new PCSTR[groupCount];
+	int32_t groupCount = pMgr->getBuildingGroupCount();
+	PCSTR* pGroups = new PCSTR[groupCount];
 	m_Group.ResetContent();
 	pMgr->getBuildingGroupNames(pGroups, groupCount);
 	int32_t count = 0;
@@ -242,7 +250,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 	if (group != -1) // we found a valid group
 	{
 		PCSTR pGroupName = pMgr->getGroupName(group);
-		int32_t index	= m_Group.FindString(-1, pGroupName);
+		int32_t index = m_Group.FindString(-1, pGroupName);
 		m_Group.SetCurSel(index);
 		// OK, now fill in the index....
 		PCSTR MechNames[256];
@@ -266,7 +274,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 		if (indexInGroup != -1)
 		{
 			PCSTR pName = units.GetHead()->getDisplayName();
-			index		= m_Mech.FindString(-1, pName);
+			index = m_Mech.FindString(-1, pName);
 			if (index != -1)
 			{
 				m_Mech.SetCurSel(index);
@@ -281,7 +289,8 @@ void BuildingSettingsDlg::updateMemberVariables()
 	UpdateData(false);
 }
 
-void BuildingSettingsDlg::OnCancel()
+void
+BuildingSettingsDlg::OnCancel()
 {
 	pAction->undo();
 	delete pAction;

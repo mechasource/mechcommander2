@@ -15,7 +15,6 @@
 //#include <stuff/plug.hpp>
 //#include <mlr/mlr.hpp>
 
-
 namespace MidLevelRenderer
 {
 class MLRState;
@@ -34,7 +33,7 @@ class Effect__ClassData;
 class Event // : public Stuff::Plug
 {
 public:
-	Event() /* : Plug(DefaultData) */  {}
+	Event() /* : Plug(DefaultData) */ {}
 	Event(const Event& event);
 
 	static Event* Make(std::istream& stream, uint32_t gfx_version);
@@ -97,13 +96,12 @@ public:
 	void AdoptEvent(Event* event);
 
 protected:
-	std::list<Event*> m_events;		// Stuff::ChainOf<Event*> m_events;
+	std::list<Event*> m_events; // Stuff::ChainOf<Event*> m_events;
 
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
 public:
-
 protected:
 	ConstantCurve m_lifeSpan;
 	SplineCurve m_maximumChildSeed;
@@ -113,7 +111,6 @@ protected:
 	// States
 	//
 public:
-
 protected:
 	MidLevelRenderer::MLRState m_state;
 
@@ -148,12 +145,12 @@ public:
 		ExecuteInfo(Stuff::Time time, const Stuff::LinearMatrix4D* parent_to_world,
 			Stuff::OBB* bounds, float seed = -1.0f)
 		{
-			m_time			= time;
-			m_seed			= seed;
+			m_time = time;
+			m_seed = seed;
 			m_parentToWorld = parent_to_world;
-			m_bounds		= bounds;
-			m_age			= -1.0f;
-			m_ageRate		= -1.0f;
+			m_bounds = bounds;
+			m_age = -1.0f;
+			m_ageRate = -1.0f;
 		}
 
 		void TestInstance(void) const {}
@@ -210,7 +207,7 @@ protected:
 	// Events
 	//
 protected:
-	std::list<Effect*> m_children;	// Stuff::ChainOf<Effect*> m_children;
+	std::list<Effect*> m_children; // Stuff::ChainOf<Effect*> m_children;
 	std::unique_ptr<Event> m_event; // Stuff::ChainIteratorOf<Event*> m_event;
 
 	//----------------------------------------------------------------------------
@@ -232,13 +229,13 @@ public:
 
 	enum : uint32_t
 	{
-		ExecuteFlag						= 1,
-		LoopFlag						= 2,
-		LocalSpaceSimulationMode		= 0,
+		ExecuteFlag = 1,
+		LoopFlag = 2,
+		LocalSpaceSimulationMode = 0,
 		DynamicWorldSpaceSimulationMode = 4,
-		StaticWorldSpaceSimulationMode  = 8,
-		ParentSimulationMode			= 12,
-		SimulationModeMask				= 12
+		StaticWorldSpaceSimulationMode = 8,
+		ParentSimulationMode = 12,
+		SimulationModeMask = 12
 	};
 
 	static Stuff::Vector3D s_ether;
@@ -326,9 +323,9 @@ class Effect__ClassData //: public Stuff::Plug::ClassData
 public:
 	Effect__ClassData(Stuff::RegisteredClass::ClassID class_id, PCSTR class_name,
 		Stuff::Plug::ClassData* parent_class, Effect::Factory effect_factory,
-		Effect::Specification::Factory spec_factory)
-		: RegisteredClass__ClassData(class_id, class_name, parent_class),
-		  effectFactory(effect_factory), specificationFactory(spec_factory)
+		Effect::Specification::Factory spec_factory) :
+		RegisteredClass__ClassData(class_id, class_name, parent_class),
+		effectFactory(effect_factory), specificationFactory(spec_factory)
 	{
 	}
 

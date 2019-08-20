@@ -18,8 +18,8 @@
 enum gosMusic_Command
 {
 	gosMusic_SeekTime = 1, // Seek to a frame or timestamp in hMusic
-	gosMusic_Volume   = 2, // Set the volume of the multiMusic
-	gosMusic_Panning  = 4  // Set the pan of the multiMusic
+	gosMusic_Volume = 2, // Set the volume of the multiMusic
+	gosMusic_Panning = 4 // Set the pan of the multiMusic
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -27,10 +27,10 @@ enum gosMusic_Command
 enum gosMusic_PlayMode
 {
 	gosMusic_PlayOnce, // Play the channel's resource once and then end
-	gosMusic_Loop,	 // Continually play the channel's resource, looping after each iteration
-	gosMusic_Pause,	// Pause the sound, a Continue will resume the sound from where it was paused
+	gosMusic_Loop, // Continually play the channel's resource, looping after each iteration
+	gosMusic_Pause, // Pause the sound, a Continue will resume the sound from where it was paused
 	gosMusic_Continue, // SET ONLY: continue a sound that was paused.
-	gosMusic_Stop,	 // Silence the channel and stop processing the resource
+	gosMusic_Stop, // Silence the channel and stop processing the resource
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -41,13 +41,13 @@ enum gosMusic_PlayMode
 // command (listed above).
 typedef struct _gosMusic_Info
 {
-	PSTR lpstrPath;				   // string specified path to data
-	gosMusic_PlayMode ePlayMode;   // the play mode (see above)
+	PSTR lpstrPath; // string specified path to data
+	gosMusic_PlayMode ePlayMode; // the play mode (see above)
 	gosMusic_PlayMode ePlayStatus; // the play mode (see above)
-	float fDurationSec;			   // read-only duration of video (hundredth of a second)
-	float fSoFarSec;			   // current play position (hundredth of a second)
-	float fVolume;				   // current volume from 0 to 1
-	float fPanning;				   // current volume from -1 to 1
+	float fDurationSec; // read-only duration of video (hundredth of a second)
+	float fSoFarSec; // current play position (hundredth of a second)
+	float fVolume; // current volume from 0 to 1
+	float fPanning; // current volume from -1 to 1
 } gosMusic_ResourceInfo;
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -95,13 +95,18 @@ public:
 	void FF(double time);
 };
 
-void MusicManagerInstall(void);
+void
+MusicManagerInstall(void);
 
-void MusicManagerRestore(void);
+void
+MusicManagerRestore(void);
 
-void MusicManagerUninstall(void);
+void
+MusicManagerUninstall(void);
 
-void MusicManagerUpdate(void);
+void
+MusicManagerUpdate(void);
 
-void OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
+void
+OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
 	IBasicAudio** ppBasicAudio);

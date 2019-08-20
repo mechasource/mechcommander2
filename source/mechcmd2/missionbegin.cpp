@@ -38,13 +38,15 @@ class MechLabScreen;
 
 extern int32_t renderer;
 
-void initABL();
-void closeABL();
+void
+initABL();
+void
+closeABL();
 
 // Tutorial
 // Please save these two flags with the saveGames!!
 bool MissionBegin::FirstTimePurchase = true;
-bool MissionBegin::FirstTimeMechLab  = true;
+bool MissionBegin::FirstTimeMechLab = true;
 
 MissionBegin::MissionBegin()
 {
@@ -53,12 +55,12 @@ MissionBegin::MissionBegin()
 		singlePlayerScreens, 0, sizeof(LogisticsScreen*) * 5 /*dim screen X*/ * 3 /*dim screen Y*/);
 	memset(
 		multiplayerScreens, 0, sizeof(LogisticsScreen*) * 5 /*dim screen X*/ * 3 /*dim screen Y*/);
-	curScreenX		  = -1;
-	curScreenY		  = 1;
-	mainMenu		  = nullptr;
-	bSplash			  = 0;
-	bMultiplayer	  = 0;
-	animJustBegun	 = 0;
+	curScreenX = -1;
+	curScreenY = 1;
+	mainMenu = nullptr;
+	bSplash = 0;
+	bMultiplayer = 0;
+	animJustBegun = 0;
 	placeHolderScreen = nullptr;
 }
 
@@ -91,7 +93,8 @@ MissionBegin::~MissionBegin()
 	}
 }
 
-bool MissionBegin::startAnimation(int32_t bId, bool isButton, float scrollTime, int32_t nFlashes)
+bool
+MissionBegin::startAnimation(int32_t bId, bool isButton, float scrollTime, int32_t nFlashes)
 {
 	if (animationRunning)
 		return false;
@@ -99,15 +102,16 @@ bool MissionBegin::startAnimation(int32_t bId, bool isButton, float scrollTime, 
 	{
 		animationRunning = true;
 		timeLeftToScroll = scrollTime;
-		targetButtonId   = bId;
-		targetIsButton   = isButton;
+		targetButtonId = bId;
+		targetIsButton = isButton;
 		buttonNumFlashes = nFlashes;
-		buttonFlashTime  = 0.0f;
+		buttonFlashTime = 0.0f;
 	}
 	return true;
 }
 
-void MissionBegin::begin()
+void
+MissionBegin::begin()
 {
 	bReadyToLoad = 0;
 	initABL();
@@ -115,9 +119,9 @@ void MissionBegin::begin()
 	// Tutorial Data
 	animationRunning = false;
 	timeLeftToScroll = 0.0f;
-	targetButtonId   = 0;
+	targetButtonId = 0;
 	buttonNumFlashes = 0;
-	buttonFlashTime  = 0.0f;
+	buttonFlashTime = 0.0f;
 	//---------------------------------------------
 	// Load up the Logistics Brain for Tutorials.
 	// OK if brain file is NOT there!!
@@ -142,14 +146,14 @@ void MissionBegin::begin()
 	else
 	{
 		logisticsScriptHandle = 0;
-		logisticsBrain		  = nullptr;
+		logisticsBrain = nullptr;
 	}
 	//---------------------------------------------
 	uint32_t localRenderer = prefs.renderer;
 	if (prefs.renderer != 0 && prefs.renderer != 3)
 		localRenderer = 0;
 	bool localFullScreen = prefs.fullScreen;
-	bool localWindow	 = !prefs.fullScreen;
+	bool localWindow = !prefs.fullScreen;
 	if (Environment.fullScreen && prefs.fullScreen)
 		localFullScreen = false;
 	if (prefs.renderer == 3)
@@ -169,8 +173,8 @@ void MissionBegin::begin()
 		{
 			if (LogisticsData::instance->showChooseMission())
 			{
-				curScreenX	= 3;
-				curScreenY	= 1;
+				curScreenX = 3;
+				curScreenY = 1;
 				screens[3][1] = singlePlayerScreens[0][1];
 			}
 		}
@@ -191,13 +195,13 @@ void MissionBegin::begin()
 	MissionBriefingScreen* pBriefingScreen;
 	LoadScreenWrapper* pLoadScreen;
 	pMissionSelectionScreen = nullptr;
-	pMechBayScreen			= nullptr;
-	pPilotSelectionScreen   = nullptr;
-	pMechLabScreen			= nullptr;
-	pPurchaseMechScreen		= nullptr;
-	pBriefingScreen			= nullptr;
-	pLoadScreen				= nullptr;
-	bDone					= 0;
+	pMechBayScreen = nullptr;
+	pPilotSelectionScreen = nullptr;
+	pMechLabScreen = nullptr;
+	pPurchaseMechScreen = nullptr;
+	pBriefingScreen = nullptr;
+	pLoadScreen = nullptr;
+	bDone = 0;
 	// initialize the main menu
 	mainMenu = new MainMenu;
 	char path[256];
@@ -354,18 +358,24 @@ void MissionBegin::begin()
 	pMissionSelectionScreen->begin();
 }
 
-void MissionBegin::init() { begin(); }
+void
+MissionBegin::init()
+{
+	begin();
+}
 
-void MissionBegin::end()
+void
+MissionBegin::end()
 {
 	logisticsBrain = nullptr;
 	closeABL();
 }
 
 bool inPurchase = false;
-bool inMechLab  = false;
+bool inMechLab = false;
 // Returns screen ID as a function of curScreenX and curScreenY
-int32_t MissionBegin::getCurrentScreenId()
+int32_t
+MissionBegin::getCurrentScreenId()
 {
 	// singlePlayerScreens[0][1] = pMissionSelectionScreen;		ID 1
 	// singlePlayerScreens[1][1] = pBriefingScreen;				ID 11
@@ -390,7 +400,8 @@ int32_t MissionBegin::getCurrentScreenId()
 	return (screenId);
 }
 
-PCSTR MissionBegin::update()
+PCSTR
+MissionBegin::update()
 {
 	if (bSplash)
 	{
@@ -416,8 +427,8 @@ PCSTR MissionBegin::update()
 				{
 					if (LogisticsData::instance->showChooseMission())
 					{
-						curScreenX	= 3;
-						curScreenY	= 1;
+						curScreenX = 3;
+						curScreenY = 1;
 						screens[3][1] = singlePlayerScreens[0][1];
 						screens[curScreenX][curScreenY]->begin();
 					}
@@ -520,8 +531,8 @@ PCSTR MissionBegin::update()
 					float realMouseY = userInput->realMouseY();
 					if (timeLeftToScroll > 0.0f)
 					{
-						float xDistLeft		 = buttonPosX - realMouseX;
-						float yDistLeft		 = buttonPosY - realMouseY;
+						float xDistLeft = buttonPosX - realMouseX;
+						float yDistLeft = buttonPosY - realMouseY;
 						float xDistThisFrame = xDistLeft / timeLeftToScroll * frameLength;
 						float yDistThisFrame = yDistLeft / timeLeftToScroll * frameLength;
 						userInput->setMousePos(
@@ -575,8 +586,8 @@ PCSTR MissionBegin::update()
 					float realMouseY = userInput->realMouseY();
 					if (timeLeftToScroll > 0.0f)
 					{
-						float xDistLeft		 = buttonPosX - realMouseX;
-						float yDistLeft		 = buttonPosY - realMouseY;
+						float xDistLeft = buttonPosX - realMouseX;
+						float yDistLeft = buttonPosY - realMouseY;
 						float xDistThisFrame = xDistLeft / timeLeftToScroll * frameLength;
 						float yDistThisFrame = yDistLeft / timeLeftToScroll * frameLength;
 						userInput->setMousePos(
@@ -613,8 +624,7 @@ PCSTR MissionBegin::update()
 			}
 		}
 		pCurScreen->update();
-		if (pCurScreen->getStatus() == LogisticsScreen::GOTOSPLASH ||
-			(MPlayer && MPlayer->hostLeft))
+		if (pCurScreen->getStatus() == LogisticsScreen::GOTOSPLASH || (MPlayer && MPlayer->hostLeft))
 		{
 			pCurScreen->end();
 			beginSplash();
@@ -626,13 +636,12 @@ PCSTR MissionBegin::update()
 			}
 			return nullptr;
 		}
-		if (pCurScreen->getStatus() == LogisticsScreen::READYTOLOAD &&
-			(curScreenX == 4 || (MPlayer && curScreenX == 3)))
+		if (pCurScreen->getStatus() == LogisticsScreen::READYTOLOAD && (curScreenX == 4 || (MPlayer && curScreenX == 3)))
 			bReadyToLoad = true;
 		if (pCurScreen->getStatus() != LogisticsScreen::RUNNING)
 		{
 			soundSystem->stopBettySample(); // don't want to carry droning on to
-											// next screen
+				// next screen
 			soundSystem->stopSupportSample();
 			if (pCurScreen->getStatus() == LogisticsScreen::NEXT)
 			{
@@ -749,12 +758,13 @@ PCSTR MissionBegin::update()
 	return nullptr;
 }
 
-void MissionBegin::render()
+void
+MissionBegin::render()
 {
-	int32_t xOffset				  = 0;
-	int32_t yOffset				  = 0;
+	int32_t xOffset = 0;
+	int32_t yOffset = 0;
 	LogisticsScreen* pOtherScreen = 0;
-	LogisticsScreen* pCurScreen   = 0;
+	LogisticsScreen* pCurScreen = 0;
 	if (curScreenX > -1 && curScreenY > -1)
 	{
 		pCurScreen = screens[curScreenX][curScreenY];
@@ -779,8 +789,8 @@ void MissionBegin::render()
 		{
 			if (animJustBegun)
 				leftAnim.begin(); // restart to compensate for int32_t begins
-			xOffset		 = leftAnim.getXDelta() + 800;
-			yOffset		 = leftAnim.getYDelta();
+			xOffset = leftAnim.getXDelta() + 800;
+			yOffset = leftAnim.getYDelta();
 			xOtherOffset = xOffset - 800;
 			yOtherOffset = yOffset;
 			pOtherScreen = screens[curScreenX - 1][curScreenY];
@@ -791,8 +801,8 @@ void MissionBegin::render()
 		{
 			if (animJustBegun)
 				downAnim.begin(); // restart to compensate for int32_t begins
-			xOffset		 = downAnim.getXDelta();
-			yOffset		 = downAnim.getYDelta();
+			xOffset = downAnim.getXDelta();
+			yOffset = downAnim.getYDelta();
 			xOtherOffset = xOffset;
 			yOtherOffset = yOffset + 600;
 			pOtherScreen = screens[curScreenX][curScreenY + 1];
@@ -801,8 +811,8 @@ void MissionBegin::render()
 		{
 			if (animJustBegun)
 				upAnim.begin(); // restart to compensate for int32_t begins
-			xOffset		 = upAnim.getXDelta();
-			yOffset		 = upAnim.getYDelta();
+			xOffset = upAnim.getXDelta();
+			yOffset = upAnim.getYDelta();
 			xOtherOffset = xOffset;
 			yOtherOffset = yOffset - 600;
 			pOtherScreen = screens[curScreenX][curScreenY - 1];
@@ -811,8 +821,8 @@ void MissionBegin::render()
 		{
 			if (animJustBegun)
 				rightAnim.begin(); // restart to compensate for int32_t begins
-			xOffset		 = rightAnim.getXDelta() - 800;
-			yOffset		 = rightAnim.getYDelta();
+			xOffset = rightAnim.getXDelta() - 800;
+			yOffset = rightAnim.getYDelta();
 			xOtherOffset = xOffset + 800;
 			yOtherOffset = yOffset;
 			pOtherScreen = screens[curScreenX + 1][curScreenY];
@@ -835,7 +845,8 @@ void MissionBegin::render()
 	animJustBegun = false;
 }
 
-void MissionBegin::beginSplash(PCSTR playerName)
+void
+MissionBegin::beginSplash(PCSTR playerName)
 {
 	// check for old screen and end that
 	if (curScreenX > -1 && curScreenY > -1)
@@ -844,11 +855,11 @@ void MissionBegin::beginSplash(PCSTR playerName)
 		if (pCurScreen)
 			pCurScreen->end();
 	}
-	bSplash		 = true;
-	curScreenX   = 0;
-	curScreenY   = 1;
+	bSplash = true;
+	curScreenX = 0;
+	curScreenY = 1;
 	bReadyToLoad = 0;
-	bDone		 = 0;
+	bDone = 0;
 	if (mainMenu)
 	{
 		if (MPlayer && MPlayer->launchedFromLobby)
@@ -861,15 +872,16 @@ void MissionBegin::beginSplash(PCSTR playerName)
 	}
 }
 
-void MissionBegin::beginMPlayer()
+void
+MissionBegin::beginMPlayer()
 {
 	// already set up
 	if (multiplayerScreens[0][1])
 		return;
 	// multiplayer setup screens
-	MPConnectionType* pMPConnectionType   = nullptr;
-	placeHolderScreen					  = nullptr;
-	MPGameBrowser* pMPGameBrowser		  = nullptr;
+	MPConnectionType* pMPConnectionType = nullptr;
+	placeHolderScreen = nullptr;
+	MPGameBrowser* pMPGameBrowser = nullptr;
 	MPParameterScreen* pMPParameterScreen = nullptr;
 	char path[512];
 	FitIniFile file;
@@ -939,15 +951,15 @@ void MissionBegin::beginMPlayer()
 	}
 	pMLoadScreen->init(file);
 	file.close();
-	pMPConnectionType->ppConnectionScreen   = (PVOID*)(&(screens[1][1]));
-	pMPConnectionType->pLocalBrowserScreen  = pMPGameBrowser;
-	pMPConnectionType->pDirectTcpipScreen   = pMPGameBrowser;
+	pMPConnectionType->ppConnectionScreen = (PVOID*)(&(screens[1][1]));
+	pMPConnectionType->pLocalBrowserScreen = pMPGameBrowser;
+	pMPConnectionType->pDirectTcpipScreen = pMPGameBrowser;
 	pMPConnectionType->pMPPlaceHolderScreen = placeHolderScreen;
-	multiplayerScreens[0][1]				= pMPConnectionType;
-	multiplayerScreens[1][1]				= pMPGameBrowser;
-	multiplayerScreens[2][1]				= pMPParameterScreen;
-	multiplayerScreens[3][1]				= pMLoadScreen;
-	multiplayerScreens[2][0]				= pMPPrefs;
+	multiplayerScreens[0][1] = pMPConnectionType;
+	multiplayerScreens[1][1] = pMPGameBrowser;
+	multiplayerScreens[2][1] = pMPParameterScreen;
+	multiplayerScreens[3][1] = pMLoadScreen;
+	multiplayerScreens[2][0] = pMPPrefs;
 	pMPPrefs->initColors();
 	{
 		for (size_t i = 0; i < 4; i++)
@@ -970,7 +982,8 @@ void MissionBegin::beginMPlayer()
 	}
 }
 
-void MissionBegin::setUpMultiplayerLogisticsScreens()
+void
+MissionBegin::setUpMultiplayerLogisticsScreens()
 {
 	for (size_t i = 0; i < 5 /*dim screen X*/; i += 1)
 	{
@@ -984,7 +997,8 @@ void MissionBegin::setUpMultiplayerLogisticsScreens()
 	curScreenY = 1;
 }
 
-void MissionBegin::setToMissionBriefing()
+void
+MissionBegin::setToMissionBriefing()
 {
 	bReadyToLoad = 0;
 	if (screens[curScreenX][curScreenY])
@@ -997,10 +1011,11 @@ void MissionBegin::setToMissionBriefing()
 	}
 }
 
-void MissionBegin::restartMPlayer(PCSTR playerName)
+void
+MissionBegin::restartMPlayer(PCSTR playerName)
 {
 	bReadyToLoad = 0;
-	bDone		 = 0;
+	bDone = 0;
 	if (screens[curScreenX][curScreenY])
 		screens[curScreenX][curScreenY]->end();
 	for (size_t i = 0; i < 5 /*dim screen X*/; i += 1)
@@ -1023,17 +1038,19 @@ void MissionBegin::restartMPlayer(PCSTR playerName)
 	}
 }
 
-void MissionBegin::beginZone()
+void
+MissionBegin::beginZone()
 {
 	beginMPlayer();
 	restartMPlayer(nullptr);
 	bReadyToLoad = 0;
-	bDone		 = 0;
+	bDone = 0;
 	LogisticsData::instance->startMultiPlayer();
 	mainMenu->skipIntro();
 	ChatWindow::init();
 }
-void MissionBegin::beginAtConnectionScreen()
+void
+MissionBegin::beginAtConnectionScreen()
 {
 	beginMPlayer();
 	int32_t i;
@@ -1049,7 +1066,7 @@ void MissionBegin::beginAtConnectionScreen()
 	curScreenY = 1;
 	screens[curScreenX][curScreenY]->beginFadeIn(1.0);
 	bReadyToLoad = 0;
-	bDone		 = 0;
+	bDone = 0;
 	LogisticsData::instance->startMultiPlayer();
 	ChatWindow::init();
 }

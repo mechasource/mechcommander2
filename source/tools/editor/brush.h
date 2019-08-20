@@ -27,8 +27,8 @@ class Brush
 public:
 	Brush(void) {}
 	virtual ~Brush(void) {}
-	virtual bool beginPaint(void)													= 0;
-	virtual Action* endPaint(void)													= 0;
+	virtual bool beginPaint(void) = 0;
+	virtual Action* endPaint(void) = 0;
 	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY) = 0;
 	virtual bool canPaint(
 		Stuff::Vector3D& /*worldPos*/, int32_t /*screenX*/, int32_t /*screenY*/, int32_t /*flags*/)

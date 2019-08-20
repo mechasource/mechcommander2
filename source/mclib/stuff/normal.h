@@ -24,9 +24,12 @@ public:
 	// Constructors
 	//
 	Normal3D(void) {}
-	Normal3D(float x, float y, float z) : UnitVector3D(x, y, z) {}
-	Normal3D(const Normal3D& n) : UnitVector3D(n) {}
-	Normal3D(const UnitVector3D& v) : UnitVector3D(v) {}
+	Normal3D(float x, float y, float z) :
+		UnitVector3D(x, y, z) {}
+	Normal3D(const Normal3D& n) :
+		UnitVector3D(n) {}
+	Normal3D(const UnitVector3D& v) :
+		UnitVector3D(v) {}
 	explicit Normal3D(const Vector3D& v) { *this = v; }
 
 	static const Normal3D Forward;

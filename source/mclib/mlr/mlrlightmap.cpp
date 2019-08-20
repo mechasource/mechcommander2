@@ -25,7 +25,8 @@ std::vector<MLRClippingState>* clippingStates;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLightMap::InitializeClass()
+void
+MLRLightMap::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -55,7 +56,8 @@ void MLRLightMap::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLightMap::TerminateClass()
+void
+MLRLightMap::TerminateClass()
 {
 	clipBuffer[1].Destroy();
 	clipBuffer[0].Destroy();
@@ -85,7 +87,8 @@ void MLRLightMap::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLightMap::MLRLightMap(MLRTexture* tex) : RegisteredClass(DefaultData)
+MLRLightMap::MLRLightMap(MLRTexture* tex) :
+	RegisteredClass(DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	state.SetTextureHandle(tex->GetTextureHandle());
@@ -114,7 +117,8 @@ MLRLightMap::~MLRLightMap()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLightMap::SetDrawData(
+void
+MLRLightMap::SetDrawData(
 	GOSVertexPool* vp, Stuff::Matrix4D* mat, MLRClippingState& clippingState, MLRState& _state)
 {
 	vertexPool = vp;
@@ -129,7 +133,8 @@ void MLRLightMap::SetDrawData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLightMap::TestInstance()
+void
+MLRLightMap::TestInstance()
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 	Check_Object(stream);
@@ -137,7 +142,8 @@ void MLRLightMap::TestInstance()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
+void
+MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 {
 	Check_Object(stream);
 	PVOIDptr, *end = stream->GetPointer();
@@ -148,12 +154,12 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 	int32_t i, pointerValue;
 	Stuff::Point3D* coords = nullptr;
 	Stuff::RGBAColor color;
-	Stuff::RGBAColor* colors		 = nullptr;
+	Stuff::RGBAColor* colors = nullptr;
 	Stuff::Vector2DScalar* texCoords = nullptr;
-	uint32_t argb					 = 0xffffffff;
+	uint32_t argb = 0xffffffff;
 	Check_Object(vertexPool);
 	GOSVertex* gos_vertices = vertexPool->GetActualVertexPool();
-	int32_t numGOSVertices  = 0;
+	int32_t numGOSVertices = 0;
 	int32_t msd;
 	MemoryStreamData type;
 	stream->Rewind();
@@ -193,7 +199,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 				{
 					sorter->AddSortRawData(sd);
 				}
-				gos_vertices   = vertexPool->GetActualVertexPool();
+				gos_vertices = vertexPool->GetActualVertexPool();
 				numGOSVertices = 0;
 			}
 			currentState = lightmapState;
@@ -204,14 +210,14 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 			*stream >> stride;
 			_ASSERT(stride <= Limits::Max_Number_Vertices_Per_Polygon);
 			*stream >> color;
-			argb   = GOSCopyColor(&color);
+			argb = GOSCopyColor(&color);
 			coords = (Stuff::Point3D*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Point3D));
 			texCoords = (Stuff::Vector2DScalar*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Vector2DScalar));
 			MLRClippingState theAnd(0x3f), theOr(0);
 			MLRClippingState* cs = clippingStates->GetData();
-			Vector4D* v4d		 = transformedCoords->GetData();
+			Vector4D* v4d = transformedCoords->GetData();
 			for (i = 0; i < stride; i++, v4d++, cs++)
 			{
 				v4d->Multiply(coords[i], *currentMatrix);
@@ -224,12 +230,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 #if defined(_ARMOR)
 				else
 				{
-					_ASSERT((*transformedCoords)[i].x >= 0.0f &&
-						(*transformedCoords)[i].x <= (*transformedCoords)[i].w);
-					_ASSERT((*transformedCoords)[i].y >= 0.0f &&
-						(*transformedCoords)[i].y <= (*transformedCoords)[i].w);
-					_ASSERT((*transformedCoords)[i].z >= 0.0f &&
-						(*transformedCoords)[i].z <= (*transformedCoords)[i].w);
+					_ASSERT((*transformedCoords)[i].x >= 0.0f && (*transformedCoords)[i].x <= (*transformedCoords)[i].w);
+					_ASSERT((*transformedCoords)[i].y >= 0.0f && (*transformedCoords)[i].y <= (*transformedCoords)[i].w);
+					_ASSERT((*transformedCoords)[i].z >= 0.0f && (*transformedCoords)[i].z <= (*transformedCoords)[i].w);
 				}
 #endif
 			}
@@ -240,7 +243,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 					_ASSERT((vertexPool->GetLast() + 3 + numGOSVertices) < vertexPool.size());
 					GOSCopyTriangleData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
 						texCoords, 0, i + 1, i);
-					gos_vertices[numGOSVertices].argb	 = argb;
+					gos_vertices[numGOSVertices].argb = argb;
 					gos_vertices[numGOSVertices + 1].argb = argb;
 					gos_vertices[numGOSVertices + 2].argb = argb;
 					numGOSVertices += 3;
@@ -255,7 +258,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 				else
 				{
 					int32_t k, k0, k1, l, mask, ct = 0;
-					float a							 = 0.0f;
+					float a = 0.0f;
 					int32_t numberVerticesPerPolygon = 0;
 					//
 					//---------------------------------------------------------------
@@ -273,8 +276,8 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						for (k = 0; k < stride; k++)
 						{
 							int32_t clipped_index = numberVerticesPerPolygon;
-							k0					  = k;
-							k1					  = (k + 1) < stride ? k + 1 : 0;
+							k0 = k;
+							k1 = (k + 1) < stride ? k + 1 : 0;
 							//
 							//----------------------------------------------------
 							// If this vertex is inside the viewing space, copy
@@ -284,17 +287,11 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 							theTest = (*clippingStates)[k0];
 							if (theTest == 0)
 							{
-								firstIsIn						  = true;
+								firstIsIn = true;
 								(*clipExtraCoords)[clipped_index] = (*transformedCoords)[k0];
-								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].x <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].y <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].z <=
-										(*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f && (*clipExtraCoords)[clipped_index].x <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f && (*clipExtraCoords)[clipped_index].y <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f && (*clipExtraCoords)[clipped_index].z <= (*clipExtraCoords)[clipped_index].w);
 								(*clipExtraTexCoords)[clipped_index] = texCoords[k0];
 								numberVerticesPerPolygon++;
 								clipped_index++;
@@ -382,15 +379,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 								(*clipExtraCoords)[clipped_index].Lerp(
 									(*transformedCoords)[k0], (*transformedCoords)[k1], a);
 								DoClipTrick((*clipExtraCoords)[clipped_index], ct);
-								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].x <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].y <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].z <=
-										(*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f && (*clipExtraCoords)[clipped_index].x <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f && (*clipExtraCoords)[clipped_index].y <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f && (*clipExtraCoords)[clipped_index].z <= (*clipExtraCoords)[clipped_index].w);
 								//
 								//-----------------------------------------------------
 								// If there are texture uv's, we need to lerp
@@ -405,15 +396,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 								(*clipExtraCoords)[clipped_index].Lerp(
 									(*transformedCoords)[k1], (*transformedCoords)[k0], a);
 								DoClipTrick((*clipExtraCoords)[clipped_index], ct);
-								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].x <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].y <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].z <=
-										(*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f && (*clipExtraCoords)[clipped_index].x <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f && (*clipExtraCoords)[clipped_index].y <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f && (*clipExtraCoords)[clipped_index].z <= (*clipExtraCoords)[clipped_index].w);
 								//
 								//-----------------------------------------------------
 								// If there are texture uv's, we need to lerp
@@ -444,9 +429,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						Set_Statistic(PolysClippedButGOnePlane, PolysClippedButGOnePlane + 1);
 #endif
 						ClipData2 srcPolygon, dstPolygon;
-						int32_t dstBuffer		 = 1;
-						srcPolygon.coords		 = clipBuffer[dstBuffer].coords.GetData();
-						srcPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
+						int32_t dstBuffer = 1;
+						srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+						srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 						srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 						//
 						//----------------------------------------------------------
@@ -456,8 +441,8 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						//
 						for (k = 0; k < stride; k++)
 						{
-							srcPolygon.coords[k]		= (*transformedCoords)[k];
-							srcPolygon.texCoords[k]		= texCoords[k];
+							srcPolygon.coords[k] = (*transformedCoords)[k];
+							srcPolygon.texCoords[k] = texCoords[k];
 							srcPolygon.clipPerVertex[k] = (*clippingStates)[k];
 						}
 						srcPolygon.length = stride;
@@ -466,11 +451,11 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						// Point to the destination buffer
 						//--------------------------------
 						//
-						dstBuffer				 = 0;
-						dstPolygon.coords		 = clipBuffer[dstBuffer].coords.GetData();
-						dstPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
+						dstBuffer = 0;
+						dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+						dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 						dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
-						dstPolygon.length		 = 0;
+						dstPolygon.length = 0;
 						//
 						//-----------------------------------------------------------
 						// Spin through each plane that clipped the primitive
@@ -493,7 +478,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 									//
 									for (k = 0; k < srcPolygon.length; k++)
 									{
-										k1		= (k + 1) < srcPolygon.length ? k + 1 : 0;
+										k1 = (k + 1) < srcPolygon.length ? k + 1 : 0;
 										theTest = srcPolygon.clipPerVertex[k];
 										//
 										//----------------------------------------------------
@@ -542,8 +527,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 											if (srcPolygon.clipPerVertex[k1].IsClipped(mask) != 0)
 											{
 												_ASSERT(
-													srcPolygon.clipPerVertex[k1].IsClipped(mask) ==
-													srcPolygon.clipPerVertex[k].IsClipped(mask));
+													srcPolygon.clipPerVertex[k1].IsClipped(mask) == srcPolygon.clipPerVertex[k].IsClipped(mask));
 												continue;
 											}
 										}
@@ -628,7 +612,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 									srcPolygon.clipPerVertex =
 										clipBuffer[dstBuffer].clipPerVertex.GetData();
 									srcPolygon.length = dstPolygon.length;
-									dstBuffer		  = !dstBuffer;
+									dstBuffer = !dstBuffer;
 									dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 									dstPolygon.texCoords =
 										clipBuffer[dstBuffer].texCoords.GetData();
@@ -655,12 +639,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						for (k = 0; k < srcPolygon.length; k++)
 						{
 							(*clipExtraCoords)[k] = srcPolygon.coords[k];
-							_ASSERT((*clipExtraCoords)[k].x >= 0.0f &&
-								(*clipExtraCoords)[k].x <= (*clipExtraCoords)[k].w);
-							_ASSERT((*clipExtraCoords)[k].y >= 0.0f &&
-								(*clipExtraCoords)[k].y <= (*clipExtraCoords)[k].w);
-							_ASSERT((*clipExtraCoords)[k].z >= 0.0f &&
-								(*clipExtraCoords)[k].z <= (*clipExtraCoords)[k].w);
+							_ASSERT((*clipExtraCoords)[k].x >= 0.0f && (*clipExtraCoords)[k].x <= (*clipExtraCoords)[k].w);
+							_ASSERT((*clipExtraCoords)[k].y >= 0.0f && (*clipExtraCoords)[k].y <= (*clipExtraCoords)[k].w);
+							_ASSERT((*clipExtraCoords)[k].z >= 0.0f && (*clipExtraCoords)[k].z <= (*clipExtraCoords)[k].w);
 							(*clipExtraTexCoords)[k] = srcPolygon.texCoords[k];
 						}
 						numberVerticesPerPolygon = srcPolygon.length;
@@ -671,7 +652,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						_ASSERT((vertexPool->GetLast() + 3 + numGOSVertices) < vertexPool.size());
 						GOSCopyTriangleData(&gos_vertices[numGOSVertices],
 							clipExtraCoords->GetData(), clipExtraTexCoords->GetData(), 0, i + 1, i);
-						gos_vertices[numGOSVertices].argb	 = argb;
+						gos_vertices[numGOSVertices].argb = argb;
 						gos_vertices[numGOSVertices + 1].argb = argb;
 						gos_vertices[numGOSVertices + 2].argb = argb;
 						numGOSVertices += 3;
@@ -692,7 +673,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 			stream->AdvancePointer(stride * sizeof(Stuff::Vector2DScalar));
 			MLRClippingState theAnd(0x3f), theOr(0);
 			MLRClippingState* cs = clippingStates->GetData();
-			Vector4D* v4d		 = transformedCoords->GetData();
+			Vector4D* v4d = transformedCoords->GetData();
 			for (i = 0; i < stride; i++, v4d++, cs++)
 			{
 				v4d->Multiply(coords[i], *currentMatrix);
@@ -705,12 +686,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 #if defined(_ARMOR)
 				else
 				{
-					_ASSERT((*transformedCoords)[i].x >= 0.0f &&
-						(*transformedCoords)[i].x <= (*transformedCoords)[i].w);
-					_ASSERT((*transformedCoords)[i].y >= 0.0f &&
-						(*transformedCoords)[i].y <= (*transformedCoords)[i].w);
-					_ASSERT((*transformedCoords)[i].z >= 0.0f &&
-						(*transformedCoords)[i].z <= (*transformedCoords)[i].w);
+					_ASSERT((*transformedCoords)[i].x >= 0.0f && (*transformedCoords)[i].x <= (*transformedCoords)[i].w);
+					_ASSERT((*transformedCoords)[i].y >= 0.0f && (*transformedCoords)[i].y <= (*transformedCoords)[i].w);
+					_ASSERT((*transformedCoords)[i].z >= 0.0f && (*transformedCoords)[i].z <= (*transformedCoords)[i].w);
 				}
 #endif
 			}
@@ -733,7 +711,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 				else
 				{
 					int32_t k, k0, k1, l, mask, ct = 0;
-					float a							 = 0.0f;
+					float a = 0.0f;
 					int32_t numberVerticesPerPolygon = 0;
 					//
 					//---------------------------------------------------------------
@@ -751,8 +729,8 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						for (k = 0; k < stride; k++)
 						{
 							int32_t clipped_index = numberVerticesPerPolygon;
-							k0					  = k;
-							k1					  = (k + 1) < stride ? k + 1 : 0;
+							k0 = k;
+							k1 = (k + 1) < stride ? k + 1 : 0;
 							//
 							//----------------------------------------------------
 							// If this vertex is inside the viewing space, copy
@@ -762,18 +740,12 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 							theTest = (*clippingStates)[k0];
 							if (theTest == 0)
 							{
-								firstIsIn						  = true;
+								firstIsIn = true;
 								(*clipExtraCoords)[clipped_index] = (*transformedCoords)[k0];
-								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].x <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].y <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].z <=
-										(*clipExtraCoords)[clipped_index].w);
-								(*clipExtraColors)[clipped_index]	= colors[k0];
+								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f && (*clipExtraCoords)[clipped_index].x <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f && (*clipExtraCoords)[clipped_index].y <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f && (*clipExtraCoords)[clipped_index].z <= (*clipExtraCoords)[clipped_index].w);
+								(*clipExtraColors)[clipped_index] = colors[k0];
 								(*clipExtraTexCoords)[clipped_index] = texCoords[k0];
 								numberVerticesPerPolygon++;
 								clipped_index++;
@@ -861,15 +833,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 								(*clipExtraCoords)[clipped_index].Lerp(
 									(*transformedCoords)[k0], (*transformedCoords)[k1], a);
 								DoClipTrick((*clipExtraCoords)[clipped_index], ct);
-								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].x <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].y <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].z <=
-										(*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f && (*clipExtraCoords)[clipped_index].x <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f && (*clipExtraCoords)[clipped_index].y <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f && (*clipExtraCoords)[clipped_index].z <= (*clipExtraCoords)[clipped_index].w);
 								//
 								//-----------------------------------------------------
 								// If there are texture uv's, we need to lerp
@@ -885,15 +851,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 								(*clipExtraCoords)[clipped_index].Lerp(
 									(*transformedCoords)[k1], (*transformedCoords)[k0], a);
 								DoClipTrick((*clipExtraCoords)[clipped_index], ct);
-								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].x <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].y <=
-										(*clipExtraCoords)[clipped_index].w);
-								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f &&
-									(*clipExtraCoords)[clipped_index].z <=
-										(*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f && (*clipExtraCoords)[clipped_index].x <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f && (*clipExtraCoords)[clipped_index].y <= (*clipExtraCoords)[clipped_index].w);
+								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f && (*clipExtraCoords)[clipped_index].z <= (*clipExtraCoords)[clipped_index].w);
 								//
 								//-----------------------------------------------------
 								// If there are texture uv's, we need to lerp
@@ -925,10 +885,10 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						Set_Statistic(PolysClippedButGOnePlane, PolysClippedButGOnePlane + 1);
 #endif
 						ClipData2 srcPolygon, dstPolygon;
-						int32_t dstBuffer		 = 1;
-						srcPolygon.coords		 = clipBuffer[dstBuffer].coords.GetData();
-						srcPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
-						srcPolygon.colors		 = clipBuffer[dstBuffer].colors.GetData();
+						int32_t dstBuffer = 1;
+						srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+						srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
+						srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 						srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 						//
 						//----------------------------------------------------------
@@ -938,9 +898,9 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						//
 						for (k = 0; k < stride; k++)
 						{
-							srcPolygon.coords[k]		= (*transformedCoords)[k];
-							srcPolygon.texCoords[k]		= texCoords[k];
-							srcPolygon.colors[k]		= colors[k];
+							srcPolygon.coords[k] = (*transformedCoords)[k];
+							srcPolygon.texCoords[k] = texCoords[k];
+							srcPolygon.colors[k] = colors[k];
 							srcPolygon.clipPerVertex[k] = (*clippingStates)[k];
 						}
 						srcPolygon.length = stride;
@@ -949,12 +909,12 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						// Point to the destination buffer
 						//--------------------------------
 						//
-						dstBuffer				 = 0;
-						dstPolygon.coords		 = clipBuffer[dstBuffer].coords.GetData();
-						dstPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
-						dstPolygon.colors		 = clipBuffer[dstBuffer].colors.GetData();
+						dstBuffer = 0;
+						dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+						dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
+						dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 						dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
-						dstPolygon.length		 = 0;
+						dstPolygon.length = 0;
 						//
 						//-----------------------------------------------------------
 						// Spin through each plane that clipped the primitive
@@ -977,7 +937,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 									//
 									for (k = 0; k < srcPolygon.length; k++)
 									{
-										k1		= (k + 1) < srcPolygon.length ? k + 1 : 0;
+										k1 = (k + 1) < srcPolygon.length ? k + 1 : 0;
 										theTest = srcPolygon.clipPerVertex[k];
 										//
 										//----------------------------------------------------
@@ -1028,8 +988,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 											if (srcPolygon.clipPerVertex[k1].IsClipped(mask) != 0)
 											{
 												_ASSERT(
-													srcPolygon.clipPerVertex[k1].IsClipped(mask) ==
-													srcPolygon.clipPerVertex[k].IsClipped(mask));
+													srcPolygon.clipPerVertex[k1].IsClipped(mask) == srcPolygon.clipPerVertex[k].IsClipped(mask));
 												continue;
 											}
 										}
@@ -1119,7 +1078,7 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 									srcPolygon.clipPerVertex =
 										clipBuffer[dstBuffer].clipPerVertex.GetData();
 									srcPolygon.length = dstPolygon.length;
-									dstBuffer		  = !dstBuffer;
+									dstBuffer = !dstBuffer;
 									dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 									dstPolygon.texCoords =
 										clipBuffer[dstBuffer].texCoords.GetData();
@@ -1147,14 +1106,11 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 						for (k = 0; k < srcPolygon.length; k++)
 						{
 							(*clipExtraCoords)[k] = srcPolygon.coords[k];
-							_ASSERT((*clipExtraCoords)[k].x >= 0.0f &&
-								(*clipExtraCoords)[k].x <= (*clipExtraCoords)[k].w);
-							_ASSERT((*clipExtraCoords)[k].y >= 0.0f &&
-								(*clipExtraCoords)[k].y <= (*clipExtraCoords)[k].w);
-							_ASSERT((*clipExtraCoords)[k].z >= 0.0f &&
-								(*clipExtraCoords)[k].z <= (*clipExtraCoords)[k].w);
+							_ASSERT((*clipExtraCoords)[k].x >= 0.0f && (*clipExtraCoords)[k].x <= (*clipExtraCoords)[k].w);
+							_ASSERT((*clipExtraCoords)[k].y >= 0.0f && (*clipExtraCoords)[k].y <= (*clipExtraCoords)[k].w);
+							_ASSERT((*clipExtraCoords)[k].z >= 0.0f && (*clipExtraCoords)[k].z <= (*clipExtraCoords)[k].w);
 							(*clipExtraTexCoords)[k] = srcPolygon.texCoords[k];
-							(*clipExtraColors)[k]	= srcPolygon.colors[k];
+							(*clipExtraColors)[k] = srcPolygon.colors[k];
 						}
 						numberVerticesPerPolygon = srcPolygon.length;
 					}
@@ -1193,7 +1149,8 @@ void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MLRLightMap::CreateLightMapShape()
+MLRShape*
+MLRLightMap::CreateLightMapShape()
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -1209,9 +1166,9 @@ MLRShape* MLRLightMap::CreateLightMapShape()
 	int32_t i;
 	Stuff::Point3D* coords = nullptr;
 	Stuff::RGBAColor color;
-	Stuff::RGBAColor* colors		 = nullptr;
+	Stuff::RGBAColor* colors = nullptr;
 	Stuff::Vector2DScalar* texCoords = nullptr;
-	int32_t numGOSVertices			 = 0;
+	int32_t numGOSVertices = 0;
 	int32_t msd;
 	MemoryStreamData type;
 	stream->Rewind();
@@ -1261,7 +1218,7 @@ MLRShape* MLRLightMap::CreateLightMapShape()
 		{
 			if (ctmesh == nullptr)
 			{
-				ctmesh		   = new MLR_I_C_TMesh;
+				ctmesh = new MLR_I_C_TMesh;
 				numGOSVertices = 0;
 			}
 			*stream >> stride;
@@ -1269,7 +1226,7 @@ MLRShape* MLRLightMap::CreateLightMapShape()
 			*stream >> color;
 #if COLOR_AS_DWORD
 			uint32_t argb = 0xffffffff;
-			argb		  = GOSCopyColor(&color);
+			argb = GOSCopyColor(&color);
 #endif
 			coords = (Stuff::Point3D*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Point3D));
@@ -1291,7 +1248,7 @@ MLRShape* MLRLightMap::CreateLightMapShape()
 		{
 			if (ctmesh == nullptr)
 			{
-				ctmesh		   = new MLR_I_C_TMesh;
+				ctmesh = new MLR_I_C_TMesh;
 				numGOSVertices = 0;
 			}
 			*stream >> stride;

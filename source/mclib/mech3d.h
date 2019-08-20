@@ -27,14 +27,14 @@
 //
 typedef struct _GestureData
 {
-	float startVel;				 // Gesture Starts at this speed
-	float endVel;				 // Gesture Ends at this speed
-	int32_t frameStart;			 // Which frame does gesture start at.
-	bool reverse;				 // Should we play backwards?
+	float startVel; // Gesture Starts at this speed
+	float endVel; // Gesture Ends at this speed
+	int32_t frameStart; // Which frame does gesture start at.
+	bool reverse; // Should we play backwards?
 	int32_t rightFootDownFrame0; // When should the right foot make a poof and print?
 	int32_t rightFootDownFrame1; // Sometimes the foot's down twice.
-	int32_t leftFootDownFrame0;  // When should the left foot make a poof and print?
-	int32_t leftFootDownFrame1;  // Sometimes the foot's down twice.
+	int32_t leftFootDownFrame0; // When should the left foot make a poof and print?
+	int32_t leftFootDownFrame1; // Sometimes the foot's down twice.
 } GestureData;
 
 typedef struct _PaintSchemata
@@ -52,49 +52,49 @@ typedef PaintSchemata* PaintSchemataPtr;
 
 enum gesture_const : uint32_t
 {
-	GesturePark			  = 0,
-	GestureStandToPark	= 1,
-	GestureStand		  = 2,
-	GestureStandToWalk	= 3, // OBSOLETE!
-	GestureWalk			  = 4,
-	GestureParkToStand	= 5,
-	GestureWalkToRun	  = 6, // OBSOLETE!
-	GestureRun			  = 7,
-	GestureRunToWalk	  = 8, // OBSOLETE!
-	GestureReverse		  = 9,
+	GesturePark = 0,
+	GestureStandToPark = 1,
+	GestureStand = 2,
+	GestureStandToWalk = 3, // OBSOLETE!
+	GestureWalk = 4,
+	GestureParkToStand = 5,
+	GestureWalkToRun = 6, // OBSOLETE!
+	GestureRun = 7,
+	GestureRunToWalk = 8, // OBSOLETE!
+	GestureReverse = 9,
 	GestureStandToReverse = 10, // OBSOLETE!
-	GestureLimpLeft		  = 11,
-	GestureLimpRight	  = 12,
-	GestureIdle			  = 13,
-	GestureFallBackward   = 14,
-	GestureFallForward	= 15,
-	GestureHitFront		  = 16,
-	GestureHitBack		  = 17,
-	GestureHitLeft		  = 18,
-	GestureHitRight		  = 19,
-	GestureJump			  = 20,
-	GestureRollover		  = 21,
-	GestureGetUp		  = 22,
-	GestureFallenForward  = 23,
+	GestureLimpLeft = 11,
+	GestureLimpRight = 12,
+	GestureIdle = 13,
+	GestureFallBackward = 14,
+	GestureFallForward = 15,
+	GestureHitFront = 16,
+	GestureHitBack = 17,
+	GestureHitLeft = 18,
+	GestureHitRight = 19,
+	GestureJump = 20,
+	GestureRollover = 21,
+	GestureGetUp = 22,
+	GestureFallenForward = 23,
 	GestureFallenBackward = 24,
-	MaxGestures			  = 25,
+	MaxGestures = 25,
 };
 
 #define MAX_MECH_ANIMATIONS MaxGestures
 
 enum mech3dappearancetype_const : uint32_t
 {
-	NUM_MECH_STATES			   = 10,
-	MECH_STATE_PARKED		   = 0,
-	MECH_STATE_STANDING		   = 1,
-	MECH_STATE_WALKING		   = 2,
-	MECH_STATE_RUNNING		   = 3,
-	MECH_STATE_REVERSE		   = 4,
-	MECH_STATE_LIMPING_LEFT	= 5,
-	MECH_STATE_JUMPING		   = 6,
-	MECH_STATE_FALLEN_FORWARD  = 7,
+	NUM_MECH_STATES = 10,
+	MECH_STATE_PARKED = 0,
+	MECH_STATE_STANDING = 1,
+	MECH_STATE_WALKING = 2,
+	MECH_STATE_RUNNING = 3,
+	MECH_STATE_REVERSE = 4,
+	MECH_STATE_LIMPING_LEFT = 5,
+	MECH_STATE_JUMPING = 6,
+	MECH_STATE_FALLEN_FORWARD = 7,
 	MECH_STATE_FALLEN_BACKWARD = 8,
-	MECH_STATE_LIMPING_RIGHT   = 9,
+	MECH_STATE_LIMPING_RIGHT = 9,
 };
 
 constexpr const float BASE_NODE_RECYCLE_TIME = 0.25f;
@@ -120,9 +120,9 @@ public:
 	TG_TypeMultiShapePtr mechBackwardDmgShape;
 
 	int32_t rightFootprintType; // Footprint type for this mech.
-	int32_t leftFootprintType;  // Footprint type for this mech.
-	int32_t shadowScalar;		// Values to scale shadow for this type of mech
-	int32_t textureSide;		// Size of texture edge in pixels
+	int32_t leftFootprintType; // Footprint type for this mech.
+	int32_t shadowScalar; // Values to scale shadow for this type of mech
+	int32_t textureSide; // Size of texture edge in pixels
 
 	GestureData gestures[MaxGestures];
 
@@ -144,17 +144,17 @@ public:
 		int32_t i = 0;
 		for (i = 0; i < MAX_LODS; i++)
 		{
-			mechShape[i]   = nullptr;
+			mechShape[i] = nullptr;
 			lodDistance[i] = 0.0f;
 		}
 		for (i = 0; i < MAX_MECH_ANIMATIONS; i++)
 			mechAnim[i] = nullptr;
 		rightFootprintType = leftFootprintType = -1;
-		shadowScalar						   = 0;   // For stupid shadows if we need to draw them.
-		textureSide							   = 128; // For stupid shadows if we need to draw them.
-		nodeData							   = nullptr;
+		shadowScalar = 0; // For stupid shadows if we need to draw them.
+		textureSide = 128; // For stupid shadows if we need to draw them.
+		nodeData = nullptr;
 		numSmokeNodes = numWeaponNodes = numJumpNodes = 0;
-		mechShadowShape								  = nullptr;
+		mechShadowShape = nullptr;
 	}
 
 	Mech3DAppearanceType(void) { init(void); }
@@ -245,13 +245,13 @@ typedef struct _MechAppearanceData
 	float currentFrame; // One for each part.
 	int32_t currentLOD;
 
-	int32_t nodeUsed[10];  // Used to stagger the weapon nodes for firing.
+	int32_t nodeUsed[10]; // Used to stagger the weapon nodes for firing.
 	float nodeRecycle[10]; // Used for ripple fire to find out if the node has
-						   // fired recently.
+		// fired recently.
 
 	Stuff::Vector3D jumpDestination;
 	Stuff::Vector3D jumpVelocity; // Real velocity vector now.  Just plug into
-								  // mech velocity.
+		// mech velocity.
 
 	float baseRootNodeHeight;
 
@@ -334,12 +334,12 @@ protected:
 
 	Stuff::Vector3D jumpDestination;
 	Stuff::Vector3D jumpVelocity; // Real velocity vector now.  Just plug into
-								  // mech velocity.
+		// mech velocity.
 	float hazeFactor;
 
-	int32_t* nodeUsed;  // Used to stagger the weapon nodes for firing.
+	int32_t* nodeUsed; // Used to stagger the weapon nodes for firing.
 	float* nodeRecycle; // Used for ripple fire to find out if the node has
-						// fired recently.
+		// fired recently.
 
 	Stuff::Vector3D footPos[2]; // Used to store previous frame foot positions.
 	// For foot poofs and footprints.
@@ -483,13 +483,13 @@ public:
 		// These two lines force the select box to match the helicopter's
 		// position in the sky
 		currentGestureId = 2;
-		inView			 = true;
+		inView = true;
 		update(void);
 		currentGestureId = gestureId;
-		oldStateGoal	 = 0;  // This is ONLY valid for park!!!!
+		oldStateGoal = 0; // This is ONLY valid for park!!!!
 		currentStateGoal = -1; // Not going anywhere
-		transitionState  = 0;  // No Transition necessary.
-		currentFrame	 = mechType->getNumFrames(currentGestureId) - 1;
+		transitionState = 0; // No Transition necessary.
+		currentFrame = mechType->getNumFrames(currentGestureId) - 1;
 	}
 
 	virtual int32_t setGestureGoal(int32_t stateGoal)
@@ -510,8 +510,7 @@ public:
 			return (0);
 		if (currentStateGoal != -1)
 			return 0;
-		if ((currentGestureId == GestureHitFront) || (currentGestureId == GestureHitBack) ||
-			(currentGestureId == GestureHitLeft) || (currentGestureId == GestureHitRight))
+		if ((currentGestureId == GestureHitFront) || (currentGestureId == GestureHitBack) || (currentGestureId == GestureHitLeft) || (currentGestureId == GestureHitRight))
 		{
 			return 0;
 		}
@@ -522,10 +521,10 @@ public:
 		// Gesture will allow a change IMMEDIATELY.  Set the appropriate
 		// variables if this is TRUE and go on.  Otherwise, IGNORE THIS
 		// COMMAND.  MECH will continually ask to change if necessary.
-		transitionState			  = 0; // Start at beginning gestureId of this goal.
-		currentStateGoal		  = stateGoal;
+		transitionState = 0; // Start at beginning gestureId of this goal.
+		currentStateGoal = stateGoal;
 		atTransitionToNextGesture = true;
-		oncePerFrame			  = true;
+		oncePerFrame = true;
 		return -1;
 	}
 
@@ -540,13 +539,13 @@ public:
 
 	virtual float getVelocityOfGesture(size_t gestureId)
 	{
-		float result	  = mechType->getStartVel(gestureId);
+		float result = mechType->getStartVel(gestureId);
 		float otherResult = mechType->getEndVel(gestureId);
 		if (otherResult == result)
 			return (result);
 		else
 		{
-			float vel   = otherResult - result;
+			float vel = otherResult - result;
 			otherResult = getNumFramesInGesture(gestureId);
 			if (otherResult > Stuff::SMALL)
 			{

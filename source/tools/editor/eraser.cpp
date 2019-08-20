@@ -14,20 +14,23 @@ eraser.cpp			: Implementation of the eraser component.
 #endif
 
 //---------------------------------------------------------------------------
-inline bool isCementType(uint32_t type)
+inline bool
+isCementType(uint32_t type)
 {
 	bool isCement =
 		((type == BASE_CEMENT_TYPE) || ((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
 	return isCement;
 }
 
-bool Eraser::beginPaint()
+bool
+Eraser::beginPaint()
 {
 	gosASSERT(!pCurAction);
 	pCurAction = new EraserAction;
 	return true;
 }
-Action* Eraser::endPaint()
+Action*
+Eraser::endPaint()
 {
 	Action* pRetAction = nullptr;
 	if (pCurAction)
@@ -46,7 +49,8 @@ Action* Eraser::endPaint()
 }
 
 #define DEFAULT_TERRAIN 2
-bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool
+Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	EditorObject* pInfo = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
 	if (pInfo)
@@ -108,7 +112,8 @@ bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	}
 	return false;
 }
-bool Eraser::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool
+Eraser::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	if (EditorObjectMgr::instance()->getObjectAtPosition(worldPos))
 		return true;
@@ -136,7 +141,8 @@ bool Eraser::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screen
 	return false;
 }
 
-Action* Eraser::applyToSelection()
+Action*
+Eraser::applyToSelection()
 {
 	EraserAction* pRetAction = new EraserAction;
 	{
@@ -219,10 +225,11 @@ Action* Eraser::applyToSelection()
 	return pRetAction;
 }
 
-bool Eraser::EraserAction::undo()
+bool
+Eraser::EraserAction::undo()
 {
 	bool bRetVal = bldgAction.redo();
-	bRetVal		 = linkAction.undo() && bRetVal;
+	bRetVal = linkAction.undo() && bRetVal;
 	/*teamAction.undo() must occur after bldgAction.redo() (after the deleted
 	buildings have been restored)*/
 	if (teamsActionIsSet)
@@ -233,7 +240,8 @@ bool Eraser::EraserAction::undo()
 	return bRetVal;
 }
 
-bool Eraser::EraserAction::redo()
+bool
+Eraser::EraserAction::redo()
 {
 	bool bRetVal = true;
 	/*teamAction.redo() must occur before bldgAction.undo() (before the

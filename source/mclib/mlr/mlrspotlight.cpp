@@ -16,7 +16,8 @@ MLRSpotLight::ClassData* MLRSpotLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::InitializeClass()
+void
+MLRSpotLight::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -27,7 +28,8 @@ void MLRSpotLight::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::TerminateClass()
+void
+MLRSpotLight::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -36,7 +38,8 @@ void MLRSpotLight::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSpotLight::MLRSpotLight() : MLRInfiniteLightWithFalloff(DefaultData)
+MLRSpotLight::MLRSpotLight() :
+	MLRInfiniteLightWithFalloff(DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
@@ -44,8 +47,8 @@ MLRSpotLight::MLRSpotLight() : MLRInfiniteLightWithFalloff(DefaultData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSpotLight::MLRSpotLight(std::iostream stream, uint32_t version)
-	: MLRInfiniteLightWithFalloff(DefaultData, stream, version)
+MLRSpotLight::MLRSpotLight(std::iostream stream, uint32_t version) :
+	MLRInfiniteLightWithFalloff(DefaultData, stream, version)
 {
 	Check_Object(stream);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -73,7 +76,8 @@ MLRSpotLight::MLRSpotLight(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSpotLight::MLRSpotLight(Stuff::Page* page) : MLRInfiniteLightWithFalloff(DefaultData, page)
+MLRSpotLight::MLRSpotLight(Stuff::Page* page) :
+	MLRInfiniteLightWithFalloff(DefaultData, page)
 {
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -109,7 +113,8 @@ MLRSpotLight::~MLRSpotLight()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::Save(std::iostream stream)
+void
+MLRSpotLight::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -117,7 +122,7 @@ void MLRSpotLight::Save(std::iostream stream)
 	if (lightMap)
 	{
 		Check_Object(lightMap);
-		uint32_t handle		= lightMap->GetState().GetTextureHandle();
+		uint32_t handle = lightMap->GetState().GetTextureHandle();
 		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
 		std::wstring name = texture->GetTextureName();
@@ -130,7 +135,8 @@ void MLRSpotLight::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::Write(Stuff::Page* page)
+void
+MLRSpotLight::Write(Stuff::Page* page)
 {
 	// Check_Object(this);
 	Check_Object(page);
@@ -138,7 +144,7 @@ void MLRSpotLight::Write(Stuff::Page* page)
 	if (lightMap)
 	{
 		Check_Object(lightMap);
-		uint32_t handle		= lightMap->GetState().GetTextureHandle();
+		uint32_t handle = lightMap->GetState().GetTextureHandle();
 		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
 		page->SetEntry("LightMap", texture->GetTextureName());
@@ -148,31 +154,38 @@ void MLRSpotLight::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLRSpotLight::TestInstance()
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::SetSpreadAngle(const Radian& radian)
+void
+MLRSpotLight::SetSpreadAngle(const Radian& radian)
 {
 	// Check_Object(this);
-	spreadAngle	= radian;
+	spreadAngle = radian;
 	tanSpreadAngle = (float)tan(spreadAngle);
 	cosSpreadAngle = (float)cos(spreadAngle);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::SetSpreadAngle(const Degree& degree)
+void
+MLRSpotLight::SetSpreadAngle(const Degree& degree)
 {
 	// Check_Object(this);
-	spreadAngle	= degree;
+	spreadAngle = degree;
 	tanSpreadAngle = (float)tan(spreadAngle);
 	cosSpreadAngle = (float)cos(spreadAngle);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool MLRSpotLight::GetSpreadAngle(Radian* angle)
+bool
+MLRSpotLight::GetSpreadAngle(Radian* angle)
 {
 	// Check_Object(this);
 	*angle = spreadAngle;
@@ -181,7 +194,8 @@ bool MLRSpotLight::GetSpreadAngle(Radian* angle)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
+void
+MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 {
 	UnitVector3D light_z;
 	RGBColor light_color(color);
@@ -196,7 +210,7 @@ void MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 	// light level as appropriate to the distance
 	//--------------------------------------------------------------
 	//
-	float length  = vertex_to_light.GetApproximateLength();
+	float length = vertex_to_light.GetApproximateLength();
 	float falloff = 1.0f;
 	if (GetFalloff(length, falloff))
 	{
@@ -251,7 +265,8 @@ void MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSpotLight::SetLightMap(MLRLightMap* light_map)
+void
+MLRSpotLight::SetLightMap(MLRLightMap* light_map)
 {
 	// Check_Object(this);
 	if (lightMap)

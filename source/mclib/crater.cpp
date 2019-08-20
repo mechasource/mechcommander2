@@ -46,7 +46,7 @@ extern bool useNonWeaponEffects;
 #define MAX_FOOTPRINTS 64
 //---------------------------------------------------------------------
 float craterUVTable[136] = {
-	0.000, 0.000,				// Anubis
+	0.000, 0.000, // Anubis
 	0.125, 0.000, 0.250, 0.000, // Atlas
 	0.375, 0.000, 0.500, 0.000, // BloodAsp
 	0.625, 0.000, 0.750, 0.000, // Bushwacker
@@ -75,20 +75,21 @@ float craterUVTable[136] = {
 	0.375, 0.750, 0.500, 0.750, // Werewolf (razorback)
 	0.625, 0.750, 0.750, 0.750, // Wolfhound
 	0.875, 0.750, 0.000, 0.875, // Zeus
-	0.125, 0.875, 0.0, 0.0,		// CRATER_1,
-	0.50, 0.0,					// CRATER_2,
-	0.0, 0.50,					// CRATER_3,
-	0.50, 0.50					// CRATER_4,
+	0.125, 0.875, 0.0, 0.0, // CRATER_1,
+	0.50, 0.0, // CRATER_2,
+	0.0, 0.50, // CRATER_3,
+	0.50, 0.50 // CRATER_4,
 };
 
 //---------------------------------------------------------------------
 // class CraterManager
-int32_t CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName)
+int32_t
+CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName)
 {
 	init();
 	//-----------------------------------------------------
 	// Allocate Heap to store crater Info
-	maxCraters		  = numCraters;
+	maxCraters = numCraters;
 	craterPosHeapSize = numCraters * (sizeof(CraterData) + allocatedBlockSize);
 	//-----------------------------------------------------
 	// create Heaps
@@ -130,7 +131,8 @@ int32_t CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, PSTR cr
 }
 
 //---------------------------------------------------------------------
-void CraterManager::destroy(void)
+void
+CraterManager::destroy(void)
 {
 	//---------------------------------------------
 	// Close file and whack it.
@@ -143,10 +145,10 @@ void CraterManager::destroy(void)
 	delete craterShpHeap;
 	craterShpHeap = nullptr;
 	delete craterPosHeap;
-	craterPosHeap	 = nullptr;
+	craterPosHeap = nullptr;
 	craterPosHeapSize = craterShpHeapSize = 0;
-	craterList							  = nullptr;
-	currentCrater						  = 0;
+	craterList = nullptr;
+	currentCrater = 0;
 	free(craterTextureHandles);
 	craterTextureHandles = nullptr;
 	free(craterTextureIndices);
@@ -154,7 +156,8 @@ void CraterManager::destroy(void)
 }
 
 //---------------------------------------------------------------------
-int32_t CraterManager::addCrater(int32_t craterType, Stuff::Vector3D& position, float rotation)
+int32_t
+CraterManager::addCrater(int32_t craterType, Stuff::Vector3D& position, float rotation)
 {
 	if (!useNonWeaponEffects)
 		return NO_ERROR;
@@ -186,7 +189,7 @@ int32_t CraterManager::addCrater(int32_t craterType, Stuff::Vector3D& position, 
 		craterList[currentCrater].position[3].x = -size;
 		craterList[currentCrater].position[3].y = size;
 		craterList[currentCrater].position[3].z = 0.0f;
-		float cRotation							= rotation;
+		float cRotation = rotation;
 		OppRotate(craterList[currentCrater].position[0], cRotation);
 		OppRotate(craterList[currentCrater].position[1], cRotation);
 		OppRotate(craterList[currentCrater].position[2], cRotation);
@@ -213,7 +216,8 @@ int32_t CraterManager::addCrater(int32_t craterType, Stuff::Vector3D& position, 
 }
 
 //---------------------------------------------------------------------
-int32_t CraterManager::update(void)
+int32_t
+CraterManager::update(void)
 {
 	if (!useNonWeaponEffects)
 		return NO_ERROR;
@@ -248,7 +252,8 @@ int32_t CraterManager::update(void)
 }
 
 //---------------------------------------------------------------------
-void CraterManager::render(void)
+void
+CraterManager::render(void)
 {
 	if (!useNonWeaponEffects)
 		return;
@@ -261,11 +266,11 @@ void CraterManager::render(void)
 		if (currCrater->craterShapeId != -1)
 		{
 			int32_t handleOffset = 1;
-			float uvAdd			 = 0.125;
+			float uvAdd = 0.125;
 			if (currCrater->craterShapeId >= MAX_FOOTPRINTS)
 			{
 				handleOffset = 0;
-				uvAdd		 = 0.50;
+				uvAdd = 0.50;
 			}
 			bool onScreen1 = eye->projectZ(currCrater->position[0], currCrater->screenPos[0]);
 			bool onScreen2 = eye->projectZ(currCrater->position[1], currCrater->screenPos[1]);
@@ -308,9 +313,9 @@ void CraterManager::render(void)
 				uint32_t lightRGB = 0xffffffff;
 				uint32_t specR = 0, specB = 0, specG = 0;
 				uint8_t lightr = 0xff, lightg = 0xff, lightb = 0xff;
-				lightr   = eye->ambientRed;
-				lightg   = eye->ambientGreen;
-				lightb   = eye->ambientBlue;
+				lightr = eye->ambientRed;
+				lightg = eye->ambientGreen;
+				lightb = eye->ambientBlue;
 				lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
 				if (Terrain::terrainTextures2)
 				{
@@ -330,8 +335,8 @@ void CraterManager::render(void)
 				if (useFog)
 				{
 					uint32_t fogValue = 0xff;
-					float fogStart	= eye->fogStart;
-					float fogFull	 = eye->fogFull;
+					float fogStart = eye->fogStart;
+					float fogFull = eye->fogFull;
 					if (currCrater->position[0].z < fogStart)
 					{
 						float fogFactor = fogStart - currCrater->position[0].z;
@@ -351,7 +356,7 @@ void CraterManager::render(void)
 								fogFactor = 256.0;
 							}
 							uint8_t fogResult = fogFactor;
-							fogValue		  = fogFactor;
+							fogValue = fogFactor;
 							fogRGB = (fogResult << 24) + (specR << 16) + (specG << 8) + specB;
 						}
 					}
@@ -361,7 +366,7 @@ void CraterManager::render(void)
 					}
 					if (hazeFactor != 0.0f)
 					{
-						float fogFactor  = 1.0 - hazeFactor;
+						float fogFactor = 1.0 - hazeFactor;
 						uint32_t distFog = float2long(fogFactor * 255.0f);
 						if (distFog < fogValue)
 							fogValue = distFog;
@@ -373,36 +378,36 @@ void CraterManager::render(void)
 					//------------------------------------
 					// Replace with Polygon Quad Elements
 					gos_VERTEX gVertex[4];
-					gVertex[0].x	= currCrater->screenPos[0].x;
-					gVertex[0].y	= currCrater->screenPos[0].y;
-					gVertex[0].z	= currCrater->screenPos[0].z;
-					gVertex[0].rhw  = currCrater->screenPos[0].w;
-					gVertex[0].u	= craterUVTable[(currCrater->craterShapeId * 2)];
-					gVertex[0].v	= craterUVTable[(currCrater->craterShapeId * 2) + 1];
+					gVertex[0].x = currCrater->screenPos[0].x;
+					gVertex[0].y = currCrater->screenPos[0].y;
+					gVertex[0].z = currCrater->screenPos[0].z;
+					gVertex[0].rhw = currCrater->screenPos[0].w;
+					gVertex[0].u = craterUVTable[(currCrater->craterShapeId * 2)];
+					gVertex[0].v = craterUVTable[(currCrater->craterShapeId * 2) + 1];
 					gVertex[0].argb = lightRGB;
 					gVertex[0].frgb = fogRGB;
-					gVertex[1].x	= currCrater->screenPos[1].x;
-					gVertex[1].y	= currCrater->screenPos[1].y;
-					gVertex[1].z	= currCrater->screenPos[1].z;
-					gVertex[1].rhw  = currCrater->screenPos[1].w;
-					gVertex[1].u	= gVertex[0].u + uvAdd;
-					gVertex[1].v	= gVertex[0].v;
+					gVertex[1].x = currCrater->screenPos[1].x;
+					gVertex[1].y = currCrater->screenPos[1].y;
+					gVertex[1].z = currCrater->screenPos[1].z;
+					gVertex[1].rhw = currCrater->screenPos[1].w;
+					gVertex[1].u = gVertex[0].u + uvAdd;
+					gVertex[1].v = gVertex[0].v;
 					gVertex[1].argb = lightRGB;
 					gVertex[1].frgb = fogRGB;
-					gVertex[2].x	= currCrater->screenPos[2].x;
-					gVertex[2].y	= currCrater->screenPos[2].y;
-					gVertex[2].z	= currCrater->screenPos[2].z;
-					gVertex[2].rhw  = currCrater->screenPos[2].w;
-					gVertex[2].u	= gVertex[1].u;
-					gVertex[2].v	= gVertex[0].v + uvAdd;
+					gVertex[2].x = currCrater->screenPos[2].x;
+					gVertex[2].y = currCrater->screenPos[2].y;
+					gVertex[2].z = currCrater->screenPos[2].z;
+					gVertex[2].rhw = currCrater->screenPos[2].w;
+					gVertex[2].u = gVertex[1].u;
+					gVertex[2].v = gVertex[0].v + uvAdd;
 					gVertex[2].argb = lightRGB;
 					gVertex[2].frgb = fogRGB;
-					gVertex[3].x	= currCrater->screenPos[3].x;
-					gVertex[3].y	= currCrater->screenPos[3].y;
-					gVertex[3].z	= currCrater->screenPos[3].z;
-					gVertex[3].rhw  = currCrater->screenPos[3].w;
-					gVertex[3].u	= gVertex[0].u;
-					gVertex[3].v	= gVertex[2].v;
+					gVertex[3].x = currCrater->screenPos[3].x;
+					gVertex[3].y = currCrater->screenPos[3].y;
+					gVertex[3].z = currCrater->screenPos[3].z;
+					gVertex[3].rhw = currCrater->screenPos[3].w;
+					gVertex[3].u = gVertex[0].u;
+					gVertex[3].v = gVertex[2].v;
 					gVertex[3].argb = lightRGB;
 					gVertex[3].frgb = fogRGB;
 					TexturedPolygonQuadElement element;
@@ -431,18 +436,18 @@ void CraterManager::render(void)
 					gVertex[0].z = sVertex[0].z = currCrater->screenPos[0].z;
 					gVertex[0].rhw = sVertex[0].rhw = currCrater->screenPos[0].w;
 					gVertex[0].u = sVertex[0].u = craterUVTable[(currCrater->craterShapeId * 2)];
-					gVertex[0].v				= sVertex[0].v =
+					gVertex[0].v = sVertex[0].v =
 						craterUVTable[(currCrater->craterShapeId * 2) + 1];
 					gVertex[0].argb = sVertex[0].argb = lightRGB;
 					gVertex[0].frgb = sVertex[0].frgb = fogRGB;
-					gVertex[1].x					  = currCrater->screenPos[1].x;
-					gVertex[1].y					  = currCrater->screenPos[1].y;
-					gVertex[1].z					  = currCrater->screenPos[1].z;
-					gVertex[1].rhw					  = currCrater->screenPos[1].w;
-					gVertex[1].u					  = gVertex[0].u + uvAdd;
-					gVertex[1].v					  = gVertex[0].v;
-					gVertex[1].argb					  = lightRGB;
-					gVertex[1].frgb					  = fogRGB;
+					gVertex[1].x = currCrater->screenPos[1].x;
+					gVertex[1].y = currCrater->screenPos[1].y;
+					gVertex[1].z = currCrater->screenPos[1].z;
+					gVertex[1].rhw = currCrater->screenPos[1].w;
+					gVertex[1].u = gVertex[0].u + uvAdd;
+					gVertex[1].v = gVertex[0].v;
+					gVertex[1].argb = lightRGB;
+					gVertex[1].frgb = fogRGB;
 					gVertex[2].x = sVertex[1].x = currCrater->screenPos[2].x;
 					gVertex[2].y = sVertex[1].y = currCrater->screenPos[2].y;
 					gVertex[2].z = sVertex[1].z = currCrater->screenPos[2].z;
@@ -451,14 +456,14 @@ void CraterManager::render(void)
 					gVertex[2].v = sVertex[1].v = gVertex[0].v + uvAdd;
 					gVertex[2].argb = sVertex[1].argb = lightRGB;
 					gVertex[2].frgb = sVertex[1].frgb = fogRGB;
-					sVertex[2].x					  = currCrater->screenPos[3].x;
-					sVertex[2].y					  = currCrater->screenPos[3].y;
-					sVertex[2].z					  = currCrater->screenPos[3].z;
-					sVertex[2].rhw					  = currCrater->screenPos[3].w;
-					sVertex[2].u					  = gVertex[0].u;
-					sVertex[2].v					  = gVertex[2].v;
-					sVertex[2].argb					  = lightRGB;
-					sVertex[2].frgb					  = fogRGB;
+					sVertex[2].x = currCrater->screenPos[3].x;
+					sVertex[2].y = currCrater->screenPos[3].y;
+					sVertex[2].z = currCrater->screenPos[3].z;
+					sVertex[2].rhw = currCrater->screenPos[3].w;
+					sVertex[2].u = gVertex[0].u;
+					sVertex[2].v = gVertex[2].v;
+					sVertex[2].argb = lightRGB;
+					sVertex[2].frgb = fogRGB;
 					if (currCrater->craterShapeId > TURKINA_FOOTPRINT) // We are standard crater.
 					{
 						mcTextureManager->addVertices(craterTextureIndices[handleOffset], gVertex,

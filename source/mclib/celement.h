@@ -24,7 +24,7 @@ public:
 
 	Element(void)
 	{
-		depth	  = 1.0;
+		depth = 1.0;
 		drawNormal = TRUE;
 	}
 

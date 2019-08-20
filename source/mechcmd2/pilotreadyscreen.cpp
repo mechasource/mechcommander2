@@ -26,16 +26,16 @@ PilotReadyScreen* PilotReadyScreen::s_instance = nullptr;
 
 PilotReadyScreen::PilotReadyScreen()
 {
-	pCurPilot		= nullptr;
-	pIcons			= nullptr;
-	status			= LogisticsScreen::RUNNING;
-	s_instance		= this;
+	pCurPilot = nullptr;
+	pIcons = nullptr;
+	status = LogisticsScreen::RUNNING;
+	s_instance = this;
 	forceGroupCount = 0;
-	pDragPilot		= 0;
-	dragLeft		= 0;
-	status			= PAUSED;
+	pDragPilot = 0;
+	dragLeft = 0;
+	status = PAUSED;
 	helpTextArrayID = 13;
-	mechSelected	= 0;
+	mechSelected = 0;
 }
 
 PilotReadyScreen::~PilotReadyScreen()
@@ -46,7 +46,8 @@ PilotReadyScreen::~PilotReadyScreen()
 	LogisticsScreen::clear();
 }
 
-void PilotReadyScreen::init(FitIniFile* file)
+void
+PilotReadyScreen::init(FitIniFile* file)
 {
 	mechDisplay.init();
 	// init button, texts, statics, rects
@@ -64,10 +65,10 @@ void PilotReadyScreen::init(FitIniFile* file)
 		return;
 	}
 	LogisticsMechIcon::init(iconFile);
-	pIcons		  = new LogisticsMechIcon[ICON_COUNT];
+	pIcons = new LogisticsMechIcon[ICON_COUNT];
 	int32_t count = 0;
-	int32_t x	 = 0;
-	int32_t y	 = 0;
+	int32_t x = 0;
+	int32_t y = 0;
 	for (size_t j = 0; j < ICON_COUNT_Y; j++)
 	{
 		for (size_t i = 0; i < ICON_COUNT_X; i++)
@@ -135,7 +136,8 @@ void PilotReadyScreen::init(FitIniFile* file)
 	}
 }
 
-void PilotReadyScreen::begin()
+void
+PilotReadyScreen::begin()
 {
 	getButton(MB_MSG_PREV)->disable(false);
 	getButton(MB_MSG_MAINMENU)->disable(false);
@@ -144,7 +146,7 @@ void PilotReadyScreen::begin()
 	EList<LogisticsMech*, LogisticsMech*> mechList;
 	LogisticsData::instance->getInventory(mechList);
 	// reset force group
-	forceGroupCount  = 0;
+	forceGroupCount = 0;
 	int32_t maxUnits = 12;
 	if (MPlayer)
 	{
@@ -217,17 +219,21 @@ void PilotReadyScreen::begin()
 	}
 }
 
-void PilotReadyScreen::end() { mechDisplay.setMech(nullptr); }
+void
+PilotReadyScreen::end()
+{
+	mechDisplay.setMech(nullptr);
+}
 
-void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
+void
+PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	pilotListBox.move(xOffset, yOffset);
 	pilotListBox.render();
 	pilotListBox.move(-xOffset, -yOffset);
 	if (!xOffset && !yOffset)
 	{
-		if (!MPlayer && !LogisticsData::instance->isSingleMission() &&
-			LogisticsData::instance->newPilotsAvailable())
+		if (!MPlayer && !LogisticsData::instance->isSingleMission() && LogisticsData::instance->newPilotsAvailable())
 		{
 			soundSystem->playBettySample(BETTY_NEW_PILOTS);
 			LogisticsData::instance->setNewPilotsAcknowledged();
@@ -262,7 +268,7 @@ void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 	{
 		launchFadeTime += frameLength;
 		int32_t color = interpolateColor(0x00000000, 0x7f000000, launchFadeTime / .5f);
-		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 	if (MPlayer && ChatWindow::instance())
@@ -271,7 +277,8 @@ void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 		dragIcon.render();
 }
 
-void PilotReadyScreen::update()
+void
+PilotReadyScreen::update()
 {
 	if (MPlayer)
 	{
@@ -279,7 +286,7 @@ void PilotReadyScreen::update()
 			status = NEXT;
 	}
 	if (getButton(MB_MSG_PREV)->isEnabled()) // this is disabled if the user has
-											 // already pressed launch )
+		// already pressed launch )
 	{
 		// update current text
 		char str[64];
@@ -289,10 +296,10 @@ void PilotReadyScreen::update()
 		for (size_t i = 0; i < 4; i++)
 			skillIcons[i].update();
 		// desel icons if necessary
-		bool bAllFull		= 1;
-		int32_t newSel		= -1;
-		int32_t oldSel		= -1;
-		bool bHasMech		= 0;
+		bool bAllFull = 1;
+		int32_t newSel = -1;
+		int32_t oldSel = -1;
+		bool bHasMech = 0;
 		int32_t newRightSel = -1;
 		for (i = 0; i < ICON_COUNT; i++)
 		{
@@ -310,9 +317,7 @@ void PilotReadyScreen::update()
 			{
 				newRightSel = i;
 			}
-			else if (userInput->isLeftDrag() && bInside &&
-				pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()) &&
-				pIcons[i].getMech())
+			else if (userInput->isLeftDrag() && bInside && pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()) && pIcons[i].getMech())
 			{
 				beginDrag(pIcons[i].getMech()->getPilot());
 				pIcons[i].dimPilot(true);
@@ -339,13 +344,9 @@ void PilotReadyScreen::update()
 			setMech(pIcons[newRightSel].getMech());
 		}
 		int32_t curSel = newSel == -1 ? oldSel : newSel;
-		if (!MPlayer ||
-			!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+		if (!MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			LogisticsScreen::update();
-		if (mechSelected &&
-			(!MPlayer ||
-				!ChatWindow::instance()->pointInside(
-					userInput->getMouseX(), userInput->getMouseY())))
+		if (mechSelected && (!MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY())))
 		{
 			if (userInput->getMouseY() > 317)
 			{
@@ -387,8 +388,7 @@ void PilotReadyScreen::update()
 			LogisticsMechIcon* pSelIcon = 0;
 			for (size_t i = 0; i < ICON_COUNT; i++)
 			{
-				if (pIcons[i].pointInside(userInput->getMouseX(), userInput->getMouseY()) &&
-					pIcons[i].getMech())
+				if (pIcons[i].pointInside(userInput->getMouseX(), userInput->getMouseY()) && pIcons[i].getMech())
 				{
 					pSelIcon = &pIcons[i];
 					break;
@@ -405,7 +405,8 @@ void PilotReadyScreen::update()
 		ChatWindow::instance()->update();
 }
 
-int32_t PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
+int32_t
+PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
 {
 	switch (who)
 	{
@@ -444,11 +445,12 @@ int32_t PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void PilotReadyScreen::addSelectedPilot()
+void
+PilotReadyScreen::addSelectedPilot()
 {
 	aListItem* pItem = nullptr;
-	bool bFound		 = 0;
-	int32_t index	= pilotListBox.GetSelectedItem();
+	bool bFound = 0;
+	int32_t index = pilotListBox.GetSelectedItem();
 	if (index != -1)
 		pItem = pilotListBox.GetItem(index);
 	if (pItem)
@@ -500,7 +502,8 @@ void PilotReadyScreen::addSelectedPilot()
 	}
 }
 
-void PilotReadyScreen::removeSelectedPilot()
+void
+PilotReadyScreen::removeSelectedPilot()
 {
 	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
@@ -552,7 +555,8 @@ void PilotReadyScreen::removeSelectedPilot()
 	}
 }
 
-void PilotReadyScreen::beginDrag(LogisticsPilot* pPilot)
+void
+PilotReadyScreen::beginDrag(LogisticsPilot* pPilot)
 {
 	if (!pDragPilot)
 		pDragPilot = pPilot;
@@ -561,7 +565,8 @@ void PilotReadyScreen::beginDrag(LogisticsPilot* pPilot)
 	launchFadeTime = 0.f;
 }
 
-void PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
+void
+PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
 {
 	if (pIcon)
 	{
@@ -578,7 +583,8 @@ void PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
 	pDragPilot = 0;
 }
 
-void PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
+void
+PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
 {
 	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
@@ -592,7 +598,8 @@ void PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
 	pilotListBox.AddItem(pItem);
 }
 
-void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
+void
+PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 {
 	mechSelected = 0;
 	if (pPilot != pCurPilot)
@@ -696,7 +703,8 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 	}
 }
 
-void PilotReadyScreen::setMech(LogisticsMech* pMech)
+void
+PilotReadyScreen::setMech(LogisticsMech* pMech)
 {
 	mechSelected = true;
 	mechDisplay.setMech(pMech, 0);

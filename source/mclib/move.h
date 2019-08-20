@@ -145,12 +145,12 @@ typedef enum
 #define TACORDER_PARAM_DONT_SET_ORDER (1 << 19)
 #define TACORDER_PARAM_JUMP (1 << 20)
 #define TACORDER_PARAM_DONT_KEEP_MOVING (1 << 21)
-#define TACORDER_PARAM_TACTIC_FLANK_RIGHT (1 << 22)   // 4194304
-#define TACORDER_PARAM_TACTIC_FLANK_LEFT (1 << 23)	// 8388608
-#define TACORDER_PARAM_TACTIC_FLANK_REAR (1 << 24)	// 16777216
+#define TACORDER_PARAM_TACTIC_FLANK_RIGHT (1 << 22) // 4194304
+#define TACORDER_PARAM_TACTIC_FLANK_LEFT (1 << 23) // 8388608
+#define TACORDER_PARAM_TACTIC_FLANK_REAR (1 << 24) // 16777216
 #define TACORDER_PARAM_TACTIC_STOP_AND_FIRE (1 << 25) // 33554432
-#define TACORDER_PARAM_TACTIC_TURRET (1 << 26)		  // 67108864
-#define TACORDER_PARAM_TACTIC_JOUST (1 << 27)		  // 134217728
+#define TACORDER_PARAM_TACTIC_TURRET (1 << 26) // 67108864
+#define TACORDER_PARAM_TACTIC_JOUST (1 << 27) // 134217728
 
 #define TACORDER_ATTACK_MASK 0x00000300
 #define TACORDER_RANGE_MASK 0x0000FC00
@@ -506,13 +506,13 @@ public:
 
 	void init(void)
 	{
-		map					= nullptr;
-		height				= 0;
-		width				= 0;
-		preserveCells		= false;
-		numPreservedCells   = 0;
+		map = nullptr;
+		height = 0;
+		width = 0;
+		preserveCells = false;
+		numPreservedCells = 0;
 		placeMoversCallback = nullptr;
-		numDebugCells		= 0;
+		numDebugCells = 0;
 	}
 
 	MissionMap(void) { init(void); }
@@ -767,8 +767,8 @@ public:
 	void preserveCell(int32_t row, int32_t col)
 	{
 		preservedCells[numPreservedCells].data = map[row * width + col].data;
-		preservedCells[numPreservedCells].row  = row;
-		preservedCells[numPreservedCells].col  = col;
+		preservedCells[numPreservedCells].row = row;
+		preservedCells[numPreservedCells].col = col;
 		map[row * width + col].setPreserved(1);
 		numPreservedCells++;
 	}
@@ -805,10 +805,10 @@ typedef MovePath* MovePathPtr;
 
 typedef struct _PathStep
 {
-	int16_t cell[2];			 // obvious
-	float distanceToGoal;		 // dist, in meters, to goal from this step
+	int16_t cell[2]; // obvious
+	float distanceToGoal; // dist, in meters, to goal from this step
 	Stuff::Vector3D destination; // world pos of this step
-	char direction;				 // 0 thru 7 direction into this step
+	char direction; // 0 thru 7 direction into this step
 	int16_t area;
 } PathStep;
 
@@ -818,15 +818,15 @@ class MovePath
 {
 
 public:
-	Stuff::Vector3D goal;		   // world pos of path goal
-	Stuff::Vector3D target;		   // world pos of object target
-	int32_t numSteps;			   // if paused or no steps, == 0, else == numStepsWhenNotPaused
+	Stuff::Vector3D goal; // world pos of path goal
+	Stuff::Vector3D target; // world pos of object target
+	int32_t numSteps; // if paused or no steps, == 0, else == numStepsWhenNotPaused
 	int32_t numStepsWhenNotPaused; // total number of steps
-	int32_t curStep;			   // cuurent step we're headed for
-	int32_t cost;				   // total cost of path
+	int32_t curStep; // cuurent step we're headed for
+	int32_t cost; // total cost of path
 	PathStep stepList[MAX_STEPS_PER_MOVEPATH]; // actual steps :)
-	bool marked;							   // is it currently marked
-	int32_t globalStep;						   // if part of a complex path
+	bool marked; // is it currently marked
+	int32_t globalStep; // if part of a complex path
 
 public:
 	PVOID operator new(size_t mySize);
@@ -835,12 +835,12 @@ public:
 	void init(void)
 	{
 		goal.Zero(void);
-		numSteps			  = 0;
+		numSteps = 0;
 		numStepsWhenNotPaused = 0;
-		curStep				  = 0;
-		cost				  = 0;
-		marked				  = false;
-		globalStep			  = -1;
+		curStep = 0;
+		cost = 0;
+		marked = false;
+		globalStep = -1;
 	}
 
 	int32_t init(int32_t numberOfSteps);
@@ -1015,8 +1015,8 @@ typedef struct _GlobalPathStep
 	int32_t thruArea;
 	int32_t goalDoor;
 	Stuff::Vector3D start; // "start" in this area
-	Stuff::Vector3D goal;  // "goal" in this area
-	int32_t goalCell[2];   // which cell did we actually exit thru
+	Stuff::Vector3D goal; // "goal" in this area
+	int32_t goalCell[2]; // which cell did we actually exit thru
 	int32_t costToGoal;
 } GlobalPathStep;
 
@@ -1050,11 +1050,11 @@ class GlobalMap
 {
 
 public:
-	int32_t height;		  // in cells
-	int32_t width;		  // in cells
-	int32_t sectorDim;	// in cells
+	int32_t height; // in cells
+	int32_t width; // in cells
+	int32_t sectorDim; // in cells
 	int32_t sectorHeight; // in sectors
-	int32_t sectorWidth;  // in sectors
+	int32_t sectorWidth; // in sectors
 	int32_t numAreas;
 	int32_t numDoors;
 	int32_t numDoorInfos;
@@ -1110,39 +1110,39 @@ public:
 
 	void init(void)
 	{
-		height		  = 0;
-		width		  = 0;
-		sectorDim	 = 30;
-		sectorHeight  = 0;
-		sectorWidth   = 0;
-		numAreas	  = 0;
-		areaMap		  = nullptr;
-		areas		  = nullptr;
-		numDoors	  = 0;
-		numDoorInfos  = 0;
-		numDoorLinks  = 0;
-		doors		  = nullptr;
-		doorInfos	 = nullptr;
-		doorLinks	 = nullptr;
+		height = 0;
+		width = 0;
+		sectorDim = 30;
+		sectorHeight = 0;
+		sectorWidth = 0;
+		numAreas = 0;
+		areaMap = nullptr;
+		areas = nullptr;
+		numDoors = 0;
+		numDoorInfos = 0;
+		numDoorLinks = 0;
+		doors = nullptr;
+		doorInfos = nullptr;
+		doorLinks = nullptr;
 		doorBuildList = nullptr;
 		goalSector[0] = goalSector[1] = 0;
-		blank						  = false;
-		hover						  = false;
-		useClosedAreas				  = false;
-		badLoad						  = false;
-		calcedPathCost				  = false;
-		startCell[0]				  = -1;
-		startCell[1]				  = -1;
-		goalCell[0]					  = -1;
-		goalCell[1]					  = -1;
-		specialAreas				  = nullptr;
-		closes						  = false;
-		opens						  = false;
-		numOffMapAreas				  = 0;
-		log							  = nullptr;
-		logEnabled					  = false;
-		isGateDisabledCallback		  = nullptr;
-		isGateOpenCallback			  = nullptr;
+		blank = false;
+		hover = false;
+		useClosedAreas = false;
+		badLoad = false;
+		calcedPathCost = false;
+		startCell[0] = -1;
+		startCell[1] = -1;
+		goalCell[0] = -1;
+		goalCell[1] = -1;
+		specialAreas = nullptr;
+		closes = false;
+		opens = false;
+		numOffMapAreas = 0;
+		log = nullptr;
+		logEnabled = false;
+		isGateDisabledCallback = nullptr;
+		isGateOpenCallback = nullptr;
 	}
 
 	GlobalMap(void) { init(void); }
@@ -1325,10 +1325,10 @@ typedef GlobalMap* GlobalMapPtr;
 typedef struct _MoveMapNode
 {
 	int16_t adjCells[NUM_ADJ_CELLS];
-	int32_t cost;   // normal cost to travel here, based upon terrain
+	int32_t cost; // normal cost to travel here, based upon terrain
 	int32_t parent; // where we came from (parent cell)
 	uint32_t flags; // CLOSED, OPEN, STEP flags
-	int32_t g;		// known cost from START to this node
+	int32_t g; // known cost from START to this node
 	int32_t hPrime; // estimated cost from this node to GOAL
 	int32_t fPrime; // = g + hPrime
 
@@ -1364,16 +1364,16 @@ public:
 	int32_t startR;
 	int32_t startC;
 	Stuff::Vector3D goal; // actual world-coord goal
-	int32_t goalR;		  // cell goal row relative to move map
-	int32_t goalC;		  // cell goal col relative to move map
+	int32_t goalR; // cell goal row relative to move map
+	int32_t goalC; // cell goal col relative to move map
 	int32_t thruAreas[2];
 	int32_t door;
 	int32_t doorSide;
-	int32_t doorDirection;  // if goal is not a door, set to -1
+	int32_t doorDirection; // if goal is not a door, set to -1
 	Stuff::Vector3D target; // actual world-coord target
-	int32_t clearCost;		// cost, in tenths of secs, to move to clear cell
-	int32_t jumpCost;		// cost, in tenths of secs, to jump to cell
-	int32_t numOffsets;		// set by calcMovePath function (don't touch:)
+	int32_t clearCost; // cost, in tenths of secs, to move to clear cell
+	int32_t jumpCost; // cost, in tenths of secs, to jump to cell
+	int32_t numOffsets; // set by calcMovePath function (don't touch:)
 	float calcTime;
 	int32_t* overlayWeightTable;
 	int32_t moverWID;
@@ -1403,40 +1403,40 @@ public:
 
 	void init(void)
 	{
-		ULr			 = 0;
-		ULc			 = 0;
-		maxHeight	= 0;
-		maxWidth	 = 0;
-		height		 = 0;
-		width		 = 0;
-		minRow		 = 0;
-		maxRow		 = 0;
-		minCol		 = 0;
-		maxCol		 = 0;
-		map			 = nullptr;
-		mapRowTable  = nullptr;
-		moveLevel	= 0;
-		startR		 = -1;
-		startC		 = -1;
-		goalR		 = -1;
-		goalC		 = -1;
+		ULr = 0;
+		ULc = 0;
+		maxHeight = 0;
+		maxWidth = 0;
+		height = 0;
+		width = 0;
+		minRow = 0;
+		maxRow = 0;
+		minCol = 0;
+		maxCol = 0;
+		map = nullptr;
+		mapRowTable = nullptr;
+		moveLevel = 0;
+		startR = -1;
+		startC = -1;
+		goalR = -1;
+		goalC = -1;
 		thruAreas[0] = -1;
 		thruAreas[1] = -1;
 		goal.Zero(void);
-		door						  = -1;
-		doorSide					  = -1;
-		doorDirection				  = -1;
-		target.x					  = -999999.0;
-		target.y					  = -999999.0;
-		target.z					  = -999999.0;
-		clearCost					  = 1;
-		jumpCost					  = 0;
-		numOffsets					  = 8;
-		calcTime					  = 0.0;
-		travelOffMap				  = false;
-		cannotEnterOffMap			  = true;
-		overlayWeightTable			  = nullptr;
-		blockedDoorCallback			  = nullptr;
+		door = -1;
+		doorSide = -1;
+		doorDirection = -1;
+		target.x = -999999.0;
+		target.y = -999999.0;
+		target.z = -999999.0;
+		clearCost = 1;
+		jumpCost = 0;
+		numOffsets = 8;
+		calcTime = 0.0;
+		travelOffMap = false;
+		cannotEnterOffMap = true;
+		overlayWeightTable = nullptr;
+		blockedDoorCallback = nullptr;
 		placeStationaryMoversCallback = nullptr;
 	}
 
@@ -1484,7 +1484,7 @@ public:
 	void adjustCost(int32_t row, int32_t col, int32_t costAdj)
 	{
 		int32_t index = row * width + col;
-		int32_t cost  = map[index].cost + costAdj;
+		int32_t cost = map[index].cost + costAdj;
 		if (cost < 1)
 			cost = 1;
 		map[index].cost = cost;
@@ -1500,15 +1500,15 @@ public:
 
 	void setJumpCost(int32_t cost, int32_t offsets = 8)
 	{
-		jumpCost   = cost;
+		jumpCost = cost;
 		numOffsets = offsets;
 	}
 
 	void setMover(
 		int32_t watchID, int32_t teamID = 0, bool layingMines = false, bool withdrawing = false)
 	{
-		moverWID		 = watchID;
-		moverTeamID		 = teamID;
+		moverWID = watchID;
+		moverTeamID = teamID;
 		moverLayingMines = layingMines;
 		moverWithdrawing = withdrawing;
 	}
@@ -1539,25 +1539,34 @@ public:
 
 //---------------------------------------------------------------------------
 
-inline void MoveMap::setCost(int32_t row, int32_t col, int32_t newCost)
+inline void
+MoveMap::setCost(int32_t row, int32_t col, int32_t newCost)
 {
 	map[row * maxWidth + col].cost = newCost;
 }
 
 //---------------------------------------------------------------------------
 
-void SaveMapCells(PSTR fileName, int32_t height, int32_t width, MissionMapCellInfo* mapData);
+void
+SaveMapCells(PSTR fileName, int32_t height, int32_t width, MissionMapCellInfo* mapData);
 
-MissionMapCellInfo* LoadMapCells(PSTR fileName, int32_t& height, int32_t& width);
+MissionMapCellInfo*
+LoadMapCells(PSTR fileName, int32_t& height, int32_t& width);
 
-void DeleteMapCells(MissionMapCellInfo* mapData);
+void
+DeleteMapCells(MissionMapCellInfo* mapData);
 
-void MOVE_init(int32_t moveRange);
-void MOVE_buildData(int32_t height, int32_t width, MissionMapCellInfo* mapData,
+void
+MOVE_init(int32_t moveRange);
+void
+MOVE_buildData(int32_t height, int32_t width, MissionMapCellInfo* mapData,
 	int32_t numSpecialAreas, GameObjectFootPrint* specialAreaFootPrints);
-int32_t MOVE_saveData(PacketFile* packetFile, int32_t whichPacket = 0);
-int32_t MOVE_readData(PacketFile* packetFile, int32_t whichPacket);
-void MOVE_cleanup(void);
+int32_t
+MOVE_saveData(PacketFile* packetFile, int32_t whichPacket = 0);
+int32_t
+MOVE_readData(PacketFile* packetFile, int32_t whichPacket);
+void
+MOVE_cleanup(void);
 
 // int32_t BuildAndSaveMoveData (PSTR fileName, int32_t height, int32_t width,
 // MissionMapCellInfo* mapData);

@@ -22,15 +22,16 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // SelectTerrainTypeDlg dialog
 
-SelectTerrainTypeDlg::SelectTerrainTypeDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(SelectTerrainTypeDlg::IDD, pParent)
+SelectTerrainTypeDlg::SelectTerrainTypeDlg(CWnd* pParent /*=nullptr*/) :
+	CDialog(SelectTerrainTypeDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(SelectTerrainTypeDlg)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
-void SelectTerrainTypeDlg::DoDataExchange(CDataExchange* pDX)
+void
+SelectTerrainTypeDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(SelectTerrainTypeDlg)
@@ -46,12 +47,13 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // SelectTerrainTypeDlg message handlers
 
-BOOL SelectTerrainTypeDlg::OnInitDialog()
+BOOL
+SelectTerrainTypeDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_terrainTypeList.ResetContent();
 	int32_t numTerrains = 0;
-	numTerrains			= land->terrainTextures->getNumTypes();
+	numTerrains = land->terrainTextures->getNumTypes();
 	int32_t i;
 	for (i = 0; i < numTerrains; i++)
 	{
@@ -61,7 +63,7 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 			cLoadString(land->terrainTextures->getTextureNameID(i), buffer, 256);
 			CString newStr(buffer);
 			int32_t count = m_terrainTypeList.GetCount();
-			bool bPlaced  = 0;
+			bool bPlaced = 0;
 			for (size_t j = 0; j < count; ++j)
 			{
 				CString tmp;
@@ -97,10 +99,11 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 	SelectedTerrainType(-1);
 	// TODO: Add extra initialization here
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void SelectTerrainTypeDlg::OnOK()
+void
+SelectTerrainTypeDlg::OnOK()
 {
 	int32_t curSelIndex = m_terrainTypeList.GetCurSel();
 	if (LB_ERR != curSelIndex)

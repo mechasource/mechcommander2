@@ -9,7 +9,7 @@
 #pragma once
 
 #define WIN32_EXTRA_LEAN // Reduce windows header size
-#define VC_EXTRALEAN	 // Reduce windows header size
+#define VC_EXTRALEAN // Reduce windows header size
 #include <windows.h>
 #include <platform.hpp>
 #include <gameos.hpp>

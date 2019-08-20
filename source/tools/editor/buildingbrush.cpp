@@ -17,10 +17,10 @@ BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 
 BuildingBrush::BuildingBrush(int32_t Group, int32_t IndexInGroup, int32_t Alignment)
 {
-	group			= Group;
-	indexInGroup	= IndexInGroup;
-	pAction			= nullptr;
-	pCursor			= EditorObjectMgr::instance()->getAppearance(Group, IndexInGroup);
+	group = Group;
+	indexInGroup = IndexInGroup;
+	pAction = nullptr;
+	pCursor = EditorObjectMgr::instance()->getAppearance(Group, IndexInGroup);
 	pCursor->teamId = Alignment;
 	pCursor->setInView(true);
 	pCursor->setVisibility(true, true);
@@ -33,7 +33,7 @@ BuildingBrush::BuildingBrush()
 {
 	pCursor = nullptr;
 	group = indexInGroup = -1;
-	pAction				 = nullptr;
+	pAction = nullptr;
 }
 
 BuildingBrush::~BuildingBrush()
@@ -42,7 +42,8 @@ BuildingBrush::~BuildingBrush()
 		delete pCursor;
 }
 
-bool BuildingBrush::canPaint(
+bool
+BuildingBrush::canPaint(
 	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	if (!EditorObjectMgr::instance()->canAddBuilding(
@@ -55,18 +56,18 @@ bool BuildingBrush::canPaint(
 	return true;
 }
 
-bool BuildingBrush::beginPaint()
+bool
+BuildingBrush::beginPaint()
 {
 	gosASSERT(!pAction);
 	pAction = new BuildingAction;
 	return true; // need to set up undo here
 }
 
-bool BuildingBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool
+BuildingBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() < 1000 /*arbitrary*/) ||
-		(AppearanceTypeList::appearanceHeap->totalCoreLeft() <
-			0.01 /*arbitrary*/ * AppearanceTypeList::appearanceHeap->size()))
+	if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() < 1000 /*arbitrary*/) || (AppearanceTypeList::appearanceHeap->totalCoreLeft() < 0.01 /*arbitrary*/ * AppearanceTypeList::appearanceHeap->size()))
 	{
 		AfxMessageBox(IDS_APPEARANCE_HEAP_EXHAUSTED);
 		{
@@ -91,7 +92,8 @@ bool BuildingBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t sc
 	}
 }
 
-Action* BuildingBrush::endPaint()
+Action*
+BuildingBrush::endPaint()
 {
 	if (pAction)
 	{
@@ -102,11 +104,12 @@ Action* BuildingBrush::endPaint()
 		}
 	}
 	Action* pRetAction = pAction;
-	pAction			   = nullptr;
+	pAction = nullptr;
 	return pRetAction;
 }
 
-bool BuildingBrush::BuildingAction::undo()
+bool
+BuildingBrush::BuildingAction::undo()
 {
 	bool bRetVal = true;
 	/*
@@ -132,8 +135,8 @@ bool BuildingBrush::BuildingAction::undo()
 	for (OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin(); !iter.IsDone(); iter++)
 	{
 		ObjectAppearance* pAppearance = (*(*iter)).appearance();
-		EditorObject* pObj			  = EditorObjectMgr::instance()->getObjectAtLocation(
-			   pAppearance->position.x, pAppearance->position.y);
+		EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtLocation(
+			pAppearance->position.x, pAppearance->position.y);
 		if (pObj)
 		{
 			bRetVal = EditorObjectMgr::instance()->deleteBuilding(pObj) && bRetVal;
@@ -146,7 +149,8 @@ bool BuildingBrush::BuildingAction::undo()
 	return bRetVal;
 }
 
-bool BuildingBrush::BuildingAction::redo()
+bool
+BuildingBrush::BuildingAction::redo()
 {
 	bool bRetVal = true;
 	for (OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin(); !iter.IsDone(); iter++)
@@ -169,14 +173,16 @@ bool BuildingBrush::BuildingAction::redo()
 	return bRetVal;
 }
 
-void BuildingBrush::BuildingAction::addBuildingInfo(EditorObject& info)
+void
+BuildingBrush::BuildingAction::addBuildingInfo(EditorObject& info)
 {
 	EditorObject* pCopy = info.Clone();
 	gosASSERT(pCopy);
 	objInfoPtrList.Append(pCopy);
 }
 
-void BuildingBrush::update(int32_t ScreenMouseX, int32_t ScreenMouseY)
+void
+BuildingBrush::update(int32_t ScreenMouseX, int32_t ScreenMouseY)
 {
 	if (!pCursor)
 		return;
@@ -192,13 +198,14 @@ void BuildingBrush::update(int32_t ScreenMouseX, int32_t ScreenMouseY)
 	pCursor->position = pos;
 	pCursor->recalcBounds();
 	pCursor->update(); // Safe tp call here now because we run the first update
-					   // in the constructor which caches in texture
+		// in the constructor which caches in texture
 	// NOT TRUE WITH RIA CODE!!!!!  Must have a separate update or NO Triangles
 	// get added!!!
 	pCursor->setVisibility(true, true);
 }
 
-void BuildingBrush::render(int32_t ScreenMouseX, int32_t ScreenMouseY)
+void
+BuildingBrush::render(int32_t ScreenMouseX, int32_t ScreenMouseY)
 {
 	if (!pCursor)
 		return;
@@ -220,16 +227,17 @@ void BuildingBrush::render(int32_t ScreenMouseX, int32_t ScreenMouseY)
 	constructor which caches in texture
 								//NOT TRUE WITH RIA CODE!!!!!  Must have a separate update or NO
 	Triangles get added!!! pCursor->setVisibility( true, true );
-	*/ // This may cause cursor to lag.  Check it and see.
+	*/
+	// This may cause cursor to lag.  Check it and see.
 	pCursor->render();
 }
 
-void BuildingBrush::rotateBrush(int32_t direction)
+void
+BuildingBrush::rotateBrush(int32_t direction)
 {
-	int32_t ID	= EditorObjectMgr::instance()->getID(group, indexInGroup);
+	int32_t ID = EditorObjectMgr::instance()->getID(group, indexInGroup);
 	int32_t fitID = EditorObjectMgr::instance()->getFitID(ID);
-	if ((EditorObjectMgr::WALL == EditorObjectMgr::instance()->getSpecialType(ID)) ||
-		(33 /*repair bay*/ == fitID))
+	if ((EditorObjectMgr::WALL == EditorObjectMgr::instance()->getSpecialType(ID)) || (33 /*repair bay*/ == fitID))
 	{
 		pCursor->rotation += direction * 90;
 	}

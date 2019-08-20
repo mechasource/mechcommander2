@@ -20,20 +20,24 @@ MPLoadMap.cpp			: Implementation of the MPLoadMap component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID  = 1000010;
-static cint32_t OK_BUTTON_ID	 = 1000001;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPLoadMap::MPLoadMap()
 {
-	bDone			= 0;
-	status			= RUNNING;
+	bDone = 0;
+	status = RUNNING;
 	helpTextArrayID = 6;
 }
 
-MPLoadMap::~MPLoadMap() { mapList.destroy(); }
+MPLoadMap::~MPLoadMap()
+{
+	mapList.destroy();
+}
 
-int32_t MPLoadMap::indexOfButtonWithID(int32_t id)
+int32_t
+MPLoadMap::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -46,7 +50,8 @@ int32_t MPLoadMap::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void MPLoadMap::init(FitIniFile* file)
+void
+MPLoadMap::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -84,7 +89,8 @@ void MPLoadMap::init(FitIniFile* file)
 	mapList.setOrange(true);
 }
 
-void MPLoadMap::begin()
+void
+MPLoadMap::begin()
 {
 	// fill up the dialog....
 	LogisticsDialog::begin();
@@ -92,7 +98,8 @@ void MPLoadMap::begin()
 	bIsSingle = false;
 }
 
-void MPLoadMap::beginSingleMission()
+void
+MPLoadMap::beginSingleMission()
 {
 	// fill up the dialog....
 	LogisticsDialog::begin();
@@ -100,7 +107,8 @@ void MPLoadMap::beginSingleMission()
 	bIsSingle = true;
 }
 
-void MPLoadMap::seedDialog(bool bSeedSingle)
+void
+MPLoadMap::seedDialog(bool bSeedSingle)
 {
 	mapList.removeAllItems(true);
 	// need to add items to the save game list
@@ -135,7 +143,8 @@ void MPLoadMap::seedDialog(bool bSeedSingle)
 	updateMapInfo();
 }
 
-void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
+void
+MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 {
 	FitIniFile tmp;
 	FullPathFileName path;
@@ -145,7 +154,7 @@ void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 		if (NO_ERROR == tmp.seekBlock("MissionSettings"))
 		{
 			uint32_t bSingle;
-			int32_t result	 = tmp.readIdULong("IsSinglePlayer", bSingle);
+			int32_t result = tmp.readIdULong("IsSinglePlayer", bSingle);
 			bool bSingleResult = (bSingle != 0);
 			if ((result == NO_ERROR) && (bSingleResult == bSeedSingle))
 			{
@@ -157,7 +166,7 @@ void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 				if (pExt)
 					*pExt = nullptr;
 				aLocalizedListItem* pEntry = new aLocalizedListItem();
-				*pEntry					   = templateItem;
+				*pEntry = templateItem;
 				pEntry->resize(
 					mapList.width() - mapList.getScrollBarWidth() - 30, pEntry->height());
 				pEntry->setHiddenText(pFileName);
@@ -188,7 +197,7 @@ void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 					if (!bFound)
 					{
 						aLocalizedListItem* pHeaderEntry = new aLocalizedListItem();
-						*pHeaderEntry					 = templateItem;
+						*pHeaderEntry = templateItem;
 						pHeaderEntry->setText(IDS_MP_LM_TYPE0 + type);
 						pHeaderEntry->resize(mapList.width() - mapList.getScrollBarWidth() - 30,
 							pHeaderEntry->height());
@@ -207,7 +216,8 @@ void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 	}
 }
 
-void MPLoadMap::seedFromFile(PCSTR pFileName)
+void
+MPLoadMap::seedFromFile(PCSTR pFileName)
 {
 	FullPathFileName path;
 	path.init(missionPath, pFileName, ".csv");
@@ -232,7 +242,8 @@ void MPLoadMap::seedFromFile(PCSTR pFileName)
 	}
 }
 
-void MPLoadMap::seedFromCampaign()
+void
+MPLoadMap::seedFromCampaign()
 {
 	char searchStr[255];
 	cLoadString(IDS_AUTOSAVE_NAME, searchStr, 255);
@@ -241,7 +252,7 @@ void MPLoadMap::seedFromCampaign()
 	FullPathFileName findPath;
 	findPath.init(savePath, finalStr, ".fit");
 	std::wstring newestFile;
-	int32_t groupCount   = -1;
+	int32_t groupCount = -1;
 	int32_t missionCount = -1;
 	FitIniFile tmpFile;
 	WIN32_FIND_DATA findResult;
@@ -264,7 +275,7 @@ void MPLoadMap::seedFromCampaign()
 						groupCount = group;
 						tmpFile.readIdLong("CompletedMissions", missions);
 						missionCount = missions;
-						newestFile   = findResult.cFileName;
+						newestFile = findResult.cFileName;
 					}
 					else if (group == groupCount)
 					{
@@ -320,7 +331,7 @@ void MPLoadMap::seedFromCampaign()
 								char tmpFileName[255];
 								campaignFile.readIdString("FileName", tmpFileName, 255);
 								aLocalizedListItem* pEntry = new aLocalizedListItem();
-								*pEntry					   = templateItem;
+								*pEntry = templateItem;
 								pEntry->resize(mapList.width() - mapList.getScrollBarWidth() - 20,
 									pEntry->height());
 								pEntry->setHiddenText(tmpFileName);
@@ -338,7 +349,8 @@ void MPLoadMap::seedFromCampaign()
 	}
 }
 
-void MPLoadMap::end()
+void
+MPLoadMap::end()
 {
 	LogisticsDialog::end();
 	statics[18].setTexture((uint32_t) nullptr);
@@ -350,7 +362,7 @@ void MPLoadMap::render(int32_t, int32_t)
 	float color = 0x7f000000;
 	if (enterAnim.isAnimating() && !enterAnim.isDone())
 	{
-		float time	= enterAnim.getCurrentTime();
+		float time = enterAnim.getCurrentTime();
 		float endTime = enterAnim.getMaxTime();
 		if (endTime)
 		{
@@ -359,7 +371,7 @@ void MPLoadMap::render(int32_t, int32_t)
 	}
 	else if (exitAnim.isAnimating() && !exitAnim.isDone())
 	{
-		float time	= exitAnim.getCurrentTime();
+		float time = exitAnim.getCurrentTime();
 		float endTime = exitAnim.getMaxTime();
 		if (endTime)
 		{
@@ -387,9 +399,14 @@ void MPLoadMap::render(int32_t, int32_t)
 	LogisticsScreen::render((int32_t)xOffset, (int32_t)yOffset);
 }
 
-void MPLoadMap::render() { render(0, 0); }
+void
+MPLoadMap::render()
+{
+	render(0, 0);
+}
 
-int32_t MPLoadMap::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MPLoadMap::handleMessage(uint32_t message, uint32_t who)
 {
 	status = who;
 	end();
@@ -419,9 +436,14 @@ int32_t MPLoadMap::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool MPLoadMap::isDone() { return bDone; }
+bool
+MPLoadMap::isDone()
+{
+	return bDone;
+}
 
-void MPLoadMap::update()
+void
+MPLoadMap::update()
 {
 	LogisticsDialog::update();
 	int32_t oldSel = mapList.GetSelectedItem();
@@ -429,7 +451,7 @@ void MPLoadMap::update()
 	int32_t newSel = mapList.GetSelectedItem();
 	if (oldSel != newSel)
 		updateMapInfo();
-	helpTextID		 = 0;
+	helpTextID = 0;
 	helpTextHeaderID = 0;
 	/*
 	for ( int32_t i = 0; i < buttonCount; i++ )
@@ -446,7 +468,8 @@ void MPLoadMap::update()
 	*/
 }
 
-void MPLoadMap::updateMapInfo()
+void
+MPLoadMap::updateMapInfo()
 {
 	int32_t sel = mapList.GetSelectedItem();
 	if (sel != -1)
@@ -454,13 +477,13 @@ void MPLoadMap::updateMapInfo()
 		FitIniFile file;
 		FullPathFileName path;
 		PCSTR fileName = ((aTextListItem*)mapList.GetItem(sel))->getText();
-		selMapName	 = ((aLocalizedListItem*)mapList.GetItem(sel))->getHiddenText();
+		selMapName = ((aLocalizedListItem*)mapList.GetItem(sel))->getHiddenText();
 		path.init(missionPath, selMapName, ".fit");
 		if (NO_ERROR == file.open(path))
 		{
 			char missionName[256];
 			missionName[0] = 0;
-			bool bRes	  = 0;
+			bool bRes = 0;
 			char text[1024];
 			char text2[1024];
 			file.seekBlock("MissionSettings");
@@ -503,14 +526,14 @@ void MPLoadMap::updateMapInfo()
 				textObjects[2].setText("");
 			}
 			char blurb[1024];
-			blurb[0]	   = 0;
+			blurb[0] = 0;
 			int32_t result = file.readIdString("Blurb2", blurb, 1023);
-			bool tmpBool   = false;
-			result		   = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
+			bool tmpBool = false;
+			result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
 			if (NO_ERROR == result && tmpBool)
 			{
 				uint32_t tmpInt = 0;
-				result			= file.readIdULong("Blurb2ResourceStringID", tmpInt);
+				result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
 				if (NO_ERROR == result)
 				{
 					cLoadString(tmpInt, blurb, 1024);
@@ -529,7 +552,8 @@ void MPLoadMap::updateMapInfo()
 	}
 }
 
-void MPLoadMap::getMapNameFromFile(PCSTR pFileName, PSTR missionName, int32_t bufferLength)
+void
+MPLoadMap::getMapNameFromFile(PCSTR pFileName, PSTR missionName, int32_t bufferLength)
 {
 	FullPathFileName path;
 	path.init(missionPath, pFileName, ".fit");
@@ -543,8 +567,8 @@ void MPLoadMap::getMapNameFromFile(PCSTR pFileName, PSTR missionName, int32_t bu
 	int32_t result = file.seekBlock("MissionSettings");
 	Assert(result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file");
 	missionName[0] = 0;
-	bool bRes	  = 0;
-	result		   = file.readIdBoolean("MissionNameUseResourceString", bRes);
+	bool bRes = 0;
+	result = file.readIdBoolean("MissionNameUseResourceString", bRes);
 	// Assert( result == NO_ERROR, 0, "couldn't find the
 	// MissionNameUseResourceString" );
 	if (bRes)

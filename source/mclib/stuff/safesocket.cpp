@@ -18,7 +18,11 @@ using namespace Stuff;
 // SafeSocket
 //###########################################################################
 //
-SafeSocket::SafeSocket(Node* node) : Socket(node) { iteratorHead = nullptr; }
+SafeSocket::SafeSocket(Node* node) :
+	Socket(node)
+{
+	iteratorHead = nullptr;
+}
 
 //
 //###########################################################################
@@ -36,7 +40,8 @@ SafeSocket::~SafeSocket(void)
 // TestInstance
 //###########################################################################
 //
-void SafeSocket::TestInstance(void)
+void
+SafeSocket::TestInstance(void)
 {
 	Socket::TestInstance();
 	if (iteratorHead != nullptr)
@@ -50,7 +55,8 @@ void SafeSocket::TestInstance(void)
 // SendIteratorMemo
 //###########################################################################
 //
-void SafeSocket::SendIteratorMemo(IteratorMemo memo, PVOID content)
+void
+SafeSocket::SendIteratorMemo(IteratorMemo memo, PVOID content)
 {
 	// Check_Object(this);
 	SafeIterator* iterator;
@@ -66,7 +72,8 @@ void SafeSocket::SendIteratorMemo(IteratorMemo memo, PVOID content)
 // SafeIterator
 //###########################################################################
 //
-SafeIterator::SafeIterator(SafeSocket* safeSocket) : SocketIterator(safeSocket)
+SafeIterator::SafeIterator(SafeSocket* safeSocket) :
+	SocketIterator(safeSocket)
 {
 	//
 	// Link iterator into sockets set of iterators
@@ -77,7 +84,7 @@ SafeIterator::SafeIterator(SafeSocket* safeSocket) : SocketIterator(safeSocket)
 		Check_Object(nextIterator);
 		nextIterator->prevIterator = this;
 	}
-	prevIterator			 = nullptr;
+	prevIterator = nullptr;
 	safeSocket->iteratorHead = this;
 }
 
@@ -115,7 +122,8 @@ SafeIterator::~SafeIterator(void)
 // TestInstance
 //###########################################################################
 //
-void SafeIterator::TestInstance(void) const
+void
+SafeIterator::TestInstance(void) const
 {
 	SocketIterator::TestInstance();
 	if (prevIterator != nullptr)

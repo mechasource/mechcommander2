@@ -23,18 +23,18 @@
 enum _packet_storage : uint32_t
 {
 	PACKET_FILE_VERSION = 0xFEEDFACE,
-	NEW_PACKET_FLAG		= 0xFEEDFACE
+	NEW_PACKET_FLAG = 0xFEEDFACE
 };
 
 // 3 bits of type info
 enum _packet_storage_type : uint32_t
 {
-	STORAGE_TYPE_RAW  = 0x00,
-	STORAGE_TYPE_FWF  = 0x01, // file within file
-	STORAGE_TYPE_LZD  = 0x02, // LZ Compressed Packet
-	STORAGE_TYPE_HF   = 0x03, // Huffman Compressed Packet
+	STORAGE_TYPE_RAW = 0x00,
+	STORAGE_TYPE_FWF = 0x01, // file within file
+	STORAGE_TYPE_LZD = 0x02, // LZ Compressed Packet
+	STORAGE_TYPE_HF = 0x03, // Huffman Compressed Packet
 	STORAGE_TYPE_ZLIB = 0x04, // zLib Compressed Packet
-	STORAGE_TYPE_NUL  = 0x07, // nullptr packet.
+	STORAGE_TYPE_NUL = 0x07, // nullptr packet.
 };
 #define DEFAULT_PACKET_TYPE STORAGE_TYPE_RAW
 

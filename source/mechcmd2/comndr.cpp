@@ -34,7 +34,7 @@
 
 //---------------------------------------------------------------------------
 
-int32_t Commander::numCommanders				   = 0;
+int32_t Commander::numCommanders = 0;
 CommanderPtr Commander::commanders[MAX_COMMANDERS] = {
 	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 CommanderPtr Commander::home = nullptr;
@@ -43,7 +43,8 @@ CommanderPtr Commander::home = nullptr;
 // COMMANDER class
 //***************************************************************************
 
-PVOID Commander::operator new(size_t ourSize)
+PVOID
+Commander::operator new(size_t ourSize)
 {
 	PVOID result = systemHeap->Malloc(ourSize);
 	return (result);
@@ -51,13 +52,18 @@ PVOID Commander::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void Commander::operator delete(PVOID us) { systemHeap->Free(us); }
+void
+Commander::operator delete(PVOID us)
+{
+	systemHeap->Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void Commander::init(void)
+void
+Commander::init(void)
 {
-	id   = -1;
+	id = -1;
 	team = nullptr;
 	for (size_t i = 0; i < MAX_MOVERGROUPS; i++)
 	{
@@ -69,7 +75,8 @@ void Commander::init(void)
 
 //---------------------------------------------------------------------------
 
-void Commander::destroy(void)
+void
+Commander::destroy(void)
 {
 	for (size_t i = 0; i < MAX_MOVERGROUPS; i++)
 	{
@@ -82,7 +89,8 @@ void Commander::destroy(void)
 
 //---------------------------------------------------------------------------
 
-int32_t Commander::setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point)
+int32_t
+Commander::setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point)
 {
 	// First, does the unit currently have objects set up there already?
 	// If so, we need to determine
@@ -121,7 +129,8 @@ int32_t Commander::setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, i
 
 //---------------------------------------------------------------------------
 
-void Commander::setLocalMoverId(int32_t localMoverId)
+void
+Commander::setLocalMoverId(int32_t localMoverId)
 {
 	if (getTeam())
 	{
@@ -132,7 +141,8 @@ void Commander::setLocalMoverId(int32_t localMoverId)
 
 //---------------------------------------------------------------------------
 
-void Commander::eject(void)
+void
+Commander::eject(void)
 {
 	for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 	{
@@ -156,7 +166,8 @@ void Commander::eject(void)
 
 //---------------------------------------------------------------------------
 
-void Commander::addToGUI(bool visible)
+void
+Commander::addToGUI(bool visible)
 {
 	//----------------------------------
 	// The GUI only supports 4 groups...
@@ -165,10 +176,11 @@ void Commander::addToGUI(bool visible)
 }
 
 //---------------------------------------------------------------------------
-int32_t Commander::Save(PacketFilePtr file, int32_t packetNum)
+int32_t
+Commander::Save(PacketFilePtr file, int32_t packetNum)
 {
 	StaticCommanderData staticData;
-	staticData.numCommanders   = numCommanders;
+	staticData.numCommanders = numCommanders;
 	staticData.homeCommanderId = home->getId();
 	file->writePacket(
 		packetNum, (puint8_t)&staticData, sizeof(StaticCommanderData), STORAGE_TYPE_RAW);
@@ -192,7 +204,8 @@ int32_t Commander::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //---------------------------------------------------------------------------
-int32_t Commander::Load(PacketFilePtr file, int32_t packetNum)
+int32_t
+Commander::Load(PacketFilePtr file, int32_t packetNum)
 {
 	StaticCommanderData staticData;
 	file->readPacket(packetNum, (puint8_t)&staticData);

@@ -59,10 +59,10 @@
 #define MIN_TEAM_PART_ID 500 // Teams are specialized units...
 #define MAX_TEAM_PART_ID 511
 
-#define MIN_MOVER_PART_ID 512		   // Movers now start here
+#define MIN_MOVER_PART_ID 512 // Movers now start here
 #define MIN_REINFORCEMENT_PART_ID 2050 // Reinforcements start here...
 #define MAX_REINFORCEMENT_PART_ID 3550 // Only 1500 reinforcements allowed...
-#define MAX_MOVER_PART_ID 4095		   // MIN_MOVER_PART_ID +
+#define MAX_MOVER_PART_ID 4095 // MIN_MOVER_PART_ID +
 // MAX_COMMANDERS * MAX_MOVERGROUPS * MAX_MOVERGROUP_COUNT_START
 
 #define MIN_TERRAIN_PART_ID 4096

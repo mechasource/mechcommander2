@@ -25,7 +25,7 @@
 enum craterTypes
 {
 	INVALID_CRATER = -1,
-	SML_FOOTPRINT  = 0,
+	SML_FOOTPRINT = 0,
 	AVG_FOOTPRINT,
 	BIG_FOOTPRINT,
 	ULLER_FOOTPRINT,
@@ -35,7 +35,7 @@ enum craterTypes
 	BUSH_FOOTPRINT,
 	NOVACAT_FOOTPRINT,
 	TURKINA_FOOTPRINT = 63,
-	CRATER_1		  = 64,
+	CRATER_1 = 64,
 	CRATER_2,
 	CRATER_3,
 	CRATER_4,
@@ -84,15 +84,15 @@ protected:
 public:
 	void init(void)
 	{
-		craterPosHeap	 = nullptr;
-		craterShpHeap	 = nullptr;
+		craterPosHeap = nullptr;
+		craterShpHeap = nullptr;
 		craterPosHeapSize = craterShpHeapSize = 0;
 		currentCrater = maxCraters = 0;
-		craterList				   = nullptr;
-		numCraterTextures		   = 0;
-		craterTextureHandles	   = nullptr;
-		craterTextureIndices	   = nullptr;
-		craterFile				   = nullptr;
+		craterList = nullptr;
+		numCraterTextures = 0;
+		craterTextureHandles = nullptr;
+		craterTextureIndices = nullptr;
+		craterFile = nullptr;
 	}
 
 	CraterManager(void) { init(void); }

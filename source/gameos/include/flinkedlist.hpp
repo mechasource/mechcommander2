@@ -13,7 +13,8 @@ public:
 	virtual ~ListItem() {}
 };
 
-template <class T> class FLink
+template <class T>
+class FLink
 {
 public:
 	FLink<T>* Next;
@@ -24,20 +25,21 @@ public:
 	FLink()
 	{
 		linkData = nullptr;
-		Next	 = nullptr;
+		Next = nullptr;
 	}
 	FLink(T* ptr)
 	{
 		castedData = static_cast<ListItem*>(ptr);
-		linkData   = ptr;
-		Next	   = nullptr;
+		linkData = ptr;
+		Next = nullptr;
 	}
 	virtual ~FLink() { Next = nullptr; }
 
 	FLink<T>* GetNext() { return (FLink<T>*)Next; }
 };
 
-template <class T> class FLinkedList
+template <class T>
+class FLinkedList
 {
 protected:
 	FLink<T>* m_Tail;
@@ -57,13 +59,13 @@ public:
 	};
 	FLinkedList(T* ptr)
 	{
-		FLink<T>* newlink   = (FLink<T>*)malloc(sizeof(FLink<T>));
+		FLink<T>* newlink = (FLink<T>*)malloc(sizeof(FLink<T>));
 		newlink->castedData = static_cast<ListItem*>(ptr);
-		newlink->linkData   = ptr;
-		newlink->Next		= nullptr;
-		m_Head				= newlink;
-		m_Head->Next		= nullptr;
-		m_Size				= 1;
+		newlink->linkData = ptr;
+		newlink->Next = nullptr;
+		m_Head = newlink;
+		m_Head->Next = nullptr;
+		m_Size = 1;
 	};
 	~FLinkedList()
 	{
@@ -73,20 +75,20 @@ public:
 
 	void Add(T* ptr)
 	{
-		FLink<T>* newlink   = (FLink<T>*)malloc(sizeof(FLink<T>));
+		FLink<T>* newlink = (FLink<T>*)malloc(sizeof(FLink<T>));
 		newlink->castedData = static_cast<ListItem*>(ptr);
-		newlink->linkData   = ptr;
-		newlink->Next		= nullptr;
+		newlink->linkData = ptr;
+		newlink->Next = nullptr;
 		if (m_Head == nullptr)
 		{
-			m_Head		  = newlink;
-			m_Tail		  = newlink;
+			m_Head = newlink;
+			m_Tail = newlink;
 			newlink->Next = nullptr;
 		}
 		else
 		{
-			m_Tail->Next  = newlink;
-			m_Tail		  = newlink;
+			m_Tail->Next = newlink;
+			m_Tail = newlink;
 			newlink->Next = nullptr;
 		}
 		m_Size += 1;
@@ -98,14 +100,14 @@ public:
 		FLink<T>* link = (FLink<T>*)link_memory;
 		if (m_Head == nullptr)
 		{
-			m_Head	 = link;
-			m_Tail	 = link;
+			m_Head = link;
+			m_Tail = link;
 			link->Next = nullptr;
 		}
 		else
 		{
 			m_Tail->Next = link;
-			m_Tail		 = link;
+			m_Tail = link;
 		}
 		m_Size++;
 	};
@@ -118,15 +120,15 @@ public:
 		}
 		else
 		{
-			FLink<T>* newlink   = (FLink<T>*)malloc(sizeof(FLink<T>));
+			FLink<T>* newlink = (FLink<T>*)malloc(sizeof(FLink<T>));
 			newlink->castedData = static_cast<ListItem*>(ptr);
-			newlink->linkData   = ptr;
-			newlink->Next		= nullptr;
+			newlink->linkData = ptr;
+			newlink->Next = nullptr;
 			FLink<T>* tmp;
 			gosASSERT(m_Iterator);
-			tmp				 = m_Iterator->Next;
+			tmp = m_Iterator->Next;
 			m_Iterator->Next = new_link;
-			new_link->Next   = tmp;
+			new_link->Next = tmp;
 		}
 	};
 
@@ -139,7 +141,7 @@ public:
 			m_Head = tmp->Next;
 			if (m_Tail == tmp)
 			{
-				m_Tail	 = m_Head;
+				m_Tail = m_Head;
 				m_Iterator = m_Head;
 			}
 			else if (m_Iterator == tmp)
@@ -165,7 +167,7 @@ public:
 					// to the link being deleted.
 					if (m_Tail == target)
 					{
-						m_Tail	 = tmp;
+						m_Tail = tmp;
 						m_Iterator = m_Head;
 					}
 					else if (m_Iterator == target)
@@ -257,7 +259,8 @@ public:
 	}
 };
 
-template <class T> class FListIterator
+template <class T>
+class FListIterator
 {
 protected:
 	FLinkedList<T>* myList;
@@ -266,19 +269,19 @@ protected:
 public:
 	FListIterator<T>(FLinkedList<T>* list)
 	{
-		myList  = list;
+		myList = list;
 		current = myList->m_Head;
 	}
 
 	FListIterator<T>()
 	{
-		myList  = nullptr;
+		myList = nullptr;
 		current = nullptr;
 	}
 
 	void Init(FLinkedList<T>* list)
 	{
-		myList  = list;
+		myList = list;
 		current = myList->m_Head;
 	}
 

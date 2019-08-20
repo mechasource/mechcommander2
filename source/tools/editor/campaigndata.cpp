@@ -9,7 +9,8 @@
 //#include "echarstring.h"
 //#include "assert.h"
 
-static int32_t sReadIdBoolean(FitIniFile& missionFile, PCSTR varName, bool& value)
+static int32_t
+sReadIdBoolean(FitIniFile& missionFile, PCSTR varName, bool& value)
 {
 	int32_t result = 0;
 	bool tmpBool;
@@ -25,7 +26,8 @@ static int32_t sReadIdBoolean(FitIniFile& missionFile, PCSTR varName, bool& valu
 	return result;
 }
 
-static int32_t sReadIdInteger(FitIniFile& missionFile, PCSTR varName, int32_t& value)
+static int32_t
+sReadIdInteger(FitIniFile& missionFile, PCSTR varName, int32_t& value)
 {
 	int32_t result = 0;
 	int32_t tmpLong;
@@ -41,12 +43,13 @@ static int32_t sReadIdInteger(FitIniFile& missionFile, PCSTR varName, int32_t& v
 	return result;
 }
 
-static int32_t sReadIdString(FitIniFile& missionFile, PCSTR varName, CString& CStr)
+static int32_t
+sReadIdString(FitIniFile& missionFile, PCSTR varName, CString& CStr)
 {
 	int32_t result = 0;
 	char buffer[2001 /*buffer size*/];
 	buffer[0] = '\0';
-	result	= missionFile.readIdString((PSTR)varName, buffer, 2001 /*buffer size*/ - 1);
+	result = missionFile.readIdString((PSTR)varName, buffer, 2001 /*buffer size*/ - 1);
 	if (NO_ERROR != result)
 	{
 		// assert(false);
@@ -60,23 +63,19 @@ static int32_t sReadIdString(FitIniFile& missionFile, PCSTR varName, CString& CS
 
 CMissionData::CMissionData()
 {
-	m_PurchaseFile			  = "purchase_All";
-	m_LogisticsEnabled		  = true;
-	m_IsMandatory			  = true;
-	m_PilotPromotionEnabled   = true;
-	m_PurchasingEnabled		  = false;
-	m_SalvageEnabled		  = true;
+	m_PurchaseFile = "purchase_All";
+	m_LogisticsEnabled = true;
+	m_IsMandatory = true;
+	m_PilotPromotionEnabled = true;
+	m_PurchasingEnabled = false;
+	m_SalvageEnabled = true;
 	m_MissionSelectionEnabled = true;
 }
 
-bool CMissionData::operator==(const CMissionData& rhs) const
+bool
+CMissionData::operator==(const CMissionData& rhs) const
 {
-	if ((m_MissionFile == rhs.m_MissionFile) && (m_PurchaseFile == rhs.m_PurchaseFile) &&
-		(m_LogisticsEnabled == rhs.m_LogisticsEnabled) && (m_IsMandatory == rhs.m_IsMandatory) &&
-		(m_PilotPromotionEnabled == rhs.m_PilotPromotionEnabled) &&
-		(m_PurchasingEnabled == rhs.m_PurchasingEnabled) &&
-		(m_MissionSelectionEnabled == rhs.m_MissionSelectionEnabled) &&
-		(m_SalvageEnabled == rhs.m_SalvageEnabled))
+	if ((m_MissionFile == rhs.m_MissionFile) && (m_PurchaseFile == rhs.m_PurchaseFile) && (m_LogisticsEnabled == rhs.m_LogisticsEnabled) && (m_IsMandatory == rhs.m_IsMandatory) && (m_PilotPromotionEnabled == rhs.m_PilotPromotionEnabled) && (m_PurchasingEnabled == rhs.m_PurchasingEnabled) && (m_MissionSelectionEnabled == rhs.m_MissionSelectionEnabled) && (m_SalvageEnabled == rhs.m_SalvageEnabled))
 	{
 		return true;
 	}
@@ -86,7 +85,8 @@ bool CMissionData::operator==(const CMissionData& rhs) const
 	}
 }
 
-bool CMissionData::Save(FitIniFile& fitFile)
+bool
+CMissionData::Save(FitIniFile& fitFile)
 {
 	fitFile.writeIdString("FileName", m_MissionFile.GetBuffer(0));
 	fitFile.writeIdBoolean("Mandatory", m_IsMandatory);
@@ -99,7 +99,8 @@ bool CMissionData::Save(FitIniFile& fitFile)
 	return true;
 }
 
-bool CMissionData::Read(FitIniFile& fitFile)
+bool
+CMissionData::Read(FitIniFile& fitFile)
 {
 	int32_t result;
 	result = sReadIdString(fitFile, "FileName", m_MissionFile);
@@ -115,17 +116,15 @@ bool CMissionData::Read(FitIniFile& fitFile)
 
 CGroupData::CGroupData()
 {
-	m_OperationFile			= "mcl_cm_op_sample";
+	m_OperationFile = "mcl_cm_op_sample";
 	m_NumMissionsToComplete = 1;
-	m_TuneNumber			= 0;
+	m_TuneNumber = 0;
 }
 
-bool CGroupData::operator==(const CGroupData& rhs) const
+bool
+CGroupData::operator==(const CGroupData& rhs) const
 {
-	if ((m_MissionList == rhs.m_MissionList) && (m_OperationFile == rhs.m_OperationFile) &&
-		(m_PreVideoFile == rhs.m_PreVideoFile) && (m_VideoFile == rhs.m_VideoFile) &&
-		(m_Label == rhs.m_Label) && (m_NumMissionsToComplete == rhs.m_NumMissionsToComplete) &&
-		(m_TuneNumber == rhs.m_TuneNumber) && (m_ABLScript == rhs.m_ABLScript))
+	if ((m_MissionList == rhs.m_MissionList) && (m_OperationFile == rhs.m_OperationFile) && (m_PreVideoFile == rhs.m_PreVideoFile) && (m_VideoFile == rhs.m_VideoFile) && (m_Label == rhs.m_Label) && (m_NumMissionsToComplete == rhs.m_NumMissionsToComplete) && (m_TuneNumber == rhs.m_TuneNumber) && (m_ABLScript == rhs.m_ABLScript))
 	{
 		return true;
 	}
@@ -135,7 +134,8 @@ bool CGroupData::operator==(const CGroupData& rhs) const
 	}
 }
 
-bool CGroupData::Save(FitIniFile& fitFile, PCSTR groupName)
+bool
+CGroupData::Save(FitIniFile& fitFile, PCSTR groupName)
 {
 	fitFile.writeIdString("Label", m_Label.GetBuffer(0));
 	fitFile.writeIdLong("NumberToComplete", m_NumMissionsToComplete);
@@ -160,18 +160,19 @@ bool CGroupData::Save(FitIniFile& fitFile, PCSTR groupName)
 	return true;
 }
 
-bool CGroupData::Read(FitIniFile& fitFile, PCSTR groupName)
+bool
+CGroupData::Read(FitIniFile& fitFile, PCSTR groupName)
 {
 	int32_t result;
-	result				 = sReadIdString(fitFile, "Label", m_Label);
-	result				 = sReadIdInteger(fitFile, "NumberToComplete", m_NumMissionsToComplete);
-	result				 = sReadIdString(fitFile, "OperationFile", m_OperationFile);
-	result				 = sReadIdString(fitFile, "Video", m_VideoFile);
-	result				 = sReadIdString(fitFile, "PreVideo", m_PreVideoFile);
-	result				 = sReadIdInteger(fitFile, "Tune", m_TuneNumber);
-	result				 = sReadIdString(fitFile, "ABLScript", m_ABLScript);
+	result = sReadIdString(fitFile, "Label", m_Label);
+	result = sReadIdInteger(fitFile, "NumberToComplete", m_NumMissionsToComplete);
+	result = sReadIdString(fitFile, "OperationFile", m_OperationFile);
+	result = sReadIdString(fitFile, "Video", m_VideoFile);
+	result = sReadIdString(fitFile, "PreVideo", m_PreVideoFile);
+	result = sReadIdInteger(fitFile, "Tune", m_TuneNumber);
+	result = sReadIdString(fitFile, "ABLScript", m_ABLScript);
 	int32_t missionCount = 0;
-	result				 = sReadIdInteger(fitFile, "MissionCount", missionCount);
+	result = sReadIdInteger(fitFile, "MissionCount", missionCount);
 	if (NO_ERROR != result)
 	{
 		return false;
@@ -202,16 +203,14 @@ bool CGroupData::Read(FitIniFile& fitFile, PCSTR groupName)
 CCampaignData::CCampaignData()
 {
 	m_NameUseResourceString = false;
-	m_NameResourceStringID  = 0;
-	m_CBills				= 0;
+	m_NameResourceStringID = 0;
+	m_CBills = 0;
 }
 
-bool CCampaignData::operator==(const CCampaignData& rhs) const
+bool
+CCampaignData::operator==(const CCampaignData& rhs) const
 {
-	if ((m_GroupList == rhs.m_GroupList) && (m_Name == rhs.m_Name) &&
-		(m_NameUseResourceString == rhs.m_NameUseResourceString) &&
-		(m_NameResourceStringID == rhs.m_NameResourceStringID) && (m_CBills == rhs.m_CBills) &&
-		(m_FinalVideo == rhs.m_FinalVideo))
+	if ((m_GroupList == rhs.m_GroupList) && (m_Name == rhs.m_Name) && (m_NameUseResourceString == rhs.m_NameUseResourceString) && (m_NameResourceStringID == rhs.m_NameResourceStringID) && (m_CBills == rhs.m_CBills) && (m_FinalVideo == rhs.m_FinalVideo))
 	{
 		return true;
 	}
@@ -221,7 +220,8 @@ bool CCampaignData::operator==(const CCampaignData& rhs) const
 	}
 }
 
-bool CCampaignData::Save(CString pathName)
+bool
+CCampaignData::Save(CString pathName)
 {
 	FitIniFile fitFile;
 	int32_t result = fitFile.create(pathName.GetBuffer(0));
@@ -255,7 +255,8 @@ bool CCampaignData::Save(CString pathName)
 	return true;
 }
 
-bool CCampaignData::Read(CString pathName)
+bool
+CCampaignData::Read(CString pathName)
 {
 	FitIniFile fitFile;
 	int32_t result = fitFile.open(pathName.GetBuffer(0));
@@ -279,11 +280,11 @@ bool CCampaignData::Read(CString pathName)
 	{
 		m_NameUseResourceString = true;
 	}
-	result			   = sReadIdBoolean(fitFile, "NameUseResourceString", m_NameUseResourceString);
-	result			   = sReadIdInteger(fitFile, "CBills", m_CBills);
-	result			   = sReadIdString(fitFile, "FinalVideo", m_FinalVideo);
+	result = sReadIdBoolean(fitFile, "NameUseResourceString", m_NameUseResourceString);
+	result = sReadIdInteger(fitFile, "CBills", m_CBills);
+	result = sReadIdString(fitFile, "FinalVideo", m_FinalVideo);
 	int32_t groupCount = 0;
-	result			   = sReadIdInteger(fitFile, "GroupCount", groupCount);
+	result = sReadIdInteger(fitFile, "GroupCount", groupCount);
 	if (NO_ERROR != result)
 	{
 		return false;

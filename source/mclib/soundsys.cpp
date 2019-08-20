@@ -25,25 +25,26 @@ bool useSound = TRUE;
 bool useMusic = TRUE;
 
 int32_t DigitalMasterVolume = 0;
-int32_t MusicVolume			= 0;
-int32_t sfxVolume			= 0;
-int32_t RadioVolume			= 0;
-int32_t BettyVolume			= 0;
+int32_t MusicVolume = 0;
+int32_t sfxVolume = 0;
+int32_t RadioVolume = 0;
+int32_t BettyVolume = 0;
 
 #define MAX_SENSOR_UPDATE_TIME (5.0f) // Seconds
 
-float SoundSystem::digitalMasterVolume	= 0.99f;
-float SoundSystem::SFXVolume			  = 0.6f;
-float SoundSystem::musicVolume			  = 0.4f;
-float SoundSystem::radioVolume			  = 0.6f;
-float SoundSystem::bettyVolume			  = 0.7f;
+float SoundSystem::digitalMasterVolume = 0.99f;
+float SoundSystem::SFXVolume = 0.6f;
+float SoundSystem::musicVolume = 0.4f;
+float SoundSystem::radioVolume = 0.6f;
+float SoundSystem::bettyVolume = 0.7f;
 int32_t SoundSystem::largestSensorContact = -1;
 
 #define FALLOFF_DISTANCE (1500.0f)
 //---------------------------------------------------------------------------
 // class SoundSystem
 //---------------------------------------------------------------------------
-void SoundSystem::destroy(void)
+void
+SoundSystem::destroy(void)
 {
 	if (soundHeap)
 	{
@@ -54,7 +55,8 @@ void SoundSystem::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::init(PSTR soundFileName)
+int32_t
+SoundSystem::init(PSTR soundFileName)
 {
 	if (useSound)
 	{
@@ -154,7 +156,7 @@ int32_t SoundSystem::init(PSTR soundFileName)
 			char digitalMSVId[25];
 			sprintf(digitalMSVId, "DMSVolume%d", i);
 			digitalMusicIds[i] = (PSTR)soundHeap->Malloc(30);
-			result			   = soundFile.readIdString(digitalMSId, digitalMusicIds[i], 29);
+			result = soundFile.readIdString(digitalMSId, digitalMusicIds[i], 29);
 			gosASSERT(result == NO_ERROR);
 			result = soundFile.readIdBoolean(digitalMSBId, digitalMusicLoopFlags[i]);
 			gosASSERT(result == NO_ERROR);
@@ -169,10 +171,10 @@ int32_t SoundSystem::init(PSTR soundFileName)
 		}
 	}
 	digitalMasterVolume = float(DigitalMasterVolume) / 256.0f;
-	SFXVolume			= float(sfxVolume) / 256.0f;
-	musicVolume			= float(MusicVolume) / 256.0f;
-	radioVolume			= float(RadioVolume) / 256.0f;
-	bettyVolume			= float(BettyVolume) / 256.0f;
+	SFXVolume = float(sfxVolume) / 256.0f;
+	musicVolume = float(MusicVolume) / 256.0f;
+	radioVolume = float(RadioVolume) / 256.0f;
+	bettyVolume = float(BettyVolume) / 256.0f;
 	stream1Id = stream2Id = 0;
 	return (NO_ERROR);
 }
@@ -185,7 +187,8 @@ int32_t SoundSystem::init(PSTR soundFileName)
 //   fields in the memory.
 //
 //////////////////////////////////////////////////////////////////
-bool wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
+bool
+wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
 	puint8_t* lplpWaveSamples, uint32_t* lpcbWaveSize)
 {
 	uint32_t* pdw;
@@ -204,9 +207,9 @@ bool wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveH
 	// of memory.
 	pdw = (uint32_t*)lpChunkOfMemory;
 	// Get the type and length of the chunk of memory
-	dwRiff   = *pdw++;
+	dwRiff = *pdw++;
 	dwLength = *pdw++;
-	dwType   = *pdw++;
+	dwType = *pdw++;
 	// Using the mmioFOURCC macro (part of Windows SDK), ensure
 	// that this is a RIFF WAVE chunk of memory
 	if (dwRiff != 0x46464952)
@@ -218,7 +221,7 @@ bool wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveH
 	// Run through the bytes looking for the tags
 	while (pdw < pdwEnd)
 	{
-		dwType   = *pdw++;
+		dwType = *pdw++;
 		dwLength = *pdw++;
 		switch (dwType)
 		{
@@ -268,7 +271,8 @@ bool wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveH
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::preloadSoundBite(int32_t soundId)
+void
+SoundSystem::preloadSoundBite(int32_t soundId)
 {
 	int32_t result = soundDataFile->seekPacket(soundId);
 	if (result != NO_ERROR)
@@ -280,7 +284,7 @@ void SoundSystem::preloadSoundBite(int32_t soundId)
 	uint32_t packetSize = soundDataFile->getPacketSize();
 	if (packetSize > 0)
 	{
-		SoundBite* thisSoundBite	  = (SoundBite*)(&(sounds[soundId]));
+		SoundBite* thisSoundBite = (SoundBite*)(&(sounds[soundId]));
 		thisSoundBite->resourceHandle = 0;
 		if (thisSoundBite->biteSize == 0 || thisSoundBite->biteData == nullptr)
 		{
@@ -293,21 +297,21 @@ void SoundSystem::preloadSoundBite(int32_t soundId)
 		//--------------------------------------------------------------------
 		// Hand GOS sound the data it needs to create the resource Handle
 		gosAudio_Format soundFormat;
-		soundFormat.wFormatTag		 = 1; // PCM
+		soundFormat.wFormatTag = 1; // PCM
 		MC2_WAVEFORMATEX* waveFormat = nullptr;
-		puint8_t dataOffset			 = nullptr;
-		uint32_t length				 = 0;
-		uint32_t bitsPerSec			 = 0;
+		puint8_t dataOffset = nullptr;
+		uint32_t length = 0;
+		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(thisSoundBite->biteData, &waveFormat, &dataOffset, &length);
 		if (waveFormat && dataOffset)
 		{
-			bitsPerSec					= waveFormat->nBlockAlign / waveFormat->nChannels * 8;
-			soundFormat.nChannels		= waveFormat->nChannels;
-			soundFormat.nSamplesPerSec  = waveFormat->nSamplesPerSec;
+			bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
+			soundFormat.nChannels = waveFormat->nChannels;
+			soundFormat.nSamplesPerSec = waveFormat->nSamplesPerSec;
 			soundFormat.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
-			soundFormat.nBlockAlign		= waveFormat->nBlockAlign;
-			soundFormat.wBitsPerSample  = bitsPerSec;
-			soundFormat.cbSize			= 0;
+			soundFormat.nBlockAlign = waveFormat->nBlockAlign;
+			soundFormat.wBitsPerSample = bitsPerSec;
+			soundFormat.cbSize = 0;
 			gosAudio_CreateResource(&thisSoundBite->resourceHandle, gosAudio_UserMemory, nullptr,
 				&soundFormat, dataOffset, length);
 		}
@@ -319,7 +323,8 @@ void SoundSystem::preloadSoundBite(int32_t soundId)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::update(void)
+void
+SoundSystem::update(void)
 {
 	if (useSound && (isRaining != oldRaining))
 	{
@@ -332,7 +337,7 @@ void SoundSystem::update(void)
 			gosAudio_SetChannelSlider(
 				ourChannel, gosAudio_Volume, (digitalMasterVolume * vol * SFXVolume));
 			channelSampleId[ourChannel] = isRaining;
-			channelInUse[ourChannel]	= TRUE;
+			channelInUse[ourChannel] = TRUE;
 			if (sounds[isRaining].biteData)
 			{
 				gosAudio_AssignResourceToChannel(ourChannel, sounds[isRaining].resourceHandle);
@@ -343,7 +348,7 @@ void SoundSystem::update(void)
 		else
 		{
 			// Stop the sound Effect by fading it to zero!
-			oldRaining					   = isRaining;
+			oldRaining = isRaining;
 			gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(FIRE_CHANNEL);
 			if (sampleStatus == gosAudio_PlayOnce || sampleStatus == gosAudio_Loop)
 			{
@@ -436,8 +441,7 @@ void SoundSystem::update(void)
 					if (volLevel > 1.0)
 						volLevel = 1.0;
 					gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Volume,
-						digitalMasterVolume * volLevel * musicVolume *
-							digitalMusicVolume[currentMusicId]);
+						digitalMasterVolume * volLevel * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 			}
 			else if (stream1Time > 0.0)
@@ -459,8 +463,7 @@ void SoundSystem::update(void)
 					if (volLevel > 1.0)
 						volLevel = 1.0;
 					gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Volume,
-						digitalMasterVolume * volLevel * musicVolume *
-							digitalMusicVolume[currentMusicId]);
+						digitalMasterVolume * volLevel * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 			}
 		}
@@ -487,8 +490,7 @@ void SoundSystem::update(void)
 					if (volLevel > 1.0)
 						volLevel = 1.0;
 					gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Volume,
-						digitalMasterVolume * volLevel * musicVolume *
-							digitalMusicVolume[currentMusicId]);
+						digitalMasterVolume * volLevel * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 			}
 			else if (stream2Time > 0.0)
@@ -510,27 +512,24 @@ void SoundSystem::update(void)
 					if (volLevel > 1.0)
 						volLevel = 1.0;
 					gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Volume,
-						digitalMasterVolume * volLevel * musicVolume *
-							digitalMusicVolume[currentMusicId]);
+						digitalMasterVolume * volLevel * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 			}
 		}
-		if (stream1Active && stream1Handle &&
-			(gosAudio_GetChannelPlayMode(STREAM1CHANNEL) == gosAudio_Stop))
+		if (stream1Active && stream1Handle && (gosAudio_GetChannelPlayMode(STREAM1CHANNEL) == gosAudio_Stop))
 		{
 			if (stream1Handle)
 				gosAudio_DestroyResource(&stream1Handle);
 			stream1Handle = nullptr;
-			stream1Time   = 0.0;
+			stream1Time = 0.0;
 			stream1Active = FALSE;
 		}
-		if (stream2Active && stream2Handle &&
-			(gosAudio_GetChannelPlayMode(STREAM2CHANNEL) == gosAudio_Stop))
+		if (stream2Active && stream2Handle && (gosAudio_GetChannelPlayMode(STREAM2CHANNEL) == gosAudio_Stop))
 		{
 			if (stream2Handle)
 				gosAudio_DestroyResource(&stream2Handle);
 			stream2Handle = nullptr;
-			stream2Time   = 0.0;
+			stream2Time = 0.0;
 			stream2Active = FALSE;
 		}
 		if (!stream1Active && !stream2Active)
@@ -562,9 +561,9 @@ void SoundSystem::update(void)
 			}
 			else
 			{
-				fadeDown[i]		   = FALSE;
+				fadeDown[i] = FALSE;
 				channelSampleId[i] = -1;
-				channelInUse[i]	= FALSE;
+				channelInUse[i] = FALSE;
 			}
 		}
 	}
@@ -573,14 +572,14 @@ void SoundSystem::update(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::playDigitalMusic(int32_t musicId)
+int32_t
+SoundSystem::playDigitalMusic(int32_t musicId)
 {
 	//-------------------------------------------------------------------
 	// Make sure we have a real music filename.
 	if (useMusic)
 	{
-		if ((musicId >= 0) && (musicId < numDMS) &&
-			(strncmp(digitalMusicIds[musicId], "NONE", 4) != 0))
+		if ((musicId >= 0) && (musicId < numDMS) && (strncmp(digitalMusicIds[musicId], "NONE", 4) != 0))
 		{
 			if (musicId == currentMusicId)
 				return (-1);
@@ -610,7 +609,7 @@ int32_t SoundSystem::playDigitalMusic(int32_t musicId)
 						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Panning, 0.0f);
 						gosAudio_AssignResourceToChannel(STREAM1CHANNEL, stream1Handle);
 						currentMusicId = musicId;
-						stream1Id	  = musicId;
+						stream1Id = musicId;
 					}
 					else if (!stream2Active)
 					{
@@ -632,7 +631,7 @@ int32_t SoundSystem::playDigitalMusic(int32_t musicId)
 						gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Panning, 0.0f);
 						gosAudio_AssignResourceToChannel(STREAM2CHANNEL, stream2Handle);
 						currentMusicId = musicId;
-						stream2Id	  = musicId;
+						stream2Id = musicId;
 					}
 					else if (!stream1Active)
 					{
@@ -654,7 +653,7 @@ int32_t SoundSystem::playDigitalMusic(int32_t musicId)
 						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Panning, 0.0f);
 						gosAudio_AssignResourceToChannel(STREAM1CHANNEL, stream1Handle);
 						currentMusicId = musicId;
-						stream1Id	  = musicId;
+						stream1Id = musicId;
 					}
 					else
 					{
@@ -668,7 +667,8 @@ int32_t SoundSystem::playDigitalMusic(int32_t musicId)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::playDigitalStream(PCSTR streamName)
+int32_t
+SoundSystem::playDigitalStream(PCSTR streamName)
 {
 	//-------------------------------------------------------------------
 	// Make sure we have a real music filename.
@@ -711,7 +711,8 @@ int32_t SoundSystem::playDigitalStream(PCSTR streamName)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::playBettySample(uint32_t bettySampleId)
+int32_t
+SoundSystem::playBettySample(uint32_t bettySampleId)
 {
 	if (useSound && (bettySoundBite == nullptr)) // Playing Betty takes precedence
 	{
@@ -724,31 +725,31 @@ int32_t SoundSystem::playBettySample(uint32_t bettySampleId)
 			ourChannel, gosAudio_Volume, digitalMasterVolume * vol * bettyVolume);
 		gosAudio_SetChannelSlider(
 			RADIO_CHANNEL, gosAudio_Volume, digitalMasterVolume * vol * radioVolume * 0.5f);
-		lastBettyId				 = bettySampleId;
+		lastBettyId = bettySampleId;
 		channelInUse[ourChannel] = TRUE;
-		int32_t result			 = bettyDataFile->seekPacket(bettySampleId);
+		int32_t result = bettyDataFile->seekPacket(bettySampleId);
 		if (result != NO_ERROR)
 			return (-1);
 		int32_t bettySize = bettyDataFile->getPacketSize();
-		bettySoundBite	= (puint8_t)soundHeap->Malloc(bettySize);
+		bettySoundBite = (puint8_t)soundHeap->Malloc(bettySize);
 		gosASSERT(bettySoundBite != nullptr);
 		bettyDataFile->readPacket(bettySampleId, bettySoundBite);
 		//--------------------------------------------------------------------
 		// Hand GOS sound the data it needs to create the resource Handle
 		gosAudio_Format soundFormat;
-		soundFormat.wFormatTag		 = 1; // PCM
+		soundFormat.wFormatTag = 1; // PCM
 		MC2_WAVEFORMATEX* waveFormat = nullptr;
-		puint8_t dataOffset			 = nullptr;
-		uint32_t length				 = 0;
-		uint32_t bitsPerSec			 = 0;
+		puint8_t dataOffset = nullptr;
+		uint32_t length = 0;
+		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(bettySoundBite, &waveFormat, &dataOffset, &length);
-		bitsPerSec					= waveFormat->nBlockAlign / waveFormat->nChannels * 8;
-		soundFormat.nChannels		= waveFormat->nChannels;
-		soundFormat.nSamplesPerSec  = waveFormat->nSamplesPerSec;
+		bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
+		soundFormat.nChannels = waveFormat->nChannels;
+		soundFormat.nSamplesPerSec = waveFormat->nSamplesPerSec;
 		soundFormat.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
-		soundFormat.nBlockAlign		= waveFormat->nBlockAlign;
-		soundFormat.wBitsPerSample  = bitsPerSec;
-		soundFormat.cbSize			= 0;
+		soundFormat.nBlockAlign = waveFormat->nBlockAlign;
+		soundFormat.wBitsPerSample = bitsPerSec;
+		soundFormat.cbSize = 0;
 		gosAudio_CreateResource(
 			&bettyHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
 		gosAudio_AssignResourceToChannel(ourChannel, bettyHandle);
@@ -759,7 +760,8 @@ int32_t SoundSystem::playBettySample(uint32_t bettySampleId)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::playSupportSample(uint32_t supportSampleId, PSTR fileName)
+int32_t
+SoundSystem::playSupportSample(uint32_t supportSampleId, PSTR fileName)
 {
 	if (useSound && (supportSoundBite == nullptr)) // Playing Support takes precedence
 	{
@@ -780,9 +782,9 @@ int32_t SoundSystem::playSupportSample(uint32_t supportSampleId, PSTR fileName)
 			float vol = 1.0;
 			gosAudio_SetChannelSlider(
 				ourChannel, gosAudio_Volume, digitalMasterVolume * vol * bettyVolume);
-			lastSupportId			 = supportSampleId;
+			lastSupportId = supportSampleId;
 			channelInUse[ourChannel] = TRUE;
-			int32_t result			 = supportDataFile->seekPacket(supportSampleId);
+			int32_t result = supportDataFile->seekPacket(supportSampleId);
 			if (result != NO_ERROR)
 				return (-1);
 			int32_t supportSize = supportDataFile->getPacketSize();
@@ -800,19 +802,19 @@ int32_t SoundSystem::playSupportSample(uint32_t supportSampleId, PSTR fileName)
 		//--------------------------------------------------------------------
 		// Hand GOS sound the data it needs to create the resource Handle
 		gosAudio_Format soundFormat;
-		soundFormat.wFormatTag		 = 1; // PCM
+		soundFormat.wFormatTag = 1; // PCM
 		MC2_WAVEFORMATEX* waveFormat = nullptr;
-		puint8_t dataOffset			 = nullptr;
-		uint32_t length				 = 0;
-		uint32_t bitsPerSec			 = 0;
+		puint8_t dataOffset = nullptr;
+		uint32_t length = 0;
+		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(supportSoundBite, &waveFormat, &dataOffset, &length);
-		bitsPerSec					= waveFormat->nBlockAlign / waveFormat->nChannels * 8;
-		soundFormat.nChannels		= waveFormat->nChannels;
-		soundFormat.nSamplesPerSec  = waveFormat->nSamplesPerSec;
+		bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
+		soundFormat.nChannels = waveFormat->nChannels;
+		soundFormat.nSamplesPerSec = waveFormat->nSamplesPerSec;
 		soundFormat.nAvgBytesPerSec = waveFormat->nAvgBytesPerSec;
-		soundFormat.nBlockAlign		= waveFormat->nBlockAlign;
-		soundFormat.wBitsPerSample  = bitsPerSec;
-		soundFormat.cbSize			= 0;
+		soundFormat.nBlockAlign = waveFormat->nBlockAlign;
+		soundFormat.wBitsPerSample = bitsPerSec;
+		soundFormat.cbSize = 0;
 		gosAudio_CreateResource(
 			&supportHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
 		gosAudio_AssignResourceToChannel(ourChannel, supportHandle);
@@ -823,7 +825,8 @@ int32_t SoundSystem::playSupportSample(uint32_t supportSampleId, PSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-bool SoundSystem::isPlayingSample(int32_t sampleId)
+bool
+SoundSystem::isPlayingSample(int32_t sampleId)
 {
 	for (size_t i = 0; i < MAX_DIGITAL_SAMPLES; i++)
 	{
@@ -834,7 +837,8 @@ bool SoundSystem::isPlayingSample(int32_t sampleId)
 }
 
 //---------------------------------------------------------------------------
-bool SoundSystem::isChannelPlaying(int32_t channelId)
+bool
+SoundSystem::isChannelPlaying(int32_t channelId)
 {
 	if ((channelId < 0) || (channelId > MAX_DIGITAL_SAMPLES))
 		return (FALSE);
@@ -845,7 +849,8 @@ bool SoundSystem::isChannelPlaying(int32_t channelId)
 }
 
 //---------------------------------------------------------------------------
-bool SoundSystem::isPlayingVoiceOver(void)
+bool
+SoundSystem::isPlayingVoiceOver(void)
 {
 	if (stream3Handle)
 		return true;
@@ -853,7 +858,8 @@ bool SoundSystem::isPlayingVoiceOver(void)
 }
 
 //---------------------------------------------------------------------------
-bool SoundSystem::isDigitalMusicPlaying(void)
+bool
+SoundSystem::isDigitalMusicPlaying(void)
 {
 	if (stream2Handle || stream1Handle)
 		return true;
@@ -861,7 +867,8 @@ bool SoundSystem::isDigitalMusicPlaying(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::findOpenChannel(int32_t start, int32_t end)
+int32_t
+SoundSystem::findOpenChannel(int32_t start, int32_t end)
 {
 	int32_t channel = start;
 	while (channelInUse[channel] && (channel < end))
@@ -872,7 +879,8 @@ int32_t SoundSystem::findOpenChannel(int32_t start, int32_t end)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::playDigitalSample(uint32_t sampleId, Stuff::Vector3D pos, bool allowDupes)
+int32_t
+SoundSystem::playDigitalSample(uint32_t sampleId, Stuff::Vector3D pos, bool allowDupes)
 {
 	if (useSound && allowDupes || (!isPlayingSample(sampleId) && !allowDupes))
 	{
@@ -882,7 +890,7 @@ int32_t SoundSystem::playDigitalSample(uint32_t sampleId, Stuff::Vector3D pos, b
 		if (ourChannel != -1)
 		{
 			float distanceVolume = 1.0f;
-			float panVolume		 = 0.0f;
+			float panVolume = 0.0f;
 			if (eye && (pos.z != -9999.0f))
 			{
 				Stuff::Vector3D distance;
@@ -909,7 +917,7 @@ int32_t SoundSystem::playDigitalSample(uint32_t sampleId, Stuff::Vector3D pos, b
 			gosAudio_SetChannelSlider(
 				ourChannel, gosAudio_Volume, (digitalMasterVolume * vol * SFXVolume));
 			channelSampleId[ourChannel] = sampleId;
-			channelInUse[ourChannel]	= TRUE;
+			channelInUse[ourChannel] = TRUE;
 			if (sounds[sampleId].biteData && sounds[sampleId].resourceHandle)
 			{
 				gosAudio_AssignResourceToChannel(ourChannel, sounds[sampleId].resourceHandle);
@@ -922,7 +930,8 @@ int32_t SoundSystem::playDigitalSample(uint32_t sampleId, Stuff::Vector3D pos, b
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::stopDigitalSample(uint32_t sampleHandleNumber)
+void
+SoundSystem::stopDigitalSample(uint32_t sampleHandleNumber)
 {
 	if (useSound)
 	{
@@ -935,7 +944,8 @@ void SoundSystem::stopDigitalSample(uint32_t sampleHandleNumber)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::stopDigitalMusic(void)
+void
+SoundSystem::stopDigitalMusic(void)
 {
 	if (useSound && useMusic)
 	{
@@ -944,7 +954,7 @@ void SoundSystem::stopDigitalMusic(void)
 			if (stream1Handle)
 				gosAudio_DestroyResource(&stream1Handle);
 			stream1Handle = nullptr;
-			stream1Time   = 0.0;
+			stream1Time = 0.0;
 			stream1Active = FALSE;
 		}
 		if (stream2Active && stream2Handle)
@@ -952,7 +962,7 @@ void SoundSystem::stopDigitalMusic(void)
 			if (stream2Handle)
 				gosAudio_DestroyResource(&stream2Handle);
 			stream2Handle = nullptr;
-			stream2Time   = 0.0;
+			stream2Time = 0.0;
 			stream2Active = FALSE;
 		}
 		currentMusicId = -1;
@@ -960,7 +970,8 @@ void SoundSystem::stopDigitalMusic(void)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::stopSupportSample(void)
+void
+SoundSystem::stopSupportSample(void)
 {
 	if (stream3Handle)
 	{
@@ -971,7 +982,8 @@ void SoundSystem::stopSupportSample(void)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::stopBettySample(void)
+void
+SoundSystem::stopBettySample(void)
 {
 	if (bettyHandle)
 	{
@@ -979,12 +991,13 @@ void SoundSystem::stopBettySample(void)
 		gosAudio_DestroyResource(&bettyHandle);
 		soundHeap->Free(bettySoundBite);
 		bettySoundBite = nullptr;
-		bettyHandle	= nullptr;
+		bettyHandle = nullptr;
 	}
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::setDigitalMasterVolume(byte volume)
+void
+SoundSystem::setDigitalMasterVolume(byte volume)
 {
 	if (useSound)
 	{
@@ -994,7 +1007,8 @@ void SoundSystem::setDigitalMasterVolume(byte volume)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::getDigitalMasterVolume(void)
+int32_t
+SoundSystem::getDigitalMasterVolume(void)
 {
 	if (useSound)
 	{
@@ -1004,7 +1018,8 @@ int32_t SoundSystem::getDigitalMasterVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::setSFXVolume(uint8_t volume)
+void
+SoundSystem::setSFXVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1014,7 +1029,8 @@ void SoundSystem::setSFXVolume(uint8_t volume)
 }
 
 //---------------------------------------------------------------------------
-uint8_t SoundSystem::getSFXVolume(void)
+uint8_t
+SoundSystem::getSFXVolume(void)
 {
 	if (useSound)
 	{
@@ -1024,7 +1040,8 @@ uint8_t SoundSystem::getSFXVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::setRadioVolume(uint8_t volume)
+void
+SoundSystem::setRadioVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1034,7 +1051,8 @@ void SoundSystem::setRadioVolume(uint8_t volume)
 }
 
 //---------------------------------------------------------------------------
-uint8_t SoundSystem::getRadioVolume(void)
+uint8_t
+SoundSystem::getRadioVolume(void)
 {
 	if (useSound)
 	{
@@ -1044,7 +1062,8 @@ uint8_t SoundSystem::getRadioVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::setMusicVolume(uint8_t volume)
+void
+SoundSystem::setMusicVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1067,7 +1086,8 @@ void SoundSystem::setMusicVolume(uint8_t volume)
 }
 
 //---------------------------------------------------------------------------
-uint8_t SoundSystem::getMusicVolume(void)
+uint8_t
+SoundSystem::getMusicVolume(void)
 {
 	if (useSound)
 	{
@@ -1077,7 +1097,8 @@ uint8_t SoundSystem::getMusicVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::setBettyVolume(uint8_t volume)
+void
+SoundSystem::setBettyVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1087,7 +1108,8 @@ void SoundSystem::setBettyVolume(uint8_t volume)
 }
 
 //---------------------------------------------------------------------------
-uint8_t SoundSystem::getBettyVolume(void)
+uint8_t
+SoundSystem::getBettyVolume(void)
 {
 	if (useSound)
 	{
@@ -1097,13 +1119,22 @@ uint8_t SoundSystem::getBettyVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::stopABLMusic(void) { stopDigitalMusic(); }
+void
+SoundSystem::stopABLMusic(void)
+{
+	stopDigitalMusic();
+}
 
 //---------------------------------------------------------------------------
-void SoundSystem::playABLSFX(int32_t sfxId) { playDigitalSample(sfxId); }
+void
+SoundSystem::playABLSFX(int32_t sfxId)
+{
+	playDigitalSample(sfxId);
+}
 
 //---------------------------------------------------------------------------
-void SoundSystem::playABLDigitalMusic(int32_t musicId)
+void
+SoundSystem::playABLDigitalMusic(int32_t musicId)
 {
 	//	PAUSE(("Switching to Tune %d.  Playing Tune
 	//%d.",musicId,currentMusicId));

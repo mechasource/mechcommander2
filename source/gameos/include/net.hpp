@@ -168,12 +168,15 @@ GOSERRORCODE __stdcall gos_Disconnect(void);
 // Return value: If successful, it returns GOS_OK, else it returns
 // GOS_ERR_GENERIC
 //
-GOSERRORCODE gos_LockSession(void);
+GOSERRORCODE
+gos_LockSession(void);
 
 // LeaveSession kills the current player and removes him from the session.
 //
 // AG - kill this one
 //
-GOSERRORCODE gos_LeaveSession(void);
+GOSERRORCODE
+gos_LeaveSession(void);
 
-GOSERRORCODE gos_RemovePlayer(uint32_t player_id);
+GOSERRORCODE
+gos_RemovePlayer(uint32_t player_id);

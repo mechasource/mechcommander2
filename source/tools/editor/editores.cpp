@@ -6,7 +6,8 @@
 //
 #include <windows.h>
 
-BOOL APIENTRY DllMain(HANDLE hModule, uint32_t ul_reason_for_call, LPVOID lpReserved)
+BOOL APIENTRY
+DllMain(HANDLE hModule, uint32_t ul_reason_for_call, LPVOID lpReserved)
 {
 	lpReserved;
 	ul_reason_for_call;

@@ -9,8 +9,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::CardCloud__Specification::CardCloud__Specification(
-	std::iostream stream, uint32_t gfx_version)
-	: SpinningCloud__Specification(gosFX::CardCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version) :
+	SpinningCloud__Specification(gosFX::CardCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -61,20 +61,21 @@ gosFX::CardCloud__Specification::CardCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::CardCloud__Specification::CardCloud__Specification()
-	: SpinningCloud__Specification(gosFX::CardCloudClassID)
+gosFX::CardCloud__Specification::CardCloud__Specification() :
+	SpinningCloud__Specification(gosFX::CardCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	m_animated			= false;
-	m_width				= 1;
+	m_animated = false;
+	m_width = 1;
 	m_totalParticleSize = gosFX::CardCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::CardCloud::Particle);
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::CardCloud__Specification* gosFX::CardCloud__Specification::Make(
+gosFX::CardCloud__Specification*
+gosFX::CardCloud__Specification::Make(
 	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
@@ -88,7 +89,8 @@ gosFX::CardCloud__Specification* gosFX::CardCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud__Specification::Save(std::iostream stream)
+void
+gosFX::CardCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -105,7 +107,8 @@ void gosFX::CardCloud__Specification::Save(std::iostream stream)
 //------------------------------------------------------------------------------
 //
 
-void gosFX::CardCloud__Specification::BuildDefaults()
+void
+gosFX::CardCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
@@ -123,13 +126,14 @@ void gosFX::CardCloud__Specification::BuildDefaults()
 	m_USize.SetCurve(1.0f);
 	m_VSize.SetCurve(1.0f);
 	m_animated = false;
-	m_width	= 1;
+	m_width = 1;
 }
 
 //------------------------------------------------------------------------------
 //
 
-bool gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float max_offset, min_offset;
@@ -188,7 +192,8 @@ bool gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
+void
+gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -196,21 +201,22 @@ void gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	m_halfHeight  = spec->m_halfHeight;
+	m_halfHeight = spec->m_halfHeight;
 	m_aspectRatio = spec->m_aspectRatio;
-	m_pIndex	  = spec->m_pIndex;
-	m_UOffset	 = spec->m_UOffset;
-	m_VOffset	 = spec->m_VOffset;
-	m_USize		  = spec->m_USize;
-	m_VSize		  = spec->m_VSize;
-	m_animated	= spec->m_animated;
-	m_width		  = spec->m_width;
+	m_pIndex = spec->m_pIndex;
+	m_UOffset = spec->m_UOffset;
+	m_VOffset = spec->m_VOffset;
+	m_USize = spec->m_USize;
+	m_VSize = spec->m_VSize;
+	m_animated = spec->m_animated;
+	m_width = spec->m_width;
 	// gos_PopCurrentHeap();
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud__Specification::SetWidth()
+void
+gosFX::CardCloud__Specification::SetWidth()
 {
 	m_width = static_cast<uint8_t>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
@@ -224,7 +230,8 @@ gosFX::CardCloud::ClassData* gosFX::CardCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::InitializeClass()
+void
+gosFX::CardCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -235,7 +242,8 @@ void gosFX::CardCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::TerminateClass()
+void
+gosFX::CardCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -244,8 +252,8 @@ void gosFX::CardCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::CardCloud::CardCloud(Specification* spec, uint32_t flags)
-	: SpinningCloud(DefaultData, spec, flags)
+gosFX::CardCloud::CardCloud(Specification* spec, uint32_t flags) :
+	SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -254,7 +262,7 @@ gosFX::CardCloud::CardCloud(Specification* spec, uint32_t flags)
 	Register_Object(m_cloudImplementation);
 	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
-	m_P_vertices   = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
+	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += 4 * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
 	index += spec->m_maxParticleCount * sizeof(Stuff::RGBAColor);
@@ -273,7 +281,8 @@ gosFX::CardCloud::~CardCloud()
 
 //------------------------------------------------------------------------------
 //
-gosFX::CardCloud* gosFX::CardCloud::Make(Specification* spec, uint32_t flags)
+gosFX::CardCloud*
+gosFX::CardCloud::Make(Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
 #ifdef _GAMEOS_HPP_
@@ -286,7 +295,8 @@ gosFX::CardCloud* gosFX::CardCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void
+gosFX::CardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -315,7 +325,8 @@ void gosFX::CardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* transla
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::CardCloud::AnimateParticle(
+bool
+gosFX::CardCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -332,24 +343,24 @@ bool gosFX::CardCloud::AnimateParticle(
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	float seed = particle->m_seed;
-	float age  = particle->m_age;
+	float age = particle->m_age;
 	//
 	//------------------
 	// Animate the color
 	//------------------
 	//
 	Check_Pointer(m_P_color);
-	m_P_color[index].red   = spec->m_pRed.ComputeValue(age, seed);
+	m_P_color[index].red = spec->m_pRed.ComputeValue(age, seed);
 	m_P_color[index].green = spec->m_pGreen.ComputeValue(age, seed);
-	m_P_color[index].blue  = spec->m_pBlue.ComputeValue(age, seed);
+	m_P_color[index].blue = spec->m_pBlue.ComputeValue(age, seed);
 	m_P_color[index].alpha = spec->m_pAlpha.ComputeValue(age, seed);
 	//
 	//----------------
 	// Animate the uvs
 	//----------------
 	//
-	float u  = spec->m_UOffset.ComputeValue(age, seed);
-	float v  = spec->m_VOffset.ComputeValue(age, seed);
+	float u = spec->m_UOffset.ComputeValue(age, seed);
+	float v = spec->m_VOffset.ComputeValue(age, seed);
 	float u2 = spec->m_USize.ComputeValue(age, seed);
 	float v2 = spec->m_VSize.ComputeValue(age, seed);
 	//
@@ -360,8 +371,8 @@ bool gosFX::CardCloud::AnimateParticle(
 	if (spec->m_animated)
 	{
 		uint8_t columns = Stuff::Truncate_Float_To_Byte(spec->m_pIndex.ComputeValue(age, seed));
-		uint8_t rows	= static_cast<uint8_t>(columns / spec->m_width);
-		columns			= static_cast<uint8_t>(columns - rows * spec->m_width);
+		uint8_t rows = static_cast<uint8_t>(columns / spec->m_width);
+		columns = static_cast<uint8_t>(columns - rows * spec->m_width);
 		//
 		//---------------------------
 		// Now compute the end points
@@ -373,20 +384,21 @@ bool gosFX::CardCloud::AnimateParticle(
 	u2 += u;
 	v2 += v;
 	index *= 4;
-	m_P_uvs[index].x   = u;
-	m_P_uvs[index].y   = v2;
+	m_P_uvs[index].x = u;
+	m_P_uvs[index].y = v2;
 	m_P_uvs[++index].x = u2;
-	m_P_uvs[index].y   = v2;
+	m_P_uvs[index].y = v2;
 	m_P_uvs[++index].x = u2;
-	m_P_uvs[index].y   = v;
+	m_P_uvs[index].y = v;
 	m_P_uvs[++index].x = u;
-	m_P_uvs[index].y   = v;
+	m_P_uvs[index].y = v;
 	return true;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::DestroyParticle(uint32_t index)
+void
+gosFX::CardCloud::DestroyParticle(uint32_t index)
 {
 	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
@@ -396,7 +408,8 @@ void gosFX::CardCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::Draw(DrawInfo* info)
+void
+gosFX::CardCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -408,7 +421,7 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 	if (m_activeParticleCount)
 	{
 		MidLevelRenderer::DrawEffectInformation dInfo;
-		dInfo.effect		= m_cloudImplementation;
+		dInfo.effect = m_cloudImplementation;
 		Specification* spec = GetSpecification();
 		Check_Object(spec);
 		dInfo.state.Combine(info->m_state, spec->m_state);
@@ -661,4 +674,8 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+gosFX::CardCloud::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}

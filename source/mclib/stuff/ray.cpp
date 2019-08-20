@@ -20,7 +20,8 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Ray3D& Ray3D::SetDirection(const Vector3D& vector)
+Ray3D&
+Ray3D::SetDirection(const Vector3D& vector)
 {
 	// Check_Pointer(this);
 	Check_Object(&vector);
@@ -47,7 +48,8 @@ Ray3D& Ray3D::SetDirection(const Vector3D& vector)
 //#############################################################################
 //#############################################################################
 //
-float Ray3D::GetDistanceTo(const Plane& plane, float* product) const
+float
+Ray3D::GetDistanceTo(const Plane& plane, float* product) const
 {
 	// Check_Object(this);
 	Check_Object(&plane);
@@ -65,7 +67,8 @@ float Ray3D::GetDistanceTo(const Plane& plane, float* product) const
 //#############################################################################
 //#############################################################################
 //
-float Ray3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
+float
+Ray3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 {
 	float b, c;
 	Vector3D temp;
@@ -107,7 +110,8 @@ float Ray3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 //#############################################################################
 //#############################################################################
 //
-float Stuff::Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1,
+float
+Stuff::Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1,
 	Point3D* result1, const Point3D& origin2, const Vector3D& velocity2, Point3D* result2,
 	float* time, bool* constant)
 {
@@ -124,7 +128,7 @@ float Stuff::Find_Closest_Approach(const Point3D& origin1, const Vector3D& veloc
 	if (Small_Enough(d))
 	{
 		*constant = true;
-		d		  = a.GetLength();
+		d = a.GetLength();
 		return d;
 	}
 	//
@@ -134,7 +138,7 @@ float Stuff::Find_Closest_Approach(const Point3D& origin1, const Vector3D& veloc
 	//-------------------------------------------------------------------------
 	//
 	*constant = false;
-	*time	 = (a * b) / -d;
+	*time = (a * b) / -d;
 	//
 	//------------------------------------------------------
 	// Now, plot the resultant points of both line equations

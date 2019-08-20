@@ -15,21 +15,21 @@
 
 // globals used for memory
 UserHeapPtr systemHeap = nullptr;
-UserHeapPtr guiHeap	= nullptr;
+UserHeapPtr guiHeap = nullptr;
 
 float MaxMinUV = 8.0f;
 
 std::iostream effectStream = nullptr;
 
 uint32_t systemHeapSize = 8192000;
-uint32_t guiHeapSize	= 1023999;
-uint32_t tglHeapSize	= 65536000;
+uint32_t guiHeapSize = 1023999;
+uint32_t tglHeapSize = 65536000;
 
 uint32_t BaseVertexColor = 0x00000000; // This color is applied to all vertices
-									   // in game as Brightness correction.
+	// in game as Brightness correction.
 
 int32_t gammaLevel = 0;
-bool hasGuardBand  = false;
+bool hasGuardBand = false;
 extern int32_t terrainLineChanged; // the terrain uses this
 // extern float frameNum;	// tiny geometry needs this
 extern float frameRate; // tiny geometry needs this
@@ -41,11 +41,11 @@ extern char MissingTitleString[];
 
 extern char CDInstallPath[];
 
-uint32_t gosResourceHandle   = 0;
-HGOSFONT3D gosFontHandle	 = 0;
-float gosFontScale			 = 1.0;
+uint32_t gosResourceHandle = 0;
+HGOSFONT3D gosFontHandle = 0;
+float gosFontScale = 1.0;
 FloatHelpPtr globalFloatHelp = nullptr;
-uint32_t currentFloatHelp	= 0;
+uint32_t currentFloatHelp = 0;
 extern float CliffTerrainAngle;
 
 extern bool gNoDialogs;
@@ -56,21 +56,22 @@ bool quitGame = FALSE;
 
 bool gamePaused = FALSE;
 
-bool reloadBounds	  = false;
+bool reloadBounds = false;
 bool justResaveAllMaps = false;
 
 extern bool forceShadowBurnIn;
 // these globals are necessary for fast files for some reason
 FastFile** fastFiles = nullptr;
-size_t numFastFiles  = 0;
-size_t maxFastFiles  = 0;
+size_t numFastFiles = 0;
+size_t maxFastFiles = 0;
 
 #define MAX_SHAPES 0
 
 // Heidi, turn this FALSE to turn Fog of War ON!
 extern uint8_t godMode; // Can I simply see everything, enemy and friendly?
 
-void InitDW();
+void
+InitDW();
 
 TimerManagerPtr timerManager = nullptr;
 
@@ -90,26 +91,31 @@ enum
 	CPU_MMX,
 	CPU_KATMAI
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
-						   // -- MECHCMDR2
+	// -- MECHCMDR2
 
 MidLevelRenderer::MLRClipper* theClipper = nullptr;
 
 // called by gos
 //---------------------------------------------------------------------------
-PSTR GetGameInformation() { return (ExceptionGameMsg); }
+PSTR
+GetGameInformation()
+{
+	return (ExceptionGameMsg);
+}
 
 // called by GOS when you need to draw
 //---------------------------------------------------------------------------
 // define RUNNING_REMOTELY
 #ifdef RUNNING_REMOTELY
 #include <windows.h> /* for declaration of Sleep() */
-#endif				 /*RUNNING_REMOTELY*/
-void UpdateRenderers()
+#endif /*RUNNING_REMOTELY*/
+void
+UpdateRenderers()
 {
 #ifdef RUNNING_REMOTELY
 	Sleep(0.25 /*seconds*/ * 1000.0); /* limit the frame rate when displaying on remote console */
-#endif								  /*RUNNING_REMOTELY*/
-	hasGuardBand	= true;
+#endif /*RUNNING_REMOTELY*/
+	hasGuardBand = true;
 	uint32_t bColor = 0x0;
 	if (eye)
 		bColor = eye->fogColor;
@@ -138,7 +144,8 @@ void UpdateRenderers()
 
 bool statisticsInitialized = false;
 //------------------------------------------------------------
-void DoGameLogic()
+void
+DoGameLogic()
 {
 	globalFloatHelp->resetAll();
 	//-------------------------------------
@@ -146,7 +153,7 @@ void DoGameLogic()
 	// Convert to frameLength and any other timing stuff.
 	if (frameRate < 4.0)
 		frameRate = 4.0;
-	frameLength			 = 1.0f / frameRate;
+	frameLength = 1.0f / frameRate;
 	bool doTransformMath = true;
 	if (doTransformMath)
 	{
@@ -176,7 +183,8 @@ void DoGameLogic()
 }
 
 //---------------------------------------------------------------------------
-void InitializeGameEngine()
+void
+InitializeGameEngine()
 {
 	InEditor = true;
 	if (fileExists("mc2resUS.dll"))
@@ -193,7 +201,7 @@ void InitializeGameEngine()
 	if (pStr)
 	{
 		gosFontScale = atoi(pStr + 2);
-		*pStr		 = 0;
+		*pStr = 0;
 	}
 	char path[256];
 	strcpy(path, "assets\\graphics\\");
@@ -201,12 +209,11 @@ void InitializeGameEngine()
 	gosFontHandle = gos_LoadFont(path);
 	// Check if we are a Voodoo 3.  If so, ONLY allow editor to run IF
 	// Starting resolution is 1024x768x16 or LOWER.  NO 32-BIT ALLOWED!
-	if ((gos_GetMachineInformation(gos_Info_GetDeviceVendorID, 0) == 0x121a) &&
-		(gos_GetMachineInformation(gos_Info_GetDeviceDeviceID, 0) == 0x0005))
+	if ((gos_GetMachineInformation(gos_Info_GetDeviceVendorID, 0) == 0x121a) && (gos_GetMachineInformation(gos_Info_GetDeviceDeviceID, 0) == 0x0005))
 	{
 		DEVMODE dev;
 		memset(&dev, 0, sizeof(DEVMODE));
-		dev.dmSize		  = sizeof(DEVMODE);
+		dev.dmSize = sizeof(DEVMODE);
 		dev.dmSpecVersion = DM_SPECVERSION;
 		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
 		if ((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) || (dev.dmBitsPerPel > 16))
@@ -264,7 +271,7 @@ void InitializeGameEngine()
 	int32_t result = effectFile.open(effectsName);
 	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
-	int32_t effectsSize  = effectFile.fileSize();
+	int32_t effectsSize = effectFile.fileSize();
 	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
@@ -276,7 +283,7 @@ void InitializeGameEngine()
 	globalFloatHelp = new FloatHelp(MAX_FLOAT_HELPS);
 	//---------------------------------------------------------------------
 	float doubleClickThreshold = 0.2f;
-	int32_t dragThreshold	  = 10;
+	int32_t dragThreshold = 10;
 	//--------------------------------------------------------------
 	// Read in System.CFG
 	FitIniFilePtr systemFile = new FitIniFile;
@@ -416,7 +423,7 @@ void InitializeGameEngine()
 	systemFile = nullptr;
 	//--------------------------------------------------------------
 	// Read in Prefs.cfg
-	FitIniFilePtr prefs  = new FitIniFile;
+	FitIniFilePtr prefs = new FitIniFile;
 	Environment.Key_Exit = (uint32_t)-1;
 #ifdef _DEBUG
 	int32_t prefsOpenResult =
@@ -438,9 +445,9 @@ void InitializeGameEngine()
 		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
 			Environment.Key_SwitchMonitors = 0;
-			Environment.Key_FullScreen	 = 0;
-			int32_t bitD				   = 0;
-			int32_t result				   = prefs->readIdLong("BitDepth", bitD);
+			Environment.Key_FullScreen = 0;
+			int32_t bitD = 0;
+			int32_t result = prefs->readIdLong("BitDepth", bitD);
 			if (result != NO_ERROR)
 				Environment.bitDepth = 16;
 			else if (bitD == 32)
@@ -571,7 +578,8 @@ void InitializeGameEngine()
 }
 
 bool alreadyTermed = false;
-void TerminateGameEngine()
+void
+TerminateGameEngine()
 {
 	if (alreadyTermed)
 		return;
@@ -700,11 +708,12 @@ void TerminateGameEngine()
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void ParseCommandLine(PSTR command_line)
+void
+ParseCommandLine(PSTR command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
-	int32_t index  = 0;
+	int32_t index = 0;
 	PSTR argv[30];
 	char tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
@@ -758,7 +767,7 @@ void ParseCommandLine(PSTR command_line)
 							strcat(missionName, argv[i]);
 							if (strstr(argv[i], "\"") != nullptr)
 							{
-								scanName							 = false;
+								scanName = false;
 								missionName[strlen(missionName) - 1] = 0;
 							}
 						}
@@ -766,7 +775,7 @@ void ParseCommandLine(PSTR command_line)
 						{
 							// They put a quote on the line with no space.
 							//
-							scanName							 = false;
+							scanName = false;
 							missionName[strlen(missionName) - 1] = 0;
 						}
 					}
@@ -780,98 +789,97 @@ void ParseCommandLine(PSTR command_line)
 }
 
 //---------------------------------------------------------------------
-void GetGameOSEnvironment(PSTR CommandLine)
+void
+GetGameOSEnvironment(PSTR CommandLine)
 {
 	ParseCommandLine(CommandLine);
-	Environment.applicationName		 = "MC2 Mission Editor";
-	Environment.debugLog			 = ""; //"DebugLog.txt";
-	Environment.memoryTraceLevel	 = 5;
-	Environment.spew				 = ""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
-	Environment.TimeStampSpew		 = 0;
-	Environment.GetGameInformation   = GetGameInformation;
-	Environment.UpdateRenderers		 = UpdateRenderers;
+	Environment.applicationName = "MC2 Mission Editor";
+	Environment.debugLog = ""; //"DebugLog.txt";
+	Environment.memoryTraceLevel = 5;
+	Environment.spew = ""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
+	Environment.TimeStampSpew = 0;
+	Environment.GetGameInformation = GetGameInformation;
+	Environment.UpdateRenderers = UpdateRenderers;
 	Environment.InitializeGameEngine = InitializeGameEngine;
-	Environment.DoGameLogic			 = DoGameLogic;
-	Environment.TerminateGameEngine  = TerminateGameEngine;
-	Environment.soundDisable		 = TRUE;
-	Environment.soundHiFi			 = FALSE;
-	Environment.soundChannels		 = 24;
-	Environment.dontClearRegistry	= true;
-	Environment.allowMultipleApps	= false;
-	Environment.version				 = versionStamp;
-	Environment.AntiAlias			 = 0;
+	Environment.DoGameLogic = DoGameLogic;
+	Environment.TerminateGameEngine = TerminateGameEngine;
+	Environment.soundDisable = TRUE;
+	Environment.soundHiFi = FALSE;
+	Environment.soundChannels = 24;
+	Environment.dontClearRegistry = true;
+	Environment.allowMultipleApps = false;
+	Environment.version = versionStamp;
+	Environment.AntiAlias = 0;
 	//
 	// Texture infomation
 	//
-	Environment.Texture_S_256	= 6;
-	Environment.Texture_S_128	= 1;
-	Environment.Texture_S_64	 = 0;
-	Environment.Texture_S_32	 = 1;
-	Environment.Texture_S_16	 = 5;
-	Environment.Texture_K_256	= 2;
-	Environment.Texture_K_128	= 5;
-	Environment.Texture_K_64	 = 5;
-	Environment.Texture_K_32	 = 5;
-	Environment.Texture_K_16	 = 5;
-	Environment.Texture_A_256	= 0;
-	Environment.Texture_A_128	= 1;
-	Environment.Texture_A_64	 = 5;
-	Environment.Texture_A_32	 = 1;
-	Environment.Texture_A_16	 = 0;
-	Environment.bitDepth		 = 16;
-	Environment.RaidDataSource   = "MechCommander 2:Raid4";
-	Environment.RaidFilePath	 = "\\\\aas1\\MC2\\Test\\GOSRaid";
+	Environment.Texture_S_256 = 6;
+	Environment.Texture_S_128 = 1;
+	Environment.Texture_S_64 = 0;
+	Environment.Texture_S_32 = 1;
+	Environment.Texture_S_16 = 5;
+	Environment.Texture_K_256 = 2;
+	Environment.Texture_K_128 = 5;
+	Environment.Texture_K_64 = 5;
+	Environment.Texture_K_32 = 5;
+	Environment.Texture_K_16 = 5;
+	Environment.Texture_A_256 = 0;
+	Environment.Texture_A_128 = 1;
+	Environment.Texture_A_64 = 5;
+	Environment.Texture_A_32 = 1;
+	Environment.Texture_A_16 = 0;
+	Environment.bitDepth = 16;
+	Environment.RaidDataSource = "MechCommander 2:Raid4";
+	Environment.RaidFilePath = "\\\\aas1\\MC2\\Test\\GOSRaid";
 	Environment.RaidCustomFields = "Area=GOSRaid";
 	DEVMODE dev;
 	memset(&dev, 0, sizeof(DEVMODE));
-	dev.dmSize		  = sizeof(DEVMODE);
+	dev.dmSize = sizeof(DEVMODE);
 	dev.dmSpecVersion = DM_SPECVERSION;
 	EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
-	Environment.screenWidth  = dev.dmPelsWidth;
+	Environment.screenWidth = dev.dmPelsWidth;
 	Environment.screenHeight = dev.dmPelsHeight;
-	if (((512 > Environment.screenWidth) || (384 > Environment.screenHeight) ||
-			(1600 < Environment.screenWidth) || (1200 < Environment.screenHeight)) &&
-		(0 == dev.dmDeviceName[0]))
+	if (((512 > Environment.screenWidth) || (384 > Environment.screenHeight) || (1600 < Environment.screenWidth) || (1200 < Environment.screenHeight)) && (0 == dev.dmDeviceName[0]))
 	{
 		/* might be a buggy driver reporting incorrectly (like the permedia2
 		 * win95 driver */
-		Environment.screenWidth  = GetDeviceCaps(GetDC(nullptr), HORZRES);
+		Environment.screenWidth = GetDeviceCaps(GetDC(nullptr), HORZRES);
 		Environment.screenHeight = GetDeviceCaps(GetDC(nullptr), VERTRES);
 	}
 	// CHeck for non-standard resolutions.  Like LapTops or ATI cards or BOTH!!
 	if (Environment.screenWidth < 512)
 	{
-		Environment.screenWidth  = 512;
+		Environment.screenWidth = 512;
 		Environment.screenHeight = 384;
 	}
 	else if ((Environment.screenWidth > 512) && (Environment.screenWidth < 640))
 	{
-		Environment.screenWidth  = 640;
+		Environment.screenWidth = 640;
 		Environment.screenHeight = 480;
 	}
 	else if ((Environment.screenWidth > 640) && (Environment.screenWidth < 800))
 	{
-		Environment.screenWidth  = 512;
+		Environment.screenWidth = 512;
 		Environment.screenHeight = 384;
 	}
 	else if ((Environment.screenWidth > 800) && (Environment.screenWidth < 1024))
 	{
-		Environment.screenWidth  = 800;
+		Environment.screenWidth = 800;
 		Environment.screenHeight = 600;
 	}
 	else if ((Environment.screenWidth > 1024) && (Environment.screenWidth < 1280))
 	{
-		Environment.screenWidth  = 1024;
+		Environment.screenWidth = 1024;
 		Environment.screenHeight = 768;
 	}
 	else if ((Environment.screenWidth > 1280) && (Environment.screenWidth < 1600))
 	{
-		Environment.screenWidth  = 1280;
+		Environment.screenWidth = 1280;
 		Environment.screenHeight = 1024;
 	}
 	else if (Environment.screenWidth > 1600)
 	{
-		Environment.screenWidth  = 1600;
+		Environment.screenWidth = 1600;
 		Environment.screenHeight = 1200;
 	}
 	Environment.Suppress3DFullScreenWarning = 0;

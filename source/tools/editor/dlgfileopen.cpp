@@ -18,7 +18,8 @@ ON_LBN_SELCHANGE(IDC_FILEOPEN_FILELIST, OnSelchangeFileopenFilelist)
 END_MESSAGE_MAP()
 
 //-------------------------------------------------------------------------------------------------
-DlgFileOpen::DlgFileOpen(PCSTR directory, PCSTR dlgExtension, bool bsave) : CDialog(IDD_FILEOPEN)
+DlgFileOpen::DlgFileOpen(PCSTR directory, PCSTR dlgExtension, bool bsave) :
+	CDialog(IDD_FILEOPEN)
 {
 	strcpy(m_directory, directory);
 	strcpy(fileName, directory);
@@ -33,7 +34,8 @@ DlgFileOpen::DlgFileOpen(PCSTR directory, PCSTR dlgExtension, bool bsave) : CDia
 	m_bSave = bsave;
 }
 
-void DlgFileOpen::Init()
+void
+DlgFileOpen::Init()
 {
 	CListBox* m_pList = (CListBox*)GetDlgItem(IDC_FILEOPEN_FILELIST);
 	// Not Used.
@@ -51,13 +53,15 @@ void DlgFileOpen::Init()
 	strcpy(fileName, m_directory);
 }
 
-void DlgFileOpen::OnCancel()
+void
+DlgFileOpen::OnCancel()
 {
 	// EndDialog(IDCANCEL);
 	EndDialog(IDCANCEL);
 }
 
-void DlgFileOpen::OnOK()
+void
+DlgFileOpen::OnOK()
 {
 	CEdit* m_pEntry = (CEdit*)GetDlgItem(IDC_FILEOPEN_EDITBOX);
 	char pszEntryString[1024 /*MAX_STRING_LENGTH*/];
@@ -67,8 +71,7 @@ void DlgFileOpen::OnOK()
 	tmpExtension[0] = '.';
 	tmpExtension[1] = 0;
 	strcat(tmpExtension, extension);
-	if (!fileName ||
-		(strlen(fileName) < 4 || 0 != _stricmp(tmpExtension, fileName + strlen(fileName) - 4)))
+	if (!fileName || (strlen(fileName) < 4 || 0 != _stricmp(tmpExtension, fileName + strlen(fileName) - 4)))
 	{
 		strcat(fileName, ".");
 		strcat(fileName, extension);
@@ -83,20 +86,22 @@ DlgFileOpen::~DlgFileOpen() {}
 //*************************************************************************************************
 // end of file ( DlgFileOpen.cpp )
 
-BOOL DlgFileOpen::OnInitDialog()
+BOOL
+DlgFileOpen::OnInitDialog()
 {
 	CDialog ::OnInitDialog();
 	Init();
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void DlgFileOpen::OnSelchangeFileopenFilelist()
+void
+DlgFileOpen::OnSelchangeFileopenFilelist()
 {
 	CListBox* m_pList = (CListBox*)GetDlgItem(IDC_FILEOPEN_FILELIST);
 	gosASSERT(m_pList);
 	int32_t nSelectionIndex = m_pList->GetCurSel();
-	int32_t nStringLength   = m_pList->GetTextLen(nSelectionIndex);
+	int32_t nStringLength = m_pList->GetTextLen(nSelectionIndex);
 	if (0 < nStringLength)
 	{
 		PSTR pszSelectionString = new char[nStringLength + 1];

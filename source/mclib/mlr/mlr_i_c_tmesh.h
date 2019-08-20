@@ -125,8 +125,10 @@ protected:
 #endif
 };
 
-MLR_I_C_TMesh* CreateIndexedTriCube_Color_NoLit(float, MLRState*);
-MLRShape* CreateIndexedTriIcosahedron_Color_NoLit(IcoInfo&, MLRState*);
+MLR_I_C_TMesh*
+CreateIndexedTriCube_Color_NoLit(float, MLRState*);
+MLRShape*
+CreateIndexedTriIcosahedron_Color_NoLit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 
 #endif // MLR_MLR_I_C_TMESH_HPP

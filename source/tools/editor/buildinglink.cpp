@@ -21,18 +21,22 @@ BuildingLink::BuildingLink(const EditorObject* pParent)
 {
 	ATLASSERT(pParent != nullptr);
 	parent.m_ID = pParent->getID();
-	parent.pos  = pParent->getPosition();
+	parent.pos = pParent->getPosition();
 }
 
 BuildingLink::BuildingLink(const Stuff::Vector3D& pos)
 {
-	parent.pos  = pos;
+	parent.pos = pos;
 	parent.m_ID = -1;
 }
 
-BuildingLink::BuildingLink(const BuildingLink& Src) { CopyData(Src); }
+BuildingLink::BuildingLink(const BuildingLink& Src)
+{
+	CopyData(Src);
+}
 
-BuildingLink& BuildingLink::operator=(const BuildingLink& Src)
+BuildingLink&
+BuildingLink::operator=(const BuildingLink& Src)
 {
 	if (&Src != this)
 	{
@@ -41,7 +45,8 @@ BuildingLink& BuildingLink::operator=(const BuildingLink& Src)
 	return *this;
 }
 
-void BuildingLink::CopyData(const BuildingLink& Src)
+void
+BuildingLink::CopyData(const BuildingLink& Src)
 {
 	parent = Src.parent;
 	children.Clear();
@@ -52,7 +57,8 @@ void BuildingLink::CopyData(const BuildingLink& Src)
 	}
 }
 
-bool BuildingLink::AddChild(const EditorObject* pObject)
+bool
+BuildingLink::AddChild(const EditorObject* pObject)
 {
 	int32_t ID = pObject->getID();
 	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)
@@ -66,17 +72,26 @@ bool BuildingLink::AddChild(const EditorObject* pObject)
 		}
 	}
 	Info tmp;
-	tmp.pos  = pObject->getPosition();
+	tmp.pos = pObject->getPosition();
 	tmp.m_ID = ID;
 	children.Append(tmp);
 	return true;
 }
 
-int32_t BuildingLink::GetLinkCount() const { return children.Count(); }
+int32_t
+BuildingLink::GetLinkCount() const
+{
+	return children.Count();
+}
 
-const Stuff::Vector3D& BuildingLink::GetParentPosition(void) const { return parent.pos; }
+const Stuff::Vector3D&
+BuildingLink::GetParentPosition(void) const
+{
+	return parent.pos;
+}
 
-bool BuildingLink::HasChild(const EditorObject* pObject) const
+bool
+BuildingLink::HasChild(const EditorObject* pObject) const
 {
 	int32_t ID = pObject->getID();
 	pObject->getPosition();
@@ -91,7 +106,8 @@ bool BuildingLink::HasChild(const EditorObject* pObject) const
 	return false;
 }
 
-bool BuildingLink::HasParent(const EditorObject* pObject) const
+bool
+BuildingLink::HasParent(const EditorObject* pObject) const
 {
 	int32_t ID = pObject->getID();
 	// ignore damage bit and rotation
@@ -100,7 +116,8 @@ bool BuildingLink::HasParent(const EditorObject* pObject) const
 	return false;
 }
 
-bool BuildingLink::TypeCanBeParent(const EditorObject* pObject)
+bool
+BuildingLink::TypeCanBeParent(const EditorObject* pObject)
 {
 	int32_t Type = pObject->getSpecialType();
 	switch (Type)
@@ -119,15 +136,15 @@ bool BuildingLink::TypeCanBeParent(const EditorObject* pObject)
 	};
 	return false;
 }
-bool BuildingLink::CanLink(const EditorObject* pParent, const EditorObject* pChild)
+bool
+BuildingLink::CanLink(const EditorObject* pParent, const EditorObject* pChild)
 {
 	int32_t ParentType = pParent->getSpecialType();
-	int32_t ChildType  = pChild->getSpecialType();
+	int32_t ChildType = pChild->getSpecialType();
 	switch (ParentType)
 	{
 	case EditorObjectMgr::TURRET_CONTROL:
-		return (ChildType == EditorObjectMgr::EDITOR_TURRET ||
-				   ChildType == EditorObjectMgr::LOOKOUT)
+		return (ChildType == EditorObjectMgr::EDITOR_TURRET || ChildType == EditorObjectMgr::LOOKOUT)
 			? true
 			: false;
 		break;
@@ -135,9 +152,7 @@ bool BuildingLink::CanLink(const EditorObject* pParent, const EditorObject* pChi
 		return ChildType == EditorObjectMgr::EDITOR_GATE ? true : false;
 		break;
 	case EditorObjectMgr::POWER_STATION:
-		return (ChildType == EditorObjectMgr::BRIDGE_CONTROL ||
-				   ChildType == EditorObjectMgr::GATE_CONTROL ||
-				   ChildType == EditorObjectMgr::SPOTLIGHT_CONTROL)
+		return (ChildType == EditorObjectMgr::BRIDGE_CONTROL || ChildType == EditorObjectMgr::GATE_CONTROL || ChildType == EditorObjectMgr::SPOTLIGHT_CONTROL)
 			? true
 			: false;
 		break;
@@ -159,7 +174,8 @@ bool BuildingLink::CanLink(const EditorObject* pParent, const EditorObject* pChi
 	return false;
 }
 
-bool BuildingLink::RemoveObject(const EditorObject* pObject)
+bool
+BuildingLink::RemoveObject(const EditorObject* pObject)
 {
 	if (HasParent(pObject))
 	{
@@ -167,7 +183,7 @@ bool BuildingLink::RemoveObject(const EditorObject* pObject)
 		return false;
 	}
 	Stuff::Vector3D pos = pObject->getPosition();
-	int32_t ID			= pObject->getID();
+	int32_t ID = pObject->getID();
 	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)
 	{
 		if (ID == (*iter).m_ID && pos == (*iter).pos)
@@ -182,7 +198,8 @@ bool BuildingLink::RemoveObject(const EditorObject* pObject)
 	return false;
 }
 
-int32_t BuildingLink::GetChildrenPositions(Stuff::Vector3D* pos, int32_t Count) const
+int32_t
+BuildingLink::GetChildrenPositions(Stuff::Vector3D* pos, int32_t Count) const
 {
 	if (children.Count() > (uint32_t)Count)
 		return children.Count();
@@ -194,7 +211,8 @@ int32_t BuildingLink::GetChildrenPositions(Stuff::Vector3D* pos, int32_t Count) 
 	return i;
 }
 
-static bool isInView(const Point3D& position)
+static bool
+isInView(const Point3D& position)
 {
 	/* the code in this function was largely swiped from "bool
 	 * BldgAppearance::recalcBounds (void)" on 4/24/00 */
@@ -225,7 +243,7 @@ static bool isInView(const Point3D& position)
 			else
 			{
 				Camera::HazeFactor = 0.0f;
-				inView			   = true;
+				inView = true;
 			}
 			//-----------------------------------------------------------------
 			// If inside farClip plane, check if behind camera.
@@ -251,13 +269,14 @@ static bool isInView(const Point3D& position)
 		else
 		{
 			Camera::HazeFactor = 0.0f;
-			inView			   = true;
+			inView = true;
 		}
 	}
 	return (inView);
 }
 
-void BuildingLink::render()
+void
+BuildingLink::render()
 {
 	Stuff::Vector4D parentScreen;
 	eye->projectZ(parent.pos, parentScreen);
@@ -270,14 +289,14 @@ void BuildingLink::render()
 		rendered. */
 		Stuff::Vector3D diffVect;
 		diffVect.Subtract((*iter).pos, parent.pos);
-		float lineLength						= diffVect.GetLength();
+		float lineLength = diffVect.GetLength();
 		const float lengthOfATypicalLargeObject = 150.0 /*arbitrary*/;
-		int32_t numSegments						= lineLength / lengthOfATypicalLargeObject;
+		int32_t numSegments = lineLength / lengthOfATypicalLargeObject;
 		if (1 > numSegments)
 		{
 			numSegments = 1;
 		}
-		float segmentLength		= lineLength / numSegments;
+		float segmentLength = lineLength / numSegments;
 		Stuff::Vector3D segVect = diffVect;
 		segVect.Normalize(segVect);
 		segVect *= segmentLength;
@@ -305,13 +324,14 @@ void BuildingLink::render()
 				LineElement elem(vertices[0], vertices[1], 0xffff0000, 0, -1);
 				elem.draw();
 			}
-			p1		   = p2;
+			p1 = p2;
 			p1IsInView = p2IsInView;
 		}
 	}
 }
 
-void BuildingLink::SetParentAlignment(int32_t alignment)
+void
+BuildingLink::SetParentAlignment(int32_t alignment)
 {
 	EditorObject* pTmp =
 		EditorObjectMgr::instance()->getObjectAtLocation(parent.pos.x, parent.pos.y);
@@ -333,7 +353,8 @@ void BuildingLink::SetParentAlignment(int32_t alignment)
 	}
 }
 
-void BuildingLink::FixHeights()
+void
+BuildingLink::FixHeights()
 {
 	parent.pos.z = land->getTerrainElevation(parent.pos);
 	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)
@@ -342,7 +363,11 @@ void BuildingLink::FixHeights()
 	}
 }
 
-void BuildingLink::SetParentPosition(const Stuff::Vector3D& pos) { parent.pos = pos; }
+void
+BuildingLink::SetParentPosition(const Stuff::Vector3D& pos)
+{
+	parent.pos = pos;
+}
 
 BuildingLink::Info::~Info(void)
 {

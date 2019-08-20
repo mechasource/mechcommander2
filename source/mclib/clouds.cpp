@@ -56,7 +56,8 @@ extern bool hasGuardBand;
 
 //---------------------------------------------------------------------------
 // Class Clouds
-void Clouds::init(PSTR textureName, int32_t gSize)
+void
+Clouds::init(PSTR textureName, int32_t gSize)
 {
 	FullPathFileName cloudName;
 	cloudName.init(texturePath, textureName, ".tga");
@@ -66,15 +67,16 @@ void Clouds::init(PSTR textureName, int32_t gSize)
 		cloudName, gos_Texture_Alpha, /*gosHint_DisableMipmap |*/ gosHint_DontShrink);
 	//-------------------------------------
 	// Create the CloudVertices here.
-	gridSize		  = gSize;
+	gridSize = gSize;
 	int32_t gridTotal = gridSize * gridSize;
-	cloudVertices	 = (CloudVertexPtr)systemHeap->Malloc(sizeof(CloudVertex) * gridTotal);
+	cloudVertices = (CloudVertexPtr)systemHeap->Malloc(sizeof(CloudVertex) * gridTotal);
 	gosASSERT(cloudVertices != nullptr);
 	memset(cloudVertices, 0, sizeof(CloudVertex) * gridTotal);
 }
 
 //---------------------------------------------------------------------------
-void Clouds::update(void)
+void
+Clouds::update(void)
 {
 	renderClouds = false;
 	scrollU += frameLength * SCROLL_U_FACTOR;
@@ -103,7 +105,7 @@ void Clouds::update(void)
 		//-------------------------------------------------------
 		// Create the grid.
 		int32_t cloudInc = float2long(MAX_CLOUDS_SIZE * 2.0f / gridSize);
-		float uvInc		 = MAX_UV_REPEAT / float(gridSize);
+		float uvInc = MAX_UV_REPEAT / float(gridSize);
 		int32_t y;
 		for (y = 0; y < gridSize; y++)
 		{
@@ -157,8 +159,8 @@ void Clouds::update(void)
 			// Calculate the HazeDWORD here
 			if (hazeFactor != 0.0f)
 			{
-				float fogFactor			= 1.0 - hazeFactor;
-				uint32_t distFog		= float2long(fogFactor * 255.0f);
+				float fogFactor = 1.0 - hazeFactor;
+				uint32_t distFog = float2long(fogFactor * 255.0f);
 				cloudVertices[i].fogRGB = (distFog << 24) + (0xffffff);
 			}
 			else
@@ -188,7 +190,7 @@ void Clouds::update(void)
 			Stuff::Vector3D vertex3D(cloudVertices[i].vx, cloudVertices[i].vy,
 				(CLOUD_ALTITUDE + eye->getCameraOrigin().y));
 			Stuff::Vector4D screenPos;
-			bool inView			= eye->projectZ(vertex3D, screenPos);
+			bool inView = eye->projectZ(vertex3D, screenPos);
 			cloudVertices[i].px = screenPos.x;
 			cloudVertices[i].py = screenPos.y;
 			cloudVertices[i].pz = screenPos.z;
@@ -212,19 +214,13 @@ void Clouds::update(void)
 				CloudVertexPtr cloudVertex3 = &(cloudVertices[x + ((y + 1) * gridSize)]);
 				bool clipCheck =
 					(cloudVertex0->clipInfo || cloudVertex1->clipInfo || cloudVertex2->clipInfo);
-				if (clipCheck &&
-					((cloudVertex0->pz < 1.0f) && (cloudVertex0->pz > 0.0f) &&
-						(cloudVertex1->pz < 1.0f) && (cloudVertex1->pz > 0.0f) &&
-						(cloudVertex2->pz < 1.0f) && (cloudVertex2->pz > 0.0f)))
+				if (clipCheck && ((cloudVertex0->pz < 1.0f) && (cloudVertex0->pz > 0.0f) && (cloudVertex1->pz < 1.0f) && (cloudVertex1->pz > 0.0f) && (cloudVertex2->pz < 1.0f) && (cloudVertex2->pz > 0.0f)))
 				{
 					mcTextureManager->addTriangle(mcTextureNodeIndex, MC2_DRAWALPHA);
 				}
 				clipCheck =
 					(cloudVertex0->clipInfo || cloudVertex2->clipInfo || cloudVertex3->clipInfo);
-				if (clipCheck &&
-					((cloudVertex0->pz < 1.0f) && (cloudVertex0->pz > 0.0f) &&
-						(cloudVertex2->pz < 1.0f) && (cloudVertex2->pz > 0.0f) &&
-						(cloudVertex3->pz < 1.0f) && (cloudVertex3->pz > 0.0f)))
+				if (clipCheck && ((cloudVertex0->pz < 1.0f) && (cloudVertex0->pz > 0.0f) && (cloudVertex2->pz < 1.0f) && (cloudVertex2->pz > 0.0f) && (cloudVertex3->pz < 1.0f) && (cloudVertex3->pz > 0.0f)))
 				{
 					mcTextureManager->addTriangle(mcTextureNodeIndex, MC2_DRAWALPHA);
 				}
@@ -235,7 +231,8 @@ void Clouds::update(void)
 
 #define CLOUD_Z_VALUE 0.9900f
 //---------------------------------------------------------------------------
-void Clouds::render(void)
+void
+Clouds::render(void)
 {
 	if (!renderClouds)
 		return;
@@ -250,45 +247,39 @@ void Clouds::render(void)
 			gos_VERTEX gVertex[3];
 			bool clipCheck =
 				(cloudVertex0->clipInfo || cloudVertex1->clipInfo || cloudVertex2->clipInfo);
-			if (clipCheck &&
-				((cloudVertex0->pz < 1.0f) && (cloudVertex0->pz > 0.0f) &&
-					(cloudVertex1->pz < 1.0f) && (cloudVertex1->pz > 0.0f) &&
-					(cloudVertex2->pz < 1.0f) && (cloudVertex2->pz > 0.0f)))
+			if (clipCheck && ((cloudVertex0->pz < 1.0f) && (cloudVertex0->pz > 0.0f) && (cloudVertex1->pz < 1.0f) && (cloudVertex1->pz > 0.0f) && (cloudVertex2->pz < 1.0f) && (cloudVertex2->pz > 0.0f)))
 			{
 				//--------------------------
 				// Top Triangle
-				gVertex[0].x	= cloudVertex0->px;
-				gVertex[0].y	= cloudVertex0->py;
-				gVertex[0].z	= CLOUD_Z_VALUE;
-				gVertex[0].rhw  = cloudVertex0->pw;
-				gVertex[0].u	= cloudVertex0->pu;
-				gVertex[0].v	= cloudVertex0->pv;
+				gVertex[0].x = cloudVertex0->px;
+				gVertex[0].y = cloudVertex0->py;
+				gVertex[0].z = CLOUD_Z_VALUE;
+				gVertex[0].rhw = cloudVertex0->pw;
+				gVertex[0].u = cloudVertex0->pu;
+				gVertex[0].v = cloudVertex0->pv;
 				gVertex[0].argb = cloudVertex0->fogRGB;
 				gVertex[0].frgb = 0xff000000;
-				gVertex[1].x	= cloudVertex1->px;
-				gVertex[1].y	= cloudVertex1->py;
-				gVertex[1].z	= CLOUD_Z_VALUE;
-				gVertex[1].rhw  = cloudVertex1->pw;
-				gVertex[1].u	= cloudVertex1->pu;
-				gVertex[1].v	= cloudVertex1->pv;
+				gVertex[1].x = cloudVertex1->px;
+				gVertex[1].y = cloudVertex1->py;
+				gVertex[1].z = CLOUD_Z_VALUE;
+				gVertex[1].rhw = cloudVertex1->pw;
+				gVertex[1].u = cloudVertex1->pu;
+				gVertex[1].v = cloudVertex1->pv;
 				gVertex[1].argb = cloudVertex1->fogRGB;
 				gVertex[1].frgb = 0xff000000;
-				gVertex[2].x	= cloudVertex2->px;
-				gVertex[2].y	= cloudVertex2->py;
-				gVertex[2].z	= CLOUD_Z_VALUE;
-				gVertex[2].rhw  = cloudVertex2->pw;
-				gVertex[2].u	= cloudVertex2->pu;
-				gVertex[2].v	= cloudVertex2->pv;
+				gVertex[2].x = cloudVertex2->px;
+				gVertex[2].y = cloudVertex2->py;
+				gVertex[2].z = CLOUD_Z_VALUE;
+				gVertex[2].rhw = cloudVertex2->pw;
+				gVertex[2].u = cloudVertex2->pu;
+				gVertex[2].v = cloudVertex2->pv;
 				gVertex[2].argb = cloudVertex2->fogRGB;
 				gVertex[2].frgb = 0xff000000;
 				mcTextureManager->addVertices(mcTextureNodeIndex, gVertex, MC2_DRAWALPHA);
 			}
 			clipCheck =
 				(cloudVertex0->clipInfo || cloudVertex2->clipInfo || cloudVertex3->clipInfo);
-			if (clipCheck &&
-				((cloudVertex0->pz < 1.0f) && (cloudVertex0->pz > 0.0f) &&
-					(cloudVertex2->pz < 1.0f) && (cloudVertex2->pz > 0.0f) &&
-					(cloudVertex3->pz < 1.0f) && (cloudVertex3->pz > 0.0f)))
+			if (clipCheck && ((cloudVertex0->pz < 1.0f) && (cloudVertex0->pz > 0.0f) && (cloudVertex2->pz < 1.0f) && (cloudVertex2->pz > 0.0f) && (cloudVertex3->pz < 1.0f) && (cloudVertex3->pz > 0.0f)))
 			{
 				//--------------------------
 				// Bottom Triangle
@@ -296,28 +287,28 @@ void Clouds::render(void)
 				// gVertex[0] same as above gVertex[0].
 				// gVertex[1] is same as above gVertex[2].
 				// gVertex[2] is calced from vertex[3].
-				gVertex[0].x	= cloudVertex0->px;
-				gVertex[0].y	= cloudVertex0->py;
-				gVertex[0].z	= CLOUD_Z_VALUE;
-				gVertex[0].rhw  = cloudVertex0->pw;
-				gVertex[0].u	= cloudVertex0->pu;
-				gVertex[0].v	= cloudVertex0->pv;
+				gVertex[0].x = cloudVertex0->px;
+				gVertex[0].y = cloudVertex0->py;
+				gVertex[0].z = CLOUD_Z_VALUE;
+				gVertex[0].rhw = cloudVertex0->pw;
+				gVertex[0].u = cloudVertex0->pu;
+				gVertex[0].v = cloudVertex0->pv;
 				gVertex[0].argb = cloudVertex0->fogRGB;
 				gVertex[0].frgb = 0xff000000;
-				gVertex[1].x	= cloudVertex2->px;
-				gVertex[1].y	= cloudVertex2->py;
-				gVertex[1].z	= CLOUD_Z_VALUE;
-				gVertex[1].rhw  = cloudVertex2->pw;
-				gVertex[1].u	= cloudVertex2->pu;
-				gVertex[1].v	= cloudVertex2->pv;
+				gVertex[1].x = cloudVertex2->px;
+				gVertex[1].y = cloudVertex2->py;
+				gVertex[1].z = CLOUD_Z_VALUE;
+				gVertex[1].rhw = cloudVertex2->pw;
+				gVertex[1].u = cloudVertex2->pu;
+				gVertex[1].v = cloudVertex2->pv;
 				gVertex[1].argb = cloudVertex2->fogRGB;
 				gVertex[1].frgb = 0xff000000;
-				gVertex[2].x	= cloudVertex3->px;
-				gVertex[2].y	= cloudVertex3->py;
-				gVertex[2].z	= CLOUD_Z_VALUE;
-				gVertex[2].rhw  = cloudVertex3->pw;
-				gVertex[2].u	= cloudVertex3->pu;
-				gVertex[2].v	= cloudVertex3->pv;
+				gVertex[2].x = cloudVertex3->px;
+				gVertex[2].y = cloudVertex3->py;
+				gVertex[2].z = CLOUD_Z_VALUE;
+				gVertex[2].rhw = cloudVertex3->pw;
+				gVertex[2].u = cloudVertex3->pu;
+				gVertex[2].v = cloudVertex3->pv;
 				gVertex[2].argb = cloudVertex3->fogRGB;
 				gVertex[2].frgb = 0xff000000;
 				mcTextureManager->addVertices(mcTextureNodeIndex, gVertex, MC2_DRAWALPHA);
@@ -327,7 +318,8 @@ void Clouds::render(void)
 }
 
 //---------------------------------------------------------------------------
-void Clouds::destroy(void)
+void
+Clouds::destroy(void)
 {
 	systemHeap->Free(cloudVertices);
 	cloudVertices = nullptr;

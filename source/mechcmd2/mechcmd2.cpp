@@ -47,24 +47,24 @@ extern CPrefs prefs;
 // int32_t maxFastFiles = 0;
 
 uint32_t GameDifficulty = 0;
-uint32_t gammaLevel		= 0;
+uint32_t gammaLevel = 0;
 extern int32_t DigitalMasterVolume;
 extern int32_t MusicVolume;
 extern int32_t sfxVolume;
 extern int32_t RadioVolume;
 extern int32_t BettyVolume;
-int32_t resolution  = 0;
-int32_t renderer	= 0;
+int32_t resolution = 0;
+int32_t renderer = 0;
 int32_t FilterState = gos_FilterNone;
 
-bool quitGame				  = false;
-bool justStartMission		  = false;
-bool gamePaused				  = false;
-bool hasGuardBand			  = false;
-bool canMultiTextureDetail	= false;
-bool useUnlimitedAmmo		  = true;
+bool quitGame = false;
+bool justStartMission = false;
+bool gamePaused = false;
+bool hasGuardBand = false;
+bool canMultiTextureDetail = false;
+bool useUnlimitedAmmo = true;
 bool useLeftRightMouseProfile = true; // if false, use old style commands
-bool justResaveAllMaps		  = false;
+bool justResaveAllMaps = false;
 extern bool useWaterInterestTexture;
 extern bool useShadows;
 
@@ -73,46 +73,47 @@ bool gotBombData = false;
 
 TimerManagerPtr timerManager = nullptr;
 
-bool initGameLogs  = false;
-bool initNetLog	= false;
-GameLog* NetLog	= nullptr;
+bool initGameLogs = false;
+bool initNetLog = false;
+GameLog* NetLog = nullptr;
 bool initCombatLog = false;
 GameLog* CombatLog = nullptr;
-bool initBugLog	= false;
-GameLog* BugLog	= nullptr;
+bool initBugLog = false;
+GameLog* BugLog = nullptr;
 bool initLRMoveLog = false;
 
 bool KillAmbientLight = false;
 
-void InitDW();
+void
+InitDW();
 
 extern uint32_t NumDevices;
 
 uint32_t elementHeapSize = 1024000;
-uint32_t maxElements	 = 2048;
-uint32_t maxGroups		 = 1024;
+uint32_t maxElements = 2048;
+uint32_t maxGroups = 1024;
 
-uint32_t systemHeapSize		= 8192000;
-uint32_t guiHeapSize		= 1023999;
-uint32_t logisticsHeapSize  = 4095999;
-uint32_t missionHeapSize	= 3072000;
+uint32_t systemHeapSize = 8192000;
+uint32_t guiHeapSize = 1023999;
+uint32_t logisticsHeapSize = 4095999;
+uint32_t missionHeapSize = 3072000;
 uint32_t spriteDataHeapSize = 2048000;
-uint32_t spriteHeapSize		= 8192000;
-uint32_t polyHeapSize		= 1024000;
+uint32_t spriteHeapSize = 8192000;
+uint32_t polyHeapSize = 1024000;
 
 extern float ProcessorSpeed;
 void __stdcall ExitGameOS();
 
 uint32_t gosResourceHandle = 0;
-HGOSFONT3D gosFontHandle   = 0;
-float gosFontScale		   = 1.0;
+HGOSFONT3D gosFontHandle = 0;
+float gosFontScale = 1.0;
 extern HGOSFONT3D FontHandle;
 FloatHelpPtr globalFloatHelp = nullptr;
-uint32_t currentFloatHelp	= 0;
-float MaxMinUV				 = 8.0f;
+uint32_t currentFloatHelp = 0;
+float MaxMinUV = 8.0f;
 
 uint32_t BaseVertexColor = 0x00000000; // This color is applied to all vertices
-									   // in game as Brightness correction.
+	// in game as Brightness correction.
 
 enum
 {
@@ -121,17 +122,18 @@ enum
 	CPU_MMX,
 	CPU_KATMAI
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
-						   // -- MECHCMDR2
+	// -- MECHCMDR2
 extern float frameRate;
-void EnterWindowMode();
+void
+EnterWindowMode();
 
 extern int32_t MaxMoveGoalChecks;
 extern bool useSound;
 extern bool useMusic;
 int32_t MaxResourcePoints = -1;
-bool ShowMovers			  = false;
-bool EnemiesGoalPlan	  = false;
-bool inViewMode			  = false;
+bool ShowMovers = false;
+bool EnemiesGoalPlan = false;
+bool inViewMode = false;
 extern bool CullPathAreas;
 uint32_t viewObject = 0x0;
 char missionName[1024];
@@ -188,9 +190,9 @@ Stuff::Vector3D pos[36] = {Stuff::Vector3D(-3400.0f, 3000.0f, -1.0f),
 int32_t currentLineElement = 0;
 LineElement* debugLines[10000];
 
-#define ProfileTime(x, y)                                                                          \
-	x = GetCycles();                                                                               \
-	y;                                                                                             \
+#define ProfileTime(x, y) \
+	x = GetCycles();      \
+	y;                    \
 	x = GetCycles() - x;
 extern int64_t MCTimeMultiplayerUpdate;
 #else
@@ -203,17 +205,17 @@ int32_t NumDisableAtStart = 0;
 int32_t DisableAtStart[MAX_KILL_AT_START];
 
 OptionsScreenWrapper* optionsScreenWrapper = nullptr;
-bool bInvokeOptionsScreenFlag			   = false;
+bool bInvokeOptionsScreenFlag = false;
 
-bool SnifferMode		   = false;
-gos_VERTEX* testVertex	 = nullptr;
-puint16_t indexArray	   = nullptr;
+bool SnifferMode = false;
+gos_VERTEX* testVertex = nullptr;
+puint16_t indexArray = nullptr;
 uint32_t testTextureHandle = 0xffffffff;
-float totalTime			   = 0;
-uint32_t numIterations	 = 4;
-uint32_t curIteration	  = 0;
-uint32_t curDevice		   = 0;
-bool isUsingSoftware	   = false;
+float totalTime = 0;
+uint32_t numIterations = 4;
+uint32_t curIteration = 0;
+uint32_t curDevice = 0;
+bool isUsingSoftware = false;
 #define MAX_HARDWARE_CARDS 5
 float trisPerSecond[MAX_HARDWARE_CARDS] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
@@ -237,18 +239,20 @@ bool checkedBomb = false;
 #define NUM_DEBUG_WINDOWS 4
 char DebugStatusBarString[256];
 GameDebugWindow* DebugWindow[NUM_DEBUG_WINDOWS] = {nullptr, nullptr, nullptr, nullptr};
-GameObjectPtr DebugGameObject[3]				= {nullptr, nullptr, nullptr};
-int32_t GameObjectWindowList[3]					= {0, 0, 0};
-int32_t NumGameObjectsToDisplay					= 0;
-bool DebugWindowOpen[NUM_DEBUG_WINDOWS]			= {false, false, false, false};
-bool DebugStatusBarOpen							= false;
-bool DebugScoreBoardOpen						= false;
-bool DebugHelpOpen								= false;
-void DEBUGWINS_print(PSTR s, int32_t window = 0);
+GameObjectPtr DebugGameObject[3] = {nullptr, nullptr, nullptr};
+int32_t GameObjectWindowList[3] = {0, 0, 0};
+int32_t NumGameObjectsToDisplay = 0;
+bool DebugWindowOpen[NUM_DEBUG_WINDOWS] = {false, false, false, false};
+bool DebugStatusBarOpen = false;
+bool DebugScoreBoardOpen = false;
+bool DebugHelpOpen = false;
+void
+DEBUGWINS_print(PSTR s, int32_t window = 0);
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_init(void)
+void
+DEBUGWINS_init(void)
 {
 
 	sprintf(DebugStatusBarString, "DEBUG Status Bar: GLENNBA");
@@ -288,7 +292,8 @@ void DEBUGWINS_init(void)
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_destroy(void)
+void
+DEBUGWINS_destroy(void)
 {
 
 	for (size_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
@@ -300,7 +305,8 @@ void DEBUGWINS_destroy(void)
 		}
 }
 
-void initDialogs()
+void
+initDialogs()
 {
 	FullPathFileName path;
 	path.init(artPath, "mcl_dialog", ".fit");
@@ -342,7 +348,8 @@ void initDialogs()
 	LogisticsOneButtonDialog::init(file);
 }
 
-void endDialogs()
+void
+endDialogs()
 {
 	if (LogisticsOKDialog::s_instance)
 	{
@@ -371,20 +378,22 @@ void endDialogs()
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_toggle(bool* windowsOpen)
+void
+DEBUGWINS_toggle(bool* windowsOpen)
 {
 
 	for (size_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
 		if (windowsOpen[i])
 			DebugWindow[i]->toggle();
-	DebugHelpOpen		= windowsOpen[NUM_DEBUG_WINDOWS];
-	DebugStatusBarOpen  = windowsOpen[NUM_DEBUG_WINDOWS + 1];
+	DebugHelpOpen = windowsOpen[NUM_DEBUG_WINDOWS];
+	DebugStatusBarOpen = windowsOpen[NUM_DEBUG_WINDOWS + 1];
 	DebugScoreBoardOpen = windowsOpen[NUM_DEBUG_WINDOWS + 2];
 }
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_display(bool* windowsOpen)
+void
+DEBUGWINS_display(bool* windowsOpen)
 {
 
 	for (size_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
@@ -400,32 +409,38 @@ void DEBUGWINS_display(bool* windowsOpen)
 			DebugWindow[i]->close();
 		}
 	}
-	DebugHelpOpen		= windowsOpen[NUM_DEBUG_WINDOWS];
-	DebugStatusBarOpen  = windowsOpen[NUM_DEBUG_WINDOWS + 1];
+	DebugHelpOpen = windowsOpen[NUM_DEBUG_WINDOWS];
+	DebugStatusBarOpen = windowsOpen[NUM_DEBUG_WINDOWS + 1];
 	DebugScoreBoardOpen = windowsOpen[NUM_DEBUG_WINDOWS + 2];
 }
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_print(PSTR s, int32_t window) { DebugWindow[window]->print(s); }
+void
+DEBUGWINS_print(PSTR s, int32_t window)
+{
+	DebugWindow[window]->print(s);
+}
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj)
+void
+DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj)
 {
 
 	if (debugObj == -1)
 	{
 		DebugGameObject[2] = DebugGameObject[1];
 		DebugGameObject[1] = DebugGameObject[0];
-		debugObj		   = 0;
+		debugObj = 0;
 	}
 	DebugGameObject[debugObj] = obj;
 }
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_viewGameObject(int32_t debugObj)
+void
+DEBUGWINS_viewGameObject(int32_t debugObj)
 {
 
 	if (DebugGameObject[debugObj])
@@ -437,7 +452,8 @@ void DEBUGWINS_viewGameObject(int32_t debugObj)
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_removeGameObject(GameObjectPtr obj)
+void
+DEBUGWINS_removeGameObject(GameObjectPtr obj)
 {
 
 	for (size_t i = 0; i < 3; i++)
@@ -450,7 +466,8 @@ void DEBUGWINS_removeGameObject(GameObjectPtr obj)
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_update(void)
+void
+DEBUGWINS_update(void)
 {
 
 	for (size_t i = 0; i < 3; i++)
@@ -460,7 +477,8 @@ void DEBUGWINS_update(void)
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_renderSpecialWindows(void)
+void
+DEBUGWINS_renderSpecialWindows(void)
 {
 
 	gos_TextSetAttributes(DebugWindow[0]->font, 0xffffffff, 1.0, true, true, false, false);
@@ -607,7 +625,8 @@ void DEBUGWINS_renderSpecialWindows(void)
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_render(void)
+void
+DEBUGWINS_render(void)
 {
 
 	for (size_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
@@ -617,7 +636,11 @@ void DEBUGWINS_render(void)
 
 //***************************************************************************
 
-PSTR GetGameInformation() { return (ExceptionGameMsg); }
+PSTR
+GetGameInformation()
+{
+	return (ExceptionGameMsg);
+}
 
 // int32_t cLoadString (HINSTANCE hInstance,  uint32_t uID, PSTR lpBuffer,
 // int32_t nBufferMax );
@@ -627,7 +650,8 @@ uint32_t startTime;
 uint32_t endTime;
 
 //---------------------------------------------------------------------------
-void UpdateRenderers()
+void
+UpdateRenderers()
 {
 	if (!SnifferMode)
 	{
@@ -766,13 +790,18 @@ void UpdateRenderers()
 typedef uint32_t(__stdcall* EBUPROC)(
 	PCSTR lpRegKeyLocation, PCSTR lpEULAFileName, PCSTR lpWarrantyFileName, BOOL fCheckForFirstRun);
 
-bool FirstRunEula(void) { return (true); }
+bool
+FirstRunEula(void)
+{
+	return (true);
+}
 
 std::iostream effectStream = nullptr;
 extern MidLevelRenderer::MLRClipper* theClipper;
 
 bool gameStarted = false;
-void InitializeGameEngine()
+void
+InitializeGameEngine()
 {
 	__asm push esi;
 
@@ -837,12 +866,11 @@ void InitializeGameEngine()
 
 	// Check if we are a Voodoo 3.  If so, ONLY allow editor to run IF
 	// Starting resolution is 1024x768x16 or LOWER.  NO 32-BIT ALLOWED!
-	if ((gos_GetMachineInformation(gos_Info_GetDeviceVendorID, 0) == 0x121a) &&
-		(gos_GetMachineInformation(gos_Info_GetDeviceDeviceID, 0) == 0x0005))
+	if ((gos_GetMachineInformation(gos_Info_GetDeviceVendorID, 0) == 0x121a) && (gos_GetMachineInformation(gos_Info_GetDeviceDeviceID, 0) == 0x0005))
 	{
 		DEVMODE dev;
 		memset(&dev, 0, sizeof(DEVMODE));
-		dev.dmSize		  = sizeof(DEVMODE);
+		dev.dmSize = sizeof(DEVMODE);
 		dev.dmSpecVersion = DM_SPECVERSION;
 		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
 
@@ -865,10 +893,7 @@ void InitializeGameEngine()
 		// Must also check for a RIVA TNT card with driver 4.10.1.0131
 		// If this card is in the machine with this driver, do NOT allow sniffer
 		// to run. Just copy minprefs.cfg to options.cfg and move on.
-		if ((gos_GetMachineInformation(gos_Info_GetDeviceVendorID, 0) == 0x10de) &&
-			(gos_GetMachineInformation(gos_Info_GetDeviceDeviceID, 0) == 0x0020) &&
-			(gos_GetMachineInformation(gos_Info_GetDeviceDriverVersionHi, 0) == 0x0004000a) &&
-			(gos_GetMachineInformation(gos_Info_GetDeviceDriverVersionLo, 0) == 0x00010083))
+		if ((gos_GetMachineInformation(gos_Info_GetDeviceVendorID, 0) == 0x10de) && (gos_GetMachineInformation(gos_Info_GetDeviceDeviceID, 0) == 0x0020) && (gos_GetMachineInformation(gos_Info_GetDeviceDriverVersionHi, 0) == 0x0004000a) && (gos_GetMachineInformation(gos_Info_GetDeviceDriverVersionLo, 0) == 0x00010083))
 		{
 			CopyFile("minprefs.cfg", "orgprefs.cfg", true);
 			CopyFile("minprefs.cfg", "options.cfg", true);
@@ -893,7 +918,7 @@ void InitializeGameEngine()
 		//---------------------------------------------------------------------
 
 		float doubleClickThreshold = 0.2f;
-		int32_t dragThreshold	  = .016667;
+		int32_t dragThreshold = .016667;
 
 		Environment.Key_Exit = -1; // so escape doesn't kill your app
 
@@ -915,7 +940,7 @@ void InitializeGameEngine()
 
 		globalHeapList->init();
 		globalHeapList->update(); // Run Instrumentation into GOS Debugger
-								  // Screen
+			// Screen
 
 		systemHeap = new UserHeap;
 		gosASSERT(systemHeap != nullptr);
@@ -1162,9 +1187,9 @@ void InitializeGameEngine()
 
 		//--------------------------------------------------------------
 		// Read in Prefs.cfg
-		bool fullScreen			= false;
+		bool fullScreen = false;
 		FitIniFilePtr prefsFile = new FitIniFile;
-		FitIniFilePtr optsFile  = new FitIniFile;
+		FitIniFilePtr optsFile = new FitIniFile;
 
 		int32_t prefsOpenResult = prefsFile->open("prefs.cfg");
 
@@ -1239,7 +1264,7 @@ void InitializeGameEngine()
 				if (FAILED(result))
 					useLeftRightMouseProfile = true;
 				bool asyncMouse = false;
-				result			= optsFile->readIdBoolean("useAsyncMouse", asyncMouse);
+				result = optsFile->readIdBoolean("useAsyncMouse", asyncMouse);
 				if (FAILED(result))
 					asyncMouse = false;
 				mc2UseAsyncMouse = asyncMouse;
@@ -1391,14 +1416,14 @@ void InitializeGameEngine()
 		if (pStr)
 		{
 			gosFontScale = -atoi(pStr + 1);
-			*pStr		 = 0;
+			*pStr = 0;
 		}
 		char path[256];
 		strcpy(path, "assets\\graphics\\");
 		strcat(path, temp);
 
 		gosFontHandle = gos_LoadFont(path);
-		FontHandle	= gosFontHandle;
+		FontHandle = gosFontHandle;
 
 		globalFloatHelp = new FloatHelp(MAX_FLOAT_HELPS);
 
@@ -1445,7 +1470,7 @@ void InitializeGameEngine()
 		if (FAILED(result))
 			STOP(("Could not find MC2.fx"));
 
-		int32_t effectsSize  = effectFile.fileSize();
+		int32_t effectsSize = effectFile.fileSize();
 		puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 		effectFile.read(effectsData, effectsSize);
 		effectFile.close();
@@ -1486,23 +1511,23 @@ void InitializeGameEngine()
 
 		//-----------------------------------------------
 		// Only used by camera to retrieve screen coords.
-		globalPane   = new PANE;
+		globalPane = new PANE;
 		globalWindow = new WINDOW;
 
 		globalPane->window = globalWindow;
-		globalPane->x0	 = 0;
-		globalPane->y0	 = 0;
-		globalPane->x1	 = Environment.screenWidth;
-		globalPane->y1	 = Environment.screenHeight;
+		globalPane->x0 = 0;
+		globalPane->y0 = 0;
+		globalPane->x1 = Environment.screenWidth;
+		globalPane->y1 = Environment.screenHeight;
 
 		globalWindow->buffer = nullptr; // This is set at the start of Renders.
-										// For now we HOLD LOCK during entire old
-										// 2D render test.  This will go away
-										// once we hit 3D
-		globalWindow->shadow  = nullptr;
+			// For now we HOLD LOCK during entire old
+			// 2D render test.  This will go away
+			// once we hit 3D
+		globalWindow->shadow = nullptr;
 		globalWindow->stencil = nullptr;
-		globalWindow->x_max   = globalPane->x1 - globalPane->x0 - 1;
-		globalWindow->y_max   = globalPane->y1 - globalPane->y0 - 1;
+		globalWindow->x_max = globalPane->x1 - globalPane->x0 - 1;
+		globalWindow->y_max = globalPane->y1 - globalPane->y0 - 1;
 
 		//---------------------------------------------------------
 		// Start the Timers
@@ -1577,15 +1602,15 @@ void InitializeGameEngine()
 		gos_LoadDataFromRegistry("GraphicsDataInit2", &bombDate, &dataSize);
 		if (dataSize == 0)
 		{
-			bombDate.wYear		   = 2001;
-			bombDate.wMonth		   = 6;
-			bombDate.wDayOfWeek	= 5;
-			bombDate.wDay		   = 15;
-			bombDate.wHour		   = 0;
-			bombDate.wMinute	   = 0;
-			bombDate.wSecond	   = 0;
+			bombDate.wYear = 2001;
+			bombDate.wMonth = 6;
+			bombDate.wDayOfWeek = 5;
+			bombDate.wDay = 15;
+			bombDate.wHour = 0;
+			bombDate.wMinute = 0;
+			bombDate.wSecond = 0;
 			bombDate.wMilliseconds = 0;
-			dataSize			   = sizeof(SYSTEMTIME);
+			dataSize = sizeof(SYSTEMTIME);
 			gos_SaveDataToRegistry("GraphicsDataInit2", &bombDate, dataSize);
 		}
 
@@ -1615,9 +1640,7 @@ void InitializeGameEngine()
 		// Check which rasterizer comes up.  If software, tell prefs we cannot
 		// run in hardware!!
 		//
-		while (((gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, curDevice) +
-					gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, curDevice)) < 6291456) &&
-			(curDevice < gos_GetMachineInformation(gos_Info_NumberDevices)))
+		while (((gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, curDevice) + gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, curDevice)) < 6291456) && (curDevice < gos_GetMachineInformation(gos_Info_NumberDevices)))
 			curDevice++;
 		if (curDevice < gos_GetMachineInformation(gos_Info_NumberDevices))
 			gos_SetScreenMode(800, 600, 16, curDevice, 0, 0, 0, true, 0, 0, 0, 0);
@@ -1626,15 +1649,15 @@ void InitializeGameEngine()
 		indexArray = (puint16_t)malloc(sizeof(uint16_t) * 3000);
 		for (size_t i = 0; i < 3000; i++)
 		{
-			testVertex[i].x	= RandomNumber(1000) - 100;
-			testVertex[i].y	= RandomNumber(800) - 100;
-			testVertex[i].z	= ((float)RandomNumber(150) / 100.0f) - 0.25f;
-			testVertex[i].rhw  = 0.5f;
-			testVertex[i].u	= (float)RandomNumber(100) / 100.0f;
-			testVertex[i].v	= (float)RandomNumber(100) / 100.0f;
+			testVertex[i].x = RandomNumber(1000) - 100;
+			testVertex[i].y = RandomNumber(800) - 100;
+			testVertex[i].z = ((float)RandomNumber(150) / 100.0f) - 0.25f;
+			testVertex[i].rhw = 0.5f;
+			testVertex[i].u = (float)RandomNumber(100) / 100.0f;
+			testVertex[i].v = (float)RandomNumber(100) / 100.0f;
 			testVertex[i].argb = 0x3fffffff;
 			testVertex[i].frgb = 0x3f1f2f3f;
-			indexArray[i]	  = i;
+			indexArray[i] = i;
 		}
 		testTextureHandle = gos_NewTextureFromFile(gos_Texture_Solid, "testTxm.tga");
 	}
@@ -1651,7 +1674,8 @@ void InitializeGameEngine()
 
 //---------------------------------------------------------------------------
 
-void TerminateGameEngine()
+void
+TerminateGameEngine()
 {
 	if (!gameStarted)
 		return;
@@ -1822,7 +1846,7 @@ extern int32_t terrainLineChanged;
 
 float frameNum = 0.0f;
 
-bool enoughTime		= true;
+bool enoughTime = true;
 int32_t enoughCount = 0;
 
 //---------------------------------------------------------------------------
@@ -1830,7 +1854,8 @@ int32_t enoughCount = 0;
 // No multi-thread now!
 //
 bool DoneSniffing = false;
-void DoGameLogic()
+void
+DoGameLogic()
 {
 	if (!SnifferMode)
 	{
@@ -1869,12 +1894,11 @@ void DoGameLogic()
 		if (currentFrameNum == 30)
 			currentFrameNum = 0;
 		last30Frames[currentFrameNum] = frameRate;
-		averageFrameRate			  = 0.0f;
+		averageFrameRate = 0.0f;
 		for (size_t fc = 0; fc < 30; fc++)
 			averageFrameRate += last30Frames[fc];
 		averageFrameRate /= 30.0f;
-		if (userInput->getKeyDown(KEY_R) && userInput->ctrl() && !userInput->alt() &&
-			!userInput->shift())
+		if (userInput->getKeyDown(KEY_R) && userInput->ctrl() && !userInput->alt() && !userInput->shift())
 		{
 			doTransformMath ^= true;
 			terrainLineChanged = turn;
@@ -1900,9 +1924,7 @@ void DoGameLogic()
 					logistics->stop();
 				}
 			}
-			if ((true == bInvokeOptionsScreenFlag) ||
-				(userInput->getKeyDown(KEY_O) && userInput->ctrl() && !userInput->alt() &&
-					!userInput->shift()))
+			if ((true == bInvokeOptionsScreenFlag) || (userInput->getKeyDown(KEY_O) && userInput->ctrl() && !userInput->alt() && !userInput->shift()))
 			{
 				bInvokeOptionsScreenFlag = false;
 				if ((!optionsScreenWrapper) || (optionsScreenWrapper->isDone()))
@@ -1912,8 +1934,7 @@ void DoGameLogic()
 						optionsScreenWrapper = new OptionsScreenWrapper;
 						optionsScreenWrapper->init();
 					}
-					if (mission && mission->missionInterface &&
-						!mission->missionInterface->isPaused())
+					if (mission && mission->missionInterface && !mission->missionInterface->isPaused())
 						mission->missionInterface->togglePauseWithoutMenu();
 					optionsScreenWrapper->begin();
 				}
@@ -1956,8 +1977,7 @@ void DoGameLogic()
 					else
 						logistics->start(log_RESULTS); // Should be log_RESULTS!!!!!!
 					aborted = false;
-					if (!LogisticsData::instance->campaignOver() || MPlayer ||
-						LogisticsData::instance->isSingleMission())
+					if (!LogisticsData::instance->campaignOver() || MPlayer || LogisticsData::instance->isSingleMission())
 					{
 						mission->destroy();
 						// delete mission;
@@ -1976,8 +1996,7 @@ void DoGameLogic()
 				if (result == OptionsScreenWrapper::opt_DONE)
 				{
 					optionsScreenWrapper->end();
-					if (mission && mission->missionInterface &&
-						mission->missionInterface->isPaused())
+					if (mission && mission->missionInterface && mission->missionInterface->isPaused())
 						mission->missionInterface->togglePauseWithoutMenu();
 				}
 			}
@@ -2058,15 +2077,15 @@ void DoGameLogic()
 		{
 			for (size_t i = 0; i < 3000; i++)
 			{
-				testVertex[i].x	= RandomNumber(1000) - 100;
-				testVertex[i].y	= RandomNumber(800) - 100;
-				testVertex[i].z	= ((float)RandomNumber(150) / 100.0f) - 0.25f;
-				testVertex[i].rhw  = 0.5f;
-				testVertex[i].u	= (float)RandomNumber(100) / 100.0f;
-				testVertex[i].v	= (float)RandomNumber(100) / 100.0f;
+				testVertex[i].x = RandomNumber(1000) - 100;
+				testVertex[i].y = RandomNumber(800) - 100;
+				testVertex[i].z = ((float)RandomNumber(150) / 100.0f) - 0.25f;
+				testVertex[i].rhw = 0.5f;
+				testVertex[i].u = (float)RandomNumber(100) / 100.0f;
+				testVertex[i].v = (float)RandomNumber(100) / 100.0f;
 				testVertex[i].argb = 0x3fffffff;
 				testVertex[i].frgb = 0x3f1f2f3f;
-				indexArray[i]	  = i;
+				indexArray[i] = i;
 			}
 			curIteration++;
 			if (curIteration > numIterations)
@@ -2132,8 +2151,7 @@ void DoGameLogic()
 				else
 				{
 					// Don't sniff a below minspec card.  Crash O Roni!
-					if (gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, curDevice) >=
-						6291456)
+					if (gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, curDevice) >= 6291456)
 						gos_SetScreenMode(800, 600, 16, curDevice, 0, 0, 0, true, 0, 0, 0, 0);
 					else
 						curDevice++;
@@ -2159,7 +2177,8 @@ void DoGameLogic()
 }
 
 //---------------------------------------------------------------------------
-int32_t textToLong(PSTR num)
+int32_t
+textToLong(PSTR num)
 {
 	int32_t result = 0;
 	//------------------------------------
@@ -2178,12 +2197,12 @@ int32_t textToLong(PSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -2210,11 +2229,12 @@ int32_t textToLong(PSTR num)
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void ParseCommandLine(PSTR command_line)
+void
+ParseCommandLine(PSTR command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
-	int32_t index  = 0;
+	int32_t index = 0;
 	PSTR argv[30];
 	char tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
@@ -2242,7 +2262,7 @@ void ParseCommandLine(PSTR command_line)
 			if (i < n_args)
 			{
 				justStartMission = true;
-				inViewMode		 = false;
+				inViewMode = false;
 				if (argv[i][0] == '"')
 				{
 					// They typed in a quote, keep reading argvs
@@ -2258,7 +2278,7 @@ void ParseCommandLine(PSTR command_line)
 							strcat(missionName, argv[i]);
 							if (strstr(argv[i], "\"") != nullptr)
 							{
-								scanName							 = false;
+								scanName = false;
 								missionName[strlen(missionName) - 1] = 0;
 							}
 						}
@@ -2266,7 +2286,7 @@ void ParseCommandLine(PSTR command_line)
 						{
 							// They put a quote on the line with no space.
 							//
-							scanName							 = false;
+							scanName = false;
 							missionName[strlen(missionName) - 1] = 0;
 						}
 					}
@@ -2280,9 +2300,9 @@ void ParseCommandLine(PSTR command_line)
 			i++;
 			if (i < n_args)
 			{
-				inViewMode		 = true;
+				inViewMode = true;
 				justStartMission = true;
-				viewObject		 = textToLong(argv[i]);
+				viewObject = textToLong(argv[i]);
 				strcpy(missionName, "mis0101");
 			}
 		}
@@ -2299,7 +2319,7 @@ void ParseCommandLine(PSTR command_line)
 			i++;
 			if (i < n_args)
 			{
-				int32_t teamID					   = textToLong(argv[i]);
+				int32_t teamID = textToLong(argv[i]);
 				MechWarrior::brainsEnabled[teamID] = false;
 			}
 		}
@@ -2308,7 +2328,7 @@ void ParseCommandLine(PSTR command_line)
 			i++;
 			if (i < n_args)
 			{
-				int32_t teamID				   = textToLong(argv[i]);
+				int32_t teamID = textToLong(argv[i]);
 				Turret::turretsEnabled[teamID] = false;
 			}
 		}
@@ -2360,7 +2380,7 @@ void ParseCommandLine(PSTR command_line)
 			i++;
 			if (i < n_args)
 			{
-				int32_t teamID		 = textToLong(argv[i]);
+				int32_t teamID = textToLong(argv[i]);
 				Team::noPain[teamID] = true;
 			}
 		}
@@ -2369,7 +2389,7 @@ void ParseCommandLine(PSTR command_line)
 			i++;
 			if (i < n_args)
 			{
-				int32_t partID						= textToLong(argv[i]);
+				int32_t partID = textToLong(argv[i]);
 				DisableAtStart[NumDisableAtStart++] = partID;
 			}
 		}
@@ -2447,31 +2467,32 @@ bool notFirstTime = false;
 //
 // Setup the GameOS structure -- This tells GameOS what I am using
 //
-void GetGameOSEnvironment(PSTR CommandLine)
+void
+GetGameOSEnvironment(PSTR CommandLine)
 {
 	ParseCommandLine(CommandLine);
-	Environment.applicationName		 = "MechCommander2\\1.0"; // MP012001";
-	Environment.debugLog			 = "";
-	Environment.spew				 = "";
-	Environment.TimeStampSpew		 = 0;
-	Environment.GetGameInformation   = GetGameInformation;
-	Environment.UpdateRenderers		 = UpdateRenderers;
+	Environment.applicationName = "MechCommander2\\1.0"; // MP012001";
+	Environment.debugLog = "";
+	Environment.spew = "";
+	Environment.TimeStampSpew = 0;
+	Environment.GetGameInformation = GetGameInformation;
+	Environment.UpdateRenderers = UpdateRenderers;
 	Environment.InitializeGameEngine = InitializeGameEngine;
-	Environment.DoGameLogic			 = DoGameLogic;
-	Environment.TerminateGameEngine  = TerminateGameEngine;
-	Environment.Renderer			 = 0;
-	Environment.allowMultipleApps	= false;
-	Environment.dontClearRegistry	= true;
+	Environment.DoGameLogic = DoGameLogic;
+	Environment.TerminateGameEngine = TerminateGameEngine;
+	Environment.Renderer = 0;
+	Environment.allowMultipleApps = false;
+	Environment.dontClearRegistry = true;
 	if (useSound)
 	{
-		Environment.soundDisable  = FALSE;
-		Environment.soundHiFi	 = TRUE;
+		Environment.soundDisable = FALSE;
+		Environment.soundHiFi = TRUE;
 		Environment.soundChannels = 20;
 	}
 	else
 	{
-		Environment.soundDisable  = TRUE;
-		Environment.soundHiFi	 = FALSE;
+		Environment.soundDisable = TRUE;
+		Environment.soundHiFi = FALSE;
 		Environment.soundChannels = 0;
 	}
 	//--------------------------
@@ -2479,36 +2500,36 @@ void GetGameOSEnvironment(PSTR CommandLine)
 	// MechCommander GUID = {09608800-4815-11d2-92D2-0060973CFB2C}
 	// or {0x9608800, 0x4815, 0x11d2, {0x92, 0xd2, 0x0, 0x60, 0x97, 0x3c, 0xfb,
 	// 0x2c}}
-	Environment.NetworkGame		   = FALSE;
-	Environment.NetworkMaxPlayers  = MAX_COMMANDERS;
-	Environment.NetworkGUID[0]	 = 0x09;
-	Environment.NetworkGUID[1]	 = 0x60;
-	Environment.NetworkGUID[2]	 = 0x88;
-	Environment.NetworkGUID[3]	 = 0x00;
-	Environment.NetworkGUID[4]	 = 0x48;
-	Environment.NetworkGUID[5]	 = 0x15;
-	Environment.NetworkGUID[6]	 = 0x11;
-	Environment.NetworkGUID[7]	 = 0xd2;
-	Environment.NetworkGUID[8]	 = 0x92;
-	Environment.NetworkGUID[9]	 = 0xd2;
-	Environment.NetworkGUID[10]	= 0x00;
-	Environment.NetworkGUID[11]	= 0x60;
-	Environment.NetworkGUID[12]	= 0x97;
-	Environment.NetworkGUID[13]	= 0x3c;
-	Environment.NetworkGUID[14]	= 0xfb;
-	Environment.NetworkGUID[15]	= 0x2c;
-	Environment.Key_FullScreen	 = 0;
+	Environment.NetworkGame = FALSE;
+	Environment.NetworkMaxPlayers = MAX_COMMANDERS;
+	Environment.NetworkGUID[0] = 0x09;
+	Environment.NetworkGUID[1] = 0x60;
+	Environment.NetworkGUID[2] = 0x88;
+	Environment.NetworkGUID[3] = 0x00;
+	Environment.NetworkGUID[4] = 0x48;
+	Environment.NetworkGUID[5] = 0x15;
+	Environment.NetworkGUID[6] = 0x11;
+	Environment.NetworkGUID[7] = 0xd2;
+	Environment.NetworkGUID[8] = 0x92;
+	Environment.NetworkGUID[9] = 0xd2;
+	Environment.NetworkGUID[10] = 0x00;
+	Environment.NetworkGUID[11] = 0x60;
+	Environment.NetworkGUID[12] = 0x97;
+	Environment.NetworkGUID[13] = 0x3c;
+	Environment.NetworkGUID[14] = 0xfb;
+	Environment.NetworkGUID[15] = 0x2c;
+	Environment.Key_FullScreen = 0;
 	Environment.Key_SwitchMonitors = 0;
-	Environment.Key_Exit		   = 0;
-	Environment.screenWidth		   = 800;
-	Environment.screenHeight	   = 600;
-	Environment.bitDepth		   = 16;
-	Environment.fullScreen		   = 0;
+	Environment.Key_Exit = 0;
+	Environment.screenWidth = 800;
+	Environment.screenHeight = 600;
+	Environment.bitDepth = 16;
+	Environment.fullScreen = 0;
 	HKEY hKey;
 	int32_t result;
 	char pData[1024];
 	uint32_t szData = 1023;
-	result			= RegOpenKey(HKEY_CURRENT_USER, GAME_REG_KEY, &hKey);
+	result = RegOpenKey(HKEY_CURRENT_USER, GAME_REG_KEY, &hKey);
 	if (ERROR_SUCCESS == result)
 	{
 		result = RegQueryValueEx(hKey, "FIRSTRUN", nullptr, nullptr, (PBYTE)pData, &szData);
@@ -2522,35 +2543,35 @@ void GetGameOSEnvironment(PSTR CommandLine)
 		}
 		RegCloseKey(hKey);
 	}
-	Environment.version			 = versionStamp;
+	Environment.version = versionStamp;
 	Environment.FullScreenDevice = 0;
-	Environment.AntiAlias		 = 0;
-	Environment.disableZBuffer   = 0;
+	Environment.AntiAlias = 0;
+	Environment.disableZBuffer = 0;
 	//
 	// Texture infomation
 	//
-	Environment.Texture_S_256				= 6;
-	Environment.Texture_S_128				= 1;
-	Environment.Texture_S_64				= 0;
-	Environment.Texture_S_32				= 1;
-	Environment.Texture_S_16				= 5;
-	Environment.Texture_K_256				= 2;
-	Environment.Texture_K_128				= 5;
-	Environment.Texture_K_64				= 5;
-	Environment.Texture_K_32				= 5;
-	Environment.Texture_K_16				= 5;
-	Environment.Texture_A_256				= 0;
-	Environment.Texture_A_128				= 1;
-	Environment.Texture_A_64				= 5;
-	Environment.Texture_A_32				= 1;
-	Environment.Texture_A_16				= 0;
-	Environment.RaidDataSource				= "MechCommander 2:Raid4";
-	Environment.RaidFilePath				= "\\\\aas1\\MC2\\Test\\GOSRaid";
-	Environment.RaidCustomFields			= "Area=GOSRaid";
-	Environment.DisableLowEndCard			= 1;
+	Environment.Texture_S_256 = 6;
+	Environment.Texture_S_128 = 1;
+	Environment.Texture_S_64 = 0;
+	Environment.Texture_S_32 = 1;
+	Environment.Texture_S_16 = 5;
+	Environment.Texture_K_256 = 2;
+	Environment.Texture_K_128 = 5;
+	Environment.Texture_K_64 = 5;
+	Environment.Texture_K_32 = 5;
+	Environment.Texture_K_16 = 5;
+	Environment.Texture_A_256 = 0;
+	Environment.Texture_A_128 = 1;
+	Environment.Texture_A_64 = 5;
+	Environment.Texture_A_32 = 1;
+	Environment.Texture_A_16 = 0;
+	Environment.RaidDataSource = "MechCommander 2:Raid4";
+	Environment.RaidFilePath = "\\\\aas1\\MC2\\Test\\GOSRaid";
+	Environment.RaidCustomFields = "Area=GOSRaid";
+	Environment.DisableLowEndCard = 1;
 	Environment.Suppress3DFullScreenWarning = 1;
-	Environment.RenderToVram				= 1;
-	notFirstTime							= true;
+	Environment.RenderToVram = 1;
+	notFirstTime = true;
 }
 
 //***************************************************************************

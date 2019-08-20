@@ -26,7 +26,7 @@ public:
 	virtual ~Action(void) {}
 	virtual bool redo(void) = 0;
 	virtual bool undo(void) = 0;
-	Action& operator		=(const Action& src);
+	Action& operator=(const Action& src);
 	PCWSTR getDescription(void) { return m_strDescription.c_str(void); }
 
 protected:
@@ -70,7 +70,8 @@ public:
 
 	bool doRedo(void); // so we don't go through virtual functions
 
-	ActionPaintTile(PCWSTR pStr) : Action(pStr) {}
+	ActionPaintTile(PCWSTR pStr) :
+		Action(pStr) {}
 
 	void addChangedVertexInfo(uint32_t row, uint32_t column);
 	void addVertexInfo(VertexInfo&);

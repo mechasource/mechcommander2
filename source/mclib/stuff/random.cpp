@@ -21,7 +21,8 @@ Random* Random::Instance = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Random::InitializeClass()
+void
+Random::InitializeClass()
 {
 	_ASSERT(!Random::Instance);
 	_ASSERT(Index == -1);
@@ -31,19 +32,21 @@ void Random::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Random::TerminateClass()
+void
+Random::TerminateClass()
 {
 	Unregister_Pointer(Random::Instance);
 	delete Random::Instance;
 	Random::Instance = nullptr;
-	Index			 = -1;
+	Index = -1;
 }
 
 //
 //###########################################################################
 //###########################################################################
 //
-void Random::Init()
+void
+Random::Init()
 {
 	//
 	//------------------------------
@@ -62,7 +65,7 @@ void Random::Init()
 	//--------------------------------------------------------------------
 	//
 	int32_t mask = RAND_MAX >> 1;
-	int32_t msb  = mask + 1;
+	int32_t msb = mask + 1;
 	int32_t rand_size;
 	for (rand_size = 0; !(msb & (1 << rand_size)); ++rand_size)
 		;
@@ -82,7 +85,8 @@ void Random::Init()
 //###########################################################################
 //###########################################################################
 //
-int32_t Random::GetRandomInt()
+int32_t
+Random::GetRandomInt()
 {
 	int32_t indent, result;
 	//
@@ -109,7 +113,8 @@ int32_t Random::GetRandomInt()
 //###########################################################################
 //###########################################################################
 //
-float Random::GetFraction()
+float
+Random::GetFraction()
 {
 	float result;
 	result = static_cast<float>(GetRandomInt());
@@ -121,7 +126,8 @@ float Random::GetFraction()
 //###########################################################################
 //###########################################################################
 //
-int32_t Random::GetLessThan(int32_t range)
+int32_t
+Random::GetLessThan(int32_t range)
 {
 	int32_t result, max;
 	max = RAND_MAX - ((RAND_MAX + 1) % range);
@@ -138,7 +144,7 @@ int32_t Random::GetLessThan(int32_t range)
 //
 Die::Die(int32_t n)
 {
-	dieSides	  = (n > 1) ? n : 2;
+	dieSides = (n > 1) ? n : 2;
 	highestRandom = RAND_MAX - ((RAND_MAX + 1) % dieSides);
 }
 

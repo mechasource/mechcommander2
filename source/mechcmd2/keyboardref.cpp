@@ -18,16 +18,20 @@ KeyboardRef.cpp			: Implementation of the KeyboardRef component.
 #define ALT 0x00100000
 #define WAYPT 0x20000000
 
-KeyboardRef::KeyboardRef()
-	: listItemTemplate(IDS_KEYBOARD_REF_FONT), listItemTemplate2(IDS_KEYBOARD_REF_FONT)
+KeyboardRef::KeyboardRef() :
+	listItemTemplate(IDS_KEYBOARD_REF_FONT), listItemTemplate2(IDS_KEYBOARD_REF_FONT)
 {
 }
 
-KeyboardRef::~KeyboardRef() { listBox.destroy(); }
+KeyboardRef::~KeyboardRef()
+{
+	listBox.destroy();
+}
 
 //-------------------------------------------------------------------------------------------------
 
-int32_t KeyboardRef::init()
+int32_t
+KeyboardRef::init()
 {
 	// clear out old stuff first
 	clear();
@@ -67,13 +71,15 @@ int32_t KeyboardRef::init()
 	return true;
 }
 
-void KeyboardRef::update()
+void
+KeyboardRef::update()
 {
 	listBox.update();
 	LogisticsScreen::update();
 }
 
-void KeyboardRef::render()
+void
+KeyboardRef::render()
 {
 	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 	drawRect(rect, 0xff000000);
@@ -81,7 +87,8 @@ void KeyboardRef::render()
 	LogisticsScreen::render();
 }
 
-void KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
+void
+KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 {
 	listBox.removeAllItems(true);
 	char shift[32];
@@ -108,7 +115,7 @@ void KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 		{
 			cLoadString(commands[i].hotKeyDescriptionText, descText, 127);
 			int32_t key = commands[i].key;
-			PSTR pKey   = gos_DescribeKey((key & 0x000fffff) << 8);
+			PSTR pKey = gos_DescribeKey((key & 0x000fffff) << 8);
 			strcpy(keysString, pKey);
 			if (((key & SHIFT)))
 			{
@@ -126,13 +133,13 @@ void KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 				strcat(keysString, alt);
 			}
 			aTextListItem* item = new aTextListItem(IDS_KEYBOARD_REF_FONT);
-			*item				= listItemTemplate;
+			*item = listItemTemplate;
 			item->setText(keysString);
 			item->setAlignment(1);
 			listBox.AddItem(item);
 			int32_t yVal = item->y();
-			item		 = new aTextListItem(IDS_KEYBOARD_REF_FONT);
-			*item		 = listItemTemplate2;
+			item = new aTextListItem(IDS_KEYBOARD_REF_FONT);
+			*item = listItemTemplate2;
 			int32_t xVal = listItemTemplate2.left();
 			item->setText(descText);
 			item->setAlignment(0);
@@ -142,7 +149,8 @@ void KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 	}
 }
 
-int32_t KeyboardRef::handleMessage(uint32_t who, uint32_t)
+int32_t
+KeyboardRef::handleMessage(uint32_t who, uint32_t)
 {
 	return MissionInterfaceManager::instance()->toggleHotKeys();
 }

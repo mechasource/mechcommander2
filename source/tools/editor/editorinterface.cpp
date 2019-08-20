@@ -189,15 +189,16 @@ static char szTGAFilter[] = "TGA Files (*.TGA)|*.tga||";
 static char szPAKFilter[] = "Pak Files (*.PAK)|*.pak||";
 
 static bool windowSizeChanged = false;
-static float g_newWidth		  = 0.0;
-static float g_newHeight	  = 0.0;
+static float g_newWidth = 0.0;
+static float g_newHeight = 0.0;
 
 // EDITOR stuff
 
-void Editor::init(PSTR loader)
+void
+Editor::init(PSTR loader)
 {
 	volatile float crap = 0;
-	bool bOK			= false;
+	bool bOK = false;
 	if (!eye)
 		eye = new EditorCamera;
 	Pilot::initPilots();
@@ -229,7 +230,7 @@ void Editor::init(PSTR loader)
 					resolved = true;
 					gos_TerminateApplication();
 					PostQuitMessage(0);
-					bOK		  = true;
+					bOK = true;
 					bCanceled = true;
 					EditorInterface::instance()->UnsetBusyMode();
 				}
@@ -279,14 +280,14 @@ void Editor::init(PSTR loader)
 					CFileDialog fileDlg(1, "pak", nullptr,
 						OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter);
 					fileDlg.m_ofn.lpstrInitialDir = missionPath;
-					bOK							  = false;
+					bOK = false;
 					while (!bOK)
 					{
 						if (IDOK == fileDlg.DoModal())
 						{
 							EditorInterface::instance()->SetBusyMode();
 							PCSTR pFile = fileDlg.m_ofn.lpstrFile;
-							bOK			= EditorData::initTerrainFromPCV(pFile);
+							bOK = EditorData::initTerrainFromPCV(pFile);
 							EditorInterface::instance()->UnsetBusyMode();
 						}
 						else
@@ -319,7 +320,8 @@ void Editor::init(PSTR loader)
 	PlaySound("SystemDefault", nullptr, SND_ASYNC);
 }
 
-void Editor::destroy(void)
+void
+Editor::destroy(void)
 {
 	if (EditorInterface::instance())
 	{
@@ -338,15 +340,16 @@ void Editor::destroy(void)
 	eye = nullptr;
 }
 
-void Editor::resaveAll(void)
+void
+Editor::resaveAll(void)
 {
 	// Startup the editor.
 	if (!eye)
 		eye = new EditorCamera;
 	// ARM
 	CoInitialize(nullptr);
-	armProvider				   = CreateProviderEngine("MC2Editor", versionStamp);
-	silentMode				   = true; // shut up the warnings from tgl export
+	armProvider = CreateProviderEngine("MC2Editor", versionStamp);
+	silentMode = true; // shut up the warnings from tgl export
 	char campaignFiles[2][256] = {0};
 	strcpy(campaignFiles[0], "Data\\Campaign\\campaign.fit");
 	strcpy(campaignFiles[1], "Data\\Campaign\\tutorial.fit");
@@ -366,7 +369,7 @@ void Editor::resaveAll(void)
 			CGroupData groupData = (*iter);
 			// Make a virtual group name
 			strcpy(buf, campaignFiles[i]);
-			int32_t campaignLen  = strlen(buf);
+			int32_t campaignLen = strlen(buf);
 			buf[campaignLen - 4] = '_';
 			buf[campaignLen - 3] = 0;
 			strcat(buf, "group");
@@ -485,13 +488,15 @@ void Editor::resaveAll(void)
 	CoUninitialize();
 }
 
-void Editor::render()
+void
+Editor::render()
 {
 	if (eye)
 		eye->render();
 }
 
-void Editor::update()
+void
+Editor::update()
 {
 	if (windowSizeChanged)
 	{
@@ -501,8 +506,7 @@ void Editor::update()
 	// interMgr.update();
 	mcTextureManager->clearArrays();
 	eye->update();
-	if (land->terrainTextures2 && !(land->terrainTextures2->colorMapStarted) &&
-		(EditorInterface::instance()))
+	if (land->terrainTextures2 && !(land->terrainTextures2->colorMapStarted) && (EditorInterface::instance()))
 	{
 		EditorInterface::instance()->SetBusyMode(false /*no redraw*/);
 		land->update();
@@ -562,33 +566,33 @@ END_MESSAGE_MAP()
 EditorInterface::EditorInterface()
 {
 	bThisIsInitialized = false;
-	painting		   = false;
-	curBrush		   = nullptr;
-	selecting		   = true;
-	realRotation	   = 0.0;
-	currentBrushID	 = IDS_SELECT;
+	painting = false;
+	curBrush = nullptr;
+	selecting = true;
+	realRotation = 0.0;
+	currentBrushID = IDS_SELECT;
 	currentBrushMenuID = ID_OTHER_SELECT;
-	smoothRadius	   = 2;
-	dragging		   = false;
-	prevBrush		   = nullptr;
-	prevSelecting	  = false;
-	highlighted		   = false;
-	prevPainting	   = false;
-	prevDragging	   = false;
+	smoothRadius = 2;
+	dragging = false;
+	prevBrush = nullptr;
+	prevSelecting = false;
+	highlighted = false;
+	prevPainting = false;
+	prevDragging = false;
 	gosASSERT(!s_instance);
-	s_instance	 = this;
-	bSmooth		   = false;
-	lastKey		   = -1;
+	s_instance = this;
+	bSmooth = false;
+	lastKey = -1;
 	lastClickPos.x = lastClickPos.y = lastClickPos.z = 0.;
-	hCursor											 = 0;
-	bObjectSelectOnlyMode							 = false;
-	menus											 = nullptr;
-	m_hAccelTable   = LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR1));
+	hCursor = 0;
+	bObjectSelectOnlyMode = false;
+	menus = nullptr;
+	m_hAccelTable = LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR1));
 	m_hSplashBitMap = nullptr;
-	m_hBusyCursor   = nullptr;
-	m_AppIsBusy		= 0;
+	m_hBusyCursor = nullptr;
+	m_AppIsBusy = 0;
 	m_bInRunGameOSLogicCall = false;
-	rightDrag				= 0;
+	rightDrag = 0;
 }
 
 EditorInterface::~EditorInterface()
@@ -612,7 +616,8 @@ EditorInterface::~EditorInterface()
 	s_instance = nullptr;
 }
 
-void EditorInterface::terminate()
+void
+EditorInterface::terminate()
 {
 	if (bThisIsInitialized)
 	{
@@ -635,7 +640,8 @@ void EditorInterface::terminate()
 	}
 }
 
-void EditorInterface::init(PCSTR fileName)
+void
+EditorInterface::init(PCSTR fileName)
 {
 	SetBusyMode(false /*no redraw*/);
 	FitIniFile loader;
@@ -675,7 +681,8 @@ void EditorInterface::init(PCSTR fileName)
 	bThisIsInitialized = true;
 }
 
-void EditorInterface::addBuildingsToNewMenu()
+void
+EditorInterface::addBuildingsToNewMenu()
 {
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	char BuildingHeader[64];
@@ -686,10 +693,10 @@ void EditorInterface::addBuildingsToNewMenu()
 	pMenu->CreatePopupMenu();
 	// now i need to add the buildings to the toolbars/menus
 	int32_t groupCount = pMgr->getBuildingGroupCount();
-	PCSTR* pNames	  = (PCSTR*)malloc(sizeof(PCSTR) * groupCount);
+	PCSTR* pNames = (PCSTR*)malloc(sizeof(PCSTR) * groupCount);
 	pMgr->getBuildingGroupNames(pNames, groupCount);
-	menus	  = (CMenu**)malloc(sizeof(CMenu*) * (groupCount + 2));
-	menus[0]   = pMenu;
+	menus = (CMenu**)malloc(sizeof(CMenu*) * (groupCount + 2));
+	menus[0] = pMenu;
 	int32_t id = IDS_OBJECT_200;
 	for (size_t i = 0; i < groupCount; ++i)
 	{
@@ -703,7 +710,7 @@ void EditorInterface::addBuildingsToNewMenu()
 		for (size_t j = 0; j < buildingCount; ++j, ++id)
 		{
 			CString oldName;
-			bool bAdded   = 0;
+			bool bAdded = 0;
 			int32_t count = pChildMenu->GetMenuItemCount();
 			for (size_t k = 0; k < count; ++k)
 			{
@@ -719,7 +726,7 @@ void EditorInterface::addBuildingsToNewMenu()
 				pChildMenu->AppendMenu(MF_STRING, id, pBuildingNames[j]);
 		}
 		CString oldName;
-		bool bAdded   = 0;
+		bool bAdded = 0;
 		int32_t count = pMenu->GetMenuItemCount();
 		for (size_t k = 0; k < count; ++k)
 		{
@@ -740,13 +747,13 @@ void EditorInterface::addBuildingsToNewMenu()
 		5, MF_BYPOSITION | MF_POPUP, (uint32_t)pMenu->m_hMenu, BuildingHeader);
 	CMenu* pChildMenu = new CMenu;
 	pChildMenu->CreatePopupMenu();
-	menus[i + 1]		= pChildMenu;
+	menus[i + 1] = pChildMenu;
 	int32_t numTerrains = 0;
-	numTerrains			= land->terrainTextures->getNumTypes();
+	numTerrains = land->terrainTextures->getNumTypes();
 	for (i = groupCount; i < numTerrains + groupCount; i++)
 	{
 		char buffer[256];
-		int32_t nameID	= land->terrainTextures->getTextureNameID(i - groupCount);
+		int32_t nameID = land->terrainTextures->getTextureNameID(i - groupCount);
 		bool continueFlag = true;
 		switch (nameID)
 		{
@@ -766,7 +773,7 @@ void EditorInterface::addBuildingsToNewMenu()
 			continue;
 		cLoadString(land->terrainTextures->getTextureNameID(i - groupCount), buffer, 256);
 		int32_t count = pChildMenu->GetMenuItemCount();
-		bool bPlaced  = 0;
+		bool bPlaced = 0;
 		CString newStr(buffer);
 		for (size_t j = 0; j < count; ++j)
 		{
@@ -790,7 +797,8 @@ void EditorInterface::addBuildingsToNewMenu()
 }
 
 //--------------------------------------------------------------------------------------
-void EditorInterface::handleNewMenuMessage(int32_t specificMessage)
+void
+EditorInterface::handleNewMenuMessage(int32_t specificMessage)
 {
 	if (!eye || !eye->active)
 		return;
@@ -804,8 +812,7 @@ void EditorInterface::handleNewMenuMessage(int32_t specificMessage)
 	{
 		paintBuildings(specificMessage);
 	}
-	if (specificMessage >= ID_TERRAINS_BLUEWATER - 1 &&
-		specificMessage <= ID_TERRAINS_BLUEWATER + 255)
+	if (specificMessage >= ID_TERRAINS_BLUEWATER - 1 && specificMessage <= ID_TERRAINS_BLUEWATER + 255)
 	{
 		PaintTerrain(specificMessage - ID_TERRAINS_BLUEWATER);
 		return;
@@ -1190,7 +1197,8 @@ void EditorInterface::handleNewMenuMessage(int32_t specificMessage)
 }
 
 //--------------------------------------------------------------------------------------
-int32_t EditorInterface::Quit()
+int32_t
+EditorInterface::Quit()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL != res)
@@ -1204,15 +1212,15 @@ int32_t EditorInterface::Quit()
 }
 
 //--------------------------------------------------------------------------------------
-int32_t EditorInterface::PromptAndSaveIfNecessary()
+int32_t
+EditorInterface::PromptAndSaveIfNecessary()
 {
-	int32_t res  = IDNO;
+	int32_t res = IDNO;
 	bool endFlag = false;
 	while (!endFlag)
 	{
 		endFlag = true;
-		if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized() &&
-			EditorData::instance)
+		if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized() && EditorData::instance)
 		{
 			if (EditorInterface::instance()->undoMgr.ThereHasBeenANetChangeFromWhenLastSaved())
 			{
@@ -1238,7 +1246,8 @@ int32_t EditorInterface::PromptAndSaveIfNecessary()
 }
 
 //--------------------------------------------------------------------------------------
-int32_t EditorInterface::New()
+int32_t
+EditorInterface::New()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL == res)
@@ -1277,7 +1286,8 @@ int32_t EditorInterface::New()
 }
 
 //--------------------------------------------------------------------------------------
-int32_t EditorInterface::FileOpen()
+int32_t
+EditorInterface::FileOpen()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL == res)
@@ -1302,7 +1312,8 @@ int32_t EditorInterface::FileOpen()
 
 //--------------------------------------------------------------------------------------
 
-void EditorInterface::handleLeftButtonDown(int32_t PosX, int32_t PosY)
+void
+EditorInterface::handleLeftButtonDown(int32_t PosX, int32_t PosY)
 {
 	if (!eye || !eye->active)
 		return;
@@ -1319,7 +1330,8 @@ void EditorInterface::handleLeftButtonDown(int32_t PosX, int32_t PosY)
 	lastClickPos = vector;
 }
 
-void EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
+void
+EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 {
 	if (!eye || !eye->active)
 		return;
@@ -1336,7 +1348,7 @@ void EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 	if (rightDrag)
 	{
 		int32_t mouseXDelta = PosX - lastX;
-		float actualRot		= rotationInc * 0.1f * abs(mouseXDelta);
+		float actualRot = rotationInc * 0.1f * abs(mouseXDelta);
 		if (mouseXDelta > 0)
 		{
 			eye->rotateRight(actualRot);
@@ -1346,7 +1358,7 @@ void EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 			eye->rotateLeft(actualRot);
 		}
 		int32_t mouseYDelta = PosY - lastY;
-		float actualTilt	= rotationInc * 0.1f * abs(mouseYDelta);
+		float actualTilt = rotationInc * 0.1f * abs(mouseYDelta);
 		if (mouseYDelta > 0)
 		{
 			eye->tiltDown(actualTilt);
@@ -1380,14 +1392,14 @@ void EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 	// need to put this value in the appropriate place.
 	((MainFrame*)AfxGetMainWnd())->m_wndDlgBar.GetDlgItem(IDC_DISTANCE_EDIT)->SetWindowText(buffer);
 	// IF there is a selected object, find distance to it from camera.
-	float eyeDistance	  = 0.0f;
+	float eyeDistance = 0.0f;
 	int32_t selectionCount = EditorObjectMgr::instance()->getSelectionCount();
 	if (selectionCount)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 			EditorObjectMgr::instance()->getSelectedObjectList();
 		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
-		const EditorObject* pInfo						  = (*it);
+		const EditorObject* pInfo = (*it);
 		if (pInfo)
 		{
 			Stuff::Point3D eyePosition(eye->getCameraOrigin());
@@ -1407,13 +1419,14 @@ void EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 		->SetWindowText(buffer);
 }
 
-void EditorInterface::handleLeftButtonUp(int32_t PosX, int32_t PosY)
+void
+EditorInterface::handleLeftButtonUp(int32_t PosX, int32_t PosY)
 {
 	if (!eye || !eye->active)
 		return;
 	if (curBrush && painting)
 	{
-		painting		= false;
+		painting = false;
 		Action* pAction = curBrush->endPaint();
 		if (pAction)
 			undoMgr.AddAction(pAction);
@@ -1422,7 +1435,8 @@ void EditorInterface::handleLeftButtonUp(int32_t PosX, int32_t PosY)
 
 //--------------------------------------------------------------------------------------
 // THE EDITOR CLASS, kind of like the mission in MCommander
-void EditorInterface::handleKeyDown(int32_t Key)
+void
+EditorInterface::handleKeyDown(int32_t Key)
 {
 	if (!eye || !eye->active)
 		return;
@@ -1430,21 +1444,21 @@ void EditorInterface::handleKeyDown(int32_t Key)
 		return;
 	//----------------------
 	// Adjust for frameRate
-	float frameFactor  = frameLength / baseFrameLength;
+	float frameFactor = frameLength / baseFrameLength;
 	float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
-	bool shiftDn	   = GetAsyncKeyState(KEY_LSHIFT) ? true : false;
-	bool ctrlDn		   = GetAsyncKeyState(KEY_LCONTROL) ? true : false;
-	int32_t altDn	  = GetAsyncKeyState(KEY_LMENU) ? true : false;
+	bool shiftDn = GetAsyncKeyState(KEY_LSHIFT) ? true : false;
+	bool ctrlDn = GetAsyncKeyState(KEY_LCONTROL) ? true : false;
+	int32_t altDn = GetAsyncKeyState(KEY_LMENU) ? true : false;
 	if (Key == KEY_SPACE)
 	{
 		if (!dragging)
 		{
-			prevBrush	 = curBrush;
+			prevBrush = curBrush;
 			prevSelecting = selecting;
-			prevPainting  = painting;
-			prevDragging  = dragging;
-			curBrush	  = new DragTool;
-			oldCursor	 = curCursorID;
+			prevPainting = painting;
+			prevDragging = dragging;
+			curBrush = new DragTool;
+			oldCursor = curCursorID;
 			ChangeCursor(IDC_HAND_MC);
 			dragging = true;
 		}
@@ -1532,7 +1546,7 @@ void EditorInterface::handleKeyDown(int32_t Key)
 		}
 		if (GetAsyncKeyState(KEY_R) && ctrlDn && altDn && !shiftDn)
 		{
-			reloadBounds	   = true;
+			reloadBounds = true;
 			terrainLineChanged = turn;
 		}
 		if (GetAsyncKeyState(KEY_V) && ctrlDn && altDn && !shiftDn)
@@ -1553,21 +1567,21 @@ void EditorInterface::handleKeyDown(int32_t Key)
 	}
 	//------------------------
 	// Keyboard Checks First
-	bool scrollUp	  = (GetAsyncKeyState(KEY_UP) && !shiftDn && !ctrlDn && !altDn);
-	bool scrollDn	  = (GetAsyncKeyState(KEY_DOWN) && !shiftDn && !ctrlDn && !altDn);
-	bool scrollLf	  = (GetAsyncKeyState(KEY_LEFT) && !shiftDn && !ctrlDn && !altDn);
-	bool scrollRt	  = (GetAsyncKeyState(KEY_RIGHT) && !shiftDn && !ctrlDn && !altDn);
-	bool zoomOut	   = (GetAsyncKeyState(KEY_SUBTRACT) && !shiftDn && !ctrlDn && !altDn);
-	bool zoomIn		   = (GetAsyncKeyState(KEY_ADD) && !shiftDn && !ctrlDn && !altDn);
-	bool rotateLf	  = (GetAsyncKeyState(KEY_LEFT) && shiftDn && !ctrlDn && !altDn);
-	bool rotateRt	  = (GetAsyncKeyState(KEY_RIGHT) && shiftDn && !ctrlDn && !altDn);
+	bool scrollUp = (GetAsyncKeyState(KEY_UP) && !shiftDn && !ctrlDn && !altDn);
+	bool scrollDn = (GetAsyncKeyState(KEY_DOWN) && !shiftDn && !ctrlDn && !altDn);
+	bool scrollLf = (GetAsyncKeyState(KEY_LEFT) && !shiftDn && !ctrlDn && !altDn);
+	bool scrollRt = (GetAsyncKeyState(KEY_RIGHT) && !shiftDn && !ctrlDn && !altDn);
+	bool zoomOut = (GetAsyncKeyState(KEY_SUBTRACT) && !shiftDn && !ctrlDn && !altDn);
+	bool zoomIn = (GetAsyncKeyState(KEY_ADD) && !shiftDn && !ctrlDn && !altDn);
+	bool rotateLf = (GetAsyncKeyState(KEY_LEFT) && shiftDn && !ctrlDn && !altDn);
+	bool rotateRt = (GetAsyncKeyState(KEY_RIGHT) && shiftDn && !ctrlDn && !altDn);
 	bool rotateLightLf = (GetAsyncKeyState(KEY_LEFT) && !shiftDn && ctrlDn && !altDn);
 	bool rotateLightRt = (GetAsyncKeyState(KEY_RIGHT) && !shiftDn && ctrlDn && !altDn);
 	bool rotateLightUp = (GetAsyncKeyState(KEY_UP) && !shiftDn && ctrlDn && !altDn);
 	bool rotateLightDn = (GetAsyncKeyState(KEY_DOWN) && !shiftDn && ctrlDn && !altDn);
-	bool tiltUp		   = (GetAsyncKeyState(KEY_DOWN) && shiftDn && !ctrlDn && !altDn);
-	bool tiltDn		   = (GetAsyncKeyState(KEY_UP) && shiftDn && !ctrlDn && !altDn);
-	bool tiltNormal	= (GetAsyncKeyState(KEY_HOME) && !shiftDn && !ctrlDn && !altDn);
+	bool tiltUp = (GetAsyncKeyState(KEY_DOWN) && shiftDn && !ctrlDn && !altDn);
+	bool tiltDn = (GetAsyncKeyState(KEY_UP) && shiftDn && !ctrlDn && !altDn);
+	bool tiltNormal = (GetAsyncKeyState(KEY_HOME) && !shiftDn && !ctrlDn && !altDn);
 	// Update the Camera based on Input
 	if (scrollLf)
 	{
@@ -1662,23 +1676,21 @@ void EditorInterface::handleKeyDown(int32_t Key)
 		eye->rotateLightDown(rotationInc);
 	}
 	lastKey = Key;
-	if (scrollUp || scrollDn || scrollLf || scrollRt || zoomOut || zoomIn || rotateLf || rotateRt ||
-		rotateLightLf || rotateLightRt || rotateLightUp || rotateLightDn || tiltUp || tiltDn ||
-		tiltNormal)
+	if (scrollUp || scrollDn || scrollLf || scrollRt || zoomOut || zoomIn || rotateLf || rotateRt || rotateLightLf || rotateLightRt || rotateLightUp || rotateLightDn || tiltUp || tiltDn || tiltNormal)
 	{
 		SafeRunGameOSLogic();
 	}
 	//------------------------------------------------
 	// IF there is a selected object, find distance to it from camera.
 	char buffer[256];
-	float eyeDistance	  = 0.0f;
+	float eyeDistance = 0.0f;
 	int32_t selectionCount = EditorObjectMgr::instance()->getSelectionCount();
 	if (selectionCount)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 			EditorObjectMgr::instance()->getSelectedObjectList();
 		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
-		const EditorObject* pInfo						  = (*it);
+		const EditorObject* pInfo = (*it);
 		if (pInfo)
 		{
 			Stuff::Point3D eyePosition(eye->getCameraOrigin());
@@ -1698,44 +1710,69 @@ void EditorInterface::handleKeyDown(int32_t Key)
 		->SetWindowText(buffer);
 }
 
-void EditorInterface::KillCurBrush()
+void
+EditorInterface::KillCurBrush()
 {
 	if (curBrush) // might want to do a check to make sure this guy isn't being
-				  // used
+		// used
 	{
 		delete curBrush;
 	}
-	curBrush  = nullptr;
+	curBrush = nullptr;
 	selecting = false;
 	ChangeCursor(IDC_MC2ARROW);
 }
 
-int32_t EditorInterface::PaintDirtRoad() { return PaintOverlay(DIRT_ROAD, PAINT_OVERLAY_DIRT); }
+int32_t
+EditorInterface::PaintDirtRoad()
+{
+	return PaintOverlay(DIRT_ROAD, PAINT_OVERLAY_DIRT);
+}
 
-int32_t EditorInterface::PaintRocks() { return PaintOverlay(ROUGH, PAINT_OVERLAY_ROUGH); }
+int32_t
+EditorInterface::PaintRocks()
+{
+	return PaintOverlay(ROUGH, PAINT_OVERLAY_ROUGH);
+}
 
-int32_t EditorInterface::PaintPaved() { return PaintOverlay(PAVED_ROAD, PAINT_OVERLAY_PAVED); }
+int32_t
+EditorInterface::PaintPaved()
+{
+	return PaintOverlay(PAVED_ROAD, PAINT_OVERLAY_PAVED);
+}
 
-int32_t EditorInterface::PaintTwoLaneDirtRoad()
+int32_t
+EditorInterface::PaintTwoLaneDirtRoad()
 {
 	return PaintOverlay(TWO_LANE_DIRT_ROAD, PAINT_OVERLAY_PAVED);
 }
 
-int32_t EditorInterface::PaintDamagedRoad()
+int32_t
+EditorInterface::PaintDamagedRoad()
 {
 	return PaintOverlay(DAMAGED_ROAD, PAINT_OVERLAY_PAVED);
 }
 
-int32_t EditorInterface::PaintRunway() { return PaintOverlay(RUNWAY, PAINT_OVERLAY_PAVED); }
+int32_t
+EditorInterface::PaintRunway()
+{
+	return PaintOverlay(RUNWAY, PAINT_OVERLAY_PAVED);
+}
 
-int32_t EditorInterface::PaintBridge() { return PaintOverlay(OBRIDGE, PAINT_OVERLAY_PAVED); }
+int32_t
+EditorInterface::PaintBridge()
+{
+	return PaintOverlay(OBRIDGE, PAINT_OVERLAY_PAVED);
+}
 
-int32_t EditorInterface::PaintDamagedBridge()
+int32_t
+EditorInterface::PaintDamagedBridge()
 {
 	return PaintOverlay(DAMAGED_BRIDGE, PAINT_OVERLAY_PAVED);
 }
 
-int32_t EditorInterface::PaintOverlay(int32_t type, int32_t message)
+int32_t
+EditorInterface::PaintOverlay(int32_t type, int32_t message)
 {
 	KillCurBrush();
 	curBrush = new OverlayBrush(type);
@@ -1744,7 +1781,8 @@ int32_t EditorInterface::PaintOverlay(int32_t type, int32_t message)
 	return true;
 }
 
-int32_t EditorInterface::PaintTerrain(int32_t type)
+int32_t
+EditorInterface::PaintTerrain(int32_t type)
 {
 	if (selecting && (land->hasSelection()))
 	{
@@ -1763,7 +1801,8 @@ int32_t EditorInterface::PaintTerrain(int32_t type)
 	return true;
 }
 
-int32_t EditorInterface::SaveAs()
+int32_t
+EditorInterface::SaveAs()
 {
 	int32_t retVal = IDOK;
 	CFileDialog fileDlg(
@@ -1771,7 +1810,7 @@ int32_t EditorInterface::SaveAs()
 	{
 		/* if the mission directory doesn't exist, we attempt to create it */
 		int32_t curDirStrSize = GetCurrentDirectory(0, nullptr);
-		TCHAR* curDirStr	  = (TCHAR*)gos_Malloc(curDirStrSize);
+		TCHAR* curDirStr = (TCHAR*)gos_Malloc(curDirStrSize);
 		GetCurrentDirectory(curDirStrSize, curDirStr);
 		BOOL result = SetCurrentDirectory(missionPath);
 		SetCurrentDirectory(curDirStr);
@@ -1787,7 +1826,7 @@ int32_t EditorInterface::SaveAs()
 		}
 	}
 	fileDlg.m_ofn.lpstrInitialDir = missionPath;
-	retVal						  = fileDlg.DoModal();
+	retVal = fileDlg.DoModal();
 	if (IDOK == retVal)
 	{
 		SetBusyMode();
@@ -1851,7 +1890,8 @@ int32_t EditorInterface::SaveAs()
 	return retVal;
 }
 
-int32_t EditorInterface::Save()
+int32_t
+EditorInterface::Save()
 {
 	PCSTR pFileName = EditorData::instance->getMapName();
 	if (pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)))
@@ -1863,7 +1903,8 @@ int32_t EditorInterface::Save()
 	return IDOK;
 }
 
-int32_t EditorInterface::QuickSave()
+int32_t
+EditorInterface::QuickSave()
 {
 	PCSTR pFileName = EditorData::instance->getMapName();
 	if (pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)))
@@ -1873,25 +1914,28 @@ int32_t EditorInterface::QuickSave()
 	return true;
 }
 
-int32_t EditorInterface::Undo()
+int32_t
+EditorInterface::Undo()
 {
 	if (undoMgr.HaveUndo())
 		undoMgr.Undo();
 	return true;
 }
 
-int32_t EditorInterface::Redo()
+int32_t
+EditorInterface::Redo()
 {
 	if (undoMgr.HaveRedo())
 		undoMgr.Redo();
 	return true;
 }
 
-int32_t EditorInterface::paintBuildings(int32_t message)
+int32_t
+EditorInterface::paintBuildings(int32_t message)
 {
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
-	int32_t groupCount	= pMgr->getBuildingGroupCount();
-	int32_t id			  = IDS_OBJECT_200;
+	int32_t groupCount = pMgr->getBuildingGroupCount();
+	int32_t id = IDS_OBJECT_200;
 	for (size_t i = 0; i < groupCount; ++i)
 	{
 		int32_t buildCount = pMgr->getNumberBuildingsInGroup(i);
@@ -1900,8 +1944,7 @@ int32_t EditorInterface::paintBuildings(int32_t message)
 			int32_t alignment = EDITOR_TEAM2;
 			for (size_t j = 0; j < 9; ++j)
 			{
-				if (GetParent()->GetMenu()->GetMenuState(ID_ALIGNMENT_TEAM1 + j, MF_BYCOMMAND) &
-					MF_CHECKED)
+				if (GetParent()->GetMenu()->GetMenuState(ID_ALIGNMENT_TEAM1 + j, MF_BYCOMMAND) & MF_CHECKED)
 				{
 					if (j != 8)
 						alignment = EDITOR_TEAM1 + j;
@@ -1918,8 +1961,8 @@ int32_t EditorInterface::paintBuildings(int32_t message)
 				return false;
 			}
 			KillCurBrush();
-			curBrush		   = new BuildingBrush(i, message - id, alignment);
-			currentBrushID	 = message;
+			curBrush = new BuildingBrush(i, message - id, alignment);
+			currentBrushID = message;
 			currentBrushMenuID = message;
 			break;
 		}
@@ -1928,7 +1971,8 @@ int32_t EditorInterface::paintBuildings(int32_t message)
 	return true;
 }
 
-int32_t EditorInterface::Erase()
+int32_t
+EditorInterface::Erase()
 {
 	if (selecting && (EditorObjectMgr::instance()->hasSelection() || land->hasSelection()))
 	{
@@ -1942,13 +1986,14 @@ int32_t EditorInterface::Erase()
 		KillCurBrush();
 		curBrush = new Eraser();
 		ChangeCursor(IDC_ERASER);
-		currentBrushID	 = ID_OTHER_ERASE;
+		currentBrushID = ID_OTHER_ERASE;
 		currentBrushMenuID = ID_OTHER_ERASE;
 	}
 	return true;
 }
 
-void EditorInterface::update()
+void
+EditorInterface::update()
 {
 	if (!bThisIsInitialized)
 		return;
@@ -1961,7 +2006,8 @@ void EditorInterface::update()
 	}
 }
 
-void EditorInterface::render()
+void
+EditorInterface::render()
 {
 	if (!bThisIsInitialized)
 		return;
@@ -2036,11 +2082,11 @@ void EditorInterface::render()
 			int32_t PosX = (int32_t)pt.x;
 			int32_t PosY = (int32_t)pt.y;
 			// scroll if painting
-			int32_t scrollLf   = (PosX <= (screenScrollLeft));
-			int32_t scrollRt   = (PosX >= (Width() - screenScrollRight));
-			int32_t scrollUp   = (PosY <= (screenScrollUp));
-			int32_t scrollDn   = (PosY >= (Height() - screenScrollDown));
-			float frameFactor  = frameLength / baseFrameLength;
+			int32_t scrollLf = (PosX <= (screenScrollLeft));
+			int32_t scrollRt = (PosX >= (Width() - screenScrollRight));
+			int32_t scrollUp = (PosY <= (screenScrollUp));
+			int32_t scrollDn = (PosY >= (Height() - screenScrollDown));
+			float frameFactor = frameLength / baseFrameLength;
 			float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
 			if (scrollLf)
 			{
@@ -2066,12 +2112,13 @@ void EditorInterface::render()
 	}
 }
 
-int32_t EditorInterface::NewHeightMap()
+int32_t
+EditorInterface::NewHeightMap()
 {
 	CFileDialog fileDlg(
 		1, "tga", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = terrainPath;
-	bool endFlag				  = false;
+	bool endFlag = false;
 	while (!endFlag)
 	{
 		endFlag = true;
@@ -2086,8 +2133,7 @@ int32_t EditorInterface::NewHeightMap()
 				gosASSERT(result == NO_ERROR);
 				struct TGAFileHeader theader;
 				tgaFile.read((puint8_t)&theader, sizeof(TGAFileHeader));
-				if ((theader.width != land->realVerticesMapSide) ||
-					(theader.height != land->realVerticesMapSide))
+				if ((theader.width != land->realVerticesMapSide) || (theader.height != land->realVerticesMapSide))
 				{
 					/*wrong size*/
 					AfxMessageBox(IDS_WRONG_SIZE_HEIGHT_MAP);
@@ -2125,7 +2171,8 @@ int32_t EditorInterface::NewHeightMap()
 #define MIN_THRESHOLD 1
 #define MIN_NOISE 0
 
-int32_t EditorInterface::RefractalizeTerrain(int32_t Threshold)
+int32_t
+EditorInterface::RefractalizeTerrain(int32_t Threshold)
 {
 	FractalDlg fDlg;
 	fDlg.SetThreshold(Terrain::fractalThreshold);
@@ -2134,7 +2181,7 @@ int32_t EditorInterface::RefractalizeTerrain(int32_t Threshold)
 	{
 		SetBusyMode();
 		Terrain::fractalThreshold = fDlg.GetThreshold();
-		Terrain::fractalNoise	 = fDlg.GetNoise();
+		Terrain::fractalNoise = fDlg.GetNoise();
 		if (Terrain::fractalThreshold > MAX_THRESHOLD)
 			Terrain::fractalThreshold = MAX_THRESHOLD;
 		if (Terrain::fractalThreshold < MIN_THRESHOLD)
@@ -2151,13 +2198,15 @@ int32_t EditorInterface::RefractalizeTerrain(int32_t Threshold)
 	return true;
 }
 
-int32_t EditorInterface::SetSky(int32_t skyId)
+int32_t
+EditorInterface::SetSky(int32_t skyId)
 {
 	EditorData::instance->TheSkyNumber(skyId);
 	return true;
 }
 
-int32_t EditorInterface::Select()
+int32_t
+EditorInterface::Select()
 {
 	if (currentBrushID == IDS_SELECT)
 	{
@@ -2171,8 +2220,8 @@ int32_t EditorInterface::Select()
 			GetParent()->GetMenu()->GetMenuState(ID_DRAGNORMAL, MF_BYCOMMAND) & MF_CHECKED
 			? -1
 			: smoothRadius;
-		curBrush		   = new SelectionBrush(false, radius);
-		currentBrushID	 = IDS_SELECT;
+		curBrush = new SelectionBrush(false, radius);
+		currentBrushID = IDS_SELECT;
 		currentBrushMenuID = ID_OTHER_SELECT;
 		ChangeCursor(IDC_MC2ARROW);
 	}
@@ -2180,7 +2229,8 @@ int32_t EditorInterface::Select()
 	return true;
 }
 
-int32_t EditorInterface::Flatten()
+int32_t
+EditorInterface::Flatten()
 {
 	if (selecting && (land->hasSelection()))
 	{
@@ -2196,13 +2246,14 @@ int32_t EditorInterface::Flatten()
 		KillCurBrush();
 		curBrush = new FlattenBrush();
 		ChangeCursor(IDC_FLATTEN);
-		currentBrushID	 = IDS_FLATTEN;
+		currentBrushID = IDS_FLATTEN;
 		currentBrushMenuID = ID_OTHER_FLATTEN;
 	}
 	return true;
 }
 
-int32_t EditorInterface::SaveCameras()
+int32_t
+EditorInterface::SaveCameras()
 {
 	if (!EditorData::getMapName())
 	{
@@ -2223,7 +2274,8 @@ int32_t EditorInterface::SaveCameras()
 	return true;
 }
 
-int32_t EditorInterface::SelectSlopes()
+int32_t
+EditorInterface::SelectSlopes()
 {
 	SelectSlopeDialog dlg;
 	if (dlg.DoModal() == IDOK)
@@ -2245,12 +2297,12 @@ int32_t EditorInterface::SelectSlopes()
 		{
 			for (size_t i = 0; i < land->realVerticesMapSide; ++i)
 			{
-				left	  = i > 0 ? i - 1 : 0;
-				right	 = i < land->realVerticesMapSide ? i + 1 : i;
-				top		  = j > 0 ? j - 1 : 0;
-				bottom	= j < land->realVerticesMapSide ? j + 1 : j;
+				left = i > 0 ? i - 1 : 0;
+				right = i < land->realVerticesMapSide ? i + 1 : i;
+				top = j > 0 ? j - 1 : 0;
+				bottom = j < land->realVerticesMapSide ? j + 1 : j;
 				centerElv = land->getVertexHeight(j * land->realVerticesMapSide + i);
-				tmpElv	= land->getVertexHeight(top * land->realVerticesMapSide + left);
+				tmpElv = land->getVertexHeight(top * land->realVerticesMapSide + left);
 				if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
 				{
 					land->selectVertex(j, i);
@@ -2258,16 +2310,14 @@ int32_t EditorInterface::SelectSlopes()
 				else
 				{
 					tmpElv = land->getVertexHeight(top * land->realVerticesMapSide + right);
-					if (fabs(tmpElv - centerElv) >= minHeight &&
-						fabs(tmpElv - centerElv) <= maxHeight)
+					if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
 					{
 						land->selectVertex(j, i);
 					}
 					else
 					{
 						tmpElv = land->getVertexHeight(bottom * land->realVerticesMapSide + right);
-						if (fabs(tmpElv - centerElv) >= minHeight &&
-							fabs(tmpElv - centerElv) <= maxHeight)
+						if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
 						{
 							land->selectVertex(j, i);
 						}
@@ -2275,8 +2325,7 @@ int32_t EditorInterface::SelectSlopes()
 						{
 							tmpElv =
 								land->getVertexHeight(bottom * land->realVerticesMapSide + left);
-							if (fabs(tmpElv - centerElv) >= minHeight &&
-								fabs(tmpElv - centerElv) <= maxHeight)
+							if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
 							{
 								land->selectVertex(j, i);
 							}
@@ -2290,7 +2339,8 @@ int32_t EditorInterface::SelectSlopes()
 	return true;
 }
 
-int32_t EditorInterface::SelectAltitude()
+int32_t
+EditorInterface::SelectAltitude()
 {
 	HeightDlg dlg;
 	if (dlg.DoModal() == IDOK)
@@ -2315,7 +2365,8 @@ int32_t EditorInterface::SelectAltitude()
 	return true;
 }
 
-int32_t EditorInterface::SelectTerrainType()
+int32_t
+EditorInterface::SelectTerrainType()
 {
 	SelectTerrainTypeDlg dlg;
 	dlg.SelectedTerrainType(-1);
@@ -2339,7 +2390,8 @@ int32_t EditorInterface::SelectTerrainType()
 	return true;
 }
 
-int32_t EditorInterface::PurgeTransitions()
+int32_t
+EditorInterface::PurgeTransitions()
 {
 	land->purgeTransitions();
 	highlighted = false;
@@ -2347,7 +2399,8 @@ int32_t EditorInterface::PurgeTransitions()
 	return true;
 }
 
-int32_t EditorInterface::ShowTransitions()
+int32_t
+EditorInterface::ShowTransitions()
 {
 	highlighted ^= true;
 	if (highlighted)
@@ -2357,28 +2410,30 @@ int32_t EditorInterface::ShowTransitions()
 	return true;
 }
 
-int32_t EditorInterface::Fog()
+int32_t
+EditorInterface::Fog()
 {
 	FogDlg dlg;
-	dlg.m_blue  = (eye->dayFogColor) & 0xff;
+	dlg.m_blue = (eye->dayFogColor) & 0xff;
 	dlg.m_green = (eye->dayFogColor >> 8) & 0xff;
-	dlg.m_red   = (eye->dayFogColor >> 16) & 0xff;
+	dlg.m_red = (eye->dayFogColor >> 16) & 0xff;
 	dlg.m_start = eye->fogStart;
-	dlg.m_end   = eye->fogFull;
+	dlg.m_end = eye->fogFull;
 	if (IDOK == dlg.DoModal())
 	{
 		eye->dayFogColor =
 			((uint32_t)dlg.m_blue) + (((uint32_t)dlg.m_green) << 8) + (((uint32_t)dlg.m_red) << 16);
 		eye->fogColor = eye->dayFogColor;
 		eye->fogStart = dlg.m_start;
-		eye->fogFull  = dlg.m_end;
+		eye->fogFull = dlg.m_end;
 		//		land->reCalcLight();
 		//		eye->updateDaylight();
 	}
 	return true;
 }
 
-int32_t EditorInterface::Light()
+int32_t
+EditorInterface::Light()
 {
 	SunDlg dlg;
 	if (IDOK == dlg.DoModal())
@@ -2393,39 +2448,41 @@ int32_t EditorInterface::Light()
 	return true;
 }
 
-int32_t EditorInterface::Waves()
+int32_t
+EditorInterface::Waves()
 {
 	WaterDlg dlg;
-	dlg.alphaDeep		 = Terrain::alphaDeep;
-	dlg.alphaElevation   = Terrain::mapData->alphaDepth;
-	dlg.alphaMiddle		 = Terrain::alphaMiddle;
-	dlg.alphaShallow	 = Terrain::alphaEdge;
-	dlg.amplitude		 = Terrain::waterAmplitude;
-	dlg.elevation		 = Terrain::mapData->waterDepth;
-	dlg.frequency		 = Terrain::waterFreq;
+	dlg.alphaDeep = Terrain::alphaDeep;
+	dlg.alphaElevation = Terrain::mapData->alphaDepth;
+	dlg.alphaMiddle = Terrain::alphaMiddle;
+	dlg.alphaShallow = Terrain::alphaEdge;
+	dlg.amplitude = Terrain::waterAmplitude;
+	dlg.elevation = Terrain::mapData->waterDepth;
+	dlg.frequency = Terrain::waterFreq;
 	dlg.shallowElevation = Terrain::mapData->shallowDepth;
 	if (IDOK == dlg.DoModal())
 	{
-		Terrain::alphaDeep			   = dlg.alphaDeep;
-		Terrain::alphaMiddle		   = dlg.alphaMiddle;
-		Terrain::alphaEdge			   = dlg.alphaShallow;
-		Terrain::waterAmplitude		   = dlg.amplitude;
-		Terrain::waterElevation		   = dlg.elevation;
-		Terrain::waterFreq			   = dlg.frequency;
+		Terrain::alphaDeep = dlg.alphaDeep;
+		Terrain::alphaMiddle = dlg.alphaMiddle;
+		Terrain::alphaEdge = dlg.alphaShallow;
+		Terrain::waterAmplitude = dlg.amplitude;
+		Terrain::waterElevation = dlg.elevation;
+		Terrain::waterFreq = dlg.frequency;
 		Terrain::mapData->shallowDepth = dlg.shallowElevation;
-		Terrain::mapData->alphaDepth   = dlg.alphaElevation;
-		Terrain::mapData->waterDepth   = dlg.elevation;
+		Terrain::mapData->alphaDepth = dlg.alphaElevation;
+		Terrain::mapData->waterDepth = dlg.elevation;
 		land->recalcWater();
 		tacMap.UpdateMap();
 	}
 	return true;
 }
 
-int32_t EditorInterface::DragSmooth()
+int32_t
+EditorInterface::DragSmooth()
 {
 	if (IDS_SELECT == currentBrushID)
 	{
-		currentBrushID	 = -1;
+		currentBrushID = -1;
 		currentBrushMenuID = -1;
 		GetParent()->GetMenu()->CheckMenuItem(ID_DRAGSMOOTH, MF_BYCOMMAND | MF_CHECKED);
 		GetParent()->GetMenu()->CheckMenuItem(ID_DRAGNORMAL, MF_BYCOMMAND | MF_UNCHECKED);
@@ -2433,11 +2490,12 @@ int32_t EditorInterface::DragSmooth()
 	}
 	return true;
 }
-int32_t EditorInterface::DragRough()
+int32_t
+EditorInterface::DragRough()
 {
 	if (IDS_SELECT == currentBrushID)
 	{
-		currentBrushID	 = -1;
+		currentBrushID = -1;
 		currentBrushMenuID = -1;
 		GetParent()->GetMenu()->CheckMenuItem(ID_DRAGSMOOTH, MF_BYCOMMAND | MF_UNCHECKED);
 		GetParent()->GetMenu()->CheckMenuItem(ID_DRAGNORMAL, MF_BYCOMMAND | MF_CHECKED);
@@ -2446,7 +2504,8 @@ int32_t EditorInterface::DragRough()
 	return true;
 }
 
-int32_t EditorInterface::AssignElevation()
+int32_t
+EditorInterface::AssignElevation()
 {
 	if (!land->hasSelection())
 	{
@@ -2487,7 +2546,8 @@ int32_t EditorInterface::AssignElevation()
 	return true;
 }
 
-int32_t EditorInterface::SmoothRadius()
+int32_t
+EditorInterface::SmoothRadius()
 {
 	SingleValueDlg dlg(IDS_SMOOTH_RADIUS, IDS_RADIUS, smoothRadius);
 	if (IDOK == dlg.DoModal())
@@ -2495,7 +2555,7 @@ int32_t EditorInterface::SmoothRadius()
 		smoothRadius = dlg.GetVal();
 		if (IDS_SELECT == currentBrushID)
 		{
-			currentBrushID	 = -1;
+			currentBrushID = -1;
 			currentBrushMenuID = -1;
 			Select();
 		}
@@ -2503,21 +2563,23 @@ int32_t EditorInterface::SmoothRadius()
 	return true;
 }
 
-int32_t EditorInterface::Alignment(int32_t specific)
+int32_t
+EditorInterface::Alignment(int32_t specific)
 {
 	for (size_t i = 0; i < 9; ++i)
 		GetParent()->GetMenu()->CheckMenuItem(ID_ALIGNMENT_TEAM1 + i, MF_BYCOMMAND | MF_UNCHECKED);
 	GetParent()->GetMenu()->CheckMenuItem(specific, MF_BYCOMMAND | MF_CHECKED);
 	if (currentBrushID >= IDS_OBJECT_200 && currentBrushID <= 30800)
 	{
-		int32_t tmp	= currentBrushID;
+		int32_t tmp = currentBrushID;
 		currentBrushID = 0;
 		paintBuildings(tmp);
 	}
 	return true;
 }
 
-int32_t EditorInterface::SaveHeightMap()
+int32_t
+EditorInterface::SaveHeightMap()
 {
 	CreateDirectory(terrainPath, nullptr);
 	CFileDialog fileDlg(
@@ -2540,44 +2602,45 @@ int32_t EditorInterface::SaveHeightMap()
 	return true;
 }
 
-int32_t EditorInterface::MissionSettings()
+int32_t
+EditorInterface::MissionSettings()
 {
 	MissionSettingsDlg dlg;
-	dlg.m_MissionNameUnlocalizedText   = EditorData::instance->MissionName().Data();
+	dlg.m_MissionNameUnlocalizedText = EditorData::instance->MissionName().Data();
 	dlg.m_MissionNameUseResourceString = EditorData::instance->MissionNameUseResourceString();
-	dlg.m_MissionNameResourceStringID  = EditorData::instance->MissionNameResourceStringID();
-	dlg.m_AuthorEdit				   = EditorData::instance->Author().Data();
-	dlg.m_BlurbUnlocalizedText		   = EditorData::instance->Blurb().Data();
-	dlg.m_BlurbUseResourceString	   = EditorData::instance->BlurbUseResourceString();
-	dlg.m_BlurbResourceStringID		   = EditorData::instance->BlurbResourceStringID();
-	dlg.m_Blurb2UnlocalizedText		   = EditorData::instance->Blurb2().Data();
-	dlg.m_Blurb2UseResourceString	  = EditorData::instance->Blurb2UseResourceString();
-	dlg.m_Blurb2ResourceStringID	   = EditorData::instance->Blurb2ResourceStringID();
-	dlg.m_TimeLimit					   = EditorData::instance->TimeLimit();
-	dlg.m_DropWeightLimit			   = EditorData::instance->DropWeightLimit();
-	dlg.m_InitialResourcePoints		   = EditorData::instance->InitialResourcePoints();
-	dlg.m_SinglePlayerCheck			   = (BOOL)EditorData::instance->IsSinglePlayer();
-	dlg.m_MaxTeams					   = EditorData::instance->MaxTeams();
-	dlg.m_MaxPlayers				   = EditorData::instance->MaxPlayers();
+	dlg.m_MissionNameResourceStringID = EditorData::instance->MissionNameResourceStringID();
+	dlg.m_AuthorEdit = EditorData::instance->Author().Data();
+	dlg.m_BlurbUnlocalizedText = EditorData::instance->Blurb().Data();
+	dlg.m_BlurbUseResourceString = EditorData::instance->BlurbUseResourceString();
+	dlg.m_BlurbResourceStringID = EditorData::instance->BlurbResourceStringID();
+	dlg.m_Blurb2UnlocalizedText = EditorData::instance->Blurb2().Data();
+	dlg.m_Blurb2UseResourceString = EditorData::instance->Blurb2UseResourceString();
+	dlg.m_Blurb2ResourceStringID = EditorData::instance->Blurb2ResourceStringID();
+	dlg.m_TimeLimit = EditorData::instance->TimeLimit();
+	dlg.m_DropWeightLimit = EditorData::instance->DropWeightLimit();
+	dlg.m_InitialResourcePoints = EditorData::instance->InitialResourcePoints();
+	dlg.m_SinglePlayerCheck = (BOOL)EditorData::instance->IsSinglePlayer();
+	dlg.m_MaxTeams = EditorData::instance->MaxTeams();
+	dlg.m_MaxPlayers = EditorData::instance->MaxPlayers();
 	dlg.m_ScenarioTune.Empty();
 	dlg.m_ScenarioTune.Format(_T("%d"), EditorData::instance->ScenarioTune());
-	dlg.m_VideoFilename			= EditorData::instance->VideoFilename().Data();
-	dlg.m_CBills				= EditorData::instance->CBills();
-	dlg.m_NumRPBuildings		= EditorData::instance->NumRandomRPbuildings();
-	dlg.m_DownloadUrlEdit		= EditorData::instance->DownloadURL().Data();
-	dlg.m_MissionType			= EditorData::instance->MissionType();
-	dlg.m_AirStrikeCheck		= EditorData::instance->AirStrikesEnabledDefault();
-	dlg.m_MineLayerCheck		= EditorData::instance->MineLayersEnabledDefault();
-	dlg.m_ScoutCopterCheck		= EditorData::instance->ScoutCoptersEnabledDefault();
-	dlg.m_SensorProbeCheck		= EditorData::instance->SensorProbesEnabledDefault();
-	dlg.m_UnlimitedAmmoCheck	= EditorData::instance->UnlimitedAmmoEnabledDefault();
-	dlg.m_AllTech				= EditorData::instance->AllTechEnabledDefault();
-	dlg.m_RepairVehicleCheck	= EditorData::instance->RepairVehicleEnabledDefault();
-	dlg.m_SalvageCraftCheck		= EditorData::instance->SalvageCraftEnabledDefault();
+	dlg.m_VideoFilename = EditorData::instance->VideoFilename().Data();
+	dlg.m_CBills = EditorData::instance->CBills();
+	dlg.m_NumRPBuildings = EditorData::instance->NumRandomRPbuildings();
+	dlg.m_DownloadUrlEdit = EditorData::instance->DownloadURL().Data();
+	dlg.m_MissionType = EditorData::instance->MissionType();
+	dlg.m_AirStrikeCheck = EditorData::instance->AirStrikesEnabledDefault();
+	dlg.m_MineLayerCheck = EditorData::instance->MineLayersEnabledDefault();
+	dlg.m_ScoutCopterCheck = EditorData::instance->ScoutCoptersEnabledDefault();
+	dlg.m_SensorProbeCheck = EditorData::instance->SensorProbesEnabledDefault();
+	dlg.m_UnlimitedAmmoCheck = EditorData::instance->UnlimitedAmmoEnabledDefault();
+	dlg.m_AllTech = EditorData::instance->AllTechEnabledDefault();
+	dlg.m_RepairVehicleCheck = EditorData::instance->RepairVehicleEnabledDefault();
+	dlg.m_SalvageCraftCheck = EditorData::instance->SalvageCraftEnabledDefault();
 	dlg.m_ResourceBuildingCheck = EditorData::instance->ResourceBuildingsEnabledDefault();
-	dlg.m_NoVariantsCheck		= EditorData::instance->NoVariantsEnabledDefault();
-	dlg.m_ArtilleryPieceCheck   = EditorData::instance->ArtilleryPieceEnabledDefault();
-	dlg.m_RPsForMechsCheck		= EditorData::instance->RPsForMechsEnabledDefault();
+	dlg.m_NoVariantsCheck = EditorData::instance->NoVariantsEnabledDefault();
+	dlg.m_ArtilleryPieceCheck = EditorData::instance->ArtilleryPieceEnabledDefault();
+	dlg.m_RPsForMechsCheck = EditorData::instance->RPsForMechsEnabledDefault();
 	if (IDOK == dlg.DoModal())
 	{
 		EditorData::instance->MissionName(dlg.m_MissionNameUnlocalizedText.GetBuffer(0));
@@ -2618,7 +2681,8 @@ int32_t EditorInterface::MissionSettings()
 	return true;
 }
 
-int32_t EditorInterface::Team(int32_t team)
+int32_t
+EditorInterface::Team(int32_t team)
 {
 	static CTeams originalTeams;
 	if (!ObjectSelectOnlyMode())
@@ -2638,12 +2702,13 @@ int32_t EditorInterface::Team(int32_t team)
 	return true;
 }
 
-int32_t EditorInterface::Player(int32_t player)
+int32_t
+EditorInterface::Player(int32_t player)
 {
 	PlayerSettingsDlg dlg;
-	dlg.m_playerEdit	 = player + 1;
+	dlg.m_playerEdit = player + 1;
 	dlg.m_oldDefaultTeam = EditorData::instance->PlayersRef().PlayerRef(player).DefaultTeam();
-	dlg.m_numTeams		 = EditorData::instance->MaxTeams();
+	dlg.m_numTeams = EditorData::instance->MaxTeams();
 	if ((IDOK == dlg.DoModal()) && (0 <= dlg.m_newDefaultTeam))
 	{
 		EditorData::instance->PlayersRef().PlayerRef(player).DefaultTeam(dlg.m_newDefaultTeam);
@@ -2653,7 +2718,8 @@ int32_t EditorInterface::Player(int32_t player)
 
 static const float SQRT_2 = 1.4142135623730950488016887242097f;
 /* make the horizontal scroll bar reflect the current camera position */
-void EditorInterface::syncHScroll()
+void
+EditorInterface::syncHScroll()
 {
 	/* this calculation was based in the code for Camera::moveRight(float
 	 * amount) */
@@ -2675,7 +2741,7 @@ void EditorInterface::syncHScroll()
 	Stuff::Vector3D eyeDisplacement = eye->getPosition();
 	/* maxVisual was taken from Camera::setPosition(). */
 	float maxVisual = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
-	float bound		= SQRT_2 * maxVisual;
+	float bound = SQRT_2 * maxVisual;
 	float scrollPos = ((direction * eyeDisplacement) / bound * 0.5f + 0.5f) * HSCROLLBAR_RANGE;
 	SetScrollRange(SB_HORZ, 0, HSCROLLBAR_RANGE, true);
 	SetScrollPos(SB_HORZ, (int32_t)scrollPos);
@@ -2688,8 +2754,8 @@ void EditorInterface::syncHScroll()
 		eye->inverseProject(screen, world1);
 		screen.x = Environment.screenWidth - 1;
 		eye->inverseProject(screen, world2);
-		float dx   = world2.x - world1.x;
-		float dy   = world2.y - world1.y;
+		float dx = world2.x - world1.x;
+		float dy = world2.y - world1.y;
 		float span = sqrt(dx * dx + dy * dy);
 		/* make the size of the scroll bar proportional to the proportion of the
 		 * map that's visible */
@@ -2703,7 +2769,8 @@ void EditorInterface::syncHScroll()
 }
 
 /* make the vertical scroll bar reflect the current camera position */
-void EditorInterface::syncVScroll()
+void
+EditorInterface::syncVScroll()
 {
 	/* this calculation was based in the code for Camera::moveRight(float
 	 * amount) */
@@ -2725,7 +2792,7 @@ void EditorInterface::syncVScroll()
 	Stuff::Vector3D eyeDisplacement = eye->getPosition();
 	/* maxVisual was taken from Camera::setPosition(). */
 	float maxVisual = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
-	float bound		= SQRT_2 * maxVisual;
+	float bound = SQRT_2 * maxVisual;
 	float scrollPos = ((direction * eyeDisplacement) / bound * 0.5f + 0.5f) * VSCROLLBAR_RANGE;
 	SetScrollRange(SB_VERT, 0, VSCROLLBAR_RANGE, false);
 	SetScrollPos(SB_VERT, (int32_t)scrollPos);
@@ -2738,8 +2805,8 @@ void EditorInterface::syncVScroll()
 		eye->inverseProject(screen, world1);
 		screen.y = Environment.screenHeight - 1;
 		eye->inverseProject(screen, world2);
-		float dx   = world2.x - world1.x;
-		float dy   = world2.y - world1.y;
+		float dx = world2.x - world1.x;
+		float dy = world2.y - world1.y;
 		float span = sqrt(dx * dx + dy * dy);
 		/* make the size of the scroll bar proportional to the proportion of the
 		 * map that's visible */
@@ -2752,7 +2819,8 @@ void EditorInterface::syncVScroll()
 	tacMap.RedrawWindow();
 }
 
-void EditorInterface::SetBusyMode(bool bRedrawWindow)
+void
+EditorInterface::SetBusyMode(bool bRedrawWindow)
 {
 	if (bRedrawWindow)
 	{
@@ -2783,7 +2851,8 @@ void EditorInterface::SetBusyMode(bool bRedrawWindow)
 	m_AppIsBusy += 1;
 }
 
-void EditorInterface::UnsetBusyMode()
+void
+EditorInterface::UnsetBusyMode()
 {
 	if (1 == m_AppIsBusy)
 	{
@@ -2795,7 +2864,8 @@ void EditorInterface::UnsetBusyMode()
 	m_AppIsBusy -= 1;
 }
 
-int32_t EditorInterface::Damage(bool bDamage)
+int32_t
+EditorInterface::Damage(bool bDamage)
 {
 	if (selecting && EditorObjectMgr::instance()->hasSelection())
 	{
@@ -2818,7 +2888,8 @@ int32_t EditorInterface::Damage(bool bDamage)
 	return true;
 }
 
-int32_t EditorInterface::LayMines()
+int32_t
+EditorInterface::LayMines()
 {
 	if (selecting && (land->hasSelection()))
 	{
@@ -2837,7 +2908,8 @@ int32_t EditorInterface::LayMines()
 	return true;
 }
 
-int32_t EditorInterface::SelectDetailTexture()
+int32_t
+EditorInterface::SelectDetailTexture()
 {
 	CFileDialog fileDlg(TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
@@ -2854,7 +2926,8 @@ int32_t EditorInterface::SelectDetailTexture()
 	return true;
 }
 
-int32_t EditorInterface::SelectWaterTexture()
+int32_t
+EditorInterface::SelectWaterTexture()
 {
 	CFileDialog fileDlg(TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
@@ -2872,7 +2945,8 @@ int32_t EditorInterface::SelectWaterTexture()
 }
 
 //---------------------------------------------------------------------------
-inline bool colorMapIsOKFormat(PCSTR fileName)
+inline bool
+colorMapIsOKFormat(PCSTR fileName)
 {
 	uint32_t localColorMapSizeCheck = land->realVerticesMapSide * 12.8;
 	File tgaFile;
@@ -2881,15 +2955,15 @@ inline bool colorMapIsOKFormat(PCSTR fileName)
 	{
 		struct TGAFileHeader tgaHeader;
 		tgaFile.read((puint8_t)&tgaHeader, sizeof(TGAFileHeader));
-		if ((tgaHeader.image_type == UNC_TRUE) && (tgaHeader.width == tgaHeader.height) &&
-			(tgaHeader.width == localColorMapSizeCheck))
+		if ((tgaHeader.image_type == UNC_TRUE) && (tgaHeader.width == tgaHeader.height) && (tgaHeader.width == localColorMapSizeCheck))
 			return true;
 		tgaFile.close();
 	}
 	return false;
 }
 
-int32_t EditorInterface::SetBaseTexture()
+int32_t
+EditorInterface::SetBaseTexture()
 {
 	CFileDialog fileDlg(TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
@@ -2922,7 +2996,8 @@ int32_t EditorInterface::SetBaseTexture()
 	return true;
 }
 
-int32_t EditorInterface::ReloadBaseTexture()
+int32_t
+EditorInterface::ReloadBaseTexture()
 {
 	if (land->terrainTextures2 && (land->terrainTextures2->colorMapStarted))
 	{
@@ -2934,7 +3009,8 @@ int32_t EditorInterface::ReloadBaseTexture()
 	return true;
 }
 
-int32_t EditorInterface::SelectWaterDetailTexture()
+int32_t
+EditorInterface::SelectWaterDetailTexture()
 {
 	CFileDialog fileDlg(TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
@@ -2951,7 +3027,8 @@ int32_t EditorInterface::SelectWaterDetailTexture()
 	return true;
 }
 
-int32_t EditorInterface::TextureTilingFactors()
+int32_t
+EditorInterface::TextureTilingFactors()
 {
 	TilingFactorsDialog tilingFactorsDlg;
 	tilingFactorsDlg.m_TerrainDetailTilingFactor = land->terrainTextures2->getDetailTilingFactor();
@@ -2968,7 +3045,8 @@ int32_t EditorInterface::TextureTilingFactors()
 	return true;
 }
 
-int32_t EditorInterface::Link(bool bLink)
+int32_t
+EditorInterface::Link(bool bLink)
 {
 	LinkBrush* pCurLinkBrush = dynamic_cast<LinkBrush*>(curBrush);
 	if ((0 == pCurLinkBrush) || (pCurLinkBrush->bLink != bLink))
@@ -2981,7 +3059,8 @@ int32_t EditorInterface::Link(bool bLink)
 	return 1;
 }
 
-int32_t EditorInterface::DropZone(bool bVTol)
+int32_t
+EditorInterface::DropZone(bool bVTol)
 {
 	KillCurBrush();
 	int32_t alignment = EDITOR_TEAM1;
@@ -2997,20 +3076,22 @@ int32_t EditorInterface::DropZone(bool bVTol)
 				alignment = EDITOR_TEAMNONE;
 		}
 	}*/
-	curBrush	   = new DropZoneBrush(alignment, bVTol);
+	curBrush = new DropZoneBrush(alignment, bVTol);
 	currentBrushID = ID_DROPZONES_ADD + bVTol;
 	ChangeCursor(IDC_DROPZONE);
 	return true;
 }
 
-int32_t EditorInterface::CampaignEditor()
+int32_t
+EditorInterface::CampaignEditor()
 {
 	CCampaignDialog campaignDialog;
 	campaignDialog.DoModal();
 	return 1;
 }
 
-int32_t EditorInterface::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int32_t
+EditorInterface::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CWnd ::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -3031,7 +3112,8 @@ extern bool gActive;
 extern bool gGotFocus;
 extern Editor* editor;
 
-LRESULT EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
+LRESULT
+EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	// We're not ready to draw anything.
 	// If you let an event through it'll probably crash!
@@ -3040,7 +3122,7 @@ LRESULT EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lPar
 		handleKeyDown(wParam);
 	if (message == WM_CREATE)
 	{
-		gActive   = true;
+		gActive = true;
 		gGotFocus = true;
 	}
 	if (WM_MOUSEWHEEL == message)
@@ -3048,7 +3130,7 @@ LRESULT EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lPar
 		// int32_t i = 17;
 	}
 	int32_t retVal = 0;
-	retVal		   = CWnd::WindowProc(message, wParam, lParam);
+	retVal = CWnd::WindowProc(message, wParam, lParam);
 	if (message == WM_KEYDOWN && wParam == VK_SCROLL)
 		return 0;
 	if ((eye || message == WM_MOVE))
@@ -3083,12 +3165,12 @@ LRESULT EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lPar
 		break;
 		case WM_SIZE:
 		{
-			float w			  = LOWORD(lParam);
-			float h			  = HIWORD(lParam);
+			float w = LOWORD(lParam);
+			float h = HIWORD(lParam);
 			windowSizeChanged = true;
-			g_newWidth		  = w + 16 /*scrollbar thickness*/;
-			g_newHeight		  = h + 16 /*scrollbar thickness*/;
-			retVal			  = GameOSWinProc(m_hWnd, message, wParam, lParam);
+			g_newWidth = w + 16 /*scrollbar thickness*/;
+			g_newHeight = h + 16 /*scrollbar thickness*/;
+			retVal = GameOSWinProc(m_hWnd, message, wParam, lParam);
 			if (editor && bThisIsInitialized)
 			{
 				editor->update();
@@ -3101,9 +3183,14 @@ LRESULT EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lPar
 	return retVal;
 }
 
-afx_msg void EditorInterface::OnCommand(WPARAM wParam) { handleNewMenuMessage(wParam); }
+afx_msg void
+EditorInterface::OnCommand(WPARAM wParam)
+{
+	handleNewMenuMessage(wParam);
+}
 
-void EditorInterface::UpdateButton(CCmdUI* pButton)
+void
+EditorInterface::UpdateButton(CCmdUI* pButton)
 {
 	pButton->Enable(true);
 	if (pButton->m_nID == ID_DROPZONES_ADD || pButton->m_nID == ID_DROPZONES_VTOL)
@@ -3117,26 +3204,30 @@ void EditorInterface::UpdateButton(CCmdUI* pButton)
 	}
 }
 
-void EditorInterface::OnLButtonDown(uint32_t nFlags, CPoint point)
+void
+EditorInterface::OnLButtonDown(uint32_t nFlags, CPoint point)
 {
 	SetCapture();
 	handleLeftButtonDown(point.x, point.y);
 	SPEW((0, "GotClick"));
 }
 
-void EditorInterface::OnLButtonUp(uint32_t nFlags, CPoint point)
+void
+EditorInterface::OnLButtonUp(uint32_t nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	handleLeftButtonUp(point.x, point.y);
 	ReleaseCapture();
 }
 
-void EditorInterface::OnMouseMove(uint32_t nFlags, CPoint point)
+void
+EditorInterface::OnMouseMove(uint32_t nFlags, CPoint point)
 {
 	handleMouseMove(point.x, point.y);
 }
 
-void EditorInterface::ChangeCursor(int32_t ID)
+void
+EditorInterface::ChangeCursor(int32_t ID)
 {
 	if (hCursor)
 		DestroyCursor(hCursor);
@@ -3148,7 +3239,8 @@ void EditorInterface::ChangeCursor(int32_t ID)
 	curCursorID = ID;
 }
 
-BOOL EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t message)
+BOOL
+EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t message)
 {
 	if (0 < m_AppIsBusy)
 	{
@@ -3169,7 +3261,8 @@ BOOL EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t messag
 	return CWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
-BOOL EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
+BOOL
+EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
 {
 	cs.lpszClass =
 		AfxRegisterWndClass(CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW, // use any window styles
@@ -3177,19 +3270,20 @@ BOOL EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
 	return CWnd ::PreCreateWindow(cs);
 }
 
-void EditorInterface::OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
+void
+EditorInterface::OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
 {
 	if (nChar == KEY_SPACE)
 	{
 		KillCurBrush();
-		curBrush	  = prevBrush;
-		selecting	 = prevSelecting;
-		painting	  = prevPainting;
-		dragging	  = prevDragging;
-		prevBrush	 = nullptr;
+		curBrush = prevBrush;
+		selecting = prevSelecting;
+		painting = prevPainting;
+		dragging = prevDragging;
+		prevBrush = nullptr;
 		prevSelecting = false;
-		prevPainting  = false;
-		prevDragging  = false;
+		prevPainting = false;
+		prevDragging = false;
 		ChangeCursor(oldCursor);
 		syncScrollBars();
 		// dragging = false;
@@ -3198,15 +3292,17 @@ void EditorInterface::OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
 	CWnd ::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void EditorInterface::OnRButtonDown(uint32_t nFlags, CPoint point)
+void
+EditorInterface::OnRButtonDown(uint32_t nFlags, CPoint point)
 {
 	SetCapture();
-	lastX			   = point.x;
-	lastY			   = point.y;
-	rightDrag		   = true;
+	lastX = point.x;
+	lastY = point.y;
+	rightDrag = true;
 	lastRightClickTime = timeGetTime();
 }
-void EditorInterface::OnRButtonUp(uint32_t nFlags, CPoint point)
+void
+EditorInterface::OnRButtonUp(uint32_t nFlags, CPoint point)
 {
 	rightDrag = false;
 	ReleaseCapture();
@@ -3243,7 +3339,8 @@ void EditorInterface::OnRButtonUp(uint32_t nFlags, CPoint point)
 	}*/
 }
 
-BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
+BOOL
+EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 {
 	//--------------------------------------------------
 	// Zoom Camera based on Mouse Wheel input.
@@ -3261,9 +3358,8 @@ BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 		}
 	}
 	// int32_t middleClicked = nFlags & MK_MBUTTON;
-	int32_t middleClicked = (nFlags & MK_MBUTTON) &&
-		(nFlags & MK_RBUTTON); // it's too easy to accidentally press the middle
-							   // button while scrolling on some mice
+	int32_t middleClicked = (nFlags & MK_MBUTTON) && (nFlags & MK_RBUTTON); // it's too easy to accidentally press the middle
+		// button while scrolling on some mice
 	//-----------------------------------------------------------------
 	// If middle mouse button is pressed, go to normal tilt, 50% zoom
 	if (middleClicked)
@@ -3272,14 +3368,14 @@ BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 		eye->ZoomNormal();
 	}
 	// IF there is a selected object, find distance to it from camera.
-	float eyeDistance	  = 0.0f;
+	float eyeDistance = 0.0f;
 	int32_t selectionCount = EditorObjectMgr::instance()->getSelectionCount();
 	if (selectionCount)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 			EditorObjectMgr::instance()->getSelectedObjectList();
 		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
-		const EditorObject* pInfo						  = (*it);
+		const EditorObject* pInfo = (*it);
 		if (pInfo)
 		{
 			Stuff::Point3D eyePosition(eye->getCameraOrigin());
@@ -3303,7 +3399,8 @@ BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 	return CWnd ::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-void EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
+void
+EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
 {
 	if (pScrollBar != nullptr && pScrollBar->SendChildNotifyLastMsg())
 		return; // eat it
@@ -3312,12 +3409,12 @@ void EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pSc
 		return;
 	//	OnScroll(MAKEWORD(nSBCode, -1), nPos);
 	SCROLLINFO sInfo;
-	sInfo.cbSize	= sizeof(SCROLLINFO);
-	sInfo.fMask		= SIF_POS | SIF_PAGE;
-	sInfo.nMin		= 0;
-	sInfo.nMax		= 0;
-	sInfo.nPage		= 0;
-	sInfo.nPos		= 0;
+	sInfo.cbSize = sizeof(SCROLLINFO);
+	sInfo.fMask = SIF_POS | SIF_PAGE;
+	sInfo.nMin = 0;
+	sInfo.nMax = 0;
+	sInfo.nPage = 0;
+	sInfo.nPos = 0;
 	sInfo.nTrackPos = 0;
 	CPoint pt;
 	GetScrollInfo(SB_HORZ, &sInfo);
@@ -3366,12 +3463,12 @@ void EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pSc
 	OppRotate(direction, worldCameraRotation);
 	Stuff::Vector3D eyeDisplacement = eye->getPosition();
 	/* maxVisual was taken from Camera::setPosition(). */
-	float maxVisual  = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
-	float bound		 = SQRT_2 * maxVisual;
-	float amount	 = bound * 2.0f * (((float)pt.x) / HSCROLLBAR_RANGE - 0.5f);
+	float maxVisual = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
+	float bound = SQRT_2 * maxVisual;
+	float amount = bound * 2.0f * (((float)pt.x) / HSCROLLBAR_RANGE - 0.5f);
 	float amountMore = amount - direction * eyeDisplacement;
 	eye->moveRight(amountMore);
-	sInfo.nPos  = pt.x;
+	sInfo.nPos = pt.x;
 	sInfo.fMask = SIF_POS;
 	this->SetScrollPos(SB_HORZ, pt.x);
 	CWnd ::OnHScroll(nSBCode, nPos, pScrollBar);
@@ -3380,15 +3477,16 @@ void EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pSc
 	syncScrollBars();
 }
 
-void EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
+void
+EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
 {
 	SCROLLINFO sInfo;
-	sInfo.cbSize	= sizeof(SCROLLINFO);
-	sInfo.fMask		= SIF_POS | SIF_PAGE;
-	sInfo.nMin		= 0;
-	sInfo.nMax		= 0;
-	sInfo.nPage		= 0;
-	sInfo.nPos		= 0;
+	sInfo.cbSize = sizeof(SCROLLINFO);
+	sInfo.fMask = SIF_POS | SIF_PAGE;
+	sInfo.nMin = 0;
+	sInfo.nMax = 0;
+	sInfo.nPage = 0;
+	sInfo.nPos = 0;
 	sInfo.nTrackPos = 0;
 	CPoint pt;
 	GetScrollInfo(SB_VERT, &sInfo);
@@ -3437,9 +3535,9 @@ void EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pSc
 	OppRotate(direction, worldCameraRotation);
 	Stuff::Vector3D eyeDisplacement = eye->getPosition();
 	/* maxVisual was taken from Camera::setPosition(). */
-	float maxVisual  = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
-	float bound		 = SQRT_2 * maxVisual;
-	float amount	 = bound * 2.0f * ((float)pt.y / VSCROLLBAR_RANGE - 0.5f);
+	float maxVisual = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
+	float bound = SQRT_2 * maxVisual;
+	float amount = bound * 2.0f * ((float)pt.y / VSCROLLBAR_RANGE - 0.5f);
 	float amountMore = amount - direction * eyeDisplacement;
 	eye->moveDown(amountMore);
 	SetScrollPos(SB_VERT, pt.y);
@@ -3449,13 +3547,15 @@ void EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pSc
 	syncScrollBars();
 }
 
-void EditorInterface::OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
+void
+EditorInterface::OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
 {
 	handleKeyDown(nChar);
 	CWnd ::OnSysKeyDown(nChar, nRepCnt, nFlags);
 }
 
-int32_t EditorInterface::UnitSettings()
+int32_t
+EditorInterface::UnitSettings()
 {
 	EList<Unit*, Unit*> list;
 	// ok, find the rest of the selected units
@@ -3492,14 +3592,15 @@ int32_t EditorInterface::UnitSettings()
 	return true;
 }
 
-void EditorInterface::initTacMap()
+void
+EditorInterface::initTacMap()
 {
 	// Why don't we just load it from the frickin' file?
 	// We go through all the damned trouble to save it every time!
 	// This takes a int32_t time.
 	// -fs
 	puint8_t pData = nullptr;
-	int32_t size   = 0;
+	int32_t size = 0;
 	FullPathFileName mPath;
 	bool bFile = false;
 	if (EditorData::instance->getMapName())
@@ -3524,7 +3625,8 @@ void EditorInterface::initTacMap()
 	tacMap.RedrawWindow();
 }
 
-BOOL EditorInterface::PreTranslateMessage(MSG* pMsg)
+BOOL
+EditorInterface::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_hAccelTable)
 	{
@@ -3534,7 +3636,8 @@ BOOL EditorInterface::PreTranslateMessage(MSG* pMsg)
 	return CWnd ::PreTranslateMessage(pMsg);
 }
 
-void EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point)
+void
+EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point)
 {
 	Stuff::Vector3D pos;
 	Stuff::Vector2DOf<int32_t> screen;
@@ -3549,7 +3652,8 @@ void EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point)
 	CWnd ::OnLButtonDblClk(nFlags, point);
 }
 
-void EditorInterface::OnPaint()
+void
+EditorInterface::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	static bool bFirstLoad = true;
@@ -3576,21 +3680,21 @@ void EditorInterface::OnPaint()
 					pSplashBitmap->GetBitmap(&bm_struct);
 					pbmOld = dcMem.SelectObject(pSplashBitmap);
 				}
-				int32_t gbmLeft   = rcClient.right / 2 - bm_struct.bmWidth / 2;
-				int32_t gbmTop	= rcClient.bottom / 2 - bm_struct.bmHeight / 2;
-				int32_t gbmRight  = gbmLeft + bm_struct.bmWidth;
+				int32_t gbmLeft = rcClient.right / 2 - bm_struct.bmWidth / 2;
+				int32_t gbmTop = rcClient.bottom / 2 - bm_struct.bmHeight / 2;
+				int32_t gbmRight = gbmLeft + bm_struct.bmWidth;
 				int32_t gbmBottom = gbmTop + bm_struct.bmHeight;
 				CRect rcTmp;
-				rcTmp		 = rcClient;
+				rcTmp = rcClient;
 				rcTmp.bottom = gbmTop;
 				dc.FillSolidRect(&rcTmp, RGB(0, 0, 0));
-				rcTmp	 = rcClient;
+				rcTmp = rcClient;
 				rcTmp.top = gbmBottom;
 				dc.FillSolidRect(&rcTmp, RGB(0, 0, 0));
-				rcTmp		= rcClient;
+				rcTmp = rcClient;
 				rcTmp.right = gbmLeft;
 				dc.FillSolidRect(&rcTmp, RGB(0, 0, 0));
-				rcTmp	  = rcClient;
+				rcTmp = rcClient;
 				rcTmp.left = gbmRight;
 				dc.FillSolidRect(&rcTmp, RGB(0, 0, 0));
 				dc.BitBlt(rcClient.right / 2 - bm_struct.bmWidth / 2,
@@ -3620,9 +3724,14 @@ void EditorInterface::OnPaint()
 	// Do not call CWnd ::OnPaint() for painting messages
 }
 
-void EditorInterface::OnViewRefreshtacmap() { tacMap.UpdateMap(); }
+void
+EditorInterface::OnViewRefreshtacmap()
+{
+	tacMap.UpdateMap();
+}
 
-bool EditorInterface::SafeRunGameOSLogic()
+bool
+EditorInterface::SafeRunGameOSLogic()
 {
 	if (bThisIsInitialized && (nullptr != land))
 	{
@@ -3637,7 +3746,8 @@ bool EditorInterface::SafeRunGameOSLogic()
 	return false;
 }
 
-void EditorInterface::rotateSelectedObjects(int32_t direction)
+void
+EditorInterface::rotateSelectedObjects(int32_t direction)
 {
 	ModifyBuildingAction* pAction = new ModifyBuildingAction;
 	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects;
@@ -3646,7 +3756,7 @@ void EditorInterface::rotateSelectedObjects(int32_t direction)
 	while (!iter.IsDone())
 	{
 		pAction->addBuildingInfo(*(*iter));
-		int32_t id	= (*iter)->getID();
+		int32_t id = (*iter)->getID();
 		int32_t fitID = EditorObjectMgr::instance()->getFitID(id);
 		if ((EditorObjectMgr::WALL == (*iter)->getSpecialType()) || (33 /*repair bay*/ == fitID))
 		{
@@ -3662,7 +3772,8 @@ void EditorInterface::rotateSelectedObjects(int32_t direction)
 	pAction = nullptr;
 }
 
-static void UpdateMissionPlayerPlayer(int32_t player, CCmdUI* pCmdUI)
+static void
+UpdateMissionPlayerPlayer(int32_t player, CCmdUI* pCmdUI)
 {
 	if (EditorData::instance->MaxPlayers() < player)
 	{
@@ -3674,37 +3785,44 @@ static void UpdateMissionPlayerPlayer(int32_t player, CCmdUI* pCmdUI)
 	}
 }
 
-void EditorInterface::OnUpdateMissionPlayerPlayer3(CCmdUI* pCmdUI)
+void
+EditorInterface::OnUpdateMissionPlayerPlayer3(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(3, pCmdUI);
 }
 
-void EditorInterface::OnUpdateMissionPlayerPlayer4(CCmdUI* pCmdUI)
+void
+EditorInterface::OnUpdateMissionPlayerPlayer4(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(4, pCmdUI);
 }
 
-void EditorInterface::OnUpdateMissionPlayerPlayer5(CCmdUI* pCmdUI)
+void
+EditorInterface::OnUpdateMissionPlayerPlayer5(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(5, pCmdUI);
 }
 
-void EditorInterface::OnUpdateMissionPlayerPlayer6(CCmdUI* pCmdUI)
+void
+EditorInterface::OnUpdateMissionPlayerPlayer6(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(6, pCmdUI);
 }
 
-void EditorInterface::OnUpdateMissionPlayerPlayer7(CCmdUI* pCmdUI)
+void
+EditorInterface::OnUpdateMissionPlayerPlayer7(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(7, pCmdUI);
 }
 
-void EditorInterface::OnUpdateMissionPlayerPlayer8(CCmdUI* pCmdUI)
+void
+EditorInterface::OnUpdateMissionPlayerPlayer8(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(8, pCmdUI);
 }
 
-static void UpdateMissionTeamTeam(int32_t team, CCmdUI* pCmdUI)
+static void
+UpdateMissionTeamTeam(int32_t team, CCmdUI* pCmdUI)
 {
 	if (EditorData::instance->MaxTeams() < team)
 	{
@@ -3716,19 +3834,44 @@ static void UpdateMissionTeamTeam(int32_t team, CCmdUI* pCmdUI)
 	}
 }
 
-void EditorInterface::OnUpdateMissionTeamTeam3(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(3, pCmdUI); }
+void
+EditorInterface::OnUpdateMissionTeamTeam3(CCmdUI* pCmdUI)
+{
+	UpdateMissionTeamTeam(3, pCmdUI);
+}
 
-void EditorInterface::OnUpdateMissionTeamTeam4(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(4, pCmdUI); }
+void
+EditorInterface::OnUpdateMissionTeamTeam4(CCmdUI* pCmdUI)
+{
+	UpdateMissionTeamTeam(4, pCmdUI);
+}
 
-void EditorInterface::OnUpdateMissionTeamTeam5(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(5, pCmdUI); }
+void
+EditorInterface::OnUpdateMissionTeamTeam5(CCmdUI* pCmdUI)
+{
+	UpdateMissionTeamTeam(5, pCmdUI);
+}
 
-void EditorInterface::OnUpdateMissionTeamTeam6(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(6, pCmdUI); }
+void
+EditorInterface::OnUpdateMissionTeamTeam6(CCmdUI* pCmdUI)
+{
+	UpdateMissionTeamTeam(6, pCmdUI);
+}
 
-void EditorInterface::OnUpdateMissionTeamTeam7(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(7, pCmdUI); }
+void
+EditorInterface::OnUpdateMissionTeamTeam7(CCmdUI* pCmdUI)
+{
+	UpdateMissionTeamTeam(7, pCmdUI);
+}
 
-void EditorInterface::OnUpdateMissionTeamTeam8(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(8, pCmdUI); }
+void
+EditorInterface::OnUpdateMissionTeamTeam8(CCmdUI* pCmdUI)
+{
+	UpdateMissionTeamTeam(8, pCmdUI);
+}
 
-void EditorInterface::OnDestroy()
+void
+EditorInterface::OnDestroy()
 {
 	CWnd ::OnDestroy();
 	if (tacMap.m_hWnd)
@@ -3743,7 +3886,8 @@ void EditorInterface::OnDestroy()
 
 //#pragma warning( default:4244 )
 
-void EditorInterface::OnForestTool()
+void
+EditorInterface::OnForestTool()
 {
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -3770,7 +3914,7 @@ void EditorInterface::OnForestTool()
 	}
 	float centerX = xAvg / count;
 	float centerY = yAvg / count;
-	float dist	= 0;
+	float dist = 0;
 	for (j = 0; j < land->realVerticesMapSide; ++j)
 	{
 		for (size_t i = 0; i < land->realVerticesMapSide; ++i)
@@ -3779,8 +3923,8 @@ void EditorInterface::OnForestTool()
 			{
 				Stuff::Vector3D pos;
 				land->tileCellToWorld(j, i, 0, 0, pos);
-				float deltaX  = pos.x - centerX;
-				float deltaY  = pos.y - centerY;
+				float deltaX = pos.x - centerX;
+				float deltaY = pos.y - centerY;
 				float tmpDist = deltaX * deltaX + deltaY * deltaY;
 				if (tmpDist > dist)
 					dist = tmpDist;
@@ -3797,7 +3941,8 @@ void EditorInterface::OnForestTool()
 	}
 }
 
-void EditorInterface::OnOtherEditforests()
+void
+EditorInterface::OnOtherEditforests()
 {
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -3807,21 +3952,24 @@ void EditorInterface::OnOtherEditforests()
 	dlg.DoModal();
 }
 
-bool TeamsAction::undo()
+bool
+TeamsAction::undo()
 {
-	CTeams swap						 = EditorData::instance->TeamsRef();
+	CTeams swap = EditorData::instance->TeamsRef();
 	EditorData::instance->TeamsRef() = PreviousTeams();
 	PreviousTeams(swap);
 	return true;
 }
 
-CTeams TeamsAction::PreviousTeams()
+CTeams
+TeamsAction::PreviousTeams()
 {
 	m_previousTeams.RestoreObjectPointerReferencesFromNotedPositions();
 	return m_previousTeams;
 }
 
-void TeamsAction::PreviousTeams(const CTeams& teams)
+void
+TeamsAction::PreviousTeams(const CTeams& teams)
 {
 	m_previousTeams = teams;
 	/*Some of the objective conditions have pointers to objects. These pointers
@@ -3833,7 +3981,8 @@ void TeamsAction::PreviousTeams(const CTeams& teams)
 	m_previousTeams.NoteThePositionsOfObjectsReferenced();
 }
 
-void EditorInterface::OnViewOrthographiccamera()
+void
+EditorInterface::OnViewOrthographiccamera()
 {
 	if (GetParent()->GetMenu()->GetMenuState(ID_VIEW_ORTHOGRAPHICCAMERA, MF_BYCOMMAND) & MF_CHECKED)
 	{
@@ -3852,7 +4001,8 @@ void EditorInterface::OnViewOrthographiccamera()
 	syncScrollBars();
 }
 
-void EditorInterface::OnViewShowpassabilitymap()
+void
+EditorInterface::OnViewShowpassabilitymap()
 {
 	if (GetParent()->GetMenu()->GetMenuState(ID_VIEW_SHOWPASSABILITYMAP, MF_BYCOMMAND) & MF_CHECKED)
 	{
@@ -3868,7 +4018,8 @@ void EditorInterface::OnViewShowpassabilitymap()
 	}
 }
 
-void EditorInterface::OnMButtonUp(uint32_t nFlags, CPoint point)
+void
+EditorInterface::OnMButtonUp(uint32_t nFlags, CPoint point)
 {
 	if (ThisIsInitialized() && eye)
 	{

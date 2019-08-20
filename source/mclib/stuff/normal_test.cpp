@@ -8,7 +8,8 @@
 #include "stdinc.h"
 #include "stuffheaders.hpp"
 
-bool Normal3D::TestClass()
+bool
+Normal3D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Normal3D Test...\n"));
 	SPEW((GROUP_STUFF_TEST, "  Normal3D::TestClass() is stubbed out!\n"));

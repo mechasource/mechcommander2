@@ -15,7 +15,8 @@ class YawPitchRange;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::YawPitchRange& polar);
+void
+Spew(PCSTR group, const Stuff::YawPitchRange& polar);
 #endif
 
 namespace Stuff
@@ -37,14 +38,14 @@ public:
 	{
 		// Check_Pointer(this);
 		pitch = p;
-		yaw   = y;
+		yaw = y;
 		range = r;
 	}
 	YawPitchRange(const YawPitchRange& polar)
 	{
 		// Check_Pointer(this);
 		pitch = polar.pitch;
-		yaw   = polar.yaw;
+		yaw = polar.yaw;
 		range = polar.range;
 	}
 	explicit YawPitchRange(const Vector3D& vector) { *this = vector; }
@@ -57,7 +58,7 @@ public:
 		// Check_Pointer(this);
 		Check_Object(&angles);
 		pitch = angles.pitch;
-		yaw   = angles.yaw;
+		yaw = angles.yaw;
 		range = angles.range;
 		return *this;
 	}

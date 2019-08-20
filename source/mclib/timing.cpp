@@ -16,11 +16,11 @@
 #endif
 
 //----------------------------------------------------------------------------------
-int32_t turn			 = 0;
-float frameLength		 = 0.05f;
-float scenarioTime		 = 0.0;
+int32_t turn = 0;
+float frameLength = 0.05f;
+float scenarioTime = 0.0;
 uint32_t LastTimeGetTime = 0;
-bool dynamicFrameTiming  = TRUE;
+bool dynamicFrameTiming = TRUE;
 
 PSTR monthName[12] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -35,24 +35,29 @@ uint32_t MCTiming_GetTimeZoneInforation(PVOIDtimeData)
 }
 
 //----------------------------------------------------------------------------------
-uint32_t MCTiming_GetTimeZoneInformationSize(void) { return sizeof(TIME_ZONE_INFORMATION); }
+uint32_t
+MCTiming_GetTimeZoneInformationSize(void)
+{
+	return sizeof(TIME_ZONE_INFORMATION);
+}
 
 //----------------------------------------------------------------------------------
 void MC_SYSTEMTIME::copyFromSystemTime(PVOIDsystemTime)
 {
 	SYSTEMTIME* sysTime = (SYSTEMTIME*)systemTime;
-	dwYear				= sysTime->wYear;
-	dwMonth				= sysTime->wMonth;
-	dwDayOfWeek			= sysTime->wDayOfWeek;
-	dwDay				= sysTime->wDay;
-	dwHour				= sysTime->wHour;
-	dwMinute			= sysTime->wMinute;
-	dwSecond			= sysTime->wSecond;
-	dwMilliseconds		= sysTime->wMilliseconds;
+	dwYear = sysTime->wYear;
+	dwMonth = sysTime->wMonth;
+	dwDayOfWeek = sysTime->wDayOfWeek;
+	dwDay = sysTime->wDay;
+	dwHour = sysTime->wHour;
+	dwMinute = sysTime->wMinute;
+	dwSecond = sysTime->wSecond;
+	dwMilliseconds = sysTime->wMilliseconds;
 }
 
 //----------------------------------------------------------------------------------
-void MCTiming_GetUTCSystemTimeFromInformation(
+void
+MCTiming_GetUTCSystemTimeFromInformation(
 	uint32_t daylightInfo, PVOIDtimeData, MC_SYSTEMTIME* systemTime)
 {
 	TIME_ZONE_INFORMATION* tzInfo = (TIME_ZONE_INFORMATION*)timeData;

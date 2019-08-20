@@ -18,11 +18,12 @@ ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 // THIS NEEDS TO BE MOVED TO A DERIVED CLASS!
-void TacMapTGA::OnPaint()
+void
+TacMapTGA::OnPaint()
 {
 	TGAWnd::OnPaint();
 	CDC* pDC = GetDC();
-	CDC& dc  = *pDC;
+	CDC& dc = *pDC;
 	// device context for painting
 	if (eye && land && land->realVerticesMapSide)
 	{
@@ -52,7 +53,7 @@ void TacMapTGA::OnPaint()
 		TacMap::worldToTacMap(world, 0, 0, TACMAP_SIZE, TACMAP_SIZE, tmp);
 		pts[3].x = tmp.x;
 		pts[3].y = tmp.y;
-		pts[4]   = pts[0];
+		pts[4] = pts[0];
 		CPen ourPen(PS_SOLID, 1, 0x00ffffff);
 		CPen* pReplacedPen = dc.SelectObject(&ourPen);
 		dc.MoveTo(pts[0].x, pts[0].y);
@@ -65,7 +66,8 @@ void TacMapTGA::OnPaint()
 	ReleaseDC(pDC);
 }
 
-void TacMapTGA::refreshBmp()
+void
+TacMapTGA::refreshBmp()
 {
 	EditorData::instance->drawTacMap((puint8_t)m_pBits, 128 * 128 * 4, 128);
 	RedrawWindow();

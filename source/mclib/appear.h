@@ -23,7 +23,7 @@
 // Macro definitions
 
 #define HUD_DEPTH 0.0001f // HUD Objects draw over everything else.
-#define WIDTH 19		  // really half the width...
+#define WIDTH 19 // really half the width...
 #define HEIGHT 4
 #define BARTEST 0.001f
 
@@ -33,11 +33,11 @@
 // would have loved to make object flags, but it looks like we're out...
 enum __appear_draw_const
 {
-	DRAW_NORMAL   = 0x00,			// 0x00
-	DRAW_BARS	 = 0x01,			// 0x01
-	DRAW_TEXT	 = DRAW_BARS << 1, // 0x02
+	DRAW_NORMAL = 0x00, // 0x00
+	DRAW_BARS = 0x01, // 0x01
+	DRAW_TEXT = DRAW_BARS << 1, // 0x02
 	DRAW_BRACKETS = DRAW_BARS << 2, // 0x04
-	DRAW_COLORED  = DRAW_BARS << 3, // 0x08
+	DRAW_COLORED = DRAW_BARS << 3, // 0x08
 };
 
 // needed forward declarations
@@ -55,14 +55,14 @@ protected:
 	Stuff::Vector4D screenPos; // Where am I on Screen? INCLUDES correct Z now!
 
 	bool visible; // Current FOW status to help draw
-	bool seen;	// Current FOW status to help draw
+	bool seen; // Current FOW status to help draw
 
 	// public:
-	bool inView;				// Can I be Seen?
-	Stuff::Vector4D upperLeft;  // used to draw select boxes. Can be 3D Now!
+	bool inView; // Can I be Seen?
+	Stuff::Vector4D upperLeft; // used to draw select boxes. Can be 3D Now!
 	Stuff::Vector4D lowerRight; // used to draw select boxes.
 
-	float barStatus;   // Status Bar Length.
+	float barStatus; // Status Bar Length.
 	uint32_t barColor; // Status Bar Color.
 
 	// Member Functions
@@ -73,24 +73,24 @@ public:
 
 	Appearance(void)
 	{
-		inView		= false;
+		inView = false;
 		screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 		upperLeft.x = upperLeft.y = upperLeft.z = upperLeft.w = -999.0f;
 		lowerRight.x = lowerRight.y = lowerRight.z = lowerRight.w = -999.0f;
-		barStatus												  = 1.0;
-		barColor												  = 0x0;
+		barStatus = 1.0;
+		barColor = 0x0;
 		visible = seen = false;
 	}
 	virtual ~Appearance(void) { destroy(); }
 
 	virtual void init(AppearanceType* tree = nullptr, GameObject* obj = nullptr)
 	{
-		inView		= false;
+		inView = false;
 		screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 		upperLeft.x = upperLeft.y = upperLeft.z = upperLeft.w = -999.0f;
 		lowerRight.x = lowerRight.y = lowerRight.z = lowerRight.w = -999.0f;
-		barStatus												  = 1.0;
-		barColor												  = 0x0;
+		barStatus = 1.0;
+		barColor = 0x0;
 		visible = seen = false;
 		(void)tree;
 		(void)obj;
@@ -274,7 +274,7 @@ public:
 	virtual void setVisibility(bool vis, bool sen)
 	{
 		visible = vis;
-		seen	= sen;
+		seen = sen;
 	}
 
 	virtual void setSensorLevel(int32_t /*lvl*/) {}

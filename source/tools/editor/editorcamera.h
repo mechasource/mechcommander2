@@ -46,10 +46,10 @@ public:
 	virtual void init(void)
 	{
 		Camera::init(void);
-		compass			  = nullptr;
-		drawCompass		  = true;
+		compass = nullptr;
+		drawCompass = true;
 		cameraLineChanged = 0;
-		theSky			  = nullptr;
+		theSky = nullptr;
 	}
 
 	virtual void reset(void)
@@ -99,9 +99,9 @@ public:
 		default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 		float z = 1.0f;
 		Stuff::RGBAColor fColor;
-		fColor.red						  = (float)((fogColor >> 16) & 0xff);
-		fColor.green					  = (float)((fogColor >> 8) & 0xff);
-		fColor.blue						  = (float)((fogColor)&0xff);
+		fColor.red = (float)((fogColor >> 16) & 0xff);
+		fColor.green = (float)((fogColor >> 8) & 0xff);
+		fColor.blue = (float)((fogColor)&0xff);
 		MidLevelRenderer::PerspectiveMode = usePerspective;
 		theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
 		MidLevelRenderer::GOSVertex::farClipReciprocal =
@@ -173,8 +173,7 @@ public:
 		// Current altitude above terrain.
 		float anglePercent =
 			(projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo +
-			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
 		float altitudePercent = (cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
 		Camera::NearPlaneDistance =
 			MinNearPlane + ((MaxNearPlane - MinNearPlane) * altitudePercent);
@@ -198,7 +197,7 @@ public:
 		if (!theSky && (turn > 3))
 		{
 			// Startup the SKYBox
-			int32_t appearanceType					= (GENERIC_APPR_TYPE << 24);
+			int32_t appearanceType = (GENERIC_APPR_TYPE << 24);
 			AppearanceTypePtr genericAppearanceType = nullptr;
 			genericAppearanceType = appearanceTypeList->getAppearance(appearanceType, "skybox");
 			if (!genericAppearanceType)
@@ -224,8 +223,7 @@ public:
 		int32_t result = Camera::update(void);
 		if ((cameraLineChanged + 10) < turn)
 		{
-			if (userInput->getKeyDown(KEY_BACKSLASH) && !userInput->ctrl() && !userInput->alt() &&
-				!userInput->shift())
+			if (userInput->getKeyDown(KEY_BACKSLASH) && !userInput->ctrl() && !userInput->alt() && !userInput->shift())
 			{
 				drawCompass ^= true;
 				cameraLineChanged = turn;
@@ -236,10 +234,10 @@ public:
 		forceShadowRecalc = true;
 		if (compass && (turn > 3))
 		{
-			bool oldFog			= useFog;
-			bool oldShadows		= useShadows;
-			useFog				= false;
-			useShadows			= false;
+			bool oldFog = useFog;
+			bool oldShadows = useShadows;
+			useFog = false;
+			useShadows = false;
 			Stuff::Vector3D pos = getPosition(void);
 			compass->setObjectParameters(pos, 0.0f, false, 0, 0);
 			compass->setMoverParameters(0.0f);
@@ -263,7 +261,7 @@ public:
 				theSky->setIsHudElement(void);
 				theSky->update(void); // Force it to try and draw or stuff will not work!
 			}
-			useFog	 = oldFog;
+			useFog = oldFog;
 			useShadows = oldShadows;
 		}
 		return result;

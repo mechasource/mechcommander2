@@ -204,9 +204,9 @@ class GroundVehicle : public Mover
 	// Data Members
 
 public:
-	float accel;	   // Current acceleration of vehicle in meters per sec per sec
+	float accel; // Current acceleration of vehicle in meters per sec per sec
 	float velocityMag; // Current Speed of vehicle.  Not a vector quantity!! in
-					   // M/s
+		// M/s
 
 	float suspension;
 	bool movementEnabled;
@@ -372,7 +372,7 @@ public:
 				maxArmorLocation = armor[curLocation].curArmor;
 		}
 		return maxArmorLocation + 1; // Always assume you need one point more
-									 // than the best armor to be sure.
+			// than the best armor to be sure.
 	}
 
 	//----------------------------------------------
@@ -404,8 +404,7 @@ public:
 	{
 		// return ((captureable || salvage != nullptr) && (getTeamId() !=
 		// capturingTeamID) && !isDestroyed());
-		return ((getFlag(OBJECT_FLAG_CAPTURABLE) || (salvage != nullptr)) &&
-			(getTeamId() != capturingTeamID) && !isDestroyed());
+		return ((getFlag(OBJECT_FLAG_CAPTURABLE) || (salvage != nullptr)) && (getTeamId() != capturingTeamID) && !isDestroyed());
 	}
 #else
 	virtual bool isCaptureable(int32_t capturingTeamID)

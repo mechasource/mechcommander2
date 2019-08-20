@@ -29,7 +29,8 @@ public:
 	// Constructors/Destructors
 	//
 public:
-	MLRIndexedTriangleCloud(uint32_t nr) : MLRTriangleCloud(nr)
+	MLRIndexedTriangleCloud(uint32_t nr) :
+		MLRTriangleCloud(nr)
 	{
 		// _ASSERT(gos_GetCurrentHeap() == Heap);
 		usedNrOfPoints = nullptr;
@@ -43,7 +44,8 @@ public:
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
-	MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(uint32_t nr) : MLRTriangleCloud(nr)
+	MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(uint32_t nr) :
+		MLRTriangleCloud(nr)
 	{
 		// _ASSERT(gos_GetCurrentHeap() == Heap);
 		usedNrOfPoints = nullptr;
@@ -93,7 +95,7 @@ protected:
 	const Stuff::Vector2DScalar* texCoords;
 
 	static std::vector<Stuff::Vector2DScalar>*
-		clipExtraTexCoords;									// , Max_Number_Vertices_Per_Mesh
+		clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
 	static std::vector<uint16_t>* clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
 	static std::vector<uint8_t>* visibleIndexedVertices;
 

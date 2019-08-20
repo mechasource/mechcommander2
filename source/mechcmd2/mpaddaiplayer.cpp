@@ -18,19 +18,23 @@ MPAddAIPlayer.cpp			: Implementation of the MPAddAIPlayer component.
 
 static CFocusManager* g_focusManager = nullptr;
 
-static cint32_t FIRST_BUTTON_ID  = 1000010;
-static cint32_t OK_BUTTON_ID	 = 1000001;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPAddAIPlayer::MPAddAIPlayer()
 {
-	status		   = RUNNING;
+	status = RUNNING;
 	g_focusManager = &focusManager;
 }
 
-MPAddAIPlayer::~MPAddAIPlayer() { g_focusManager = nullptr; }
+MPAddAIPlayer::~MPAddAIPlayer()
+{
+	g_focusManager = nullptr;
+}
 
-int32_t MPAddAIPlayer::indexOfButtonWithID(int32_t id)
+int32_t
+MPAddAIPlayer::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
 	for (i = 0; i < buttonCount; i++)
@@ -43,7 +47,8 @@ int32_t MPAddAIPlayer::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void MPAddAIPlayer::init(FitIniFile* file)
+void
+MPAddAIPlayer::init(FitIniFile* file)
 {
 	if (g_focusManager)
 	{
@@ -169,11 +174,19 @@ void MPAddAIPlayer::init(FitIniFile* file)
 	}
 }
 
-void MPAddAIPlayer::begin() { status = RUNNING; }
+void
+MPAddAIPlayer::begin()
+{
+	status = RUNNING;
+}
 
-void MPAddAIPlayer::end() {}
+void
+MPAddAIPlayer::end()
+{
+}
 
-void MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset)
+void
+MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
 	if ((0 == xOffset) && (0 == yOffset))
@@ -200,9 +213,14 @@ void MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void MPAddAIPlayer::render() { render(0, 0); }
+void
+MPAddAIPlayer::render()
+{
+	render(0, 0);
+}
 
-int32_t MPAddAIPlayer::handleMessage(uint32_t message, uint32_t who)
+int32_t
+MPAddAIPlayer::handleMessage(uint32_t message, uint32_t who)
 {
 	if (RUNNING == status)
 	{
@@ -232,7 +250,8 @@ int32_t MPAddAIPlayer::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void MPAddAIPlayer::update()
+void
+MPAddAIPlayer::update()
 {
 	focusManager.update();
 	aObject* pControlThatHasTheFocus = focusManager.pControlThatHasTheFocus();
@@ -257,7 +276,7 @@ void MPAddAIPlayer::update()
 			}
 		}
 	}
-	helpTextID		 = 0;
+	helpTextID = 0;
 	helpTextHeaderID = 0;
 	/*
 	for ( int32_t i = 0; i < buttonCount; i++ )
@@ -274,7 +293,8 @@ void MPAddAIPlayer::update()
 	*/
 }
 
-int32_t aStyle4TextListItem::init(FitIniFile* file, PCSTR blockName)
+int32_t
+aStyle4TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
 	file->seekBlock(blockName);
 	int32_t fontResID = 0;
@@ -302,7 +322,8 @@ int32_t aStyle4TextListItem::init(FitIniFile* file, PCSTR blockName)
 	return 0;
 }
 
-void aStyle4TextListItem::render()
+void
+aStyle4TextListItem::render()
 {
 	float color;
 	if (aListItem::SELECTED == getState())

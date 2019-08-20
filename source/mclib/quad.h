@@ -60,23 +60,23 @@ class TerrainQuad
 public:
 	VertexPtr vertices[4]; // Pointers to vertices defining this tile.
 
-	uint32_t terrainHandle;		  // Handle to texture to draw.
+	uint32_t terrainHandle; // Handle to texture to draw.
 	uint32_t terrainDetailHandle; // Handle to detail texture to draw.
-	uint32_t waterHandle;		  // Handle to water texture to draw.
-	uint32_t waterDetailHandle;   // Handle to Water Detail texture to draw.
-	uint32_t overlayHandle;		  // Handle to overlay texture to draw.
+	uint32_t waterHandle; // Handle to water texture to draw.
+	uint32_t waterDetailHandle; // Handle to Water Detail texture to draw.
+	uint32_t overlayHandle; // Handle to overlay texture to draw.
 
-	uint32_t uvMode;	   // Is this a top or bottom triangle?
+	uint32_t uvMode; // Is this a top or bottom triangle?
 	MineResult mineResult; // Is there a mine or exploded mine in this cell on
-						   // this tile?
+		// this tile?
 
 	TerrainUVData uvData; // Stores the min and max UVs for this face.
 
 	bool isCement; // Need to know if this tile is cement for a number of
-				   // reasons
+		// reasons
 
-	static float rainLightLevel;	   // How much to darken terrain based on rain
-	static uint32_t lighteningLevel;   // How much to lighten terrain based on lightening.
+	static float rainLightLevel; // How much to darken terrain based on rain
+	static uint32_t lighteningLevel; // How much to lighten terrain based on lightening.
 	static uint32_t mineTextureHandle; // Handle to the mine textures.
 	static uint32_t blownTextureHandle;
 
@@ -91,11 +91,11 @@ public:
 	{
 		for (size_t i = 0; i < 4; i++)
 			vertices[i] = nullptr;
-		terrainHandle		= 0xffffffff;
+		terrainHandle = 0xffffffff;
 		terrainDetailHandle = 0xffffffff;
-		waterHandle			= 0xffffffff;
-		waterDetailHandle   = 0xffffffff;
-		uvMode				= 0;
+		waterHandle = 0xffffffff;
+		waterDetailHandle = 0xffffffff;
+		uvMode = 0;
 		uvData.maxU = uvData.minU = uvData.minV = uvData.maxV = 0.0f;
 		mineResult.init(void);
 		isCement = false;

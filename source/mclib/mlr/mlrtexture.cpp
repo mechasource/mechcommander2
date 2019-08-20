@@ -28,15 +28,15 @@ MLRTexture::MLRTexture(
 	MLRTexturePool* tp, PCSTR texName, int32_t _instance, int32_t handle, int32_t _hint)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	thePool					= tp;
-	textureHandle			= handle;
-	textureName				= texName;
-	textureNameHashValue	= textureName.GetHashValue();
-	instance				= _instance;
-	textureMatrix			= AffineMatrix4D::Identity;
+	thePool = tp;
+	textureHandle = handle;
+	textureName = texName;
+	textureNameHashValue = textureName.GetHashValue();
+	instance = _instance;
+	textureMatrix = AffineMatrix4D::Identity;
 	textureMatrixIsIdentity = true;
-	image					= thePool->GetImage(textureName);
-	hint					= _hint;
+	image = thePool->GetImage(textureName);
+	hint = _hint;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,20 +44,21 @@ MLRTexture::MLRTexture(
 MLRTexture::MLRTexture(MLRTexturePool* tp, GOSImage* _image, int32_t handle, int32_t _hint)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	thePool					= tp;
-	textureHandle			= handle;
-	image					= _image;
-	textureName				= image->GetName();
-	textureNameHashValue	= textureName.GetHashValue();
-	instance				= 0;
-	textureMatrix			= AffineMatrix4D::Identity;
+	thePool = tp;
+	textureHandle = handle;
+	image = _image;
+	textureName = image->GetName();
+	textureNameHashValue = textureName.GetHashValue();
+	instance = 0;
+	textureMatrix = AffineMatrix4D::Identity;
 	textureMatrixIsIdentity = true;
-	hint					= _hint;
+	hint = _hint;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRTexture::TestInstance(void) const
+void
+MLRTexture::TestInstance(void) const
 {
 	_ASSERT((*thePool)[textureHandle]);
 	Check_Object(image);
@@ -84,7 +85,8 @@ MLRTexture::~MLRTexture()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture* MLRTexture::Make(std::iostream stream)
+MLRTexture*
+MLRTexture::Make(std::iostream stream)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -97,11 +99,15 @@ MLRTexture* MLRTexture::Make(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRTexture::Save(std::iostream stream) {}
+void
+MLRTexture::Save(std::iostream stream)
+{
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t MLRTexture::GetImageNumber()
+int32_t
+MLRTexture::GetImageNumber()
 {
 	// Check_Object(this);
 	return ((textureHandle - 1) >> (thePool->GetInstanceDepth()));
@@ -109,7 +115,8 @@ int32_t MLRTexture::GetImageNumber()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t MLRTexture::GetInstanceNumber()
+int32_t
+MLRTexture::GetInstanceNumber()
 {
 	// Check_Object(this);
 	return ((textureHandle - 1) & ~((1 << thePool->GetInstanceDepth()) - 1));

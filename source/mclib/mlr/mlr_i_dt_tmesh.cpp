@@ -27,7 +27,8 @@ std::vector<Stuff::Vector2DScalar>* MLR_I_DT_TMesh::texCoords2;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DT_TMesh::InitializeClass()
+void
+MLR_I_DT_TMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -48,7 +49,8 @@ void MLR_I_DT_TMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DT_TMesh::TerminateClass()
+void
+MLR_I_DT_TMesh::TerminateClass()
 {
 	Unregister_Object(clipExtraTexCoords2);
 	delete clipExtraTexCoords2;
@@ -65,8 +67,8 @@ void MLR_I_DT_TMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DT_TMesh::MLR_I_DT_TMesh(ClassData* class_data, std::iostream stream, uint32_t version)
-	: MLR_I_TMesh(class_data, stream, version)
+MLR_I_DT_TMesh::MLR_I_DT_TMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
+	MLR_I_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -85,7 +87,8 @@ MLR_I_DT_TMesh::MLR_I_DT_TMesh(ClassData* class_data, std::iostream stream, uint
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DT_TMesh::MLR_I_DT_TMesh(ClassData* class_data) : MLR_I_TMesh(class_data)
+MLR_I_DT_TMesh::MLR_I_DT_TMesh(ClassData* class_data) :
+	MLR_I_TMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -101,7 +104,8 @@ MLR_I_DT_TMesh::~MLR_I_DT_TMesh()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DT_TMesh* MLR_I_DT_TMesh::Make(std::iostream stream, uint32_t version)
+MLR_I_DT_TMesh*
+MLR_I_DT_TMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -117,7 +121,8 @@ MLR_I_DT_TMesh* MLR_I_DT_TMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DT_TMesh::Save(std::iostream stream)
+void
+MLR_I_DT_TMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -127,7 +132,8 @@ void MLR_I_DT_TMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool MLR_I_DT_TMesh::Copy(MLR_I_DT_PMesh* pmesh)
+bool
+MLR_I_DT_TMesh::Copy(MLR_I_DT_PMesh* pmesh)
 {
 	Check_Object(pmesh);
 	MLR_I_TMesh::Copy(pmesh);
@@ -137,11 +143,16 @@ bool MLR_I_DT_TMesh::Copy(MLR_I_DT_PMesh* pmesh)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DT_TMesh::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
+void
+MLR_I_DT_TMesh::TestInstance(void) const
+{
+	_ASSERT(IsDerivedFrom(DefaultData));
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DT_TMesh::SetTexCoordData(
+void
+MLR_I_DT_TMesh::SetTexCoordData(
 	const Stuff::Vector2DScalar* data, size_t dataSize, size_t pass)
 {
 	(void)pass;
@@ -153,11 +164,11 @@ void MLR_I_DT_TMesh::SetTexCoordData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t MLR_I_DT_TMesh::GetNumPasses(void)
+uint32_t
+MLR_I_DT_TMesh::GetNumPasses(void)
 {
 	// Check_Object(this);
-	if (MLRState::GetMultitextureLightMap() == true &&
-		state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
+	if (MLRState::GetMultitextureLightMap() == true && state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
 	{
 		return 1;
 	}
@@ -191,7 +202,8 @@ uint32_t MLR_I_DT_TMesh::GetNumPasses(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DT_TMesh* MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_2Tex(
+MLR_I_DT_TMesh*
+MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_2Tex(
 	float half, MLRState* state, MLRState* state2)
 {
 	(void)half;
@@ -315,7 +327,8 @@ MLR_I_DT_TMesh* MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_2Tex(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
+MLRShape*
+MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* state2)
 {
 #ifdef _GAMEOS_HPP_
@@ -345,7 +358,7 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
 	uint32_t uniquePoints = 0;
 	for (k = 0; k < 20; k++)
 	{
-		triDrawn			 = 0;
+		triDrawn = 0;
 		MLR_I_DT_TMesh* mesh = new MLR_I_DT_TMesh();
 		Register_Object(mesh);
 		// setup vertex position information
@@ -359,9 +372,9 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
 		mesh->SetSubprimitiveLengths(nullptr, nrTri);
 		if (icoInfo.indexed == true)
 		{
-			uniquePoints	   = 1;
+			uniquePoints = 1;
 			collapsedCoords[0] = coords[0];
-			index[0]		   = 0;
+			index[0] = 0;
 			for (i = 1; i < nrTri * 3; i++)
 			{
 				for (j = 0; j < uniquePoints; j++)

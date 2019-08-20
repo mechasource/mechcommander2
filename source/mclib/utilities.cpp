@@ -13,7 +13,8 @@ Utilities.cpp			: Implementation of the Utilities component.
 
 //#pragma warning(disable:4514)
 
-void drawRect(const RECT& area, uint32_t color)
+void
+drawRect(const RECT& area, uint32_t color)
 {
 	if (color & 0xff000000)
 	{
@@ -38,14 +39,14 @@ void drawRect(const RECT& area, uint32_t color)
 		memset(v, 0, sizeof(v));
 		v[0].rhw = v[1].rhw = v[2].rhw = v[3].rhw = 1.0;
 		v[0].argb = v[1].argb = v[2].argb = v[3].argb = color;
-		v[0].x										  = (float)clientArea.left;
-		v[0].y										  = (float)clientArea.top;
-		v[1].x										  = (float)clientArea.left;
-		v[1].y										  = (float)clientArea.bottom;
-		v[2].x										  = (float)clientArea.right;
-		v[2].y										  = (float)clientArea.bottom;
-		v[3].x										  = (float)clientArea.right;
-		v[3].y										  = (float)clientArea.top;
+		v[0].x = (float)clientArea.left;
+		v[0].y = (float)clientArea.top;
+		v[1].x = (float)clientArea.left;
+		v[1].y = (float)clientArea.bottom;
+		v[2].x = (float)clientArea.right;
+		v[2].y = (float)clientArea.bottom;
+		v[3].x = (float)clientArea.right;
+		v[3].y = (float)clientArea.top;
 		gos_SetRenderState(gos_State_Texture, 0);
 		gos_SetRenderState(gos_State_ZWrite, 0);
 		gos_SetRenderState(gos_State_ZCompare, 0);
@@ -54,16 +55,14 @@ void drawRect(const RECT& area, uint32_t color)
 	}
 }
 
-void drawEmptyRect(const RECT& area, uint32_t leftTopBorderColor, uint32_t rightBottomBorderColor)
+void
+drawEmptyRect(const RECT& area, uint32_t leftTopBorderColor, uint32_t rightBottomBorderColor)
 {
 	gos_VERTEX v[4];
 	memset(v, 0, sizeof(v));
 	v[0].rhw = v[1].rhw = v[2].rhw = v[3].rhw = 1.0;
-	RECT clientArea							  = area;
-	if ((clientArea.left < 0 && clientArea.right < 0) ||
-		(clientArea.right > Environment.screenWidth && clientArea.left > Environment.screenWidth) ||
-		(clientArea.top < 0 && clientArea.bottom < 0) ||
-		(clientArea.top > Environment.screenHeight && clientArea.bottom > Environment.screenHeight))
+	RECT clientArea = area;
+	if ((clientArea.left < 0 && clientArea.right < 0) || (clientArea.right > Environment.screenWidth && clientArea.left > Environment.screenWidth) || (clientArea.top < 0 && clientArea.bottom < 0) || (clientArea.top > Environment.screenHeight && clientArea.bottom > Environment.screenHeight))
 		return;
 	if (clientArea.left < 0)
 		clientArea.left = 0;
@@ -85,27 +84,27 @@ void drawEmptyRect(const RECT& area, uint32_t leftTopBorderColor, uint32_t right
 	gos_SetRenderState(gos_State_ZWrite, 0);
 	gos_SetRenderState(gos_State_ZCompare, 0);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
-	v[0].x	= (float)(clientArea.left);
-	v[0].y	= (float)(clientArea.top);
+	v[0].x = (float)(clientArea.left);
+	v[0].y = (float)(clientArea.top);
 	v[0].argb = leftTopBorderColor;
-	v[1].x	= (float)(clientArea.right);
-	v[1].y	= (float)(clientArea.top);
+	v[1].x = (float)(clientArea.right);
+	v[1].y = (float)(clientArea.top);
 	v[1].argb = leftTopBorderColor;
-	v[2]	  = v[0];
-	v[3].x	= (float)(clientArea.left);
-	v[3].y	= (float)(clientArea.bottom);
+	v[2] = v[0];
+	v[3].x = (float)(clientArea.left);
+	v[3].y = (float)(clientArea.bottom);
 	v[3].argb = leftTopBorderColor;
 	gos_DrawLines(v, 4);
-	v[0].x	= (float)(clientArea.right);
-	v[0].y	= (float)(clientArea.top);
+	v[0].x = (float)(clientArea.right);
+	v[0].y = (float)(clientArea.top);
 	v[0].argb = rightBottomBorderColor;
-	v[1].x	= (float)(clientArea.right);
-	v[1].y	= (float)(clientArea.bottom);
+	v[1].x = (float)(clientArea.right);
+	v[1].y = (float)(clientArea.bottom);
 	v[1].argb = rightBottomBorderColor;
-	v[3]	  = v[1];
+	v[3] = v[1];
 	v[3].x += 1;
-	v[2].x	= (float)(clientArea.left);
-	v[2].y	= (float)(clientArea.bottom) + .1 / 256.f;
+	v[2].x = (float)(clientArea.left);
+	v[2].y = (float)(clientArea.bottom) + .1 / 256.f;
 	v[2].argb = rightBottomBorderColor;
 	gos_DrawLines(v, 4);
 }
@@ -121,7 +120,8 @@ StaticInfo::~StaticInfo()
 	}
 }
 
-void StaticInfo::render()
+void
+StaticInfo::render()
 {
 	uint32_t gosID = mcTextureManager->get_gosTextureHandle(textureHandle);
 	gos_SetRenderState(gos_State_Texture, gosID);
@@ -131,7 +131,8 @@ void StaticInfo::render()
 	gos_DrawQuads(location, 4);
 }
 
-void StaticInfo::showGUIWindow(bool bShow)
+void
+StaticInfo::showGUIWindow(bool bShow)
 {
 	int32_t mask = bShow ? 0xff000000 : 0x00ffffff;
 	for (size_t i = 0; i < 4; i++)
@@ -143,17 +144,18 @@ void StaticInfo::showGUIWindow(bool bShow)
 	}
 }
 
-bool StaticInfo::isInside(int32_t mouseX, int32_t mouseY)
+bool
+StaticInfo::isInside(int32_t mouseX, int32_t mouseY)
 {
-	if ((location[0].x) <= mouseX && location[3].x >= mouseX && location[0].y <= mouseY &&
-		location[1].y >= mouseY)
+	if ((location[0].x) <= mouseX && location[3].x >= mouseX && location[0].y <= mouseY && location[1].y >= mouseY)
 		return true;
 	return false;
 }
 
 // Fills the buffer with the bitmap data.
 // Used by new mouse cursor draw routines.
-void StaticInfo::getData(puint8_t buffer)
+void
+StaticInfo::getData(puint8_t buffer)
 {
 	if ((vHeight > 32) || (uWidth > 32))
 	{
@@ -166,11 +168,10 @@ void StaticInfo::getData(puint8_t buffer)
 		TEXTUREPTR textureData;
 		gos_LockTexture(gosID, 0, 0, &textureData);
 		uint32_t* bufMem = (uint32_t*)buffer;
-		uint32_t localU  = location[0].u * textureData.Width;
-		uint32_t localV  = location[0].v * textureData.Width;
+		uint32_t localU = location[0].u * textureData.Width;
+		uint32_t localV = location[0].v * textureData.Width;
 		// Make sure we don't fall off of the texture!
-		if ((localU > textureData.Width) || ((localU + uWidth) > textureData.Width) ||
-			(localV > textureData.Width) || ((localV + vHeight) > textureData.Width))
+		if ((localU > textureData.Width) || ((localU + uWidth) > textureData.Width) || (localV > textureData.Width) || ((localV + vHeight) > textureData.Width))
 		{
 			memset(buffer, 0, sizeof(uint32_t) * 32 * 32);
 			gos_UnLockTexture(gosID);
@@ -191,13 +192,14 @@ void StaticInfo::getData(puint8_t buffer)
 	}
 }
 
-void StaticInfo::init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, int32_t hiResOffsetY,
+void
+StaticInfo::init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, int32_t hiResOffsetY,
 	uint32_t neverFlush)
 {
 	memset(location, 0, sizeof(location));
 	char fileName[256];
 	textureHandle = 0;
-	textureWidth  = 0;
+	textureWidth = 0;
 	if (NO_ERROR != file.seekBlock(blockName))
 	{
 		char errBuffer[256];
@@ -218,8 +220,8 @@ void StaticInfo::init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, in
 		FullPathFileName fullPath;
 		_strlwr(fileName);
 		fullPath.init(artPath, fileName, ".tga");
-		int32_t ID	 = mcTextureManager->loadTexture(fullPath, gos_Texture_Alpha, 0, 0, 0x2);
-		textureHandle  = ID;
+		int32_t ID = mcTextureManager->loadTexture(fullPath, gos_Texture_Alpha, 0, 0, 0x2);
+		textureHandle = ID;
 		uint32_t gosID = mcTextureManager->get_gosTextureHandle(ID);
 		TEXTUREPTR textureData;
 		gos_LockTexture(gosID, 0, 0, &textureData);
@@ -236,16 +238,16 @@ void StaticInfo::init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, in
 	{
 		location[k].argb = 0xffffffff;
 		location[k].frgb = 0;
-		location[k].x	= x;
-		location[k].y	= y;
-		location[k].z	= 0.f;
-		location[k].rhw  = .5;
-		location[k].u	= (float)u / (float)textureWidth + (.1f / (float)textureWidth);
-		location[k].v	= (float)v / (float)textureWidth + (.1f / (float)textureWidth);
+		location[k].x = x;
+		location[k].y = y;
+		location[k].z = 0.f;
+		location[k].rhw = .5;
+		location[k].u = (float)u / (float)textureWidth + (.1f / (float)textureWidth);
+		location[k].v = (float)v / (float)textureWidth + (.1f / (float)textureWidth);
 	}
 	location[3].x = location[2].x = x + width;
 	location[2].y = location[1].y = y + height;
-	location[2].u				  = location[3].u =
+	location[2].u = location[3].u =
 		((float)(u + uWidth)) / ((float)textureWidth) + (.1f / (float)textureWidth);
 	location[1].v = location[2].v =
 		((float)(v + vHeight)) / ((float)textureWidth) + (.1f / (float)textureWidth);
@@ -268,17 +270,19 @@ void StaticInfo::init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, in
 	}
 }
 
-void StaticInfo::setLocation(float newX, float newY)
+void
+StaticInfo::setLocation(float newX, float newY)
 {
-	float height  = location[1].y - location[0].y;
-	float width   = location[3].x - location[0].x;
+	float height = location[1].y - location[0].y;
+	float width = location[3].x - location[0].x;
 	location[0].x = location[1].x = newX;
 	location[2].x = location[3].x = newX + width;
 	location[0].y = location[3].y = newY;
 	location[1].y = location[2].y = newY + height;
 }
 
-void StaticInfo::move(float deltaX, float deltaY)
+void
+StaticInfo::move(float deltaX, float deltaY)
 {
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -287,13 +291,15 @@ void StaticInfo::move(float deltaX, float deltaY)
 	}
 }
 
-void StaticInfo::setColor(int32_t newColor)
+void
+StaticInfo::setColor(int32_t newColor)
 {
 	for (size_t i = 0; i < 4; i++)
 		location[i].argb = newColor;
 }
 
-void StaticInfo::setNewUVs(float uLeft, float vTop, float uRight, float vBottom)
+void
+StaticInfo::setNewUVs(float uLeft, float vTop, float uRight, float vBottom)
 {
 	location[0].u = location[1].u = uLeft;
 	location[2].u = location[3].u = uRight;
@@ -301,13 +307,15 @@ void StaticInfo::setNewUVs(float uLeft, float vTop, float uRight, float vBottom)
 	location[1].v = location[2].v = vBottom;
 }
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+void
+drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
 	int32_t top, bool proportional, PCSTR text, bool bold, float scale)
 {
 	drawShadowText(colorTop, colorShadow, font, left, top, proportional, text, bold, scale, -1, 1);
 }
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+void
+drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
 	int32_t top, bool proportional, PCSTR text, bool bold, float scale, int32_t xOffset,
 	int32_t yOffset)
 {
@@ -320,7 +328,8 @@ void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int3
 	gos_TextDraw(text);
 }
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+void
+drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
 	int32_t top, int32_t right, int32_t bottom, bool proportional, PCSTR text, bool bold,
 	float scale, int32_t xOffset, int32_t yOffset)
 {
@@ -334,7 +343,8 @@ void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int3
 	gos_TextDraw(text);
 }
 
-uint32_t interpolateColor(uint32_t color1, uint32_t color2, float percent)
+uint32_t
+interpolateColor(uint32_t color1, uint32_t color2, float percent)
 {
 	uint32_t color = 0xffffffff;
 	if (percent > 1.0)
@@ -346,16 +356,16 @@ uint32_t interpolateColor(uint32_t color1, uint32_t color2, float percent)
 		uint32_t alphaMin = (color1 >> 24) & 0xff;
 		uint32_t alphaMax = (color2 >> 24) & 0xff;
 		uint32_t newAlpha = alphaMin + ((alphaMax - alphaMin) * percent);
-		uint32_t redMin   = (color1 & 0x00ff0000) >> 16;
-		uint32_t redMax   = (color2 & 0x00ff0000) >> 16;
-		uint32_t newRed   = redMin + ((redMax - redMin) * percent);
+		uint32_t redMin = (color1 & 0x00ff0000) >> 16;
+		uint32_t redMax = (color2 & 0x00ff0000) >> 16;
+		uint32_t newRed = redMin + ((redMax - redMin) * percent);
 		uint32_t greenMin = (color1 & 0x0000ff00) >> 8;
 		uint32_t greenMax = (color2 & 0x0000ff00) >> 8;
 		uint32_t newGreen = greenMin + ((greenMax - greenMin) * percent);
-		uint32_t blueMin  = color1 & 0x000000ff;
-		uint32_t blueMax  = color2 & 0x000000ff;
-		uint32_t newBlue  = blueMin + ((blueMax - blueMin) * percent);
-		color			  = newBlue + (newGreen << 8) + (newRed << 16) + (newAlpha << 24);
+		uint32_t blueMin = color1 & 0x000000ff;
+		uint32_t blueMax = color2 & 0x000000ff;
+		uint32_t newBlue = blueMin + ((blueMax - blueMin) * percent);
+		color = newBlue + (newGreen << 8) + (newRed << 16) + (newAlpha << 24);
 	}
 	return color;
 }

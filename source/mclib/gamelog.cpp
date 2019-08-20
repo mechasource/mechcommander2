@@ -32,20 +32,26 @@ bool isSetup = false;
 
 GameLogPtr GameLog::files[MAX_GAMELOGS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 
-PVOID GameLog::operator new(size_t mySize)
+PVOID
+GameLog::operator new(size_t mySize)
 {
 	PVOID result = nullptr;
-	result		 = gos_Malloc(mySize);
+	result = gos_Malloc(mySize);
 	return (result);
 }
 
 //---------------------------------------------------------------------------
 
-void GameLog::operator delete(PVOID us) { gos_Free(us); }
+void
+GameLog::operator delete(PVOID us)
+{
+	gos_Free(us);
+}
 
 //---------------------------------------------------------------------------
 
-void GameLog::dump(void)
+void
+GameLog::dump(void)
 {
 	//----------------
 	// Dump to file...
@@ -56,7 +62,8 @@ void GameLog::dump(void)
 
 //---------------------------------------------------------------------------
 
-void GameLog::close(void)
+void
+GameLog::close(void)
 {
 	if (filePtr && inUse)
 	{
@@ -65,21 +72,26 @@ void GameLog::close(void)
 		sprintf(s, "\nNum Total Lines = %d\n", totalLines);
 		filePtr->writeString(s);
 		filePtr->close();
-		inUse	  = false;
-		numLines   = 0;
+		inUse = false;
+		numLines = 0;
 		totalLines = 0;
 	}
 }
 
 //---------------------------------------------------------------------------
 
-void GameLog::destroy(void) { close(); }
+void
+GameLog::destroy(void)
+{
+	close();
+}
 
 //---------------------------------------------------------------------------
 
-int32_t GameLog::open(PSTR fileName)
+int32_t
+GameLog::open(PSTR fileName)
 {
-	numLines   = 0;
+	numLines = 0;
 	totalLines = 0;
 	if (filePtr->create(fileName) != NO_ERROR)
 		return (-1);
@@ -89,7 +101,8 @@ int32_t GameLog::open(PSTR fileName)
 
 //---------------------------------------------------------------------------
 
-void GameLog::write(PSTR s)
+void
+GameLog::write(PSTR s)
 {
 	static char buffer[MAX_GAMELOG_LINELEN];
 	if (numLines == MAX_GAMELOG_LINES)
@@ -104,7 +117,8 @@ void GameLog::write(PSTR s)
 
 //---------------------------------------------------------------------------
 
-GameLog* GameLog::getNewFile(void)
+GameLog*
+GameLog::getNewFile(void)
 {
 	if (!isSetup)
 		setup();
@@ -121,7 +135,8 @@ GameLog* GameLog::getNewFile(void)
 
 //---------------------------------------------------------------------------
 
-void GameLog::setup(void)
+void
+GameLog::setup(void)
 {
 	if (isSetup)
 		return;
@@ -130,8 +145,8 @@ void GameLog::setup(void)
 	{
 		files[i] = new GameLog;
 		files[i]->init();
-		files[i]->handle  = i;
-		files[i]->inUse   = false;
+		files[i]->handle = i;
+		files[i]->inUse = false;
 		files[i]->filePtr = new MechFile;
 		gosASSERT(files[i]->filePtr != nullptr);
 	}
@@ -139,7 +154,8 @@ void GameLog::setup(void)
 
 //---------------------------------------------------------------------------
 
-void GameLog::cleanup(void)
+void
+GameLog::cleanup(void)
 {
 	if (!isSetup)
 		return;

@@ -28,49 +28,49 @@
 //------------------------------------------------------------------------------------------------------------
 // MechCmdr2 Global Instances of Things
 UserHeapPtr systemHeap = nullptr;
-UserHeapPtr guiHeap	= nullptr;
+UserHeapPtr guiHeap = nullptr;
 
 FastFile** fastFiles = nullptr;
 int32_t numFastFiles = 0;
 int32_t maxFastFiles = 0;
 
-int32_t GameDifficulty		= 0;
-int32_t gammaLevel			= 0;
+int32_t GameDifficulty = 0;
+int32_t gammaLevel = 0;
 int32_t DigitalMasterVolume = 0;
-int32_t MusicVolume			= 0;
-int32_t SFXVolume			= 0;
-int32_t RadioVolume			= 0;
-int32_t resolution			= 0;
-int32_t FilterState			= gos_FilterNone;
-bool quitGame				= FALSE;
-bool justStartMission		= FALSE;
-bool gamePaused				= FALSE;
-bool hasGuardBand			= false;
-bool useUnlimitedAmmo		= true;
+int32_t MusicVolume = 0;
+int32_t SFXVolume = 0;
+int32_t RadioVolume = 0;
+int32_t resolution = 0;
+int32_t FilterState = gos_FilterNone;
+bool quitGame = FALSE;
+bool justStartMission = FALSE;
+bool gamePaused = FALSE;
+bool hasGuardBand = false;
+bool useUnlimitedAmmo = true;
 
 TimerManagerPtr timerManager = nullptr;
 
 uint32_t elementHeapSize = 1024000;
-uint32_t maxElements	 = 2048;
-uint32_t maxGroups		 = 1024;
+uint32_t maxElements = 2048;
+uint32_t maxGroups = 1024;
 
-uint32_t systemHeapSize		= 3071999;
-uint32_t guiHeapSize		= 1023999;
-uint32_t logisticsHeapSize  = 4095999;
-uint32_t missionHeapSize	= 1023999;
+uint32_t systemHeapSize = 3071999;
+uint32_t guiHeapSize = 1023999;
+uint32_t logisticsHeapSize = 4095999;
+uint32_t missionHeapSize = 1023999;
 uint32_t spriteDataHeapSize = 2048000;
-uint32_t spriteHeapSize		= 8192000;
-uint32_t polyHeapSize		= 1024000;
-uint32_t tglHeapSize		= 32767000;
+uint32_t spriteHeapSize = 8192000;
+uint32_t polyHeapSize = 1024000;
+uint32_t tglHeapSize = 32767000;
 
-uint32_t gosResourceHandle   = 0;
-HGOSFONT3D gosFontHandle	 = 0;
+uint32_t gosResourceHandle = 0;
+HGOSFONT3D gosFontHandle = 0;
 FloatHelpPtr globalFloatHelp = nullptr;
-uint32_t currentFloatHelp	= 0;
-float MaxMinUV				 = 8.0f;
+uint32_t currentFloatHelp = 0;
+float MaxMinUV = 8.0f;
 
 uint32_t BaseVertexColor = 0x00000000; // This color is applied to all vertices
-									   // in game as Brightness correction.
+	// in game as Brightness correction.
 
 enum
 {
@@ -79,14 +79,15 @@ enum
 	CPU_MMX,
 	CPU_KATMAI
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
-						   // -- MECHCMDR2
+	// -- MECHCMDR2
 extern float frameRate;
-void EnterWindowMode();
+void
+EnterWindowMode();
 
 extern bool useSound;
 extern bool useMusic;
 
-bool inViewMode		= false;
+bool inViewMode = false;
 uint32_t viewObject = 0x0;
 char missionName[1024];
 
@@ -103,19 +104,24 @@ bool reloadBounds = false;
 
 // DEBUG
 
-CameraPtr eye   = nullptr;
+CameraPtr eye = nullptr;
 bool useRealLOS = true;
 
 //***************************************************************************
 
-PSTR GetGameInformation() { return (ExceptionGameMsg); }
+PSTR
+GetGameInformation()
+{
+	return (ExceptionGameMsg);
+}
 
 // int32_t cLoadString (HINSTANCE hInstance,  uint32_t uID, PSTR lpBuffer,
 // int32_t nBufferMax );
 
 //---------------------------------------------------------------------------
 
-void UpdateRenderers()
+void
+UpdateRenderers()
 {
 	hasGuardBand = gos_GetMachineInformation(gos_Info_HasGuardBandClipping) != 0;
 	//---------------------------------------------------------------------------------
@@ -147,12 +153,13 @@ void UpdateRenderers()
 }
 
 //---------------------------------------------------------------------------
-void InitializeGameEngine()
+void
+InitializeGameEngine()
 {
 	//---------------------------------------------------------------------
 	float doubleClickThreshold = 0.2f;
-	int32_t dragThreshold	  = 10;
-	Environment.Key_Exit	   = -1; // so escape doesn't kill your app
+	int32_t dragThreshold = 10;
+	Environment.Key_Exit = -1; // so escape doesn't kill your app
 	//--------------------------------------------------------------
 	// Read in System.CFG
 	FitIniFilePtr systemFile = new FitIniFile;
@@ -380,8 +387,8 @@ void InitializeGameEngine()
 	// userInput->setMouseDragThreshold(dragThreshold);
 	//--------------------------------------------------
 	gosResourceHandle = gos_OpenResourceDLL("mc2res.dll");
-	gosFontHandle	 = gos_LoadFont("assets\\graphics\\arial8.tga");
-	globalFloatHelp   = new FloatHelp[MAX_FLOAT_HELPS];
+	gosFontHandle = gos_LoadFont("assets\\graphics\\arial8.tga");
+	globalFloatHelp = new FloatHelp[MAX_FLOAT_HELPS];
 	//
 	//----------------------------------
 	// Start associated stuff.
@@ -419,7 +426,8 @@ void InitializeGameEngine()
 
 //---------------------------------------------------------------------------
 
-void TerminateGameEngine()
+void
+TerminateGameEngine()
 {
 	gosScript_ShutdownProcessor();
 	//---------------------------------------------------------
@@ -488,7 +496,8 @@ void TerminateGameEngine()
 // No multi-thread now!
 //
 
-void DoGameLogic()
+void
+DoGameLogic()
 {
 	//-------------------------------------
 	// Get me the current frameRate.
@@ -529,7 +538,8 @@ void DoGameLogic()
 }
 
 //---------------------------------------------------------------------------
-int32_t textToLong(PSTR num)
+int32_t
+textToLong(PSTR num)
 {
 	int32_t result = 0;
 	//------------------------------------
@@ -548,12 +558,12 @@ int32_t textToLong(PSTR num)
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
-								  // start of a comment or something illegal.
-								  // Either way, stop evaluation here.
+					// start of a comment or something illegal.
+					// Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits	 = strlen(hexOffset) - 1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
 		for (size_t count = numDigits; count >= 0; count--, power++)
 		{
@@ -580,11 +590,12 @@ int32_t textToLong(PSTR num)
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void ParseCommandLine(PSTR command_line)
+void
+ParseCommandLine(PSTR command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
-	int32_t index  = 0;
+	int32_t index = 0;
 	PSTR argv[30];
 	char tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
@@ -615,31 +626,32 @@ bool notFirstTime = false;
 //
 // Setup the GameOS structure -- This tells GameOS what I am using
 //
-void GetGameOSEnvironment(PSTR CommandLine)
+void
+GetGameOSEnvironment(PSTR CommandLine)
 {
 	ParseCommandLine(CommandLine);
 	Environment.applicationName = "MC2GOSScriptShell";
-	Environment.directoryPath   = "Logistics";
-	Environment.debugLog		= "";					  //;		"DebugLog.txt";
-	Environment.spew			= "GameOS_ScriptsOUtput"; //"GameOS_Texture
-														  // GameOS_DirectDraw
-														  // GameOS_Direct3D ";
-	Environment.TimeStampSpew		 = 0;
-	Environment.GetGameInformation   = GetGameInformation;
-	Environment.UpdateRenderers		 = UpdateRenderers;
+	Environment.directoryPath = "Logistics";
+	Environment.debugLog = ""; //;		"DebugLog.txt";
+	Environment.spew = "GameOS_ScriptsOUtput"; //"GameOS_Texture
+		// GameOS_DirectDraw
+		// GameOS_Direct3D ";
+	Environment.TimeStampSpew = 0;
+	Environment.GetGameInformation = GetGameInformation;
+	Environment.UpdateRenderers = UpdateRenderers;
 	Environment.InitializeGameEngine = InitializeGameEngine;
-	Environment.DoGameLogic			 = DoGameLogic;
-	Environment.TerminateGameEngine  = TerminateGameEngine;
+	Environment.DoGameLogic = DoGameLogic;
+	Environment.TerminateGameEngine = TerminateGameEngine;
 	if (useSound)
 	{
-		Environment.soundDisable  = FALSE;
-		Environment.soundHiFi	 = TRUE;
+		Environment.soundDisable = FALSE;
+		Environment.soundHiFi = TRUE;
 		Environment.soundChannels = 24;
 	}
 	else
 	{
-		Environment.soundDisable  = TRUE;
-		Environment.soundHiFi	 = FALSE;
+		Environment.soundDisable = TRUE;
+		Environment.soundHiFi = FALSE;
 		Environment.soundChannels = 0;
 	}
 	//--------------------------
@@ -647,51 +659,51 @@ void GetGameOSEnvironment(PSTR CommandLine)
 	// MechCommander GUID = {09608800-4815-11d2-92D2-0060973CFB2C}
 	// or {0x9608800, 0x4815, 0x11d2, {0x92, 0xd2, 0x0, 0x60, 0x97, 0x3c, 0xfb,
 	// 0x2c}}
-	Environment.NetworkGame		  = false;
+	Environment.NetworkGame = false;
 	Environment.NetworkMaxPlayers = 0;
-	Environment.NetworkGUID[0]	= 0x09;
-	Environment.NetworkGUID[1]	= 0x60;
-	Environment.NetworkGUID[2]	= 0x88;
-	Environment.NetworkGUID[3]	= 0x00;
-	Environment.NetworkGUID[4]	= 0x48;
-	Environment.NetworkGUID[5]	= 0x15;
-	Environment.NetworkGUID[6]	= 0x11;
-	Environment.NetworkGUID[7]	= 0xd2;
-	Environment.NetworkGUID[8]	= 0x92;
-	Environment.NetworkGUID[9]	= 0xd2;
-	Environment.NetworkGUID[10]   = 0x00;
-	Environment.NetworkGUID[11]   = 0x60;
-	Environment.NetworkGUID[12]   = 0x97;
-	Environment.NetworkGUID[13]   = 0x3c;
-	Environment.NetworkGUID[14]   = 0xfb;
-	Environment.NetworkGUID[15]   = 0x2c;
-	Environment.screenWidth		  = 640;
-	Environment.screenHeight	  = 480;
-	Environment.bitDepth		  = 16;
-	Environment.fullScreen		  = 0;
-	Environment.version			  = versionStamp;
-	Environment.FullScreenDevice  = 0;
-	Environment.Renderer		  = 0;
-	Environment.AntiAlias		  = 0;
+	Environment.NetworkGUID[0] = 0x09;
+	Environment.NetworkGUID[1] = 0x60;
+	Environment.NetworkGUID[2] = 0x88;
+	Environment.NetworkGUID[3] = 0x00;
+	Environment.NetworkGUID[4] = 0x48;
+	Environment.NetworkGUID[5] = 0x15;
+	Environment.NetworkGUID[6] = 0x11;
+	Environment.NetworkGUID[7] = 0xd2;
+	Environment.NetworkGUID[8] = 0x92;
+	Environment.NetworkGUID[9] = 0xd2;
+	Environment.NetworkGUID[10] = 0x00;
+	Environment.NetworkGUID[11] = 0x60;
+	Environment.NetworkGUID[12] = 0x97;
+	Environment.NetworkGUID[13] = 0x3c;
+	Environment.NetworkGUID[14] = 0xfb;
+	Environment.NetworkGUID[15] = 0x2c;
+	Environment.screenWidth = 640;
+	Environment.screenHeight = 480;
+	Environment.bitDepth = 16;
+	Environment.fullScreen = 0;
+	Environment.version = versionStamp;
+	Environment.FullScreenDevice = 0;
+	Environment.Renderer = 0;
+	Environment.AntiAlias = 0;
 	//
 	// Texture infomation
 	//
 	Environment.Texture_S_256 = 6;
 	Environment.Texture_S_128 = 1;
-	Environment.Texture_S_64  = 0;
-	Environment.Texture_S_32  = 1;
-	Environment.Texture_S_16  = 5;
+	Environment.Texture_S_64 = 0;
+	Environment.Texture_S_32 = 1;
+	Environment.Texture_S_16 = 5;
 	Environment.Texture_K_256 = 2;
 	Environment.Texture_K_128 = 5;
-	Environment.Texture_K_64  = 5;
-	Environment.Texture_K_32  = 5;
-	Environment.Texture_K_16  = 5;
+	Environment.Texture_K_64 = 5;
+	Environment.Texture_K_32 = 5;
+	Environment.Texture_K_16 = 5;
 	Environment.Texture_A_256 = 0;
 	Environment.Texture_A_128 = 1;
-	Environment.Texture_A_64  = 5;
-	Environment.Texture_A_32  = 1;
-	Environment.Texture_A_16  = 0;
-	notFirstTime			  = true;
+	Environment.Texture_A_64 = 5;
+	Environment.Texture_A_32 = 1;
+	Environment.Texture_A_16 = 0;
+	notFirstTime = true;
 }
 
 //***************************************************************************

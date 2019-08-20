@@ -29,48 +29,49 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // MissionSettingsDlg dialog
 
-MissionSettingsDlg::MissionSettingsDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(MissionSettingsDlg::IDD, pParent)
+MissionSettingsDlg::MissionSettingsDlg(CWnd* pParent /*=nullptr*/) :
+	CDialog(MissionSettingsDlg::IDD, pParent)
 {
 	m_MissionNameResourceStringID = 0;
-	m_BlurbResourceStringID		  = 0;
-	m_Blurb2ResourceStringID	  = 0;
+	m_BlurbResourceStringID = 0;
+	m_Blurb2ResourceStringID = 0;
 	//{{AFX_DATA_INIT(MissionSettingsDlg)
-	m_AuthorEdit					  = _T("");
-	m_MaxPlayers					  = 0;
-	m_MaxTeams						  = 0;
-	m_TimeLimit						  = -1.0;
-	m_SinglePlayerCheck				  = FALSE;
-	m_InitialResourcePoints			  = 0;
-	m_ScenarioTune					  = _T("");
-	m_VideoFilename					  = _T("");
-	m_CBills						  = 0;
-	m_NumRPBuildings				  = 0;
-	m_DownloadUrlEdit				  = _T("");
-	m_MissionType					  = -1;
-	m_AirStrikeCheck				  = FALSE;
-	m_AllTech						  = FALSE;
-	m_MineLayerCheck				  = FALSE;
-	m_NoVariantsCheck				  = FALSE;
-	m_RepairVehicleCheck			  = FALSE;
-	m_ResourceBuildingCheck			  = FALSE;
-	m_SalvageCraftCheck				  = FALSE;
-	m_ScoutCopterCheck				  = FALSE;
-	m_SensorProbeCheck				  = FALSE;
-	m_UnlimitedAmmoCheck			  = FALSE;
-	m_DropWeightLimit				  = 0;
-	m_ArtilleryPieceCheck			  = FALSE;
-	m_RPsForMechsCheck				  = FALSE;
-	m_MissionNameEdit				  = _T("");
-	m_BlurbEdit						  = _T("");
-	m_Blurb2Edit					  = _T("");
-	m_BlurbResourceStringIDEdit		  = _T("");
-	m_Blurb2ResourceStringIDEdit	  = _T("");
+	m_AuthorEdit = _T("");
+	m_MaxPlayers = 0;
+	m_MaxTeams = 0;
+	m_TimeLimit = -1.0;
+	m_SinglePlayerCheck = FALSE;
+	m_InitialResourcePoints = 0;
+	m_ScenarioTune = _T("");
+	m_VideoFilename = _T("");
+	m_CBills = 0;
+	m_NumRPBuildings = 0;
+	m_DownloadUrlEdit = _T("");
+	m_MissionType = -1;
+	m_AirStrikeCheck = FALSE;
+	m_AllTech = FALSE;
+	m_MineLayerCheck = FALSE;
+	m_NoVariantsCheck = FALSE;
+	m_RepairVehicleCheck = FALSE;
+	m_ResourceBuildingCheck = FALSE;
+	m_SalvageCraftCheck = FALSE;
+	m_ScoutCopterCheck = FALSE;
+	m_SensorProbeCheck = FALSE;
+	m_UnlimitedAmmoCheck = FALSE;
+	m_DropWeightLimit = 0;
+	m_ArtilleryPieceCheck = FALSE;
+	m_RPsForMechsCheck = FALSE;
+	m_MissionNameEdit = _T("");
+	m_BlurbEdit = _T("");
+	m_Blurb2Edit = _T("");
+	m_BlurbResourceStringIDEdit = _T("");
+	m_Blurb2ResourceStringIDEdit = _T("");
 	m_MissionNameResourceStringIDEdit = _T("");
 	//}}AFX_DATA_INIT
 }
 
-void MissionSettingsDlg::DoDataExchange(CDataExchange* pDX)
+void
+MissionSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(MissionSettingsDlg)
@@ -128,7 +129,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // MissionSettingsDlg message handlers
 
-static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
+static BOOL
+CSLoadString(int32_t resourceID, CString& targetStr)
 {
 	char szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
@@ -142,7 +144,8 @@ static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-void MissionSettingsDlg::UpdateMissionNameDisplay()
+void
+MissionSettingsDlg::UpdateMissionNameDisplay()
 {
 	UpdateData(TRUE);
 	if (m_MissionNameUseResourceString)
@@ -157,12 +160,13 @@ void MissionSettingsDlg::UpdateMissionNameDisplay()
 	else
 	{
 		m_MissionNameResourceStringIDEdit = _TEXT("");
-		m_MissionNameEdit				  = m_MissionNameUnlocalizedText;
+		m_MissionNameEdit = m_MissionNameUnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-void MissionSettingsDlg::UpdateBlurbDisplay()
+void
+MissionSettingsDlg::UpdateBlurbDisplay()
 {
 	UpdateData(TRUE);
 	if (m_BlurbUseResourceString)
@@ -177,12 +181,13 @@ void MissionSettingsDlg::UpdateBlurbDisplay()
 	else
 	{
 		m_BlurbResourceStringIDEdit = _TEXT("");
-		m_BlurbEdit					= m_BlurbUnlocalizedText;
+		m_BlurbEdit = m_BlurbUnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-void MissionSettingsDlg::UpdateBlurb2Display()
+void
+MissionSettingsDlg::UpdateBlurb2Display()
 {
 	UpdateData(TRUE);
 	if (m_Blurb2UseResourceString)
@@ -197,12 +202,13 @@ void MissionSettingsDlg::UpdateBlurb2Display()
 	else
 	{
 		m_Blurb2ResourceStringIDEdit = _TEXT("");
-		m_Blurb2Edit				 = m_Blurb2UnlocalizedText;
+		m_Blurb2Edit = m_Blurb2UnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-BOOL MissionSettingsDlg::OnInitDialog()
+BOOL
+MissionSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_MaxTeamsSpin.SetRange(2, GAME_MAX_PLAYERS);
@@ -212,10 +218,11 @@ BOOL MissionSettingsDlg::OnInitDialog()
 	UpdateBlurbDisplay();
 	UpdateBlurb2Display();
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void MissionSettingsDlg::OnBrowseButton()
+void
+MissionSettingsDlg::OnBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -225,7 +232,7 @@ void MissionSettingsDlg::OnBrowseButton()
 		selectAVIFileDialog.m_ofn.lpstrInitialDir = moviePath;
 		if (selectAVIFileDialog.DoModal() == IDOK)
 		{
-			CString pathname					 = selectAVIFileDialog.GetPathName();
+			CString pathname = selectAVIFileDialog.GetPathName();
 			int32_t CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
 			assert(1 <= CurrentDirectoryBufferLength);
 			// TCHAR *CurrentDirectoryBuffer = new
@@ -261,50 +268,53 @@ void MissionSettingsDlg::OnBrowseButton()
 	UpdateData(FALSE);
 }
 
-void MissionSettingsDlg::OnMissionNameEditButton()
+void
+MissionSettingsDlg::OnMissionNameEditButton()
 {
 	CUserTextEdit userTextEditDialog;
-	userTextEditDialog.m_UnlocalizedText   = m_MissionNameUnlocalizedText;
+	userTextEditDialog.m_UnlocalizedText = m_MissionNameUnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_MissionNameUseResourceString;
-	userTextEditDialog.m_ResourceStringID  = m_MissionNameResourceStringID;
-	int32_t ret							   = userTextEditDialog.DoModal();
+	userTextEditDialog.m_ResourceStringID = m_MissionNameResourceStringID;
+	int32_t ret = userTextEditDialog.DoModal();
 	if (IDOK == ret)
 	{
-		m_MissionNameUnlocalizedText   = userTextEditDialog.m_UnlocalizedText;
+		m_MissionNameUnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_MissionNameUseResourceString = userTextEditDialog.m_UseResourceString;
-		m_MissionNameResourceStringID  = userTextEditDialog.m_ResourceStringID;
+		m_MissionNameResourceStringID = userTextEditDialog.m_ResourceStringID;
 		UpdateMissionNameDisplay();
 	}
 }
 
-void MissionSettingsDlg::OnBlurbEditButton()
+void
+MissionSettingsDlg::OnBlurbEditButton()
 {
 	CUserTextEdit userTextEditDialog;
-	userTextEditDialog.m_UnlocalizedText   = m_BlurbUnlocalizedText;
+	userTextEditDialog.m_UnlocalizedText = m_BlurbUnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_BlurbUseResourceString;
-	userTextEditDialog.m_ResourceStringID  = m_BlurbResourceStringID;
-	int32_t ret							   = userTextEditDialog.DoModal();
+	userTextEditDialog.m_ResourceStringID = m_BlurbResourceStringID;
+	int32_t ret = userTextEditDialog.DoModal();
 	if (IDOK == ret)
 	{
-		m_BlurbUnlocalizedText   = userTextEditDialog.m_UnlocalizedText;
+		m_BlurbUnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_BlurbUseResourceString = userTextEditDialog.m_UseResourceString;
-		m_BlurbResourceStringID  = userTextEditDialog.m_ResourceStringID;
+		m_BlurbResourceStringID = userTextEditDialog.m_ResourceStringID;
 		UpdateBlurbDisplay();
 	}
 }
 
-void MissionSettingsDlg::OnBlurb2EditButton()
+void
+MissionSettingsDlg::OnBlurb2EditButton()
 {
 	CUserTextEdit userTextEditDialog;
-	userTextEditDialog.m_UnlocalizedText   = m_Blurb2UnlocalizedText;
+	userTextEditDialog.m_UnlocalizedText = m_Blurb2UnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_Blurb2UseResourceString;
-	userTextEditDialog.m_ResourceStringID  = m_Blurb2ResourceStringID;
-	int32_t ret							   = userTextEditDialog.DoModal();
+	userTextEditDialog.m_ResourceStringID = m_Blurb2ResourceStringID;
+	int32_t ret = userTextEditDialog.DoModal();
 	if (IDOK == ret)
 	{
-		m_Blurb2UnlocalizedText   = userTextEditDialog.m_UnlocalizedText;
+		m_Blurb2UnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_Blurb2UseResourceString = userTextEditDialog.m_UseResourceString;
-		m_Blurb2ResourceStringID  = userTextEditDialog.m_ResourceStringID;
+		m_Blurb2ResourceStringID = userTextEditDialog.m_ResourceStringID;
 		UpdateBlurb2Display();
 	}
 }

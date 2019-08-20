@@ -19,10 +19,10 @@ extern PSTR ComponentFormString[];
 
 int32_t LogisticsComponent::XICON_FACTOR = 48;
 int32_t LogisticsComponent::YICON_FACTOR = 32;
-float LogisticsComponent::MAX_HEAT		 = 20.f;
-float LogisticsComponent::MAX_DAMAGE	 = 15.f;
-float LogisticsComponent::MAX_RECYCLE	= 10.75f;
-float LogisticsComponent::MAX_RANGE		 = 3.f;
+float LogisticsComponent::MAX_HEAT = 20.f;
+float LogisticsComponent::MAX_DAMAGE = 15.f;
+float LogisticsComponent::MAX_RECYCLE = 10.75f;
+float LogisticsComponent::MAX_RANGE = 3.f;
 
 /*PSTR LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] =
 {
@@ -50,15 +50,15 @@ float LogisticsComponent::MAX_RANGE		 = 3.f;
 
 LogisticsComponent::LogisticsComponent()
 {
-	name	   = nullptr;
-	ID		   = -1;
+	name = nullptr;
+	ID = -1;
 	flavorText = nullptr;
 	bHead = bTorso = bLegs = 0;
-	iconFileName		   = 0;
-	pictureFileName		   = 0;
+	iconFileName = 0;
+	pictureFileName = 0;
 	iconX = iconY = 0;
-	bAvailable	= 0;
-	recycleTime   = 0.f;
+	bAvailable = 0;
+	recycleTime = 0.f;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -73,9 +73,10 @@ LogisticsComponent::~LogisticsComponent()
 		delete pictureFileName;
 }
 
-int32_t LogisticsComponent::init(PSTR dataLine)
+int32_t
+LogisticsComponent::init(PSTR dataLine)
 {
-	PSTR line  = dataLine;
+	PSTR line = dataLine;
 	PSTR pLine = line;
 	char pBuffer[1025];
 	ID = (extractInt(pLine));
@@ -97,7 +98,7 @@ int32_t LogisticsComponent::init(PSTR dataLine)
 	// name, probably aren't going to use this, they should be in the RC.
 	extractString(pLine, pBuffer, 1024); // ignore critical hits
 	recycleTime = extractFloat(pLine);
-	heat		= extractFloat(pLine);
+	heat = extractFloat(pLine);
 	// weight
 	weight = extractFloat(pLine);
 	damage = extractFloat(pLine);
@@ -145,10 +146,10 @@ int32_t LogisticsComponent::init(PSTR dataLine)
 			new char[strlen(pBuffer) + 1]; // Forgot the nullptr all over the place did we?
 		strcpy(pictureFileName, pBuffer);
 	}
-	stringID	 = extractInt(pLine);
+	stringID = extractInt(pLine);
 	helpStringID = extractInt(pLine);
-	iconX		 = extractInt(pLine);
-	iconY		 = extractInt(pLine);
+	iconX = extractInt(pLine);
+	iconY = extractInt(pLine);
 	char nameBuffer[256];
 	cLoadString(stringID, nameBuffer, 256);
 	name = flavorText = new char[strlen(nameBuffer) + 1]; // Lets not forget the nullptr!!!
@@ -156,7 +157,8 @@ int32_t LogisticsComponent::init(PSTR dataLine)
 	return ID;
 }
 
-int32_t LogisticsComponent::extractString(PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength)
+int32_t
+LogisticsComponent::extractString(PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength)
 {
 	*pBuffer = 0;
 	int32_t i;
@@ -173,13 +175,14 @@ int32_t LogisticsComponent::extractString(PSTR& pFileLine, PSTR pBuffer, int32_t
 		return false;
 	gosASSERT(i < bufferLength);
 	memcpy(pBuffer, pFileLine, i);
-	pBuffer[i]   = nullptr;
+	pBuffer[i] = nullptr;
 	bufferLength = i + 1;
 	pFileLine += i + 1;
 	return i;
 }
 
-int32_t LogisticsComponent::extractInt(PSTR& pFileLine)
+int32_t
+LogisticsComponent::extractInt(PSTR& pFileLine)
 {
 	char buffer[1024];
 	int32_t count = extractString(pFileLine, buffer, 1024);
@@ -190,7 +193,8 @@ int32_t LogisticsComponent::extractInt(PSTR& pFileLine)
 	return -1;
 }
 
-float LogisticsComponent::extractFloat(PSTR& pFileLine)
+float
+LogisticsComponent::extractFloat(PSTR& pFileLine)
 {
 	char buffer[1024];
 	int32_t count = extractString(pFileLine, buffer, 1024);
@@ -201,7 +205,8 @@ float LogisticsComponent::extractFloat(PSTR& pFileLine)
 	return -1;
 }
 
-bool LogisticsComponent::compare(LogisticsComponent* second, int32_t type)
+bool
+LogisticsComponent::compare(LogisticsComponent* second, int32_t type)
 {
 	switch (type)
 	{
@@ -224,10 +229,10 @@ bool LogisticsComponent::compare(LogisticsComponent* second, int32_t type)
 	return 0;
 }
 
-bool LogisticsComponent::isWeapon()
+bool
+LogisticsComponent::isWeapon()
 {
-	return Type == COMPONENT_FORM_WEAPON || Type == COMPONENT_FORM_WEAPON_ENERGY ||
-		Type == COMPONENT_FORM_WEAPON_BALLISTIC || Type == COMPONENT_FORM_WEAPON_MISSILE;
+	return Type == COMPONENT_FORM_WEAPON || Type == COMPONENT_FORM_WEAPON_ENERGY || Type == COMPONENT_FORM_WEAPON_BALLISTIC || Type == COMPONENT_FORM_WEAPON_MISSILE;
 }
 
 //*************************************************************************************************

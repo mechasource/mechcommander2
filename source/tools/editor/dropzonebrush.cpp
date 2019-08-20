@@ -14,10 +14,11 @@ dropZoneBrush.cpp			: Implementation of the dropZoneBrush component.
 DropZoneBrush::DropZoneBrush(int32_t align, bool bVtol)
 {
 	alignment = align;
-	bVTol	 = bVtol;
+	bVTol = bVtol;
 }
 
-bool DropZoneBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool
+DropZoneBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	EditorObject* pInfo = EditorObjectMgr::instance()->addDropZone(worldPos, alignment, bVTol);
 	if (pInfo && pAction)
@@ -28,7 +29,8 @@ bool DropZoneBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t sc
 	return false;
 }
 
-bool DropZoneBrush::canPaint(
+bool
+DropZoneBrush::canPaint(
 	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	return EditorObjectMgr::instance()->canAddDropZone(worldPos, alignment, bVTol);

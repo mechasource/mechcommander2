@@ -20,7 +20,7 @@ ChatWindow* ChatWindow::s_instance = nullptr;
 
 ChatWindow::ChatWindow()
 {
-	curItem			= 0;
+	curItem = 0;
 	helpTextArrayID = 0;
 }
 
@@ -32,7 +32,8 @@ ChatWindow::~ChatWindow()
 }
 
 //-------------------------------------------------------------------------------------------------
-void ChatWindow::destroy()
+void
+ChatWindow::destroy()
 {
 	if (s_instance)
 	{
@@ -43,7 +44,8 @@ void ChatWindow::destroy()
 
 //-------------------------------------------------------------------------------------------------
 
-void ChatWindow::init()
+void
+ChatWindow::init()
 {
 	s_instance = new ChatWindow;
 	s_instance->initInstance();
@@ -51,7 +53,8 @@ void ChatWindow::init()
 
 //-------------------------------------------------------------------------------------------------
 
-int32_t ChatWindow::initInstance()
+int32_t
+ChatWindow::initInstance()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -76,21 +79,27 @@ int32_t ChatWindow::initInstance()
 	}
 	ChatMessageItem item;
 	float itemHeight = item.height();
-	maxItems		 = listBox.height() / itemHeight;
+	maxItems = listBox.height() / itemHeight;
 	edits[0].limitEntry(128);
 	edits[0].setSelectedColor(0xffffffff);
 	return true;
 }
 
-bool ChatWindow::pointInside(int32_t xPos, int32_t yPos)
+bool
+ChatWindow::pointInside(int32_t xPos, int32_t yPos)
 {
 	if (getButton(MP_CHAT_EXPAND)->isPressed())
 		return chatWidget.inside(xPos, yPos);
 	return LogisticsScreen::inside(xPos, yPos);
 }
 
-bool ChatWindow::isExpanded() { return getButton(MP_CHAT_EXPAND)->isPressed(); }
-int32_t ChatWindow::handleMessage(uint32_t, uint32_t who)
+bool
+ChatWindow::isExpanded()
+{
+	return getButton(MP_CHAT_EXPAND)->isPressed();
+}
+int32_t
+ChatWindow::handleMessage(uint32_t, uint32_t who)
 {
 	if (who == MP_CHAT_HELPTOGGLE)
 	{
@@ -111,7 +120,8 @@ int32_t ChatWindow::handleMessage(uint32_t, uint32_t who)
 	return 1;
 }
 
-void ChatWindow::render(int32_t xOffset, int32_t yOffset)
+void
+ChatWindow::render(int32_t xOffset, int32_t yOffset)
 {
 	if (getButton(MP_CHAT_EXPAND)->isPressed())
 	{
@@ -152,10 +162,11 @@ void ChatWindow::render(int32_t xOffset, int32_t yOffset)
 	textObjects[0].render(); // render this last, otherwise it gets cut off
 }
 
-void ChatWindow::update()
+void
+ChatWindow::update()
 {
 	bool bEnterPressed = gos_GetKeyStatus(KEY_RETURN) == KEY_PRESSED;
-	bool bFocused	  = edits[0].hasFocus();
+	bool bFocused = edits[0].hasFocus();
 	if (getButton(MP_CHAT_EXPAND)->isPressed())
 	{
 		chatWidget.update();
@@ -206,14 +217,15 @@ void ChatWindow::update()
 	}
 }
 
-void ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,
+void
+ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,
 	ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount)
 {
 	int32_t linesToAdd = 0;
 	for (size_t i = 0; i < itemCount && i < maxCount; i++)
 	{
-		int32_t item	  = (curItem + i) % maxCount;
-		int32_t playerID  = playerIDs[i] & 0x00ffffff;
+		int32_t item = (curItem + i) % maxCount;
+		int32_t playerID = playerIDs[i] & 0x00ffffff;
 		MC2Player* player = &MPlayer->playerInfo[0];
 		for (size_t j = 0; j < MAX_MC_PLAYERS; j++)
 		{
@@ -264,14 +276,18 @@ void ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* play
 }
 
 //-------------------------------------------------------------------------------------------------
-ChatWidget::ChatWidget() { curItem = 0; }
+ChatWidget::ChatWidget()
+{
+	curItem = 0;
+}
 
 ChatWidget::~ChatWidget()
 {
 	//	listBox.destroy();
 }
 
-void ChatWidget::init()
+void
+ChatWidget::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -307,7 +323,8 @@ ChatMessageItem::ChatMessageItem()
 	lineCount = 1;
 }
 
-void ChatMessageItem::setPlayerName(PCSTR pName)
+void
+ChatMessageItem::setPlayerName(PCSTR pName)
 {
 	name.setText(pName);
 	name.moveTo(globalX() + 1, globalY() + 1);
@@ -318,16 +335,17 @@ void ChatMessageItem::setPlayerName(PCSTR pName)
 	lineCount = 1;
 }
 
-int32_t ChatMessageItem::setText(PCSTR pText)
+int32_t
+ChatMessageItem::setText(PCSTR pText)
 {
 	playerText.setText(pText);
-	lineCount		= 1;
+	lineCount = 1;
 	uint32_t height = playerText.font.height(pText, playerText.width());
-	int32_t retVal  = 1;
+	int32_t retVal = 1;
 	if (height > playerText.font.height() * 2)
 	{
-		height	= playerText.font.height() * 2;
-		retVal	= 2;
+		height = playerText.font.height() * 2;
+		retVal = 2;
 		lineCount = 2;
 	}
 	playerText.resize(playerText.width(), height);
@@ -335,7 +353,8 @@ int32_t ChatMessageItem::setText(PCSTR pText)
 	return retVal;
 }
 
-void ChatMessageItem::setPlayerColor(int32_t newColor)
+void
+ChatMessageItem::setPlayerColor(int32_t newColor)
 {
 	playerRect.setColor(newColor);
 	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) + ((newColor & 0xff0000) >> 16)) / 3 < 85)
@@ -344,7 +363,11 @@ void ChatMessageItem::setPlayerColor(int32_t newColor)
 		name.setColor(0xff000000);
 }
 
-void ChatMessageItem::setTextColor(int32_t newColor) { playerText.setColor(newColor); }
+void
+ChatMessageItem::setTextColor(int32_t newColor)
+{
+	playerText.setColor(newColor);
+}
 
 //*************************************************************************************************
 // end of file ( ChatWindow.cpp )

@@ -30,7 +30,7 @@ public:
 	//{{AFX_VIRTUAL(TextMessageDlg)
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
-													 //}}AFX_VIRTUAL
+		//}}AFX_VIRTUAL
 
 	// Implementation
 protected:

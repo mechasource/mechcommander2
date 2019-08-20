@@ -26,29 +26,29 @@ extern float gosFontScale;
 class FloatHelp
 {
 protected:
-	char text[2048];		   // Last person to set this displays the font.
+	char text[2048]; // Last person to set this displays the font.
 	Stuff::Vector4D screenPos; // x,y are left and top.  z,w are width and height.
-	uint32_t foregroundColor;  // Color in aRGB Format.
-	uint32_t backgroundColor;  // Color in aRGB Format.
-	float scale;			   // Scale.  1.0f is normal.
-	bool proportional;		   // if false, spacing is equal for each letter.
-	bool bold;				   // if true, draws bold.
-	bool italic;			   // if true, draws italic.
-	bool wordWrap;			   // if true, wraps word.
+	uint32_t foregroundColor; // Color in aRGB Format.
+	uint32_t backgroundColor; // Color in aRGB Format.
+	float scale; // Scale.  1.0f is normal.
+	bool proportional; // if false, spacing is equal for each letter.
+	bool bold; // if true, draws bold.
+	bool italic; // if true, draws italic.
+	bool wordWrap; // if true, wraps word.
 
 	static uint32_t currentFloatHelp; // How many of them are we using at present
-	static FloatHelp* floatHelps;	 // POinters to all of them.
+	static FloatHelp* floatHelps; // POinters to all of them.
 
 public:
 	FloatHelp(int32_t maxHelps)
 	{
 		init(maxHelps);
-		text[0]		= 0;
+		text[0] = 0;
 		screenPos.x = screenPos.y = screenPos.z = screenPos.w = 0.0f;
-		foregroundColor										  = SD_WHITE;
-		backgroundColor										  = SD_BLACK;
-		scale												  = 1.0f;
-		proportional										  = true;
+		foregroundColor = SD_WHITE;
+		backgroundColor = SD_BLACK;
+		scale = 1.0f;
+		proportional = true;
 		bold = italic = wordWrap = false;
 	}
 

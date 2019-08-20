@@ -29,8 +29,10 @@ public:
 	// Constructors
 	//
 	Point3D(void) {}
-	Point3D(float x, float y, float z) : Vector3D(x, y, z) {}
-	Point3D(const Point3D& p) : Vector3D(p) {}
+	Point3D(float x, float y, float z) :
+		Vector3D(x, y, z) {}
+	Point3D(const Point3D& p) :
+		Vector3D(p) {}
 	explicit Point3D(const Vector3D& v) { *this = v; }
 	explicit Point3D(const Vector4D& v) { *this = v; }
 	explicit Point3D(const Origin3D& origin) { *this = origin; }

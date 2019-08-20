@@ -18,7 +18,8 @@ class ExtentBox;
 }
 
 #if !defined(Spew)
-void Spew(PCSTR group, const Stuff::ExtentBox& box);
+void
+Spew(PCSTR group, const Stuff::ExtentBox& box);
 #endif
 
 namespace Stuff
@@ -72,22 +73,27 @@ public:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~ ExtentBox functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void Convert_From_Ascii(PCSTR str, ExtentBox* extent_box);
+void
+Convert_From_Ascii(PCSTR str, ExtentBox* extent_box);
 
-void Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, puint32_t max_index,
+void
+Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, puint32_t max_index,
 	uint32_t block_size, float threshold = SMALL);
 
-void Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes);
+void
+Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes);
 } // namespace Stuff
 
 namespace MemoryStreamIO
 {
 #if _CONSIDERED_TEMPORARILY_DISABLED
-inline std::istream& Read(std::istream& stream, Stuff::ExtentBox* output)
+inline std::istream&
+Read(std::istream& stream, Stuff::ExtentBox* output)
 {
 	return stream.read(output, sizeof(*output));
 }
-inline std::ostream& Write(std::ostream& stream, const Stuff::ExtentBox* input)
+inline std::ostream&
+Write(std::ostream& stream, const Stuff::ExtentBox* input)
 {
 	return stream.write(input, sizeof(*input));
 }

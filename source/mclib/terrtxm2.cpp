@@ -56,7 +56,8 @@
 
 bool forceShadowBurnIn = false;
 
-PVOID DecodeJPG(PCSTR FileName, puint8_t Data, uint32_t DataSize, uint32_t* TextureWidth,
+PVOID
+DecodeJPG(PCSTR FileName, puint8_t Data, uint32_t DataSize, uint32_t* TextureWidth,
 	uint32_t* TextureHeight, bool TextureLoad, PVOIDpDestSurf);
 
 uint32_t TerrainColorMap::terrainTypeIDs[TOTAL_COLORMAP_TYPES] = {
@@ -65,35 +66,37 @@ uint32_t TerrainColorMap::terrainTypeIDs[TOTAL_COLORMAP_TYPES] = {
 #define MBOK 1
 //---------------------------------------------------------------------------
 // Class TerrainColorMap
-void TerrainColorMap::init(void)
+void
+TerrainColorMap::init(void)
 {
-	ColorMap		  = nullptr;
-	colorMapHeap	  = nullptr;
-	colorMapRAMHeap   = nullptr;
-	numTextures		  = 0;
-	textures		  = nullptr;
-	txmRAM			  = nullptr;
+	ColorMap = nullptr;
+	colorMapHeap = nullptr;
+	colorMapRAMHeap = nullptr;
+	numTextures = 0;
+	textures = nullptr;
+	txmRAM = nullptr;
 	numTexturesAcross = fractionPerTexture = 0.0f;
-	colorMapStarted						   = false;
-	detailTextureRAM					   = nullptr;
-	detailTextureNodeIndex				   = 0xffffffff;
-	detailTextureTilingFactor			   = 30.0f;
-	waterTextureRAM						   = nullptr;
-	waterTextureNodeIndex				   = 0xffffffff;
-	waterTextureTilingFactor			   = 48.0f;
-	numWaterDetailFrames				   = 0;
+	colorMapStarted = false;
+	detailTextureRAM = nullptr;
+	detailTextureNodeIndex = 0xffffffff;
+	detailTextureTilingFactor = 30.0f;
+	waterTextureRAM = nullptr;
+	waterTextureNodeIndex = 0xffffffff;
+	waterTextureTilingFactor = 48.0f;
+	numWaterDetailFrames = 0;
 	int32_t i;
 	for (i = 0; i < MAX_WATER_DETAIL_TEXTURES; i++)
 	{
 		waterDetailNodeIndex[i] = 0xffffffff;
 	}
-	waterDetailFrameRate	= 8;
+	waterDetailFrameRate = 8;
 	waterDetailTilingFactor = 45.0f;
-	hGauss					= 5.0f;
-	roughDistance			= -1.0f;
+	hGauss = 5.0f;
+	roughDistance = -1.0f;
 }
 
-void TerrainColorMap::destroy(void)
+void
+TerrainColorMap::destroy(void)
 {
 	if (textures)
 	{
@@ -129,9 +132,10 @@ void TerrainColorMap::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::getColorMapData(puint8_t ourRAM, int32_t index, int32_t width)
+void
+TerrainColorMap::getColorMapData(puint8_t ourRAM, int32_t index, int32_t width)
 {
-	int32_t numWide  = width / COLOR_MAP_TEXTURE_SIZE;
+	int32_t numWide = width / COLOR_MAP_TEXTURE_SIZE;
 	int32_t startCol = ((index % numWide) * COLOR_MAP_TEXTURE_SIZE);
 	if (startCol > 0)
 		startCol -= (index % numWide);
@@ -148,7 +152,8 @@ void TerrainColorMap::getColorMapData(puint8_t ourRAM, int32_t index, int32_t wi
 }
 
 //---------------------------------------------------------------------------
-inline void fractalPass(float* heightMap, int32_t edgeSize, int32_t THRESHOLD, int32_t NOISE)
+inline void
+fractalPass(float* heightMap, int32_t edgeSize, int32_t THRESHOLD, int32_t NOISE)
 {
 	// Add a bunch o Gaussian noise to the new hi-res height map to break up the
 	// lines.
@@ -163,7 +168,7 @@ inline void fractalPass(float* heightMap, int32_t edgeSize, int32_t THRESHOLD, i
 		{
 			if (RandomNumber(THRESHOLD) == 0)
 			{
-				float noise					 = float(NOISE * 0.5f) - RandomNumber(NOISE);
+				float noise = float(NOISE * 0.5f) - RandomNumber(NOISE);
 				noiseMap[x + (y * edgeSize)] = noise;
 			}
 			else
@@ -180,19 +185,21 @@ inline void fractalPass(float* heightMap, int32_t edgeSize, int32_t THRESHOLD, i
 }
 
 //---------------------------------------------------------------------------
-void rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize)
+void
+rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize)
 {
 	Image source, dest;
 	source.xSize = source.ySize = srcSize;
-	source.data					= src;
+	source.data = src;
 	dest.xSize = dest.ySize = dstSize;
-	dest.data				= dst;
+	dest.data = dst;
 	//	zoom(&dest, &source, mitchellFilter, MitchellSupport);
 	zoom(&dest, &source, triangleFilter, triangleSupport);
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int32_t Noise)
+void
+TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int32_t Noise)
 {
 	// Find max and min vertex elevations for scaling below.
 	float maxVertex = land->getTerrainElevation(0, 0);
@@ -226,7 +233,7 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 		for (size_t x = 0; x < Terrain::realVerticesMapSide; x++)
 		{
 			float currentElevation = land->getTerrainElevation(y, x);
-			float scaledValue	  = (currentElevation - minVertex) * scalar;
+			float scaledValue = (currentElevation - minVertex) * scalar;
 			srcData[x + (y * Terrain::realVerticesMapSide)] = scaledValue;
 		}
 	}
@@ -234,7 +241,7 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 	puint8_t sourceData =
 		(puint8_t)malloc(Terrain::realVerticesMapSide * Terrain::realVerticesMapSide);
 	memset(sourceData, 0, Terrain::realVerticesMapSide * Terrain::realVerticesMapSide);
-	float* tmpEdge	 = srcData;
+	float* tmpEdge = srcData;
 	puint8_t tmpOutput = sourceData;
 	int32_t i;
 	for (i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; i++)
@@ -247,18 +254,18 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 	OEMheightName.init(terrainPath, fileName, ".tga");
 	SetFileAttributes(OEMheightName, FILE_ATTRIBUTE_NORMAL);
 	TGAFileHeader tgaOutput;
-	tgaOutput.cm_entry_size	= 0;
-	tgaOutput.cm_first_entry   = 0;
-	tgaOutput.cm_length		   = 0;
-	tgaOutput.color_map		   = 0;
-	tgaOutput.height		   = Terrain::realVerticesMapSide;
+	tgaOutput.cm_entry_size = 0;
+	tgaOutput.cm_first_entry = 0;
+	tgaOutput.cm_length = 0;
+	tgaOutput.color_map = 0;
+	tgaOutput.height = Terrain::realVerticesMapSide;
 	tgaOutput.image_descriptor = 32; // Right side up!!
-	tgaOutput.image_id_len	 = 0;
-	tgaOutput.image_type	   = UNC_GRAY;
-	tgaOutput.pixel_depth	  = 8;
-	tgaOutput.width			   = Terrain::realVerticesMapSide;
-	tgaOutput.x_origin		   = 0;
-	tgaOutput.y_origin		   = 0;
+	tgaOutput.image_id_len = 0;
+	tgaOutput.image_type = UNC_GRAY;
+	tgaOutput.pixel_depth = 8;
+	tgaOutput.width = Terrain::realVerticesMapSide;
+	tgaOutput.x_origin = 0;
+	tgaOutput.y_origin = 0;
 	MechFile OEMtgaFile;
 	int32_t result = OEMtgaFile.create(OEMheightName);
 	if (result != NO_ERROR)
@@ -267,7 +274,7 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 	OEMtgaFile.write(sourceData, Terrain::realVerticesMapSide * Terrain::realVerticesMapSide);
 	OEMtgaFile.close();
 	int32_t edgeSize = (numTexturesAcross * COLOR_MAP_RES);
-	float* dstData   = (float*)malloc(sizeof(float) * edgeSize * edgeSize);
+	float* dstData = (float*)malloc(sizeof(float) * edgeSize * edgeSize);
 	memset(dstData, 0, sizeof(float) * edgeSize * edgeSize);
 	rescaleMap(dstData, srcData, edgeSize, Terrain::realVerticesMapSide);
 	// Now, apply refractalization to dstData.
@@ -281,7 +288,7 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 	SetFileAttributes(heightName, FILE_ATTRIBUTE_NORMAL);
 	puint8_t outputData = (puint8_t)malloc(edgeSize * edgeSize);
 	memset(outputData, 0, sizeof(uint8_t) * edgeSize * edgeSize);
-	tmpEdge   = dstData;
+	tmpEdge = dstData;
 	tmpOutput = outputData;
 	for (i = 0; i < edgeSize * edgeSize; i++)
 	{
@@ -289,26 +296,26 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 		tmpOutput++;
 		tmpEdge++;
 	}
-	tgaOutput.cm_entry_size	= 0;
-	tgaOutput.cm_first_entry   = 0;
-	tgaOutput.cm_length		   = 0;
-	tgaOutput.color_map		   = 0;
-	tgaOutput.height		   = edgeSize;
+	tgaOutput.cm_entry_size = 0;
+	tgaOutput.cm_first_entry = 0;
+	tgaOutput.cm_length = 0;
+	tgaOutput.color_map = 0;
+	tgaOutput.height = edgeSize;
 	tgaOutput.image_descriptor = 32; // Right side up!!
-	tgaOutput.image_id_len	 = 0;
-	tgaOutput.image_type	   = UNC_TRUE;
-	tgaOutput.pixel_depth	  = 24;
-	tgaOutput.width			   = edgeSize;
-	tgaOutput.x_origin		   = 0;
-	tgaOutput.y_origin		   = 0;
+	tgaOutput.image_id_len = 0;
+	tgaOutput.image_type = UNC_TRUE;
+	tgaOutput.pixel_depth = 24;
+	tgaOutput.width = edgeSize;
+	tgaOutput.x_origin = 0;
+	tgaOutput.y_origin = 0;
 	// flipTopToBottom(outputData,8,edgeSize,edgeSize);
 	MechFile tgaFile;
 	result = tgaFile.create(heightName);
 	if (result != NO_ERROR)
 		STOP(("Couldnt create height map %s on refractalize.  Error: %d", heightName, result));
 	tgaFile.write((puint8_t)&tgaOutput, sizeof(TGAFileHeader));
-	puint8_t outputByte   = outputData;
-	puint8_t output24Bit  = (puint8_t)malloc(edgeSize * edgeSize * 3);
+	puint8_t outputByte = outputData;
+	puint8_t output24Bit = (puint8_t)malloc(edgeSize * edgeSize * 3);
 	puint8_t output24Temp = output24Bit;
 	for (i = 0; i < edgeSize * edgeSize; i++)
 	{
@@ -333,9 +340,10 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 }
 
 float ContrastEnhance = 1.5f;
-float ShadowEnhance   = 2.0f;
+float ShadowEnhance = 2.0f;
 //---------------------------------------------------------------------------
-void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
+void
+TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 {
 	//-----------------------------------------------------------------
 	// for each pixel in the colormap, figure out where light is and
@@ -343,16 +351,16 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 	// first create a height map which is pixel for pixel identical to
 	// the color map.
 	int32_t pixelWidth = numTexturesAcross * COLOR_MAP_TEXTURE_SIZE;
-	float* heightMap   = (float*)malloc(sizeof(float) * pixelWidth * pixelWidth);
+	float* heightMap = (float*)malloc(sizeof(float) * pixelWidth * pixelWidth);
 	gosASSERT(heightMap != nullptr);
 	memset(heightMap, 0, sizeof(float) * pixelWidth * pixelWidth);
 	float* shadowMap = (float*)malloc(sizeof(float) * pixelWidth * pixelWidth);
 	gosASSERT(shadowMap != nullptr);
 	memset(shadowMap, 0, sizeof(float) * pixelWidth * pixelWidth);
 	float worldUnitsPerPixel = (Terrain::worldUnitsMapSide / pixelWidth);
-	float startY			 = Terrain::mapTopLeft3d.y;
-	float* hMap				 = heightMap;
-	float* sMap				 = shadowMap;
+	float startY = Terrain::mapTopLeft3d.y;
+	float* hMap = heightMap;
+	float* sMap = shadowMap;
 	if (Terrain::userMin == Terrain::userMax)
 	{
 		// Spread 'em out so the lighting actually works!!
@@ -362,7 +370,7 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 	// First, check if there is a height Map on disk.  If so, use it, not a
 	// fractally generated one.
 	bool heightMapExists = false;
-	float highPoint		 = 0.0f;
+	float highPoint = 0.0f;
 	if (fileName)
 	{
 		char newName[1024];
@@ -432,7 +440,7 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 				{
 					// 24-Bit color means we must skip to every third color
 					// data.
-					float* hMap   = heightMap;
+					float* hMap = heightMap;
 					puint8_t lMap = loadBuffer;
 					for (size_t i = 0; i < (heightMapInfo.width * heightMapInfo.width); i++)
 					{
@@ -452,7 +460,7 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 				else
 				{
 					// 32-bit color means skip three instead of two bytes.
-					float* hMap   = heightMap;
+					float* hMap = heightMap;
 					puint8_t lMap = loadBuffer;
 					for (size_t i = 0; i < (heightMapInfo.width * heightMapInfo.width); i++)
 					{
@@ -515,12 +523,12 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 	// Do normal calculations first.
 	Stuff::Vector3D lightDir;
 	lightDir.x = lightDir.y = 0.0f;
-	lightDir.z				= 1.0f;
+	lightDir.z = 1.0f;
 	if (eye)
 		lightDir = eye->lightDirection;
 	Stuff::Vector3D shadowDir(lightDir);
 	shadowDir *= worldUnitsPerPixel; // Distance which is the per pixel distance
-									 // for checking shadows
+		// for checking shadows
 	//---------------------
 	// Shadow Map Pass Here
 	highPoint *= ShadowEnhance;
@@ -580,14 +588,13 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 					vertexPos.Add(vertexPos, shadowDir);
 					if (!heightMapExists)
 					{
-						while (eye && (vertexPos.z < highPoint) &&
-							Terrain::IsValidTerrainPosition(vertexPos))
+						while (eye && (vertexPos.z < highPoint) && Terrain::IsValidTerrainPosition(vertexPos))
 						{
 							float elev = land->getTerrainElevation(vertexPos) * ShadowEnhance;
 							if (elev >= vertexPos.z)
 							{
 								*thisShadow = -1.0f; // Mark as shadowed
-								break;				 // Stop Looking!!
+								break; // Stop Looking!!
 							}
 							vertexPos.Add(vertexPos, shadowDir);
 						}
@@ -596,18 +603,17 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 					{
 						float tx = x;
 						float ty = y;
-						while (eye && (vertexPos.z < highPoint) &&
-							Terrain::IsValidTerrainPosition(vertexPos))
+						while (eye && (vertexPos.z < highPoint) && Terrain::IsValidTerrainPosition(vertexPos))
 						{
 							// Figure out index into array from vertexPos and
 							// use REAL height data for shadows.
 							int32_t tileX = tx;
 							int32_t tileY = ty;
-							float elev	= heightMap[tileX + (tileY * pixelWidth)];
+							float elev = heightMap[tileX + (tileY * pixelWidth)];
 							if (elev > vertexPos.z)
 							{
 								*thisShadow = -1.0f; // Mark as shadowed
-								break;				 // Stop Looking!!
+								break; // Stop Looking!!
 							}
 							tx += lightDir.x;
 							ty -= lightDir.y;
@@ -709,12 +715,9 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 				gosASSERT(normals[7].z > 0.0);
 				normals[7].Normalize(normals[7]);
 				Stuff::Vector3D vertexNormal;
-				vertexNormal.x = normals[0].x + normals[1].x + normals[2].x + normals[3].x +
-					normals[4].x + normals[5].x + normals[6].x + normals[7].x;
-				vertexNormal.y = normals[0].y + normals[1].y + normals[2].y + normals[3].y +
-					normals[4].y + normals[5].y + normals[6].y + normals[7].y;
-				vertexNormal.z = normals[0].z + normals[1].z + normals[2].z + normals[3].z +
-					normals[4].z + normals[5].z + normals[6].z + normals[7].z;
+				vertexNormal.x = normals[0].x + normals[1].x + normals[2].x + normals[3].x + normals[4].x + normals[5].x + normals[6].x + normals[7].x;
+				vertexNormal.y = normals[0].y + normals[1].y + normals[2].y + normals[3].y + normals[4].y + normals[5].y + normals[6].y + normals[7].y;
+				vertexNormal.z = normals[0].z + normals[1].z + normals[2].z + normals[3].z + normals[4].z + normals[5].z + normals[6].z + normals[7].z;
 				vertexNormal.x /= 8.0;
 				vertexNormal.y /= 8.0;
 				vertexNormal.z /= 8.0;
@@ -776,20 +779,20 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 				lightFactor = 0.0f;
 			}
 			uint32_t lightr, lightg, lightb;
-			lightr				  = eye->getLightRed(lightFactor);
-			lightg				  = eye->getLightGreen(lightFactor);
-			lightb				  = eye->getLightBlue(lightFactor);
+			lightr = eye->getLightRed(lightFactor);
+			lightg = eye->getLightGreen(lightFactor);
+			lightb = eye->getLightBlue(lightFactor);
 			uint32_t currentColor = *cMap;
-			float currentBlue	 = currentColor & 0xff;
-			float currentGreen	= (currentColor >> 8) & 0xff;
-			float currentRed	  = (currentColor >> 16) & 0xff;
+			float currentBlue = currentColor & 0xff;
+			float currentGreen = (currentColor >> 8) & 0xff;
+			float currentRed = (currentColor >> 16) & 0xff;
 			currentRed *= ((float)lightr / 255.0f);
 			currentBlue *= ((float)lightb / 255.0f);
 			currentGreen *= ((float)lightg / 255.0f);
 			lightr = currentRed;
 			lightg = currentGreen;
 			lightb = currentBlue;
-			*cMap  = (0xff << 24) + (lightr << 16) + (lightg << 8) + (lightb);
+			*cMap = (0xff << 24) + (lightr << 16) + (lightg << 8) + (lightb);
 		}
 		cMap++;
 	}
@@ -799,20 +802,21 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-void saveTGAFile(puint8_t ColorMap, PSTR fileName, int32_t pixelWidth)
+void
+saveTGAFile(puint8_t ColorMap, PSTR fileName, int32_t pixelWidth)
 {
 	TGAFileHeader colorMapInfo;
-	colorMapInfo.image_id_len	 = 0;
-	colorMapInfo.color_map		  = 0;
-	colorMapInfo.image_type		  = UNC_TRUE;
-	colorMapInfo.cm_first_entry   = 0;
-	colorMapInfo.cm_length		  = 0;
-	colorMapInfo.cm_entry_size	= 0;
-	colorMapInfo.x_origin		  = 0;
-	colorMapInfo.y_origin		  = 0;
-	colorMapInfo.width			  = pixelWidth;
-	colorMapInfo.height			  = pixelWidth;
-	colorMapInfo.pixel_depth	  = 32.0;
+	colorMapInfo.image_id_len = 0;
+	colorMapInfo.color_map = 0;
+	colorMapInfo.image_type = UNC_TRUE;
+	colorMapInfo.cm_first_entry = 0;
+	colorMapInfo.cm_length = 0;
+	colorMapInfo.cm_entry_size = 0;
+	colorMapInfo.x_origin = 0;
+	colorMapInfo.y_origin = 0;
+	colorMapInfo.width = pixelWidth;
+	colorMapInfo.height = pixelWidth;
+	colorMapInfo.pixel_depth = 32.0;
 	colorMapInfo.image_descriptor = 32; // DO NOT FLIP!
 	char newName[1024];
 	sprintf(newName, "%s.burnin", fileName);
@@ -827,7 +831,8 @@ void saveTGAFile(puint8_t ColorMap, PSTR fileName, int32_t pixelWidth)
 }
 
 //---------------------------------------------------------------------------
-inline bool textureIsOKFormat(PCSTR fileName)
+inline bool
+textureIsOKFormat(PCSTR fileName)
 {
 	MechFile tgaFile;
 	int32_t result = tgaFile.open(fileName);
@@ -835,10 +840,7 @@ inline bool textureIsOKFormat(PCSTR fileName)
 	{
 		struct TGAFileHeader tgaHeader;
 		tgaFile.read((puint8_t)&tgaHeader, sizeof(TGAFileHeader));
-		if (((tgaHeader.image_type == UNC_TRUE) || (tgaHeader.image_type == RLE_TRUE)) &&
-			(tgaHeader.width == tgaHeader.height) &&
-			((tgaHeader.width == 32) || (tgaHeader.width == 64) || (tgaHeader.width == 128) ||
-				(tgaHeader.width == 256)))
+		if (((tgaHeader.image_type == UNC_TRUE) || (tgaHeader.image_type == RLE_TRUE)) && (tgaHeader.width == tgaHeader.height) && ((tgaHeader.width == 32) || (tgaHeader.width == 64) || (tgaHeader.width == 128) || (tgaHeader.width == 256)))
 			return true;
 		tgaFile.close();
 	}
@@ -846,7 +848,8 @@ inline bool textureIsOKFormat(PCSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::resetDetailTexture(PCSTR fileName)
+void
+TerrainColorMap::resetDetailTexture(PCSTR fileName)
 {
 	if (!textureIsOKFormat(fileName))
 	{
@@ -877,7 +880,8 @@ void TerrainColorMap::resetDetailTexture(PCSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::resetWaterTexture(PCSTR fileName)
+void
+TerrainColorMap::resetWaterTexture(PCSTR fileName)
 {
 	if (!textureIsOKFormat(fileName))
 	{
@@ -907,7 +911,8 @@ void TerrainColorMap::resetWaterTexture(PCSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::resetWaterDetailTextures(PSTR fileName)
+void
+TerrainColorMap::resetWaterDetailTextures(PSTR fileName)
 {
 	// Then, load up the water detail texture(s).
 	// Water detail texture is named the same as the colormap with .water0000 in
@@ -960,7 +965,8 @@ void TerrainColorMap::resetWaterDetailTextures(PSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::recalcLight(PSTR fileName)
+void
+TerrainColorMap::recalcLight(PSTR fileName)
 {
 	colorMapRAMHeap = new UserHeap;
 	colorMapRAMHeap->init(COLOR_MAP_HEAP_SIZE, "ColorMap");
@@ -1022,11 +1028,11 @@ void TerrainColorMap::recalcLight(PSTR fileName)
 				ColorMap, loadBuffer, colorMapInfo.width * colorMapInfo.width * sizeof(uint32_t));
 		}
 		free(tgaFileImage);
-		tgaFileImage	   = nullptr;
-		numTextures		   = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
-		numTexturesAcross  = numTextures;
+		tgaFileImage = nullptr;
+		numTextures = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
+		numTexturesAcross = numTextures;
 		fractionPerTexture = 1.0f / numTextures;
-		float checkNum	 = float(colorMapInfo.width) / float(COLOR_MAP_TEXTURE_SIZE);
+		float checkNum = float(colorMapInfo.width) / float(COLOR_MAP_TEXTURE_SIZE);
 		if (checkNum != float(numTextures))
 			STOP(("Color Map is %d pixels wide which is not even divisible by %d",
 				colorMapInfo.width, COLOR_MAP_TEXTURE_SIZE));
@@ -1080,7 +1086,8 @@ void TerrainColorMap::recalcLight(PSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::resetBaseTexture(PSTR fileName)
+void
+TerrainColorMap::resetBaseTexture(PSTR fileName)
 {
 	// First, free up the existing colormap.
 	uint32_t i;
@@ -1153,11 +1160,11 @@ void TerrainColorMap::resetBaseTexture(PSTR fileName)
 				ColorMap, loadBuffer, colorMapInfo.width * colorMapInfo.width * sizeof(uint32_t));
 		}
 		free(tgaFileImage);
-		tgaFileImage	   = nullptr;
-		numTextures		   = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
-		numTexturesAcross  = numTextures;
+		tgaFileImage = nullptr;
+		numTextures = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
+		numTexturesAcross = numTextures;
 		fractionPerTexture = 1.0f / numTextures;
-		float checkNum	 = float(colorMapInfo.width) / float(COLOR_MAP_TEXTURE_SIZE);
+		float checkNum = float(colorMapInfo.width) / float(COLOR_MAP_TEXTURE_SIZE);
 		if (checkNum != float(numTextures))
 			STOP(("Color Map is %d pixels wide which is not even divisible by %d",
 				colorMapInfo.width, COLOR_MAP_TEXTURE_SIZE));
@@ -1216,13 +1223,14 @@ void TerrainColorMap::resetBaseTexture(PSTR fileName)
 
 //---------------------------------------------------------------------------
 // Used by editor for TacMap
-void TerrainColorMap::getScaledColorMap(puint8_t bfr, int32_t dWidth)
+void
+TerrainColorMap::getScaledColorMap(puint8_t bfr, int32_t dWidth)
 {
 	bool wasColorMapAround = true;
 	if (!ColorMap)
 	{
 		wasColorMapAround = false;
-		PSTR fileName	 = Terrain::colorMapName;
+		PSTR fileName = Terrain::colorMapName;
 		if (!fileName)
 			fileName = Terrain::terrainName;
 		colorMapRAMHeap = new UserHeap;
@@ -1290,9 +1298,9 @@ void TerrainColorMap::getScaledColorMap(puint8_t bfr, int32_t dWidth)
 					colorMapInfo.width * colorMapInfo.width * sizeof(uint32_t));
 			}
 			free(tgaFileImage);
-			tgaFileImage		 = nullptr;
+			tgaFileImage = nullptr;
 			uint32_t numTextures = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
-			numTexturesAcross	= numTextures;
+			numTexturesAcross = numTextures;
 			//------------------------------------------------------------------------
 			// Must check image_descriptor to see if we need to un upside down
 			// image.
@@ -1306,11 +1314,11 @@ void TerrainColorMap::getScaledColorMap(puint8_t bfr, int32_t dWidth)
 	}
 	// Grab every xth pixel from every yth scan line!
 	float cMapWidth = numTexturesAcross * COLOR_MAP_TEXTURE_SIZE;
-	float xSkip		= cMapWidth / float(dWidth);
-	float ySkip		= xSkip;
+	float xSkip = cMapWidth / float(dWidth);
+	float ySkip = xSkip;
 	int32_t xOffset = 0, yOffset = 0;
 	uint32_t* currentColor = (uint32_t*)ColorMap;
-	uint32_t* currentBfr   = (uint32_t*)bfr;
+	uint32_t* currentBfr = (uint32_t*)bfr;
 	for (size_t i = 0; i < (dWidth * dWidth); i++)
 	{
 		*currentBfr = *currentColor;
@@ -1321,18 +1329,18 @@ void TerrainColorMap::getScaledColorMap(puint8_t bfr, int32_t dWidth)
 			yOffset++;
 		}
 		currentBfr++;
-		currentColor = ((uint32_t*)ColorMap) + int32_t(xOffset * xSkip) +
-			(int32_t(yOffset * ySkip) * (int32_t)cMapWidth);
+		currentColor = ((uint32_t*)ColorMap) + int32_t(xOffset * xSkip) + (int32_t(yOffset * ySkip) * (int32_t)cMapWidth);
 	}
 	if (!wasColorMapAround)
 	{
 		delete colorMapRAMHeap;
 		colorMapRAMHeap = nullptr;
-		ColorMap		= nullptr;
+		ColorMap = nullptr;
 	}
 }
 
-static int32_t sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float& value)
+static int32_t
+sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float& value)
 {
 	int32_t result = 0;
 	float tmpFloat;
@@ -1349,7 +1357,8 @@ static int32_t sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float& value
 }
 
 //---------------------------------------------------------------------------
-int32_t TerrainColorMap::init(PSTR fileName)
+int32_t
+TerrainColorMap::init(PSTR fileName)
 {
 	bool usedJPG = false;
 	if (!colorMapStarted)
@@ -1417,8 +1426,8 @@ int32_t TerrainColorMap::init(PSTR fileName)
 		resetWaterDetailTextures((PSTR)waterFile);
 		{
 			detailTextureTilingFactor = 30.0f;
-			waterTextureTilingFactor  = 48.0f;
-			waterDetailTilingFactor   = 45.0f;
+			waterTextureTilingFactor = 48.0f;
+			waterDetailTilingFactor = 45.0f;
 			FullPathFileName missionFitFilePath;
 			missionFitFilePath.init(missionPath, fileName, ".fit");
 			FitIniFile missionFitIni;
@@ -1452,7 +1461,7 @@ int32_t TerrainColorMap::init(PSTR fileName)
 		// Look for the JPG first.
 		// If its there, read it in, pass it to the Decoder and bypass the rest
 		// of this!!
-		uint32_t jpgColorMapWidth  = 0;
+		uint32_t jpgColorMapWidth = 0;
 		uint32_t jpgColorMapHeight = 0;
 		MechFile colorMapFile;
 		int32_t result = colorMapFile.open(burnInJpg);
@@ -1464,9 +1473,9 @@ int32_t TerrainColorMap::init(PSTR fileName)
 			ColorMap = (puint8_t)DecodeJPG(burnInJpg, jpgData, fileSize, &jpgColorMapWidth,
 				&jpgColorMapHeight, false, nullptr);
 			uint32_t numTextures = jpgColorMapWidth / COLOR_MAP_TEXTURE_SIZE;
-			numTexturesAcross	= numTextures;
-			fractionPerTexture   = 1.0f / numTextures;
-			float checkNum		 = float(jpgColorMapWidth) / float(COLOR_MAP_TEXTURE_SIZE);
+			numTexturesAcross = numTextures;
+			fractionPerTexture = 1.0f / numTextures;
+			float checkNum = float(jpgColorMapWidth) / float(COLOR_MAP_TEXTURE_SIZE);
 			if (checkNum != float(numTextures))
 				STOP(("Color Map is %d pixels wide which is not even divisible "
 					  "by %d",
@@ -1491,9 +1500,9 @@ int32_t TerrainColorMap::init(PSTR fileName)
 						gos_Texture_Solid, gosHint_DontShrink, COLOR_MAP_TEXTURE_SIZE);
 			}
 			free(jpgData);
-			jpgData			= nullptr;
+			jpgData = nullptr;
 			colorMapStarted = true;
-			usedJPG			= true;
+			usedJPG = true;
 		}
 		else
 		{
@@ -1553,11 +1562,11 @@ int32_t TerrainColorMap::init(PSTR fileName)
 						colorMapInfo.width * colorMapInfo.width * sizeof(uint32_t));
 				}
 				free(tgaFileImage);
-				tgaFileImage		 = nullptr;
+				tgaFileImage = nullptr;
 				uint32_t numTextures = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
-				numTexturesAcross	= numTextures;
-				fractionPerTexture   = 1.0f / numTextures;
-				float checkNum		 = float(colorMapInfo.width) / float(COLOR_MAP_TEXTURE_SIZE);
+				numTexturesAcross = numTextures;
+				fractionPerTexture = 1.0f / numTextures;
+				float checkNum = float(colorMapInfo.width) / float(COLOR_MAP_TEXTURE_SIZE);
 				if (checkNum != float(numTextures))
 					STOP(("Color Map is %d pixels wide which is not even "
 						  "divisible by %d",
@@ -1630,7 +1639,8 @@ int32_t TerrainColorMap::init(PSTR fileName)
 
 float textureOffset = 0.4f;
 //---------------------------------------------------------------------------
-uint32_t TerrainColorMap::getTextureHandle(VertexPtr vMin, VertexPtr vMax, TerrainUVData* uvData)
+uint32_t
+TerrainColorMap::getTextureHandle(VertexPtr vMin, VertexPtr vMax, TerrainUVData* uvData)
 {
 	float posX = 0.0f, posY = 0.0f, maxX = 0.0f, maxY = 0.0f;
 	Stuff::Vector3D pos1(vMin->vx, vMin->vy, 0.0f), pos2(vMax->vx, vMax->vy, 0.0f);
@@ -1658,8 +1668,8 @@ uint32_t TerrainColorMap::getTextureHandle(VertexPtr vMin, VertexPtr vMax, Terra
 		// We now have the position in x and y as fraction from 0.0 to 1.0
 		// The texture is easy.  Just mutiply by number of textures across.
 #define EDGE_ADJUST_FACTOR 0.0005f
-		int32_t txmNumX		  = (posX + EDGE_ADJUST_FACTOR) * numTexturesAcross;
-		int32_t txmNumY		  = (posY + EDGE_ADJUST_FACTOR) * numTexturesAcross;
+		int32_t txmNumX = (posX + EDGE_ADJUST_FACTOR) * numTexturesAcross;
+		int32_t txmNumY = (posY + EDGE_ADJUST_FACTOR) * numTexturesAcross;
 		int32_t resultTexture = txmNumX + (txmNumY * numTexturesAcross);
 		// Now we need the UV Coords in this texture.  This is the fraction from
 		// 0.0 to 1.0 across the texture we are as vMin and vMax.
@@ -1670,10 +1680,10 @@ uint32_t TerrainColorMap::getTextureHandle(VertexPtr vMin, VertexPtr vMax, Terra
 		// also store in the new PostcompVertex Structure!!
 		// Also need to adjust UVs by texturePixelAdjust to handle overlaping
 		// correctly.
-		float minX   = (float)txmNumX * fractionPerTexture;
+		float minX = (float)txmNumX * fractionPerTexture;
 		uvData->maxU = (maxX - minX) * numTexturesAcross;
 		uvData->minU = (posX - minX) * numTexturesAcross;
-		float minY   = (float)txmNumY * fractionPerTexture;
+		float minY = (float)txmNumY * fractionPerTexture;
 		uvData->maxV = (maxY - minY) * numTexturesAcross;
 		uvData->minV = (posY - minY) * numTexturesAcross;
 		/*
@@ -1715,7 +1725,8 @@ uint32_t TerrainColorMap::getTextureHandle(VertexPtr vMin, VertexPtr vMax, Terra
 	return 0;
 }
 
-int32_t TerrainColorMap::saveDetailTexture(PCSTR fileName)
+int32_t
+TerrainColorMap::saveDetailTexture(PCSTR fileName)
 {
 	char dName[1024];
 	sprintf(dName, "%s.detail", fileName);
@@ -1724,7 +1735,8 @@ int32_t TerrainColorMap::saveDetailTexture(PCSTR fileName)
 	return mcTextureManager->saveTexture(detailTextureNodeIndex, detailFile);
 }
 
-int32_t TerrainColorMap::saveWaterTexture(PCSTR fileName)
+int32_t
+TerrainColorMap::saveWaterTexture(PCSTR fileName)
 {
 	char dName[1024];
 	sprintf(dName, "%s.water", fileName);
@@ -1733,7 +1745,8 @@ int32_t TerrainColorMap::saveWaterTexture(PCSTR fileName)
 	return mcTextureManager->saveTexture(waterTextureNodeIndex, waterFile);
 }
 
-int32_t TerrainColorMap::saveWaterDetail(PCSTR fileName)
+int32_t
+TerrainColorMap::saveWaterDetail(PCSTR fileName)
 {
 	int32_t result = NO_ERROR;
 	int32_t i;
@@ -1770,7 +1783,8 @@ int32_t TerrainColorMap::saveWaterDetail(PCSTR fileName)
 	return result;
 }
 
-int32_t TerrainColorMap::saveTilingFactors(FitIniFile* fitFile)
+int32_t
+TerrainColorMap::saveTilingFactors(FitIniFile* fitFile)
 {
 	int32_t result = NO_ERROR;
 	fitFile->writeIdFloat("DetailTextureTilingFactor", getDetailTilingFactor());

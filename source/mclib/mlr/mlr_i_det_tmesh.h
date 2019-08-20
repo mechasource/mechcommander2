@@ -64,12 +64,12 @@ public:
 		float& xOff, float& yOff, float& xFac, float& yFac, float& dStart, float& dEnd)
 	{
 		// Check_Object(this);
-		xOff   = xOffset;
-		yOff   = yOffset;
-		xFac   = xScale;
-		yFac   = yScale;
+		xOff = xOffset;
+		yOff = yOffset;
+		xFac = xScale;
+		yFac = yScale;
 		dStart = fadeDetailStart;
-		dEnd   = fadeDetailEnd;
+		dEnd = fadeDetailEnd;
 	}
 
 	virtual uint32_t TransformAndClip(
@@ -87,7 +87,7 @@ public:
 		}
 		else
 		{
-			passes			= 2;
+			passes = 2;
 			referenceState2 = _state;
 		}
 	}
@@ -167,7 +167,9 @@ protected:
 	GOSVertex2UV* gos_vertices2uv;
 };
 
-MLR_I_DeT_TMesh* CreateIndexedTriCube_NoColor_NoLit_DetTex(float, MLRState*, MLRState*);
-MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
+MLR_I_DeT_TMesh*
+CreateIndexedTriCube_NoColor_NoLit_DetTex(float, MLRState*, MLRState*);
+MLRShape*
+CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

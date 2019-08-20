@@ -23,17 +23,19 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CUserTextEdit dialog
 
-CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/) : CDialog(CUserTextEdit::IDD, pParent)
+CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/) :
+	CDialog(CUserTextEdit::IDD, pParent)
 {
 	m_UseResourceString = false;
-	m_ResourceStringID  = 0;
+	m_ResourceStringID = 0;
 	//{{AFX_DATA_INIT(CUserTextEdit)
-	m_Edit				   = _T("");
+	m_Edit = _T("");
 	m_ResourceStringIDEdit = _T("");
 	//}}AFX_DATA_INIT
 }
 
-void CUserTextEdit::DoDataExchange(CDataExchange* pDX)
+void
+CUserTextEdit::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CUserTextEdit)
@@ -53,7 +55,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CUserTextEdit message handlers
 
-static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
+static BOOL
+CSLoadString(int32_t resourceID, CString& targetStr)
 {
 	char szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
@@ -67,7 +70,8 @@ static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-void CUserTextEdit::UpdateTextDisplay()
+void
+CUserTextEdit::UpdateTextDisplay()
 {
 	UpdateData(TRUE);
 	if (m_UseResourceString)
@@ -82,16 +86,17 @@ void CUserTextEdit::UpdateTextDisplay()
 	else
 	{
 		m_ResourceStringIDEdit = _TEXT("");
-		m_Edit				   = m_UnlocalizedText;
+		m_Edit = m_UnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-void CUserTextEdit::OnUserTextEditEnterTextButton()
+void
+CUserTextEdit::OnUserTextEditEnterTextButton()
 {
 	TextMessageDlg textMessageDlg;
 	textMessageDlg.m_TextMessage = m_UnlocalizedText;
-	int32_t ret					 = textMessageDlg.DoModal();
+	int32_t ret = textMessageDlg.DoModal();
 	if (IDOK == ret)
 	{
 		m_UnlocalizedText = textMessageDlg.m_TextMessage;
@@ -106,23 +111,25 @@ void CUserTextEdit::OnUserTextEditEnterTextButton()
 	}
 }
 
-void CUserTextEdit::OnUserTextEditSelectResourceStringButton()
+void
+CUserTextEdit::OnUserTextEditSelectResourceStringButton()
 {
 	ResourceStringSelectionDlg resourceStringSelectionDlg;
 	resourceStringSelectionDlg.m_SelectedResourceStringID = m_ResourceStringID;
-	int32_t ret											  = resourceStringSelectionDlg.DoModal();
+	int32_t ret = resourceStringSelectionDlg.DoModal();
 	if (IDOK == ret)
 	{
-		m_ResourceStringID  = resourceStringSelectionDlg.m_SelectedResourceStringID;
+		m_ResourceStringID = resourceStringSelectionDlg.m_SelectedResourceStringID;
 		m_UseResourceString = true;
 		UpdateTextDisplay();
 	}
 }
 
-BOOL CUserTextEdit::OnInitDialog()
+BOOL
+CUserTextEdit::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	UpdateTextDisplay();
 	return TRUE; // return TRUE unless you set the focus to a control
-				 // EXCEPTION: OCX Property Pages should return FALSE
+		// EXCEPTION: OCX Property Pages should return FALSE
 }

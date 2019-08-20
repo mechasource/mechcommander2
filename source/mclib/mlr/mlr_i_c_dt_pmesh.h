@@ -88,8 +88,10 @@ protected:
 #endif
 };
 
-MLR_I_C_DT_PMesh* CreateIndexedCube_Color_NoLit_2Tex(
+MLR_I_C_DT_PMesh*
+CreateIndexedCube_Color_NoLit_2Tex(
 	float, Stuff::RGBAColor*, MLRState*, MLRState*);
-MLRShape* CreateIndexedIcosahedron_Color_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
+MLRShape*
+CreateIndexedIcosahedron_Color_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

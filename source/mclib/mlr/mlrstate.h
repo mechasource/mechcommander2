@@ -17,7 +17,8 @@ class MLRState;
 
 namespace GetHashFunctions
 {
-Stuff::IteratorPosition GetHashValue(const MidLevelRenderer::MLRState& value);
+Stuff::IteratorPosition
+GetHashValue(const MidLevelRenderer::MLRState& value);
 }
 
 namespace MidLevelRenderer
@@ -59,45 +60,45 @@ public:
 public:
 	enum : uint32_t
 	{
-		TextureNumberBit  = 0,
+		TextureNumberBit = 0,
 		TextureNumberBits = Limits::Max_Number_Of_Texture_Bits,
 		TextureMask = (0xFFFFFFFF >> (Stuff::INT_BITS - TextureNumberBits)) << TextureNumberBit,
 
-		AlphaBit  = TextureNumberBit + TextureNumberBits,
+		AlphaBit = TextureNumberBit + TextureNumberBits,
 		AlphaBits = 3,
 		AlphaMask = (0xFFFFFFFF >> (Stuff::INT_BITS - AlphaBits)) << AlphaBit,
 
-		FilterBit  = AlphaBit + AlphaBits,
+		FilterBit = AlphaBit + AlphaBits,
 		FilterBits = 2,
 		FilterMask = (0xFFFFFFFF >> (Stuff::INT_BITS - FilterBits)) << FilterBit,
 
-		FogBit  = FilterBit + FilterBits,
+		FogBit = FilterBit + FilterBits,
 		FogBits = 2,
 		FogMask = (0xFFFFFFFF >> (Stuff::INT_BITS - FogBits)) << FogBit,
 
-		TextureWrapBit  = FogBit + FogBits,
+		TextureWrapBit = FogBit + FogBits,
 		TextureWrapMask = 1 << TextureWrapBit,
 
-		DitherBit  = TextureWrapBit + 1,
+		DitherBit = TextureWrapBit + 1,
 		DitherMask = 1 << DitherBit,
 
-		TextureCorrectionBit  = DitherBit + 1,
+		TextureCorrectionBit = DitherBit + 1,
 		TextureCorrectionMask = 1 << TextureCorrectionBit,
 
-		WireFrameBit  = TextureCorrectionBit + 1,
+		WireFrameBit = TextureCorrectionBit + 1,
 		WireFrameBits = 2,
 		WireFrameMask = (0xFFFFFFFF >> (Stuff::INT_BITS - WireFrameBits)) << WireFrameBit,
 
-		ZBufferWriteBit  = WireFrameBit + WireFrameBits,
+		ZBufferWriteBit = WireFrameBit + WireFrameBits,
 		ZBufferWriteMask = 1 << ZBufferWriteBit,
 
-		ZBufferCompareBit  = ZBufferWriteBit + 1,
+		ZBufferCompareBit = ZBufferWriteBit + 1,
 		ZBufferCompareMask = 1 << ZBufferCompareBit,
 
-		SpecularBit  = ZBufferCompareBit + 1,
+		SpecularBit = ZBufferCompareBit + 1,
 		SpecularMask = 1 << SpecularBit,
 
-		FlatColoringBit  = SpecularBit + 1,
+		FlatColoringBit = SpecularBit + 1,
 		FlatColoringMask = 1 << FlatColoringBit,
 
 		UsedRenderBits = FlatColoringBit + 1,
@@ -106,70 +107,70 @@ public:
 
 	enum AlphaMode
 	{
-		OneZeroMode		  = 0,
-		OneOneMode		  = 1 << AlphaBit,
-		AlphaOneMode	  = 2 << AlphaBit,
-		OneAlphaMode	  = 3 << AlphaBit,
+		OneZeroMode = 0,
+		OneOneMode = 1 << AlphaBit,
+		AlphaOneMode = 2 << AlphaBit,
+		OneAlphaMode = 3 << AlphaBit,
 		AlphaInvAlphaMode = 4 << AlphaBit,
-		OneInvAlphaMode   = 5 << AlphaBit,
+		OneInvAlphaMode = 5 << AlphaBit,
 
 		FirstAlphaAlphaMode = OneOneMode
 	};
 
 	enum FilterMode
 	{
-		NoFilterMode		= 0,
-		BiLinearFilterMode  = 1 << FilterBit,
+		NoFilterMode = 0,
+		BiLinearFilterMode = 1 << FilterBit,
 		TriLinearFilterMode = 2 << FilterBit
 	};
 
 	enum SpecularMode
 	{
 		SpecularOffMode = 0,
-		SpecularOnMode  = 1 << SpecularBit
+		SpecularOnMode = 1 << SpecularBit
 	};
 
 	enum TextureWrapMode
 	{
-		TextureWrap  = 0,
+		TextureWrap = 0,
 		TextureClamp = 1 << TextureWrapBit
 	};
 
 	enum DitherMode
 	{
 		DitherOffMode = 0,
-		DitherOnMode  = 1 << DitherBit
+		DitherOnMode = 1 << DitherBit
 	};
 
 	enum TextureCorrectionMode
 	{
 		TextureCorrectionOffMode = 0,
-		TextureCorrectionOnMode  = 1 << TextureCorrectionBit
+		TextureCorrectionOnMode = 1 << TextureCorrectionBit
 	};
 
 	enum WireFrameMode
 	{
-		WireFrameOffMode  = 0,
+		WireFrameOffMode = 0,
 		WireFrameOnlyMode = 1 << WireFrameBit,
-		WireFrameAddMode  = 2 << WireFrameBit
+		WireFrameAddMode = 2 << WireFrameBit
 	};
 
 	enum ZBufferWriteMode
 	{
 		ZBufferWriteOffMode = 0,
-		ZBufferWriteOnMode  = 1 << ZBufferWriteBit
+		ZBufferWriteOnMode = 1 << ZBufferWriteBit
 	};
 
 	enum ZBufferCompareMode
 	{
 		ZBufferCompareOffMode = 0,
-		ZBufferCompareOnMode  = 1 << ZBufferCompareBit
+		ZBufferCompareOnMode = 1 << ZBufferCompareBit
 	};
 
 	enum FlatColoringMode
 	{
 		FlatColoringOffMode = 0,
-		FlatColoringOnMode  = 1 << FlatColoringBit
+		FlatColoringOnMode = 1 << FlatColoringBit
 	};
 
 	// manipulate render state
@@ -390,22 +391,22 @@ public:
 public:
 	enum
 	{
-		PriorityBit  = 0,
+		PriorityBit = 0,
 		PriorityBits = 4,
 		PriorityMask = (0xFFFFFFFF >> (Stuff::INT_BITS - PriorityBits)) << PriorityBit,
 
-		BackFaceBit  = PriorityBit + PriorityBits,
+		BackFaceBit = PriorityBit + PriorityBits,
 		BackFaceMask = 1 << BackFaceBit,
 
-		LightingBit  = BackFaceBit + 1,
+		LightingBit = BackFaceBit + 1,
 		LightingBits = 5,
 		LightingMask = (0xFFFFFFFF >> (Stuff::INT_BITS - LightingBits)) << LightingBit,
 
-		MultitextureBit  = LightingBit + LightingBits,
+		MultitextureBit = LightingBit + LightingBits,
 		MultitextureBits = 4,
 		MultitextureMask = (0xFFFFFFFF >> (Stuff::INT_BITS - MultitextureBits)) << MultitextureBit,
 
-		DrawNowBit  = MultitextureBit + MultitextureBits,
+		DrawNowBit = MultitextureBit + MultitextureBits,
 		DrawNowMask = 1 << DrawNowBit,
 
 		UsedProcessBits = DrawNowBit + 1,
@@ -415,31 +416,31 @@ public:
 	enum BackFaceMode
 	{
 		BackFaceOffMode = 0,
-		BackFaceOnMode  = 1 << BackFaceBit,
+		BackFaceOnMode = 1 << BackFaceBit,
 	};
 
 	enum
 	{
-		DefaultPriority			 = 0,
-		AlphaPriority			 = 2,
+		DefaultPriority = 0,
+		AlphaPriority = 2,
 		FirstApplicationPriority = 4,
-		PriorityCount			 = 1 << PriorityBits,
+		PriorityCount = 1 << PriorityBits,
 	};
 
 	enum LightingMode
 	{
-		LightingOffMode		 = 0,
-		VertexLightingMode   = 1 << LightingBit,
+		LightingOffMode = 0,
+		VertexLightingMode = 1 << LightingBit,
 		LightMapLightingMode = 2 << LightingBit,
-		LookupLightingMode   = 4 << LightingBit,
-		FaceLightingMode	 = 8 << LightingBit,
-		TerrainLightingMode  = 16 << LightingBit
+		LookupLightingMode = 4 << LightingBit,
+		FaceLightingMode = 8 << LightingBit,
+		TerrainLightingMode = 16 << LightingBit
 	};
 
 	//	if cards are multi texture capable so use this mode
 	enum MultiTextureMode
 	{
-		MultiTextureOffMode		 = 0,
+		MultiTextureOffMode = 0,
 		MultiTextureLightmapMode = 1 << MultitextureBit,
 		MultiTextureSpecularMode = 2 << MultitextureBit,
 	};
@@ -447,7 +448,7 @@ public:
 	enum DrawNowMode
 	{
 		DrawNowOffMode = 0,
-		DrawNowOnMode  = 1 << DrawNowBit,
+		DrawNowOnMode = 1 << DrawNowBit,
 	};
 
 	// manipulate process state
@@ -564,10 +565,10 @@ public:
 
 	enum
 	{
-		HasAGPAvailable			= 1, //	FALSE when no AGP memory available (assume a low end card)
+		HasAGPAvailable = 1, //	FALSE when no AGP memory available (assume a low end card)
 		CanMultitextureLightMap = 2, //	TRUE when single pass light mapping is available
 		CanMultitextureSpecularMap = 4, //	TRUE when single pass specular mapping is available
-		HasMaxUVs				   = 8  //	TRUE if video card has certain limits on UVs
+		HasMaxUVs = 8 //	TRUE if video card has certain limits on UVs
 	};
 
 	static void SetAGPAvailable(bool b)
@@ -642,8 +643,7 @@ public:
 	bool operator>(const MLRState& s) const
 	{
 		// Check_Pointer(this);
-		return (renderState > s.renderState) ||
-			(renderState == s.renderState) && (processState > s.processState);
+		return (renderState > s.renderState) || (renderState == s.renderState) && (processState > s.processState);
 	}
 
 	bool operator!=(const MLRState& s) const

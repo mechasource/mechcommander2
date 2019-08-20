@@ -47,9 +47,12 @@
 // -----------------------------------------------------------------------------
 // Global data exported from this module
 
-MECH_IMPEXP EXECUTION_STATE(__stdcall* _SetThreadExecutionState)(EXECUTION_STATE);
-MECH_IMPEXP int32_t(__stdcall* _GetFileAttributesEx)(PCSTR, GET_FILEEX_INFO_LEVELS, PVOID);
-MECH_IMPEXP int32_t(__stdcall* _GetDiskFreeSpaceEx)(
+MECH_IMPEXP
+EXECUTION_STATE(__stdcall* _SetThreadExecutionState)(EXECUTION_STATE);
+MECH_IMPEXP
+int32_t(__stdcall* _GetFileAttributesEx)(PCSTR, GET_FILEEX_INFO_LEVELS, PVOID);
+MECH_IMPEXP
+int32_t(__stdcall* _GetDiskFreeSpaceEx)(
 	PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
 
 MECH_IMPEXP HANDLE hMappedFile;
@@ -178,7 +181,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 
 #if _CONSIDERED_OBSOLETE
 	// _SetThreadExecutionState = nullptr;
-	hKernel32				 = GetModuleHandleA("kernel32.dll");
+	hKernel32 = GetModuleHandleA("kernel32.dll");
 	_SetThreadExecutionState = reinterpret_cast<EXECUTION_STATE(__stdcall*)(EXECUTION_STATE)>(
 		GetProcAddress(hKernel32, "SetThreadExecutionState"));
 	_GetFileAttributesEx =
@@ -199,9 +202,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 #if _CONSIDERED_OBSOLETE
 	VersionInformation.dwOSVersionInfoSize = sizeof(OSVERSIONINFOA);
 	GetVersionExA(&VersionInformation);
-	if (VersionInformation.dwPlatformId == VER_PLATFORM_WIN32_NT &&
-		VersionInformation.dwMajorVersion == 5 && VersionInformation.dwBuildNumber < 0x893 &&
-		InternalFunctionPause("Please upgrade to Windows 2000 RTM (Build 2195)"))
+	if (VersionInformation.dwPlatformId == VER_PLATFORM_WIN32_NT && VersionInformation.dwMajorVersion == 5 && VersionInformation.dwBuildNumber < 0x893 && InternalFunctionPause("Please upgrade to Windows 2000 RTM (Build 2195)"))
 		ENTER_DEBUGGER;
 #else
 #if _CONSIDERED_OUTDATED
@@ -216,8 +217,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 #endif
 	if (Platform == Platform_Game)
 	{
-		if ((DesktopBpp == 1) ||
-			((RunFullScreen == false) && (DesktopBpp != 16) && (DesktopBpp != 32)))
+		if ((DesktopBpp == 1) || ((RunFullScreen == false) && (DesktopBpp != 16) && (DesktopBpp != 32)))
 		{
 			// pszMessage = gos_GetResourceString(gLanguageDLL, 1020u);
 			pszMessage = "Please select a color depth of 16 bit or 32 bit from "
@@ -250,31 +250,31 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 					RunFullScreen = true;
 			}
 		}
-		widthX		   = Environment.screenWidth;
-		heightY		   = Environment.screenHeight;
+		widthX = Environment.screenWidth;
+		heightY = Environment.screenHeight;
 		wndClass.style = CS_BYTEALIGNCLIENT | CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 		if (Environment.allowDoubleClicks)
 			wndClass.style |= CS_DBLCLKS;
 		wndClass.lpfnWndProc = (WNDPROC)&GameOSWinProc;
-		wndClass.cbClsExtra  = 0;
-		wndClass.cbWndExtra  = 0;
-		wndClass.hInstance   = hInstance;
+		wndClass.cbClsExtra = 0;
+		wndClass.cbWndExtra = 0;
+		wndClass.hInstance = hInstance;
 		EnumResourceNamesA(hInstance, "Windows()", EnumIcons, 0);
 		if (IconName)
 			wndClass.hIcon = LoadIconA(hInstance, /*static_cast<PCSTR>*/ (IconName));
 		else
 			wndClass.hIcon = nullptr;
-		wndClass.hCursor	   = nullptr;
+		wndClass.hCursor = nullptr;
 		wndClass.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
-		wndClass.lpszMenuName  = Environment.applicationName;
+		wndClass.lpszMenuName = Environment.applicationName;
 		wndClass.lpszClassName = Environment.applicationName;
-		atom				   = RegisterClassA(&wndClass);
-		Rect.left			   = 0;
-		Rect.top			   = 0;
-		Rect.right			   = widthX;
-		Rect.bottom			   = heightY;
-		dwStyle				   = WS_CAPTION | WS_SYSMENU | WS_GROUP | WS_TABSTOP;
-		bSuccess			   = AdjustWindowRect(&Rect, dwStyle, FALSE) == TRUE;
+		atom = RegisterClassA(&wndClass);
+		Rect.left = 0;
+		Rect.top = 0;
+		Rect.right = widthX;
+		Rect.bottom = heightY;
+		dwStyle = WS_CAPTION | WS_SYSMENU | WS_GROUP | WS_TABSTOP;
+		bSuccess = AdjustWindowRect(&Rect, dwStyle, FALSE) == TRUE;
 		if (atom && bSuccess)
 		{
 			hWindow = CreateWindowExA(0, Environment.applicationName, Environment.applicationName,
@@ -376,7 +376,7 @@ MECH_IMPEXP void __stdcall Update(void)
 			uint64_t timeelapsed;
 			uint64_t timenow;
 			// ????
-			timenow		= gos_GetHiResTime();
+			timenow = gos_GetHiResTime();
 			timeelapsed = (0.01666666666666667 - (timenow - timeLastTime));
 			if (timeelapsed > 0)
 				Sleep((timeelapsed * 1000u));
@@ -465,12 +465,12 @@ MECH_IMPEXP void __stdcall gos_SetClipboardText(PSTR pszText)
 		EmptyClipboard();
 		if (*pszText)
 		{
-			nsizetext	  = strlen(pszText);
+			nsizetext = strlen(pszText);
 			hClipboardData = GlobalAlloc(GMEM_SHARE, nsizetext + 1);
 			if (hClipboardData)
 			{
 				ClipboardData = GlobalLock(hClipboardData);
-				nsizetext	 = strlen(pszText);
+				nsizetext = strlen(pszText);
 				if (ClipboardData)
 					memcpy(ClipboardData, pszText, nsizetext + 1);
 				GlobalUnlock(hClipboardData);

@@ -18,10 +18,10 @@
 //
 // Error groups for SPEW
 //
-#define GROUP_FILES "GameOS_Files"				   // File functions
-#define GROUP_MEMORY "GameOS_Memory"			   // Leak notification only
+#define GROUP_FILES "GameOS_Files" // File functions
+#define GROUP_MEMORY "GameOS_Memory" // Leak notification only
 #define GROUP_MEMORYVERBOSE "GameOS_MemoryVerbose" // Heap create / destroy functions
-#define GROUP_TEXTURE "GameOS_Texture"			   // Texture enumeration and creation
+#define GROUP_TEXTURE "GameOS_Texture" // Texture enumeration and creation
 #define GROUP_GAMEOS "GameOS_Core"
 #define GROUP_NETWORK "GameOS_Network" // Networking messages (DPlay layer is lower level)
 #define GROUP_DIRECTX "GameOS_DirectX"
@@ -35,15 +35,15 @@
 //
 // Defines to alter windows headers
 //
-#define STRICT			 // Make windows type checking more accurate
+#define STRICT // Make windows type checking more accurate
 #define WIN32_EXTRA_LEAN // Reduce windows header size
-#define VC_EXTRALEAN	 // Reduce windows header size
+#define VC_EXTRALEAN // Reduce windows header size
 #define NOGDIOBJ
 #define NOSCROLL
-#define NOMDI	  // windows - if you ever use a windows function
+#define NOMDI // windows - if you ever use a windows function
 #define NOLOGERROR // of define that does not work or link comment
 #define NOPROFILER // out all of these, and put them back until you
-#define NOMEMMGR   // find the one causing it to be removed.
+#define NOMEMMGR // find the one causing it to be removed.
 #define NOLFILEIO
 #define NOOPENFILE
 #define NOATOM
@@ -125,8 +125,8 @@ typedef float real;
 //
 // DirectShow
 //
-#pragma warning(disable : 4201) // nameless struct/union (again - something
-								// reenables this!)
+#pragma warning(disable : 4201) // nameless struct/union (again - something \
+	// reenables this!)
 #include <amstream.h>
 #include <control.h>
 #include <process.h>
@@ -154,7 +154,8 @@ typedef float real;
 //
 // Faster float to int32_t  (Always rounds to nearest)  ie: -2.7 goes to 3
 //
-inline int32_t float2long(float fval)
+inline int32_t
+float2long(float fval)
 {
 	fval += 3 << 22;
 	return ((*(int32_t*)&fval) & 0x007fffff) - 0x00400000;

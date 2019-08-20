@@ -27,7 +27,7 @@
 enum ActorState
 {
 	ACTOR_STATE_INVALID = -1,
-	ACTOR_STATE_NORMAL  = 0,
+	ACTOR_STATE_NORMAL = 0,
 	ACTOR_STATE_BLOWING_UP1, // From Normal to Damaged
 	ACTOR_STATE_DAMAGED,
 	ACTOR_STATE_BLOWING_UP2, // From Damaged to Destroyed
@@ -39,13 +39,13 @@ enum ActorState
 struct ActorData
 {
 	ActorState state;
-	uint8_t symmetrical;	   // are second-half rotations flip versions of first half?
-	uint8_t numRotations;	  // number of rotations (including flips)
-	uint32_t numFrames;		   // number of frames for this gesture (if -1, does not exist)
+	uint8_t symmetrical; // are second-half rotations flip versions of first half?
+	uint8_t numRotations; // number of rotations (including flips)
+	uint32_t numFrames; // number of frames for this gesture (if -1, does not exist)
 	uint32_t basePacketNumber; // Where in packet file does this gesture start.
-	float frameRate;		   // intended frame rate of playback
-	int32_t textureSize;	   // Length of one edge of texture.
-	int32_t textureHS;		   // Where the screen coord should go for texture.
+	float frameRate; // intended frame rate of playback
+	int32_t textureSize; // Length of one edge of texture.
+	int32_t textureHS; // Where the screen coord should go for texture.
 };
 
 //***********************************************************************
@@ -60,7 +60,7 @@ class VFXAppearanceType : public AppearanceType
 public:
 	ActorData* actorStateData;
 	TGATexturePtr* textureList; // These go nullptr when a texture is cached
-								// out.
+		// out.
 	int32_t numPackets;
 	uint32_t textureMemoryHandle;
 	uint8_t numStates;
@@ -69,11 +69,11 @@ public:
 	void init(void)
 	{
 		actorStateData = nullptr;
-		textureList	= nullptr;
-		numStates	  = 0;
-		numPackets	 = 0;
-		users		   = nullptr;
-		lastUser	   = nullptr;
+		textureList = nullptr;
+		numStates = 0;
+		numPackets = 0;
+		users = nullptr;
+		lastUser = nullptr;
 	}
 
 	VFXAppearanceType(void) { init(void); }
@@ -161,9 +161,9 @@ public:
 		if ((typeId < appearType->numStates) && (typeId >= 0))
 		{
 			currentShapeTypeId = typeId;
-			currentFrame	   = -1;
-			timeInFrame		   = 0.0;
-			lastWholeFrame	 = 0;
+			currentFrame = -1;
+			timeInFrame = 0.0;
+			lastWholeFrame = 0;
 		}
 		changedTypeId = TRUE;
 	}
@@ -171,7 +171,7 @@ public:
 	void loopFrames(int32_t sFrame, int32_t eFrame)
 	{
 		startFrame = sFrame;
-		endFrame   = eFrame;
+		endFrame = eFrame;
 	}
 
 	virtual void setDamageLvl(uint32_t damage);

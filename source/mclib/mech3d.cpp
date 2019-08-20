@@ -12,20 +12,10 @@
 
 #include "stdinc.h"
 
-#ifndef MECH3D_H
 #include "mech3d.h"
-#endif
-
-#ifndef CAMERA_H
 #include "camera.h"
-#endif
-
-#ifndef DBASEGUI_H
 #include "dbasegui.h"
-#endif
-
-#ifndef TERRAIN_H
-#include <terrain.h>
+#include "terrain.h"
 #endif
 
 #ifndef MSTATES_H

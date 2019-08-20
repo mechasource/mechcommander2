@@ -23,13 +23,12 @@ public:
 	static void __stdcall TerminateClass(void);
 
 	MLRInfiniteLightWithFalloff(ClassData* class_data = MLRInfiniteLightWithFalloff::DefaultData);
-	MLRInfiniteLightWithFalloff(
-		ClassData* class_data, std::iostream stream, uint32_t version);
-	MLRInfiniteLightWithFalloff(ClassData* class_data, Stuff::Page* page);
+	MLRInfiniteLightWithFalloff(ClassData* class_data, std::iostream stream, uint32_t version);
+	//MLRInfiniteLightWithFalloff(ClassData* class_data, Stuff::Page* page);
 	~MLRInfiniteLightWithFalloff(void);
 
-	void Save(std::iostream stream);
-	void Write(Stuff::Page* page);
+	void Save(std::ostream& stream);
+	//void Write(Stuff::Page* page);
 
 	virtual void LightVertex(const MLRVertexData&);
 

@@ -25,9 +25,8 @@
 #endif
 
 #ifdef _MSC_VER
-#define DISABLE_WARNING_PUSH(x)                                                                    \
-	__pragma(warning(push));                                                                       \
-	__pragma(warning(disable : x))
+#define DISABLE_WARNING_PUSH(x) \
+	__pragma(warning(push)); __pragma(warning(disable : x))
 #define DISABLE_WARNING_POP __pragma(warning(pop))
 #define SUPPRESS_WARNING(x) __pragma(warning(suppress : x))
 #define ADD_LIBRARY(x) __pragma(comment(lib, x))
@@ -71,6 +70,7 @@ DISABLE_WARNING_PUSH(4191 4350 4355 4365 4774 4571 4619 4623 4626 4946 5026 5027
 #include <stdexcept>
 #include <functional>
 #include <filesystem>
+#include <variant>
 #include <comdef.h>
 #include <crtdbg.h>
 #include <cppunittest.h>
@@ -115,6 +115,7 @@ DISABLE_WARNING_POP
 
 #pragma warning(disable : 4514)	// unreferenced inline function has been removed
 #pragma warning(disable : 4626)	// assignment operator was implicitly defined as deleted
+#pragma warning(disable : 4820) // bytes padding added 
 #pragma warning(disable : 5027) // move assignment operator was implicitly defined as deleted
 
 #ifdef _DEBUG
@@ -136,6 +137,10 @@ DISABLE_WARNING_POP
 // NDEBUG;LAB_ONLY;_WINDOWS;WIN32;NOMINMAX;BUGLOG	- profile
 // #define LAB_ONLY 0
 // #define FINAL
+#endif
+
+#ifndef IN_TEST_MODE
+#define IN_TEST_MODE 0
 #endif
 
 #define USE_INLINE_ASSEMBLER_CODE 0

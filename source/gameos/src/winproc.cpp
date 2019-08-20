@@ -17,13 +17,13 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <controlmanager.hpp>
-#include <directx.hpp>
-#include <dxrasterizer.hpp>
-#include <debugger.hpp>
-#include <windows.hpp>
-#include <winproc.hpp>
+#include "gameos.hpp"
+#include "controlmanager.hpp"
+#include "directx.hpp"
+#include "dxrasterizer.hpp"
+#include "debugger.hpp"
+#include "windows.hpp"
+#include "winproc.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module
@@ -62,10 +62,7 @@ extern uint32_t g_DDstate;
 LRESULT __stdcall ProcessIMEMessages(
 	HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam, bool* pbHandled);
 
-#pragma region UpdateCursor
-/*
- */
-#pragma endregion UpdateCursor
+/******************************************************************************/
 /// <summary>
 /// <c>UpdateCursor</c>
 /// </summary>
@@ -75,8 +72,8 @@ LRESULT __stdcall ProcessIMEMessages(
 /// <returns></returns>
 void __stdcall UpdateCursor(void)
 {
-	if (gActive && gGotFocus && !ProcessingError &&
-		((unsigned __int16)LastlParam == 1 || Environment.fullScreen))
+	if (gActive && gGotFocus && (ProcessingError == 0) &&
+		(static_cast<uint16_t>(LastlParam) == 1 || (Environment.fullScreen == true)))
 	{
 		if (!gHardwareMouse && !DebuggerMouse || Environment.fullScreen || Compatibility3D & 0x400)
 			SetCursor(0);
@@ -89,10 +86,7 @@ void __stdcall UpdateCursor(void)
 	}
 }
 
-#pragma region GameOSWinProc
-/*
- */
-#pragma endregion GameOSWinProc
+/******************************************************************************/
 /// <summary>
 /// <c>GameOSWinProc</c>
 /// </summary>
@@ -102,7 +96,7 @@ void __stdcall UpdateCursor(void)
 /// <param name="uMsg"></param>
 /// <param name="wParam"></param>
 /// <param name="lParam"></param>
-/// <returns>LRESULT __stdcall</returns>
+/// <returns>LRESULT</returns>
 MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam)
 {
 	bool bActive;
@@ -464,11 +458,11 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 			if (!Environment.fullScreen)
 			{
 				winpos = (WINDOWPOS*)lParam;
-				if (!(*(_DWORD*)(lParam + 24) & SWP_NOMOVE)) // WINDOWPOS.flags
+				if (!(winpos->flags & SWP_NOMOVE)) // WINDOWPOS.flags
 				{
-					wndpl.length = 0x2Cu;
+					wndpl.length = sizeof(wndpl);
 					GetWindowPlacement(hWindow, &wndpl);
-					if (wndpl.showCmd == 1)
+					if (wndpl.showCmd == SW_SHOW 1)
 					{
 						WindowStartX = winpos->x;
 						WindowStartY = winpos->y;

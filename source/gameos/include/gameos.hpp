@@ -22,6 +22,9 @@
 #ifndef _GAMEOS_HPP_
 #define _GAMEOS_HPP_
 
+#pragma warning(push)
+#pragma warning(disable : 4820)
+
 #ifndef MECH_IMPEXP
 #define MECH_IMPEXP extern
 #endif
@@ -170,7 +173,7 @@ typedef struct gosEnvironment
 	uint32_t MegMemoryRequired;  // Megabytes of virtual memory required to run game (default is 64Meg)
 	bool allowMultipleApps; // Allows the game to be run more than once on a single system (network testing)
 	bool dontClearRegistry; // When true, the registry is not cleared when the .exe is changed
-	uint8_t _unused1[3];
+	uint8_t _unused1[sizeof(void*)-2];
 
 	//
 	// Current screen mode (application can check, but may change from frame to frame)
@@ -1793,20 +1796,20 @@ enum gosNetFlags : uint32_t
 //
 // These are the system messages that may be recieved by the application
 //
-cuint8_t gosNet_PlayerAdded =
+const uint8_t gosNet_PlayerAdded =
 	240; // FromID will contain the new PlayerID of the player.
 		 // gos_NetInformation(gos_NumberOfPlayers) will be greater than last game logic.
-cuint8_t gosNet_PlayerDeleted =
+const uint8_t gosNet_PlayerDeleted =
 	241; // FromID will contain the old PlayerID of the player.
 		 // gos_NetInformation will work with this ID only for the remainder of
 		 // the current GameLogic. (Packets sent to the player will be ignored)
-cuint8_t gosNet_GameEnded = 242; // The server has ended the network game. This
+const uint8_t gosNet_GameEnded = 242; // The server has ended the network game. This
 								 // is the last packet the game will see.
-cuint8_t gosNet_Ping = 243;		 // Used to send a ping packet. You will eventually
+const uint8_t gosNet_Ping = 243;		 // Used to send a ping packet. You will eventually
 								 // receive back a ping packet containing four
 								 // uint32_t containing the milliseconds time at each
 								 // end of a 'double ping'.
-cuint8_t gosNet_Heartbeat = 244; // Used to send a heartbeat packet to keep the
+const uint8_t gosNet_Heartbeat = 244; // Used to send a heartbeat packet to keep the
 								 // outbound window up to date.
 
 // This is a network packet header for sent and recieved packets. This is not
@@ -3422,4 +3425,5 @@ public:
 };
 
 #endif // __cplusplus
+#pragma warning(pop)  
 #endif

@@ -9,7 +9,7 @@
 //#include "stuffheaders.hpp"
 
 #include <gameos.hpp>
-#include <stuff/node.hpp>
+//#include <stuff/node.hpp>
 #include <stuff/safechain.hpp>
 
 using namespace Stuff;

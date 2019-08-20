@@ -24,7 +24,7 @@ public:
 
 	MLRAmbientLight(void);
 	MLRAmbientLight(std::iostream stream, uint32_t version);
-	MLRAmbientLight(Stuff::Page* page);
+	// MLRAmbientLight(Stuff::Page* page);
 	~MLRAmbientLight(void);
 
 	virtual void LightVertex(const MLRVertexData&);

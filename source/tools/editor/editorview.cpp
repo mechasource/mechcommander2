@@ -6,7 +6,7 @@
 //
 
 #include "stdinc.h"
-#include <mclib.h>
+//#include <mclib.h>
 #include "EditorMFC.h"
 #include "EditorView.h"
 

@@ -6,30 +6,30 @@ Objective.cpp			: Implementation of the Objective component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include <terrain.h>
+#include "terrain.h"
 
-#include "Objective.h"
-#include "ObjectiveDlg.h"
-#include "ObjectivesDlg.h"
-#include "ChooseUnitDlg.h"
-#include "ChooseBuildingDlg.h"
-#include "ResourceStringSelectionDlg.h"
-#include "SingleValueDlg.h"
-#include "BooleanFlagIsSetDialog.h"
-#include "TargetAreaDlg.h"
-#include "TextMessageDlg.h"
-#include "MCLibResource.h"
-#include "EditorInterface.h"
+#include "objective.h"
+#include "objectivedlg.h"
+#include "objectivesdlg.h"
+#include "chooseunitdlg.h"
+#include "choosebuildingdlg.h"
+#include "resourcestringselectiondlg.h"
+#include "singlevaluedlg.h"
+#include "booleanflagissetdialog.h"
+#include "targetareadlg.h"
+#include "textmessagedlg.h"
+#include "mclibresource.h"
+#include "editorinterface.h"
 #include "../resource.h" /*this is mc2res.dll's header file*/
 
-#include <estring.h>
-#include "ECharString.h"
+//#include <estring.h>
+//#include "echarstring.h"
 
 #ifndef INIFILE_H
-#include "IniFile.h"
+#include "inifile.h"
 #endif
 
-#include <assert.h>
+//#include <assert.h>
 
 static bool ESLoadString(int32_t resourceID, std::wstring& targetStr)
 {

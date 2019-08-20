@@ -17,10 +17,10 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <directx.hpp>
-#include <directxdebugging.hpp>
-#include <errorhandler.hpp>
+#include "gameos.hpp"
+#include "directx.hpp"
+#include "directxdebugging.hpp"
+#include "errorhandler.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module
@@ -43,7 +43,7 @@ extern uint32_t TotalRenderStateChanges;
 
 #pragma region wLock
 /*
-
+Appears unused
 */
 #pragma endregion local info
 /// <summary>
@@ -59,15 +59,14 @@ extern uint32_t TotalRenderStateChanges;
 HRESULT __stdcall wLock(
 	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, uint32_t dwFlags, PVOID* lplpData, puint32_t lpdwSize)
 {
-	PSTR pszErrorMessage;
-	HRESULT hResult;
-	InternalFunctionSpew("GameOS_Direct3D", "Lock(0x%x)", D3Dvb7);
-	hResult = D3Dvb7->Lock(dwFlags, lplpData, lpdwSize);
+
+	// InternalFunctionSpew("GameOS_Direct3D", "Lock(0x%x)", D3Dvb7);
+
+	HRESULT hResult = D3Dvb7->Lock(dwFlags, lplpData, lpdwSize);
 	if (FAILED(hResult))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - Lock(0x%x)", hResult, pszErrorMessage, D3Dvb7))
+		PSTR pszErrorMessage = ErrorNumberToMessage(hResult);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - Lock(0x%x)", hResult, pszErrorMessage, D3Dvb7))
 			ENTER_DEBUGGER;
 	}
 	return hResult;
@@ -87,13 +86,12 @@ HRESULT __stdcall wLock(
 /// <returns></returns>
 HRESULT __stdcall wUnlock(LPDIRECT3DVERTEXBUFFER7 D3Dvb7)
 {
-	PSTR pszErrorMessage;
-	HRESULT hResult;
-	InternalFunctionSpew("GameOS_Direct3D", "Unlock(0x%x)", D3Dvb7);
-	hResult = D3Dvb7->Unlock();
+	// InternalFunctionSpew("GameOS_Direct3D", "Unlock(0x%x)", D3Dvb7);
+
+	HRESULT  hResult = D3Dvb7->Unlock();
 	if (FAILED(hResult))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
+		PSTR pszErrorMessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause(
 				"FAILED (0x%x - %s) - Unlock(0x%x)", hResult, pszErrorMessage, D3Dvb7))
 			ENTER_DEBUGGER;
@@ -960,7 +958,9 @@ HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7,
 	LPDIRECT3DVERTEXBUFFER7 pd3dVertexBufferUsed;
 	PSTR pszErrorMessage;
 	HRESULT hResult;
-	InternalFunctionSpew("GameOS_Direct3D", "DrawIndexedPrimitiveVB(0x%x)", lpd3dVertexBuffer);
+	
+	//InternalFunctionSpew("GameOS_Direct3D", "DrawIndexedPrimitiveVB(0x%x)", lpd3dVertexBuffer);
+	
 	if (g_pGetDXVB)
 	{
 		pd3dVertexBufferUsed = g_pGetDXVB(lpd3dVertexBuffer, d3dDevice7);
@@ -1008,7 +1008,9 @@ HRESULT __stdcall wDrawPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7,
 	LPDIRECT3DVERTEXBUFFER7 pd3dVertexBufferUsed;
 	PSTR pszErrorMessage;
 	HRESULT hResult;
-	InternalFunctionSpew("GameOS_Direct3D", "DrawPrimitiveVB(0x%x)", lpd3dVertexBuffer);
+
+	// InternalFunctionSpew("GameOS_Direct3D", "DrawPrimitiveVB(0x%x)", lpd3dVertexBuffer);
+	
 	if (g_pGetDXVB)
 	{
 		pd3dVertexBufferUsed = g_pGetDXVB(lpd3dVertexBuffer, d3dDevice7);

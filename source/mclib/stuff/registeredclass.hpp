@@ -11,7 +11,7 @@
 #define _REGISTEREDCLASS_HPP_
 
 //#include <stuff/stuff.hpp>
-//#include <stuff/style.hpp>
+#include <stuff/style.hpp>
 #include <mechclassids.h>
 
 namespace Stuff

@@ -9,35 +9,18 @@
 //===========================================================================//
 #include "stdinc.h"
 
-#ifndef TGL_H
-#include "tgl.h"
-#endif
-
-#ifndef CLIP_H
-#include "clip.h"
-#endif
-
-#ifndef TIMING_H
-#include "timing.h"
-#endif
-
-#ifndef TERRAIN_H
-#include <terrain.h>
-#endif
-
-#ifndef CAMERA_H
-#include "camera.h"
-#endif
-
-#ifndef TXMMGR_H
-#include "txmmgr.h"
-#endif
+//#include "tgl.h"
+//#include "clip.h"
+//#include "timing.h"
+//#include "terrain.h"
+//#include "camera.h"
+//#include "txmmgr.h"
+//#include "toolos.hpp"
 
 //-------------------------------------------------------------------------------
 // Include Files
-#include <toolOS.hpp>
 
-#define USE_ASSEMBLY
+// #define USE_ASSEMBLY
 //-------------------------------------------------------------------------------
 // Statics
 Stuff::LinearMatrix4D* TG_Shape::cameraOrigin = nullptr;

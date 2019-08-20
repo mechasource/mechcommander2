@@ -1,5 +1,3 @@
-
-
 /*************************************************************************************************\
 TargetAreaDlg.cpp			: Implementation of the TargetAreaDlg component.
 //---------------------------------------------------------------------------//
@@ -7,16 +5,13 @@ TargetAreaDlg.cpp			: Implementation of the TargetAreaDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "resource.h"
-
-#include <stdlib.h>
-#include <assert.h>
-#include <estring.h>
-
-#include "TargetAreaDlg.h"
-#include "Objective.h"
-
-#include "EditorInterface.h"
+//#include "resource.h"
+//#include <stdlib.h>
+//#include <assert.h>
+//#include <estring.h>
+//#include "targetareadlg.h"
+//#include "objective.h"
+//#include "editorinterface.h"
 
 //-------------------------------------------------------------------------------------------------
 TargetAreaDlg::TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius)

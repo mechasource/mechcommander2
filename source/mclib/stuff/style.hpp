@@ -104,7 +104,7 @@ public:
 	friend void Is_Signature_Bad(const volatile Signature* p);
 };
 
-inline void Is_Signature_Bad(const volatile void* p) { Check_Pointer(p); }
+inline void Is_Signature_Bad(const volatile void* p) { (void)p; Check_Pointer(p); }
 #endif
 
 //##########~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

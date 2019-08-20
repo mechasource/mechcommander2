@@ -12,25 +12,11 @@
 //#include <stdlib.h>
 //#include <string.h>
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLEXEC_H
-#include "ablexec.h"
-#endif
-
-#ifndef ABLDBUG_H
-#include "abldbug.h"
-#endif
+//#include "ablgen.h"
+//#include "ablerr.h"
+//#include "ablscan.h"
+//#include "ablexec.h"
+//#include "abldbug.h"
 
 //***************************************************************************
 

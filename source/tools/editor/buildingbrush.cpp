@@ -10,7 +10,7 @@ BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 
 #include "buildingbrush.h"
 #include "editorobjectmgr.h"
-#include <terrain.h>
+#include "terrain.h"
 #include "editorobjects.h"
 #include "editorinterface.h"
 #include "resource.h"

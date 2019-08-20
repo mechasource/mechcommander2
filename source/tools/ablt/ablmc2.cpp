@@ -18,7 +18,6 @@
 #endif
 
 #ifdef BUILD_GAME
-#include <mclib.h>
 #include "mission.h"
 #include "move.h"
 #include "movemgr.h"
@@ -40,7 +39,10 @@
 #include "turret.h"
 #include "gate.h"
 #include "artlry.h"
+//#include <mclib.h>
 #endif
+
+
 
 MoverGroupPtr CurGroup	= nullptr;
 GameObjectPtr CurObject   = nullptr;

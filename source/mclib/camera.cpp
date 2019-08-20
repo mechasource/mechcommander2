@@ -9,7 +9,7 @@
 #include "stdinc.h"
 
 #include "camera.h"
-#include <terrain.h>
+#include "terrain.h"
 #include "vertex.h"
 #include "crater.h"
 #include <terrtxm.h>

@@ -5,9 +5,9 @@
 #include "stdinc.h"
 
 #include "campaigndata.h"
-#include <estring.h>
-#include "echarstring.h"
-#include "assert.h"
+//#include <estring.h>
+//#include "echarstring.h"
+//#include "assert.h"
 
 static int32_t sReadIdBoolean(FitIniFile& missionFile, PCSTR varName, bool& value)
 {

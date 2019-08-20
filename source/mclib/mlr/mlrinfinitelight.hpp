@@ -24,7 +24,7 @@ public:
 
 	MLRInfiniteLight(ClassData* class_data = DefaultData);
 	MLRInfiniteLight(ClassData* class_data, std::iostream stream, uint32_t version);
-	MLRInfiniteLight(ClassData* class_data, Stuff::Page* page);
+	//MLRInfiniteLight(ClassData* class_data, Stuff::Page* page);
 	~MLRInfiniteLight(void);
 
 	virtual void LightVertex(const MLRVertexData&);

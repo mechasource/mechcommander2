@@ -11,7 +11,7 @@
 #define _PLUG_HPP_
 
 #include <stuff/registeredclass.hpp>
-#include <stuff/iterator.hpp>
+// #include <stuff/iterator.hpp>
 
 namespace Stuff
 {

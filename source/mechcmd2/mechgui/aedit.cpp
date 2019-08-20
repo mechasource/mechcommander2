@@ -7,16 +7,20 @@ aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 #define AEDIT_CPP
 
 #include "stdinc.h"
-#include <mechgui/aedit.h>
-#include "userinput.h"
-#include "ctype.h"
-#include "inifile.h"
-#include <mclib.h>
+
+// #include <ctype.h>
 // #include <windows.h>
-#include <mbstring.h>
-#include <winnls.h>
+// #include <winnls.h>
+
+#include "mechgui/aedit.h"
+#include "userinput.h"
+#include "inifile.h"
+//#include "mclib.h"
 #include "soundsys.h"
-#include "..\resource.h"
+
+//#include "..\resource.h"
+// #include <mbstring.h>
+
 
 #define ENTRY_MAX_CHARS 1000
 #define ENTRY_MARGIN 4.f
@@ -53,7 +57,7 @@ aEdit::aEdit()
 			g_ia.compColorInputErr		= 0xffff00ff;
 			g_ia.compTranslucence		= 0x7f;
 			if (acp != 949) // other than Korean version, reduce color value by
-							// half so that composition string can be seen
+				// half so that composition string can be seen
 			{
 				g_ia.compColorTargetConv	= HalfColorValue(g_ia.compColorTargetConv);
 				g_ia.compColorTargetNotConv = HalfColorValue(g_ia.compColorTargetNotConv);
@@ -121,6 +125,7 @@ void aEdit::handleMouse()
 	bool bLeftClick  = userInput->isLeftClick();
 	bool bRightClick = userInput->isRightClick();
 	int32_t nOffset  = mouseX - (globalX() + ENTRY_MARGIN);
+
 	nOffset += nLeftOffset;
 	// find char position of nOffset and set insertion point there
 	int32_t nChar = findChar(nOffset);
@@ -264,7 +269,7 @@ void aEdit::render()
 	aObject::render();
 	std::wstring textToDraw = text;
 	textToDraw += ' '; // have to do this for loc, some fonts are getting
-					   // clipped in millenium
+	// clipped in millenium
 	// draw selection range
 	if (nInsertion1 != nInsertion2)
 	{
@@ -464,13 +469,13 @@ bool aEdit::handleFormattingKeys(int32_t keycode)
 		return true;
 		break;
 	case KEY_RETURN:
-	{
-		if (gos_GetKeyStatus(KEY_RETURN) ==
-			KEY_PRESSED) // don't want this called more than 1 time if held
-			setFocus(false);
-		return true;
-	}
-	break;
+		{
+			if (gos_GetKeyStatus(KEY_RETURN) ==
+				KEY_PRESSED) // don't want this called more than 1 time if held
+				setFocus(false);
+			return true;
+		}
+		break;
 	case KEY_TAB:
 		return true;
 		break;
@@ -550,7 +555,7 @@ bool aEdit::handleFormattingKeys(int32_t keycode)
 		return true;
 	case KEY_DELETE:
 		if (bExtendedKey) // must check this, the period key will get mixed up
-						  // with this
+			// with this
 		{
 			if (!clearSelection())
 				backSpace(nInsertion1 + charLength(nInsertion1));

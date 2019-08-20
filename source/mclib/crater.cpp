@@ -17,7 +17,7 @@
 #endif
 
 #ifndef TERRAIN_H
-#include <terrain.h>
+#include "terrain.h"
 #endif
 
 #ifndef CIDENT_H

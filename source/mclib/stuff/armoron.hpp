@@ -32,7 +32,7 @@ namespace Stuff
 	}                                                                                              \
 	SUPPRESS_WARNING(4127) while (0)
 #endif
-#define _ASSERT(c) ATLASSERT(c)
+#define Verify(c) ATLASSERT(c)
 
 #define Warn(c)                                                                                    \
 	do                                                                                             \

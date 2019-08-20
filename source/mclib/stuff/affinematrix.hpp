@@ -13,6 +13,25 @@
 #include <stuff/scalar.hpp>
 #include <stuff/origin.hpp>
 
+//inline XMMATRIX XM_CALLCONV XMMatrixAffineTransformation(
+//	FXMVECTOR Scaling, FXMVECTOR RotationOrigin, FXMVECTOR RotationQuaternion, GXMVECTOR Translation)
+//{
+//	// M = MScaling * Inverse(MRotationOrigin) * MRotation * MRotationOrigin * MTranslation;
+//
+//	XMMATRIX MScaling        = XMMatrixScalingFromVector(Scaling);
+//	XMVECTOR VRotationOrigin = XMVectorSelect(g_XMSelect1110.v, RotationOrigin,g_XMSelect1110.v);
+//	XMMATRIX MRotation       = XMMatrixRotationQuaternion(RotationQuaternion);
+//	XMVECTOR VTranslation    = XMVectorSelect(g_XMSelect1110.v, Translation,g_XMSelect1110.v);
+//
+//	XMMATRIX M;
+//	M      = MScaling;
+//	M.r[3] = XMVectorSubtract(M.r[3], VRotationOrigin);
+//	M      = XMMatrixMultiply(M, MRotation);
+//	M.r[3] = XMVectorAdd(M.r[3], VRotationOrigin);
+//	M.r[3] = XMVectorAdd(M.r[3], VTranslation);
+//	return M;
+//}
+
 namespace Stuff
 {
 class AffineMatrix4D;

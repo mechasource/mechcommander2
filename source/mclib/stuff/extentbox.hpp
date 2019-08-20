@@ -26,7 +26,7 @@ namespace Stuff
 
 class Vector3D;
 class Point3D;
-class NotationFile;
+//class NotationFile;
 class OBB;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~ ExtentBox ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

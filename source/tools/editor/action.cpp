@@ -11,7 +11,7 @@
 #include "stdinc.h"
 
 //#include <elist.h>
-//#include <terrain.h>
+//#include "terrain.h"
 //#include <terrtxm.h>
 //#include "editorobjects.h"
 //#include "editorobjectmgr.h"

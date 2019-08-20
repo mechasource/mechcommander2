@@ -160,4 +160,6 @@ inline int32_t float2long(float fval)
 	return ((*(int32_t*)&fval) & 0x007fffff) - 0x00400000;
 }
 
+std::variant<long, float>
+
 #include <winsock.h>

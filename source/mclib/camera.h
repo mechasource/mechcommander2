@@ -16,7 +16,7 @@
 #endif
 
 #ifndef TERRAIN_H
-#include <terrain.h>
+#include "terrain.h"
 #endif
 
 #ifndef MATHFUNC_H

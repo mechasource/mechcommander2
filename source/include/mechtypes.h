@@ -58,8 +58,8 @@ extern "C"
 // addition to C standard types
 #ifndef _CONST_TYPES_DEFINED
 #define _CONST_TYPES_DEFINED
-	typedef const signed char cint8_t;
-	typedef const unsigned char cuint8_t;
+	//typedef const signed char const int8_t;
+	//typedef const unsigned char const uint8_t;
 	typedef const unsigned char* pcuint8_t;
 	typedef const signed short cint16_t;
 	typedef const signed short* pcint16_t;

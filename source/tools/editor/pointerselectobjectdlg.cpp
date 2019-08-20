@@ -6,18 +6,15 @@ PointerSelectObjectDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "resource.h"
-
-#include <stdlib.h>
-#include <assert.h>
-#include <estring.h>
-
-#include "PointerSelectObjectDlg.h"
-#include "Objective.h"
-
-#include "EditorInterface.h"
-
-#include "MFCPlatform.hpp"
+//#include "resource.h"
+//#include <stdlib.h>
+//#include <assert.h>
+//#include <estring.h>
+//#include "pointerselectobjectdlg.h"
+//#include "objective.h"
+//#include "editorinterface.h"
+//#include "mfcplatform.hpp"
+//#include "afxpriv.h" // just for definition of WM_KICKIDLE
 
 static cint32_t WM_DOTICK = WM_USER + 1;
 
@@ -59,7 +56,7 @@ BOOL PointerSelectObjectDlg::OnCommand(WPARAM wParam,
 	return inherited::OnCommand(wParam, lParam);
 }
 
-#include "afxpriv.h" // just for definition of WM_KICKIDLE
+
 BOOL PointerSelectObjectDlg::OnWndMsg(
 	uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {

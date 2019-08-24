@@ -24,7 +24,6 @@ class Action;
 class EditorObject;
 class ObjectAppearance;
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -53,7 +52,7 @@ public:
 		virtual bool undo(void);
 		virtual void addBuildingInfo(EditorObject& info);
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 		class OBJ_INFO_PTR_LIST : public EList<EditorObject*, EditorObject*>
 		{
 		public:
@@ -87,5 +86,4 @@ protected:
 	int32_t alignment;
 };
 
-//*************************************************************************************************
 #endif // end of file ( BuildingBrush.h )

@@ -9,10 +9,9 @@
 #ifndef CHATWINDOW_H
 #define CHATWINDOW_H
 
-//#include <mechgui/logisticsscreen.h>
-// #include <mechgui/alistbox.h>
+//#include "mechgui/logisticsscreen.h"
+// #include "mechgui/alistbox.h"
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -25,8 +24,8 @@ public:
 	ChatMessageItem(void);
 	void setPlayerColor(int32_t color);
 	void setTextColor(int32_t color);
-	void setPlayerName(PCSTR name);
-	int32_t setText(PCSTR text); // returns number of lines
+	void setPlayerName(const std::wstring_view& name);
+	int32_t setText(const std::wstring_view& text); // returns number of lines
 	int32_t getLineCount() { return lineCount; }
 
 private:
@@ -83,9 +82,8 @@ private:
 	int32_t curItem;
 	int32_t maxItems;
 
-	static void refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,
+	static void refillListBox(aListBox& listBox, const std::wstring_view&* chatTexts, int32_t* playerIDs,
 		ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount);
 };
 
-//*************************************************************************************************
 #endif // end of file ( ChatWindow.h )

@@ -179,7 +179,7 @@ gosFX::Effect__Specification::IsDataValid(bool fix_data)
 		{
 			m_lifeSpan.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"lifespan\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;

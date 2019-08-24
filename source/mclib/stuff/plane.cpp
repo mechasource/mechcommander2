@@ -8,13 +8,13 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/sphere.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <stuff/obb.hpp>
-#include <stuff/extentbox.hpp>
-#include <stuff/plane.hpp>
+#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/sphere.h"
+#include "stuff/linearmatrix.h"
+#include "stuff/obb.h"
+#include "stuff/extentbox.h"
+#include "stuff/plane.h"
 
 using namespace Stuff;
 
@@ -228,7 +228,7 @@ Plane::Intersects(const ExtentBox& box, float thickness) const
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Plane& plane)
+Spew(const std::wstring_view& group, const Plane& plane)
 {
 	Check_Object(&plane);
 	SPEW((group, "\n\tPlane Normal: +"));

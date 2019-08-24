@@ -8,35 +8,15 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <string.h>
-
-#ifndef ABLGEN_H
 #include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
 #include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
 #include "ablscan.h"
-#endif
-
-#ifndef ABLSYMT_H
 #include "ablsymt.h"
-#endif
-
-#ifndef ABLPARSE_H
 #include "ablparse.h"
-#endif
-
-#ifndef ABLEXEC_H
 #include "ablexec.h"
-#endif
-
-#ifndef ABLDBUG_H
 #include "abldbug.h"
-#endif
+
+namespace mclib::abl {
 
 //***************************************************************************
 
@@ -44,28 +24,28 @@
 // EXTERNALS
 
 extern int32_t level;
-extern PSTR codeSegmentPtr;
+extern const std::wstring_view& codeSegmentPtr;
 extern TokenCodeType codeToken;
 
 extern StackItem* stack;
-extern StackItemPtr tos;
-extern StackItemPtr stackFrameBasePtr;
-extern StackItemPtr StaticDataPtr;
-extern SymTableNodePtr CurRoutineIdPtr;
-extern ABLModulePtr CurModule;
+extern const std::unique_ptr<StackItem>& tos;
+extern const std::unique_ptr<StackItem>& stackFrameBasePtr;
+extern const std::unique_ptr<StackItem>& StaticDataPtr;
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
+extern const std::unique_ptr<ABLModule>& CurModule;
 
-extern TypePtr IntegerTypePtr;
-extern TypePtr CharTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& CharTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
 
-extern DebuggerPtr debugger;
+extern const std::unique_ptr<Debugger>& debugger;
 
 //***************************************************************************
 
 inline void
 promoteOperandsToReal(
-	StackItemPtr operand1Ptr, TypePtr type1Ptr, StackItemPtr operand2Ptr, TypePtr type2Ptr)
+	const std::unique_ptr<StackItem>& operand1Ptr, const std::unique_ptr<Type>& type1Ptr, const std::unique_ptr<StackItem>& operand2Ptr, const std::unique_ptr<Type>& type2Ptr)
 {
 	if (type1Ptr == IntegerTypePtr)
 		operand1Ptr->real = (float)(operand1Ptr->integer);
@@ -75,8 +55,8 @@ promoteOperandsToReal(
 
 //***************************************************************************
 
-TypePtr
-execSubscripts(TypePtr typePtr)
+const std::unique_ptr<Type>&
+execSubscripts(const std::unique_ptr<Type>& ptype)
 {
 	//----------------------------------------
 	// Loop to execute bracketed subscripts...
@@ -90,63 +70,63 @@ execSubscripts(TypePtr typePtr)
 			pop();
 			//-------------------------
 			// Range check the index...
-			if ((subscriptValue < 0) || (subscriptValue >= typePtr->info.array.elementCount))
+			if ((subscriptValue < 0) || (subscriptValue >= ptype->info.array.elementCount))
 				runtimeError(ABL_ERR_RUNTIME_VALUE_OUT_OF_RANGE);
-			tos->address += (subscriptValue * typePtr->info.array.elementTypePtr->size);
+			tos->address += (subscriptValue * ptype->info.array.elementTypePtr->size);
 			if (codeToken == TKN_COMMA)
-				typePtr = typePtr->info.array.elementTypePtr;
+				ptype = ptype->info.array.elementTypePtr;
 		} while (codeToken == TKN_COMMA);
 		getCodeToken();
 		if (codeToken == TKN_LBRACKET)
-			typePtr = typePtr->info.array.elementTypePtr;
+			ptype = ptype->info.array.elementTypePtr;
 	}
-	return (typePtr->info.array.elementTypePtr);
+	return (ptype->info.array.elementTypePtr);
 }
 
 //***************************************************************************
 
-TypePtr
-execConstant(SymTableNodePtr idPtr)
+const std::unique_ptr<Type>&
+execConstant(const std::unique_ptr<SymTableNode>& idPtr)
 {
-	TypePtr typePtr = idPtr->typePtr;
-	if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
+	const std::unique_ptr<Type>& ptype = idPtr->ptype;
+	if ((ptype == IntegerTypePtr) || (ptype->form == FRM_ENUM))
 		pushInteger(idPtr->defn.info.constant.value.integer);
-	else if (typePtr == RealTypePtr)
+	else if (ptype == RealTypePtr)
 		pushReal(idPtr->defn.info.constant.value.real);
-	else if (typePtr == CharTypePtr)
+	else if (ptype == CharTypePtr)
 		pushInteger(idPtr->defn.info.constant.value.character);
-	else if (typePtr->form == FRM_ARRAY)
+	else if (ptype->form == FRM_ARRAY)
 		pushAddress(idPtr->defn.info.constant.value.stringPtr);
 	if (debugger)
-		debugger->traceDataFetch(idPtr, typePtr, tos);
+		debugger->traceDataFetch(idPtr, ptype, tos);
 	getCodeToken();
-	return (typePtr);
+	return (ptype);
 }
 
 //***************************************************************************
 
-TypePtr
-execVariable(SymTableNodePtr idPtr, UseType use)
+const std::unique_ptr<Type>&
+execVariable(const std::unique_ptr<SymTableNode>& idPtr, UseType use)
 {
-	TypePtr typePtr = (TypePtr)(idPtr->typePtr);
+	const std::unique_ptr<Type>& ptype = (const std::unique_ptr<Type>&)(idPtr->ptype);
 	// First, point to the variable's stack item. If the variable's scope
 	// level is less than the current scope level, follow the static links
 	// to the proper stack frame base...
-	StackItemPtr dataPtr = nullptr;
+	const std::unique_ptr<StackItem>& dataPtr = nullptr;
 	StackItem tempStackItem;
 	switch (idPtr->defn.info.data.varType)
 	{
 	case VAR_TYPE_NORMAL:
 	{
-		StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+		const std::unique_ptr<StackFrameHeader>& headerPtr = (const std::unique_ptr<StackFrameHeader>&)stackFrameBasePtr;
 		int32_t delta = level - idPtr->level;
 		while (delta-- > 0)
-			headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
-		dataPtr = (StackItemPtr)headerPtr + idPtr->defn.info.data.offset;
+			headerPtr = (const std::unique_ptr<StackFrameHeader>&)headerPtr->staticLink.address;
+		dataPtr = (const std::unique_ptr<StackItem>&)headerPtr + idPtr->defn.info.data.offset;
 	}
 	break;
 	case VAR_TYPE_ETERNAL:
-		dataPtr = (StackItemPtr)stack + idPtr->defn.info.data.offset;
+		dataPtr = (const std::unique_ptr<StackItem>&)stack + idPtr->defn.info.data.offset;
 		break;
 	case VAR_TYPE_STATIC:
 		//---------------------------------------------------------
@@ -154,12 +134,12 @@ execVariable(SymTableNodePtr idPtr, UseType use)
 		// need to shift to its static data space temporarily...
 		if (idPtr->library && (idPtr->library != CurModule))
 			StaticDataPtr = idPtr->library->getStaticData();
-		dataPtr = (StackItemPtr)StaticDataPtr + idPtr->defn.info.data.offset;
+		dataPtr = (const std::unique_ptr<StackItem>&)StaticDataPtr + idPtr->defn.info.data.offset;
 		if (idPtr->library && (idPtr->library != CurModule))
 			StaticDataPtr = CurModule->getStaticData();
 		break;
 	case VAR_TYPE_REGISTERED:
-		tempStackItem.address = (PSTR)idPtr->defn.info.data.registeredData;
+		tempStackItem.address = (const std::wstring_view&)idPtr->defn.info.data.registeredData;
 		dataPtr = &tempStackItem;
 		break;
 	}
@@ -167,14 +147,14 @@ execVariable(SymTableNodePtr idPtr, UseType use)
 	// If it's a scalar or enumeration reference parameter, that item
 	// points to the actual item...
 	if (idPtr->defn.key == DFN_REFPARAM)
-		if (typePtr->form != FRM_ARRAY) /* && (typePtr->form != FRM_RECORD)*/
-			dataPtr = (StackItemPtr)dataPtr->address;
+		if (ptype->form != FRM_ARRAY) /* && (ptype->form != FRM_RECORD)*/
+			dataPtr = (const std::unique_ptr<StackItem>&)dataPtr->address;
 	ABL_Assert(dataPtr != nullptr, 0, " ABL.execVariable(): dataPtr is nullptr ");
 	//-----------------------------------------------------
 	// Now, push the address of the variable's data area...
-	if ((typePtr->form == FRM_ARRAY) /*|| (typePtr->form == FRM_RECORD)*/)
+	if ((ptype->form == FRM_ARRAY) /*|| (ptype->form == FRM_RECORD)*/)
 	{
-		// pushInteger(typePtr->size);
+		// pushInteger(ptype->size);
 		pushAddress((Address)dataPtr->address);
 	}
 	else if (idPtr->defn.info.data.varType == VAR_TYPE_REGISTERED)
@@ -189,9 +169,9 @@ execVariable(SymTableNodePtr idPtr, UseType use)
 	while ((codeToken == TKN_LBRACKET) /*|| (codeTOken == TKN_PERIOD)*/)
 	{
 		// if (codeToken == TKN_LBRACKET)
-		typePtr = execSubscripts(typePtr);
+		ptype = execSubscripts(ptype);
 		// else if (codeToken == TKN_PERIOD)
-		//	typePtr = execField(typePtr);
+		//	ptype = execField(ptype);
 	}
 	//------------------------------------------------------------
 	// Leave the modified address on the top of the stack if:
@@ -199,14 +179,14 @@ execVariable(SymTableNodePtr idPtr, UseType use)
 	//		b) it reresents a parameter passed by reference;
 	//		c) it's the address of an array or record;
 	// Otherwise, replace the address with the value it points to.
-	if ((use != USE_TARGET) && (use != USE_REFPARAM) && (typePtr->form != FRM_ARRAY))
+	if ((use != USE_TARGET) && (use != USE_REFPARAM) && (ptype->form != FRM_ARRAY))
 	{
-		if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
+		if ((ptype == IntegerTypePtr) || (ptype->form == FRM_ENUM))
 		{
 			tos->integer = *((int32_t*)tos->address);
 		}
-		else if (typePtr == CharTypePtr)
-			tos->byte = *((PSTR)tos->address);
+		else if (ptype == CharTypePtr)
+			tos->byte = *((const std::wstring_view&)tos->address);
 		else
 			tos->real = *((float*)tos->address);
 	}
@@ -214,29 +194,29 @@ execVariable(SymTableNodePtr idPtr, UseType use)
 	{
 		if ((use != USE_TARGET) && (use != USE_REFPARAM))
 		{
-			if (typePtr->form == FRM_ARRAY)
-				debugger->traceDataFetch(idPtr, typePtr, (StackItemPtr)tos->address);
+			if (ptype->form == FRM_ARRAY)
+				debugger->traceDataFetch(idPtr, ptype, (const std::unique_ptr<StackItem>&)tos->address);
 			else
-				debugger->traceDataFetch(idPtr, typePtr, tos);
+				debugger->traceDataFetch(idPtr, ptype, tos);
 		}
 	}
-	return (typePtr);
+	return (ptype);
 }
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 execFactor(void)
 {
-	TypePtr resultTypePtr = nullptr;
+	const std::unique_ptr<Type>& resultTypePtr = nullptr;
 	switch (codeToken)
 	{
 	case TKN_IDENTIFIER:
 	{
-		SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+		const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 		if (idPtr->defn.key == DFN_FUNCTION)
 		{
-			SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
+			const std::unique_ptr<SymTableNode>& thisRoutineIdPtr = CurRoutineIdPtr;
 			resultTypePtr = execRoutineCall(idPtr, false);
 			CurRoutineIdPtr = thisRoutineIdPtr;
 		}
@@ -248,8 +228,8 @@ execFactor(void)
 	break;
 	case TKN_NUMBER:
 	{
-		SymTableNodePtr numberPtr = getCodeSymTableNodePtr();
-		if (numberPtr->typePtr == IntegerTypePtr)
+		const std::unique_ptr<SymTableNode>& numberPtr = getCodeSymTableNodePtr();
+		if (numberPtr->ptype == IntegerTypePtr)
 		{
 			pushInteger(numberPtr->defn.info.constant.value.integer);
 			resultTypePtr = IntegerTypePtr;
@@ -264,7 +244,7 @@ execFactor(void)
 	break;
 	case TKN_STRING:
 	{
-		SymTableNodePtr nodePtr = getCodeSymTableNodePtr();
+		const std::unique_ptr<SymTableNode>& nodePtr = getCodeSymTableNodePtr();
 		int32_t length = strlen(nodePtr->name);
 		if (length > 1)
 		{
@@ -272,7 +252,7 @@ execFactor(void)
 			// Remember, the double quotes are on the back and front of the
 			// string...
 			pushAddress(nodePtr->info);
-			resultTypePtr = nodePtr->typePtr;
+			resultTypePtr = nodePtr->ptype;
 		}
 		else
 		{
@@ -302,14 +282,14 @@ execFactor(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 execTerm(void)
 {
-	StackItemPtr operand1Ptr;
-	StackItemPtr operand2Ptr;
-	TypePtr type2Ptr;
+	const std::unique_ptr<StackItem>& operand1Ptr;
+	const std::unique_ptr<StackItem>& operand2Ptr;
+	const std::unique_ptr<Type>& type2Ptr;
 	TokenCodeType op;
-	TypePtr resultTypePtr = execFactor();
+	const std::unique_ptr<Type>& resultTypePtr = execFactor();
 	//----------------------------------------------
 	// Process the factors separated by operators...
 	while ((codeToken == TKN_STAR) || (codeToken == TKN_FSLASH) || (codeToken == TKN_DIV) || (codeToken == TKN_MOD) || (codeToken == TKN_AND))
@@ -415,7 +395,7 @@ execTerm(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 execSimpleExpression(void)
 {
 	TokenCodeType unaryOp = TKN_PLUS;
@@ -426,7 +406,7 @@ execSimpleExpression(void)
 		unaryOp = codeToken;
 		getCodeToken();
 	}
-	TypePtr resultTypePtr = execTerm();
+	const std::unique_ptr<Type>& resultTypePtr = execTerm();
 	//-------------------------------------------------------
 	// If there was a unary -, negate the top of the stack...
 	if (unaryOp == TKN_MINUS)
@@ -440,9 +420,9 @@ execSimpleExpression(void)
 	{
 		TokenCodeType op = codeToken;
 		getCodeToken();
-		TypePtr type2Ptr = execTerm();
-		StackItemPtr operand1Ptr = tos - 1;
-		StackItemPtr operand2Ptr = tos;
+		const std::unique_ptr<Type>& type2Ptr = execTerm();
+		const std::unique_ptr<StackItem>& operand1Ptr = tos - 1;
+		const std::unique_ptr<StackItem>& operand2Ptr = tos;
 		if (op == TKN_OR)
 		{
 			operand1Ptr->integer = operand1Ptr->integer || operand2Ptr->integer;
@@ -477,17 +457,17 @@ execSimpleExpression(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 execExpression(void)
 {
-	StackItemPtr operand1Ptr;
-	StackItemPtr operand2Ptr;
+	const std::unique_ptr<StackItem>& operand1Ptr;
+	const std::unique_ptr<StackItem>& operand2Ptr;
 	TokenCodeType op;
 	bool result = false;
 	//-----------------------------------
 	// Get the first simple expression...
-	TypePtr resultTypePtr = execSimpleExpression();
-	TypePtr type2Ptr = nullptr;
+	const std::unique_ptr<Type>& resultTypePtr = execSimpleExpression();
+	const std::unique_ptr<Type>& type2Ptr = nullptr;
 	//-----------------------------------------------------------
 	// If there is a relational operator, save it and process the
 	// second simple expression...
@@ -594,3 +574,5 @@ execExpression(void)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

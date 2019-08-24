@@ -17,7 +17,7 @@
 #define MAX_ECMS 50
 #define MAX_CONTACTS_PER_SENSOR 200
 
-typedef enum _ContactStatus
+enum class _ContactStatus
 {
 	CONTACT_NONE,
 	CONTACT_SENSOR_QUALITY_1,
@@ -28,7 +28,7 @@ typedef enum _ContactStatus
 	NUM_CONTACT_STATUSES
 } ContactStatus;
 
-typedef enum
+enum class 
 {
 	CONTACT_CRITERIA_NONE = 0,
 	CONTACT_CRITERIA_ENEMY = 1,
@@ -42,7 +42,7 @@ typedef enum
 	NUM_CONTACT_CRITERIA = 9
 } ContactCriteria;
 
-typedef enum
+enum class 
 {
 	CONTACT_SORT_NONE,
 	CONTACT_SORT_CV,

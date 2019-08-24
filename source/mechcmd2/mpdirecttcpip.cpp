@@ -10,8 +10,8 @@ MPDirectTcpip.cpp			: Implementation of the MPDirectTcpip component.
 #include "MPDirectTcpip.h"
 #include "prefs.h"
 #include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
+#include "userinput.h"
+#include "resource.h"
 
 #include "gamesound.h"
 #define CHECK_BUTTON 200
@@ -77,7 +77,7 @@ MPDirectTcpip::init(FitIniFile* file)
 		for (i = 0; i < 15; i += 1)
 		{
 			pTmp2 = new aStyle7TextListItem;
-			std::wstring tmpStr;
+			const std::wstring_view& tmpStr;
 			tmpStr.Format("Text0");
 			pTmp2->init(&PNfile, tmpStr.Data());
 			ipAddressComboBox.AddItem(pTmp2);
@@ -188,7 +188,7 @@ MPDirectTcpip::update()
 }
 
 int32_t
-aStyle7TextListItem::init(FitIniFile* file, PCSTR blockName)
+aStyle7TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x = 0;
@@ -243,5 +243,4 @@ aStyle7TextListItem::render()
 
 //////////////////////////////////////////////
 
-//*************************************************************************************************
 // end of file ( MPDirectTcpip.cpp )

@@ -10,7 +10,7 @@ component.
 
 #include "stdinc.h"
 #include "optionsscreenwrapper.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "optionsarea.h"
 
 OptionsScreenWrapper::OptionsScreenWrapper()

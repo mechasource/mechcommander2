@@ -163,7 +163,7 @@ typedef struct _DWSharedMem
 		// user (ie "Word")
 	char szModuleFileName[DW_MAX_PATH]; // The result of
 		// GetModuleFileNameA(nullptr)
-	WCHAR wzErrorMessage[DW_MAX_ERROR_CWC]; // Error message to show user.
+	wchar_t wzErrorMessage[DW_MAX_ERROR_CWC]; // Error message to show user.
 
 	char szServer[DW_MAX_SERVERNAME]; // name of server to try by default
 	char szLCIDKeyValue[DW_MAX_PATH]; // name of key value uint32_t containing
@@ -182,12 +182,12 @@ typedef struct _DWSharedMem
 	// HKCU\Software and
 	// HKCU\Software\Policies (for policy)
 
-	WCHAR wzDotDataDlls[DW_MAX_PATH]; // contains the list of DLLs, terminated
+	wchar_t wzDotDataDlls[DW_MAX_PATH]; // contains the list of DLLs, terminated
 	// by '\0' characters, that DW will
 	// collect the .data sections into the
 	// full minidump version
 	// e.g. "mso9.dll\0outllib.dll\0"
-	WCHAR wzAdditionalFile[1024]; // File list, seperated by DW_FILESEP
+	wchar_t wzAdditionalFile[1024]; // File list, seperated by DW_FILESEP
 	// each of these files gets added to the
 	// cab at upload time
 

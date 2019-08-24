@@ -14,8 +14,8 @@
 #define DEBUGGING_H
 
 //#include <stdio.h>
-//#include <gameos.hpp>
-//#include <GameOS\ToolOS.hpp>
+//#include "gameos.hpp"
+//#include "toolos.hpp"
 
 //---------------------------------------------------------------------------
 
@@ -76,7 +76,7 @@ public:
 
 	virtual void destroy(void) {}
 
-	void print(PSTR s);
+	void print(const std::wstring_view& s);
 
 	void render(void);
 
@@ -87,7 +87,7 @@ public:
 			textBuffer[i][0] = nullptr;
 	}
 
-	static void setFont(PSTR fontFile);
+	static void setFont(const std::wstring_view& fontFile);
 };
 
 //***************************************************************************

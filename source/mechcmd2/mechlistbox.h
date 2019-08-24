@@ -11,17 +11,16 @@ MechListBox.h			: Interface for the MechListBox component.
 \*************************************************************************************************/
 
 #ifndef ALISTBOX_H
-#include <mechgui/alistbox.h>
+#include "mechgui/alistbox.h"
 #endif
 
 #ifndef AANIM_H
-#include <mechgui/aanim.h>
+#include "mechgui/aanim.h"
 #endif
 
 class FitIniFile;
 class LogisticsMech;
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -128,5 +127,4 @@ private:
 	bool bOrange;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MechListBox.h )

@@ -12,9 +12,9 @@ component.
 #include "componentlistbox.h"
 #include "logisticsvariant.h"
 #include "logisticscomponent.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "malloc.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "logisticsdata.h"
 #include "mechlabscreen.h"
 #include "gamesound.h"
@@ -41,7 +41,7 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 		heatText.setText(numericText);
 		int32_t sizeX = pComponent->getComponentWidth();
 		int32_t sizeY = pComponent->getComponentHeight();
-		PCSTR pFile = pComponent->getIconFileName();
+		const std::wstring_view& pFile = pComponent->getIconFileName();
 		FullPathFileName path;
 		path.init(artPath, pFile, "tga");
 		icon.setTexture(path);
@@ -284,7 +284,6 @@ ComponentListItem::startDrag()
 {
 	MechLabScreen::instance()->beginDrag(pComponent);
 }
-//*************************************************************************************************
 
 void
 ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_t orThis)
@@ -415,5 +414,4 @@ ComponentIconListBox::addSortedItem(ComponentListItem* pItem)
 	aListBox::AddItem(pItem);
 }
 
-//*************************************************************************************************
 // end of file ( ComponentListBox.cpp )

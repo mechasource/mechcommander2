@@ -9,13 +9,13 @@ component.
 #include "stdinc.h"
 
 #include "LogisticsComponent.h"
-#include <gameos.hpp>
-#include "Cmponent.h"
+#include "gameos.hpp"
+#include "cmponent.h"
 
-#include "..\resource.h"
+#include "resource.h"
 #include "utilities.h"
 
-extern PSTR ComponentFormString[];
+extern const std::wstring_view& ComponentFormString[];
 
 int32_t LogisticsComponent::XICON_FACTOR = 48;
 int32_t LogisticsComponent::YICON_FACTOR = 32;
@@ -24,7 +24,7 @@ float LogisticsComponent::MAX_DAMAGE = 15.f;
 float LogisticsComponent::MAX_RECYCLE = 10.75f;
 float LogisticsComponent::MAX_RANGE = 3.f;
 
-/*PSTR LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] =
+/*const std::wstring_view& LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] =
 {
 	"Simple",
 	"Cockpit",
@@ -74,10 +74,10 @@ LogisticsComponent::~LogisticsComponent()
 }
 
 int32_t
-LogisticsComponent::init(PSTR dataLine)
+LogisticsComponent::init(const std::wstring_view& dataLine)
 {
-	PSTR line = dataLine;
-	PSTR pLine = line;
+	const std::wstring_view& line = dataLine;
+	const std::wstring_view& pLine = line;
 	char pBuffer[1025];
 	ID = (extractInt(pLine));
 	// the type
@@ -158,7 +158,7 @@ LogisticsComponent::init(PSTR dataLine)
 }
 
 int32_t
-LogisticsComponent::extractString(PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength)
+LogisticsComponent::extractString(const std::wstring_view&& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength)
 {
 	*pBuffer = 0;
 	int32_t i;
@@ -182,7 +182,7 @@ LogisticsComponent::extractString(PSTR& pFileLine, PSTR pBuffer, int32_t bufferL
 }
 
 int32_t
-LogisticsComponent::extractInt(PSTR& pFileLine)
+LogisticsComponent::extractInt(const std::wstring_view&& pFileLine)
 {
 	char buffer[1024];
 	int32_t count = extractString(pFileLine, buffer, 1024);
@@ -194,7 +194,7 @@ LogisticsComponent::extractInt(PSTR& pFileLine)
 }
 
 float
-LogisticsComponent::extractFloat(PSTR& pFileLine)
+LogisticsComponent::extractFloat(const std::wstring_view&& pFileLine)
 {
 	char buffer[1024];
 	int32_t count = extractString(pFileLine, buffer, 1024);
@@ -235,5 +235,4 @@ LogisticsComponent::isWeapon()
 	return Type == COMPONENT_FORM_WEAPON || Type == COMPONENT_FORM_WEAPON_ENERGY || Type == COMPONENT_FORM_WEAPON_BALLISTIC || Type == COMPONENT_FORM_WEAPON_MISSILE;
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsComponent.cpp )

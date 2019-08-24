@@ -5,22 +5,21 @@ MPParameterScreen.h			: Interface for the MPParameterScreen component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
 #ifndef MPPARAMETERSCREEN_H
 #define MPPARAMETERSCREEN_H
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/asystem.h>
-//#include <mechgui/alistbox.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/asystem.h"
+//#include "mechgui/alistbox.h"
 //#include "attributemeter.h"
 //#include "simplecamera.h"
-//#include <elist.h>
+//#include "elist.h"
 //#include "multplyr.h"
 //#include "mploadmap.h"
-//#include <mechgui/aanim.h>
+//#include "mechgui/aanim.h"
 
 struct _MC2Player;
 
@@ -32,7 +31,7 @@ public:
 		hasAnimation = false;
 		normalColor = 0xff808080;
 	}
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void render(void);
 
 protected:
@@ -49,7 +48,7 @@ public:
 	aPlayerParams& operator=(const aPlayerParams& src);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-	void init(FitIniFile* file, PCSTR blockName);
+	void init(FitIniFile* file, const std::wstring_view& blockName);
 
 	virtual void destroy(void);
 	virtual void render(void);
@@ -63,7 +62,7 @@ public:
 
 	bool isSelected() { return bHasFocus; }
 
-	int32_t getCommanderID() const { return commanderID; }
+	int32_t getCommanderID() const { return commanderid; }
 
 	void disableReadyButton(void);
 
@@ -85,11 +84,11 @@ protected:
 
 	aStyle2TextListItem templateItem;
 
-	std::wstring insigniaName;
+	const std::wstring_view& insigniaName;
 	aEdit edit;
 
 	bool bHasFocus;
-	int32_t commanderID;
+	int32_t commanderid;
 
 	friend class MPParameterScreen;
 };
@@ -137,11 +136,11 @@ public:
 
 	static void resetCheckBoxes(void);
 
-	void setHostLeftDlg(PCSTR playerName);
+	void setHostLeftDlg(const std::wstring_view& playerName);
 
-	static GUID getGUIDFromFile(PCSTR fileName);
+	static GUID getGUIDFromFile(const std::wstring_view& fileName);
 
-	static void initializeMap(PCSTR fileName);
+	static void initializeMap(const std::wstring_view& fileName);
 
 	static MPParameterScreen* s_instance;
 
@@ -150,9 +149,9 @@ private:
 
 	int32_t chatToSend;
 
-	void setMission(PCSTR fileName, bool resetData = 1);
-	void setMissionClientOnly(PCSTR pNewMapName);
-	void checkVersionClientOnly(PCSTR pNewMapName);
+	void setMission(const std::wstring_view& fileName, bool resetData = 1);
+	void setMissionClientOnly(const std::wstring_view& pNewMapName);
+	void checkVersionClientOnly(const std::wstring_view& pNewMapName);
 
 	aPlayerParams playerParameters[MAX_MC_PLAYERS];
 	int32_t playerCount;
@@ -164,7 +163,7 @@ private:
 	bool bErrorDlg;
 	bool bBootDlg;
 	bool bDisconnectDlg;
-	std::wstring mapName;
+	const std::wstring_view& mapName;
 	int32_t bootPlayerID;
 
 	bool bMapInfoDlg;
@@ -175,5 +174,4 @@ private:
 	bool bWaitingToStart;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MPParameterScreen.h )

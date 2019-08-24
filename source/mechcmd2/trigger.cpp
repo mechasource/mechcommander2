@@ -107,10 +107,10 @@ TriggerAreaManager::isHit(int32_t areaHandle)
 
 //---------------------------------------------------------------------------
 void
-DEBUGWINS_print(PSTR s, int32_t window);
+DEBUGWINS_print(const std::wstring_view& s, int32_t window);
 
 void
-TriggerAreaManager::setHit(MoverPtr mover)
+TriggerAreaManager::setHit(std::unique_ptr<Mover> mover)
 {
 #if 1
 	for (size_t i = 0; i < MAX_TRIGGER_AREAS; i++)

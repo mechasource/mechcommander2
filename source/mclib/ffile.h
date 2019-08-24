@@ -17,8 +17,8 @@
 //---------------------------------------------------------------------------
 // Include files
 
-//#include <dstd.h>
-//#include <file.h>
+//#include "dstd.h"
+//#include "file.h"
 //#include <sys/types.h>
 //#include <sys/stat.h>
 
@@ -36,7 +36,7 @@ typedef struct FILEENTRY
 	size_t size; // LZ Compressed Size
 	size_t realSize; // Uncompressed Size
 	size_t hash; // Hash Compare to weed out stinky files faster then StrCmp
-	// std::wstring name;
+	// const std::wstring_view& name;
 	wchar_t name[UCHAR_MAX];
 } FILEENTRY;
 //#pragma pack()
@@ -57,7 +57,7 @@ class FastFile
 protected:
 	std::vector<FILE_HANDLE> m_files;
 	std::fstream m_stream;
-	std::wstring m_fileName;
+	const std::wstring_view& m_fileName;
 
 	size_t numFiles;
 	size_t length;
@@ -80,13 +80,13 @@ public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
-	HRESULT open(std::wstring& fileName);
-	HRESULT open(PWSTR pszFilename)
+	HRESULT open(const std::wstring_view& fileName);
+	HRESULT open(const std::wstring_view& filename)
 	{
-		std::wstring fileName(pszFilename);
+		const std::wstring_view& fileName(filename);
 		return open(fileName);
 	};
-	HRESULT openFast(uint32_t hash, std::wstring& fileName, ffindex& index);
+	HRESULT openFast(uint32_t hash, const std::wstring_view& fileName, ffindex& index);
 	HRESULT closeFast(ffindex index);
 
 	void close(void) { return m_stream.close(); }

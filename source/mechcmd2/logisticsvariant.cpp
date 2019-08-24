@@ -10,9 +10,9 @@ component.
 
 #include "stdinc.h"
 #include "logisticsvariant.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "logisticsdata.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "cmponent.h"
 #include "logisticserrors.h"
 
@@ -49,7 +49,7 @@ LogisticsChassis::init(CSVFile* file, int32_t chassisID)
 	gosASSERT(result == NO_ERROR);
 	result = file->readLong(12, 5, maxArmor);
 	gosASSERT(result == NO_ERROR);
-	result = file->readLong(8, 2, helpID);
+	result = file->readLong(8, 2, helpid);
 	gosASSERT(result == NO_ERROR);
 	result = file->readLong(6, 2, encyclopediaID);
 	gosASSERT(result == NO_ERROR);
@@ -430,7 +430,7 @@ LogisticsVariant::getWeight(void) const
 	return baseWeight;
 }
 
-const std::wstring&
+const std::wstring_view&
 LogisticsVariant::getMechClass(void) const
 {
 	return chassis->mechClass;
@@ -751,7 +751,7 @@ LogisticsVariant::save(FitIniFile& file, int32_t counter)
 }
 
 void
-LogisticsVariant::setName(PCSTR pName)
+LogisticsVariant::setName(const std::wstring_view& pName)
 {
 	variantName = pName;
 }
@@ -889,7 +889,7 @@ LogisticsVehicle::init(FitIniFile& file)
 	}
 	file.seekBlock("VehicleDynamics");
 	file.readIdFloat("MaxVelocity", speed);
-	PSTR parts[5] = {"Front", "Left", "Right", "Rear", "Turret"};
+	const std::wstring_view& parts[5] = {"Front", "Left", "Right", "Rear", "Turret"};
 	baseArmor = 0;
 	uint8_t pts;
 	int32_t i;
@@ -935,5 +935,4 @@ LogisticsVehicle::getComponents(int32_t& count, LogisticsComponent** array)
 	return count;
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsVariant.cpp )

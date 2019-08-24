@@ -13,7 +13,7 @@
 #ifndef WARRIOR_H
 #define WARRIOR_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "move.h"
 //#include "dmovemgr.h"
 //#include "dwarrior.h"
@@ -72,97 +72,97 @@ class BldgAppearance;
 #define MAX_QUEUED_TACORDERS 2000
 #define MAX_QUEUED_TACORDERS_PER_WARRIOR 16
 
-typedef enum
+enum class OrderType : uint8_t
 {
-	ORDER_CURRENT,
-	ORDER_ISSUED,
-	ORDER_PENDING,
-	NUM_ORDER_TYPES
-} OrderType;
+	current,
+	issued,
+	order_pending,
+	numberoftypes
+};
 
-typedef enum
+enum class SituationType : uint8_t
 {
-	SITUATION_NORMAL,
-	SITUATION_ENGAGE,
-	SITUATION_WITHDRAW,
-	SITUATION_RETREAT,
-	SITUATION_ROUT,
-	SITUATION_BERSERK,
-	SITUATION_SUICIDAL,
-	NUM_SITUATIONS
-} SituationType;
+	normal,
+	engage,
+	withdraw,
+	retreat,
+	rout,
+	berserk,
+	suicidal,
+	numberoftypes
+};
 
-typedef enum
+enum class MechType : uint8_t
 {
-	MECH_TYPE_NONE,
-	MECH_TYPE_HOLLANDER,
-	MECH_TYPE_COMMANDO,
-	MECH_TYPE_COUGAR,
-	MECH_TYPE_FIRESTARTER,
-	MECH_TYPE_PUMA,
-	MECH_TYPE_RAVEN,
-	MECH_TYPE_ULLER,
-	MECH_TYPE_CENTURION,
-	MECH_TYPE_HUNCHBACK,
-	MECH_TYPE_HUNCHBACK_IIC,
-	MECH_TYPE_CATAPULT,
-	MECH_TYPE_JAGERMECH,
-	MECH_TYPE_LOKI,
-	MECH_TYPE_MADCAT,
-	MECH_TYPE_THOR,
-	MECH_TYPE_VULTURE,
-	MECH_TYPE_ATLAS,
-	MECH_TYPE_AWESOME,
-	MECH_TYPE_MASAKARI,
-	NUM_MECH_TYPES
-} MechType;
+	none,
+	hollander,
+	commando,
+	cougar,
+	firestarter,
+	puma,
+	raven,
+	uller,
+	centurion,
+	hunchback,
+	hunchbackiic,
+	catapult,
+	jagermech,
+	loki,
+	madcat,
+	thor,
+	vulture,
+	atlas,
+	awesome,
+	masakari,
+	numberoftypes
+};
 
-typedef enum
+enum class WeaponClass : uint8_t
 {
-	WEAPON_CLASS_NONE,
-	WEAPON_CLASS_BALLISTIC,
-	WEAPON_CLASS_ENERGY,
-	WEAPON_CLASS_MISSILE,
-	NUM_WEAPON_CLASSES
-} WeaponClass;
+	none,
+	ballistic,
+	energy,
+	missile,
+	numberoftypes
+};
 
-typedef enum
+enum class MechWarriorRole : uint8_t
 {
-	MWR_POINT,
-	MWR_WINGMAN,
-	MWR_REARGUARD,
-	MWR_SCOUT,
-	NUM_MECHWARRIOR_ROLES
-} MechWarriorRole;
+	point,
+	wingman,
+	rearguard,
+	scout,
+	numberofroles
+};
 
-typedef enum
+enum class Skill : uint8_t
 {
-	MWS_PILOTING,
-	MWS_SENSORS,
-	MWS_GUNNERY,
-	NUM_SKILLS
-} Skill;
+	piloting,
+	sensors,
+	gunnery,
+	numberofskills
+};
 
-typedef enum
+enum class PersonalityTrait : uint8_t
 {
-	MWP_PROFESSIONALISM,
-	MWP_DECORUM,
-	MWP_AGGRESSIVENESS,
-	MWP_COURAGE,
-	NUM_PERSONALITY_TRAITS
-} PersonalityTrait;
+	professionalism,
+	decorum,
+	aggressiveness,
+	courage,
+	numberoftraits
+};
 
-typedef enum
+enum class WarriorRank : uint8_t
 {
-	WARRIOR_RANK_GREEN,
-	WARRIOR_RANK_REGULAR,
-	WARRIOR_RANK_VETERAN,
-	WARRIOR_RANK_ELITE,
-	WARRIOR_RANK_ACE,
-	NUM_WARRIOR_RANKS
-} WarriorRank;
+	green,
+	regular,
+	veteran,
+	elite,
+	ace,
+	numberofranks
+};
 
-typedef enum
+enum class SpecialtySkill : uint8_t
 {
 	LIGHT_MECH_SPECIALIST,
 	LASER_SPECIALIST,
@@ -188,7 +188,7 @@ typedef enum
 	GAUSS_SPECIALIST,
 	SHARPSHOOTER,
 	NUM_SPECIALTY_SKILLS
-} SpecialtySkill;
+};
 
 enum SpecialtySkillType
 {
@@ -204,7 +204,7 @@ enum SpecialtySkillType
 #define FIRST_ELITE_SPECIALTY 14
 #define FIRST_ACE_SPECIALTY 20
 
-typedef enum
+enum class 
 {
 	CV_CURRENT,
 	CV_FIELDED,
@@ -212,14 +212,14 @@ typedef enum
 	NUM_CV_TYPES
 } CombatValueType;
 
-typedef enum CombatStats
+enum class CombatStats
 {
 	COMBAT_STAT_CAREER,
 	COMBAT_STAT_MISSION,
 	NUM_COMBAT_STATS
 } CombatStats;
 
-typedef enum WarriorStatus
+enum class WarriorStatus
 {
 	WARRIOR_STATUS_NORMAL,
 	WARRIOR_STATUS_WITHDRAWING,
@@ -232,7 +232,7 @@ typedef enum WarriorStatus
 	NUM_WARRIOR_STATUSES
 } WarriorStatus;
 
-typedef enum MoveStateType
+enum class MoveStateType
 {
 	MOVESTATE_STAND,
 	MOVESTATE_FORWARD,
@@ -247,7 +247,7 @@ typedef enum MoveStateType
 
 #define MAX_ALARM_TRIGGERS 15
 
-typedef enum
+enum class 
 {
 	PILOT_ALARM_TARGET_OF_WEAPONFIRE,
 	PILOT_ALARM_HIT_BY_WEAPONFIRE,
@@ -295,7 +295,7 @@ typedef struct
 
 #define MAX_TARGET_PRIORITIES 20
 
-typedef enum
+enum class 
 {
 	TARGET_PRIORITY_NONE,
 	TARGET_PRIORITY_GAMEOBJECT,
@@ -352,17 +352,17 @@ public:
 
 	void remove(int32_t index);
 
-	int32_t calcAction(MechWarriorPtr pilot, GameObjectPtr target);
+	int32_t calcAction(std::unique_ptr<MechWarrior> pilot, GameObjectPtr target);
 
 	int32_t calcTarget(
-		MechWarriorPtr pilot, Stuff::Vector3D location, int32_t contactCriteria, int32_t& action);
+		std::unique_ptr<MechWarrior> pilot, Stuff::Vector3D location, int32_t contactCriteria, int32_t& action);
 };
 
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 
-typedef enum
+enum class 
 {
 	ORDERSTATE_GENERAL,
 	ORDERSTATE_PLAYER,
@@ -380,7 +380,7 @@ typedef AttackerRec* AttackerRecPtr;
 
 #define MAX_GLOBAL_PATH 50
 
-typedef enum
+enum class 
 {
 	MOVEPATH_UNDEFINED,
 	MOVEPATH_SIMPLE,
@@ -550,7 +550,7 @@ typedef struct _AttackOrders
 	char origin;
 	int32_t type; // to kill, to disable, etc.
 	GameObjectWatchID targetWID; // current object targeted for attack, if attacking object
-	Stuff::Vector3D targetPoint; // target location targeted for attack, if attacking point
+	Stuff::Vector3D targetpoint; // target location targeted for attack, if attacking point
 	int32_t aimLocation;
 	bool pursue; // does this attack entail a move order too?
 	int32_t tactic;
@@ -625,7 +625,7 @@ typedef QueuedTacOrder* QueuedTacOrderPtr;
 #define MAXLEN_PILOT_AUDIO 20
 #define MAXLEN_PILOT_BRAIN 40
 
-typedef enum
+enum class 
 {
 	GOAL_ACTION_NONE,
 	GOAL_ACTION_UNDECIDED,
@@ -649,7 +649,7 @@ typedef struct _MechWarriorData
 	int32_t photoIndex;
 
 	char rank;
-	char skills[NUM_SKILLS]; // Current
+	char skills[Skill::numberofskills]; // Current
 	char professionalism;
 	char professionalismModifier;
 	char decorum;
@@ -668,14 +668,14 @@ typedef struct _MechWarriorData
 	int32_t teamId;
 	GameObjectWatchID vehicleWID; // Must point to a Mover
 
-	int32_t numSkillUses[NUM_SKILLS][NUM_COMBAT_STATS];
-	int32_t numSkillSuccesses[NUM_SKILLS][NUM_COMBAT_STATS];
+	int32_t numSkillUses[Skill::numberofskills][NUM_COMBAT_STATS];
+	int32_t numSkillSuccesses[Skill::numberofskills][NUM_COMBAT_STATS];
 	int32_t numMechKills[NUM_VEHICLE_CLASSES][NUM_COMBAT_STATS];
 	int32_t numPhysicalAttacks[NUM_PHYSICAL_ATTACKS][NUM_COMBAT_STATS];
-	float skillRank[NUM_SKILLS];
-	float skillPoints[NUM_SKILLS];
-	char originalSkills[NUM_SKILLS];
-	char startingSkills[NUM_SKILLS];
+	float skillRank[Skill::numberofskills];
+	float skillPoints[Skill::numberofskills];
+	char originalSkills[Skill::numberofskills];
+	char startingSkills[Skill::numberofskills];
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
 	GameObjectWatchID killed[MAX_MOVERS / 3];
 	int32_t numKilled;
@@ -801,15 +801,15 @@ protected:
 
 public:
 	// Combat Stats and History
-	int32_t numSkillUses[NUM_SKILLS][NUM_COMBAT_STATS];
-	int32_t numSkillSuccesses[NUM_SKILLS][NUM_COMBAT_STATS];
+	int32_t numSkillUses[Skill::numberofskills][NUM_COMBAT_STATS];
+	int32_t numSkillSuccesses[Skill::numberofskills][NUM_COMBAT_STATS];
 	int32_t numMechKills[NUM_VEHICLE_CLASSES][NUM_COMBAT_STATS];
 	int32_t numPhysicalAttacks[NUM_PHYSICAL_ATTACKS][NUM_COMBAT_STATS];
-	char skills[NUM_SKILLS]; // Current
-	float skillRank[NUM_SKILLS];
-	float skillPoints[NUM_SKILLS];
-	char originalSkills[NUM_SKILLS]; // How I arrived in MechCommander
-	char startingSkills[NUM_SKILLS]; // How I arrived in the mission
+	char skills[Skill::numberofskills]; // Current
+	float skillRank[Skill::numberofskills];
+	float skillPoints[Skill::numberofskills];
+	char originalSkills[Skill::numberofskills]; // How I arrived in MechCommander
+	char startingSkills[Skill::numberofskills]; // How I arrived in the mission
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
 	GameObjectWatchID killed[MAX_MOVERS / 3];
 	int32_t numKilled;
@@ -828,9 +828,9 @@ protected:
 
 	// ABL Brain and Memory
 	MemoryCell memory[NUM_MEMORY_CELLS];
-	ABLModulePtr brain;
+	const std::unique_ptr<ABLModule>& brain;
 	int32_t warriorBrainHandle;
-	SymTableNodePtr brainAlarmCallback[NUM_PILOT_ALARMS];
+	const std::unique_ptr<SymTableNode>& brainAlarmCallback[NUM_PILOT_ALARMS];
 	char debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
 
 	// Orders
@@ -886,7 +886,7 @@ protected:
 
 	char orderState;
 
-	PathQueueRecPtr movePathRequest;
+	std::unique_ptr<PathQueueRec> movePathRequest;
 
 	uint32_t debugFlags;
 
@@ -894,7 +894,7 @@ protected:
 	bool isPlayingMsg; // Always false unless I'm playing a message!
 	uint8_t oldPilot;
 
-	// MechWarriorPtr next;
+	// std::unique_ptr<MechWarrior> next;
 
 public:
 	static int32_t numWarriors;
@@ -924,7 +924,7 @@ public:
 
 	static void freeWarrior(MechWarrior* warrior);
 
-	static bool warriorInUse(PSTR warriorName);
+	static bool warriorInUse(const std::wstring_view& warriorName);
 
 	void init(bool create);
 
@@ -944,11 +944,11 @@ public:
 
 	void updateMissionSkills(void);
 
-	PSTR getName(void) { return (name); }
+	const std::wstring_view& getName(void) { return (name); }
 
 	int32_t getPhoto(void) { return (photoIndex); }
 
-	PSTR getCallsign(void) { return (callsign); }
+	const std::wstring_view& getCallsign(void) { return (callsign); }
 
 	void setIndex(int32_t i) { index = i; }
 
@@ -972,7 +972,7 @@ public:
 
 	void setSkill(uint32_t skillId, int32_t skillValue)
 	{
-		if (skillId > 0 && skillId < NUM_SKILLS)
+		if (skillId > 0 && skillId < Skill::numberofskills)
 			skills[skillId] = skillValue;
 	}
 
@@ -1212,17 +1212,17 @@ public:
 
 	MoverGroupPtr getGroup(void);
 
-	MoverPtr getPoint(void);
+	std::unique_ptr<Mover> getPoint(void);
 
 	TeamPtr getTeam(void);
 
 	CommanderPtr getCommander(void);
 
-	PSTR getAudioString(void) { return audioStr; }
+	const std::wstring_view& getAudioString(void) { return audioStr; }
 
-	PSTR getVideoString(void) { return videoStr; }
+	const std::wstring_view& getVideoString(void) { return videoStr; }
 
-	PSTR getBrainString(void) { return brainStr; }
+	const std::wstring_view& getBrainString(void) { return brainStr; }
 
 	int32_t getPilotPhoto(void) { return photoIndex; }
 
@@ -1230,7 +1230,7 @@ public:
 
 	bool underHomeCommand(void);
 
-	MoverPtr getVehicle(void);
+	std::unique_ptr<Mover> getVehicle(void);
 
 	GameObjectPtr calcTurretThreats(float threatRange, int32_t minThreat);
 
@@ -1252,9 +1252,9 @@ public:
 
 	int32_t setBrain(int32_t brainHandle);
 
-	void setBrainName(PSTR brainName);
+	void setBrainName(const std::wstring_view& brainName);
 
-	ABLModulePtr getBrain(void) { return (brain); }
+	const std::unique_ptr<ABLModule>& getBrain(void) { return (brain); }
 
 	int32_t runBrain(void);
 
@@ -1369,9 +1369,9 @@ public:
 
 	bool getMoveRun(void) { return (moveOrders.run); }
 
-	void setMovePathRequest(PathQueueRecPtr rec) { movePathRequest = rec; }
+	void setMovePathRequest(std::unique_ptr<PathQueueRec> rec) { movePathRequest = rec; }
 
-	PathQueueRecPtr getMovePathRequest(void) { return (movePathRequest); }
+	std::unique_ptr<PathQueueRec> getMovePathRequest(void) { return (movePathRequest); }
 
 	void pausePath(void);
 
@@ -1433,9 +1433,9 @@ public:
 
 	int32_t getMovePathGlobalStep(void) { return (moveOrders.path[0]->globalStep); }
 
-	void requestMovePath(int32_t selectionIndex, uint32_t moveParams, int32_t source);
+	void requestMovePath(int32_t selectionindex, uint32_t moveparams, int32_t source);
 
-	int32_t calcMovePath(int32_t selectionIndex, uint32_t moveParams = MOVEPARAM_NONE);
+	int32_t calcMovePath(int32_t selectionindex, uint32_t moveparams = MOVEPARAM_NONE);
 
 	int32_t calcMoveSpeedState(void)
 	{
@@ -1488,9 +1488,9 @@ public:
 
 	int32_t getAttackAimLocation(void) { return (attackOrders.aimLocation); }
 
-	void setAttackTargetPoint(Stuff::Vector3D location) { attackOrders.targetPoint = location; }
+	void setAttackTargetPoint(Stuff::Vector3D location) { attackOrders.targetpoint = location; }
 
-	Stuff::Vector3D getAttackTargetPoint(void) { return (attackOrders.targetPoint); }
+	Stuff::Vector3D getAttackTargetPoint(void) { return (attackOrders.targetpoint); }
 
 	float getAttackTargetTime(void) { return (attackOrders.targetTime); }
 
@@ -1559,9 +1559,9 @@ public:
 	int32_t executeTacticalOrder(TacticalOrderPtr order = nullptr);
 
 	int32_t calcWeaponsStatus(
-		GameObjectPtr target, int32_t* weaponList, Stuff::Vector3D* targetPoint = nullptr);
+		GameObjectPtr target, int32_t* weaponList, _In_ DirectX::XMFLOAT3& targetpoint);
 
-	void printWeaponsStatus(PSTR s);
+	void printWeaponsStatus(const std::wstring_view& s);
 
 	int32_t combatDecisionTree(void);
 
@@ -1613,7 +1613,7 @@ public:
 
 	bool getDebugFlag(uint32_t flag);
 
-	void debugPrint(PSTR s, bool debugMode = false);
+	void debugPrint(const std::wstring_view& s, bool debugMode = false);
 
 	void debugOrders(void);
 
@@ -1667,20 +1667,20 @@ public:
 	int32_t orderStop(bool unitOrder, bool setTacOrder);
 
 	int32_t orderMoveToPoint(bool unitOrder, bool setTacOrder, int32_t origin,
-		Stuff::Vector3D location, int32_t selectionIndex = -1,
+		Stuff::Vector3D location, int32_t selectionindex = -1,
 		uint32_t params = TACORDER_PARAM_NONE);
 
 	int32_t orderFormation(bool unitOrder, bool setTacOrder, int32_t origin);
 
 	int32_t orderMoveToObject(bool unitOrder, bool setTacOrder, int32_t origin,
-		GameObjectPtr target, int32_t fromArea, int32_t selectionIndex = -1,
+		GameObjectPtr target, int32_t fromArea, int32_t selectionindex = -1,
 		uint32_t params = TACORDER_PARAM_FACE_OBJECT);
 
 	int32_t orderJumpToPoint(bool unitOrder, bool setTacOrder, int32_t origin,
-		Stuff::Vector3D location, int32_t selectionIndex = -1);
+		Stuff::Vector3D location, int32_t selectionindex = -1);
 
 	int32_t orderJumpToObject(bool unitOrder, bool setTacOrder, int32_t origin,
-		GameObjectPtr target, int32_t selectionIndex = -1);
+		GameObjectPtr target, int32_t selectionindex = -1);
 
 	int32_t orderTraversePath(bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath,
 		uint32_t params = TACORDER_PARAM_NONE);
@@ -1777,15 +1777,15 @@ public:
 
 	int32_t closeStatusWindow(void);
 
-	int32_t missionLog(FilePtr file, int32_t unitLevel);
+	int32_t missionLog(std::unique_ptr<File> file, int32_t unitLevel);
 
 	void calcRank(void);
 
 	bool isCloseToFirstTacOrder(Stuff::Vector3D& pos);
 
-	BldgAppearance* getWayPointMarker(const Stuff::Vector3D& pos, PSTR name);
+	BldgAppearance* getWayPointMarker(const Stuff::Vector3D& pos, const std::wstring_view& name);
 
-	void setDebugString(int32_t stringNum, PSTR s)
+	void setDebugString(int32_t stringNum, const std::wstring_view& s)
 	{
 		if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
 			if (s == nullptr)
@@ -1794,7 +1794,7 @@ public:
 				strncpy(debugStrings[stringNum], s, MAXLEN_PILOT_DEBUG_STRING - 1);
 	}
 
-	PSTR getDebugString(int32_t stringNum)
+	const std::wstring_view& getDebugString(int32_t stringNum)
 	{
 		if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
 			return (debugStrings[stringNum]);

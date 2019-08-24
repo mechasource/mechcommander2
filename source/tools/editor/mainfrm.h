@@ -35,7 +35,7 @@ public:
 		uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 
 protected:
-	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam);
 	//}}AFX_VIRTUAL
 
 	// Implementation

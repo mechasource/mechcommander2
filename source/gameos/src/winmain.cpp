@@ -34,9 +34,9 @@
 
 #include "stdinc.h"
 
-#include <texture_manager.hpp>
-#include <platform.hpp>
-#include <windows.hpp>
+#include "texture_manager.hpp"
+#include "platform.hpp"
+#include "windows.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module
@@ -117,9 +117,9 @@ bool RunFullScreen;
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
 
-MECH_IMPEXP void _stdcall RunFromOtherApp(HINSTANCE hInstance, HWND hWnd, PSTR pCmdLine);
+MECH_IMPEXP void _stdcall RunFromOtherApp(HINSTANCE hinstance, HWND hwnd, PSTR commandline);
 MECH_IMPEXP int32_t _stdcall RunFromWinMain(
-	HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int32_t nCmdShow);
+	HINSTANCE hinstance, HINSTANCE hPrevInstance, PSTR commandline, int32_t nCmdShow);
 MECH_IMPEXP void __stdcall RestartGameOS(void);
 MECH_IMPEXP void __stdcall gos_UpdateDisplay(bool Everything);
 MECH_IMPEXP uint32_t __stdcall RunGameOSLogic(void);
@@ -134,8 +134,8 @@ MECH_IMPEXP uint8_t __stdcall gos_RunMainLoop(void(__stdcall* DoGameLogic)(void)
 // global implemented functions not listed in headers
 
 // local functions
-static int32_t __stdcall CheckOption(PCSTR substr);
-static void __stdcall InitializeGOS(HINSTANCE hInstance, PSTR pCmdLine);
+static int32_t __stdcall CheckOption(PSTR substr);
+static void __stdcall InitializeGOS(HINSTANCE hinstance, PSTR commandline);
 static void __stdcall ProfileRenderStart(void);
 static int64_t __stdcall ProfileRenderEnd(int64_t);
 static uint32_t __stdcall InternalRunGameOSLogic(void(__stdcall* DoGameLogic)(void));

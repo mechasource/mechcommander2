@@ -247,5 +247,4 @@ BuildingBrush::rotateBrush(int32_t direction)
 	}
 }
 
-//*************************************************************************************************
 // end of file ( BuildingBrush.cpp )

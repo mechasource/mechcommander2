@@ -4,16 +4,16 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <stuff/polar.hpp>
-#include <mlr/mlrlight.hpp>
-#include <mlr/mlrlightmap.hpp>
-#include <mlr/mlreffect.hpp>
-#include <mlr/mlrprimitivebase.hpp>
-#include <mlr/mlr_i_c_pmesh.hpp>
-#include <mlr/mlrclipper.hpp>
+#include "gameos.hpp"
+#include "stuff/polar.h"
+#include "mlr/mlrlight.h"
+#include "mlr/mlrlightmap.h"
+#include "mlr/mlreffect.h"
+#include "mlr/mlrprimitivebase.h"
+#include "mlr/mlr_i_c_pmesh.h"
+#include "mlr/mlrclipper.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -630,3 +630,5 @@ void MLRClipper::Clear(uint32_t /*flags*/)
 {
 	// Check_Object(this);
 }
+
+} // namespace MidLevelRenderer

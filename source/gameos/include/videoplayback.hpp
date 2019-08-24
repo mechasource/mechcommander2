@@ -54,7 +54,7 @@ public:
 	void Restore(void);
 	void Release(void);
 	void SetLocation(uint32_t, uint32_t);
-	void OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
+	void OpenMMStream(PSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
 } gos_Video;
 
 void __stdcall VideoManagerInstall(void);
@@ -65,5 +65,5 @@ void __stdcall VideoManagerRestore(void);
 void __stdcall VideoManagerUninstall(void);
 void __stdcall VideoManagerUpdate(void);
 void __stdcall VideoManagerFF(double sec);
-void __stdcall OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
+void __stdcall OpenMMStream(PSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
 	IBasicAudio** ppBasicAudio);

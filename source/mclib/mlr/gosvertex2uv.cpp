@@ -6,7 +6,7 @@
 
 #include "mlr/gosvertex2uv.hpp"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //##########################    GOSVertex2UV   ################################
@@ -25,3 +25,5 @@ GOSVertex2UV::GOSVertex2UV()
 	v2 = 0.0f;
 	frgb = 0xffffffff;
 }
+
+} // namespace MidLevelRenderer

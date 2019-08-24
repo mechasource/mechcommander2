@@ -15,6 +15,8 @@
 //#include "ablgen.h"
 //#include "ablerr.h"
 
+namespace mclib::abl {
+
 //***************************************************************************
 
 //#define MIN_INTEGER -2147483648
@@ -32,7 +34,7 @@ enum __ablscan_const : uint32_t
 //------------
 // TOKEN CODES
 
-typedef enum TokenCodeType : uint32_t
+enum class TokenCodeType : uint8_t
 {
 	TKN_NONE,
 	TKN_IDENTIFIER,
@@ -111,20 +113,20 @@ typedef enum TokenCodeType : uint32_t
 	TKN_STATEMENT_MARKER,
 	TKN_ADDRESS_MARKER,
 	NUM_TOKENS
-} TokenCodeType;
+};
 
-typedef enum CharCodeType : uint32_t
+enum class CharCodeType : uint8_t
 {
 	CHR_LETTER,
 	CHR_DIGIT,
 	CHR_DQUOTE,
 	CHR_SPECIAL,
 	CHR_EOF
-} CharCodeType;
+};
 
 typedef struct ReservedWord
 {
-	PSTR string;
+	const std::wstring_view& string;
 	TokenCodeType tokenCode;
 } ReservedWord;
 
@@ -133,14 +135,14 @@ typedef struct ReservedWord
 //------------------
 // LITERAL structure
 
-typedef enum LiteralType : uint32_t
+enum class LiteralType : uint8_t
 {
 	LIT_INTEGER,
 	LIT_REAL,
 	LIT_STRING
-} LiteralType;
+};
 
-typedef struct Literal
+struct Literal
 {
 	LiteralType type;
 	struct
@@ -149,17 +151,17 @@ typedef struct Literal
 		float real;
 		char string[MAXLEN_TOKENSTRING];
 	} value;
-} Literal;
+};
 
 //---------------------------------------------------------------------------
 
-typedef struct CaseItem
+struct CaseItem
 {
 	int32_t labelValue;
-	PSTR branchLocation;
-	struct CaseItem* next;
-} CaseItem;
-typedef CaseItem* CaseItemPtr;
+	std::wstring_view branchLocation;
+	// struct CaseItem* next;
+};
+// typedef CaseItem* const std::unique_ptr<CaseItem>&;
 
 //***************************************************************************
 
@@ -167,11 +169,11 @@ class ABLFile
 {
 
 public:
-	PSTR fileName;
+	std::wstring_view fileName;
 	PVOID file;
 
-	static int32_t(__stdcall* createCB)(PVOID* file, PSTR fName);
-	static int32_t(__stdcall* openCB)(PVOID* file, PSTR fName);
+	static int32_t(__stdcall* createCB)(PVOID* file, const std::wstring_view& filename);
+	static int32_t(__stdcall* openCB)(PVOID* file, const std::wstring_view& filename);
 	static int32_t(__stdcall* closeCB)(PVOID* file);
 	static bool(__stdcall* eofCB)(PVOID file);
 	static int32_t(__stdcall* readCB)(PVOID file, puint8_t buffer, int32_t length);
@@ -181,7 +183,7 @@ public:
 	static int32_t(__stdcall* writeCB)(PVOID file, puint8_t buffer, int32_t length);
 	static int32_t(__stdcall* writeByteCB)(PVOID file, uint8_t byte);
 	static int32_t(__stdcall* writeLongCB)(PVOID file, int32_t value);
-	static int32_t(__stdcall* writeStringCB)(PVOID file, PSTR buffer);
+	static int32_t(__stdcall* writeStringCB)(PVOID file, const std::wstring_view& buffer);
 
 public:
 	PVOID operator new(size_t ourSize);
@@ -199,8 +201,8 @@ public:
 
 	PVOID get(void) { return (file); }
 
-	int32_t create(PSTR fileName);
-	int32_t open(PSTR fileName);
+	int32_t create(const std::wstring_view& fileName);
+	int32_t open(const std::wstring_view& fileName);
 	int32_t close(void);
 	bool eof(void);
 	int32_t read(puint8_t buffer, int32_t length);
@@ -210,7 +212,7 @@ public:
 	int32_t write(puint8_t buffer, int32_t length);
 	int32_t writeByte(uint8_t val);
 	int32_t writeLong(int32_t val);
-	int32_t writeString(PSTR buffer);
+	int32_t writeString(const std::wstring_view& buffer);
 };
 
 //***************************************************************************
@@ -220,7 +222,7 @@ public:
 
 inline CharCodeType __stdcall calcCharCode(int32_t ch);
 int32_t __stdcall isReservedWord(void);
-void __stdcall initScanner(PSTR fileName);
+void __stdcall initScanner(const std::wstring_view& fileName);
 void __stdcall quitScanner(void);
 void __stdcall skipComment(void);
 void __stdcall skipBlanks(void);
@@ -237,8 +239,8 @@ bool __stdcall tokenIn(TokenCodeType* tokenList);
 void __stdcall synchronize(
 	TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3);
 bool __stdcall getSourceLine(void);
-void __stdcall printLine(PSTR line);
-void __stdcall initPageHeader(PSTR fileName);
+void __stdcall printLine(const std::wstring_view& line);
+void __stdcall initPageHeader(const std::wstring_view& fileName);
 void __stdcall printPageHeader(void);
 
 //----------
@@ -253,12 +255,14 @@ extern void(__stdcall* ABLSystemFreeCallback)(PVOID memBlock);
 extern void(__stdcall* ABLStackFreeCallback)(PVOID memBlock);
 extern void(__stdcall* ABLCodeFreeCallback)(PVOID memBlock);
 extern void(__stdcall* ABLSymbolFreeCallback)(PVOID memBlock);
-extern void(__stdcall* ABLDebugPrintCallback)(PSTR s);
+extern void(__stdcall* ABLDebugPrintCallback)(const std::wstring_view& s);
 extern int32_t(__stdcall* ABLRandomCallback)(int32_t range);
 extern void(__stdcall* ABLSeedRandomCallback)(size_t range);
 extern size_t(__stdcall* ABLGetTimeCallback)(void);
-extern void(__stdcall* ABLFatalCallback)(int32_t code, PSTR s);
+extern void(__stdcall* ABLFatalCallback)(int32_t code, const std::wstring_view& s);
 
 //***************************************************************************
+
+} // namespace mclib::abl
 
 #endif

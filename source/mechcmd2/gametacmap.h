@@ -10,9 +10,8 @@ gameTacMap.h			: Interface for the gameTacMap component.
 #ifndef GAMETACMAP_H
 #define GAMETACMAP_H
 
-#include <tacmap.h>
+#include "tacmap.h"
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -75,5 +74,4 @@ protected:
 	float objectiveFlashTime;
 };
 
-//*************************************************************************************************
 #endif // end of file ( gameTacMap.h )

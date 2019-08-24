@@ -108,5 +108,5 @@ void
 MusicManagerUpdate(void);
 
 void
-OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
+OpenMMStream(PSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
 	IBasicAudio** ppBasicAudio);

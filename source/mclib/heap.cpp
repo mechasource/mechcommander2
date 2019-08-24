@@ -25,7 +25,7 @@
 #include "file.h"
 #endif
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 // Static Globals
@@ -70,7 +70,7 @@ void
 InitStackWalk(STACKFRAME* sf, CONTEXT* Context);
 int32_t
 WalkStack(STACKFRAME* sf);
-PSTR
+const std::wstring_view&
 DecodeAddress(uint32_t Address, bool brief);
 
 //---------------------------------------------------------------------------
@@ -257,11 +257,11 @@ UserHeap::UserHeap(void) :
 
 //---------------------------------------------------------------------------
 int32_t
-UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
+UserHeap::init(uint32_t memSize, const std::wstring_view& heapId, bool useGOS)
 {
 	if (heapId)
 	{
-		heapName = (PSTR)::gos_Malloc(strlen(heapId) + 1);
+		heapName = (const std::wstring_view&)::gos_Malloc(strlen(heapId) + 1);
 		strcpy(heapName, heapId);
 	}
 	else
@@ -378,14 +378,14 @@ UserHeap::dumpRecordLog(void)
 				sprintf(msg, "Allocated block at DS:%08X, size = %u\n", recordArray[i].ptr,
 					recordArray[i].size);
 				log.writeLine(msg);
-				PSTR addressName = DecodeAddress(recordArray[i].stack[0], false);
+				const std::wstring_view& addressName = DecodeAddress(recordArray[i].stack[0], false);
 				sprintf(msg, "Call stack: %08X : %s", recordArray[i].stack[0], addressName);
 				log.writeLine(msg);
 				for (size_t j = 1; j < 12; j++)
 				{
 					if (recordArray[i].stack[j] == 0x0)
 						break;
-					PSTR addressName = DecodeAddress(recordArray[i].stack[j], false);
+					const std::wstring_view& addressName = DecodeAddress(recordArray[i].stack[j], false);
 					sprintf(msg, "            %08X : %s", recordArray[i].stack[j], addressName);
 					log.writeLine(msg);
 				}
@@ -1581,10 +1581,10 @@ HeapList::update(void)
 
 //---------------------------------------------------------------------------
 uint32_t
-textToLong(PSTR num)
+textToLong(const std::wstring_view& num)
 {
 	int32_t result = 0;
-	PSTR hexOffset = num;
+	const std::wstring_view& hexOffset = num;
 	hexOffset += 2;
 	int32_t numDigits = strlen(hexOffset) - 1;
 	int32_t power = 0;
@@ -1612,7 +1612,7 @@ textToLong(PSTR num)
 
 //-----------------------------------------------------------
 int32_t
-longToText(PSTR result, int32_t num, uint32_t bufLen)
+longToText(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%08X", num);
@@ -1626,7 +1626,7 @@ longToText(PSTR result, int32_t num, uint32_t bufLen)
 
 //--------------------------------------------------------------------------
 int32_t
-getStringFromMap(MechFile& mapFile, uint32_t addr, PSTR result)
+getStringFromMap(MechFile& mapFile, uint32_t addr, const std::wstring_view& result)
 {
 	//----------------------------------------
 	// Convert function address to raw offset
@@ -1656,7 +1656,7 @@ getStringFromMap(MechFile& mapFile, uint32_t addr, PSTR result)
 	// We've found the first code entry.  Now, scan until
 	// the current address is greater than the address asked for.
 	// The previous function name is the function in question.
-	PSTR currentAddress = &(mapFileLine[6]);
+	const std::wstring_view& currentAddress = &(mapFileLine[6]);
 	char previousAddress[511];
 	strncpy(previousAddress, &(mapFileLine[6]), 510);
 	while (strstr(mapFileLine, "0001:") != nullptr)

@@ -9,7 +9,7 @@ PointerSelectObjectDlg component.
 //#include "resource.h"
 //#include <stdlib.h>
 //#include <assert.h>
-//#include <estring.h>
+//#include "estring.h"
 //#include "pointerselectobjectdlg.h"
 //#include "objective.h"
 //#include "editorinterface.h"
@@ -52,20 +52,20 @@ PointerSelectObjectDlg::OnNcHitTest(CPoint point)
 }
 
 BOOL
-PointerSelectObjectDlg::OnCommand(WPARAM wParam,
-	LPARAM lParam) // called by child controls to inform of an event
+PointerSelectObjectDlg::OnCommand(WPARAM wparam,
+	LPARAM lparam) // called by child controls to inform of an event
 {
-	//	HWND hWndCtrl = (HWND)lParam;
+	//	HWND hWndCtrl = (HWND)lparam;
 	//	if (hWndCtrl == m_pButton->m_hWnd)
 	//	{
 	//		EndDialog(0);
 	//	}
-	return inherited::OnCommand(wParam, lParam);
+	return inherited::OnCommand(wparam, lparam);
 }
 
 BOOL
 PointerSelectObjectDlg::OnWndMsg(
-	uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+	uint32_t message, WPARAM wparam, LPARAM lparam, LRESULT* pResult)
 {
 	switch (message)
 	{
@@ -102,7 +102,7 @@ PointerSelectObjectDlg::OnWndMsg(
 	break;
 	case WM_TIMER:
 	{
-		::KillTimer(GetSafeHwnd(), wParam);
+		::KillTimer(GetSafeHwnd(), wparam);
 		EditorInterface::instance()->SafeRunGameOSLogic();
 		m_bTimerIsReset = true;
 		// m_pButton->Invalidate(FALSE);
@@ -115,20 +115,20 @@ PointerSelectObjectDlg::OnWndMsg(
 	}
 	break;
 	}
-	BOOL ret = CDialog::OnWndMsg(message, wParam, lParam, pResult);
+	BOOL ret = CDialog::OnWndMsg(message, wparam, lparam, pResult);
 	if (((WM_MOUSEFIRST <= message) && (WM_MOUSELAST >= message)))
 	{
 		POINT pt;
-		pt.x = LOWORD(lParam);
-		pt.y = HIWORD(lParam);
+		pt.x = LOWORD(lparam);
+		pt.y = HIWORD(lparam);
 		ClientToScreen(&pt);
 		EditorInterface::instance()->ScreenToClient(&pt);
-		lParam = MAKELPARAM(pt.x, pt.y);
-		EditorInterface::instance()->SendMessage(message, wParam, lParam);
+		lparam = MAKELPARAM(pt.x, pt.y);
+		EditorInterface::instance()->SendMessage(message, wparam, lparam);
 	}
 	else if ((WM_KEYDOWN == message) || (WM_KEYUP == message))
 	{
-		switch ((int32_t)wParam)
+		switch ((int32_t)wparam)
 		{
 		case VK_RETURN:
 		case VK_SPACE:
@@ -142,7 +142,7 @@ PointerSelectObjectDlg::OnWndMsg(
 		case VK_DOWN:
 		case VK_ADD:
 		case VK_SUBTRACT:
-			EditorInterface::instance()->SendMessage(message, wParam, lParam);
+			EditorInterface::instance()->SendMessage(message, wparam, lparam);
 			break;
 		}
 	}
@@ -171,5 +171,4 @@ PointerSelectObjectDlg::OnWndMsg(
 
 PointerSelectObjectDlg::~PointerSelectObjectDlg() {}
 
-//*************************************************************************************************
 // end of file ( PointerSelectObjectDlg.cpp )

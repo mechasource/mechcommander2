@@ -10,14 +10,13 @@ MPPrefs.h			: Interface for the MPPrefs component.
 #ifndef MPPREFS_H
 #define MPPREFS_H
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/alistbox.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/alistbox.h"
 //#include "simplecamera.h"
 
 class FitIniFile;
 struct _MC2Player;
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -65,14 +64,13 @@ private:
 class aBmpListItem : public aListItem
 {
 public:
-	int32_t setBmp(PCSTR pFileName);
-	PCSTR getBmp() { return fileName; }
+	int32_t setBmp(const std::wstring_view& pFileName);
+	const std::wstring_view& getBmp() { return fileName; }
 
 private:
 	aObject bmp;
 
-	std::wstring fileName;
+	const std::wstring_view& fileName;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MPPrefs.h )

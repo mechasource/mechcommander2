@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrlookuplight.hpp>
+#include "mlr/mlrlookuplight.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //#########################    MLRLookUpLight ################################
@@ -84,7 +84,7 @@ MLRLookUpLight::MLRLookUpLight(Stuff::Page* page) :
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	maps = nullptr;
-	PCSTR data;
+	const std::wstring_view& data;
 	mapOrigin.x = 0.0f;
 	mapOrigin.y = 0.0f;
 	mapOrigin.z = 0.0f;
@@ -172,7 +172,7 @@ MLRLookUpLight::Write(Stuff::Page* page)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, PCSTR name)
+MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, const std::wstring_view& name)
 {
 	// Check_Object(this);
 	if (maps != nullptr)
@@ -296,3 +296,5 @@ MLRLookUpLight::LightVertex(const MLRVertexData& vertexData)
 	}
 #endif // COLOR_AS_DWORD
 }
+
+} // namespace MidLevelRenderer

@@ -13,7 +13,7 @@
 
 //***************************************************************************
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "dmultplyr.h"
 //#include "dmover.h"
 //#include "dwarrior.h"
@@ -24,8 +24,8 @@
 //#include <dunit.h>
 //#include "unitdesg.h"
 //#include "dgroup.h"
-//#include <ficommonnetwork.h>
-//#include <sessionmanager.h>
+//#include "ficommonnetwork.h"
+//#include "sessionmanager.h"
 //#include <windows.h>
 //#include <stdio.h>
 
@@ -85,14 +85,14 @@ public:
 #define MPLAYER_ERR_BAD_VERSION -7
 #define MPLAYER_ERR_SESSION_FULL -8
 
-typedef enum
+enum class 
 {
 	BASECOLOR_PREFERENCE,
 	BASECOLOR_SELF,
 	BASECOLOR_TEAM
 } BaseColorType;
 
-typedef enum
+enum class 
 {
 	MULTIPLAYER_MODE_NONE,
 	MULTIPLAYER_MODE_BROWSER,
@@ -103,7 +103,7 @@ typedef enum
 	MULTIPLAYER_MODE_RESULTS
 } MultiplayerMode;
 
-typedef enum
+enum class 
 {
 	MISSION_TYPE_ELIMINATION,
 	MISSION_TYPE_KING_OF_THE_HILL,
@@ -115,12 +115,12 @@ typedef enum
 	NUM_MISSION_TYPES
 } MissionType;
 
-typedef enum
+enum class 
 {
 	GO_SESSION_SCREEN = 1
 };
 
-typedef enum
+enum class 
 {
 	MCMSG_GENERIC,
 	MCMSG_CHAT,
@@ -211,7 +211,7 @@ typedef struct _TeamInfo
 typedef struct _MC2PlayerSlot
 {
 	NETPLAYER player;
-	char commanderID;
+	char commanderid;
 	char name[MAXLEN_PLAYER_NAME];
 } MC2PlayerSlot;
 
@@ -219,7 +219,7 @@ typedef struct _MC2Player
 {
 	bool checkedIn;
 	NETPLAYER player;
-	char commanderID;
+	char commanderid;
 	char dropZone;
 	char name[MAXLEN_PLAYER_NAME];
 	char ipAddress[16];
@@ -280,7 +280,7 @@ typedef struct _CompressedMech
 {
 	bool lastMech;
 	int32_t objNumber;
-	char commanderID;
+	char commanderid;
 	uint32_t baseColor;
 	uint32_t highlightColor1;
 	uint32_t highlightColor2;
@@ -353,7 +353,7 @@ public:
 
 	void buildPilotKillStat(int32_t moverIndex, int32_t vehicleClass);
 
-	void buildScore(int32_t commanderID, int32_t score);
+	void buildScore(int32_t commanderid, int32_t score);
 
 	void buildKillLoss(int32_t killerCID, int32_t loserCID);
 
@@ -563,7 +563,7 @@ class MCMSG_PlayerCID
 
 public:
 	uint8_t type;
-	char commanderID;
+	char commanderid;
 	uint8_t subType;
 
 public:
@@ -572,7 +572,7 @@ public:
 	void init(void)
 	{
 		type = MCMSG_PLAYER_CID;
-		commanderID = -1;
+		commanderid = -1;
 		subType = 0;
 	}
 };
@@ -645,7 +645,7 @@ class MCMSG_PlayerInfo
 
 public:
 	uint8_t type;
-	char commanderID;
+	char commanderid;
 
 public:
 	MCMSG_PlayerInfo(void) { init(void); }
@@ -653,7 +653,7 @@ public:
 	void init(void)
 	{
 		type = MCMSG_PLAYER_INFO;
-		commanderID = -1;
+		commanderid = -1;
 	}
 };
 
@@ -693,7 +693,7 @@ class MCMSG_PlayerCheckIn
 
 public:
 	uint8_t type;
-	char commanderID;
+	char commanderid;
 
 public:
 	MCMSG_PlayerCheckIn(void) { init(void); }
@@ -701,7 +701,7 @@ public:
 	void init(void)
 	{
 		type = MCMSG_PLAYER_CHECK_IN;
-		commanderID = -1;
+		commanderid = -1;
 	}
 };
 
@@ -734,7 +734,7 @@ class MCMSG_PlayerInsignia
 
 public:
 	uint8_t type;
-	char commanderID;
+	char commanderid;
 	char fileName[64];
 	int32_t dataSize;
 	uint8_t data[];
@@ -797,7 +797,7 @@ class MCMSG_LeaveSession
 public:
 	uint8_t type;
 	uint8_t subType;
-	char commanderID;
+	char commanderid;
 
 public:
 	MCMSG_LeaveSession(void) { init(void); }
@@ -806,7 +806,7 @@ public:
 	{
 		type = MCMSG_LEAVE_SESSION;
 		subType = 0;
-		commanderID = -1;
+		commanderid = -1;
 	}
 };
 
@@ -819,7 +819,7 @@ class MCMSG_PlayerOrder
 
 public:
 	uint8_t type;
-	char commanderID;
+	char commanderid;
 	uint8_t flags;
 	float location[2];
 	uint32_t tacOrderChunk[2];
@@ -830,7 +830,7 @@ public:
 	void init(void)
 	{
 		type = MCMSG_PLAYER_ORDER;
-		commanderID = -1;
+		commanderid = -1;
 		flags = 0;
 		location[0] = 0.0;
 		location[1] = 0.0;
@@ -846,7 +846,7 @@ class MCMSG_HoldPosition
 
 public:
 	uint8_t type;
-	char commanderID;
+	char commanderid;
 	uint16_t flags;
 
 public:
@@ -855,7 +855,7 @@ public:
 	void init(void)
 	{
 		type = MCMSG_HOLD_POSITION;
-		commanderID = -1;
+		commanderid = -1;
 		flags = 0;
 	}
 };
@@ -874,7 +874,7 @@ class MCMSG_PlayerMoverGroup
 public:
 	uint8_t type;
 	uint8_t action;
-	char commanderID;
+	char commanderid;
 	char groupId;
 	uint16_t moverGroupInfo;
 
@@ -884,7 +884,7 @@ public:
 	void init(void)
 	{
 		type = MCMSG_PLAYER_MOVERGROUP;
-		commanderID = -1;
+		commanderid = -1;
 		groupId = -1;
 		moverGroupInfo = 0;
 	}
@@ -1088,7 +1088,7 @@ public:
 	uint8_t rosterIndex;
 	int32_t vehicleID;
 	char pilotName[24];
-	char commanderID;
+	char commanderid;
 	float location[2];
 
 public:
@@ -1101,7 +1101,7 @@ public:
 		rosterIndex = 255;
 		vehicleID = 0;
 		pilotName[0] = nullptr;
-		commanderID = 0;
+		commanderid = 0;
 		location[0] = 0.0;
 		location[1] = 0.0;
 	}
@@ -1178,7 +1178,7 @@ class MCMSG_PassValue {
 
 //***************************************************************************
 
-typedef enum
+enum class 
 {
 	VERSION_STATUS_UNKNOWN,
 	VERSION_STATUS_GOOD,
@@ -1247,9 +1247,9 @@ public:
 	int32_t numTurrets;
 	uint8_t moverRosterRLE[MAX_MULTIPLAYER_MOVERS];
 	int32_t numMoverRosterRLE;
-	MoverPtr localMovers[MAX_LOCAL_MOVERS];
-	MoverPtr moverRoster[MAX_MULTIPLAYER_MOVERS];
-	MoverPtr playerMoverRoster[MAX_MC_PLAYERS][MAX_LOCAL_MOVERS];
+	std::unique_ptr<Mover> localMovers[MAX_LOCAL_MOVERS];
+	std::unique_ptr<Mover> moverRoster[MAX_MULTIPLAYER_MOVERS];
+	std::unique_ptr<Mover> playerMoverRoster[MAX_MC_PLAYERS][MAX_LOCAL_MOVERS];
 	TurretPtr turretRoster[MAX_MULTIPLAYER_TURRETS];
 
 	bool iAmHost;
@@ -1259,7 +1259,7 @@ public:
 
 	bool inSession;
 	bool hostDroppedOut;
-	int32_t commanderID; // same as commanderId
+	int32_t commanderid; // same as commanderId
 	char sessionName[80];
 	char playerName[80];
 
@@ -1270,7 +1270,7 @@ public:
 	int32_t insigniaSizeList[MAX_MC_PLAYERS];
 	// int32_t				maxPlayers;						// max number of players
 	// allowed in session
-	MC2Player playerInfo[MAX_MC_PLAYERS]; // list of players--indexed by commanderID
+	MC2Player playerInfo[MAX_MC_PLAYERS]; // list of players--indexed by commanderid
 
 	bool playerReady[MAX_MC_PLAYERS];
 	bool inSessionScreen[MAX_MC_PLAYERS];
@@ -1376,7 +1376,7 @@ public:
 
 	int32_t update(void);
 
-	int32_t beginSessionScan(PSTR ipAddress, bool persistent = true);
+	int32_t beginSessionScan(const std::wstring_view& ipAddress, bool persistent = true);
 
 	int32_t endSessionScan(void);
 
@@ -1388,11 +1388,11 @@ public:
 	const MC2Player* getPlayers(int32_t& playerCount);
 
 	// for write purposes....
-	MC2Player* getPlayerInfo(int32_t commanderID) { return nullptr; }
+	MC2Player* getPlayerInfo(int32_t commanderid) { return nullptr; }
 
-	bool hostSession(PSTR sessionName, PSTR playerName, int32_t mxPlayers);
+	bool hostSession(const std::wstring_view& sessionName, const std::wstring_view& playerName, int32_t mxPlayers);
 
-	int32_t joinSession(MC2Session* session, PSTR playerName);
+	int32_t joinSession(MC2Session* session, const std::wstring_view& playerName);
 
 	bool getOnLAN(void) { return (onLAN); }
 
@@ -1423,9 +1423,9 @@ public:
 	void sendMessage(
 		NETPLAYER player, PVOID data, size_t dataSize, bool guaranteed, bool toSelf = true);
 
-	bool hostGame(PSTR sessionName, PSTR playerName, int32_t nPlayers);
+	bool hostGame(const std::wstring_view& sessionName, const std::wstring_view& playerName, int32_t nPlayers);
 
-	int32_t joinGame(PSTR ipAddress, PSTR sessionName, PSTR playerName);
+	int32_t joinGame(const std::wstring_view& ipAddress, const std::wstring_view& sessionName, const std::wstring_view& playerName);
 
 	bool waitTillStartLoading(void);
 
@@ -1443,7 +1443,7 @@ public:
 
 	void handleTerminateSession(void);
 
-	bool launchBrowser(PCSTR link);
+	bool launchBrowser(const std::wstring_view& link);
 
 	void initParametersScreen(void);
 
@@ -1451,37 +1451,37 @@ public:
 
 	void initSpecialBuildings(char commandersToLoad[8][3]);
 
-	PSTR getPlayerName(void) { return (nullptr); }
+	const std::wstring_view& getPlayerName(void) { return (nullptr); }
 
-	void addToLocalMovers(MoverPtr mover);
+	void addToLocalMovers(std::unique_ptr<Mover> mover);
 
-	void removeFromLocalMovers(MoverPtr mover);
+	void removeFromLocalMovers(std::unique_ptr<Mover> mover);
 
-	void addToMoverRoster(MoverPtr mover);
+	void addToMoverRoster(std::unique_ptr<Mover> mover);
 
 	bool canAddToMoverRoster(void) { return false; }
 
-	void removeFromMoverRoster(MoverPtr mover);
+	void removeFromMoverRoster(std::unique_ptr<Mover> mover);
 
 	void addToTurretRoster(TurretPtr turret);
 
-	void addToPlayerMoverRoster(int32_t playerCommanderID, MoverPtr mover);
+	void addToPlayerMoverRoster(int32_t playerCommanderID, std::unique_ptr<Mover> mover);
 
-	void removeFromPlayerMoverRoster(MoverPtr mover);
+	void removeFromPlayerMoverRoster(std::unique_ptr<Mover> mover);
 
 	int32_t getNumWorldChunks(void) { return (numWorldChunks); }
 
 	void clearWorldChunks(void) { numWorldChunks = 0; }
 
-	int32_t setClosestColor(int32_t colorIndex, int32_t commanderID);
+	int32_t setClosestColor(int32_t colorIndex, int32_t commanderid);
 
-	int32_t setNextFreeColor(int32_t commanderID);
+	int32_t setNextFreeColor(int32_t commanderid);
 
-	void setColor(int32_t colorIndex, int32_t commanderID);
+	void setColor(int32_t colorIndex, int32_t commanderid);
 
-	void setPlayerBaseColor(int32_t commanderID, int32_t colorIndex);
+	void setPlayerBaseColor(int32_t commanderid, int32_t colorIndex);
 
-	void setPlayerTeam(int32_t commanderID, int32_t teamID);
+	void setPlayerTeam(int32_t commanderid, int32_t teamID);
 
 	void calcPlayerRanks(void);
 
@@ -1500,9 +1500,9 @@ public:
 
 	int32_t addLightOnFireChunk(GameObjectPtr object, int32_t seconds);
 
-	int32_t addPilotKillStat(MoverPtr mover, int32_t vehicleClass);
+	int32_t addPilotKillStat(std::unique_ptr<Mover> mover, int32_t vehicleClass);
 
-	int32_t addScoreChunk(int32_t commanderID, int32_t score);
+	int32_t addScoreChunk(int32_t commanderid, int32_t score);
 
 	int32_t addKillLossChunk(int32_t killerCID, int32_t loserCID);
 
@@ -1594,12 +1594,12 @@ public:
 
 	void handleWorldUpdate(NETPLAYER sender, MCMSG_WorldUpdate* msg);
 
-	void sendChat(NETPLAYER receiver, char team, PSTR chatString);
-	void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, uint32_t resID);
+	void sendChat(NETPLAYER receiver, char team, const std::wstring_view& chatString);
+	void sendPlayerActionChat(NETPLAYER receiver, const std::wstring_view& playerName, uint32_t resID);
 
 	void sendPlayerCID(NETPLAYER receiver, uint8_t subType, char CID);
 
-	void sendPlayerUpdate(NETPLAYER receiver, int32_t stage, int32_t commanderID);
+	void sendPlayerUpdate(NETPLAYER receiver, int32_t stage, int32_t commanderid);
 
 	void sendMissionSettingsUpdate(NETPLAYER receiver);
 
@@ -1609,7 +1609,7 @@ public:
 
 	void sendPlayerSetup(void);
 
-	void sendPlayerInsignia(PSTR insigniaFileName, puint8_t insigniaData, int32_t insigniaDataSize);
+	void sendPlayerInsignia(const std::wstring_view& insigniaFileName, puint8_t insigniaData, int32_t insigniaDataSize);
 
 	void sendMissionSetup(NETPLAYER receiver, int32_t stage, CompressedMech* mechData);
 
@@ -1620,22 +1620,22 @@ public:
 	void sendEndMission(int32_t result);
 
 	void sendReinforcement(int32_t vehicleID, int32_t rosterIndex, char pilotName[16],
-		int32_t commanderID, Stuff::Vector3D pos, uint8_t stage);
+		int32_t commanderid, Stuff::Vector3D pos, uint8_t stage);
 
 	void sendNewServer(void);
 
-	void sendLeaveSession(char subType, char commanderID);
+	void sendLeaveSession(char subType, char commanderid);
 
 	void sendPlayerOrder(TacticalOrderPtr tacOrder, bool needsSelection, int32_t numMovers,
-		MoverPtr* moverList, int32_t numGroups = 0, MoverGroupPtr* groupList = nullptr,
+		std::unique_ptr<Mover>* moverList, int32_t numGroups = 0, MoverGroupPtr* groupList = nullptr,
 		bool queuedOrder = false);
 
 	void sendHoldPosition(void);
 
 	void sendPlayerMoverGroup(
-		int32_t groupId, int32_t numMovers, MoverPtr* moverList, int32_t point);
+		int32_t groupId, int32_t numMovers, std::unique_ptr<Mover>* moverList, int32_t point);
 
-	void sendPlayerArtillery(int32_t strikeType, Stuff::Vector3D location, int32_t seconds);
+	void sendPlayerArtillery(int32_t striketype, Stuff::Vector3D location, int32_t seconds);
 
 	int32_t sendPing(void);
 
@@ -1653,13 +1653,13 @@ public:
 
 	void sendWorldUpdate(void);
 
-	void sendFile(PSTR path, PSTR fileName);
+	void sendFile(const std::wstring_view& path, const std::wstring_view& fileName);
 
 	void sendReadyForBattle(void);
 
 	void sendPrepareMission(void);
 
-	void sendFileInquiry(PSTR filename);
+	void sendFileInquiry(const std::wstring_view& filename);
 
 	int32_t updateServer(void);
 
@@ -1677,14 +1677,14 @@ public:
 
 	void calcDropZones(char dropZonesCID[8], char hqs[MAX_TEAMS]);
 
-	int32_t saveTranscript(PCSTR fileName, bool debugging = false);
+	int32_t saveTranscript(const std::wstring_view& fileName, bool debugging = false);
 
 	void playerLeftGame(uint32_t playerId);
 
 	// call this to exit the current session.
 	void leaveSession(void);
 
-	void getChatMessages(PSTR* buffer, int32_t* playerIDs, int32_t& count);
+	void getChatMessages(const std::wstring_view&* buffer, int32_t* playerIDs, int32_t& count);
 
 	void redistributeRP(void);
 };

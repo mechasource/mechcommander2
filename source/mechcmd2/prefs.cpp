@@ -11,7 +11,7 @@
 #include "MissionGui.h"
 
 #include "soundSys.h"
-#include "..\resource.h"
+#include "resource.h"
 
 extern SoundSystem* sndSystem;
 
@@ -79,7 +79,7 @@ CPrefs::CPrefs()
 }
 
 int32_t
-CPrefs::load(PCSTR pFileName)
+CPrefs::load(const std::wstring_view& pFileName)
 {
 	int32_t result = 0;
 	FullPathFileName prefsPathname;
@@ -247,7 +247,7 @@ CPrefs::save()
 	// MoveFileEx(originalPath, backupPath, MOVEFILE_COPY_ALLOWED |
 	// MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 	FitIniFilePtr prefsFile = new FitIniFile;
-	int32_t result = prefsFile->create((PSTR)originalPath);
+	int32_t result = prefsFile->create((const std::wstring_view&)originalPath);
 	if (result != NO_ERROR)
 	{
 		gosASSERT(false);
@@ -419,7 +419,7 @@ CPrefs::applyPrefs(bool applyRes)
 }
 
 void
-CPrefs::setNewName(PCSTR pNewName)
+CPrefs::setNewName(const std::wstring_view& pNewName)
 {
 	if (!pNewName)
 		return;
@@ -454,7 +454,7 @@ CPrefs::setNewName(PCSTR pNewName)
 }
 
 void
-CPrefs::setNewIP(PCSTR pNewIP)
+CPrefs::setNewIP(const std::wstring_view& pNewIP)
 {
 	if (!pNewIP)
 		return;
@@ -484,7 +484,7 @@ CPrefs::setNewIP(PCSTR pNewIP)
 }
 
 void
-CPrefs::setNewUnit(PCSTR pNewUnit)
+CPrefs::setNewUnit(const std::wstring_view& pNewUnit)
 {
 	if (!pNewUnit)
 		return;

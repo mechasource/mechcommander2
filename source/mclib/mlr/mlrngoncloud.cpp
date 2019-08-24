@@ -4,12 +4,12 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlrsorter.hpp>
-#include <mlr/mlrclipper.hpp>
-#include <mlr/mlrngoncloud.hpp>
+#include "mlr/mlr.h"
+#include "mlr/mlrsorter.h"
+#include "mlr/mlrclipper.h"
+#include "mlr/mlrngoncloud.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -642,3 +642,5 @@ MLRNGonCloud::TestInstance(void) const
 		_ASSERT(*usedNrOfNGons <= maxNrOf);
 	}
 }
+
+} // namespace MidLevelRenderer

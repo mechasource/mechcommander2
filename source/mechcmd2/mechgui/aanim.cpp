@@ -3,9 +3,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <mechgui/aanim.h>
-//#include <mclib.h>
-//#include <estring.h>
+#include "mechgui/aanim.h"
+//#include "mclib.h"
+//#include "estring.h"
 
 extern float frameRate;
 
@@ -66,13 +66,13 @@ aAnimation::copyData(const aAnimation& src)
 }
 
 int32_t
-aAnimation::init(FitIniFile* file, PCSTR headerName)
+aAnimation::init(FitIniFile* file, const std::wstring_view& headerName)
 {
-	std::wstring strToCheck = headerName;
+	const std::wstring_view& strToCheck = headerName;
 	strToCheck += "AnimationTimeStamps";
 	if (NO_ERROR != file->readIdLong(strToCheck, infoCount))
 	{
-		std::wstring strToCheck = headerName;
+		const std::wstring_view& strToCheck = headerName;
 		strToCheck += "NumTimeStamps";
 		file->readIdLong(strToCheck, infoCount);
 	}
@@ -372,7 +372,7 @@ aAnimation::isDone(void) const
 }
 
 int32_t
-aAnimation::initWithBlockName(FitIniFile* file, PCSTR blockName)
+aAnimation::initWithBlockName(FitIniFile* file, const std::wstring_view& blockName)
 {
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
@@ -395,7 +395,7 @@ aAnimation::getMaxTime()
 }
 
 int32_t
-aAnimGroup::init(FitIniFile* file, PCSTR blockName)
+aAnimGroup::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	if (NO_ERROR != file->seekBlock(blockName))
 	{

@@ -23,7 +23,7 @@
 #include "zlib.h"
 
 #ifndef _MBCS
-#include <gameos.hpp>
+#include "gameos.hpp"
 #else
 #include <assert.h>
 #define gosASSERT assert
@@ -183,9 +183,9 @@ PacketFile::~PacketFile(void)
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::open(PSTR fName, FileMode _mode, int32_t numChild)
+PacketFile::open(const std::wstring_view& filename, FileMode _mode, int32_t numChild)
 {
-	int32_t openResult = MechFile::open(fName, _mode, numChild);
+	int32_t openResult = MechFile::open(filename, _mode, numChild);
 	if (openResult != NO_ERROR)
 	{
 		return (openResult);
@@ -196,7 +196,7 @@ PacketFile::open(PSTR fName, FileMode _mode, int32_t numChild)
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
+PacketFile::open(std::unique_ptr<File> _parent, uint32_t fileSize, int32_t numChild)
 {
 	int32_t result = MechFile::open(_parent, fileSize, numChild);
 	if (result != NO_ERROR)
@@ -207,9 +207,9 @@ PacketFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::create(PSTR fName)
+PacketFile::create(const std::wstring_view& filename)
 {
-	int32_t openResult = MechFile::create(fName);
+	int32_t openResult = MechFile::create(filename);
 	if (openResult != NO_ERROR)
 	{
 		return (openResult);
@@ -219,9 +219,9 @@ PacketFile::create(PSTR fName)
 }
 
 int32_t
-PacketFile::createWithCase(PSTR fName)
+PacketFile::createWithCase(const std::wstring_view& filename)
 {
-	int32_t openResult = MechFile::createWithCase(fName);
+	int32_t openResult = MechFile::createWithCase(filename);
 	if (openResult != NO_ERROR)
 	{
 		return (openResult);

@@ -8,7 +8,7 @@
 #ifndef CAMPAIGNDATA_H
 #define CAMPAIGNDATA_H
 
-//#include <elist.h>
+//#include "elist.h"
 //#include "inifile.h"
 
 class CMissionData
@@ -40,8 +40,8 @@ public:
 	CGroupData(void);
 	bool operator==(const CGroupData& rhs) const;
 	bool operator!=(const CGroupData& rhs) const { return (!((*this) == rhs)); }
-	bool Save(FitIniFile& fitFile, PCSTR groupName);
-	bool Read(FitIniFile& fitFile, PCSTR groupName);
+	bool Save(FitIniFile& fitFile, const std::wstring_view& groupName);
+	bool Read(FitIniFile& fitFile, const std::wstring_view& groupName);
 
 	CMissionList m_MissionList;
 	CString m_OperationFile;

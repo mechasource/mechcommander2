@@ -46,7 +46,7 @@ EulerAngles::TestClass()
 //#############################################################################
 //
 #define NUMBER_OF_MULTIPLICATIONS 30
-#include <stuff/random.hpp>
+#include "stuff/random.h"
 
 class fstream;
 bool

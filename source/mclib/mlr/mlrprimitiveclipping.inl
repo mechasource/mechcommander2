@@ -21,10 +21,10 @@
 //#ifndef _MLRPRIMITIVECLIPPING_HPP_
 //#define _MLRPRIMITIVECLIPPING_HPP_
 
-#include <mlr/mlrcliptrick.hpp>
-#include <mlr/gosvertexpool.hpp>
-#include <mlr/mlrtexture.hpp>
-#include <mlr/mlrtexturepool.hpp>
+#include "mlr/mlrcliptrick.h"
+#include "mlr/gosvertexpool.h"
+#include "mlr/mlrtexture.h"
+#include "mlr/mlrtexturepool.h"
 
 extern uint32_t gEnableTextureSort, gShowClippedPolys;
 extern puint16_t indexOffset; // [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]

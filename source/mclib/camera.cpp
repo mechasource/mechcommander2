@@ -12,7 +12,7 @@
 #include "terrain.h"
 #include "vertex.h"
 #include "crater.h"
-#include <terrtxm.h>
+#include "terrtxm.h"
 #include "cident.h"
 #include "paths.h"
 #include "timing.h"
@@ -1825,12 +1825,12 @@ Stuff::Vector3D actualPosition;
 
 //-----------------------------------------------------------------------------------------------
 bool
-CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition)
+CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition)
 {
 	int32_t posCellR, posCellC;
 	int32_t tarCellR, tarCellC;
 	land->worldToCell(position, posCellR, posCellC);
-	land->worldToCell(targetPosition, tarCellR, tarCellC);
+	land->worldToCell(targetposition, tarCellR, tarCellC);
 	//-----------------------------------------------------
 	// Once we allow teams to have alliances (for contacts,
 	// etc.), simply set all nec. team bits in this mask...

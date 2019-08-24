@@ -13,11 +13,11 @@ MechLabScreen.cpp			: Implementation of the MechLabScreen component.
 #include "MechBayScreen.h"
 #include "cmponent.H"
 #include "windows.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "logisticsdialog.h"
 #include <malloc.h>
 #include "gamesound.h"
-#include "ChatWindow.h"
+#include "chatwindow.h"
 #include "Multplyr.h"
 extern bool useUnlimitedAmmo;
 #include "Prefs.h"
@@ -138,7 +138,7 @@ MechLabScreen::init(FitIniFile& file)
 	if (NO_ERROR != comboFile.open(path))
 	{
 		char errorStr[255];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)path);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 	}
 	variantList.init(&comboFile, "VariantComboBox");
@@ -233,7 +233,7 @@ MechLabScreen::begin()
 		strcpy(path, artPath);
 		strcat(path, "MCL_MC_");
 		char mechName[64];
-		std::wstring fileName = pVariant->getFileName();
+		const std::wstring_view& fileName = pVariant->getFileName();
 		_splitpath(fileName, nullptr, nullptr, mechName, nullptr);
 		strcat(path, mechName);
 		strcat(path, "_B.tga");
@@ -346,13 +346,13 @@ MechLabScreen::update()
 			}
 		}
 	}
-	// hack, in case the variant list sets the helpID
+	// hack, in case the variant list sets the helpid
 	if (::helpTextID)
 	{
 		textObjects[helpTextArrayID].setText(helpTextID);
 	}
 	// see if the variant changed
-	std::wstring tmp;
+	const std::wstring_view& tmp;
 	variantList.EditBox().getEntry(tmp);
 	if (varName.Compare(tmp) != 0)
 	{
@@ -803,7 +803,7 @@ MechLabScreen::swapVariant()
 	LogisticsVariant* pNewVariant = LogisticsData::instance->getVariant(varName);
 	if (pVariant && pNewVariant)
 	{
-		std::wstring oldName = pVariant->getName();
+		const std::wstring_view& oldName = pVariant->getName();
 		*pVariant = *pNewVariant;
 		pVariant->setName(oldName);
 	}
@@ -1088,15 +1088,15 @@ MechLabScreen::setComponent(LogisticsComponent* pComponent, bool bMessageFromLB)
 }
 
 void
-MechLabScreen::showJumpJetItems(bool bShow)
+MechLabScreen::showJumpJetItems(bool doshow)
 {
 	// show jump jet stuff
-	statics[47].showGUIWindow(bShow);
-	statics[48].showGUIWindow(bShow);
+	statics[47].showGUIWindow(doshow);
+	statics[48].showGUIWindow(doshow);
 	statics[49].showGUIWindow(0);
-	attributeMeters[4].showGUIWindow(bShow);
+	attributeMeters[4].showGUIWindow(doshow);
 	attributeMeters[0].showGUIWindow(1);
-	statics[30].showGUIWindow(!bShow); // damage
+	statics[30].showGUIWindow(!doshow); // damage
 	textObjects[7].showGUIWindow(1);
 	// hide all heat sink stuff, regardless of who
 	attributeMeters[8].showGUIWindow(0);
@@ -1105,12 +1105,12 @@ MechLabScreen::showJumpJetItems(bool bShow)
 	// turn off weapon stuff
 	for (size_t i = 31; i < 35; i++)
 	{
-		statics[i].showGUIWindow(!bShow);
+		statics[i].showGUIWindow(!doshow);
 	}
 	// but not the heat one!
 	statics[33].showGUIWindow(true);
 	// turn off ammo thing if appropriate
-	if (!useUnlimitedAmmo && !bShow)
+	if (!useUnlimitedAmmo && !doshow)
 	{
 		statics[34].showGUIWindow(1);
 		attributeMeters[3].showGUIWindow(1);
@@ -1123,7 +1123,7 @@ MechLabScreen::showJumpJetItems(bool bShow)
 	// weapon stuff
 	for (i = 1; i < 3; i++)
 	{
-		attributeMeters[i].showGUIWindow(!bShow);
+		attributeMeters[i].showGUIWindow(!doshow);
 	}
 }
 
@@ -1178,7 +1178,7 @@ MechLabScreen::beginDrag(LogisticsComponent* pComponent)
 			// initialize the drag object
 			int32_t sizeX = pComponent->getComponentWidth();
 			int32_t sizeY = pComponent->getComponentHeight();
-			PCSTR pFile = pComponent->getIconFileName();
+			const std::wstring_view& pFile = pComponent->getIconFileName();
 			FullPathFileName path;
 			path.init(artPath, pFile, "tga");
 			dragIcon.setTexture(path);
@@ -1331,7 +1331,7 @@ MechLabScreen::updateDiagram()
 		}
 		int32_t sizeX = pComponent->getComponentWidth();
 		int32_t sizeY = pComponent->getComponentHeight();
-		PCSTR pFile = pComponent->getIconFileName();
+		const std::wstring_view& pFile = pComponent->getIconFileName();
 		FullPathFileName path;
 		path.init(artPath, pFile, "tga");
 		componentIcons[i].setTexture(path);
@@ -1447,5 +1447,4 @@ MechLabScreen::canRemoveComponent(LogisticsComponent* pComp)
 	return 1;
 }
 
-//*************************************************************************************************
 // end of file ( MechLabScreen.cpp )

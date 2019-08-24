@@ -255,5 +255,4 @@ Eraser::EraserAction::redo()
 	bRetVal = ActionPaintTile::undo() && bRetVal;
 	return bRetVal;
 }
-//*************************************************************************************************
 // end of file ( eraser.cpp )

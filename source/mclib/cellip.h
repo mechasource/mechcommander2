@@ -21,7 +21,7 @@
 
 #include "utilities.h"
 
-#include <stuff/stuff.hpp>
+#include "stuff/stuff.h"
 //---------------------------------------------------------------------------
 class EllipseElement : public Element
 {

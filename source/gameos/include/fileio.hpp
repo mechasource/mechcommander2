@@ -43,7 +43,7 @@ typedef struct gosFileStream
 	char m_Filename[MAX_PATH];
 	struct gosFileStream* pNext;
 
-	gosFileStream(PCSTR FileName, gosEnum_FileWriteStatus fwstatus);
+	gosFileStream(PSTR FileName, gosEnum_FileWriteStatus fwstatus);
 	~gosFileStream(void);
 
 	uint32_t Seek(int32_t where, gosEnum_FileSeekType from_end);

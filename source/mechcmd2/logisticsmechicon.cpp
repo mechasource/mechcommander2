@@ -11,8 +11,8 @@
 #include "MechIcon.h"
 #include "LogisticsMech.h"
 #include "LogisticsPilot.h"
-#include "..\resource.h"
-#include <mechgui/alistbox.h>
+#include "resource.h"
+#include "mechgui/alistbox.h"
 #include "LogisticsPilotListBox.h"
 #include "gameSound.h"
 
@@ -49,7 +49,7 @@ LogisticsMechIcon::operator=(const LogisticsMechIcon& src)
 		iconID = src.iconID;
 		pilotIconID = src.pilotIconID;
 		outlineID = src.outlineID;
-		helpID = src.helpID;
+		helpid = src.helpid;
 	}
 	return *this;
 }
@@ -217,7 +217,7 @@ LogisticsMechIcon::update()
 			}
 			state = aListItem::HIGHLITE;
 		}
-		::helpTextID = helpID;
+		::helpTextID = helpid;
 	}
 	else if (state != aListItem::SELECTED)
 	{
@@ -303,5 +303,4 @@ LogisticsMechIcon::dimPilot(bool bDim)
 		pilotIcon.setColor(0xffffffff);
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsMechIcon.cpp )

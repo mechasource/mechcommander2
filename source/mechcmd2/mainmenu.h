@@ -11,11 +11,11 @@ MainMenu.h			: Interface for the MainMenu component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include <mechgui/logisticsscreen.h>
+#include "mechgui/logisticsscreen.h"
 #endif
 
 #ifndef AANIM_H
-#include <mechgui/aanim.h>
+#include "mechgui/aanim.h"
 #endif
 
 #ifndef MPLOADMAP_H
@@ -28,7 +28,6 @@ MainMenu.h			: Interface for the MainMenu component.
 
 class OptionsScreenWrapper;
 class Mechlopedia;
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -56,7 +55,7 @@ public:
 	virtual void update(void);
 	virtual void render(void);
 
-	void setHostLeftDlg(PCSTR playerName);
+	void setHostLeftDlg(const std::wstring_view& playerName);
 
 	void setDrawBackground(bool bDrawBackground);
 	void skipIntro(void);
@@ -100,5 +99,4 @@ private:
 	MC2MoviePtr introMovie;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MainMenu.h )

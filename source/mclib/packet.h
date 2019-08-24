@@ -80,11 +80,11 @@ public:
 	PacketFile(void);
 	~PacketFile(void);
 
-	virtual int32_t open(PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
-	virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
+	virtual int32_t open(const std::wstring_view& filename, FileMode _mode = READ, uint32_t numChildren = 50);
+	virtual int32_t open(std::unique_ptr<File> _parent, size_t fileSize, uint32_t numChildren = 50);
 
-	virtual int32_t create(PCSTR fName);
-	virtual int32_t createWithCase(PSTR fName);
+	virtual int32_t create(const std::wstring_view& filename);
+	virtual int32_t createWithCase(const std::wstring_view& filename);
 	virtual void close(void);
 
 	void forceUseCheckSum(void) { usesCheckSum = true; }
@@ -107,7 +107,7 @@ public:
 	int32_t getPackedPacketSize(void);
 	int32_t getStorageType(void);
 
-	virtual FileClass getFileClass(void) { return PACKETFILE; }
+	virtual FileClass getFileClass(void) { return FileClass::packetfile; }
 
 	int32_t checkSumFile(void);
 

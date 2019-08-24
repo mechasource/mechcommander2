@@ -8,9 +8,9 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <stuff/node.hpp>
-#include <stuff/slot.hpp>
+#include "gameos.hpp"
+#include "stuff/node.h"
+#include "stuff/slot.h"
 
 using namespace Stuff;
 

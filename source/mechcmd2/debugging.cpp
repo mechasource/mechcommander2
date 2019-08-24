@@ -15,8 +15,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <gameos.hpp>
-#include <GameOS\ToolOS.hpp>
+#include "gameos.hpp"
+#include "toolos.hpp"
 
 HGOSFONT3D GameDebugWindow::font = nullptr;
 int32_t GameDebugWindow::fontHeight = 0;
@@ -26,7 +26,7 @@ int32_t GameDebugWindow::fontHeight = 0;
 //***************************************************************************
 
 void
-GameDebugWindow::setFont(PSTR fontFile)
+GameDebugWindow::setFont(const std::wstring_view& fontFile)
 {
 	if (font)
 	{
@@ -46,7 +46,7 @@ GameDebugWindow::setFont(PSTR fontFile)
 //---------------------------------------------------------------------------
 
 void
-GameDebugWindow::print(PSTR s)
+GameDebugWindow::print(const std::wstring_view& s)
 {
 	if (numLines < MAX_DEBUG_WINDOW_LINES)
 		strcpy(textBuffer[numLines++], s);

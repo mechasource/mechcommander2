@@ -1809,7 +1809,7 @@ AG_shape_translate_draw(
 	char msg[1024];
 	//-------------------------------------
 	// Save off the shape data table start
-	PSTR shapeTable = (PSTR)shape_table;
+	const std::wstring_view& shapeTable = (const std::wstring_view&)shape_table;
 	char version[5];
 	for (size_t i = 0; i < 4; i++)
 	{

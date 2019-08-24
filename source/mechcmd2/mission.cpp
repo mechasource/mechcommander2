@@ -11,7 +11,7 @@
 
 //----------------------------------------------------------------------------------
 // Include Files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef MISSION_H
 #include "mission.h"
@@ -107,9 +107,9 @@
 #include "prefs.h"
 #endif
 
-#include "..\resource.h"
+#include "resource.h"
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
@@ -197,7 +197,7 @@ float CheatHitDamage = 0.0f;
 bool neverEndingStory = false;
 
 void
-GetBlockedDoorCells(int32_t moveLevel, int32_t door, PSTR openCells);
+GetBlockedDoorCells(int32_t moveLevel, int32_t door, const std::wstring_view& openCells);
 void
 PlaceStationaryMovers(MoveMap* map);
 void
@@ -501,7 +501,7 @@ Mission::update(void)
 			bool playerForceAllDead = true;
 			for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 			{
-				MoverPtr mover = ObjectManager->getMover(i);
+				std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 				if (mover->getCommanderId() == Commander::home->getId())
 					if (!mover->isDisabled() && !mover->isDestroyed() && mover->isOnGUI())
 					{
@@ -546,7 +546,7 @@ Mission::update(void)
 					bool playerForceAllDead = true;
 					for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 					{
-						MoverPtr mover = ObjectManager->getMover(i);
+						std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 						if (mover->getCommanderId() == Commander::home->getId())
 							if (!mover->isDisabled() && !mover->isDestroyed() && mover->isOnGUI())
 							{
@@ -575,7 +575,7 @@ Mission::update(void)
 					{
 						terminationCounterStarted = true;
 						missionTerminationTime = actualTime + 5.0 /*seconds*/;
-						if (MPlayer->playerInfo[MPlayer->commanderID].winner)
+						if (MPlayer->playerInfo[MPlayer->commanderid].winner)
 							terminationResult = mis_PLAYER_WIN_BIG;
 						else
 							terminationResult = mis_PLAYER_LOST_BIG;
@@ -855,7 +855,7 @@ float InfluenceRadius = -1.0; // Capture Radius
 float InfluenceTime = 0.0; // Time inside to Capture
 //----------------------------------------------------------------------------------
 void
-Mission::createPartObject(int32_t partIndex, MoverPtr mover)
+Mission::createPartObject(int32_t partIndex, std::unique_ptr<Mover> mover)
 {
 	//-----------------------------------
 	// All parts are movers in this game!
@@ -934,7 +934,7 @@ Mission::createPartObject(int32_t partIndex, MoverPtr mover)
 		mover->setPosition(parts[partIndex].position);
 		mover->setLastValidPosition(parts[partIndex].position);
 		mover->setRotation(parts[partIndex].rotation);
-		mover->setCommanderId(parts[partIndex].commanderID);
+		mover->setCommanderId(parts[partIndex].commanderid);
 		switch (mover->getObjectClass())
 		{
 		case BATTLEMECH:
@@ -994,12 +994,12 @@ Mission::createPartObject(int32_t partIndex, MoverPtr mover)
 		if (MPlayer)
 		{
 			MPlayer->addToMoverRoster(
-				(MoverPtr)ObjectManager->getByWatchID(parts[partIndex].objectWID));
-			MPlayer->addToPlayerMoverRoster(parts[partIndex].commanderID,
-				(MoverPtr)ObjectManager->getByWatchID(parts[partIndex].objectWID));
-			if (parts[partIndex].commanderID == MPlayer->commanderID)
+				(std::unique_ptr<Mover>)ObjectManager->getByWatchID(parts[partIndex].objectWID));
+			MPlayer->addToPlayerMoverRoster(parts[partIndex].commanderid,
+				(std::unique_ptr<Mover>)ObjectManager->getByWatchID(parts[partIndex].objectWID));
+			if (parts[partIndex].commanderid == MPlayer->commanderid)
 				MPlayer->addToLocalMovers(
-					(MoverPtr)ObjectManager->getByWatchID(parts[partIndex].objectWID));
+					(std::unique_ptr<Mover>)ObjectManager->getByWatchID(parts[partIndex].objectWID));
 		}
 		if (parts[partIndex].exists)
 		{
@@ -1042,7 +1042,7 @@ Mission::addMover(MoverInitData* moverSpec)
 {
 	//--------------------------------------
 	// Load the mechwarrior into the mech...
-	MechWarriorPtr pilot = MechWarrior::newWarrior();
+	std::unique_ptr<MechWarrior> pilot = MechWarrior::newWarrior();
 	if (!pilot)
 		STOP(("Too many pilots in this mission!"));
 	FullPathFileName pilotFullFileName;
@@ -1060,8 +1060,8 @@ Mission::addMover(MoverInitData* moverSpec)
 	// ONLY if we overrode the data in logistics!!
 	if (moverSpec->overrideLoadedPilot)
 	{
-		pilot->skills[MWS_GUNNERY] = pilot->skillRank[MWS_GUNNERY] = moverSpec->gunnerySkill;
-		pilot->skills[MWS_PILOTING] = pilot->skillRank[MWS_PILOTING] = moverSpec->pilotingSkill;
+		pilot->skills[Skill::gunnery] = pilot->skillRank[Skill::gunnery] = moverSpec->gunnerySkill;
+		pilot->skills[Skill::piloting] = pilot->skillRank[Skill::piloting] = moverSpec->pilotingSkill;
 		memcpy(pilot->specialtySkills, moverSpec->specialtySkills,
 			sizeof(bool) * NUM_SPECIALTY_SKILLS);
 		pilot->calcRank();
@@ -1097,7 +1097,7 @@ Mission::addMover(MoverInitData* moverSpec)
 		float			position[2];
 		int32_t			rotation;
 		char			teamID;
-		char			commanderID;
+		char			commanderid;
 		int32_t			paintScheme;
 		bool			active;
 		bool			exists;
@@ -1111,14 +1111,14 @@ Mission::addMover(MoverInitData* moverSpec)
 		objType = ObjectManager->getObjectType(moverSpec->objNumber);
 	if (objType)
 	{
-		MoverPtr mover = nullptr;
+		std::unique_ptr<Mover> mover = nullptr;
 		switch (objType->getObjectTypeClass())
 		{
 		case BATTLEMECH_TYPE:
-			mover = (MoverPtr)ObjectManager->newMech();
+			mover = (std::unique_ptr<Mover>)ObjectManager->newMech();
 			break;
 		case VEHICLE_TYPE:
-			mover = (MoverPtr)ObjectManager->newVehicle();
+			mover = (std::unique_ptr<Mover>)ObjectManager->newVehicle();
 			break;
 		}
 		if (mover)
@@ -1182,7 +1182,7 @@ Mission::addMover(MoverInitData* moverSpec)
 			mover->setPosition(moverSpec->position);
 			mover->setLastValidPosition(moverSpec->position);
 			mover->setRotation(moverSpec->rotation);
-			mover->setCommanderId(moverSpec->commanderID);
+			mover->setCommanderId(moverSpec->commanderid);
 			switch (mover->getObjectClass())
 			{
 			case BATTLEMECH:
@@ -1213,8 +1213,8 @@ Mission::addMover(MoverInitData* moverSpec)
 			if (MPlayer)
 			{
 				MPlayer->addToMoverRoster(mover);
-				MPlayer->addToPlayerMoverRoster(moverSpec->commanderID, mover);
-				if (moverSpec->commanderID == MPlayer->commanderID)
+				MPlayer->addToPlayerMoverRoster(moverSpec->commanderid, mover);
+				if (moverSpec->commanderid == MPlayer->commanderid)
 					MPlayer->addToLocalMovers(mover);
 			}
 			if (moverSpec->exists)
@@ -1225,14 +1225,14 @@ Mission::addMover(MoverInitData* moverSpec)
 			// If we're not playing multiplayer, make sure all home commander
 			// movers have their localMoverId set to 0, so the iface can at
 			// least check if a mover is player controlled...
-			if (!MPlayer && (Commander::home->getId() == moverSpec->commanderID))
+			if (!MPlayer && (Commander::home->getId() == moverSpec->commanderid))
 				mover->setLocalMoverId(0);
 			ObjectManager->modifyMoverLists(mover, MOVERLIST_ADD);
 			Team::teams[moverSpec->teamID]->addToRoster(mover);
 			missionInterface->addMover(mover);
 			for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 			{
-				MoverPtr curMover = ObjectManager->getMover(i);
+				std::unique_ptr<Mover> curMover = ObjectManager->getMover(i);
 				if (!curMover->isDisabled())
 				{
 					if (curMover->sensorSystem)
@@ -1280,7 +1280,7 @@ Mission::addMover(MoverInitData* moveSpec, LogisticsMech* mechData)
 	mData.position.z = moveSpec->position.z;
 	mData.rotation = moveSpec->rotation;
 	mData.teamID = moveSpec->teamID;
-	mData.commanderID = moveSpec->commanderID;
+	mData.commanderid = moveSpec->commanderid;
 	mData.baseColor = moveSpec->baseColor;
 	mData.highlightColor1 = moveSpec->highlightColor1;
 	mData.highlightColor2 = moveSpec->highlightColor2;
@@ -1296,7 +1296,7 @@ Mission::addMover(MoverInitData* moveSpec, LogisticsMech* mechData)
 	int32_t moverHandle = addMover(&mData);
 	// Now take the moverHandle and change the component data to match Heidi's
 	// passed logisticsMech.
-	MoverPtr mMech = (MoverPtr)ObjectManager->get(moverHandle);
+	std::unique_ptr<Mover> mMech = (std::unique_ptr<Mover>)ObjectManager->get(moverHandle);
 	if (mMech->getObjectClass() != BATTLEMECH)
 		STOP(("LogisticsMech was not a MECH!!"));
 	strcpy(((BattleMech*)mMech)->variantName, mechData->getName());
@@ -1318,7 +1318,7 @@ Mission::addMover(MoverInitData* moveSpec, LogisticsMech* mechData)
 void
 DEBUGWINS_removeGameObject(GameObjectPtr obj);
 int32_t
-Mission::removeMover(MoverPtr mover)
+Mission::removeMover(std::unique_ptr<Mover> mover)
 {
 	DEBUGWINS_removeGameObject((GameObjectPtr)mover);
 	missionInterface->removeMover(mover);
@@ -1332,8 +1332,8 @@ Mission::removeMover(MoverPtr mover)
 }
 //---------------------------------------------------------------------------
 void
-Mission::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID,
-	PSTR pilotFileName, PSTR brainFileName)
+Mission::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID,
+	const std::wstring_view& pilotFileName, const std::wstring_view& brainFileName)
 {
 	missionInterface->removeMover(mover);
 	if (MPlayer)
@@ -1354,7 +1354,7 @@ Mission::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID,
 	if (MPlayer && (newCommanderID > -1))
 	{
 		MPlayer->addToPlayerMoverRoster(newCommanderID, mover);
-		if (newCommanderID == MPlayer->commanderID)
+		if (newCommanderID == MPlayer->commanderid)
 			MPlayer->addToLocalMovers(mover);
 	}
 	if (newCommanderID > -1)
@@ -1364,7 +1364,7 @@ Mission::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID,
 }
 //----------------------------------------------------------------------------
 bool
-Mission::calcComplexDropZones(PSTR missionName, char dropZoneCID[MAX_MC_PLAYERS])
+Mission::calcComplexDropZones(const std::wstring_view& missionName, char dropZoneCID[MAX_MC_PLAYERS])
 {
 	for (size_t p = 0; p < MAX_MC_PLAYERS; p++)
 		dropZoneCID[p] = -1;
@@ -1382,8 +1382,8 @@ Mission::calcComplexDropZones(PSTR missionName, char dropZoneCID[MAX_MC_PLAYERS]
 	for (size_t i = 0; i < MAX_MC_PLAYERS; i++) {
 		if (MPlayer->playerInfo[i].team > maxTeamID)
 			maxTeamID = MPlayer->playerInfo[i].team;
-		if (MPlayer->playerInfo[i].commanderID > maxCommanderID)
-			maxCommanderID = MPlayer->playerInfo[i].commanderID;
+		if (MPlayer->playerInfo[i].commanderid > maxCommanderID)
+			maxCommanderID = MPlayer->playerInfo[i].commanderid;
 	}
 	*/
 	int32_t dropZoneSetup[MAX_MC_PLAYERS] = {-1, -1, -1, -1, -1, -1, -1, -1};
@@ -1405,18 +1405,18 @@ Mission::calcComplexDropZones(PSTR missionName, char dropZoneCID[MAX_MC_PLAYERS]
 			gosASSERT(result == NO_ERROR);
 			if ((teamID < 0) || (teamID >= MAX_TEAMS))
 				STOP(("Mission.calcComplexDropZones: bad teamID"));
-			char commanderID = -1;
-			result = missionFile->readIdChar("CommanderId", commanderID);
+			char commanderid = -1;
+			result = missionFile->readIdChar("CommanderId", commanderid);
 			if (result != NO_ERROR)
 			{
 				int32_t cID;
 				result = missionFile->readIdLong("CommanderId", cID);
 				gosASSERT(result == NO_ERROR);
-				commanderID = (char)cID;
+				commanderid = (char)cID;
 			}
-			if ((commanderID < 0) || (commanderID >= MAX_MC_PLAYERS))
-				STOP(("Mission.calcComplexDropZones: bad commanderID"));
-			dropZoneSetup[commanderID] = teamID;
+			if ((commanderid < 0) || (commanderid >= MAX_MC_PLAYERS))
+				STOP(("Mission.calcComplexDropZones: bad commanderid"));
+			dropZoneSetup[commanderid] = teamID;
 		}
 	//------------------------------------------------------------------------------------
 	// First, let's confirm that we have the correct player/team setup for this
@@ -1431,7 +1431,7 @@ Mission::calcComplexDropZones(PSTR missionName, char dropZoneCID[MAX_MC_PLAYERS]
 			if (dropZoneSetup[i] > -1)
 				teamSize[dropZoneSetup[i]][0]++;
 		for (i = 0; i < MAX_MC_PLAYERS; i++)
-			if (MPlayer->playerInfo[i].commanderID > -1)
+			if (MPlayer->playerInfo[i].commanderid > -1)
 				teamSize[MPlayer->playerInfo[i].team][1]++;
 		for (i = 0; i < MAX_MC_PLAYERS; i++)
 			if (teamSize[i][0] != teamSize[i][1])
@@ -1495,7 +1495,7 @@ IsGateOpen(int32_t objectWID)
 }
 //----------------------------------------------------------------------------
 void
-Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
+Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dropZoneID,
 	Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], int32_t numMoversPerCommander)
 {
 	neverEndingStory = false;
@@ -1732,7 +1732,7 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 				MPlayer = new MultiPlayer;
 				Assert(MPlayer != nullptr, 0, " Unable to create MultiPlayer object ");
 				MPlayer->setup();
-				MPlayer->commanderID = MultiPlayCommanderId;
+				MPlayer->commanderid = MultiPlayCommanderId;
 				//-------------------------------------------
 				// If I'm the server, then create the game...
 				if(isServer)
@@ -1801,8 +1801,8 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		{
 			if (MPlayer->playerInfo[i].team > maxTeamID)
 				maxTeamID = MPlayer->playerInfo[i].team;
-			if (MPlayer->playerInfo[i].commanderID > maxCommanderID)
-				maxCommanderID = MPlayer->playerInfo[i].commanderID;
+			if (MPlayer->playerInfo[i].commanderid > maxCommanderID)
+				maxCommanderID = MPlayer->playerInfo[i].commanderid;
 		}
 	}
 	else
@@ -1823,26 +1823,26 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 				char teamID = -1;
 				result = missionFile->readIdChar("TeamId", teamID);
 				gosASSERT(result == NO_ERROR);
-				char commanderID = -1;
-				result = missionFile->readIdChar("CommanderId", commanderID);
+				char commanderid = -1;
+				result = missionFile->readIdChar("CommanderId", commanderid);
 				if (result != NO_ERROR)
 				{
 					int32_t cID;
 					result = missionFile->readIdLong("CommanderId", cID);
 					gosASSERT(result == NO_ERROR);
-					commanderID = (char)cID;
+					commanderid = (char)cID;
 				}
 				if (MPlayer && dropZoneList)
 				{
 					//-------------------------------------------------------------
 					// Since dropZoneList is not nullptr, we know this was not
 					// started from the command-line...
-					int32_t origCommanderID = commanderID;
-					commanderID = commandersToLoad[origCommanderID][0];
+					int32_t origCommanderID = commanderid;
+					commanderid = commandersToLoad[origCommanderID][0];
 					teamID = commandersToLoad[origCommanderID][1];
 				}
-				if (commanderID > maxCommanderID)
-					maxCommanderID = commanderID;
+				if (commanderid > maxCommanderID)
+					maxCommanderID = commanderid;
 				if (teamID > maxTeamID)
 					maxTeamID = teamID;
 			}
@@ -1864,8 +1864,8 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		Team::home = Team::teams[MultiPlayTeamId];
 		Commander::home = Commander::commanders[MultiPlayCommanderId];
 		for (size_t i = 0; i <= maxCommanderID; i++)
-			if (MPlayer->playerInfo[i].commanderID > -1)
-				Commander::commanders[MPlayer->playerInfo[i].commanderID]->setTeam(
+			if (MPlayer->playerInfo[i].commanderid > -1)
+				Commander::commanders[MPlayer->playerInfo[i].commanderid]->setTeam(
 					Team::teams[MPlayer->playerInfo[i].team]);
 	}
 	else
@@ -2018,7 +2018,7 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	int32_t numErrors, numLinesProcessed;
 	FullPathFileName libraryFileName;
 	libraryFileName.init(missionPath, "orders", ".abx");
-	ABLModulePtr library = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
+	const std::unique_ptr<ABLModule>& library = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
 	gosASSERT(library != nullptr);
 	FullPathFileName libraryFileName1;
 	libraryFileName1.init(missionPath, "miscfunc", ".abx");
@@ -2080,7 +2080,7 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			result = missionFile->readIdString("Profile", warriorFile, 99);
 			Assert(
 				result == NO_ERROR, 0, " Could not find Warrior Profile in Warrior Number Block ");
-			MechWarriorPtr pilot = MechWarrior::newWarrior();
+			std::unique_ptr<MechWarrior> pilot = MechWarrior::newWarrior();
 			if (!pilot)
 				STOP(("Too many pilots in this mission!"));
 			//--------------------------------------
@@ -2334,23 +2334,23 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			result = missionFile->readIdChar("CommanderId", cmdId);
 			if (result != NO_ERROR)
 			{
-				result = missionFile->readIdLong("CommanderId", parts[i].commanderID);
+				result = missionFile->readIdLong("CommanderId", parts[i].commanderid);
 				gosASSERT(result == NO_ERROR);
 			}
 			else
 			{
-				parts[i].commanderID = cmdId;
+				parts[i].commanderid = cmdId;
 			}
 			if (loadType == MISSION_LOAD_MP_QUICKSTART)
 			{
-				int32_t origCommanderID = parts[i].commanderID;
-				parts[i].commanderID = commandersToLoad[origCommanderID][0];
+				int32_t origCommanderID = parts[i].commanderid;
+				parts[i].commanderid = commandersToLoad[origCommanderID][0];
 				parts[i].teamId = commandersToLoad[origCommanderID][1];
 				if (commandersToLoad[origCommanderID][0] > -1)
 				{
 					if (numMoversLoaded[commandersToLoad[origCommanderID][0]] == numMoversPerCommander)
 					{
-						parts[i].commanderID = -1;
+						parts[i].commanderid = -1;
 						parts[i].teamId = -1;
 					}
 					else
@@ -2445,10 +2445,10 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			if (loadType == MISSION_LOAD_MP_LOGISTICS)
 				loadEm = false;
 			if (loadType == MISSION_LOAD_SP_LOGISTICS)
-				if (parts[i].commanderID == 0 && !parts[i].destroyed)
+				if (parts[i].commanderid == 0 && !parts[i].destroyed)
 					loadEm = false;
 			if (loadType == MISSION_LOAD_MP_QUICKSTART)
-				if (parts[i].commanderID == -1)
+				if (parts[i].commanderid == -1)
 					loadEm = false;
 			if (loadEm)
 			{
@@ -2571,7 +2571,7 @@ Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 						commandersToLoad[curCommanderId][0], numGroups, curMate);
 					Commander::commanders[commandersToLoad[curCommanderId][0]]
 						->getGroup(numGroups)
-						->add((MoverPtr)ObjectManager->getByWatchID(
+						->add((std::unique_ptr<Mover>)ObjectManager->getByWatchID(
 							parts[groupMates[curMate]].objectWID));
 					if (!pointSet)
 					{

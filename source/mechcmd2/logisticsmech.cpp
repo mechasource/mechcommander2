@@ -73,5 +73,4 @@ LogisticsMech::getColors(uint32_t& base, uint32_t& high1, uint32_t& high2) const
 	high2 = highlightColor2;
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsMech.cpp )

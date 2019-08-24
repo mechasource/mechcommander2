@@ -11,17 +11,17 @@ MainMenu.cpp			: Implementation of the MainMenu component.
 #include <windows.h>
 #include <ddraw.h>
 #include "mainmenu.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "inifile.h"
 #include "logisticsdata.h"
 #include "logisticsdialog.h"
-#include <mechgui/abutton.h>
+#include "mechgui/abutton.h"
 #include "optionsscreenwrapper.h"
 //#include <windows.h>
-#include "..\resource.h"
+#include "resource.h"
 #include "mechlopedia.h"
 #include "gamesound.h"
-#include <mechgui/aanimobject.h>
+#include "mechgui/aanimobject.h"
 #include "multplyr.h"
 #include "prefs.h"
 
@@ -59,7 +59,7 @@ SplashIntro::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)path);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
@@ -101,7 +101,7 @@ MainMenu::init(FitIniFile& file)
 	if (NO_ERROR != file2.open(name))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)name);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)name);
 		Assert(0, 0, errorStr);
 	}
 	background.init(file2, "Static", "Text", "Rect", "Button");
@@ -530,7 +530,7 @@ MainMenu::update()
 		{
 			if (singleLoadDlg.getStatus() == YES)
 			{
-				PCSTR pName = singleLoadDlg.getMapFileName();
+				const std::wstring_view& pName = singleLoadDlg.getMapFileName();
 				if (pName)
 				{
 					LogisticsData::instance->setSingleMission(pName);
@@ -733,7 +733,7 @@ MainMenu::render()
 }
 
 void
-MainMenu::setHostLeftDlg(PCSTR playerName)
+MainMenu::setHostLeftDlg(const std::wstring_view& playerName)
 {
 	char leaveStr[256];
 	char formatStr[256];
@@ -741,7 +741,7 @@ MainMenu::setHostLeftDlg(PCSTR playerName)
 	sprintf(formatStr, leaveStr, playerName);
 	LogisticsOneButtonDialog::instance()->setText(IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
 	LogisticsOneButtonDialog::instance()->setText(formatStr);
-	if (MPlayer && MPlayer->playerInfo[MPlayer->commanderID].booted)
+	if (MPlayer && MPlayer->playerInfo[MPlayer->commanderid].booted)
 	{
 		LogisticsOneButtonDialog::instance()->setText(
 			IDS_MP_PLAYER_KICKED, IDS_DIALOG_OK, IDS_DIALOG_OK);
@@ -750,5 +750,4 @@ MainMenu::setHostLeftDlg(PCSTR playerName)
 	bHostLeftDlg = true;
 }
 
-//*************************************************************************************************
 // end of file ( MainMenu.cpp )

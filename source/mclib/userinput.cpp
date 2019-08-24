@@ -40,7 +40,7 @@
 #include "txmmgr.h"
 #endif
 
-#include <stuff/stuff.hpp>
+#include "stuff/stuff.h"
 
 //---------------------------------------------------------------------------
 UserInput* userInput = nullptr;
@@ -55,7 +55,7 @@ void
 MouseTimerKill();
 //---------------------------------------------------------------------------
 void
-MouseCursorData::initCursors(PSTR cursorFileName)
+MouseCursorData::initCursors(const std::wstring_view& cursorFileName)
 {
 	// New
 	// add an "a" to the end of the cursorFileName IF we are running in 800x600
@@ -371,7 +371,7 @@ UserInput::update(void)
 
 //---------------------------------------------------------------------------
 void
-UserInput::initMouseCursors(PSTR mouseFile)
+UserInput::initMouseCursors(const std::wstring_view& mouseFile)
 {
 	if (cursors)
 	{

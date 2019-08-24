@@ -11,14 +11,13 @@ component.
 #ifndef LOGISTICSMECHDISPLAY_H
 #define LOGISTICSMECHDISPLAY_H
 
-//#include <mechgui/logisticsscreen.h>
+//#include "mechgui/logisticsscreen.h"
 //#include "simplecamera.h"
 //#include "attributemeter.h"
 //#include "simplecomponentlistbox.h"
 
 class LogisticsMech;
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -43,5 +42,4 @@ private:
 	ComponentListBox componentListBox;
 };
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsMechDisplay.h )

@@ -8,8 +8,8 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/registeredclass.hpp>
+//#include "gameos.hpp"
+#include "stuff/registeredclass.h"
 
 using namespace Stuff;
 
@@ -53,7 +53,7 @@ RegisteredClass::RegisteredClass(ClassData* class_data) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PCSTR
+const std::wstring_view&
 RegisteredClass::GetClassString(void) const
 {
 	// Check_Object(this);
@@ -77,7 +77,7 @@ RegisteredClass::TestInstance(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 RegisteredClass__ClassData::RegisteredClass__ClassData(
-	RegisteredClass::ClassID class_id, PCSTR name, RegisteredClass__ClassData* parent)
+	RegisteredClass::ClassID class_id, const std::wstring_view& name, RegisteredClass__ClassData* parent)
 {
 	//
 	//--------------------------------
@@ -195,7 +195,7 @@ RegisteredClass__ClassData::IsDerivedFrom(RegisteredClass__ClassData* parent)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 RegisteredClass__ClassData*
-RegisteredClass__ClassData::FindClassData(PCSTR name)
+RegisteredClass__ClassData::FindClassData(const std::wstring_view& name)
 {
 	// Check_Object(this);
 	if (!_stricmp(className, name))

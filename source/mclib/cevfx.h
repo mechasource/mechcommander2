@@ -16,7 +16,7 @@
 #endif
 
 #include <float.h>
-#include <gameos.hpp>
+#include "gameos.hpp"
 //---------------------------------------------------------------------------
 class VFXElement : public Element
 {

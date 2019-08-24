@@ -19,7 +19,7 @@
 //
 // Packet overhead of DirectPlay
 //
-typedef enum __net_header_const
+enum class __net_header_const
 {
 	PACKET_OVERHEAD = 42,
 	MAX_DP_OBJECTS = 8
@@ -38,7 +38,7 @@ typedef struct _PacketBuffer
 	uint32_t FromID;
 	uint32_t ToID;
 	uint64_t TimeStamp;
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	uint8_t Encrypted; // changed from bool due to packing
 #else
 	uint32_t Encrypted;
@@ -83,7 +83,7 @@ typedef struct _Messages
 //
 // All memory in networking must be allocated on this heap
 //
-extern HGOSHEAP Heap_Network;
+// extern HGOSHEAP Heap_Network;
 
 //
 // Interfaces
@@ -309,7 +309,7 @@ CheckForInternet(void);
 void
 PushGameList(void);
 bool
-GUNPrepareDPlay(PCSTR GameName);
+GUNPrepareDPlay(PSTR GameName);
 
 HRESULT
 QuickEnum(bool async); // quickly begin dplay enumeration of sessions.

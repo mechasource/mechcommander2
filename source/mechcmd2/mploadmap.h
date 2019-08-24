@@ -5,7 +5,6 @@ MPLoadMap.h			: Interface for the MPLoadMap component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
@@ -13,11 +12,11 @@ MPLoadMap.h			: Interface for the MPLoadMap component.
 #define MPLOADMAP_H
 
 //#include "logisticsdialog.h"
-//#include <mechgui/asystem.h>
-//#include <mechgui/alistbox.h>
+//#include "mechgui/asystem.h"
+//#include "mechgui/alistbox.h"
 //#include "attributemeter.h"
 //#include "simplecamera.h"
-//#include <mechgui/aanim.h>
+//#include "mechgui/aanim.h"
 
 class aButton;
 
@@ -38,9 +37,9 @@ public:
 
 	void beginSingleMission(void);
 
-	PCSTR getMapFileName() { return selMapName; }
+	const std::wstring_view& getMapFileName() { return selMapName; }
 
-	static void getMapNameFromFile(PCSTR pFileName, PSTR pBuffer, int32_t bufferLength);
+	static void getMapNameFromFile(const std::wstring_view& pFileName, const std::wstring_view& pBuffer, int32_t bufferLength);
 
 private:
 	int32_t indexOfButtonWithID(int32_t id);
@@ -50,14 +49,13 @@ private:
 	aListBox mapList;
 	aLocalizedListItem templateItem;
 
-	std::wstring selMapName;
+	const std::wstring_view& selMapName;
 
 	bool bIsSingle;
 
 	void updateMapInfo(void);
-	void seedFromFile(PCSTR pFileName);
-	void addFile(PCSTR pFileName, bool bSeedSingle);
+	void seedFromFile(const std::wstring_view& pFileName);
+	void addFile(const std::wstring_view& pFileName, bool bSeedSingle);
 };
 
-//*************************************************************************************************
 #endif // end of file ( MPLoadMap.h )

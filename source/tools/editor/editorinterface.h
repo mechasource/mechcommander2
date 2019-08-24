@@ -7,7 +7,7 @@
 #ifndef EDITORINTERFACE_H
 #define EDITORINTERFACE_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "action.h"
 //#include "editorobjectmgr.h"
 //#include "editordata.h"
@@ -47,7 +47,7 @@ public:
 
 	void handleNewMenuMessage(int32_t specificMessage);
 
-	void init(PCSTR fileName);
+	void init(const std::wstring_view& fileName);
 
 	void terminate(void);
 
@@ -123,7 +123,7 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 protected:
-	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
@@ -165,7 +165,7 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnCommand(WPARAM wParam);
+	afx_msg void OnCommand(WPARAM wparam);
 
 private:
 	// Message handlers
@@ -299,7 +299,7 @@ public:
 
 	void destroy(void);
 
-	void init(PSTR loader);
+	void init(const std::wstring_view& loader);
 
 	void render(void);
 

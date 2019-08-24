@@ -8,10 +8,10 @@ ObjectSelectionBrush.h	: Interface for the ObjectSelectionBrush component.
 \*************************************************************************************************/
 
 #ifndef BRUSH_H
-#include "Brush.h"
+#include "brush.h"
 #endif
 
-#include <elist.h>
+#include "elist.h"
 
 class ActionPaintTile;
 class EditorObject;
@@ -48,5 +48,4 @@ private:
 	ActionPaintTile* pCurAction;
 };
 
-//*************************************************************************************************
 #endif // end of file ( ObjectSelectionBrush.h )

@@ -9,7 +9,7 @@
 #ifndef MLR_MLR_HPP
 #define MLR_MLR_HPP
 
-// #include <stuff/memorystream.hpp>
+// #include "stuff/memorystream.h"
 
 #ifndef _GAMEOS_HPP_
 typedef struct gos_Heap* HGOSHEAP;
@@ -49,8 +49,8 @@ void __stdcall InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame = 8192,
 	uint32_t Max_Size_Of_LightMap_MemoryStream = 32768, bool Convert_To_Triangle_Meshes = true);
 void __stdcall TerminateClasses(void);
 
-extern HGOSHEAP Heap;
-extern HGOSHEAP StaticHeap;
+// extern HGOSHEAP Heap;
+// extern HGOSHEAP StaticHeap;
 
 extern bool ConvertToTriangleMeshes;
 
@@ -87,15 +87,15 @@ extern bool PerspectiveMode;
 #define TO_DO Abort_Program("Here has work to be done !");
 #undef MLR_TRACE
 
-//#include <mlr/mlrstate.hpp>
-//#include <mlr/mlrtexture.hpp>
-//#include <mlr/mlrtexturepool.hpp>
-//#include <mlr/mlrclippingstate.hpp>
-//#include <mlr/mlrclipper.hpp>
-//#include <mlr/mlrsorter.hpp>
-//#include <mlr/mlrsortbyorder.hpp>
-//#include <mlr/mlrlight.hpp>
-//#include <mlr/mlrshape.hpp>
-//#include <mlr/mlreffect.hpp>
+//#include "mlr/mlrstate.h"
+//#include "mlr/mlrtexture.h"
+//#include "mlr/mlrtexturepool.h"
+//#include "mlr/mlrclippingstate.h"
+//#include "mlr/mlrclipper.h"
+//#include "mlr/mlrsorter.h"
+//#include "mlr/mlrsortbyorder.h"
+//#include "mlr/mlrlight.h"
+//#include "mlr/mlrshape.h"
+//#include "mlr/mlreffect.h"
 
 #endif

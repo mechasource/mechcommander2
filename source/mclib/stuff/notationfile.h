@@ -12,7 +12,7 @@
 #ifndef _NOTATIONFILE_HPP_
 #define _NOTATIONFILE_HPP_
 
-#include <stuff/scalar.hpp>
+#include "stuff/scalar.h"
 #include <stuff/chain.hpp>
 #include <stuff/filestream.hpp>
 #include <stuff/filestreammanager.hpp>

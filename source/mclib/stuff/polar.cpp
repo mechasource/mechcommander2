@@ -8,9 +8,9 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/polar.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/polar.h"
 
 using namespace Stuff;
 
@@ -94,7 +94,7 @@ Stuff::Close_Enough(const YawPitchRange& a1, const YawPitchRange& a2, float e)
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const YawPitchRange& angle)
+Spew(const std::wstring_view& group, const YawPitchRange& angle)
 {
 	SPEW((group, "<+"));
 	Spew(group, angle.yaw);

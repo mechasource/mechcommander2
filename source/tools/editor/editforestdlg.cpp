@@ -136,7 +136,7 @@ EditForestDlg::OnInitDialog()
 		char final[256];
 		for (size_t i = 0; i < count; i++)
 		{
-			PCSTR pName = pForests[i]->getName();
+			const std::wstring_view& pName = pForests[i]->getName();
 			int32_t index = -1;
 			// make up name if necessary
 			if (!pName || !strlen(pName))

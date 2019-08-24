@@ -77,7 +77,7 @@ public:
 
 	virtual MoverGroupPtr getGroup(int32_t groupNumber) { return (groups[groupNumber]); }
 
-	int32_t setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point);
+	int32_t setGroup(int32_t id, int32_t numMates, std::unique_ptr<Mover>* moverList, int32_t point);
 
 	void setLocalMoverId(int32_t localMoverId);
 

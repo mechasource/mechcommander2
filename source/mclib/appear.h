@@ -16,8 +16,8 @@
 //#include "dappear.h"
 //#include <daprtype.h>
 //#include "floathelp.h"
-//#include <stuff/stuff.hpp>
-#include <stuff/vector4d.hpp>
+//#include "stuff/stuff.h"
+#include "stuff/vector4d.h"
 
 //---------------------------------------------------------------------------
 // Macro definitions
@@ -129,9 +129,9 @@ public:
 	virtual void drawSelectBox(uint32_t color);
 	virtual void drawSelectBrackets(uint32_t color);
 	virtual void drawBars(void);
-	void drawTextHelp(PSTR text);
-	void drawTextHelp(PSTR text, uint32_t color);
-	void drawPilotName(PSTR text, uint32_t color); // next line below drawTextHelp
+	void drawTextHelp(const std::wstring_view& text);
+	void drawTextHelp(const std::wstring_view& text, uint32_t color);
+	void drawPilotName(const std::wstring_view& text, uint32_t color); // next line below drawTextHelp
 
 	virtual bool recalcBounds(void)
 	{
@@ -222,7 +222,7 @@ public:
 		return position;
 	}
 
-	virtual Stuff::Vector3D getNodeNamePosition(PSTR /*nodeName*/)
+	virtual Stuff::Vector3D getNodeNamePosition(const std::wstring_view& /*nodeName*/)
 	{
 		Stuff::Vector3D position;
 		position.x = position.y = position.z = 0.0f;
@@ -344,7 +344,7 @@ public:
 		size_t bmpHandle, size_t bmpWidth, size_t bmpHeight, size_t color, size_t where = 0);
 
 	virtual void setSkyNumber(int32_t /*skyNum*/) {}
-	virtual void setMechName(PCSTR /*pName*/) {}
+	virtual void setMechName(const std::wstring_view& /*pName*/) {}
 	virtual void startSmoking(int32_t /*smokeLvl*/) {}
 	virtual void startWaterWake(void) {}
 	virtual void stopWaterWake(void) {}

@@ -7,20 +7,18 @@
 #ifndef MLR_GOSVERTEX_HPP
 #define MLR_GOSVERTEX_HPP
 
-#include <stuff/vector2d.hpp>
-#include <stuff/vector4d.hpp>
-#include <stuff/color.hpp>
-#include <mlr/mlr.hpp>
-#include <mlr/mlrstate.hpp>
+#include "stuff/vector2d.h"
+#include "stuff/vector4d.h"
+#include "stuff/color.h"
+#include "mlr/mlr.h"
+#include "mlr/mlrstate.h"
 
 #ifndef _GAMEOS_HPP_
 typedef struct _gos_VERTEX
 {
-	float x, y; // Screen coords    - must be 0.0 to Environment.screenWidth/Height (no clipping
-		// occurs unless gos_State_Clipping is true)
+	float x, y; // Screen coords    - must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
 	float z; // 0.0 to 0.99999   - Used for visibility check in ZBuffer (1.0 is not valid)
-	float rhw; // 0.0 to 1.0       - reciprocal of homogeneous w - Used for perspective correct
-		// textures, fog and clipping
+	float rhw; // 0.0 to 1.0       - reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
 	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid, 0=transparent)
 	uint32_t frgb; // Specular color and fog
 	float u, v; // Texture coordinates
@@ -554,23 +552,23 @@ Color_DWORD_Lerp(uint32_t _from, uint32_t _to, float _lerp)
 #define I_SAY_YES_TO_COLOR
 #define I_SAY_YES_TO_TEXTURE
 #define I_SAY_YES_TO_DWORD_COLOR
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 #undef I_SAY_YES_TO_DWORD_COLOR
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 #undef I_SAY_YES_TO_COLOR
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 #define I_SAY_YES_TO_COLOR
 #undef I_SAY_YES_TO_TEXTURE
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 #define I_SAY_YES_TO_DWORD_COLOR
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 #undef I_SAY_YES_TO_COLOR
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 // #define MLR_GOSVERTEXMANIPULATION_HPP
 } // namespace MidLevelRenderer

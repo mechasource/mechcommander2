@@ -34,8 +34,8 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <3drasterizer.hpp>
+#include "gameos.hpp"
+#include "3drasterizer.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module

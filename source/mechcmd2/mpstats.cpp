@@ -8,9 +8,9 @@ MPStats.cpp			: Implementation of the MPStats component.
 #include "stdinc.h"
 
 #include "mpstats.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "MissionBriefingScreen.h"
-#include "ChatWindow.h"
+#include "chatwindow.h"
 #include "MechBayScreen.h"
 #include "logisticsdialog.h"
 
@@ -36,7 +36,7 @@ MPStats::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (PSTR)path);
+		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return false;
 	}
@@ -187,7 +187,7 @@ MPStats::update()
 		LogisticsVariantDialog::instance()->update();
 		if (LogisticsVariantDialog::instance()->getStatus() == YES)
 		{
-			std::wstring str = LogisticsVariantDialog::instance()->getFileName();
+			const std::wstring_view& str = LogisticsVariantDialog::instance()->getFileName();
 			FullPathFileName oldPath;
 			FullPathFileName newPath;
 			newPath.init("data\\multiplayer\\transcripts\\", str, ".txt");
@@ -218,7 +218,7 @@ MPStats::update()
 }
 
 void
-MPStats::setHostLeftDlg(PCSTR hostName)
+MPStats::setHostLeftDlg(const std::wstring_view& hostName)
 {
 	char leaveStr[256];
 	char formatStr[256];
@@ -230,7 +230,6 @@ MPStats::setHostLeftDlg(PCSTR hostName)
 	bHostLeftDlg = true;
 }
 
-//*************************************************************************************************
 MPStatsEntry::MPStatsEntry()
 {
 	overlayColor = 0;
@@ -253,7 +252,7 @@ MPStatsEntry::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (PSTR)path);
+		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return;
 	}
@@ -269,7 +268,7 @@ MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 	int32_t color = data ? MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] : 0x00000000;
 	int32_t color2 = data ? MPlayer->colors[data->stripeColor] : 0x00000000;
 	int32_t scoreColor = 0xffffffff;
-	if (data && MPlayer->allUnitsDestroyed[data->commanderID])
+	if (data && MPlayer->allUnitsDestroyed[data->commanderid])
 		scoreColor = 0xff7f7f7f;
 	rects[0].setColor(color2);
 	rects[1].setColor(color);
@@ -333,7 +332,6 @@ MPStatsEntry::getLossesX()
 	return textObjects[2].globalX();
 }
 
-//*************************************************************************************************
 MPStatsResultsEntry::MPStatsResultsEntry()
 {
 	overlayColor = 0;
@@ -361,7 +359,7 @@ MPStatsResultsEntry::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (PSTR)path);
+		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return;
 	}
@@ -374,7 +372,7 @@ MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool b
 {
 	rects[4].setColor(MPlayer->colors[data->baseColor[BASECOLOR_TEAM]]);
 	rects[2].setColor(MPlayer->colors[data->stripeColor]);
-	if (data && MPlayer->allUnitsDestroyed[data->commanderID])
+	if (data && MPlayer->allUnitsDestroyed[data->commanderid])
 		overlayColor = 0x7f000000;
 	else
 		overlayColor = 0;
@@ -423,7 +421,7 @@ MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool b
 	}
 	else
 	{
-		TGAFileHeader* pData = (TGAFileHeader*)MPlayer->insigniaList[data->commanderID];
+		TGAFileHeader* pData = (TGAFileHeader*)MPlayer->insigniaList[data->commanderid];
 		if (pData)
 		{
 			int32_t size = pData->pixel_depth / 8;
@@ -435,5 +433,4 @@ MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool b
 	}
 }
 
-//*************************************************************************************************
 // end of file ( MPStats.cpp )

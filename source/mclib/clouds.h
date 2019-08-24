@@ -17,11 +17,11 @@
 #endif
 
 #ifndef GAMEOS_HPP
-#include <gameos.hpp>
+#include "gameos.hpp"
 #endif
 
 #ifndef STUFF_HPP
-#include <stuff/stuff.hpp>
+#include "stuff/stuff.h"
 #endif
 
 //---------------------------------------------------------------------------
@@ -71,7 +71,7 @@ public:
 
 	~Clouds(void) { destroy(void); }
 
-	void init(PSTR textureName, int32_t gSize);
+	void init(const std::wstring_view& textureName, int32_t gSize);
 
 	void update(void);
 	void render(void);

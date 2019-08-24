@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrprimitivebase.hpp>
+#include "mlr/mlrprimitivebase.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -430,7 +430,7 @@ MidLevelRenderer::CreateIndexedIcosahedron(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PCSTR
+const std::wstring_view&
 MidLevelRenderer::IcoInfo::GetTypeName()
 {
 	switch (type)
@@ -508,3 +508,5 @@ MLRPrimitiveBase__ClassData::TestInstance()
 {
 	_ASSERT(IsDerivedFrom(MLRPrimitiveBase::DefaultData));
 }
+
+} // namespace MidLevelRenderer

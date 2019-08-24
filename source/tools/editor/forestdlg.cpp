@@ -10,7 +10,7 @@
 #include "forestdlg.h"
 #include "terrain.h"
 #include "editorobjectmgr.h"
-#include <mclib.h>
+#include "mclib.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // ForestDlg dialog

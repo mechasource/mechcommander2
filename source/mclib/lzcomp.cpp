@@ -9,7 +9,7 @@
 #include "lz.h"
 
 //#ifndef _MBCS
-//#include <gameos.hpp>
+//#include "gameos.hpp"
 //
 //#ifndef HEAP_H
 //#include "heap.h"
@@ -48,7 +48,7 @@ uint32_t BitOffset = 0;
 uint32_t codeToWrite = 0;
 uint8_t K = 0;
 
-typedef enum __lzcomp_const
+enum class __lzcomp_const
 {
 	MaxMax = 4096,
 	Clear = 256,

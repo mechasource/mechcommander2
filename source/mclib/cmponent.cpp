@@ -22,11 +22,11 @@
 #include "utilities.h"
 //******************************************************************************************
 
-PSTR ComponentFormString[] = {"Simple", "Cockpit", "Sensors", "Actuator", "Engine", "HeatSink",
+const std::wstring_view& ComponentFormString[] = {"Simple", "Cockpit", "Sensors", "Actuator", "Engine", "HeatSink",
 	"Weapon", "EnergyWeapon", "BallisticWeapon", "MissileWeapon", "Ammo", "JumpJet", "Case",
 	"LifeSupport", "Gyroscope", "PowerAmplifier", "ECM", "Probe", "Jammer", "Bulk", nullptr};
 
-PSTR WeaponRangeString[] = {"int16_t", "medium", "int32_t"};
+const std::wstring_view& WeaponRangeString[] = {"int16_t", "medium", "int32_t"};
 
 MasterComponentPtr MasterComponent::masterList = nullptr;
 int32_t MasterComponent::numComponents = 0;
@@ -65,13 +65,13 @@ MasterComponent::destroy(void)
 
 //******************************************************************************************
 int32_t
-MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
+MasterComponent::initEXCEL(const std::wstring_view& dataLine, float baseSensorRange)
 {
 	//----------------------------------------------------------
 	// Component data was read in, so parse it. First, parse the
 	// fields common to all components...
-	PSTR next_token = nullptr;
-	PSTR field = strtok_s(dataLine, ",", &next_token);
+	const std::wstring_view& next_token = nullptr;
+	const std::wstring_view& field = strtok_s(dataLine, ",", &next_token);
 	int32_t ammoAmount = 1;
 	health = 1;
 	masterID = atoi(field);
@@ -108,7 +108,7 @@ MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 	field = strtok_s(nullptr, ",", &next_token);
 	uint8_t rangeType = 255;
 	_Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(
-		_Inout_updates_z_(_Size) PSTR _Str, _In_ size_t _Size);
+		_Inout_updates_z_(_Size) const std::wstring_view& _Str, _In_ size_t _Size);
 	_strlwr(field);
 	if (strcmp(field, "0") != 0)
 	{
@@ -231,7 +231,7 @@ MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 
 //******************************************************************************************
 int32_t
-MasterComponent::saveEXCEL(FilePtr componentFile, uint8_t masterId, float baseSensorRange)
+MasterComponent::saveEXCEL(std::unique_ptr<File> componentFile, uint8_t masterId, float baseSensorRange)
 {
 	char dataLine[512];
 	char piece[512];
@@ -537,7 +537,7 @@ MasterComponent::isDefensiveWeapon(void)
 //---------------------------------------------------------------------------
 
 int32_t
-MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float baseSensorRange)
+MasterComponent::loadMasterList(const std::wstring_view& fileName, int32_t listSize, float baseSensorRange)
 {
 	if (masterList)
 	{
@@ -579,7 +579,7 @@ MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float baseSenso
 
 //---------------------------------------------------------------------------
 int32_t
-MasterComponent::saveMasterList(PSTR fileName, int32_t listSize, float baseSensorRange)
+MasterComponent::saveMasterList(const std::wstring_view& fileName, int32_t listSize, float baseSensorRange)
 {
 	//-----------------------------------------------------------------
 	// All components are in one data file. Save it in CSV format!

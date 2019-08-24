@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrpointlight.hpp>
+#include "mlr/mlrpointlight.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //###########################    MLRPointLight    #############################
@@ -55,7 +55,7 @@ MLRPointLight::MLRPointLight(std::iostream stream, uint32_t version) :
 	lightMap = nullptr;
 	if (version > 7)
 	{
-		std::wstring name;
+		const std::wstring_view& name;
 		*stream >> name;
 		if (name.GetLength() > 0)
 		{
@@ -79,7 +79,7 @@ MLRPointLight::MLRPointLight(Stuff::Page* page) :
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
-	PCSTR lightmap;
+	const std::wstring_view& lightmap;
 	if (page->GetEntry("LightMap", &lightmap))
 	{
 		Check_Pointer(lightmap);
@@ -119,11 +119,11 @@ MLRPointLight::Save(std::iostream stream)
 		uint32_t handle = lightMap->GetState().GetTextureHandle();
 		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
-		std::wstring name = texture->GetTextureName();
+		const std::wstring_view& name = texture->GetTextureName();
 		*stream << name;
 	}
 	else
-		*stream << std::wstring("");
+		*stream << const std::wstring_view&("");
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -227,3 +227,5 @@ MLRPointLight::SetLightMap(MLRLightMap* light_map)
 		lightMask |= MLRState::LightMapLightingMode;
 	}
 }
+
+} // namespace MidLevelRenderer

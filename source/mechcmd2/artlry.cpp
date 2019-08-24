@@ -9,56 +9,19 @@
 //===========================================================================//
 #include "stdinc.h"
 
-// #include <mclib.h>
-
-#ifndef ARTLRY_H
 #include "artlry.h"
-#endif
-
-#ifndef TEAM_H
 #include "team.h"
-#endif
-
-#ifndef OBJMGR_H
 #include "objmgr.h"
-#endif
-
-#ifndef MOVE_H
 #include "move.h"
-#endif
-
-#ifndef CARNAGE_H
 #include "carnage.h"
-#endif
-
-#ifndef COLLSN_H
 #include "collsn.h"
-#endif
-
-#ifndef TURRET_H
 #include "turret.h"
-#endif
-
-#ifndef TERRAIN_H
 #include "terrain.h"
-#endif
-
-#ifndef COMNDR_H
 #include "comndr.h"
-#endif
-
-#ifndef MISSION_H
 #include "mission.h"
-#endif
-
-#ifndef GATE_H
 #include "gate.h"
-#endif
-
 #include "gamesound.h"
-#ifndef MULTPLYR_H
 #include "multplyr.h"
-#endif
 
 //---------------------------------------------------------------------------
 
@@ -81,8 +44,8 @@
 extern MidLevelRenderer::MLRClipper* theClipper;
 extern bool useShadows;
 
-#define AIRSTRIKE_NAME "airstrikemarker"
-#define SENSOR_NAME "sensormarker"
+constexpr wchar_t AIRSTRIKE_NAME[] = L"airstrikemarker";
+constexpr wchar_t SENSOR_NAME[] = L"sensormarker";
 
 #define GV_LEFT_DUST_ID 0
 #define GV_RIGHT_DUST_ID 1
@@ -93,7 +56,7 @@ extern bool MLRVertexLimitReached;
 //***************************************************************************
 
 void
-CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc,
+CallArtillery(int32_t commanderid, int32_t striketype, Stuff::Vector3D strikeloc,
 	int32_t secondsToImpact, bool randomOff)
 {
 	//-------------------------------------------------------------------
@@ -103,7 +66,7 @@ CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc
 	for (size_t i = 0; i < ObjectManager->getNumArtillery(); i++)
 	{
 		ArtilleryPtr artillery = ObjectManager->getArtillery(i);
-		if (artillery && artillery->getExists() && (artillery->getCommanderId() == commanderID))
+		if (artillery && artillery->getExists() && (artillery->getCommanderId() == commanderid))
 			numArtillery++;
 	}
 	if (numArtillery >= 10)
@@ -111,15 +74,15 @@ CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc
 		if (MPlayer && MPlayer->isServer())
 			return;
 	}
-	ArtilleryPtr artilleryStrike = ObjectManager->createArtillery(strikeType, strikeLoc);
+	ArtilleryPtr artilleryStrike = ObjectManager->createArtillery(striketype, strikeloc);
 	if (artilleryStrike)
 	{
-		artilleryStrike->iFacePosition = strikeLoc;
-		artilleryStrike->setPosition(strikeLoc);
+		artilleryStrike->iFacePosition = strikeloc;
+		artilleryStrike->setPosition(strikeloc);
 		//-----------------------------------------------------------
 		// alignment only really matters for sensor & camera strikes.
-		artilleryStrike->setTeamId(Commander::commanders[commanderID]->getTeam()->getId(), true);
-		artilleryStrike->setCommanderId(commanderID);
+		artilleryStrike->setTeamId(Commander::commanders[commanderid]->getTeam()->getId(), true);
+		artilleryStrike->setCommanderId(commanderid);
 		//-----------------------------------------------------------
 		// Set Time to Impact here.  Only if timeToImpact is != -1.0
 		if (secondsToImpact != -1)
@@ -134,12 +97,12 @@ CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc
 		// We must be server if we got here...
 		if (MPlayer)
 		{
-			if ((strikeType == ARTILLERY_SMALL) || (strikeType == ARTILLERY_LARGE))
-				MPlayer->numAirStrikesUsed[commanderID]++;
+			if ((striketype == ARTILLERY_SMALL) || (striketype == ARTILLERY_LARGE))
+				MPlayer->numAirStrikesUsed[commanderid]++;
 			else
-				MPlayer->numSensorProbesUsed[commanderID]++;
+				MPlayer->numSensorProbesUsed[commanderid]++;
 			if (MPlayer->isServer())
-				MPlayer->addArtilleryChunk(commanderID, strikeType, strikeLoc, secondsToImpact);
+				MPlayer->addArtilleryChunk(commanderid, striketype, strikeloc, secondsToImpact);
 		}
 		artilleryStrike->update(); // call this so if in pause mode, there is
 			// something to draw
@@ -149,24 +112,24 @@ CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc
 //---------------------------------------------------------------------------
 
 void
-IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr strikeTarget,
+IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeloc, GameObjectPtr strikeTarget,
 	bool playerStrike, bool clanStrike, float timeToImpact)
 {
 	if ((strikeID != ARTILLERY_LARGE) && (strikeID != ARTILLERY_SMALL) && (strikeID != ARTILLERY_SENSOR))
 		return;
-	if (!strikeLoc && !strikeTarget)
+	if (!strikeloc && !strikeTarget)
 		return;
 	Stuff::Vector3D strikeLocation;
-	if (strikeLoc)
-		strikeLocation = *strikeLoc;
+	if (strikeloc)
+		strikeLocation = *strikeloc;
 	else
 		strikeLocation = strikeTarget->getPosition();
 	bool bRandom = 0;
-	int32_t commanderID = -1;
+	int32_t commanderid = -1;
 	if (playerStrike)
 	{
-		commanderID = Commander::home->getId();
-		bRandom = Team::home->teamLineOfSight(*strikeLoc, 0.0f) ? 0 : 1;
+		commanderid = Commander::home->getId();
+		bRandom = Team::home->teamLineOfSight(*strikeloc, 0.0f) ? 0 : 1;
 	}
 	else if (clanStrike)
 	{
@@ -176,8 +139,8 @@ IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr stri
 				"MPlayer ");
 		//------------------------------------------------------------
 		// In campaign game, clans can strike into unrevealed terrain.
-		bRandom = Team::teams[1]->teamLineOfSight(*strikeLoc, 0.0f) ? 0 : 1;
-		commanderID = 1;
+		bRandom = Team::teams[1]->teamLineOfSight(*strikeloc, 0.0f) ? 0 : 1;
+		commanderid = 1;
 	}
 	switch (strikeID)
 	{
@@ -198,7 +161,7 @@ IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr stri
 	{
 		if (MPlayer->isServer())
 		{
-			CallArtillery(commanderID, strikeID, strikeLocation, secondsToImpact, bRandom);
+			CallArtillery(commanderid, strikeID, strikeLocation, secondsToImpact, bRandom);
 		}
 		else
 		{
@@ -207,7 +170,7 @@ IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr stri
 	}
 	else
 	{
-		CallArtillery(commanderID, strikeID, strikeLocation, secondsToImpact, bRandom);
+		CallArtillery(commanderid, strikeID, strikeLocation, secondsToImpact, bRandom);
 	}
 }
 
@@ -238,7 +201,7 @@ ArtilleryChunk::build(
 	int32_t _commanderId, int32_t _strikeType, Stuff::Vector3D location, int32_t _seconds)
 {
 	commanderId = _commanderId;
-	strikeType = _strikeType;
+	striketype = _strikeType;
 	land->worldToCell(location, cellRC[0], cellRC[1]);
 	secondsToImpact = _seconds;
 	data = 0;
@@ -256,7 +219,7 @@ ArtilleryChunk::pack(void)
 	data <<= ARTILLERYCHUNK_CELLPOS_BITS;
 	data |= cellRC[1];
 	data <<= ARTILLERYCHUNK_STRIKETYPE_BITS;
-	data |= strikeType;
+	data |= striketype;
 	data <<= ARTILLERYCHUNK_COMMANDERID_BITS;
 	data |= commanderId;
 }
@@ -269,7 +232,7 @@ ArtilleryChunk::unpack(void)
 	uint32_t tempData = data;
 	commanderId = (tempData & ARTILLERYCHUNK_COMMANDERID_MASK);
 	tempData >>= ARTILLERYCHUNK_COMMANDERID_BITS;
-	strikeType = (tempData & ARTILLERYCHUNK_STRIKETYPE_MASK);
+	striketype = (tempData & ARTILLERYCHUNK_STRIKETYPE_MASK);
 	tempData >>= ARTILLERYCHUNK_STRIKETYPE_BITS;
 	cellRC[1] = (tempData & ARTILLERYCHUNK_CELLPOS_MASK);
 	tempData >>= ARTILLERYCHUNK_CELLPOS_BITS;
@@ -285,7 +248,7 @@ ArtilleryChunk::equalTo(ArtilleryChunkPtr chunk)
 {
 	if (commanderId != chunk->commanderId)
 		return (false);
-	if (strikeType != chunk->strikeType)
+	if (striketype != chunk->striketype)
 		return (false);
 	if (cellRC[0] != chunk->cellRC[0])
 		return (false);
@@ -346,7 +309,7 @@ ArtilleryType::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
+ArtilleryType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile miFile;
@@ -515,7 +478,7 @@ ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 			break;
 			}
 		}
-		else if ((collider->getObjectClass() == BATTLEMECH) && (((MoverPtr)collider)->getMoveType() == MOVETYPE_AIR) && (collider->getStatus() != OBJECT_STATUS_SHUTDOWN))
+		else if ((collider->getObjectClass() == BATTLEMECH) && (((std::unique_ptr<Mover>)collider)->getMoveType() == MOVETYPE_AIR) && (collider->getStatus() != OBJECT_STATUS_SHUTDOWN))
 		{
 			// DO Nothing.  Helicopters are immune.
 			return false;

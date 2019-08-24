@@ -17,7 +17,7 @@ SelectionBrush.cpp			: Implementation of the SelectionBrush component.
 #endif
 
 #ifndef ACTION_H
-#include "Action.h"
+#include "action.h"
 #endif
 
 #include "utilities.h"
@@ -471,5 +471,4 @@ SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int3
 	return true;
 }
 
-//*************************************************************************************************
 // end of file ( SelectionBrush.cpp )

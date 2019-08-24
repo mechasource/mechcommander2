@@ -12,7 +12,7 @@
 
 #include "stdinc.h"
 #include "gosFXHeaders.hpp"
-#include <mlr/mlrpointcloud.hpp>
+#include "mlr/mlrpointcloud.h"
 
 //------------------------------------------------------------------------------
 //

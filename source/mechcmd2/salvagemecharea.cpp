@@ -14,7 +14,7 @@ SalvageMechArea.cpp			: Implementation of the SalvageMechArea component.
 #include "LogisticsVariant.h"
 #include "MechIcon.h"
 #include "LogisticsData.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "gamesound.h"
 #include <malloc.h>
 
@@ -546,7 +546,7 @@ SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, in
 	loadoutListBox.setMech(pMech);
 	if (pMech)
 	{
-		std::wstring fileName = pMech->getFileName();
+		const std::wstring_view& fileName = pMech->getFileName();
 		int32_t index = fileName.Find('.');
 		fileName = fileName.Left(index);
 		index = fileName.ReverseFind('\\');
@@ -606,5 +606,4 @@ SalvageMechArea::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-//*************************************************************************************************
 // end of file ( SalvageMechArea.cpp )

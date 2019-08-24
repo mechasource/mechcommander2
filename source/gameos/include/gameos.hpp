@@ -124,7 +124,7 @@
 #define SPEW(x) ((void)0)
 #endif
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 //
 // Types used by GameOS
 //
@@ -360,11 +360,11 @@ typedef struct gosEnvironment
 	// that function. GameOS will check for gos_GetFIle being called again
 	// during this function and allow it to read from the disk normally.
 	//
-	void(__stdcall* HookGetFile)(PCSTR FileName, puint8_t* MemoryImage, puint32_t Size);
+	void(__stdcall* HookGetFile)(PSTR FileName, puint8_t* MemoryImage, puint32_t Size);
 
 	// Other file API calls available to hook
 
-	uint8_t(__stdcall* HookDoesFileExist)(PCSTR FileName);
+	uint8_t(__stdcall* HookDoesFileExist)(PSTR FileName);
 
 } gosEnvironment;
 
@@ -377,7 +377,7 @@ typedef struct gosEnvironment
 //
 // The command line that was used to start the game is passed
 //
-void __stdcall GetGameOSEnvironment(PSTR CommandLine);
+void __stdcall GetGameOSEnvironment(PSTR commandline);
 //
 // Called by the Game to cause GameOS to quit and exit (at the end of the
 // current frame - not immediately)
@@ -672,10 +672,10 @@ typedef struct _gosAudio_ChannelInfo
 //////////////////////////////////////////////////////////////////////////////////
 // Creates a resource to be played later
 //
-void __stdcall gosAudio_CreateResource(HGOSAUDIO* hgosaudio, gosAudio_ResourceType, PCSTR file_name,
+void __stdcall gosAudio_CreateResource(HGOSAUDIO* hgosaudio, gosAudio_ResourceType, PSTR file_name,
 	gosAudio_Format* ga_wf = 0, PVOID data = 0, int32_t size = 0, uint8_t only2D = 0);
 void __stdcall gosAudio_CreateResource(
-	HGOSAUDIO* hgosaudio, PCSTR identifier_name, HGOSFILE file, size_t offset, uint8_t only2D = 0);
+	HGOSAUDIO* hgosaudio, PSTR identifier_name, HGOSFILE file, size_t offset, uint8_t only2D = 0);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Destroy a resource; any sounds currently playing using the ResourceID will be
@@ -811,7 +811,7 @@ typedef struct _gosIME_Appearance
 //
 // Opens a DLL and returns a handle
 //
-uint32_t __stdcall gos_OpenResourceDLL(PCSTR FileName);
+uint32_t __stdcall gos_OpenResourceDLL(PSTR FileName);
 
 //
 // Use to close a resource DLL
@@ -838,7 +838,7 @@ PSTR __stdcall gos_GetResourceString(uint32_t Handle, uint32_t Id);
 // from the currently designated heap. It is the responsibility of the client
 // application to release this memory when it is no longer needed.
 //
-PVOID __stdcall gos_GetResourceData(uint32_t Handle, PCSTR type, uint32_t id, size_t* size);
+PVOID __stdcall gos_GetResourceData(uint32_t Handle, PSTR type, uint32_t id, size_t* size);
 
 //
 // If the user's OS supports IME, this function will Enable/Disable the user's
@@ -958,7 +958,7 @@ PSTR __stdcall gos_GetFormattedTime(uint16_t Hour = -1, uint16_t Minute = -1, ui
 //  texture plus one.
 //
 HGOSFONT3D __stdcall gos_LoadFont(
-	PCSTR FontFile, uint32_t StartLine = 0, int32_t CharCount = 256, uint32_t TextureHandle = 0);
+	PSTR FontFile, uint32_t StartLine = 0, int32_t CharCount = 256, uint32_t TextureHandle = 0);
 
 //
 // This routine should be called to release storage and textures used by fonts.
@@ -1021,7 +1021,7 @@ void __stdcall gos_TextDrawBackground(
 // of /n found)
 //  Make sure you have setup the Text attributes before calling this.
 //
-void __stdcall gos_TextStringLength(uint32_t* pWidth, uint32_t* pHeight, PCSTR Message, ...);
+void __stdcall gos_TextStringLength(uint32_t* pWidth, uint32_t* pHeight, PSTR Message, ...);
 
 //
 // Draws string using current attributes and position
@@ -1038,11 +1038,11 @@ void __stdcall gos_TextStringLength(uint32_t* pWidth, uint32_t* pHeight, PCSTR M
 //		//					/ character (/ not followed by a special code will be
 // displayed as - // is only required to display strings like "//color"
 //
-void __stdcall gos_TextDraw(PCSTR Message, ...);
+void __stdcall gos_TextDraw(PSTR Message, ...);
 //
 // Same as above, but an arglist can be passed
 //
-void __stdcall gos_TextDrawV(PCSTR Message, PSTR arglist);
+void __stdcall gos_TextDrawV(PSTR Message, PSTR arglist);
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -1058,13 +1058,13 @@ void __stdcall gos_TextDrawV(PCSTR Message, PSTR arglist);
 // The whole file in read into memory, MemoryImage will point to the start of
 // the file, Size will be the size of the file.
 //
-void __stdcall gos_GetFile(PCSTR FileName, puint8_t* MemoryImage, size_t* pSize);
+void __stdcall gos_GetFile(PSTR FileName, puint8_t* MemoryImage, size_t* pSize);
 
 //
 // Opens a memory mapped file - returns a handle that must be passed to the
 // Close function below.
 //
-HANDLE __stdcall gos_OpenMemoryMappedFile(PCSTR FileName, puint8_t* MemoryImage, size_t* pSize);
+HANDLE __stdcall gos_OpenMemoryMappedFile(PSTR FileName, puint8_t* MemoryImage, size_t* pSize);
 
 //
 // Closes a memory mapped file
@@ -1077,7 +1077,7 @@ void __stdcall gos_CloseMemoryMappedFile(HANDLE Handle);
 //    When you are finished with the file, the Close function below must be
 //    called.
 //
-uint32_t __stdcall gos_ReadFileInBackground(PCSTR FileName, puint8_t* MemoryImage, puint32_t Size,
+uint32_t __stdcall gos_ReadFileInBackground(PSTR FileName, puint8_t* MemoryImage, puint32_t Size,
 	uint32_t Offset = 0, uint32_t MaxSize = 0xffffffff);
 
 //
@@ -1086,7 +1086,7 @@ uint32_t __stdcall gos_ReadFileInBackground(PCSTR FileName, puint8_t* MemoryImag
 void __stdcall gos_CloseBackgroundFile(uint32_t Handle);
 
 /* =============================================================================*/
-#if 1 // _CONSIDERED_OBSOLETE
+#if 1 // CONSIDERED_OBSOLETE
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -1109,7 +1109,7 @@ void __stdcall gos_CloseBackgroundFile(uint32_t Handle);
 // explicitly tell the Memory Manager to place allocated memory into client
 // memory.
 //
-extern HGOSHEAP ParentClientHeap;
+// extern HGOSHEAP ParentClientHeap;
 
 //
 // When including GamePlatform, new and delete will map directly to gos_Malloc
@@ -1427,7 +1427,7 @@ enum GOSJoystickAxis : uint32_t
 //
 typedef struct gosJoystick_Info
 {
-	PCSTR lpstrName; // the brand and model name
+	PSTR lpstrName; // the brand and model name
 	uint32_t bAxisValid : JOY_MAX; // yes/no bitflags.
 	uint32_t nAxes : 4; // number of availab axes
 	uint32_t nButtons : 5; // number of available buttons
@@ -1542,7 +1542,7 @@ void __stdcall gosJoystick_CreateEffect(
 //
 // Load a feedback effect from an FFE file onto joystick <joy>
 //
-void __stdcall gosJoystick_LoadEffect(HGOSFORCEEFFECT* ff, uint32_t joystick, PCSTR file);
+void __stdcall gosJoystick_LoadEffect(HGOSFORCEEFFECT* ff, uint32_t joystick, PSTR file);
 
 //
 // Update the force feedback effect <ff>, given the parameters specified in <fe>
@@ -2331,7 +2331,7 @@ enum gosVERTEXTYPE : uint32_t
 //
 // Vector definition (Identical to D3DVECTOR)
 //
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 typedef struct
 {
 	float x, y, z;
@@ -2341,7 +2341,7 @@ typedef struct
 
 //
 // Matrix definition (Identical to D3DMATRIX)
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 typedef struct gosMATRIX
 {
 	union {
@@ -2360,7 +2360,7 @@ typedef struct gosMATRIX
 // #define gosMATRIX (struct _D3DMATRIX)
 //
 // Color definition (Identical to D3DCOLORVALUE)
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 typedef struct gosCOLOR
 {
 	float r, g, b, a;
@@ -2369,7 +2369,7 @@ typedef struct gosCOLOR
 
 //
 // Material definition (Identical to D3DMATERIAL7)
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 typedef struct gosMATERIAL
 {
 	gosCOLOR diffuse;
@@ -2382,8 +2382,8 @@ typedef struct gosMATERIAL
 
 //
 // Used to specify type of light (Identical to D3DLIGHTTYPE)
-#if _CONSIDERED_OBSOLETE
-typedef enum gosLIGHTTYPE : uint32_t
+#if CONSIDERED_OBSOLETE
+enum class gosLIGHTTYPE : uint32_t
 {
 	LIGHT_POINT = 1,
 	LIGHT_SPOT,
@@ -2398,7 +2398,7 @@ typedef enum gosLIGHTTYPE : uint32_t
 
 //
 // Light definition (Identical to D3DLIGHT7)
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 typedef struct gosLIGHT
 {
 	gosLIGHTTYPE dltType;
@@ -2419,8 +2419,8 @@ typedef struct gosLIGHT
 
 //
 // Used to specify which matrix (Identical to D3DTRANSFORMSTATETYPE)
-#if _CONSIDERED_OBSOLETE
-typedef enum gosTRANSFORMTYPE : uint32_t
+#if CONSIDERED_OBSOLETE
+enum class gosTRANSFORMTYPE : uint32_t
 {
 	MATRIX_WORLD = 1,
 	MATRIX_VIEW,
@@ -2636,7 +2636,7 @@ uint8_t __stdcall gosDirtyRectangeLostTarget(void);
 // Used when loading a texture - the source file will be loaded into a surface
 // with this type (exact format may vary on each card)
 //
-//#if _CONSIDERED_UNUSED
+//#if CONSIDERED_UNUSED
 enum gos_TextureFormat
 {
 	gos_Texture_Detect =
@@ -2733,7 +2733,7 @@ typedef void(__stdcall* gos_RebuildFunction)(uint32_t, PVOID);
 // default.
 //
 
-uint32_t __stdcall gos_NewTextureFromFile(gos_TextureFormat Format, PCSTR FileName,
+uint32_t __stdcall gos_NewTextureFromFile(gos_TextureFormat Format, PSTR FileName,
 	uint32_t Hints = 0, gos_RebuildFunction pFunc = 0, PVOID pInstance = 0);
 
 //
@@ -2754,7 +2754,7 @@ uint32_t __stdcall gos_NewTextureFromFile(gos_TextureFormat Format, PCSTR FileNa
 // Hints should be set to any combination of gos_TextureHints or 0 is a good
 // default.
 //
-uint32_t __stdcall gos_NewTextureFromMemory(gos_TextureFormat Format, PCSTR FileName,
+uint32_t __stdcall gos_NewTextureFromMemory(gos_TextureFormat Format, PSTR FileName,
 	puint8_t pBitmap, uint32_t Size, uint32_t Hints = 0, gos_RebuildFunction pFunc = 0,
 	PVOID pInstance = 0);
 
@@ -2784,7 +2784,7 @@ uint32_t __stdcall gos_NewTextureFromMemory(gos_TextureFormat Format, PCSTR File
 // For Rectangular textures, use RECT_TEX(width,height) to pack the width and
 // height values
 //
-uint32_t __stdcall gos_NewEmptyTexture(gos_TextureFormat Format, PCSTR Name, uint32_t HeightWidth,
+uint32_t __stdcall gos_NewEmptyTexture(gos_TextureFormat Format, PSTR Name, uint32_t HeightWidth,
 	uint32_t Hints = 0, gos_RebuildFunction pFunc = 0, PVOID pInstance = 0);
 
 //
@@ -2834,8 +2834,8 @@ uint8_t __stdcall gos_RecreateTextureHeaps(void);
 //
 void __stdcall gos_PreloadTexture(uint32_t Handle);
 
-void __stdcall gos_SetTextureName(uint32_t Handle, PCSTR name);
-PCSTR __stdcall gos_GetTextureName(uint32_t Handle);
+void __stdcall gos_SetTextureName(uint32_t Handle, PSTR name);
+PSTR __stdcall gos_GetTextureName(uint32_t Handle);
 
 //
 // Render to a texture using blade.
@@ -2946,7 +2946,7 @@ void __stdcall StatisticFormat(PSTR String);
 // 'Frame' parameter can be used to return old data from previous frames. The
 // values 0 to -511 are valid.
 //
-float __stdcall gos_ReturnStatistic(PCSTR Name, int32_t Frame = 0);
+float __stdcall gos_ReturnStatistic(PSTR Name, int32_t Frame = 0);
 
 //
 // Place a start and end Cycle timing around code to be optimized to display
@@ -3021,7 +3021,7 @@ void __stdcall DelDebuggerMenuItem(PSTR Name);
 //  Note Debugger\\, Rasterizer\\ and Libraries\\ must appear at the start of
 //  the name, but for application menu items, no app name is needed.
 //
-uint32_t __stdcall CallDebuggerMenuItem(PCSTR Name, uint32_t MenuFunction);
+uint32_t __stdcall CallDebuggerMenuItem(PSTR Name, uint32_t MenuFunction);
 
 //
 // This function enables or disables the math exception handler
@@ -3279,10 +3279,10 @@ uint32_t __stdcall gos_GetMachineInformation(
 
 extern PSTR gosErrorFile;
 extern uint32_t gosErrorLine;
-extern void __cdecl InternalFunctionSpew(PCSTR Group, PCSTR Message, ...);
-extern void __cdecl InternalFunctionSpewV(int32_t Flags, PCSTR Group, PCSTR Message, PSTR arglist);
-extern int32_t __cdecl InternalFunctionStop(PCSTR Message, ...);
-extern int32_t __cdecl InternalFunctionPause(PCSTR Message, ...);
+extern void __cdecl InternalFunctionSpew(PSTR Group, PSTR Message, ...);
+extern void __cdecl InternalFunctionSpewV(int32_t Flags, PSTR Group, PSTR Message, PSTR arglist);
+extern int32_t __cdecl InternalFunctionStop(PSTR Message, ...);
+extern int32_t __cdecl InternalFunctionPause(PSTR Message, ...);
 extern void __stdcall gosLabRatStart(uint32_t Handle);
 extern void __stdcall gosLabRatEnd(uint32_t Handle);
 extern void __stdcall gosLabRatSet(uint32_t Handle, uint32_t Value);

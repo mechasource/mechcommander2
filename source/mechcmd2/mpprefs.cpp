@@ -8,7 +8,7 @@ mpprefs.cpp			: Implementation of the mpprefs component.ef
 
 #include "stdinc.h"
 #include "mpprefs.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "mechbayscreen.h"
 #include "prefs.h"
 #include "multplyr.h"
@@ -59,7 +59,7 @@ MPPrefs::init(FitIniFile& file)
 	int32_t count = 0;
 	file.readIdLong("ComboBoxCount", count);
 	char blockName[256];
-	PCSTR headers[3] = {"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox"};
+	const std::wstring_view& headers[3] = {"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox"};
 	for (i = 0; i < count; i++)
 	{
 		sprintf(blockName, "ComboBox%ld", i);
@@ -165,7 +165,7 @@ MPPrefs::begin()
 	{
 		comboBox[2].SelectItem(0);
 	}
-	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	int32_t mySeniority = player->teamSeniority;
 	bool bMostSenior = true;
 	int32_t playerCount;
@@ -203,7 +203,7 @@ MPPrefs::end()
 void
 MPPrefs::update()
 {
-	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	int32_t mySeniority = player->teamSeniority;
 	bool bMostSenior = true;
 	int32_t playerCount;
@@ -238,8 +238,8 @@ MPPrefs::update()
 	if (newSel != oldSel && newSel != -1)
 	{
 		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem(newSel));
-		PCSTR pName = pItem->getBmp();
-		MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+		const std::wstring_view& pName = pItem->getBmp();
+		MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 		strcpy(pInfo->insigniaFile, pName);
 		MPlayer->sendPlayerUpdate(0, 5, -1);
 		FullPathFileName path;
@@ -253,8 +253,8 @@ MPPrefs::update()
 		int32_t size = file.getLength();
 		puint8_t pData = new uint8_t[size];
 		file.read(pData, size);
-		MPlayer->sendPlayerInsignia((PSTR)pName, pData, size);
-		MPlayer->insigniaList[MPlayer->commanderID] = 1;
+		MPlayer->sendPlayerInsignia((const std::wstring_view&)pName, pData, size);
+		MPlayer->insigniaList[MPlayer->commanderid] = 1;
 		delete pData;
 	}
 	if (userInput->isLeftClick() && !bExpanded)
@@ -286,15 +286,15 @@ MPPrefs::setColor(uint32_t color)
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	for (size_t i = 0; i < playerCount; i++)
 	{
-		if (MPlayer->colors[players[i].baseColor[BASECOLOR_SELF]] == color && i != MPlayer->commanderID)
+		if (MPlayer->colors[players[i].baseColor[BASECOLOR_SELF]] == color && i != MPlayer->commanderid)
 		{
 			soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 			return;
 		}
 	}
-	// GD:MPlayer->setPlayerBaseColor( MPlayer->commanderID, getColorIndex(
+	// GD:MPlayer->setPlayerBaseColor( MPlayer->commanderid, getColorIndex(
 	// color ) );
-	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	player->baseColor[BASECOLOR_PREFERENCE] = getColorIndex(color);
 	MPlayer->sendPlayerUpdate(0, 6, -1);
 	// GD:camera.setMech( "Bushwacker", color,
@@ -305,7 +305,7 @@ MPPrefs::setColor(uint32_t color)
 void
 MPPrefs::setHighlightColor(uint32_t color)
 {
-	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	player->stripeColor = getColorIndex(color);
 	MPlayer->sendPlayerUpdate(0, 6, -1);
 	camera.setMech(
@@ -331,7 +331,7 @@ MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bool bD
 	{
 		for (size_t i = 0; i < playerCount; i++)
 		{
-			if (players[i].commanderID == MPlayer->commanderID)
+			if (players[i].commanderid == MPlayer->commanderid)
 			{
 				for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
@@ -359,7 +359,7 @@ MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bool bD
 			}
 		}
 	}
-	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	rects[BASE_RECT].setColor(MPlayer->colors[pInfo->baseColor[BASECOLOR_PREFERENCE]]);
 }
 
@@ -370,7 +370,7 @@ MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, bool 
 	{
 		for (size_t i = 0; i < playerCount; i++)
 		{
-			if (players[i].commanderID == MPlayer->commanderID)
+			if (players[i].commanderid == MPlayer->commanderid)
 			{
 				for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
@@ -386,7 +386,7 @@ MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, bool 
 			}
 		}
 	}
-	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	rects[STRIPE_RECT].setColor(MPlayer->colors[pInfo->stripeColor]);
 }
 
@@ -460,13 +460,13 @@ void
 MPPrefs::saveSettings()
 {
 	// check and see if name has changed
-	std::wstring txt;
+	const std::wstring_view& txt;
 	comboBox[0].EditBox().getEntry(txt);
 	if (txt != prefs.playerName[0])
 	{
 		prefs.setNewName(txt);
 	}
-	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	strcpy(pInfo->name, txt);
 	// check and see if name has changed
 	comboBox[1].EditBox().getEntry(txt);
@@ -484,7 +484,7 @@ MPPrefs::saveSettings()
 		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem(index));
 		if (pItem)
 		{
-			PCSTR pName = pItem->getBmp();
+			const std::wstring_view& pName = pItem->getBmp();
 			strcpy(prefs.insigniaFile, pName);
 			strcpy(pInfo->insigniaFile, pName);
 		}
@@ -501,7 +501,7 @@ MPPrefs::saveSettings()
 void
 MPPrefs::cancelSettings()
 {
-	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	strcpy(pInfo->name, prefs.playerName[0]);
 	strcpy(pInfo->unitName, prefs.unitName[0]);
 	strcpy(pInfo->insigniaFile, prefs.insigniaFile);
@@ -520,7 +520,7 @@ MPPrefs::initColors()
 }
 
 int32_t
-aBmpListItem::setBmp(PCSTR pFileName)
+aBmpListItem::setBmp(const std::wstring_view& pFileName)
 {
 	if (strlen(pFileName) >= MAXLEN_INSIGNIA_FILE)
 		return 0;
@@ -558,5 +558,4 @@ MPPrefs::setMechColors(uint32_t base, uint32_t highlight)
 	}
 }
 
-//*************************************************************************************************
 // end of file ( mpprefs.cpp )

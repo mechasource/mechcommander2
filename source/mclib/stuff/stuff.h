@@ -84,7 +84,7 @@ void __stdcall TerminateClasses(void);
 #include <stuff/hash.hpp>
 //#include <stuff/marray.hpp>
 
-#include <stuff/scalar.hpp>
+#include "stuff/scalar.h"
 #include <stuff/angle.hpp>
 #include <stuff/color.hpp>
 #include <stuff/vector3d.hpp>

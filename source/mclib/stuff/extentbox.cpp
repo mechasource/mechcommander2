@@ -8,11 +8,11 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/obb.hpp>
-// #include <stuff/mstring.hpp>
-#include <stuff/extentbox.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/obb.h"
+// #include "stuff/mstring.h"
+#include "stuff/extentbox.h"
 
 using namespace Stuff;
 
@@ -209,7 +209,7 @@ ExtentBox::TestInstance(void) const
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const ExtentBox& box)
+Spew(const std::wstring_view& group, const ExtentBox& box)
 {
 	Check_Object(&box);
 	SPEW((group, "[%f..%f,%f..%f,%f..%f]+", box.minX, box.maxX, box.minY, box.maxY, box.minZ,
@@ -222,13 +222,13 @@ Spew(PCSTR group, const ExtentBox& box)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Stuff::Convert_From_Ascii(PCSTR str, ExtentBox* extent_box)
+Stuff::Convert_From_Ascii(const std::wstring_view& str, ExtentBox* extent_box)
 {
 	Check_Pointer(str);
 	Check_Object(extent_box);
-	std::wstring parse_string(str);
+	const std::wstring_view& parse_string(str);
 	Check_Object(&parse_string);
-	std::wstring token = parse_string.GetNthToken(0);
+	const std::wstring_view& token = parse_string.GetNthToken(0);
 	extent_box->minX = AtoF(token);
 	token = parse_string.GetNthToken(1);
 	extent_box->minY = AtoF(token);

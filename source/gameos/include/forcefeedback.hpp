@@ -34,7 +34,7 @@ public:
 
 public:
 	gosForceEffect(gosJoystick_ForceEffect* fe, uint32_t joy);
-	gosForceEffect(PCSTR fe, uint32_t joy);
+	gosForceEffect(PSTR fe, uint32_t joy);
 	void ReCreate(void);
 	~gosForceEffect(void);
 	void Play(uint32_t times);

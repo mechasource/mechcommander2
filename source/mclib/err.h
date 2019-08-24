@@ -13,10 +13,10 @@
 //***************************************************************************
 
 void
-Fatal(int32_t errCode, PSTR errMessage);
+Fatal(int32_t errCode, const std::wstring_view& errMessage);
 
 void
-Assert(bool test, int32_t errCode, PSTR errMessage);
+Assert(bool test, int32_t errCode, const std::wstring_view& errMessage);
 
 //***************************************************************************
 

@@ -11,7 +11,7 @@
 #include "stdinc.h"
 
 //=============
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef DOBJMGR_H
 #include "dobjmgr.h"
@@ -268,7 +268,7 @@ GameObjectManager::init(void)
 //---------------------------------------------------------------------------
 
 void
-GameObjectManager::init(PSTR objTypeDataFile, int32_t objTypeHeapSize, int32_t objHeapSize)
+GameObjectManager::init(const std::wstring_view& objTypeDataFile, int32_t objTypeHeapSize, int32_t objHeapSize)
 {
 	if (objTypeManager)
 		delete objTypeManager;
@@ -481,7 +481,7 @@ GameObjectManager::setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t nEle
 		}
 	}
 	useMoverLineOfSightTable = true;
-	moverLineOfSightTable = (PSTR)systemHeap->Malloc(maxMovers * maxMovers);
+	moverLineOfSightTable = (const std::wstring_view&)systemHeap->Malloc(maxMovers * maxMovers);
 	if (!moverLineOfSightTable)
 		Fatal(numGates,
 			" GameObjectManager.setNumObjects: cannot malloc "
@@ -589,7 +589,7 @@ GameObjectManager::setWatchID(GameObjectPtr obj)
 //---------------------------------------------------------------------------
 
 void
-GameObjectManager::freeMover(MoverPtr mover)
+GameObjectManager::freeMover(std::unique_ptr<Mover> mover)
 {
 	bool foundIt = modifyMoverLists(mover, MOVERLIST_DELETE);
 	if (foundIt)
@@ -606,7 +606,7 @@ GameObjectManager::freeMover(MoverPtr mover)
 //---------------------------------------------------------------------------
 
 void
-GameObjectManager::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID)
+GameObjectManager::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID)
 {
 	if (newTeamID > -1)
 	{
@@ -786,7 +786,7 @@ GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHan
 		terrainFile->readPacket(packet, pBuffer);
 	gosASSERT(bytesRead == size);
 	File* terrainObjectFile = new File;
-	terrainObjectFile->open((PSTR)pBuffer, size);
+	terrainObjectFile->open((const std::wstring_view&)pBuffer, size);
 	totalObjCount = terrainObjectFile->readLong();
 	if (totalObjCount)
 	{
@@ -1729,7 +1729,7 @@ GameObjectManager::update(bool terrain, bool movers, bool other)
 #endif
 	if (movers)
 	{
-		static MoverPtr removeList[MAX_MOVERS];
+		static std::unique_ptr<Mover> removeList[MAX_MOVERS];
 		int32_t numRemoved = 0;
 #ifdef LAB_ONLY
 		x = GetCycles();
@@ -1738,7 +1738,7 @@ GameObjectManager::update(bool terrain, bool movers, bool other)
 		{
 			for (size_t i = 0; i < numMechs; i++)
 			{
-				MoverPtr mover = mechs[i];
+				std::unique_ptr<Mover> mover = mechs[i];
 				if (mover && mover->getExists())
 				{
 #ifdef LAB_ONLY
@@ -1764,7 +1764,7 @@ GameObjectManager::update(bool terrain, bool movers, bool other)
 		{
 			for (size_t i = 0; i < maxVehicles; i++)
 			{
-				MoverPtr mover = vehicles[i];
+				std::unique_ptr<Mover> mover = vehicles[i];
 				if (mover && mover->getExists())
 				{
 #ifdef LAB_ONLY
@@ -1890,7 +1890,7 @@ GameObjectManager::buildMoverLists(void)
 	numBadMovers = 0;
 	for (size_t i = 0; i < numMechs; i++)
 	{
-		MoverPtr mover = dynamic_cast<MoverPtr>(mechs[i]);
+		std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(mechs[i]);
 		if (!mover->getTeam())
 			continue;
 		moverList[numMovers++] = mover;
@@ -1901,7 +1901,7 @@ GameObjectManager::buildMoverLists(void)
 	}
 	for (i = 0; i < numVehicles; i++)
 	{
-		MoverPtr mover = dynamic_cast<MoverPtr>(vehicles[i]);
+		std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(vehicles[i]);
 		if (!mover->getTeam())
 			continue;
 		moverList[numMovers++] = mover;
@@ -1916,7 +1916,7 @@ GameObjectManager::buildMoverLists(void)
 //---------------------------------------------------------------------------
 
 bool
-GameObjectManager::modifyMoverLists(MoverPtr mover, int32_t action)
+GameObjectManager::modifyMoverLists(std::unique_ptr<Mover> mover, int32_t action)
 {
 	switch (action)
 	{
@@ -2346,7 +2346,7 @@ GameObjectManager::moverInRect(int32_t index, Stuff::Vector3D& dStart, Stuff::Ve
 	// alignment. This is because we are drag selecting in the GUI!
 	if ((index < 0) || (index >= getMaxMovers()))
 		return (false);
-	MoverPtr checkMover = getMover(index);
+	std::unique_ptr<Mover> checkMover = getMover(index);
 	if (checkMover && checkMover->getExists() && (checkMover->getTeam() == Team::home))
 	{
 		AppearancePtr objAppearance = checkMover->getAppearance();
@@ -2548,10 +2548,10 @@ GameObjectManager::updateCaptureList(void)
 		numCaptures[i] = 0;
 	for (i = 0; i < getNumMovers(); i++)
 	{
-		MoverPtr mover = getMover(i);
+		std::unique_ptr<Mover> mover = getMover(i);
 		if (mover->isDisabled())
 			continue;
-		MechWarriorPtr pilot = mover->getPilot();
+		std::unique_ptr<MechWarrior> pilot = mover->getPilot();
 		if (pilot)
 		{
 			TacticalOrderPtr tacOrder;
@@ -3069,7 +3069,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 			Fatal(numArtillery, " GameObjectManager.setNumObjects: cannot malloc artillery ");
 	}
 	useMoverLineOfSightTable = true;
-	moverLineOfSightTable = (PSTR)systemHeap->Malloc(maxMovers * maxMovers);
+	moverLineOfSightTable = (const std::wstring_view&)systemHeap->Malloc(maxMovers * maxMovers);
 	if (!moverLineOfSightTable)
 		Fatal(numGates,
 			" GameObjectManager.setNumObjects: cannot malloc "

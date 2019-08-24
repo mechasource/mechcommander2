@@ -7,8 +7,8 @@ OverlayBrush.cpp			: Implementation of the OverlayBrush component.
 \*************************************************************************************************/
 
 #include "OverlayBrush.h"
-#include "Action.h"
-#include <elist.h>
+#include "action.h"
+#include "elist.h"
 #include <map>
 
 //-------------------------------------------------------------------------------------------------
@@ -663,5 +663,4 @@ OverlayBrush::endPaint()
 	return pRetAction;
 }
 
-//*************************************************************************************************
 // end of file ( OverlayBrush.cpp )

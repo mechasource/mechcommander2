@@ -62,7 +62,7 @@
 #endif
 
 #ifndef TACMAP_H
-#include <tacmap.h>
+#include "tacmap.h"
 #endif
 
 #ifndef EDITORDATA_H
@@ -73,7 +73,7 @@
 
 #include "McLibResource.h"
 
-#include "BuildingLink.h"
+#include "buildinglink.h"
 #include "utilities.h"
 
 #include "malloc.h"
@@ -106,7 +106,6 @@ EditorObjectMgr::EditorObjectMgr()
 	s_instance = this; // should only be one of these
 }
 
-//*************************************************************************************************
 EditorObjectMgr::~EditorObjectMgr()
 {
 	clear();
@@ -139,7 +138,6 @@ EditorObjectMgr::~EditorObjectMgr()
 	s_instance = 0;
 }
 
-//*************************************************************************************************
 void
 EditorObjectMgr::clear()
 {
@@ -178,21 +176,20 @@ EditorObjectMgr::clear()
 	forests.Clear();
 }
 
-//*************************************************************************************************
 void
-EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
+EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstring_view& objectFileName)
 {
 	File lstFile;
-	lstFile.open(const_cast<PSTR>(bldgListFileName));
+	lstFile.open(const_cast<const std::wstring_view&>(bldgListFileName));
 	uint8_t buffer[512];
 	lstFile.readLine(buffer, 512);
 	PacketFile objectFile;
-	int32_t result = objectFile.open(const_cast<PSTR>(objectFileName));
+	int32_t result = objectFile.open(const_cast<const std::wstring_view&>(objectFileName));
 	gosASSERT(result == NO_ERROR);
 	while (lstFile.getLogicalPosition() < lstFile.getLength())
 	{
 		lstFile.readLine(buffer, 512);
-		if (!strlen((PSTR)buffer))
+		if (!strlen((const std::wstring_view&)buffer))
 			break;
 		Building bldg;
 		bldg.appearanceType = nullptr;
@@ -320,12 +317,12 @@ EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 		char varName[256];
 		if (NO_ERROR == csvFile.open(csvFileName))
 		{
-			bldg.varNames = (PSTR*)malloc(sizeof(PSTR) * 16);
+			bldg.varNames = (const std::wstring_view&*)malloc(sizeof(const std::wstring_view&) * 16);
 			for (size_t i = 0; i < 16; ++i)
 			{
 				if (NO_ERROR == csvFile.readString(23 + 97 * i, 2, varName, 256) && strlen(varName))
 				{
-					bldg.varNames[i] = (PSTR)malloc(sizeof(char) * (strlen(varName) + 1));
+					bldg.varNames[i] = (const std::wstring_view&)malloc(sizeof(char) * (strlen(varName) + 1));
 					strcpy(bldg.varNames[i], varName);
 				}
 				else
@@ -361,7 +358,7 @@ EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 }
 
 int32_t
-EditorObjectMgr::ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength)
+EditorObjectMgr::ExtractNextString(puint8_t& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength)
 {
 	for (size_t i = 0; i < 512; ++i)
 	{
@@ -384,12 +381,12 @@ EditorObjectMgr::ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, int32_t bu
 
 //---------------------------------------------------------------------------
 int32_t
-textToLong(PCSTR num)
+textToLong(const std::wstring_view& num)
 {
 	int32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = (PSTR)strstr(num, "0x");
+	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -684,7 +681,6 @@ EditorObjectMgr::addBuilding(const Stuff::Vector3D& position, uint32_t group,
 	return info;
 }
 
-//*************************************************************************************************
 bool
 EditorObjectMgr::deleteBuilding(const EditorObject* pInfo)
 {
@@ -742,23 +738,20 @@ EditorObjectMgr::deleteBuilding(const EditorObject* pInfo)
 	return false;
 }
 
-//*************************************************************************************************
 int32_t
 EditorObjectMgr::getBuildingGroupCount(void) const
 {
 	return groups.Count();
 }
 
-//*************************************************************************************************
 int32_t
 EditorObjectMgr::getNumberBuildingsInGroup(int32_t group) const
 {
 	return groups[group].buildings.Count();
 }
 
-//*************************************************************************************************
 void
-EditorObjectMgr::getBuildingGroupNames(PCSTR* names, int32_t& NumberOfNames) const
+EditorObjectMgr::getBuildingGroupNames(const std::wstring_view&* names, int32_t& NumberOfNames) const
 {
 	if (NumberOfNames < groups.Count())
 		NumberOfNames = groups.Count();
@@ -771,10 +764,9 @@ EditorObjectMgr::getBuildingGroupNames(PCSTR* names, int32_t& NumberOfNames) con
 	}
 }
 
-//*************************************************************************************************
 void
 EditorObjectMgr::getBuildingNamesInGroup(
-	int32_t group, PCSTR* names, int32_t& NumberOfNames) const
+	int32_t group, const std::wstring_view&* names, int32_t& NumberOfNames) const
 {
 	Group* pGroup = &groups[group];
 	if (NumberOfNames < groups.Count())
@@ -790,7 +782,6 @@ EditorObjectMgr::getBuildingNamesInGroup(
 	NumberOfNames = i;
 }
 
-//*************************************************************************************************
 void
 EditorObjectMgr::update()
 {
@@ -856,7 +847,6 @@ EditorObjectMgr::update()
 	}
 }
 
-//*************************************************************************************************
 void
 EditorObjectMgr::render()
 {
@@ -945,7 +935,6 @@ EditorObjectMgr::render()
 	}
 }
 
-//*************************************************************************************************
 void
 EditorObjectMgr::renderShadows()
 {
@@ -1013,7 +1002,6 @@ EditorObjectMgr::renderShadows()
 	}
 }
 
-//*************************************************************************************************
 bool
 EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 {
@@ -1025,7 +1013,7 @@ EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 	}
 	int32_t bufferSize =
 		buildings.Count() * (4 * sizeof(float) + 6 * sizeof(int32_t)) + 2 * sizeof(int32_t);
-	PSTR pBuffer = (PSTR)malloc(bufferSize);
+	const std::wstring_view& pBuffer = (const std::wstring_view&)malloc(bufferSize);
 	int32_t* pTacMapPoints = (int32_t*)malloc(sizeof(int32_t) * (buildings.Count() * 2 + 1));
 	int32_t* pPoints = pTacMapPoints + 1;
 	int32_t pointCounter = 0;
@@ -1120,7 +1108,7 @@ EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 {
 	PakFile.seekPacket(whichPacket);
 	int32_t size = PakFile.getPacketSize();
-	PSTR pBuffer = (PSTR)malloc(size);
+	const std::wstring_view& pBuffer = (const std::wstring_view&)malloc(size);
 	PakFile.readPacket(whichPacket, (puint8_t)pBuffer);
 	File file;
 	file.open(pBuffer, size);
@@ -1214,7 +1202,6 @@ EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 	return true;
 }
 
-//*************************************************************************************************
 // this will NOT RETURN MECHS AND VEHICLES
 bool
 EditorObjectMgr::getBuildingFromID(
@@ -1239,26 +1226,22 @@ EditorObjectMgr::getBuildingFromID(
 	return false;
 }
 
-//*************************************************************************************************
 int32_t
 EditorObjectMgr::getFitID(int32_t id) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].fitID;
 }
 
-//*************************************************************************************************
 bool
 EditorObjectMgr::getBlocksLineOfFire(int32_t id) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].blocksLineOfFire;
 }
-//*************************************************************************************************
 bool
 EditorObjectMgr::getIsHoverCraft(int32_t id) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].isHoverCraft;
 }
-//*************************************************************************************************
 int64_t
 EditorObjectMgr::getImpassability(int32_t id)
 {
@@ -1729,7 +1712,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 		char armName[512] = {0};
 		strcpy(armName, file.getFilename());
 		_strlwr(armName);
-		PSTR fitExt = strstr(armName, ".fit");
+		const std::wstring_view& fitExt = strstr(armName, ".fit");
 		*fitExt = '_';
 		sprintf(fitExt + 1, "warrior%02d", counter);
 		mapAsset->AddRelationship("warrior", armName);
@@ -1798,7 +1781,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 						mates[mateIndex] = 0;
 					}
 				}
-				std::wstring commanderBlock;
+				const std::wstring_view& commanderBlock;
 				commanderBlock.Format("Commander%ldGroup:%ld", playerNum, lanceGroup);
 				file.writeBlock(commanderBlock.Data());
 				file.writeIdLongArray("Mates", &(mates[0]), 12);
@@ -2338,20 +2321,20 @@ EditorObjectMgr::deleteLink(BuildingLink* pLink)
 	}
 }
 
-PCSTR
+const std::wstring_view&
 EditorObjectMgr::getObjectName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].name;
 }
 
-PCSTR
+const std::wstring_view&
 EditorObjectMgr::getGroupName(int32_t ID) const
 {
 	return groups[ID].name;
 }
 
 void
-EditorObjectMgr::getUnitGroupNames(PCSTR* names, pint32_t ids, int32_t& numberOfEm) const
+EditorObjectMgr::getUnitGroupNames(const std::wstring_view&* names, pint32_t ids, int32_t& numberOfEm) const
 {
 	int32_t counter = 0;
 	int32_t index = 0;
@@ -2410,7 +2393,7 @@ EditorObjectMgr::getNumberOfVariants(int32_t group, int32_t indexInGroup) const
 
 void
 EditorObjectMgr::getVariantNames(
-	int32_t group, int32_t indexInGroup, PCSTR* names, int32_t& numberOfNames) const
+	int32_t group, int32_t indexInGroup, const std::wstring_view&* names, int32_t& numberOfNames) const
 {
 	Building bldg = groups[group].buildings[indexInGroup];
 	for (size_t i = 0; i < 16 && i < numberOfNames; ++i)
@@ -2431,5 +2414,4 @@ EditorObjectMgr::registerSquadNum(uint32_t squadNum)
 	}
 }
 
-//*************************************************************************************************
 // end of file ( EditorObjectMgr.cpp )

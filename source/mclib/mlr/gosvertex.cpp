@@ -4,10 +4,10 @@
 
 #include "stdinc.h"
 
-#include <mlr/gosvertexpool.hpp>
-#include <mlr/gosvertex.hpp>
+#include "mlr/gosvertexpool.h"
+#include "mlr/gosvertex.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 float GOSVertex::farClipReciprocal;
 
@@ -98,3 +98,5 @@ GOSVertexPool::Reset(void)
 	lastUsedIndex = 0;
 	MLRVertexLimitReached = false;
 }
+
+} // namespace MidLevelRenderer

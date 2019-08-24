@@ -28,7 +28,7 @@ public:
 	//{{AFX_VIRTUAL(EditorView)
 protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam);
 	//}}AFX_VIRTUAL
 
 	// Implementation

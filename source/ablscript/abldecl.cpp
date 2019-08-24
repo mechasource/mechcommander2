@@ -8,33 +8,14 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <string.h>
-//#include <stdio.h>
-//#include <stdlib.h>
+//#include "ablgen.h"
+//#include "ablerr.h"
+//#include "ablscan.h"
+//#include "ablsymt.h"
+//#include "ablparse.h"
+//#include "ablexec.h"
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLPARSE_H
-#include "ablparse.h"
-#endif
-
-#ifndef ABLEXEC_H
-#include "ablexec.h"
-#endif
+namespace mclib::abl {
 
 //***************************************************************************
 
@@ -42,13 +23,13 @@ extern TokenCodeType curToken;
 extern char wordString[];
 extern Literal curLiteral;
 
-extern SymTableNodePtr SymTableDisplay[];
+extern const std::unique_ptr<SymTableNode>& SymTableDisplay[];
 extern int32_t level;
 
-extern TypePtr IntegerTypePtr;
-extern TypePtr CharTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& CharTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
 
 extern TokenCodeType declarationStartList[];
 extern TokenCodeType statementStartList[];
@@ -58,7 +39,7 @@ extern int32_t NumStaticVariables;
 extern int32_t MaxStaticVariables;
 extern int32_t* StaticVariablesSizes;
 extern int32_t* EternalVariablesSizes;
-extern ABLModulePtr CurLibrary;
+extern const std::unique_ptr<ABLModule>& CurLibrary;
 
 //***************************************************************************
 
@@ -105,7 +86,7 @@ ifTokenGetElseError(TokenCodeType tokenCode, SyntaxErrorType errorCode)
 //***************************************************************************
 
 void
-declarations(SymTableNodePtr routineIdPtr, bool allowFunctions)
+declarations(const std::unique_ptr<SymTableNode>& routineIdPtr, bool allowFunctions)
 {
 	if (curToken == TKN_CONST)
 	{
@@ -151,7 +132,7 @@ constDefinitions(void)
 	// Loop to process definitions separated by semicolons...
 	while (curToken == TKN_IDENTIFIER)
 	{
-		SymTableNodePtr constantIdPtr;
+		const std::unique_ptr<SymTableNode>& constantIdPtr;
 		searchAndEnterLocalSymTable(constantIdPtr);
 		constantIdPtr->defn.key = DFN_CONST;
 		constantIdPtr->library = CurLibrary;
@@ -171,10 +152,10 @@ constDefinitions(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 makeStringType(int32_t length)
 {
-	TypePtr stringTypePtr = createType();
+	const std::unique_ptr<Type>& stringTypePtr = createType();
 	if (!stringTypePtr)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc stringType ");
 	stringTypePtr->form = FRM_ARRAY;
@@ -189,7 +170,7 @@ makeStringType(int32_t length)
 //***************************************************************************
 
 void
-doConst(SymTableNodePtr constantIdPtr)
+doConst(const std::unique_ptr<SymTableNode>& constantIdPtr)
 {
 	TokenCodeType sign = TKN_PLUS;
 	bool sawSign = false;
@@ -209,7 +190,7 @@ doConst(SymTableNodePtr constantIdPtr)
 				constantIdPtr->defn.info.constant.value.integer = curLiteral.value.integer;
 			else
 				constantIdPtr->defn.info.constant.value.integer = -(curLiteral.value.integer);
-			constantIdPtr->typePtr = setType(IntegerTypePtr);
+			constantIdPtr->ptype = setType(IntegerTypePtr);
 		}
 		else
 		{
@@ -217,18 +198,18 @@ doConst(SymTableNodePtr constantIdPtr)
 				constantIdPtr->defn.info.constant.value.real = curLiteral.value.real;
 			else
 				constantIdPtr->defn.info.constant.value.real = -(curLiteral.value.real);
-			constantIdPtr->typePtr = setType(RealTypePtr);
+			constantIdPtr->ptype = setType(RealTypePtr);
 		}
 	}
 	else if (curToken == TKN_IDENTIFIER)
 	{
-		SymTableNodePtr idPtr = nullptr;
+		const std::unique_ptr<SymTableNode>& idPtr = nullptr;
 		searchAllSymTables(idPtr);
 		if (!idPtr)
 			syntaxError(ABL_ERR_SYNTAX_UNDEFINED_IDENTIFIER);
 		else if (idPtr->defn.key != DFN_CONST)
 			syntaxError(ABL_ERR_SYNTAX_NOT_A_CONSTANT_IDENTIFIER);
-		else if (idPtr->typePtr == IntegerTypePtr)
+		else if (idPtr->ptype == IntegerTypePtr)
 		{
 			if (sign == TKN_PLUS)
 				constantIdPtr->defn.info.constant.value.integer =
@@ -236,40 +217,40 @@ doConst(SymTableNodePtr constantIdPtr)
 			else
 				constantIdPtr->defn.info.constant.value.integer =
 					-(idPtr->defn.info.constant.value.integer);
-			constantIdPtr->typePtr = setType(IntegerTypePtr);
+			constantIdPtr->ptype = setType(IntegerTypePtr);
 		}
-		else if (idPtr->typePtr == CharTypePtr)
+		else if (idPtr->ptype == CharTypePtr)
 		{
 			if (sawSign)
 				syntaxError(ABL_ERR_SYNTAX_INVALID_CONSTANT);
 			constantIdPtr->defn.info.constant.value.character =
 				idPtr->defn.info.constant.value.character;
-			constantIdPtr->typePtr = setType(CharTypePtr);
+			constantIdPtr->ptype = setType(CharTypePtr);
 		}
-		else if (idPtr->typePtr == RealTypePtr)
+		else if (idPtr->ptype == RealTypePtr)
 		{
 			if (sign == TKN_PLUS)
 				constantIdPtr->defn.info.constant.value.real = idPtr->defn.info.constant.value.real;
 			else
 				constantIdPtr->defn.info.constant.value.real =
 					-(idPtr->defn.info.constant.value.real);
-			constantIdPtr->typePtr = setType(RealTypePtr);
+			constantIdPtr->ptype = setType(RealTypePtr);
 		}
-		else if (((Type*)(idPtr->typePtr))->form == FRM_ENUM)
+		else if (((Type*)(idPtr->ptype))->form == FRM_ENUM)
 		{
 			if (sawSign)
 				syntaxError(ABL_ERR_SYNTAX_INVALID_CONSTANT);
 			constantIdPtr->defn.info.constant.value.integer =
 				idPtr->defn.info.constant.value.integer;
-			constantIdPtr->typePtr = setType(idPtr->typePtr);
+			constantIdPtr->ptype = setType(idPtr->ptype);
 		}
-		else if (((TypePtr)(idPtr->typePtr))->form == FRM_ARRAY)
+		else if (((const std::unique_ptr<Type>&)(idPtr->ptype))->form == FRM_ARRAY)
 		{
 			if (sawSign)
 				syntaxError(ABL_ERR_SYNTAX_INVALID_CONSTANT);
 			constantIdPtr->defn.info.constant.value.stringPtr =
 				idPtr->defn.info.constant.value.stringPtr;
-			constantIdPtr->typePtr = setType(idPtr->typePtr);
+			constantIdPtr->ptype = setType(idPtr->ptype);
 		}
 	}
 	else if (curToken == TKN_STRING)
@@ -279,24 +260,24 @@ doConst(SymTableNodePtr constantIdPtr)
 		if (strlen(curLiteral.value.string) == 1)
 		{
 			constantIdPtr->defn.info.constant.value.character = curLiteral.value.string[0];
-			constantIdPtr->typePtr = setType(CharTypePtr);
+			constantIdPtr->ptype = setType(CharTypePtr);
 		}
 		else
 		{
 			int32_t length = strlen(curLiteral.value.string);
 			constantIdPtr->defn.info.constant.value.stringPtr =
-				(PSTR)ABLSymbolMallocCallback(length + 1);
+				(const std::wstring_view&)ABLSymbolMallocCallback(length + 1);
 			if (!constantIdPtr->defn.info.constant.value.stringPtr)
 				ABL_Fatal(0,
 					" ABL: Unable to AblSymbolHeap->malloc array "
 					"string constant ");
 			strcpy(constantIdPtr->defn.info.constant.value.stringPtr, curLiteral.value.string);
-			constantIdPtr->typePtr = makeStringType(length);
+			constantIdPtr->ptype = makeStringType(length);
 		}
 	}
 	else
 	{
-		constantIdPtr->typePtr = nullptr;
+		constantIdPtr->ptype = nullptr;
 		syntaxError(ABL_ERR_SYNTAX_INVALID_CONSTANT);
 	}
 	getToken();
@@ -316,7 +297,7 @@ typeDefinitions(void)
 {
 	while (curToken == TKN_IDENTIFIER)
 	{
-		SymTableNodePtr typeIdPtr;
+		const std::unique_ptr<SymTableNode>& typeIdPtr;
 		searchAndEnterLocalSymTable(typeIdPtr);
 		typeIdPtr->defn.key = DFN_TYPE;
 		typeIdPtr->library = CurLibrary;
@@ -324,9 +305,9 @@ typeDefinitions(void)
 		ifTokenGetElseError(TKN_EQUAL, ABL_ERR_SYNTAX_MISSING_EQUAL);
 		//----------------------------------
 		// Process the type specification...
-		typeIdPtr->typePtr = doType();
-		if (typeIdPtr->typePtr->typeIdPtr == nullptr)
-			typeIdPtr->typePtr->typeIdPtr = typeIdPtr;
+		typeIdPtr->ptype = doType();
+		if (typeIdPtr->ptype->typeIdPtr == nullptr)
+			typeIdPtr->ptype->typeIdPtr = typeIdPtr;
 		analyzeTypeDefn(typeIdPtr);
 		//---------------
 		// Error synch...
@@ -340,14 +321,14 @@ typeDefinitions(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 doType(void)
 {
 	switch (curToken)
 	{
 	case TKN_IDENTIFIER:
 	{
-		SymTableNodePtr idPtr;
+		const std::unique_ptr<SymTableNode>& idPtr;
 		searchAllSymTables(idPtr);
 		if (!idPtr)
 		{
@@ -359,15 +340,15 @@ doType(void)
 			//----------------------------------------------------------
 			// NOTE: Array types should be parsed in this case if a left
 			// bracket follows the type identifier.
-			TypePtr elementType = setType(identifierType(idPtr));
+			const std::unique_ptr<Type>& elementType = setType(identifierType(idPtr));
 			if (curToken == TKN_LBRACKET)
 			{
 				//--------------
 				// Array type...
-				TypePtr typePtr = createType();
-				if (!typePtr)
+				const std::unique_ptr<Type>& ptype = createType();
+				if (!ptype)
 					ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc array type ");
-				TypePtr elementTypePtr = typePtr;
+				const std::unique_ptr<Type>& elementTypePtr = ptype;
 				do
 				{
 					getToken();
@@ -398,13 +379,13 @@ doType(void)
 							break;
 						case TKN_IDENTIFIER:
 						{
-							SymTableNodePtr idPtr;
+							const std::unique_ptr<SymTableNode>& idPtr;
 							searchAllSymTables(idPtr);
 							if (idPtr == nullptr)
 								syntaxError(ABL_ERR_SYNTAX_UNDEFINED_IDENTIFIER);
 							else if (idPtr->defn.key == DFN_CONST)
 							{
-								if (idPtr->typePtr == IntegerTypePtr)
+								if (idPtr->ptype == IntegerTypePtr)
 									elementTypePtr->info.array.elementCount =
 										idPtr->defn.info.constant.value.integer;
 								else
@@ -459,8 +440,8 @@ doType(void)
 				} while (curToken == TKN_COMMA);
 				ifTokenGetElseError(TKN_RBRACKET, ABL_ERR_SYNTAX_MISSING_RBRACKET);
 				elementTypePtr->info.array.elementTypePtr = elementType;
-				typePtr->size = arraySize(typePtr);
-				elementType = typePtr;
+				ptype->size = arraySize(ptype);
+				elementType = ptype;
 			}
 			return (elementType);
 		}
@@ -481,28 +462,28 @@ doType(void)
 
 //***************************************************************************
 
-TypePtr
-identifierType(SymTableNodePtr idPtr)
+const std::unique_ptr<Type>&
+identifierType(const std::unique_ptr<SymTableNode>& idPtr)
 {
-	TypePtr typePtr = (TypePtr)idPtr->typePtr;
+	const std::unique_ptr<Type>& ptype = (const std::unique_ptr<Type>&)idPtr->ptype;
 	getToken();
-	return (typePtr);
+	return (ptype);
 }
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 enumerationType(void)
 {
-	SymTableNodePtr constantIdPtr = nullptr;
-	SymTableNodePtr lastIdPtr = nullptr;
-	TypePtr typePtr = createType();
-	if (!typePtr)
+	const std::unique_ptr<SymTableNode>& constantIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& lastIdPtr = nullptr;
+	const std::unique_ptr<Type>& ptype = createType();
+	if (!ptype)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc enumeration type ");
 	int32_t constantValue = -1;
-	typePtr->form = FRM_ENUM;
-	typePtr->size = sizeof(int32_t);
-	typePtr->typeIdPtr = nullptr;
+	ptype->form = FRM_ENUM;
+	ptype->size = sizeof(int32_t);
+	ptype->typeIdPtr = nullptr;
 	getToken();
 	//------------------------------------------------------------
 	// Process list of identifiers in this new enumeration type...
@@ -511,10 +492,10 @@ enumerationType(void)
 		searchAndEnterLocalSymTable(constantIdPtr);
 		constantIdPtr->defn.key = DFN_CONST;
 		constantIdPtr->defn.info.constant.value.integer = ++constantValue;
-		constantIdPtr->typePtr = typePtr;
+		constantIdPtr->ptype = ptype;
 		constantIdPtr->library = CurLibrary;
 		if (lastIdPtr == nullptr)
-			typePtr->info.enumeration.constIdPtr = lastIdPtr = constantIdPtr;
+			ptype->info.enumeration.constIdPtr = lastIdPtr = constantIdPtr;
 		else
 		{
 			lastIdPtr->next = constantIdPtr;
@@ -524,27 +505,27 @@ enumerationType(void)
 		ifTokenGet(TKN_COMMA);
 	}
 	ifTokenGetElseError(TKN_RPAREN, ABL_ERR_SYNTAX_MISSING_RPAREN);
-	typePtr->info.enumeration.max = constantValue;
-	return (typePtr);
+	ptype->info.enumeration.max = constantValue;
+	return (ptype);
 }
 
 //***************************************************************************
 
 int32_t
-arraySize(TypePtr typePtr)
+arraySize(const std::unique_ptr<Type>& ptype)
 {
-	if (typePtr->info.array.elementTypePtr->size == 0)
-		typePtr->info.array.elementTypePtr->size = arraySize(typePtr->info.array.elementTypePtr);
-	if (typePtr->info.array.elementCount == -1)
+	if (ptype->info.array.elementTypePtr->size == 0)
+		ptype->info.array.elementTypePtr->size = arraySize(ptype->info.array.elementTypePtr);
+	if (ptype->info.array.elementCount == -1)
 	{
 		//--------------------------------------------------------------
 		// Open array, so just return the size of its element. Remember,
 		// open arrays must be open at the end...
-		typePtr->size = typePtr->info.array.elementTypePtr->size;
+		ptype->size = ptype->info.array.elementTypePtr->size;
 	}
 	else
-		typePtr->size = typePtr->info.array.elementCount * typePtr->info.array.elementTypePtr->size;
-	return (typePtr->size);
+		ptype->size = ptype->info.array.elementCount * ptype->info.array.elementTypePtr->size;
+	return (ptype->size);
 }
 
 //***************************************************************************
@@ -552,7 +533,7 @@ arraySize(TypePtr typePtr)
 //***************************************************************************
 
 void
-varDeclarations(SymTableNodePtr routineIdPtr)
+varDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	varOrFieldDeclarations(
 		routineIdPtr, STACK_FRAME_HEADER_SIZE + routineIdPtr->defn.info.routine.paramCount);
@@ -561,13 +542,13 @@ varDeclarations(SymTableNodePtr routineIdPtr)
 //***************************************************************************
 
 void
-varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
+varOrFieldDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t offset)
 {
 	bool varFlag = (routineIdPtr != nullptr);
-	SymTableNodePtr idPtr = nullptr;
-	SymTableNodePtr firstIdPtr = nullptr;
-	SymTableNodePtr lastIdPtr = nullptr;
-	SymTableNodePtr prevLastIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& idPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& firstIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& lastIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& prevLastIdPtr = nullptr;
 	int32_t totalSize = 0;
 	while ((curToken == TKN_IDENTIFIER) || (curToken == TKN_ETERNAL) || (curToken == TKN_STATIC))
 	{
@@ -585,12 +566,12 @@ varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 		firstIdPtr = nullptr;
 		//------------------------------
 		// Process the variable type...
-		TypePtr typePtr = doType();
+		const std::unique_ptr<Type>& ptype = doType();
 		//------------------------------------------------------------------
 		// Since we haven't really assigned it here, decrement its
 		// numInstances. Every variable in this list will set it properly...
-		typePtr->numInstances--;
-		int32_t size = typePtr->size;
+		ptype->numInstances--;
+		int32_t size = ptype->size;
 		//-------------------------------------------------------
 		// Now that we've read the type, read in the variable (or
 		// possibly list of variables) declared of this type.
@@ -638,7 +619,7 @@ varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 		// sublist...
 		for (idPtr = firstIdPtr; idPtr != nullptr; idPtr = idPtr->next)
 		{
-			idPtr->typePtr = setType(typePtr);
+			idPtr->ptype = setType(ptype);
 			if (varFlag)
 			{
 				idPtr->defn.info.data.varType = varType;
@@ -653,8 +634,8 @@ varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 					idPtr->defn.info.data.offset = eternalOffset;
 					//-----------------------------------
 					// Initialize the variable to zero...
-					StackItemPtr dataPtr = (StackItemPtr)stack + eternalOffset;
-					if (typePtr->form == FRM_ARRAY)
+					const std::unique_ptr<StackItem>& dataPtr = (const std::unique_ptr<StackItem>&)stack + eternalOffset;
+					if (ptype->form == FRM_ARRAY)
 					{
 						dataPtr->address = (Address)ABLStackMallocCallback((size_t)size);
 						if (!dataPtr->address)
@@ -677,7 +658,7 @@ varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 					if (NumStaticVariables == MaxStaticVariables)
 						syntaxError(ABL_ERR_SYNTAX_TOO_MANY_STATIC_VARS);
 					idPtr->defn.info.data.offset = NumStaticVariables;
-					if (typePtr->form == FRM_ARRAY)
+					if (ptype->form == FRM_ARRAY)
 						StaticVariablesSizes[NumStaticVariables] = size;
 					else
 						StaticVariablesSizes[NumStaticVariables] = 0;
@@ -727,3 +708,5 @@ varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

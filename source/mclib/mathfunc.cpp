@@ -5,7 +5,7 @@
 #include "stdinc.h"
 
 #ifndef STUFF_STUFF_HPP
-#include <stuff/stuff.hpp>
+#include "stuff/stuff.h"
 #endif
 
 #ifndef DSTD_H

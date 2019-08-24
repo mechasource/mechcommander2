@@ -7,7 +7,7 @@
 #ifndef AFONT_H
 #define AFONT_H
 
-//#include <gameos.hpp>
+//#include "gameos.hpp"
 
 namespace mechgui
 {
@@ -40,17 +40,17 @@ public:
 	aFont(const aFont& src);
 	aFont& operator=(const aFont& src);
 
-	int32_t init(PCSTR fontName);
+	int32_t init(const std::wstring_view& fontName);
 	int32_t init(int32_t resourceID);
 	void destroy(void);
-	void render(PCSTR text, int32_t XPos, int32_t YPos, int32_t areaWidth, int32_t areaHeight,
+	void render(const std::wstring_view& text, int32_t XPos, int32_t YPos, int32_t areaWidth, int32_t areaHeight,
 		uint32_t color, bool bBold, int32_t alignment);
 
-	int32_t load(PCSTR fontName);
+	int32_t load(const std::wstring_view& fontName);
 	uint32_t height(void) const;
-	uint32_t width(PCSTR st) const;
-	uint32_t height(PCSTR st, int32_t areaWidth) const;
-	void getSize(uint32_t& width, uint32_t& height, PCSTR pText);
+	uint32_t width(const std::wstring_view& st) const;
+	uint32_t height(const std::wstring_view& st, int32_t areaWidth) const;
+	void getSize(uint32_t& width, uint32_t& height, const std::wstring_view& pText);
 
 	static HGOSFONT3D loadFont(int32_t resourceID, int32_t& size);
 	int32_t getSize() { return size; }

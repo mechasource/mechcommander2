@@ -77,5 +77,4 @@ private:
 	ActionPaintTile* pAction;
 };
 
-//*************************************************************************************************
 #endif // end of file ( TerrainBrush.h )

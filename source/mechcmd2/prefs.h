@@ -7,19 +7,19 @@
 #ifndef PREFS_H
 #define PREFS_H
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 class CPrefs
 {
 public:
 	CPrefs(void);
-	int32_t load(PCSTR pFileName = "options");
+	int32_t load(const std::wstring_view& pFileName = "options");
 	int32_t save(void);
 	int32_t applyPrefs(bool bApplyResolution = 1);
 
-	void setNewName(PCSTR pNewName);
-	void setNewUnit(PCSTR pNewUnit);
-	void setNewIP(PCSTR pNewIP);
+	void setNewName(const std::wstring_view& pNewName);
+	void setNewUnit(const std::wstring_view& pNewUnit);
+	void setNewIP(const std::wstring_view& pNewIP);
 
 public:
 	int32_t DigitalMasterVolume;

@@ -8,7 +8,7 @@
 #include "stdinc.h"
 #include "stuffheaders.hpp"
 
-#include <ToolOS.hpp>
+#include "toolos.hpp"
 
 #define TEST_COUNT 50
 

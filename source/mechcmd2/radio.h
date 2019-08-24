@@ -13,7 +13,7 @@
 #ifndef RADIO_H
 #define RADIO_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "dradio.h"
 //#include "dwarrior.h"
 //#include "dgameobj.h"
@@ -37,7 +37,7 @@ struct RadioData
 	byte priority;
 	byte movieCode;
 	float expirationDate;
-	MechWarriorPtr pilot;
+	std::unique_ptr<MechWarrior> pilot;
 };
 
 struct RadioMessageInfo
@@ -58,7 +58,7 @@ class Radio
 	// Data Members
 	//-------------
 protected:
-	MechWarriorPtr owner;
+	std::unique_ptr<MechWarrior> owner;
 	bool enabled;
 	bool ammoOutPlayed;
 	int32_t radioID;
@@ -96,9 +96,9 @@ public:
 
 	~Radio(void) { destroy(void); }
 
-	int32_t init(PSTR fileName, uint32_t heapSize, PSTR movie);
+	int32_t init(const std::wstring_view& fileName, uint32_t heapSize, const std::wstring_view& movie);
 
-	void setOwner(MechWarriorPtr _owner) { owner = _owner; }
+	void setOwner(std::unique_ptr<MechWarrior> _owner) { owner = _owner; }
 
 	int32_t playMessage(RadioMessageType msgId);
 

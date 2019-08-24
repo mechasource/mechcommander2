@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  windowsdebugging.cpp - GameOS reference pseudo code
@@ -17,8 +18,8 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <windows.hpp>
+#include "gameos.hpp"
+#include "windows.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module
@@ -29,19 +30,19 @@
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
-MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPARAM lParam);
+MECH_IMPEXP PSTR __stdcall GetWindowsMessage(uint32_t message, WPARAM wparam, LPARAM lparam);
 
 // global implemented functions not listed in headers
 
 // local functions
-static PCSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos);
-static PCSTR __stdcall GetWM_SIZEFlags(WPARAM wParam);
-static PCSTR __stdcall GetWM_SYSCOMMANDFlags(WPARAM wParam);
+static PSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos);
+static PSTR __stdcall GetWM_SIZEFlags(WPARAM wparam);
+static PSTR __stdcall GetWM_SYSCOMMANDFlags(WPARAM wparam);
 
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
 
-static PCSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos)
+static PSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos)
 {
 	/*static*/ char szBuffer[0x80];
 	szBuffer[0] = 0;
@@ -77,10 +78,10 @@ static PCSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos)
 	return szBuffer; //-V558
 }
 
-static PCSTR __stdcall GetWM_SIZEFlags(WPARAM wParam)
+static PSTR __stdcall GetWM_SIZEFlags(WPARAM wparam)
 {
-	PCSTR pszMessage;
-	switch (wParam)
+	PSTR pszMessage;
+	switch (wparam)
 	{
 	case SIZE_MAXHIDE:
 		pszMessage = "MAXHIDE";
@@ -104,11 +105,11 @@ static PCSTR __stdcall GetWM_SIZEFlags(WPARAM wParam)
 	return pszMessage;
 }
 
-static PCSTR __stdcall GetWM_SYSCOMMANDFlags(WPARAM wParam)
+static PSTR __stdcall GetWM_SYSCOMMANDFlags(WPARAM wparam)
 {
 	/*static*/ char szBuffer[30];
-	PCSTR pszMessage;
-	switch (wParam)
+	PSTR pszMessage;
+	switch (wparam)
 	{
 	case SC_CLOSE:
 		pszMessage = "CLOSE";
@@ -165,7 +166,7 @@ static PCSTR __stdcall GetWM_SYSCOMMANDFlags(WPARAM wParam)
 		pszMessage = "TASKLIST";
 		break;
 	default:
-		sprintf_s(szBuffer, _countof(szBuffer), "Unknown 0x%x", wParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "Unknown 0x%x", wparam);
 		pszMessage = szBuffer;
 		break;
 	}
@@ -173,14 +174,14 @@ static PCSTR __stdcall GetWM_SYSCOMMANDFlags(WPARAM wParam)
 }
 
 //----- (00000AB0) --------------------------------------------------------
-MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPARAM lParam)
+MECH_IMPEXP PSTR __stdcall GetWindowsMessage(uint32_t message, WPARAM wparam, LPARAM lparam)
 {
 	/*static*/ char szBuffer[0x100];
-	PCSTR pszMessage = nullptr;
+	PSTR pszMessage = nullptr;
 	szBuffer[0] = 0;
-	if (uMsg == WM_NCHITTEST || uMsg == WM_SETCURSOR || uMsg == WM_MOUSEMOVE)
+	if (message == WM_NCHITTEST || message == WM_SETCURSOR || message == WM_MOUSEMOVE)
 		return nullptr;
-	switch (uMsg)
+	switch (message)
 	{
 	case WM_NCMOUSEMOVE:
 	case WM_NCLBUTTONDOWN:
@@ -188,7 +189,7 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPAR
 		pszMessage = nullptr;
 		break;
 	case WM_KEYFIRST:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_KEYDOWN w=0x%4.4x l=0x%4.4x", wParam, lParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_KEYDOWN w=0x%4.4x l=0x%4.4x", wparam, lparam);
 		pszMessage = szBuffer;
 		break;
 	case WM_CANCELMODE:
@@ -206,13 +207,13 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPAR
 	case WM_SIZE:
 		sprintf_s(szBuffer, _countof(szBuffer),
 			"WM_SIZE %ux%u %s", // "WM_SIZE %dx%d %s",
-			LOWORD(lParam), HIWORD(lParam), GetWM_SIZEFlags(wParam));
+			LOWORD(lparam), HIWORD(lparam), GetWM_SIZEFlags(wparam));
 		pszMessage = szBuffer;
 		break;
 	case WM_DISPLAYCHANGE:
 		sprintf_s(szBuffer, _countof(szBuffer),
 			"WM_DISPLAYCHANGE %ux%u %ubpp", //"WM_DISPLAYCHANGE %dx%d %dbpp",
-			LOWORD(lParam), HIWORD(lParam), wParam);
+			LOWORD(lparam), HIWORD(lparam), wparam);
 		pszMessage = szBuffer;
 		break;
 	case WM_SYSCOLORCHANGE:
@@ -232,24 +233,24 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPAR
 		break;
 	case WM_WINDOWPOSCHANGING:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_WINDOWPOSCHANGING %s",
-			GetWM_WINDOWPOSCHANGEFlags(reinterpret_cast<PWINDOWPOS>(lParam)));
+			GetWM_WINDOWPOSCHANGEFlags(reinterpret_cast<PWINDOWPOS>(lparam)));
 		pszMessage = szBuffer;
 		break;
 	case WM_WINDOWPOSCHANGED:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_WINDOWPOSCHANGED %s",
-			GetWM_WINDOWPOSCHANGEFlags(reinterpret_cast<PWINDOWPOS>(lParam)));
+			GetWM_WINDOWPOSCHANGEFlags(reinterpret_cast<PWINDOWPOS>(lparam)));
 		pszMessage = szBuffer;
 		break;
 	case WM_QUIT:
 		pszMessage = "WM_QUIT";
 		break;
 	case WM_MOVE:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_MOVE %ux%u", LOWORD(lParam),
-			HIWORD(lParam)); // "WM_MOVE %dx%d",
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_MOVE %ux%u", LOWORD(lparam),
+			HIWORD(lparam)); // "WM_MOVE %dx%d",
 		pszMessage = szBuffer;
 		break;
 	case WM_ACTIVATEAPP:
-		if (LOWORD(wParam))
+		if (LOWORD(wparam))
 			pszMessage = "Activated";
 		else
 			pszMessage = "Deactivated";
@@ -257,7 +258,7 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPAR
 		pszMessage = szBuffer;
 		break;
 	case WM_ACTIVATE:
-		if (LOWORD(wParam))
+		if (LOWORD(wparam))
 			pszMessage = "Activated";
 		else
 			pszMessage = "Deactivated";
@@ -274,7 +275,7 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPAR
 		pszMessage = "WM_NCCALCSIZE";
 		break;
 	case WM_SHOWWINDOW:
-		if (wParam)
+		if (wparam)
 			pszMessage = "Show";
 		else
 			pszMessage = "Hide";
@@ -318,36 +319,36 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPAR
 		pszMessage = 0;
 		break;
 	case WM_KEYUP:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_KEYUP 0x%4.4x", wParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_KEYUP 0x%4.4x", wparam);
 		pszMessage = szBuffer;
 		break;
 	case WM_SYSCHAR:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSCHAR 0x%4.4x", wParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSCHAR 0x%4.4x", wparam);
 		pszMessage = szBuffer;
 		break;
 	case WM_SYSKEYDOWN:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSKEYDOWN 0x%4.4x", wParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSKEYDOWN 0x%4.4x", wparam);
 		pszMessage = szBuffer;
 		break;
 	case WM_SYSKEYUP:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSKEYUP 0x%4.4x", wParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSKEYUP 0x%4.4x", wparam);
 		pszMessage = szBuffer;
 		break;
 	case WM_SYSCOMMAND:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSCOMMAND %s", GetWM_SYSCOMMANDFlags(wParam));
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSCOMMAND %s", GetWM_SYSCOMMANDFlags(wparam));
 		pszMessage = szBuffer;
 		break;
 	case WM_COMMAND:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_COMMAND 0x%4.4x,0x%x", wParam, lParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_COMMAND 0x%4.4x,0x%x", wparam, lparam);
 		pszMessage = szBuffer;
 		break;
 	case WM_CHAR:
-		// wParam is character code of the key
-		if (wParam >= 32 && wParam <= 127)
-			sprintf_s(szBuffer, _countof(szBuffer), "WM_CHAR \"%c\"", wParam);
+		// wparam is character code of the key
+		if (wparam >= 32 && wparam <= 127)
+			sprintf_s(szBuffer, _countof(szBuffer), "WM_CHAR \"%c\"", wparam);
 		else
 			sprintf_s(szBuffer, _countof(szBuffer), "WM_CHAR code=%u",
-				wParam); // "WM_CHAR code=%d"
+				wparam); // "WM_CHAR code=%d"
 		pszMessage = szBuffer;
 		break;
 	case WM_TIMER:
@@ -408,7 +409,7 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPAR
 		pszMessage = "WM_DEVICECHANGE";
 		break;
 	default:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_%x", uMsg);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_%x", message);
 		pszMessage = szBuffer;
 		break;
 	}

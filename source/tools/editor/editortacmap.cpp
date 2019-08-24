@@ -8,7 +8,7 @@
 #include "stdinc.h"
 #include "resource.h"
 #include "EditorTacMap.h"
-#include <tacmap.h>
+#include "tacmap.h"
 #include "EditorInterface.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ EditorTacMap::ReleaseFocus()
 }
 
 LRESULT
-EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
+EditorTacMap::WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam)
 {
 	/* if the left mouse button is not down, then we don't want focus */
 	CWnd* pCWnd = GetFocus();
@@ -114,7 +114,7 @@ EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_COMMAND:
 	{
-		if (IDC_TGA != wParam)
+		if (IDC_TGA != wparam)
 		{
 			/* default processing would've closed the dialog */
 			return 0;
@@ -122,5 +122,5 @@ EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	}
-	return CDialog::WindowProc(message, wParam, lParam);
+	return CDialog::WindowProc(message, wparam, lparam);
 }

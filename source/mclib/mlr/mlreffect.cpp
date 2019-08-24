@@ -3,11 +3,11 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <gameos.hpp>
-#include <mlr/mlr.hpp>
-#include <mlr/mlreffect.hpp>
+#include "gameos.hpp"
+#include "mlr/mlr.h"
+#include "mlr/mlreffect.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //############################   MLREffect    #################################
@@ -171,3 +171,5 @@ MLREffect::TurnAllInVisible(void)
 		testList[i] &= ~1;
 	}
 }
+
+} // namespace MidLevelRenderer

@@ -10,11 +10,10 @@ MechIcon.h			: Interface for the MechIcon component.
 #ifndef MECHICON_H
 #define MECHICON_H
 
-#include <mclib.h>
-#include <mechgui/afont.h>
+#include "mclib.h"
+#include "mechgui/afont.h"
 #include "mc2movie.h"
 
-//*************************************************************************************************
 class Mover;
 class MechWarrior;
 
@@ -74,7 +73,7 @@ public:
 
 	static int32_t __cdecl sort(PCVOID p1, PCVOID p2);
 
-	PCSTR getPilotName(void);
+	const std::wstring_view& getPilotName(void);
 
 	static void init(FitIniFile& file, int32_t which);
 	void swapResolutions(bool bForce);
@@ -160,7 +159,7 @@ public:
 
 	static TGAFileHeader* s_MechTextures;
 
-	void doDraw(PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t where);
+	void doDraw(const std::wstring_view& newDamage, const std::wstring_view& oldDamage, uint32_t handle, uint32_t where);
 	virtual void setDrawBack(bool bSet);
 
 private:
@@ -186,5 +185,4 @@ private:
 	char damage[5];
 };
 
-//*************************************************************************************************
 #endif // end of file ( MechIcon.h )

@@ -8,10 +8,10 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/affinematrix.hpp>
-#include <stuff/normal.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/affinematrix.h"
+#include "stuff/normal.h"
 
 using namespace Stuff;
 

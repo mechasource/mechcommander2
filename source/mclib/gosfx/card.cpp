@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 #include "gosfxheaders.hpp"
-#include <mlr/mlrcardcloud.hpp>
+#include "mlr/mlrcardcloud.h"
 
 //############################################################################
 //######################## gosFX::Card__Specification
@@ -78,7 +78,7 @@ gosFX::Card__Specification::Make(
 	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	// gos_PushCurrentHeap(Heap);
 	Card__Specification* spec = new gosFX::Card__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
@@ -159,7 +159,7 @@ gosFX::Card__Specification::IsDataValid(bool fix_data)
 		{
 			m_VOffset.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;
@@ -184,7 +184,7 @@ gosFX::Card__Specification::IsDataValid(bool fix_data)
 		{
 			m_UOffset.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;
@@ -200,7 +200,7 @@ gosFX::Card__Specification::Copy(Card__Specification* spec)
 	// Check_Object(this);
 	Check_Object(spec);
 	Singleton__Specification::Copy(spec);
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	// gos_PushCurrentHeap(Heap);
 	m_halfHeight = spec->m_halfHeight;
 	m_aspectRatio = spec->m_aspectRatio;
@@ -279,7 +279,7 @@ gosFX::Card*
 gosFX::Card::Make(Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	// gos_PushCurrentHeap(Heap);
 	Card* cloud = new gosFX::Card(spec, flags);
 	// gos_PopCurrentHeap();

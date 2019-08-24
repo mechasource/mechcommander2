@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  threads.cpp - GameOS reference pseudo code
@@ -17,9 +18,9 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <globals.hpp>
-#include <toolos.hpp>
+#include "gameos.hpp"
+#include "globals.hpp"
+#include "toolos.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module

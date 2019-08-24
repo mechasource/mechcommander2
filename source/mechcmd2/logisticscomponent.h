@@ -27,7 +27,7 @@ public:
 
 	LogisticsComponent();
 	~LogisticsComponent(void);
-	int32_t init(PSTR dataLine);
+	int32_t init(const std::wstring_view& dataLine);
 
 	inline int32_t getID(void) const { return ID; }
 	inline int32_t getType(void) const { return Type; }
@@ -39,11 +39,11 @@ public:
 	inline float getWeight(void) const { return weight; }
 	inline int32_t getCost(void) const { return cost; }
 	inline float getHeat(void) const { return heat; }
-	inline PCSTR getName(void) const { return name; }
-	inline PCSTR getFlavorText(void) const { return flavorText; }
+	inline const std::wstring_view& getName(void) const { return name; }
+	inline const std::wstring_view& getFlavorText(void) const { return flavorText; }
 	inline int32_t getHelpID(void) const { return helpStringID; }
-	inline PCSTR getIconFileName(void) const { return iconFileName; }
-	inline PCSTR getPictureFileName(void) const { return pictureFileName; }
+	inline const std::wstring_view& getIconFileName(void) const { return iconFileName; }
+	inline const std::wstring_view& getPictureFileName(void) const { return pictureFileName; }
 	inline int32_t getComponentWidth(void) const { return iconX; }
 	inline int32_t getComponentHeight(void) const { return iconY; }
 	bool compare(LogisticsComponent* second, int32_t type);
@@ -79,8 +79,8 @@ private:
 	int32_t iconX;
 	int32_t iconY;
 
-	PSTR iconFileName;
-	PSTR pictureFileName;
+	const std::wstring_view& iconFileName;
+	const std::wstring_view& pictureFileName;
 	int32_t range;
 	WEAPON_RANGE rangeType;
 
@@ -90,21 +90,20 @@ private:
 	float weight;
 	int32_t cost;
 	float heat;
-	PSTR name;
-	PSTR flavorText;
+	const std::wstring_view& name;
+	const std::wstring_view& flavorText;
 
 	bool bHead;
 	bool bTorso;
 	bool bLegs;
 	bool bAvailable;
 
-	static PSTR s_typeString[];
+	static const std::wstring_view& s_typeString[];
 
 	// HELPERS
-	int32_t extractString(PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength);
-	int32_t extractInt(PSTR& pFileLine);
-	float extractFloat(PSTR& pFileLine);
+	int32_t extractString(const std::wstring_view&& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength);
+	int32_t extractInt(const std::wstring_view&& pFileLine);
+	float extractFloat(const std::wstring_view&& pFileLine);
 };
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsComponent.h )

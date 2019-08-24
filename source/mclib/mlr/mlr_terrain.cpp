@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlr_terrain.hpp>
+#include "mlr/mlr_terrain.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -153,7 +153,7 @@ MLR_Terrain::SetUVData(float bpf, float xmin, float xmax, float zmin, float zmax
 // int32_t MLR_Terrain::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtriangleclipping.inl>
+#include "mlr/mlrtriangleclipping.inl"
 
 #undef I_SAY_YES_TO_DETAIL_TEXTURES
 
@@ -259,3 +259,5 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
 	gos_PopCurrentHeap();
 	return ret;
 }
+
+} // namespace MidLevelRenderer

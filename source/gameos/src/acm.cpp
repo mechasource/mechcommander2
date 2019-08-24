@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  acm.cpp - gameos Audio Compression Manager wrappers
@@ -19,9 +20,9 @@
 
 //#include <mmreg.h>
 //#include <msacm.h>
-#include <gameos.hpp>
-#include <errorhandler.hpp>
-#include <acm.hpp>
+#include "gameos.hpp"
+#include "errorhandler.hpp"
+#include "acm.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module

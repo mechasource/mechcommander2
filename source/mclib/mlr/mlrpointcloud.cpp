@@ -3,12 +3,12 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <gameos.hpp>
-#include <mlr/mlrsorter.hpp>
-#include <mlr/mlrclipper.hpp>
-#include <mlr/mlrpointcloud.hpp>
+#include "gameos.hpp"
+#include "mlr/mlrsorter.h"
+#include "mlr/mlrclipper.h"
+#include "mlr/mlrpointcloud.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //#########################    MLRPointCloud    ###############################
@@ -216,3 +216,5 @@ MLRPointCloud::TestInstance(void) const
 		_ASSERT(*usedNrOfVertices <= maxNrOf);
 	}
 }
+
+} // namespace MidLevelRenderer

@@ -10,8 +10,8 @@ MPLoadMap.cpp			: Implementation of the MPLoadMap component.
 #include "MPLoadMap.h"
 #include "prefs.h"
 #include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
+#include "userinput.h"
+#include "resource.h"
 #include <windows.h>
 #include "MissionBriefingScreen.h"
 
@@ -144,7 +144,7 @@ MPLoadMap::seedDialog(bool bSeedSingle)
 }
 
 void
-MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
+MPLoadMap::addFile(const std::wstring_view& pFileName, bool bSeedSingle)
 {
 	FitIniFile tmp;
 	FullPathFileName path;
@@ -158,10 +158,10 @@ MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 			bool bSingleResult = (bSingle != 0);
 			if ((result == NO_ERROR) && (bSingleResult == bSeedSingle))
 			{
-				PSTR pExt = (PSTR)strstr(pFileName, ".fit");
+				const std::wstring_view& pExt = (const std::wstring_view&)strstr(pFileName, ".fit");
 				if (!pExt)
 				{
-					pExt = (PSTR)(strstr(pFileName, ".FIT"));
+					pExt = (const std::wstring_view&)(strstr(pFileName, ".FIT"));
 				}
 				if (pExt)
 					*pExt = nullptr;
@@ -217,7 +217,7 @@ MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 }
 
 void
-MPLoadMap::seedFromFile(PCSTR pFileName)
+MPLoadMap::seedFromFile(const std::wstring_view& pFileName)
 {
 	FullPathFileName path;
 	path.init(missionPath, pFileName, ".csv");
@@ -247,11 +247,11 @@ MPLoadMap::seedFromCampaign()
 {
 	char searchStr[255];
 	cLoadString(IDS_AUTOSAVE_NAME, searchStr, 255);
-	std::wstring finalStr;
+	const std::wstring_view& finalStr;
 	finalStr = "*.fit";
 	FullPathFileName findPath;
 	findPath.init(savePath, finalStr, ".fit");
-	std::wstring newestFile;
+	const std::wstring_view& newestFile;
 	int32_t groupCount = -1;
 	int32_t missionCount = -1;
 	FitIniFile tmpFile;
@@ -476,7 +476,7 @@ MPLoadMap::updateMapInfo()
 	{
 		FitIniFile file;
 		FullPathFileName path;
-		PCSTR fileName = ((aTextListItem*)mapList.GetItem(sel))->getText();
+		const std::wstring_view& fileName = ((aTextListItem*)mapList.GetItem(sel))->getText();
 		selMapName = ((aLocalizedListItem*)mapList.GetItem(sel))->getHiddenText();
 		path.init(missionPath, selMapName, ".fit");
 		if (NO_ERROR == file.open(path))
@@ -553,12 +553,12 @@ MPLoadMap::updateMapInfo()
 }
 
 void
-MPLoadMap::getMapNameFromFile(PCSTR pFileName, PSTR missionName, int32_t bufferLength)
+MPLoadMap::getMapNameFromFile(const std::wstring_view& pFileName, const std::wstring_view& missionName, int32_t bufferLength)
 {
 	FullPathFileName path;
 	path.init(missionPath, pFileName, ".fit");
 	FitIniFile file;
-	if (NO_ERROR != file.open((PSTR)(PCSTR)path))
+	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
 		char errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
@@ -587,5 +587,4 @@ MPLoadMap::getMapNameFromFile(PCSTR pFileName, PSTR missionName, int32_t bufferL
 
 //////////////////////////////////////////////
 
-//*************************************************************************************************
 // end of file ( MPLoadMap.cpp )

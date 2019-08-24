@@ -8,8 +8,8 @@ KeyboardRef.cpp			: Implementation of the KeyboardRef component.
 
 #include "stdinc.h"
 #include "keyboardref.h"
-#include <mclib.h>
-#include "..\resource.h"
+#include "mclib.h"
+#include "resource.h"
 #include "missiongui.h"
 #include "utilities.h"
 
@@ -115,7 +115,7 @@ KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 		{
 			cLoadString(commands[i].hotKeyDescriptionText, descText, 127);
 			int32_t key = commands[i].key;
-			PSTR pKey = gos_DescribeKey((key & 0x000fffff) << 8);
+			const std::wstring_view& pKey = gos_DescribeKey((key & 0x000fffff) << 8);
 			strcpy(keysString, pKey);
 			if (((key & SHIFT)))
 			{
@@ -155,5 +155,4 @@ KeyboardRef::handleMessage(uint32_t who, uint32_t)
 	return MissionInterfaceManager::instance()->toggleHotKeys();
 }
 
-//*************************************************************************************************
 // end of file ( KeyboardRef.cpp )

@@ -280,7 +280,7 @@ MechIcon::setDrawBack(bool bSet)
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[textureIndex], 0, 0, &textureData);
 	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
-	PSTR pTmp = (PSTR)s_MechTextures + sizeof(TGAFileHeader);
+	const std::wstring_view& pTmp = (const std::wstring_view&)s_MechTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	int32_t whichMech = unit->getIconPictureIndex();
 	offsetY = unitIconY;
@@ -429,7 +429,7 @@ MechIcon::init(int32_t whichIndex)
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[textureIndex], 0, 0, &textureData);
 	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
-	PSTR pTmp = (PSTR)s_MechTextures + sizeof(TGAFileHeader);
+	const std::wstring_view& pTmp = (const std::wstring_view&)s_MechTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	offsetY = 0;
 	offsetX = whichIndex * unitIconX;
@@ -641,7 +641,7 @@ MechIcon::update()
 }
 
 void
-MechIcon::doDraw(PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t index)
+MechIcon::doDraw(const std::wstring_view& newDamage, const std::wstring_view& oldDamage, uint32_t handle, uint32_t index)
 {
 	int32_t i = 0;
 	int32_t maxToCheck = 8;
@@ -719,7 +719,7 @@ MechIcon::doDraw(PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t index
 }
 
 bool
-IsDbcsString(PCSTR pszString)
+IsDbcsString(const std::wstring_view& pszString)
 {
 	if (pszString)
 	{
@@ -976,7 +976,7 @@ VehicleIcon::init(Mover* pMover)
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[texIndex], 0, 0, &textureData);
 	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
-	PSTR pTmp = (PSTR)s_VehicleTextures + sizeof(TGAFileHeader);
+	const std::wstring_view& pTmp = (const std::wstring_view&)s_VehicleTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	int32_t whichMech = pMover->getIconPictureIndex();
 	offsetY = 0;
@@ -1167,7 +1167,7 @@ ForceGroupIcon::sort(PCVOID p1, PCVOID p2)
 	return retVal;
 }
 
-PCSTR
+const std::wstring_view&
 ForceGroupIcon::getPilotName()
 {
 	return unit->getPilot()->getName();
@@ -1369,5 +1369,4 @@ PilotIcon::swapResolutions(bool bForce)
 	}
 }
 
-//*************************************************************************************************
 // end of file ( MechIcon.cpp )

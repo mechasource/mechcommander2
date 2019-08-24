@@ -13,7 +13,7 @@
 #ifndef GAMECAM_H
 #define GAMECAM_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "gameobj.h"
 //#include "objmgr.h"
 

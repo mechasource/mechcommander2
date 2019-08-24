@@ -16,7 +16,7 @@
 //---------------------------------------------------------------------------
 
 //#include "mapdata.h"
-//#include <terrtxm.h>
+//#include "terrtxm.h"
 //#include "terrtxm2.h"
 //#include "bitflag.h"
 //#include "inifile.h"
@@ -296,7 +296,7 @@ public:
 	void resetVisibleVertices(int32_t maxVisibleVertices);
 
 	void getColorMapName(FitIniFile* file);
-	void setColorMapName(PSTR mapName);
+	void setColorMapName(const std::wstring_view& mapName);
 	void saveColorMapName(FitIniFile* file);
 };
 

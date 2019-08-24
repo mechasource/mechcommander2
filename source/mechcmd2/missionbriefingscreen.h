@@ -7,9 +7,9 @@
 #ifndef MISSIONBRIEFINGSCREEN_H
 #define MISSIONBRIEFINGSCREEN_H
 
-#include <mechgui/logisticsscreen.h>
-#include <mechgui/alistbox.h>
-#include <mechgui/abutton.h>
+#include "mechgui/logisticsscreen.h"
+#include "mechgui/alistbox.h"
+#include "mechgui/abutton.h"
 #include "Mission.h"
 #include "simplecamera.h"
 
@@ -17,7 +17,6 @@
 #define MN_MSG_STOP 82
 #define MN_MSG_PAUSE 81
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -36,18 +35,18 @@ public:
 	void init(FitIniFile* file);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	static int32_t getMissionTGA(PCSTR missionName);
+	static int32_t getMissionTGA(const std::wstring_view& missionName);
 
 private:
 	aObject* objectiveButtons[MAX_OBJECTIVES];
 	aObject dropZoneButton;
-	std::wstring objectiveModels[MAX_OBJECTIVES];
+	const std::wstring_view& objectiveModels[MAX_OBJECTIVES];
 	int32_t modelTypes[MAX_OBJECTIVES];
 	float modelScales[MAX_OBJECTIVES];
 	int32_t modelColors[MAX_OBJECTIVES][3];
 	aListBox missionListBox;
 
-	int32_t addLBItem(PCSTR itemName, uint32_t color, int32_t ID);
+	int32_t addLBItem(const std::wstring_view& itemName, uint32_t color, int32_t ID);
 	int32_t addItem(int32_t ID, uint32_t color, int32_t LBid);
 	void addObjectiveButton(float fMakerX, float fMarkerY, int32_t count, int32_t priority,
 		float mapWidth, float mapHeight, bool display);
@@ -59,5 +58,4 @@ private:
 	SimpleCamera camera;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MissionBriefingScreen.h )

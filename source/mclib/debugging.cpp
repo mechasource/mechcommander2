@@ -45,7 +45,7 @@ GameDebugWindow::operator delete(PVOID us)
 //---------------------------------------------------------------------------
 
 void
-GameDebugWindow::setFont(PSTR fontFile)
+GameDebugWindow::setFont(const std::wstring_view& fontFile)
 {
 	if (font)
 	{
@@ -65,7 +65,7 @@ GameDebugWindow::setFont(PSTR fontFile)
 //---------------------------------------------------------------------------
 
 void
-GameDebugWindow::print(PSTR s)
+GameDebugWindow::print(const std::wstring_view& s)
 {
 	if (numLines < MAX_DEBUG_WINDOW_LINES)
 		strcpy(textBuffer[numLines++], s);

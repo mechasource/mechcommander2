@@ -10,7 +10,7 @@
 // Include files
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef VFXSHAPE_H
 #include "vfxshape.h"

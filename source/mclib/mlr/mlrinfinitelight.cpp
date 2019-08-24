@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrinfinitelight.hpp>
+#include "mlr/mlrinfinitelight.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //###############################    MLRInfiniteLight
@@ -107,3 +107,5 @@ MLRInfiniteLight::LightVertex(const MLRVertexData& vertexData)
 	}
 #endif
 }
+
+} // namespace MidLevelRenderer

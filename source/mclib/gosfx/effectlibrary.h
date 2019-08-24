@@ -7,8 +7,8 @@
 
 #pragma once
 
-//#include <gosfx/gosfx.hpp>
-//#include <gosfx/effect.hpp>
+//#include "gosfx/gosfx.h"
+//#include "gosfx/effect.h"
 
 namespace gosFX
 {
@@ -54,7 +54,7 @@ protected:
 public:
 	std::vector<Effect::Specification*> m_effects;
 
-	Effect::Specification* Find(std::wstring& name);
+	Effect::Specification* Find(const std::wstring_view& name);
 	Effect* MakeEffect(uint32_t index, uint32_t flags);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

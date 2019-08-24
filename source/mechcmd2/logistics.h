@@ -12,7 +12,7 @@
 #ifndef LOGISTICS_H
 #define LOGISTICS_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "mc2movie.h"
 //#include "logisticsdata.h"
 
@@ -57,7 +57,7 @@ public:
 
 	void destroy(void);
 
-	void initSplashScreen(PSTR screenFile, PSTR artFile);
+	void initSplashScreen(const std::wstring_view& screenFile, const std::wstring_view& artFile);
 	void destroySplashScreen(void);
 
 	void start(int32_t logState); // Actually Starts execution of logistics in
@@ -68,7 +68,7 @@ public:
 
 	void render(void);
 
-	void setResultsHostLeftDlg(PCSTR pName);
+	void setResultsHostLeftDlg(const std::wstring_view& pName);
 
 	void setLogisticsState(int32_t state)
 	{
@@ -81,7 +81,7 @@ public:
 	static int32_t _stdcall beginMission(PVOID, int32_t, PVOID[]);
 
 	int32_t DoBeginMission(void);
-	void playFullScreenVideo(PCSTR fileName);
+	void playFullScreenVideo(const std::wstring_view& fileName);
 
 	MC2MoviePtr bMovie;
 

@@ -17,7 +17,7 @@
 #define MAX_OBJECTS_PER_ROOM 10
 #define MAX_CONTROLLED_OBJECTS 200
 
-typedef enum
+enum class 
 {
 	GOAL_NONE,
 	GOAL_OBJECT,
@@ -25,7 +25,7 @@ typedef enum
 	NUM_GOAL_TYPES
 } GoalType;
 
-typedef enum
+enum class 
 {
 	GOAL_LINK_NONE,
 	GOAL_LINK_MOVE,
@@ -97,9 +97,9 @@ public:
 
 	~GoalObject(void) { destroy(void); }
 
-	void initObject(PSTR name, GameObjectPtr obj);
+	void initObject(const std::wstring_view& name, GameObjectPtr obj);
 
-	void initRegion(PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
+	void initRegion(const std::wstring_view& name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
 
 	void addLink(GoalObjectPtr gobject, GoalLinkType linkType);
 
@@ -146,11 +146,11 @@ public:
 
 	// int32_t setControl (GoalObjectPtr controller, GoalObjectPtr controllee);
 
-	GoalObjectPtr addRegion(GoalObjectPtr parent, GoalLinkType linkType, PSTR name, int32_t minRow,
+	GoalObjectPtr addRegion(GoalObjectPtr parent, GoalLinkType linkType, const std::wstring_view& name, int32_t minRow,
 		int32_t minCol, int32_t maxRow, int32_t maxCol);
 
 	GoalObjectPtr addObject(
-		GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object);
+		GoalObjectPtr parent, GoalLinkType linkType, const std::wstring_view& name, GameObjectPtr object);
 
 	void clear(void);
 

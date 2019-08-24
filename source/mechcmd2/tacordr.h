@@ -23,22 +23,19 @@
 
 //***************************************************************************
 
-#define NUM_MOVE_SPEEDS 4
-
 #define TACORDER_FAILURE 0
 #define TACORDER_SUCCESS 1
 
-typedef enum
+enum class MoveSpeedType : uint8_t
 {
 	MOVE_SPEED_BEST,
 	MOVE_SPEED_MAXIMUM,
 	MOVE_SPEED_SLOW,
-	MOVE_SPEED_MODERATE
-} MoveSpeedType;
+	MOVE_SPEED_MODERATE,
+	NUM_MOVE_SPEEDS
+};
 
-#define NUM_MOVE_PATTERNS 7
-
-typedef enum
+enum class MovePatternType : uint8_t
 {
 	MOVE_PATTERN_DIRECT,
 	MOVE_PATTERN_ZIGZAG_NARROW,
@@ -46,24 +43,24 @@ typedef enum
 	MOVE_PATTERN_ZIGZAG_WIDE,
 	MOVE_PATTERN_RANDOM_NARROW,
 	MOVE_PATTERN_RANDOM_MEDIUM,
-	MOVE_PATTERN_RANDOM_WIDE
-} MovePatternType;
+	MOVE_PATTERN_RANDOM_WIDE,
+	NUM_MOVE_PATTERNS
+};
 
-#define NUM_ATTITUDES 6
-
-typedef enum
+enum class AttitudeType : uint8_t
 {
 	ATTITUDE_CAUTIOUS,
 	ATTITUDE_CONSERVATIVE,
 	ATTITUDE_NORMAL,
 	ATTITUDE_AGGRESSIVE,
 	ATTITUDE_BERSERKER,
-	ATTITUDE_SUICIDAL
-} AttitudeType;
+	ATTITUDE_SUICIDAL,
+	NUM_ATTITUDES
+};
 
 //#define	FIRERANGE_OPTIMUM	-1
 
-typedef enum
+enum class FireRangeType : uint8_t
 {
 	FIRERANGE_DEFAULT = -4,
 	FIRERANGE_RAMMING,
@@ -74,26 +71,26 @@ typedef enum
 	FIRERANGE_LONG,
 	FIRERANGE_CURRENT,
 	NUM_FIRERANGES
-} FireRangeType;
+};
 
-typedef enum
+enum class AttackType : uint8_t
 {
 	ATTACK_NONE,
 	ATTACK_TO_DESTROY,
 	ATTACK_TO_DISABLE,
 	ATTACK_CONSERVING_AMMO,
 	NUM_ATTACK_TYPES
-} AttackType;
+};
 
-typedef enum
+enum class AttackMethod : uint8_t
 {
 	ATTACKMETHOD_RANGED,
 	ATTACKMETHOD_DFA,
 	ATTACKMETHOD_RAMMING,
 	NUM_ATTACKMETHODS
-} AttackMethod;
+};
 
-typedef enum
+enum class FireOddsType : uint8_t
 {
 	FIREODDS_LUCKY,
 	FIREODDS_BAD,
@@ -101,9 +98,9 @@ typedef enum
 	FIREODDS_GOOD,
 	FIREODDS_GREAT,
 	NUM_FIREODDS
-} FireOddsType;
+};
 
-typedef enum
+enum class TacticType : uint8_t
 {
 	TACTIC_NONE,
 	TACTIC_FLANK_LEFT,
@@ -113,16 +110,16 @@ typedef enum
 	TACTIC_TURRET,
 	TACTIC_JOUST,
 	NUM_TACTICS
-} TacticType;
+};
 
-typedef enum
+enum class OrderOriginType : uint8_t
 {
 	ORDER_ORIGIN_PLAYER,
 	ORDER_ORIGIN_COMMANDER,
 	ORDER_ORIGIN_SELF
-} OrderOriginType;
+};
 
-typedef enum
+enum class TacticalOrderCode : uint8_t
 {
 	TACTICAL_ORDER_NONE,
 	TACTICAL_ORDER_WAIT,
@@ -153,7 +150,7 @@ typedef enum
 	TACTICAL_ORDER_RECOVER,
 	NUM_TACTICAL_ORDERS // IF THIS CHANGES, ADD GUARD_POINT AS SEP. ORDER (see
 	// pack/unpack hack)
-} TacticalOrderCode;
+};
 
 //***************************************************************************
 
@@ -164,14 +161,20 @@ struct LocationNode
 	LocationNodePtr next;
 };
 
-typedef enum _TravelModeType
+enum class TravelModeType : uint8_t
 {
-	TRAVEL_MODE_INVALID = -1,
-	TRAVEL_MODE_SLOW,
-	TRAVEL_MODE_FAST,
-	TRAVEL_MODE_JUMP,
-	NUM_TRAVEL_MODES
-} TravelModeType;
+	slow,
+	fast,
+	jump,
+	numberoftypes,
+	invalid = UCHAR_MAX	// not used
+};
+
+enum class SpecialMoveMode : uint8_t
+{
+	normal,
+	minelaying
+};
 
 typedef struct _WayPath
 {
@@ -182,12 +185,6 @@ typedef struct _WayPath
 } WayPath;
 
 typedef WayPath* WayPathPtr;
-
-typedef enum
-{
-	MOVE_MODE_NORMAL,
-	MOVE_MODE_MINELAYING
-} SpecialMoveMode;
 
 typedef struct _TacOrderMoveParams
 {
@@ -210,7 +207,7 @@ typedef struct _TacOrderAttackParams
 	int32_t aimLocation;
 	bool pursue;
 	bool obliterate;
-	Stuff::Vector3D targetPoint;
+	Stuff::Vector3D targetpoint;
 } TacOrderAttackParams;
 
 class TacticalOrder
@@ -225,11 +222,11 @@ public:
 	bool subOrder;
 	OrderOriginType origin;
 	TacticalOrderCode code;
-	TacOrderMoveParams moveParams;
+	TacOrderMoveParams moveparams;
 	TacOrderAttackParams attackParams;
 	GameObjectWatchID targetWID;
 	int32_t targetObjectClass;
-	int32_t selectionIndex;
+	int32_t selectionindex;
 	char stage;
 	char statusCode;
 	Stuff::Vector3D lastMoveGoal;
@@ -251,11 +248,11 @@ public:
 		unitOrder = copy.unitOrder;
 		origin = copy.origin;
 		code = copy.code;
-		moveParams = copy.moveParams;
+		moveparams = copy.moveparams;
 		attackParams = copy.attackParams;
 		targetWID = copy.targetWID;
 		targetObjectClass = copy.targetObjectClass;
-		selectionIndex = copy.selectionIndex;
+		selectionindex = copy.selectionindex;
 		stage = copy.stage;
 		subOrder = copy.subOrder;
 		lastMoveGoal.x = -99999.0;
@@ -267,69 +264,37 @@ public:
 	}
 
 	void init(void);
-
 	void init(OrderOriginType _origin, TacticalOrderCode _code, bool _unitOrder = false);
-
 	void initWayPath(LocationNodePtr path);
-
 	void initAttackWayPath(LocationNodePtr path);
-
 	void destroy(void);
-
 	TacticalOrder(void) { init(void); }
-
 	~TacticalOrder(void) { destroy(void); }
-
 	void setId(int32_t newId) { id = newId; }
-
-	void setId(MechWarriorPtr pilot);
-
+	void setId(std::unique_ptr<MechWarrior> pilot);
 	int32_t getId(void) { return (id); }
-
-	int32_t execute(MechWarriorPtr warrior, int32_t& message);
-
-	int32_t status(MechWarriorPtr warrior);
-
+	int32_t execute(std::unique_ptr<MechWarrior> warrior, int32_t& message);
+	int32_t status(std::unique_ptr<MechWarrior> warrior);
 	Stuff::Vector3D getWayPoint(int32_t index);
-
 	void setWayPoint(int32_t index, Stuff::Vector3D wayPoint);
-
 	void addWayPoint(Stuff::Vector3D wayPoint, int32_t travelMode);
-
 	GameObjectPtr getRamTarget(void);
-
 	GameObjectPtr getJumpTarget(void);
-
 	bool isGroupOrder(void);
-
 	bool isCombatOrder(void);
-
 	bool isMoveOrder(void);
-
 	bool isJumpOrder(void);
-
 	bool isWayPathOrder(void);
-
 	int32_t getParamData(float* time, int32_t* paramList);
-
-	int32_t pack(MoverGroupPtr unit, MoverPtr point);
-
+	int32_t pack(MoverGroupPtr unit, std::unique_ptr<Mover> point);
 	int32_t unpack(void);
-
 	void setGroupFlag(int32_t localMoverId, bool set);
-
-	int32_t getGroup(
-		int32_t commanderID, MoverPtr* moverList, MoverPtr* point, int32_t sortType = 0);
-
+	int32_t getGroup(int32_t commanderid, std::unique_ptr<Mover>* moverList, std::unique_ptr<Mover>* point, int32_t sortType = 0);
 	void setStage(int32_t newStage) { stage = (char)newStage; }
-
 	GameObjectPtr getTarget(void);
-
 	bool equals(TacticalOrder* tacOrder);
-
 	char getStatusCode(void) { return (statusCode); }
-
-	void debugString(MechWarriorPtr pilot, PSTR s);
+	void debugString(std::unique_ptr<MechWarrior> pilot, const std::wstring_view& s);
 };
 
 //***************************************************************************

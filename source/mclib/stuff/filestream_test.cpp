@@ -7,7 +7,7 @@
 
 #include "stdinc.h"
 #include "stuffheaders.hpp"
-#include <toolos.hpp>
+#include "toolos.hpp"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MMIOstream ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

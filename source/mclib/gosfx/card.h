@@ -4,9 +4,9 @@
 
 #pragma once
 
-//#include <gosfx/gosfx.hpp>
-//#include <gosfx/singleton.hpp>
-//#include <mlr/mlr.hpp>
+//#include "gosfx/gosfx.h"
+//#include "gosfx/singleton.h"
+//#include "mlr/mlr.h"
 
 namespace MidLevelRenderer
 {

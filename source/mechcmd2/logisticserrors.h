@@ -43,5 +43,4 @@ LogisticsErrors.h	error codes for logistics
 #define NO_MORE_ARMOR 1029
 #define INSUFFICIENT_HEAT 1030
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsErrors.h )

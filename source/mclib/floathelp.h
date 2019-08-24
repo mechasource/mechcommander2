@@ -14,8 +14,8 @@
 // Include Files
 
 //#include "dbasegui.h"
-//#include <gameos.hpp>
-//#include <stuff/stuff.hpp>
+//#include "gameos.hpp"
+//#include "stuff/stuff.h"
 
 extern HGOSFONT3D gosFontHandle;
 extern float gosFontScale;
@@ -62,14 +62,14 @@ public:
 
 	static void renderAll(void);
 
-	static void setFloatHelp(PSTR txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
+	static void setFloatHelp(const std::wstring_view& txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
 		float scl, bool proportional, bool bold, bool italic, bool wordWrap);
 
-	static void getTextStringLength(PSTR text, uint32_t fColor, float scl, bool proportional,
+	static void getTextStringLength(const std::wstring_view& text, uint32_t fColor, float scl, bool proportional,
 		bool bold, bool italic, bool wordWrap, uint32_t& width, uint32_t& height);
 
 protected:
-	void setHelpText(PSTR txt)
+	void setHelpText(const std::wstring_view& txt)
 	{
 		if (strlen(txt) < 2048)
 		{

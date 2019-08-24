@@ -7,7 +7,7 @@
 
 #include "stdinc.h"
 #include "stuffheaders.hpp"
-#include <toolos.hpp>
+#include "toolos.hpp"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MMIOstream ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -380,7 +380,7 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 			Stuff::MString value = " ";
 			text += value;
 		}
-		SPEW((GROUP_STUFF_TEST, "%s", (PCSTR)text));
+		SPEW((GROUP_STUFF_TEST, "%s", (const std::wstring_view&)text));
 		// SPEW((GROUP_STUFF_TEST, "%d ---- Dst Bit Value : +", i));
 		text = "\t---- Dst Bit Value : ";
 		for (byte_count = 0; byte_count < 8; ++byte_count)
@@ -409,7 +409,7 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 			Stuff::MString value = " ";
 			text += value;
 		}
-		SPEW((GROUP_STUFF_TEST, "%s", (PCSTR)text));
+		SPEW((GROUP_STUFF_TEST, "%s", (const std::wstring_view&)text));
 		SPEW((GROUP_STUFF_TEST, "\t---- Src Hex Value : +", i));
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{

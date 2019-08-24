@@ -19,7 +19,7 @@
 //#include "gameobj.h"
 //#include "objtype.h"
 //#include "contact.h"
-//#include <gosfx/gosfxheaders.hpp>
+//#include "gosfx/gosfxheaders.h"
 
 //***************************************************************************
 
@@ -43,7 +43,7 @@ class ArtilleryChunk
 
 public:
 	char commanderId;
-	char strikeType;
+	char striketype;
 	int32_t cellRC[2];
 	char secondsToImpact;
 
@@ -57,7 +57,7 @@ public:
 	void init(void)
 	{
 		commanderId = -1;
-		strikeType = -1;
+		striketype = -1;
 		cellRC[0] = -1;
 		cellRC[1] = -1;
 		secondsToImpact = -1;
@@ -70,7 +70,7 @@ public:
 
 	~ArtilleryChunk(void) { destroy(void); }
 
-	void build(int32_t commanderId, int32_t strikeType, Stuff::Vector3D location, int32_t seconds);
+	void build(int32_t commanderId, int32_t striketype, Stuff::Vector3D location, int32_t seconds);
 
 	void pack(void);
 
@@ -123,7 +123,7 @@ public:
 
 	ArtilleryType(void) { init(void); }
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
@@ -277,11 +277,11 @@ public:
 
 //---------------------------------------------------------------------------
 extern void
-CallArtillery(int32_t commanderId, int32_t strikeType, Stuff::Vector3D strikeLoc,
+CallArtillery(int32_t commanderId, int32_t striketype, Stuff::Vector3D strikeloc,
 	int32_t secondsToImpact, bool randomOffset);
 
 extern void
-IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc,
+IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeloc,
 	GameObjectPtr strikeTarget, bool playerStrike = true, bool clanStrike = false,
 	float timeToImpact = -1.00);
 

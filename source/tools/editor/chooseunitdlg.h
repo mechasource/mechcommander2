@@ -10,7 +10,7 @@ ChooseUnitDlg.h		: Interface for the ChooseUnitDlg component.
 #ifndef CHOOSEUNITDLG_H
 #define CHOOSEUNITDLG_H
 
-//#include <elist.h>
+//#include "elist.h"
 //#include "objective.h"
 //#include "editorobjectmgr.h"
 
@@ -21,8 +21,8 @@ public:
 
 	ChooseUnitDlg(unit_ptr_type& unitPtr, int32_t alignmentToExclude = -1);
 
-	BOOL OnCommand(WPARAM wParam,
-		LPARAM lParam); // called by child controls to inform of an event
+	BOOL OnCommand(WPARAM wparam,
+		LPARAM lparam); // called by child controls to inform of an event
 	void OnUsePointer(void);
 	void OnCancel(void);
 	void OnOK(void);
@@ -48,5 +48,4 @@ private:
 	CButton* m_pOKButton;
 };
 
-//*************************************************************************************************
 #endif // end of file ( ChooseUnitDlg.h )

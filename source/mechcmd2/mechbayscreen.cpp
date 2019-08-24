@@ -10,12 +10,12 @@ MechBayScreen.cpp			: Implementation of the MechBayScreen component.
 #include "LogisticsMech.h"
 #include "LogisticsData.h"
 #include "LogisticsMechIcon.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "simplecamera.h"
 #include "windows.h"
 #include "gameSound.h"
 #include "multPlyr.h"
-#include "ChatWindow.h"
+#include "chatwindow.h"
 #include "Prefs.h"
 
 MechBayScreen* MechBayScreen::s_instance = nullptr;
@@ -617,7 +617,7 @@ MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 	if (pMech)
 	{
 		loadoutListBox.setMech(pMech->getVariant());
-		std::wstring fileName = pMech->getFileName();
+		const std::wstring_view& fileName = pMech->getFileName();
 		int32_t index = fileName.Find('.');
 		fileName = fileName.Left(index);
 		index = fileName.ReverseFind('\\');
@@ -639,7 +639,7 @@ MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 		char str[64];
 		// weight
 		cLoadString(IDS_MB_MECH_WEIGHT, tmpStr, 63);
-		sprintf(str, tmpStr, pCurMech->getMaxWeight(), (PCSTR)pCurMech->getMechClass());
+		sprintf(str, tmpStr, pCurMech->getMaxWeight(), (const std::wstring_view&)pCurMech->getMechClass());
 		textObjects[7].setText(str);
 		// firing range
 		int32_t tmpColor;

@@ -7,13 +7,13 @@
 //#ifndef MLRTRIANGLECLIPPING_HPP
 //#define MLRTRIANGLECLIPPING_HPP
 
-// #include <gameos.hpp>
+// #include "gameos.hpp"
 
-#include <mlr/mlrcliptrick.hpp>
-#include <mlr/mlrtexture.hpp>
-#include <mlr/mlrtexturepool.hpp>
-#include <mlr/gosvertex.hpp>
-#include <mlr/gosvertexpool.hpp>
+#include "mlr/mlrcliptrick.h"
+#include "mlr/mlrtexture.h"
+#include "mlr/mlrtexturepool.h"
+#include "mlr/gosvertex.h"
+#include "mlr/gosvertexpool.h"
 
 extern uint32_t gEnableTextureSort, gShowClippedPolys, gEnableDetailTexture;
 extern puint16_t indexOffset; // [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]

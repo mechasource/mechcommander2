@@ -8,13 +8,13 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/affinematrix.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <stuff/matrix.hpp>
-#include <stuff/vector4d.hpp>
-#include <stuff/point3d.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/affinematrix.h"
+#include "stuff/linearmatrix.h"
+#include "stuff/matrix.h"
+#include "stuff/vector4d.h"
+#include "stuff/point3d.h"
 
 using namespace Stuff;
 

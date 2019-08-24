@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrinfinitelightwithfalloff.hpp>
+#include "mlr/mlrinfinitelightwithfalloff.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //###############    MLRInfiniteLightWithFalloff    ###########################
@@ -186,3 +186,5 @@ MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
 	}
 #endif
 }
+
+} // namespace MidLevelRenderer

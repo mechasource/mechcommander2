@@ -17,7 +17,7 @@
 //#include "apprtype.h"
 //#include "msl.h"
 //#include "objectappearance.h"
-//#include <gosfx/gosfxheaders.hpp>
+//#include "gosfx/gosfxheaders.h"
 
 //**************************************************************************************
 
@@ -89,7 +89,7 @@ public:
 
 	~GVAppearanceType(void) { destroy(void); }
 
-	virtual void init(PSTR fileName);
+	virtual void init(const std::wstring_view& fileName);
 
 	virtual void destroy(void);
 
@@ -280,7 +280,7 @@ public:
 
 	virtual int32_t getLowestWeaponNode(void);
 
-	virtual Stuff::Vector3D getNodeNamePosition(PSTR nodeName);
+	virtual Stuff::Vector3D getNodeNamePosition(const std::wstring_view& nodeName);
 
 	virtual bool PerPolySelect(int32_t mouseX, int32_t mouseY);
 

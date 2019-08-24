@@ -7,8 +7,8 @@
 //
 #pragma once
 
-//#include <gosfx/gosfx.hpp>
-//#include <gosfx/effect.hpp>
+//#include "gosfx/gosfx.h"
+//#include "gosfx/effect.h"
 
 namespace gosFX
 {
@@ -26,7 +26,7 @@ class LightManager
 public:
 	static LightManager* Instance;
 
-	virtual Light* MakePointLight(PCSTR light_map = nullptr);
+	virtual Light* MakePointLight(const std::wstring_view& light_map = nullptr);
 	struct Info
 	{
 		Stuff::RGBColor m_color;
@@ -76,7 +76,7 @@ public:
 	SplineCurve m_outerRadius;
 
 	bool m_twoSided;
-	std::wstring m_lightMap; // std::wstring	m_lightMap;
+	const std::wstring_view& m_lightMap; // const std::wstring_view&	m_lightMap;
 };
 
 //############################################################################

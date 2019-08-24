@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrtexture.hpp>
+#include "mlr/mlrtexture.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //############################    MLRTexture    ###############################
@@ -25,7 +25,7 @@ MLRTexture::MLRTexture(std::iostream stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture::MLRTexture(
-	MLRTexturePool* tp, PCSTR texName, int32_t _instance, int32_t handle, int32_t _hint)
+	MLRTexturePool* tp, const std::wstring_view& texName, int32_t _instance, int32_t handle, int32_t _hint)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	thePool = tp;
@@ -121,3 +121,5 @@ MLRTexture::GetInstanceNumber()
 	// Check_Object(this);
 	return ((textureHandle - 1) & ~((1 << thePool->GetInstanceDepth()) - 1));
 }
+
+} // namespace MidLevelRenderer

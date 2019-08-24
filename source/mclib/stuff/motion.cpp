@@ -8,9 +8,9 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/motion.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/motion.h"
 
 using namespace Stuff;
 
@@ -70,7 +70,7 @@ Motion3D::AddScaled(const Motion3D& source, const Motion3D& delta, float t)
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Motion3D& motion)
+Spew(const std::wstring_view& group, const Motion3D& motion)
 {
 	Check_Object(&motion);
 	SPEW((group, "{+"));

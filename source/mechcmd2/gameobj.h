@@ -16,7 +16,7 @@
 //---------------------------------------------------------------------------
 // Include Files
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "dobjtype.h"
 //#include "dappear.h"
 //#include "dcontact.h"
@@ -26,7 +26,7 @@
 //#include "dgameobj.h"
 //#include "dcarnage.h"
 //#include "move.h"
-//#include <stuff/stuff.hpp>
+//#include "stuff/stuff.h"
 
 extern float metersPerWorldUnit;
 extern ObjectTypeManagerPtr objectTypeManager;
@@ -43,7 +43,7 @@ extern ObjectTypeManagerPtr objectTypeManager;
 #define RELPOS_FLAG_PASSABLE_START 2
 #define RELPOS_FLAG_PASSABLE_GOAL 4
 
-typedef enum
+enum class 
 {
 	ATTACKSOURCE_WEAPONFIRE,
 	ATTACKSOURCE_COLLISION,
@@ -328,7 +328,7 @@ public:
 
 	uint32_t getWatchID(bool assign = true);
 
-	virtual PSTR getName(void) { return (nullptr); }
+	virtual const std::wstring_view& getName(void) { return (nullptr); }
 
 	virtual float getStatusRating(void) { return (0.0); }
 
@@ -500,11 +500,11 @@ public:
 
 	virtual void setCommanderId(int32_t /*_commanderId*/) {}
 
-	virtual MechWarriorPtr getPilot(void) { return (nullptr); }
+	virtual std::unique_ptr<MechWarrior> getPilot(void) { return (nullptr); }
 
 	virtual int32_t getCommanderId(void) { return (-1); }
 
-	virtual int32_t write(FilePtr /*objFile*/) { return NO_ERROR; }
+	virtual int32_t write(std::unique_ptr<File> /*objFile*/) { return NO_ERROR; }
 
 	virtual float distanceFrom(Stuff::Vector3D goal);
 

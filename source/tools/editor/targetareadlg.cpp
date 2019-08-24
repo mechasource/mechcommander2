@@ -8,7 +8,7 @@ TargetAreaDlg.cpp			: Implementation of the TargetAreaDlg component.
 //#include "resource.h"
 //#include <stdlib.h>
 //#include <assert.h>
-//#include <estring.h>
+//#include "estring.h"
 //#include "targetareadlg.h"
 //#include "objective.h"
 //#include "editorinterface.h"
@@ -40,7 +40,7 @@ TargetAreaDlg::OnInitDialog()
 	assert(m_pCancelButton);
 	m_pOKButton = (CButton*)GetDlgItem(IDOK);
 	assert(m_pOKButton);
-	std::wstring tmpStr;
+	const std::wstring_view& tmpStr;
 	tmpStr.Format("%.3f", (*m_pTargetCenterX));
 	m_pTargetCenterXEditBox->SetWindowText(tmpStr.Data());
 	tmpStr.Format("%.3f", (*m_pTargetCenterY));
@@ -51,12 +51,12 @@ TargetAreaDlg::OnInitDialog()
 }
 
 BOOL
-TargetAreaDlg::OnCommand(WPARAM wParam,
-	LPARAM lParam) // called by child controls to inform of an event
+TargetAreaDlg::OnCommand(WPARAM wparam,
+	LPARAM lparam) // called by child controls to inform of an event
 {
 	assert(m_pCancelButton);
 	assert(m_pOKButton);
-	return inherited::OnCommand(wParam, lParam);
+	return inherited::OnCommand(wparam, lparam);
 }
 
 void
@@ -96,5 +96,4 @@ TargetAreaDlg::OnOK()
 
 TargetAreaDlg::~TargetAreaDlg() {}
 
-//*************************************************************************************************
 // end of file ( TargetAreaDlg.cpp )

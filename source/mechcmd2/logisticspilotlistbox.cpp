@@ -10,7 +10,7 @@ LogisticsPilotListBox component.
 
 #include "LogisticsPilotListBox.h"
 #include "LogisticsPilot.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "PilotReadyScreen.h"
 
 LogisticsPilotListBoxItem* LogisticsPilotListBoxItem::s_templateItem = nullptr;
@@ -74,7 +74,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem(LogisticsPilot* pNewPilot)
 	addChild(&outline);
 	addChild(&line);
 	addChild(&pilotOutline);
-	std::wstring name = pPilot->getName();
+	const std::wstring_view& name = pPilot->getName();
 	name.MakeUpper();
 	nameText.setText(name);
 	// ACE not continguous with other ranks.  Added too late!
@@ -279,5 +279,4 @@ LogisticsPilotListBox::removePilot(LogisticsPilot* pPilot)
 	}
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsPilotListBox.cpp )

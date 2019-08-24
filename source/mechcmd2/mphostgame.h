@@ -5,7 +5,6 @@ MPHostGame.h			: Interface for the MPHostGame component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
@@ -13,11 +12,11 @@ MPHostGame.h			: Interface for the MPHostGame component.
 #define MPHOSTGAME_H
 
 //#include "logisticsdialog.h"
-//#include <mechgui/asystem.h>
-//#include <mechgui/alistbox.h>
+//#include "mechgui/asystem.h"
+//#include "mechgui/alistbox.h"
 //#include "attributemeter.h"
 //#include "simplecamera.h"
-//#include <mechgui/aanim.h>
+//#include "mechgui/aanim.h"
 
 class aStyle5TextListItem : public aTextListItem
 {
@@ -27,7 +26,7 @@ public:
 		hasAnimation = false;
 		normalColor = 0xff808080;
 	}
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void render(void);
 
 protected:
@@ -59,5 +58,4 @@ private:
 	int32_t indexOfButtonWithID(int32_t id);
 };
 
-//*************************************************************************************************
 #endif // end of file ( MPHostGame.h )

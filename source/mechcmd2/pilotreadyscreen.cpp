@@ -11,12 +11,12 @@ component.
 #include "LogisticsMech.h"
 #include "LogisticsData.h"
 #include "LogisticsMechIcon.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "MechBayScreen.h"
 #include "warrior.h"
 #include "Gamesound.h"
 #include "multPlyr.h"
-#include "ChatWindow.h"
+#include "chatwindow.h"
 
 PilotReadyScreen* PilotReadyScreen::s_instance = nullptr;
 
@@ -350,7 +350,7 @@ PilotReadyScreen::update()
 		{
 			if (userInput->getMouseY() > 317)
 			{
-				helpID = 0;
+				helpid = 0;
 				textObjects[helpTextArrayID].setText("");
 			}
 			mechDisplay.update();
@@ -417,10 +417,10 @@ PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
 			getButton(MB_MSG_PREV)->disable(true);
 			getButton(MB_MSG_NEXT)->disable(true);
 			getButton(MB_MSG_MAINMENU)->disable(true);
-			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 			if (pInfo)
 			{
-				PCSTR name = pInfo->name;
+				const std::wstring_view& name = pInfo->name;
 				MPlayer->sendPlayerActionChat(nullptr, name, IDS_MP_PLAYER_READY);
 			}
 			pilotListBox.SelectItem(-1);
@@ -616,7 +616,7 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		strcat(fileName, "MCL_PR_");
 		strcat(fileName, pPilot->getName());
 		strcat(fileName, ".tga");
-		std::wstring str = fileName;
+		const std::wstring_view& str = fileName;
 		str.MakeLower();
 		statics[67].setTexture(str);
 		statics[67].setColor(0xffffffff);
@@ -640,11 +640,11 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		attributeMeters[1].setValue(pCurPilot->getPiloting() / 80.f);
 		sprintf(number, "%ld", pCurPilot->getMechKills());
 		textObjects[7].setText(number);
-		std::wstring name = pCurPilot->getName();
+		const std::wstring_view& name = pCurPilot->getName();
 		name.MakeUpper();
 		textObjects[8].setText(name);
 		int32_t count = 32;
-		PCSTR specialtySkills[32];
+		const std::wstring_view& specialtySkills[32];
 		int32_t skillIDs[32];
 		pCurPilot->getSpecialtySkills(specialtySkills, count);
 		count = 32;

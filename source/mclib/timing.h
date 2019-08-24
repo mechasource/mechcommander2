@@ -125,7 +125,7 @@ typedef TimerManager* TimerManagerPtr;
 //----------------------------------------------------------------------------------
 extern TimerManagerPtr timerManager;
 
-extern PSTR monthName[];
+extern const std::wstring_view& monthName[];
 //----------------------------------------------------------------------------------
 // Find out actual system time
 typedef struct _MC_SYSTEMTIME

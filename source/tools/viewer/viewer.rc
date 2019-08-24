@@ -42,7 +42,7 @@ END
 
 3 TEXTINCLUDE 
 BEGIN
-    "#include <mechcommander2.ver>\r\n"
+    "#include ""mechcommander2.ver""\r\n"
     "\0"
 END
 
@@ -78,7 +78,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-#include <mechcommander2.ver>
+#include "mechcommander2.ver"
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

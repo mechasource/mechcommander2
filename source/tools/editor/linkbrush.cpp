@@ -8,7 +8,7 @@
 //===========================================================================//
 
 #include "LinkBrush.h"
-#include "BuildingLink.h"
+#include "buildinglink.h"
 #include "editorobjectmgr.h"
 
 LinkBrush::LinkBrush(bool Link)

@@ -77,7 +77,7 @@ extern bool reloadBounds;
 //-----------------------------------------------------------------------------
 // class GenericAppearanceType
 void
-GenericAppearanceType::init(PSTR fileName)
+GenericAppearanceType::init(const std::wstring_view& fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -432,7 +432,7 @@ GenericAppearance::setObjectParameters(
 
 //-----------------------------------------------------------------------------
 void
-GenericAppearance::changeSkyToSkyNum(PSTR txmName, PSTR newName)
+GenericAppearance::changeSkyToSkyNum(const std::wstring_view& txmName, const std::wstring_view& newName)
 {
 	if (strnicmp(txmName, "sky", 3) != 0)
 	{

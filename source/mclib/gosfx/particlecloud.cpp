@@ -168,7 +168,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 			m_pLifeSpan.m_seeded = false;
 			m_pLifeSpan.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"pLifeSpan\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;
@@ -179,7 +179,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 		{
 			m_startingPopulation.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"startingPopulation\" in Effect \"%s\" Is
-			// Out of Range and has been Reset", (PSTR)m_name));
+			// Out of Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;
@@ -188,7 +188,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 		{
 			m_maxParticleCount = 1;
 			// PAUSE(("Warning: Value \"maxParticleCount\" in Effect \"%s\" Is
-			// Out of Range and has been Reset", (PSTR)m_name));
+			// Out of Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;

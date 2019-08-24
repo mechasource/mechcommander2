@@ -8,7 +8,7 @@
 
 //--------------
 // Include Files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef MOVE_H
 #include "move.h"
@@ -27,7 +27,7 @@
 #define USE_SEPARATE_WATER_MAPS FALSE
 
 #ifndef TEAM_H
-typedef enum
+enum class 
 {
 	RELATION_FRIENDLY,
 	RELATION_NEUTRAL,
@@ -44,7 +44,7 @@ typedef enum
 extern UserHeapPtr systemHeap;
 extern float metersPerWorldUnit;
 
-extern PSTR ExceptionGameMsg;
+extern const std::wstring_view& ExceptionGameMsg;
 extern char ChunkDebugMsg[5120];
 
 int32_t GlobalMap::minRow = 0;
@@ -826,7 +826,7 @@ MissionMap::init(
 //---------------------------------------------------------------------------
 
 void
-MissionMap::setPassable(int32_t row, int32_t col, PSTR footPrint, bool passable)
+MissionMap::setPassable(int32_t row, int32_t col, const std::wstring_view& footPrint, bool passable)
 {
 	/* FootPrint Data format:
 			r1, c1, l1, r2, c2, l2, r3, c3, l3, ...
@@ -836,7 +836,7 @@ MissionMap::setPassable(int32_t row, int32_t col, PSTR footPrint, bool passable)
 	   the data is a block of chars, so all values must be -127 < x < 127. This
 	   should allow foot prints big enuff for all buildings we have.
 	*/
-	PSTR data = footPrint;
+	const std::wstring_view& data = footPrint;
 	int32_t r = row + *data++;
 	int32_t c = col + *data++;
 	int32_t len = *data++;
@@ -1049,7 +1049,7 @@ MissionMap::getOverlayWeight(
 //---------------------------------------------------------------------------
 
 void
-MissionMap::print(PSTR fileName)
+MissionMap::print(const std::wstring_view& fileName)
 {
 	MechFile* debugFile = new MechFile;
 	debugFile->create(fileName);
@@ -1510,7 +1510,7 @@ GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 				sprintf(s, "     ownerWID is %d", areas[i].ownerWID);
 				log->write(s);
 			}
-			static PSTR typeString[] = {
+			static const std::wstring_view& typeString[] = {
 				"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 			sprintf(s, "     %s", typeString[areas[i].type]);
 			log->write(s);
@@ -2399,19 +2399,19 @@ GlobalMap::calcLinkCost(int32_t startDoor, int32_t thruArea, int32_t goalDoor)
 		ClearBridgeTiles = true;
 		int32_t mapULr = areas[thruArea].sectorR * SECTOR_DIM;
 		int32_t mapULc = areas[thruArea].sectorC * SECTOR_DIM;
-		int32_t moveParams = MOVEPARAM_NONE;
+		int32_t moveparams = MOVEPARAM_NONE;
 		if (hover)
-			moveParams |= (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP);
+			moveparams |= (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP);
 		else if (!blank)
-			moveParams |= MOVEPARAM_WATER_SHALLOW;
+			moveparams |= MOVEPARAM_WATER_SHALLOW;
 #if USE_SEPARATE_WATER_MAPS
 		// To REALLY fix the separate water maps, we should do this for vehicles
 		// and mechs separately (and vehicles don't use shallow). But, if
 		// nothing else, this fixes the bug where we weren't passing in the
-		// moveParams.
+		// moveparams.
 		PathFindMap[SECTOR_PATHMAP]->setUp(mapULr, mapULc, SECTOR_DIM, SECTOR_DIM, hover ? 1 : 0,
 			nullptr, startRow, startCol, goalWorldPos, goalRow - mapULr, goalCol - mapULc, 10, 0, 8,
-			moveParams);
+			moveparams);
 #else
 		PathFindMap[SECTOR_PATHMAP]->setUp(mapULr, mapULc, SECTOR_DIM, SECTOR_DIM, hover ? 1 : 0,
 			nullptr, startRow, startCol, goalWorldPos, goalRow - mapULr, goalCol - mapULc, 10, 0, 8,
@@ -3005,7 +3005,7 @@ GlobalMap::build(MissionMapCellInfo* mapData)
 				sprintf(s, "     ownerWID is %d", areas[i].ownerWID);
 				log->write(s);
 			}
-			static PSTR typeString[] = {
+			static const std::wstring_view& typeString[] = {
 				"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 			sprintf(s, "     %s", typeString[areas[i].type]);
 			log->write(s);
@@ -3719,7 +3719,7 @@ GlobalMap::openArea(int32_t area)
 //---------------------------------------------------------------------------
 
 void
-GlobalMap::print(PSTR fileName)
+GlobalMap::print(const std::wstring_view& fileName)
 {
 	if (areaMap)
 		return;
@@ -3876,7 +3876,7 @@ GlobalMap::toggleLog(void)
 					sprintf(s, "     ownerWID is %d", map->areas[i].ownerWID);
 					log->write(s);
 				}
-				static PSTR typeString[] = {
+				static const std::wstring_view& typeString[] = {
 					"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 				sprintf(s, "     %s", typeString[map->areas[i].type]);
 				log->write(s);
@@ -3900,7 +3900,7 @@ GlobalMap::toggleLog(void)
 //----------------------------------------------------------------------------------
 
 void
-GlobalMap::writeLog(PSTR s)
+GlobalMap::writeLog(const std::wstring_view& s)
 {
 	if (log)
 		log->write(s);

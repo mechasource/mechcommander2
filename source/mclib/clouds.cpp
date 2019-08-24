@@ -57,7 +57,7 @@ extern bool hasGuardBand;
 //---------------------------------------------------------------------------
 // Class Clouds
 void
-Clouds::init(PSTR textureName, int32_t gSize)
+Clouds::init(const std::wstring_view& textureName, int32_t gSize)
 {
 	FullPathFileName cloudName;
 	cloudName.init(texturePath, textureName, ".tga");

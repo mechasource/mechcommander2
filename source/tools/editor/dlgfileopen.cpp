@@ -18,7 +18,7 @@ ON_LBN_SELCHANGE(IDC_FILEOPEN_FILELIST, OnSelchangeFileopenFilelist)
 END_MESSAGE_MAP()
 
 //-------------------------------------------------------------------------------------------------
-DlgFileOpen::DlgFileOpen(PCSTR directory, PCSTR dlgExtension, bool bsave) :
+DlgFileOpen::DlgFileOpen(const std::wstring_view& directory, const std::wstring_view& dlgExtension, bool bsave) :
 	CDialog(IDD_FILEOPEN)
 {
 	strcpy(m_directory, directory);
@@ -44,7 +44,7 @@ DlgFileOpen::Init()
 	strcpy(dirBuffer, m_directory);
 	strcat(dirBuffer, "*.");
 	strcat(dirBuffer, extension);
-	PSTR pFileFirst = gos_FindFiles(dirBuffer);
+	const std::wstring_view& pFileFirst = gos_FindFiles(dirBuffer);
 	while (pFileFirst)
 	{
 		m_pList->AddString(pFileFirst);
@@ -83,7 +83,6 @@ DlgFileOpen::OnOK()
 
 DlgFileOpen::~DlgFileOpen() {}
 
-//*************************************************************************************************
 // end of file ( DlgFileOpen.cpp )
 
 BOOL
@@ -104,7 +103,7 @@ DlgFileOpen::OnSelchangeFileopenFilelist()
 	int32_t nStringLength = m_pList->GetTextLen(nSelectionIndex);
 	if (0 < nStringLength)
 	{
-		PSTR pszSelectionString = new char[nStringLength + 1];
+		const std::wstring_view& pszSelectionString = new char[nStringLength + 1];
 		m_pList->GetText(nSelectionIndex, pszSelectionString);
 		CEdit* m_pEntry = (CEdit*)GetDlgItem(IDC_FILEOPEN_EDITBOX);
 		m_pEntry->SetWindowText(pszSelectionString);

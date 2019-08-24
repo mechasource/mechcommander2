@@ -7,9 +7,9 @@
 #ifndef ABUTTON_H
 #define ABUTTON_H
 
-//#include <mechgui/asystem.h>
-//#include <mechgui/afont.h>
-//#include <mechgui/aanim.h>
+//#include "mechgui/asystem.h"
+//#include "mechgui/afont.h"
+//#include "mechgui/aanim.h"
 
 namespace mechgui
 {
@@ -25,7 +25,7 @@ public:
 	virtual void update(void);
 	virtual void render(void);
 
-	void init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font = 0);
+	void init(FitIniFile& file, const std::wstring_view& headerName, HGOSFONT3D font = 0);
 
 	aButton& operator=(const aButton& src);
 	aButton(const aButton& src);
@@ -109,7 +109,7 @@ class aAnimButton : public aButton
 {
 public:
 	aAnimButton(void);
-	void init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font = 0);
+	void init(FitIniFile& file, const std::wstring_view& headerName, HGOSFONT3D font = 0);
 	virtual void update(void);
 	virtual void render(void);
 

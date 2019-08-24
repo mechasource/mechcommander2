@@ -11,7 +11,7 @@
 #endif
 
 #include "vfx.h"
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 uint8_t
 FindClosest(VFX_RGB* Palette, int32_t r, int32_t g, int32_t b);
@@ -43,14 +43,14 @@ enum
 	DestAlpha
 };
 
-PSTR g_logistic_fadetable = &AlphaTable[256 * 256];
-PSTR g_logistic_bluefade = &AlphaTable[267 * 256];
-PSTR g_logistic_dlgfade = &AlphaTable[268 * 256];
+const std::wstring_view& g_logistic_fadetable = &AlphaTable[256 * 256];
+const std::wstring_view& g_logistic_bluefade = &AlphaTable[267 * 256];
+const std::wstring_view& g_logistic_dlgfade = &AlphaTable[268 * 256];
 
 void
 InitAlphaLookup(VFX_RGB* Palette)
 {
-	PSTR pAlphaTable = AlphaTable;
+	const std::wstring_view& pAlphaTable = AlphaTable;
 	int32_t r, g, b, i;
 	MechFile* IniFile;
 	char Line[256];

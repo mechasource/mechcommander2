@@ -4,19 +4,19 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlrclipper.hpp>
-#include <mlr/mlrsorter.hpp>
-#include <mlr/mlreffect.hpp>
-#include <mlr/mlrprimitivebase.hpp>
-#include <mlr/mlrcliptrick.hpp>
-#include <mlr/mlrindexedtrianglecloud.hpp>
+#include "mlr/mlr.h"
+#include "mlr/mlrclipper.h"
+#include "mlr/mlrsorter.h"
+#include "mlr/mlreffect.h"
+#include "mlr/mlrprimitivebase.h"
+#include "mlr/mlrcliptrick.h"
+#include "mlr/mlrindexedtrianglecloud.h"
 
 #ifndef HUNT_CLIP_ERROR
 #define HUNT_CLIP_ERROR 0
 #endif
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 extern uint32_t gShowClippedPolys;
 extern puint16_t indexOffset; // [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
@@ -801,3 +801,5 @@ MLRIndexedTriangleCloud::TestInstance(void) const
 		_ASSERT(*usedNrOfTriangles <= maxNrOf);
 	}
 }
+
+} // namespace MidLevelRenderer

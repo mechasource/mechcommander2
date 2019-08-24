@@ -15,7 +15,7 @@
 #include "gate.h"
 #endif
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef SOUNDS_H
 #include "sounds.h"
@@ -54,7 +54,7 @@
 #include "team.h"
 #endif
 
-#include "..\resource.h"
+#include "resource.h"
 #include <stdio.h>
 
 extern uint32_t NextIdNumber;
@@ -85,7 +85,7 @@ GateType::destroy(void)
 
 //---------------------------------------------------------------------------
 int32_t
-GateType::init(FilePtr objFile, uint32_t fileSize)
+GateType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile bldgFile;
@@ -179,9 +179,9 @@ GateType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 		//------------------------------------------------
 		// Regardless of alignment, if I'm closest, mark me
 		// So if gate closes and Im too close.  BOOM
-		if ((colliderRange < closestRange) && (!collider->isDisabled() && !collider->isDestroyed()) && !((MoverPtr)collider)->isJumping())
+		if ((colliderRange < closestRange) && (!collider->isDisabled() && !collider->isDestroyed()) && !((std::unique_ptr<Mover>)collider)->isJumping())
 		{
-			gate->closestObject = (MoverPtr)collider;
+			gate->closestObject = (std::unique_ptr<Mover>)collider;
 			closestRange = colliderRange * colliderRange;
 		}
 	}
@@ -610,7 +610,7 @@ Gate::init(bool create, ObjectTypePtr _type)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	PSTR appearName = _type->getAppearanceTypeName();
+	const std::wstring_view& appearName = _type->getAppearanceTypeName();
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.

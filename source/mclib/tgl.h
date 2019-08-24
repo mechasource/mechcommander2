@@ -20,8 +20,8 @@
 #include "file.h"
 #endif
 
-#include <stuff/stuff.hpp>
-#include <gameos.hpp>
+#include "stuff/stuff.h"
+#include "gameos.hpp"
 
 //-------------------------------------------------------------------------------
 // Structs used by layer.
@@ -359,9 +359,9 @@ public:
 
 	virtual void destroy(void);
 
-	PSTR getNodeId(void) { return nodeId; }
+	const std::wstring_view& getNodeId(void) { return nodeId; }
 
-	PSTR getParentId(void) { return parentId; }
+	const std::wstring_view& getParentId(void) { return parentId; }
 
 	Stuff::Point3D GetNodeCenter(void) { return nodeCenter; }
 
@@ -387,7 +387,7 @@ public:
 	//
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t ParseASEFile(puint8_t /*aseBuffer*/, PSTR /*filename*/) { return 0; }
+	virtual int32_t ParseASEFile(puint8_t /*aseBuffer*/, const std::wstring_view& /*filename*/) { return 0; }
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -397,7 +397,7 @@ public:
 	//
 	// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t MakeFromHelper(puint8_t aseBuffer, PSTR filename);
+	virtual int32_t MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& filename);
 
 	// Function returns 0 if OK.  -1 if file not found or file not ASE Format.
 	// This function loads the ASE file into the TG_Triangle and TG_Vertex
@@ -405,7 +405,7 @@ public:
 	//
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t LoadTGShapeFromASE(PSTR /*fileName*/) { return 0; }
+	virtual int32_t LoadTGShapeFromASE(const std::wstring_view& /*fileName*/) { return 0; }
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the gosTextureHandle passed in and
@@ -513,7 +513,7 @@ public:
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
 	virtual int32_t ParseASEFile(
-		puint8_t aseBuffer, PSTR filename); // filename for error reporting ONLY
+		puint8_t aseBuffer, const std::wstring_view& filename); // filename for error reporting ONLY
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -523,7 +523,7 @@ public:
 	//
 	// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t MakeFromHelper(puint8_t aseBuffer, PSTR filename);
+	virtual int32_t MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& filename);
 
 	// Function returns 0 if OK.  -1 if file not found or file not ASE Format.
 	// This function loads the ASE file into the TG_Triangle and TG_Vertex
@@ -531,7 +531,7 @@ public:
 	//
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t LoadTGShapeFromASE(PSTR fileName);
+	virtual int32_t LoadTGShapeFromASE(const std::wstring_view& fileName);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the gosTextureHandle passed in and
@@ -735,7 +735,7 @@ public:
 
 	void SetLightsOut(bool lightFlag) { lightsOut = lightFlag; }
 
-	PSTR getNodeName(void) { return myType->getNodeId(void); }
+	const std::wstring_view& getNodeName(void) { return myType->getNodeId(void); }
 
 	Stuff::Point3D GetRelativeNodeCenter(void) { return myType->GetRelativeNodeCenter(void); }
 

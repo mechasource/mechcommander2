@@ -12,7 +12,7 @@
 #ifndef GAMESOUND_H
 #define GAMESOUND_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "dwarrior.h"
 //#include "radio.h"
 
@@ -64,7 +64,7 @@ public:
 
 	void purgeSoundSystem(void); // This will shutdown all active sound.
 	void removeQueuedMessage(int32_t msgNumber);
-	bool checkMessage(MechWarriorPtr pilot, byte priority, uint32_t messageType);
+	bool checkMessage(std::unique_ptr<MechWarrior> pilot, byte priority, uint32_t messageType);
 	int32_t queueRadioMessage(RadioData* msgData);
 	void moveFromQueueToPlaying(void);
 	void removeCurrentMessage(void);

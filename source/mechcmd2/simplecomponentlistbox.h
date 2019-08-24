@@ -11,12 +11,11 @@ component.
 #ifndef SIMPLECOMPONENTLISTBOX_H
 #define SIMPLECOMPONENTLISTBOX_H
 
-//#include <mechgui/alistbox.h>
+//#include "mechgui/alistbox.h"
 
 class LogisticsVariant;
 class LogisticsVehicle;
 class LogisticsComponent;
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -37,5 +36,4 @@ private:
 	// HELPER FUNCTIONS
 };
 
-//*************************************************************************************************
 #endif // end of file ( SimpleComponentListBox.h )

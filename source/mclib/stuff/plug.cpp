@@ -8,11 +8,11 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <stuff/link.hpp>
-#include <stuff/node.hpp>
-#include <stuff/socket.hpp>
-#include <stuff/plug.hpp>
+#include "gameos.hpp"
+#include "stuff/link.h"
+#include "stuff/node.h"
+#include "stuff/socket.h"
+#include "stuff/plug.h"
 
 using namespace Stuff;
 

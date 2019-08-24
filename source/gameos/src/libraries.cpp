@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  libraries.cpp - GameOS reference pseudo code
@@ -17,9 +18,9 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <toolos.hpp>
-#include <windows.hpp>
+#include "gameos.hpp"
+#include "toolos.hpp"
+#include "windows.hpp"
 
 #pragma warning(disable : 4191) // 'type cast' : unsafe conversion from 'FARPROC'
 
@@ -35,15 +36,15 @@ typedef HRESULT(__stdcall* PDIRECTSOUNDCREATE)(
 typedef HRESULT(__stdcall* PDIRECTSOUNDENUMERATEA)(
 	LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
 typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(
-	HINSTANCE hInstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
+	HINSTANCE hinstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
 
 typedef LPDIRECT3DVERTEXBUFFER7(__stdcall* GETDXFUNC)(LPDIRECT3DVERTEXBUFFER7, LPDIRECT3DDEVICE7);
 
-typedef enum IJLERR(__stdcall* PIJLINIT)(struct _JPEG_CORE_PROPERTIES* jcprops);
-typedef enum IJLERR(__stdcall* PIJLFREE)(struct _JPEG_CORE_PROPERTIES* jcprops);
-typedef enum IJLERR(__stdcall* PIJLREAD)(
+enum class IJLERR(__stdcall* PIJLINIT)(struct _JPEG_CORE_PROPERTIES* jcprops);
+enum class IJLERR(__stdcall* PIJLFREE)(struct _JPEG_CORE_PROPERTIES* jcprops);
+enum class IJLERR(__stdcall* PIJLREAD)(
 	struct _JPEG_CORE_PROPERTIES* jcprops, enum IJLIOTYPE iotype);
-typedef enum IJLERR(__stdcall* PIJLWRITE)(
+enum class IJLERR(__stdcall* PIJLWRITE)(
 	struct _JPEG_CORE_PROPERTIES* jcprops, enum IJLIOTYPE iotype);
 
 typedef HIMC(__stdcall* PIMMASSOCIATECONTEXT)(HWND, HIMC);
@@ -250,8 +251,8 @@ PSTR __stdcall GetDirectXVersion(void);
 /// <returns></returns>
 void __stdcall InitLibraries(void)
 {
-	PCSTR pszFormat;
-	PCSTR pszMessage;
+	PSTR pszFormat;
+	PSTR pszMessage;
 	size_t nBufferSize;
 	char szAssetsPathMessage[MAX_PATH * 2];
 	bool bbladepath1;
@@ -263,7 +264,7 @@ void __stdcall InitLibraries(void)
 	HMODULE hModule_dsetup;
 	char szAssetsPath[MAX_PATH];
 	PDIRECTXSETUPGETVERSION pDirectXSetupGetVersion;
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	OSVERSIONINFOA VersionInformation;
 	char szDirBuffer[MAX_PATH];
 	char szInstallMessage[256];
@@ -623,7 +624,7 @@ void __stdcall InitLibraries(void)
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	// Windows 9X vmcpd.vxd
 	VersionInformation.dwOSVersionInfoSize = sizeof(OSVERSIONINFOA);
 	GetVersionExA(&VersionInformation);

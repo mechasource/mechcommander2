@@ -27,7 +27,7 @@
 #endif
 
 #ifndef ACTION_H
-#include "Action.h"
+#include "action.h"
 #endif
 
 #ifndef TERRAINBRUSH_H
@@ -39,7 +39,7 @@
 #endif
 
 #ifndef BUILDINGBRUSH_H
-#include "BuildingBrush.h"
+#include "buildingbrush.h"
 #endif
 
 #ifndef ERASER_H
@@ -68,7 +68,7 @@
 #include "MapsizeDlg.h"
 #endif
 
-#include "..\resource.h"
+#include "resource.h"
 
 #ifndef SUNDLG_H
 #include "sunDlg.h"
@@ -109,11 +109,11 @@
 #endif
 
 #ifndef DRAGTOOL_H
-#include "DragTool.h"
+#include "dragtool.h"
 #endif
 
 #ifndef DAMAGEBRUSH_H
-#include "DamageBrush.h"
+#include "damagebrush.h"
 #endif
 
 #ifndef MINEBRUSH_H
@@ -130,7 +130,7 @@
 #endif
 
 #include "UnitSettingsDlg.h"
-#include "BuildingSettingsDlg.h"
+#include "buildingsettingsdlg.h"
 #include "TilingFactorsDialog.h"
 
 #include "MFCPlatform.hpp"
@@ -139,9 +139,9 @@
 
 #include "EditorObjects.h"
 #include "ForestDlg.h"
-#include "EditForestDlg.h"
+#include "editforestdlg.h"
 
-#include "CampaignDialog.h"
+#include "campaigndialog.h"
 
 extern bool silentMode;
 
@@ -195,7 +195,7 @@ static float g_newHeight = 0.0;
 // EDITOR stuff
 
 void
-Editor::init(PSTR loader)
+Editor::init(const std::wstring_view& loader)
 {
 	volatile float crap = 0;
 	bool bOK = false;
@@ -286,7 +286,7 @@ Editor::init(PSTR loader)
 						if (IDOK == fileDlg.DoModal())
 						{
 							EditorInterface::instance()->SetBusyMode();
-							PCSTR pFile = fileDlg.m_ofn.lpstrFile;
+							const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
 							bOK = EditorData::initTerrainFromPCV(pFile);
 							EditorInterface::instance()->UnsetBusyMode();
 						}
@@ -641,11 +641,11 @@ EditorInterface::terminate()
 }
 
 void
-EditorInterface::init(PCSTR fileName)
+EditorInterface::init(const std::wstring_view& fileName)
 {
 	SetBusyMode(false /*no redraw*/);
 	FitIniFile loader;
-	loader.open(const_cast<PSTR>(fileName));
+	loader.open(const_cast<const std::wstring_view&>(fileName));
 	int32_t result = loader.seekBlock("CameraData");
 	gosASSERT(result == NO_ERROR);
 	result = loader.readIdFloat("ScrollIncrement", scrollInc);
@@ -693,7 +693,7 @@ EditorInterface::addBuildingsToNewMenu()
 	pMenu->CreatePopupMenu();
 	// now i need to add the buildings to the toolbars/menus
 	int32_t groupCount = pMgr->getBuildingGroupCount();
-	PCSTR* pNames = (PCSTR*)malloc(sizeof(PCSTR) * groupCount);
+	const std::wstring_view&* pNames = (const std::wstring_view&*)malloc(sizeof(const std::wstring_view&) * groupCount);
 	pMgr->getBuildingGroupNames(pNames, groupCount);
 	menus = (CMenu**)malloc(sizeof(CMenu*) * (groupCount + 2));
 	menus[0] = pMenu;
@@ -705,7 +705,7 @@ EditorInterface::addBuildingsToNewMenu()
 		menus[i + 1] = pChildMenu;
 		// now add sub items to the group
 		int32_t buildingCount = pMgr->getNumberBuildingsInGroup(i);
-		PCSTR* pBuildingNames = (PCSTR*)malloc(sizeof(PCSTR) * buildingCount);
+		const std::wstring_view&* pBuildingNames = (const std::wstring_view&*)malloc(sizeof(const std::wstring_view&) * buildingCount);
 		pMgr->getBuildingNamesInGroup(i, pBuildingNames, buildingCount);
 		for (size_t j = 0; j < buildingCount; ++j, ++id)
 		{
@@ -1300,7 +1300,7 @@ EditorInterface::FileOpen()
 	if (IDOK == fileDlg.DoModal())
 	{
 		SetBusyMode();
-		PCSTR pFile = fileDlg.m_ofn.lpstrFile;
+		const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
 		EditorData::initTerrainFromPCV(pFile);
 		tacMap.UpdateMap();
 		syncScrollBars();
@@ -1830,7 +1830,7 @@ EditorInterface::SaveAs()
 	if (IDOK == retVal)
 	{
 		SetBusyMode();
-		PCSTR pFile = fileDlg.m_ofn.lpstrFile;
+		const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
 		//-----------------------------------------------------
 		// New Stuff here.
 		// Must resave the following for the new map methods to insure goodness.
@@ -1893,7 +1893,7 @@ EditorInterface::SaveAs()
 int32_t
 EditorInterface::Save()
 {
-	PCSTR pFileName = EditorData::instance->getMapName();
+	const std::wstring_view& pFileName = EditorData::instance->getMapName();
 	if (pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)))
 	{
 		EditorData::instance->save(pFileName);
@@ -1906,7 +1906,7 @@ EditorInterface::Save()
 int32_t
 EditorInterface::QuickSave()
 {
-	PCSTR pFileName = EditorData::instance->getMapName();
+	const std::wstring_view& pFileName = EditorData::instance->getMapName();
 	if (pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)))
 		EditorData::instance->quickSave(pFileName);
 	else
@@ -2124,12 +2124,12 @@ EditorInterface::NewHeightMap()
 		endFlag = true;
 		if (IDOK == fileDlg.DoModal())
 		{
-			PCSTR pFile = fileDlg.m_ofn.lpstrFile;
+			const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
 			if (pFile)
 			{
 				File tgaFile;
 				gosASSERT(strstr(pFile, ".tga") || strstr(pFile, ".TGA"));
-				int32_t result = tgaFile.open(const_cast<PSTR>(pFile));
+				int32_t result = tgaFile.open(const_cast<const std::wstring_view&>(pFile));
 				gosASSERT(result == NO_ERROR);
 				struct TGAFileHeader theader;
 				tgaFile.read((puint8_t)&theader, sizeof(TGAFileHeader));
@@ -2587,9 +2587,9 @@ EditorInterface::SaveHeightMap()
 	fileDlg.m_ofn.lpstrInitialDir = terrainPath;
 	if (IDOK == fileDlg.DoModal())
 	{
-		PCSTR pFile = fileDlg.m_ofn.lpstrFile;
+		const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
 		File file;
-		if (NO_ERROR != file.create((PSTR)pFile))
+		if (NO_ERROR != file.create((const std::wstring_view&)pFile))
 		{
 			EMessageBox(IDS_INVALID_FILE, IDS_CANT_SAVE, MB_OK);
 			return false;
@@ -2946,7 +2946,7 @@ EditorInterface::SelectWaterTexture()
 
 //---------------------------------------------------------------------------
 inline bool
-colorMapIsOKFormat(PCSTR fileName)
+colorMapIsOKFormat(const std::wstring_view& fileName)
 {
 	uint32_t localColorMapSizeCheck = land->realVerticesMapSide * 12.8;
 	File tgaFile;
@@ -2976,7 +2976,7 @@ EditorInterface::SetBaseTexture()
 		{
 			char name[1024];
 			_splitpath(path, nullptr, nullptr, name, nullptr);
-			PSTR testLoc = strstr(name, ".burnin");
+			const std::wstring_view& testLoc = strstr(name, ".burnin");
 			if (testLoc)
 				testLoc[0] = 0; // Prune off the burnin name.
 			land->setColorMapName(name);
@@ -3113,13 +3113,13 @@ extern bool gGotFocus;
 extern Editor* editor;
 
 LRESULT
-EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
+EditorInterface::WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam)
 {
 	// We're not ready to draw anything.
 	// If you let an event through it'll probably crash!
 	//
 	if (message == WM_KEYDOWN)
-		handleKeyDown(wParam);
+		handleKeyDown(wparam);
 	if (message == WM_CREATE)
 	{
 		gActive = true;
@@ -3130,8 +3130,8 @@ EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 		// int32_t i = 17;
 	}
 	int32_t retVal = 0;
-	retVal = CWnd::WindowProc(message, wParam, lParam);
-	if (message == WM_KEYDOWN && wParam == VK_SCROLL)
+	retVal = CWnd::WindowProc(message, wparam, lparam);
+	if (message == WM_KEYDOWN && wparam == VK_SCROLL)
 		return 0;
 	if ((eye || message == WM_MOVE))
 	{
@@ -3151,7 +3151,7 @@ EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 		case WM_KEYUP:
 		case WM_CHAR:
 		case WM_CLOSE:
-			retVal = GameOSWinProc(m_hWnd, message, wParam, lParam);
+			retVal = GameOSWinProc(m_hWnd, message, wparam, lparam);
 			break;
 		case WM_LBUTTONDOWN:
 		case WM_LBUTTONUP:
@@ -3160,17 +3160,17 @@ EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 		case WM_MBUTTONDOWN:
 		case WM_MBUTTONUP:
 		{
-			retVal = GameOSWinProc(m_hWnd, message, wParam, lParam);
+			retVal = GameOSWinProc(m_hWnd, message, wparam, lparam);
 		}
 		break;
 		case WM_SIZE:
 		{
-			float w = LOWORD(lParam);
-			float h = HIWORD(lParam);
+			float w = LOWORD(lparam);
+			float h = HIWORD(lparam);
 			windowSizeChanged = true;
 			g_newWidth = w + 16 /*scrollbar thickness*/;
 			g_newHeight = h + 16 /*scrollbar thickness*/;
-			retVal = GameOSWinProc(m_hWnd, message, wParam, lParam);
+			retVal = GameOSWinProc(m_hWnd, message, wparam, lparam);
 			if (editor && bThisIsInitialized)
 			{
 				editor->update();
@@ -3184,9 +3184,9 @@ EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 }
 
 afx_msg void
-EditorInterface::OnCommand(WPARAM wParam)
+EditorInterface::OnCommand(WPARAM wparam)
 {
-	handleNewMenuMessage(wParam);
+	handleNewMenuMessage(wparam);
 }
 
 void
@@ -3605,7 +3605,7 @@ EditorInterface::initTacMap()
 	bool bFile = false;
 	if (EditorData::instance->getMapName())
 	{
-		mPath.init(missionPath, (PSTR)EditorData::instance->getMapName(), ".pak");
+		mPath.init(missionPath, (const std::wstring_view&)EditorData::instance->getMapName(), ".pak");
 		bFile = true;
 	}
 	if (bFile && fileExists(mPath))

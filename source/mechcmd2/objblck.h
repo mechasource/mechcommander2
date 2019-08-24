@@ -12,33 +12,14 @@
 #define OBJBLCK_H
 //---------------------------------------------------------------------------
 // Include Files
-#ifndef DSTD_H
-#include <dstd.h>
-#endif
-
-#ifndef DOBJBLCK_H
-#include <dobjblck.h>
-#endif
-
-#ifndef DOBJTYPE_H
-#include <dobjtype.h>
-#endif
-
-#ifndef DPACKET_H
+#include "dstd.h"
+#include "dobjblck.h"
+#include "dobjtype.h"
 #include <dpacket.h>
-#endif
-
-#ifndef DHEAP_H
-#include <dheap.h>
-#endif
-
-#ifndef cVMATH_H
+#include "dheap.h"
 #include <cvmath.h>
-#endif
-
-#ifndef DOBJQUE_H
 #include <dobjque.h>
-#endif
+
 //---------------------------------------------------------------------------
 // Macro Definitions
 #ifndef NO_ERROR
@@ -147,7 +128,7 @@ public:
 
 	void destroy(void);
 
-	int32_t init(PSTR packetFileName);
+	int32_t init(const std::wstring_view& packetFileName);
 
 	~ObjectBlockManager(void) { destroy(void); }
 

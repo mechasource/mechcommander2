@@ -76,7 +76,7 @@ TGAWnd::SetTGAFileName(const CString& str)
 	File.Read(&header, sizeof(TGAFileHeader));
 	if (header.image_type == UNC_TRUE)
 	{
-		m_pImage = (PSTR)malloc(header.width * header.height * 4);
+		m_pImage = (const std::wstring_view&)malloc(header.width * header.height * 4);
 		File.Read(m_pImage, header.width * header.height * 4);
 		m_pBmi->bmiHeader.biHeight = -header.height;
 		m_pBmi->bmiHeader.biWidth = header.width;
@@ -96,7 +96,7 @@ TGAWnd::SetTGAFileData(puint8_t data, int32_t size)
 		m_pImage = nullptr;
 	}
 	if (!m_pImage)
-		m_pImage = (PSTR)malloc(header->width * header->height * 4);
+		m_pImage = (const std::wstring_view&)malloc(header->width * header->height * 4);
 	if (header->image_type == UNC_TRUE)
 	{
 		memcpy(m_pImage, data + sizeof(TGAFileHeader), header->width * header->height * 4);

@@ -8,27 +8,13 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <stdio.h>
+//#include "ablgen.h"
+//#include "ablerr.h"
+//#include "ablscan.h"
+//#include "ablsymt.h"
+//#include "ablparse.h"
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLPARSE_H
-#include "ablparse.h"
-#endif
+namespace mclib::abl {
 
 //***************************************************************************
 
@@ -36,15 +22,15 @@ extern TokenCodeType curToken;
 extern char wordString[];
 extern TokenCodeType followParmList[];
 extern TokenCodeType statementEndList[];
-extern SymTableNodePtr symTableDisplay[];
+extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
 extern int32_t level;
-extern TypePtr IntegerTypePtr;
-extern TypePtr CharTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& CharTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
 extern Type DummyType;
 
-extern SymTableNodePtr CurRoutineIdPtr;
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
 
 bool EnterStateSymbol = false;
 
@@ -63,12 +49,12 @@ stdReturn(void)
 	if (curToken == TKN_LPAREN)
 	{
 		getToken();
-		TypePtr paramType = expression();
-		if (paramType != CurRoutineIdPtr->typePtr)
+		const std::unique_ptr<Type>& paramType = expression();
+		if (paramType != CurRoutineIdPtr->ptype)
 			syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 		ifTokenGetElseError(TKN_RPAREN, ABL_ERR_SYNTAX_MISSING_RPAREN);
 	}
-	else if (CurRoutineIdPtr->typePtr != nullptr)
+	else if (CurRoutineIdPtr->ptype != nullptr)
 		syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
 }
 
@@ -86,7 +72,7 @@ stdPrint(void)
 		getToken();
 	else
 		syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
-	TypePtr paramType = expression();
+	const std::unique_ptr<Type>& paramType = expression();
 	if ((paramType != IntegerTypePtr) && (paramType != RealTypePtr) && (paramType != CharTypePtr) && ((paramType->form != FRM_ARRAY) || (paramType->info.array.elementTypePtr != CharTypePtr)))
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 	ifTokenGetElseError(TKN_RPAREN, ABL_ERR_SYNTAX_MISSING_RPAREN);
@@ -94,7 +80,7 @@ stdPrint(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 stdConcat(void)
 {
 	// PRINT function:
@@ -108,7 +94,7 @@ stdConcat(void)
 		getToken();
 	else
 		syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
-	TypePtr paramType = expression();
+	const std::unique_ptr<Type>& paramType = expression();
 	if ((paramType->form != FRM_ARRAY) || (paramType->info.array.elementTypePtr != CharTypePtr))
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 	ifTokenGetElseError(TKN_COMMA, ABL_ERR_SYNTAX_MISSING_COMMA);
@@ -121,7 +107,7 @@ stdConcat(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 stdGetStateHandle(void)
 {
 	if (curToken == TKN_LPAREN)
@@ -129,7 +115,7 @@ stdGetStateHandle(void)
 	else
 		syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
 	EnterStateSymbol = true;
-	TypePtr paramType = expression();
+	const std::unique_ptr<Type>& paramType = expression();
 	EnterStateSymbol = false;
 	if ((paramType->form != FRM_ARRAY) || (paramType->info.array.elementTypePtr != CharTypePtr))
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
@@ -139,8 +125,8 @@ stdGetStateHandle(void)
 
 //***************************************************************************
 
-TypePtr
-standardRoutineCall(SymTableNodePtr routineIdPtr)
+const std::unique_ptr<Type>&
+standardRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	int32_t key = routineIdPtr->defn.info.routine.key;
 	int32_t numParams = FunctionInfoTable[key].numParams;
@@ -172,7 +158,7 @@ standardRoutineCall(SymTableNodePtr routineIdPtr)
 				syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
 			for (size_t i = 0; i < numParams; i++)
 			{
-				TypePtr paramType = expression();
+				const std::unique_ptr<Type>& paramType = expression();
 				switch (FunctionInfoTable[key].params[i])
 				{
 				case PARAM_TYPE_ANYTHING:
@@ -236,3 +222,5 @@ standardRoutineCall(SymTableNodePtr routineIdPtr)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

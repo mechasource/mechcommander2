@@ -10,7 +10,7 @@ struct hResource
 {
 	hResource* pNext;
 
-	HINSTANCE hInstance;
+	HINSTANCE hinstance;
 	char Name[256];
 	uint32_t ReferenceCount;
 };

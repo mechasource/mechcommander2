@@ -127,5 +127,4 @@ MineBrush::MineAction::AddChangedTileMineInfo(CTileMineInfo& info)
 	mineInfoList.Append(info);
 }
 
-//*************************************************************************************************
 // end of file ( MineBrush.cpp )

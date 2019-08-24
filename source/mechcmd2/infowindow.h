@@ -10,9 +10,9 @@ InfoWindow.h			: Interface for the InfoWindow component.
 #ifndef INFOWINDOW_H
 #define INFOWINDOW_H
 
-#include <mclib.h>
+#include "mclib.h"
 #include "controlgui.h"
-#include <mechgui/afont.h>
+#include "mechgui/afont.h"
 
 class Mover;
 class ForceGroupIcon;
@@ -20,7 +20,6 @@ class ForceGroupIcon;
 #define SCROLLUP 1
 #define SCROLLDOWN 2
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -37,6 +36,20 @@ public:
 	void render(void);
 
 private:
+	friend class ControlGui;
+
+	// HELPER FUNCTIONS
+	void drawScrollingStuff(void);
+	void handleClick(int32_t ID);
+	void drawDivider(float yVal);
+	void drawSkillBar(int32_t skill, float yVal, float height);
+	void setScrollPos(int32_t where);
+	void drawName(const std::wstring_view& name);
+
+
+private:
+
+
 	float scrollPos;
 	float scrollLength;
 	float infoLength;
@@ -56,16 +69,6 @@ private:
 	static ControlButton buttons[2];
 
 	bool bUnitChanged;
-
-	friend class ControlGui;
-
-	// HELPER FUNCTIONS
-	void drawScrollingStuff(void);
-	void handleClick(int32_t ID);
-	void drawDivider(float yVal);
-	void drawSkillBar(int32_t skill, float yVal, float height);
-	void setScrollPos(int32_t where);
-	void drawName(PCSTR name);
 
 	ForceGroupIcon* icon;
 
@@ -126,5 +129,4 @@ private:
 	static InfoWindow* s_instance;
 };
 
-//*************************************************************************************************
 #endif // end of file ( InfoWindow.h )

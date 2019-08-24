@@ -7,8 +7,8 @@ aAnimObject.cpp			: Implementation of the aAnimObject component.
 #define AANIMOBJECT_CPP
 
 #include "stdinc.h"
-#include <mechgui/aanimobject.h>
-#include <mclib.h>
+#include "mechgui/aanimobject.h"
+#include "mclib.h"
 
 //-------------------------------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ aAnimObject::operator=(const aAnimObject& src)
 }
 
 int32_t
-aAnimObject::init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush)
+aAnimObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t neverFlush)
 {
 	aObject::init(file, blockName, neverFlush);
 	int32_t color = 0xffffffff;
@@ -89,5 +89,4 @@ aAnimObject::end()
 	animInfo.end();
 }
 
-//*************************************************************************************************
 // end of file ( aAnimObject.cpp )

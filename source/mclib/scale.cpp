@@ -30,7 +30,7 @@
 #include "camera.h"
 #endif
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 extern void
 AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable, int32_t frameNum,

@@ -7,7 +7,7 @@ forest.cpp			: Implementation of the forest component.
 \*************************************************************************************************/
 
 #include "forest.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "resource.h"
 #include "editorobjectmgr.h"
 
@@ -86,7 +86,7 @@ Forest::init()
 	if (NO_ERROR != file.open(fileName))
 	{
 		char errorString[256];
-		sprintf(errorString, "Couldn't open file %s", (PCSTR)fileName);
+		sprintf(errorString, "Couldn't open file %s", (const std::wstring_view&)fileName);
 		Assert(0, 0, errorString);
 		return;
 	}
@@ -124,10 +124,10 @@ void
 Forest::save()
 {
 	FitIniFile file;
-	if (NO_ERROR != file.create((PSTR)(PCSTR)fileName))
+	if (NO_ERROR != file.create((const std::wstring_view&)(const std::wstring_view&)fileName))
 	{
 		char errorString[256];
-		sprintf(errorString, "Couldn't create file %s", (PCSTR)fileName);
+		sprintf(errorString, "Couldn't create file %s", (const std::wstring_view&)fileName);
 		Assert(0, 0, errorString);
 		return;
 	}
@@ -156,5 +156,4 @@ Forest::save(FitIniFile& file)
 	file.writeIdString("FileName", fileName);
 }
 
-//*************************************************************************************************
 // end of file ( forest.cpp )

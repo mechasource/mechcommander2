@@ -8,11 +8,11 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/affinematrix.hpp>
-#include <stuff/matrix.hpp>
-#include <stuff/vector4d.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/affinematrix.h"
+#include "stuff/matrix.h"
+#include "stuff/vector4d.h"
 
 using namespace Stuff;
 
@@ -125,7 +125,7 @@ Vector4D::Multiply(
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Vector4D& vector)
+Spew(const std::wstring_view& group, const Vector4D& vector)
 {
 	Check_Object(&vector);
 	SPEW((group, "<%4f,%4f,%4f,%4f>", vector.x, vector.y, vector.z, vector.w));

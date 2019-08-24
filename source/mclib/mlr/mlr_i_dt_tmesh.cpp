@@ -4,12 +4,13 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlr_i_dt_pmesh.hpp>
-#include <mlr/mlr_i_dt_tmesh.hpp>
+#include "gameos.hpp"
+#include "mlr/mlrshape.h"
+#include "mlr/mlr_i_dt_pmesh.h"
+#include "mlr/mlr_i_dt_tmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
+
 
 //#############################################################################
 
@@ -195,7 +196,7 @@ MLR_I_DT_TMesh::GetNumPasses(void)
 //	int32_t MLR_I_DT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtriangleclipping.inl>
+#include "mlr/mlrtriangleclipping.inl"
 
 #undef I_SAY_YES_TO_DUAL_TEXTURES
 #undef CLASSNAME
@@ -481,3 +482,5 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
 
 	return ret;
 }
+
+} // namespace MidLevelRenderer

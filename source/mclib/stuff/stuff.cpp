@@ -3,22 +3,22 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <eh.h>
+
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <toolos.hpp>
-#include <stuff/plug.hpp>
-#include <stuff/node.hpp>
-#include <stuff/slot.hpp>
-#include <stuff/chain.hpp>
-#include <stuff/safechain.hpp>
-#include <stuff/rotation.hpp>
-#include <stuff/random.hpp>
-#include <stuff/filestream.hpp>
-#include <stuff/filestreammanager.hpp>
-#include <stuff/trace.hpp>
-#include <stuff/stuff.hpp>
+#include "gameos.hpp"
+#include "toolos.hpp"
+#include "stuff/plug.h"
+#include "stuff/node.h"
+#include "stuff/slot.h"
+#include "stuff/chain.h"
+#include "stuff/safechain.h"
+#include "stuff/rotation.h"
+#include "stuff/random.h"
+#include "stuff/filestream.h"
+#include "stuff/filestreammanager.h"
+#include "stuff/trace.h"
+#include "stuff/stuff.h"
 
 using namespace Stuff;
 

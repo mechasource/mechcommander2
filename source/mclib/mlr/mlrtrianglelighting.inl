@@ -9,7 +9,7 @@
 #ifndef _MLRTRIANGLELIGHTING_HPP_
 #define _MLRTRIANGLELIGHTING_HPP_
 
-#include <mlr/mlrlight.hpp>
+#include "mlr/mlrlight.h"
 
 void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 {

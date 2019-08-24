@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlr_i_tmesh.hpp>
+#include "mlr/mlr_i_tmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -356,7 +356,7 @@ void
 //	int32_t MLR_I_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtriangleclipping.inl>
+#include "mlr/mlrtriangleclipping.inl"
 
 #undef CLASSNAME
 
@@ -1138,3 +1138,5 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit(
 	gos_PopCurrentHeap();
 	return ret;
 }
+
+} // namespace MidLevelRenderer

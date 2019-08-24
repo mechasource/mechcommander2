@@ -40,7 +40,7 @@ public:
 
 	LightType(void) { init(void); }
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 	int32_t init(FitIniFilePtr objFile);
 
 	~LightType(void) { destroy(void); }

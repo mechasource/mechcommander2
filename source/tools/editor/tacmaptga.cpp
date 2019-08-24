@@ -7,7 +7,7 @@ TgaMapTGA.cpp			: Implementation of the TgaMapTGA component.
 \*************************************************************************************************/
 
 #include "stdinc.h"
-#include <tacmap.h>
+#include "tacmap.h"
 #include "tgawnd.h"
 #include "editordata.h"
 
@@ -73,5 +73,4 @@ TacMapTGA::refreshBmp()
 	RedrawWindow();
 }
 
-//*************************************************************************************************
 // end of file ( TgaMapTGA.cpp )

@@ -9,10 +9,10 @@
 #include "LogisticsData.h"
 #include "IniFile.h"
 #include "packet.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "Objective.h"
 #include "Multplyr.h"
-#include "ChatWindow.h"
+#include "chatwindow.h"
 #include "gameSound.h"
 
 #define MAP_INDEX 32
@@ -214,7 +214,7 @@ MissionBriefingScreen::update()
 }
 
 int32_t
-MissionBriefingScreen::getMissionTGA(PCSTR missionName)
+MissionBriefingScreen::getMissionTGA(const std::wstring_view& missionName)
 {
 	if (!missionName)
 		return 0;
@@ -265,7 +265,7 @@ MissionBriefingScreen::begin()
 	statics[VIDEO_SCREEN].setColor(0);
 	memset(objectiveButtons, 0, sizeof(aObject*) * MAX_OBJECTIVES);
 	// need to set up all pertinent mission info
-	std::wstring missionName = LogisticsData::instance->getCurrentMission();
+	const std::wstring_view& missionName = LogisticsData::instance->getCurrentMission();
 	int32_t tmpMapTextureHandle = getMissionTGA(missionName);
 	statics[MAP_INDEX].setTexture(tmpMapTextureHandle);
 	statics[MAP_INDEX].setUVs(0, 127, 127, 0);
@@ -467,7 +467,7 @@ MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int
 	}
 }
 
-/*int32_t MissionBriefingScreen::addLBItem( FitIniFile& file, PCSTR itemName,
+/*int32_t MissionBriefingScreen::addLBItem( FitIniFile& file, const std::wstring_view& itemName,
 uint32_t color, int32_t ID)
 {
 	char buffer[1024];
@@ -476,7 +476,7 @@ uint32_t color, int32_t ID)
 }*/
 
 int32_t
-MissionBriefingScreen::addLBItem(PCSTR text, uint32_t color, int32_t ID)
+MissionBriefingScreen::addLBItem(const std::wstring_view& text, uint32_t color, int32_t ID)
 {
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->setID(ID);
@@ -533,5 +533,4 @@ MissionBriefingScreen::handleMessage(uint32_t msg, uint32_t who)
 	return 0;
 }
 
-//*************************************************************************************************
 // end of file ( MissionBriefingScreen.cpp )

@@ -22,7 +22,7 @@ float scenarioTime = 0.0;
 uint32_t LastTimeGetTime = 0;
 bool dynamicFrameTiming = TRUE;
 
-PSTR monthName[12] = {
+const std::wstring_view& monthName[12] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 //----------------------------------------------------------------------------------

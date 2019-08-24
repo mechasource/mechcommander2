@@ -10,8 +10,8 @@ MissionSelectionScreen.h : Header file for mission selection
 #ifndef MISSIONSELECTION_H
 #define MISSIONSELECTION_H
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/alistbox.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/alistbox.h"
 //#include "mc2movie.h"
 
 class FitIniFile;
@@ -40,7 +40,7 @@ private:
 	// HGOSVIDEO			video;
 	// uint32_t		videoTexture;
 
-	PCSTR missionNames[MAX_MISSIONS_IN_GROUP];
+	const std::wstring_view& missionNames[MAX_MISSIONS_IN_GROUP];
 	int32_t missionCount;
 
 	void setMission(int32_t whichOne);

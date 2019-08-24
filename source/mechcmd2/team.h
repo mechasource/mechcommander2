@@ -15,7 +15,7 @@
 
 //---------------------------------------------------------------------------
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "dteam.h"
 //#include "dmover.h"
 //#include "contact.h"
@@ -85,13 +85,13 @@ public:
 
 	void buildRoster(void);
 
-	void addToRoster(MoverPtr mover);
+	void addToRoster(std::unique_ptr<Mover> mover);
 
 	int32_t getRosterSize(void) { return (rosterSize); }
 
-	MoverPtr getMover(int32_t index);
+	std::unique_ptr<Mover> getMover(int32_t index);
 
-	void removeFromRoster(MoverPtr mover);
+	void removeFromRoster(std::unique_ptr<Mover> mover);
 
 	virtual int32_t getRoster(GameObjectPtr* objList, bool existsOnly = false);
 
@@ -103,7 +103,7 @@ public:
 
 	bool isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID);
 
-	bool isContact(GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria);
+	bool isContact(GameObjectPtr looker, std::unique_ptr<Mover> mover, int32_t contactCriteria);
 
 	virtual int32_t getContacts(
 		GameObjectPtr looker, int32_t* contactList, int32_t contactCriteria, int32_t sortType);
@@ -112,7 +112,7 @@ public:
 
 	void addToGUI(void);
 
-	Stuff::Vector3D calcEscapeVector(MoverPtr mover, float threatRange);
+	Stuff::Vector3D calcEscapeVector(std::unique_ptr<Mover> mover, float threatRange);
 
 	void statusCount(int32_t* statusTally);
 
@@ -128,7 +128,7 @@ public:
 		int32_t tCellRow, int32_t tCellCol, int32_t teamId, float targetRadius,
 		float startRadius = 0.0f, bool checkVisibleBits = true);
 
-	static bool lineOfSight(Stuff::Vector3D myPos, Stuff::Vector3D targetPosition, int32_t teamId,
+	static bool lineOfSight(Stuff::Vector3D myPos, Stuff::Vector3D targetposition, int32_t teamId,
 		float targetRadius, float startRadius = 0.0f, bool checkVisibleBits = true);
 
 	//-------------------------------------------

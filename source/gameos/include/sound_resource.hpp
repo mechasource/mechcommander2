@@ -52,11 +52,11 @@ public:
 	uint32_t m_cueSeekDistance;
 
 public:
-	SoundResource(PCSTR file_name, enum gosAudio_ResourceType rt, bool only2D);
+	SoundResource(PSTR file_name, enum gosAudio_ResourceType rt, bool only2D);
 	SoundResource(
-		PVOID data, gosAudio_Format* wf, PCSTR caching_nametag, int32_t size, bool only2D);
-	SoundResource(PCSTR name, gosAudio_PlayList* playlist, bool only2D);
-	SoundResource(PCSTR identifier_name, HGOSFILE file, uint32_t offset, bool only2D);
+		PVOID data, gosAudio_Format* wf, PSTR caching_nametag, int32_t size, bool only2D);
+	SoundResource(PSTR name, gosAudio_PlayList* playlist, bool only2D);
+	SoundResource(PSTR identifier_name, HGOSFILE file, uint32_t offset, bool only2D);
 
 	~SoundResource(void);
 	void GetWaveInfo(puint8_t lpBuffer, WAVEFORMATEX* lplpWaveFormatEX, puint8_t* lplpWaveData,

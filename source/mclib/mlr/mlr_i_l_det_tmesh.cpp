@@ -4,13 +4,13 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlr_i_l_tmesh.hpp>
-#include <mlr/mlr_i_l_det_pmesh.hpp>
-#include <mlr/mlr_i_l_det_tmesh.hpp>
+#include "gameos.hpp"
+#include "mlr/mlrshape.h"
+#include "mlr/mlr_i_l_tmesh.h"
+#include "mlr/mlr_i_l_det_pmesh.h"
+#include "mlr/mlr_i_l_det_tmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -270,7 +270,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //	int32_t MLR_I_L_DeT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtriangleclipping.inl>
+#include "mlr/mlrtriangleclipping.inl"
 
 #undef I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_COLOR
@@ -281,7 +281,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //	void	Lighting (MLRLight**, int32_t nrLights);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtrianglelighting.inl>
+#include "mlr/mlrtrianglelighting.inl"
 #undef CLASSNAME
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -459,3 +459,5 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
 
 	return ret;
 }
+
+} // namespace MidLevelRenderer

@@ -72,7 +72,7 @@ FloatHelp::renderAll(void)
 
 //-----------------------------------------------------------------------------------------
 void
-FloatHelp::setFloatHelp(PSTR txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
+FloatHelp::setFloatHelp(const std::wstring_view& txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
 	float scl, bool proportional, bool bold, bool italic, bool wordWrap)
 {
 	if (currentFloatHelp < MAX_FLOAT_HELPS)
@@ -92,7 +92,7 @@ FloatHelp::setFloatHelp(PSTR txt, Stuff::Vector4D screenPos, uint32_t fClr, uint
 
 //-----------------------------------------------------------------------------------------
 void
-FloatHelp::getTextStringLength(PSTR txt, uint32_t fColor, float scl, bool proportional,
+FloatHelp::getTextStringLength(const std::wstring_view& txt, uint32_t fColor, float scl, bool proportional,
 	bool bold, bool italic, bool wordWrap, uint32_t& width, uint32_t& height)
 {
 	// must use globalFloat Scale because of true type fonts

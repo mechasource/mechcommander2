@@ -1559,7 +1559,7 @@ gosFX::ComplexCurve::InsertKey(float time)
 	// key array and shift the m_keys after the insert point up one slot
 	//-----------------------------------------------------------------------
 	//
-	//#if _CONSIDERED_OBSOLETE
+	//#if CONSIDERED_OBSOLETE
 	size_t before = GetKeyIndex(time);
 	size_t key_count = m_keys.size();
 	m_keys.resize(key_count + 1);

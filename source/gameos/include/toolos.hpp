@@ -92,7 +92,7 @@ uint32_t __stdcall gos_GetValidDrives(PSTR Buffer, size_t buf_len);
 // Returns the drive label for a root directory specified. eg:  "c:\" might
 // return "DriveC"
 //
-bool __stdcall gos_GetDriveLabel(PCSTR RootName, PSTR DriveLabel, size_t DriveLabelBufferLen);
+bool __stdcall gos_GetDriveLabel(PSTR RootName, PSTR DriveLabel, size_t DriveLabelBufferLen);
 
 //
 // Get the space available on the drive specified, either "x:" or "x:\"
@@ -107,26 +107,26 @@ void __stdcall gos_GetCurrentPath(PSTR Buffer, size_t buf_len);
 //
 // Create directory. - Returns TRUE for sucess
 //
-bool __stdcall gos_CreateDirectory(PCSTR FileName);
+bool __stdcall gos_CreateDirectory(PSTR FileName);
 //
 // Delete directory. - Returns TRUE for sucess  (Directories must be empty)
 //
-bool __stdcall gos_DeleteDirectory(PCSTR DirectoryName);
+bool __stdcall gos_DeleteDirectory(PSTR DirectoryName);
 
 //
 // Rename file/directory. - Returns TRUE for sucess
 //
-bool __stdcall gos_RenameFile(PCSTR FileNameFrom, PCSTR FileNameTo);
+bool __stdcall gos_RenameFile(PSTR FileNameFrom, PSTR FileNameTo);
 //
 // Delete file. - Returns TRUE for sucess
 //
-bool __stdcall gos_DeleteFile(PCSTR FileName);
+bool __stdcall gos_DeleteFile(PSTR FileName);
 
 //
 // Find files matching pattern - returns nullptr when no more files (Can be used
 // too see if a directory is empty : ie: 0==gos_FindFiles( "\\graphics\\*.*" )
 //
-PSTR __stdcall gos_FindFiles(PCSTR PathFileName);
+PSTR __stdcall gos_FindFiles(PSTR PathFileName);
 //
 // Continues the previous gos_FindFiles
 //
@@ -139,7 +139,7 @@ void __stdcall gos_FindFilesClose(void);
 //
 // Find directories matching pattern - returns nullptr when no more directories
 //
-PSTR __stdcall gos_FindDirectories(PCSTR DirectoryName);
+PSTR __stdcall gos_FindDirectories(PSTR DirectoryName);
 //
 // Continues the previous gos_FindDirectoriesNext
 //
@@ -152,17 +152,17 @@ void __stdcall gos_FindDirectoriesClose(void);
 //
 // Return full path name of file - FullPath should point to a 256 byte buffer
 //
-void __stdcall gos_GetFullPathName(PSTR FullPath, PCSTR FileName);
+void __stdcall gos_GetFullPathName(PSTR FullPath, PSTR FileName);
 
 //
 // Get file size information (-1 if error)
 //
-uint32_t __stdcall gos_FileSize(PCSTR FileName);
+uint32_t __stdcall gos_FileSize(PSTR FileName);
 //
 // Get file date/time information (-1 if error) - this can be compared directly,
 // and decoded using gos_FileTimeString
 //
-int64_t __stdcall gos_FileTimeStamp(PCSTR FileName);
+int64_t __stdcall gos_FileTimeStamp(PSTR FileName);
 //
 // Get current date/time information (only updates one per game logic)
 //
@@ -175,15 +175,15 @@ PSTR __stdcall gos_FileTimeString(int64_t Time);
 //
 // Get file read only attribute information
 //
-bool __stdcall gos_FileReadOnly(PCSTR FileName);
+bool __stdcall gos_FileReadOnly(PSTR FileName);
 //
 // Set file to read/write
 //
-void __stdcall gos_FileSetReadWrite(PCSTR FileName);
+void __stdcall gos_FileSetReadWrite(PSTR FileName);
 //
 // Set file to read only
 //
-void __stdcall gos_FileSetReadOnly(PCSTR FileName);
+void __stdcall gos_FileSetReadOnly(PSTR FileName);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Ways to specify how to open file.
@@ -205,12 +205,12 @@ enum gosEnum_FileSeekType : uint32_t
 
 //////////////////////////////////////////////////////////////////////////////////
 // If the file or directory exists, return TRUE
-bool __stdcall gos_DoesFileExist(PCSTR FileName);
+bool __stdcall gos_DoesFileExist(PSTR FileName);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Open the file found at <path> with the method <writeable> and return a handle
 // hfile to it.
-void __stdcall gos_OpenFile(HGOSFILE* hfile, PCSTR path, gosEnum_FileWriteStatus);
+void __stdcall gos_OpenFile(HGOSFILE* hfile, PSTR path, gosEnum_FileWriteStatus);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Close the file specified by handle <hfile>.

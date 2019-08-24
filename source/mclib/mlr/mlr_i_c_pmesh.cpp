@@ -4,16 +4,16 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <mlr/gosvertex.hpp>
-#include <mlr/gosvertexpool.hpp>
-#include <mlr/mlrtexture.hpp>
-#include <mlr/mlrtexturepool.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlrcliptrick.hpp>
-#include <mlr/mlr_i_c_pmesh.hpp>
+#include "gameos.hpp"
+#include "mlr/gosvertex.h"
+#include "mlr/gosvertexpool.h"
+#include "mlr/mlrtexture.h"
+#include "mlr/mlrtexturepool.h"
+#include "mlr/mlrshape.h"
+#include "mlr/mlrcliptrick.h"
+#include "mlr/mlr_i_c_pmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -143,7 +143,7 @@ MLR_I_C_PMesh*
 MLR_I_C_PMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	gos_PushCurrentHeap(Heap);
 	MLR_I_C_PMesh* mesh = new MLR_I_C_PMesh(DefaultData, stream, version);
 	gos_PopCurrentHeap();
@@ -267,7 +267,7 @@ MLR_I_C_PMesh::PaintMe(
 // int32_t MLR_I_C_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrprimitiveclipping.inl>
+#include "mlr/mlrprimitiveclipping.inl"
 
 #undef I_SAY_YES_TO_COLOR
 #undef CLASSNAME
@@ -680,3 +680,5 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit(IcoInfo& icoInfo, MLRStat
 	gos_PopCurrentHeap();
 	return ret;
 }
+
+} // namespace MidLevelRenderer

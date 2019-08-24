@@ -12,7 +12,7 @@
 
 #include "EditorData.h" /* just for definition of GAME_MAX_PLAYERS */
 #include "ResourceStringSelectionDlg.h"
-#include "../MCLib/Utilities.h" /*for cLoadString*/
+#include "utilities.h" /*for cLoadString*/
 #include "UserTextEdit.h"
 
 /* mh: I notice the compiler seems complain about DEBUG_NEW not being defined

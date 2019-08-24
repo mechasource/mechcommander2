@@ -6,8 +6,8 @@
 
 #pragma once
 
-// #include <stuff/style.hpp>
-#include <stuff/linearmatrix.hpp>
+// #include "stuff/style.h"
+#include "stuff/linearmatrix.h"
 
 namespace Stuff
 {
@@ -53,7 +53,7 @@ void __stdcall WriteGFXVersion(std::iostream& erf_stream);
 void __stdcall InitializeClasses(void);
 void __stdcall TerminateClasses(void);
 
-// extern HGOSHEAP Heap;
+// // extern HGOSHEAP Heap;
 
 extern const Stuff::LinearMatrix4D& Effect_Into_Motion;
 extern const Stuff::LinearMatrix4D& Effect_Against_Motion;
@@ -68,4 +68,4 @@ extern uint32_t Shape_Count;
 extern uint32_t Profile_Count;
 } // namespace gosFX
 
-//#include <gosfx/fcurve.hpp>
+//#include "gosfx/fcurve.h"

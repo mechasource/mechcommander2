@@ -9,29 +9,13 @@
 
 #include "stdinc.h"
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
+//#include "ablgen.h"
+//#include "ablerr.h"
+//#include "ablsymt.h"
+//#include "ablscan.h"
+//#include "ablenv.h"
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLENV_H
-#include "ablenv.h"
-#endif
+namespace mclib::abl {
 
 //***************************************************************************
 
@@ -43,17 +27,17 @@ extern int32_t level; // current nesting/scope level
 //--------
 // GLOBALS
 
-SymTableNodePtr SymTableDisplay[MAX_NESTING_LEVEL];
+const std::unique_ptr<SymTableNode>& SymTableDisplay[MAX_NESTING_LEVEL];
 
-ABLModulePtr LibrariesUsed[MAX_LIBRARIES_USED];
+const std::unique_ptr<ABLModule>& LibrariesUsed[MAX_LIBRARIES_USED];
 int32_t NumLibrariesUsed = 0;
 
 //------------------
 // Pre-defined types
-TypePtr IntegerTypePtr;
-TypePtr CharTypePtr;
-TypePtr RealTypePtr;
-TypePtr BooleanTypePtr;
+const std::unique_ptr<Type>& IntegerTypePtr;
+const std::unique_ptr<Type>& CharTypePtr;
+const std::unique_ptr<Type>& RealTypePtr;
+const std::unique_ptr<Type>& BooleanTypePtr;
 
 Type DummyType = // for erroneous type definitions
 	{0, FRM_NONE, 0, nullptr};
@@ -71,7 +55,7 @@ execStdRandom();
 //***************************************************************************
 
 void
-searchLocalSymTable(SymTableNodePtr& IdPtr)
+searchLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr)
 {
 	IdPtr = searchSymTable(wordString, SymTableDisplay[level]);
 }
@@ -79,7 +63,7 @@ searchLocalSymTable(SymTableNodePtr& IdPtr)
 //***************************************************************************
 
 inline void
-searchThisSymTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable)
+searchThisSymTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::unique_ptr<SymTableNode>& thisTable)
 {
 	IdPtr = searchSymTable(wordString, thisTable);
 }
@@ -87,7 +71,7 @@ searchThisSymTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable)
 //***************************************************************************
 
 void
-searchAllSymTables(SymTableNodePtr& IdPtr)
+searchAllSymTables(const std::unique_ptr<SymTableNode>&& IdPtr)
 {
 	IdPtr = searchSymTableDisplay(wordString);
 }
@@ -95,7 +79,7 @@ searchAllSymTables(SymTableNodePtr& IdPtr)
 //***************************************************************************
 
 void
-enterLocalSymTable(SymTableNodePtr& IdPtr)
+enterLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr)
 {
 	IdPtr = enterSymTable(wordString, &SymTableDisplay[level]);
 }
@@ -103,7 +87,7 @@ enterLocalSymTable(SymTableNodePtr& IdPtr)
 //***************************************************************************
 
 inline void
-enterNameLocalSymTable(SymTableNodePtr& IdPtr, PSTR name)
+enterNameLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::wstring_view& name)
 {
 	IdPtr = enterSymTable(name, &SymTableDisplay[level]);
 }
@@ -111,21 +95,21 @@ enterNameLocalSymTable(SymTableNodePtr& IdPtr, PSTR name)
 //***************************************************************************
 
 void
-searchAndFindAllSymTables(SymTableNodePtr& IdPtr)
+searchAndFindAllSymTables(const std::unique_ptr<SymTableNode>&& IdPtr)
 {
 	if ((IdPtr = searchSymTableDisplay(wordString)) == nullptr)
 	{
 		syntaxError(ABL_ERR_SYNTAX_UNDEFINED_IDENTIFIER);
 		IdPtr = enterSymTable(wordString, &SymTableDisplay[level]);
 		IdPtr->defn.key = DFN_UNDEFINED;
-		IdPtr->typePtr = &DummyType;
+		IdPtr->ptype = &DummyType;
 	}
 }
 
 //***************************************************************************
 
 void
-searchAndEnterLocalSymTable(SymTableNodePtr& IdPtr)
+searchAndEnterLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr)
 {
 	if ((IdPtr = searchSymTable(wordString, SymTableDisplay[level])) == nullptr)
 		IdPtr = enterSymTable(wordString, &SymTableDisplay[level]);
@@ -136,7 +120,7 @@ searchAndEnterLocalSymTable(SymTableNodePtr& IdPtr)
 //***************************************************************************
 
 void
-searchAndEnterThisTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable)
+searchAndEnterThisTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::unique_ptr<SymTableNode>& thisTable)
 {
 	if ((IdPtr = searchSymTable(wordString, thisTable)) == nullptr)
 		IdPtr = enterSymTable(wordString, &thisTable);
@@ -146,8 +130,8 @@ searchAndEnterThisTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable)
 
 //***************************************************************************
 
-inline SymTableNodePtr
-symTableSuccessor(SymTableNodePtr nodeX)
+inline const std::unique_ptr<SymTableNode>&
+symTableSuccessor(const std::unique_ptr<SymTableNode>& nodeX)
 {
 	if (nodeX->right)
 	{
@@ -156,7 +140,7 @@ symTableSuccessor(SymTableNodePtr nodeX)
 			nodeX = nodeX->left;
 		return (nodeX);
 	}
-	SymTableNodePtr nodeY = nodeX->parent;
+	const std::unique_ptr<SymTableNode>& nodeY = nodeX->parent;
 	while (nodeY && (nodeX == nodeY->right))
 	{
 		nodeX = nodeY;
@@ -169,10 +153,10 @@ symTableSuccessor(SymTableNodePtr nodeX)
 // TYPE management routines
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 createType(void)
 {
-	TypePtr newType = (TypePtr)ABLSymbolMallocCallback(sizeof(Type));
+	const std::unique_ptr<Type>& newType = (const std::unique_ptr<Type>&)ABLSymbolMallocCallback(sizeof(Type));
 	if (!newType)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc newType ");
 	newType->numInstances = 1;
@@ -184,8 +168,8 @@ createType(void)
 
 //---------------------------------------------------------------------------
 
-TypePtr
-setType(TypePtr type)
+const std::unique_ptr<Type>&
+setType(const std::unique_ptr<Type>& type)
 {
 	if (type)
 		type->numInstances++;
@@ -195,7 +179,7 @@ setType(TypePtr type)
 //---------------------------------------------------------------------------
 
 void
-clearType(TypePtr& type)
+clearType(const std::unique_ptr<Type>&& type)
 {
 	if (type)
 	{
@@ -213,12 +197,12 @@ clearType(TypePtr& type)
 //***************************************************************************
 
 void
-recordLibraryUsed(SymTableNodePtr memberNodePtr)
+recordLibraryUsed(const std::unique_ptr<SymTableNode>& memberNodePtr)
 {
 	//------------------------------------------------------------------
 	// If the library already on our list, then don't bother. Otherwise,
 	// add it to our list...
-	ABLModulePtr library = memberNodePtr->library;
+	const std::unique_ptr<ABLModule>& library = memberNodePtr->library;
 	for (size_t i = 0; i < NumLibrariesUsed; i++)
 		if (LibrariesUsed[i] == library)
 			return;
@@ -231,8 +215,8 @@ recordLibraryUsed(SymTableNodePtr memberNodePtr)
 
 //***************************************************************************
 
-SymTableNodePtr
-searchSymTable(PSTR name, SymTableNodePtr nodePtr)
+const std::unique_ptr<SymTableNode>&
+searchSymTable(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr)
 {
 	while (nodePtr)
 	{
@@ -249,15 +233,15 @@ searchSymTable(PSTR name, SymTableNodePtr nodePtr)
 
 //***************************************************************************
 
-SymTableNodePtr
-searchSymTableForFunction(PSTR name, SymTableNodePtr nodePtr)
+const std::unique_ptr<SymTableNode>&
+searchSymTableForFunction(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr)
 {
 	while (nodePtr)
 	{
 		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0)
 		{
-			if (nodePtr->typePtr == nullptr)
+			if (nodePtr->ptype == nullptr)
 				if (nodePtr->defn.key == DFN_FUNCTION)
 					return (nodePtr);
 			nodePtr = nodePtr->right;
@@ -272,15 +256,15 @@ searchSymTableForFunction(PSTR name, SymTableNodePtr nodePtr)
 
 //***************************************************************************
 
-SymTableNodePtr
-searchSymTableForState(PSTR name, SymTableNodePtr nodePtr)
+const std::unique_ptr<SymTableNode>&
+searchSymTableForState(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr)
 {
 	while (nodePtr)
 	{
 		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0)
 		{
-			if (nodePtr->typePtr == nullptr)
+			if (nodePtr->ptype == nullptr)
 				if (nodePtr->defn.key == DFN_FUNCTION)
 					if (nodePtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
 						return (nodePtr);
@@ -296,17 +280,17 @@ searchSymTableForState(PSTR name, SymTableNodePtr nodePtr)
 
 //***************************************************************************
 
-SymTableNodePtr
-searchSymTableForString(PSTR name, SymTableNodePtr nodePtr)
+const std::unique_ptr<SymTableNode>&
+searchSymTableForString(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr)
 {
 	while (nodePtr)
 	{
 		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0)
 		{
-			if (nodePtr->typePtr)
-				if (nodePtr->typePtr->form == FRM_ARRAY)
-					if (nodePtr->typePtr->info.array.elementTypePtr == CharTypePtr)
+			if (nodePtr->ptype)
+				if (nodePtr->ptype->form == FRM_ARRAY)
+					if (nodePtr->ptype->info.array.elementTypePtr == CharTypePtr)
 						return (nodePtr);
 			nodePtr = nodePtr->right;
 		}
@@ -320,8 +304,8 @@ searchSymTableForString(PSTR name, SymTableNodePtr nodePtr)
 
 //***************************************************************************
 
-SymTableNodePtr
-searchLibrarySymTable(PSTR name, SymTableNodePtr nodePtr)
+const std::unique_ptr<SymTableNode>&
+searchLibrarySymTable(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr)
 {
 	//-------------------------------------------------------------
 	// Since all libraries are at the symbol display 0-level, we'll
@@ -343,12 +327,12 @@ searchLibrarySymTable(PSTR name, SymTableNodePtr nodePtr)
 		{
 			if (nodePtr->library && (nodePtr->defn.key == DFN_MODULE))
 			{
-				SymTableNodePtr memberNodePtr =
+				const std::unique_ptr<SymTableNode>& memberNodePtr =
 					searchSymTable(name, nodePtr->defn.info.routine.localSymTable);
 				if (memberNodePtr)
 					return (memberNodePtr);
 			}
-			SymTableNodePtr nodeFoundPtr = searchLibrarySymTable(name, nodePtr->left);
+			const std::unique_ptr<SymTableNode>& nodeFoundPtr = searchLibrarySymTable(name, nodePtr->left);
 			if (nodeFoundPtr)
 				return (nodeFoundPtr);
 			nodeFoundPtr = searchLibrarySymTable(name, nodePtr->right);
@@ -361,33 +345,33 @@ searchLibrarySymTable(PSTR name, SymTableNodePtr nodePtr)
 
 //***************************************************************************
 
-SymTableNodePtr
-searchLibrarySymTableDisplay(PSTR name)
+const std::unique_ptr<SymTableNode>&
+searchLibrarySymTableDisplay(const std::wstring_view& name)
 {
-	SymTableNodePtr nodePtr = searchLibrarySymTable(name, SymTableDisplay[0]);
+	const std::unique_ptr<SymTableNode>& nodePtr = searchLibrarySymTable(name, SymTableDisplay[0]);
 	return (nodePtr);
 }
 
 //***************************************************************************
 
-SymTableNodePtr
-searchSymTableDisplay(PSTR name)
+const std::unique_ptr<SymTableNode>&
+searchSymTableDisplay(const std::wstring_view& name)
 {
 	//---------------------------------------------------------------------
 	// First check if this is an explicit library reference. If so, we need
 	// to determine which library and which identifier in that library...
-	PSTR separator = strchr(name, '.');
-	SymTableNodePtr nodePtr = nullptr;
+	const std::wstring_view& separator = strchr(name, '.');
+	const std::unique_ptr<SymTableNode>& nodePtr = nullptr;
 	if (separator)
 	{
 		*separator = nullptr;
-		SymTableNodePtr libraryNodePtr = searchSymTable(name, SymTableDisplay[0]);
+		const std::unique_ptr<SymTableNode>& libraryNodePtr = searchSymTable(name, SymTableDisplay[0]);
 		if (!libraryNodePtr)
 			return (nullptr);
 		//-------------------------------------
 		// Now, search for the member symbol...
-		PSTR memberName = separator + 1;
-		SymTableNodePtr memberNodePtr =
+		const std::wstring_view& memberName = separator + 1;
+		const std::unique_ptr<SymTableNode>& memberNodePtr =
 			searchSymTable(memberName, libraryNodePtr->defn.info.routine.localSymTable);
 		if (memberNodePtr)
 			recordLibraryUsed(memberNodePtr);
@@ -397,7 +381,7 @@ searchSymTableDisplay(PSTR name)
 	{
 		for (size_t i = level; i >= 0; i--)
 		{
-			SymTableNodePtr nodePtr = searchSymTable(name, SymTableDisplay[i]);
+			const std::unique_ptr<SymTableNode>& nodePtr = searchSymTable(name, SymTableDisplay[i]);
 			if (nodePtr)
 				return (nodePtr);
 		}
@@ -420,15 +404,15 @@ searchSymTableDisplay(PSTR name)
 
 //***************************************************************************
 
-SymTableNodePtr
-enterSymTable(PSTR name, SymTableNodePtr* ptrToNodePtr)
+const std::unique_ptr<SymTableNode>&
+enterSymTable(const std::wstring_view& name, const std::unique_ptr<SymTableNode>&* ptrToNodePtr)
 {
 	//-------------------------------------
 	// First, create the new symbol node...
-	SymTableNodePtr newNode = (SymTableNodePtr)ABLSymbolMallocCallback(sizeof(SymTableNode));
+	const std::unique_ptr<SymTableNode>& newNode = (const std::unique_ptr<SymTableNode>&)ABLSymbolMallocCallback(sizeof(SymTableNode));
 	if (!newNode)
 		ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc symbol ");
-	newNode->name = (PSTR)ABLSymbolMallocCallback(strlen(name) + 1);
+	newNode->name = (const std::wstring_view&)ABLSymbolMallocCallback(strlen(name) + 1);
 	if (!newNode->name)
 		ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc symbol name ");
 	strcpy(newNode->name, name);
@@ -440,13 +424,13 @@ enterSymTable(PSTR name, SymTableNodePtr* ptrToNodePtr)
 	newNode->defn.key = DFN_UNDEFINED;
 	newNode->defn.info.data.varType = VAR_TYPE_NORMAL;
 	newNode->defn.info.data.offset = 0;
-	newNode->typePtr = nullptr;
+	newNode->ptype = nullptr;
 	newNode->level = (uint8_t)level;
 	newNode->labelIndex = 0;
 	//-------------------------------------
 	// Find where to put this new symbol...
-	SymTableNodePtr curNode = *ptrToNodePtr;
-	SymTableNodePtr parentNode = nullptr;
+	const std::unique_ptr<SymTableNode>& curNode = *ptrToNodePtr;
+	const std::unique_ptr<SymTableNode>& parentNode = nullptr;
 	while (curNode)
 	{
 		if (strcmp(name, curNode->name) < 0)
@@ -463,16 +447,16 @@ enterSymTable(PSTR name, SymTableNodePtr* ptrToNodePtr)
 
 //***************************************************************************
 
-SymTableNodePtr
-insertSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr newNode)
+const std::unique_ptr<SymTableNode>&
+insertSymTable(const std::unique_ptr<SymTableNode>&* tableRoot, const std::unique_ptr<SymTableNode>& newNode)
 {
 	newNode->left = nullptr;
 	newNode->parent = nullptr;
 	newNode->right = nullptr;
 	//------------------------------------
 	// Find where to insert this symbol...
-	SymTableNodePtr curNode = *tableRoot;
-	SymTableNodePtr parentNode = nullptr;
+	const std::unique_ptr<SymTableNode>& curNode = *tableRoot;
+	const std::unique_ptr<SymTableNode>& parentNode = nullptr;
 	while (curNode)
 	{
 		if (strcmp(newNode->name, curNode->name) < 0)
@@ -489,8 +473,8 @@ insertSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr newNode)
 
 //***************************************************************************
 
-SymTableNodePtr
-extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill)
+const std::unique_ptr<SymTableNode>&
+extractSymTable(const std::unique_ptr<SymTableNode>&* tableRoot, const std::unique_ptr<SymTableNode>& nodeKill)
 {
 	//------------------------------------------------------------------------
 	// NOTE: While this routine extracts a node from the symbol table,
@@ -500,8 +484,8 @@ extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill)
 	// 0 in the SymTable Display. Do we want to eliminate the use of the
 	// parent pointer, and just hardcode something that may be more efficient
 	// for this level-0 special case?
-	SymTableNodePtr nodeX = nullptr;
-	SymTableNodePtr nodeY = nullptr;
+	const std::unique_ptr<SymTableNode>& nodeX = nullptr;
+	const std::unique_ptr<SymTableNode>& nodeY = nullptr;
 	if ((nodeKill->left == nullptr) || (nodeKill->right == nullptr))
 		nodeY = nodeKill;
 	else
@@ -526,7 +510,7 @@ extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill)
 		nodeKill->name = nodeY->name;
 		nodeKill->info = nodeY->info;
 		memcpy(&nodeKill->defn, &nodeY->defn, sizeof(Definition));
-		nodeKill->typePtr = nodeY->typePtr;
+		nodeKill->ptype = nodeY->ptype;
 		nodeKill->level = nodeY->level;
 		nodeKill->labelIndex = nodeY->labelIndex;
 	}
@@ -536,8 +520,8 @@ extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill)
 //***************************************************************************
 
 void
-enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList,
-	PSTR returnType, void (*callback)(void))
+enterStandardRoutine(const std::wstring_view& name, int32_t routineKey, bool isOrder, const std::wstring_view& paramList,
+	const std::wstring_view& returnType, void (*callback)(void))
 {
 	int32_t tableIndex = routineKey;
 	if (tableIndex == -1)
@@ -546,7 +530,7 @@ enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList
 			ABL_Fatal(0, " ABL.enterStandardRoutine: Too Many Standard Functions ");
 		tableIndex = NumStandardFunctions++;
 	}
-	SymTableNodePtr routineIdPtr;
+	const std::unique_ptr<SymTableNode>& routineIdPtr;
 	enterNameLocalSymTable(routineIdPtr, name);
 	routineIdPtr->defn.key = DFN_FUNCTION;
 	routineIdPtr->defn.info.routine.key = (RoutineKey)tableIndex;
@@ -554,7 +538,7 @@ enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList
 	routineIdPtr->defn.info.routine.params = nullptr;
 	routineIdPtr->defn.info.routine.localSymTable = nullptr;
 	routineIdPtr->library = nullptr;
-	routineIdPtr->typePtr = nullptr;
+	routineIdPtr->ptype = nullptr;
 	FunctionInfoTable[tableIndex].numParams = 0;
 	if (paramList)
 	{
@@ -635,7 +619,7 @@ enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList
 //***************************************************************************
 
 void
-enterScope(SymTableNodePtr symTableRoot)
+enterScope(const std::unique_ptr<SymTableNode>& symTableRoot)
 {
 	if (++level >= MAX_NESTING_LEVEL)
 		syntaxError(ABL_ERR_SYNTAX_NESTING_TOO_DEEP);
@@ -644,7 +628,7 @@ enterScope(SymTableNodePtr symTableRoot)
 
 //***************************************************************************
 
-SymTableNodePtr
+const std::unique_ptr<SymTableNode>&
 exitScope(void)
 {
 	return (SymTableDisplay[level--]);
@@ -662,17 +646,17 @@ initSymTable(void)
 	SymTableDisplay[0] = nullptr;
 	//----------------------------------------------------------------------
 	// Set up the basic variable types as identifiers in the symbol table...
-	SymTableNodePtr integerIdPtr;
+	const std::unique_ptr<SymTableNode>& integerIdPtr;
 	enterNameLocalSymTable(integerIdPtr, "integer");
-	SymTableNodePtr charIdPtr;
+	const std::unique_ptr<SymTableNode>& charIdPtr;
 	enterNameLocalSymTable(charIdPtr, "char");
-	SymTableNodePtr realIdPtr;
+	const std::unique_ptr<SymTableNode>& realIdPtr;
 	enterNameLocalSymTable(realIdPtr, "real");
-	SymTableNodePtr booleanIdPtr;
+	const std::unique_ptr<SymTableNode>& booleanIdPtr;
 	enterNameLocalSymTable(booleanIdPtr, "boolean");
-	SymTableNodePtr falseIdPtr;
+	const std::unique_ptr<SymTableNode>& falseIdPtr;
 	enterNameLocalSymTable(falseIdPtr, "false");
-	SymTableNodePtr trueIdPtr;
+	const std::unique_ptr<SymTableNode>& trueIdPtr;
 	enterNameLocalSymTable(trueIdPtr, "true");
 	//------------------------------------------------------------------
 	// Now, create the basic variable TYPEs, and point their identifiers
@@ -690,41 +674,41 @@ initSymTable(void)
 	if (!BooleanTypePtr)
 		ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc Boolean Type ");
 	integerIdPtr->defn.key = DFN_TYPE;
-	integerIdPtr->typePtr = IntegerTypePtr;
+	integerIdPtr->ptype = IntegerTypePtr;
 	IntegerTypePtr->form = FRM_SCALAR;
 	IntegerTypePtr->size = sizeof(int32_t);
 	IntegerTypePtr->typeIdPtr = integerIdPtr;
 	charIdPtr->defn.key = DFN_TYPE;
-	charIdPtr->typePtr = CharTypePtr;
+	charIdPtr->ptype = CharTypePtr;
 	CharTypePtr->form = FRM_SCALAR;
 	CharTypePtr->size = sizeof(char);
 	CharTypePtr->typeIdPtr = charIdPtr;
 	realIdPtr->defn.key = DFN_TYPE;
-	realIdPtr->typePtr = RealTypePtr;
+	realIdPtr->ptype = RealTypePtr;
 	RealTypePtr->form = FRM_SCALAR;
 	RealTypePtr->size = sizeof(float);
 	RealTypePtr->typeIdPtr = realIdPtr;
 	booleanIdPtr->defn.key = DFN_TYPE;
-	booleanIdPtr->typePtr = BooleanTypePtr;
+	booleanIdPtr->ptype = BooleanTypePtr;
 	BooleanTypePtr->form = FRM_ENUM;
 	BooleanTypePtr->size = sizeof(int32_t);
 	BooleanTypePtr->typeIdPtr = booleanIdPtr;
 	//----------------------------------------------------
 	// Set up the FALSE identifier for the boolean type...
 	BooleanTypePtr->info.enumeration.max = 1;
-	((TypePtr)(booleanIdPtr->typePtr))->info.enumeration.constIdPtr = falseIdPtr;
+	((const std::unique_ptr<Type>&)(booleanIdPtr->ptype))->info.enumeration.constIdPtr = falseIdPtr;
 	falseIdPtr->defn.key = DFN_CONST;
 	falseIdPtr->defn.info.constant.value.integer = 0;
-	falseIdPtr->typePtr = BooleanTypePtr;
+	falseIdPtr->ptype = BooleanTypePtr;
 	//----------------------------------------------------
 	// Set up the TRUE identifier for the boolean type...
 	falseIdPtr->next = trueIdPtr;
 	trueIdPtr->defn.key = DFN_CONST;
 	trueIdPtr->defn.info.constant.value.integer = 1;
-	trueIdPtr->typePtr = BooleanTypePtr;
+	trueIdPtr->ptype = BooleanTypePtr;
 	//-------------------------------------------
 	// Set up the standard, built-in functions...
-	//(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList, PSTR
+	//(const std::wstring_view& name, int32_t routineKey, bool isOrder, const std::wstring_view& paramList, const std::wstring_view&
 	// returnType, PVOID callback);
 	enterStandardRoutine("return", RTN_RETURN, false, nullptr, nullptr, nullptr);
 	enterStandardRoutine("print", RTN_PRINT, false, nullptr, nullptr, nullptr);
@@ -737,3 +721,5 @@ initSymTable(void)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

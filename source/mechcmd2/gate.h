@@ -72,7 +72,7 @@ public:
 
 	GateType(void) { init(void); }
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 	int32_t init(FitIniFilePtr objFile);
 
 	~GateType(void) { destroy(void); }
@@ -103,7 +103,7 @@ typedef struct _GateData : public TerrainObjectData
 
 	bool lastMarkedOpen;
 
-	MoverPtr closestObject;
+	std::unique_ptr<Mover> closestObject;
 
 	uint32_t parentId;
 	GameObjectWatchID parent;
@@ -130,7 +130,7 @@ public:
 
 	bool lastMarkedOpen;
 
-	MoverPtr closestObject;
+	std::unique_ptr<Mover> closestObject;
 
 	uint32_t parentId;
 	GameObjectWatchID parent;

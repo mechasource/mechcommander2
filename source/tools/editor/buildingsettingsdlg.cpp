@@ -13,7 +13,7 @@
 #include "editorobjectmgr.h"
 #include "editorinterface.h" // just for the undo manager
 
-//#include "../Code/unitdesg.h" /* just for definition of MIN_TERRAIN_PART_ID
+//#include "unitdesg.h" /* just for definition of MIN_TERRAIN_PART_ID
 // and MAX_MAP_CELL_WIDTH */
 
 /////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ BuildingSettingsDlg::OnSelchangeGroup()
 	m_Mech.ResetContent();
 	int32_t group = m_Group.GetCurSel();
 	group = m_Group.GetItemData(group);
-	PCSTR MechNames[256];
+	const std::wstring_view& MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
 	for (size_t i = 0; i < count; ++i)
@@ -222,7 +222,7 @@ BuildingSettingsDlg::updateMemberVariables()
 	}
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	int32_t groupCount = pMgr->getBuildingGroupCount();
-	PCSTR* pGroups = new PCSTR[groupCount];
+	const std::wstring_view&* pGroups = new const std::wstring_view&[groupCount];
 	m_Group.ResetContent();
 	pMgr->getBuildingGroupNames(pGroups, groupCount);
 	int32_t count = 0;
@@ -249,11 +249,11 @@ BuildingSettingsDlg::updateMemberVariables()
 	}
 	if (group != -1) // we found a valid group
 	{
-		PCSTR pGroupName = pMgr->getGroupName(group);
+		const std::wstring_view& pGroupName = pMgr->getGroupName(group);
 		int32_t index = m_Group.FindString(-1, pGroupName);
 		m_Group.SetCurSel(index);
 		// OK, now fill in the index....
-		PCSTR MechNames[256];
+		const std::wstring_view& MechNames[256];
 		int32_t count = 256;
 		m_Mech.ResetContent();
 		pMgr->getBuildingNamesInGroup(group, MechNames, count);
@@ -273,7 +273,7 @@ BuildingSettingsDlg::updateMemberVariables()
 		}
 		if (indexInGroup != -1)
 		{
-			PCSTR pName = units.GetHead()->getDisplayName();
+			const std::wstring_view& pName = units.GetHead()->getDisplayName();
 			index = m_Mech.FindString(-1, pName);
 			if (index != -1)
 			{

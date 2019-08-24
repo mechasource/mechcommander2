@@ -104,7 +104,7 @@ gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 			m_scale.m_seeded = false;
 			m_scale.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"scale\" in Effect \"%s\" Is Out of Range
-			// and has been Reset", (PSTR)m_name));
+			// and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;

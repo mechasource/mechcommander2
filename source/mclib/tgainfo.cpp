@@ -11,7 +11,7 @@
 //#include <string.h>
 
 #include "tgainfo.h"
-#include <gameos.hpp>
+#include "gameos.hpp"
 //---------------------------------------------------------------------------
 typedef struct _RGB
 {
@@ -184,8 +184,8 @@ tgaCopy(puint8_t dest, puint8_t src, int32_t size)
 //---------------------------------------------------------------------------
 static cint32_t g_textureCache_BufferSize = 16384 /*64*64*sizeof(uint32_t)*/;
 static uint8_t g_textureCache_Buffer[g_textureCache_BufferSize];
-std::wstring* g_textureCache_FilenameOfLastLoadedTexture =
-	nullptr; /*This is an (std::wstring *) instead of an std::wstring because apparently
+const std::wstring_view&* g_textureCache_FilenameOfLastLoadedTexture =
+	nullptr; /*This is an (const std::wstring_view& *) instead of an const std::wstring_view& because apparently
 				gos memory management has a problem with global static
 				allocation of EStrings.*/
 static int32_t g_textureCache_WidthOfLastLoadedTexture = 0; /*just to be sure*/
@@ -194,10 +194,10 @@ static int32_t g_textureCache_NumberOfConsecutiveLoads = 0;
 static bool g_textureCache_LastTextureIsCached = false;
 
 void
-loadTGATexture(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
+loadTGATexture(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
 {
 	if (!g_textureCache_FilenameOfLastLoadedTexture)
-		g_textureCache_FilenameOfLastLoadedTexture = new std::wstring;
+		g_textureCache_FilenameOfLastLoadedTexture = new const std::wstring_view&;
 	if (width * height * sizeof(uint32_t) <= g_textureCache_BufferSize)
 	{
 		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) && (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) && ((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture) && ((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture))
@@ -316,7 +316,7 @@ loadTGATexture(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
 }
 
 void
-loadTGAMask(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
+loadTGAMask(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
 {
 	puint8_t tgaBuffer = (puint8_t)malloc(tgaFile->fileSize());
 	tgaFile->read(tgaBuffer, tgaFile->fileSize());

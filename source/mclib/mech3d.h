@@ -18,9 +18,9 @@
 //-------------------------------------------------------------------------------
 // Include Files
 //#include "apprtype.h"
-//#include <objectappearance.h>
+//#include "objectappearance.h"
 //#include "msl.h"
-//#include <gosfx/gosfxheaders.hpp>
+//#include "gosfx/gosfxheaders.h"
 
 //-------------------------------------------------------------------------------
 // Structs used by layer.
@@ -163,7 +163,7 @@ public:
 
 	~Mech3DAppearanceType(void) { destroy(void); }
 
-	virtual void init(PSTR fileName);
+	virtual void init(const std::wstring_view& fileName);
 
 	int32_t getTotalNodes(void)
 	{
@@ -601,7 +601,7 @@ public:
 
 	virtual Stuff::Vector3D getNodePosition(int32_t nodeId);
 
-	virtual Stuff::Vector3D getNodeNamePosition(PSTR nodeName);
+	virtual Stuff::Vector3D getNodeNamePosition(const std::wstring_view& nodeName);
 
 	virtual int32_t getWeaponNode(int32_t weapontype);
 
@@ -656,7 +656,7 @@ public:
 		sensorTriangleShape->SetAlphaValue(0xff - aVal);
 	}
 
-	virtual void setMechName(PCSTR pName) { strcpy(mechName, pName); }
+	virtual void setMechName(const std::wstring_view& pName) { strcpy(mechName, pName); }
 
 	virtual void startSmoking(int32_t smokeLvl);
 	virtual void startWaterWake(void);

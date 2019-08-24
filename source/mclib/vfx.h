@@ -349,7 +349,7 @@ extern "C"
 	extern int32_t VFX_CALL VFX_character_draw(
 		PPANE pane, int32_t x, int32_t y, PVOID font, int32_t character, puint8_t color_translate);
 	extern void VFX_CALL VFX_string_draw(
-		PPANE pane, int32_t x, int32_t y, PVOID font, PSTR string, puint8_t color_translate);
+		PPANE pane, int32_t x, int32_t y, PVOID font, const std::wstring_view& string, puint8_t color_translate);
 	extern int32_t VFX_CALL VFX_ILBM_draw(PPANE pane, puint8_t ILBM_buffer);
 	extern void VFX_CALL VFX_ILBM_palette(puint8_t ILBM_buffer, PVFX_RGB palette);
 	extern int32_t VFX_CALL VFX_ILBM_resolution(puint8_t ILBM_buffer);

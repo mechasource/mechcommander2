@@ -10,9 +10,9 @@ ComponentListBox.h			: Interface for the ComponentListBox component.
 #ifndef COMPONENTLISTBOX_H
 #define COMPONENTLISTBOX_H
 
-//#include <mechgui/alistbox.h>
-//#include <mechgui/aanim.h>
-//#include <elist.h>
+//#include "mechgui/alistbox.h"
+//#include "mechgui/aanim.h"
+//#include "elist.h"
 
 class LogisticsVariant;
 class LogisticsComponent;
@@ -20,7 +20,6 @@ class LogisticsVehicle;
 
 #define COMP_ANIMATION_COUNT 5
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -95,5 +94,4 @@ private:
 	void addSortedItem(ComponentListItem* pItem);
 };
 
-//*************************************************************************************************
 #endif // end of file ( ComponentListBox.h )

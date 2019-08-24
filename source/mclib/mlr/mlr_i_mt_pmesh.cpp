@@ -4,11 +4,11 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlr_i_mt_pmesh.hpp>
+#include "gameos.hpp"
+#include "mlr/mlrshape.h"
+#include "mlr/mlr_i_mt_pmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -308,7 +308,7 @@ MLR_I_MT_PMesh::SetTexCoordDataPointer(const Stuff::Vector2DScalar* data)
 //	int32_t MLR_I_MT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrprimitiveclipping.inl>
+#include "mlr/mlrprimitiveclipping.inl"
 
 #undef I_SAY_YES_TO_MULTI_TEXTURES
 #undef CLASSNAME
@@ -455,3 +455,5 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
 
 	return ret;
 }
+
+} // namespace MidLevelRenderer

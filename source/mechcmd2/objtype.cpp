@@ -9,7 +9,7 @@
 
 //---------------------------------------------------------------------------
 // Include Files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef OBJTYPE_H
 #include "objtype.h"
@@ -124,7 +124,7 @@ ObjectType::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-ObjectType::init(FilePtr objFile, uint32_t fileSize)
+ObjectType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	return (NO_ERROR);
 }
@@ -145,7 +145,7 @@ ObjectType::init(FitIniFilePtr objFile)
 	result = objFile->readIdString("AppearanceName", apprName, 511);
 	if (result == NO_ERROR)
 	{
-		appearName = (PSTR)ObjectTypeManager::objectTypeCache->Malloc(strlen(apprName) + 1);
+		appearName = (const std::wstring_view&)ObjectTypeManager::objectTypeCache->Malloc(strlen(apprName) + 1);
 		strcpy(appearName, apprName);
 	}
 	result = objFile->readIdLong("ExplosionObject", explosionObject);
@@ -214,7 +214,7 @@ ObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 //***************************************************************************
 
 int32_t
-ObjectTypeManager::init(PSTR objectFileName, int32_t objectTypeCacheSize,
+ObjectTypeManager::init(const std::wstring_view& objectFileName, int32_t objectTypeCacheSize,
 	int32_t objectCacheSize, int32_t maxObjectTypes)
 {
 	FullPathFileName objectName;

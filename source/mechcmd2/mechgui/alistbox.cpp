@@ -5,17 +5,17 @@
 #include "stdinc.h"
 
 #ifndef ASYSTEM_H
-#include <mechgui/asystem.h>
+#include "mechgui/asystem.h"
 #endif
 #ifndef AFONT_H
-#include <mechgui/afont.h>
+#include "mechgui/afont.h"
 #endif
 #ifndef ALISTBOX_H
-#include <mechgui/alistbox.h>
+#include "mechgui/alistbox.h"
 #endif
 
 #include "soundsys.h"
-#include <mclib.h>
+#include "mclib.h"
 
 extern SoundSystem* sndSystem;
 
@@ -59,7 +59,7 @@ aListBox::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 }
 
 void
-aListBox::init(FitIniFile* file, PCSTR blockName)
+aListBox::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	int32_t x, y, width, height;
 	file->readIdLong("XLocation", x);
@@ -67,7 +67,7 @@ aListBox::init(FitIniFile* file, PCSTR blockName)
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
 	file->readIdLong("HelpCaption", helpHeader);
-	file->readIdLong("HelpDesc", helpID);
+	file->readIdLong("HelpDesc", helpid);
 	init(x, y, width, height);
 }
 
@@ -118,9 +118,9 @@ aListBox::update()
 		int32_t mouseX = userInput->getMouseX();
 		int32_t mouseY = userInput->getMouseY();
 		bool bInside = pointInside(mouseX, mouseY);
-		if (bInside && helpID)
+		if (bInside && helpid)
 		{
-			::helpTextID = helpID;
+			::helpTextID = helpid;
 		}
 		int32_t i;
 		for (i = 0; i < itemCount; i++)
@@ -527,7 +527,7 @@ aDropList::aDropList(void) :
 	templateItem(27333)
 {
 	listBoxMaxHeight = 0.0;
-	selectionIndex = -1;
+	selectionindex = -1;
 	rects = nullptr;
 }
 
@@ -545,7 +545,7 @@ aDropList::operator=(const aDropList& src)
 	}
 	listBox.removeAllItems(0);
 	listBoxMaxHeight = src.listBoxMaxHeight;
-	selectionIndex = -1;
+	selectionindex = -1;
 	rectCount = src.rectCount;
 	if (rectCount)
 	{
@@ -568,7 +568,7 @@ aDropList::operator=(const aDropList& src)
 }
 
 int32_t
-aDropList::init(FitIniFile* file, PCSTR blockName)
+aDropList::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x, y, width, height;
@@ -622,7 +622,7 @@ aDropList::init(FitIniFile* file, PCSTR blockName)
 	expandButton.setDisabledFX(LOG_WRONGBUTTON);
 	expandButton.setMessageOnRelease();
 	move(x, y);
-	selectionIndex = -1;
+	selectionindex = -1;
 	templateItem.init(*file);
 	return 0;
 }
@@ -665,9 +665,9 @@ aDropList::render()
 		{
 			pChildren[i]->render();
 		}
-		if (0 <= selectionIndex)
+		if (0 <= selectionindex)
 		{
-			aListItem* pListItem = ListBox().GetItem(selectionIndex);
+			aListItem* pListItem = ListBox().GetItem(selectionindex);
 			if (pListItem)
 			{
 				float l, t, w, h;
@@ -734,7 +734,7 @@ aDropList::update()
 		}
 		if (0 <= ListBox().GetSelectedItem())
 		{
-			selectionIndex = ListBox().GetSelectedItem();
+			selectionindex = ListBox().GetSelectedItem();
 			if (listBox.isShowing())
 			{
 				IsExpanded(false);
@@ -750,7 +750,7 @@ aDropList::update()
 			}
 		}
 	}
-	ListBox().setHelpID(helpID);
+	ListBox().setHelpID(helpid);
 }
 
 int32_t
@@ -803,7 +803,7 @@ aDropList::AddItem(aListItem* itemString)
 }
 
 int32_t
-aDropList::AddItem(PCSTR text, uint32_t color)
+aDropList::AddItem(const std::wstring_view& text, uint32_t color)
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem(27333);
 	*pItem = templateItem;
@@ -827,7 +827,7 @@ aDropList::SelectItem(int32_t item)
 {
 	listBox.showGUIWindow(false);
 	rects[2].showGUIWindow(false);
-	selectionIndex = item;
+	selectionindex = item;
 	return listBox.SelectItem(item);
 }
 
@@ -839,7 +839,7 @@ aComboBox::aComboBox(void) :
 	templateItem(27333)
 {
 	listBoxMaxHeight = 0.0;
-	selectionIndex = -1;
+	selectionindex = -1;
 	rects = nullptr;
 }
 
@@ -859,7 +859,7 @@ aComboBox::operator=(const aComboBox& src)
 	listBox = src.listBox;
 	listBox.removeAllItems(0);
 	listBoxMaxHeight = src.listBoxMaxHeight;
-	selectionIndex = -1;
+	selectionindex = -1;
 	rectCount = src.rectCount;
 	if (rectCount)
 	{
@@ -878,7 +878,7 @@ aComboBox::operator=(const aComboBox& src)
 }
 
 int32_t
-aComboBox::init(FitIniFile* file, PCSTR blockName)
+aComboBox::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x, y, width, height;
@@ -939,7 +939,7 @@ aComboBox::SelectItem(int32_t item)
 {
 	listBox.showGUIWindow(false);
 	rects[2].showGUIWindow(false);
-	selectionIndex = item;
+	selectionindex = item;
 	return listBox.SelectItem(item);
 }
 
@@ -990,8 +990,8 @@ aComboBox::update()
 		}
 		if (0 <= ListBox().GetSelectedItem())
 		{
-			selectionIndex = ListBox().GetSelectedItem();
-			aListItem* pListItem = ListBox().GetItem(selectionIndex);
+			selectionindex = ListBox().GetSelectedItem();
+			aListItem* pListItem = ListBox().GetItem(selectionindex);
 			aTextListItem* pTextListItem = dynamic_cast<aTextListItem*>(pListItem);
 			if (0 != pTextListItem)
 			{
@@ -1018,7 +1018,7 @@ aComboBox::update()
 			}
 		}
 	}
-	ListBox().setHelpID(helpID);
+	ListBox().setHelpID(helpid);
 }
 
 int32_t
@@ -1082,7 +1082,7 @@ aComboBox::AddItem(uint32_t textID, uint32_t color)
 }
 
 int32_t
-aComboBox::AddItem(PCSTR text, uint32_t color)
+aComboBox::AddItem(const std::wstring_view& text, uint32_t color)
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem(27333);
 	*pItem = templateItem;
@@ -1131,11 +1131,11 @@ aTextListItem::init(int32_t newFontResID)
 aTextListItem::~aTextListItem() {}
 
 void
-aTextListItem::setText(PCSTR newText)
+aTextListItem::setText(const std::wstring_view& newText)
 {
 	text = newText;
 }
-PCSTR
+const std::wstring_view&
 aTextListItem::getText(void) const
 {
 	return text;
@@ -1176,7 +1176,7 @@ aTextListItem::sizeToText()
 }
 
 void
-aTextListItem::init(FitIniFile& file, PCSTR blockName)
+aTextListItem::init(FitIniFile& file, const std::wstring_view& blockName)
 {
 	file.seekBlock(blockName);
 	int32_t x, y, width, height;
@@ -1207,7 +1207,7 @@ aAnimTextListItem::operator=(const aAnimTextListItem& src)
 }
 
 void
-aAnimTextListItem::init(FitIniFile& file, PCSTR blockName)
+aAnimTextListItem::init(FitIniFile& file, const std::wstring_view& blockName)
 {
 	file.seekBlock(blockName);
 	int32_t x, y, width, height;
@@ -1254,7 +1254,7 @@ aAnimTextListItem::update()
 aLocalizedListItem::aLocalizedListItem() :
 	aAnimTextListItem(27663) {}
 int32_t
-aLocalizedListItem::init(FitIniFile* file, PCSTR blockName)
+aLocalizedListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x = 0;

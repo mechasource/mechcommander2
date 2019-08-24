@@ -195,14 +195,14 @@ public:
 	int32_t numPowerGenerators;
 	int32_t numSpecialBuildings;
 
-	PSTR moverLineOfSightTable;
+	const std::wstring_view& moverLineOfSightTable;
 	bool useMoverLineOfSightTable;
 
 	GameObjectPtr* objList;
 	GameObjectPtr* collidableList;
-	MoverPtr moverList[MAX_MOVERS];
-	MoverPtr goodMoverList[MAX_MOVERS];
-	MoverPtr badMoverList[MAX_MOVERS];
+	std::unique_ptr<Mover> moverList[MAX_MOVERS];
+	std::unique_ptr<Mover> goodMoverList[MAX_MOVERS];
+	std::unique_ptr<Mover> badMoverList[MAX_MOVERS];
 	int32_t numCollidables;
 	int32_t numGoodMovers;
 	int32_t numBadMovers;
@@ -257,7 +257,7 @@ public:
 
 	~GameObjectManager(void) { destroy(void); }
 
-	void init(PSTR objTypeDataFile, int32_t objTypeCacheSize, int32_t objCacheSize);
+	void init(const std::wstring_view& objTypeDataFile, int32_t objTypeCacheSize, int32_t objCacheSize);
 
 	void setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t nElementals,
 		int32_t nTerrainObjects, int32_t nBuildings, int32_t nTurrets, int32_t nWeapons,
@@ -281,9 +281,9 @@ public:
 
 	GroundVehiclePtr newVehicle(void);
 
-	void freeMover(MoverPtr mover);
+	void freeMover(std::unique_ptr<Mover> mover);
 
-	void tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID);
+	void tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID);
 
 #ifdef USE_ELEMENTAL
 	BattleMechPtr addElemental(void);
@@ -394,13 +394,13 @@ public:
 
 	int32_t buildMoverLists(void);
 
-	bool modifyMoverLists(MoverPtr mover, int32_t action);
+	bool modifyMoverLists(std::unique_ptr<Mover> mover, int32_t action);
 
-	MoverPtr getMover(int32_t index) { return (moverList[index]); }
+	std::unique_ptr<Mover> getMover(int32_t index) { return (moverList[index]); }
 
-	MoverPtr getGoodMover(int32_t index) { return (goodMoverList[index]); }
+	std::unique_ptr<Mover> getGoodMover(int32_t index) { return (goodMoverList[index]); }
 
-	MoverPtr getBadMover(int32_t index) { return (badMoverList[index]); }
+	std::unique_ptr<Mover> getBadMover(int32_t index) { return (badMoverList[index]); }
 
 	GameObjectPtr findObject(Stuff::Vector3D position);
 
@@ -463,7 +463,7 @@ public:
 		return (moversRemoved);
 	}
 
-	bool isRemoved(MoverPtr mover);
+	bool isRemoved(std::unique_ptr<Mover> mover);
 
 	void setWatchID(GameObjectPtr obj);
 

@@ -17,7 +17,7 @@
 #include "vfx.h"
 #endif
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 //---------------------------------------------------------------------------
 // Macro Definitions
 

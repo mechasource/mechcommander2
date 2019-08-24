@@ -4,18 +4,18 @@
 
 #pragma once
 
-//#include <gosfx/gosfx.hpp>
-//#include <gosfx/effect.hpp>
-//#include <gosfx/particlecloud.hpp>
-//#include <gosfx/pointcloud.hpp>
-//#include <gosfx/shardcloud.hpp>
-//#include <gosfx/pertcloud.hpp>
-//#include <gosfx/shapecloud.hpp>
-//#include <gosfx/cardcloud.hpp>
-//#include <gosfx/effectcloud.hpp>
-//#include <gosfx/effectlibrary.hpp>
-//#include <gosfx/card.hpp>
-//#include <gosfx/shape.hpp>
-//#include <gosfx/tube.hpp>
-//#include <gosfx/debriscloud.hpp>
-//#include <gosfx/pointlight.hpp>
+//#include "gosfx/gosfx.h"
+//#include "gosfx/effect.h"
+//#include "gosfx/particlecloud.h"
+//#include "gosfx/pertcloud.h"
+//#include "gosfx/shardcloud.h"
+//#include "gosfx/pertcloud.h"
+//#include "gosfx/shapecloud.h"
+//#include "gosfx/cardcloud.h"
+//#include "gosfx/effectcloud.h"
+//#include "gosfx/effectlibrary.h"
+//#include "gosfx/card.h"
+//#include "gosfx/shape.h"
+//#include "gosfx/tube.h"
+//#include "gosfx/debriscloud.h"
+//#include "gosfx/pointlight.h"

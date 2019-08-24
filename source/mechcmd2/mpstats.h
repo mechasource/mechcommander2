@@ -10,10 +10,9 @@ MPStats.h			: Interface for the MPStats component.
 #ifndef MPSTATS_H
 #define MPSTATS_H
 
-//#include <mechgui/logisticsscreen.h>
+//#include "mechgui/logisticsscreen.h"
 //#include "Multplyr.h"
 
-//*************************************************************************************************
 struct _MC2Player;
 
 /**************************************************************************************************
@@ -65,7 +64,7 @@ public:
 
 	int32_t init(void);
 
-	void setHostLeftDlg(PCSTR hostName);
+	void setHostLeftDlg(const std::wstring_view& hostName);
 
 private:
 	MPStats(const MPStats& src);
@@ -79,5 +78,4 @@ private:
 	// HELPER FUNCTIONS
 };
 
-//*************************************************************************************************
 #endif // end of file ( MPStats.h )

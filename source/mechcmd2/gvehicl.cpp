@@ -6,7 +6,7 @@
 //===========================================================================//
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef GAMEOBJ_H
 #include "gameobj.h"
@@ -59,7 +59,7 @@
 
 #ifdef USE_ELEMENTALS
 #ifndef ELEMNTL_H
-#include <elemntl.h>
+#include "elemntl.h"
 #endif
 #endif
 
@@ -104,7 +104,7 @@
 #include "comndr.h"
 #endif
 
-#include "..\resource.h"
+#include "resource.h"
 
 extern uint32_t NextIdNumber;
 
@@ -298,9 +298,9 @@ GroundVehicleType::destroy(void)
 //----------------------------------------------------------------------------------
 
 int32_t
-GroundVehicleType::init(FilePtr objFile, uint32_t fileSize)
+GroundVehicleType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
-	PSTR bodyLocationString[NUM_GROUNDVEHICLE_LOCATIONS] = {
+	const std::wstring_view& bodyLocationString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front", "Left", "Right", "Rear", "Turret"};
 	int32_t result = 0;
 	FitIniFile vehicleFile;
@@ -408,16 +408,16 @@ GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr collide
 		else
 		{
 			GameObjectPtr collideeRamTarget =
-				((MoverPtr)collidee)->getPilot()->getCurTacOrder()->getRamTarget();
+				((std::unique_ptr<Mover>)collidee)->getPilot()->getCurTacOrder()->getRamTarget();
 			GameObjectPtr colliderRamTarget =
-				((MoverPtr)collider)->getPilot()->getCurTacOrder()->getRamTarget();
+				((std::unique_ptr<Mover>)collider)->getPilot()->getCurTacOrder()->getRamTarget();
 			if ((collideeRamTarget == collider) || (colliderRamTarget == collidee))
 				collide = true;
 			else
-				collide = false; //(((MoverPtr)collidee)->getPilot()->checkSkill(MWS_PILOTING)
+				collide = false; //(((std::unique_ptr<Mover>)collidee)->getPilot()->checkSkill(Skill::piloting)
 					//>= 0);
 		}
-		if (!((MoverPtr)collidee)->pathLocks && !sameTeam)
+		if (!((std::unique_ptr<Mover>)collidee)->pathLocks && !sameTeam)
 		{
 			collide = true; // Something steppable
 		}
@@ -440,7 +440,7 @@ GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr collide
 				//------------------------------------
 				// Adjust my velocity and direction...
 				collidee->rotate(90.0);
-				((MoverPtr)collidee)->bounceToAdjCell();
+				((std::unique_ptr<Mover>)collidee)->bounceToAdjCell();
 			}
 			//---------------------------------------------
 			// Administer the damage from this collision...
@@ -509,7 +509,7 @@ GroundVehicleType::handleDestruction(GameObjectPtr collidee, GameObjectPtr colli
 	//-------------------------------------------------------
 	// For now, a BattleMech will play a default explosion
 	// and disappear after the explosion is half way through
-	MoverPtr vehicle = (MoverPtr)collidee;
+	std::unique_ptr<Mover> vehicle = (std::unique_ptr<Mover>)collidee;
 	if (!vehicle->getPilot())
 		Fatal(0, " No Pilot in this vehicle! ");
 	//--------------------------------------------------------
@@ -628,7 +628,7 @@ GroundVehicleType::loadHotSpots(FitIniFilePtr vehicleFile)
 			if(result != NO_ERROR)
 				return(result);
 		}
-		drawFootprint = (PSTR)ObjectTypeManager::objectTypeCache->malloc(NUM_MECH_GESTURES);
+		drawFootprint = (const std::wstring_view&)ObjectTypeManager::objectTypeCache->malloc(NUM_MECH_GESTURES);
 		result = vehicleFile->readIdCharArray("DrawFootprint", drawFootprint, NUM_MECH_GESTURES);
 		if(result != NO_ERROR)
 			return(result);
@@ -860,7 +860,7 @@ GroundVehicle::init(bool create, ObjectTypePtr objType)
 	accel = dynamics.max.groundVehicle.accel;
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
-	PSTR appearanceName = objType->getAppearanceTypeName();
+	const std::wstring_view& appearanceName = objType->getAppearanceTypeName();
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.
@@ -905,7 +905,7 @@ GroundVehicle::setControl(ControlType ctrlType)
 int32_t
 GroundVehicle::init(FitIniFile* vehicleFile)
 {
-	PSTR BodyLocationBlockString[NUM_GROUNDVEHICLE_LOCATIONS] = {
+	const std::wstring_view& BodyLocationBlockString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front", "Left", "Right", "Rear", "Turret"};
 	//--------------------------
 	// Read in the vehicle data.
@@ -1324,13 +1324,13 @@ GroundVehicle::pivotTo(void)
 	else
 		isRunning = (pilot->getMovePath()->numStepsWhenNotPaused > 0) && pilot->getMoveRun();
 	bool hasTarget = false;
-	Stuff::Vector3D targetPosition;
+	Stuff::Vector3D targetposition;
 	GameObjectPtr target = pilot->getCurrentTarget();
 	float relFacingToTarget = 0.0;
 	if (target)
 	{
-		targetPosition = target->getPosition();
-		relFacingToTarget = relFacingTo(targetPosition);
+		targetposition = target->getPosition();
+		relFacingToTarget = relFacingTo(targetposition);
 		// maxVehiclePivotRate =
 		// ((GroundVehicleDynamicsTypePtr)(((GroundVehicleTypePtr)type)->dynamicsType))->maxTurretYawRate
 		// * frameLength;
@@ -1338,8 +1338,8 @@ GroundVehicle::pivotTo(void)
 	}
 	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
 	{
-		targetPosition = pilot->getAttackTargetPoint();
-		relFacingToTarget = relFacingTo(targetPosition);
+		targetposition = pilot->getAttackTargetPoint();
+		relFacingToTarget = relFacingTo(targetposition);
 		// maxVehiclePivotRate =
 		// ((GroundVehicleDynamicsTypePtr)(((GroundVehicleTypePtr)type)->dynamicsType))->maxTurretYawRate
 		// * frameLength;
@@ -1492,7 +1492,7 @@ GroundVehicle::pivotTo(void)
 				return (false);
 			}
 			control.settings.groundVehicle.throttle = 0;
-			float relFacingToTarget = relFacingTo(targetPosition);
+			float relFacingToTarget = relFacingTo(targetposition);
 			float fireArc = getFireArc();
 			if ((relFacingToTarget < -fireArc) || (relFacingToTarget > fireArc))
 			{
@@ -1565,18 +1565,18 @@ GroundVehicle::getSpeedState(void)
 void
 GroundVehicle::updateMoveStateGoal(void)
 {
-	Stuff::Vector3D targetPosition;
-	targetPosition.Zero();
+	Stuff::Vector3D targetposition;
+	targetposition.Zero();
 	GameObjectPtr target = pilot->getLastTarget();
 	bool hasTarget = false;
 	if (target)
 	{
-		targetPosition = target->getPosition();
+		targetposition = target->getPosition();
 		hasTarget = true;
 	}
 	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
 	{
-		targetPosition = pilot->getAttackTargetPoint();
+		targetposition = pilot->getAttackTargetPoint();
 		hasTarget = true;
 	}
 	MovePathPtr path = pilot->getMovePath();
@@ -1608,7 +1608,7 @@ GroundVehicle::updateMoveStateGoal(void)
 			if ((path->numStepsWhenNotPaused > 0) && (path->curStep < path->numStepsWhenNotPaused))
 			{
 				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
-				float facingDelta = relFacingDelta(wayPt, targetPosition);
+				float facingDelta = relFacingDelta(wayPt, targetposition);
 				float totalFireArc = getFireArc() + dynamics.max.groundVehicle.turretYaw;
 				int32_t moveStateGoal = pilot->getMoveStateGoal();
 				if (moveStateGoal == MOVESTATE_FORWARD)
@@ -1670,11 +1670,11 @@ GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 	// Am I ahead of my point vehicle, if I have one?
 	bool aheadOfPointVehicle = false;
 	bool stopForPointVehicle = false;
-	MoverPtr pointVehicle = (MoverPtr)pilot->getPoint();
+	std::unique_ptr<Mover> pointVehicle = (std::unique_ptr<Mover>)pilot->getPoint();
 	bool hasGroupMoveOrder = (curOrder->isGroupOrder() && curOrder->isMoveOrder());
 	if (!allowedToRun && !hustle && pointVehicle && !pointVehicle->isDisabled() && (pointVehicle != this) && hasGroupMoveOrder)
 	{
-		MechWarriorPtr pointPilot = pointVehicle->getPilot();
+		std::unique_ptr<MechWarrior> pointPilot = pointVehicle->getPilot();
 		float pointDistanceFromGoal = pointPilot->getMoveDistanceLeft();
 		float myDistanceFromGoal = pilot->getMoveDistanceLeft();
 		aheadOfPointVehicle = (myDistanceFromGoal < pointDistanceFromGoal);
@@ -1918,7 +1918,7 @@ GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 	// if we're a sweeping minesweeper or a laying minelayer, take it slow
 	if (mineSweeper && sweepTime > 0 && sweepTime < gvSweepTime)
 		maxThrottle = MineSweepThrottle;
-	if ((mineLayer != 0) && pilot->getCurTacOrder()->moveParams.mode == MOVE_MODE_MINELAYING)
+	if ((mineLayer != 0) && pilot->getCurTacOrder()->moveparams.mode == SpecialMoveMode::minelaying)
 		maxThrottle = MineLayThrottle;
 	if (goalReached)
 	{
@@ -1949,7 +1949,7 @@ GroundVehicle::setNextMovePath(char& newThrottleSetting)
 	//----------------------------------------
 	// If this is only an intermediate path,
 	// let's check where we need to go next...
-	// pilot->clearMovePath(ORDER_CURRENT);
+	// pilot->clearMovePath(OrderType::current);
 	Stuff::Vector3D nextWayPoint;
 	bool haveWayPoint = pilot->getNextWayPoint(nextWayPoint, true);
 	if (haveWayPoint)
@@ -1957,7 +1957,7 @@ GroundVehicle::setNextMovePath(char& newThrottleSetting)
 		pilot->setMoveGoal(MOVEGOAL_LOCATION, &nextWayPoint);
 		TacticalOrderPtr curTacOrder = pilot->getCurTacOrder();
 		pilot->requestMovePath(
-			curTacOrder->selectionIndex, MOVEPARAM_FACE_TARGET + MOVEPARAM_FOLLOW_ROADS, 0);
+			curTacOrder->selectionindex, MOVEPARAM_FACE_TARGET + MOVEPARAM_FOLLOW_ROADS, 0);
 	}
 	else
 	{
@@ -2312,7 +2312,7 @@ GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 	// if we're a sweeping minesweeper or a laying minelayer, take it slow
 	if (mineSweeper && sweepTime > 0 && sweepTime < gvSweepTime)
 		maxThrottle = MineSweepThrottle;
-	if ((mineLayer != 0) && pilot->getCurTacOrder()->moveParams.mode == MOVE_MODE_MINELAYING)
+	if ((mineLayer != 0) && pilot->getCurTacOrder()->moveparams.mode == SpecialMoveMode::minelaying)
 		maxThrottle = MineLayThrottle;
 	return (goalReached);
 }
@@ -2538,12 +2538,12 @@ GroundVehicle::crashAvoidanceSystem(void)
 				// move orders and let the pilot's movementDecision update
 				// decide whether a new one should be set...
 				/*
-				pilot->setMoveWayPath(ORDER_CURRENT, nullptr, 0);
+				pilot->setMoveWayPath(OrderType::current, nullptr, 0);
 				for (size_t i = 0; i < 2; i++)
-					pilot->clearMovePath(ORDER_CURRENT, i);
-				pilot->setMoveGlobalPath(ORDER_CURRENT, nullptr, 0);
+					pilot->clearMovePath(OrderType::current, i);
+				pilot->setMoveGlobalPath(OrderType::current, nullptr, 0);
 				*/
-				// pilot->clearMoveOrders(ORDER_CURRENT);
+				// pilot->clearMoveOrders(OrderType::current);
 				pilot->rethinkPath(0);
 				// pilot->pausePath();
 				// pilot->setMoveYieldTime(scenarioTime + crashYieldTime);
@@ -3391,7 +3391,7 @@ GroundVehicle::update(void)
 	{
 		if (mineLayer != 0)
 		{
-			if (pilot->getCurTacOrder()->moveParams.mode == MOVE_MODE_MINELAYING)
+			if (pilot->getCurTacOrder()->moveparams.mode == SpecialMoveMode::minelaying)
 			{
 				if ((cellPositionRow != cellRowToMine) || (cellPositionCol != cellColToMine))
 				{
@@ -3485,7 +3485,7 @@ GroundVehicle::update(void)
 				appearance->stopWaterWake();
 			}
 			// Check if we need to start or stop activity in appearance
-			if (pilot->getCurTacOrder()->moveParams.mode == MOVE_MODE_MINELAYING)
+			if (pilot->getCurTacOrder()->moveparams.mode == SpecialMoveMode::minelaying)
 			{
 				appearance->startActivity(MINELAYER_EFFECT_ID, true);
 			}
@@ -3506,7 +3506,7 @@ GroundVehicle::update(void)
 				{
 					//---------------------------------------------------------------
 					conStat = getContactStatus(Team::home->getId(), true);
-					if ((conStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
+					if ((conStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderid]))
 					{
 						if (alphaValue != 0xff)
 						{
@@ -3638,7 +3638,7 @@ GroundVehicle::render(void)
 		if (teamId != Team::home->getId())
 		{
 			int32_t cStat = conStat;
-			if ((cStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
+			if ((cStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderid]))
 			{
 				float barStatus = getTotalEffectiveness();
 				uint32_t color = 0xff7f7f7f;
@@ -3775,12 +3775,12 @@ GroundVehicle::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 
 float
 GroundVehicle::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
-	int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint)
+	int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetpoint)
 {
 	if ((weaponIndex < numOther) || (weaponIndex >= numOther + numWeapons))
 		return (-1000.0);
 	float attackChance = Mover::calcAttackChance(
-		target, aimLocation, targetTime, weaponIndex, modifiers, range, targetPoint);
+		target, aimLocation, targetTime, weaponIndex, modifiers, range, targetpoint);
 	return (attackChance);
 }
 
@@ -3887,7 +3887,7 @@ GroundVehicle::buildStatusChunk(void)
 			if (curTarget->isMover())
 			{
 				statusChunk.targetType = STATUSCHUNK_TARGET_MOVER;
-				statusChunk.targetId = ((MoverPtr)curTarget)->getNetRosterIndex();
+				statusChunk.targetId = ((std::unique_ptr<Mover>)curTarget)->getNetRosterIndex();
 			}
 			else if (curTarget->isTerrainObject())
 			{
@@ -4041,9 +4041,9 @@ GroundVehicle::handleMoveChunk(uint32_t chunk)
 //---------------------------------------------------------------------------
 
 float
-GroundVehicle::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition)
+GroundVehicle::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetposition)
 {
-	return (relFacingTo(targetPosition, GROUNDVEHICLE_LOCATION_TURRET));
+	return (relFacingTo(targetposition, GROUNDVEHICLE_LOCATION_TURRET));
 }
 
 //---------------------------------------------------------------------------
@@ -4140,7 +4140,7 @@ GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChun
 			{
 				int32_t attackerCID = attacker->getCommanderId();
 				if (attackerCID == -1)
-					attackerCID = ((MoverPtr)attacker)->prevCommanderId;
+					attackerCID = ((std::unique_ptr<Mover>)attacker)->prevCommanderId;
 				if ((attackerCID == -1) || (attackerCID == getCommanderId()))
 					attackerCID = MAX_MC_PLAYERS;
 				MPlayer->addKillLossChunk(attackerCID, !lost ? getCommanderId() : MAX_MC_PLAYERS);
@@ -4154,7 +4154,7 @@ GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChun
 			{
 				int32_t attackerCID = attacker->getCommanderId();
 				if (attackerCID == -1)
-					attackerCID = ((MoverPtr)attacker)->prevCommanderId;
+					attackerCID = ((std::unique_ptr<Mover>)attacker)->prevCommanderId;
 				if ((attackerCID == -1) || (attackerCID == getCommanderId()))
 					attackerCID = MAX_MC_PLAYERS;
 				MPlayer->addKillLossChunk(attackerCID, !lost ? getCommanderId() : MAX_MC_PLAYERS);
@@ -4221,7 +4221,7 @@ GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChun
 
 int32_t
 GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
-	int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& dmgDone)
+	int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetpoint, float& dmgDone)
 {
 	if (status != OBJECT_STATUS_NORMAL)
 		return (1);
@@ -4255,7 +4255,7 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 		*/
 		distanceToTarget = distanceFrom(target->getPosition());
 	}
-	else if (targetPoint)
+	else if (targetpoint)
 	{
 		// We did this in calcWeaponsStatus.  Do we really need to do it
 		// again??!
@@ -4263,16 +4263,16 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 		/*
 		if (getWeaponIndirectFire(weaponIndex))
 		{
-			if (!getTeam()->teamLineOfSight(*targetPoint))
+			if (!getTeam()->teamLineOfSight(*targetpoint))
 				return(4);
 		}
 		else
 		{
-			if (!lineOfSight(*targetPoint))
+			if (!lineOfSight(*targetpoint))
 				return(4);
 		}
 		*/
-		distanceToTarget = distanceFrom(*targetPoint);
+		distanceToTarget = distanceFrom(*targetpoint);
 	}
 	else
 		return (4);
@@ -4295,10 +4295,10 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 	// if ((aimLocation != -1) &&
 	// (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
 	// COMPONENT_FORM_WEAPON_MISSILE)) 	return(4);
-	MechWarriorPtr targetPilot = nullptr;
+	std::unique_ptr<MechWarrior> targetPilot = nullptr;
 	if (target && target->isMover())
 	{
-		targetPilot = ((MoverPtr)target)->getPilot();
+		targetPilot = ((std::unique_ptr<Mover>)target)->getPilot();
 		targetPilot->updateAttackerStatus(getWatchID(), scenarioTime);
 	}
 	float entryAngle = 0.0;
@@ -4308,10 +4308,10 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 		MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponStreak();
 	int32_t range;
 	int32_t attackChance = (int32_t)calcAttackChance(
-		target, aimLocation, targetTime, weaponIndex, 0.0, &range, targetPoint);
+		target, aimLocation, targetTime, weaponIndex, 0.0, &range, targetpoint);
 	int32_t hitRoll = RandomNumber(100);
 	if (target && (target->getTeamId() == TEAM2))
-		pilot->incNumSkillUses(COMBAT_STAT_MISSION, MWS_GUNNERY);
+		pilot->incNumSkillUses(COMBAT_STAT_MISSION, Skill::gunnery);
 	//---------------------------------------------------------------
 	// HACK: If aiming a shot and moving, make chance to hit equal to
 	// zero, yet still take shot (denny request: 4/22/98)
@@ -4323,7 +4323,7 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 		//---------------------------------------------------------------------
 		// This really shouldn't be hardcoded to work for just IS players! --gd
 		if (target->getTeamId() == TEAM2)
-			pilot->incNumSkillSuccesses(COMBAT_STAT_MISSION, MWS_GUNNERY);
+			pilot->incNumSkillSuccesses(COMBAT_STAT_MISSION, Skill::gunnery);
 		//------------------------------------------------------------------
 		// If it's an aimed shot, we need to calc whether we hit the desired
 		// location on the target...
@@ -4440,7 +4440,7 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 				}
 				else
 					chunk.buildLocationTarget(
-						*targetPoint, weaponIndex - numOther, true, numMissiles);
+						*targetpoint, weaponIndex - numOther, true, numMissiles);
 				chunk.pack(this);
 				WeaponFireChunk chunk2;
 				chunk2.init();
@@ -4460,15 +4460,15 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 			{
 				if (target)
 					target->handleWeaponHit(&curShotInfo, MPlayer != nullptr);
-				else if (targetPoint)
+				else if (targetpoint)
 				{
 					//-----------------------------------------
 					// Check for Mine hit and MOVE ON!!!
 					int32_t cellRow, cellCol;
-					land->worldToCell(*targetPoint, cellRow, cellCol);
+					land->worldToCell(*targetpoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint,
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetpoint,
 							MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2); // Mark Exploded
 					}
@@ -4480,11 +4480,11 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 					weaponFX->connect(this, target, &curShotInfo, sourceHotSpot, targetHotSpot);
 				else
 				{
-					weaponFX->connect(this, *targetPoint, &curShotInfo, sourceHotSpot);
+					weaponFX->connect(this, *targetpoint, &curShotInfo, sourceHotSpot);
 					pilot->clearCurTacOrder();
 				}
 				printFireWeaponDebugInfo(
-					target, targetPoint, attackChance, aimLocation, hitRoll, &curShotInfo);
+					target, targetpoint, attackChance, aimLocation, hitRoll, &curShotInfo);
 			}
 		}
 		else
@@ -4533,7 +4533,7 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 						chunk.buildTerrainTarget(target, weaponIndex - numOther, true, 0);
 				}
 				else
-					chunk.buildLocationTarget(*targetPoint, weaponIndex - numOther, true, 0);
+					chunk.buildLocationTarget(*targetpoint, weaponIndex - numOther, true, 0);
 				chunk.pack(this);
 				WeaponFireChunk chunk2;
 				chunk2.init();
@@ -4553,15 +4553,15 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 			{
 				if (target)
 					target->handleWeaponHit(&shotInfo, MPlayer != nullptr);
-				else if (targetPoint)
+				else if (targetpoint)
 				{
 					//-----------------------------------------
 					// Check for Mine hit and MOVE ON!!!
 					int32_t cellRow, cellCol;
-					land->worldToCell(*targetPoint, cellRow, cellCol);
+					land->worldToCell(*targetpoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint,
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetpoint,
 							MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2); // Mark Exploded
 					}
@@ -4575,12 +4575,12 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 				}
 				else
 				{
-					weaponFX->connect(this, *targetPoint, &shotInfo, sourceHotSpot);
+					weaponFX->connect(this, *targetpoint, &shotInfo, sourceHotSpot);
 					if (!suppressionFire)
 						pilot->clearCurTacOrder();
 				}
 				printFireWeaponDebugInfo(
-					target, targetPoint, attackChance, aimLocation, hitRoll, &shotInfo);
+					target, targetpoint, attackChance, aimLocation, hitRoll, &shotInfo);
 			}
 		}
 	}
@@ -4624,8 +4624,8 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 					Stuff::Vector3D positionOffset;
 					if (target)
 						positionOffset = target->getPosition();
-					else if (targetPoint)
-						positionOffset = *targetPoint;
+					else if (targetpoint)
+						positionOffset = *targetpoint;
 					positionOffset.x += missRadius;
 					positionOffset.z = land->getTerrainElevation(positionOffset);
 					bool canSeeHit = lineOfSight(positionOffset, true);
@@ -4724,8 +4724,8 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 				Stuff::Vector3D positionOffset;
 				if (target)
 					positionOffset = target->getPosition();
-				else if (targetPoint)
-					positionOffset = *targetPoint;
+				else if (targetpoint)
+					positionOffset = *targetpoint;
 				positionOffset.x += missRadius;
 				positionOffset.z = land->getTerrainElevation(positionOffset);
 				bool canSeeHit = lineOfSight(positionOffset, true);
@@ -4821,7 +4821,7 @@ GroundVehicle::fireWeapon(GameObjectPtr target, float targetTime, int32_t weapon
 
 int32_t
 GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-	Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+	Stuff::Vector3D* targetpoint, bool hit, float entryAngle, int32_t numMissiles,
 	int32_t hitLocation)
 {
 	//--------------------------------------------------------
@@ -4907,7 +4907,7 @@ GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 					}
 					else
 					{
-						weaponFX->connect(this, *targetPoint, &curShotInfo, sourceHotSpot);
+						weaponFX->connect(this, *targetpoint, &curShotInfo, sourceHotSpot);
 						if (!suppressionFire)
 							pilot->clearCurTacOrder();
 					}
@@ -4947,7 +4947,7 @@ GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 				}
 				else
 				{
-					weaponFX->connect(this, *targetPoint, &shotInfo, sourceHotSpot);
+					weaponFX->connect(this, *targetpoint, &shotInfo, sourceHotSpot);
 					if (!suppressionFire)
 						pilot->clearCurTacOrder();
 				}
@@ -4959,7 +4959,7 @@ GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 		Assert(target == nullptr, 0,
 			" GVehicl.handleWeaponFire: target should be nullptr with network "
 			"miss! ");
-		Assert(targetPoint != nullptr, 0,
+		Assert(targetpoint != nullptr, 0,
 			" GVehicl.handleWeaponFire: MUST have targetpoint with network "
 			"miss! ");
 		if (isStreakMissile)
@@ -4995,7 +4995,7 @@ GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 					curShotInfo.init(this->getWatchID(), inventory[weaponIndex].masterID,
 						numMissiles * MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 						-1, entryAngle);
-					weaponFX->connect(this, *targetPoint, &curShotInfo, sourceHotSpot);
+					weaponFX->connect(this, *targetpoint, &curShotInfo, sourceHotSpot);
 				}
 			}
 		}
@@ -5014,17 +5014,17 @@ GroundVehicle::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 			if (!weaponFX)
 				Fatal(-1, " couldnt create weapon FX ");
 			else
-				weaponFX->connect(this, *targetPoint, &shotInfo, sourceHotSpot);
+				weaponFX->connect(this, *targetpoint, &shotInfo, sourceHotSpot);
 		}
 	}
 	//-------------------------------------------------------------------
 	// Trigger the WEAPON TARGET event. For now, this assumes the target
 	// KNOWS we were targeting him. Of course, the target wouldn't always
 	// be aware of this, would they?
-	MechWarriorPtr targetPilot = nullptr;
+	std::unique_ptr<MechWarrior> targetPilot = nullptr;
 	if (target && target->isMover())
 	{
-		targetPilot = ((MoverPtr)target)->getPilot();
+		targetPilot = ((std::unique_ptr<Mover>)target)->getPilot();
 		targetPilot->updateAttackerStatus(getWatchID(), scenarioTime);
 		targetPilot->triggerAlarm(PILOT_ALARM_TARGET_OF_WEAPONFIRE, getWatchID());
 	}

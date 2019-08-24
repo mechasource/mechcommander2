@@ -8,30 +8,30 @@ component.
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <mechgui/asystem.h>
+#include "gameos.hpp"
+#include "mechgui/asystem.h"
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/abutton.h>
-//#include <mechgui/alistbox.h>
-//#include <mechgui/aanim.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/abutton.h"
+//#include "mechgui/alistbox.h"
+//#include "mechgui/aanim.h"
 //#include "mphostgame.h"
 
 #include "mpconnectiontype.h"
 
 //#include "prefs.h"
 //#include "inifile.h"
-//#include <mclib/userinput.h>
+//#include "mclib/userinput.h"
 //#include "multplyr.h"
 //#include "mechbayscreen.h"
 //#include "gamesound.h"
 //
-//#include "..\resource.h"
+//#include "resource.h"
 
 extern bool quitGame;
 static int32_t connectionType = 0;
 
-typedef enum __mpconnectiontype_constants
+enum class __mpconnectiontype_constants
 {
 	CHECK_BUTTON = 200,
 	FIRST_BUTTON_ID = 1000010,
@@ -583,7 +583,7 @@ aTcpipPanel::update()
 						{
 							pParentScreen->handleMessage(1, TCPIP_PANEL_FIRST_BUTTON_ID);
 							MPlayer->endSessionScan();
-							std::wstring ipAddress;
+							const std::wstring_view& ipAddress;
 							comboBox.EditBox().getEntry(ipAddress);
 							prefs.setNewIP(ipAddress);
 							prefs.save();
@@ -677,7 +677,7 @@ aTcpipPanel::update()
 			bExpanded = 0;
 	}
 	// grey out button if inavlid...
-	std::wstring str;
+	const std::wstring_view& str;
 	comboBox.EditBox().getEntry(str);
 	bool bValid = 1;
 	if (str.Length())
@@ -756,7 +756,7 @@ aTcpipPanel::render()
 }
 
 int32_t
-aTcpipPanel::getNum(PSTR pStr, int32_t index1, int32_t index2)
+aTcpipPanel::getNum(const std::wstring_view& pStr, int32_t index1, int32_t index2)
 {
 	char tmp = pStr[index2];
 	pStr[index2] = 0;
@@ -776,12 +776,12 @@ aTcpipPanel::handleMessage(uint32_t message, uint32_t who)
 		char text[256];
 		char Display[256];
 		cLoadString(IDS_MP_CON_MODEM_CONNECTING, text, 255);
-		std::wstring str;
+		const std::wstring_view& str;
 		comboBox.EditBox().getEntry(str);
-		sprintf(Display, text, (PCSTR)str);
+		sprintf(Display, text, (const std::wstring_view&)str);
 		LogisticsOneButtonDialog::instance()->setText(Display);
 		LogisticsOneButtonDialog::instance()->begin();
-		if (MPlayer->beginSessionScan((PSTR)(PCSTR)str))
+		if (MPlayer->beginSessionScan((const std::wstring_view&)(const std::wstring_view&)str))
 		{
 			LogisticsOneButtonDialog::instance()->setText(
 				IDS_MP_CONNECT_ERROR_NO_CONNECTION, IDS_DIALOG_OK, IDS_DIALOG_OK);
@@ -800,5 +800,4 @@ aTcpipPanel::handleMessage(uint32_t message, uint32_t who)
 }
 //////////////////////////////////////////////
 
-//*************************************************************************************************
 // end of file ( MPConnectionType.cpp )

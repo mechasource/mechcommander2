@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  dllplatform.cpp - gameos entry point functions
@@ -15,18 +16,18 @@
 
 *******************************************************************************/
 
-#include <gameos.hpp>
-#include <platform.hpp>
-#include <dllplatform.hpp>
+#include "gameos.hpp"
+#include "platform.hpp"
+#include "dllplatform.hpp"
 
 extern "C" void WINAPI
-InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
+InitGameOS(HINSTANCE hinstance, HWND hwnd, PSTR commandline)
 {
 	Platform = Platform_DLL;
-	RunFromOtherApp(hInstance, hWindow, CommandLine);
+	RunFromOtherApp(hinstance, hwnd, commandline);
 }
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 PVOID __cdecl
 operator new(size_t size, HGOSHEAP /*Heap*/)
 {

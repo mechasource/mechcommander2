@@ -11,7 +11,7 @@
 
 //---------------------------------------------------------------------------
 // Include Files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef WEAPONBOLT_H
 #include "weaponbolt.h"
@@ -34,7 +34,7 @@
 #include "mission.h"
 #endif
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 extern bool hasGuardBand;
@@ -78,7 +78,7 @@ bgrTorgb(uint32_t frontRGB);
 
 //---------------------------------------------------------------------------
 int32_t
-WeaponBoltType::init(FilePtr objFile, uint32_t fileSize)
+WeaponBoltType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile bullFile;
@@ -111,7 +111,7 @@ WeaponBoltType::init(FilePtr objFile, uint32_t fileSize)
 		result = bullFile.readIdString("TextureName", txmName, 1023);
 		if (result != NO_ERROR)
 			strcpy(txmName, "NONE");
-		textureName = (PSTR)ObjectTypeManager::objectCache->Malloc(strlen(txmName) + 1);
+		textureName = (const std::wstring_view&)ObjectTypeManager::objectCache->Malloc(strlen(txmName) + 1);
 		strcpy(textureName, txmName);
 		result = bullFile.readIdFloat("UVAnimRate", uvAnimRate);
 		if (result != NO_ERROR)
@@ -361,9 +361,9 @@ WeaponBolt::update(void)
 					setTargetPosition(target->appearance->getHitNodeRight());
 			}
 		}
-		if (targetPosition)
+		if (targetposition)
 		{
-			targetPos = *targetPosition;
+			targetPos = *targetposition;
 		}
 		else
 		{
@@ -381,9 +381,9 @@ WeaponBolt::update(void)
 		{
 			timeLeft = ((WeaponBoltTypePtr)getObjectType())->beamDuration;
 			actualPosition.x =
-				-(*targetPosition).x; // Play the beam hitting effect at the hit location
-			actualPosition.y = (*targetPosition).z;
-			actualPosition.z = (*targetPosition).y;
+				-(*targetposition).x; // Play the beam hitting effect at the hit location
+			actualPosition.y = (*targetposition).z;
+			actualPosition.z = (*targetposition).y;
 		}
 		else
 			timeLeft = 0.0f;
@@ -394,7 +394,7 @@ WeaponBolt::update(void)
 			Stuff::LinearMatrix4D localResult;
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-			rotation = -world_angle_between(position, *targetPosition);
+			rotation = -world_angle_between(position, *targetposition);
 			Stuff::UnitQuaternion effectRot;
 			effectRot = Stuff::EulerAngles(0.0f, rotation * DEGREES_TO_RADS, 0.0f);
 			localToWorld.Multiply(gosFX::Effect_Against_Motion, effectRot);
@@ -480,9 +480,9 @@ WeaponBolt::update(void)
 				setTargetPosition(target->appearance->getHitNodeRight());
 		}
 	}
-	if (targetPosition)
+	if (targetposition)
 	{
-		targetPos = *targetPosition;
+		targetPos = *targetposition;
 	}
 	Stuff::Vector3D laserVelocity;
 	float velMag = ((WeaponBoltTypePtr)getObjectType())->velocity;
@@ -561,7 +561,7 @@ WeaponBolt::update(void)
 				}
 				else
 				{
-					Stuff::Vector3D hotSpot = *targetPosition;
+					Stuff::Vector3D hotSpot = *targetposition;
 					int32_t cellR, cellC;
 					land->worldToCell(hotSpot, cellR, cellC);
 					if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
@@ -672,7 +672,7 @@ WeaponBolt::update(void)
 						// Damage is done by explosion NOT by hit!
 						ObjectManager->createExplosion(
 							((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum, nullptr,
-							*targetPosition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
+							*targetposition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
 							((WeaponBoltTypePtr)getObjectType())->areaEffectRad);
 					}
 					else
@@ -686,7 +686,7 @@ WeaponBolt::update(void)
 							target->handleWeaponHit(&weaponShot);
 					}
 				}
-				else if (targetPosition)
+				else if (targetposition)
 				{
 					int32_t randomCrater = 0;
 					if (weaponShot.damage > 9)
@@ -698,7 +698,7 @@ WeaponBolt::update(void)
 					if (missEffect) // We missed and hit land.  Otherwise, we
 						// hit water, do NOT add crater
 						craterManager->addCrater(
-							CRATER_1 + randomCrater, *targetPosition, RandomNumber(180));
+							CRATER_1 + randomCrater, *targetposition, RandomNumber(180));
 					// if
 					// (MasterComponentList[weaponShot.masterId].getWeaponAmmoType()
 					// != WEAPON_AMMO_NONE)
@@ -706,11 +706,11 @@ WeaponBolt::update(void)
 					// Yes, they should DT, 5/30/98
 					{
 						int32_t cellRow, cellCol;
-						land->worldToCell(*targetPosition, cellRow, cellCol);
+						land->worldToCell(*targetposition, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
 						{
 							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr,
-								*targetPosition, MineSplashDamage,
+								*targetposition, MineSplashDamage,
 								MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
@@ -742,7 +742,7 @@ WeaponBolt::update(void)
 						// Damage is done by explosion NOT by hit!
 						ObjectManager->createExplosion(
 							((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum, nullptr,
-							*targetPosition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
+							*targetposition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
 							((WeaponBoltTypePtr)getObjectType())->areaEffectRad);
 					}
 				}
@@ -792,7 +792,7 @@ WeaponBolt::update(void)
 				}
 				else
 				{
-					Stuff::Vector3D hotSpot = *targetPosition;
+					Stuff::Vector3D hotSpot = *targetposition;
 					int32_t cellR, cellC;
 					land->worldToCell(hotSpot, cellR, cellC);
 					if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
@@ -901,7 +901,7 @@ WeaponBolt::update(void)
 						// Damage is done by explosion NOT by hit!
 						ObjectManager->createExplosion(
 							((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum, nullptr,
-							*targetPosition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
+							*targetposition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
 							((WeaponBoltTypePtr)getObjectType())->areaEffectRad);
 					}
 					else
@@ -915,7 +915,7 @@ WeaponBolt::update(void)
 							target->handleWeaponHit(&weaponShot);
 					}
 				}
-				else if (targetPosition)
+				else if (targetposition)
 				{
 					int32_t randomCrater = 0;
 					if (weaponShot.damage > 9)
@@ -926,7 +926,7 @@ WeaponBolt::update(void)
 						randomCrater = 1;
 					if (missEffect)
 						craterManager->addCrater(
-							CRATER_1 + randomCrater, *targetPosition, RandomNumber(180));
+							CRATER_1 + randomCrater, *targetposition, RandomNumber(180));
 					// if
 					// (MasterComponentList[weaponShot.masterId].getWeaponAmmoType()
 					// != WEAPON_AMMO_NONE)
@@ -934,11 +934,11 @@ WeaponBolt::update(void)
 					// Yes, they should DT, 5/30/98
 					{
 						int32_t cellRow, cellCol;
-						land->worldToCell(*targetPosition, cellRow, cellCol);
+						land->worldToCell(*targetposition, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
 						{
 							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr,
-								*targetPosition, MineSplashDamage,
+								*targetposition, MineSplashDamage,
 								MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
@@ -970,7 +970,7 @@ WeaponBolt::update(void)
 						// Damage is done by explosion NOT by hit!
 						ObjectManager->createExplosion(
 							((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum, nullptr,
-							*targetPosition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
+							*targetposition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
 							((WeaponBoltTypePtr)getObjectType())->areaEffectRad);
 					}
 				}
@@ -1009,9 +1009,9 @@ WeaponBolt::update(void)
 		if (((WeaponBoltTypePtr)getObjectType())->isBeam)
 		{
 			actualPosition.x =
-				-(*targetPosition).x; // Play the beam hitting effect at the hit location
-			actualPosition.y = (*targetPosition).z;
-			actualPosition.z = (*targetPosition).y;
+				-(*targetposition).x; // Play the beam hitting effect at the hit location
+			actualPosition.y = (*targetposition).z;
+			actualPosition.z = (*targetposition).y;
 		}
 		else
 		{
@@ -1024,7 +1024,7 @@ WeaponBolt::update(void)
 		Stuff::LinearMatrix4D localResult;
 		shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 		shapeOrigin.BuildTranslation(actualPosition);
-		rotation = -world_angle_between(laserPosition, *targetPosition);
+		rotation = -world_angle_between(laserPosition, *targetposition);
 		Stuff::UnitQuaternion effectRot;
 		effectRot = Stuff::EulerAngles(0.0f, rotation * DEGREES_TO_RADS, 0.0f);
 		localToWorld.Multiply(gosFX::Effect_Against_Motion, effectRot);
@@ -1113,7 +1113,7 @@ WeaponBolt::update(void)
 		laserVertices[1].y -= laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
 		laserSide[0].z += ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
 		laserSide[1].z -= ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		hsPos = *targetPosition;
+		hsPos = *targetposition;
 		if (target)
 		{
 			if (!target->isMech())
@@ -1178,7 +1178,7 @@ WeaponBolt::update(void)
 		}
 		if (hitEffect && hitEffect->IsExecuted())
 		{
-			Stuff::Vector3D hotSpot = *targetPosition;
+			Stuff::Vector3D hotSpot = *targetposition;
 			if (target)
 			{
 				if (!target->isMech())
@@ -1246,7 +1246,7 @@ WeaponBolt::update(void)
 		}
 		if (missEffect && missEffect->IsExecuted())
 		{
-			Stuff::Vector3D hotSpot = *targetPosition;
+			Stuff::Vector3D hotSpot = *targetposition;
 			if (target)
 			{
 				if (!target->isMech())
@@ -1313,7 +1313,7 @@ WeaponBolt::update(void)
 		}
 		if (waterMissEffect && waterMissEffect->IsExecuted())
 		{
-			Stuff::Vector3D hotSpot = *targetPosition;
+			Stuff::Vector3D hotSpot = *targetposition;
 			if (target)
 			{
 				if (!target->isMech())
@@ -1604,7 +1604,7 @@ WeaponBolt::render(void)
 			uint32_t edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
 			edgeMode <<= 24;
 			Stuff::Point3D actualPosition;
-			Stuff::Vector3D hotSpot = *targetPosition;
+			Stuff::Vector3D hotSpot = *targetposition;
 			GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 			if (target)
 			{
@@ -1792,7 +1792,7 @@ WeaponBolt::render(void)
 			if (gosEffect)
 			{
 				Stuff::Point3D actualPosition;
-				Stuff::Vector3D hotSpot = *targetPosition;
+				Stuff::Vector3D hotSpot = *targetposition;
 				GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 				if (target)
 				{
@@ -1870,7 +1870,7 @@ WeaponBolt::render(void)
 		}
 		if (hitEffect && hitTarget && hitEffect->IsExecuted())
 		{
-			Stuff::Vector3D hotSpot = *targetPosition;
+			Stuff::Vector3D hotSpot = *targetposition;
 			GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 			if (target)
 			{
@@ -1900,7 +1900,7 @@ WeaponBolt::render(void)
 		}
 		if (missEffect && hitTarget && missEffect->IsExecuted())
 		{
-			Stuff::Vector3D hotSpot = *targetPosition;
+			Stuff::Vector3D hotSpot = *targetposition;
 			Stuff::Point3D tPosition;
 			tPosition.x = -hotSpot.x;
 			tPosition.y = hotSpot.z;
@@ -1915,7 +1915,7 @@ WeaponBolt::render(void)
 		}
 		if (waterMissEffect && hitTarget && waterMissEffect->IsExecuted())
 		{
-			Stuff::Vector3D hotSpot = *targetPosition;
+			Stuff::Vector3D hotSpot = *targetposition;
 			Stuff::Point3D tPosition;
 			tPosition.x = -hotSpot.x;
 			tPosition.y = Terrain::waterElevation;
@@ -1935,10 +1935,10 @@ WeaponBolt::render(void)
 void
 WeaponBolt::destroy(void)
 {
-	if (targetPosition)
+	if (targetposition)
 	{
-		delete targetPosition;
-		targetPosition = nullptr;
+		delete targetposition;
+		targetposition = nullptr;
 	}
 	// Must toss these here as mission may have ended with effect still
 	// playing!!
@@ -2132,9 +2132,9 @@ WeaponBolt::setTarget(GameObjectPtr who)
 void
 WeaponBolt::setTargetPosition(Stuff::Vector3D pos)
 {
-	if (!targetPosition)
-		targetPosition = new Stuff::Vector3D;
-	*targetPosition = pos;
+	if (!targetposition)
+		targetposition = new Stuff::Vector3D;
+	*targetposition = pos;
 }
 
 //***************************************************************************
@@ -2157,10 +2157,10 @@ WeaponBolt::CopyTo(WeaponBoltData* data)
 	data->targetHotSpot = targetHotSpot;
 	Stuff::Vector3D dmy;
 	dmy.Zero();
-	if (targetPosition)
-		data->targetPosition = *targetPosition;
+	if (targetposition)
+		data->targetposition = *targetposition;
 	else
-		data->targetPosition = dmy;
+		data->targetposition = dmy;
 	data->distanceToTarget = distanceToTarget;
 	data->halfDistanceToTarget = halfDistanceToTarget;
 	data->weaponShot = weaponShot;
@@ -2188,12 +2188,12 @@ WeaponBolt::Load(WeaponBoltData* data)
 	hotSpotNumber = data->hotSpotNumber;
 	targetWID = data->targetWID;
 	targetHotSpot = data->targetHotSpot;
-	if ((data->targetPosition.x == data->targetPosition.y) && (data->targetPosition.x == data->targetPosition.z))
-		targetPosition = nullptr;
+	if ((data->targetposition.x == data->targetposition.y) && (data->targetposition.x == data->targetposition.z))
+		targetposition = nullptr;
 	else
 	{
-		targetPosition = new Stuff::Vector3D;
-		*targetPosition = data->targetPosition;
+		targetposition = new Stuff::Vector3D;
+		*targetposition = data->targetposition;
 	}
 	distanceToTarget = data->distanceToTarget;
 	halfDistanceToTarget = data->halfDistanceToTarget;
@@ -2274,7 +2274,7 @@ WeaponBolt::finishNow(void)
 			// Create the explosion here.  HIT or MISS, its the same one!!
 			// Damage is done by explosion NOT by hit!
 			ObjectManager->createExplosion(((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum,
-				nullptr, *targetPosition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
+				nullptr, *targetposition, ((WeaponBoltTypePtr)getObjectType())->areaEffectDmg,
 				((WeaponBoltTypePtr)getObjectType())->areaEffectRad);
 		}
 		setExists(false);

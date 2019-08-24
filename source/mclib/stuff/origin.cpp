@@ -8,10 +8,10 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <stuff/origin.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/linearmatrix.h"
+#include "stuff/origin.h"
 
 using namespace Stuff;
 
@@ -100,7 +100,7 @@ Origin3D::Lerp(const Origin3D& start, const Origin3D& end, float t)
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Origin3D& origin)
+Spew(const std::wstring_view& group, const Origin3D& origin)
 {
 	SPEW((group, "{+"));
 	Spew(group, origin.linearPosition);

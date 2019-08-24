@@ -9,23 +9,23 @@
 //===========================================================================//
 #include "stdinc.h"
 
-#include <mclib.h>
-#include "turret.h"
-#include "gamesound.h"
-#include "sounds.h"
-#include "move.h"
-#include "collsn.h"
-#include "mech.h"
-#include "gvehicl.h"
-#include "carnage.h"
-#include "team.h"
-#include "weaponfx.h"
-#include "weaponbolt.h"
-#include "multplyr.h"
-#include "mission.h"
-#include "gamelog.h"
+//#include "mclib.h"
+//#include "turret.h"
+//#include "gamesound.h"
+//#include "sounds.h"
+//#include "move.h"
+//#include "collsn.h"
+//#include "mech.h"
+//#include "gvehicl.h"
+//#include "carnage.h"
+//#include "team.h"
+//#include "weaponfx.h"
+//#include "weaponbolt.h"
+//#include "multplyr.h"
+//#include "mission.h"
+//#include "gamelog.h"
 
-// #include "..\resource.h"
+// #include "resource.h"
 //***************************************************************************
 
 // extern float worldUnitsPerMeter;
@@ -45,14 +45,10 @@ extern float MaxVisualRadius;
 
 extern GameLog* CombatLog;
 
-extern void
-DebugWeaponFireChunk(
-	WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker);
-extern void
-LogWeaponFireChunk(
-	WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameObjectPtr target);
+extern void DebugWeaponFireChunk(WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker);
+extern void LogWeaponFireChunk(WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameObjectPtr target);
 
-// int32_t cLoadString (HINSTANCE hInstance, uint32_t uID, PSTR lpBuffer,
+// int32_t cLoadString (HINSTANCE hinstance, uint32_t uID, const std::wstring_view& lpBuffer,
 // int32_t nBufferMax );
 
 bool Turret::turretsEnabled[MAX_TEAMS] = {true, true, true, true, true, true, true, true};
@@ -90,7 +86,7 @@ TurretType::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-TurretType::init(FilePtr objFile, uint32_t fileSize)
+TurretType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile bldgFile;
@@ -862,7 +858,7 @@ Turret::calcAttackChance(GameObjectPtr target, int32_t* range, int32_t weaponId)
 		return 0.0f;
 	//-------------------------------------------------------------
 	// First, let's find out what kind of object we're targeting...
-	Stuff::Vector3D targetPosition(0.0f, 0.0f, 0.0f);
+	Stuff::Vector3D targetposition(0.0f, 0.0f, 0.0f);
 	BattleMechPtr mech = nullptr;
 	GroundVehiclePtr vehicle = nullptr;
 	if (target)
@@ -877,12 +873,12 @@ Turret::calcAttackChance(GameObjectPtr target, int32_t* range, int32_t weaponId)
 			vehicle = (GroundVehiclePtr)target;
 			break;
 		}
-		targetPosition = target->getPosition();
+		targetposition = target->getPosition();
 	}
 	float attackChance = ((TurretTypePtr)getObjectType())->pilotSkill;
 	//----------------------
 	// General fire range...
-	float distanceToTarget = distanceFrom(targetPosition);
+	float distanceToTarget = distanceFrom(targetposition);
 	if (range)
 	{
 		if (distanceToTarget <= WeaponRange[FIRERANGE_SHORT])
@@ -1057,11 +1053,11 @@ Turret::updateWeaponFireChunks(int32_t which)
 		}
 		else if (chunk.targetType == 3)
 		{
-			Stuff::Vector3D targetPoint;
-			targetPoint.x = (float)chunk.targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk.targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
-			targetPoint.z = (float)0;
-			handleWeaponFire(chunk.weaponIndex, nullptr, &targetPoint, chunk.hit, 0.0, 0, 0);
+			Stuff::Vector3D targetpoint;
+			targetpoint.x = (float)chunk.targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+			targetpoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk.targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
+			targetpoint.z = (float)0;
+			handleWeaponFire(chunk.weaponIndex, nullptr, &targetpoint, chunk.hit, 0.0, 0, 0);
 		}
 		else
 			Fatal(0, " Mover.updateWeaponFireChunk: bad targetType ");
@@ -1096,19 +1092,19 @@ Turret::getLOSPosition(void)
 //---------------------------------------------------------------------------
 
 void
-Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoint,
+Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpoint,
 	int32_t chance, int32_t roll, WeaponShotInfo* shotInfo)
 {
 	if (!CombatLog)
 		return;
-	static PSTR locationStrings[] = {"head", "center torso", "left torso", "right torso",
+	static const std::wstring_view& locationStrings[] = {"head", "center torso", "left torso", "right torso",
 		"left arm", "right arm", "left leg", "right leg", "rear center torso", "rear left torso",
 		"rear right torso"};
 	if (roll < chance)
 	{
 		if (target)
 		{
-			PSTR targetName = target->getName();
+			const std::wstring_view& targetName = target->getName();
 			char s[1024];
 			sprintf(s, "[%.2f] turret.fireWeapon HIT: (%05d)%s @ (%05d)%s", scenarioTime,
 				getPartId(), getName(), target->getPartId(), targetName ? targetName : "unknown");
@@ -1125,7 +1121,7 @@ Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPo
 			CombatLog->write(s);
 			CombatLog->write(" ");
 		}
-		else if (targetPoint)
+		else if (targetpoint)
 		{
 		}
 	}
@@ -1133,7 +1129,7 @@ Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPo
 	{
 		if (target)
 		{
-			PSTR targetName = target->getName();
+			const std::wstring_view& targetName = target->getName();
 			char s[1024];
 			sprintf(s, "[%.2f] turret.fireWeapon MISS: (%05d)%s @ (%05d)%s", scenarioTime,
 				getPartId(), getName(), target->getPartId(), targetName ? targetName : "unknown");
@@ -1150,7 +1146,7 @@ Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPo
 			CombatLog->write(s);
 			CombatLog->write(" ");
 		}
-		else if (targetPoint)
+		else if (targetpoint)
 		{
 		}
 	}
@@ -1163,7 +1159,7 @@ Turret::printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo)
 {
 	if (!CombatLog)
 		return;
-	static PSTR locationStrings[] = {"head", "center torso", "left torso", "right torso",
+	static const std::wstring_view& locationStrings[] = {"head", "center torso", "left torso", "right torso",
 		"left arm", "right arm", "left leg", "right leg", "rear center torso", "rear left torso",
 		"rear right torso"};
 	char s[1024];
@@ -1238,10 +1234,10 @@ Turret::fireWeapon(GameObjectPtr target, int32_t weaponId)
 		return;
 	int32_t hitRoll = RandomNumber(100);
 	int32_t hitLocation = -2;
-	MechWarriorPtr targetPilot = nullptr;
+	std::unique_ptr<MechWarrior> targetPilot = nullptr;
 	if (target && target->isMover())
 	{
-		targetPilot = ((MoverPtr)target)->getPilot();
+		targetPilot = ((std::unique_ptr<Mover>)target)->getPilot();
 		targetPilot->updateAttackerStatus(partId, scenarioTime);
 	}
 	//-----------------------
@@ -1611,7 +1607,7 @@ Turret::fireWeapon(GameObjectPtr target, int32_t weaponId)
 
 int32_t
 Turret::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-	Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+	Stuff::Vector3D* targetpoint, bool hit, float entryAngle, int32_t numMissiles,
 	int32_t hitLocation)
 {
 	int32_t weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[weaponIndex];
@@ -1657,7 +1653,7 @@ Turret::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 				if (target)
 					weaponFX->connect(this, target, &curShotInfo, 0, targetHotSpot);
 				else
-					weaponFX->connect(this, *targetPoint, &curShotInfo);
+					weaponFX->connect(this, *targetpoint, &curShotInfo);
 			}
 		}
 		else
@@ -1685,7 +1681,7 @@ Turret::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 			{
 				//--------------------------------
 				// Hit the target point/terrain...
-				weaponFX->connect(this, *targetPoint, &shotInfo);
+				weaponFX->connect(this, *targetpoint, &shotInfo);
 			}
 		}
 	}
@@ -1736,7 +1732,7 @@ Turret::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 					positionOffset.x = RandomNumber(positionOffset.x * 2) - positionOffset.x;
 					positionOffset.y = RandomNumber(positionOffset.y * 2) - positionOffset.y;
 					positionOffset.z = RandomNumber(positionOffset.z * 2) - positionOffset.z;
-					positionOffset += (target ? target->getPosition() : *targetPoint);
+					positionOffset += (target ? target->getPosition() : *targetpoint);
 					weaponFX->connect(this, positionOffset, &curShotInfo);
 				}
 			}
@@ -1764,7 +1760,7 @@ Turret::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 				positionOffset.x = RandomNumber(positionOffset.x * 2) - positionOffset.x;
 				positionOffset.y = RandomNumber(positionOffset.y * 2) - positionOffset.y;
 				positionOffset.z = RandomNumber(positionOffset.z * 2) - positionOffset.z;
-				positionOffset += (target ? target->getPosition() : *targetPoint);
+				positionOffset += (target ? target->getPosition() : *targetpoint);
 				weaponFX->connect(this, positionOffset, &shotInfo);
 			}
 		}
@@ -1773,10 +1769,10 @@ Turret::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 	// Trigger the WEAPON TARGET event. For now, this assumes the target
 	// KNOWS we were targeting him. Of course, the target wouldn't always
 	// be aware of this, would they?
-	MechWarriorPtr targetPilot = nullptr;
+	std::unique_ptr<MechWarrior> targetPilot = nullptr;
 	if (target && target->isMover())
 	{
-		targetPilot = ((MoverPtr)target)->getPilot();
+		targetPilot = ((std::unique_ptr<Mover>)target)->getPilot();
 		targetPilot->updateAttackerStatus(partId, scenarioTime);
 		targetPilot->triggerAlarm(PILOT_ALARM_TARGET_OF_WEAPONFIRE, getWatchID());
 	}
@@ -1874,7 +1870,7 @@ Turret::init(bool create, ObjectTypePtr _type)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	PSTR appearName = _type->getAppearanceTypeName();
+	const std::wstring_view& appearName = _type->getAppearanceTypeName();
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.

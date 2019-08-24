@@ -30,7 +30,7 @@ class GoalObject;
 typedef GoalObject* GoalObjectPtr;
 
 class MechWarrior;
-typedef MechWarrior* MechWarriorPtr;
+typedef MechWarrior* std::unique_ptr<MechWarrior>;
 
 //------------------------------------------------------------------------------
 #endif

@@ -36,7 +36,7 @@
 #include "weather.h"
 #endif
 
-#include <mlr/mlr.hpp>
+#include "mlr/mlr.h"
 
 //---------------------------------------------------------------------------
 CameraPtr eye = nullptr;
@@ -329,7 +329,7 @@ GameCamera::activate(void)
 	// Camera always starts pointing at first mover in lists
 	// CANNOT be infinite because we don't allow missions without at least 1
 	// player mech!!
-	MoverPtr firstMover = nullptr;
+	std::unique_ptr<Mover> firstMover = nullptr;
 	if (ObjectManager->getNumMovers() > 0)
 	{
 		int32_t i = 0;

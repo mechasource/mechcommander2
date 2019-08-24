@@ -10,9 +10,8 @@ ForceGroupBar.h			: Interface for the ForceGroupBar component.
 #ifndef FORCEGROUPBAR_H
 #define FORCEGROUPBAR_H
 
-#include <mclib.h>
+#include "mclib.h"
 
-//*************************************************************************************************
 
 class ForceGroupIcon;
 class Mover;
@@ -49,7 +48,7 @@ public:
 	void swapResolutions(void);
 	int32_t getIconCount() { return iconCount; }
 
-	bool setPilotVideo(PCSTR pVideo, MechWarrior* pPilot);
+	bool setPilotVideo(const std::wstring_view& pVideo, MechWarrior* pPilot);
 	bool isPlayingVideo(void);
 
 	bool flashJumpers(int32_t numFlashes);
@@ -71,5 +70,4 @@ private:
 	friend class ControlGui;
 };
 
-//*************************************************************************************************
 #endif // end of file ( ForceGroupBar.h )

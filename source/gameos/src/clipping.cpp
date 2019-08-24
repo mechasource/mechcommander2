@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  clipping.cpp - GameOS reference pseudo code
@@ -17,11 +18,11 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <directx.hpp>
-#include <3drasterizer.hpp>
-#include <dxrasterizer.hpp>
-#include <texture_manager.hpp>
+#include "gameos.hpp"
+#include "directx.hpp"
+#include "3drasterizer.hpp"
+#include "dxrasterizer.hpp"
+#include "texture_manager.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module

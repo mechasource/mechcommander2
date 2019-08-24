@@ -6,7 +6,7 @@
 //
 
 #include "stdinc.h"
-//#include <mclib.h>
+//#include "mclib.h"
 #include "EditorMFC.h"
 #include "EditorView.h"
 
@@ -46,9 +46,9 @@ EditorView::OnPaint()
 }
 
 LRESULT
-EditorView::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
+EditorView::WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam)
 {
 	if (eye)
-		return GameOSWinProc(m_hWnd, message, wParam, lParam);
-	return CWnd ::WindowProc(message, wParam, lParam);
+		return GameOSWinProc(m_hWnd, message, wparam, lparam);
+	return CWnd ::WindowProc(message, wparam, lparam);
 }

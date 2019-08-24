@@ -8,9 +8,9 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/unitvector.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/unitvector.h"
 
 using namespace Stuff;
 

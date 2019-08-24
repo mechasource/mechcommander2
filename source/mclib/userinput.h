@@ -17,7 +17,7 @@
 //#include "utilities.h"
 
 //#include <string.h>
-//#include <gameos.hpp>
+//#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 
@@ -162,7 +162,7 @@ public:
 		return 0;
 	}
 
-	void initCursors(PSTR cursorFile);
+	void initCursors(const std::wstring_view& cursorFile);
 };
 
 //---------------------------------------------------------------------------
@@ -274,7 +274,7 @@ public:
 		cursors = nullptr;
 	}
 
-	void initMouseCursors(PSTR mouseFile);
+	void initMouseCursors(const std::wstring_view& mouseFile);
 
 	void destroy(void)
 	{

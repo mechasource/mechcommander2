@@ -7,7 +7,7 @@ MissionBegin.cpp			: Implementation of the MissionBegin component.
 
 #include "stdinc.h"
 #include "missionbegin.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "objmgr.h"
 #include "mech.h"
 #include "logisticsvariant.h"
@@ -126,7 +126,7 @@ MissionBegin::begin()
 	// Load up the Logistics Brain for Tutorials.
 	// OK if brain file is NOT there!!
 	FullPathFileName brainFileName;
-	PCSTR brainfile = LogisticsData::instance->getCurrentABLScript();
+	const std::wstring_view& brainfile = LogisticsData::instance->getCurrentABLScript();
 	if (brainfile)
 		brainFileName.init(missionPath, brainfile, ".abl");
 	if (brainfile && fileExists(brainFileName))
@@ -400,7 +400,7 @@ MissionBegin::getCurrentScreenId()
 	return (screenId);
 }
 
-PCSTR
+const std::wstring_view&
 MissionBegin::update()
 {
 	if (bSplash)
@@ -846,7 +846,7 @@ MissionBegin::render()
 }
 
 void
-MissionBegin::beginSplash(PCSTR playerName)
+MissionBegin::beginSplash(const std::wstring_view& playerName)
 {
 	// check for old screen and end that
 	if (curScreenX > -1 && curScreenY > -1)
@@ -1012,7 +1012,7 @@ MissionBegin::setToMissionBriefing()
 }
 
 void
-MissionBegin::restartMPlayer(PCSTR playerName)
+MissionBegin::restartMPlayer(const std::wstring_view& playerName)
 {
 	bReadyToLoad = 0;
 	bDone = 0;

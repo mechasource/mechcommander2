@@ -8,7 +8,7 @@ thing lets you assign a particular elevation to selected vertices
 
 #include "singlevaluedlg.h"
 #include "resource.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "utilities.h"
 
 extern uint32_t gameResourceHandle; // Default handle must be used for
@@ -69,5 +69,4 @@ SingleValueDlg::Update()
 	((CStatic*)GetDlgItem(IDC_TEXT))->SetWindowText(staticText);
 }
 
-//*************************************************************************************************
 // end of file ( HeightDlg.cpp )

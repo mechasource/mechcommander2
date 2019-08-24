@@ -144,5 +144,4 @@ FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 #endif /*flattening without "area effect"*/
 }
 
-//*************************************************************************************************
 // end of file ( FlattenBrush.cpp )

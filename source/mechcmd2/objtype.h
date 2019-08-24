@@ -15,10 +15,10 @@
 
 //---------------------------------------------------------------------------
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "dobjtype.h"
 //#include "dgameobj.h"
-//#include <stuff/stuff.hpp>
+//#include "stuff/stuff.h"
 
 #define MAX_NAME 25
 
@@ -63,7 +63,7 @@ public:
 
 	ObjectType(void) { init(void); }
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
@@ -87,7 +87,7 @@ public:
 
 	ObjectTypeNumber whatAmI(void) { return (objTypeNum); }
 
-	PSTR getAppearanceTypeName(void) { return (appearName); }
+	const std::wstring_view& getAppearanceTypeName(void) { return (appearName); }
 
 	bool getPotentialContact(void) { return (potentialContact); }
 
@@ -152,7 +152,7 @@ public:
 
 	ObjectTypeManager(void) { init(void); }
 
-	int32_t init(PSTR objectFileName, int32_t objectTypeCacheSize, int32_t objectCacheSize,
+	int32_t init(const std::wstring_view& objectFileName, int32_t objectTypeCacheSize, int32_t objectCacheSize,
 		int32_t maxObjectTypes = 1024);
 
 	void destroy(void);

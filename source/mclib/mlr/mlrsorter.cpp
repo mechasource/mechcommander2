@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrsorter.hpp>
+#include "mlr/mlrsorter.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -641,3 +641,5 @@ MLRSorter::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
+
+} // namespace MidLevelRenderer

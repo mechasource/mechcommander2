@@ -49,7 +49,7 @@
 
 #include "dstd.h"
 #include "userinput.h"
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 extern volatile bool mc2IsInDisplayBackBuffer;
 extern volatile bool mc2IsInMouseTimer;
@@ -80,7 +80,7 @@ void (*AsynFunc)(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc) = 0;
 
 // External GameOS stuff
 extern LPDIRECTDRAWSURFACE7 FrontBufferSurface;
-extern HWND hWindow;
+extern HWND hwnd;
 extern POINT clientToScreen;
 extern uint32_t MouseInWindow;
 
@@ -196,7 +196,7 @@ MouseTimer(
 	//
 	if (Environment.fullScreen)
 	{
-		GetWindowRect(hWindow, &WinRect);
+		GetWindowRect(hwnd, &WinRect);
 	}
 	else
 	{

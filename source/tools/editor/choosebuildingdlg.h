@@ -10,7 +10,7 @@ ChooseBuildingDlg.h		: Interface for the ChooseBuildingDlg component.
 #ifndef CHOOSEBUILDINGDLG_H
 #define CHOOSEBUILDINGDLG_H
 
-//#include <elist.h>
+//#include "elist.h"
 //#include "objective.h"
 //#include "editorobjectmgr.h"
 
@@ -21,8 +21,8 @@ public:
 
 	ChooseBuildingDlg(building_ptr_type& buildingPtr);
 
-	BOOL OnCommand(WPARAM wParam,
-		LPARAM lParam); // called by child controls to inform of an event
+	BOOL OnCommand(WPARAM wparam,
+		LPARAM lparam); // called by child controls to inform of an event
 	void OnUsePointer(void);
 	void OnCancel(void);
 	void OnOK(void);
@@ -47,5 +47,4 @@ private:
 	CButton* m_pOKButton;
 };
 
-//*************************************************************************************************
 #endif // end of file ( ChooseBuildingDlg.h )

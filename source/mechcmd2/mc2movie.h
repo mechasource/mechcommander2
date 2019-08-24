@@ -63,7 +63,7 @@ public:
 
 	// Movie name assumes path is correct.
 	// Sets up the MC2 to be played.
-	void init(PSTR MC2Name, RECT mRect, bool useWaveFile);
+	void init(const std::wstring_view& MC2Name, RECT mRect, bool useWaveFile);
 
 	// Handles tickling MC2 to make sure we keep playing back
 	// Returns true when MC2 is DONE playing!!
@@ -98,7 +98,7 @@ public:
 
 	bool isPlaying(void) { return stillPlaying; }
 
-	PSTR getMovieName(void) { return m_MC2Name; }
+	const std::wstring_view& getMovieName(void) { return m_MC2Name; }
 
 protected:
 	uint32_t* MC2Surface; // Extra surface used if MC2 Movie is larger then 256x256

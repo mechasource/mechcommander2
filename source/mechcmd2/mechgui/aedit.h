@@ -11,17 +11,16 @@ aEdit.h			: Interface for the aEdit component of the GUI library.
 #define AEDIT_H
 
 #ifndef ASYSTEM_H
-#include <mechgui/asystem.h>
+#include "mechgui/asystem.h"
 #endif
 
 #ifndef ESTRING_H
-#include <estring.h>
+#include "estring.h"
 #endif
 
 namespace mechgui
 {
 
-//*************************************************************************************************
 // Entry field styles
 #define ES_EDITALPHA 0x00020000 // Entry field alpha only
 #define ES_EDITNUM 0x00040000 // Entry field numeric only
@@ -47,8 +46,8 @@ public:
 
 	void renderWithDropShadow(void);
 
-	void getEntry(std::wstring& str);
-	void setEntry(const std::wstring& str, uint8_t byHighlight = 0);
+	void getEntry(const std::wstring_view& str);
+	void setEntry(const std::wstring_view& str, uint8_t byHighlight = 0);
 	void limitEntry(int32_t nNewLimit) { nLimit = nNewLimit; }
 	void setFocus(bool bHasFocus);
 	void setFont(int32_t fontID);
@@ -56,7 +55,7 @@ public:
 	void setSelectedColor(int32_t color) { selectedColor = color; }
 	bool hasFocus() const { return bFocus; }
 
-	void init(FitIniFile* file, PCSTR header);
+	void init(FitIniFile* file, const std::wstring_view& header);
 	int32_t getHighlightColor() const { return highlightColor; }
 	int32_t getColor(void) const { return textColor; }
 	int32_t getCursorColor(void) const { return cursorColor; }
@@ -129,7 +128,7 @@ private:
 	int32_t nLeftOffset;
 	float cursorTime;
 	bool bMouseDown;
-	std::wstring text;
+	const std::wstring_view& text;
 	aFont font;
 	bool bFocus;
 	uint32_t dwStyleFlags;
@@ -139,5 +138,4 @@ private:
 	bool bIMEInitialized;
 };
 
-//*************************************************************************************************
 #endif // end of file ( aEdit.h )

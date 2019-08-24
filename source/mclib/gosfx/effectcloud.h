@@ -7,8 +7,8 @@
 //
 #pragma once
 
-//#include <gosfx/gosfx.hpp>
-//#include <gosfx/spinningcloud.hpp>
+//#include "gosfx/gosfx.h"
+//#include "gosfx/spinningcloud.h"
 
 namespace gosFX
 {

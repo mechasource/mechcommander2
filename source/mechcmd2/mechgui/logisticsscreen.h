@@ -10,9 +10,8 @@ LogisticsScreen.h			: Interface for the LogisticsScreen component.
 #ifndef LOGISTICSSCREEN_H
 #define LOGISTICSSCREEN_H
 
-#include <mechgui/asystem.h>
+#include "mechgui/asystem.h"
 
-//*************************************************************************************************
 
 class FitIniFile;
 
@@ -65,8 +64,8 @@ public:
 	LogisticsScreen& operator=(const LogisticsScreen& src);
 
 protected:
-	void init(FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName, PCSTR buttonName,
-		PCSTR editName = "Edit", PCSTR animObjectName = "AnimObject", uint32_t neverFlush = 0);
+	void init(FitIniFile& file, const std::wstring_view& staticName, const std::wstring_view& textName, const std::wstring_view& rectName, const std::wstring_view& buttonName,
+		const std::wstring_view& editName = "Edit", const std::wstring_view& animObjectName = "AnimObject", uint32_t neverFlush = 0);
 
 	virtual void update(void);
 	virtual void render(void);
@@ -133,5 +132,4 @@ private:
 };
 } // namespace mechgui
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsScreen.h )

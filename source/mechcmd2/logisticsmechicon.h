@@ -9,8 +9,8 @@
 #ifndef LOGISTICSMECHICON_H
 #define LOGISTICSMECHICON_H
 
-//#include <mechgui/asystem.h>
-//#include <mechgui/aanim.h>
+//#include "mechgui/asystem.h"
+//#include "mechgui/aanim.h"
 
 class LogisticsMech;
 class LogisticsPilot;
@@ -53,7 +53,7 @@ public:
 	bool pointInside(int32_t x, int32_t y) const { return outline.pointInside(x, y); }
 
 	void dimPilot(bool bDim);
-	void setHelpID(int32_t newID) { helpID = newID; }
+	void setHelpID(int32_t newID) { helpid = newID; }
 
 	void disable(bool bdo) { bDisabled = bdo; }
 
@@ -82,12 +82,11 @@ private:
 	LogisticsMech* pMech;
 	int32_t state;
 	bool bJustSelected;
-	int32_t helpID;
+	int32_t helpid;
 	bool bDisabled;
 
 	void renderObject(aObject& obj, int32_t color, int32_t xOffset, int32_t yOffset);
 	static void assignAnimation(FitIniFile& file, int32_t& number);
 };
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsMechIcon.h )

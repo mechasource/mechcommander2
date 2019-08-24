@@ -9,9 +9,9 @@
 // include "CampaignEditor.h"
 #include "resource.h"
 #include "GroupDialog.h"
-#include "CampaignData.h"
+#include "campaigndata.h"
 #include "MissionDialog.h"
-#include "../MCLib/Paths.h"
+#include "paths.h"
 #include "assert.h"
 
 #ifdef _DEBUG
@@ -79,7 +79,7 @@ CGroupDialog::OnGrOperationFileBrowseButton()
 			CString operationPath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			int32_t result = 0;
-			result = file.open((PSTR)(PCSTR)operationPath);
+			result = file.open((const std::wstring_view&)(const std::wstring_view&)operationPath);
 			if (NO_ERROR != result)
 			{
 				AfxMessageBox(IDS_COULDNT_OPEN_OPERATION_FILE);

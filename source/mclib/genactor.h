@@ -109,7 +109,7 @@ public:
 		return false;
 	}
 
-	virtual void init(PSTR fileName);
+	virtual void init(const std::wstring_view& fileName);
 
 	virtual void destroy(void);
 };
@@ -147,7 +147,7 @@ public:
 
 	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
 
-	void changeSkyToSkyNum(PSTR txmName, PSTR newName);
+	void changeSkyToSkyNum(const std::wstring_view& txmName, const std::wstring_view& newName);
 
 	GenericAppearance(void) { init(void); }
 

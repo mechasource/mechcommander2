@@ -7,10 +7,10 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/unitvector.hpp>
-#include <stuff/sphere.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/unitvector.h"
+#include "stuff/sphere.h"
 
 using namespace Stuff;
 
@@ -70,7 +70,7 @@ Sphere::Union(const Sphere& sphere1, const Sphere& sphere2)
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Sphere& sphere)
+Spew(const std::wstring_view& group, const Sphere& sphere)
 {
 	Check_Object(&sphere);
 	SPEW((group, "\n\tSphere Centerpoint: +"));

@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrspotlight.hpp>
+#include "mlr/mlrspotlight.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //#########################    MLRSpotLight    ################################
@@ -55,7 +55,7 @@ MLRSpotLight::MLRSpotLight(std::iostream stream, uint32_t version) :
 	lightMap = nullptr;
 	if (version > 7)
 	{
-		std::wstring name;
+		const std::wstring_view& name;
 		*stream >> name;
 		if (name.GetLength() > 0)
 		{
@@ -82,7 +82,7 @@ MLRSpotLight::MLRSpotLight(Stuff::Page* page) :
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
-	PCSTR lightmap;
+	const std::wstring_view& lightmap;
 	if (page->GetEntry("LightMap", &lightmap))
 	{
 		Check_Pointer(lightmap);
@@ -125,11 +125,11 @@ MLRSpotLight::Save(std::iostream stream)
 		uint32_t handle = lightMap->GetState().GetTextureHandle();
 		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
-		std::wstring name = texture->GetTextureName();
+		const std::wstring_view& name = texture->GetTextureName();
 		*stream << name;
 	}
 	else
-		*stream << std::wstring("");
+		*stream << const std::wstring_view&("");
 	*stream << spreadAngle;
 }
 
@@ -285,3 +285,5 @@ MLRSpotLight::SetLightMap(MLRLightMap* light_map)
 		lightMask |= MLRState::LightMapLightingMode;
 	}
 }
+
+} // namespace MidLevelRenderer

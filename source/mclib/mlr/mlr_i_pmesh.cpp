@@ -4,17 +4,17 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <stuff/line.hpp>
-#include <mlr/mlrsorter.hpp>
-#include <mlr/mlrlight.hpp>
-#include <mlr/mlrlightmap.hpp>
-#include <mlr/mlrspotlight.hpp>
-#include <mlr/mlrinfinitelightwithfalloff.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlr_i_pmesh.hpp>
+#include "gameos.hpp"
+#include "stuff/line.h"
+#include "mlr/mlrsorter.h"
+#include "mlr/mlrlight.h"
+#include "mlr/mlrlightmap.h"
+#include "mlr/mlrspotlight.h"
+#include "mlr/mlrinfinitelightwithfalloff.h"
+#include "mlr/mlrshape.h"
+#include "mlr/mlr_i_pmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -381,7 +381,7 @@ MLR_I_PMesh::Transform(Stuff::Matrix4D* mat)
 //	int32_t MLR_I_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrprimitiveclipping.inl>
+#include "mlr/mlrprimitiveclipping.inl"
 
 #undef CLASSNAME
 
@@ -1213,3 +1213,5 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit(
 
 	return ret;
 }
+
+} // namespace MidLevelRenderer

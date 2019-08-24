@@ -11,7 +11,7 @@ mechlopedia.h			: Interface for the mechlopedia component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include <mechgui/logisticsscreen.h>
+#include "mechgui/logisticsscreen.h"
 #endif
 
 #ifndef SIMPLECAMERA_H
@@ -19,19 +19,18 @@ mechlopedia.h			: Interface for the mechlopedia component.
 #endif
 
 #ifndef ALISTBOX_H
-#include <mechgui/alistbox.h>
+#include "mechgui/alistbox.h"
 #endif
 
 #ifndef COMPONENTLISTBOX_H
 #include "simplecomponentlistbox.h"
 #endif
 
-#include "..\resource.h"
+#include "resource.h"
 
 class LogisticsChassis;
 class LogisticsVehicle;
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -158,5 +157,4 @@ private:
 	static MechlopediaListItem* s_templateItem;
 };
 
-//*************************************************************************************************
 #endif // end of file ( mechlopedia.h )

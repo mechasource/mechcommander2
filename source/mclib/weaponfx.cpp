@@ -8,7 +8,7 @@
 
 //---------------------------------------------------------------------------------
 // Include Files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #include "weaponfx.h"
 //---------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ WeaponEffects::destroy(void)
 
 //---------------------------------------------------------------------------------
 void
-WeaponEffects::init(PSTR effectCSVFileName)
+WeaponEffects::init(const std::wstring_view& effectCSVFileName)
 {
 	FullPathFileName effectsName;
 	effectsName.init(objectPath, effectCSVFileName, ".csv");

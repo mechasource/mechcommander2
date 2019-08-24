@@ -8,34 +8,15 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <math.h>
-//#include <string.h>
-//#include <time.h>
-
-#ifndef ABLGEN_H
 #include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
 #include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
 #include "ablscan.h"
-#endif
-
-#ifndef ABLPARSE_H
 #include "ablparse.h"
-#endif
-
-#ifndef ABLENV_H
 #include "ablenv.h"
-#endif
+
+namespace mclib::abl {
 
 //***************************************************************************
-//#pragma warning(disable:4244)
 
 //---------------------
 // RESERVED uint16_t tables
@@ -92,7 +73,7 @@ TokenCodeType statementEndList[] = {TKN_SEMICOLON, TKN_END_IF, TKN_END_WHILE, TK
 TokenCodeType declarationStartList[] = {
 	TKN_CONST, TKN_VAR, TKN_FUNCTION, TKN_ORDER, TKN_STATE, TKN_NONE};
 
-PSTR TokenStrings[NUM_TOKENS] = {"{BAD TOKEN}", "{IDENTIFIER}", "{NUMBER}", "{TYPE}", "{STRING}",
+const std::wstring_view& TokenStrings[NUM_TOKENS] = {"{BAD TOKEN}", "{IDENTIFIER}", "{NUMBER}", "{TYPE}", "{STRING}",
 	"*", "(", ")", "-", "+", "=", "[", "]", ":", ";", "<", ">", ",", ".", "/",
 	"==", "<=", ">=", "<>", "{EOF}", "{ERROR}", "code", "order", "state", "and", "switch", "case",
 	"const", "div", "do", "of", "else", "endif", "endwhile", "endfor", "endfunction", "endorder",
@@ -114,8 +95,8 @@ ABLFile* sourceFile = nullptr;
 bool printFlag = true;
 bool blockFlag = false;
 BlockType blockType = BLOCK_MODULE;
-SymTableNodePtr CurModuleIdPtr = nullptr;
-SymTableNodePtr CurRoutineIdPtr = nullptr;
+const std::unique_ptr<SymTableNode>& CurModuleIdPtr = nullptr;
+const std::unique_ptr<SymTableNode>& CurRoutineIdPtr = nullptr;
 bool DumbGetCharOn = false;
 
 int32_t NumOpenFiles = 0;
@@ -126,8 +107,8 @@ char sourceBuffer[MAXLEN_SOURCELINE];
 char tokenString[MAXLEN_TOKENSTRING];
 char wordString[MAXLEN_TOKENSTRING];
 int32_t bufferOffset = 0;
-PSTR bufferp = sourceBuffer;
-PSTR tokenp = tokenString;
+const std::wstring_view& bufferp = sourceBuffer;
+const std::wstring_view& tokenp = tokenString;
 
 int32_t digitCount = 0;
 bool countError = false;
@@ -145,10 +126,10 @@ extern bool PrintEnabled;
 extern bool StringFunctionsEnabled;
 extern bool DebugCodeEnabled;
 
-extern ABLModulePtr CurLibrary;
+extern const std::unique_ptr<ABLModule>& CurLibrary;
 
-int32_t (*ABLFile::createCB)(PVOID* file, PSTR fName) = nullptr;
-int32_t (*ABLFile::openCB)(PVOID* file, PSTR fName) = nullptr;
+int32_t (*ABLFile::createCB)(PVOID* file, const std::wstring_view& filename) = nullptr;
+int32_t (*ABLFile::openCB)(PVOID* file, const std::wstring_view& filename) = nullptr;
 int32_t (*ABLFile::closeCB)(PVOID* file) = nullptr;
 bool (*ABLFile::eofCB)(PVOID file) = nullptr;
 int32_t (*ABLFile::readCB)(PVOID file, puint8_t buffer, int32_t length) = nullptr;
@@ -158,7 +139,7 @@ int32_t (*ABLFile::readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength)
 int32_t (*ABLFile::writeCB)(PVOID file, puint8_t buffer, int32_t length) = nullptr;
 int32_t (*ABLFile::writeByteCB)(PVOID file, uint8_t byte) = nullptr;
 int32_t (*ABLFile::writeLongCB)(PVOID file, int32_t value) = nullptr;
-int32_t (*ABLFile::writeStringCB)(PVOID file, PSTR buffer) = nullptr;
+int32_t (*ABLFile::writeStringCB)(PVOID file, const std::wstring_view& buffer) = nullptr;
 
 //***************************************************************************
 // ABL FILE routines
@@ -204,12 +185,12 @@ ABLFile::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLFile::create(PSTR fName)
+ABLFile::create(const std::wstring_view& filename)
 {
-	if (fName)
+	if (filename)
 	{
-		fileName = (PSTR)ABLSystemMallocCallback(strlen(fName) + 1);
-		strcpy(fileName, fName);
+		fileName = (const std::wstring_view&)ABLSystemMallocCallback(strlen(filename) + 1);
+		strcpy(fileName, filename);
 		return (createCB(&file, fileName));
 	}
 	return (-1);
@@ -218,12 +199,12 @@ ABLFile::create(PSTR fName)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLFile::open(PSTR fName)
+ABLFile::open(const std::wstring_view& filename)
 {
-	if (fName)
+	if (filename)
 	{
-		fileName = (PSTR)ABLSystemMallocCallback(strlen(fName) + 1);
-		strcpy(fileName, fName);
+		fileName = (const std::wstring_view&)ABLSystemMallocCallback(strlen(filename) + 1);
+		strcpy(fileName, filename);
 		return (openCB(&file, fileName));
 	}
 	return (-1);
@@ -322,7 +303,7 @@ ABLFile::writeLong(int32_t val)
 //-----------------------------------------------------------------------------
 
 int32_t
-ABLFile::writeString(PSTR buffer)
+ABLFile::writeString(const std::wstring_view& buffer)
 {
 	if (file)
 		return (writeStringCB(file, buffer));
@@ -367,7 +348,7 @@ void
 getChar();
 
 void
-initScanner(PSTR fileName)
+initScanner(const std::wstring_view& fileName)
 {
 	int32_t curCh;
 	//----------------------------------
@@ -729,8 +710,8 @@ void
 downShiftWord(void)
 {
 	int32_t offset = 'a' - 'A';
-	PSTR wp = wordString;
-	PSTR tp = tokenString;
+	const std::wstring_view& wp = wordString;
+	const std::wstring_view& tp = tokenString;
 	int32_t checkLengthWord = strlen(wordString);
 	int32_t checkLengthToken = strlen(tokenString);
 	if ((checkLengthWord >= MAXLEN_TOKENSTRING) || (checkLengthToken >= MAXLEN_TOKENSTRING))
@@ -940,7 +921,7 @@ getNumber(void)
 void
 getString(void)
 {
-	PSTR stringPtr = curLiteral.value.string;
+	const std::wstring_view& stringPtr = curLiteral.value.string;
 	*tokenp = '\"';
 	getChar();
 	while (curChar != CHAR_EOF)
@@ -1154,7 +1135,7 @@ getSourceLine(void)
 //---------------------------------------------------------------------------
 
 int32_t
-openSourceFile(PSTR sourceFileName)
+openSourceFile(const std::wstring_view& sourceFileName)
 {
 	//---------------------------------------
 	// Now, let's open the ABL source file...
@@ -1172,7 +1153,7 @@ openSourceFile(PSTR sourceFileName)
 	FileNumber = NumSourceFiles++;
 	sourceFile = sFile;
 	strcpy(openFiles[NumOpenFiles].fileName, sourceFileName);
-	openFiles[NumOpenFiles].filePtr = sFile;
+	openFiles[NumOpenFiles].pfile = sFile;
 	openFiles[NumOpenFiles].fileNumber = (uint8_t)FileNumber;
 	openFiles[NumOpenFiles].lineNumber = 0;
 	if (NumOpenFiles > 0)
@@ -1195,11 +1176,11 @@ closeSourceFile(void)
 	sourceFile->close();
 	delete sourceFile;
 	sourceFile = nullptr;
-	openFiles[NumOpenFiles].filePtr = nullptr;
+	openFiles[NumOpenFiles].pfile = nullptr;
 	NumOpenFiles--;
 	if (NumOpenFiles > 0)
 	{
-		sourceFile = openFiles[NumOpenFiles - 1].filePtr;
+		sourceFile = openFiles[NumOpenFiles - 1].pfile;
 		FileNumber = openFiles[NumOpenFiles - 1].fileNumber;
 		lineNumber = openFiles[NumOpenFiles - 1].lineNumber;
 	}
@@ -1211,14 +1192,14 @@ closeSourceFile(void)
 //***************************************************************************
 
 void
-printLine(PSTR line)
+printLine(const std::wstring_view& line)
 {
 	if (++lineCount > MAX_LINES_PER_PAGE)
 	{
 		printPageHeader();
 		lineCount = 1;
 	}
-	PSTR saveChPtr = nullptr;
+	const std::wstring_view& saveChPtr = nullptr;
 	char saveCh = ' ';
 	if (strlen(line) > MAXLEN_PRINTLINE)
 	{
@@ -1234,7 +1215,7 @@ printLine(PSTR line)
 //***************************************************************************
 
 void
-initPageHeader(PSTR fileName)
+initPageHeader(const std::wstring_view& fileName)
 {
 	//--------------------------
 	// Save the source file name
@@ -1256,3 +1237,5 @@ printPageHeader(void)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

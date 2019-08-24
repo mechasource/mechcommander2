@@ -8,13 +8,13 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-// #include <stuff/mstring.hpp>
-#include <stuff/polar.hpp>
-#include <stuff/affinematrix.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <stuff/vector3d.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+// #include "stuff/mstring.h"
+#include "stuff/polar.h"
+#include "stuff/affinematrix.h"
+#include "stuff/linearmatrix.h"
+#include "stuff/vector3d.h"
 
 using namespace Stuff;
 
@@ -124,7 +124,7 @@ Vector3D::MultiplyByInverse(const Vector3D& v, const LinearMatrix4D& m)
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Vector3D& vector)
+Spew(const std::wstring_view& group, const Vector3D& vector)
 {
 	Check_Object(&vector);
 	SPEW((group, "<%4f,%4f,%4f>+", vector.x, vector.y, vector.z));
@@ -138,12 +138,12 @@ Spew(PCSTR group, const Vector3D& vector)
 //###########################################################################
 //
 void
-Stuff::Convert_From_Ascii(PCSTR str, Vector3D* vector_3D)
+Stuff::Convert_From_Ascii(const std::wstring_view& str, Vector3D* vector_3D)
 {
 	Check_Pointer(str);
 	Check_Object(vector_3D);
-	std::wstring parse_string(str);
-	PCSTR token = parse_string.GetNthToken(0);
+	const std::wstring_view& parse_string(str);
+	const std::wstring_view& token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	vector_3D->x = AtoF(token);
 	token = parse_string.GetNthToken(1);

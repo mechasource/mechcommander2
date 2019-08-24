@@ -35,5 +35,4 @@ DropZoneBrush::canPaint(
 {
 	return EditorObjectMgr::instance()->canAddDropZone(worldPos, alignment, bVTol);
 }
-//*************************************************************************************************
 // end of file ( dropZoneBrush.cpp )

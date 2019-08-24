@@ -9,7 +9,7 @@
 //===========================================================================//
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef GAMEOBJ_H
 #include "gameobj.h"
@@ -78,7 +78,7 @@ extern float worldUnitsPerMeter;
 extern TeamPtr homeTeam;
 extern float MechClassWeights[NUM_MECH_CLASSES];
 
-extern PSTR ExceptionGameMsg;
+extern const std::wstring_view& ExceptionGameMsg;
 char ChunkDebugMsg[5120];
 
 uint32_t GameObject::spanMask = 0;
@@ -232,8 +232,7 @@ WeaponFireChunk::operator delete(PVOID us)
 //---------------------------------------------------------------------------
 
 void
-DebugWeaponFireChunk(
-	WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker)
+DebugWeaponFireChunk(WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker)
 {
 	ChunkDebugMsg[0] = nullptr;
 	char outString[512];
@@ -257,8 +256,8 @@ DebugWeaponFireChunk(
 	{
 		strcat(ChunkDebugMsg, "\nCHUNK1\n");
 		GameObjectPtr target = nullptr;
-		Stuff::Vector3D targetPoint;
-		targetPoint.Zero();
+		Stuff::Vector3D targetpoint;
+		targetpoint.Zero();
 		bool isTargetPoint = false;
 		if (chunk1->targetType == WEAPONFIRECHUNK_TARGET_MOVER)
 			target = (GameObjectPtr)MPlayer->moverRoster[chunk1->targetId];
@@ -268,9 +267,9 @@ DebugWeaponFireChunk(
 			target = ObjectManager->findByPartId(chunk1->targetId);
 		else if (chunk1->targetType == WEAPONFIRECHUNK_TARGET_LOCATION)
 		{
-			targetPoint.x = (float)chunk1->targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk1->targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
-			targetPoint.z = (float)land->getTerrainElevation(targetPoint);
+			targetpoint.x = (float)chunk1->targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+			targetpoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk1->targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
+			targetpoint.z = (float)land->getTerrainElevation(targetpoint);
 			isTargetPoint = true;
 		}
 		if (target)
@@ -289,8 +288,8 @@ DebugWeaponFireChunk(
 		}
 		else if (isTargetPoint)
 		{
-			sprintf(outString, "target point = (%f, %f, %f)\n", targetPoint.x, targetPoint.y,
-				targetPoint.z);
+			sprintf(outString, "target point = (%f, %f, %f)\n", targetpoint.x, targetpoint.y,
+				targetpoint.z);
 			strcat(ChunkDebugMsg, outString);
 		}
 		else
@@ -324,8 +323,8 @@ DebugWeaponFireChunk(
 	{
 		strcat(ChunkDebugMsg, "\nCHUNK2\n");
 		GameObjectPtr target = nullptr;
-		Stuff::Vector3D targetPoint;
-		targetPoint.Zero();
+		Stuff::Vector3D targetpoint;
+		targetpoint.Zero();
 		bool isTargetPoint = false;
 		if (chunk2->targetType == WEAPONFIRECHUNK_TARGET_MOVER)
 			target = (GameObjectPtr)MPlayer->moverRoster[chunk2->targetId];
@@ -335,9 +334,9 @@ DebugWeaponFireChunk(
 			target = ObjectManager->findByPartId(chunk2->targetId);
 		else if (chunk2->targetType == WEAPONFIRECHUNK_TARGET_LOCATION)
 		{
-			targetPoint.x = (float)chunk2->targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk2->targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
-			targetPoint.z = (float)land->getTerrainElevation(targetPoint);
+			targetpoint.x = (float)chunk2->targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+			targetpoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk2->targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
+			targetpoint.z = (float)land->getTerrainElevation(targetpoint);
 			isTargetPoint = true;
 		}
 		if (target)
@@ -356,8 +355,8 @@ DebugWeaponFireChunk(
 		}
 		else if (isTargetPoint)
 		{
-			sprintf(outString, "target point = (%f, %f, %f)\n", targetPoint.x, targetPoint.y,
-				targetPoint.z);
+			sprintf(outString, "target point = (%f, %f, %f)\n", targetpoint.x, targetpoint.y,
+				targetpoint.z);
 			strcat(ChunkDebugMsg, outString);
 		}
 		else
@@ -515,7 +514,7 @@ WeaponFireChunk::buildMoverTarget(GameObjectPtr target, int32_t _weaponIndex, bo
 	float _entryAngle, int32_t _numMissiles, int32_t _hitLocation)
 {
 	targetType = WEAPONFIRECHUNK_TARGET_MOVER;
-	targetId = ((MoverPtr)target)->getNetRosterIndex();
+	targetId = ((std::unique_ptr<Mover>)target)->getNetRosterIndex();
 	weaponIndex = _weaponIndex;
 	hit = _hit;
 	if ((_entryAngle >= -45.0) && (_entryAngle <= 45.0))
@@ -742,8 +741,8 @@ WeaponFireChunk::unpack(GameObjectPtr attacker)
 	bool isMissileWeapon = false;
 	if (attacker->isMover())
 	{
-		int32_t itemIndex = ((MoverPtr)attacker)->numOther + weaponIndex;
-		isMissileWeapon = ((MoverPtr)attacker)->isWeaponMissile(itemIndex);
+		int32_t itemIndex = ((std::unique_ptr<Mover>)attacker)->numOther + weaponIndex;
+		isMissileWeapon = ((std::unique_ptr<Mover>)attacker)->isWeaponMissile(itemIndex);
 	}
 	else if (attacker->getObjectClass() == TURRET)
 	{
@@ -874,9 +873,9 @@ WeaponFireChunk::unpack(GameObjectPtr attacker)
 		bool isStreakMissile = false;
 		if (attacker->isMover())
 		{
-			int32_t itemIndex = ((MoverPtr)attacker)->numOther + weaponIndex;
+			int32_t itemIndex = ((std::unique_ptr<Mover>)attacker)->numOther + weaponIndex;
 			isStreakMissile =
-				MasterComponent::masterList[((MoverPtr)attacker)->inventory[itemIndex].masterID]
+				MasterComponent::masterList[((std::unique_ptr<Mover>)attacker)->inventory[itemIndex].masterID]
 					.getWeaponStreak();
 		}
 		else if (attacker->getObjectClass() == TURRET)
@@ -1140,7 +1139,7 @@ WeaponHitChunk::buildMoverTarget(GameObjectPtr target, int32_t _cause, float _da
 	int32_t _hitLocation, float _entryAngle, bool isRefit)
 {
 	targetType = WEAPONHITCHUNK_TARGET_MOVER;
-	targetId = ((MoverPtr)target)->getNetRosterIndex();
+	targetId = ((std::unique_ptr<Mover>)target)->getNetRosterIndex();
 	// Assert((targetId > -1) && (targetId < MPlayer->numMovers), targetId, "
 	// WeaponHitChunk.buildMoverTarget: bad targetId ");
 	cause = _cause;
@@ -1416,7 +1415,7 @@ WeaponHitChunk::valid(int32_t from)
 			Fatal(0,
 				" Multiplayer.handleAppWeaponHitUpdate: bad targetType "
 				"for refit ");
-		MoverPtr target = MPlayer->moverRoster[targetId];
+		std::unique_ptr<Mover> target = MPlayer->moverRoster[targetId];
 		if (!target)
 		{
 			if (CombatLog)
@@ -1853,11 +1852,11 @@ bool
 GameObject::lineOfSight(Stuff::Vector3D point, bool checkVisibleBits)
 {
 	Stuff::Vector3D firingPosition = getLOSPosition();
-	Stuff::Vector3D targetPosition = point;
+	Stuff::Vector3D targetposition = point;
 	bool LOSclear = false;
 	if (land->IsGameSelectTerrainPosition(point))
 		LOSclear =
-			Team::lineOfSight(firingPosition, targetPosition, getTeamId(), 15.0, checkVisibleBits);
+			Team::lineOfSight(firingPosition, targetposition, getTeamId(), 15.0, checkVisibleBits);
 	return (LOSclear);
 }
 
@@ -1901,7 +1900,7 @@ GameObject::lineOfSight(GameObjectPtr target, float startExtRad, bool checkVisib
 	// Scouting specialty skill.
 	if (isMover())
 	{
-		MoverPtr mover = (MoverPtr)this;
+		std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)this;
 		if (mover->pilot && mover->pilot->isScout())
 			radius += (radius * 0.2f);
 		radius *= mover->getLOSFactor();
@@ -1985,7 +1984,7 @@ GameObject::lineOfSight(GameObjectPtr target, float startExtRad, bool checkVisib
 	//		{
 	float elev = land->getTerrainElevation(getLOSPosition());
 	float localStart = getLOSPosition().z - elev;
-	Stuff::Vector3D targetPosition = target->getLOSPosition();
+	Stuff::Vector3D targetposition = target->getLOSPosition();
 	if (Team::lineOfSight(getLOSPosition(), target->getLOSPosition(), getTeamId(),
 			target->getAppearRadius(), startExtRad, checkVisibleBits))
 	{
@@ -2091,7 +2090,7 @@ GameObject::getCaptureBlocker(GameObjectPtr capturingMover, GameObjectPtr* block
 	{
 		for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 		{
-			MoverPtr mover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 			if (capturingTeam->isEnemy(mover->getTeam()))
 				if (!mover->isMarine() && (mover->numWeapons > 0))
 					if ((distanceFrom(mover->getPosition()) < blockCaptureRange) && !mover->isDisabled() && mover->getAwake())
@@ -2105,7 +2104,7 @@ GameObject::getCaptureBlocker(GameObjectPtr capturingMover, GameObjectPtr* block
 	{
 		for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 		{
-			MoverPtr mover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 			if (!mover->getTeam() || capturingTeam->isEnemy(mover->getTeam()))
 				if (!mover->isMarine() && (mover->numWeapons > 0))
 					if ((distanceFrom(mover->getPosition()) < blockCaptureRange) && !mover->isDisabled() && mover->getAwake())

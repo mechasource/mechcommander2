@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrshape.hpp>
+#include "mlr/mlrshape.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //###############################    MLRShape ##################################
@@ -604,3 +604,5 @@ MLRShape::CastRay(Line3D* line, Normal3D* normal)
 	}
 	return result;
 }
+
+} // namespace MidLevelRenderer

@@ -9,7 +9,7 @@
 //===========================================================================//
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 #include "radio.h"
 #include "gamesound.h"
 #include "mover.h"
@@ -61,7 +61,7 @@ Radio::operator delete(PVOID us)
 
 //-------------------------------------------------------------------------------
 int32_t
-Radio::init(PSTR fileName, uint32_t heapSize, PSTR movie)
+Radio::init(const std::wstring_view& fileName, uint32_t heapSize, const std::wstring_view& movie)
 {
 	FullPathFileName pilotAudioPath;
 	pilotAudioPath.init(CDsoundPath, fileName, ".pak");
@@ -247,10 +247,10 @@ int32_t
 Radio::loadMessageInfo(void)
 {
 	FullPathFileName messageInfoPath;
-	FilePtr messageInfoFile;
+	std::unique_ptr<File> messageInfoFile;
 	int32_t result;
 	char dataLine[512];
-	PSTR field;
+	const std::wstring_view& field;
 	messageInfoPath.init(soundPath, "radio", ".csv");
 	messageInfoFile = new File;
 	if (!messageInfoFile)

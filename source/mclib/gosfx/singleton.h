@@ -7,8 +7,8 @@
 //
 #pragma once
 
-//#include <gosfx/gosfx.hpp>
-//#include <gosfx/effect.hpp>
+//#include "gosfx/gosfx.h"
+//#include "gosfx/effect.h"
 
 namespace gosFX
 {

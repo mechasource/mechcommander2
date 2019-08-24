@@ -9,7 +9,7 @@
 //===========================================================================//
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef GROUP_H
 #include "group.h"
@@ -90,7 +90,7 @@ Commander::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-Commander::setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point)
+Commander::setGroup(int32_t id, int32_t numMates, std::unique_ptr<Mover>* moverList, int32_t point)
 {
 	// First, does the unit currently have objects set up there already?
 	// If so, we need to determine
@@ -104,7 +104,7 @@ Commander::setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t p
 	// Now, slip the new group into this unit slot...
 	for (size_t i = 0; i < numMates; i++)
 	{
-		MoverPtr mover = moverList[i];
+		std::unique_ptr<Mover> mover = moverList[i];
 		//-----------------------------------------
 		// Pull the mover from its current group...
 		MoverGroupPtr oldGroup = mover->getGroup();
@@ -146,7 +146,7 @@ Commander::eject(void)
 {
 	for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 	{
-		MoverPtr mover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 		if (mover && (mover->getCommanderId() == id))
 		{
 			if (mover->getObjectClass() == BATTLEMECH)

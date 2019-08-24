@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  3d_tl.cpp - GameOS reference pseudo code
@@ -17,9 +18,9 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <directx.hpp>
-#include <dxrasterizer.hpp>
+#include "gameos.hpp"
+#include "directx.hpp"
+#include "dxrasterizer.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module
@@ -65,7 +66,7 @@ void __stdcall gos_SetTransform(D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX
 /// <c>gos_MultiplyTransform</c> multiplies the current WORLD/VIEW or PROJECTION
 /// matrix by another
 /// </summary>
-/// <remarks>
+/// <remarks> not referenced in Mechcommander 2
 /// </remarks>
 /// <param name="TransformType"></param>
 /// <param name="pMatrixData"></param>
@@ -73,8 +74,7 @@ void __stdcall gos_SetTransform(D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX
 void __stdcall gos_MultiplyTransform(D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX pMatrixData)
 {
 	gosASSERT(InsideBeginScene);
-	gosASSERT(
-		TransformType >= D3DTRANSFORMSTATE_WORLD && TransformType <= D3DTRANSFORMSTATE_WORLD1);
+	gosASSERT(TransformType >= D3DTRANSFORMSTATE_WORLD && TransformType <= D3DTRANSFORMSTATE_WORLD1);
 	wMultiplyTransform(d3dDevice7, TransformType, pMatrixData);
 	GameOSFPU();
 }

@@ -56,7 +56,7 @@ SoundSystem::destroy(void)
 
 //---------------------------------------------------------------------------
 int32_t
-SoundSystem::init(PSTR soundFileName)
+SoundSystem::init(const std::wstring_view& soundFileName)
 {
 	if (useSound)
 	{
@@ -142,7 +142,7 @@ SoundSystem::init(PSTR soundFileName)
 		gosASSERT(result == NO_ERROR);
 		result = soundFile.readIdULong("StreamChannels", digitalStreamChannels);
 		gosASSERT(result == NO_ERROR);
-		digitalMusicIds = (PSTR*)soundHeap->Malloc(sizeof(PSTR) * numDMS);
+		digitalMusicIds = (const std::wstring_view&*)soundHeap->Malloc(sizeof(const std::wstring_view&) * numDMS);
 		gosASSERT(digitalMusicIds != nullptr);
 		digitalMusicLoopFlags = (bool*)soundHeap->Malloc(sizeof(bool) * numDMS);
 		gosASSERT(digitalMusicLoopFlags != nullptr);
@@ -155,7 +155,7 @@ SoundSystem::init(PSTR soundFileName)
 			sprintf(digitalMSBId, "DMSLoop%d", i);
 			char digitalMSVId[25];
 			sprintf(digitalMSVId, "DMSVolume%d", i);
-			digitalMusicIds[i] = (PSTR)soundHeap->Malloc(30);
+			digitalMusicIds[i] = (const std::wstring_view&)soundHeap->Malloc(30);
 			result = soundFile.readIdString(digitalMSId, digitalMusicIds[i], 29);
 			gosASSERT(result == NO_ERROR);
 			result = soundFile.readIdBoolean(digitalMSBId, digitalMusicLoopFlags[i]);
@@ -603,7 +603,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream1Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream1Handle, gosAudio_StreamedFile, (PCSTR)digitalStream);
+							&stream1Handle, gosAudio_StreamedFile, (const std::wstring_view&)digitalStream);
 						stream1Time = streamFadeDownTime;
 						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Volume, 0.0f);
 						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Panning, 0.0f);
@@ -619,7 +619,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream2Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream2Handle, gosAudio_StreamedFile, (PCSTR)digitalStream);
+							&stream2Handle, gosAudio_StreamedFile, (const std::wstring_view&)digitalStream);
 						// Need to check if stream1 ever got all the way faded
 						// up!
 						if (stream1Time > 0.0f)
@@ -641,7 +641,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream1Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream1Handle, gosAudio_StreamedFile, (PCSTR)digitalStream);
+							&stream1Handle, gosAudio_StreamedFile, (const std::wstring_view&)digitalStream);
 						stream1Time = streamFadeDownTime;
 						// Need to check if stream2 ever got all the way faded
 						// up!
@@ -668,7 +668,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 
 //---------------------------------------------------------------------------
 int32_t
-SoundSystem::playDigitalStream(PCSTR streamName)
+SoundSystem::playDigitalStream(const std::wstring_view& streamName)
 {
 	//-------------------------------------------------------------------
 	// Make sure we have a real music filename.
@@ -694,7 +694,7 @@ SoundSystem::playDigitalStream(PCSTR streamName)
 					stream3Handle = 0;
 				}
 				gosAudio_CreateResource(
-					&stream3Handle, gosAudio_StreamedFile, (PCSTR)digitalStream);
+					&stream3Handle, gosAudio_StreamedFile, (const std::wstring_view&)digitalStream);
 				stream3Active = false;
 				gosAudio_AssignResourceToChannel(STREAM3CHANNEL, stream3Handle);
 				gosAudio_SetChannelSlider(
@@ -761,7 +761,7 @@ SoundSystem::playBettySample(uint32_t bettySampleId)
 
 //---------------------------------------------------------------------------
 int32_t
-SoundSystem::playSupportSample(uint32_t supportSampleId, PSTR fileName)
+SoundSystem::playSupportSample(uint32_t supportSampleId, const std::wstring_view& fileName)
 {
 	if (useSound && (supportSoundBite == nullptr)) // Playing Support takes precedence
 	{

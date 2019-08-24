@@ -24,7 +24,7 @@
 #include "clip.h"
 #endif
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 // Static Globals

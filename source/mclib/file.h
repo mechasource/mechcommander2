@@ -15,23 +15,25 @@
 #pragma once
 
 //---------------------------------------------------------------------------
-// enums
-enum FileMode : uint32_t
+
+#if CONSIDERED_OBSOLETE
+enum class FileMode : uint8_t
 {
-	NOMODE = 0,
+	NOMODE = 0,	// notused
 	READ,
 	CREATE,
-	MC2_APPEND,
+	MC2_APPEND,	// notused
 	WRITE,
 	RDWRITE
 };
+#endif
 
-enum FileClass : uint32_t
+enum class FileClass : uint8_t
 {
-	BASEFILE = 0,
-	INIFILE,
-	PACKETFILE,
-	CSVFILE
+	basefile,
+	inifile,
+	packetfile,
+	csvfile
 };
 
 //---------------------------------------------------------------------------
@@ -64,42 +66,22 @@ enum __file_constants : uint32_t
 //---------------------------------------------------------------------------
 // Function Declarations
 // Returns 1 if file is on HardDrive and 2 if file is in FastFile
-// int32_t __stdcall fileExists(PSTR fName);
-// int32_t __stdcall fileExistsOnCD(PSTR fName);
-// bool __stdcall file1OlderThan2(PSTR file1, PSTR file2);
+// int32_t __stdcall fileExists(const std::wstring_view& filename);
+// int32_t __stdcall fileExistsOnCD(const std::wstring_view& filename);
+// bool __stdcall file1OlderThan2(const std::wstring_view& file1, const std::wstring_view& file2);
 
 // class UserHeap;
 // class FastFile;
 // class File;
-// typedef File* FilePtr;
+// typedef File* std::unique_ptr<File>;
 
 //---------------------------------------------------------------------------
 //									File
 //---------------------------------------------------------------------------
 
-class MechFile
+template <class Tderived>
+class ATL_NO_VTABLE MechFile
 {
-protected:
-	std::wstring m_fileName;
-	std::filesystem::path m_path;
-	std::fstream m_stream;
-	std::unique_ptr<MechFile> m_parent;
-
-	// FileMode fileMode;
-	// int32_t handle;
-	// FastFile* fastFile;
-	// int32_t fastFileHandle;
-	// size_t length;
-	// size_t logicalPosition;
-	// size_t bufferResult;
-	// FilePtr* childList;
-	// size_t numChildren;
-	// size_t maxChildren;
-	// FilePtr parent;
-	// ptrdiff_t parentOffset;
-	// size_t physicalLength;
-	// bool inRAM;
-	// puint8_t fileImage;
 
 public:
 	// static bool logFileTraffic;
@@ -111,42 +93,24 @@ public:
 	// PVOID operator new(size_t mySize);
 	// void operator delete(PVOID us);
 
-	MechFile(void)
+	MechFile(void) noexcept
 	{
-		// fileMode		= NOMODE;
-		// handle			= -1;
-		// length			= 0;
-		// logicalPosition = 0;
-		// bufferResult	= 0;
-		// parent			= nullptr;
-		// parentOffset	= 0;
-		// physicalLength  = 0;
-		// childList		= nullptr;
-		// numChildren		= 0;
-		// inRAM			= false;
-		// fileImage		= nullptr;
-		// fastFile		= nullptr;
 	}
-	virtual ~MechFile(void) { close(); }
+	virtual ~MechFile(void) noexcept = default;
 
-	virtual HRESULT open(std::filesystem::path& path);
-	virtual HRESULT open(std::wstring& filename)
+	virtual HRESULT open(stdfs::path& path);
+	virtual HRESULT open(const std::wstring_view& filename)
 	{
-		std::filesystem::path path(filename);
-		return open(path);
-	}
-	virtual HRESULT open(PWSTR pszFilename)
-	{
-		std::filesystem::path path(pszFilename);
+		stdfs::path path(filename);
 		return open(path);
 	}
 
-	// virtual HRESULT open(PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
-	// virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
-	///*virtual*/ int32_t open(PCSTR buffer, size_t bufferLength); // for streaming from memory
+	// virtual HRESULT open(const std::wstring_view& filename, FileMode _mode = READ, uint32_t numChildren = 50);
+	// virtual int32_t open(std::unique_ptr<File> _parent, size_t fileSize, uint32_t numChildren = 50);
+	///*virtual*/ int32_t open(const std::wstring_view& buffer, size_t bufferLength); // for streaming from memory
 
-	virtual int32_t create(PCSTR fName);
-	virtual int32_t createWithCase(PSTR fName);
+	virtual int32_t create(const std::wstring_view& filename);
+	virtual int32_t createWithCase(const std::wstring_view& filename);
 
 	virtual void close(void);
 
@@ -183,14 +147,14 @@ public:
 	int32_t writeLong(int32_t value);
 	int32_t writeFloat(float value);
 
-	int32_t writeString(PSTR buffer);
-	int32_t writeLine(PSTR buffer);
+	int32_t writeString(const std::wstring_view& buffer);
+	int32_t writeLine(const std::wstring_view& buffer);
 
 	bool isOpen(void);
 
-	virtual FileClass getFileClass(void) { return BASEFILE; }
+	virtual FileClass getFileClass(void) { return FileClass::basefile; }
 
-	PSTR getFilename(void);
+	const std::wstring_view& getFilename(void);
 
 	size_t getLength(void);
 	size_t fileSize(void);
@@ -198,13 +162,50 @@ public:
 
 	// HRESULT getLastError(void) { return (lastError); }
 	// size_t getLogicalPosition(void) { return logicalPosition; }
-	// FilePtr getParent(void) { return m_parent; }
+	// std::unique_ptr<File> getParent(void) { return m_parent; }
 	// FileMode getFileMode(void) { return (fileMode); }
 	// int32_t getFileHandle(void) { return (handle); }
 	time_t getFileMTime(void);
-	// int32_t addChild(FilePtr child);
-	// void removeChild(FilePtr child);
+	// int32_t addChild(std::unique_ptr<File> child);
+	// void removeChild(std::unique_ptr<File> child);
 
 protected:
 	void setup(void);
+
+protected:
+	std::wstring_view m_fileName;
+	stdfs::path m_path;
+	std::fstream m_stream;
+	std::unique_ptr<MechFile> m_parent;
+
+	// fileMode		= NOMODE;
+	// handle			= -1;
+	// length			= 0;
+	// logicalPosition = 0;
+	// bufferResult	= 0;
+	// parent			= nullptr;
+	// parentOffset	= 0;
+	// physicalLength  = 0;
+	// childList		= nullptr;
+	// numChildren		= 0;
+	// inRAM			= false;
+	// fileImage		= nullptr;
+	// fastFile		= nullptr;
+
+	// FileMode fileMode;
+	// int32_t handle;
+	// FastFile* fastFile;
+	// int32_t fastFileHandle;
+	// size_t length;
+	// size_t logicalPosition;
+	// size_t bufferResult;
+	// std::unique_ptr<File>* childList;
+	// size_t numChildren;
+	// size_t maxChildren;
+	// std::unique_ptr<File> parent;
+	// ptrdiff_t parentOffset;
+	// size_t physicalLength;
+	// bool inRAM;
+	// puint8_t fileImage;
+
 };

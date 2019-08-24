@@ -28,7 +28,7 @@
 #endif
 
 #include "heap.h"
-#include <mclib.h>
+#include "mclib.h"
 extern UserHeapPtr missionHeap;
 
 //***************************************************************************
@@ -73,7 +73,7 @@ GoalObject::init(void)
 //---------------------------------------------------------------------------
 
 void
-GoalObject::initObject(PSTR name, GameObjectPtr obj)
+GoalObject::initObject(const std::wstring_view& name, GameObjectPtr obj)
 {
 }
 
@@ -81,7 +81,7 @@ GoalObject::initObject(PSTR name, GameObjectPtr obj)
 
 void
 GoalObject::initRegion(
-	PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol)
+	const std::wstring_view& name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol)
 {
 	init();
 	used = true;
@@ -489,7 +489,7 @@ int32_t GoalManager::setControl (ObstaclePtr controller, ObstaclePtr controllee)
 //---------------------------------------------------------------------------
 
 GoalObjectPtr
-GoalManager::addRegion(GoalObjectPtr parent, GoalLinkType linkType, PSTR name,
+GoalManager::addRegion(GoalObjectPtr parent, GoalLinkType linkType, const std::wstring_view& name,
 	int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol)
 {
 	GoalObjectPtr newRegion = newGoalObject();
@@ -505,7 +505,7 @@ GoalManager::addRegion(GoalObjectPtr parent, GoalLinkType linkType, PSTR name,
 
 GoalObjectPtr
 GoalManager::addObject(
-	GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object)
+	GoalObjectPtr parent, GoalLinkType linkType, const std::wstring_view& name, GameObjectPtr object)
 {
 	GoalObjectPtr newObject = newGoalObject();
 	newObject->initObject(name, object);

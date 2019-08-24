@@ -11,7 +11,7 @@ MechLabScreen.h			: Interface for the MechLabScreen component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include <mechgui/logisticsscreen.h>
+#include "mechgui/logisticsscreen.h"
 #endif
 
 #ifndef ATTRIBUTEMETER_H
@@ -32,7 +32,6 @@ class LogisticsVariant;
 class LogisticsComponent;
 class LogisticsVariantDialog;
 class LogisticsAcceptVariantDialog;
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -94,7 +93,7 @@ private:
 	LogisticsComponent* pDragComponent;
 	LogisticsComponent* pCurComponent;
 
-	void showJumpJetItems(bool bShow);
+	void showJumpJetItems(bool doshow);
 
 	void updateDiagram(void);
 
@@ -109,7 +108,7 @@ private:
 
 	SimpleCamera camera;
 
-	std::wstring varName;
+	const std::wstring_view& varName;
 
 	static RECT sensorRects[4];
 	static int32_t sensorHelpIDs[4];
@@ -143,5 +142,4 @@ private:
 	void removeComponent(int32_t i, int32_t j);
 };
 
-//*************************************************************************************************
 #endif // end of file ( MechLabScreen.h )

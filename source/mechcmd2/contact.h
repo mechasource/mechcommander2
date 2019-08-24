@@ -15,7 +15,7 @@
 
 //---------------------------------------------------------------------------
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "dcontact.h"
 //#include "dgameobj.h"
 //#include "dmover.h"
@@ -171,17 +171,17 @@ public:
 
 	int32_t getSensorQuality(void);
 
-	int32_t calcContactStatus(MoverPtr mover);
+	int32_t calcContactStatus(std::unique_ptr<Mover> mover);
 
-	bool isContact(MoverPtr mover);
+	bool isContact(std::unique_ptr<Mover> mover);
 
-	void addContact(MoverPtr mover, bool visual);
+	void addContact(std::unique_ptr<Mover> mover, bool visual);
 
-	void modifyContact(MoverPtr mover, bool visual);
+	void modifyContact(std::unique_ptr<Mover> mover, bool visual);
 
 	void removeContact(int32_t contactIndex);
 
-	void removeContact(MoverPtr mover);
+	void removeContact(std::unique_ptr<Mover> mover);
 
 	void clearContacts(void);
 
@@ -246,30 +246,30 @@ public:
 	void decNumEnemyContacts(void);
 
 	void addContact(
-		SensorSystemPtr sensor, MoverPtr contact, int32_t contactIndex, int32_t contactStatus);
+		SensorSystemPtr sensor, std::unique_ptr<Mover> contact, int32_t contactIndex, int32_t contactStatus);
 
-	SensorSystemPtr findBestSpotter(MoverPtr contact, int32_t* status);
+	SensorSystemPtr findBestSpotter(std::unique_ptr<Mover> contact, int32_t* status);
 
-	void modifyContact(SensorSystemPtr sensor, MoverPtr contact, int32_t contactStatus);
+	void modifyContact(SensorSystemPtr sensor, std::unique_ptr<Mover> contact, int32_t contactStatus);
 
-	void removeContact(SensorSystemPtr sensor, MoverPtr contact);
+	void removeContact(SensorSystemPtr sensor, std::unique_ptr<Mover> contact);
 
 	void addSensor(SensorSystemPtr sensor);
 
 	void removeSensor(SensorSystemPtr sensor);
 
-	int32_t getVisualContacts(MoverPtr* moverList);
+	int32_t getVisualContacts(std::unique_ptr<Mover>* moverList);
 
-	int32_t getSensorContacts(MoverPtr* moverList);
+	int32_t getSensorContacts(std::unique_ptr<Mover>* moverList);
 
 	bool hasSensorContact(int32_t teamID);
 
 	int32_t getContacts(
 		GameObjectPtr looker, int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
-	int32_t getContactStatus(MoverPtr mover, bool includingAllies);
+	int32_t getContactStatus(std::unique_ptr<Mover> mover, bool includingAllies);
 
-	bool meetsCriteria(GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria);
+	bool meetsCriteria(GameObjectPtr looker, std::unique_ptr<Mover> mover, int32_t contactCriteria);
 
 	void scanBattlefield(void);
 

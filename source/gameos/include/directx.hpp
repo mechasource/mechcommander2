@@ -44,7 +44,7 @@ extern PSTR __stdcall ErrorNumberToMessage(HRESULT hResult);
 //
 // General DirectX
 //
-HRESULT __stdcall wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN pUnkOuter, uint32_t dwClsContext, REFIID riid, PVOID* ppv);
+HRESULT __stdcall wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN punkouter, uint32_t clscontext, REFIID riid, PVOID* ppv);
 HRESULT __stdcall wQueryInterface(IUnknown* iun, REFIID riid, PVOID* obp);
 uint32_t __stdcall wRelease(IUnknown* iun);
 uint32_t __stdcall wAddRef(IUnknown* iun);
@@ -105,7 +105,7 @@ HRESULT __stdcall wProcessVertices(LPDIRECT3DVERTEXBUFFER7 D3Dvb7, uint32_t dwVe
 HRESULT __stdcall wDirectDrawCreateEx(LPGUID lpGUID, PVOID* lplpDD, REFIID iid, IUnknown* pUnkOuter);
 HRESULT __stdcall wDirectDrawEnumerate(LPDDENUMCALLBACK lpCallback, LPDDENUMCALLBACKEX lpCallbackEx, PVOID lpContext);
 
-HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER lpddc, uint32_t dwFlags, HWND hWnd);
+HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER lpddc, uint32_t dwFlags, HWND hwnd);
 
 HRESULT __stdcall wIsLost(LPDIRECTDRAWSURFACE7 lpdds7);
 HRESULT __stdcall wGetDC(LPDIRECTDRAWSURFACE7 lpdds7, HDC* lphDC);
@@ -132,7 +132,7 @@ HRESULT __stdcall wGetDeviceIdentifier(LPDIRECTDRAW7 lpdd7, LPDDDEVICEIDENTIFIER
 HRESULT __stdcall wGetCaps(LPDIRECTDRAW7 lpdd7, LPDDCAPS lpDDDriverCaps, LPDDCAPS lpDDHELCaps);
 HRESULT __stdcall wCreatePalette(LPDIRECTDRAW7 lpdd7, uint32_t dwFlags, LPPALETTEENTRY lpColorTable,LPDIRECTDRAWPALETTE* lplpDDPalette, IUnknown* pUnkOuter);
 HRESULT __stdcall wCreateSurface(LPDIRECTDRAW7 lpdd7, LPDDSURFACEDESC2 lpDDSurfaceDesc,LPDIRECTDRAWSURFACE7* lplpDDSurface7, IUnknown* pUnkOuter);
-HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 lpdd7, HWND hWnd, uint32_t dwFlags);
+HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 lpdd7, HWND hwnd, uint32_t dwFlags);
 HRESULT __stdcall wEnumDisplayModes(LPDIRECTDRAW7 lpdd7, uint32_t dwFlags,LPDDSURFACEDESC2 lpDDSurfaceDesc, PVOID lpContext, LPDDENUMMODESCALLBACK2 lpEnumModesCallback);
 HRESULT __stdcall wRestoreDisplayMode(LPDIRECTDRAW7 lpdd7);
 HRESULT __stdcall wGetDisplayMode(LPDIRECTDRAW7 lpdd7, LPDDSURFACEDESC2 lpDDSurfaceDesc);
@@ -192,7 +192,7 @@ typedef struct IAMMultiMediaStream* PIAMMULTIMEDIASTREAM;
 typedef struct IMediaStream* PIMEDIASTREAM;
 typedef struct IGraphBuilder* PIGRAPHBUILDER;
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 // Direct Show
 HRESULT __stdcall wSetState(PIMULTIMEDIASTREAM imms, STREAM_STATE NewState);
 HRESULT __stdcall wGetState(PIMULTIMEDIASTREAM imms, STREAM_STATE* NewState);
@@ -253,7 +253,7 @@ HRESULT __stdcall wGetEffectStatus(LPDIRECTINPUTEFFECT lpeff, puint32_t status);
 HRESULT __stdcall wDownload(LPDIRECTINPUTEFFECT lpeff);
 HRESULT __stdcall wSetParameters(LPDIRECTINPUTEFFECT lpeff, LPCDIEFFECT lpdi, uint32_t flags);
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 // DirectPlay
 HRESULT __stdcall wAddPlayerToGroup(IDirectPlay4A* dplay4, DPID idGroup, DPID idPlayer);
 HRESULT __stdcall wCancelMessage(IDirectPlay4A* dplay4, uint32_t dwMsgID, uint32_t dwFlags);

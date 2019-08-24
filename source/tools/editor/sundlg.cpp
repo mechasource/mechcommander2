@@ -143,7 +143,6 @@ SunDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-//*************************************************************************************************
 // end of file ( sunDlg.cpp )
 
 void

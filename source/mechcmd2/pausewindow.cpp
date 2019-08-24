@@ -9,7 +9,7 @@ PauseWindow.cpp			: Implementation of the PauseWindow component.
 
 #include "pausewindow.h"
 #include "controlgui.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "userInput.h"
 #include "missiongui.h"
 #include "logisticsdialog.h"
@@ -198,7 +198,7 @@ PauseWindow::update()
 		}
 	}
 	wasDragging = userInput->wasLeftDrag();
-	PCSTR campaignName = LogisticsData::instance->getCampaignName().Data();
+	const std::wstring_view& campaignName = LogisticsData::instance->getCampaignName().Data();
 	char campName[1024];
 	_splitpath(campaignName, nullptr, nullptr, campName, nullptr);
 	if (MPlayer || LogisticsData::instance->isSingleMission() || (_stricmp("tutorial", campName) == 0))
@@ -396,5 +396,4 @@ PauseWindow::begin(bool objectivesOn)
 	else
 		buttons[OBJECTIVES].press(1);
 }
-//*************************************************************************************************
 // end of file ( PauseWindow.cpp )

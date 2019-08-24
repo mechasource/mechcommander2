@@ -84,7 +84,7 @@ float craterUVTable[136] = {
 //---------------------------------------------------------------------
 // class CraterManager
 int32_t
-CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName)
+CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, const std::wstring_view& craterFileName)
 {
 	init();
 	//-----------------------------------------------------

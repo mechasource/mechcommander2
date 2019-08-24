@@ -10,7 +10,7 @@ TargetAreaDlg.h		: Interface for the TargetAreaDlg component.
 #ifndef TARGETAREADLG_H
 #define TARGETAREADLG_H
 
-//#include <elist.h>
+//#include "elist.h"
 //#include "objective.h"
 //#include "editorobjectmgr.h"
 
@@ -19,8 +19,8 @@ class TargetAreaDlg : public CDialog
 public:
 	TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius);
 
-	BOOL OnCommand(WPARAM wParam,
-		LPARAM lParam); // called by child controls to inform of an event
+	BOOL OnCommand(WPARAM wparam,
+		LPARAM lparam); // called by child controls to inform of an event
 	void OnCancel(void);
 	void OnOK(void);
 
@@ -45,5 +45,4 @@ private:
 	CButton* m_pOKButton;
 };
 
-//*************************************************************************************************
 #endif // end of file ( TargetAreaDlg.h )

@@ -11,7 +11,7 @@
 #include "stdinc.h"
 
 #ifndef MCLIB_h
-#include <mclib.h>
+#include "mclib.h"
 #endif
 
 #ifndef TEAM_H
@@ -79,7 +79,7 @@
 #include "LogisticsData.h"
 #endif
 
-#include "..\resource.h"
+#include "resource.h"
 
 #define BLIP_FRAME_RATE 0.067
 // extern uint32_t NextIdNumber;
@@ -163,7 +163,7 @@ BuildingType::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-BuildingType::init(FilePtr objFile, uint32_t fileSize)
+BuildingType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile bldgFile;
@@ -1043,7 +1043,7 @@ Building::render(void)
 }
 
 //---------------------------------------------------------------------------
-PSTR
+const std::wstring_view&
 Building::getName(void)
 {
 	if (((BuildingTypePtr)getObjectType())->buildingTypeName != -1)
@@ -1128,7 +1128,7 @@ Building::init(bool create, ObjectTypePtr objType)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	PSTR appearName = objType->getAppearanceTypeName();
+	const std::wstring_view& appearName = objType->getAppearanceTypeName();
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.
@@ -1208,7 +1208,7 @@ Building::createBuildingMarines(void)
 		int32_t numPilots = scenario->getNumWarriors();
 		for (size_t j = 0; j < numPilots; j++)
 		{
-			MechWarriorPtr pilot = scenario->getWarrior(j);
+			std::unique_ptr<MechWarrior> pilot = scenario->getWarrior(j);
 			if (pilot && (pilot->getAlignment() != homeTeam->getAlignment()))
 			{
 				GameObjectPtr myVehicle = pilot->getVehicle();
@@ -1281,9 +1281,9 @@ Building::createBuildingMarines(void)
 #if 0
 					if(MPlayer)
 					{
-						MPlayer->addToMoverRoster((MoverPtr)parts[i].object);
-						if(parts[i].commanderID == MPlayer->commanderID)
-							MPlayer->addToLocalMovers((MoverPtr)parts[i].object);
+						MPlayer->addToMoverRoster((std::unique_ptr<Mover>)parts[i].object);
+						if(parts[i].commanderid == MPlayer->commanderid)
+							MPlayer->addToLocalMovers((std::unique_ptr<Mover>)parts[i].object);
 					}
 #endif
 					//--------------------------------------------------------------------
@@ -1353,7 +1353,7 @@ Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 					appearance->stopActivity();
 					GameObjectPtr attacker = ObjectManager->getByWatchID(shotInfo->attackerWID);
 					if (attacker && attacker->isMover())
-						((MoverPtr)attacker)
+						((std::unique_ptr<Mover>)attacker)
 							->getPilot()
 							->triggerAlarm(PILOT_ALARM_KILLED_TARGET, getWatchID());
 					if (sensorSystem)
@@ -1438,7 +1438,7 @@ Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 						int32_t numMovers = ObjectManager->getNumMovers();
 						for (size_t j = 0; j < numMovers; j += 1)
 						{
-							MoverPtr pMover = ObjectManager->getMover(j);
+							std::unique_ptr<Mover> pMover = ObjectManager->getMover(j);
 							if (pMover && pMover->getExists())
 							{
 								int32_t cellRow, cellCol;

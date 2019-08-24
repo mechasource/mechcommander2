@@ -3,9 +3,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <mclib.h>
+#include "mclib.h"
 #ifndef ASCROLL_H
-#include <mechgui/ascroll.h>
+#include "mechgui/ascroll.h"
 #endif
 
 aScrollBar::aScrollBar()

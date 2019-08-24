@@ -10,15 +10,15 @@ Objective.cpp			: Implementation of the Objective component.
 
 //#include "terrain.h"
 //#include "objective.h"
-//#include <estring.h>
+//#include "estring.h"
 //#include "echarstring.h"
 //#include "inifile.h"
 //#include "mission.h"
 //#include "objmgr.h"
 //#include "bldng.h"
 //#include "gamesound.h"
-//#include <tacmap.h>
-//#include <mechgui/afont.h>
+//#include "tacmap.h"
+//#include "mechgui/afont.h"
 //#include "logisticsdata.h"
 //#include "team.h"
 //#include "comndr.h"
@@ -57,7 +57,7 @@ static bool
 MoverIsDeadOrDisabled(const uint32_t pMoverWID)
 {
 	bool retval = false;
-	Mover* pMover = (MoverPtr)ObjectManager->getByWatchID(pMoverWID);
+	Mover* pMover = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(pMoverWID);
 	ATLASSERT(pMover);
 	if (pMover->isDisabled() || pMover->isDestroyed())
 	{
@@ -76,7 +76,7 @@ MoverIsDeadOrDisabled(const uint32_t pMoverWID)
 }
 
 static bool
-MoverIsDeadOrDisabled(const MoverPtr pMover)
+MoverIsDeadOrDisabled(const std::unique_ptr<Mover> pMover)
 {
 	bool retval = false;
 	ATLASSERT(pMover);
@@ -97,7 +97,7 @@ MoverIsDeadOrDisabled(const MoverPtr pMover)
 }
 
 static bool
-MoverIsDeadOrDisabledOrFled(const MoverPtr pMover)
+MoverIsDeadOrDisabledOrFled(const std::unique_ptr<Mover> pMover)
 {
 	ATLASSERT(pMover);
 	bool retval = false;
@@ -122,7 +122,7 @@ MoverIsDeadOrDisabledOrFled(const MoverPtr pMover)
 }
 
 static bool
-MoverIsCaptured(const MoverPtr pMover, const int32_t teamID)
+MoverIsCaptured(const std::unique_ptr<Mover> pMover, const int32_t teamID)
 {
 	ATLASSERT(pMover);
 	bool retval = false;
@@ -143,7 +143,7 @@ MoverIsCaptured(const MoverPtr pMover, const int32_t teamID)
 static bool
 MoverIsCaptured(const int32_t pMoverWID, const int32_t teamID)
 {
-	Mover* pMover = (MoverPtr)ObjectManager->getByWatchID(pMoverWID);
+	Mover* pMover = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(pMoverWID);
 	ATLASSERT(pMover);
 	bool retval = false;
 	if (pMover->isDestroyed())
@@ -161,11 +161,11 @@ MoverIsCaptured(const int32_t pMoverWID, const int32_t teamID)
 }
 
 static int32_t
-sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float& value)
+sReadIdFloat(FitIniFile* missionFile, const std::wstring_view& varName, float& value)
 {
 	int32_t result = 0;
 	float tmpFloat;
-	result = missionFile->readIdFloat((PSTR)varName, tmpFloat);
+	result = missionFile->readIdFloat((const std::wstring_view&)varName, tmpFloat);
 	if (NO_ERROR != result)
 	{
 		// ATLASSERT(false);
@@ -178,11 +178,11 @@ sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float& value)
 }
 
 static int32_t
-sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool& value)
+sReadIdBoolean(FitIniFile* missionFile, const std::wstring_view& varName, bool& value)
 {
 	int32_t result = 0;
 	bool tmpBool;
-	result = missionFile->readIdBoolean((PSTR)varName, tmpBool);
+	result = missionFile->readIdBoolean((const std::wstring_view&)varName, tmpBool);
 	if (NO_ERROR != result)
 	{
 		// ATLASSERT(false);
@@ -195,11 +195,11 @@ sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool& value)
 }
 
 static int32_t
-sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int32_t& value)
+sReadIdWholeNum(FitIniFile* missionFile, const std::wstring_view& varName, int32_t& value)
 {
 	int32_t result = 0;
 	uint32_t tmpULong;
-	result = missionFile->readIdULong((PSTR)varName, tmpULong);
+	result = missionFile->readIdULong((const std::wstring_view&)varName, tmpULong);
 	if (NO_ERROR != result)
 	{
 		// ATLASSERT(false);
@@ -212,11 +212,11 @@ sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int32_t& value)
 }
 
 static int32_t
-sReadIdLongInt(FitIniFile* missionFile, PCSTR varName, int32_t& value)
+sReadIdLongInt(FitIniFile* missionFile, const std::wstring_view& varName, int32_t& value)
 {
 	int32_t result = 0;
 	int32_t tmpLong;
-	result = missionFile->readIdLong((PSTR)varName, tmpLong);
+	result = missionFile->readIdLong((const std::wstring_view&)varName, tmpLong);
 	if (NO_ERROR != result)
 	{
 		// ATLASSERT(false);
@@ -229,7 +229,7 @@ sReadIdLongInt(FitIniFile* missionFile, PCSTR varName, int32_t& value)
 }
 
 static int32_t
-sReplace(ECharString& ECStr, PCSTR szOldSub, PCSTR szNewSub)
+sReplace(ECharString& ECStr, const std::wstring_view& szOldSub, const std::wstring_view& szNewSub)
 {
 	if ((!szOldSub) || (0 >= strlen(szOldSub)) || (!szNewSub))
 	{
@@ -263,12 +263,12 @@ sReplace(ECharString& ECStr, PCSTR szOldSub, PCSTR szNewSub)
 }
 
 static int32_t
-sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString& ECStr)
+sReadIdString(FitIniFile* missionFile, const std::wstring_view& varName, ECharString& ECStr)
 {
 	int32_t result = 0;
 	char buffer[2001 /*buffer size*/];
 	buffer[0] = '\0';
-	result = missionFile->readIdString((PSTR)varName, buffer, 2001 /*buffer size*/ - 1);
+	result = missionFile->readIdString((const std::wstring_view&)varName, buffer, 2001 /*buffer size*/ - 1);
 	if ((NO_ERROR != result) && (BUFFER_TOO_SMALL != result))
 	{
 		// ATLASSERT(false);
@@ -283,7 +283,7 @@ sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString& ECStr)
 }
 
 static int32_t
-sWriteIdString(FitIniFile* missionFile, PCSTR varName, PCSTR szStr)
+sWriteIdString(FitIniFile* missionFile, const std::wstring_view& varName, const std::wstring_view& szStr)
 {
 	if (!szStr)
 	{
@@ -348,7 +348,7 @@ CBooleanArray::load(int32_t alignment, FitIniFile* file)
 	if (result == NO_ERROR)
 	{
 		ECharString tmpECStr;
-		std::wstring element;
+		const std::wstring_view& element;
 		bool value;
 		int32_t count = 0;
 		char stringName[1024];
@@ -376,7 +376,7 @@ CDestroyAllEnemyUnits::Status()
 	int32_t i;
 	for (i = 0; i < numMovers; i += 1)
 	{
-		MoverPtr pMover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 		ATLASSERT(pMover);
 		if (pMover->getTeamId() != Alignment())
 			if (!(MoverIsDeadOrDisabled(pMover) || MoverIsCaptured(pMover, Alignment())))
@@ -399,10 +399,10 @@ CNumberOfUnitsObjectiveCondition::Read(FitIniFile* missionFile)
 	return true;
 }
 
-std::wstring
+const std::wstring_view&
 CNumberOfUnitsObjectiveCondition::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("%d", m_num);
 	return tmpEStr;
 }
@@ -415,7 +415,7 @@ CDestroyNumberOfEnemyUnits::Status()
 	int32_t i;
 	for (i = 0; i < numMovers; i += 1)
 	{
-		MoverPtr pMover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 		ATLASSERT(pMover);
 		if (pMover->getTeamId() != Alignment())
 			if (MoverIsDeadOrDisabled(pMover) || MoverIsCaptured(pMover, Alignment()))
@@ -433,10 +433,10 @@ CDestroyNumberOfEnemyUnits::Status()
 	}
 }
 
-std::wstring
+const std::wstring_view&
 CSpecificUnitObjectiveCondition::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	int32_t partId = m_pUnitWID;
 	tmpEStr.Format("partId: %ld", partId);
 	return tmpEStr;
@@ -460,7 +460,7 @@ CSpecificEnemyUnitObjectiveCondition::Read(FitIniFile* missionFile)
 		{
 			return false;
 		}
-		MoverPtr pMover = nullptr;
+		std::unique_ptr<Mover> pMover = nullptr;
 		if (ObjectManager)
 		{
 			int32_t numMovers = ObjectManager->getNumMovers();
@@ -501,10 +501,10 @@ CDestroySpecificEnemyUnit::Status()
 	}
 }
 
-std::wstring
+const std::wstring_view&
 CSpecificStructureObjectiveCondition::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	Building* m_pBuilding = (Building*)ObjectManager->getByWatchID(m_pBuildingWID);
 	int32_t partId = m_pBuilding->getPartId();
 	tmpEStr.Format("partId: %ld", partId);
@@ -577,7 +577,7 @@ CCaptureOrDestroyAllEnemyUnits::Status()
 	int32_t i;
 	for (i = 0; i < numMovers; i += 1)
 	{
-		MoverPtr pMover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 		ATLASSERT(pMover);
 		if (pMover->getTeamId() != Alignment())
 			if (!MoverIsDeadOrDisabled(pMover))
@@ -601,7 +601,7 @@ CCaptureOrDestroyNumberOfEnemyUnits::Status()
 	int32_t i;
 	for (i = 0; i < numMovers; i += 1)
 	{
-		MoverPtr pMover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 		ATLASSERT(pMover);
 		if (pMover->getTeamId() != Alignment())
 			if (MoverIsDeadOrDisabled(pMover) || MoverIsCaptured(pMover, Alignment()) /*redundant?*/)
@@ -637,7 +637,7 @@ CCaptureOrDestroySpecificEnemyUnit::Read(FitIniFile* missionFile)
 		{
 			return false;
 		}
-		MoverPtr pMover = 0;
+		std::unique_ptr<Mover> pMover = 0;
 		if (ObjectManager)
 		{
 			int32_t numMovers = ObjectManager->getNumMovers();
@@ -668,7 +668,7 @@ CCaptureOrDestroySpecificEnemyUnit::Read(FitIniFile* missionFile)
 objective_status_type
 CCaptureOrDestroySpecificEnemyUnit::Status()
 {
-	MoverPtr m_pUnit = (MoverPtr)ObjectManager->getByWatchID(m_pUnitWID);
+	std::unique_ptr<Mover> m_pUnit = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(m_pUnitWID);
 	ATLASSERT(m_pUnit);
 	if (MoverIsDeadOrDisabled(m_pUnit) || MoverIsCaptured(m_pUnit, Alignment()) /*redundant?*/)
 	{
@@ -751,7 +751,7 @@ CDeadOrFledAllEnemyUnits::Status()
 	int32_t i;
 	for (i = 0; i < numMovers; i += 1)
 	{
-		MoverPtr pMover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 		ATLASSERT(pMover);
 		if (!MoverIsDeadOrDisabledOrFled(pMover))
 		{
@@ -769,7 +769,7 @@ CDeadOrFledNumberOfEnemyUnits::Status()
 	int32_t i;
 	for (i = 0; i < numMovers; i += 1)
 	{
-		MoverPtr pMover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 		ATLASSERT(pMover);
 		if (MoverIsDeadOrDisabledOrFled(pMover))
 		{
@@ -789,7 +789,7 @@ CDeadOrFledNumberOfEnemyUnits::Status()
 objective_status_type
 CDeadOrFledSpecificEnemyUnit::Status()
 {
-	MoverPtr m_pUnit = (MoverPtr)ObjectManager->getByWatchID(m_pUnitWID);
+	std::unique_ptr<Mover> m_pUnit = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(m_pUnitWID);
 	ATLASSERT(m_pUnit);
 	if (MoverIsDeadOrDisabledOrFled(m_pUnit))
 	{
@@ -819,7 +819,7 @@ CCaptureUnit::Read(FitIniFile* missionFile)
 		{
 			return false;
 		}
-		MoverPtr pMover = 0;
+		std::unique_ptr<Mover> pMover = 0;
 		if (ObjectManager)
 		{
 			int32_t numMovers = ObjectManager->getNumMovers();
@@ -850,7 +850,7 @@ CCaptureUnit::Read(FitIniFile* missionFile)
 objective_status_type
 CCaptureUnit::Status()
 {
-	MoverPtr m_pUnit = (MoverPtr)ObjectManager->getByWatchID(m_pUnitWID);
+	std::unique_ptr<Mover> m_pUnit = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(m_pUnitWID);
 	if (!m_pUnit || m_pUnit->isDestroyed())
 	{
 		return OS_FAILED;
@@ -947,7 +947,7 @@ CGuardSpecificUnit::Read(FitIniFile* missionFile)
 		{
 			return false;
 		}
-		MoverPtr pMover = 0;
+		std::unique_ptr<Mover> pMover = 0;
 		if (ObjectManager)
 		{
 			int32_t numMovers = ObjectManager->getNumMovers();
@@ -1036,10 +1036,10 @@ CAreaObjectiveCondition::Read(FitIniFile* missionFile)
 	return true;
 }
 
-std::wstring
+const std::wstring_view&
 CAreaObjectiveCondition::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format(
 		"x: %.3f, y: %.3f, radius: %.3f", m_targetCenterX, m_targetCenterY, m_targetRadius);
 	return tmpEStr;
@@ -1054,7 +1054,7 @@ CMoveAnyUnitToArea::Status()
 	{
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			if (pMover->getTeamId() == Alignment())
 			{
@@ -1071,7 +1071,7 @@ CMoveAnyUnitToArea::Status()
 	{
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			if (pMover->isOnGUI() && (pMover->getCommanderId() == Commander::home->getId()))
 			{
@@ -1096,7 +1096,7 @@ CMoveAllUnitsToArea::Status()
 	{
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			if (pMover->isRecover())
 				continue;
@@ -1117,7 +1117,7 @@ CMoveAllUnitsToArea::Status()
 	{
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			if (pMover->isRecover())
 				continue;
@@ -1146,7 +1146,7 @@ CMoveAllSurvivingUnitsToArea::Status()
 	{
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			if (pMover->isRecover())
 				continue;
@@ -1170,7 +1170,7 @@ CMoveAllSurvivingUnitsToArea::Status()
 	{
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			if (pMover->isRecover())
 				continue;
@@ -1202,7 +1202,7 @@ CMoveAllSurvivingMechsToArea::Status()
 	{
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			if (!pMover->isMech() || (pMover->isMech() && (pMover->getMoveType() == MOVETYPE_AIR)))
 				continue;
@@ -1226,7 +1226,7 @@ CMoveAllSurvivingMechsToArea::Status()
 	{
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			if (!pMover->isMech() || (pMover->isMech() && (pMover->getMoveType() == MOVETYPE_AIR)))
 				continue;
@@ -1250,7 +1250,7 @@ CMoveAllSurvivingMechsToArea::Status()
 		float MaxUnitDistanceSquared = (MaxExtractUnitDistance * MaxExtractUnitDistance);
 		for (i = 0; i < numMovers; i += 1)
 		{
-			MoverPtr pMover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> pMover = ObjectManager->getMover(i);
 			ATLASSERT(pMover);
 			// Seems like any allied or unlinked up unit would keep this from
 			// being true?
@@ -1308,10 +1308,10 @@ CBooleanFlagIsSet::Status()
 	return OS_UNDETERMINED;
 }
 
-std::wstring
+const std::wstring_view&
 CBooleanFlagIsSet::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("flag name: %s, value: %d", m_flagID.Data(), m_value);
 	return tmpEStr;
 }
@@ -1338,10 +1338,10 @@ CElapsedMissionTime::Status()
 	return OS_UNDETERMINED;
 }
 
-std::wstring
+const std::wstring_view&
 CElapsedMissionTime::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("%f seconds", m_time);
 	return tmpEStr;
 }
@@ -1362,10 +1362,10 @@ CPlayBIK::Read(FitIniFile* missionFile)
 	return true;
 }
 
-std::wstring
+const std::wstring_view&
 CPlayBIK::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("%s", m_pathname.Data());
 	return tmpEStr;
 }
@@ -1393,10 +1393,10 @@ CPlayWAV::Read(FitIniFile* missionFile)
 	return true;
 }
 
-std::wstring
+const std::wstring_view&
 CPlayWAV::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("%s", m_pathname.Data());
 	return tmpEStr;
 }
@@ -1422,10 +1422,10 @@ CDisplayTextMessage::Read(FitIniFile* missionFile)
 	return true;
 }
 
-std::wstring
+const std::wstring_view&
 CDisplayTextMessage::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("%s", m_message.Data());
 	return tmpEStr;
 }
@@ -1450,12 +1450,12 @@ CDisplayResourceTextMessage::Read(FitIniFile* missionFile)
 }
 
 static bool
-ESLoadString(int32_t resourceID, std::wstring& targetStr)
+ESLoadString(int32_t resourceID, const std::wstring_view& targetStr)
 {
 	char szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
 	targetStr = szTmp;
-	std::wstring tmpStr;
+	const std::wstring_view& tmpStr;
 	tmpStr.Format("mc2res.dll:%d Not defined", resourceID);
 	if (0 == strcmp(tmpStr.Data(), szTmp))
 	{
@@ -1464,12 +1464,12 @@ ESLoadString(int32_t resourceID, std::wstring& targetStr)
 	return (!0);
 }
 
-std::wstring
+const std::wstring_view&
 CDisplayResourceTextMessage::InstanceDescription()
 {
-	std::wstring resourceText;
+	const std::wstring_view& resourceText;
 	ESLoadString(m_resourceStringID, resourceText);
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("%d: %s", m_resourceStringID, resourceText.Data());
 	return tmpEStr;
 }
@@ -1477,7 +1477,7 @@ CDisplayResourceTextMessage::InstanceDescription()
 int32_t
 CDisplayResourceTextMessage::Execute()
 {
-	std::wstring resourceText;
+	const std::wstring_view& resourceText;
 	ESLoadString(m_resourceStringID, resourceText);
 	ControlGui::instance->setChatText("", resourceText.Data(), 0xf0000000, 0);
 	return true;
@@ -1508,10 +1508,10 @@ CSetBooleanFlag::Read(FitIniFile* missionFile)
 	return true;
 }
 
-std::wstring
+const std::wstring_view&
 CSetBooleanFlag::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("flag name: %s, value: %d", m_flagID.Data(), m_value);
 	return tmpEStr;
 }
@@ -1538,10 +1538,10 @@ CMakeNewTechnologyAvailable::Read(FitIniFile* missionFile)
 	return true;
 }
 
-std::wstring
+const std::wstring_view&
 CMakeNewTechnologyAvailable::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	tmpEStr.Format("%s", m_purchaseFilePathname.Data());
 	return tmpEStr;
 }
@@ -1627,10 +1627,10 @@ C_RemoveStructure::Read(FitIniFile* missionFile)
 	return true;
 }
 
-std::wstring
+const std::wstring_view&
 C_RemoveStructure::InstanceDescription()
 {
-	std::wstring tmpEStr;
+	const std::wstring_view& tmpEStr;
 	Building* m_pBuilding = (Building*)ObjectManager->getByWatchID(m_pBuildingWID);
 	int32_t partId = m_pBuilding->getPartId();
 	tmpEStr.Format("partId: %ld", partId);
@@ -1716,10 +1716,10 @@ CObjective::new_CObjectiveCondition(
 	return retval;
 }
 
-std::wstring
+const std::wstring_view&
 CObjective::DescriptionOfConditionSpecies(condition_species_type conditionSpecies)
 {
-	std::wstring retval = "<unimplemented condition>" /* needs to be put somewhere localizable */;
+	const std::wstring_view& retval = "<unimplemented condition>" /* needs to be put somewhere localizable */;
 	CObjectiveCondition* tmpCondition =
 		new_CObjectiveCondition(conditionSpecies, 0 /*dummy alignment*/);
 	if (0 != tmpCondition)
@@ -1768,10 +1768,10 @@ CObjective::new_CObjectiveAction(
 	return retval;
 }
 
-std::wstring
+const std::wstring_view&
 CObjective::DescriptionOfActionSpecies(action_species_type actionSpecies)
 {
-	std::wstring retval = "<unimplemented action>" /* needs to be put somewhere localizable */;
+	const std::wstring_view& retval = "<unimplemented action>" /* needs to be put somewhere localizable */;
 	CObjectiveAction* tmpAction = new_CObjectiveAction(actionSpecies, 0 /*dummy alignment*/);
 	if (0 != tmpAction)
 	{
@@ -1979,7 +1979,7 @@ CObjective::Alignment(int32_t alignment)
 }
 
 static condition_species_type
-ConditionSpeciesMap(PCSTR speciesString)
+ConditionSpeciesMap(const std::wstring_view& speciesString)
 {
 	condition_species_type retval = DESTROY_ALL_ENEMY_UNITS;
 	int32_t i;
@@ -1996,7 +1996,7 @@ ConditionSpeciesMap(PCSTR speciesString)
 }
 
 static action_species_type
-ActionSpeciesMap(PCSTR speciesString)
+ActionSpeciesMap(const std::wstring_view& speciesString)
 {
 	action_species_type retval = PLAY_BIK;
 	int32_t i;
@@ -2503,13 +2503,13 @@ CObjective::StatusChangedFailed(void)
 	return false;
 }
 
-std::wstring
+const std::wstring_view&
 CObjective::LocalizedTitle(void) const
 {
-	std::wstring retval;
+	const std::wstring_view& retval;
 	if (TitleUseResourceString())
 	{
-		std::wstring EStr;
+		const std::wstring_view& EStr;
 		ESLoadString(TitleResourceStringID(), EStr);
 		retval = EStr.Data();
 	}
@@ -2520,13 +2520,13 @@ CObjective::LocalizedTitle(void) const
 	return retval;
 }
 
-std::wstring
+const std::wstring_view&
 CObjective::LocalizedDescription(void) const
 {
-	std::wstring retval;
+	const std::wstring_view& retval;
 	if (DescriptionUseResourceString())
 	{
-		std::wstring EStr;
+		const std::wstring_view& EStr;
 		ESLoadString(DescriptionResourceStringID(), EStr);
 		retval = EStr.Data();
 	}
@@ -2775,7 +2775,7 @@ CObjectives::Status()
 	gos_TextSetAttributes( guiFont, color, 1.0, false, true, false, false, 0 );
 	gos_TextSetPosition(xPos + 2 * fontWidth, yPos );
 
-	gos_TextDraw( (PCSTR)m_description );
+	gos_TextDraw( (const std::wstring_view&)m_description );
 
 }*/
 
@@ -2914,7 +2914,6 @@ C_RemoveStructure::Execute()
 	return true;
 }
 
-//*************************************************************************************************
 bool
 CNumberOfUnitsObjectiveCondition::Save(FitIniFile* file)
 {
@@ -3149,5 +3148,4 @@ CObjectives::Save(FitIniFile* file)
 	return true;
 }
 
-//*************************************************************************************************
 // end of file ( Objective.cpp )

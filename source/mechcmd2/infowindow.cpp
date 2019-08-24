@@ -9,13 +9,13 @@ InfoWindow.cpp			: Implementation of the InfoWindow component.
 
 #include "stdinc.h"
 #include "infowindow.h"
-#include <mclib.h>
-#include "..\resource.h"
+#include "mclib.h"
+#include "resource.h"
 #include "mover.h"
 #include "mechicon.h"
 #include "team.h"
 #include "txmmgr.h"
-#include <estring.h>
+#include "estring.h"
 
 int32_t InfoWindow::SCROLLLEFT = 0;
 int32_t InfoWindow::SCROLLRIGHT = 0;
@@ -284,7 +284,7 @@ InfoWindow::setUnit(Mover* pNewMover)
 }
 
 void
-InfoWindow::drawName(PCSTR name)
+InfoWindow::drawName(const std::wstring_view& name)
 {
 	RECT rect = {NAMELEFT, NAMETOP, NAMERIGHT, SCROLLTOP};
 	drawRect(rect, 0xff000000);
@@ -491,7 +491,7 @@ InfoWindow::drawScrollingStuff()
 	char ranges[60];
 	int32_t names[60];
 	memset(disabledCount, 0, sizeof(char) * 60 * 2);
-	memset(names, 0, sizeof(PSTR) * 60);
+	memset(names, 0, sizeof(const std::wstring_view&) * 60);
 	memset(ranges, 0, sizeof(char) * 60);
 	memset(ammo, 0, sizeof(int32_t) * 60);
 	bool bDraw[4];
@@ -542,7 +542,7 @@ InfoWindow::drawScrollingStuff()
 	//	int32_t stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG,
 	// IDS_COMPONENT}; 	int32_t headerColors[4] = { 0xFFC8E100, 0xff0091FF,
 	// 0xFFFF0000, 0xffFF8A00 };
-	std::wstring capHeader;
+	const std::wstring_view& capHeader;
 	for (size_t j = 0; j < 3; j++)
 	{
 		if (!bDraw[j]) // make sure we have one
@@ -594,7 +594,7 @@ InfoWindow::drawScrollingStuff()
 			drawDivider(curY);
 		curY += SECTIONSKIP;
 	}
-	memset(names, 0, sizeof(PSTR) * 60);
+	memset(names, 0, sizeof(const std::wstring_view&) * 60);
 	int32_t count[4];
 	count[0] = pUnit->ecm;
 	count[1] = pUnit->probe;
@@ -660,7 +660,7 @@ InfoWindow::drawScrollingStuff()
 		}
 		curY += SECTIONSKIP;
 		int32_t rank = pWarrior->getRank();
-		int32_t skills[2] = {MWS_GUNNERY, MWS_PILOTING};
+		int32_t skills[2] = {Skill::gunnery, Skill::piloting};
 		char buffer[256];
 		// ACE not continguous with other ranks.  Added too late!
 		if (rank != 4)
@@ -804,5 +804,4 @@ InfoWindow::setScrollPos(int32_t where)
 		scrollPos = where;
 }
 
-//*************************************************************************************************
 // end of file ( InfoWindow.cpp )

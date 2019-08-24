@@ -21,7 +21,7 @@ DlgFileOpen:
 class DlgFileOpen : public CDialog
 {
 public:
-	DlgFileOpen(PCSTR directoryName, PCSTR extension, bool bSave);
+	DlgFileOpen(const std::wstring_view& directoryName, const std::wstring_view& extension, bool bSave);
 	DlgFileOpen(const DlgFileOpen& lgFileOpen);
 
 	void OnCancel(void);
@@ -33,8 +33,8 @@ public:
 
 	void Init(void);
 
-	PCSTR getFileName(void) const { return fileName; }
-	PCSTR getExtension(void) const { return extension; }
+	const std::wstring_view& getFileName(void) const { return fileName; }
+	const std::wstring_view& getExtension(void) const { return extension; }
 
 private:
 	// HELPER FUNCTIONS
@@ -68,5 +68,4 @@ protected:
 	bool m_bSave;
 };
 
-//*************************************************************************************************
 #endif // end of file ( DlgFileOpen.h )

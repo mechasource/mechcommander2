@@ -15,9 +15,11 @@
 //#include "dabldbug.h"
 //#include "ablenv.h"
 
+namespace mclib::abl {
+
 //***************************************************************************
 
-typedef enum DebugCommandCode : uint32_t
+enum class DebugCommandCode : uint32_t
 {
 	DEBUG_COMMAND_SET_MODULE,
 	DEBUG_COMMAND_TRACE,
@@ -37,7 +39,7 @@ typedef enum DebugCommandCode : uint32_t
 
 typedef struct _Watch
 {
-	SymTableNodePtr idPtr;
+	const std::unique_ptr<SymTableNode>& idPtr;
 	bool store;
 	bool breakOnStore;
 	bool fetch;
@@ -74,19 +76,19 @@ public:
 
 	~WatchManager(void) { destroy(void); }
 
-	WatchPtr add(SymTableNodePtr idPtr);
+	WatchPtr add(const std::unique_ptr<SymTableNode>& idPtr);
 
-	int32_t remove(SymTableNodePtr idPtr);
+	int32_t remove(const std::unique_ptr<SymTableNode>& idPtr);
 
 	int32_t removeAll(void);
 
-	int32_t setStore(SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
+	int32_t setStore(const std::unique_ptr<SymTableNode>& idPtr, bool state, bool breakToDebug = false);
 
-	int32_t setFetch(SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
+	int32_t setFetch(const std::unique_ptr<SymTableNode>& idPtr, bool state, bool breakToDebug = false);
 
-	bool getStore(SymTableNodePtr idPtr);
+	bool getStore(const std::unique_ptr<SymTableNode>& idPtr);
 
-	bool getFetch(SymTableNodePtr idPtr);
+	bool getFetch(const std::unique_ptr<SymTableNode>& idPtr);
 
 	void print(void);
 };
@@ -144,11 +146,11 @@ class Debugger
 {
 
 protected:
-	ABLModulePtr module; // Current executing module
-	WatchManagerPtr watchManager; // Current executing watch manager
-	BreakPointManagerPtr breakPointManager; // Current executing breakpt manager
+	const std::unique_ptr<ABLModule>& module; // Current executing module
+	const std::unique_ptr<WatchManager>& watchManager; // Current executing watch manager
+	const std::unique_ptr<BreakPointManager>& breakPointManager; // Current executing breakpt manager
 
-	ABLModulePtr debugModule; // Current module being debugged
+	const std::unique_ptr<ABLModule>& debugModule; // Current module being debugged
 
 	bool enabled;
 	bool debugCommand;
@@ -160,7 +162,7 @@ protected:
 
 	static char message[512];
 
-	void (*printCallback)(PSTR s);
+	void (*printCallback)(const std::wstring_view& s);
 
 public:
 	PVOID operator new(size_t mySize);
@@ -183,7 +185,7 @@ public:
 		printCallback = nullptr;
 	}
 
-	int32_t init(void (*callback)(PSTR s), ABLModulePtr _module);
+	int32_t init(void (*callback)(const std::wstring_view& s), const std::unique_ptr<ABLModule>& _module);
 
 	void destroy(void);
 
@@ -197,9 +199,9 @@ public:
 
 	bool isEnabled(void) { return (enabled); }
 
-	int32_t print(PSTR s);
+	int32_t print(const std::wstring_view& s);
 
-	void setModule(ABLModulePtr _module);
+	void setModule(const std::unique_ptr<ABLModule>& _module);
 
 	int32_t setWatch(int32_t states);
 
@@ -207,28 +209,28 @@ public:
 
 	int32_t removeBreakPoint(void);
 
-	void sprintStatement(PSTR dest);
+	void sprintStatement(const std::wstring_view& dest);
 
-	void sprintLineNumber(PSTR dest);
+	void sprintLineNumber(const std::wstring_view& dest);
 
-	void sprintDataValue(PSTR dest, StackItemPtr data, TypePtr dataType);
+	void sprintDataValue(const std::wstring_view& dest, const std::unique_ptr<StackItem>& data, const std::unique_ptr<Type>& dataType);
 
-	int32_t sprintSimpleValue(PSTR dest, SymTableNodePtr symbol);
+	int32_t sprintSimpleValue(const std::wstring_view& dest, const std::unique_ptr<SymTableNode>& symbol);
 
-	int32_t sprintArrayValue(PSTR dest, SymTableNodePtr symbol, PSTR subscriptString);
+	int32_t sprintArrayValue(const std::wstring_view& dest, const std::unique_ptr<SymTableNode>& symbol, const std::wstring_view& subscriptString);
 
-	int32_t sprintValue(PSTR dest, PSTR exprString);
+	int32_t sprintValue(const std::wstring_view& dest, const std::wstring_view& exprString);
 
 	int32_t traceStatementExecution(void);
 
-	int32_t traceRoutineEntry(SymTableNodePtr idPtr);
+	int32_t traceRoutineEntry(const std::unique_ptr<SymTableNode>& idPtr);
 
-	int32_t traceRoutineExit(SymTableNodePtr idPtr);
+	int32_t traceRoutineExit(const std::unique_ptr<SymTableNode>& idPtr);
 
 	int32_t traceDataStore(
-		SymTableNodePtr id, TypePtr idType, StackItemPtr target, TypePtr targetType);
+		const std::unique_ptr<SymTableNode>& id, const std::unique_ptr<Type>& idType, const std::unique_ptr<StackItem>& target, const std::unique_ptr<Type>& targetType);
 
-	int32_t traceDataFetch(SymTableNodePtr id, TypePtr idType, StackItemPtr data);
+	int32_t traceDataFetch(const std::unique_ptr<SymTableNode>& id, const std::unique_ptr<Type>& idType, const std::unique_ptr<StackItem>& data);
 
 	void showValue(void);
 
@@ -237,13 +239,15 @@ public:
 	void displayModuleInstanceRegistry(void);
 
 	void processCommand(
-		int32_t commandId, PSTR strParam1, int32_t numParam1, ABLModulePtr moduleParam1);
+		int32_t commandId, const std::wstring_view& strParam1, int32_t numParam1, const std::unique_ptr<ABLModule>& moduleParam1);
 
 	void debugMode(void);
 
-	ABLModulePtr getDebugModule(void) { return (debugModule); }
+	const std::unique_ptr<ABLModule>& getDebugModule(void) { return (debugModule); }
 };
 
 //***************************************************************************
+
+} // namespace mclib::abl
 
 #endif

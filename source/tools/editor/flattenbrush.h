@@ -13,7 +13,6 @@ FlattenBrush.h			: Interface for the FlattenBrush component.
 //#include "brush.h"
 //#include "action.h"
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -44,5 +43,4 @@ private:
 	ActionPaintTile* pCurAction;
 	void flattenVertex(int32_t row, int32_t col, float val);
 };
-//*************************************************************************************************
 #endif // end of file ( FLATTENBRUSH_H.h )

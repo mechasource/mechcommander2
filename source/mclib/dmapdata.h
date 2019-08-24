@@ -18,7 +18,7 @@
 
 //---------------------------------------------------------------------------
 // Macro Definitions
-typedef enum
+enum class 
 {
 	MC_BLUEWATER_TYPE,
 	MC_GREEN_WATER_TYPE,

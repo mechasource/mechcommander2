@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  3dprimitives.cpp  - D3D DrawPrimitive implementations
@@ -17,11 +18,11 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <directx.hpp>
-#include <dxrasterizer.hpp>
-#include <debugger.hpp>
-#include <3drasterizer.hpp>
+#include "gameos.hpp"
+#include "directx.hpp"
+#include "dxrasterizer.hpp"
+#include "debugger.hpp"
+#include "3drasterizer.hpp"
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module
@@ -36,7 +37,7 @@ static float StripLength;
 static uint32_t StripCalls;
 
 // unrecognized DirectX vertex type
-typedef enum __3dprimitives_const
+enum class __3dprimitives_const
 {
 	vertextype_unk1 = 0x1C4,
 	vertextype_unk2 = 0x2C4,

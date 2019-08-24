@@ -5,7 +5,6 @@ PauseWindow.h			: Interface for the PauseWindow component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
@@ -13,7 +12,7 @@ PauseWindow.h			: Interface for the PauseWindow component.
 #define PAUSEWINDOW_H
 
 //#include "utilities.h"
-//#include <mechgui/afont.h>
+//#include "mechgui/afont.h"
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -85,5 +84,4 @@ private:
 	bool bPromptToAbort;
 };
 
-//*************************************************************************************************
 #endif // end of file ( PauseWindow.h )

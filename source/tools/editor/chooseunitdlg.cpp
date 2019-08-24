@@ -10,7 +10,7 @@ ChooseUnitDlg.cpp			: Implementation of the ChooseUnitDlg component.
 
 //#include <stdlib.h>
 //#include <assert.h>
-//#include <estring.h>
+//#include "estring.h"
 //#include "chooseunitdlg.h"
 //#include "pointerselectobjectdlg.h"
 //#include "objective.h"
@@ -67,9 +67,9 @@ ChooseUnitDlg::OnInitDialog()
 		EditorObjectMgr::UNIT_LIST::EConstIterator it = m_unitList.Begin();
 		while (!it.IsDone())
 		{
-			std::wstring tmpEStr;
+			const std::wstring_view& tmpEStr;
 			Stuff::Vector3D pos = (*it)->getPosition();
-			PCSTR szDisplayName = (*it)->getDisplayName(); // nb: localization
+			const std::wstring_view& szDisplayName = (*it)->getDisplayName(); // nb: localization
 			assert(szDisplayName);
 			tmpEStr.Format("(pos: %.3f, %.3f) %s", pos.x, pos.y, szDisplayName);
 			m_pComboBox->AddString(tmpEStr.Data());
@@ -94,13 +94,13 @@ ChooseUnitDlg::OnInitDialog()
 }
 
 BOOL
-ChooseUnitDlg::OnCommand(WPARAM wParam,
-	LPARAM lParam) // called by child controls to inform of an event
+ChooseUnitDlg::OnCommand(WPARAM wparam,
+	LPARAM lparam) // called by child controls to inform of an event
 {
 	assert(m_pCancelButton);
 	assert(m_pOKButton);
-	HWND hWndCtrl = (HWND)lParam;
-	int32_t nCode = HIWORD(wParam);
+	HWND hWndCtrl = (HWND)lparam;
+	int32_t nCode = HIWORD(wparam);
 	if (hWndCtrl == m_pComboBox->m_hWnd)
 	{
 		if (LBN_SELCHANGE == nCode)
@@ -121,7 +121,7 @@ ChooseUnitDlg::OnCommand(WPARAM wParam,
 			}
 		}
 	}
-	return inherited::OnCommand(wParam, lParam);
+	return inherited::OnCommand(wparam, lparam);
 }
 
 void
@@ -196,5 +196,4 @@ ChooseUnitDlg::OnOK()
 
 ChooseUnitDlg::~ChooseUnitDlg() {}
 
-//*************************************************************************************************
 // end of file ( ChooseUnitDlg.cpp )

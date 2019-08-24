@@ -9,7 +9,7 @@
 //===========================================================================//
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef GROUP_H
 #include "group.h"
@@ -99,7 +99,7 @@ MoverGroup::destroy(void)
 //---------------------------------------------------------------------------
 
 bool
-MoverGroup::add(MoverPtr mover)
+MoverGroup::add(std::unique_ptr<Mover> mover)
 {
 	if (numMovers == MAX_MOVERGROUP_COUNT)
 	{
@@ -116,7 +116,7 @@ MoverGroup::add(MoverPtr mover)
 //---------------------------------------------------------------------------
 
 bool
-MoverGroup::remove(MoverPtr mover)
+MoverGroup::remove(std::unique_ptr<Mover> mover)
 {
 	GameObjectWatchID moverWID = mover->getWatchID();
 	if (moverWID == pointWID)
@@ -142,7 +142,7 @@ MoverGroup::remove(MoverPtr mover)
 //---------------------------------------------------------------------------
 
 bool
-MoverGroup::isMember(MoverPtr mover)
+MoverGroup::isMember(std::unique_ptr<Mover> mover)
 {
 	if (!mover)
 		return (false);
@@ -160,7 +160,7 @@ MoverGroup::disband(void)
 {
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		MoverPtr mover = getMover(i);
+		std::unique_ptr<Mover> mover = getMover(i);
 		mover->setGroupId(-1, true);
 	}
 #ifdef USE_IFACE
@@ -175,7 +175,7 @@ MoverGroup::disband(void)
 //---------------------------------------------------------------------------
 
 int32_t
-MoverGroup::setPoint(MoverPtr mover)
+MoverGroup::setPoint(std::unique_ptr<Mover> mover)
 {
 	if (isMember(mover))
 	{
@@ -193,18 +193,18 @@ MoverGroup::setPoint(MoverPtr mover)
 
 //---------------------------------------------------------------------------
 
-MoverPtr
+std::unique_ptr<Mover>
 MoverGroup::getPoint(void)
 {
-	return (dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(pointWID)));
+	return (dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->getByWatchID(pointWID)));
 }
 
 //---------------------------------------------------------------------------
 
-MoverPtr
+std::unique_ptr<Mover>
 MoverGroup::getMover(int32_t i)
 {
-	MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(moverWIDs[i]));
+	std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->getByWatchID(moverWIDs[i]));
 	if (!mover)
 		Fatal(0, " MoverGroup.getMover: nullptr mover ");
 	return (mover);
@@ -212,14 +212,14 @@ MoverGroup::getMover(int32_t i)
 
 //---------------------------------------------------------------------------
 
-MoverPtr
+std::unique_ptr<Mover>
 MoverGroup::selectPoint(bool excludePoint)
 {
 	for (size_t i = 0; i < numMovers; i++)
 		if (!excludePoint || (moverWIDs[i] != pointWID))
 		{
-			MoverPtr mover = getMover(i);
-			MechWarriorPtr pilot = mover->getPilot();
+			std::unique_ptr<Mover> mover = getMover(i);
+			std::unique_ptr<MechWarrior> pilot = mover->getPilot();
 			if (pilot && pilot->alive())
 			{
 				//----------------------------------------
@@ -237,7 +237,7 @@ MoverGroup::selectPoint(bool excludePoint)
 //---------------------------------------------------------------------------
 
 int32_t
-MoverGroup::getMovers(MoverPtr* moverList)
+MoverGroup::getMovers(std::unique_ptr<Mover>* moverList)
 {
 	if (numMovers > 0)
 		for (size_t i = 0; i < numMovers; i++)
@@ -247,7 +247,7 @@ MoverGroup::getMovers(MoverPtr* moverList)
 
 //---------------------------------------------------------------------------
 
-MechWarriorPtr
+std::unique_ptr<MechWarrior>
 MoverGroup::getPointPilot(void)
 {
 	if (pointWID)
@@ -262,8 +262,8 @@ MoverGroup::statusCount(int32_t* statusTally)
 {
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		MoverPtr mover = getMover(i);
-		MechWarriorPtr pilot = mover->getPilot();
+		std::unique_ptr<Mover> mover = getMover(i);
+		std::unique_ptr<MechWarrior> pilot = mover->getPilot();
 		if (!mover->getExists())
 			statusTally[8]++;
 		else if (!mover->getAwake())
@@ -316,7 +316,7 @@ char CellSpiralIncrement[JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2] = {-1, 0, 0, 1
 
 void
 MoverGroup::sortMovers(
-	int32_t numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D destination)
+	int32_t numMoversInGroup, std::unique_ptr<Mover>* moverList, Stuff::Vector3D destination)
 {
 	Mover::sortList->clear();
 	for (size_t i = 0; i < numMoversInGroup; i++)
@@ -338,7 +338,7 @@ MoverGroup::sortMovers(
 	{
 		int32_t moverIndex = Mover::sortList->getId(i);
 		if (moverIndex != -1)
-			moverList[moverIndex]->selectionIndex = i;
+			moverList[moverIndex]->selectionindex = i;
 	}
 }
 
@@ -561,7 +561,7 @@ MoverGroup::calcJumpGoals(
 	int32_t moverCount = ObjectManager->getNumMovers();
 	for (size_t i = 0; i < moverCount; i++)
 	{
-		MoverPtr mover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 		if ((mover->getObjectClass() != ELEMENTAL) && (mover != DFATarget) && !mover->isDisabled())
 		{
 			int32_t mapCellRow, mapCellCol;
@@ -657,15 +657,15 @@ MoverGroup::handleTacticalOrder(
 	bool isMove = false;
 	Stuff::Vector3D goalList[MAX_MOVERGROUP_COUNT];
 	Stuff::Vector3D location = tacOrder.getWayPoint(0);
-	// MoverPtr pointVehicle = getPoint();
+	// std::unique_ptr<Mover> pointVehicle = getPoint();
 	if (tacOrder.code == TACTICAL_ORDER_ATTACK_OBJECT)
 		if (tacOrder.attackParams.method == ATTACKMETHOD_DFA)
 		{
 			//-------------------------------------------------
 			// Let's just make it a move/jump order, for now...
 			tacOrder.code = TACTICAL_ORDER_JUMPTO_OBJECT;
-			tacOrder.moveParams.wait = false;
-			tacOrder.moveParams.wayPath.mode[0] = TRAVEL_MODE_SLOW;
+			tacOrder.moveparams.wait = false;
+			tacOrder.moveparams.wayPath.mode[0] = TravelModeType::slow;
 			GameObjectPtr target = ObjectManager->getByWatchID(tacOrder.targetWID);
 			Assert(tacOrder.targetWID != 0, 0, " DFA AttackObject WID is 0 ");
 			if (!target)
@@ -695,7 +695,7 @@ MoverGroup::handleTacticalOrder(
 			"well in mc2 ");
 		isMove = true;
 		//-----------------------------------------------------------
-		// Sort by distance to destination. Their selectionIndex will
+		// Sort by distance to destination. Their selectionindex will
 		// be set to modify this goal...
 		SortListPtr list = Mover::sortList;
 		if (list)
@@ -704,7 +704,7 @@ MoverGroup::handleTacticalOrder(
 			int32_t moverCount = 0;
 			for (size_t i = 0; i < numMovers; i++)
 			{
-				MoverPtr mover = getMover(i);
+				std::unique_ptr<Mover> mover = getMover(i);
 				Assert(mover != nullptr, moverWIDs[i],
 					" MoverGroup.handleTacticalOrder: nullptr mover ");
 				if (!mover->isDisabled())
@@ -732,11 +732,11 @@ MoverGroup::handleTacticalOrder(
 			int32_t curIndex = 1;
 			for (i = 0; i < moverCount; i++)
 			{
-				MoverPtr mover = getMover(list->getId(i));
+				std::unique_ptr<Mover> mover = getMover(list->getId(i));
 				if (mover->getWatchID() == pointWID)
-					mover->selectionIndex = 0;
+					mover->selectionindex = 0;
 				else
-					mover->selectionIndex = curIndex++;
+					mover->selectionindex = curIndex++;
 			}
 		}
 	}
@@ -745,7 +745,7 @@ MoverGroup::handleTacticalOrder(
 	case TACTICAL_ORDER_JUMPTO_OBJECT:
 	{
 		//-----------------------------------------------------------
-		// Sort by distance to destination. Their selectionIndex will
+		// Sort by distance to destination. Their selectionindex will
 		// be set to modify this goal...
 		isJump = true;
 		//-------------------------------------------------------------------------
@@ -761,12 +761,12 @@ MoverGroup::handleTacticalOrder(
 			calcJumpGoals(tacOrder.getWayPoint(0), goalList, target);
 		for (size_t i = 0; i < numMovers; i++)
 		{
-			MoverPtr mover = getMover(i);
+			std::unique_ptr<Mover> mover = getMover(i);
 			bool canJump = (goalList[i].x > -99000.0);
 			if (canJump)
-				mover->selectionIndex = 0;
+				mover->selectionindex = 0;
 			else
-				mover->selectionIndex = -2;
+				mover->selectionindex = -2;
 		}
 	}
 	break;
@@ -802,22 +802,22 @@ MoverGroup::handleTacticalOrder(
 	tacOrder.unitOrder = true;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		MoverPtr mover = getMover(i);
+		std::unique_ptr<Mover> mover = getMover(i);
 		if (mover && !mover->isDisabled())
 		{
-			if (mover->selectionIndex == -2)
+			if (mover->selectionindex == -2)
 			{
-				mover->selectionIndex = -1;
+				mover->selectionindex = -1;
 				continue;
 			}
-			tacOrder.selectionIndex = mover->selectionIndex;
-			if (tacOrder.selectionIndex != -1)
+			tacOrder.selectionindex = mover->selectionindex;
+			if (tacOrder.selectionindex != -1)
 			{
 				if (isMove)
 					tacOrder.setWayPoint(0, location);
 				else if (isJump)
 					tacOrder.setWayPoint(0, goalList[i]);
-				tacOrder.delayedTime = scenarioTime + (mover->selectionIndex * DelayedOrderTime);
+				tacOrder.delayedTime = scenarioTime + (mover->selectionindex * DelayedOrderTime);
 			}
 			switch (tacOrder.origin)
 			{
@@ -842,7 +842,7 @@ MoverGroup::handleTacticalOrder(
 				mover->getPilot()->setAlarmTacOrder(tacOrder, priority);
 				break;
 			}
-			mover->selectionIndex = -1;
+			mover->selectionindex = -1;
 		}
 	}
 	return (NO_ERROR);
@@ -860,7 +860,7 @@ MoverGroup::orderMoveToPoint(
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderMoveToPoint: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderMoveToPoint(true, setTacOrder, origin, location, -1, params);
 	}
@@ -877,7 +877,7 @@ MoverGroup::orderMoveToObject(
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderMoveToObject: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result =
 				pilot->orderMoveToObject(true, setTacOrder, origin, target, fromArea, -1, params);
@@ -894,7 +894,7 @@ MoverGroup::orderTraversePath(int32_t origin, WayPathPtr wayPath, uint32_t param
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderTraversePath: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderTraversePath(true, true, origin, wayPath, params);
 	}
@@ -910,7 +910,7 @@ MoverGroup::orderPatrolPath(int32_t origin, WayPathPtr wayPath)
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPatrolPath: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPatrolPath(true, true, origin, wayPath);
 	}
@@ -926,7 +926,7 @@ MoverGroup::orderPowerDown(int32_t origin)
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPowerDown: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPowerDown(true, origin);
 	}
@@ -942,7 +942,7 @@ MoverGroup::orderPowerUp(int32_t origin)
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPowerUp: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPowerUp(true, origin);
 	}
@@ -960,7 +960,7 @@ MoverGroup::orderAttackObject(int32_t origin, GameObjectPtr target, int32_t atta
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderAttackObject: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderAttackObject(true, origin, target, attackType, attackMethod,
 				attackRange, aimLocation, fromArea, params);
@@ -977,7 +977,7 @@ MoverGroup::orderWithdraw(int32_t origin, Stuff::Vector3D location)
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderWithdraw: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderWithdraw(true, origin, location);
 	}
@@ -993,7 +993,7 @@ MoverGroup::orderEject(int32_t origin)
 	for (size_t i = 0; i < numMovers; i++)
 	{
 		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderEject: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderEject(true, true, origin);
 	}
@@ -1009,7 +1009,7 @@ MoverGroup::triggerAlarm(int32_t alarmCode, uint32_t triggerId)
 {
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		MechWarriorPtr pilot = getMover(i)->getPilot();
+		std::unique_ptr<MechWarrior> pilot = getMover(i)->getPilot();
 		if (pilot)
 			pilot->triggerAlarm(alarmCode, triggerId);
 	}

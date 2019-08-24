@@ -12,14 +12,14 @@
 //--------------
 // Include Files
 //#include <stdio.h>
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 //***************************************************************************
 // Error Handling routines
 //***************************************************************************
 
 void
-Fatal(int32_t errCode, PSTR errMessage)
+Fatal(int32_t errCode, const std::wstring_view& errMessage)
 {
 	char msg[512];
 	sprintf(msg, " [FATAL %d] %s ", errCode, errMessage);
@@ -29,7 +29,7 @@ Fatal(int32_t errCode, PSTR errMessage)
 //---------------------------------------------------------------------------
 
 void
-Assert(bool test, int32_t errCode, PSTR errMessage)
+Assert(bool test, int32_t errCode, const std::wstring_view& errMessage)
 {
 	if (!test)
 	{

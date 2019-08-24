@@ -14,7 +14,7 @@
 // static Globals
 
 void
-GetMcDataPath(std::wstring& path, uint32_t id)
+GetMcDataPath(const std::wstring_view& path, uint32_t id)
 {
 	switch (id)
 	{

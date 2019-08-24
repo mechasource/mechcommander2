@@ -32,7 +32,7 @@ protected:
 public:
 	void init(void) { memset(id, 0, ID_SIZE); }
 
-	void init(PSTR new_id)
+	void init(const std::wstring_view& new_id)
 	{
 		strncpy_s(id, ID_SIZE, new_id, ID_SIZE - 1); // pads unused ID with 0s!
 		id[ID_SIZE - 1] = 0;
@@ -46,13 +46,13 @@ public:
 
 	IDString(void) { init(); }
 
-	IDString(PSTR new_id) { init(new_id); }
+	IDString(const std::wstring_view& new_id) { init(new_id); }
 
 	IDString(IDString& new_ids) { init(new_ids); }
 
-	inline operator PSTR(void) { return id; }
+	inline operator const std::wstring_view&(void) { return id; }
 
-	bool operator==(PSTR other_id)
+	bool operator==(const std::wstring_view& other_id)
 	{
 		if (other_id[0] != id[0])
 			return false;
@@ -120,11 +120,11 @@ public:
 		//			return (strncmp(id,other_ids.id,ID_SIZE-1) == 0);
 	}
 
-	bool operator!=(PSTR other_id) { return !(*this == other_id); }
+	bool operator!=(const std::wstring_view& other_id) { return !(*this == other_id); }
 
 	bool operator!=(IDString& other_ids) { return !(*this == other_ids); }
 
-	void operator=(PSTR new_id) { init(new_id); }
+	void operator=(const std::wstring_view& new_id) { init(new_id); }
 
 	void operator=(IDString& new_ids) { init(new_ids); }
 
@@ -137,22 +137,22 @@ public:
 class FullPathFileName
 {
 protected:
-	std::wstring fullName;
+	const std::wstring_view& fullName;
 
 public:
 	FullPathFileName(void) {}
 
-	FullPathFileName(std::wstring& dir_path, std::wstring& name, std::wstring& ext)
+	FullPathFileName(const std::wstring_view& dir_path, const std::wstring_view& name, const std::wstring_view& ext)
 	{
 		init(dir_path, name, ext);
 	}
 	~FullPathFileName(void) {}
 
-	operator std::wstring&() { return fullName; }
-	void changeExt(std::wstring& from, std::wstring& to);
+	operator const std::wstring_view&() { return fullName; }
+	void changeExt(const std::wstring_view& from, const std::wstring_view& to);
 
 protected:
-	void init(std::wstring& dir_path, std::wstring& name, std::wstring& ext);
+	void init(const std::wstring_view& dir_path, const std::wstring_view& name, const std::wstring_view& ext);
 	void destroy(void);
 };
 

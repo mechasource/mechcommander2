@@ -13,7 +13,7 @@
 #ifndef MOVER_H
 #define MOVER_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "contact.h"
 //#include "dmover.h"
 //#include "gameobj.h"
@@ -90,13 +90,13 @@ extern float metersPerWorldUnit;
 
 //------------------------------------------------------------------------------
 // Enums
-typedef enum
+enum class 
 {
 	WEAPONSORT_ATTACKCHANCE,
 	NUM_WEAPONSORT_TYPES
 } WeaponSortType;
 
-typedef enum
+enum class 
 {
 	SPEED_STATE_STATIONARY,
 	SPEED_STATE_MOVING,
@@ -152,21 +152,21 @@ public:
 
 	~MoveChunk(void) { destroy(void); }
 
-	void build(MoverPtr mover, MovePath* path1, MovePath* path2 = nullptr);
+	void build(std::unique_ptr<Mover> mover, MovePath* path1, MovePath* path2 = nullptr);
 
-	void build(MoverPtr mover, Stuff::Vector3D jumpGoal);
+	void build(std::unique_ptr<Mover> mover, Stuff::Vector3D jumpGoal);
 
-	void pack(MoverPtr mover);
+	void pack(std::unique_ptr<Mover> mover);
 
-	void unpack(MoverPtr mover);
+	void unpack(std::unique_ptr<Mover> mover);
 
-	bool equalTo(MoverPtr mover, MoveChunkPtr chunk);
+	bool equalTo(std::unique_ptr<Mover> mover, MoveChunkPtr chunk);
 };
 
 //---------------------------------------------------------------------------
 #define MAX_YAW 64
 
-typedef enum
+enum class 
 {
 	DYNAMICS_BASE,
 	DYNAMICS_MECH,
@@ -233,7 +233,7 @@ public:
 
 //---------------------------------------------------------------------------
 
-typedef enum
+enum class 
 {
 	CONTROL_BASE,
 	CONTROL_PLAYER,
@@ -241,7 +241,7 @@ typedef enum
 	CONTROL_NET
 } ControlType;
 
-typedef enum
+enum class 
 {
 	CONTROL_DATA_BASE,
 	CONTROL_DATA_MECH,
@@ -330,7 +330,7 @@ public:
 
 	void brake(void);
 
-	void update(MoverPtr mover);
+	void update(std::unique_ptr<Mover> mover);
 };
 
 //---------------------------------------------------------------------------
@@ -470,7 +470,7 @@ typedef ArmorLocation* ArmorLocationPtr;
 #define STATUSCHUNK_EJECTORDER_MASK 0x00000001
 #define STATUSCHUNK_JUMPORDER_MASK 0x00000001
 
-typedef enum
+enum class 
 {
 	STATUSCHUNK_TARGET_NONE,
 	STATUSCHUNK_TARGET_MOVER,
@@ -524,11 +524,11 @@ public:
 
 	~StatusChunk(void) { destroy(void); }
 
-	virtual void build(MoverPtr mover);
+	virtual void build(std::unique_ptr<Mover> mover);
 
-	virtual void pack(MoverPtr mover);
+	virtual void pack(std::unique_ptr<Mover> mover);
 
-	virtual void unpack(MoverPtr mover);
+	virtual void unpack(std::unique_ptr<Mover> mover);
 
 	bool equalTo(StatusChunkPtr chunk);
 };
@@ -613,7 +613,7 @@ typedef struct _MoverData : public GameObjectData
 	char teamId;
 	char groupId;
 	int32_t squadId;
-	int32_t selectionIndex;
+	int32_t selectionindex;
 	int32_t teamRosterIndex;
 	char commanderId;
 	int32_t unitGroup;
@@ -693,7 +693,7 @@ typedef struct _MoverData : public GameObjectData
 
 } MoverData;
 
-typedef enum
+enum class 
 {
 	MOVETYPE_GROUND,
 	MOVETYPE_AIR,
@@ -749,7 +749,7 @@ public:
 	uint8_t numAmmos;
 	AmmoTally ammoTypeTotal[MAX_AMMO_TYPES]; // tracks total ammo per ammo type
 	char numAmmoTypes; // number of different ammo types
-	MechWarriorPtr pilot;
+	std::unique_ptr<MechWarrior> pilot;
 	int32_t pilotHandle;
 	SensorSystemPtr sensorSystem;
 	ContactInfoPtr contactInfo;
@@ -787,7 +787,7 @@ public:
 	char teamId;
 	char groupId;
 	int32_t squadId;
-	int32_t selectionIndex; // > 0 when in selected group
+	int32_t selectionindex; // > 0 when in selected group
 	int32_t teamRosterIndex; // where am I in my team's roster?
 	char commanderId;
 	int32_t unitGroup; // the thing the user sets by hitting ctrl and a number
@@ -940,9 +940,9 @@ public:
 
 	virtual void updateDebugWindow(GameDebugWindow* debugWindow);
 
-	virtual PSTR getName(void) { return (name); }
+	virtual const std::wstring_view& getName(void) { return (name); }
 
-	virtual void setName(PSTR s) { strncpy(name, s, MAXLEN_MOVER_NAME); }
+	virtual void setName(const std::wstring_view& s) { strncpy(name, s, MAXLEN_MOVER_NAME); }
 
 	virtual void setControl(ControlType ctrlType) {}
 
@@ -1039,7 +1039,7 @@ public:
 	virtual void setSelected(bool set, int32_t newSelectionIndex = 0)
 	{
 		GameObject::setSelected(set);
-		selectionIndex = newSelectionIndex;
+		selectionindex = newSelectionIndex;
 	}
 
 	virtual int32_t handleTacticalOrder(
@@ -1137,7 +1137,7 @@ public:
 
 	virtual void setPilotHandle(int32_t _pilotHandle);
 
-	virtual void loadPilot(PSTR pilotFileName, PSTR brainFileName, LogisticsPilot* lPilot);
+	virtual void loadPilot(const std::wstring_view& pilotFileName, const std::wstring_view& brainFileName, LogisticsPilot* lPilot);
 
 	virtual void setCommanderId(int32_t _commanderId);
 
@@ -1145,9 +1145,9 @@ public:
 
 	virtual CommanderPtr getCommander(void);
 
-	virtual MechWarriorPtr getPilot(void) { return (pilot); }
+	virtual std::unique_ptr<MechWarrior> getPilot(void) { return (pilot); }
 
-	MoverPtr getPoint(void);
+	std::unique_ptr<Mover> getPoint(void);
 
 	void setTeamRosterIndex(int32_t index) { teamRosterIndex = index; }
 
@@ -1165,13 +1165,13 @@ public:
 	//			return(netPlayerId);
 	//		}
 
-	void setNetPlayerName(PCSTR name)
+	void setNetPlayerName(const std::wstring_view& name)
 	{
 		if (netPlayerName)
 			strncpy(netPlayerName, name, 255);
 	}
 
-	PCSTR getNetPlayerName(void) { return (netPlayerName); }
+	const std::wstring_view& getNetPlayerName(void) { return (netPlayerName); }
 
 	void setLocalMoverId(int32_t id) { localMoverId = id; }
 
@@ -1314,20 +1314,20 @@ public:
 		Stuff::Vector3D* location, bool useClosedAreas);
 
 	virtual int32_t calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float moveRadius,
-		Stuff::Vector3D moveGoal, int32_t selectionIndex, Stuff::Vector3D& newGoal,
-		int32_t numValidAreas, pint16_t validAreas, uint32_t moveParams);
+		Stuff::Vector3D moveGoal, int32_t selectionindex, Stuff::Vector3D& newGoal,
+		int32_t numValidAreas, pint16_t validAreas, uint32_t moveparams);
 
 	virtual int32_t calcMovePath(MovePathPtr path, int32_t pathType, Stuff::Vector3D start,
-		Stuff::Vector3D goal, int32_t* goalCell, uint32_t moveParams = MOVEPARAM_NONE);
+		Stuff::Vector3D goal, int32_t* goalCell, uint32_t moveparams = MOVEPARAM_NONE);
 
 	virtual int32_t calcEscapePath(MovePathPtr path, Stuff::Vector3D start, Stuff::Vector3D goal,
-		int32_t* goalCell, uint32_t moveParams, Stuff::Vector3D& escapeGoal);
+		int32_t* goalCell, uint32_t moveparams, Stuff::Vector3D& escapeGoal);
 
 	virtual int32_t calcMovePath(MovePathPtr path, Stuff::Vector3D start, int32_t thruArea[2],
 		int32_t goalDoor, Stuff::Vector3D finalGoal, Stuff::Vector3D* goalWorldPos,
-		int32_t* goalCell, uint32_t moveParams = MOVEPARAM_NONE);
+		int32_t* goalCell, uint32_t moveparams = MOVEPARAM_NONE);
 
-	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition);
+	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetposition);
 
 	virtual bool weaponInRange(int32_t weaponIndex, float metersToTarget, float buffer);
 
@@ -1405,7 +1405,7 @@ public:
 
 	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
 		int32_t weaponIndex, float modifiers, int32_t* range,
-		Stuff::Vector3D* targetPoint = nullptr);
+		Stuff::Vector3D* targetpoint = nullptr);
 
 	virtual float calcAttackModifier(GameObjectPtr target, int32_t weaponIndex, bool skillCheck)
 	{
@@ -1436,19 +1436,19 @@ public:
 	virtual void ammoExplosion(int32_t ammoIndex);
 
 	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
-		int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& damageDone)
+		int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetpoint, float& damageDone)
 	{
 		return (NO_ERROR);
 	}
 
 	virtual int32_t handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+		Stuff::Vector3D* targetpoint, bool hit, float entryAngle, int32_t numMissiles,
 		int32_t hitLocation)
 	{
 		return (NO_ERROR);
 	}
 
-	virtual void printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoint,
+	virtual void printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpoint,
 		int32_t chance, int32_t aimLocation, int32_t roll, WeaponShotInfo* shotInfo);
 
 	virtual void printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo);
@@ -1522,7 +1522,7 @@ public:
 
 	bool enemyRevealed(void);
 
-	virtual PSTR getIfaceName(void) { return ("No Name"); }
+	virtual const std::wstring_view& getIfaceName(void) { return ("No Name"); }
 
 	void drawSensorTextHelp(
 		float screenX, float screenY, int32_t resID, uint32_t color, bool drawBOLD);
@@ -1583,7 +1583,7 @@ typedef struct _MoverInitData
 	Stuff::Vector3D position;
 	int32_t rotation;
 	char teamID;
-	char commanderID;
+	char commanderid;
 	uint32_t baseColor;
 	uint32_t highlightColor1;
 	uint32_t highlightColor2;
@@ -1598,7 +1598,7 @@ typedef struct _MoverInitData
 
 //---------------------------------------------------------------------------
 
-extern MoverPtr
+extern std::unique_ptr<Mover>
 getMoverFromHandle(int32_t partId);
 
 //******************************************************************************************

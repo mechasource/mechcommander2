@@ -12,7 +12,7 @@ MissionSelectionScreen component.
 #include "missionselectionscreen.h"
 #include "mechbayscreen.h"
 #include "logisticsdata.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "missionbriefingscreen.h"
 #include "sounds.h"
 #include "mc2movie.h"
@@ -30,7 +30,7 @@ MissionSelectionScreen::MissionSelectionScreen()
 	LogisticsScreen::helpTextArrayID = 3;
 	bMovie = 0;
 	missionCount = 0;
-	memset(missionNames, 0, sizeof(PCSTR) * MAX_MISSIONS_IN_GROUP);
+	memset(missionNames, 0, sizeof(const std::wstring_view&) * MAX_MISSIONS_IN_GROUP);
 	bStop = 0;
 	missionDescriptionListBox.setPressFX(-1);
 	missionDescriptionListBox.setHighlightFX(-1);
@@ -179,7 +179,7 @@ MissionSelectionScreen::begin()
 	if (fadeInTime)
 		operationScreen.beginFadeIn(fadeInTime);
 	// initialize the operation
-	PCSTR str = LogisticsData::instance->getCurrentOperationFileName();
+	const std::wstring_view& str = LogisticsData::instance->getCurrentOperationFileName();
 	FullPathFileName fileName;
 	fileName.init(artPath, str, ".fit");
 	FitIniFile file;
@@ -228,7 +228,7 @@ MissionSelectionScreen::begin()
 	}
 	missionCount = MAX_MISSIONS_IN_GROUP;
 	int32_t result = LogisticsData::instance->getCurrentMissions(missionNames, missionCount);
-	std::wstring selMissionName = LogisticsData::instance->getCurrentMission();
+	const std::wstring_view& selMissionName = LogisticsData::instance->getCurrentMission();
 	gosASSERT(result == NO_ERROR);
 	bool bPressed = 0;
 	for (size_t i = 0; i < missionCount; i++)
@@ -374,5 +374,4 @@ MissionSelectionScreen::updateListBox()
 	missionDescriptionListBox.AddItem(pEntry);
 }
 
-//*************************************************************************************************
 // end of file ( MissionSelectionScreen.cpp )

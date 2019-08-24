@@ -10,7 +10,7 @@
 #include "stdinc.h"
 #include "stuffheaders.hpp"
 
-#include <ToolOS.hpp>
+#include "toolos.hpp"
 
 //#############################################################################
 //##############    NotationFile::TestClass    ################################
@@ -21,30 +21,30 @@ NotationFile::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting NotationFile test..."));
 	Check_Object(FileStreamManager::Instance);
-	PCSTR notation_snapshot = "notation.snapshot";
-	PCSTR page_1_name = "Page 1";
-	PCSTR page_2_name = "Page 2";
-	PCSTR page_3_name = "Page 3";
-	PCSTR page_5_name = "Page 5";
-	PCSTR page_8_name = "Page 8";
-	PCSTR page_9_name = "Page9";
-	PCSTR sub_page_name = "SubPage1";
-	PCSTR note_1_name = "Entry 1";
-	PCSTR note_2_name = "Entry 2";
-	PCSTR note_3_name = "Entry 3";
-	PCSTR note_4_name = "Entry 4";
-	PCSTR note_5_name = "Entry 5";
-	PCSTR note_6_name = "Entry 6";
-	PCSTR note_9_name = "Entry 9";
-	PCSTR text_a = "Text Line A";
-	PCSTR text_b = "Text Line B";
-	PCSTR text_c = "Text Line C";
-	PCSTR text_i = "-35";
-	PCSTR text_s = "3.1415";
-	PCSTR text_d = "1.99d+199";
-	PCSTR text_t = "yes";
-	PCSTR text_f = "no";
-	PCSTR string_value;
+	const std::wstring_view& notation_snapshot = "notation.snapshot";
+	const std::wstring_view& page_1_name = "Page 1";
+	const std::wstring_view& page_2_name = "Page 2";
+	const std::wstring_view& page_3_name = "Page 3";
+	const std::wstring_view& page_5_name = "Page 5";
+	const std::wstring_view& page_8_name = "Page 8";
+	const std::wstring_view& page_9_name = "Page9";
+	const std::wstring_view& sub_page_name = "SubPage1";
+	const std::wstring_view& note_1_name = "Entry 1";
+	const std::wstring_view& note_2_name = "Entry 2";
+	const std::wstring_view& note_3_name = "Entry 3";
+	const std::wstring_view& note_4_name = "Entry 4";
+	const std::wstring_view& note_5_name = "Entry 5";
+	const std::wstring_view& note_6_name = "Entry 6";
+	const std::wstring_view& note_9_name = "Entry 9";
+	const std::wstring_view& text_a = "Text Line A";
+	const std::wstring_view& text_b = "Text Line B";
+	const std::wstring_view& text_c = "Text Line C";
+	const std::wstring_view& text_i = "-35";
+	const std::wstring_view& text_s = "3.1415";
+	const std::wstring_view& text_d = "1.99d+199";
+	const std::wstring_view& text_t = "yes";
+	const std::wstring_view& text_f = "no";
+	const std::wstring_view& string_value;
 	Page *page, *sub_page = nullptr, *page_1 = nullptr, *page_2 = nullptr, *page_3 = nullptr,
 				*page_5 = nullptr, *page_8 = nullptr, *page_9 = nullptr;
 	PageIterator* pages;
@@ -228,9 +228,9 @@ NotationFile::TestClass()
 	//
 	// TESTING PRE-PROCESSOR STYLE COMMANDS
 	//
-	PCSTR include_temp;
-	PCSTR base_name = "base.ini";
-	PCSTR inc_name = "inc.ini";
+	const std::wstring_view& include_temp;
+	const std::wstring_view& base_name = "base.ini";
+	const std::wstring_view& inc_name = "inc.ini";
 	{
 		NotationFile basefile;
 		page = basefile.AddPage("Page 1");

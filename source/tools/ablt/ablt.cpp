@@ -48,20 +48,20 @@ extern "C" int __cdecl main(
 		while (!bFile->eof())
 		{
 			bFile->readString(s);
-			if (s[strlen((PSTR)s) - 1] == 10)
-				s[strlen((PSTR)s) - 1] = nullptr;
+			if (s[strlen((const std::wstring_view&)s) - 1] == 10)
+				s[strlen((const std::wstring_view&)s) - 1] = nullptr;
 			numErrs = 0;
 			numLines = 0;
 			numFiles = 0;
 			if ((s[0] == 'l') && (s[1] == ' '))
 			{
 				handle =
-					(int32_t)ABLi_loadLibrary((PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
+					(int32_t)ABLi_loadLibrary((const std::wstring_view&)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 			}
 			else if ((s[0] == 'm') && (s[1] == ' '))
 			{
-				handle = ABLi_preProcess((PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
+				handle = ABLi_preProcess((const std::wstring_view&)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 			}
 		}

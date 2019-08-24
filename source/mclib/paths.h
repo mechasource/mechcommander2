@@ -46,4 +46,4 @@ enum class data_paths : uint32_t
 };
 
 void
-GetMcDataPath(std::wstring& path, uint32_t id);
+GetMcDataPath(const std::wstring_view& path, uint32_t id);

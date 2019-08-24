@@ -19,8 +19,8 @@
 // fastfiles, close them all on exit and provide a find function which returns a
 // pointer to the fastfile containing the file we care about.  If no file is
 // found, returns nullptr.
-extern bool __stdcall FastFileInit(PSTR fname);
+extern bool __stdcall FastFileInit(const std::wstring_view& fname);
 extern void __stdcall FastFileFini(void);
-extern FastFile* __stdcall FastFileFind(PSTR fname, int32_t& fastFileHandle);
-extern uint32_t __stdcall elfHash(PSTR name);
+extern FastFile* __stdcall FastFileFind(const std::wstring_view& fname, int32_t& fastFileHandle);
+extern uint32_t __stdcall elfHash(const std::wstring_view& name);
 //-----------------------------------------------------------------------------------

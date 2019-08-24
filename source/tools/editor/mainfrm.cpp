@@ -142,18 +142,18 @@ MainFrame::OnCmdMsg(
 }
 
 LRESULT
-MainFrame::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
+MainFrame::WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam)
 {
 	if (message == WM_MOVE)
 	{
 		POINT tmp;
-		tmp.x = LOWORD(lParam) + 30;
-		tmp.y = HIWORD(lParam) + 30;
+		tmp.x = LOWORD(lparam) + 30;
+		tmp.y = HIWORD(lparam) + 30;
 		EditorInterface::instance()->ScreenToClient(&tmp);
 		LPARAM lNewParam = tmp.y << 16 | tmp.x;
-		EditorInterface::instance()->SendMessage(WM_MOVE, wParam, lNewParam);
+		EditorInterface::instance()->SendMessage(WM_MOVE, wparam, lNewParam);
 	}
-	return CFrameWnd::WindowProc(message, wParam, lParam);
+	return CFrameWnd::WindowProc(message, wparam, lparam);
 }
 
 void

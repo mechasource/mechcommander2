@@ -88,7 +88,7 @@ gosFX::EffectLibrary::Save(std::iostream stream)
 //------------------------------------------------------------------------------
 //
 gosFX::Effect::Specification*
-gosFX::EffectLibrary::Find(std::wstring& name)
+gosFX::EffectLibrary::Find(const std::wstring_view& name)
 {
 	for (auto i = 0; i < m_effects.GetLength(); ++i)
 	{

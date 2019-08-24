@@ -13,7 +13,7 @@ LogisticsData.cpp			: Implementation of the LogisticsData component.
 #include "cmponent.h"
 #include "paths.h"
 #include "warrior.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "malloc.h"
 #include "Team.h"
 #include "Mech.h"
@@ -27,7 +27,7 @@ LogisticsData.cpp			: Implementation of the LogisticsData component.
 
 #ifndef VIEWER
 #include "multPlyr.h"
-#include "Chatwindow.h"
+#include "chatwindow.h"
 #else
 bool MissionResults::FirstTimeResults = false;
 #endif
@@ -42,7 +42,6 @@ int32_t SaveGameVersionNumber = 10004;
 
 LogisticsData* LogisticsData::instance = nullptr;
 
-//*************************************************************************************************
 LogisticsData::LogisticsData()
 {
 	gosASSERT(!instance);
@@ -77,7 +76,6 @@ LogisticsData::~LogisticsData()
 #endif
 }
 
-//*************************************************************************************************
 void
 LogisticsData::init()
 {
@@ -97,12 +95,11 @@ LogisticsData::init()
 	missionInfo->init(file);
 	// temporary, just so we can test
 	int32_t count = 32;
-	PCSTR missionNames[32];
+	const std::wstring_view& missionNames[32];
 	missionInfo->getAvailableMissions(missionNames, count);
 	setCurrentMission(missionNames[0]);
 }
 
-//*************************************************************************************************
 void
 LogisticsData::initComponents()
 {
@@ -118,10 +115,10 @@ LogisticsData::initComponents()
 	puint8_t data = new uint8_t[componentFile.getLength()];
 	componentFile.read(data, componentFile.getLength());
 	File dataFile;
-	dataFile.open((PSTR)data, componentFile.getLength());
+	dataFile.open((const std::wstring_view&)data, componentFile.getLength());
 	componentFile.close();
 	uint8_t line[1024];
-	PSTR pLine = (PSTR)line;
+	const std::wstring_view& pLine = (const std::wstring_view&)line;
 	// skip the first line
 	dataFile.readLine(line, 1024);
 	int32_t Ammo[512];
@@ -154,7 +151,6 @@ LogisticsData::initComponents()
 	data = nullptr;
 }
 
-//*************************************************************************************************
 void
 LogisticsData::initPilots()
 {
@@ -175,7 +171,7 @@ LogisticsData::initPilots()
 		pilots.Append(tmpPilot);
 		LogisticsPilot& pilot = pilots.GetTail();
 		pilot.id = id;
-		if (-1 == pilot.init((PSTR)pilotFileName))
+		if (-1 == pilot.init((const std::wstring_view&)pilotFileName))
 			pilots.DeleteTail();
 		id++;
 	}
@@ -195,7 +191,7 @@ LogisticsData::initVariants()
 	if (NO_ERROR != pakFile.open(pakPath))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)pakPath);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)pakPath);
 		Assert(0, 0, errorStr);
 	}
 	char variantFileName[256];
@@ -286,13 +282,11 @@ LogisticsData::addVehicle(int32_t fitID, PacketFile& objectFile, float scale)
 	}
 }
 
-//*************************************************************************************************
 void
 LogisticsData::RegisterFunctions()
 {
 }
 
-//*************************************************************************************************
 void
 LogisticsData::UnRegisterFunctions()
 {
@@ -411,7 +405,7 @@ LogisticsData::sellMech(LogisticsMech* pVar)
 }
 
 int32_t
-LogisticsData::removeVariant(PCSTR varName)
+LogisticsData::removeVariant(const std::wstring_view& varName)
 {
 	if (!varName)
 		return -1;
@@ -588,9 +582,9 @@ LogisticsData::getFirstAvailablePilot()
 	return nullptr;
 }
 
-// GetAvailableMissions( PSTR* missionNames, int32_t& count )
+// GetAvailableMissions( const std::wstring_view&* missionNames, int32_t& count )
 int32_t
-LogisticsData::getAvailableMissions(PCSTR* missionNames, int32_t& count)
+LogisticsData::getAvailableMissions(const std::wstring_view&* missionNames, int32_t& count)
 {
 	int32_t numberOfEm = 0;
 	// first figure out how many there are
@@ -604,7 +598,7 @@ LogisticsData::getAvailableMissions(PCSTR* missionNames, int32_t& count)
 }
 
 int32_t
-LogisticsData::getCurrentMissions(PCSTR* missionNames, int32_t& count)
+LogisticsData::getCurrentMissions(const std::wstring_view&* missionNames, int32_t& count)
 {
 	int32_t numberOfEm = 0;
 	// first figure out how many there are
@@ -619,14 +613,14 @@ LogisticsData::getCurrentMissions(PCSTR* missionNames, int32_t& count)
 }
 
 bool
-LogisticsData::getMissionAvailable(PCSTR missionName)
+LogisticsData::getMissionAvailable(const std::wstring_view& missionName)
 {
 	return missionInfo->getMissionAvailable(missionName);
 }
 
-// SetCurrentMission( PSTR missionName )
+// SetCurrentMission( const std::wstring_view& missionName )
 int32_t
-LogisticsData::setCurrentMission(PCSTR missionName)
+LogisticsData::setCurrentMission(const std::wstring_view& missionName)
 {
 	int32_t result = missionInfo->setNextMission(missionName);
 	if (result == NO_ERROR)
@@ -656,9 +650,9 @@ LogisticsData::removeDeadWeight()
 }
 
 int32_t
-LogisticsData::setCurrentMission(const std::wstring& missionName)
+LogisticsData::setCurrentMission(const std::wstring_view& missionName)
 {
-	return setCurrentMission((PCSTR)missionName);
+	return setCurrentMission((const std::wstring_view&)missionName);
 }
 
 void
@@ -727,9 +721,9 @@ LogisticsData::addMechToInventory(LogisticsVariant* pVar, int32_t addToForceGrou
 }
 
 LogisticsVariant*
-LogisticsData::getVariant(PCSTR pCSVFileName, int32_t VariantNum)
+LogisticsData::getVariant(const std::wstring_view& pCSVFileName, int32_t VariantNum)
 {
-	std::wstring lowerCase = pCSVFileName;
+	const std::wstring_view& lowerCase = pCSVFileName;
 	lowerCase.MakeLower();
 	for (VARIANT_LIST::EIterator iter = variants.Begin(); !iter.IsDone(); iter++)
 	{
@@ -760,7 +754,7 @@ LogisticsData::removeMechsInForceGroup()
 	}
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsData::getBestPilot(int32_t mechWeight)
 {
 	if (!pilots.Count())
@@ -771,8 +765,8 @@ LogisticsData::getBestPilot(int32_t mechWeight)
 #ifndef VIEWER
 	for (PILOT_LIST::EIterator iter = pilots.Begin(); !iter.IsDone(); iter++)
 	{
-		PCSTR nameCheck = (*iter).getName();
-		if ((*iter).isAvailable() && (MPlayer || !MechWarrior::warriorInUse((PSTR)nameCheck)))
+		const std::wstring_view& nameCheck = (*iter).getName();
+		if ((*iter).isAvailable() && (MPlayer || !MechWarrior::warriorInUse((const std::wstring_view&)nameCheck)))
 			pPilots[counter++] = &(*iter);
 	}
 #endif
@@ -815,8 +809,8 @@ LogisticsData::gotPilotsLeft()
 #ifndef VIEWER
 	for (PILOT_LIST::EIterator iter = pilots.Begin(); !iter.IsDone(); iter++)
 	{
-		PCSTR nameCheck = (*iter).getName();
-		if ((*iter).isAvailable() && (MPlayer || !MechWarrior::warriorInUse((PSTR)nameCheck)))
+		const std::wstring_view& nameCheck = (*iter).getName();
+		if ((*iter).isAvailable() && (MPlayer || !MechWarrior::warriorInUse((const std::wstring_view&)nameCheck)))
 			pPilots[counter++] = &(*iter);
 	}
 #endif
@@ -1093,7 +1087,7 @@ void
 LogisticsData::setMissionCompleted()
 {
 #ifndef VIEWER
-	PCSTR pMissionName = missionInfo->getCurrentMission();
+	const std::wstring_view& pMissionName = missionInfo->getCurrentMission();
 	missionInfo->setMissionComplete();
 	rpJustAdded = 0;
 	// first set all pilots as not just dead
@@ -1174,7 +1168,7 @@ LogisticsData::setMissionCompleted()
 }
 
 LogisticsMech*
-LogisticsData::getMech(PCSTR MechName, PCSTR pilotName)
+LogisticsData::getMech(const std::wstring_view& MechName, const std::wstring_view& pilotName)
 {
 	for (MECH_LIST::EIterator iter = inventory.Begin(); !iter.IsDone(); iter++)
 	{
@@ -1196,7 +1190,7 @@ LogisticsData::getMech(PCSTR MechName, PCSTR pilotName)
 }
 
 void
-LogisticsData::removeMechFromInventory(PCSTR mechName, PCSTR pilotName)
+LogisticsData::removeMechFromInventory(const std::wstring_view& mechName, const std::wstring_view& pilotName)
 {
 	LogisticsMech* pMech = getMech(mechName, pilotName);
 	gosASSERT(pMech);
@@ -1208,7 +1202,7 @@ LogisticsData::removeMechFromInventory(PCSTR mechName, PCSTR pilotName)
 }
 
 LogisticsPilot*
-LogisticsData::getPilot(PCSTR pilotName)
+LogisticsData::getPilot(const std::wstring_view& pilotName)
 {
 	// look for available ones first
 	PILOT_LIST::EIterator iter;
@@ -1233,7 +1227,7 @@ LogisticsData::getPilot(PCSTR pilotName)
 }
 
 LogisticsVariant*
-LogisticsData::getVariant(PCSTR mechName)
+LogisticsData::getVariant(const std::wstring_view& mechName)
 {
 	for (VARIANT_LIST::EIterator iter = variants.Begin(); !iter.IsDone(); iter++)
 	{
@@ -1247,7 +1241,7 @@ int32_t
 LogisticsData::updateAvailability()
 {
 	bNewWeapons = 0;
-	std::wstring purchaseFileName = missionInfo->getCurrentPurchaseFile();
+	const std::wstring_view& purchaseFileName = missionInfo->getCurrentPurchaseFile();
 	purchaseFileName.MakeLower();
 	if (purchaseFileName.Length() < 1)
 	{
@@ -1267,11 +1261,11 @@ LogisticsData::updateAvailability()
 	}
 	// make sure its around and you can open it
 	FitIniFile file;
-	if (NO_ERROR != file.open((PSTR)(PCSTR)purchaseFileName))
+	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)purchaseFileName))
 	{
-		std::wstring error;
-		error.Format("Couldn't open %s", (PSTR)(PCSTR)purchaseFileName);
-		PAUSE(((PSTR)(PCSTR)error));
+		const std::wstring_view& error;
+		error.Format("Couldn't open %s", (const std::wstring_view&)(const std::wstring_view&)purchaseFileName);
+		PAUSE(((const std::wstring_view&)(const std::wstring_view&)error));
 		return NO_PURCHASE_FILE;
 	}
 	// read in available components
@@ -1310,7 +1304,7 @@ LogisticsData::updateAvailability()
 			(*cIter).setAvailable(1);
 		}
 	}
-	PCSTR pFileNames[512];
+	const std::wstring_view& pFileNames[512];
 	int32_t count = 512;
 	missionInfo->getAdditionalPurachaseFiles(pFileNames, count);
 	// reset all variants to unavailable
@@ -1347,7 +1341,7 @@ LogisticsData::updateAvailability()
 		// all of its components are valid
 		for (vIter = variants.Begin(); !vIter.IsDone(); vIter++)
 		{
-			std::wstring mechName = (*vIter)->getFileName();
+			const std::wstring_view& mechName = (*vIter)->getFileName();
 			char realName[1024];
 			_splitpath(mechName, nullptr, nullptr, realName, nullptr);
 			if (_stricmp(realName, chassisFileName) == 0)
@@ -1409,7 +1403,7 @@ LogisticsData::updateAvailability()
 }
 
 void
-LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray)
+LogisticsData::appendAvailability(const std::wstring_view& pFileName, bool* availableArray)
 {
 	FitIniFile file;
 	if (NO_ERROR != file.open(pFileName))
@@ -1468,7 +1462,7 @@ LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray)
 		// all of its components are valid
 		for (VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone(); vIter++)
 		{
-			std::wstring mechName = (*vIter)->getFileName();
+			const std::wstring_view& mechName = (*vIter)->getFileName();
 			char realName[255];
 			_splitpath(mechName, nullptr, nullptr, realName, nullptr);
 			if (_stricmp(realName, chassisFileName) == 0)
@@ -1501,19 +1495,19 @@ LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray)
 	}
 }
 
-const std::wstring&
+const std::wstring_view&
 LogisticsData::getCurrentMission(void) const
 {
 	return missionInfo->getCurrentMission();
 }
 
-const std::wstring&
+const std::wstring_view&
 LogisticsData::getLastMission(void) const
 {
 	return missionInfo->getLastMission();
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsData::getCurrentABLScript(void) const
 {
 	return missionInfo->getCurrentABLScriptName();
@@ -1662,7 +1656,7 @@ LogisticsData::setMechToModify(LogisticsMech* pMech)
 }
 
 void
-encryptFile(PSTR inputFile, PSTR outputFile)
+encryptFile(const std::wstring_view& inputFile, const std::wstring_view& outputFile)
 {
 	// Now we encrypt this by zlib Compressing the file passed in.
 	// Then LZ Compressing the resulting zlib data.
@@ -1695,7 +1689,7 @@ encryptFile(PSTR inputFile, PSTR outputFile)
 }
 
 void
-decryptFile(PSTR inputFile, PSTR outputFile)
+decryptFile(const std::wstring_view& inputFile, const std::wstring_view& outputFile)
 {
 	// Now we decrypt this by lz deCompressing the zlib file created.
 	// Then zlib deCompressing the resulting zlib data into the raw File again.
@@ -1734,7 +1728,7 @@ decryptFile(PSTR inputFile, PSTR outputFile)
 }
 
 int32_t
-LogisticsData::acceptMechModifications(PCSTR name)
+LogisticsData::acceptMechModifications(const std::wstring_view& name)
 {
 	if (!currentlyModifiedMech)
 		return -1;
@@ -1824,7 +1818,7 @@ LogisticsData::acceptMechModifications(PCSTR name)
 	return 0;
 }
 int32_t
-LogisticsData::acceptMechModificationsUseOldVariant(PCSTR name)
+LogisticsData::acceptMechModificationsUseOldVariant(const std::wstring_view& name)
 {
 	if (!currentlyModifiedMech)
 		return -1;
@@ -1845,7 +1839,7 @@ LogisticsData::acceptMechModificationsUseOldVariant(PCSTR name)
 }
 
 bool
-LogisticsData::canReplaceVariant(PCSTR name)
+LogisticsData::canReplaceVariant(const std::wstring_view& name)
 {
 	int32_t nameCount = 0;
 	for (MECH_LIST::EIterator iter = inventory.Begin(); !iter.IsDone(); iter++)
@@ -1870,7 +1864,7 @@ LogisticsData::canReplaceVariant(PCSTR name)
 }
 
 bool
-LogisticsData::canDeleteVariant(PCSTR name)
+LogisticsData::canDeleteVariant(const std::wstring_view& name)
 {
 	LogisticsVariant* pVariant = getVariant(name);
 	if (!pVariant)
@@ -1895,31 +1889,31 @@ LogisticsData::cancelMechModfications()
 	return 0;
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsData::getCurrentOperationFileName()
 {
 	return missionInfo->getCurrentOperationFile();
 }
-PCSTR
+const std::wstring_view&
 LogisticsData::getCurrentVideoFileName()
 {
 	return missionInfo->getCurrentVideo();
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsData::getCurrentMissionDescription()
 {
 	return missionInfo->getCurrentMissionDescription();
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsData::getCurrentMissionFriendlyName()
 {
 	return missionInfo->getCurrentMissionFriendlyName();
 }
 
-PCSTR
-LogisticsData::getMissionFriendlyName(PCSTR missionName)
+const std::wstring_view&
+LogisticsData::getMissionFriendlyName(const std::wstring_view& missionName)
 {
 	return missionInfo->getMissionFriendlyName(missionName);
 }
@@ -1930,7 +1924,7 @@ LogisticsData::getMissionFriendlyName(PCSTR missionName)
 }*/
 
 void
-LogisticsData::startNewCampaign(PCSTR fileName)
+LogisticsData::startNewCampaign(const std::wstring_view& fileName)
 {
 #ifndef VIEWER
 	if (MPlayer)
@@ -1953,7 +1947,7 @@ LogisticsData::startNewCampaign(PCSTR fileName)
 	missionInfo->init(file);
 	// temporary, just so we can test
 	int32_t count = 32;
-	PCSTR missionNames[32];
+	const std::wstring_view& missionNames[32];
 	missionInfo->getAvailableMissions(missionNames, count);
 	setCurrentMission(missionNames[0]);
 	soundSystem->setMusicVolume(prefs.MusicVolume);
@@ -2008,7 +2002,7 @@ LogisticsData::startMultiPlayer()
 #endif
 }
 void
-LogisticsData::setPurchaseFile(PCSTR fileName)
+LogisticsData::setPurchaseFile(const std::wstring_view& fileName)
 {
 	missionInfo->setPurchaseFile(fileName);
 	if (MPlayer)
@@ -2033,7 +2027,7 @@ LogisticsData::decrementCBills(int32_t amount)
 }
 
 int32_t
-LogisticsData::getPlayerVariantNames(PCSTR* array, int32_t& count)
+LogisticsData::getPlayerVariantNames(const std::wstring_view&* array, int32_t& count)
 {
 	int32_t maxCount = count;
 	count = 0;
@@ -2114,7 +2108,7 @@ LogisticsData::getVehicles(const LogisticsVehicle** pChassis, int32_t& count)
 }
 
 LogisticsVehicle*
-LogisticsData::getVehicle(PCSTR pName)
+LogisticsData::getVehicle(const std::wstring_view& pName)
 {
 	char tmpStr[256];
 	for (VEHICLE_LIST::EIterator vIter = vehicles.Begin(); !vIter.IsDone(); vIter++)
@@ -2189,7 +2183,6 @@ LogisticsData::addBuilding(int32_t fitID, PacketFile& objectFile, float scale)
 	return 0;
 }
 
-//*************************************************************************************************
 LogisticsComponent*
 LogisticsData::getComponent(int32_t componentID)
 {
@@ -2201,7 +2194,6 @@ LogisticsData::getComponent(int32_t componentID)
 	return nullptr;
 }
 
-//*************************************************************************************************
 LogisticsData::Building*
 LogisticsData::getBuilding(int32_t nameID)
 {
@@ -2213,7 +2205,6 @@ LogisticsData::getBuilding(int32_t nameID)
 	return nullptr;
 }
 
-//*************************************************************************************************
 int32_t
 LogisticsData::getBuildings(Building** bdgs, int32_t& count)
 {
@@ -2233,7 +2224,7 @@ LogisticsData::getBuildings(Building** bdgs, int32_t& count)
 	return retVal;
 }
 
-const std::wstring&
+const std::wstring_view&
 LogisticsData::getCampaignName(void) const
 {
 	return missionInfo->getCampaignName();
@@ -2244,19 +2235,19 @@ LogisticsData::campaignOver()
 {
 	return missionInfo->campaignOver();
 }
-PCSTR
+const std::wstring_view&
 LogisticsData::getCurrentBigVideo(void) const
 {
 	return missionInfo->getCurrentBigVideo();
 }
-PCSTR
+const std::wstring_view&
 LogisticsData::getFinalVideo(void) const
 {
 	return missionInfo->getFinalVideo();
 }
 
 void
-LogisticsData::addNewBonusPurchaseFile(PCSTR pFileName)
+LogisticsData::addNewBonusPurchaseFile(const std::wstring_view& pFileName)
 {
 	missionInfo->addBonusPurchaseFile(pFileName);
 }
@@ -2289,7 +2280,7 @@ LogisticsData::showChooseMission()
 }
 
 void
-LogisticsData::setSingleMission(PCSTR pName)
+LogisticsData::setSingleMission(const std::wstring_view& pName)
 {
 	missionInfo->setSingleMission(pName);
 	clearVariants();
@@ -2372,7 +2363,7 @@ LogisticsData::setVideoShown()
 		missionInfo->setVideoShown();
 }
 void
-LogisticsData::setPilotUnused(PCSTR pName)
+LogisticsData::setPilotUnused(const std::wstring_view& pName)
 {
 	for (PILOT_LIST::EIterator iter = pilots.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2396,5 +2387,4 @@ LogisticsData::getCurrentMissionNum(void)
 	return missionInfo->getCurrentMissionNumber();
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsData.cpp )

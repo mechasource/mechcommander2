@@ -16,27 +16,29 @@
 //#include "ablscan.h"
 //#include "dablenv.h"
 
+namespace mclib::abl {
+
 //***************************************************************************
 
 //---------------------
 // DEFINITION structure
 
-typedef union {
+union Value {
 	int32_t integer;
 	char character;
 	float real;
-	PSTR stringPtr;
-} Value;
+	std::wstring_view stringPtr;
+};
 
-typedef enum VariableType : uint32_t
+enum class VariableType : uint8_t
 {
 	VAR_TYPE_NORMAL,
 	VAR_TYPE_STATIC,
 	VAR_TYPE_ETERNAL,
 	VAR_TYPE_REGISTERED
-} VariableType;
+};
 
-typedef enum DefinitionType : uint32_t
+enum class DefinitionType : uint8_t
 {
 	DFN_UNDEFINED,
 	DFN_CONST,
@@ -47,9 +49,9 @@ typedef enum DefinitionType : uint32_t
 	DFN_MODULE,
 	DFN_PROCEDURE,
 	DFN_FUNCTION
-} DefinitionType;
+};
 
-typedef enum RoutineKey : uint32_t
+enum class RoutineKey : uint8_t
 {
 	RTN_DECLARED,
 	RTN_FORWARD,
@@ -60,30 +62,30 @@ typedef enum RoutineKey : uint32_t
 	RTN_ASSERT,
 	RTN_FATAL,
 	NUM_ABL_ROUTINES
-} RoutineKey;
+};
 // NOTE: NUMBER OF ROUTINEKEYS IS LIMITED TO 256!
 
-typedef struct _SymTableNode* SymTableNodePtr;
-typedef struct _Type* TypePtr;
+//typedef struct _SymTableNode* SymTableNodePtr;
+//typedef struct _Type* TypePtr;
 
-typedef struct
+struct Constant
 {
 	Value value;
-} Constant;
+};
 
-typedef struct
+struct StateHandleInfo
 {
 	char name[128];
-	SymTableNodePtr state;
-} StateHandleInfo;
+	const std::unique_ptr<SymTableNode>& state;
+};
 
-typedef StateHandleInfo* StateHandleInfoPtr;
+// typedef StateHandleInfo* StateHandleInfo;
 
 #define ROUTINE_FLAG_ORDER 1
 #define ROUTINE_FLAG_FSM 2
 #define ROUTINE_FLAG_STATE 4
 
-typedef struct _Routine
+struct Routine
 {
 	RoutineKey key;
 	uint8_t flags;
@@ -92,55 +94,55 @@ typedef struct _Routine
 	uint8_t paramCount;
 	uint8_t totalParamSize;
 	uint16_t totalLocalSize;
-	SymTableNodePtr params;
-	SymTableNodePtr locals;
-	SymTableNodePtr localSymTable;
-	PSTR codeSegment;
+	const std::unique_ptr<SymTableNode>& params;
+	const std::unique_ptr<SymTableNode>& locals;
+	const std::unique_ptr<SymTableNode>& localSymTable;
+	const std::wstring_view& codeSegment;
 	int32_t codeSegmentSize;
-} Routine;
+};
 
-typedef struct
+struct Data
 {
 	VariableType varType;
 	int32_t offset;
 	PVOID registeredData;
-	// SymTableNodePtr			recordIdPtr;		// Currently not
+	// const std::unique_ptr<SymTableNode>&			recordIdPtr;		// Currently not
 	// implementing record structures...
-} Data;
+};
 
-typedef union {
+union DefinitionInfo {
 	Constant constant;
 	Routine routine;
 	Data data;
-} DefinitionInfo;
+};
 
-typedef struct
+struct Definition
 {
 	DefinitionType key;
 	DefinitionInfo info;
-} Definition;
+};
 
 //***************************************************************************
 
 //------------------
 // SYMBOL TABLE node
 
-typedef struct _SymTableNode
+struct SymTableNode
 {
-	SymTableNodePtr left;
-	SymTableNodePtr parent;
-	SymTableNodePtr right;
-	SymTableNodePtr next;
-	PSTR name;
-	PSTR info;
+	std::unique_ptr<SymTableNode> left;
+	std::unique_ptr<SymTableNode> parent;
+	std::unique_ptr<SymTableNode> right;
+	std::unique_ptr<SymTableNode> next;
+	std::unique_ptr<Type> ptype;
+	std::unique_ptr<ABLModule> library;
+	std::wstring_view name;
+	std::wstring_view info;
 	Definition defn;
-	TypePtr typePtr;
-	ABLModulePtr library;
 	uint8_t level;
 	int32_t labelIndex; // really for compiling only...
-} SymTableNode;
+};
 
-typedef enum FunctionParamType
+enum class FunctionParamType : uint8_t
 {
 	PARAM_TYPE_ANYTHING,
 	PARAM_TYPE_CHAR,
@@ -153,23 +155,23 @@ typedef enum FunctionParamType
 	PARAM_TYPE_REAL_ARRAY,
 	PARAM_TYPE_BOOLEAN_ARRAY,
 	NUM_PARAM_TYPES
-} FunctionParamType;
+};
 
-typedef enum FunctionReturnType
+enum class FunctionReturnType : uint8_t
 {
 	RETURN_TYPE_NONE,
 	RETURN_TYPE_INTEGER,
 	RETURN_TYPE_REAL,
 	RETURN_TYPE_BOOLEAN,
 	NUM_RETURN_TYPES
-} FunctionReturnType;
+};
 
 #define MAX_STANDARD_FUNCTIONS 256
 #define MAX_FUNCTION_PARAMS 20
 
 typedef struct
 {
-	SymTableNodePtr symbol;
+	const std::unique_ptr<SymTableNode>& symbol;
 	int32_t numParams;
 	FunctionParamType params[MAX_FUNCTION_PARAMS];
 	FunctionReturnType returnType;
@@ -180,99 +182,99 @@ typedef struct
 //---------------
 // TYPE structure
 
-typedef enum
+enum class FormType : uint8_t
 {
 	FRM_NONE,
 	FRM_SCALAR,
 	FRM_ENUM,
 	FRM_ARRAY
 	// FRM_RECORD
-} FormType;
+};
 
 //---------------------------------------------------------------------
 // Currently, we are only supporting the basic types: arrays and simple
 // variables.
 
-typedef struct _Type
+struct Type
 {
 	int32_t numInstances;
 	FormType form;
 	int32_t size;
-	SymTableNodePtr typeIdPtr;
+	const std::unique_ptr<SymTableNode>& typeIdPtr;
 	union {
 		struct
 		{
-			SymTableNodePtr constIdPtr;
+			const std::unique_ptr<SymTableNode>& constIdPtr;
 			int32_t max;
 		} enumeration;
 		struct
 		{
-			TypePtr indexTypePtr; // should be Integer
-			TypePtr elementTypePtr; // should be Real, Integer, Char or array
+			const std::unique_ptr<Type>& indexTypePtr; // should be Integer
+			const std::unique_ptr<Type>& elementTypePtr; // should be Real, Integer, Char or array
 			int32_t elementCount;
 		} array;
 		// Not currently implementing record structures...
 		// struct {
-		//	SymTableNodePtr		fieldSymTable;
+		//	const std::unique_ptr<SymTableNode>&		fieldSymTable;
 		//} record;
 	} info;
-} Type;
+};
 
 //***************************************************************************
 
 void
-searchLocalSymTable(SymTableNodePtr& IdPtr);
-SymTableNodePtr
-searchLocalSymTableForFunction(PSTR name);
+searchLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
+const std::unique_ptr<SymTableNode>&
+searchLocalSymTableForFunction(const std::wstring_view& name);
 void
-searchThisSymTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
+searchThisSymTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::unique_ptr<SymTableNode>& thisTable);
 void
-searchAllSymTables(SymTableNodePtr& IdPtr);
+searchAllSymTables(const std::unique_ptr<SymTableNode>&& IdPtr);
 void
-enterLocalSymTable(SymTableNodePtr& IdPtr);
+enterLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
 void
-enterNameLocalSymTable(SymTableNodePtr& IdPtr, PSTR name);
+enterNameLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::wstring_view& name);
 void
-searchAndFindAllSymTables(SymTableNodePtr& IdPtr);
+searchAndFindAllSymTables(const std::unique_ptr<SymTableNode>&& IdPtr);
 void
-searchAndEnterLocalSymTable(SymTableNodePtr& IdPtr);
+searchAndEnterLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
 /*inline*/ void
-searchAndEnterThisTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
-inline SymTableNodePtr
-symTableSuccessor(SymTableNodePtr nodeX);
+searchAndEnterThisTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::unique_ptr<SymTableNode>& thisTable);
+inline const std::unique_ptr<SymTableNode>&
+symTableSuccessor(const std::unique_ptr<SymTableNode>& nodeX);
 
-SymTableNodePtr
-searchSymTable(PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr
-searchSymTableForFunction(PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr
-searchSymTableForState(PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr
-searchSymTableForString(PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr
-searchSymTableDisplay(PSTR name);
-SymTableNodePtr
-enterSymTable(PSTR name, SymTableNodePtr* ptrToNodePtr);
-SymTableNodePtr
-insertSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
-SymTableNodePtr
-extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
+const std::unique_ptr<SymTableNode>&
+searchSymTable(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr);
+const std::unique_ptr<SymTableNode>&
+searchSymTableForFunction(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr);
+const std::unique_ptr<SymTableNode>&
+searchSymTableForState(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr);
+const std::unique_ptr<SymTableNode>&
+searchSymTableForString(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr);
+const std::unique_ptr<SymTableNode>&
+searchSymTableDisplay(const std::wstring_view& name);
+const std::unique_ptr<SymTableNode>&
+enterSymTable(const std::wstring_view& name, const std::unique_ptr<SymTableNode>&* ptrToNodePtr);
+const std::unique_ptr<SymTableNode>&
+insertSymTable(const std::unique_ptr<SymTableNode>&* tableRoot, const std::unique_ptr<SymTableNode>& newNode);
+const std::unique_ptr<SymTableNode>&
+extractSymTable(const std::unique_ptr<SymTableNode>&* tableRoot, const std::unique_ptr<SymTableNode>& nodeKill);
 void
-enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList,
-	PSTR returnType, void (*callback)(void));
+enterStandardRoutine(const std::wstring_view& name, int32_t routineKey, bool isOrder, const std::wstring_view& paramList,
+	const std::wstring_view& returnType, void (*callback)(void));
 void
-enterScope(SymTableNodePtr symTableRoot);
-SymTableNodePtr
+enterScope(const std::unique_ptr<SymTableNode>& symTableRoot);
+const std::unique_ptr<SymTableNode>&
 exitScope(void);
 void
 initSymTable(void);
 
-TypePtr
+const std::unique_ptr<Type>&
 createType(void);
-TypePtr
-setType(TypePtr type);
+const std::unique_ptr<Type>&
+setType(const std::unique_ptr<Type>& type);
 void
-clearType(TypePtr& type);
+clearType(const std::unique_ptr<Type>&& type);
 
 //***************************************************************************
 
@@ -280,5 +282,7 @@ extern StandardFunctionInfo FunctionInfoTable[MAX_STANDARD_FUNCTIONS];
 // extern PVOID					FunctionCallbackTable[MAX_STANDARD_FUNCTIONS];
 extern void (*FunctionCallbackTable[MAX_STANDARD_FUNCTIONS])(void);
 extern int32_t NumStandardFunctions;
+
+} // namespace mclib::abl
 
 #endif

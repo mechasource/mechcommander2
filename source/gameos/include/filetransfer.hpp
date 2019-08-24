@@ -27,7 +27,7 @@ public:
 	static CHUNKSIZE;
 	// static char HomeDirectory[512];
 
-	typedef enum
+	enum class 
 	{
 		FTReceive = 0,
 		FTSend

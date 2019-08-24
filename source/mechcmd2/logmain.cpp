@@ -9,7 +9,7 @@
 
 //-----------------------------------
 // Include Files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef LOGISTICS_H
 #include "logistics.h"
@@ -20,10 +20,10 @@
 #include "version.h"
 #endif
 
-#include <gameos.hpp>
-#include <GameOS\ToolOS.hpp>
-#include <GOSScript\GOSScriptHeaders.hpp>
-#include <Stuff\stuff.hpp>
+#include "gameos.hpp"
+#include "toolos.hpp"
+#include "gosscript/gosscriptheaders.hpp"
+#include "stuff/stuff.h"
 
 //------------------------------------------------------------------------------------------------------------
 // MechCmdr2 Global Instances of Things
@@ -91,7 +91,7 @@ bool inViewMode = false;
 uint32_t viewObject = 0x0;
 char missionName[1024];
 
-PSTR ExceptionGameMsg = nullptr;
+const std::wstring_view& ExceptionGameMsg = nullptr;
 
 char buildNumber[80];
 
@@ -109,13 +109,13 @@ bool useRealLOS = true;
 
 //***************************************************************************
 
-PSTR
+const std::wstring_view&
 GetGameInformation()
 {
 	return (ExceptionGameMsg);
 }
 
-// int32_t cLoadString (HINSTANCE hInstance,  uint32_t uID, PSTR lpBuffer,
+// int32_t cLoadString (HINSTANCE hinstance,  uint32_t uID, const std::wstring_view& lpBuffer,
 // int32_t nBufferMax );
 
 //---------------------------------------------------------------------------
@@ -539,12 +539,12 @@ DoGameLogic()
 
 //---------------------------------------------------------------------------
 int32_t
-textToLong(PSTR num)
+textToLong(const std::wstring_view& num)
 {
 	int32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = strstr(num, "0x");
+	const std::wstring_view& hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -591,12 +591,12 @@ textToLong(PSTR num)
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
 void
-ParseCommandLine(PSTR command_line)
+ParseCommandLine(const std::wstring_view& command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
 	int32_t index = 0;
-	PSTR argv[30];
+	const std::wstring_view& argv[30];
 	char tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
@@ -627,9 +627,9 @@ bool notFirstTime = false;
 // Setup the GameOS structure -- This tells GameOS what I am using
 //
 void
-GetGameOSEnvironment(PSTR CommandLine)
+GetGameOSEnvironment(const std::wstring_view& commandline)
 {
-	ParseCommandLine(CommandLine);
+	ParseCommandLine(commandline);
 	Environment.applicationName = "MC2GOSScriptShell";
 	Environment.directoryPath = "Logistics";
 	Environment.debugLog = ""; //;		"DebugLog.txt";

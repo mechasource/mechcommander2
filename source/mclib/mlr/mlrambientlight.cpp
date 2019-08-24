@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrambientlight.hpp>
+#include "mlr/mlrambientlight.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //###########################    MLRAmbientLight    ###########################
@@ -90,3 +90,5 @@ MLRAmbientLight::LightVertex(const MLRVertexData& vertexData)
 	vertexData.color->blue += (color.blue * intensity);
 #endif
 }
+
+} // namespace MidLevelRenderer

@@ -19,7 +19,7 @@
 
 #define MAX_TRIGGER_AREAS 16
 
-typedef enum
+enum class 
 {
 	TRIGGER_AREA_NONE,
 	TRIGGER_AREA_MOVER,
@@ -73,7 +73,7 @@ public:
 
 	bool isHit(int32_t areaHandle);
 
-	void setHit(MoverPtr mover);
+	void setHit(std::unique_ptr<Mover> mover);
 };
 
 //---------------------------------------------------------------------------

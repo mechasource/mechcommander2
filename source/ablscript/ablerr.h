@@ -12,6 +12,8 @@
 #ifndef ABLERR_H
 #define ABLERR_H
 
+namespace mclib::abl {
+
 //***************************************************************************
 
 #define MAX_SYNTAX_ERRORS 1 // 20
@@ -19,7 +21,7 @@
 
 //#pragma warning( disable : 4514 )
 
-typedef enum SyntaxErrorType : uint32_t
+enum class SyntaxErrorType : uint32_t
 {
 	ABL_ERR_SYNTAX_NONE, // 0
 	ABL_ERR_SYNTAX_ERROR,
@@ -92,7 +94,7 @@ typedef enum SyntaxErrorType : uint32_t
 	NUM_ABL_SYNTAX_ERRORS
 } SyntaxErrorType;
 
-typedef enum RuntimeErrorType : uint32_t
+enum class RuntimeErrorType : uint32_t
 {
 	ABL_ERR_RUNTIME_STACK_OVERFLOW,
 	ABL_ERR_RUNTIME_INFINITE_LOOP,
@@ -114,10 +116,12 @@ syntaxError(int32_t errCode);
 void
 runtimeError(int32_t errCode);
 void
-ABL_Fatal(int32_t errCode, PSTR s);
+ABL_Fatal(int32_t errCode, const std::wstring_view& s);
 void
-ABL_Assert(bool test, int32_t errCode, PSTR s);
+ABL_Assert(bool test, int32_t errCode, const std::wstring_view& s);
 
 //***************************************************************************
+
+} // namespace mclib::abl
 
 #endif

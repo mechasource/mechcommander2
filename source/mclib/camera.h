@@ -31,7 +31,7 @@
 #include "inifile.h"
 #endif
 
-#include <stuff/stuff.hpp>
+#include "stuff/stuff.h"
 
 inline int16_t
 float2short(float _in)

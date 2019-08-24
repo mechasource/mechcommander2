@@ -19,8 +19,8 @@
 //#include "gameobj.h"
 //#include "objtype.h"
 //#include "objmgr.h"
-//#include <stuff/stuff.hpp>
-//#include <gosfx/gosfxheaders.hpp>
+//#include "stuff/stuff.h"
+//#include "gosfx/gosfxheaders.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -102,7 +102,7 @@ public:
 
 	WeaponBoltType(void) { init(void); }
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 	int32_t init(FitIniFilePtr objFile);
 
 	~WeaponBoltType(void) { destroy(void); }
@@ -127,7 +127,7 @@ typedef struct _WeaponBoltData : public GameObjectData
 
 	GameObjectWatchID targetWID;
 	int32_t targetHotSpot;
-	Stuff::Vector3D targetPosition;
+	Stuff::Vector3D targetposition;
 	float distanceToTarget;
 	float halfDistanceToTarget;
 
@@ -160,7 +160,7 @@ protected:
 
 	GameObjectWatchID targetWID;
 	int32_t targetHotSpot;
-	Stuff::Vector3D* targetPosition;
+	Stuff::Vector3D* targetposition;
 	float distanceToTarget;
 	float halfDistanceToTarget;
 
@@ -203,7 +203,7 @@ public:
 		init(true);
 		hotSpotNumber = 0;
 		targetHotSpot = 0;
-		targetPosition = nullptr;
+		targetposition = nullptr;
 		distanceToTarget = 0.0;
 		ownerWID = targetWID = 0;
 		pointLight = nullptr;

@@ -16,16 +16,18 @@
 //#include "ablsymt.h"
 //#include "ablerr.h"
 
+namespace mclib::abl {
+
 //***************************************************************************
 
-typedef enum UseType : uint32_t
+enum class UseType : uint32_t
 {
 	USE_EXPR,
 	USE_TARGET,
 	USE_REFPARAM
 } UseType;
 
-typedef enum BlockType : uint32_t
+enum class BlockType : uint32_t
 {
 	BLOCK_MODULE,
 	BLOCK_ROUTINE
@@ -35,17 +37,17 @@ typedef enum BlockType : uint32_t
 
 //----------
 // FUNCTIONS
-TypePtr
+const std::unique_ptr<Type>&
 expression(void);
-TypePtr
-variable(SymTableNodePtr variableIdPtr);
-TypePtr
-arraySubscriptList(TypePtr typePtr);
-// TypePtr routineCall (SymTableNodePtr routineIdPtr, BOOL parmCheckFlag);
+const std::unique_ptr<Type>&
+variable(const std::unique_ptr<SymTableNode>& variableIdPtr);
+const std::unique_ptr<Type>&
+arraySubscriptList(const std::unique_ptr<Type>& ptype);
+// const std::unique_ptr<Type>& routineCall (const std::unique_ptr<SymTableNode>& routineIdPtr, BOOL parmCheckFlag);
 void
-checkRelationalOpTypes(TypePtr type1, TypePtr type2);
+checkRelationalOpTypes(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2);
 int32_t
-isAssignTypeCompatible(TypePtr type1, TypePtr type2);
+isAssignTypeCompatible(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2);
 void
 ifTokenGet(TokenCodeType tokenCode);
 void
@@ -53,57 +55,57 @@ ifTokenGetElseError(TokenCodeType tokenCode, SyntaxErrorType errCode);
 
 // DECL routines
 void
-declarations(SymTableNodePtr routineIdPtr, bool allowFunctions);
+declarations(const std::unique_ptr<SymTableNode>& routineIdPtr, bool allowFunctions);
 void
 constDefinitions(void);
 void
-doConst(SymTableNodePtr constantIdPtr);
+doConst(const std::unique_ptr<SymTableNode>& constantIdPtr);
 void
-varDeclarations(SymTableNodePtr routineIdPtr);
+varDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr);
 void
-varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset);
+varOrFieldDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t offset);
 void
 typeDefinitions(void);
-TypePtr
+const std::unique_ptr<Type>&
 doType(void);
-TypePtr
-identifierType(SymTableNodePtr idPtr);
-TypePtr
+const std::unique_ptr<Type>&
+identifierType(const std::unique_ptr<SymTableNode>& idPtr);
+const std::unique_ptr<Type>&
 enumerationType(void);
-TypePtr
+const std::unique_ptr<Type>&
 subrangeType(void);
-TypePtr
+const std::unique_ptr<Type>&
 arrayType(void);
 int32_t
-arraySize(TypePtr typePtr);
-TypePtr
+arraySize(const std::unique_ptr<Type>& ptype);
+const std::unique_ptr<Type>&
 makeStringType(int32_t length);
 
 // ROUTINE functions
 void
 module(void);
-SymTableNodePtr
+const std::unique_ptr<SymTableNode>&
 moduleHeader(void);
 void
 routine(void);
-SymTableNodePtr
+const std::unique_ptr<SymTableNode>&
 functionHeader(void);
-SymTableNodePtr
+const std::unique_ptr<SymTableNode>&
 formalParamList(int32_t* count, int32_t* totalSize);
-TypePtr
-routineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
-TypePtr
-declaredRoutineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
+const std::unique_ptr<Type>&
+routineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t paramCheckFlag);
+const std::unique_ptr<Type>&
+declaredRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t paramCheckFlag);
 void
-actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
+actualParamList(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t paramCheckFlag);
 void
-block(SymTableNodePtr routineIdPtr);
+block(const std::unique_ptr<SymTableNode>& routineIdPtr);
 
 // STATEMNT routines
 void
 compoundStatement(void);
 void
-assignmentStatement(SymTableNodePtr varIdPtr);
+assignmentStatement(const std::unique_ptr<SymTableNode>& varIdPtr);
 void
 repeatStatement(void);
 void
@@ -122,22 +124,22 @@ statement(void);
 // STANDARD routines
 void
 stdPrint(void);
-TypePtr
+const std::unique_ptr<Type>&
 stdAbs(void);
-TypePtr
+const std::unique_ptr<Type>&
 stdRound(void);
-TypePtr
+const std::unique_ptr<Type>&
 stdTrunc(void);
-TypePtr
+const std::unique_ptr<Type>&
 stdSqrt(void);
-TypePtr
+const std::unique_ptr<Type>&
 stdRandom(void);
-TypePtr
-standardRoutineCall(SymTableNodePtr routineIdPtr);
+const std::unique_ptr<Type>&
+standardRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr);
 
 // FILE routines
 int32_t
-openSourceFile(PSTR sourceFileName);
+openSourceFile(const std::wstring_view& sourceFileName);
 int32_t
 closeSourceFile(void);
 
@@ -150,5 +152,7 @@ closeSourceFile(void);
 #endif
 
 //***************************************************************************
+
+} // namespace mclib::abl
 
 #endif

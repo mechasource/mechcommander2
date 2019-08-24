@@ -10,11 +10,11 @@ EditorObjects.h : Interface for the EditorObjects, buildings, mechs etc.
 #ifndef EDITOROBJECTS_H
 #define EDITOROBJECTS_H
 
-//#include <heap.h>
-//#include <elist.h>
+//#include "heap.h"
+//#include "elist.h"
 
 #include <daprtype.h>
-// #include <objectappearance.h>
+// #include "objectappearance.h"
 
 namespace Stuff
 {
@@ -27,7 +27,6 @@ class ObjectAppearance;
 
 #define MAX_PILOT 64
 
-//*************************************************************************************************
 
 class EditorObject
 {
@@ -64,7 +63,7 @@ public:
 	void setDamage(bool bDamage);
 	bool getDamage(void) const;
 
-	PCSTR getDisplayName(void) const;
+	const std::wstring_view& getDisplayName(void) const;
 
 	const Stuff::Vector3D& getPosition(void) const { return appearance()->position; }
 
@@ -114,7 +113,6 @@ protected:
 };
 
 // THIS CLASS CLEARLY NEEDS FLESHING OUT!
-//*************************************************************************************************
 class Pilot
 {
 
@@ -125,8 +123,8 @@ public:
 
 	struct PilotInfo
 	{
-		PSTR name;
-		PSTR fileName;
+		const std::wstring_view& name;
+		const std::wstring_view& fileName;
 	};
 
 	static PilotInfo s_GoodPilots[MAX_PILOT];
@@ -134,8 +132,8 @@ public:
 	static int32_t goodCount;
 	static int32_t badCount;
 
-	PCSTR getName(void) const { return info->name; }
-	void setName(PCSTR);
+	const std::wstring_view& getName(void) const { return info->name; }
+	void setName(const std::wstring_view&);
 
 	void save(FitIniFile* file, int32_t bGoodGuy);
 	void load(FitIniFile* file, int32_t bGoodGuy);
@@ -145,7 +143,6 @@ public:
 	data. So the default assignment/copy operator (shallow copy) is valid. */
 };
 
-//*************************************************************************************************
 
 class Brain
 {
@@ -185,7 +182,6 @@ public:
 	bool load(FitIniFile* file, int32_t warriorNumber);
 };
 
-//*************************************************************************************************
 
 class CUnitList;
 
@@ -233,7 +229,7 @@ public:
 	uint32_t tmpAlternativeStartIndex;
 
 protected:
-	bool save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, PSTR objectProfile);
+	bool save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, const std::wstring_view& objectProfile);
 
 	Brain brain;
 	bool selfRepairBehaviorEnabled;
@@ -251,7 +247,6 @@ protected:
 
 // class CUnitList: public EList<Unit, Unit&> {};
 
-//*************************************************************************************************
 class DropZone : public EditorObject
 {
 public:
@@ -280,6 +275,5 @@ public:
 	virtual bool save(FitIniFile* file, int32_t number);
 };
 
-//*************************************************************************************************
 
 #endif // end of file ( EditorObjects.h )

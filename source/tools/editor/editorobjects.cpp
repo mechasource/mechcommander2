@@ -22,7 +22,7 @@
 #endif
 
 #ifndef BUILDINGLINK_H
-#include "BuildingLink.h"
+#include "buildinglink.h"
 #endif
 
 #ifndef EDITORDATA_H
@@ -142,7 +142,7 @@ EditorObject::getDamage() const
 	return appearance()->damage ? true : false;
 }
 
-PCSTR
+const std::wstring_view&
 EditorObject::getDisplayName(void) const
 {
 	return EditorObjectMgr::instance()->getObjectName(id);
@@ -277,7 +277,6 @@ EditorObject::getSpecialType(void) const
 	return EditorObjectMgr::instance()->getSpecialType(getID());
 }
 
-//*************************************************************************************************
 
 Unit::Unit(int32_t align)
 {
@@ -348,12 +347,12 @@ Unit::save(FitIniFile* file, int32_t WarriorNumber)
 
 bool
 Unit::save(
-	FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, PSTR objectProfile)
+	FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, const std::wstring_view& objectProfile)
 {
 	// ARM
 	if (mechAsset)
 	{
-		PCSTR iniFilename = (PCSTR)EditorObjectMgr::instance()->getFileName(id);
+		const std::wstring_view& iniFilename = (const std::wstring_view&)EditorObjectMgr::instance()->getFileName(id);
 		char buf[512] = {0};
 		if (iniFilename && iniFilename[0])
 		{
@@ -530,7 +529,6 @@ Unit::setSquad(uint32_t newSquad)
 	}
 }
 
-//*************************************************************************************************
 
 bool
 DropZone::save(FitIniFile* file, int32_t number)
@@ -583,7 +581,6 @@ DropZone::CastAndCopy(const EditorObject& master)
 	}
 }
 
-//*************************************************************************************************
 bool
 Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 {
@@ -653,7 +650,6 @@ Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 	return true;
 }
 
-//*************************************************************************************************
 bool
 Brain::load(FitIniFile* file, int32_t warriorNumber)
 {
@@ -875,7 +871,7 @@ Pilot::initPilots()
 }
 
 void
-Pilot::setName(PCSTR newName)
+Pilot::setName(const std::wstring_view& newName)
 {
 	for (size_t i = 0; i < goodCount; i++)
 	{
@@ -910,5 +906,4 @@ NavMarker::save(FitIniFile* file, int32_t warriorNumber)
 
 NavMarker::NavMarker() {}
 
-//*************************************************************************************************
 // end of file ( EditorObjects.cpp )

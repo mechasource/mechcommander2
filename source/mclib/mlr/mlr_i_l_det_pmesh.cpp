@@ -4,17 +4,17 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <mlr/gosvertex.hpp>
-#include <mlr/gosvertexpool.hpp>
-#include <mlr/mlrtexture.hpp>
-#include <mlr/mlrtexturepool.hpp>
-#include <mlr/mlrlight.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlrcliptrick.hpp>
-#include <mlr/mlr_i_l_det_pmesh.hpp>
+#include "gameos.hpp"
+#include "mlr/gosvertex.h"
+#include "mlr/gosvertexpool.h"
+#include "mlr/mlrtexture.h"
+#include "mlr/mlrtexturepool.h"
+#include "mlr/mlrlight.h"
+#include "mlr/mlrshape.h"
+#include "mlr/mlrcliptrick.h"
+#include "mlr/mlr_i_l_det_pmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -231,7 +231,7 @@ MLR_I_L_DeT_PMesh::PaintMe(
 // int32_t MLR_I_L_DeT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrprimitiveclipping.inl>
+#include "mlr/mlrprimitiveclipping.inl"
 
 #undef I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_COLOR
@@ -242,7 +242,7 @@ MLR_I_L_DeT_PMesh::PaintMe(
 // void Lighting (MLRLight**, int32_t nrLights);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrprimitivelighting.inl>
+#include "mlr/mlrprimitivelighting.inl"
 
 #undef CLASSNAME
 
@@ -424,3 +424,5 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_DetTex(
 	gos_PopCurrentHeap();
 	return ret;
 }
+
+} // namespace MidLevelRenderer

@@ -7,13 +7,13 @@ LogisticsScreen.cpp			: Implementation of the LogisticsScreen component.
 #define LOGISTICSSCREEN_CPP
 
 #include "stdinc.h"
-#include <mechgui/logisticsscreen.h>
+#include "mechgui/logisticsscreen.h"
 #include "inifile.h"
-#include <mechgui/asystem.h>
-#include <mechgui/abutton.h>
-#include <mechgui/aedit.h>
+#include "mechgui/asystem.h"
+#include "mechgui/abutton.h"
+#include "mechgui/aedit.h"
 #include "err.h"
-#include <mechgui/aanimobject.h>
+#include "mechgui/aanimobject.h"
 
 extern int32_t helpTextID;
 extern int32_t helpTextHeaderID;
@@ -78,8 +78,8 @@ LogisticsScreen::clear()
 //-------------------------------------------------------------------------------------------------
 
 void
-LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName,
-	PCSTR buttonName, PCSTR editName, PCSTR animObjectName, uint32_t neverFlush)
+LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, const std::wstring_view& textName, const std::wstring_view& rectName,
+	const std::wstring_view& buttonName, const std::wstring_view& editName, const std::wstring_view& animObjectName, uint32_t neverFlush)
 {
 	clear();
 	char blockName[256];
@@ -245,7 +245,7 @@ LogisticsScreen::update()
 	{
 		if (::helpTextID)
 		{
-			std::wstring helpText;
+			const std::wstring_view& helpText;
 			char tmp[1024];
 			//	if ( helpTextHeaderID )
 			//	{
@@ -578,5 +578,4 @@ LogisticsScreen::begin()
 	gos_KeyboardFlush();
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsScreen.cpp )

@@ -3,19 +3,19 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <mechgui/afont.h>
+#include "mechgui/afont.h"
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include <mbstring.h>
 
 int32_t
-aFont::init(PCSTR newFontName)
+aFont::init(const std::wstring_view& newFontName)
 {
 	destroy();
 	gosFont = 0;
 	strcpy(fontName, newFontName);
 	char path[256];
-	PSTR pStr = strstr(fontName, ",");
+	const std::wstring_view& pStr = strstr(fontName, ",");
 	if (pStr)
 	{
 		size = atoi(pStr + 1);
@@ -56,14 +56,14 @@ aFont::height() const
 }
 
 void
-aFont::getSize(uint32_t& width, uint32_t& height, PCSTR pText)
+aFont::getSize(uint32_t& width, uint32_t& height, const std::wstring_view& pText)
 {
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width, &height, pText);
 }
 
 uint32_t
-aFont::height(PCSTR st, int32_t areaWidth) const
+aFont::height(const std::wstring_view& st, int32_t areaWidth) const
 {
 	uint32_t width, height;
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
@@ -75,9 +75,9 @@ aFont::height(PCSTR st, int32_t areaWidth) const
 		uint32_t curLineWidth = 0;
 		gosASSERT(strlen(st) < 2048);
 		char pLine[2048]; // should be more than adequate
-		PSTR pLastWord = (PSTR)st;
-		PSTR pTmp = (PSTR)st;
-		PSTR pTmpLine = (PSTR)pLine;
+		const std::wstring_view& pLastWord = (const std::wstring_view&)st;
+		const std::wstring_view& pTmp = (const std::wstring_view&)st;
+		const std::wstring_view& pTmpLine = (const std::wstring_view&)pLine;
 		int32_t numberOfWordsPerLine = 0;
 		bool bHasSpaces = true;
 		if (!strstr(st, " "))
@@ -152,8 +152,8 @@ aFont::height(PCSTR st, int32_t areaWidth) const
 			{
 				*(pTmpLine + 1) = *(pTmp + 1);
 			}
-			pTmpLine = (PSTR)_mbsinc((puint8_t)pTmpLine);
-			pTmp = (PSTR)_mbsinc((puint8_t)pTmp);
+			pTmpLine = (const std::wstring_view&)_mbsinc((puint8_t)pTmpLine);
+			pTmp = (const std::wstring_view&)_mbsinc((puint8_t)pTmp);
 		}
 		// one last check
 		*pTmpLine = nullptr;
@@ -170,7 +170,7 @@ aFont::height(PCSTR st, int32_t areaWidth) const
 }
 
 uint32_t
-aFont::width(PCSTR st) const
+aFont::width(const std::wstring_view& st) const
 {
 	uint32_t width, height;
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
@@ -179,7 +179,7 @@ aFont::width(PCSTR st) const
 }
 
 int32_t
-aFont::load(PCSTR fontName)
+aFont::load(const std::wstring_view& fontName)
 {
 	destroy();
 	return init(fontName);
@@ -196,7 +196,7 @@ aFont::destroy()
 }
 
 void
-aFont::render(PCSTR text, int32_t xPos, int32_t yPos, int32_t areaWidth, int32_t areaHeight,
+aFont::render(const std::wstring_view& text, int32_t xPos, int32_t yPos, int32_t areaWidth, int32_t areaHeight,
 	uint32_t color, bool bBold, int32_t alignment)
 {
 	gos_TextSetAttributes(gosFont, color, size, true, true, bBold, false, alignment);
@@ -235,7 +235,7 @@ aFont::loadFont(int32_t resourceID, int32_t& size)
 	size = 1;
 	char buffer[256];
 	cLoadString(resourceID, buffer, 255);
-	PSTR pStr = strstr(buffer, ",");
+	const std::wstring_view& pStr = strstr(buffer, ",");
 	if (pStr)
 	{
 		size = -atoi(pStr + 1);

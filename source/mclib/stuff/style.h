@@ -10,12 +10,12 @@
 #ifndef _STYLE_HPP_
 #define _STYLE_HPP_
 
-// #include <stuff/stuff.hpp>
+// #include "stuff/stuff.h"
 
 #if defined(_ARMOR)
-#include <stuff/armoron.hpp>
+#include "stuff/armoron.h"
 #else
-#include <stuff/armoroff.hpp>
+#include "stuff/armoron.h"
 #endif
 
 namespace Stuff

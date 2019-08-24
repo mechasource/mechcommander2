@@ -33,7 +33,7 @@
 #include "quad.h"
 #endif
 
-#include <stuff/stuff.hpp>
+#include "stuff/stuff.h"
 
 //---------------------------------------------------------------------------
 enum Overlays
@@ -104,7 +104,7 @@ public:
 
 	~MapData(void) { destroy(void); }
 
-	int32_t init(PSTR fileName, int32_t numBlocks, int32_t blockSize);
+	int32_t init(const std::wstring_view& fileName, int32_t numBlocks, int32_t blockSize);
 
 	void newInit(PacketFile* file, uint32_t numVertices);
 	void newInit(uint32_t numVertices);

@@ -4,9 +4,10 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrclippingstate.hpp>
+#include "mlr/mlrclippingstate.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
+
 
 //#############################################################################
 //#########################    MLRClippingState    ############################
@@ -45,3 +46,5 @@ MLRClippingState::Load(std::iostream stream)
 	//
 	*stream >> clippingState;
 }
+
+} // namespace MidLevelRenderer

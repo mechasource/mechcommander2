@@ -103,7 +103,7 @@ extern bool useHighObjectDetail;
 //-----------------------------------------------------------------------------
 // class GVAppearanceType
 void
-GVAppearanceType::init(PSTR fileName)
+GVAppearanceType::init(const std::wstring_view& fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -274,7 +274,7 @@ GVAppearanceType::init(PSTR fileName)
 		char blockId[512];
 		sprintf(blockId, "Smoke_%02d", i);
 		nodeData[i - 1].nodeId =
-			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
+			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
 		gosASSERT(nodeData[i - 1].nodeId != nullptr);
 		strcpy(nodeData[i - 1].nodeId, blockId);
 		nodeData[i - 1].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -284,7 +284,7 @@ GVAppearanceType::init(PSTR fileName)
 		char blockId[512];
 		sprintf(blockId, "Weapon_%02d", i);
 		nodeData[(i - 1) + numSmokeNodes].nodeId =
-			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
+			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
 		gosASSERT(nodeData[(i - 1) + numSmokeNodes].nodeId != nullptr);
 		strcpy(nodeData[(i - 1) + numSmokeNodes].nodeId, blockId);
 		nodeData[(i - 1) + numSmokeNodes].weaponType = MECH3D_WEAPONTYPE_ANY;
@@ -294,7 +294,7 @@ GVAppearanceType::init(PSTR fileName)
 		char blockId[512];
 		sprintf(blockId, "FootNode_%02d", i);
 		nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId =
-			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
+			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
 		gosASSERT(nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId != nullptr);
 		strcpy(nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId, blockId);
 		nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -1721,7 +1721,7 @@ GVAppearance::playDestruction(void)
 
 //-----------------------------------------------------------------------------
 Stuff::Vector3D
-GVAppearance::getNodeNamePosition(PSTR nodeName)
+GVAppearance::getNodeNamePosition(const std::wstring_view& nodeName)
 {
 	Stuff::Vector3D result = position;
 	if (!inView)

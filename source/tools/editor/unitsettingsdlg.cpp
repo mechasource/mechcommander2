@@ -67,7 +67,7 @@ UnitSettingsDlg::OnSelchangeGroup()
 	m_Mech.ResetContent();
 	int32_t group = m_Group.GetCurSel();
 	group = m_Group.GetItemData(group);
-	PCSTR MechNames[256];
+	const std::wstring_view& MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
 	for (size_t i = 0; i < count; ++i)
@@ -425,10 +425,10 @@ UnitSettingsDlg::OnSelchangeMech()
 	group = m_Group.GetItemData(group);
 	int32_t indexInGroup = m_Mech.GetCurSel();
 	int32_t varCount = EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
-	PCSTR* VariantNames = 0;
+	const std::wstring_view&* VariantNames = 0;
 	if (0 < varCount)
 	{
-		VariantNames = new PCSTR[varCount];
+		VariantNames = new const std::wstring_view&[varCount];
 		EditorObjectMgr::instance()->getVariantNames(group, indexInGroup, VariantNames, varCount);
 		for (size_t v = 0; v < varCount; ++v)
 		{
@@ -537,7 +537,7 @@ UnitSettingsDlg::updateMemberVariables()
 		GetDlgItem(IDC_HIGHLIGHT2)->SetWindowText(pH2);
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	int32_t groupCount = pMgr->getUnitGroupCount();
-	PCSTR* pGroups = new PCSTR[groupCount];
+	const std::wstring_view&* pGroups = new const std::wstring_view&[groupCount];
 	pint32_t groupIDs = new int32_t[groupCount];
 	m_Group.ResetContent();
 	pMgr->getUnitGroupNames(pGroups, groupIDs, groupCount);
@@ -560,11 +560,11 @@ UnitSettingsDlg::updateMemberVariables()
 	}
 	if (group != -1) // we found a valid group
 	{
-		PCSTR pGroupName = pMgr->getGroupName(group);
+		const std::wstring_view& pGroupName = pMgr->getGroupName(group);
 		int32_t index = m_Group.FindString(-1, pGroupName);
 		m_Group.SetCurSel(index);
 		// OK, now fill in the index....
-		PCSTR MechNames[256];
+		const std::wstring_view& MechNames[256];
 		int32_t count = 256;
 		m_Mech.ResetContent();
 		pMgr->getBuildingNamesInGroup(group, MechNames, count);
@@ -584,7 +584,7 @@ UnitSettingsDlg::updateMemberVariables()
 		}
 		if (indexInGroup != -1)
 		{
-			PCSTR pName = units.GetHead()->getDisplayName();
+			const std::wstring_view& pName = units.GetHead()->getDisplayName();
 			index = m_Mech.FindString(-1, pName);
 			if (index != -1)
 			{
@@ -593,10 +593,10 @@ UnitSettingsDlg::updateMemberVariables()
 				m_Variant.ResetContent();
 				int32_t varCount =
 					EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
-				PCSTR* VariantNames = 0;
+				const std::wstring_view&* VariantNames = 0;
 				if (0 < varCount)
 				{
-					VariantNames = new PCSTR[varCount];
+					VariantNames = new const std::wstring_view&[varCount];
 					EditorObjectMgr::instance()->getVariantNames(
 						group, indexInGroup, VariantNames, varCount);
 					for (size_t v = 0; v < varCount; ++v)
@@ -640,11 +640,11 @@ UnitSettingsDlg::updateMemberVariables()
 		}
 	}
 	Pilot* pPilot = pUnit->getPilot();
-	PCSTR defaultPilot = pPilot->info->fileName;
+	const std::wstring_view& defaultPilot = pPilot->info->fileName;
 	for (iter = units.Begin(); !iter.IsDone(); iter++)
 	{
 		pPilot = (*iter)->getPilot();
-		PCSTR tmpName = pPilot->info->fileName;
+		const std::wstring_view& tmpName = pPilot->info->fileName;
 		if (_stricmp(tmpName, defaultPilot) != 0)
 		{
 			defaultPilot = 0;
@@ -656,7 +656,7 @@ UnitSettingsDlg::updateMemberVariables()
 		int32_t index;
 		for (index = 0; index < m_Pilot.GetCount(); index++)
 		{
-			PSTR fileName = (PSTR)m_Pilot.GetItemDataPtr(index);
+			const std::wstring_view& fileName = (const std::wstring_view&)m_Pilot.GetItemDataPtr(index);
 			if (0 == strcmp(fileName, defaultPilot))
 			{
 				break;
@@ -702,11 +702,11 @@ UnitSettingsDlg::OnAlign1(uint32_t whichID)
 	}
 	Unit* pUnit = (*(units.Begin()));
 	Pilot* pPilot = pUnit->getPilot();
-	PCSTR defaultPilot = pPilot->getName();
+	const std::wstring_view& defaultPilot = pPilot->getName();
 	for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 	{
 		pPilot = (*iter)->getPilot();
-		PCSTR tmpName = pPilot->getName();
+		const std::wstring_view& tmpName = pPilot->getName();
 		if (_stricmp(tmpName, defaultPilot) != 0)
 		{
 			defaultPilot = 0;

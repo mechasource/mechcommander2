@@ -10,7 +10,7 @@
 #ifndef _AFFINEMATRIX_HPP_
 #define _AFFINEMATRIX_HPP_
 
-#include <stuff/scalar.hpp>
+#include "stuff/scalar.h"
 #include <stuff/origin.hpp>
 
 //inline XMMATRIX XM_CALLCONV XMMatrixAffineTransformation(

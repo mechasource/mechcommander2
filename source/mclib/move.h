@@ -13,7 +13,7 @@
 
 //--------------
 // Include Files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #include "dmovemgr.h"
 #include "terrain.h"
@@ -21,7 +21,7 @@
 #include "dobjblck.h"
 #include "dgamelog.h"
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 //***************************************************************************
 
@@ -41,7 +41,7 @@
 #define SIMPLE_PATHMAP 0
 #define SECTOR_PATHMAP 1
 
-typedef enum
+enum class 
 {
 	DOOR_OFFSET_START,
 	DOOR_OFFSET_GOAL,
@@ -87,7 +87,7 @@ typedef enum
 //#define	SCENARIOMAP_LAST_BASETYPE_INDEX		63
 
 // TileType and OverlayType now in terrain.h!
-typedef enum
+enum class 
 {
 	OVERLAY_WEIGHT_VEHICLE,
 	OVERLAY_WEIGHT_MECH,
@@ -526,7 +526,7 @@ public:
 	int32_t init(
 		int32_t curHeight, int32_t curWidth, int32_t curPlanet, MissionMapCellInfo* mapData);
 
-	void setPassable(int32_t row, int32_t col, PSTR footPrint, bool passable);
+	void setPassable(int32_t row, int32_t col, const std::wstring_view& footPrint, bool passable);
 
 	int32_t init(PacketFile* packetFile, int32_t whichPacket = 0);
 
@@ -790,7 +790,7 @@ public:
 	void placeTerrainObject(int32_t row, int32_t col, int32_t objectClass, int32_t objectTypeID,
 		int64_t footPrint, bool blocksLineOfFire, int32_t mineType);
 
-	void print(PSTR fileName);
+	void print(const std::wstring_view& fileName);
 };
 
 typedef MissionMap* MissionMapPtr;
@@ -971,7 +971,7 @@ typedef struct _DoorInfo
 
 typedef DoorInfo* DoorInfoPtr;
 
-typedef enum _AreaType
+enum class _AreaType
 {
 	AREA_TYPE_NORMAL,
 	AREA_TYPE_WALL,
@@ -981,7 +981,7 @@ typedef enum _AreaType
 	NUM_AREA_TYPES
 } AreaType;
 
-typedef enum _WaterType
+enum class _WaterType
 {
 	WATER_TYPE_NONE,
 	WATER_TYPE_SHALLOW,
@@ -1309,11 +1309,11 @@ public:
 	bool getAdjacentAreaCell(
 		int32_t area, int32_t adjacentArea, int32_t& cellRow, int32_t& cellCol);
 
-	void print(PSTR fileName);
+	void print(const std::wstring_view& fileName);
 
 	static bool toggleLog(void);
 
-	static void writeLog(PSTR s);
+	static void writeLog(const std::wstring_view& s);
 };
 
 typedef GlobalMap* GlobalMapPtr;
@@ -1383,7 +1383,7 @@ public:
 	bool travelOffMap;
 	bool cannotEnterOffMap;
 
-	void (*blockedDoorCallback)(int32_t moveLevel, int32_t door, PSTR openCells);
+	void (*blockedDoorCallback)(int32_t moveLevel, int32_t door, const std::wstring_view& openCells);
 	void (*placeStationaryMoversCallback)(MoveMapPtr map);
 
 	static float distanceFloat[DISTANCE_TABLE_DIM][DISTANCE_TABLE_DIM];
@@ -1548,10 +1548,10 @@ MoveMap::setCost(int32_t row, int32_t col, int32_t newCost)
 //---------------------------------------------------------------------------
 
 void
-SaveMapCells(PSTR fileName, int32_t height, int32_t width, MissionMapCellInfo* mapData);
+SaveMapCells(const std::wstring_view& fileName, int32_t height, int32_t width, MissionMapCellInfo* mapData);
 
 MissionMapCellInfo*
-LoadMapCells(PSTR fileName, int32_t& height, int32_t& width);
+LoadMapCells(const std::wstring_view& fileName, int32_t& height, int32_t& width);
 
 void
 DeleteMapCells(MissionMapCellInfo* mapData);
@@ -1568,7 +1568,7 @@ MOVE_readData(PacketFile* packetFile, int32_t whichPacket);
 void
 MOVE_cleanup(void);
 
-// int32_t BuildAndSaveMoveData (PSTR fileName, int32_t height, int32_t width,
+// int32_t BuildAndSaveMoveData (const std::wstring_view& fileName, int32_t height, int32_t width,
 // MissionMapCellInfo* mapData);
 
 //***************************************************************************

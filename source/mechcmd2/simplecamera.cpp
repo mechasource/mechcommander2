@@ -8,7 +8,7 @@ SimpleCamera.cpp	: Implementation of the SimpleCamera component.
 #include "stdinc.h"
 #include "simplecamera.h"
 #include "appear.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "mech3d.h"
 #include "mission.h"
 #include "bdactor.h"
@@ -236,7 +236,7 @@ SimpleCamera::update()
 
 void
 SimpleCamera::setMech(
-	PCSTR fileName, int32_t baseColor, int32_t highlight1, int32_t highlight2)
+	const std::wstring_view& fileName, int32_t baseColor, int32_t highlight1, int32_t highlight2)
 {
 	shapeScale = 0.0f;
 	bIsComponent = 0;
@@ -267,10 +267,10 @@ SimpleCamera::setMech(
 	Mech3DAppearanceType* appearanceType = nullptr;
 	if (fileExists(path))
 		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance(
-			MECH_TYPE << 24, (PSTR)testName);
+			MECH_TYPE << 24, (const std::wstring_view&)testName);
 	else
 		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance(
-			MECH_TYPE << 24, (PSTR)NoPathFileName);
+			MECH_TYPE << 24, (const std::wstring_view&)NoPathFileName);
 	pObject = new Mech3DAppearance;
 	pObject->init(appearanceType);
 	pObject->setGestureGoal(2);
@@ -282,7 +282,7 @@ SimpleCamera::setMech(
 }
 
 void
-SimpleCamera::setVehicle(PCSTR fileName, int32_t base, int32_t highlight, int32_t h2)
+SimpleCamera::setVehicle(const std::wstring_view& fileName, int32_t base, int32_t highlight, int32_t h2)
 {
 	shapeScale = 0.0f;
 	bIsComponent = 0;
@@ -309,10 +309,10 @@ SimpleCamera::setVehicle(PCSTR fileName, int32_t base, int32_t highlight, int32_
 	GVAppearanceType* appearanceType = nullptr;
 	if (fileExists(path))
 		appearanceType =
-			(GVAppearanceType*)appearanceTypeList->getAppearance(GV_TYPE << 24, (PSTR)testName);
+			(GVAppearanceType*)appearanceTypeList->getAppearance(GV_TYPE << 24, (const std::wstring_view&)testName);
 	else
 		appearanceType = (GVAppearanceType*)appearanceTypeList->getAppearance(
-			GV_TYPE << 24, (PSTR)NoPathFileName);
+			GV_TYPE << 24, (const std::wstring_view&)NoPathFileName);
 	pObject = new GVAppearance;
 	pObject->init(appearanceType);
 	pObject->setGestureGoal(2);
@@ -324,7 +324,7 @@ SimpleCamera::setVehicle(PCSTR fileName, int32_t base, int32_t highlight, int32_
 }
 
 void
-SimpleCamera::setComponent(PCSTR fileName)
+SimpleCamera::setComponent(const std::wstring_view& fileName)
 {
 	shapeScale = 0.0f;
 	bIsComponent = 1;
@@ -347,11 +347,11 @@ SimpleCamera::setComponent(PCSTR fileName)
 	if (fileExists(path))
 	{
 		appearanceType =
-			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (PSTR)testName);
+			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (const std::wstring_view&)testName);
 	}
 	else
 		appearanceType =
-			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (PSTR)fileName);
+			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (const std::wstring_view&)fileName);
 	// MUST ALWAYS CALL GET, EVEN IF WE HAVE AN APPEARANCE TYPE OR REFERENCE
 	// COUNT DOES NOT INCREASE!
 	pObject = new BldgAppearance;
@@ -370,7 +370,7 @@ SimpleCamera::setScale(float newAltitude)
 }
 
 void
-SimpleCamera::setBuilding(PCSTR pBuilding)
+SimpleCamera::setBuilding(const std::wstring_view& pBuilding)
 {
 	shapeScale = 0.0f;
 	setComponent(pBuilding);
@@ -380,7 +380,7 @@ SimpleCamera::setBuilding(PCSTR pBuilding)
 
 void
 SimpleCamera::setObject(
-	PCSTR pFileName, int32_t type, int32_t base, int32_t highlight, int32_t h2)
+	const std::wstring_view& pFileName, int32_t type, int32_t base, int32_t highlight, int32_t h2)
 {
 	if (!pFileName || !strlen(pFileName))
 	{

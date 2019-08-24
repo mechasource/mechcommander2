@@ -47,5 +47,4 @@ DragTool::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	return true;
 }
 
-//*************************************************************************************************
 // end of file ( DragTool.cpp )

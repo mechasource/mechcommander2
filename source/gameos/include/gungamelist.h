@@ -9,49 +9,49 @@
 
 // #include "hash.h"
 
-extern PCSTR GAMELIST_KEY_INSTANCE;
-extern PCSTR GAMELIST_KEY_SERVER_NAME;
-extern PCSTR GAMELIST_KEY_SERVER_ADDRESS;
-extern PCSTR GAMELIST_KEY_SERVER_PORT;
-extern PCSTR GAMELIST_KEY_NUM_PLAYERS;
-extern PCSTR GAMELIST_KEY_NUM_BOTS;
-extern PCSTR GAMELIST_KEY_MAX_PLAYERS;
-extern PCSTR GAMELIST_KEY_PRODUCT_NAME;
-extern PCSTR GAMELIST_KEY_PRODUCT_VERSION;
-extern PCSTR GAMELIST_KEY_MOD_NAME;
-extern PCSTR GAMELIST_KEY_MAP_TYPE;
-extern PCSTR GAMELIST_KEY_PASSWORD_PROTECTED;
-extern PCSTR GAMELIST_KEY_PASSWORD;
-extern PCSTR GAMELIST_KEY_BROWSER_HANDLE;
-extern PCSTR GAMELIST_KEY_PING;
-extern PCSTR GAMELIST_KEY_GAME_TYPE; // rules for game (ctf, team fortress, etc...)
-extern PCSTR GAMELIST_KEY_UPDATE_TIME; // whether the game was updated or not in
+extern PSTR GAMELIST_KEY_INSTANCE;
+extern PSTR GAMELIST_KEY_SERVER_NAME;
+extern PSTR GAMELIST_KEY_SERVER_ADDRESS;
+extern PSTR GAMELIST_KEY_SERVER_PORT;
+extern PSTR GAMELIST_KEY_NUM_PLAYERS;
+extern PSTR GAMELIST_KEY_NUM_BOTS;
+extern PSTR GAMELIST_KEY_MAX_PLAYERS;
+extern PSTR GAMELIST_KEY_PRODUCT_NAME;
+extern PSTR GAMELIST_KEY_PRODUCT_VERSION;
+extern PSTR GAMELIST_KEY_MOD_NAME;
+extern PSTR GAMELIST_KEY_MAP_TYPE;
+extern PSTR GAMELIST_KEY_PASSWORD_PROTECTED;
+extern PSTR GAMELIST_KEY_PASSWORD;
+extern PSTR GAMELIST_KEY_BROWSER_HANDLE;
+extern PSTR GAMELIST_KEY_PING;
+extern PSTR GAMELIST_KEY_GAME_TYPE; // rules for game (ctf, team fortress, etc...)
+extern PSTR GAMELIST_KEY_UPDATE_TIME; // whether the game was updated or not in
 	// the last EnumSessions
-extern PCSTR GAMELIST_KEY_PROTOCOL;
-extern PCSTR GAMELIST_KEY_FLAGS;
-extern PCSTR GAMELIST_KEY_SERVER_INFO_STATUS;
-extern PCSTR GAMELIST_KEY_REFRESH_PENDING;
-extern PCSTR GAMELIST_VALUE_PROTOCOL_GUN;
-extern PCSTR GAMELIST_VALUE_PROTOCOL_TCPIP_LAN;
-extern PCSTR GAMELIST_VALUE_PROTOCOL_INTERNET;
-extern PCSTR GAMELIST_VALUE_PROTOCOL_IPX;
-extern PCSTR GAMELIST_VALUE_PROTOCOL_GAMESPY;
-extern PCSTR GAMELIST_VALUE_REFRESH_PENDING_TRUE;
-extern PCSTR GAMELIST_VALUE_REFRESH_PENDING_FALSE;
-extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_PENDING;
-extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_SUCCESS;
-extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_ERROR;
-extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_NOSERVER;
-extern PCSTR PLAYERLIST_KEY_SERVER_ROWID;
-extern PCSTR PLAYERLIST_KEY_PLAYER_NAME;
-extern PCSTR PLAYERLIST_KEY_CLAN_NAME; // not yet in MW4 - 8/1/2000
-extern PCSTR PLAYERLIST_KEY_UPDATE_TIME; // whether the player was updated or
+extern PSTR GAMELIST_KEY_PROTOCOL;
+extern PSTR GAMELIST_KEY_FLAGS;
+extern PSTR GAMELIST_KEY_SERVER_INFO_STATUS;
+extern PSTR GAMELIST_KEY_REFRESH_PENDING;
+extern PSTR GAMELIST_VALUE_PROTOCOL_GUN;
+extern PSTR GAMELIST_VALUE_PROTOCOL_TCPIP_LAN;
+extern PSTR GAMELIST_VALUE_PROTOCOL_INTERNET;
+extern PSTR GAMELIST_VALUE_PROTOCOL_IPX;
+extern PSTR GAMELIST_VALUE_PROTOCOL_GAMESPY;
+extern PSTR GAMELIST_VALUE_REFRESH_PENDING_TRUE;
+extern PSTR GAMELIST_VALUE_REFRESH_PENDING_FALSE;
+extern PSTR GAMELIST_VALUE_SERVER_INFO_STATUS_PENDING;
+extern PSTR GAMELIST_VALUE_SERVER_INFO_STATUS_SUCCESS;
+extern PSTR GAMELIST_VALUE_SERVER_INFO_STATUS_ERROR;
+extern PSTR GAMELIST_VALUE_SERVER_INFO_STATUS_NOSERVER;
+extern PSTR PLAYERLIST_KEY_SERVER_ROWID;
+extern PSTR PLAYERLIST_KEY_PLAYER_NAME;
+extern PSTR PLAYERLIST_KEY_CLAN_NAME; // not yet in MW4 - 8/1/2000
+extern PSTR PLAYERLIST_KEY_UPDATE_TIME; // whether the player was updated or
 	// not in the last EnumPlayers
-extern PCSTR ZONE_SERVER_KEY;
-extern PCSTR ZONE_ADVERTISE_PORT_KEY;
-extern PCSTR ZONE_SERVER_INTERNET_ADDRESS;
-extern PCSTR ZONE_SERVER_LAN_ADDRESS;
-extern PCSTR INVALID_PING_STR;
+extern PSTR ZONE_SERVER_KEY;
+extern PSTR ZONE_ADVERTISE_PORT_KEY;
+extern PSTR ZONE_SERVER_INTERNET_ADDRESS;
+extern PSTR ZONE_SERVER_LAN_ADDRESS;
+extern PSTR INVALID_PING_STR;
 
 #define NETFLAGS_CONNECTION_TYPE_MASK 0x000000FF
 #define NETFLAGS_DEDICATED_FLAG 0x00000100
@@ -237,13 +237,13 @@ public:
 
 	// create a new entry in the table, either with an auto-id
 	// or with a specified ID.
-	virtual bool CreateEntry(PCSTR id);
+	virtual bool CreateEntry(PSTR id);
 
 	// data field operations
-	virtual bool SetField(PCSTR id, PCSTR key, PCSTR val);
-	PCSTR GetDataField(PCSTR id, PCSTR key);
-	virtual bool RemoveField(PCSTR id, PCSTR header);
-	virtual bool Remove(PCSTR id);
+	virtual bool SetField(PSTR id, PSTR key, PSTR val);
+	PSTR GetDataField(PSTR id, PSTR key);
+	virtual bool RemoveField(PSTR id, PSTR header);
+	virtual bool Remove(PSTR id);
 	void RemoveAll(void);
 
 	// The indexed view is used for array-like access to the
@@ -252,10 +252,10 @@ public:
 
 	// misc operations
 	int32_t GetTotalCount(void); // total number of table items
-	bool Exists(PCSTR id);
-	void EnumerateAll(CHash<TableItem, PCSTR>::PFITERCALLBACK pfnCB, PVOID cookie);
-	PCSTR GetIDFromField(PCSTR key, PCSTR val);
-	PCSTR GetIDFromField(PCSTR key,
+	bool Exists(PSTR id);
+	void EnumerateAll(CHash<TableItem, PSTR>::PFITERCALLBACK pfnCB, PVOID cookie);
+	PSTR GetIDFromField(PSTR key, PSTR val);
+	PSTR GetIDFromField(PSTR key,
 		int32_t val); // compares iVal
 	static void __cdecl Lock(void);
 	static void __cdecl Unlock(void);
@@ -266,13 +266,13 @@ public:
 	void operator delete(PVOID ptr);
 	void operator delete[](PVOID ptr);
 
-	static FieldItem* FindField(FieldList& pList, PCSTR key);
+	static FieldItem* FindField(FieldList& pList, PSTR key);
 
 protected:
 	// hash table stuff
-	static uint32_t HashLPSTR(PCSTR Key);
-	static bool HashCompare(TableItem* obj, PCSTR key);
-	typedef CHash<TableItem, PCSTR> ItemHash;
+	static uint32_t HashLPSTR(PSTR Key);
+	static bool HashCompare(TableItem* obj, PSTR key);
+	typedef CHash<TableItem, PSTR> ItemHash;
 
 	////////////////////
 	// protected methods
@@ -281,8 +281,8 @@ protected:
 	void FreeFieldList(FieldList* pList);
 	virtual void FreeTableItem(TableItem* pItem);
 	void FreeFieldItem(FieldItem* pItem);
-	TableItem* FindItem(PCSTR id);
-	static PCSTR FindFieldVal(FieldList& pList, PCSTR key);
+	TableItem* FindItem(PSTR id);
+	static PSTR FindFieldVal(FieldList& pList, PSTR key);
 	static bool ForEachFindField(TableItem* tableItem, MTListNodeHandle handle, PVOID pThis);
 
 	// this is the callback required for the m_Items.RemoveAll() call in
@@ -296,9 +296,9 @@ protected:
 	ItemHash m_Items;
 
 	// extra vars needed or hash foreach callback
-	PCSTR m_SearchKey;
-	PCSTR m_SearchVal;
-	PCSTR m_SearchResult;
+	PSTR m_SearchKey;
+	PSTR m_SearchVal;
+	PSTR m_SearchResult;
 
 	IndexedTableView* m_IndexedView; // make list later if we want multiple
 		// views to be possible
@@ -317,20 +317,20 @@ public:
 	GameList(void);
 	virtual ~GameList(void);
 
-	virtual bool CreateEntry(PCSTR id);
-	virtual bool SetField(PCSTR id, PCSTR key, PCSTR val);
+	virtual bool CreateEntry(PSTR id);
+	virtual bool SetField(PSTR id, PSTR key, PSTR val);
 
-	bool GetGUID(PCSTR id, GUID& gameGUID);
-	bool GetID(PCSTR gameName, PCSTR& id);
+	bool GetGUID(PSTR id, GUID& gameGUID);
+	bool GetID(PSTR gameName, PSTR& id);
 
-	PCSTR GetReferenceGameID(void);
-	PlayerList* GetPlayerList(PCSTR id);
+	PSTR GetReferenceGameID(void);
+	PlayerList* GetPlayerList(PSTR id);
 
 	// ping management
 	static bool _stdcall StartPingServer(void);
 	static bool _stdcall StartPingClient(uint32_t ping_interval_sec);
 	static void _stdcall ShutdownPing(void);
-	int32_t GetPing(PCSTR id);
+	int32_t GetPing(PSTR id);
 	int32_t GetPing(int32_t index);
 
 	PVOID operator new(size_t size);
@@ -401,9 +401,9 @@ public:
 	FilterType GetFilterType(void) const;
 
 	// general field-based filtering
-	void AddNumericFilter(PCSTR key, int32_t minVal, int32_t maxVal);
-	void AddStringFilter(PCSTR key, PCSTR val);
-	virtual bool ClearFilter(PCSTR key);
+	void AddNumericFilter(PSTR key, int32_t minVal, int32_t maxVal);
+	void AddStringFilter(PSTR key, PSTR val);
+	virtual bool ClearFilter(PSTR key);
 
 	virtual void ClearAllFilters(void);
 
@@ -474,18 +474,18 @@ public:
 	void EnablePlayerCountFilter(bool val);
 	bool GetPlayerCountFilterEnabled(void) const;
 
-	bool SetGameTypeFilter(PCSTR gameType);
-	PCSTR GetGameTypeFilter(void) const;
+	bool SetGameTypeFilter(PSTR gameType);
+	PSTR GetGameTypeFilter(void) const;
 	void EnableGameTypeFilter(bool val);
 	bool GetGameTypeFilterEnabled(void) const;
 
-	bool SetPlayerFilter(PCSTR playerName);
-	PCSTR GetPlayerFilter(void) const;
+	bool SetPlayerFilter(PSTR playerName);
+	PSTR GetPlayerFilter(void) const;
 	void EnablePlayerFilter(bool val);
 	bool GetPlayerFilterEnabled(void) const;
 
-	bool SetClanFilter(PCSTR clanName);
-	PCSTR GetClanFilter(void) const;
+	bool SetClanFilter(PSTR clanName);
+	PSTR GetClanFilter(void) const;
 	void EnableClanFilter(bool val);
 	bool GetClanFilterEnabled(void) const;
 
@@ -535,7 +535,7 @@ public:
 	// callback methods
 	void CreateEntryNotify(TableList::TableItem& item);
 	void SetFieldNotify(TableList::TableItem& item, TableList::FieldItem& field);
-	void RemoveFieldNotify(TableList::TableItem* item, PCSTR key);
+	void RemoveFieldNotify(TableList::TableItem* item, PSTR key);
 	void RemoveNotify(TableList::TableItem& item);
 
 	// policy settings
@@ -556,7 +556,7 @@ public:
 	bool Filter(void);
 
 	// sorting operations
-	bool Sort(PCSTR sortKey, SortOrderType sortOrder);
+	bool Sort(PSTR sortKey, SortOrderType sortOrder);
 	bool SortIfDirty(void);
 	void SetResortFrequency(double seconds);
 	double GetResortFrequency(void) const;
@@ -564,9 +564,9 @@ public:
 	void SetSortDirty(bool val);
 
 	// misc operations
-	int32_t GetIndexFromID(PCSTR id);
-	bool SetSelection(PCSTR id);
-	PCSTR GetSelection(void) const;
+	int32_t GetIndexFromID(PSTR id);
+	bool SetSelection(PSTR id);
+	PSTR GetSelection(void) const;
 
 	// to override gos memory allocation
 	PVOID operator new(size_t size);
@@ -613,9 +613,9 @@ private:
 	PSTR m_SortKey;
 	SortOrderType m_SortOrder;
 	// extra vars needed or hash foreach callback
-	PCSTR m_SearchKey;
-	PCSTR m_SearchVal;
-	PCSTR m_SearchResult;
+	PSTR m_SearchKey;
+	PSTR m_SearchVal;
+	PSTR m_SearchResult;
 	// mdm - used to remember which item is selected in the list
 	PSTR m_Selection;
 	// mdm - true if the list has been changed but not resorted

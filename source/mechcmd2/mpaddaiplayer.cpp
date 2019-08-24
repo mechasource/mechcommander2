@@ -10,8 +10,8 @@ MPAddAIPlayer.cpp			: Implementation of the MPAddAIPlayer component.
 #include "MPAddAIPlayer.h"
 #include "prefs.h"
 #include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
+#include "userinput.h"
+#include "resource.h"
 
 #include "gamesound.h"
 #define CHECK_BUTTON 200
@@ -99,7 +99,7 @@ MPAddAIPlayer::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
-			std::wstring tmpStr;
+			const std::wstring_view& tmpStr;
 			tmpStr.Format("Text%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			experienceDropList.AddItem(pTmp2);
@@ -127,7 +127,7 @@ MPAddAIPlayer::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
-			std::wstring tmpStr;
+			const std::wstring_view& tmpStr;
 			tmpStr.Format("Text%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			factionDropList.AddItem(pTmp2);
@@ -161,7 +161,7 @@ MPAddAIPlayer::init(FitIniFile* file)
 				for (i = 0; i < listItemCount; i += 1)
 				{
 					pTmp2 = new aStyle4TextListItem;
-					std::wstring tmpStr;
+					const std::wstring_view& tmpStr;
 					tmpStr.Format("Text%d", i);
 					pTmp2->init(&PNfile, tmpStr.Data());
 					mechSelectionDropLists[row][column].AddItem(pTmp2);
@@ -294,7 +294,7 @@ MPAddAIPlayer::update()
 }
 
 int32_t
-aStyle4TextListItem::init(FitIniFile* file, PCSTR blockName)
+aStyle4TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t fontResID = 0;
@@ -344,5 +344,4 @@ aStyle4TextListItem::render()
 
 //////////////////////////////////////////////
 
-//*************************************************************************************************
 // end of file ( MPAddAIPlayer.cpp )

@@ -10,10 +10,10 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <stuff/angle.hpp>
-#include <stuff/rotation.hpp>
-#include <stuff/note.hpp>
+#include "gameos.hpp"
+#include "stuff/angle.h"
+#include "stuff/rotation.h"
+#include "stuff/note.h"
 
 using namespace Stuff;
 
@@ -40,7 +40,7 @@ Note::GetEntry(pint32_t value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = atoi(contents);
@@ -65,7 +65,7 @@ Note::GetEntry(float* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = AtoF(contents);
@@ -90,7 +90,7 @@ Note::GetEntry(bool* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = (!_stricmp(contents, "true") || !_stricmp(contents, "yes") || atoi(contents) != 0);
@@ -112,7 +112,7 @@ Note::GetEntry(Vector3D* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count = sscanf_s(contents, "%f %f %f", &value->x, &value->y, &value->z);
@@ -147,7 +147,7 @@ Note::GetEntry(YawPitchRoll* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	// AFAIU we need pointers to float to avoid warning C6272
@@ -189,7 +189,7 @@ Note::GetEntry(UnitQuaternion* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	// AFAIU we need pointers to float to avoid warning C6272
@@ -234,7 +234,7 @@ Note::GetEntry(Motion3D* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count = sscanf_s(contents, "%f %f %f %f %f %f", &value->linearMotion.x,
@@ -272,7 +272,7 @@ Note::GetEntry(RGBColor* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count = sscanf_s(contents, "%f %f %f", &value->red, &value->green, &value->blue);
@@ -306,7 +306,7 @@ Note::GetEntry(RGBAColor* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count =
@@ -344,7 +344,7 @@ Note::GetEntry(NotationFile* value)
 {
 	// Check_Object(this);
 	Check_Object(value);
-	PCSTR contents = nullptr;
+	const std::wstring_view& contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	//
@@ -366,7 +366,7 @@ Note::GetEntry(NotationFile* value)
 	//
 	else
 	{
-		std::iostream stream(const_cast<PSTR>(contents + 3), strlen(contents) - 3);
+		std::iostream stream(const_cast<const std::wstring_view&>(contents + 3), strlen(contents) - 3);
 		NotationFile* parent_file = m_page->GetNotationFile();
 		Check_Object(parent_file);
 		value->m_fileDependencies.AddDependencies(parent_file->GetFileDependencies());
@@ -377,7 +377,7 @@ Note::GetEntry(NotationFile* value)
 		//
 		if (parent_file->GetFileName())
 		{
-			std::wstring name(parent_file->GetFileName());
+			const std::wstring_view& name(parent_file->GetFileName());
 			name += '[';
 			name += GetName();
 			name += ']';
@@ -404,7 +404,7 @@ Note::SetEntry(NotationFile* value)
 	// If this isn't a nested file, write out the filename
 	//----------------------------------------------------
 	//
-	PCSTR name = value->GetFileName();
+	const std::wstring_view& name = value->GetFileName();
 	if (name && name[strlen(name) - 1] != ']')
 		SetEntry(name);
 	//
@@ -420,7 +420,7 @@ Note::SetEntry(NotationFile* value)
 		value->Write(&file_buffer);
 		file_buffer << "}" << '\0';
 		file_buffer.Rewind();
-		SetEntry(static_cast<PCSTR>(file_buffer.GetPointer()));
+		SetEntry(static_cast<const std::wstring_view&>(file_buffer.GetPointer()));
 		value->IgnoreChanges();
 	}
 }

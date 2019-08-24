@@ -76,9 +76,9 @@ public:
 
 	void destroy(void);
 
-	void init(PSTR effectCSVFileName);
+	void init(const std::wstring_view& effectCSVFileName);
 
-	PSTR GetEffectName(int32_t effectId)
+	const std::wstring_view& GetEffectName(int32_t effectId)
 	{
 		if ((effectId >= 0) && (effectId < numEffects))
 		{
@@ -87,7 +87,7 @@ public:
 		return mc2_word_none;
 	}
 
-	PSTR GetEffectMuzzleFlashName(int32_t effectId)
+	const std::wstring_view& GetEffectMuzzleFlashName(int32_t effectId)
 	{
 		if ((effectId >= 0) && (effectId < numEffects))
 		{
@@ -96,7 +96,7 @@ public:
 		return mc2_word_none;
 	}
 
-	PSTR GetEffectHitName(int32_t effectId)
+	const std::wstring_view& GetEffectHitName(int32_t effectId)
 	{
 		if ((effectId >= 0) && (effectId < numEffects))
 		{
@@ -105,7 +105,7 @@ public:
 		return mc2_word_none;
 	}
 
-	PSTR GetEffectMissName(int32_t effectId)
+	const std::wstring_view& GetEffectMissName(int32_t effectId)
 	{
 		if ((effectId >= 0) && (effectId < numEffects))
 		{

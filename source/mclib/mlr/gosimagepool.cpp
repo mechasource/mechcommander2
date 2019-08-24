@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/gosimagepool.hpp>
+#include "mlr/gosimagepool.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -21,7 +21,7 @@ GOSImagePool::GOSImagePool() :
 //
 GOSImagePool::~GOSImagePool()
 {
-	HashIteratorOf<GOSImage*, std::wstring> images(&imageHash);
+	HashIteratorOf<GOSImage*, const std::wstring_view&> images(&imageHash);
 	images.DeletePlugs();
 }
 
@@ -30,7 +30,7 @@ GOSImagePool::~GOSImagePool()
 void
 GOSImagePool::UnLoadImages(void)
 {
-	HashIteratorOf<GOSImage*, std::wstring> images(&imageHash);
+	HashIteratorOf<GOSImage*, const std::wstring_view&> images(&imageHash);
 	GOSImage* image = images.ReadAndNext();
 	while (image)
 	{
@@ -42,10 +42,10 @@ GOSImagePool::UnLoadImages(void)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 GOSImage*
-GOSImagePool::GetImage(PCSTR image_name)
+GOSImagePool::GetImage(const std::wstring_view& image_name)
 {
 	// Check_Object(this);
-	std::wstring imageName = image_name;
+	const std::wstring_view& imageName = image_name;
 	_ASSERT(imageName.GetLength() > 0);
 	//
 	//---------------------------
@@ -71,10 +71,10 @@ GOSImagePool::GetImage(PCSTR image_name)
 //
 GOSImage*
 GOSImagePool::GetImage(
-	PCSTR image_name, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
+	const std::wstring_view& image_name, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
 {
 	// Check_Object(this);
-	std::wstring imageName = image_name;
+	const std::wstring_view& imageName = image_name;
 	_ASSERT(imageName.GetLength() > 0);
 	//
 	//---------------------------
@@ -114,7 +114,7 @@ GOSImagePool::RemoveImage(GOSImage* image)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-TGAFilePool::TGAFilePool(PCSTR path)
+TGAFilePool::TGAFilePool(const std::wstring_view& path)
 {
 	texturePath = path;
 }
@@ -126,10 +126,10 @@ TGAFilePool::LoadImage(GOSImage* image, int32_t hint)
 {
 	if ((image->flags & GOSImage::Loaded) != 0)
 		return true;
-	std::wstring file_name = texturePath;
+	const std::wstring_view& file_name = texturePath;
 	file_name += image->imageName;
 	file_name += ".tga";
-	PSTR fFileName = file_name;
+	const std::wstring_view& fFileName = file_name;
 	if (((fFileName[0] != 'F') || (fFileName[0] != 'f')) && ((fFileName[1] != 'X') || (fFileName[1] != 'x')))
 		hint |= gosHint_DisableMipmap;
 	uint32_t nodeIndex = mcTextureManager->loadTexture(file_name, gos_Texture_Detect, hint);
@@ -137,3 +137,5 @@ TGAFilePool::LoadImage(GOSImage* image, int32_t hint)
 	image->flags |= GOSImage::Loaded;
 	return ((image->flags & GOSImage::Loaded) != 0);
 }
+
+} // namespace MidLevelRenderer

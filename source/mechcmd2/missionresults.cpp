@@ -9,7 +9,7 @@ MissionResults.cpp			: Implementation of the MissionResults component.
 
 #include "stdinc.h"
 #include "missionresults.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "objmgr.h"
 #include "mech.h"
 #include "logisticsvariant.h"
@@ -18,7 +18,7 @@ MissionResults.cpp			: Implementation of the MissionResults component.
 #include "salvagemecharea.h"
 #include "pilotreviewarea.h"
 #include "gamesound.h"
-#include "..\resource.h"
+#include "resource.h"
 
 bool MissionResults::FirstTimeResults = true;
 MissionResults::MissionResults()
@@ -107,7 +107,7 @@ MissionResults::end()
 	// Need to save the game here so salvage and pilot promotion get saved as
 	// well!
 	// Pity we never call ::end!
-	PCSTR pMissionName = LogisticsData::instance->getLastMission();
+	const std::wstring_view& pMissionName = LogisticsData::instance->getLastMission();
 	if (pMissionName && !LogisticsData::instance->isSingleMission() && !LogisticsData::instance->campaignOver() && !MPlayer)
 	{
 		FitIniFile file;
@@ -197,7 +197,7 @@ MissionResults::render()
 }
 
 void
-MissionResults::setHostLeftDlg(PCSTR pName)
+MissionResults::setHostLeftDlg(const std::wstring_view& pName)
 {
 	if (MPlayer && mpStats.getStatus() == LogisticsScreen::RUNNING)
 	{

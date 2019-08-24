@@ -27,7 +27,7 @@ struct _LARGEBLOCKHEADER;
 // 255   = Unused
 //
 //
-typedef enum _memorymanager_constants
+enum class _memorymanager_constants
 {
 	Magic_LargeBlock = 253, // Larger than 4k memory block (no in pools)
 	Magic_BeforeInit = 254, // Allocated before inited  (was 0xabadcafe)
@@ -165,19 +165,19 @@ typedef struct gos_Heap* HGOSHEAP;
 
 #pragma pack(pop)
 
-extern HGOSHEAP AllHeaps;
+// extern HGOSHEAP AllHeaps;
 extern uint16_t PoolSizes[MemoryPools];
-extern HGOSHEAP HeapList[256];
+// extern HGOSHEAP HeapList[256];
 extern uint32_t LargeMemorySize;
 extern uint32_t LargeMemoryAllocations;
 extern uint32_t gMemoryBlockOverhead;
-extern HGOSHEAP Heap_Texture;
-extern HGOSHEAP Heap_Texture32;
-extern HGOSHEAP Heap_Texture16;
-extern HGOSHEAP Heap_TextureOther;
-extern HGOSHEAP Heap_Network;
-extern HGOSHEAP ParentGameOSHeap;
-extern HGOSHEAP DefaultHeap;
+// extern HGOSHEAP Heap_Texture;
+// extern HGOSHEAP Heap_Texture32;
+// extern HGOSHEAP Heap_Texture16;
+// extern HGOSHEAP Heap_TextureOther;
+// extern HGOSHEAP Heap_Network;
+// extern HGOSHEAP ParentGameOSHeap;
+// extern HGOSHEAP DefaultHeap;
 extern PMEMORYPOOL gMemoryPool[MemoryPools];
 
 void __stdcall gos_ChangeHeapSize(HGOSHEAP Heap, size_t Change, uint8_t SystemAllocation = 0);

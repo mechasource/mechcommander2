@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // BuildingSettingsDlg dialog
 
-//#include <elist.h>
+//#include "elist.h"
 //#include "action.h"
 
 class EditorObject;

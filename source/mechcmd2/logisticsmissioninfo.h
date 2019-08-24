@@ -11,12 +11,11 @@ component.
 #ifndef LOGISTICSMISSIONINFO_H
 #define LOGISTICSMISSIONINFO_H
 
-//#include <elist.h>
-//#include <estring.h>
+//#include "elist.h"
+//#include "estring.h"
 
 #define MAX_PLAYER_NAME_LENGTH 64
 
-//*************************************************************************************************
 class FitIniFile;
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -32,54 +31,54 @@ public:
 	void save(FitIniFile& file);
 	int32_t load(FitIniFile& file); // init previously saved stuff
 
-	int32_t getAvailableMissions(PCSTR* missions, int32_t& numberOfEm);
-	int32_t getCurrentMissions(PCSTR* missions, int32_t& numberOfEm);
+	int32_t getAvailableMissions(const std::wstring_view&* missions, int32_t& numberOfEm);
+	int32_t getCurrentMissions(const std::wstring_view&* missions, int32_t& numberOfEm);
 
-	bool getMissionAvailable(PCSTR missionName);
+	bool getMissionAvailable(const std::wstring_view& missionName);
 
-	bool isMissionComplete(PCSTR missionName);
+	bool isMissionComplete(const std::wstring_view& missionName);
 	bool isSingleMission(void) const;
 
-	int32_t setNextMission(PCSTR missionName);
+	int32_t setNextMission(const std::wstring_view& missionName);
 	void setMissionComplete();
 
 	int32_t getCurrentLogisticsTuneId(void);
 
 	int32_t getCurrentMissionId(void);
 
-	const std::wstring& getCurrentPurchaseFile(void) const;
-	const std::wstring& getCurrentMission(void) const { return currentMissionName; }
-	const std::wstring& getLastMission(void) const { return lastMissionName; }
+	const std::wstring_view& getCurrentPurchaseFile(void) const;
+	const std::wstring_view& getCurrentMission(void) const { return currentMissionName; }
+	const std::wstring_view& getLastMission(void) const { return lastMissionName; }
 
 	int32_t getCurrentDropWeight(void) const;
-	PCSTR getCurrentVideo(void) const;
-	PCSTR getCurrentOperationFile(void) const;
-	PCSTR getCurrentMissionDescription(void) const;
-	PCSTR getCurrentMissionFriendlyName(void) const;
-	PCSTR getMissionFriendlyName(PCSTR missionName) const;
-	PCSTR getCurrentABLScriptName(void) const;
+	const std::wstring_view& getCurrentVideo(void) const;
+	const std::wstring_view& getCurrentOperationFile(void) const;
+	const std::wstring_view& getCurrentMissionDescription(void) const;
+	const std::wstring_view& getCurrentMissionFriendlyName(void) const;
+	const std::wstring_view& getMissionFriendlyName(const std::wstring_view& missionName) const;
+	const std::wstring_view& getCurrentABLScriptName(void) const;
 
 	int32_t getCurrentRP(void) const;
 	int32_t getCBills(void) const { return CBills; }
 	void incrementCBills(int32_t amount) { CBills += amount; }
 	void decrementCBills(int32_t amount) { CBills -= amount; }
 
-	const std::wstring& getCampaignName() const { return campaignName; }
-	const std::wstring& getCampaignDisplayName(void) const { return campaignDisplayName; }
+	const std::wstring_view& getCampaignName() const { return campaignName; }
+	const std::wstring_view& getCampaignDisplayName(void) const { return campaignDisplayName; }
 
 	bool campaignOver(void) const;
 
-	PCSTR getCurrentBigVideo(void) const;
-	PCSTR getFinalVideo(void) const;
+	const std::wstring_view& getCurrentBigVideo(void) const;
+	const std::wstring_view& getFinalVideo(void) const;
 
 	void setMultiplayer(void);
-	void setPurchaseFile(PCSTR fileName);
+	void setPurchaseFile(const std::wstring_view& fileName);
 
 	//		int32_t				getMaxTeams(void) const { return maxTeams; }
 	//		int32_t				getMaxPlayers(void) const { return maxPlayers; }
 
-	int32_t getAdditionalPurachaseFiles(PCSTR* list, int32_t& maxCount);
-	void addBonusPurchaseFile(PCSTR fileName); // extra bonus
+	int32_t getAdditionalPurachaseFiles(const std::wstring_view&* list, int32_t& maxCount);
+	void addBonusPurchaseFile(const std::wstring_view& fileName); // extra bonus
 
 	bool skipLogistics(void);
 	bool showChooseMission(void);
@@ -88,7 +87,7 @@ public:
 	bool skipSalvageScreen(void);
 	bool skipPurchasing(void);
 
-	void setSingleMission(PCSTR pName);
+	void setSingleMission(const std::wstring_view& pName);
 
 	bool canHaveSalavageCraft(void);
 	bool canHaveRepairTruck(void);
@@ -109,11 +108,11 @@ private:
 	{
 	public:
 		~MissionInfo(void);
-		std::wstring missionDescriptiveName;
-		std::wstring fileName;
-		std::wstring description;
-		std::wstring purchaseFileName;
-		std::wstring videoName;
+		const std::wstring_view& missionDescriptiveName;
+		const std::wstring_view& fileName;
+		const std::wstring_view& description;
+		const std::wstring_view& purchaseFileName;
+		const std::wstring_view& videoName;
 		bool mandatory;
 		bool completePrevious;
 		bool completed;
@@ -136,16 +135,16 @@ private:
 	};
 
 	typedef EList<MissionInfo*, MissionInfo*> MISSION_LIST;
-	typedef EList<PSTR, PSTR> FILE_LIST;
+	typedef EList<const std::wstring_view&, const std::wstring_view&> FILE_LIST;
 
 	class MissionGroup
 	{
 	public:
 		int32_t numberToBeCompleted;
-		std::wstring videoFileName;
-		std::wstring operationFileName;
-		std::wstring bigVideoName;
-		std::wstring ablBrainName;
+		const std::wstring_view& videoFileName;
+		const std::wstring_view& operationFileName;
+		const std::wstring_view& bigVideoName;
+		const std::wstring_view& ablBrainName;
 		int32_t logisticsTuneId;
 		MISSION_LIST infos;
 		bool bigVideoShown;
@@ -154,17 +153,17 @@ private:
 
 	// DATA
 
-	std::wstring campaignName;
-	std::wstring campaignDisplayName;
-	std::wstring playerName;
-	std::wstring currentMissionName;
-	std::wstring finalVideoName;
+	const std::wstring_view& campaignName;
+	const std::wstring_view& campaignDisplayName;
+	const std::wstring_view& playerName;
+	const std::wstring_view& currentMissionName;
+	const std::wstring_view& finalVideoName;
 	int32_t currentStage;
 	int32_t currentMission;
 
 	int32_t lastStage;
 	int32_t lastMission;
-	std::wstring lastMissionName;
+	const std::wstring_view& lastMissionName;
 
 	MissionGroup* groups;
 	int32_t groupCount;
@@ -182,5 +181,4 @@ private:
 	// HELPER FUNCTIONS
 };
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsMissionInfo.h )

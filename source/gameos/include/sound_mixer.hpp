@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "EZVector.hpp"
+#include "ezvector.hpp"
 
 class SoundMixer
 {

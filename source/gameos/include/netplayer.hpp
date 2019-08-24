@@ -115,9 +115,9 @@ public:
 		}
 	}
 
-	inline PCSTR GetShortName() { return shortName; }
+	inline PSTR GetShortName() { return shortName; }
 
-	inline PCSTR GetLongName() { return longName; }
+	inline PSTR GetLongName() { return longName; }
 
 	inline DPID PlayerID() { return playerID; }
 

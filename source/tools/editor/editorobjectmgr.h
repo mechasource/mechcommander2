@@ -11,10 +11,10 @@ holds lists of all the objects on the map.
 #ifndef EDITOROBJECTMGR_H
 #define EDITOROBJECTMGR_H
 
-//#include <elist.h>
+//#include "elist.h"
 //#include "editorobjects.h"
 //#include "forest.h"
-//#include <mclib.h>
+//#include "mclib.h"
 
 class ObjectAppearance;
 class AppearanceType;
@@ -88,7 +88,7 @@ public:
 
 	void renderShadows(void);
 
-	void init(PCSTR bldgListFileName, PCSTR objectFileName);
+	void init(const std::wstring_view& bldgListFileName, const std::wstring_view& objectFileName);
 
 	EditorObject* addBuilding(const Stuff::Vector3D& position, uint32_t group,
 		uint32_t indexWithinGroup, int32_t alignment, float rotation = 0.0, float height = 1.0,
@@ -129,17 +129,17 @@ public:
 
 	int32_t getBuildingGroupCount(void) const; // mechs count too!
 	int32_t getNumberBuildingsInGroup(int32_t Group) const;
-	void getBuildingGroupNames(PCSTR* names, int32_t& numberOfNames) const;
-	void getNamesOfObjectsInGroup(PCSTR groupName, PCSTR* names, int32_t& numberOfNames) const;
-	void getBuildingNamesInGroup(int32_t Group, PCSTR* names, int32_t& numberOfNames) const;
+	void getBuildingGroupNames(const std::wstring_view&* names, int32_t& numberOfNames) const;
+	void getNamesOfObjectsInGroup(const std::wstring_view& groupName, const std::wstring_view&* names, int32_t& numberOfNames) const;
+	void getBuildingNamesInGroup(int32_t Group, const std::wstring_view&* names, int32_t& numberOfNames) const;
 	int32_t getNumberOfVariants(int32_t group, int32_t indexInGroup) const;
 	void getVariantNames(
-		int32_t group, int32_t indexInGroup, PCSTR* names, int32_t& numberOfNames) const;
-	PCSTR getGroupName(int32_t group) const;
-	PCSTR getObjectName(int32_t ID) const;
+		int32_t group, int32_t indexInGroup, const std::wstring_view&* names, int32_t& numberOfNames) const;
+	const std::wstring_view& getGroupName(int32_t group) const;
+	const std::wstring_view& getObjectName(int32_t ID) const;
 
 	int32_t getUnitGroupCount(void) const;
-	void getUnitGroupNames(PCSTR* names, pint32_t IDs, int32_t& numberOfNames) const;
+	void getUnitGroupNames(const std::wstring_view&* names, pint32_t IDs, int32_t& numberOfNames) const;
 
 	bool save(PacketFile& file, int32_t whichPacket);
 	bool load(PacketFile& file, int32_t whichPacket);
@@ -206,8 +206,8 @@ public:
 	inline float getScale(int32_t ID);
 	inline bool isAlignable(int32_t ID);
 	inline int32_t getObjectTypeNum(int32_t ID);
-	inline PCSTR getFileName(int32_t ID) const;
-	inline PCSTR getTGAFileName(int32_t ID) const;
+	inline const std::wstring_view& getFileName(int32_t ID) const;
+	inline const std::wstring_view& getTGAFileName(int32_t ID) const;
 	inline uint32_t getTacMapColor(int32_t ID) const;
 
 	typedef EList<EditorObject*, EditorObject*> BUILDING_LIST; // buildings on the map
@@ -234,7 +234,7 @@ private:
 	struct Building
 	{
 		char name[64];
-		PSTR* varNames;
+		const std::wstring_view&* varNames;
 		int32_t nameID;
 		char fileName[64];
 		AppearanceType* appearanceType;
@@ -283,7 +283,7 @@ private:
 		// marked as selected
 
 	// HELPERS
-	int32_t ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength);
+	int32_t ExtractNextString(puint8_t& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength);
 	int32_t ExtractNextInt(puint8_t& pFileLine);
 	float ExtractNextFloat(puint8_t& pFileLine);
 
@@ -332,13 +332,13 @@ EditorObjectMgr::getObjectTypeNum(int32_t ID)
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].objectTypeNum;
 }
 
-inline PCSTR
+inline const std::wstring_view&
 EditorObjectMgr::getFileName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].fileName;
 }
 
-inline PCSTR
+inline const std::wstring_view&
 EditorObjectMgr::getTGAFileName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].tgaName;
@@ -356,5 +356,4 @@ EditorObjectMgr::getScale(int32_t ID)
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].scale;
 }
 
-//*************************************************************************************************
 #endif // end of file ( EditorObjectMgr.h )

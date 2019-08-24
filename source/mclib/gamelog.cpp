@@ -9,7 +9,7 @@
 //---------------------------------------------------------------------------
 // Include files
 #ifndef FILE_H
-#include <file.h>
+#include "file.h"
 #endif
 
 #ifndef GAMELOG_H
@@ -17,14 +17,14 @@
 #endif
 
 #ifndef HEAP_H
-#include <heap.h>
+#include "heap.h"
 #endif
 
 #include <malloc.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 bool isSetup = false;
 
@@ -56,7 +56,7 @@ GameLog::dump(void)
 	//----------------
 	// Dump to file...
 	for (size_t i = 0; i < numLines; i++)
-		filePtr->writeString(lines[i]);
+		pfile->writeString(lines[i]);
 	numLines = 0;
 }
 
@@ -65,13 +65,13 @@ GameLog::dump(void)
 void
 GameLog::close(void)
 {
-	if (filePtr && inUse)
+	if (pfile && inUse)
 	{
 		dump();
 		char s[512];
 		sprintf(s, "\nNum Total Lines = %d\n", totalLines);
-		filePtr->writeString(s);
-		filePtr->close();
+		pfile->writeString(s);
+		pfile->close();
 		inUse = false;
 		numLines = 0;
 		totalLines = 0;
@@ -89,11 +89,11 @@ GameLog::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-GameLog::open(PSTR fileName)
+GameLog::open(const std::wstring_view& fileName)
 {
 	numLines = 0;
 	totalLines = 0;
-	if (filePtr->create(fileName) != NO_ERROR)
+	if (pfile->create(fileName) != NO_ERROR)
 		return (-1);
 	inUse = true;
 	return (0);
@@ -102,7 +102,7 @@ GameLog::open(PSTR fileName)
 //---------------------------------------------------------------------------
 
 void
-GameLog::write(PSTR s)
+GameLog::write(const std::wstring_view& s)
 {
 	static char buffer[MAX_GAMELOG_LINELEN];
 	if (numLines == MAX_GAMELOG_LINES)
@@ -147,8 +147,8 @@ GameLog::setup(void)
 		files[i]->init();
 		files[i]->handle = i;
 		files[i]->inUse = false;
-		files[i]->filePtr = new MechFile;
-		gosASSERT(files[i]->filePtr != nullptr);
+		files[i]->pfile = new MechFile;
+		gosASSERT(files[i]->pfile != nullptr);
 	}
 }
 
@@ -164,9 +164,9 @@ GameLog::cleanup(void)
 		if (files[i] && files[i]->inUse)
 		{
 			files[i]->close();
-			files[i]->filePtr->close();
-			delete files[i]->filePtr;
-			files[i]->filePtr = nullptr;
+			files[i]->pfile->close();
+			delete files[i]->pfile;
+			files[i]->pfile = nullptr;
 			delete files[i];
 			files[i] = nullptr;
 		}

@@ -17,7 +17,7 @@
 //#include "objtype.h"
 //#include "gameobj.h"
 //#include "dcarnage.h"
-//#include <gosfx/gosfxheaders.hpp>
+//#include "gosfx/gosfxheaders.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -28,7 +28,7 @@
 
 //---------------------------------------------------------------------------
 
-typedef enum
+enum class 
 {
 	TERROBJ_NONE,
 	TERROBJ_TREE,
@@ -66,7 +66,7 @@ public:
 
 	virtual void initMiscTerrObj(int32_t objTypeNum);
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
@@ -167,7 +167,7 @@ public:
 
 	virtual void updateDebugWindow(GameDebugWindow* debugWindow);
 
-	virtual PSTR getName(void);
+	virtual const std::wstring_view& getName(void);
 
 	virtual void killFire(void);
 

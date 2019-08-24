@@ -7,17 +7,17 @@
 #define LOGISTICSPILOT_CPP
 
 #include "stdinc.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "logisticspilot.h"
 #include "logisticserrors.h"
 #include "logisticsdata.h"
 #include "warrior.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "mechicon.h"
 #include "objmgr.h"
 
 char LogisticsPilot::skillTexts[NUM_SPECIALTY_SKILLS][255] = {0};
-extern PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
+extern const std::wstring_view& SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
 LogisticsPilot::LogisticsPilot()
 {
@@ -46,7 +46,7 @@ LogisticsPilot::LogisticsPilot()
 LogisticsPilot::~LogisticsPilot() {}
 
 int32_t
-LogisticsPilot::init(PSTR pilotFileName)
+LogisticsPilot::init(const std::wstring_view& pilotFileName)
 {
 	fileName = pilotFileName;
 	char path[256];
@@ -108,10 +108,10 @@ LogisticsPilot::init(PSTR pilotFileName)
 	return 0;
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsPilot::getSkillText(int32_t skillID)
 {
-	gosASSERT(skillID <= NUM_SKILLS);
+	gosASSERT(skillID <= Skill::numberofskills);
 	if (skillTexts[skillID])
 	{
 		return skillTexts[skillID];
@@ -227,10 +227,10 @@ LogisticsPilot::update(MechWarrior* pWarrior)
 	}
 	setUsed(1);
 	pWarrior->updateMissionSkills();
-	newGunnery = pWarrior->skillRank[MWS_GUNNERY] - gunnery;
-	newPiloting = pWarrior->skillRank[MWS_PILOTING] - piloting;
-	gunnery = pWarrior->skillRank[MWS_GUNNERY];
-	piloting = pWarrior->skillRank[MWS_PILOTING];
+	newGunnery = pWarrior->skillRank[Skill::gunnery] - gunnery;
+	newPiloting = pWarrior->skillRank[Skill::piloting] - piloting;
+	gunnery = pWarrior->skillRank[Skill::gunnery];
+	piloting = pWarrior->skillRank[Skill::piloting];
 	// make sure no more than 4 points per mission
 	if (newGunnery > 4.f)
 	{
@@ -262,7 +262,7 @@ LogisticsPilot::update(MechWarrior* pWarrior)
 			killedIcons.Append(pIcon);
 			pIcon->init((Mover*)pDead);
 			pIcon->update();
-			if (((MoverPtr)pDead)->getMoveType() != MOVETYPE_AIR)
+			if (((std::unique_ptr<Mover>)pDead)->getMoveType() != MOVETYPE_AIR)
 				deadMechCount++;
 		}
 		else if (pDead->getObjectClass() == GROUNDVEHICLE)
@@ -382,7 +382,7 @@ LogisticsPilot::promotePilot()
 	if (oldRank != newRank)
 	{
 		gosASSERT(newRank > oldRank); // bad to demote
-		if (rank > WARRIOR_RANK_GREEN)
+		if (rank > WarriorRank::green)
 			return true;
 		return false;
 	}
@@ -394,14 +394,14 @@ int32_t
 LogisticsPilot::turnAverageIntoRank(float avg)
 {
 	if (avg > 79)
-		return WARRIOR_RANK_ACE;
+		return WarriorRank::ace;
 	else if (avg > 70)
-		return WARRIOR_RANK_ELITE;
+		return WarriorRank::elite;
 	else if (avg > 60)
-		return WARRIOR_RANK_VETERAN;
+		return WarriorRank::veteran;
 	else if (avg > 50)
-		return WARRIOR_RANK_REGULAR;
-	return WARRIOR_RANK_GREEN;
+		return WarriorRank::regular;
+	return WarriorRank::green;
 }
 
 int32_t
@@ -416,7 +416,7 @@ LogisticsPilot::getSpecialtySkillCount(void) const
 	return count;
 }
 int32_t
-LogisticsPilot::getSpecialtySkills(PCSTR* array, int32_t& count)
+LogisticsPilot::getSpecialtySkills(const std::wstring_view&* array, int32_t& count)
 {
 	int32_t max = count;
 	count = 0;
@@ -466,5 +466,4 @@ LogisticsPilot::setSpecialtySkill(int32_t skill, bool set)
 	specialtySkills[skill] = set;
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsPilot.cpp )

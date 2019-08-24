@@ -7,13 +7,13 @@
 
 #pragma once
 
-#include <stuff/linearmatrix.hpp>
-#include <stuff/registeredclass.hpp>
-#include <gosfx/gosfx.hpp>
-#include <gosfx/fcurve.hpp>
+#include "stuff/linearmatrix.h"
+#include "stuff/registeredclass.h"
+#include "gosfx/gosfx.h"
+#include "gosfx/fcurve.h"
 
-//#include <stuff/plug.hpp>
-//#include <mlr/mlr.hpp>
+//#include "stuff/plug.h"
+//#include "mlr/mlr.h"
 
 namespace MidLevelRenderer
 {
@@ -87,7 +87,7 @@ protected:
 	Stuff::RegisteredClass::ClassID m_class;
 
 	uint32_t m_effectID;
-	std::wstring m_name;
+	const std::wstring_view& m_name;
 
 	//----------------------------------------------------------------------
 	// Events
@@ -321,7 +321,7 @@ class Effect__ClassData //: public Stuff::Plug::ClassData
 	//----------------------------------------------------------------------------
 	//
 public:
-	Effect__ClassData(Stuff::RegisteredClass::ClassID class_id, PCSTR class_name,
+	Effect__ClassData(Stuff::RegisteredClass::ClassID class_id, const std::wstring_view& class_name,
 		Stuff::Plug::ClassData* parent_class, Effect::Factory effect_factory,
 		Effect::Specification::Factory spec_factory) :
 		RegisteredClass__ClassData(class_id, class_name, parent_class),

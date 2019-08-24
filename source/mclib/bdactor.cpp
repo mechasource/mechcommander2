@@ -63,7 +63,7 @@
 #include "move.h"
 #endif
 
-#include "../Code/unitdesg.h" /* just for definition of MIN_TERRAIN_PART_ID and MAX_MAP_CELL_WIDTH */
+#include "unitdesg.h" /* just for definition of MIN_TERRAIN_PART_ID and MAX_MAP_CELL_WIDTH */
 //******************************************************************************************
 extern float worldUnitsPerMeter;
 extern bool drawTerrainGrid;
@@ -90,7 +90,7 @@ extern bool MLRVertexLimitReached;
 //-----------------------------------------------------------------------------
 // class BldgAppearanceType
 void
-BldgAppearanceType::init(PSTR fileName)
+BldgAppearanceType::init(const std::wstring_view& fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -328,7 +328,7 @@ BldgAppearanceType::init(PSTR fileName)
 				strcpy(weaponName, "NONE");
 			}
 			nodeData[i].nodeId =
-				(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName) + 1);
+				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName) + 1);
 			gosASSERT(nodeData[i].nodeId != nullptr);
 			strcpy(nodeData[i].nodeId, weaponName);
 			nodeData[i].weaponType = 0;
@@ -819,7 +819,7 @@ BldgAppearance::setObjStatus(int32_t oStatus)
 
 //-----------------------------------------------------------------------------
 Stuff::Vector3D
-BldgAppearance::getNodeNamePosition(PSTR nodeName)
+BldgAppearance::getNodeNamePosition(const std::wstring_view& nodeName)
 {
 	Stuff::Vector3D result = position;
 	//-------------------------------------------
@@ -2647,7 +2647,7 @@ BldgAppearance::calcAdjCell(int32_t& row, int32_t& col)
 //-----------------------------------------------------------------------------
 // class TreeAppearanceType
 void
-TreeAppearanceType::init(PSTR fileName)
+TreeAppearanceType::init(const std::wstring_view& fileName)
 {
 	AppearanceType::init(fileName);
 	FullPathFileName iniName;

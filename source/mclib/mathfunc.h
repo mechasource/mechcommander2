@@ -5,8 +5,8 @@
 #ifndef MATHFUNC_H
 #define MATHFUNC_H
 
-#include <stuff/vector3d.hpp>
-#include <stuff/vector2d.hpp>
+#include "stuff/vector3d.h"
+#include "stuff/vector2d.h"
 
 // DESCRIBES A COORDINATE SYSTEM, OR FRAME OR REFERENCE
 class frameOfRef
@@ -180,7 +180,7 @@ mc2_atan2(float f1, float f2)
 }
 
 //---------------------------------------------------------------------------
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 inline float
 fmax(float f1, float f2)
 {

@@ -76,7 +76,7 @@ component.
 //#include "waterdlg.h"
 //#include "wavedlg.h"
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 /* -------------------------------------------------------------------------- */
 
 #include "objectselectionbrush.h"
@@ -223,5 +223,4 @@ ObjectSelectionBrush::selectedObjectPointerList()
 
 #endif
 
-//*************************************************************************************************
 // end of file ( ObjectSelectionBrush.cpp )

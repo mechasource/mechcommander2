@@ -8,9 +8,9 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-//#include <stuff/node.hpp>
-#include <stuff/safechain.hpp>
+#include "gameos.hpp"
+//#include "stuff/node.h"
+#include "stuff/safechain.h"
 
 using namespace Stuff;
 

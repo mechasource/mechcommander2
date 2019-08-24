@@ -82,7 +82,7 @@ public:
 
 	TurretType(void) { init(void); }
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
@@ -232,10 +232,10 @@ public:
 	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
 	int32_t handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+		Stuff::Vector3D* targetpoint, bool hit, float entryAngle, int32_t numMissiles,
 		int32_t hitLocation);
 
-	virtual void printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoint,
+	virtual void printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpoint,
 		int32_t chance, int32_t roll, WeaponShotInfo* shotInfo);
 
 	virtual void printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo);

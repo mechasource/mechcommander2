@@ -56,7 +56,7 @@
 //#include <stuff/rotation.hpp>
 //#include <stuff/safechain.hpp>
 //#include <stuff/safesocket.hpp>
-//#include <stuff/scalar.hpp>
+//#include "stuff/scalar.h"
 //#include <stuff/slot.hpp>
 //#include <stuff/socket.hpp>
 //#include <stuff/sortedchain.hpp>

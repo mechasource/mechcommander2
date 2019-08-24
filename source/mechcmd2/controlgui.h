@@ -11,15 +11,15 @@ holds the tac map and everything else on the left hand side of the screen.
 #ifndef CONTROLGUI_H
 #define CONTROLGUI_H
 
-#include "gametacmap.h"
-#include "forcegroupbar.h"
-#include "mover.h"
-#include "utilities.h"
-#include "pausewindow.h"
-#include <mechgui/afont.h>
-#include <mechgui/aedit.h>
-#include "mc2movie.h"
-#include "mpstats.h"
+//#include "gametacmap.h"
+//#include "forcegroupbar.h"
+//#include "mover.h"
+//#include "utilities.h"
+//#include "pausewindow.h"
+//#include "mechgui/afont.h"
+//#include "mechgui/aedit.h"
+//#include "mc2movie.h"
+//#include "mpstats.h"
 
 class CObjective;
 class InfoWindow;
@@ -71,7 +71,7 @@ public:
 	static void makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data);
 
 	static void initButtons(FitIniFile& file, int32_t buttonCount, ControlButton* buttons,
-		ButtonData* buttonData, PCSTR str, aFont* font = 0);
+		ButtonData* buttonData, const std::wstring_view& str, aFont* font = 0);
 
 	enum States
 	{
@@ -102,8 +102,8 @@ public:
 	void initMechs(void);
 	void unPressAllVehicleButtons(void);
 	void disableAllVehicleButtons(void);
-	void addMover(MoverPtr mover);
-	void removeMover(MoverPtr mover);
+	void addMover(std::unique_ptr<Mover> mover);
+	void removeMover(std::unique_ptr<Mover> mover);
 	int32_t updateChat(void);
 
 	void beginPause(void);
@@ -118,7 +118,7 @@ public:
 	void setVehicleCommand(bool);
 	bool getVehicleCommand();
 
-	void playMovie(PCSTR fileName);
+	void playMovie(const std::wstring_view& fileName);
 	bool isMoviePlaying(void);
 
 	bool playPilotVideo(MechWarrior* pPilot, char movieCode);
@@ -134,8 +134,8 @@ public:
 	bool pushButton(int32_t buttonId);
 	bool flashRPTotal(int32_t numFlashes);
 
-	PCSTR getVehicleName(int32_t& ID);
-	PCSTR getVehicleNameFromID(int32_t ID);
+	const std::wstring_view& getVehicleName(int32_t& ID);
+	const std::wstring_view& getVehicleNameFromID(int32_t ID);
 	void swapResolutions(int32_t newResolution);
 
 	GameTacMap tacMap;
@@ -143,7 +143,7 @@ public:
 
 	bool mouseInVehicleStopButton;
 
-	typedef enum __controlgui_const
+	enum class __controlgui_const
 	{
 		OBJECTVE_MOVE_COUNT = 2,
 		RESULTS_MOVE_COUNT = 3,
@@ -248,7 +248,7 @@ public:
 
 	void setRolloverHelpText(uint32_t textID);
 
-	void setChatText(PCSTR playerName, PCSTR message, uint32_t backgroundColor, uint32_t textColor);
+	void setChatText(const std::wstring_view& playerName, const std::wstring_view& message, uint32_t backgroundColor, uint32_t textColor);
 	void toggleChat(bool setTeamOnly);
 	void eatChatKey(void);
 	void cancelInfo(void);
@@ -287,9 +287,9 @@ private:
 	ControlButton* vehicleButtons;
 	static ButtonData* buttonData;
 	static ButtonData* vehicleData;
-	static PCSTR vehicleNames[5];
+	static const std::wstring_view& vehicleNames[5];
 	static int32_t vehicleIDs[5];
-	static PCSTR vehiclePilots[5];
+	static const std::wstring_view& vehiclePilots[5];
 
 	static int32_t vehicleCosts[LAST_VEHICLE];
 
@@ -404,5 +404,4 @@ public:
 	}
 };
 
-//*************************************************************************************************
 #endif // end of file ( ControlGui.h )

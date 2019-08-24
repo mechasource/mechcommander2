@@ -8,32 +8,14 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <stdlib.h>
-//#include <string.h>
-
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLEXEC_H
-#include "ablexec.h"
-#endif
-
-#ifndef ABLDBUG_H
+//#include "ablgen.h"
+//#include "ablerr.h"
+//#include "ablscan.h"
+//#include "ablsymt.h"
+//#include "ablexec.h"
 #include "abldbug.h"
-#endif
+
+namespace mclib::abl {
 
 //***************************************************************************
 
@@ -45,15 +27,15 @@ extern int32_t execLineNumber;
 // extern int32_t				execStatementCount;
 extern TokenCodeType codeToken;
 
-extern PSTR codeBuffer;
-extern PSTR codeBufferPtr;
-extern PSTR codeSegmentPtr;
-extern PSTR statementStartPtr;
+extern const std::wstring_view& codeBuffer;
+extern const std::wstring_view& codeBufferPtr;
+extern const std::wstring_view& codeSegmentPtr;
+extern const std::wstring_view& statementStartPtr;
 
-extern StackItemPtr tos;
-// extern StackItemPtr		stackFrameBasePtr;
-extern SymTableNodePtr CurRoutineIdPtr;
-extern SymTableNodePtr symTableDisplay[];
+extern const std::unique_ptr<StackItem>& tos;
+// extern const std::unique_ptr<StackItem>&		stackFrameBasePtr;
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
+extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
 
 extern int32_t errorCount;
 extern char curChar;
@@ -63,29 +45,29 @@ extern Literal curLiteral;
 extern int32_t bufferOffset;
 extern char sourceBuffer[MAXLEN_SOURCELINE];
 // extern int32_t				bufferOffset;
-extern PSTR bufferp;
-// extern PSTR			tokenp;
+extern const std::wstring_view& bufferp;
+// extern const std::wstring_view&			tokenp;
 extern char wordString[MAXLEN_TOKENSTRING];
 
-extern TypePtr IntegerTypePtr;
-extern TypePtr CharTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& CharTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
 extern Type DummyType;
 
-extern ModuleEntryPtr ModuleRegistry;
-extern ABLModulePtr* ModuleInstanceRegistry;
+extern const std::unique_ptr<ModuleEntry>& ModuleRegistry;
+extern const std::unique_ptr<ABLModule>&* ModuleInstanceRegistry;
 extern int32_t MaxModules;
 extern int32_t NumModulesRegistered;
 extern int32_t NumModuleInstances;
 extern int32_t MaxWatchesPerModule;
 extern int32_t MaxBreakPointsPerModule;
-extern PSTR TokenStrings[NUM_TOKENS];
+extern const std::wstring_view& TokenStrings[NUM_TOKENS];
 
 // extern StackItem*		stack;
-// extern StackItemPtr		stackFrameBasePtr;
-extern StackItemPtr StaticDataPtr;
-// extern SymTableNodePtr	CurRoutineIdPtr;
+// extern const std::unique_ptr<StackItem>&		stackFrameBasePtr;
+extern const std::unique_ptr<StackItem>& StaticDataPtr;
+// extern const std::unique_ptr<SymTableNode>&	CurRoutineIdPtr;
 
 // extern int32_t				MaxLoopIterations;
 
@@ -96,7 +78,7 @@ CheckMouse();
 
 int32_t MaxBreaks = 50;
 int32_t MaxWatches = 50;
-DebuggerPtr debugger = nullptr;
+const std::unique_ptr<Debugger>& debugger = nullptr;
 
 char Debugger::message[512];
 
@@ -158,7 +140,7 @@ WatchManager::destroy(void)
 //---------------------------------------------------------------------------
 
 WatchPtr
-WatchManager::add(SymTableNodePtr idPtr)
+WatchManager::add(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	//------------------------------------------
 	// This routine assumes idPtr is non-nullptr...
@@ -173,7 +155,7 @@ WatchManager::add(SymTableNodePtr idPtr)
 			return ((WatchPtr)idPtr->info);
 		else if (numWatches < maxWatches)
 		{
-			idPtr->info = (PSTR)&watches[numWatches];
+			idPtr->info = (const std::wstring_view&)&watches[numWatches];
 			watches[numWatches].idPtr = idPtr;
 			watches[numWatches].store = false;
 			watches[numWatches].breakOnStore = false;
@@ -189,7 +171,7 @@ WatchManager::add(SymTableNodePtr idPtr)
 //---------------------------------------------------------------------------
 
 int32_t
-WatchManager::remove(SymTableNodePtr idPtr)
+WatchManager::remove(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	if (!idPtr)
 		return (1);
@@ -214,7 +196,7 @@ WatchManager::remove(SymTableNodePtr idPtr)
 		watches[i].breakOnStore = watches[i + 1].breakOnStore;
 		watches[i].fetch = watches[i + 1].fetch;
 		watches[i].breakOnFetch = watches[i + 1].breakOnFetch;
-		watches[i].idPtr->info = (PSTR)&watches[i];
+		watches[i].idPtr->info = (const std::wstring_view&)&watches[i];
 	}
 	return (ABL_NO_ERR);
 }
@@ -241,7 +223,7 @@ WatchManager::removeAll(void)
 //---------------------------------------------------------------------------
 
 int32_t
-WatchManager::setStore(SymTableNodePtr idPtr, bool state, bool breakToDebug)
+WatchManager::setStore(const std::unique_ptr<SymTableNode>& idPtr, bool state, bool breakToDebug)
 {
 	if (!idPtr)
 		return (1);
@@ -274,7 +256,7 @@ WatchManager::setStore(SymTableNodePtr idPtr, bool state, bool breakToDebug)
 //---------------------------------------------------------------------------
 
 int32_t
-WatchManager::setFetch(SymTableNodePtr idPtr, bool state, bool breakToDebug)
+WatchManager::setFetch(const std::unique_ptr<SymTableNode>& idPtr, bool state, bool breakToDebug)
 {
 	if (!idPtr)
 		return (1);
@@ -307,7 +289,7 @@ WatchManager::setFetch(SymTableNodePtr idPtr, bool state, bool breakToDebug)
 //---------------------------------------------------------------------------
 
 bool
-WatchManager::getStore(SymTableNodePtr idPtr)
+WatchManager::getStore(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	if (!idPtr->info)
 		return (false);
@@ -317,7 +299,7 @@ WatchManager::getStore(SymTableNodePtr idPtr)
 //---------------------------------------------------------------------------
 
 bool
-WatchManager::getFetch(SymTableNodePtr idPtr)
+WatchManager::getFetch(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	if (!idPtr->info)
 		return (false);
@@ -331,7 +313,7 @@ WatchManager::print(void)
 {
 	for (size_t i = 0; i < numWatches; i++)
 	{
-		// SymTableNodePtr idPtr = watches[i].idPtr;
+		// const std::unique_ptr<SymTableNode>& idPtr = watches[i].idPtr;
 		// Display info here...
 	}
 }
@@ -491,7 +473,7 @@ Debugger::operator delete(PVOID us)
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::init(void (*callback)(PSTR s), ABLModulePtr _module)
+Debugger::init(void (*callback)(const std::wstring_view& s), const std::unique_ptr<ABLModule>& _module)
 {
 	printCallback = callback;
 	module = _module;
@@ -513,7 +495,7 @@ Debugger::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::print(PSTR s)
+Debugger::print(const std::wstring_view& s)
 {
 	if (printCallback)
 		(*printCallback)(s);
@@ -523,7 +505,7 @@ Debugger::print(PSTR s)
 //---------------------------------------------------------------------------
 
 void
-Debugger::setModule(ABLModulePtr _module)
+Debugger::setModule(const std::unique_ptr<ABLModule>& _module)
 {
 	module = _module;
 	breakPointManager = module->getBreakPointManager();
@@ -547,7 +529,7 @@ Debugger::setWatch(int32_t states)
 		watchManager->print();
 		break;
 	case TKN_IDENTIFIER:
-		SymTableNodePtr idPtr = nullptr;
+		const std::unique_ptr<SymTableNode>& idPtr = nullptr;
 		searchAndFindAllSymTables(idPtr);
 		getToken();
 		//-----------------
@@ -612,13 +594,13 @@ Debugger::removeBreakPoint(void)
 //---------------------------------------------------------------------------
 
 void
-Debugger::sprintStatement(PSTR dest)
+Debugger::sprintStatement(const std::wstring_view& dest)
 {
 	//---------------------------------------------------------------------
 	// First, rebuild the the current statement from the module code. Then,
 	// spit it out as we do so...
 	bool done = false;
-	PSTR cp = statementStartPtr;
+	const std::wstring_view& cp = statementStartPtr;
 	do
 	{
 		TokenCodeType token = (TokenCodeType)*cp;
@@ -656,10 +638,10 @@ Debugger::sprintStatement(PSTR dest)
 			case TKN_NUMBER:
 			case TKN_STRING:
 			{
-				SymTableNodePtr symbol = *((SymTableNodePtr*)cp);
+				const std::unique_ptr<SymTableNode>& symbol = *((const std::unique_ptr<SymTableNode>&*)cp);
 				strcat(dest, " ");
 				strcat(dest, symbol->name);
-				cp += sizeof(SymTableNodePtr);
+				cp += sizeof(const std::unique_ptr<SymTableNode>&);
 			}
 			break;
 			default:
@@ -675,7 +657,7 @@ Debugger::sprintStatement(PSTR dest)
 //---------------------------------------------------------------------------
 
 void
-Debugger::sprintLineNumber(PSTR dest)
+Debugger::sprintLineNumber(const std::wstring_view& dest)
 {
 	//--------------------------
 	// PRINT LINE NUMBER HERE...
@@ -685,7 +667,7 @@ Debugger::sprintLineNumber(PSTR dest)
 //---------------------------------------------------------------------------
 
 void
-Debugger::sprintDataValue(PSTR dest, StackItemPtr data, TypePtr dataType)
+Debugger::sprintDataValue(const std::wstring_view& dest, const std::unique_ptr<StackItem>& data, const std::unique_ptr<Type>& dataType)
 {
 	if ((dataType->form == FRM_ENUM) && (dataType != BooleanTypePtr))
 		dataType = IntegerTypePtr;
@@ -715,17 +697,17 @@ Debugger::sprintDataValue(PSTR dest, StackItemPtr data, TypePtr dataType)
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::sprintSimpleValue(PSTR dest, SymTableNodePtr symbol)
+Debugger::sprintSimpleValue(const std::wstring_view& dest, const std::unique_ptr<SymTableNode>& symbol)
 {
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
 	// this better too!
-	TypePtr typePtr = (TypePtr)(symbol->typePtr);
+	const std::unique_ptr<Type>& ptype = (const std::unique_ptr<Type>&)(symbol->ptype);
 	if (symbol->defn.key == DFN_CONST)
 	{
-		if (typePtr == IntegerTypePtr)
+		if (ptype == IntegerTypePtr)
 			sprintf(dest, "%d", symbol->defn.info.constant.value.integer);
-		else if (typePtr == CharTypePtr)
+		else if (ptype == CharTypePtr)
 			sprintf(dest, "%c", symbol->defn.info.constant.value.character);
 		else
 			sprintf(dest, "%.4f", symbol->defn.info.constant.value.real);
@@ -736,37 +718,37 @@ Debugger::sprintSimpleValue(PSTR dest, SymTableNodePtr symbol)
 		// First, point to the variable's stack item. If the variable's scope
 		// level is less than the current scope level, follow the static links
 		// to the proper stack frame base...
-		StackItemPtr dataPtr = nullptr;
+		const std::unique_ptr<StackItem>& dataPtr = nullptr;
 		switch (symbol->defn.info.data.varType)
 		{
 		case VAR_TYPE_NORMAL:
 		{
-			StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+			const std::unique_ptr<StackFrameHeader>& headerPtr = (const std::unique_ptr<StackFrameHeader>&)stackFrameBasePtr;
 			int32_t delta = level - symbol->level;
 			while (delta-- > 0)
-				headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
-			dataPtr = (StackItemPtr)headerPtr + symbol->defn.info.data.offset;
+				headerPtr = (const std::unique_ptr<StackFrameHeader>&)headerPtr->staticLink.address;
+			dataPtr = (const std::unique_ptr<StackItem>&)headerPtr + symbol->defn.info.data.offset;
 		}
 		break;
 		case VAR_TYPE_ETERNAL:
-			dataPtr = (StackItemPtr)stack + symbol->defn.info.data.offset;
+			dataPtr = (const std::unique_ptr<StackItem>&)stack + symbol->defn.info.data.offset;
 			break;
 		case VAR_TYPE_STATIC:
-			dataPtr = (StackItemPtr)StaticDataPtr + symbol->defn.info.data.offset;
+			dataPtr = (const std::unique_ptr<StackItem>&)StaticDataPtr + symbol->defn.info.data.offset;
 			break;
 		}
 		//---------------------------------------------------------------
 		// If it's a scalar or enumeration reference parameter, that item
 		// points to the actual item...
-		if ((symbol->defn.key == DFN_REFPARAM) && (typePtr->form != FRM_ARRAY) /* && (typePtr->form != FRM_RECORD)*/)
-			dataPtr = (StackItemPtr)dataPtr->address;
-		if ((typePtr->form != FRM_ARRAY) /*&& (typePtr->form != FRM_RECORD)*/)
+		if ((symbol->defn.key == DFN_REFPARAM) && (ptype->form != FRM_ARRAY) /* && (ptype->form != FRM_RECORD)*/)
+			dataPtr = (const std::unique_ptr<StackItem>&)dataPtr->address;
+		if ((ptype->form != FRM_ARRAY) /*&& (ptype->form != FRM_RECORD)*/)
 		{
 			ABL_Assert(dataPtr != nullptr, 0, " Debugger.sprintSimpleValue(): dataPtr is nullptr ");
-			if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
+			if ((ptype == IntegerTypePtr) || (ptype->form == FRM_ENUM))
 				sprintf(dest, "%d", *((int32_t*)dataPtr));
-			else if (typePtr == CharTypePtr)
-				sprintf(dest, "\"%c\"", *((PSTR)dataPtr));
+			else if (ptype == CharTypePtr)
+				sprintf(dest, "\"%c\"", *((const std::wstring_view&)dataPtr));
 			else
 				sprintf(dest, "%.4f", *((float*)dataPtr));
 		}
@@ -779,7 +761,7 @@ Debugger::sprintSimpleValue(PSTR dest, SymTableNodePtr symbol)
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::sprintArrayValue(PSTR dest, SymTableNodePtr symbol, PSTR subscriptString)
+Debugger::sprintArrayValue(const std::wstring_view& dest, const std::unique_ptr<SymTableNode>& symbol, const std::wstring_view& subscriptString)
 {
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
@@ -792,35 +774,35 @@ Debugger::sprintArrayValue(PSTR dest, SymTableNodePtr symbol, PSTR subscriptStri
 		sprintf(dest, "\"%s\"", symbol->defn.info.constant.value.stringPtr);
 	else
 	{
-		StackItemPtr dataPtr = nullptr;
+		const std::unique_ptr<StackItem>& dataPtr = nullptr;
 		switch (symbol->defn.info.data.varType)
 		{
 		case VAR_TYPE_NORMAL:
 		{
-			StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+			const std::unique_ptr<StackFrameHeader>& headerPtr = (const std::unique_ptr<StackFrameHeader>&)stackFrameBasePtr;
 			int32_t delta = level - symbol->level;
 			while (delta-- > 0)
-				headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
-			dataPtr = (StackItemPtr)headerPtr + symbol->defn.info.data.offset;
+				headerPtr = (const std::unique_ptr<StackFrameHeader>&)headerPtr->staticLink.address;
+			dataPtr = (const std::unique_ptr<StackItem>&)headerPtr + symbol->defn.info.data.offset;
 		}
 		break;
 		case VAR_TYPE_ETERNAL:
-			dataPtr = (StackItemPtr)stack + symbol->defn.info.data.offset;
+			dataPtr = (const std::unique_ptr<StackItem>&)stack + symbol->defn.info.data.offset;
 			break;
 		case VAR_TYPE_STATIC:
-			dataPtr = (StackItemPtr)StaticDataPtr + symbol->defn.info.data.offset;
+			dataPtr = (const std::unique_ptr<StackItem>&)StaticDataPtr + symbol->defn.info.data.offset;
 			break;
 		}
-		TypePtr typePtr = (TypePtr)(symbol->typePtr);
+		const std::unique_ptr<Type>& ptype = (const std::unique_ptr<Type>&)(symbol->ptype);
 		ABL_Assert(dataPtr != nullptr, 0, " Debugger.sprintArrayValue(): dataPtr is nullptr ");
 		Address elementAddress = (Address)dataPtr->address;
 		if (subscriptString)
 		{
-			PSTR cp = subscriptString;
+			const std::wstring_view& cp = subscriptString;
 			//-----------------------------
 			// Get past the open bracket...
 			cp++;
-			PSTR token = strtok(&subscriptString[1], ",]");
+			const std::wstring_view& token = strtok(&subscriptString[1], ",]");
 			while (token)
 			{
 				//----------------
@@ -828,24 +810,24 @@ Debugger::sprintArrayValue(PSTR dest, SymTableNodePtr symbol, PSTR subscriptStri
 				int32_t index = atoi(token);
 				//-------------------------
 				// Range check the index...
-				if ((index < 0) || (index >= typePtr->info.array.elementCount))
+				if ((index < 0) || (index >= ptype->info.array.elementCount))
 					return (1);
-				elementAddress += (index * typePtr->info.array.elementTypePtr->size);
-				typePtr = typePtr->info.array.elementTypePtr;
+				elementAddress += (index * ptype->info.array.elementTypePtr->size);
+				ptype = ptype->info.array.elementTypePtr;
 				token = strtok(nullptr, ",]");
 			}
 		}
-		if ((typePtr->form != FRM_ARRAY))
+		if ((ptype->form != FRM_ARRAY))
 		{
-			if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
+			if ((ptype == IntegerTypePtr) || (ptype->form == FRM_ENUM))
 				sprintf(dest, "%d", *((int32_t*)elementAddress));
-			else if (typePtr == CharTypePtr)
-				sprintf(dest, "\"%c\"", *((PSTR)elementAddress));
+			else if (ptype == CharTypePtr)
+				sprintf(dest, "\"%c\"", *((const std::wstring_view&)elementAddress));
 			else
 				sprintf(dest, "%.4f", *((float*)elementAddress));
 		}
-		else if (typePtr->info.array.elementTypePtr == CharTypePtr)
-			sprintf(dest, "\"%s\"", (PSTR)elementAddress);
+		else if (ptype->info.array.elementTypePtr == CharTypePtr)
+			sprintf(dest, "\"%s\"", (const std::wstring_view&)elementAddress);
 		else
 			sprintf(dest, "Could you be more specific?");
 	}
@@ -855,17 +837,17 @@ Debugger::sprintArrayValue(PSTR dest, SymTableNodePtr symbol, PSTR subscriptStri
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::sprintValue(PSTR dest, PSTR exprString)
+Debugger::sprintValue(const std::wstring_view& dest, const std::wstring_view& exprString)
 {
-	PSTR subscript = strchr(exprString, '[');
+	const std::wstring_view& subscript = strchr(exprString, '[');
 	if (!subscript)
 	{
 		//------------------------------------------
 		// Probably a simple variable or constant...
-		SymTableNodePtr symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
+		const std::unique_ptr<SymTableNode>& symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
 		if (!symbol)
 			return (1);
-		if (symbol->typePtr->form != FRM_ARRAY)
+		if (symbol->ptype->form != FRM_ARRAY)
 		{
 			sprintSimpleValue(dest, symbol);
 			return (ABL_NO_ERR);
@@ -880,7 +862,7 @@ Debugger::sprintValue(PSTR dest, PSTR exprString)
 		char subscriptString[255];
 		strcpy(subscriptString, subscript);
 		*subscript = nullptr;
-		SymTableNodePtr symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
+		const std::unique_ptr<SymTableNode>& symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
 		if (!symbol)
 			return (1);
 		sprintArrayValue(dest, symbol, subscriptString);
@@ -889,7 +871,7 @@ Debugger::sprintValue(PSTR dest, PSTR exprString)
 	{
 		//-------------------------
 		// Print the whole thing...
-		SymTableNodePtr symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
+		const std::unique_ptr<SymTableNode>& symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
 		if (!symbol)
 			return (1);
 		sprintArrayValue(dest, symbol, nullptr);
@@ -933,7 +915,7 @@ Debugger::traceStatementExecution(void)
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::traceRoutineEntry(SymTableNodePtr idPtr)
+Debugger::traceRoutineEntry(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	if (traceEntry)
 	{
@@ -946,7 +928,7 @@ Debugger::traceRoutineEntry(SymTableNodePtr idPtr)
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::traceRoutineExit(SymTableNodePtr idPtr)
+Debugger::traceRoutineExit(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	if (traceExit)
 	{
@@ -960,9 +942,9 @@ Debugger::traceRoutineExit(SymTableNodePtr idPtr)
 
 int32_t
 Debugger::traceDataStore(
-	SymTableNodePtr id, TypePtr idType, StackItemPtr target, TypePtr targetType)
+	const std::unique_ptr<SymTableNode>& id, const std::unique_ptr<Type>& idType, const std::unique_ptr<StackItem>& target, const std::unique_ptr<Type>& targetType)
 {
-	// SymTableNodePtr idPtr = debugModule->findSymbol(strParam1);
+	// const std::unique_ptr<SymTableNode>& idPtr = debugModule->findSymbol(strParam1);
 	// if (!idPtr) {
 	//			print("Unknown identifier in current scope.\n");
 	//			return;
@@ -994,9 +976,9 @@ Debugger::traceDataStore(
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::traceDataFetch(SymTableNodePtr id, TypePtr idType, StackItemPtr data)
+Debugger::traceDataFetch(const std::unique_ptr<SymTableNode>& id, const std::unique_ptr<Type>& idType, const std::unique_ptr<StackItem>& data)
 {
-	TypePtr idTypePtr = id->typePtr;
+	const std::unique_ptr<Type>& idTypePtr = id->ptype;
 	if (id->info && ((WatchPtr)id->info)->fetch)
 	{
 		char valString[255];
@@ -1034,20 +1016,20 @@ Debugger::showValue(void)
 		//---------------------------------------------------------------
 		// It's important that the expression parser return an error code
 		// rather than fatal!
-		TypePtr typePtr = expression();
+		const std::unique_ptr<Type>& ptype = expression();
 		if (errorCount > 0)
 			return;
-		PSTR savedCodeSegmentPtr = codeSegmentPtr;
+		const std::wstring_view& savedCodeSegmentPtr = codeSegmentPtr;
 		TokenCodeType savedCodeToken = codeToken;
 		execExpression();
-		if (typePtr->form == FRM_ARRAY)
+		if (ptype->form == FRM_ARRAY)
 		{
 			print("SHOW ARRAY\n");
 		}
 		else
 		{
 			char message[255];
-			sprintDataValue(message, tos, typePtr);
+			sprintDataValue(message, tos, ptype);
 			strcat(message, "\n");
 			print(message);
 		}
@@ -1070,14 +1052,14 @@ Debugger::assignVariable(void)
 	{
 		//----------------------------------
 		// Parse the assignment statement...
-		SymTableNodePtr idPtr = nullptr;
+		const std::unique_ptr<SymTableNode>& idPtr = nullptr;
 		searchAndFindAllSymTables(idPtr);
 		assigmentStatement(idPtr);
 		if(errorCount > 0)
 			return;
 		//-------------------
 		// Now, execute it...
-		PSTR savedCodeSegmentPtr = codeSegmentPtr;
+		const std::wstring_view& savedCodeSegmentPtr = codeSegmentPtr;
 		int32_t savedCodeToken = codeToken;
 		codeSegmentPtr = codeBuffer + 1;
 		getCodeToken();
@@ -1115,7 +1097,7 @@ Debugger::displayModuleInstanceRegistry(void)
 
 void
 Debugger::processCommand(
-	int32_t commandId, PSTR strParam1, int32_t numParam1, ABLModulePtr moduleParam1)
+	int32_t commandId, const std::wstring_view& strParam1, int32_t numParam1, const std::unique_ptr<ABLModule>& moduleParam1)
 {
 	switch (commandId)
 	{
@@ -1194,7 +1176,7 @@ Debugger::processCommand(
 	case DEBUG_COMMAND_WATCH_SET:
 	{
 		print(" ");
-		SymTableNodePtr idPtr = debugModule->findSymbol(strParam1);
+		const std::unique_ptr<SymTableNode>& idPtr = debugModule->findSymbol(strParam1);
 		if (!idPtr)
 		{
 			print("Unknown identifier in current scope.\n");
@@ -1369,10 +1351,13 @@ Debugger::debugMode(void)
 
 //---------------------------------------------------------------------------
 
-DebuggerPtr
+const std::unique_ptr<Debugger>&
 ABLi_getDebugger(void)
 {
 	return (debugger);
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl
+

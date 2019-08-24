@@ -10,8 +10,8 @@ MPSetupArea.cpp			: Implementation of the MPSetupArea component.
 #include "MPSetupArea.h"
 #include "prefs.h"
 #include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
+#include "userinput.h"
+#include "resource.h"
 
 #include "gamesound.h"
 #define CHECK_BUTTON 200
@@ -121,7 +121,7 @@ MPSetupXScreen::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aInsigniaListItem;
-			std::wstring tmpStr;
+			const std::wstring_view& tmpStr;
 			tmpStr.Format("ListItem%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			insigniaDropList.AddItem(pTmp2);
@@ -133,57 +133,57 @@ MPSetupXScreen::init(FitIniFile* file)
 	/* these string are to be moved to the string table */
 	if (1 <= textCount)
 	{
-		std::wstring str = "MULTIPLAYER SETUP";
+		const std::wstring_view& str = "MULTIPLAYER SETUP";
 		textObjects[0].setText(str);
 	}
 	if (2 <= textCount)
 	{
-		std::wstring str = "PLAYER NAME";
+		const std::wstring_view& str = "PLAYER NAME";
 		textObjects[1].setText(str);
 	}
 	if (3 <= textCount)
 	{
-		std::wstring str = "UNIT NAME";
+		const std::wstring_view& str = "UNIT NAME";
 		textObjects[2].setText(str);
 	}
 	if (4 <= textCount)
 	{
-		std::wstring str = "UNIT INSIGNIA";
+		const std::wstring_view& str = "UNIT INSIGNIA";
 		textObjects[3].setText(str);
 	}
 	if (5 <= textCount)
 	{
-		std::wstring str = "PLAYER COLORS";
+		const std::wstring_view& str = "PLAYER COLORS";
 		textObjects[4].setText(str);
 	}
 	if (6 <= textCount)
 	{
-		std::wstring str = "HELP TEXT";
+		const std::wstring_view& str = "HELP TEXT";
 		textObjects[5].setText(str);
 	}
 	if (7 <= textCount)
 	{
-		std::wstring str = "CONNECTION TYPE";
+		const std::wstring_view& str = "CONNECTION TYPE";
 		textObjects[6].setText(str);
 	}
 	if (8 <= textCount)
 	{
-		std::wstring str = "connection type info";
+		const std::wstring_view& str = "connection type info";
 		textObjects[7].setText(str);
 	}
 	if (9 <= textCount)
 	{
-		std::wstring str = "PLAYER NAME...";
+		const std::wstring_view& str = "PLAYER NAME...";
 		textObjects[8].setText(str);
 	}
 	if (10 <= textCount)
 	{
-		std::wstring str = "UNIT NAME...";
+		const std::wstring_view& str = "UNIT NAME...";
 		textObjects[9].setText(str);
 	}
 	if (11 <= textCount)
 	{
-		std::wstring str = "INSIGNIA NAME...";
+		const std::wstring_view& str = "INSIGNIA NAME...";
 		textObjects[10].setText(str);
 	}
 	unitNameComboBox.setFocus(false);
@@ -433,7 +433,7 @@ aColorPicker::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 }
 
 void
-aColorPicker::init(FitIniFile* file, PCSTR blockName)
+aColorPicker::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x, y, width, height;
@@ -442,14 +442,14 @@ aColorPicker::init(FitIniFile* file, PCSTR blockName)
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
 	init(x, y, width, height);
-	std::wstring blockname;
+	const std::wstring_view& blockname;
 	blockname = "ColorPickerMainRect";
 	mainRect.init(file, blockname.Data());
 	file->seekBlock("ColorPickerTab0");
 	blockname = "Tab0Text";
 	tab0text.init(file, blockname.Data());
 	{
-		std::wstring str = "BASE COLOR";
+		const std::wstring_view& str = "BASE COLOR";
 		tab0text.setText(str);
 	}
 	activeTab = 0;
@@ -465,7 +465,7 @@ aColorPicker::init(FitIniFile* file, PCSTR blockName)
 	blockname = "Tab1Text";
 	tab1text.init(file, blockname.Data());
 	{
-		std::wstring str = "STRIPE COLOR";
+		const std::wstring_view& str = "STRIPE COLOR";
 		tab1text.setText(str);
 	}
 	blockname = "Tab1ColorOutlineRect";
@@ -728,7 +728,7 @@ aColorPicker::setColor1(int32_t color)
 }
 
 int32_t
-aStyle1TextListItem::init(FitIniFile* file, PCSTR blockName)
+aStyle1TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t fontResID = 0;
@@ -777,13 +777,13 @@ aStyle1TextListItem::render()
 }
 
 int32_t
-aInsigniaListItem::init(FitIniFile* file, PCSTR blockName)
+aInsigniaListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t width, height;
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
-	std::wstring graphicBlockName = blockName;
+	const std::wstring_view& graphicBlockName = blockName;
 	graphicBlockName += "Static";
 	graphic.init(file, graphicBlockName.Data());
 	if (graphic.height() > height)
@@ -794,7 +794,7 @@ aInsigniaListItem::init(FitIniFile* file, PCSTR blockName)
 	{
 		width = graphic.width();
 	}
-	std::wstring textBlockName = blockName;
+	const std::wstring_view& textBlockName = blockName;
 	textBlockName += "Text";
 	text.init(file, textBlockName.Data());
 	if (text.height() > height)
@@ -821,5 +821,4 @@ aInsigniaListItem::update()
 
 //////////////////////////////////////////////
 
-//*************************************************************************************************
 // end of file ( MPSetupArea.cpp )

@@ -434,7 +434,7 @@ MechListBox::AddItem(aListItem* itemString)
 {
 	itemString->setID(ID);
 	MechListBoxItem* pItem = dynamic_cast<MechListBoxItem*>(itemString);
-	std::wstring addedName;
+	const std::wstring_view& addedName;
 	char tmp[256];
 	cLoadString(pItem->getMech()->getChassisName(), tmp, 255);
 	addedName = tmp;
@@ -447,7 +447,7 @@ MechListBox::AddItem(aListItem* itemString)
 			pItem->countText.setColor(0);
 			pItem->countText.showGUIWindow(0);
 		}
-		std::wstring chassisName;
+		const std::wstring_view& chassisName;
 		for (size_t i = 0; i < itemCount; i++)
 		{
 			int32_t ID = ((MechListBoxItem*)items[i])->pMech->getChassisName();
@@ -579,5 +579,4 @@ MechListBox::setOrange(bool bNewOrange)
 		scrollBar->setGreen();
 }
 
-//*************************************************************************************************
 // end of file ( MechListBox.cpp )

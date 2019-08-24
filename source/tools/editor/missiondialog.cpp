@@ -9,7 +9,7 @@
 // include "CampaignEditor.h"
 #include "resource.h"
 #include "MissionDialog.h"
-#include "../MCLib/Paths.h"
+#include "paths.h"
 #include "Inifile.h"
 
 #ifdef _DEBUG
@@ -100,7 +100,7 @@ CMissionDialog::OnMiPurchaseFileBrowseButton()
 			CString purchasePath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			int32_t result = 0;
-			result = file.open((PSTR)(PCSTR)purchasePath);
+			result = file.open((const std::wstring_view&)(const std::wstring_view&)purchasePath);
 			if (NO_ERROR != result)
 			{
 				AfxMessageBox(IDS_COULDNT_OPEN_PURCHASE_FILE);

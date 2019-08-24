@@ -26,7 +26,7 @@
 #include "mechicon.h"
 #include "missionresults.h"
 #include "paths.h"
-#include "..\resource.h"
+#include "resource.h"
 
 extern CPrefs prefs;
 extern bool quitGame;
@@ -37,7 +37,7 @@ extern float loadProgress;
 extern bool aborted;
 
 void
-DEBUGWINS_print(PSTR s, int32_t window = 0);
+DEBUGWINS_print(const std::wstring_view& s, int32_t window = 0);
 
 //----------------------------------------------------------------------------------
 // class Logistics
@@ -282,7 +282,7 @@ Logistics::update(void)
 				}
 				else
 				{
-					PCSTR videoName = LogisticsData::instance->getCurrentBigVideo();
+					const std::wstring_view& videoName = LogisticsData::instance->getCurrentBigVideo();
 					if (videoName)
 					{
 						playFullScreenVideo(videoName);
@@ -297,7 +297,7 @@ Logistics::update(void)
 					missionBegin = new MissionBegin();
 					missionBegin->init();
 				}
-				if (MPlayer->hostLeft || MPlayer->commanderID < 0)
+				if (MPlayer->hostLeft || MPlayer->commanderid < 0)
 				{
 					missionBegin->beginSplash(nullptr);
 					MPlayer->closeSession();
@@ -317,7 +317,7 @@ Logistics::update(void)
 	{
 		if (missionBegin)
 		{
-			PCSTR pVid = missionBegin->update();
+			const std::wstring_view& pVid = missionBegin->update();
 			if (pVid && (0 != strcmp("", pVid)))
 			{
 				playFullScreenVideo(pVid);
@@ -381,21 +381,21 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		for (size_t CID = 0; CID < MAX_MC_PLAYERS; CID++)
 		{
 			MPlayer->availableCIDs[CID] = true;
-			if (MPlayer->playerInfo[CID].player && (MPlayer->playerInfo[CID].commanderID > -1))
+			if (MPlayer->playerInfo[CID].player && (MPlayer->playerInfo[CID].commanderid > -1))
 			{
 				if (CID != curCommanderID)
 				{
 					int32_t oldCommanderID = CID;
-					MPlayer->playerInfo[CID].commanderID = curCommanderID;
+					MPlayer->playerInfo[CID].commanderid = curCommanderID;
 					memcpy(&MPlayer->playerInfo[curCommanderID], &MPlayer->playerInfo[CID],
 						sizeof(MC2Player));
 					MPlayer->playerInfo[CID].player = nullptr;
-					MPlayer->playerInfo[CID].commanderID = -1;
+					MPlayer->playerInfo[CID].commanderid = -1;
 					for (size_t j = 0; j < MAX_MC_PLAYERS; j++)
 						if (MPlayer->playerList[j].player == MPlayer->playerInfo[curCommanderID].player)
-							MPlayer->playerList[j].commanderID = curCommanderID;
-					if (oldCommanderID == MPlayer->commanderID)
-						MPlayer->commanderID = curCommanderID;
+							MPlayer->playerList[j].commanderid = curCommanderID;
+					if (oldCommanderID == MPlayer->commanderid)
+						MPlayer->commanderid = curCommanderID;
 				}
 				MPlayer->availableCIDs[curCommanderID] = false;
 				curCommanderID++;
@@ -425,7 +425,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 			if (MPlayer->missionSettings.missionType == MISSION_TYPE_OTHER)
 			{
 				bool goodToLoad = mission->calcComplexDropZones(
-					(PSTR)(PCSTR)LogisticsData::instance->getCurrentMission(), dropZoneList);
+					(const std::wstring_view&)(const std::wstring_view&)LogisticsData::instance->getCurrentMission(), dropZoneList);
 				if (!goodToLoad)
 					STOP(("Logisitics.beginMission: teams do not match up for "
 						  "complex mission"));
@@ -438,7 +438,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 				{
 					MPlayer->commandersToLoad[i][0] =
-						(int32_t)dropZoneList[i]; // MPlayer->playerInfo[i].commanderID;
+						(int32_t)dropZoneList[i]; // MPlayer->playerInfo[i].commanderid;
 					MPlayer->commandersToLoad[i][1] = (int32_t)(dropZoneList[i] > -1)
 						? MPlayer->playerInfo[dropZoneList[i]].team
 						: 0;
@@ -470,18 +470,18 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		}
 		if (MPlayer->missionSettings.quickStart)
 		{
-			MultiPlayTeamId = MPlayer->playerInfo[MPlayer->commanderID].team;
+			MultiPlayTeamId = MPlayer->playerInfo[MPlayer->commanderid].team;
 			if (MultiPlayTeamId < 0)
-				STOP(("Bad commanderID"));
-			MultiPlayCommanderId = MPlayer->commanderID;
+				STOP(("Bad commanderid"));
+			MultiPlayCommanderId = MPlayer->commanderid;
 			if (MultiPlayCommanderId < 0)
-				STOP(("Bad commanderID"));
+				STOP(("Bad commanderid"));
 			missionLoadType = MISSION_LOAD_MP_QUICKSTART;
 		}
 		else
 		{
-			MultiPlayTeamId = MPlayer->playerInfo[MPlayer->commanderID].team;
-			MultiPlayCommanderId = MPlayer->commanderID;
+			MultiPlayTeamId = MPlayer->playerInfo[MPlayer->commanderid].team;
+			MultiPlayCommanderId = MPlayer->commanderid;
 			missionLoadType = MISSION_LOAD_MP_LOGISTICS;
 		}
 		int32_t maxTeam = -1;
@@ -512,16 +512,16 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 	int32_t dropZoneID = 0;
 	if (MPlayer)
 	{
-		// dropZoneID = MPlayer->commanderID;
+		// dropZoneID = MPlayer->commanderid;
 		for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
-			if (commandersToLoad[i][0] == MPlayer->commanderID)
+			if (commandersToLoad[i][0] == MPlayer->commanderid)
 			{
 				dropZoneID = i;
 				break;
 			}
 		useUnlimitedAmmo = MPlayer->missionSettings.unlimitedAmmo;
 	}
-	mission->init((PSTR)(PCSTR)LogisticsData::instance->getCurrentMission(), missionLoadType,
+	mission->init((const std::wstring_view&)(const std::wstring_view&)LogisticsData::instance->getCurrentMission(), missionLoadType,
 		dropZoneID, dropZoneList, commandersToLoad, numMoversPerCommander[numPlayers - 1]);
 	LogisticsData::instance->rpJustAdded = 0;
 	if (MPlayer)
@@ -541,13 +541,13 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				CompressedMech mechData;
 				mechData.lastMech = (list.Count() == numMechs);
 				mechData.objNumber = (*iter)->getFitID();
-				mechData.commanderID = MPlayer->commanderID;
-				mechData.baseColor = MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderID]
+				mechData.commanderid = MPlayer->commanderid;
+				mechData.baseColor = MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid]
 														 .baseColor[BASECOLOR_TEAM]];
 				mechData.highlightColor1 =
-					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderID].stripeColor];
+					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid].stripeColor];
 				mechData.highlightColor2 =
-					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderID].stripeColor];
+					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid].stripeColor];
 				strcpy(mechData.pilotFile, (*iter)->getPilot()->getFileName());
 				strcpy(mechData.mechFile, (*iter)->getFileName());
 				strcpy(mechData.variantName, (*iter)->getName());
@@ -598,8 +598,8 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 							data.position.z = 0.0;
 							data.rotation = 0;
 							data.teamID =
-								MPlayer->playerInfo[MPlayer->mechData[i][j].commanderID].team;
-							data.commanderID = MPlayer->mechData[i][j].commanderID;
+								MPlayer->playerInfo[MPlayer->mechData[i][j].commanderid].team;
+							data.commanderid = MPlayer->mechData[i][j].commanderid;
 							data.baseColor = MPlayer->mechData[i][j].baseColor;
 							data.highlightColor1 = MPlayer->mechData[i][j].highlightColor1;
 							data.highlightColor2 = MPlayer->mechData[i][j].highlightColor2;
@@ -618,7 +618,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 							if (moverHandle < 1)
 								STOP(("Logistics.beginMission: unable to "
 									  "addMover"));
-							MoverPtr mover = (MoverPtr)ObjectManager->get(moverHandle);
+							std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)ObjectManager->get(moverHandle);
 							if (!mover)
 								STOP(("Logistics.beginMission: nullptr mover"));
 							if (mover->getObjectClass() != BATTLEMECH)
@@ -658,7 +658,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 			}
 		}
 		CompressedMech mechData;
-		mechData.commanderID = MPlayer->commanderID;
+		mechData.commanderid = MPlayer->commanderid;
 		MPlayer->sendMissionSetup(0, 2, &mechData);
 		if (!MPlayer->waitTillMissionLoaded())
 		{
@@ -680,7 +680,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		data.position.Zero(); // need to get the drop zone location
 		data.rotation = 0;
 		data.teamID = Team::home->getId();
-		data.commanderID = Team::home->getId();
+		data.commanderid = Team::home->getId();
 		data.active = 1;
 		data.exists = 1;
 		data.capturable = 0;
@@ -726,12 +726,12 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 	}
 	/*	if (MPlayer) {
 			if (MPlayer->isHost())
-				MPlayer->serverCID = MPlayer->commanderID;
+				MPlayer->serverCID = MPlayer->commanderid;
 			else {
 				for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 					if (MPlayer->serverPlayer && (MPlayer->playerList[i].player
 	   == MPlayer->serverPlayer)) MPlayer->serverCID =
-	   MPlayer->playerList[i].commanderID; if (MPlayer->serverCID == -1)
+	   MPlayer->playerList[i].commanderid; if (MPlayer->serverCID == -1)
 					STOP(("Logistics.beginMission: bad serverCID"));
 			}
 		}
@@ -744,7 +744,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 	if (MPlayer)
 	{
 		CompressedMech mechData;
-		mechData.commanderID = MPlayer->commanderID;
+		mechData.commanderid = MPlayer->commanderid;
 		MPlayer->sendMissionSetup(0, 4, &mechData);
 		if (!MPlayer->waitTillMissionSetup())
 		{
@@ -817,7 +817,7 @@ Logistics::initializeLogData()
 }
 
 void
-Logistics::playFullScreenVideo(PCSTR fileName)
+Logistics::playFullScreenVideo(const std::wstring_view& fileName)
 {
 	if (!fileName || !fileName[0])
 		return;
@@ -834,7 +834,7 @@ Logistics::playFullScreenVideo(PCSTR fileName)
 }
 
 void
-Logistics::setResultsHostLeftDlg(PCSTR pName)
+Logistics::setResultsHostLeftDlg(const std::wstring_view& pName)
 {
 	if (missionResults && logisticsState == log_RESULTS)
 	{

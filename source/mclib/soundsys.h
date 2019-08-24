@@ -40,8 +40,8 @@
 #endif
 
 #include <math.h>
-#include <gameos.hpp>
-#include <stuff/stuff.hpp>
+#include "gameos.hpp"
+#include "stuff/stuff.h"
 //---------------------------------------------------------------------------
 // Macro Defintiions
 // Channels 0 through 10 are Main Sound Effect Channels
@@ -209,7 +209,7 @@ public:
 		gamePaused = false;
 	}
 
-	int32_t init(PSTR soundFileName);
+	int32_t init(const std::wstring_view& soundFileName);
 	virtual void destroy(void);
 
 	void preloadSoundBite(int32_t sampleId);
@@ -221,7 +221,7 @@ public:
 
 	int32_t playDigitalMusic(int32_t musicId);
 
-	int32_t playDigitalStream(PCSTR streamName);
+	int32_t playDigitalStream(const std::wstring_view& streamName);
 
 	bool isDigitalMusicPlaying(void);
 	bool isPlayingSample(int32_t sampleId);
@@ -231,7 +231,7 @@ public:
 	int32_t playBettySample(uint32_t bettySampleId);
 	void stopBettySample(void);
 
-	int32_t playSupportSample(uint32_t supportSampleId, PSTR fileName = nullptr);
+	int32_t playSupportSample(uint32_t supportSampleId, const std::wstring_view& fileName = nullptr);
 
 	void stopDigitalSample(uint32_t sampleHandleNumber);
 	void stopDigitalMusic(void);
@@ -260,7 +260,7 @@ public:
 	void playABLVideo(int32_t videoId);
 	void playABLSpeech(int32_t pilotId, int32_t speechId);
 
-	int32_t playPilotSpeech(PSTR pilotSpeechFilename, int32_t msgId);
+	int32_t playPilotSpeech(const std::wstring_view& pilotSpeechFilename, int32_t msgId);
 
 	void setIsRaining(uint32_t rainLevel) { isRaining = rainLevel; }
 

@@ -10,16 +10,15 @@ MissionBegin.h			: Interface for the MissionBegin component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
 MissionBegin:
 **************************************************************************************************/
 
-#include <mechgui/asystem.h>
-#include <mechgui/alistbox.h>
-#include <mechgui/aanim.h>
+#include "mechgui/asystem.h"
+#include "mechgui/alistbox.h"
+#include "mechgui/aanim.h"
 #include "abl.h"
 
 class LogisticsScreen;
@@ -37,7 +36,7 @@ public:
 
 	void init(void);
 
-	PCSTR update(void);
+	const std::wstring_view& update(void);
 	void render(void);
 
 	void begin(void);
@@ -45,7 +44,7 @@ public:
 	bool isDone() { return bDone; }
 	bool readyToLoad() { return bReadyToLoad; }
 
-	void beginSplash(PCSTR playerName = 0);
+	void beginSplash(const std::wstring_view& playerName = 0);
 
 	void beginMPlayer(void);
 	void beginSPlayer(void);
@@ -60,13 +59,13 @@ public:
 
 	void beginAtConnectionScreen(void);
 
-	void restartMPlayer(PCSTR playerName);
+	void restartMPlayer(const std::wstring_view& playerName);
 
 private:
 	bool bDone;
 	bool bReadyToLoad;
 
-	ABLModulePtr logisticsBrain;
+	const std::unique_ptr<ABLModule>& logisticsBrain;
 	int32_t logisticsScriptHandle;
 
 	aAnimation leftAnim;
@@ -101,5 +100,4 @@ private:
 	float buttonFlashTime;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MissionBegin.h )

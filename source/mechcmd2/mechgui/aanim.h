@@ -23,8 +23,8 @@ public:
 
 	aAnimation& operator=(const aAnimation& src);
 
-	int32_t init(FitIniFile* file, PCSTR prependName);
-	int32_t initWithBlockName(FitIniFile* file, PCSTR blockName);
+	int32_t init(FitIniFile* file, const std::wstring_view& prependName);
+	int32_t initWithBlockName(FitIniFile* file, const std::wstring_view& blockName);
 	void destroy(void);
 
 	void begin(void);
@@ -91,7 +91,7 @@ public:
 
 	aAnimGroup() { curState = NORMAL; }
 
-	int32_t init(FitIniFile* file, PCSTR blockName);
+	int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 
 	void setState(STATE);
 	STATE getState(void) const;

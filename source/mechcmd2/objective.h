@@ -10,8 +10,8 @@ Objective.h			: Interface for the Objective component.
 #ifndef OBJECTIVE_H
 #define OBJECTIVE_H
 
-//#include <elist.h>
-//#include <estring.h>
+//#include "elist.h"
+//#include "estring.h"
 //#include "tchar.h"
 //#include "mover.h"
 //#include "bldng.h"
@@ -20,7 +20,6 @@ Objective.h			: Interface for the Objective component.
 class FitIniFile;
 class aFont;
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -69,7 +68,7 @@ enum MARKER_TYPES
 	NUMERIC = 2
 };
 
-static PCSTR g_conditionSpeciesStringArray[] = {
+static const std::wstring_view& g_conditionSpeciesStringArray[] = {
 	"DestroyAllEnemyUnits",
 	"DestroyNumberOfEnemyUnits",
 	"DestroyEnemyUnitGroup",
@@ -109,7 +108,7 @@ enum objective_status_type
 	OS_FAILED
 };
 
-class CEStringList : public EList<std::wstring, std::wstring>
+class CEStringList : public EList<const std::wstring_view&, const std::wstring_view&>
 {
 };
 class CBoolList : public EList<bool, bool>
@@ -130,7 +129,7 @@ public:
 		m_FlagIDList.Clear(void);
 		m_valueList.Clear(void);
 	}
-	int32_t elementPos(std::wstring element)
+	int32_t elementPos(const std::wstring_view& element)
 	{
 		bool elementFound = false;
 		int32_t pos = 0;
@@ -154,7 +153,7 @@ public:
 			return -1;
 		}
 	}
-	void setElementValue(std::wstring element, bool value)
+	void setElementValue(const std::wstring_view& element, bool value)
 	{
 		int32_t pos = elementPos(element);
 		if (-1 != pos)
@@ -167,7 +166,7 @@ public:
 			m_valueList.Append(value);
 		}
 	}
-	bool getElementValue(std::wstring element)
+	bool getElementValue(const std::wstring_view& element)
 	{
 		int32_t pos = elementPos(element);
 		if (-1 != pos)
@@ -201,10 +200,10 @@ public:
 	virtual bool Read(FitIniFile* /*missionFile */) { return true; }
 	virtual bool Save(FitIniFile* /*file*/) { return true; }
 	virtual objective_status_type Status() = 0;
-	virtual std::wstring Description() = 0;
-	virtual std::wstring InstanceDescription()
+	virtual const std::wstring_view& Description() = 0;
+	virtual const std::wstring_view& InstanceDescription()
 	{
-		std::wstring retval;
+		const std::wstring_view& retval;
 		return retval;
 	}
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster) { (*this) = (*pMaster); }
@@ -221,9 +220,9 @@ public:
 		CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_ALL_ENEMY_UNITS; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DestroyAllEnemyUnits"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "DestroyAllEnemyUnits"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -241,7 +240,7 @@ public:
 	}
 	virtual bool Read(FitIniFile* missionFile);
 	virtual bool Save(FitIniFile* file);
-	virtual std::wstring InstanceDescription(void);
+	virtual const std::wstring_view& InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CNumberOfUnitsObjectiveCondition*>(pMaster)));
@@ -255,9 +254,9 @@ public:
 		CNumberOfUnitsObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_NUMBER_OF_ENEMY_UNITS; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DestroyNumberOfEnemyUnits"; /* needs to be put
+		const std::wstring_view& retval = "DestroyNumberOfEnemyUnits"; /* needs to be put
 														 somewhere localizable
 													   */
 		return retval;
@@ -275,7 +274,7 @@ public:
 	{
 		m_pUnitWID = 0;
 	}
-	virtual std::wstring InstanceDescription(void);
+	virtual const std::wstring_view& InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CSpecificUnitObjectiveCondition*>(pMaster)));
@@ -302,9 +301,9 @@ public:
 	}
 	condition_species_type Species() { return DESTROY_SPECIFIC_ENEMY_UNIT; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DestroySpecificEnemyUnit"; /* needs to be put
+		const std::wstring_view& retval = "DestroySpecificEnemyUnit"; /* needs to be put
 														somewhere localizable */
 		return retval;
 	}
@@ -323,7 +322,7 @@ public:
 	}
 	virtual bool Read(FitIniFile* missionFile);
 	virtual bool Save(FitIniFile* file);
-	virtual std::wstring InstanceDescription(void);
+	virtual const std::wstring_view& InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CSpecificStructureObjectiveCondition*>(pMaster)));
@@ -347,9 +346,9 @@ public:
 	}
 	condition_species_type Species() { return DESTROY_SPECIFIC_STRUCTURE; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DestroySpecificStructure"; /* needs to be put
+		const std::wstring_view& retval = "DestroySpecificStructure"; /* needs to be put
 														somewhere localizable */
 		return retval;
 	}
@@ -362,9 +361,9 @@ public:
 		CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "CaptureOrDestroyAllEnemyUnits"; /* needs to be put
+		const std::wstring_view& retval = "CaptureOrDestroyAllEnemyUnits"; /* needs to be put
 															 somewhere
 															 localizable */
 		return retval;
@@ -380,9 +379,9 @@ public:
 	}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "CaptureOrDestroyNumberOfEnemyUnits"; /* needs to be put somewhere
+		const std::wstring_view& retval = "CaptureOrDestroyNumberOfEnemyUnits"; /* needs to be put somewhere
 																	   localizable */
 		return retval;
 	}
@@ -398,9 +397,9 @@ public:
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT; }
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "CaptureOrDestroySpecificEnemyUnit"; /* needs to be put somewhere
+		const std::wstring_view& retval = "CaptureOrDestroySpecificEnemyUnit"; /* needs to be put somewhere
 																	  localizable */
 		return retval;
 	}
@@ -416,9 +415,9 @@ public:
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE; }
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "CaptureOrDestroySpecificStructure"; /* needs to be put somewhere
+		const std::wstring_view& retval = "CaptureOrDestroySpecificStructure"; /* needs to be put somewhere
 																	  localizable */
 		return retval;
 	}
@@ -431,9 +430,9 @@ public:
 		CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DEAD_OR_FLED_ALL_ENEMY_UNITS; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere
+		const std::wstring_view& retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere
 													   localizable */
 		return retval;
 	}
@@ -448,9 +447,9 @@ public:
 	}
 	condition_species_type Species() { return DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DeadOrFledNumberOfEnemyUnits"; /* needs to be put
+		const std::wstring_view& retval = "DeadOrFledNumberOfEnemyUnits"; /* needs to be put
 															somewhere
 															localizable */
 		return retval;
@@ -466,9 +465,9 @@ public:
 	}
 	condition_species_type Species() { return DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DeadOrFledSpecificEnemyUnit"; /* needs to be put somewhere
+		const std::wstring_view& retval = "DeadOrFledSpecificEnemyUnit"; /* needs to be put somewhere
 																localizable */
 		return retval;
 	}
@@ -482,9 +481,9 @@ public:
 	condition_species_type Species() { return CAPTURE_UNIT; }
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "CaptureSpecificUnit"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "CaptureSpecificUnit"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -497,9 +496,9 @@ public:
 	condition_species_type Species() { return CAPTURE_STRUCTURE; }
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "CaptureStructure"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "CaptureStructure"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -512,9 +511,9 @@ public:
 	condition_species_type Species() { return GUARD_SPECIFIC_UNIT; }
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "GuardSpecificUnit"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "GuardSpecificUnit"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -526,9 +525,9 @@ public:
 		CSpecificStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() { return GUARD_SPECIFIC_STRUCTURE; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "GuardSpecificStructure"; /* needs to be put somewhere localizable
+		const std::wstring_view& retval = "GuardSpecificStructure"; /* needs to be put somewhere localizable
 														 */
 		return retval;
 	}
@@ -558,7 +557,7 @@ public:
 	}
 	virtual bool Read(FitIniFile* missionFile);
 	virtual bool Save(FitIniFile* file);
-	virtual std::wstring InstanceDescription(void);
+	virtual const std::wstring_view& InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CAreaObjectiveCondition*>(pMaster)));
@@ -577,9 +576,9 @@ public:
 		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ANY_UNIT_TO_AREA; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "MoveAnyUnitToArea"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "MoveAnyUnitToArea"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -591,9 +590,9 @@ public:
 		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_UNITS_TO_AREA; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "MoveAllUnitsToArea"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "MoveAllUnitsToArea"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -605,9 +604,9 @@ public:
 		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_SURVIVING_UNITS_TO_AREA; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "MoveAllSurvivingUnitsToArea"; /* needs to be put somewhere
+		const std::wstring_view& retval = "MoveAllSurvivingUnitsToArea"; /* needs to be put somewhere
 																localizable */
 		return retval;
 	}
@@ -620,9 +619,9 @@ public:
 		CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_SURVIVING_MECHS_TO_AREA; }
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "MoveAllSurvivingMechsToArea"; /* needs to be put somewhere
+		const std::wstring_view& retval = "MoveAllSurvivingMechsToArea"; /* needs to be put somewhere
 																localizable */
 		return retval;
 	}
@@ -631,7 +630,7 @@ public:
 class CBooleanFlagIsSet : public CObjectiveCondition
 {
 protected:
-	std::wstring m_flagID;
+	const std::wstring_view& m_flagID;
 	bool m_value;
 
 public:
@@ -645,12 +644,12 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "BooleanFlagIsSet"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "BooleanFlagIsSet"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CBooleanFlagIsSet*>(pMaster)));
@@ -669,12 +668,12 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	objective_status_type Status(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "ElapsedMissionTime"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "ElapsedMissionTime"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CElapsedMissionTime*>(pMaster)));
@@ -694,7 +693,7 @@ enum action_species_type
 	NUM_ACTION_SPECIES
 };
 
-static PCSTR g_actionSpeciesStringArray[] = {
+static const std::wstring_view& g_actionSpeciesStringArray[] = {
 	"PlayBIK",
 	"PlayWAV",
 	"DisplayTextMessage",
@@ -720,10 +719,10 @@ public:
 	virtual bool Read(FitIniFile* missionFile) = 0;
 	virtual bool Save(FitIniFile* file) = 0;
 	virtual int32_t Execute() = 0;
-	virtual std::wstring Description() = 0;
-	virtual std::wstring InstanceDescription()
+	virtual const std::wstring_view& Description() = 0;
+	virtual const std::wstring_view& InstanceDescription()
 	{
-		std::wstring retval;
+		const std::wstring_view& retval;
 		return retval;
 	}
 	virtual void CastAndCopy(const CObjectiveAction* pMaster) { (*this) = (*pMaster); }
@@ -732,7 +731,7 @@ public:
 class CPlayBIK : public CObjectiveAction
 {
 private:
-	std::wstring m_pathname;
+	const std::wstring_view& m_pathname;
 
 public:
 	CPlayBIK(int32_t alignment) :
@@ -742,12 +741,12 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "PlayBIK"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "PlayBIK"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CPlayBIK*>(pMaster)));
@@ -757,7 +756,7 @@ public:
 class CPlayWAV : public CObjectiveAction
 {
 private:
-	std::wstring m_pathname;
+	const std::wstring_view& m_pathname;
 
 public:
 	CPlayWAV(int32_t alignment) :
@@ -767,12 +766,12 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "PlayWAV"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "PlayWAV"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CPlayWAV*>(pMaster)));
@@ -782,7 +781,7 @@ public:
 class CDisplayTextMessage : public CObjectiveAction
 {
 private:
-	std::wstring m_message;
+	const std::wstring_view& m_message;
 
 public:
 	CDisplayTextMessage(int32_t alignment) :
@@ -792,12 +791,12 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DisplayTextMessage"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "DisplayTextMessage"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CDisplayTextMessage*>(pMaster)));
@@ -817,13 +816,13 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "DisplayResourceTextMessage"; /* needs to be put somewhere
+		const std::wstring_view& retval = "DisplayResourceTextMessage"; /* needs to be put somewhere
 															   localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CDisplayResourceTextMessage*>(pMaster)));
@@ -833,7 +832,7 @@ public:
 class CSetBooleanFlag : public CObjectiveAction
 {
 private:
-	std::wstring m_flagID;
+	const std::wstring_view& m_flagID;
 	bool m_value;
 
 public:
@@ -848,12 +847,12 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "SetBooleanFlag"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "SetBooleanFlag"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CSetBooleanFlag*>(pMaster)));
@@ -863,7 +862,7 @@ public:
 class CMakeNewTechnologyAvailable : public CObjectiveAction
 {
 private:
-	std::wstring m_purchaseFilePathname;
+	const std::wstring_view& m_purchaseFilePathname;
 
 public:
 	CMakeNewTechnologyAvailable(int32_t alignment) :
@@ -873,13 +872,13 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "MakeNewTechnologyAvailable"; /* needs to be put somewhere
+		const std::wstring_view& retval = "MakeNewTechnologyAvailable"; /* needs to be put somewhere
 															   localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CMakeNewTechnologyAvailable*>(pMaster)));
@@ -900,12 +899,12 @@ public:
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	std::wstring Description()
+	const std::wstring_view& Description()
 	{
-		std::wstring retval = "_RemoveStructure"; /* needs to be put somewhere localizable */
+		const std::wstring_view& retval = "_RemoveStructure"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	std::wstring InstanceDescription(void);
+	const std::wstring_view& InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const C_RemoveStructure*>(pMaster)));
@@ -925,10 +924,10 @@ class CObjective : public /*maybe protected*/ CObjectiveConditionList
 private:
 	typedef CObjectiveConditionList inherited;
 	int32_t m_alignment;
-	std::wstring m_title;
+	const std::wstring_view& m_title;
 	bool m_titleUseResourceString;
 	int32_t m_titleResourceStringID;
-	std::wstring m_description;
+	const std::wstring_view& m_description;
 	bool m_descriptionUseResourceString;
 	int32_t m_descriptionResourceStringID;
 	int32_t m_priority;
@@ -942,14 +941,14 @@ private:
 	bool m_isHiddenTrigger;
 	bool m_isActive;
 	bool m_activateOnFlag;
-	std::wstring m_activateFlagID;
+	const std::wstring_view& m_activateFlagID;
 	bool m_resetStatusOnFlag;
-	std::wstring m_resetStatusFlagID;
+	const std::wstring_view& m_resetStatusFlagID;
 	double m_activationTime;
 	bool m_resolved;
 	bool m_changedStatus;
 	objective_status_type m_resolvedStatus;
-	std::wstring m_modelName;
+	const std::wstring_view& m_modelName;
 	int32_t m_modelType;
 	int32_t m_modelBaseColor;
 	int32_t m_modelHighlightColor;
@@ -964,10 +963,10 @@ public: /* we could make this protected if only the editdialog is to access
 		   these functions */
 	static CObjectiveCondition* new_CObjectiveCondition(
 		condition_species_type conditionSpecies, int32_t alignment);
-	static std::wstring DescriptionOfConditionSpecies(condition_species_type conditionSpecies);
+	static const std::wstring_view& DescriptionOfConditionSpecies(condition_species_type conditionSpecies);
 	static CObjectiveAction* new_CObjectiveAction(
 		action_species_type actionSpecies, int32_t alignment);
-	static std::wstring DescriptionOfActionSpecies(action_species_type actionSpecies);
+	static const std::wstring_view& DescriptionOfActionSpecies(action_species_type actionSpecies);
 
 public:
 	typedef CObjectiveConditionList condition_list_type;
@@ -1000,8 +999,8 @@ public:
 	objective has failed or been completed since I last checked!*/
 	bool StatusChangedSuccess(void);
 	bool StatusChangedFailed(void);
-	std::wstring Title(void) const { return m_title; }
-	void Title(std::wstring title) { m_title = title; }
+	const std::wstring_view& Title(void) const { return m_title; }
+	void Title(const std::wstring_view& title) { m_title = title; }
 	bool TitleUseResourceString(void) const { return m_titleUseResourceString; }
 	void TitleUseResourceString(bool titleUseResourceString)
 	{
@@ -1012,9 +1011,9 @@ public:
 	{
 		m_titleResourceStringID = titleResourceStringID;
 	}
-	std::wstring LocalizedTitle(void) const;
-	std::wstring Description(void) const { return m_description; }
-	void Description(std::wstring description) { m_description = description; }
+	const std::wstring_view& LocalizedTitle(void) const;
+	const std::wstring_view& Description(void) const { return m_description; }
+	void Description(const std::wstring_view& description) { m_description = description; }
 	bool DescriptionUseResourceString(void) const { return m_descriptionUseResourceString; }
 	void DescriptionUseResourceString(bool descriptionUseResourceString)
 	{
@@ -1025,7 +1024,7 @@ public:
 	{
 		m_descriptionResourceStringID = descriptionResourceStringID;
 	}
-	std::wstring LocalizedDescription(void) const;
+	const std::wstring_view& LocalizedDescription(void) const;
 	int32_t Priority() { return m_priority; }
 	void Priority(int32_t priority) { m_priority = priority; }
 	int32_t ResourcePoints() { return m_resourcePoints; }
@@ -1058,17 +1057,17 @@ public:
 	bool IsActive() { return m_isActive; }
 	void ActivateOnFlag(bool activateOnFlag) { m_activateOnFlag = activateOnFlag; }
 	bool ActivateOnFlag() { return m_activateOnFlag; }
-	void ActivateFlagID(std::wstring activateFlagId) { m_activateFlagID = activateFlagId; }
-	std::wstring ActivateFlagID() { return m_activateFlagID; }
+	void ActivateFlagID(const std::wstring_view& activateFlagId) { m_activateFlagID = activateFlagId; }
+	const std::wstring_view& ActivateFlagID() { return m_activateFlagID; }
 	void ResetStatusOnFlag(bool resetStatusOnFlag) { m_resetStatusOnFlag = resetStatusOnFlag; }
 	bool ResetStatusOnFlag() { return m_resetStatusOnFlag; }
-	void ResetStatusFlagID(std::wstring resetStatusFlagID)
+	void ResetStatusFlagID(const std::wstring_view& resetStatusFlagID)
 	{
 		m_resetStatusFlagID = resetStatusFlagID;
 	}
-	std::wstring ResetStatusFlagID() { return m_resetStatusFlagID; }
-	std::wstring ModelName() { return m_modelName; }
-	void ModelName(std::wstring modelName) { m_modelName = modelName; }
+	const std::wstring_view& ResetStatusFlagID() { return m_resetStatusFlagID; }
+	const std::wstring_view& ModelName() { return m_modelName; }
+	void ModelName(const std::wstring_view& modelName) { m_modelName = modelName; }
 	int32_t ModelType() { return m_modelType; }
 	void ModelType(int32_t modelType) { m_modelType = modelType; }
 	int32_t ModelBaseColor() { return m_modelBaseColor; }
@@ -1119,5 +1118,4 @@ private:
 bool
 ReadNavMarkers(FitIniFile* missionFile, CObjectives& objectives);
 
-//*************************************************************************************************
 #endif // end of file ( Objective.h )

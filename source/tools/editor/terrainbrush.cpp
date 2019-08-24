@@ -27,5 +27,4 @@ TerrainBrush::applyToSelection()
 	}
 	return pRetAction;
 }
-//*************************************************************************************************
 // end of file ( terrainBrush.cpp )

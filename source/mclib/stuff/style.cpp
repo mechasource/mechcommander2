@@ -7,8 +7,8 @@
 
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
-#include <gameos.hpp>
-#include <stuff/style.hpp>
+#include "gameos.hpp"
+#include "stuff/style.h"
 
 //
 //#############################################################################

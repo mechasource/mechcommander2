@@ -10,8 +10,8 @@ OptionsArea.cpp			: Implementation of the OptionsArea component.
 #include "OptionsArea.h"
 #include "prefs.h"
 #include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
+#include "userinput.h"
+#include "resource.h"
 #include "prefs.h"
 #include "missionGui.h"
 #include "logisticsdialog.h"
@@ -111,7 +111,7 @@ void
 OptionsXScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button", "Edit");
-	PCSTR fileNames[4] = {
+	const std::wstring_view& fileNames[4] = {
 		"mcl_optionsgraphics", "mcl_optionsaudio", "mcl_optionsgameplay", "mcl_optionshotkeys"};
 	OptionsGraphics* pGraphics = new OptionsGraphics;
 	tabAreas[0] = pGraphics;
@@ -366,7 +366,7 @@ OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 		*/
 		if (gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, i) >= minTextureRam)
 		{
-			PSTR deviceName = (PSTR)gos_GetMachineInformation(gos_Info_GetDeviceName, i);
+			const std::wstring_view& deviceName = (const std::wstring_view&)gos_GetMachineInformation(gos_Info_GetDeviceName, i);
 			// Save name to other string here.
 			cardList.AddItem(deviceName, 0xffffffff);
 			if (Environment.FullScreenDevice == i)
@@ -528,7 +528,6 @@ OptionsGraphics::reset(const CPrefs& newPrefs)
 	}
 }
 
-//*************************************************************************************************
 
 //////////////////////////////////////////////
 
@@ -794,7 +793,6 @@ OptionsGamePlay::reset(const CPrefs& newPrefs)
 	//	getButton( MSG_TUTORIALS )->press( newPrefs.tutorials );
 }
 
-//*************************************************************************************************
 
 //////////////////////////////////////////////
 
@@ -934,7 +932,7 @@ OptionsHotKeys::update()
 }
 
 void
-OptionsHotKeys::makeKeyString(int32_t newKey, PSTR keysString)
+OptionsHotKeys::makeKeyString(int32_t newKey, const std::wstring_view& keysString)
 {
 	char shift[32];
 	char control[32];
@@ -943,7 +941,7 @@ OptionsHotKeys::makeKeyString(int32_t newKey, PSTR keysString)
 	cLoadString(IDS_CONTROL, control, 31);
 	cLoadString(IDS_ALT, alt, 31);
 	int32_t key = newKey;
-	PSTR pKey = gos_DescribeKey((key & 0x000fffff) << 8);
+	const std::wstring_view& pKey = gos_DescribeKey((key & 0x000fffff) << 8);
 	if (((key & SHIFT)))
 	{
 		strcat(keysString, shift);
@@ -963,9 +961,9 @@ OptionsHotKeys::makeKeyString(int32_t newKey, PSTR keysString)
 }
 
 int32_t
-OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, PSTR hotKeyString)
+OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, const std::wstring_view& hotKeyString)
 {
-	PCSTR pText = gos_DescribeKey(tmpKey & 0x0001ff00);
+	const std::wstring_view& pText = gos_DescribeKey(tmpKey & 0x0001ff00);
 	int32_t tmp = (tmpKey >> 8) & 0x01ff;
 	if (tmp == KEY_LSHIFT || tmp == KEY_LMENU || tmp == KEY_LCONTROL)
 		return -1;
@@ -1058,7 +1056,6 @@ OptionsHotKeys::reset(bool useOld)
 	}
 }
 
-//*************************************************************************************************
 
 ScrollX::ScrollX()
 {
@@ -1274,12 +1271,12 @@ HotKeyListItem::update()
 }
 
 void
-HotKeyListItem::setDescription(PCSTR pText)
+HotKeyListItem::setDescription(const std::wstring_view& pText)
 {
 	description.setText(pText);
 }
 void
-HotKeyListItem::setKey(PCSTR pText)
+HotKeyListItem::setKey(const std::wstring_view& pText)
 {
 	text.setText(pText);
 }

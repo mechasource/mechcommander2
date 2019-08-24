@@ -9,62 +9,21 @@
 //===========================================================================//*
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 
-#ifndef OBJMGR_H
 #include "objmgr.h"
-#endif
-
 #include "mover.h"
-#ifdef USE_MECHS
-#ifndef MECH_H
-#include <mech.h>
-#endif
-#endif
-
-#ifndef GVEHICL_H
+#include "mech.h"
 #include "gvehicl.h"
-#endif
-
-#ifdef USE_ARTILLERY
-#ifndef ARTLRY_H
-#include <artlry.h>
-#endif
-#endif
-
-#ifndef UNITDESG_H
+#include "artlry.h"
 #include "unitdesg.h"
-#endif
-
-#ifndef TEAM_H
 #include "team.h"
-#endif
-
-#ifdef USE_MOVERCONTROL
-#ifndef AICTRL_H
-#include <aictrl.h>
-#endif
-#endif
-
-#ifndef MULTPLYR_H
+#include "aictrl.h"
 #include "multplyr.h"
-#endif
-
-#ifndef CONTACT_H
 #include "contact.h"
-#endif
-
-#ifndef MISSION_H
 #include "mission.h"
-#endif
-
-#ifndef MISSIONGUI_H
 #include "missionGui.h"
-#endif
-
-#ifndef WARRIOR_H
 #include "warrior.h"
-#endif
 
 char Team::relations[MAX_TEAMS][MAX_TEAMS] = {{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2},
 	{2, 0, 2, 2, 2, 2, 2, 2}, {RELATION_NEUTRAL, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
@@ -180,7 +139,7 @@ Team::buildRoster(void)
 	rosterSize = 0;
 	for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 	{
-		MoverPtr mover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 		if (mover->getTeamId() == id)
 			roster[rosterSize++] = mover->getWatchID();
 	}
@@ -191,18 +150,18 @@ Team::buildRoster(void)
 
 //---------------------------------------------------------------------------
 
-MoverPtr
+std::unique_ptr<Mover>
 Team::getMover(int32_t index)
 {
 	if (roster[index] > 0)
-		return ((MoverPtr)ObjectManager->getByWatchID(roster[index]));
+		return ((std::unique_ptr<Mover>)ObjectManager->getByWatchID(roster[index]));
 	return (nullptr);
 }
 
 //----------------------------------------------------------------------------
 
 void
-Team::addToRoster(MoverPtr mover)
+Team::addToRoster(std::unique_ptr<Mover> mover)
 {
 	if (mover)
 		roster[rosterSize++] = mover->getWatchID();
@@ -211,7 +170,7 @@ Team::addToRoster(MoverPtr mover)
 //---------------------------------------------------------------------------
 
 void
-Team::removeFromRoster(MoverPtr mover)
+Team::removeFromRoster(std::unique_ptr<Mover> mover)
 {
 	for (size_t i = 0; i < rosterSize; i++)
 		if (roster[i] == mover->getWatchID())
@@ -224,7 +183,7 @@ Team::removeFromRoster(MoverPtr mover)
 //---------------------------------------------------------------------------
 
 bool
-Team::isContact(GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria)
+Team::isContact(GameObjectPtr looker, std::unique_ptr<Mover> mover, int32_t contactCriteria)
 {
 	return (SensorManager->getTeamSensor(id)->meetsCriteria(looker, mover, contactCriteria));
 }
@@ -288,9 +247,9 @@ Team::disableTargets(void)
 		{
 			GameObjectPtr target = nullptr;
 			if (object->isMover())
-				target = ((MoverPtr)object)->getPilot()->getCurrentTarget();
+				target = ((std::unique_ptr<Mover>)object)->getPilot()->getCurrentTarget();
 			if (target && target->isMover())
-				((MoverPtr)target)->disable(66);
+				((std::unique_ptr<Mover>)target)->disable(66);
 		}
 	}
 }
@@ -302,7 +261,7 @@ Team::eject(void)
 {
 	for (size_t i = 0; i < rosterSize; i++)
 	{
-		MoverPtr mover = (MoverPtr)ObjectManager->getByWatchID(roster[i]);
+		std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(roster[i]);
 		if (mover)
 		{
 			if (mover->getObjectClass() == BATTLEMECH)
@@ -329,7 +288,7 @@ Team::destroyTargets(void)
 		{
 			GameObjectPtr target = nullptr;
 			if (object->isMover())
-				target = ((MoverPtr)object)->getPilot()->getCurrentTarget();
+				target = ((std::unique_ptr<Mover>)object)->getPilot()->getCurrentTarget();
 			if (target && target->isMover())
 			{
 				//-----------------------------------------
@@ -366,9 +325,9 @@ Team::isTargeting(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 		{
 			if (roster[i] == exceptWID)
 				continue;
-			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
+			std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->getByWatchID(roster[i]));
 			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
-			MechWarriorPtr pilot = mover->getPilot();
+			std::unique_ptr<MechWarrior> pilot = mover->getPilot();
 			if (pilot)
 			{
 				GameObjectPtr target = pilot->getCurrentTarget();
@@ -379,9 +338,9 @@ Team::isTargeting(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 	else
 		for (size_t i = 0; i < rosterSize; i++)
 		{
-			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
+			std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->getByWatchID(roster[i]));
 			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
-			MechWarriorPtr pilot = mover->getPilot();
+			std::unique_ptr<MechWarrior> pilot = mover->getPilot();
 			if (pilot)
 			{
 				GameObjectPtr target = pilot->getCurrentTarget();
@@ -402,9 +361,9 @@ Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 		{
 			if (roster[i] == exceptWID)
 				continue;
-			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
+			std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->getByWatchID(roster[i]));
 			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
-			MechWarriorPtr pilot = mover->getPilot();
+			std::unique_ptr<MechWarrior> pilot = mover->getPilot();
 			if (pilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE))
 			{
 				GameObjectPtr target = pilot->getCurTacOrder()->getTarget();
@@ -415,9 +374,9 @@ Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 	else
 		for (size_t i = 0; i < rosterSize; i++)
 		{
-			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
+			std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->getByWatchID(roster[i]));
 			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
-			MechWarriorPtr pilot = mover->getPilot();
+			std::unique_ptr<MechWarrior> pilot = mover->getPilot();
 			if (pilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE))
 			{
 				GameObjectPtr target = pilot->getCurTacOrder()->getTarget();
@@ -451,7 +410,7 @@ Team::markRadiusSeenToTeams(Stuff::Vector3D& location, float radius, bool shrink
 	bool didTeam[MAX_TEAMS] = {false, false, false, false, false, false, false, false};
 	for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 	{
-		MoverPtr mover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 		if (mover->getTeam() && !didTeam[mover->getTeamId()] && !isFriendly(mover->getTeam()))
 		{
 			Stuff::Vector3D result;
@@ -680,7 +639,7 @@ float Team::getECMEffect(Stuff::Vector3D position)
 //---------------------------------------------------------------------------
 
 Stuff::Vector3D
-Team::calcEscapeVector(MoverPtr mover, float threatRange)
+Team::calcEscapeVector(std::unique_ptr<Mover> mover, float threatRange)
 {
 	static float distance[100];
 	static Stuff::Vector3D delta[100];
@@ -737,9 +696,9 @@ Team::statusCount(int32_t* statusTally)
 	// each of the statuses...
 	for (size_t i = 0; i < rosterSize; i++)
 	{
-		MoverPtr obj = (MoverPtr)ObjectManager->getByWatchID(roster[i]);
+		std::unique_ptr<Mover> obj = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(roster[i]);
 		Assert(obj != nullptr, i, " Team.statusCount: nullptr roster object ");
-		MechWarriorPtr pilot = obj->getPilot();
+		std::unique_ptr<MechWarrior> pilot = obj->getPilot();
 		if (!obj->getExists())
 			statusTally[8]++;
 		else if (!obj->getAwake())
@@ -796,7 +755,7 @@ Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 	// For each member of the team, check LOS to point provided.
 	for (size_t i = 0; i < rosterSize; i++)
 	{
-		MoverPtr obj = (MoverPtr)ObjectManager->getByWatchID(roster[i]);
+		std::unique_ptr<Mover> obj = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(roster[i]);
 		if (!obj->isDisabled() && !obj->isDestroyed() && (obj->getStatus() != OBJECT_STATUS_SHUTDOWN))
 		{
 			Stuff::Vector3D distance;
@@ -820,7 +779,7 @@ Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 			// Scouting specialty skill.
 			if (obj->isMover())
 			{
-				MoverPtr mover = (MoverPtr)obj;
+				std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)obj;
 				if (mover->pilot && mover->pilot->isScout())
 					radius += (radius * 0.2f);
 				radius *= mover->getLOSFactor();
@@ -862,7 +821,7 @@ Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 				// Scouting specialty skill.
 				if (obj->isMover())
 				{
-					MoverPtr mover = (MoverPtr)obj;
+					std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)obj;
 					if (mover->pilot && mover->pilot->isScout())
 						radius += (radius * 0.2f);
 					radius *= mover->getLOSFactor();
@@ -1234,17 +1193,17 @@ Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float en
 
 //---------------------------------------------------------------------------
 bool
-Team::lineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition, int32_t teamId,
+Team::lineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition, int32_t teamId,
 	float extRad, float startExtRad, bool checkVisibleBits)
 {
 	int32_t posCellR, posCellC;
 	int32_t tarCellR, tarCellC;
 	land->worldToCell(position, posCellR, posCellC);
-	land->worldToCell(targetPosition, tarCellR, tarCellC);
+	land->worldToCell(targetposition, tarCellR, tarCellC);
 	float elev = land->getTerrainElevation(position);
 	float localStart = position.z - elev;
-	elev = land->getTerrainElevation(targetPosition);
-	float localEnd = targetPosition.z - elev;
+	elev = land->getTerrainElevation(targetposition);
+	float localEnd = targetposition.z - elev;
 	return (lineOfSight(localStart, posCellR, posCellC, localEnd, tarCellR, tarCellC, teamId,
 		extRad, startExtRad, checkVisibleBits));
 }

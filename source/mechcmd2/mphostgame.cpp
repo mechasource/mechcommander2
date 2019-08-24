@@ -10,8 +10,8 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 #include "mphostgame.h"
 #include "prefs.h"
 #include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
+#include "userinput.h"
+#include "resource.h"
 #include "multplyr.h"
 
 #include "gamesound.h"
@@ -94,7 +94,7 @@ MPHostGame::init()
 			if ( NO_ERROR != PNfile.open( tmpPath ) )
 			{
 				char error[256];
-				sprintf( error, "couldn't open file %s", (PSTR)tmpPath );
+				sprintf( error, "couldn't open file %s", (const std::wstring_view&)tmpPath );
 				Assert( 0, 0, error );
 				return;
 			}
@@ -171,12 +171,12 @@ MPHostGame::handleMessage(uint32_t message, uint32_t who)
 	enterAnim.end();
 	if (status == YES)
 	{
-		std::wstring tmp;
+		const std::wstring_view& tmp;
 		//		numPlayersDropList.EditBox().getEntry(tmp);
 		//		int32_t maxPlayers = atoi( tmp );
 		edits[0].getEntry(tmp);
 		MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
-		if (!MPlayer->hostSession((PSTR)(PCSTR)tmp, &prefs.playerName[0][0], 8))
+		if (!MPlayer->hostSession((const std::wstring_view&)(const std::wstring_view&)tmp, &prefs.playerName[0][0], 8))
 		{
 			MPlayer->setMode(MULTIPLAYER_MODE_NONE);
 			// need to pop dlg here
@@ -212,7 +212,7 @@ MPHostGame::update()
 	LogisticsDialog::update();
 	helpTextID = 0;
 	helpTextHeaderID = 0;
-	std::wstring tmp;
+	const std::wstring_view& tmp;
 	edits[0].getEntry(tmp);
 	int32_t len = tmp.Length();
 	if (len >= 1)
@@ -224,7 +224,7 @@ MPHostGame::update()
 }
 
 int32_t
-aStyle5TextListItem::init(FitIniFile* file, PCSTR blockName)
+aStyle5TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t fontResID = 0;
@@ -274,5 +274,4 @@ aStyle5TextListItem::render()
 
 //////////////////////////////////////////////
 
-//*************************************************************************************************
 // end of file ( MPHostGame.cpp )

@@ -103,7 +103,7 @@ gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 			m_pScale.m_seeded = false;
 			m_pScale.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;

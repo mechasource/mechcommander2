@@ -61,7 +61,7 @@ typedef struct _srdata
 
 } SoundRendererData;
 
-extern HGOSHEAP SoundHeap;
+// extern HGOSHEAP SoundHeap;
 
 void __stdcall SoundRendererInstall(int32_t);
 void __stdcall SoundRendererStartFrame(void);
@@ -76,6 +76,6 @@ void __stdcall SoundRendererFF(double sec);
 bool __stdcall IsValidSoundResource(HGOSAUDIO gosAudio);
 
 void __stdcall TimeFunc(
-	uint32_t uTimerID, uint32_t uMsg, uint32_t dwUser, uint32_t dw1, uint32_t dw2);
+	uint32_t uTimerID, uint32_t message, uint32_t dwUser, uint32_t dw1, uint32_t dw2);
 
 void __stdcall SoundRendererNotify(void);

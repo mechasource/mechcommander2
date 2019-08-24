@@ -3,9 +3,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <mechgui/abutton.h>
-#include <mechgui/afont.h>
-#include <mclib.h>
+#include "mechgui/abutton.h"
+#include "mechgui/afont.h"
+#include "mclib.h"
 #include <windows.h>
 #include "soundsys.h"
 
@@ -281,7 +281,7 @@ aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data
 }
 
 void
-aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
+aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D font)
 {
 	textureHandle = 0;
 	int32_t result = buttonFile.seekBlock(str);
@@ -295,7 +295,7 @@ aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 	buttonFile.readIdLong("ID", data.ID);
 	buttonFile.readIdString("FileName", data.fileName, 32);
 	buttonFile.readIdLong("HelpCaption", helpHeader);
-	buttonFile.readIdLong("HelpDesc", helpID);
+	buttonFile.readIdLong("HelpDesc", helpid);
 	buttonFile.readIdLong("TextID", data.textID);
 	buttonFile.readIdLong("TextNormal", data.textColors[0]);
 	buttonFile.readIdLong("TextPressed", data.textColors[1]);
@@ -314,7 +314,7 @@ aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 	buttonFile.readIdLong("Width", width);
 	buttonFile.readIdLong("Height", height);
 	buttonFile.readIdLong("HelpCaption", helpHeader);
-	buttonFile.readIdLong("HelpDesc", helpID);
+	buttonFile.readIdLong("HelpDesc", helpid);
 	buttonFile.readIdBoolean("texturesRotated", data.textureRotated);
 	if (NO_ERROR != buttonFile.readIdLong("Alignment", data.textAlign))
 		data.textAlign = 2;
@@ -460,7 +460,7 @@ aAnimButton::destroy()
 }
 
 void
-aAnimButton::init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font)
+aAnimButton::init(FitIniFile& file, const std::wstring_view& headerName, HGOSFONT3D font)
 {
 	if (NO_ERROR != file.seekBlock(headerName))
 	{
@@ -498,12 +498,12 @@ aAnimButton::update()
 	bool bInside = pointInside(mouseX, mouseY);
 	if (bInside && state == DISABLED)
 	{
-		::helpTextID = this->helpID;
+		::helpTextID = this->helpid;
 		::helpTextHeaderID = this->helpHeader;
 	}
 	if (bInside && state != DISABLED && state != HIDDEN)
 	{
-		::helpTextID = this->helpID;
+		::helpTextID = this->helpid;
 		::helpTextHeaderID = this->helpHeader;
 		if (userInput->isLeftClick())
 		{

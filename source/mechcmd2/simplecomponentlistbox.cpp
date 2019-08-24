@@ -9,7 +9,7 @@ SimpleComponentListBox component.
 #include "stdinc.h"
 
 #include "simplecomponentlistbox.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "LogisticsVariant.h"
 #include "LogisticsComponent.h"
 #include "LogisticsData.h"
@@ -21,7 +21,7 @@ ComponentListBox::ComponentListBox()
 	clickSFX = -1;
 	highlightSFX = -1;
 	disabledSFX = -1;
-	helpID = IDS_HELP_WEAPONS;
+	helpid = IDS_HELP_WEAPONS;
 }
 
 ComponentListBox::~ComponentListBox()
@@ -113,7 +113,7 @@ ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** com
 		}
 		if (finalList[0])
 		{
-			std::wstring str;
+			const std::wstring_view& str;
 			// add the header
 			// no more headers, keeping code just in case
 			//				aTextListItem* textItem = new aTextListItem(
@@ -142,5 +142,4 @@ ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** com
 	}
 }
 
-//*************************************************************************************************
 // end of file ( SimpleComponentListBox.cpp )

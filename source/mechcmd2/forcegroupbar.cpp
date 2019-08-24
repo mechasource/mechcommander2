@@ -13,7 +13,7 @@ ForceGroupBar.cpp			: Implementation of the ForceGroupBar component.
 #include "Team.h"
 #include "MissionGui.h"
 #include "controlgui.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "multplyr.h"
 #include "mc2movie.h"
 #include "comndr.h"
@@ -363,7 +363,7 @@ ForceGroupBar::swapResolutions()
 }
 
 bool
-ForceGroupBar::setPilotVideo(PCSTR pVideo, MechWarrior* pPilot)
+ForceGroupBar::setPilotVideo(const std::wstring_view& pVideo, MechWarrior* pPilot)
 {
 	if (!pVideo)
 	{
@@ -478,5 +478,4 @@ ForceGroupBar::isPlayingVideo()
 	return false;
 }
 
-//*************************************************************************************************
 // end of file ( ForceGroupBar.cpp )

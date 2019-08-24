@@ -4,14 +4,14 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <mlr/mlrsorter.hpp>
-#include <mlr/mlrclipper.hpp>
-#include <mlr/mlrprimitivebase.hpp>
-#include <mlr/mlrcliptrick.hpp>
-#include <mlr/mlrlinecloud.hpp>
+#include "gameos.hpp"
+#include "mlr/mlrsorter.h"
+#include "mlr/mlrclipper.h"
+#include "mlr/mlrprimitivebase.h"
+#include "mlr/mlrcliptrick.h"
+#include "mlr/mlrlinecloud.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //#########################    MLRLineCloud    ###############################
@@ -285,3 +285,5 @@ MLRLineCloud::TestInstance(void) const
 		_ASSERT(*usedNrOfVertices <= maxNrOf);
 	}
 }
+
+} // namespace MidLevelRenderer

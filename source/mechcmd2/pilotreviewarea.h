@@ -5,17 +5,16 @@ PilotReviewARea.h			: Interface for the PilotReviewARea component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
 #ifndef PILOTREVIEWAREA_H
 #define PILOTREVIEWAREA_H
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/alistbox.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/alistbox.h"
 //#include "attributemeter.h"
-//#include <mechgui/aanim.h>
+//#include "mechgui/aanim.h"
 //#include "logisticspilot.h"
 
 class aButton;
@@ -271,5 +270,4 @@ private:
 	friend class PilotPromotionArea;
 };
 
-//*************************************************************************************************
 #endif // end of file ( PilotReview.h )

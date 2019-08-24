@@ -174,7 +174,7 @@ extern float MinVCoord; // The minimum v coord (for current texture)// Various
 	// video card
 
 // Various modes the renderer can be in
-typedef enum RenderModeType
+enum class RenderModeType
 {
 	Normal = 0, // Normal rendering
 	WireframeGlobalColor, // Only wireframe, no texture, global wireframe color

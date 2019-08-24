@@ -21,11 +21,11 @@ MECH_IMPEXP void __stdcall DestroyWindows(void);
 MECH_IMPEXP void __stdcall Update(void);
 
 // windowsdebugging.cpp
-MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPARAM lParam);
+MECH_IMPEXP PSTR __stdcall GetWindowsMessage(uint32_t message, WPARAM wparam, LPARAM lparam);
 
 void __stdcall SystemCheck(void);
 
-typedef enum Status
+enum class Status
 {
 	BeforeInit,
 	Uninitialized,
@@ -36,10 +36,10 @@ typedef enum Status
 } Status;
 
 extern HDC DesktopDC;
-extern HWND hWindow;
-extern HINSTANCE hInstance;
+extern HWND hwnd;
+extern HINSTANCE hinstance;
 extern WNDCLASSA wndClass;
-extern PSTR CommandLine;
+extern PSTR commandline;
 extern MSG msg;
 extern Status status;
 extern BOOL fullScreen;
@@ -63,9 +63,9 @@ PSTR __stdcall GetDirectXVersion(
 	void); // Returns a string describing the current version of DirectX
 
 // Functions only in Win98/2000
-typedef BOOL(__stdcall* T_GetFileAttributesEx)(PCSTR lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, PVOID lpFileInformation);
+typedef BOOL(__stdcall* T_GetFileAttributesEx)(PSTR lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, PVOID lpFileInformation);
 typedef EXECUTION_STATE(__stdcall* T_SetThreadExecutionState)(EXECUTION_STATE esFlags);
-typedef BOOL(__stdcall* T_GetDiskFreeSpaceEx)(PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
+typedef BOOL(__stdcall* T_GetDiskFreeSpaceEx)(PSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
 
 extern T_SetThreadExecutionState _SetThreadExecutionState;
 extern T_GetFileAttributesEx _GetFileAttributesEx;
@@ -82,7 +82,7 @@ typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEA)(LPDDENUMCALLBACKA pCallback, P
 typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEEXA)(LPDDENUMCALLBACKEXA pCallback, PVOID pContext, uint32_t dwFlags);
 typedef HRESULT(__stdcall* PDIRECTSOUNDCREATE)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter);
 typedef HRESULT(__stdcall* PDIRECTSOUNDENUMERATEA)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
-typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(HINSTANCE hInstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
+typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(HINSTANCE hinstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
 
 extern HRESULT(__stdcall* _DirectDrawCreateEx)(GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN pUnkOuter);
 extern HRESULT(__stdcall* _DirectDrawEnumerate)(LPDDENUMCALLBACKA pCallback, PVOID pContext);
@@ -90,8 +90,8 @@ extern HRESULT(__stdcall* _DirectDrawEnumerateEx)(LPDDENUMCALLBACKEXA pCallback,
 extern HRESULT(__stdcall* _DirectSoundCreate)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter);
 extern HRESULT(__stdcall* _DirectSoundEnumerate)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
 extern HRESULT(__stdcall* _DirectInputCreate)(HINSTANCE hinst, uint32_t dwVersion, LPDIRECTINPUT* lplpDirectInput, LPUNKNOWN punkOuter);
-extern HRESULT(__stdcall* _DirectInputCreateEx)(HINSTANCE hInstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
-extern HWND(__stdcall* _CallmyHelp)(HWND hWindow, HINSTANCE hInst, bool Window, uint32_t HelpItem);
+extern HRESULT(__stdcall* _DirectInputCreateEx)(HINSTANCE hinstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
+extern HWND(__stdcall* _CallmyHelp)(HWND hwnd, HINSTANCE hinstance, bool Window, uint32_t HelpItem);
 extern void(__stdcall* _FreeHlpLib)(void);
 extern uint32_t(__stdcall* _AMGetErrorText)(HRESULT hr, PSTR pbuffer, uint32_t MaxLen);
 

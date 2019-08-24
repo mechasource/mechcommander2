@@ -4,12 +4,12 @@
 
 #include "stdinc.h"
 #include "gosFXHeaders.hpp"
-#include <mlr/mlrpointlight.hpp>
+#include "mlr/mlrpointlight.h"
 
 gosFX::LightManager* gosFX::LightManager::Instance = nullptr;
 
 gosFX::Light*
-gosFX::LightManager::MakePointLight(PCSTR light_map)
+gosFX::LightManager::MakePointLight(const std::wstring_view& light_map)
 {
 	return reinterpret_cast<Light*>(this);
 }

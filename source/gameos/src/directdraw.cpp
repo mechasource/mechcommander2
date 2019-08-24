@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  directdraw.cpp - GameOS reference pseudo code
@@ -36,7 +37,7 @@
 // clang-format off
 HRESULT __stdcall wDirectDrawCreateEx(LPGUID pGUID, PVOID* ppDD, REFIID iid, IUnknown* pUnkOuter);
 HRESULT __stdcall wDirectDrawEnumerate(LPDDENUMCALLBACKA pCallback, LPDDENUMCALLBACKEXA pCallbackEx, PVOID pContext);
-HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t dwFlags, HWND hWnd);
+HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t dwFlags, HWND hwnd);
 HRESULT __stdcall wGetAvailableVidMem(LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, pulong32_t lpdwTotal, pulong32_t lpdwFree);
 HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, pulong32_t pNumCodes, pulong32_t pCodes);
 HRESULT __stdcall wGetDeviceIdentifier(LPDIRECTDRAW7 pdd7, LPDDDEVICEIDENTIFIER2 pdddi2, uint32_t dwFlags);
@@ -48,7 +49,7 @@ HRESULT __stdcall wSetDisplayMode(LPDIRECTDRAW7 pdd7, uint32_t dwWidth, uint32_t
 HRESULT __stdcall wRestoreDisplayMode(LPDIRECTDRAW7 pdd7);
 HRESULT __stdcall wCreateClipper(LPDIRECTDRAW7 pdd7, uint32_t dwFlags, LPDIRECTDRAWCLIPPER* ppDDClipper, IUnknown* pUnkOuter);
 HRESULT __stdcall wCreateSurface(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurfaceDesc, LPDIRECTDRAWSURFACE7* ppDDSurface7, IUnknown* pUnkOuter);
-HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hWnd, uint32_t dwFlags);
+HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hwnd, uint32_t dwFlags);
 HRESULT __stdcall wIsLost(LPDIRECTDRAWSURFACE7 pdds7);
 HRESULT __stdcall wGetDC(LPDIRECTDRAWSURFACE7 pdds7, HDC* phDC);
 HRESULT __stdcall wReleaseDC(LPDIRECTDRAWSURFACE7 pdds7, HDC hDC);
@@ -162,20 +163,20 @@ HRESULT __stdcall wDirectDrawEnumerate(
 /// </remarks>
 /// <param name="pddc"></param>
 /// <param name="dwFlags"></param>
-/// <param name="hWnd"></param>
+/// <param name="hwnd"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t dwFlags, HWND hWnd)
+HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t dwFlags, HWND hwnd)
 {
 	HRESULT hResult;
 
-	// InternalFunctionSpew("GameOS_DirectDraw", "SetHWnd(Flags=0x%x Window=0x%x)", dwFlags, hWnd);
-	hResult = pddc->SetHWnd(dwFlags, hWnd);
+	// InternalFunctionSpew("GameOS_DirectDraw", "SetHWnd(Flags=0x%x Window=0x%x)", dwFlags, hwnd);
+	hResult = pddc->SetHWnd(dwFlags, hwnd);
 
 	if (FAILED(hResult))
 	{
 		PSTR errormessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetHWnd(Flags=0x%x Window=0x%x)",
-				hResult, errormessage, dwFlags, hWnd))
+				hResult, errormessage, dwFlags, hwnd))
 		{
 			ENTER_DEBUGGER;
 		}
@@ -539,16 +540,16 @@ HRESULT __stdcall wCreateSurface(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurface
 /// <remarks>
 /// </remarks>
 /// <param name="pdd7"></param>
-/// <param name="hWnd"></param>
+/// <param name="hwnd"></param>
 /// <param name="dwFlags"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hWnd, uint32_t dwFlags)
+HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hwnd, uint32_t dwFlags)
 {
 	HRESULT hResult;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "SetCooperativeLevel( 0x%x,%s)", pdd7,
 	// GetSetCooperativeLevelFlags(dwFlags));
-	hResult = pdd7->SetCooperativeLevel(hWnd, dwFlags);
+	hResult = pdd7->SetCooperativeLevel(hwnd, dwFlags);
 
 	if (FAILED(hResult))
 	{

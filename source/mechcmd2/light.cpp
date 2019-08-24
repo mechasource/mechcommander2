@@ -10,7 +10,7 @@
 
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef GAMEOBJ_H
 #include "gameobj.h"
@@ -49,7 +49,7 @@ LightType::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-LightType::init(FilePtr objFile, uint32_t fileSize)
+LightType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile explFile;

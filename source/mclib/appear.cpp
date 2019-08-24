@@ -24,7 +24,7 @@
 
 // extern bool useFog;
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 //---------------------------------------------------------------------------
 // class Appearance
 PVOID
@@ -52,7 +52,7 @@ Appearance::operator delete(PVOID us)
 
 //---------------------------------------------------------------------------
 void
-Appearance::drawTextHelp(PSTR text, uint32_t color)
+Appearance::drawTextHelp(const std::wstring_view& text, uint32_t color)
 {
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;
@@ -68,13 +68,13 @@ Appearance::drawTextHelp(PSTR text, uint32_t color)
 }
 
 void
-Appearance::drawTextHelp(PSTR text)
+Appearance::drawTextHelp(const std::wstring_view& text)
 {
 	drawTextHelp(text, SD_GREEN);
 }
 
 void
-Appearance::drawPilotName(PSTR text, uint32_t color)
+Appearance::drawPilotName(const std::wstring_view& text, uint32_t color)
 {
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;

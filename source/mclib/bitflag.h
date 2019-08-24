@@ -89,7 +89,7 @@ public:
 	~ByteFlag(void) { destroy(); }
 
 	int32_t init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
-	void initTGA(PSTR tgaFileName);
+	void initTGA(const std::wstring_view& tgaFileName);
 
 	void destroy(void);
 

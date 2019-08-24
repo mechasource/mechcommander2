@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/gosimage.hpp>
+#include "mlr/gosimage.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //############################    GOSImage    ###############################
@@ -14,7 +14,7 @@ using namespace MidLevelRenderer;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(PCSTR iName) :
+GOSImage::GOSImage(const std::wstring_view& iName) :
 	Plug(DefaultData)
 {
 	imageName = iName;
@@ -40,7 +40,7 @@ GOSImage::GOSImage(uint32_t iHandle) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(PCSTR name, gos_TextureHints hints) :
+GOSImage::GOSImage(const std::wstring_view& name, gos_TextureHints hints) :
 	Plug(DefaultData)
 {
 	imageName = name;
@@ -71,7 +71,7 @@ GOSImage::~GOSImage(void)
 	flags = 0;
 }
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -129,3 +129,5 @@ GOSImage::GetImagePtr()
 }
 
 #endif
+
+} // namespace MidLevelRenderer

@@ -103,11 +103,11 @@ typedef float real;
 //
 //#define WINTRUST_H
 //#define ULONG_PTR uint32_t
-#include "imagehlp.h"
+#include <imagehlp.h>
 //
 // Debugging library (Win2K only - from the platform SDK)
 //
-#include "psapi.h"
+#include <psapi.h>
 //
 // Check that DX7 SDK headers and includes are included first in your
 // Tools\Options\Directories in Visual C

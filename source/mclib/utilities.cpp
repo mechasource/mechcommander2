@@ -9,7 +9,7 @@ Utilities.cpp			: Implementation of the Utilities component.
 
 #include "txmmgr.h"
 #include "IniFile.h"
-#include <mclib.h>
+#include "mclib.h"
 
 //#pragma warning(disable:4514)
 
@@ -132,12 +132,12 @@ StaticInfo::render()
 }
 
 void
-StaticInfo::showGUIWindow(bool bShow)
+StaticInfo::showGUIWindow(bool doshow)
 {
-	int32_t mask = bShow ? 0xff000000 : 0x00ffffff;
+	int32_t mask = doshow ? 0xff000000 : 0x00ffffff;
 	for (size_t i = 0; i < 4; i++)
 	{
-		if (bShow)
+		if (doshow)
 			location[i].argb |= mask;
 		else
 			location[i].argb &= mask;
@@ -193,7 +193,7 @@ StaticInfo::getData(puint8_t buffer)
 }
 
 void
-StaticInfo::init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, int32_t hiResOffsetY,
+StaticInfo::init(FitIniFile& file, const std::wstring_view& blockName, int32_t hiResOffsetX, int32_t hiResOffsetY,
 	uint32_t neverFlush)
 {
 	memset(location, 0, sizeof(location));
@@ -309,14 +309,14 @@ StaticInfo::setNewUVs(float uLeft, float vTop, float uRight, float vBottom)
 
 void
 drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, bool proportional, PCSTR text, bool bold, float scale)
+	int32_t top, bool proportional, const std::wstring_view& text, bool bold, float scale)
 {
 	drawShadowText(colorTop, colorShadow, font, left, top, proportional, text, bold, scale, -1, 1);
 }
 
 void
 drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, bool proportional, PCSTR text, bool bold, float scale, int32_t xOffset,
+	int32_t top, bool proportional, const std::wstring_view& text, bool bold, float scale, int32_t xOffset,
 	int32_t yOffset)
 {
 	gos_TextSetAttributes(font, colorShadow, scale, false, proportional, bold, false, 0);
@@ -330,7 +330,7 @@ drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t l
 
 void
 drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, int32_t right, int32_t bottom, bool proportional, PCSTR text, bool bold,
+	int32_t top, int32_t right, int32_t bottom, bool proportional, const std::wstring_view& text, bool bold,
 	float scale, int32_t xOffset, int32_t yOffset)
 {
 	gos_TextSetAttributes(font, colorShadow, scale, true, proportional, bold, false, 2);

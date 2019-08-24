@@ -8,8 +8,8 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <stuff/safesocket.hpp>
+#include "gameos.hpp"
+#include "stuff/safesocket.h"
 
 using namespace Stuff;
 

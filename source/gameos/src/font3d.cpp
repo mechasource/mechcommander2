@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  font3d.cpp - GameOS reference pseudo code
@@ -73,12 +74,12 @@ void __stdcall gos_TextSetAttributes(HGOSFONT3D FontHandle, uint32_t Foreground,
 void __stdcall gos_TextSetPosition(int32_t XPosition, int32_t YPosition);
 void __stdcall gos_TextGetPrintPosition(int32_t* pXPosition, int32_t* pYPosition);
 void __stdcall gos_TextSetRegion(int32_t Left, int32_t Top, int32_t Right, int32_t Bottom);
-void __stdcall gos_TextStringLength(uint32_t* pWidth, uint32_t* pHeight, PCSTR Message, ...);
+void __stdcall gos_TextStringLength(uint32_t* pWidth, uint32_t* pHeight, PSTR Message, ...);
 void __stdcall gos_TextDrawBackground(
 	int32_t Left, int32_t Top, int32_t Right, int32_t Bottom, uint32_t Color);
 void __stdcall SetupFontRenderstates(void);
-void __stdcall gos_TextDraw(PCSTR Message, ...);
-void __stdcall gos_TextDrawV(PCSTR Message, PSTR arglist);
+void __stdcall gos_TextDraw(PSTR Message, ...);
+void __stdcall gos_TextDrawV(PSTR Message, PSTR arglist);
 
 // global implemented functions not listed in headers
 void __stdcall FontDrawQuad(bool);

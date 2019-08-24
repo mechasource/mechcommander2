@@ -23,7 +23,7 @@
 #endif
 
 #ifndef TERRTXM_H
-#include <terrtxm.h>
+#include "terrtxm.h"
 #endif
 
 #ifndef DBASEGUI_H
@@ -92,8 +92,8 @@ int32_t Terrain::realVerticesMapSide = 0;
 Stuff::Vector3D Terrain::mapTopLeft3d; // Calced during load.
 
 UserHeapPtr Terrain::terrainHeap = nullptr; // Setup at load time.
-PSTR Terrain::terrainName = nullptr;
-PSTR Terrain::colorMapName = nullptr;
+const std::wstring_view& Terrain::terrainName = nullptr;
+const std::wstring_view& Terrain::colorMapName = nullptr;
 
 int32_t Terrain::numObjBlocks = 0;
 ObjBlockInfo* Terrain::objBlockInfo = nullptr;
@@ -321,7 +321,7 @@ Terrain::getColorMapName(FitIniFile* file)
 
 //---------------------------------------------------------------------------
 void
-Terrain::setColorMapName(PSTR mapName)
+Terrain::setColorMapName(const std::wstring_view& mapName)
 {
 	if (colorMapName)
 	{

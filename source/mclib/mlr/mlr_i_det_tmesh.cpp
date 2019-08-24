@@ -4,11 +4,12 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlr_i_det_tmesh.hpp>
+#include "gameos.hpp"
+#include "mlr/mlrshape.h"
+#include "mlr/mlr_i_det_tmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
+
 
 //#############################################################################
 
@@ -229,7 +230,7 @@ MLR_I_DeT_TMesh::TestInstance(void) const
 //	int32_t MLR_I_DeT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtriangleclipping.inl>
+#include "mlr/mlrtriangleclipping.inl"
 
 #undef I_SAY_YES_TO_DETAIL_TEXTURES
 #undef CLASSNAME
@@ -481,3 +482,5 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
 
 	return ret;
 }
+
+} // namespace MidLevelRenderer

@@ -12,7 +12,7 @@ SalvageMechArea.cpp			: Implementation of the SalvageMechArea component.
 #include "objMgr.h"
 #include "LogisticsPilot.h"
 #include "LogisticsData.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "mech.h"
 #include <malloc.h>
 #include "MechIcon.h"
@@ -346,7 +346,7 @@ DeadPilotListItem::DeadPilotListItem(LogisticsPilot* pPilot)
 	cLoadString(IDS_PILOT_KILLS, tmpText, 255);
 	sprintf(realText, tmpText, numberOfKills);
 	killsText.setText(realText);
-	PCSTR name = pPilot->getName();
+	const std::wstring_view& name = pPilot->getName();
 	cLoadString(IDS_PILOT_NAME, tmpText, 255);
 	sprintf(realText, tmpText, name);
 	nameText.setText(realText);
@@ -972,7 +972,7 @@ ActivePilotListItem::ActivePilotListItem(LogisticsPilot* pPilot)
 	missionText.setText(realText);
 	cLoadString(IDS_KILLS_NO_COUNT, tmpText, 255);
 	killsText.setText(tmpText);
-	PCSTR name = pPilot->getName();
+	const std::wstring_view& name = pPilot->getName();
 	cLoadString(IDS_PILOT_NAME, tmpText, 255);
 	sprintf(realText, tmpText, name);
 	nameText.setText(realText);
@@ -1163,7 +1163,7 @@ PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 	cLoadString(IDS_PILOT_MISSIONS, tmpText, 255);
 	sprintf(realText, tmpText, missions);
 	areaLeft.textObjects[2].setText(realText);
-	PCSTR name = pPilot->getName();
+	const std::wstring_view& name = pPilot->getName();
 	cLoadString(IDS_PILOT_NAME, tmpText, 255);
 	sprintf(realText, tmpText, name);
 	areaLeft.textObjects[1].setText(realText);
@@ -1190,7 +1190,7 @@ PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 	int32_t specSkills = pPilot->getSpecialtySkillCount();
 	if (specSkills)
 	{
-		PCSTR tmp[NUM_SPECIALTY_SKILLS];
+		const std::wstring_view& tmp[NUM_SPECIALTY_SKILLS];
 		specSkills = 10;
 		pPilot->getSpecialtySkills(tmp, specSkills);
 		for (size_t i = 0; i < specSkills; i++)
@@ -1221,17 +1221,17 @@ PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 	skillListBox.setScrollPos(0);
 	skillListBox.removeAllItems(true);
 	int32_t maxSkill = 0;
-	if (rank > WARRIOR_RANK_ELITE)
+	if (rank > WarriorRank::elite)
 	{
 		maxSkill = NUM_SPECIALTY_SKILLS;
 		soundSystem->playBettySample(BETTY_PROMOACE);
 	}
-	else if (rank > WARRIOR_RANK_VETERAN)
+	else if (rank > WarriorRank::veteran)
 	{
 		maxSkill = FIRST_ACE_SPECIALTY;
 		soundSystem->playBettySample(BETTY_PROMOELI);
 	}
-	else if (rank > WARRIOR_RANK_REGULAR)
+	else if (rank > WarriorRank::regular)
 	{
 		maxSkill = FIRST_ELITE_SPECIALTY;
 		soundSystem->playBettySample(BETTY_PROMOVET);

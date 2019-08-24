@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  windows.cpp - GameOS reference pseudo code
@@ -17,13 +18,13 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <globals.hpp>
-#include <winproc.hpp>
-#include <platform.hpp>
-#include <toolos.hpp>
-#include <errorhandler.hpp>
-#include <windows.hpp>
+#include "gameos.hpp"
+#include "globals.hpp"
+#include "winproc.hpp"
+#include "platform.hpp"
+#include "toolos.hpp"
+#include "errorhandler.hpp"
+#include "windows.hpp"
 
 #pragma warning(disable : 4191) // 'type cast' : unsafe conversion from 'FARPROC'
 
@@ -50,16 +51,16 @@
 MECH_IMPEXP
 EXECUTION_STATE(__stdcall* _SetThreadExecutionState)(EXECUTION_STATE);
 MECH_IMPEXP
-int32_t(__stdcall* _GetFileAttributesEx)(PCSTR, GET_FILEEX_INFO_LEVELS, PVOID);
+int32_t(__stdcall* _GetFileAttributesEx)(PSTR, GET_FILEEX_INFO_LEVELS, PVOID);
 MECH_IMPEXP
 int32_t(__stdcall* _GetDiskFreeSpaceEx)(
-	PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
+	PSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
 
 MECH_IMPEXP HANDLE hMappedFile;
 MECH_IMPEXP MSG msg;
 MECH_IMPEXP WNDCLASSA wndClass;
-MECH_IMPEXP HWND hWindow;
-MECH_IMPEXP HINSTANCE hInstance;
+MECH_IMPEXP HWND hwnd;
+MECH_IMPEXP HINSTANCE hinstance;
 MECH_IMPEXP uint32_t DesktopBpp;
 MECH_IMPEXP uint32_t DesktopRes;
 MECH_IMPEXP POINT clientToScreen;
@@ -73,7 +74,7 @@ MECH_IMPEXP HDC DesktopDC;
 MECH_IMPEXP uint32_t ForceReStart;
 MECH_IMPEXP BOOL bScreenSaver;
 MECH_IMPEXP bool StoredScreenSaverSetting;
-MECH_IMPEXP PSTR CommandLine;
+MECH_IMPEXP PSTR commandline;
 
 // -----------------------------------------------------------------------------
 // implemented functions
@@ -85,7 +86,7 @@ MECH_IMPEXP void __stdcall Update(void);
 MECH_IMPEXP size_t __stdcall gos_GetClipboardText(PSTR Buffer, size_t BufferSize);
 MECH_IMPEXP void __stdcall gos_SetClipboardText(PSTR Text);
 
-static BOOL __stdcall EnumIcons(HMODULE hModule, PCSTR pszType, PSTR pszName, LONG_PTR lParam);
+static BOOL __stdcall EnumIcons(HMODULE hModule, PSTR pszType, PSTR pszName, LONG_PTR lparam);
 
 // -----------------------------------------------------------------------------
 // externals not specified in headers
@@ -96,7 +97,7 @@ extern uint32_t gLanguageDLL;
 extern int32_t LoseFocusBehavior; // enum?
 extern bool WindowsPause;
 
-void __stdcall InitializeIME(HWND hWnd);
+void __stdcall InitializeIME(HWND hwnd);
 bool __stdcall IgnoreImeHotKey(PMSG pmsg);
 
 // -----------------------------------------------------------------------------
@@ -115,15 +116,15 @@ bool __stdcall IgnoreImeHotKey(PMSG pmsg);
 MECH_IMPEXP bool __stdcall AlreadyRunning(void)
 {
 	WINDOWPLACEMENT wndpl;
-	HWND hWnd;
-	hWnd = ::FindWindowA(Environment.applicationName, Environment.applicationName);
-	if (hWnd)
+	HWND hwnd;
+	hwnd = ::FindWindowA(Environment.applicationName, Environment.applicationName);
+	if (hwnd)
 	{
 		wndpl.length = sizeof(wndpl);
-		::GetWindowPlacement(hWnd, &wndpl);
-		::SetForegroundWindow(hWnd);
+		::GetWindowPlacement(hwnd, &wndpl);
+		::SetForegroundWindow(hwnd);
 		if (wndpl.showCmd == SW_SHOWMINIMIZED)
-			::ShowWindow(hWnd, SW_RESTORE);
+			::ShowWindow(hwnd, SW_RESTORE);
 		return true;
 	}
 	hMappedFile = ::CreateFileMappingA(
@@ -137,11 +138,11 @@ MECH_IMPEXP bool __stdcall AlreadyRunning(void)
 	return false;
 }
 
-static BOOL __stdcall EnumIcons(HMODULE hModule, PCSTR pszType, PSTR pszName, LONG_PTR lParam)
+static BOOL __stdcall EnumIcons(HMODULE hModule, PSTR pszType, PSTR pszName, LONG_PTR lparam)
 {
 	(void)hModule;
 	(void)pszType;
-	(void)lParam;
+	(void)lparam;
 	IconName = pszName;
 	return FALSE;
 }
@@ -159,8 +160,8 @@ static BOOL __stdcall EnumIcons(HMODULE hModule, PCSTR pszType, PSTR pszName, LO
 MECH_IMPEXP void __stdcall InitializeWindows(void)
 {
 	HMODULE hKernel32;
-	PCSTR pszMessage;
-	PCSTR pszFormat;
+	PSTR pszMessage;
+	PSTR pszFormat;
 	RECT Rect;
 	char Buffer2[260] = {0};
 	va_list Arguments;
@@ -168,7 +169,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 	ATOM atom;
 	bool bSuccess;
 	uint32_t dwStyle;
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	OSVERSIONINFOA VersionInformation;
 #endif
 
@@ -179,15 +180,15 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 	DesktopRes = static_cast<uint32_t>(
 		(GetDeviceCaps(DesktopDC, VERTRES) << 16) + GetDeviceCaps(DesktopDC, HORZRES));
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	// _SetThreadExecutionState = nullptr;
 	hKernel32 = GetModuleHandleA("kernel32.dll");
 	_SetThreadExecutionState = reinterpret_cast<EXECUTION_STATE(__stdcall*)(EXECUTION_STATE)>(
 		GetProcAddress(hKernel32, "SetThreadExecutionState"));
 	_GetFileAttributesEx =
-		reinterpret_cast<int32_t(__stdcall*)(PCSTR, GET_FILEEX_INFO_LEVELS, PVOID)>(
+		reinterpret_cast<int32_t(__stdcall*)(PSTR, GET_FILEEX_INFO_LEVELS, PVOID)>(
 			GetProcAddress(hKernel32, "GetFileAttributesExA"));
-	_GetDiskFreeSpaceEx = reinterpret_cast<int32_t(__stdcall*)(PCSTR, PULARGE_INTEGER,
+	_GetDiskFreeSpaceEx = reinterpret_cast<int32_t(__stdcall*)(PSTR, PULARGE_INTEGER,
 		PULARGE_INTEGER, PULARGE_INTEGER)>(GetProcAddress(hKernel32, "GetDiskFreeSpaceExA"));
 
 	if (_SetThreadExecutionState)
@@ -199,7 +200,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 	SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, 0, nullptr, SPIF_SENDCHANGE);
 	StoredScreenSaverSetting = true;
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	VersionInformation.dwOSVersionInfoSize = sizeof(OSVERSIONINFOA);
 	GetVersionExA(&VersionInformation);
 	if (VersionInformation.dwPlatformId == VER_PLATFORM_WIN32_NT && VersionInformation.dwMajorVersion == 5 && VersionInformation.dwBuildNumber < 0x893 && InternalFunctionPause("Please upgrade to Windows 2000 RTM (Build 2195)"))
@@ -234,7 +235,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 						"be available when running in a window";
 			FormatMessageA(FORMAT_MESSAGE_ARGUMENT_ARRAY | FORMAT_MESSAGE_FROM_STRING, pszMessage,
 				0, 0, Buffer1, _countof(Buffer1), &Arguments);
-#if _CONSIDERED_UNSUPPORTED
+#if CONSIDERED_UNSUPPORTED
 			// Pointer to local array Buffer1 is stored outside the scope of
 			// this array. Such a pointer will become invalid
 			ErrorMessageTitle = Buffer1;
@@ -258,10 +259,10 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 		wndClass.lpfnWndProc = (WNDPROC)&GameOSWinProc;
 		wndClass.cbClsExtra = 0;
 		wndClass.cbWndExtra = 0;
-		wndClass.hInstance = hInstance;
-		EnumResourceNamesA(hInstance, "Windows()", EnumIcons, 0);
+		wndClass.hinstance = hinstance;
+		EnumResourceNamesA(hinstance, "Windows()", EnumIcons, 0);
 		if (IconName)
-			wndClass.hIcon = LoadIconA(hInstance, /*static_cast<PCSTR>*/ (IconName));
+			wndClass.hIcon = LoadIconA(hinstance, /*static_cast<PSTR>*/ (IconName));
 		else
 			wndClass.hIcon = nullptr;
 		wndClass.hCursor = nullptr;
@@ -277,14 +278,14 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 		bSuccess = AdjustWindowRect(&Rect, dwStyle, FALSE) == TRUE;
 		if (atom && bSuccess)
 		{
-			hWindow = CreateWindowExA(0, Environment.applicationName, Environment.applicationName,
+			hwnd = CreateWindowExA(0, Environment.applicationName, Environment.applicationName,
 				dwStyle, WindowStartX, WindowStartY, Rect.right - Rect.left, Rect.bottom - Rect.top,
-				nullptr, nullptr, hInstance, nullptr);
-			if (hWindow)
+				nullptr, nullptr, hinstance, nullptr);
+			if (hwnd)
 			{
 				if (gDumpMachineInfo == false)
-					ShowWindow(hWindow, SW_SHOWDEFAULT);
-				InitializeIME(hWindow);
+					ShowWindow(hwnd, SW_SHOWDEFAULT);
+				InitializeIME(hwnd);
 				gos_EnableIME(false);
 			}
 			else
@@ -348,7 +349,7 @@ MECH_IMPEXP void __stdcall Update(void)
 		if (Platform == Platform_MFC)
 		{
 			hDlg = GetForegroundWindow();
-			if (hDlg != hWindow)
+			if (hDlg != hwnd)
 			{
 				if (IsDialogMessageA(hDlg, &msg))
 					continue;
@@ -411,19 +412,19 @@ Gets a pointer to text data in the windows clip board (0=No text)
 MECH_IMPEXP size_t __stdcall gos_GetClipboardText(PSTR Buffer, size_t BufferSize)
 {
 	size_t nstringsize;
-	PCSTR Source;
+	PSTR Source;
 	HANDLE hClipboardData;
 	if (Buffer == nullptr)
 		return 0;
 	Buffer[0] = 0;
 	if (IsClipboardFormatAvailable(CF_TEXT))
 	{
-		if (OpenClipboard(hWindow))
+		if (OpenClipboard(hwnd))
 		{
 			hClipboardData = GetClipboardData(CF_TEXT);
 			if (hClipboardData)
 			{
-				Source = (PCSTR)GlobalLock(hClipboardData);
+				Source = (PSTR)GlobalLock(hClipboardData);
 				if (Source)
 				{
 					strncpy_s(Buffer, BufferSize, Source, BufferSize - 1);
@@ -460,7 +461,7 @@ MECH_IMPEXP void __stdcall gos_SetClipboardText(PSTR pszText)
 	size_t nsizetext;
 	PVOID ClipboardData;
 	HGLOBAL hClipboardData;
-	if (OpenClipboard(hWindow))
+	if (OpenClipboard(hwnd))
 	{
 		EmptyClipboard();
 		if (*pszText)

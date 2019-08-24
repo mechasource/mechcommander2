@@ -45,9 +45,9 @@
 #include "paths.h"
 #endif
 
-#include <gameos.hpp>
-#include <mlr/mlr.hpp>
-#include <GosFX\gosfxheaders.hpp>
+#include "gameos.hpp"
+#include "mlr/mlr.h"
+#include "gosfx/gosfxheaders.h"
 
 //---------------------------------------------------------------------------
 // static globals
@@ -1060,7 +1060,7 @@ MC_TextureManager::textureFromMemory(
 
 //----------------------------------------------------------------------
 uint32_t
-MC_TextureManager::textureInstanceExists(PCSTR textureFullPathName, gos_TextureFormat key,
+MC_TextureManager::textureInstanceExists(const std::wstring_view& textureFullPathName, gos_TextureFormat key,
 	uint32_t hints, uint32_t uniqueInstance, uint32_t nFlush)
 {
 	int32_t i = 0;
@@ -1093,7 +1093,7 @@ MC_TextureManager::textureInstanceExists(PCSTR textureFullPathName, gos_TextureF
 
 //----------------------------------------------------------------------
 uint32_t
-MC_TextureManager::loadTexture(PCSTR textureFullPathName, gos_TextureFormat key,
+MC_TextureManager::loadTexture(const std::wstring_view& textureFullPathName, gos_TextureFormat key,
 	uint32_t hints, uint32_t uniqueInstance, uint32_t nFlush)
 {
 	int32_t i = 0;
@@ -1141,7 +1141,7 @@ MC_TextureManager::loadTexture(PCSTR textureFullPathName, gos_TextureFormat key,
 	// DO NOT create GOS handle until we need it.
 	masterTextureNodes[i].gosTextureHandle = CACHED_OUT_HANDLE;
 	masterTextureNodes[i].nodeName =
-		(PSTR)textureStringHeap->Malloc(strlen(textureFullPathName) + 1);
+		(const std::wstring_view&)textureStringHeap->Malloc(strlen(textureFullPathName) + 1);
 	gosASSERT(masterTextureNodes[i].nodeName != nullptr);
 	strcpy(masterTextureNodes[i].nodeName, textureFullPathName);
 	masterTextureNodes[i].numUsers = 1;
@@ -1198,7 +1198,7 @@ MC_TextureManager::loadTexture(PCSTR textureFullPathName, gos_TextureFormat key,
 
 //----------------------------------------------------------------------
 int32_t
-MC_TextureManager::saveTexture(uint32_t textureIndex, PCSTR textureFullPathName)
+MC_TextureManager::saveTexture(uint32_t textureIndex, const std::wstring_view& textureFullPathName)
 {
 	if ((MC_MAXTEXTURES <= textureIndex) || (nullptr == masterTextureNodes[textureIndex].textureData))
 	{

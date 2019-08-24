@@ -10,11 +10,10 @@ KeyboardRef.h			: Interface for the KeyboardRef component.
 #ifndef KEYBOARDREF_H
 #define KEYBOARDREF_H
 
-#include <mechgui/logisticsscreen.h>
-#include <mechgui/alistbox.h>
+#include "mechgui/logisticsscreen.h"
+#include "mechgui/alistbox.h"
 #include "missiongui.h"
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -45,5 +44,4 @@ private:
 	aTextListItem listItemTemplate2;
 };
 
-//*************************************************************************************************
 #endif // end of file ( KeyboardRef.h )

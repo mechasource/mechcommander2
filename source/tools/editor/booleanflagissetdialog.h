@@ -20,7 +20,7 @@ public:
 	//{{AFX_DATA(CBooleanFlagIsSetDialog)
 	// enum { IDD = IDD_FLAG_IS_SET_DIALOG };
 	int32_t m_Index;
-	std::wstring m_FlagID;
+	const std::wstring_view& m_FlagID;
 	//}}AFX_DATA
 
 	// Overrides

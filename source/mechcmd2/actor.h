@@ -11,7 +11,7 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "appear.h"
 //#include "apprtype.h"
 
@@ -80,14 +80,14 @@ public:
 
 	~VFXAppearanceType(void) { destroy(void); }
 
-	void init(FilePtr appearFile, uint32_t fileSize);
+	void init(std::unique_ptr<File> appearFile, uint32_t fileSize);
 
 	//----------------------------------------------
 	// This routine is where the magic happens.
 	TGATexturePtr getTexture(
 		ActorState shapeId, int32_t rot, int32_t currFrame, float& frameRate, bool& mirror);
 
-	int32_t loadIniFile(FilePtr appearFile, uint32_t fileSize);
+	int32_t loadIniFile(std::unique_ptr<File> appearFile, uint32_t fileSize);
 
 	void destroy(void);
 

@@ -4,16 +4,17 @@
 
 #include "stdinc.h"
 
-//#include <stuff/scalar.hpp>
-#include <mlr/gosvertex.hpp>
-#include <mlr/mlrcliptrick.hpp>
-#include <mlr/mlrclipper.hpp>
-#include <mlr/mlrsorter.hpp>
-#include <mlr/mlrindexedprimitivebase.hpp>
-#include <mlr/mlr.hpp>
-#include <mlr/mlrcardcloud.hpp>
+//#include "stuff/scalar.h"
+#include "mlr/gosvertex.h"
+#include "mlr/mlrcliptrick.h"
+#include "mlr/mlrclipper.h"
+#include "mlr/mlrsorter.h"
+#include "mlr/mlrindexedprimitivebase.h"
+#include "mlr/mlr.h"
+#include "mlr/mlrcardcloud.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
+
 
 extern uint32_t gShowClippedPolys;
 
@@ -666,3 +667,5 @@ MLRCardCloud::TestInstance(void) const
 		_ASSERT(*usedNrOfCards <= maxNrOf);
 	}
 }
+
+} // namespace MidLevelRenderer

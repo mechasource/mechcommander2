@@ -10,15 +10,14 @@ MissionResults.h			: Interface for the MissionResults component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
 MissionResults:
 **************************************************************************************************/
 
-#include <mechgui/asystem.h>
-#include <mechgui/alistbox.h>
+#include "mechgui/asystem.h"
+#include "mechgui/alistbox.h"
 #include "mpstats.h"
 
 class SalvageMechScreen;
@@ -41,7 +40,7 @@ public:
 	void end(void);
 	bool isDone() { return bDone; }
 
-	void setHostLeftDlg(PCSTR pName);
+	void setHostLeftDlg(const std::wstring_view& pName);
 
 	// Tutorial - Used to play Voice Over, first time in!!
 	// THIS must be added to savegame!!
@@ -58,5 +57,4 @@ private:
 	friend class Logistics;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MissionResults.h )

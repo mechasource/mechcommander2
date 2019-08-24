@@ -9,7 +9,7 @@ and tree appearance keep their common elements here
 \*************************************************************************************************/
 
 #ifndef APPEARANCE_H
-#include "Appear.h"
+#include "appear.h"
 #endif
 
 #ifndef DSTD_H
@@ -20,7 +20,6 @@ and tree appearance keep their common elements here
 #include "objstatus.h"
 #endif
 
-//*************************************************************************************************
 
 // WEAPON TYPES
 #define MECH3D_WEAPONTYPE_NONE -1
@@ -105,5 +104,4 @@ protected:
 	*/
 };
 
-//*************************************************************************************************
 #endif // end of file ( ObjectAppearance.h )

@@ -12,7 +12,7 @@
 
 #include "networking.hpp"
 
-typedef void(__stdcall* LPSTRINGCALLBACK)(PCSTR string, uint32_t value);
+typedef void(__stdcall* LPSTRINGCALLBACK)(PSTR string, uint32_t value);
 
 // Functionality: Calls the callback for each session available using the
 // current

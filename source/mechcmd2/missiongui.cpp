@@ -94,13 +94,13 @@
 #include "KeyboardRef.h"
 #endif
 
-#include "..\resource.h"
+#include "resource.h"
 
 #include "windows.h"
 
 #include "gvehicl.h" // remove
 
-static PSTR terrainStr[NUM_TERRAIN_TYPES] = {
+static const std::wstring_view& terrainStr[NUM_TERRAIN_TYPES] = {
 	"Blue Water", // MC_BLUEWATER_TYPE
 	"Green Water", // MC_GREEN_WATER_TYPE
 	"Mud", // MC_MUD_TYPE
@@ -132,7 +132,7 @@ extern bool MLRVertexLimitReached;
 extern float frameLength;
 
 extern void
-DEBUGWINS_print(PSTR s, int32_t window = 0);
+DEBUGWINS_print(const std::wstring_view& s, int32_t window = 0);
 extern void
 DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj);
 extern void
@@ -416,7 +416,7 @@ MissionInterfaceManager::startAnimation(
 
 static char tutorialPlayerName[1024];
 void
-MissionInterfaceManager::setTutorialText(PCSTR text)
+MissionInterfaceManager::setTutorialText(const std::wstring_view& text)
 {
 	cLoadString(IDS_TUTORIAL, tutorialPlayerName, 1023);
 	controlGui.setChatText(tutorialPlayerName, text, 0x00ffffff, 0);
@@ -726,16 +726,16 @@ MissionInterfaceManager::update(void)
 		"%02d(%02d)",
 		(int32_t)scenarioTime, row, col, GlobalMoveMap[0]->calcArea(row, col),
 		GlobalMoveMap[1]->calcArea(row, col), GlobalMoveMap[2]->calcArea(row, col), wPos.x, wPos.y,
-		wPos.z, PathManager->numPaths, PathManager->peakPaths);
+		wPos.z, PathManager->m_numpaths, PathManager->m_peakpaths);
 	if (MPlayer)
 	{
 		char mpStr[256];
 		if (MPlayer->isServer())
 			sprintf(mpStr, ", MULTIPLAY: %s-(%d)SERVER {%d,%d}", MPlayer->getPlayerName(),
-				MPlayer->commanderID, MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
+				MPlayer->commanderid, MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
 		else
 			sprintf(mpStr, ", MULTIPLAY: %s-(%d)CLIENT {%d,%d}", MPlayer->getPlayerName(),
-				MPlayer->commanderID, MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
+				MPlayer->commanderid, MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
 		strcat(DebugStatusBarString, mpStr);
 	}
 	if (EnemiesGoalPlan)
@@ -847,8 +847,8 @@ void
 MissionInterfaceManager::updateVTol()
 {
 	// We're probably going to use this alot!
-	int32_t commanderID = Commander::home->getId();
-	paintingMyVtol = paintingVtol[commanderID];
+	int32_t commanderid = Commander::home->getId();
+	paintingMyVtol = paintingVtol[commanderid];
 	for (size_t vtolNum = 0; vtolNum < MAX_TEAMS; vtolNum++)
 	{
 		// update the vtol, if it needs it
@@ -863,17 +863,17 @@ MissionInterfaceManager::updateVTol()
 					// OK, if this is another persons vtol, I probably shouldn't
 					// do this
 					// Glenn, what should it do?
-					// Just check my commanderID against the vtolNum and if they
+					// Just check my commanderid against the vtolNum and if they
 					// match do it? Otherwise do nothing? Help Me, Spock! -fs
 					if (MPlayer)
 					{
-						if (commanderID == vtolNum)
+						if (commanderid == vtolNum)
 						{
 							//--------------------------------------------------------
 							// This will get the other machines to enable the
 							// mover...
 							MPlayer->sendReinforcement(vehicleID[vtolNum],
-								MPlayer->reinforcements[commanderID][0], "noname", commanderID,
+								MPlayer->reinforcements[commanderid][0], "noname", commanderid,
 								vPos[vtolNum], 2);
 						}
 					}
@@ -905,7 +905,7 @@ MissionInterfaceManager::updateVTol()
 							STOP(("updateVTOL: bad vtolNum"));
 						if (MPlayer->reinforcements[vtolNum][0] < 0)
 							STOP(("updateVTOL: bad reinforcement"));
-						MoverPtr mover = MPlayer->moverRoster[MPlayer->reinforcements[vtolNum][0]];
+						std::unique_ptr<Mover> mover = MPlayer->moverRoster[MPlayer->reinforcements[vtolNum][0]];
 						if (mover)
 						{
 							TacticalOrder tacOrder;
@@ -923,7 +923,7 @@ MissionInterfaceManager::updateVTol()
 						reinforcement->getPilot()->orderPowerUp(true, ORDER_ORIGIN_SELF);
 						reinforcement = nullptr;
 					}
-					if (!MPlayer || vtolNum == MPlayer->commanderID)
+					if (!MPlayer || vtolNum == MPlayer->commanderid)
 						controlGui.unPressAllVehicleButtons();
 				}
 			}
@@ -970,7 +970,7 @@ MissionInterfaceManager::updateVTol()
 						bool doIt = true;
 						if (MPlayer)
 						{
-							if (commanderID == vtolNum)
+							if (commanderid == vtolNum)
 							{
 								//--------------------------------------------------------
 								// This will get the other machines to enable
@@ -990,20 +990,20 @@ MissionInterfaceManager::updateVTol()
 							// -fs
 							// STAY in recover until its done.  I know it
 							// shouldn't be possible but trust me, its happening.
-							while (((MoverPtr)mechToRecover[vtolNum])->recover() == false)
+							while (((std::unique_ptr<Mover>)mechToRecover[vtolNum])->recover() == false)
 								;
 							if (mechToRecover[vtolNum]->isDisabled())
 							{
 								mechToRecover[vtolNum]->setStatus(OBJECT_STATUS_SHUTDOWN, true);
 								mechToRecover[vtolNum]->getSensorSystem()->broken = false;
-								((MoverPtr)mechToRecover[vtolNum])->timeLeft = 1.0f;
-								((MoverPtr)mechToRecover[vtolNum])->exploding = false;
+								((std::unique_ptr<Mover>)mechToRecover[vtolNum])->timeLeft = 1.0f;
+								((std::unique_ptr<Mover>)mechToRecover[vtolNum])->exploding = false;
 							}
-							PSTR newPilotName = nullptr;
+							const std::wstring_view& newPilotName = nullptr;
 							if (MPlayer)
 								newPilotName = MPlayer->reinforcementPilot[vtolNum];
 							else
-								newPilotName = (PSTR)LogisticsData::instance->getBestPilot(
+								newPilotName = (const std::wstring_view&)LogisticsData::instance->getBestPilot(
 									mechToRecover[vtolNum]->tonnage);
 							mission->tradeMover(mechToRecover[vtolNum],
 								Commander::commanders[vtolNum]->getTeam()->getId(), vtolNum,
@@ -1058,7 +1058,7 @@ MissionInterfaceManager::updateVTol()
 							LogisticsData::instance->setResourcePoints(
 								LogisticsData::instance->getResourcePoints() + 10000);
 					}
-					if (!MPlayer || vtolNum == MPlayer->commanderID)
+					if (!MPlayer || vtolNum == MPlayer->commanderid)
 						controlGui.unPressAllVehicleButtons();
 				}
 			}
@@ -1141,7 +1141,7 @@ MissionInterfaceManager::updateTarget(bool bGui)
 	{
 		if (bGui)
 			target = 0;
-		else if (target->isMover() && !ShowMovers && !(MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
+		else if (target->isMover() && !ShowMovers && !(MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderid]))
 		{
 			if ((target->getTeamId() != Team::home->getId()) && !target->isDisabled() && (((Mover*)target)->conStat < CONTACT_SENSOR_QUALITY_1))
 				target = nullptr;
@@ -1190,7 +1190,7 @@ MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, b
 {
 	printDebugInfo();
 	// We're probably going to use this alot!
-	int32_t commanderID = Commander::home->getId();
+	int32_t commanderid = Commander::home->getId();
 	// Update the waypoint markers so that they are visible!
 	if (userInput->getKeyDown(WAYPOINT_KEY) || controlGui.getMines())
 	{
@@ -1230,23 +1230,23 @@ MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, b
 	}
 	if (userInput->leftMouseReleased() && !userInput->wasLeftDrag() && !bGui && !lastUpdateDoubleClick) // move on the mouse ups
 	{
-		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderID] && canRecover(wPos)))
+		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderid] && canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderid] && canRecover(wPos)))
 		{
 			// Target has already been confirmed  as a mover(BattleMech) by
 			// canRecover OR it doesn't matter because the canAddVehicle part of
 			// the beginVtol function doesn't reference it! Again, Its OK
 			// because we only use it for salvage craft. Need to pass this in so
 			// that Multiplayer can pass it in.
-			beginVtol(-1, commanderID, nullptr,
-				(MoverPtr)target); // In Single player, this should always be zero?
+			beginVtol(-1, commanderid, nullptr,
+				(std::unique_ptr<Mover>)target); // In Single player, this should always be zero?
 			return;
 		}
-		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && !canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderID] && !canRecover(wPos)))
+		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderid] && !canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderid] && !canRecover(wPos)))
 		{
 			soundSystem->playDigitalSample(INVALID_GUI);
 			return;
 		}
-		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID]) // if we're painting
+		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderid]) // if we're painting
 			// the vtol, carry on
 		{
 			addAirstrike();
@@ -1365,7 +1365,7 @@ MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, b
 {
 	printDebugInfo();
 	// We're probably going to use this alot!
-	int32_t commanderID = Commander::home->getId();
+	int32_t commanderid = Commander::home->getId();
 	// Update the waypoint markers so that they are visible!
 	if (userInput->getKeyDown(WAYPOINT_KEY) || controlGui.getMines())
 	{
@@ -1406,23 +1406,23 @@ MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, b
 	}
 	if (userInput->rightMouseReleased() && !userInput->wasRightDrag() && !bGui) // move on the mouse ups
 	{
-		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderID] && canRecover(wPos)))
+		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderid] && canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderid] && canRecover(wPos)))
 		{
 			// Target has already been confirmed  as a mover(BattleMech) by
 			// canRecover OR it doesn't matter because the canAddVehicle part of
 			// the beginVtol function doesn't reference it! Again, Its OK
 			// because we only use it for salvage craft. Need to pass this in so
 			// that Multiplayer can pass it in.
-			beginVtol(-1, commanderID, nullptr,
-				(MoverPtr)target); // In Single player, this should always be zero?
+			beginVtol(-1, commanderid, nullptr,
+				(std::unique_ptr<Mover>)target); // In Single player, this should always be zero?
 			return;
 		}
-		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && !canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderID] && !canRecover(wPos)))
+		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderid] && !canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderid] && !canRecover(wPos)))
 		{
 			soundSystem->playDigitalSample(INVALID_GUI);
 			return;
 		}
-		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID]) // if we're painting
+		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderid]) // if we're painting
 			// the vtol, carry on
 		{
 			addAirstrike();
@@ -1482,23 +1482,23 @@ MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, b
 		// We clicked on a target.  If mouse cursor is normal, we want to select
 		// a friendly.  if the mouse cursor is some form of attack, attack the
 		// target.
-		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderID] && canRecover(wPos)))
+		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderid] && canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderid] && canRecover(wPos)))
 		{
 			// Target has already been confirmed  as a mover(BattleMech) by
 			// canRecover. OR it doesn't matter because the canAddVehicle part
 			// of the beginVtol function doesn't reference it! Again, Its OK
 			// because we only use it for salvage craft. Need to pass this in so
 			// that Multiplayer can pass it in.
-			beginVtol(-1, commanderID, nullptr,
-				(MoverPtr)target); // In Single player, this should always be zero?
+			beginVtol(-1, commanderid, nullptr,
+				(std::unique_ptr<Mover>)target); // In Single player, this should always be zero?
 			return;
 		}
-		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && !canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderID] && !canRecover(wPos)))
+		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderid] && !canAddVehicle(wPos)) || (controlGui.isAddingSalvage() && !paintingVtol[commanderid] && !canRecover(wPos)))
 		{
 			soundSystem->playDigitalSample(INVALID_GUI);
 			return;
 		}
-		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID]) // if we're painting
+		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderid]) // if we're painting
 			// the vtol, carry on
 		{
 			addAirstrike();
@@ -1700,8 +1700,8 @@ MissionInterfaceManager::doAttack()
 			tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 			tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
 			tacOrder.attackParams.pursue = !bFireFromCurrentPos;
-			tacOrder.moveParams.wayPath.mode[0] =
-				controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+			tacOrder.moveparams.wayPath.mode[0] =
+				controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 			target->getAppearance()->flashBuilding(1.3f, 0.2f, 0xffff0000);
 		}
 		else
@@ -1742,8 +1742,8 @@ MissionInterfaceManager::doAttack()
 		tacOrder.attackParams.type = ATTACK_NONE;
 		tacOrder.attackParams.method = ATTACKMETHOD_RAMMING;
 		tacOrder.attackParams.pursue = true;
-		tacOrder.moveParams.wayPath.mode[0] =
-			controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+		tacOrder.moveparams.wayPath.mode[0] =
+			controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 	}
 	soundSystem->playDigitalSample(BUTTON5);
 	Team* pTeam = Team::home;
@@ -1857,8 +1857,8 @@ MissionInterfaceManager::doJump()
 		{
 			TacticalOrder tacOrder;
 			tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_JUMPTO_POINT, false);
-			tacOrder.moveParams.wait = false;
-			tacOrder.moveParams.wayPath.mode[0] = TRAVEL_MODE_JUMP;
+			tacOrder.moveparams.wait = false;
+			tacOrder.moveparams.wayPath.mode[0] = TravelModeType::jump;
 			tacOrder.setWayPoint(0, wPos);
 			tacOrder.pack(nullptr, nullptr);
 			handleOrders(tacOrder);
@@ -1915,8 +1915,8 @@ MissionInterfaceManager::doGuard(GameObject* who)
 		TacticalOrder tacOrder;
 		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_GUARD);
 		tacOrder.initWayPath(&path);
-		tacOrder.moveParams.wayPath.mode[0] =
-			controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+		tacOrder.moveparams.wayPath.mode[0] =
+			controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 		tacOrder.pack(nullptr, nullptr);
 		handleOrders(tacOrder);
 		controlGui.setDefaultSpeed();
@@ -2011,8 +2011,8 @@ MissionInterfaceManager::aimLeg()
 				tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 				tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
 				tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
-				tacOrder.moveParams.wayPath.mode[0] =
-					controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+				tacOrder.moveparams.wayPath.mode[0] =
+					controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 				bool bRight =
 					pMech->body[MECH_BODY_LOCATION_LLEG].damageState == IS_DAMAGE_DESTROYED;
 				tacOrder.attackParams.aimLocation =
@@ -2048,8 +2048,8 @@ MissionInterfaceManager::aimArm()
 			tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 			tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
 			tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
-			tacOrder.moveParams.wayPath.mode[0] =
-				controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+			tacOrder.moveparams.wayPath.mode[0] =
+				controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 			bool bRight = pMech->body[MECH_BODY_LOCATION_LARM].damageState == IS_DAMAGE_DESTROYED;
 			tacOrder.attackParams.aimLocation =
 				bRight ? MECH_BODY_LOCATION_RARM : MECH_BODY_LOCATION_LARM;
@@ -2097,8 +2097,8 @@ MissionInterfaceManager::aimHead()
 				tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 				tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
 				tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
-				tacOrder.moveParams.wayPath.mode[0] =
-					controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+				tacOrder.moveparams.wayPath.mode[0] =
+					controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 				tacOrder.attackParams.aimLocation = MECH_BODY_LOCATION_HEAD;
 				tacOrder.pack(nullptr, nullptr);
 				handleOrders(tacOrder);
@@ -2710,7 +2710,7 @@ bool rotateLightDn = false;
 //--------------------------------------------------------------------------------------
 
 void
-HandlePlayerOrder(MoverPtr mover, TacticalOrderPtr tacOrder)
+HandlePlayerOrder(std::unique_ptr<Mover> mover, TacticalOrderPtr tacOrder)
 {
 	//---------------------------------------------------------------------
 	// Helper function--perhaps this should just be a part of the mover and
@@ -3001,11 +3001,11 @@ MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
 	else
 		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_MOVETO_POINT, false);
 	tacOrder.initWayPath(&path);
-	tacOrder.moveParams.wait = false;
-	tacOrder.moveParams.wayPath.mode[0] =
-		controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+	tacOrder.moveparams.wait = false;
+	tacOrder.moveparams.wayPath.mode[0] =
+		controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 	if (controlGui.getMines())
-		tacOrder.moveParams.mode = MOVE_MODE_MINELAYING;
+		tacOrder.moveparams.mode = SpecialMoveMode::minelaying;
 	tacOrder.pack(nullptr, nullptr);
 	handleOrders(tacOrder);
 	soundSystem->playDigitalSample(BUTTON5);
@@ -3062,13 +3062,13 @@ MissionInterfaceManager::forceShot()
 			target ? TACTICAL_ORDER_ATTACK_OBJECT : TACTICAL_ORDER_ATTACK_POINT);
 		tacOrder.targetWID = target ? target->getWatchID() : 0;
 		if (!target)
-			tacOrder.attackParams.targetPoint = wPos;
+			tacOrder.attackParams.targetpoint = wPos;
 		tacOrder.attackParams.type = bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
 		tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 		tacOrder.attackParams.range = (FireRangeType)FIRERANGE_OPTIMAL;
 		tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
-		tacOrder.moveParams.wayPath.mode[0] =
-			controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+		tacOrder.moveparams.wayPath.mode[0] =
+			controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 		soundSystem->playDigitalSample(BUTTON5);
 		if (target)
 			target->getAppearance()->flashBuilding(1.3f, 0.2f, 0xffff0000);
@@ -3430,8 +3430,8 @@ bool
 MissionInterfaceManager::canAddVehicle(const Stuff::Vector3D& pos)
 {
 	// We're probably going to use this alot!
-	int32_t commanderID = Commander::home->getId();
-	if (paintingVtol[commanderID])
+	int32_t commanderid = Commander::home->getId();
+	if (paintingVtol[commanderid])
 		return 0;
 	int32_t tileI, tileJ;
 	land->worldToTile(pos, tileJ, tileI);
@@ -3452,8 +3452,8 @@ bool
 MissionInterfaceManager::canRecover(const Stuff::Vector3D& pos)
 {
 	// We're probably going to use this alot!
-	int32_t commanderID = Commander::home->getId();
-	if (paintingVtol[commanderID])
+	int32_t commanderid = Commander::home->getId();
+	if (paintingVtol[commanderid])
 		return 0;
 	int32_t tileI, tileJ;
 	land->worldToTile(pos, tileJ, tileI);
@@ -3475,7 +3475,7 @@ MissionInterfaceManager::makeTargetCursor(
 	bool lineOfSight, int32_t moverCount, int32_t nonMoverCount)
 {
 	// We're probably going to use this alot!
-	int32_t commanderID = Commander::home->getId();
+	int32_t commanderid = Commander::home->getId();
 	int32_t currentCursor = makeRangeCursor(lineOfSight);
 	if (!moverCount && !nonMoverCount)
 		currentCursor = mState_NORMAL;
@@ -3494,12 +3494,12 @@ MissionInterfaceManager::makeTargetCursor(
 			currentCursor = mState_DONT;
 		return currentCursor;
 	}
-	else if (controlGui.isAddingVehicle() && !paintingVtol[commanderID])
+	else if (controlGui.isAddingVehicle() && !paintingVtol[commanderid])
 	{
 		currentCursor = mState_DONT;
 		return currentCursor;
 	}
-	else if (controlGui.isAddingSalvage() && !paintingVtol[commanderID])
+	else if (controlGui.isAddingSalvage() && !paintingVtol[commanderid])
 	{
 		if (canSalvage(target))
 		{
@@ -3510,7 +3510,7 @@ MissionInterfaceManager::makeTargetCursor(
 			currentCursor = mState_XSALVAGE;
 		return currentCursor;
 	}
-	else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID])
+	else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderid])
 	{
 		if (controlGui.getButton(ControlGui::SENSOR_PROBE)->state == ControlButton::PRESSED)
 		{
@@ -3727,7 +3727,7 @@ MissionInterfaceManager::makeNoTargetCursor(bool passable, bool lineOfSight, boo
 	// If not passable, dont.
 	// If passable and jumpCommand and cantJump, dont.
 	// We're probably going to use this alot!
-	int32_t commanderID = Commander::home->getId();
+	int32_t commanderid = Commander::home->getId();
 	int32_t cursorType = makeMoveCursor(lineOfSight);
 	if (!moverCount)
 		cursorType = mState_NORMAL;
@@ -3743,7 +3743,7 @@ MissionInterfaceManager::makeNoTargetCursor(bool passable, bool lineOfSight, boo
 		cursorType = mState_DONT;
 		return cursorType;
 	}
-	else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID])
+	else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderid])
 	{
 		if (bGui && (!controlGui.isOverTacMap() || !controlGui.isButtonPressed(ControlGui::SENSOR_PROBE)))
 			cursorType = mState_NORMAL;
@@ -3762,7 +3762,7 @@ MissionInterfaceManager::makeNoTargetCursor(bool passable, bool lineOfSight, boo
 	{
 		if (canAddVehicle(wPos) && !bGui)
 			cursorType = mState_VEHICLE;
-		else if (!paintingVtol[commanderID] && !bGui)
+		else if (!paintingVtol[commanderid] && !bGui)
 			cursorType = mState_CANTVEHICLE;
 		else if (bGui)
 			cursorType = mState_NORMAL;
@@ -3771,7 +3771,7 @@ MissionInterfaceManager::makeNoTargetCursor(bool passable, bool lineOfSight, boo
 	{
 		if (canRecover(wPos) && !bGui)
 			cursorType = mState_SALVAGE;
-		else if (!paintingVtol[commanderID] & !bGui)
+		else if (!paintingVtol[commanderid] & !bGui)
 			cursorType = mState_XSALVAGE;
 		else if (bGui)
 			cursorType = mState_NORMAL;
@@ -3873,14 +3873,14 @@ MissionInterfaceManager::addAirstrike()
 
 //-----------------------------------------------------------------------------
 
-MoverPtr
+std::unique_ptr<Mover>
 BringInReinforcement(
-	int32_t vehicleID, int32_t rosterIndex, int32_t commanderID, Stuff::Vector3D pos, bool exists)
+	int32_t vehicleID, int32_t rosterIndex, int32_t commanderid, Stuff::Vector3D pos, bool exists)
 {
 	MoverInitData data;
 	memset(&data, 0, sizeof(data));
-	PSTR vehicleFile =
-		(PSTR)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(vehicleID);
+	const std::wstring_view& vehicleFile =
+		(const std::wstring_view&)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(vehicleID);
 	if (!vehicleFile)
 	{
 		char s[1024];
@@ -3896,8 +3896,8 @@ BringInReinforcement(
 	data.objNumber = vehicleID;
 	data.position = pos;
 	data.rotation = 0;
-	data.teamID = Commander::commanders[commanderID]->team->getId();
-	data.commanderID = commanderID;
+	data.teamID = Commander::commanders[commanderid]->team->getId();
+	data.commanderid = commanderid;
 	data.active = 1;
 	data.exists = exists;
 	data.capturable = 0;
@@ -3906,7 +3906,7 @@ BringInReinforcement(
 	data.highlightColor2 = prefs.highlightColor;
 	if (MPlayer)
 	{
-		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderID);
+		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 		if (pInfo)
 		{
 			data.baseColor = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
@@ -3918,7 +3918,7 @@ BringInReinforcement(
 	if ((moverId != -1) && (moverId != 0))
 	{
 		// Start the helicopters landed!!
-		MoverPtr newMover = (MoverPtr)ObjectManager->get(moverId);
+		std::unique_ptr<Mover> newMover = (std::unique_ptr<Mover>)ObjectManager->get(moverId);
 		if (!newMover)
 			return nullptr;
 		if (newMover->getMoveType() == MOVETYPE_AIR)
@@ -3938,7 +3938,7 @@ void
 MissionInterfaceManager::addVehicle(const Stuff::Vector3D& pos)
 {
 	//	LogisticsPilot* pPilot =
-	// LogisticsData::instance->getFirstAvailablePilot(); 	PCSTR pChar =
+	// LogisticsData::instance->getFirstAvailablePilot(); 	const std::wstring_view& pChar =
 	// pPilot->getFileName(); 	if ( !pChar ) 		return;
 	// Check if vehicleFile is nullptr.  If it is, simply get it.
 	// Can happen if we get here BEFORE beginVtol?
@@ -3958,52 +3958,52 @@ MissionInterfaceManager::addVehicle(const Stuff::Vector3D& pos)
 
 void
 MissionInterfaceManager::beginVtol(
-	int32_t supportID, int32_t commanderID, Stuff::Vector3D* reinforcePos, MoverPtr salvageTarget)
+	int32_t supportID, int32_t commanderid, Stuff::Vector3D* reinforcePos, std::unique_ptr<Mover> salvageTarget)
 {
 	Stuff::Vector3D vtolPos = wPos;
 	if (reinforcePos)
 		vtolPos = *reinforcePos;
 	if (supportID == -1)
 	{
-		vehicleFile = controlGui.getVehicleName(vehicleID[commanderID]);
+		vehicleFile = controlGui.getVehicleName(vehicleID[commanderid]);
 	}
 	else
 	{
 		//-----------------------
 		// used in multiplayer...
-		vehicleID[commanderID] = supportID;
+		vehicleID[commanderid] = supportID;
 		vehicleFile = controlGui.getVehicleNameFromID(supportID);
 	}
-	if (vehicleID[commanderID] == 0)
+	if (vehicleID[commanderid] == 0)
 	{
 		char s[1024];
 		sprintf(s,
-			"beginvtol: supportID = %d, commanderID = %d, vehicleID = %d, "
+			"beginvtol: supportID = %d, commanderid = %d, vehicleID = %d, "
 			"vehicleFile = %s",
-			supportID, commanderID, vehicleID[commanderID], vehicleFile);
+			supportID, commanderid, vehicleID[commanderid], vehicleFile);
 		PAUSE((s));
 	}
-	if (!vTol[commanderID])
+	if (!vTol[commanderid])
 	{
-		if (vehicleID[commanderID] != 147) // NOT a recovery vehicle.  Standard VTOL
+		if (vehicleID[commanderid] != 147) // NOT a recovery vehicle.  Standard VTOL
 		{
 			if (supportID == -1)
 			{
-				// Do not call this unless the commanderID passed in equals us
+				// Do not call this unless the commanderid passed in equals us
 				// or will you do something outside here?
 				if (MPlayer && !reinforcePos)
 				{
-					vPos[commanderID] = vtolPos;
+					vPos[commanderid] = vtolPos;
 					MPlayer->sendReinforcement(
-						vehicleID[commanderID], 255, "noone", commanderID, vPos[commanderID], 0);
+						vehicleID[commanderid], 255, "noone", commanderid, vPos[commanderid], 0);
 					return;
 				}
 			}
 			AppearanceType* appearanceType =
 				appearanceTypeList->getAppearance(BLDG_TYPE << 24, "vtol");
-			vTol[commanderID] = new BldgAppearance;
-			vTol[commanderID]->init(appearanceType);
-			if (!dustCloud[commanderID] && prefs.useNonWeaponEffects)
+			vTol[commanderid] = new BldgAppearance;
+			vTol[commanderid]->init(appearanceType);
+			if (!dustCloud[commanderid] && prefs.useNonWeaponEffects)
 			{
 				if (strcmp(weaponEffects->GetEffectName(VTOL_DUST_CLOUD), "NONE") != 0)
 				{
@@ -4016,9 +4016,9 @@ MissionInterfaceManager::beginVtol(
 							weaponEffects->GetEffectName(VTOL_DUST_CLOUD));
 					if (gosEffectSpec)
 					{
-						dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+						dustCloud[commanderid] = gosFX::EffectLibrary::Instance->MakeEffect(
 							gosEffectSpec->m_effectID, flags);
-						gosASSERT(dustCloud[commanderID] != nullptr);
+						gosASSERT(dustCloud[commanderid] != nullptr);
 						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
 				}
@@ -4031,31 +4031,31 @@ MissionInterfaceManager::beginVtol(
 			{
 				if (MPlayer && !reinforcePos) // Probably same as above here, too.
 				{
-					vPos[commanderID] = vtolPos;
+					vPos[commanderid] = vtolPos;
 					if (!salvageTarget)
 						STOP(("MissionGUI.beginvtol: null target PASSED IN."));
-					PSTR newPilotName =
-						(PSTR)LogisticsData::instance->getBestPilot(salvageTarget->tonnage);
-					if (vehicleID[commanderID] != 147)
+					const std::wstring_view& newPilotName =
+						(const std::wstring_view&)LogisticsData::instance->getBestPilot(salvageTarget->tonnage);
+					if (vehicleID[commanderid] != 147)
 						STOP(("missiongui.beginvtol: bad vehicleID"));
-					MPlayer->sendReinforcement(vehicleID[commanderID],
-						salvageTarget->netRosterIndex, newPilotName, commanderID, vPos[commanderID],
+					MPlayer->sendReinforcement(vehicleID[commanderid],
+						salvageTarget->netRosterIndex, newPilotName, commanderid, vPos[commanderid],
 						3);
 					return;
 				}
 			}
 			AppearanceType* appearanceType =
 				appearanceTypeList->getAppearance(BLDG_TYPE << 24, "karnov");
-			vTol[commanderID] = new BldgAppearance;
-			vTol[commanderID]->init(appearanceType);
+			vTol[commanderid] = new BldgAppearance;
+			vTol[commanderid]->init(appearanceType);
 			if (MPlayer)
-				mechToRecover[commanderID] =
-					MPlayer->moverRoster[MPlayer->reinforcements[commanderID][1]];
+				mechToRecover[commanderid] =
+					MPlayer->moverRoster[MPlayer->reinforcements[commanderid][1]];
 			else
-				mechToRecover[commanderID] = salvageTarget;
-			mechRecovered[commanderID] =
+				mechToRecover[commanderid] = salvageTarget;
+			mechRecovered[commanderid] =
 				false; // Need to know when mech is done so Karnov can fly away.
-			if (!dustCloud[commanderID] && prefs.useNonWeaponEffects)
+			if (!dustCloud[commanderid] && prefs.useNonWeaponEffects)
 			{
 				if (strcmp(weaponEffects->GetEffectName(KARNOV_DUST_CLOUD), "NONE") != 0)
 				{
@@ -4068,14 +4068,14 @@ MissionInterfaceManager::beginVtol(
 							weaponEffects->GetEffectName(KARNOV_DUST_CLOUD));
 					if (gosEffectSpec)
 					{
-						dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+						dustCloud[commanderid] = gosFX::EffectLibrary::Instance->MakeEffect(
 							gosEffectSpec->m_effectID, flags);
-						gosASSERT(dustCloud[commanderID] != nullptr);
+						gosASSERT(dustCloud[commanderid] != nullptr);
 						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
 				}
 			}
-			if (!recoveryBeam[commanderID])
+			if (!recoveryBeam[commanderid])
 			{
 				if (strcmp(weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM), "NONE") != 0)
 				{
@@ -4088,18 +4088,18 @@ MissionInterfaceManager::beginVtol(
 							weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM));
 					if (gosEffectSpec)
 					{
-						recoveryBeam[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+						recoveryBeam[commanderid] = gosFX::EffectLibrary::Instance->MakeEffect(
 							gosEffectSpec->m_effectID, flags);
-						gosASSERT(recoveryBeam[commanderID] != nullptr);
+						gosASSERT(recoveryBeam[commanderid] != nullptr);
 						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
 				}
 			}
 		}
 	}
-	if (commanderID == Commander::home->getId())
+	if (commanderid == Commander::home->getId())
 	{
-		switch (vehicleID[commanderID])
+		switch (vehicleID[commanderid])
 		{
 		case 120: // Minelayer
 			soundSystem->playSupportSample(SUPPORT_MINELAYER);
@@ -4120,32 +4120,32 @@ MissionInterfaceManager::beginVtol(
 	}
 	Stuff::Vector3D newPos = vtolPos;
 	float rotation = 0.f; // this needs to be pointing 180 degrees from drop point
-	if (vehicleID[commanderID] == 147)
+	if (vehicleID[commanderid] == 147)
 	{
 		// Move wPos to be over the cockpit of the downed mech.
-		if (mechToRecover[commanderID] && mechToRecover[commanderID]->appearance)
-			newPos = mechToRecover[commanderID]->appearance->getNodeNamePosition("cockpit");
+		if (mechToRecover[commanderid] && mechToRecover[commanderid]->appearance)
+			newPos = mechToRecover[commanderid]->appearance->getNodeNamePosition("cockpit");
 	}
-	if (vehicleID[commanderID] != 147)
+	if (vehicleID[commanderid] != 147)
 		soundSystem->playDigitalSample(VTOL_ANIMATE, newPos);
 	else
 		soundSystem->playDigitalSample(SALVAGE_CRAFT, newPos);
-	vTol[commanderID]->setObjectParameters(newPos, 0, false, Team::home->id, 0);
+	vTol[commanderid]->setObjectParameters(newPos, 0, false, Team::home->id, 0);
 	eye->update();
-	vTol[commanderID]->update();
-	vTol[commanderID]->setInView(true);
-	vTol[commanderID]->setVisibility(1, 1);
-	vTol[commanderID]->rotation = rotation;
-	if (vehicleID[commanderID] != 147)
-		vTol[commanderID]->setGesture(0); // Start Animation at beginning
+	vTol[commanderid]->update();
+	vTol[commanderid]->setInView(true);
+	vTol[commanderid]->setVisibility(1, 1);
+	vTol[commanderid]->rotation = rotation;
+	if (vehicleID[commanderid] != 147)
+		vTol[commanderid]->setGesture(0); // Start Animation at beginning
 	else
-		vTol[commanderID]->setGesture(1); // Start Animation with Landing -- KARNOV
-	if (dustCloud[commanderID])
+		vTol[commanderid]->setGesture(1); // Start Animation with Landing -- KARNOV
+	if (dustCloud[commanderid])
 	{
 		Stuff::LinearMatrix4D shapeOrigin;
 		Stuff::LinearMatrix4D localToWorld;
 		Stuff::LinearMatrix4D localResult;
-		Stuff::Vector3D dustPos = vTol[commanderID]->position;
+		Stuff::Vector3D dustPos = vTol[commanderid]->position;
 		Stuff::Point3D wakePos;
 		wakePos.x = -dustPos.x;
 		wakePos.y = dustPos.z;
@@ -4153,15 +4153,15 @@ MissionInterfaceManager::beginVtol(
 		shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 		shapeOrigin.BuildTranslation(wakePos);
 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
-		dustCloud[commanderID]->SetLoopOff();
-		dustCloud[commanderID]->SetExecuteOn();
-		dustCloud[commanderID]->Start(&info);
+		dustCloud[commanderid]->SetLoopOff();
+		dustCloud[commanderid]->SetExecuteOn();
+		dustCloud[commanderid]->Start(&info);
 	}
-	paintingVtol[commanderID] = 1;
+	paintingVtol[commanderid] = 1;
 	vTolSpeed = -75.f;
-	vPos[commanderID] = vtolPos;
-	vehicleDropped[commanderID] = false;
-	if (!MPlayer || commanderID == MPlayer->commanderID)
+	vPos[commanderid] = vtolPos;
+	vehicleDropped[commanderid] = false;
+	if (!MPlayer || commanderid == MPlayer->commanderid)
 		controlGui.disableAllVehicleButtons();
 }
 
@@ -4185,7 +4185,7 @@ MissionInterfaceManager::doSalvage()
 		tacOrder.attackParams.type = ATTACK_NONE;
 		tacOrder.attackParams.method = ATTACKMETHOD_RAMMING;
 		tacOrder.attackParams.pursue = true;
-		tacOrder.moveParams.wayPath.mode[0] = TRAVEL_MODE_FAST;
+		tacOrder.moveparams.wayPath.mode[0] = TravelModeType::fast;
 		handleOrders(tacOrder);
 	}
 }
@@ -4225,12 +4225,12 @@ MissionInterfaceManager::doRepair(GameObject* who)
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_REFIT, false);
 	tacOrder.targetWID = who->getWatchID();
-	tacOrder.selectionIndex = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.fromArea = -1;
-	tacOrder.moveParams.wait = false;
+	tacOrder.selectionindex = -1;
+	tacOrder.moveparams.wayPath.mode[0] =
+		controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
+	tacOrder.moveparams.faceObject = true;
+	tacOrder.moveparams.fromArea = -1;
+	tacOrder.moveparams.wait = false;
 	handleOrders(tacOrder);
 	soundSystem->playDigitalSample(BUTTON5);
 	controlGui.setDefaultSpeed();
@@ -4259,12 +4259,12 @@ MissionInterfaceManager::doRepairBay(GameObject* who)
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_GETFIXED, false);
 	tacOrder.targetWID = who->getWatchID();
-	tacOrder.selectionIndex = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.fromArea = -1;
-	tacOrder.moveParams.wait = false;
+	tacOrder.selectionindex = -1;
+	tacOrder.moveparams.wayPath.mode[0] =
+		controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
+	tacOrder.moveparams.faceObject = true;
+	tacOrder.moveparams.fromArea = -1;
+	tacOrder.moveparams.wait = false;
 	handleOrders(tacOrder);
 	soundSystem->playDigitalSample(BUTTON5);
 	controlGui.setDefaultSpeed();
@@ -4432,11 +4432,11 @@ MissionInterfaceManager::gotoNextNavMarker()
 			TacticalOrder tacOrder;
 			tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_MOVETO_POINT, false);
 			tacOrder.initWayPath(&path);
-			tacOrder.moveParams.wait = false;
-			tacOrder.moveParams.wayPath.mode[0] =
-				controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
+			tacOrder.moveparams.wait = false;
+			tacOrder.moveparams.wayPath.mode[0] =
+				controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 			if (controlGui.getMines())
-				tacOrder.moveParams.mode = MOVE_MODE_MINELAYING;
+				tacOrder.moveparams.mode = SpecialMoveMode::minelaying;
 			tacOrder.pack(nullptr, nullptr);
 			handleOrders(tacOrder);
 			soundSystem->playDigitalSample(BUTTON5);
@@ -4473,7 +4473,7 @@ MissionInterfaceManager::quickDebugInfo()
 				GameMap->getForest(row, col) ? 'T' : 'F',
 				GlobalMoveMap[target->getMoveLevel()]->calcArea(row, col),
 				GameMap->getShallowWater(row, col) ? 1 : (GameMap->getDeepWater(row, col) ? 2 : 0),
-				row, col, wPos.x, wPos.y, wPos.z, PathManager->numPaths, PathManager->peakPaths,
+				row, col, wPos.x, wPos.y, wPos.z, PathManager->m_numpaths, PathManager->m_peakpaths,
 				target->getName());
 		else
 			sprintf(debugString,
@@ -4483,13 +4483,13 @@ MissionInterfaceManager::quickDebugInfo()
 				GameMap->getPassable(row, col) ? 'T' : 'F',
 				GameMap->getForest(row, col) ? 'T' : 'F', GlobalMoveMap[0]->calcArea(row, col),
 				GameMap->getShallowWater(row, col) ? 1 : (GameMap->getDeepWater(row, col) ? 2 : 0),
-				row, col, wPos.x, wPos.y, wPos.z, PathManager->numPaths, PathManager->peakPaths);
+				row, col, wPos.x, wPos.y, wPos.z, PathManager->m_numpaths, PathManager->m_peakpaths);
 		DEBUGWINS_print(debugString);
 		sprintf(debugString, "REQ =");
 		char s[10];
 		for (size_t i = 0; i < 25; i++)
 		{
-			sprintf(s, " %02d", PathManager->sourceTally[i]);
+			sprintf(s, " %02d", PathManager->m_sourcetally[i]);
 			strcat(debugString, s);
 		}
 		DEBUGWINS_print(debugString);
@@ -4521,7 +4521,7 @@ MissionInterfaceManager::pageGameObjectWindow1()
 	if ((lastTime + 0.5) < gos_GetElapsedTime())
 	{
 		if (DebugGameObject[0] && DebugGameObject[0]->isMover())
-			((MoverPtr)DebugGameObject[0])->debugPage++;
+			((std::unique_ptr<Mover>)DebugGameObject[0])->debugPage++;
 		lastTime = gos_GetElapsedTime();
 	}
 #endif
@@ -4536,7 +4536,7 @@ MissionInterfaceManager::pageGameObjectWindow2()
 	if ((lastTime + 0.5) < gos_GetElapsedTime())
 	{
 		if (DebugGameObject[1] && DebugGameObject[1]->isMover())
-			((MoverPtr)DebugGameObject[1])->debugPage++;
+			((std::unique_ptr<Mover>)DebugGameObject[1])->debugPage++;
 		lastTime = gos_GetElapsedTime();
 	}
 #endif
@@ -4551,7 +4551,7 @@ MissionInterfaceManager::pageGameObjectWindow3()
 	if ((lastTime + 0.5) < gos_GetElapsedTime())
 	{
 		if (DebugGameObject[2] && DebugGameObject[2]->isMover())
-			((MoverPtr)DebugGameObject[2])->debugPage++;
+			((std::unique_ptr<Mover>)DebugGameObject[2])->debugPage++;
 		lastTime = gos_GetElapsedTime();
 	}
 #endif
@@ -4712,7 +4712,7 @@ MissionInterfaceManager::teleport()
 		{
 			Mover* mover = (Mover*)pTeam->getMover(i);
 			if (mover->isSelected() && mover->getCommander()->getId() == Commander::home->getId())
-				((MoverPtr)mover)->setTeleportPosition(moveGoals[numMovers++]);
+				((std::unique_ptr<Mover>)mover)->setTeleportPosition(moveGoals[numMovers++]);
 		}
 		lastTime = gos_GetElapsedTime();
 	}
@@ -4778,10 +4778,10 @@ MissionInterfaceManager::goalPlan()
 			Mover* mover = (Mover*)pTeam->getMover(i);
 			if (mover->isSelected() && mover->getCommander()->getId() == Commander::home->getId())
 			{
-				((MoverPtr)mover)
+				((std::unique_ptr<Mover>)mover)
 					->getPilot()
-					->setUseGoalPlan(!((MoverPtr)mover)->getPilot()->getUseGoalPlan());
-				((MoverPtr)mover)
+					->setUseGoalPlan(!((std::unique_ptr<Mover>)mover)->getPilot()->getUseGoalPlan());
+				((std::unique_ptr<Mover>)mover)
 					->getPilot()
 					->setMainGoal(GOAL_ACTION_NONE, nullptr, nullptr, -1.0);
 			}
@@ -4805,8 +4805,8 @@ MissionInterfaceManager::enemyGoalPlan()
 			Mover* mover = ObjectManager->getMover(i);
 			if (mover->getTeam() != Team::home)
 			{
-				((MoverPtr)mover)->getPilot()->setUseGoalPlan(EnemiesGoalPlan);
-				((MoverPtr)mover)
+				((std::unique_ptr<Mover>)mover)->getPilot()->setUseGoalPlan(EnemiesGoalPlan);
+				((std::unique_ptr<Mover>)mover)
 					->getPilot()
 					->setMainGoal(GOAL_ACTION_NONE, nullptr, nullptr, -1.0);
 			}
@@ -4827,7 +4827,7 @@ MissionInterfaceManager::showVictim()
 		if (DebugGameObject[0] && DebugGameObject[0]->isMover())
 		{
 			GameObjectPtr targetObj =
-				((MoverPtr)DebugGameObject[0])->getPilot()->getCurTacOrder()->getTarget();
+				((std::unique_ptr<Mover>)DebugGameObject[0])->getPilot()->getCurTacOrder()->getTarget();
 			if (targetObj)
 				DEBUGWINS_setGameObject(-1, targetObj);
 		}
@@ -5001,7 +5001,7 @@ MissionInterfaceManager::damageObject0()
 		if (target)
 		{
 			if (target->isMover())
-				((MoverPtr)target)->disable(0);
+				((std::unique_ptr<Mover>)target)->disable(0);
 			else
 				damageObject(target, 100.0);
 		}
@@ -5159,7 +5159,7 @@ MissionInterfaceManager::doEject(GameObject* who)
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_EJECT, true);
 	tacOrder.pack(nullptr, nullptr);
-	MoverPtr pMover = (MoverPtr)who;
+	std::unique_ptr<Mover> pMover = (std::unique_ptr<Mover>)who;
 	if (MPlayer && !MPlayer->isServer())
 		MPlayer->sendPlayerOrder(&tacOrder, false, 1, &pMover);
 	else
@@ -5230,7 +5230,7 @@ MissionInterfaceManager::drawHotKeys()
 }
 
 void
-MissionInterfaceManager::drawHotKey(PCSTR keyString, PCSTR descString, int32_t x, int32_t y)
+MissionInterfaceManager::drawHotKey(const std::wstring_view& keyString, const std::wstring_view& descString, int32_t x, int32_t y)
 {
 	hotKeyFont.render(keyString, 0, y, x, Environment.screenHeight, 0xffffffff, 0, 1);
 	hotKeyFont.render(descString, x + (10 * Environment.screenWidth / 640.f), y,
@@ -5253,14 +5253,14 @@ MissionInterfaceManager::doGuardTower()
 	// tacOrder.init(ORDER_ORIGIN_PLAYER,  target ? TACTICAL_ORDER_ATTACK_OBJECT
 	// : TACTICAL_ORDER_ATTACK_POINT);  tacOrder.targetWID = target ?
 	// target->getWatchID() : 0;  if ( !target )
-	tacOrder.attackParams.targetPoint = wPos;
+	tacOrder.attackParams.targetpoint = wPos;
 	tacOrder.attackParams.type = bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
 	tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 	tacOrder.attackParams.range = FIRERANGE_CURRENT;
 	tacOrder.attackParams.pursue = false;
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.fromArea = -1;
-	tacOrder.moveParams.wait = false;
+	tacOrder.moveparams.faceObject = true;
+	tacOrder.moveparams.fromArea = -1;
+	tacOrder.moveparams.wait = false;
 	handleOrders(tacOrder);
 	controlGui.setDefaultSpeed();
 }
@@ -5445,7 +5445,7 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 {
 	// Is there any VTOL data here?  OK if not!
 	int32_t vtolNum = Commander::home->getId();
-	int32_t commanderID = vtolNum;
+	int32_t commanderid = vtolNum;
 	if (file->seekBlock("VTOLData") == NO_ERROR)
 	{
 		// Load 'em
@@ -5458,19 +5458,19 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 			// Go ahead and make a VTOL.  We're gonna need it!
 			AppearanceType* appearanceType =
 				appearanceTypeList->getAppearance(BLDG_TYPE << 24, "vtol");
-			vTol[commanderID] = new BldgAppearance;
-			vTol[commanderID]->init(appearanceType);
+			vTol[commanderid] = new BldgAppearance;
+			vTol[commanderid]->init(appearanceType);
 		}
 		else
 		{
 			AppearanceType* appearanceType =
 				appearanceTypeList->getAppearance(BLDG_TYPE << 24, "karnov");
-			vTol[commanderID] = new BldgAppearance;
-			vTol[commanderID]->init(appearanceType);
+			vTol[commanderid] = new BldgAppearance;
+			vTol[commanderid]->init(appearanceType);
 		}
 		int32_t mechWID = 0;
 		file->readIdLong("SalvageMechWID", mechWID);
-		mechToRecover[vtolNum] = (MoverPtr)ObjectManager->getByWatchID(mechWID);
+		mechToRecover[vtolNum] = (std::unique_ptr<Mover>)ObjectManager->getByWatchID(mechWID);
 		file->readIdFloat("VTOLFrame", vTol[vtolNum]->currentFrame);
 		int32_t gestureId = 0;
 		file->readIdLong("VTOLGesture", gestureId);
@@ -5482,7 +5482,7 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 		{
 			if (vehicleID[vtolNum] != 147) // NOT a recovery vehicle.  Standard VTOL
 			{
-				if (!dustCloud[commanderID] && prefs.useNonWeaponEffects)
+				if (!dustCloud[commanderid] && prefs.useNonWeaponEffects)
 				{
 					if (strcmp(weaponEffects->GetEffectName(VTOL_DUST_CLOUD), "NONE") != 0)
 					{
@@ -5495,9 +5495,9 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 								weaponEffects->GetEffectName(VTOL_DUST_CLOUD));
 						if (gosEffectSpec)
 						{
-							dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+							dustCloud[commanderid] = gosFX::EffectLibrary::Instance->MakeEffect(
 								gosEffectSpec->m_effectID, flags);
-							gosASSERT(dustCloud[commanderID] != nullptr);
+							gosASSERT(dustCloud[commanderid] != nullptr);
 							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
 					}
@@ -5506,10 +5506,10 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 			else // IS a recovery vehicle.  DO NOT create VTOL, use KARNOV
 				// instead.  NO Vehicle created either
 			{
-				mechRecovered[commanderID] = false; // Need to know when mech is
+				mechRecovered[commanderid] = false; // Need to know when mech is
 					// done so Karnov can fly
 					// away.
-				if (!dustCloud[commanderID] && prefs.useNonWeaponEffects)
+				if (!dustCloud[commanderid] && prefs.useNonWeaponEffects)
 				{
 					if (strcmp(weaponEffects->GetEffectName(KARNOV_DUST_CLOUD), "NONE") != 0)
 					{
@@ -5522,14 +5522,14 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 								weaponEffects->GetEffectName(KARNOV_DUST_CLOUD));
 						if (gosEffectSpec)
 						{
-							dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+							dustCloud[commanderid] = gosFX::EffectLibrary::Instance->MakeEffect(
 								gosEffectSpec->m_effectID, flags);
-							gosASSERT(dustCloud[commanderID] != nullptr);
+							gosASSERT(dustCloud[commanderid] != nullptr);
 							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
 					}
 				}
-				if (!recoveryBeam[commanderID])
+				if (!recoveryBeam[commanderid])
 				{
 					if (strcmp(weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM), "NONE") != 0)
 					{
@@ -5542,9 +5542,9 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 								weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM));
 						if (gosEffectSpec)
 						{
-							recoveryBeam[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+							recoveryBeam[commanderid] = gosFX::EffectLibrary::Instance->MakeEffect(
 								gosEffectSpec->m_effectID, flags);
-							gosASSERT(recoveryBeam[commanderID] != nullptr);
+							gosASSERT(recoveryBeam[commanderid] != nullptr);
 							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
 					}
@@ -5577,24 +5577,24 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 			break;
 		}
 		*/
-		if (vehicleID[commanderID] != 147)
-			soundSystem->playDigitalSample(VTOL_ANIMATE, vPos[commanderID]);
+		if (vehicleID[commanderid] != 147)
+			soundSystem->playDigitalSample(VTOL_ANIMATE, vPos[commanderid]);
 		else
-			soundSystem->playDigitalSample(SALVAGE_CRAFT, vPos[commanderID]);
-		Stuff::Vector3D newPos = vPos[commanderID];
+			soundSystem->playDigitalSample(SALVAGE_CRAFT, vPos[commanderid]);
+		Stuff::Vector3D newPos = vPos[commanderid];
 		float rotation = 0.f; // this needs to be pointing 180 degrees from drop point
-		vTol[commanderID]->setObjectParameters(newPos, 0, false, Team::home->id, 0);
+		vTol[commanderid]->setObjectParameters(newPos, 0, false, Team::home->id, 0);
 		// eye->update();
-		vTol[commanderID]->update();
-		vTol[commanderID]->setInView(true);
-		vTol[commanderID]->setVisibility(1, 1);
-		vTol[commanderID]->rotation = rotation;
-		if (dustCloud[commanderID])
+		vTol[commanderid]->update();
+		vTol[commanderid]->setInView(true);
+		vTol[commanderid]->setVisibility(1, 1);
+		vTol[commanderid]->rotation = rotation;
+		if (dustCloud[commanderid])
 		{
 			Stuff::LinearMatrix4D shapeOrigin;
 			Stuff::LinearMatrix4D localToWorld;
 			Stuff::LinearMatrix4D localResult;
-			Stuff::Vector3D dustPos = vTol[commanderID]->position;
+			Stuff::Vector3D dustPos = vTol[commanderid]->position;
 			Stuff::Point3D wakePos;
 			wakePos.x = -dustPos.x;
 			wakePos.y = dustPos.z;
@@ -5602,14 +5602,14 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(wakePos);
 			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
-			dustCloud[commanderID]->SetLoopOff();
-			dustCloud[commanderID]->SetExecuteOn();
-			dustCloud[commanderID]->Start(&info);
+			dustCloud[commanderid]->SetLoopOff();
+			dustCloud[commanderid]->SetExecuteOn();
+			dustCloud[commanderid]->Start(&info);
 		}
-		paintingVtol[commanderID] = 1;
+		paintingVtol[commanderid] = 1;
 		vTolSpeed = -75.f;
-		vehicleDropped[commanderID] = false;
-		mechRecovered[commanderID] = false;
+		vehicleDropped[commanderid] = false;
+		mechRecovered[commanderid] = false;
 		controlGui.disableAllVehicleButtons();
 	}
 }

@@ -10,9 +10,9 @@
 #include "campaigndata.h"
 #include "groupdialog.h"
 #include "assert.h"
-#include <utilities.h> /*for cloadstring*/
+#include "utilities.h" /*for cloadstring*/
 #include "usertextedit.h"
-#include <paths.h>
+#include "paths.h"
 
 #if 0 /*gos doesn't like this */
 #ifdef _DEBUG

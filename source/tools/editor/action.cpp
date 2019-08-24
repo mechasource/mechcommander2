@@ -10,9 +10,9 @@
 
 #include "stdinc.h"
 
-//#include <elist.h>
+//#include "elist.h"
 //#include "terrain.h"
-//#include <terrtxm.h>
+//#include "terrtxm.h"
 //#include "editorobjects.h"
 //#include "editorobjectmgr.h"
 #include "action.h"
@@ -100,10 +100,10 @@ ActionUndoMgr::EmptyUndoList(void)
 // Returns:		string to put in the Undo prompt
 // Descripition: this is the string that should go in the redo prompt
 //***********************************************************************
-PCSTR
+const std::wstring_view&
 ActionUndoMgr::GetRedoString(void)
 {
-	PCSTR strRet = nullptr;
+	const std::wstring_view& strRet = nullptr;
 	if (HaveRedo())
 	{
 		ACTION_POS tmp = m_CurrentPos;
@@ -121,10 +121,10 @@ ActionUndoMgr::GetRedoString(void)
 // Returns:		string to put in the Udo prompt
 // Descripition: this is the string that should go in the undo prompt
 //***********************************************************************
-PCSTR
+const std::wstring_view&
 ActionUndoMgr::GetUndoString(void)
 {
-	PCSTR strRet = nullptr;
+	const std::wstring_view& strRet = nullptr;
 	if (HaveUndo())
 	{
 		ACTION_LIST::EIterator iter = m_listUndoActions.Iterator(m_CurrentPos);

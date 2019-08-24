@@ -5,19 +5,18 @@ MPSetupArea.h			: Interface for the MPSetupArea component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
 #ifndef MPSETUP_H
 #define MPSETUP_H
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/asystem.h>
-//#include <mechgui/alistbox.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/asystem.h"
+//#include "mechgui/alistbox.h"
 //#include "attributemeter.h"
 //#include "simplecamera.h"
-//#include <mechgui/aanim.h>
+//#include "mechgui/aanim.h"
 
 class aButton;
 
@@ -27,7 +26,7 @@ public:
 	aColorPicker(void);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-	void init(FitIniFile* file, PCSTR blockName);
+	void init(FitIniFile* file, const std::wstring_view& blockName);
 
 	virtual void destroy(void);
 	virtual void render(void);
@@ -69,7 +68,7 @@ public:
 		hasAnimation = false;
 		normalColor = 0xff808080;
 	}
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void render(void);
 
 protected:
@@ -82,7 +81,7 @@ class aInsigniaListItem : public aListItem
 {
 public:
 	aInsigniaListItem() { ; }
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void update(void);
 
 protected:
@@ -129,5 +128,4 @@ private:
 	bool bPaintSchemeInitialized;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MPSetupArea.h )

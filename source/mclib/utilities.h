@@ -6,7 +6,7 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 //#include <string.h>
 
 class FitIniFile;
@@ -17,7 +17,7 @@ public:
 	StaticInfo() {}
 	~StaticInfo(void);
 
-	void init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0,
+	void init(FitIniFile& file, const std::wstring_view& blockName, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0,
 		uint32_t neverFlush = 0);
 	void render(void);
 	bool isInside(int32_t mouseX, int32_t mouseY);
@@ -32,7 +32,7 @@ public:
 
 	void getData(puint8_t buffer);
 
-	void showGUIWindow(bool bShow);
+	void showGUIWindow(bool doshow);
 
 	void setColor(int32_t newColor);
 
@@ -43,7 +43,7 @@ public:
 	uint32_t textureWidth; // textures are square
 };
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 typedef struct _GUI_RECTd
 {
 	int32_t left;
@@ -62,16 +62,16 @@ drawRect(const RECT& rect, uint32_t color);
 
 void
 drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, bool proportional, PCSTR text, bool bBold, float scale);
+	int32_t top, bool proportional, const std::wstring_view& text, bool bBold, float scale);
 
 void
 drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, bool proportional, PCSTR text, bool bold, float scale, int32_t xOffset,
+	int32_t top, bool proportional, const std::wstring_view& text, bool bold, float scale, int32_t xOffset,
 	int32_t yOffset);
 
 void
 drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, int32_t right, int32_t bottom, bool proportional, PCSTR text, bool bold,
+	int32_t top, int32_t right, int32_t bottom, bool proportional, const std::wstring_view& text, bool bold,
 	float scale, int32_t xOffset, int32_t yOffset);
 
 uint32_t
@@ -92,19 +92,18 @@ reverseRGB(COLORREF oldVal)
 // Replaced.  Andy wants us to call everytime.  Will try and see if practical.
 extern uint32_t gosResourceHandle;
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 inline size_t
 cLoadString(uint32_t uID, // resource identifier
-	PSTR lpBuffer, // pointer to buffer for resource
+	const std::wstring_view& lpBuffer, // pointer to buffer for resource
 	size_t nBufferMax, // size of buffer
 	uint32_t handle = gosResourceHandle)
 {
 	memset(lpBuffer, 0, nBufferMax);
-	PSTR tmpBuffer = gos_GetResourceString(handle, uID);
+	const std::wstring_view& tmpBuffer = gos_GetResourceString(handle, uID);
 	size_t stringLength = strlen(tmpBuffer);
 	if (stringLength >= nBufferMax)
-		STOP(("String too int32_t for buffer.  String Id %d, bufferLen %d, "
-			  "StringLen %d",
+		STOP(("String too int32_t for buffer.  String Id %d, bufferLen %d, StringLen %d",
 			uID, nBufferMax, stringLength));
 	memcpy(lpBuffer, tmpBuffer, stringLength);
 	return stringLength;
@@ -112,7 +111,7 @@ cLoadString(uint32_t uID, // resource identifier
 
 #else
 
-inline PSTR
+inline const std::wstring_view&
 cLoadString(uint32_t uID)
 {
 	return gos_GetResourceString(gosResourceHandle, uID);

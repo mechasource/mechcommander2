@@ -12,17 +12,16 @@ component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include <mechgui/logisticsscreen.h>
+#include "mechgui/logisticsscreen.h"
 #endif
 
 #include "MechListBox.h"
 #include "LogisticsMech.h"
-#include <elist.h>
+#include "elist.h"
 #include "LogisticsMechDisplay.h"
 
 class LogisticsMech;
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -84,5 +83,4 @@ private:
 	bool selectFirstBuyableMech(void);
 };
 
-//*************************************************************************************************
 #endif // end of file ( MechPurchaseScreen.h )

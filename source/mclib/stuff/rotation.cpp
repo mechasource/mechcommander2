@@ -8,12 +8,12 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <stuff/vector4d.hpp>
-#include <stuff/matrix.hpp>
-#include <stuff/rotation.hpp>
+#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/linearmatrix.h"
+#include "stuff/vector4d.h"
+#include "stuff/matrix.h"
+#include "stuff/rotation.h"
 
 using namespace Stuff;
 
@@ -205,7 +205,7 @@ EulerAngles::Normalize()
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const EulerAngles& angle)
+Spew(const std::wstring_view& group, const EulerAngles& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "<+"));
@@ -370,7 +370,7 @@ YawPitchRoll::Normalize()
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const YawPitchRoll& angle)
+Spew(const std::wstring_view& group, const YawPitchRoll& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "<+"));
@@ -1382,7 +1382,7 @@ UnitQuaternion::Orthog(const UnitQuaternion& p, const Point3D& axis)
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const UnitQuaternion& quat)
+Spew(const std::wstring_view& group, const UnitQuaternion& quat)
 {
 	Check_Object(&quat);
 	SPEW((group, "<%f, %f, %f, %f>+", quat.x, quat.y, quat.z, quat.w));

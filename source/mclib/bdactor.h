@@ -19,7 +19,7 @@
 //#include "move.h"
 //#include "msl.h"
 //#include "ObjectAppearance.h"
-//#include <gosfx/gosfxheaders.hpp>
+//#include "gosfx/gosfxheaders.h"
 
 //**************************************************************************************
 
@@ -126,7 +126,7 @@ public:
 		return false;
 	}
 
-	virtual void init(PSTR fileName);
+	virtual void init(const std::wstring_view& fileName);
 
 	virtual void destroy(void);
 };
@@ -283,7 +283,7 @@ public:
 		return result;
 	}
 
-	virtual Stuff::Vector3D getNodeNamePosition(PSTR nodeName);
+	virtual Stuff::Vector3D getNodeNamePosition(const std::wstring_view& nodeName);
 
 	virtual void startActivity(int32_t effectId, bool loop);
 	virtual void stopActivity(void);
@@ -340,7 +340,7 @@ public:
 
 	~TreeAppearanceType(void) { destroy(void); }
 
-	virtual void init(PSTR fileName);
+	virtual void init(const std::wstring_view& fileName);
 
 	virtual void destroy(void);
 };

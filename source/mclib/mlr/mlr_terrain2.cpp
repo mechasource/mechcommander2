@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlr_terrain2.hpp>
+#include "mlr/mlr_terrain2.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -119,7 +119,7 @@ MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t
 	Check_Object(MLRTexturePool::Instance);
 	MLRTexture* orgTexture = (*MLRTexturePool::Instance)[referenceState.GetTextureHandle()];
 	Check_Object(orgTexture);
-	PCSTR texName = orgTexture->GetTextureName();
+	const std::wstring_view& texName = orgTexture->GetTextureName();
 	char texRoot[1024], name[1024];
 	size_t len;
 	if ((len = strlen(texName)) > 0)
@@ -239,7 +239,7 @@ MLR_Terrain2::Save(std::iostream stream)
 	/*
 		Check_Object(MLRTexturePool::Instance);
 		MLRTexture *orgTexture =
-	(*MLRTexturePool::Instance)[referenceState.GetTextureHandle()]; PCSTR
+	(*MLRTexturePool::Instance)[referenceState.GetTextureHandle()]; const std::wstring_view&
 	texName = orgTexture->GetTextureName(); char texRoot[1024], name[1024];
 
 		size_t len;
@@ -381,7 +381,7 @@ MLR_Terrain2::CalculateUVs()
 //	int32_t MLR_Terrain2::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtriangleclipping.inl>
+#include "mlr/mlrtriangleclipping.inl"
 
 #undef I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_TERRAIN2
@@ -742,3 +742,5 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 		break;
 	}
 }
+
+} // namespace MidLevelRenderer

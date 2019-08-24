@@ -36,7 +36,7 @@ struct LocationNode;
 typedef LocationNode* LocationNodePtr;
 
 class Mover;
-typedef Mover* MoverPtr;
+typedef Mover* std::unique_ptr<Mover>;
 
 //******************************************************************************************
 

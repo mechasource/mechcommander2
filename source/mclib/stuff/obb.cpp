@@ -5,9 +5,9 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/obb.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/obb.h"
 
 using namespace Stuff;
 
@@ -24,7 +24,7 @@ OBB::TestInstance(void) const
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const OBB& box)
+Spew(const std::wstring_view& group, const OBB& box)
 {
 	Check_Object(&box);
 	SPEW((group, ""));

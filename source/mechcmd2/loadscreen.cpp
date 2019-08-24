@@ -11,9 +11,9 @@ LoadScreen.cpp			: Implementation of the LoadScreen component.
 //#include <windows.h>
 //#include <ddraw.h>
 #include "loadscreen.h"
-#include <mechgui/aanimobject.h>
+#include "mechgui/aanimobject.h"
 #include "tgainfo.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "prefs.h"
 #include "multplyr.h"
 #include "mission.h"
@@ -87,7 +87,7 @@ LoadScreenWrapper::init(FitIniFile& file)
 void
 LoadScreenWrapper::changeRes()
 {
-	PCSTR Appendix = nullptr;
+	const std::wstring_view& Appendix = nullptr;
 	switch (prefs.resolution)
 	{
 	case 0:
@@ -562,5 +562,4 @@ LoadScreen::setupOutAnims()
 	}
 }
 
-//*************************************************************************************************
 // end of file ( LoadScreen.cpp )

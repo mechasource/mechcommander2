@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrstate.hpp>
+#include "mlr/mlrstate.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //###############################    MLRState ##################################
@@ -97,7 +97,7 @@ MLRState::Save(std::ostream& stream)
 	{
 		MLRTexture* texture = (*MLRTexturePool::Instance)[this];
 		Check_Object(texture);
-		std::wstring name = texture->GetTextureName();
+		const std::wstring_view& name = texture->GetTextureName();
 		int32_t hint = texture->GetHint();
 		hint <<= 4;
 		hint |= texture->GetTextureInstance();
@@ -155,7 +155,7 @@ MLRState::Load(std::istream& stream, uint32_t version)
 	}
 	if (renderState & TextureMask)
 	{
-		std::wstring name;
+		const std::wstring_view& name;
 		int32_t instance;
 		stream >> name;
 		stream >> instance;
@@ -359,3 +359,5 @@ GetHashFunctions::GetHashValue(const MLRState& value)
 			   | (value.renderState & MidLevelRenderer::MLRState::UsedRenderMask))
 		& 0x7FFFFFFF;
 }
+
+} // namespace MidLevelRenderer

@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  winproc.cpp - GameOS reference pseudo code
@@ -41,7 +42,7 @@ LPARAM LastlParam;
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
-MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam);
+MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM wparam, LPARAM lparam);
 
 // global implemented functions not listed in headers
 MECH_IMPEXP void __stdcall UpdateCursor(void);
@@ -60,7 +61,7 @@ extern bool g_DDperformFlip;
 extern uint32_t g_DDstate;
 
 LRESULT __stdcall ProcessIMEMessages(
-	HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam, bool* pbHandled);
+	HWND hwnd, uint32_t message, WPARAM wparam, LPARAM lparam, bool* pbHandled);
 
 /******************************************************************************/
 /// <summary>
@@ -91,12 +92,12 @@ void __stdcall UpdateCursor(void)
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="hWnd"></param>
-/// <param name="uMsg"></param>
-/// <param name="wParam"></param>
-/// <param name="lParam"></param>
+/// <param name="hwnd"></param>
+/// <param name="message"></param>
+/// <param name="wparam"></param>
+/// <param name="lparam"></param>
 /// <returns>LRESULT</returns>
-MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam)
+MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM wparam, LPARAM lparam)
 {
 	bool bActive;
 	bool bHandled;
@@ -108,32 +109,32 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 	PAINTSTRUCT paint;
 	RECT rect;
 	PSTR pszMessage;
-	if ((uMsg == WM_NCHITTEST) || (uMsg == WM_MOUSEMOVE))
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
-	if (uMsg == WM_SETCURSOR)
+	if ((message == WM_NCHITTEST) || (message == WM_MOUSEMOVE))
+		return DefWindowProcA(hwnd, message, wparam, lparam);
+	if (message == WM_SETCURSOR)
 	{
 		if (Platform != Platform_Game)
 		{
-			lResult = DefWindowProcA(hWnd, WM_SETCURSOR, wParam, lParam);
+			lResult = DefWindowProcA(hwnd, WM_SETCURSOR, wparam, lparam);
 		}
 		else
 		{
-			LastlParam = lParam;
+			LastlParam = lparam;
 			UpdateCursor();
 			lResult = 1;
 		}
 		return lResult;
 	}
-	pszMessage = GetWindowsMessage(uMsg, wParam, lParam);
+	pszMessage = GetWindowsMessage(message, wparam, lparam);
 	if (pszMessage)
 		InternalFunctionSpew("Windows_Messages", pszMessage);
-	if (uMsg <= WM_KEYFIRST) // uMsg <= 0x100
+	if (message <= WM_KEYFIRST) // message <= 0x100
 	{
-		if (uMsg != WM_KEYFIRST)
+		if (message != WM_KEYFIRST)
 		{
 			return lResult;
 		}
-		switch (wParam)
+		switch (wparam)
 		{
 		case VK_SCROLL:
 			HitScrollLock = 1;
@@ -161,13 +162,13 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 		default:
 			break;
 		}
-		if (wParam != VK_CANCEL)
-			DealWithKey(wParam, lParam);
-		if (!Environment.Key_FullScreen || ProcessingError || wParam != Environment.Key_FullScreen)
+		if (wparam != VK_CANCEL)
+			DealWithKey(wparam, lparam);
+		if (!Environment.Key_FullScreen || ProcessingError || wparam != Environment.Key_FullScreen)
 		{
-			if (!Environment.Key_SwitchMonitors || ProcessingError || wParam != Environment.Key_SwitchMonitors)
+			if (!Environment.Key_SwitchMonitors || ProcessingError || wparam != Environment.Key_SwitchMonitors)
 			{
-				if (Environment.Key_Exit && !ProcessingError && wParam == Environment.Key_Exit)
+				if (Environment.Key_Exit && !ProcessingError && wparam == Environment.Key_Exit)
 				{
 					InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - Esc");
 					if (Environment.fullScreen)
@@ -213,65 +214,65 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 				GlobalGotoFullScreen = 1;
 			}
 		}
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		return DefWindowProcA(hwnd, message, wparam, lparam);
 	}
-	if (uMsg > WM_SYSCOMMAND)
+	if (message > WM_SYSCOMMAND)
 	{
-		switch (uMsg)
+		switch (message)
 		{
 		case WM_ENTERMENULOOP:
 			WindowsPause = 1;
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_EXITMENULOOP:
 			WindowsPause = 0;
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_LBUTTONDOWN:
 			DealWithKey(1u, 0);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_LBUTTONUP:
 			DoKeyReleased(1u);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_RBUTTONDOWN:
 			DealWithKey(2u, 0);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_RBUTTONUP:
 			DoKeyReleased(2u);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_MBUTTONDOWN:
 			DealWithKey(3u, 0);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_MBUTTONUP:
 			DoKeyReleased(3u);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_XBUTTONDOWN:
-			DealWithKey(HIWORD(wParam) + 3, 0);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			DealWithKey(HIWORD(wparam) + 3, 0);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		case WM_XBUTTONUP:
-			DoKeyReleased(HIWORD(wParam) + 3);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			DoKeyReleased(HIWORD(wparam) + 3);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		default:
 		$LN2:
 			bHandled = 0;
-			lResult = ProcessIMEMessages(hWnd, uMsg, wParam, lParam, &bHandled);
+			lResult = ProcessIMEMessages(hwnd, message, wparam, lparam, &bHandled);
 			if (!bHandled)
-				return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+				return DefWindowProcA(hwnd, message, wparam, lparam);
 			lResult = lResult;
 			break;
 		}
 	}
 	else
 	{
-		if (uMsg != WM_SYSCOMMAND)
+		if (message != WM_SYSCOMMAND)
 		{
-			switch (uMsg)
+			switch (message)
 			{
 			case WM_SYSKEYUP:
-				if (wParam == VK_RETURN)
+				if (wparam == VK_RETURN)
 					return 0;
-				DoKeyReleased(wParam);
-				return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+				DoKeyReleased(wparam);
+				return DefWindowProcA(hwnd, message, wparam, lparam);
 			case WM_SYSKEYDOWN:
-				if (wParam == VK_RETURN && !ProcessingError)
+				if (wparam == VK_RETURN && !ProcessingError)
 				{
 					InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - Alt Enter");
 					if (Environment.fullScreen)
@@ -286,37 +287,37 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 					}
 					return 0;
 				}
-				if (wParam == VK_SCROLL)
+				if (wparam == VK_SCROLL)
 				{
 					if (Environment.fullScreen)
 						EnterWindowMode();
 					ENTER_DEBUGGER;
 					JUMPOUT(loc_818);
 				}
-				DealWithKey(wParam, lParam);
+				DealWithKey(wparam, lparam);
 				break;
 			case WM_SYSCHAR:
-				if (wParam != VK_F10)
-					return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+				if (wparam != VK_F10)
+					return DefWindowProcA(hwnd, message, wparam, lparam);
 				return 0;
 			case WM_KEYUP:
-				if (wParam != VK_CANCEL)
-					DoKeyReleased(wParam);
-				if (wParam == VK_CONTROL)
+				if (wparam != VK_CANCEL)
+					DoKeyReleased(wparam);
+				if (wparam == VK_CONTROL)
 					ControlDown = 0;
-				if (wParam == VK_SNAPSHOT && gPrintScreen)
+				if (wparam == VK_SNAPSHOT && gPrintScreen)
 					gCaptureScreen = 1;
-				return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+				return DefWindowProcA(hwnd, message, wparam, lparam);
 			case WM_CHAR:
-				if (wParam != VK_F16 && (wParam != VK_CANCEL || lParam != 0x1460001))
+				if (wparam != VK_F16 && (wparam != VK_CANCEL || lparam != 0x1460001))
 				{
 					if (DebuggerActive && ((dbKeyPressed + 1) != dbKeyCurrent))
 					{
-						dbKeyBoardBuffer[dbKeyPressed] = wParam + LastWMDown;
+						dbKeyBoardBuffer[dbKeyPressed] = wparam + LastWMDown;
 						dbKeyPressed = (dbKeyPressed + 1);
 					}
 					if (!DebuggerActive || DebuggerActive && gControlsActive && !gStopSystem)
-						AddKeyEvent(wParam + LastWMDown);
+						AddKeyEvent(wparam + LastWMDown);
 					LastWMDown = 0;
 					lResult = 0;
 				}
@@ -328,13 +329,13 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 			default:
 				goto $LN2;
 			}
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		}
-		if ((wParam & 0xFFF0) == SC_KEYMENU)
+		if ((wparam & 0xFFF0) == SC_KEYMENU)
 			return 0;
-		if ((wParam & 0xFFF0) == SC_SCREENSAVE || (wParam & 0xFFF0) == SC_MONITORPOWER)
+		if ((wparam & 0xFFF0) == SC_SCREENSAVE || (wparam & 0xFFF0) == SC_MONITORPOWER)
 			return 0;
-		if ((wParam & 0xFFF0) == SC_RESTORE)
+		if ((wparam & 0xFFF0) == SC_RESTORE)
 		{
 			InternalFunctionSpew(
 				"GameOS_DirectDraw", "Mode change requested - WM_SYSCOMMAND - SC_RESTORE");
@@ -348,11 +349,11 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 				DoUpdateWindow = 1;
 				GlobalGotoWindowMode = 1;
 			}
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		}
-		if ((wParam & 0xFFF0) != SC_MAXIMIZE)
+		if ((wparam & 0xFFF0) != SC_MAXIMIZE)
 		{
-			if ((wParam & 0xFFF0) == SC_CLOSE)
+			if ((wparam & 0xFFF0) == SC_CLOSE)
 			{
 				WindowClosed = true;
 				return 0;
@@ -364,7 +365,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 				DoUpdateWindow = 1;
 				GlobalGotoWindowMode = 1;
 			}
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		}
 		if (!Environment.fullScreen && !ProcessingError)
 		{
@@ -376,7 +377,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 		lResult = 0;
 	}
 	return lResult;
-	switch (uMsg)
+	switch (message)
 	{
 	case WM_SYSCOLORCHANGE:
 	case WM_DISPLAYCHANGE:
@@ -389,7 +390,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 				"WM_SYSCOLORCHANGE or "
 				"WM_DISPLAYCHANGE");
 		}
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		return DefWindowProcA(hwnd, message, wparam, lparam);
 	case WM_PAINT:
 		if (InUpdateRenderers || g_DDstate != 1 || !g_DDperformFlip || Environment.fullScreen || status != Running && status != GameInit)
 			goto LABEL_35;
@@ -411,12 +412,12 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 			__asm { fninit} // GameOSFPU(void);
 			AllowFail = false;
 		LABEL_35:
-			ValidateRect(hWnd, 0);
+			ValidateRect(hwnd, 0);
 			lResult = 0;
 		}
 		else
 		{
-			hdc = BeginPaint(hWnd, &paint);
+			hdc = BeginPaint(hwnd, &paint);
 			wGetDC(BackBufferSurface, &hdcSrc);
 			if (DesktopBpp == 8)
 			{
@@ -430,34 +431,34 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 					SRCCOPY);
 			}
 			wReleaseDC(BackBufferSurface, hdcSrc);
-			EndPaint(hWnd, &paint);
+			EndPaint(hwnd, &paint);
 			lResult = 0;
 		}
 		return lResult;
 	case WM_ACTIVATE:
-		bActive = (unsigned __int16)wParam == WA_ACTIVE || (unsigned __int16)wParam == WA_CLICKACTIVE; // low order word
+		bActive = (unsigned __int16)wparam == WA_ACTIVE || (unsigned __int16)wparam == WA_CLICKACTIVE; // low order word
 		gActive = bActive;
 		if (gActive)
 			mc2HasLostFocus = false;
 		else
 			mc2HasLostFocus = true;
-		if (!(wParam & 0xFFFF0000) && gActive) // high order word. A nonzero
+		if (!(wparam & 0xFFFF0000) && gActive) // high order word. A nonzero
 			// value indicates the window is
 			// minimized.
 			CMAcquireControls();
-		if (Environment.fullScreen && !(_WORD)wParam)
+		if (Environment.fullScreen && !(_WORD)wparam)
 			ClipCursor(0);
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		return DefWindowProcA(hwnd, message, wparam, lparam);
 	case WM_WINDOWPOSCHANGING:
 		if (!ChangingModes)
 		{
 			if (!Environment.fullScreen)
 			{
-				winpos = (WINDOWPOS*)lParam;
+				winpos = (WINDOWPOS*)lparam;
 				if (!(winpos->flags & SWP_NOMOVE)) // WINDOWPOS.flags
 				{
 					wndpl.length = sizeof(wndpl);
-					GetWindowPlacement(hWindow, &wndpl);
+					GetWindowPlacement(hwnd, &wndpl);
 					if (wndpl.showCmd == SW_SHOW 1)
 					{
 						WindowStartX = winpos->x;
@@ -466,29 +467,29 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wPa
 				}
 			}
 		}
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		return DefWindowProcA(hwnd, message, wparam, lparam);
 	case WM_ACTIVATEAPP:
-		if (!IsIconic(hWindow) && wParam)
+		if (!IsIconic(hwnd) && wparam)
 			CMAcquireControls();
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		return DefWindowProcA(hwnd, message, wparam, lparam);
 	case WM_KILLFOCUS:
 		gGotFocus = false;
 		CMUnacquireControls();
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		return DefWindowProcA(hwnd, message, wparam, lparam);
 	case WM_SETFOCUS:
 		gGotFocus = true;
 		CMAcquireControls();
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		return DefWindowProcA(hwnd, message, wparam, lparam);
 	case WM_MOVE:
 		clientToScreen.x = 0;
 		clientToScreen.y = 0;
-		ClientToScreen(hWnd, &clientToScreen);
-		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+		ClientToScreen(hwnd, &clientToScreen);
+		return DefWindowProcA(hwnd, message, wparam, lparam);
 	case WM_ERASEBKGND:
 		if (Platform || status == Uninitialized)
 		{
-			ValidateRect(hWnd, 0);
-			return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+			ValidateRect(hwnd, 0);
+			return DefWindowProcA(hwnd, message, wparam, lparam);
 		}
 		lResult = 1;
 		break;

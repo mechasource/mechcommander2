@@ -27,7 +27,7 @@ extern uint32_t dbKeyPressed; // Where the next key pressed will go
 extern uint32_t LastWMDown; // Last WM_KEYDOWN message scan code
 extern void __stdcall SaveOldKeyState(void);
 extern void __stdcall DoKeyReleased(uint32_t KeyCode);
-extern void __stdcall DealWithKey(uint32_t wParam, uint32_t lParam);
+extern void __stdcall DealWithKey(uint32_t wparam, uint32_t lparam);
 extern void __stdcall AddKeyEvent(uint32_t KeyEvent);
 
 #define MAX_DI_DEVICES 16

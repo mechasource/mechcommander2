@@ -17,7 +17,7 @@ class LogisticsComponent;
 class CSVFile;
 class FitIniFile;
 
-#include <estring.h>
+#include "estring.h"
 
 //#pragma warning (disable:4514)
 
@@ -36,10 +36,10 @@ public:
 	void setFitID(int32_t id) { fitID = id; }
 	int32_t getNameID(void) const { return chassisNameID; }
 	int32_t getEncyclopediaID(void) const { return encyclopediaID; }
-	const std::wstring& getFileName(void) const { return fileName; }
+	const std::wstring_view& getFileName(void) const { return fileName; }
 	int32_t getHouseID(void) const { return houseID; }
 	float getMaxWeight(void) const { return maxWeight; }
-	const std::wstring& getMechClass(void) const { return mechClass; }
+	const std::wstring_view& getMechClass(void) const { return mechClass; }
 	int32_t getArmor(void) const { return baseArmor; }
 	int32_t getArmorClass(void) const;
 	float getSpeed(void) const { return speed; }
@@ -66,9 +66,9 @@ protected:
 
 	int32_t iconPictureIndex;
 	int32_t ID;
-	std::wstring fileName;
-	std::wstring mechClass;
-	std::wstring iconFileNames[3];
+	const std::wstring_view& fileName;
+	const std::wstring_view& mechClass;
+	const std::wstring_view& iconFileNames[3];
 
 	int32_t componentAreaWidth;
 	int32_t componentAreaHeight;
@@ -82,7 +82,7 @@ protected:
 	bool canHaveExtendedSensor;
 
 	int32_t encyclopediaID;
-	int32_t helpID;
+	int32_t helpid;
 	int32_t houseID;
 
 	int32_t fitID;
@@ -122,15 +122,15 @@ public:
 	uint32_t getID(void) const { return ID; }
 	float getMaxWeight(void) const { return chassis->maxWeight; }
 	int32_t getChassisName(void) const { return chassis->chassisNameID; }
-	const std::wstring& getName(void) const { return variantName; }
+	const std::wstring_view& getName(void) const { return variantName; }
 	int32_t getEncyclopediaID(void) const { return chassis->encyclopediaID; }
-	int32_t getHelpID(void) const { return chassis->helpID; }
+	int32_t getHelpID(void) const { return chassis->helpid; }
 	int32_t getBaseCost(void) const { return chassis->baseCost; }
 	int32_t getComponentCount(void) const { return componentCount; }
 	int32_t canAddComponent(LogisticsComponent* pComponent, int32_t& x, int32_t& y) const;
 	int32_t getCost(void) const;
 	int32_t getWeight(void) const;
-	const std::wstring& getMechClass(void) const;
+	const std::wstring_view& getMechClass(void) const;
 	int32_t getChassisID(void) const { return chassis->ID; }
 	int32_t getArmor(void) const;
 	int32_t getArmorClass() { return chassis->getArmorClass(void); }
@@ -140,9 +140,9 @@ public:
 	int32_t getDisplaySpeed(void) const;
 
 	int32_t getVariantID(void) const { return ID & 0x00ffffff; }
-	const std::wstring& getSmallIconFileName(void) const { return chassis->iconFileNames[0]; }
-	const std::wstring& getMediumIconFileName(void) const { return chassis->iconFileNames[1]; }
-	const std::wstring& getLargeIconFileName(void) const { return chassis->iconFileNames[2]; }
+	const std::wstring_view& getSmallIconFileName(void) const { return chassis->iconFileNames[0]; }
+	const std::wstring_view& getMediumIconFileName(void) const { return chassis->iconFileNames[1]; }
+	const std::wstring_view& getLargeIconFileName(void) const { return chassis->iconFileNames[2]; }
 	int32_t getComponentsWithLocation(
 		int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray);
 	int32_t removeComponent(int32_t xCoord, int32_t yCoord);
@@ -157,13 +157,13 @@ public:
 	LogisticsVariant& operator=(const LogisticsVariant&);
 
 	bool operator==(const LogisticsVariant& src);
-	const std::wstring& getFileName() { return chassis->fileName; }
+	const std::wstring_view& getFileName() { return chassis->fileName; }
 
 	int32_t save(FitIniFile& file, int32_t counter);
 
 	const LogisticsChassis* getChassis(void) const { return chassis; }
 	bool addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y);
-	void setName(PCSTR name); // will allocate for you
+	void setName(const std::wstring_view& name); // will allocate for you
 
 	void setAvailable(bool available);
 
@@ -192,7 +192,7 @@ protected:
 	int32_t fileID; // in csv file
 
 	LogisticsChassis* chassis;
-	std::wstring variantName; // in file
+	const std::wstring_view& variantName; // in file
 
 	int32_t componentCount;
 	LogisticsChassis::ComponentInfo components[54]; // I count a max of 54
@@ -226,5 +226,4 @@ protected:
 		// to check though
 };
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsVariant.h )

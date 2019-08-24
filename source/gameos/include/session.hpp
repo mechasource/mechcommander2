@@ -43,9 +43,9 @@ public:
 
 	inline int32_t GetMaxPlayers() { return SessionDescriptor.dwMaxPlayers; }
 
-	inline PCSTR GetName() { return SessionDescriptor.lpszSessionNameA; }
+	inline PSTR GetName() { return SessionDescriptor.lpszSessionNameA; }
 
-	inline PCSTR GetPassword() { return SessionDescriptor.lpszPasswordA; }
+	inline PSTR GetPassword() { return SessionDescriptor.lpszPasswordA; }
 
 	inline LPGUID GetGuidInstance() { return &SessionDescriptor.guidInstance; }
 

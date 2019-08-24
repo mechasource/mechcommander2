@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <gosfx/gosfx.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <gosfx/effect.hpp>
+#include "gosfx/gosfx.h"
+#include "stuff/linearmatrix.h"
+#include "gosfx/effect.h"
 
 // HGOSHEAP gosFX::Heap = nullptr;
 

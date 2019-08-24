@@ -9,7 +9,7 @@
 //---------------------------------------------------------------------------
 // Include Files
 #ifndef TERRTXM_H
-#include <terrtxm.h>
+#include "terrtxm.h"
 #endif
 
 #ifndef MATHFUNC_H
@@ -65,7 +65,7 @@ extern bool InEditor;
 // they are loaded forever.  This may not be a problem, but if it becomes one,
 // the textures can be preloaded during the init.
 int32_t
-TerrainTextures::init(PSTR fileName, PSTR baseName)
+TerrainTextures::init(const std::wstring_view& fileName, const std::wstring_view& baseName)
 {
 	if (InEditor)
 		quickLoad = false;
@@ -131,7 +131,7 @@ TerrainTextures::init(PSTR fileName, PSTR baseName)
 	gosASSERT(result == NO_ERROR);
 	result = tileRAMHeap->init(terrainTileCacheSize, "TextureRAM");
 	gosASSERT(result == NO_ERROR);
-	localBaseName = (PSTR)tileRAMHeap->Malloc(strlen(baseName) + 1);
+	localBaseName = (const std::wstring_view&)tileRAMHeap->Malloc(strlen(baseName) + 1);
 	strcpy(localBaseName, baseName);
 	//--------------------------------------------------------
 	// Create the lists of pointers to the textures.
@@ -165,12 +165,12 @@ TerrainTextures::init(PSTR fileName, PSTR baseName)
 			char tmpy[2048];
 			result = textureFile.readIdString("TerrainName", tmpy, 2047);
 			gosASSERT(result == NO_ERROR);
-			types[i].terrainName = (PSTR)tileRAMHeap->Malloc(strlen(tmpy) + 1);
+			types[i].terrainName = (const std::wstring_view&)tileRAMHeap->Malloc(strlen(tmpy) + 1);
 			gosASSERT(types[i].terrainName != nullptr);
 			strcpy(types[i].terrainName, tmpy);
 			result = textureFile.readIdString("MaskName", tmpy, 2047);
 			gosASSERT(result == NO_ERROR);
-			types[i].maskName = (PSTR)tileRAMHeap->Malloc(strlen(tmpy) + 1);
+			types[i].maskName = (const std::wstring_view&)tileRAMHeap->Malloc(strlen(tmpy) + 1);
 			gosASSERT(types[i].maskName != nullptr);
 			strcpy(types[i].maskName, tmpy);
 			result = textureFile.readIdLong("TerrainPriority", types[i].terrainPriority);
@@ -240,7 +240,7 @@ TerrainTextures::init(PSTR fileName, PSTR baseName)
 		char tmpy[2048];
 		result = textureFile.readIdString("OverlayName", tmpy, 2047);
 		gosASSERT(result == NO_ERROR);
-		overlays[i].overlayName = (PSTR)tileRAMHeap->Malloc(strlen(tmpy) + 1);
+		overlays[i].overlayName = (const std::wstring_view&)tileRAMHeap->Malloc(strlen(tmpy) + 1);
 		gosASSERT(overlays[i].overlayName != nullptr);
 		strcpy(overlays[i].overlayName, tmpy);
 		result = textureFile.readIdLong("NumOverlays", overlays[i].numTextures);
@@ -284,7 +284,7 @@ TerrainTextures::init(PSTR fileName, PSTR baseName)
 		char tmpy[2048];
 		result = textureFile.readIdString("DetailName", tmpy, 2047);
 		gosASSERT(result == NO_ERROR);
-		details[i].detailName = (PSTR)tileRAMHeap->Malloc(strlen(tmpy) + 1);
+		details[i].detailName = (const std::wstring_view&)tileRAMHeap->Malloc(strlen(tmpy) + 1);
 		gosASSERT(details[i].detailName != nullptr);
 		strcpy(details[i].detailName, tmpy);
 		result = textureFile.readIdLong("NumDetails", details[i].numDetails);
@@ -357,7 +357,7 @@ TerrainTextures::textureFromMemory(puint8_t ourRAM, int32_t mipLevel)
 
 //---------------------------------------------------------------------------
 int32_t
-TerrainTextures::loadTextureMemory(PSTR textureName, int32_t mipSize)
+TerrainTextures::loadTextureMemory(const std::wstring_view& textureName, int32_t mipSize)
 {
 	textures[nextAvailable].mcTextureNodeIndex = mcTextureManager->loadTexture(
 		textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
@@ -369,7 +369,7 @@ TerrainTextures::loadTextureMemory(PSTR textureName, int32_t mipSize)
 
 //---------------------------------------------------------------------------
 int32_t
-TerrainTextures::loadDetailMemory(PSTR textureName, int32_t mipSize)
+TerrainTextures::loadDetailMemory(const std::wstring_view& textureName, int32_t mipSize)
 {
 	textures[nextAvailable].mcTextureNodeIndex =
 		mcTextureManager->loadTexture(textureName, gos_Texture_Alpha, gosHint_DontShrink);
@@ -381,7 +381,7 @@ TerrainTextures::loadDetailMemory(PSTR textureName, int32_t mipSize)
 
 //---------------------------------------------------------------------------
 int32_t
-TerrainTextures::loadOverlayMemory(PSTR textureName)
+TerrainTextures::loadOverlayMemory(const std::wstring_view& textureName)
 {
 	textures[nextAvailable].mcTextureNodeIndex = mcTextureManager->loadTexture(
 		textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
@@ -553,7 +553,7 @@ TerrainTextures::initMask(int32_t typeNum)
 
 //---------------------------------------------------------------------------
 int32_t
-TerrainTextures::initOverlay(int32_t overlayNum, int32_t txmNum, PSTR txmName)
+TerrainTextures::initOverlay(int32_t overlayNum, int32_t txmNum, const std::wstring_view& txmName)
 {
 	int32_t txmResult = -1;
 	for (size_t j = 0; j < MC_MAX_MIP_LEVELS; j++)

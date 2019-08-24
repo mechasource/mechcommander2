@@ -16,7 +16,7 @@
 //
 // Size of scroll back buffer for spew
 //
-typedef enum __spew_scroll_back_buffer
+enum class __spew_scroll_back_buffer
 {
 	DebuggerBufferSize = 128 * 1024, // 0x20000
 };
@@ -115,7 +115,7 @@ uint8_t __stdcall CheckWindow(void);
 // Main Debugger Screens
 //
 
-typedef enum EDbgScreen
+enum class EDbgScreen
 {
 	DbgS_Stat, // 0
 	DbgS_Spew, // 1
@@ -146,7 +146,7 @@ extern EDbgScreen DebugDisplay;
 //
 // Framegraph information
 //
-typedef enum FrameGraphMode
+enum class FrameGraphMode
 {
 	Graph_Chart = 0,
 	Graph_30,
@@ -245,7 +245,7 @@ extern uint32_t TopStatistics;
 //
 // Debugger window constants
 //
-typedef enum __debugger_window_constants
+enum class __debugger_window_constants
 {
 	DbSizeX = 489,
 	DbSizeY = 342,

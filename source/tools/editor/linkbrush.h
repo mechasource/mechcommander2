@@ -13,11 +13,10 @@ LinkBrush.h			: Interface for the LinkBrush component.
 //#include "brush.h"
 //#include "action.h"
 //#include "buildinglink.h"
-//#include <mclib.h>
+//#include "mclib.h"
 
 class EditorObject;
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -76,5 +75,4 @@ public:
 	LinkAction* pAction;
 };
 
-//*************************************************************************************************
 #endif // end of file ( LinkBrush.h )

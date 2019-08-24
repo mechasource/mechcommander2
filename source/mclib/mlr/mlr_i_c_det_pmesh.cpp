@@ -4,14 +4,14 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-//#include <mlr/gosvertexpool.hpp>
-//#include <mlr/mlrtexture.hpp>
-//#include <mlr/mlrtexturepool.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlr_i_c_det_pmesh.hpp>
+#include "gameos.hpp"
+//#include "mlr/gosvertexpool.h"
+//#include "mlr/mlrtexture.h"
+//#include "mlr/mlrtexturepool.h"
+#include "mlr/mlrshape.h"
+#include "mlr/mlr_i_c_det_pmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -120,7 +120,7 @@ MLR_I_C_DeT_PMesh*
 MLR_I_C_DeT_PMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
@@ -259,7 +259,7 @@ MLR_I_C_DeT_PMesh::PaintMe(
 // int32_t MLR_I_C_DeT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrprimitiveclipping.inl>
+#include "mlr/mlrprimitiveclipping.inl"
 
 #undef I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_COLOR
@@ -547,3 +547,5 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_DetTex(
 	gos_PopCurrentHeap();
 	return ret;
 }
+
+} // namespace MidLevelRenderer

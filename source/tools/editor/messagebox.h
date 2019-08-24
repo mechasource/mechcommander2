@@ -13,7 +13,6 @@ MessageBox.h			: quick helper function to call up a message box
 //#include "utilities.h"
 //#include "editorinterface.h"
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -39,5 +38,4 @@ EMessageBox(int32_t MessageID, int32_t CaptionID, uint32_t dwS)
 	}
 }
 
-//*************************************************************************************************
 #endif // end of file ( MessageBox.h )

@@ -5,6 +5,7 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
+ All code is logically copyrighted to Microsoft
 *******************************************************************************/
 /*******************************************************************************
  debugger.cpp - GameOS reference pseudo code
@@ -34,7 +35,7 @@
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
 
-uint32_t __stdcall CallDebuggerMenuItem(PCSTR Name, uint32_t MenuFunction);
+uint32_t __stdcall CallDebuggerMenuItem(PSTR Name, uint32_t MenuFunction);
 void __stdcall DelDebuggerMenuItem(PSTR Name);
 void __stdcall AddDebuggerMenuItem(PSTR Name, uint8_t(__stdcall* CheckMark)(void),
 	void(__stdcall* Activated)(void), uint8_t(__stdcall* Greyed)(void) = 0,
@@ -103,7 +104,7 @@ unsigned long gStopRendering;
 
 struct _TextureHeap* pTextureHeap;
 
-int32_t __stdcall DrawTextA(HDC hdc, PCSTR lpchText, int32_t cchText, PRECT lprc, uint32_t format);
+int32_t __stdcall DrawTextA(HDC hdc, PSTR lpchText, int32_t cchText, PRECT lprc, uint32_t format);
 
 InternalFunctionStop(char const*, ...);
 gos_Free(void*);

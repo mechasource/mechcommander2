@@ -5,16 +5,15 @@ OptionsArea.h			: Interface for the OptionsArea component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
 #ifndef OPTIONSAREA_H
 #define OPTIONSAREA_H
 
-//#include <mechgui/logisticsscreen.h>
+//#include "mechgui/logisticsscreen.h"
 //#include "simplecamera.h"
-//#include <mechgui/alistbox.h>
+//#include "mechgui/alistbox.h"
 //#include "attributemeter.h"
 
 class aButton;
@@ -134,8 +133,8 @@ public:
 	virtual int32_t handleMessage(uint32_t message, uint32_t fromWho);
 
 private:
-	static void makeKeyString(int32_t hotKey, PSTR buffer);
-	static int32_t makeInputKeyString(int32_t& hotKey, PSTR buffer);
+	static void makeKeyString(int32_t hotKey, const std::wstring_view& buffer);
+	static int32_t makeInputKeyString(int32_t& hotKey, const std::wstring_view& buffer);
 
 	aListBox hotKeyList;
 	bool bShowDlg;
@@ -167,8 +166,8 @@ public:
 	virtual void render(void);
 	virtual void update(void);
 
-	void setDescription(PCSTR pText);
-	void setKey(PCSTR pText);
+	void setDescription(const std::wstring_view& pText);
+	void setKey(const std::wstring_view& pText);
 
 	HotKeyListItem();
 	~HotKeyListItem(void);
@@ -190,5 +189,4 @@ private:
 	static HotKeyListItem* s_item;
 };
 
-//*************************************************************************************************
 #endif // end of file ( OptionsArea.h )

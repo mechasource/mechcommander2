@@ -13,7 +13,7 @@
 #ifndef GVEHICL_H
 #define GVEHICL_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "mover.h"
 //#include "dgvehicl.h"
 //#include "gameobj.h"
@@ -24,7 +24,7 @@
 //#include "mechclass.h"
 //
 //#ifdef USE_ELEMENTALS
-//#include <delemntl.h>
+//#include "delemntl.h"
 //#endif
 
 extern float metersPerWorldUnit;
@@ -50,7 +50,7 @@ extern float metersPerWorldUnit;
 #define MAX_TOADS 10
 #define MAX_SEATS 4
 
-typedef enum
+enum class 
 {
 	GROUNDVEHICLE_LOCATION_ANY = -1,
 	GROUNDVEHICLE_LOCATION_FRONT,
@@ -61,7 +61,7 @@ typedef enum
 	NUM_GROUNDVEHICLE_LOCATIONS
 } VehicleLocationType;
 
-typedef enum
+enum class 
 {
 	GROUNDVEHICLE_CHASSIS_WHEELED,
 	GROUNDVEHICLE_CHASSIS_TRACKED,
@@ -69,7 +69,7 @@ typedef enum
 	NUM_GROUNDVEHICLE_CHASSIS
 } GroundVehicleChassisType;
 
-typedef enum
+enum class 
 {
 	GROUNDVEHICLE_CRITICAL_NO_EFFECT,
 	GROUNDVEHICLE_CRITICAL_AMMO_POWER_HIT,
@@ -136,7 +136,7 @@ public:
 		init(void);
 	}
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t loadHotSpots(FitIniFilePtr vehicleFile);
 
@@ -286,7 +286,7 @@ public:
 
 	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition);
+	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetposition);
 
 	virtual void pilotingCheck(void);
 
@@ -317,7 +317,7 @@ public:
 
 	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
 		int32_t weaponIndex, float modifiers, int32_t* range,
-		Stuff::Vector3D* targetPoint = nullptr);
+		Stuff::Vector3D* targetpoint = nullptr);
 
 	virtual float getTotalEffectiveness(void);
 
@@ -338,11 +338,11 @@ public:
 	virtual bool injureBodyLocation(int32_t bodyLocation, float damage);
 
 	virtual int32_t handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+		Stuff::Vector3D* targetpoint, bool hit, float entryAngle, int32_t numMissiles,
 		int32_t hitLocation);
 
 	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
-		int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& damageDone);
+		int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetpoint, float& damageDone);
 
 	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
@@ -390,7 +390,7 @@ public:
 
 	virtual bool isLayingMines(void)
 	{
-		return (pilot && (pilot->getCurTacOrder()->moveParams.mode == MOVE_MODE_MINELAYING));
+		return (pilot && (pilot->getCurTacOrder()->moveparams.mode == SpecialMoveMode::minelaying));
 	}
 
 	virtual bool isMineSweeper(void) { return (mineSweeper); }
@@ -418,7 +418,7 @@ public:
 
 	virtual void handleStaticCollision(void);
 
-	virtual PSTR getIfaceName(void) { return (longName); }
+	virtual const std::wstring_view& getIfaceName(void) { return (longName); }
 
 	void createVehiclePilot(void);
 

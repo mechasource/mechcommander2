@@ -14,7 +14,6 @@ DamageBrush.h			: Interface for the DamageBrush component.
 //#include "action.h"
 //#include "editorobjects.h"
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -42,5 +41,4 @@ private:
 	ModifyBuildingAction* pAction;
 };
 
-//*************************************************************************************************
 #endif // end of file ( DamageBrush.h )

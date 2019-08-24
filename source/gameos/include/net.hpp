@@ -8,7 +8,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-typedef enum GOSERRORCODE
+enum class GOSERRORCODE
 {
 	GOS_OK = 0,
 	GOS_ERR_GENERIC,
@@ -21,7 +21,7 @@ typedef enum GOSERRORCODE
 	GOS_DIALING
 };
 
-typedef enum
+enum class 
 {
 	NP_TCP = 1,
 	NP_IPX,
@@ -29,7 +29,7 @@ typedef enum
 	NP_MODEM,
 } ConnectionType;
 
-typedef enum
+enum class 
 {
 	FIDP_MSG_STARTGAME = 224,
 	FIDP_MSG_VERIFY,
@@ -45,7 +45,7 @@ typedef enum
 //
 // Routine typedef used to return game and player information
 //
-typedef void(__stdcall* NETCALLBACK)(PCSTR string, uint32_t value);
+typedef void(__stdcall* NETCALLBACK)(PSTR string, uint32_t value);
 
 extern bool Connected;
 

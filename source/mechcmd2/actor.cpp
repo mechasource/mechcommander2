@@ -9,7 +9,7 @@
 
 //---------------------------------------------------------------------------
 // Include files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef ACTOR_H
 #include "actor.h"
@@ -33,7 +33,7 @@
 //-----------------------------------------------------------------------------
 // class VFXAppearanceType
 void
-VFXAppearanceType::init(FilePtr apprFile, uint32_t fileSize)
+VFXAppearanceType::init(std::unique_ptr<File> apprFile, uint32_t fileSize)
 {
 	loadIniFile(apprFile, fileSize);
 	//------------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ VFXAppearanceType::removeTexture(TGATexturePtr texture) // Cache texture
 
 //---------------------------------------------------------------------------
 int32_t
-VFXAppearanceType::loadIniFile(FilePtr apprFile, uint32_t fileSize)
+VFXAppearanceType::loadIniFile(std::unique_ptr<File> apprFile, uint32_t fileSize)
 {
 	FitIniFile VFXAppearanceFile;
 	int32_t result = VFXAppearanceFile.open(apprFile, fileSize);

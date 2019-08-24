@@ -55,7 +55,7 @@ public:
 	uint32_t m_FontColor;
 
 public:
-	gos_DBCS(PCSTR msg, int32_t w, int32_t h, bool cc);
+	gos_DBCS(PSTR msg, int32_t w, int32_t h, bool cc);
 	~gos_DBCS(void);
 	void Render(void);
 	void Update(void);

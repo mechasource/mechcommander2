@@ -5,17 +5,16 @@ SalvageMechArea.h			: Interface for the SalvageMechArea component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
 #ifndef SALVAGEMECHAREA_H
 #define SALVAGEMECHAREA_H
 
-//#include <mechgui/asystem.h>
+//#include "mechgui/asystem.h"
 //#include "simplecomponentlistbox.h"
 //#include "attributemeter.h"
-//#include <mechgui/logisticsscreen.h>
+//#include "mechgui/logisticsscreen.h"
 //#include "simplecamera.h"
 
 class aButton;
@@ -125,5 +124,4 @@ private:
 	friend class SalvageMechScreen;
 };
 
-//*************************************************************************************************
 #endif // end of file ( SalvageMechArea.h )

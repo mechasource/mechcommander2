@@ -8,37 +8,15 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <string.h>
-//#include <stdio.h>
-//#include <stdlib.h>
+//#include "ablgen.h"
+//#include "ablerr.h"
+//#include "ablscan.h"
+//#include "ablsymt.h"
+//#include "ablparse.h"
+//#include "ablexec.h"
+//#include "ablenv.h"
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLPARSE_H
-#include "ablparse.h"
-#endif
-
-#ifndef ABLEXEC_H
-#include "ablexec.h"
-#endif
-
-#ifndef ABLENV_H
-#include "ablenv.h"
-#endif
+namespace mclib::abl {
 
 //***************************************************************************
 
@@ -47,19 +25,19 @@ extern char tokenString[];
 extern char wordString[];
 extern Literal curLiteral;
 
-extern SymTableNodePtr SymTableDisplay[];
+extern const std::unique_ptr<SymTableNode>& SymTableDisplay[];
 extern int32_t level;
 
-extern TypePtr IntegerTypePtr, CharTypePtr, RealTypePtr, BooleanTypePtr;
+extern const std::unique_ptr<Type>& IntegerTypePtr, CharTypePtr, RealTypePtr, BooleanTypePtr;
 extern Type DummyType;
 
 extern TokenCodeType statementEndList[];
 
 extern bool EnterStateSymbol;
-extern ABLModulePtr CurFSM;
-SymTableNodePtr
-forwardState(PSTR stateName);
-extern SymTableNodePtr CurModuleIdPtr;
+extern const std::unique_ptr<ABLModule>& CurFSM;
+const std::unique_ptr<SymTableNode>&
+forwardState(const std::wstring_view& stateName);
+extern const std::unique_ptr<SymTableNode>& CurModuleIdPtr;
 
 //***************************************************************************
 
@@ -77,7 +55,7 @@ TokenCodeType multiplyOperatorList[] = {TKN_STAR, TKN_FSLASH,
 //***************************************************************************
 
 inline bool
-integerOperands(TypePtr type1, TypePtr type2)
+integerOperands(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2)
 {
 	return ((type1 == IntegerTypePtr) && (type2 == IntegerTypePtr));
 }
@@ -85,7 +63,7 @@ integerOperands(TypePtr type1, TypePtr type2)
 //***************************************************************************
 
 inline bool
-realOperands(TypePtr type1, TypePtr type2)
+realOperands(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2)
 {
 	if (type1 == RealTypePtr)
 		return ((type2 == RealTypePtr) || (type2 == IntegerTypePtr));
@@ -98,7 +76,7 @@ realOperands(TypePtr type1, TypePtr type2)
 //***************************************************************************
 
 inline bool
-booleanOperands(TypePtr type1, TypePtr type2)
+booleanOperands(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2)
 {
 	return ((type1 == BooleanTypePtr) && (type2 == BooleanTypePtr));
 }
@@ -106,7 +84,7 @@ booleanOperands(TypePtr type1, TypePtr type2)
 //***************************************************************************
 
 void
-checkRelationalOpTypes(TypePtr type1, TypePtr type2)
+checkRelationalOpTypes(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2)
 {
 	if (type1 && type2)
 	{
@@ -123,7 +101,7 @@ checkRelationalOpTypes(TypePtr type1, TypePtr type2)
 //***************************************************************************
 
 int32_t
-isAssignTypeCompatible(TypePtr type1, TypePtr type2)
+isAssignTypeCompatible(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2)
 {
 	if (type1 == type2)
 		return (1);
@@ -138,10 +116,10 @@ isAssignTypeCompatible(TypePtr type1, TypePtr type2)
 // EXPRESSION routines
 //***************************************************************************
 
-TypePtr
-variable(SymTableNodePtr variableIdPtr)
+const std::unique_ptr<Type>&
+variable(const std::unique_ptr<SymTableNode>& variableIdPtr)
 {
-	TypePtr typePtr = (TypePtr)(variableIdPtr->typePtr);
+	const std::unique_ptr<Type>& ptype = (const std::unique_ptr<Type>&)(variableIdPtr->ptype);
 	DefinitionType defnKey = variableIdPtr->defn.key;
 	crunchSymTableNodePtr(variableIdPtr);
 	switch (defnKey)
@@ -153,7 +131,7 @@ variable(SymTableNodePtr variableIdPtr)
 	case DFN_UNDEFINED:
 		break;
 	default:
-		// typePtr = &DummyType;
+		// ptype = &DummyType;
 		// syntaxError(ABL_ERR_SYNTAX_INVALID_IDENTIFIER_USAGE);
 		NODEFAULT;
 	}
@@ -165,32 +143,32 @@ variable(SymTableNodePtr variableIdPtr)
 	{
 		syntaxError(ABL_ERR_SYNTAX_UNEXPECTED_TOKEN);
 		actualParamList(variableIdPtr, 0);
-		return (typePtr);
+		return (ptype);
 	}
 	//-----------
 	// Subscripts
 	while (curToken == TKN_LBRACKET)
 	{
 		if (curToken == TKN_LBRACKET)
-			typePtr = arraySubscriptList(typePtr);
+			ptype = arraySubscriptList(ptype);
 	}
-	return (typePtr);
+	return (ptype);
 }
 
 //***************************************************************************
 
-TypePtr
-arraySubscriptList(TypePtr typePtr)
+const std::unique_ptr<Type>&
+arraySubscriptList(const std::unique_ptr<Type>& ptype)
 {
-	TypePtr indexTypePtr = nullptr;
-	TypePtr elementTypePtr = nullptr;
-	TypePtr subscriptTypePtr = nullptr;
+	const std::unique_ptr<Type>& indexTypePtr = nullptr;
+	const std::unique_ptr<Type>& elementTypePtr = nullptr;
+	const std::unique_ptr<Type>& subscriptTypePtr = nullptr;
 	do
 	{
-		if (typePtr->form == FRM_ARRAY)
+		if (ptype->form == FRM_ARRAY)
 		{
-			indexTypePtr = typePtr->info.array.indexTypePtr;
-			elementTypePtr = typePtr->info.array.elementTypePtr;
+			indexTypePtr = ptype->info.array.indexTypePtr;
+			elementTypePtr = ptype->info.array.elementTypePtr;
 			getToken();
 			subscriptTypePtr = expression();
 			//-------------------------------------------------------------
@@ -198,7 +176,7 @@ arraySubscriptList(TypePtr typePtr)
 			// with its corresponding subscript type, we're screwed...
 			if (!isAssignTypeCompatible(indexTypePtr, subscriptTypePtr))
 				syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
-			typePtr = elementTypePtr;
+			ptype = elementTypePtr;
 		}
 		else
 		{
@@ -208,20 +186,20 @@ arraySubscriptList(TypePtr typePtr)
 		}
 	} while (curToken == TKN_COMMA);
 	ifTokenGetElseError(TKN_RBRACKET, ABL_ERR_SYNTAX_MISSING_RBRACKET);
-	return (typePtr);
+	return (ptype);
 }
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 factor(void)
 {
-	TypePtr thisType = nullptr;
+	const std::unique_ptr<Type>& thisType = nullptr;
 	switch (curToken)
 	{
 	case TKN_IDENTIFIER:
 	{
-		SymTableNodePtr IdPtr = nullptr;
+		const std::unique_ptr<SymTableNode>& IdPtr = nullptr;
 		searchAndFindAllSymTables(IdPtr);
 		switch (IdPtr->defn.key)
 		{
@@ -233,29 +211,29 @@ factor(void)
 		case DFN_CONST:
 			crunchSymTableNodePtr(IdPtr);
 			getToken();
-			thisType = (TypePtr)(IdPtr->typePtr);
+			thisType = (const std::unique_ptr<Type>&)(IdPtr->ptype);
 			break;
 		default:
-			thisType = (TypePtr)variable(IdPtr);
+			thisType = (const std::unique_ptr<Type>&)variable(IdPtr);
 			break;
 		}
 	}
 	break;
 	case TKN_NUMBER:
 	{
-		SymTableNodePtr thisNode = searchSymTable(tokenString, SymTableDisplay[1]);
+		const std::unique_ptr<SymTableNode>& thisNode = searchSymTable(tokenString, SymTableDisplay[1]);
 		if (!thisNode)
 			thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
 		if (curLiteral.type == LIT_INTEGER)
 		{
-			thisNode->typePtr = IntegerTypePtr;
-			thisType = (TypePtr)(thisNode->typePtr);
+			thisNode->ptype = IntegerTypePtr;
+			thisType = (const std::unique_ptr<Type>&)(thisNode->ptype);
 			thisNode->defn.info.constant.value.integer = curLiteral.value.integer;
 		}
 		else
 		{
-			thisNode->typePtr = RealTypePtr;
-			thisType = (TypePtr)(thisNode->typePtr);
+			thisNode->ptype = RealTypePtr;
+			thisType = (const std::unique_ptr<Type>&)(thisNode->ptype);
 			thisNode->defn.info.constant.value.real = curLiteral.value.real;
 		}
 		crunchSymTableNodePtr(thisNode);
@@ -267,12 +245,12 @@ factor(void)
 		int32_t length = strlen(curLiteral.value.string);
 		if (EnterStateSymbol)
 		{
-			SymTableNodePtr stateSymbol =
+			const std::unique_ptr<SymTableNode>& stateSymbol =
 				searchSymTableForState(curLiteral.value.string, SymTableDisplay[1]);
 			if (!stateSymbol)
 				forwardState(curLiteral.value.string);
 		}
-		SymTableNodePtr thisNode = searchSymTableForString(tokenString, SymTableDisplay[1]);
+		const std::unique_ptr<SymTableNode>& thisNode = searchSymTableForString(tokenString, SymTableDisplay[1]);
 		if (!thisNode) // {
 			thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
 		if (length == 1)
@@ -282,8 +260,8 @@ factor(void)
 		}
 		else
 		{
-			thisNode->typePtr = thisType = makeStringType(length);
-			thisNode->info = (PSTR)ABLSymbolMallocCallback(length + 1);
+			thisNode->ptype = thisType = makeStringType(length);
+			thisNode->info = (const std::wstring_view&)ABLSymbolMallocCallback(length + 1);
 			if (!thisNode->info)
 				ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc string literal ");
 			strcpy(thisNode->info, curLiteral.value.string);
@@ -313,19 +291,19 @@ factor(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 term(void)
 {
 	//-------------------------
 	// Grab the first factor...
-	TypePtr resultType = factor();
+	const std::unique_ptr<Type>& resultType = factor();
 	//------------------------------------------------------------------
 	// Now, continue grabbing factors separated by multiply operators...
 	while (tokenIn(multiplyOperatorList))
 	{
 		TokenCodeType op = curToken;
 		getToken();
-		TypePtr secondType = factor();
+		const std::unique_ptr<Type>& secondType = factor();
 		switch (op)
 		{
 		case TKN_STAR:
@@ -386,7 +364,7 @@ term(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 simpleExpression(void)
 {
 	bool usedUnaryOp = false;
@@ -399,7 +377,7 @@ simpleExpression(void)
 	}
 	//------------------------------------------------
 	// Grab the first term in the simple expression...
-	TypePtr resultType = term();
+	const std::unique_ptr<Type>& resultType = term();
 	if (usedUnaryOp && (resultType != IntegerTypePtr) && (resultType != RealTypePtr))
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 	//---------------------------------------------------
@@ -408,7 +386,7 @@ simpleExpression(void)
 	{
 		TokenCodeType op = curToken;
 		getToken();
-		TypePtr secondType = term();
+		const std::unique_ptr<Type>& secondType = term();
 		switch (op)
 		{
 		case TKN_PLUS:
@@ -443,18 +421,18 @@ simpleExpression(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 expression(void)
 {
 	//------------------------------------
 	// Grab the first simple expression...
-	TypePtr resultType = simpleExpression();
+	const std::unique_ptr<Type>& resultType = simpleExpression();
 	if (tokenIn(relationalOperatorList))
 	{
 		//---------------------------------------
 		// Snatch the second simple expression...
 		getToken();
-		TypePtr secondType = simpleExpression();
+		const std::unique_ptr<Type>& secondType = simpleExpression();
 		checkRelationalOpTypes(resultType, secondType);
 		resultType = BooleanTypePtr;
 	}
@@ -462,3 +440,5 @@ expression(void)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

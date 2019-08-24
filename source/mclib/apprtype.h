@@ -14,7 +14,7 @@
 //#include "dappear.h"
 //#include "dstd.h"
 //#include "heap.h"
-//#include <stuff\stuffheaders.hpp>
+//#include "stuff/stuffheaders.h"
 
 enum appearancetype_const : uint32_t
 {
@@ -91,7 +91,7 @@ public:
 		designerTypeBounds = false;
 	}
 
-	virtual void init(PSTR fileName);
+	virtual void init(const std::wstring_view& fileName);
 
 	virtual void destroy(void);
 
@@ -130,7 +130,7 @@ public:
 
 	void init(size_t heapSize);
 
-	AppearanceTypePtr getAppearance(size_t apprNum, PSTR apprFile);
+	AppearanceTypePtr getAppearance(size_t apprNum, const std::wstring_view& apprFile);
 
 	int32_t removeAppearance(AppearanceTypePtr which);
 

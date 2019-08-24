@@ -5,16 +5,16 @@
 #include "stdinc.h"
 
 #include "campaigndata.h"
-//#include <estring.h>
+//#include "estring.h"
 //#include "echarstring.h"
 //#include "assert.h"
 
 static int32_t
-sReadIdBoolean(FitIniFile& missionFile, PCSTR varName, bool& value)
+sReadIdBoolean(FitIniFile& missionFile, const std::wstring_view& varName, bool& value)
 {
 	int32_t result = 0;
 	bool tmpBool;
-	result = missionFile.readIdBoolean((PSTR)varName, tmpBool);
+	result = missionFile.readIdBoolean((const std::wstring_view&)varName, tmpBool);
 	if (NO_ERROR != result)
 	{
 		// assert(false);
@@ -27,11 +27,11 @@ sReadIdBoolean(FitIniFile& missionFile, PCSTR varName, bool& value)
 }
 
 static int32_t
-sReadIdInteger(FitIniFile& missionFile, PCSTR varName, int32_t& value)
+sReadIdInteger(FitIniFile& missionFile, const std::wstring_view& varName, int32_t& value)
 {
 	int32_t result = 0;
 	int32_t tmpLong;
-	result = missionFile.readIdLong((PSTR)varName, tmpLong);
+	result = missionFile.readIdLong((const std::wstring_view&)varName, tmpLong);
 	if (NO_ERROR != result)
 	{
 		// assert(false);
@@ -44,12 +44,12 @@ sReadIdInteger(FitIniFile& missionFile, PCSTR varName, int32_t& value)
 }
 
 static int32_t
-sReadIdString(FitIniFile& missionFile, PCSTR varName, CString& CStr)
+sReadIdString(FitIniFile& missionFile, const std::wstring_view& varName, CString& CStr)
 {
 	int32_t result = 0;
 	char buffer[2001 /*buffer size*/];
 	buffer[0] = '\0';
-	result = missionFile.readIdString((PSTR)varName, buffer, 2001 /*buffer size*/ - 1);
+	result = missionFile.readIdString((const std::wstring_view&)varName, buffer, 2001 /*buffer size*/ - 1);
 	if (NO_ERROR != result)
 	{
 		// assert(false);
@@ -135,7 +135,7 @@ CGroupData::operator==(const CGroupData& rhs) const
 }
 
 bool
-CGroupData::Save(FitIniFile& fitFile, PCSTR groupName)
+CGroupData::Save(FitIniFile& fitFile, const std::wstring_view& groupName)
 {
 	fitFile.writeIdString("Label", m_Label.GetBuffer(0));
 	fitFile.writeIdLong("NumberToComplete", m_NumMissionsToComplete);
@@ -150,7 +150,7 @@ CGroupData::Save(FitIniFile& fitFile, PCSTR groupName)
 	}
 	CMissionList::EIterator it;
 	int32_t index;
-	std::wstring blockName;
+	const std::wstring_view& blockName;
 	for (it = m_MissionList.Begin(), index = 0; !it.IsDone(); it++, index += 1)
 	{
 		blockName.Format("%sMission%d", groupName, index);
@@ -161,7 +161,7 @@ CGroupData::Save(FitIniFile& fitFile, PCSTR groupName)
 }
 
 bool
-CGroupData::Read(FitIniFile& fitFile, PCSTR groupName)
+CGroupData::Read(FitIniFile& fitFile, const std::wstring_view& groupName)
 {
 	int32_t result;
 	result = sReadIdString(fitFile, "Label", m_Label);

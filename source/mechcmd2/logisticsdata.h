@@ -11,8 +11,8 @@ thing holds the inventory lists and the component lists
 #ifndef LOGISTICSDATA_H
 #define LOGISTICSDATA_H
 
-//#include <stuff/stuff.hpp>
-//#include <elist.h>
+//#include "stuff/stuff.h"
+//#include "elist.h"
 //#include "logisticsmech.h"
 //#include "logisticscomponent.h"
 //#include "logisticspilot.h"
@@ -37,26 +37,26 @@ public:
 
 	LogisticsComponent* getComponent(int32_t componentID);
 	LogisticsPilot* getPilot(int32_t pilotID);
-	LogisticsPilot* getPilot(PCSTR pilotName);
+	LogisticsPilot* getPilot(const std::wstring_view& pilotName);
 	int32_t getPilotCount(void);
 	int32_t getPilots(LogisticsPilot**, int32_t& count);
-	PCSTR getBestPilot(int32_t mechWeight);
+	const std::wstring_view& getBestPilot(int32_t mechWeight);
 	bool gotPilotsLeft(void);
 
-	void setPilotUnused(PCSTR pPilot);
+	void setPilotUnused(const std::wstring_view& pPilot);
 
 	int32_t getVariantsInInventory(LogisticsVariant* pVar, bool bIncludeForceGroup);
-	int32_t getPlayerVariantNames(PCSTR*, int32_t& count);
+	int32_t getPlayerVariantNames(const std::wstring_view&*, int32_t& count);
 	int32_t getChassisVariants(
 		const LogisticsChassis* pChassis, LogisticsVariant** pVar, int32_t& count);
 
 	LogisticsVariant* getVariant(int32_t ID);
-	LogisticsVariant* getVariant(PCSTR mechName);
-	LogisticsVariant* getVariant(PCSTR pCSVFileNaem, int32_t VariantNum);
-	int32_t removeVariant(PCSTR varName);
+	LogisticsVariant* getVariant(const std::wstring_view& mechName);
+	LogisticsVariant* getVariant(const std::wstring_view& pCSVFileNaem, int32_t VariantNum);
+	int32_t removeVariant(const std::wstring_view& varName);
 
 	LogisticsMech* getMech(int32_t ID);
-	LogisticsMech* getMech(PCSTR MechName, PCSTR pilotName);
+	LogisticsMech* getMech(const std::wstring_view& MechName, const std::wstring_view& pilotName);
 	LogisticsMech* getMechWithoutForceGroup(LogisticsMech* clone);
 
 	void addMechToInventory(
@@ -71,7 +71,7 @@ public:
 		void); // takes mechs that are in the force group out of the inventory
 	void addMechToInventory(LogisticsVariant* pVar, int32_t addToForceGroup, LogisticsPilot*,
 		uint32_t color1 = 0xffffffff, uint32_t color2 = 0xffffffff, uint32_t color3 = 0xffffffff);
-	void removeMechFromInventory(PCSTR mechName, PCSTR pilotName);
+	void removeMechFromInventory(const std::wstring_view& mechName, const std::wstring_view& pilotName);
 
 	int32_t addMechToForceGroup(LogisticsMech* pMech, int32_t slot);
 	int32_t removeMechFromForceGroup(LogisticsMech* pMech, bool bRemovePilot);
@@ -108,13 +108,13 @@ public:
 	void setMissionCompleted(void);
 	int32_t updateAvailability(void);
 
-	const std::wstring& getCurrentMission(void) const;
-	const std::wstring& getLastMission(void) const;
-	int32_t setCurrentMission(const std::wstring& missionName);
-	void setSingleMission(PCSTR pName);
+	const std::wstring_view& getCurrentMission(void) const;
+	const std::wstring_view& getLastMission(void) const;
+	int32_t setCurrentMission(const std::wstring_view& missionName);
+	void setSingleMission(const std::wstring_view& pName);
 	bool isSingleMission(void);
 	int32_t getCurrentMissionTune(void);
-	PCSTR getCurrentABLScript(void) const;
+	const std::wstring_view& getCurrentABLScript(void) const;
 	int32_t getCurrentMissionId(void);
 
 	void clearInventory(void);
@@ -127,47 +127,47 @@ public:
 	int32_t getHelicopters(const LogisticsVariant**, int32_t& count);
 
 	int32_t getVehicles(const LogisticsVehicle**, int32_t& count);
-	LogisticsVehicle* getVehicle(PCSTR pName);
+	LogisticsVehicle* getVehicle(const std::wstring_view& pName);
 
 	int32_t setMechToModify(LogisticsMech* pVariant);
 	LogisticsMech* getMechToModify() { return currentlyModifiedMech; }
-	int32_t acceptMechModifications(PCSTR pNewVariantName);
+	int32_t acceptMechModifications(const std::wstring_view& pNewVariantName);
 	int32_t cancelMechModfications(void);
-	bool canReplaceVariant(PCSTR name);
-	bool canDeleteVariant(PCSTR name);
+	bool canReplaceVariant(const std::wstring_view& name);
+	bool canDeleteVariant(const std::wstring_view& name);
 
 	void setCurrentMissionNum(int32_t cMission);
 	int32_t getCurrentMissionNum(void);
 
 	int32_t getAvailableComponents(LogisticsComponent** pComps, int32_t& maxCount);
 	int32_t getAllComponents(LogisticsComponent** pComps, int32_t& maxCount);
-	PCSTR getCurrentOperationFileName(void);
-	PCSTR getCurrentVideoFileName(void);
-	PCSTR getCurrentMissionDescription(void);
-	int32_t getAvailableMissions(PCSTR* missionNames, int32_t& count);
-	int32_t getCurrentMissions(PCSTR* missionNames, int32_t& count);
-	bool getMissionAvailable(PCSTR missionName);
-	PCSTR getCurrentMissionFriendlyName();
-	PCSTR getMissionFriendlyName(PCSTR missionName);
+	const std::wstring_view& getCurrentOperationFileName(void);
+	const std::wstring_view& getCurrentVideoFileName(void);
+	const std::wstring_view& getCurrentMissionDescription(void);
+	int32_t getAvailableMissions(const std::wstring_view&* missionNames, int32_t& count);
+	int32_t getCurrentMissions(const std::wstring_view&* missionNames, int32_t& count);
+	bool getMissionAvailable(const std::wstring_view& missionName);
+	const std::wstring_view& getCurrentMissionFriendlyName();
+	const std::wstring_view& getMissionFriendlyName(const std::wstring_view& missionName);
 	int32_t getMaxTeams(void) const;
 	int32_t getMaxPlayers(void) const;
 
-	int32_t acceptMechModificationsUseOldVariant(PCSTR name);
+	int32_t acceptMechModificationsUseOldVariant(const std::wstring_view& name);
 
-	const std::wstring& getCampaignName(void) const;
+	const std::wstring_view& getCampaignName(void) const;
 
-	int32_t setCurrentMission(PCSTR missionName);
+	int32_t setCurrentMission(const std::wstring_view& missionName);
 
-	void startNewCampaign(PCSTR fileName = "campaign");
+	void startNewCampaign(const std::wstring_view& fileName = "campaign");
 	void startMultiPlayer(void);
-	void setPurchaseFile(PCSTR fileName);
+	void setPurchaseFile(const std::wstring_view& fileName);
 
 	Building* getBuilding(int32_t nameID);
 	int32_t getBuildings(Building** bdgs, int32_t& count);
 
 	bool campaignOver(void);
-	PCSTR getCurrentBigVideo(void) const;
-	PCSTR getFinalVideo(void) const;
+	const std::wstring_view& getCurrentBigVideo(void) const;
+	const std::wstring_view& getFinalVideo(void) const;
 
 	bool newMechsAvailable() { return bNewMechs; }
 	bool newPilotsAvailable() { return bNewPilots; }
@@ -177,8 +177,8 @@ public:
 	void setNewWeaponsAcknowledged() { bNewWeapons = 0; }
 	void setNewMechsAcknowledged() { bNewMechs = 0; }
 
-	void addNewBonusPurchaseFile(PCSTR pFileName);
-	void appendAvailability(PCSTR pFileName, bool* availableArray);
+	void addNewBonusPurchaseFile(const std::wstring_view& pFileName);
+	void appendAvailability(const std::wstring_view& pFileName, bool* availableArray);
 
 	bool skipLogistics(void);
 	bool showChooseMission(void);
@@ -249,5 +249,4 @@ private:
 	void clearVariants(void);
 };
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsData.h )

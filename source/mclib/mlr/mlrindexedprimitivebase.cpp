@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <mlr/mlrindexedprimitivebase.hpp>
+#include "mlr/mlrindexedprimitivebase.h"
 
-// using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
-namespace MidLevelRenderer
-{
 std::vector<uint16_t> clipExtraIndex;
 std::vector<uint16_t> indexOffset;
-} // namespace MidLevelRenderer
 
 //#############################################################################
 //#####################    MLRIndexedPrimitiveBase    #########################
@@ -20,7 +17,7 @@ std::vector<uint16_t> indexOffset;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 
 MLRIndexedPrimitiveBase::ClassData* MLRIndexedPrimitiveBase::DefaultData = nullptr;
 
@@ -209,3 +206,5 @@ MLRIndexedPrimitiveBase::CheckIndicies()
 	}
 	return true;
 }
+
+} // namespace MidLevelRenderer

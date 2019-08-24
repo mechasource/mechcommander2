@@ -17,7 +17,7 @@
 //#include "dstd.h"
 //#include "dheap.h"
 //#include <memory.h>
-//#include <gameos.hpp>
+//#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -88,11 +88,11 @@ protected:
 	uint32_t whoMadeMe;
 
 	//		BOOL	VMQuery (PVOID pvAddress, PVMQUERY pVMQ);
-	//		PCSTR   GetMemStorageText (uint32_t dwStorage);
-	//		PSTR	GetProtectText (uint32_t dwProtect, PSTR szBuf, BOOL
+	//		const std::wstring_view&   GetMemStorageText (uint32_t dwStorage);
+	//		const std::wstring_view&	GetProtectText (uint32_t dwProtect, const std::wstring_view& szBuf, BOOL
 	// fShowFlags);
-	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, PSTR szLine, int32_t
-	// nMaxLen); 		void	ConstructBlkInfoLine (PVMQUERY pVMQ, PSTR
+	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, const std::wstring_view& szLine, int32_t
+	// nMaxLen); 		void	ConstructBlkInfoLine (PVMQUERY pVMQ, const std::wstring_view&
 	// szLine, int32_t nMaxLen);
 
 public:
@@ -143,7 +143,7 @@ protected:
 	size_t heapSize;
 	bool mallocFatals;
 	int32_t heapState;
-	PSTR heapName;
+	const std::wstring_view& heapName;
 	bool useGOSGuardPage;
 	HGOSHEAP gosHeap;
 
@@ -162,7 +162,7 @@ protected:
 
 public:
 	UserHeap(void);
-	int32_t init(uint32_t memSize, PSTR heapId = nullptr, bool useGOS = false);
+	int32_t init(uint32_t memSize, const std::wstring_view& heapId = nullptr, bool useGOS = false);
 
 	~UserHeap(void);
 	void destroy(void);
@@ -186,7 +186,7 @@ public:
 
 	virtual uint8_t heapType(void) { return USER_HEAP; }
 
-	PSTR getHeapName(void) { return heapName; }
+	const std::wstring_view& getHeapName(void) { return heapName; }
 
 	bool pointerOnHeap(PVOID ptr);
 

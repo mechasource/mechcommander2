@@ -13,7 +13,7 @@
 #ifndef MECH_H
 #define MECH_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "mover.h"
 //#include "dmech.h"
 //#include "gameobj.h"
@@ -117,7 +117,7 @@ extern float metersPerWorldUnit;
 // Enums
 //------------------------------------------------------------------------------------------
 
-typedef enum
+enum class 
 {
 	MECH_BODY_LOCATION_ANY = -1,
 	MECH_BODY_LOCATION_HEAD,
@@ -131,7 +131,7 @@ typedef enum
 	NUM_MECH_BODY_LOCATIONS
 } MechBodyLocationType;
 
-typedef enum
+enum class 
 {
 	MECH_ARMOR_LOCATION_ANY = -1,
 	MECH_ARMOR_LOCATION_HEAD,
@@ -148,7 +148,7 @@ typedef enum
 	NUM_MECH_ARMOR_LOCATIONS
 } MechArmorLocationType;
 
-typedef enum
+enum class 
 {
 	LEG_STATUS_NORMAL,
 	LEG_STATUS_HURTING,
@@ -158,21 +158,21 @@ typedef enum
 	NUM_LEG_STATUSES
 } LegStatusType;
 
-typedef enum
+enum class 
 {
 	TORSO_STATUS_NORMAL,
 	TORSO_STATUS_IMPAIRED,
 	NUM_TORSO_STATUSES
 } TorsoStatusType;
 
-typedef enum
+enum class 
 {
 	MECH_PILOT_CHECK_CONDITION_NO_LEG,
 	MECH_PILOT_CHECK_CONDITION_NO_HIP,
 	NUM_MECH_PILOT_CHECK_CONDITIONS
 } MechPilotCheckCondition;
 
-typedef enum
+enum class 
 {
 	MECH_STATUSCHUNK_BODYSTATE_NORMAL,
 	MECH_STATUSCHUNK_BODYSTATE_STANDING,
@@ -196,7 +196,7 @@ public:
 	bool isEndoSteel; // has endosteel frame?
 	uint8_t maxInternalStructure[NUM_BODY_LOCATIONS];
 
-	PSTR anim;
+	const std::wstring_view& anim;
 	uint8_t moveAnimSpeed[3];
 
 	// uint32_t		controlType;								// Who controls us, Player,
@@ -238,7 +238,7 @@ public:
 		init(void);
 	}
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	virtual GameObjectPtr createInstance(void);
 
@@ -410,13 +410,13 @@ public:
 
 	virtual int32_t init(uint32_t variantNum);
 
-	virtual int32_t init(FilePtr mechFile);
+	virtual int32_t init(std::unique_ptr<File> mechFile);
 
 	virtual void destroy(void);
 
 	virtual void clear(void);
 
-	virtual int32_t write(FilePtr mechFile);
+	virtual int32_t write(std::unique_ptr<File> mechFile);
 
 	virtual float getStatusRating(void);
 
@@ -448,7 +448,7 @@ public:
 
 	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition);
+	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetposition);
 
 	virtual float getWeaponHeat(int32_t weaponIndex)
 	{
@@ -493,7 +493,7 @@ public:
 
 	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
 		int32_t weaponIndex, float modifiers, int32_t* range,
-		Stuff::Vector3D* targetPoint = nullptr);
+		Stuff::Vector3D* targetpoint = nullptr);
 
 	virtual float getTotalEffectiveness(void);
 
@@ -518,11 +518,11 @@ public:
 	virtual bool injureBodyLocation(int32_t bodyLocation, float damage);
 
 	virtual int32_t handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+		Stuff::Vector3D* targetpoint, bool hit, float entryAngle, int32_t numMissiles,
 		int32_t hitLocation);
 
 	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
-		int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& damageDone);
+		int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetpoint, float& damageDone);
 
 	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
@@ -651,7 +651,7 @@ public:
 
 	void damageLoadedComponents(void);
 
-	virtual PSTR getIfaceName(void) { return (longName); }
+	virtual const std::wstring_view& getIfaceName(void) { return (longName); }
 
 	static int32_t loadGameSystem(FitIniFilePtr mechFile);
 

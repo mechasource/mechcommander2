@@ -23,7 +23,7 @@ enum __dteam_const : uint32_t
 	NUM_CONTACT_UPDATES_PER_PASS = 3,
 };
 
-typedef enum Relation : uint32_t
+enum class Relation : uint32_t
 {
 	RELATION_FRIENDLY,
 	RELATION_NEUTRAL,

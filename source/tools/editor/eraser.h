@@ -11,13 +11,12 @@ Eraser.h			: Interface for the Eraser component.
 #define ERASER_H
 
 //#include "brush.h"
-//#include <elist.h>
+//#include "elist.h"
 //#include "action.h"
 //#include "buildingbrush.h"
 //#include "linkbrush.h"
 //#include "editorinterface.h" /*only for the definition of teamsaction*/
 
-//*************************************************************************************************
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -56,5 +55,4 @@ private:
 	EraserAction* pCurAction;
 };
 
-//*************************************************************************************************
 #endif // end of file ( Eraser.h )

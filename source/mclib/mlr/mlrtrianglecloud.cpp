@@ -4,12 +4,12 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlrsorter.hpp>
-#include <mlr/mlrclipper.hpp>
-#include <mlr/mlrtrianglecloud.hpp>
+#include "mlr/mlr.h"
+#include "mlr/mlrsorter.h"
+#include "mlr/mlrclipper.h"
+#include "mlr/mlrtrianglecloud.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -636,3 +636,5 @@ MLRTriangleCloud::TestInstance(void) const
 		_ASSERT(*usedNrOfTriangles <= maxNrOf);
 	}
 }
+
+} // namespace MidLevelRenderer

@@ -9,12 +9,12 @@ LogisticsDialog.cpp			: Implementation of the LogisticsDialog component.
 
 #include "stdinc.h"
 #include "logisticsdialog.h"
-#include <mechgui/abutton.h>
+#include "mechgui/abutton.h"
 #include "inifile.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "windows.h"
-#include "..\resource.h"
-#include <mechgui/aedit.h>
+#include "resource.h"
+#include "mechgui/aedit.h"
 #include "logisticsdata.h"
 #include <malloc.h>
 #include "missionbriefingscreen.h"
@@ -216,7 +216,7 @@ LogisticsOKDialog::setText(int32_t textID, int32_t CancelButton, int32_t OKButto
 }
 
 void
-LogisticsOKDialog::setText(PCSTR mainText)
+LogisticsOKDialog::setText(const std::wstring_view& mainText)
 {
 	textObjects[0].setText(mainText);
 }
@@ -292,7 +292,7 @@ LogisticsOneButtonDialog::setText(int32_t textID, int32_t CancelButton, int32_t 
 }
 
 void
-LogisticsOneButtonDialog::setText(PCSTR mainText)
+LogisticsOneButtonDialog::setText(const std::wstring_view& mainText)
 {
 	textObjects[0].setText(mainText);
 }
@@ -427,7 +427,7 @@ LogisticsSaveDialog::beginCampaign()
 }
 
 void
-LogisticsSaveDialog::initDialog(PCSTR path, bool bCampaign)
+LogisticsSaveDialog::initDialog(const std::wstring_view& path, bool bCampaign)
 {
 	gameListBox.removeAllItems(true);
 	// need to add items to the save game list
@@ -443,7 +443,7 @@ LogisticsSaveDialog::initDialog(PCSTR path, bool bCampaign)
 			{
 				aLocalizedListItem* pEntry = new aLocalizedListItem();
 				*pEntry = s_instance->templateItem;
-				PSTR pExt = strstr(findResult.cFileName, ".fit");
+				const std::wstring_view& pExt = strstr(findResult.cFileName, ".fit");
 				if (!pExt)
 				{
 					pExt = (strstr(findResult.cFileName, ".FIT"));
@@ -505,12 +505,12 @@ LogisticsSaveDialog::initDialog(PCSTR path, bool bCampaign)
 }
 
 bool
-LogisticsSaveDialog::isCorrectVersionSaveGame(PSTR fileName)
+LogisticsSaveDialog::isCorrectVersionSaveGame(const std::wstring_view& fileName)
 {
 	FullPathFileName path;
 	path.init(savePath, fileName, ".fit");
 	FitIniFile file;
-	if (NO_ERROR != file.open((PSTR)(PCSTR)path))
+	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
 		char errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
@@ -527,12 +527,12 @@ LogisticsSaveDialog::isCorrectVersionSaveGame(PSTR fileName)
 }
 
 void
-LogisticsSaveDialog::readCampaignNameFromFile(PSTR fileName, PSTR resultName, int32_t len)
+LogisticsSaveDialog::readCampaignNameFromFile(const std::wstring_view& fileName, const std::wstring_view& resultName, int32_t len)
 {
 	FullPathFileName path;
 	path.init(campaignPath, fileName, ".fit");
 	FitIniFile file;
-	if (NO_ERROR != file.open((PSTR)(PCSTR)path))
+	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
 		char errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
@@ -570,12 +570,12 @@ LogisticsSaveDialog::update()
 		bDone = true;
 	buttons[2].disable(0);
 	buttons[0].disable(0);
-	std::wstring fileName;
+	const std::wstring_view& fileName;
 	edits[0].getEntry(fileName);
 	if (bCampaign)
 	{
 		fileName.Empty();
-		std::wstring displayName;
+		const std::wstring_view& displayName;
 		edits[0].getEntry(displayName);
 		{
 			/*if there is a selected item and it matches the text in the
@@ -693,7 +693,7 @@ LogisticsSaveDialog::update()
 					gameListBox.GetItem(i)->setColor(edits[0].getColor());
 				}
 				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
-				PCSTR text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
+				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = ((aLocalizedListItem*)gameListBox.GetItem(item))->getHiddenText();
 				// update mission info
@@ -785,8 +785,8 @@ LogisticsSaveDialog::updateMissionInfo()
 		strcat(real, "\n");
 		time_t time = file.getFileMTime();
 		struct tm* ptm = localtime(&time);
-		PSTR timeStr = gos_GetFormattedTime(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
-		PSTR dateStr = gos_GetFormattedDate(0, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday);
+		const std::wstring_view& timeStr = gos_GetFormattedTime(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
+		const std::wstring_view& dateStr = gos_GetFormattedDate(0, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday);
 		cLoadString(IDS_DIALOG_TIME, tmp2, 255);
 		sprintf(tmp, tmp2, dateStr, timeStr);
 		strcat(real, tmp);
@@ -800,7 +800,7 @@ LogisticsSaveDialog::updateMissionInfo()
 }
 
 void
-LogisticsSaveDialog::setMission(PCSTR fileName)
+LogisticsSaveDialog::setMission(const std::wstring_view& fileName)
 {
 	if (strlen(fileName))
 	{
@@ -901,7 +901,7 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 {
 	if (YES == who)
 	{
-		std::wstring str;
+		const std::wstring_view& str;
 		edits[0].getEntry(str);
 		bool bFound = 0;
 		// look and see if you are overwriting anything here...
@@ -914,7 +914,7 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 				char str[256];
 				cLoadString(IDS_DIALOG_OVERWRITE_PROMPT, str, 255);
 				char promptString[256];
-				sprintf(promptString, str, (PCSTR)selectedName);
+				sprintf(promptString, str, (const std::wstring_view&)selectedName);
 				LogisticsOKDialog::instance()->setText(
 					IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 				LogisticsOKDialog::instance()->setText(promptString);
@@ -947,11 +947,11 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 	{
 		if (gameListBox.GetItemCount())
 		{
-			std::wstring tmpName;
+			const std::wstring_view& tmpName;
 			edits[0].getEntry(tmpName);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 			{
-				PCSTR pFileName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
+				const std::wstring_view& pFileName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
 				if (tmpName.Compare(pFileName, 0) == 0)
 				{
 					selectedName = pFileName;
@@ -961,7 +961,7 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 			char str[256];
 			cLoadString(IDS_DIALOG_DELETE_PROMPT, str, 255);
 			char promptString[256];
-			sprintf(promptString, str, (PCSTR)tmpName);
+			sprintf(promptString, str, (const std::wstring_view&)tmpName);
 			LogisticsOKDialog::instance()->setText(
 				IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 			LogisticsOKDialog::instance()->setText(promptString);
@@ -1082,7 +1082,7 @@ LogisticsVariantDialog::initVariantList()
 	LogisticsData::instance->getPlayerVariantNames(nullptr, count);
 	if (count)
 	{
-		PCSTR* pNames = (PCSTR*)_alloca(count * sizeof(PSTR));
+		const std::wstring_view&* pNames = (const std::wstring_view&*)_alloca(count * sizeof(const std::wstring_view&));
 		LogisticsData::instance->getPlayerVariantNames(pNames, count);
 		int32_t bValid = 0;
 		for (size_t i = 0; i < count; i++)
@@ -1177,7 +1177,7 @@ LogisticsVariantDialog::update()
 					gameListBox.GetItem(i)->setColor(edits[0].getColor());
 				}
 				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
-				PCSTR text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
+				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = text;
 			}
@@ -1191,7 +1191,7 @@ LogisticsVariantDialog::update()
 			}
 		}
 	}
-	std::wstring text;
+	const std::wstring_view& text;
 	edits[0].getEntry(text);
 	if ((!bTranscript && !LogisticsData.instance->canReplaceVariant(text)) || !text.Length())
 	{
@@ -1290,7 +1290,7 @@ LogisticsVariantDialog::handleMessage(uint32_t what, uint32_t who)
 				char str[256];
 				cLoadString(IDS_DIALOG_OVERWRITE_PROMPT, str, 255);
 				char promptString[256];
-				sprintf(promptString, str, (PCSTR)selectedName);
+				sprintf(promptString, str, (const std::wstring_view&)selectedName);
 				LogisticsOKDialog::instance()->setText(
 					IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 				LogisticsOKDialog::instance()->setText(promptString);
@@ -1318,7 +1318,7 @@ LogisticsVariantDialog::handleMessage(uint32_t what, uint32_t who)
 		char str[256];
 		cLoadString(IDS_DIALOG_DELETE_PROMPT, str, 255);
 		char promptString[256];
-		sprintf(promptString, str, (PCSTR)selectedName);
+		sprintf(promptString, str, (const std::wstring_view&)selectedName);
 		LogisticsOKDialog::instance()->setText(
 			IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 		LogisticsOKDialog::instance()->setText(promptString);
@@ -1393,7 +1393,7 @@ LogisticsAcceptVariantDialog::update()
 					gameListBox.GetItem(i)->setColor(edits[0].getColor());
 				}
 				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
-				PCSTR text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
+				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = text;
 			}
@@ -1407,7 +1407,7 @@ LogisticsAcceptVariantDialog::update()
 			}
 		}
 	}
-	std::wstring text;
+	const std::wstring_view& text;
 	edits[0].getEntry(text);
 	if (!LogisticsData.instance->canReplaceVariant(text))
 	{
@@ -1497,7 +1497,7 @@ LogisticsMapInfoDialog::end()
 	statics[10].setColor((int32_t)0);
 }
 void
-LogisticsMapInfoDialog::setMap(PCSTR pFileName)
+LogisticsMapInfoDialog::setMap(const std::wstring_view& pFileName)
 {
 	int32_t textureHandle = MissionBriefingScreen::getMissionTGA(pFileName);
 	statics[10].setTexture(textureHandle);
@@ -1572,7 +1572,7 @@ LogisticsMapInfoDialog::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (PSTR)path);
+		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return false;
 	}
@@ -1594,5 +1594,4 @@ LogisticsMapInfoDialog::handleMessage(uint32_t, uint32_t who)
 }
 //-------------------------------------------------------------------------------------------------
 
-//*************************************************************************************************
 // end of file ( LogisticsDialog.cpp )

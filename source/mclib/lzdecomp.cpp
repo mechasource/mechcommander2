@@ -11,7 +11,7 @@
 //---------------------------------------------------------------------------
 // Static Globals
 
-typedef enum __lzdecomp_const
+enum class __lzdecomp_const
 {
 	HASH_CLEAR = 256, // clear hash table command code
 	HASH_EOF = 257, // End Of Data command code

@@ -18,7 +18,7 @@ aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 //#include "mclib.h"
 #include "soundsys.h"
 
-//#include "..\resource.h"
+//#include "resource.h"
 // #include <mbstring.h>
 
 #define ENTRY_MAX_CHARS 1000
@@ -272,7 +272,7 @@ aEdit::render()
 	if (!isShowing())
 		return;
 	aObject::render();
-	std::wstring textToDraw = text;
+	const std::wstring_view& textToDraw = text;
 	textToDraw += ' '; // have to do this for loc, some fonts are getting
 	// clipped in millenium
 	// draw selection range
@@ -348,12 +348,12 @@ aEdit::render()
 }
 
 void
-aEdit::getEntry(std::wstring& str)
+aEdit::getEntry(const std::wstring_view& str)
 {
 	str = text;
 }
 void
-aEdit::setEntry(const std::wstring& str, uint8_t byHighlight)
+aEdit::setEntry(const std::wstring_view& str, uint8_t byHighlight)
 {
 	text = str;
 	if (byHighlight)
@@ -444,8 +444,8 @@ aEdit::backSpace(int32_t nPosition)
 	nCharCount = 1;
 	if (nPosition > 1)
 	{
-		puint8_t pPrev = _mbsdec((pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nPosition);
-		nCharCount = (pcuint8_t)(PCSTR)text + nPosition - pPrev;
+		puint8_t pPrev = _mbsdec((pcuint8_t)(const std::wstring_view&)text, (pcuint8_t)(const std::wstring_view&)text + nPosition);
+		nCharCount = (pcuint8_t)(const std::wstring_view&)text + nPosition - pPrev;
 	}
 	text.Remove(nPosition - nCharCount, nPosition - 1);
 	nInsertion2 = nInsertion1 = nPosition - nCharCount;
@@ -527,8 +527,8 @@ aEdit::handleFormattingKeys(int32_t keycode)
 				if (nInsertion2 > 1)
 				{
 					puint8_t pPrev =
-						_mbsdec((pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2);
-					decrementCount = (pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;
+						_mbsdec((pcuint8_t)(const std::wstring_view&)text, (pcuint8_t)(const std::wstring_view&)text + nInsertion2);
+					decrementCount = (pcuint8_t)(const std::wstring_view&)text + nInsertion2 - pPrev;
 				}
 				nInsertion2 -= decrementCount;
 			}
@@ -543,8 +543,8 @@ aEdit::handleFormattingKeys(int32_t keycode)
 				if (nInsertion1 > 1)
 				{
 					puint8_t pPrev =
-						_mbsdec((pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2);
-					decrementCount = (pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;
+						_mbsdec((pcuint8_t)(const std::wstring_view&)text, (pcuint8_t)(const std::wstring_view&)text + nInsertion2);
+					decrementCount = (pcuint8_t)(const std::wstring_view&)text + nInsertion2 - pPrev;
 				}
 				nInsertion1 -= decrementCount;
 			}
@@ -671,7 +671,7 @@ aEdit::findChar(int32_t nXPos)
 }
 
 void
-aEdit::init(FitIniFile* file, PCSTR header)
+aEdit::init(FitIniFile* file, const std::wstring_view& header)
 {
 	int32_t result = file->seekBlock(header);
 	if (result != NO_ERROR)
@@ -695,7 +695,7 @@ aEdit::init(FitIniFile* file, PCSTR header)
 	file->readIdLong("HighlightColor", highlightColor);
 	file->readIdLong("SelectedColor", selectedColor);
 	file->readIdLong("HelpCaption", helpHeader);
-	file->readIdLong("HelpDesc", helpID);
+	file->readIdLong("HelpDesc", helpid);
 }
 
 int32_t
@@ -717,5 +717,4 @@ aEdit::setFont(int32_t resID)
 	font.init(resID);
 }
 
-//*************************************************************************************************
 // end of file ( aEdit.cpp )

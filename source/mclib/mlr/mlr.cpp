@@ -6,52 +6,52 @@
 
 #include "mechclassids.h"
 
-#include <mlr/mlrlight.hpp>
-#include <mlr/mlrtexturepool.hpp>
-#include <mlr/mlrclipper.hpp>
-#include <mlr/mlrsorter.hpp>
-#include <mlr/mlrsortbyorder.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlreffect.hpp>
-#include <mlr/mlrpointcloud.hpp>
-#include <mlr/mlrtrianglecloud.hpp>
-#include <mlr/mlrngoncloud.hpp>
-#include <mlr/mlrcardcloud.hpp>
-#include <mlr/mlrambientlight.hpp>
-#include <mlr/mlrinfinitelight.hpp>
-#include <mlr/mlrinfinitelightwithfalloff.hpp>
-#include <mlr/mlrpointlight.hpp>
-#include <mlr/mlrspotlight.hpp>
-#include <mlr/mlrlightmap.hpp>
-#include <mlr/mlrprimitivebase.hpp>
-#include <mlr/mlrindexedprimitivebase.hpp>
-#include <mlr/mlrlinecloud.hpp>
-#include <mlr/mlrindexedtrianglecloud.hpp>
-#include <mlr/mlrlookuplight.hpp>
+#include "mlr/mlrlight.h"
+#include "mlr/mlrtexturepool.h"
+#include "mlr/mlrclipper.h"
+#include "mlr/mlrsorter.h"
+#include "mlr/mlrsortbyorder.h"
+#include "mlr/mlrshape.h"
+#include "mlr/mlreffect.h"
+#include "mlr/mlrpointcloud.h"
+#include "mlr/mlrtrianglecloud.h"
+#include "mlr/mlrngoncloud.h"
+#include "mlr/mlrcardcloud.h"
+#include "mlr/mlrambientlight.h"
+#include "mlr/mlrinfinitelight.h"
+#include "mlr/mlrinfinitelightwithfalloff.h"
+#include "mlr/mlrpointlight.h"
+#include "mlr/mlrspotlight.h"
+#include "mlr/mlrlightmap.h"
+#include "mlr/mlrprimitivebase.h"
+#include "mlr/mlrindexedprimitivebase.h"
+#include "mlr/mlrlinecloud.h"
+#include "mlr/mlrindexedtrianglecloud.h"
+#include "mlr/mlrlookuplight.h"
 
-#include <mlr/mlr_i_pmesh.hpp>
-#include <mlr/mlr_i_c_pmesh.hpp>
-#include <mlr/mlr_i_l_pmesh.hpp>
-#include <mlr/mlr_i_dt_pmesh.hpp>
-#include <mlr/mlr_i_c_dt_pmesh.hpp>
-#include <mlr/mlr_i_l_dt_pmesh.hpp>
-#include <mlr/mlr_i_mt_pmesh.hpp>
-#include <mlr/mlr_i_det_pmesh.hpp>
-#include <mlr/mlr_i_c_det_pmesh.hpp>
-#include <mlr/mlr_i_l_det_pmesh.hpp>
-#include <mlr/mlr_i_tmesh.hpp>
-#include <mlr/mlr_i_det_tmesh.hpp>
-#include <mlr/mlr_i_c_tmesh.hpp>
-#include <mlr/mlr_i_l_tmesh.hpp>
-#include <mlr/mlr_i_dt_tmesh.hpp>
-#include <mlr/mlr_i_c_dt_tmesh.hpp>
-#include <mlr/mlr_i_l_dt_tmesh.hpp>
-#include <mlr/mlr_i_c_det_tmesh.hpp>
-#include <mlr/mlr_i_l_det_tmesh.hpp>
+#include "mlr/mlr_i_pmesh.h"
+#include "mlr/mlr_i_c_pmesh.h"
+#include "mlr/mlr_i_l_pmesh.h"
+#include "mlr/mlr_i_dt_pmesh.h"
+#include "mlr/mlr_i_c_dt_pmesh.h"
+#include "mlr/mlr_i_l_dt_pmesh.h"
+#include "mlr/mlr_i_mt_pmesh.h"
+#include "mlr/mlr_i_det_pmesh.h"
+#include "mlr/mlr_i_c_det_pmesh.h"
+#include "mlr/mlr_i_l_det_pmesh.h"
+#include "mlr/mlr_i_tmesh.h"
+#include "mlr/mlr_i_det_tmesh.h"
+#include "mlr/mlr_i_c_tmesh.h"
+#include "mlr/mlr_i_l_tmesh.h"
+#include "mlr/mlr_i_dt_tmesh.h"
+#include "mlr/mlr_i_c_dt_tmesh.h"
+#include "mlr/mlr_i_l_dt_tmesh.h"
+#include "mlr/mlr_i_c_det_tmesh.h"
+#include "mlr/mlr_i_l_det_tmesh.h"
 
-#include <mlr/mlr.hpp>
+#include "mlr/mlr.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 #ifdef _GAMEOS_HPP_
 extern uint32_t gShowClippedPolys;
@@ -168,7 +168,7 @@ MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
 	uint32_t Max_Size_Of_LightMap_MemoryStream, bool Convert_To_Triangle_Meshes)
 {
 	_ASSERT(FirstFreeMLRClassID <= Stuff::LastMLRClassID);
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	_ASSERT(!StaticHeap);
 	StaticHeap = gos_CreateMemoryHeap("MLR Static", 0, ParentClientHeap);
 	Check_Pointer(StaticHeap);
@@ -231,7 +231,7 @@ MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
 	// GOSVertex::SetFogTableEntry(i+1, 700.0f, 1000.0f, 0.0f);
 	// }
 #endif
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	gos_PopCurrentHeap();
 #endif
 	//
@@ -347,7 +347,7 @@ MidLevelRenderer::TerminateClasses(void)
 	MLRClipper::TerminateClass();
 	MLRTexturePool::TerminateClass();
 	MLRLight::TerminateClass();
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	Check_Pointer(Heap);
 	gos_DestroyMemoryHeap(Heap);
 	Heap = nullptr;
@@ -389,3 +389,5 @@ MidLevelRenderer::WriteMLRVersion(std::iostream erf_stream)
 	Check_Object(erf_stream);
 	*erf_stream << 'MLR#' << static_cast<uint32_t>(Current_MLR_Version);
 }
+
+} // namespace MidLevelRenderer

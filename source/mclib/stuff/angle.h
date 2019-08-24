@@ -10,7 +10,7 @@
 #ifndef _ANGLE_HPP_
 #define _ANGLE_HPP_
 
-#include <stuff/scalar.hpp>
+#include "stuff/scalar.h"
 
 namespace Stuff
 {

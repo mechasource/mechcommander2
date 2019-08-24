@@ -15,7 +15,7 @@
 
 // #include <windows.h>
 // #include <string.h>
-// #include <gameos.hpp>
+// #include "gameos.hpp"
 
 union {
 	uint32_t numval;
@@ -37,7 +37,7 @@ char MissingTitleString[256];
 //---------------------------------------------------------------------------
 //	class FastFile member functions
 //---------------------------------------------------------------------------
-#if _CONSIDERED_DISABLED
+#if CONSIDERED_DISABLED
 PVOID
 FastFile::operator new(size_t mySize)
 {
@@ -78,7 +78,7 @@ FastFile::operator delete(PVOID us)
 
 //---------------------------------------------------------------------------
 HRESULT
-FastFile::open(std::wstring& fileName)
+FastFile::open(const std::wstring_view& fileName)
 {
 	//---------------------------------------------
 	//-- Read in ALL of the file names and offsets
@@ -143,7 +143,7 @@ FastFile::open(std::wstring& fileName)
 
 //---------------------------------------------------------------------------
 HRESULT
-FastFile::openFast(uint32_t hash, std::wstring& fileName, ffindex& index)
+FastFile::openFast(uint32_t hash, const std::wstring_view& fileName, ffindex& index)
 {
 	//------------------------------------------------------------------
 	//-- In order to use this, the file name must be part of the index.

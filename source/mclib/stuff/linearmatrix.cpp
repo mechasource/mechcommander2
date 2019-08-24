@@ -8,9 +8,9 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/linearmatrix.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/linearmatrix.h"
 
 using namespace Stuff;
 

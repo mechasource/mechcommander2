@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrlight.hpp>
+#include "mlr/mlrlight.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //###########################    MLRLight    ##################################
@@ -137,7 +137,7 @@ MLRLight::Make(Stuff::Page* page)
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
-	PCSTR type;
+	const std::wstring_view& type;
 	page->GetEntry("LightType", &type, true);
 	MLRLight* light = nullptr;
 	if (!_stricmp(type, "Ambient"))
@@ -246,3 +246,5 @@ MLRLight::GetColor(float& r, float& g, float& b)
 	g = color.green;
 	b = color.blue;
 }
+
+} // namespace MidLevelRenderer

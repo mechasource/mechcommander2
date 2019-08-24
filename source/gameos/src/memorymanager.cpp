@@ -34,7 +34,7 @@
 
 #include "stdinc.h"
 
-#include <memorymanager.hpp>
+#include "memorymanager.hpp"
 
 typedef struct _MemStack
 {
@@ -48,8 +48,8 @@ typedef MemStack* PMemStack;
 // -----------------------------------------------------------------------------
 // Global data exported from this module
 
-extern HGOSHEAP HeapList[256];
-extern HGOSHEAP gCurrentHeapStack[64];
+// extern HGOSHEAP HeapList[256];
+// extern HGOSHEAP gCurrentHeapStack[64];
 extern PMEMORYPOOL gMemoryPool[MemoryPools];
 size_t MemoryLeaks;
 size_t LeakedMemory;

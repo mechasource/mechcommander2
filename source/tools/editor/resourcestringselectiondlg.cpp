@@ -10,7 +10,7 @@
 #include "ResourceStringSelectionDlg.h"
 
 #include "assert.h"
-#include "../MCLib/Utilities.h" /*for cLoadString*/
+#include "utilities.h" /*for cLoadString*/
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -105,11 +105,11 @@ ResourceStringSelectionDlg::OnInitDialog()
 void
 ResourceStringSelectionDlg::OnOK()
 {
-	uint32_t selectionIndex = m_Combo.GetCurSel();
-	if (CB_ERR != selectionIndex)
+	uint32_t selectionindex = m_Combo.GetCurSel();
+	if (CB_ERR != selectionindex)
 	{
-		assert(m_ResourceStringIDs.Count() > selectionIndex);
-		m_SelectedResourceStringID = m_ResourceStringIDs[selectionIndex];
+		assert(m_ResourceStringIDs.Count() > selectionindex);
+		m_SelectedResourceStringID = m_ResourceStringIDs[selectionindex];
 	}
 	CDialog::OnOK();
 }

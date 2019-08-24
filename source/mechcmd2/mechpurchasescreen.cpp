@@ -10,11 +10,11 @@ component.
 
 #include "stdinc.h"
 #include "mechpurchasescreen.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "logisticsdata.h"
 #include "mechbayscreen.h"
 #include "gamesound.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "simplecamera.h"
 #include "attributemeter.h"
 #include "chatwindow.h"
@@ -491,5 +491,4 @@ MechPurchaseScreen::selectFirstBuyableMech()
 	return false;
 }
 
-//*************************************************************************************************
 // end of file ( MechPurchaseScreen.cpp )

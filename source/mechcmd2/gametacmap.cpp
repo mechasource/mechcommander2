@@ -15,7 +15,7 @@ gameTacMap.cpp			: Implementation of the gameTacMap component.
 #include "Objective.h"
 #include "mission.h"
 #include <windows.h>
-#include "..\resource.h"
+#include "resource.h"
 extern uint8_t godMode;
 extern bool useLeftRightMouseProfile;
 
@@ -295,7 +295,7 @@ GameTacMap::render()
 	// draw the movers
 	for (i = 0; i < (ObjectManager->numMovers); i++)
 	{
-		MoverPtr mover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 		if (mover && mover->getExists() && !(mover->isDestroyed() || mover->isDisabled()))
 		{
 			SensorSystem* pSensor = mover->getSensorSystem();
@@ -326,7 +326,7 @@ GameTacMap::render()
 						continue;
 				}
 			}
-			else if (ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]) || ((mover->getTeamId() != Team::home->id) && (contactStatus != CONTACT_NONE) && (mover->getStatus() != OBJECT_STATUS_SHUTDOWN) && (!mover->hasNullSignature()) && (mover->getEcmRange() <= 0.0f))) // Do not draw ECM mechs!!)
+			else if (ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderid]) || ((mover->getTeamId() != Team::home->id) && (contactStatus != CONTACT_NONE) && (mover->getStatus() != OBJECT_STATUS_SHUTDOWN) && (!mover->hasNullSignature()) && (mover->getEcmRange() <= 0.0f))) // Do not draw ECM mechs!!)
 			{
 				// Not on our side.  Draw by contact status
 				colorBlip = mover->getSelected() ? 0xffff3f3f : 0xffff0000;
@@ -471,8 +471,6 @@ GameTacMap::setPos(const RECT& newPos)
 	bottom = newPos.bottom;
 }
 
-//*************************************************************************************************
 // end of file ( TacMap.cpp )
 
-//*************************************************************************************************
 // end of file ( gameTacMap.cpp )

@@ -11,8 +11,8 @@ component.
 #include "stdinc.h"
 #include "logisticsmechdisplay.h"
 #include "logisticsmech.h"
-#include <mclib.h>
-#include "..\resource.h"
+#include "mclib.h"
+#include "resource.h"
 #include "prefs.h"
 
 LogisticsMechDisplay::LogisticsMechDisplay()
@@ -95,7 +95,7 @@ LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 			char text[64];
 			char tmpStr[64];
 			cLoadString(IDS_MB_MECH_WEIGHT, tmpStr, 63);
-			sprintf(text, tmpStr, pCurMech->getMaxWeight(), (PCSTR)pCurMech->getMechClass());
+			sprintf(text, tmpStr, pCurMech->getMaxWeight(), (const std::wstring_view&)pCurMech->getMechClass());
 			textObjects[3].setText(text);
 			int32_t tmpColor;
 			textObjects[2].setText(pCurMech->getVariant()->getOptimalRangeString(tmpColor));
@@ -109,7 +109,7 @@ LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 			attributeMeters[0].setValue(pCurMech->getArmor() / MAX_ARMOR_RANGE);
 			attributeMeters[1].setValue(pCurMech->getSpeed() / MAX_SPEED_RANGE);
 			attributeMeters[2].setValue(pCurMech->getJumpRange() * 25 / MAX_JUMP_RANGE);
-			std::wstring fileName = pMech->getFileName();
+			const std::wstring_view& fileName = pMech->getFileName();
 			int32_t index = fileName.Find('.');
 			fileName = fileName.Left(index);
 			index = fileName.ReverseFind('\\');
@@ -132,5 +132,4 @@ LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 	}
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsMechDisplay.cpp )

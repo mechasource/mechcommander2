@@ -10,7 +10,7 @@
 #ifndef _VECTOR3D_HPP_
 #define _VECTOR3D_HPP_
 
-#include <stuff/scalar.hpp>
+#include "stuff/scalar.h"
 
 namespace Stuff
 {
@@ -96,6 +96,10 @@ enum Axes : uint32_t
 #define LEFT_Z (-RIGHT_Z)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Vector3 alt1;
+XMFLOAT3 alt2;
+XMVECTOR alt3;
 
 class Vector3D
 {

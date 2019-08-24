@@ -18,7 +18,7 @@
 #include "packet.h"
 #endif
 
-#include <stuff/stuff.hpp>
+#include "stuff/stuff.h"
 
 //---------------------------------------------------------------------
 // Macro Definitions
@@ -97,7 +97,7 @@ public:
 
 	CraterManager(void) { init(void); }
 
-	int32_t init(int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName);
+	int32_t init(int32_t numCraters, uint32_t craterTypeSize, const std::wstring_view& craterFileName);
 
 	~CraterManager(void) { destroy(void); }
 

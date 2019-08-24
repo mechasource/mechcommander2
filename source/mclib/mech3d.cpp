@@ -138,7 +138,7 @@ char MechStateByGesture[MAX_MECH_ANIMATIONS] = {
 #define JUMP_PITCH (90.0f)
 
 extern bool reloadBounds;
-PSTR MechAnimationNames[MaxGestures + 2] = {
+const std::wstring_view& MechAnimationNames[MaxGestures + 2] = {
 	"StandToPark", // GesturePark							 0 -- Park
 	"ParkToStand", // GestureParkToStand					 1 --
 	// ParkToStand
@@ -190,7 +190,7 @@ bool Mech3DAppearanceType::animationLoadingEnabled = true;
 //-------------------------------------------------------------------------------
 // class Mech3DAppearanceType
 void
-Mech3DAppearanceType::init(PSTR fileName)
+Mech3DAppearanceType::init(const std::wstring_view& fileName)
 {
 	AppearanceType::init(fileName);
 	//---------------------------------------------------
@@ -429,7 +429,7 @@ Mech3DAppearanceType::init(PSTR fileName)
 			result = mechFile.readIdString("SmokeNodeName", smokeName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i].nodeId =
-				(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(smokeName) + 1);
+				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(smokeName) + 1);
 			gosASSERT(nodeData[i].nodeId != nullptr);
 			strcpy(nodeData[i].nodeId, smokeName);
 			nodeData[i].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -447,7 +447,7 @@ Mech3DAppearanceType::init(PSTR fileName)
 			result = mechFile.readIdLong("WeaponType", weaponType);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i + numSmokeNodes].nodeId =
-				(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName) + 1);
+				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName) + 1);
 			gosASSERT(nodeData[i + numSmokeNodes].nodeId != nullptr);
 			strcpy(nodeData[i + numSmokeNodes].nodeId, weaponName);
 			nodeData[i + numSmokeNodes].weaponType = weaponType;
@@ -462,7 +462,7 @@ Mech3DAppearanceType::init(PSTR fileName)
 			result = mechFile.readIdString("JumpNodeName", jumpName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i + numSmokeNodes + numWeaponNodes].nodeId =
-				(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(jumpName) + 1);
+				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(jumpName) + 1);
 			gosASSERT(nodeData[i + numSmokeNodes + numWeaponNodes].nodeId != nullptr);
 			strcpy(nodeData[i + numSmokeNodes + numWeaponNodes].nodeId, jumpName);
 			nodeData[i + numSmokeNodes + numWeaponNodes].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -477,7 +477,7 @@ Mech3DAppearanceType::init(PSTR fileName)
 			result = mechFile.readIdString("FootNodeName", footName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i + numSmokeNodes + numWeaponNodes + numJumpNodes].nodeId =
-				(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(footName) + 1);
+				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(footName) + 1);
 			gosASSERT(
 				nodeData[i + numSmokeNodes + numWeaponNodes + numJumpNodes].nodeId != nullptr);
 			strcpy(nodeData[i + numSmokeNodes + numWeaponNodes + numJumpNodes].nodeId, footName);
@@ -656,7 +656,7 @@ Mech3DAppearance::getWeaponNodePosition(int32_t nodeId)
 
 //-----------------------------------------------------------------------------
 Stuff::Vector3D
-Mech3DAppearance::getNodeNamePosition(PSTR nodeName)
+Mech3DAppearance::getNodeNamePosition(const std::wstring_view& nodeName)
 {
 	Stuff::Vector3D result = position;
 	if (!inView)
@@ -3074,7 +3074,7 @@ Mech3DAppearance::updateGeometry(void)
 }
 
 #ifdef _DEBUG
-FilePtr logFile = nullptr;
+std::unique_ptr<File> logFile = nullptr;
 #endif
 
 //-----------------------------------------------------------------------------
@@ -3375,10 +3375,10 @@ Mech3DAppearance::update(bool animate)
 		float takeoffFrame = mechType->getJumpTakeoffFrame();
 		float landingFrame = mechType->getJumpLandFrame();
 		//-----------------------------------------
-		// Get mech flying toward targetPosition.
+		// Get mech flying toward targetposition.
 		Stuff::Vector3D ownerPosition = position;
-		Stuff::Vector3D targetPosition = jumpDestination;
-		jumpVelocity.Subtract(targetPosition, ownerPosition);
+		Stuff::Vector3D targetposition = jumpDestination;
+		jumpVelocity.Subtract(targetposition, ownerPosition);
 		float velMag = jumpVelocity.GetLength() / ((landingFrame - takeoffFrame) / 30.0f);
 		jumpVelocity.Normalize(jumpVelocity);
 		jumpVelocity *= velMag;

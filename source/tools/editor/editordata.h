@@ -7,9 +7,9 @@
 #ifndef EDITORDATA_H
 #define EDITORDATA_H
 
-//#include <mclib.h>
-//#include <elist.h>
-//#include <estring.h>
+//#include "mclib.h"
+//#include "elist.h"
+//#include "estring.h"
 //#include "objective.h"
 
 static cint32_t GAME_MAX_PLAYERS = 8;
@@ -130,20 +130,20 @@ public:
 	// makes a terrain from a height map.
 	static bool initTerrainFromTGA(
 		int32_t mapSize, int32_t min = 0, int32_t max = 512, int32_t terrain = 0);
-	static bool initTerrainFromPCV(PCSTR fileName);
-	static bool reassignHeightsFromTGA(PCSTR fileName, int32_t min, int32_t max);
+	static bool initTerrainFromPCV(const std::wstring_view& fileName);
+	static bool reassignHeightsFromTGA(const std::wstring_view& fileName, int32_t min, int32_t max);
 
-	bool save(PCSTR fileName, bool quickSave = false);
-	bool quickSave(PCSTR fileName);
+	bool save(const std::wstring_view& fileName, bool quickSave = false);
+	bool quickSave(const std::wstring_view& fileName);
 	static bool saveHeightMap(File* file);
 	bool saveMissionFitFileStuff(FitIniFile& fitFile);
 
-	static void setMapName(PCSTR name);
-	static PCSTR getMapName() { return strlen(mapName) ? mapName : 0; }
+	static void setMapName(const std::wstring_view& name);
+	static const std::wstring_view& getMapName() { return strlen(mapName) ? mapName : 0; }
 	static void updateTitleBar(void);
 
-	std::wstring MissionName() { return m_missionName; }
-	void MissionName(std::wstring missionName) { m_missionName = missionName; }
+	const std::wstring_view& MissionName() { return m_missionName; }
+	void MissionName(const std::wstring_view& missionName) { m_missionName = missionName; }
 
 	bool MissionNameUseResourceString() { return m_missionNameUseResourceString; }
 	void MissionNameUseResourceString(bool missionNameUseResourceString)
@@ -157,11 +157,11 @@ public:
 		m_missionNameResourceStringID = missionNameResourceStringID;
 	}
 
-	std::wstring Author() { return m_author; }
-	void Author(std::wstring author) { m_author = author; }
+	const std::wstring_view& Author() { return m_author; }
+	void Author(const std::wstring_view& author) { m_author = author; }
 
-	std::wstring Blurb() { return m_blurb; }
-	void Blurb(std::wstring blurb) { m_blurb = blurb; }
+	const std::wstring_view& Blurb() { return m_blurb; }
+	void Blurb(const std::wstring_view& blurb) { m_blurb = blurb; }
 
 	bool BlurbUseResourceString() { return m_blurbUseResourceString; }
 	void BlurbUseResourceString(bool blurbUseResourceString)
@@ -175,8 +175,8 @@ public:
 		m_blurbResourceStringID = blurbResourceStringID;
 	}
 
-	std::wstring Blurb2() { return m_blurb2; }
-	void Blurb2(std::wstring blurb2) { m_blurb2 = blurb2; }
+	const std::wstring_view& Blurb2() { return m_blurb2; }
+	void Blurb2(const std::wstring_view& blurb2) { m_blurb2 = blurb2; }
 
 	bool Blurb2UseResourceString() { return m_blurb2UseResourceString; }
 	void Blurb2UseResourceString(bool blurb2UseResourceString)
@@ -226,8 +226,8 @@ public:
 	int32_t ScenarioTune() { return m_scenarioTune; }
 	void ScenarioTune(int32_t scenarioTune) { m_scenarioTune = scenarioTune; }
 
-	std::wstring VideoFilename() { return m_videoFilename; }
-	void VideoFilename(std::wstring videoFilename) { m_videoFilename = videoFilename; }
+	const std::wstring_view& VideoFilename() { return m_videoFilename; }
+	void VideoFilename(const std::wstring_view& videoFilename) { m_videoFilename = videoFilename; }
 
 	int32_t NumRandomRPbuildings() { return m_numRandomRPbuildings; }
 	void NumRandomRPbuildings(int32_t numRandomRPbuildings)
@@ -235,8 +235,8 @@ public:
 		m_numRandomRPbuildings = numRandomRPbuildings;
 	}
 
-	std::wstring DownloadURL() { return m_downloadURL; }
-	void DownloadURL(std::wstring downloadURL) { m_downloadURL = downloadURL; }
+	const std::wstring_view& DownloadURL() { return m_downloadURL; }
+	void DownloadURL(const std::wstring_view& downloadURL) { m_downloadURL = downloadURL; }
 
 	int32_t MissionType() { return m_missionType; }
 	void MissionType(int32_t missionType) { m_missionType = missionType; }
@@ -376,14 +376,14 @@ private:
 	EditorData(const EditorData& editorData);
 	bool saveTacMap(PacketFile* file, int32_t whichPacket);
 
-	std::wstring m_missionName;
+	const std::wstring_view& m_missionName;
 	bool m_missionNameUseResourceString;
 	int32_t m_missionNameResourceStringID;
-	std::wstring m_author;
-	std::wstring m_blurb;
+	const std::wstring_view& m_author;
+	const std::wstring_view& m_blurb;
 	bool m_blurbUseResourceString;
 	int32_t m_blurbResourceStringID;
-	std::wstring m_blurb2;
+	const std::wstring_view& m_blurb2;
 	bool m_blurb2UseResourceString;
 	int32_t m_blurb2ResourceStringID;
 	float m_timeLimit;
@@ -396,9 +396,9 @@ private:
 	CTeams m_teams;
 	CPlayers m_players;
 	int32_t m_scenarioTune;
-	std::wstring m_videoFilename;
+	const std::wstring_view& m_videoFilename;
 	int32_t m_numRandomRPbuildings;
-	std::wstring m_downloadURL;
+	const std::wstring_view& m_downloadURL;
 	int32_t m_missionType;
 
 	/*defaults for multiplayer options*/
@@ -435,5 +435,4 @@ private:
 	bool m_waterDetailTextureNeedsSaving;
 };
 
-//*************************************************************************************************
 #endif // end of file ( EditorData.h )

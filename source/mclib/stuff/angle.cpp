@@ -8,8 +8,8 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/angle.hpp>
+//#include "gameos.hpp"
+#include "stuff/angle.h"
 
 using namespace Stuff;
 
@@ -116,7 +116,7 @@ SinCosPair::operator=(const Radian& radian)
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Radian& angle)
+Spew(const std::wstring_view& group, const Radian& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "%f rad+", angle.m_angle));
@@ -127,7 +127,7 @@ Spew(PCSTR group, const Radian& angle)
 //#############################################################################
 //
 void
-Spew(PCSTR group, const Degree& angle)
+Spew(const std::wstring_view& group, const Degree& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "%f deg+", angle.m_angle));
@@ -138,7 +138,7 @@ Spew(PCSTR group, const Degree& angle)
 //#############################################################################
 //
 void
-Spew(PCSTR group, const SinCosPair& angle)
+Spew(const std::wstring_view& group, const SinCosPair& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "{%f,%f}+", angle.cosine, angle.sine));

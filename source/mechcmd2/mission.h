@@ -13,7 +13,7 @@
 #ifndef MISSION_H
 #define MISSION_H
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "warrior.h"
 //#include "missiongui.h"
 //#include "objective.h"
@@ -57,7 +57,7 @@ struct Part
 	uint32_t gestureId; // What gesture do I start in?
 	char alignment; // Who do I fight for?
 	char teamId; // Which team am I on?
-	int32_t commanderID; // Used when setting up multiplayer
+	int32_t commanderid; // Used when setting up multiplayer
 	char squadId; // Which team am I on?
 	char myIcon; // If set, start with Icon on Screen for this part.
 	uint32_t controlType; // How am I controlled?
@@ -111,7 +111,7 @@ typedef uint32_t ObjectiveStatus;
 
 #define MAX_OBJECTIVES 50
 
-typedef enum
+enum class 
 {
 	MISSION_LOAD_SP_QUICKSTART,
 	MISSION_LOAD_SP_LOGISTICS,
@@ -149,9 +149,9 @@ protected:
 
 	char missionFileName[80];
 	char missionScriptName[80];
-	ABLModulePtr missionBrain;
-	ABLParamPtr missionParams;
-	SymTableNodePtr missionBrainCallback;
+	const std::unique_ptr<ABLModule>& missionBrain;
+	const std::unique_ptr<ABLParam>& missionParams;
+	const std::unique_ptr<SymTableNode>& missionBrainCallback;
 
 	uint32_t numParts;
 	PartPtr parts;
@@ -224,9 +224,9 @@ public:
 
 	Mission(void) { init(void); }
 
-	bool calcComplexDropZones(PSTR missionName, char dropZoneList[MAX_MC_PLAYERS]);
+	bool calcComplexDropZones(const std::wstring_view& missionName, char dropZoneList[MAX_MC_PLAYERS]);
 
-	void init(PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList,
+	void init(const std::wstring_view& missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList,
 		char commandersToLoad[8][3], int32_t numMoversPerCommander);
 
 	static void initBareMinimum(void);
@@ -266,16 +266,16 @@ public:
 	int32_t addMover(MoverInitData* moveSpec, LogisticsMech* mechData);
 	int32_t addMover(MoverInitData* moveSpec, CompressedMech* mechData);
 
-	int32_t removeMover(MoverPtr mover);
+	int32_t removeMover(std::unique_ptr<Mover> mover);
 
-	void tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID, PSTR pilotFileName,
-		PSTR brainFileName);
+	void tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID, const std::wstring_view& pilotFileName,
+		const std::wstring_view& brainFileName);
 
-	void createPartObject(int32_t objectId, MoverPtr mover);
+	void createPartObject(int32_t objectId, std::unique_ptr<Mover> mover);
 
 	void createMissionObject(int32_t partId); // Moves object from holding area to real world.
 
-	ABLModulePtr getBrain(void) { return (missionBrain); }
+	const std::unique_ptr<ABLModule>& getBrain(void) { return (missionBrain); }
 
 	void handleMultiplayMessage(int32_t code, int32_t param1);
 
@@ -305,16 +305,16 @@ public:
 
 	int32_t GetMissionID(void) { return missionId; }
 
-	PSTR getMissionName(void) { return missionScriptName; }
+	const std::wstring_view& getMissionName(void) { return missionScriptName; }
 
 	int32_t getMissionTuneId(void) { return missionTuneNum; }
 
-	PCSTR getMissionFileName() { return missionFileName; }
+	const std::wstring_view& getMissionFileName() { return missionFileName; }
 
 	static void initializeStatistics(void);
 
-	void load(PCSTR filename);
-	void save(PCSTR filename);
+	void load(const std::wstring_view& filename);
+	void save(const std::wstring_view& filename);
 
 	bool isActive(void) { return active; }
 };

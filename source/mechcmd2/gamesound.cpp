@@ -133,7 +133,7 @@ GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 
 //---------------------------------------------------------------------------
 bool
-GameSoundSystem::checkMessage(MechWarriorPtr pilot, byte priority, uint32_t messageType)
+GameSoundSystem::checkMessage(std::unique_ptr<MechWarrior> pilot, byte priority, uint32_t messageType)
 {
 	for (size_t i = 0; i < MAX_QUEUED_MESSAGES; i++)
 	{

@@ -42,7 +42,7 @@ extern void __stdcall CopyBackBuffer(LPDIRECTDRAWSURFACE7 Dest, LPDIRECTDRAWSURF
 //
 // Compatibility flags for different video cards
 //
-typedef enum __compatibilityconst
+enum class __compatibilityconst
 {
 	SceneRenderer = 1, // Scene based renderer (PowerVR, Kyro etc...)
 	NoAlphaTest = 1 << 1, // Disable alpha test (conflicts with other modes)

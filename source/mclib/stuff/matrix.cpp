@@ -8,9 +8,9 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/matrix.hpp>
+#include "gameos.hpp"
+#include "stuff/scalar.h"
+#include "stuff/matrix.h"
 
 using namespace Stuff;
 
@@ -769,7 +769,7 @@ Matrix4D::Invert(const Matrix4D& Source)
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Matrix4D& matrix)
+Spew(const std::wstring_view& group, const Matrix4D& matrix)
 {
 	Check_Object(&matrix);
 	SPEW((group, "\n\t| %9f, %9f, %9f, %9f |", matrix(0, 0), matrix(0, 1), matrix(0, 2),

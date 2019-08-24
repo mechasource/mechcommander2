@@ -12,7 +12,7 @@
 
 #include "stdinc.h"
 #include "gosfxheaders.hpp"
-#include <mlr/mlrindexedtrianglecloud.hpp>
+#include "mlr/mlrindexedtrianglecloud.h"
 
 //------------------------------------------------------------------------------
 //
@@ -182,7 +182,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 		{
 			m_maxProfileCount = 2;
 			// PAUSE(("Warning: Value \"maxProfileCount\" in Effect \"%s\" Is
-			// Out of Range and has been Reset", (PSTR)m_name));
+			// Out of Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;
@@ -195,7 +195,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pScale.m_seeded = false;
 			m_pScale.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;
@@ -222,7 +222,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pVOffset.m_seeded = false;
 			m_pVOffset.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;
@@ -249,7 +249,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pUOffset.m_seeded = false;
 			m_pUOffset.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;

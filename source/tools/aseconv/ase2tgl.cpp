@@ -18,30 +18,31 @@
 //#include "../../ARM/Microsoft.Xna.Arm.h"
 // using namespace Microsoft::Xna::Arm;
 
-HINSTANCE hInst = nullptr;
+HINSTANCE g_hinstance = nullptr;
 uint32_t gosResourceHandle = 0;
 
-std::iostream effectStream = nullptr;
+std::iostream effectStream;
 
 extern char CDInstallPath[];
 
 bool hasGuardBand = false;
 bool justResaveAllMaps = false;
 Camera* eye = nullptr;
-enum
+enum class Processor
 {
 	CPU_UNKNOWN,
 	CPU_PENTIUM,
 	CPU_MMX,
 	CPU_KATMAI
-} Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
-	// -- MECHCMDR2
+};
+// Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
+// -- MECHCMDR2
 
 float MaxMinUV = 8.0f;
 
 uint32_t BaseVertexColor = 0x00000000;
 
-static PCSTR lpszAppName = "MechCmdr2";
+static const std::wstring_view& lpszAppName = "MechCmdr2";
 
 UserHeapPtr systemHeap = nullptr;
 UserHeapPtr guiHeap = nullptr;
@@ -62,7 +63,7 @@ int32_t maxFastFiles = 0;
 
 HWND appWnd = nullptr;
 
-extern PSTR MechAnimationNames[MaxGestures];
+extern const std::wstring_view& MechAnimationNames[MaxGestures];
 
 int32_t ObjectTextureSize = 128;
 bool reloadBounds = false;
@@ -78,12 +79,12 @@ char listName[1024];
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
 void
-ParseCommandLine(PSTR command_line)
+ParseCommandLine(const std::wstring_view& command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
 	int32_t index = 0;
-	PSTR argv[30];
+	const std::wstring_view& argv[30];
 	char tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
@@ -188,7 +189,7 @@ ParseCommandLine(PSTR command_line)
 
 //-----------------------------
 int32_t
-convertASE2TGL(PSTR file)
+convertASE2TGL(const std::wstring_view& file)
 {
 	//---------------------------------------------------
 	// Get all of the .ASE files in the tgl directory.
@@ -220,7 +221,7 @@ convertASE2TGL(PSTR file)
 				return result;
 			// ARM
 			IProviderAssetPtr iniAsset =
-				armProvider->OpenAsset((PSTR)iniName, AssetType_Physical, ProviderType_Primary);
+				armProvider->OpenAsset((const std::wstring_view&)iniName, AssetType_Physical, ProviderType_Primary);
 			iniAsset->AddProperty("Type", "Object Definition");
 			iniAsset->AddProperty("Version", "1.0");
 			TG_TypeMultiShape* shape = nullptr;
@@ -311,7 +312,7 @@ convertASE2TGL(PSTR file)
 						// Happens ALOT!
 						printf("Processing Animation %s\n", aseName);
 						IProviderRelationshipPtr armLink =
-							iniAsset->AddRelationship("Animation", (PSTR)aseName);
+							iniAsset->AddRelationship("Animation", (const std::wstring_view&)aseName);
 						anim->LoadTGMultiShapeAnimationFromASE(aseName, shape, true);
 						delete anim;
 						anim = nullptr;
@@ -426,7 +427,7 @@ convertASE2TGL(PSTR file)
 }
 
 LRESULT CALLBACK
-WndProc(HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lParam)
+WndProc(HWND hwnd, uint32_t message, WPARAM wparam, LPARAM lparam)
 {
 	switch (message)
 	{
@@ -434,7 +435,7 @@ WndProc(HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	default:
-		return (GameOSWinProc(hWnd, message, wParam, lParam));
+		return (GameOSWinProc(hwnd, message, wparam, lparam));
 	}
 	return 0;
 }
@@ -442,7 +443,7 @@ WndProc(HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lParam)
 //-----------------------------
 int32_t APIENTRY
 WinMain(
-	HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
+	HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR commandline, int32_t nCmdShow)
 {
 	WNDCLASS wc;
 	if (!hPrevInstance)
@@ -451,8 +452,8 @@ WinMain(
 		wc.lpfnWndProc = (WNDPROC)WndProc;
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
-		wc.hInstance = hInstance;
-		wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+		wc.hInstance = hinstance;
+		wc.hIcon = LoadIcon(hinstance, MAKEINTRESOURCE(IDI_ICON1));
 		wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 		wc.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
@@ -460,11 +461,11 @@ WinMain(
 		if (RegisterClass(&wc) == 0)
 			return false;
 	}
-	hInst = hInstance;
+	g_hinstance = hinstance;
 	char appTitle[1024];
 	sprintf(appTitle, "MechCommander 2 Data Editor %s", versionStamp);
 	appWnd = CreateWindow(lpszAppName, appTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-		640, 480, nullptr, nullptr, hInstance, nullptr);
+		640, 480, nullptr, nullptr, hinstance, nullptr);
 	if (appWnd == nullptr)
 		return false;
 	globalHeapList = new HeapList;
@@ -541,7 +542,7 @@ WinMain(
 	//
 	// Init GameOS with window created
 	//
-	// InitGameOS( hInstance, appWnd, lpCmdLine );
+	// InitGameOS( hinstance, appWnd, commandline );
 	Platform = Platform_DLL;
 	//-------------------------------------------------------------
 	// Find the CDPath in the registry and save it off so I can
@@ -560,7 +561,7 @@ WinMain(
 	silentMode = true;
 	memset(fileName, 0, sizeof(fileName));
 	memset(listName, 0, sizeof(listName));
-	ParseCommandLine(lpCmdLine);
+	ParseCommandLine(commandline);
 	// Initialize COM and create an instance of the InterfaceImplementation
 	// class:
 	CoInitialize(nullptr);
@@ -637,9 +638,9 @@ DoGameLogic()
 // Setup the GameOS structure
 //
 void
-GetGameOSEnvironment(PSTR CommandLine)
+GetGameOSEnvironment(const std::wstring_view& commandline)
 {
-	CommandLine = CommandLine;
+	commandline = commandline;
 	Environment.applicationName = "MechCmdr2";
 	Environment.screenWidth = 640;
 	Environment.screenHeight = 480;

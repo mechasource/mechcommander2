@@ -27,13 +27,13 @@ public:
 	virtual bool redo(void) = 0;
 	virtual bool undo(void) = 0;
 	Action& operator=(const Action& src);
-	PCWSTR getDescription(void) { return m_strDescription.c_str(void); }
+	const std::wstring_view& getDescription(void) { return m_strDescription.c_str(void); }
 
 protected:
-	std::wstring m_strDescription;
+	const std::wstring_view& m_strDescription;
 
 	// suppressed
-	Action(PCWSTR pStr) { m_strDescription.assign(pStr); }
+	Action(const std::wstring_view& pStr) { m_strDescription.assign(pStr); }
 
 	// if you call this, make sure you set the description
 	Action(void) {}
@@ -70,7 +70,7 @@ public:
 
 	bool doRedo(void); // so we don't go through virtual functions
 
-	ActionPaintTile(PCWSTR pStr) :
+	ActionPaintTile(const std::wstring_view& pStr) :
 		Action(pStr) {}
 
 	void addChangedVertexInfo(uint32_t row, uint32_t column);
@@ -121,8 +121,8 @@ public:
 	bool HaveUndo(void) const;
 	bool HaveRedo(void) const;
 
-	PCWSTR GetUndoString(void);
-	PCWSTR GetRedoString(void);
+	const std::wstring_view& GetUndoString(void);
+	const std::wstring_view& GetRedoString(void);
 
 	void NoteThatASaveHasJustOccurred(void);
 	bool ThereHasBeenANetChangeFromWhenLastSaved(void);

@@ -39,16 +39,16 @@
 #include "turret.h"
 #include "gate.h"
 #include "artlry.h"
-//#include <mclib.h>
+//#include "mclib.h"
 #endif
 
 MoverGroupPtr CurGroup = nullptr;
 GameObjectPtr CurObject = nullptr;
 int32_t CurObjectClass = 0;
-MechWarriorPtr CurWarrior = nullptr;
+std::unique_ptr<MechWarrior> CurWarrior = nullptr;
 GameObjectPtr CurContact = nullptr;
 int32_t CurAlarm;
-MoverPtr moverList[256];
+std::unique_ptr<Mover> moverList[256];
 bool TacOrderOrigin = ORDER_ORIGIN_COMMANDER;
 int32_t CurMultiplayCode = 0;
 int32_t CurMultiplayParam = 0;
@@ -58,7 +58,7 @@ extern float WeaponRange[NUM_FIRERANGES];
 void
 DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj);
 void
-DEBUGWINS_print(PSTR s, int32_t window);
+DEBUGWINS_print(const std::wstring_view& s, int32_t window);
 
 UserHeapPtr AblStackHeap = nullptr;
 UserHeapPtr AblCodeHeap = nullptr;
@@ -69,7 +69,7 @@ UserHeapPtr AblSymbolHeap = nullptr;
 //*****************************************************************************
 
 int32_t
-getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center, float radius,
+getMoversWithinRadius(std::unique_ptr<Mover>* moverList, Stuff::Vector3D center, float radius,
 	int32_t teamID, bool getEnemies, bool sortDescending, bool ignoreOrder)
 {
 	static float sortValues[MAX_MOVERS];
@@ -82,13 +82,13 @@ getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center, float radius,
 	}
 	Team::sortList->clear(sortDescending);
 	TeamPtr team = Team::teams[teamID];
-	MoverPtr validMovers[MAX_MOVERS];
+	std::unique_ptr<Mover> validMovers[MAX_MOVERS];
 	int32_t numValidMovers = 0;
 	if (getEnemies)
 	{
 		for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 		{
-			MoverPtr mover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 			if (!mover->isDisabled() && mover->isEnemy(team))
 				if (mover->numFunctionalWeapons > 0)
 					if (mover->distanceFrom(center) < radius)
@@ -106,7 +106,7 @@ getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center, float radius,
 	{
 		for (size_t i = 0; i < team->rosterSize; i++)
 		{
-			MoverPtr mover = team->getMover(i);
+			std::unique_ptr<Mover> mover = team->getMover(i);
 			if (!mover->isDisabled() && (mover->numFunctionalWeapons > 0))
 				if (mover->distanceFrom(center) < radius)
 				{
@@ -126,7 +126,7 @@ getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center, float radius,
 	{
 		Team::sortList->sort(sortDescending);
 		for (size_t i = 0; i < numValidMovers; i++)
-			moverList[i] = (MoverPtr)ObjectManager->get(Team::sortList->getId(i));
+			moverList[i] = (std::unique_ptr<Mover>)ObjectManager->get(Team::sortList->getId(i));
 	}
 	return (numValidMovers);
 }
@@ -183,8 +183,8 @@ calcAttackPlan(
 //-----------------------------------------------------------------------------
 
 GameObjectPtr
-calcBestTarget(MoverPtr attacker, int32_t numAttackers, MoverPtr* attackers,
-	int32_t numDefenders, MoverPtr* defenders)
+calcBestTarget(std::unique_ptr<Mover> attacker, int32_t numAttackers, std::unique_ptr<Mover>* attackers,
+	int32_t numDefenders, std::unique_ptr<Mover>* defenders)
 {
 	//------------------------------------------------------------------
 	// This assumes the attackers and defenders lists are already sorted
@@ -290,7 +290,7 @@ getObject(int32_t partId, bool existsOnly)
 
 //---------------------------------------------------------------------------
 
-inline MechWarriorPtr
+inline std::unique_ptr<MechWarrior>
 getWarrior(int32_t warriorIndex)
 {
 	if (warriorIndex == -1)
@@ -302,10 +302,10 @@ getWarrior(int32_t warriorIndex)
 //---------------------------------------------------------------------------
 
 int32_t
-getMovers(int32_t partId, MoverPtr* list, bool existsOnly = false);
+getMovers(int32_t partId, std::unique_ptr<Mover>* list, bool existsOnly = false);
 
 inline int32_t
-getMovers(int32_t partId, MoverPtr* list, bool existsOnly)
+getMovers(int32_t partId, std::unique_ptr<Mover>* list, bool existsOnly)
 {
 	//---------------------------------------------------------------------
 	// NOTE: It should be safe to assume that all objects here are movers,
@@ -486,7 +486,7 @@ execGetWarriorStatus(void)
 	//
 	//-----------------------------------------------------
 	int32_t warriorId = ABLi_peekInteger();
-	MechWarriorPtr warrior = getWarrior(warriorId);
+	std::unique_ptr<MechWarrior> warrior = getWarrior(warriorId);
 	if (warrior)
 		ABLi_pokeInteger(warrior->getStatus());
 	else
@@ -600,8 +600,8 @@ execSelectContact(void)
 	int32_t code = -1;
 	if (CurObject->isMover())
 	{
-		MoverPtr me = (MoverPtr)CurObject;
-		MoverPtr object = (MoverPtr)ObjectManager->findByPartId(id);
+		std::unique_ptr<Mover> me = (std::unique_ptr<Mover>)CurObject;
+		std::unique_ptr<Mover> object = (std::unique_ptr<Mover>)ObjectManager->findByPartId(id);
 		//-------------------------------------------------------
 		// Passed an object id, so select it if it's a contact...
 		if (object && object->getContactStatus(me->getTeam()->getId(), true) != CONTACT_NONE)
@@ -627,7 +627,7 @@ execIsContact(void)
 	if (CurObject->isMover())
 	{
 		GameObjectPtr object = getObject(objectId);
-		if (object->isMover() && (SensorManager->getTeamSensor(CurObject->getTeamId())->meetsCriteria(CurObject, (MoverPtr)object, criteria)))
+		if (object->isMover() && (SensorManager->getTeamSensor(CurObject->getTeamId())->meetsCriteria(CurObject, (std::unique_ptr<Mover>)object, criteria)))
 		{
 			result = objectId;
 			if (select)
@@ -681,7 +681,7 @@ execGetContactStatus(void)
 	*contactTagged = 0;
 	int32_t status = 0;
 	if (CurContact && CurObject->isMover())
-		status = ((MoverPtr)CurContact)->getContactStatus(CurObject->getTeamId(), true);
+		status = ((std::unique_ptr<Mover>)CurContact)->getContactStatus(CurObject->getTeamId(), true);
 	ABLi_pushInteger(status);
 }
 
@@ -733,7 +733,7 @@ execSetTarget(void)
 		int32_t numObjects = getMovers(attackerId, moverList);
 		for (size_t i = 0; i < numObjects; i++)
 		{
-			MechWarriorPtr pilot = moverList[i]->getPilot();
+			std::unique_ptr<MechWarrior> pilot = moverList[i]->getPilot();
 			if (pilot)
 			{
 				pilot->setCurrentTarget(target);
@@ -746,7 +746,7 @@ execSetTarget(void)
 		GameObjectPtr attacker = getObject(attackerId);
 		if (attacker)
 		{
-			MechWarriorPtr pilot = ((MoverPtr)attacker)->getPilot();
+			std::unique_ptr<MechWarrior> pilot = ((std::unique_ptr<Mover>)attacker)->getPilot();
 			if (pilot)
 			{
 				pilot->setCurrentTarget(target);
@@ -774,7 +774,7 @@ execGetTarget(void)
 		GameObjectPtr object = getObject(objectId);
 		if (object && object->isMover())
 		{
-			MechWarriorPtr pilot = ((MoverPtr)object)->getPilot();
+			std::unique_ptr<MechWarrior> pilot = ((std::unique_ptr<Mover>)object)->getPilot();
 			Assert(pilot != nullptr, 0, " execHbGetTarget:No pilot in mover! ");
 			GameObjectPtr target = pilot->getCurrentTarget();
 			if (target)
@@ -793,7 +793,7 @@ execGetWeaponsReady(void)
 	int32_t listSize = ABLi_popInteger();
 	int32_t numWeapons = 0;
 	if (CurObject->isMover())
-		numWeapons = ((MoverPtr)CurObject)->getWeaponsReady(weaponList, listSize);
+		numWeapons = ((std::unique_ptr<Mover>)CurObject)->getWeaponsReady(weaponList, listSize);
 	ABLi_pushInteger(numWeapons);
 }
 
@@ -806,7 +806,7 @@ execGetWeaponsLocked(void)
 	int32_t listSize = ABLi_popInteger();
 	int32_t numWeapons = 0;
 	if (CurObject->isMover())
-		numWeapons = ((MoverPtr)CurObject)->getWeaponsLocked(weaponList, listSize);
+		numWeapons = ((std::unique_ptr<Mover>)CurObject)->getWeaponsLocked(weaponList, listSize);
 	ABLi_pushInteger(numWeapons);
 }
 
@@ -820,7 +820,7 @@ execGetWeaponsInRange(void)
 	GameObjectPtr target = CurWarrior->getCurrentTarget();
 	int32_t numWeapons = 0;
 	if (CurObject->isMover() && target)
-		numWeapons = ((MoverPtr)CurObject)
+		numWeapons = ((std::unique_ptr<Mover>)CurObject)
 						 ->getWeaponsInRange(
 							 weaponList, listSize, CurObject->distanceFrom(target->getPosition()));
 	ABLi_pushInteger(numWeapons);
@@ -834,7 +834,7 @@ execGetWeaponShots(void)
 	int32_t weaponIndex = ABLi_popInteger();
 	int32_t numShots = 0;
 	if (CurObject->isMover())
-		numShots = ((MoverPtr)CurObject)->getWeaponShots(weaponIndex);
+		numShots = ((std::unique_ptr<Mover>)CurObject)->getWeaponShots(weaponIndex);
 	ABLi_pushInteger(numShots);
 }
 
@@ -862,9 +862,9 @@ execGetWeaponRanges(void)
 	GameObjectPtr object = getObject(objectId);
 	if (object && object->isMover())
 	{
-		rangeList[0] = ((MoverPtr)object)->getMinFireRange();
-		rangeList[1] = ((MoverPtr)object)->getOptimalFireRange();
-		rangeList[2] = ((MoverPtr)object)->getMaxFireRange();
+		rangeList[0] = ((std::unique_ptr<Mover>)object)->getMinFireRange();
+		rangeList[1] = ((std::unique_ptr<Mover>)object)->getOptimalFireRange();
+		rangeList[2] = ((std::unique_ptr<Mover>)object)->getMaxFireRange();
 	}
 	else
 		rangeList[0] = rangeList[1] = rangeList[2] = 0.0;
@@ -983,7 +983,7 @@ execGetChallenger(void)
 		{
 			if (object->isMover())
 			{
-				GameObjectPtr challenger = ((MoverPtr)object)->getChallenger();
+				GameObjectPtr challenger = ((std::unique_ptr<Mover>)object)->getChallenger();
 				if (challenger)
 					challengerPartID = challenger->getPartId();
 			}
@@ -1140,7 +1140,7 @@ execSetChallenger(void)
 		GameObjectPtr challenger = getObject(challengerId);
 		GameObjectPtr victim = getObject(victimId);
 		if (victim && victim->isMover())
-			((MoverPtr)victim)->setChallenger(challenger);
+			((std::unique_ptr<Mover>)victim)->setChallenger(challenger);
 		else
 			result = -2;
 	}
@@ -1199,7 +1199,7 @@ execSortWeapons(void)
 	int32_t sortType = ABLi_popInteger();
 	int32_t valueList[50];
 	if (CurObject && CurObject->isMover())
-		((MoverPtr)CurObject)->sortWeapons(weaponList, valueList, listSize, sortType, true);
+		((std::unique_ptr<Mover>)CurObject)->sortWeapons(weaponList, valueList, listSize, sortType, true);
 }
 
 //*****************************************************************************
@@ -1233,7 +1233,7 @@ execGetVisualRange(void)
 	{
 		object = getObject(objectId);
 		if (object && object->isMover())
-			range = ((MoverPtr)object)->getVisualRange();
+			range = ((std::unique_ptr<Mover>)object)->getVisualRange();
 	}
 	ABLi_pushReal(range);
 }
@@ -1273,7 +1273,7 @@ execGetUnitMates(void)
 		GameObjectPtr object = getObject(objectId);
 		if (object && object->isMover())
 		{
-			MoverGroupPtr group = ((MoverPtr)object)->getGroup();
+			MoverGroupPtr group = ((std::unique_ptr<Mover>)object)->getGroup();
 			if (group)
 			{
 				int32_t numObjects = group->getMovers(moverList);
@@ -1323,7 +1323,7 @@ execGetTacOrder(void)
 		GameObjectPtr object = getObject(objectId);
 		if (object && object->isMover())
 		{
-			MechWarriorPtr pilot = ((MoverPtr)object)->getPilot();
+			std::unique_ptr<MechWarrior> pilot = ((std::unique_ptr<Mover>)object)->getPilot();
 			if (pilot)
 				code = pilot->getCurTacOrder()->getParamData(time, paramList);
 		}
@@ -1368,7 +1368,7 @@ execGetLastTacOrder(void)
 		GameObjectPtr object = getObject(objectId);
 		if (object && object->isMover())
 		{
-			MechWarriorPtr pilot = ((MoverPtr)object)->getPilot();
+			std::unique_ptr<MechWarrior> pilot = ((std::unique_ptr<Mover>)object)->getPilot();
 			if (pilot)
 				code = pilot->getLastTacOrder()->getParamData(time, paramList);
 		}
@@ -1405,7 +1405,7 @@ execGetObjects(void)
 		int32_t listSize = ObjectManager->getNumMovers();
 		for (size_t i = 0; i < listSize; i++)
 		{
-			MoverPtr mover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 			if (mover && mover->getExists())
 				objList[numObjects++] = mover->getPartId();
 		}
@@ -2066,7 +2066,7 @@ execDistanceToObject(void)
 			int32_t numObjects = getMovers(objectId1, moverList);
 			for (size_t i = 0; i < numObjects; i++)
 			{
-				MoverPtr mover = moverList[i];
+				std::unique_ptr<Mover> mover = moverList[i];
 				if (!mover->getExistsAndAwake())
 					continue;
 				Stuff::Vector3D position1 = mover->getPosition();
@@ -2126,7 +2126,7 @@ execDistanceToPosition(void)
 		float distance = 3.4E38f;
 		for (size_t i = 0; i < numObjects; i++)
 		{
-			MoverPtr mover = moverList[i];
+			std::unique_ptr<Mover> mover = moverList[i];
 			if (!mover->getExistsAndAwake())
 				continue;
 			Stuff::Vector3D position1 = mover->getPosition();
@@ -2264,7 +2264,7 @@ execObjectStatus(void)
 			int32_t status = moverList[i]->getStatus();
 			if ((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED))
 			{
-				MechWarriorPtr pilot = moverList[i]->getPilot();
+				std::unique_ptr<MechWarrior> pilot = moverList[i]->getPilot();
 				if (pilot && (pilot->getStatus() != WARRIOR_STATUS_WITHDRAWN))
 				{
 					disabled = false;
@@ -2664,7 +2664,7 @@ execSetRadio(void)
 	//-----------------------------------------------------
 	int32_t warriorIndex = ABLi_popInteger();
 	bool radioSetting = ABLi_popBoolean();
-	MechWarriorPtr pilot = getWarrior(warriorIndex);
+	std::unique_ptr<MechWarrior> pilot = getWarrior(warriorIndex);
 	if (pilot && pilot->getRadio())
 	{
 		if (radioSetting)
@@ -2686,7 +2686,7 @@ execPlaySpeech(void)
 	// Returns: integer (result)
 	int32_t warriorIndex = ABLi_popInteger();
 	int32_t message = ABLi_popInteger();
-	MechWarriorPtr pilot = getWarrior(warriorIndex);
+	std::unique_ptr<MechWarrior> pilot = getWarrior(warriorIndex);
 	if (pilot)
 		pilot->radioMessage(message, true);
 	ABLi_pushInteger(0);
@@ -2810,7 +2810,7 @@ execGetWeaponAmmo(void)
 	// Code to make this work goes here
 	GameObjectPtr object1 = getObject(objectNum);
 	if (object1 && object1->isMover())
-		ABLi_pushInteger(((MoverPtr)object1)->getWeaponShots(weaponNum));
+		ABLi_pushInteger(((std::unique_ptr<Mover>)object1)->getWeaponShots(weaponNum));
 	else
 		ABLi_pushInteger(-1);
 }
@@ -2873,7 +2873,7 @@ execInArea(void)
 			int32_t numIn = 0;
 			for (size_t i = 0; i < numObjects; i++)
 			{
-				MoverPtr mover = moverList[i];
+				std::unique_ptr<Mover> mover = moverList[i];
 				if (mover->getExists() && mover->getAwake() && !mover->isDisabled() && !mover->isDestroyed())
 					if (mover->distanceFrom(center) <= areaRadius)
 					{
@@ -2933,7 +2933,7 @@ execObjectRemove(void)
 			if (object == CurObject)
 				CurObject->setFlag(OBJECT_FLAG_REMOVED, true);
 			else
-				mission->removeMover((MoverPtr)object);
+				mission->removeMover((std::unique_ptr<Mover>)object);
 			ABLi_pushInteger(0);
 		}
 		else
@@ -2947,7 +2947,7 @@ void
 execCreateInfantry(void)
 {
 	int32_t teamID = ABLi_popInteger();
-	int32_t commanderID = ABLi_popInteger();
+	int32_t commanderid = ABLi_popInteger();
 	float* worldPos = ABLi_popRealPtr();
 	int32_t buildingPartID = ABLi_popInteger();
 	MoverInitData moverData;
@@ -2963,14 +2963,14 @@ execCreateInfantry(void)
 	moverData.position.z = 0.0;
 	moverData.rotation = 0.0;
 	moverData.teamID = teamID;
-	moverData.commanderID = commanderID;
+	moverData.commanderid = commanderid;
 	moverData.gestureID = 2;
 	moverData.active = true;
 	moverData.exists = true;
 	moverData.icon = 0;
 	moverData.capturable = false;
 	int32_t infantryHandle = mission->addMover(&moverData);
-	MoverPtr infantry = (MoverPtr)ObjectManager->get(infantryHandle);
+	std::unique_ptr<Mover> infantry = (std::unique_ptr<Mover>)ObjectManager->get(infantryHandle);
 	if (infantry)
 		infantry->getPilot()->setIntegerMemory(0, buildingPartID);
 	ABLi_pushInteger(0);
@@ -2989,8 +2989,8 @@ execGetSensorsWorking(void)
 	int32_t objectNum = ABLi_popInteger();
 	int32_t result = -1;
 	GameObjectPtr object1 = getObject(objectNum);
-	if (object1 && object1->isMover() && ((MoverPtr)object1)->sensorSystem)
-		result = ((MoverPtr)object1)->sensorSystem->enabled();
+	if (object1 && object1->isMover() && ((std::unique_ptr<Mover>)object1)->sensorSystem)
+		result = ((std::unique_ptr<Mover>)object1)->sensorSystem->enabled();
 	ABLi_pushInteger(result);
 }
 
@@ -3052,7 +3052,7 @@ execGetArmorPts(void)
 	ABLi_pokeInteger(0);
 	if (obj && obj->isMover())
 	{
-		MoverPtr mover = (MoverPtr)obj;
+		std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)obj;
 		for (size_t i = 0; i < mover->numArmorLocations; i++)
 			armorPts += mover->armor[i].curArmor;
 		ABLi_pokeInteger(armorPts);
@@ -3077,7 +3077,7 @@ execGetMaxArmor(void)
 	int32_t armorPts = 0;
 	if (obj && obj->isMover())
 	{
-		MoverPtr mover = (MoverPtr)obj;
+		std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)obj;
 		for (size_t i = 0; i < mover->numArmorLocations; i++)
 			armorPts += mover->armor[i].maxArmor;
 		ABLi_pokeInteger(armorPts);
@@ -3101,7 +3101,7 @@ execGetPilotID(void)
 	ABLi_pokeInteger(-1);
 	if (obj)
 	{
-		MechWarriorPtr pilot = obj->getPilot();
+		std::unique_ptr<MechWarrior> pilot = obj->getPilot();
 		if (pilot)
 			ABLi_pokeInteger(pilot->getIndex());
 	}
@@ -3124,7 +3124,7 @@ execGetPilotWounds(void)
 	ABLi_pokeReal(0.0);
 	if (obj)
 	{
-		MechWarriorPtr pilot = obj->getPilot();
+		std::unique_ptr<MechWarrior> pilot = obj->getPilot();
 		if (pilot)
 			ABLi_pokeReal(pilot->getWounds());
 	}
@@ -3149,7 +3149,7 @@ execSetPilotWounds(void)
 	GameObjectPtr obj = getObject(objectNum);
 	if (obj)
 	{
-		MechWarriorPtr pilot = obj->getPilot();
+		std::unique_ptr<MechWarrior> pilot = obj->getPilot();
 		if (pilot)
 			pilot->setWounds(wounds);
 	}
@@ -3669,7 +3669,7 @@ execOrderRefit(void)
 	int32_t params = ABLi_popInteger();
 	if (CurObject)
 	{
-		MechWarriorPtr pilot = CurObject->getPilot();
+		std::unique_ptr<MechWarrior> pilot = CurObject->getPilot();
 		if (pilot)
 		{
 			GameObjectPtr refitee = getObject(refiteeId);
@@ -3917,20 +3917,20 @@ execCallStrike(void)
 	// strike)...
 	if (MPlayer)
 		Fatal(0, " ABL: Calling ArtilleryStrike in Multiplayer game ");
-	int32_t strikeType = ABLi_popInteger();
+	int32_t striketype = ABLi_popInteger();
 	int32_t targetId = ABLi_popInteger();
-	Stuff::Vector3D strikeLoc;
-	strikeLoc.x = ABLi_popReal();
-	strikeLoc.y = ABLi_popReal();
-	strikeLoc.z = ABLi_popReal();
+	Stuff::Vector3D strikeloc;
+	strikeloc.x = ABLi_popReal();
+	strikeloc.y = ABLi_popReal();
+	strikeloc.z = ABLi_popReal();
 	bool clanStrike = ABLi_popBoolean();
 	GameObjectPtr target = getObject(targetId);
 	if (target)
-		IfaceCallStrike(strikeType, nullptr, target, false);
+		IfaceCallStrike(striketype, nullptr, target, false);
 	else
 	{
-		strikeLoc.z = land->getTerrainElevation(strikeLoc);
-		IfaceCallStrike(strikeType, &strikeLoc, nullptr, false, clanStrike);
+		strikeloc.z = land->getTerrainElevation(strikeloc);
+		IfaceCallStrike(striketype, &strikeloc, nullptr, false, clanStrike);
 	}
 }
 
@@ -3973,23 +3973,23 @@ execCallStrikeEx(void)
 	// strike)...
 	if (MPlayer)
 		Fatal(0, " ABL: Calling ArtilleryStrike in Multiplayer game ");
-	int32_t strikeType = ABLi_popInteger();
+	int32_t striketype = ABLi_popInteger();
 	int32_t targetId = ABLi_popInteger();
-	Stuff::Vector3D strikeLoc;
-	strikeLoc.x = ABLi_popReal();
-	strikeLoc.y = ABLi_popReal();
-	strikeLoc.z = ABLi_popReal();
+	Stuff::Vector3D strikeloc;
+	strikeloc.x = ABLi_popReal();
+	strikeloc.y = ABLi_popReal();
+	strikeloc.z = ABLi_popReal();
 	bool clanStrike = ABLi_popBoolean();
 	float timeToImpact = ABLi_popReal();
 	if (timeToImpact < 0.0)
 		timeToImpact = 0.0;
 	GameObjectPtr target = getObject(targetId);
 	if (target)
-		IfaceCallStrike(strikeType, nullptr, target, false, clanStrike, timeToImpact);
+		IfaceCallStrike(striketype, nullptr, target, false, clanStrike, timeToImpact);
 	else
 	{
-		strikeLoc.z = land->getTerrainElevation(strikeLoc);
-		IfaceCallStrike(strikeType, &strikeLoc, nullptr, false, clanStrike, timeToImpact);
+		strikeloc.z = land->getTerrainElevation(strikeloc);
+		IfaceCallStrike(striketype, &strikeloc, nullptr, false, clanStrike, timeToImpact);
 	}
 }
 
@@ -4269,7 +4269,7 @@ execGetRelativePositionToObject(void)
 	if (object)
 	{
 		Stuff::Vector3D newPos;
-		newPos = ((MoverPtr)object)->relativePosition(angle, distance, flags);
+		newPos = ((std::unique_ptr<Mover>)object)->relativePosition(angle, distance, flags);
 		relPos[0] = newPos.x;
 		relPos[1] = newPos.y;
 		relPos[2] = newPos.z;
@@ -4502,7 +4502,7 @@ execGetRepairState(void)
 	GameObjectPtr object = getObject(objectId);
 	if (object && object->isMover())
 	{
-		MoverPtr mover = (MoverPtr)object;
+		std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)object;
 		for (size_t i = 0; i < mover->numBodyLocations; i++)
 		{
 			// can't repair it if it ain't there, so don't report it if
@@ -4682,11 +4682,11 @@ execGetStrikes(void)
 	//
 	//-----------------------------------------------------
 	int32_t commanderId = ABLi_popInteger();
-	int32_t strikeType = ABLi_peekInteger();
+	int32_t striketype = ABLi_peekInteger();
 	ABLi_pokeInteger(0);
 	if ((commanderId > -1) && (commanderId < Commander::numCommanders))
-		if ((strikeType > -1) && (strikeType < 4))
-			switch (strikeType)
+		if ((striketype > -1) && (striketype < 4))
+			switch (striketype)
 			{
 			case 0:
 				ABLi_pokeInteger(Commander::commanders[commanderId]->getNumSmallStrikes());
@@ -4722,11 +4722,11 @@ execSetStrikes(void)
 	//
 	//-----------------------------------------------------
 	int32_t commanderId = ABLi_popInteger();
-	int32_t strikeType = ABLi_popInteger();
+	int32_t striketype = ABLi_popInteger();
 	int32_t numStrikes = ABLi_popInteger();
 	if ((commanderId > -1) && (commanderId < Commander::numCommanders))
-		if ((strikeType > -1) && (strikeType < 4))
-			switch (strikeType)
+		if ((striketype > -1) && (striketype < 4))
+			switch (striketype)
 			{
 			case 0:
 				Commander::commanders[commanderId]->setNumSmallStrikes(numStrikes);
@@ -4762,12 +4762,12 @@ execAddStrikes(void)
 	//
 	//-----------------------------------------------------
 	int32_t commanderId = ABLi_popInteger();
-	int32_t strikeType = ABLi_popInteger();
+	int32_t striketype = ABLi_popInteger();
 	int32_t numStrikes = ABLi_popInteger();
 	int32_t strikeInc = 0;
 	if ((commanderId > -1) && (commanderId < Commander::numCommanders))
-		if ((strikeType > -1) && (strikeType < 4))
-			switch (strikeType)
+		if ((striketype > -1) && (striketype < 4))
+			switch (striketype)
 			{
 			case 0:
 				strikeInc = Commander::commanders[commanderId]->getNumSmallStrikes();
@@ -4828,11 +4828,11 @@ execSetDebugString(void)
 {
 	int32_t objectId = ABLi_popInteger();
 	int32_t stringNum = ABLi_popInteger();
-	PSTR debugString = ABLi_popCharPtr();
+	const std::wstring_view& debugString = ABLi_popCharPtr();
 	GameObjectPtr obj = getObject(objectId);
 	if (obj)
 	{
-		MechWarriorPtr pilot = obj->getPilot();
+		std::unique_ptr<MechWarrior> pilot = obj->getPilot();
 		if (pilot)
 			pilot->setDebugString(stringNum, debugString);
 	}
@@ -5031,7 +5031,7 @@ execSetPilotState(void)
 	//
 	//-----------------------------------------------------
 	uint32_t newState = ABLi_popInteger();
-	SymTableNodePtr curState = ABLi_getCurrentState();
+	const std::unique_ptr<SymTableNode>& curState = ABLi_getCurrentState();
 	if (curState)
 	{
 		if (newState < 1000)
@@ -5042,7 +5042,7 @@ execSetPilotState(void)
 			ABLi_pushInteger(01);
 			return;
 		}
-		ABLi_transState((SymTableNodePtr)newState);
+		ABLi_transState((const std::unique_ptr<SymTableNode>&)newState);
 		ABLi_pushInteger((uint32_t)curState);
 	}
 	else
@@ -5583,7 +5583,7 @@ execRequestHelp(void)
 	friendlyPos.x = friendlyCenter[0];
 	friendlyPos.y = friendlyCenter[1];
 	friendlyPos.z = 0.0;
-	MoverPtr friendlies[MAX_MOVERS];
+	std::unique_ptr<Mover> friendlies[MAX_MOVERS];
 	int32_t numFriendlies = getMoversWithinRadius(friendlies, friendlyPos, friendlyRadius,
 		CurWarrior->getTeam()->getId(), false, true, priority > 0);
 	GameObjectPtr enemy = ObjectManager->findByPartId(enemyPartID);
@@ -5593,7 +5593,7 @@ execRequestHelp(void)
 		enemyPos.x = enemyCenter[0];
 		enemyPos.y = enemyCenter[1];
 		enemyPos.z = 0.0;
-		MoverPtr enemies[MAX_MOVERS];
+		std::unique_ptr<Mover> enemies[MAX_MOVERS];
 		int32_t numEnemies = getMoversWithinRadius(
 			enemies, enemyPos, enemyRadius, enemy->getTeamId(), false, true, true);
 		calcAttackPlan(
@@ -5611,8 +5611,8 @@ execRequestTarget(void)
 	friendlyPos.x = center[0];
 	friendlyPos.y = center[1];
 	friendlyPos.z = 0.0;
-	MoverPtr friendlies[MAX_MOVERS];
-	MoverPtr enemies[MAX_MOVERS];
+	std::unique_ptr<Mover> friendlies[MAX_MOVERS];
+	std::unique_ptr<Mover> enemies[MAX_MOVERS];
 	int32_t numFriendlies = getMoversWithinRadius(
 		friendlies, friendlyPos, radius, CurWarrior->getTeam()->getId(), false, true, true);
 	int32_t numEnemies = getMoversWithinRadius(
@@ -5679,7 +5679,7 @@ execMCPrint(void)
 		DEBUGWINS_print(s, 0);
 		break;
 	case ABL_STACKITEM_CHAR_PTR:
-		sprintf(s, "PSTR=%s", (PSTR)value.data.characterPtr);
+		sprintf(s, "const std::wstring_view&=%s", (const std::wstring_view&)value.data.characterPtr);
 		DEBUGWINS_print(s, 0);
 		break;
 	case ABL_STACKITEM_INTEGER_PTR:
@@ -5750,7 +5750,7 @@ execGetWeapons(void)
 	int32_t numWpns = 0;
 	if (CurObject->isMover())
 	{
-		MoverPtr mover = (MoverPtr)CurObject;
+		std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)CurObject;
 		switch (infoType)
 		{
 		case 0:
@@ -5784,7 +5784,7 @@ execGetWeaponsStatus(void)
 	int32_t status = 0;
 	if (CurObject && CurObject->isMover())
 	{
-		MoverPtr mover = (MoverPtr)CurObject;
+		std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)CurObject;
 		status = mover->getPilot()->getWeaponsStatus(weaponList);
 	}
 	ABLi_pushInteger(status);
@@ -5801,8 +5801,8 @@ execSetMoveArea(void)
 		loc.x = center[0];
 		loc.y = center[1];
 		loc.z = land->getTerrainElevation(loc);
-		((MoverPtr)CurObject)->moveCenter = loc;
-		((MoverPtr)CurObject)->moveRadius = radius;
+		((std::unique_ptr<Mover>)CurObject)->moveCenter = loc;
+		((std::unique_ptr<Mover>)CurObject)->moveRadius = radius;
 	}
 }
 //*****************************************************************************
@@ -5816,7 +5816,7 @@ execClearTacOrder(void)
 void
 execPlayWave(void)
 {
-	PSTR fileName = ABLi_popCharPtr();
+	const std::wstring_view& fileName = ABLi_popCharPtr();
 	int32_t type = ABLi_popInteger();
 	soundSystem->playSupportSample(-1, fileName);
 	ABLi_pushInteger(0);
@@ -5910,97 +5910,97 @@ ablSymbolFreeCallback(PVOID memBlock)
 }
 //*****************************************************************************
 int32_t
-ablFileCreateCB(PVOID* file, PSTR fName)
+ablFileCreateCB(PVOID* file, const std::wstring_view& filename)
 {
 	*file = new File;
 	if (*file == nullptr)
 		Fatal(0, " unable to create ABL file");
-	if (((FilePtr)*file)->create(fName) != NO_ERROR)
+	if (((std::unique_ptr<File>)*file)->create(filename) != NO_ERROR)
 	{
 		char s[256];
-		sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", fName);
+		sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", filename);
 		Fatal(0, s);
 	}
 	return (NO_ERROR);
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileOpenCB(PVOID* file, PSTR fName)
+ablFileOpenCB(PVOID* file, const std::wstring_view& filename)
 {
 	*file = new File;
 	if (*file == nullptr)
 		Fatal(0, " unable to create ABL file");
 	// Filenames MUST be all lowercase or Hash won't find 'em!
-	for (size_t i = 0; i < strlen(fName); i++)
-		fName[i] = tolower(fName[i]);
-	if (((FilePtr)*file)->open(fName) != NO_ERROR)
-		STOP((" unable to open ABL File %s", fName));
+	for (size_t i = 0; i < strlen(filename); i++)
+		filename[i] = tolower(filename[i]);
+	if (((std::unique_ptr<File>)*file)->open(filename) != NO_ERROR)
+		STOP((" unable to open ABL File %s", filename));
 	return (NO_ERROR);
 }
 //-----------------------------------------------------------------------------
 int32_t
 ablFileCloseCB(PVOID file)
 {
-	((FilePtr)file)->close();
+	((std::unique_ptr<File>)file)->close();
 	return (0);
 }
 //-----------------------------------------------------------------------------
 bool
 ablFileEofCB(PVOID file)
 {
-	return (((FilePtr)file)->eof());
+	return (((std::unique_ptr<File>)file)->eof());
 }
 //-----------------------------------------------------------------------------
 int32_t
 ablFileReadCB(PVOID file, puint8_t buffer, int32_t length)
 {
-	return (((FilePtr)file)->read(buffer, length));
+	return (((std::unique_ptr<File>)file)->read(buffer, length));
 }
 //-----------------------------------------------------------------------------
 int32_t
 ablFileReadLongCB(PVOID file)
 {
-	return (((FilePtr)file)->readLong());
+	return (((std::unique_ptr<File>)file)->readLong());
 }
 //-----------------------------------------------------------------------------
 int32_t
 ablFileReadStringCB(PVOID file, puint8_t buffer)
 {
-	return (((FilePtr)file)->readString(buffer));
+	return (((std::unique_ptr<File>)file)->readString(buffer));
 }
 //-----------------------------------------------------------------------------
 int32_t
 ablFileReadLineExCB(PVOID file, puint8_t buffer, int32_t maxLength)
 {
-	return (((FilePtr)file)->readLineEx(buffer, maxLength));
+	return (((std::unique_ptr<File>)file)->readLineEx(buffer, maxLength));
 }
 //-----------------------------------------------------------------------------
 int32_t
 ablFileWriteCB(PVOID file, puint8_t buffer, int32_t length)
 {
-	return (((FilePtr)file)->write(buffer, length));
+	return (((std::unique_ptr<File>)file)->write(buffer, length));
 }
 //-----------------------------------------------------------------------------
 int32_t
 ablFileWriteByteCB(PVOID file, uint8_t byte)
 {
-	return (((FilePtr)file)->writeByte(byte));
+	return (((std::unique_ptr<File>)file)->writeByte(byte));
 }
 //-----------------------------------------------------------------------------
 int32_t
 ablFileWriteLongCB(PVOID file, int32_t value)
 {
-	return (((FilePtr)file)->writeLong(value));
+	return (((std::unique_ptr<File>)file)->writeLong(value));
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileWriteStringCB(PVOID file, PSTR buffer)
+ablFileWriteStringCB(PVOID file, const std::wstring_view& buffer)
 {
-	return (((FilePtr)file)->writeString(buffer));
+	return (((std::unique_ptr<File>)file)->writeString(buffer));
 }
 //*****************************************************************************
 void
-ablDebuggerPrintCallback(PSTR s)
+ablDebuggerPrintCallback(const std::wstring_view& s)
 {
 	// ABLDebuggerOut->print(s);
 	char msg[1024];
@@ -6009,7 +6009,7 @@ ablDebuggerPrintCallback(PSTR s)
 }
 //*****************************************************************************
 void
-ablDebugPrintCallback(PSTR s)
+ablDebugPrintCallback(const std::wstring_view& s)
 {
 	DEBUGWINS_print(s, 0);
 }
@@ -6021,7 +6021,7 @@ ablSeedRandom(uint32_t seed)
 }
 //*****************************************************************************
 void
-ablFatalCallback(int32_t code, PSTR s)
+ablFatalCallback(int32_t code, const std::wstring_view& s)
 {
 	STOP((s));
 }
@@ -6053,7 +6053,7 @@ ablEndlessStateCallback(UserFile* log)
 		log->write(s);
 		if (LastCoreAttackTarget->isMover())
 		{
-			MoverPtr mover = (MoverPtr)LastCoreAttackTarget;
+			std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)LastCoreAttackTarget;
 			sprintf(s, " NumWeapons = %d", mover->numWeapons);
 			log->write(s);
 			sprintf(s, " NumFunctionalWeapons = %d", mover->numFunctionalWeapons);
@@ -6336,28 +6336,28 @@ closeABL(void)
 PVOID
 ablSystemMallocCallback(uint32_t memSize)
 {
-	PSTR mem = new char[memSize];
+	const std::wstring_view& mem = new char[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablStackMallocCallback(uint32_t memSize)
 {
-	PSTR mem = new char[memSize];
+	const std::wstring_view& mem = new char[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablCodeMallocCallback(uint32_t memSize)
 {
-	PSTR mem = new char[memSize];
+	const std::wstring_view& mem = new char[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablSymbolMallocCallback(uint32_t memSize)
 {
-	PSTR mem = new char[memSize];
+	const std::wstring_view& mem = new char[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
@@ -6386,14 +6386,14 @@ ablSymbolFreeCallback(PVOID memBlock)
 }
 //*****************************************************************************
 int32_t
-ablFileCreateCB(PVOID* /* file */, PSTR /* fName */)
+ablFileCreateCB(PVOID* /* file */, const std::wstring_view& /* filename */)
 {
 	/* *file = fopen(fNamenew File;
 	if (*file == nullptr)
 	Fatal(0, " unable to create ABL file");
-	if (((FilePtr)*file)->create(fName) != NO_ERROR) {
+	if (((std::unique_ptr<File>)*file)->create(filename) != NO_ERROR) {
 	char s[256];
-	sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", fName);
+	sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", filename);
 	Fatal(0, s);
 	}
 	*/
@@ -6401,16 +6401,16 @@ ablFileCreateCB(PVOID* /* file */, PSTR /* fName */)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileOpenCB(PVOID* file, PSTR fName)
+ablFileOpenCB(PVOID* file, const std::wstring_view& filename)
 {
 	// Filenames MUST be all lowercase or Hash won't find 'em!
-	for (size_t i = 0; i < strlen(fName); i++)
-		fName[i] = (char)tolower(fName[i]);
-	*file = fopen(fName, "r");
+	for (size_t i = 0; i < strlen(filename); i++)
+		filename[i] = (char)tolower(filename[i]);
+	*file = fopen(filename, "r");
 	if (*file == nullptr)
 	{
 		char errStr[256];
-		sprintf(errStr, "Cannot open \"%s\"", fName);
+		sprintf(errStr, "Cannot open \"%s\"", filename);
 		printf(errStr);
 		scanf("\nPress any key to exit\n");
 		exit(0);
@@ -6450,9 +6450,9 @@ int32_t
 ablFileReadStringCB(PVOID file, puint8_t buffer)
 {
 	buffer[0] = nullptr;
-	PSTR s = fgets((PSTR)buffer, 9999, (FILE*)file);
+	const std::wstring_view& s = fgets((const std::wstring_view&)buffer, 9999, (FILE*)file);
 	if (!s)
-		return (strlen((PSTR)buffer));
+		return (strlen((const std::wstring_view&)buffer));
 	return (strlen(s));
 }
 //-----------------------------------------------------------------------------
@@ -6460,37 +6460,37 @@ int32_t
 ablFileReadLineExCB(PVOID file, puint8_t buffer, int32_t maxLength)
 {
 	buffer[0] = nullptr;
-	PSTR s = fgets((PSTR)buffer, maxLength, (FILE*)file);
+	const std::wstring_view& s = fgets((const std::wstring_view&)buffer, maxLength, (FILE*)file);
 	if (!s)
-		return (strlen((PSTR)buffer));
+		return (strlen((const std::wstring_view&)buffer));
 	return (strlen(s));
 }
 //-----------------------------------------------------------------------------
 int32_t ablFileWriteCB(PVOID /* file */, puint8_t /* buffer */, int32_t /* length */)
 {
-	// return(((FilePtr)file)->write(buffer, length));
+	// return(((std::unique_ptr<File>)file)->write(buffer, length));
 	return (0);
 }
 //-----------------------------------------------------------------------------
 int32_t ablFileWriteByteCB(PVOID /* file */, uint8_t /* byte */)
 {
-	// return(((FilePtr)file)->writeByte(byte));
+	// return(((std::unique_ptr<File>)file)->writeByte(byte));
 	return (0);
 }
 //-----------------------------------------------------------------------------
 int32_t ablFileWriteLongCB(PVOID /* file */, int32_t /* value */)
 {
-	// return(((FilePtr)file)->writeLong(value));
+	// return(((std::unique_ptr<File>)file)->writeLong(value));
 	return (0);
 }
 //-----------------------------------------------------------------------------
-int32_t ablFileWriteStringCB(PVOID /* file */, PSTR /* buffer */)
+int32_t ablFileWriteStringCB(PVOID /* file */, const std::wstring_view& /* buffer */)
 {
-	// return(((FilePtr)file)->writeString(buffer));
+	// return(((std::unique_ptr<File>)file)->writeString(buffer));
 	return (0);
 }
 //*****************************************************************************
-void ablDebuggerPrintCallback(PSTR /* s */)
+void ablDebuggerPrintCallback(const std::wstring_view& /* s */)
 {
 	// ABLDebuggerOut->print(s);
 	// char msg[1024];
@@ -6498,7 +6498,7 @@ void ablDebuggerPrintCallback(PSTR /* s */)
 	// SPEW((0,msg));
 }
 //*****************************************************************************
-void ablDebugPrintCallback(PSTR /* s */)
+void ablDebugPrintCallback(const std::wstring_view& /* s */)
 {
 	// DEBUGWINS_print(s, 0);
 }
@@ -6509,7 +6509,7 @@ void ablSeedRandom(uint32_t /* seed */)
 }
 //*****************************************************************************
 void
-ablFatalCallback(int32_t code, PSTR s)
+ablFatalCallback(int32_t code, const std::wstring_view& s)
 {
 	printf("\n");
 	printf(" FATAL: (%d) %s", code, s);

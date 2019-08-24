@@ -84,9 +84,9 @@ public:
 		}
 	}
 
-	PCSTR GetShortName() { return shortName; }
+	PSTR GetShortName() { return shortName; }
 
-	PCSTR GetLongName() { return longName; }
+	PSTR GetLongName() { return longName; }
 
 	void SetGroupData(LPVOID data, uint32_t size);
 

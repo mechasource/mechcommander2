@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlr_i_l_tmesh.hpp>
+#include "mlr/mlr_i_l_tmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -243,7 +243,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //	int32_t MLR_I_L_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtriangleclipping.inl>
+#include "mlr/mlrtriangleclipping.inl"
 
 #undef I_SAY_YES_TO_COLOR
 #undef I_SAY_YES_TO_LIGHTING
@@ -253,7 +253,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //	void	Lighting (MLRLight**, int32_t nrLights);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtrianglelighting.inl>
+#include "mlr/mlrtrianglelighting.inl"
 #undef CLASSNAME
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -423,3 +423,5 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRSta
 	gos_PopCurrentHeap();
 	return ret;
 }
+
+} // namespace MidLevelRenderer

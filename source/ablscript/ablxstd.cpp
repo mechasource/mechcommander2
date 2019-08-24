@@ -9,24 +9,17 @@
 
 #include "stdinc.h"
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-//#include <math.h>
-//#include <time.h>
-
-#ifndef ABL_H
 #include "abl.h"
-#endif
 
-inline int32_t
-double2long(double _in)
+namespace mclib::abl {
+
+//***************************************************************************
+
+inline int32_t double2long(double _in)
 {
 	_in += 6755399441055744.0;
 	return (*(int32_t*)&_in);
 }
-
-//***************************************************************************
 
 //----------
 // EXTERNALS
@@ -34,21 +27,21 @@ double2long(double _in)
 extern int32_t level;
 extern int32_t execLineNumber;
 extern int32_t FileNumber;
-extern PSTR codeSegmentPtr;
+extern const std::wstring_view& codeSegmentPtr;
 extern TokenCodeType codeToken;
 extern StackItem* stack;
-extern StackItemPtr tos;
-extern StackItemPtr stackFrameBasePtr;
-extern SymTableNodePtr CurRoutineIdPtr;
+extern const std::unique_ptr<StackItem>& tos;
+extern const std::unique_ptr<StackItem>& stackFrameBasePtr;
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
 extern int32_t CurModuleHandle;
-extern TypePtr IntegerTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
-extern TypePtr CharTypePtr;
-extern ABLModulePtr CurModule;
-extern ABLModulePtr CurFSM;
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
+extern const std::unique_ptr<Type>& CharTypePtr;
+extern const std::unique_ptr<ABLModule>& CurModule;
+extern const std::unique_ptr<ABLModule>& CurFSM;
 extern int32_t MaxLoopIterations;
-extern DebuggerPtr debugger;
+extern const std::unique_ptr<Debugger>& debugger;
 extern bool NewStateSet;
 
 //--------
@@ -107,7 +100,7 @@ float
 ABLi_popIntegerReal(void)
 {
 	getCodeToken();
-	TypePtr paramTypePtr = execExpression();
+	const std::unique_ptr<Type>& paramTypePtr = execExpression();
 	float val = 0.0;
 	if (paramTypePtr == IntegerTypePtr)
 		val = (float)tos->integer;
@@ -131,14 +124,14 @@ ABLi_popBoolean(void)
 
 //---------------------------------------------------------------------------
 
-PSTR
+const std::wstring_view&
 ABLi_popCharPtr(void)
 {
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	PSTR charPtr = (PSTR)tos->address;
+	const std::wstring_view& charPtr = (const std::wstring_view&)tos->address;
 	pop();
 	return (charPtr);
 }
@@ -149,9 +142,9 @@ int32_t*
 ABLi_popIntegerPtr(void)
 {
 	getCodeToken();
-	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+	const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 	execVariable(idPtr, USE_REFPARAM);
-	int32_t* integerPtr = (int32_t*)(&((StackItemPtr)tos->address)->integer);
+	int32_t* integerPtr = (int32_t*)(&((const std::unique_ptr<StackItem>&)tos->address)->integer);
 	pop();
 	return (integerPtr);
 }
@@ -162,23 +155,23 @@ float*
 ABLi_popRealPtr(void)
 {
 	getCodeToken();
-	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+	const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 	execVariable(idPtr, USE_REFPARAM);
-	float* realPtr = (float*)(&((StackItemPtr)tos->address)->real);
+	float* realPtr = (float*)(&((const std::unique_ptr<StackItem>&)tos->address)->real);
 	pop();
 	return (realPtr);
 }
 
 //---------------------------------------------------------------------------
 
-PSTR
+const std::wstring_view&
 ABLi_popBooleanPtr(void)
 {
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	PSTR charPtr = (PSTR)tos->address;
+	const std::wstring_view& charPtr = (const std::wstring_view&)tos->address;
 	pop();
 	return (charPtr);
 }
@@ -189,7 +182,7 @@ int32_t
 ABLi_popAnything(ABLStackItem* value)
 {
 	getCodeToken();
-	TypePtr paramTypePtr = execExpression();
+	const std::unique_ptr<Type>& paramTypePtr = execExpression();
 	int32_t type = -1;
 	if (paramTypePtr == IntegerTypePtr)
 	{
@@ -216,7 +209,7 @@ ABLi_popAnything(ABLStackItem* value)
 		if (paramTypePtr->info.array.elementTypePtr == CharTypePtr)
 		{
 			value->type = type = ABL_STACKITEM_CHAR_PTR;
-			value->data.characterPtr = (PSTR)tos->address;
+			value->data.characterPtr = (const std::wstring_view&)tos->address;
 		}
 		else if (paramTypePtr->info.array.elementTypePtr == IntegerTypePtr)
 		{
@@ -243,7 +236,7 @@ ABLi_popAnything(ABLStackItem* value)
 void
 ABLi_pushBoolean(bool value)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->integer = value ? 1 : 0;
@@ -254,7 +247,7 @@ ABLi_pushBoolean(bool value)
 void
 ABLi_pushInteger(int32_t value)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->integer = value;
@@ -265,7 +258,7 @@ ABLi_pushInteger(int32_t value)
 void
 ABLi_pushReal(float value)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->real = value;
@@ -276,7 +269,7 @@ ABLi_pushReal(float value)
 void
 ABLi_pushChar(char value)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->integer = value;
@@ -314,12 +307,12 @@ ABLi_peekBoolean(void)
 
 //---------------------------------------------------------------------------
 
-PSTR
+const std::wstring_view&
 ABLi_peekCharPtr(void)
 {
 	getCodeToken();
 	execExpression();
-	return ((PSTR)tos->address);
+	return ((const std::wstring_view&)tos->address);
 }
 
 //---------------------------------------------------------------------------
@@ -328,9 +321,9 @@ int32_t*
 ABLi_peekIntegerPtr(void)
 {
 	getCodeToken();
-	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+	const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 	execVariable(idPtr, USE_REFPARAM);
-	return ((int32_t*)(&((StackItemPtr)tos->address)->integer));
+	return ((int32_t*)(&((const std::unique_ptr<StackItem>&)tos->address)->integer));
 }
 
 //---------------------------------------------------------------------------
@@ -339,9 +332,9 @@ float*
 ABLi_peekRealPtr(void)
 {
 	getCodeToken();
-	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+	const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 	execVariable(idPtr, USE_REFPARAM);
-	return ((float*)(&((StackItemPtr)tos->address)->real));
+	return ((float*)(&((const std::unique_ptr<StackItem>&)tos->address)->real));
 }
 
 //---------------------------------------------------------------------------
@@ -383,24 +376,24 @@ execOrderReturn(int32_t returnVal)
 {
 	//-----------------------------
 	// Assignment to function id...
-	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+	const std::unique_ptr<StackFrameHeader>& headerPtr = (const std::unique_ptr<StackFrameHeader>&)stackFrameBasePtr;
 	int32_t delta = level - CurRoutineIdPtr->level - 1;
 	while (delta-- > 0)
-		headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
+		headerPtr = (const std::unique_ptr<StackFrameHeader>&)headerPtr->staticLink.address;
 	if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
 	{
 		//----------------------------------
 		// Return in a state function, so...
 		if (debugger)
-			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->typePtr,
-				(StackItemPtr)headerPtr, CurRoutineIdPtr->typePtr);
+			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->ptype,
+				(const std::unique_ptr<StackItem>&)headerPtr, CurRoutineIdPtr->ptype);
 		ExitWithReturn = true;
 		ExitFromTacOrder = true;
 		if (returnVal == 0)
 		{
 			//----------------------------------------------------------
 			// Use the "eject" code only if called for a failed Order...
-			codeSegmentPtr = (PSTR)ExitStateCodeSegment;
+			codeSegmentPtr = (const std::wstring_view&)ExitStateCodeSegment;
 			getCodeToken();
 		}
 	}
@@ -410,21 +403,21 @@ execOrderReturn(int32_t returnVal)
 		// All Order functions (TacticalOrder/GeneralOrder/ActionOrder) must
 		// return an integer error code, so we assume the return type is
 		// IntegerTypePtr...
-		StackItemPtr targetPtr = (StackItemPtr)headerPtr;
+		const std::unique_ptr<StackItem>& targetPtr = (const std::unique_ptr<StackItem>&)headerPtr;
 		targetPtr->integer = returnVal;
 		//----------------------------------------------------------------------
 		// Preserve the return value, in case we need it for the calling user...
 		memcpy(&returnValue, targetPtr, sizeof(StackItem));
 		if (debugger)
-			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->typePtr,
-				(StackItemPtr)headerPtr, CurRoutineIdPtr->typePtr);
+			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->ptype,
+				(const std::unique_ptr<StackItem>&)headerPtr, CurRoutineIdPtr->ptype);
 		ExitWithReturn = true;
 		ExitFromTacOrder = true;
 		if (returnVal == 0)
 		{
 			//----------------------------------------------------------
 			// Use the "eject" code only if called for a failed Order...
-			codeSegmentPtr = (PSTR)ExitOrderCodeSegment;
+			codeSegmentPtr = (const std::wstring_view&)ExitOrderCodeSegment;
 			getCodeToken();
 		}
 	}
@@ -436,22 +429,22 @@ void
 execStdReturn(void)
 {
 	memset(&returnValue, 0, sizeof(StackItem));
-	if (CurRoutineIdPtr->typePtr)
+	if (CurRoutineIdPtr->ptype)
 	{
 		//-----------------------------
 		// Assignment to function id...
-		StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+		const std::unique_ptr<StackFrameHeader>& headerPtr = (const std::unique_ptr<StackFrameHeader>&)stackFrameBasePtr;
 		int32_t delta = level - CurRoutineIdPtr->level - 1;
 		while (delta-- > 0)
-			headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
-		StackItemPtr targetPtr = (StackItemPtr)headerPtr;
-		TypePtr targetTypePtr = (TypePtr)(CurRoutineIdPtr->typePtr);
+			headerPtr = (const std::unique_ptr<StackFrameHeader>&)headerPtr->staticLink.address;
+		const std::unique_ptr<StackItem>& targetPtr = (const std::unique_ptr<StackItem>&)headerPtr;
+		const std::unique_ptr<Type>& targetTypePtr = (const std::unique_ptr<Type>&)(CurRoutineIdPtr->ptype);
 		getCodeToken();
 		//---------------------------------------------------------------
 		// Routine execExpression() leaves the expression value on top of
 		// stack...
 		getCodeToken();
-		TypePtr expressionTypePtr = execExpression();
+		const std::unique_ptr<Type>& expressionTypePtr = execExpression();
 		//--------------------------
 		// Now, do the assignment...
 		if ((targetTypePtr == RealTypePtr) && (expressionTypePtr == IntegerTypePtr))
@@ -464,8 +457,8 @@ execStdReturn(void)
 		{
 			//-------------------------
 			// Copy the array/record...
-			PSTR dest = (PSTR)targetPtr;
-			PSTR src = tos->address;
+			const std::wstring_view& dest = (const std::wstring_view&)targetPtr;
+			const std::wstring_view& src = tos->address;
 			int32_t size = targetTypePtr->size;
 			memcpy(dest, src, size);
 		}
@@ -489,17 +482,17 @@ execStdReturn(void)
 		memcpy(&returnValue, targetPtr, sizeof(StackItem));
 		if (debugger)
 			debugger->traceDataStore(
-				CurRoutineIdPtr, CurRoutineIdPtr->typePtr, targetPtr, targetTypePtr);
+				CurRoutineIdPtr, CurRoutineIdPtr->ptype, targetPtr, targetTypePtr);
 	}
 	//-----------------------
 	// Grab the semi-colon...
 	getCodeToken();
 	if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
-		codeSegmentPtr = (PSTR)ExitOrderCodeSegment;
+		codeSegmentPtr = (const std::wstring_view&)ExitOrderCodeSegment;
 	else if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
-		codeSegmentPtr = (PSTR)ExitStateCodeSegment;
+		codeSegmentPtr = (const std::wstring_view&)ExitStateCodeSegment;
 	else
-		codeSegmentPtr = (PSTR)ExitRoutineCodeSegment;
+		codeSegmentPtr = (const std::wstring_view&)ExitRoutineCodeSegment;
 	ExitWithReturn = true;
 	getCodeToken();
 }
@@ -515,9 +508,9 @@ execStdPrint(void)
 	//----------------------------
 	// Get parameter expression...
 	getCodeToken();
-	TypePtr paramTypePtr = execExpression();
+	const std::unique_ptr<Type>& paramTypePtr = execExpression();
 	char buffer[20];
-	PSTR s = buffer;
+	const std::wstring_view& s = buffer;
 	if (paramTypePtr == IntegerTypePtr)
 		sprintf(buffer, "%d", tos->integer);
 	else if (paramTypePtr == BooleanTypePtr)
@@ -527,7 +520,7 @@ execStdPrint(void)
 	else if (paramTypePtr == RealTypePtr)
 		sprintf(buffer, "%.4f", tos->real);
 	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
-		s = (PSTR)tos->address;
+		s = (const std::wstring_view&)tos->address;
 	pop();
 	if (debugger)
 	{
@@ -565,7 +558,7 @@ execStdPrint(void)
 
 //***************************************************************************
 
-TypePtr
+const std::unique_ptr<Type>&
 execStdConcat(void)
 {
 	//-------------------
@@ -575,12 +568,12 @@ execStdConcat(void)
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	PSTR dest = (PSTR)tos->address;
+	const std::wstring_view& dest = (const std::wstring_view&)tos->address;
 	pop();
 	//----------------------
 	// Get item to append...
 	getCodeToken();
-	TypePtr paramTypePtr = execExpression();
+	const std::unique_ptr<Type>& paramTypePtr = execExpression();
 	char buffer[20];
 	if (paramTypePtr == IntegerTypePtr)
 	{
@@ -603,7 +596,7 @@ execStdConcat(void)
 		strcat(dest, buffer);
 	}
 	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
-		strcat(dest, (PSTR)tos->address);
+		strcat(dest, (const std::wstring_view&)tos->address);
 	tos->integer = 0;
 	getCodeToken();
 	return (IntegerTypePtr);
@@ -658,7 +651,7 @@ execStdTrunc(void)
 void
 execStdFileOpen(void)
 {
-	PSTR fileName = ABLi_popCharPtr();
+	const std::wstring_view& fileName = ABLi_popCharPtr();
 	int32_t fileHandle = -1;
 	UserFile* userFile = UserFile::getNewFile();
 	if (userFile)
@@ -676,7 +669,7 @@ void
 execStdFileWrite(void)
 {
 	int32_t fileHandle = ABLi_popInteger();
-	PSTR string = ABLi_popCharPtr();
+	const std::wstring_view& string = ABLi_popCharPtr();
 	UserFile* userFile = UserFile::files[fileHandle];
 	if (userFile->inUse)
 		userFile->write(string);
@@ -700,8 +693,8 @@ execStdGetModule(void)
 {
 	//----------------------------------------------------------
 	// Return the handle of the current module being executed...
-	PSTR curBuffer = ABLi_popCharPtr();
-	PSTR fsmBuffer = ABLi_popCharPtr();
+	const std::wstring_view& curBuffer = ABLi_popCharPtr();
+	const std::wstring_view& fsmBuffer = ABLi_popCharPtr();
 	strcpy(curBuffer, CurModule->getFileName());
 	strcpy(fsmBuffer, CurFSM ? CurFSM->getFileName() : "none");
 	ABLi_pushInteger(CurModuleHandle);
@@ -748,7 +741,7 @@ execStdFatal(void)
 	//
 	//----------------------------------------------------------------------
 	int32_t code = ABLi_popInteger();
-	PSTR s = ABLi_popCharPtr();
+	const std::wstring_view& s = ABLi_popCharPtr();
 	char message[512];
 	if (debugger)
 	{
@@ -795,7 +788,7 @@ execStdAssert(void)
 	//----------------------------------------------------------------------
 	int32_t expression = ABLi_popInteger();
 	int32_t code = ABLi_popInteger();
-	PSTR s = ABLi_popCharPtr();
+	const std::wstring_view& s = ABLi_popCharPtr();
 	if (!expression)
 	{
 		char message[512];
@@ -871,7 +864,7 @@ execStdResetOrders(void)
 void
 execStdGetStateHandle(void)
 {
-	PSTR name = ABLi_popCharPtr();
+	const std::wstring_view& name = ABLi_popCharPtr();
 	int32_t stateHandle = CurFSM->findStateHandle(_strlwr(name));
 	ABLi_pushInteger(stateHandle);
 }
@@ -887,7 +880,7 @@ execStdGetCurrentStateHandle(void)
 
 //---------------------------------------------------------------------------
 
-extern ModuleEntryPtr ModuleRegistry;
+extern const std::unique_ptr<ModuleEntry>& ModuleRegistry;
 
 extern char SetStateDebugStr[256];
 
@@ -897,7 +890,7 @@ execStdSetState(void)
 	uint32_t stateHandle = ABLi_popInteger();
 	if (stateHandle > 0)
 	{
-		SymTableNodePtr stateFunction =
+		const std::unique_ptr<SymTableNode>& stateFunction =
 			ModuleRegistry[CurFSM->getHandle()].stateHandles[stateHandle].state;
 		CurFSM->setPrevState(CurFSM->getState());
 		CurFSM->setState(stateFunction);
@@ -912,8 +905,8 @@ execStdSetState(void)
 void
 execStdGetFunctionHandle(void)
 {
-	PSTR name = ABLi_popCharPtr();
-	SymTableNodePtr function = CurModule->findFunction(name, false);
+	const std::wstring_view& name = ABLi_popCharPtr();
+	const std::unique_ptr<SymTableNode>& function = CurModule->findFunction(name, false);
 	if (function)
 		ABLi_pushInteger((uint32_t)function);
 	else
@@ -993,8 +986,8 @@ initStandardRoutines(void)
 
 //-----------------------------------------------------------------------------
 
-TypePtr
-execStandardRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
+const std::unique_ptr<Type>&
+execStandardRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool skipOrder)
 {
 	int32_t key = routineIdPtr->defn.info.routine.key;
 	switch (key)
@@ -1046,3 +1039,5 @@ execStandardRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

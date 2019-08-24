@@ -19,7 +19,7 @@
 //#include "cident.h"
 //#include "inifile.h"
 //#include "paths.h"
-//#include <gameos.hpp>
+//#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 // static Globals
@@ -28,7 +28,7 @@
 
 //---------------------------------------------------------------------------
 // Class AppearanceType
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 PVOID
 AppearanceType::operator new(size_t memSize)
 {
@@ -54,9 +54,9 @@ AppearanceType::operator delete(PVOID treePtr)
 
 //---------------------------------------------------------------------------
 void
-AppearanceType::init(PSTR fileName)
+AppearanceType::init(const std::wstring_view& fileName)
 {
-	name = (PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
+	name = (const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
 	strcpy(name, fileName);
 	// Dig out the Type Bounds here for selections
 	FullPathFileName iniName;
@@ -155,7 +155,7 @@ AppearanceType::reinit(void)
 }
 
 //---------------------------------------------------------------------------
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 void
 AppearanceType::destroy(void)
 {
@@ -178,7 +178,7 @@ AppearanceTypeList::init(uint32_t heapSize)
 
 //---------------------------------------------------------------------------
 AppearanceTypePtr
-AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appearFile)
+AppearanceTypeList::getAppearance(uint32_t apprNum, const std::wstring_view& appearFile)
 {
 	//----------------------------------------------------------------
 	// The type of appearance is stored in the upper 8 bits of the

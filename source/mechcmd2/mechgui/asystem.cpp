@@ -3,10 +3,10 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include <mclib.h>
-#include <mechgui/asystem.h>
+#include "mclib.h"
+#include "mechgui/asystem.h"
 #include "packet.h"
-#include <mechgui/afont.h>
+#include "mechgui/afont.h"
 #include "paths.h"
 #include "userinput.h"
 
@@ -18,9 +18,9 @@ aObject::update()
 {
 	int32_t x = userInput->getMouseX();
 	int32_t y = userInput->getMouseY();
-	if (pointInside(x, y) && helpID && isShowing())
+	if (pointInside(x, y) && helpid && isShowing())
 	{
-		helpTextID = helpID;
+		helpTextID = helpid;
 	}
 	// call update for the children
 	for (size_t i = 0; i < nNumberOfChildren; i++)
@@ -38,7 +38,7 @@ aObject::aObject()
 	for (size_t i = 0; i < 4; i++)
 		location[i].rhw = .5;
 	showWindow = 1;
-	helpID = 0;
+	helpid = 0;
 	fileWidth = 0.0f;
 }
 
@@ -76,7 +76,7 @@ aObject::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 }
 
 void
-aObject::init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush)
+aObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t neverFlush)
 {
 	memset(location, 0, sizeof(location));
 	char fileName[256];
@@ -95,7 +95,7 @@ aObject::init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush)
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
 	file->readIdLong("HelpCaption", helpHeader);
-	file->readIdLong("HelpDesc", helpID);
+	file->readIdLong("HelpDesc", helpid);
 	if (NO_ERROR == file->readIdString("fileName", fileName, 32))
 	{
 		bool bAlpha = 0;
@@ -421,7 +421,7 @@ aObject::render(int32_t x, int32_t y)
 }
 
 void
-aObject::setTexture(PCSTR fileName)
+aObject::setTexture(const std::wstring_view& fileName)
 {
 	if (textureHandle)
 	{
@@ -563,7 +563,7 @@ aRect::render(int32_t x, int32_t y)
 }
 
 void
-aRect::init(FitIniFile* file, PCSTR blockName)
+aRect::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
@@ -596,7 +596,7 @@ aRect::init(FitIniFile* file, PCSTR blockName)
 	setColor(color);
 	file->readIdBoolean("outline", bOutline);
 	file->readIdLong("HelpCaption", helpHeader);
-	file->readIdLong("HelpDesc", helpID);
+	file->readIdLong("HelpDesc", helpid);
 }
 
 RECT
@@ -640,7 +640,7 @@ aText::aText()
 aText::~aText() {}
 
 void
-aText::init(FitIniFile* file, PCSTR header)
+aText::init(FitIniFile* file, const std::wstring_view& header)
 {
 	int32_t result = file->seekBlock(header);
 	if (result != NO_ERROR)
@@ -675,11 +675,11 @@ aText::init(FitIniFile* file, PCSTR header)
 		text = tmp;
 	}
 	file->readIdLong("HelpCaption", helpHeader);
-	file->readIdLong("HelpDesc", helpID);
+	file->readIdLong("HelpDesc", helpid);
 }
 
 void
-aText::setText(const std::wstring& str)
+aText::setText(const std::wstring_view& str)
 {
 	text = str;
 }

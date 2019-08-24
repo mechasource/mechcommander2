@@ -8,8 +8,8 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/scalar.hpp>
+//#include "gameos.hpp"
+#include "stuff/scalar.h"
 
 using namespace Stuff;
 

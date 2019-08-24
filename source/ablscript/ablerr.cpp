@@ -8,35 +8,23 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <stdio.h>
-//#include <stdlib.h>
+//#include "ablgen.h"
+//#include "ablscan.h"
+//#include "ablerr.h"
+//#include "abl.h"
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABL_H
-#include "abl.h"
-#endif
+namespace mclib::abl {
 
 //***************************************************************************
 
 //----------
 // EXTERNALS
-extern PSTR tokenp;
+extern const std::wstring_view& tokenp;
 extern int32_t execLineNumber;
 extern int32_t lineNumber;
 extern int32_t FileNumber;
 extern char SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
-extern ABLModulePtr CurModule;
+extern const std::unique_ptr<ABLModule>& CurModule;
 extern char wordString[];
 
 //---------------------------------------------------------------------------
@@ -44,7 +32,7 @@ extern char wordString[];
 //----------------------
 // SYNTAX ERROR messages
 
-PSTR syntaxErrorMessages[] = {"No syntax error", // 0
+const std::wstring_view& syntaxErrorMessages[] = {"No syntax error", // 0
 	"Syntax error", "Too many errors", "Cannot open source file", "Unexpected end-of-file",
 	"Invalid number", "Invalid fraction", "Invalid exponent", "Too many digits",
 	"Real out of range",
@@ -75,7 +63,7 @@ PSTR syntaxErrorMessages[] = {"No syntax error", // 0
 //-----------------------
 // RUNTIME ERROR messages
 
-PSTR runtimeErrorMessages[] = {"Runtime stack overflow", "Infinite Loop", "Nested function call",
+const std::wstring_view& runtimeErrorMessages[] = {"Runtime stack overflow", "Infinite Loop", "Nested function call",
 	"Unimplemented feature", "Value out of range", "Division by zero", "Invalid function argument",
 	"Invalid case value", "Abort", "No Previous State"};
 
@@ -86,12 +74,12 @@ PSTR runtimeErrorMessages[] = {"Runtime stack overflow", "Infinite Loop", "Neste
 
 int32_t errorCount = 0;
 
-extern DebuggerPtr debugger;
+extern const std::unique_ptr<Debugger>& debugger;
 
 //***************************************************************************
 
 void
-ABL_Fatal(int32_t errCode, PSTR s)
+ABL_Fatal(int32_t errCode, const std::wstring_view& s)
 {
 	ABLFatalCallback(errCode, s);
 }
@@ -99,7 +87,7 @@ ABL_Fatal(int32_t errCode, PSTR s)
 //---------------------------------------------------------------------------
 
 void
-ABL_Assert(bool test, int32_t errCode, PSTR s)
+ABL_Assert(bool test, int32_t errCode, const std::wstring_view& s)
 {
 	test;
 	errCode;
@@ -156,3 +144,5 @@ runtimeError(int32_t errCode)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

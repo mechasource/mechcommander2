@@ -6,7 +6,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "EZVector.hpp"
+#include "ezvector.hpp"
 //
 // Maximum number of available channels;
 //

@@ -8,36 +8,15 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <stdio.h>
-//#include <string.h>
-
-#ifndef ABLGEN_H
 #include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
 #include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
 #include "ablscan.h"
-#endif
-
-#ifndef ABLSYMT_H
 #include "ablsymt.h"
-#endif
-
-#ifndef ABLPARSE_H
 #include "ablparse.h"
-#endif
-
-#ifndef ABLEXEC_H
 #include "ablexec.h"
-#endif
-
-#ifndef ABLDBUG_H
 #include "abldbug.h"
-#endif
+
+namespace mclib::abl {
 
 //***************************************************************************
 
@@ -48,20 +27,20 @@ extern int32_t level;
 extern int32_t CallStackLevel;
 extern int32_t execLineNumber;
 extern int32_t execStatementCount;
-extern PSTR codeSegmentPtr;
-extern PSTR statementStartPtr;
+extern const std::wstring_view& codeSegmentPtr;
+extern const std::wstring_view& statementStartPtr;
 extern TokenCodeType codeToken;
 extern int32_t NumExecutions;
 
 extern StackItem* stack;
-extern StackItemPtr tos;
-extern StackItemPtr stackFrameBasePtr;
-extern SymTableNodePtr CurRoutineIdPtr;
+extern const std::unique_ptr<StackItem>& tos;
+extern const std::unique_ptr<StackItem>& stackFrameBasePtr;
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
 
-extern TypePtr IntegerTypePtr;
-extern TypePtr CharTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& CharTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
 
 extern bool ExitWithReturn;
 extern bool ExitFromTacOrder;
@@ -69,18 +48,18 @@ extern bool AutoReturnFromOrders;
 
 extern int32_t MaxLoopIterations;
 
-extern DebuggerPtr debugger;
-extern ABLModulePtr CurModule;
-extern ABLModulePtr CurFSM;
-extern SymTableNodePtr CurModuleIdPtr;
+extern const std::unique_ptr<Debugger>& debugger;
+extern const std::unique_ptr<ABLModule>& CurModule;
+extern const std::unique_ptr<ABLModule>& CurFSM;
+extern const std::unique_ptr<SymTableNode>& CurModuleIdPtr;
 extern int32_t CurModuleHandle;
 extern bool CallModuleInit;
-extern StackItemPtr StaticDataPtr;
+extern const std::unique_ptr<StackItem>& StaticDataPtr;
 uint32_t* OrderCompletionFlags = nullptr;
-extern ModuleEntryPtr ModuleRegistry;
-extern ABLModulePtr* ModuleInstanceRegistry;
-extern ABLModulePtr CurModule;
-extern ABLModulePtr CurLibrary;
+extern const std::unique_ptr<ModuleEntry>& ModuleRegistry;
+extern const std::unique_ptr<ABLModule>&* ModuleInstanceRegistry;
+extern const std::unique_ptr<ABLModule>& CurModule;
+extern const std::unique_ptr<ABLModule>& CurLibrary;
 extern int32_t ProfileLogFunctionTimeLimit;
 extern ABLFile* ProfileLog;
 extern bool NewStateSet;
@@ -90,9 +69,9 @@ int32_t dummyCount = 0;
 void
 execOrderReturn(int32_t returnVal);
 void
-ABL_AddToProfileLog(PSTR profileString);
+ABL_AddToProfileLog(const std::wstring_view& profileString);
 void
-transState(SymTableNodePtr newState);
+transState(const std::unique_ptr<SymTableNode>& newState);
 
 //***************************************************************************
 //
@@ -114,7 +93,7 @@ execStatement(void)
 	{
 	case TKN_IDENTIFIER:
 	{
-		SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+		const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 		ABL_Assert(idPtr != nullptr, 0, " oops ");
 		if (idPtr->defn.key == DFN_FUNCTION)
 		{
@@ -127,7 +106,7 @@ execStatement(void)
 				orderBitMask = getCodeByte();
 				skipOrder = !CurModule->isLibrary() && CurModule->getOrderCallFlag(orderDWord, orderBitMask);
 			}
-			TypePtr returnType = execRoutineCall(idPtr, skipOrder);
+			const std::unique_ptr<Type>& returnType = execRoutineCall(idPtr, skipOrder);
 			if (idPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
 			{
 				if (AutoReturnFromOrders)
@@ -216,15 +195,15 @@ execStatement(void)
 //***************************************************************************
 
 void
-execAssignmentStatement(SymTableNodePtr idPtr)
+execAssignmentStatement(const std::unique_ptr<SymTableNode>& idPtr)
 {
-	StackItemPtr targetPtr;
-	TypePtr targetTypePtr;
-	TypePtr expressionTypePtr;
+	const std::unique_ptr<StackItem>& targetPtr;
+	const std::unique_ptr<Type>& targetTypePtr;
+	const std::unique_ptr<Type>& expressionTypePtr;
 	//--------------------------
 	// Assignment to variable...
 	targetTypePtr = execVariable(idPtr, USE_TARGET);
-	targetPtr = (StackItemPtr)tos->address;
+	targetPtr = (const std::unique_ptr<StackItem>&)tos->address;
 	//------------------------------
 	// Pop off the target address...
 	pop();
@@ -249,8 +228,8 @@ execAssignmentStatement(SymTableNodePtr idPtr)
 	{
 		//-------------------------
 		// Copy the array/record...
-		PSTR dest = (PSTR)targetPtr;
-		PSTR src = tos->address;
+		const std::wstring_view& dest = (const std::wstring_view&)targetPtr;
+		const std::wstring_view& src = tos->address;
 		int32_t size = targetTypePtr->size;
 		memcpy(dest, src, size);
 	}
@@ -272,13 +251,13 @@ execAssignmentStatement(SymTableNodePtr idPtr)
 	// Grab the expression value...
 	pop();
 	if (debugger)
-		debugger->traceDataStore(idPtr, idPtr->typePtr, targetPtr, targetTypePtr);
+		debugger->traceDataStore(idPtr, idPtr->ptype, targetPtr, targetTypePtr);
 }
 
 //***************************************************************************
 
-TypePtr
-execRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
+const std::unique_ptr<Type>&
+execRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool skipOrder)
 {
 	if (routineIdPtr->defn.info.routine.key == RTN_DECLARED)
 		return (execDeclaredRoutineCall(routineIdPtr, skipOrder));
@@ -288,12 +267,12 @@ execRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 
 //***************************************************************************
 
-TypePtr
-execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
+const std::unique_ptr<Type>&
+execDeclaredRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool skipOrder)
 {
 	if (skipOrder)
 	{
-		StackItemPtr curStackFrameBase = tos;
+		const std::unique_ptr<StackItem>& curStackFrameBase = tos;
 		//----------------------------------------
 		// Push parameter values onto the stack...
 		getCodeToken();
@@ -305,14 +284,14 @@ execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 		getCodeToken();
 		tos = curStackFrameBase;
 		pushInteger(1);
-		return ((TypePtr)(routineIdPtr->typePtr));
+		return ((const std::unique_ptr<Type>&)(routineIdPtr->ptype));
 	}
 	int32_t oldLevel = level; // level of caller
 	int32_t newLevel = routineIdPtr->level + 1; // level of callee
 	CallStackLevel++;
 	//-------------------------------------------
 	// First, set up the stack frame of callee...
-	StackItemPtr newStackFrameBasePtr = tos + 1;
+	const std::unique_ptr<StackItem>& newStackFrameBasePtr = tos + 1;
 	bool isLibraryCall =
 		(routineIdPtr->library && (routineIdPtr->library != CurRoutineIdPtr->library));
 	if (isLibraryCall)
@@ -331,12 +310,12 @@ execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 	// Set the return address in the new stack frame...
 	level = newLevel;
 	stackFrameBasePtr = newStackFrameBasePtr;
-	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+	const std::unique_ptr<StackFrameHeader>& headerPtr = (const std::unique_ptr<StackFrameHeader>&)stackFrameBasePtr;
 	headerPtr->returnAddress.address = codeSegmentPtr - 1;
 	//---------------------------------------------------------
 	// If we're calling a library function, we need to set some
 	// module-specific info...
-	ABLModulePtr PrevModule = nullptr;
+	const std::unique_ptr<ABLModule>& PrevModule = nullptr;
 	if (isLibraryCall)
 	{
 		PrevModule = CurModule;
@@ -386,13 +365,13 @@ execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 	level = oldLevel;
 	getCodeToken();
 	CallStackLevel--;
-	return ((TypePtr)(routineIdPtr->typePtr));
+	return ((const std::unique_ptr<Type>&)(routineIdPtr->ptype));
 }
 
 //***************************************************************************
 
 void
-setOpenArray(TypePtr arrayTypePtr, int32_t size)
+setOpenArray(const std::unique_ptr<Type>& arrayTypePtr, int32_t size)
 {
 	int32_t numElements = size / arrayTypePtr->size;
 	arrayTypePtr->size = size;
@@ -404,20 +383,20 @@ setOpenArray(TypePtr arrayTypePtr, int32_t size)
 //***************************************************************************
 
 void
-execActualParams(SymTableNodePtr routineIdPtr)
+execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	//--------------------------
 	// Execute the parameters...
-	for (SymTableNodePtr formalIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
+	for (const std::unique_ptr<SymTableNode>& formalIdPtr = (const std::unique_ptr<SymTableNode>&)(routineIdPtr->defn.info.routine.params);
 		 formalIdPtr != nullptr; formalIdPtr = formalIdPtr->next)
 	{
-		TypePtr formalTypePtr = (TypePtr)(formalIdPtr->typePtr);
+		const std::unique_ptr<Type>& formalTypePtr = (const std::unique_ptr<Type>&)(formalIdPtr->ptype);
 		getCodeToken();
 		if (formalIdPtr->defn.key == DFN_VALPARAM)
 		{
 			//-------------------
 			// pass by value parameter...
-			TypePtr actualTypePtr = execExpression();
+			const std::unique_ptr<Type>& actualTypePtr = execExpression();
 			if ((formalTypePtr == RealTypePtr) && (actualTypePtr == IntegerTypePtr))
 			{
 				//---------------------------------------------
@@ -432,8 +411,8 @@ execActualParams(SymTableNodePtr routineIdPtr)
 				// The following is a little inefficient, but is kept this way
 				// to keep it clear. Once it's verified to work, optimize...
 				int32_t size = formalTypePtr->size;
-				PSTR src = tos->address;
-				PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
+				const std::wstring_view& src = tos->address;
+				const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
 				if (!dest)
 				{
 					char err[255];
@@ -443,7 +422,7 @@ execActualParams(SymTableNodePtr routineIdPtr)
 						CurModule->getName());
 					ABL_Fatal(0, err);
 				}
-				PSTR savePtr = dest;
+				const std::wstring_view& savePtr = dest;
 				memcpy(dest, src, size);
 				tos->address = savePtr;
 			}
@@ -452,7 +431,7 @@ execActualParams(SymTableNodePtr routineIdPtr)
 		{
 			//-------------------------------
 			// pass by reference parameter...
-			SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+			const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 			execVariable(idPtr, USE_REFPARAM);
 		}
 	}
@@ -464,9 +443,9 @@ void
 execSwitchStatement(void)
 {
 	getCodeToken();
-	PSTR branchTableLocation = getCodeAddressMarker();
+	const std::wstring_view& branchTableLocation = getCodeAddressMarker();
 	getCodeToken();
-	TypePtr switchExpressionTypePtr = execExpression();
+	const std::unique_ptr<Type>& switchExpressionTypePtr = execExpression();
 	int32_t switchExpressionValue;
 	if ((switchExpressionTypePtr == IntegerTypePtr) || (switchExpressionTypePtr->form == FRM_ENUM))
 		switchExpressionValue = tos->integer;
@@ -479,7 +458,7 @@ execSwitchStatement(void)
 	getCodeToken();
 	int32_t caseLabelCount = getCodeInteger();
 	bool done = false;
-	PSTR caseBranchLocation = nullptr;
+	const std::wstring_view& caseBranchLocation = nullptr;
 	while (!done && caseLabelCount--)
 	{
 		int32_t caseLabelValue = getCodeInteger();
@@ -526,13 +505,13 @@ execForStatement(void)
 	getCodeToken();
 	//---------------------------------------
 	// Grab address of the end of the loop...
-	PSTR loopEndLocation = getCodeAddressMarker();
+	const std::wstring_view& loopEndLocation = getCodeAddressMarker();
 	//--------------------------------------------------------
 	// Get the address of the control variable's stack item...
 	getCodeToken();
-	SymTableNodePtr controlIdPtr = getCodeSymTableNodePtr();
-	TypePtr controlTypePtr = execVariable(controlIdPtr, USE_TARGET);
-	StackItemPtr targetPtr = (StackItemPtr)tos->address;
+	const std::unique_ptr<SymTableNode>& controlIdPtr = getCodeSymTableNodePtr();
+	const std::unique_ptr<Type>& controlTypePtr = execVariable(controlIdPtr, USE_TARGET);
+	const std::unique_ptr<StackItem>& targetPtr = (const std::unique_ptr<StackItem>&)tos->address;
 	//------------------------------------
 	// Control variable address...
 	pop();
@@ -567,7 +546,7 @@ execForStatement(void)
 	pop();
 	//----------------------------
 	// Address of start of loop...
-	PSTR loopStartLocation = codeSegmentPtr;
+	const std::wstring_view& loopStartLocation = codeSegmentPtr;
 	int32_t controlValue = initialValue;
 	//-----------------------------
 	// Now, execute the FOR loop...
@@ -627,7 +606,7 @@ execTransStatement(void)
 {
 	getCodeToken();
 	getCodeToken();
-	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+	const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 	transState(idPtr);
 	getCodeToken();
 }
@@ -637,7 +616,7 @@ execTransStatement(void)
 void
 execTransBackStatement(void)
 {
-	SymTableNodePtr prevState = CurModule->getPrevState();
+	const std::unique_ptr<SymTableNode>& prevState = CurModule->getPrevState();
 	if (!prevState)
 		runtimeError(ABL_ERR_RUNTIME_NULL_PREVSTATE);
 	transState(prevState);
@@ -650,7 +629,7 @@ void
 execIfStatement(void)
 {
 	getCodeToken();
-	PSTR falseLocation = getCodeAddressMarker();
+	const std::wstring_view& falseLocation = getCodeAddressMarker();
 	//-------------------------------
 	// Eval the boolean expression. Note that, unlike C/C++, the expression
 	// must be true(1) or false(0). In C/C++, an expression is true if it's
@@ -707,7 +686,7 @@ execIfStatement(void)
 void
 execRepeatStatement(void)
 {
-	PSTR loopStartLocation = codeSegmentPtr;
+	const std::wstring_view& loopStartLocation = codeSegmentPtr;
 	int32_t iterations = 0;
 	do
 	{
@@ -742,8 +721,8 @@ void
 execWhileStatement(void)
 {
 	getCodeToken();
-	PSTR loopEndLocation = getCodeAddressMarker();
-	PSTR testLocation = codeSegmentPtr;
+	const std::wstring_view& loopEndLocation = getCodeAddressMarker();
+	const std::wstring_view& testLocation = codeSegmentPtr;
 	bool loopDone = false;
 	int32_t iterations = 0;
 	do
@@ -784,3 +763,5 @@ execWhileStatement(void)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

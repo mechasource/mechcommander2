@@ -10,8 +10,8 @@ MPGameBrowser.cpp			: Implementation of the MPGameBrowser component.
 #include "MPGameBrowser.h"
 #include "prefs.h"
 #include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
+#include "userinput.h"
+#include "resource.h"
 #include "Multplyr.h"
 #include "MechBayScreen.h"
 
@@ -363,7 +363,7 @@ MPGameBrowser::update()
 }
 
 int32_t
-aStyle3TextListItem::init(FitIniFile* file, PCSTR blockName)
+aStyle3TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x = 0;
@@ -458,14 +458,14 @@ aGameListItem::operator=(const aGameListItem& src)
 aGameListItem::aGameListItem() :
 	latency(IDS_MP_LANBROW_PING_FONT) {}
 int32_t
-aGameListItem::init(FitIniFile* file, PCSTR blockName)
+aGameListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t width = 0;
 	int32_t height = 0;
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
-	std::wstring graphicBlockName;
+	const std::wstring_view& graphicBlockName;
 	graphicBlockName += "Static0";
 	allTechGraphic.init(file, graphicBlockName.Data());
 	if (allTechGraphic.height() + 5 > height)
@@ -476,7 +476,7 @@ aGameListItem::init(FitIniFile* file, PCSTR blockName)
 	{
 		width = allTechGraphic.globalRight() - globalX();
 	}
-	std::wstring textBlockName;
+	const std::wstring_view& textBlockName;
 	textBlockName = "Text0";
 	gameName.init(file, textBlockName.Data());
 	if (gameName.height() > height)
@@ -517,7 +517,7 @@ aGameListItem::init(FitIniFile* file, PCSTR blockName)
 	{
 		// width = latency.globalRight() - globalX();
 	}
-	std::wstring rectBlockName;
+	const std::wstring_view& rectBlockName;
 	rectBlockName = "Rect0";
 	allTechRect.init(file, rectBlockName.Data());
 	if (allTechRect.height() > height)
@@ -620,7 +620,7 @@ aGameListItem::setSessionInfo(MC2Session* pSession)
 	//>501ms	 - 	red
 }
 
-PCSTR
+const std::wstring_view&
 aGameListItem::getText(int32_t which)
 {
 	if (which == SORT_ORDER_NAME)
@@ -634,7 +634,7 @@ aGameListItem::getText(int32_t which)
 	return nullptr;
 }
 
-PCSTR
+const std::wstring_view&
 aGameListItem::getSessionName()
 {
 	return gameName.getText();
@@ -652,5 +652,4 @@ aGameListItem::update()
 
 //////////////////////////////////////////////
 
-//*************************************************************************************************
 // end of file ( MPGameBrowser.cpp )

@@ -16,7 +16,7 @@
 #include "dvertex.h"
 #endif
 
-#include <stuff/stuff.hpp>
+#include "stuff/stuff.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions

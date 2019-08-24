@@ -8,31 +8,14 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <stdio.h>
+//#include "ablgen.h"
+//#include "ablerr.h"
+//#include "ablscan.h"
+//#include "ablsymt.h"
+//#include "ablparse.h"
+//#include "ablexec.h"
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLPARSE_H
-#include "ablparse.h"
-#endif
-
-#ifndef ABLEXEC_H
-#include "ablexec.h"
-#endif
+namespace mclib::abl {
 
 //***************************************************************************
 
@@ -42,16 +25,16 @@ extern char wordString[];
 extern Literal curLiteral;
 extern TokenCodeType statementStartList[];
 extern TokenCodeType statementEndList[];
-extern SymTableNodePtr symTableDisplay[];
+extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
 extern int32_t level;
-extern PSTR codeBuffer;
-extern TypePtr IntegerTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
-extern TypePtr CharTypePtr;
+extern const std::wstring_view& codeBuffer;
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
+extern const std::unique_ptr<Type>& CharTypePtr;
 extern Type DummyType;
-extern SymTableNodePtr CurRoutineIdPtr;
-extern SymTableNodePtr SymTableDisplay[MAX_NESTING_LEVEL];
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
+extern const std::unique_ptr<SymTableNode>& SymTableDisplay[MAX_NESTING_LEVEL];
 extern bool AssertEnabled;
 extern bool PrintEnabled;
 extern bool StringFunctionsEnabled;
@@ -65,21 +48,21 @@ TokenCodeType FollowCaseLabelList[] = {TKN_COLON, TKN_SEMICOLON, TKN_NONE};
 TokenCodeType CaseLabelStartList[] = {
 	TKN_IDENTIFIER, TKN_NUMBER, TKN_PLUS, TKN_MINUS, TKN_STRING, TKN_NONE};
 
-SymTableNodePtr
-forwardState(PSTR stateName);
+const std::unique_ptr<SymTableNode>&
+forwardState(const std::wstring_view& stateName);
 
 //***************************************************************************
 
 void
-assignmentStatement(SymTableNodePtr varIdPtr)
+assignmentStatement(const std::unique_ptr<SymTableNode>& varIdPtr)
 {
 	//-----------------------------------
 	// Grab the variable we're setting...
-	TypePtr varType = variable(varIdPtr);
+	const std::unique_ptr<Type>& varType = variable(varIdPtr);
 	ifTokenGetElseError(TKN_EQUAL, ABL_ERR_SYNTAX_MISSING_EQUAL);
 	//---------------------------------------------------------
 	// Now, get the expression we're setting the variable to...
-	TypePtr exprType = expression();
+	const std::unique_ptr<Type>& exprType = expression();
 	//----------------------------------------
 	// They better be assignment compatible...
 	if (!isAssignTypeCompatible(varType, exprType))
@@ -104,7 +87,7 @@ repeatStatement(void)
 		} while (tokenIn(statementStartList));
 	}
 	ifTokenGetElseError(TKN_UNTIL, ABL_ERR_SYNTAX_MISSING_UNTIL);
-	TypePtr exprType = expression();
+	const std::unique_ptr<Type>& exprType = expression();
 	if (exprType != BooleanTypePtr)
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 }
@@ -116,8 +99,8 @@ whileStatement(void)
 {
 	// NEW STYLE, using endwhile keyword...
 	getToken();
-	PSTR loopEndLocation = crunchAddressMarker(nullptr);
-	TypePtr exprType = expression();
+	const std::wstring_view& loopEndLocation = crunchAddressMarker(nullptr);
+	const std::unique_ptr<Type>& exprType = expression();
 	if (exprType != BooleanTypePtr)
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 	//---------------------------------------
@@ -142,8 +125,8 @@ void
 ifStatement(void)
 {
 	getToken();
-	PSTR falseLocation = crunchAddressMarker(nullptr);
-	TypePtr exprType = expression();
+	const std::wstring_view& falseLocation = crunchAddressMarker(nullptr);
+	const std::unique_ptr<Type>& exprType = expression();
 	if (exprType != BooleanTypePtr)
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 	ifTokenGetElseError(TKN_THEN, ABL_ERR_SYNTAX_MISSING_THEN);
@@ -162,7 +145,7 @@ ifStatement(void)
 	if (curToken == TKN_ELSE)
 	{
 		getToken();
-		PSTR ifEndLocation = crunchAddressMarker(nullptr);
+		const std::wstring_view& ifEndLocation = crunchAddressMarker(nullptr);
 		if (curToken != TKN_END_IF)
 			do
 			{
@@ -183,16 +166,16 @@ void
 forStatement(void)
 {
 	getToken();
-	PSTR loopEndLocation = crunchAddressMarker(nullptr);
-	TypePtr forType = nullptr;
+	const std::wstring_view& loopEndLocation = crunchAddressMarker(nullptr);
+	const std::unique_ptr<Type>& forType = nullptr;
 	if (curToken == TKN_IDENTIFIER)
 	{
-		SymTableNodePtr forIdPtr = nullptr;
+		const std::unique_ptr<SymTableNode>& forIdPtr = nullptr;
 		searchAndFindAllSymTables(forIdPtr);
 		crunchSymTableNodePtr(forIdPtr);
 		if (/*(forIdPtr->level != level) ||*/ (forIdPtr->defn.key != DFN_VAR))
 			syntaxError(ABL_ERR_SYNTAX_INVALID_FOR_CONTROL);
-		forType = forIdPtr->typePtr;
+		forType = forIdPtr->ptype;
 		getToken();
 		//------------------------------------------------------------------
 		// If we end up adding a CHAR type, this line needs to be changed...
@@ -206,7 +189,7 @@ forStatement(void)
 		forType = &DummyType;
 	}
 	ifTokenGetElseError(TKN_EQUAL, ABL_ERR_SYNTAX_MISSING_EQUAL);
-	TypePtr exprType = expression();
+	const std::unique_ptr<Type>& exprType = expression();
 	if (!isAssignTypeCompatible(forType, exprType))
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 	if (curToken == TKN_TO)
@@ -234,10 +217,10 @@ forStatement(void)
 
 //***************************************************************************
 
-TypePtr
-caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLabelCount)
+const std::unique_ptr<Type>&
+caseLabel(const std::unique_ptr<CaseItem>&& caseItemHead, const std::unique_ptr<CaseItem>&& caseItemTail, int32_t& caseLabelCount)
 {
-	CaseItemPtr newCaseItem = (CaseItemPtr)ABLStackMallocCallback(sizeof(CaseItem));
+	const std::unique_ptr<CaseItem>& newCaseItem = (const std::unique_ptr<CaseItem>&)ABLStackMallocCallback(sizeof(CaseItem));
 	if (!newCaseItem)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc case item ");
 	if (caseItemHead)
@@ -259,7 +242,7 @@ caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLab
 	}
 	if (curToken == TKN_NUMBER)
 	{
-		SymTableNodePtr thisNode = searchSymTable(tokenString, SymTableDisplay[1]);
+		const std::unique_ptr<SymTableNode>& thisNode = searchSymTable(tokenString, SymTableDisplay[1]);
 		if (!thisNode)
 			thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
 		crunchSymTableNodePtr(thisNode);
@@ -272,7 +255,7 @@ caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLab
 	}
 	else if (curToken == TKN_IDENTIFIER)
 	{
-		SymTableNodePtr idPtr;
+		const std::unique_ptr<SymTableNode>& idPtr;
 		searchAllSymTables(idPtr);
 		crunchSymTableNodePtr(idPtr);
 		if (!idPtr)
@@ -285,25 +268,25 @@ caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLab
 			syntaxError(ABL_ERR_SYNTAX_NOT_A_CONSTANT_IDENTIFIER);
 			return (&DummyType);
 		}
-		else if (idPtr->typePtr == IntegerTypePtr)
+		else if (idPtr->ptype == IntegerTypePtr)
 		{
 			newCaseItem->labelValue = (sign == TKN_PLUS ? idPtr->defn.info.constant.value.integer
 														: -idPtr->defn.info.constant.value.integer);
 			return (IntegerTypePtr);
 		}
-		else if (idPtr->typePtr == CharTypePtr)
+		else if (idPtr->ptype == CharTypePtr)
 		{
 			if (sawSign)
 				syntaxError(ABL_ERR_SYNTAX_INVALID_CONSTANT);
 			newCaseItem->labelValue = idPtr->defn.info.constant.value.character;
 			return (CharTypePtr);
 		}
-		else if (idPtr->typePtr->form == FRM_ENUM)
+		else if (idPtr->ptype->form == FRM_ENUM)
 		{
 			if (sawSign)
 				syntaxError(ABL_ERR_SYNTAX_INVALID_CONSTANT);
 			newCaseItem->labelValue = idPtr->defn.info.constant.value.integer;
-			return (idPtr->typePtr);
+			return (idPtr->ptype);
 		}
 		else
 			return (&DummyType);
@@ -323,15 +306,15 @@ caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLab
 //---------------------------------------------------------------------------
 
 void
-caseBranch(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLabelCount,
-	TypePtr expressionType)
+caseBranch(const std::unique_ptr<CaseItem>&& caseItemHead, const std::unique_ptr<CaseItem>&& caseItemTail, int32_t& caseLabelCount,
+	const std::unique_ptr<Type>& expressionType)
 {
-	// static CaseItemPtr oldCaseItemTail = nullptr;
-	CaseItemPtr oldCaseItemTail = caseItemTail;
+	// static const std::unique_ptr<CaseItem>& oldCaseItemTail = nullptr;
+	const std::unique_ptr<CaseItem>& oldCaseItemTail = caseItemTail;
 	bool anotherLabel;
 	do
 	{
-		TypePtr labelType = caseLabel(caseItemHead, caseItemTail, caseLabelCount);
+		const std::unique_ptr<Type>& labelType = caseLabel(caseItemHead, caseItemTail, caseLabelCount);
 		if (expressionType != labelType)
 			syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 		getToken();
@@ -355,7 +338,7 @@ caseBranch(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLa
 	ifTokenGetElseError(TKN_COLON, ABL_ERR_SYNTAX_MISSING_COLON);
 	//-----------------------------------------------------------------
 	// Fill in the branch location for each CaseItem for this branch...
-	CaseItemPtr caseItem = (!oldCaseItemTail ? caseItemHead : oldCaseItemTail->next);
+	const std::unique_ptr<CaseItem>& caseItem = (!oldCaseItemTail ? caseItemHead : oldCaseItemTail->next);
 	// oldCaseItemTail = CaseItemTail;
 	while (caseItem)
 	{
@@ -383,13 +366,13 @@ switchStatement(void)
 	//-------------------------
 	// Init the branch table...
 	getToken();
-	PSTR branchTableLocation = crunchAddressMarker(nullptr);
-	CaseItemPtr caseItemHead = nullptr;
-	CaseItemPtr caseItemTail = nullptr;
+	const std::wstring_view& branchTableLocation = crunchAddressMarker(nullptr);
+	const std::unique_ptr<CaseItem>& caseItemHead = nullptr;
+	const std::unique_ptr<CaseItem>& caseItemTail = nullptr;
 	int32_t caseLabelCount = 0;
 	// CaseItemHead = CaseItemTail = nullptr;
 	// CaseLabelCount = 0;
-	TypePtr expressionType = expression();
+	const std::unique_ptr<Type>& expressionType = expression();
 	//-----------------------------------------------------------------------------
 	// NOTE: If we have subranges in ABL, we'll have to check in the following
 	// line for a subrange, as well...
@@ -399,7 +382,7 @@ switchStatement(void)
 	//----------------------------
 	// Process each CASE branch...
 	bool moreBranches = (curToken == TKN_CASE);
-	PSTR caseEndChain = nullptr;
+	const std::wstring_view& caseEndChain = nullptr;
 	while (moreBranches)
 	{
 		getToken();
@@ -417,12 +400,12 @@ switchStatement(void)
 	// Emit the branch table...
 	fixupAddressMarker(branchTableLocation);
 	crunchInteger(caseLabelCount);
-	CaseItemPtr caseItem = caseItemHead;
+	const std::unique_ptr<CaseItem>& caseItem = caseItemHead;
 	while (caseItem)
 	{
 		crunchInteger(caseItem->labelValue);
 		crunchOffset(caseItem->branchLocation);
-		CaseItemPtr nextCaseItem = caseItem->next;
+		const std::unique_ptr<CaseItem>& nextCaseItem = caseItem->next;
 		ABLStackFreeCallback(caseItem);
 		caseItem = nextCaseItem;
 	}
@@ -440,7 +423,7 @@ transStatement(void)
 {
 	getToken();
 	ifTokenGetElseError(TKN_IDENTIFIER, ABL_ERR_MISSING_STATE_IDENTIFIER);
-	SymTableNodePtr IdPtr = searchSymTableForState(wordString, SymTableDisplay[1]);
+	const std::unique_ptr<SymTableNode>& IdPtr = searchSymTableForState(wordString, SymTableDisplay[1]);
 	if (!IdPtr)
 	{
 		// New symbol, so let's assume it's a state defined later. We'll make it
@@ -474,7 +457,7 @@ statement(void)
 	{
 	case TKN_IDENTIFIER:
 	{
-		SymTableNodePtr IdPtr = nullptr;
+		const std::unique_ptr<SymTableNode>& IdPtr = nullptr;
 		//--------------------------------------------------------------
 		// First, do we have an assignment statement or a function call?
 		searchAndFindAllSymTables(IdPtr);
@@ -500,7 +483,7 @@ statement(void)
 				NumOrderCalls++;
 			}
 			getToken();
-			SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
+			const std::unique_ptr<SymTableNode>& thisRoutineIdPtr = CurRoutineIdPtr;
 			routineCall(IdPtr, 1);
 			CurRoutineIdPtr = thisRoutineIdPtr;
 			Crunch = true;
@@ -540,3 +523,5 @@ statement(void)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

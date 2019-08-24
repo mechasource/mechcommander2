@@ -4,14 +4,14 @@
 
 #include "stdinc.h"
 
-#include <gameos.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <mlr/gosvertex.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlr_i_c_pmesh.hpp>
-#include <mlr/mlr_i_c_tmesh.hpp>
+#include "gameos.hpp"
+#include "stuff/linearmatrix.h"
+#include "mlr/gosvertex.h"
+#include "mlr/mlrshape.h"
+#include "mlr/mlr_i_c_pmesh.h"
+#include "mlr/mlr_i_c_tmesh.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 
@@ -313,7 +313,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //	int32_t MLR_I_C_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <mlr/mlrtriangleclipping.inl>
+#include "mlr/mlrtriangleclipping.inl"
 
 #undef I_SAY_YES_TO_COLOR
 #undef CLASSNAME
@@ -581,3 +581,5 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit(
 
 	return ret;
 }
+
+} // namespace MidLevelRenderer

@@ -7,9 +7,9 @@
 #ifndef ASYSTEM_H
 #define ASYSTEM_H
 
-//#include <gameos.hpp>
-//#include <estring.h>
-//#include <mechgui/afont.h>
+//#include "gameos.hpp"
+//#include "estring.h"
+//#include "mechgui/afont.h"
 //#include "utilities.h"
 
 // class aSystem;
@@ -23,7 +23,7 @@ class FitIniFile;
 namespace mechgui
 {
 
-typedef enum __asystem_constants
+enum class __asystem_constants
 {
 	MAX_CHILDREN = 64,
 	aMSG_LEFTMOUSEDOWN = 1,
@@ -50,8 +50,8 @@ typedef enum __asystem_constants
 	aMSG_SELCHANGED = 112,
 };
 
-#if _CONSIDERED_OBSOLETE
-typedef enum WINDOW_ID
+#if CONSIDERED_OBSOLETE
+enum class WINDOW_ID
 {
 	UNDEFINEDWINDOW = -1,
 	GENERIC = 1,
@@ -112,12 +112,12 @@ public:
 	void removeChild(aObject* c);
 	void setParent(aObject* p);
 
-	void setTexture(PCSTR fileName);
+	void setTexture(const std::wstring_view& fileName);
 	void setTexture(uint32_t newHandle);
 	void setUVs(float u1, float v1, float u2, float v2);
 	void setColor(uint32_t color, bool bRecurse = 0); // color the vertices
 
-	void init(FitIniFile* file, PCSTR block, uint32_t neverFlush = 0); // for statics
+	void init(FitIniFile* file, const std::wstring_view& block, uint32_t neverFlush = 0); // for statics
 
 	aObject* getParent(void)
 	{
@@ -161,8 +161,8 @@ public:
 	int32_t getID(void) const { return ID; }
 	void setID(int32_t newID) { ID = newID; }
 
-	void setHelpID(int32_t newID) { helpID = newID; }
-	int32_t getHelpID(void) const { return helpID; }
+	void setHelpID(int32_t newID) { helpid = newID; }
+	int32_t getHelpID(void) const { return helpid; }
 
 	float left(void) { return x(void); }
 	float top(void) { return y(void); }
@@ -186,7 +186,7 @@ protected:
 	void copyData(const aObject& src);
 
 	int32_t helpHeader;
-	uint32_t helpID;
+	uint32_t helpid;
 };
 
 // class aRect : public aBaseObject
@@ -202,7 +202,7 @@ public:
 	virtual void render(void);
 	virtual void render(int32_t x, int32_t y);
 
-	void init(FitIniFile* file, PCSTR blockName);
+	void init(FitIniFile* file, const std::wstring_view& blockName);
 
 	RECT getGUI_RECT(void);
 	RECT getGlobalGUI_RECT(void);
@@ -221,7 +221,7 @@ public:
 
 	virtual void render(void);
 	virtual void render(int32_t x, int32_t y);
-	void init(FitIniFile* file, PCSTR header);
+	void init(FitIniFile* file, const std::wstring_view& header);
 
 	void setText(const std::string& text);
 	void setText(int32_t resID);

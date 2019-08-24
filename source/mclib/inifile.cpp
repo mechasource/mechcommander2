@@ -23,7 +23,7 @@
 //#include <string.h>
 //#include <ctype.h>
 
-//#include <gameos.hpp>
+//#include "gameos.hpp"
 //#include <assert.h>
 //#define gosASSERT assert
 //#define gos_Malloc malloc
@@ -36,10 +36,10 @@ enum __inifile_source_constants : uint32_t
 
 //---------------------------------------------------------------------------
 // Static Globals
-constexpr PCSTR fitIniHeader = "FITini";
-constexpr PCSTR fitIniFooter = "FITend";
-constexpr PCSTR fitIniHeaderLE = "FITini\r\n";
-constexpr PCSTR fitIniFooterLE = "FITend\r\n";
+constexpr const std::wstring_view& fitIniHeader = "FITini";
+constexpr const std::wstring_view& fitIniFooter = "FITend";
+constexpr const std::wstring_view& fitIniHeaderLE = "FITini\r\n";
+constexpr const std::wstring_view& fitIniFooterLE = "FITend\r\n";
 
 //---------------------------------------------------------------------------
 // class FitIniFile
@@ -61,10 +61,10 @@ constexpr PCSTR fitIniFooterLE = "FITend\r\n";
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::findNextBlockStart(PSTR line, size_t lineLen)
+FitIniFile::findNextBlockStart(const std::wstring_view& line, size_t lineLen)
 {
 	char thisLine[BUFFERSIZE];
-	PSTR common = nullptr;
+	const std::wstring_view& common = nullptr;
 	do
 	{
 		if (line)
@@ -103,7 +103,7 @@ FitIniFile::countBlocks(void)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::getNextWord(PSTR& line, PSTR buffer, size_t bufLen)
+FitIniFile::getNextWord(const std::wstring_view&& line, const std::wstring_view& buffer, size_t bufLen)
 {
 	//--------------------------------------------------
 	// Check to see if we are at end of line
@@ -129,7 +129,7 @@ FitIniFile::getNextWord(PSTR& line, PSTR buffer, size_t bufLen)
 		return (GET_NEXT_LINE);
 	//-------------------------------------------
 	// Find length of word from current location
-	PSTR startOfWord = line;
+	const std::wstring_view& startOfWord = line;
 	size_t wordLength = 0;
 	while ((*line != '\0') && ((*line != ' ') && (*line != '\t') && (*line != ',')))
 	{
@@ -217,6 +217,7 @@ FitIniFile::afterOpen(void)
 	return (NO_ERROR);
 }
 
+#if CONSIDERED_OBSOLETE
 //---------------------------------------------------------------------------
 void
 FitIniFile::atClose(void)
@@ -235,10 +236,11 @@ FitIniFile::atClose(void)
 	systemHeap->Free(m_fileBlocks);
 	m_fileBlocks = nullptr;
 }
+#endif
 
 //---------------------------------------------------------------------------
 float
-FitIniFile::textToFloat(PCSTR num)
+FitIniFile::textToFloat(const std::wstring_view& num)
 {
 	float result = atof(num);
 	return (result);
@@ -246,7 +248,7 @@ FitIniFile::textToFloat(PCSTR num)
 
 //---------------------------------------------------------------------------
 double
-FitIniFile::textToDouble(PCSTR num)
+FitIniFile::textToDouble(const std::wstring_view& num)
 {
 	double result = atof(num);
 	return (result);
@@ -254,12 +256,12 @@ FitIniFile::textToDouble(PCSTR num)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::textToLong(PCSTR num)
+FitIniFile::textToLong(const std::wstring_view& num)
 {
 	int32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = (PSTR)strstr(num, "0x");
+	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -305,12 +307,12 @@ FitIniFile::textToLong(PCSTR num)
 
 //---------------------------------------------------------------------------
 int16_t
-FitIniFile::textToShort(PCSTR num)
+FitIniFile::textToShort(const std::wstring_view& num)
 {
 	int16_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = (PSTR)strstr(num, "0x");
+	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -356,12 +358,12 @@ FitIniFile::textToShort(PCSTR num)
 
 //---------------------------------------------------------------------------
 char
-FitIniFile::textToChar(PCSTR num)
+FitIniFile::textToChar(const std::wstring_view& num)
 {
 	char result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = (PSTR)strstr(num, "0x");
+	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -407,12 +409,12 @@ FitIniFile::textToChar(PCSTR num)
 
 //---------------------------------------------------------------------------
 uint32_t
-FitIniFile::textToULong(PCSTR num)
+FitIniFile::textToULong(const std::wstring_view& num)
 {
 	uint32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = (PSTR)strstr(num, "0x");
+	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -458,12 +460,12 @@ FitIniFile::textToULong(PCSTR num)
 
 //---------------------------------------------------------------------------
 uint16_t
-FitIniFile::textToUShort(PCSTR num)
+FitIniFile::textToUShort(const std::wstring_view& num)
 {
 	uint16_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = (PSTR)strstr(num, "0x");
+	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -509,12 +511,12 @@ FitIniFile::textToUShort(PCSTR num)
 
 //---------------------------------------------------------------------------
 uint8_t
-FitIniFile::textToUChar(PCSTR num)
+FitIniFile::textToUChar(const std::wstring_view& num)
 {
 	uint8_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = (PSTR)strstr(num, "0x");
+	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -560,7 +562,7 @@ FitIniFile::textToUChar(PCSTR num)
 
 //---------------------------------------------------------------------------
 bool
-FitIniFile::booleanToLong(PCSTR num)
+FitIniFile::booleanToLong(const std::wstring_view& num)
 {
 	char testChar = 0;
 	while (num[testChar] && isspace(num[testChar]))
@@ -573,7 +575,7 @@ FitIniFile::booleanToLong(PCSTR num)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::floatToText(PSTR result, float num, uint32_t bufLen)
+FitIniFile::floatToText(const std::wstring_view& result, float num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%f4", num);
@@ -587,7 +589,7 @@ FitIniFile::floatToText(PSTR result, float num, uint32_t bufLen)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::longToTextDec(PSTR result, int32_t num, uint32_t bufLen)
+FitIniFile::longToTextDec(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%d", num);
@@ -601,7 +603,7 @@ FitIniFile::longToTextDec(PSTR result, int32_t num, uint32_t bufLen)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::longToTextHex(PSTR result, int32_t num, uint32_t bufLen)
+FitIniFile::longToTextHex(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "0x%x", num);
@@ -615,7 +617,7 @@ FitIniFile::longToTextHex(PSTR result, int32_t num, uint32_t bufLen)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::shortToTextDec(PSTR result, int16_t num, uint32_t bufLen)
+FitIniFile::shortToTextDec(const std::wstring_view& result, int16_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%d", num);
@@ -629,7 +631,7 @@ FitIniFile::shortToTextDec(PSTR result, int16_t num, uint32_t bufLen)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::shortToTextHex(PSTR result, int16_t num, uint32_t bufLen)
+FitIniFile::shortToTextHex(const std::wstring_view& result, int16_t num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "0x%x", num);
@@ -643,7 +645,7 @@ FitIniFile::shortToTextHex(PSTR result, int16_t num, uint32_t bufLen)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::byteToTextDec(PSTR result, byte num, uint32_t bufLen)
+FitIniFile::byteToTextDec(const std::wstring_view& result, byte num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "%d", num);
@@ -657,7 +659,7 @@ FitIniFile::byteToTextDec(PSTR result, byte num, uint32_t bufLen)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::byteToTextHex(PSTR result, byte num, uint32_t bufLen)
+FitIniFile::byteToTextHex(const std::wstring_view& result, byte num, uint32_t bufLen)
 {
 	char temp[250];
 	sprintf(temp, "0x%x", num);
@@ -671,9 +673,9 @@ FitIniFile::byteToTextHex(PSTR result, byte num, uint32_t bufLen)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::open(PCSTR fName, FileMode _mode, int32_t numChild)
+FitIniFile::open(const std::wstring_view& filename, FileMode _mode, int32_t numChild)
 {
-	int32_t result = MechFile::open(fName, _mode, numChild);
+	int32_t result = MechFile::open(filename, _mode, numChild);
 	if (result != NO_ERROR)
 		return (result);
 	seek(0);
@@ -683,7 +685,7 @@ FitIniFile::open(PCSTR fName, FileMode _mode, int32_t numChild)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
+FitIniFile::open(std::unique_ptr<File> _parent, uint32_t fileSize, int32_t numChild)
 {
 	numChild = -1; // Force all parented FitINIs to load from RAM.
 	int32_t result = MechFile::open(_parent, fileSize, numChild);
@@ -695,17 +697,17 @@ FitIniFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::create(PSTR fName)
+FitIniFile::create(const std::wstring_view& filename)
 {
-	int32_t result = MechFile::create(fName);
+	int32_t result = MechFile::create(filename);
 	afterOpen();
 	return (result);
 }
 
 int32_t
-FitIniFile::createWithCase(PSTR fName)
+FitIniFile::createWithCase(const std::wstring_view& filename)
 {
-	int32_t result = MechFile::createWithCase(fName);
+	int32_t result = MechFile::createWithCase(filename);
 	afterOpen();
 	return result;
 }
@@ -723,7 +725,7 @@ FitIniFile::close(void)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::seekBlock(PCSTR blockId)
+FitIniFile::seekBlock(const std::wstring_view& blockId)
 {
 	uint32_t blockNum = 0;
 	while ((blockNum < m_totalBlocks) && (strcmp(m_fileBlocks[blockNum].blockId, blockId) != 0))
@@ -755,7 +757,7 @@ FitIniFile::seekBlock(PCSTR blockId)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdFloat(PCSTR varName, float& value)
+FitIniFile::readIdFloat(const std::wstring_view& varName, float& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -775,7 +777,7 @@ FitIniFile::readIdFloat(PCSTR varName, float& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -787,7 +789,7 @@ FitIniFile::readIdFloat(PCSTR varName, float& value)
 		value = 0.0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -802,7 +804,7 @@ FitIniFile::readIdFloat(PCSTR varName, float& value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdDouble(PCSTR varName, double& value)
+FitIniFile::readIdDouble(const std::wstring_view& varName, double& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -822,7 +824,7 @@ FitIniFile::readIdDouble(PCSTR varName, double& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -834,7 +836,7 @@ FitIniFile::readIdDouble(PCSTR varName, double& value)
 		value = 0.0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -849,14 +851,14 @@ FitIniFile::readIdDouble(PCSTR varName, double& value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdInt(PCSTR varName, int32_t& value){
+FitIniFile::readIdInt(const std::wstring_view& varName, int32_t& value){
 	return readIdLong(varName, static_cast<long32_t>(value))}
 
-HRESULT FitIniFile::readIdUInt(PCSTR varName, uint32_t& value){
+HRESULT FitIniFile::readIdUInt(const std::wstring_view& varName, uint32_t& value){
 	return readIdULong(varName, static_cast<ulong32_t>(value))}
 
 //---------------------------------------------------------------------------
-HRESULT FitIniFile::readIdLong(PCSTR varName, long32_t& value)
+HRESULT FitIniFile::readIdLong(const std::wstring_view& varName, long32_t& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -876,7 +878,7 @@ HRESULT FitIniFile::readIdLong(PCSTR varName, long32_t& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -888,7 +890,7 @@ HRESULT FitIniFile::readIdLong(PCSTR varName, long32_t& value)
 		value = 0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -903,7 +905,7 @@ HRESULT FitIniFile::readIdLong(PCSTR varName, long32_t& value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdBoolean(PCSTR varName, bool& value)
+FitIniFile::readIdBoolean(const std::wstring_view& varName, bool& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -923,7 +925,7 @@ FitIniFile::readIdBoolean(PCSTR varName, bool& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -935,7 +937,7 @@ FitIniFile::readIdBoolean(PCSTR varName, bool& value)
 		value = 0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -950,7 +952,7 @@ FitIniFile::readIdBoolean(PCSTR varName, bool& value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdShort(PCSTR varName, int16_t& value)
+FitIniFile::readIdShort(const std::wstring_view& varName, int16_t& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -970,7 +972,7 @@ FitIniFile::readIdShort(PCSTR varName, int16_t& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -982,7 +984,7 @@ FitIniFile::readIdShort(PCSTR varName, int16_t& value)
 		value = 0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -997,7 +999,7 @@ FitIniFile::readIdShort(PCSTR varName, int16_t& value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdChar(PCSTR varName, char& value)
+FitIniFile::readIdChar(const std::wstring_view& varName, char& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -1017,7 +1019,7 @@ FitIniFile::readIdChar(PCSTR varName, char& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1029,7 +1031,7 @@ FitIniFile::readIdChar(PCSTR varName, char& value)
 		value = 0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1044,7 +1046,7 @@ FitIniFile::readIdChar(PCSTR varName, char& value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdULong(PCSTR varName, ulong32_t& value)
+FitIniFile::readIdULong(const std::wstring_view& varName, ulong32_t& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -1064,7 +1066,7 @@ FitIniFile::readIdULong(PCSTR varName, ulong32_t& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1076,7 +1078,7 @@ FitIniFile::readIdULong(PCSTR varName, ulong32_t& value)
 		value = 0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1091,7 +1093,7 @@ FitIniFile::readIdULong(PCSTR varName, ulong32_t& value)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdUShort(PCSTR varName, uint16_t& value)
+FitIniFile::readIdUShort(const std::wstring_view& varName, uint16_t& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -1111,7 +1113,7 @@ FitIniFile::readIdUShort(PCSTR varName, uint16_t& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1123,7 +1125,7 @@ FitIniFile::readIdUShort(PCSTR varName, uint16_t& value)
 		value = 0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1138,7 +1140,7 @@ FitIniFile::readIdUShort(PCSTR varName, uint16_t& value)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdUChar(PCSTR varName, uint8_t& value)
+FitIniFile::readIdUChar(const std::wstring_view& varName, uint8_t& value)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -1158,7 +1160,7 @@ FitIniFile::readIdUChar(PCSTR varName, uint8_t& value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1170,7 +1172,7 @@ FitIniFile::readIdUChar(PCSTR varName, uint8_t& value)
 		value = 0;
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1185,7 +1187,7 @@ FitIniFile::readIdUChar(PCSTR varName, uint8_t& value)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::copyString(PSTR dest, PSTR src, uint32_t bufLen)
+FitIniFile::copyString(const std::wstring_view& dest, const std::wstring_view& src, uint32_t bufLen)
 {
 	uint32_t offset = 0;
 	//---------------------
@@ -1217,7 +1219,7 @@ FitIniFile::copyString(PSTR dest, PSTR src, uint32_t bufLen)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdString(PCSTR varName, PSTR result, uint32_t bufferSize)
+FitIniFile::readIdString(const std::wstring_view& varName, const std::wstring_view& result, uint32_t bufferSize)
 {
 	char line[2048];
 	char searchString[BUFFERSIZE];
@@ -1237,7 +1239,7 @@ FitIniFile::readIdString(PCSTR varName, PSTR result, uint32_t bufferSize)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1248,12 +1250,12 @@ FitIniFile::readIdString(PCSTR varName, PSTR result, uint32_t bufferSize)
 	{
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
-		PSTR pFound = nullptr;
-		PSTR pFirstEqual = strstr(equalSign, "\"");
+		const std::wstring_view& pFound = nullptr;
+		const std::wstring_view& pFirstEqual = strstr(equalSign, "\"");
 		// strings can span more than one line, make sure there is another equal
 		// sign
 		if (pFirstEqual && !strstr(pFirstEqual + 1, "\""))
@@ -1288,7 +1290,7 @@ FitIniFile::readIdString(PCSTR varName, PSTR result, uint32_t bufferSize)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::getIdStringLength(PCSTR varName)
+FitIniFile::getIdStringLength(const std::wstring_view& varName)
 {
 	char line[BUFFERSIZE];
 	char searchString[BUFFERSIZE];
@@ -1308,7 +1310,7 @@ FitIniFile::getIdStringLength(PCSTR varName)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			PSTR tc = &line[strlen(searchString)];
+			const std::wstring_view& tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1319,11 +1321,11 @@ FitIniFile::getIdStringLength(PCSTR varName)
 	{
 		return (VARIABLE_NOT_FOUND);
 	}
-	PSTR equalSign = strchr(line, '"');
+	const std::wstring_view& equalSign = strchr(line, '"');
 	if (equalSign)
 	{
 		equalSign++;
-		PSTR end = equalSign;
+		const std::wstring_view& end = equalSign;
 		while (*end != '"' && *end != 0)
 			end++;
 		if (*end)
@@ -1336,7 +1338,7 @@ FitIniFile::getIdStringLength(PCSTR varName)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdFloatArray(PCSTR varName, float* result, uint32_t numElements)
+FitIniFile::readIdFloatArray(const std::wstring_view& varName, float* result, uint32_t numElements)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1351,8 +1353,8 @@ FitIniFile::readIdFloatArray(PCSTR varName, float* result, uint32_t numElements)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1378,7 +1380,7 @@ FitIniFile::readIdFloatArray(PCSTR varName, float* result, uint32_t numElements)
 		return (USER_ARRAY_TOO_SMALL);
 	//------------------------------
 	// Parse out the elements here.
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
@@ -1414,7 +1416,7 @@ FitIniFile::readIdFloatArray(PCSTR varName, float* result, uint32_t numElements)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdLongArray(PCSTR varName, int32_t* result, uint32_t numElements)
+FitIniFile::readIdLongArray(const std::wstring_view& varName, int32_t* result, uint32_t numElements)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1429,8 +1431,8 @@ FitIniFile::readIdLongArray(PCSTR varName, int32_t* result, uint32_t numElements
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1456,7 +1458,7 @@ FitIniFile::readIdLongArray(PCSTR varName, int32_t* result, uint32_t numElements
 		return (USER_ARRAY_TOO_SMALL);
 	//------------------------------
 	// Parse out the elements here.
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
@@ -1492,7 +1494,7 @@ FitIniFile::readIdLongArray(PCSTR varName, int32_t* result, uint32_t numElements
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdULongArray(PCSTR varName, uint32_t* result, uint32_t numElements)
+FitIniFile::readIdULongArray(const std::wstring_view& varName, uint32_t* result, uint32_t numElements)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1507,8 +1509,8 @@ FitIniFile::readIdULongArray(PCSTR varName, uint32_t* result, uint32_t numElemen
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1534,7 +1536,7 @@ FitIniFile::readIdULongArray(PCSTR varName, uint32_t* result, uint32_t numElemen
 		return (USER_ARRAY_TOO_SMALL);
 	//------------------------------
 	// Parse out the elements here.
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
@@ -1570,7 +1572,7 @@ FitIniFile::readIdULongArray(PCSTR varName, uint32_t* result, uint32_t numElemen
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdShortArray(PCSTR varName, pint16_t result, uint32_t numElements)
+FitIniFile::readIdShortArray(const std::wstring_view& varName, pint16_t result, uint32_t numElements)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1585,8 +1587,8 @@ FitIniFile::readIdShortArray(PCSTR varName, pint16_t result, uint32_t numElement
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1612,7 +1614,7 @@ FitIniFile::readIdShortArray(PCSTR varName, pint16_t result, uint32_t numElement
 		return (USER_ARRAY_TOO_SMALL);
 	//------------------------------
 	// Parse out the elements here.
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
@@ -1648,7 +1650,7 @@ FitIniFile::readIdShortArray(PCSTR varName, pint16_t result, uint32_t numElement
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdUShortArray(PCSTR varName, puint16_t result, uint32_t numElements)
+FitIniFile::readIdUShortArray(const std::wstring_view& varName, puint16_t result, uint32_t numElements)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1663,8 +1665,8 @@ FitIniFile::readIdUShortArray(PCSTR varName, puint16_t result, uint32_t numEleme
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1690,7 +1692,7 @@ FitIniFile::readIdUShortArray(PCSTR varName, puint16_t result, uint32_t numEleme
 		return (USER_ARRAY_TOO_SMALL);
 	//------------------------------
 	// Parse out the elements here.
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
@@ -1726,7 +1728,7 @@ FitIniFile::readIdUShortArray(PCSTR varName, puint16_t result, uint32_t numEleme
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdCharArray(PCSTR varName, PSTR result, uint32_t numElements)
+FitIniFile::readIdCharArray(const std::wstring_view& varName, const std::wstring_view& result, uint32_t numElements)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1741,8 +1743,8 @@ FitIniFile::readIdCharArray(PCSTR varName, PSTR result, uint32_t numElements)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1768,7 +1770,7 @@ FitIniFile::readIdCharArray(PCSTR varName, PSTR result, uint32_t numElements)
 		return (USER_ARRAY_TOO_SMALL);
 	//------------------------------
 	// Parse out the elements here.
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
@@ -1804,7 +1806,7 @@ FitIniFile::readIdCharArray(PCSTR varName, PSTR result, uint32_t numElements)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdUCharArray(PCSTR varName, puint8_t result, uint32_t numElements)
+FitIniFile::readIdUCharArray(const std::wstring_view& varName, puint8_t result, uint32_t numElements)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1819,8 +1821,8 @@ FitIniFile::readIdUCharArray(PCSTR varName, puint8_t result, uint32_t numElement
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1846,7 +1848,7 @@ FitIniFile::readIdUCharArray(PCSTR varName, puint8_t result, uint32_t numElement
 		return (USER_ARRAY_TOO_SMALL);
 	//------------------------------
 	// Parse out the elements here.
-	PSTR equalSign = strstr(line, "=");
+	const std::wstring_view& equalSign = strstr(line, "=");
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
@@ -1882,7 +1884,7 @@ FitIniFile::readIdUCharArray(PCSTR varName, puint8_t result, uint32_t numElement
 
 //---------------------------------------------------------------------------
 uint32_t
-FitIniFile::getIdFloatArrayElements(PCSTR varName)
+FitIniFile::getIdFloatArrayElements(const std::wstring_view& varName)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1897,8 +1899,8 @@ FitIniFile::getIdFloatArrayElements(PCSTR varName)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1925,7 +1927,7 @@ FitIniFile::getIdFloatArrayElements(PCSTR varName)
 
 //---------------------------------------------------------------------------
 uint32_t
-FitIniFile::getIdLongArrayElements(PCSTR varName)
+FitIniFile::getIdLongArrayElements(const std::wstring_view& varName)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1940,8 +1942,8 @@ FitIniFile::getIdLongArrayElements(PCSTR varName)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -1968,7 +1970,7 @@ FitIniFile::getIdLongArrayElements(PCSTR varName)
 
 //---------------------------------------------------------------------------
 uint32_t
-FitIniFile::getIdULongArrayElements(PCSTR varName)
+FitIniFile::getIdULongArrayElements(const std::wstring_view& varName)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -1983,8 +1985,8 @@ FitIniFile::getIdULongArrayElements(PCSTR varName)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -2011,7 +2013,7 @@ FitIniFile::getIdULongArrayElements(PCSTR varName)
 
 //---------------------------------------------------------------------------
 uint32_t
-FitIniFile::getIdShortArrayElements(PCSTR varName)
+FitIniFile::getIdShortArrayElements(const std::wstring_view& varName)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -2026,8 +2028,8 @@ FitIniFile::getIdShortArrayElements(PCSTR varName)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -2054,7 +2056,7 @@ FitIniFile::getIdShortArrayElements(PCSTR varName)
 
 //---------------------------------------------------------------------------
 uint32_t
-FitIniFile::getIdUShortArrayElements(PCSTR varName)
+FitIniFile::getIdUShortArrayElements(const std::wstring_view& varName)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -2069,8 +2071,8 @@ FitIniFile::getIdUShortArrayElements(PCSTR varName)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -2097,7 +2099,7 @@ FitIniFile::getIdUShortArrayElements(PCSTR varName)
 
 //---------------------------------------------------------------------------
 uint32_t
-FitIniFile::getIdCharArrayElements(PCSTR varName)
+FitIniFile::getIdCharArrayElements(const std::wstring_view& varName)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -2112,8 +2114,8 @@ FitIniFile::getIdCharArrayElements(PCSTR varName)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -2140,7 +2142,7 @@ FitIniFile::getIdCharArrayElements(PCSTR varName)
 
 //---------------------------------------------------------------------------
 uint32_t
-FitIniFile::getIdUCharArrayElements(PCSTR varName)
+FitIniFile::getIdUCharArrayElements(const std::wstring_view& varName)
 {
 	char line[BUFFERSIZE];
 	char frontSearch[10];
@@ -2155,8 +2157,8 @@ FitIniFile::getIdUCharArrayElements(PCSTR varName)
 	sprintf(searchString, "] %s", varName);
 	//--------------------------------
 	// Search line by line for varName
-	PSTR fSearch = nullptr;
-	PSTR bSearch = nullptr;
+	const std::wstring_view& fSearch = nullptr;
+	const std::wstring_view& bSearch = nullptr;
 	do
 	{
 		readLine((puint8_t)line, BUFFERSIZE - 1);
@@ -2193,7 +2195,7 @@ sprintf_s(char* buffer, size_t sizeOfBuffer, const char* format[, argument]...);
 
 template <typename TVAR>
 static HRESULT
-writeformatted(PCSTR varName, PCSTR format, TVAR value)
+writeformatted(const std::wstring_view& varName, const std::wstring_view& format, TVAR value)
 {
 	uint8_t thisLine[BUFFERSIZE];
 	int lenght = sprintf_s(static_cast<char*>(thisLine), BUFFERSIZE - 1, format, value);
@@ -2205,7 +2207,7 @@ writeformatted(PCSTR varName, PCSTR format, TVAR value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::writeBlock(PCSTR blockId)
+FitIniFile::writeBlock(const std::wstring_view& blockId)
 {
 	constexpr const char* format = "\r\n[%s]\r\n";
 
@@ -2214,7 +2216,7 @@ FitIniFile::writeBlock(PCSTR blockId)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::writeIdBoolean(PCSTR varName, bool value)
+FitIniFile::writeIdBoolean(const std::wstring_view& varName, bool value)
 {
 	constexpr const char* formattrue = "b %s = true\r\n";
 	constexpr const char* formatfalse = "b %s = false\r\n";
@@ -2225,7 +2227,7 @@ FitIniFile::writeIdBoolean(PCSTR varName, bool value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::writeIdFloat(PCSTR varName, float value)
+FitIniFile::writeIdFloat(const std::wstring_view& varName, float value)
 {
 	constexpr const char* format = "f %s = %f\r\n";
 
@@ -2234,7 +2236,7 @@ FitIniFile::writeIdFloat(PCSTR varName, float value)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdLong(PCSTR varName, long32_t value)
+FitIniFile::writeIdLong(const std::wstring_view& varName, long32_t value)
 {
 	constexpr const char* format = "l %s = %d\r\n";
 
@@ -2243,7 +2245,7 @@ FitIniFile::writeIdLong(PCSTR varName, long32_t value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::writeIdULong(PCSTR varName, ulong32_t value)
+FitIniFile::writeIdULong(const std::wstring_view& varName, ulong32_t value)
 {
 	constexpr const char* format = "ul %s = %d\r\n";
 
@@ -2252,7 +2254,7 @@ FitIniFile::writeIdULong(PCSTR varName, ulong32_t value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::writeIdShort(PCSTR varName, int16_t value)
+FitIniFile::writeIdShort(const std::wstring_view& varName, int16_t value)
 {
 	constexpr const char* format = "s %s = %d\r\n";
 
@@ -2261,7 +2263,7 @@ FitIniFile::writeIdShort(PCSTR varName, int16_t value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::writeIdUShort(PCSTR varName, uint16_t value)
+FitIniFile::writeIdUShort(const std::wstring_view& varName, uint16_t value)
 {
 	constexpr const char* format = "us %s = %d\r\n";
 
@@ -2270,7 +2272,7 @@ FitIniFile::writeIdUShort(PCSTR varName, uint16_t value)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdChar(PCSTR varName, char value)
+FitIniFile::writeIdChar(const std::wstring_view& varName, char value)
 {
 	constexpr const char* format = "c %s = %d\r\n";
 
@@ -2279,7 +2281,7 @@ FitIniFile::writeIdChar(PCSTR varName, char value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::writeIdUChar(PCSTR varName, uint8_t value)
+FitIniFile::writeIdUChar(const std::wstring_view& varName, uint8_t value)
 {
 	constexpr const char* format = "uc %s = %d\r\n";
 
@@ -2288,7 +2290,7 @@ FitIniFile::writeIdUChar(PCSTR varName, uint8_t value)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdString(PCSTR varName, PCSTR result)
+FitIniFile::writeIdString(const std::wstring_view& varName, const std::wstring_view& result)
 {
 	char thisLine[4096];
 	char tmpString[4000];
@@ -2303,7 +2305,7 @@ FitIniFile::writeIdString(PCSTR varName, PCSTR result)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdUShortArray(PCSTR varName, puint16_t array, uint32_t numElements)
+FitIniFile::writeIdUShortArray(const std::wstring_view& varName, puint16_t array, uint32_t numElements)
 {
 	char thisLine[BUFFERSIZE];
 	sprintf(thisLine, "us[%d] %s = %d,", numElements, varName, array[0]);
@@ -2320,7 +2322,7 @@ FitIniFile::writeIdUShortArray(PCSTR varName, puint16_t array, uint32_t numEleme
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdLongArray(PCSTR varName, int32_t* array, uint32_t numElements)
+FitIniFile::writeIdLongArray(const std::wstring_view& varName, int32_t* array, uint32_t numElements)
 {
 	char thisLine[BUFFERSIZE];
 	sprintf(thisLine, "l[%d] %s = %d,", numElements, varName, array[0]);
@@ -2337,7 +2339,7 @@ FitIniFile::writeIdLongArray(PCSTR varName, int32_t* array, uint32_t numElements
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdFloatArray(PCSTR varName, float* array, uint32_t numElements)
+FitIniFile::writeIdFloatArray(const std::wstring_view& varName, float* array, uint32_t numElements)
 {
 	char thisLine[BUFFERSIZE];
 	sprintf(thisLine, "f[%d] %s = %.2f,", numElements, varName, array[0]);
@@ -2354,7 +2356,7 @@ FitIniFile::writeIdFloatArray(PCSTR varName, float* array, uint32_t numElements)
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdUCharArray(PCSTR varName, puint8_t array, uint32_t numElements)
+FitIniFile::writeIdUCharArray(const std::wstring_view& varName, puint8_t array, uint32_t numElements)
 {
 	char thisLine[BUFFERSIZE];
 	sprintf(thisLine, "uc[%d] %s = %d,", numElements, varName, array[0]);

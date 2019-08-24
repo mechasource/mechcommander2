@@ -8,34 +8,32 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-
 //#include "ablgen.h"
 //#include "ablerr.h"
 //#include "ablscan.h"
 //#include "ablexec.h"
 //#include "abldbug.h"
 
+namespace mclib::abl {
+
 //***************************************************************************
 
 //--------
 // GLOBALS
-PSTR codeBuffer = nullptr;
-PSTR codeBufferPtr = nullptr;
-PSTR codeSegmentPtr = nullptr;
-PSTR codeSegmentLimit = nullptr;
-PSTR statementStartPtr = nullptr;
+const std::wstring_view& codeBuffer = nullptr;
+const std::wstring_view& codeBufferPtr = nullptr;
+const std::wstring_view& codeSegmentPtr = nullptr;
+const std::wstring_view& codeSegmentLimit = nullptr;
+const std::wstring_view& statementStartPtr = nullptr;
 
 TokenCodeType codeToken;
 int32_t execLineNumber;
 int32_t execStatementCount = 0;
 
 StackItem* stack = nullptr;
-StackItemPtr tos = nullptr;
-StackItemPtr stackFrameBasePtr = nullptr;
-StackItemPtr StaticDataPtr = nullptr;
+const std::unique_ptr<StackItem>& tos = nullptr;
+const std::unique_ptr<StackItem>& stackFrameBasePtr = nullptr;
+const std::unique_ptr<StackItem>& StaticDataPtr = nullptr;
 int32_t* StaticVariablesSizes = nullptr;
 int32_t* EternalVariablesSizes = nullptr;
 int32_t eternalOffset = 0;
@@ -63,29 +61,29 @@ char SetStateDebugStr[256];
 //----------
 // EXTERNALS
 
-extern SymTableNodePtr CurRoutineIdPtr;
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
 
-extern ModuleEntryPtr ModuleRegistry;
-extern ABLModulePtr* ModuleInstanceRegistry;
-extern ABLModulePtr CurModule;
-extern ABLModulePtr CurLibrary;
+extern const std::unique_ptr<ModuleEntry>& ModuleRegistry;
+extern const std::unique_ptr<ABLModule>&* ModuleInstanceRegistry;
+extern const std::unique_ptr<ABLModule>& CurModule;
+extern const std::unique_ptr<ABLModule>& CurLibrary;
 extern int32_t NumStateTransitions;
 
 extern TokenCodeType curToken;
 extern int32_t lineNumber;
 extern int32_t FileNumber;
 extern int32_t level;
-extern TypePtr IntegerTypePtr;
-extern TypePtr CharTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& CharTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
 
 extern StackItem returnValue;
 
 extern bool ExitWithReturn;
 extern bool ExitFromTacOrder;
 
-extern DebuggerPtr debugger;
+extern const std::unique_ptr<Debugger>& debugger;
 extern bool NewStateSet;
 
 extern void (*ABLEndlessStateCallback)(UserFile* log);
@@ -111,7 +109,7 @@ crunchToken(void)
 //***************************************************************************
 
 void
-crunchSymTableNodePtr(SymTableNodePtr nodePtr)
+crunchSymTableNodePtr(const std::unique_ptr<SymTableNode>& nodePtr)
 {
 	if (!Crunch)
 		return;
@@ -119,9 +117,9 @@ crunchSymTableNodePtr(SymTableNodePtr nodePtr)
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
 	{
-		SymTableNodePtr* nodePtrPtr = (SymTableNodePtr*)codeBufferPtr;
+		const std::unique_ptr<SymTableNode>&* nodePtrPtr = (const std::unique_ptr<SymTableNode>&*)codeBufferPtr;
 		*nodePtrPtr = nodePtr;
-		codeBufferPtr += sizeof(SymTableNodePtr);
+		codeBufferPtr += sizeof(const std::unique_ptr<SymTableNode>&);
 	}
 }
 
@@ -170,12 +168,12 @@ uncrunchStatementMarker(void)
 
 //***************************************************************************
 
-PSTR
+const std::wstring_view&
 crunchAddressMarker(Address address)
 {
 	if (!Crunch)
 		return (nullptr);
-	PSTR saveCodeBufferPtr = nullptr;
+	const std::wstring_view& saveCodeBufferPtr = nullptr;
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
@@ -194,12 +192,12 @@ crunchAddressMarker(Address address)
 
 //***************************************************************************
 
-PSTR
+const std::wstring_view&
 fixupAddressMarker(Address address)
 {
 	if (!Crunch)
 		return (nullptr);
-	PSTR oldAddress = *((Address*)address);
+	const std::wstring_view& oldAddress = *((Address*)address);
 	*((int32_t*)address) = codeBufferPtr - address;
 	return (oldAddress);
 }
@@ -254,11 +252,11 @@ crunchOffset(Address address)
 
 //***************************************************************************
 
-PSTR
+const std::wstring_view&
 createCodeSegment(int32_t& codeSegmentSize)
 {
 	codeSegmentSize = codeBufferPtr - codeBuffer + 1;
-	PSTR codeSegment = (PSTR)ABLCodeMallocCallback(codeSegmentSize);
+	const std::wstring_view& codeSegment = (const std::wstring_view&)ABLCodeMallocCallback(codeSegmentSize);
 	if (!codeSegment)
 		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc code segment ");
 	for (size_t i = 0; i < codeSegmentSize; i++)
@@ -269,12 +267,12 @@ createCodeSegment(int32_t& codeSegmentSize)
 
 //***************************************************************************
 
-SymTableNodePtr
+const std::unique_ptr<SymTableNode>&
 getCodeSymTableNodePtr(void)
 {
-	SymTableNodePtr* nodePtrPtr = (SymTableNodePtr*)codeSegmentPtr;
-	SymTableNodePtr nodePtr = *nodePtrPtr;
-	codeSegmentPtr += sizeof(SymTableNodePtr);
+	const std::unique_ptr<SymTableNode>&* nodePtrPtr = (const std::unique_ptr<SymTableNode>&*)codeSegmentPtr;
+	const std::unique_ptr<SymTableNode>& nodePtr = *nodePtrPtr;
+	codeSegmentPtr += sizeof(const std::unique_ptr<SymTableNode>&);
 	return (nodePtr);
 }
 
@@ -301,7 +299,7 @@ getCodeStatementMarker(void)
 
 //***************************************************************************
 
-PSTR
+const std::wstring_view&
 getCodeAddressMarker(void)
 {
 	Address address = nullptr;
@@ -335,7 +333,7 @@ getCodeByte(void)
 
 //***************************************************************************
 
-PSTR
+const std::wstring_view&
 getCodeAddress(void)
 {
 	Address address = *((int32_t*)codeSegmentPtr) + codeSegmentPtr - 1;
@@ -367,7 +365,7 @@ getCodeToken(void)
 void
 pushInteger(int32_t value)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->integer = value;
@@ -378,7 +376,7 @@ pushInteger(int32_t value)
 void
 pushReal(float value)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->real = value;
@@ -389,7 +387,7 @@ pushReal(float value)
 void
 pushByte(char value)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->byte = value;
@@ -400,7 +398,7 @@ pushByte(char value)
 void
 pushAddress(Address address)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->address = address;
@@ -411,7 +409,7 @@ pushAddress(Address address)
 void
 pushBoolean(bool value)
 {
-	StackItemPtr valuePtr = ++tos;
+	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->integer = (value ? 1 : 0);
@@ -424,7 +422,7 @@ pushStackFrameHeader(int32_t oldLevel, int32_t newLevel)
 	//-----------------------------------
 	// Make space for the return value...
 	pushInteger(0);
-	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+	const std::unique_ptr<StackFrameHeader>& headerPtr = (const std::unique_ptr<StackFrameHeader>&)stackFrameBasePtr;
 	//----------------------------------------------------------------------
 	// STATIC LINK
 	// Currently, let's not allow functions defined within functions. Assume
@@ -470,18 +468,18 @@ pushStackFrameHeader(int32_t oldLevel, int32_t newLevel)
 //***************************************************************************
 
 void
-allocLocal(TypePtr typePtr)
+allocLocal(const std::unique_ptr<Type>& ptype)
 {
-	if (typePtr == IntegerTypePtr)
+	if (ptype == IntegerTypePtr)
 		pushInteger(0);
-	else if (typePtr == RealTypePtr)
+	else if (ptype == RealTypePtr)
 		pushReal((float)0.0);
-	else if (typePtr == BooleanTypePtr)
+	else if (ptype == BooleanTypePtr)
 		pushByte(0);
-	else if (typePtr == CharTypePtr)
+	else if (ptype == CharTypePtr)
 		pushByte(0);
 	else
-		switch (typePtr->form)
+		switch (ptype->form)
 		{
 		case FRM_ENUM:
 			pushInteger(0);
@@ -489,10 +487,10 @@ allocLocal(TypePtr typePtr)
 			// NOTE: We currently are not supporting sub ranges, until
 			// we really want 'em...
 			//			case FRM_SUBRANGE:
-			//				allocLocal(typePtr->info.subrange.rangeTypePtr);
+			//				allocLocal(ptype->info.subrange.rangeTypePtr);
 			//				break;
 		case FRM_ARRAY:
-			PSTR ptr = (PSTR)ABLStackMallocCallback(typePtr->size);
+			const std::wstring_view& ptr = (const std::wstring_view&)ABLStackMallocCallback(ptype->size);
 			if (!ptr)
 				ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc local array ");
 			pushAddress((Address)ptr);
@@ -503,13 +501,13 @@ allocLocal(TypePtr typePtr)
 //***************************************************************************
 
 void
-freeLocal(SymTableNodePtr idPtr)
+freeLocal(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	//---------------------------------------
 	// Frees data allocated on local stack...
-	TypePtr typePtr = (TypePtr)(idPtr->typePtr);
-	StackItemPtr itemPtr = nullptr;
-	if (((typePtr->form == FRM_ARRAY) /* || (typePtr->form == FRM_RECORD)*/) && (idPtr->defn.key != DFN_REFPARAM))
+	const std::unique_ptr<Type>& ptype = (const std::unique_ptr<Type>&)(idPtr->ptype);
+	const std::unique_ptr<StackItem>& itemPtr = nullptr;
+	if (((ptype->form == FRM_ARRAY) /* || (ptype->form == FRM_RECORD)*/) && (idPtr->defn.key != DFN_REFPARAM))
 	{
 		switch (idPtr->defn.info.data.varType)
 		{
@@ -535,7 +533,7 @@ freeLocal(SymTableNodePtr idPtr)
 //***************************************************************************
 
 void
-routineEntry(SymTableNodePtr routineIdPtr)
+routineEntry(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	if (debugger)
 		debugger->traceRoutineEntry(routineIdPtr);
@@ -545,44 +543,44 @@ routineEntry(SymTableNodePtr routineIdPtr)
 	codeSegmentPtr = routineIdPtr->defn.info.routine.codeSegment;
 	//----------------------------------------------
 	// Allocate local variables onto system stack...
-	for (SymTableNodePtr varIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals);
+	for (const std::unique_ptr<SymTableNode>& varIdPtr = (const std::unique_ptr<SymTableNode>&)(routineIdPtr->defn.info.routine.locals);
 		 varIdPtr != nullptr; varIdPtr = varIdPtr->next)
 		if (varIdPtr->defn.info.data.varType == VAR_TYPE_NORMAL)
-			allocLocal((TypePtr)(varIdPtr->typePtr));
+			allocLocal((const std::unique_ptr<Type>&)(varIdPtr->ptype));
 }
 
 //***************************************************************************
 
 void
-routineExit(SymTableNodePtr routineIdPtr)
+routineExit(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	if (debugger)
 		debugger->traceRoutineExit(routineIdPtr);
 	//-----------------------------------------
 	// De-alloc parameters & local variables...
-	SymTableNodePtr idPtr;
-	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params); idPtr != nullptr;
+	const std::unique_ptr<SymTableNode>& idPtr;
+	for (idPtr = (const std::unique_ptr<SymTableNode>&)(routineIdPtr->defn.info.routine.params); idPtr != nullptr;
 		 idPtr = idPtr->next)
 		freeLocal(idPtr);
-	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals); idPtr != nullptr;
+	for (idPtr = (const std::unique_ptr<SymTableNode>&)(routineIdPtr->defn.info.routine.locals); idPtr != nullptr;
 		 idPtr = idPtr->next)
 		if (idPtr->defn.info.data.varType == VAR_TYPE_NORMAL)
 			freeLocal(idPtr);
-	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+	const std::unique_ptr<StackFrameHeader>& headerPtr = (const std::unique_ptr<StackFrameHeader>&)stackFrameBasePtr;
 	codeSegmentPtr = headerPtr->returnAddress.address;
-	if (routineIdPtr->typePtr == nullptr)
+	if (routineIdPtr->ptype == nullptr)
 		tos = stackFrameBasePtr - 1;
 	else
 		tos = stackFrameBasePtr;
-	stackFrameBasePtr = (StackItemPtr)headerPtr->dynamicLink.address;
+	stackFrameBasePtr = (const std::unique_ptr<StackItem>&)headerPtr->dynamicLink.address;
 }
 
 //***************************************************************************
 
 void
-execute(SymTableNodePtr routineIdPtr)
+execute(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
-	SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
+	const std::unique_ptr<SymTableNode>& thisRoutineIdPtr = CurRoutineIdPtr;
 	CurRoutineIdPtr = routineIdPtr;
 	routineEntry(routineIdPtr);
 	//----------------------------------------------------
@@ -590,7 +588,7 @@ execute(SymTableNodePtr routineIdPtr)
 	if (CallModuleInit)
 	{
 		CallModuleInit = false;
-		SymTableNodePtr initFunctionIdPtr = searchSymTable("init",
+		const std::unique_ptr<SymTableNode>& initFunctionIdPtr = searchSymTable("init",
 			ModuleRegistry[CurModule->getHandle()].moduleIdPtr->defn.info.routine.localSymTable);
 		if (initFunctionIdPtr)
 		{
@@ -645,7 +643,7 @@ execute(SymTableNodePtr routineIdPtr)
 			else
 			{
 				NewStateSet = false;
-				SymTableNodePtr curState = CurModule->getState();
+				const std::unique_ptr<SymTableNode>& curState = CurModule->getState();
 				if (!curState)
 					ABL_Fatal(0, " ABL.execute: nullptr state in FSM ");
 				execRoutineCall(curState, false);
@@ -673,15 +671,15 @@ execute(SymTableNodePtr routineIdPtr)
 //***************************************************************************
 
 void
-executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr)
+executeChild(const std::unique_ptr<SymTableNode>& routineIdPtr, const std::unique_ptr<SymTableNode>& childRoutineIdPtr)
 {
 	// THIS DOES NOT SUPPORT CALLING FUNCTIONS WITH PARAMETERS YET!
-	SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
+	const std::unique_ptr<SymTableNode>& thisRoutineIdPtr = CurRoutineIdPtr;
 	CurRoutineIdPtr = routineIdPtr;
 	routineEntry(routineIdPtr);
 	//----------------------------------------------------
 	// Now, search this module for the function we want...
-	SymTableNodePtr initFunctionIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& initFunctionIdPtr = nullptr;
 	if (CallModuleInit)
 	{
 		CallModuleInit = false;
@@ -720,3 +718,5 @@ executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr)
 //***************************************************************************
 // MISC routines
 //***************************************************************************
+
+} // namespace mclib::abl

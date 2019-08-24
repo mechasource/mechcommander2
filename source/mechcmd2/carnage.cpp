@@ -10,7 +10,7 @@
 
 #include "stdinc.h"
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef CARNAGE_H
 #include "carnage.h"
@@ -45,7 +45,7 @@
 #include "mission.h"
 #endif
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 
@@ -117,7 +117,7 @@ FireType::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-FireType::init(FilePtr objFile, uint32_t fileSize)
+FireType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile explFile;
@@ -232,7 +232,7 @@ ExplosionType::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-ExplosionType::init(FilePtr objFile, uint32_t fileSize)
+ExplosionType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile explFile;

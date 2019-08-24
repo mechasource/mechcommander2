@@ -23,7 +23,7 @@
 #include <string.h>
 
 #ifndef _MBCS
-#include <gameos.hpp>
+#include "gameos.hpp"
 #else
 #include <assert.h>
 #define gosASSERT assert
@@ -48,7 +48,7 @@
 
 #define WEAPON_AMMO_OFFSET 65 // Master Component Index Offset from weapon
 
-typedef enum
+enum class 
 {
 	COMPONENT_FORM_SIMPLE = 0,
 	COMPONENT_FORM_COCKPIT,
@@ -73,7 +73,7 @@ typedef enum
 	NUM_COMPONENT_FORMS
 } ComponentFormType;
 
-typedef enum
+enum class 
 {
 	WEAPON_AMMO_NONE, // unlimited ammo (energy weapons)
 	WEAPON_AMMO_SRM,
@@ -83,7 +83,7 @@ typedef enum
 	NUM_WEAPON_AMMO_TYPES
 } WeaponAmmoType;
 
-typedef enum
+enum class 
 {
 	WEAPON_STATE_READY,
 	WEAPON_STATE_RECYCLING,
@@ -91,7 +91,7 @@ typedef enum
 	WEAPON_STATE_DESTROYED
 } WeaponStateType;
 
-typedef enum
+enum class 
 {
 	WEAPON_RANGE_SHORT,
 	WEAPON_RANGE_MEDIUM,
@@ -213,11 +213,11 @@ public:
 
 	int32_t init(FitIniFile* componentFile);
 
-	int32_t initEXCEL(PSTR dataLine, float baseSensorRange);
+	int32_t initEXCEL(const std::wstring_view& dataLine, float baseSensorRange);
 
-	int32_t saveEXCEL(FilePtr file, uint8_t masterId, float baseSensorRange);
+	int32_t saveEXCEL(std::unique_ptr<File> file, uint8_t masterId, float baseSensorRange);
 
-	PSTR getName(void) { return (&name[0]); }
+	const std::wstring_view& getName(void) { return (&name[0]); }
 
 	int32_t getMasterID(void) { return (masterID); }
 
@@ -375,7 +375,7 @@ public:
 
 	void setProbeEffect(float effect) { stats.probe.effect = effect; }
 
-	PSTR getAbbreviation(void) { return (&abbreviation[0]); }
+	const std::wstring_view& getAbbreviation(void) { return (&abbreviation[0]); }
 
 	bool isOffensiveWeapon(void);
 
@@ -383,8 +383,8 @@ public:
 
 	void multiplyWeaponRanges(float factor);
 
-	static int32_t loadMasterList(PSTR fileName, int32_t numComponents, float baseSensorRange);
-	static int32_t saveMasterList(PSTR fileName, int32_t numComponents, float baseSensorRange);
+	static int32_t loadMasterList(const std::wstring_view& fileName, int32_t numComponents, float baseSensorRange);
+	static int32_t saveMasterList(const std::wstring_view& fileName, int32_t numComponents, float baseSensorRange);
 
 	static int32_t freeMasterList(void);
 

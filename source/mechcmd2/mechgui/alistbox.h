@@ -7,11 +7,11 @@
 #ifndef ALISTBOX_H
 #define ALISTBOX_H
 
-#include <mechgui/ascroll.h>
-#include <mechgui/aedit.h>
-#include <mechgui/afont.h>
+#include "mechgui/ascroll.h"
+#include "mechgui/aedit.h"
+#include "mechgui/afont.h"
 
-#include <estring.h>
+#include "estring.h"
 
 namespace mechgui
 {
@@ -60,12 +60,12 @@ public:
 
 	virtual ~aTextListItem(void);
 
-	void setText(PCSTR text);
+	void setText(const std::wstring_view& text);
 	void setText(int32_t resID);
-	PCSTR getText(void) const;
+	const std::wstring_view& getText(void) const;
 	void sizeToText(void);
 
-	void init(FitIniFile& file, PCSTR blockName = "Text0");
+	void init(FitIniFile& file, const std::wstring_view& blockName = "Text0");
 
 	virtual void render(void);
 	void setAlignment(int32_t newA) { alignment = newA; }
@@ -77,7 +77,7 @@ protected:
 	void init(int32_t fontResID);
 
 	aFont font;
-	std::wstring text;
+	const std::wstring_view& text;
 	int32_t alignment;
 
 	bool bForceToTop;
@@ -97,7 +97,7 @@ public:
 	aAnimTextListItem(const aAnimTextListItem& src);
 	aAnimTextListItem& operator=(const aAnimTextListItem& src);
 
-	void init(FitIniFile& file, PCSTR blockName = "Text0");
+	void init(FitIniFile& file, const std::wstring_view& blockName = "Text0");
 	virtual void render(void);
 	virtual void update(void);
 
@@ -110,14 +110,14 @@ class aLocalizedListItem : public aAnimTextListItem
 {
 public:
 	aLocalizedListItem(void);
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void render(void);
 
-	void setHiddenText(PCSTR pText) { hiddenText = pText; }
-	PCSTR getHiddenText() const { return hiddenText; }
+	void setHiddenText(const std::wstring_view& pText) { hiddenText = pText; }
+	const std::wstring_view& getHiddenText() const { return hiddenText; }
 
 protected:
-	std::wstring hiddenText;
+	const std::wstring_view& hiddenText;
 };
 
 class aListBox : public aObject
@@ -126,7 +126,7 @@ public:
 	aListBox(void);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-	void init(FitIniFile* file, PCSTR blockName);
+	void init(FitIniFile* file, const std::wstring_view& blockName);
 
 	virtual void destroy(void);
 	virtual void render(void);
@@ -137,7 +137,7 @@ public:
 	virtual int32_t AddItem(aListItem* itemString);
 	virtual int32_t InsertItem(aListItem* itemString, int32_t where);
 	virtual int32_t RemoveItem(aListItem* itemString, bool bDelete);
-	int32_t ChangeItemString(int16_t itemNumber, PSTR newString);
+	int32_t ChangeItemString(int16_t itemNumber, const std::wstring_view& newString);
 	int32_t GetSelectedItem(void) { return itemSelected; };
 	int32_t GetCheckedItem(void) const;
 	int32_t SelectItem(int32_t itemNumber);
@@ -197,7 +197,7 @@ class aDropList : public aObject
 public:
 	aDropList(void);
 
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void destroy(void);
 	void specialDestroy(void);
 	virtual void render(void);
@@ -222,8 +222,8 @@ public:
 	}
 
 	int32_t AddItem(uint32_t textID, uint32_t color);
-	int32_t AddItem(PCSTR text, uint32_t color);
-	int32_t GetSelectedItem(void) const { return selectionIndex; }
+	int32_t AddItem(const std::wstring_view& text, uint32_t color);
+	int32_t GetSelectedItem(void) const { return selectionindex; }
 
 	aDropList& operator=(const aDropList&);
 
@@ -233,7 +233,7 @@ protected:
 	aAnimButton expandButton;
 	aListBox listBox;
 	float listBoxMaxHeight;
-	int32_t selectionIndex;
+	int32_t selectionindex;
 	aAnimTextListItem templateItem;
 	aDropList(const aDropList&);
 
@@ -247,7 +247,7 @@ public:
 	aComboBox(void);
 	~aComboBox(){};
 
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void destroy(void);
 	virtual void render(void);
 	virtual void update(void);
@@ -260,8 +260,8 @@ public:
 
 	void setReadOnly(bool bReadOnly) { entry.setReadOnly(bReadOnly); }
 	int32_t AddItem(uint32_t textID, uint32_t color);
-	int32_t AddItem(PCSTR text, uint32_t color);
-	int32_t GetSelectedItem(void) const { return selectionIndex; }
+	int32_t AddItem(const std::wstring_view& text, uint32_t color);
+	int32_t GetSelectedItem(void) const { return selectionindex; }
 
 	aComboBox& operator=(const aComboBox&);
 
@@ -277,7 +277,7 @@ protected:
 	aAnimButton expandButton;
 	aListBox listBox;
 	float listBoxMaxHeight;
-	int32_t selectionIndex;
+	int32_t selectionindex;
 
 	aComboBox(const aComboBox&);
 	aAnimTextListItem templateItem;

@@ -10,9 +10,9 @@ Mechlopedia.cpp			: Implementation of the Mechlopedia component.
 #include "stdinc.h"
 #include "mechlopedia.h"
 #include "inifile.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "logisticsdata.h"
-#include "..\resource.h"
+#include "resource.h"
 #include "prefs.h"
 #include "cmponent.h"
 
@@ -51,7 +51,7 @@ Mechlopedia::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)path);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 		return 0;
 	}
@@ -213,7 +213,7 @@ Mechlopedia::MechScreen::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)path);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 		return;
 	}
@@ -264,7 +264,7 @@ Mechlopedia::MechScreen::begin()
 			MechlopediaListItem* pEntry = new MechlopediaListItem();
 			char name[256];
 			cLoadString(pVehicles[i]->getNameID(), name, 255);
-			std::wstring text = name;
+			const std::wstring_view& text = name;
 			text.MakeUpper();
 			pEntry->setText(text);
 			pEntry->resize(
@@ -286,7 +286,7 @@ Mechlopedia::MechScreen::begin()
 		for (i = 0; i < copterCount; i++)
 		{
 			MechlopediaListItem* pEntry = new MechlopediaListItem();
-			std::wstring text = pCopters[i]->getName();
+			const std::wstring_view& text = pCopters[i]->getName();
 			text.MakeUpper();
 			pEntry->setText(text);
 			pEntry->resize(
@@ -359,10 +359,10 @@ Mechlopedia::MechScreen::update()
 void
 Mechlopedia::MechScreen::select(aTextListItem* pItem)
 {
-	PCSTR pText = pItem->getText();
+	const std::wstring_view& pText = pItem->getText();
 	if (!bIsVehicle)
 	{
-		std::wstring name = pText;
+		const std::wstring_view& name = pText;
 		name += " Prime";
 		LogisticsVariant* pChassis = LogisticsData::instance->getVariant(name);
 		setMech(pChassis, 1);
@@ -399,7 +399,7 @@ Mechlopedia::MechScreen::setVehicle(LogisticsVehicle* pVehicle)
 	int32_t descID = pVehicle->getEncyclopediaID();
 	char text[256];
 	cLoadString(pVehicle->getNameID(), text, 255);
-	std::wstring tmpStr = text;
+	const std::wstring_view& tmpStr = text;
 	tmpStr.MakeUpper();
 	descriptionListBox.removeAllItems(true);
 	aTextListItem* pItem = new aTextListItem(IDS_EN_LISTBOX_FONT);
@@ -438,7 +438,7 @@ Mechlopedia::MechScreen::setVehicle(LogisticsVehicle* pVehicle)
 	// add weight class stats
 	pItem = new aTextListItem(IDS_EN_LISTBOX_FONT);
 	cLoadString(IDS_EN_CLASS, text, 255);
-	sprintf(formatText, text, (PCSTR)pVehicle->getMechClass());
+	sprintf(formatText, text, (const std::wstring_view&)pVehicle->getMechClass());
 	pItem->setText(formatText);
 	pItem->setColor(color);
 	statsListBox.AddItem(pItem);
@@ -479,7 +479,7 @@ Mechlopedia::MechScreen::setMech(LogisticsVariant* pChassis, bool bShowJump)
 		pChassis->getFileName(), prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
 	char name[256];
 	cLoadString(pChassis->getChassisName(), name, 255);
-	std::wstring upper = name;
+	const std::wstring_view& upper = name;
 	upper.MakeUpper();
 	textObjects[0].setText(upper);
 	statsListBox.removeAllItems(true);
@@ -509,7 +509,7 @@ Mechlopedia::MechScreen::setMech(LogisticsVariant* pChassis, bool bShowJump)
 	// add weight class stats
 	pItem = new aTextListItem(IDS_EN_LISTBOX_FONT);
 	cLoadString(IDS_EN_CLASS, text, 255);
-	sprintf(formatText, text, (PCSTR)pChassis->getMechClass());
+	sprintf(formatText, text, (const std::wstring_view&)pChassis->getMechClass());
 	pItem->setText(formatText);
 	pItem->setColor(color);
 	statsListBox.AddItem(pItem);
@@ -550,7 +550,7 @@ Mechlopedia::WeaponScreen::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)path);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 	}
 	SubScreen::init(file);
@@ -603,7 +603,7 @@ Mechlopedia::WeaponScreen::begin()
 	for (size_t i = 0; i < count; i++)
 	{
 		MechlopediaListItem* pItem = new MechlopediaListItem();
-		std::wstring text = comps[i]->getName();
+		const std::wstring_view& text = comps[i]->getName();
 		text.MakeUpper();
 		pItem->setText(text);
 		pItem->setID(comps[i]->getID());
@@ -628,7 +628,7 @@ Mechlopedia::WeaponScreen::setWeapon(LogisticsComponent* pComponent)
 	statsListBox.removeAllItems(true);
 	descriptionListBox.removeAllItems(true);
 	// set header
-	std::wstring name = pComponent->getName();
+	const std::wstring_view& name = pComponent->getName();
 	name.MakeUpper();
 	textObjects[0].setText(name);
 	// set description
@@ -733,7 +733,6 @@ Mechlopedia::WeaponScreen::setWeapon(LogisticsComponent* pComponent)
 	camera.setScale(1.5);
 }
 
-//*************************************************************************************************
 
 void
 Mechlopedia::PersonalityScreen::init()
@@ -744,7 +743,7 @@ Mechlopedia::PersonalityScreen::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)path);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 		return;
 	}
@@ -774,7 +773,7 @@ Mechlopedia::PersonalityScreen::begin()
 		MechlopediaListItem* pItem = new MechlopediaListItem();
 		char text[256];
 		cLoadString(FirstID + i, text, 255);
-		std::wstring upper = text;
+		const std::wstring_view& upper = text;
 		upper.MakeUpper();
 		pItem->setText(upper);
 		pItem->setID(i);
@@ -853,7 +852,7 @@ MechlopediaListItem::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn' open file %s", (PSTR)path);
+		sprintf(errorStr, "couldn' open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 		return;
 	}
@@ -890,7 +889,7 @@ Mechlopedia::BuildingScreen::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (PSTR)path);
+		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 		return;
 	}
@@ -930,9 +929,9 @@ Mechlopedia::BuildingScreen::begin()
 	{
 		char tmp[256];
 		cLoadString(pBldgs[i]->nameID, tmp, 255);
-		std::wstring str = tmp;
+		const std::wstring_view& str = tmp;
 		str.MakeUpper();
-		std::wstring liao = "Liao ";
+		const std::wstring_view& liao = "Liao ";
 		str.Remove(liao);
 		liao = "LIAO ";
 		str.Remove(liao);
@@ -974,9 +973,9 @@ Mechlopedia::BuildingScreen::select(aTextListItem* pEntry)
 	{
 		char name[256];
 		cLoadString(pBldg->nameID, name, 255);
-		std::wstring tmpStr = name;
+		const std::wstring_view& tmpStr = name;
 		tmpStr.MakeUpper();
-		std::wstring liao = "LIAO ";
+		const std::wstring_view& liao = "LIAO ";
 		tmpStr.Remove(liao);
 		textObjects[0].setText(tmpStr);
 		cLoadString(IDS_EN_BUILDING_WEIGHT, name, 255);
@@ -1014,5 +1013,4 @@ Mechlopedia::BuildingScreen::select(aTextListItem* pEntry)
 	}
 }
 
-//*************************************************************************************************
 // end of file ( Mechlopedia.cpp )

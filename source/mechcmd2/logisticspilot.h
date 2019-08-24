@@ -17,8 +17,8 @@ class ForceGroupIcon;
 CLASS DESCRIPTION
 LogisticsPilot:
 **************************************************************************************************/
-#include <estring.h>
-#include <elist.h>
+#include "estring.h"
+#include "elist.h"
 #include "warrior.h"
 
 #define MAX_MISSIONS 50
@@ -49,15 +49,15 @@ enum Medals
 class LogisticsPilot
 {
 public:
-	int32_t init(PSTR fileName);
+	int32_t init(const std::wstring_view& fileName);
 	LogisticsPilot(void);
 	~LogisticsPilot(void);
 
-	const std::wstring& getName(void) const { return name; }
-	const std::wstring& getAudio(void) const { return audio; }
-	const std::wstring& getVideo(void) const { return video; }
+	const std::wstring_view& getName(void) const { return name; }
+	const std::wstring_view& getAudio(void) const { return audio; }
+	const std::wstring_view& getVideo(void) const { return video; }
 	int32_t getRank(void) const { return rank; }
-	const std::wstring& getIconFile(void) const { return iconFile; }
+	const std::wstring_view& getIconFile(void) const { return iconFile; }
 	float getGunnery(void) const { return gunnery; }
 	float getPiloting(void) const { return piloting; }
 	int32_t getMechKills(void) const { return mechKills; }
@@ -93,8 +93,8 @@ public:
 	bool promotePilot(void);
 	int32_t turnAverageIntoRank(float avg);
 
-	static PCSTR getSkillText(int32_t skillID);
-	const std::wstring& getFileName() { return fileName; }
+	static const std::wstring_view& getSkillText(int32_t skillID);
+	const std::wstring_view& getFileName() { return fileName; }
 
 	int32_t save(FitIniFile& file, int32_t count);
 	int32_t load(FitIniFile& file);
@@ -102,7 +102,7 @@ public:
 	int32_t update(MechWarrior* pWarrior);
 
 	int32_t getSpecialtySkillCount(void) const;
-	int32_t getSpecialtySkills(PCSTR* array, int32_t& count);
+	int32_t getSpecialtySkills(const std::wstring_view&* array, int32_t& count);
 	int32_t getSpecialtySkills(pint32_t array, int32_t& count);
 	bool* getSpecialtySkills() { return specialtySkills; }
 	void setSpecialtySkill(int32_t skill, bool set);
@@ -116,11 +116,11 @@ public:
 	EList<ForceGroupIcon*, ForceGroupIcon*> killedIcons;
 
 private:
-	std::wstring name;
-	std::wstring audio;
-	std::wstring video;
+	const std::wstring_view& name;
+	const std::wstring_view& audio;
+	const std::wstring_view& video;
 	int32_t rank;
-	std::wstring iconFile; // or file name?
+	const std::wstring_view& iconFile; // or file name?
 	float gunnery;
 	float piloting;
 	int32_t mechKills;
@@ -139,7 +139,7 @@ private:
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
 
 	static char skillTexts[][255];
-	std::wstring fileName;
+	const std::wstring_view& fileName;
 
 	bool medals[MAX_MEDAL];
 	bool medalsLastMission[MAX_MEDAL];
@@ -148,5 +148,4 @@ private:
 	friend class LogisticsData;
 };
 
-//*************************************************************************************************
 #endif // end of file ( LogisticsPilot.h )

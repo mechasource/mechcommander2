@@ -8,7 +8,7 @@ component.
 \*************************************************************************************************/
 
 #include "stdinc.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "logisticsmissioninfo.h"
 
 #ifndef FITINIFILE_H
@@ -160,13 +160,13 @@ LogisticsMissionInfo::init(FitIniFile& file)
 					continue;
 				}
 				groups[i].infos.Append(pInfo);
-				std::wstring path = missionPath;
+				const std::wstring_view& path = missionPath;
 				path += fileName;
 				path += ".fit";
 				pInfo->fileName = fileName;
 				pInfo->completed = 0;
 				FitIniFile missionFile;
-				if (NO_ERROR != missionFile.open((PSTR)(PCSTR)path))
+				if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 				{
 					char errorStr[256];
 					sprintf(errorStr, "couldn't open file %s", fileName);
@@ -348,7 +348,7 @@ LogisticsMissionInfo::load(FitIniFile& file)
 			char tmp[256];
 			if (NO_ERROR == file.readIdString(header, tmp, 255))
 			{
-				PSTR pfName = new char[strlen(tmp) + 1];
+				const std::wstring_view& pfName = new char[strlen(tmp) + 1];
 				strcpy(pfName, tmp);
 				additionalPurchaseFiles.Append(pfName);
 				i++;
@@ -409,7 +409,7 @@ LogisticsMissionInfo::save(FitIniFile& file)
 }
 
 int32_t
-LogisticsMissionInfo::getAvailableMissions(PCSTR* missions, int32_t& numberOfEm)
+LogisticsMissionInfo::getAvailableMissions(const std::wstring_view&* missions, int32_t& numberOfEm)
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	int32_t count = 0;
@@ -436,7 +436,7 @@ LogisticsMissionInfo::getAvailableMissions(PCSTR* missions, int32_t& numberOfEm)
 }
 
 int32_t
-LogisticsMissionInfo::getCurrentMissions(PCSTR* missions, int32_t& numberOfEm)
+LogisticsMissionInfo::getCurrentMissions(const std::wstring_view&* missions, int32_t& numberOfEm)
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	int32_t count = 0;
@@ -462,13 +462,13 @@ LogisticsMissionInfo::getCurrentMissions(PCSTR* missions, int32_t& numberOfEm)
 	return 0;
 }
 int32_t
-LogisticsMissionInfo::setNextMission(PCSTR missionName)
+LogisticsMissionInfo::setNextMission(const std::wstring_view& missionName)
 {
 	if (!missionName || !strlen(missionName))
 		return -1;
 	if (bMultiplayer)
 	{
-		std::wstring path = missionPath;
+		const std::wstring_view& path = missionPath;
 		path += missionName;
 		path += ".fit";
 		currentMission = 0;
@@ -479,7 +479,7 @@ LogisticsMissionInfo::setNextMission(PCSTR missionName)
 		pInfo->playPurchasing = true;
 		currentMissionName = missionName;
 		FitIniFile missionFile;
-		if (NO_ERROR != missionFile.open((PSTR)(PCSTR)path))
+		if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 		{
 			char errorStr[256];
 			sprintf(errorStr, "couldn't open file %s", missionName);
@@ -490,7 +490,7 @@ LogisticsMissionInfo::setNextMission(PCSTR missionName)
 		//			result = missionFile.readIdLong( "MaximumNumberOfTeams",
 		// maxTeams ); 			result = missionFile.readIdLong(
 		//"MaximumNumberOfPlayers", maxPlayers );
-		MC2Player* pPlayerInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+		MC2Player* pPlayerInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 		;
 		if (pPlayerInfo)
 		{
@@ -534,7 +534,7 @@ LogisticsMissionInfo::setNextMission(PCSTR missionName)
 					}
 					currentMission = count;
 					currentMissionName = (*iter)->fileName;
-					currentMissionName.Remove(std::wstring(".fit"));
+					currentMissionName.Remove(const std::wstring_view&(".fit"));
 					CBills += (*iter)->additionalCBills;
 				}
 				break;
@@ -549,7 +549,7 @@ LogisticsMissionInfo::setNextMission(PCSTR missionName)
 }
 
 void
-LogisticsMissionInfo::setSingleMission(PCSTR missionFileName)
+LogisticsMissionInfo::setSingleMission(const std::wstring_view& missionFileName)
 {
 	clear();
 	bMultiplayer = true;
@@ -565,7 +565,7 @@ LogisticsMissionInfo::setSingleMission(PCSTR missionFileName)
 	groups[0].numberToBeCompleted = 1;
 	groups[0].videoFileName = "";
 	groupCount = 1;
-	std::wstring path = missionPath;
+	const std::wstring_view& path = missionPath;
 	path += missionFileName;
 	path += ".fit";
 	currentMission = 0;
@@ -578,7 +578,7 @@ LogisticsMissionInfo::setSingleMission(PCSTR missionFileName)
 	pInfo->playPilotPromotion = 0;
 	currentMissionName = missionFileName;
 	FitIniFile missionFile;
-	if (NO_ERROR != missionFile.open((PSTR)(PCSTR)path))
+	if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
 		char errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", missionName);
@@ -702,7 +702,7 @@ LogisticsMissionInfo::setMissionComplete()
 
 LogisticsMissionInfo::MissionInfo::~MissionInfo() {}
 
-const std::wstring&
+const std::wstring_view&
 LogisticsMissionInfo::getCurrentPurchaseFile(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
@@ -719,7 +719,7 @@ LogisticsMissionInfo::getCurrentDropWeight(void) const
 		return 10000;
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsMissionInfo::getCurrentOperationFile(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
@@ -728,7 +728,7 @@ LogisticsMissionInfo::getCurrentOperationFile(void) const
 	return nullptr;
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsMissionInfo::getCurrentVideo(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
@@ -754,7 +754,7 @@ LogisticsMissionInfo::getCurrentLogisticsTuneId()
 	return -1;
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsMissionInfo::getCurrentMissionDescription(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
@@ -764,7 +764,7 @@ LogisticsMissionInfo::getCurrentMissionDescription(void) const
 }
 
 bool
-LogisticsMissionInfo::getMissionAvailable(PCSTR missionName)
+LogisticsMissionInfo::getMissionAvailable(const std::wstring_view& missionName)
 {
 	MissionGroup* pGroup = &groups[currentStage];
 	for (size_t i = 0; i < pGroup->infos.Count(); i++)
@@ -777,7 +777,7 @@ LogisticsMissionInfo::getMissionAvailable(PCSTR missionName)
 	return nullptr;
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsMissionInfo::getCurrentMissionFriendlyName(void) const
 {
 	if (currentStage >= groupCount)
@@ -788,7 +788,7 @@ LogisticsMissionInfo::getCurrentMissionFriendlyName(void) const
 	return nullptr;
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsMissionInfo::getCurrentABLScriptName(void) const
 {
 	if (currentStage >= groupCount)
@@ -799,8 +799,8 @@ LogisticsMissionInfo::getCurrentABLScriptName(void) const
 	return nullptr;
 }
 
-PCSTR
-LogisticsMissionInfo::getMissionFriendlyName(PCSTR missionName) const
+const std::wstring_view&
+LogisticsMissionInfo::getMissionFriendlyName(const std::wstring_view& missionName) const
 {
 	if (currentStage >= groupCount)
 		return nullptr;
@@ -824,7 +824,7 @@ LogisticsMissionInfo::getCurrentRP(void) const
 	return pGroup->infos[currentMission]->resourcePoints;
 }
 
-PCSTR
+const std::wstring_view&
 LogisticsMissionInfo::getCurrentBigVideo(void) const
 {
 	if (currentStage == -1)
@@ -835,7 +835,7 @@ LogisticsMissionInfo::getCurrentBigVideo(void) const
 	pGroup->bigVideoShown = true;
 	return pGroup->bigVideoName;
 }
-PCSTR
+const std::wstring_view&
 LogisticsMissionInfo::getFinalVideo(void) const
 {
 	return finalVideoName;
@@ -860,7 +860,7 @@ LogisticsMissionInfo::setMultiplayer()
 	groupCount = 1;
 }
 void
-LogisticsMissionInfo::setPurchaseFile(PCSTR fileName)
+LogisticsMissionInfo::setPurchaseFile(const std::wstring_view& fileName)
 {
 	gosASSERT(bMultiplayer);
 	MissionInfo* pInfo = groups[0].infos[0];
@@ -870,7 +870,7 @@ LogisticsMissionInfo::setPurchaseFile(PCSTR fileName)
 }
 
 int32_t
-LogisticsMissionInfo::getAdditionalPurachaseFiles(PCSTR* list, int32_t& maxCount)
+LogisticsMissionInfo::getAdditionalPurachaseFiles(const std::wstring_view&* list, int32_t& maxCount)
 {
 	if (maxCount >= additionalPurchaseFiles.Count())
 	{
@@ -884,11 +884,11 @@ LogisticsMissionInfo::getAdditionalPurachaseFiles(PCSTR* list, int32_t& maxCount
 	return additionalPurchaseFiles.Count();
 }
 void
-LogisticsMissionInfo::addBonusPurchaseFile(PCSTR fileName)
+LogisticsMissionInfo::addBonusPurchaseFile(const std::wstring_view& fileName)
 {
 	if (!fileName)
 		return;
-	PSTR pNewFile = new char[strlen(fileName) + 1];
+	const std::wstring_view& pNewFile = new char[strlen(fileName) + 1];
 	strcpy(pNewFile, fileName);
 	additionalPurchaseFiles.Append(pNewFile);
 }
@@ -1039,5 +1039,4 @@ LogisticsMissionInfo::setVideoShown()
 	pGroup->videoShown = true;
 }
 
-//*************************************************************************************************
 // end of file ( LogisticsMissionInfo.cpp )

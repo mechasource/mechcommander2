@@ -15,7 +15,6 @@ thing you use to create overlays
 
 class ActionPaintTile;
 
-//*************************************************************************************************
 
 class OverlayBrush : public Brush
 {
@@ -55,5 +54,4 @@ private:
 public:
 };
 
-//*************************************************************************************************
 #endif // end of file ( OverlayBrush.h )

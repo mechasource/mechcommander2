@@ -39,7 +39,7 @@ extern bool ThreadDone;
 extern bool InDebugger; // During debugger rendering
 extern char CacheInformation[128];
 
-#if _CONSIDERED_OBSOLETE // and not used BTW
+#if CONSIDERED_OBSOLETE // and not used BTW
 extern void __stdcall InitProcessorSpeed(void);
 extern PSTR __stdcall GetProcessor(void);
 #endif
@@ -126,7 +126,7 @@ void __stdcall ScanCards(FixedLengthString& Buffer);
 //
 // Functions in imagehlp.cpp
 //
-void __stdcall InitExceptionHandler(PSTR CommandLine);
+void __stdcall InitExceptionHandler(PSTR commandline);
 void __stdcall DestroyImageHlp(void);
 PSTR __stdcall GetSymbolFromAddress(PSTR Buffer, size_t Address);
 PSTR __stdcall GetLocationFromAddress(PIMAGEHLP_LINE pline, PSTR Buffer, size_t Address);
@@ -138,7 +138,7 @@ extern uint32_t LastOffset;
 // extern IMAGEHLP_LINE ImageHlp_pline;
 
 PSTR __stdcall GetExceptionCode(PEXCEPTION_RECORD per);
-void __stdcall GetEnvironmentSettings(PSTR CommandLine);
+void __stdcall GetEnvironmentSettings(PSTR commandline);
 
 //
 // Context information
@@ -230,7 +230,7 @@ typedef struct _LogHeader
 	uint32_t Version; // Version number of log file data
 	char GameName[32]; // Name of application being logged
 	char AppPath[256]; // Path of application being logged
-	char CommandLine[128]; // Command line passed to App
+	char commandline[128]; // Command line passed to App
 	char UserName[32]; // Username who created log
 	char LogDate[64]; // Date/Time log created
 	char ExeDate[64]; // Date/Time exe file used to create log

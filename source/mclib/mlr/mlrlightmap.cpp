@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrlightmap.hpp>
+#include "mlr/mlrlightmap.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //###########################    MLRLightMap    ###############################
@@ -1289,3 +1289,5 @@ MLRLightMap::CreateLightMapShape()
 	gos_PopCurrentHeap();
 	return ret;
 }
+
+} // namespace MidLevelRenderer

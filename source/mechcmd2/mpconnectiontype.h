@@ -10,14 +10,14 @@ MPConnectionType.h			: Interface for the MPConnectionType component.
 #ifndef MPCONNECTIONTYPE_H
 #define MPCONNECTIONTYPE_H
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/asystem.h>
-//#include <mechgui/abutton.h>
-//#include <mechgui/alistbox.h>
-//#include <mechgui/aanim.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/asystem.h"
+//#include "mechgui/abutton.h"
+//#include "mechgui/alistbox.h"
+//#include "mechgui/aanim.h"
 //#include "mphostgame.h"
 
-typedef enum __mpconnectiontype_const
+enum class __mpconnectiontype_const
 {
 	ZONE_PANEL_FIRST_BUTTON_ID = 1000100,
 	LAN_PANEL_FIRST_BUTTON_ID = 1000200,
@@ -72,7 +72,7 @@ public:
 	virtual void begin(void);
 
 private:
-	int32_t getNum(PSTR pStr, int32_t index1, int32_t index2);
+	int32_t getNum(const std::wstring_view& pStr, int32_t index1, int32_t index2);
 	LogisticsScreen* pParentScreen;
 	aAnimButton button0;
 	aAnimButton button1;
@@ -168,5 +168,4 @@ public:
 private:
 };
 
-//*************************************************************************************************
 #endif // end of file ( MPConnectionType.h )

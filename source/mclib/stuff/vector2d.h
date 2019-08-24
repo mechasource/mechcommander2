@@ -10,7 +10,7 @@
 #ifndef _VECTOR2D_HPP_
 #define _VECTOR2D_HPP_
 
-#include <stuff/style.hpp>
+#include "stuff/style.h"
 
 namespace Stuff
 {

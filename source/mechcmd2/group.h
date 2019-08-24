@@ -16,7 +16,7 @@
 //--------------
 // Include Files
 
-//#include <mclib.h>
+//#include "mclib.h"
 //#include "gameobj.h"
 //#include "dmover.h"
 //#include "dgroup.h"
@@ -103,29 +103,29 @@ public:
 
 	void setNumMovers(int32_t num) { numMovers = num; }
 
-	virtual bool add(MoverPtr mover);
+	virtual bool add(std::unique_ptr<Mover> mover);
 
-	virtual bool remove(MoverPtr mover);
+	virtual bool remove(std::unique_ptr<Mover> mover);
 
-	virtual bool isMember(MoverPtr mover);
+	virtual bool isMember(std::unique_ptr<Mover> mover);
 
 	virtual int32_t disband(void);
 
-	virtual int32_t setPoint(MoverPtr mover);
+	virtual int32_t setPoint(std::unique_ptr<Mover> mover);
 
-	virtual MoverPtr getPoint(void);
+	virtual std::unique_ptr<Mover> getPoint(void);
 
 	virtual void setDisbandOnNoPoint(bool setting) { disbandOnNoPoint = setting; }
 
 	virtual bool getDisbandOnNoPoint(void) { return (disbandOnNoPoint); }
 
-	MoverPtr getMover(int32_t i);
+	std::unique_ptr<Mover> getMover(int32_t i);
 
-	MoverPtr selectPoint(bool excludePoint);
+	std::unique_ptr<Mover> selectPoint(bool excludePoint);
 
-	virtual int32_t getMovers(MoverPtr* moverList);
+	virtual int32_t getMovers(std::unique_ptr<Mover>* moverList);
 
-	MechWarriorPtr getPointPilot(void);
+	std::unique_ptr<MechWarrior> getPointPilot(void);
 
 	void statusCount(int32_t* statusTally);
 
@@ -178,7 +178,7 @@ public:
 
 	void handleMateFiredWeapon(uint32_t mateWID);
 
-	static void sortMovers(int32_t numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
+	static void sortMovers(int32_t numMoversInGroup, std::unique_ptr<Mover>* moverList, Stuff::Vector3D dest);
 
 	static int32_t calcMoveGoals(
 		Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList);

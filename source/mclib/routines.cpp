@@ -10,7 +10,7 @@
 #include "stdinc.h"
 
 // #include <stdlib.h>
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 // void memclear(PVOID Dest,size_t Length);
 // void memfill(PVOID Dest,size_t Length);
@@ -22,7 +22,7 @@ extern enum { CPU_UNKNOWN,
 
 static int64_t fillnum = -1;
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 //
 // Instead of using memset(x,0,x) - use this function
 //
@@ -50,7 +50,7 @@ uint32_t align edi when possible sub ecx, edi xor eax, eax sub ecx, ebx and ecx,
 ;
 #endif
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 //
 // Instead of using memset(x,0xff,x) - use this function
 //

@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 #include "gosfxheaders.hpp"
-#include <mlr/mlrcardcloud.hpp>
+#include "mlr/mlrcardcloud.h"
 
 //------------------------------------------------------------------------------
 //
@@ -157,7 +157,7 @@ gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 		{
 			m_VOffset.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;
@@ -182,7 +182,7 @@ gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 		{
 			m_UOffset.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (PSTR)m_name));
+			// Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
 			return false;

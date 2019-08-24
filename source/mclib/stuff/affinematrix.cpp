@@ -8,10 +8,10 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-#include <stuff/affinematrix.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <stuff/matrix.hpp>
+//#include "gameos.hpp"
+#include "stuff/affinematrix.h"
+#include "stuff/linearmatrix.h"
+#include "stuff/matrix.h"
 
 using namespace Stuff;
 
@@ -848,7 +848,7 @@ AffineMatrix4D::Solve()
 //
 #if !defined(Spew)
 void
-Spew(PCSTR group, const AffineMatrix4D& matrix)
+Spew(const std::wstring_view& group, const AffineMatrix4D& matrix)
 {
 	Check_Object(&matrix);
 	SPEW((group, "\n\t| %9f, %9f, %9f, 0 |", matrix(0, 0), matrix(0, 1), matrix(0, 2)));

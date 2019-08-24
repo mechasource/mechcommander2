@@ -19,7 +19,7 @@
 #include "heap.h"
 
 #ifndef _MBCS
-#include <gameos.hpp>
+#include "gameos.hpp"
 #else
 #include <assert.h>
 #define gosASSERT assert
@@ -44,14 +44,14 @@ FullPathFileName::destroy(void)
 
 //---------------------------------------------------------------------------
 void
-FullPathFileName::init(PSTR dir_path, PCSTR name, PSTR ext)
+FullPathFileName::init(const std::wstring_view& dir_path, const std::wstring_view& name, const std::wstring_view& ext)
 {
 	destroy();
 	size_t total_length = strlen(dir_path);
 	total_length += strlen(name);
 	total_length += strlen(ext);
 	total_length++;
-	fullName = (PSTR)systemHeap->Malloc(total_length);
+	fullName = (const std::wstring_view&)systemHeap->Malloc(total_length);
 	gosASSERT(fullName != nullptr);
 	if (fullName == nullptr)
 		return;
@@ -68,11 +68,11 @@ FullPathFileName::init(PSTR dir_path, PCSTR name, PSTR ext)
 }
 
 void
-FullPathFileName::changeExt(PSTR from, PSTR to)
+FullPathFileName::changeExt(const std::wstring_view& from, const std::wstring_view& to)
 {
 	if (strlen(from) != strlen(to))
 		return;
-	PSTR ext = strstr(fullName, from);
+	const std::wstring_view& ext = strstr(fullName, from);
 	if (ext)
 	{
 		for (uint32_t i = 0; i < strlen(to); i++)

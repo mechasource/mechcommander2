@@ -41,28 +41,28 @@ GetBackBufferColor(uint16_t In);
 void
 UpdateBackBufferFormat(void);
 
-void __stdcall DecodeBMPDimensions(PCSTR FileName, puint8_t Data, uint32_t DataSize,
+void __stdcall DecodeBMPDimensions(PSTR FileName, puint8_t Data, uint32_t DataSize,
 	puint32_t pTextureWidth, puint32_t pTextureHeight);
-void __stdcall DecodeJPGDimensions(PCSTR FileName, puint8_t Data, uint32_t DataSize,
+void __stdcall DecodeJPGDimensions(PSTR FileName, puint8_t Data, uint32_t DataSize,
 	puint32_t pTextureWidth, puint32_t pTextureHeight);
 #ifdef USEPNG
-PVOID __stdcall DecodePNG(PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
+PVOID __stdcall DecodePNG(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
 	puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf = nullptr);
-void __stdcall DecodePNGDimensions(PCSTR FileName, puint8_t Data, uint32_t DataSize,
+void __stdcall DecodePNGDimensions(PSTR FileName, puint8_t Data, uint32_t DataSize,
 	puint32_t pTextureWidth, puint32_t pTextureHeight);
 #endif
 void
-DecodeTGADimensions(PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t pTextureWidth,
+DecodeTGADimensions(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t pTextureWidth,
 	puint32_t pTextureHeight);
 
 PVOID
-DecodeBMP(PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
+DecodeBMP(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
 	puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf = nullptr);
 PVOID
-DecodeJPG(PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
+DecodeJPG(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
 	puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf = nullptr);
 PVOID
-DecodeTGA(PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
+DecodeTGA(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
 	puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf = nullptr);
 
 int32_t
@@ -99,7 +99,7 @@ cint32_t tFlag_FormatShift = 10; // Bits 10,11,12 used for format
 cuint16_t FormatMask = (7 << tFlag_FormatShift);
 cuint16_t tFlag_Special = 8192; // Special texture (font, chess, or color mipmap)
 
-typedef enum EGraphicsMemType
+enum class EGraphicsMemType
 {
 	gmt_All,
 	gmt_Original,
@@ -171,7 +171,7 @@ public:
 	{
 		return (MipmapDisabled()) ? 1 : MipLevelsRequired(m_nWidth, m_nHeight);
 	}
-	PCSTR Name(void) { return m_pName; }
+	PSTR Name(void) { return m_pName; }
 	PVOID pInstance(void) { return m_pInstance; }
 	DDSURFACEDESC2* Description(void)
 	{
@@ -216,7 +216,7 @@ public:
 	// Texture Create.cpp
 	// Fundamental new/init/delete of a CtexInfo
 	static CTexInfo* Allocate(void);
-	void Initialize(gos_TextureFormat Format, PCSTR FileName, puint8_t pBitmap, uint32_t Size,
+	void Initialize(gos_TextureFormat Format, PSTR FileName, puint8_t pBitmap, uint32_t Size,
 		uint16_t Width, uint16_t Height, uint32_t Hints, gos_RebuildFunction pFunc,
 		PVOID pInstance);
 	void Free(void);
@@ -233,7 +233,7 @@ public:
 		uint32_t Width, uint32_t Height);
 	// Various setters
 	void SetPreload(void);
-	void SetName(PCSTR name);
+	void SetName(PSTR name);
 	void SetUsed(void)
 	{
 		m_nLastFrameUsed = FrameNo;
@@ -272,7 +272,7 @@ private:
 	void Rebuild(void); // Calls rebuild function of app to re-populate the surface
 	void FreeOriginal(void); // Frees the original surface (assumes it exists and is ok to free)
 	void DecodeImageLevel(
-		PCSTR FileName, puint8_t pSourceData, uint32_t Size, LPDIRECTDRAWSURFACE7 pSurface);
+		PSTR FileName, puint8_t pSourceData, uint32_t Size, LPDIRECTDRAWSURFACE7 pSurface);
 
 	// Texture SysMem.cpp
 	// System Memory Surface

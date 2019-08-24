@@ -20,56 +20,45 @@
 
 //***************************************************************************
 
-typedef struct _PathQueueRec* PathQueueRecPtr;
+#define MAX_MOVERS 255 // Should probably equal that in Collision System
 
-typedef struct _PathQueueRec
+struct PathQueueRec
 {
-	int32_t num;
-	MechWarriorPtr pilot;
-	int32_t selectionIndex;
-	uint32_t moveParams;
+	std::unique_ptr<MechWarrior> pilot;
+	int32_t num = 0;
+	int32_t selectionindex = 0;
+	uint32_t moveparams;
 	bool initPath;
 	bool faceObject;
-	PathQueueRecPtr prev;
-	PathQueueRecPtr next;
-} PathQueueRec;
+	//std::unique_ptr<PathQueueRec> prev;
+	//std::unique_ptr<PathQueueRec> next;
+};
 
 //---------------------------------------------------------------------------
 
 class MovePathManager
 {
-
 public:
-	PathQueueRec pool[MAX_MOVERS];
-	PathQueueRecPtr queueFront;
-	PathQueueRecPtr queueEnd;
-	PathQueueRecPtr freeList;
-	static int32_t numPaths;
-	static int32_t peakPaths;
-	static int32_t sourceTally[50];
+	MovePathManager(void) noexcept {}
+	~MovePathManager(void) noexcept = default;
 
-public:
-	PVOID operator new(size_t ourSize);
-
-	void operator delete(PVOID us);
-
-	MovePathManager(void) { init(void); }
-
-	~MovePathManager(void) { destroy(void); }
-
-	void destroy(void);
-
+	//PVOID operator new(size_t ourSize);
+	//void operator delete(PVOID us);
 	int32_t init(void);
-
-	void remove(PathQueueRecPtr rec);
-
-	PathQueueRecPtr remove(MechWarriorPtr pilot);
-
-	void request(MechWarriorPtr pilot, int32_t selectionIndex, uint32_t moveParams, int32_t source);
-
+	void remove(std::unique_ptr<PathQueueRec> rec);
+	std::unique_ptr<PathQueueRec> remove(std::unique_ptr<MechWarrior> pilot);
+	void request(std::unique_ptr<MechWarrior> pilot, int32_t selectionindex, uint32_t moveparams, int32_t source);
 	void calcPath(void);
-
 	void update(void);
+
+protected:
+	std::vector<PathQueueRec> m_pool;	// PathQueueRec pool[MAX_MOVERS];
+	//std::unique_ptr<PathQueueRec> queueFront;
+	//std::unique_ptr<PathQueueRec> queueEnd;
+	//std::unique_ptr<PathQueueRec> freeList;
+	static int32_t m_numpaths;
+	static int32_t m_peakpaths;
+	std::array<int32_t, 50> m_sourcetally;
 };
 
 typedef MovePathManager* MovePathManagerPtr;

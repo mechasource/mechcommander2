@@ -30,7 +30,7 @@
 #endif
 
 #include <string.h>
-#include <gameos.hpp>
+#include "gameos.hpp"
 //----------------------------------------------------------------------
 enum MC_TextureKey
 {
@@ -287,7 +287,7 @@ public:
 	// by the fact that that an existing texture instance can been modified in
 	// memory after it's loaded, and thus be different the from an instance that
 	// would be loaded from disk.
-	uint32_t textureInstanceExists(PCSTR textureFullPathName, gos_TextureFormat key, uint32_t hints,
+	uint32_t textureInstanceExists(const std::wstring_view& textureFullPathName, gos_TextureFormat key, uint32_t hints,
 		uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
 
 	//-----------------------------------------------------------------------------
@@ -297,10 +297,10 @@ public:
 	// matches that of an already existing instance of the texture, the handle
 	// of the existing instance will be returned. Used for Mech Coloration
 	// possibly, damage states, etc.
-	uint32_t loadTexture(PCSTR textureFullPathName, gos_TextureFormat key, uint32_t hints,
+	uint32_t loadTexture(const std::wstring_view& textureFullPathName, gos_TextureFormat key, uint32_t hints,
 		uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
 
-	int32_t saveTexture(uint32_t textureIndex, PCSTR textureFullPathName);
+	int32_t saveTexture(uint32_t textureIndex, const std::wstring_view& textureFullPathName);
 
 	//-----------------------------------------------------------------------------
 	// Returns the TextureNode Id based on what you asked for.

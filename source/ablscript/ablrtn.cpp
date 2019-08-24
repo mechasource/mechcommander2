@@ -8,73 +8,45 @@
 //***************************************************************************
 #include "stdinc.h"
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
+//#include "ablgen.h"
+//#include "ablerr.h"
+//#include "ablscan.h"
+//#include "ablsymt.h"
+//#include "ablparse.h"
+//#include "ablexec.h"
+//#include "ablenv.h"
+//#include "abl.h"
+//#include "abldbug.h"
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLPARSE_H
-#include "ablparse.h"
-#endif
-
-#ifndef ABLEXEC_H
-#include "ablexec.h"
-#endif
-
-#ifndef ABLENV_H
-#include "ablenv.h"
-#endif
-
-#ifndef ABL_H
-#include "abl.h"
-#endif
-
-#ifndef ABLDBUG_H
-#include "abldbug.h"
-#endif
+namespace mclib::abl {
 
 //***************************************************************************
 
 extern int32_t MaxBreaks;
 extern int32_t MaxWatches;
-extern DebuggerPtr debugger;
+extern const std::unique_ptr<Debugger>& debugger;
 extern int32_t NumModules;
-extern ModuleEntryPtr ModuleRegistry;
-extern ABLModulePtr* ModuleInstanceRegistry;
+extern const std::unique_ptr<ModuleEntry>& ModuleRegistry;
+extern const std::unique_ptr<ABLModule>&* ModuleInstanceRegistry;
 extern int32_t MaxModules;
-extern ABLModulePtr* LibraryInstanceRegistry;
+extern const std::unique_ptr<ABLModule>&* LibraryInstanceRegistry;
 extern int32_t MaxLibraries;
 extern int32_t NumModulesRegistered;
 extern int32_t NumModuleInstances;
 extern int32_t MaxWatchesPerModule;
 extern int32_t MaxBreakPointsPerModule;
 extern int32_t MaxCodeBufferSize;
-extern ABLModulePtr CurModule;
-extern ABLModulePtr CurLibrary;
-extern PSTR codeBuffer;
-extern PSTR codeBufferPtr;
-extern PSTR codeSegmentPtr;
-extern PSTR codeSegmentLimit;
-extern PSTR statementStartPtr;
+extern const std::unique_ptr<ABLModule>& CurModule;
+extern const std::unique_ptr<ABLModule>& CurLibrary;
+extern const std::wstring_view& codeBuffer;
+extern const std::wstring_view& codeBufferPtr;
+extern const std::wstring_view& codeSegmentPtr;
+extern const std::wstring_view& codeSegmentLimit;
+extern const std::wstring_view& statementStartPtr;
 extern StackItem* stack;
-extern StackItemPtr tos;
-extern StackItemPtr stackFrameBasePtr;
-extern StackItemPtr StaticDataPtr;
+extern const std::unique_ptr<StackItem>& tos;
+extern const std::unique_ptr<StackItem>& stackFrameBasePtr;
+extern const std::unique_ptr<StackItem>& StaticDataPtr;
 extern int32_t* StaticVariablesSizes;
 extern int32_t* EternalVariablesSizes;
 extern int32_t MaxEternalVariables;
@@ -99,16 +71,16 @@ extern ABLFile* sourceFile;
 extern bool printFlag;
 extern bool blockFlag;
 extern BlockType blockType;
-extern SymTableNodePtr CurModuleIdPtr;
-extern SymTableNodePtr CurRoutineIdPtr;
+extern const std::unique_ptr<SymTableNode>& CurModuleIdPtr;
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
 extern bool DumbGetCharOn;
 extern int32_t NumOpenFiles;
 extern int32_t NumSourceFiles;
 extern int32_t NumLibrariesUsed;
-extern ABLModulePtr LibrariesUsed[MAX_LIBRARIES_USED];
+extern const std::unique_ptr<ABLModule>& LibrariesUsed[MAX_LIBRARIES_USED];
 extern int32_t bufferOffset;
-extern PSTR bufferp;
-extern PSTR tokenp;
+extern const std::wstring_view& bufferp;
+extern const std::wstring_view& tokenp;
 extern int32_t digitCount;
 extern bool countError;
 extern int32_t pageNumber;
@@ -131,18 +103,18 @@ extern char SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
 
 extern TokenCodeType curToken;
 extern char wordString[];
-extern SymTableNodePtr symTableDisplay[];
+extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
 extern int32_t level;
 extern bool blockFlag;
 extern BlockType blockType;
 extern bool printFlag;
-extern SymTableNodePtr CurRoutineIdPtr;
+extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
 
 extern Type DummyType;
 extern StackItem* stack;
 // extern StackItem*		eternalStack;
-extern StackItemPtr tos;
-extern StackItemPtr stackFrameBasePtr;
+extern const std::unique_ptr<StackItem>& tos;
+extern const std::unique_ptr<StackItem>& stackFrameBasePtr;
 extern int32_t eternalOffset;
 
 extern TokenCodeType statementStartList[];
@@ -155,8 +127,8 @@ extern CharCodeType charTable[256];
 
 extern char sourceBuffer[MAXLEN_SOURCELINE];
 extern int32_t bufferOffset;
-extern PSTR bufferp;
-extern PSTR tokenp;
+extern const std::wstring_view& bufferp;
+extern const std::wstring_view& tokenp;
 
 extern int32_t digitCount;
 extern bool countError;
@@ -164,15 +136,15 @@ extern bool countError;
 extern bool eofFlag;
 extern int32_t pageNumber;
 
-extern SymTableNodePtr SymTableDisplay[MAX_NESTING_LEVEL];
-extern TypePtr IntegerTypePtr;
-extern TypePtr RealTypePtr;
-extern TypePtr BooleanTypePtr;
+extern const std::unique_ptr<SymTableNode>& SymTableDisplay[MAX_NESTING_LEVEL];
+extern const std::unique_ptr<Type>& IntegerTypePtr;
+extern const std::unique_ptr<Type>& RealTypePtr;
+extern const std::unique_ptr<Type>& BooleanTypePtr;
 
-extern StackItemPtr StaticDataPtr;
+extern const std::unique_ptr<StackItem>& StaticDataPtr;
 extern StackItem returnValue;
 
-extern ModuleEntryPtr ModuleRegistry;
+extern const std::unique_ptr<ModuleEntry>& ModuleRegistry;
 extern int32_t MaxModules;
 extern int32_t NumModulesRegistered;
 extern int32_t MaxStaticVariables;
@@ -184,7 +156,7 @@ extern bool AssertEnabled;
 extern bool PrintEnabled;
 extern bool StringFunctionsEnabled;
 extern bool DebugCodeEnabled;
-extern DebuggerPtr debugger;
+extern const std::unique_ptr<Debugger>& debugger;
 
 bool ABLenabled = false;
 char buffer[MAXLEN_PRINTLINE];
@@ -192,11 +164,11 @@ char buffer[MAXLEN_PRINTLINE];
 extern int32_t CallStackLevel;
 extern bool SkipOrder;
 
-extern ABLModulePtr CurFSM;
+extern const std::unique_ptr<ABLModule>& CurFSM;
 extern bool NewStateSet;
 
 extern void
-transState(SymTableNodePtr newState);
+transState(const std::unique_ptr<SymTableNode>& newState);
 
 int32_t numLibrariesLoaded = 0;
 int32_t NumExecutions = 0;
@@ -213,11 +185,11 @@ void (*ABLSystemFreeCallback)(PVOID memBlock) = nullptr;
 void (*ABLStackFreeCallback)(PVOID memBlock) = nullptr;
 void (*ABLCodeFreeCallback)(PVOID memBlock) = nullptr;
 void (*ABLSymbolFreeCallback)(PVOID memBlock) = nullptr;
-void (*ABLDebugPrintCallback)(PSTR s) = nullptr;
+void (*ABLDebugPrintCallback)(const std::wstring_view& s) = nullptr;
 int32_t (*ABLRandomCallback)(int32_t range) = nullptr;
 void (*ABLSeedRandomCallback)(uint32_t range) = nullptr;
 uint32_t (*ABLGetTimeCallback)(void) = nullptr;
-void (*ABLFatalCallback)(int32_t code, PSTR s) = nullptr;
+void (*ABLFatalCallback)(int32_t code, const std::wstring_view& s) = nullptr;
 void (*ABLEndlessStateCallback)(UserFile* log) = nullptr;
 
 //***************************************************************************
@@ -243,7 +215,7 @@ ABL_CloseProfileLog();
 void
 ABL_OpenProfileLog();
 void
-ABL_AddToProfileLog(PSTR profileString);
+ABL_AddToProfileLog(const std::wstring_view& profileString);
 
 //***************************************************************************
 // ABL library interface routines
@@ -260,7 +232,7 @@ void DefaultSeedRandom(uint32_t /* seed */) {}
 
 //---------------------------------------------------------------------------
 
-void DefaultDebugPrintCallback(PSTR /* s */) {}
+void DefaultDebugPrintCallback(const std::wstring_view& /* s */) {}
 
 //---------------------------------------------------------------------------
 
@@ -283,7 +255,7 @@ ABLi_setRandomCallbacks(
 //---------------------------------------------------------------------------
 
 void
-ABLi_setDebugPrintCallback(void (*debugPrintCallback)(PSTR s))
+ABLi_setDebugPrintCallback(void (*debugPrintCallback)(const std::wstring_view& s))
 {
 	ABLDebugPrintCallback = debugPrintCallback;
 }
@@ -311,8 +283,8 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 	PVOID (*stackMallocCallback)(uint32_t memSize), PVOID (*codeMallocCallback)(uint32_t memSize),
 	PVOID (*symbolMallocCallback)(uint32_t memSize), void (*systemFreeCallback)(PVOID memBlock),
 	void (*stackFreeCallback)(PVOID memBlock), void (*codeFreeCallback)(PVOID memBlock),
-	void (*symbolFreeCallback)(PVOID memBlock), int32_t (*fileCreateCB)(PVOID* file, PSTR fName),
-	int32_t (*fileOpenCB)(PVOID* file, PSTR fName), int32_t (*fileCloseCB)(PVOID* file),
+	void (*symbolFreeCallback)(PVOID memBlock), int32_t (*fileCreateCB)(PVOID* file, const std::wstring_view& filename),
+	int32_t (*fileOpenCB)(PVOID* file, const std::wstring_view& filename), int32_t (*fileCloseCB)(PVOID* file),
 	bool (*fileEofCB)(PVOID file),
 	int32_t (*fileReadCB)(PVOID file, puint8_t buffer, int32_t length),
 	int32_t (*fileReadLongCB)(PVOID file), int32_t (*fileReadStringCB)(PVOID file, puint8_t buffer),
@@ -320,8 +292,8 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 	int32_t (*fileWriteCB)(PVOID file, puint8_t buffer, int32_t length),
 	int32_t (*fileWriteByteCB)(PVOID file, uint8_t byte),
 	int32_t (*fileWriteLongCB)(PVOID file, int32_t value),
-	int32_t (*fileWriteStringCB)(PVOID file, PSTR buffer), void (*debuggerPrintCallback)(PSTR s),
-	void (*fatalCallback)(int32_t code, PSTR s), bool debugInfo, bool debug, bool profile)
+	int32_t (*fileWriteStringCB)(PVOID file, const std::wstring_view& buffer), void (*debuggerPrintCallback)(const std::wstring_view& s),
+	void (*fatalCallback)(int32_t code, const std::wstring_view& s), bool debugInfo, bool debug, bool profile)
 {
 // HACK, for testing...
 #ifdef _DEBUG
@@ -444,7 +416,7 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 	//--------------------------------------------------------------------
 	// Allocate the code buffer used during pre-processing/interpreting...
 	MaxCodeBufferSize = maxCodeBufferSize;
-	codeBuffer = (PSTR)ABLCodeMallocCallback(maxCodeBufferSize);
+	codeBuffer = (const std::wstring_view&)ABLCodeMallocCallback(maxCodeBufferSize);
 	if (!codeBuffer)
 		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc preprocess code buffer ");
 	//----------------------------------------------------------------------
@@ -466,7 +438,7 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 	}
 	//------------------------------
 	// Allocate the runtime stack...
-	stack = (StackItemPtr)ABLStackMallocCallback(
+	stack = (const std::unique_ptr<StackItem>&)ABLStackMallocCallback(
 		sizeof(StackItem) * (runtimeStackSize / sizeof(StackItem)));
 	if (!stack)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc stack ");
@@ -521,7 +493,7 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 //***************************************************************************
 
 int32_t
-ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
+ABLi_preProcess(const std::wstring_view& sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
 	int32_t* numFilesProcessed, bool printLines)
 {
 	//--------------------------------------------------------------------------------
@@ -578,7 +550,7 @@ ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProces
 	//------------------
 	// Get it rolling...
 	getToken();
-	SymTableNodePtr moduleIdPtr = moduleHeader();
+	const std::unique_ptr<SymTableNode>& moduleIdPtr = moduleHeader();
 	CurModuleIdPtr = moduleIdPtr;
 	CurRoutineIdPtr = moduleIdPtr;
 	//---------------------
@@ -642,27 +614,27 @@ ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProces
 	//--------------------------------------------------
 	// Register the new module in the ABL environment...
 	ModuleRegistry[NumModulesRegistered].fileName =
-		(PSTR)ABLStackMallocCallback(strlen(sourceFileName) + 1);
+		(const std::wstring_view&)ABLStackMallocCallback(strlen(sourceFileName) + 1);
 	if (!ModuleRegistry[NumModulesRegistered].fileName)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc module filename ");
 	strcpy(ModuleRegistry[NumModulesRegistered].fileName, strlwr(sourceFileName));
 	ModuleRegistry[NumModulesRegistered].moduleIdPtr = moduleIdPtr;
 	ModuleRegistry[NumModulesRegistered].numSourceFiles = NumSourceFiles;
 	ModuleRegistry[NumModulesRegistered].sourceFiles =
-		(PSTR*)ABLStackMallocCallback(NumSourceFiles * sizeof(PSTR));
+		(const std::wstring_view&*)ABLStackMallocCallback(NumSourceFiles * sizeof(const std::wstring_view&));
 	if (!ModuleRegistry[NumModulesRegistered].sourceFiles)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc sourceFiles ");
 	for (i = 0; i < NumSourceFiles; i++)
 	{
 		ModuleRegistry[NumModulesRegistered].sourceFiles[i] =
-			(PSTR)ABLStackMallocCallback(strlen(SourceFiles[i]) + 1);
+			(const std::wstring_view&)ABLStackMallocCallback(strlen(SourceFiles[i]) + 1);
 		strcpy(ModuleRegistry[NumModulesRegistered].sourceFiles[i], SourceFiles[i]);
 	}
 	if (NumLibrariesUsed > 0)
 	{
 		ModuleRegistry[NumModulesRegistered].numLibrariesUsed = NumLibrariesUsed;
 		ModuleRegistry[NumModulesRegistered].librariesUsed =
-			(ABLModulePtr*)ABLStackMallocCallback(NumLibrariesUsed * sizeof(SymTableNodePtr));
+			(const std::unique_ptr<ABLModule>&*)ABLStackMallocCallback(NumLibrariesUsed * sizeof(const std::unique_ptr<SymTableNode>&));
 		if (!ModuleRegistry[NumModulesRegistered].librariesUsed)
 			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc librariesUsed ");
 		for (i = 0; i < NumLibrariesUsed; i++)
@@ -691,7 +663,7 @@ ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProces
 	if (NumStateHandles > 1)
 	{
 		ModuleRegistry[NumModulesRegistered].stateHandles =
-			(StateHandleInfoPtr)ABLStackMallocCallback(sizeof(StateHandleInfo) * NumStateHandles);
+			(const std::unique_ptr<StateHandleInfo>&)ABLStackMallocCallback(sizeof(StateHandleInfo) * NumStateHandles);
 		memcpy(ModuleRegistry[NumModulesRegistered].stateHandles, StateHandleList,
 			sizeof(StateHandleInfo) * NumStateHandles);
 	}
@@ -710,8 +682,8 @@ ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProces
 //***************************************************************************
 
 int32_t
-ABLi_execute(SymTableNodePtr moduleIdPtr, SymTableNodePtr /* functionIdPtr */,
-	ABLParamPtr paramList, StackItemPtr returnVal)
+ABLi_execute(const std::unique_ptr<SymTableNode>& moduleIdPtr, const std::unique_ptr<SymTableNode>& /* functionIdPtr */,
+	const std::unique_ptr<ABLParam>& paramList, const std::unique_ptr<StackItem>& returnVal)
 {
 	// insertSymTable(&SymTableDisplay[0], moduleIdPtr);
 	//--------------------------
@@ -766,10 +738,10 @@ ABLi_execute(SymTableNodePtr moduleIdPtr, SymTableNodePtr /* functionIdPtr */,
 		// NOTE: Currently, parameter passing of arrays is not functioning. This
 		// MUST be done...
 		int32_t curParam = 0;
-		for (SymTableNodePtr formalIdPtr = (SymTableNodePtr)(moduleIdPtr->defn.info.routine.params);
+		for (const std::unique_ptr<SymTableNode>& formalIdPtr = (const std::unique_ptr<SymTableNode>&)(moduleIdPtr->defn.info.routine.params);
 			 formalIdPtr != nullptr; formalIdPtr = formalIdPtr->next)
 		{
-			TypePtr formalTypePtr = (TypePtr)(formalIdPtr->typePtr);
+			const std::unique_ptr<Type>& formalTypePtr = (const std::unique_ptr<Type>&)(formalIdPtr->ptype);
 			if (formalIdPtr->defn.key == DFN_VALPARAM)
 			{
 				if (formalTypePtr == RealTypePtr)
@@ -799,13 +771,13 @@ ABLi_execute(SymTableNodePtr moduleIdPtr, SymTableNodePtr /* functionIdPtr */,
 					// way to keep it clear. Once it's verified to work,
 					// optimize...
 					int32_t size = formalTypePtr->size;
-					PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
+					const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
 					if (!dest)
 						ABL_Fatal(0,
 							" ABL: Unable to AblStackHeap->malloc "
 							"module formal array param ");
-					PSTR src = tos->address;
-					PSTR savePtr = dest;
+					const std::wstring_view& src = tos->address;
+					const std::wstring_view& savePtr = dest;
 					memcpy(dest, src, size);
 					tos->address = savePtr;
 				}
@@ -820,7 +792,7 @@ ABLi_execute(SymTableNodePtr moduleIdPtr, SymTableNodePtr /* functionIdPtr */,
 					pushAddress((Address) & (paramList[curParam].integer));
 				else
 					return (0);
-				// SymTableNodePtr idPtr = getCodeSymTableNodePtr();
+				// const std::unique_ptr<SymTableNode>& idPtr = getCodeSymTableNodePtr();
 				// execVariable(idPtr, USE_REFPARAM);
 			}
 			curParam++;
@@ -837,7 +809,7 @@ ABLi_execute(SymTableNodePtr moduleIdPtr, SymTableNodePtr /* functionIdPtr */,
 
 //***************************************************************************
 
-int32_t ABLi_deleteModule(SymTableNodePtr /* moduleIdPtr */)
+int32_t ABLi_deleteModule(const std::unique_ptr<SymTableNode>& /* moduleIdPtr */)
 {
 	return (ABL_NO_ERR);
 }
@@ -883,15 +855,15 @@ ABLi_close(void)
 
 //***************************************************************************
 
-ABLModulePtr
-ABLi_loadLibrary(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
+const std::unique_ptr<ABLModule>&
+ABLi_loadLibrary(const std::wstring_view& sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
 	int32_t* numFilesProcessed, bool printLines, bool createInstance)
 {
 	//--------------------------------------------------------------------
 	// Create an instance of it so it may be used from other modules. Note
 	// that we need this when preprocessing since all identifiers in the
 	// library should point to this module...
-	ABLModulePtr library = new ABLModule;
+	const std::unique_ptr<ABLModule>& library = new ABLModule;
 	if (!library)
 		ABL_Fatal(0, "ABL: no RAM for library");
 	CurLibrary = library;
@@ -925,13 +897,13 @@ ABLi_loadLibrary(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProce
 
 //***************************************************************************
 
-ABLParamPtr
+const std::unique_ptr<ABLParam>&
 ABLi_createParamList(int32_t numParameters)
 {
 	if (numParameters)
 	{
-		ABLParamPtr paramList =
-			(ABLParamPtr)ABLStackMallocCallback(sizeof(ABLParam) * (numParameters + 1));
+		const std::unique_ptr<ABLParam>& paramList =
+			(const std::unique_ptr<ABLParam>&)ABLStackMallocCallback(sizeof(ABLParam) * (numParameters + 1));
 		if (!paramList)
 			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc paramList ");
 		memset(paramList, 0, sizeof(ABLParam) * (numParameters + 1));
@@ -943,7 +915,7 @@ ABLi_createParamList(int32_t numParameters)
 //***************************************************************************
 
 void
-ABLi_setIntegerParam(ABLParamPtr paramList, int32_t index, int32_t value)
+ABLi_setIntegerParam(const std::unique_ptr<ABLParam>& paramList, int32_t index, int32_t value)
 {
 	if (paramList)
 	{
@@ -955,7 +927,7 @@ ABLi_setIntegerParam(ABLParamPtr paramList, int32_t index, int32_t value)
 //***************************************************************************
 
 void
-ABLi_setRealParam(ABLParamPtr paramList, int32_t index, float value)
+ABLi_setRealParam(const std::unique_ptr<ABLParam>& paramList, int32_t index, float value)
 {
 	if (paramList)
 	{
@@ -967,7 +939,7 @@ ABLi_setRealParam(ABLParamPtr paramList, int32_t index, float value)
 //***************************************************************************
 
 void
-ABLi_deleteParamList(ABLParamPtr paramList)
+ABLi_deleteParamList(const std::unique_ptr<ABLParam>& paramList)
 {
 	if (paramList)
 		ABLStackFreeCallback(paramList);
@@ -975,7 +947,7 @@ ABLi_deleteParamList(ABLParamPtr paramList)
 
 //***************************************************************************
 
-ABLModulePtr
+const std::unique_ptr<ABLModule>&
 ABLi_getModule(int32_t id)
 {
 	if ((id >= 0) && (id < NumModules))
@@ -995,7 +967,7 @@ ABLi_enabled(void)
 
 void
 ABLi_addFunction(
-	PSTR name, bool isOrder, PSTR paramList, PSTR returnType, void (*codeCallback)(void))
+	const std::wstring_view& name, bool isOrder, const std::wstring_view& paramList, const std::wstring_view& returnType, void (*codeCallback)(void))
 {
 	enterStandardRoutine(name, -1, isOrder, paramList, returnType, codeCallback);
 }
@@ -1003,20 +975,20 @@ ABLi_addFunction(
 //***************************************************************************
 
 int32_t
-ABLi_registerInteger(PSTR name, int32_t* address, int32_t numElements)
+ABLi_registerInteger(const std::wstring_view& name, int32_t* address, int32_t numElements)
 {
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
 		ABL_Fatal(0, " ABLi_registerInteger: variable name too int32_t ");
 	level = 0;
 	strcpy(wordString, name);
-	SymTableNodePtr idPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& idPtr = nullptr;
 	searchAndEnterThisTable(idPtr, SymTableDisplay[0]);
 	if (numElements == 1)
 	{
 		idPtr->library = nullptr;
 		idPtr->defn.key = DFN_VAR;
 		idPtr->labelIndex = 0;
-		idPtr->typePtr = setType(IntegerTypePtr);
+		idPtr->ptype = setType(IntegerTypePtr);
 		idPtr->defn.info.data.varType = VAR_TYPE_REGISTERED;
 		idPtr->defn.info.data.registeredData = address;
 	}
@@ -1026,18 +998,18 @@ ABLi_registerInteger(PSTR name, int32_t* address, int32_t numElements)
 //***************************************************************************
 
 int32_t
-ABLi_registerReal(PSTR name, float* address, int32_t /* numElements */)
+ABLi_registerReal(const std::wstring_view& name, float* address, int32_t /* numElements */)
 {
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
 		ABL_Fatal(0, " ABLi_registerInteger: variable name too int32_t ");
 	level = 0;
 	strcpy(wordString, name);
-	SymTableNodePtr idPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& idPtr = nullptr;
 	searchAndEnterThisTable(idPtr, SymTableDisplay[0]);
 	idPtr->library = nullptr;
 	idPtr->defn.key = DFN_VAR;
 	idPtr->labelIndex = 0;
-	idPtr->typePtr = setType(RealTypePtr);
+	idPtr->ptype = setType(RealTypePtr);
 	idPtr->defn.info.data.varType = VAR_TYPE_REGISTERED;
 	idPtr->defn.info.data.registeredData = address;
 	return (ABL_NO_ERR);
@@ -1082,10 +1054,10 @@ ABLi_transState(int32_t newStateHandle)
 // MODULE routines
 //***************************************************************************
 
-SymTableNodePtr
+const std::unique_ptr<SymTableNode>&
 moduleHeader(void)
 {
-	SymTableNodePtr moduleIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& moduleIdPtr = nullptr;
 	bool isFSM = false;
 	if (CurLibrary)
 		ifTokenGetElseError(TKN_LIBRARY, ABL_ERR_SYNTAX_MISSING_LIBRARY);
@@ -1115,7 +1087,7 @@ moduleHeader(void)
 		moduleIdPtr->defn.info.routine.localSymTable = nullptr;
 		moduleIdPtr->defn.info.routine.codeSegment = nullptr;
 		moduleIdPtr->library = CurLibrary;
-		moduleIdPtr->typePtr = &DummyType;
+		moduleIdPtr->ptype = &DummyType;
 		moduleIdPtr->labelIndex = 0;
 		getToken();
 	}
@@ -1129,7 +1101,7 @@ moduleHeader(void)
 	{
 		int32_t paramCount;
 		int32_t totalParamSize;
-		SymTableNodePtr paramListPtr = formalParamList(&paramCount, &totalParamSize);
+		const std::unique_ptr<SymTableNode>& paramListPtr = formalParamList(&paramCount, &totalParamSize);
 		// if (forwardFlag)
 		//	syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
 		// else {
@@ -1145,8 +1117,8 @@ moduleHeader(void)
 	//}
 	//-----------------------------
 	// Now, check if return type...
-	moduleIdPtr->typePtr = nullptr;
-	SymTableNodePtr typeIdPtr = nullptr;
+	moduleIdPtr->ptype = nullptr;
+	const std::unique_ptr<SymTableNode>& typeIdPtr = nullptr;
 	if (curToken == TKN_COLON)
 	{
 		getToken();
@@ -1156,13 +1128,13 @@ moduleHeader(void)
 			if (typeIdPtr->defn.key != DFN_TYPE)
 				syntaxError(ABL_ERR_SYNTAX_INVALID_TYPE);
 			// if (!forwardFlag)
-			moduleIdPtr->typePtr = typeIdPtr->typePtr;
+			moduleIdPtr->ptype = typeIdPtr->ptype;
 			getToken();
 		}
 		else
 		{
 			syntaxError(ABL_ERR_SYNTAX_MISSING_IDENTIFIER);
-			moduleIdPtr->typePtr = &DummyType;
+			moduleIdPtr->ptype = &DummyType;
 		}
 		// if (forwardFlag)
 		//	syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
@@ -1177,14 +1149,14 @@ moduleHeader(void)
 void
 routine(void)
 {
-	SymTableNodePtr routineIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& routineIdPtr = nullptr;
 	//------------------------------------------------------------------------
 	// Do we want to have "procedures", or do functions handle both cases (with
 	// and without return values)? For now, functions handle both...
 	routineIdPtr = functionHeader();
 	//------------------------------------------------------------------
 	// We need to save a pointer to the current routine we're parsing...
-	SymTableNodePtr prevRoutineIdPtr = CurRoutineIdPtr;
+	const std::unique_ptr<SymTableNode>& prevRoutineIdPtr = CurRoutineIdPtr;
 	CurRoutineIdPtr = routineIdPtr;
 	//---------------------
 	// Error synchronize...
@@ -1255,10 +1227,10 @@ routine(void)
 
 //***************************************************************************
 
-SymTableNodePtr
-forwardState(PSTR stateName)
+const std::unique_ptr<SymTableNode>&
+forwardState(const std::wstring_view& stateName)
 {
-	SymTableNodePtr stateSymbol = searchSymTableForState(stateName, SymTableDisplay[1]);
+	const std::unique_ptr<SymTableNode>& stateSymbol = searchSymTableForState(stateName, SymTableDisplay[1]);
 	if (stateSymbol)
 		ABL_Fatal(0, " ABL.forwardState: State symbol should not exist ");
 	stateSymbol = enterSymTable(stateName, &SymTableDisplay[1]);
@@ -1275,7 +1247,7 @@ forwardState(PSTR stateName)
 	stateSymbol->defn.info.routine.localSymTable = nullptr;
 	stateSymbol->defn.info.routine.codeSegment = nullptr;
 	stateSymbol->library = CurLibrary;
-	stateSymbol->typePtr = nullptr;
+	stateSymbol->ptype = nullptr;
 	stateSymbol->labelIndex = 0;
 	//-------------------
 	// Force the level...
@@ -1285,7 +1257,7 @@ forwardState(PSTR stateName)
 
 //***************************************************************************
 
-SymTableNodePtr
+const std::unique_ptr<SymTableNode>&
 functionHeader(void)
 {
 	bool isState = false;
@@ -1295,8 +1267,8 @@ functionHeader(void)
 	else if (curToken == TKN_ORDER)
 		isOrder = true;
 	getToken();
-	SymTableNodePtr functionIdPtr = nullptr;
-	SymTableNodePtr typeIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& functionIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& typeIdPtr = nullptr;
 	bool forwardFlag = false;
 	if (curToken == TKN_IDENTIFIER)
 	{
@@ -1321,7 +1293,7 @@ functionHeader(void)
 			if (isState)
 				functionIdPtr->defn.info.routine.flags |= ROUTINE_FLAG_STATE;
 			functionIdPtr->library = CurLibrary;
-			functionIdPtr->typePtr = &DummyType;
+			functionIdPtr->ptype = &DummyType;
 			functionIdPtr->labelIndex = 0;
 		}
 		else if ((functionIdPtr->defn.key == DFN_FUNCTION) && (functionIdPtr->defn.info.routine.key == RTN_FORWARD))
@@ -1338,7 +1310,7 @@ functionHeader(void)
 	{
 		int32_t paramCount;
 		int32_t totalParamSize;
-		SymTableNodePtr paramListPtr = formalParamList(&paramCount, &totalParamSize);
+		const std::unique_ptr<SymTableNode>& paramListPtr = formalParamList(&paramCount, &totalParamSize);
 		if (forwardFlag)
 			syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
 		else
@@ -1356,7 +1328,7 @@ functionHeader(void)
 	}
 	//--------------------------------------------
 	// Now, check if return type and/or forward...
-	functionIdPtr->typePtr = nullptr;
+	functionIdPtr->ptype = nullptr;
 	bool hasIntegerReturnValue = false;
 	if (curToken == TKN_COLON)
 	{
@@ -1366,15 +1338,15 @@ functionHeader(void)
 			searchAndFindAllSymTables(typeIdPtr);
 			if (typeIdPtr->defn.key != DFN_TYPE)
 				syntaxError(ABL_ERR_SYNTAX_INVALID_TYPE);
-			hasIntegerReturnValue = (typeIdPtr->typePtr == IntegerTypePtr);
+			hasIntegerReturnValue = (typeIdPtr->ptype == IntegerTypePtr);
 			if (!forwardFlag)
-				functionIdPtr->typePtr = typeIdPtr->typePtr;
+				functionIdPtr->ptype = typeIdPtr->ptype;
 			getToken();
 		}
 		else
 		{
 			syntaxError(ABL_ERR_SYNTAX_MISSING_IDENTIFIER);
-			functionIdPtr->typePtr = &DummyType;
+			functionIdPtr->ptype = &DummyType;
 		}
 		if (forwardFlag)
 			syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
@@ -1386,15 +1358,15 @@ functionHeader(void)
 
 //***************************************************************************
 
-SymTableNodePtr
+const std::unique_ptr<SymTableNode>&
 formalParamList(int32_t* count, int32_t* totalSize)
 {
-	SymTableNodePtr paramIdPtr;
-	SymTableNodePtr firstIdPtr;
-	SymTableNodePtr lastIdPtr = nullptr;
-	SymTableNodePtr paramListPtr = nullptr;
-	SymTableNodePtr typeIdPtr;
-	TypePtr paramTypePtr;
+	const std::unique_ptr<SymTableNode>& paramIdPtr;
+	const std::unique_ptr<SymTableNode>& firstIdPtr;
+	const std::unique_ptr<SymTableNode>& lastIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& paramListPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& typeIdPtr;
+	const std::unique_ptr<Type>& paramTypePtr;
 	DefinitionType paramDefn;
 	int32_t paramCount = 0;
 	int32_t paramOffset = STACK_FRAME_HEADER_SIZE;
@@ -1416,7 +1388,7 @@ formalParamList(int32_t* count, int32_t* totalSize)
 			searchAndFindAllSymTables(typeIdPtr);
 			if (typeIdPtr->defn.key != DFN_TYPE)
 				syntaxError(ABL_ERR_SYNTAX_INVALID_TYPE);
-			paramTypePtr = (TypePtr)(typeIdPtr->typePtr);
+			paramTypePtr = (const std::unique_ptr<Type>&)(typeIdPtr->ptype);
 			getToken();
 		}
 		else
@@ -1437,7 +1409,7 @@ formalParamList(int32_t* count, int32_t* totalSize)
 			searchAndEnterLocalSymTable(paramIdPtr);
 			paramIdPtr->defn.key = paramDefn;
 			paramIdPtr->labelIndex = 0;
-			paramIdPtr->typePtr = paramTypePtr;
+			paramIdPtr->ptype = paramTypePtr;
 			paramIdPtr->defn.info.data.offset = paramOffset++;
 			paramCount++;
 			if (paramListPtr == nullptr)
@@ -1463,7 +1435,7 @@ formalParamList(int32_t* count, int32_t* totalSize)
 		//------------------------------------------------------------------
 		// Assign the offset and the type to all param ids in the sublist...
 		// for (paramIdPtr = firstIdPtr; paramIdPtr != nullptr; paramIdPtr =
-		// paramIdPtr->next) { 	paramIdPtr->typePtr = paramTypePtr;
+		// paramIdPtr->next) { 	paramIdPtr->ptype = paramTypePtr;
 		//	paramIdPtr->defn.info.data.offset = paramOffset++;
 		//}
 		//-----------------------------------------------
@@ -1486,11 +1458,11 @@ formalParamList(int32_t* count, int32_t* totalSize)
 
 //***************************************************************************
 
-TypePtr
-routineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
+const std::unique_ptr<Type>&
+routineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t paramCheckFlag)
 {
-	SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
-	TypePtr resultType = nullptr;
+	const std::unique_ptr<SymTableNode>& thisRoutineIdPtr = CurRoutineIdPtr;
+	const std::unique_ptr<Type>& resultType = nullptr;
 	if ((routineIdPtr->defn.info.routine.key == RTN_DECLARED) || (routineIdPtr->defn.info.routine.key == RTN_FORWARD) || !paramCheckFlag)
 		resultType = declaredRoutineCall(routineIdPtr, paramCheckFlag);
 	else
@@ -1501,25 +1473,25 @@ routineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
 
 //***************************************************************************
 
-TypePtr
-declaredRoutineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
+const std::unique_ptr<Type>&
+declaredRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t paramCheckFlag)
 {
 	actualParamList(routineIdPtr, paramCheckFlag);
 	return (
-		/*routineIdPtr->defn.key == DFN_PROCEDURE ? nullptr :*/ (TypePtr)(routineIdPtr->typePtr));
+		/*routineIdPtr->defn.key == DFN_PROCEDURE ? nullptr :*/ (const std::unique_ptr<Type>&)(routineIdPtr->ptype));
 }
 
 //***************************************************************************
 
 void
-actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
+actualParamList(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t paramCheckFlag)
 {
-	SymTableNodePtr formalParamIdPtr = nullptr;
+	const std::unique_ptr<SymTableNode>& formalParamIdPtr = nullptr;
 	DefinitionType formalParamDefn = (DefinitionType)0;
-	TypePtr formalParamTypePtr = nullptr;
-	TypePtr actualParamTypePtr = nullptr;
+	const std::unique_ptr<Type>& formalParamTypePtr = nullptr;
+	const std::unique_ptr<Type>& actualParamTypePtr = nullptr;
 	if (paramCheckFlag)
-		formalParamIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
+		formalParamIdPtr = (const std::unique_ptr<SymTableNode>&)(routineIdPtr->defn.info.routine.params);
 	if (curToken == TKN_LPAREN)
 	{
 		//-----------------------------------------------
@@ -1531,7 +1503,7 @@ actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
 			if (paramCheckFlag && (formalParamIdPtr != nullptr))
 			{
 				formalParamDefn = formalParamIdPtr->defn.key;
-				formalParamTypePtr = (TypePtr)(formalParamIdPtr->typePtr);
+				formalParamTypePtr = (const std::unique_ptr<Type>&)(formalParamIdPtr->ptype);
 			}
 			getToken();
 			if ((formalParamIdPtr == nullptr) || (formalParamDefn == DFN_VALPARAM) || !paramCheckFlag)
@@ -1548,7 +1520,7 @@ actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
 				// VAR params...
 				if (curToken == TKN_IDENTIFIER)
 				{
-					SymTableNodePtr idPtr;
+					const std::unique_ptr<SymTableNode>& idPtr;
 					searchAndFindAllSymTables(idPtr);
 					actualParamTypePtr = variable(idPtr);
 					if (formalParamTypePtr != actualParamTypePtr)
@@ -1589,7 +1561,7 @@ actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
 extern char SetStateDebugStr[256];
 
 void
-transState(SymTableNodePtr newState)
+transState(const std::unique_ptr<SymTableNode>& newState)
 {
 	if (CurFSM)
 	{
@@ -1602,3 +1574,5 @@ transState(SymTableNodePtr newState)
 }
 
 //***************************************************************************
+
+} // namespace mclib::abl

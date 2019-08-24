@@ -35,7 +35,7 @@ public:
 	int32_t handle;
 	bool inUse;
 	char fileName[MAXLEN_GAMELOG_NAME];
-	MechFile* filePtr;
+	MechFile* pfile;
 	int32_t numLines;
 	int32_t totalLines;
 	char lines[MAX_GAMELOG_LINES][MAX_GAMELOG_LINELEN];
@@ -52,7 +52,7 @@ public:
 		handle = -1;
 		inUse = false;
 		fileName[0] = nullptr;
-		filePtr = nullptr;
+		pfile = nullptr;
 		numLines = 0;
 		totalLines = 0;
 		for (size_t i = 0; i < MAX_GAMELOG_LINES; i++)
@@ -69,9 +69,9 @@ public:
 
 	void close(void);
 
-	int32_t open(PSTR fileName);
+	int32_t open(const std::wstring_view& fileName);
 
-	void write(PSTR s);
+	void write(const std::wstring_view& s);
 
 	static void setup(void);
 

@@ -12,15 +12,15 @@ component.
 #include "MPParameterScreen.h"
 #include "prefs.h"
 #include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
+#include "userinput.h"
+#include "resource.h"
 #include "assert.h"
 #include "Multplyr.h"
 #include "MechBayScreen.h"
 #include "LogisticsData.h"
 #include "Comndr.h"
 #include "MissionBriefingScreen.h"
-#include "ChatWindow.h"
+#include "chatwindow.h"
 
 extern bool quitGame;
 
@@ -67,7 +67,7 @@ GUID NO_VERSION_GUID = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 };
 
-PCSTR pPurchaseFiles[5] = {
+const std::wstring_view& pPurchaseFiles[5] = {
 	"purchase_Steiner", "purchase_Davion", "purchase_Liao", "purchase_Clan", "purchase_All"};
 
 MPParameterScreen::MPParameterScreen()
@@ -281,14 +281,14 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 		case 57 /*MB_MSG_MAINMENU*/:
 		{
 			getButton(57 /*MB_MSG_MAINMENU*/)->press(0);
-			if (MPlayer->commanderID > -1)
+			if (MPlayer->commanderid > -1)
 			{
-				MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+				MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 				if (pInfo->ready)
 					pInfo->ready = 0;
 				if (!MPlayer->isHost())
 				{
-					MPlayer->sendPlayerUpdate(0, 5, MPlayer->commanderID);
+					MPlayer->sendPlayerUpdate(0, 5, MPlayer->commanderid);
 				}
 			}
 			status = MAINMENU;
@@ -337,12 +337,12 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 			break;
 		case MP_PLAYER_PREFS:
 		{
-			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 			if (pInfo->ready)
 				pInfo->ready = 0;
 			if (!MPlayer->isHost())
 			{
-				MPlayer->sendPlayerUpdate(0, 5, MPlayer->commanderID);
+				MPlayer->sendPlayerUpdate(0, 5, MPlayer->commanderid);
 			}
 			status = UP;
 		}
@@ -361,7 +361,7 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 			{
 				if (playerParameters[i].isSelected())
 				{
-					if (MPlayer->commanderID == playerParameters[i].getCommanderID())
+					if (MPlayer->commanderid == playerParameters[i].getCommanderID())
 					{
 						soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 						return 0;
@@ -371,7 +371,7 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 					char finalStr[256];
 					for (size_t j = 0; j < MAX_MC_PLAYERS; j++)
 					{
-						if (MPlayer->playerList[j].commanderID == playerParameters[i].getCommanderID())
+						if (MPlayer->playerList[j].commanderid == playerParameters[i].getCommanderID())
 						{
 							sprintf(finalStr, str, MPlayer->playerList[j].name);
 							LogisticsOKDialog::instance()->setText(
@@ -379,7 +379,7 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 							LogisticsOKDialog::instance()->setText(finalStr);
 							LogisticsOKDialog::instance()->begin();
 							bBootDlg = true;
-							bootPlayerID = MPlayer->playerList[j].commanderID;
+							bootPlayerID = MPlayer->playerList[j].commanderid;
 							return 0;
 						}
 					}
@@ -504,18 +504,18 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 }
 
 void
-MPParameterScreen::initializeMap(PCSTR fileName)
+MPParameterScreen::initializeMap(const std::wstring_view& fileName)
 {
 	s_instance->setMission(fileName, true);
 }
 
 void
-MPParameterScreen::setMission(PCSTR fileName, bool resetData)
+MPParameterScreen::setMission(const std::wstring_view& fileName, bool resetData)
 {
 	FullPathFileName path;
 	path.init(missionPath, fileName, ".fit");
 	FitIniFile missionFile;
-	if (NO_ERROR != missionFile.open((PSTR)(PCSTR)path))
+	if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
 		char errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", fileName);
@@ -625,7 +625,7 @@ int32_t __cdecl sortPlayers(PCVOID p1, PCVOID p2)
 void
 MPParameterScreen::update()
 {
-	if (MPlayer->commanderID < 0) // don't do anything until we've been initalized
+	if (MPlayer->commanderid < 0) // don't do anything until we've been initalized
 		return;
 	if (VERSION_STATUS_UNKNOWN == MPlayer->getVersionStatus())
 	{
@@ -699,7 +699,7 @@ MPParameterScreen::update()
 		if (getButton(MB_MSG_NEXT)->isEnabled())
 		{
 			getButton(50 /*MB_MSG_NEXT*/)->press(0);
-			int32_t faction = MPlayer->getPlayerInfo(MPlayer->commanderID)->faction;
+			int32_t faction = MPlayer->getPlayerInfo(MPlayer->commanderid)->faction;
 			if (faction < 0)
 				faction = 0;
 			if (MPlayer->missionSettings.allTech)
@@ -743,9 +743,9 @@ MPParameterScreen::update()
 		}
 	}
 	// load up my own icon and send out to everyone else....
-	/*	MC2Player* pPlayer = MPlayer->getPlayerInfo( MPlayer->commanderID );
+	/*	MC2Player* pPlayer = MPlayer->getPlayerInfo( MPlayer->commanderid );
 
-		if ( pPlayer && !MPlayer->insigniaList[MPlayer->commanderID])
+		if ( pPlayer && !MPlayer->insigniaList[MPlayer->commanderid])
 		{
 
 			FullPathFileName path;
@@ -760,8 +760,8 @@ MPParameterScreen::update()
 				puint8_t pData = new uint8_t[size];
 
 				file.read( pData, size );
-				MPlayer->sendPlayerInsignia( (PSTR)pPlayer->insigniaFile, pData,
-	   size ); MPlayer->insigniaList[MPlayer->commanderID] = 1;
+				MPlayer->sendPlayerInsignia( (const std::wstring_view&)pPlayer->insigniaFile, pData,
+	   size ); MPlayer->insigniaList[MPlayer->commanderid] = 1;
 			}
 		}*/
 	if (MPlayer->launchedFromLobby)
@@ -830,7 +830,7 @@ MPParameterScreen::update()
 			if (mpLoadMap.getStatus() == YES)
 			{
 				// need to pull in this map information....
-				PCSTR pName = mpLoadMap.getMapFileName();
+				const std::wstring_view& pName = mpLoadMap.getMapFileName();
 				LogisticsData::instance->setCurrentMission(pName);
 				// now I need to update the other people....
 				setMission(pName);
@@ -850,7 +850,7 @@ MPParameterScreen::update()
 			{
 				checkVersionClientOnly(MPlayer->missionSettings.map);
 			}
-			if (MPlayer->playerInfo[MPlayer->commanderID].leftSession) // I've been booted!
+			if (MPlayer->playerInfo[MPlayer->commanderid].leftSession) // I've been booted!
 			{
 				if (status != GOTOSPLASH)
 				{
@@ -882,7 +882,7 @@ MPParameterScreen::update()
 			getButton(MP_BOOTPLAYER)->showGUIWindow(false);
 			if (MPlayer->startLoading || MPlayer->startLogistics)
 			{
-				int32_t faction = MPlayer->getPlayerInfo(MPlayer->commanderID)->faction;
+				int32_t faction = MPlayer->getPlayerInfo(MPlayer->commanderid)->faction;
 				if (faction < 0)
 					faction = 0;
 				if (MPlayer->missionSettings.allTech)
@@ -941,7 +941,7 @@ MPParameterScreen::update()
 					bErrorDlg = true;
 				}
 			}
-			MC2Player* data = MPlayer->getPlayerInfo(MPlayer->commanderID);
+			MC2Player* data = MPlayer->getPlayerInfo(MPlayer->commanderid);
 			{
 				if (data)
 					data->ready = true; // default to ready for host since they
@@ -975,7 +975,7 @@ MPParameterScreen::update()
 			{
 				if (playerParameters[i].hasFocus())
 				{
-					if (playerParameters[i].getCommanderID() == MPlayer->commanderID)
+					if (playerParameters[i].getCommanderID() == MPlayer->commanderid)
 						getButton(MP_BOOTPLAYER)->disable(true);
 				}
 			}
@@ -995,7 +995,7 @@ MPParameterScreen::update()
 			bEditHasFocus = true;
 			if (!edits[oldEditFocus].hasFocus())
 			{
-				std::wstring text;
+				const std::wstring_view& text;
 				edits[oldEditFocus].getEntry(text);
 				int32_t val = atoi(text);
 				switch (oldEditFocus)
@@ -1042,9 +1042,9 @@ MPParameterScreen::update()
 				int32_t teamID = -1;
 				for (size_t i = 0; i < playerCount; i++)
 				{
-					if (players[i].commanderID > maxCommander)
+					if (players[i].commanderid > maxCommander)
 					{
-						maxCommander = players[i].commanderID;
+						maxCommander = players[i].commanderid;
 						teamID = players[i].team;
 					}
 				}
@@ -1180,14 +1180,14 @@ MPParameterScreen::update()
 }
 
 GUID
-MPParameterScreen::getGUIDFromFile(PCSTR pNewMapName)
+MPParameterScreen::getGUIDFromFile(const std::wstring_view& pNewMapName)
 {
 	GUID retVal;
 	memset(&retVal, 0xff, sizeof(GUID));
 	FullPathFileName path;
 	path.init(missionPath, pNewMapName, ".pak");
 	PacketFile pakFile;
-	if (NO_ERROR != pakFile.open((PSTR)(PCSTR)path))
+	if (NO_ERROR != pakFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
 		return retVal;
 	}
@@ -1206,12 +1206,12 @@ MPParameterScreen::getGUIDFromFile(PCSTR pNewMapName)
 }
 
 void
-MPParameterScreen::setMissionClientOnly(PCSTR pNewMapName)
+MPParameterScreen::setMissionClientOnly(const std::wstring_view& pNewMapName)
 {
 	FullPathFileName path;
 	path.init(missionPath, pNewMapName, ".fit");
 	FitIniFile missionFile;
-	if (NO_ERROR != missionFile.open((PSTR)(PCSTR)path))
+	if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
 		char tmp[256];
 		char final[1024];
@@ -1239,7 +1239,7 @@ MPParameterScreen::setMissionClientOnly(PCSTR pNewMapName)
 }
 
 void
-MPParameterScreen::checkVersionClientOnly(PCSTR pNewMapName)
+MPParameterScreen::checkVersionClientOnly(const std::wstring_view& pNewMapName)
 {
 	GUID version = getGUIDFromFile(pNewMapName);
 	if (MPlayer->missionSettings.mapGuid != NO_VERSION_GUID && version != MPlayer->missionSettings.mapGuid && version != NO_VERSION_GUID) // if 0 it simply wasn't in the file at all,
@@ -1260,7 +1260,7 @@ MPParameterScreen::checkVersionClientOnly(PCSTR pNewMapName)
 		// need to disable the ready button
 		for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		{
-			if (playerParameters[i].getCommanderID() == MPlayer->commanderID)
+			if (playerParameters[i].getCommanderID() == MPlayer->commanderid)
 			{
 				playerParameters[i].disableReadyButton();
 				break;
@@ -1278,15 +1278,15 @@ MPParameterScreen::resetCheckBoxes()
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		for (size_t i = 0; i < playerCount; i++)
 		{
-			MC2Player* pWrite = MPlayer->getPlayerInfo(players[i].commanderID);
-			if (pWrite->commanderID != MPlayer->commanderID)
+			MC2Player* pWrite = MPlayer->getPlayerInfo(players[i].commanderid);
+			if (pWrite->commanderid != MPlayer->commanderid)
 				pWrite->ready = 0;
 		}
 	}
 }
 
 void
-MPParameterScreen::setHostLeftDlg(PCSTR playerName)
+MPParameterScreen::setHostLeftDlg(const std::wstring_view& playerName)
 {
 	char leaveStr[256];
 	char formatStr[256];
@@ -1379,7 +1379,7 @@ aPlayerParams::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 }
 
 void
-aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
+aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 {
 	FitIniFile& file = (*pFile);
 	pFile->seekBlock(blockNameParam);
@@ -1403,9 +1403,9 @@ aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 	CBillsSpinnerDownButton.setDisabledFX(LOG_WRONGBUTTON);
 	CBillsSpinnerUpButton.setDisabledFX(LOG_WRONGBUTTON);
 	ReadyButton.setDisabledFX(LOG_WRONGBUTTON);
-	PCSTR staticName = "PlayerParamsStatic";
-	PCSTR textName = "PlayerParamsText";
-	PCSTR rectName = "PlayerParamsRect";
+	const std::wstring_view& staticName = "PlayerParamsStatic";
+	const std::wstring_view& textName = "PlayerParamsText";
+	const std::wstring_view& rectName = "PlayerParamsRect";
 	char blockName[256];
 	// init statics
 	if (staticName)
@@ -1629,7 +1629,7 @@ aPlayerParams::update()
 		}
 	}
 	// don't accept any kind of input for anything but your own stuff....
-	if (commanderID != MPlayer->commanderID && !MPlayer->isHost())
+	if (commanderid != MPlayer->commanderid && !MPlayer->isHost())
 	{
 		CBillsSpinnerUpButton.showGUIWindow(0);
 		CBillsSpinnerDownButton.showGUIWindow(0);
@@ -1660,7 +1660,7 @@ aPlayerParams::update()
 		rects[8].showGUIWindow(1);
 		rects[1].showGUIWindow(1);
 	}
-	if (commanderID == MPlayer->commanderID)
+	if (commanderid == MPlayer->commanderid)
 	{
 		if (!MPlayer->isHost())
 		{
@@ -1688,7 +1688,7 @@ aPlayerParams::update()
 	// need to check for changes
 	int32_t oldSel = teamNumberDropList.GetSelectedItem();
 	int32_t oldFaction = factionDropList.GetSelectedItem();
-	PCSTR pText = textObjects[1].text;
+	const std::wstring_view& pText = textObjects[1].text;
 	int32_t oldCBills = 0;
 	if (pText)
 	{
@@ -1697,14 +1697,14 @@ aPlayerParams::update()
 	bool bCBillsChanged = 0;
 	if (!bOldReady || (MPlayer->isHost())) // don't do anything if all ready.
 	{
-		if ((commanderID == MPlayer->commanderID || MPlayer->isHost()))
+		if ((commanderid == MPlayer->commanderid || MPlayer->isHost()))
 		{
 			edit.setReadOnly(0);
 			bool bHasFocus = edit.hasFocus();
 			edit.update();
 			if (bHasFocus && !edit.hasFocus())
 				bCBillsChanged = true;
-			if (commanderID == MPlayer->commanderID)
+			if (commanderid == MPlayer->commanderid)
 				ReadyButton.update();
 			CBillsSpinnerDownButton.update();
 			CBillsSpinnerUpButton.update();
@@ -1717,7 +1717,7 @@ aPlayerParams::update()
 	int32_t newSel = teamNumberDropList.GetSelectedItem();
 	int32_t newFaction = factionDropList.GetSelectedItem();
 	bool bNewReady = ReadyButton.isPressed();
-	std::wstring cBillsText;
+	const std::wstring_view& cBillsText;
 	edit.getEntry(cBillsText);
 	int32_t newCBills = 0;
 	if (cBillsText.Length())
@@ -1726,9 +1726,9 @@ aPlayerParams::update()
 	}
 	if (bCBillsChanged)
 	{
-		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderID);
+		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 		pInfo->cBills = newCBills;
-		MPlayer->sendPlayerUpdate(0, 5, commanderID);
+		MPlayer->sendPlayerUpdate(0, 5, commanderid);
 		char text[256];
 		sprintf(text, "%ld",
 			pInfo->cBills / 5000 * (5)); // need to round to nearest 5000
@@ -1740,7 +1740,7 @@ aPlayerParams::update()
 		// send out new info....
 		if (MPlayer)
 		{
-			MC2Player* pInfo = MPlayer->getPlayerInfo(commanderID);
+			MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 			pInfo->cBills = newCBills;
 			if (MPlayer->isHost())
 				pInfo->ready = 0;
@@ -1750,12 +1750,12 @@ aPlayerParams::update()
 			if (MPlayer->isHost())
 			{
 				if (pInfo->team != newSel)
-					MPlayer->setPlayerTeam(commanderID, newSel);
+					MPlayer->setPlayerTeam(commanderid, newSel);
 			}
 			else
 			{
 				pInfo->team = newSel;
-				MPlayer->sendPlayerUpdate(0, 5, commanderID);
+				MPlayer->sendPlayerUpdate(0, 5, commanderid);
 			}
 		}
 		bHasFocus = 0;
@@ -1779,7 +1779,7 @@ aPlayerParams::setData(const _MC2Player* data)
 	CBillsSpinnerUpButton.disable(bDisable);
 	if (data->ready)
 	{
-		if (data->commanderID != MPlayer->commanderID)
+		if (data->commanderid != MPlayer->commanderid)
 			ReadyButton.disable(false);
 		ReadyButton.press(1);
 	}
@@ -1789,7 +1789,7 @@ aPlayerParams::setData(const _MC2Player* data)
 			soundSystem->playDigitalSample(LOG_UNREADY);
 		ReadyButton.press(0);
 	}
-	commanderID = data->commanderID;
+	commanderid = data->commanderid;
 	int32_t textColor = 0xff000000;
 	int32_t newColor = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
 	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) + ((newColor & 0xff0000) >> 16)) / 3 < 85)
@@ -1810,7 +1810,7 @@ aPlayerParams::setData(const _MC2Player* data)
 	// set up the insignia...
 	// I really need to store this... really don't want to allocate a texture
 	// every time
-	PCSTR pFileName = data->insigniaFile;
+	const std::wstring_view& pFileName = data->insigniaFile;
 	if (pFileName != insigniaName)
 	{
 		FullPathFileName path;
@@ -1820,7 +1820,7 @@ aPlayerParams::setData(const _MC2Player* data)
 			statics[0].setTexture(path);
 			statics[0].setUVs(0, 0, 32, 32);
 			insigniaName = pFileName;
-			MPlayer->insigniaList[data->commanderID] = 1;
+			MPlayer->insigniaList[data->commanderid] = 1;
 		}
 	}
 	if (!teamNumberDropList.IsExpanded())
@@ -1866,7 +1866,7 @@ aPlayerParams::handleMessage(uint32_t message, uint32_t who)
 	{
 	case MP_INCREMENT_PLAYER_CBILLS:
 	{
-		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderID);
+		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 		pInfo->cBills += increment;
 		char text[256];
 		sprintf(text, "%ld",
@@ -1877,7 +1877,7 @@ aPlayerParams::handleMessage(uint32_t message, uint32_t who)
 	}
 	case MP_DECREMENT_PLAYER_CBILLS:
 	{
-		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderID);
+		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 		pInfo->cBills -= increment;
 		char text[256];
 		sprintf(text, "%ld", pInfo->cBills / 5000 * (5));
@@ -1902,7 +1902,7 @@ aPlayerParams::move(float offsetX, float offsetY)
 }
 
 int32_t
-aStyle2TextListItem::init(FitIniFile* file, PCSTR blockName)
+aStyle2TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t fontResID = 0;
@@ -2069,5 +2069,4 @@ CFocusManager::pControlThatHasTheFocus()
 
 //////////////////////////////////////////////
 
-//*************************************************************************************************
 // end of file ( MPParameterScreen.cpp )

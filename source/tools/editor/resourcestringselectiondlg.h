@@ -7,7 +7,7 @@
 #if !defined(AFX_RESOURCESTRINGSELECTIONDLG_H__90F375DF_47EA_4C33_A4EB_281A4DADDC12__INCLUDED_)
 #define AFX_RESOURCESTRINGSELECTIONDLG_H__90F375DF_47EA_4C33_A4EB_281A4DADDC12__INCLUDED_
 
-//#include <elist.h>
+//#include "elist.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // ResourceStringSelectionDlg dialog

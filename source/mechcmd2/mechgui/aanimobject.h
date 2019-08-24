@@ -11,10 +11,9 @@ library.
 #ifndef AANIMOBJECT_H
 #define AANIMOBJECT_H
 
-//#include <mechgui/asystem.h>
-//#include <mechgui/aanim.h>
+//#include "mechgui/asystem.h"
+//#include "mechgui/aanim.h"
 
-//*************************************************************************************************
 
 namespace mechgui
 {
@@ -30,7 +29,7 @@ public:
 	virtual ~aAnimObject(void) {}
 	aAnimObject& operator=(const aAnimObject& AnimObject);
 
-	int32_t init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush = 0);
+	int32_t init(FitIniFile* file, const std::wstring_view& blockName, uint32_t neverFlush = 0);
 
 	virtual void update(void);
 	virtual void render(void);
@@ -47,5 +46,4 @@ private:
 	aAnimObject(const aAnimObject& src);
 };
 
-//*************************************************************************************************
 #endif // end of file ( aAnimObject.h )

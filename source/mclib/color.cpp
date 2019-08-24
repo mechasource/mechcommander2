@@ -29,7 +29,7 @@
 #include "heap.h"
 #endif
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 //----------------------------------------------------------------------------------
 puint32_t* colorRGBLookup = nullptr;
 int32_t numColorRGBTables = 0;

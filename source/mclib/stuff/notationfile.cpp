@@ -5,11 +5,11 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-#include <gameos.hpp>
-#include <toolos.hpp>
-#include <stuff/page.hpp>
-#include <stuff/note.hpp>
-#include <stuff/notationfile.hpp>
+#include "gameos.hpp"
+#include "toolos.hpp"
+#include "stuff/page.h"
+#include "stuff/note.h"
+#include "stuff/notationfile.h"
 
 using namespace Stuff;
 
@@ -17,7 +17,7 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Macro::Macro(std::wstring* macro, std::wstring* replace) :
+Macro::Macro(const std::wstring_view&* macro, const std::wstring_view&* replace) :
 	Plug(DefaultData)
 {
 	m_macro = *macro;
@@ -28,7 +28,7 @@ Macro::Macro(std::wstring* macro, std::wstring* replace) :
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Macro::AddValue(MacroTree* macro_tree, PCSTR name, PCSTR value)
+Macro::AddValue(MacroTree* macro_tree, const std::wstring_view& name, const std::wstring_view& value)
 {
 	Check_Object(macro_tree);
 	Check_Pointer(name);
@@ -38,8 +38,8 @@ Macro::AddValue(MacroTree* macro_tree, PCSTR name, PCSTR value)
 	// Create MStrings for all this, and create a new plug
 	//----------------------------------------------------
 	//
-	std::wstring ms_define(name);
-	std::wstring ms_replace(value);
+	const std::wstring_view& ms_define(name);
+	const std::wstring_view& ms_replace(value);
 	Macro* mr_new = new Macro(&ms_define, &ms_replace);
 	Check_Object(mr_new);
 	//
@@ -60,7 +60,7 @@ Macro::AddValue(MacroTree* macro_tree, PCSTR name, PCSTR value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Macro::ReplaceMacros(MacroTree* macro_tree, PCSTR buffer, PSTR new_buf, size_t new_buf_size)
+Macro::ReplaceMacros(MacroTree* macro_tree, const std::wstring_view& buffer, const std::wstring_view& new_buf, size_t new_buf_size)
 {
 	//
 	//----------------------------------------------------
@@ -92,7 +92,7 @@ Macro::ReplaceMacros(MacroTree* macro_tree, PCSTR buffer, PSTR new_buf, size_t n
 		// Find the end of the macro name
 		//-------------------------------
 		//
-		PCSTR p = strchr(buffer, ')');
+		const std::wstring_view& p = strchr(buffer, ')');
 		if (!p)
 		{
 			_ASSERT(new_buf_size > 0);
@@ -105,9 +105,9 @@ Macro::ReplaceMacros(MacroTree* macro_tree, PCSTR buffer, PSTR new_buf, size_t n
 		//-------------------
 		//
 		size_t len = size_t(p - buffer - 2);
-		std::wstring macro_name;
+		const std::wstring_view& macro_name;
 		macro_name.AllocateLength(len + 1);
-		PSTR t = macro_name;
+		const std::wstring_view& t = macro_name;
 		size_t i = 0;
 		for (p = buffer + 2; *p != ')'; ++p, ++i)
 		{
@@ -141,7 +141,7 @@ Macro::ReplaceMacros(MacroTree* macro_tree, PCSTR buffer, PSTR new_buf, size_t n
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-NotationFile::NotationFile(PCSTR file_name, Type type) :
+NotationFile::NotationFile(const std::wstring_view& file_name, Type type) :
 	m_pages(nullptr)
 {
 	// Check_Pointer(this);
@@ -283,13 +283,13 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 	char buffer[MAX_LINE_SIZE];
 	while (stream->ReadLine(buffer, sizeof(buffer)))
 	{
-		PSTR p = buffer;
+		const std::wstring_view& p = buffer;
 		//
 		//----------------------------------------------------------------
 		// Deal with any comments - C++ style are the easiest to deal with
 		//----------------------------------------------------------------
 		//
-		PSTR comment_start = nullptr;
+		const std::wstring_view& comment_start = nullptr;
 		while ((p = strchr(p, '/')) != nullptr)
 		{
 			if (p[1] == '/')
@@ -404,7 +404,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 		//
 		if (m_type != Raw)
 		{
-			PSTR q;
+			const std::wstring_view& q;
 			if (*p == '!')
 				HandleBangStuff(p + 1, macro_tree, page);
 			//
@@ -435,9 +435,9 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 			ProcessLine(stream, macro_tree, page, p);
 	}
 	if (comment_mode)
-		PAUSE(("There is a missing */ in %s", (PCSTR)m_fileName));
+		PAUSE(("There is a missing */ in %s", (const std::wstring_view&)m_fileName));
 	if (nested)
-		PAUSE(("There is a missing } in %s", (PCSTR)m_fileName));
+		PAUSE(("There is a missing } in %s", (const std::wstring_view&)m_fileName));
 	//
 	//------------------------------------------------------------------------
 	// If we allocated the macro tree, delete it now.  The extra braces are to
@@ -447,7 +447,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 	if (!orig_tree)
 	{
 		{
-			TreeIteratorOf<Macro*, std::wstring> macros(macro_tree);
+			TreeIteratorOf<Macro*, const std::wstring_view&> macros(macro_tree);
 			macros.DeletePlugs();
 		}
 		Check_Object(macro_tree);
@@ -504,7 +504,7 @@ NotationFile::Save()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-NotationFile::SaveAs(PCSTR file_name)
+NotationFile::SaveAs(const std::wstring_view& file_name)
 {
 	// Check_Object(this);
 	//
@@ -522,7 +522,7 @@ NotationFile::SaveAs(PCSTR file_name)
 //
 void
 NotationFile::ProcessLine(
-	std::iostream& stream, MacroTree* macro_tree, Page** notepage, PSTR buffer)
+	std::iostream& stream, MacroTree* macro_tree, Page** notepage, const std::wstring_view& buffer)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -534,7 +534,7 @@ NotationFile::ProcessLine(
 	// find first non-blank character
 	//--------------------------------
 	//
-	PSTR p = buffer;
+	const std::wstring_view& p = buffer;
 	while (*p == ' ' || *p == '\t')
 		++p;
 	//
@@ -543,7 +543,7 @@ NotationFile::ProcessLine(
 	// new page
 	//----------------------------------------------------------------------
 	//
-	PSTR token;
+	const std::wstring_view& token;
 	if (*p == '[')
 	{
 		token = p + 1;
@@ -566,7 +566,7 @@ NotationFile::ProcessLine(
 	//--------------------------------------------------------------
 	//
 	token = p;
-	PSTR entry = nullptr;
+	const std::wstring_view& entry = nullptr;
 	if ((p = strchr(token, '=')) != nullptr)
 	{
 		*p = '\0';
@@ -613,7 +613,7 @@ NotationFile::ProcessLine(
 			nested_file.Write(&file_buffer);
 			file_buffer << "}" << '\0';
 			file_buffer.Rewind();
-			notation->m_text = static_cast<PCSTR>(file_buffer.GetPointer());
+			notation->m_text = static_cast<const std::wstring_view&>(file_buffer.GetPointer());
 		}
 	}
 }
@@ -621,7 +621,7 @@ NotationFile::ProcessLine(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-NotationFile::HandleBangStuff(PSTR buffer, MacroTree* macro_tree, Page** page)
+NotationFile::HandleBangStuff(const std::wstring_view& buffer, MacroTree* macro_tree, Page** page)
 {
 	Check_Pointer(buffer);
 	Check_Pointer(page);
@@ -640,7 +640,7 @@ NotationFile::HandleBangStuff(PSTR buffer, MacroTree* macro_tree, Page** page)
 	// Handle an include directive
 	//----------------------------
 	//
-	PSTR p;
+	const std::wstring_view& p;
 	if (!_strnicmp(buffer, "include", 7))
 	{
 		p = buffer + 7;
@@ -662,7 +662,7 @@ NotationFile::HandleBangStuff(PSTR buffer, MacroTree* macro_tree, Page** page)
 		// If the filename starts with a quote, strip it off
 		//--------------------------------------------------
 		//
-		PSTR file_name;
+		const std::wstring_view& file_name;
 		if (*p == '"')
 		{
 			file_name = ++p;
@@ -705,7 +705,7 @@ NotationFile::HandleBangStuff(PSTR buffer, MacroTree* macro_tree, Page** page)
 	//
 	else
 	{
-		PSTR entry = nullptr;
+		const std::wstring_view& entry = nullptr;
 		//
 		//--------------------------------
 		// trim the spaces off of the name
@@ -737,7 +737,7 @@ NotationFile::HandleBangStuff(PSTR buffer, MacroTree* macro_tree, Page** page)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Page*
-NotationFile::FindPage(PCSTR pagename)
+NotationFile::FindPage(const std::wstring_view& pagename)
 {
 	// Check_Object(this);
 	Check_Pointer(pagename);
@@ -746,7 +746,7 @@ NotationFile::FindPage(PCSTR pagename)
 	while ((page = pages.ReadAndNext()) != nullptr)
 	{
 		Check_Object(page);
-		PCSTR name = page->m_name;
+		const std::wstring_view& name = page->m_name;
 		if (name && !_stricmp(name, pagename))
 			return page;
 	}
@@ -756,7 +756,7 @@ NotationFile::FindPage(PCSTR pagename)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Page*
-NotationFile::GetPage(PCSTR pagename)
+NotationFile::GetPage(const std::wstring_view& pagename)
 {
 	Page* page = FindPage(pagename);
 	if (!page)
@@ -767,7 +767,7 @@ NotationFile::GetPage(PCSTR pagename)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Page*
-NotationFile::SetPage(PCSTR pagename)
+NotationFile::SetPage(const std::wstring_view& pagename)
 {
 	// Check_Object(this);
 	Check_Pointer(pagename);
@@ -781,7 +781,7 @@ NotationFile::SetPage(PCSTR pagename)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Page*
-NotationFile::AddPage(PCSTR pagename)
+NotationFile::AddPage(const std::wstring_view& pagename)
 {
 	// Check_Object(this);
 	Check_Pointer(pagename);
@@ -796,7 +796,7 @@ NotationFile::AddPage(PCSTR pagename)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-NotationFile::DeletePage(PCSTR pagename)
+NotationFile::DeletePage(const std::wstring_view& pagename)
 {
 	// Check_Object(this);
 	Check_Pointer(pagename);

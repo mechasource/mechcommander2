@@ -11,10 +11,10 @@
 //#define TRACE_ENABLED
 #if defined(TRACE_ENABLED)
 
-#include <gameos.hpp>
-#include <toolos.hpp>
-#include <stuff/filestream.hpp>
-#include <stuff/trace.hpp>
+#include "gameos.hpp"
+#include "toolos.hpp"
+#include "stuff/filestream.h"
+#include "stuff/trace.h"
 
 //##########################################################################
 //############################    Trace    #################################
@@ -24,7 +24,7 @@ uint8_t Stuff::Trace::NextTraceID = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Stuff::Trace::Trace(PCSTR name, Type type) :
+Stuff::Trace::Trace(const std::wstring_view& name, Type type) :
 	Plug(DefaultData)
 {
 	traceNumber = NextTraceID++;
@@ -55,7 +55,7 @@ int32_t Stuff::BitTrace::NextBit = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Stuff::BitTrace::BitTrace(PCSTR name) :
+Stuff::BitTrace::BitTrace(const std::wstring_view& name) :
 	Trace(name, BitType)
 {
 	activeLine = NextActiveLine++;
@@ -328,7 +328,7 @@ Stuff::TraceManager::ResetTraces()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PCSTR
+const std::wstring_view&
 Stuff::TraceManager::GetNameOfTrace(int32_t bit_no)
 {
 	//
@@ -437,7 +437,7 @@ Stuff::TraceManager::CreateTraceLog(size_t max_trace_count, bool start_logging)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Stuff::TraceManager::SaveTraceLog(PCSTR filename)
+Stuff::TraceManager::SaveTraceLog(const std::wstring_view& filename)
 {
 	// Check_Object(this);
 	if (allocatedTraceLog)

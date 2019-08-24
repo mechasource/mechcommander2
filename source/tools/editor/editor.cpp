@@ -6,10 +6,10 @@
 #include "resource.h"
 
 //#include "editorinterface.h"
-//#include <gameos.hpp>
-//#include <toolos.hpp>
-//#include <mlr/mlr.hpp>
-//#include <stuff/stuff.hpp>
+//#include "gameos.hpp"
+//#include "toolos.hpp"
+//#include "mlr/mlr.h"
+//#include "stuff/stuff.h"
 //#include "editordata.h"
 //#include "version.h"
 
@@ -50,7 +50,7 @@ extern float CliffTerrainAngle;
 
 extern bool gNoDialogs;
 
-PSTR ExceptionGameMsg = nullptr; // some debugging thing I think
+const std::wstring_view& ExceptionGameMsg = nullptr; // some debugging thing I think
 
 bool quitGame = FALSE;
 
@@ -97,7 +97,7 @@ MidLevelRenderer::MLRClipper* theClipper = nullptr;
 
 // called by gos
 //---------------------------------------------------------------------------
-PSTR
+const std::wstring_view&
 GetGameInformation()
 {
 	return (ExceptionGameMsg);
@@ -197,7 +197,7 @@ InitializeGameEngine()
 	cLoadString(IDS_MC2_MISSING_TITLE, MissingTitleString, 255);
 	char temp[256];
 	cLoadString(IDS_FLOAT_HELP_FONT, temp, 255);
-	PSTR pStr = strstr(temp, ",");
+	const std::wstring_view& pStr = strstr(temp, ",");
 	if (pStr)
 	{
 		gosFontScale = atoi(pStr + 2);
@@ -559,7 +559,7 @@ InitializeGameEngine()
 		FitIniFile loader;
 		int32_t result = loader.open(guiloader);
 		gosASSERT(result == NO_ERROR);
-		editor->init((PSTR)guiloader);
+		editor->init((const std::wstring_view&)guiloader);
 	}
 	//---------------------------------------------------------
 	// Start the Timers
@@ -709,12 +709,12 @@ TerminateGameEngine()
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
 void
-ParseCommandLine(PSTR command_line)
+ParseCommandLine(const std::wstring_view& command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
 	int32_t index = 0;
-	PSTR argv[30];
+	const std::wstring_view& argv[30];
 	char tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
@@ -790,9 +790,9 @@ ParseCommandLine(PSTR command_line)
 
 //---------------------------------------------------------------------
 void
-GetGameOSEnvironment(PSTR CommandLine)
+GetGameOSEnvironment(const std::wstring_view& commandline)
 {
-	ParseCommandLine(CommandLine);
+	ParseCommandLine(commandline);
 	Environment.applicationName = "MC2 Mission Editor";
 	Environment.debugLog = ""; //"DebugLog.txt";
 	Environment.memoryTraceLevel = 5;

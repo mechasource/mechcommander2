@@ -10,8 +10,8 @@ LoadScreen.h			: Interface for the LoadScreen component.
 #ifndef LOADSCREEN_H
 #define LOADSCREEN_H
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/aanim.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/aanim.h"
 
 struct TGAFileHeader;
 class FitIniFile;
@@ -19,7 +19,6 @@ class FitIniFile;
 struct tagRECT;
 struct _DDSURFACEDESC2;
 
-//*************************************************************************************************
 class LoadScreen;
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -90,5 +89,4 @@ private:
 	pint32_t animIndices;
 };
 
-//*************************************************************************************************
 #endif // end of file ( LoadScreen.h )

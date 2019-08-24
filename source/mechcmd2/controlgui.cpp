@@ -33,10 +33,10 @@ controlGui.cpp			: Implementation of the controlGui component.
 
 #include "txmmgr.h"
 
-#include "..\resource.h"
+#include "resource.h"
 #include "malloc.h"
 
-#include "ChatWindow.h"
+#include "chatwindow.h"
 
 ControlGui* ControlGui::instance = 0;
 
@@ -77,7 +77,7 @@ int32_t __cdecl sortStats(PCVOID pPlayer1, PCVOID pPlayer2);
 
 int32_t ControlGui::vehicleCosts[LAST_VEHICLE] = {7000, 8000, 2000, 6000, 2000, 4000, 10000, 0};
 
-PCSTR ControlGui::vehicleNames[5] = {
+const std::wstring_view& ControlGui::vehicleNames[5] = {
 	"repairTruck", "scout", "minelayer", "pv20600",
 	"guardTower" // needs to be recovery
 
@@ -85,7 +85,7 @@ PCSTR ControlGui::vehicleNames[5] = {
 
 int32_t ControlGui::vehicleIDs[5] = {182, 393, 120, 147, 415};
 
-PCSTR ControlGui::vehiclePilots[5] = {
+const std::wstring_view& ControlGui::vehiclePilots[5] = {
 	"PMWRepair", "PMWScout", "PMWMinelayer", "PMWRecover", "PMWGuardTower"};
 
 uint32_t ControlGui::WALK = 0;
@@ -450,7 +450,7 @@ ControlGui::renderResults()
 			cLoadString(IDS_MISSION_FAILED, text, 256);
 		if (MPlayer)
 		{
-			if (MPlayer->playerInfo[MPlayer->commanderID].winner)
+			if (MPlayer->playerInfo[MPlayer->commanderid].winner)
 				cLoadString(IDS_MISSION_SUCCESS, text, 256);
 			else
 				cLoadString(IDS_MISSION_FAILED, text, 256);
@@ -719,7 +719,7 @@ ControlGui::renderObjective(
 		{
 			numberOfDots = 3;
 		}
-		PSTR dots = (PSTR)_alloca(sizeof(char) * (numberOfDots + 1));
+		const std::wstring_view& dots = (const std::wstring_view&)_alloca(sizeof(char) * (numberOfDots + 1));
 		for (size_t i = 0; i < numberOfDots - 2; i++)
 			dots[i] = '.';
 		dots[i] = 0;
@@ -1055,7 +1055,7 @@ ControlGui::inRegion(int32_t mouseX, int32_t mouseY, bool bPaused)
 }
 
 void
-ControlGui::addMover(MoverPtr mover)
+ControlGui::addMover(std::unique_ptr<Mover> mover)
 {
 	if (mover->getCommanderId() == Commander::home->getId())
 	{
@@ -1069,7 +1069,7 @@ ControlGui::addMover(MoverPtr mover)
 }
 
 void
-ControlGui::removeMover(MoverPtr mover)
+ControlGui::removeMover(std::unique_ptr<Mover> mover)
 {
 	if (mover->getCommanderId() == Commander::home->getId())
 		forceGroupBar.removeMover(mover);
@@ -1581,7 +1581,7 @@ ControlGui::updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS)
 	if (LogisticsData::instance) // turn off things that aren't allowed in
 		// mplayer
 	{
-		bool disableAll = (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]);
+		bool disableAll = (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderid]);
 		if (disableAll)
 		{
 			getButton(LARGE_AIRSTRIKE)->disable(true);
@@ -1705,7 +1705,7 @@ ControlGui::handleVehicleClick(int32_t ID)
 				if (MPlayer)
 				{
 					Stuff::Vector3D pos;
-					MPlayer->sendReinforcement(-cost, 0, "noname", MPlayer->commanderID, pos, 6);
+					MPlayer->sendReinforcement(-cost, 0, "noname", MPlayer->commanderid, pos, 6);
 				}
 			}
 		}
@@ -1745,11 +1745,11 @@ ControlGui::handleVehicleClick(int32_t ID)
 			LogisticsData::instance->addResourcePoints(cost);
 			if (MPlayer)
 			{
-				MPlayer->playerInfo[MPlayer->commanderID].resourcePoints += cost;
-				MPlayer->playerInfo[MPlayer->commanderID].resourcePointsGained += cost;
+				MPlayer->playerInfo[MPlayer->commanderid].resourcePoints += cost;
+				MPlayer->playerInfo[MPlayer->commanderid].resourcePointsGained += cost;
 				if (!MPlayer->isHost())
 				{
-					MPlayer->sendPlayerUpdate(0, 5, MPlayer->commanderID);
+					MPlayer->sendPlayerUpdate(0, 5, MPlayer->commanderid);
 				}
 			}
 		}
@@ -1784,7 +1784,7 @@ ControlGui::disableAllVehicleButtons()
 	//	addingVehicle = 0;
 }
 
-PCSTR
+const std::wstring_view&
 ControlGui::getVehicleName(int32_t& ID)
 {
 	for (size_t i = GUARD_TOWER; i <= RECOVERY_TEAM; i++)
@@ -1806,7 +1806,7 @@ ControlGui::getVehicleName(int32_t& ID)
 	return 0;
 }
 
-PCSTR
+const std::wstring_view&
 ControlGui::getVehicleNameFromID(int32_t ID)
 {
 	for (size_t i = 0; i < 5; i++)
@@ -1952,7 +1952,7 @@ ControlGui::getVehicleCommand()
 
 void
 ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlButton* Buttons,
-	ButtonData* Data, PCSTR str, aFont* font)
+	ButtonData* Data, const std::wstring_view& str, aFont* font)
 {
 	char path[256];
 	for (size_t i = 0; i < buttonCount; ++i)
@@ -2411,7 +2411,7 @@ ControlGui::switchTabs(int32_t direction)
 }
 
 void
-ControlGui::playMovie(PCSTR fileName)
+ControlGui::playMovie(const std::wstring_view& fileName)
 {
 	if (moviePlaying)
 		return;
@@ -2428,7 +2428,7 @@ ControlGui::playMovie(PCSTR fileName)
 	FullPathFileName movieName;
 	movieName.init(moviePath, realName, ".bik");
 	bMovie = new MC2Movie;
-	bMovie->init((PSTR)movieName, vRect, true);
+	bMovie->init((const std::wstring_view&)movieName, vRect, true);
 	// Maybe not enough frames to run.  Do not flash the border!
 	// Do ONE update to make sure the damned sound starts at least!!
 	bMovie->update();
@@ -2548,12 +2548,12 @@ ControlGui::toggleChat(bool isTeamOnly)
 	bChatting ^= 1;
 	if (!bChatting && MPlayer) // over -- broadcast messages
 	{
-		std::wstring tmp;
+		const std::wstring_view& tmp;
 		personalEdit.getEntry(tmp);
 		if (tmp.Length())
 		{
-			char team = chatIsTeamOnly ? MPlayer->getPlayerInfo(MPlayer->commanderID)->team : -1;
-			MPlayer->sendChat(0, team, (PSTR)(PCSTR)tmp);
+			char team = chatIsTeamOnly ? MPlayer->getPlayerInfo(MPlayer->commanderid)->team : -1;
+			MPlayer->sendChat(0, team, (const std::wstring_view&)(const std::wstring_view&)tmp);
 		}
 		personalEdit.setFocus(0);
 	}
@@ -2576,7 +2576,7 @@ ControlGui::eatChatKey()
 }
 
 void
-ControlGui::setChatText(PCSTR playerName, PCSTR message, uint32_t color, uint32_t chatColor)
+ControlGui::setChatText(const std::wstring_view& playerName, const std::wstring_view& message, uint32_t color, uint32_t chatColor)
 {
 	for (size_t i = 0; i < MAX_CHAT_COUNT - 1; i++)
 	{
@@ -2610,7 +2610,7 @@ ControlGui::renderChatText()
 		playerNameEdit.setColor(0xff007f00);
 		if (MPlayer)
 		{
-			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 			int32_t color = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
 			int32_t textColor = 0xff000000;
 			if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
@@ -2759,5 +2759,4 @@ ControlGui::showServerMissing()
 	}
 }
 
-//*************************************************************************************************
 // end of file ( controlGui.cpp )

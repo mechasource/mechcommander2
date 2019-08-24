@@ -5,20 +5,19 @@ MPGameBrowser.h			: Interface for the MPGameBrowser component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
 
 #pragma once
 
 #ifndef MPGAMEBROWSER_H
 #define MPGAMEBROWSER_H
 
-//#include <mechgui/logisticsscreen.h>
-//#include <mechgui/asystem.h>
-//#include <mechgui/alistbox.h>
+//#include "mechgui/logisticsscreen.h"
+//#include "mechgui/asystem.h"
+//#include "mechgui/alistbox.h"
 //#include "attributemeter.h"
 //#include "simplecamera.h"
 //#include "multplyr.h"
-//#include <mechgui/aanim.h>
+//#include "mechgui/aanim.h"
 //#include "mphostgame.h"
 
 class aButton;
@@ -32,7 +31,7 @@ public:
 		hasAnimation = false;
 		normalColor = 0xff808080;
 	}
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void render(void);
 
 protected:
@@ -45,13 +44,13 @@ class aGameListItem : public aListItem
 {
 public:
 	aGameListItem(void);
-	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void update(void);
 	void setSessionInfo(_MC2Session* pSessions);
 
-	PCSTR getSessionName(void);
+	const std::wstring_view& getSessionName(void);
 
-	PCSTR getText(int32_t which);
+	const std::wstring_view& getText(int32_t which);
 
 	const MC2Session* getSession(void) { return (&session); }
 
@@ -105,5 +104,4 @@ private:
 	int32_t oldScrollPos;
 };
 
-//*************************************************************************************************
 #endif // end of file ( MPGameBrowser.h )

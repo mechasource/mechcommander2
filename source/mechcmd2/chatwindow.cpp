@@ -8,9 +8,9 @@
 
 #include "stdinc.h"
 #include "chatwindow.h"
-#include <mclib.h>
+#include "mclib.h"
 #include "multplyr.h"
-#include "..\resource.h"
+#include "resource.h"
 
 ChatWindow* ChatWindow::s_instance = nullptr;
 
@@ -62,7 +62,7 @@ ChatWindow::initInstance()
 	if (NO_ERROR != file.open(path))
 	{
 		char buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (PSTR)path);
+		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return false;
 	}
@@ -182,7 +182,7 @@ ChatWindow::update()
 	}
 	else
 		rects[2].setColor(rects[2].getColor() | 0xff000000);
-	PSTR chatTexts[MAX_STORED_CHATS];
+	const std::wstring_view& chatTexts[MAX_STORED_CHATS];
 	int32_t playerIDs[MAX_STORED_CHATS];
 	int32_t count = MAX_STORED_CHATS;
 	MPlayer->getChatMessages(chatTexts, playerIDs, count);
@@ -195,14 +195,14 @@ ChatWindow::update()
 	{
 		if (bFocused)
 		{
-			std::wstring text;
+			const std::wstring_view& text;
 			edits[0].getEntry(text);
 			int32_t team = getButton(MP_CHAT_TEAMONLY)->isPressed()
-				? MPlayer->getPlayerInfo(MPlayer->commanderID)->team
+				? MPlayer->getPlayerInfo(MPlayer->commanderid)->team
 				: -1;
 			if (text.Length())
 			{
-				MPlayer->sendChat(0, team, (PSTR)(PCSTR)text);
+				MPlayer->sendChat(0, team, (const std::wstring_view&)(const std::wstring_view&)text);
 			}
 			edits[0].setEntry("");
 			edits[0].setFocus(false);
@@ -218,7 +218,7 @@ ChatWindow::update()
 }
 
 void
-ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,
+ChatWindow::refillListBox(aListBox& listBox, const std::wstring_view&* chatTexts, int32_t* playerIDs,
 	ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount)
 {
 	int32_t linesToAdd = 0;
@@ -229,7 +229,7 @@ ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs
 		MC2Player* player = &MPlayer->playerInfo[0];
 		for (size_t j = 0; j < MAX_MC_PLAYERS; j++)
 		{
-			if (MPlayer->playerInfo[j].commanderID == playerID)
+			if (MPlayer->playerInfo[j].commanderid == playerID)
 			{
 				player = &MPlayer->playerInfo[j];
 				break;
@@ -295,7 +295,7 @@ ChatWidget::init()
 	if (NO_ERROR != file.open(path))
 	{
 		char buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (PSTR)path);
+		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return;
 	}
@@ -324,7 +324,7 @@ ChatMessageItem::ChatMessageItem()
 }
 
 void
-ChatMessageItem::setPlayerName(PCSTR pName)
+ChatMessageItem::setPlayerName(const std::wstring_view& pName)
 {
 	name.setText(pName);
 	name.moveTo(globalX() + 1, globalY() + 1);
@@ -336,7 +336,7 @@ ChatMessageItem::setPlayerName(PCSTR pName)
 }
 
 int32_t
-ChatMessageItem::setText(PCSTR pText)
+ChatMessageItem::setText(const std::wstring_view& pText)
 {
 	playerText.setText(pText);
 	lineCount = 1;
@@ -369,5 +369,4 @@ ChatMessageItem::setTextColor(int32_t newColor)
 	playerText.setColor(newColor);
 }
 
-//*************************************************************************************************
 // end of file ( ChatWindow.cpp )

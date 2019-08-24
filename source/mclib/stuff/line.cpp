@@ -7,11 +7,11 @@
 #include "stdinc.h"
 //#include "stuffheaders.hpp"
 
-//#include <gameos.hpp>
-//#include <stuff/scalar.hpp>
-#include <stuff/sphere.hpp>
-#include <stuff/obb.hpp>
-#include <stuff/line.hpp>
+//#include "gameos.hpp"
+//#include "stuff/scalar.h"
+#include "stuff/sphere.h"
+#include "stuff/obb.h"
+#include "stuff/line.h"
 
 using namespace Stuff;
 

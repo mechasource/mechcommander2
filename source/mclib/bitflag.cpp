@@ -25,7 +25,7 @@
 #include "tgainfo.h"
 #endif
 
-#include <gameos.hpp>
+#include "gameos.hpp"
 
 extern void
 AG_ellipse_draw(
@@ -254,7 +254,7 @@ ByteFlag::init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
 
 //------------------------------------------------------------------------
 void
-ByteFlag::initTGA(PSTR tgaFileName)
+ByteFlag::initTGA(const std::wstring_view& tgaFileName)
 {
 	MechFile tgaFile;
 #ifdef _DEBUG

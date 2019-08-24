@@ -11,7 +11,7 @@
 
 //----------------------------------------------------------------------------------
 // Include Files
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef MISSION_H
 #include "mission.h"
@@ -103,8 +103,8 @@
 #include "loadscreen.h"
 #endif
 
-#include "..\resource.h"
-#include <gameos.hpp>
+#include "resource.h"
+#include "gameos.hpp"
 #include <ddraw.h>
 
 //----------------------------------------------------------------------------------------------------
@@ -191,7 +191,7 @@ InitDifficultySettings(FitIniFile* gameSystemFile);
 extern int32_t GameVisibleVertices;
 
 void
-GetBlockedDoorCells(int32_t moveLevel, int32_t door, PSTR openCells);
+GetBlockedDoorCells(int32_t moveLevel, int32_t door, const std::wstring_view& openCells);
 void
 PlaceStationaryMovers(MoveMap* map);
 void
@@ -207,7 +207,7 @@ bool
 IsGateOpen(int32_t objectWID);
 
 uint32_t
-elfHash(PSTR name);
+elfHash(const std::wstring_view& name);
 
 extern char versionStamp[];
 //----------------------------------------------------------------------------------------------------
@@ -234,7 +234,7 @@ Part::Save(FitIniFilePtr file, int32_t partNum)
 	file->writeIdLong("GestureId", gestureId);
 	file->writeIdChar("Alignment", alignment);
 	file->writeIdChar("TeamId", teamId);
-	file->writeIdLong("CommanderId", commanderID);
+	file->writeIdLong("CommanderId", commanderid);
 	file->writeIdLong("SquadId", squadId);
 	file->writeIdChar("MyIcon", myIcon);
 	file->writeIdULong("ControlType", controlType);
@@ -246,7 +246,7 @@ Part::Save(FitIniFilePtr file, int32_t partNum)
 }
 
 void
-Mission::save(PCSTR saveFileName)
+Mission::save(const std::wstring_view& saveFileName)
 {
 	// Check for sufficient hard Drive space on drive game is running from
 	char currentPath[1024];
@@ -268,12 +268,12 @@ Mission::save(PCSTR saveFileName)
 	mc2UseAsyncMouse = true;
 	AsynFunc = ProgressTimer;
 	// Get the campaign name for the campaign we are currently playing.
-	std::wstring campaignName = LogisticsData::instance->getCampaignName();
-	PCSTR cmpName = campaignName.Data();
+	const std::wstring_view& campaignName = LogisticsData::instance->getCampaignName();
+	const std::wstring_view& cmpName = campaignName.Data();
 	// Open the Save File.
 	// Assume path is correct when we get here.
 	PacketFile saveFile;
-	int32_t result = saveFile.create((PSTR)saveFileName);
+	int32_t result = saveFile.create((const std::wstring_view&)saveFileName);
 	loadProgress = 1.0f;
 	// A thousand packets ought to get it!!
 	saveFile.reserve(20000);
@@ -503,7 +503,7 @@ Part::Load(FitIniFilePtr file, int32_t partNum)
 	result = file->readIdChar("TeamId", teamId);
 	if (result != NO_ERROR)
 		STOP(("Part %d TeamId missing from In-Mission Save", partNum));
-	result = file->readIdLong("CommanderId", commanderID);
+	result = file->readIdLong("CommanderId", commanderid);
 	if (result != NO_ERROR)
 		STOP(("Part %d CommanderId missing from In-Mission Save", partNum));
 	result = file->readIdChar("SquadId", squadId);
@@ -533,7 +533,7 @@ Part::Load(FitIniFilePtr file, int32_t partNum)
 }
 
 void
-Mission::load(PCSTR loadFileName)
+Mission::load(const std::wstring_view& loadFileName)
 {
 	userInput->mouseOff();
 	loadProgress = 0.0f;
@@ -548,7 +548,7 @@ Mission::load(PCSTR loadFileName)
 	AsynFunc = ProgressTimer;
 	// Open the In-Mission Save packet file.
 	PacketFile loadFile;
-	int32_t result = loadFile.open((PSTR)loadFileName);
+	int32_t result = loadFile.open((const std::wstring_view&)loadFileName);
 	if (result != NO_ERROR)
 		return; // Can't load.  No File.  Dialog?  Probably not.
 	uint32_t currentPacket = 0;
@@ -563,12 +563,12 @@ Mission::load(PCSTR loadFileName)
 		return;
 	}
 	loadFile.seekPacket(currentPacket);
-	PSTR campName = new char[loadFile.getPacketSize() + 1];
+	const std::wstring_view& campName = new char[loadFile.getPacketSize() + 1];
 	loadFile.readPacket(currentPacket, (puint8_t)(campName));
 	currentPacket++;
 	// Get the campaign name for the campaign we are currently playing.
-	std::wstring campaignName = LogisticsData::instance->getCampaignName();
-	PCSTR cmpName = campaignName.Data();
+	const std::wstring_view& campaignName = LogisticsData::instance->getCampaignName();
+	const std::wstring_view& cmpName = campaignName.Data();
 	/*
 	if (_stricmp(campName,cmpName) != 0)
 	{
@@ -1034,12 +1034,12 @@ Mission::load(PCSTR loadFileName)
 			result = missionFile.readIdChar("CommanderId", cmdId);
 			if (result != NO_ERROR)
 			{
-				result = missionFile.readIdLong("CommanderId", parts[i].commanderID);
+				result = missionFile.readIdLong("CommanderId", parts[i].commanderid);
 				gosASSERT(result == NO_ERROR);
 			}
 			else
 			{
-				parts[i].commanderID = cmdId;
+				parts[i].commanderid = cmdId;
 			}
 			parts[i].gestureId = 2; // this has never changed
 			result = missionFile.readIdULong("BaseColor", parts[i].baseColor);

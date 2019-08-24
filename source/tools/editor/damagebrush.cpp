@@ -6,7 +6,7 @@ DamageBrush.cpp			: Implementation of the DamageBrush component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "DamageBrush.h"
+#include "damagebrush.h"
 #include "editorobjectmgr.h"
 
 bool
@@ -86,5 +86,4 @@ DamageBrush::applyToSelection()
 	return pRetAction;
 }
 
-//*************************************************************************************************
 // end of file ( DamageBrush.cpp )

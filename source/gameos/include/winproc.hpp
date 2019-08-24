@@ -6,5 +6,5 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM wparam, LPARAM lparam);
 extern HCURSOR ArrowCursor;

@@ -10,7 +10,7 @@
 #include "stdinc.h"
 
 #ifndef MCLIB_h
-#include <mclib.h>
+#include "mclib.h"
 #endif
 
 #ifndef GAMEOBJ_H
@@ -164,7 +164,7 @@ extern bool JumpOnBlocked;
 extern bool FindingEscapePath;
 
 // extern float				FireOddsTable[NUM_FIREODDS];
-extern float RankVersusChassisCombatModifier[NUM_WARRIOR_RANKS][NUM_MECH_CLASSES];
+extern float RankVersusChassisCombatModifier[WarriorRank::numberofranks][NUM_MECH_CLASSES];
 float WeaponFireModifiers[NUM_WEAPONFIRE_MODIFIERS] = {0.0, // Short Range To Target
 	-10.0, // Medium Range To Target
 	-20.0, // Long Range To Target
@@ -190,8 +190,8 @@ float WeaponFireModifiers[NUM_WEAPONFIRE_MODIFIERS] = {0.0, // Short Range To Ta
 	0.0, // Elite/Assault
 	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
-extern float WarriorRankScale[NUM_WARRIOR_RANKS];
-extern PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
+extern float WarriorRankScale[WarriorRank::numberofranks];
+extern const std::wstring_view& SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
 float WeaponSpecialistModifier = 20.0f;
 
@@ -218,7 +218,7 @@ extern bool CantBlowSalvage;
 int32_t TargetRolo = -1;
 WeaponFireChunk CurMoverWeaponFireChunk;
 
-extern PSTR ExceptionGameMsg;
+extern const std::wstring_view& ExceptionGameMsg;
 extern char ChunkDebugMsg[5120];
 
 extern char OverlayIsBridge[NUM_OVERLAY_TYPES];
@@ -392,16 +392,16 @@ float LegShotModifier = 0.0f;
 bool CalcValidAreaTable = true;
 
 void
-DEBUGWINS_print(PSTR s, int32_t window);
+DEBUGWINS_print(const std::wstring_view& s, int32_t window);
 
 //***************************************************************************
 // MISC routines
 //***************************************************************************
 
-inline MoverPtr
+inline std::unique_ptr<Mover>
 getMoverFromHandle(int32_t handle)
 {
-	return (dynamic_cast<MoverPtr>(ObjectManager->get(handle)));
+	return (dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->get(handle)));
 }
 
 //***************************************************************************
@@ -425,7 +425,7 @@ getMoverFromHandle(int32_t handle)
 //---------------------------------------------------------------------------
 
 void
-DebugMoveChunk(MoverPtr mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2)
+DebugMoveChunk(std::unique_ptr<Mover> mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2)
 {
 	ChunkDebugMsg[0] = nullptr;
 	char outString[512];
@@ -549,7 +549,7 @@ cellDirToCell(
 //---------------------------------------------------------------------------
 
 void
-MoveChunk::build(MoverPtr mover, MovePathPtr path1, MovePathPtr path2)
+MoveChunk::build(std::unique_ptr<Mover> mover, MovePathPtr path1, MovePathPtr path2)
 {
 	int32_t cellPos[2];
 	mover->getCellPosition(cellPos[0], cellPos[1]);
@@ -709,7 +709,7 @@ MoveChunk::build(MoverPtr mover, MovePathPtr path1, MovePathPtr path2)
 // A JUMP ORDER!
 
 void
-MoveChunk::build(MoverPtr mover, Stuff::Vector3D jumpGoal)
+MoveChunk::build(std::unique_ptr<Mover> mover, Stuff::Vector3D jumpGoal)
 {
 	int32_t jumpCoords[2];
 	land->worldToCell(jumpGoal, jumpCoords[0], jumpCoords[1]);
@@ -728,7 +728,7 @@ MoveChunk::build(MoverPtr mover, Stuff::Vector3D jumpGoal)
 #define DEBUG_MOVECHUNK
 
 void
-MoveChunk::pack(MoverPtr mover)
+MoveChunk::pack(std::unique_ptr<Mover> mover)
 {
 	data = stepPos[0][0];
 	data <<= MOVECHUNK_CELLPOS_BITS;
@@ -763,7 +763,7 @@ MoveChunk::pack(MoverPtr mover)
 //---------------------------------------------------------------------------
 
 void
-MoveChunk::unpack(MoverPtr mover)
+MoveChunk::unpack(std::unique_ptr<Mover> mover)
 {
 	err = 0;
 	stepRelPos[2] = (data & MOVECHUNK_STEP_MASK);
@@ -826,7 +826,7 @@ MoveChunk::unpack(MoverPtr mover)
 //---------------------------------------------------------------------------
 
 bool
-MoveChunk::equalTo(MoverPtr mover, MoveChunkPtr chunk)
+MoveChunk::equalTo(std::unique_ptr<Mover> mover, MoveChunkPtr chunk)
 {
 	if (numSteps != chunk->numSteps)
 	{
@@ -887,7 +887,7 @@ Mover::setMoveChunk(MovePathPtr path, MoveChunkPtr chunk)
 //***************************************************************************
 
 void
-DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
+DebugStatusChunk(std::unique_ptr<Mover> mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 {
 	ChunkDebugMsg[0] = nullptr;
 	char outString[512];
@@ -902,8 +902,8 @@ DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 	{
 		strcat(ChunkDebugMsg, "\nCHUNK1\n");
 		GameObjectPtr target = nullptr;
-		Stuff::Vector3D targetPoint;
-		targetPoint.Zero();
+		Stuff::Vector3D targetpoint;
+		targetpoint.Zero();
 		bool isTargetPoint = false;
 		if (chunk1->targetType == STATUSCHUNK_TARGET_MOVER)
 			target = (GameObjectPtr)MPlayer->moverRoster[chunk1->targetId];
@@ -913,9 +913,9 @@ DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 			target = ObjectManager->findByPartId(chunk1->targetId);
 		else if (chunk1->targetType == STATUSCHUNK_TARGET_LOCATION)
 		{
-			targetPoint.x = (float)chunk1->targetCellRC[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk1->targetCellRC[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
-			targetPoint.z = (float)land->getTerrainElevation(targetPoint);
+			targetpoint.x = (float)chunk1->targetCellRC[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+			targetpoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk1->targetCellRC[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
+			targetpoint.z = (float)land->getTerrainElevation(targetpoint);
 			isTargetPoint = true;
 		}
 		if (target)
@@ -923,7 +923,7 @@ DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 			if (target->isMover())
 			{
 				sprintf(
-					outString, "target = %s (%d)\n", ((MoverPtr)target)->name, target->getPartId());
+					outString, "target = %s (%d)\n", ((std::unique_ptr<Mover>)target)->name, target->getPartId());
 				strcat(ChunkDebugMsg, outString);
 			}
 			else
@@ -935,8 +935,8 @@ DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 		}
 		else if (isTargetPoint)
 		{
-			sprintf(outString, "target point = (%f, %f, %f)\n", targetPoint.x, targetPoint.y,
-				targetPoint.z);
+			sprintf(outString, "target point = (%f, %f, %f)\n", targetpoint.x, targetpoint.y,
+				targetpoint.z);
 			strcat(ChunkDebugMsg, outString);
 		}
 		else if (chunk1->targetType == STATUSCHUNK_TARGET_NONE)
@@ -999,8 +999,8 @@ DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 	{
 		strcat(ChunkDebugMsg, "\nCHUNK2\n");
 		GameObjectPtr target = nullptr;
-		Stuff::Vector3D targetPoint;
-		targetPoint.Zero();
+		Stuff::Vector3D targetpoint;
+		targetpoint.Zero();
 		bool isTargetPoint = false;
 		if (chunk1->targetType == STATUSCHUNK_TARGET_MOVER)
 			target = (GameObjectPtr)MPlayer->moverRoster[chunk2->targetId];
@@ -1010,9 +1010,9 @@ DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 			target = ObjectManager->findByPartId(chunk2->targetId);
 		else if (chunk1->targetType == STATUSCHUNK_TARGET_LOCATION)
 		{
-			targetPoint.x = (float)chunk2->targetCellRC[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk2->targetCellRC[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
-			targetPoint.z = (float)land->getTerrainElevation(targetPoint);
+			targetpoint.x = (float)chunk2->targetCellRC[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+			targetpoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk2->targetCellRC[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
+			targetpoint.z = (float)land->getTerrainElevation(targetpoint);
 			isTargetPoint = true;
 		}
 		if (target)
@@ -1020,7 +1020,7 @@ DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 			if (target->isMover())
 			{
 				sprintf(
-					outString, "target = %s (%d)\n", ((MoverPtr)target)->name, target->getPartId());
+					outString, "target = %s (%d)\n", ((std::unique_ptr<Mover>)target)->name, target->getPartId());
 				strcat(ChunkDebugMsg, outString);
 			}
 			else
@@ -1032,8 +1032,8 @@ DebugStatusChunk(MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 		}
 		else if (isTargetPoint)
 		{
-			sprintf(outString, "target point = (%f, %f, %f)\n", targetPoint.x, targetPoint.y,
-				targetPoint.z);
+			sprintf(outString, "target point = (%f, %f, %f)\n", targetpoint.x, targetpoint.y,
+				targetpoint.z);
 			strcat(ChunkDebugMsg, outString);
 		}
 		else if (chunk1->targetType == STATUSCHUNK_TARGET_NONE)
@@ -1122,7 +1122,7 @@ StatusChunk::operator delete(PVOID us)
 //---------------------------------------------------------------------------
 
 void
-StatusChunk::build(MoverPtr mover)
+StatusChunk::build(std::unique_ptr<Mover> mover)
 {
 	bodyState = 0;
 	data = 0;
@@ -1134,7 +1134,7 @@ StatusChunk::build(MoverPtr mover)
 //#define	ASSERT_STATUSCHUNK
 
 void
-StatusChunk::pack(MoverPtr mover)
+StatusChunk::pack(std::unique_ptr<Mover> mover)
 {
 	data = 0;
 	if (jumpOrder)
@@ -1275,7 +1275,7 @@ StatusChunk::pack(MoverPtr mover)
 //---------------------------------------------------------------------------
 
 void
-StatusChunk::unpack(MoverPtr mover)
+StatusChunk::unpack(std::unique_ptr<Mover> mover)
 {
 	StatusChunkUnpackErr = 0;
 	uint32_t tempData = data;
@@ -1661,7 +1661,7 @@ MoverControl::brake(void)
 //---------------------------------------------------------------------------
 
 void
-MoverControl::update(MoverPtr mover)
+MoverControl::update(std::unique_ptr<Mover> mover)
 {
 	switch (type)
 	{
@@ -1813,10 +1813,10 @@ Mover::loadGameSystem(FitIniFilePtr mechFile, float visualRange)
 		return (result);
 	//	result = mechFile->readIdFloatArray("WeaponFireModifiers",
 	// WeaponFireModifiers, NUM_WEAPONFIRE_MODIFIERS); 	if (result == NO_ERROR)
-	//{ 		for (size_t i = 0; i < NUM_WARRIOR_RANKS; i++)
+	//{ 		for (size_t i = 0; i < WarriorRank::numberofranks; i++)
 	//			for (int32_t j = 0; j < (NUM_MECH_CLASSES - 1); j++)
 	//				RankVersusChassisCombatModifier[i][j + 1] = WeaponFireModifiers[7
-	//+ i * NUM_WARRIOR_RANKS + j];
+	//+ i * WarriorRank::numberofranks + j];
 	//	}
 	result = mechFile->readIdFloatArray("FireArc", FireArc, 3);
 	if (result != NO_ERROR)
@@ -1887,7 +1887,7 @@ Mover::loadGameSystem(FitIniFilePtr mechFile, float visualRange)
 	result = mechFile->readIdFloat("DefaultAttackRadius", DefaultAttackRadius);
 	if (result != NO_ERROR)
 		DefaultAttackRadius = 275.0;
-	result = mechFile->readIdFloatArray("WarriorRankScale", WarriorRankScale, NUM_WARRIOR_RANKS);
+	result = mechFile->readIdFloatArray("WarriorRankScale", WarriorRankScale, WarriorRank::numberofranks);
 	if (result != NO_ERROR)
 		return (result);
 	char profData[NUM_OFFSET_RANGES * 2];
@@ -2134,7 +2134,7 @@ Mover::init(bool create)
 	teamId = -1;
 	groupId = -1;
 	squadId = -1;
-	selectionIndex = -1;
+	selectionindex = -1;
 	teamRosterIndex = -1;
 	commanderId = -1;
 	unitGroup = 2; // the thing the user sets by hitting ctrl and a number
@@ -2257,7 +2257,7 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 	if (sensorSystem)
 		sensorRange = (int32_t)sensorSystem->getEffectiveRange();
 	int32_t contStat = contactInfo->getContactStatus(0, true);
-	static PSTR contactStr[NUM_CONTACT_STATUSES] = {
+	static const std::wstring_view& contactStr[NUM_CONTACT_STATUSES] = {
 		"        ", "SENSOR_1", "SENSOR_2", "SENSOR_3", "SENSOR_4", "VISUAL  "};
 	if (debugPage == 0)
 	{
@@ -2342,7 +2342,7 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 				numConts = sensorSystem->numContacts;
 			for (size_t i = 0; i < numConts; i++)
 			{
-				MoverPtr contact = (MoverPtr)ObjectManager->get(sensorSystem->contacts[i] & 0x7FFF);
+				std::unique_ptr<Mover> contact = (std::unique_ptr<Mover>)ObjectManager->get(sensorSystem->contacts[i] & 0x7FFF);
 				Assert(contact != nullptr, sensorSystem->contacts[i] & 0x7FFF, " null contact ");
 				char s2[10];
 				sprintf(s2, " %d.%d", sensorSystem->contacts[i] & 0x7FFF,
@@ -2412,7 +2412,7 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 				strcat(s, " +");
 			debugWindow->print(s);
 		}
-		static PSTR moveStateStr[NUM_MOVESTATES] = {"SS", "FF", "RR", "*F", "*R", "*T"};
+		static const std::wstring_view& moveStateStr[NUM_MOVESTATES] = {"SS", "FF", "RR", "*F", "*R", "*T"};
 		sprintf(s, "MoveState Cur/Goal = %s[%s]", moveStateStr[pilot->getMoveState()],
 			moveStateStr[pilot->getMoveStateGoal()]);
 		debugWindow->print(s);
@@ -2449,10 +2449,10 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 	}
 	else if (debugPage == 2)
 	{
-		static PSTR locationStrings[] = {"head:     ", "c torso:  ", "l torso:  ", "r torso:  ",
+		static const std::wstring_view& locationStrings[] = {"head:     ", "c torso:  ", "l torso:  ", "r torso:  ",
 			"l arm:    ", "r arm:    ", "l leg:    ", "r leg:    ", "rc torso: ", "rl torso: ",
 			"rr torso: ", "front:    ", "left:     ", "right:    ", "rear:     ", "turret:   "};
-		static PSTR bodyState[] = {"normal", "DAM", "DEST"};
+		static const std::wstring_view& bodyState[] = {"normal", "DAM", "DEST"};
 		sprintf(s, "%s (%s %02d)", getName(), getPilot()->getName(), getPilot()->getIndex());
 		debugWindow->print(s);
 		sprintf(s, "team: %d, partID: %d, threat: %d", getTeamId(), getPartId(), getThreatRating());
@@ -3029,9 +3029,9 @@ Mover::handleTacticalOrder(TacticalOrder tacOrder, int32_t priority, bool queueP
 		//---------------------------------------------------
 		// If we're part of a selected group, offset our goal
 		// slightly...
-		if (selectionIndex != -1)
+		if (selectionindex != -1)
 		{
-			tacOrder.delayedTime = scenarioTime + (selectionIndex * DelayedOrderTime);
+			tacOrder.delayedTime = scenarioTime + (selectionindex * DelayedOrderTime);
 		}
 		if (!canMove())
 		{
@@ -3080,7 +3080,7 @@ Mover::handleTacticalOrder(TacticalOrder tacOrder, int32_t priority, bool queueP
 		break;
 	case TACTICAL_ORDER_ATTACK_OBJECT:
 		// tacOrder.code = TACTICAL_ORDER_ATTACK_POINT;
-		// tacOrder.attackParams.targetPoint =
+		// tacOrder.attackParams.targetpoint =
 		// (GameObjectPtr(BaseObjectPtr(tacOrder.target)))->getPosition();
 		// tacOrder.target = nullptr;
 		if (tacOrder.attackParams.method == ATTACKMETHOD_DFA)
@@ -3089,8 +3089,8 @@ Mover::handleTacticalOrder(TacticalOrder tacOrder, int32_t priority, bool queueP
 			// Let's just make it a move/jump order, for now...
 			tacOrder.code = TACTICAL_ORDER_JUMPTO_OBJECT;
 			// tacOrder.target = mouseObject;
-			tacOrder.moveParams.wait = false;
-			tacOrder.moveParams.wayPath.mode[0] = TRAVEL_MODE_SLOW;
+			tacOrder.moveparams.wait = false;
+			tacOrder.moveparams.wayPath.mode[0] = TravelModeType::slow;
 			GameObjectPtr target = tacOrder.getTarget();
 			if (target)
 				tacOrder.setWayPoint(0, target->getPosition());
@@ -3188,7 +3188,7 @@ Mover::updateDamageTakenRate(void)
 	if (damageRateCheckTime < scenarioTime)
 	{
 		int32_t damageRate = (damageRateTally / DamageRateFrequency);
-		if (damageRate > 10 /*AttitudeEffect[pilot->getAttitude(ORDER_CURRENT)][5]*/)
+		if (damageRate > 10 /*AttitudeEffect[pilot->getAttitude(OrderType::current)][5]*/)
 			pilot->triggerAlarm(PILOT_ALARM_DAMAGE_TAKEN_RATE, damageRate);
 		damageRateTally = 0;
 		damageRateCheckTime += DamageRateFrequency;
@@ -3216,7 +3216,7 @@ Mover::setPilotHandle(int32_t _pilotHandle)
 //---------------------------------------------------------------------------
 
 void
-Mover::loadPilot(PSTR pilotFileName, PSTR brainFileName, LogisticsPilot* lPilot)
+Mover::loadPilot(const std::wstring_view& pilotFileName, const std::wstring_view& brainFileName, LogisticsPilot* lPilot)
 {
 	if (pilot)
 	{
@@ -3227,7 +3227,7 @@ Mover::loadPilot(PSTR pilotFileName, PSTR brainFileName, LogisticsPilot* lPilot)
 	// Loads a new pilot into the pilot manager and then puts it into
 	// this mover. If a pilot already exists in this mover, it is
 	// replaced...
-	MechWarriorPtr pilot = MechWarrior::newWarrior();
+	std::unique_ptr<MechWarrior> pilot = MechWarrior::newWarrior();
 	if (!pilot)
 		STOP(("Too many pilots in this mission!"));
 	FullPathFileName pilotFullFileName;
@@ -3245,8 +3245,8 @@ Mover::loadPilot(PSTR pilotFileName, PSTR brainFileName, LogisticsPilot* lPilot)
 	// ONLY if we overrode the data in logistics!!
 	if (lPilot)
 	{
-		pilot->skills[MWS_GUNNERY] = pilot->skillRank[MWS_GUNNERY] = lPilot->getGunnery();
-		pilot->skills[MWS_PILOTING] = pilot->skillRank[MWS_PILOTING] = lPilot->getPiloting();
+		pilot->skills[Skill::gunnery] = pilot->skillRank[Skill::gunnery] = lPilot->getGunnery();
+		pilot->skills[Skill::piloting] = pilot->skillRank[Skill::piloting] = lPilot->getPiloting();
 		memcpy(pilot->specialtySkills, lPilot->getSpecialtySkills(),
 			sizeof(bool) * NUM_SPECIALTY_SKILLS);
 		pilot->calcRank();
@@ -3285,7 +3285,7 @@ Mover::setCommanderId(int32_t _commanderId)
 
 //---------------------------------------------------------------------------
 
-MoverPtr
+std::unique_ptr<Mover>
 Mover::getPoint(void)
 {
 #ifdef USE_GROUPS
@@ -3362,19 +3362,19 @@ Mover::getLOSPosition(void)
 //---------------------------------------------------------------------------
 
 void
-Mover::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoint,
+Mover::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpoint,
 	int32_t chance, int32_t aimLocation, int32_t roll, WeaponShotInfo* shotInfo)
 {
 	if (!CombatLog)
 		return;
-	static PSTR locationStrings[] = {"head", "center torso", "left torso", "right torso",
+	static const std::wstring_view& locationStrings[] = {"head", "center torso", "left torso", "right torso",
 		"left arm", "right arm", "left leg", "right leg", "rear center torso", "rear left torso",
 		"rear right torso"};
 	if (roll < chance)
 	{
 		if (target)
 		{
-			PSTR targetName = target->getName();
+			const std::wstring_view& targetName = target->getName();
 			char s[1024];
 			if (getObjectClass() == BATTLEMECH)
 				sprintf(s, "[%.2f] mech.fireWeapon HIT: (%05d)%s @ (%05d)%s", scenarioTime,
@@ -3403,7 +3403,7 @@ Mover::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoi
 			CombatLog->write(s);
 			CombatLog->write(" ");
 		}
-		else if (targetPoint)
+		else if (targetpoint)
 		{
 		}
 	}
@@ -3411,7 +3411,7 @@ Mover::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoi
 	{
 		if (target)
 		{
-			PSTR targetName = target->getName();
+			const std::wstring_view& targetName = target->getName();
 			char s[1024];
 			if (getObjectClass() == BATTLEMECH)
 				sprintf(s, "[%.2f] mech.fireWeapon MISS: (%05d)%s @ (%05d)%s", scenarioTime,
@@ -3440,7 +3440,7 @@ Mover::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoi
 			CombatLog->write(s);
 			CombatLog->write(" ");
 		}
-		else if (targetPoint)
+		else if (targetpoint)
 		{
 		}
 	}
@@ -3455,7 +3455,7 @@ Mover::printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo)
 {
 	if (!CombatLog)
 		return;
-	static PSTR locationStrings[] = {"head", "center torso", "left torso", "right torso",
+	static const std::wstring_view& locationStrings[] = {"head", "center torso", "left torso", "right torso",
 		"left arm", "right arm", "left leg", "right leg", "rear center torso", "rear left torso",
 		"rear right torso"};
 	char s[1024];
@@ -3638,12 +3638,12 @@ Mover::updateWeaponFireChunks(int32_t which)
 		}
 		else if (chunk.targetType == 3 /*WEAPONFIRECHUNK_TARGET_LOCATION*/)
 		{
-			Stuff::Vector3D targetPoint;
-			targetPoint.x = (float)chunk.targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk.targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
-			targetPoint.z = (float)land->getTerrainElevation(targetPoint);
+			Stuff::Vector3D targetpoint;
+			targetpoint.x = (float)chunk.targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+			targetpoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk.targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
+			targetpoint.z = (float)land->getTerrainElevation(targetpoint);
 			handleWeaponFire(
-				weaponIndex, nullptr, &targetPoint, chunk.hit, 0.0, chunk.numMissiles, 0);
+				weaponIndex, nullptr, &targetpoint, chunk.hit, 0.0, chunk.numMissiles, 0);
 		}
 		else
 			Fatal(0, " Mover.updateWeaponFireChunks: bad targetType ");
@@ -4231,8 +4231,8 @@ extern int64_t MCTimeCalcGoal6Update;
 
 int32_t
 Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float moveRadius,
-	Stuff::Vector3D moveGoal, int32_t selectionIndex, Stuff::Vector3D& newGoal,
-	int32_t numValidAreas, pint16_t validAreas, uint32_t moveParams)
+	Stuff::Vector3D moveGoal, int32_t selectionindex, Stuff::Vector3D& newGoal,
+	int32_t numValidAreas, pint16_t validAreas, uint32_t moveparams)
 {
 	int64_t startTime = 0;
 	if (goalMapRowStart[0] == -1)
@@ -4247,17 +4247,17 @@ Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float move
 				goalMapRowCol[index][1] = c;
 			}
 	}
-	bool playerMove = ((moveParams & MOVEPARAM_PLAYER) != 0);
+	bool playerMove = ((moveparams & MOVEPARAM_PLAYER) != 0);
 	bool movingToRepair = (pilot->getCurTacOrder()->code == TACTICAL_ORDER_REFIT);
 	bool movingToCapture = (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE);
 	bool avoidStationaryMovers = movingToRepair;
 	bool noTravelOffMap = !GameMap->getOffMap(cellPositionRow, cellPositionCol);
-	if (moveParams & MOVEPARAM_MYSTERY_PARAM)
+	if (moveparams & MOVEPARAM_MYSTERY_PARAM)
 	{
 		newGoal = moveGoal;
 		return (NO_ERROR);
 	}
-	if (moveParams & MOVEPARAM_STEP_TOWARD_TARGET)
+	if (moveparams & MOVEPARAM_STEP_TOWARD_TARGET)
 	{
 		//--------------------------------------------------------------------------
 		// We want to pick a goal just a couple cells away from our position,
@@ -4278,7 +4278,7 @@ Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float move
 		}
 		return (NO_ERROR);
 	}
-	if (moveParams & MOVEPARAM_STEP_ADJACENT_TARGET)
+	if (moveparams & MOVEPARAM_STEP_ADJACENT_TARGET)
 	{
 		//--------------------------------------------------------------------------
 		// We want to pick a goal just a couple cells away from our position,
@@ -4403,7 +4403,7 @@ Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float move
 	}
 	//-----------------------------------------------------------------------
 	// Optimal Range (based upon current fire range of pilot, if possible)...
-	if (moveParams & MOVEPARAM_RANDOM_OPTIMAL)
+	if (moveparams & MOVEPARAM_RANDOM_OPTIMAL)
 		for (size_t i = 0; i < numOptimalIncrements; i++)
 		{
 			int32_t r = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][0];
@@ -4449,7 +4449,7 @@ Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float move
 			}
 	//----------------------------------
 	// If we must move somewhere else...
-	if (moveParams & MOVEPARAM_SOMEWHERE_ELSE)
+	if (moveparams & MOVEPARAM_SOMEWHERE_ELSE)
 		goalMap[goalMapRowStart[startCell[0]] + startCell[1]] -= 10000;
 	//-------------------------------------
 	// Cells closer to the start cell get a
@@ -4469,17 +4469,17 @@ Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float move
 			goalMap[goalMapRowStart[r] + c] -= (dist * 1);
 		}
 	//----------------------------------------------------------------------
-	// If we're attacking this target, let's use a selectionIndex based upon
+	// If we're attacking this target, let's use a selectionindex based upon
 	// the number of people in my unit attacking this target...
 	if (getGroup())
 	{
-		MoverPtr mates[MAX_MOVERGROUP_COUNT];
+		std::unique_ptr<Mover> mates[MAX_MOVERGROUP_COUNT];
 		int32_t numMates = getGroup()->getMovers(mates);
 		for (size_t i = 0; i < numMates; i++)
 		{
 			if (mates[i] == this)
 				continue;
-			MechWarriorPtr pilot = mates[i]->getPilot();
+			std::unique_ptr<MechWarrior> pilot = mates[i]->getPilot();
 			Stuff::Vector3D goal;
 			goal.x = goal.y = goal.z = 0.0f;
 			if (pilot && pilot->getMoveGlobalGoal(goal))
@@ -4635,35 +4635,35 @@ Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float move
 	MCTimeCalcGoal3Update += (GetCycles() - startTime);
 #endif
 	//----------------------------------------------------------------------
-	// If we're attacking this target, let's use a selectionIndex based upon
+	// If we're attacking this target, let's use a selectionindex based upon
 	// the number of people in my unit attacking this target...
 	//#ifdef USE_GROUPS
 	if ((getObjectClass() == ELEMENTAL) && target && getGroup())
 	{
-		MoverPtr mates[MAX_MOVERGROUP_COUNT];
+		std::unique_ptr<Mover> mates[MAX_MOVERGROUP_COUNT];
 		int32_t numMates = getGroup()->getMovers(mates);
-		selectionIndex = 0;
+		selectionindex = 0;
 		for (size_t i = 0; i < numMates; i++)
 		{
 			if (mates[i] == this)
 				break;
-			MechWarriorPtr pilot = mates[i]->getPilot();
+			std::unique_ptr<MechWarrior> pilot = mates[i]->getPilot();
 			if (pilot)
 			{
 				if (pilot->getCurrentTarget() == target)
-					selectionIndex++;
+					selectionindex++;
 			}
 		}
 	}
 	//#endif
 	//---------------------------------
 	// so they don't select wacky goals
-	selectionIndex = -1;
+	selectionindex = -1;
 	//------------------------------
 	// Now, pick the goal we want...
 	int32_t curGoalIndex = 0;
-	if ((selectionIndex > 0) && (selectionIndex < MAX_MOVE_GOALS))
-		curGoalIndex = selectionIndex;
+	if ((selectionindex > 0) && (selectionindex < MAX_MOVE_GOALS))
+		curGoalIndex = selectionindex;
 	int32_t curGoalCell[2];
 	bool noLOF = true;
 	curGoalCell[0] = mapCellUL[0] + goalMapRowCol[goalList[0][0]][0];
@@ -4855,7 +4855,7 @@ Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float move
 
 int32_t
 Mover::calcMovePath(MovePathPtr path, int32_t pathType, Stuff::Vector3D start,
-	Stuff::Vector3D goal, int32_t* goalCell, uint32_t moveParams)
+	Stuff::Vector3D goal, int32_t* goalCell, uint32_t moveparams)
 {
 	//-------------------------------------------------------------------------
 	// This assumes the goal is already the "optimum" goal (it should have been
@@ -4900,18 +4900,18 @@ Mover::calcMovePath(MovePathPtr path, int32_t pathType, Stuff::Vector3D start,
 			}
 #endif
 			if (isMineSweeper())
-				moveParams |= MOVEPARAM_SWEEP_MINES;
+				moveparams |= MOVEPARAM_SWEEP_MINES;
 			if (followRoads)
-				moveParams |= MOVEPARAM_FOLLOW_ROADS;
+				moveparams |= MOVEPARAM_FOLLOW_ROADS;
 			if (isMech())
-				moveParams |= MOVEPARAM_WATER_SHALLOW;
+				moveparams |= MOVEPARAM_WATER_SHALLOW;
 			if (moveLevel == 1)
-				moveParams |= (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP);
+				moveparams |= (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP);
 			PathFindMap[SIMPLE_PATHMAP]->setMover(getWatchID(), getTeamId(), isLayingMines());
 			PathFindMap[SIMPLE_PATHMAP]->setUp(mapULr, mapULc, SimpleMovePathRange * 2 + 1,
 				SimpleMovePathRange * 2 + 1, moveLevel, &start, posCellR, posCellC, goal,
 				goalCellR - mapULr, goalCellC - mapULc, clearCost, jumpCost, numOffsets,
-				moveParams);
+				moveparams);
 			//---------------------
 			// Set up debug info...
 			DebugMovePathType = pathType;
@@ -4966,19 +4966,19 @@ Mover::calcMovePath(MovePathPtr path, int32_t pathType, Stuff::Vector3D start,
 			}
 #endif
 			if (isMineSweeper())
-				moveParams |= MOVEPARAM_SWEEP_MINES;
+				moveparams |= MOVEPARAM_SWEEP_MINES;
 			if (followRoads)
-				moveParams |= MOVEPARAM_FOLLOW_ROADS;
+				moveparams |= MOVEPARAM_FOLLOW_ROADS;
 			if (isMech())
-				moveParams |= MOVEPARAM_WATER_SHALLOW;
+				moveparams |= MOVEPARAM_WATER_SHALLOW;
 			if (moveLevel == 1)
-				moveParams |= (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP);
-			if (moveParams & MOVEPARAM_JUMP)
-				moveParams |= 0;
+				moveparams |= (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP);
+			if (moveparams & MOVEPARAM_JUMP)
+				moveparams |= 0;
 			PathFindMap[SECTOR_PATHMAP]->setMover(getWatchID(), getTeamId(), isLayingMines());
 			PathFindMap[SECTOR_PATHMAP]->setUp(sectorULr, sectorULc, SECTOR_DIM * 2, SECTOR_DIM * 2,
 				moveLevel, &start, posCellR, posCellC, goal, goalCellR - sectorULr,
-				goalCellC - sectorULc, clearCost, jumpCost, numOffsets, moveParams);
+				goalCellC - sectorULc, clearCost, jumpCost, numOffsets, moveparams);
 			//---------------------
 			// Set up debug info...
 			DebugMovePathType = pathType;
@@ -5005,7 +5005,7 @@ Mover::calcMovePath(MovePathPtr path, int32_t pathType, Stuff::Vector3D start,
 
 int32_t
 Mover::calcEscapePath(MovePathPtr path, Stuff::Vector3D start, Stuff::Vector3D goal,
-	int32_t* goalCell, uint32_t moveParams, Stuff::Vector3D& escapeGoal)
+	int32_t* goalCell, uint32_t moveparams, Stuff::Vector3D& escapeGoal)
 {
 	//------------------------------------------
 	// If nothing else, clear the escape goal...
@@ -5050,14 +5050,14 @@ Mover::calcEscapePath(MovePathPtr path, Stuff::Vector3D start, Stuff::Vector3D g
 		}
 #endif
 		if (isMineSweeper())
-			moveParams |= MOVEPARAM_SWEEP_MINES;
+			moveparams |= MOVEPARAM_SWEEP_MINES;
 		if (followRoads)
-			moveParams |= MOVEPARAM_FOLLOW_ROADS;
+			moveparams |= MOVEPARAM_FOLLOW_ROADS;
 		FindingEscapePath = true;
 		PathFindMap[SIMPLE_PATHMAP]->setMover(getWatchID(), getTeamId(), isLayingMines());
 		PathFindMap[SIMPLE_PATHMAP]->setUp(mapULr, mapULc, SimpleMovePathRange * 2 + 1,
 			SimpleMovePathRange * 2 + 1, moveLevel, &start, posCellR, posCellC, goal,
-			goalCellR - mapULr, goalCellC - mapULc, clearCost, jumpCost, numOffsets, moveParams);
+			goalCellR - mapULr, goalCellC - mapULc, clearCost, jumpCost, numOffsets, moveparams);
 		//---------------------
 		// Set up debug info...
 		DebugMovePathType = 0;
@@ -5247,7 +5247,7 @@ Mover::bounceToAdjCell(void)
 int32_t
 Mover::calcMovePath(MovePathPtr path, Stuff::Vector3D start, int32_t thruArea[2],
 	int32_t goalDoor, Stuff::Vector3D finalGoal, Stuff::Vector3D* goal, int32_t* goalCell,
-	uint32_t moveParams)
+	uint32_t moveparams)
 {
 	//-------------------------------------------------------------------------
 	// This assumes the goal is already the "optimum" goal (it should have been
@@ -5285,16 +5285,16 @@ Mover::calcMovePath(MovePathPtr path, Stuff::Vector3D start, int32_t thruArea[2]
 		}
 #endif
 		if (isMineSweeper())
-			moveParams |= MOVEPARAM_SWEEP_MINES;
+			moveparams |= MOVEPARAM_SWEEP_MINES;
 		if (followRoads)
-			moveParams |= MOVEPARAM_FOLLOW_ROADS;
+			moveparams |= MOVEPARAM_FOLLOW_ROADS;
 		if (isMech())
-			moveParams |= MOVEPARAM_WATER_SHALLOW;
+			moveparams |= MOVEPARAM_WATER_SHALLOW;
 		if (moveLevel == 1)
-			moveParams |= (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP);
+			moveparams |= (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP);
 		PathFindMap[SECTOR_PATHMAP]->setMover(getWatchID(), getTeamId(), isLayingMines());
 		result = PathFindMap[SECTOR_PATHMAP]->setUp(moveLevel, &start, posCellR, posCellC, thruArea,
-			goalDoor, finalGoal, clearCost, jumpCost, numOffsets, moveParams);
+			goalDoor, finalGoal, clearCost, jumpCost, numOffsets, moveparams);
 		if (result == -1)
 		{
 			//-------------------------------------------------------
@@ -5345,10 +5345,10 @@ Mover::getContactStatus(int32_t scanningTeamID, bool includingAllies)
 //------------------------------------------------------------------------------------------
 
 float
-Mover::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition)
+Mover::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetposition)
 {
 	int32_t bodyLocation = inventory[weaponIndex].bodyLocation;
-	return (relFacingTo(targetPosition, bodyLocation));
+	return (relFacingTo(targetposition, bodyLocation));
 }
 
 //------------------------------------------------------------------------------------------
@@ -5411,20 +5411,20 @@ Mover::getWeaponsLocked(int32_t* list, int32_t listSize)
 	GameObjectPtr target = pilot->getCurrentTarget();
 	if (!target)
 		return (-2);
-	Stuff::Vector3D targetPosition = target->getPosition();
+	Stuff::Vector3D targetposition = target->getPosition();
 	int32_t numLocked = 0;
 	float fireArc = getFireArc();
 	if (listSize == -1)
 		for (size_t item = numOther; item < (numOther + numWeapons); item++)
 		{
-			float relAngle = weaponLocked(item, targetPosition);
+			float relAngle = weaponLocked(item, targetposition);
 			if ((relAngle >= -fireArc) && (relAngle <= fireArc))
 				list[numLocked++] = item;
 		}
 	else
 		for (size_t item = 0; item < listSize; item++)
 		{
-			float relAngle = weaponLocked(list[item], targetPosition);
+			float relAngle = weaponLocked(list[item], targetposition);
 			if ((relAngle >= -fireArc) && (relAngle <= fireArc))
 				list[numLocked++] = list[item];
 		}
@@ -5543,7 +5543,7 @@ Mover::calcWeaponEffectiveness(bool setMax)
 	// Record time of our latest calc...
 	lastWeaponEffectivenessCalc = scenarioTime;
 	if (pilot)
-		avgSkill = (float)pilot->getSkill(MWS_GUNNERY) / 50.0;
+		avgSkill = (float)pilot->getSkill(Skill::gunnery) / 50.0;
 	else
 		avgSkill = 1.0;
 	// Ammo is NOT part of weapon effectiveness anymore
@@ -6067,13 +6067,13 @@ applyDifficultySkill(float chance, bool isPlayer);
 //---------------------------------------------------------------------------
 float
 Mover::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
-	int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint)
+	int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetpoint)
 {
 	if ((weaponIndex < numOther) || (weaponIndex >= numOther + numWeapons))
 		return (-9999.0);
 	//-------------------------------------------------------------
 	// First, let's find out what kind of object we're targeting...
-	Stuff::Vector3D targetPosition;
+	Stuff::Vector3D targetposition;
 	BattleMechPtr mech = nullptr;
 	GroundVehiclePtr vehicle = nullptr;
 	if (target)
@@ -6088,13 +6088,13 @@ Mover::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetT
 			vehicle = (GroundVehiclePtr)target;
 			break;
 		}
-		targetPosition = target->getPosition();
+		targetposition = target->getPosition();
 	}
-	else if (targetPoint)
-		targetPosition = *targetPoint;
+	else if (targetpoint)
+		targetposition = *targetpoint;
 	else
 		return (-9999.0);
-	float attackChance = pilot->getSkill(MWS_GUNNERY);
+	float attackChance = pilot->getSkill(Skill::gunnery);
 	if (!MPlayer && (getCommanderId() == Commander::home->getId())) // Up the gunnery Skill by the difficulty modifier
 		attackChance = applyDifficultySkill(attackChance, TRUE);
 	else if (!MPlayer && (getCommanderId() == Commander::home->getId())) // Up the gunnery
@@ -6104,7 +6104,7 @@ Mover::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetT
 		attackChance = applyDifficultySkill(attackChance, FALSE);
 	//----------------------
 	// General fire range...
-	float distanceToTarget = distanceFrom(targetPosition);
+	float distanceToTarget = distanceFrom(targetposition);
 	if (range)
 	{
 		if (distanceToTarget <= WeaponRange[FIRERANGE_SHORT])
@@ -6819,7 +6819,7 @@ Mover::initOptimalCells(int32_t numIncrements)
 //***************************************************************************
 
 void
-GetBlockedDoorCells(int32_t moveLevel, int32_t door, PSTR openCells)
+GetBlockedDoorCells(int32_t moveLevel, int32_t door, const std::wstring_view& openCells)
 {
 	Assert((door > -1) && (door < GlobalMoveMap[moveLevel]->numDoors), 0, " FUDGE 1");
 	Assert((GlobalMoveMap[moveLevel]->doors[door].direction[0] == 1) || (GlobalMoveMap[moveLevel]->doors[door].direction[0] == 2),
@@ -6837,7 +6837,7 @@ GetBlockedDoorCells(int32_t moveLevel, int32_t door, PSTR openCells)
 		int32_t numMovers = ObjectManager->getNumMovers();
 		for (size_t i = 0; i < numMovers; i++)
 		{
-			MoverPtr mover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 			if ((mover->getWatchID() != PathFindMap[SECTOR_PATHMAP]->moverWID) && (mover->getWatchID() != RamObjectWID) && !mover->isDisabled())
 			{
 				int32_t cellPos[2];
@@ -6864,7 +6864,7 @@ GetBlockedDoorCells(int32_t moveLevel, int32_t door, PSTR openCells)
 		int32_t numMovers = ObjectManager->getNumMovers();
 		for (size_t i = 0; i < numMovers; i++)
 		{
-			MoverPtr mover = ObjectManager->getMover(i);
+			std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 			if ((mover->getObjectClass() != ELEMENTAL) && (mover->getWatchID() != PathFindMap[SECTOR_PATHMAP]->moverWID) && (mover->getWatchID() != RamObjectWID) && !mover->isDisabled())
 			{
 				int32_t cellPos[2];
@@ -6892,7 +6892,7 @@ PlaceMovers(void)
 	int32_t numMovers = ObjectManager->getNumMovers();
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		MoverPtr mover = (MoverPtr)ObjectManager->getMover(i);
+		std::unique_ptr<Mover> mover = (std::unique_ptr<Mover>)ObjectManager->getMover(i);
 		if (mover->getUseMe())
 		{
 			int32_t cellRow, cellCol;
@@ -6916,7 +6916,7 @@ PlaceStationaryMovers(MoveMap* map)
 	int32_t numMovers = ObjectManager->getNumMovers();
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		MoverPtr mover = ObjectManager->getMover(i);
+		std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 		if ((mover->getObjectClass() != ELEMENTAL) && (mover->getWatchID() != map->moverWID) && (mover->getWatchID() != RamObjectWID) && !mover->isDisabled())
 		{
 			int32_t cellRow, cellCol;
@@ -7084,7 +7084,7 @@ Mover::CopyTo(MoverData* data)
 	data->teamId = teamId;
 	data->groupId = groupId;
 	data->squadId = squadId;
-	data->selectionIndex = selectionIndex;
+	data->selectionindex = selectionindex;
 	data->teamRosterIndex = teamRosterIndex;
 	data->commanderId = commanderId;
 	data->unitGroup = unitGroup;
@@ -7202,7 +7202,7 @@ Mover::Load(MoverData* data)
 	teamId = data->teamId;
 	groupId = data->groupId;
 	squadId = data->squadId;
-	selectionIndex = data->selectionIndex;
+	selectionindex = data->selectionindex;
 	teamRosterIndex = data->teamRosterIndex;
 	commanderId = data->commanderId;
 	unitGroup = data->unitGroup;

@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrtexturepool.hpp>
+#include "mlr/mlrtexturepool.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //############################    MLRTexture    ###############################
@@ -162,9 +162,9 @@ MLRTexturePool::Save(std::iostream stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture*
-MLRTexturePool::Add(PCSTR tn, int32_t instance)
+MLRTexturePool::Add(const std::wstring_view& tn, int32_t instance)
 {
-	std::wstring textureName(tn);
+	const std::wstring_view& textureName(tn);
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
 	for (i = 0; i < lastHandle; i++)
 	{
@@ -237,7 +237,7 @@ MLRTexturePool::Add(PCSTR tn, int32_t instance)
 MLRTexture*
 MLRTexturePool::Add(GOSImage* image)
 {
-	std::wstring textureName;
+	const std::wstring_view& textureName;
 	textureName = image->GetName();
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
 	for (i = 0; i < lastHandle; i++)
@@ -306,10 +306,10 @@ MLRTexturePool::Remove(MLRTexture* tex)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture*
-MLRTexturePool::operator()(PCSTR tn, int32_t instance)
+MLRTexturePool::operator()(const std::wstring_view& tn, int32_t instance)
 {
 	// Check_Object(this);
-	std::wstring textureName = tn;
+	const std::wstring_view& textureName = tn;
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
 	for (i = 0; i < lastHandle; i++)
 	{
@@ -370,3 +370,5 @@ MLRTexturePool::LoadImages()
 	unLoadedImages = false;
 	return lastHandle;
 }
+
+} // namespace MidLevelRenderer

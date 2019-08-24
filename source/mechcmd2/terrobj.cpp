@@ -12,7 +12,7 @@
 //---------------------------------------------------------------------------
 // Include Files
 
-// #include <mclib.h>
+// #include "mclib.h"
 
 #ifndef TERROBJ_H
 #include "terrobj.h"
@@ -165,7 +165,7 @@ TerrainObjectType::initMiscTerrObj(int32_t objTypeNum)
 //---------------------------------------------------------------------------
 
 int32_t
-TerrainObjectType::init(FilePtr objFile, uint32_t fileSize)
+TerrainObjectType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	FitIniFile bldgFile;
@@ -245,7 +245,7 @@ TerrainObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collide
 		case EXPLOSION:
 		case BATTLEMECH:
 		case GROUNDVEHICLE:
-			if (!collider->isMover() || (collider->isMover() && ((MoverPtr)collider)->pathLocks))
+			if (!collider->isMover() || (collider->isMover() && ((std::unique_ptr<Mover>)collider)->pathLocks))
 			{
 				WeaponShotInfo shot;
 				shot.init(0, -1, collidee->getDamageLevel(), 0, 0);
@@ -268,7 +268,7 @@ TerrainObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collide
 		case EXPLOSION:
 		case BATTLEMECH:
 		case GROUNDVEHICLE:
-			if (!collider->isMover() || (collider->isMover() && ((MoverPtr)collider)->pathLocks))
+			if (!collider->isMover() || (collider->isMover() && ((std::unique_ptr<Mover>)collider)->pathLocks))
 			{
 				TerrainObjectPtr tree = (TerrainObjectPtr)collidee;
 				if (!tree->getFlag(OBJECT_FLAG_FALLEN) && !tree->getFlag(OBJECT_FLAG_FALLING))
@@ -411,11 +411,11 @@ TerrainObject::isVisible(void)
 
 //---------------------------------------------------------------------------
 
-PSTR
+const std::wstring_view&
 TerrainObject::getName(void)
 {
 	/*
-	static PSTR terrainObjectNames[NUM_TERROBJ_SUBTYPES] = {
+	static const std::wstring_view& terrainObjectNames[NUM_TERROBJ_SUBTYPES] = {
 		"Nothing",
 		"Tree",
 		"Bridge",
@@ -681,7 +681,7 @@ TerrainObject::init(bool create, ObjectTypePtr objType)
 		//-------------------------------------------------------------
 		// The appearance is initialized here using data from the type
 		// Need an MLR appearance class
-		PSTR appearanceName = objType->getAppearanceTypeName();
+		const std::wstring_view& appearanceName = objType->getAppearanceTypeName();
 		//--------------------------------------------------------------
 		// New code!!!
 		// We need to append the sprite type to the appearance num now.
@@ -708,7 +708,7 @@ TerrainObject::init(bool create, ObjectTypePtr objType)
 		//-------------------------------------------------------------
 		// The appearance is initialized here using data from the type
 		// Need an MLR appearance class
-		PSTR appearanceName = objType->getAppearanceTypeName();
+		const std::wstring_view& appearanceName = objType->getAppearanceTypeName();
 		//--------------------------------------------------------------
 		// New code!!!
 		// We need to append the sprite type to the appearance num now.

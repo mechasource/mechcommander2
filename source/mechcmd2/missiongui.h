@@ -27,7 +27,7 @@
 #ifndef MISSIONGUI_H
 #define MISSIONGUI_H
 
-#include <mclib.h>
+#include "mclib.h"
 #include "mover.h"
 #include "controlgui.h"
 
@@ -122,7 +122,7 @@ protected:
 	// Mouse Event Data
 	bool isDragging;
 	float vTolSpeed;
-	PCSTR vehicleFile;
+	const std::wstring_view& vehicleFile;
 	int32_t vehicleID[MAX_TEAMS];
 	Stuff::Vector3D dragStart;
 	Stuff::Vector3D dragEnd;
@@ -142,7 +142,7 @@ protected:
 	gosFX::Effect* dustCloud[MAX_TEAMS];
 	bool mechRecovered[MAX_TEAMS];
 	bool vehicleDropped[MAX_TEAMS];
-	MoverPtr mechToRecover[MAX_TEAMS];
+	std::unique_ptr<Mover> mechToRecover[MAX_TEAMS];
 
 	bool bPaused;
 	bool bPausedWithoutMenu;
@@ -192,10 +192,10 @@ public:
 
 	void initMechs() { controlGui.initMechs(void); }
 
-	PCSTR getSupportVehicleNameFromID(int32_t ID) { return controlGui.getVehicleNameFromID(ID); }
+	const std::wstring_view& getSupportVehicleNameFromID(int32_t ID) { return controlGui.getVehicleNameFromID(ID); }
 
-	void addMover(MoverPtr mover) { controlGui.addMover(mover); }
-	void removeMover(MoverPtr mover) { controlGui.removeMover(mover); }
+	void addMover(std::unique_ptr<Mover> mover) { controlGui.addMover(mover); }
+	void removeMover(std::unique_ptr<Mover> mover) { controlGui.removeMover(mover); }
 
 	int32_t update(bool bLeftClick, bool bRightClick, int32_t mouseX, int32_t mouseY,
 		GameObject* pTarget,
@@ -205,7 +205,7 @@ public:
 
 	ControlGui* getControlGui(void) { return &controlGui; }
 
-	void playMovie(PSTR filename) { controlGui.playMovie(filename); }
+	void playMovie(const std::wstring_view& filename) { controlGui.playMovie(filename); }
 
 	int32_t handleOrders(TacticalOrder& order);
 	bool anySelectedWithoutAreaEffect(void);
@@ -253,13 +253,13 @@ public:
 	void doMove(const Stuff::Vector3D& pos);
 	void doGuard(GameObject* pObj);
 	int32_t toggleHotKeys(void);
-	void beginVtol(int32_t supportID, int32_t commanderID = 0,
-		Stuff::Vector3D* reinforcePos = nullptr, MoverPtr salvageTarget = nullptr);
+	void beginVtol(int32_t supportID, int32_t commanderid = 0,
+		Stuff::Vector3D* reinforcePos = nullptr, std::unique_ptr<Mover> salvageTarget = nullptr);
 
 	// Tutorial Stuff goes here.
 	bool startAnimation(
 		int32_t buttonId, bool isButton, bool isPressed, float timeToScroll, int32_t numFlashes);
-	void setTutorialText(PCSTR text);
+	void setTutorialText(const std::wstring_view& text);
 
 	bool isInCalloutAnimation() { return animationRunning; }
 
@@ -430,7 +430,7 @@ private:
 
 	bool canSalvage(GameObject* pMover);
 	bool selectionIsHelicopters();
-	void drawHotKey(PCSTR string, PCSTR descStr, int32_t x, int32_t y);
+	void drawHotKey(const std::wstring_view& string, const std::wstring_view& descStr, int32_t x, int32_t y);
 	void drawHotKeys(void);
 
 	Stuff::Vector3D makeAirStrikeTarget(const Stuff::Vector3D& pos);
@@ -446,7 +446,7 @@ private:
 
 	KeyboardRef* keyboardRef;
 
-	MoverPtr reinforcement;
+	std::unique_ptr<Mover> reinforcement;
 };
 
 typedef MissionInterfaceManager* MissionInterfaceManagerPtr;

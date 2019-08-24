@@ -74,7 +74,7 @@ public:
 	//
 	// Strings can be initialized by PSTR strings
 	//
-	inline FixedLengthString& operator=(PCSTR Source)
+	inline FixedLengthString& operator=(PSTR Source)
 	{
 		if (Source)
 		{

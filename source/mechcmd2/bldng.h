@@ -28,7 +28,7 @@
 
 #define MAX_PRISONERS 4
 
-typedef enum
+enum class 
 {
 	BUILDING_SUBTYPE_NONE,
 	BUILDING_SUBTYPE_WALL,
@@ -74,7 +74,7 @@ public:
 		init(void);
 	}
 
-	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
@@ -199,7 +199,7 @@ public:
 
 	virtual int32_t kill(void) { return (NO_ERROR); }
 
-	virtual PSTR getName(void);
+	virtual const std::wstring_view& getName(void);
 
 	virtual Stuff::Vector3D getPositionFromHS(int32_t weaponType)
 	{

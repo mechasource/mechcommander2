@@ -4,9 +4,9 @@
 
 #include "stdinc.h"
 
-#include <mlr/mlrsortbyorder.hpp>
+#include "mlr/mlrsortbyorder.h"
 
-using namespace MidLevelRenderer;
+namespace MidLevelRenderer {
 
 //#############################################################################
 //############################    MLRSortByOrder
@@ -493,3 +493,5 @@ MLRSortByOrder::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
+
+} // namespace MidLevelRenderer

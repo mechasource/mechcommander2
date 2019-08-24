@@ -1,0 +1,6 @@
+This code is based on a snapshot of DirectX Tool Kit for DirectX 12
+https://github.com/Microsoft/DirectXTK12.git
+forked 2019-08-24
+
+The files was lowercased, code lineendings converted to linefeed and code formatted by clang-format, 
+prior to added to repository. Still it should be possible to follow code changes from the original.

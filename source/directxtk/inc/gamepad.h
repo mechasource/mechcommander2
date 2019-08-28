@@ -107,42 +107,42 @@ public:
 		ThumbSticks thumbSticks;
 		Triggers triggers;
 
-		bool __cdecl IsConnected() const { return connected; }
+		bool __cdecl IsConnected(void) const { return connected; }
 
 		// Is the button pressed currently?
-		bool __cdecl IsAPressed() const { return buttons.a; }
-		bool __cdecl IsBPressed() const { return buttons.b; }
-		bool __cdecl IsXPressed() const { return buttons.x; }
-		bool __cdecl IsYPressed() const { return buttons.y; }
+		bool __cdecl IsAPressed(void) const { return buttons.a; }
+		bool __cdecl IsBPressed(void) const { return buttons.b; }
+		bool __cdecl IsXPressed(void) const { return buttons.x; }
+		bool __cdecl IsYPressed(void) const { return buttons.y; }
 
-		bool __cdecl IsLeftStickPressed() const { return buttons.leftStick; }
-		bool __cdecl IsRightStickPressed() const { return buttons.rightStick; }
+		bool __cdecl IsLeftStickPressed(void) const { return buttons.leftStick; }
+		bool __cdecl IsRightStickPressed(void) const { return buttons.rightStick; }
 
-		bool __cdecl IsLeftShoulderPressed() const { return buttons.leftShoulder; }
-		bool __cdecl IsRightShoulderPressed() const { return buttons.rightShoulder; }
+		bool __cdecl IsLeftShoulderPressed(void) const { return buttons.leftShoulder; }
+		bool __cdecl IsRightShoulderPressed(void) const { return buttons.rightShoulder; }
 
-		bool __cdecl IsBackPressed() const { return buttons.back; }
-		bool __cdecl IsViewPressed() const { return buttons.view; }
-		bool __cdecl IsStartPressed() const { return buttons.start; }
-		bool __cdecl IsMenuPressed() const { return buttons.menu; }
+		bool __cdecl IsBackPressed(void) const { return buttons.back; }
+		bool __cdecl IsViewPressed(void) const { return buttons.view; }
+		bool __cdecl IsStartPressed(void) const { return buttons.start; }
+		bool __cdecl IsMenuPressed(void) const { return buttons.menu; }
 
-		bool __cdecl IsDPadDownPressed() const { return dpad.down; }
-		bool __cdecl IsDPadUpPressed() const { return dpad.up; }
-		bool __cdecl IsDPadLeftPressed() const { return dpad.left; }
-		bool __cdecl IsDPadRightPressed() const { return dpad.right; }
+		bool __cdecl IsDPadDownPressed(void) const { return dpad.down; }
+		bool __cdecl IsDPadUpPressed(void) const { return dpad.up; }
+		bool __cdecl IsDPadLeftPressed(void) const { return dpad.left; }
+		bool __cdecl IsDPadRightPressed(void) const { return dpad.right; }
 
-		bool __cdecl IsLeftThumbStickUp() const { return (thumbSticks.leftY > 0.5f) != 0; }
-		bool __cdecl IsLeftThumbStickDown() const { return (thumbSticks.leftY < -0.5f) != 0; }
-		bool __cdecl IsLeftThumbStickLeft() const { return (thumbSticks.leftX < -0.5f) != 0; }
-		bool __cdecl IsLeftThumbStickRight() const { return (thumbSticks.leftX > 0.5f) != 0; }
+		bool __cdecl IsLeftThumbStickUp(void) const { return (thumbSticks.leftY > 0.5f) != 0; }
+		bool __cdecl IsLeftThumbStickDown(void) const { return (thumbSticks.leftY < -0.5f) != 0; }
+		bool __cdecl IsLeftThumbStickLeft(void) const { return (thumbSticks.leftX < -0.5f) != 0; }
+		bool __cdecl IsLeftThumbStickRight(void) const { return (thumbSticks.leftX > 0.5f) != 0; }
 
-		bool __cdecl IsRightThumbStickUp() const { return (thumbSticks.rightY > 0.5f) != 0; }
-		bool __cdecl IsRightThumbStickDown() const { return (thumbSticks.rightY < -0.5f) != 0; }
-		bool __cdecl IsRightThumbStickLeft() const { return (thumbSticks.rightX < -0.5f) != 0; }
-		bool __cdecl IsRightThumbStickRight() const { return (thumbSticks.rightX > 0.5f) != 0; }
+		bool __cdecl IsRightThumbStickUp(void) const { return (thumbSticks.rightY > 0.5f) != 0; }
+		bool __cdecl IsRightThumbStickDown(void) const { return (thumbSticks.rightY < -0.5f) != 0; }
+		bool __cdecl IsRightThumbStickLeft(void) const { return (thumbSticks.rightX < -0.5f) != 0; }
+		bool __cdecl IsRightThumbStickRight(void) const { return (thumbSticks.rightX > 0.5f) != 0; }
 
-		bool __cdecl IsLeftTriggerPressed() const { return (triggers.left > 0.5f) != 0; }
-		bool __cdecl IsRightTriggerPressed() const { return (triggers.right > 0.5f) != 0; }
+		bool __cdecl IsLeftTriggerPressed(void) const { return (triggers.left > 0.5f) != 0; }
+		bool __cdecl IsRightTriggerPressed(void) const { return (triggers.right > 0.5f) != 0; }
 	};
 
 	struct Capabilities
@@ -173,7 +173,7 @@ public:
 		uint64_t id;
 #endif
 
-		bool __cdecl IsConnected() const
+		bool __cdecl IsConnected(void) const
 		{
 			return connected;
 		}
@@ -239,7 +239,7 @@ public:
 
 		void __cdecl Reset() noexcept;
 
-		State __cdecl GetLastState() const { return lastState; }
+		State __cdecl GetLastState(void) const { return lastState; }
 
 	private:
 		State lastState;
@@ -254,7 +254,7 @@ public:
 	// Set the vibration motor speeds of the gamepad
 	bool __cdecl SetVibration(int player, float leftMotor, float rightMotor, float leftTrigger = 0.f, float rightTrigger = 0.f);
 
-	// Handle suspending/resuming
+	// handle suspending/resuming
 	void __cdecl Suspend();
 	void __cdecl Resume();
 

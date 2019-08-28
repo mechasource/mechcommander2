@@ -9,16 +9,12 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <future>
 #include <memory>
 
-#include "GraphicsMemory.h"
+#include "graphicsmemory.h"
 
 namespace DirectX
 {

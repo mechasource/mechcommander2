@@ -7,20 +7,19 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PostProcess.h"
+#include "stdinc.h"
+#include "postprocess.h"
 
-#include "AlignedNew.h"
-#include "CommonStates.h"
-#include "DemandCreate.h"
-#include "DirectXHelpers.h"
-#include "EffectPipelineStateDescription.h"
-#include "GraphicsMemory.h"
-#include "SharedResourcePool.h"
+#include "alignednew.h"
+#include "commonstates.h"
+#include "demandcreate.h"
+#include "directxhelpers.h"
+#include "effectpipelinestatedescription.h"
+#include "graphicsmemory.h"
+#include "sharedresourcepool.h"
 
 using namespace DirectX;
 
-using Microsoft::WRL::ComPtr;
 
 namespace
 {
@@ -80,7 +79,7 @@ public:
 	ID3D12RootSignature* GetRootSignature(const D3D12_ROOT_SIGNATURE_DESC& desc)
 	{
 		return DemandCreate(mRootSignature, mMutex, [&](ID3D12RootSignature** pResult) -> HRESULT {
-			HRESULT hr = CreateRootSignature(mDevice.Get(), &desc, pResult);
+			HRESULT hr = CreateRootSignature(mDevice.get(), &desc, pResult);
 
 			if (SUCCEEDED(hr))
 				SetDebugObjectName(*pResult, L"DualPostProcess");
@@ -89,11 +88,11 @@ public:
 		});
 	}
 
-	ID3D12Device* GetDevice() const { return mDevice.Get(); }
+	ID3D12Device* GetDevice(void) const { return mDevice.get(); }
 
 protected:
-	ComPtr<ID3D12Device> mDevice;
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature;
+	wil::com_ptr<ID3D12Device> mDevice;
+	wil::com_ptr<ID3D12RootSignature> mRootSignature;
 	std::mutex mMutex;
 };
 } // namespace
@@ -134,7 +133,7 @@ private:
 	GraphicsResource mConstantBuffer;
 
 	// Per instance cache of PSOs, populated with variants for each shader & layout
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> mPipelineState;
+	wil::com_ptr<ID3D12PipelineState> mPipelineState;
 
 	// Per instance root signature
 	ID3D12RootSignature* mRootSignature;
@@ -205,7 +204,7 @@ DualPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState& 
 		mRootSignature = mDeviceResources->GetRootSignature(rsigDesc);
 	}
 
-	assert(mRootSignature != nullptr);
+	_ASSERT(mRootSignature != nullptr);
 
 	// Create pipeline state.
 	EffectPipelineStateDescription psd(nullptr,
@@ -220,9 +219,9 @@ DualPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState& 
 		mRootSignature,
 		vertexShader,
 		pixelShaders[ifx],
-		mPipelineState.GetAddressOf());
+		mPipelineState.addressof());
 
-	SetDebugObjectName(mPipelineState.Get(), L"DualPostProcess");
+	SetDebugObjectName(mPipelineState.get(), L"DualPostProcess");
 }
 
 // Sets our state onto the D3D device.
@@ -274,7 +273,7 @@ DualPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList)
 	commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, mConstantBuffer.GpuAddress());
 
 	// Set the pipeline state.
-	commandList->SetPipelineState(mPipelineState.Get());
+	commandList->SetPipelineState(mPipelineState.get());
 
 	// Draw quad.
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

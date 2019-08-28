@@ -9,11 +9,7 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
@@ -25,11 +21,11 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
-#include <assert.h>
+#include <_ASSERT.h>
 #include <stdint.h>
 
-#include "GraphicsMemory.h"
-#include "Effects.h"
+#include "graphicsmemory.h"
+#include "effects.h"
 
 namespace DirectX
 {
@@ -58,8 +54,8 @@ public:
 	DXGI_FORMAT indexFormat;
 	SharedGraphicsResource indexBuffer;
 	SharedGraphicsResource vertexBuffer;
-	Microsoft::WRL::ComPtr<ID3D12Resource> staticIndexBuffer;
-	Microsoft::WRL::ComPtr<ID3D12Resource> staticVertexBuffer;
+	wil::com_ptr<ID3D12Resource> staticIndexBuffer;
+	wil::com_ptr<ID3D12Resource> staticVertexBuffer;
 	std::shared_ptr<std::vector<D3D12_INPUT_ELEMENT_DESC>> vbDecl;
 
 	using Collection = std::vector<std::unique_ptr<ModelMeshPart>>;
@@ -84,7 +80,7 @@ public:
 	static void __cdecl DrawMeshParts(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart::Collection& meshParts, DrawCallback callback);
 
 	// Draw the mesh with a range of effects that mesh parts will index into.
-	// Effects can be any IEffect pointer type (including smart pointer). Value or reference types will not compile.
+	// Effects can be any IEffect pointer type (including smart pointer). value or reference types will not compile.
 	// The iterator passed to this method should have random access capabilities for best performance.
 	template <typename TEffectIterator, typename TEffectIteratorCategory = typename TEffectIterator::iterator_category>
 	static void DrawMeshParts(
@@ -92,7 +88,7 @@ public:
 		_In_ const ModelMeshPart::Collection& meshParts,
 		TEffectIterator partEffects)
 	{
-		// This assert is here to prevent accidental use of containers that would cause undesirable performance penalties.
+		// This _ASSERT is here to prevent accidental use of containers that would cause undesirable performance penalties.
 		static_assert(
 			std::is_base_of<std::random_access_iterator_tag, TEffectIteratorCategory>::value,
 			"Providing an iterator without random access capabilities -- such as from std::list -- is not supported.");
@@ -100,7 +96,7 @@ public:
 		for (auto it = std::begin(meshParts); it != std::end(meshParts); ++it)
 		{
 			auto part = it->get();
-			assert(part != nullptr);
+			_ASSERT(part != nullptr);
 
 			// Get the effect at the location specified by the part's material
 			TEffectIterator effect_iterator = partEffects;
@@ -142,7 +138,7 @@ public:
 	void __cdecl DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, ModelMeshPart::DrawCallback callback) const;
 
 	// Draw the mesh with a range of effects that mesh parts will index into.
-	// TEffectPtr can be any IEffect pointer type (including smart pointer). Value or reference types will not compile.
+	// TEffectPtr can be any IEffect pointer type (including smart pointer). value or reference types will not compile.
 	template <typename TEffectIterator, typename TEffectIteratorCategory = typename TEffectIterator::iterator_category>
 	void DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, TEffectIterator effects) const
 	{
@@ -184,7 +180,7 @@ public:
 		for (auto it = std::begin(meshes); it != std::end(meshes); ++it)
 		{
 			auto mesh = it->get();
-			assert(mesh != nullptr);
+			_ASSERT(mesh != nullptr);
 
 			mesh->DrawOpaque(commandList, std::forward<TForwardArgs>(args)...);
 		}
@@ -198,7 +194,7 @@ public:
 		for (auto it = std::begin(meshes); it != std::end(meshes); ++it)
 		{
 			auto mesh = it->get();
-			assert(mesh != nullptr);
+			_ASSERT(mesh != nullptr);
 
 			mesh->DrawAlpha(commandList, std::forward<TForwardArgs>(args)...);
 		}
@@ -219,7 +215,7 @@ public:
 	std::unique_ptr<EffectTextureFactory> __cdecl LoadTextures(
 		_In_ ID3D12Device* device,
 		ResourceUploadBatch& resourceUploadBatch,
-		_In_opt_z_ const wchar_t* texturesPath = nullptr,
+		_In_opt_z_ const std::wstring_view& texturesPath = nullptr,
 		D3D12_DESCRIPTOR_HEAP_FLAGS flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE) const;
 
 	// Load VB/IB resources for static geometry
@@ -247,11 +243,11 @@ public:
 
 	// Loads a model from a DirectX SDK .SDKMESH file
 	static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(_In_reads_bytes_(dataSize) const uint8_t* meshData, _In_ size_t dataSize, _In_opt_ ID3D12Device* device = nullptr);
-	static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(_In_z_ const wchar_t* szFileName, _In_opt_ ID3D12Device* device = nullptr);
+	static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(_In_z_ const std::wstring_view& szFileName, _In_opt_ ID3D12Device* device = nullptr);
 
 	// Loads a model from a .VBO file
 	static std::unique_ptr<Model> __cdecl CreateFromVBO(_In_reads_bytes_(dataSize) const uint8_t* meshData, _In_ size_t dataSize, _In_opt_ ID3D12Device* device = nullptr);
-	static std::unique_ptr<Model> __cdecl CreateFromVBO(_In_z_ const wchar_t* szFileName, _In_opt_ ID3D12Device* device = nullptr);
+	static std::unique_ptr<Model> __cdecl CreateFromVBO(_In_z_ const std::wstring_view& szFileName, _In_opt_ ID3D12Device* device = nullptr);
 
 	// Utility function for getting a GPU descriptor for a mesh part/material index. If there is no texture the
 	// descriptor will be zero.

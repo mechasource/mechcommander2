@@ -7,8 +7,8 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 
 using namespace DirectX;
 
@@ -48,7 +48,7 @@ public:
 		RootParameterCount
 	};
 
-	int GetPipelineStatePermutation(bool vertexColorEnabled, DebugEffect::Mode debugMode, bool biasedVertexNormals) const;
+	int GetPipelineStatePermutation(bool vertexcolourEnabled, DebugEffect::Mode debugMode, bool biasedVertexNormals) const;
 
 	void Apply(_In_ ID3D12GraphicsCommandList* commandList);
 };
@@ -183,21 +183,21 @@ DebugEffect::Impl::Impl(_In_ ID3D12Device* device, int effectFlags, const Effect
 		mRootSignature = GetRootSignature(0, rsigDesc);
 	}
 
-	assert(mRootSignature != nullptr);
+	_ASSERT(mRootSignature != nullptr);
 
 	// Create pipeline state.
 	int sp = GetPipelineStatePermutation(
-		(effectFlags & EffectFlags::VertexColor) != 0,
+		(effectFlags & EffectFlags::Vertexcolour) != 0,
 		debugMode,
 		(effectFlags & EffectFlags::BiasedVertexNormals) != 0);
-	assert(sp >= 0 && sp < DebugEffectTraits::ShaderPermutationCount);
+	_ASSERT(sp >= 0 && sp < DebugEffectTraits::ShaderPermutationCount);
 	_Analysis_assume_(sp >= 0 && sp < DebugEffectTraits::ShaderPermutationCount);
 
 	int vi = EffectBase<DebugEffectTraits>::VertexShaderIndices[sp];
-	assert(vi >= 0 && vi < DebugEffectTraits::VertexShaderCount);
+	_ASSERT(vi >= 0 && vi < DebugEffectTraits::VertexShaderCount);
 	_Analysis_assume_(vi >= 0 && vi < DebugEffectTraits::VertexShaderCount);
 	int pi = EffectBase<DebugEffectTraits>::PixelShaderIndices[sp];
-	assert(pi >= 0 && pi < DebugEffectTraits::PixelShaderCount);
+	_ASSERT(pi >= 0 && pi < DebugEffectTraits::PixelShaderCount);
 	_Analysis_assume_(pi >= 0 && pi < DebugEffectTraits::PixelShaderCount);
 
 	pipelineDescription.CreatePipelineState(
@@ -205,18 +205,18 @@ DebugEffect::Impl::Impl(_In_ ID3D12Device* device, int effectFlags, const Effect
 		mRootSignature,
 		EffectBase<DebugEffectTraits>::VertexShaderBytecode[vi],
 		EffectBase<DebugEffectTraits>::PixelShaderBytecode[pi],
-		mPipelineState.GetAddressOf());
+		mPipelineState.addressof());
 
-	SetDebugObjectName(mPipelineState.Get(), L"DebugEffect");
+	SetDebugObjectName(mPipelineState.get(), L"DebugEffect");
 }
 
 int
-DebugEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled, DebugEffect::Mode debugMode, bool biasedVertexNormals) const
+DebugEffect::Impl::GetPipelineStatePermutation(bool vertexcolourEnabled, DebugEffect::Mode debugMode, bool biasedVertexNormals) const
 {
 	int permutation = static_cast<int>(debugMode);
 
 	// Support vertex coloring?
-	if (vertexColorEnabled)
+	if (vertexcolourEnabled)
 	{
 		permutation += 4;
 	}
@@ -261,7 +261,7 @@ DebugEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 	commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
 	// Set the pipeline state
-	commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+	commandList->SetPipelineState(EffectBase::mPipelineState.get());
 }
 
 // Public constructor.
@@ -333,7 +333,7 @@ DebugEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
 
 // Material settings.
 void XM_CALLCONV
-DebugEffect::SetHemisphericalAmbientColor(FXMVECTOR upper, FXMVECTOR lower)
+DebugEffect::SetHemisphericalAmbientcolour(FXMVECTOR upper, FXMVECTOR lower)
 {
 	// Set xyz to new value, but preserve existing w (alpha).
 	pImpl->constants.ambientDownAndAlpha = XMVectorSelect(pImpl->constants.ambientDownAndAlpha, lower, g_XMSelect1110);

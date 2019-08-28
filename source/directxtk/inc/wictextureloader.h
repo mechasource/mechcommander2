@@ -19,11 +19,7 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <stdint.h>
 #include <memory>
@@ -53,7 +49,7 @@ HRESULT __cdecl LoadWICTextureFromMemory(
 
 HRESULT __cdecl LoadWICTextureFromFile(
 	_In_ ID3D12Device* d3dDevice,
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	_Outptr_ ID3D12Resource** texture,
 	std::unique_ptr<uint8_t[]>& decodedData,
 	D3D12_SUBRESOURCE_DATA& subresource,
@@ -72,7 +68,7 @@ HRESULT __cdecl CreateWICTextureFromMemory(
 HRESULT __cdecl CreateWICTextureFromFile(
 	_In_ ID3D12Device* d3dDevice,
 	ResourceUploadBatch& resourceUpload,
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	_Outptr_ ID3D12Resource** texture,
 	bool generateMips = false,
 	size_t maxsize = 0);
@@ -84,17 +80,17 @@ HRESULT __cdecl LoadWICTextureFromMemoryEx(
 	size_t wicDataSize,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture,
 	std::unique_ptr<uint8_t[]>& decodedData,
 	D3D12_SUBRESOURCE_DATA& subresource);
 
 HRESULT __cdecl LoadWICTextureFromFileEx(
 	_In_ ID3D12Device* d3dDevice,
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture,
 	std::unique_ptr<uint8_t[]>& decodedData,
 	D3D12_SUBRESOURCE_DATA& subresource);
@@ -107,15 +103,15 @@ HRESULT __cdecl CreateWICTextureFromMemoryEx(
 	size_t wicDataSize,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture);
 
 HRESULT __cdecl CreateWICTextureFromFileEx(
 	_In_ ID3D12Device* d3dDevice,
 	ResourceUploadBatch& resourceUpload,
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture);
 } // namespace DirectX

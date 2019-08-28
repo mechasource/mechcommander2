@@ -11,14 +11,15 @@
 
 #include <memory>
 
-#include "Effects.h"
-#include "PlatformHelpers.h"
-#include "SharedResourcePool.h"
-#include "AlignedNew.h"
-#include "DescriptorHeap.h"
-#include "GraphicsMemory.h"
-#include "DirectXHelpers.h"
-#include "RenderTargetState.h"
+#include "effects.h"
+#include "platformhelpers.h"
+#include "sharedresourcepool.h"
+#include "alignednew.h"
+#include "descriptorheap.h"
+#include "graphicsmemory.h"
+#include "directxhelpers.h"
+#include "rendertargetstate.h"
+#include "d3dx12.h"
 
 // BasicEffect, SkinnedEffect, et al, have many things in common, but also significant
 // differences (for instance, not all the effects support lighting). This header breaks
@@ -42,7 +43,7 @@ const int ConstantBuffer = 0x01;
 const int WorldViewProj = 0x02;
 const int WorldInverseTranspose = 0x04;
 const int EyePosition = 0x08;
-const int MaterialColor = 0x10;
+const int Materialcolour = 0x10;
 const int FogVector = 0x20;
 const int FogEnable = 0x40;
 const int AlphaTest = 0x80;
@@ -74,38 +75,38 @@ struct EffectFog
 };
 
 // Helper stores material color settings, and computes derived parameters for shaders that do not support realtime lighting.
-struct EffectColor
+struct Effectcolour
 {
-	EffectColor() noexcept;
+	Effectcolour() noexcept;
 
-	XMVECTOR diffuseColor;
+	XMVECTOR diffusecolour;
 	float alpha;
 
-	void SetConstants(_Inout_ int& dirtyFlags, _Inout_ XMVECTOR& diffuseColorConstant);
+	void SetConstants(_Inout_ int& dirtyFlags, _Inout_ XMVECTOR& diffusecolourConstant);
 };
 
 // Helper stores the current light settings, and computes derived shader parameters.
-struct EffectLights : public EffectColor
+struct EffectLights : public Effectcolour
 {
 	EffectLights() noexcept;
 
 	static const int MaxDirectionalLights = IEffectLights::MaxDirectionalLights;
 
 	// Fields.
-	XMVECTOR emissiveColor;
-	XMVECTOR ambientLightColor;
+	XMVECTOR emissivecolour;
+	XMVECTOR ambientLightcolour;
 
 	bool lightEnabled[MaxDirectionalLights];
-	XMVECTOR lightDiffuseColor[MaxDirectionalLights];
-	XMVECTOR lightSpecularColor[MaxDirectionalLights];
+	XMVECTOR lightDiffusecolour[MaxDirectionalLights];
+	XMVECTOR lightSpecularcolour[MaxDirectionalLights];
 
 	// Methods.
-	void InitializeConstants(_Out_ XMVECTOR& specularColorAndPowerConstant, _Out_writes_all_(MaxDirectionalLights) XMVECTOR* lightDirectionConstant, _Out_writes_all_(MaxDirectionalLights) XMVECTOR* lightDiffuseConstant, _Out_writes_all_(MaxDirectionalLights) XMVECTOR* lightSpecularConstant) const;
-	void SetConstants(_Inout_ int& dirtyFlags, _In_ EffectMatrices const& matrices, _Inout_ XMMATRIX& worldConstant, _Inout_updates_(3) XMVECTOR worldInverseTransposeConstant[3], _Inout_ XMVECTOR& eyePositionConstant, _Inout_ XMVECTOR& diffuseColorConstant, _Inout_ XMVECTOR& emissiveColorConstant, bool lightingEnabled);
+	void InitializeConstants(_Out_ XMVECTOR& specularcolourAndPowerConstant, _Out_writes_all_(MaxDirectionalLights) XMVECTOR* lightDirectionConstant, _Out_writes_all_(MaxDirectionalLights) XMVECTOR* lightDiffuseConstant, _Out_writes_all_(MaxDirectionalLights) XMVECTOR* lightSpecularConstant) const;
+	void SetConstants(_Inout_ int& dirtyFlags, _In_ EffectMatrices const& matrices, _Inout_ XMMATRIX& worldConstant, _Inout_updates_(3) XMVECTOR worldInverseTransposeConstant[3], _Inout_ XMVECTOR& eyePositionConstant, _Inout_ XMVECTOR& diffusecolourConstant, _Inout_ XMVECTOR& emissivecolourConstant, bool lightingEnabled);
 
 	int SetLightEnabled(int whichLight, bool value, _Inout_updates_(MaxDirectionalLights) XMVECTOR* lightDiffuseConstant, _Inout_updates_(MaxDirectionalLights) XMVECTOR* lightSpecularConstant);
-	int XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value, _Inout_updates_(MaxDirectionalLights) XMVECTOR* lightDiffuseConstant);
-	int XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value, _Inout_updates_(MaxDirectionalLights) XMVECTOR* lightSpecularConstant);
+	int XM_CALLCONV SetLightDiffusecolour(int whichLight, FXMVECTOR value, _Inout_updates_(MaxDirectionalLights) XMVECTOR* lightDiffuseConstant);
+	int XM_CALLCONV SetLightSpecularcolour(int whichLight, FXMVECTOR value, _Inout_updates_(MaxDirectionalLights) XMVECTOR* lightSpecularConstant);
 
 	static void ValidateLightIndex(int whichLight);
 	static void EnableDefaultLighting(_In_ IEffectLights* effect);
@@ -120,10 +121,10 @@ public:
 	{
 	}
 
-	ID3D12RootSignature* DemandCreateRootSig(_Inout_ Microsoft::WRL::ComPtr<ID3D12RootSignature>& rootSig, D3D12_ROOT_SIGNATURE_DESC const& desc);
+	ID3D12RootSignature* DemandCreateRootSig(_Inout_ wil::com_ptr<ID3D12RootSignature>& rootSig, D3D12_ROOT_SIGNATURE_DESC const& desc);
 
 protected:
-	Microsoft::WRL::ComPtr<ID3D12Device> mDevice;
+	wil::com_ptr<ID3D12Device> mDevice;
 
 	std::mutex mMutex;
 };
@@ -184,7 +185,7 @@ protected:
 	static const D3D12_INPUT_LAYOUT_DESC VertexShaderInputLayouts[Traits::ShaderPermutationCount];
 
 	// Per instance cache of PSOs, populated with variants for each shader & layout
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> mPipelineState;
+	wil::com_ptr<ID3D12PipelineState> mPipelineState;
 
 	// Per instance root signature
 	ID3D12RootSignature* mRootSignature;
@@ -206,16 +207,16 @@ private:
 		// Gets or lazily creates the specified root signature
 		ID3D12RootSignature* GetRootSignature(int slot, D3D12_ROOT_SIGNATURE_DESC const& desc)
 		{
-			assert(slot >= 0 && slot < Traits::RootSignatureCount);
+			_ASSERT(slot >= 0 && slot < Traits::RootSignatureCount);
 			_Analysis_assume_(slot >= 0 && slot < Traits::RootSignatureCount);
 
 			return DemandCreateRootSig(mRootSignature[slot], desc);
 		}
 
-		ID3D12Device* GetDevice() const { return mDevice.Get(); }
+		ID3D12Device* GetDevice(void) const { return mDevice.get(); }
 
 	private:
-		Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature[Traits::RootSignatureCount];
+		wil::com_ptr<ID3D12RootSignature> mRootSignature[Traits::RootSignatureCount];
 	};
 
 	// Per-device resources.

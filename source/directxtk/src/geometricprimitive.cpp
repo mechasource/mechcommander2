@@ -7,19 +7,18 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "GeometricPrimitive.h"
+#include "stdinc.h"
+#include "geometricprimitive.h"
 
-#include "CommonStates.h"
-#include "DirectXHelpers.h"
-#include "Effects.h"
-#include "Geometry.h"
-#include "GraphicsMemory.h"
-#include "PlatformHelpers.h"
-#include "ResourceUploadBatch.h"
+#include "commonstates.h"
+#include "directxhelpers.h"
+#include "effects.h"
+#include "geometry.h"
+#include "graphicsmemory.h"
+#include "platformhelpers.h"
+#include "resourceuploadbatch.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 // Internal GeometricPrimitive implementation class.
 class GeometricPrimitive::Impl
@@ -34,11 +33,11 @@ public:
 
 	void Draw(_In_ ID3D12GraphicsCommandList* commandList) const;
 
-	UINT mIndexCount;
+	uint32_t mIndexCount;
 	SharedGraphicsResource mIndexBuffer;
 	SharedGraphicsResource mVertexBuffer;
-	ComPtr<ID3D12Resource> mStaticIndexBuffer;
-	ComPtr<ID3D12Resource> mStaticVertexBuffer;
+	wil::com_ptr<ID3D12Resource> mStaticIndexBuffer;
+	wil::com_ptr<ID3D12Resource> mStaticVertexBuffer;
 	D3D12_VERTEX_BUFFER_VIEW mVertexBufferView;
 	D3D12_INDEX_BUFFER_VIEW mIndexBufferView;
 };
@@ -81,15 +80,15 @@ GeometricPrimitive::Impl::Initialize(
 	memcpy(mIndexBuffer.Memory(), ind, indSizeBytes);
 
 	// Record index count for draw
-	mIndexCount = static_cast<UINT>(indices.size());
+	mIndexCount = static_cast<uint32_t>(indices.size());
 
 	// Create views
 	mVertexBufferView.BufferLocation = mVertexBuffer.GpuAddress();
-	mVertexBufferView.StrideInBytes = static_cast<UINT>(sizeof(VertexCollection::value_type));
-	mVertexBufferView.SizeInBytes = static_cast<UINT>(mVertexBuffer.Size());
+	mVertexBufferView.StrideInBytes = static_cast<uint32_t>(sizeof(VertexCollection::value_type));
+	mVertexBufferView.SizeInBytes = static_cast<uint32_t>(mVertexBuffer.Size());
 
 	mIndexBufferView.BufferLocation = mIndexBuffer.GpuAddress();
-	mIndexBufferView.SizeInBytes = static_cast<UINT>(mIndexBuffer.Size());
+	mIndexBufferView.SizeInBytes = static_cast<uint32_t>(mIndexBuffer.Size());
 	mIndexBufferView.Format = DXGI_FORMAT_R16_UINT;
 }
 
@@ -104,7 +103,7 @@ GeometricPrimitive::Impl::LoadStaticBuffers(
 	// Convert dynamic VB to static VB
 	if (!mStaticVertexBuffer)
 	{
-		assert(mVertexBuffer);
+		_ASSERT(mVertexBuffer);
 
 		auto desc = CD3DX12_RESOURCE_DESC::Buffer(mVertexBuffer.Size());
 
@@ -114,13 +113,13 @@ GeometricPrimitive::Impl::LoadStaticBuffers(
 			&desc,
 			D3D12_RESOURCE_STATE_COPY_DEST,
 			nullptr,
-			IID_GRAPHICS_PPV_ARGS(mStaticVertexBuffer.GetAddressOf())));
+			IID_GRAPHICS_PPV_ARGS(mStaticVertexBuffer.addressof())));
 
-		SetDebugObjectName(mStaticVertexBuffer.Get(), L"GeometricPrimitive");
+		SetDebugObjectName(mStaticVertexBuffer.get(), L"GeometricPrimitive");
 
-		resourceUploadBatch.Upload(mStaticVertexBuffer.Get(), mVertexBuffer);
+		resourceUploadBatch.Upload(mStaticVertexBuffer.get(), mVertexBuffer);
 
-		resourceUploadBatch.Transition(mStaticVertexBuffer.Get(),
+		resourceUploadBatch.Transition(mStaticVertexBuffer.get(),
 			D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
 		// Update view
@@ -132,7 +131,7 @@ GeometricPrimitive::Impl::LoadStaticBuffers(
 	// Convert dynamic IB to static IB
 	if (!mStaticIndexBuffer)
 	{
-		assert(mIndexBuffer);
+		_ASSERT(mIndexBuffer);
 
 		auto desc = CD3DX12_RESOURCE_DESC::Buffer(mIndexBuffer.Size());
 
@@ -142,13 +141,13 @@ GeometricPrimitive::Impl::LoadStaticBuffers(
 			&desc,
 			D3D12_RESOURCE_STATE_COPY_DEST,
 			nullptr,
-			IID_GRAPHICS_PPV_ARGS(mStaticIndexBuffer.GetAddressOf())));
+			IID_GRAPHICS_PPV_ARGS(mStaticIndexBuffer.addressof())));
 
-		SetDebugObjectName(mStaticIndexBuffer.Get(), L"GeometricPrimitive");
+		SetDebugObjectName(mStaticIndexBuffer.get(), L"GeometricPrimitive");
 
-		resourceUploadBatch.Upload(mStaticIndexBuffer.Get(), mIndexBuffer);
+		resourceUploadBatch.Upload(mStaticIndexBuffer.get(), mIndexBuffer);
 
-		resourceUploadBatch.Transition(mStaticIndexBuffer.Get(),
+		resourceUploadBatch.Transition(mStaticIndexBuffer.get(),
 			D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
 
 		// Update view

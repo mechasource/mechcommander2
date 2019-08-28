@@ -7,20 +7,19 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 
 #include <algorithm>
 #include <vector>
 
-#include "SpriteFont.h"
-#include "DirectXHelpers.h"
-#include "BinaryReader.h"
-#include "LoaderHelpers.h"
-#include "ResourceUploadBatch.h"
-#include "DescriptorHeap.h"
+#include "spritefont.h"
+#include "directxhelpers.h"
+#include "binaryreader.h"
+#include "loaderhelpers.h"
+#include "resourceuploadbatch.h"
+#include "descriptorheap.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 // Internal SpriteFont implementation class.
 class SpriteFont::Impl
@@ -43,7 +42,7 @@ public:
 	void SetDefaultCharacter(wchar_t character);
 
 	template <typename TAction>
-	void ForEachGlyph(_In_z_ wchar_t const* text, TAction action) const;
+	void ForEachGlyph(_In_z_ const std::wstring_view& text, TAction action) const;
 
 	void CreateTextureResource(_In_ ID3D12Device* device,
 		ResourceUploadBatch& upload,
@@ -52,10 +51,10 @@ public:
 		uint32_t stride, uint32_t rows,
 		_In_reads_(stride* rows) const uint8_t* data);
 
-	const wchar_t* ConvertUTF8(_In_z_ const char* text);
+	const std::wstring_view& ConvertUTF8(_In_z_ const std::string_view& text);
 
 	// Fields.
-	ComPtr<ID3D12Resource> textureResource;
+	wil::com_ptr<ID3D12Resource> textureResource;
 	D3D12_GPU_DESCRIPTOR_HANDLE texture;
 	XMUINT2 textureSize;
 	std::vector<Glyph> glyphs;
@@ -70,7 +69,7 @@ private:
 // Constants.
 const XMFLOAT2 SpriteFont::Float2Zero(0, 0);
 
-static const char spriteFontMagic[] = "DXTKfont";
+static const wchar_t spriteFontMagic[] = "DXTKfont";
 
 // Comparison operators make our sorted glyph vector work with std::binary_search and lower_bound.
 namespace DirectX
@@ -108,7 +107,7 @@ SpriteFont::Impl::Impl(
 	utfBufferSize(0)
 {
 	// Validate the header.
-	for (char const* magic = spriteFontMagic; *magic; magic++)
+	for (const std::string_view& magic = spriteFontMagic; *magic; magic++)
 	{
 		if (reader->Read<uint8_t>() != *magic)
 		{
@@ -129,8 +128,8 @@ SpriteFont::Impl::Impl(
 	SetDefaultCharacter(static_cast<wchar_t>(reader->Read<uint32_t>()));
 
 	// Read the texture data.
-	auto textureWidth = reader->Read<uint32_t>();
-	auto textureHeight = reader->Read<uint32_t>();
+	auto texturewidth = reader->Read<uint32_t>();
+	auto textureheight = reader->Read<uint32_t>();
 	auto textureFormat = reader->Read<DXGI_FORMAT>();
 	auto textureStride = reader->Read<uint32_t>();
 	auto textureRows = reader->Read<uint32_t>();
@@ -144,19 +143,19 @@ SpriteFont::Impl::Impl(
 	// Create the D3D texture object.
 	CreateTextureResource(
 		device, upload,
-		textureWidth, textureHeight,
+		texturewidth, textureheight,
 		textureFormat,
 		textureStride, textureRows,
 		textureData);
 
 	// Create the shader resource view
 	CreateShaderResourceView(
-		device, textureResource.Get(),
+		device, textureResource.get(),
 		cpuDesc, false);
 
 	// Save off the GPU descriptor pointer and size.
 	texture = gpuDesc;
-	textureSize = XMUINT2(textureWidth, textureHeight);
+	textureSize = XMUINT2(texturewidth, textureheight);
 }
 
 // Constructs a SpriteFont from arbitrary user specified glyph data.
@@ -210,7 +209,7 @@ SpriteFont::Impl::SetDefaultCharacter(wchar_t character)
 // The core glyph layout algorithm, shared between DrawString and MeasureString.
 template <typename TAction>
 void
-SpriteFont::Impl::ForEachGlyph(_In_z_ wchar_t const* text, TAction action) const
+SpriteFont::Impl::ForEachGlyph(_In_z_ const std::wstring_view& text, TAction action) const
 {
 	float x = 0;
 	float y = 0;
@@ -265,12 +264,12 @@ SpriteFont::Impl::CreateTextureResource(
 	const uint8_t* data)
 {
 	D3D12_RESOURCE_DESC desc = {};
-	desc.Width = static_cast<UINT>(width);
-	desc.Height = static_cast<UINT>(height);
+	desc.width = static_cast<uint32_t>(width);
+	desc.height = static_cast<uint32_t>(height);
 	desc.MipLevels = 1;
 	desc.DepthOrArraySize = 1;
 	desc.Format = format;
-	desc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	desc.flags = D3D12_RESOURCE_FLAG_NONE;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
 	desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -285,7 +284,7 @@ SpriteFont::Impl::CreateTextureResource(
 		nullptr,
 		IID_GRAPHICS_PPV_ARGS(textureResource.ReleaseAndGetAddressOf())));
 
-	SetDebugObjectName(textureResource.Get(), L"SpriteFont:Texture");
+	SetDebugObjectName(textureResource.get(), L"SpriteFont:Texture");
 
 	D3D12_SUBRESOURCE_DATA subres = {};
 	subres.pData = data;
@@ -293,19 +292,19 @@ SpriteFont::Impl::CreateTextureResource(
 	subres.SlicePitch = ptrdiff_t(stride) * ptrdiff_t(rows);
 
 	upload.Upload(
-		textureResource.Get(),
+		textureResource.get(),
 		0,
 		&subres,
 		1);
 
 	upload.Transition(
-		textureResource.Get(),
+		textureResource.get(),
 		D3D12_RESOURCE_STATE_COPY_DEST,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
-const wchar_t*
-SpriteFont::Impl::ConvertUTF8(_In_z_ const char* text)
+const std::wstring_view&
+SpriteFont::Impl::ConvertUTF8(_In_z_ const std::string_view& text)
 {
 	if (!utfBuffer)
 	{
@@ -336,7 +335,7 @@ SpriteFont::Impl::ConvertUTF8(_In_z_ const char* text)
 
 // Construct from a binary file created by the MakeSpriteFont utility.
 _Use_decl_annotations_
-SpriteFont::SpriteFont(ID3D12Device* device, ResourceUploadBatch& upload, wchar_t const* fileName, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorDest, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorDest, bool forceSRGB)
+SpriteFont::SpriteFont(ID3D12Device* device, ResourceUploadBatch& upload, const std::wstring_view& fileName, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorDest, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorDest, bool forceSRGB)
 {
 	BinaryReader reader(fileName);
 
@@ -380,25 +379,25 @@ SpriteFont::~SpriteFont()
 
 // Wide-character / UTF-16LE
 void XM_CALLCONV
-SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, float scale, SpriteEffects effects, float layerDepth) const
+SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ const std::wstring_view& text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, float scale, SpriteEffects effects, float layerDepth) const
 {
 	DrawString(spriteBatch, text, XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMVectorReplicate(scale), effects, layerDepth);
 }
 
 void XM_CALLCONV
-SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, XMFLOAT2 const& scale, SpriteEffects effects, float layerDepth) const
+SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ const std::wstring_view& text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, XMFLOAT2 const& scale, SpriteEffects effects, float layerDepth) const
 {
 	DrawString(spriteBatch, text, XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMLoadFloat2(&scale), effects, layerDepth);
 }
 
 void XM_CALLCONV
-SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, float scale, SpriteEffects effects, float layerDepth) const
+SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ const std::wstring_view& text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, float scale, SpriteEffects effects, float layerDepth) const
 {
 	DrawString(spriteBatch, text, position, color, rotation, origin, XMVectorReplicate(scale), effects, layerDepth);
 }
 
 void XM_CALLCONV
-SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, GXMVECTOR scale, SpriteEffects effects, float layerDepth) const
+SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ const std::wstring_view& text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, GXMVECTOR scale, SpriteEffects effects, float layerDepth) const
 {
 	static_assert(SpriteEffects_FlipHorizontally == 1 && SpriteEffects_FlipVertically == 2, "If you change these enum values, the following tables must be updated to match");
 
@@ -453,7 +452,7 @@ SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text
 }
 
 XMVECTOR XM_CALLCONV
-SpriteFont::MeasureString(_In_z_ wchar_t const* text) const
+SpriteFont::MeasureString(_In_z_ const std::wstring_view& text) const
 {
 	XMVECTOR result = XMVectorZero();
 
@@ -472,7 +471,7 @@ SpriteFont::MeasureString(_In_z_ wchar_t const* text) const
 }
 
 RECT
-SpriteFont::MeasureDrawBounds(_In_z_ wchar_t const* text, XMFLOAT2 const& position) const
+SpriteFont::MeasureDrawBounds(_In_z_ const std::wstring_view& text, XMFLOAT2 const& position) const
 {
 	RECT result = {LONG_MAX, LONG_MAX, 0, 0};
 
@@ -509,7 +508,7 @@ SpriteFont::MeasureDrawBounds(_In_z_ wchar_t const* text, XMFLOAT2 const& positi
 }
 
 RECT XM_CALLCONV
-SpriteFont::MeasureDrawBounds(_In_z_ wchar_t const* text, FXMVECTOR position) const
+SpriteFont::MeasureDrawBounds(_In_z_ const std::wstring_view& text, FXMVECTOR position) const
 {
 	XMFLOAT2 pos;
 	XMStoreFloat2(&pos, position);
@@ -519,43 +518,43 @@ SpriteFont::MeasureDrawBounds(_In_z_ wchar_t const* text, FXMVECTOR position) co
 
 // UTF-8
 void XM_CALLCONV
-SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ char const* text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, float scale, SpriteEffects effects, float layerDepth) const
+SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ const std::string_view& text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, float scale, SpriteEffects effects, float layerDepth) const
 {
 	DrawString(spriteBatch, pImpl->ConvertUTF8(text), XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMVectorReplicate(scale), effects, layerDepth);
 }
 
 void XM_CALLCONV
-SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ char const* text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, XMFLOAT2 const& scale, SpriteEffects effects, float layerDepth) const
+SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ const std::string_view& text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, XMFLOAT2 const& scale, SpriteEffects effects, float layerDepth) const
 {
 	DrawString(spriteBatch, pImpl->ConvertUTF8(text), XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMLoadFloat2(&scale), effects, layerDepth);
 }
 
 void XM_CALLCONV
-SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ char const* text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, float scale, SpriteEffects effects, float layerDepth) const
+SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ const std::string_view& text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, float scale, SpriteEffects effects, float layerDepth) const
 {
 	DrawString(spriteBatch, pImpl->ConvertUTF8(text), position, color, rotation, origin, XMVectorReplicate(scale), effects, layerDepth);
 }
 
 void XM_CALLCONV
-SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ char const* text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, GXMVECTOR scale, SpriteEffects effects, float layerDepth) const
+SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ const std::string_view& text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, GXMVECTOR scale, SpriteEffects effects, float layerDepth) const
 {
 	DrawString(spriteBatch, pImpl->ConvertUTF8(text), position, color, rotation, origin, scale, effects, layerDepth);
 }
 
 XMVECTOR XM_CALLCONV
-SpriteFont::MeasureString(_In_z_ char const* text) const
+SpriteFont::MeasureString(_In_z_ const std::string_view& text) const
 {
 	return MeasureString(pImpl->ConvertUTF8(text));
 }
 
 RECT
-SpriteFont::MeasureDrawBounds(_In_z_ char const* text, XMFLOAT2 const& position) const
+SpriteFont::MeasureDrawBounds(_In_z_ const std::string_view& text, XMFLOAT2 const& position) const
 {
 	return MeasureDrawBounds(pImpl->ConvertUTF8(text), position);
 }
 
 RECT XM_CALLCONV
-SpriteFont::MeasureDrawBounds(_In_z_ char const* text, FXMVECTOR position) const
+SpriteFont::MeasureDrawBounds(_In_z_ const std::string_view& text, FXMVECTOR position) const
 {
 	XMFLOAT2 pos;
 	XMStoreFloat2(&pos, position);
@@ -565,7 +564,7 @@ SpriteFont::MeasureDrawBounds(_In_z_ char const* text, FXMVECTOR position) const
 
 // Spacing properties
 float
-SpriteFont::GetLineSpacing() const
+SpriteFont::GetLineSpacing(void) const
 {
 	return pImpl->lineSpacing;
 }
@@ -578,7 +577,7 @@ SpriteFont::SetLineSpacing(float spacing)
 
 // Font properties
 wchar_t
-SpriteFont::GetDefaultCharacter() const
+SpriteFont::GetDefaultCharacter(void) const
 {
 	return static_cast<wchar_t>(pImpl->defaultGlyph ? pImpl->defaultGlyph->Character : 0);
 }
@@ -603,13 +602,13 @@ SpriteFont::FindGlyph(wchar_t character) const
 }
 
 D3D12_GPU_DESCRIPTOR_HANDLE
-SpriteFont::GetSpriteSheet() const
+SpriteFont::GetSpriteSheet(void) const
 {
 	return pImpl->texture;
 }
 
 XMUINT2
-SpriteFont::GetSpriteSheetSize() const
+SpriteFont::GetSpriteSheetSize(void) const
 {
 	return pImpl->textureSize;
 }

@@ -20,16 +20,15 @@
 
 // For 2D array textures and cubemaps, it captures only the first image in the array
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include "ScreenGrab.h"
-#include "DirectXHelpers.h"
+#include "screengrab.h"
+#include "directxhelpers.h"
 
-#include "PlatformHelpers.h"
-#include "DDS.h"
-#include "LoaderHelpers.h"
+#include "platformhelpers.h"
+#include "dds.h"
+#include "loaderhelpers.h"
 
-using Microsoft::WRL::ComPtr;
 using namespace DirectX;
 using namespace DirectX::LoaderHelpers;
 
@@ -42,7 +41,7 @@ CaptureTexture(_In_ ID3D12Device* device,
 	_In_ ID3D12Resource* pSource,
 	UINT64 srcPitch,
 	const D3D12_RESOURCE_DESC& desc,
-	ComPtr<ID3D12Resource>& pStaging,
+	wil::com_ptr<ID3D12Resource>& pStaging,
 	D3D12_RESOURCE_STATES beforeState,
 	D3D12_RESOURCE_STATES afterState)
 {
@@ -63,7 +62,7 @@ CaptureTexture(_In_ ID3D12Device* device,
 	if (srcPitch > UINT32_MAX)
 		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
-	UINT numberOfPlanes = D3D12GetFormatPlaneCount(device, desc.Format);
+	uint32_t numberOfPlanes = D3D12GetFormatPlaneCount(device, desc.Format);
 	if (numberOfPlanes != 1)
 		return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
@@ -75,36 +74,36 @@ CaptureTexture(_In_ ID3D12Device* device,
 
 	if (sourceHeapProperties.Type == D3D12_HEAP_TYPE_READBACK)
 	{
-		// Handle case where the source is already a staging texture we can use directly
+		// handle case where the source is already a staging texture we can use directly
 		pStaging = pSource;
 		return S_OK;
 	}
 
 	// Create a command allocator
-	ComPtr<ID3D12CommandAllocator> commandAlloc;
-	hr = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_GRAPHICS_PPV_ARGS(commandAlloc.GetAddressOf()));
+	wil::com_ptr<ID3D12CommandAllocator> commandAlloc;
+	hr = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_GRAPHICS_PPV_ARGS(commandAlloc.addressof()));
 	if (FAILED(hr))
 		return hr;
 
-	SetDebugObjectName(commandAlloc.Get(), L"ScreenGrab");
+	SetDebugObjectName(commandAlloc.get(), L"ScreenGrab");
 
 	// Spin up a new command list
-	ComPtr<ID3D12GraphicsCommandList> commandList;
-	hr = device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAlloc.Get(), nullptr, IID_GRAPHICS_PPV_ARGS(commandList.GetAddressOf()));
+	wil::com_ptr<ID3D12GraphicsCommandList> commandList;
+	hr = device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAlloc.get(), nullptr, IID_GRAPHICS_PPV_ARGS(commandList.addressof()));
 	if (FAILED(hr))
 		return hr;
 
-	SetDebugObjectName(commandList.Get(), L"ScreenGrab");
+	SetDebugObjectName(commandList.get(), L"ScreenGrab");
 
 	// Create a fence
-	ComPtr<ID3D12Fence> fence;
-	hr = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_GRAPHICS_PPV_ARGS(fence.GetAddressOf()));
+	wil::com_ptr<ID3D12Fence> fence;
+	hr = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_GRAPHICS_PPV_ARGS(fence.addressof()));
 	if (FAILED(hr))
 		return hr;
 
-	SetDebugObjectName(fence.Get(), L"ScreenGrab");
+	SetDebugObjectName(fence.get(), L"ScreenGrab");
 
-	assert((srcPitch & 0xFF) == 0);
+	_ASSERT((srcPitch & 0xFF) == 0);
 
 	CD3DX12_HEAP_PROPERTIES defaultHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
 	CD3DX12_HEAP_PROPERTIES readBackHeapProperties(D3D12_HEAP_TYPE_READBACK);
@@ -114,16 +113,16 @@ CaptureTexture(_In_ ID3D12Device* device,
 	bufferDesc.Alignment = desc.Alignment;
 	bufferDesc.DepthOrArraySize = 1;
 	bufferDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	bufferDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	bufferDesc.flags = D3D12_RESOURCE_FLAG_NONE;
 	bufferDesc.Format = DXGI_FORMAT_UNKNOWN;
-	bufferDesc.Height = 1;
-	bufferDesc.Width = srcPitch * desc.Height;
+	bufferDesc.height = 1;
+	bufferDesc.width = srcPitch * desc.height;
 	bufferDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	bufferDesc.MipLevels = 1;
 	bufferDesc.SampleDesc.Count = 1;
 	bufferDesc.SampleDesc.Quality = 0;
 
-	ComPtr<ID3D12Resource> copySource(pSource);
+	wil::com_ptr<ID3D12Resource> copySource(pSource);
 	if (desc.SampleDesc.Count > 1)
 	{
 		// MSAA content must be resolved before being copied to a staging texture
@@ -131,20 +130,20 @@ CaptureTexture(_In_ ID3D12Device* device,
 		descCopy.SampleDesc.Count = 1;
 		descCopy.SampleDesc.Quality = 0;
 
-		ComPtr<ID3D12Resource> pTemp;
+		wil::com_ptr<ID3D12Resource> pTemp;
 		hr = device->CreateCommittedResource(
 			&defaultHeapProperties,
 			D3D12_HEAP_FLAG_NONE,
 			&descCopy,
 			D3D12_RESOURCE_STATE_COPY_DEST,
 			nullptr,
-			IID_GRAPHICS_PPV_ARGS(pTemp.GetAddressOf()));
+			IID_GRAPHICS_PPV_ARGS(pTemp.addressof()));
 		if (FAILED(hr))
 			return hr;
 
-		assert(pTemp);
+		_ASSERT(pTemp);
 
-		SetDebugObjectName(pTemp.Get(), L"ScreenGrab temporary");
+		SetDebugObjectName(pTemp.get(), L"ScreenGrab temporary");
 
 		DXGI_FORMAT fmt = EnsureNotTypeless(desc.Format);
 
@@ -156,12 +155,12 @@ CaptureTexture(_In_ ID3D12Device* device,
 		if (!(formatInfo.Support1 & D3D12_FORMAT_SUPPORT1_TEXTURE2D))
 			return E_FAIL;
 
-		for (UINT item = 0; item < desc.DepthOrArraySize; ++item)
+		for (uint32_t item = 0; item < desc.DepthOrArraySize; ++item)
 		{
-			for (UINT level = 0; level < desc.MipLevels; ++level)
+			for (uint32_t level = 0; level < desc.MipLevels; ++level)
 			{
-				UINT index = D3D12CalcSubresource(level, item, 0, desc.MipLevels, desc.DepthOrArraySize);
-				commandList->ResolveSubresource(pTemp.Get(), index, pSource, index, fmt);
+				uint32_t index = D3D12CalcSubresource(level, item, 0, desc.MipLevels, desc.DepthOrArraySize);
+				commandList->ResolveSubresource(pTemp.get(), index, pSource, index, fmt);
 			}
 		}
 
@@ -179,39 +178,39 @@ CaptureTexture(_In_ ID3D12Device* device,
 	if (FAILED(hr))
 		return hr;
 
-	SetDebugObjectName(pStaging.Get(), L"ScreenGrab staging");
+	SetDebugObjectName(pStaging.get(), L"ScreenGrab staging");
 
-	assert(pStaging);
+	_ASSERT(pStaging);
 
 	// Transition the resource if necessary
-	TransitionResource(commandList.Get(), pSource, beforeState, D3D12_RESOURCE_STATE_COPY_SOURCE);
+	TransitionResource(commandList.get(), pSource, beforeState, D3D12_RESOURCE_STATE_COPY_SOURCE);
 
 	// Get the copy target location
 	D3D12_PLACED_SUBRESOURCE_FOOTPRINT bufferFootprint = {};
-	bufferFootprint.Footprint.Width = static_cast<UINT>(desc.Width);
-	bufferFootprint.Footprint.Height = desc.Height;
+	bufferFootprint.Footprint.width = static_cast<uint32_t>(desc.width);
+	bufferFootprint.Footprint.height = desc.height;
 	bufferFootprint.Footprint.Depth = 1;
-	bufferFootprint.Footprint.RowPitch = static_cast<UINT>(srcPitch);
+	bufferFootprint.Footprint.RowPitch = static_cast<uint32_t>(srcPitch);
 	bufferFootprint.Footprint.Format = desc.Format;
 
-	CD3DX12_TEXTURE_COPY_LOCATION copyDest(pStaging.Get(), bufferFootprint);
-	CD3DX12_TEXTURE_COPY_LOCATION copySrc(copySource.Get(), 0);
+	CD3DX12_TEXTURE_COPY_LOCATION copydest(pStaging.get(), bufferFootprint);
+	CD3DX12_TEXTURE_COPY_LOCATION copysrc(copySource.get(), 0);
 
 	// Copy the texture
-	commandList->CopyTextureRegion(&copyDest, 0, 0, 0, &copySrc, nullptr);
+	commandList->CopyTextureRegion(&copydest, 0, 0, 0, &copysrc, nullptr);
 
 	// Transition the resource to the next state
-	TransitionResource(commandList.Get(), pSource, D3D12_RESOURCE_STATE_COPY_SOURCE, afterState);
+	TransitionResource(commandList.get(), pSource, D3D12_RESOURCE_STATE_COPY_SOURCE, afterState);
 
 	hr = commandList->Close();
 	if (FAILED(hr))
 		return hr;
 
 	// Execute the command list
-	pCommandQ->ExecuteCommandLists(1, CommandListCast(commandList.GetAddressOf()));
+	pCommandQ->ExecuteCommandLists(1, CommandListCast(commandList.addressof()));
 
 	// Signal the fence
-	hr = pCommandQ->Signal(fence.Get(), 1);
+	hr = pCommandQ->Signal(fence.get(), 1);
 	if (FAILED(hr))
 		return hr;
 
@@ -229,25 +228,25 @@ _Use_decl_annotations_
 	DirectX::SaveDDSTextureToFile(
 		ID3D12CommandQueue* pCommandQ,
 		ID3D12Resource* pSource,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		D3D12_RESOURCE_STATES beforeState,
 		D3D12_RESOURCE_STATES afterState)
 {
 	if (!fileName)
 		return E_INVALIDARG;
 
-	ComPtr<ID3D12Device> device;
-	pCommandQ->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+	wil::com_ptr<ID3D12Device> device;
+	pCommandQ->GetDevice(IID_GRAPHICS_PPV_ARGS(device.addressof()));
 
 	// Get the size of the image
 	const auto desc = pSource->GetDesc();
 
-	if (desc.Width > UINT32_MAX)
+	if (desc.width > UINT32_MAX)
 		return E_INVALIDARG;
 
 	UINT64 totalResourceSize = 0;
 	UINT64 fpRowPitch = 0;
-	UINT fpRowCount = 0;
+	uint32_t fpRowCount = 0;
 	// Get the rowcount, pitch and size of the top mip
 	device->GetCopyableFootprints(
 		&desc,
@@ -270,8 +269,8 @@ _Use_decl_annotations_
 	if (dstRowPitch > UINT32_MAX)
 		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
-	ComPtr<ID3D12Resource> pStaging;
-	HRESULT hr = CaptureTexture(device.Get(), pCommandQ, pSource, dstRowPitch, desc, pStaging, beforeState, afterState);
+	wil::com_ptr<ID3D12Resource> pStaging;
+	HRESULT hr = CaptureTexture(device.get(), pCommandQ, pSource, dstRowPitch, desc, pStaging, beforeState, afterState);
 	if (FAILED(hr))
 		return hr;
 
@@ -293,8 +292,8 @@ _Use_decl_annotations_
 	memset(header, 0, sizeof(DDS_HEADER));
 	header->size = sizeof(DDS_HEADER);
 	header->flags = DDS_HEADER_FLAGS_TEXTURE | DDS_HEADER_FLAGS_MIPMAP;
-	header->height = desc.Height;
-	header->width = static_cast<uint32_t>(desc.Width);
+	header->height = desc.height;
+	header->width = static_cast<uint32_t>(desc.width);
 	header->mipMapCount = 1;
 	header->caps = DDS_SURFACE_FLAGS_TEXTURE;
 
@@ -437,7 +436,7 @@ _Use_decl_annotations_
 	}
 
 	size_t rowPitch, slicePitch, rowCount;
-	hr = GetSurfaceInfo(static_cast<size_t>(desc.Width), desc.Height, desc.Format, &slicePitch, &rowPitch, &rowCount);
+	hr = GetSurfaceInfo(static_cast<size_t>(desc.width), desc.height, desc.Format, &slicePitch, &rowPitch, &rowCount);
 	if (FAILED(hr))
 		return hr;
 
@@ -460,8 +459,8 @@ _Use_decl_annotations_
 	if (!pixels)
 		return E_OUTOFMEMORY;
 
-	assert(fpRowCount == rowCount);
-	assert(fpRowPitch == rowPitch);
+	_ASSERT(fpRowCount == rowCount);
+	_ASSERT(fpRowPitch == rowPitch);
 
 	UINT64 imageSize = dstRowPitch * UINT64(rowCount);
 	if (imageSize > UINT32_MAX)
@@ -494,14 +493,14 @@ _Use_decl_annotations_
 	pStaging->Unmap(0, &writeRange);
 
 	// Write header & pixels
-	DWORD bytesWritten;
-	if (!WriteFile(hFile.get(), fileHeader, static_cast<DWORD>(headerSize), &bytesWritten, nullptr))
+	uint32_t bytesWritten;
+	if (!WriteFile(hFile.get(), fileHeader, static_cast<uint32_t>(headerSize), &bytesWritten, nullptr))
 		return HRESULT_FROM_WIN32(GetLastError());
 
 	if (bytesWritten != headerSize)
 		return E_FAIL;
 
-	if (!WriteFile(hFile.get(), pixels.get(), static_cast<DWORD>(slicePitch), &bytesWritten, nullptr))
+	if (!WriteFile(hFile.get(), pixels.get(), static_cast<uint32_t>(slicePitch), &bytesWritten, nullptr))
 		return HRESULT_FROM_WIN32(GetLastError());
 
 	if (bytesWritten != slicePitch)
@@ -525,7 +524,7 @@ _Use_decl_annotations_
 		ID3D12CommandQueue* pCommandQ,
 		ID3D12Resource* pSource,
 		REFGUID guidContainerFormat,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		D3D12_RESOURCE_STATES beforeState,
 		D3D12_RESOURCE_STATES afterState,
 		const GUID* targetFormat,
@@ -534,18 +533,18 @@ _Use_decl_annotations_
 	if (!fileName)
 		return E_INVALIDARG;
 
-	ComPtr<ID3D12Device> device;
-	pCommandQ->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+	wil::com_ptr<ID3D12Device> device;
+	pCommandQ->GetDevice(IID_GRAPHICS_PPV_ARGS(device.addressof()));
 
 	// Get the size of the image
 	const auto desc = pSource->GetDesc();
 
-	if (desc.Width > UINT32_MAX)
+	if (desc.width > UINT32_MAX)
 		return E_INVALIDARG;
 
 	UINT64 totalResourceSize = 0;
 	UINT64 fpRowPitch = 0;
-	UINT fpRowCount = 0;
+	uint32_t fpRowCount = 0;
 	// Get the rowcount, pitch and size of the top mip
 	device->GetCopyableFootprints(
 		&desc,
@@ -568,8 +567,8 @@ _Use_decl_annotations_
 	if (dstRowPitch > UINT32_MAX)
 		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
-	ComPtr<ID3D12Resource> pStaging;
-	HRESULT hr = CaptureTexture(device.Get(), pCommandQ, pSource, dstRowPitch, desc, pStaging, beforeState, afterState);
+	wil::com_ptr<ID3D12Resource> pStaging;
+	HRESULT hr = CaptureTexture(device.get(), pCommandQ, pSource, dstRowPitch, desc, pStaging, beforeState, afterState);
 	if (FAILED(hr))
 		return hr;
 
@@ -651,8 +650,8 @@ _Use_decl_annotations_
 	if (!pWIC)
 		return E_NOINTERFACE;
 
-	ComPtr<IWICStream> stream;
-	hr = pWIC->CreateStream(stream.GetAddressOf());
+	wil::com_ptr<IWICStream> stream;
+	hr = pWIC->CreateStream(stream.addressof());
 	if (FAILED(hr))
 		return hr;
 
@@ -662,18 +661,18 @@ _Use_decl_annotations_
 
 	auto_delete_file_wic delonfail(stream, fileName);
 
-	ComPtr<IWICBitmapEncoder> encoder;
-	hr = pWIC->CreateEncoder(guidContainerFormat, nullptr, encoder.GetAddressOf());
+	wil::com_ptr<IWICBitmapEncoder> encoder;
+	hr = pWIC->CreateEncoder(guidContainerFormat, nullptr, encoder.addressof());
 	if (FAILED(hr))
 		return hr;
 
-	hr = encoder->Initialize(stream.Get(), WICBitmapEncoderNoCache);
+	hr = encoder->Initialize(stream.get(), WICBitmapEncoderNoCache);
 	if (FAILED(hr))
 		return hr;
 
-	ComPtr<IWICBitmapFrameEncode> frame;
-	ComPtr<IPropertyBag2> props;
-	hr = encoder->CreateNewFrame(frame.GetAddressOf(), props.GetAddressOf());
+	wil::com_ptr<IWICBitmapFrameEncode> frame;
+	wil::com_ptr<IPropertyBag2> props;
+	hr = encoder->CreateNewFrame(frame.addressof(), props.addressof());
 	if (FAILED(hr))
 		return hr;
 
@@ -691,14 +690,14 @@ _Use_decl_annotations_
 
 	if (setCustomProps)
 	{
-		setCustomProps(props.Get());
+		setCustomProps(props.get());
 	}
 
-	hr = frame->Initialize(props.Get());
+	hr = frame->Initialize(props.get());
 	if (FAILED(hr))
 		return hr;
 
-	hr = frame->SetSize(static_cast<UINT>(desc.Width), desc.Height);
+	hr = frame->SetSize(static_cast<uint32_t>(desc.width), desc.height);
 	if (FAILED(hr))
 		return hr;
 
@@ -757,14 +756,14 @@ _Use_decl_annotations_
 	}
 
 	// Encode WIC metadata
-	ComPtr<IWICMetadataQueryWriter> metawriter;
-	if (SUCCEEDED(frame->GetMetadataQueryWriter(metawriter.GetAddressOf())))
+	wil::com_ptr<IWICMetadataQueryWriter> metawriter;
+	if (SUCCEEDED(frame->GetMetadataQueryWriter(metawriter.addressof())))
 	{
 		PROPVARIANT value;
 		PropVariantInit(&value);
 
 		value.vt = VT_LPSTR;
-		value.pszVal = const_cast<char*>("DirectXTK");
+		value.pszVal = const_cast<wchar_t*>("DirectXTK");
 
 		if (memcmp(&guidContainerFormat, &GUID_ContainerFormatPng, sizeof(GUID)) == 0)
 		{
@@ -797,7 +796,7 @@ _Use_decl_annotations_
 
 			if (sRGB)
 			{
-				// Set EXIF Colorspace of sRGB
+				// Set EXIF colourspace of sRGB
 				value.vt = VT_UI2;
 				value.uiVal = 1;
 				(void)metawriter->SetMetadataByName(L"/app1/ifd/exif/{ushort=40961}", &value);
@@ -810,7 +809,7 @@ _Use_decl_annotations_
 
 			if (sRGB)
 			{
-				// Set EXIF Colorspace of sRGB
+				// Set EXIF colourspace of sRGB
 				value.vt = VT_UI2;
 				value.uiVal = 1;
 				(void)metawriter->SetMetadataByName(L"/ifd/exif/{ushort=40961}", &value);
@@ -824,16 +823,16 @@ _Use_decl_annotations_
 
 			if (sRGB)
 			{
-				// Set EXIF Colorspace of sRGB
+				// Set EXIF colourspace of sRGB
 				value.vt = VT_UI2;
 				value.uiVal = 1;
-				(void)metawriter->SetMetadataByName(L"System.Image.ColorSpace", &value);
+				(void)metawriter->SetMetadataByName(L"System.Image.colourSpace", &value);
 			}
 		}
 #endif
 	}
 
-	UINT64 imageSize = dstRowPitch * UINT64(desc.Height);
+	UINT64 imageSize = dstRowPitch * UINT64(desc.height);
 	if (imageSize > UINT32_MAX)
 		return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
@@ -847,18 +846,18 @@ _Use_decl_annotations_
 	if (memcmp(&targetGuid, &pfGuid, sizeof(WICPixelFormatGUID)) != 0)
 	{
 		// Conversion required to write
-		ComPtr<IWICBitmap> source;
-		hr = pWIC->CreateBitmapFromMemory(static_cast<UINT>(desc.Width), desc.Height, pfGuid,
-			static_cast<UINT>(dstRowPitch), static_cast<UINT>(imageSize),
-			static_cast<BYTE*>(pMappedMemory), source.GetAddressOf());
+		wil::com_ptr<IWICBitmap> source;
+		hr = pWIC->CreateBitmapFromMemory(static_cast<uint32_t>(desc.width), desc.height, pfGuid,
+			static_cast<uint32_t>(dstRowPitch), static_cast<uint32_t>(imageSize),
+			static_cast<BYTE*>(pMappedMemory), source.addressof());
 		if (FAILED(hr))
 		{
 			pStaging->Unmap(0, &writeRange);
 			return hr;
 		}
 
-		ComPtr<IWICFormatConverter> FC;
-		hr = pWIC->CreateFormatConverter(FC.GetAddressOf());
+		wil::com_ptr<IWICFormatConverter> FC;
+		hr = pWIC->CreateFormatConverter(FC.addressof());
 		if (FAILED(hr))
 		{
 			pStaging->Unmap(0, &writeRange);
@@ -872,15 +871,15 @@ _Use_decl_annotations_
 			return E_UNEXPECTED;
 		}
 
-		hr = FC->Initialize(source.Get(), targetGuid, WICBitmapDitherTypeNone, nullptr, 0, WICBitmapPaletteTypeMedianCut);
+		hr = FC->Initialize(source.get(), targetGuid, WICBitmapDitherTypeNone, nullptr, 0, WICBitmapPaletteTypeMedianCut);
 		if (FAILED(hr))
 		{
 			pStaging->Unmap(0, &writeRange);
 			return hr;
 		}
 
-		WICRect rect = {0, 0, static_cast<INT>(desc.Width), static_cast<INT>(desc.Height)};
-		hr = frame->WriteSource(FC.Get(), &rect);
+		WICRect rect = {0, 0, static_cast<INT>(desc.width), static_cast<INT>(desc.height)};
+		hr = frame->WriteSource(FC.get(), &rect);
 		if (FAILED(hr))
 		{
 			pStaging->Unmap(0, &writeRange);
@@ -890,7 +889,7 @@ _Use_decl_annotations_
 	else
 	{
 		// No conversion required
-		hr = frame->WritePixels(desc.Height, static_cast<UINT>(dstRowPitch), static_cast<UINT>(imageSize), static_cast<BYTE*>(pMappedMemory));
+		hr = frame->WritePixels(desc.height, static_cast<uint32_t>(dstRowPitch), static_cast<uint32_t>(imageSize), static_cast<BYTE*>(pMappedMemory));
 		if (FAILED(hr))
 			return hr;
 	}

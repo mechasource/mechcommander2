@@ -7,17 +7,16 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "Effects.h"
-#include "CommonStates.h"
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "DescriptorHeap.h"
+#include "stdinc.h"
+#include "effects.h"
+#include "commonstates.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "descriptorheap.h"
 
 #include <mutex>
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 // Internal PBREffectFactory implementation class. Only one of these helpers is allocated
 // per D3D device, even if there are multiple public facing PBREffectFactory instances.
@@ -48,7 +47,7 @@ public:
 	std::unique_ptr<DescriptorHeap> mSamplerDescriptors;
 
 private:
-	ComPtr<ID3D12Device> mDevice;
+	wil::com_ptr<ID3D12Device> mDevice;
 
 	typedef std::map<std::wstring, std::shared_ptr<IEffect>> EffectCache;
 
@@ -110,7 +109,7 @@ PBREffectFactory::Impl::CreateEffect(
 		}
 	}
 
-	auto effect = std::make_shared<PBREffect>(mDevice.Get(), effectflags, derivedPSD, (emissiveTextureIndex != -1));
+	auto effect = std::make_shared<PBREffect>(mDevice.get(), effectflags, derivedPSD, (emissiveTextureIndex != -1));
 
 	// We don't use EnableDefaultLighting generally for PBR as it uses Image-Based Lighting instead.
 
@@ -173,18 +172,18 @@ PBREffectFactory::PBREffectFactory(_In_ ID3D12DescriptorHeap* textureDescriptors
 		throw std::exception("PBREffectFactory::CreateEffect requires a SAMPLER descriptor heap for samplerDescriptors.");
 	}
 
-	ComPtr<ID3D12Device> device;
+	wil::com_ptr<ID3D12Device> device;
 #if defined(_XBOX_ONE) && defined(_TITLE)
-	textureDescriptors->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+	textureDescriptors->GetDevice(IID_GRAPHICS_PPV_ARGS(device.addressof()));
 #else
-	HRESULT hresult = textureDescriptors->GetDevice(IID_PPV_ARGS(device.GetAddressOf()));
+	HRESULT hresult = textureDescriptors->GetDevice(IID_PPV_ARGS(device.addressof()));
 	if (FAILED(hresult))
 	{
 		throw com_exception(hresult);
 	}
 #endif
 
-	pImpl = std::make_shared<Impl>(device.Get(), textureDescriptors, samplerDescriptors);
+	pImpl = std::make_shared<Impl>(device.get(), textureDescriptors, samplerDescriptors);
 }
 
 PBREffectFactory::~PBREffectFactory()

@@ -8,8 +8,8 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "SoundCommon.h"
+#include "stdinc.h"
+#include "soundcommon.h"
 
 using namespace DirectX;
 
@@ -28,10 +28,10 @@ public:
 		mIndex(0),
 		mLooped(false)
 	{
-		assert(engine != nullptr);
+		_ASSERT(engine != nullptr);
 		engine->RegisterNotify(this, false);
 
-		assert(mEffect != nullptr);
+		_ASSERT(mEffect != nullptr);
 		mBase.Initialize(engine, effect->GetFormat(), flags);
 	}
 
@@ -42,12 +42,12 @@ public:
 		mIndex(index),
 		mLooped(false)
 	{
-		assert(engine != nullptr);
+		_ASSERT(engine != nullptr);
 		engine->RegisterNotify(this, false);
 
-		char buff[64] = {};
+		wchar_t buff[64] = {};
 		auto wfx = reinterpret_cast<WAVEFORMATEX*>(buff);
-		assert(mWaveBank != nullptr);
+		_ASSERT(mWaveBank != nullptr);
 		mBase.Initialize(engine, mWaveBank->GetFormat(index, wfx, sizeof(buff)), flags);
 	}
 
@@ -68,7 +68,7 @@ public:
 	virtual void __cdecl OnBufferEnd() override
 	{
 		// We don't register for this notification for SoundEffectInstances, so this should not be invoked
-		assert(false);
+		_ASSERT(false);
 	}
 
 	virtual void __cdecl OnCriticalError() override
@@ -84,7 +84,7 @@ public:
 	virtual void __cdecl OnUpdate() override
 	{
 		// We do not register for update notification
-		assert(false);
+		_ASSERT(false);
 	}
 
 	virtual void __cdecl OnDestroyEngine() override
@@ -116,13 +116,13 @@ SoundEffectInstance::Impl::Play(bool loop)
 	{
 		if (mWaveBank)
 		{
-			char buff[64] = {};
+			wchar_t buff[64] = {};
 			auto wfx = reinterpret_cast<WAVEFORMATEX*>(buff);
 			mBase.AllocateVoice(mWaveBank->GetFormat(mIndex, wfx, sizeof(buff)));
 		}
 		else
 		{
-			assert(mEffect != nullptr);
+			_ASSERT(mEffect != nullptr);
 			mBase.AllocateVoice(mEffect->GetFormat());
 		}
 	}
@@ -143,7 +143,7 @@ SoundEffectInstance::Impl::Play(bool loop)
 	}
 	else
 	{
-		assert(mEffect != nullptr);
+		_ASSERT(mEffect != nullptr);
 		iswma = mEffect->FillSubmitBuffer(buffer, wmaBuffer);
 	}
 
@@ -155,13 +155,13 @@ SoundEffectInstance::Impl::Play(bool loop)
 	}
 	else
 	{
-		assert(mEffect != nullptr);
+		_ASSERT(mEffect != nullptr);
 		mEffect->FillSubmitBuffer(buffer);
 	}
 
 #endif
 
-	buffer.Flags = XAUDIO2_END_OF_STREAM;
+	buffer.flags = XAUDIO2_END_OF_STREAM;
 	if (loop)
 	{
 		mLooped = true;
@@ -172,7 +172,7 @@ SoundEffectInstance::Impl::Play(bool loop)
 		mLooped = false;
 		buffer.LoopCount = buffer.LoopBegin = buffer.LoopLength = 0;
 	}
-	buffer.pContext = nullptr;
+	buffer.pcontext = nullptr;
 
 	HRESULT hr;
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
@@ -191,7 +191,7 @@ SoundEffectInstance::Impl::Play(bool loop)
 #ifdef _DEBUG
 		DebugTrace("ERROR: SoundEffectInstance failed (%08X) when submitting buffer:\n", hr);
 
-		char buff[64] = {};
+		wchar_t buff[64] = {};
 		auto wfx = (mWaveBank) ? mWaveBank->GetFormat(mIndex, reinterpret_cast<WAVEFORMATEX*>(buff), sizeof(buff))
 							   : mEffect->GetFormat();
 
@@ -217,7 +217,7 @@ SoundEffectInstance::SoundEffectInstance(AudioEngine* engine, SoundEffect* effec
 }
 
 _Use_decl_annotations_
-SoundEffectInstance::SoundEffectInstance(AudioEngine* engine, WaveBank* waveBank, unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags) :
+SoundEffectInstance::SoundEffectInstance(AudioEngine* engine, WaveBank* waveBank, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags) :
 	pImpl(std::make_unique<Impl>(engine, waveBank, index, flags))
 {
 }
@@ -306,7 +306,7 @@ SoundEffectInstance::Apply3D(const AudioListener& listener, const AudioEmitter& 
 
 // Public accessors.
 bool
-SoundEffectInstance::IsLooped() const
+SoundEffectInstance::IsLooped(void) const
 {
 	return pImpl->mLooped;
 }

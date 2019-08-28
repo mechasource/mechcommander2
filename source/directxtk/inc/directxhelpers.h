@@ -9,11 +9,7 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <DirectXMath.h>
 
@@ -86,9 +82,9 @@ CreateRootSignature(
 	_In_ const D3D12_ROOT_SIGNATURE_DESC* rootSignatureDesc,
 	_Out_ ID3D12RootSignature** rootSignature)
 {
-	Microsoft::WRL::ComPtr<ID3DBlob> pSignature;
-	Microsoft::WRL::ComPtr<ID3DBlob> pError;
-	HRESULT hr = D3D12SerializeRootSignature(rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, pSignature.GetAddressOf(), pError.GetAddressOf());
+	wil::com_ptr<ID3DBlob> pSignature;
+	wil::com_ptr<ID3DBlob> pError;
+	HRESULT hr = D3D12SerializeRootSignature(rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, pSignature.addressof(), pError.addressof());
 	if (SUCCEEDED(hr))
 	{
 		hr = device->CreateRootSignature(0, pSignature->GetBufferPointer(), pSignature->GetBufferSize(),
@@ -102,7 +98,7 @@ inline XMUINT2
 GetTextureSize(_In_ ID3D12Resource* tex)
 {
 	const auto desc = tex->GetDesc();
-	return XMUINT2(static_cast<uint32_t>(desc.Width), static_cast<uint32_t>(desc.Height));
+	return XMUINT2(static_cast<uint32_t>(desc.width), static_cast<uint32_t>(desc.height));
 }
 
 #if defined(_PIX_H_) || defined(_PIX3_H_)
@@ -126,9 +122,9 @@ private:
 #endif
 
 // Helper sets a D3D resource name string (used by PIX and debug layer leak reporting).
-template <UINT TNameLength>
+template <uint32_t TNameLength>
 inline void
-SetDebugObjectName(_In_ ID3D12DeviceChild* resource, _In_z_ const char (&name)[TNameLength])
+SetDebugObjectName(_In_ ID3D12DeviceChild* resource, _In_z_ const wchar_t (&name)[TNameLength])
 {
 #if !defined(NO_D3D12_DEBUG_NAME) && (defined(_DEBUG) || defined(PROFILE))
 	wchar_t wname[MAX_PATH];
@@ -143,7 +139,7 @@ SetDebugObjectName(_In_ ID3D12DeviceChild* resource, _In_z_ const char (&name)[T
 #endif
 }
 
-template <UINT TNameLength>
+template <uint32_t TNameLength>
 inline void
 SetDebugObjectName(_In_ ID3D12DeviceChild* resource, _In_z_ const wchar_t (&name)[TNameLength])
 {
@@ -163,8 +159,8 @@ TransitionResource(
 	D3D12_RESOURCE_STATES stateBefore,
 	D3D12_RESOURCE_STATES stateAfter)
 {
-	assert(commandList != nullptr);
-	assert(resource != nullptr);
+	_ASSERT(commandList != nullptr);
+	_ASSERT(resource != nullptr);
 
 	if (stateBefore == stateAfter)
 		return;
@@ -189,10 +185,10 @@ public:
 		mCommandList(commandList),
 		mBarriers(barriers)
 	{
-		assert(mBarriers.size() <= UINT32_MAX);
+		_ASSERT(mBarriers.size() <= UINT32_MAX);
 
 		// Set barriers
-		mCommandList->ResourceBarrier(static_cast<UINT>(mBarriers.size()), mBarriers.data());
+		mCommandList->ResourceBarrier(static_cast<uint32_t>(mBarriers.size()), mBarriers.data());
 	}
 
 	~ScopedBarrier()
@@ -204,7 +200,7 @@ public:
 		}
 
 		// Set barriers
-		mCommandList->ResourceBarrier(static_cast<UINT>(mBarriers.size()), mBarriers.data());
+		mCommandList->ResourceBarrier(static_cast<uint32_t>(mBarriers.size()), mBarriers.data());
 	}
 
 private:
@@ -219,7 +215,7 @@ AlignDown(T size, size_t alignment)
 {
 	if (alignment > 0)
 	{
-		assert(((alignment - 1) & alignment) == 0);
+		_ASSERT(((alignment - 1) & alignment) == 0);
 		T mask = static_cast<T>(alignment - 1);
 		return size & ~mask;
 	}
@@ -232,7 +228,7 @@ AlignUp(T size, size_t alignment)
 {
 	if (alignment > 0)
 	{
-		assert(((alignment - 1) & alignment) == 0);
+		_ASSERT(((alignment - 1) & alignment) == 0);
 		T mask = static_cast<T>(alignment - 1);
 		return (size + mask) & ~mask;
 	}

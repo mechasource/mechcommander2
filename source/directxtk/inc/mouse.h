@@ -88,14 +88,14 @@ public:
 
 		void __cdecl Reset() noexcept;
 
-		State __cdecl GetLastState() const { return lastState; }
+		State __cdecl GetLastState(void) const { return lastState; }
 
 	private:
 		State lastState;
 	};
 
 	// Retrieve the current state of the mouse
-	State __cdecl GetState() const;
+	State __cdecl GetState(void) const;
 
 	// Resets the accumulated scroll wheel value
 	void __cdecl ResetScrollWheelValue();
@@ -104,15 +104,15 @@ public:
 	void __cdecl SetMode(Mode mode);
 
 	// Feature detection
-	bool __cdecl IsConnected() const;
+	bool __cdecl IsConnected(void) const;
 
 	// Cursor visibility
-	bool __cdecl IsVisible() const;
+	bool __cdecl IsVisible(void) const;
 	void __cdecl SetVisible(bool visible);
 
 #if (!defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)) && defined(WM_USER)
 	void __cdecl SetWindow(HWND window);
-	static void __cdecl ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
+	static void __cdecl ProcessMessage(uint32_t message, WPARAM wParam, LPARAM lParam);
 #endif
 
 #if (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)) || (defined(_XBOX_ONE) && defined(_TITLE) && (_XDK_VER >= 0x42D907D1))

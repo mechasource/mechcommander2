@@ -7,15 +7,14 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PrimitiveBatch.h"
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "GraphicsMemory.h"
+#include "stdinc.h"
+#include "primitivebatch.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "graphicsmemory.h"
 
 using namespace DirectX;
 using namespace DirectX::Internal;
-using Microsoft::WRL::ComPtr;
 
 // Internal PrimitiveBatch implementation class.
 class PrimitiveBatchBase::Impl
@@ -34,8 +33,8 @@ private:
 	GraphicsResource mVertexSegment;
 	GraphicsResource mIndexSegment;
 
-	ComPtr<ID3D12Device> mDevice;
-	ComPtr<ID3D12GraphicsCommandList> mCommandList;
+	wil::com_ptr<ID3D12Device> mDevice;
+	wil::com_ptr<ID3D12GraphicsCommandList> mCommandList;
 
 	size_t mMaxIndices;
 	size_t mMaxVertices;
@@ -149,7 +148,7 @@ PrimitiveBatchBase::Impl::Draw(D3D_PRIMITIVE_TOPOLOGY topology, bool isIndexed, 
 	if (!mInBeginEndPair)
 		throw std::exception("Begin must be called before Draw");
 
-	assert(pMappedVertices != nullptr);
+	_ASSERT(pMappedVertices != nullptr);
 
 	// Can we merge this primitive in with an existing batch, or must we flush first?
 	bool wrapIndexBuffer = (mIndexCount + indexCount > mMaxIndices);
@@ -172,9 +171,9 @@ PrimitiveBatchBase::Impl::Draw(D3D_PRIMITIVE_TOPOLOGY topology, bool isIndexed, 
 
 		// Allocate a page for the primitive data
 		if (isIndexed)
-			mIndexSegment = GraphicsMemory::Get(mDevice.Get()).Allocate(mIndexPageSize);
+			mIndexSegment = GraphicsMemory::Get(mDevice.get()).Allocate(mIndexPageSize);
 
-		mVertexSegment = GraphicsMemory::Get(mDevice.Get()).Allocate(mVertexPageSize);
+		mVertexSegment = GraphicsMemory::Get(mDevice.get()).Allocate(mVertexPageSize);
 	}
 
 	// Copy over the index data.
@@ -209,8 +208,8 @@ PrimitiveBatchBase::Impl::FlushBatch()
 	// Set the vertex buffer view
 	D3D12_VERTEX_BUFFER_VIEW vbv;
 	vbv.BufferLocation = mVertexSegment.GpuAddress();
-	vbv.SizeInBytes = static_cast<UINT>(mVertexSize * (mVertexCount - mBaseVertex));
-	vbv.StrideInBytes = static_cast<UINT>(mVertexSize);
+	vbv.SizeInBytes = static_cast<uint32_t>(mVertexSize * (mVertexCount - mBaseVertex));
+	vbv.StrideInBytes = static_cast<uint32_t>(mVertexSize);
 	mCommandList->IASetVertexBuffers(0, 1, &vbv);
 
 	if (mCurrentlyIndexed)
@@ -219,16 +218,16 @@ PrimitiveBatchBase::Impl::FlushBatch()
 		D3D12_INDEX_BUFFER_VIEW ibv;
 		ibv.BufferLocation = mIndexSegment.GpuAddress();
 		ibv.Format = DXGI_FORMAT_R16_UINT;
-		ibv.SizeInBytes = static_cast<UINT>(mIndexCount - mBaseIndex) * sizeof(uint16_t);
+		ibv.SizeInBytes = static_cast<uint32_t>(mIndexCount - mBaseIndex) * sizeof(uint16_t);
 		mCommandList->IASetIndexBuffer(&ibv);
 
 		// Draw indexed geometry.
-		mCommandList->DrawIndexedInstanced(static_cast<UINT>(mIndexCount - mBaseIndex), 1, 0, 0, 0);
+		mCommandList->DrawIndexedInstanced(static_cast<uint32_t>(mIndexCount - mBaseIndex), 1, 0, 0, 0);
 	}
 	else
 	{
 		// Draw non-indexed geometry.
-		mCommandList->DrawInstanced(static_cast<UINT>(mVertexCount - mBaseVertex), 1, 0, 0);
+		mCommandList->DrawInstanced(static_cast<uint32_t>(mVertexCount - mBaseVertex), 1, 0, 0);
 	}
 
 	mCurrentTopology = D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;

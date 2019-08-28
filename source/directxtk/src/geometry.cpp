@@ -8,9 +8,9 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "Geometry.h"
-#include "Bezier.h"
+#include "stdinc.h"
+#include "geometry.h"
+#include "bezier.h"
 
 using namespace DirectX;
 
@@ -40,7 +40,7 @@ index_push_back(IndexCollection& indices, size_t value)
 inline void
 ReverseWinding(IndexCollection& indices, VertexCollection& vertices)
 {
-	assert((indices.size() % 3) == 0);
+	_ASSERT((indices.size() % 3) == 0);
 	for (auto it = indices.begin(); it != indices.end(); it += 3)
 	{
 		std::swap(*it, *(it + 2));
@@ -236,7 +236,7 @@ DirectX::ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indices, 
 	};
 
 	// Key: an edge
-	// Value: the index of the vertex which lies midway between the two vertices pointed to by the key value
+	// value: the index of the vertex which lies midway between the two vertices pointed to by the key value
 	// This map is used to avoid duplicating vertices when subdividing triangles along edges.
 	typedef std::map<UndirectedEdge, uint16_t> EdgeSubdivisionMap;
 
@@ -278,7 +278,7 @@ DirectX::ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indices, 
 
 	for (size_t iSubdivision = 0; iSubdivision < tessellation; ++iSubdivision)
 	{
-		assert(indices.size() % 3 == 0); // sanity
+		_ASSERT(indices.size() % 3 == 0); // sanity
 
 		// We use this to keep track of which edges have already been subdivided.
 		EdgeSubdivisionMap subdividedEdges;
@@ -442,8 +442,8 @@ DirectX::ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indices, 
 				}
 
 				// If we got to this point then triIndex0 is the pointer to the index to the vertex we're looking at
-				assert(*triIndex0 == i);
-				assert(*triIndex1 != i && *triIndex2 != i); // assume no degenerate triangles
+				_ASSERT(*triIndex0 == i);
+				_ASSERT(*triIndex1 != i && *triIndex2 != i); // assume no degenerate triangles
 
 				const VertexPositionNormalTexture& v0 = vertices[*triIndex0];
 				const VertexPositionNormalTexture& v1 = vertices[*triIndex1];
@@ -833,8 +833,8 @@ DirectX::ComputeTetrahedron(VertexCollection& vertices, IndexCollection& indices
 	if (rhcoords)
 		ReverseWinding(indices, vertices);
 
-	assert(vertices.size() == 4 * 3);
-	assert(indices.size() == 4 * 3);
+	_ASSERT(vertices.size() == 4 * 3);
+	_ASSERT(indices.size() == 4 * 3);
 }
 
 //--------------------------------------------------------------------------------------
@@ -897,8 +897,8 @@ DirectX::ComputeOctahedron(VertexCollection& vertices, IndexCollection& indices,
 	if (rhcoords)
 		ReverseWinding(indices, vertices);
 
-	assert(vertices.size() == 8 * 3);
-	assert(indices.size() == 8 * 3);
+	_ASSERT(vertices.size() == 8 * 3);
+	_ASSERT(indices.size() == 8 * 3);
 }
 
 //--------------------------------------------------------------------------------------
@@ -1074,8 +1074,8 @@ DirectX::ComputeDodecahedron(VertexCollection& vertices, IndexCollection& indice
 	if (rhcoords)
 		ReverseWinding(indices, vertices);
 
-	assert(vertices.size() == 12 * 5);
-	assert(indices.size() == 12 * 3 * 3);
+	_ASSERT(vertices.size() == 12 * 5);
+	_ASSERT(indices.size() == 12 * 3 * 3);
 }
 
 //--------------------------------------------------------------------------------------
@@ -1159,8 +1159,8 @@ DirectX::ComputeIcosahedron(VertexCollection& vertices, IndexCollection& indices
 	if (rhcoords)
 		ReverseWinding(indices, vertices);
 
-	assert(vertices.size() == 20 * 3);
-	assert(indices.size() == 20 * 3);
+	_ASSERT(vertices.size() == 20 * 3);
+	_ASSERT(indices.size() == 20 * 3);
 }
 
 //--------------------------------------------------------------------------------------
@@ -1170,7 +1170,7 @@ DirectX::ComputeIcosahedron(VertexCollection& vertices, IndexCollection& indices
 // Include the teapot control point data.
 namespace
 {
-#include "TeapotData.inc"
+#include "teapotdata.inc"
 
 // Tessellates the specified bezier patch.
 void XM_CALLCONV

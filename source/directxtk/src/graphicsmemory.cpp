@@ -7,15 +7,14 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "GraphicsMemory.h"
-#include "PlatformHelpers.h"
-#include "LinearAllocator.h"
+#include "stdinc.h"
+#include "graphicsmemory.h"
+#include "platformhelpers.h"
+#include "linearallocator.h"
 
 #include <atomic>
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 using ScopedLock = std::lock_guard<std::mutex>;
 
 namespace
@@ -57,11 +56,11 @@ GetPoolIndexFromSize(size_t x)
 	// 4 - 16k allocator
 	// etc...
 	// Need to convert to an index.
-	DWORD bitIndex = 0;
+	uint32_t bitIndex = 0;
 #ifdef _WIN64
 	return _BitScanForward64(&bitIndex, allocatorPageSize) ? bitIndex + 1 : 0;
 #else
-	return _BitScanForward(&bitIndex, static_cast<DWORD>(allocatorPageSize)) ? bitIndex + 1 : 0;
+	return _BitScanForward(&bitIndex, static_cast<uint32_t>(allocatorPageSize)) ? bitIndex + 1 : 0;
 #endif
 }
 
@@ -88,7 +87,7 @@ public:
 		{
 			size_t pageSize = GetPageSizeFromPoolIndex(i);
 			mPools[i] = std::make_unique<LinearAllocator>(
-				mDevice.Get(),
+				mDevice.get(),
 				pageSize);
 		}
 	}
@@ -111,12 +110,12 @@ public:
 		// Which memory pool does it live in?
 		size_t poolSize = NextPow2((alignment + size) * PoolIndexScale);
 		size_t poolIndex = GetPoolIndexFromSize(poolSize);
-		assert(poolIndex < mPools.size());
+		_ASSERT(poolIndex < mPools.size());
 
 		// If the allocator isn't initialized yet, do so now
 		auto& allocator = mPools[poolIndex];
-		assert(allocator != nullptr);
-		assert(poolSize < MinPageSize || poolSize == allocator->PageSize());
+		_ASSERT(allocator != nullptr);
+		_ASSERT(poolSize < MinPageSize || poolSize == allocator->PageSize());
 
 		auto page = allocator->FindPageForAlloc(size, alignment);
 		if (!page)
@@ -166,14 +165,14 @@ public:
 	}
 
 #if !defined(_XBOX_ONE) || !defined(_TITLE)
-	ID3D12Device* GetDevice() const
+	ID3D12Device* GetDevice(void) const
 	{
-		return mDevice.Get();
+		return mDevice.get();
 	}
 #endif
 
 private:
-	ComPtr<ID3D12Device> mDevice;
+	wil::com_ptr<ID3D12Device> mDevice;
 	std::array<std::unique_ptr<LinearAllocator>, AllocatorPoolCount> mPools;
 	mutable std::mutex mMutex;
 };
@@ -292,7 +291,7 @@ GraphicsMemory::~GraphicsMemory()
 GraphicsResource
 GraphicsMemory::Allocate(size_t size, size_t alignment)
 {
-	assert(alignment >= 4); // Should use at least DWORD alignment
+	_ASSERT(alignment >= 4); // Should use at least uint32_t alignment
 	return pImpl->Allocate(size, alignment);
 }
 
@@ -328,7 +327,7 @@ GraphicsMemory::Get(_In_opt_ ID3D12Device* device)
 	if (!device)
 	{
 		// Should only use nullptr for device for single GPU usage
-		assert(Impl::s_graphicsMemory.size() == 1);
+		_ASSERT(Impl::s_graphicsMemory.size() == 1);
 
 		it = Impl::s_graphicsMemory.cbegin();
 	}
@@ -363,7 +362,7 @@ GraphicsResource::GraphicsResource(
 	mPage(page),
 	mGpuAddress(gpuAddress), mResource(resource), mMemory(memory), mBufferOffset(offset), mSize(size)
 {
-	assert(mPage != nullptr);
+	_ASSERT(mPage != nullptr);
 	mPage->AddRef();
 }
 

@@ -16,11 +16,6 @@
 #include <mmreg.h>
 #include <Audioclient.h>
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <xma2defs.h>
-#pragma comment(lib, "acphal.lib")
-#endif
-
 #ifndef XAUDIO2_HELPER_FUNCTIONS
 #define XAUDIO2_HELPER_FUNCTIONS
 #endif
@@ -33,14 +28,11 @@
 #pragma comment(lib, "xaudio2.lib")
 #else
 // Using XAudio 2.7 requires the DirectX SDK
-#include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\comdecl.h>
-#include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xaudio2.h>
-#include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xaudio2fx.h>
-#include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xapofx.h>
-#pragma warning(push)
-#pragma warning(disable : 4005)
-#include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\x3daudio.h>
-#pragma warning(pop)
+#include "june2010/comdecl.h"
+#include "june2010/xaudio2.h"
+#include "june2010/xaudio2fx.h"
+#include "june2010/xapofx.h"
+#include "june2010/x3daudio.h"
 #pragma comment(lib, "x3daudio.lib")
 #pragma comment(lib, "xapofx.lib")
 #endif
@@ -68,9 +60,6 @@ struct AudioStatistics
 	size_t allocatedVoicesOneShot; // Number of XAudio2 voices allocated for one-shot sounds
 	size_t allocatedVoicesIdle; // Number of XAudio2 voices allocated for one-shot sounds but not currently in use
 	size_t audioBytes; // Total wave data (in bytes) in SoundEffects and in-memory WaveBanks
-#if defined(_XBOX_ONE) && defined(_TITLE)
-	size_t xmaAudioBytes; // Total wave data (in bytes) in SoundEffects and in-memory WaveBanks allocated with ApuAlloc
-#endif
 };
 
 //----------------------------------------------------------------------------------
@@ -196,7 +185,7 @@ class AudioEngine
 {
 public:
 	explicit AudioEngine(
-		AUDIO_ENGINE_FLAGS flags = AudioEngine_Default, _In_opt_ const WAVEFORMATEX* wfx = nullptr, _In_opt_z_ const wchar_t* deviceId = nullptr,
+		AUDIO_ENGINE_FLAGS flags = AudioEngine_Default, _In_opt_ const WAVEFORMATEX* wfx = nullptr, _In_opt_z_ const std::wstring_view& deviceId = nullptr,
 		AUDIO_STREAM_CATEGORY category = AudioCategory_GameEffects) noexcept(false);
 
 	AudioEngine(AudioEngine&& moveFrom) noexcept;
@@ -210,7 +199,7 @@ public:
 	bool __cdecl Update();
 	// Performs per-frame processing for the audio engine, returns false if in 'silent mode'
 
-	bool __cdecl Reset(_In_opt_ const WAVEFORMATEX* wfx = nullptr, _In_opt_z_ const wchar_t* deviceId = nullptr);
+	bool __cdecl Reset(_In_opt_ const WAVEFORMATEX* wfx = nullptr, _In_opt_z_ const std::wstring_view& deviceId = nullptr);
 	// Reset audio engine from critical error/silent mode using a new device; can also 'migrate' the graph
 	// Returns true if succesfully reset, false if in 'silent mode' due to no default device
 	// Note: One shots are lost, all SoundEffectInstances are in the STOPPED state after successful reset
@@ -219,7 +208,7 @@ public:
 	void __cdecl Resume();
 	// Suspend/resumes audio processing (i.e. global pause/resume)
 
-	float __cdecl GetMasterVolume() const;
+	float __cdecl GetMasterVolume(void) const;
 	void __cdecl SetMasterVolume(float volume);
 	// Master volume property for all sounds
 
@@ -230,22 +219,22 @@ public:
 	void __cdecl SetMasteringLimit(int release, int loudness);
 	// Sets the mastering volume limiter properties (if active)
 
-	AudioStatistics __cdecl GetStatistics() const;
+	AudioStatistics __cdecl GetStatistics(void) const;
 	// Gathers audio engine statistics
 
-	WAVEFORMATEXTENSIBLE __cdecl GetOutputFormat() const;
+	WAVEFORMATEXTENSIBLE __cdecl GetOutputFormat(void) const;
 	// Returns the format consumed by the mastering voice (which is the same as the device output if defaults are used)
 
-	uint32_t __cdecl GetChannelMask() const;
+	uint32_t __cdecl GetChannelMask(void) const;
 	// Returns the output channel mask
 
-	unsigned int __cdecl GetOutputChannels() const;
+	uint32_t __cdecl GetOutputChannels(void) const;
 	// Returns the number of output channels
 
-	bool __cdecl IsAudioDevicePresent() const;
+	bool __cdecl IsAudioDevicePresent(void) const;
 	// Returns true if the audio graph is operating normally, false if in 'silent mode'
 
-	bool __cdecl IsCriticalError() const;
+	bool __cdecl IsCriticalError(void) const;
 	// Returns true if the audio graph is halted due to a critical error (which also places the engine into 'silent mode')
 
 	// Voice pool management.
@@ -269,10 +258,10 @@ public:
 	void __cdecl UnregisterNotify(_In_ IVoiceNotify* notify, bool usesOneShots, bool usesUpdate);
 
 	// XAudio2 interface access
-	IXAudio2* __cdecl GetInterface() const;
-	IXAudio2MasteringVoice* __cdecl GetMasterVoice() const;
-	IXAudio2SubmixVoice* __cdecl GetReverbVoice() const;
-	X3DAUDIO_HANDLE& __cdecl Get3DHandle() const;
+	IXAudio2* __cdecl GetInterface(void) const;
+	IXAudio2MasteringVoice* __cdecl GetMasterVoice(void) const;
+	IXAudio2SubmixVoice* __cdecl GetReverbVoice(void) const;
+	X3DAUDIO_HANDLE& __cdecl Get3DHandle(void) const;
 
 	// Static functions
 	struct RendererDetail
@@ -294,7 +283,7 @@ private:
 class WaveBank
 {
 public:
-	WaveBank(_In_ AudioEngine* engine, _In_z_ const wchar_t* wbFileName);
+	WaveBank(_In_ AudioEngine* engine, _In_z_ const std::wstring_view& wbFileName);
 
 	WaveBank(WaveBank&& moveFrom) noexcept;
 	WaveBank& operator=(WaveBank&& moveFrom) noexcept;
@@ -304,36 +293,36 @@ public:
 
 	virtual ~WaveBank();
 
-	void __cdecl Play(unsigned int index);
-	void __cdecl Play(unsigned int index, float volume, float pitch, float pan);
+	void __cdecl Play(uint32_t index);
+	void __cdecl Play(uint32_t index, float volume, float pitch, float pan);
 
-	void __cdecl Play(_In_z_ const char* name);
-	void __cdecl Play(_In_z_ const char* name, float volume, float pitch, float pan);
+	void __cdecl Play(_In_z_ const std::string_view& name);
+	void __cdecl Play(_In_z_ const std::string_view& name, float volume, float pitch, float pan);
 
-	std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
-	std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(_In_z_ const char* name, SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
+	std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
+	std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(_In_z_ const std::string_view& name, SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
 
-	bool __cdecl IsPrepared() const;
-	bool __cdecl IsInUse() const;
-	bool __cdecl IsStreamingBank() const;
+	bool __cdecl IsPrepared(void) const;
+	bool __cdecl IsInUse(void) const;
+	bool __cdecl IsStreamingBank(void) const;
 
-	size_t __cdecl GetSampleSizeInBytes(unsigned int index) const;
+	size_t __cdecl GetSampleSizeInBytes(uint32_t index) const;
 	// Returns size of wave audio data
 
-	size_t __cdecl GetSampleDuration(unsigned int index) const;
+	size_t __cdecl GetSampleDuration(uint32_t index) const;
 	// Returns the duration in samples
 
-	size_t __cdecl GetSampleDurationMS(unsigned int index) const;
+	size_t __cdecl GetSampleDurationMS(uint32_t index) const;
 	// Returns the duration in milliseconds
 
-	const WAVEFORMATEX* __cdecl GetFormat(unsigned int index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* wfx, size_t maxsize) const;
+	const WAVEFORMATEX* __cdecl GetFormat(uint32_t index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* wfx, size_t maxsize) const;
 
-	int __cdecl Find(_In_z_ const char* name) const;
+	int __cdecl Find(_In_z_ const std::string_view& name) const;
 
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= 0x0A00 /*_WIN32_WINNT_WIN10*/)
-	bool __cdecl FillSubmitBuffer(unsigned int index, _Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
+	bool __cdecl FillSubmitBuffer(uint32_t index, _Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
 #else
-	void __cdecl FillSubmitBuffer(unsigned int index, _Out_ XAUDIO2_BUFFER& buffer) const;
+	void __cdecl FillSubmitBuffer(uint32_t index, _Out_ XAUDIO2_BUFFER& buffer) const;
 #endif
 
 private:
@@ -352,7 +341,7 @@ private:
 class SoundEffect
 {
 public:
-	SoundEffect(_In_ AudioEngine* engine, _In_z_ const wchar_t* waveFileName);
+	SoundEffect(_In_ AudioEngine* engine, _In_z_ const std::wstring_view& waveFileName);
 
 	SoundEffect(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
 		_In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes);
@@ -382,18 +371,18 @@ public:
 
 	std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
 
-	bool __cdecl IsInUse() const;
+	bool __cdecl IsInUse(void) const;
 
-	size_t __cdecl GetSampleSizeInBytes() const;
+	size_t __cdecl GetSampleSizeInBytes(void) const;
 	// Returns size of wave audio data
 
-	size_t __cdecl GetSampleDuration() const;
+	size_t __cdecl GetSampleDuration(void) const;
 	// Returns the duration in samples
 
-	size_t __cdecl GetSampleDurationMS() const;
+	size_t __cdecl GetSampleDurationMS(void) const;
 	// Returns the duration in milliseconds
 
-	const WAVEFORMATEX* __cdecl GetFormat() const;
+	const WAVEFORMATEX* __cdecl GetFormat(void) const;
 
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= 0x0A00 /*_WIN32_WINNT_WIN10*/)
 	bool __cdecl FillSubmitBuffer(_Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
@@ -617,7 +606,7 @@ public:
 
 	void __cdecl Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords = true);
 
-	bool __cdecl IsLooped() const;
+	bool __cdecl IsLooped(void) const;
 
 	SoundState __cdecl GetState();
 
@@ -632,10 +621,10 @@ private:
 
 	// Private constructors
 	SoundEffectInstance(_In_ AudioEngine* engine, _In_ SoundEffect* effect, SOUND_EFFECT_INSTANCE_FLAGS flags);
-	SoundEffectInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags);
+	SoundEffectInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags);
 
 	friend std::unique_ptr<SoundEffectInstance> __cdecl SoundEffect::CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS);
-	friend std::unique_ptr<SoundEffectInstance> __cdecl WaveBank::CreateInstance(unsigned int, SOUND_EFFECT_INSTANCE_FLAGS);
+	friend std::unique_ptr<SoundEffectInstance> __cdecl WaveBank::CreateInstance(uint32_t, SOUND_EFFECT_INSTANCE_FLAGS);
 };
 
 //----------------------------------------------------------------------------------
@@ -679,9 +668,9 @@ public:
 	size_t __cdecl GetSampleSizeInBytes(uint64_t duration) const;
 	// Returns size of a buffer for a duration given in milliseconds
 
-	int __cdecl GetPendingBufferCount() const;
+	int __cdecl GetPendingBufferCount(void) const;
 
-	const WAVEFORMATEX* __cdecl GetFormat() const;
+	const WAVEFORMATEX* __cdecl GetFormat(void) const;
 
 private:
 	// Private implementation.

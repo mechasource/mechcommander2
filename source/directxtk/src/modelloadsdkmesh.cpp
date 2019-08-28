@@ -7,22 +7,21 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "Model.h"
+#include "stdinc.h"
+#include "model.h"
 
-#include "Effects.h"
-#include "VertexTypes.h"
+#include "effects.h"
+#include "vertextypes.h"
 
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "BinaryReader.h"
-#include "DescriptorHeap.h"
-#include "CommonStates.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "binaryreader.h"
+#include "descriptorheap.h"
+#include "commonstates.h"
 
-#include "SDKMesh.h"
+#include "sdkmesh.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 namespace
 {
@@ -37,7 +36,7 @@ enum
 };
 
 int
-GetUniqueTextureIndex(const wchar_t* textureName, std::map<std::wstring, int>& textureDictionary)
+GetUniqueTextureIndex(const std::wstring_view& textureName, std::map<std::wstring, int>& textureDictionary)
 {
 	if (textureName == nullptr || !textureName[0])
 		return -1;
@@ -58,7 +57,7 @@ GetUniqueTextureIndex(const wchar_t* textureName, std::map<std::wstring, int>& t
 void
 InitMaterial(
 	const DXUT::SDKMESH_MATERIAL& mh,
-	unsigned int flags,
+	uint32_t flags,
 	_Out_ Model::ModelMaterialInfo& m,
 	_Inout_ std::map<std::wstring, int32_t>& textureDictionary)
 {
@@ -77,14 +76,14 @@ InitMaterial(
 	if ((flags & DUAL_TEXTURE) && !mh.SpecularTexture[0])
 	{
 		DebugTrace("WARNING: Material '%s' has multiple texture coords but not multiple textures\n", mh.Name);
-		flags &= ~static_cast<unsigned int>(DUAL_TEXTURE);
+		flags &= ~static_cast<uint32_t>(DUAL_TEXTURE);
 	}
 
 	if (flags & NORMAL_MAPS)
 	{
 		if (!mh.NormalTexture[0])
 		{
-			flags &= ~static_cast<unsigned int>(NORMAL_MAPS);
+			flags &= ~static_cast<uint32_t>(NORMAL_MAPS);
 			*normalName = 0;
 		}
 	}
@@ -96,7 +95,7 @@ InitMaterial(
 
 	m = {};
 	m.name = matName;
-	m.perVertexColor = (flags & PER_VERTEX_COLOR) != 0;
+	m.perVertexcolour = (flags & PER_VERTEX_COLOR) != 0;
 	m.enableSkinning = (flags & SKINNING) != 0;
 	m.enableDualTexture = (flags & DUAL_TEXTURE) != 0;
 	m.enableNormalMaps = (flags & NORMAL_MAPS) != 0;
@@ -106,14 +105,14 @@ InitMaterial(
 		&& mh.Diffuse.x == 0 && mh.Diffuse.y == 0 && mh.Diffuse.z == 0 && mh.Diffuse.w == 0)
 	{
 		// SDKMESH material color block is uninitalized; assume defaults
-		m.diffuseColor = XMFLOAT3(1.f, 1.f, 1.f);
+		m.diffusecolour = XMFLOAT3(1.f, 1.f, 1.f);
 		m.alphaValue = 1.f;
 	}
 	else
 	{
-		m.ambientColor = XMFLOAT3(mh.Ambient.x, mh.Ambient.y, mh.Ambient.z);
-		m.diffuseColor = XMFLOAT3(mh.Diffuse.x, mh.Diffuse.y, mh.Diffuse.z);
-		m.emissiveColor = XMFLOAT3(mh.Emissive.x, mh.Emissive.y, mh.Emissive.z);
+		m.ambientcolour = XMFLOAT3(mh.Ambient.x, mh.Ambient.y, mh.Ambient.z);
+		m.diffusecolour = XMFLOAT3(mh.Diffuse.x, mh.Diffuse.y, mh.Diffuse.z);
+		m.emissivecolour = XMFLOAT3(mh.Emissive.x, mh.Emissive.y, mh.Emissive.z);
 
 		if (mh.Diffuse.w != 1.f && mh.Diffuse.w != 0.f)
 		{
@@ -125,7 +124,7 @@ InitMaterial(
 		if (mh.Power > 0)
 		{
 			m.specularPower = mh.Power;
-			m.specularColor = XMFLOAT3(mh.Specular.x, mh.Specular.y, mh.Specular.z);
+			m.specularcolour = XMFLOAT3(mh.Specular.x, mh.Specular.y, mh.Specular.z);
 		}
 	}
 
@@ -140,7 +139,7 @@ InitMaterial(
 void
 InitMaterial(
 	const DXUT::SDKMESH_MATERIAL_V2& mh,
-	unsigned int flags,
+	uint32_t flags,
 	_Out_ Model::ModelMaterialInfo& m,
 	_Inout_ std::map<std::wstring, int>& textureDictionary)
 {
@@ -161,7 +160,7 @@ InitMaterial(
 
 	m = {};
 	m.name = matName;
-	m.perVertexColor = false;
+	m.perVertexcolour = false;
 	m.enableSkinning = false;
 	m.enableDualTexture = false;
 	m.enableNormalMaps = true;
@@ -181,7 +180,7 @@ InitMaterial(
 
 static_assert(D3D12_IA_VERTEX_INPUT_STRUCTURE_ELEMENT_COUNT >= 32, "SDKMESH supports decls up to 32 entries");
 
-unsigned int
+uint32_t
 GetInputLayoutDesc(
 	_In_reads_(32) const DXUT::D3DVERTEXELEMENT9 decl[],
 	std::vector<D3D12_INPUT_ELEMENT_DESC>& inputDesc)
@@ -202,7 +201,7 @@ GetInputLayoutDesc(
 
 	uint32_t offset = 0;
 	uint32_t texcoords = 0;
-	unsigned int flags = 0;
+	uint32_t flags = 0;
 
 	bool posfound = false;
 
@@ -244,7 +243,7 @@ GetInputLayoutDesc(
 			switch (decl[index].Type)
 			{
 			case D3DDECLTYPE_FLOAT3:
-				assert(desc.Format == DXGI_FORMAT_R32G32B32_FLOAT);
+				_ASSERT(desc.Format == DXGI_FORMAT_R32G32B32_FLOAT);
 				offset += 12;
 				break;
 			case D3DDECLTYPE_UBYTE4N:
@@ -319,7 +318,7 @@ GetInputLayoutDesc(
 				offset += 16;
 				break;
 			case D3DDECLTYPE_D3DCOLOR:
-				assert(desc.Format == DXGI_FORMAT_B8G8R8A8_UNORM);
+				_ASSERT(desc.Format == DXGI_FORMAT_B8G8R8A8_UNORM);
 				offset += 4;
 				break;
 			case D3DDECLTYPE_UBYTE4N:
@@ -364,7 +363,7 @@ GetInputLayoutDesc(
 				offset += 4;
 				break;
 			case D3DDECLTYPE_FLOAT2:
-				assert(desc.Format == DXGI_FORMAT_R32G32_FLOAT);
+				_ASSERT(desc.Format == DXGI_FORMAT_R32G32_FLOAT);
 				offset += 8;
 				break;
 			case D3DDECLTYPE_FLOAT3:
@@ -534,11 +533,11 @@ _Use_decl_annotations_
 	std::vector<std::shared_ptr<std::vector<D3D12_INPUT_ELEMENT_DESC>>> vbDecls;
 	vbDecls.resize(header->NumVertexBuffers);
 
-	std::vector<unsigned int> materialFlags;
+	std::vector<uint32_t> materialFlags;
 	materialFlags.resize(header->NumVertexBuffers);
 
 	bool dec3nwarning = false;
-	for (UINT j = 0; j < header->NumVertexBuffers; ++j)
+	for (uint32_t j = 0; j < header->NumVertexBuffers; ++j)
 	{
 		auto& vh = vbArray[j];
 
@@ -550,15 +549,15 @@ _Use_decl_annotations_
 			throw std::exception("End of file");
 
 		vbDecls[j] = std::make_shared<std::vector<D3D12_INPUT_ELEMENT_DESC>>();
-		unsigned int flags = GetInputLayoutDesc(vh.Decl, *vbDecls[j].get());
+		uint32_t flags = GetInputLayoutDesc(vh.Decl, *vbDecls[j].get());
 
 		if (flags & SKINNING)
 		{
-			flags &= ~static_cast<unsigned int>(DUAL_TEXTURE | NORMAL_MAPS);
+			flags &= ~static_cast<uint32_t>(DUAL_TEXTURE | NORMAL_MAPS);
 		}
 		if (flags & DUAL_TEXTURE)
 		{
-			flags &= ~static_cast<unsigned int>(NORMAL_MAPS);
+			flags &= ~static_cast<uint32_t>(NORMAL_MAPS);
 		}
 
 		if (flags & USES_OBSOLETE_DEC3N)
@@ -576,7 +575,7 @@ _Use_decl_annotations_
 	}
 
 	// Validate index buffers
-	for (UINT j = 0; j < header->NumIndexBuffers; ++j)
+	for (uint32_t j = 0; j < header->NumIndexBuffers; ++j)
 	{
 		auto& ih = ibArray[j];
 
@@ -602,7 +601,7 @@ _Use_decl_annotations_
 
 	uint32_t partCount = 0;
 
-	for (UINT meshIndex = 0; meshIndex < header->NumMeshes; ++meshIndex)
+	for (uint32_t meshIndex = 0; meshIndex < header->NumMeshes; ++meshIndex)
 	{
 		auto& mh = meshArray[meshIndex];
 
@@ -615,18 +614,18 @@ _Use_decl_annotations_
 		// mh.NumVertexBuffers is sometimes not what you'd expect, so we skip validating it
 
 		if (dataSize < mh.SubsetOffset
-			|| (dataSize < mh.SubsetOffset + uint64_t(mh.NumSubsets) * sizeof(UINT)))
+			|| (dataSize < mh.SubsetOffset + uint64_t(mh.NumSubsets) * sizeof(uint32_t)))
 			throw std::exception("End of file");
 
-		auto subsets = reinterpret_cast<const UINT*>(meshData + mh.SubsetOffset);
+		auto subsets = reinterpret_cast<const uint32_t*>(meshData + mh.SubsetOffset);
 
 		if (mh.NumFrameInfluences > 0)
 		{
 			if (dataSize < mh.FrameInfluenceOffset
-				|| (dataSize < mh.FrameInfluenceOffset + uint64_t(mh.NumFrameInfluences) * sizeof(UINT)))
+				|| (dataSize < mh.FrameInfluenceOffset + uint64_t(mh.NumFrameInfluences) * sizeof(uint32_t)))
 				throw std::exception("End of file");
 
-			// TODO - auto influences = reinterpret_cast<const UINT*>( meshData + mh.FrameInfluenceOffset );
+			// TODO - auto influences = reinterpret_cast<const uint32_t*>( meshData + mh.FrameInfluenceOffset );
 		}
 
 		auto mesh = std::make_shared<ModelMesh>();
@@ -640,7 +639,7 @@ _Use_decl_annotations_
 		BoundingSphere::CreateFromBoundingBox(mesh->boundingSphere, mesh->boundingBox);
 
 		// Create subsets
-		for (UINT j = 0; j < mh.NumSubsets; ++j)
+		for (uint32_t j = 0; j < mh.NumSubsets; ++j)
 		{
 			auto sIndex = subsets[j];
 			if (sIndex >= header->NumTotalSubsets)
@@ -763,7 +762,7 @@ _Use_decl_annotations_
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 	std::unique_ptr<Model>
-	DirectX::Model::CreateFromSDKMESH(const wchar_t* szFileName, ID3D12Device* device)
+	DirectX::Model::CreateFromSDKMESH(const std::wstring_view& szFileName, ID3D12Device* device)
 {
 	size_t dataSize = 0;
 	std::unique_ptr<uint8_t[]> data;

@@ -9,11 +9,7 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <DirectXMath.h>
 
@@ -50,23 +46,23 @@ private:
 };
 
 // Vertex struct holding position and color information.
-struct VertexPositionColor
+struct VertexPositioncolour
 {
-	VertexPositionColor() = default;
+	VertexPositioncolour() = default;
 
-	VertexPositionColor(const VertexPositionColor&) = default;
-	VertexPositionColor& operator=(const VertexPositionColor&) = default;
+	VertexPositioncolour(const VertexPositioncolour&) = default;
+	VertexPositioncolour& operator=(const VertexPositioncolour&) = default;
 
-	VertexPositionColor(VertexPositionColor&&) = default;
-	VertexPositionColor& operator=(VertexPositionColor&&) = default;
+	VertexPositioncolour(VertexPositioncolour&&) = default;
+	VertexPositioncolour& operator=(VertexPositioncolour&&) = default;
 
-	VertexPositionColor(XMFLOAT3 const& iposition, XMFLOAT4 const& icolor) :
+	VertexPositioncolour(XMFLOAT3 const& iposition, XMFLOAT4 const& icolor) :
 		position(iposition),
 		color(icolor)
 	{
 	}
 
-	VertexPositionColor(FXMVECTOR iposition, FXMVECTOR icolor)
+	VertexPositioncolour(FXMVECTOR iposition, FXMVECTOR icolor)
 	{
 		XMStoreFloat3(&this->position, iposition);
 		XMStoreFloat4(&this->color, icolor);
@@ -187,24 +183,24 @@ private:
 };
 
 // Vertex struct holding position, color, and texture mapping information.
-struct VertexPositionColorTexture
+struct VertexPositioncolourTexture
 {
-	VertexPositionColorTexture() = default;
+	VertexPositioncolourTexture() = default;
 
-	VertexPositionColorTexture(const VertexPositionColorTexture&) = default;
-	VertexPositionColorTexture& operator=(const VertexPositionColorTexture&) = default;
+	VertexPositioncolourTexture(const VertexPositioncolourTexture&) = default;
+	VertexPositioncolourTexture& operator=(const VertexPositioncolourTexture&) = default;
 
-	VertexPositionColorTexture(VertexPositionColorTexture&&) = default;
-	VertexPositionColorTexture& operator=(VertexPositionColorTexture&&) = default;
+	VertexPositioncolourTexture(VertexPositioncolourTexture&&) = default;
+	VertexPositioncolourTexture& operator=(VertexPositioncolourTexture&&) = default;
 
-	VertexPositionColorTexture(XMFLOAT3 const& iposition, XMFLOAT4 const& icolor, XMFLOAT2 const& itextureCoordinate) :
+	VertexPositioncolourTexture(XMFLOAT3 const& iposition, XMFLOAT4 const& icolor, XMFLOAT2 const& itextureCoordinate) :
 		position(iposition),
 		color(icolor),
 		textureCoordinate(itextureCoordinate)
 	{
 	}
 
-	VertexPositionColorTexture(FXMVECTOR iposition, FXMVECTOR icolor, FXMVECTOR itextureCoordinate)
+	VertexPositioncolourTexture(FXMVECTOR iposition, FXMVECTOR icolor, FXMVECTOR itextureCoordinate)
 	{
 		XMStoreFloat3(&this->position, iposition);
 		XMStoreFloat4(&this->color, icolor);
@@ -223,24 +219,24 @@ private:
 };
 
 // Vertex struct holding position, normal vector, and color information.
-struct VertexPositionNormalColor
+struct VertexPositionNormalcolour
 {
-	VertexPositionNormalColor() = default;
+	VertexPositionNormalcolour() = default;
 
-	VertexPositionNormalColor(const VertexPositionNormalColor&) = default;
-	VertexPositionNormalColor& operator=(const VertexPositionNormalColor&) = default;
+	VertexPositionNormalcolour(const VertexPositionNormalcolour&) = default;
+	VertexPositionNormalcolour& operator=(const VertexPositionNormalcolour&) = default;
 
-	VertexPositionNormalColor(VertexPositionNormalColor&&) = default;
-	VertexPositionNormalColor& operator=(VertexPositionNormalColor&&) = default;
+	VertexPositionNormalcolour(VertexPositionNormalcolour&&) = default;
+	VertexPositionNormalcolour& operator=(VertexPositionNormalcolour&&) = default;
 
-	VertexPositionNormalColor(XMFLOAT3 const& iposition, XMFLOAT3 const& inormal, XMFLOAT4 const& icolor) :
+	VertexPositionNormalcolour(XMFLOAT3 const& iposition, XMFLOAT3 const& inormal, XMFLOAT4 const& icolor) :
 		position(iposition),
 		normal(inormal),
 		color(icolor)
 	{
 	}
 
-	VertexPositionNormalColor(FXMVECTOR iposition, FXMVECTOR inormal, FXMVECTOR icolor)
+	VertexPositionNormalcolour(FXMVECTOR iposition, FXMVECTOR inormal, FXMVECTOR icolor)
 	{
 		XMStoreFloat3(&this->position, iposition);
 		XMStoreFloat3(&this->normal, inormal);
@@ -295,17 +291,17 @@ private:
 };
 
 // Vertex struct holding position, normal vector, color, and texture mapping information.
-struct VertexPositionNormalColorTexture
+struct VertexPositionNormalcolourTexture
 {
-	VertexPositionNormalColorTexture() = default;
+	VertexPositionNormalcolourTexture() = default;
 
-	VertexPositionNormalColorTexture(const VertexPositionNormalColorTexture&) = default;
-	VertexPositionNormalColorTexture& operator=(const VertexPositionNormalColorTexture&) = default;
+	VertexPositionNormalcolourTexture(const VertexPositionNormalcolourTexture&) = default;
+	VertexPositionNormalcolourTexture& operator=(const VertexPositionNormalcolourTexture&) = default;
 
-	VertexPositionNormalColorTexture(VertexPositionNormalColorTexture&&) = default;
-	VertexPositionNormalColorTexture& operator=(VertexPositionNormalColorTexture&&) = default;
+	VertexPositionNormalcolourTexture(VertexPositionNormalcolourTexture&&) = default;
+	VertexPositionNormalcolourTexture& operator=(VertexPositionNormalcolourTexture&&) = default;
 
-	VertexPositionNormalColorTexture(XMFLOAT3 const& iposition, XMFLOAT3 const& inormal, XMFLOAT4 const& icolor, XMFLOAT2 const& itextureCoordinate) :
+	VertexPositionNormalcolourTexture(XMFLOAT3 const& iposition, XMFLOAT3 const& inormal, XMFLOAT4 const& icolor, XMFLOAT2 const& itextureCoordinate) :
 		position(iposition),
 		normal(inormal),
 		color(icolor),
@@ -313,7 +309,7 @@ struct VertexPositionNormalColorTexture
 	{
 	}
 
-	VertexPositionNormalColorTexture(FXMVECTOR iposition, FXMVECTOR inormal, FXMVECTOR icolor, CXMVECTOR itextureCoordinate)
+	VertexPositionNormalcolourTexture(FXMVECTOR iposition, FXMVECTOR inormal, FXMVECTOR icolor, CXMVECTOR itextureCoordinate)
 	{
 		XMStoreFloat3(&this->position, iposition);
 		XMStoreFloat3(&this->normal, inormal);

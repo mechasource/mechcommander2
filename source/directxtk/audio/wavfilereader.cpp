@@ -10,9 +10,9 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //-------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PlatformHelpers.h"
-#include "WAVFileReader.h"
+#include "stdinc.h"
+#include "platformhelpers.h"
+#include "wavfilereader.h"
 
 using namespace DirectX;
 
@@ -21,15 +21,15 @@ namespace
 //---------------------------------------------------------------------------------
 // .WAV files
 //---------------------------------------------------------------------------------
-const uint32_t FOURCC_RIFF_TAG = MAKEFOURCC('R', 'I', 'F', 'F');
-const uint32_t FOURCC_FORMAT_TAG = MAKEFOURCC('f', 'm', 't', ' ');
-const uint32_t FOURCC_DATA_TAG = MAKEFOURCC('d', 'a', 't', 'a');
-const uint32_t FOURCC_WAVE_FILE_TAG = MAKEFOURCC('W', 'A', 'V', 'E');
-const uint32_t FOURCC_XWMA_FILE_TAG = MAKEFOURCC('X', 'W', 'M', 'A');
-const uint32_t FOURCC_DLS_SAMPLE = MAKEFOURCC('w', 's', 'm', 'p');
-const uint32_t FOURCC_MIDI_SAMPLE = MAKEFOURCC('s', 'm', 'p', 'l');
-const uint32_t FOURCC_XWMA_DPDS = MAKEFOURCC('d', 'p', 'd', 's');
-const uint32_t FOURCC_XMA_SEEK = MAKEFOURCC('s', 'e', 'e', 'k');
+constexpr uint32_t FOURCC_RIFF_TAG = MAKEFOURCC('R', 'I', 'F', 'F');
+constexpr uint32_t FOURCC_FORMAT_TAG = MAKEFOURCC('f', 'm', 't', ' ');
+constexpr uint32_t FOURCC_DATA_TAG = MAKEFOURCC('d', 'a', 't', 'a');
+constexpr uint32_t FOURCC_WAVE_FILE_TAG = MAKEFOURCC('W', 'A', 'V', 'E');
+constexpr uint32_t FOURCC_XWMA_FILE_TAG = MAKEFOURCC('X', 'W', 'M', 'A');
+constexpr uint32_t FOURCC_DLS_SAMPLE = MAKEFOURCC('w', 's', 'm', 'p');
+constexpr uint32_t FOURCC_MIDI_SAMPLE = MAKEFOURCC('s', 'm', 'p', 'l');
+constexpr uint32_t FOURCC_XWMA_DPDS = MAKEFOURCC('d', 'p', 'd', 's');
+constexpr uint32_t FOURCC_XMA_SEEK = MAKEFOURCC('s', 'e', 'e', 'k');
 
 #pragma pack(push, 1)
 struct RIFFChunk
@@ -243,8 +243,8 @@ WaveFindFormatAndData(
 
 				auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>(ptr);
 
-				if (memcmp(reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(DWORD),
-						reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD))
+				if (memcmp(reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(uint32_t),
+						reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(uint32_t), sizeof(GUID) - sizeof(uint32_t))
 					!= 0)
 				{
 					return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
@@ -477,9 +477,9 @@ WaveFindTable(
 //---------------------------------------------------------------------------------
 HRESULT
 LoadAudioFromFile(
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	_Inout_ std::unique_ptr<uint8_t[]>& wavData,
-	_Out_ DWORD* bytesRead)
+	_Out_ uint32_t* bytesRead)
 {
 	if (!szFileName)
 		return E_INVALIDARG;
@@ -520,7 +520,7 @@ LoadAudioFromFile(
 	}
 
 	// Need at least enough data to have a valid minimal WAV file
-	if (fileInfo.EndOfFile.LowPart < (sizeof(RIFFChunk) * 2 + sizeof(DWORD) + sizeof(WAVEFORMAT)))
+	if (fileInfo.EndOfFile.LowPart < (sizeof(RIFFChunk) * 2 + sizeof(uint32_t) + sizeof(WAVEFORMAT)))
 	{
 		return E_FAIL;
 	}
@@ -564,7 +564,7 @@ _Use_decl_annotations_
 	*audioBytes = 0;
 
 	// Need at least enough data to have a valid minimal WAV file
-	if (wavDataSize < (sizeof(RIFFChunk) * 2 + sizeof(DWORD) + sizeof(WAVEFORMAT)))
+	if (wavDataSize < (sizeof(RIFFChunk) * 2 + sizeof(uint32_t) + sizeof(WAVEFORMAT)))
 	{
 		return E_FAIL;
 	}
@@ -581,7 +581,7 @@ _Use_decl_annotations_
 _Use_decl_annotations_
 	HRESULT
 	DirectX::LoadWAVAudioFromFile(
-		const wchar_t* szFileName,
+		const std::wstring_view& szFileName,
 		std::unique_ptr<uint8_t[]>& wavData,
 		const WAVEFORMATEX** wfx,
 		const uint8_t** startAudio,
@@ -594,7 +594,7 @@ _Use_decl_annotations_
 	*startAudio = nullptr;
 	*audioBytes = 0;
 
-	DWORD bytesRead = 0;
+	uint32_t bytesRead = 0;
 	HRESULT hr = LoadAudioFromFile(szFileName, wavData, &bytesRead);
 	if (FAILED(hr))
 	{
@@ -623,7 +623,7 @@ _Use_decl_annotations_
 	memset(&result, 0, sizeof(result));
 
 	// Need at least enough data to have a valid minimal WAV file
-	if (wavDataSize < (sizeof(RIFFChunk) * 2 + sizeof(DWORD) + sizeof(WAVEFORMAT)))
+	if (wavDataSize < (sizeof(RIFFChunk) * 2 + sizeof(uint32_t) + sizeof(WAVEFORMAT)))
 	{
 		return E_FAIL;
 	}
@@ -657,7 +657,7 @@ _Use_decl_annotations_
 _Use_decl_annotations_
 	HRESULT
 	DirectX::LoadWAVAudioFromFileEx(
-		const wchar_t* szFileName,
+		const std::wstring_view& szFileName,
 		std::unique_ptr<uint8_t[]>& wavData,
 		DirectX::WAVData& result)
 {
@@ -666,7 +666,7 @@ _Use_decl_annotations_
 
 	memset(&result, 0, sizeof(result));
 
-	DWORD bytesRead = 0;
+	uint32_t bytesRead = 0;
 	HRESULT hr = LoadAudioFromFile(szFileName, wavData, &bytesRead);
 	if (FAILED(hr))
 	{

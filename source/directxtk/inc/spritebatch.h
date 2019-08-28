@@ -9,18 +9,14 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <DirectXMath.h>
-#include <DirectXColors.h>
+#include <DirectXcolours.h>
 #include <functional>
 #include <memory>
 
-#include "RenderTargetState.h"
+#include "rendertargetstate.h"
 
 namespace DirectX
 {
@@ -100,22 +96,22 @@ public:
 	void __cdecl End();
 
 	// Draw overloads specifying position, origin and scale as XMFLOAT2.
-	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, XMFLOAT2 const& position, FXMVECTOR color = Colors::White);
-	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, XMFLOAT2 const& position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = Colors::White, float rotation = 0, XMFLOAT2 const& origin = Float2Zero, float scale = 1, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
+	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, XMFLOAT2 const& position, FXMVECTOR color = colours::White);
+	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, XMFLOAT2 const& position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = colours::White, float rotation = 0, XMFLOAT2 const& origin = Float2Zero, float scale = 1, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
 	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, XMFLOAT2 const& position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, XMFLOAT2 const& scale, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
 
 	// Draw overloads specifying position, origin and scale via the first two components of an XMVECTOR.
-	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, FXMVECTOR position, FXMVECTOR color = Colors::White);
-	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, FXMVECTOR position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = Colors::White, float rotation = 0, FXMVECTOR origin = g_XMZero, float scale = 1, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
+	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, FXMVECTOR position, FXMVECTOR color = colours::White);
+	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, FXMVECTOR position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = colours::White, float rotation = 0, FXMVECTOR origin = g_XMZero, float scale = 1, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
 	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, FXMVECTOR position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color, float rotation, FXMVECTOR origin, GXMVECTOR scale, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
 
 	// Draw overloads specifying position as a RECT.
-	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, RECT const& destinationRectangle, FXMVECTOR color = Colors::White);
-	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, RECT const& destinationRectangle, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = Colors::White, float rotation = 0, XMFLOAT2 const& origin = Float2Zero, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
+	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, RECT const& destinationRectangle, FXMVECTOR color = colours::White);
+	void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, RECT const& destinationRectangle, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = colours::White, float rotation = 0, XMFLOAT2 const& origin = Float2Zero, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
 
 	// Rotation mode to be applied to the sprite transformation
 	void __cdecl SetRotation(DXGI_MODE_ROTATION mode);
-	DXGI_MODE_ROTATION __cdecl GetRotation() const;
+	DXGI_MODE_ROTATION __cdecl GetRotation(void) const;
 
 	// Set viewport for sprite transformation
 	void __cdecl SetViewport(const D3D12_VIEWPORT& viewPort);

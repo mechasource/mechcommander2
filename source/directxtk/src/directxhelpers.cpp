@@ -7,10 +7,10 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "DirectXHelpers.h"
-#include "GraphicsMemory.h"
-#include "PlatformHelpers.h"
+#include "stdinc.h"
+#include "directxhelpers.h"
+#include "graphicsmemory.h"
+#include "platformhelpers.h"
 
 using namespace DirectX;
 
@@ -33,13 +33,13 @@ DirectX::CreateShaderResourceView(
 		if (desc.DepthOrArraySize > 1)
 		{
 			srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE1DARRAY;
-			srvDesc.Texture1DArray.MipLevels = (!desc.MipLevels) ? UINT(-1) : desc.MipLevels;
-			srvDesc.Texture1DArray.ArraySize = static_cast<UINT>(desc.DepthOrArraySize);
+			srvDesc.Texture1DArray.MipLevels = (!desc.MipLevels) ? uint32_t(-1) : desc.MipLevels;
+			srvDesc.Texture1DArray.ArraySize = static_cast<uint32_t>(desc.DepthOrArraySize);
 		}
 		else
 		{
 			srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE1D;
-			srvDesc.Texture1D.MipLevels = (!desc.MipLevels) ? UINT(-1) : desc.MipLevels;
+			srvDesc.Texture1D.MipLevels = (!desc.MipLevels) ? uint32_t(-1) : desc.MipLevels;
 		}
 		break;
 
@@ -49,31 +49,31 @@ DirectX::CreateShaderResourceView(
 			if (desc.DepthOrArraySize > 6)
 			{
 				srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURECUBEARRAY;
-				srvDesc.TextureCubeArray.MipLevels = (!desc.MipLevels) ? UINT(-1) : desc.MipLevels;
-				srvDesc.TextureCubeArray.NumCubes = static_cast<UINT>(desc.DepthOrArraySize / 6);
+				srvDesc.TextureCubeArray.MipLevels = (!desc.MipLevels) ? uint32_t(-1) : desc.MipLevels;
+				srvDesc.TextureCubeArray.NumCubes = static_cast<uint32_t>(desc.DepthOrArraySize / 6);
 			}
 			else
 			{
 				srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURECUBE;
-				srvDesc.TextureCube.MipLevels = (!desc.MipLevels) ? UINT(-1) : desc.MipLevels;
+				srvDesc.TextureCube.MipLevels = (!desc.MipLevels) ? uint32_t(-1) : desc.MipLevels;
 			}
 		}
 		else if (desc.DepthOrArraySize > 1)
 		{
 			srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2DARRAY;
-			srvDesc.Texture2DArray.MipLevels = (!desc.MipLevels) ? UINT(-1) : desc.MipLevels;
-			srvDesc.Texture2DArray.ArraySize = static_cast<UINT>(desc.DepthOrArraySize);
+			srvDesc.Texture2DArray.MipLevels = (!desc.MipLevels) ? uint32_t(-1) : desc.MipLevels;
+			srvDesc.Texture2DArray.ArraySize = static_cast<uint32_t>(desc.DepthOrArraySize);
 		}
 		else
 		{
 			srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-			srvDesc.Texture2D.MipLevels = (!desc.MipLevels) ? UINT(-1) : desc.MipLevels;
+			srvDesc.Texture2D.MipLevels = (!desc.MipLevels) ? uint32_t(-1) : desc.MipLevels;
 		}
 		break;
 
 	case D3D12_RESOURCE_DIMENSION_TEXTURE3D:
 		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE3D;
-		srvDesc.Texture3D.MipLevels = (!desc.MipLevels) ? UINT(-1) : desc.MipLevels;
+		srvDesc.Texture3D.MipLevels = (!desc.MipLevels) ? uint32_t(-1) : desc.MipLevels;
 		break;
 
 	case D3D12_RESOURCE_DIMENSION_BUFFER:

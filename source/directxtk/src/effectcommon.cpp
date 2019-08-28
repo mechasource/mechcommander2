@@ -7,13 +7,12 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
-#include "DemandCreate.h"
-#include "ResourceUploadBatch.h"
+#include "stdinc.h"
+#include "effectcommon.h"
+#include "demandcreate.h"
+#include "resourceuploadbatch.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 // IEffectMatrices default method
 void XM_CALLCONV
@@ -108,40 +107,40 @@ EffectFog::SetConstants(int& dirtyFlags, FXMMATRIX worldView, XMVECTOR& fogVecto
 }
 
 // Constructor initializes default material color settings.
-EffectColor::EffectColor() noexcept :
-	diffuseColor(g_XMOne),
+Effectcolour::Effectcolour() noexcept :
+	diffusecolour(g_XMOne),
 	alpha(1.f)
 {
 }
 
 // Lazily recomputes the material color parameter for shaders that do not support realtime lighting.
 void
-EffectColor::SetConstants(_Inout_ int& dirtyFlags, _Inout_ XMVECTOR& diffuseColorConstant)
+Effectcolour::SetConstants(_Inout_ int& dirtyFlags, _Inout_ XMVECTOR& diffusecolourConstant)
 {
-	if (dirtyFlags & EffectDirtyFlags::MaterialColor)
+	if (dirtyFlags & EffectDirtyFlags::Materialcolour)
 	{
 		XMVECTOR alphaVector = XMVectorReplicate(alpha);
 
 		// xyz = diffuse * alpha, w = alpha.
-		diffuseColorConstant = XMVectorSelect(alphaVector, XMVectorMultiply(diffuseColor, alphaVector), g_XMSelect1110);
+		diffusecolourConstant = XMVectorSelect(alphaVector, XMVectorMultiply(diffusecolour, alphaVector), g_XMSelect1110);
 
-		dirtyFlags &= ~EffectDirtyFlags::MaterialColor;
+		dirtyFlags &= ~EffectDirtyFlags::Materialcolour;
 		dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 	}
 }
 
 // Constructor initializes default light settings.
 EffectLights::EffectLights() noexcept :
-	emissiveColor{},
-	ambientLightColor{},
+	emissivecolour{},
+	ambientLightcolour{},
 	lightEnabled{},
-	lightDiffuseColor{},
-	lightSpecularColor{}
+	lightDiffusecolour{},
+	lightSpecularcolour{}
 {
 	for (int i = 0; i < MaxDirectionalLights; i++)
 	{
 		lightEnabled[i] = (i == 0);
-		lightDiffuseColor[i] = g_XMOne;
+		lightDiffusecolour[i] = g_XMOne;
 	}
 }
 
@@ -152,19 +151,19 @@ EffectLights::EffectLights() noexcept :
 
 // Initializes constant buffer fields to match the current lighting state.
 _Use_decl_annotations_ void
-EffectLights::InitializeConstants(XMVECTOR& specularColorAndPowerConstant, XMVECTOR* lightDirectionConstant, XMVECTOR* lightDiffuseConstant, XMVECTOR* lightSpecularConstant) const
+EffectLights::InitializeConstants(XMVECTOR& specularcolourAndPowerConstant, XMVECTOR* lightDirectionConstant, XMVECTOR* lightDiffuseConstant, XMVECTOR* lightSpecularConstant) const
 {
 	static const XMVECTORF32 defaultSpecular = {{{1, 1, 1, 16}}};
 	static const XMVECTORF32 defaultLightDirection = {{{0, -1, 0, 0}}};
 
-	specularColorAndPowerConstant = defaultSpecular;
+	specularcolourAndPowerConstant = defaultSpecular;
 
 	for (int i = 0; i < MaxDirectionalLights; i++)
 	{
 		lightDirectionConstant[i] = defaultLightDirection;
 
-		lightDiffuseConstant[i] = lightEnabled[i] ? lightDiffuseColor[i] : g_XMZero;
-		lightSpecularConstant[i] = lightEnabled[i] ? lightSpecularColor[i] : g_XMZero;
+		lightDiffuseConstant[i] = lightEnabled[i] ? lightDiffusecolour[i] : g_XMZero;
+		lightSpecularConstant[i] = lightEnabled[i] ? lightSpecularcolour[i] : g_XMZero;
 	}
 }
 
@@ -174,7 +173,7 @@ EffectLights::InitializeConstants(XMVECTOR& specularColorAndPowerConstant, XMVEC
 
 // Lazily recomputes derived parameter values used by shader lighting calculations.
 _Use_decl_annotations_ void
-EffectLights::SetConstants(int& dirtyFlags, EffectMatrices const& matrices, XMMATRIX& worldConstant, XMVECTOR worldInverseTransposeConstant[3], XMVECTOR& eyePositionConstant, XMVECTOR& diffuseColorConstant, XMVECTOR& emissiveColorConstant, bool lightingEnabled)
+EffectLights::SetConstants(int& dirtyFlags, EffectMatrices const& matrices, XMMATRIX& worldConstant, XMVECTOR worldInverseTransposeConstant[3], XMVECTOR& eyePositionConstant, XMVECTOR& diffusecolourConstant, XMVECTOR& emissivecolourConstant, bool lightingEnabled)
 {
 	if (lightingEnabled)
 	{
@@ -207,46 +206,46 @@ EffectLights::SetConstants(int& dirtyFlags, EffectMatrices const& matrices, XMMA
 
 	// Material color parameters. The desired lighting model is:
 	//
-	//     ((ambientLightColor + sum(diffuse directional light)) * diffuseColor) + emissiveColor
+	//     ((ambientLightcolour + sum(diffuse directional light)) * diffusecolour) + emissivecolour
 	//
 	// When lighting is disabled, ambient and directional lights are ignored, leaving:
 	//
-	//     diffuseColor + emissiveColor
+	//     diffusecolour + emissivecolour
 	//
 	// For the lighting disabled case, we can save one shader instruction by precomputing
-	// diffuse+emissive on the CPU, after which the shader can use diffuseColor directly,
+	// diffuse+emissive on the CPU, after which the shader can use diffusecolour directly,
 	// ignoring its emissive parameter.
 	//
 	// When lighting is enabled, we can merge the ambient and emissive settings. If we
 	// set our emissive parameter to emissive+(ambient*diffuse), the shader no longer
 	// needs to bother adding the ambient contribution, simplifying its computation to:
 	//
-	//     (sum(diffuse directional light) * diffuseColor) + emissiveColor
+	//     (sum(diffuse directional light) * diffusecolour) + emissivecolour
 	//
 	// For futher optimization goodness, we merge material alpha with the diffuse
 	// color parameter, and premultiply all color values by this alpha.
 
-	if (dirtyFlags & EffectDirtyFlags::MaterialColor)
+	if (dirtyFlags & EffectDirtyFlags::Materialcolour)
 	{
-		XMVECTOR diffuse = diffuseColor;
+		XMVECTOR diffuse = diffusecolour;
 		XMVECTOR alphaVector = XMVectorReplicate(alpha);
 
 		if (lightingEnabled)
 		{
 			// Merge emissive and ambient light contributions.
-			// (emissiveColor + ambientLightColor * diffuse) * alphaVector;
-			emissiveColorConstant = XMVectorMultiply(XMVectorMultiplyAdd(ambientLightColor, diffuse, emissiveColor), alphaVector);
+			// (emissivecolour + ambientLightcolour * diffuse) * alphaVector;
+			emissivecolourConstant = XMVectorMultiply(XMVectorMultiplyAdd(ambientLightcolour, diffuse, emissivecolour), alphaVector);
 		}
 		else
 		{
 			// Merge diffuse and emissive light contributions.
-			diffuse = XMVectorAdd(diffuse, emissiveColor);
+			diffuse = XMVectorAdd(diffuse, emissivecolour);
 		}
 
 		// xyz = diffuse * alpha, w = alpha.
-		diffuseColorConstant = XMVectorSelect(alphaVector, XMVectorMultiply(diffuse, alphaVector), g_XMSelect1110);
+		diffusecolourConstant = XMVectorSelect(alphaVector, XMVectorMultiply(diffuse, alphaVector), g_XMSelect1110);
 
-		dirtyFlags &= ~EffectDirtyFlags::MaterialColor;
+		dirtyFlags &= ~EffectDirtyFlags::Materialcolour;
 		dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 	}
 }
@@ -270,8 +269,8 @@ EffectLights::SetLightEnabled(int whichLight, bool value, XMVECTOR* lightDiffuse
 	if (value)
 	{
 		// If this light is now on, store its color in the constant buffer.
-		lightDiffuseConstant[whichLight] = lightDiffuseColor[whichLight];
-		lightSpecularConstant[whichLight] = lightSpecularColor[whichLight];
+		lightDiffuseConstant[whichLight] = lightDiffusecolour[whichLight];
+		lightSpecularConstant[whichLight] = lightSpecularcolour[whichLight];
 	}
 	else
 	{
@@ -285,12 +284,12 @@ EffectLights::SetLightEnabled(int whichLight, bool value, XMVECTOR* lightDiffuse
 
 // Helper for setting diffuse color of one of the directional lights.
 _Use_decl_annotations_ int XM_CALLCONV
-EffectLights::SetLightDiffuseColor(int whichLight, FXMVECTOR value, XMVECTOR* lightDiffuseConstant)
+EffectLights::SetLightDiffusecolour(int whichLight, FXMVECTOR value, XMVECTOR* lightDiffuseConstant)
 {
 	ValidateLightIndex(whichLight);
 
 	// Locally store the new color.
-	lightDiffuseColor[whichLight] = value;
+	lightDiffusecolour[whichLight] = value;
 
 	// If this light is currently on, also update the constant buffer.
 	if (lightEnabled[whichLight])
@@ -305,12 +304,12 @@ EffectLights::SetLightDiffuseColor(int whichLight, FXMVECTOR value, XMVECTOR* li
 
 // Helper for setting specular color of one of the directional lights.
 _Use_decl_annotations_ int XM_CALLCONV
-EffectLights::SetLightSpecularColor(int whichLight, FXMVECTOR value, XMVECTOR* lightSpecularConstant)
+EffectLights::SetLightSpecularcolour(int whichLight, FXMVECTOR value, XMVECTOR* lightSpecularConstant)
 {
 	ValidateLightIndex(whichLight);
 
 	// Locally store the new color.
-	lightSpecularColor[whichLight] = value;
+	lightSpecularcolour[whichLight] = value;
 
 	// If this light is currently on, also update the constant buffer.
 	if (lightEnabled[whichLight])
@@ -364,23 +363,23 @@ EffectLights::EnableDefaultLighting(_In_ IEffectLights* effect)
 
 	static const XMVECTORF32 defaultAmbient = {{{0.05333332f, 0.09882354f, 0.1819608f, 0}}};
 
-	effect->SetAmbientLightColor(defaultAmbient);
+	effect->SetAmbientLightcolour(defaultAmbient);
 
 	for (int i = 0; i < MaxDirectionalLights; i++)
 	{
 		effect->SetLightEnabled(i, true);
 		effect->SetLightDirection(i, defaultDirections[i]);
-		effect->SetLightDiffuseColor(i, defaultDiffuse[i]);
-		effect->SetLightSpecularColor(i, defaultSpecular[i]);
+		effect->SetLightDiffusecolour(i, defaultDiffuse[i]);
+		effect->SetLightSpecularcolour(i, defaultSpecular[i]);
 	}
 }
 
 // Gets or lazily creates the specified root signature.
 ID3D12RootSignature*
-EffectDeviceResources::DemandCreateRootSig(_Inout_ Microsoft::WRL::ComPtr<ID3D12RootSignature>& rootSig, D3D12_ROOT_SIGNATURE_DESC const& desc)
+EffectDeviceResources::DemandCreateRootSig(_Inout_ wil::com_ptr<ID3D12RootSignature>& rootSig, D3D12_ROOT_SIGNATURE_DESC const& desc)
 {
 	return DemandCreate(rootSig, mMutex, [&](ID3D12RootSignature** pResult) -> HRESULT {
-		HRESULT hr = CreateRootSignature(mDevice.Get(), &desc, pResult);
+		HRESULT hr = CreateRootSignature(mDevice.get(), &desc, pResult);
 
 		if (SUCCEEDED(hr))
 			SetDebugObjectName(*pResult, L"DirectXTK:Effect");

@@ -14,13 +14,13 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include "XboxDDSTextureLoader.h"
+#include "xboxddstextureloader.h"
 
-#include "PlatformHelpers.h"
-#include "DDS.h"
-#include "DirectXHelpers.h"
+#include "platformhelpers.h"
+#include "dds.h"
+#include "directxhelpers.h"
 
 #include <xdk.h>
 
@@ -66,7 +66,7 @@ static_assert(sizeof(DDS_HEADER_XBOX) == 36, "DDS XBOX Header size mismatch");
 
 //--------------------------------------------------------------------------------------
 HRESULT
-LoadTextureDataFromFile(_In_z_ const wchar_t* fileName,
+LoadTextureDataFromFile(_In_z_ const std::wstring_view& fileName,
 	std::unique_ptr<uint8_t[]>& ddsData,
 	DDS_HEADER** header,
 	uint8_t** bitData,
@@ -116,7 +116,7 @@ LoadTextureDataFromFile(_In_z_ const wchar_t* fileName,
 	}
 
 	// read the data in
-	DWORD BytesRead = 0;
+	uint32_t BytesRead = 0;
 	if (!ReadFile(hFile.get(),
 			ddsData.get(),
 			fileInfo.EndOfFile.LowPart,
@@ -226,12 +226,12 @@ CreateD3DResources(_In_ ID3D12Device* d3dDevice,
 	}
 
 	D3D12_RESOURCE_DESC desc = {};
-	desc.Width = static_cast<UINT>(width);
-	desc.Height = static_cast<UINT>(height);
-	desc.MipLevels = static_cast<UINT16>(mipCount);
-	desc.DepthOrArraySize = (xboxext->resourceDimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D) ? static_cast<UINT16>(depth) : static_cast<UINT16>(arraySize);
+	desc.width = static_cast<uint32_t>(width);
+	desc.height = static_cast<uint32_t>(height);
+	desc.MipLevels = static_cast<uint16_t>(mipCount);
+	desc.DepthOrArraySize = (xboxext->resourceDimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D) ? static_cast<uint16_t>(depth) : static_cast<uint16_t>(arraySize);
 	desc.Format = format;
-	desc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	desc.flags = D3D12_RESOURCE_FLAG_NONE;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
 	desc.Dimension = static_cast<D3D12_RESOURCE_DIMENSION>(xboxext->resourceDimension);
@@ -536,7 +536,7 @@ _Use_decl_annotations_
 	HRESULT
 	Xbox::CreateDDSTextureFromFile(
 		ID3D12Device* d3dDevice,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		ID3D12Resource** texture,
 		void** grfxMemory,
 		DDS_ALPHA_MODE* alphaMode,

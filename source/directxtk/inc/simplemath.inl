@@ -20,13 +20,13 @@
 // Rectangle operations
 //------------------------------------------------------------------------------
 inline Vector2
-Rectangle::Location() const
+Rectangle::Location(void) const
 {
 	return Vector2(float(x), float(y));
 }
 
 inline Vector2
-Rectangle::Center() const
+Rectangle::Center(void) const
 {
 	return Vector2(float(x) + float(width / 2.f), float(y) + float(height / 2.f));
 }
@@ -227,7 +227,7 @@ inline Vector2&
 Vector2::operator/=(float S)
 {
 	using namespace DirectX;
-	assert(S != 0.0f);
+	_ASSERT(S != 0.0f);
 	XMVECTOR v1 = XMLoadFloat2(this);
 	XMVECTOR X = XMVectorScale(v1, 1.f / S);
 	XMStoreFloat2(this, X);
@@ -319,7 +319,7 @@ Vector2::InBounds(const Vector2& Bounds) const
 }
 
 inline float
-Vector2::Length() const
+Vector2::Length(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat2(this);
@@ -328,7 +328,7 @@ Vector2::Length() const
 }
 
 inline float
-Vector2::LengthSquared() const
+Vector2::LengthSquared(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat2(this);
@@ -838,7 +838,7 @@ inline Vector3&
 Vector3::operator/=(float S)
 {
 	using namespace DirectX;
-	assert(S != 0.0f);
+	_ASSERT(S != 0.0f);
 	XMVECTOR v1 = XMLoadFloat3(this);
 	XMVECTOR X = XMVectorScale(v1, 1.f / S);
 	XMStoreFloat3(this, X);
@@ -850,7 +850,7 @@ Vector3::operator/=(float S)
 //------------------------------------------------------------------------------
 
 inline Vector3
-Vector3::operator-() const
+Vector3::operator-(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat3(this);
@@ -945,7 +945,7 @@ Vector3::InBounds(const Vector3& Bounds) const
 }
 
 inline float
-Vector3::Length() const
+Vector3::Length(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat3(this);
@@ -954,7 +954,7 @@ Vector3::Length() const
 }
 
 inline float
-Vector3::LengthSquared() const
+Vector3::LengthSquared(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat3(this);
@@ -1464,7 +1464,7 @@ inline Vector4&
 Vector4::operator/=(float S)
 {
 	using namespace DirectX;
-	assert(S != 0.0f);
+	_ASSERT(S != 0.0f);
 	XMVECTOR v1 = XMLoadFloat4(this);
 	XMVECTOR X = XMVectorScale(v1, 1.f / S);
 	XMStoreFloat4(this, X);
@@ -1476,7 +1476,7 @@ Vector4::operator/=(float S)
 //------------------------------------------------------------------------------
 
 inline Vector4
-Vector4::operator-() const
+Vector4::operator-(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat4(this);
@@ -1571,7 +1571,7 @@ Vector4::InBounds(const Vector4& Bounds) const
 }
 
 inline float
-Vector4::Length() const
+Vector4::Length(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat4(this);
@@ -1580,7 +1580,7 @@ Vector4::Length() const
 }
 
 inline float
-Vector4::LengthSquared() const
+Vector4::LengthSquared(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat4(this);
@@ -2244,7 +2244,7 @@ inline Matrix&
 Matrix::operator/=(float S)
 {
 	using namespace DirectX;
-	assert(S != 0.f);
+	_ASSERT(S != 0.f);
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_21));
 	XMVECTOR x3 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_31));
@@ -2295,7 +2295,7 @@ Matrix::operator/=(const Matrix& M)
 //------------------------------------------------------------------------------
 
 inline Matrix
-Matrix::operator-() const
+Matrix::operator-(void) const
 {
 	using namespace DirectX;
 	XMVECTOR v1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&_11));
@@ -2411,7 +2411,7 @@ inline Matrix
 operator/(const Matrix& M, float S)
 {
 	using namespace DirectX;
-	assert(S != 0.f);
+	_ASSERT(S != 0.f);
 
 	XMVECTOR x1 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&M._11));
 	XMVECTOR x2 = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&M._21));
@@ -2504,7 +2504,7 @@ Matrix::Decompose(Vector3& scale, Quaternion& rotation, Vector3& translation)
 }
 
 inline Matrix
-Matrix::Transpose() const
+Matrix::Transpose(void) const
 {
 	using namespace DirectX;
 	XMMATRIX M = XMLoadFloat4x4(this);
@@ -2522,7 +2522,7 @@ Matrix::Transpose(Matrix& result) const
 }
 
 inline Matrix
-Matrix::Invert() const
+Matrix::Invert(void) const
 {
 	using namespace DirectX;
 	XMMATRIX M = XMLoadFloat4x4(this);
@@ -2542,7 +2542,7 @@ Matrix::Invert(Matrix& result) const
 }
 
 inline float
-Matrix::Determinant() const
+Matrix::Determinant(void) const
 {
 	using namespace DirectX;
 	XMMATRIX M = XMLoadFloat4x4(this);
@@ -3177,7 +3177,7 @@ Quaternion::operator/=(const Quaternion& q)
 //------------------------------------------------------------------------------
 
 inline Quaternion
-Quaternion::operator-() const
+Quaternion::operator-(void) const
 {
 	using namespace DirectX;
 	XMVECTOR q = XMLoadFloat4(this);
@@ -3264,7 +3264,7 @@ inline Quaternion operator*(float S, const Quaternion& Q)
 //------------------------------------------------------------------------------
 
 inline float
-Quaternion::Length() const
+Quaternion::Length(void) const
 {
 	using namespace DirectX;
 	XMVECTOR q = XMLoadFloat4(this);
@@ -3272,7 +3272,7 @@ Quaternion::Length() const
 }
 
 inline float
-Quaternion::LengthSquared() const
+Quaternion::LengthSquared(void) const
 {
 	using namespace DirectX;
 	XMVECTOR q = XMLoadFloat4(this);
@@ -3461,17 +3461,17 @@ Quaternion::Concatenate(const Quaternion& q1, const Quaternion& q2)
 
 /****************************************************************************
  *
- * Color
+ * colour
  *
  ****************************************************************************/
 
-inline Color::Color(const DirectX::PackedVector::XMCOLOR& Packed)
+inline colour::colour(const DirectX::PackedVector::XMCOLOR& Packed)
 {
 	using namespace DirectX;
-	XMStoreFloat4(this, PackedVector::XMLoadColor(&Packed));
+	XMStoreFloat4(this, PackedVector::XMLoadcolour(&Packed));
 }
 
-inline Color::Color(const DirectX::PackedVector::XMUBYTEN4& Packed)
+inline colour::colour(const DirectX::PackedVector::XMUBYTEN4& Packed)
 {
 	using namespace DirectX;
 	XMStoreFloat4(this, PackedVector::XMLoadUByteN4(&Packed));
@@ -3481,45 +3481,45 @@ inline Color::Color(const DirectX::PackedVector::XMUBYTEN4& Packed)
 // Comparision operators
 //------------------------------------------------------------------------------
 inline bool
-Color::operator==(const Color& c) const
+colour::operator==(const colour& c) const
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(this);
 	XMVECTOR c2 = XMLoadFloat4(&c);
-	return XMColorEqual(c1, c2);
+	return XMcolourEqual(c1, c2);
 }
 
 inline bool
-Color::operator!=(const Color& c) const
+colour::operator!=(const colour& c) const
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(this);
 	XMVECTOR c2 = XMLoadFloat4(&c);
-	return XMColorNotEqual(c1, c2);
+	return XMcolourNotEqual(c1, c2);
 }
 
 //------------------------------------------------------------------------------
 // Assignment operators
 //------------------------------------------------------------------------------
 
-inline Color&
-Color::operator=(const DirectX::PackedVector::XMCOLOR& Packed)
+inline colour&
+colour::operator=(const DirectX::PackedVector::XMCOLOR& Packed)
 {
 	using namespace DirectX;
-	XMStoreFloat4(this, PackedVector::XMLoadColor(&Packed));
+	XMStoreFloat4(this, PackedVector::XMLoadcolour(&Packed));
 	return *this;
 }
 
-inline Color&
-Color::operator=(const DirectX::PackedVector::XMUBYTEN4& Packed)
+inline colour&
+colour::operator=(const DirectX::PackedVector::XMUBYTEN4& Packed)
 {
 	using namespace DirectX;
 	XMStoreFloat4(this, PackedVector::XMLoadUByteN4(&Packed));
 	return *this;
 }
 
-inline Color&
-Color::operator+=(const Color& c)
+inline colour&
+colour::operator+=(const colour& c)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(this);
@@ -3528,8 +3528,8 @@ Color::operator+=(const Color& c)
 	return *this;
 }
 
-inline Color&
-Color::operator-=(const Color& c)
+inline colour&
+colour::operator-=(const colour& c)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(this);
@@ -3538,8 +3538,8 @@ Color::operator-=(const Color& c)
 	return *this;
 }
 
-inline Color&
-Color::operator*=(const Color& c)
+inline colour&
+colour::operator*=(const colour& c)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(this);
@@ -3548,8 +3548,8 @@ Color::operator*=(const Color& c)
 	return *this;
 }
 
-inline Color&
-Color::operator*=(float S)
+inline colour&
+colour::operator*=(float S)
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
@@ -3557,8 +3557,8 @@ Color::operator*=(float S)
 	return *this;
 }
 
-inline Color&
-Color::operator/=(const Color& c)
+inline colour&
+colour::operator/=(const colour& c)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(this);
@@ -3571,12 +3571,12 @@ Color::operator/=(const Color& c)
 // Urnary operators
 //------------------------------------------------------------------------------
 
-inline Color
-Color::operator-() const
+inline colour
+colour::operator-(void) const
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
-	Color R;
+	colour R;
 	XMStoreFloat4(&R, XMVectorNegate(c));
 	return R;
 }
@@ -3585,83 +3585,83 @@ Color::operator-() const
 // Binary operators
 //------------------------------------------------------------------------------
 
-inline Color
-operator+(const Color& C1, const Color& C2)
+inline colour
+operator+(const colour& C1, const colour& C2)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(&C1);
 	XMVECTOR c2 = XMLoadFloat4(&C2);
-	Color R;
+	colour R;
 	XMStoreFloat4(&R, XMVectorAdd(c1, c2));
 	return R;
 }
 
-inline Color
-operator-(const Color& C1, const Color& C2)
+inline colour
+operator-(const colour& C1, const colour& C2)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(&C1);
 	XMVECTOR c2 = XMLoadFloat4(&C2);
-	Color R;
+	colour R;
 	XMStoreFloat4(&R, XMVectorSubtract(c1, c2));
 	return R;
 }
 
-inline Color operator*(const Color& C1, const Color& C2)
+inline colour operator*(const colour& C1, const colour& C2)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(&C1);
 	XMVECTOR c2 = XMLoadFloat4(&C2);
-	Color R;
+	colour R;
 	XMStoreFloat4(&R, XMVectorMultiply(c1, c2));
 	return R;
 }
 
-inline Color operator*(const Color& C, float S)
+inline colour operator*(const colour& C, float S)
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(&C);
-	Color R;
+	colour R;
 	XMStoreFloat4(&R, XMVectorScale(c, S));
 	return R;
 }
 
-inline Color
-operator/(const Color& C1, const Color& C2)
+inline colour
+operator/(const colour& C1, const colour& C2)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(&C1);
 	XMVECTOR c2 = XMLoadFloat4(&C2);
-	Color R;
+	colour R;
 	XMStoreFloat4(&R, XMVectorDivide(c1, c2));
 	return R;
 }
 
-inline Color operator*(float S, const Color& C)
+inline colour operator*(float S, const colour& C)
 {
 	using namespace DirectX;
 	XMVECTOR c1 = XMLoadFloat4(&C);
-	Color R;
+	colour R;
 	XMStoreFloat4(&R, XMVectorScale(c1, S));
 	return R;
 }
 
 //------------------------------------------------------------------------------
-// Color operations
+// colour operations
 //------------------------------------------------------------------------------
 
 inline DirectX::PackedVector::XMCOLOR
-Color::BGRA() const
+colour::BGRA(void) const
 {
 	using namespace DirectX;
 	XMVECTOR clr = XMLoadFloat4(this);
 	PackedVector::XMCOLOR Packed;
-	PackedVector::XMStoreColor(&Packed, clr);
+	PackedVector::XMStorecolour(&Packed, clr);
 	return Packed;
 }
 
 inline DirectX::PackedVector::XMUBYTEN4
-Color::RGBA() const
+colour::RGBA(void) const
 {
 	using namespace DirectX;
 	XMVECTOR clr = XMLoadFloat4(this);
@@ -3671,35 +3671,35 @@ Color::RGBA() const
 }
 
 inline Vector3
-Color::ToVector3() const
+colour::ToVector3(void) const
 {
 	return Vector3(x, y, z);
 }
 
 inline Vector4
-Color::ToVector4() const
+colour::ToVector4(void) const
 {
 	return Vector4(x, y, z, w);
 }
 
 inline void
-Color::Negate()
+colour::Negate()
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
-	XMStoreFloat4(this, XMColorNegative(c));
+	XMStoreFloat4(this, XMcolourNegative(c));
 }
 
 inline void
-Color::Negate(Color& result) const
+colour::Negate(colour& result) const
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
-	XMStoreFloat4(&result, XMColorNegative(c));
+	XMStoreFloat4(&result, XMcolourNegative(c));
 }
 
 inline void
-Color::Saturate()
+colour::Saturate()
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
@@ -3707,7 +3707,7 @@ Color::Saturate()
 }
 
 inline void
-Color::Saturate(Color& result) const
+colour::Saturate(colour& result) const
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
@@ -3715,7 +3715,7 @@ Color::Saturate(Color& result) const
 }
 
 inline void
-Color::Premultiply()
+colour::Premultiply()
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
@@ -3725,7 +3725,7 @@ Color::Premultiply()
 }
 
 inline void
-Color::Premultiply(Color& result) const
+colour::Premultiply(colour& result) const
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
@@ -3735,35 +3735,35 @@ Color::Premultiply(Color& result) const
 }
 
 inline void
-Color::AdjustSaturation(float sat)
+colour::AdjustSaturation(float sat)
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
-	XMStoreFloat4(this, XMColorAdjustSaturation(c, sat));
+	XMStoreFloat4(this, XMcolourAdjustSaturation(c, sat));
 }
 
 inline void
-Color::AdjustSaturation(float sat, Color& result) const
+colour::AdjustSaturation(float sat, colour& result) const
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
-	XMStoreFloat4(&result, XMColorAdjustSaturation(c, sat));
+	XMStoreFloat4(&result, XMcolourAdjustSaturation(c, sat));
 }
 
 inline void
-Color::AdjustContrast(float contrast)
+colour::AdjustContrast(float contrast)
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
-	XMStoreFloat4(this, XMColorAdjustContrast(c, contrast));
+	XMStoreFloat4(this, XMcolourAdjustContrast(c, contrast));
 }
 
 inline void
-Color::AdjustContrast(float contrast, Color& result) const
+colour::AdjustContrast(float contrast, colour& result) const
 {
 	using namespace DirectX;
 	XMVECTOR c = XMLoadFloat4(this);
-	XMStoreFloat4(&result, XMColorAdjustContrast(c, contrast));
+	XMStoreFloat4(&result, XMcolourAdjustContrast(c, contrast));
 }
 
 //------------------------------------------------------------------------------
@@ -3771,28 +3771,28 @@ Color::AdjustContrast(float contrast, Color& result) const
 //------------------------------------------------------------------------------
 
 inline void
-Color::Modulate(const Color& c1, const Color& c2, Color& result)
+colour::Modulate(const colour& c1, const colour& c2, colour& result)
 {
 	using namespace DirectX;
 	XMVECTOR C0 = XMLoadFloat4(&c1);
 	XMVECTOR C1 = XMLoadFloat4(&c2);
-	XMStoreFloat4(&result, XMColorModulate(C0, C1));
+	XMStoreFloat4(&result, XMcolourModulate(C0, C1));
 }
 
-inline Color
-Color::Modulate(const Color& c1, const Color& c2)
+inline colour
+colour::Modulate(const colour& c1, const colour& c2)
 {
 	using namespace DirectX;
 	XMVECTOR C0 = XMLoadFloat4(&c1);
 	XMVECTOR C1 = XMLoadFloat4(&c2);
 
-	Color result;
-	XMStoreFloat4(&result, XMColorModulate(C0, C1));
+	colour result;
+	XMStoreFloat4(&result, XMcolourModulate(C0, C1));
 	return result;
 }
 
 inline void
-Color::Lerp(const Color& c1, const Color& c2, float t, Color& result)
+colour::Lerp(const colour& c1, const colour& c2, float t, colour& result)
 {
 	using namespace DirectX;
 	XMVECTOR C0 = XMLoadFloat4(&c1);
@@ -3800,14 +3800,14 @@ Color::Lerp(const Color& c1, const Color& c2, float t, Color& result)
 	XMStoreFloat4(&result, XMVectorLerp(C0, C1, t));
 }
 
-inline Color
-Color::Lerp(const Color& c1, const Color& c2, float t)
+inline colour
+colour::Lerp(const colour& c1, const colour& c2, float t)
 {
 	using namespace DirectX;
 	XMVECTOR C0 = XMLoadFloat4(&c1);
 	XMVECTOR C1 = XMLoadFloat4(&c2);
 
-	Color result;
+	colour result;
 	XMStoreFloat4(&result, XMVectorLerp(C0, C1, t));
 	return result;
 }
@@ -3949,8 +3949,8 @@ Viewport::operator=(const D3D11_VIEWPORT& vp)
 {
 	x = vp.TopLeftX;
 	y = vp.TopLeftY;
-	width = vp.Width;
-	height = vp.Height;
+	width = vp.width;
+	height = vp.height;
 	minDepth = vp.MinDepth;
 	maxDepth = vp.MaxDepth;
 	return *this;
@@ -3963,8 +3963,8 @@ Viewport::operator=(const D3D12_VIEWPORT& vp)
 {
 	x = vp.TopLeftX;
 	y = vp.TopLeftY;
-	width = vp.Width;
-	height = vp.Height;
+	width = vp.width;
+	height = vp.height;
 	minDepth = vp.MinDepth;
 	maxDepth = vp.MaxDepth;
 	return *this;
@@ -3976,7 +3976,7 @@ Viewport::operator=(const D3D12_VIEWPORT& vp)
 //------------------------------------------------------------------------------
 
 inline float
-Viewport::AspectRatio() const
+Viewport::AspectRatio(void) const
 {
 	if (width == 0.f || height == 0.f)
 		return 0.f;

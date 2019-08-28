@@ -8,8 +8,8 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "SoundCommon.h"
+#include "stdinc.h"
+#include "soundcommon.h"
 
 using namespace DirectX;
 
@@ -227,83 +227,8 @@ DirectX::IsValid(_In_ const WAVEFORMATEX* wfx)
 #endif
 
 	case 0x166 /* WAVE_FORMAT_XMA2 */:
-
-#if defined(_XBOX_ONE) && defined(_TITLE)
-
-		if (wfx->nBlockAlign != wfx->nChannels * XMA_OUTPUT_SAMPLE_BYTES)
-		{
-			DebugTrace("ERROR: Wave format XMA2 - nBlockAlign (%u) != nChannels(%u) * %u\n", wfx->nBlockAlign, wfx->nChannels, XMA_OUTPUT_SAMPLE_BYTES);
-			return false;
-		}
-
-		if (wfx->wBitsPerSample != XMA_OUTPUT_SAMPLE_BITS)
-		{
-			DebugTrace("ERROR: Wave format XMA2 wBitsPerSample (%u) should be %u\n", wfx->wBitsPerSample, XMA_OUTPUT_SAMPLE_BITS);
-			return false;
-		}
-
-		if (wfx->cbSize != (sizeof(XMA2WAVEFORMATEX) - sizeof(WAVEFORMATEX)))
-		{
-			DebugTrace("ERROR: Wave format XMA2 - cbSize must be %zu (%u)\n", (sizeof(XMA2WAVEFORMATEX) - sizeof(WAVEFORMATEX)), wfx->cbSize);
-			return false;
-		}
-		else
-		{
-			auto xmaFmt = reinterpret_cast<const XMA2WAVEFORMATEX*>(wfx);
-
-			if (xmaFmt->EncoderVersion < 3)
-			{
-				DebugTrace("ERROR: Wave format XMA2 encoder version (%u) - 3 or higher is required\n", xmaFmt->EncoderVersion);
-				return false;
-			}
-
-			if (!xmaFmt->BlockCount)
-			{
-				DebugTrace("ERROR: Wave format XMA2 BlockCount must be non-zero\n");
-				return false;
-			}
-
-			if (!xmaFmt->BytesPerBlock || (xmaFmt->BytesPerBlock > XMA_READBUFFER_MAX_BYTES))
-			{
-				DebugTrace("ERROR: Wave format XMA2 BytesPerBlock (%u) is invalid\n", xmaFmt->BytesPerBlock);
-				return false;
-			}
-
-			if (xmaFmt->ChannelMask)
-			{
-				auto channelBits = ChannelsSpecifiedInMask(xmaFmt->ChannelMask);
-				if (channelBits != wfx->nChannels)
-				{
-					DebugTrace("ERROR: Wave format XMA2 - nChannels=%u but ChannelMask (%08X) has %u bits set\n",
-						xmaFmt->ChannelMask, wfx->nChannels, channelBits);
-					return false;
-				}
-			}
-
-			if (xmaFmt->NumStreams != ((wfx->nChannels + 1) / 2))
-			{
-				DebugTrace("ERROR: Wave format XMA2 - NumStreams (%u) != ( nChannels(%u) + 1 ) / 2\n", xmaFmt->NumStreams, wfx->nChannels);
-				return false;
-			}
-
-			if ((xmaFmt->PlayBegin + xmaFmt->PlayLength) > xmaFmt->SamplesEncoded)
-			{
-				DebugTrace("ERROR: Wave format XMA2 play region too large (%u + %u > %u)\n", xmaFmt->PlayBegin, xmaFmt->PlayLength, xmaFmt->SamplesEncoded);
-				return false;
-			}
-
-			if ((xmaFmt->LoopBegin + xmaFmt->LoopLength) > xmaFmt->SamplesEncoded)
-			{
-				DebugTrace("ERROR: Wave format XMA2 loop region too large (%u + %u > %u)\n", xmaFmt->LoopBegin, xmaFmt->LoopLength, xmaFmt->SamplesEncoded);
-				return false;
-			}
-		}
-		return true;
-
-#else
 		DebugTrace("ERROR: Wave format XMA2 not supported by this version of DirectXTK for Audio\n");
 		return false;
-#endif
 
 	case WAVE_FORMAT_EXTENSIBLE:
 		if (wfx->cbSize < (sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX)))
@@ -317,8 +242,8 @@ DirectX::IsValid(_In_ const WAVEFORMATEX* wfx)
 
 			auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>(wfx);
 
-			if (memcmp(reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(DWORD),
-					reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD))
+			if (memcmp(reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(uint32_t),
+					reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(uint32_t), sizeof(GUID) - sizeof(uint32_t))
 				!= 0)
 			{
 				DebugTrace("ERROR: Wave format WAVEFORMATEXTENSIBLE encountered with unknown GUID ({%8.8lX-%4.4X-%4.4X-%2.2X%2.2X-%2.2X%2.2X%2.2X%2.2X%2.2X%2.2X})\n",
@@ -514,13 +439,13 @@ DirectX::CreateIntegerPCM(WAVEFORMATEX* wfx, int sampleRate, int channels, int s
 
 	wfx->wFormatTag = WAVE_FORMAT_PCM;
 	wfx->nChannels = static_cast<WORD>(channels);
-	wfx->nSamplesPerSec = static_cast<DWORD>(sampleRate);
-	wfx->nAvgBytesPerSec = static_cast<DWORD>(blockAlign * sampleRate);
+	wfx->nSamplesPerSec = static_cast<uint32_t>(sampleRate);
+	wfx->nAvgBytesPerSec = static_cast<uint32_t>(blockAlign * sampleRate);
 	wfx->nBlockAlign = static_cast<WORD>(blockAlign);
 	wfx->wBitsPerSample = static_cast<WORD>(sampleBits);
 	wfx->cbSize = 0;
 
-	assert(IsValid(wfx));
+	_ASSERT(IsValid(wfx));
 }
 
 _Use_decl_annotations_ void
@@ -530,13 +455,13 @@ DirectX::CreateFloatPCM(WAVEFORMATEX* wfx, int sampleRate, int channels)
 
 	wfx->wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
 	wfx->nChannels = static_cast<WORD>(channels);
-	wfx->nSamplesPerSec = static_cast<DWORD>(sampleRate);
-	wfx->nAvgBytesPerSec = static_cast<DWORD>(blockAlign * sampleRate);
+	wfx->nSamplesPerSec = static_cast<uint32_t>(sampleRate);
+	wfx->nAvgBytesPerSec = static_cast<uint32_t>(blockAlign * sampleRate);
 	wfx->nBlockAlign = static_cast<WORD>(blockAlign);
 	wfx->wBitsPerSample = 32;
 	wfx->cbSize = 0;
 
-	assert(IsValid(wfx));
+	_ASSERT(IsValid(wfx));
 }
 
 _Use_decl_annotations_ void
@@ -559,8 +484,8 @@ DirectX::CreateADPCM(WAVEFORMATEX* wfx, size_t wfxSize, int sampleRate, int chan
 
 	wfx->wFormatTag = WAVE_FORMAT_ADPCM;
 	wfx->nChannels = static_cast<WORD>(channels);
-	wfx->nSamplesPerSec = static_cast<DWORD>(sampleRate);
-	wfx->nAvgBytesPerSec = static_cast<DWORD>(blockAlign * sampleRate / samplesPerBlock);
+	wfx->nSamplesPerSec = static_cast<uint32_t>(sampleRate);
+	wfx->nAvgBytesPerSec = static_cast<uint32_t>(blockAlign * sampleRate / samplesPerBlock);
 	wfx->nBlockAlign = static_cast<WORD>(blockAlign);
 	wfx->wBitsPerSample = 4 /* MSADPCM_BITS_PER_SAMPLE */;
 	wfx->cbSize = 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/;
@@ -572,7 +497,7 @@ DirectX::CreateADPCM(WAVEFORMATEX* wfx, size_t wfxSize, int sampleRate, int chan
 	static ADPCMCOEFSET aCoef[7] = {{256, 0}, {512, -256}, {0, 0}, {192, 64}, {240, 0}, {460, -208}, {392, -232}};
 	memcpy(&adpcm->aCoef, aCoef, sizeof(aCoef));
 
-	assert(IsValid(wfx));
+	_ASSERT(IsValid(wfx));
 }
 
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
@@ -581,61 +506,18 @@ DirectX::CreateXWMA(WAVEFORMATEX* wfx, int sampleRate, int channels, int blockAl
 {
 	wfx->wFormatTag = static_cast<WORD>((wma3) ? WAVE_FORMAT_WMAUDIO3 : WAVE_FORMAT_WMAUDIO2);
 	wfx->nChannels = static_cast<WORD>(channels);
-	wfx->nSamplesPerSec = static_cast<DWORD>(sampleRate);
-	wfx->nAvgBytesPerSec = static_cast<DWORD>(avgBytes);
+	wfx->nSamplesPerSec = static_cast<uint32_t>(sampleRate);
+	wfx->nAvgBytesPerSec = static_cast<uint32_t>(avgBytes);
 	wfx->nBlockAlign = static_cast<WORD>(blockAlign);
 	wfx->wBitsPerSample = 16;
 	wfx->cbSize = 0;
 
-	assert(IsValid(wfx));
+	_ASSERT(IsValid(wfx));
 }
 #endif
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-_Use_decl_annotations_ void
-DirectX::CreateXMA2(WAVEFORMATEX* wfx, size_t wfxSize, int sampleRate, int channels, int bytesPerBlock, int blockCount, int samplesEncoded)
-{
-	if (wfxSize < sizeof(XMA2WAVEFORMATEX))
-	{
-		DebugTrace("XMA2 needs at least %zu bytes for the result\n", sizeof(XMA2WAVEFORMATEX));
-		throw std::invalid_argument("XMA2WAVEFORMATEX");
-	}
-
-	if ((bytesPerBlock < 1) || (bytesPerBlock > int(XMA_READBUFFER_MAX_BYTES)))
-	{
-		DebugTrace("XMA2 needs a valid bytes per block\n");
-		throw std::invalid_argument("XMA2WAVEFORMATEX");
-	}
-
-	int blockAlign = (channels * (16 /*XMA_OUTPUT_SAMPLE_BITS*/) / 8);
-
-	wfx->wFormatTag = WAVE_FORMAT_XMA2;
-	wfx->nChannels = static_cast<WORD>(channels);
-	wfx->nSamplesPerSec = static_cast<WORD>(sampleRate);
-	wfx->nAvgBytesPerSec = static_cast<DWORD>(blockAlign * sampleRate);
-	wfx->nBlockAlign = static_cast<WORD>(blockAlign);
-	wfx->wBitsPerSample = 16 /* XMA_OUTPUT_SAMPLE_BITS */;
-	wfx->cbSize = sizeof(XMA2WAVEFORMATEX) - sizeof(WAVEFORMATEX);
-
-	auto xmaFmt = reinterpret_cast<XMA2WAVEFORMATEX*>(wfx);
-
-	xmaFmt->NumStreams = static_cast<WORD>((channels + 1) / 2);
-
-	xmaFmt->ChannelMask = GetDefaultChannelMask(channels);
-
-	xmaFmt->SamplesEncoded = static_cast<DWORD>(samplesEncoded);
-	xmaFmt->BytesPerBlock = static_cast<DWORD>(bytesPerBlock);
-	xmaFmt->PlayBegin = xmaFmt->PlayLength =
-		xmaFmt->LoopBegin = xmaFmt->LoopLength = xmaFmt->LoopCount = 0;
-	xmaFmt->EncoderVersion = 4 /* XMAENCODER_VERSION_XMA2 */;
-	xmaFmt->BlockCount = static_cast<WORD>(blockCount);
-
-	assert(IsValid(wfx));
-}
-#endif // _XBOX_ONE && _TITLE
-
 _Use_decl_annotations_ bool
-DirectX::ComputePan(float pan, unsigned int channels, float* matrix)
+DirectX::ComputePan(float pan, uint32_t channels, float* matrix)
 {
 	memset(matrix, 0, sizeof(float) * 16);
 
@@ -690,7 +572,7 @@ DirectX::ComputePan(float pan, unsigned int channels, float* matrix)
 void
 SoundEffectInstanceBase::SetPan(float pan)
 {
-	assert(pan >= -1.f && pan <= 1.f);
+	_ASSERT(pan >= -1.f && pan <= 1.f);
 
 	mPan = pan;
 
@@ -717,7 +599,7 @@ SoundEffectInstanceBase::Apply3D(const AudioListener& listener, const AudioEmitt
 		throw std::exception("Apply3D");
 	}
 
-	DWORD dwCalcFlags = X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER | X3DAUDIO_CALCULATE_LPF_DIRECT;
+	uint32_t dwCalcFlags = X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER | X3DAUDIO_CALCULATE_LPF_DIRECT;
 
 	if (mFlags & SoundEffectInstance_UseRedirectLFE)
 	{
@@ -732,11 +614,11 @@ SoundEffectInstanceBase::Apply3D(const AudioListener& listener, const AudioEmitt
 	}
 
 	float matrix[XAUDIO2_MAX_AUDIO_CHANNELS * 8] = {};
-	assert(mDSPSettings.SrcChannelCount <= XAUDIO2_MAX_AUDIO_CHANNELS);
-	assert(mDSPSettings.DstChannelCount <= 8);
+	_ASSERT(mDSPSettings.SrcChannelCount <= XAUDIO2_MAX_AUDIO_CHANNELS);
+	_ASSERT(mDSPSettings.DstChannelCount <= 8);
 	mDSPSettings.pMatrixCoefficients = matrix;
 
-	assert(engine != nullptr);
+	_ASSERT(engine != nullptr);
 	if (rhcoords)
 	{
 		X3DAUDIO_EMITTER lhEmitter;
@@ -765,7 +647,7 @@ SoundEffectInstanceBase::Apply3D(const AudioListener& listener, const AudioEmitt
 	(void)voice->SetFrequencyRatio(mFreqRatio * mDSPSettings.DopplerFactor);
 
 	auto direct = mDirectVoice;
-	assert(direct != nullptr);
+	_ASSERT(direct != nullptr);
 	(void)voice->SetOutputMatrix(direct, mDSPSettings.SrcChannelCount, mDSPSettings.DstChannelCount, matrix);
 
 	if (reverb)

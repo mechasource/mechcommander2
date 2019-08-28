@@ -7,27 +7,26 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include "Effects.h"
-#include "DirectXHelpers.h"
-#include "DDSTextureLoader.h"
-#include "DescriptorHeap.h"
-#include "PlatformHelpers.h"
-#include "ResourceUploadBatch.h"
-#include "WICTextureLoader.h"
+#include "effects.h"
+#include "directxhelpers.h"
+#include "ddstextureloader.h"
+#include "descriptorheap.h"
+#include "platformhelpers.h"
+#include "resourceuploadbatch.h"
+#include "wictextureloader.h"
 
 #include <mutex>
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 class EffectTextureFactory::Impl
 {
 public:
 	struct TextureCacheEntry
 	{
-		ComPtr<ID3D12Resource> mResource;
+		wil::com_ptr<ID3D12Resource> mResource;
 		bool mIsCubeMap;
 		size_t slot;
 
@@ -58,7 +57,7 @@ public:
 		SetDebugObjectName(mTextureDescriptorHeap.Heap(), L"EffectTextureFactory");
 	}
 
-	size_t CreateTexture(_In_z_ const wchar_t* name, int descriptorSlot);
+	size_t CreateTexture(_In_z_ const std::wstring_view& name, int descriptorSlot);
 
 	void ReleaseCache();
 	void SetSharing(bool enabled) { mSharing = enabled; }
@@ -71,7 +70,7 @@ public:
 	std::vector<TextureCacheEntry> mResources; // flat list of unique resources so we can index into it
 
 private:
-	ComPtr<ID3D12Device> mDevice;
+	wil::com_ptr<ID3D12Device> mDevice;
 	ResourceUploadBatch& mResourceUploadBatch;
 
 	TextureCache mTextureCache;
@@ -85,7 +84,7 @@ private:
 
 _Use_decl_annotations_
 	size_t
-	EffectTextureFactory::Impl::CreateTexture(_In_z_ const wchar_t* name, int descriptorSlot)
+	EffectTextureFactory::Impl::CreateTexture(_In_z_ const std::wstring_view& name, int descriptorSlot)
 {
 	if (!name)
 		throw std::exception("invalid arguments");
@@ -119,7 +118,7 @@ _Use_decl_annotations_
 		wchar_t ext[_MAX_EXT];
 		_wsplitpath_s(name, nullptr, 0, nullptr, 0, nullptr, 0, ext, _MAX_EXT);
 
-		unsigned int loadFlags = DDS_LOADER_DEFAULT;
+		uint32_t loadFlags = DDS_LOADER_DEFAULT;
 		if (mForceSRGB)
 			loadFlags |= DDS_LOADER_FORCE_SRGB;
 		if (mAutoGenMips)
@@ -133,7 +132,7 @@ _Use_decl_annotations_
 		if (_wcsicmp(ext, L".dds") == 0)
 		{
 			HRESULT hr = CreateDDSTextureFromFileEx(
-				mDevice.Get(),
+				mDevice.get(),
 				mResourceUploadBatch,
 				fullName,
 				0u,
@@ -153,7 +152,7 @@ _Use_decl_annotations_
 			textureEntry.mIsCubeMap = false;
 
 			HRESULT hr = CreateWICTextureFromFileEx(
-				mDevice.Get(),
+				mDevice.get(),
 				mResourceUploadBatch,
 				fullName,
 				0u,
@@ -177,11 +176,11 @@ _Use_decl_annotations_
 		mResources.push_back(textureEntry);
 	}
 
-	assert(textureEntry.mResource != nullptr);
+	_ASSERT(textureEntry.mResource != nullptr);
 
 	// bind a new descriptor in slot
 	auto textureDescriptor = mTextureDescriptorHeap.GetCpuHandle(static_cast<size_t>(descriptorSlot));
-	DirectX::CreateShaderResourceView(mDevice.Get(), textureEntry.mResource.Get(), textureDescriptor, textureEntry.mIsCubeMap);
+	DirectX::CreateShaderResourceView(mDevice.get(), textureEntry.mResource.get(), textureDescriptor, textureEntry.mIsCubeMap);
 
 	return textureEntry.slot;
 }
@@ -234,7 +233,7 @@ EffectTextureFactory::operator=(EffectTextureFactory&& moveFrom) noexcept
 
 _Use_decl_annotations_
 	size_t
-	EffectTextureFactory::CreateTexture(_In_z_ const wchar_t* name, int descriptorIndex)
+	EffectTextureFactory::CreateTexture(_In_z_ const std::wstring_view& name, int descriptorIndex)
 {
 	return pImpl->CreateTexture(name, descriptorIndex);
 }
@@ -264,7 +263,7 @@ EffectTextureFactory::EnableAutoGenMips(bool generateMips)
 }
 
 void
-EffectTextureFactory::SetDirectory(_In_opt_z_ const wchar_t* path)
+EffectTextureFactory::SetDirectory(_In_opt_z_ const std::wstring_view& path)
 {
 	if (path && *path != 0)
 	{
@@ -285,7 +284,7 @@ EffectTextureFactory::SetDirectory(_In_opt_z_ const wchar_t* path)
 }
 
 ID3D12DescriptorHeap*
-EffectTextureFactory::Heap() const
+EffectTextureFactory::Heap(void) const
 {
 	return pImpl->mTextureDescriptorHeap.Heap();
 }
@@ -304,7 +303,7 @@ EffectTextureFactory::GetGpuDescriptorHandle(size_t index) const
 }
 
 size_t
-EffectTextureFactory::ResourceCount() const
+EffectTextureFactory::ResourceCount(void) const
 {
 	return pImpl->mResources.size();
 }

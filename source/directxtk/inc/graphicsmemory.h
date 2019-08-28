@@ -9,11 +9,7 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <memory>
 
@@ -43,13 +39,13 @@ public:
 
 	~GraphicsResource();
 
-	D3D12_GPU_VIRTUAL_ADDRESS GpuAddress() const { return mGpuAddress; }
-	ID3D12Resource* Resource() const { return mResource; }
-	void* Memory() const { return mMemory; }
-	size_t ResourceOffset() const { return mBufferOffset; }
-	size_t Size() const { return mSize; }
+	D3D12_GPU_VIRTUAL_ADDRESS GpuAddress(void) const { return mGpuAddress; }
+	ID3D12Resource* Resource(void) const { return mResource; }
+	void* Memory(void) const { return mMemory; }
+	size_t ResourceOffset(void) const { return mBufferOffset; }
+	size_t Size(void) const { return mSize; }
 
-	explicit operator bool() const { return mResource != nullptr; }
+	explicit operator bool(void) const { return mResource != nullptr; }
 
 	// Clear the pointer. Using operator -> will produce bad results.
 	void __cdecl Reset();
@@ -83,13 +79,13 @@ public:
 
 	~SharedGraphicsResource();
 
-	D3D12_GPU_VIRTUAL_ADDRESS GpuAddress() const { return mSharedResource->GpuAddress(); }
-	ID3D12Resource* Resource() const { return mSharedResource->Resource(); }
-	void* Memory() const { return mSharedResource->Memory(); }
-	size_t ResourceOffset() const { return mSharedResource->ResourceOffset(); }
-	size_t Size() const { return mSharedResource->Size(); }
+	D3D12_GPU_VIRTUAL_ADDRESS GpuAddress(void) const { return mSharedResource->GpuAddress(); }
+	ID3D12Resource* Resource(void) const { return mSharedResource->Resource(); }
+	void* Memory(void) const { return mSharedResource->Memory(); }
+	size_t ResourceOffset(void) const { return mSharedResource->ResourceOffset(); }
+	size_t Size(void) const { return mSharedResource->Size(); }
 
-	explicit operator bool() const { return mSharedResource != nullptr; }
+	explicit operator bool(void) const { return mSharedResource != nullptr; }
 
 	bool operator==(const SharedGraphicsResource& other) const { return mSharedResource.get() == other.mSharedResource.get(); }
 	bool operator!=(const SharedGraphicsResource& other) const { return mSharedResource.get() != other.mSharedResource.get(); }

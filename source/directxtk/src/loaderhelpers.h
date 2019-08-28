@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include "DDS.h"
-#include "DDSTextureLoader.h"
+#include "dds.h"
+#include "ddstextureloader.h"
 
 namespace DirectX
 {
@@ -176,23 +176,6 @@ BitsPerPixel(_In_ DXGI_FORMAT fmt)
 
 #endif // (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-
-	case DXGI_FORMAT_R10G10B10_7E3_A2_FLOAT:
-	case DXGI_FORMAT_R10G10B10_6E4_A2_FLOAT:
-	case DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM:
-		return 32;
-
-	case DXGI_FORMAT_D16_UNORM_S8_UINT:
-	case DXGI_FORMAT_R16_UNORM_X8_TYPELESS:
-	case DXGI_FORMAT_X16_TYPELESS_G8_UINT:
-		return 24;
-
-	case DXGI_FORMAT_R4G4_UNORM:
-		return 8;
-
-#endif // _XBOX_ONE && _TITLE
-
 	case DXGI_FORMAT_UNKNOWN:
 	case DXGI_FORMAT_FORCE_UINT:
 	default:
@@ -270,7 +253,7 @@ IsCompressed(_In_ DXGI_FORMAT fmt)
 inline DXGI_FORMAT
 EnsureNotTypeless(DXGI_FORMAT fmt)
 {
-	// Assumes UNORM or FLOAT; doesn't use UINT or SINT
+	// Assumes UNORM or FLOAT; doesn't use uint32_t or SINT
 	switch (fmt)
 	{
 	case DXGI_FORMAT_R32G32B32A32_TYPELESS:
@@ -382,7 +365,7 @@ LoadTextureDataFromMemory(
 //--------------------------------------------------------------------------------------
 inline HRESULT
 LoadTextureDataFromFile(
-	_In_z_ const wchar_t* fileName,
+	_In_z_ const std::wstring_view& fileName,
 	std::unique_ptr<uint8_t[]>& ddsData,
 	const DDS_HEADER** header,
 	const uint8_t** bitData,
@@ -442,7 +425,7 @@ LoadTextureDataFromFile(
 	}
 
 	// read the data in
-	DWORD BytesRead = 0;
+	uint32_t BytesRead = 0;
 	if (!ReadFile(hFile.get(),
 			ddsData.get(),
 			fileInfo.EndOfFile.LowPart,
@@ -573,17 +556,6 @@ GetSurfaceInfo(
 		planar = true;
 		bpe = 4;
 		break;
-
-#if defined(_XBOX_ONE) && defined(_TITLE)
-
-	case DXGI_FORMAT_D16_UNORM_S8_UINT:
-	case DXGI_FORMAT_R16_UNORM_X8_TYPELESS:
-	case DXGI_FORMAT_X16_TYPELESS_G8_UINT:
-		planar = true;
-		bpe = 4;
-		break;
-
-#endif
 
 	default:
 		break;
@@ -965,7 +937,7 @@ private:
 class auto_delete_file_wic
 {
 public:
-	auto_delete_file_wic(Microsoft::WRL::ComPtr<IWICStream>& hFile, LPCWSTR szFile) :
+	auto_delete_file_wic(wil::com_ptr<IWICStream>& hFile, LPCWSTR szFile) :
 		m_filename(szFile), m_handle(hFile) {}
 
 	auto_delete_file_wic(const auto_delete_file_wic&) = delete;
@@ -984,7 +956,7 @@ public:
 
 private:
 	LPCWSTR m_filename;
-	Microsoft::WRL::ComPtr<IWICStream>& m_handle;
+	wil::com_ptr<IWICStream>& m_handle;
 };
 
 } // namespace LoaderHelpers

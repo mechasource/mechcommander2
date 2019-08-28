@@ -7,20 +7,19 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "Model.h"
+#include "stdinc.h"
+#include "model.h"
 
-#include "Effects.h"
-#include "VertexTypes.h"
+#include "effects.h"
+#include "vertextypes.h"
 
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "BinaryReader.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "binaryreader.h"
 
 #include "vbo.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 static_assert(sizeof(VertexPositionNormalTexture) == 32, "VBO vertex size mismatch");
 
@@ -32,11 +31,11 @@ INIT_ONCE g_InitOnce = INIT_ONCE_STATIC_INIT;
 std::shared_ptr<std::vector<D3D12_INPUT_ELEMENT_DESC>> g_vbdecl;
 
 BOOL CALLBACK
-InitializeDecl(PINIT_ONCE initOnce, PVOID Parameter, PVOID* lpContext)
+InitializeDecl(PINIT_ONCE initOnce, PVOID Parameter, PVOID* pcontext)
 {
 	UNREFERENCED_PARAMETER(initOnce);
 	UNREFERENCED_PARAMETER(Parameter);
-	UNREFERENCED_PARAMETER(lpContext);
+	UNREFERENCED_PARAMETER(pcontext);
 
 	g_vbdecl = std::make_shared<std::vector<D3D12_INPUT_ELEMENT_DESC>>(VertexPositionNormalTexture::InputLayout.pInputElementDescs,
 		VertexPositionNormalTexture::InputLayout.pInputElementDescs + VertexPositionNormalTexture::InputLayout.NumElements);
@@ -118,7 +117,7 @@ _Use_decl_annotations_
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 	std::unique_ptr<Model>
-	DirectX::Model::CreateFromVBO(const wchar_t* szFileName, ID3D12Device* device)
+	DirectX::Model::CreateFromVBO(const std::wstring_view& szFileName, ID3D12Device* device)
 {
 	size_t dataSize = 0;
 	std::unique_ptr<uint8_t[]> data;

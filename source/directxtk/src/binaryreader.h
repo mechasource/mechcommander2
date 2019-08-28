@@ -15,7 +15,7 @@
 #include <stdexcept>
 #include <type_traits>
 
-#include "PlatformHelpers.h"
+#include "platformhelpers.h"
 
 namespace DirectX
 {
@@ -23,7 +23,7 @@ namespace DirectX
 class BinaryReader
 {
 public:
-	explicit BinaryReader(_In_z_ wchar_t const* fileName);
+	explicit BinaryReader(_In_z_ const std::wstring_view& fileName);
 	BinaryReader(_In_reads_bytes_(dataSize) uint8_t const* dataBlob, size_t dataSize);
 
 	BinaryReader(BinaryReader const&) = delete;
@@ -58,7 +58,7 @@ public:
 	}
 
 	// Lower level helper reads directly from the filesystem into memory.
-	static HRESULT ReadEntireFile(_In_z_ wchar_t const* fileName, _Inout_ std::unique_ptr<uint8_t[]>& data, _Out_ size_t* dataSize);
+	static HRESULT ReadEntireFile(_In_z_ const std::wstring_view& fileName, _Inout_ std::unique_ptr<uint8_t[]>& data, _Out_ size_t* dataSize);
 
 private:
 	// The data currently being read.

@@ -13,15 +13,15 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include "DDSTextureLoader.h"
+#include "ddstextureloader.h"
 
-#include "PlatformHelpers.h"
-#include "DDS.h"
-#include "DirectXHelpers.h"
-#include "LoaderHelpers.h"
-#include "ResourceUploadBatch.h"
+#include "platformhelpers.h"
+#include "dds.h"
+#include "directxhelpers.h"
+#include "loaderhelpers.h"
+#include "resourceuploadbatch.h"
 
 namespace DirectX
 {
@@ -88,13 +88,13 @@ AdjustPlaneResource(
 		if (!slicePlane)
 		{
 			// Plane 0
-			res.SlicePitch = res.RowPitch * static_cast<LONG>(height);
+			res.SlicePitch = res.RowPitch * static_cast<long32_t>(height);
 		}
 		else
 		{
 			// Plane 1
 			res.pData = static_cast<const uint8_t*>(res.pData) + uintptr_t(res.RowPitch) * height;
-			res.SlicePitch = res.RowPitch * ((static_cast<LONG>(height) + 1) >> 1);
+			res.SlicePitch = res.RowPitch * ((static_cast<long32_t>(height) + 1) >> 1);
 		}
 		break;
 
@@ -102,14 +102,14 @@ AdjustPlaneResource(
 		if (!slicePlane)
 		{
 			// Plane 0
-			res.SlicePitch = res.RowPitch * static_cast<LONG>(height);
+			res.SlicePitch = res.RowPitch * static_cast<long32_t>(height);
 		}
 		else
 		{
 			// Plane 1
 			res.pData = static_cast<const uint8_t*>(res.pData) + uintptr_t(res.RowPitch) * height;
 			res.RowPitch = (res.RowPitch >> 1);
-			res.SlicePitch = res.RowPitch * static_cast<LONG>(height);
+			res.SlicePitch = res.RowPitch * static_cast<long32_t>(height);
 		}
 		break;
 
@@ -236,7 +236,7 @@ CreateTextureResource(
 	size_t arraySize,
 	DXGI_FORMAT format,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture)
 {
 	if (!d3dDevice)
@@ -250,12 +250,12 @@ CreateTextureResource(
 	}
 
 	D3D12_RESOURCE_DESC desc = {};
-	desc.Width = static_cast<UINT>(width);
-	desc.Height = static_cast<UINT>(height);
-	desc.MipLevels = static_cast<UINT16>(mipCount);
-	desc.DepthOrArraySize = (resDim == D3D12_RESOURCE_DIMENSION_TEXTURE3D) ? static_cast<UINT16>(depth) : static_cast<UINT16>(arraySize);
+	desc.width = static_cast<uint32_t>(width);
+	desc.height = static_cast<uint32_t>(height);
+	desc.MipLevels = static_cast<uint16_t>(mipCount);
+	desc.DepthOrArraySize = (resDim == D3D12_RESOURCE_DIMENSION_TEXTURE3D) ? static_cast<uint16_t>(depth) : static_cast<uint16_t>(arraySize);
 	desc.Format = format;
-	desc.Flags = resFlags;
+	desc.flags = resFlags;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
 	desc.Dimension = resDim;
@@ -271,7 +271,7 @@ CreateTextureResource(
 		IID_GRAPHICS_PPV_ARGS(texture));
 	if (SUCCEEDED(hr))
 	{
-		assert(texture != nullptr && *texture != nullptr);
+		_ASSERT(texture != nullptr && *texture != nullptr);
 		_Analysis_assume_(texture != nullptr && *texture != nullptr);
 
 		SetDebugObjectName(*texture, L"DDSTextureLoader");
@@ -288,19 +288,19 @@ CreateTextureFromDDS(_In_ ID3D12Device* d3dDevice,
 	size_t bitSize,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture,
 	std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
 	_Out_opt_ bool* outIsCubeMap)
 {
 	HRESULT hr = S_OK;
 
-	UINT width = header->width;
-	UINT height = header->height;
-	UINT depth = header->depth;
+	uint32_t width = header->width;
+	uint32_t height = header->height;
+	uint32_t depth = header->depth;
 
 	D3D12_RESOURCE_DIMENSION resDim = D3D12_RESOURCE_DIMENSION_UNKNOWN;
-	UINT arraySize = 1;
+	uint32_t arraySize = 1;
 	DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN;
 	bool isCubeMap = false;
 
@@ -312,7 +312,7 @@ CreateTextureFromDDS(_In_ ID3D12Device* d3dDevice,
 
 	if ((header->ddspf.flags & DDS_FOURCC) && (MAKEFOURCC('D', 'X', '1', '0') == header->ddspf.fourCC))
 	{
-		auto d3d10ext = reinterpret_cast<const DDS_HEADER_DXT10*>(reinterpret_cast<const char*>(header) + sizeof(DDS_HEADER));
+		auto d3d10ext = reinterpret_cast<const DDS_HEADER_DXT10*>(reinterpret_cast<const std::string_view&>(header) + sizeof(DDS_HEADER));
 
 		arraySize = d3d10ext->arraySize;
 		if (arraySize == 0)
@@ -343,7 +343,7 @@ CreateTextureFromDDS(_In_ ID3D12Device* d3dDevice,
 		switch (d3d10ext->resourceDimension)
 		{
 		case D3D12_RESOURCE_DIMENSION_TEXTURE1D:
-			// D3DX writes 1D textures with a fixed Height of 1
+			// D3DX writes 1D textures with a fixed height of 1
 			if ((header->flags & DDS_HEIGHT) && height != 1)
 			{
 				return HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
@@ -420,7 +420,7 @@ CreateTextureFromDDS(_In_ ID3D12Device* d3dDevice,
 			// Note there's no way for a legacy Direct3D 9 DDS to express a '1D' texture
 		}
 
-		assert(BitsPerPixel(format) != 0);
+		_ASSERT(BitsPerPixel(format) != 0);
 	}
 
 	// Bound sizes (for security purposes we don't trust DDS file metadata larger than the Direct3D hardware requirements)
@@ -474,7 +474,7 @@ CreateTextureFromDDS(_In_ ID3D12Device* d3dDevice,
 		return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 	}
 
-	UINT numberOfPlanes = D3D12GetFormatPlaneCount(d3dDevice, format);
+	uint32_t numberOfPlanes = D3D12GetFormatPlaneCount(d3dDevice, format);
 	if (!numberOfPlanes)
 		return E_INVALIDARG;
 
@@ -553,13 +553,13 @@ CreateTextureFromDDS(_In_ ID3D12Device* d3dDevice,
 //--------------------------------------------------------------------------------------
 void
 SetDebugTextureInfo(
-	_In_z_ const wchar_t* fileName,
+	_In_z_ const std::wstring_view& fileName,
 	_In_ ID3D12Resource** texture)
 {
 #if !defined(NO_D3D12_DEBUG_NAME) && (defined(_DEBUG) || defined(PROFILE))
 	if (texture && *texture)
 	{
-		const wchar_t* pstrName = wcsrchr(fileName, '\\');
+		const std::wstring_view& pstrName = wcsrchr(fileName, '\\');
 		if (!pstrName)
 		{
 			pstrName = fileName;
@@ -583,7 +583,7 @@ GetPixelFormat(const DDS_HEADER* header)
 {
 	if ((header->ddspf.flags & DDS_FOURCC) && (MAKEFOURCC('D', 'X', '1', '0') == header->ddspf.fourCC))
 	{
-		auto d3d10ext = reinterpret_cast<const DDS_HEADER_DXT10*>(reinterpret_cast<const char*>(header) + sizeof(DDS_HEADER));
+		auto d3d10ext = reinterpret_cast<const DDS_HEADER_DXT10*>(reinterpret_cast<const std::string_view&>(header) + sizeof(DDS_HEADER));
 		return d3d10ext->dxgiFormat;
 	}
 	else
@@ -625,7 +625,7 @@ _Use_decl_annotations_
 		size_t ddsDataSize,
 		size_t maxsize,
 		D3D12_RESOURCE_FLAGS resFlags,
-		unsigned int loadFlags,
+		uint32_t loadFlags,
 		ID3D12Resource** texture,
 		std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
 		DDS_ALPHA_MODE* alphaMode,
@@ -687,7 +687,7 @@ _Use_decl_annotations_
 	HRESULT
 	DirectX::LoadDDSTextureFromFile(
 		ID3D12Device* d3dDevice,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		ID3D12Resource** texture,
 		std::unique_ptr<uint8_t[]>& ddsData,
 		std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
@@ -712,10 +712,10 @@ _Use_decl_annotations_
 	HRESULT
 	DirectX::LoadDDSTextureFromFileEx(
 		ID3D12Device* d3dDevice,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		size_t maxsize,
 		D3D12_RESOURCE_FLAGS resFlags,
-		unsigned int loadFlags,
+		uint32_t loadFlags,
 		ID3D12Resource** texture,
 		std::unique_ptr<uint8_t[]>& ddsData,
 		std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
@@ -806,7 +806,7 @@ _Use_decl_annotations_
 		size_t ddsDataSize,
 		size_t maxsize,
 		D3D12_RESOURCE_FLAGS resFlags,
-		unsigned int loadFlags,
+		uint32_t loadFlags,
 		ID3D12Resource** texture,
 		DDS_ALPHA_MODE* alphaMode,
 		bool* isCubeMap)
@@ -874,7 +874,7 @@ _Use_decl_annotations_
 			*texture,
 			0,
 			subresources.data(),
-			static_cast<UINT>(subresources.size()));
+			static_cast<uint32_t>(subresources.size()));
 
 		resourceUpload.Transition(
 			*texture,
@@ -897,7 +897,7 @@ _Use_decl_annotations_
 	DirectX::CreateDDSTextureFromFile(
 		ID3D12Device* d3dDevice,
 		ResourceUploadBatch& resourceUpload,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		ID3D12Resource** texture,
 		bool generateMipsIfMissing,
 		size_t maxsize,
@@ -921,10 +921,10 @@ _Use_decl_annotations_
 	DirectX::CreateDDSTextureFromFileEx(
 		ID3D12Device* d3dDevice,
 		ResourceUploadBatch& resourceUpload,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		size_t maxsize,
 		D3D12_RESOURCE_FLAGS resFlags,
-		unsigned int loadFlags,
+		uint32_t loadFlags,
 		ID3D12Resource** texture,
 		DDS_ALPHA_MODE* alphaMode,
 		bool* isCubeMap)
@@ -989,7 +989,7 @@ _Use_decl_annotations_
 			*texture,
 			0,
 			subresources.data(),
-			static_cast<UINT>(subresources.size()));
+			static_cast<uint32_t>(subresources.size()));
 
 		resourceUpload.Transition(
 			*texture,

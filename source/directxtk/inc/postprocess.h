@@ -9,16 +9,12 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <DirectXMath.h>
 #include <memory>
 
-#include "RenderTargetState.h"
+#include "rendertargetstate.h"
 
 namespace DirectX
 {
@@ -154,12 +150,7 @@ public:
 	};
 
 	explicit ToneMapPostProcess(_In_ ID3D12Device* device, const RenderTargetState& rtState,
-		Operator op, TransferFunction func
-#if defined(_XBOX_ONE) && defined(_TITLE)
-		,
-		bool mrt = false
-#endif
-	);
+		Operator op, TransferFunction func);
 
 	ToneMapPostProcess(ToneMapPostProcess&& moveFrom) noexcept;
 	ToneMapPostProcess& operator=(ToneMapPostProcess&& moveFrom) noexcept;

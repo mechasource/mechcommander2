@@ -9,15 +9,11 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <stdint.h>
 
-#include "RenderTargetState.h"
+#include "rendertargetstate.h"
 
 namespace DirectX
 {
@@ -57,7 +53,7 @@ struct EffectPipelineStateDescription
 		const D3D12_SHADER_BYTECODE& pixelShader,
 		_Outptr_ ID3D12PipelineState** pPipelineState) const;
 
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC GetDesc() const
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC GetDesc(void) const
 	{
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 		psoDesc.BlendState = blendDesc;
@@ -75,7 +71,7 @@ struct EffectPipelineStateDescription
 		return psoDesc;
 	}
 
-	uint32_t ComputeHash() const;
+	uint32_t ComputeHash(void) const;
 
 	D3D12_INPUT_LAYOUT_DESC inputLayout;
 	D3D12_BLEND_DESC blendDesc;

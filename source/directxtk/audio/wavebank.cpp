@@ -8,11 +8,11 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "Audio.h"
-#include "WaveBankReader.h"
-#include "SoundCommon.h"
-#include "PlatformHelpers.h"
+#include "stdinc.h"
+#include "audio.h"
+#include "wavebankreader.h"
+#include "soundcommon.h"
+#include "platformhelpers.h"
 
 #include <list>
 
@@ -32,7 +32,7 @@ public:
 		mPrepared(false),
 		mStreaming(false)
 	{
-		assert(mEngine != nullptr);
+		_ASSERT(mEngine != nullptr);
 		mEngine->RegisterNotify(this, false);
 	}
 
@@ -44,7 +44,7 @@ public:
 
 			for (auto it = mInstances.begin(); it != mInstances.end(); ++it)
 			{
-				assert(*it != nullptr);
+				_ASSERT(*it != nullptr);
 				(*it)->OnDestroyParent();
 			}
 
@@ -63,9 +63,9 @@ public:
 		}
 	}
 
-	HRESULT Initialize(_In_ AudioEngine* engine, _In_z_ const wchar_t* wbFileName);
+	HRESULT Initialize(_In_ AudioEngine* engine, _In_z_ const std::wstring_view& wbFileName);
 
-	void Play(unsigned int index, float volume, float pitch, float pan);
+	void Play(uint32_t index, float volume, float pitch, float pan);
 
 	// IVoiceNotify
 	virtual void __cdecl OnBufferEnd() override
@@ -86,7 +86,7 @@ public:
 	virtual void __cdecl OnUpdate() override
 	{
 		// We do not register for update notification
-		assert(false);
+		_ASSERT(false);
 	}
 
 	virtual void __cdecl OnDestroyEngine() override
@@ -107,11 +107,6 @@ public:
 		if (!mStreaming)
 		{
 			stats.audioBytes += mReader.BankAudioSize();
-
-#if defined(_XBOX_ONE) && defined(_TITLE)
-			if (mReader.HasXMA())
-				stats.xmaAudioBytes += mReader.BankAudioSize();
-#endif
 		}
 	}
 
@@ -125,7 +120,7 @@ public:
 
 _Use_decl_annotations_
 	HRESULT
-	WaveBank::Impl::Initialize(AudioEngine* engine, const wchar_t* wbFileName)
+	WaveBank::Impl::Initialize(AudioEngine* engine, const std::wstring_view& wbFileName)
 {
 	if (!engine || !wbFileName)
 		return E_INVALIDARG;
@@ -140,11 +135,11 @@ _Use_decl_annotations_
 }
 
 void
-WaveBank::Impl::Play(unsigned int index, float volume, float pitch, float pan)
+WaveBank::Impl::Play(uint32_t index, float volume, float pitch, float pan)
 {
-	assert(volume >= -XAUDIO2_MAX_VOLUME_LEVEL && volume <= XAUDIO2_MAX_VOLUME_LEVEL);
-	assert(pitch >= -1.f && pitch <= 1.f);
-	assert(pan >= -1.f && pan <= 1.f);
+	_ASSERT(volume >= -XAUDIO2_MAX_VOLUME_LEVEL && volume <= XAUDIO2_MAX_VOLUME_LEVEL);
+	_ASSERT(pitch >= -1.f && pitch <= 1.f);
+	_ASSERT(pan >= -1.f && pan <= 1.f);
 
 	if (mStreaming)
 	{
@@ -164,7 +159,7 @@ WaveBank::Impl::Play(unsigned int index, float volume, float pitch, float pan)
 		mPrepared = true;
 	}
 
-	char wfxbuff[64] = {};
+	wchar_t wfxbuff[64] = {};
 	auto wfx = reinterpret_cast<WAVEFORMATEX*>(wfxbuff);
 	HRESULT hr = mReader.GetFormat(index, wfx, sizeof(wfxbuff));
 	ThrowIfFailed(hr);
@@ -210,8 +205,8 @@ WaveBank::Impl::Play(unsigned int index, float volume, float pitch, float pan)
 	hr = mReader.GetMetadata(index, metadata);
 	ThrowIfFailed(hr);
 
-	buffer.Flags = XAUDIO2_END_OF_STREAM;
-	buffer.pContext = this;
+	buffer.flags = XAUDIO2_END_OF_STREAM;
+	buffer.pcontext = this;
 
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
 
@@ -247,7 +242,7 @@ WaveBank::Impl::Play(unsigned int index, float volume, float pitch, float pan)
 
 // Public constructors.
 _Use_decl_annotations_
-WaveBank::WaveBank(AudioEngine* engine, const wchar_t* wbFileName) :
+WaveBank::WaveBank(AudioEngine* engine, const std::wstring_view& wbFileName) :
 	pImpl(std::make_unique<Impl>(engine))
 {
 	HRESULT hr = pImpl->Initialize(engine, wbFileName);
@@ -282,21 +277,21 @@ WaveBank::~WaveBank()
 
 // Public methods.
 void
-WaveBank::Play(unsigned int index)
+WaveBank::Play(uint32_t index)
 {
 	pImpl->Play(index, 1.f, 0.f, 0.f);
 }
 
 void
-WaveBank::Play(unsigned int index, float volume, float pitch, float pan)
+WaveBank::Play(uint32_t index, float volume, float pitch, float pan)
 {
 	pImpl->Play(index, volume, pitch, pan);
 }
 
 void
-WaveBank::Play(_In_z_ const char* name)
+WaveBank::Play(_In_z_ const std::string_view& name)
 {
-	unsigned int index = pImpl->mReader.Find(name);
+	uint32_t index = pImpl->mReader.Find(name);
 	if (index == unsigned(-1))
 	{
 		DebugTrace("WARNING: Name '%hs' not found in wave bank, one-shot not triggered\n", name);
@@ -307,9 +302,9 @@ WaveBank::Play(_In_z_ const char* name)
 }
 
 void
-WaveBank::Play(_In_z_ const char* name, float volume, float pitch, float pan)
+WaveBank::Play(_In_z_ const std::string_view& name, float volume, float pitch, float pan)
 {
-	unsigned int index = pImpl->mReader.Find(name);
+	uint32_t index = pImpl->mReader.Find(name);
 	if (index == unsigned(-1))
 	{
 		DebugTrace("WARNING: Name '%hs' not found in wave bank, one-shot not triggered\n", name);
@@ -320,7 +315,7 @@ WaveBank::Play(_In_z_ const char* name, float volume, float pitch, float pan)
 }
 
 std::unique_ptr<SoundEffectInstance>
-WaveBank::CreateInstance(unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags)
+WaveBank::CreateInstance(uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags)
 {
 	auto& wb = pImpl->mReader;
 
@@ -343,15 +338,15 @@ WaveBank::CreateInstance(unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags)
 	}
 
 	auto effect = new SoundEffectInstance(pImpl->mEngine, this, index, flags);
-	assert(effect != nullptr);
+	_ASSERT(effect != nullptr);
 	pImpl->mInstances.emplace_back(effect);
 	return std::unique_ptr<SoundEffectInstance>(effect);
 }
 
 std::unique_ptr<SoundEffectInstance>
-WaveBank::CreateInstance(_In_z_ const char* name, SOUND_EFFECT_INSTANCE_FLAGS flags)
+WaveBank::CreateInstance(_In_z_ const std::string_view& name, SOUND_EFFECT_INSTANCE_FLAGS flags)
 {
-	unsigned int index = pImpl->mReader.Find(name);
+	uint32_t index = pImpl->mReader.Find(name);
 	if (index == unsigned(-1))
 	{
 		// We don't throw an exception here as titles often simply ignore missing assets rather than fail
@@ -373,7 +368,7 @@ WaveBank::UnregisterInstance(_In_ SoundEffectInstance* instance)
 
 // Public accessors.
 bool
-WaveBank::IsPrepared() const
+WaveBank::IsPrepared(void) const
 {
 	if (pImpl->mPrepared)
 		return true;
@@ -386,19 +381,19 @@ WaveBank::IsPrepared() const
 }
 
 bool
-WaveBank::IsInUse() const
+WaveBank::IsInUse(void) const
 {
 	return (pImpl->mOneShots > 0) || !pImpl->mInstances.empty();
 }
 
 bool
-WaveBank::IsStreamingBank() const
+WaveBank::IsStreamingBank(void) const
 {
 	return pImpl->mReader.IsStreamingBank();
 }
 
 size_t
-WaveBank::GetSampleSizeInBytes(unsigned int index) const
+WaveBank::GetSampleSizeInBytes(uint32_t index) const
 {
 	if (index >= pImpl->mReader.Count())
 		return 0;
@@ -410,7 +405,7 @@ WaveBank::GetSampleSizeInBytes(unsigned int index) const
 }
 
 size_t
-WaveBank::GetSampleDuration(unsigned int index) const
+WaveBank::GetSampleDuration(uint32_t index) const
 {
 	if (index >= pImpl->mReader.Count())
 		return 0;
@@ -422,12 +417,12 @@ WaveBank::GetSampleDuration(unsigned int index) const
 }
 
 size_t
-WaveBank::GetSampleDurationMS(unsigned int index) const
+WaveBank::GetSampleDurationMS(uint32_t index) const
 {
 	if (index >= pImpl->mReader.Count())
 		return 0;
 
-	char buff[64] = {};
+	wchar_t buff[64] = {};
 	auto wfx = reinterpret_cast<WAVEFORMATEX*>(buff);
 	HRESULT hr = pImpl->mReader.GetFormat(index, wfx, sizeof(buff));
 	ThrowIfFailed(hr);
@@ -439,7 +434,7 @@ WaveBank::GetSampleDurationMS(unsigned int index) const
 }
 
 _Use_decl_annotations_ const WAVEFORMATEX*
-WaveBank::GetFormat(unsigned int index, WAVEFORMATEX* wfx, size_t maxsize) const
+WaveBank::GetFormat(uint32_t index, WAVEFORMATEX* wfx, size_t maxsize) const
 {
 	if (index >= pImpl->mReader.Count())
 		return nullptr;
@@ -450,7 +445,7 @@ WaveBank::GetFormat(unsigned int index, WAVEFORMATEX* wfx, size_t maxsize) const
 }
 
 _Use_decl_annotations_ int
-WaveBank::Find(const char* name) const
+WaveBank::Find(const std::string_view& name) const
 {
 	return static_cast<int>(pImpl->mReader.Find(name));
 }
@@ -458,7 +453,7 @@ WaveBank::Find(const char* name) const
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
 
 _Use_decl_annotations_ bool
-WaveBank::FillSubmitBuffer(unsigned int index, XAUDIO2_BUFFER& buffer, XAUDIO2_BUFFER_WMA& wmaBuffer) const
+WaveBank::FillSubmitBuffer(uint32_t index, XAUDIO2_BUFFER& buffer, XAUDIO2_BUFFER_WMA& wmaBuffer) const
 {
 	memset(&buffer, 0, sizeof(buffer));
 	memset(&wmaBuffer, 0, sizeof(wmaBuffer));
@@ -483,7 +478,7 @@ WaveBank::FillSubmitBuffer(unsigned int index, XAUDIO2_BUFFER& buffer, XAUDIO2_B
 #else
 
 _Use_decl_annotations_ void
-WaveBank::FillSubmitBuffer(unsigned int index, XAUDIO2_BUFFER& buffer) const
+WaveBank::FillSubmitBuffer(uint32_t index, XAUDIO2_BUFFER& buffer) const
 {
 	memset(&buffer, 0, sizeof(buffer));
 

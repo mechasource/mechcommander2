@@ -7,17 +7,17 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 
 using namespace DirectX;
 
 // Constant buffer layout. Must match the shader!
 struct AlphaTestEffectConstants
 {
-	XMVECTOR diffuseColor;
+	XMVECTOR diffusecolour;
 	XMVECTOR alphaTest;
-	XMVECTOR fogColor;
+	XMVECTOR fogcolour;
 	XMVECTOR fogVector;
 	XMMATRIX worldViewProj;
 };
@@ -52,30 +52,20 @@ public:
 	D3D12_COMPARISON_FUNC mAlphaFunction;
 	int referenceAlpha;
 
-	EffectColor color;
+	Effectcolour color;
 
 	D3D12_GPU_DESCRIPTOR_HANDLE texture;
 	D3D12_GPU_DESCRIPTOR_HANDLE textureSampler;
 
-	int GetPipelineStatePermutation(bool vertexColorEnabled) const;
+	int GetPipelineStatePermutation(bool vertexcolourEnabled) const;
 
 	void Apply(_In_ ID3D12GraphicsCommandList* commandList);
 };
 
+#if USE_PRECOMPILED_SHADER
 // Include the precompiled shader code.
 namespace
 {
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTest.inc"
-#include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestNoFog.inc"
-#include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestVc.inc"
-#include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestVcNoFog.inc"
-
-#include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestLtGt.inc"
-#include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestLtGtNoFog.inc"
-#include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestEqNe.inc"
-#include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestEqNeNoFog.inc"
-#else
 #include "Shaders/Compiled/AlphaTestEffect_VSAlphaTest.inc"
 #include "Shaders/Compiled/AlphaTestEffect_VSAlphaTestNoFog.inc"
 #include "Shaders/Compiled/AlphaTestEffect_VSAlphaTestVc.inc"
@@ -85,8 +75,8 @@ namespace
 #include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestLtGtNoFog.inc"
 #include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestEqNe.inc"
 #include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestEqNeNoFog.inc"
-#endif
 } // namespace
+#endif
 
 template <>
 const D3D12_SHADER_BYTECODE EffectBase<AlphaTestEffectTraits>::VertexShaderBytecode[] =
@@ -171,7 +161,7 @@ AlphaTestEffect::Impl::Impl(_In_ ID3D12Device* device,
 		mRootSignature = GetRootSignature(0, rsigDesc);
 	}
 
-	assert(mRootSignature != nullptr);
+	_ASSERT(mRootSignature != nullptr);
 
 	fog.enabled = (effectFlags & EffectFlags::Fog) != 0;
 
@@ -188,15 +178,15 @@ AlphaTestEffect::Impl::Impl(_In_ ID3D12Device* device,
 
 	// Create pipeline state.
 	int sp = GetPipelineStatePermutation(
-		(effectFlags & EffectFlags::VertexColor) != 0);
-	assert(sp >= 0 && sp < AlphaTestEffectTraits::ShaderPermutationCount);
+		(effectFlags & EffectFlags::Vertexcolour) != 0);
+	_ASSERT(sp >= 0 && sp < AlphaTestEffectTraits::ShaderPermutationCount);
 	_Analysis_assume_(sp >= 0 && sp < AlphaTestEffectTraits::ShaderPermutationCount);
 
 	int vi = EffectBase<AlphaTestEffectTraits>::VertexShaderIndices[sp];
-	assert(vi >= 0 && vi < AlphaTestEffectTraits::VertexShaderCount);
+	_ASSERT(vi >= 0 && vi < AlphaTestEffectTraits::VertexShaderCount);
 	_Analysis_assume_(vi >= 0 && vi < AlphaTestEffectTraits::VertexShaderCount);
 	int pi = EffectBase<AlphaTestEffectTraits>::PixelShaderIndices[sp];
-	assert(pi >= 0 && pi < AlphaTestEffectTraits::PixelShaderCount);
+	_ASSERT(pi >= 0 && pi < AlphaTestEffectTraits::PixelShaderCount);
 	_Analysis_assume_(pi >= 0 && pi < AlphaTestEffectTraits::PixelShaderCount);
 
 	pipelineDescription.CreatePipelineState(
@@ -204,13 +194,13 @@ AlphaTestEffect::Impl::Impl(_In_ ID3D12Device* device,
 		mRootSignature,
 		EffectBase<AlphaTestEffectTraits>::VertexShaderBytecode[vi],
 		EffectBase<AlphaTestEffectTraits>::PixelShaderBytecode[pi],
-		mPipelineState.GetAddressOf());
+		mPipelineState.addressof());
 
-	SetDebugObjectName(mPipelineState.Get(), L"AlphaTestEffect");
+	SetDebugObjectName(mPipelineState.get(), L"AlphaTestEffect");
 }
 
 int
-AlphaTestEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled) const
+AlphaTestEffect::Impl::GetPipelineStatePermutation(bool vertexcolourEnabled) const
 {
 	int permutation = 0;
 
@@ -221,7 +211,7 @@ AlphaTestEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled) cons
 	}
 
 	// Support vertex coloring?
-	if (vertexColorEnabled)
+	if (vertexcolourEnabled)
 	{
 		permutation += 2;
 	}
@@ -242,7 +232,7 @@ AlphaTestEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 	// Compute derived parameter values.
 	matrices.SetConstants(dirtyFlags, constants.worldViewProj);
 	fog.SetConstants(dirtyFlags, matrices.worldView, constants.fogVector);
-	color.SetConstants(dirtyFlags, constants.diffuseColor);
+	color.SetConstants(dirtyFlags, constants.diffusecolour);
 
 	UpdateConstants();
 
@@ -343,7 +333,7 @@ AlphaTestEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 	commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
 	// Set the pipeline state
-	commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+	commandList->SetPipelineState(EffectBase::mPipelineState.get());
 }
 
 // Public constructor.
@@ -415,11 +405,11 @@ AlphaTestEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projecti
 
 // Material settings
 void XM_CALLCONV
-AlphaTestEffect::SetDiffuseColor(FXMVECTOR value)
+AlphaTestEffect::SetDiffusecolour(FXMVECTOR value)
 {
-	pImpl->color.diffuseColor = value;
+	pImpl->color.diffusecolour = value;
 
-	pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+	pImpl->dirtyFlags |= EffectDirtyFlags::Materialcolour;
 }
 
 void
@@ -427,16 +417,16 @@ AlphaTestEffect::SetAlpha(float value)
 {
 	pImpl->color.alpha = value;
 
-	pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+	pImpl->dirtyFlags |= EffectDirtyFlags::Materialcolour;
 }
 
 void XM_CALLCONV
-AlphaTestEffect::SetColorAndAlpha(FXMVECTOR value)
+AlphaTestEffect::SetcolourAndAlpha(FXMVECTOR value)
 {
-	pImpl->color.diffuseColor = value;
+	pImpl->color.diffusecolour = value;
 	pImpl->color.alpha = XMVectorGetW(value);
 
-	pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+	pImpl->dirtyFlags |= EffectDirtyFlags::Materialcolour;
 }
 
 // Fog settings.
@@ -457,9 +447,9 @@ AlphaTestEffect::SetFogEnd(float value)
 }
 
 void XM_CALLCONV
-AlphaTestEffect::SetFogColor(FXMVECTOR value)
+AlphaTestEffect::SetFogcolour(FXMVECTOR value)
 {
-	pImpl->constants.fogColor = value;
+	pImpl->constants.fogcolour = value;
 
 	pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }

@@ -7,15 +7,15 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "Model.h"
+#include "stdinc.h"
+#include "model.h"
 
-#include "CommonStates.h"
-#include "DescriptorHeap.h"
-#include "DirectXHelpers.h"
-#include "Effects.h"
-#include "PlatformHelpers.h"
-#include "ResourceUploadBatch.h"
+#include "commonstates.h"
+#include "descriptorheap.h"
+#include "directxhelpers.h"
+#include "effects.h"
+#include "platformhelpers.h"
+#include "resourceuploadbatch.h"
 
 using namespace DirectX;
 
@@ -128,7 +128,7 @@ ModelMeshPart::DrawMeshParts(ID3D12GraphicsCommandList* commandList, const Model
 	for (auto it = meshParts.cbegin(); it != meshParts.cend(); ++it)
 	{
 		auto part = (*it).get();
-		assert(part != nullptr);
+		_ASSERT(part != nullptr);
 
 		part->Draw(commandList);
 	}
@@ -143,7 +143,7 @@ ModelMeshPart::DrawMeshParts(
 	for (auto it = meshParts.cbegin(); it != meshParts.cend(); ++it)
 	{
 		auto part = (*it).get();
-		assert(part != nullptr);
+		_ASSERT(part != nullptr);
 
 		callback(commandList, *part);
 		part->Draw(commandList);
@@ -233,7 +233,7 @@ _Use_decl_annotations_
 	Model::LoadTextures(
 		ID3D12Device* device,
 		ResourceUploadBatch& resourceUploadBatch,
-		const wchar_t* texturesPath,
+		const std::wstring_view& texturesPath,
 		D3D12_DESCRIPTOR_HEAP_FLAGS flags) const
 {
 	if (textureNames.empty())
@@ -300,20 +300,20 @@ Model::LoadStaticBuffers(
 				&desc,
 				D3D12_RESOURCE_STATE_COPY_DEST,
 				nullptr,
-				IID_GRAPHICS_PPV_ARGS(part->staticVertexBuffer.GetAddressOf())));
+				IID_GRAPHICS_PPV_ARGS(part->staticVertexBuffer.addressof())));
 
-			SetDebugObjectName(part->staticVertexBuffer.Get(), L"ModelMeshPart");
+			SetDebugObjectName(part->staticVertexBuffer.get(), L"ModelMeshPart");
 
-			resourceUploadBatch.Upload(part->staticVertexBuffer.Get(), part->vertexBuffer);
+			resourceUploadBatch.Upload(part->staticVertexBuffer.get(), part->vertexBuffer);
 
-			resourceUploadBatch.Transition(part->staticVertexBuffer.Get(),
+			resourceUploadBatch.Transition(part->staticVertexBuffer.get(),
 				D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
 			// Scan for any other part with the same vertex buffer for sharing
 			for (auto sit = std::next(it); sit != uniqueParts.cend(); ++sit)
 			{
 				auto sharePart = *sit;
-				assert(sharePart != part);
+				_ASSERT(sharePart != part);
 
 				if (sharePart->staticVertexBuffer)
 					continue;
@@ -355,20 +355,20 @@ Model::LoadStaticBuffers(
 				&desc,
 				D3D12_RESOURCE_STATE_COPY_DEST,
 				nullptr,
-				IID_GRAPHICS_PPV_ARGS(part->staticIndexBuffer.GetAddressOf())));
+				IID_GRAPHICS_PPV_ARGS(part->staticIndexBuffer.addressof())));
 
-			SetDebugObjectName(part->staticIndexBuffer.Get(), L"ModelMeshPart");
+			SetDebugObjectName(part->staticIndexBuffer.get(), L"ModelMeshPart");
 
-			resourceUploadBatch.Upload(part->staticIndexBuffer.Get(), part->indexBuffer);
+			resourceUploadBatch.Upload(part->staticIndexBuffer.get(), part->indexBuffer);
 
-			resourceUploadBatch.Transition(part->staticIndexBuffer.Get(),
+			resourceUploadBatch.Transition(part->staticIndexBuffer.get(),
 				D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
 
 			// Scan for any other part with the same index buffer for sharing
 			for (auto sit = std::next(it); sit != uniqueParts.cend(); ++sit)
 			{
 				auto sharePart = *sit;
-				assert(sharePart != part);
+				_ASSERT(sharePart != part);
 
 				if (sharePart->staticIndexBuffer)
 					continue;
@@ -430,30 +430,30 @@ Model::CreateEffects(
 
 	for (const auto& mesh : meshes)
 	{
-		assert(mesh != nullptr);
+		_ASSERT(mesh != nullptr);
 
 		for (const auto& part : mesh->opaqueMeshParts)
 		{
-			assert(part != nullptr);
+			_ASSERT(part != nullptr);
 
 			if (part->materialIndex == uint32_t(-1))
 				continue;
 
 			// If this fires, you have multiple parts with the same unique ID
-			assert(effects[part->partIndex] == nullptr);
+			_ASSERT(effects[part->partIndex] == nullptr);
 
 			effects[part->partIndex] = CreateEffectForMeshPart(fxFactory, opaquePipelineState, alphaPipelineState, textureDescriptorOffset, samplerDescriptorOffset, part.get());
 		}
 
 		for (const auto& part : mesh->alphaMeshParts)
 		{
-			assert(part != nullptr);
+			_ASSERT(part != nullptr);
 
 			if (part->materialIndex == uint32_t(-1))
 				continue;
 
 			// If this fires, you have multiple parts with the same unique ID
-			assert(effects[part->partIndex] == nullptr);
+			_ASSERT(effects[part->partIndex] == nullptr);
 
 			effects[part->partIndex] = CreateEffectForMeshPart(fxFactory, opaquePipelineState, alphaPipelineState, textureDescriptorOffset, samplerDescriptorOffset, part.get());
 		}
@@ -473,7 +473,7 @@ _Use_decl_annotations_
 		int samplerDescriptorOffset,
 		const ModelMeshPart* part) const
 {
-	assert(part->materialIndex < materials.size());
+	_ASSERT(part->materialIndex < materials.size());
 	const auto& m = materials[part->materialIndex];
 
 	if (!part->vbDecl || part->vbDecl->empty())
@@ -483,7 +483,7 @@ _Use_decl_annotations_
 		throw std::exception("Model mesh part input layout size is too large for DirectX 12");
 
 	D3D12_INPUT_LAYOUT_DESC il = {};
-	il.NumElements = static_cast<UINT>(part->vbDecl->size());
+	il.NumElements = static_cast<uint32_t>(part->vbDecl->size());
 	il.pInputElementDescs = part->vbDecl->data();
 
 	return fxFactory.CreateEffect(m, opaquePipelineState, alphaPipelineState, il, textureDescriptorOffset, samplerDescriptorOffset);

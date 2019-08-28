@@ -8,8 +8,8 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //-------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "SimpleMath.h"
+#include "stdinc.h"
+#include "simplemath.h"
 
 /****************************************************************************
  *
@@ -64,8 +64,8 @@ const Quaternion Quaternion::Identity = {0.f, 0.f, 0.f, 1.f};
 static_assert(sizeof(DirectX::SimpleMath::Viewport) == sizeof(D3D11_VIEWPORT), "Size mismatch");
 static_assert(offsetof(DirectX::SimpleMath::Viewport, x) == offsetof(D3D11_VIEWPORT, TopLeftX), "Layout mismatch");
 static_assert(offsetof(DirectX::SimpleMath::Viewport, y) == offsetof(D3D11_VIEWPORT, TopLeftY), "Layout mismatch");
-static_assert(offsetof(DirectX::SimpleMath::Viewport, width) == offsetof(D3D11_VIEWPORT, Width), "Layout mismatch");
-static_assert(offsetof(DirectX::SimpleMath::Viewport, height) == offsetof(D3D11_VIEWPORT, Height), "Layout mismatch");
+static_assert(offsetof(DirectX::SimpleMath::Viewport, width) == offsetof(D3D11_VIEWPORT, width), "Layout mismatch");
+static_assert(offsetof(DirectX::SimpleMath::Viewport, height) == offsetof(D3D11_VIEWPORT, height), "Layout mismatch");
 static_assert(offsetof(DirectX::SimpleMath::Viewport, minDepth) == offsetof(D3D11_VIEWPORT, MinDepth), "Layout mismatch");
 static_assert(offsetof(DirectX::SimpleMath::Viewport, maxDepth) == offsetof(D3D11_VIEWPORT, MaxDepth), "Layout mismatch");
 #endif
@@ -74,14 +74,14 @@ static_assert(offsetof(DirectX::SimpleMath::Viewport, maxDepth) == offsetof(D3D1
 static_assert(sizeof(DirectX::SimpleMath::Viewport) == sizeof(D3D12_VIEWPORT), "Size mismatch");
 static_assert(offsetof(DirectX::SimpleMath::Viewport, x) == offsetof(D3D12_VIEWPORT, TopLeftX), "Layout mismatch");
 static_assert(offsetof(DirectX::SimpleMath::Viewport, y) == offsetof(D3D12_VIEWPORT, TopLeftY), "Layout mismatch");
-static_assert(offsetof(DirectX::SimpleMath::Viewport, width) == offsetof(D3D12_VIEWPORT, Width), "Layout mismatch");
-static_assert(offsetof(DirectX::SimpleMath::Viewport, height) == offsetof(D3D12_VIEWPORT, Height), "Layout mismatch");
+static_assert(offsetof(DirectX::SimpleMath::Viewport, width) == offsetof(D3D12_VIEWPORT, width), "Layout mismatch");
+static_assert(offsetof(DirectX::SimpleMath::Viewport, height) == offsetof(D3D12_VIEWPORT, height), "Layout mismatch");
 static_assert(offsetof(DirectX::SimpleMath::Viewport, minDepth) == offsetof(D3D12_VIEWPORT, MinDepth), "Layout mismatch");
 static_assert(offsetof(DirectX::SimpleMath::Viewport, maxDepth) == offsetof(D3D12_VIEWPORT, MaxDepth), "Layout mismatch");
 #endif
 
 RECT
-DirectX::SimpleMath::Viewport::ComputeDisplayArea(DXGI_SCALING scaling, UINT backBufferWidth, UINT backBufferHeight, int outputWidth, int outputHeight)
+DirectX::SimpleMath::Viewport::ComputeDisplayArea(DXGI_SCALING scaling, uint32_t backBufferwidth, uint32_t backBufferheight, int outputwidth, int outputheight)
 {
 	RECT rct;
 
@@ -91,40 +91,40 @@ DirectX::SimpleMath::Viewport::ComputeDisplayArea(DXGI_SCALING scaling, UINT bac
 		// Output fills the entire window area
 		rct.top = 0;
 		rct.left = 0;
-		rct.right = outputWidth;
-		rct.bottom = outputHeight;
+		rct.right = outputwidth;
+		rct.bottom = outputheight;
 		break;
 
 	case 2 /*DXGI_SCALING_ASPECT_RATIO_STRETCH*/:
 		// Output fills the window area but respects the original aspect ratio, using pillar boxing or letter boxing as required
 		// Note: This scaling option is not supported for legacy Win32 windows swap chains
 		{
-			assert(backBufferHeight > 0);
-			float aspectRatio = float(backBufferWidth) / float(backBufferHeight);
+			_ASSERT(backBufferheight > 0);
+			float aspectRatio = float(backBufferwidth) / float(backBufferheight);
 
 			// Horizontal fill
-			float scaledWidth = float(outputWidth);
-			float scaledHeight = float(outputWidth) / aspectRatio;
-			if (scaledHeight >= outputHeight)
+			float scaledwidth = float(outputwidth);
+			float scaledheight = float(outputwidth) / aspectRatio;
+			if (scaledheight >= outputheight)
 			{
 				// Do vertical fill
-				scaledWidth = float(outputHeight) * aspectRatio;
-				scaledHeight = float(outputHeight);
+				scaledwidth = float(outputheight) * aspectRatio;
+				scaledheight = float(outputheight);
 			}
 
-			float offsetX = (float(outputWidth) - scaledWidth) * 0.5f;
-			float offsetY = (float(outputHeight) - scaledHeight) * 0.5f;
+			float offsetX = (float(outputwidth) - scaledwidth) * 0.5f;
+			float offsetY = (float(outputheight) - scaledheight) * 0.5f;
 
-			rct.left = static_cast<LONG>(offsetX);
-			rct.top = static_cast<LONG>(offsetY);
-			rct.right = static_cast<LONG>(offsetX + scaledWidth);
-			rct.bottom = static_cast<LONG>(offsetY + scaledHeight);
+			rct.left = static_cast<long32_t>(offsetX);
+			rct.top = static_cast<long32_t>(offsetY);
+			rct.right = static_cast<long32_t>(offsetX + scaledwidth);
+			rct.bottom = static_cast<long32_t>(offsetY + scaledheight);
 
 			// Clip to display window
-			rct.left = std::max<LONG>(0, rct.left);
-			rct.top = std::max<LONG>(0, rct.top);
-			rct.right = std::min<LONG>(outputWidth, rct.right);
-			rct.bottom = std::min<LONG>(outputHeight, rct.bottom);
+			rct.left = std::max<long32_t>(0, rct.left);
+			rct.top = std::max<long32_t>(0, rct.top);
+			rct.right = std::min<long32_t>(outputwidth, rct.right);
+			rct.bottom = std::min<long32_t>(outputheight, rct.bottom);
 		}
 		break;
 
@@ -133,8 +133,8 @@ DirectX::SimpleMath::Viewport::ComputeDisplayArea(DXGI_SCALING scaling, UINT bac
 		// Output is displayed in the upper left corner of the window area
 		rct.top = 0;
 		rct.left = 0;
-		rct.right = std::min<LONG>(static_cast<LONG>(backBufferWidth), outputWidth);
-		rct.bottom = std::min<LONG>(static_cast<LONG>(backBufferHeight), outputHeight);
+		rct.right = std::min<long32_t>(static_cast<long32_t>(backBufferwidth), outputwidth);
+		rct.bottom = std::min<long32_t>(static_cast<long32_t>(backBufferheight), outputheight);
 		break;
 	}
 
@@ -142,16 +142,16 @@ DirectX::SimpleMath::Viewport::ComputeDisplayArea(DXGI_SCALING scaling, UINT bac
 }
 
 RECT
-DirectX::SimpleMath::Viewport::ComputeTitleSafeArea(UINT backBufferWidth, UINT backBufferHeight)
+DirectX::SimpleMath::Viewport::ComputeTitleSafeArea(uint32_t backBufferwidth, uint32_t backBufferheight)
 {
-	float safew = (float(backBufferWidth) + 19.f) / 20.f;
-	float safeh = (float(backBufferHeight) + 19.f) / 20.f;
+	float safew = (float(backBufferwidth) + 19.f) / 20.f;
+	float safeh = (float(backBufferheight) + 19.f) / 20.f;
 
 	RECT rct;
-	rct.left = static_cast<LONG>(safew);
-	rct.top = static_cast<LONG>(safeh);
-	rct.right = static_cast<LONG>(float(backBufferWidth) - safew + 0.5f);
-	rct.bottom = static_cast<LONG>(float(backBufferHeight) - safeh + 0.5f);
+	rct.left = static_cast<long32_t>(safew);
+	rct.top = static_cast<long32_t>(safeh);
+	rct.right = static_cast<long32_t>(float(backBufferwidth) - safew + 0.5f);
+	rct.bottom = static_cast<long32_t>(float(backBufferheight) - safeh + 0.5f);
 
 	return rct;
 }

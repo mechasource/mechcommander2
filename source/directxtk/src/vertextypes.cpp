@@ -7,8 +7,8 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "VertexTypes.h"
+#include "stdinc.h"
+#include "vertextypes.h"
 
 using namespace DirectX;
 
@@ -28,18 +28,18 @@ const D3D12_INPUT_LAYOUT_DESC VertexPosition::InputLayout =
 
 //--------------------------------------------------------------------------------------
 // Vertex struct holding position and color information.
-const D3D12_INPUT_ELEMENT_DESC VertexPositionColor::InputElements[] =
+const D3D12_INPUT_ELEMENT_DESC VertexPositioncolour::InputElements[] =
 	{
 		{"SV_Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 };
 
-static_assert(sizeof(VertexPositionColor) == 28, "Vertex struct/layout mismatch");
+static_assert(sizeof(VertexPositioncolour) == 28, "Vertex struct/layout mismatch");
 
-const D3D12_INPUT_LAYOUT_DESC VertexPositionColor::InputLayout =
+const D3D12_INPUT_LAYOUT_DESC VertexPositioncolour::InputLayout =
 	{
-		VertexPositionColor::InputElements,
-		VertexPositionColor::InputElementCount};
+		VertexPositioncolour::InputElements,
+		VertexPositioncolour::InputElementCount};
 
 //--------------------------------------------------------------------------------------
 // Vertex struct holding position and texture mapping information.
@@ -84,35 +84,35 @@ static_assert(sizeof(VertexPositionNormal) == 24, "Vertex struct/layout mismatch
 
 //--------------------------------------------------------------------------------------
 // Vertex struct holding position, color, and texture mapping information.
-const D3D12_INPUT_ELEMENT_DESC VertexPositionColorTexture::InputElements[] =
+const D3D12_INPUT_ELEMENT_DESC VertexPositioncolourTexture::InputElements[] =
 	{
 		{"SV_Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 };
 
-static_assert(sizeof(VertexPositionColorTexture) == 36, "Vertex struct/layout mismatch");
+static_assert(sizeof(VertexPositioncolourTexture) == 36, "Vertex struct/layout mismatch");
 
-const D3D12_INPUT_LAYOUT_DESC VertexPositionColorTexture::InputLayout =
+const D3D12_INPUT_LAYOUT_DESC VertexPositioncolourTexture::InputLayout =
 	{
-		VertexPositionColorTexture::InputElements,
-		VertexPositionColorTexture::InputElementCount};
+		VertexPositioncolourTexture::InputElements,
+		VertexPositioncolourTexture::InputElementCount};
 
 //--------------------------------------------------------------------------------------
 // Vertex struct holding position, normal vector, and color information.
-const D3D12_INPUT_ELEMENT_DESC VertexPositionNormalColor::InputElements[] =
+const D3D12_INPUT_ELEMENT_DESC VertexPositionNormalcolour::InputElements[] =
 	{
 		{"SV_Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 };
 
-static_assert(sizeof(VertexPositionNormalColor) == 40, "Vertex struct/layout mismatch");
+static_assert(sizeof(VertexPositionNormalcolour) == 40, "Vertex struct/layout mismatch");
 
-const D3D12_INPUT_LAYOUT_DESC VertexPositionNormalColor::InputLayout =
+const D3D12_INPUT_LAYOUT_DESC VertexPositionNormalcolour::InputLayout =
 	{
-		VertexPositionNormalColor::InputElements,
-		VertexPositionNormalColor::InputElementCount};
+		VertexPositionNormalcolour::InputElements,
+		VertexPositionNormalcolour::InputElementCount};
 
 //--------------------------------------------------------------------------------------
 // Vertex struct holding position, normal vector, and texture mapping information.
@@ -132,7 +132,7 @@ const D3D12_INPUT_LAYOUT_DESC VertexPositionNormalTexture::InputLayout =
 
 //--------------------------------------------------------------------------------------
 // Vertex struct holding position, normal vector, color, and texture mapping information.
-const D3D12_INPUT_ELEMENT_DESC VertexPositionNormalColorTexture::InputElements[] =
+const D3D12_INPUT_ELEMENT_DESC VertexPositionNormalcolourTexture::InputElements[] =
 	{
 		{"SV_Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
@@ -140,13 +140,13 @@ const D3D12_INPUT_ELEMENT_DESC VertexPositionNormalColorTexture::InputElements[]
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 };
 
-static_assert(sizeof(VertexPositionNormalColorTexture) == 48, "Vertex struct/layout mismatch");
+static_assert(sizeof(VertexPositionNormalcolourTexture) == 48, "Vertex struct/layout mismatch");
 
-const D3D12_INPUT_LAYOUT_DESC VertexPositionNormalColorTexture::InputLayout =
+const D3D12_INPUT_LAYOUT_DESC VertexPositionNormalcolourTexture::InputLayout =
 	{
-		VertexPositionNormalColorTexture::InputElements,
-		VertexPositionNormalColorTexture::InputElementCount};
+		VertexPositionNormalcolourTexture::InputElements,
+		VertexPositionNormalcolourTexture::InputElementCount};
 
 //--------------------------------------------------------------------------------------
-// VertexPositionNormalTangentColorTexture, VertexPositionNormalTangentColorTextureSkinning are not
+// VertexPositionNormalTangentcolourTexture, VertexPositionNormalTangentcolourTextureSkinning are not
 // supported for DirectX 12 since they were only present for DGSL

@@ -32,25 +32,21 @@ public:
 
 	~WaveBankReader();
 
-	HRESULT Open(_In_z_ const wchar_t* szFileName);
+	HRESULT Open(_In_z_ const std::wstring_view& szFileName);
 
-	uint32_t Find(_In_z_ const char* name) const;
+	uint32_t Find(_In_z_ const std::string_view& name) const;
 
 	bool IsPrepared();
 	void WaitOnPrepare();
 
-	bool HasNames() const;
-	bool IsStreamingBank() const;
+	bool HasNames(void) const;
+	bool IsStreamingBank(void) const;
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-	bool HasXMA() const;
-#endif
+	const std::string_view& BankName(void) const;
 
-	const char* BankName() const;
+	uint32_t Count(void) const;
 
-	uint32_t Count() const;
-
-	uint32_t BankAudioSize() const;
+	uint32_t BankAudioSize(void) const;
 
 	HRESULT GetFormat(_In_ uint32_t index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* pFormat, _In_ size_t maxsize) const;
 
@@ -58,7 +54,7 @@ public:
 
 	HRESULT GetSeekTable(_In_ uint32_t index, _Out_ const uint32_t** pData, _Out_ uint32_t& dataCount, _Out_ uint32_t& tag) const;
 
-	HANDLE GetAsyncHandle() const;
+	HANDLE GetAsyncHandle(void) const;
 
 	struct Metadata
 	{

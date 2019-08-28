@@ -9,11 +9,7 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <memory>
 #include <utility>
@@ -54,7 +50,7 @@ private:
 };
 } // namespace Internal
 
-// Template makes the API typesafe, eg. PrimitiveBatch<VertexPositionColor>.
+// Template makes the API typesafe, eg. PrimitiveBatch<VertexPositioncolour>.
 template <typename TVertex>
 class PrimitiveBatch : public Internal::PrimitiveBatchBase
 {

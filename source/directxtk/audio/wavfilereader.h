@@ -29,7 +29,7 @@ LoadWAVAudioInMemory(
 
 HRESULT
 LoadWAVAudioFromFile(
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	_Inout_ std::unique_ptr<uint8_t[]>& wavData,
 	_Outptr_ const WAVEFORMATEX** wfx,
 	_Outptr_ const uint8_t** startAudio,
@@ -54,7 +54,7 @@ LoadWAVAudioInMemoryEx(
 
 HRESULT
 LoadWAVAudioFromFileEx(
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	_Inout_ std::unique_ptr<uint8_t[]>& wavData,
 	_Out_ WAVData& result);
 } // namespace DirectX

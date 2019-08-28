@@ -32,10 +32,10 @@ public:
 	com_exception(HRESULT hr) noexcept :
 		result(hr) {}
 
-	virtual const char* what() const override
+	virtual wchar_t const* what(void) const override
 	{
-		static char s_str[64] = {};
-		sprintf_s(s_str, "Failure with HRESULT of %08X", static_cast<unsigned int>(result));
+		static wchar_t s_str[64] = {};
+		sprintf_s(s_str, "Failure with HRESULT of %08X", static_cast<uint32_t>(result));
 		return s_str;
 	}
 
@@ -55,13 +55,13 @@ ThrowIfFailed(HRESULT hr)
 
 // Helper for output debug tracing
 inline void
-DebugTrace(_In_z_ _Printf_format_string_ const char* format, ...) noexcept
+DebugTrace(_In_z_ _Printf_format_string_ const wchar_t* format, ...) noexcept
 {
 #ifdef _DEBUG
 	va_list args;
 	va_start(args, format);
 
-	char buff[1024] = {};
+	wchar_t buff[1024] = {};
 	vsprintf_s(buff, format, args);
 	OutputDebugStringA(buff);
 	va_end(args);

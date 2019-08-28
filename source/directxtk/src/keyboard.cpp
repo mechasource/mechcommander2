@@ -8,13 +8,12 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "Keyboard.h"
+#include "stdinc.h"
+#include "keyboard.h"
 
-#include "PlatformHelpers.h"
+#include "platformhelpers.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 static_assert(sizeof(Keyboard::State) == (256 / 8), "Size mismatch for State");
 
@@ -28,7 +27,7 @@ KeyDown(int key, Keyboard::State& state)
 
 	auto ptr = reinterpret_cast<uint32_t*>(&state);
 
-	unsigned int bf = 1u << (key & 0x1f);
+	uint32_t bf = 1u << (key & 0x1f);
 	ptr[(key >> 5)] |= bf;
 }
 
@@ -40,7 +39,7 @@ KeyUp(int key, Keyboard::State& state)
 
 	auto ptr = reinterpret_cast<uint32_t*>(&state);
 
-	unsigned int bf = 1u << (key & 0x1f);
+	uint32_t bf = 1u << (key & 0x1f);
 	ptr[(key >> 5)] &= ~bf;
 }
 } // namespace
@@ -52,9 +51,9 @@ KeyUp(int key, Keyboard::State& state)
 //======================================================================================
 
 //
-// For a Win32 desktop application, call this function from your Window Message Procedure
+// For a Win32 desktop application, call this function from your Window message Procedure
 //
-// LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+// LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lParam)
 // {
 //     switch (message)
 //     {
@@ -104,7 +103,7 @@ public:
 		memset(&mState, 0, sizeof(State));
 	}
 
-	bool IsConnected() const
+	bool IsConnected(void) const
 	{
 		return true;
 	}
@@ -118,7 +117,7 @@ public:
 Keyboard::Impl* Keyboard::Impl::s_keyboard = nullptr;
 
 void
-Keyboard::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
+Keyboard::ProcessMessage(uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	auto pImpl = Impl::s_keyboard;
 
@@ -151,7 +150,7 @@ Keyboard::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case VK_SHIFT:
 		vk = static_cast<int>(
-			MapVirtualKey((static_cast<UINT>(lParam) & 0x00ff0000) >> 16u,
+			MapVirtualKey((static_cast<uint32_t>(lParam) & 0x00ff0000) >> 16u,
 				MAPVK_VSC_TO_VK_EX));
 		if (!down)
 		{
@@ -162,11 +161,11 @@ Keyboard::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case VK_CONTROL:
-		vk = (static_cast<UINT>(lParam) & 0x01000000) ? VK_RCONTROL : VK_LCONTROL;
+		vk = (static_cast<uint32_t>(lParam) & 0x01000000) ? VK_RCONTROL : VK_LCONTROL;
 		break;
 
 	case VK_MENU:
-		vk = (static_cast<UINT>(lParam) & 0x01000000) ? VK_RMENU : VK_LMENU;
+		vk = (static_cast<uint32_t>(lParam) & 0x01000000) ? VK_RMENU : VK_LMENU;
 		break;
 	}
 
@@ -231,15 +230,15 @@ public:
 		memset(&mState, 0, sizeof(State));
 	}
 
-	bool IsConnected() const
+	bool IsConnected(void) const
 	{
 		using namespace Microsoft::WRL;
 		using namespace Microsoft::WRL::Wrappers;
 		using namespace ABI::Windows::Devices::Input;
 		using namespace ABI::Windows::Foundation;
 
-		ComPtr<IKeyboardCapabilities> caps;
-		HRESULT hr = RoActivateInstance(HStringReference(RuntimeClass_Windows_Devices_Input_KeyboardCapabilities).Get(), &caps);
+		wil::com_ptr<IKeyboardCapabilities> caps;
+		HRESULT hr = RoActivateInstance(HStringReference(RuntimeClass_Windows_Devices_Input_KeyboardCapabilities).get(), &caps);
 		ThrowIfFailed(hr);
 
 		INT32 value;
@@ -257,7 +256,7 @@ public:
 		using namespace Microsoft::WRL::Wrappers;
 		using namespace ABI::Windows::UI::Core;
 
-		if (mWindow.Get() == window)
+		if (mWindow.get() == window)
 			return;
 
 		RemoveHandlers();
@@ -268,19 +267,19 @@ public:
 			return;
 
 		typedef __FITypedEventHandler_2_Windows__CUI__CCore__CCoreWindow_Windows__CUI__CCore__CWindowActivatedEventArgs ActivatedHandler;
-		HRESULT hr = window->add_Activated(Callback<ActivatedHandler>(Activated).Get(), &mActivatedToken);
+		HRESULT hr = window->add_Activated(Callback<ActivatedHandler>(Activated).get(), &mActivatedToken);
 		ThrowIfFailed(hr);
 
-		ComPtr<ICoreDispatcher> dispatcher;
-		hr = window->get_Dispatcher(dispatcher.GetAddressOf());
+		wil::com_ptr<ICoreDispatcher> dispatcher;
+		hr = window->get_Dispatcher(dispatcher.addressof());
 		ThrowIfFailed(hr);
 
-		ComPtr<ICoreAcceleratorKeys> keys;
+		wil::com_ptr<ICoreAcceleratorKeys> keys;
 		hr = dispatcher.As(&keys);
 		ThrowIfFailed(hr);
 
 		typedef __FITypedEventHandler_2_Windows__CUI__CCore__CCoreDispatcher_Windows__CUI__CCore__CAcceleratorKeyEventArgs AcceleratorKeyHandler;
-		hr = keys->add_AcceleratorKeyActivated(Callback<AcceleratorKeyHandler>(AcceleratorKeyEvent).Get(), &mAcceleratorKeyToken);
+		hr = keys->add_AcceleratorKeyActivated(Callback<AcceleratorKeyHandler>(AcceleratorKeyEvent).get(), &mAcceleratorKeyToken);
 		ThrowIfFailed(hr);
 	}
 
@@ -290,7 +289,7 @@ public:
 	static Keyboard::Impl* s_keyboard;
 
 private:
-	ComPtr<ABI::Windows::UI::Core::ICoreWindow> mWindow;
+	wil::com_ptr<ABI::Windows::UI::Core::ICoreWindow> mWindow;
 
 	EventRegistrationToken mAcceleratorKeyToken;
 	EventRegistrationToken mActivatedToken;
@@ -301,14 +300,14 @@ private:
 		{
 			using namespace ABI::Windows::UI::Core;
 
-			ComPtr<ICoreDispatcher> dispatcher;
-			HRESULT hr = mWindow->get_Dispatcher(dispatcher.GetAddressOf());
+			wil::com_ptr<ICoreDispatcher> dispatcher;
+			HRESULT hr = mWindow->get_Dispatcher(dispatcher.addressof());
 			ThrowIfFailed(hr);
 
 			(void)mWindow->remove_Activated(mActivatedToken);
 			mActivatedToken.value = 0;
 
-			ComPtr<ICoreAcceleratorKeys> keys;
+			wil::com_ptr<ICoreAcceleratorKeys> keys;
 			hr = dispatcher.As(&keys);
 			ThrowIfFailed(hr);
 
@@ -444,7 +443,7 @@ Keyboard::~Keyboard()
 }
 
 Keyboard::State
-Keyboard::GetState() const
+Keyboard::GetState(void) const
 {
 	State state;
 	pImpl->GetState(state);
@@ -458,7 +457,7 @@ Keyboard::Reset()
 }
 
 bool
-Keyboard::IsConnected() const
+Keyboard::IsConnected(void) const
 {
 	return pImpl->IsConnected();
 }

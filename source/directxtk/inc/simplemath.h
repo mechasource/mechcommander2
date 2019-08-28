@@ -19,7 +19,6 @@
 #endif
 
 #include <functional>
-#include <assert.h>
 #include <memory.h>
 
 #include <DirectXMath.h>
@@ -97,10 +96,10 @@ struct Rectangle
 	}
 
 	// Rectangle operations
-	Vector2 Location() const;
-	Vector2 Center() const;
+	Vector2 Location(void) const;
+	Vector2 Center(void) const;
 
-	bool IsEmpty() const { return (width == 0 && height == 0 && x == 0 && y == 0); }
+	bool IsEmpty(void) const { return (width == 0 && height == 0 && x == 0 && y == 0); }
 
 	bool Contains(long ix, long iy) const { return (x <= ix) && (ix < (x + width)) && (y <= iy) && (iy < (y + height)); }
 	bool Contains(const Vector2& point) const;
@@ -156,7 +155,7 @@ struct Vector2 : public XMFLOAT2
 	Vector2(Vector2&&) = default;
 	Vector2& operator=(Vector2&&) = default;
 
-	operator XMVECTOR() const { return XMLoadFloat2(this); }
+	operator XMVECTOR(void) const { return XMLoadFloat2(this); }
 
 	// Comparison operators
 	bool operator==(const Vector2& V) const;
@@ -176,14 +175,14 @@ struct Vector2 : public XMFLOAT2
 	Vector2& operator/=(float S);
 
 	// Unary operators
-	Vector2 operator+() const { return *this; }
-	Vector2 operator-() const { return Vector2(-x, -y); }
+	Vector2 operator+(void) const { return *this; }
+	Vector2 operator-(void) const { return Vector2(-x, -y); }
 
 	// Vector operations
 	bool InBounds(const Vector2& Bounds) const;
 
-	float Length() const;
-	float LengthSquared() const;
+	float Length(void) const;
+	float LengthSquared(void) const;
 
 	float Dot(const Vector2& V) const;
 	void Cross(const Vector2& V, Vector2& result) const;
@@ -290,7 +289,7 @@ struct Vector3 : public XMFLOAT3
 	Vector3(Vector3&&) = default;
 	Vector3& operator=(Vector3&&) = default;
 
-	operator XMVECTOR() const { return XMLoadFloat3(this); }
+	operator XMVECTOR(void) const { return XMLoadFloat3(this); }
 
 	// Comparison operators
 	bool operator==(const Vector3& V) const;
@@ -311,14 +310,14 @@ struct Vector3 : public XMFLOAT3
 	Vector3& operator/=(float S);
 
 	// Unary operators
-	Vector3 operator+() const { return *this; }
-	Vector3 operator-() const;
+	Vector3 operator+(void) const { return *this; }
+	Vector3 operator-(void) const;
 
 	// Vector operations
 	bool InBounds(const Vector3& Bounds) const;
 
-	float Length() const;
-	float LengthSquared() const;
+	float Length(void) const;
+	float LengthSquared(void) const;
 
 	float Dot(const Vector3& V) const;
 	void Cross(const Vector3& V, Vector3& result) const;
@@ -434,7 +433,7 @@ struct Vector4 : public XMFLOAT4
 	Vector4(Vector4&&) = default;
 	Vector4& operator=(Vector4&&) = default;
 
-	operator XMVECTOR() const { return XMLoadFloat4(this); }
+	operator XMVECTOR(void) const { return XMLoadFloat4(this); }
 
 	// Comparison operators
 	bool operator==(const Vector4& V) const;
@@ -456,14 +455,14 @@ struct Vector4 : public XMFLOAT4
 	Vector4& operator/=(float S);
 
 	// Unary operators
-	Vector4 operator+() const { return *this; }
-	Vector4 operator-() const;
+	Vector4 operator+(void) const { return *this; }
+	Vector4 operator-(void) const;
 
 	// Vector operations
 	bool InBounds(const Vector4& Bounds) const;
 
-	float Length() const;
-	float LengthSquared() const;
+	float Length(void) const;
+	float LengthSquared(void) const;
 
 	float Dot(const Vector4& V) const;
 	void Cross(const Vector4& v1, const Vector4& v2, Vector4& result) const;
@@ -580,7 +579,7 @@ struct Matrix : public XMFLOAT4X4
 	Matrix(Matrix&&) = default;
 	Matrix& operator=(Matrix&&) = default;
 
-	operator XMMATRIX() const { return XMLoadFloat4x4(this); }
+	operator XMMATRIX(void) const { return XMLoadFloat4x4(this); }
 
 	// Comparison operators
 	bool operator==(const Matrix& M) const;
@@ -599,11 +598,11 @@ struct Matrix : public XMFLOAT4X4
 	// Element-wise divide
 
 	// Unary operators
-	Matrix operator+() const { return *this; }
-	Matrix operator-() const;
+	Matrix operator+(void) const { return *this; }
+	Matrix operator-(void) const;
 
 	// Properties
-	Vector3 Up() const { return Vector3(_21, _22, _23); }
+	Vector3 Up(void) const { return Vector3(_21, _22, _23); }
 	void Up(const Vector3& v)
 	{
 		_21 = v.x;
@@ -611,7 +610,7 @@ struct Matrix : public XMFLOAT4X4
 		_23 = v.z;
 	}
 
-	Vector3 Down() const { return Vector3(-_21, -_22, -_23); }
+	Vector3 Down(void) const { return Vector3(-_21, -_22, -_23); }
 	void Down(const Vector3& v)
 	{
 		_21 = -v.x;
@@ -619,7 +618,7 @@ struct Matrix : public XMFLOAT4X4
 		_23 = -v.z;
 	}
 
-	Vector3 Right() const { return Vector3(_11, _12, _13); }
+	Vector3 Right(void) const { return Vector3(_11, _12, _13); }
 	void Right(const Vector3& v)
 	{
 		_11 = v.x;
@@ -627,7 +626,7 @@ struct Matrix : public XMFLOAT4X4
 		_13 = v.z;
 	}
 
-	Vector3 Left() const { return Vector3(-_11, -_12, -_13); }
+	Vector3 Left(void) const { return Vector3(-_11, -_12, -_13); }
 	void Left(const Vector3& v)
 	{
 		_11 = -v.x;
@@ -635,7 +634,7 @@ struct Matrix : public XMFLOAT4X4
 		_13 = -v.z;
 	}
 
-	Vector3 Forward() const { return Vector3(-_31, -_32, -_33); }
+	Vector3 Forward(void) const { return Vector3(-_31, -_32, -_33); }
 	void Forward(const Vector3& v)
 	{
 		_31 = -v.x;
@@ -643,7 +642,7 @@ struct Matrix : public XMFLOAT4X4
 		_33 = -v.z;
 	}
 
-	Vector3 Backward() const { return Vector3(_31, _32, _33); }
+	Vector3 Backward(void) const { return Vector3(_31, _32, _33); }
 	void Backward(const Vector3& v)
 	{
 		_31 = v.x;
@@ -651,7 +650,7 @@ struct Matrix : public XMFLOAT4X4
 		_33 = v.z;
 	}
 
-	Vector3 Translation() const { return Vector3(_41, _42, _43); }
+	Vector3 Translation(void) const { return Vector3(_41, _42, _43); }
 	void Translation(const Vector3& v)
 	{
 		_41 = v.x;
@@ -662,13 +661,13 @@ struct Matrix : public XMFLOAT4X4
 	// Matrix operations
 	bool Decompose(Vector3& scale, Quaternion& rotation, Vector3& translation);
 
-	Matrix Transpose() const;
+	Matrix Transpose(void) const;
 	void Transpose(Matrix& result) const;
 
-	Matrix Invert() const;
+	Matrix Invert(void) const;
 	void Invert(Matrix& result) const;
 
-	float Determinant() const;
+	float Determinant(void) const;
 
 	// Static functions
 	static Matrix CreateBillboard(const Vector3& object, const Vector3& cameraPosition, const Vector3& cameraUp, _In_opt_ const Vector3* cameraForward = nullptr);
@@ -768,7 +767,7 @@ struct Plane : public XMFLOAT4
 	Plane(Plane&&) = default;
 	Plane& operator=(Plane&&) = default;
 
-	operator XMVECTOR() const { return XMLoadFloat4(this); }
+	operator XMVECTOR(void) const { return XMLoadFloat4(this); }
 
 	// Comparison operators
 	bool operator==(const Plane& p) const;
@@ -785,7 +784,7 @@ struct Plane : public XMFLOAT4
 	}
 
 	// Properties
-	Vector3 Normal() const { return Vector3(x, y, z); }
+	Vector3 Normal(void) const { return Vector3(x, y, z); }
 	void Normal(const Vector3& normal)
 	{
 		x = normal.x;
@@ -793,7 +792,7 @@ struct Plane : public XMFLOAT4
 		z = normal.z;
 	}
 
-	float D() const { return w; }
+	float D(void) const { return w; }
 	void D(float d) { w = d; }
 
 	// Plane operations
@@ -849,7 +848,7 @@ struct Quaternion : public XMFLOAT4
 	Quaternion(Quaternion&&) = default;
 	Quaternion& operator=(Quaternion&&) = default;
 
-	operator XMVECTOR() const { return XMLoadFloat4(this); }
+	operator XMVECTOR(void) const { return XMLoadFloat4(this); }
 
 	// Comparison operators
 	bool operator==(const Quaternion& q) const;
@@ -871,12 +870,12 @@ struct Quaternion : public XMFLOAT4
 	Quaternion& operator/=(const Quaternion& q);
 
 	// Unary operators
-	Quaternion operator+() const { return *this; }
-	Quaternion operator-() const;
+	Quaternion operator+(void) const { return *this; }
+	Quaternion operator-(void) const;
 
 	// Quaternion operations
-	float Length() const;
-	float LengthSquared() const;
+	float Length(void) const;
+	float LengthSquared(void) const;
 
 	void Normalize();
 	void Normalize(Quaternion& result) const;
@@ -918,30 +917,30 @@ operator/(const Quaternion& Q1, const Quaternion& Q2);
 Quaternion operator*(float S, const Quaternion& Q);
 
 //------------------------------------------------------------------------------
-// Color
-struct Color : public XMFLOAT4
+// colour
+struct colour : public XMFLOAT4
 {
-	Color() noexcept :
+	colour() noexcept :
 		XMFLOAT4(0, 0, 0, 1.f) {}
-	XM_CONSTEXPR Color(float _r, float _g, float _b) :
+	XM_CONSTEXPR colour(float _r, float _g, float _b) :
 		XMFLOAT4(_r, _g, _b, 1.f) {}
-	XM_CONSTEXPR Color(float _r, float _g, float _b, float _a) :
+	XM_CONSTEXPR colour(float _r, float _g, float _b, float _a) :
 		XMFLOAT4(_r, _g, _b, _a) {}
-	explicit Color(const Vector3& clr) :
+	explicit colour(const Vector3& clr) :
 		XMFLOAT4(clr.x, clr.y, clr.z, 1.f) {}
-	explicit Color(const Vector4& clr) :
+	explicit colour(const Vector4& clr) :
 		XMFLOAT4(clr.x, clr.y, clr.z, clr.w) {}
-	explicit Color(_In_reads_(4) const float* pArray) :
+	explicit colour(_In_reads_(4) const float* pArray) :
 		XMFLOAT4(pArray) {}
-	Color(FXMVECTOR V) { XMStoreFloat4(this, V); }
-	Color(const XMFLOAT4& c)
+	colour(FXMVECTOR V) { XMStoreFloat4(this, V); }
+	colour(const XMFLOAT4& c)
 	{
 		this->x = c.x;
 		this->y = c.y;
 		this->z = c.z;
 		this->w = c.w;
 	}
-	explicit Color(const XMVECTORF32& F)
+	explicit colour(const XMVECTORF32& F)
 	{
 		this->x = F.f[0];
 		this->y = F.f[1];
@@ -949,27 +948,27 @@ struct Color : public XMFLOAT4
 		this->w = F.f[3];
 	}
 
-	explicit Color(const DirectX::PackedVector::XMCOLOR& Packed);
+	explicit colour(const DirectX::PackedVector::XMCOLOR& Packed);
 	// BGRA Direct3D 9 D3DCOLOR packed color
 
-	explicit Color(const DirectX::PackedVector::XMUBYTEN4& Packed);
+	explicit colour(const DirectX::PackedVector::XMUBYTEN4& Packed);
 	// RGBA XNA Game Studio packed color
 
-	Color(const Color&) = default;
-	Color& operator=(const Color&) = default;
+	colour(const colour&) = default;
+	colour& operator=(const colour&) = default;
 
-	Color(Color&&) = default;
-	Color& operator=(Color&&) = default;
+	colour(colour&&) = default;
+	colour& operator=(colour&&) = default;
 
-	operator XMVECTOR() const { return XMLoadFloat4(this); }
-	operator const float*() const { return reinterpret_cast<const float*>(this); }
+	operator XMVECTOR(void) const { return XMLoadFloat4(this); }
+	operator const float*(void) const { return reinterpret_cast<const float*>(this); }
 
 	// Comparison operators
-	bool operator==(const Color& c) const;
-	bool operator!=(const Color& c) const;
+	bool operator==(const colour& c) const;
+	bool operator!=(const colour& c) const;
 
 	// Assignment operators
-	Color& operator=(const XMVECTORF32& F)
+	colour& operator=(const XMVECTORF32& F)
 	{
 		x = F.f[0];
 		y = F.f[1];
@@ -977,71 +976,71 @@ struct Color : public XMFLOAT4
 		w = F.f[3];
 		return *this;
 	}
-	Color& operator=(const DirectX::PackedVector::XMCOLOR& Packed);
-	Color& operator=(const DirectX::PackedVector::XMUBYTEN4& Packed);
-	Color& operator+=(const Color& c);
-	Color& operator-=(const Color& c);
-	Color& operator*=(const Color& c);
-	Color& operator*=(float S);
-	Color& operator/=(const Color& c);
+	colour& operator=(const DirectX::PackedVector::XMCOLOR& Packed);
+	colour& operator=(const DirectX::PackedVector::XMUBYTEN4& Packed);
+	colour& operator+=(const colour& c);
+	colour& operator-=(const colour& c);
+	colour& operator*=(const colour& c);
+	colour& operator*=(float S);
+	colour& operator/=(const colour& c);
 
 	// Unary operators
-	Color operator+() const { return *this; }
-	Color operator-() const;
+	colour operator+(void) const { return *this; }
+	colour operator-(void) const;
 
 	// Properties
-	float R() const { return x; }
+	float R(void) const { return x; }
 	void R(float r) { x = r; }
 
-	float G() const { return y; }
+	float G(void) const { return y; }
 	void G(float g) { y = g; }
 
-	float B() const { return z; }
+	float B(void) const { return z; }
 	void B(float b) { z = b; }
 
-	float A() const { return w; }
+	float A(void) const { return w; }
 	void A(float a) { w = a; }
 
-	// Color operations
-	DirectX::PackedVector::XMCOLOR BGRA() const;
-	DirectX::PackedVector::XMUBYTEN4 RGBA() const;
+	// colour operations
+	DirectX::PackedVector::XMCOLOR BGRA(void) const;
+	DirectX::PackedVector::XMUBYTEN4 RGBA(void) const;
 
-	Vector3 ToVector3() const;
-	Vector4 ToVector4() const;
+	Vector3 ToVector3(void) const;
+	Vector4 ToVector4(void) const;
 
 	void Negate();
-	void Negate(Color& result) const;
+	void Negate(colour& result) const;
 
 	void Saturate();
-	void Saturate(Color& result) const;
+	void Saturate(colour& result) const;
 
 	void Premultiply();
-	void Premultiply(Color& result) const;
+	void Premultiply(colour& result) const;
 
 	void AdjustSaturation(float sat);
-	void AdjustSaturation(float sat, Color& result) const;
+	void AdjustSaturation(float sat, colour& result) const;
 
 	void AdjustContrast(float contrast);
-	void AdjustContrast(float contrast, Color& result) const;
+	void AdjustContrast(float contrast, colour& result) const;
 
 	// Static functions
-	static void Modulate(const Color& c1, const Color& c2, Color& result);
-	static Color Modulate(const Color& c1, const Color& c2);
+	static void Modulate(const colour& c1, const colour& c2, colour& result);
+	static colour Modulate(const colour& c1, const colour& c2);
 
-	static void Lerp(const Color& c1, const Color& c2, float t, Color& result);
-	static Color Lerp(const Color& c1, const Color& c2, float t);
+	static void Lerp(const colour& c1, const colour& c2, float t, colour& result);
+	static colour Lerp(const colour& c1, const colour& c2, float t);
 };
 
 // Binary operators
-Color
-operator+(const Color& C1, const Color& C2);
-Color
-operator-(const Color& C1, const Color& C2);
-Color operator*(const Color& C1, const Color& C2);
-Color operator*(const Color& C, float S);
-Color
-operator/(const Color& C1, const Color& C2);
-Color operator*(float S, const Color& C);
+colour
+operator+(const colour& C1, const colour& C2);
+colour
+operator-(const colour& C1, const colour& C2);
+colour operator*(const colour& C1, const colour& C2);
+colour operator*(const colour& C, float S);
+colour
+operator/(const colour& C1, const colour& C2);
+colour operator*(float S, const colour& C);
 
 //------------------------------------------------------------------------------
 // Ray
@@ -1099,11 +1098,11 @@ public:
 	// Direct3D 11 interop
 	explicit Viewport(const D3D11_VIEWPORT& vp) :
 		x(vp.TopLeftX), y(vp.TopLeftY),
-		width(vp.Width), height(vp.Height),
+		width(vp.width), height(vp.height),
 		minDepth(vp.MinDepth), maxDepth(vp.MaxDepth) {}
 
 	operator D3D11_VIEWPORT() { return *reinterpret_cast<const D3D11_VIEWPORT*>(this); }
-	const D3D11_VIEWPORT* Get11() const { return reinterpret_cast<const D3D11_VIEWPORT*>(this); }
+	const D3D11_VIEWPORT* Get11(void) const { return reinterpret_cast<const D3D11_VIEWPORT*>(this); }
 	Viewport& operator=(const D3D11_VIEWPORT& vp);
 #endif
 
@@ -1111,11 +1110,11 @@ public:
 	// Direct3D 12 interop
 	explicit Viewport(const D3D12_VIEWPORT& vp) :
 		x(vp.TopLeftX), y(vp.TopLeftY),
-		width(vp.Width), height(vp.Height),
+		width(vp.width), height(vp.height),
 		minDepth(vp.MinDepth), maxDepth(vp.MaxDepth) {}
 
 	operator D3D12_VIEWPORT() { return *reinterpret_cast<const D3D12_VIEWPORT*>(this); }
-	const D3D12_VIEWPORT* Get12() const { return reinterpret_cast<const D3D12_VIEWPORT*>(this); }
+	const D3D12_VIEWPORT* Get12(void) const { return reinterpret_cast<const D3D12_VIEWPORT*>(this); }
 	Viewport& operator=(const D3D12_VIEWPORT& vp);
 #endif
 
@@ -1133,7 +1132,7 @@ public:
 	Viewport& operator=(const RECT& rct);
 
 	// Viewport operations
-	float AspectRatio() const;
+	float AspectRatio(void) const;
 
 	Vector3 Project(const Vector3& p, const Matrix& proj, const Matrix& view, const Matrix& world) const;
 	void Project(const Vector3& p, const Matrix& proj, const Matrix& view, const Matrix& world, Vector3& result) const;
@@ -1142,11 +1141,11 @@ public:
 	void Unproject(const Vector3& p, const Matrix& proj, const Matrix& view, const Matrix& world, Vector3& result) const;
 
 	// Static methods
-	static RECT __cdecl ComputeDisplayArea(DXGI_SCALING scaling, UINT backBufferWidth, UINT backBufferHeight, int outputWidth, int outputHeight);
-	static RECT __cdecl ComputeTitleSafeArea(UINT backBufferWidth, UINT backBufferHeight);
+	static RECT __cdecl ComputeDisplayArea(DXGI_SCALING scaling, uint32_t backBufferwidth, uint32_t backBufferheight, int outputwidth, int outputheight);
+	static RECT __cdecl ComputeTitleSafeArea(uint32_t backBufferwidth, uint32_t backBufferheight);
 };
 
-#include "SimpleMath.inl"
+#include "simplemath.inl"
 
 } // namespace SimpleMath
 
@@ -1268,9 +1267,9 @@ struct less<DirectX::SimpleMath::Quaternion>
 };
 
 template <>
-struct less<DirectX::SimpleMath::Color>
+struct less<DirectX::SimpleMath::colour>
 {
-	bool operator()(const DirectX::SimpleMath::Color& C1, const DirectX::SimpleMath::Color& C2) const
+	bool operator()(const DirectX::SimpleMath::colour& C1, const DirectX::SimpleMath::colour& C2) const
 	{
 		return ((C1.x < C2.x)
 			|| ((C1.x == C2.x) && (C1.y < C2.y))

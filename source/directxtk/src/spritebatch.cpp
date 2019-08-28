@@ -7,19 +7,18 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include "SpriteBatch.h"
-#include "CommonStates.h"
-#include "VertexTypes.h"
-#include "SharedResourcePool.h"
-#include "AlignedNew.h"
-#include "ResourceUploadBatch.h"
-#include "GraphicsMemory.h"
-#include "DirectXHelpers.h"
+#include "spritebatch.h"
+#include "commonstates.h"
+#include "vertextypes.h"
+#include "sharedresourcepool.h"
+#include "alignednew.h"
+#include "resourceuploadbatch.h"
+#include "graphicsmemory.h"
+#include "directxhelpers.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 namespace
 {
@@ -84,7 +83,7 @@ public:
 		_In_opt_ RECT const* sourceRectangle,
 		FXMVECTOR color,
 		FXMVECTOR originRotationDepth,
-		unsigned int flags);
+		uint32_t flags);
 
 	// Info about a single sprite that is waiting to be drawn.
 	__declspec(align(16)) struct SpriteInfo : public AlignedNew<SpriteInfo>
@@ -95,11 +94,11 @@ public:
 		XMFLOAT4A originRotationDepth;
 		D3D12_GPU_DESCRIPTOR_HANDLE texture;
 		XMVECTOR textureSize;
-		unsigned int flags;
+		uint32_t flags;
 
 		// Combine values from the public SpriteEffects enum with these internal-only flags.
-		static const unsigned int SourceInTexels = 4;
-		static const unsigned int DestSizeInPixels = 8;
+		static const uint32_t SourceInTexels = 4;
+		static const uint32_t DestSizeInPixels = 8;
 
 		static_assert((SpriteEffects_FlipBoth & (SourceInTexels | DestSizeInPixels)) == 0, "Flag bits must not overlap");
 	};
@@ -120,7 +119,7 @@ private:
 	void RenderBatch(D3D12_GPU_DESCRIPTOR_HANDLE texture, XMVECTOR textureSize, _In_reads_(count) SpriteInfo const* const* sprites, size_t count);
 
 	static void XM_CALLCONV RenderSprite(_In_ SpriteInfo const* sprite,
-		_Out_writes_(VerticesPerSprite) VertexPositionColorTexture* vertices,
+		_Out_writes_(VerticesPerSprite) VertexPositioncolourTexture* vertices,
 		FXMVECTOR textureSize,
 		FXMVECTOR inverseTextureSize);
 
@@ -158,11 +157,11 @@ private:
 	bool mInBeginEndPair;
 
 	SpriteSortMode mSortMode;
-	ComPtr<ID3D12PipelineState> mPSO;
-	ComPtr<ID3D12RootSignature> mRootSignature;
+	wil::com_ptr<ID3D12PipelineState> mPSO;
+	wil::com_ptr<ID3D12RootSignature> mRootSignature;
 	D3D12_GPU_DESCRIPTOR_HANDLE mSampler;
 	XMMATRIX mTransformMatrix;
-	ComPtr<ID3D12GraphicsCommandList> mCommandList;
+	wil::com_ptr<ID3D12GraphicsCommandList> mCommandList;
 
 	// Batched data
 	GraphicsResource mVertexSegment;
@@ -183,10 +182,10 @@ private:
 	{
 		DeviceResources(_In_ ID3D12Device* device, ResourceUploadBatch& upload);
 
-		ComPtr<ID3D12Resource> indexBuffer;
+		wil::com_ptr<ID3D12Resource> indexBuffer;
 		D3D12_INDEX_BUFFER_VIEW indexBufferView;
-		ComPtr<ID3D12RootSignature> rootSignatureStatic;
-		ComPtr<ID3D12RootSignature> rootSignatureHeap;
+		wil::com_ptr<ID3D12RootSignature> rootSignatureStatic;
+		wil::com_ptr<ID3D12RootSignature> rootSignatureHeap;
 		ID3D12Device* mDevice;
 
 	private:
@@ -214,7 +213,7 @@ const D3D12_SHADER_BYTECODE SpriteBatch::Impl::s_DefaultPixelShaderByteCodeStati
 const D3D12_SHADER_BYTECODE SpriteBatch::Impl::s_DefaultVertexShaderByteCodeHeap = {SpriteEffect_SpriteVertexShaderHeap, sizeof(SpriteEffect_SpriteVertexShaderHeap)};
 const D3D12_SHADER_BYTECODE SpriteBatch::Impl::s_DefaultPixelShaderByteCodeHeap = {SpriteEffect_SpritePixelShaderHeap, sizeof(SpriteEffect_SpritePixelShaderHeap)};
 
-const D3D12_INPUT_LAYOUT_DESC SpriteBatch::Impl::s_DefaultInputLayoutDesc = VertexPositionColorTexture::InputLayout;
+const D3D12_INPUT_LAYOUT_DESC SpriteBatch::Impl::s_DefaultInputLayoutDesc = VertexPositioncolourTexture::InputLayout;
 
 // Matches CommonStates::AlphaBlend
 const D3D12_BLEND_DESC SpriteBatchPipelineStateDescription::s_DefaultBlendDesc =
@@ -297,24 +296,24 @@ SpriteBatch::Impl::DeviceResources::CreateIndexBuffer(_In_ ID3D12Device* device,
 		nullptr,
 		IID_GRAPHICS_PPV_ARGS(indexBuffer.ReleaseAndGetAddressOf())));
 
-	SetDebugObjectName(indexBuffer.Get(), L"SpriteBatch");
+	SetDebugObjectName(indexBuffer.get(), L"SpriteBatch");
 
 	auto indexValues = CreateIndexValues();
 
 	D3D12_SUBRESOURCE_DATA indexDataDesc = {};
 	indexDataDesc.pData = indexValues.data();
-	indexDataDesc.RowPitch = static_cast<LONG_PTR>(bufferDesc.Width);
+	indexDataDesc.RowPitch = static_cast<LONG_PTR>(bufferDesc.width);
 	indexDataDesc.SlicePitch = indexDataDesc.RowPitch;
 
 	// Upload the resource
-	upload.Upload(indexBuffer.Get(), 0, &indexDataDesc, 1);
-	upload.Transition(indexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
-	SetDebugObjectName(indexBuffer.Get(), L"DirectXTK:SpriteBatch Index Buffer");
+	upload.Upload(indexBuffer.get(), 0, &indexDataDesc, 1);
+	upload.Transition(indexBuffer.get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
+	SetDebugObjectName(indexBuffer.get(), L"DirectXTK:SpriteBatch Index Buffer");
 
 	// Create the index buffer view
 	indexBufferView.BufferLocation = indexBuffer->GetGPUVirtualAddress();
 	indexBufferView.Format = DXGI_FORMAT_R16_UINT;
-	indexBufferView.SizeInBytes = static_cast<UINT>(bufferDesc.Width);
+	indexBufferView.SizeInBytes = static_cast<uint32_t>(bufferDesc.width);
 }
 
 void
@@ -350,7 +349,7 @@ SpriteBatch::Impl::DeviceResources::CreateRootSignatures(_In_ ID3D12Device* devi
 
 		ThrowIfFailed(::CreateRootSignature(device, &rsigDesc, rootSignatureStatic.ReleaseAndGetAddressOf()));
 
-		SetDebugObjectName(rootSignatureStatic.Get(), L"SpriteBatch");
+		SetDebugObjectName(rootSignatureStatic.get(), L"SpriteBatch");
 	}
 
 	{
@@ -366,7 +365,7 @@ SpriteBatch::Impl::DeviceResources::CreateRootSignatures(_In_ ID3D12Device* devi
 
 		ThrowIfFailed(::CreateRootSignature(device, &rsigDesc, rootSignatureHeap.ReleaseAndGetAddressOf()));
 
-		SetDebugObjectName(rootSignatureHeap.Get(), L"SpriteBatch");
+		SetDebugObjectName(rootSignatureHeap.get(), L"SpriteBatch");
 	}
 }
 
@@ -407,7 +406,7 @@ SpriteBatch::Impl::Impl(ID3D12Device* device, ResourceUploadBatch& upload, const
 	mSampler{},
 	mTransformMatrix(MatrixIdentity),
 	mVertexSegment{},
-	mVertexPageSize(sizeof(VertexPositionColorTexture) * MaxBatchSize * VerticesPerSprite),
+	mVertexPageSize(sizeof(VertexPositioncolourTexture) * MaxBatchSize * VerticesPerSprite),
 	mSpriteCount(0),
 	mDeviceResources(deviceResourcesPool.DemandCreate(device, upload))
 {
@@ -438,9 +437,9 @@ SpriteBatch::Impl::Impl(ID3D12Device* device, ResourceUploadBatch& upload, const
 	}
 	else
 	{
-		mRootSignature = (psoDesc.samplerDescriptor.ptr) ? mDeviceResources->rootSignatureHeap.Get() : mDeviceResources->rootSignatureStatic.Get();
+		mRootSignature = (psoDesc.samplerDescriptor.ptr) ? mDeviceResources->rootSignatureHeap.get() : mDeviceResources->rootSignatureStatic.get();
 	}
-	d3dDesc.pRootSignature = mRootSignature.Get();
+	d3dDesc.pRootSignature = mRootSignature.get();
 
 	if (psoDesc.customVertexShader.pShaderBytecode)
 	{
@@ -467,9 +466,9 @@ SpriteBatch::Impl::Impl(ID3D12Device* device, ResourceUploadBatch& upload, const
 
 	ThrowIfFailed(device->CreateGraphicsPipelineState(
 		&d3dDesc,
-		IID_GRAPHICS_PPV_ARGS(mPSO.GetAddressOf())));
+		IID_GRAPHICS_PPV_ARGS(mPSO.addressof())));
 
-	SetDebugObjectName(mPSO.Get(), L"SpriteBatch");
+	SetDebugObjectName(mPSO.get(), L"SpriteBatch");
 }
 
 // Begins a batch of sprite drawing operations.
@@ -522,7 +521,7 @@ SpriteBatch::Impl::Draw(D3D12_GPU_DESCRIPTOR_HANDLE texture,
 	RECT const* sourceRectangle,
 	FXMVECTOR color,
 	FXMVECTOR originRotationDepth,
-	unsigned int flags)
+	uint32_t flags)
 {
 	if (!mInBeginEndPair)
 		throw std::exception("Begin must be called before Draw");
@@ -615,13 +614,13 @@ SpriteBatch::Impl::GrowSpriteQueue()
 void
 SpriteBatch::Impl::PrepareForRendering()
 {
-	auto commandList = mCommandList.Get();
+	auto commandList = mCommandList.get();
 
 	// Set root signature
-	commandList->SetGraphicsRootSignature(mRootSignature.Get());
+	commandList->SetGraphicsRootSignature(mRootSignature.get());
 
 	// Set render state
-	commandList->SetPipelineState(mPSO.Get());
+	commandList->SetPipelineState(mPSO.get());
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// Set the index buffer.
@@ -653,7 +652,7 @@ SpriteBatch::Impl::FlushBatch()
 	for (size_t pos = 0; pos < mSpriteQueueCount; pos++)
 	{
 		D3D12_GPU_DESCRIPTOR_HANDLE texture = mSortedSprites[pos]->texture;
-		assert(texture.ptr != 0);
+		_ASSERT(texture.ptr != 0);
 		XMVECTOR textureSize = mSortedSprites[pos]->textureSize;
 
 		// Flush whenever the texture changes.
@@ -747,7 +746,7 @@ SpriteBatch::Impl::GrowSortedSprites()
 _Use_decl_annotations_ void
 SpriteBatch::Impl::RenderBatch(D3D12_GPU_DESCRIPTOR_HANDLE texture, XMVECTOR textureSize, SpriteInfo const* const* sprites, size_t count)
 {
-	auto commandList = mCommandList.Get();
+	auto commandList = mCommandList.get();
 
 	// Draw using the specified texture.
 	// **NOTE** If D3D asserts or crashes here, you probably need to call commandList->SetDescriptorHeaps() with the required descriptor heap(s)
@@ -791,12 +790,12 @@ SpriteBatch::Impl::RenderBatch(D3D12_GPU_DESCRIPTOR_HANDLE texture, XMVECTOR tex
 			mVertexSegment = GraphicsMemory::Get(mDeviceResources->mDevice).Allocate(mVertexPageSize);
 		}
 
-		auto vertices = static_cast<VertexPositionColorTexture*>(mVertexSegment.Memory()) + mSpriteCount * VerticesPerSprite;
+		auto vertices = static_cast<VertexPositioncolourTexture*>(mVertexSegment.Memory()) + mSpriteCount * VerticesPerSprite;
 
 		// Generate sprite vertex data.
 		for (size_t i = 0; i < batchSize; i++)
 		{
-			assert(i < count);
+			_ASSERT(i < count);
 			_Analysis_assume_(i < count);
 			RenderSprite(sprites[i], vertices, textureSize, inverseTextureSize);
 
@@ -805,14 +804,14 @@ SpriteBatch::Impl::RenderBatch(D3D12_GPU_DESCRIPTOR_HANDLE texture, XMVECTOR tex
 
 		// Set the vertex buffer view
 		D3D12_VERTEX_BUFFER_VIEW vbv;
-		size_t spriteVertexTotalSize = sizeof(VertexPositionColorTexture) * VerticesPerSprite;
+		size_t spriteVertexTotalSize = sizeof(VertexPositioncolourTexture) * VerticesPerSprite;
 		vbv.BufferLocation = mVertexSegment.GpuAddress() + (UINT64(mSpriteCount) * UINT64(spriteVertexTotalSize));
-		vbv.StrideInBytes = sizeof(VertexPositionColorTexture);
-		vbv.SizeInBytes = static_cast<UINT>(batchSize * spriteVertexTotalSize);
+		vbv.StrideInBytes = sizeof(VertexPositioncolourTexture);
+		vbv.SizeInBytes = static_cast<uint32_t>(batchSize * spriteVertexTotalSize);
 		commandList->IASetVertexBuffers(0, 1, &vbv);
 
 		// Ok lads, the time has come for us draw ourselves some sprites!
-		UINT indexCount = static_cast<UINT>(batchSize * IndicesPerSprite);
+		uint32_t indexCount = static_cast<uint32_t>(batchSize * IndicesPerSprite);
 
 		commandList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
 
@@ -826,7 +825,7 @@ SpriteBatch::Impl::RenderBatch(D3D12_GPU_DESCRIPTOR_HANDLE texture, XMVECTOR tex
 
 // Generates vertex data for drawing a single sprite.
 _Use_decl_annotations_ void XM_CALLCONV
-SpriteBatch::Impl::RenderSprite(SpriteInfo const* sprite, VertexPositionColorTexture* vertices, FXMVECTOR textureSize, FXMVECTOR inverseTextureSize)
+SpriteBatch::Impl::RenderSprite(SpriteInfo const* sprite, VertexPositioncolourTexture* vertices, FXMVECTOR textureSize, FXMVECTOR inverseTextureSize)
 {
 	// Load sprite parameters into SIMD registers.
 	XMVECTOR source = XMLoadFloat4A(&sprite->source);
@@ -835,7 +834,7 @@ SpriteBatch::Impl::RenderSprite(SpriteInfo const* sprite, VertexPositionColorTex
 	XMVECTOR originRotationDepth = XMLoadFloat4A(&sprite->originRotationDepth);
 
 	float rotation = sprite->originRotationDepth.z;
-	unsigned int flags = sprite->flags;
+	uint32_t flags = sprite->flags;
 
 	// Extract the source and destination sizes into separate vectors.
 	XMVECTOR sourceSize = XMVectorSwizzle<2, 3, 2, 3>(source);
@@ -904,7 +903,7 @@ SpriteBatch::Impl::RenderSprite(SpriteInfo const* sprite, VertexPositionColorTex
 
 	static_assert(SpriteEffects_FlipHorizontally == 1 && SpriteEffects_FlipVertically == 2, "If you change these enum values, the mirroring implementation must be updated to match");
 
-	const unsigned int mirrorBits = flags & 3u;
+	const uint32_t mirrorBits = flags & 3u;
 
 	// Generate the four output vertices.
 	for (size_t i = 0; i < VerticesPerSprite; i++)
@@ -919,7 +918,7 @@ SpriteBatch::Impl::RenderSprite(SpriteInfo const* sprite, VertexPositionColorTex
 		// Set z = depth.
 		XMVECTOR position = XMVectorPermute<0, 1, 7, 6>(position2, originRotationDepth);
 
-		// Write position as a Float4, even though VertexPositionColor::position is an XMFLOAT3.
+		// Write position as a Float4, even though VertexPositioncolour::position is an XMFLOAT3.
 		// This is faster, and harmless as we are just clobbering the first element of the
 		// following color field, which will immediately be overwritten with its correct value.
 		XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(&vertices[i].position), position);
@@ -928,7 +927,7 @@ SpriteBatch::Impl::RenderSprite(SpriteInfo const* sprite, VertexPositionColorTex
 		XMStoreFloat4(&vertices[i].color, color);
 
 		// Compute and write the texture coordinate.
-		XMVECTOR textureCoordinate = XMVectorMultiplyAdd(cornerOffsets[static_cast<unsigned int>(i) ^ mirrorBits], sourceSize, source);
+		XMVECTOR textureCoordinate = XMVectorMultiplyAdd(cornerOffsets[static_cast<uint32_t>(i) ^ mirrorBits], sourceSize, source);
 
 		XMStoreFloat2(&vertices[i].textureCoordinate, textureCoordinate);
 	}
@@ -942,8 +941,8 @@ SpriteBatch::Impl::GetViewportTransform(_In_ DXGI_MODE_ROTATION rotation)
 		throw std::exception("Viewport not set.");
 
 	// Compute the matrix.
-	float xScale = (mViewPort.Width > 0) ? 2.0f / mViewPort.Width : 0.0f;
-	float yScale = (mViewPort.Height > 0) ? 2.0f / mViewPort.Height : 0.0f;
+	float xScale = (mViewPort.width > 0) ? 2.0f / mViewPort.width : 0.0f;
+	float yScale = (mViewPort.height > 0) ? 2.0f / mViewPort.height : 0.0f;
 
 	switch (rotation)
 	{
@@ -1051,7 +1050,7 @@ SpriteBatch::Draw(D3D12_GPU_DESCRIPTOR_HANDLE texture,
 
 	XMVECTOR originRotationDepth = XMVectorSet(origin.x, origin.y, rotation, layerDepth);
 
-	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<unsigned int>(effects));
+	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<uint32_t>(effects));
 }
 
 _Use_decl_annotations_ void XM_CALLCONV
@@ -1070,7 +1069,7 @@ SpriteBatch::Draw(D3D12_GPU_DESCRIPTOR_HANDLE texture,
 
 	XMVECTOR originRotationDepth = XMVectorSet(origin.x, origin.y, rotation, layerDepth);
 
-	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<unsigned int>(effects));
+	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<uint32_t>(effects));
 }
 
 void XM_CALLCONV
@@ -1099,7 +1098,7 @@ SpriteBatch::Draw(D3D12_GPU_DESCRIPTOR_HANDLE texture,
 
 	XMVECTOR originRotationDepth = XMVectorPermute<0, 1, 4, 5>(origin, rotationDepth);
 
-	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<unsigned int>(effects));
+	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<uint32_t>(effects));
 }
 
 _Use_decl_annotations_ void XM_CALLCONV
@@ -1120,7 +1119,7 @@ SpriteBatch::Draw(D3D12_GPU_DESCRIPTOR_HANDLE texture,
 
 	XMVECTOR originRotationDepth = XMVectorPermute<0, 1, 4, 5>(origin, rotationDepth);
 
-	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<unsigned int>(effects));
+	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<uint32_t>(effects));
 }
 
 void XM_CALLCONV
@@ -1149,7 +1148,7 @@ SpriteBatch::Draw(D3D12_GPU_DESCRIPTOR_HANDLE texture,
 
 	XMVECTOR originRotationDepth = XMVectorSet(origin.x, origin.y, rotation, layerDepth);
 
-	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<unsigned int>(effects) | Impl::SpriteInfo::DestSizeInPixels);
+	pImpl->Draw(texture, textureSize, destination, sourceRectangle, color, originRotationDepth, static_cast<uint32_t>(effects) | Impl::SpriteInfo::DestSizeInPixels);
 }
 
 void
@@ -1159,7 +1158,7 @@ SpriteBatch::SetRotation(DXGI_MODE_ROTATION mode)
 }
 
 DXGI_MODE_ROTATION
-SpriteBatch::GetRotation() const
+SpriteBatch::GetRotation(void) const
 {
 	return pImpl->mRotation;
 }

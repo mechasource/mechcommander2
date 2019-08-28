@@ -31,7 +31,7 @@
 // is left to you to decide. In most cases this is sufficient:
 //
 //      allocator.RetirePages();
-//      allocator.InsertFences( pContext, 0 );
+//      allocator.InsertFences( pcontext, 0 );
 //      Present(...);
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -59,14 +59,14 @@ public:
 
 	size_t Suballocate(_In_ size_t size, _In_ size_t alignment);
 
-	void* BaseMemory() const { return mMemory; }
-	ID3D12Resource* UploadResource() const { return mUploadResource.Get(); }
-	D3D12_GPU_VIRTUAL_ADDRESS GpuAddress() const { return mGpuAddress; }
-	size_t BytesUsed() const { return mOffset; }
-	size_t Size() const { return mSize; }
+	void* BaseMemory(void) const { return mMemory; }
+	ID3D12Resource* UploadResource(void) const { return mUploadResource.get(); }
+	D3D12_GPU_VIRTUAL_ADDRESS GpuAddress(void) const { return mGpuAddress; }
+	size_t BytesUsed(void) const { return mOffset; }
+	size_t Size(void) const { return mSize; }
 
 	void AddRef() { mRefCount.fetch_add(1); }
-	int32_t RefCount() const { return mRefCount.load(); }
+	int32_t RefCount(void) const { return mRefCount.load(); }
 	void Release();
 
 protected:
@@ -76,8 +76,8 @@ protected:
 	LinearAllocatorPage* pNextPage;
 
 	void* mMemory;
-	Microsoft::WRL::ComPtr<ID3D12Resource> mUploadResource;
-	Microsoft::WRL::ComPtr<ID3D12Fence> mFence;
+	wil::com_ptr<ID3D12Resource> mUploadResource;
+	wil::com_ptr<ID3D12Fence> mFence;
 	uint64_t mPendingFence;
 	D3D12_GPU_VIRTUAL_ADDRESS mGpuAddress;
 	size_t mOffset;
@@ -119,21 +119,21 @@ public:
 	void Shrink();
 
 	// Statistics
-	size_t CommittedPageCount() const { return m_numPending; }
-	size_t TotalPageCount() const { return m_totalPages; }
-	size_t CommittedMemoryUsage() const { return m_numPending * m_increment; }
-	size_t TotalMemoryUsage() const { return m_totalPages * m_increment; }
-	size_t PageSize() const { return m_increment; }
+	size_t CommittedPageCount(void) const { return m_numPending; }
+	size_t TotalPageCount(void) const { return m_totalPages; }
+	size_t CommittedMemoryUsage(void) const { return m_numPending * m_increment; }
+	size_t TotalMemoryUsage(void) const { return m_totalPages * m_increment; }
+	size_t PageSize(void) const { return m_increment; }
 
 #if defined(_DEBUG) || defined(PROFILE)
 	// Debug info
-	const wchar_t* GetDebugName() const { return m_debugName.c_str(); }
-	void SetDebugName(const wchar_t* name);
-	void SetDebugName(const char* name);
+	const std::wstring_view& GetDebugName(void) const { return m_debugName.c_str(); }
+	void SetDebugName(const std::wstring_view& name);
+	void SetDebugName(const std::string_view& name);
 #endif
 
 private:
-	Microsoft::WRL::ComPtr<ID3D12Device> m_device;
+	wil::com_ptr<ID3D12Device> m_device;
 	LinearAllocatorPage* m_pendingPages; // Pages in use by the GPU
 	LinearAllocatorPage* m_usedPages; // Pages to be submitted to the GPU
 	LinearAllocatorPage* m_unusedPages; // Pages not being used right now

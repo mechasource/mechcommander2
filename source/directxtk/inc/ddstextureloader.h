@@ -15,11 +15,7 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <memory>
 #include <vector>
@@ -59,7 +55,7 @@ HRESULT __cdecl LoadDDSTextureFromMemory(
 
 HRESULT __cdecl LoadDDSTextureFromFile(
 	_In_ ID3D12Device* d3dDevice,
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	_Outptr_ ID3D12Resource** texture,
 	std::unique_ptr<uint8_t[]>& ddsData,
 	std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
@@ -82,7 +78,7 @@ HRESULT __cdecl CreateDDSTextureFromMemory(
 HRESULT __cdecl CreateDDSTextureFromFile(
 	_In_ ID3D12Device* device,
 	ResourceUploadBatch& resourceUpload,
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	_Outptr_ ID3D12Resource** texture,
 	bool generateMipsIfMissing = false,
 	size_t maxsize = 0,
@@ -96,7 +92,7 @@ HRESULT __cdecl LoadDDSTextureFromMemoryEx(
 	size_t ddsDataSize,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture,
 	std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
 	_Out_opt_ DDS_ALPHA_MODE* alphaMode = nullptr,
@@ -104,10 +100,10 @@ HRESULT __cdecl LoadDDSTextureFromMemoryEx(
 
 HRESULT __cdecl LoadDDSTextureFromFileEx(
 	_In_ ID3D12Device* d3dDevice,
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture,
 	std::unique_ptr<uint8_t[]>& ddsData,
 	std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
@@ -122,7 +118,7 @@ HRESULT __cdecl CreateDDSTextureFromMemoryEx(
 	size_t ddsDataSize,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture,
 	_Out_opt_ DDS_ALPHA_MODE* alphaMode = nullptr,
 	_Out_opt_ bool* isCubeMap = nullptr);
@@ -130,10 +126,10 @@ HRESULT __cdecl CreateDDSTextureFromMemoryEx(
 HRESULT __cdecl CreateDDSTextureFromFileEx(
 	_In_ ID3D12Device* device,
 	ResourceUploadBatch& resourceUpload,
-	_In_z_ const wchar_t* szFileName,
+	_In_z_ const std::wstring_view& szFileName,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture,
 	_Out_opt_ DDS_ALPHA_MODE* alphaMode = nullptr,
 	_Out_opt_ bool* isCubeMap = nullptr);

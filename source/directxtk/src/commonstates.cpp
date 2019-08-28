@@ -7,10 +7,10 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "CommonStates.h"
-#include "DirectXHelpers.h"
-#include "DescriptorHeap.h"
+#include "stdinc.h"
+#include "commonstates.h"
+#include "directxhelpers.h"
+#include "descriptorheap.h"
 
 using namespace DirectX;
 
@@ -213,7 +213,7 @@ const D3D12_RASTERIZER_DESC CommonStates::Wireframe =
 // --------------------------------------------------------------------------
 
 const D3D12_STATIC_SAMPLER_DESC
-CommonStates::StaticPointWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, unsigned int registerSpace)
+CommonStates::StaticPointWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, uint32_t registerSpace)
 {
 	static const D3D12_STATIC_SAMPLER_DESC s_desc = {
 		D3D12_FILTER_MIN_MAG_MIP_POINT,
@@ -239,7 +239,7 @@ CommonStates::StaticPointWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILI
 }
 
 const D3D12_STATIC_SAMPLER_DESC
-CommonStates::StaticPointClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, unsigned int registerSpace)
+CommonStates::StaticPointClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, uint32_t registerSpace)
 {
 	static const D3D12_STATIC_SAMPLER_DESC s_desc = {
 		D3D12_FILTER_MIN_MAG_MIP_POINT,
@@ -264,7 +264,7 @@ CommonStates::StaticPointClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBIL
 	return desc;
 };
 const D3D12_STATIC_SAMPLER_DESC
-CommonStates::StaticLinearWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, unsigned int registerSpace)
+CommonStates::StaticLinearWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, uint32_t registerSpace)
 {
 	static const D3D12_STATIC_SAMPLER_DESC s_desc = {
 		D3D12_FILTER_MIN_MAG_MIP_LINEAR,
@@ -290,7 +290,7 @@ CommonStates::StaticLinearWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBIL
 };
 
 const D3D12_STATIC_SAMPLER_DESC
-CommonStates::StaticLinearClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, unsigned int registerSpace)
+CommonStates::StaticLinearClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, uint32_t registerSpace)
 {
 	static const D3D12_STATIC_SAMPLER_DESC s_desc = {
 		D3D12_FILTER_MIN_MAG_MIP_LINEAR,
@@ -316,7 +316,7 @@ CommonStates::StaticLinearClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBI
 };
 
 const D3D12_STATIC_SAMPLER_DESC
-CommonStates::StaticAnisotropicWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, unsigned int registerSpace)
+CommonStates::StaticAnisotropicWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, uint32_t registerSpace)
 {
 	static const D3D12_STATIC_SAMPLER_DESC s_desc = {
 		D3D12_FILTER_ANISOTROPIC,
@@ -342,7 +342,7 @@ CommonStates::StaticAnisotropicWrap(unsigned int shaderRegister, D3D12_SHADER_VI
 };
 
 const D3D12_STATIC_SAMPLER_DESC
-CommonStates::StaticAnisotropicClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, unsigned int registerSpace)
+CommonStates::StaticAnisotropicClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility, uint32_t registerSpace)
 {
 	static const D3D12_STATIC_SAMPLER_DESC s_desc = {
 		D3D12_FILTER_ANISOTROPIC,
@@ -392,7 +392,7 @@ public:
 		return mDescriptors.GetGpuHandle(static_cast<size_t>(i));
 	}
 
-	ID3D12DescriptorHeap* Heap() const
+	ID3D12DescriptorHeap* Heap(void) const
 	{
 		return mDescriptors.Heap();
 	}
@@ -412,7 +412,7 @@ const D3D12_SAMPLER_DESC CommonStates::Impl::SamplerDescs[] =
 			0, // MipLODBias
 			D3D12_MAX_MAXANISOTROPY,
 			D3D12_COMPARISON_FUNC_NEVER,
-			{0, 0, 0, 0}, // BorderColor
+			{0, 0, 0, 0}, // Bordercolour
 			0, // MinLOD
 			FLT_MAX // MaxLOD
 		},
@@ -425,7 +425,7 @@ const D3D12_SAMPLER_DESC CommonStates::Impl::SamplerDescs[] =
 			0, // MipLODBias
 			D3D12_MAX_MAXANISOTROPY,
 			D3D12_COMPARISON_FUNC_NEVER,
-			{0, 0, 0, 0}, // BorderColor
+			{0, 0, 0, 0}, // Bordercolour
 			0, // MinLOD
 			FLT_MAX // MaxLOD
 		},
@@ -438,7 +438,7 @@ const D3D12_SAMPLER_DESC CommonStates::Impl::SamplerDescs[] =
 			0, // MipLODBias
 			D3D12_MAX_MAXANISOTROPY,
 			D3D12_COMPARISON_FUNC_NEVER,
-			{0, 0, 0, 0}, // BorderColor
+			{0, 0, 0, 0}, // Bordercolour
 			0, // MinLOD
 			FLT_MAX // MaxLOD
 		},
@@ -451,7 +451,7 @@ const D3D12_SAMPLER_DESC CommonStates::Impl::SamplerDescs[] =
 			0, // MipLODBias
 			D3D12_MAX_MAXANISOTROPY,
 			D3D12_COMPARISON_FUNC_NEVER,
-			{0, 0, 0, 0}, // BorderColor
+			{0, 0, 0, 0}, // Bordercolour
 			0, // MinLOD
 			FLT_MAX // MaxLOD
 		},
@@ -464,7 +464,7 @@ const D3D12_SAMPLER_DESC CommonStates::Impl::SamplerDescs[] =
 			0, // MipLODBias
 			D3D12_MAX_MAXANISOTROPY,
 			D3D12_COMPARISON_FUNC_NEVER,
-			{0, 0, 0, 0}, // BorderColor
+			{0, 0, 0, 0}, // Bordercolour
 			0, // MinLOD
 			FLT_MAX // MaxLOD
 		},
@@ -477,7 +477,7 @@ const D3D12_SAMPLER_DESC CommonStates::Impl::SamplerDescs[] =
 			0, // MipLODBias
 			D3D12_MAX_MAXANISOTROPY,
 			D3D12_COMPARISON_FUNC_NEVER,
-			{0, 0, 0, 0}, // BorderColor
+			{0, 0, 0, 0}, // Bordercolour
 			0, // MinLOD
 			FLT_MAX // MaxLOD
 		}};
@@ -503,38 +503,38 @@ CommonStates::operator=(CommonStates&& moveFrom) noexcept
 }
 
 D3D12_GPU_DESCRIPTOR_HANDLE
-CommonStates::PointWrap() const
+CommonStates::PointWrap(void) const
 {
 	return pImpl->Get(SamplerIndex::PointWrap);
 }
 D3D12_GPU_DESCRIPTOR_HANDLE
-CommonStates::PointClamp() const
+CommonStates::PointClamp(void) const
 {
 	return pImpl->Get(SamplerIndex::PointClamp);
 }
 D3D12_GPU_DESCRIPTOR_HANDLE
-CommonStates::LinearWrap() const
+CommonStates::LinearWrap(void) const
 {
 	return pImpl->Get(SamplerIndex::LinearWrap);
 }
 D3D12_GPU_DESCRIPTOR_HANDLE
-CommonStates::LinearClamp() const
+CommonStates::LinearClamp(void) const
 {
 	return pImpl->Get(SamplerIndex::LinearClamp);
 }
 D3D12_GPU_DESCRIPTOR_HANDLE
-CommonStates::AnisotropicWrap() const
+CommonStates::AnisotropicWrap(void) const
 {
 	return pImpl->Get(SamplerIndex::AnisotropicWrap);
 }
 D3D12_GPU_DESCRIPTOR_HANDLE
-CommonStates::AnisotropicClamp() const
+CommonStates::AnisotropicClamp(void) const
 {
 	return pImpl->Get(SamplerIndex::AnisotropicClamp);
 }
 
 ID3D12DescriptorHeap*
-CommonStates::Heap() const
+CommonStates::Heap(void) const
 {
 	return pImpl->Heap();
 }

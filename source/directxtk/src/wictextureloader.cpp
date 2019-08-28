@@ -20,14 +20,14 @@
 // We could load multi-frame images (TIFF/GIF) into a texture array.
 // For now, we just load the first frame (note: DirectXTex supports multi-frame images)
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include "WICTextureLoader.h"
+#include "wictextureloader.h"
 
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "LoaderHelpers.h"
-#include "ResourceUploadBatch.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "loaderhelpers.h"
+#include "resourceuploadbatch.h"
 
 namespace DirectX
 {
@@ -36,7 +36,6 @@ CountMips(uint32_t width, uint32_t height);
 }
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 namespace
 {
@@ -206,8 +205,8 @@ _WICBitsPerPixel(REFGUID targetGuid)
 	if (!pWIC)
 		return 0;
 
-	ComPtr<IWICComponentInfo> cinfo;
-	if (FAILED(pWIC->CreateComponentInfo(targetGuid, cinfo.GetAddressOf())))
+	wil::com_ptr<IWICComponentInfo> cinfo;
+	if (FAILED(pWIC->CreateComponentInfo(targetGuid, cinfo.addressof())))
 		return 0;
 
 	WICComponentType type;
@@ -217,11 +216,11 @@ _WICBitsPerPixel(REFGUID targetGuid)
 	if (type != WICPixelFormat)
 		return 0;
 
-	ComPtr<IWICPixelFormatInfo> pfinfo;
+	wil::com_ptr<IWICPixelFormatInfo> pfinfo;
 	if (FAILED(cinfo.As(&pfinfo)))
 		return 0;
 
-	UINT bpp;
+	uint32_t bpp;
 	if (FAILED(pfinfo->GetBitsPerPixel(&bpp)))
 		return 0;
 
@@ -234,17 +233,17 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 	_In_ IWICBitmapFrameDecode* frame,
 	size_t maxsize,
 	D3D12_RESOURCE_FLAGS resFlags,
-	unsigned int loadFlags,
+	uint32_t loadFlags,
 	_Outptr_ ID3D12Resource** texture,
 	std::unique_ptr<uint8_t[]>& decodedData,
 	D3D12_SUBRESOURCE_DATA& subresource)
 {
-	UINT width, height;
+	uint32_t width, height;
 	HRESULT hr = frame->GetSize(&width, &height);
 	if (FAILED(hr))
 		return hr;
 
-	assert(width > 0 && height > 0);
+	_ASSERT(width > 0 && height > 0);
 
 	if (maxsize > UINT32_MAX)
 		return E_INVALIDARG;
@@ -254,21 +253,21 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 		maxsize = D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION;
 	}
 
-	UINT twidth, theight;
+	uint32_t twidth, theight;
 	if (width > maxsize || height > maxsize)
 	{
 		float ar = static_cast<float>(height) / static_cast<float>(width);
 		if (width > height)
 		{
-			twidth = static_cast<UINT>(maxsize);
-			theight = std::max<UINT>(1, static_cast<UINT>(static_cast<float>(maxsize) * ar));
+			twidth = static_cast<uint32_t>(maxsize);
+			theight = std::max<uint32_t>(1, static_cast<uint32_t>(static_cast<float>(maxsize) * ar));
 		}
 		else
 		{
-			theight = static_cast<UINT>(maxsize);
-			twidth = std::max<UINT>(1, static_cast<UINT>(static_cast<float>(maxsize) / ar));
+			theight = static_cast<uint32_t>(maxsize);
+			twidth = std::max<uint32_t>(1, static_cast<uint32_t>(static_cast<float>(maxsize) / ar));
 		}
-		assert(twidth <= maxsize && theight <= maxsize);
+		_ASSERT(twidth <= maxsize && theight <= maxsize);
 	}
 	else
 	{
@@ -297,7 +296,7 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 				memcpy_s(&convertGUID, sizeof(WICPixelFormatGUID), &g_WICConvert[i].target, sizeof(GUID));
 
 				format = _WICToDXGI(g_WICConvert[i].target);
-				assert(format != DXGI_FORMAT_UNKNOWN);
+				_ASSERT(format != DXGI_FORMAT_UNKNOWN);
 				bpp = _WICBitsPerPixel(convertGUID);
 				break;
 			}
@@ -320,15 +319,15 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 	if (!bpp)
 		return E_FAIL;
 
-	// Handle sRGB formats
+	// handle sRGB formats
 	if (loadFlags & WIC_LOADER_FORCE_SRGB)
 	{
 		format = LoaderHelpers::MakeSRGB(format);
 	}
 	else if (!(loadFlags & WIC_LOADER_IGNORE_SRGB))
 	{
-		ComPtr<IWICMetadataQueryReader> metareader;
-		if (SUCCEEDED(frame->GetMetadataQueryReader(metareader.GetAddressOf())))
+		wil::com_ptr<IWICMetadataQueryReader> metareader;
+		if (SUCCEEDED(frame->GetMetadataQueryReader(metareader.addressof())))
 		{
 			GUID containerFormat;
 			if (SUCCEEDED(metareader->GetContainerFormat(&containerFormat)))
@@ -363,7 +362,7 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 					}
 				}
 #else
-				else if (SUCCEEDED(metareader->GetMetadataByName(L"System.Image.ColorSpace", &value)) && value.vt == VT_UI2 && value.uiVal == 1)
+				else if (SUCCEEDED(metareader->GetMetadataByName(L"System.Image.colourSpace", &value)) && value.vt == VT_UI2 && value.uiVal == 1)
 				{
 					sRGB = true;
 				}
@@ -397,7 +396,7 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 		&& theight == height)
 	{
 		// No format conversion or resize needed
-		hr = frame->CopyPixels(nullptr, static_cast<UINT>(rowPitch), static_cast<UINT>(imageSize), decodedData.get());
+		hr = frame->CopyPixels(nullptr, static_cast<uint32_t>(rowPitch), static_cast<uint32_t>(imageSize), decodedData.get());
 		if (FAILED(hr))
 			return hr;
 	}
@@ -408,8 +407,8 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 		if (!pWIC)
 			return E_NOINTERFACE;
 
-		ComPtr<IWICBitmapScaler> scaler;
-		hr = pWIC->CreateBitmapScaler(scaler.GetAddressOf());
+		wil::com_ptr<IWICBitmapScaler> scaler;
+		hr = pWIC->CreateBitmapScaler(scaler.addressof());
 		if (FAILED(hr))
 			return hr;
 
@@ -425,14 +424,14 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 		if (memcmp(&convertGUID, &pfScaler, sizeof(GUID)) == 0)
 		{
 			// No format conversion needed
-			hr = scaler->CopyPixels(nullptr, static_cast<UINT>(rowPitch), static_cast<UINT>(imageSize), decodedData.get());
+			hr = scaler->CopyPixels(nullptr, static_cast<uint32_t>(rowPitch), static_cast<uint32_t>(imageSize), decodedData.get());
 			if (FAILED(hr))
 				return hr;
 		}
 		else
 		{
-			ComPtr<IWICFormatConverter> FC;
-			hr = pWIC->CreateFormatConverter(FC.GetAddressOf());
+			wil::com_ptr<IWICFormatConverter> FC;
+			hr = pWIC->CreateFormatConverter(FC.addressof());
 			if (FAILED(hr))
 				return hr;
 
@@ -443,11 +442,11 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 				return E_UNEXPECTED;
 			}
 
-			hr = FC->Initialize(scaler.Get(), convertGUID, WICBitmapDitherTypeErrorDiffusion, nullptr, 0, WICBitmapPaletteTypeMedianCut);
+			hr = FC->Initialize(scaler.get(), convertGUID, WICBitmapDitherTypeErrorDiffusion, nullptr, 0, WICBitmapPaletteTypeMedianCut);
 			if (FAILED(hr))
 				return hr;
 
-			hr = FC->CopyPixels(nullptr, static_cast<UINT>(rowPitch), static_cast<UINT>(imageSize), decodedData.get());
+			hr = FC->CopyPixels(nullptr, static_cast<uint32_t>(rowPitch), static_cast<uint32_t>(imageSize), decodedData.get());
 			if (FAILED(hr))
 				return hr;
 		}
@@ -459,8 +458,8 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 		if (!pWIC)
 			return E_NOINTERFACE;
 
-		ComPtr<IWICFormatConverter> FC;
-		hr = pWIC->CreateFormatConverter(FC.GetAddressOf());
+		wil::com_ptr<IWICFormatConverter> FC;
+		hr = pWIC->CreateFormatConverter(FC.addressof());
 		if (FAILED(hr))
 			return hr;
 
@@ -475,7 +474,7 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 		if (FAILED(hr))
 			return hr;
 
-		hr = FC->CopyPixels(nullptr, static_cast<UINT>(rowPitch), static_cast<UINT>(imageSize), decodedData.get());
+		hr = FC->CopyPixels(nullptr, static_cast<uint32_t>(rowPitch), static_cast<uint32_t>(imageSize), decodedData.get());
 		if (FAILED(hr))
 			return hr;
 	}
@@ -485,14 +484,14 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 
 	// Create texture
 	D3D12_RESOURCE_DESC desc = {};
-	desc.Width = twidth;
-	desc.Height = theight;
-	desc.MipLevels = static_cast<UINT16>(mipCount);
+	desc.width = twidth;
+	desc.height = theight;
+	desc.MipLevels = static_cast<uint16_t>(mipCount);
 	desc.DepthOrArraySize = 1;
 	desc.Format = format;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
-	desc.Flags = resFlags;
+	desc.flags = resFlags;
 	desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 
 	CD3DX12_HEAP_PROPERTIES defaultHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
@@ -514,8 +513,8 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 	_Analysis_assume_(tex != nullptr);
 
 	subresource.pData = decodedData.get();
-	subresource.RowPitch = static_cast<LONG>(rowPitch);
-	subresource.SlicePitch = static_cast<LONG>(imageSize);
+	subresource.RowPitch = static_cast<long32_t>(rowPitch);
+	subresource.SlicePitch = static_cast<long32_t>(imageSize);
 
 	*texture = tex;
 	return hr;
@@ -524,13 +523,13 @@ CreateTextureFromWIC(_In_ ID3D12Device* d3dDevice,
 //--------------------------------------------------------------------------------------
 void
 SetDebugTextureInfo(
-	_In_z_ const wchar_t* fileName,
+	_In_z_ const std::wstring_view& fileName,
 	_In_ ID3D12Resource** texture)
 {
 #if !defined(NO_D3D12_DEBUG_NAME) && (defined(_DEBUG) || defined(PROFILE))
 	if (texture && *texture)
 	{
-		const wchar_t* pstrName = wcsrchr(fileName, '\\');
+		const std::wstring_view& pstrName = wcsrchr(fileName, '\\');
 		if (!pstrName)
 		{
 			pstrName = fileName;
@@ -627,7 +626,7 @@ _Use_decl_annotations_
 		size_t wicDataSize,
 		size_t maxsize,
 		D3D12_RESOURCE_FLAGS resFlags,
-		unsigned int loadFlags,
+		uint32_t loadFlags,
 		ID3D12Resource** texture,
 		std::unique_ptr<uint8_t[]>& decodedData,
 		D3D12_SUBRESOURCE_DATA& subresource)
@@ -651,28 +650,28 @@ _Use_decl_annotations_
 		return E_NOINTERFACE;
 
 	// Create input stream for memory
-	ComPtr<IWICStream> stream;
-	HRESULT hr = pWIC->CreateStream(stream.GetAddressOf());
+	wil::com_ptr<IWICStream> stream;
+	HRESULT hr = pWIC->CreateStream(stream.addressof());
 	if (FAILED(hr))
 		return hr;
 
-	hr = stream->InitializeFromMemory(const_cast<uint8_t*>(wicData), static_cast<DWORD>(wicDataSize));
+	hr = stream->InitializeFromMemory(const_cast<uint8_t*>(wicData), static_cast<uint32_t>(wicDataSize));
 	if (FAILED(hr))
 		return hr;
 
 	// Initialize WIC
-	ComPtr<IWICBitmapDecoder> decoder;
-	hr = pWIC->CreateDecoderFromStream(stream.Get(), nullptr, WICDecodeMetadataCacheOnDemand, decoder.GetAddressOf());
+	wil::com_ptr<IWICBitmapDecoder> decoder;
+	hr = pWIC->CreateDecoderFromStream(stream.get(), nullptr, WICDecodeMetadataCacheOnDemand, decoder.addressof());
 	if (FAILED(hr))
 		return hr;
 
-	ComPtr<IWICBitmapFrameDecode> frame;
-	hr = decoder->GetFrame(0, frame.GetAddressOf());
+	wil::com_ptr<IWICBitmapFrameDecode> frame;
+	hr = decoder->GetFrame(0, frame.addressof());
 	if (FAILED(hr))
 		return hr;
 
 	hr = CreateTextureFromWIC(d3dDevice,
-		frame.Get(), maxsize,
+		frame.get(), maxsize,
 		resFlags, loadFlags,
 		texture, decodedData, subresource);
 	if (FAILED(hr))
@@ -693,7 +692,7 @@ _Use_decl_annotations_
 		size_t wicDataSize,
 		size_t maxsize,
 		D3D12_RESOURCE_FLAGS resFlags,
-		unsigned int loadFlags,
+		uint32_t loadFlags,
 		ID3D12Resource** texture)
 {
 	if (texture)
@@ -715,29 +714,29 @@ _Use_decl_annotations_
 		return E_NOINTERFACE;
 
 	// Create input stream for memory
-	ComPtr<IWICStream> stream;
-	HRESULT hr = pWIC->CreateStream(stream.GetAddressOf());
+	wil::com_ptr<IWICStream> stream;
+	HRESULT hr = pWIC->CreateStream(stream.addressof());
 	if (FAILED(hr))
 		return hr;
 
-	hr = stream->InitializeFromMemory(const_cast<uint8_t*>(wicData), static_cast<DWORD>(wicDataSize));
+	hr = stream->InitializeFromMemory(const_cast<uint8_t*>(wicData), static_cast<uint32_t>(wicDataSize));
 	if (FAILED(hr))
 		return hr;
 
 	// Initialize WIC
-	ComPtr<IWICBitmapDecoder> decoder;
-	hr = pWIC->CreateDecoderFromStream(stream.Get(), nullptr, WICDecodeMetadataCacheOnDemand, decoder.GetAddressOf());
+	wil::com_ptr<IWICBitmapDecoder> decoder;
+	hr = pWIC->CreateDecoderFromStream(stream.get(), nullptr, WICDecodeMetadataCacheOnDemand, decoder.addressof());
 	if (FAILED(hr))
 		return hr;
 
-	ComPtr<IWICBitmapFrameDecode> frame;
-	hr = decoder->GetFrame(0, frame.GetAddressOf());
+	wil::com_ptr<IWICBitmapFrameDecode> frame;
+	hr = decoder->GetFrame(0, frame.addressof());
 	if (FAILED(hr))
 		return hr;
 
 	if (loadFlags & WIC_LOADER_MIP_AUTOGEN)
 	{
-		DXGI_FORMAT fmt = GetPixelFormat(frame.Get());
+		DXGI_FORMAT fmt = GetPixelFormat(frame.get());
 		if (!resourceUpload.IsSupportedForGenerateMips(fmt))
 		{
 			DebugTrace("WARNING: This device does not support autogen mips for this format (%d)\n", static_cast<int>(fmt));
@@ -748,13 +747,13 @@ _Use_decl_annotations_
 	std::unique_ptr<uint8_t[]> decodedData;
 	D3D12_SUBRESOURCE_DATA initData;
 	hr = CreateTextureFromWIC(d3dDevice,
-		frame.Get(), maxsize,
+		frame.get(), maxsize,
 		resFlags, loadFlags,
 		texture, decodedData, initData);
 
 	if (SUCCEEDED(hr))
 	{
-		assert(texture != nullptr && *texture != nullptr);
+		_ASSERT(texture != nullptr && *texture != nullptr);
 		_Analysis_assume_(texture != nullptr && *texture != nullptr);
 		SetDebugObjectName(*texture, L"WICTextureLoader");
 
@@ -784,7 +783,7 @@ _Use_decl_annotations_
 	HRESULT
 	DirectX::LoadWICTextureFromFile(
 		ID3D12Device* d3dDevice,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		ID3D12Resource** texture,
 		std::unique_ptr<uint8_t[]>& wicData,
 		D3D12_SUBRESOURCE_DATA& subresource,
@@ -806,7 +805,7 @@ _Use_decl_annotations_
 	DirectX::CreateWICTextureFromFile(
 		ID3D12Device* d3dDevice,
 		ResourceUploadBatch& resourceUpload,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		ID3D12Resource** texture,
 		bool generateMips,
 		size_t maxsize)
@@ -826,10 +825,10 @@ _Use_decl_annotations_
 	HRESULT
 	DirectX::LoadWICTextureFromFileEx(
 		ID3D12Device* d3dDevice,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		size_t maxsize,
 		D3D12_RESOURCE_FLAGS resFlags,
-		unsigned int loadFlags,
+		uint32_t loadFlags,
 		ID3D12Resource** texture,
 		std::unique_ptr<uint8_t[]>& decodedData,
 		D3D12_SUBRESOURCE_DATA& subresource)
@@ -847,21 +846,21 @@ _Use_decl_annotations_
 		return E_NOINTERFACE;
 
 	// Initialize WIC
-	ComPtr<IWICBitmapDecoder> decoder;
+	wil::com_ptr<IWICBitmapDecoder> decoder;
 	HRESULT hr = pWIC->CreateDecoderFromFilename(fileName,
 		nullptr,
 		GENERIC_READ,
 		WICDecodeMetadataCacheOnDemand,
-		decoder.GetAddressOf());
+		decoder.addressof());
 	if (FAILED(hr))
 		return hr;
 
-	ComPtr<IWICBitmapFrameDecode> frame;
-	hr = decoder->GetFrame(0, frame.GetAddressOf());
+	wil::com_ptr<IWICBitmapFrameDecode> frame;
+	hr = decoder->GetFrame(0, frame.addressof());
 	if (FAILED(hr))
 		return hr;
 
-	hr = CreateTextureFromWIC(d3dDevice, frame.Get(), maxsize,
+	hr = CreateTextureFromWIC(d3dDevice, frame.get(), maxsize,
 		resFlags, loadFlags,
 		texture, decodedData, subresource);
 
@@ -878,10 +877,10 @@ _Use_decl_annotations_
 	DirectX::CreateWICTextureFromFileEx(
 		ID3D12Device* d3dDevice,
 		ResourceUploadBatch& resourceUpload,
-		const wchar_t* fileName,
+		const std::wstring_view& fileName,
 		size_t maxsize,
 		D3D12_RESOURCE_FLAGS resFlags,
-		unsigned int loadFlags,
+		uint32_t loadFlags,
 		ID3D12Resource** texture)
 {
 	if (texture)
@@ -897,23 +896,23 @@ _Use_decl_annotations_
 		return E_NOINTERFACE;
 
 	// Initialize WIC
-	ComPtr<IWICBitmapDecoder> decoder;
+	wil::com_ptr<IWICBitmapDecoder> decoder;
 	HRESULT hr = pWIC->CreateDecoderFromFilename(fileName,
 		nullptr,
 		GENERIC_READ,
 		WICDecodeMetadataCacheOnDemand,
-		decoder.GetAddressOf());
+		decoder.addressof());
 	if (FAILED(hr))
 		return hr;
 
-	ComPtr<IWICBitmapFrameDecode> frame;
-	hr = decoder->GetFrame(0, frame.GetAddressOf());
+	wil::com_ptr<IWICBitmapFrameDecode> frame;
+	hr = decoder->GetFrame(0, frame.addressof());
 	if (FAILED(hr))
 		return hr;
 
 	if (loadFlags & WIC_LOADER_MIP_AUTOGEN)
 	{
-		DXGI_FORMAT fmt = GetPixelFormat(frame.Get());
+		DXGI_FORMAT fmt = GetPixelFormat(frame.get());
 		if (!resourceUpload.IsSupportedForGenerateMips(fmt))
 		{
 			DebugTrace("WARNING: This device does not support autogen mips for this format (%d)\n", static_cast<int>(fmt));
@@ -923,7 +922,7 @@ _Use_decl_annotations_
 
 	std::unique_ptr<uint8_t[]> decodedData;
 	D3D12_SUBRESOURCE_DATA initData;
-	hr = CreateTextureFromWIC(d3dDevice, frame.Get(), maxsize,
+	hr = CreateTextureFromWIC(d3dDevice, frame.get(), maxsize,
 		resFlags, loadFlags,
 		texture, decodedData, initData);
 

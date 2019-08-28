@@ -8,13 +8,12 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include "GamePad.h"
-#include "PlatformHelpers.h"
+#include "gamepad.h"
+#include "platformhelpers.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 namespace
 {
@@ -112,19 +111,19 @@ public:
 
 		s_gamePad = this;
 
-		mChanged.reset(CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
+		mChanged.reset(::CreateEventExW(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
 		if (!mChanged)
 		{
-			throw std::exception("CreateEventEx");
+			throw std::exception("::CreateEventExW");
 		}
 
-		ThrowIfFailed(GetActivationFactory(HStringReference(RuntimeClass_Windows_Gaming_Input_Gamepad).Get(), mStatics.GetAddressOf()));
+		ThrowIfFailed(GetActivationFactory(HStringReference(RuntimeClass_Windows_Gaming_Input_Gamepad).get(), mStatics.addressof()));
 
 		typedef __FIEventHandler_1_Windows__CGaming__CInput__CGamepad AddedHandler;
-		ThrowIfFailed(mStatics->add_GamepadAdded(Callback<AddedHandler>(GamepadAdded).Get(), &mAddedToken));
+		ThrowIfFailed(mStatics->add_GamepadAdded(Callback<AddedHandler>(GamepadAdded).get(), &mAddedToken));
 
 		typedef __FIEventHandler_1_Windows__CGaming__CInput__CGamepad RemovedHandler;
-		ThrowIfFailed(mStatics->add_GamepadRemoved(Callback<RemovedHandler>(GamepadRemoved).Get(), &mRemovedToken));
+		ThrowIfFailed(mStatics->add_GamepadRemoved(Callback<RemovedHandler>(GamepadRemoved).get(), &mRemovedToken));
 
 		ScanGamePads();
 	}
@@ -137,7 +136,7 @@ public:
 		{
 			if (mGamePad[j])
 			{
-				ComPtr<IGameController> ctrl;
+				wil::com_ptr<IGameController> ctrl;
 				HRESULT hr = mGamePad[j].As(&ctrl);
 				if (SUCCEEDED(hr) && ctrl)
 				{
@@ -247,16 +246,16 @@ public:
 				caps.gamepadType = Capabilities::GAMEPAD;
 				caps.id.clear();
 
-				ComPtr<IGameController> ctrl;
+				wil::com_ptr<IGameController> ctrl;
 				HRESULT hr = mGamePad[player].As(&ctrl);
 				if (SUCCEEDED(hr) && ctrl)
 				{
-					ComPtr<IUser> user;
-					hr = ctrl->get_User(user.GetAddressOf());
+					wil::com_ptr<IUser> user;
+					hr = ctrl->get_User(user.addressof());
 					if (SUCCEEDED(hr) && user != nullptr)
 					{
 						Wrappers::HString str;
-						hr = user->get_NonRoamableId(str.GetAddressOf());
+						hr = user->get_NonRoamableId(str.addressof());
 						if (SUCCEEDED(hr))
 						{
 							caps.id = str.GetRawBuffer(nullptr);
@@ -327,10 +326,10 @@ private:
 		using namespace ABI::Windows::Foundation::Collections;
 		using namespace ABI::Windows::Gaming::Input;
 
-		ComPtr<IVectorView<Gamepad*>> pads;
-		ThrowIfFailed(mStatics->get_Gamepads(pads.GetAddressOf()));
+		wil::com_ptr<IVectorView<Gamepad*>> pads;
+		ThrowIfFailed(mStatics->get_Gamepads(pads.addressof()));
 
-		unsigned int count = 0;
+		uint32_t count = 0;
 		ThrowIfFailed(pads->get_Size(&count));
 
 		// Check for removed gamepads
@@ -338,11 +337,11 @@ private:
 		{
 			if (mGamePad[j])
 			{
-				unsigned int k = 0;
+				uint32_t k = 0;
 				for (; k < count; ++k)
 				{
-					ComPtr<IGamepad> pad;
-					HRESULT hr = pads->GetAt(k, pad.GetAddressOf());
+					wil::com_ptr<IGamepad> pad;
+					HRESULT hr = pads->GetAt(k, pad.addressof());
 					if (SUCCEEDED(hr) && (pad == mGamePad[j]))
 					{
 						break;
@@ -351,7 +350,7 @@ private:
 
 				if (k >= count)
 				{
-					ComPtr<IGameController> ctrl;
+					wil::com_ptr<IGameController> ctrl;
 					HRESULT hr = mGamePad[j].As(&ctrl);
 					if (SUCCEEDED(hr) && ctrl)
 					{
@@ -365,10 +364,10 @@ private:
 		}
 
 		// Check for added gamepads
-		for (unsigned int j = 0; j < count; ++j)
+		for (uint32_t j = 0; j < count; ++j)
 		{
-			ComPtr<IGamepad> pad;
-			HRESULT hr = pads->GetAt(j, pad.GetAddressOf());
+			wil::com_ptr<IGamepad> pad;
+			HRESULT hr = pads->GetAt(j, pad.addressof());
 			if (SUCCEEDED(hr))
 			{
 				size_t empty = MAX_PLAYER_COUNT;
@@ -397,12 +396,12 @@ private:
 						if (j == (count - 1))
 							mMostRecentGamepad = static_cast<int>(empty);
 
-						ComPtr<IGameController> ctrl;
+						wil::com_ptr<IGameController> ctrl;
 						hr = pad.As(&ctrl);
 						if (SUCCEEDED(hr) && ctrl)
 						{
 							typedef __FITypedEventHandler_2_Windows__CGaming__CInput__CIGameController_Windows__CSystem__CUserChangedEventArgs UserHandler;
-							ThrowIfFailed(ctrl->add_UserChanged(Callback<UserHandler>(UserChanged).Get(), &mUserChangeToken[empty]));
+							ThrowIfFailed(ctrl->add_UserChanged(Callback<UserHandler>(UserChanged).get(), &mUserChangeToken[empty]));
 						}
 					}
 				}
@@ -410,8 +409,8 @@ private:
 		}
 	}
 
-	ComPtr<ABI::Windows::Gaming::Input::IGamepadStatics> mStatics;
-	ComPtr<ABI::Windows::Gaming::Input::IGamepad> mGamePad[MAX_PLAYER_COUNT];
+	wil::com_ptr<ABI::Windows::Gaming::Input::IGamepadStatics> mStatics;
+	wil::com_ptr<ABI::Windows::Gaming::Input::IGamepad> mGamePad[MAX_PLAYER_COUNT];
 	EventRegistrationToken mUserChangeToken[MAX_PLAYER_COUNT];
 
 	EventRegistrationToken mAddedToken;
@@ -565,21 +564,21 @@ public:
 
 		s_gamePad = this;
 
-		mChanged.reset(CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
+		mChanged.reset(::CreateEventExW(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
 		if (!mChanged)
 		{
-			throw std::exception("CreateEventEx");
+			throw std::exception("::CreateEventExW");
 		}
 
-		ThrowIfFailed(GetActivationFactory(HStringReference(RuntimeClass_Windows_Xbox_Input_Gamepad).Get(), mStatics.GetAddressOf()));
+		ThrowIfFailed(GetActivationFactory(HStringReference(RuntimeClass_Windows_Xbox_Input_Gamepad).get(), mStatics.addressof()));
 
-		ThrowIfFailed(GetActivationFactory(HStringReference(RuntimeClass_Windows_Xbox_Input_Controller).Get(), mStaticsCtrl.GetAddressOf()));
+		ThrowIfFailed(GetActivationFactory(HStringReference(RuntimeClass_Windows_Xbox_Input_Controller).get(), mStaticsCtrl.addressof()));
 
-		ThrowIfFailed(mStatics->add_GamepadAdded(Make<GamepadAddedListener>(mChanged.get()).Get(), &mAddedToken));
+		ThrowIfFailed(mStatics->add_GamepadAdded(Make<GamepadAddedListener>(mChanged.get()).get(), &mAddedToken));
 
-		ThrowIfFailed(mStatics->add_GamepadRemoved(Make<GamepadRemovedListener>(mChanged.get()).Get(), &mRemovedToken));
+		ThrowIfFailed(mStatics->add_GamepadRemoved(Make<GamepadRemovedListener>(mChanged.get()).get(), &mRemovedToken));
 
-		ThrowIfFailed(mStaticsCtrl->add_ControllerPairingChanged(Make<UserPairingListener>().Get(), &mUserParingToken));
+		ThrowIfFailed(mStaticsCtrl->add_ControllerPairingChanged(Make<UserPairingListener>().get(), &mUserParingToken));
 
 		ScanGamePads();
 	}
@@ -690,7 +689,7 @@ public:
 				caps.connected = true;
 				caps.gamepadType = Capabilities::UNKNOWN;
 
-				ComPtr<IController> ctrl;
+				wil::com_ptr<IController> ctrl;
 				HRESULT hr = mGamePad[player].As(&ctrl);
 				if (SUCCEEDED(hr) && ctrl)
 				{
@@ -699,10 +698,10 @@ public:
 						caps.id = 0;
 
 					Wrappers::HString str;
-					hr = ctrl->get_Type(str.GetAddressOf());
+					hr = ctrl->get_Type(str.addressof());
 					if (SUCCEEDED(hr))
 					{
-						const wchar_t* typeStr = str.GetRawBuffer(nullptr);
+						const std::wstring_view& typeStr = str.GetRawBuffer(nullptr);
 						if (_wcsicmp(typeStr, L"Windows.Xbox.Input.Gamepad") == 0)
 						{
 							caps.gamepadType = Capabilities::GAMEPAD;
@@ -750,7 +749,7 @@ public:
 				}
 				catch (...)
 				{
-					// Handle case where gamepad might be invalid
+					// handle case where gamepad might be invalid
 					hr = E_FAIL;
 				}
 
@@ -791,10 +790,10 @@ private:
 		using namespace ABI::Windows::Foundation::Collections;
 		using namespace ABI::Windows::Xbox::Input;
 
-		ComPtr<IVectorView<IGamepad*>> pads;
-		ThrowIfFailed(mStatics->get_Gamepads(pads.GetAddressOf()));
+		wil::com_ptr<IVectorView<IGamepad*>> pads;
+		ThrowIfFailed(mStatics->get_Gamepads(pads.addressof()));
 
-		unsigned int count = 0;
+		uint32_t count = 0;
 		ThrowIfFailed(pads->get_Size(&count));
 
 		// Check for removed gamepads
@@ -802,11 +801,11 @@ private:
 		{
 			if (mGamePad[j])
 			{
-				unsigned int k = 0;
+				uint32_t k = 0;
 				for (; k < count; ++k)
 				{
-					ComPtr<IGamepad> pad;
-					HRESULT hr = pads->GetAt(k, pad.GetAddressOf());
+					wil::com_ptr<IGamepad> pad;
+					HRESULT hr = pads->GetAt(k, pad.addressof());
 					if (SUCCEEDED(hr) && (pad == mGamePad[j]))
 					{
 						break;
@@ -821,10 +820,10 @@ private:
 		}
 
 		// Check for added gamepads
-		for (unsigned int j = 0; j < count; ++j)
+		for (uint32_t j = 0; j < count; ++j)
 		{
-			ComPtr<IGamepad> pad;
-			HRESULT hr = pads->GetAt(j, pad.GetAddressOf());
+			wil::com_ptr<IGamepad> pad;
+			HRESULT hr = pads->GetAt(j, pad.addressof());
 			if (SUCCEEDED(hr))
 			{
 				size_t empty = MAX_PLAYER_COUNT;
@@ -859,9 +858,9 @@ private:
 		}
 	}
 
-	ComPtr<ABI::Windows::Xbox::Input::IGamepadStatics> mStatics;
-	ComPtr<ABI::Windows::Xbox::Input::IControllerStatics> mStaticsCtrl;
-	ComPtr<ABI::Windows::Xbox::Input::IGamepad> mGamePad[MAX_PLAYER_COUNT];
+	wil::com_ptr<ABI::Windows::Xbox::Input::IGamepadStatics> mStatics;
+	wil::com_ptr<ABI::Windows::Xbox::Input::IControllerStatics> mStaticsCtrl;
+	wil::com_ptr<ABI::Windows::Xbox::Input::IGamepad> mGamePad[MAX_PLAYER_COUNT];
 
 	EventRegistrationToken mAddedToken;
 	EventRegistrationToken mRemovedToken;
@@ -930,7 +929,7 @@ public:
 #endif
 
 			XINPUT_STATE xstate;
-			DWORD result = XInputGetState(DWORD(player), &xstate);
+			uint32_t result = XInputGetState(uint32_t(player), &xstate);
 			if (result == ERROR_DEVICE_NOT_CONNECTED)
 			{
 				ClearSlot(player, time);
@@ -998,7 +997,7 @@ public:
 		if (!ThrottleRetry(player, time))
 		{
 			XINPUT_CAPABILITIES xcaps;
-			DWORD result = XInputGetCapabilities(DWORD(player), 0, &xcaps);
+			uint32_t result = XInputGetCapabilities(uint32_t(player), 0, &xcaps);
 			if (result == ERROR_DEVICE_NOT_CONNECTED)
 			{
 				ClearSlot(player, time);
@@ -1065,7 +1064,7 @@ public:
 		XINPUT_VIBRATION xvibration;
 		xvibration.wLeftMotorSpeed = WORD(leftMotor * 0xFFFF);
 		xvibration.wRightMotorSpeed = WORD(rightMotor * 0xFFFF);
-		DWORD result = XInputSetState(DWORD(player), &xvibration);
+		uint32_t result = XInputSetState(uint32_t(player), &xvibration);
 		if (result == ERROR_DEVICE_NOT_CONNECTED)
 		{
 			ClearSlot(player, time);
@@ -1095,7 +1094,7 @@ public:
 				{
 					XINPUT_VIBRATION xvibration;
 					xvibration.wLeftMotorSpeed = xvibration.wRightMotorSpeed = 0;
-					(void)XInputSetState(DWORD(j), &xvibration);
+					(void)XInputSetState(uint32_t(j), &xvibration);
 				}
 			}
 
@@ -1121,7 +1120,7 @@ public:
 					XINPUT_VIBRATION xvibration;
 					xvibration.wLeftMotorSpeed = WORD(mLeftMotor[j] * 0xFFFF);
 					xvibration.wRightMotorSpeed = WORD(mRightMotor[j] * 0xFFFF);
-					DWORD result = XInputSetState(DWORD(j), &xvibration);
+					uint32_t result = XInputSetState(uint32_t(j), &xvibration);
 					if (result == ERROR_DEVICE_NOT_CONNECTED)
 					{
 						ClearSlot(j, time);
@@ -1302,10 +1301,10 @@ GamePad::ButtonStateTracker::Update(const GamePad::State& state)
 {
 	UPDATE_BUTTON_STATE(a)
 
-	assert((!state.buttons.a && !lastState.buttons.a) == (a == UP));
-	assert((state.buttons.a && lastState.buttons.a) == (a == HELD));
-	assert((!state.buttons.a && lastState.buttons.a) == (a == RELEASED));
-	assert((state.buttons.a && !lastState.buttons.a) == (a == PRESSED));
+	_ASSERT((!state.buttons.a && !lastState.buttons.a) == (a == UP));
+	_ASSERT((state.buttons.a && lastState.buttons.a) == (a == HELD));
+	_ASSERT((!state.buttons.a && lastState.buttons.a) == (a == RELEASED));
+	_ASSERT((state.buttons.a && !lastState.buttons.a) == (a == PRESSED));
 
 	UPDATE_BUTTON_STATE(b)
 	UPDATE_BUTTON_STATE(x)
@@ -1325,12 +1324,12 @@ GamePad::ButtonStateTracker::Update(const GamePad::State& state)
 	dpadLeft = static_cast<ButtonState>((!!state.dpad.left) | ((!!state.dpad.left ^ !!lastState.dpad.left) << 1));
 	dpadRight = static_cast<ButtonState>((!!state.dpad.right) | ((!!state.dpad.right ^ !!lastState.dpad.right) << 1));
 
-	assert((!state.dpad.up && !lastState.dpad.up) == (dpadUp == UP));
-	assert((state.dpad.up && lastState.dpad.up) == (dpadUp == HELD));
-	assert((!state.dpad.up && lastState.dpad.up) == (dpadUp == RELEASED));
-	assert((state.dpad.up && !lastState.dpad.up) == (dpadUp == PRESSED));
+	_ASSERT((!state.dpad.up && !lastState.dpad.up) == (dpadUp == UP));
+	_ASSERT((state.dpad.up && lastState.dpad.up) == (dpadUp == HELD));
+	_ASSERT((!state.dpad.up && lastState.dpad.up) == (dpadUp == RELEASED));
+	_ASSERT((state.dpad.up && !lastState.dpad.up) == (dpadUp == PRESSED));
 
-	// Handle 'threshold' tests which emulate buttons
+	// handle 'threshold' tests which emulate buttons
 
 	bool threshold = state.IsLeftThumbStickUp();
 	leftStickUp = static_cast<ButtonState>((!!threshold) | ((!!threshold ^ !!lastState.IsLeftThumbStickUp()) << 1));

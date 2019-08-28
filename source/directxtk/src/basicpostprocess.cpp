@@ -7,20 +7,19 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PostProcess.h"
+#include "stdinc.h"
+#include "postprocess.h"
 
-#include "AlignedNew.h"
-#include "CommonStates.h"
-#include "DemandCreate.h"
-#include "DirectXHelpers.h"
-#include "EffectPipelineStateDescription.h"
-#include "GraphicsMemory.h"
-#include "SharedResourcePool.h"
+#include "alignednew.h"
+#include "commonstates.h"
+#include "demandcreate.h"
+#include "directxhelpers.h"
+#include "effectpipelinestatedescription.h"
+#include "graphicsmemory.h"
+#include "sharedresourcepool.h"
 
 using namespace DirectX;
 
-using Microsoft::WRL::ComPtr;
 
 namespace
 {
@@ -49,21 +48,9 @@ GaussianDistribution(float x, float y, float rho)
 } // namespace
 
 // Include the precompiled shader code.
+#if USE_PRECOMPILED_SHADER
 namespace
 {
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include "Shaders/Compiled/XboxOnePostProcess_VSQuadNoCB.inc"
-#include "Shaders/Compiled/XboxOnePostProcess_VSQuad.inc"
-
-#include "Shaders/Compiled/XboxOnePostProcess_PSCopy.inc"
-#include "Shaders/Compiled/XboxOnePostProcess_PSMonochrome.inc"
-#include "Shaders/Compiled/XboxOnePostProcess_PSSepia.inc"
-#include "Shaders/Compiled/XboxOnePostProcess_PSDownScale2x2.inc"
-#include "Shaders/Compiled/XboxOnePostProcess_PSDownScale4x4.inc"
-#include "Shaders/Compiled/XboxOnePostProcess_PSGaussianBlur5x5.inc"
-#include "Shaders/Compiled/XboxOnePostProcess_PSBloomExtract.inc"
-#include "Shaders/Compiled/XboxOnePostProcess_PSBloomBlur.inc"
-#else
 #include "Shaders/Compiled/PostProcess_VSQuadNoCB.inc"
 #include "Shaders/Compiled/PostProcess_VSQuad.inc"
 
@@ -75,8 +62,8 @@ namespace
 #include "Shaders/Compiled/PostProcess_PSGaussianBlur5x5.inc"
 #include "Shaders/Compiled/PostProcess_PSBloomExtract.inc"
 #include "Shaders/Compiled/PostProcess_PSBloomBlur.inc"
-#endif
 } // namespace
+#endif
 
 namespace
 {
@@ -113,11 +100,11 @@ public:
 
 	ID3D12RootSignature* GetRootSignature(int slot, const D3D12_ROOT_SIGNATURE_DESC& desc)
 	{
-		assert(slot >= 0 && slot < RootSignatureCount);
+		_ASSERT(slot >= 0 && slot < RootSignatureCount);
 		_Analysis_assume_(slot >= 0 && slot < RootSignatureCount);
 
 		return DemandCreate(mRootSignature[slot], mMutex, [&](ID3D12RootSignature** pResult) -> HRESULT {
-			HRESULT hr = CreateRootSignature(mDevice.Get(), &desc, pResult);
+			HRESULT hr = CreateRootSignature(mDevice.get(), &desc, pResult);
 
 			if (SUCCEEDED(hr))
 				SetDebugObjectName(*pResult, L"BasicPostProcess");
@@ -126,11 +113,11 @@ public:
 		});
 	}
 
-	ID3D12Device* GetDevice() const { return mDevice.Get(); }
+	ID3D12Device* GetDevice(void) const { return mDevice.get(); }
 
 protected:
-	ComPtr<ID3D12Device> mDevice;
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature[RootSignatureCount];
+	wil::com_ptr<ID3D12Device> mDevice;
+	wil::com_ptr<ID3D12RootSignature> mRootSignature[RootSignatureCount];
 	std::mutex mMutex;
 };
 } // namespace
@@ -155,8 +142,8 @@ public:
 	BasicPostProcess::Effect fx;
 	PostProcessConstants constants;
 	D3D12_GPU_DESCRIPTOR_HANDLE texture;
-	unsigned texWidth;
-	unsigned texHeight;
+	unsigned texwidth;
+	unsigned texheight;
 	float guassianMultiplier;
 	float bloomSize;
 	float bloomBrightness;
@@ -176,7 +163,7 @@ private:
 	GraphicsResource mConstantBuffer;
 
 	// Per instance cache of PSOs, populated with variants for each shader & layout
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> mPipelineState;
+	wil::com_ptr<ID3D12PipelineState> mPipelineState;
 
 	// Per instance root signature
 	ID3D12RootSignature* mRootSignature;
@@ -195,8 +182,8 @@ BasicPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState&
 	fx(ifx),
 	constants{},
 	texture{},
-	texWidth(0),
-	texHeight(0),
+	texwidth(0),
+	texheight(0),
 	guassianMultiplier(1.f),
 	bloomSize(1.f),
 	bloomBrightness(1.f),
@@ -269,7 +256,7 @@ BasicPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState&
 		}
 	}
 
-	assert(mRootSignature != nullptr);
+	_ASSERT(mRootSignature != nullptr);
 
 	// Create pipeline state.
 	EffectPipelineStateDescription psd(nullptr,
@@ -284,9 +271,9 @@ BasicPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState&
 		mRootSignature,
 		vertexShader[mUseConstants ? 1 : 0],
 		pixelShaders[ifx],
-		mPipelineState.GetAddressOf());
+		mPipelineState.addressof());
 
-	SetDebugObjectName(mPipelineState.Get(), L"BasicPostProcess");
+	SetDebugObjectName(mPipelineState.get(), L"BasicPostProcess");
 }
 
 // Sets our state onto the D3D device.
@@ -349,7 +336,7 @@ BasicPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList)
 	}
 
 	// Set the pipeline state.
-	commandList->SetPipelineState(mPipelineState.Get());
+	commandList->SetPipelineState(mPipelineState.get());
 
 	// Draw quad.
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -361,13 +348,13 @@ BasicPostProcess::Impl::DownScale2x2()
 {
 	mUseConstants = true;
 
-	if (!texWidth || !texHeight)
+	if (!texwidth || !texheight)
 	{
 		throw std::exception("Call SetSourceTexture before setting post-process effect");
 	}
 
-	float tu = 1.0f / float(texWidth);
-	float tv = 1.0f / float(texHeight);
+	float tu = 1.0f / float(texwidth);
+	float tv = 1.0f / float(texheight);
 
 	// Sample from the 4 surrounding points. Since the center point will be in the exact
 	// center of 4 texels, a 0.5f offset is needed to specify a texel center.
@@ -388,13 +375,13 @@ BasicPostProcess::Impl::DownScale4x4()
 {
 	mUseConstants = true;
 
-	if (!texWidth || !texHeight)
+	if (!texwidth || !texheight)
 	{
 		throw std::exception("Call SetSourceTexture before setting post-process effect");
 	}
 
-	float tu = 1.0f / float(texWidth);
-	float tv = 1.0f / float(texHeight);
+	float tu = 1.0f / float(texwidth);
+	float tv = 1.0f / float(texheight);
 
 	// Sample from the 16 surrounding points. Since the center point will be in the
 	// exact center of 16 texels, a 1.5f offset is needed to specify a texel center.
@@ -415,13 +402,13 @@ BasicPostProcess::Impl::GaussianBlur5x5(float multiplier)
 {
 	mUseConstants = true;
 
-	if (!texWidth || !texHeight)
+	if (!texwidth || !texheight)
 	{
 		throw std::exception("Call SetSourceTexture before setting post-process effect");
 	}
 
-	float tu = 1.0f / float(texWidth);
-	float tv = 1.0f / float(texHeight);
+	float tu = 1.0f / float(texwidth);
+	float tv = 1.0f / float(texheight);
 
 	float totalWeight = 0.0f;
 	size_t index = 0;
@@ -471,7 +458,7 @@ BasicPostProcess::Impl::Bloom(bool horizontal, float size, float brightness)
 {
 	mUseConstants = true;
 
-	if (!texWidth || !texHeight)
+	if (!texwidth || !texheight)
 	{
 		throw std::exception("Call SetSourceTexture before setting post-process effect");
 	}
@@ -480,11 +467,11 @@ BasicPostProcess::Impl::Bloom(bool horizontal, float size, float brightness)
 	float tv = 0.f;
 	if (horizontal)
 	{
-		tu = 1.f / float(texWidth);
+		tu = 1.f / float(texwidth);
 	}
 	else
 	{
-		tv = 1.f / float(texHeight);
+		tv = 1.f / float(texheight);
 	}
 
 	auto weights = reinterpret_cast<XMFLOAT4*>(constants.sampleWeights);
@@ -553,12 +540,12 @@ BasicPostProcess::SetSourceTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, _I
 	if (resource)
 	{
 		const auto desc = resource->GetDesc();
-		pImpl->texWidth = static_cast<unsigned>(desc.Width);
-		pImpl->texHeight = desc.Height;
+		pImpl->texwidth = static_cast<unsigned>(desc.width);
+		pImpl->texheight = desc.height;
 	}
 	else
 	{
-		pImpl->texWidth = pImpl->texHeight = 0;
+		pImpl->texwidth = pImpl->texheight = 0;
 	}
 }
 

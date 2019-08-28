@@ -9,14 +9,9 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <stdexcept>
-#include <assert.h>
 #include <stdint.h>
 
 #include <wrl/client.h>
@@ -27,11 +22,8 @@ namespace DirectX
 class DescriptorHeap
 {
 public:
-	DescriptorHeap(
-		_In_ ID3D12DescriptorHeap* pExistingHeap);
-	DescriptorHeap(
-		_In_ ID3D12Device* device,
-		_In_ const D3D12_DESCRIPTOR_HEAP_DESC* pDesc);
+	DescriptorHeap(_In_ ID3D12DescriptorHeap* pExistingHeap);
+	DescriptorHeap(_In_ ID3D12Device* device,_In_ const D3D12_DESCRIPTOR_HEAP_DESC* pDesc);
 	DescriptorHeap(
 		_In_ ID3D12Device* device,
 		D3D12_DESCRIPTOR_HEAP_TYPE type,
@@ -65,27 +57,27 @@ public:
 		_In_reads_(descriptorCount) const D3D12_CPU_DESCRIPTOR_HANDLE* pDescriptors,
 		uint32_t descriptorCount);
 
-	D3D12_GPU_DESCRIPTOR_HANDLE GetFirstGpuHandle() const
+	D3D12_GPU_DESCRIPTOR_HANDLE GetFirstGpuHandle(void) const
 	{
-		assert(m_desc.Flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
-		assert(m_pHeap != nullptr);
+		_ASSERT(m_desc.flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
+		_ASSERT(m_pHeap != nullptr);
 		return m_hGPU;
 	}
 
-	D3D12_CPU_DESCRIPTOR_HANDLE GetFirstCpuHandle() const
+	D3D12_CPU_DESCRIPTOR_HANDLE GetFirstCpuHandle(void) const
 	{
-		assert(m_pHeap != nullptr);
+		_ASSERT(m_pHeap != nullptr);
 		return m_hCPU;
 	}
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle(_In_ size_t index) const
 	{
-		assert(m_pHeap != nullptr);
+		_ASSERT(m_pHeap != nullptr);
 		if (index >= m_desc.NumDescriptors)
 		{
 			throw std::out_of_range("D3DX12_GPU_DESCRIPTOR_HANDLE");
 		}
-		assert(m_desc.Flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
+		_ASSERT(m_desc.flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
 
 		D3D12_GPU_DESCRIPTOR_HANDLE handle;
 		handle.ptr = m_hGPU.ptr + UINT64(index) * UINT64(m_increment);
@@ -94,7 +86,7 @@ public:
 
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle(_In_ size_t index) const
 	{
-		assert(m_pHeap != nullptr);
+		_ASSERT(m_pHeap != nullptr);
 		if (index >= m_desc.NumDescriptors)
 		{
 			throw std::out_of_range("D3DX12_CPU_DESCRIPTOR_HANDLE");
@@ -105,11 +97,11 @@ public:
 		return handle;
 	}
 
-	size_t Count() const { return m_desc.NumDescriptors; }
-	unsigned int Flags() const { return m_desc.Flags; }
-	D3D12_DESCRIPTOR_HEAP_TYPE Type() const { return m_desc.Type; }
-	size_t Increment() const { return m_increment; }
-	ID3D12DescriptorHeap* Heap() const { return m_pHeap.Get(); }
+	size_t Count(void) const { return m_desc.NumDescriptors; }
+	uint32_t flags(void) const { return m_desc.flags; }
+	D3D12_DESCRIPTOR_HEAP_TYPE Type(void) const { return m_desc.Type; }
+	size_t Increment(void) const { return m_increment; }
+	ID3D12DescriptorHeap* Heap(void) const { return m_pHeap.get(); }
 
 	static void __cdecl DefaultDesc(
 		_In_ D3D12_DESCRIPTOR_HEAP_TYPE type,
@@ -118,7 +110,7 @@ public:
 private:
 	void __cdecl Create(_In_ ID3D12Device* pDevice, _In_ const D3D12_DESCRIPTOR_HEAP_DESC* pDesc);
 
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_pHeap;
+	wil::com_ptr<ID3D12DescriptorHeap> m_pHeap;
 	D3D12_DESCRIPTOR_HEAP_DESC m_desc;
 	D3D12_CPU_DESCRIPTOR_HANDLE m_hCPU;
 	D3D12_GPU_DESCRIPTOR_HANDLE m_hGPU;

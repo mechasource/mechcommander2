@@ -9,11 +9,7 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <memory>
 
@@ -49,20 +45,20 @@ public:
 	static const D3D12_RASTERIZER_DESC Wireframe;
 
 	// Static sampler states.
-	static const D3D12_STATIC_SAMPLER_DESC StaticPointWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0);
-	static const D3D12_STATIC_SAMPLER_DESC StaticPointClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0);
-	static const D3D12_STATIC_SAMPLER_DESC StaticLinearWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0);
-	static const D3D12_STATIC_SAMPLER_DESC StaticLinearClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0);
-	static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0);
-	static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0);
+	static const D3D12_STATIC_SAMPLER_DESC StaticPointWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0);
+	static const D3D12_STATIC_SAMPLER_DESC StaticPointClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0);
+	static const D3D12_STATIC_SAMPLER_DESC StaticLinearWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0);
+	static const D3D12_STATIC_SAMPLER_DESC StaticLinearClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0);
+	static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0);
+	static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0);
 
 	// Sampler states.
-	D3D12_GPU_DESCRIPTOR_HANDLE PointWrap() const;
-	D3D12_GPU_DESCRIPTOR_HANDLE PointClamp() const;
-	D3D12_GPU_DESCRIPTOR_HANDLE LinearWrap() const;
-	D3D12_GPU_DESCRIPTOR_HANDLE LinearClamp() const;
-	D3D12_GPU_DESCRIPTOR_HANDLE AnisotropicWrap() const;
-	D3D12_GPU_DESCRIPTOR_HANDLE AnisotropicClamp() const;
+	D3D12_GPU_DESCRIPTOR_HANDLE PointWrap(void) const;
+	D3D12_GPU_DESCRIPTOR_HANDLE PointClamp(void) const;
+	D3D12_GPU_DESCRIPTOR_HANDLE LinearWrap(void) const;
+	D3D12_GPU_DESCRIPTOR_HANDLE LinearClamp(void) const;
+	D3D12_GPU_DESCRIPTOR_HANDLE AnisotropicWrap(void) const;
+	D3D12_GPU_DESCRIPTOR_HANDLE AnisotropicClamp(void) const;
 
 	// These index into the heap returned by SamplerDescriptorHeap
 	enum class SamplerIndex
@@ -76,7 +72,7 @@ public:
 		Count
 	};
 
-	ID3D12DescriptorHeap* Heap() const;
+	ID3D12DescriptorHeap* Heap(void) const;
 
 private:
 	class Impl;

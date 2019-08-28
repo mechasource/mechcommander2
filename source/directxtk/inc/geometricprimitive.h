@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "VertexTypes.h"
+#include "vertextypes.h"
 
 #include <memory>
 #include <vector>

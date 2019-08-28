@@ -9,18 +9,14 @@
 
 #pragma once
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <d3d12_x.h>
-#else
 #include <d3d12.h>
-#endif
 
 #include <DirectXMath.h>
 #include <memory>
 #include <string>
 
-#include "RenderTargetState.h"
-#include "EffectPipelineStateDescription.h"
+#include "rendertargetstate.h"
+#include "effectpipelinestatedescription.h"
 
 namespace DirectX
 {
@@ -79,12 +75,12 @@ public:
 	IEffectLights(IEffectLights&&) = delete;
 	IEffectLights& operator=(IEffectLights&&) = delete;
 
-	virtual void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) = 0;
+	virtual void XM_CALLCONV SetAmbientLightcolour(FXMVECTOR value) = 0;
 
 	virtual void __cdecl SetLightEnabled(int whichLight, bool value) = 0;
 	virtual void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) = 0;
-	virtual void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) = 0;
-	virtual void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) = 0;
+	virtual void XM_CALLCONV SetLightDiffusecolour(int whichLight, FXMVECTOR value) = 0;
+	virtual void XM_CALLCONV SetLightSpecularcolour(int whichLight, FXMVECTOR value) = 0;
 
 	virtual void __cdecl EnableDefaultLighting() = 0;
 
@@ -108,7 +104,7 @@ public:
 
 	virtual void __cdecl SetFogStart(float value) = 0;
 	virtual void __cdecl SetFogEnd(float value) = 0;
-	virtual void XM_CALLCONV SetFogColor(FXMVECTOR value) = 0;
+	virtual void XM_CALLCONV SetFogcolour(FXMVECTOR value) = 0;
 
 protected:
 	IEffectFog() = default;
@@ -142,7 +138,7 @@ const int None = 0x00;
 const int Fog = 0x01;
 const int Lighting = 0x02;
 const int PerPixelLighting = 0x04 | Lighting; // per pixel lighting implies lighting enabled
-const int VertexColor = 0x08;
+const int Vertexcolour = 0x08;
 const int Texture = 0x10;
 
 const int BiasedVertexNormals = 0x10000; // compressed vertex normals need x2 bias
@@ -172,28 +168,28 @@ public:
 	void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
 
 	// Material settings.
-	void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
-	void XM_CALLCONV SetEmissiveColor(FXMVECTOR value);
-	void XM_CALLCONV SetSpecularColor(FXMVECTOR value);
+	void XM_CALLCONV SetDiffusecolour(FXMVECTOR value);
+	void XM_CALLCONV SetEmissivecolour(FXMVECTOR value);
+	void XM_CALLCONV SetSpecularcolour(FXMVECTOR value);
 	void __cdecl SetSpecularPower(float value);
 	void __cdecl DisableSpecular();
 	void __cdecl SetAlpha(float value);
-	void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+	void XM_CALLCONV SetcolourAndAlpha(FXMVECTOR value);
 
 	// Light settings.
-	void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetAmbientLightcolour(FXMVECTOR value) override;
 
 	void __cdecl SetLightEnabled(int whichLight, bool value) override;
 	void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-	void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
-	void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightDiffusecolour(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightSpecularcolour(int whichLight, FXMVECTOR value) override;
 
 	void __cdecl EnableDefaultLighting() override;
 
 	// Fog settings.
 	void __cdecl SetFogStart(float value) override;
 	void __cdecl SetFogEnd(float value) override;
-	void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetFogcolour(FXMVECTOR value) override;
 
 	// Texture setting.
 	void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
@@ -229,14 +225,14 @@ public:
 	void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
 
 	// Material settings.
-	void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
+	void XM_CALLCONV SetDiffusecolour(FXMVECTOR value);
 	void __cdecl SetAlpha(float value);
-	void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+	void XM_CALLCONV SetcolourAndAlpha(FXMVECTOR value);
 
 	// Fog settings.
 	void __cdecl SetFogStart(float value) override;
 	void __cdecl SetFogEnd(float value) override;
-	void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetFogcolour(FXMVECTOR value) override;
 
 	// Texture setting.
 	void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
@@ -274,14 +270,14 @@ public:
 	void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
 
 	// Material settings.
-	void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
+	void XM_CALLCONV SetDiffusecolour(FXMVECTOR value);
 	void __cdecl SetAlpha(float value);
-	void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+	void XM_CALLCONV SetcolourAndAlpha(FXMVECTOR value);
 
 	// Fog settings.
 	void __cdecl SetFogStart(float value) override;
 	void __cdecl SetFogEnd(float value) override;
-	void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetFogcolour(FXMVECTOR value) override;
 
 	// Texture settings.
 	void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
@@ -317,24 +313,24 @@ public:
 	void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
 
 	// Material settings.
-	void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
-	void XM_CALLCONV SetEmissiveColor(FXMVECTOR value);
+	void XM_CALLCONV SetDiffusecolour(FXMVECTOR value);
+	void XM_CALLCONV SetEmissivecolour(FXMVECTOR value);
 	void __cdecl SetAlpha(float value);
-	void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+	void XM_CALLCONV SetcolourAndAlpha(FXMVECTOR value);
 
 	// Light settings.
-	void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetAmbientLightcolour(FXMVECTOR value) override;
 
 	void __cdecl SetLightEnabled(int whichLight, bool value) override;
 	void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-	void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightDiffusecolour(int whichLight, FXMVECTOR value) override;
 
 	void __cdecl EnableDefaultLighting() override;
 
 	// Fog settings.
 	void __cdecl SetFogStart(float value) override;
 	void __cdecl SetFogEnd(float value) override;
-	void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetFogcolour(FXMVECTOR value) override;
 
 	// Texture setting.
 	void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE texture, D3D12_GPU_DESCRIPTOR_HANDLE sampler);
@@ -352,7 +348,7 @@ private:
 	std::unique_ptr<Impl> pImpl;
 
 	// Unsupported interface methods.
-	void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightSpecularcolour(int whichLight, FXMVECTOR value) override;
 };
 
 // Built-in shader supports skinned animation.
@@ -378,28 +374,28 @@ public:
 	void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
 
 	// Material settings.
-	void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
-	void XM_CALLCONV SetEmissiveColor(FXMVECTOR value);
-	void XM_CALLCONV SetSpecularColor(FXMVECTOR value);
+	void XM_CALLCONV SetDiffusecolour(FXMVECTOR value);
+	void XM_CALLCONV SetEmissivecolour(FXMVECTOR value);
+	void XM_CALLCONV SetSpecularcolour(FXMVECTOR value);
 	void __cdecl SetSpecularPower(float value);
 	void __cdecl DisableSpecular();
 	void __cdecl SetAlpha(float value);
-	void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+	void XM_CALLCONV SetcolourAndAlpha(FXMVECTOR value);
 
 	// Light settings.
-	void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetAmbientLightcolour(FXMVECTOR value) override;
 
 	void __cdecl SetLightEnabled(int whichLight, bool value) override;
 	void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-	void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
-	void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightDiffusecolour(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightSpecularcolour(int whichLight, FXMVECTOR value) override;
 
 	void __cdecl EnableDefaultLighting() override;
 
 	// Fog settings.
 	void __cdecl SetFogStart(float value) override;
 	void __cdecl SetFogEnd(float value) override;
-	void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetFogcolour(FXMVECTOR value) override;
 
 	// Texture setting.
 	void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
@@ -439,28 +435,28 @@ public:
 	void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
 
 	// Material settings.
-	void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
-	void XM_CALLCONV SetEmissiveColor(FXMVECTOR value);
-	void XM_CALLCONV SetSpecularColor(FXMVECTOR value);
+	void XM_CALLCONV SetDiffusecolour(FXMVECTOR value);
+	void XM_CALLCONV SetEmissivecolour(FXMVECTOR value);
+	void XM_CALLCONV SetSpecularcolour(FXMVECTOR value);
 	void __cdecl SetSpecularPower(float value);
 	void __cdecl DisableSpecular();
 	void __cdecl SetAlpha(float value);
-	void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+	void XM_CALLCONV SetcolourAndAlpha(FXMVECTOR value);
 
 	// Light settings.
-	void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetAmbientLightcolour(FXMVECTOR value) override;
 
 	void __cdecl SetLightEnabled(int whichLight, bool value) override;
 	void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-	void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
-	void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightDiffusecolour(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightSpecularcolour(int whichLight, FXMVECTOR value) override;
 
 	void __cdecl EnableDefaultLighting() override;
 
 	// Fog settings.
 	void __cdecl SetFogStart(float value) override;
 	void __cdecl SetFogEnd(float value) override;
-	void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+	void XM_CALLCONV SetFogcolour(FXMVECTOR value) override;
 
 	// Texture setting - albedo, normal and specular intensity
 	void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
@@ -500,7 +496,7 @@ public:
 	// Light settings.
 	void __cdecl SetLightEnabled(int whichLight, bool value) override;
 	void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-	void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetLightDiffusecolour(int whichLight, FXMVECTOR value) override;
 
 	void __cdecl EnableDefaultLighting() override;
 
@@ -539,8 +535,8 @@ private:
 	std::unique_ptr<Impl> pImpl;
 
 	// Unsupported interface methods.
-	void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
-	void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+	void XM_CALLCONV SetAmbientLightcolour(FXMVECTOR value) override;
+	void XM_CALLCONV SetLightSpecularcolour(int whichLight, FXMVECTOR value) override;
 };
 
 //----------------------------------------------------------------------------------
@@ -575,7 +571,7 @@ public:
 	void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
 
 	// Debug Settings.
-	void XM_CALLCONV SetHemisphericalAmbientColor(FXMVECTOR upper, FXMVECTOR lower);
+	void XM_CALLCONV SetHemisphericalAmbientcolour(FXMVECTOR upper, FXMVECTOR lower);
 	void __cdecl SetAlpha(float value);
 
 private:
@@ -598,7 +594,7 @@ public:
 	IEffectTextureFactory(IEffectTextureFactory&&) = delete;
 	IEffectTextureFactory& operator=(IEffectTextureFactory&&) = delete;
 
-	virtual size_t __cdecl CreateTexture(_In_z_ const wchar_t* name, int descriptorIndex) = 0;
+	virtual size_t __cdecl CreateTexture(_In_z_ const std::wstring_view& name, int descriptorIndex) = 0;
 
 protected:
 	IEffectTextureFactory() = default;
@@ -627,16 +623,16 @@ public:
 
 	virtual ~EffectTextureFactory() override;
 
-	virtual size_t __cdecl CreateTexture(_In_z_ const wchar_t* name, int descriptorIndex) override;
+	virtual size_t __cdecl CreateTexture(_In_z_ const std::wstring_view& name, int descriptorIndex) override;
 
-	ID3D12DescriptorHeap* __cdecl Heap() const;
+	ID3D12DescriptorHeap* __cdecl Heap(void) const;
 
 	// Shorthand accessors for the descriptor heap
 	D3D12_CPU_DESCRIPTOR_HANDLE __cdecl GetCpuDescriptorHandle(size_t index) const;
 	D3D12_GPU_DESCRIPTOR_HANDLE __cdecl GetGpuDescriptorHandle(size_t index) const;
 
 	// How many textures are there in this factory?
-	size_t __cdecl ResourceCount() const;
+	size_t __cdecl ResourceCount(void) const;
 
 	// Get a resource in a specific slot (note: increases reference count on resource)
 	void __cdecl GetResource(size_t slot, _Out_ ID3D12Resource** resource, _Out_opt_ bool* isCubeMap = nullptr);
@@ -649,7 +645,7 @@ public:
 	void __cdecl EnableForceSRGB(bool forceSRGB);
 	void __cdecl EnableAutoGenMips(bool generateMips);
 
-	void __cdecl SetDirectory(_In_opt_z_ const wchar_t* path);
+	void __cdecl SetDirectory(_In_opt_z_ const std::wstring_view& path);
 
 private:
 	// Private implementation
@@ -674,17 +670,17 @@ public:
 	struct EffectInfo
 	{
 		std::wstring name;
-		bool perVertexColor;
+		bool perVertexcolour;
 		bool enableSkinning;
 		bool enableDualTexture;
 		bool enableNormalMaps;
 		bool biasedVertexNormals;
 		float specularPower;
 		float alphaValue;
-		XMFLOAT3 ambientColor;
-		XMFLOAT3 diffuseColor;
-		XMFLOAT3 specularColor;
-		XMFLOAT3 emissiveColor;
+		XMFLOAT3 ambientcolour;
+		XMFLOAT3 diffusecolour;
+		XMFLOAT3 specularcolour;
+		XMFLOAT3 emissivecolour;
 		int diffuseTextureIndex;
 		int specularTextureIndex;
 		int normalTextureIndex;
@@ -693,7 +689,7 @@ public:
 		int samplerIndex2;
 
 		EffectInfo() noexcept :
-			perVertexColor(false), enableSkinning(false), enableDualTexture(false), enableNormalMaps(false), biasedVertexNormals(false), specularPower(0), alphaValue(0), ambientColor(0, 0, 0), diffuseColor(0, 0, 0), specularColor(0, 0, 0), emissiveColor(0, 0, 0), diffuseTextureIndex(-1), specularTextureIndex(-1), normalTextureIndex(-1), emissiveTextureIndex(-1), samplerIndex(-1), samplerIndex2(-1)
+			perVertexcolour(false), enableSkinning(false), enableDualTexture(false), enableNormalMaps(false), biasedVertexNormals(false), specularPower(0), alphaValue(0), ambientcolour(0, 0, 0), diffusecolour(0, 0, 0), specularcolour(0, 0, 0), emissivecolour(0, 0, 0), diffuseTextureIndex(-1), specularTextureIndex(-1), normalTextureIndex(-1), emissiveTextureIndex(-1), samplerIndex(-1), samplerIndex2(-1)
 		{
 		}
 	};

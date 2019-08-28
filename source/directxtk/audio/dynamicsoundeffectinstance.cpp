@@ -8,8 +8,8 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "SoundCommon.h"
+#include "stdinc.h"
+#include "soundcommon.h"
 
 using namespace DirectX;
 
@@ -52,7 +52,7 @@ public:
 			throw std::invalid_argument("DynamicSoundEffectInstance");
 		}
 
-		mBufferEvent.reset(CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
+		mBufferEvent.reset(::CreateEventExW(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
 		if (!mBufferEvent)
 		{
 			throw std::exception("CreateEvent");
@@ -60,7 +60,7 @@ public:
 
 		CreateIntegerPCM(&mWaveFormat, sampleRate, channels, sampleBits);
 
-		assert(engine != nullptr);
+		_ASSERT(engine != nullptr);
 		engine->RegisterNotify(this, true);
 
 		mBase.Initialize(engine, &mWaveFormat, flags);
@@ -85,7 +85,7 @@ public:
 
 	void SubmitBuffer(_In_reads_bytes_(audioBytes) const uint8_t* pAudioData, uint32_t offset, size_t audioBytes);
 
-	const WAVEFORMATEX* GetFormat() const { return &mWaveFormat; }
+	const WAVEFORMATEX* GetFormat(void) const { return &mWaveFormat; }
 
 	// IVoiceNotify
 	virtual void __cdecl OnBufferEnd() override
@@ -169,17 +169,17 @@ DynamicSoundEffectInstance::Impl::SubmitBuffer(const uint8_t* pAudioData, uint32
 		throw std::out_of_range("SubmitBuffer");
 
 	XAUDIO2_BUFFER buffer = {};
-	buffer.AudioBytes = static_cast<UINT32>(audioBytes);
+	buffer.AudioBytes = static_cast<uint32_t>(audioBytes);
 	buffer.pAudioData = pAudioData;
 
 	if (offset)
 	{
-		assert(mWaveFormat.wFormatTag == WAVE_FORMAT_PCM);
+		_ASSERT(mWaveFormat.wFormatTag == WAVE_FORMAT_PCM);
 		buffer.PlayBegin = offset / mWaveFormat.nBlockAlign;
-		buffer.PlayLength = static_cast<UINT32>((audioBytes - offset) / mWaveFormat.nBlockAlign);
+		buffer.PlayLength = static_cast<uint32_t>((audioBytes - offset) / mWaveFormat.nBlockAlign);
 	}
 
-	buffer.pContext = this;
+	buffer.pcontext = this;
 
 	HRESULT hr = mBase.voice->SubmitSourceBuffer(&buffer, nullptr);
 	if (FAILED(hr))
@@ -197,7 +197,7 @@ DynamicSoundEffectInstance::Impl::SubmitBuffer(const uint8_t* pAudioData, uint32
 void
 DynamicSoundEffectInstance::Impl::OnUpdate()
 {
-	DWORD result = WaitForSingleObjectEx(mBufferEvent.get(), 0, FALSE);
+	uint32_t result = WaitForSingleObjectEx(mBufferEvent.get(), 0, FALSE);
 	switch (result)
 	{
 	case WAIT_TIMEOUT:
@@ -351,13 +351,13 @@ DynamicSoundEffectInstance::GetSampleSizeInBytes(uint64_t duration) const
 }
 
 int
-DynamicSoundEffectInstance::GetPendingBufferCount() const
+DynamicSoundEffectInstance::GetPendingBufferCount(void) const
 {
 	return pImpl->mBase.GetPendingBufferCount();
 }
 
 const WAVEFORMATEX*
-DynamicSoundEffectInstance::GetFormat() const
+DynamicSoundEffectInstance::GetFormat(void) const
 {
 	return pImpl->GetFormat();
 }

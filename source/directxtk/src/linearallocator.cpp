@@ -7,10 +7,10 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "LinearAllocator.h"
+#include "stdinc.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "linearallocator.h"
 
 // Set this to 1 to enable some additional debug validation
 #define VALIDATE_LISTS 0
@@ -20,7 +20,6 @@
 #endif
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 LinearAllocatorPage::LinearAllocatorPage() noexcept :
 	pPrevPage(nullptr), pNextPage(nullptr), mMemory(nullptr), mPendingFence(0), mGpuAddress{}, mOffset(0), mSize(0), mRefCount(1)
@@ -44,7 +43,7 @@ LinearAllocatorPage::Suballocate(_In_ size_t size, _In_ size_t alignment)
 void
 LinearAllocatorPage::Release()
 {
-	assert(mRefCount > 0);
+	_ASSERT(mRefCount > 0);
 
 	if (mRefCount.fetch_sub(1) == 1)
 	{
@@ -85,7 +84,7 @@ LinearAllocator::~LinearAllocator()
 		RetirePendingPages();
 	}
 
-	assert(m_pendingPages == nullptr);
+	_ASSERT(m_pendingPages == nullptr);
 
 	// Return all the memory
 	FreePages(m_unusedPages);
@@ -127,7 +126,7 @@ LinearAllocator::FenceCommittedPages(_In_ ID3D12CommandQueue* commandQueue)
 		return;
 
 	// For all the used pages, fence them
-	UINT numReady = 0;
+	uint32_t numReady = 0;
 	LinearAllocatorPage* readyPages = nullptr;
 	LinearAllocatorPage* unreadyPages = nullptr;
 	LinearAllocatorPage* nextPage = nullptr;
@@ -143,7 +142,7 @@ LinearAllocator::FenceCommittedPages(_In_ ID3D12CommandQueue* commandQueue)
 		{
 			// Signal the fence
 			numReady++;
-			ThrowIfFailed(commandQueue->Signal(page->mFence.Get(), ++page->mPendingFence));
+			ThrowIfFailed(commandQueue->Signal(page->mFence.get(), ++page->mPendingFence));
 
 			// Link to the ready pages list
 			page->pNextPage = readyPages;
@@ -188,7 +187,7 @@ LinearAllocator::RetirePendingPages()
 	{
 		LinearAllocatorPage* nextPage = page->pNextPage;
 
-		assert(page->mPendingFence != 0);
+		_ASSERT(page->mPendingFence != 0);
 
 		if (page->mFence->GetCompletedValue() >= page->mPendingFence)
 		{
@@ -230,7 +229,7 @@ LinearAllocator::GetCleanPageForAlloc()
 	UnlinkPage(page);
 	LinkPage(page, m_usedPages);
 
-	assert(page->mOffset == 0);
+	_ASSERT(page->mOffset == 0);
 
 	return page;
 }
@@ -278,7 +277,7 @@ LinearAllocator::GetNewPage()
 	CD3DX12_RESOURCE_DESC bufferDesc = CD3DX12_RESOURCE_DESC::Buffer(m_increment);
 
 	// Allocate the upload heap
-	ComPtr<ID3D12Resource> spResource;
+	wil::com_ptr<ID3D12Resource> spResource;
 	HRESULT hr = m_device->CreateCommittedResource(
 		&uploadHeapProperties,
 		D3D12_HEAP_FLAG_NONE,
@@ -305,7 +304,7 @@ LinearAllocator::GetNewPage()
 	memset(pMemory, 0, m_increment);
 
 	// Create a fence
-	ComPtr<ID3D12Fence> spFence;
+	wil::com_ptr<ID3D12Fence> spFence;
 	hr = m_device->CreateFence(
 		0,
 		D3D12_FENCE_FLAG_NONE,
@@ -316,7 +315,7 @@ LinearAllocator::GetNewPage()
 		return nullptr;
 	}
 
-	SetDebugObjectName(spFence.Get(), L"LinearAllocator");
+	SetDebugObjectName(spFence.get(), L"LinearAllocator");
 
 	// Add the page to the page list
 	auto page = new LinearAllocatorPage;
@@ -374,11 +373,11 @@ LinearAllocator::LinkPageChain(LinearAllocatorPage* page, LinearAllocatorPage*& 
 	// Walk the chain and ensure it's not in the list twice
 	for (LinearAllocatorPage* cur = list; cur != nullptr; cur = cur->pNextPage)
 	{
-		assert(cur != page);
+		_ASSERT(cur != page);
 	}
 #endif
-	assert(page->pPrevPage == nullptr);
-	assert(list == nullptr || list->pPrevPage == nullptr);
+	_ASSERT(page->pPrevPage == nullptr);
+	_ASSERT(list == nullptr || list->pPrevPage == nullptr);
 
 	// Follow chain to the end and append
 	LinearAllocatorPage* lastPage = nullptr;
@@ -404,12 +403,12 @@ LinearAllocator::LinkPage(LinearAllocatorPage* page, LinearAllocatorPage*& list)
 	// Walk the chain and ensure it's not in the list twice
 	for (LinearAllocatorPage* cur = list; cur != nullptr; cur = cur->pNextPage)
 	{
-		assert(cur != page);
+		_ASSERT(cur != page);
 	}
 #endif
-	assert(page->pNextPage == nullptr);
-	assert(page->pPrevPage == nullptr);
-	assert(list == nullptr || list->pPrevPage == nullptr);
+	_ASSERT(page->pNextPage == nullptr);
+	_ASSERT(page->pPrevPage == nullptr);
+	_ASSERT(list == nullptr || list->pPrevPage == nullptr);
 
 	page->pNextPage = list;
 	if (list)
@@ -425,7 +424,7 @@ LinearAllocator::LinkPage(LinearAllocatorPage* page, LinearAllocatorPage*& list)
 void
 LinearAllocator::ReleasePage(LinearAllocatorPage* page)
 {
-	assert(m_numPending > 0);
+	_ASSERT(m_numPending > 0);
 	m_numPending--;
 
 	UnlinkPage(page);
@@ -453,7 +452,7 @@ LinearAllocator::FreePages(LinearAllocatorPage* page)
 		page->Release();
 
 		page = nextPage;
-		assert(m_totalPages > 0);
+		_ASSERT(m_totalPages > 0);
 		m_totalPages--;
 	}
 }
@@ -484,7 +483,7 @@ LinearAllocator::ValidatePageLists()
 
 #if defined(_DEBUG) || defined(PROFILE)
 void
-LinearAllocator::SetDebugName(const char* name)
+LinearAllocator::SetDebugName(const std::string_view& name)
 {
 	wchar_t wname[MAX_PATH] = {};
 	int result = MultiByteToWideChar(CP_UTF8, 0, name, static_cast<int>(strlen(name)), wname, MAX_PATH);
@@ -495,7 +494,7 @@ LinearAllocator::SetDebugName(const char* name)
 }
 
 void
-LinearAllocator::SetDebugName(const wchar_t* name)
+LinearAllocator::SetDebugName(const std::wstring_view& name)
 {
 	m_debugName = name;
 

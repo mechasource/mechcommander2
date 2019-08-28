@@ -8,16 +8,11 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "WAVFileReader.h"
-#include "SoundCommon.h"
+#include "stdinc.h"
+#include "wavfilereader.h"
+#include "soundcommon.h"
 
 #include <list>
-
-#if defined(_XBOX_ONE) && defined(_TITLE)
-#include <apu.h>
-#include <shapexmacontext.h>
-#endif
 
 using namespace DirectX;
 
@@ -41,12 +36,8 @@ public:
 		,
 		mSeekCount(0), mSeekTable(nullptr)
 #endif
-#if defined(_XBOX_ONE) && defined(_TITLE)
-		,
-		mXMAMemory(nullptr)
-#endif
 	{
-		assert(mEngine != nullptr);
+		_ASSERT(mEngine != nullptr);
 		mEngine->RegisterNotify(this, false);
 	}
 
@@ -58,7 +49,7 @@ public:
 
 			for (auto it = mInstances.begin(); it != mInstances.end(); ++it)
 			{
-				assert(*it != nullptr);
+				_ASSERT(*it != nullptr);
 				(*it)->OnDestroyParent();
 			}
 
@@ -76,13 +67,6 @@ public:
 			mEngine = nullptr;
 		}
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-		if (mXMAMemory)
-		{
-			ApuFree(mXMAMemory);
-			mXMAMemory = nullptr;
-		}
-#endif
 	}
 
 	HRESULT Initialize(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
@@ -113,7 +97,7 @@ public:
 	virtual void __cdecl OnUpdate() override
 	{
 		// We do not register for update notification
-		assert(false);
+		_ASSERT(false);
 	}
 
 	virtual void __cdecl OnDestroyEngine() override
@@ -132,10 +116,6 @@ public:
 		stats.playingOneShots += mOneShots;
 		stats.audioBytes += mAudioBytes;
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-		if (mXMAMemory)
-			stats.xmaAudioBytes += mAudioBytes;
-#endif
 	}
 
 	const WAVEFORMATEX* mWaveFormat;
@@ -155,9 +135,6 @@ public:
 private:
 	std::unique_ptr<uint8_t[]> mWavData;
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-	void* mXMAMemory;
-#endif
 };
 
 _Use_decl_annotations_
@@ -213,53 +190,6 @@ _Use_decl_annotations_
 
 #endif // _XBOX_ONE || _WIN32_WINNT < _WIN32_WINNT_WIN8 || _WIN32_WINNT >= _WIN32_WINNT_WIN10
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-
-	case WAVE_FORMAT_XMA2:
-		if (!seekCount || !seekTable)
-		{
-			DebugTrace("ERROR: SoundEffect format XMA2 requires seek table\n");
-			return E_FAIL;
-		}
-
-		if (seekCount > UINT32_MAX)
-			return E_INVALIDARG;
-
-		{
-			HRESULT hr = ApuAlloc(&mXMAMemory, nullptr,
-				static_cast<UINT32>(audioBytes), SHAPE_XMA_INPUT_BUFFER_ALIGNMENT);
-			if (FAILED(hr))
-			{
-				DebugTrace("ERROR: ApuAlloc failed. Did you allocate a large enough heap with ApuCreateHeap for all your XMA wave data?\n");
-				return hr;
-			}
-		}
-
-		memcpy(mXMAMemory, startAudio, audioBytes);
-		mStartAudio = reinterpret_cast<const uint8_t*>(mXMAMemory);
-
-		mWavData.reset(new uint8_t[sizeof(XMA2WAVEFORMATEX) + (seekCount * sizeof(uint32_t))]);
-
-		memcpy(mWavData.get(), wfx, sizeof(XMA2WAVEFORMATEX));
-		mWaveFormat = reinterpret_cast<WAVEFORMATEX*>(mWavData.get());
-
-		// XMA seek table is Big-Endian
-		{
-			auto dest = reinterpret_cast<uint32_t*>(mWavData.get() + sizeof(XMA2WAVEFORMATEX));
-			for (size_t k = 0; k < seekCount; ++k)
-			{
-				dest[k] = _byteswap_ulong(seekTable[k]);
-			}
-		}
-
-		mSeekCount = static_cast<uint32_t>(seekCount);
-		mSeekTable = reinterpret_cast<const uint32_t*>(mWavData.get() + sizeof(XMA2WAVEFORMATEX));
-
-		wavData.reset();
-		break;
-
-#endif // _XBOX_ONE && _TITLE
-
 	default:
 	{
 		DebugTrace("ERROR: SoundEffect encountered an unsupported format tag (%u)\n", wfx->wFormatTag);
@@ -277,9 +207,9 @@ _Use_decl_annotations_
 void
 SoundEffect::Impl::Play(float volume, float pitch, float pan)
 {
-	assert(volume >= -XAUDIO2_MAX_VOLUME_LEVEL && volume <= XAUDIO2_MAX_VOLUME_LEVEL);
-	assert(pitch >= -1.f && pitch <= 1.f);
-	assert(pan >= -1.f && pan <= 1.f);
+	_ASSERT(volume >= -XAUDIO2_MAX_VOLUME_LEVEL && volume <= XAUDIO2_MAX_VOLUME_LEVEL);
+	_ASSERT(pitch >= -1.f && pitch <= 1.f);
+	_ASSERT(pan >= -1.f && pan <= 1.f);
 
 	IXAudio2SourceVoice* voice = nullptr;
 	mEngine->AllocateVoice(mWaveFormat, SoundEffectInstance_Default, true, &voice);
@@ -317,8 +247,8 @@ SoundEffect::Impl::Play(float volume, float pitch, float pan)
 	XAUDIO2_BUFFER buffer = {};
 	buffer.AudioBytes = mAudioBytes;
 	buffer.pAudioData = mStartAudio;
-	buffer.Flags = XAUDIO2_END_OF_STREAM;
-	buffer.pContext = this;
+	buffer.flags = XAUDIO2_END_OF_STREAM;
+	buffer.pcontext = this;
 
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
 
@@ -353,7 +283,7 @@ SoundEffect::Impl::Play(float volume, float pitch, float pan)
 
 // Public constructors.
 _Use_decl_annotations_
-SoundEffect::SoundEffect(AudioEngine* engine, const wchar_t* waveFileName) :
+SoundEffect::SoundEffect(AudioEngine* engine, const std::wstring_view& waveFileName) :
 	pImpl(std::make_unique<Impl>(engine))
 {
 	WAVData wavInfo;
@@ -469,7 +399,7 @@ std::unique_ptr<SoundEffectInstance>
 SoundEffect::CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS flags)
 {
 	auto effect = new SoundEffectInstance(pImpl->mEngine, this, flags);
-	assert(effect != nullptr);
+	_ASSERT(effect != nullptr);
 	pImpl->mInstances.emplace_back(effect);
 	return std::unique_ptr<SoundEffectInstance>(effect);
 }
@@ -486,19 +416,19 @@ SoundEffect::UnregisterInstance(_In_ SoundEffectInstance* instance)
 
 // Public accessors.
 bool
-SoundEffect::IsInUse() const
+SoundEffect::IsInUse(void) const
 {
 	return (pImpl->mOneShots > 0) || !pImpl->mInstances.empty();
 }
 
 size_t
-SoundEffect::GetSampleSizeInBytes() const
+SoundEffect::GetSampleSizeInBytes(void) const
 {
 	return pImpl->mAudioBytes;
 }
 
 size_t
-SoundEffect::GetSampleDuration() const
+SoundEffect::GetSampleDuration(void) const
 {
 	if (!pImpl->mWaveFormat || !pImpl->mWaveFormat->nChannels)
 		return 0;
@@ -510,7 +440,7 @@ SoundEffect::GetSampleDuration() const
 		auto adpcmFmt = reinterpret_cast<const ADPCMWAVEFORMAT*>(pImpl->mWaveFormat);
 
 		uint64_t duration = uint64_t(pImpl->mAudioBytes / adpcmFmt->wfx.nBlockAlign) * adpcmFmt->wSamplesPerBlock;
-		unsigned int partial = pImpl->mAudioBytes % adpcmFmt->wfx.nBlockAlign;
+		uint32_t partial = pImpl->mAudioBytes % adpcmFmt->wfx.nBlockAlign;
 		if (partial)
 		{
 			if (partial >= (7u * adpcmFmt->wfx.nChannels))
@@ -531,13 +461,6 @@ SoundEffect::GetSampleDuration() const
 
 #endif
 
-#if defined(_XBOX_ONE) && defined(_TITLE)
-
-	case WAVE_FORMAT_XMA2:
-		return reinterpret_cast<const XMA2WAVEFORMATEX*>(pImpl->mWaveFormat)->SamplesEncoded;
-
-#endif
-
 	default:
 		if (pImpl->mWaveFormat->wBitsPerSample > 0)
 		{
@@ -550,7 +473,7 @@ SoundEffect::GetSampleDuration() const
 }
 
 size_t
-SoundEffect::GetSampleDurationMS() const
+SoundEffect::GetSampleDurationMS(void) const
 {
 	if (!pImpl->mWaveFormat || !pImpl->mWaveFormat->nSamplesPerSec)
 		return 0;
@@ -560,7 +483,7 @@ SoundEffect::GetSampleDurationMS() const
 }
 
 const WAVEFORMATEX*
-SoundEffect::GetFormat() const
+SoundEffect::GetFormat(void) const
 {
 	return pImpl->mWaveFormat;
 }

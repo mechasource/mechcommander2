@@ -7,8 +7,8 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 
 using namespace DirectX;
 
@@ -22,7 +22,7 @@ struct PBREffectConstants
 	XMMATRIX prevWorldViewProj; // for velocity generation
 
 	XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
-	XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
+	XMVECTOR lightDiffusecolour[IEffectLights::MaxDirectionalLights];
 
 	// PBR Parameters
 	XMVECTOR Albedo;
@@ -31,8 +31,8 @@ struct PBREffectConstants
 	int numRadianceMipLevels;
 
 	// Size of render target
-	float targetWidth;
-	float targetHeight;
+	float targetwidth;
+	float targetheight;
 };
 
 static_assert((sizeof(PBREffectConstants) % 16) == 0, "CB size not padded correctly");
@@ -81,7 +81,7 @@ public:
 
 	D3D12_GPU_DESCRIPTOR_HANDLE descriptors[RootParametersCount];
 
-	XMVECTOR lightColor[MaxDirectionalLights];
+	XMVECTOR lightcolour[MaxDirectionalLights];
 };
 
 // Include the precompiled shader code.
@@ -175,7 +175,7 @@ PBREffect::Impl::Impl(_In_ ID3D12Device* device,
 	EffectBase(device),
 	emissiveMap(emissive),
 	descriptors{},
-	lightColor{}
+	lightcolour{}
 {
 	static_assert(_countof(EffectBase<PBREffectTraits>::VertexShaderIndices) == PBREffectTraits::ShaderPermutationCount, "array/max mismatch");
 	static_assert(_countof(EffectBase<PBREffectTraits>::VertexShaderBytecode) == PBREffectTraits::VertexShaderCount, "array/max mismatch");
@@ -186,9 +186,9 @@ PBREffect::Impl::Impl(_In_ ID3D12Device* device,
 	static const XMVECTORF32 defaultLightDirection = {{{0, -1, 0, 0}}};
 	for (int i = 0; i < MaxDirectionalLights; i++)
 	{
-		lightColor[i] = g_XMOne;
+		lightcolour[i] = g_XMOne;
 		constants.lightDirection[i] = defaultLightDirection;
-		constants.lightDiffuseColor[i] = g_XMZero;
+		constants.lightDiffusecolour[i] = g_XMZero;
 	}
 
 	if (effectFlags & EffectFlags::Texture)
@@ -250,30 +250,30 @@ PBREffect::Impl::Impl(_In_ ID3D12Device* device,
 		mRootSignature = GetRootSignature(0, rsigDesc);
 	}
 
-	assert(mRootSignature != nullptr);
+	_ASSERT(mRootSignature != nullptr);
 
 	if (effectFlags & EffectFlags::Fog)
 	{
 		DebugTrace("ERROR: PBEffect does not implement EffectFlags::Fog\n");
 		throw std::invalid_argument("PBREffect");
 	}
-	else if (effectFlags & EffectFlags::VertexColor)
+	else if (effectFlags & EffectFlags::Vertexcolour)
 	{
-		DebugTrace("ERROR: PBEffect does not implement EffectFlags::VertexColor\n");
+		DebugTrace("ERROR: PBEffect does not implement EffectFlags::Vertexcolour\n");
 		throw std::invalid_argument("PBREffect");
 	}
 
 	// Create pipeline state.
 	int sp = GetPipelineStatePermutation(generateVelocity,
 		(effectFlags & EffectFlags::BiasedVertexNormals) != 0);
-	assert(sp >= 0 && sp < PBREffectTraits::ShaderPermutationCount);
+	_ASSERT(sp >= 0 && sp < PBREffectTraits::ShaderPermutationCount);
 	_Analysis_assume_(sp >= 0 && sp < PBREffectTraits::ShaderPermutationCount);
 
 	int vi = EffectBase<PBREffectTraits>::VertexShaderIndices[sp];
-	assert(vi >= 0 && vi < PBREffectTraits::VertexShaderCount);
+	_ASSERT(vi >= 0 && vi < PBREffectTraits::VertexShaderCount);
 	_Analysis_assume_(vi >= 0 && vi < PBREffectTraits::VertexShaderCount);
 	int pi = EffectBase<PBREffectTraits>::PixelShaderIndices[sp];
-	assert(pi >= 0 && pi < PBREffectTraits::PixelShaderCount);
+	_ASSERT(pi >= 0 && pi < PBREffectTraits::PixelShaderCount);
 	_Analysis_assume_(pi >= 0 && pi < PBREffectTraits::PixelShaderCount);
 
 	pipelineDescription.CreatePipelineState(
@@ -283,7 +283,7 @@ PBREffect::Impl::Impl(_In_ ID3D12Device* device,
 		EffectBase<PBREffectTraits>::PixelShaderBytecode[pi],
 		mPipelineState.ReleaseAndGetAddressOf());
 
-	SetDebugObjectName(mPipelineState.Get(), L"PBREffect");
+	SetDebugObjectName(mPipelineState.get(), L"PBREffect");
 }
 
 int
@@ -438,7 +438,7 @@ PBREffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 	commandList->SetGraphicsRootConstantBufferView(ConstantBuffer, GetConstantBufferGpuAddress());
 
 	// Set the pipeline state
-	commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+	commandList->SetPipelineState(EffectBase::mPipelineState.get());
 }
 
 // Public constructor.
@@ -513,7 +513,7 @@ PBREffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
 }
 
 // Light settings
-void XM_CALLCONV PBREffect::SetAmbientLightColor(FXMVECTOR)
+void XM_CALLCONV PBREffect::SetAmbientLightcolour(FXMVECTOR)
 {
 	// Unsupported interface.
 }
@@ -523,7 +523,7 @@ PBREffect::SetLightEnabled(int whichLight, bool value)
 {
 	EffectLights::ValidateLightIndex(whichLight);
 
-	pImpl->constants.lightDiffuseColor[whichLight] = (value) ? pImpl->lightColor[whichLight] : g_XMZero;
+	pImpl->constants.lightDiffusecolour[whichLight] = (value) ? pImpl->lightcolour[whichLight] : g_XMZero;
 
 	pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
@@ -539,18 +539,18 @@ PBREffect::SetLightDirection(int whichLight, FXMVECTOR value)
 }
 
 void XM_CALLCONV
-PBREffect::SetLightDiffuseColor(int whichLight, FXMVECTOR value)
+PBREffect::SetLightDiffusecolour(int whichLight, FXMVECTOR value)
 {
 	EffectLights::ValidateLightIndex(whichLight);
 
-	pImpl->lightColor[whichLight] = value;
-	pImpl->constants.lightDiffuseColor[whichLight] = value;
+	pImpl->lightcolour[whichLight] = value;
+	pImpl->constants.lightDiffusecolour[whichLight] = value;
 
 	pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 void XM_CALLCONV
-PBREffect::SetLightSpecularColor(int, FXMVECTOR)
+PBREffect::SetLightSpecularcolour(int, FXMVECTOR)
 {
 	// Unsupported interface.
 }
@@ -660,8 +660,8 @@ PBREffect::SetIBLTextures(
 void
 PBREffect::SetRenderTargetSizeInPixels(int width, int height)
 {
-	pImpl->constants.targetWidth = static_cast<float>(width);
-	pImpl->constants.targetHeight = static_cast<float>(height);
+	pImpl->constants.targetwidth = static_cast<float>(width);
+	pImpl->constants.targetheight = static_cast<float>(height);
 
 	pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }

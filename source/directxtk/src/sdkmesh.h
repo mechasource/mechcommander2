@@ -202,7 +202,7 @@ struct SDKMESH_INDEX_BUFFER_HEADER
 
 struct SDKMESH_MESH
 {
-	char Name[MAX_MESH_NAME];
+	wchar_t Name[MAX_MESH_NAME];
 	uint8_t NumVertexBuffers;
 	uint32_t VertexBuffers[MAX_VERTEX_STREAMS];
 	uint32_t IndexBuffer;
@@ -224,7 +224,7 @@ struct SDKMESH_MESH
 
 struct SDKMESH_SUBSET
 {
-	char Name[MAX_SUBSET_NAME];
+	wchar_t Name[MAX_SUBSET_NAME];
 	uint32_t MaterialID;
 	uint32_t PrimitiveType;
 	uint64_t IndexStart;
@@ -235,7 +235,7 @@ struct SDKMESH_SUBSET
 
 struct SDKMESH_FRAME
 {
-	char Name[MAX_FRAME_NAME];
+	wchar_t Name[MAX_FRAME_NAME];
 	uint32_t Mesh;
 	uint32_t ParentFrame;
 	uint32_t ChildFrame;
@@ -246,15 +246,15 @@ struct SDKMESH_FRAME
 
 struct SDKMESH_MATERIAL
 {
-	char Name[MAX_MATERIAL_NAME];
+	wchar_t Name[MAX_MATERIAL_NAME];
 
 	// Use MaterialInstancePath
-	char MaterialInstancePath[MAX_MATERIAL_PATH];
+	wchar_t MaterialInstancePath[MAX_MATERIAL_PATH];
 
 	// Or fall back to d3d8-type materials
-	char DiffuseTexture[MAX_TEXTURE_NAME];
-	char NormalTexture[MAX_TEXTURE_NAME];
-	char SpecularTexture[MAX_TEXTURE_NAME];
+	wchar_t DiffuseTexture[MAX_TEXTURE_NAME];
+	wchar_t NormalTexture[MAX_TEXTURE_NAME];
+	wchar_t SpecularTexture[MAX_TEXTURE_NAME];
 
 	DirectX::XMFLOAT4 Diffuse;
 	DirectX::XMFLOAT4 Ambient;
@@ -272,17 +272,17 @@ struct SDKMESH_MATERIAL
 
 struct SDKMESH_MATERIAL_V2
 {
-	char Name[MAX_MATERIAL_NAME];
+	wchar_t Name[MAX_MATERIAL_NAME];
 
 	// PBR materials
-	char RMATexture[MAX_TEXTURE_NAME];
-	char AlbetoTexture[MAX_TEXTURE_NAME];
-	char NormalTexture[MAX_TEXTURE_NAME];
-	char EmissiveTexture[MAX_TEXTURE_NAME];
+	wchar_t RMATexture[MAX_TEXTURE_NAME];
+	wchar_t AlbetoTexture[MAX_TEXTURE_NAME];
+	wchar_t NormalTexture[MAX_TEXTURE_NAME];
+	wchar_t EmissiveTexture[MAX_TEXTURE_NAME];
 
 	float Alpha;
 
-	char Reserved[60];
+	wchar_t Reserved[60];
 
 	uint64_t Force64_1;
 	uint64_t Force64_2;
@@ -313,7 +313,7 @@ struct SDKANIMATION_DATA
 
 struct SDKANIMATION_FRAME_DATA
 {
-	char FrameName[MAX_FRAME_NAME];
+	wchar_t FrameName[MAX_FRAME_NAME];
 	uint64_t DataOffset;
 };
 

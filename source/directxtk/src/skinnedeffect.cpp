@@ -7,25 +7,25 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 
 using namespace DirectX;
 
 // Constant buffer layout. Must match the shader!
 struct SkinnedEffectConstants
 {
-	XMVECTOR diffuseColor;
-	XMVECTOR emissiveColor;
-	XMVECTOR specularColorAndPower;
+	XMVECTOR diffusecolour;
+	XMVECTOR emissivecolour;
+	XMVECTOR specularcolourAndPower;
 
 	XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
-	XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
-	XMVECTOR lightSpecularColor[IEffectLights::MaxDirectionalLights];
+	XMVECTOR lightDiffusecolour[IEffectLights::MaxDirectionalLights];
+	XMVECTOR lightSpecularcolour[IEffectLights::MaxDirectionalLights];
 
 	XMVECTOR eyePosition;
 
-	XMVECTOR fogColor;
+	XMVECTOR fogcolour;
 	XMVECTOR fogVector;
 
 	XMMATRIX world;
@@ -231,7 +231,7 @@ SkinnedEffect::Impl::Impl(_In_ ID3D12Device* device, int effectFlags, const Effe
 		throw std::out_of_range("weightsPerVertex must be 1, 2, or 4");
 	}
 
-	lights.InitializeConstants(constants.specularColorAndPower, constants.lightDirection, constants.lightDiffuseColor, constants.lightSpecularColor);
+	lights.InitializeConstants(constants.specularcolourAndPower, constants.lightDirection, constants.lightDiffusecolour, constants.lightSpecularcolour);
 
 	for (int i = 0; i < MaxBones; i++)
 	{
@@ -259,13 +259,13 @@ SkinnedEffect::Impl::Impl(_In_ ID3D12Device* device, int effectFlags, const Effe
 		mRootSignature = GetRootSignature(0, rsigDesc);
 	}
 
-	assert(mRootSignature != nullptr);
+	_ASSERT(mRootSignature != nullptr);
 
 	fog.enabled = (effectFlags & EffectFlags::Fog) != 0;
 
-	if (effectFlags & EffectFlags::VertexColor)
+	if (effectFlags & EffectFlags::Vertexcolour)
 	{
-		DebugTrace("ERROR: SkinnedEffect does not implement EffectFlags::VertexColor\n");
+		DebugTrace("ERROR: SkinnedEffect does not implement EffectFlags::Vertexcolour\n");
 		throw std::invalid_argument("SkinnedEffect");
 	}
 
@@ -274,14 +274,14 @@ SkinnedEffect::Impl::Impl(_In_ ID3D12Device* device, int effectFlags, const Effe
 		(effectFlags & EffectFlags::PerPixelLightingBit) != 0,
 		weightsPerVertex,
 		(effectFlags & EffectFlags::BiasedVertexNormals) != 0);
-	assert(sp >= 0 && sp < SkinnedEffectTraits::ShaderPermutationCount);
+	_ASSERT(sp >= 0 && sp < SkinnedEffectTraits::ShaderPermutationCount);
 	_Analysis_assume_(sp >= 0 && sp < SkinnedEffectTraits::ShaderPermutationCount);
 
 	int vi = EffectBase<SkinnedEffectTraits>::VertexShaderIndices[sp];
-	assert(vi >= 0 && vi < SkinnedEffectTraits::VertexShaderCount);
+	_ASSERT(vi >= 0 && vi < SkinnedEffectTraits::VertexShaderCount);
 	_Analysis_assume_(vi >= 0 && vi < SkinnedEffectTraits::VertexShaderCount);
 	int pi = EffectBase<SkinnedEffectTraits>::PixelShaderIndices[sp];
-	assert(pi >= 0 && pi < SkinnedEffectTraits::PixelShaderCount);
+	_ASSERT(pi >= 0 && pi < SkinnedEffectTraits::PixelShaderCount);
 	_Analysis_assume_(pi >= 0 && pi < SkinnedEffectTraits::PixelShaderCount);
 
 	pipelineDescription.CreatePipelineState(
@@ -289,9 +289,9 @@ SkinnedEffect::Impl::Impl(_In_ ID3D12Device* device, int effectFlags, const Effe
 		mRootSignature,
 		EffectBase<SkinnedEffectTraits>::VertexShaderBytecode[vi],
 		EffectBase<SkinnedEffectTraits>::PixelShaderBytecode[pi],
-		mPipelineState.GetAddressOf());
+		mPipelineState.addressof());
 
-	SetDebugObjectName(mPipelineState.Get(), L"SkinnedEffect");
+	SetDebugObjectName(mPipelineState.get(), L"SkinnedEffect");
 }
 
 int
@@ -337,7 +337,7 @@ SkinnedEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 	// Compute derived parameter values.
 	matrices.SetConstants(dirtyFlags, constants.worldViewProj);
 	fog.SetConstants(dirtyFlags, matrices.worldView, constants.fogVector);
-	lights.SetConstants(dirtyFlags, matrices, constants.world, constants.worldInverseTranspose, constants.eyePosition, constants.diffuseColor, constants.emissiveColor, true);
+	lights.SetConstants(dirtyFlags, matrices, constants.world, constants.worldInverseTranspose, constants.eyePosition, constants.diffusecolour, constants.emissivecolour, true);
 
 	UpdateConstants();
 
@@ -359,7 +359,7 @@ SkinnedEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 	commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
 	// Set the pipeline state
-	commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+	commandList->SetPipelineState(EffectBase::mPipelineState.get());
 }
 
 // Public constructor.
@@ -431,26 +431,26 @@ SkinnedEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection
 
 // Material settings.
 void XM_CALLCONV
-SkinnedEffect::SetDiffuseColor(FXMVECTOR value)
+SkinnedEffect::SetDiffusecolour(FXMVECTOR value)
 {
-	pImpl->lights.diffuseColor = value;
+	pImpl->lights.diffusecolour = value;
 
-	pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+	pImpl->dirtyFlags |= EffectDirtyFlags::Materialcolour;
 }
 
 void XM_CALLCONV
-SkinnedEffect::SetEmissiveColor(FXMVECTOR value)
+SkinnedEffect::SetEmissivecolour(FXMVECTOR value)
 {
-	pImpl->lights.emissiveColor = value;
+	pImpl->lights.emissivecolour = value;
 
-	pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+	pImpl->dirtyFlags |= EffectDirtyFlags::Materialcolour;
 }
 
 void XM_CALLCONV
-SkinnedEffect::SetSpecularColor(FXMVECTOR value)
+SkinnedEffect::SetSpecularcolour(FXMVECTOR value)
 {
 	// Set xyz to new value, but preserve existing w (specular power).
-	pImpl->constants.specularColorAndPower = XMVectorSelect(pImpl->constants.specularColorAndPower, value, g_XMSelect1110);
+	pImpl->constants.specularcolourAndPower = XMVectorSelect(pImpl->constants.specularcolourAndPower, value, g_XMSelect1110);
 
 	pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
@@ -459,7 +459,7 @@ void
 SkinnedEffect::SetSpecularPower(float value)
 {
 	// Set w to new value, but preserve existing xyz (specular color).
-	pImpl->constants.specularColorAndPower = XMVectorSetW(pImpl->constants.specularColorAndPower, value);
+	pImpl->constants.specularcolourAndPower = XMVectorSetW(pImpl->constants.specularcolourAndPower, value);
 
 	pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
@@ -470,7 +470,7 @@ SkinnedEffect::DisableSpecular()
 	// Set specular color to black, power to 1
 	// Note: Don't use a power of 0 or the shader will generate strange highlights on non-specular materials
 
-	pImpl->constants.specularColorAndPower = g_XMIdentityR3;
+	pImpl->constants.specularcolourAndPower = g_XMIdentityR3;
 
 	pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
@@ -480,31 +480,31 @@ SkinnedEffect::SetAlpha(float value)
 {
 	pImpl->lights.alpha = value;
 
-	pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+	pImpl->dirtyFlags |= EffectDirtyFlags::Materialcolour;
 }
 
 void XM_CALLCONV
-SkinnedEffect::SetColorAndAlpha(FXMVECTOR value)
+SkinnedEffect::SetcolourAndAlpha(FXMVECTOR value)
 {
-	pImpl->lights.diffuseColor = value;
+	pImpl->lights.diffusecolour = value;
 	pImpl->lights.alpha = XMVectorGetW(value);
 
-	pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+	pImpl->dirtyFlags |= EffectDirtyFlags::Materialcolour;
 }
 
 // Light settings.
 void XM_CALLCONV
-SkinnedEffect::SetAmbientLightColor(FXMVECTOR value)
+SkinnedEffect::SetAmbientLightcolour(FXMVECTOR value)
 {
-	pImpl->lights.ambientLightColor = value;
+	pImpl->lights.ambientLightcolour = value;
 
-	pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+	pImpl->dirtyFlags |= EffectDirtyFlags::Materialcolour;
 }
 
 void
 SkinnedEffect::SetLightEnabled(int whichLight, bool value)
 {
-	pImpl->dirtyFlags |= pImpl->lights.SetLightEnabled(whichLight, value, pImpl->constants.lightDiffuseColor, pImpl->constants.lightSpecularColor);
+	pImpl->dirtyFlags |= pImpl->lights.SetLightEnabled(whichLight, value, pImpl->constants.lightDiffusecolour, pImpl->constants.lightSpecularcolour);
 }
 
 void XM_CALLCONV
@@ -518,15 +518,15 @@ SkinnedEffect::SetLightDirection(int whichLight, FXMVECTOR value)
 }
 
 void XM_CALLCONV
-SkinnedEffect::SetLightDiffuseColor(int whichLight, FXMVECTOR value)
+SkinnedEffect::SetLightDiffusecolour(int whichLight, FXMVECTOR value)
 {
-	pImpl->dirtyFlags |= pImpl->lights.SetLightDiffuseColor(whichLight, value, pImpl->constants.lightDiffuseColor);
+	pImpl->dirtyFlags |= pImpl->lights.SetLightDiffusecolour(whichLight, value, pImpl->constants.lightDiffusecolour);
 }
 
 void XM_CALLCONV
-SkinnedEffect::SetLightSpecularColor(int whichLight, FXMVECTOR value)
+SkinnedEffect::SetLightSpecularcolour(int whichLight, FXMVECTOR value)
 {
-	pImpl->dirtyFlags |= pImpl->lights.SetLightSpecularColor(whichLight, value, pImpl->constants.lightSpecularColor);
+	pImpl->dirtyFlags |= pImpl->lights.SetLightSpecularcolour(whichLight, value, pImpl->constants.lightSpecularcolour);
 }
 
 void
@@ -553,9 +553,9 @@ SkinnedEffect::SetFogEnd(float value)
 }
 
 void XM_CALLCONV
-SkinnedEffect::SetFogColor(FXMVECTOR value)
+SkinnedEffect::SetFogcolour(FXMVECTOR value)
 {
-	pImpl->constants.fogColor = value;
+	pImpl->constants.fogcolour = value;
 
 	pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }

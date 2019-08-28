@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include "Audio.h"
-#include "PlatformHelpers.h"
+#include "audio.h"
+#include "platformhelpers.h"
 
 namespace DirectX
 {
@@ -28,8 +28,8 @@ GetFormatTag(const WAVEFORMATEX* wfx)
 
 		auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>(wfx);
 
-		if (memcmp(reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(DWORD),
-				reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD))
+		if (memcmp(reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(uint32_t),
+				reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(uint32_t), sizeof(GUID) - sizeof(uint32_t))
 			!= 0)
 		{
 			return 0;
@@ -62,14 +62,10 @@ CreateADPCM(_Out_writes_bytes_(wfxSize) WAVEFORMATEX* wfx, size_t wfxSize, int s
 void
 CreateXWMA(_Out_ WAVEFORMATEX* wfx, int sampleRate, int channels, int blockAlign, int avgBytes, bool wma3);
 #endif
-#if defined(_XBOX_ONE) && defined(_TITLE)
-void
-CreateXMA2(_Out_writes_bytes_(wfxSize) WAVEFORMATEX* wfx, size_t wfxSize, int sampleRate, int channels, int bytesPerBlock, int blockCount, int samplesEncoded);
-#endif
 
 // Helper for computing pan volume matrix
 bool
-ComputePan(float pan, unsigned int channels, _Out_writes_(16) float* matrix);
+ComputePan(float pan, uint32_t channels, _Out_writes_(16) float* matrix);
 
 // Helper class for implementing SoundEffectInstance
 class SoundEffectInstanceBase
@@ -92,12 +88,12 @@ public:
 
 	~SoundEffectInstanceBase()
 	{
-		assert(voice == nullptr);
+		_ASSERT(voice == nullptr);
 	}
 
 	void Initialize(_In_ AudioEngine* eng, _In_ const WAVEFORMATEX* wfx, SOUND_EFFECT_INSTANCE_FLAGS flags)
 	{
-		assert(eng != nullptr);
+		_ASSERT(eng != nullptr);
 		engine = eng;
 		mDirectVoice = eng->GetMasterVoice();
 		mReverbVoice = eng->GetReverbVoice();
@@ -105,10 +101,10 @@ public:
 		if (eng->GetChannelMask() & SPEAKER_LOW_FREQUENCY)
 			mFlags = flags | SoundEffectInstance_UseRedirectLFE;
 		else
-			mFlags = static_cast<SOUND_EFFECT_INSTANCE_FLAGS>(static_cast<unsigned int>(flags) & ~static_cast<unsigned int>(SoundEffectInstance_UseRedirectLFE));
+			mFlags = static_cast<SOUND_EFFECT_INSTANCE_FLAGS>(static_cast<uint32_t>(flags) & ~static_cast<uint32_t>(SoundEffectInstance_UseRedirectLFE));
 
 		memset(&mDSPSettings, 0, sizeof(X3DAUDIO_DSP_SETTINGS));
-		assert(wfx != nullptr);
+		_ASSERT(wfx != nullptr);
 		mDSPSettings.SrcChannelCount = wfx->nChannels;
 		mDSPSettings.DstChannelCount = eng->GetOutputChannels();
 	}
@@ -118,7 +114,7 @@ public:
 		if (voice)
 			return;
 
-		assert(engine != nullptr);
+		_ASSERT(engine != nullptr);
 		engine->AllocateVoice(wfx, mFlags, false, &voice);
 	}
 
@@ -126,7 +122,7 @@ public:
 	{
 		if (voice)
 		{
-			assert(engine != nullptr);
+			_ASSERT(engine != nullptr);
 			engine->DestroyVoice(voice);
 			voice = nullptr;
 		}
@@ -219,7 +215,7 @@ public:
 
 	void SetVolume(float volume)
 	{
-		assert(volume >= -XAUDIO2_MAX_VOLUME_LEVEL && volume <= XAUDIO2_MAX_VOLUME_LEVEL);
+		_ASSERT(volume >= -XAUDIO2_MAX_VOLUME_LEVEL && volume <= XAUDIO2_MAX_VOLUME_LEVEL);
 
 		mVolume = volume;
 
@@ -232,7 +228,7 @@ public:
 
 	void SetPitch(float pitch)
 	{
-		assert(pitch >= -1.f && pitch <= 1.f);
+		_ASSERT(pitch >= -1.f && pitch <= 1.f);
 
 		if ((mFlags & SoundEffectInstance_NoSetPitch) && pitch != 0.f)
 		{
@@ -277,7 +273,7 @@ public:
 		return state;
 	}
 
-	int GetPendingBufferCount() const
+	int GetPendingBufferCount(void) const
 	{
 		if (!voice)
 			return 0;
@@ -305,14 +301,14 @@ public:
 
 	void OnReset()
 	{
-		assert(engine != nullptr);
+		_ASSERT(engine != nullptr);
 		mDirectVoice = engine->GetMasterVoice();
 		mReverbVoice = engine->GetReverbVoice();
 
 		if (engine->GetChannelMask() & SPEAKER_LOW_FREQUENCY)
 			mFlags = mFlags | SoundEffectInstance_UseRedirectLFE;
 		else
-			mFlags = static_cast<SOUND_EFFECT_INSTANCE_FLAGS>(static_cast<unsigned int>(mFlags) & ~static_cast<unsigned int>(SoundEffectInstance_UseRedirectLFE));
+			mFlags = static_cast<SOUND_EFFECT_INSTANCE_FLAGS>(static_cast<uint32_t>(mFlags) & ~static_cast<uint32_t>(SoundEffectInstance_UseRedirectLFE));
 
 		mDSPSettings.DstChannelCount = engine->GetOutputChannels();
 	}

@@ -7,11 +7,11 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectPipelineStateDescription.h"
+#include "stdinc.h"
+#include "effectpipelinestatedescription.h"
 
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
 
 using namespace DirectX;
 
@@ -280,7 +280,7 @@ static const uint32_t s_crc32[] =
 } // namespace
 
 uint32_t
-EffectPipelineStateDescription::ComputeHash() const
+EffectPipelineStateDescription::ComputeHash(void) const
 {
 	// Computes a CRC32 of the structure
 	uint32_t crc = 0xFFFFFFFF;

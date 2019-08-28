@@ -7,20 +7,19 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PlatformHelpers.h"
-#include "DirectXHelpers.h"
-#include "DescriptorHeap.h"
+#include "stdinc.h"
+#include "platformhelpers.h"
+#include "directxhelpers.h"
+#include "descriptorheap.h"
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 namespace
 {
 struct DescriptorHeapDesc
 {
 	D3D12_DESCRIPTOR_HEAP_TYPE Type;
-	D3D12_DESCRIPTOR_HEAP_FLAGS Flags;
+	D3D12_DESCRIPTOR_HEAP_FLAGS flags;
 };
 
 static const DescriptorHeapDesc c_DescriptorHeapDescs[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES] =
@@ -40,8 +39,8 @@ DescriptorHeap::DescriptorHeap(
 	m_hGPU = pExistingHeap->GetGPUDescriptorHandleForHeapStart();
 	m_desc = pExistingHeap->GetDesc();
 
-	ComPtr<ID3D12Device> device;
-	pExistingHeap->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+	wil::com_ptr<ID3D12Device> device;
+	pExistingHeap->GetDevice(IID_GRAPHICS_PPV_ARGS(device.addressof()));
 
 	m_increment = device->GetDescriptorHandleIncrementSize(m_desc.Type);
 }
@@ -73,8 +72,8 @@ DescriptorHeap::DescriptorHeap(
 		throw std::exception("Too many descriptors");
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
-	desc.Flags = flags;
-	desc.NumDescriptors = static_cast<UINT>(count);
+	desc.flags = flags;
+	desc.NumDescriptors = static_cast<uint32_t>(count);
 	desc.Type = type;
 	Create(device, &desc);
 }
@@ -89,7 +88,7 @@ _Use_decl_annotations_
 		const uint32_t* pDescriptorRangeSizes,
 		uint32_t descriptorRangeCount)
 {
-	assert((size_t(offsetIntoHeap) + size_t(totalDescriptorCount)) <= size_t(m_desc.NumDescriptors));
+	_ASSERT((size_t(offsetIntoHeap) + size_t(totalDescriptorCount)) <= size_t(m_desc.NumDescriptors));
 
 	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = GetCpuHandle(offsetIntoHeap);
 
@@ -151,7 +150,7 @@ DescriptorHeap::Create(
 	ID3D12Device* pDevice,
 	const D3D12_DESCRIPTOR_HEAP_DESC* pDesc)
 {
-	assert(pDesc != nullptr);
+	_ASSERT(pDesc != nullptr);
 
 	m_desc = *pDesc;
 	m_increment = pDevice->GetDescriptorHandleIncrementSize(pDesc->Type);
@@ -168,11 +167,11 @@ DescriptorHeap::Create(
 			pDesc,
 			IID_GRAPHICS_PPV_ARGS(m_pHeap.ReleaseAndGetAddressOf())));
 
-		SetDebugObjectName(m_pHeap.Get(), L"DescriptorHeap");
+		SetDebugObjectName(m_pHeap.get(), L"DescriptorHeap");
 
 		m_hCPU = m_pHeap->GetCPUDescriptorHandleForHeapStart();
 
-		if (pDesc->Flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE)
+		if (pDesc->flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE)
 			m_hGPU = m_pHeap->GetGPUDescriptorHandleForHeapStart();
 	}
 }
@@ -182,8 +181,8 @@ DescriptorHeap::DefaultDesc(
 	D3D12_DESCRIPTOR_HEAP_TYPE type,
 	D3D12_DESCRIPTOR_HEAP_DESC* pDesc)
 {
-	assert(c_DescriptorHeapDescs[type].Type == type);
-	pDesc->Flags = c_DescriptorHeapDescs[type].Flags;
+	_ASSERT(c_DescriptorHeapDescs[type].Type == type);
+	pDesc->flags = c_DescriptorHeapDescs[type].flags;
 	pDesc->NumDescriptors = 0;
 	pDesc->Type = type;
 }

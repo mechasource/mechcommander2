@@ -8,14 +8,14 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include "BinaryReader.h"
+#include "binaryreader.h"
 
 using namespace DirectX;
 
 // Constructor reads from the filesystem.
-BinaryReader::BinaryReader(_In_z_ wchar_t const* fileName) :
+BinaryReader::BinaryReader(_In_z_ const std::wstring_view& fileName) :
 	mPos(nullptr),
 	mEnd(nullptr)
 {
@@ -41,7 +41,7 @@ BinaryReader::BinaryReader(_In_reads_bytes_(dataSize) uint8_t const* dataBlob, s
 
 // Reads from the filesystem into memory.
 HRESULT
-BinaryReader::ReadEntireFile(_In_z_ wchar_t const* fileName, _Inout_ std::unique_ptr<uint8_t[]>& data, _Out_ size_t* dataSize)
+BinaryReader::ReadEntireFile(_In_z_ const std::wstring_view& fileName, _Inout_ std::unique_ptr<uint8_t[]>& data, _Out_ size_t* dataSize)
 {
 	// Open the file.
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
@@ -71,7 +71,7 @@ BinaryReader::ReadEntireFile(_In_z_ wchar_t const* fileName, _Inout_ std::unique
 		return E_OUTOFMEMORY;
 
 	// Read the data in.
-	DWORD bytesRead = 0;
+	uint32_t bytesRead = 0;
 
 	if (!ReadFile(hFile.get(), data.get(), fileInfo.EndOfFile.LowPart, &bytesRead, nullptr))
 	{

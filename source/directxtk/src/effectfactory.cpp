@@ -7,17 +7,16 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "Effects.h"
-#include "CommonStates.h"
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "DescriptorHeap.h"
+#include "stdinc.h"
+#include "effects.h"
+#include "commonstates.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "descriptorheap.h"
 
 #include <mutex>
 
 using namespace DirectX;
-using Microsoft::WRL::ComPtr;
 
 // Internal EffectFactory implementation class. Only one of these helpers is allocated
 // per D3D device, even if there are multiple public facing EffectFactory instances.
@@ -52,7 +51,7 @@ public:
 	bool mEnableFog;
 
 private:
-	ComPtr<ID3D12Device> mDevice;
+	wil::com_ptr<ID3D12Device> mDevice;
 
 	typedef std::map<std::wstring, std::shared_ptr<IEffect>> EffectCache;
 
@@ -142,7 +141,7 @@ EffectFactory::Impl::CreateEffect(
 			}
 		}
 
-		auto effect = std::make_shared<SkinnedEffect>(mDevice.Get(), effectflags, derivedPSD);
+		auto effect = std::make_shared<SkinnedEffect>(mDevice.get(), effectflags, derivedPSD);
 
 		effect->EnableDefaultLighting();
 
@@ -150,13 +149,13 @@ EffectFactory::Impl::CreateEffect(
 
 		// Skinned Effect does not have an ambient material color, or per-vertex color support
 
-		XMVECTOR color = XMLoadFloat3(&info.diffuseColor);
-		effect->SetDiffuseColor(color);
+		XMVECTOR color = XMLoadFloat3(&info.diffusecolour);
+		effect->SetDiffusecolour(color);
 
-		if (info.specularColor.x != 0 || info.specularColor.y != 0 || info.specularColor.z != 0)
+		if (info.specularcolour.x != 0 || info.specularcolour.y != 0 || info.specularcolour.z != 0)
 		{
-			color = XMLoadFloat3(&info.specularColor);
-			effect->SetSpecularColor(color);
+			color = XMLoadFloat3(&info.specularcolour);
+			effect->SetSpecularcolour(color);
 			effect->SetSpecularPower(info.specularPower);
 		}
 		else
@@ -164,10 +163,10 @@ EffectFactory::Impl::CreateEffect(
 			effect->DisableSpecular();
 		}
 
-		if (info.emissiveColor.x != 0 || info.emissiveColor.y != 0 || info.emissiveColor.z != 0)
+		if (info.emissivecolour.x != 0 || info.emissivecolour.y != 0 || info.emissivecolour.z != 0)
 		{
-			color = XMLoadFloat3(&info.emissiveColor);
-			effect->SetEmissiveColor(color);
+			color = XMLoadFloat3(&info.emissivecolour);
+			effect->SetEmissivecolour(color);
 		}
 
 		if (diffuseTextureIndex != -1)
@@ -208,18 +207,18 @@ EffectFactory::Impl::CreateEffect(
 			}
 		}
 
-		if (info.perVertexColor)
+		if (info.perVertexcolour)
 		{
-			effectflags |= EffectFlags::VertexColor;
+			effectflags |= EffectFlags::Vertexcolour;
 		}
 
-		auto effect = std::make_shared<DualTextureEffect>(mDevice.Get(), effectflags, derivedPSD);
+		auto effect = std::make_shared<DualTextureEffect>(mDevice.get(), effectflags, derivedPSD);
 
 		// Dual texture effect doesn't support lighting (usually it's lightmaps)
 		effect->SetAlpha(info.alphaValue);
 
-		XMVECTOR color = XMLoadFloat3(&info.diffuseColor);
-		effect->SetDiffuseColor(color);
+		XMVECTOR color = XMLoadFloat3(&info.diffusecolour);
+		effect->SetDiffusecolour(color);
 
 		if (diffuseTextureIndex != -1)
 		{
@@ -273,9 +272,9 @@ EffectFactory::Impl::CreateEffect(
 			effectflags |= EffectFlags::Fog;
 		}
 
-		if (info.perVertexColor)
+		if (info.perVertexcolour)
 		{
-			effectflags |= EffectFlags::VertexColor;
+			effectflags |= EffectFlags::Vertexcolour;
 		}
 
 		if (info.biasedVertexNormals)
@@ -297,7 +296,7 @@ EffectFactory::Impl::CreateEffect(
 			}
 		}
 
-		auto effect = std::make_shared<NormalMapEffect>(mDevice.Get(), effectflags, derivedPSD, (specularTextureIndex != -1));
+		auto effect = std::make_shared<NormalMapEffect>(mDevice.get(), effectflags, derivedPSD, (specularTextureIndex != -1));
 
 		effect->EnableDefaultLighting();
 
@@ -305,13 +304,13 @@ EffectFactory::Impl::CreateEffect(
 
 		// NormalMap Effect does not have an ambient material color
 
-		XMVECTOR color = XMLoadFloat3(&info.diffuseColor);
-		effect->SetDiffuseColor(color);
+		XMVECTOR color = XMLoadFloat3(&info.diffusecolour);
+		effect->SetDiffusecolour(color);
 
-		if (info.specularColor.x != 0 || info.specularColor.y != 0 || info.specularColor.z != 0)
+		if (info.specularcolour.x != 0 || info.specularcolour.y != 0 || info.specularcolour.z != 0)
 		{
-			color = XMLoadFloat3(&info.specularColor);
-			effect->SetSpecularColor(color);
+			color = XMLoadFloat3(&info.specularcolour);
+			effect->SetSpecularcolour(color);
 			effect->SetSpecularPower(info.specularPower);
 		}
 		else
@@ -319,10 +318,10 @@ EffectFactory::Impl::CreateEffect(
 			effect->DisableSpecular();
 		}
 
-		if (info.emissiveColor.x != 0 || info.emissiveColor.y != 0 || info.emissiveColor.z != 0)
+		if (info.emissivecolour.x != 0 || info.emissivecolour.y != 0 || info.emissivecolour.z != 0)
 		{
-			color = XMLoadFloat3(&info.emissiveColor);
-			effect->SetEmissiveColor(color);
+			color = XMLoadFloat3(&info.emissivecolour);
+			effect->SetEmissivecolour(color);
 		}
 
 		if (diffuseTextureIndex != -1)
@@ -361,9 +360,9 @@ EffectFactory::Impl::CreateEffect(
 			effectflags |= EffectFlags::Fog;
 		}
 
-		if (info.perVertexColor)
+		if (info.perVertexcolour)
 		{
-			effectflags |= EffectFlags::VertexColor;
+			effectflags |= EffectFlags::Vertexcolour;
 		}
 
 		if (diffuseTextureIndex != -1)
@@ -389,20 +388,20 @@ EffectFactory::Impl::CreateEffect(
 			}
 		}
 
-		auto effect = std::make_shared<BasicEffect>(mDevice.Get(), effectflags, derivedPSD);
+		auto effect = std::make_shared<BasicEffect>(mDevice.get(), effectflags, derivedPSD);
 
 		effect->EnableDefaultLighting();
 
 		effect->SetAlpha(info.alphaValue);
 
 		// Basic Effect does not have an ambient material color
-		XMVECTOR color = XMLoadFloat3(&info.diffuseColor);
-		effect->SetDiffuseColor(color);
+		XMVECTOR color = XMLoadFloat3(&info.diffusecolour);
+		effect->SetDiffusecolour(color);
 
-		if (info.specularColor.x != 0 || info.specularColor.y != 0 || info.specularColor.z != 0)
+		if (info.specularcolour.x != 0 || info.specularcolour.y != 0 || info.specularcolour.z != 0)
 		{
-			color = XMLoadFloat3(&info.specularColor);
-			effect->SetSpecularColor(color);
+			color = XMLoadFloat3(&info.specularcolour);
+			effect->SetSpecularcolour(color);
 			effect->SetSpecularPower(info.specularPower);
 		}
 		else
@@ -410,10 +409,10 @@ EffectFactory::Impl::CreateEffect(
 			effect->DisableSpecular();
 		}
 
-		if (info.emissiveColor.x != 0 || info.emissiveColor.y != 0 || info.emissiveColor.z != 0)
+		if (info.emissivecolour.x != 0 || info.emissivecolour.y != 0 || info.emissivecolour.z != 0)
 		{
-			color = XMLoadFloat3(&info.emissiveColor);
-			effect->SetEmissiveColor(color);
+			color = XMLoadFloat3(&info.emissivecolour);
+			effect->SetEmissivecolour(color);
 		}
 
 		if (diffuseTextureIndex != -1)
@@ -473,18 +472,18 @@ EffectFactory::EffectFactory(_In_ ID3D12DescriptorHeap* textureDescriptors, _In_
 		throw std::exception("EffectFactory::CreateEffect requires a SAMPLER descriptor heap for samplerDescriptors.");
 	}
 
-	ComPtr<ID3D12Device> device;
+	wil::com_ptr<ID3D12Device> device;
 #if defined(_XBOX_ONE) && defined(_TITLE)
-	textureDescriptors->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+	textureDescriptors->GetDevice(IID_GRAPHICS_PPV_ARGS(device.addressof()));
 #else
-	HRESULT hresult = textureDescriptors->GetDevice(IID_PPV_ARGS(device.GetAddressOf()));
+	HRESULT hresult = textureDescriptors->GetDevice(IID_PPV_ARGS(device.addressof()));
 	if (FAILED(hresult))
 	{
 		throw com_exception(hresult);
 	}
 #endif
 
-	pImpl = std::make_shared<Impl>(device.Get(), textureDescriptors, samplerDescriptors);
+	pImpl = std::make_shared<Impl>(device.get(), textureDescriptors, samplerDescriptors);
 }
 
 EffectFactory::~EffectFactory()

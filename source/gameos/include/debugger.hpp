@@ -60,7 +60,7 @@ extern uint32_t gScreenBMP;
 void __stdcall WalkStack(
 	uint32_t* RoutineAddresses, uint32_t NumberOfLevels, uint32_t IgnoreLevels);
 PSTR __stdcall DecodeAddress(uint32_t Address, uint8_t brief /* = true*/);
-void __stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
+void __stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t colour);
 
 typedef struct _MenuItem
 {
@@ -103,13 +103,13 @@ typedef struct _TextureHeap
 	int32_t Y1;
 	int32_t X2;
 	int32_t Y2;
-	uint32_t Handle;
+	uint32_t handle;
 } TextureHeap;
 
 extern TextureHeap* pTextureHeap;
 extern uint32_t SelectedHandle;
 extern uint32_t TextureToUnload;
-uint8_t __stdcall CheckWindow(void);
+bool __stdcall CheckWindow(void);
 
 //
 // Main Debugger Screens
@@ -237,7 +237,7 @@ extern uint32_t gDisableVertexBlending;
 //
 // Debugger window variables
 //
-extern int32_t DbTopX, DbTopY;
+extern int32_t Dbtopx, Dbtopy;
 extern int32_t DbMaxX, DbMaxY, DbMinX;
 
 extern uint32_t TopStatistics;
@@ -259,16 +259,14 @@ void __stdcall UpdateDebugger(void);
 void __stdcall InitDebugger(void);
 void __stdcall EndRenderMode(void);
 void __stdcall DestroyDebugger(void);
-void __stdcall SpewToDebugger(PSTR Message);
-int32_t __stdcall GetMipmapUsed(
-	uint32_t Handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
+void __stdcall SpewToDebugger(PSTR message);
+int32_t __stdcall GetMipmapUsed(uint32_t handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
 void __stdcall ShowFrameGraphs(void);
 void __stdcall UpdateDebugMouse(void);
 void __stdcall UpdateDebugWindow(void);
 void __stdcall InitTextDisplay(void);
-void __stdcall DrawText(uint32_t Color, PSTR String);
-void __stdcall DrawSquare(
-	int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color);
+void __stdcall DrawText(uint32_t colour, PSTR string);
+void __stdcall DrawSquare(int32_t topx, int32_t topy, int32_t width, int32_t height, uint32_t colour);
 void __stdcall DrawChr(char Chr);
 
 #endif

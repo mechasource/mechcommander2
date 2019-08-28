@@ -52,7 +52,7 @@ struct CMTListNode
 #pragma pack(pop)
 
 //
-// Handle typedefs
+// handle typedefs
 //
 typedef CMTListNode* MTListNodeHandle;
 

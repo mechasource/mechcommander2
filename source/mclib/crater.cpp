@@ -103,16 +103,16 @@ CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, const std::wstr
 	//---------------------------------------------------------
 	// Setup Crater Texture handles
 	craterTextureHandles = (uint32_t*)malloc(sizeof(uint32_t) * numCraterTextures);
-	memset((puint8_t)craterTextureHandles, 0xff, sizeof(uint32_t) * numCraterTextures);
+	memset((uint8_t*)craterTextureHandles, 0xff, sizeof(uint32_t) * numCraterTextures);
 	craterTextureIndices = (uint32_t*)malloc(sizeof(uint32_t) * numCraterTextures);
-	memset((puint8_t)craterTextureIndices, 0xff, sizeof(uint32_t) * numCraterTextures);
+	memset((uint8_t*)craterTextureIndices, 0xff, sizeof(uint32_t) * numCraterTextures);
 	//-----------------------------------------------------
 	// Preload all of the craters for the mission.
 	// This should just be one texture with all of the craters on it
 	// and a generic set of UVs to mark each one.
 	for (size_t i = 0; i < numCraterTextures; i++)
 	{
-		char craterName[1024];
+		wchar_t craterName[1024];
 		sprintf(craterName, "defaults\\feet%04d", i);
 		FullPathFileName craterPath;
 		craterPath.init(texturePath, craterName, ".tga");
@@ -416,8 +416,8 @@ CraterManager::render(void)
 					// FOG time.  Set Render state to FOG on!
 					if (useFog)
 					{
-						uint32_t fogColor = eye->fogColor;
-						gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+						uint32_t fogcolour = eye->fogcolour;
+						gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 					}
 					else
 					{

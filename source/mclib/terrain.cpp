@@ -66,7 +66,7 @@ int32_t terrainLineChanged = 0;
 
 MapDataPtr Terrain::mapData = nullptr;
 TerrainTexturesPtr Terrain::terrainTextures = nullptr;
-TerrainColorMapPtr Terrain::terrainTextures2 = nullptr;
+TerraincolourMapPtr Terrain::terrainTextures2 = nullptr;
 
 const int32_t Terrain::verticesBlockSide = 20; // Changes for new terrain?
 int32_t Terrain::blocksMapSide = 0; // Calced during load.
@@ -139,7 +139,7 @@ TerrainPtr land = nullptr;
 int32_t* usedBlockList; // Used to determine what objects to deal with.
 int32_t* moverBlockList;
 
-uint32_t blockMemSize = 0; // Misc Flags.
+uint32_t blockMemSize = 0; // Misc flags.
 bool useOldProject = FALSE;
 bool projectAll = FALSE;
 bool useClouds = false;
@@ -301,16 +301,16 @@ Terrain::init(PacketFile* pakFile, int32_t whichPacket, uint32_t visibleVertices
 
 //---------------------------------------------------------------------------
 void
-Terrain::getColorMapName(FitIniFile* file)
+Terrain::getcolourMapName(FitIniFile* file)
 {
 	if (file)
 	{
-		if (file->seekBlock("ColorMap") == NO_ERROR)
+		if (file->seekBlock("colourMap") == NO_ERROR)
 		{
-			char mapName[1024];
-			if (file->readIdString("ColorMapName", mapName, 1023) == NO_ERROR)
+			wchar_t mapName[1024];
+			if (file->readIdString("colourMapName", mapName, 1023) == NO_ERROR)
 			{
-				colorMapName = new char[strlen(mapName) + 1];
+				colorMapName = new wchar_t[strlen(mapName) + 1];
 				strcpy(colorMapName, mapName);
 				return;
 			}
@@ -321,7 +321,7 @@ Terrain::getColorMapName(FitIniFile* file)
 
 //---------------------------------------------------------------------------
 void
-Terrain::setColorMapName(const std::wstring_view& mapName)
+Terrain::setcolourMapName(const std::wstring_view& mapName)
 {
 	if (colorMapName)
 	{
@@ -330,19 +330,19 @@ Terrain::setColorMapName(const std::wstring_view& mapName)
 	}
 	if (mapName)
 	{
-		colorMapName = new char[strlen(mapName) + 1];
+		colorMapName = new wchar_t[strlen(mapName) + 1];
 		strcpy(colorMapName, mapName);
 	}
 }
 
 //---------------------------------------------------------------------------
 void
-Terrain::saveColorMapName(FitIniFile* file)
+Terrain::savecolourMapName(FitIniFile* file)
 {
 	if (file && colorMapName)
 	{
-		file->writeBlock("ColorMap");
-		file->writeIdString("ColorMapName", colorMapName);
+		file->writeBlock("colourMap");
+		file->writeIdString("colourMapName", colorMapName);
 	}
 }
 
@@ -379,7 +379,7 @@ Terrain::init(uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_t visible
 	// Startup the Terrain Texture Maps
 	if (!terrainTextures)
 	{
-		char baseName[256];
+		wchar_t baseName[256];
 		if (pakFile)
 		{
 			_splitpath(pakFile->getFilename(), nullptr, nullptr, baseName, nullptr);
@@ -395,24 +395,24 @@ Terrain::init(uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_t visible
 	if (!pakFile && !realVerticesMapSide)
 		return NO_ERROR;
 	//-----------------------------------------------------------------
-	// Startup the Terrain Color Map
+	// Startup the Terrain colour Map
 	if (!terrainTextures2 && pakFile)
 	{
-		char name[1024];
+		wchar_t name[1024];
 		_splitpath(pakFile->getFilename(), nullptr, nullptr, name, nullptr);
-		terrainName = new char[strlen(name) + 1];
+		terrainName = new wchar_t[strlen(name) + 1];
 		strcpy(terrainName, name);
 		if (colorMapName)
 			strcpy(name, colorMapName);
-		FullPathFileName tgaColorMapName;
-		tgaColorMapName.init(texturePath, name, ".tga");
-		FullPathFileName tgaColorMapBurninName;
-		tgaColorMapBurninName.init(texturePath, name, ".burnin.tga");
-		FullPathFileName tgaColorMapJPGName;
-		tgaColorMapJPGName.init(texturePath, name, ".burnin.jpg");
-		if (fileExists(tgaColorMapName) || fileExists(tgaColorMapBurninName) || fileExists(tgaColorMapJPGName))
+		FullPathFileName tgacolourMapName;
+		tgacolourMapName.init(texturePath, name, ".tga");
+		FullPathFileName tgacolourMapBurninName;
+		tgacolourMapBurninName.init(texturePath, name, ".burnin.tga");
+		FullPathFileName tgacolourMapJPGName;
+		tgacolourMapJPGName.init(texturePath, name, ".burnin.jpg");
+		if (fileExists(tgacolourMapName) || fileExists(tgacolourMapBurninName) || fileExists(tgacolourMapJPGName))
 		{
-			terrainTextures2 = new TerrainColorMap; // Otherwise, this will stay
+			terrainTextures2 = new TerraincolourMap; // Otherwise, this will stay
 				// nullptr and we know not to
 				// use them
 		}
@@ -470,7 +470,7 @@ Terrain::init(uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_t visible
 	//-------------------------------------------------------------------
 	initMapCellArrays();
 	//-----------------------------------------------------------------
-	// Startup the Terrain Color Map
+	// Startup the Terrain colour Map
 	if (terrainTextures2 && !(terrainTextures2->colorMapStarted))
 	{
 		if (colorMapName)
@@ -657,7 +657,7 @@ int32_t
 Terrain::update(void)
 {
 	//-----------------------------------------------------------------
-	// Startup the Terrain Color Map
+	// Startup the Terrain colour Map
 	if (terrainTextures2 && !(terrainTextures2->colorMapStarted))
 	{
 		if (colorMapName)
@@ -744,18 +744,18 @@ Terrain::getOverlay(int32_t tileR, int32_t tileC, enum Overlays& type, uint32_t&
 
 //---------------------------------------------------------------------------
 void
-Terrain::setVertexHeight(int32_t VertexIndex, float Val)
+Terrain::setVertexheight(int32_t VertexIndex, float Val)
 {
 	if (VertexIndex > -1 && VertexIndex < realVerticesMapSide * realVerticesMapSide)
-		mapData->setVertexHeight(VertexIndex, Val);
+		mapData->setVertexheight(VertexIndex, Val);
 }
 
 //---------------------------------------------------------------------------
 float
-Terrain::getVertexHeight(int32_t VertexIndex)
+Terrain::getVertexheight(int32_t VertexIndex)
 {
 	if (VertexIndex > -1 && VertexIndex < realVerticesMapSide * realVerticesMapSide)
-		return mapData->getVertexHeight(VertexIndex);
+		return mapData->getVertexheight(VertexIndex);
 	return -1.f;
 }
 
@@ -770,7 +770,7 @@ Terrain::render(void)
 	//-----------------------------------
 	// Draw resulting terrain quads
 	TerrainQuadPtr currentQuad = quadList;
-	uint32_t fogColor = eye->fogColor;
+	uint32_t fogcolour = eye->fogcolour;
 	for (size_t i = 0; i < numberQuads; i++)
 	{
 		if (drawTerrainTiles)
@@ -785,7 +785,7 @@ Terrain::render(void)
 				gos_SetRenderState(gos_State_Fog, 0);
 			currentQuad->drawLine();
 			if (useFog)
-				gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+				gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 		}
 		else if (DrawDebugCells)
 		{
@@ -793,7 +793,7 @@ Terrain::render(void)
 				gos_SetRenderState(gos_State_Fog, 0);
 			currentQuad->drawDebugCellLine();
 			if (useFog)
-				gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+				gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 		}
 		else if (drawLOSGrid)
 		{
@@ -801,7 +801,7 @@ Terrain::render(void)
 				gos_SetRenderState(gos_State_Fog, 0);
 			currentQuad->drawLOSLine();
 			if (useFog)
-				gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+				gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 		}
 		currentQuad++;
 	}
@@ -1364,7 +1364,7 @@ Terrain::getHighestVertex(int32_t& tileR, int32_t& tileC)
 	float highest = -9999999.; // an absurdly small number
 	for (size_t i = 0; i < realVerticesMapSide * realVerticesMapSide; ++i)
 	{
-		float tmp = getVertexHeight(i);
+		float tmp = getVertexheight(i);
 		if (tmp > highest)
 		{
 			highest = tmp;
@@ -1382,7 +1382,7 @@ Terrain::getLowestVertex(int32_t& tileR, int32_t& tileC)
 	float lowest = 9999999.; // an absurdly big number
 	for (size_t i = 0; i < realVerticesMapSide * realVerticesMapSide; ++i)
 	{
-		float tmp = getVertexHeight(i);
+		float tmp = getVertexheight(i);
 		if (tmp < lowest)
 		{
 			lowest = tmp;

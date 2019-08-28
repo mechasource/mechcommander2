@@ -45,7 +45,7 @@
 #include "mission.h"
 #endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 
@@ -473,7 +473,7 @@ Carnage::handleStaticCollision(void)
 		//-------------------------------------------------------------------------
 		// We must now move out into other tiles for the artillery strike to
 		// work. Remember, Its pretty big! Just grab the nine vertices around
-		// this one.  Problems arise when on Block border.  Handle it.
+		// this one.  Problems arise when on Block border.  handle it.
 		int32_t topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
 		int32_t currentBlockNumber = topLeftBlockNumber;
 		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
@@ -842,7 +842,7 @@ Carnage::Save(PacketFilePtr file, int32_t packetNum)
 	CarnageData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(CarnageData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(CarnageData), STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------

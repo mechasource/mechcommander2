@@ -47,21 +47,21 @@ struct TerrainTXM
 struct MC_TerrainType
 {
 	int32_t terrainId;
-	char* terrainName;
-	char* maskName;
+	wchar_t* terrainName;
+	wchar_t* maskName;
 	int32_t terrainPriority;
-	puint8_t* textureData;
-	puint8_t* maskData;
+	uint8_t** textureData;
+	uint8_t** maskData;
 	int32_t baseTXMIndex; // Index of Highest MIP Level of Texture.
-	uint32_t terrainMapRGB; // Rgb Color used for TacMap.
+	uint32_t terrainMapRGB; // Rgb colour used for TacMap.
 	int32_t nameId;
 };
 
 struct MC_DetailType
 {
 	int32_t detailId;
-	char* detailName;
-	puint8_t* detailData;
+	wchar_t* detailName;
+	uint8_t** detailData;
 	int32_t numDetails;
 	float frameRate;
 	float tilingFactor; // How often does texture repeat
@@ -71,11 +71,11 @@ struct MC_DetailType
 struct MC_OverlayType
 {
 	int32_t overlayId;
-	char* overlayName;
+	wchar_t* overlayName;
 	int32_t numTextures;
 	int32_t oldOverlayId;
 	bool isMLRAppearance;
-	puint8_t* overlayData;
+	uint8_t** overlayData;
 	int32_t baseTXMIndex;
 	uint32_t terrainMapRGB;
 };
@@ -119,7 +119,7 @@ protected:
 
 	bool quickLoad; // Checks for list o magic textures and then checks that
 		// each magic texture exists.
-	char* localBaseName;
+	wchar_t* localBaseName;
 	MechFile* listTransitionFile;
 
 	static bool terrainTexturesInstrumented;
@@ -135,13 +135,13 @@ protected:
 
 	int32_t loadTextureMemory(const std::wstring_view& textureName, int32_t mipSize);
 	int32_t loadOverlayMemory(const std::wstring_view& overlayName);
-	int32_t textureFromMemory(puint8_t ourRam, int32_t mipSize);
+	int32_t textureFromMemory(uint8_t* ourRam, int32_t mipSize);
 	int32_t loadDetailMemory(const std::wstring_view& detailName, int32_t mipSize);
-	int32_t textureFromMemoryAlpha(puint8_t ourRam, int32_t mipSize);
+	int32_t textureFromMemoryAlpha(uint8_t* ourRam, int32_t mipSize);
 
 	int32_t createTransition(uint32_t typeInfo, uint32_t overlayInfo = 0);
-	void combineTxm(puint8_t dest, uint32_t binNumber, int32_t type, int32_t mipLevel);
-	void combineOverlayTxm(puint8_t dest, int32_t type, int32_t mipLevel);
+	void combineTxm(uint8_t* dest, uint32_t binNumber, int32_t type, int32_t mipLevel);
+	void combineOverlayTxm(uint8_t* dest, int32_t type, int32_t mipLevel);
 
 public:
 	void init(void)

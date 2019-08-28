@@ -155,7 +155,7 @@ public:
 			}
 			else
 			{
-				assert(false);
+				_ASSERT(false);
 				status = NEXT;
 			}
 		}

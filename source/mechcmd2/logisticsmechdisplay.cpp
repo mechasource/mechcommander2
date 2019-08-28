@@ -70,7 +70,7 @@ LogisticsMechDisplay::init()
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
 	mechCamera.init(rects[1].left(), rects[2].top(), rects[2].left(), rects[2].bottom());
-	char blockName[64];
+	wchar_t blockName[64];
 	for (size_t i = 0; i < 3; i++)
 	{
 		sprintf(blockName, "AttributeMeter%ld", i);
@@ -92,14 +92,14 @@ LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 		{
 			textObjects[0].setText(pCurMech->getChassisName());
 			textObjects[1].setText(pCurMech->getName());
-			char text[64];
-			char tmpStr[64];
+			wchar_t text[64];
+			wchar_t tmpStr[64];
 			cLoadString(IDS_MB_MECH_WEIGHT, tmpStr, 63);
 			sprintf(text, tmpStr, pCurMech->getMaxWeight(), (const std::wstring_view&)pCurMech->getMechClass());
 			textObjects[3].setText(text);
-			int32_t tmpColor;
-			textObjects[2].setText(pCurMech->getVariant()->getOptimalRangeString(tmpColor));
-			textObjects[2].setColor(tmpColor);
+			int32_t tmpcolour;
+			textObjects[2].setText(pCurMech->getVariant()->getOptimalRangeString(tmpcolour));
+			textObjects[2].setcolour(tmpcolour);
 			sprintf(text, "%ld", pCurMech->getArmor());
 			textObjects[4].setText(text);
 			sprintf(text, "%ld", pCurMech->getDisplaySpeed());
@@ -115,7 +115,7 @@ LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 			index = fileName.ReverseFind('\\');
 			fileName = fileName.Right(fileName.Length() - index - 1);
 			mechCamera.setMech(
-				fileName, prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
+				fileName, prefs.basecolour, prefs.highlightcolour, prefs.highlightcolour);
 			mechCamera.setScale(pMech->getVariant()->getChassis()->getScale());
 			componentListBox.setMech(pCurMech->getVariant());
 		}

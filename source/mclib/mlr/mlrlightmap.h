@@ -7,15 +7,15 @@
 #ifndef MLR_MLRLIGHTMAP_HPP
 #define MLR_MLRLIGHTMAP_HPP
 
-#include <stuff/vector2d.hpp>
-#include <mlr/mlrstate.hpp>
-#include <mlr/mlrprimitivebase.hpp>
+#include "stuff/vector2d.h"
+#include "mlr/mlrstate.h"
+#include "mlr/mlrprimitivebase.h"
 
 namespace Stuff
 {
 class Point3D;
-class RGBAColor;
-class RGBColor;
+class RGBAcolour;
+class RGBcolour;
 class Matrix4D;
 } // namespace Stuff
 
@@ -32,7 +32,7 @@ class GOSVertexPool;
 //#########################    MLRLightMap    ##############################
 //##########################################################################
 
-class MLRLightMap : public Stuff::RegisteredClass
+class MLRLightMap // : public Stuff::RegisteredClass
 {
 public:
 	static void __stdcall InitializeClass(void);
@@ -48,7 +48,7 @@ public:
 		MasterRenderState,
 		LightMapRenderState,
 		Polygon,
-		PolygonWithColor
+		PolygonWithcolour
 	};
 
 	static void DrawLightMaps(MLRSorter*);
@@ -72,11 +72,11 @@ public:
 	{
 		// Check_Object(this);
 		// Check_Object(stream);
-		stream << (withcolour ? PolygonWithColor : Polygon);
+		stream << (withcolour ? PolygonWithcolour : Polygon);
 	}
 
-#if _CONSIDERED_TEMPORARILY_DISABLED
-	inline void AddColor(Stuff::RGBAColor color)
+#if CONSIDERED_DISABLED
+	inline void Addcolour(Stuff::RGBAcolour color)
 	{
 		// Check_Object(this);
 		// Check_Object(stream);
@@ -84,14 +84,14 @@ public:
 	}
 #endif
 
-	inline void AddColor(float red, float green, float blue, float alpha)
+	inline void Addcolour(float red, float green, float blue, float alpha)
 	{
 		// Check_Object(this);
 		// Check_Object(stream);
 		stream << red << green << blue << alpha;
 	}
 
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 	inline void AddCoord(Stuff::Point3D coord)
 	{
 		// Check_Object(this);

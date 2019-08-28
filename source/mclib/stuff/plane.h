@@ -10,9 +10,9 @@
 #ifndef _PLANE_HPP_
 #define _PLANE_HPP_
 
-#include <stuff/normal.hpp>
-#include <stuff/point3d.hpp>
-//#include <stuff/marray.hpp>
+#include "stuff/normal.h"
+#include "stuff/point3d.h"
+//#include "stuff/marray.h"
 
 namespace Stuff
 {
@@ -21,7 +21,7 @@ class Plane;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::Plane& plane);
+Spew(const std::wstring_view& group, const Stuff::Plane& plane);
 #endif
 
 namespace Stuff
@@ -106,7 +106,7 @@ public:
 	bool Intersects(const OBB& box, float thickness = SMALL) const;
 
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Plane& plane);
+	friend void ::Spew(const std::wstring_view& group, const Plane& plane);
 #endif
 	void TestInstance(void) const
 	{

@@ -125,7 +125,7 @@ public:
 	uint32_t endFrame;
 
 	ActorState currentShapeTypeId;
-	puint8_t fadeTable;
+	uint8_t* fadeTable;
 	bool realBuildingDamage;
 	bool changedTypeId;
 
@@ -176,7 +176,7 @@ public:
 
 	virtual void setDamageLvl(uint32_t damage);
 
-	void setFadeTable(puint8_t fTable) { fadeTable = fTable; }
+	void setFadeTable(uint8_t* fTable) { fadeTable = fTable; }
 
 	void setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t selected);
 

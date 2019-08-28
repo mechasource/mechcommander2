@@ -19,7 +19,7 @@ class Vector3D;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::Vector3D& vector);
+Spew(const std::wstring_view& group, const Stuff::Vector3D& vector);
 #endif
 
 namespace Stuff
@@ -97,9 +97,11 @@ enum Axes : uint32_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#if CONSIDERED_UNUSED
 Vector3 alt1;
 XMFLOAT3 alt2;
 XMVECTOR alt3;
+#endif
 
 class Vector3D
 {
@@ -428,7 +430,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Vector3D& vector);
+	friend void ::Spew(const std::wstring_view& group, const Vector3D& vector);
 #endif
 	static bool TestClass(void);
 };
@@ -436,12 +438,12 @@ public:
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector3D functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void
-Convert_From_Ascii(PCSTR str, Vector3D* vector_3D);
+Convert_From_Ascii(const std::wstring_view& str, Vector3D* vector_3D);
 } // namespace Stuff
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, Stuff::Vector3D* output)
 {

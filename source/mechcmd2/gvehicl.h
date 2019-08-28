@@ -296,16 +296,16 @@ public:
 
 	void updateMoveStateGoal(void);
 
-	bool updateMovePath(float& newRotate, char& newThrottleSetting, int32_t& newMoveState,
+	bool updateMovePath(float& newRotate, wchar_t& newThrottleSetting, int32_t& newMoveState,
 		int32_t& minThrottle, int32_t& maxThrottle);
 
-	bool netUpdateMovePath(float& newRotate, char& newThrottleSetting, int32_t& newMoveState,
+	bool netUpdateMovePath(float& newRotate, wchar_t& newThrottleSetting, int32_t& newMoveState,
 		int32_t& minThrottle, int32_t& maxThrottle);
 
-	void setNextMovePath(char& newThrottleSetting);
+	void setNextMovePath(wchar_t& newThrottleSetting);
 
 	void setControlSettings(
-		float& newRotate, char& newThrottleSetting, int32_t& minThrottle, int32_t& maxThrottle);
+		float& newRotate, wchar_t& newThrottleSetting, int32_t& minThrottle, int32_t& maxThrottle);
 
 	void updateTurret(float newRotate);
 

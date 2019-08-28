@@ -30,7 +30,7 @@
 #endif
 
 #include <string.h>
-#include "gameos.hpp"
+//#include "gameos.hpp"
 //----------------------------------------------------------------------
 enum MC_TextureKey
 {
@@ -75,8 +75,7 @@ typedef struct _MC_VertexArrayNode
 public:
 	uint32_t textureIndex;
 	uint32_t flags; // Marks texture render state and terrain or not, etc.
-	int32_t numVertices; // Number of vertices this texture will be used to draw
-		// this frame.
+	int32_t numVertices; // Number of vertices this texture will be used to draw this frame.
 	gos_VERTEX* currentVertex; // CurrentVertex data being added.
 	gos_VERTEX* vertices; // Pointer into the vertex Pool for this texture to draw.
 
@@ -99,10 +98,10 @@ typedef struct _MC_TextureNode
 	friend MC_TextureManager;
 
 protected:
-	uint32_t gosTextureHandle; // Handle returned by GOS
+	uint32_t gosTextureHandle; // handle returned by GOS
 
 public:
-	char* nodeName; // Used for Unique nodes so I can just return the handle!
+	wchar_t* nodeName; // Used for Unique nodes so I can just return the handle!
 	uint32_t uniqueInstance; // Texture is modifiable.  DO NOT CACHE OUT!!!!!!
 	uint32_t neverFLUSH; // Textures used by Userinput, etc.  DO NOT CACHE OUT!!!!!!
 	uint32_t numUsers; // Pushed up for each user using.
@@ -234,8 +233,8 @@ protected:
 	int32_t totalCacheMisses; //NUmber of times flush has been called.\
 
 	static gos_VERTEXManager* gvManager; // Stores arrays of vertices for draw.
-	static puint8_t lzBuffer1; // Used to compress/decompress textures from cache.
-	static puint8_t lzBuffer2; // Used to compress/decompress textures from cache.
+	static uint8_t* lzBuffer1; // Used to compress/decompress textures from cache.
+	static uint8_t* lzBuffer2; // Used to compress/decompress textures from cache.
 	/* iBufferRefCount is used to help determine if lzBuffer1&2 are valid. The
 	assumption is that if there are no valid MC_TextureManagers then lzBuffer1&2
 	are not valid. */
@@ -295,7 +294,7 @@ public:
 	//
 	// uniqueInstance is an ID for the instance of the texture. If its value
 	// matches that of an already existing instance of the texture, the handle
-	// of the existing instance will be returned. Used for Mech Coloration
+	// of the existing instance will be returned. Used for Mech colouration
 	// possibly, damage states, etc.
 	uint32_t loadTexture(const std::wstring_view& textureFullPathName, gos_TextureFormat key, uint32_t hints,
 		uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
@@ -576,7 +575,7 @@ public:
 			else // If we got here, something is really wrong
 			{
 #ifdef _DEBUG
-				PAUSE(("Flags do not match either set of vertex Data"));
+				PAUSE(("flags do not match either set of vertex Data"));
 #endif
 			}
 		}
@@ -645,7 +644,7 @@ public:
 			else // If we got here, something is really wrong
 			{
 #ifdef _DEBUG
-				PAUSE(("Flags do not match any set of untextured vertex Data"));
+				PAUSE(("flags do not match any set of untextured vertex Data"));
 #endif
 			}
 		}
@@ -668,7 +667,7 @@ public:
 	// Sends down the triangle lists
 	void renderLists(void);
 
-	uint32_t getWidth(uint32_t nodeId)
+	uint32_t getwidth(uint32_t nodeId)
 	{
 		if (nodeId != 0xffffffff)
 			return masterTextureNodes[nodeId].width;

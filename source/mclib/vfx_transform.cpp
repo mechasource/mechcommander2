@@ -1,6 +1,6 @@
 #include "vfx.h"
 
-extern char AlphaTable[256 * 256];
+extern wchar_t AlphaTable[256 * 256];
 extern enum { CPU_UNKNOWN,
 	CPU_PENTIUM,
 	CPU_MMX } Processor;
@@ -8,7 +8,7 @@ extern enum { CPU_UNKNOWN,
 // extern void memclear(PVOID Dest,int32_t Length);
 
 void
-CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32_t Height,
+CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t width, int32_t height,
 	int32_t Flip, int32_t Shrink);
 void
 AG_shape_fill(PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
@@ -40,14 +40,14 @@ typedef struct SHAPEHEADER
 // 0			End of line
 // 1			Skip next bytes
 // Bit 0 = 0	Repeat next byte [7654321] times
-// Bit 0 = 1	String packet [7654321] bytes
+// Bit 0 = 1	string packet [7654321] bytes
 //
 
-static uint32_t SourceWidth, tWidth, tHeight,
-	DestWidth; // Used for code optimizing
+static uint32_t Sourcewidth, twidth, theight,
+	Destwidth; // Used for code optimizing
 static int64_t xmask = -1;
 static uint32_t tempXmax, tempXmin;
-static uint32_t minX, minY, maxY, maxX, SkipLeft, NewWidth, StartofLine, StartofClip, EndofClip;
+static uint32_t minX, minY, maxY, maxX, SkipLeft, Newwidth, StartofLine, StartofClip, EndofClip;
 static uint32_t lines, paneX0, paneX1, paneY0, paneY1;
 static uintptr_t SourcePointer;
 static uintptr_t DestPointer;
@@ -84,7 +84,7 @@ AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum, int32_t
 		mov maxY, eax
 
 		}
-	tempWINDOW.buffer = (puint8_t)tempBuffer;
+	tempWINDOW.buffer = (uint8_t*)tempBuffer;
 	tempWINDOW.x_max = maxX - 1;
 	tempWINDOW.y_max = maxY - 1;
 	tempPANE.window = &tempWINDOW;
@@ -152,7 +152,7 @@ AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable, int32_t frameNum
 		mov maxY, eax
 
 		}
-	tempWINDOW.buffer = (puint8_t)tempBuffer;
+	tempWINDOW.buffer = (uint8_t*)tempBuffer;
 	tempWINDOW.x_max = maxX - 1;
 	tempWINDOW.y_max = maxY - 1;
 	tempPANE.window = &tempWINDOW;
@@ -193,23 +193,23 @@ AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable, int32_t frameNum
 }
 
 void
-CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32_t Height,
+CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t width, int32_t height,
 	int32_t Flip, int32_t ScaleUp)
 {
-	DestWidth = pane->window->x_max + 1;
+	Destwidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneX1 = (pane->x1 >= (int32_t)Destwidth) ? pane->window->x_max : pane->x1;
 	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	X += paneX0;
 	Y += paneY0;
 	SourcePointer = texture;
-	SourceWidth = Width;
+	Sourcewidth = width;
 	if (X < paneX0)
 	{
 		if (ScaleUp)
 		{
-			Width -= paneX0 - X;
+			width -= paneX0 - X;
 			if (Flip) // Zoomed IN
 				SourcePointer -= paneX0 - X;
 			else
@@ -217,7 +217,7 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		}
 		else
 		{
-			Width -= (paneX0 - X) * 2;
+			width -= (paneX0 - X) * 2;
 			if (Flip) // Zoomed OUT
 				SourcePointer -= (paneX0 - X) * 2;
 			else
@@ -229,46 +229,46 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 	{
 		if (ScaleUp)
 		{
-			Height -= paneY0 - Y;
-			SourcePointer += (paneY0 - Y) * Width;
+			height -= paneY0 - Y;
+			SourcePointer += (paneY0 - Y) * width;
 			Y = paneY0;
 		}
 		else
 		{
-			Height -= (paneY0 - Y) * 2;
-			SourcePointer += ((paneY0 - Y) * 2) * Width;
+			height -= (paneY0 - Y) * 2;
+			SourcePointer += ((paneY0 - Y) * 2) * width;
 			Y = paneY0;
 		}
 	}
 	if (ScaleUp)
 	{
-		if (X + Width > (paneX1 + 1))
+		if (X + width > (paneX1 + 1))
 		{
-			Width = paneX1 + 1 - X;
+			width = paneX1 + 1 - X;
 		}
 	}
 	else
 	{
-		if (X + (Width >> 1) > (paneX1 + 1))
+		if (X + (width >> 1) > (paneX1 + 1))
 		{
-			Width = (paneX1 + 1 - X) << 1;
+			width = (paneX1 + 1 - X) << 1;
 		}
 	}
 	if (ScaleUp)
 	{
-		if (Y + Height > (paneY1 + 1))
-			Height = paneY1 + 1 - Y;
+		if (Y + height > (paneY1 + 1))
+			height = paneY1 + 1 - Y;
 	}
 	else
 	{
-		if (Y + (Height >> 1) > (paneY1 + 1))
-			Height = (paneY1 + 1 - Y) << 1;
+		if (Y + (height >> 1) > (paneY1 + 1))
+			height = (paneY1 + 1 - Y) << 1;
 	}
-	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - Width)) || (Y <= (paneY0 - Height)) || (Width <= 0) || (Height <= 0))
+	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - width)) || (Y <= (paneY0 - height)) || (width <= 0) || (height <= 0))
 		return;
-	DestPointer = pane->window->buffer + X + Y * DestWidth;
-	tWidth = Width;
-	tHeight = Height;
+	DestPointer = pane->window->buffer + X + Y * Destwidth;
+	twidth = width;
+	theight = height;
 	_asm {
 
 		push ebp
@@ -283,11 +283,11 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		;
 		Not Flipped, Shrunk
 		;
-		mov ebx, tHeight
+		mov ebx, theight
 		mov edi, DestPointer
 
 		mov esi, SourcePointer
-		mov ebp, tWidth
+		mov ebp, twidth
 
 		shr ebx, 1
 		jz Done
@@ -310,14 +310,14 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		mov [edi-1], cl
 		jnz tl0
 
-		mov ecx, DestWidth
+		mov ecx, Destwidth
 		sub esi, edx
 
 		sub esi, edx
 		add edi, ecx
 
 		sub edi, edx
-		mov ecx, SourceWidth
+		mov ecx, Sourcewidth
 
 		mov ebp, edx
 		dec ebx
@@ -333,8 +333,8 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		UnFlipNormal:
 		mov edi, DestPointer
 		mov esi, SourcePointer
-		mov ebx, tHeight
-		mov ebp, tWidth
+		mov ebx, theight
+		mov ebp, twidth
 		xor eax, eax
 		mov edx, ebp
 
@@ -355,14 +355,14 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		dec ebp
 		jnz tl1
 
-		mov ecx, DestWidth
+		mov ecx, Destwidth
 		sub edi, edx
 
 		add edi, ecx
 		mov ebp, edx
 
 		sub esi, edx
-		mov ecx, SourceWidth
+		mov ecx, Sourcewidth
 
 		add esi, ecx
 		dec ebx
@@ -378,15 +378,15 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		;
 		Flipped, Shrunk
 		;
-		mov ebp, tWidth
-		mov ebx, tHeight
+		mov ebp, twidth
+		mov ebx, theight
 
 		shr ebp, 1
 		jz Done
 		shr ebx, 1
 		jz Done
 
-		mov eax, SourceWidth
+		mov eax, Sourcewidth
 		mov esi, SourcePointer
 
 		mov edi, DestPointer
@@ -408,14 +408,14 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		mov [edi-1], cl
 		jnz tl2
 
-		mov ecx, DestWidth
+		mov ecx, Destwidth
 		mov ebp, edx
 
 		add esi, edx
 		add edi, ecx
 
 		add esi, edx
-		mov ecx, SourceWidth
+		mov ecx, Sourcewidth
 
 		sub edi, edx
 		dec ebx
@@ -431,11 +431,11 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		;
 		FlipNormal:
 
-		mov eax, SourceWidth
+		mov eax, Sourcewidth
 		mov esi, SourcePointer
 		mov edi, DestPointer
-		mov ebp, tWidth
-		mov ebx, tHeight
+		mov ebp, twidth
+		mov ebx, theight
 		lea esi, [esi+eax-1]
 		xor eax, eax
 		mov edx, ebp
@@ -458,12 +458,12 @@ CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32
 		jnz tl3
 
 		sub edi, edx
-		mov ecx, DestWidth
+		mov ecx, Destwidth
 
 		mov ebp, edx
 		add edi, ecx
 
-		mov ecx, SourceWidth
+		mov ecx, Sourcewidth
 		add esi, edx
 
 		add esi, ecx
@@ -539,7 +539,7 @@ AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		nop
 
 		sub ecx, eax
-		mov DestWidth, eax
+		mov Destwidth, eax
 
 		setge bl
 
@@ -589,7 +589,7 @@ AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		mov eax, [esi+SHAPEHEADER.ymin-SIZE SHAPEHEADER]
 
 		sub ecx, eax							;
-		ecx = Height of sprite
+		ecx = height of sprite
 		add eax, edx							;
 		eax = top line
 
@@ -629,7 +629,7 @@ AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 	mov edx, paneX0
 
 	sub ebx, ecx							;
-	ebx = Width of sprite
+	ebx = width of sprite
 	add ecx, hotX						;
 	ecx = offset to left edge
 
@@ -649,7 +649,7 @@ AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		Work out screen position
 		;
 		//NowDraw:
-		imul DestWidth
+		imul Destwidth
 
 		add eax, ecx
 		xor ecx, ecx
@@ -732,7 +732,7 @@ AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		jmp lineLoop
 
 		EndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov edi, StartofLine
 
 		add edi, edx
@@ -811,7 +811,7 @@ AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		jbe Exit
 
 		ClippedX:
-		imul DestWidth
+		imul Destwidth
 
 		add edi, eax
 		mov eax, paneX0
@@ -897,7 +897,7 @@ AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 
 
 		cEndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov eax, EndofClip
 
 		add eax, edx
@@ -1001,7 +1001,7 @@ AG_shape_translate_fill(
 		nop
 
 		sub ecx, eax
-		mov DestWidth, eax
+		mov Destwidth, eax
 
 		setge bl
 
@@ -1051,7 +1051,7 @@ AG_shape_translate_fill(
 		mov eax, [esi+SHAPEHEADER.ymin-SIZE SHAPEHEADER]
 
 		sub ecx, eax							;
-		ecx = Height of sprite
+		ecx = height of sprite
 		add eax, edx							;
 		eax = top line
 
@@ -1091,7 +1091,7 @@ AG_shape_translate_fill(
 	mov edx, paneX0
 
 	sub ebx, ecx							;
-	ebx = Width of sprite
+	ebx = width of sprite
 	add ecx, hotX						;
 	ecx = offset to left edge
 
@@ -1111,7 +1111,7 @@ AG_shape_translate_fill(
 		Work out screen position
 		;
 		//NowDraw:
-		imul DestWidth
+		imul Destwidth
 
 		add eax, ecx
 		xor ecx, ecx
@@ -1229,7 +1229,7 @@ AG_shape_translate_fill(
 		jmp lineLoop
 
 		EndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov edi, StartofLine
 
 		add edi, edx
@@ -1310,7 +1310,7 @@ AG_shape_translate_fill(
 		jbe Exit
 
 		ClippedX:
-		imul DestWidth
+		imul Destwidth
 
 		add edi, eax
 		mov eax, paneX0
@@ -1399,7 +1399,7 @@ AG_shape_translate_fill(
 
 
 		cEndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov eax, EndofClip
 
 		add eax, edx

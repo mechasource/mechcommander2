@@ -21,7 +21,7 @@
 #include "dobjblck.h"
 #include "dgamelog.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //***************************************************************************
 
@@ -198,7 +198,7 @@ typedef struct _ScenarioMapCellInfo
 	bool road;
 	bool gate;
 	bool forest;
-	char mine;
+	wchar_t mine;
 	uint8_t specialType;
 	int16_t specialID;
 	bool passable;
@@ -351,13 +351,13 @@ typedef struct _MapCell
 			data |= MAPCELL_PRESERVED_MASK;
 	}
 
-	void setLocalHeight(uint32_t localElevation)
+	void setLocalheight(uint32_t localElevation)
 	{
 		data &= (MAPCELL_HEIGHT_MASK ^ 0xFFFFFFFF);
 		data |= (localElevation << MAPCELL_HEIGHT_SHIFT);
 	}
 
-	uint32_t getLocalHeight(void) { return ((data & MAPCELL_HEIGHT_MASK) >> MAPCELL_HEIGHT_SHIFT); }
+	uint32_t getLocalheight(void) { return ((data & MAPCELL_HEIGHT_MASK) >> MAPCELL_HEIGHT_SHIFT); }
 
 	void setDebug(uint32_t value)
 	{
@@ -524,7 +524,7 @@ public:
 	void init(int32_t h, int32_t w);
 
 	int32_t init(
-		int32_t curHeight, int32_t curWidth, int32_t curPlanet, MissionMapCellInfo* mapData);
+		int32_t curheight, int32_t curwidth, int32_t curPlanet, MissionMapCellInfo* mapData);
 
 	void setPassable(int32_t row, int32_t col, const std::wstring_view& footPrint, bool passable);
 
@@ -589,14 +589,14 @@ public:
 		map[row * width + col].setPreserved(preserved);
 	}
 
-	void setLocalHeight(int32_t row, int32_t col, uint32_t localElevation)
+	void setLocalheight(int32_t row, int32_t col, uint32_t localElevation)
 	{
-		map[row * width + col].setLocalHeight(localElevation);
+		map[row * width + col].setLocalheight(localElevation);
 	}
 
-	uint32_t getLocalHeight(int32_t row, int32_t col)
+	uint32_t getLocalheight(int32_t row, int32_t col)
 	{
-		return (map[row * width + col].getLocalHeight());
+		return (map[row * width + col].getLocalheight());
 	}
 
 	void setCellDebug(int32_t row, int32_t col, uint32_t value, uint32_t level)
@@ -749,9 +749,9 @@ public:
 		map[row * width + col].setBuildNotSet(set);
 	}
 
-	int32_t getHeight(void) { return (height); }
+	int32_t getheight(void) { return (height); }
 
-	int32_t getWidth(void) { return (width); }
+	int32_t getwidth(void) { return (width); }
 
 	bool inBounds(int32_t row, int32_t col)
 	{
@@ -808,7 +808,7 @@ typedef struct _PathStep
 	int16_t cell[2]; // obvious
 	float distanceToGoal; // dist, in meters, to goal from this step
 	Stuff::Vector3D destination; // world pos of this step
-	char direction; // 0 thru 7 direction into this step
+	wchar_t direction; // 0 thru 7 direction into this step
 	int16_t area;
 } PathStep;
 
@@ -847,7 +847,7 @@ public:
 
 	void clear(void);
 
-	void setDirection(int32_t stepNumber, char direction)
+	void setDirection(int32_t stepNumber, wchar_t direction)
 	{
 		stepList[stepNumber].direction = direction;
 	}
@@ -929,7 +929,7 @@ public:
 typedef struct _DoorLink
 {
 	int16_t doorIndex;
-	char doorSide;
+	wchar_t doorSide;
 	int32_t cost;
 	int32_t openCost;
 } DoorLink;
@@ -942,12 +942,12 @@ typedef struct _GlobalMapDoor
 	// Map layout data
 	int16_t row;
 	int16_t col;
-	char length; // in cells
+	wchar_t length; // in cells
 	bool open;
-	char teamID;
+	wchar_t teamID;
 	int16_t area[2];
 	int16_t areaCost[2];
-	char direction[2];
+	wchar_t direction[2];
 	int16_t numLinks[2];
 	DoorLinkPtr links[2];
 	//------------------
@@ -966,7 +966,7 @@ typedef GlobalMapDoor* GlobalMapDoorPtr;
 typedef struct _DoorInfo
 {
 	int16_t doorIndex;
-	char doorSide;
+	wchar_t doorSide;
 } DoorInfo;
 
 typedef DoorInfo* DoorInfoPtr;
@@ -999,10 +999,10 @@ typedef struct _GlobalMapArea
 	AreaType type;
 	int16_t numDoors;
 	int32_t ownerWID;
-	char teamID;
+	wchar_t teamID;
 	bool offMap;
 	bool open;
-	pint16_t cellsCovered;
+	int16_t* cellsCovered;
 } GlobalMapArea;
 
 #pragma pack()
@@ -1053,23 +1053,23 @@ public:
 	int32_t height; // in cells
 	int32_t width; // in cells
 	int32_t sectorDim; // in cells
-	int32_t sectorHeight; // in sectors
-	int32_t sectorWidth; // in sectors
+	int32_t sectorheight; // in sectors
+	int32_t sectorwidth; // in sectors
 	int32_t numAreas;
 	int32_t numDoors;
 	int32_t numDoorInfos;
 	int32_t numDoorLinks;
 
-	pint16_t areaMap;
+	int16_t* areaMap;
 	GlobalMapAreaPtr areas;
 	GlobalMapDoorPtr doors;
 	DoorInfoPtr doorInfos;
 	DoorLinkPtr doorLinks;
 	GlobalMapDoorPtr doorBuildList;
 #ifdef USE_PATH_COST_TABLE
-	puint8_t pathCostTable;
+	uint8_t* pathCostTable;
 #endif
-	puint8_t pathExistsTable;
+	uint8_t* pathExistsTable;
 
 	int32_t numSpecialAreas;
 	GlobalSpecialAreaInfo* specialAreas; // used when building data
@@ -1086,7 +1086,7 @@ public:
 	bool blank;
 	bool hover;
 	bool useClosedAreas;
-	char moverTeamID;
+	wchar_t moverTeamID;
 	bool badLoad;
 	bool calcedPathCost;
 
@@ -1113,8 +1113,8 @@ public:
 		height = 0;
 		width = 0;
 		sectorDim = 30;
-		sectorHeight = 0;
-		sectorWidth = 0;
+		sectorheight = 0;
+		sectorwidth = 0;
 		numAreas = 0;
 		areaMap = nullptr;
 		areas = nullptr;
@@ -1232,7 +1232,7 @@ public:
 
 	void resetStartDoor(int32_t startArea);
 
-	void setAreaTeamID(int32_t area, char teamID);
+	void setAreaTeamID(int32_t area, wchar_t teamID);
 
 	void setAreaOwnerWID(int32_t area, int32_t objWID);
 
@@ -1353,8 +1353,8 @@ public:
 	int32_t maxRow;
 	int32_t minCol;
 	int32_t maxCol;
-	int32_t maxWidth;
-	int32_t maxHeight;
+	int32_t maxwidth;
+	int32_t maxheight;
 	MoveMapNodePtr map;
 	int32_t* mapRowStartTable;
 	int32_t* mapRowTable;
@@ -1405,8 +1405,8 @@ public:
 	{
 		ULr = 0;
 		ULc = 0;
-		maxHeight = 0;
-		maxWidth = 0;
+		maxheight = 0;
+		maxwidth = 0;
 		height = 0;
 		width = 0;
 		minRow = 0;
@@ -1477,7 +1477,7 @@ public:
 
 	void setTarget(Stuff::Vector3D targetPos);
 
-	char getCost(int32_t row, int32_t col) { return (map[row * width + col].cost); }
+	wchar_t getCost(int32_t row, int32_t col) { return (map[row * width + col].cost); }
 
 	void setCost(int32_t row, int32_t col, int32_t newCost);
 
@@ -1542,7 +1542,7 @@ public:
 inline void
 MoveMap::setCost(int32_t row, int32_t col, int32_t newCost)
 {
-	map[row * maxWidth + col].cost = newCost;
+	map[row * maxwidth + col].cost = newCost;
 }
 
 //---------------------------------------------------------------------------

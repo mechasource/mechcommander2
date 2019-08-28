@@ -12,11 +12,11 @@
 #ifndef _PAGE_HPP_
 #define _PAGE_HPP_
 
-#include <stuff/notationfile.hpp>
-#include <stuff/vector3d.hpp>
-#include <stuff/rotation.hpp>
-#include <stuff/motion.hpp>
-#include <stuff/color.hpp>
+#include "stuff/notationfile.h"
+#include "stuff/vector3d.h"
+#include "stuff/rotation.h"
+#include "stuff/motion.h"
+#include "stuff/color.h"
 
 namespace Stuff
 {
@@ -50,12 +50,12 @@ public:
 	// Page functions
 	//
 public:
-	void SetName(PCSTR pagename)
+	void SetName(const std::wstring_view& pagename)
 	{
 		// Check_Object(this);
 		m_name = pagename;
 	}
-	PCSTR
+	const std::wstring_view&
 	GetName(void) const
 	{
 		// Check_Object(this);
@@ -84,12 +84,12 @@ public:
 		return m_notes.IsEmpty();
 	}
 
-	bool DoesNoteExist(PCSTR entryname)
+	bool DoesNoteExist(const std::wstring_view& entryname)
 	{
 		// Check_Object(this);
 		return FindNote(entryname) != nullptr;
 	}
-	Note* FindNote(PCSTR entryname);
+	Note* FindNote(const std::wstring_view& entryname);
 	Note* GetNote(uint32_t index);
 
 	typedef ChainIteratorOf<Note*> NoteIterator;
@@ -99,12 +99,12 @@ public:
 		return new NoteIterator(&m_notes);
 	}
 
-	ChainOf<Note*>* MakeNoteChain(PCSTR prefix);
+	ChainOf<Note*>* MakeNoteChain(const std::wstring_view& prefix);
 
-	Note* AddNote(PCSTR entryname);
-	Note* SetNote(PCSTR entryname);
+	Note* AddNote(const std::wstring_view& entryname);
+	Note* SetNote(const std::wstring_view& entryname);
 
-	void DeleteNote(PCSTR entryname);
+	void DeleteNote(const std::wstring_view& entryname);
 	void DeleteAllNotes(void);
 
 protected:
@@ -114,89 +114,89 @@ protected:
 	// string access
 	//
 public:
-	bool GetEntry(PCSTR entryname, PCSTR* contents, bool required = false);
-	void SetEntry(PCSTR entryname, PCSTR contents);
-	void AppendEntry(PCSTR entryname, PCSTR contents);
+	bool GetEntry(const std::wstring_view& entryname, const std::wstring_view&* contents, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, const std::wstring_view& contents);
+	void AppendEntry(const std::wstring_view& entryname, const std::wstring_view& contents);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// int32_t access
 	//
 public:
-	bool GetEntry(PCSTR entryname, pint32_t value, bool required = false);
-	void SetEntry(PCSTR entryname, int32_t value);
-	void AppendEntry(PCSTR entryname, int32_t value);
+	bool GetEntry(const std::wstring_view& entryname, int32_t* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, int32_t value);
+	void AppendEntry(const std::wstring_view& entryname, int32_t value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// scalar access
 	//
 public:
-	bool GetEntry(PCSTR entryname, float* value, bool required = false);
-	void SetEntry(PCSTR entryname, float value);
-	void AppendEntry(PCSTR entryname, float value);
+	bool GetEntry(const std::wstring_view& entryname, float* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, float value);
+	void AppendEntry(const std::wstring_view& entryname, float value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// bool access
 	//
 public:
-	bool GetEntry(PCSTR entryname, bool* value, bool required = false);
-	void SetEntry(PCSTR entryname, bool value);
-	void AppendEntry(PCSTR entryname, bool value);
+	bool GetEntry(const std::wstring_view& entryname, bool* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, bool value);
+	void AppendEntry(const std::wstring_view& entryname, bool value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Vector3D access
 	//
 public:
-	bool GetEntry(PCSTR entryname, Vector3D* value, bool required = false);
-	void SetEntry(PCSTR entryname, const Vector3D& value);
-	void AppendEntry(PCSTR entryname, const Vector3D& value);
+	bool GetEntry(const std::wstring_view& entryname, Vector3D* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, const Vector3D& value);
+	void AppendEntry(const std::wstring_view& entryname, const Vector3D& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// YawPitchRoll access
 	//
 public:
-	bool GetEntry(PCSTR entryname, YawPitchRoll* value, bool required = false);
-	void SetEntry(PCSTR entryname, const YawPitchRoll& value);
-	void AppendEntry(PCSTR entryname, const YawPitchRoll& value);
+	bool GetEntry(const std::wstring_view& entryname, YawPitchRoll* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, const YawPitchRoll& value);
+	void AppendEntry(const std::wstring_view& entryname, const YawPitchRoll& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// UnitQuaternion access
 	//
 public:
-	bool GetEntry(PCSTR entryname, UnitQuaternion* value, bool required = false);
-	void SetEntry(PCSTR entryname, const UnitQuaternion& value);
-	void AppendEntry(PCSTR entryname, const UnitQuaternion& value);
+	bool GetEntry(const std::wstring_view& entryname, UnitQuaternion* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, const UnitQuaternion& value);
+	void AppendEntry(const std::wstring_view& entryname, const UnitQuaternion& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Motion3D access
 	//
 public:
-	bool GetEntry(PCSTR entryname, Motion3D* value, bool required = false);
-	void SetEntry(PCSTR entryname, const Motion3D& value);
-	void AppendEntry(PCSTR entryname, const Motion3D& value);
+	bool GetEntry(const std::wstring_view& entryname, Motion3D* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, const Motion3D& value);
+	void AppendEntry(const std::wstring_view& entryname, const Motion3D& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// RGBColor access
+	// RGBcolour access
 	//
 public:
-	bool GetEntry(PCSTR entryname, RGBColor* value, bool required = false);
-	void SetEntry(PCSTR entryname, const RGBColor& value);
-	void AppendEntry(PCSTR entryname, const RGBColor& value);
+	bool GetEntry(const std::wstring_view& entryname, RGBcolour* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, const RGBcolour& value);
+	void AppendEntry(const std::wstring_view& entryname, const RGBcolour& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// RGBAColor access
+	// RGBAcolour access
 	//
 public:
-	bool GetEntry(PCSTR entryname, RGBAColor* value, bool required = false);
-	void SetEntry(PCSTR entryname, const RGBAColor& value);
-	void AppendEntry(PCSTR entryname, const RGBAColor& value);
+	bool GetEntry(const std::wstring_view& entryname, RGBAcolour* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, const RGBAcolour& value);
+	void AppendEntry(const std::wstring_view& entryname, const RGBAcolour& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// NotationFile access
 	//
 public:
-	bool GetEntry(PCSTR entryname, NotationFile* value, bool required = false);
-	void SetEntry(PCSTR entryname, NotationFile* value);
-	void AppendEntry(PCSTR entryname, NotationFile* value);
+	bool GetEntry(const std::wstring_view& entryname, NotationFile* value, bool required = false);
+	void SetEntry(const std::wstring_view& entryname, NotationFile* value);
+	void AppendEntry(const std::wstring_view& entryname, NotationFile* value);
 
 public:
 	void TestInstance(void) const;

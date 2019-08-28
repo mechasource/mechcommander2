@@ -10,7 +10,7 @@
 #ifndef _MOTION_HPP_
 #define _MOTION_HPP_
 
-#include <stuff/vector3d.hpp>
+#include "stuff/vector3d.h"
 
 namespace Stuff
 {
@@ -19,7 +19,7 @@ class Motion3D;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::Motion3D& motion);
+Spew(const std::wstring_view& group, const Stuff::Motion3D& motion);
 #endif
 
 namespace Stuff
@@ -66,7 +66,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Motion3D& motion);
+	friend void ::Spew(const std::wstring_view& group, const Motion3D& motion);
 #endif
 	void TestInstance(void) const;
 	static bool TestClass(void);
@@ -75,7 +75,7 @@ public:
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, Stuff::Motion3D* output)
 {

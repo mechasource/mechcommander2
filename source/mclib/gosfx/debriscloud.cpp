@@ -11,7 +11,7 @@
 //############################################################################
 
 #include "stdinc.h"
-#include "gosfxheaders.hpp"
+#include "gosfx/gosfxheaders.h"
 
 //------------------------------------------------------------------------------
 //
@@ -723,7 +723,7 @@ gosFX::DebrisCloud::Draw(DrawInfo* info)
 			shape_to_world.Multiply(particle->m_localToParent, local_to_world);
 			dinfo.shapeToWorld = &shape_to_world;
 			dinfo.scaling = nullptr;
-			Stuff::RGBAColor color(1.0f, 1.0f, 1.0f, particle->m_alpha);
+			Stuff::RGBAcolour color(1.0f, 1.0f, 1.0f, particle->m_alpha);
 			dinfo.paintMe = &color;
 			info->m_clipper->DrawScalableShape(&dinfo);
 		}

@@ -56,7 +56,7 @@ bool IncludeDebugInfo = true;
 bool ProfileABL = false;
 bool Crunch = true;
 
-char SetStateDebugStr[256];
+wchar_t SetStateDebugStr[256];
 
 //----------
 // EXTERNALS
@@ -101,7 +101,7 @@ crunchToken(void)
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
 	{
-		*codeBufferPtr = (char)curToken;
+		*codeBufferPtr = (wchar_t)curToken;
 		codeBufferPtr++;
 	}
 }
@@ -134,12 +134,12 @@ crunchStatementMarker(void)
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
 	{
-		char saveCode = *(--codeBufferPtr);
-		*codeBufferPtr = (char)TKN_STATEMENT_MARKER;
+		wchar_t saveCode = *(--codeBufferPtr);
+		*codeBufferPtr = (wchar_t)TKN_STATEMENT_MARKER;
 		codeBufferPtr++;
 		if (IncludeDebugInfo)
 		{
-			*((puint8_t)codeBufferPtr) = (uint8_t)FileNumber;
+			*((uint8_t*)codeBufferPtr) = (uint8_t)FileNumber;
 			codeBufferPtr += sizeof(uint8_t);
 			*((int32_t*)codeBufferPtr) = lineNumber;
 			codeBufferPtr += sizeof(int32_t);
@@ -178,8 +178,8 @@ crunchAddressMarker(Address address)
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
 	{
-		char saveCode = *(--codeBufferPtr);
-		*codeBufferPtr = (char)TKN_ADDRESS_MARKER;
+		wchar_t saveCode = *(--codeBufferPtr);
+		*codeBufferPtr = (wchar_t)TKN_ADDRESS_MARKER;
 		codeBufferPtr++;
 		saveCodeBufferPtr = codeBufferPtr;
 		*((Address*)codeBufferPtr) = address;
@@ -229,7 +229,7 @@ crunchByte(uint8_t value)
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
 	{
-		*((puint8_t)codeBufferPtr) = value;
+		*((uint8_t*)codeBufferPtr) = value;
 		codeBufferPtr += sizeof(uint8_t);
 	}
 }
@@ -288,7 +288,7 @@ getCodeStatementMarker(void)
 	{
 		if (IncludeDebugInfo)
 		{
-			FileNumber = *((puint8_t)codeSegmentPtr);
+			FileNumber = *((uint8_t*)codeSegmentPtr);
 			codeSegmentPtr += sizeof(uint8_t);
 			lineNum = *((int32_t*)codeSegmentPtr);
 			codeSegmentPtr += sizeof(int32_t);
@@ -326,7 +326,7 @@ getCodeInteger(void)
 uint8_t
 getCodeByte(void)
 {
-	uint8_t value = *((puint8_t)codeSegmentPtr);
+	uint8_t value = *((uint8_t*)codeSegmentPtr);
 	codeSegmentPtr += sizeof(uint8_t);
 	return (value);
 }
@@ -385,7 +385,7 @@ pushReal(float value)
 //***************************************************************************
 
 void
-pushByte(char value)
+pushByte(wchar_t value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -603,7 +603,7 @@ execute(const std::unique_ptr<SymTableNode>& routineIdPtr)
 	if (routineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_FSM)
 	{
 		NewStateSet = true;
-		static char stateList[60][256];
+		static wchar_t stateList[60][256];
 		strcpy(SetStateDebugStr, "--");
 		while (NewStateSet)
 		{
@@ -613,13 +613,13 @@ execute(const std::unique_ptr<SymTableNode>& routineIdPtr)
 			if (NumStateTransitions == 50)
 			{
 				UserFile* userFile = UserFile::getNewFile();
-				char errStr[512];
+				wchar_t errStr[512];
 				if (userFile)
 				{
 					int32_t err = userFile->open("endless.log");
 					if (!err)
 					{
-						// char s[1024];
+						// wchar_t s[1024];
 						// sprintf(s, "Current Date: %s\n", GetTime());
 						// userFile->write(s);
 						userFile->write(ModuleRegistry[CurModule->getHandle()].fileName);

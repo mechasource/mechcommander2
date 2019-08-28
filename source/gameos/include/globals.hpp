@@ -27,8 +27,8 @@ extern uint8_t CPUID2[16]; // CPUID 2 information
 //
 // Global window
 //
-extern uint8_t gActive;
-extern uint8_t gGotFocus;
+extern bool gActive;
+extern bool gGotFocus;
 extern uint32_t MouseInWindow; // 1=Mouse over window in a window mode
 
 //

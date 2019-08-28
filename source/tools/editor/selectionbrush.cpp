@@ -114,7 +114,7 @@ SelectionBrush::endPaint()
 }
 
 float
-SelectionBrush::calcNewHeight(int32_t vertexRow, int32_t vertexCol, float deltaScreen)
+SelectionBrush::calcNewheight(int32_t vertexRow, int32_t vertexCol, float deltaScreen)
 {
 	Stuff::Vector3D world;
 	Stuff::Vector3D newWorld;
@@ -170,7 +170,7 @@ SelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screen
 			if (lastPos.x != 0.0 && lastPos.y != 0.0)
 			{
 				// return paintSmooth( worldPos, screenX, screenY, 6 );
-				float delta = calcNewHeight(lastRow, lastCol, endPos.y - lastPos.y);
+				float delta = calcNewheight(lastRow, lastCol, endPos.y - lastPos.y);
 				for (size_t j = 0; j < land->realVerticesMapSide; ++j)
 				{
 					for (size_t i = 0; i < land->realVerticesMapSide; ++i)
@@ -178,10 +178,10 @@ SelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screen
 						if (land->isVertexSelected(j, i))
 						{
 							pCurAction->addChangedVertexInfo(j, i);
-							float oldHeight =
-								land->getVertexHeight(j * land->realVerticesMapSide + i);
-							land->setVertexHeight(
-								j * land->realVerticesMapSide + i, oldHeight + delta);
+							float oldheight =
+								land->getVertexheight(j * land->realVerticesMapSide + i);
+							land->setVertexheight(
+								j * land->realVerticesMapSide + i, oldheight + delta);
 						}
 					}
 				}
@@ -375,11 +375,11 @@ SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int3
 			pCurAction = new ActionPaintTile();
 		if (lastPos.x != 0.0 && lastPos.y != 0.0)
 		{
-			float delta = calcNewHeight(lastRow, lastCol, endPos.y - lastPos.y);
+			float delta = calcNewheight(lastRow, lastCol, endPos.y - lastPos.y);
 			pCurAction->addChangedVertexInfo(j, i);
-			float oldHeight = land->getVertexHeight(j * land->realVerticesMapSide + i);
-			float newHeight = oldHeight + delta;
-			land->setVertexHeight(j * land->realVerticesMapSide + i, newHeight);
+			float oldheight = land->getVertexheight(j * land->realVerticesMapSide + i);
+			float newheight = oldheight + delta;
+			land->setVertexheight(j * land->realVerticesMapSide + i, newheight);
 			float midX = land->tileColToWorldCoord[i];
 			float midY = land->tileRowToWorldCoord[j];
 			if (radiusX == 0)
@@ -443,7 +443,7 @@ SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int3
 									edge.x += midX;
 									edge.y += midY;
 									edge.z = land->getTerrainElevation(edge);
-									float deltaZ = newHeight - edge.z;
+									float deltaZ = newheight - edge.z;
 									if (deltaZ > .1 || deltaZ < -.1)
 									{
 										float z = (float)fabs(deltaZ / 2) + (float)fabs(deltaZ / 2) * (float)cos(PI * delta / r);
@@ -453,7 +453,7 @@ SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int3
 												z = -z;
 											pCurAction->addChangedVertexInfo(k, l);
 											z += edge.z;
-											land->setVertexHeight(
+											land->setVertexheight(
 												k * land->realVerticesMapSide + l, z);
 										}
 									}

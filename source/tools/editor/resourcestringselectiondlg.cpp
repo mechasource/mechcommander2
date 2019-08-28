@@ -9,13 +9,13 @@
 #include "resource.h"
 #include "ResourceStringSelectionDlg.h"
 
-#include "assert.h"
+#include "_ASSERT.h"
 #include "utilities.h" /*for cLoadString*/
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+static wchar_t THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 static BOOL
 CSLoadString(int32_t resourceID, CString& targetStr)
 {
-	char szTmp[16384 /*max string length*/];
+	wchar_t szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
 	targetStr = szTmp;
 	CString tmpStr;
@@ -108,7 +108,7 @@ ResourceStringSelectionDlg::OnOK()
 	uint32_t selectionindex = m_Combo.GetCurSel();
 	if (CB_ERR != selectionindex)
 	{
-		assert(m_ResourceStringIDs.Count() > selectionindex);
+		_ASSERT(m_ResourceStringIDs.Count() > selectionindex);
 		m_SelectedResourceStringID = m_ResourceStringIDs[selectionindex];
 	}
 	CDialog::OnOK();

@@ -7,7 +7,7 @@
 #ifndef MLR_MLR_I_C_DeT_PMESH_HPP
 #define MLR_MLR_I_C_DeT_PMESH_HPP
 
-#include <mlr/mlr_i_det_pmesh.hpp>
+#include "mlr/mlr_i_det_pmesh.h"
 
 namespace MidLevelRenderer
 {
@@ -45,18 +45,18 @@ public:
 	void Copy(MLR_I_C_PMesh*, MLRState detailState, float xOff, float yOff, float xFac, float yFac);
 
 #if COLOR_AS_DWORD
-	virtual void SetColorData(pcuint32_t array, size_t point_count);
-	virtual void GetColorData(puint32_t* array, psize_t point_count);
+	virtual void SetcolourData(const uint32_t* array, size_t point_count);
+	virtual void GetcolourData(uint32_t** array, size_t* point_count);
 #else
-	virtual void SetColorData(const Stuff::RGBAColor* array, size_t point_count);
-	virtual void GetColorData(Stuff::RGBAColor** array, psize_t point_count);
+	virtual void SetcolourData(const Stuff::RGBAcolour* array, size_t point_count);
+	virtual void GetcolourData(Stuff::RGBAcolour** array, size_t* point_count);
 #endif
 
 	virtual void
 #if COLOR_AS_DWORD
-	PaintMe(pcuint32_t paintMe);
+	PaintMe(const uint32_t* paintMe);
 #else
-	PaintMe(const Stuff::RGBAColor* paintMe);
+	PaintMe(const Stuff::RGBAcolour* paintMe);
 #endif
 
 	virtual uint32_t TransformAndClip(
@@ -88,14 +88,14 @@ protected:
 #if COLOR_AS_DWORD
 	std::vector<uint32_t> colors; // Base address of color list
 #else
-	std::vector<Stuff::RGBAColor> colors; // Base address of color list
+	std::vector<Stuff::RGBAcolour> colors; // Base address of color list
 #endif
 };
 
 MLR_I_C_DeT_PMesh*
-CreateIndexedCube_Color_NoLit_DetTex(
-	float, Stuff::RGBAColor*, MLRState*, MLRState*, float xOff, float yOff, float xFac, float yFac);
+CreateIndexedCube_colour_NoLit_DetTex(
+	float, Stuff::RGBAcolour*, MLRState*, MLRState*, float xOff, float yOff, float xFac, float yFac);
 MLRShape*
-CreateIndexedIcosahedron_Color_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
+CreateIndexedIcosahedron_colour_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

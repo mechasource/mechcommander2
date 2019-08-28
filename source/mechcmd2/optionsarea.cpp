@@ -128,7 +128,7 @@ OptionsXScreen::init(FitIniFile* file)
 		FitIniFile tmpFile;
 		if (NO_ERROR != tmpFile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -143,7 +143,7 @@ OptionsXScreen::init(FitIniFile* file)
 	// 1600: offset x = 400, y = 270
 	int32_t xOffset = 0;
 	int32_t yOffset = 0;
-	switch (Environment.screenWidth)
+	switch (Environment.screenwidth)
 	{
 	case 640:
 		xOffset = -80;
@@ -188,13 +188,13 @@ OptionsXScreen::init(FitIniFile* file)
 void
 OptionsXScreen::render()
 {
-	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, 0xff000000);
-	rects[1].setColor(0xff000000);
+	rects[1].setcolour(0xff000000);
 	rects[1].render();
 	if (curTab < 2)
 		tabAreas[curTab]->render();
-	rects[1].setColor(0);
+	rects[1].setcolour(0);
 	LogisticsScreen::render();
 	getButton(MSB_TAB0 + curTab)->render();
 	if (curTab >= 2)
@@ -309,7 +309,7 @@ OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	FitIniFile file;
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -327,7 +327,7 @@ OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 		}
 		else
 		{
-			char cstr[256];
+			wchar_t cstr[256];
 			cLoadString(i, cstr, 255);
 			resolutionList.AddItem(cstr, 0xffffffff);
 		}
@@ -336,7 +336,7 @@ OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	path.init(artPath, "mcl_options_combobox2", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -693,10 +693,10 @@ OptionsGamePlay::render()
 {
 	LogisticsScreen::render();
 	int32_t colorToMatch =
-		getButton(MSG_BASE)->isPressed() ? rects[36].getColor() : rects[37].getColor();
+		getButton(MSG_BASE)->isPressed() ? rects[36].getcolour() : rects[37].getcolour();
 	for (size_t i = 4; i < 36; i++)
 	{
-		if (rects[i].getColor() == colorToMatch)
+		if (rects[i].getcolour() == colorToMatch)
 		{
 			RECT tmp = {rects[i].globalX() - 2, rects[i].globalY() - 2, rects[i].globalRight() + 1,
 				rects[i].globalBottom() + 1};
@@ -722,7 +722,7 @@ OptionsGamePlay::update()
 		{
 			if (rects[i].pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
-				pRect->setColor(rects[i].getColor());
+				pRect->setcolour(rects[i].getcolour());
 				bChanged = 1;
 				break;
 			}
@@ -730,7 +730,7 @@ OptionsGamePlay::update()
 	}
 	if (bChanged)
 		camera.setMech(
-			"Bushwacker", rects[36].getColor(), rects[37].getColor(), rects[37].getColor());
+			"Bushwacker", rects[36].getcolour(), rects[37].getcolour(), rects[37].getcolour());
 }
 
 void
@@ -748,7 +748,7 @@ OptionsGamePlay::begin()
 	}
 	else
 	{
-		camera.setMech("Bushwacker", prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
+		camera.setMech("Bushwacker", prefs.basecolour, prefs.highlightcolour, prefs.highlightcolour);
 	}
 }
 
@@ -760,8 +760,8 @@ OptionsGamePlay::end()
 		if (getButton(i)->isPressed())
 			prefs.GameDifficulty = i - MSG_GREEN;
 	}
-	prefs.baseColor = rects[36].getColor();
-	prefs.highlightColor = rects[37].getColor();
+	prefs.basecolour = rects[36].getcolour();
+	prefs.highlightcolour = rects[37].getcolour();
 	prefs.useUnlimitedAmmo = getButton(MSG_UNLIMITED_AMMO)->isPressed();
 	prefs.useLeftRightMouseProfile = getButton(MSG_LEFT_CLICK)->isPressed();
 	// prefs.tutorials = getButton( MSG_TUTORIALS )->isPressed();
@@ -786,8 +786,8 @@ OptionsGamePlay::reset(const CPrefs& newPrefs)
 		getButton(i)->press(0);
 	}
 	getButton(MSG_GREEN + newPrefs.GameDifficulty)->press(true);
-	rects[36].setColor(newPrefs.baseColor);
-	rects[37].setColor(newPrefs.highlightColor);
+	rects[36].setcolour(newPrefs.basecolour);
+	rects[37].setcolour(newPrefs.highlightcolour);
 	getButton(MSG_UNLIMITED_AMMO)->press(newPrefs.useUnlimitedAmmo);
 	getButton(MSG_LEFT_CLICK)->press(newPrefs.useLeftRightMouseProfile);
 	//	getButton( MSG_TUTORIALS )->press( newPrefs.tutorials );
@@ -843,7 +843,7 @@ OptionsHotKeys::update()
 			bShowDlg = 0;
 			if (LogisticsDialog::YES == LogisticsOKDialog::instance()->getStatus())
 			{
-				char keysString[256];
+				wchar_t keysString[256];
 				keysString[0] = 0;
 				makeKeyString(curHotKey, keysString);
 				int32_t index = hotKeyList.GetSelectedItem();
@@ -875,7 +875,7 @@ OptionsHotKeys::update()
 								oldKey = defaultKey;
 							else if (pItemToSet)
 								oldKey = pItemToSet->getHotKey();
-							char tmpKeyStr[256];
+							wchar_t tmpKeyStr[256];
 							tmpKeyStr[0] = 0;
 							makeKeyString(oldKey, tmpKeyStr);
 							pTmpItem->setHotKey(oldKey);
@@ -903,7 +903,7 @@ OptionsHotKeys::update()
 			tmpKey = gos_GetKey();
 			if (tmpKey)
 			{
-				char hotKeyString[256];
+				wchar_t hotKeyString[256];
 				hotKeyString[0] = 0;
 				if (0 != makeInputKeyString(tmpKey, hotKeyString))
 					return;
@@ -934,9 +934,9 @@ OptionsHotKeys::update()
 void
 OptionsHotKeys::makeKeyString(int32_t newKey, const std::wstring_view& keysString)
 {
-	char shift[32];
-	char control[32];
-	char alt[32];
+	wchar_t shift[32];
+	wchar_t control[32];
+	wchar_t alt[32];
 	cLoadString(IDS_SHIFT, shift, 31);
 	cLoadString(IDS_CONTROL, control, 31);
 	cLoadString(IDS_ALT, alt, 31);
@@ -971,7 +971,7 @@ OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, const std::wstring_view& hot
 	bool shiftDn = userInput->shift();
 	if (shiftDn)
 	{
-		char shift[32];
+		wchar_t shift[32];
 		cLoadString(IDS_SHIFT, shift, 31);
 		hotKey |= SHIFT;
 		strcat(hotKeyString, shift);
@@ -980,7 +980,7 @@ OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, const std::wstring_view& hot
 	bool ctrlDn = userInput->ctrl();
 	if (ctrlDn)
 	{
-		char control[32];
+		wchar_t control[32];
 		cLoadString(IDS_CONTROL, control, 31);
 		hotKey |= CTRL;
 		strcat(hotKeyString, control);
@@ -989,7 +989,7 @@ OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, const std::wstring_view& hot
 	bool altDn = userInput->alt();
 	if (altDn)
 	{
-		char alt[32];
+		wchar_t alt[32];
 		cLoadString(IDS_ALT, alt, 31);
 		hotKey |= ALT;
 		strcat(hotKeyString, alt);
@@ -1028,11 +1028,11 @@ void
 OptionsHotKeys::reset(bool useOld)
 {
 	hotKeyList.removeAllItems(true);
-	char shift[32];
-	char control[32];
-	char alt[32];
-	char descText[128];
-	char keysString[128];
+	wchar_t shift[32];
+	wchar_t control[32];
+	wchar_t alt[32];
+	wchar_t descText[128];
+	wchar_t keysString[128];
 	cLoadString(IDS_SHIFT, shift, 31);
 	cLoadString(IDS_CONTROL, control, 31);
 	cLoadString(IDS_ALT, alt, 31);
@@ -1085,7 +1085,7 @@ ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 	addChild(pLeft);
 	addChild(pRight);
 	addChild(pTab);
-	setColor(0);
+	setcolour(0);
 	return (NO_ERROR);
 }
 
@@ -1237,7 +1237,7 @@ HotKeyListItem::init()
 	path.init(artPath, "mcl_options_combobox1", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -1259,9 +1259,9 @@ HotKeyListItem::render()
 		animations[i].setState(curState);
 		animations[i].update();
 	}
-	text.setColor(animations[1].getCurrentColor(curState));
-	description.setColor(animations[0].getCurrentColor(curState));
-	rects[1].setColor(animations[2].getCurrentColor(curState));
+	text.setcolour(animations[1].getCurrentcolour(curState));
+	description.setcolour(animations[0].getCurrentcolour(curState));
+	rects[1].setcolour(animations[2].getCurrentcolour(curState));
 	aObject::render();
 }
 

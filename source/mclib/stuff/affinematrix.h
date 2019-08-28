@@ -11,7 +11,7 @@
 #define _AFFINEMATRIX_HPP_
 
 #include "stuff/scalar.h"
-#include <stuff/origin.hpp>
+#include "stuff/origin.h"
 
 //inline XMMATRIX XM_CALLCONV XMMatrixAffineTransformation(
 //	FXMVECTOR Scaling, FXMVECTOR RotationOrigin, FXMVECTOR RotationQuaternion, GXMVECTOR Translation)
@@ -39,7 +39,7 @@ class AffineMatrix4D;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::AffineMatrix4D& matrix);
+Spew(const std::wstring_view& group, const Stuff::AffineMatrix4D& matrix);
 #endif
 
 namespace Stuff
@@ -590,7 +590,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const AffineMatrix4D& matrix);
+	friend void ::Spew(const std::wstring_view& group, const AffineMatrix4D& matrix);
 #endif
 
 	void TestInstance(void) const
@@ -614,7 +614,7 @@ Point3D::operator=(const AffineMatrix4D& m)
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, Stuff::AffineMatrix4D* output)
 {

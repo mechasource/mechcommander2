@@ -98,7 +98,7 @@ Logistics::start(int32_t startMode)
 				setLogisticsState(log_SPLASH);
 				missionBegin->beginSplash();
 				userInput->mouseOn();
-				char tmp[256];
+				wchar_t tmp[256];
 				cLoadString(IDS_FINAL_MISSION, tmp, 255);
 				FullPathFileName path;
 				path.init(savePath, tmp, ".fit");
@@ -230,7 +230,7 @@ Logistics::update(void)
 				RECT movieRect;
 				movieRect.top = 0;
 				movieRect.left = 0;
-				movieRect.right = Environment.screenWidth;
+				movieRect.right = Environment.screenwidth;
 				movieRect.bottom = 600;
 				bMovie = new MC2Movie;
 				bMovie->init(path, movieRect, true);
@@ -369,7 +369,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 {
 	if (MPlayer)
 		MPlayer->setMode(MULTIPLAYER_MODE_LOADING);
-	char commandersToLoad[MAX_MC_PLAYERS][3] = {
+	wchar_t commandersToLoad[MAX_MC_PLAYERS][3] = {
 		{0, 0, 0}, {1, 1, 1}, {2, 2, 2}, {3, 3, 3}, {4, 4, 4}, {5, 5, 5}, {6, 6, 6}, {7, 7, 7}};
 	int32_t missionLoadType = LogisticsData::instance->skipLogistics() ? MISSION_LOAD_SP_QUICKSTART
 																	   : MISSION_LOAD_SP_LOGISTICS;
@@ -420,8 +420,8 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		if (MPlayer->isHost())
 		{
 			// Determine drop zone order here...
-			char dropZoneList[8];
-			char hqs[MAX_TEAMS];
+			wchar_t dropZoneList[8];
+			wchar_t hqs[MAX_TEAMS];
 			if (MPlayer->missionSettings.missionType == MISSION_TYPE_OTHER)
 			{
 				bool goodToLoad = mission->calcComplexDropZones(
@@ -542,12 +542,12 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				mechData.lastMech = (list.Count() == numMechs);
 				mechData.objNumber = (*iter)->getFitID();
 				mechData.commanderid = MPlayer->commanderid;
-				mechData.baseColor = MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid]
-														 .baseColor[BASECOLOR_TEAM]];
-				mechData.highlightColor1 =
-					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid].stripeColor];
-				mechData.highlightColor2 =
-					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid].stripeColor];
+				mechData.basecolour = MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid]
+														 .basecolour[BASECOLOR_TEAM]];
+				mechData.highlightcolour1 =
+					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid].stripecolour];
+				mechData.highlightcolour2 =
+					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid].stripecolour];
 				strcpy(mechData.pilotFile, (*iter)->getPilot()->getFileName());
 				strcpy(mechData.mechFile, (*iter)->getFileName());
 				strcpy(mechData.variantName, (*iter)->getName());
@@ -600,9 +600,9 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 							data.teamID =
 								MPlayer->playerInfo[MPlayer->mechData[i][j].commanderid].team;
 							data.commanderid = MPlayer->mechData[i][j].commanderid;
-							data.baseColor = MPlayer->mechData[i][j].baseColor;
-							data.highlightColor1 = MPlayer->mechData[i][j].highlightColor1;
-							data.highlightColor2 = MPlayer->mechData[i][j].highlightColor2;
+							data.basecolour = MPlayer->mechData[i][j].basecolour;
+							data.highlightcolour1 = MPlayer->mechData[i][j].highlightcolour1;
+							data.highlightcolour2 = MPlayer->mechData[i][j].highlightcolour2;
 							data.gestureID = 2;
 							data.active = 1;
 							data.exists = 1;
@@ -684,9 +684,9 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		data.active = 1;
 		data.exists = 1;
 		data.capturable = 0;
-		data.baseColor = prefs.baseColor;
-		data.highlightColor1 = prefs.highlightColor;
-		data.highlightColor2 = prefs.highlightColor;
+		data.basecolour = prefs.basecolour;
+		data.highlightcolour1 = prefs.highlightcolour;
+		data.highlightcolour2 = prefs.highlightcolour;
 		strcpy(data.pilotFileName, "pmw00031");
 		strcpy(data.brainFileName, "pbrain");
 		Stuff::Vector3D vector;
@@ -826,7 +826,7 @@ Logistics::playFullScreenVideo(const std::wstring_view& fileName)
 	RECT movieRect;
 	movieRect.top = 100;
 	movieRect.left = 0;
-	movieRect.right = Environment.screenWidth;
+	movieRect.right = Environment.screenwidth;
 	movieRect.bottom = 500;
 	bMovie = new MC2Movie;
 	bMovie->init(path, movieRect, true);

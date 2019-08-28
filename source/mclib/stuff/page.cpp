@@ -8,9 +8,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "stuff/note.h"
 #include "stuff/page.h"
 
@@ -202,7 +202,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const std::wstring_view& c
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-Page::GetEntry(const std::wstring_view& entryname, pint32_t contents, bool required)
+Page::GetEntry(const std::wstring_view& entryname, int32_t* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -524,7 +524,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const Motion3D& value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-Page::GetEntry(const std::wstring_view& entryname, RGBColor* contents, bool required)
+Page::GetEntry(const std::wstring_view& entryname, RGBcolour* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -544,7 +544,7 @@ Page::GetEntry(const std::wstring_view& entryname, RGBColor* contents, bool requ
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Page::SetEntry(const std::wstring_view& entryname, const RGBColor& value)
+Page::SetEntry(const std::wstring_view& entryname, const RGBcolour& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -558,7 +558,7 @@ Page::SetEntry(const std::wstring_view& entryname, const RGBColor& value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Page::AppendEntry(const std::wstring_view& entryname, const RGBColor& value)
+Page::AppendEntry(const std::wstring_view& entryname, const RGBcolour& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -570,7 +570,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const RGBColor& value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-Page::GetEntry(const std::wstring_view& entryname, RGBAColor* contents, bool required)
+Page::GetEntry(const std::wstring_view& entryname, RGBAcolour* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -590,7 +590,7 @@ Page::GetEntry(const std::wstring_view& entryname, RGBAColor* contents, bool req
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Page::SetEntry(const std::wstring_view& entryname, const RGBAColor& value)
+Page::SetEntry(const std::wstring_view& entryname, const RGBAcolour& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -604,7 +604,7 @@ Page::SetEntry(const std::wstring_view& entryname, const RGBAColor& value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Page::AppendEntry(const std::wstring_view& entryname, const RGBAColor& value)
+Page::AppendEntry(const std::wstring_view& entryname, const RGBAcolour& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);

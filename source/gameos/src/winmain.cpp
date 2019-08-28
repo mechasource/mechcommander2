@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright (c);-2014, Jerker Beck. All rights reserved.
+ Copyright (c);-2014, Jerker Back. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without;is hereby granted, provided that the following
@@ -28,7 +28,7 @@
 
  MechCommander;source code
 
-;-07-24 Jerker Beck, created
+;-07-24 Jerker Back, created
 
 *******************************************************************************/
 

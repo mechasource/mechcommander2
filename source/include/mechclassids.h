@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Beck. All rights reserved.
+ Copyright (c) 2011-2014, Jerker Back. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without fee is hereby granted, provided that the following
@@ -28,7 +28,7 @@
 
  MechCommander 2 source code
 
- 2014-08-22 Jerker Beck, created
+ 2014-08-22 Jerker Back, created
 
  $LastChangedBy$
 
@@ -167,7 +167,7 @@ enum __stuff_attributeids : uint32_t
 	PlugClassID,
 	NodeClassID,
 	CharClassID,
-	RGBAColorClassID,
+	RGBAcolourClassID,
 	FirstFreeStuffClassID
 };
 } // namespace Stuff

@@ -10,8 +10,8 @@
 #ifndef _PLUG_HPP_
 #define _PLUG_HPP_
 
-#include <stuff/registeredclass.hpp>
-// #include <stuff/iterator.hpp>
+#include "stuff/registeredclass.h"
+// #include "stuff/iterator.h"
 
 namespace Stuff
 {

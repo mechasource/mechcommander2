@@ -8,7 +8,7 @@
 #ifndef _SPHERE_HPP_
 #define _SPHERE_HPP_
 
-#include <stuff/point3d.hpp>
+#include "stuff/point3d.h"
 
 namespace Stuff
 {
@@ -17,7 +17,7 @@ class Sphere;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::Sphere& sphere);
+Spew(const std::wstring_view& group, const Stuff::Sphere& sphere);
 #endif
 
 namespace Stuff
@@ -78,7 +78,7 @@ public:
 	bool Intersects(const Plane& plane) const;
 
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Sphere& sphere);
+	friend void ::Spew(const std::wstring_view& group, const Sphere& sphere);
 #endif
 	void TestInstance(void) const
 	{

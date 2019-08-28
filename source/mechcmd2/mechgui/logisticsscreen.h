@@ -123,7 +123,7 @@ protected:
 
 protected:
 	int32_t status;
-	int32_t fadeOutMaxColor;
+	int32_t fadeOutMaxcolour;
 	int32_t helpTextArrayID;
 
 private:

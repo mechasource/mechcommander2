@@ -7,12 +7,12 @@
 #ifndef MLRPRIMITIVEBASE_HPP
 #define MLRPRIMITIVEBASE_HPP
 
-//#include <stuff/marray.hpp>
-#include <stuff/vector2d.hpp>
-#include <stuff/vector4d.hpp>
-#include <stuff/color.hpp>
-#include <mlr/mlrstate.hpp>
-#include <mlr/mlrclippingstate.hpp>
+//#include "stuff/marray.h"
+#include "stuff/vector2d.h"
+#include "stuff/vector4d.h"
+#include "stuff/color.h"
+#include "mlr/mlrstate.h"
+#include "mlr/mlrclippingstate.h"
 
 namespace Stuff
 {
@@ -21,7 +21,7 @@ class Normal3D;
 class ExtentBox;
 } // namespace Stuff
 
-//#include <mlr/gosvertexpool.hpp>
+//#include "mlr/gosvertexpool.h"
 
 namespace MidLevelRenderer
 {
@@ -41,7 +41,7 @@ struct ClipPolygon2
 #if COLOR_AS_DWORD
 	std::vector<uint32_t> colors; //[Max_Number_Vertices_Per_Polygon];
 #else
-	std::vector<Stuff::RGBAColor> colors; //[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::RGBAcolour> colors; //[Max_Number_Vertices_Per_Polygon];
 #endif
 	std::vector<Stuff::Vector2DScalar> texCoords; //[2*Max_Number_Vertices_Per_Polygon];
 	std::vector<MLRClippingState> clipPerVertex; //[Max_Number_Vertices_Per_Polygon];
@@ -57,7 +57,7 @@ class MLRPrimitiveBase__ClassData;
 
 // typedef Stuff::Vector2DOf<float> Stuff::Vector2DScalar;
 
-class _declspec(novtable) MLRPrimitiveBase // : public Stuff::RegisteredClass
+class _declspec(novtable) MLRPrimitiveBase // // : public Stuff::RegisteredClass
 {
 	friend class MLRShape;
 
@@ -65,7 +65,7 @@ class _declspec(novtable) MLRPrimitiveBase // : public Stuff::RegisteredClass
 	// Initialization
 	//
 public:
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 	typedef MLRPrimitiveBase__ClassData ClassData;
@@ -98,10 +98,10 @@ public:
 		return lengths.size();
 	}
 
-	virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count) = 0;
+	virtual void SetSubprimitiveLengths(uint8_t* length_array, size_t subprimitive_count) = 0;
 
 	// returns the number of subprimitives
-	void GetSubprimitiveLengths(puint8_t* length_array, pint32_t);
+	void GetSubprimitiveLengths(uint8_t** length_array, int32_t*);
 
 	int32_t GetSubprimitiveLength(int32_t i) const;
 
@@ -139,9 +139,9 @@ public:
 	}
 
 	virtual void SetCoordData(const Stuff::Point3D* array, size_t point_count);
-	virtual void GetCoordData(Stuff::Point3D** array, psize_t point_count);
+	virtual void GetCoordData(Stuff::Point3D** array, size_t* point_count);
 	virtual void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass = 0);
-	virtual void GetTexCoordData(Stuff::Vector2DScalar** array, psize_t point_count, size_t pass = 0);
+	virtual void GetTexCoordData(Stuff::Vector2DScalar** array, size_t* point_count, size_t pass = 0);
 
 	// is to call befor clipping, parameter: camera point
 	virtual int32_t FindBackFace(const Stuff::Point3D&) = 0;
@@ -180,7 +180,7 @@ public:
 	}
 
 	virtual bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
-	virtual void PaintMe(const Stuff::RGBAColor* paintMe) = 0;
+	virtual void PaintMe(const Stuff::RGBAcolour* paintMe) = 0;
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false) = 0;
 	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false) = 0;
@@ -304,10 +304,10 @@ protected:
 
 	std::vector<uint8_t> lengths; // List of strip lengths
 
-#if COLOR_AS_DWORD // clipExtraColors for the future generations !!!
-	static std::vector<uint32_t> clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+#if COLOR_AS_DWORD // clipExtracolours for the future generations !!!
+	static std::vector<uint32_t> clipExtracolours; // , Max_Number_Vertices_Per_Mesh
 #else
-	static std::vector<Stuff::RGBAColor> clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::RGBAcolour> clipExtracolours; // , Max_Number_Vertices_Per_Mesh
 #endif
 
 	static std::vector<MLRClippingState> clipPerVertex; // , Max_Number_Vertices_Per_Mesh
@@ -332,7 +332,7 @@ struct IcoInfo
 	float radius;
 	float all;
 	bool onOff;
-	PCSTR GetTypeName(void);
+	const std::wstring_view& GetTypeName(void);
 };
 
 MLRShape*
@@ -342,12 +342,12 @@ CreateIndexedIcosahedron(IcoInfo&, std::vector<MLRState>*);
 //################### MLRPrimitiveBase__ClassData ####################
 //##########################################################################
 
-class MLRPrimitiveBase__ClassData : public Stuff::RegisteredClass::ClassData
+class MLRPrimitiveBase__ClassData // : public Stuff::RegisteredClass::ClassData
 {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
 public:
-	MLRPrimitiveBase__ClassData(Stuff::RegisteredClass::ClassID class_id, PCSTR class_name,
+	MLRPrimitiveBase__ClassData(Stuff::RegisteredClass::ClassID class_id, const std::wstring_view& class_name,
 		Stuff::RegisteredClass::ClassData* parent_class,
 		MLRPrimitiveBase::Factory primitive_factory) :
 		RegisteredClass__ClassData(class_id, class_name, parent_class),
@@ -369,7 +369,7 @@ struct ClipData2
 #if COLOR_AS_DWORD
 	uint32_t* colors;
 #else
-	Stuff::RGBAColor* colors;
+	Stuff::RGBAcolour* colors;
 #endif
 	Stuff::Vector2DScalar* texCoords;
 	MLRClippingState* clipPerVertex;

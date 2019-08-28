@@ -431,7 +431,7 @@ GoalManager::build(void)
 {
 	// For temps, pull 'em off the windows heap.  IT can resize.  OURS
 	// cannot!!!!
-	fillStack = (pint16_t)malloc(FILL_STACK_SIZE * sizeof(int16_t));
+	fillStack = (int16_t*)malloc(FILL_STACK_SIZE * sizeof(int16_t));
 	gosASSERT(fillStack != nullptr);
 	fillStackIndex = 0;
 	//--------------------------------

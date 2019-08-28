@@ -8,7 +8,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "stuffheaders.hpp"
+#include "stuff/stuffheaders.h"
 
 #include "toolos.hpp"
 

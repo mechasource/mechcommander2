@@ -10,9 +10,9 @@
 #ifndef _SAFECHAIN_HPP_
 #define _SAFECHAIN_HPP_
 
-#include <stuff/link.hpp>
-#include <stuff/memoryblock.hpp>
-#include <stuff/safesocket.hpp>
+#include "stuff/link.h"
+#include "stuff/memoryblock.h"
+#include "stuff/safesocket.h"
 
 namespace Stuff
 {

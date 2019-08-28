@@ -20,7 +20,7 @@
 #endif
 
 static uint32_t pwXMax, count; // Must be static for assembly optimizations
-static puint8_t FadeTable; // Must be static for assembly optimizations
+static uint8_t* FadeTable; // Must be static for assembly optimizations
 
 //-----------------------------------------------------------
 struct tileStruct
@@ -50,7 +50,7 @@ struct newShapeStruct
 // This one is called if the cameraScale is 100.  No drop
 // of any pixels.  Straight BLT to screen.
 int32_t
-VFX_nTile_draw(PANE* pane, PVOIDtile, int32_t hotX, int32_t hotY, puint8_t fadeTable)
+VFX_nTile_draw(PANE* pane, PVOIDtile, int32_t hotX, int32_t hotY, uint8_t* fadeTable)
 {
 	//-----------------------------------------
 	// Format of tile shape data is NEW!!
@@ -67,7 +67,7 @@ VFX_nTile_draw(PANE* pane, PVOIDtile, int32_t hotX, int32_t hotY, puint8_t fadeT
 	//------------------------------------------------------
 	//-------------------------------------------------------
 	// Create Important Data from tile data.
-	puint8_t tileData = (puint8_t)tile + sizeof(tileStruct);
+	uint8_t* tileData = (uint8_t*)tile + sizeof(tileStruct);
 	tileStruct* tileInfo = (tileStruct*)tile;
 	uint32_t* yOffsetTable = (uint32_t*)(tileData);
 	pwXMax = pane->window->x_max + 1;
@@ -82,7 +82,7 @@ VFX_nTile_draw(PANE* pane, PVOIDtile, int32_t hotX, int32_t hotY, puint8_t fadeT
 		(hotY + paneY0) - tileInfo->tileHotSpotY; // In theory, tileHotSpotY is always zero!
 	if ((topLeftX >= paneX1) || (topLeftY >= paneY1) || (topLeftX <= (paneX0 - scanCol)) || (topLeftY <= (paneY0 - scanLines)))
 		return (FULLY_CLIPPED);
-	puint8_t screenBuffer =
+	uint8_t* screenBuffer =
 		pane->window->buffer + ((topLeftY > paneY0) ? topLeftY * pwXMax : paneY0 * pwXMax);
 	int32_t firstScanOffset = (topLeftY < paneY0) ? paneY0 - topLeftY : 0;
 	int32_t lastScanOffset = ((topLeftY + scanLines) > paneY1) ? paneY1 - topLeftY + 1 : scanLines;
@@ -662,8 +662,8 @@ VFX_line_draw(
 	int32_t _T; // Top
 	int32_t _R; // Right
 	int32_t _B; // Bottom
-	puint8_t _A; // Base address of Clipped Pane
-	int32_t _W; // Width of underlying window (bytes)
+	uint8_t* _A; // Base address of Clipped Pane
+	int32_t _W; // width of underlying window (bytes)
 	int32_t _CX; // Window x coord. = Pane x coord. + CP_CX
 	int32_t _CY; // Window y coord. = Pane x coord. + CP_CY
 	int32_t lineResult;
@@ -2646,8 +2646,8 @@ VFX_pixel_write(PANE* panep, int32_t x, int32_t y, uint32_t color)
 	int32_t _T; // Top
 	int32_t _R; // Right
 	int32_t _B; // Bottom
-	puint8_t _A; // Base address of Clipped Pane
-	int32_t _W; // Width of underlying window (bytes)
+	uint8_t* _A; // Base address of Clipped Pane
+	int32_t _W; // width of underlying window (bytes)
 	int32_t _CX; // Window x coord. = Pane x coord. + CP_CX
 	int32_t _CY; // Window y coord. = Pane x coord. + CP_CY
 	int32_t result = 0;
@@ -2839,8 +2839,8 @@ VFX_pixel_read(PANE* panep, int32_t x, int32_t y)
 	int32_t _T; // Top
 	int32_t _R; // Right
 	int32_t _B; // Bottom
-	puint8_t _A; // Base address of Clipped Pane
-	int32_t _W; // Width of underlying window (bytes)
+	uint8_t* _A; // Base address of Clipped Pane
+	int32_t _W; // width of underlying window (bytes)
 	int32_t _CX; // Window x coord. = Pane x coord. + CP_CX
 	int32_t _CY; // Window y coord. = Pane x coord. + CP_CY
 	int32_t result = 0;

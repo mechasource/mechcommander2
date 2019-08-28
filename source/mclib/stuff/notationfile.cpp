@@ -3,9 +3,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "toolos.hpp"
 #include "stuff/page.h"
 #include "stuff/note.h"
@@ -67,7 +67,7 @@ Macro::ReplaceMacros(MacroTree* macro_tree, const std::wstring_view& buffer, con
 	// Copy the characters one by one until we find the $(
 	//----------------------------------------------------
 	//
-	SUPPRESS_WARNING(4127)
+	MSSUPPRESS_WARNING(4127)
 	while (1)
 	{
 		while (*buffer && (*buffer != '$' || buffer[1] != '('))
@@ -280,7 +280,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 	//--------------------------------
 	//
 	bool comment_mode = false;
-	char buffer[MAX_LINE_SIZE];
+	wchar_t buffer[MAX_LINE_SIZE];
 	while (stream->ReadLine(buffer, sizeof(buffer)))
 	{
 		const std::wstring_view& p = buffer;
@@ -307,7 +307,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 				{
 					// suppress warning about unsafe strcpy as a strcpy_s
 					// implementation isn't straightforward
-					SUPPRESS_WARNING(4996)
+					MSSUPPRESS_WARNING(4996)
 					strcpy(p - 1, p + 1);
 					--p;
 				}
@@ -315,7 +315,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 				{
 					// suppress warning about unsafe strcpy as a strcpy_s
 					// implementation isn't straightforward
-					SUPPRESS_WARNING(4996)
+					MSSUPPRESS_WARNING(4996)
 					strcpy(buffer, p + 1);
 					p = buffer;
 				}
@@ -323,7 +323,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 				{
 					// suppress warning about unsafe strcpy as a strcpy_s
 					// implementation isn't straightforward
-					SUPPRESS_WARNING(4996)
+					MSSUPPRESS_WARNING(4996)
 					strcpy(comment_start, p + 1);
 					p = comment_start;
 				}
@@ -418,7 +418,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 				_ASSERT(!macroed);
 				macroed = true;
 #endif
-				char new_buf[MAX_LINE_SIZE];
+				wchar_t new_buf[MAX_LINE_SIZE];
 				Macro::ReplaceMacros(macro_tree, buffer, new_buf, sizeof(new_buf));
 				p = new_buf;
 				goto Parse;
@@ -637,7 +637,7 @@ NotationFile::HandleBangStuff(const std::wstring_view& buffer, MacroTree* macro_
 		return;
 	//
 	//----------------------------
-	// Handle an include directive
+	// handle an include directive
 	//----------------------------
 	//
 	const std::wstring_view& p;
@@ -678,7 +678,7 @@ NotationFile::HandleBangStuff(const std::wstring_view& buffer, MacroTree* macro_
 		// otherwise we assume it is relative to us
 		//---------------------------------------------------------------
 		//
-		char path[MAX_LINE_SIZE];
+		wchar_t path[MAX_LINE_SIZE];
 		if (!strchr(file_name, '\\'))
 		{
 			Str_Copy(path, GetFileName(), sizeof(path));

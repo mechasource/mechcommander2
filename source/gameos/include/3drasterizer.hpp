@@ -92,7 +92,7 @@ void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVerti
 void __stdcall DebugTriangle(pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3);
 void __stdcall DebugTriangle_2UV(pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3);
 void __stdcall DebugTriangle_3UV(pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VERTEX_3UV v3);
-uint32_t __stdcall GetMipmapColor(int32_t Mipmap);
+uint32_t __stdcall GetMipmapcolour(int32_t Mipmap);
 
 // clipping.cpp
 MECH_IMPEXP void __stdcall gos_ClipDrawQuad(pgos_VERTEX pVertices);
@@ -174,24 +174,23 @@ extern float MinVCoord; // The minimum v coord (for current texture)// Various
 	// video card
 
 // Various modes the renderer can be in
-enum class RenderModeType
+enum class RenderModeType : uint32_t
 {
 	Normal = 0, // Normal rendering
-	WireframeGlobalColor, // Only wireframe, no texture, global wireframe color
+	WireframeGlobalcolour, // Only wireframe, no texture, global wireframe color
 	WireframeGlobalTexture, // Global wireframe color ontop of texture
 	ExamineScene, // Examine, zoom into scene mode
 	ExamineMipmaps, // Examine Mipmaps mode
 	ExamineRenderer, // Compare with reference rasterizer
 	ExamineDepth, // Examine depth complexity
 	ExamineTriangleSize, // Examine triangle size
-	ExamineTriangleSize1, // Examine triangle size and only draw 1 or 2 pixel
-	// triangles
+	ExamineTriangleSize1, // Examine triangle size and only draw 1 or 2 pixel triangles
 	ExamineArea, // Examine an area of the screen
 	ExamineDrawing, // Examine scnene being drawn
-	ShowTriangleColors, // Show each triangle as a different color
-	ExamineColor, // Examine scene, show color information
+	ShowTrianglecolours, // Show each triangle as a different color
+	Examinecolour, // Examine scene, show color information
 	ExamineMipmaps2, // Examine mipmaps using colored mipmap (alter u,v)
-} RenderModeType;
+};
 
 extern RenderModeType RenderMode; // In a special debugger mode
 

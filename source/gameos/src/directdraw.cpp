@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -35,40 +35,40 @@
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
 // clang-format off
-HRESULT __stdcall wDirectDrawCreateEx(LPGUID pGUID, PVOID* ppDD, REFIID iid, IUnknown* pUnkOuter);
-HRESULT __stdcall wDirectDrawEnumerate(LPDDENUMCALLBACKA pCallback, LPDDENUMCALLBACKEXA pCallbackEx, PVOID pContext);
-HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t dwFlags, HWND hwnd);
-HRESULT __stdcall wGetAvailableVidMem(LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, pulong32_t lpdwTotal, pulong32_t lpdwFree);
-HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, pulong32_t pNumCodes, pulong32_t pCodes);
-HRESULT __stdcall wGetDeviceIdentifier(LPDIRECTDRAW7 pdd7, LPDDDEVICEIDENTIFIER2 pdddi2, uint32_t dwFlags);
-HRESULT __stdcall wGetCaps(LPDIRECTDRAW7 pdd7, LPDDCAPS lpDDDriverCaps, LPDDCAPS lpDDHELCaps);
-HRESULT __stdcall wCreatePalette(LPDIRECTDRAW7 pdd7, uint32_t dwFlags, LPPALETTEENTRY pColorTable,LPDIRECTDRAWPALETTE* lplpDDPalette, IUnknown* pUnkOuter);
-HRESULT __stdcall wEnumDisplayModes(LPDIRECTDRAW7 pdd7, uint32_t dwFlags,LPDDSURFACEDESC2 pDDSurfaceDesc, PVOID pContext, LPDDENUMMODESCALLBACK2 pEnumModesCallback);
+HRESULT __stdcall wDirectDrawCreateEx(LPGUID pGUID, PVOID* ppDD, REFIID iid, IUnknown* punkouter);
+HRESULT __stdcall wDirectDrawEnumerate(LPDDENUMCALLBACKA pCallback, LPDDENUMCALLBACKEXA pCallbackEx, PVOID pcontext);
+HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t flags, HWND hwnd);
+HRESULT __stdcall wGetAvailableVidMem(LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, ulong32_t* lpdwTotal, ulong32_t* lpdwFree);
+HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, ulong32_t* pNumCodes, ulong32_t* pCodes);
+HRESULT __stdcall wGetDeviceIdentifier(LPDIRECTDRAW7 pdd7, LPDDDEVICEIDENTIFIER2 pdddi2, uint32_t flags);
+HRESULT __stdcall wGetCaps(LPDIRECTDRAW7 pdd7, LPDDCAPS pdddrivercaps, LPDDCAPS pddhelcaps);
+HRESULT __stdcall wCreatePalette(LPDIRECTDRAW7 pdd7, uint32_t flags, LPPALETTEENTRY pcolourTable,LPDIRECTDRAWPALETTE* lplpDDPalette, IUnknown* punkouter);
+HRESULT __stdcall wEnumDisplayModes(LPDIRECTDRAW7 pdd7, uint32_t flags,LPDDSURFACEDESC2 pDDSurfaceDesc, PVOID pcontext, LPDDENUMMODESCALLBACK2 pEnumModesCallback);
 HRESULT __stdcall wGetDisplayMode(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurfaceDesc);
-HRESULT __stdcall wSetDisplayMode(LPDIRECTDRAW7 pdd7, uint32_t dwWidth, uint32_t dwHeight, uint32_t dwBPP, uint32_t dwRefreshRate, uint32_t dwFlags);
+HRESULT __stdcall wSetDisplayMode(LPDIRECTDRAW7 pdd7, uint32_t width, uint32_t height, uint32_t bpp, uint32_t refreshrate, uint32_t flags);
 HRESULT __stdcall wRestoreDisplayMode(LPDIRECTDRAW7 pdd7);
-HRESULT __stdcall wCreateClipper(LPDIRECTDRAW7 pdd7, uint32_t dwFlags, LPDIRECTDRAWCLIPPER* ppDDClipper, IUnknown* pUnkOuter);
-HRESULT __stdcall wCreateSurface(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurfaceDesc, LPDIRECTDRAWSURFACE7* ppDDSurface7, IUnknown* pUnkOuter);
-HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hwnd, uint32_t dwFlags);
+HRESULT __stdcall wCreateClipper(LPDIRECTDRAW7 pdd7, uint32_t flags, LPDIRECTDRAWCLIPPER* ppDDClipper, IUnknown* punkouter);
+HRESULT __stdcall wCreateSurface(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurfaceDesc, LPDIRECTDRAWSURFACE7* ppDDSurface7, IUnknown* punkouter);
+HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hwnd, uint32_t flags);
 HRESULT __stdcall wIsLost(LPDIRECTDRAWSURFACE7 pdds7);
 HRESULT __stdcall wGetDC(LPDIRECTDRAWSURFACE7 pdds7, HDC* phDC);
-HRESULT __stdcall wReleaseDC(LPDIRECTDRAWSURFACE7 pdds7, HDC hDC);
-HRESULT __stdcall wSetColorKey(LPDIRECTDRAWSURFACE7 pdd3, uint32_t dwFlags, LPDDCOLORKEY pDDColorKey);
-HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect,LPDDSURFACEDESC2 pDDSurfaceDesc, uint32_t dwFlags, HANDLE hEvent);
+HRESULT __stdcall wReleaseDC(LPDIRECTDRAWSURFACE7 pdds7, HDC hdc);
+HRESULT __stdcall wSetcolourKey(LPDIRECTDRAWSURFACE7 pdd3, uint32_t flags, LPDDCOLORKEY pDDcolourKey);
+HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect,LPDDSURFACEDESC2 pDDSurfaceDesc, uint32_t flags, HANDLE hevent);
 HRESULT __stdcall wUnlock(LPDIRECTDRAWSURFACE7 pdds7, LPRECT prect);
-HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE pdds, LPRECT pDestRect, LPDDSURFACEDESC pDDSurfaceDesc, uint32_t dwFlags, HANDLE hEvent);
+HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE pdds, LPRECT pDestRect, LPDDSURFACEDESC pDDSurfaceDesc, uint32_t flags, HANDLE hevent);
 HRESULT __stdcall wUnlock(LPDIRECTDRAWSURFACE pdds, LPRECT prect);
 HRESULT __stdcall wSetPalette(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWPALETTE pDDPalette);
 HRESULT __stdcall wRestore(LPDIRECTDRAWSURFACE7 pdd7);
-HRESULT __stdcall wBlt(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect, LPDIRECTDRAWSURFACE7 lpDDSrcSurface, LPRECT lpSrcRect, uint32_t dwFlags, LPDDBLTFX lpDDBltFx);
-HRESULT __stdcall wBltFast(LPDIRECTDRAWSURFACE7 pdd7, uint32_t dwX, uint32_t dwY, LPDIRECTDRAWSURFACE7 lpDDSrcSurface, LPRECT lpSrcRect, uint32_t dwTrans);
-HRESULT __stdcall wFlip(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWSURFACE7 pDDSurfaceTargetOverride, uint32_t dwFlags);
+HRESULT __stdcall wBlt(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect, LPDIRECTDRAWSURFACE7 pddsrcSurface, LPRECT psrcrect, uint32_t flags, LPDDBLTFX lpDDBltFx);
+HRESULT __stdcall wBltFast(LPDIRECTDRAWSURFACE7 pdd7, uint32_t dwX, uint32_t dwY, LPDIRECTDRAWSURFACE7 pddsrcSurface, LPRECT psrcrect, uint32_t dwTrans);
+HRESULT __stdcall wFlip(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWSURFACE7 pDDSurfaceTargetOverride, uint32_t flags);
 HRESULT __stdcall wGetSurfaceDesc(LPDIRECTDRAWSURFACE7 pdd7, LPDDSURFACEDESC2 pDDSurfaceDesc);
 HRESULT __stdcall wGetSurfaceDesc(LPDIRECTDRAWSURFACE pdds, LPDDSURFACEDESC pDDSurfaceDesc);
 HRESULT __stdcall wGetPixelFormat(LPDIRECTDRAWSURFACE7 pdds7, LPDDPIXELFORMAT pDDPixelFormat);
 HRESULT __stdcall wGetAttachedSurface(LPDIRECTDRAWSURFACE7 pdds7, LPDDSCAPS2 pDDSCaps2, LPDIRECTDRAWSURFACE7* ppDDAttachedSurface);
 HRESULT __stdcall wAddAttachedSurface(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWSURFACE7 pDDSAttachedSurface);
-HRESULT __stdcall wDeleteAttachedSurface(LPDIRECTDRAWSURFACE7 pdds7, uint32_t dwFlags, LPDIRECTDRAWSURFACE7 pDDSAttachedSurface);
+HRESULT __stdcall wDeleteAttachedSurface(LPDIRECTDRAWSURFACE7 pdds7, uint32_t flags, LPDIRECTDRAWSURFACE7 pDDSAttachedSurface);
 HRESULT __stdcall wSetClipper(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWCLIPPER pDDClipper);
 // clang-format on
 
@@ -93,27 +93,27 @@ missing or in wrong order. I corrected a few to what I think was intended
 /// <param name="pGUID"></param>
 /// <param name="ppDD"></param>
 /// <param name="iid"></param>
-/// <param name="pUnkOuter"></param>
+/// <param name="punkouter"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wDirectDrawCreateEx(LPGUID pGUID, PVOID* ppDD, REFIID iid, IUnknown* pUnkOuter)
+HRESULT __stdcall wDirectDrawCreateEx(LPGUID pGUID, PVOID* ppDD, REFIID iid, IUnknown* punkouter)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "DirectDrawCreateEx()+", pGUID);
-	hResult = _DirectDrawCreateEx(pGUID, ppDD, iid, pUnkOuter);
+	hr = _DirectDrawCreateEx(pGUID, ppDD, iid, punkouter);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -0x%x", *ppDD);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - DirectDrawCreateEx(0x%x)",
-				hResult, errormessage, pGUID))
+				hr, errormessage, pGUID))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -124,35 +124,35 @@ HRESULT __stdcall wDirectDrawCreateEx(LPGUID pGUID, PVOID* ppDD, REFIID iid, IUn
 /// </remarks>
 /// <param name="pCallback"></param>
 /// <param name="pCallbackEx"></param>
-/// <param name="pContext"></param>
+/// <param name="pcontext"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wDirectDrawEnumerate(
-	LPDDENUMCALLBACKA pCallback, LPDDENUMCALLBACKEXA pCallbackEx, PVOID pContext)
+	LPDDENUMCALLBACKA pCallback, LPDDENUMCALLBACKEXA pCallbackEx, PVOID pcontext)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	if (_DirectDrawEnumerateEx != nullptr)
 	{
 		// InternalFunctionSpew("GameOS_DirectDraw", "DirectDrawEnumerateEx()");
-		uint32_t dwFlags = DDENUM_NONDISPLAYDEVICES | DDENUM_DETACHEDSECONDARYDEVICES | DDENUM_ATTACHEDSECONDARYDEVICES;
-		hResult = _DirectDrawEnumerateEx(pCallbackEx, pContext, dwFlags);
+		uint32_t flags = DDENUM_NONDISPLAYDEVICES | DDENUM_DETACHEDSECONDARYDEVICES | DDENUM_ATTACHEDSECONDARYDEVICES;
+		hr = _DirectDrawEnumerateEx(pCallbackEx, pcontext, flags);
 	}
 	else
 	{
 		// InternalFunctionSpew("GameOS_DirectDraw", "DirectDrawEnumerate()");
-		hResult = _DirectDrawEnumerate(pCallback, pContext);
+		hr = _DirectDrawEnumerate(pCallback, pcontext);
 	}
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - DirectDrawEnumerate()",
-				hResult, errormessage))
+				hr, errormessage))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -162,27 +162,27 @@ HRESULT __stdcall wDirectDrawEnumerate(
 /// <remarks>
 /// </remarks>
 /// <param name="pddc"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <param name="hwnd"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t dwFlags, HWND hwnd)
+HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t flags, HWND hwnd)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
-	// InternalFunctionSpew("GameOS_DirectDraw", "SetHWnd(Flags=0x%x Window=0x%x)", dwFlags, hwnd);
-	hResult = pddc->SetHWnd(dwFlags, hwnd);
+	// InternalFunctionSpew("GameOS_DirectDraw", "SetHWnd(flags=0x%x Window=0x%x)", flags, hwnd);
+	hr = pddc->SetHWnd(flags, hwnd);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - SetHWnd(Flags=0x%x Window=0x%x)",
-				hResult, errormessage, dwFlags, hwnd))
+		PSTR errormessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - SetHWnd(flags=0x%x Window=0x%x)",
+				hr, errormessage, flags, hwnd))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -197,26 +197,26 @@ HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t dwFlags, HWND hwnd
 /// <param name="pdwFree"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wGetAvailableVidMem(
-	LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, pulong32_t pdwTotal, pulong32_t pdwFree)
+	LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, ulong32_t* pdwTotal, ulong32_t* pdwFree)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetAvailableVidMem( 0x%x,%s)+", pdd7,
 	// GetSurfaceCaps(pDDSCaps2));
-	hResult = pdd7->GetAvailableVidMem(pDDSCaps2, pdwTotal, pdwFree);
+	hr = pdd7->GetAvailableVidMem(pDDSCaps2, pdwTotal, pdwFree);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -Total=%d, Free=%d", *lpdwTotal);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetAvailableVidMem( 0x%x,%s)",
-				hResult, errormessage, pdd7, GetSurfaceCaps(pDDSCaps2)))
+				hr, errormessage, pdd7, GetSurfaceCaps(pDDSCaps2)))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -229,24 +229,24 @@ HRESULT __stdcall wGetAvailableVidMem(
 /// <param name="pNumCodes"></param>
 /// <param name="pCodes"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, pulong32_t pNumCodes, pulong32_t pCodes)
+HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, ulong32_t* pNumCodes, ulong32_t* pCodes)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetFourCCCodes(0x%x)", pdd7);
-	hResult = pdd7->GetFourCCCodes(pNumCodes, pCodes);
+	hr = pdd7->GetFourCCCodes(pNumCodes, pCodes);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetFourCCCodes(0x%x)",
-				hResult, errormessage, pdd7))
+				hr, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -257,28 +257,28 @@ HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, pulong32_t pNumCodes, pulo
 /// </remarks>
 /// <param name="pdd7"></param>
 /// <param name="pdddi2"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wGetDeviceIdentifier(
-	LPDIRECTDRAW7 pdd7, LPDDDEVICEIDENTIFIER2 pdddi2, uint32_t dwFlags)
+	LPDIRECTDRAW7 pdd7, LPDDDEVICEIDENTIFIER2 pdddi2, uint32_t flags)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetDeviceIdentifier(0x%x)", pdd7);
-	hResult = pdd7->GetDeviceIdentifier(pdddi2, dwFlags);
+	hr = pdd7->GetDeviceIdentifier(pdddi2, flags);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause(
 				"FAILED (0x%x - %s) - GetDeviceIdentifier(0x%x)",
-				hResult, errormessage, pdd7))
+				hr, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -288,27 +288,27 @@ HRESULT __stdcall wGetDeviceIdentifier(
 /// <remarks>
 /// </remarks>
 /// <param name="pdd7"></param>
-/// <param name="lpDDDriverCaps"></param>
-/// <param name="lpDDHELCaps"></param>
+/// <param name="pdddrivercaps"></param>
+/// <param name="pddhelcaps"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wGetCaps(LPDIRECTDRAW7 pdd7, LPDDCAPS lpDDDriverCaps, LPDDCAPS lpDDHELCaps)
+HRESULT __stdcall wGetCaps(LPDIRECTDRAW7 pdd7, LPDDCAPS pdddrivercaps, LPDDCAPS pddhelcaps)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetCaps(0x%x)", pdd7);
-	hResult = pdd7->GetCaps(lpDDDriverCaps, lpDDHELCaps);
+	hr = pdd7->GetCaps(pdddrivercaps, pddhelcaps);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetCaps(0x%x)",
-				hResult, errormessage, pdd7))
+				hr, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -318,32 +318,32 @@ HRESULT __stdcall wGetCaps(LPDIRECTDRAW7 pdd7, LPDDCAPS lpDDDriverCaps, LPDDCAPS
 /// <remarks>
 /// </remarks>
 /// <param name="pdd7"></param>
-/// <param name="dwFlags"></param>
-/// <param name="pColorTable"></param>
+/// <param name="flags"></param>
+/// <param name="pcolourTable"></param>
 /// <param name="lplpDDPalette"></param>
-/// <param name="pUnkOuter"></param>
+/// <param name="punkouter"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wCreatePalette(LPDIRECTDRAW7 pdd7, uint32_t dwFlags, LPPALETTEENTRY pColorTable,
-	LPDIRECTDRAWPALETTE* pDDPalette, IUnknown* pUnkOuter)
+HRESULT __stdcall wCreatePalette(LPDIRECTDRAW7 pdd7, uint32_t flags, LPPALETTEENTRY pcolourTable,
+	LPDIRECTDRAWPALETTE* pDDPalette, IUnknown* punkouter)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "CreatePalette(%s)+",
-	// GetCreatePaletteFlags(dwFlags));
-	hResult = pdd7->CreatePalette(dwFlags, pColorTable, pDDPalette, pUnkOuter);
+	// GetCreatePaletteFlags(flags));
+	hr = pdd7->CreatePalette(flags, pcolourTable, pDDPalette, punkouter);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -0x%x");
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - CreatePalette(%s)",
-				hResult, errormessage, GetCreatePaletteFlags(dwFlags)))
+				hr, errormessage, GetCreatePaletteFlags(flags)))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -353,31 +353,31 @@ HRESULT __stdcall wCreatePalette(LPDIRECTDRAW7 pdd7, uint32_t dwFlags, LPPALETTE
 /// <remarks>
 /// </remarks>
 /// <param name="pdd7"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <param name="pDDSurfaceDesc"></param>
-/// <param name="pContext"></param>
+/// <param name="pcontext"></param>
 /// <param name="pEnumModesCallback"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wEnumDisplayModes(LPDIRECTDRAW7 pdd7, uint32_t dwFlags,
-	LPDDSURFACEDESC2 pDDSurfaceDesc, PVOID pContext, LPDDENUMMODESCALLBACK2 pEnumModesCallback)
+HRESULT __stdcall wEnumDisplayModes(LPDIRECTDRAW7 pdd7, uint32_t flags,
+	LPDDSURFACEDESC2 pDDSurfaceDesc, PVOID pcontext, LPDDENUMMODESCALLBACK2 pEnumModesCallback)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "EnumDisplayModes( %s)",
-	// GetEnumDisplayModeFlags(dwFlags));
-	hResult = pdd7->EnumDisplayModes(dwFlags, pDDSurfaceDesc, pContext, pEnumModesCallback);
+	// GetEnumDisplayModeFlags(flags));
+	hr = pdd7->EnumDisplayModes(flags, pDDSurfaceDesc, pcontext, pEnumModesCallback);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - EnumDisplayModes( %s)",
-				hResult, errormessage, GetEnumDisplayModeFlags(dwFlags)))
+				hr, errormessage, GetEnumDisplayModeFlags(flags)))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -391,20 +391,20 @@ HRESULT __stdcall wEnumDisplayModes(LPDIRECTDRAW7 pdd7, uint32_t dwFlags,
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wGetDisplayMode(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurfaceDesc)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetDisplayMode()");
-	hResult = pdd7->GetDisplayMode(pDDSurfaceDesc);
-	if (FAILED(hResult))
+	hr = pdd7->GetDisplayMode(pDDSurfaceDesc);
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetDisplayMode()",
-				hResult, errormessage))
+				hr, errormessage))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -414,32 +414,32 @@ HRESULT __stdcall wGetDisplayMode(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurfac
 /// <remarks>
 /// </remarks>
 /// <param name="pdd7"></param>
-/// <param name="dwWidth"></param>
-/// <param name="dwHeight"></param>
-/// <param name="dwBPP"></param>
-/// <param name="dwRefreshRate"></param>
-/// <param name="dwFlags"></param>
+/// <param name="width"></param>
+/// <param name="height"></param>
+/// <param name="bpp"></param>
+/// <param name="refreshrate"></param>
+/// <param name="flags"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wSetDisplayMode(LPDIRECTDRAW7 pdd7, uint32_t dwWidth, uint32_t dwHeight,
-	uint32_t dwBPP, uint32_t dwRefreshRate, uint32_t dwFlags)
+HRESULT __stdcall wSetDisplayMode(LPDIRECTDRAW7 pdd7, uint32_t width, uint32_t height,
+	uint32_t bpp, uint32_t refreshrate, uint32_t flags)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
-	// InternalFunctionSpew("GameOS_DirectDraw", "SetDisplayMode(%dx%d %dbpp %dHz)", dwWidth,
-	// dwHeight, dwBPP, dwRefreshRate);
-	hResult = pdd7->SetDisplayMode(dwWidth, dwHeight, dwBPP, dwRefreshRate, dwFlags);
+	// InternalFunctionSpew("GameOS_DirectDraw", "SetDisplayMode(%dx%d %dbpp %dHz)", width,
+	// height, bpp, refreshrate);
+	hr = pdd7->SetDisplayMode(width, height, bpp, refreshrate, flags);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetDisplayMode(%dx%d %dbpp %dHz)",
-				hResult, errormessage, dwWidth, dwHeight, dwBPP, dwRefreshRate))
+				hr, errormessage, width, height, bpp, refreshrate))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -452,20 +452,20 @@ HRESULT __stdcall wSetDisplayMode(LPDIRECTDRAW7 pdd7, uint32_t dwWidth, uint32_t
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wRestoreDisplayMode(LPDIRECTDRAW7 pdd7)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "RestoreDisplayMode()");
-	hResult = pdd7->RestoreDisplayMode();
-	if (FAILED(hResult))
+	hr = pdd7->RestoreDisplayMode();
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - RestoreDisplayMode()",
-				hResult, errormessage))
+				hr, errormessage))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -475,29 +475,29 @@ HRESULT __stdcall wRestoreDisplayMode(LPDIRECTDRAW7 pdd7)
 /// <remarks>
 /// </remarks>
 /// <param name="pdd7"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <param name="ppDDClipper"></param>
-/// <param name="pUnkOuter"></param>
+/// <param name="punkouter"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wCreateClipper(
-	LPDIRECTDRAW7 pdd7, uint32_t dwFlags, LPDIRECTDRAWCLIPPER* ppDDClipper, IUnknown* pUnkOuter)
+	LPDIRECTDRAW7 pdd7, uint32_t flags, LPDIRECTDRAWCLIPPER* ppDDClipper, IUnknown* punkouter)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "CreateClipper()+");
-	hResult = pdd7->CreateClipper(dwFlags, ppDDClipper, pUnkOuter);
+	hr = pdd7->CreateClipper(flags, ppDDClipper, punkouter);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -0x%x");
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateClipper()",
-				hResult, errormessage))
+				hr, errormessage))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -509,28 +509,28 @@ HRESULT __stdcall wCreateClipper(
 /// <param name="pdd7"></param>
 /// <param name="pDDSurfaceDesc"></param>
 /// <param name="ppDDSurface7"></param>
-/// <param name="pUnkOuter"></param>
+/// <param name="punkouter"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wCreateSurface(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurfaceDesc,
-	LPDIRECTDRAWSURFACE7* ppDDSurface7, IUnknown* pUnkOuter)
+	LPDIRECTDRAWSURFACE7* ppDDSurface7, IUnknown* punkouter)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "CreateSurface( 0x%x:%s)+", pdd7,
 	// GetSurfaceDescription(pDDSurfaceDesc));
-	hResult = pdd7->CreateSurface(pDDSurfaceDesc, ppDDSurface7, pUnkOuter);
+	hr = pdd7->CreateSurface(pDDSurfaceDesc, ppDDSurface7, punkouter);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -0x%x");
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateSurface( 0x%x:%s)",
-				hResult, errormessage, pdd7, GetSurfaceDescription(pDDSurfaceDesc)))
+				hr, errormessage, pdd7, GetSurfaceDescription(pDDSurfaceDesc)))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -541,26 +541,26 @@ HRESULT __stdcall wCreateSurface(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pDDSurface
 /// </remarks>
 /// <param name="pdd7"></param>
 /// <param name="hwnd"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hwnd, uint32_t dwFlags)
+HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hwnd, uint32_t flags)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "SetCooperativeLevel( 0x%x,%s)", pdd7,
-	// GetSetCooperativeLevelFlags(dwFlags));
-	hResult = pdd7->SetCooperativeLevel(hwnd, dwFlags);
+	// GetSetCooperativeLevelFlags(flags));
+	hr = pdd7->SetCooperativeLevel(hwnd, flags);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetCooperativeLevel( 0x%x,%s)",
-				hResult, errormessage, pdd7, GetSetCooperativeLevelFlags(dwFlags)))
+				hr, errormessage, pdd7, GetSetCooperativeLevelFlags(flags)))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -573,23 +573,23 @@ HRESULT __stdcall wSetCooperativeLevel(LPDIRECTDRAW7 pdd7, HWND hwnd, uint32_t d
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wIsLost(LPDIRECTDRAWSURFACE7 pdds7)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "IsLost(0x%x)+", pdds7);
-	hResult = pdds7->IsLost();
-	// InternalFunctionSpew("GameOS_DirectDraw", " -(%s)", (hResult == DDERR_SURFACELOST) ? "Yes" :
+	hr = pdds7->IsLost();
+	// InternalFunctionSpew("GameOS_DirectDraw", " -(%s)", (hr == DDERR_SURFACELOST) ? "Yes" :
 	// "No");
 
-	if (FAILED(hResult) && hResult != DDERR_SURFACELOST)
+	if (FAILED(hr) && hr != DDERR_SURFACELOST)
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - IsLost(0x%x)",
-				hResult, errormessage, pdds7))
+				hr, errormessage, pdds7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -603,21 +603,21 @@ HRESULT __stdcall wIsLost(LPDIRECTDRAWSURFACE7 pdds7)
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wGetDC(LPDIRECTDRAWSURFACE7 pdds7, HDC* phDC)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetDC(0x%x)+", pdds7);
-	hResult = pdds7->GetDC(phDC);
+	hr = pdds7->GetDC(phDC);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -0x%x");
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetDC(0x%x)",
-				hResult, errormessage, pdds7))
+				hr, errormessage, pdds7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -627,58 +627,58 @@ HRESULT __stdcall wGetDC(LPDIRECTDRAWSURFACE7 pdds7, HDC* phDC)
 /// <remarks>
 /// </remarks>
 /// <param name="pdds7"></param>
-/// <param name="hDC"></param>
+/// <param name="hdc"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wReleaseDC(LPDIRECTDRAWSURFACE7 pdds7, HDC hDC)
+HRESULT __stdcall wReleaseDC(LPDIRECTDRAWSURFACE7 pdds7, HDC hdc)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
-	// InternalFunctionSpew("GameOS_DirectDraw", "ReleaseDC(0x%x, 0x%x)", pdds7, hDC);
-	hResult = pdds7->ReleaseDC(hDC);
+	// InternalFunctionSpew("GameOS_DirectDraw", "ReleaseDC(0x%x, 0x%x)", pdds7, hdc);
+	hr = pdds7->ReleaseDC(hdc);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - ReleaseDC(0x%x, 0x%x)",
-				hResult, errormessage, pdds7, hDC))
+				hr, errormessage, pdds7, hdc))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
 /// <summary>
-/// <c>wSetColorKey</c>
+/// <c>wSetcolourKey</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
 /// <param name="pdd3"></param>
-/// <param name="dwFlags"></param>
-/// <param name="pDDColorKey"></param>
+/// <param name="flags"></param>
+/// <param name="pDDcolourKey"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wSetColorKey(
-	LPDIRECTDRAWSURFACE7 pdds7, uint32_t dwFlags, LPDDCOLORKEY pDDColorKey)
+HRESULT __stdcall wSetcolourKey(
+	LPDIRECTDRAWSURFACE7 pdds7, uint32_t flags, LPDDCOLORKEY pDDcolourKey)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
-	// InternalFunctionSpew("GameOS_DirectDraw","SetColorKey(0x%x,%s(0x%x,0x%x))",pdds7,GetSetColorKeyFlags(dwFlags),pDDColorKey->dwColorSpaceLowValue,
-	// pDDColorKey->dwColorSpaceHighValue);
-	hResult = pdds7->SetColorKey(dwFlags, pDDColorKey);
+	// InternalFunctionSpew("GameOS_DirectDraw","SetcolourKey(0x%x,%s(0x%x,0x%x))",pdds7,GetSetcolourKeyFlags(flags),pDDcolourKey->colourSpaceLowValue,
+	// pDDcolourKey->colourSpaceHighValue);
+	hr = pdds7->SetcolourKey(flags, pDDcolourKey);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - SetColorKey(0x%x,%s(0x%x,0x%x))",
-				hResult, errormessage, pdds7, GetSetColorKeyFlags(dwFlags),
-				pDDColorKey->dwColorSpaceLowValue, pDDColorKey->dwColorSpaceHighValue))
+		PSTR errormessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - SetcolourKey(0x%x,%s(0x%x,0x%x))",
+				hr, errormessage, pdds7, GetSetcolourKeyFlags(flags),
+				pDDcolourKey->colourSpaceLowValue, pDDcolourKey->colourSpaceHighValue))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -690,29 +690,29 @@ HRESULT __stdcall wSetColorKey(
 /// <param name="pdd7"></param>
 /// <param name="pDestRect"></param>
 /// <param name="pDDSurfaceDesc"></param>
-/// <param name="dwFlags"></param>
-/// <param name="hEvent"></param>
+/// <param name="flags"></param>
+/// <param name="hevent"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect,
-	LPDDSURFACEDESC2 pDDSurfaceDesc, uint32_t dwFlags, HANDLE hEvent)
+	LPDDSURFACEDESC2 pDDSurfaceDesc, uint32_t flags, HANDLE hevent)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
-	// InternalFunctionSpew("GameOS_DirectDraw", "Lock(0x%x,%s)", pdd7, GetLockFlags(dwFlags));
-	hResult = pdd7->Lock(pDestRect, pDDSurfaceDesc, dwFlags, hEvent);
+	// InternalFunctionSpew("GameOS_DirectDraw", "Lock(0x%x,%s)", pdd7, GetLockFlags(flags));
+	hr = pdd7->Lock(pDestRect, pDDSurfaceDesc, flags, hevent);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		// unused = GetLockFlags(dwFlags);
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		// unused = GetLockFlags(flags);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Lock(0x%x,%s)",
-				hResult, errormessage, pdd7))
+				hr, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -726,25 +726,25 @@ HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect,
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wUnlock(LPDIRECTDRAWSURFACE7 pdds7, LPRECT prect)
 {
-	HRESULT hResult;
+	HRESULT hr;
 	char buffer[132];
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "Unlock(0x%x,%s)", pdds7, GetRectangle(buffer,
 	// prect));
-	hResult = pdds7->Unlock(prect);
+	hr = pdds7->Unlock(prect);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
 		PSTR rectangle = GetRectangle(buffer, prect);
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Unlock(0x%x,%s)",
-				hResult, errormessage, pdds7, rectangle))
+				hr, errormessage, pdds7, rectangle))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -756,29 +756,29 @@ HRESULT __stdcall wUnlock(LPDIRECTDRAWSURFACE7 pdds7, LPRECT prect)
 /// <param name="pdds"></param>
 /// <param name="pDestRect"></param>
 /// <param name="pDDSurfaceDesc"></param>
-/// <param name="dwFlags"></param>
-/// <param name="hEvent"></param>
+/// <param name="flags"></param>
+/// <param name="hevent"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE pdds, LPRECT pDestRect, LPDDSURFACEDESC pDDSurfaceDesc,
-	uint32_t dwFlags, HANDLE hEvent)
+	uint32_t flags, HANDLE hevent)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
-	// InternalFunctionSpew("GameOS_DirectDraw", "Lock(0x%x,%s)", pdds, GetLockFlags(dwFlags));
-	hResult = pdds->Lock(pDestRect, pDDSurfaceDesc, dwFlags, hEvent);
+	// InternalFunctionSpew("GameOS_DirectDraw", "Lock(0x%x,%s)", pdds, GetLockFlags(flags));
+	hr = pdds->Lock(pDestRect, pDDSurfaceDesc, flags, hevent);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		// unused = GetLockFlags(dwFlags);
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		// unused = GetLockFlags(flags);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Lock(0x%x,%s)",
-				hResult, errormessage, pdds))
+				hr, errormessage, pdds))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -792,25 +792,25 @@ HRESULT __stdcall wLock(LPDIRECTDRAWSURFACE pdds, LPRECT pDestRect, LPDDSURFACED
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wUnlock(LPDIRECTDRAWSURFACE pdds, LPRECT prect)
 {
-	HRESULT hResult;
+	HRESULT hr;
 	char buffer[132];
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "Unlock(0x%x,%s)", pdds, GetRectangle(buffer,
 	// prect));
-	hResult = pdds->Unlock(prect);
+	hr = pdds->Unlock(prect);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
 		PSTR rectangle = GetRectangle(buffer, prect);
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Unlock(0x%x,%s)",
-				hResult, errormessage, pdds, rectangle))
+				hr, errormessage, pdds, rectangle))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -824,22 +824,22 @@ HRESULT __stdcall wUnlock(LPDIRECTDRAWSURFACE pdds, LPRECT prect)
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wSetPalette(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWPALETTE pDDPalette)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "SetPalette(0x%x,0x%x)", pdd7, pDDPalette);
-	hResult = pdd7->SetPalette(pDDPalette);
+	hr = pdd7->SetPalette(pDDPalette);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetPalette(0x%x,0x%x)",
-				hResult, errormessage, pdd7, pDDPalette))
+				hr, errormessage, pdd7, pDDPalette))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -852,22 +852,22 @@ HRESULT __stdcall wSetPalette(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWPALETTE pDD
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wRestore(LPDIRECTDRAWSURFACE7 pdd7)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "Restore(0x%x)", pdd7);
-	hResult = pdd7->Restore();
+	hr = pdd7->Restore();
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Restore(0x%x)",
-				hResult, errormessage, pdd7))
+				hr, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -878,32 +878,32 @@ HRESULT __stdcall wRestore(LPDIRECTDRAWSURFACE7 pdd7)
 /// </remarks>
 /// <param name="pdd7"></param>
 /// <param name="pDestRect"></param>
-/// <param name="lpDDSrcSurface"></param>
-/// <param name="lpSrcRect"></param>
-/// <param name="dwFlags"></param>
+/// <param name="pddsrcSurface"></param>
+/// <param name="psrcrect"></param>
+/// <param name="flags"></param>
 /// <param name="lpDDBltFx"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wBlt(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect,
-	LPDIRECTDRAWSURFACE7 lpDDSrcSurface, LPRECT lpSrcRect, uint32_t dwFlags, LPDDBLTFX lpDDBltFx)
+	LPDIRECTDRAWSURFACE7 pddsrcSurface, LPRECT psrcrect, uint32_t flags, LPDDBLTFX lpDDBltFx)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "Blt(%s)", GetBltInformation(pdd7, pDestRect,
-	// lpDDSrcSurface, lpSrcRect, dwFlags, lpDDBltFx));
-	hResult = pdd7->Blt(pDestRect, lpDDSrcSurface, lpSrcRect, dwFlags, lpDDBltFx);
+	// pddsrcSurface, psrcrect, flags, lpDDBltFx));
+	hr = pdd7->Blt(pDestRect, pddsrcSurface, psrcrect, flags, lpDDBltFx);
 
-	if (FAILED(hResult) && hResult != DDERR_SURFACELOST)
+	if (FAILED(hr) && hr != DDERR_SURFACELOST)
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Blt(%s)",
-				hResult, errormessage,
-				GetBltInformation(pdd7, pDestRect, lpDDSrcSurface, lpSrcRect, dwFlags, lpDDBltFx)))
+				hr, errormessage,
+				GetBltInformation(pdd7, pDestRect, pddsrcSurface, psrcrect, flags, lpDDBltFx)))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -915,31 +915,31 @@ HRESULT __stdcall wBlt(LPDIRECTDRAWSURFACE7 pdd7, LPRECT pDestRect,
 /// <param name="pdd7"></param>
 /// <param name="dwX"></param>
 /// <param name="dwY"></param>
-/// <param name="lpDDSrcSurface"></param>
-/// <param name="lpSrcRect"></param>
+/// <param name="pddsrcSurface"></param>
+/// <param name="psrcrect"></param>
 /// <param name="dwTrans"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wBltFast(LPDIRECTDRAWSURFACE7 pdd7, uint32_t dwX, uint32_t dwY,
-	LPDIRECTDRAWSURFACE7 lpDDSrcSurface, LPRECT lpSrcRect, uint32_t dwTrans)
+	LPDIRECTDRAWSURFACE7 pddsrcSurface, LPRECT psrcrect, uint32_t dwTrans)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "BltFast(%s)", GetBltFastInformation(pdd7, dwX,
-	// dwY, lpDDSrcSurface, lpSrcRect, dwTrans));
-	hResult = pdd7->BltFast(dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans);
+	// dwY, pddsrcSurface, psrcrect, dwTrans));
+	hr = pdd7->BltFast(dwX, dwY, pddsrcSurface, psrcrect, dwTrans);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - BltFast(%s)",
-				hResult, errormessage,
-				GetBltFastInformation(pdd7, dwX, dwY, lpDDSrcSurface, lpSrcRect, dwTrans)))
+				hr, errormessage,
+				GetBltFastInformation(pdd7, dwX, dwY, pddsrcSurface, psrcrect, dwTrans)))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -950,28 +950,28 @@ HRESULT __stdcall wBltFast(LPDIRECTDRAWSURFACE7 pdd7, uint32_t dwX, uint32_t dwY
 /// </remarks>
 /// <param name="pdd7"></param>
 /// <param name="pDDSurfaceTargetOverride"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wFlip(
-	LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWSURFACE7 pDDSurfaceTargetOverride, uint32_t dwFlags)
+	LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWSURFACE7 pDDSurfaceTargetOverride, uint32_t flags)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "Flip( 0x%x,0x%x,%s)", pdd7,
-	// pDDSurfaceTargetOverride, GetFlipFlags(dwFlags));
-	hResult = pdd7->Flip(pDDSurfaceTargetOverride, dwFlags);
+	// pDDSurfaceTargetOverride, GetFlipFlags(flags));
+	hr = pdd7->Flip(pDDSurfaceTargetOverride, flags);
 
-	if (FAILED(hResult) && hResult != DDERR_SURFACELOST)
+	if (FAILED(hr) && hr != DDERR_SURFACELOST)
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - Flip( 0x%x,0x%x,%s)",
-				hResult, errormessage,
-				pdd7, pDDSurfaceTargetOverride, GetFlipFlags(dwFlags)))
+				hr, errormessage,
+				pdd7, pDDSurfaceTargetOverride, GetFlipFlags(flags)))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -985,23 +985,23 @@ HRESULT __stdcall wFlip(
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wGetSurfaceDesc(LPDIRECTDRAWSURFACE7 pdd7, LPDDSURFACEDESC2 pDDSurfaceDesc)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetSurfaceDesc(0x%x)+", pdd7);
-	hResult = pdd7->GetSurfaceDesc(pDDSurfaceDesc);
+	hr = pdd7->GetSurfaceDesc(pDDSurfaceDesc);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -( %s)", GetSurfaceDescription(pDDSurfaceDesc));
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetSurfaceDesc(0x%x)",
-				hResult, errormessage, pdd7))
+				hr, errormessage, pdd7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -1015,24 +1015,24 @@ HRESULT __stdcall wGetSurfaceDesc(LPDIRECTDRAWSURFACE7 pdd7, LPDDSURFACEDESC2 pD
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wGetSurfaceDesc(LPDIRECTDRAWSURFACE pdds, LPDDSURFACEDESC pDDSurfaceDesc)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetSurfaceDesc(0x%x)+", pdds);
-	hResult = pdds->GetSurfaceDesc(pDDSurfaceDesc);
+	hr = pdds->GetSurfaceDesc(pDDSurfaceDesc);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -( %s)",
 	// GetSurfaceDescriptionOld(pDDSurfaceDesc));
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetSurfaceDesc(0x%x)",
-				hResult, errormessage, pdds))
+				hr, errormessage, pdds))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -1046,23 +1046,23 @@ HRESULT __stdcall wGetSurfaceDesc(LPDIRECTDRAWSURFACE pdds, LPDDSURFACEDESC pDDS
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wGetPixelFormat(LPDIRECTDRAWSURFACE7 pdds7, LPDDPIXELFORMAT pDDPixelFormat)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetPixelFormat(0x%x)+", pdds7);
-	hResult = pdds7->GetPixelFormat(pDDPixelFormat);
+	hr = pdds7->GetPixelFormat(pDDPixelFormat);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -( %s)", GetGosPixelFormat(pDDPixelFormat));
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetPixelFormat(0x%x)",
-				hResult, errormessage, pdds7))
+				hr, errormessage, pdds7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -1078,23 +1078,23 @@ HRESULT __stdcall wGetPixelFormat(LPDIRECTDRAWSURFACE7 pdds7, LPDDPIXELFORMAT pD
 HRESULT __stdcall wGetAttachedSurface(
 	LPDIRECTDRAWSURFACE7 pdds7, LPDDSCAPS2 pDDSCaps2, LPDIRECTDRAWSURFACE7* ppDDAttachedSurface)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "GetAttachedSurface(0x%x)+", pdds7);
-	hResult = pdds7->GetAttachedSurface(pDDSCaps2, ppDDAttachedSurface);
+	hr = pdds7->GetAttachedSurface(pDDSCaps2, ppDDAttachedSurface);
 	// InternalFunctionSpew("GameOS_DirectDraw", " -0x%x");
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - GetAttachedSurface(0x%x)",
-				hResult, errormessage, pdds7))
+				hr, errormessage, pdds7))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -1109,23 +1109,23 @@ HRESULT __stdcall wGetAttachedSurface(
 HRESULT __stdcall wAddAttachedSurface(
 	LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWSURFACE7 pDDSAttachedSurface)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "AddAttachedSurface(0x%x,0x%x)", pdd7,
 	// pDDSAttachedSurface);
-	hResult = pdd7->AddAttachedSurface(pDDSAttachedSurface);
+	hr = pdd7->AddAttachedSurface(pDDSAttachedSurface);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - AddAttachedSurface(0x%x- 0x%x)",
-				hResult, errormessage, pdd7, pDDSAttachedSurface))
+				hr, errormessage, pdd7, pDDSAttachedSurface))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -1135,29 +1135,29 @@ HRESULT __stdcall wAddAttachedSurface(
 /// <remarks>
 /// </remarks>
 /// <param name="pdds7"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <param name="pDDSAttachedSurface"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wDeleteAttachedSurface(
-	LPDIRECTDRAWSURFACE7 pdds7, uint32_t dwFlags, LPDIRECTDRAWSURFACE7 pDDSAttachedSurface)
+	LPDIRECTDRAWSURFACE7 pdds7, uint32_t flags, LPDIRECTDRAWSURFACE7 pDDSAttachedSurface)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "DeleteAttachedSurface(0x%x,0x%x)", pdds7,
 	// pDDSAttachedSurface);
-	hResult = pdds7->DeleteAttachedSurface(dwFlags, pDDSAttachedSurface);
+	hr = pdds7->DeleteAttachedSurface(flags, pDDSAttachedSurface);
 
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - DeleteAttachedSurface(0x%x,0x%x)",
-				hResult, errormessage, pdds7, pDDSAttachedSurface))
+				hr, errormessage, pdds7, pDDSAttachedSurface))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }
 
 /******************************************************************************/
@@ -1171,19 +1171,19 @@ HRESULT __stdcall wDeleteAttachedSurface(
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wSetClipper(LPDIRECTDRAWSURFACE7 pdd7, LPDIRECTDRAWCLIPPER pDDClipper)
 {
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_DirectDraw", "SetClipper(0x%x,0x%x)", pdd7, pDDClipper);
-	hResult = pdd7->SetClipper(pDDClipper);
-	if (FAILED(hResult))
+	hr = pdd7->SetClipper(pDDClipper);
+	if (FAILED(hr))
 	{
-		PSTR errormessage = ErrorNumberToMessage(hResult);
+		PSTR errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - SetClipper(0x%x- 0x%x)",
-				hResult, errormessage, pdd7, pDDClipper))
+				hr, errormessage, pdd7, pDDClipper))
 		{
 			ENTER_DEBUGGER;
 		}
 	}
 
-	return hResult;
+	return hr;
 }

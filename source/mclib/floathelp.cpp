@@ -35,8 +35,8 @@ FloatHelp::init(int32_t maxHelps)
 	{
 		tmp->text[0] = 0;
 		tmp->screenPos.x = tmp->screenPos.y = tmp->screenPos.z = tmp->screenPos.w = 0.0f;
-		tmp->foregroundColor = SD_WHITE;
-		tmp->backgroundColor = SD_BLACK;
+		tmp->foregroundcolour = SD_WHITE;
+		tmp->backgroundcolour = SD_BLACK;
 		tmp->scale = 1.0f;
 		tmp->proportional = true;
 		tmp->bold = tmp->italic = tmp->wordWrap = false;
@@ -79,8 +79,8 @@ FloatHelp::setFloatHelp(const std::wstring_view& txt, Stuff::Vector4D screenPos,
 	{
 		floatHelps[currentFloatHelp].setHelpText(txt);
 		floatHelps[currentFloatHelp].setScreenPos(screenPos);
-		floatHelps[currentFloatHelp].setForegroundColor(fClr);
-		floatHelps[currentFloatHelp].setBackgroundColor(bClr);
+		floatHelps[currentFloatHelp].setForegroundcolour(fClr);
+		floatHelps[currentFloatHelp].setBackgroundcolour(bClr);
 		floatHelps[currentFloatHelp].setScale(scl);
 		floatHelps[currentFloatHelp].setProportional(proportional);
 		floatHelps[currentFloatHelp].setBold(bold);
@@ -92,19 +92,19 @@ FloatHelp::setFloatHelp(const std::wstring_view& txt, Stuff::Vector4D screenPos,
 
 //-----------------------------------------------------------------------------------------
 void
-FloatHelp::getTextStringLength(const std::wstring_view& txt, uint32_t fColor, float scl, bool proportional,
+FloatHelp::getTextStringLength(const std::wstring_view& txt, uint32_t fcolour, float scl, bool proportional,
 	bool bold, bool italic, bool wordWrap, uint32_t& width, uint32_t& height)
 {
 	// must use globalFloat Scale because of true type fonts
 	gos_TextSetAttributes(
-		gosFontHandle, fColor, gosFontScale, wordWrap, proportional, bold, italic);
-	uint32_t gHeight = 0, gWidth = 0;
+		gosFontHandle, fcolour, gosFontScale, wordWrap, proportional, bold, italic);
+	uint32_t gheight = 0, gwidth = 0;
 	if (txt[0])
 	{
-		gos_TextStringLength(&gWidth, &gHeight, txt);
+		gos_TextStringLength(&gwidth, &gheight, txt);
 	}
-	width = gWidth;
-	height = gHeight;
+	width = gwidth;
+	height = gheight;
 }
 
 //-----------------------------------------------------------------------------------------

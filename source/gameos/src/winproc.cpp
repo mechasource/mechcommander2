@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -104,11 +104,11 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM 
 	LRESULT lResult;
 	WINDOWPLACEMENT wndpl;
 	PWINDOWPOS winpos;
-	HDC hdcSrc;
+	HDC hdcsrc;
 	HDC hdc;
 	PAINTSTRUCT paint;
 	RECT rect;
-	PSTR pszMessage;
+	PSTR message;
 	if ((message == WM_NCHITTEST) || (message == WM_MOUSEMOVE))
 		return DefWindowProcA(hwnd, message, wparam, lparam);
 	if (message == WM_SETCURSOR)
@@ -125,9 +125,9 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM 
 		}
 		return lResult;
 	}
-	pszMessage = GetWindowsMessage(message, wparam, lparam);
-	if (pszMessage)
-		InternalFunctionSpew("Windows_Messages", pszMessage);
+	message = GetWindowsMessage(message, wparam, lparam);
+	if (message)
+		InternalFunctionSpew("Windows_Messages", message);
 	if (message <= WM_KEYFIRST) // message <= 0x100
 	{
 		if (message != WM_KEYFIRST)
@@ -188,7 +188,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM 
 				if (Environment.fullScreen)
 				{
 					++Environment.FullScreenDevice;
-					if ((unsigned int)Environment.FullScreenDevice >= NumDevices)
+					if ((uint32_t)Environment.FullScreenDevice >= NumDevices)
 						Environment.FullScreenDevice = 0;
 					DoUpdateWindow = 1;
 					GlobalGotoFullScreen = 1;
@@ -397,15 +397,15 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM 
 		if (FrontBufferSurface)
 		{
 			rect.left = clientToScreen.x;
-			rect.right = Environment.screenWidth + clientToScreen.x;
+			rect.right = Environment.screenwidth + clientToScreen.x;
 			rect.top = clientToScreen.y;
-			rect.bottom = Environment.screenHeight + clientToScreen.y;
+			rect.bottom = Environment.screenheight + clientToScreen.y;
 			if (Environment.fullScreen)
 			{
 				rect.left = 0;
-				rect.right = Environment.screenWidth;
+				rect.right = Environment.screenwidth;
 				rect.top = 0;
-				rect.bottom = Environment.screenHeight;
+				rect.bottom = Environment.screenheight;
 			}
 			AllowFail = true;
 			wBlt(FrontBufferSurface, &rect, BackBufferSurface, 0, DDBLT_WAIT, 0);
@@ -418,19 +418,19 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM 
 		else
 		{
 			hdc = BeginPaint(hwnd, &paint);
-			wGetDC(BackBufferSurface, &hdcSrc);
+			wGetDC(BackBufferSurface, &hdcsrc);
 			if (DesktopBpp == 8)
 			{
 				SetStretchBltMode(hdc, HALFTONE);
-				StretchBlt(hdc, 0, 0, Environment.screenWidth, Environment.screenHeight, hdcSrc, 0,
-					0, Environment.screenWidth, Environment.screenHeight, SRCCOPY);
+				StretchBlt(hdc, 0, 0, Environment.screenwidth, Environment.screenheight, hdcsrc, 0,
+					0, Environment.screenwidth, Environment.screenheight, SRCCOPY);
 			}
 			else
 			{
-				BitBlt(hdc, 0, 0, Environment.screenWidth, Environment.screenHeight, hdcSrc, 0, 0,
+				BitBlt(hdc, 0, 0, Environment.screenwidth, Environment.screenheight, hdcsrc, 0, 0,
 					SRCCOPY);
 			}
-			wReleaseDC(BackBufferSurface, hdcSrc);
+			wReleaseDC(BackBufferSurface, hdcsrc);
 			EndPaint(hwnd, &paint);
 			lResult = 0;
 		}

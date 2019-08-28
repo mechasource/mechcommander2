@@ -31,7 +31,7 @@ enum class
 
 typedef struct
 {
-	char type;
+	wchar_t type;
 	int32_t param;
 	int32_t dim[4];
 	bool hit;

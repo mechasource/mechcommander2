@@ -37,7 +37,7 @@
 #include "soundsys.h"
 #endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //***************************************************************************
 
@@ -1032,7 +1032,7 @@ TeamSensorSystem::findBestSpotter(std::unique_ptr<Mover> contact, int32_t* statu
 	ContactInfoPtr contactInfo = contact->getContactInfo();
 	if (!contactInfo)
 	{
-		char s[256];
+		wchar_t s[256];
 		sprintf(s,
 			"TeamSensorSystem.findBestSpotter: nullptr contactInfo for "
 			"objClass %d partID %d team %d",

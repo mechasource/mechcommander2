@@ -19,7 +19,7 @@ ClipPolygon2* MLRLightMap::clipBuffer;
 
 std::vector<Stuff::Vector4D>* transformedCoords;
 std::vector<Stuff::Vector4D>* clipExtraCoords;
-std::vector<Stuff::RGBAColor>* clipExtraColors;
+std::vector<Stuff::RGBAcolour>* clipExtracolours;
 std::vector<Stuff::Vector2DScalar>* clipExtraTexCoords;
 std::vector<MLRClippingState>* clippingStates;
 
@@ -33,7 +33,7 @@ MLRLightMap::InitializeClass()
 	DefaultData = new ClassData(
 		MLRLightMapClassID, "MidLevelRenderer::MLRLightMap", RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
-	puint8_t ptr = new uint8_t[Limits::Max_Size_Of_LightMap_MemoryStream];
+	uint8_t* ptr = new uint8_t[Limits::Max_Size_Of_LightMap_MemoryStream];
 	Register_Pointer(ptr);
 	// stream = new MemoryStream(ptr, Limits::Max_Size_Of_LightMap_MemoryStream);
 	Register_Object(stream);
@@ -41,8 +41,8 @@ MLRLightMap::InitializeClass()
 	Register_Object(transformedCoords);
 	clipExtraCoords = new std::vector<Stuff::Vector4D>(2 * Limits::Max_Number_Vertices_Per_Polygon);
 	Register_Object(clipExtraCoords);
-	clipExtraColors = new std::vector<RGBAColor>(2 * Limits::Max_Number_Vertices_Per_Polygon);
-	Register_Object(clipExtraColors);
+	clipExtracolours = new std::vector<RGBAcolour>(2 * Limits::Max_Number_Vertices_Per_Polygon);
+	Register_Object(clipExtracolours);
 	clipExtraTexCoords =
 		new std::vector<Stuff::Vector2DScalar>(2 * Limits::Max_Number_Vertices_Per_Polygon);
 	Register_Object(clipExtraTexCoords);
@@ -67,14 +67,14 @@ MLRLightMap::TerminateClass()
 	delete transformedCoords;
 	Unregister_Object(clipExtraCoords);
 	delete clipExtraCoords;
-	Unregister_Object(clipExtraColors);
-	delete clipExtraColors;
+	Unregister_Object(clipExtracolours);
+	delete clipExtracolours;
 	Unregister_Object(clipExtraTexCoords);
 	delete clipExtraTexCoords;
 	Unregister_Object(clippingStates);
 	delete clippingStates;
 	stream->Rewind();
-	puint8_t ptr = (puint8_t)stream->GetPointer();
+	uint8_t* ptr = (uint8_t*)stream->GetPointer();
 	Unregister_Object(stream);
 	delete stream;
 	stream = nullptr;
@@ -153,8 +153,8 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 	uint16_t stride;
 	int32_t i, pointerValue;
 	Stuff::Point3D* coords = nullptr;
-	Stuff::RGBAColor color;
-	Stuff::RGBAColor* colors = nullptr;
+	Stuff::RGBAcolour color;
+	Stuff::RGBAcolour* colors = nullptr;
 	Stuff::Vector2DScalar* texCoords = nullptr;
 	uint32_t argb = 0xffffffff;
 	Check_Object(vertexPool);
@@ -210,7 +210,7 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 			*stream >> stride;
 			_ASSERT(stride <= Limits::Max_Number_Vertices_Per_Polygon);
 			*stream >> color;
-			argb = GOSCopyColor(&color);
+			argb = GOSCopycolour(&color);
 			coords = (Stuff::Point3D*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Point3D));
 			texCoords = (Stuff::Vector2DScalar*)stream->GetPointer();
@@ -262,7 +262,7 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 					int32_t numberVerticesPerPolygon = 0;
 					//
 					//---------------------------------------------------------------
-					// Handle the case of a single clipping plane by stepping
+					// handle the case of a single clipping plane by stepping
 					// through the vertices and finding the edge it originates
 					//---------------------------------------------------------------
 					//
@@ -661,14 +661,14 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 			}
 		}
 		break;
-		case PolygonWithColor:
+		case PolygonWithcolour:
 		{
 			*stream >> stride;
 			_ASSERT(stride <= Limits::Max_Number_Vertices_Per_Polygon);
 			coords = (Stuff::Point3D*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Point3D));
-			colors = (Stuff::RGBAColor*)stream->GetPointer();
-			stream->AdvancePointer(stride * sizeof(Stuff::RGBAColor));
+			colors = (Stuff::RGBAcolour*)stream->GetPointer();
+			stream->AdvancePointer(stride * sizeof(Stuff::RGBAcolour));
 			texCoords = (Stuff::Vector2DScalar*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Vector2DScalar));
 			MLRClippingState theAnd(0x3f), theOr(0);
@@ -715,7 +715,7 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 					int32_t numberVerticesPerPolygon = 0;
 					//
 					//---------------------------------------------------------------
-					// Handle the case of a single clipping plane by stepping
+					// handle the case of a single clipping plane by stepping
 					// through the vertices and finding the edge it originates
 					//---------------------------------------------------------------
 					//
@@ -745,7 +745,7 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 								_ASSERT((*clipExtraCoords)[clipped_index].x >= 0.0f && (*clipExtraCoords)[clipped_index].x <= (*clipExtraCoords)[clipped_index].w);
 								_ASSERT((*clipExtraCoords)[clipped_index].y >= 0.0f && (*clipExtraCoords)[clipped_index].y <= (*clipExtraCoords)[clipped_index].w);
 								_ASSERT((*clipExtraCoords)[clipped_index].z >= 0.0f && (*clipExtraCoords)[clipped_index].z <= (*clipExtraCoords)[clipped_index].w);
-								(*clipExtraColors)[clipped_index] = colors[k0];
+								(*clipExtracolours)[clipped_index] = colors[k0];
 								(*clipExtraTexCoords)[clipped_index] = texCoords[k0];
 								numberVerticesPerPolygon++;
 								clipped_index++;
@@ -844,7 +844,7 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 								//
 								(*clipExtraTexCoords)[clipped_index].Lerp(
 									texCoords[k0], texCoords[k1], a);
-								(*clipExtraColors)[clipped_index].Lerp(colors[k0], colors[k1], a);
+								(*clipExtracolours)[clipped_index].Lerp(colors[k0], colors[k1], a);
 							}
 							else
 							{
@@ -862,7 +862,7 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 								//
 								(*clipExtraTexCoords)[clipped_index].Lerp(
 									texCoords[k1], texCoords[k0], a);
-								(*clipExtraColors)[clipped_index].Lerp(colors[k1], colors[k0], a);
+								(*clipExtracolours)[clipped_index].Lerp(colors[k1], colors[k0], a);
 							}
 							//
 							//--------------------------------
@@ -1110,7 +1110,7 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 							_ASSERT((*clipExtraCoords)[k].y >= 0.0f && (*clipExtraCoords)[k].y <= (*clipExtraCoords)[k].w);
 							_ASSERT((*clipExtraCoords)[k].z >= 0.0f && (*clipExtraCoords)[k].z <= (*clipExtraCoords)[k].w);
 							(*clipExtraTexCoords)[k] = srcPolygon.texCoords[k];
-							(*clipExtraColors)[k] = srcPolygon.colors[k];
+							(*clipExtracolours)[k] = srcPolygon.colors[k];
 						}
 						numberVerticesPerPolygon = srcPolygon.length;
 					}
@@ -1119,7 +1119,7 @@ MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 					{
 						_ASSERT((vertexPool->GetLast() + 3 + numGOSVertices) < vertexPool.size());
 						GOSCopyTriangleData(&gos_vertices[numGOSVertices],
-							clipExtraCoords->GetData(), clipExtraColors->GetData(),
+							clipExtraCoords->GetData(), clipExtracolours->GetData(),
 							clipExtraTexCoords->GetData(), 0, i + 1, i);
 						numGOSVertices += 3;
 					}
@@ -1165,8 +1165,8 @@ MLRLightMap::CreateLightMapShape()
 	uint16_t stride;
 	int32_t i;
 	Stuff::Point3D* coords = nullptr;
-	Stuff::RGBAColor color;
-	Stuff::RGBAColor* colors = nullptr;
+	Stuff::RGBAcolour color;
+	Stuff::RGBAcolour* colors = nullptr;
 	Stuff::Vector2DScalar* texCoords = nullptr;
 	int32_t numGOSVertices = 0;
 	int32_t msd;
@@ -1202,7 +1202,7 @@ MLRLightMap::CreateLightMapShape()
 					ctmesh->SetSubprimitiveLengths(nullptr, numGOSVertices / 3);
 					ctmesh->FlashClipCoords(numGOSVertices);
 					ctmesh->FlashClipTexCoords(numGOSVertices);
-					ctmesh->FlashClipColors(numGOSVertices);
+					ctmesh->FlashClipcolours(numGOSVertices);
 					ctmesh->SetReferenceState(currentState);
 					ctmesh->TheIndexer(numGOSVertices);
 					ctmesh->FindFacePlanes();
@@ -1226,7 +1226,7 @@ MLRLightMap::CreateLightMapShape()
 			*stream >> color;
 #if COLOR_AS_DWORD
 			uint32_t argb = 0xffffffff;
-			argb = GOSCopyColor(&color);
+			argb = GOSCopycolour(&color);
 #endif
 			coords = (Stuff::Point3D*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Point3D));
@@ -1237,14 +1237,14 @@ MLRLightMap::CreateLightMapShape()
 				ctmesh->SetClipCoord(coords[i], numGOSVertices);
 				ctmesh->SetClipTexCoord(texCoords[i], numGOSVertices);
 #if COLOR_AS_DWORD
-				ctmesh->SetClipColor(argb, numGOSVertices);
+				ctmesh->SetClipcolour(argb, numGOSVertices);
 #else
-				ctmesh->SetClipColor(color, numGOSVertices);
+				ctmesh->SetClipcolour(color, numGOSVertices);
 #endif
 			}
 		}
 		break;
-		case PolygonWithColor:
+		case PolygonWithcolour:
 		{
 			if (ctmesh == nullptr)
 			{
@@ -1255,8 +1255,8 @@ MLRLightMap::CreateLightMapShape()
 			_ASSERT(stride <= Limits::Max_Number_Vertices_Per_Polygon);
 			coords = (Stuff::Point3D*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Point3D));
-			colors = (Stuff::RGBAColor*)stream->GetPointer();
-			stream->AdvancePointer(stride * sizeof(Stuff::RGBAColor));
+			colors = (Stuff::RGBAcolour*)stream->GetPointer();
+			stream->AdvancePointer(stride * sizeof(Stuff::RGBAcolour));
 			texCoords = (Stuff::Vector2DScalar*)stream->GetPointer();
 			stream->AdvancePointer(stride * sizeof(Stuff::Vector2DScalar));
 			for (i = 0; i < stride; i++, numGOSVertices++)
@@ -1266,7 +1266,7 @@ MLRLightMap::CreateLightMapShape()
 #if COLOR_AS_DWORD
 #error not implemented yet
 #else
-				ctmesh->SetClipColor(colors[i], numGOSVertices);
+				ctmesh->SetClipcolour(colors[i], numGOSVertices);
 #endif
 			}
 		}
@@ -1279,7 +1279,7 @@ MLRLightMap::CreateLightMapShape()
 		ctmesh->SetSubprimitiveLengths(nullptr, numGOSVertices / 3);
 		ctmesh->FlashClipCoords(numGOSVertices);
 		ctmesh->FlashClipTexCoords(numGOSVertices);
-		ctmesh->FlashClipColors(numGOSVertices);
+		ctmesh->FlashClipcolours(numGOSVertices);
 		ctmesh->SetReferenceState(currentState);
 		ctmesh->TheIndexer(numGOSVertices);
 		ctmesh->FindFacePlanes();

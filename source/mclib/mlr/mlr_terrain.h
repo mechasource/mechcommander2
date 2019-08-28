@@ -7,7 +7,7 @@
 #ifndef MLR_MLR_TERRAIN_HPP
 #define MLR_MLR_TERRAIN_HPP
 
-#include <mlr/mlr_i_det_tmesh.hpp>
+#include "mlr/mlr_i_det_tmesh.h"
 
 namespace MidLevelRenderer
 {

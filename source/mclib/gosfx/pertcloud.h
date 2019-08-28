@@ -86,7 +86,7 @@ public:
 protected:
 	MidLevelRenderer::MLRNGonCloud* m_cloudImplementation; // Pert to an MLR Pert cloud by Jim
 	Stuff::Point3D* m_P_vertices;
-	Stuff::RGBAColor* m_P_color;
+	Stuff::RGBAcolour* m_P_color;
 
 	//----------------------------------------------------------------------------
 	// Class Data Support

@@ -17,7 +17,7 @@
 #endif
 
 #ifndef GAMEOS_HPP
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #endif
 
 #ifndef STUFF_HPP

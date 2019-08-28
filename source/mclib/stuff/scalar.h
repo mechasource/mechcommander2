@@ -10,8 +10,8 @@
 #ifndef _SCALAR_HPP_
 #define _SCALAR_HPP_
 
-#include <stuff/style.hpp>
-// #include <stuff/memorystream.hpp>
+#include "stuff/style.h"
+// #include "stuff/memorystream.h"
 
 namespace Stuff
 {
@@ -30,7 +30,7 @@ const float Pi_Over_8 = static_cast<float>(M_PI / 8.0);
 const float Two_Pi = static_cast<float>(2.0 * M_PI);
 const float Degrees_Per_Radian = static_cast<float>(180.0 / M_PI);
 const float Radians_Per_Degree = static_cast<float>(M_PI / 180.0);
-cint32_t FP_ONE_BITS = 0x3F800000;
+const int32_t FP_ONE_BITS = 0x3F800000;
 
 inline float
 Fabs(float a)
@@ -63,7 +63,7 @@ Round_Float_To_Word(float val)
 {
 	_ASSERT(val >= 0.0f && val < 65536.0f);
 	val += 12582912.0f;
-	return *Cast_Pointer(puint16_t, &val);
+	return *Cast_Pointer(uint16_t*, &val);
 }
 
 inline uint8_t
@@ -71,7 +71,7 @@ Round_Float_To_Byte(float val)
 {
 	_ASSERT(val >= 0.0f && val < 256.0f);
 	val += 12582912.0f;
-	return *Cast_Pointer(puint8_t, &val);
+	return *Cast_Pointer(uint8_t*, &val);
 }
 
 inline uint16_t
@@ -80,7 +80,7 @@ Truncate_Float_To_Word(float val)
 	_ASSERT(val >= 0.0f && val < 65536.0f);
 	val -= 0.5f;
 	val += 12582912.0f;
-	return *Cast_Pointer(puint16_t, &val);
+	return *Cast_Pointer(uint16_t*, &val);
 }
 
 inline uint8_t
@@ -89,7 +89,7 @@ Truncate_Float_To_Byte(float val)
 	_ASSERT(val >= 0.0f && val < 256.0f);
 	val -= 0.5f;
 	val += 12582912.0f;
-	return *Cast_Pointer(puint8_t, &val);
+	return *Cast_Pointer(uint8_t*, &val);
 }
 
 uint32_t
@@ -130,7 +130,7 @@ OneOverApproximate(float f)
 	_ASSERT(f != 0.0f);
 #if USE_INLINE_ASSEMBLER_CODE
 	float temp;
-	int32_t _i = 2 * FP_ONE_BITS - *(pint32_t) & (f);
+	int32_t _i = 2 * FP_ONE_BITS - *(int32_t*) & (f);
 	temp = *(float*)&_i;
 	temp = temp * (2.0f - (f)*temp);
 	return temp;
@@ -203,7 +203,7 @@ Tan(float v)
 }
 
 inline float
-AtoF(PCSTR v)
+AtoF(const std::wstring_view& v)
 {
 	return static_cast<float>(atof(v));
 }
@@ -213,7 +213,7 @@ typedef double Time;
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, float* output)
 {

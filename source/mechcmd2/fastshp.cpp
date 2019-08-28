@@ -11,7 +11,7 @@
 #include "vfx.h"
 #endif
 
-extern char AlphaTable[256 * 256];
+extern wchar_t AlphaTable[256 * 256];
 
 static int32_t paneX0;
 static int32_t paneY0;
@@ -19,7 +19,7 @@ static int32_t paneX1;
 static int32_t paneY1;
 static int32_t shapeInfo;
 static int32_t yOffsetTable;
-static int32_t DestWidth, pwYMax;
+static int32_t Destwidth, pwYMax;
 static int32_t scanLines;
 static int32_t scanCol;
 static int32_t topLeftX;
@@ -45,7 +45,7 @@ static int32_t leftClipX, rightClipX;
 
 int32_t
 fastShapeDraw(
-	PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, int32_t hotY, puint8_t fadeTable)
+	PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, int32_t hotY, uint8_t* fadeTable)
 {
 	//---------------------------------------------------------------------------------
 	// Format of tile shape header is.
@@ -57,8 +57,8 @@ fastShapeDraw(
 	//		int32_t 	-- ShapeId			Always 0x48414e44 'HAND'
 	//		int16_t	-- HotSpot X
 	//		int16_t	-- HotSpot Y
-	//		int16_t	-- shapeWidth
-	//		int16_t	-- shapeHeight
+	//		int16_t	-- shapewidth
+	//		int16_t	-- shapeheight
 	//		int16_t[x]-- Offset table to each shape in block of memory
 	//		shape0	-- Data for shape
 	//
@@ -98,7 +98,7 @@ fastShapeDraw(
 		mov		pwYMax, edx
 		inc 	ecx
 
-		mov		DestWidth, ecx
+		mov		Destwidth, ecx
 		dec		ecx // Clip plane X1 and Y1 (without branches)
 
 		xor		ebx, ebx
@@ -149,7 +149,7 @@ fastShapeDraw(
 			// int32_t topLeftX = (hotX + paneX0) - shapeInfo->HSX;
 			// int32_t topLeftY = (hotY + paneY0) - shapeInfo->HSY;
 			//
-			// puint8_t screenBuffer = pane->window->buffer;
+			// uint8_t* screenBuffer = pane->window->buffer;
 			//-----------------------------------------------------------
 
 		mov		ebx, hotX
@@ -229,8 +229,8 @@ fastShapeDraw(
 			// if (topLeftY > paneY0)
 			//	yOffset = topLeftY;
 			//
-			// screenBuffer += (yOffset * DestWidth);
-			// puint8_t scanStart = screenBuffer;
+			// screenBuffer += (yOffset * Destwidth);
+			// uint8_t* scanStart = screenBuffer;
 			//-----------------------------------------------------------
 
 		cmp		eax, paneX0 // eax is still topLeftX
@@ -264,7 +264,7 @@ fastShapeDraw(
 		add		eax, ecx
 		nop
 
-		mul		DestWidth
+		mul		Destwidth
 
 		add		edi, eax
 		mov		eax, paneY0
@@ -344,7 +344,7 @@ fastShapeDraw(
 		mov		eax, currentOffset
 
 		add		esi, eax
-		xor		eax, eax // Clear Color Store
+		xor		eax, eax // Clear colour Store
 			// Check if we need to skip pixels in (i.e. Left Clipped)
 		cmp		leftClipX, 0
 		jle		SKIP_IN // We are on the correct scanLine of screen but must skip
@@ -354,12 +354,12 @@ fastShapeDraw(
 
 		xor		ecx, ecx
 		mov		cl, byte ptr [esi] // Get the first data byte.  This is a runLength for RLE
-		// or String
+		// or string
 
-		cmp		ecx, 0x80 // Check if Run or String
+		cmp		ecx, 0x80 // Check if Run or string
 		jb		RLE1
 
-		sub		ecx, 0x80 // Get String Length
+		sub		ecx, 0x80 // Get string Length
 		inc		esi
 
 		add		ebx, ecx // Add to total runs found so far.
@@ -383,7 +383,7 @@ fastShapeDraw(
 
 						// We have skipped in enough.
 						// Now we need to draw any remainder in the current
-						// String
+						// string
 		ENOUGH_SKIP_STR:
 
 		sub 	ebx, leftClipX // How much do we need to draw
@@ -425,10 +425,10 @@ fastShapeDraw(
 
 		BLT:
 		mov		cl, byte ptr [esi] // Get the first data byte.  This is a runLength for RLE
-		// or String
+		// or string
 		inc		esi
 
-		sub		ecx, 128 // Check if Run or String
+		sub		ecx, 128 // Check if Run or string
 		jb		BLT_RLE1 // Jump to RUN Code if RUN
 
 		add		ebx, ecx // Continue to update BltLength
@@ -481,7 +481,7 @@ fastShapeDraw(
 
 		NEXT_SCANLINE:
 		mov		edi, scanStart // Move Screen Buffer down to next scanline
-		mov		ebx, DestWidth
+		mov		ebx, Destwidth
 
 		inc 	edx // Move to next scanLine
 		add		edi, ebx
@@ -530,12 +530,12 @@ fastShapeDraw(
 
 		xor		ecx, ecx
 		mov		cl, byte ptr [esi] // Get the first data byte.  This is a runLength for RLE
-		// or String
+		// or string
 
-		cmp		ecx, 0x80 // Check if Run or String
+		cmp		ecx, 0x80 // Check if Run or string
 		jb		fRLE1
 
-		sub		ecx, 0x80 // Get String Length
+		sub		ecx, 0x80 // Get string Length
 		inc		esi
 
 		add		ebx, ecx // Add to total runs found so far.
@@ -560,7 +560,7 @@ fastShapeDraw(
 
 						// We have skipped in enough.
 						// Now we need to draw any remainder in the current
-						// String
+						// string
 		fENOUGH_SKIP_STR:
 
 		sub 	ebx, leftClipX // How much do we need to draw
@@ -583,7 +583,7 @@ fastShapeDraw(
 		dec		cl // stringLength--, shapeData++, ScreenBuffer++
 		inc		edi
 
-		mov		ch, byte ptr [eax + ebp] // Get New Color
+		mov		ch, byte ptr [eax + ebp] // Get New colour
 		test	cl, cl
 
 		mov		byte ptr [edi], ch // Put color on screen
@@ -601,7 +601,7 @@ fastShapeDraw(
 		mov		ecx, ebx
 		inc		esi
 
-		mov		al, byte ptr [eax + ebp] // Get New Color
+		mov		al, byte ptr [eax + ebp] // Get New colour
 		add		edi, paneX0
 
 		cmp		al, 0xff
@@ -623,12 +623,12 @@ fastShapeDraw(
 		fBLT:
 		xor		ecx, ecx
 		mov		cl, byte ptr [esi] // Get the first data byte.  This is a runLength for RLE
-		// or String
+		// or string
 
-		cmp		ecx, 128 // Check if Run or String
+		cmp		ecx, 128 // Check if Run or string
 		jb		fBLT_RLE1 // Jump to RUN Code if RUN
 
-		sub		ecx, 128 // Get String Length
+		sub		ecx, 128 // Get string Length
 		inc		esi
 
 		add		ebx, ecx // Continue to update BltLength
@@ -653,7 +653,7 @@ fastShapeDraw(
 		inc		esi
 
 		inc		edi
-		mov		ch, byte ptr [eax + ebp] // Get New Color
+		mov		ch, byte ptr [eax + ebp] // Get New colour
 
 		cmp		ch, 0xff
 		je		fFADE_STRING_LOOP2
@@ -683,7 +683,7 @@ fastShapeDraw(
 		fGO_RLE1:
 		mov		al, byte ptr [esi] // Get Byte
 		inc		esi // Move ShapePtr
-		mov		al, byte ptr [eax + ebp] // Get New Color
+		mov		al, byte ptr [eax + ebp] // Get New colour
 		cmp		al, 0xff
 		jne		fDO_BLT2
 		add		edi, ecx
@@ -694,7 +694,7 @@ fastShapeDraw(
 
 		fNEXT_SCANLINE:
 		mov		edi, scanStart // Move Screen Buffer down to next scanline
-		mov		ebx, DestWidth
+		mov		ebx, Destwidth
 
 		inc 	edx // Move to next scanLine
 		add		edi, ebx
@@ -741,7 +741,7 @@ fastShapeDraw(
 		mov		eax, currentOffset
 
 		add		esi, eax
-		xor		eax, eax // Clear Color Store
+		xor		eax, eax // Clear colour Store
 			// Check if we need to skip pixels in (i.e. Left Clipped)
 		cmp		leftClipX, 0
 		jle		aSKIP_IN // We are on the correct scanLine of screen but must skip
@@ -751,12 +751,12 @@ fastShapeDraw(
 
 		xor		ecx, ecx
 		mov		cl, byte ptr [esi] // Get the first data byte.  This is a runLength for RLE
-		// or String
+		// or string
 
-		cmp		ecx, 0x80 // Check if Run or String
+		cmp		ecx, 0x80 // Check if Run or string
 		jb		aRLE1
 
-		sub		ecx, 0x80 // Get String Length
+		sub		ecx, 0x80 // Get string Length
 		inc		esi
 
 		add		ebx, ecx // Add to total runs found so far.
@@ -780,7 +780,7 @@ fastShapeDraw(
 
 						// We have skipped in enough.
 						// Now we need to draw any remainder in the current
-						// String
+						// string
 		aENOUGH_SKIP_STR:
 
 		sub 	ebx, leftClipX // How much do we need to draw
@@ -845,12 +845,12 @@ fastShapeDraw(
 		aBLT:
 		xor		ecx, ecx
 		mov		cl, byte ptr [esi] // Get the first data byte.  This is a runLength for RLE
-		// or String
+		// or string
 
-		cmp		ecx, 128 // Check if Run or String
+		cmp		ecx, 128 // Check if Run or string
 		jb		aBLT_RLE1 // Jump to RUN Code if RUN
 
-		sub		ecx, 128 // Get String Length
+		sub		ecx, 128 // Get string Length
 		inc		esi
 
 		add		ebx, ecx // Continue to update BltLength
@@ -906,7 +906,7 @@ fastShapeDraw(
 
 		aNEXT_SCANLINE:
 		mov		edi, scanStart // Move Screen Buffer down to next scanline
-		mov		ebx, DestWidth
+		mov		ebx, Destwidth
 
 		inc 	edx // Move to next scanLine
 		add		edi, ebx
@@ -967,12 +967,12 @@ fastShapeDraw(
 
 		xor		ecx, ecx
 		mov		cl, byte ptr [esi] // Get the first data byte.  This is a runLength for RLE
-		// or String
+		// or string
 
-		cmp		ecx, 0x80 // Check if Run or String
+		cmp		ecx, 0x80 // Check if Run or string
 		jb		afRLE1
 
-		sub		ecx, 0x80 // Get String Length
+		sub		ecx, 0x80 // Get string Length
 		inc		esi
 
 		add		ebx, ecx // Add to total runs found so far.
@@ -997,7 +997,7 @@ fastShapeDraw(
 
 						// We have skipped in enough.
 						// Now we need to draw any remainder in the current
-						// String
+						// string
 		afENOUGH_SKIP_STR:
 
 		sub 	ebx, leftClipX // How much do we need to draw
@@ -1020,7 +1020,7 @@ fastShapeDraw(
 		inc		esi
 		inc		edi
 
-		mov		ah, byte ptr [eax + ebp] // Get New Color
+		mov		ah, byte ptr [eax + ebp] // Get New colour
 		dec		cl
 		mov		al, [edi]
 		mov		al, AlphaTable[eax]
@@ -1039,7 +1039,7 @@ fastShapeDraw(
 		mov		ecx, ebx
 		inc		esi
 
-		mov		ah, byte ptr [eax + ebp] // Get New Color
+		mov		ah, byte ptr [eax + ebp] // Get New colour
 		add		edi, paneX0
 
 		cmp		ah, 0xff
@@ -1069,12 +1069,12 @@ fastShapeDraw(
 		afBLT:
 		xor		ecx, ecx
 		mov		cl, byte ptr [esi] // Get the first data byte.  This is a runLength for RLE
-		// or String
+		// or string
 
-		cmp		ecx, 128 // Check if Run or String
+		cmp		ecx, 128 // Check if Run or string
 		jb		afBLT_RLE1 // Jump to RUN Code if RUN
 
-		sub		ecx, 128 // Get String Length
+		sub		ecx, 128 // Get string Length
 		inc		esi
 
 		add		ebx, ecx // Continue to update BltLength
@@ -1099,7 +1099,7 @@ fastShapeDraw(
 		dec		cl // stringLength--, shapeData++, ScreenBuffer++
 
 		inc		edi
-		mov		ah, byte ptr [eax + ebp] // Get New Color
+		mov		ah, byte ptr [eax + ebp] // Get New colour
 
 		cmp		ah, 0xff
 		je		afFADE_STRING_LOOP2
@@ -1134,7 +1134,7 @@ fastShapeDraw(
 		mov		al, byte ptr [esi] // Get Byte
 
 		inc		esi // Move ShapePtr
-		mov		ah, byte ptr [eax + ebp] // Get New Color
+		mov		ah, byte ptr [eax + ebp] // Get New colour
 		cmp		ah, 0xff
 		jne		afDO_BLT2
 		add		edi, ecx
@@ -1145,7 +1145,7 @@ fastShapeDraw(
 
 		afNEXT_SCANLINE:
 		mov		edi, scanStart // Move Screen Buffer down to next scanline
-		mov		ebx, DestWidth
+		mov		ebx, Destwidth
 
 		inc 	edx // Move to next scanLine
 		add		edi, ebx

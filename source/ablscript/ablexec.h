@@ -47,7 +47,7 @@ enum class ABLStackItemType : uint8_t
 
 struct ABLParam
 {
-	char type;
+	wchar_t type;
 	int32_t integer;
 	float real;
 };
@@ -56,7 +56,7 @@ struct ABLParam
 
 //---------------
 // RUN-TIME STACK
-typedef char* Address;
+typedef wchar_t* Address;
 
 union StackItem {
 	int32_t integer;
@@ -74,11 +74,11 @@ struct ABLStackItem
 		int32_t integer;
 		float real;
 		bool boolean;
-		char character;
+		wchar_t character;
 		int32_t* integerPtr;
 		float* realPtr;
 		bool* booleanPtr;
-		char* characterPtr;
+		wchar_t* characterPtr;
 	} data;
 };
 //typedef ABLStackItem* const std::unique_ptr<ABLStackItem>&;
@@ -187,7 +187,7 @@ pushInteger(int32_t value);
 void
 pushReal(float value);
 void
-pushByte(char value);
+pushByte(wchar_t value);
 void
 pushAddress(Address address);
 void

@@ -10,7 +10,7 @@
 #ifndef _NORMAL_HPP_
 #define _NORMAL_HPP_
 
-#include <stuff/unitvector.hpp>
+#include "stuff/unitvector.h"
 
 namespace Stuff
 {
@@ -100,13 +100,13 @@ private:
 	Normal3D& operator-=(const Vector3D& V);
 	Normal3D& Cross(const Vector3D& V1, const Vector3D& V2);
 	Normal3D& Multiply(const Vector3D& V, float Scale);
-	Normal3D& operator*=(float Value);
+	Normal3D& operator*=(float value);
 	Normal3D& Multiply(const Vector3D& V1, const Vector3D& V2);
 	Normal3D& operator*=(const Vector3D& V);
 	Normal3D& Multiply(const Vector3D& Source, const AffineMatrix4D& M);
 	Normal3D& operator*=(const AffineMatrix4D& M);
 	Normal3D& Divide(const Vector3D& V, float Scale);
-	Normal3D& operator/=(float Value);
+	Normal3D& operator/=(float value);
 	Normal3D& Combine(const Vector3D& V1, float t1, const Vector3D& V2, float t2);
 };
 } // namespace Stuff

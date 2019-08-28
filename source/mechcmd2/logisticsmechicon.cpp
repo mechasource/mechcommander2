@@ -76,7 +76,7 @@ LogisticsMechIcon::init(FitIniFile& file)
 		assignAnimation(file, s_pTemplateIcon->iconID);
 		s_pTemplateIcon->pilotIcon.init(&file, "PilotIcon");
 		assignAnimation(file, s_pTemplateIcon->pilotIconID);
-		char blockName[64];
+		wchar_t blockName[64];
 		for (size_t i = 0; i < ICON_ANIM_COUNT; i++)
 		{
 			sprintf(blockName, "Animation%ld", i);
@@ -90,7 +90,7 @@ void
 LogisticsMechIcon::assignAnimation(FitIniFile& file, int32_t& number)
 {
 	number = -1;
-	char buffer[64];
+	wchar_t buffer[64];
 	if (NO_ERROR == file.readIdString("Animation", buffer, 63))
 	{
 		for (size_t i = 0; i < strlen(buffer); i++)
@@ -124,7 +124,7 @@ LogisticsMechIcon::setMech(LogisticsMech* pNewMech)
 		fY += 1.f;
 		float u2 = (fX * width);
 		float v2 = (fY * height);
-		icon.setFileWidth(256.f);
+		icon.setFilewidth(256.f);
 		icon.setUVs(u, v, u2, v2);
 		chassisName.setText(pMech->getChassisName());
 		iconConnector.showGUIWindow(true);
@@ -153,8 +153,8 @@ LogisticsMechIcon::render(int32_t xOffset, int32_t yOffset)
 	}
 	if (!pMech)
 		return;
-	int32_t color = animations[outlineID].getCurrentColor(animations[outlineID].getState());
-	outline.setColor(color);
+	int32_t color = animations[outlineID].getCurrentcolour(animations[outlineID].getState());
+	outline.setcolour(color);
 	outline.render(xOffset, yOffset);
 	xOffset += outline.globalX();
 	yOffset += outline.globalY();
@@ -174,9 +174,9 @@ LogisticsMechIcon::renderObject(
 	int32_t color = 0xffffffff;
 	if (animIndex != -1)
 	{
-		color = animations[animIndex].getCurrentColor(animations[animIndex].getState());
+		color = animations[animIndex].getCurrentcolour(animations[animIndex].getState());
 	}
-	obj.setColor(color);
+	obj.setcolour(color);
 	obj.render(xOffset, yOffset);
 }
 
@@ -297,10 +297,10 @@ LogisticsMechIcon::dimPilot(bool bDim)
 {
 	if (bDim)
 	{
-		pilotIcon.setColor(0x7f000000);
+		pilotIcon.setcolour(0x7f000000);
 	}
 	else
-		pilotIcon.setColor(0xffffffff);
+		pilotIcon.setcolour(0xffffffff);
 }
 
 // end of file ( LogisticsMechIcon.cpp )

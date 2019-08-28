@@ -226,7 +226,7 @@ public:
 	void EnumeratePlayers(FIDPSession* session);
 
 	void AddPlayerOrGroup(
-		uint32_t dwPlayerType, DPID dpId, DPID dpIdParent, LPDPNAME dpnName, uint32_t dwFlags);
+		uint32_t dwPlayerType, DPID dpId, DPID dpIdParent, LPDPNAME dpnName, uint32_t flags);
 
 	// DeletePlayerOrGroup is called when a player or group leaves the
 	// game -- after calling AppCallback.  It actually deletes this player
@@ -265,15 +265,15 @@ private:
 	// essentially the callbacks for enumerating connections,
 	// sessions, players, and groups.  However, since the callback
 	// itself cannot be a member function of a class, the callback
-	// bounces the message into the class using the lpContext member.
+	// bounces the message into the class using the pcontext member.
 	BOOL FAR PASCAL AddConnection(LPCGUID lpguidSP, PVOID lpConnection, uint32_t dwConnectionSize,
-		LPCDPNAME lpName, uint32_t dwFlags, PVOID lpContext);
+		LPCDPNAME lpName, uint32_t flags, PVOID pcontext);
 
 	BOOL FAR PASCAL AddSession(
-		LPCDPSESSIONDESC2 lpThisSD, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+		LPCDPSESSIONDESC2 lpThisSD, uint32_t* lpdwTimeOut, uint32_t flags, PVOID pcontext);
 
 	BOOL FAR PASCAL NewPlayerEnumeration(
-		DPID dp_id, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags);
+		DPID dp_id, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t flags);
 
 	// RTProcessApplicationMessage is called by the receive thread when
 	// a new application message arrives.
@@ -313,13 +313,13 @@ public:
 	virtual void destroy(void);
 
 	friend BOOL FAR PASCAL DPSessionMgrSessionsCallback(
-		LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+		LPCDPSESSIONDESC2 lpSessionDesc, uint32_t* lpdwTimeOut, uint32_t flags, PVOID pcontext);
 
 	friend BOOL FAR PASCAL EnumPlayersCallback(
-		DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags, PVOID lpContext);
+		DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t flags, PVOID pcontext);
 
 	friend BOOL FAR PASCAL EnumGroupsCallback(
-		DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags, PVOID lpContext);
+		DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t flags, PVOID pcontext);
 
 	friend uint32_t WINAPI SessionManagerReceiveThread(PVOID lpThreadParameter);
 

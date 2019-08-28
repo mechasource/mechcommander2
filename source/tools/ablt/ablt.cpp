@@ -15,7 +15,7 @@ void
 closeABL(void);
 
 extern "C" int __cdecl main(
-	_In_ int argc, _In_reads_(argc) _Pre_z_ char* argv[], _In_z_ char** envp)
+	_In_ int argc, _In_reads_(argc) _Pre_z_ wchar_t* argv[], _In_z_ wchar_t** envp)
 {
 	(void)envp;
 

@@ -103,7 +103,7 @@ public:
 
 	int32_t getSpecialtySkillCount(void) const;
 	int32_t getSpecialtySkills(const std::wstring_view&* array, int32_t& count);
-	int32_t getSpecialtySkills(pint32_t array, int32_t& count);
+	int32_t getSpecialtySkills(int32_t* array, int32_t& count);
 	bool* getSpecialtySkills() { return specialtySkills; }
 	void setSpecialtySkill(int32_t skill, bool set);
 
@@ -138,7 +138,7 @@ private:
 	float newGunnery;
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
 
-	static char skillTexts[][255];
+	static wchar_t skillTexts[][255];
 	const std::wstring_view& fileName;
 
 	bool medals[MAX_MEDAL];

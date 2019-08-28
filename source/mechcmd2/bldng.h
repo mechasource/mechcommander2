@@ -94,9 +94,9 @@ public:
 //---------------------------------------------------------------------------
 typedef struct _BuildingData : public TerrainObjectData
 {
-	char teamId;
+	wchar_t teamId;
 	uint8_t baseTileId;
-	char commanderId;
+	wchar_t commanderId;
 	GameObjectWatchID refitBuddyWID;
 	uint32_t parentId;
 	GameObjectWatchID parent;
@@ -112,10 +112,10 @@ typedef struct _BuildingData : public TerrainObjectData
 class Building : public TerrainObject
 {
 public:
-	char teamId;
+	wchar_t teamId;
 	uint8_t baseTileId;
 	SensorSystemPtr sensorSystem;
-	char commanderId; // If capturable, who last captured it...
+	wchar_t commanderId; // If capturable, who last captured it...
 	GameObjectWatchID refitBuddyWID;
 	uint32_t parentId;
 	GameObjectWatchID parent;

@@ -44,14 +44,14 @@ GameTacMap::GameTacMap()
 }
 
 void
-GameTacMap::init(puint8_t bitmapData, size_t dataSize)
+GameTacMap::init(uint8_t* bitmapData, size_t dataSize)
 {
 	EllipseElement::init();
 	TGAFileHeader* pHeader = (TGAFileHeader*)bitmapData;
-	bmpWidth = pHeader->width;
-	bmpHeight = pHeader->height;
+	bmpwidth = pHeader->width;
+	bmpheight = pHeader->height;
 	textureHandle = gos_NewTextureFromMemory(gos_Texture_Solid, ".tga", bitmapData, dataSize, 0);
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, artPath);
 	strcat(path, "viewingrect.tga");
 	viewRectHandle = mcTextureManager->loadTexture(path, gos_Texture_Alpha, 0);
@@ -132,14 +132,14 @@ GameTacMap::render()
 	corners[1].x = corners[3].x = right;
 	corners[3].y = corners[2].y = bottom;
 	corners[0].y = corners[1].y = top;
-	corners[0].u = 2.f / (float)bmpWidth;
-	corners[3].u = 128.f / (float)bmpWidth;
-	corners[2].u = 2.f / (float)bmpWidth;
-	corners[1].u = 128.f / (float)bmpWidth;
-	corners[0].v = 2.f / (float)bmpWidth;
-	corners[3].v = 128.f / (float)bmpHeight;
-	corners[2].v = 128.f / (float)bmpHeight;
-	corners[1].v = 2.f / (float)bmpWidth;
+	corners[0].u = 2.f / (float)bmpwidth;
+	corners[3].u = 128.f / (float)bmpwidth;
+	corners[2].u = 2.f / (float)bmpwidth;
+	corners[1].u = 128.f / (float)bmpwidth;
+	corners[0].v = 2.f / (float)bmpwidth;
+	corners[3].v = 128.f / (float)bmpheight;
+	corners[2].v = 128.f / (float)bmpheight;
+	corners[1].v = 2.f / (float)bmpwidth;
 	gos_DrawTriangles(corners, 3);
 	gos_DrawTriangles(&corners[1], 3);
 	Stuff::Vector2DOf<int32_t> screen;
@@ -187,13 +187,13 @@ GameTacMap::render()
 	nScreen.z = nScreen.w = 0.0f;
 	eye->inverseProjectZ(nScreen, world);
 	worldToTacMap(world, corners[0]);
-	screen.y = Environment.screenHeight - 1;
-	nScreen.y = (Environment.screenHeight * 0.6667f) - 1;
+	screen.y = Environment.screenheight - 1;
+	nScreen.y = (Environment.screenheight * 0.6667f) - 1;
 	nScreen.z = nScreen.w = 0.0f;
 	eye->inverseProjectZ(nScreen, world);
 	worldToTacMap(world, corners[1]);
-	screen.x = Environment.screenWidth - 1;
-	nScreen.x = Environment.screenWidth - 1;
+	screen.x = Environment.screenwidth - 1;
+	nScreen.x = Environment.screenwidth - 1;
 	nScreen.z = nScreen.w = 0.0f;
 	eye->inverseProjectZ(nScreen, world);
 	worldToTacMap(world, corners[2]);
@@ -228,7 +228,7 @@ GameTacMap::render()
 	gos_SetRenderState(gos_State_Texture, gosTextureHandle);
 	gos_DrawQuads(&corners[0], 4);
 	uint32_t colors[MAX_MOVERS];
-	uint32_t ringColors[MAX_MOVERS];
+	uint32_t ringcolours[MAX_MOVERS];
 	Stuff::Vector3D positions[MAX_MOVERS];
 	uint32_t ranges[MAX_MOVERS];
 	bool selected[MAX_MOVERS];
@@ -281,7 +281,7 @@ GameTacMap::render()
 						}
 					}
 					colors[count] = colorBlip;
-					ringColors[count] = colorRing;
+					ringcolours[count] = colorRing;
 					ranges[count] = pSensor->getRange();
 					selected[count] = 0;
 					positions[count] = pSensor->owner->getPosition();
@@ -335,7 +335,7 @@ GameTacMap::render()
 			else
 				continue;
 			colors[count] = colorBlip;
-			ringColors[count] = colorRing;
+			ringcolours[count] = colorRing;
 			ranges[count] = range;
 			selected[count] = mover->getSelected();
 			positions[count] = mover->getPosition();
@@ -344,7 +344,7 @@ GameTacMap::render()
 	}
 	for (i = 0; i < count; i++)
 	{
-		drawSensor(positions[i], ranges[i], ringColors[i]);
+		drawSensor(positions[i], ranges[i], ringcolours[i]);
 	}
 	bool bSel = 0; // draw unselected first
 	for (size_t j = 0; j < 2; j++)
@@ -366,7 +366,7 @@ GameTacMap::worldToTacMap(Stuff::Vector3D& world, gos_VERTEX& tac)
 	TacMap::worldToTacMap(world, left, top, right - left, bottom - top, tac);
 }
 void
-GameTacMap::initBuildings(puint8_t data, int32_t size)
+GameTacMap::initBuildings(uint8_t* data, int32_t size)
 {
 	if (data)
 	{

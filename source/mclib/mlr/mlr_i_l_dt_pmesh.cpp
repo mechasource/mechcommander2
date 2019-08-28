@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/gosvertexpool.h"
 #include "mlr/mlrtexture.h"
 #include "mlr/mlrtexturepool.h"
@@ -79,8 +79,8 @@ MLR_I_L_DT_PMesh::MLR_I_L_DT_PMesh(ClassData* class_data, std::iostream stream, 
 	}
 	break;
 	}
-	litColors.SetLength(colors.GetLength());
-	actualColors = &colors;
+	litcolours.SetLength(colors.GetLength());
+	actualcolours = &colors;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,7 +90,7 @@ MLR_I_L_DT_PMesh::MLR_I_L_DT_PMesh(ClassData* class_data) :
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	actualColors = &colors;
+	actualcolours = &colors;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,7 +149,7 @@ MLR_I_L_DT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_DT_PMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
+MLR_I_L_DT_PMesh::GetNormalData(Stuff::Vector3D** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = normals.GetData();
@@ -159,11 +159,11 @@ MLR_I_L_DT_PMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_DT_PMesh::SetColorData(
+MLR_I_L_DT_PMesh::SetcolourData(
 #if COLOR_AS_DWORD
-	pcuint32_t data,
+	const uint32_t* data,
 #else
-	const Stuff::RGBAColor* data,
+	const Stuff::RGBAcolour* data,
 #endif
 	size_t dataSize)
 {
@@ -171,7 +171,7 @@ MLR_I_L_DT_PMesh::SetColorData(
 	Check_Pointer(data);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	_ASSERT(coords.GetLength() == 0 || dataSize == coords.GetLength());
-	litColors.SetLength(dataSize);
+	litcolours.SetLength(dataSize);
 	colors.AssignData(data, dataSize);
 }
 
@@ -180,31 +180,31 @@ MLR_I_L_DT_PMesh::SetColorData(
 void
 MLR_I_L_DT_PMesh::PaintMe(
 #if COLOR_AS_DWORD
-	pcuint32_t paintMe
+	const uint32_t* paintMe
 #else
-	const Stuff::RGBAColor* paintMe
+	const Stuff::RGBAcolour* paintMe
 #endif
 
 )
 {
 	// Check_Object(this);
-	_ASSERT(colors.GetLength() == litColors.GetLength());
-	size_t k, len = litColors.GetLength();
+	_ASSERT(colors.GetLength() == litcolours.GetLength());
+	size_t k, len = litcolours.GetLength();
 #if COLOR_AS_DWORD
-	uint32_t argb = GOSCopyColor(paintMe);
+	uint32_t argb = GOSCopycolour(paintMe);
 	for (k = 0; k < len; k++)
 	{
-		litColors[k] = argb;
+		litcolours[k] = argb;
 	}
 #else
 	for (k = 0; k < len; k++)
 	{
-		litColors[k] = *paintMe;
+		litcolours[k] = *paintMe;
 	}
 #endif
 	// set the to use colors to the original colors ...
 	// only lighting could overwrite this;
-	actualColors = &litColors;
+	actualcolours = &litcolours;
 }
 
 #define I_SAY_YES_TO_DUAL_TEXTURES
@@ -245,7 +245,7 @@ MLR_I_L_DT_PMesh::PaintMe(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_2Tex(
+MidLevelRenderer::CreateIndexedIcosahedron_colour_Lit_2Tex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* state2)
 {
 #ifdef _GAMEOS_HPP_
@@ -260,7 +260,7 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_2Tex(
 	{
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-	puint8_t lengths = new uint8_t[nrTri];
+	uint8_t* lengths = new uint8_t[nrTri];
 	Register_Pointer(lengths);
 	for (i = 0; i < nrTri; i++)
 	{
@@ -274,11 +274,11 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_2Tex(
 		collapsedCoords = new Stuff::Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[2 * nrTri * 3];
 	Register_Pointer(texCoords);
-	Stuff::RGBAColor* colors = new Stuff::RGBAColor[nrTri * 3];
+	Stuff::RGBAcolour* colors = new Stuff::RGBAcolour[nrTri * 3];
 	Register_Pointer(colors);
 	Stuff::Vector3D* normals = new Stuff::Vector3D[nrTri * 3];
 	Register_Pointer(normals);
@@ -389,7 +389,7 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_2Tex(
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = Stuff::RGBAColor((1.0f + collapsedCoords[i].x) / 2.0f,
+				colors[i] = Stuff::RGBAcolour((1.0f + collapsedCoords[i].x) / 2.0f,
 					(1.0f + collapsedCoords[i].y) / 2.0f, (1.0f + collapsedCoords[i].z) / 2.0f,
 					1.0f);
 				normals[i].Normalize(collapsedCoords[i]);
@@ -399,12 +399,12 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_2Tex(
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = Stuff::RGBAColor((1.0f + coords[i].x) / 2.0f,
+				colors[i] = Stuff::RGBAcolour((1.0f + coords[i].x) / 2.0f,
 					(1.0f + coords[i].y) / 2.0f, (1.0f + coords[i].z) / 2.0f, 1.0f);
 				normals[i].Normalize(coords[i]);
 			}
 		}
-		mesh->SetColorData(colors, uniquePoints);
+		mesh->SetcolourData(colors, uniquePoints);
 		mesh->SetNormalData(normals, uniquePoints);
 		mesh->SetReferenceState(*state2, 1);
 		ret->Add(mesh);

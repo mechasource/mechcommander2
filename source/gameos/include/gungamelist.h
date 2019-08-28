@@ -64,7 +64,7 @@ extern PSTR INVALID_PING_STR;
 
 extern "C" int32_t __stdcall GetDirectPlayPort(void);
 
-cint32_t ZONE_PING_INTERVAL = 20;
+const int32_t ZONE_PING_INTERVAL = 20;
 
 // mdm - change this back to INTERNET_ADDRESS when shipping externally.
 #define ZONE_SERVER_DEFAULT_ADDRESS ZONE_SERVER_LAN_ADDRESS

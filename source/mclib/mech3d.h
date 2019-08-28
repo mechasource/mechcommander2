@@ -39,10 +39,10 @@ typedef struct _GestureData
 
 typedef struct _PaintSchemata
 {
-	uint32_t redColor; // Replace all Reds in texture with this color scaled by intensity of red!
+	uint32_t redcolour; // Replace all Reds in texture with this color scaled by intensity of red!
 	uint32_t
-		greenColor; // Replace all Greens in texture with this color scaled by intensity of green!
-	uint32_t blueColor; // Replace all Blues in texture with this color scaled by intensity of blue!
+		greencolour; // Replace all Greens in texture with this color scaled by intensity of green!
+	uint32_t bluecolour; // Replace all Blues in texture with this color scaled by intensity of blue!
 } PaintSchemata;
 
 typedef PaintSchemata* PaintSchemataPtr;
@@ -99,7 +99,7 @@ enum mech3dappearancetype_const : uint32_t
 
 constexpr const float BASE_NODE_RECYCLE_TIME = 0.25f;
 
-extern char MechStateByGesture[];
+extern wchar_t MechStateByGesture[];
 
 //-------------------------------------------------------------------------------
 // class Mech3DAppearance
@@ -253,7 +253,7 @@ typedef struct _MechAppearanceData
 	Stuff::Vector3D jumpVelocity; // Real velocity vector now.  Just plug into
 		// mech velocity.
 
-	float baseRootNodeHeight;
+	float baseRootNodeheight;
 
 	int32_t isSmoking;
 	bool isWaking;
@@ -385,13 +385,13 @@ protected:
 	float OBBRadius;
 
 	uint32_t localTextureHandle;
-	float baseRootNodeHeight;
+	float baseRootNodeheight;
 
 	uint32_t psRed;
 	uint32_t psBlue;
 	uint32_t psGreen;
 
-	char mechName[64];
+	wchar_t mechName[64];
 
 	// Arm off coolness
 	Stuff::Vector3D dVel[2];
@@ -405,7 +405,7 @@ protected:
 	float duration;
 	float currentFlash;
 	bool drawFlash;
-	uint32_t flashColor;
+	uint32_t flashcolour;
 
 	int32_t rotationalNodeIndex;
 	int32_t hitLeftNodeIndex;

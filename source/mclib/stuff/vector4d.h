@@ -10,8 +10,8 @@
 #ifndef _VECTOR4D_HPP_
 #define _VECTOR4D_HPP_
 
-#include <stuff/point3d.hpp>
-#include <stuff/matrix.hpp>
+#include "stuff/point3d.h"
+#include "stuff/matrix.h"
 
 namespace Stuff
 {
@@ -20,7 +20,7 @@ class Vector4D;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::Vector4D& vector);
+Spew(const std::wstring_view& group, const Stuff::Vector4D& vector);
 #endif
 
 namespace Stuff
@@ -356,7 +356,7 @@ public:
 		return *this;
 	}
 
-	Vector4D& MultiplySetClip(const Point3D& v, const Matrix4D& m, puint32_t clipper);
+	Vector4D& MultiplySetClip(const Point3D& v, const Matrix4D& m, uint32_t* clipper);
 	/*
 	{
 	//Check_Pointer(this);
@@ -536,7 +536,7 @@ public:
 	}
 
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Vector4D& vector);
+	friend void ::Spew(const std::wstring_view& group, const Vector4D& vector);
 #endif
 	void TestInstance(void) const
 	{

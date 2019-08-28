@@ -335,11 +335,11 @@ execDeclaredRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool 
 		int32_t functionExecTime = ABLGetTimeCallback() - functionStartTime;
 		if (functionExecTime > ProfileLogFunctionTimeLimit)
 		{
-			char s[512];
+			wchar_t s[512];
 			sprintf_s(s, _countof(s), "[%08d] ", NumExecutions);
 			for (size_t i = 0; i < CallStackLevel; i++)
 				strcat(s, " ");
-			char s1[512];
+			wchar_t s1[512];
 			sprintf_s(s1, _countof(s1), "%s (%d)\n", routineIdPtr->name, functionExecTime);
 			strcat(s, s1);
 			ABL_AddToProfileLog(s);
@@ -415,7 +415,7 @@ execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr)
 				const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
 				if (!dest)
 				{
-					char err[255];
+					wchar_t err[255];
 					sprintf(err,
 						" ABL: Unable to AblStackHeap->malloc actual array "
 						"param in module %s)",

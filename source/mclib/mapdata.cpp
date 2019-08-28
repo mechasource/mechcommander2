@@ -120,7 +120,7 @@ MapData::newInit(uint32_t numVertices)
 	// There is one (1) block of memory for the ENTIRE terrain now.
 	// Since we no longer cache any aspect of the terrain, this is
 	// FAR more efficient and easier to understand.
-	puint8_t start = getHeapPtr();
+	uint8_t* start = getHeapPtr();
 	blocks = (PostcompVertexPtr)start;
 	PostcompVertex* pTmp = blocks;
 	// gotta set all of the z's to 1
@@ -141,7 +141,7 @@ void
 MapData::newInit(PacketFile* newFile, uint32_t numVertices)
 {
 	newInit(numVertices);
-	newFile->readPacket(newFile->getCurrentPacket(), (puint8_t)blocks);
+	newFile->readPacket(newFile->getCurrentPacket(), (uint8_t*)blocks);
 	calcTransitions();
 }
 
@@ -149,7 +149,7 @@ MapData::newInit(PacketFile* newFile, uint32_t numVertices)
 int32_t
 MapData::save(PacketFile* file, int32_t whichPacket)
 {
-	return file->writePacket(whichPacket, (puint8_t)blocks,
+	return file->writePacket(whichPacket, (uint8_t*)blocks,
 		Terrain::realVerticesMapSide * Terrain::realVerticesMapSide * sizeof(PostcompVertex));
 }
 
@@ -327,14 +327,14 @@ float ScrollUV2 = MAX_UV;
 float SCROLL_RATE = 0.005f;
 //---------------------------------------------------------------------------
 void
-MapData::setVertexHeight(int32_t VertexIndex, float Val)
+MapData::setVertexheight(int32_t VertexIndex, float Val)
 {
 	blocks[VertexIndex].elevation = Val;
 }
 
 //---------------------------------------------------------------------------
 float
-MapData::getVertexHeight(int32_t VertexIndex)
+MapData::getVertexheight(int32_t VertexIndex)
 {
 	return blocks[VertexIndex].elevation;
 }

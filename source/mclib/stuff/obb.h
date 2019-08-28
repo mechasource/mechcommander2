@@ -7,8 +7,8 @@
 #ifndef _OBB_HPP_
 #define _OBB_HPP_
 
-#include <stuff/linearmatrix.hpp>
-#include <stuff/sphere.hpp>
+#include "stuff/linearmatrix.h"
+#include "stuff/sphere.h"
 
 namespace Stuff
 {
@@ -17,7 +17,7 @@ class OBB;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::OBB& box);
+Spew(const std::wstring_view& group, const Stuff::OBB& box);
 #endif
 
 namespace Stuff
@@ -37,7 +37,7 @@ public:
 	float sphereRadius;
 
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const OBB& box);
+	friend void ::Spew(const std::wstring_view& group, const OBB& box);
 #endif
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -219,7 +219,7 @@ Sphere::operator=(const OBB& obb)
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, Stuff::OBB* output)
 {

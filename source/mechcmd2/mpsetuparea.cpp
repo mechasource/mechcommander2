@@ -18,15 +18,15 @@ MPSetupArea.cpp			: Implementation of the MPSetupArea component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
-static cint32_t CANCEL_BUTTON_ID = 1000002;
+static const int32_t FIRST_BUTTON_ID = 1000010;
+static const int32_t OK_BUTTON_ID = 1000001;
+static const int32_t CANCEL_BUTTON_ID = 1000002;
 
 MPSetupXScreen::MPSetupXScreen()
 {
 	bDone = 0;
-	baseColor = 0xffff0000;
-	stripeColor = 0xff00ff00;
+	basecolour = 0xffff0000;
+	stripecolour = 0xff00ff00;
 	bPaintSchemeInitialized = false;
 	ppConnectionScreen = 0;
 	pLocalBrowserScreen = 0;
@@ -67,13 +67,13 @@ MPSetupXScreen::init(FitIniFile* file)
 		}
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_setup_combobox0.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -87,13 +87,13 @@ MPSetupXScreen::init(FitIniFile* file)
 		playerNameComboBox.AddItem(pTmp2);
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_setup_combobox1.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -101,13 +101,13 @@ MPSetupXScreen::init(FitIniFile* file)
 		unitNameComboBox.init(&PNfile, "UnitNameComboBox");
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_setup_droplist0.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -128,7 +128,7 @@ MPSetupXScreen::init(FitIniFile* file)
 		}
 		insigniaDropList.SelectItem(0);
 	}
-	colorPicker.init(file, "ColorPicker");
+	colorPicker.init(file, "colourPicker");
 	mechCamera.init(337, 297, 464, 512);
 	/* these string are to be moved to the string table */
 	if (1 <= textCount)
@@ -212,12 +212,12 @@ MPSetupXScreen::begin()
 		buttons[buttonIndex3].press(2 == connectionType);
 		buttons[buttonIndex4].press(3 == connectionType);
 	}
-	colorPicker.setColor0(baseColor);
-	colorPicker.setColor1(stripeColor);
+	colorPicker.setcolour0(basecolour);
+	colorPicker.setcolour1(stripecolour);
 	mechCamera.setMech("hunchback");
 	bPaintSchemeInitialized = false;
-	// mechCamera.getObjectAppearance()->resetPaintScheme(baseColor,
-	// stripeColor, 0xfff0f0f0);
+	// mechCamera.getObjectAppearance()->resetPaintScheme(basecolour,
+	// stripecolour, 0xfff0f0f0);
 }
 
 void
@@ -237,7 +237,7 @@ MPSetupXScreen::render(int32_t xOffset, int32_t yOffset)
 		if (!bPaintSchemeInitialized)
 		{
 			bPaintSchemeInitialized = true;
-			mechCamera.getObjectAppearance()->resetPaintScheme(baseColor, stripeColor, 0xfff0f0f0);
+			mechCamera.getObjectAppearance()->resetPaintScheme(basecolour, stripecolour, 0xfff0f0f0);
 		}
 		/*combo boxes need to be rendered after anything they might obscure*/
 		insigniaDropList.render();
@@ -373,11 +373,11 @@ MPSetupXScreen::update()
 	unitNameComboBox.update();
 	playerNameComboBox.update();
 	colorPicker.update();
-	if ((colorPicker.getColor0() != baseColor) || (colorPicker.getColor1() != stripeColor))
+	if ((colorPicker.getcolour0() != basecolour) || (colorPicker.getcolour1() != stripecolour))
 	{
-		baseColor = colorPicker.getColor0();
-		stripeColor = colorPicker.getColor1();
-		mechCamera.getObjectAppearance()->resetPaintScheme(baseColor, stripeColor, 0xfff0f0f0);
+		basecolour = colorPicker.getcolour0();
+		stripecolour = colorPicker.getcolour1();
+		mechCamera.getObjectAppearance()->resetPaintScheme(basecolour, stripecolour, 0xfff0f0f0);
 	}
 	mechCamera.update();
 	if (userInput->isLeftClick())
@@ -402,7 +402,7 @@ MPSetupXScreen::updateMPSetup()
 {
 }
 
-aColorPicker::aColorPicker()
+acolourPicker::acolourPicker()
 {
 	color0 = 0xffffffff;
 	color1 = 0xff000000;
@@ -410,7 +410,7 @@ aColorPicker::aColorPicker()
 }
 
 int32_t
-aColorPicker::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
+acolourPicker::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
 	int32_t err;
 	err = aObject::init(xPos, yPos, w, h);
@@ -422,30 +422,30 @@ aColorPicker::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	addChild(&intesitySliderScrollBar);
 	addChild(&colorPlaneCursorStatic);
 	addChild(&tab0Button);
-	addChild(&tab0ColorRect);
-	addChild(&tab0ColorOutlineRect);
+	addChild(&tab0colourRect);
+	addChild(&tab0colourOutlineRect);
 	addChild(&tab0text);
 	addChild(&tab1Button);
-	addChild(&tab1ColorRect);
-	addChild(&tab1ColorOutlineRect);
+	addChild(&tab1colourRect);
+	addChild(&tab1colourOutlineRect);
 	addChild(&tab1text);
 	return (NO_ERROR);
 }
 
 void
-aColorPicker::init(FitIniFile* file, const std::wstring_view& blockName)
+acolourPicker::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t x, y, width, height;
 	file->readIdLong("XLocation", x);
 	file->readIdLong("YLocation", y);
-	file->readIdLong("Width", width);
-	file->readIdLong("Height", height);
+	file->readIdLong("width", width);
+	file->readIdLong("height", height);
 	init(x, y, width, height);
 	const std::wstring_view& blockname;
-	blockname = "ColorPickerMainRect";
+	blockname = "colourPickerMainRect";
 	mainRect.init(file, blockname.Data());
-	file->seekBlock("ColorPickerTab0");
+	file->seekBlock("colourPickerTab0");
 	blockname = "Tab0Text";
 	tab0text.init(file, blockname.Data());
 	{
@@ -453,40 +453,40 @@ aColorPicker::init(FitIniFile* file, const std::wstring_view& blockName)
 		tab0text.setText(str);
 	}
 	activeTab = 0;
-	blockname = "Tab0ColorOutlineRect";
-	tab0ColorOutlineRect.init(file, blockname.Data());
-	blockname = "Tab0ColorRect";
-	tab0ColorRect.init(file, blockname.Data());
-	tab0ColorRect.setColor(color0);
+	blockname = "Tab0colourOutlineRect";
+	tab0colourOutlineRect.init(file, blockname.Data());
+	blockname = "Tab0colourRect";
+	tab0colourRect.init(file, blockname.Data());
+	tab0colourRect.setcolour(color0);
 	blockname = "Tab0Button";
 	tab0Button.init(*file, blockname.Data());
 	tab0Button.press(true);
-	file->seekBlock("ColorPickerTab1");
+	file->seekBlock("colourPickerTab1");
 	blockname = "Tab1Text";
 	tab1text.init(file, blockname.Data());
 	{
 		const std::wstring_view& str = "STRIPE COLOR";
 		tab1text.setText(str);
 	}
-	blockname = "Tab1ColorOutlineRect";
-	tab1ColorOutlineRect.init(file, blockname.Data());
-	blockname = "Tab1ColorRect";
-	tab1ColorRect.init(file, blockname.Data());
-	tab1ColorRect.setColor(color1);
+	blockname = "Tab1colourOutlineRect";
+	tab1colourOutlineRect.init(file, blockname.Data());
+	blockname = "Tab1colourRect";
+	tab1colourRect.init(file, blockname.Data());
+	tab1colourRect.setcolour(color1);
 	blockname = "Tab1Button";
 	tab1Button.init(*file, blockname.Data());
 	tab1Button.press(false);
-	blockname = "ColorPickerCircleStatic";
+	blockname = "colourPickerCircleStatic";
 	colorPlaneStatic.init(file, blockname.Data());
-	blockname = "ColorPickerValueGradient";
+	blockname = "colourPickerValueGradient";
 	intensityGradientRect.init(file, blockname.Data());
 	{
 		blockname = "GradientSlider";
 		int32_t x, y, w, h;
 		file->readIdLong("XLocation", x);
 		file->readIdLong("YLocation", y);
-		file->readIdLong("Width", w);
-		file->readIdLong("Height", h);
+		file->readIdLong("width", w);
+		file->readIdLong("height", h);
 		intesitySliderScrollBar.init(x, y, w, h);
 	}
 	blockname = "HueCirclePicker";
@@ -494,7 +494,7 @@ aColorPicker::init(FitIniFile* file, const std::wstring_view& blockName)
 }
 
 void
-aColorPicker::destroy()
+acolourPicker::destroy()
 {
 	aObject::destroy();
 }
@@ -591,7 +591,7 @@ hsi2rgb(float hue, float saturation, float intensity, float& r, float& g, float&
 }
 
 void
-aColorPicker::update()
+acolourPicker::update()
 {
 	aObject::update();
 	if (userInput->isLeftClick() || userInput->isLeftDrag())
@@ -617,7 +617,7 @@ aColorPicker::update()
 }
 
 int32_t
-aColorPicker::handleMessage(uint32_t message, uint32_t who)
+acolourPicker::handleMessage(uint32_t message, uint32_t who)
 {
 	{
 		if ((uint32_t)(&tab0Button) == who)
@@ -683,15 +683,15 @@ aColorPicker::handleMessage(uint32_t message, uint32_t who)
 					{
 						B = 0.0f;
 					}
-					int32_t newColor = 0xff000000 | (((int32_t)(R * 255.0)) << 16) | (((int32_t)(G * 255.0)) << 8) | (((int32_t)(B * 255.0)) << 0);
+					int32_t newcolour = 0xff000000 | (((int32_t)(R * 255.0)) << 16) | (((int32_t)(G * 255.0)) << 8) | (((int32_t)(B * 255.0)) << 0);
 					// if (tab0Button.isPressed()) {
 					if (0 == activeTab)
 					{
-						setColor0(newColor);
+						setcolour0(newcolour);
 					}
 					else
 					{
-						setColor1(newColor);
+						setcolour1(newcolour);
 					}
 				}
 				return 1;
@@ -702,29 +702,29 @@ aColorPicker::handleMessage(uint32_t message, uint32_t who)
 }
 
 void
-aColorPicker::render()
+acolourPicker::render()
 {
 	aObject::render();
 }
 
 void
-aColorPicker::move(float offsetX, float offsetY)
+acolourPicker::move(float offsetX, float offsetY)
 {
 	aObject::move(offsetX, offsetY);
 }
 
 void
-aColorPicker::setColor0(int32_t color)
+acolourPicker::setcolour0(int32_t color)
 {
 	color0 = color;
-	tab0ColorRect.setColor(color);
+	tab0colourRect.setcolour(color);
 }
 
 void
-aColorPicker::setColor1(int32_t color)
+acolourPicker::setcolour1(int32_t color)
 {
 	color1 = color;
-	tab1ColorRect.setColor(color);
+	tab1colourRect.setcolour(color);
 }
 
 int32_t
@@ -738,10 +738,10 @@ aStyle1TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	aTextListItem::init(fontResID);
 	setText(textID);
 	int32_t color = 0xff808080;
-	file->readIdLong("Color", color);
-	normalColor = color;
-	setColor(color);
-	char tmpStr[64];
+	file->readIdLong("colour", color);
+	normalcolour = color;
+	setcolour(color);
+	wchar_t tmpStr[64];
 	strcpy(tmpStr, "");
 	file->readIdString("Animation", tmpStr, 63);
 	if (0 == strcmp("", tmpStr))
@@ -762,17 +762,17 @@ aStyle1TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
+		color = 0.33 * ((uint32_t)normalcolour) + 0.67 * ((uint32_t)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
+		color = 0.67 * ((uint32_t)normalcolour) + 0.33 * ((uint32_t)0xffffffff);
 	}
 	else
 	{
-		color = normalColor;
+		color = normalcolour;
 	}
-	aTextListItem::setColor((uint32_t)color);
+	aTextListItem::setcolour((uint32_t)color);
 	aTextListItem::render();
 }
 
@@ -781,8 +781,8 @@ aInsigniaListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	file->seekBlock(blockName);
 	int32_t width, height;
-	file->readIdLong("Width", width);
-	file->readIdLong("Height", height);
+	file->readIdLong("width", width);
+	file->readIdLong("height", height);
 	const std::wstring_view& graphicBlockName = blockName;
 	graphicBlockName += "Static";
 	graphic.init(file, graphicBlockName.Data());

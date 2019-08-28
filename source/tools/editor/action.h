@@ -75,7 +75,7 @@ public:
 
 	void addChangedVertexInfo(uint32_t row, uint32_t column);
 	void addVertexInfo(VertexInfo&);
-	bool getOldHeight(uint32_t row, uint32_t column, float& oldHeight);
+	bool getOldheight(uint32_t row, uint32_t column, float& oldheight);
 
 private:
 	typedef std::list<VertexInfo /*, const VertexInfo& */> VERTEX_INFO_LIST;

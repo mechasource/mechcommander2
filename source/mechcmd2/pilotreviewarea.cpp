@@ -52,7 +52,7 @@ aObject* ActivePilotListItem::s_medals[MAX_MEDAL] = {0};
 aAnimation* ActivePilotListItem::s_skillAnim = nullptr;
 aAnimation* ActivePilotListItem::s_medalAwardedAnim = nullptr;
 aAnimation* ActivePilotListItem::s_pilotPromotedAnim = nullptr;
-int32_t ActivePilotListItem::s_totalWidth = 0;
+int32_t ActivePilotListItem::s_totalwidth = 0;
 
 PilotPromotionArea* PilotReviewScreen::s_curPromotion = nullptr;
 ;
@@ -92,7 +92,7 @@ PilotReviewScreen::PilotReviewScreen()
 	instance = this;
 	// this MUST be initialized
 	LogisticsData::instance->init();
-	fadeOutMaxColor = 0x7f000000;
+	fadeOutMaxcolour = 0x7f000000;
 }
 
 PilotReviewScreen::~PilotReviewScreen()
@@ -125,7 +125,7 @@ PilotReviewScreen::init(FitIniFile* file)
 	pilotListBox.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	DeadPilotListItem::init(file);
 	ActivePilotListItem::init(file);
-	ActivePilotListItem::s_totalWidth = pilotListBox.width() - 70;
+	ActivePilotListItem::s_totalwidth = pilotListBox.width() - 70;
 	int32_t count = LogisticsData::instance->getPilotCount();
 	LogisticsPilot** pPilots = (LogisticsPilot**)_alloca(count * sizeof(LogisticsPilot*));
 	LogisticsData::instance->getPilots(pPilots, count);
@@ -139,7 +139,7 @@ PilotReviewScreen::init(FitIniFile* file)
 			{
 				aTextListItem* pItem = new aTextListItem(font);
 				pItem->setText(IDS_KILLED_IN_ACTION);
-				pItem->setColor(color);
+				pItem->setcolour(color);
 				pilotListBox.AddItem(pItem);
 				bDeadTextAdded = true;
 			}
@@ -157,7 +157,7 @@ PilotReviewScreen::init(FitIniFile* file)
 	{
 		aTextListItem* pItem = new aTextListItem(font);
 		pItem->setText("");
-		pItem->setColor(color);
+		pItem->setcolour(color);
 		pilotListBox.AddItem(pItem);
 	}
 	bool bLiveTextAdded = 0;
@@ -170,9 +170,9 @@ PilotReviewScreen::init(FitIniFile* file)
 			{
 				aTextListItem* pItem = new aTextListItem(font);
 				pItem->setText(IDS_ACTIVE_DUTY);
-				pItem->setColor(color);
-				int32_t oldHeight = pItem->height();
-				pItem->resize(pItem->width(), oldHeight + 20);
+				pItem->setcolour(color);
+				int32_t oldheight = pItem->height();
+				pItem->resize(pItem->width(), oldheight + 20);
 				if (bDeadTextAdded)
 					pItem->showGUIWindow(0);
 				pilotListBox.AddItem(pItem);
@@ -330,8 +330,8 @@ DeadPilotListItem::init(FitIniFile* file)
 
 DeadPilotListItem::DeadPilotListItem(LogisticsPilot* pPilot)
 {
-	char tmpText[256];
-	char realText[256];
+	wchar_t tmpText[256];
+	wchar_t realText[256];
 	aObject::init(s_area->left(), s_area->top(), s_area->width(), s_area->height());
 	killsText = *s_killsText;
 	nameText = *s_nameText;
@@ -351,7 +351,7 @@ DeadPilotListItem::DeadPilotListItem(LogisticsPilot* pPilot)
 	sprintf(realText, tmpText, name);
 	nameText.setText(realText);
 	int32_t rank = pPilot->getRank();
-	char rankStr[32];
+	wchar_t rankStr[32];
 	// ACE Not Contiguous with other ranks.  Added too late.
 	if (rank != 4)
 		cLoadString(rank + IDS_GREEN, rankStr, 31);
@@ -388,7 +388,7 @@ DeadPilotListItem::render()
 	tmp.top = globalY();
 	tmp.bottom = globalY() + height();
 	aObject::render();
-	drawEmptyRect(tmp, s_area->getColor(), s_area->getColor());
+	drawEmptyRect(tmp, s_area->getcolour(), s_area->getcolour());
 	liveIcon->render(globalX() + s_liveIconRect->left(), globalY() + s_liveIconRect->top(),
 		globalX() + s_liveIconRect->left() + s_liveIconRect->width(),
 		globalY() + s_liveIconRect->top() + s_liveIconRect->height());
@@ -396,7 +396,7 @@ DeadPilotListItem::render()
 	tmp.top = globalY() + s_liveIconRect->top();
 	tmp.right = globalX() + s_liveIconRect->left() + s_liveIconRect->width();
 	tmp.bottom = globalY() + s_liveIconRect->top() + s_liveIconRect->height();
-	drawEmptyRect(tmp, s_liveIconRect->getColor(), s_liveIconRect->getColor());
+	drawEmptyRect(tmp, s_liveIconRect->getcolour(), s_liveIconRect->getcolour());
 	deadIcon->render(globalX() + s_deadIconRect->left(), globalY() + s_deadIconRect->top(),
 		globalX() + s_deadIconRect->left() + s_deadIconRect->width(),
 		globalY() + s_deadIconRect->top() + s_deadIconRect->height());
@@ -404,7 +404,7 @@ DeadPilotListItem::render()
 	tmp.top = globalY() + s_deadIconRect->top();
 	tmp.right = globalX() + s_deadIconRect->left() + s_deadIconRect->width();
 	tmp.bottom = globalY() + s_deadIconRect->top() + s_deadIconRect->height();
-	drawEmptyRect(tmp, s_deadIconRect->getColor(), s_deadIconRect->getColor());
+	drawEmptyRect(tmp, s_deadIconRect->getcolour(), s_deadIconRect->getcolour());
 }
 
 int32_t
@@ -441,11 +441,11 @@ PilotListBox::AddItem(aListItem* add)
 		}
 		if (scrollBar && !(itemCount % 2))
 		{
-			int32_t itemsTotalHeight = 0;
+			int32_t itemsTotalheight = 0;
 			if (items)
-				itemsTotalHeight = items[itemCount - 1]->bottom() - items[0]->top();
-			if (itemsTotalHeight > scrollBar->height())
-				scrollBar->SetScrollMax(itemsTotalHeight - scrollBar->height());
+				itemsTotalheight = items[itemCount - 1]->bottom() - items[0]->top();
+			if (itemsTotalheight > scrollBar->height())
+				scrollBar->SetScrollMax(itemsTotalheight - scrollBar->height());
 			else
 				scrollBar->SetScrollMax(0);
 		}
@@ -578,7 +578,7 @@ ActivePilotListItem::render()
 		timeOffset += 1.5 + .5 * pilot->killedIcons.Count();
 	if (currentTime - timeOffset > 0)
 	{
-		medalAwardedText.setColor(s_medalAwardedAnim->getColor(currentTime - timeOffset));
+		medalAwardedText.setcolour(s_medalAwardedAnim->getcolour(currentTime - timeOffset));
 		if (currentTime - timeOffset > 1.5)
 		{
 			float tmpTime = currentTime - timeOffset - 1.5;
@@ -599,7 +599,7 @@ ActivePilotListItem::render()
 	}
 	else
 	{
-		medalAwardedText.setColor(0);
+		medalAwardedText.setcolour(0);
 		for (size_t i = 0; i < medalCount; i++)
 		{
 			medalIcons[i]->showGUIWindow(0);
@@ -610,15 +610,15 @@ ActivePilotListItem::render()
 		timeOffset += (1.5 + .5 * medalCount);
 	if (currentTime - timeOffset > 0)
 	{
-		if (promotionText.getColor() == 0 && currentTime - timeOffset < .3 && pilot->promotePilot())
+		if (promotionText.getcolour() == 0 && currentTime - timeOffset < .3 && pilot->promotePilot())
 		{
 			soundSystem->playDigitalSample(LOG_PROMOTED);
 		}
-		promotionText.setColor(s_pilotPromotedAnim->getColor(currentTime - timeOffset));
+		promotionText.setcolour(s_pilotPromotedAnim->getcolour(currentTime - timeOffset));
 	}
 	else
 	{
-		promotionText.setColor(0);
+		promotionText.setcolour(0);
 	}
 	bool bCanBeDone = currentTime > flashTime();
 	aObject::render();
@@ -627,19 +627,19 @@ ActivePilotListItem::render()
 	tmp.top = globalY() + s_area->top();
 	tmp.right = tmp.left + s_area->width();
 	tmp.bottom = tmp.top + s_area->height();
-	drawEmptyRect(tmp, s_area->getColor(), s_area->getColor());
+	drawEmptyRect(tmp, s_area->getcolour(), s_area->getcolour());
 	// now do same thing with line....
-	tmp.right = tmp.left + s_totalWidth;
+	tmp.right = tmp.left + s_totalwidth;
 	tmp.top -= 12;
 	tmp.bottom = tmp.top + 2;
 	drawRect(tmp, 0xff002f55);
 	pilotIcon->render(globalX() + s_iconRect->left(), globalY() + s_iconRect->top(),
 		globalX() + s_iconRect->right(), globalY() + s_iconRect->bottom());
-	int32_t color = s_skillAnim->getColor(currentTime);
+	int32_t color = s_skillAnim->getcolour(currentTime);
 	for (size_t i = 0; i < 2; i++)
 	{
-		attributeMeters[i].setAddedColorMax(color);
-		attributeMeters[i].setAddedColorMin(color);
+		attributeMeters[i].setAddedcolourMax(color);
+		attributeMeters[i].setAddedcolourMin(color);
 		attributeMeters[i].render(globalX(), globalY());
 	}
 	for (i = 0; i < 5; i++)
@@ -649,7 +649,7 @@ ActivePilotListItem::render()
 		tmp.top += globalY();
 		tmp.right += globalX();
 		tmp.bottom += globalY();
-		drawEmptyRect(tmp, s_outline[i]->getColor(), s_outline[i]->getColor());
+		drawEmptyRect(tmp, s_outline[i]->getcolour(), s_outline[i]->getcolour());
 	}
 	int32_t x = globalX() + s_killIconRect->left();
 	int32_t y = globalY() + s_killIconRect->top();
@@ -851,14 +851,14 @@ ActivePilotListItem::init(FitIniFile* file)
 	s_promotionText->init(file, "PromotionHeader");
 	s_medalText->init(file, "MedalDescriptionText");
 	s_medalAwardedText->init(file, "MedalAwardedHeader");
-	char name[64];
+	wchar_t name[64];
 	// last three are missing, remove this
 	for (i = 0; i < MAX_MEDAL; i++)
 	{
 		sprintf(name, "MedalIcon%ld", i);
 		s_medals[i]->init(file, name);
 	}
-	char buffer[256];
+	wchar_t buffer[256];
 	for (i = 0; i < 5; i++)
 	{
 		s_outline[i] = new aRect;
@@ -873,8 +873,8 @@ ActivePilotListItem::init(FitIniFile* file)
 		sprintf(buffer, "ActiveDutyBoxSkillMeter%ld", i);
 		s_attributeMeters[i] = new AttributeMeter();
 		s_attributeMeters[i]->init(file, buffer);
-		s_attributeMeters[i]->setAddedColorMax(0xffffffff);
-		s_attributeMeters[i]->setAddedColorMin(0xffffffff);
+		s_attributeMeters[i]->setAddedcolourMax(0xffffffff);
+		s_attributeMeters[i]->setAddedcolourMin(0xffffffff);
 	}
 	for (i = 0; i < 5; i++)
 	{
@@ -898,8 +898,8 @@ ActivePilotListItem::isDone()
 
 ActivePilotListItem::ActivePilotListItem(LogisticsPilot* pPilot)
 {
-	char tmpText[256];
-	char realText[256];
+	wchar_t tmpText[256];
+	wchar_t realText[256];
 	memset(medalIcons, 0, MAX_MEDAL * sizeof(aObject*));
 	memset(medalTexts, 0, MAX_MEDAL * sizeof(aText*));
 	promotionShown = 0;
@@ -945,10 +945,10 @@ ActivePilotListItem::ActivePilotListItem(LogisticsPilot* pPilot)
 		medalAwardedText.setText(IDS_ONE_MEDAL_AWARD);
 	// Gotta promote the pilot before we decide what rank he/she is!
 	bool pilotPromoted = pilot->promotePilot();
-	char text[256];
+	wchar_t text[256];
 	cLoadString(IDS_PILOT_PROMOTED, text, 255);
-	char finalText[256];
-	char tmpRank[64];
+	wchar_t finalText[256];
+	wchar_t tmpRank[64];
 	// ACE not contiguous with other ranks.  Added too late!
 	if (pilot->getRank() != 4)
 		cLoadString(IDS_GREEN + pilot->getRank(), tmpRank, 63);
@@ -977,14 +977,14 @@ ActivePilotListItem::ActivePilotListItem(LogisticsPilot* pPilot)
 	sprintf(realText, tmpText, name);
 	nameText.setText(realText);
 	int32_t rank = pPilot->getRank();
-	char rankStr[32];
+	wchar_t rankStr[32];
 	// ACE not Contiguous with other Ranks.  Added too late.
 	if (rank != 4)
 		cLoadString(rank + IDS_GREEN, rankStr, 31);
 	else
 		cLoadString(IDS_ACE, rankStr, 31);
 	rankText.setText(rankStr);
-	char buffer[32];
+	wchar_t buffer[32];
 	sprintf(buffer, "%ld", (int32_t)pPilot->getGunnery());
 	gunneryText.setText(buffer);
 	sprintf(buffer, "%ld", (int32_t)pPilot->getPiloting());
@@ -1053,13 +1053,13 @@ PilotPromotionArea::init(FitIniFile& file)
 	file.seekBlock("PromoteGadgetRightExitAnimation");
 	rightExitInfo.init(&file, "");
 	SpecialtyListItem::init(&file);
-	char buffer[32];
+	wchar_t buffer[32];
 	for (size_t i = 0; i < 2; i++)
 	{
 		sprintf(buffer, "PromoteGadgetLeftSkillMeter%ld", i);
 		attributeMeters[i].init(&file, buffer);
-		attributeMeters[i].setAddedColorMax(0xffffffff);
-		attributeMeters[i].setAddedColorMin(0xffffffff);
+		attributeMeters[i].setAddedcolourMax(0xffffffff);
+		attributeMeters[i].setAddedcolourMin(0xffffffff);
 	}
 	file.seekBlock("SkillSelectionAnimation");
 	selSkillAnim.init(&file, "");
@@ -1089,7 +1089,7 @@ PilotPromotionArea::render()
 		yOffset = rightExitInfo.getYDelta();
 	}
 	skillListBox.move(xOffset, yOffset);
-	skillListBox.setColor(0xff000000, 0);
+	skillListBox.setcolour(0xff000000, 0);
 	skillListBox.render();
 	skillListBox.move(-xOffset, -yOffset);
 	areaRight.render(xOffset, yOffset);
@@ -1145,7 +1145,7 @@ PilotPromotionArea::update()
 	selSkillAnim.update();
 	int32_t specSkills = pilot->getSpecialtySkillCount();
 	if (8 + specSkills < areaLeft.textCount)
-		areaLeft.textObjects[8 + specSkills].setColor(selSkillAnim.getColor());
+		areaLeft.textObjects[8 + specSkills].setcolour(selSkillAnim.getcolour());
 }
 
 void
@@ -1157,8 +1157,8 @@ PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 		return;
 	pilot = pPilot;
 	bDone = 0;
-	char tmpText[255];
-	char realText[255];
+	wchar_t tmpText[255];
+	wchar_t realText[255];
 	int32_t missions = pPilot->getNumberMissions();
 	cLoadString(IDS_PILOT_MISSIONS, tmpText, 255);
 	sprintf(realText, tmpText, missions);
@@ -1175,14 +1175,14 @@ PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 		else
 			areaLeft.statics[i].showGUIWindow(false);
 	}
-	char rankStr[32];
+	wchar_t rankStr[32];
 	// ACE not Contiguous with other Ranks.  Added too late.
 	if (rank != 4)
 		cLoadString(rank + IDS_GREEN, rankStr, 31);
 	else
 		cLoadString(IDS_ACE, rankStr, 31);
 	areaLeft.textObjects[3].setText(rankStr);
-	char buffer[32];
+	wchar_t buffer[32];
 	sprintf(buffer, "%ld", (int32_t)pPilot->getGunnery());
 	areaLeft.textObjects[4].setText(buffer);
 	sprintf(buffer, "%ld", (int32_t)pPilot->getPiloting());
@@ -1249,25 +1249,25 @@ PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 		{
 			tmpItem = new aTextListItem(IDS_PROMOTION_LISTBOX_FONT);
 			tmpItem->setText(IDS_REGULAR_SKILLS);
-			tmpItem->setColor(0xffffffff);
+			tmpItem->setcolour(0xffffffff);
 		}
 		else if (i == FIRST_VETERAN_SPECIALTY)
 		{
 			tmpItem = new aTextListItem(IDS_PROMOTION_LISTBOX_FONT);
 			tmpItem->setText(IDS_VETERAN_SKILLS);
-			tmpItem->setColor(0xffffffff);
+			tmpItem->setcolour(0xffffffff);
 		}
 		else if (i == FIRST_ELITE_SPECIALTY)
 		{
 			tmpItem = new aTextListItem(IDS_PROMOTION_LISTBOX_FONT);
 			tmpItem->setText(IDS_ELITE_SKILLS3);
-			tmpItem->setColor(0xffffffff);
+			tmpItem->setcolour(0xffffffff);
 		}
 		else if (i == FIRST_ACE_SPECIALTY)
 		{
 			tmpItem = new aTextListItem(IDS_PROMOTION_LISTBOX_FONT);
 			tmpItem->setText(IDS_ACE_SKILLS);
-			tmpItem->setColor(0xffffffff);
+			tmpItem->setcolour(0xffffffff);
 		}
 		if (tmpItem)
 		{
@@ -1325,7 +1325,7 @@ void
 SpecialtyListItem::update()
 {
 	normalAnim.update();
-	uint32_t color = normalAnim.getColor();
+	uint32_t color = normalAnim.getcolour();
 	if (PilotReviewScreen::s_curPromotion)
 	{
 		aListBox* skillListBox = PilotReviewScreen::s_curPromotion->getSkillListBox();
@@ -1347,18 +1347,18 @@ SpecialtyListItem::update()
 		if (!pressedAnim.isAnimating())
 			pressedAnim.begin();
 		pressedAnim.update();
-		color = pressedAnim.getColor();
+		color = pressedAnim.getcolour();
 	}
 	else if (state == HIGHLITE)
 	{
 		if (!highlightAnim.isAnimating())
 			highlightAnim.begin();
 		highlightAnim.update();
-		color = highlightAnim.getColor();
+		color = highlightAnim.getcolour();
 	}
-	setColor(color, true);
+	setcolour(color, true);
 	// make sure the background stays black
-	setColor(0xff000000, 0);
+	setcolour(0xff000000, 0);
 }
 
 void
@@ -1412,7 +1412,7 @@ SpecialtyListItem::init(FitIniFile* file)
 	s_area = new aRect;
 	s_outline = new aRect;
 	s_radioButton->init(*file, "PromoteGadgetRightRadioButton");
-	char buffer[64];
+	wchar_t buffer[64];
 	for (size_t i = 0; i < 4; i++)
 	{
 		s_skillIcons[i] = new aObject;

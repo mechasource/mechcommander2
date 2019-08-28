@@ -12,7 +12,7 @@
 #ifndef _NOTE_HPP_
 #define _NOTE_HPP_
 
-#include <stuff/page.hpp>
+#include "stuff/page.h"
 
 namespace Stuff
 {
@@ -39,13 +39,13 @@ protected:
 	// Note functions
 	//
 public:
-	void SetName(PCSTR entryname)
+	void SetName(const std::wstring_view& entryname)
 	{
 		// Check_Object(this);
 		Check_Pointer(entryname);
 		m_name = entryname;
 	}
-	PCSTR
+	const std::wstring_view&
 	GetName(void) const
 	{
 		// Check_Object(this);
@@ -68,14 +68,14 @@ protected:
 	// string access
 	//
 public:
-	void GetEntry(PCSTR* contents)
+	void GetEntry(const std::wstring_view&* contents)
 	{
 		// Check_Object(this);
 		Check_Pointer(contents);
 		if (contents)
 			*contents = m_text;
 	}
-	void SetEntry(PCSTR contents)
+	void SetEntry(const std::wstring_view& contents)
 	{
 		// Check_Object(this);
 		m_text = contents;
@@ -85,7 +85,7 @@ public:
 	// int32_t access
 	//
 public:
-	void GetEntry(pint32_t value);
+	void GetEntry(int32_t* value);
 	void SetEntry(int32_t value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -131,18 +131,18 @@ public:
 	void SetEntry(const Motion3D& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// RGBColor access
+	// RGBcolour access
 	//
 public:
-	void GetEntry(RGBColor* value);
-	void SetEntry(const RGBColor& value);
+	void GetEntry(RGBcolour* value);
+	void SetEntry(const RGBcolour& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// RGBAColor access
+	// RGBAcolour access
 	//
 public:
-	void GetEntry(RGBAColor* value);
-	void SetEntry(const RGBAColor& value);
+	void GetEntry(RGBAcolour* value);
+	void SetEntry(const RGBAcolour& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// NotationFile access

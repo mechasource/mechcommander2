@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -74,110 +74,110 @@ static PSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos)
 		strcat_s(szBuffer, _countof(szBuffer), "NOZORDER ");
 	if (pwinpos->flags & SWP_SHOWWINDOW)
 		strcat_s(szBuffer, _countof(szBuffer), "SHOWWINDOW ");
-	SUPPRESS_WARNING(4172) // returning address of local variable or temporary
+	MSSUPPRESS_WARNING(4172) // returning address of local variable or temporary
 	return szBuffer; //-V558
 }
 
 static PSTR __stdcall GetWM_SIZEFlags(WPARAM wparam)
 {
-	PSTR pszMessage;
+	PSTR message;
 	switch (wparam)
 	{
 	case SIZE_MAXHIDE:
-		pszMessage = "MAXHIDE";
+		message = "MAXHIDE";
 		break;
 	case SIZE_MAXIMIZED:
-		pszMessage = "MAXIMIZED";
+		message = "MAXIMIZED";
 		break;
 	case SIZE_MAXSHOW:
-		pszMessage = "MAXSHOW";
+		message = "MAXSHOW";
 		break;
 	case SIZE_MINIMIZED:
-		pszMessage = "MINIMIZED";
+		message = "MINIMIZED";
 		break;
 	case SIZE_RESTORED:
-		pszMessage = "RESTORED";
+		message = "RESTORED";
 		break;
 	default:
-		pszMessage = "Unknown";
+		message = "Unknown";
 		break;
 	}
-	return pszMessage;
+	return message;
 }
 
 static PSTR __stdcall GetWM_SYSCOMMANDFlags(WPARAM wparam)
 {
 	/*static*/ char szBuffer[30];
-	PSTR pszMessage;
+	PSTR message;
 	switch (wparam)
 	{
 	case SC_CLOSE:
-		pszMessage = "CLOSE";
+		message = "CLOSE";
 		break;
 	case SC_HSCROLL:
-		pszMessage = "HSCROLL";
+		message = "HSCROLL";
 		break;
 	case SC_MAXIMIZE:
-		pszMessage = "MAXIMIZE";
+		message = "MAXIMIZE";
 		break;
 	case SC_MINIMIZE:
-		pszMessage = "MINIMIZE";
+		message = "MINIMIZE";
 		break;
 	case SC_MOUSEMENU:
-		pszMessage = "MOUSEMENU";
+		message = "MOUSEMENU";
 		break;
 	case SC_MOVE:
-		pszMessage = "MOVE";
+		message = "MOVE";
 		break;
 	case SC_NEXTWINDOW:
-		pszMessage = "NEXTWINDOW";
+		message = "NEXTWINDOW";
 		break;
 	case SC_PREVWINDOW:
-		pszMessage = "PREVWINDOW";
+		message = "PREVWINDOW";
 		break;
 	case SC_SIZE:
-		pszMessage = "SIZE";
+		message = "SIZE";
 		break;
 	case SC_VSCROLL:
-		pszMessage = "VSCROLL";
+		message = "VSCROLL";
 		break;
 	case SC_KEYMENU:
-		pszMessage = "KEYMENU";
+		message = "KEYMENU";
 		break;
 	case SC_CONTEXTHELP:
-		pszMessage = "CONTEXTHELP";
+		message = "CONTEXTHELP";
 		break;
 	case SC_DEFAULT:
-		pszMessage = "DEFAULT";
+		message = "DEFAULT";
 		break;
 	case SC_HOTKEY:
-		pszMessage = "HOTKEY";
+		message = "HOTKEY";
 		break;
 	case SC_MONITORPOWER:
-		pszMessage = "MONITORPOWER";
+		message = "MONITORPOWER";
 		break;
 	case SC_RESTORE:
-		pszMessage = "RESTORE";
+		message = "RESTORE";
 		break;
 	case SC_SCREENSAVE:
-		pszMessage = "SCREENSAVE";
+		message = "SCREENSAVE";
 		break;
 	case SC_TASKLIST:
-		pszMessage = "TASKLIST";
+		message = "TASKLIST";
 		break;
 	default:
 		sprintf_s(szBuffer, _countof(szBuffer), "Unknown 0x%x", wparam);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	}
-	return pszMessage;
+	return message;
 }
 
 //----- (00000AB0) --------------------------------------------------------
 MECH_IMPEXP PSTR __stdcall GetWindowsMessage(uint32_t message, WPARAM wparam, LPARAM lparam)
 {
 	/*static*/ char szBuffer[0x100];
-	PSTR pszMessage = nullptr;
+	PSTR message = nullptr;
 	szBuffer[0] = 0;
 	if (message == WM_NCHITTEST || message == WM_SETCURSOR || message == WM_MOUSEMOVE)
 		return nullptr;
@@ -186,161 +186,161 @@ MECH_IMPEXP PSTR __stdcall GetWindowsMessage(uint32_t message, WPARAM wparam, LP
 	case WM_NCMOUSEMOVE:
 	case WM_NCLBUTTONDOWN:
 	case WM_NCLBUTTONUP:
-		pszMessage = nullptr;
+		message = nullptr;
 		break;
 	case WM_KEYFIRST:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_KEYDOWN w=0x%4.4x l=0x%4.4x", wparam, lparam);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_CANCELMODE:
-		pszMessage = "WM_CANCELMODE";
+		message = "WM_CANCELMODE";
 		break;
 	case WM_PAINT:
-		pszMessage = "WM_PAINT";
+		message = "WM_PAINT";
 		break;
 	case WM_ENABLE:
-		pszMessage = "WM_ENABLE";
+		message = "WM_ENABLE";
 		break;
 	case WM_ERASEBKGND:
-		pszMessage = "WM_ERASEBKGND";
+		message = "WM_ERASEBKGND";
 		break;
 	case WM_SIZE:
 		sprintf_s(szBuffer, _countof(szBuffer),
 			"WM_SIZE %ux%u %s", // "WM_SIZE %dx%d %s",
 			LOWORD(lparam), HIWORD(lparam), GetWM_SIZEFlags(wparam));
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_DISPLAYCHANGE:
 		sprintf_s(szBuffer, _countof(szBuffer),
 			"WM_DISPLAYCHANGE %ux%u %ubpp", //"WM_DISPLAYCHANGE %dx%d %dbpp",
 			LOWORD(lparam), HIWORD(lparam), wparam);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_SYSCOLORCHANGE:
-		pszMessage = "WM_SYSCOLORCHANGE";
+		message = "WM_SYSCOLORCHANGE";
 		break;
 	case WM_KILLFOCUS:
-		pszMessage = "WM_KILLFOCUS";
+		message = "WM_KILLFOCUS";
 		break;
 	case WM_DESTROY:
-		pszMessage = "WM_DESTROY";
+		message = "WM_DESTROY";
 		break;
 	case WM_CLOSE:
-		pszMessage = "WM_CLOSE";
+		message = "WM_CLOSE";
 		break;
 	case WM_CREATE:
-		pszMessage = "WM_CREATE";
+		message = "WM_CREATE";
 		break;
 	case WM_WINDOWPOSCHANGING:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_WINDOWPOSCHANGING %s",
 			GetWM_WINDOWPOSCHANGEFlags(reinterpret_cast<PWINDOWPOS>(lparam)));
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_WINDOWPOSCHANGED:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_WINDOWPOSCHANGED %s",
 			GetWM_WINDOWPOSCHANGEFlags(reinterpret_cast<PWINDOWPOS>(lparam)));
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_QUIT:
-		pszMessage = "WM_QUIT";
+		message = "WM_QUIT";
 		break;
 	case WM_MOVE:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_MOVE %ux%u", LOWORD(lparam),
 			HIWORD(lparam)); // "WM_MOVE %dx%d",
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_ACTIVATEAPP:
 		if (LOWORD(wparam))
-			pszMessage = "Activated";
+			message = "Activated";
 		else
-			pszMessage = "Deactivated";
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_ACTIVATEAPP %s", pszMessage);
-		pszMessage = szBuffer;
+			message = "Deactivated";
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_ACTIVATEAPP %s", message);
+		message = szBuffer;
 		break;
 	case WM_ACTIVATE:
 		if (LOWORD(wparam))
-			pszMessage = "Activated";
+			message = "Activated";
 		else
-			pszMessage = "Deactivated";
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_ACTIVATE %s", pszMessage);
-		pszMessage = szBuffer;
+			message = "Deactivated";
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_ACTIVATE %s", message);
+		message = szBuffer;
 		break;
 	case WM_SETFOCUS:
-		pszMessage = "WM_SETFOCUS";
+		message = "WM_SETFOCUS";
 		break;
 	case WM_NCCREATE:
-		pszMessage = "WM_NCCREATE";
+		message = "WM_NCCREATE";
 		break;
 	case WM_NCCALCSIZE:
-		pszMessage = "WM_NCCALCSIZE";
+		message = "WM_NCCALCSIZE";
 		break;
 	case WM_SHOWWINDOW:
 		if (wparam)
-			pszMessage = "Show";
+			message = "Show";
 		else
-			pszMessage = "Hide";
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_SHOWWINDOW %s", pszMessage);
-		pszMessage = szBuffer;
+			message = "Hide";
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_SHOWWINDOW %s", message);
+		message = szBuffer;
 		break;
 	case WM_NCACTIVATE:
-		pszMessage = "WM_NCACTIVATE";
+		message = "WM_NCACTIVATE";
 		break;
 	case WM_NCPAINT:
-		pszMessage = "WM_NCPAINT";
+		message = "WM_NCPAINT";
 		break;
 	case WM_NCDESTROY:
-		pszMessage = "WM_NCDESTROY";
+		message = "WM_NCDESTROY";
 		break;
 	case WM_STYLECHANGING:
-		pszMessage = "WM_STYLECHANGING";
+		message = "WM_STYLECHANGING";
 		break;
 	case WM_STYLECHANGED:
-		pszMessage = "WM_STYLECHANGED";
+		message = "WM_STYLECHANGED";
 		break;
 	case WM_GETTEXT:
-		pszMessage = "WM_GETTEXT";
+		message = "WM_GETTEXT";
 		break;
 	case WM_GETMINMAXINFO:
-		pszMessage = "WM_GETMINMAXINFO";
+		message = "WM_GETMINMAXINFO";
 		break;
 	case WM_CONTEXTMENU:
-		pszMessage = "WM_CONTEXTMENU";
+		message = "WM_CONTEXTMENU";
 		break;
 	case WM_POWER:
-		pszMessage = "WM_POWER";
+		message = "WM_POWER";
 		break;
 	case WM_SYNCPAINT:
-		pszMessage = "WM_SYNCPAINT";
+		message = "WM_SYNCPAINT";
 		break;
 	case WM_LBUTTONDOWN:
-		pszMessage = "WM_LBUTTONDOWN";
+		message = "WM_LBUTTONDOWN";
 		break;
 	case WM_ENTERIDLE:
-		pszMessage = 0;
+		message = 0;
 		break;
 	case WM_KEYUP:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_KEYUP 0x%4.4x", wparam);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_SYSCHAR:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSCHAR 0x%4.4x", wparam);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_SYSKEYDOWN:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSKEYDOWN 0x%4.4x", wparam);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_SYSKEYUP:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSKEYUP 0x%4.4x", wparam);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_SYSCOMMAND:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSCOMMAND %s", GetWM_SYSCOMMANDFlags(wparam));
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_COMMAND:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_COMMAND 0x%4.4x,0x%x", wparam, lparam);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_CHAR:
 		// wparam is character code of the key
@@ -349,69 +349,69 @@ MECH_IMPEXP PSTR __stdcall GetWindowsMessage(uint32_t message, WPARAM wparam, LP
 		else
 			sprintf_s(szBuffer, _countof(szBuffer), "WM_CHAR code=%u",
 				wparam); // "WM_CHAR code=%d"
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	case WM_TIMER:
-		pszMessage = "WM_TIMER";
+		message = "WM_TIMER";
 		break;
 	case WM_MENUSELECT:
-		pszMessage = "WM_MENUSELECT";
+		message = "WM_MENUSELECT";
 		break;
 	case WM_INITMENU:
-		pszMessage = "WM_INITMENU";
+		message = "WM_INITMENU";
 		break;
 	case WM_INITMENUPOPUP:
-		pszMessage = "WM_INITMENUPOPUP";
+		message = "WM_INITMENUPOPUP";
 		break;
 	case WM_PALETTECHANGED:
-		pszMessage = "WM_PALETTECHANGED";
+		message = "WM_PALETTECHANGED";
 		break;
 	case WM_QUERYNEWPALETTE:
-		pszMessage = "WM_QUERYNEWPALETTE";
+		message = "WM_QUERYNEWPALETTE";
 		break;
 	case WM_MOUSEWHEEL:
-		pszMessage = "WM_MOUSEWHEEL";
+		message = "WM_MOUSEWHEEL";
 		break;
 	case WM_SIZING:
-		pszMessage = "WM_SIZING";
+		message = "WM_SIZING";
 		break;
 	case WM_MOVING:
-		pszMessage = "WM_MOVING";
+		message = "WM_MOVING";
 		break;
 	case WM_CAPTURECHANGED:
-		pszMessage = "WM_CAPTURECHANGED";
+		message = "WM_CAPTURECHANGED";
 		break;
 	case WM_ENTERMENULOOP:
-		pszMessage = "WM_ENTERMENULOOP";
+		message = "WM_ENTERMENULOOP";
 		break;
 	case WM_EXITMENULOOP:
-		pszMessage = "WM_EXITMENULOOP";
+		message = "WM_EXITMENULOOP";
 		break;
 	case WM_LBUTTONUP:
-		pszMessage = "WM_LBUTTONUP";
+		message = "WM_LBUTTONUP";
 		break;
 	case WM_RBUTTONDOWN:
-		pszMessage = "WM_RBUTTONDOWN";
+		message = "WM_RBUTTONDOWN";
 		break;
 	case WM_RBUTTONUP:
-		pszMessage = "WM_RBUTTONUP";
+		message = "WM_RBUTTONUP";
 		break;
 	case WM_ENTERSIZEMOVE:
-		pszMessage = "WM_ENTERSIZEMOVE";
+		message = "WM_ENTERSIZEMOVE";
 		break;
 	case WM_EXITSIZEMOVE:
-		pszMessage = "WM_EXITSIZEMOVE";
+		message = "WM_EXITSIZEMOVE";
 		break;
 	case WM_POWERBROADCAST:
-		pszMessage = "WM_POWERBROADCAST";
+		message = "WM_POWERBROADCAST";
 		break;
 	case WM_DEVICECHANGE:
-		pszMessage = "WM_DEVICECHANGE";
+		message = "WM_DEVICECHANGE";
 		break;
 	default:
 		sprintf_s(szBuffer, _countof(szBuffer), "WM_%x", message);
-		pszMessage = szBuffer;
+		message = szBuffer;
 		break;
 	}
-	return (pszMessage);
+	return (message);
 }

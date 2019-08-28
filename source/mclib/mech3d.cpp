@@ -93,7 +93,7 @@ extern bool useShadows;
 
 #define HELICOPTER_FACTOR (25.0f)
 
-char MechStateByGesture[MAX_MECH_ANIMATIONS] = {
+wchar_t MechStateByGesture[MAX_MECH_ANIMATIONS] = {
 	BODYSTATE_PARKED, // GesturePark					 0 -- Park
 	BODYSTATE_STANDING, // GestureParkToStand			 1 -- ParkToStand
 	BODYSTATE_STANDING, // GestureStand					 2 -- Stand
@@ -203,7 +203,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 	gosASSERT(result == NO_ERROR);
 	for (size_t i = 0; i < MaxGestures; i++)
 	{
-		char blockId[256];
+		wchar_t blockId[256];
 		sprintf(blockId, "Gestures%d", i);
 		result = mechFile.seekBlock(blockId);
 		gosASSERT(result == NO_ERROR);
@@ -231,17 +231,17 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 	result = mechFile.seekBlock("TGLData");
 	if (result != NO_ERROR)
 		STOP(("Mech %s has no TGL Data", fileName));
-	char aseFileName[512];
+	wchar_t aseFileName[512];
 	result = mechFile.readIdString("FileName", aseFileName, 511);
 	int32_t i;
 	if (result != NO_ERROR)
 	{
 		// Check for LOD filenames
-		char aseFileName[512];
+		wchar_t aseFileName[512];
 		for (i = 0; i < MAX_LODS; i++)
 		{
-			char baseName[256];
-			char baseLODDist[256];
+			wchar_t baseName[256];
+			wchar_t baseLODDist[256];
 			sprintf(baseName, "FileName%d", i);
 			sprintf(baseLODDist, "Distance%d", i);
 			result = mechFile.readIdString(baseName, aseFileName, 511);
@@ -287,11 +287,11 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 	}
 	//------------------------------------
 	// Load Arms to blow off Next.
-	char leftArmName[1024];
+	wchar_t leftArmName[1024];
 	sprintf(leftArmName, "%sLeftArm", fileName);
 	FullPathFileName mechLeftArmName;
 	mechLeftArmName.init(tglPath, leftArmName, ".ase");
-	char rightArmName[1024];
+	wchar_t rightArmName[1024];
 	sprintf(rightArmName, "%sRightArm", fileName);
 	FullPathFileName mechRightArmName;
 	mechRightArmName.init(tglPath, rightArmName, ".ase");
@@ -316,9 +316,9 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 	// Load Damaged States
 	// They are named mechnamefallForward and mechnameFallBackward
 	//
-	char forwardName[1024];
+	wchar_t forwardName[1024];
 	sprintf(forwardName, "%sFallForwardDam", fileName);
-	char backwardName[1024];
+	wchar_t backwardName[1024];
 	sprintf(backwardName, "%sFallForwardDam", fileName);
 	{
 		FullPathFileName dmgName;
@@ -350,7 +350,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 	{
 		for (i = 0; i < MAX_ANIMATION_FILES; i++)
 		{
-			char animName[512];
+			wchar_t animName[512];
 			sprintf(animName, "%s%s", fileName, MechAnimationNames[i]);
 			FullPathFileName animPath;
 			animPath.init(tglPath, animName, ".ase");
@@ -421,11 +421,11 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 		gosASSERT(nodeData != nullptr);
 		for (i = 0; i < numSmokeNodes; i++)
 		{
-			char blockId[512];
+			wchar_t blockId[512];
 			sprintf(blockId, "SmokeNode%d", i);
 			result = mechFile.seekBlock(blockId);
 			gosASSERT(result == NO_ERROR);
-			char smokeName[512];
+			wchar_t smokeName[512];
 			result = mechFile.readIdString("SmokeNodeName", smokeName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i].nodeId =
@@ -436,11 +436,11 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 		}
 		for (i = 0; i < numWeaponNodes; i++)
 		{
-			char blockId[512];
+			wchar_t blockId[512];
 			sprintf(blockId, "WeaponNode%d", i);
 			result = mechFile.seekBlock(blockId);
 			gosASSERT(result == NO_ERROR);
-			char weaponName[512];
+			wchar_t weaponName[512];
 			result = mechFile.readIdString("WeaponNodeName", weaponName, 511);
 			gosASSERT(result == NO_ERROR);
 			int32_t weaponType;
@@ -454,11 +454,11 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 		}
 		for (i = 0; i < numJumpNodes; i++)
 		{
-			char blockId[512];
+			wchar_t blockId[512];
 			sprintf(blockId, "JumpJetNode%d", i);
 			result = mechFile.seekBlock(blockId);
 			gosASSERT(result == NO_ERROR);
-			char jumpName[512];
+			wchar_t jumpName[512];
 			result = mechFile.readIdString("JumpNodeName", jumpName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i + numSmokeNodes + numWeaponNodes].nodeId =
@@ -469,11 +469,11 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 		}
 		for (i = 0; i < numFootNodes; i++)
 		{
-			char blockId[512];
+			wchar_t blockId[512];
 			sprintf(blockId, "FootNode%d", i);
 			result = mechFile.seekBlock(blockId);
 			gosASSERT(result == NO_ERROR);
-			char footName[512];
+			wchar_t footName[512];
 			result = mechFile.readIdString("FootNodeName", footName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i + numSmokeNodes + numWeaponNodes + numJumpNodes].nodeId =
@@ -868,7 +868,7 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 	pilotNameID = -1;
 	paintScheme = -1;
 	objectNameId = 30862;
-	baseRootNodeHeight = -99999.9f;
+	baseRootNodeheight = -99999.9f;
 	baseRootNodeDifference = 0.0f;
 	rotationalNodeIndex = -1;
 	hitLeftNodeIndex = hitRightNodeIndex = -1;
@@ -912,7 +912,7 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 	leftArm = rightArm = nullptr;
 	rightArmSmoke = leftArmSmoke = nullptr;
 	currentFlash = duration = flashDuration = 0.0f;
-	flashColor = 0x00000000;
+	flashcolour = 0x00000000;
 	drawFlash = false;
 	// Default to Bright RGB.
 	psRed = psGreen = psBlue = 0xffffffff;
@@ -929,9 +929,9 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		int32_t i;
 		for (i = 0; i < sensorTriangleShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			sensorTriangleShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -965,9 +965,9 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			// Load the texture and store its handle.
 			for (i = 0; i < sensorSquareShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				sensorSquareShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -1003,9 +1003,9 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			// Load the texture and store its handle.
 			for (i = 0; i < sensorSquareShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				sensorSquareShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -1144,9 +1144,9 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		// Load the texture and store its handle.
 		for (size_t i = 0; i < mechShadowShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			mechShadowShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -1351,15 +1351,15 @@ Mech3DAppearance::LoadPaintSchemata(void)
 	memset(paintSchemata, 0xff, numPaintSchemata * sizeof(PaintSchemata));
 	for (size_t i = 0; i < numPaintSchemata; i++)
 	{
-		char blockId[512];
+		wchar_t blockId[512];
 		sprintf(blockId, "Scheme%d", i);
 		result = paintFile.seekBlock(blockId);
 		gosASSERT(result == NO_ERROR);
-		result = paintFile.readIdULong("RedColor", paintSchemata[i].redColor);
+		result = paintFile.readIdULong("Redcolour", paintSchemata[i].redcolour);
 		gosASSERT(result == NO_ERROR);
-		result = paintFile.readIdULong("GreenColor", paintSchemata[i].greenColor);
+		result = paintFile.readIdULong("Greencolour", paintSchemata[i].greencolour);
 		gosASSERT(result == NO_ERROR);
-		result = paintFile.readIdULong("BlueColor", paintSchemata[i].blueColor);
+		result = paintFile.readIdULong("Bluecolour", paintSchemata[i].bluecolour);
 		gosASSERT(result == NO_ERROR);
 	}
 	paintFile.close();
@@ -1381,69 +1381,69 @@ Mech3DAppearance::setPaintScheme(void)
 		gos_LockTexture(gosHandle, 0, 0, &textureData);
 		//-------------------------------------------------------
 		uint32_t* textureMemory = textureData.pTexture;
-		for (size_t i = 0; i < textureData.Height; i++)
+		for (size_t i = 0; i < textureData.height; i++)
 		{
-			for (size_t j = 0; j < textureData.Height; j++)
+			for (size_t j = 0; j < textureData.height; j++)
 			{
 				//---------------------------------------------
-				// Make Color from PaintScheme.
-				uint32_t baseColor = *textureMemory;
-				float baseColorRed = float((baseColor & 0x00ff0000) >> 16);
-				float baseColorGreen = float((baseColor & 0x0000ff00) >> 8);
-				float baseColorBlue = float(baseColor & 0x000000ff);
-				uint32_t newColor = *textureMemory; // Black by default.
-				if ((!baseColorGreen) && (!baseColorBlue))
+				// Make colour from PaintScheme.
+				uint32_t basecolour = *textureMemory;
+				float basecolourRed = float((basecolour & 0x00ff0000) >> 16);
+				float basecolourGreen = float((basecolour & 0x0000ff00) >> 8);
+				float basecolourBlue = float(basecolour & 0x000000ff);
+				uint32_t newcolour = *textureMemory; // Black by default.
+				if ((!basecolourGreen) && (!basecolourBlue))
 				{
-					baseColorRed *= 0.00390625f; // Divide by 256;
-					baseColorRed = 1.0 - baseColorRed;
-					baseColorRed *= baseColorRed; // Log colors
-					baseColorRed = 1.0 - baseColorRed;
-					float newColorRed = float((psRed & 0x00ff0000) >> 16);
-					newColorRed *= baseColorRed;
-					uint8_t red = (uint8_t)newColorRed;
-					float newColorGreen = float((psRed & 0x0000ff00) >> 8);
-					newColorGreen *= baseColorRed;
-					uint8_t green = (uint8_t)newColorGreen;
-					float newColorBlue = float(psRed & 0x000000ff);
-					newColorBlue *= baseColorRed;
-					uint8_t blue = (uint8_t)newColorBlue;
-					newColor = (0xff << 24) + (red << 16) + (green << 8) + (blue);
+					basecolourRed *= 0.00390625f; // Divide by 256;
+					basecolourRed = 1.0 - basecolourRed;
+					basecolourRed *= basecolourRed; // Log colors
+					basecolourRed = 1.0 - basecolourRed;
+					float newcolourRed = float((psRed & 0x00ff0000) >> 16);
+					newcolourRed *= basecolourRed;
+					uint8_t red = (uint8_t)newcolourRed;
+					float newcolourGreen = float((psRed & 0x0000ff00) >> 8);
+					newcolourGreen *= basecolourRed;
+					uint8_t green = (uint8_t)newcolourGreen;
+					float newcolourBlue = float(psRed & 0x000000ff);
+					newcolourBlue *= basecolourRed;
+					uint8_t blue = (uint8_t)newcolourBlue;
+					newcolour = (0xff << 24) + (red << 16) + (green << 8) + (blue);
 				}
-				else if ((!baseColorRed) && (!baseColorBlue))
+				else if ((!basecolourRed) && (!basecolourBlue))
 				{
-					baseColorGreen *= 0.00390625f; // Divide by 256;
-					baseColorGreen = 1.0 - baseColorGreen;
-					baseColorGreen *= baseColorGreen; // Log colors
-					baseColorGreen = 1.0 - baseColorGreen;
-					float newColorRed = float((psGreen & 0x00ff0000) >> 16);
-					newColorRed *= baseColorGreen;
-					uint8_t red = (uint8_t)newColorRed;
-					float newColorGreen = float((psGreen & 0x0000ff00) >> 8);
-					newColorGreen *= baseColorGreen;
-					uint8_t green = (uint8_t)newColorGreen;
-					float newColorBlue = float(psGreen & 0x000000ff);
-					newColorBlue *= baseColorGreen;
-					uint8_t blue = (uint8_t)newColorBlue;
-					newColor = (0xff << 24) + (red << 16) + (green << 8) + (blue);
+					basecolourGreen *= 0.00390625f; // Divide by 256;
+					basecolourGreen = 1.0 - basecolourGreen;
+					basecolourGreen *= basecolourGreen; // Log colors
+					basecolourGreen = 1.0 - basecolourGreen;
+					float newcolourRed = float((psGreen & 0x00ff0000) >> 16);
+					newcolourRed *= basecolourGreen;
+					uint8_t red = (uint8_t)newcolourRed;
+					float newcolourGreen = float((psGreen & 0x0000ff00) >> 8);
+					newcolourGreen *= basecolourGreen;
+					uint8_t green = (uint8_t)newcolourGreen;
+					float newcolourBlue = float(psGreen & 0x000000ff);
+					newcolourBlue *= basecolourGreen;
+					uint8_t blue = (uint8_t)newcolourBlue;
+					newcolour = (0xff << 24) + (red << 16) + (green << 8) + (blue);
 				}
-				else if ((!baseColorRed) && (!baseColorGreen))
+				else if ((!basecolourRed) && (!basecolourGreen))
 				{
-					baseColorBlue *= 0.00390625f; // Divide by 256;
-					baseColorBlue = 1.0 - baseColorBlue;
-					baseColorBlue *= baseColorBlue; // Log colors
-					baseColorBlue = 1.0 - baseColorBlue;
-					float newColorRed = float((psBlue & 0x00ff0000) >> 16);
-					newColorRed *= baseColorBlue;
-					uint8_t red = (uint8_t)newColorRed;
-					float newColorGreen = float((psBlue & 0x0000ff00) >> 8);
-					newColorGreen *= baseColorBlue;
-					uint8_t green = (uint8_t)newColorGreen;
-					float newColorBlue = float(psBlue & 0x000000ff);
-					newColorBlue *= baseColorBlue;
-					uint8_t blue = (uint8_t)newColorBlue;
-					newColor = (0xff << 24) + (red << 16) + (green << 8) + (blue);
+					basecolourBlue *= 0.00390625f; // Divide by 256;
+					basecolourBlue = 1.0 - basecolourBlue;
+					basecolourBlue *= basecolourBlue; // Log colors
+					basecolourBlue = 1.0 - basecolourBlue;
+					float newcolourRed = float((psBlue & 0x00ff0000) >> 16);
+					newcolourRed *= basecolourBlue;
+					uint8_t red = (uint8_t)newcolourRed;
+					float newcolourGreen = float((psBlue & 0x0000ff00) >> 8);
+					newcolourGreen *= basecolourBlue;
+					uint8_t green = (uint8_t)newcolourGreen;
+					float newcolourBlue = float(psBlue & 0x000000ff);
+					newcolourBlue *= basecolourBlue;
+					uint8_t blue = (uint8_t)newcolourBlue;
+					newcolour = (0xff << 24) + (red << 16) + (green << 8) + (blue);
 				}
-				*textureMemory = newColor;
+				*textureMemory = newcolour;
 				textureMemory++;
 			}
 		}
@@ -1505,9 +1505,9 @@ Mech3DAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 	mcTextureManager->removeTexture(gosHandle);
 	//-------------------------------------------------
 	// Load the texture and store its handle.
-	char txmName[1024];
+	wchar_t txmName[1024];
 	mechShape->GetTextureName(0, txmName, 256);
-	char texturePath[1024];
+	wchar_t texturePath[1024];
 	sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 	FullPathFileName textureName;
 	textureName.init(texturePath, txmName, "");
@@ -1848,7 +1848,7 @@ Mech3DAppearance::recalcBounds(void)
 				inView = wasInView;
 				if (inView || (currentGestureId == 20))
 					baseRootNodeDifference =
-						(getNodeIdPosition(rootNodeIndex).z - position.z) - baseRootNodeHeight;
+						(getNodeIdPosition(rootNodeIndex).z - position.z) - baseRootNodeheight;
 				if (inView && isHelicopter)
 					baseRootNodeDifference -= HELICOPTER_FACTOR;
 				inView = true;
@@ -2020,12 +2020,12 @@ Mech3DAppearance::render(int32_t depthFixup)
 			}
 			else
 			{
-				mechShape->SetARGBHighLight(highlightColor);
+				mechShape->SetARGBHighLight(highlightcolour);
 			}
 			Camera::HazeFactor = hazeFactor;
 			if (drawFlash)
 			{
-				mechShape->SetARGBHighLight(flashColor);
+				mechShape->SetARGBHighLight(flashcolour);
 			}
 			//---------------------------------------------
 			// Call Multi-shape render stuff here.
@@ -2047,7 +2047,7 @@ Mech3DAppearance::render(int32_t depthFixup)
 				}
 				else
 				{
-					char tmpString[255];
+					wchar_t tmpString[255];
 					cLoadString(objectNameId, tmpString, 254);
 					drawTextHelp(tmpString, color);
 				}
@@ -2057,7 +2057,7 @@ Mech3DAppearance::render(int32_t depthFixup)
 				}
 				else if (pilotNameID != -1) // only draw your own
 				{
-					char tmpPilotName[255];
+					wchar_t tmpPilotName[255];
 					cLoadString(pilotNameID, tmpPilotName, 254);
 					drawPilotName(tmpPilotName, color);
 				}
@@ -2465,9 +2465,9 @@ Mech3DAppearance::setObjStatus(int32_t oStatus)
 			// Load the texture and store its handle.
 			for (size_t i = 0; i < mechShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				mechShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -2583,7 +2583,7 @@ Mech3DAppearance::updateGeometry(void)
 		lightg = eye->getLightGreen(lightIntensity);
 		lightb = eye->getLightBlue(lightIntensity);
 		uint32_t lightRGB = (lightr << 16) + (lightg << 8) + lightb;
-		eye->setLightColor(0, lightRGB);
+		eye->setLightcolour(0, lightRGB);
 		eye->setLightIntensity(0, 1.0);
 		uint32_t fogRGB = 0xff << 24;
 		float fogStart = eye->fogStart;
@@ -2830,7 +2830,7 @@ Mech3DAppearance::updateGeometry(void)
 	if (sensorSpin < -180)
 		sensorSpin += 360;
 	totalRotation = Stuff::EulerAngles(0.0f, sensorSpin * DEGREES_TO_RADS, 0.0f);
-	float baseRootNodeDifference = baseRootNodeHeight;
+	float baseRootNodeDifference = baseRootNodeheight;
 	if (isHelicopter)
 		baseRootNodeDifference -= HELICOPTER_FACTOR;
 	xlatPosition.y += baseRootNodeDifference;
@@ -3526,7 +3526,7 @@ Mech3DAppearance::update(bool animate)
 #ifdef _DEBUG
 	if (logFile && (inDebugMoveMode))
 	{
-		char msg[1024];
+		wchar_t msg[1024];
 		sprintf(msg, "Gesture: %d, Frame: %f, SGoal: %d, OGoal: %d, Rot: %f", currentGestureId,
 			currentFrame, currentStateGoal, oldStateGoal, rotation);
 		logFile->writeLine(msg);
@@ -3535,14 +3535,14 @@ Mech3DAppearance::update(bool animate)
 	if ((turn < 3) || inView || (currentGestureId == GestureJump)) // Gotta get the weapon nodes working!!
 		updateGeometry();
 	//----------------------------------------------------------------------
-	// If currentGestureId is 2 and baseRootNodeHeight is not set, set it!!
-	if (baseRootNodeHeight == -99999.9f)
+	// If currentGestureId is 2 and baseRootNodeheight is not set, set it!!
+	if (baseRootNodeheight == -99999.9f)
 	{
 		if (rootNodeIndex == -1)
 			rootNodeIndex = mechShape->GetNodeNameId("joint_root");
 		bool oldInView = inView;
 		inView = true;
-		baseRootNodeHeight = (getNodeIdPosition(rootNodeIndex).z - position.z);
+		baseRootNodeheight = (getNodeIdPosition(rootNodeIndex).z - position.z);
 		inView = oldInView;
 	}
 	//------------------------------------------------
@@ -4211,7 +4211,7 @@ Mech3DAppearance::copyTo(MechAppearanceData* data)
 	data->isDusting = isDusting;
 	data->fallDust = fallDust;
 	data->isHelicopter = isHelicopter;
-	data->baseRootNodeHeight = baseRootNodeHeight;
+	data->baseRootNodeheight = baseRootNodeheight;
 	data->jumpDestination = jumpDestination;
 	data->jumpVelocity = jumpVelocity;
 }
@@ -4281,7 +4281,7 @@ Mech3DAppearance::copyFrom(MechAppearanceData* data)
 		jumpJetEffect->Start(&info);
 	}
 	isHelicopter = data->isHelicopter;
-	baseRootNodeHeight = data->baseRootNodeHeight;
+	baseRootNodeheight = data->baseRootNodeheight;
 	jumpDestination = data->jumpDestination;
 	jumpVelocity = data->jumpVelocity;
 }
@@ -4291,7 +4291,7 @@ Mech3DAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;
-	flashColor = color;
+	flashcolour = color;
 	drawFlash = true;
 	currentFlash = flashDuration;
 }

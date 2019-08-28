@@ -7,8 +7,8 @@
 #ifndef MLR_GOSIMAGEPOOL_HPP
 #define MLR_GOSIMAGEPOOL_HPP
 
-// #include <stuff/mstring.hpp>
-#include <stuff/hash.hpp>
+// #include "stuff/mstring.h"
+#include "stuff/hash.h"
 
 namespace MidLevelRenderer
 {
@@ -31,8 +31,8 @@ public:
 	// Image handling
 	//
 public:
-	GOSImage* GetImage(PCSTR imageName);
-	GOSImage* GetImage(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
+	GOSImage* GetImage(const std::wstring_view& imageName);
+	GOSImage* GetImage(const std::wstring_view& imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
 		/*gos_TextureHints*/ uint32_t hints);
 
 	virtual bool LoadImage(GOSImage* image, int32_t = 0) = 0;
@@ -61,7 +61,7 @@ class TGAFilePool : public GOSImagePool
 	// Constructors/Destructors
 	//
 public:
-	TGAFilePool(PCSTR path);
+	TGAFilePool(const std::wstring_view& path);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Image handling

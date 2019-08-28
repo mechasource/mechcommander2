@@ -62,7 +62,7 @@ private:
 	LogisticsComponent* pComponent;
 
 	static void assignAnimation(FitIniFile& file, int32_t whichChild,
-		char animNames[COMP_ANIMATION_COUNT][32], aObject* pObject);
+		wchar_t animNames[COMP_ANIMATION_COUNT][32], aObject* pObject);
 
 	void doAdd(void);
 	void setComponent(void);

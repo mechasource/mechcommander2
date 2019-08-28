@@ -20,7 +20,7 @@ extern bool NewPerformanceRegister;
 typedef struct _Stat
 {
 	_Stat* pNext; // Pointer to Next
-	uint32_t Flags; // flags
+	uint32_t flags; // flags
 	PSTR TypeName; // Pointer to type name
 	gosType Type; // Type of variable
 	uint32_t Count; // Count for average
@@ -41,15 +41,15 @@ typedef struct _Stat
 
 } Stat;
 
-cint32_t StatsInBlock = 32; // Number of stats in a single block
+const int32_t StatsInBlock = 32; // Number of stats in a single block
 
 __inline float __stdcall GetHistory(Stat* pStat, int32_t GraphHead)
 {
 	return pStat->History[GraphHead * StatsInBlock];
 }
-__inline void __stdcall SetHistory(Stat* pStat, int32_t GraphHead, float Value)
+__inline void __stdcall SetHistory(Stat* pStat, int32_t GraphHead, float value)
 {
-	pStat->History[GraphHead * StatsInBlock] = Value;
+	pStat->History[GraphHead * StatsInBlock] = value;
 }
 
 extern Stat* pStatistics; // Pointer to chain of statistics

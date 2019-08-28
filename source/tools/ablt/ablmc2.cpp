@@ -2255,7 +2255,7 @@ execObjectStatus(void)
 	{
 		//-------------------------------------------------------
 		// We have a group. Act accordingly.
-		// No Group Check of actual status, return -1.
+		// No group Check of actual status, return -1.
 		// If any unit member is still alive, then the unit is...
 		bool disabled = true;
 		int32_t numObjects = getMovers(objectId, moverList);
@@ -2304,7 +2304,7 @@ execObjectStatusCount(void)
 	{
 		//--------------------------------------------
 		// We have a group. Act accordingly.
-		// No Group Check of actual status, return -1.
+		// No group Check of actual status, return -1.
 		if ((objectId >= PlayerLance0) && (objectId < PlayerLance0 + MAX_MOVERGROUPS))
 			// Fatal(0, " ABL.objectStatusCount: bad id ");
 			Commander::commanders[0]->getGroup(objectId - PlayerLance0)->statusCount(tallyList);
@@ -3874,7 +3874,7 @@ execSetBuildingName(void)
 	if (obj)
 	{
 #ifdef USE_RESOURCE_STRINGS
-		char tmpString[255];
+		wchar_t tmpString[255];
 		cLoadString(thisInstance, newName + languageOffset, tmpString, 254);
 		obj->setName(tmpString);
 #endif
@@ -5659,11 +5659,11 @@ execMCPrint(void)
 {
 	ABLStackItem value;
 	ABLi_popAnything(&value);
-	char s[256];
+	wchar_t s[256];
 	switch (value.type)
 	{
 	case ABL_STACKITEM_CHAR:
-		sprintf(s, "char=%c", value.data.character);
+		sprintf(s, "wchar_t=%c", value.data.character);
 		DEBUGWINS_print(s, 0);
 		break;
 	case ABL_STACKITEM_INTEGER:
@@ -5683,7 +5683,7 @@ execMCPrint(void)
 		DEBUGWINS_print(s, 0);
 		break;
 	case ABL_STACKITEM_INTEGER_PTR:
-		sprintf(s, "pint32_t=%d,%d,%d", value.data.integerPtr[0], value.data.integerPtr[1],
+		sprintf(s, "int32_t*=%d,%d,%d", value.data.integerPtr[0], value.data.integerPtr[1],
 			value.data.integerPtr[2]);
 		DEBUGWINS_print(s, 0);
 		break;
@@ -5845,8 +5845,8 @@ void
 execGetMapInfo(void)
 {
 	int32_t* mapInfo = ABLi_popIntegerPtr();
-	mapInfo[0] = GameMap->getHeight();
-	mapInfo[1] = GameMap->getWidth();
+	mapInfo[0] = GameMap->getheight();
+	mapInfo[1] = GameMap->getwidth();
 }
 //*****************************************************************************
 PVOID
@@ -5917,7 +5917,7 @@ ablFileCreateCB(PVOID* file, const std::wstring_view& filename)
 		Fatal(0, " unable to create ABL file");
 	if (((std::unique_ptr<File>)*file)->create(filename) != NO_ERROR)
 	{
-		char s[256];
+		wchar_t s[256];
 		sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", filename);
 		Fatal(0, s);
 	}
@@ -5952,7 +5952,7 @@ ablFileEofCB(PVOID file)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileReadCB(PVOID file, puint8_t buffer, int32_t length)
+ablFileReadCB(PVOID file, uint8_t* buffer, int32_t length)
 {
 	return (((std::unique_ptr<File>)file)->read(buffer, length));
 }
@@ -5964,19 +5964,19 @@ ablFileReadLongCB(PVOID file)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileReadStringCB(PVOID file, puint8_t buffer)
+ablFileReadStringCB(PVOID file, uint8_t* buffer)
 {
 	return (((std::unique_ptr<File>)file)->readString(buffer));
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileReadLineExCB(PVOID file, puint8_t buffer, int32_t maxLength)
+ablFileReadLineExCB(PVOID file, uint8_t* buffer, int32_t maxLength)
 {
 	return (((std::unique_ptr<File>)file)->readLineEx(buffer, maxLength));
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileWriteCB(PVOID file, puint8_t buffer, int32_t length)
+ablFileWriteCB(PVOID file, uint8_t* buffer, int32_t length)
 {
 	return (((std::unique_ptr<File>)file)->write(buffer, length));
 }
@@ -6003,7 +6003,7 @@ void
 ablDebuggerPrintCallback(const std::wstring_view& s)
 {
 	// ABLDebuggerOut->print(s);
-	char msg[1024];
+	wchar_t msg[1024];
 	sprintf(msg, "%s\n", s);
 	SPEW((0, msg));
 }
@@ -6030,7 +6030,7 @@ extern GameObjectPtr LastCoreAttackTarget;
 void
 ablEndlessStateCallback(UserFile* log)
 {
-	char s[256];
+	wchar_t s[256];
 	sprintf(s, "Mover = %s (%d)", CurWarrior->getVehicle()->getName(),
 		CurWarrior->getVehicle()->getPartId());
 	log->write(s);
@@ -6336,28 +6336,28 @@ closeABL(void)
 PVOID
 ablSystemMallocCallback(uint32_t memSize)
 {
-	const std::wstring_view& mem = new char[memSize];
+	const std::wstring_view& mem = new wchar_t[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablStackMallocCallback(uint32_t memSize)
 {
-	const std::wstring_view& mem = new char[memSize];
+	const std::wstring_view& mem = new wchar_t[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablCodeMallocCallback(uint32_t memSize)
 {
-	const std::wstring_view& mem = new char[memSize];
+	const std::wstring_view& mem = new wchar_t[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablSymbolMallocCallback(uint32_t memSize)
 {
-	const std::wstring_view& mem = new char[memSize];
+	const std::wstring_view& mem = new wchar_t[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
@@ -6392,7 +6392,7 @@ ablFileCreateCB(PVOID* /* file */, const std::wstring_view& /* filename */)
 	if (*file == nullptr)
 	Fatal(0, " unable to create ABL file");
 	if (((std::unique_ptr<File>)*file)->create(filename) != NO_ERROR) {
-	char s[256];
+	wchar_t s[256];
 	sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", filename);
 	Fatal(0, s);
 	}
@@ -6405,11 +6405,11 @@ ablFileOpenCB(PVOID* file, const std::wstring_view& filename)
 {
 	// Filenames MUST be all lowercase or Hash won't find 'em!
 	for (size_t i = 0; i < strlen(filename); i++)
-		filename[i] = (char)tolower(filename[i]);
+		filename[i] = (wchar_t)tolower(filename[i]);
 	*file = fopen(filename, "r");
 	if (*file == nullptr)
 	{
-		char errStr[256];
+		wchar_t errStr[256];
 		sprintf(errStr, "Cannot open \"%s\"", filename);
 		printf(errStr);
 		scanf("\nPress any key to exit\n");
@@ -6433,7 +6433,7 @@ ablFileEofCB(PVOID file)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileReadCB(PVOID file, puint8_t buffer, int32_t length)
+ablFileReadCB(PVOID file, uint8_t* buffer, int32_t length)
 {
 	return (fread(buffer, 1, length, (FILE*)file));
 }
@@ -6447,7 +6447,7 @@ ablFileReadLongCB(PVOID file)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileReadStringCB(PVOID file, puint8_t buffer)
+ablFileReadStringCB(PVOID file, uint8_t* buffer)
 {
 	buffer[0] = nullptr;
 	const std::wstring_view& s = fgets((const std::wstring_view&)buffer, 9999, (FILE*)file);
@@ -6457,7 +6457,7 @@ ablFileReadStringCB(PVOID file, puint8_t buffer)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileReadLineExCB(PVOID file, puint8_t buffer, int32_t maxLength)
+ablFileReadLineExCB(PVOID file, uint8_t* buffer, int32_t maxLength)
 {
 	buffer[0] = nullptr;
 	const std::wstring_view& s = fgets((const std::wstring_view&)buffer, maxLength, (FILE*)file);
@@ -6466,7 +6466,7 @@ ablFileReadLineExCB(PVOID file, puint8_t buffer, int32_t maxLength)
 	return (strlen(s));
 }
 //-----------------------------------------------------------------------------
-int32_t ablFileWriteCB(PVOID /* file */, puint8_t /* buffer */, int32_t /* length */)
+int32_t ablFileWriteCB(PVOID /* file */, uint8_t* /* buffer */, int32_t /* length */)
 {
 	// return(((std::unique_ptr<File>)file)->write(buffer, length));
 	return (0);
@@ -6493,7 +6493,7 @@ int32_t ablFileWriteStringCB(PVOID /* file */, const std::wstring_view& /* buffe
 void ablDebuggerPrintCallback(const std::wstring_view& /* s */)
 {
 	// ABLDebuggerOut->print(s);
-	// char msg[1024];
+	// wchar_t msg[1024];
 	// sprintf(msg, "%s\n", s);
 	// SPEW((0,msg));
 }

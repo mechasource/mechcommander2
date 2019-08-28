@@ -13,39 +13,16 @@
 //===========================================================================//
 #include "stdinc.h"
 
-#ifndef TXMMGR_H
 #include "txmmgr.h"
-#endif
-
-#ifndef TGAINFO_H
 #include "tgainfo.h"
-#endif
-
-#ifndef FILE_H
 #include "file.h"
-#endif
-
-#ifndef TIMING_H
 #include "timing.h"
-#endif
-
-#ifndef CAMERA_H
 #include "camera.h"
-#endif
-
-#ifndef LZ_H
 #include "lz.h"
-#endif
-
-#ifndef CIDENT_H
 #include "cident.h"
-#endif
-
-#ifndef PATHS_H
 #include "paths.h"
-#endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/mlr.h"
 #include "gosfx/gosfxheaders.h"
 
@@ -53,8 +30,8 @@
 // static globals
 MC_TextureManager* mcTextureManager = nullptr;
 gos_VERTEXManager* MC_TextureManager::gvManager = nullptr;
-puint8_t MC_TextureManager::lzBuffer1 = nullptr;
-puint8_t MC_TextureManager::lzBuffer2 = nullptr;
+uint8_t* MC_TextureManager::lzBuffer1 = nullptr;
+uint8_t* MC_TextureManager::lzBuffer2 = nullptr;
 int32_t MC_TextureManager::iBufferRefCount = 0;
 
 bool MLRVertexLimitReached = false;
@@ -129,7 +106,7 @@ MC_TextureManager::start(void)
 		StatisticFormat("");
 		textureManagerInstrumented = true;
 	}
-	indexArray = (puint16_t)systemHeap->Malloc(sizeof(uint16_t) * MC_MAXFACES);
+	indexArray = (uint16_t*)systemHeap->Malloc(sizeof(uint16_t) * MC_MAXFACES);
 	for (i = 0; i < MC_MAXFACES; i++)
 		indexArray[i] = i;
 	// Add an Empty Texture node for all untextured triangles to go down into.
@@ -157,7 +134,7 @@ MC_TextureManager::destroy(void)
 		// Traverses list of texture nodes and frees each one.
 		int32_t usedCount = 0;
 		for (size_t i = 0; i < MC_MAXTEXTURES; i++)
-			masterTextureNodes[i].destroy(); // Destroy for nodes whacks GOS Handle
+			masterTextureNodes[i].destroy(); // Destroy for nodes whacks GOS handle
 		currentUsedTextures = usedCount; // Can this have been the damned bug all along!?
 	}
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
@@ -227,7 +204,7 @@ MC_TextureManager::flush(bool justTextures)
 		for (size_t i = 0; i < MC_MAXTEXTURES; i++)
 		{
 			if (!masterTextureNodes[i].neverFLUSH)
-				masterTextureNodes[i].destroy(); // Destroy for nodes whacks GOS Handle
+				masterTextureNodes[i].destroy(); // Destroy for nodes whacks GOS handle
 		}
 		currentUsedTextures = usedCount; // Can this have been the damned bug all along!?
 	}
@@ -281,7 +258,7 @@ MC_TextureManager::flush(bool justTextures)
 	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
 	int32_t effectsSize = effectFile.fileSize();
-	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
+	uint8_t* effectsData = (uint8_t*)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
 	effectStream = new std::iostream(effectsData, effectsSize);
@@ -460,12 +437,12 @@ MC_TextureManager::renderLists(void)
 		gos_SetRenderState(gos_State_ZCompare, 1);
 		gos_SetRenderState(gos_State_ZWrite, 1);
 	}
-	uint32_t fogColor = eye->fogColor;
+	uint32_t fogcolour = eye->fogcolour;
 	//-----------------------------------------------------
 	// FOG time.  Set Render state to FOG on!
 	if (useFog)
 	{
-		gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+		gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 	}
 	else
 	{
@@ -1034,13 +1011,13 @@ MC_TextureManager::textureFromMemory(
 	int32_t txmSize = width * width * bitDepth;
 	if (!lzBuffer1)
 	{
-		lzBuffer1 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
+		lzBuffer1 = (uint8_t*)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
 		gosASSERT(lzBuffer1 != nullptr);
-		lzBuffer2 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
+		lzBuffer2 = (uint8_t*)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
 		gosASSERT(lzBuffer2 != nullptr);
 	}
 	actualTextureSize += txmSize;
-	uint32_t txmCompressSize = LZCompress(lzBuffer2, (puint8_t)data, txmSize);
+	uint32_t txmCompressSize = LZCompress(lzBuffer2, (uint8_t*)data, txmSize);
 	compressedTextureSize += txmCompressSize;
 	//-------------------------------------------------------
 	// Create a block of cache memory to hold this texture.
@@ -1080,7 +1057,7 @@ MC_TextureManager::textureInstanceExists(const std::wstring_view& textureFullPat
 				else
 				{
 					//------------------------------------------------
-					// Copy the texture from old Handle to a new one.
+					// Copy the texture from old handle to a new one.
 					// Return the NEW handle.
 					//
 					// There should be no code here!!!
@@ -1111,7 +1088,7 @@ MC_TextureManager::loadTexture(const std::wstring_view& textureFullPathName, gos
 			else
 			{
 				//------------------------------------------------
-				// Copy the texture from old Handle to a new one.
+				// Copy the texture from old handle to a new one.
 				// Return the NEW handle.
 				//
 				// There should be no code here!!!
@@ -1163,9 +1140,9 @@ MC_TextureManager::loadTexture(const std::wstring_view& textureFullPathName, gos
 	int32_t txmSize = textureFile.fileSize();
 	if (!lzBuffer1)
 	{
-		lzBuffer1 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
+		lzBuffer1 = (uint8_t*)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
 		gosASSERT(lzBuffer1 != nullptr);
-		lzBuffer2 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
+		lzBuffer2 = (uint8_t*)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
 		gosASSERT(lzBuffer2 != nullptr);
 	}
 	// Try reading the RAW data out of the fastFile.
@@ -1221,11 +1198,11 @@ MC_TextureManager::saveTexture(uint32_t textureIndex, const std::wstring_view& t
 			//------------------------------------------
 			// Badboys are now LZ Compressed in texture cache.
 			size_t origSize = LZDecomp(MC_TextureManager::lzBuffer2,
-				(puint8_t)masterTextureNodes[textureIndex].textureData,
+				(uint8_t*)masterTextureNodes[textureIndex].textureData,
 				masterTextureNodes[textureIndex].lzCompSize);
 			if (origSize != (masterTextureNodes[textureIndex].width & 0x0fffffff))
 				STOP(("Decompressed to different size from original!  Txm:%s  "
-					  "Width:%d  DecompSize:%d",
+					  "width:%d  DecompSize:%d",
 					masterTextureNodes[textureIndex].nodeName,
 					(masterTextureNodes[textureIndex].width & 0x0fffffff), origSize));
 			if (origSize >= MAX_LZ_BUFFER_SIZE)
@@ -1287,10 +1264,10 @@ MC_TextureNode::get_gosTextureHandle(void) // If texture is not in
 			// Badboys are now LZ Compressed in texture cache.
 			// Uncompress, then memcpy.
 			size_t origSize =
-				LZDecomp(MC_TextureManager::lzBuffer2, (puint8_t)textureData, lzCompSize);
+				LZDecomp(MC_TextureManager::lzBuffer2, (uint8_t*)textureData, lzCompSize);
 			if (origSize != (width & 0x0fffffff))
 				STOP(("Decompressed to different size from original!  Txm:%s  "
-					  "Width:%d  DecompSize:%d",
+					  "width:%d  DecompSize:%d",
 					nodeName, (width & 0x0fffffff), origSize));
 			if (origSize >= MAX_LZ_BUFFER_SIZE)
 				STOP(("Texture TOO large: %s", nodeName));
@@ -1310,9 +1287,9 @@ MC_TextureNode::get_gosTextureHandle(void) // If texture is not in
 			gos_LockTexture(gosTextureHandle, 0, 0, &pTextureData);
 			//-------------------------------------------------------
 			// Create a block of cache memory to hold this texture.
-			uint32_t txmSize = pTextureData.Height * pTextureData.Height * sizeof(uint32_t);
+			uint32_t txmSize = pTextureData.height * pTextureData.height * sizeof(uint32_t);
 			gosASSERT(textureData);
-			LZDecomp(MC_TextureManager::lzBuffer2, (puint8_t)textureData, lzCompSize);
+			LZDecomp(MC_TextureManager::lzBuffer2, (uint8_t*)textureData, lzCompSize);
 			memcpy(pTextureData.pTexture, MC_TextureManager::lzBuffer2, txmSize);
 			//------------------------
 			// Unlock the texture

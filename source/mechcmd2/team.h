@@ -44,7 +44,7 @@ typedef struct _TeamStaticData
 {
 	int32_t numTeams;
 	int32_t homeTeamId;
-	char relations[MAX_TEAMS][MAX_TEAMS];
+	wchar_t relations[MAX_TEAMS][MAX_TEAMS];
 	bool noPain[MAX_TEAMS];
 } TeamStaticData;
 
@@ -69,7 +69,7 @@ public:
 	static TeamPtr home;
 	static TeamPtr teams[MAX_TEAMS];
 	static SortListPtr sortList;
-	static char relations[MAX_TEAMS][MAX_TEAMS];
+	static wchar_t relations[MAX_TEAMS][MAX_TEAMS];
 	static bool noPain[MAX_TEAMS];
 
 public:
@@ -143,7 +143,7 @@ public:
 
 	void markSeen(Stuff::Vector3D& location, float specialUnitExpand);
 
-	void setRelation(TeamPtr team, char relation)
+	void setRelation(TeamPtr team, wchar_t relation)
 	{
 		relations[id][team->getId()] = relation;
 		relations[team->getId()][id] = relation;

@@ -31,9 +31,9 @@ inline bool GOSCopyData(
 	const Stuff::Vector4D* coords,
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DWORD_COLOR
-	const puint32_t colors,
+	const uint32_t* colors,
 #else  //	I_SAY_YES_TO_DWORD_COLOR
-	const Stuff::RGBAColor* colors,
+	const Stuff::RGBAcolour* colors,
 #endif //	I_SAY_YES_TO_DWORD_COLOR
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TEXTURE
@@ -76,12 +76,12 @@ inline bool GOSCopyData(
 #ifdef I_SAY_YES_TO_DWORD_COLOR
 	gos_vertices[0].argb = colors[_index];
 #else  //	I_SAY_YES_TO_DWORD_COLOR
-	gos_vertices[0].argb = GOSCopyColor(&colors[_index]);
+	gos_vertices[0].argb = GOSCopycolour(&colors[_index]);
 #endif //	I_SAY_YES_TO_DWORD_COLOR
 #else  //	I_SAY_YES_TO_COLOR
 	gos_vertices[0].argb = 0xffffffff;
 #endif //	I_SAY_YES_TO_COLOR
-	*((puint8_t)&gos_vertices[0].frgb + 3) = 0xff;
+	*((uint8_t*)&gos_vertices[0].frgb + 3) = 0xff;
 #ifdef I_SAY_YES_TO_TEXTURE
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
 	gos_vertices[0].u1 = texCoords1[_index][0];
@@ -119,9 +119,9 @@ inline bool GOSCopyTriangleData(
 	const Stuff::Vector4D* coords,
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DWORD_COLOR
-	pcuint32_t colors,
+	const uint32_t* colors,
 #else
-	const Stuff::RGBAColor* colors,
+	const Stuff::RGBAcolour* colors,
 #endif
 #endif
 #ifdef I_SAY_YES_TO_TEXTURE
@@ -194,18 +194,18 @@ inline bool GOSCopyTriangleData(
 	gos_vertices[1].argb = colors[offset1];
 	gos_vertices[2].argb = colors[offset2];
 #else  //	I_SAY_YES_TO_DWORD_COLOR
-	gos_vertices[0].argb = GOSCopyColor(&colors[offset0]);
-	gos_vertices[1].argb = GOSCopyColor(&colors[offset1]);
-	gos_vertices[2].argb = GOSCopyColor(&colors[offset2]);
+	gos_vertices[0].argb = GOSCopycolour(&colors[offset0]);
+	gos_vertices[1].argb = GOSCopycolour(&colors[offset1]);
+	gos_vertices[2].argb = GOSCopycolour(&colors[offset2]);
 #endif //	I_SAY_YES_TO_DWORD_COLOR
 #else
 	gos_vertices[0].argb = 0xffffffff;
 	gos_vertices[1].argb = 0xffffffff;
 	gos_vertices[2].argb = 0xffffffff;
 #endif //	I_SAY_YES_TO_COLOR
-	*((puint8_t)&gos_vertices[0].frgb + 3) = 0xff;
-	*((puint8_t)&gos_vertices[1].frgb + 3) = 0xff;
-	*((puint8_t)&gos_vertices[2].frgb + 3) = 0xff;
+	*((uint8_t*)&gos_vertices[0].frgb + 3) = 0xff;
+	*((uint8_t*)&gos_vertices[1].frgb + 3) = 0xff;
+	*((uint8_t*)&gos_vertices[2].frgb + 3) = 0xff;
 #ifdef I_SAY_YES_TO_TEXTURE
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
 	gos_vertices[0].u1 = texCoords1[offset0][0];

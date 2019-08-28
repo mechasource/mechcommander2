@@ -21,11 +21,11 @@ class SinCosPair;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::Radian& angle);
+Spew(const std::wstring_view& group, const Stuff::Radian& angle);
 void
-Spew(PCSTR group, const Stuff::Degree& angle);
+Spew(const std::wstring_view& group, const Stuff::Degree& angle);
 void
-Spew(PCSTR group, const Stuff::SinCosPair& angle);
+Spew(const std::wstring_view& group, const Stuff::SinCosPair& angle);
 #endif
 
 namespace Stuff
@@ -190,11 +190,11 @@ public:
 	//
 	// Support functions
 	//
-	static float Normalize(float Value);
+	static float Normalize(float value);
 	Radian& Normalize(void);
 
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Radian& angle);
+	friend void ::Spew(const std::wstring_view& group, const Radian& angle);
 #endif
 	void TestInstance(void) const
 	{
@@ -245,7 +245,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Degree& angle);
+	friend void ::Spew(const std::wstring_view& group, const Degree& angle);
 #endif
 	void TestInstance(void) const
 	{
@@ -335,7 +335,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const SinCosPair& angle);
+	friend void ::Spew(const std::wstring_view& group, const SinCosPair& angle);
 #endif
 	void TestInstance(void) const
 	{
@@ -355,7 +355,7 @@ Radian::operator=(const SinCosPair& pair)
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, Stuff::Radian* output)
 {

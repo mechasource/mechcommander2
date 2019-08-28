@@ -45,7 +45,7 @@ public:
 
 	void setInMission(void) { bIsInMission = true; }
 
-	void setColors(
+	void setcolours(
 		int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc);
 
 	float bounds[4];

@@ -7,7 +7,7 @@
 #ifndef MLR_MLRINDEXEDPRIMITIVEBASE_HPP
 #define MLR_MLRINDEXEDPRIMITIVEBASE_HPP
 
-#include <mlr/mlrprimitivebase.hpp>
+#include "mlr/mlrprimitivebase.h"
 
 namespace MidLevelRenderer
 {
@@ -25,7 +25,7 @@ class MLRIndexedPrimitiveBase : public MLRPrimitiveBase
 	// Initialization
 	//
 public:
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 	static ClassData* DefaultData;
@@ -49,8 +49,8 @@ public:
 	virtual void Lighting(MLRLight* const*, uint32_t nrLights) = 0;
 
 	virtual void SetCoordData(const Stuff::Point3D* array, size_t point_count);
-	virtual void SetIndexData(puint16_t index_array, size_t index_count);
-	virtual void GetIndexData(puint16_t* index_array, psize_t index_count);
+	virtual void SetIndexData(uint16_t* index_array, size_t index_count);
+	virtual void GetIndexData(uint16_t** index_array, size_t* index_count);
 
 	virtual std::vector<uint16_t>& GetGOSIndices(uint16_t = 0)
 	{

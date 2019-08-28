@@ -30,7 +30,7 @@ public:
 		}
 	}
 
-	void init(puint8_t bitmapData, size_t dataSize);
+	void init(uint8_t* bitmapData, size_t dataSize);
 	void update(void); // do not call these two functions from editor
 	void render(void);
 
@@ -41,7 +41,7 @@ public:
 
 	bool inRegion(int32_t x, int32_t y) { return x > left && x < right && y > top && y < bottom; }
 
-	void initBuildings(puint8_t data, int32_t size);
+	void initBuildings(uint8_t* data, int32_t size);
 	void setPos(const RECT& newPos);
 
 protected:
@@ -49,8 +49,8 @@ protected:
 	int32_t left;
 	int32_t right;
 	int32_t bottom;
-	int32_t bmpWidth;
-	int32_t bmpHeight;
+	int32_t bmpwidth;
+	int32_t bmpheight;
 	int32_t buildingCount;
 	gos_VERTEX* buildingPoints;
 

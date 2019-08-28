@@ -36,7 +36,7 @@ public:
 	int32_t GetChildrenPositions(Stuff::Vector3D*, int32_t MaxNumberOfPoints) const;
 	bool AddChild(const EditorObject* pObject);
 	void SetParentAlignment(int32_t alignment);
-	void FixHeights(void);
+	void Fixheights(void);
 
 	static bool TypeCanBeParent(const EditorObject*); // type gotten from building mgr
 	static bool CanLink(const EditorObject* pParent, const EditorObject* pChild);

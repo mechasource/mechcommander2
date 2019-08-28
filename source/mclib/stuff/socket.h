@@ -10,8 +10,8 @@
 #ifndef _SOCKET_HPP_
 #define _SOCKET_HPP_
 
-#include <stuff/style.hpp>
-#include <stuff/plug.hpp>
+#include "stuff/style.h"
+#include "stuff/plug.h"
 
 namespace Stuff
 {

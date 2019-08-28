@@ -198,7 +198,7 @@ void
 MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 {
 	UnitVector3D light_z;
-	RGBColor light_color(color);
+	RGBcolour light_color(color);
 	Point3D vertex_to_light;
 	_ASSERT(GetFalloffDistance(vertex_to_light.x, vertex_to_light.y));
 	GetInShapePosition(vertex_to_light);

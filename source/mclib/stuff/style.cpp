@@ -6,15 +6,15 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
-#include "gameos.hpp"
+//#include "stuff/stuffheaders.h"
+//#include "gameos.hpp"
 #include "stuff/style.h"
 
 //
 //#############################################################################
 //#############################################################################
 //
-static char Error_Message_Buffer[400];
+static wchar_t Error_Message_Buffer[400];
 
 int32_t Stuff::ArmorLevel = 4;
 

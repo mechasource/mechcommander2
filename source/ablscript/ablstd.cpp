@@ -19,7 +19,7 @@ namespace mclib::abl {
 //***************************************************************************
 
 extern TokenCodeType curToken;
-extern char wordString[];
+extern wchar_t wordString[];
 extern TokenCodeType followParmList[];
 extern TokenCodeType statementEndList[];
 extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
@@ -85,9 +85,9 @@ stdConcat(void)
 {
 	// PRINT function:
 	//
-	//		PARAMS:	char array
+	//		PARAMS:	wchar_t array
 	//
-	//				integer, real or char array
+	//				integer, real or wchar_t array
 	//
 	//		RETURN: integer (resulting length, not including nullptr)
 	if (curToken == TKN_LPAREN)

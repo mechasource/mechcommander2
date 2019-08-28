@@ -280,7 +280,7 @@ MLRSortByOrder::RenderNow()
 						if (primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 						{
 							Point3D* coords;
-							puint16_t indices;
+							uint16_t* indices;
 							int32_t nr;
 							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))
 								->GetIndexData(&indices, &nr);
@@ -330,7 +330,7 @@ MLRSortByOrder::RenderNow()
 						if (primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 						{
 							Point3D* coords;
-							puint16_t indices;
+							uint16_t* indices;
 							int32_t nr;
 							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))
 								->GetIndexData(&indices, &nr);

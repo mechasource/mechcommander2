@@ -8,7 +8,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "stuffheaders.hpp"
+#include "stuff/stuffheaders.h"
 #include "namelist.hpp"
 
 #define TEST_COUNT 50
@@ -93,7 +93,7 @@ ObjectNameList::TestClass()
 	i;
 	div_t
 	mod;
-	char
+	wchar_t
 	name[20],
 		 save_name[20];
 	//----------------------

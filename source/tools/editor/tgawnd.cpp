@@ -63,8 +63,8 @@ TGAWnd::SetTGAFileName(const CString& str)
 	CFile File;
 	if (!File.Open(str, CFile::modeRead | CFile::shareDenyNone))
 	{
-		m_pBmi->bmiHeader.biHeight = 0;
-		m_pBmi->bmiHeader.biWidth = 0;
+		m_pBmi->bmiHeader.biheight = 0;
+		m_pBmi->bmiHeader.biwidth = 0;
 		return;
 	}
 	if (m_hBitmap)
@@ -78,19 +78,19 @@ TGAWnd::SetTGAFileName(const CString& str)
 	{
 		m_pImage = (const std::wstring_view&)malloc(header.width * header.height * 4);
 		File.Read(m_pImage, header.width * header.height * 4);
-		m_pBmi->bmiHeader.biHeight = -header.height;
-		m_pBmi->bmiHeader.biWidth = header.width;
+		m_pBmi->bmiHeader.biheight = -header.height;
+		m_pBmi->bmiHeader.biwidth = header.width;
 	}
 }
 
 void
-TGAWnd::SetTGAFileData(puint8_t data, int32_t size)
+TGAWnd::SetTGAFileData(uint8_t* data, int32_t size)
 {
 	m_FileName = "";
 	m_bTGAChanged = true;
 	TGAFileHeader* header;
 	header = (TGAFileHeader*)data;
-	if (m_pImage && (m_pBmi->bmiHeader.biWidth != -header->width || m_pBmi->bmiHeader.biHeight != header->height))
+	if (m_pImage && (m_pBmi->bmiHeader.biwidth != -header->width || m_pBmi->bmiHeader.biheight != header->height))
 	{
 		free(m_pImage);
 		m_pImage = nullptr;
@@ -100,8 +100,8 @@ TGAWnd::SetTGAFileData(puint8_t data, int32_t size)
 	if (header->image_type == UNC_TRUE)
 	{
 		memcpy(m_pImage, data + sizeof(TGAFileHeader), header->width * header->height * 4);
-		m_pBmi->bmiHeader.biHeight = -header->height;
-		m_pBmi->bmiHeader.biWidth = header->width;
+		m_pBmi->bmiHeader.biheight = -header->height;
+		m_pBmi->bmiHeader.biwidth = header->width;
 	}
 }
 
@@ -133,7 +133,7 @@ TGAWnd::OnPaint()
 		if (!m_hBitmap)
 			m_hBitmap =
 				CreateDIBSection(dc.m_hDC, m_pBmi, DIB_RGB_COLORS, (PVOID*)&m_pBits, nullptr, 0);
-		memcpy(m_pBits, m_pImage, m_pBmi->bmiHeader.biWidth * -m_pBmi->bmiHeader.biHeight * 4);
+		memcpy(m_pBits, m_pImage, m_pBmi->bmiHeader.biwidth * -m_pBmi->bmiHeader.biheight * 4);
 		m_bTGAChanged = false;
 	}
 	if (m_pMemDC)
@@ -142,8 +142,8 @@ TGAWnd::OnPaint()
 		CRect rect;
 		GetWindowRect(rect);
 		dc.SetStretchBltMode(STRETCH_DELETESCANS);
-		dc.StretchBlt(0, 0, rect.Width(), rect.Height(), m_pMemDC, 0, 0, m_pBmi->bmiHeader.biWidth,
-			-m_pBmi->bmiHeader.biHeight, SRCCOPY);
+		dc.StretchBlt(0, 0, rect.width(), rect.height(), m_pMemDC, 0, 0, m_pBmi->bmiHeader.biwidth,
+			-m_pBmi->bmiHeader.biheight, SRCCOPY);
 		m_pMemDC->SelectObject(hOldObj);
 	}
 	else
@@ -166,8 +166,8 @@ TGAWnd::OnPaint()
 			CRect rect;
 			GetWindowRect(rect);
 			dc.SetStretchBltMode(STRETCH_DELETESCANS);
-			dc.StretchBlt(0, 0, rect.Width(), rect.Height(), &l_MemDC, 0, 0, bm_struct.bmWidth,
-				bm_struct.bmHeight, SRCCOPY);
+			dc.StretchBlt(0, 0, rect.width(), rect.height(), &l_MemDC, 0, 0, bm_struct.bmwidth,
+				bm_struct.bmheight, SRCCOPY);
 			l_MemDC.SelectObject(hOldObj);
 		}
 	}

@@ -15,11 +15,11 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "toolos.hpp"
 
 HGOSFONT3D GameDebugWindow::font = nullptr;
-int32_t GameDebugWindow::fontHeight = 0;
+int32_t GameDebugWindow::fontheight = 0;
 
 //***************************************************************************
 //	GAME DEBUG WINDOW class
@@ -40,7 +40,7 @@ GameDebugWindow::setFont(const std::wstring_view& fontFile)
 	}
 	uint32_t height, width;
 	gos_TextStringLength(&width, &height, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	fontHeight = height;
+	fontheight = height;
 }
 
 //---------------------------------------------------------------------------
@@ -70,13 +70,13 @@ GameDebugWindow::render(void)
 	for (size_t i = linePos; i < MAX_DEBUG_WINDOW_LINES; i++)
 	{
 		gos_TextSetPosition(pos[0] + 5, curY);
-		curY += fontHeight;
+		curY += fontheight;
 		gos_TextDraw(textBuffer[i]);
 	}
 	for (i = 0; i < linePos; i++)
 	{
 		gos_TextSetPosition(pos[0] + 5, curY);
-		curY += fontHeight;
+		curY += fontheight;
 		gos_TextDraw(textBuffer[i]);
 	}
 }

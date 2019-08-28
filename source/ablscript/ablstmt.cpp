@@ -20,8 +20,8 @@ namespace mclib::abl {
 //***************************************************************************
 
 extern TokenCodeType curToken;
-extern char tokenString[];
-extern char wordString[];
+extern wchar_t tokenString[];
+extern wchar_t wordString[];
 extern Literal curLiteral;
 extern TokenCodeType statementStartList[];
 extern TokenCodeType statementEndList[];

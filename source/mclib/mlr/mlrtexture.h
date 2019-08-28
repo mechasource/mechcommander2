@@ -7,9 +7,9 @@
 #ifndef MLR_MLRTEXTURE_HPP
 #define MLR_MLRTEXTURE_HPP
 
-// #include <stuff/memorystream.hpp>
-// #include <stuff/mstring.hpp>
-#include <stuff/affinematrix.hpp>
+// #include "stuff/memorystream.h"
+// #include "stuff/mstring.h"
+#include "stuff/affinematrix.h"
 
 namespace Stuff
 {
@@ -36,8 +36,7 @@ protected:
 	MLRTexture(std::iostream stream);
 
 public:
-	MLRTexture(
-		MLRTexturePool* pool, PCSTR name, int32_t instance, int32_t handle, int32_t hint = 0);
+	MLRTexture(MLRTexturePool* pool, const std::wstring_view& name, int32_t instance, int32_t handle, int32_t hint = 0);
 	MLRTexture(MLRTexturePool* pool, GOSImage* image, int32_t handle, int32_t hint = 0);
 	MLRTexture(const MLRTexture&);
 	~MLRTexture(void);
@@ -46,7 +45,7 @@ public:
 
 	void Save(std::iostream stream);
 
-	GOSImage* GetImage(pint32_t h = nullptr)
+	GOSImage* GetImage(int32_t* h = nullptr)
 	{
 		// Check_Object(this);
 		if (h)
@@ -56,7 +55,7 @@ public:
 		return image;
 	}
 
-	PCSTR GetTextureName(void)
+	const std::wstring_view& GetTextureName(void)
 	{
 		// Check_Object(this);
 		return textureName;

@@ -227,12 +227,12 @@ public:
 	GameObjectWatchID targetWID;
 	int32_t targetObjectClass;
 	int32_t selectionindex;
-	char stage;
-	char statusCode;
+	wchar_t stage;
+	wchar_t statusCode;
 	Stuff::Vector3D lastMoveGoal;
 
 	// for network use only
-	char pointLocalMoverId;
+	wchar_t pointLocalMoverId;
 	uint32_t groupFlags;
 	uint32_t data[2];
 
@@ -290,10 +290,10 @@ public:
 	int32_t unpack(void);
 	void setGroupFlag(int32_t localMoverId, bool set);
 	int32_t getGroup(int32_t commanderid, std::unique_ptr<Mover>* moverList, std::unique_ptr<Mover>* point, int32_t sortType = 0);
-	void setStage(int32_t newStage) { stage = (char)newStage; }
+	void setStage(int32_t newStage) { stage = (wchar_t)newStage; }
 	GameObjectPtr getTarget(void);
 	bool equals(TacticalOrder* tacOrder);
-	char getStatusCode(void) { return (statusCode); }
+	wchar_t getStatusCode(void) { return (statusCode); }
 	void debugString(std::unique_ptr<MechWarrior> pilot, const std::wstring_view& s);
 };
 

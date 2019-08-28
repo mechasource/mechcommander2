@@ -6,9 +6,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 #include "stuff/scalar.h"
 // #include "stuff/mstring.h"
 #include "stuff/polar.h"
@@ -142,8 +142,8 @@ Stuff::Convert_From_Ascii(const std::wstring_view& str, Vector3D* vector_3D)
 {
 	Check_Pointer(str);
 	Check_Object(vector_3D);
-	const std::wstring_view& parse_string(str);
-	const std::wstring_view& token = parse_string.GetNthToken(0);
+	std::wstring_view parse_string(str);
+	std::wstring_view token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	vector_3D->x = AtoF(token);
 	token = parse_string.GetNthToken(1);

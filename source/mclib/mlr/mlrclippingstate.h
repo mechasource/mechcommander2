@@ -7,7 +7,7 @@
 #ifndef MLR_MLRCLIPPINGSTATE_HPP
 #define MLR_MLRCLIPPINGSTATE_HPP
 
-#include <stuff/vector4d.hpp>
+#include "stuff/vector4d.h"
 
 namespace Stuff
 {
@@ -233,7 +233,7 @@ public:
 		return (clippingState == s.clippingState);
 	}
 
-	bool operator==(cuint32_t& s)
+	bool operator==(const uint32_t& s)
 	{
 		// Check_Pointer(this);
 		return (clippingState == s);
@@ -245,7 +245,7 @@ public:
 		return (clippingState != s.clippingState);
 	}
 
-	bool operator!=(cuint32_t& s)
+	bool operator!=(const uint32_t& s)
 	{
 		// Check_Pointer(this);
 		return (clippingState != s);

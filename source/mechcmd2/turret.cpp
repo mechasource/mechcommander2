@@ -666,7 +666,7 @@ Turret::update(void)
 		turretPitch = -35.0f;
 	}
 	//-------------------------------------------
-	// Handle power out.
+	// handle power out.
 	// Parent is down OR we are destroyed.
 	if (!active || (getStatus() == OBJECT_STATUS_DESTROYED))
 		appearance->setLightsOut(true);
@@ -1105,7 +1105,7 @@ Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpo
 		if (target)
 		{
 			const std::wstring_view& targetName = target->getName();
-			char s[1024];
+			wchar_t s[1024];
 			sprintf(s, "[%.2f] turret.fireWeapon HIT: (%05d)%s @ (%05d)%s", scenarioTime,
 				getPartId(), getName(), target->getPartId(), targetName ? targetName : "unknown");
 			CombatLog->write(s);
@@ -1130,7 +1130,7 @@ Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpo
 		if (target)
 		{
 			const std::wstring_view& targetName = target->getName();
-			char s[1024];
+			wchar_t s[1024];
 			sprintf(s, "[%.2f] turret.fireWeapon MISS: (%05d)%s @ (%05d)%s", scenarioTime,
 				getPartId(), getName(), target->getPartId(), targetName ? targetName : "unknown");
 			CombatLog->write(s);
@@ -1162,8 +1162,8 @@ Turret::printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo)
 	static const std::wstring_view& locationStrings[] = {"head", "center torso", "left torso", "right torso",
 		"left arm", "right arm", "left leg", "right leg", "rear center torso", "rear left torso",
 		"rear right torso"};
-	char s[1024];
-	char statusStr[50];
+	wchar_t s[1024];
+	wchar_t statusStr[50];
 	if (isDestroyed())
 		sprintf(statusStr, " DESTROYED:");
 	// else if (Team::noPain[getTeamId()])
@@ -1826,7 +1826,7 @@ Turret::render(void)
 				else
 					color = SB_BLUE;
 			}
-			appearance->setBarColor(color);
+			appearance->setBarcolour(color);
 			appearance->setBarStatus(barStatus);
 		}
 		if (((TurretTypePtr)getObjectType())->turretTypeName < IDS_MC2_STRING_START)
@@ -1891,7 +1891,7 @@ Turret::init(bool create, ObjectTypePtr _type)
 		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 		if (!buildingAppearanceType)
 		{
-			char msg[1024];
+			wchar_t msg[1024];
 			sprintf(msg, "No Building Appearance Named %s", appearName);
 			Fatal(0, msg);
 		}
@@ -1945,7 +1945,7 @@ Turret::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 			TURRET_EXPLOSION_ID, nullptr, position, explDamage, explRadius);
 		if (CombatLog)
 		{
-			char s[1024];
+			wchar_t s[1024];
 			sprintf(s, "[%.2f] turret.destroyed: (%05d)%s", scenarioTime, getPartId(), getName());
 			CombatLog->write(s);
 			CombatLog->write(" ");
@@ -2010,12 +2010,12 @@ void
 Turret::updateDebugWindow(GameDebugWindow* debugWindow)
 {
 	debugWindow->clear();
-	char s[128];
+	wchar_t s[128];
 	//-------------------------------------------------------
 	// For now, show the floating help text if we have one...
 	if (((ObjectAppearance*)appearance)->objectNameId != -1)
 	{
-		char myName[255];
+		wchar_t myName[255];
 		cLoadString(((ObjectAppearance*)appearance)->objectNameId, myName, 254);
 		debugWindow->print(myName);
 	}
@@ -2038,7 +2038,7 @@ Turret::Save(PacketFilePtr file, int32_t packetNum)
 	TurretData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(TurretData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(TurretData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

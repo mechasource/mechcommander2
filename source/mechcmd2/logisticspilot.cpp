@@ -16,7 +16,7 @@
 #include "mechicon.h"
 #include "objmgr.h"
 
-char LogisticsPilot::skillTexts[NUM_SPECIALTY_SKILLS][255] = {0};
+wchar_t LogisticsPilot::skillTexts[NUM_SPECIALTY_SKILLS][255] = {0};
 extern const std::wstring_view& SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
 LogisticsPilot::LogisticsPilot()
@@ -33,7 +33,7 @@ LogisticsPilot::LogisticsPilot()
 	memset(specialtySkills, 0, sizeof(bool) * NUM_SPECIALTY_SKILLS);
 	if (!strlen(skillTexts[0]))
 	{
-		char tmp[256];
+		wchar_t tmp[256];
 		for (size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 		{
 			cLoadString(IDS_SPECIALTY + i, tmp, 255);
@@ -49,14 +49,14 @@ int32_t
 LogisticsPilot::init(const std::wstring_view& pilotFileName)
 {
 	fileName = pilotFileName;
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, warriorPath);
 	strcat(path, fileName);
 	strcat(path, ".fit");
 	FitIniFile pilotFile;
 	if (NO_ERROR != pilotFile.open(path))
 	{
-		char errorString[256];
+		wchar_t errorString[256];
 		sprintf(errorString, "Couldn't open file %s", fileName);
 		Assert(0, 0, errorString);
 		return -1;
@@ -87,7 +87,7 @@ LogisticsPilot::init(const std::wstring_view& pilotFileName)
 	iconFile = artPath;
 	iconFile += path;
 	pilotFile.seekBlock("Skills");
-	char tPilot, tGunnery;
+	wchar_t tPilot, tGunnery;
 	result = pilotFile.readIdChar("Piloting", tPilot);
 	gosASSERT(result == NO_ERROR);
 	pilotFile.readIdChar("Gunnery", tGunnery);
@@ -98,7 +98,7 @@ LogisticsPilot::init(const std::wstring_view& pilotFileName)
 	{
 		for (size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 		{
-			char tmpChar;
+			wchar_t tmpChar;
 			result = pilotFile.readIdChar(SpecialtySkillsTable[i], tmpChar);
 			if (result == NO_ERROR)
 				specialtySkills[i] = (tmpChar == 1);
@@ -116,7 +116,7 @@ LogisticsPilot::getSkillText(int32_t skillID)
 	{
 		return skillTexts[skillID];
 	}
-	//	char tmp[256];
+	//	wchar_t tmp[256];
 	//	cLoadString( IDS_SKILL0 + skillID, tmp, 256 );
 	//	skillTexts[skillID] = tmp;
 	return skillTexts[skillID];
@@ -131,7 +131,7 @@ LogisticsPilot::getNumberMissions(void) const
 int32_t
 LogisticsPilot::save(FitIniFile& file, int32_t which)
 {
-	char tmp[256];
+	wchar_t tmp[256];
 	sprintf(tmp, "Pilot%ld", which);
 	file.writeBlock(tmp);
 	file.writeIdString("FileName", fileName);
@@ -144,7 +144,7 @@ LogisticsPilot::save(FitIniFile& file, int32_t which)
 	file.writeIdLong("MissionsCompleted", missionsCompleted);
 	file.writeIdUCHARArray("MissionsPlayed", missionsPlayed, MAX_MISSIONS);
 	file.writeIdBoolean("Dead", bDead);
-	char buffer[64];
+	wchar_t buffer[64];
 	int32_t i;
 	for (i = 0; i < MAX_MEDAL; i++)
 	{
@@ -162,7 +162,7 @@ LogisticsPilot::save(FitIniFile& file, int32_t which)
 int32_t
 LogisticsPilot::load(FitIniFile& file)
 {
-	char tmp[256];
+	wchar_t tmp[256];
 	file.readIdString("FileName", tmp, 255);
 	fileName = tmp;
 	file.readIdLong("Rank", rank);
@@ -176,7 +176,7 @@ LogisticsPilot::load(FitIniFile& file)
 	if (result != NO_ERROR)
 		memset(missionsPlayed, 0, sizeof(uint8_t) * MAX_MISSIONS);
 	file.readIdBoolean("Dead", bDead);
-	char buffer[64];
+	wchar_t buffer[64];
 	int32_t i;
 	for (i = 0; i < MAX_MEDAL; i++)
 	{
@@ -436,7 +436,7 @@ LogisticsPilot::getSpecialtySkills(const std::wstring_view&* array, int32_t& cou
 }
 
 int32_t
-LogisticsPilot::getSpecialtySkills(pint32_t array, int32_t& count)
+LogisticsPilot::getSpecialtySkills(int32_t* array, int32_t& count)
 {
 	int32_t max = count;
 	count = 0;

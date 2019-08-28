@@ -72,7 +72,7 @@ MLR_I_L_TMesh::MLR_I_L_TMesh(ClassData* class_data, std::iostream stream, uint32
 	}
 	break;
 	}
-	litColors.SetLength(colors.GetLength());
+	litcolours.SetLength(colors.GetLength());
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -147,7 +147,7 @@ MLR_I_L_TMesh::SetNormalData(const Vector3D* data, size_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_TMesh::GetNormalData(Vector3D** data, psize_t dataSize)
+MLR_I_L_TMesh::GetNormalData(Vector3D** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = normals.GetData();
@@ -157,11 +157,11 @@ MLR_I_L_TMesh::GetNormalData(Vector3D** data, psize_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_TMesh::SetColorData(
+MLR_I_L_TMesh::SetcolourData(
 #if COLOR_AS_DWORD
-	pcuint32_t data,
+	const uint32_t* data,
 #else
-	const RGBAColor* data,
+	const RGBAcolour* data,
 #endif
 	size_t dataSize)
 {
@@ -170,7 +170,7 @@ MLR_I_L_TMesh::SetColorData(
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	_ASSERT(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	_ASSERT(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
-	litColors.SetLength(dataSize);
+	litcolours.SetLength(dataSize);
 	colors.AssignData(data, dataSize);
 }
 
@@ -179,38 +179,38 @@ MLR_I_L_TMesh::SetColorData(
 void
 MLR_I_L_TMesh::PaintMe(
 #if COLOR_AS_DWORD
-	pcuint32_t paintMe
+	const uint32_t* paintMe
 #else
-	const RGBAColor* paintMe
+	const RGBAcolour* paintMe
 #endif
 
 )
 {
 	// Check_Object(this);
 #if 1
-	_ASSERT(colors.GetLength() == litColors.GetLength());
+	_ASSERT(colors.GetLength() == litcolours.GetLength());
 #else
-	if (colors.GetLength() == litColors.GetLength())
+	if (colors.GetLength() == litcolours.GetLength())
 	{
-		litColors.SetLength(colors.GetLength());
+		litcolours.SetLength(colors.GetLength());
 	}
 #endif
-	int32_t k, len = litColors.GetLength();
+	int32_t k, len = litcolours.GetLength();
 #if COLOR_AS_DWORD
-	uint32_t argb = GOSCopyColor(paintMe);
+	uint32_t argb = GOSCopycolour(paintMe);
 	for (k = 0; k < len; k++)
 	{
-		litColors[k] = argb;
+		litcolours[k] = argb;
 	}
 #else
 	for (k = 0; k < len; k++)
 	{
-		litColors[k] = *paintMe;
+		litcolours[k] = *paintMe;
 	}
 #endif
 	// set the to use colors to the original colors ...
 	// only lighting could overwrite this;
-	actualColors = &litColors;
+	actualcolours = &litcolours;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -259,7 +259,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRState* state)
+MidLevelRenderer::CreateIndexedTriIcosahedron_colour_Lit(IcoInfo& icoInfo, MLRState* state)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
@@ -281,11 +281,11 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRSta
 		collapsedCoords = new Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);
-	RGBAColor* colors = new RGBAColor[nrTri * 3];
+	RGBAcolour* colors = new RGBAcolour[nrTri * 3];
 	Register_Pointer(colors);
 	Vector3D* normals = new Vector3D[nrTri * 3];
 	Register_Pointer(normals);
@@ -385,7 +385,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRSta
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = RGBAColor((1.0f + collapsedCoords[i].x) / 2.0f,
+				colors[i] = RGBAcolour((1.0f + collapsedCoords[i].x) / 2.0f,
 					(1.0f + collapsedCoords[i].y) / 2.0f, (1.0f + collapsedCoords[i].z) / 2.0f,
 					1.0f);
 				normals[i].Normalize(collapsedCoords[i]);
@@ -395,12 +395,12 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRSta
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = RGBAColor((1.0f + coords[i].x) / 2.0f, (1.0f + coords[i].y) / 2.0f,
+				colors[i] = RGBAcolour((1.0f + coords[i].x) / 2.0f, (1.0f + coords[i].y) / 2.0f,
 					(1.0f + coords[i].z) / 2.0f, 1.0f);
 				normals[i].Normalize(coords[i]);
 			}
 		}
-		mesh->SetColorData(colors, uniquePoints);
+		mesh->SetcolourData(colors, uniquePoints);
 		mesh->SetNormalData(normals, uniquePoints);
 		ret->Add(mesh);
 		mesh->DetachReference();

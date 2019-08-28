@@ -269,7 +269,7 @@ ActionPaintTile::doRedo(void)
 		land->terrainTextures->getOverlayInfoFromHandle((*iter).textureData, overlay, offset);
 		land->setOverlay((*iter).row, (*iter).column, overlay, offset);
 		land->setTerrain((*iter).row, (*iter).column, (*iter).terrainData);
-		land->setVertexHeight(
+		land->setVertexheight(
 			(*iter).row * land->realVerticesMapSide + (*iter).column, (*iter).elevation);
 		// save current valuds
 		(*iter).terrainData = terrain;
@@ -334,7 +334,7 @@ ActionPaintTile::addChangedVertexInfo(int32_t row, int32_t column)
 }
 
 bool
-ActionPaintTile::getOldHeight(int32_t row, int32_t column, float& height)
+ActionPaintTile::getOldheight(int32_t row, int32_t column, float& height)
 {
 	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
 	{

@@ -204,13 +204,13 @@ MissionBegin::begin()
 	bDone = 0;
 	// initialize the main menu
 	mainMenu = new MainMenu;
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, artPath);
 	strcat(path, "mcl_mm.fit");
 	FitIniFile file;
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -225,7 +225,7 @@ MissionBegin::begin()
 	strcat(path, "mcl_cm_layout.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -238,7 +238,7 @@ MissionBegin::begin()
 	strcat(path, "mcl_mn.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -251,7 +251,7 @@ MissionBegin::begin()
 	pMechBayScreen = new MechBayScreen();
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -272,7 +272,7 @@ MissionBegin::begin()
 	strcat(path, "mcl_pr_layout.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -287,7 +287,7 @@ MissionBegin::begin()
 	strcat(path, "mcl_m$.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -300,7 +300,7 @@ MissionBegin::begin()
 	strcat(path, "mcl_mc.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -313,7 +313,7 @@ MissionBegin::begin()
 	strcat(path, "mcl_loadingscreen.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -548,13 +548,13 @@ MissionBegin::update()
 							buttonFlashTime += frameLength;
 							if (buttonFlashTime > .5f)
 							{
-								pCurScreen->getButton(targetButtonId)->setColor(0xffffffff);
+								pCurScreen->getButton(targetButtonId)->setcolour(0xffffffff);
 								buttonFlashTime = 0.0f;
 								buttonNumFlashes--;
 							}
 							else if (buttonFlashTime > .25f)
 							{
-								pCurScreen->getButton(targetButtonId)->setColor(0xff7f7f7f);
+								pCurScreen->getButton(targetButtonId)->setcolour(0xff7f7f7f);
 							}
 						}
 						else
@@ -562,7 +562,7 @@ MissionBegin::update()
 							// Flashing is done.  We now return you to your
 							// regularly scheduled program.
 							animationRunning = false;
-							pCurScreen->getButton(targetButtonId)->setColor(0xffffffff);
+							pCurScreen->getButton(targetButtonId)->setcolour(0xffffffff);
 						}
 					}
 				}
@@ -603,13 +603,13 @@ MissionBegin::update()
 							buttonFlashTime += frameLength;
 							if (buttonFlashTime > .5f)
 							{
-								pCurScreen->getRect(targetButtonId)->setColor(0xff000000);
+								pCurScreen->getRect(targetButtonId)->setcolour(0xff000000);
 								buttonFlashTime = 0.0f;
 								buttonNumFlashes--;
 							}
 							else if (buttonFlashTime > .25f)
 							{
-								pCurScreen->getRect(targetButtonId)->setColor(0xffffffff);
+								pCurScreen->getRect(targetButtonId)->setcolour(0xffffffff);
 							}
 						}
 						else
@@ -617,7 +617,7 @@ MissionBegin::update()
 							// Flashing is done.  We now return you to your
 							// regularly scheduled program.
 							animationRunning = false;
-							pCurScreen->getRect(targetButtonId)->setColor(0xff000000);
+							pCurScreen->getRect(targetButtonId)->setcolour(0xff000000);
 						}
 					}
 				}
@@ -883,7 +883,7 @@ MissionBegin::beginMPlayer()
 	placeHolderScreen = nullptr;
 	MPGameBrowser* pMPGameBrowser = nullptr;
 	MPParameterScreen* pMPParameterScreen = nullptr;
-	char path[512];
+	wchar_t path[512];
 	FitIniFile file;
 	// initalize MPConnectionType
 	pMPConnectionType = new MPConnectionType;
@@ -891,7 +891,7 @@ MissionBegin::beginMPlayer()
 	strcat(path, "mcl_mp_connectiontype.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -906,7 +906,7 @@ MissionBegin::beginMPlayer()
 	strcat(path, "mcl_mp_param.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -919,7 +919,7 @@ MissionBegin::beginMPlayer()
 	strcat(path, "mcl_mp_lanbrowser.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -932,7 +932,7 @@ MissionBegin::beginMPlayer()
 	strcat(path, "mcl_mp_playerprefs.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -944,7 +944,7 @@ MissionBegin::beginMPlayer()
 	strcat(path, "mcl_loadingscreen.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -960,7 +960,7 @@ MissionBegin::beginMPlayer()
 	multiplayerScreens[2][1] = pMPParameterScreen;
 	multiplayerScreens[3][1] = pMLoadScreen;
 	multiplayerScreens[2][0] = pMPPrefs;
-	pMPPrefs->initColors();
+	pMPPrefs->initcolours();
 	{
 		for (size_t i = 0; i < 4; i++)
 		{

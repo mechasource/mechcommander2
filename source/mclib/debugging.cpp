@@ -21,7 +21,7 @@
 extern UserHeapPtr systemHeap;
 
 HGOSFONT3D GameDebugWindow::font = nullptr;
-int32_t GameDebugWindow::fontHeight = 0;
+int32_t GameDebugWindow::fontheight = 0;
 
 //***************************************************************************
 //	GAME DEBUG WINDOW class
@@ -59,7 +59,7 @@ GameDebugWindow::setFont(const std::wstring_view& fontFile)
 	}
 	uint32_t height, width;
 	gos_TextStringLength(&width, &height, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	fontHeight = height;
+	fontheight = height;
 }
 
 //---------------------------------------------------------------------------
@@ -87,18 +87,18 @@ GameDebugWindow::render(void)
 		return;
 	int32_t i;
 	gos_TextSetAttributes(font, 0xffffffff, 1.0, true, true, false, false);
-	gos_TextSetRegion(0, 0, Environment.screenWidth, Environment.screenHeight);
+	gos_TextSetRegion(0, 0, Environment.screenwidth, Environment.screenheight);
 	int32_t curY = pos[1] + 5;
 	for (i = linePos; i < MAX_DEBUG_WINDOW_LINES; i++)
 	{
 		gos_TextSetPosition(pos[0] + 5, curY);
-		curY += fontHeight;
+		curY += fontheight;
 		gos_TextDraw(textBuffer[i]);
 	}
 	for (i = 0; i < linePos; i++)
 	{
 		gos_TextSetPosition(pos[0] + 5, curY);
-		curY += fontHeight;
+		curY += fontheight;
 		gos_TextDraw(textBuffer[i]);
 	}
 }

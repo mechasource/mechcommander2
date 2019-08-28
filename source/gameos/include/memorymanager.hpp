@@ -55,7 +55,7 @@ typedef struct SMALLPOOLBLOCK
 #endif
 #ifdef _DEBUG
 	DOUBLE dTimeStamp; // at what time was the block alloc'd
-	uint32_t pContext[0]; // we'll allocate the right size based on
+	uint32_t pcontext[0]; // we'll allocate the right size based on
 		// gMemoryStackWalkLevel
 #endif
 } SMALLPOOLBLOCK;
@@ -71,7 +71,7 @@ typedef struct POOLBLOCK
 #endif
 #ifdef _DEBUG
 	DOUBLE dTimeStamp; // at what time was the block alloc'd
-	uint32_t pContext[0]; // we'll allocate the right size based on
+	uint32_t pcontext[0]; // we'll allocate the right size based on
 		// gMemoryStackWalkLevel
 #endif
 } POOLBLOCK;
@@ -88,7 +88,7 @@ typedef struct _LARGEBLOCK
 	uint8_t Heap;
 #ifdef _DEBUG
 	DOUBLE dTimeStamp; // at what time was the block alloc'd
-	uint32_t pContext[0]; // we'll allocate the right size based on
+	uint32_t pcontext[0]; // we'll allocate the right size based on
 		// gMemoryStackWalkLevel
 #endif
 } LARGEBLOCK;
@@ -115,7 +115,7 @@ typedef struct _MEMORYPOOL
 	POOLBLOCK* pInfoBlocks; // an array of blocks which describe particular
 		// memory blocks (may point to a SMALLPOOLBLOCK
 		// header for >256 bytes)
-	puint8_t pMemoryPool; // Pointer to the base of the memory blocks (pointer
+	uint8_t* pMemoryPool; // Pointer to the base of the memory blocks (pointer
 		// to header byte before allocation)
 	uint16_t wBlockSize; // what is the size of the individual blocks?
 	uint16_t wTotalBlocks; // Total blocks available

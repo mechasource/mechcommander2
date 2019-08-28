@@ -29,7 +29,7 @@ public:
 	aStyle2TextListItem()
 	{
 		hasAnimation = false;
-		normalColor = 0xff808080;
+		normalcolour = 0xff808080;
 	}
 	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void render(void);
@@ -37,7 +37,7 @@ public:
 protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
-	int32_t normalColor;
+	int32_t normalcolour;
 };
 
 class aPlayerParams : public aObject
@@ -62,7 +62,7 @@ public:
 
 	bool isSelected() { return bHasFocus; }
 
-	int32_t getCommanderID() const { return commanderid; }
+	int32_t getCommanderID(void) const { return commanderid; }
 
 	void disableReadyButton(void);
 

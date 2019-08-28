@@ -7,15 +7,15 @@
 #ifndef MLR_MLREFFECT_HPP
 #define MLR_MLREFFECT_HPP
 
-#include <stuff/vector2d.hpp>
-#include <stuff/vector4d.hpp>
-#include <stuff/color.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <mlr/mlrclippingstate.hpp>
+#include "stuff/vector2d.h"
+#include "stuff/vector4d.h"
+#include "stuff/color.h"
+#include "stuff/linearmatrix.h"
+#include "mlr/mlrclippingstate.h"
 
-//#include <stuff/marray.hpp>
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrstate.hpp>
+//#include "stuff/marray.h"
+//#include "mlr/mlr.h"
+//#include "mlr/mlrstate.h"
 
 namespace MidLevelRenderer
 {
@@ -26,7 +26,7 @@ struct EffectClipPolygon
 	void Destroy(void);
 
 	std::vector<Stuff::Vector4D> coords; //[Max_Number_Vertices_Per_Polygon];
-	std::vector<Stuff::RGBAColor> colors; //[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::RGBAcolour> colors; //[Max_Number_Vertices_Per_Polygon];
 	std::vector<Stuff::Vector2DScalar> texCoords; //[Max_Number_Vertices_Per_Polygon];
 	std::vector<MLRClippingState> clipPerVertex; //[Max_Number_Vertices_Per_Polygon];
 };
@@ -40,7 +40,7 @@ class MLRSorter;
 //#########################    MLREffect   #################################
 //##########################################################################
 
-class MLREffect : public Stuff::RegisteredClass
+class MLREffect // : public Stuff::RegisteredClass
 {
 public:
 	static void __stdcall InitializeClass(void);
@@ -50,7 +50,7 @@ public:
 	~MLREffect(void);
 
 	virtual void SetData(
-		pcsize_t pcount, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data) = 0;
+		const size_t* pcount, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data) = 0;
 
 	virtual uint32_t GetType(uint32_t) { return 0; }
 
@@ -140,7 +140,7 @@ protected:
 	uint32_t maxNrOf;
 
 	const Stuff::Point3D* points;
-	const Stuff::RGBAColor* colors;
+	const Stuff::RGBAcolour* colors;
 	static std::vector<Stuff::Vector4D>* transformedCoords;
 	std::vector<int32_t> testList;
 
@@ -156,7 +156,7 @@ protected:
 struct EffectClipData
 {
 	Stuff::Vector4D* coords;
-	Stuff::RGBAColor* colors;
+	Stuff::RGBAcolour* colors;
 	Stuff::Vector2DScalar* texCoords;
 	MLRClippingState* clipPerVertex;
 

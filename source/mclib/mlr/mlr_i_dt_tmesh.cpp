@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_dt_pmesh.h"
 #include "mlr/mlr_i_dt_tmesh.h"
@@ -204,7 +204,7 @@ MLR_I_DT_TMesh::GetNumPasses(void)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_DT_TMesh*
-MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_2Tex(
+MidLevelRenderer::CreateIndexedTriCube_Nocolour_NoLit_2Tex(
 	float half, MLRState* state, MLRState* state2)
 {
 	(void)half;
@@ -225,7 +225,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_2Tex(
 	coords[5] = Stuff::Point3D(half,  half,  half);
 	coords[6] = Stuff::Point3D(half,  half, -half);
 	coords[7] = Stuff::Point3D(-half,  half, -half);
-	puint8_t lengths = new uint8_t [6];
+	uint8_t* lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 	size_t i;
 	for(i = 0; i < 6; i++)
@@ -234,7 +234,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_2Tex(
 	}
 	ret->SetSubprimitiveLengths(lengths, 6);
 	ret->SetCoordData(coords, 8);
-	puint16_t index = new uint16_t [6 * 4];
+	uint16_t* index = new uint16_t [6 * 4];
 	Register_Pointer(index);
 	index[0] = 0;
 	index[1] = 2;
@@ -329,7 +329,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_2Tex(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
+MidLevelRenderer::CreateIndexedTriIcosahedron_Nocolour_NoLit_2Tex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* state2)
 {
 #ifdef _GAMEOS_HPP_
@@ -352,7 +352,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
 		collapsedCoords = new Stuff::Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[2 * nrTri * 3];
 	Register_Pointer(texCoords);

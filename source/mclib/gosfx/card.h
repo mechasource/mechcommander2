@@ -44,7 +44,7 @@ public:
 	// FCurves
 	//
 public:
-	SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType> m_halfHeight;
+	SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType> m_halfheight;
 	SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType> m_aspectRatio;
 	SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType> m_index;
 	ConstantCurve m_UOffset;
@@ -54,7 +54,7 @@ public:
 	bool m_animated;
 	uint8_t m_width;
 
-	void SetWidth(void);
+	void Setwidth(void);
 };
 
 //############################################################################
@@ -83,9 +83,9 @@ protected:
 	float m_halfY;
 	MidLevelRenderer::MLRCardCloud* m_cardCloud;
 	Stuff::Point3D m_vertices[4];
-	Stuff::RGBAColor m_colors[4];
+	Stuff::RGBAcolour m_colors[4];
 	Stuff::Vector2DOf<float> m_uvs[4];
-	pcsize_t m_cardCount;
+	const size_t* m_cardCount;
 
 public:
 	static Card* Make(Specification* spec, uint32_t flags);

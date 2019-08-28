@@ -11,7 +11,7 @@
 //############################################################################
 
 #include "stdinc.h"
-#include "gosFXHeaders.hpp"
+#include "gosfx/gosfxheaders.h"
 
 //------------------------------------------------------------------------------
 //
@@ -341,7 +341,7 @@ gosFX::ShapeCloud::Draw(DrawInfo* info)
 			}
 			//
 			//-----------------------
-			// Handle X-only rotation
+			// handle X-only rotation
 			//-----------------------
 			//
 			else

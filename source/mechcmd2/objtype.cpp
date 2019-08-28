@@ -141,7 +141,7 @@ ObjectType::init(FitIniFilePtr objFile)
 	//--------------------------------------------------------------------
 	// Read in the rest of the Object type Data here.  This includes
 	// exposions, collision extents, etc.
-	char apprName[512];
+	wchar_t apprName[512];
 	result = objFile->readIdString("AppearanceName", apprName, 511);
 	if (result == NO_ERROR)
 	{

@@ -21,7 +21,7 @@
 #endif
 
 #include "stuff/stuff.h"
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //-------------------------------------------------------------------------------
 // Structs used by layer.
@@ -79,7 +79,7 @@ typedef TG_ShadowVertex* TG_ShadowVertexPtr;
 // pool!
 typedef struct _TG_ShadowVertexTemp
 {
-	uint32_t fRGBFog; // Vertex Fog and Specular Color.  Needed if shadow is fogged.
+	uint32_t fRGBFog; // Vertex Fog and Specular colour.  Needed if shadow is fogged.
 	// Every frame for local light.  Once in a blue moon for infinite light.
 
 	// Changes each call to Transform.
@@ -112,7 +112,7 @@ typedef struct _TG_TypeTriangle
 {
 	uint32_t Vertices[3]; // Indices into Vertex List.
 	uint32_t localTextureHandle; // Index into texture List.
-	uint32_t renderStateFlags; // Flags about render for this face.
+	uint32_t renderStateFlags; // flags about render for this face.
 	// Bit 0 -- backFacing
 	TG_UVData uvdata; // Texture UVs for this face.
 	Stuff::Vector3D faceNormal; // Normal Vector to face
@@ -176,7 +176,7 @@ typedef struct _TG_Light
 	bool active; // Should this light be considered on?
 
 protected:
-	uint32_t aRGB; // Color
+	uint32_t aRGB; // colour
 	uint32_t OEMaRGB;
 
 public:
@@ -258,7 +258,7 @@ typedef TG_Light* TG_LightPtr;
 // TG_Texture
 typedef struct _TG_Texture
 {
-	char textureName[256];
+	wchar_t textureName[256];
 	uint32_t mcTextureNodeIndex;
 	uint32_t gosTextureHandle;
 	bool textureAlpha;
@@ -282,7 +282,7 @@ class TG_Shape;
 // TG_Animation
 typedef struct _TG_Animation
 {
-	char nodeId[TG_NODE_ID]; // Node ID
+	wchar_t nodeId[TG_NODE_ID]; // Node ID
 	uint32_t shapeId; // DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this
 		// first time through and its simple.
 	uint32_t numFrames; // Number of Frames of animation.
@@ -340,8 +340,8 @@ class TG_TypeNode
 protected:
 	Stuff::Point3D nodeCenter;
 	Stuff::Point3D relativeNodeCenter;
-	char nodeId[TG_NODE_ID];
-	char parentId[TG_NODE_ID];
+	wchar_t nodeId[TG_NODE_ID];
+	wchar_t parentId[TG_NODE_ID];
 
 	//---------------------
 	// Member Functions
@@ -387,7 +387,7 @@ public:
 	//
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t ParseASEFile(puint8_t /*aseBuffer*/, const std::wstring_view& /*filename*/) { return 0; }
+	virtual int32_t ParseASEFile(uint8_t* /*aseBuffer*/, const std::wstring_view& /*filename*/) { return 0; }
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -397,7 +397,7 @@ public:
 	//
 	// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& filename);
+	virtual int32_t MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& filename);
 
 	// Function returns 0 if OK.  -1 if file not found or file not ASE Format.
 	// This function loads the ASE file into the TG_Triangle and TG_Vertex
@@ -513,7 +513,7 @@ public:
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
 	virtual int32_t ParseASEFile(
-		puint8_t aseBuffer, const std::wstring_view& filename); // filename for error reporting ONLY
+		uint8_t* aseBuffer, const std::wstring_view& filename); // filename for error reporting ONLY
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -523,7 +523,7 @@ public:
 	//
 	// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& filename);
+	virtual int32_t MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& filename);
 
 	// Function returns 0 if OK.  -1 if file not found or file not ASE Format.
 	// This function loads the ASE file into the TG_Triangle and TG_Vertex
@@ -594,7 +594,7 @@ protected:
 	uint32_t numVisibleFaces; // Number of non-backfaced non-clipped faces.
 	uint32_t numVisibleShadows; // Number of visible Shadow Faces.
 
-	TG_Vertex* listOfColors; // Memory holding all unchanged or rarely changed
+	TG_Vertex* listOfcolours; // Memory holding all unchanged or rarely changed
 		// color data.
 	gos_VERTEX* listOfVertices; // Memory holding all vertex data
 	TG_TrianglePtr listOfTriangles; // Memory holding all triangle data
@@ -615,8 +615,8 @@ protected:
 
 	bool shadowsVisible[MAX_SHADOWS]; // Is this shadow worth drawing?
 
-	uint32_t aRGBHighlight; // Color to add to vertices to make building stand out.
-	uint32_t fogRGB; // Color to make fog.
+	uint32_t aRGBHighlight; // colour to add to vertices to make building stand out.
+	uint32_t fogRGB; // colour to make fog.
 
 	float shapeScalar;
 
@@ -642,7 +642,7 @@ public:
 	static float viewMulY;
 	static float viewAddY;
 
-	static uint32_t fogColor;
+	static uint32_t fogcolour;
 	static float fogFull;
 	static float fogStart;
 
@@ -790,7 +790,7 @@ public:
 		numVertices = 0;
 	}
 
-	TG_VertexPtr getColorsFromPool(uint32_t numRequested)
+	TG_VertexPtr getcoloursFromPool(uint32_t numRequested)
 	{
 		TG_VertexPtr result = nullptr;
 		numVertices += numRequested;
@@ -1024,7 +1024,7 @@ extern TG_ShadowPool* shadowPool;
 extern TG_TrianglePool* trianglePool;
 
 //-------------------------------------------------------------------------------
-// ASE File Parse String Macros
+// ASE File Parse string Macros
 #define ASE_HEADER "*3DSMAX_ASCIIEXPORT\t200"
 #define ASE_OBJECT "*GEOMOBJECT {"
 #define ASE_HELP_OBJECT "*HELPEROBJECT {"

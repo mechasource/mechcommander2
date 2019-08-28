@@ -120,8 +120,8 @@ UserHeapPtr AblCodeHeap = nullptr;
 UserHeapPtr AblSymbolHeap = nullptr;
 
 extern bool GeneralAlarm;
-extern bool friendlyDestroyed;
-extern bool enemyDestroyed;
+extern bool friendlydestroyed;
+extern bool enemydestroyed;
 extern bool invulnerableON; // Used for tutorials so mechs can take damage, but
 	// look like they are taking damage!  Otherwise, I'd
 	// just use NOPAIN!!
@@ -2349,7 +2349,7 @@ execObjectStatus(void)
 	{
 		//-------------------------------------------------------
 		// We have a group.  Act accordingly.
-		// No Group Check of actual status, return -1.
+		// No group Check of actual status, return -1.
 		// If any unit member is still alive, then the unit is...
 		bool disabled = true;
 		int32_t numObjects = getMovers(objectId, moverList);
@@ -2398,7 +2398,7 @@ execObjectStatusCount(void)
 	{
 		//--------------------------------------------
 		// We have a group.  Act accordingly.
-		// No Group Check of actual status, return -1.
+		// No group Check of actual status, return -1.
 		if ((objectId >= PlayerLance0) && (objectId < PlayerLance0 + MAX_MOVERGROUPS))
 			// Fatal(0, " ABL.objectStatusCount: bad id ");
 			Commander::commanders[0]->getGroup(objectId - PlayerLance0)->statusCount(tallyList);
@@ -2837,18 +2837,18 @@ execGetObjectiveFailed(void)
 
 //*****************************************************************************
 void
-execGetEnemyDestroyed(void)
+execGetEnemydestroyed(void)
 {
-	ABLi_pushBoolean(enemyDestroyed);
-	enemyDestroyed = false;
+	ABLi_pushBoolean(enemydestroyed);
+	enemydestroyed = false;
 }
 
 //*****************************************************************************
 void
-execGetFriendlyDestroyed(void)
+execGetFriendlydestroyed(void)
 {
-	ABLi_pushBoolean(friendlyDestroyed);
-	friendlyDestroyed = false;
+	ABLi_pushBoolean(friendlydestroyed);
+	friendlydestroyed = false;
 }
 
 //*****************************************************************************
@@ -4044,7 +4044,7 @@ execSetBuildingName(void)
 	if (obj)
 	{
 #ifdef USE_RESOURCE_STRINGS
-		char tmpString[255];
+		wchar_t tmpString[255];
 		cLoadString(thisInstance, newName + languageOffset, tmpString, 254);
 		obj->setName(tmpString);
 #endif
@@ -5254,11 +5254,11 @@ execIsGateOpen(void)
 		GeneralAlarm = (ABLi_popInteger() != 0);
 	}
 	//*****************************************************************************
-	void execFadeToColor(void)
+	void execFadeTocolour(void)
 	{
 		//-----------------------------------------------------
 		//
-		//	FadeToColor
+		//	FadeTocolour
 		//
 		//		Fades entire screen to color read in by the time read in.
 		//
@@ -5267,10 +5267,10 @@ execIsGateOpen(void)
 		//		RETURN: NONE
 		//
 		//-----------------------------------------------------
-		uint32_t fadeColor = ABLi_popInteger();
+		uint32_t fadecolour = ABLi_popInteger();
 		uint32_t fadeTime = ABLi_popReal();
 		if (eye)
-			eye->fadeToColor(fadeColor, fadeTime);
+			eye->fadeTocolour(fadecolour, fadeTime);
 	}
 	//*****************************************************************************
 	void execForceMovieEnd(void)
@@ -5719,7 +5719,7 @@ execIsGateOpen(void)
 			buttonId, isButton, isPressed, timeToScroll, numFlashes);
 		ABLi_pushBoolean(result);
 	}
-	static char tutorialMessages[MAX_CHAT_COUNT][1024];
+	static wchar_t tutorialMessages[MAX_CHAT_COUNT][1024];
 	static uint8_t currentMessage = 0;
 	//*****************************************************************************
 	void execTutorialText(void)
@@ -5965,11 +5965,11 @@ execIsGateOpen(void)
 	{
 		ABLStackItem value;
 		ABLi_popAnything(&value);
-		char s[256];
+		wchar_t s[256];
 		switch (value.type)
 		{
 		case ABL_STACKITEM_CHAR:
-			sprintf(s, "char=%c", value.data.character);
+			sprintf(s, "wchar_t=%c", value.data.character);
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_INTEGER:
@@ -5989,7 +5989,7 @@ execIsGateOpen(void)
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_INTEGER_PTR:
-			sprintf(s, "pint32_t=%d,%d,%d", value.data.integerPtr[0], value.data.integerPtr[1],
+			sprintf(s, "int32_t*=%d,%d,%d", value.data.integerPtr[0], value.data.integerPtr[1],
 				value.data.integerPtr[2]);
 			DEBUGWINS_print(s, 0);
 			break;
@@ -6068,7 +6068,7 @@ execIsGateOpen(void)
 #ifdef BUGLOG
 				if ((numWpns != mover->numFunctionalWeapons) && BugLog)
 				{
-					char s[50];
+					wchar_t s[50];
 					sprintf(s,
 						"[%.2f] ablmc2.execGetWeapons: numWpns != "
 						"numFunctionalWeapons (%05d)%s",
@@ -6146,8 +6146,8 @@ execIsGateOpen(void)
 	void execGetMapInfo(void)
 	{
 		int32_t* mapInfo = ABLi_popIntegerPtr();
-		mapInfo[0] = GameMap->getHeight();
-		mapInfo[1] = GameMap->getWidth();
+		mapInfo[0] = GameMap->getheight();
+		mapInfo[1] = GameMap->getwidth();
 	}
 	//*****************************************************************************
 	void execIsOffMap(void)
@@ -6264,7 +6264,7 @@ execIsGateOpen(void)
 			Fatal(0, " unable to create ABL file");
 		if (((std::unique_ptr<File>)*file)->create(filename) != NO_ERROR)
 		{
-			char s[256];
+			wchar_t s[256];
 			sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", filename);
 			Fatal(0, s);
 		}
@@ -6293,24 +6293,24 @@ execIsGateOpen(void)
 	//-----------------------------------------------------------------------------
 	bool ablFileEofCB(PVOID file) { return (((std::unique_ptr<File>)file)->eof()); }
 	//-----------------------------------------------------------------------------
-	int32_t ablFileReadCB(PVOID file, puint8_t buffer, int32_t length)
+	int32_t ablFileReadCB(PVOID file, uint8_t* buffer, int32_t length)
 	{
 		return (((std::unique_ptr<File>)file)->read(buffer, length));
 	}
 	//-----------------------------------------------------------------------------
 	int32_t ablFileReadLongCB(PVOID file) { return (((std::unique_ptr<File>)file)->readLong()); }
 	//-----------------------------------------------------------------------------
-	int32_t ablFileReadStringCB(PVOID file, puint8_t buffer)
+	int32_t ablFileReadStringCB(PVOID file, uint8_t* buffer)
 	{
 		return (((std::unique_ptr<File>)file)->readString(buffer));
 	}
 	//-----------------------------------------------------------------------------
-	int32_t ablFileReadLineExCB(PVOID file, puint8_t buffer, int32_t maxLength)
+	int32_t ablFileReadLineExCB(PVOID file, uint8_t* buffer, int32_t maxLength)
 	{
 		return (((std::unique_ptr<File>)file)->readLineEx(buffer, maxLength));
 	}
 	//-----------------------------------------------------------------------------
-	int32_t ablFileWriteCB(PVOID file, puint8_t buffer, int32_t length)
+	int32_t ablFileWriteCB(PVOID file, uint8_t* buffer, int32_t length)
 	{
 		return (((std::unique_ptr<File>)file)->write(buffer, length));
 	}
@@ -6333,7 +6333,7 @@ execIsGateOpen(void)
 	void ablDebuggerPrintCallback(const std::wstring_view& s)
 	{
 		// ABLDebuggerOut->print(s);
-		char msg[1024];
+		wchar_t msg[1024];
 		sprintf(msg, "%s\n", s);
 		SPEW((0, msg));
 	}
@@ -6347,7 +6347,7 @@ execIsGateOpen(void)
 	extern GameObjectPtr LastCoreAttackTarget;
 	void ablEndlessStateCallback(UserFile * log)
 	{
-		char s[256];
+		wchar_t s[256];
 		sprintf(s, "Mover = %s (%d)", CurWarrior->getVehicle()->getName(),
 			CurWarrior->getVehicle()->getPartId());
 		log->write(s);
@@ -6597,7 +6597,7 @@ execIsGateOpen(void)
 		ABLi_addFunction("setdebugwindow", false, "ii", "i", execSetDebugWindow);
 		ABLi_addFunction("setmoviemode", false, nullptr, nullptr, execSetMovieMode);
 		ABLi_addFunction("endmoviemode", false, nullptr, nullptr, execEndMovieMode);
-		ABLi_addFunction("fadetocolor", false, "ir", nullptr, execFadeToColor);
+		ABLi_addFunction("fadetocolor", false, "ir", nullptr, execFadeTocolour);
 		ABLi_addFunction("forcemovieend", false, nullptr, "i", execForceMovieEnd);
 		ABLi_addFunction("getcameraposition", false, "R", nullptr, execGetCameraPosition);
 		ABLi_addFunction("setcameraposition", false, "R", nullptr, execSetCameraPosition);
@@ -6622,8 +6622,8 @@ execIsGateOpen(void)
 		ABLi_addFunction("getmissionlost", false, nullptr, "b", execGetMissionLost);
 		ABLi_addFunction("getobjectivesuccess", false, nullptr, "b", execGetObjectiveSuccess);
 		ABLi_addFunction("getobjectivefailed", false, nullptr, "b", execGetObjectiveFailed);
-		ABLi_addFunction("getenemydestroyed", false, nullptr, "b", execGetEnemyDestroyed);
-		ABLi_addFunction("getfriendlydestroyed", false, nullptr, "b", execGetFriendlyDestroyed);
+		ABLi_addFunction("getenemydestroyed", false, nullptr, "b", execGetEnemydestroyed);
+		ABLi_addFunction("getfriendlydestroyed", false, nullptr, "b", execGetFriendlydestroyed);
 		ABLi_addFunction("getplayerincombat", false, nullptr, "b", execPlayerInCombat);
 		ABLi_addFunction("getsensorsactive", false, nullptr, "b", execGetSensorsActive);
 		ABLi_addFunction("getcurrentmusicid", false, nullptr, "i", execGetCurrentMusicId);

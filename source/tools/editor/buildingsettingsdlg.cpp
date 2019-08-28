@@ -105,8 +105,8 @@ BuildingSettingsDlg::applyChanges()
 	}
 	uint32_t base = 0, color1 = 0, color2 = 0;
 	bool bBase = false;
-	bool bColor1 = false;
-	bool bColor2 = false;
+	bool bcolour1 = false;
+	bool bcolour2 = false;
 	// now figure out the colors
 	CWnd* pWnd = GetDlgItem(IDC_BASE);
 	if (pWnd)
@@ -128,7 +128,7 @@ BuildingSettingsDlg::applyChanges()
 		pWnd->GetWindowText(tmpStr);
 		if (tmpStr.GetLength())
 		{
-			bColor1 = true;
+			bcolour1 = true;
 			tmpStr.Replace("0x", "");
 			sscanf_s(tmpStr, "%x", &color1);
 			color1 |= 0xff000000;
@@ -141,7 +141,7 @@ BuildingSettingsDlg::applyChanges()
 		pWnd->GetWindowText(tmpStr);
 		if (tmpStr.GetLength())
 		{
-			bColor2 = true;
+			bcolour2 = true;
 			tmpStr.Replace("0x", "");
 			sscanf_s(tmpStr, "%x", &color2);
 			color2 |= 0xff000000;

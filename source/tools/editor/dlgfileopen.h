@@ -61,10 +61,10 @@ protected:
 	inline DlgFileOpen(void);
 	DlgFileOpen& operator=(const DlgFileOpen& lgFileOpen);
 
-	char fileName[MAX_PATH];
-	char extension[8];
+	wchar_t fileName[MAX_PATH];
+	wchar_t extension[8];
 
-	char m_directory[MAX_PATH];
+	wchar_t m_directory[MAX_PATH];
 	bool m_bSave;
 };
 

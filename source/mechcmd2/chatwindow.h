@@ -22,8 +22,8 @@ class ChatMessageItem : public aListItem
 {
 public:
 	ChatMessageItem(void);
-	void setPlayerColor(int32_t color);
-	void setTextColor(int32_t color);
+	void setPlayercolour(int32_t color);
+	void setTextcolour(int32_t color);
 	void setPlayerName(const std::wstring_view& name);
 	int32_t setText(const std::wstring_view& text); // returns number of lines
 	int32_t getLineCount() { return lineCount; }

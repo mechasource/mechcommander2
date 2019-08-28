@@ -46,7 +46,7 @@ MissionResults::begin()
 		soundSystem->stopSupportSample();
 	if (!MPlayer)
 	{
-		char path[256];
+		wchar_t path[256];
 		FitIniFile file;
 		if (!LogisticsData::instance->skipSalvageScreen())
 		{
@@ -55,7 +55,7 @@ MissionResults::begin()
 			strcat(path, "mcui_mr_layout.fit");
 			if (NO_ERROR != file.open(path))
 			{
-				char error[256];
+				wchar_t error[256];
 				sprintf(error, "couldn't open file %s", path);
 				Assert(0, 0, error);
 				return;
@@ -71,7 +71,7 @@ MissionResults::begin()
 			pPilotScreen = new PilotReviewScreen();
 			if (NO_ERROR != file.open(path))
 			{
-				char error[256];
+				wchar_t error[256];
 				sprintf(error, "couldn't open file %s", path);
 				Assert(0, 0, error);
 				return;
@@ -111,9 +111,9 @@ MissionResults::end()
 	if (pMissionName && !LogisticsData::instance->isSingleMission() && !LogisticsData::instance->campaignOver() && !MPlayer)
 	{
 		FitIniFile file;
-		char name[256];
+		wchar_t name[256];
 		cLoadString(IDS_AUTOSAVE_NAME, name, 255);
-		char fullName[256];
+		wchar_t fullName[256];
 		sprintf(fullName, name, pMissionName);
 		FullPathFileName path;
 		path.init(savePath, fullName, ".fit");

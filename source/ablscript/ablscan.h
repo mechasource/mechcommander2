@@ -149,7 +149,7 @@ struct Literal
 	{
 		int32_t integer;
 		float real;
-		char string[MAXLEN_TOKENSTRING];
+		wchar_t string[MAXLEN_TOKENSTRING];
 	} value;
 };
 
@@ -176,11 +176,11 @@ public:
 	static int32_t(__stdcall* openCB)(PVOID* file, const std::wstring_view& filename);
 	static int32_t(__stdcall* closeCB)(PVOID* file);
 	static bool(__stdcall* eofCB)(PVOID file);
-	static int32_t(__stdcall* readCB)(PVOID file, puint8_t buffer, int32_t length);
+	static int32_t(__stdcall* readCB)(PVOID file, uint8_t* buffer, int32_t length);
 	static int32_t(__stdcall* readLongCB)(PVOID file);
-	static int32_t(__stdcall* readStringCB)(PVOID file, puint8_t buffer);
-	static int32_t(__stdcall* readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength);
-	static int32_t(__stdcall* writeCB)(PVOID file, puint8_t buffer, int32_t length);
+	static int32_t(__stdcall* readStringCB)(PVOID file, uint8_t* buffer);
+	static int32_t(__stdcall* readLineExCB)(PVOID file, uint8_t* buffer, int32_t maxLength);
+	static int32_t(__stdcall* writeCB)(PVOID file, uint8_t* buffer, int32_t length);
 	static int32_t(__stdcall* writeByteCB)(PVOID file, uint8_t byte);
 	static int32_t(__stdcall* writeLongCB)(PVOID file, int32_t value);
 	static int32_t(__stdcall* writeStringCB)(PVOID file, const std::wstring_view& buffer);
@@ -205,11 +205,11 @@ public:
 	int32_t open(const std::wstring_view& fileName);
 	int32_t close(void);
 	bool eof(void);
-	int32_t read(puint8_t buffer, int32_t length);
+	int32_t read(uint8_t* buffer, int32_t length);
 	int32_t readLong(void);
-	int32_t readString(puint8_t buffer);
-	int32_t readLineEx(puint8_t buffer, int32_t maxLength);
-	int32_t write(puint8_t buffer, int32_t length);
+	int32_t readString(uint8_t* buffer);
+	int32_t readLineEx(uint8_t* buffer, int32_t maxLength);
+	int32_t write(uint8_t* buffer, int32_t length);
 	int32_t writeByte(uint8_t val);
 	int32_t writeLong(int32_t val);
 	int32_t writeString(const std::wstring_view& buffer);
@@ -246,7 +246,7 @@ void __stdcall printPageHeader(void);
 //----------
 // VARIABLES
 
-extern char wordString[MAXLEN_TOKENSTRING];
+extern wchar_t wordString[MAXLEN_TOKENSTRING];
 extern PVOID(__stdcall* ABLSystemMallocCallback)(size_t memSize);
 extern PVOID(__stdcall* ABLStackMallocCallback)(size_t memSize);
 extern PVOID(__stdcall* ABLCodeMallocCallback)(size_t memSize);

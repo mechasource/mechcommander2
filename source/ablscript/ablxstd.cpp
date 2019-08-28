@@ -60,12 +60,12 @@ TokenCodeType ExitStateCodeSegment[2] = {TKN_END_STATE, TKN_SEMICOLON};
 // USEFUL ABL HELP ROUTINES
 //***************************************************************************
 
-char
+wchar_t
 ABLi_popChar(void)
 {
 	getCodeToken();
 	execExpression();
-	char val = (char)tos->integer;
+	wchar_t val = (wchar_t)tos->integer;
 	pop();
 	return (val);
 }
@@ -267,7 +267,7 @@ ABLi_pushReal(float value)
 //---------------------------------------------------------------------------
 
 void
-ABLi_pushChar(char value)
+ABLi_pushChar(wchar_t value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -509,7 +509,7 @@ execStdPrint(void)
 	// Get parameter expression...
 	getCodeToken();
 	const std::unique_ptr<Type>& paramTypePtr = execExpression();
-	char buffer[20];
+	wchar_t buffer[20];
 	const std::wstring_view& s = buffer;
 	if (paramTypePtr == IntegerTypePtr)
 		sprintf(buffer, "%d", tos->integer);
@@ -524,7 +524,7 @@ execStdPrint(void)
 	pop();
 	if (debugger)
 	{
-		char message[512];
+		wchar_t message[512];
 		sprintf(message, "PRINT:  \"%s\"", s);
 		debugger->print(message);
 		sprintf(message, "   MODULE %s", CurModule->getName());
@@ -574,7 +574,7 @@ execStdConcat(void)
 	// Get item to append...
 	getCodeToken();
 	const std::unique_ptr<Type>& paramTypePtr = execExpression();
-	char buffer[20];
+	wchar_t buffer[20];
 	if (paramTypePtr == IntegerTypePtr)
 	{
 		sprintf(buffer, "%d", tos->integer);
@@ -735,14 +735,14 @@ execStdFatal(void)
 	//
 	//		PARAMS:	integer							fatal code to display
 	//
-	//				char[]							message
+	//				wchar_t[]							message
 	//
 	//		RETURN: none
 	//
 	//----------------------------------------------------------------------
 	int32_t code = ABLi_popInteger();
 	const std::wstring_view& s = ABLi_popCharPtr();
-	char message[512];
+	wchar_t message[512];
 	if (debugger)
 	{
 		sprintf(message, "FATAL:  [%d] \"%s\"", code, s);
@@ -772,16 +772,16 @@ execStdAssert(void)
 	//	ASSERT function:
 	//
 	//		If the debugger is active, this immediately jumps into debug mode
-	//		if expression is FALSE. Otherwise, the assert statement is ignored
+	//		if expression is FALSE. Otherwise, the _ASSERT statement is ignored
 	//		unless the #debug directive has been issued in the module. If
 	//		so, a fatal occurs and exits the game (displaying the
 	//		string passed in).
 	//
 	//		PARAMS:	boolean							expression
 	//
-	//				integer							assert code to display
+	//				integer							_ASSERT code to display
 	//
-	//				char[]							message
+	//				wchar_t[]							message
 	//
 	//		RETURN: none
 	//
@@ -791,7 +791,7 @@ execStdAssert(void)
 	const std::wstring_view& s = ABLi_popCharPtr();
 	if (!expression)
 	{
-		char message[512];
+		wchar_t message[512];
 		if (debugger)
 		{
 			sprintf(message, "ASSERT:  [%d] \"%s\"", code, s);
@@ -882,7 +882,7 @@ execStdGetCurrentStateHandle(void)
 
 extern const std::unique_ptr<ModuleEntry>& ModuleRegistry;
 
-extern char SetStateDebugStr[256];
+extern wchar_t SetStateDebugStr[256];
 
 void
 execStdSetState(void)
@@ -960,7 +960,7 @@ initStandardRoutines(void)
 	// 'em in the rest of the ABL code (example: ignore asserts if
 	// the assert_off option has been set).
 	enterStandardRoutine("fatal", RTN_FATAL, false, "iC", nullptr, execStdFatal);
-	enterStandardRoutine("assert", RTN_ASSERT, false, "biC", nullptr, execStdAssert);
+	enterStandardRoutine("_ASSERT", RTN_ASSERT, false, "biC", nullptr, execStdAssert);
 	enterStandardRoutine(
 		"getstatehandle", RTN_GET_STATE_HANDLE, false, "C", "i", execStdGetStateHandle);
 	enterStandardRoutine(
@@ -1004,7 +1004,7 @@ execStandardRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool 
 	{
 		if (key >= NumStandardFunctions)
 		{
-			char err[255];
+			wchar_t err[255];
 			sprintf(err, " ABL: Undefined ABL RoutineKey in %s:%d", CurModule->getName(),
 				execLineNumber);
 			ABL_Fatal(0, err);
@@ -1016,7 +1016,7 @@ execStandardRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool 
 			(*FunctionCallbackTable[key])();
 		else
 		{
-			char err[255];
+			wchar_t err[255];
 			sprintf(err, " ABL: Undefined ABL RoutineKey %d in %s:%d", key, CurModule->getName(),
 				execLineNumber);
 			ABL_Fatal(key, err);

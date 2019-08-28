@@ -76,8 +76,8 @@ public:
 	int32_t getFitID(void) const { return pVariant->chassis->fitID; }
 	int32_t save(FitIniFile& file, int32_t count);
 
-	void setColors(uint32_t base, uint32_t high1, uint32_t high2);
-	void getColors(uint32_t& base, uint32_t& high1, uint32_t& high2) const;
+	void setcolours(uint32_t base, uint32_t high1, uint32_t high2);
+	void getcolours(uint32_t& base, uint32_t& high1, uint32_t& high2) const;
 	int32_t getIconIndex(void) const { return pVariant->chassis->iconPictureIndex; }
 
 	LogisticsVariant* getVariant() { return pVariant; }
@@ -89,9 +89,9 @@ private:
 	int32_t forceGroup; // 0 if none, 1 if otherwise
 	LogisticsPilot* pilot;
 	int32_t ID;
-	int32_t baseColor;
-	int32_t highlightColor1;
-	int32_t highlightColor2;
+	int32_t basecolour;
+	int32_t highlightcolour1;
+	int32_t highlightcolour2;
 
 	// DATA
 

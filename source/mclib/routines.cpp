@@ -10,7 +10,7 @@
 #include "stdinc.h"
 
 // #include <stdlib.h>
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 // void memclear(PVOID Dest,size_t Length);
 // void memfill(PVOID Dest,size_t Length);

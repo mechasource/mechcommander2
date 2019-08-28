@@ -50,7 +50,7 @@ aScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	pageInc = 10;
 	scrollTab.lightEdge = 0xff005392;
 	scrollTab.darkEdge = 0xff002D51;
-	scrollTab.regularColor = 0xff004275;
+	scrollTab.regularcolour = 0xff004275;
 	return (NO_ERROR);
 }
 
@@ -218,16 +218,16 @@ int32_t
 mcScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
 	FitIniFile file;
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, artPath);
 	strcat(path, "scrollbar.fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 	}
-	setColor(0, 0); // black background
+	setcolour(0, 0); // black background
 	color = 0xff002F55; // outline color
 	topButton.init(file, "ScrollButton0");
 	bottomButton.init(file, "ScrollButton1");
@@ -266,7 +266,7 @@ mcScrollBar::setGreen()
 	scrollTab.setAnimationInfo(&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
 	scrollTab.lightEdge = 0xff6E7C00;
 	scrollTab.darkEdge = 0xff303600;
-	scrollTab.regularColor = 0xff586300;
+	scrollTab.regularcolour = 0xff586300;
 	color = (0xff6E7C00);
 }
 
@@ -278,7 +278,7 @@ mcScrollBar::setOrange()
 	scrollTab.setAnimationInfo(&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
 	scrollTab.lightEdge = 0xffC66600;
 	scrollTab.darkEdge = 0xff5C2F00;
-	scrollTab.regularColor = 0xff9E5200;
+	scrollTab.regularcolour = 0xff9E5200;
 	color = (0xff43311C);
 }
 
@@ -287,7 +287,7 @@ mcScrollButton::render()
 {
 	if (isShowing() && state != DISABLED)
 	{
-		setColor(regularColor);
+		setcolour(regularcolour);
 		aButton::render();
 		RECT rect = {globalX(), globalY(), globalRight() - 1, globalBottom() - 1};
 		drawEmptyRect(rect, lightEdge, darkEdge);

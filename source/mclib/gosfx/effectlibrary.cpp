@@ -6,7 +6,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "gosFXHeaders.hpp"
+#include "gosfx/gosfxheaders.h"
 
 gosFX::EffectLibrary* gosFX::EffectLibrary::Instance = nullptr;
 

@@ -120,7 +120,7 @@ MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t
 	MLRTexture* orgTexture = (*MLRTexturePool::Instance)[referenceState.GetTextureHandle()];
 	Check_Object(orgTexture);
 	const std::wstring_view& texName = orgTexture->GetTextureName();
-	char texRoot[1024], name[1024];
+	wchar_t texRoot[1024], name[1024];
 	size_t len;
 	if ((len = strlen(texName)) > 0)
 	{
@@ -240,7 +240,7 @@ MLR_Terrain2::Save(std::iostream stream)
 		Check_Object(MLRTexturePool::Instance);
 		MLRTexture *orgTexture =
 	(*MLRTexturePool::Instance)[referenceState.GetTextureHandle()]; const std::wstring_view&
-	texName = orgTexture->GetTextureName(); char texRoot[1024], name[1024];
+	texName = orgTexture->GetTextureName(); wchar_t texRoot[1024], name[1024];
 
 		size_t len;
 		if((len = strlen(texName)) > 0)
@@ -388,7 +388,7 @@ MLR_Terrain2::CalculateUVs()
 
 #undef CLASSNAME
 
-extern RGBAColor errorColor;
+extern RGBAcolour errorcolour;
 extern bool
 CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs, uint32_t stride);
 
@@ -468,13 +468,13 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 					SPEW(("micgaert", "projection = %f,%f,%f", hitPoint.x, hitPoint.y, hitPoint.z));
 #endif
 				float sq_falloff = falloff * falloff * light->GetIntensity();
-				RGBAColor color;
-				light->GetColor(color);
+				RGBAcolour color;
+				light->Getcolour(color);
 				color.red *= sq_falloff;
 				color.green *= sq_falloff;
 				color.blue *= sq_falloff;
 				color.alpha = 1.0f;
-				lightMap->AddColor(color);
+				lightMap->Addcolour(color);
 				for (k = 0; k < 3; k++)
 				{
 					lightMap->AddCoord(coords[index[k + j]]);
@@ -633,7 +633,7 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor((*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k],
+					lightMap->Addcolour((*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k],
 						(*lightMapSqFalloffs)[k], 1.0f);
 				}
 				for (k = 0; k < 3; k++)
@@ -666,7 +666,7 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(RGBAColor(0.0f, 0.0f, 0.5f, 1.0f));
+					lightMap->Addcolour(RGBAcolour(0.0f, 0.0f, 0.5f, 1.0f));
 				}
 				for (k = 0; k < 3; k++)
 				{
@@ -685,7 +685,7 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(RGBAColor(0.5f, 0.0f, 0.0f, 1.0f));
+					lightMap->Addcolour(RGBAcolour(0.5f, 0.0f, 0.0f, 1.0f));
 				}
 				for (k = 0; k < 3; k++)
 				{
@@ -704,7 +704,7 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(
+					lightMap->Addcolour(
 						lightMapSqFalloffs[k], lightMapSqFalloffs[k], lightMapSqFalloffs[k], 1.0f);
 				}
 				for (k = 0; k < 3; k++)
@@ -724,7 +724,7 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(errorColor);
+					lightMap->Addcolour(errorcolour);
 				}
 				for (k = 0; k < 3; k++)
 				{

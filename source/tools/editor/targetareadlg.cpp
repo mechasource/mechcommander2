@@ -7,7 +7,7 @@ TargetAreaDlg.cpp			: Implementation of the TargetAreaDlg component.
 
 //#include "resource.h"
 //#include <stdlib.h>
-//#include <assert.h>
+//#include <_ASSERT.h>
 //#include "estring.h"
 //#include "targetareadlg.h"
 //#include "objective.h"
@@ -31,15 +31,15 @@ BOOL
 TargetAreaDlg::OnInitDialog()
 {
 	m_pTargetCenterXEditBox = (CEdit*)GetDlgItem(IDC_TARGET_AREA_CENTER_X_EDIT);
-	assert(m_pTargetCenterXEditBox);
+	_ASSERT(m_pTargetCenterXEditBox);
 	m_pTargetCenterYEditBox = (CEdit*)GetDlgItem(IDC_TARGET_AREA_CENTER_Y_EDIT);
-	assert(m_pTargetCenterYEditBox);
+	_ASSERT(m_pTargetCenterYEditBox);
 	m_pTargetRadiusEditBox = (CEdit*)GetDlgItem(IDC_TARGET_AREA_RADIUS_EDIT);
-	assert(m_pTargetRadiusEditBox);
+	_ASSERT(m_pTargetRadiusEditBox);
 	m_pCancelButton = (CButton*)GetDlgItem(IDCANCEL);
-	assert(m_pCancelButton);
+	_ASSERT(m_pCancelButton);
 	m_pOKButton = (CButton*)GetDlgItem(IDOK);
-	assert(m_pOKButton);
+	_ASSERT(m_pOKButton);
 	const std::wstring_view& tmpStr;
 	tmpStr.Format("%.3f", (*m_pTargetCenterX));
 	m_pTargetCenterXEditBox->SetWindowText(tmpStr.Data());
@@ -54,8 +54,8 @@ BOOL
 TargetAreaDlg::OnCommand(WPARAM wparam,
 	LPARAM lparam) // called by child controls to inform of an event
 {
-	assert(m_pCancelButton);
-	assert(m_pOKButton);
+	_ASSERT(m_pCancelButton);
+	_ASSERT(m_pOKButton);
 	return inherited::OnCommand(wparam, lparam);
 }
 

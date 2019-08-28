@@ -140,7 +140,7 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 		if (result != NO_ERROR)
 			terrainLightOuterRadius = 250.0f;
 	}
-	char aseFileName[512];
+	wchar_t aseFileName[512];
 	result = iniFile.readIdString("FileName", aseFileName, 511);
 	auto i;
 	if (result != NO_ERROR)
@@ -148,8 +148,8 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 		// Check for LOD filenames instead
 		for (i = 0; i < MAX_LODS; i++)
 		{
-			char baseName[256];
-			char baseLODDist[256];
+			wchar_t baseName[256];
+			wchar_t baseLODDist[256];
 			sprintf_s(baseName, _countof(baseName), "FileName%d", i);
 			sprintf_s(baseLODDist, _countof(baseLODDist), "Distance%d", i);
 			result = iniFile.readIdString(baseName, aseFileName, 511);
@@ -250,12 +250,12 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 	// We can load up to 10 Animation States.
 	for (size_t i = 0; i < MAX_BD_ANIMATIONS; i++)
 	{
-		char blockId[512];
+		wchar_t blockId[512];
 		sprintf(blockId, "Animation:%d", i);
 		result = iniFile.seekBlock(blockId);
 		if (result == NO_ERROR)
 		{
-			char animName[512];
+			wchar_t animName[512];
 			result = iniFile.readIdString("AnimationName", animName, 511);
 			gosASSERT(result == NO_ERROR);
 			result = iniFile.readIdBoolean("LoopAnimation", bdAnimLoop[i]);
@@ -319,9 +319,9 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 		gosASSERT(nodeData != nullptr);
 		for (i = 0; i < MAX_WEAPON_NODES; i++)
 		{
-			char blockId[512];
+			wchar_t blockId[512];
 			sprintf(blockId, "WeaponNodeId%d", i);
-			char weaponName[512];
+			wchar_t weaponName[512];
 			result = iniFile.readIdString(blockId, weaponName, 511);
 			if (result != NO_ERROR)
 			{
@@ -504,7 +504,7 @@ BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 	rotationalNodeId = -1;
 	hitNodeId = activityNodeId = activityNode1Id = -1;
 	currentFlash = duration = flashDuration = 0.0f;
-	flashColor = 0x00000000;
+	flashcolour = 0x00000000;
 	drawFlash = false;
 	pointLight = nullptr;
 	lightId = 0xffffffff;
@@ -536,9 +536,9 @@ BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		// Load the texture and store its handle.
 		for (i = 0; i < bldgShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			bldgShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -574,9 +574,9 @@ BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			// Load the texture and store its handle.
 			for (size_t i = 0; i < bldgShadowShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				bldgShadowShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -743,9 +743,9 @@ BldgAppearance::setObjStatus(int32_t oStatus)
 			// Load the texture and store its handle.
 			for (size_t i = 0; i < bldgShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				bldgShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -782,9 +782,9 @@ BldgAppearance::setObjStatus(int32_t oStatus)
 			// Load the texture for the shadow and store its handle.
 			for (size_t i = 0; i < bldgShadowShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				bldgShadowShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -1175,9 +1175,9 @@ BldgAppearance::recalcBounds(void)
 							// Load the texture and store its handle.
 							for (size_t j = 0; j < bldgShape->GetNumTextures(); j++)
 							{
-								char txmName[1024];
+								wchar_t txmName[1024];
 								bldgShape->GetTextureName(j, txmName, 256);
-								char texturePath[1024];
+								wchar_t texturePath[1024];
 								sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 								FullPathFileName textureName;
 								textureName.init(texturePath, txmName, "");
@@ -1225,9 +1225,9 @@ BldgAppearance::recalcBounds(void)
 							// Load the texture and store its handle.
 							for (size_t i = 0; i < bldgShape->GetNumTextures(); i++)
 							{
-								char txmName[1024];
+								wchar_t txmName[1024];
 								bldgShape->GetTextureName(i, txmName, 256);
-								char texturePath[1024];
+								wchar_t texturePath[1024];
 								sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 								FullPathFileName textureName;
 								textureName.init(texturePath, txmName, "");
@@ -1279,7 +1279,7 @@ BldgAppearance::recalcBounds(void)
 
 //-----------------------------------------------------------------------------
 bool
-BldgAppearance::playDestruction(void)
+BldgAppearance::playdestruction(void)
 {
 	// Check if there is a Destruct FX
 	if (appearType->destructEffect[0])
@@ -1346,11 +1346,11 @@ BldgAppearance::render(int32_t depthFixup)
 		}
 		else
 		{
-			bldgShape->SetARGBHighLight(highlightColor);
+			bldgShape->SetARGBHighLight(highlightcolour);
 		}
 		if (drawFlash)
 		{
-			bldgShape->SetARGBHighLight(flashColor);
+			bldgShape->SetARGBHighLight(flashcolour);
 		}
 		//---------------------------------------------
 		// Call Multi-shape render stuff here.
@@ -1374,7 +1374,7 @@ BldgAppearance::render(int32_t depthFixup)
 		{
 			if (objectNameId != -1)
 			{
-				char tmpString[255];
+				wchar_t tmpString[255];
 				cLoadString(objectNameId, tmpString, 254);
 				drawTextHelp(tmpString, color);
 			}
@@ -1764,7 +1764,7 @@ BldgAppearance::update(bool animate)
 			}
 			fogLightSet = true;
 		}
-		eye->setLightColor(0, lightRGB);
+		eye->setLightcolour(0, lightRGB);
 		eye->setLightIntensity(0, 1.0);
 		if (useFog)
 			bldgShape->SetFogRGB(fogRGB);
@@ -2062,7 +2062,7 @@ BldgAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;
-	flashColor = color;
+	flashcolour = color;
 	drawFlash = true;
 	currentFlash = flashDuration;
 }
@@ -2104,7 +2104,7 @@ BldgAppearance::destroy(void)
 //-----------------------------------------------------------------------------
 
 int32_t
-BldgAppearance::calcCellsCovered(Stuff::Vector3D& pos, pint16_t cellList)
+BldgAppearance::calcCellsCovered(Stuff::Vector3D& pos, int16_t* cellList)
 {
 	gosASSERT((Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM) == GameMap->width);
 	int32_t numCoords = 0;
@@ -2218,13 +2218,13 @@ BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t c
 						// pTmp->specialType = type;
 						// pTmp->specialID = counter;
 					}
-					float cellLocalHeight = vertexPos.z * metersPerWorldUnit * 0.25f;
-					if (cellLocalHeight > 15.0f)
-						cellLocalHeight = 15.0f;
+					float cellLocalheight = vertexPos.z * metersPerWorldUnit * 0.25f;
+					if (cellLocalheight > 15.0f)
+						cellLocalheight = 15.0f;
 					// ONLY mark LOS on cells that are impassable with forests.
 					// Maybe everything?
-					if (pTmp->passable && (pTmp->lineOfSight < cellLocalHeight))
-						pTmp->lineOfSight = cellLocalHeight + 0.5f;
+					if (pTmp->passable && (pTmp->lineOfSight < cellLocalheight))
+						pTmp->lineOfSight = cellLocalheight + 0.5f;
 				}
 			}
 		}
@@ -2307,11 +2307,11 @@ BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t c
 						}
 						if (type != 18)
 						{
-							float cellLocalHeight = vertexPos.z * metersPerWorldUnit * 0.25f;
-							if (cellLocalHeight > 15.0f)
-								cellLocalHeight = 15.0f;
-							if (pTmp->lineOfSight < cellLocalHeight)
-								pTmp->lineOfSight = cellLocalHeight + 0.5f;
+							float cellLocalheight = vertexPos.z * metersPerWorldUnit * 0.25f;
+							if (cellLocalheight > 15.0f)
+								cellLocalheight = 15.0f;
+							if (pTmp->lineOfSight < cellLocalheight)
+								pTmp->lineOfSight = cellLocalheight + 0.5f;
 						}
 					}
 				}
@@ -2412,7 +2412,7 @@ BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t c
 
 int32_t
 BldgAppearance::markMoveMap(
-	bool passable, int32_t* lineOfSightRect, bool useHeight, pint16_t cellList)
+	bool passable, int32_t* lineOfSightRect, bool useheight, int16_t* cellList)
 {
 	int32_t minRow = 9999;
 	int32_t maxRow = 0;
@@ -2431,7 +2431,7 @@ BldgAppearance::markMoveMap(
 	int32_t numCoords = 0;
 	if (cellList)
 	{
-		gosASSERT(!useHeight);
+		gosASSERT(!useheight);
 		//----------------------------------------------------------------------------------
 		// Store the max number of coords allowed in the first cell. Can
 		// overwrite it now...
@@ -2582,17 +2582,17 @@ BldgAppearance::markLOS(bool clearIt)
 				MapCellPtr curCell = GameMap->getCell(cellR, cellC);
 				if (!clearIt)
 				{
-					float currentCellHeight = curCell->getLocalHeight();
-					float cellLocalHeight = vertexPos.z * metersPerWorldUnit * 0.25f;
-					if (cellLocalHeight > 15.0f)
-						cellLocalHeight = 15.0f;
-					if (cellLocalHeight > currentCellHeight)
-						curCell->setLocalHeight(cellLocalHeight + 0.5f);
+					float currentCellheight = curCell->getLocalheight();
+					float cellLocalheight = vertexPos.z * metersPerWorldUnit * 0.25f;
+					if (cellLocalheight > 15.0f)
+						cellLocalheight = 15.0f;
+					if (cellLocalheight > currentCellheight)
+						curCell->setLocalheight(cellLocalheight + 0.5f);
 				}
 				else // We want to clear all LOS height INFO.  We're about to
 					// change shape!!
 				{
-					curCell->setLocalHeight(0.0f);
+					curCell->setLocalheight(0.0f);
 				}
 			}
 		}
@@ -2662,15 +2662,15 @@ TreeAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.readIdBoolean("ForestClump", isForestClump);
 	if (result != NO_ERROR)
 		isForestClump = false;
-	char aseFileName[512];
+	wchar_t aseFileName[512];
 	result = iniFile.readIdString("FileName", aseFileName, 511);
 	if (result != NO_ERROR)
 	{
 		// Check for LOD filenames instead
 		for (size_t i = 0; i < MAX_LODS; i++)
 		{
-			char baseName[256];
-			char baseLODDist[256];
+			wchar_t baseName[256];
+			wchar_t baseLODDist[256];
 			sprintf(baseName, "FileName%d", i);
 			sprintf(baseLODDist, "Distance%d", i);
 			result = iniFile.readIdString(baseName, aseFileName, 511);
@@ -2833,9 +2833,9 @@ TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		// Load the texture and store its handle.
 		for (i = 0; i < treeShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			treeShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -2871,9 +2871,9 @@ TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			// Load the texture and store its handle.
 			for (size_t i = 0; i < treeShadowShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				treeShadowShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -3014,9 +3014,9 @@ TreeAppearance::setObjStatus(int32_t oStatus)
 		{
 			for (size_t i = 0; i < treeShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				treeShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -3053,9 +3053,9 @@ TreeAppearance::setObjStatus(int32_t oStatus)
 			// Load the texture and store its handle.
 			for (size_t i = 0; i < treeShadowShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				treeShadowShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -3317,9 +3317,9 @@ TreeAppearance::recalcBounds(void)
 						// Load the texture and store its handle.
 						for (size_t j = 0; j < treeShape->GetNumTextures(); j++)
 						{
-							char txmName[1024];
+							wchar_t txmName[1024];
 							treeShape->GetTextureName(j, txmName, 256);
-							char texturePath[1024];
+							wchar_t texturePath[1024];
 							sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 							FullPathFileName textureName;
 							textureName.init(texturePath, txmName, "");
@@ -3365,9 +3365,9 @@ TreeAppearance::recalcBounds(void)
 						// Load the texture and store its handle.
 						for (size_t i = 0; i < treeShape->GetNumTextures(); i++)
 						{
-							char txmName[1024];
+							wchar_t txmName[1024];
 							treeShape->GetTextureName(i, txmName, 256);
-							char texturePath[1024];
+							wchar_t texturePath[1024];
 							sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 							FullPathFileName textureName;
 							textureName.init(texturePath, txmName, "");
@@ -3444,7 +3444,7 @@ TreeAppearance::render(int32_t depthFixup)
 		{
 			if (objectNameId != -1)
 			{
-				char tmpString[255];
+				wchar_t tmpString[255];
 				cLoadString(objectNameId, tmpString, 254);
 				drawTextHelp(tmpString, color);
 			}
@@ -3616,8 +3616,8 @@ TreeAppearance::update(bool animate)
 		treeShape->SetFogRGB(fogRGB);
 	else
 		treeShape->SetFogRGB(0xffffffff);
-	uint32_t oldRGB = eye->getLightColor(1);
-	eye->setLightColor(1, lightRGB);
+	uint32_t oldRGB = eye->getLightcolour(1);
+	eye->setLightcolour(1, lightRGB);
 	eye->setLightIntensity(1, 1.0);
 	if (forceLightsOut)
 		treeShape->SetLightsOut(true);
@@ -3643,7 +3643,7 @@ TreeAppearance::update(bool animate)
 			beenInView = true;
 	}
 	// Set Ambient back to normal color.
-	eye->setLightColor(1, oldRGB);
+	eye->setLightcolour(1, oldRGB);
 	return TRUE;
 }
 
@@ -3686,11 +3686,11 @@ TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t c
 				if (vertexPos.z >= 1.0f)
 				{
 					pTmp->forest = true;
-					float cellLocalHeight = vertexPos.z * metersPerWorldUnit * 0.25f;
-					if (cellLocalHeight > 15.0f)
-						cellLocalHeight = 15.0f;
-					if (pTmp->lineOfSight < cellLocalHeight)
-						pTmp->lineOfSight = cellLocalHeight + 0.5f;
+					float cellLocalheight = vertexPos.z * metersPerWorldUnit * 0.25f;
+					if (cellLocalheight > 15.0f)
+						cellLocalheight = 15.0f;
+					if (pTmp->lineOfSight < cellLocalheight)
+						pTmp->lineOfSight = cellLocalheight + 0.5f;
 				}
 			}
 		}
@@ -3736,19 +3736,19 @@ TreeAppearance::markLOS(bool clearIt)
 				//----------------
 				// Mark the map...
 				MapCellPtr curCell = GameMap->getCell(cellR, cellC);
-				float currentCellHeight = curCell->getLocalHeight();
-				float cellLocalHeight = vertexPos.z * metersPerWorldUnit * 0.25f;
-				if (cellLocalHeight > 15.0f)
-					cellLocalHeight = 15.0f;
+				float currentCellheight = curCell->getLocalheight();
+				float cellLocalheight = vertexPos.z * metersPerWorldUnit * 0.25f;
+				if (cellLocalheight > 15.0f)
+					cellLocalheight = 15.0f;
 				if (!clearIt)
 				{
-					if (cellLocalHeight > currentCellHeight)
-						curCell->setLocalHeight(cellLocalHeight + 0.5f);
+					if (cellLocalheight > currentCellheight)
+						curCell->setLocalheight(cellLocalheight + 0.5f);
 				}
 				else // We want to clear all LOS height INFO.  We're about to
 					// change shape!!
 				{
-					curCell->setLocalHeight(0.0f);
+					curCell->setLocalheight(0.0f);
 				}
 			}
 		}

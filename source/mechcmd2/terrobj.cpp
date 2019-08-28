@@ -69,7 +69,7 @@ agsqrt(float _a, float _b)
 #define TREE_FALL_RATE 15.0f
 #define TREE_FALL_ACCEL 5.0f;
 
-char lastName[256];
+wchar_t lastName[256];
 
 extern MidLevelRenderer::MLRClipper* theClipper;
 extern bool useNonWeaponEffects;
@@ -341,12 +341,12 @@ void
 TerrainObject::updateDebugWindow(GameDebugWindow* debugWindow)
 {
 	debugWindow->clear();
-	char s[128];
+	wchar_t s[128];
 	//-------------------------------------------------------
 	// For now, show the floating help text if we have one...
 	if (((ObjectAppearance*)appearance)->objectNameId != -1)
 	{
-		char myName[255];
+		wchar_t myName[255];
 		cLoadString(((ObjectAppearance*)appearance)->objectNameId, myName, 254);
 		debugWindow->print(myName);
 	}
@@ -370,14 +370,14 @@ TerrainObject::updateDebugWindow(GameDebugWindow* debugWindow)
 		sprintf(s, "subAreas:");
 		for (size_t i = 0; i < numSubAreas0; i++)
 		{
-			char tempStr[15];
+			wchar_t tempStr[15];
 			sprintf(tempStr, " %d", subAreas0[i]);
 			strcat(s, tempStr);
 		}
 		strcat(s, " *");
 		for (i = 0; i < numSubAreas1; i++)
 		{
-			char tempStr[15];
+			wchar_t tempStr[15];
 			sprintf(tempStr, " %d", subAreas1[i]);
 			strcat(s, tempStr);
 		}
@@ -489,7 +489,7 @@ TerrainObject::update(void)
 		}
 	}
 	//-------------------------------------------
-	// Handle power out.
+	// handle power out.
 	if (powerSupply && (ObjectManager->getByWatchID(powerSupply)->getStatus() == OBJECT_STATUS_DESTROYED))
 		appearance->setLightsOut(true);
 	if (appearance)
@@ -565,7 +565,7 @@ TerrainObject::render(void)
 			if (barStatus < 0.0)
 				barStatus = 0.0;
 			uint32_t color = 0xff7f7f7f;
-			appearance->setBarColor(color);
+			appearance->setBarcolour(color);
 			appearance->setBarStatus(barStatus);
 		}
 		// For debug purposes only.  Will crash pause!!	Sorry Heidi!
@@ -981,10 +981,10 @@ TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELL
 	numCellsCovered = numCells;
 	if (numCellsCovered)
 	{
-		cellsCovered = (pint16_t)systemHeap->Malloc(4 * numCellsCovered);
+		cellsCovered = (int16_t*)systemHeap->Malloc(4 * numCellsCovered);
 		if (cellsCovered)
 		{
-			pint16_t curCoord = cellsCovered;
+			int16_t* curCoord = cellsCovered;
 			for (size_t j = 0; j < numCellsCovered; j++)
 			{
 				*curCoord++ = cells[j][0];
@@ -992,7 +992,7 @@ TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELL
 			}
 		}
 		numSubAreas0 = 0;
-		pint16_t curCoord = cellsCovered;
+		int16_t* curCoord = cellsCovered;
 		for (size_t i = 0; i < numCellsCovered; i++)
 		{
 			int32_t r = *curCoord++;
@@ -1009,7 +1009,7 @@ TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELL
 			{
 				if (!subAreas0)
 				{
-					subAreas0 = (pint16_t)ObjectTypeManager::objectCache->Malloc(
+					subAreas0 = (int16_t*)ObjectTypeManager::objectCache->Malloc(
 						sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 					memset(subAreas0, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 				}
@@ -1034,7 +1034,7 @@ TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELL
 			{
 				if (!subAreas1)
 				{
-					subAreas1 = (pint16_t)ObjectTypeManager::objectCache->Malloc(
+					subAreas1 = (int16_t*)ObjectTypeManager::objectCache->Malloc(
 						sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 					memset(subAreas1, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 				}
@@ -1053,14 +1053,14 @@ TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELL
 void
 TerrainObject::markMoveMap(bool passable)
 {
-	pint16_t curCoord = cellsCovered;
+	int16_t* curCoord = cellsCovered;
 	for (size_t i = 0; i < numCellsCovered; i++)
 	{
 		int32_t r = *curCoord++;
 		int32_t c = *curCoord++;
 		GameMap->setPassable(r, c, passable);
 		if (passable)
-			GameMap->setLocalHeight(r, c, 0.0f);
+			GameMap->setLocalheight(r, c, 0.0f);
 	}
 }
 
@@ -1107,7 +1107,7 @@ TerrainObject::calcAdjacentAreaCell(
 {
 	if (areaID == -1)
 	{
-		pint16_t curCoord = cellsCovered;
+		int16_t* curCoord = cellsCovered;
 		for (size_t i = 0; i < numCellsCovered; i++)
 		{
 			int32_t cellRow = *curCoord++;
@@ -1144,7 +1144,7 @@ TerrainObject::calcAdjacentAreaCell(
 	}
 	else
 	{
-		pint16_t curCoord = cellsCovered;
+		int16_t* curCoord = cellsCovered;
 		for (size_t i = 0; i < numCellsCovered; i++)
 		{
 			int32_t cellRow = *curCoord++;
@@ -1189,7 +1189,7 @@ TerrainObject::Save(PacketFilePtr file, int32_t packetNum)
 	TerrainObjectData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(TerrainObjectData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(TerrainObjectData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
@@ -1239,13 +1239,13 @@ TerrainObject::Load(TerrainObjectData* data)
 	numSubAreas1 = data->numSubAreas1;
 	if (numSubAreas0)
 	{
-		subAreas0 = (pint16_t)ObjectTypeManager::objectCache->Malloc(
+		subAreas0 = (int16_t*)ObjectTypeManager::objectCache->Malloc(
 			sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 		memcpy(subAreas0, data->subAreas0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	}
 	if (numSubAreas1)
 	{
-		subAreas1 = (pint16_t)ObjectTypeManager::objectCache->Malloc(
+		subAreas1 = (int16_t*)ObjectTypeManager::objectCache->Malloc(
 			sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 		memcpy(subAreas1, data->subAreas1, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	}
@@ -1253,7 +1253,7 @@ TerrainObject::Load(TerrainObjectData* data)
 	numCellsCovered = data->numCellsCovered;
 	if (numCellsCovered)
 	{
-		cellsCovered = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * numCellsCovered * 2);
+		cellsCovered = (int16_t*)systemHeap->Malloc(sizeof(int16_t) * numCellsCovered * 2);
 		memcpy(cellsCovered, data->cellsCovered, sizeof(int16_t) * numCellsCovered * 2);
 	}
 }

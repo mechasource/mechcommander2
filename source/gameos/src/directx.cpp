@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -95,9 +95,9 @@ wQueryInterface(IUnknown* punk, REFIID riid, PVOID* ppv)
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-ULONG __stdcall wRelease(IUnknown *punk)
+ulong32_t __stdcall wRelease(IUnknown *punk)
 {
-	ULONG ur;
+	ulong32_t ur;
 
 	InternalFunctionSpew("GameOS_DirectX", "Release(0x%x)+", punk);
 	ur = punk->Release(punk);
@@ -112,9 +112,9 @@ ULONG __stdcall wRelease(IUnknown *punk)
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-ULONG __stdcall wAddRef(IUnknown *punk)
+ulong32_t __stdcall wAddRef(IUnknown *punk)
 {
-	ULONG ur;
+	ulong32_t ur;
 
 	InternalFunctionSpew("GameOS_DirectX", "AddRef(0x%x)+", punk);
 	ur = punk->AddRef(punk);

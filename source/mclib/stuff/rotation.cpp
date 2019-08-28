@@ -6,9 +6,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "stuff/scalar.h"
 #include "stuff/linearmatrix.h"
 #include "stuff/vector4d.h"
@@ -395,8 +395,8 @@ uint32_t UnitQuaternion::SlerpCount;
 //#############################################################################
 //
 
-cint32_t QuaternionLerpTableSize = static_cast<int32_t>(1024);
-cint32_t SinTableSize = static_cast<int32_t>(1024);
+const int32_t QuaternionLerpTableSize = static_cast<int32_t>(1024);
+const int32_t SinTableSize = static_cast<int32_t>(1024);
 
 const float MinCosom = static_cast<float>(-1.0f);
 const float MaxCosom = static_cast<float>(1.0f);

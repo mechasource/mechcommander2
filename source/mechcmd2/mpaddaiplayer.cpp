@@ -18,9 +18,9 @@ MPAddAIPlayer.cpp			: Implementation of the MPAddAIPlayer component.
 
 static CFocusManager* g_focusManager = nullptr;
 
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
-static cint32_t CANCEL_BUTTON_ID = 1000002;
+static const int32_t FIRST_BUTTON_ID = 1000010;
+static const int32_t OK_BUTTON_ID = 1000001;
+static const int32_t CANCEL_BUTTON_ID = 1000002;
 
 MPAddAIPlayer::MPAddAIPlayer()
 {
@@ -79,13 +79,13 @@ MPAddAIPlayer::init(FitIniFile* file)
 	nameEntry.init(file, "EditBox0");
 	nameEntryOutline.init(file, "EditBoxRect0");
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_addai_combobox1.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -107,13 +107,13 @@ MPAddAIPlayer::init(FitIniFile* file)
 		experienceDropList.SelectItem(0);
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_addai_combobox2.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -141,13 +141,13 @@ MPAddAIPlayer::init(FitIniFile* file)
 		for (column = 0; column < 3; column += 1)
 		{
 			{
-				char path[256];
+				wchar_t path[256];
 				strcpy(path, artPath);
 				strcat(path, "mcl_mp_addai_combobox3.fit");
 				FitIniFile PNfile;
 				if (NO_ERROR != PNfile.open(path))
 				{
-					char error[256];
+					wchar_t error[256];
 					sprintf(error, "couldn't open file %s", path);
 					Assert(0, 0, error);
 					return;
@@ -304,10 +304,10 @@ aStyle4TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	aTextListItem::init(fontResID);
 	setText(textID);
 	int32_t color = 0xff808080;
-	file->readIdLong("Color", color);
-	normalColor = color;
-	setColor(color);
-	char tmpStr[64];
+	file->readIdLong("colour", color);
+	normalcolour = color;
+	setcolour(color);
+	wchar_t tmpStr[64];
 	strcpy(tmpStr, "");
 	file->readIdString("Animation", tmpStr, 63);
 	if (0 == strcmp("", tmpStr))
@@ -328,17 +328,17 @@ aStyle4TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
+		color = 0.33 * ((uint32_t)normalcolour) + 0.67 * ((uint32_t)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
+		color = 0.67 * ((uint32_t)normalcolour) + 0.33 * ((uint32_t)0xffffffff);
 	}
 	else
 	{
-		color = normalColor;
+		color = normalcolour;
 	}
-	aTextListItem::setColor((uint32_t)color);
+	aTextListItem::setcolour((uint32_t)color);
 	aTextListItem::render();
 }
 

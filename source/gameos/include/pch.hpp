@@ -70,7 +70,7 @@
 //#pragma warning( disable: 4102 )	// unreferenced labels
 //#pragma warning( disable: 4127 )	// conditional expression is constant eg:
 // While(1) #pragma warning( disable: 4201 )	// nameless struct/union #pragma
-// warning( disable: 4245 )	// conversion from 'cint32_t' to 'uint32_t',
+// warning( disable: 4245 )	// conversion from 'const int32_t' to 'uint32_t',
 // signed/uint32_t mismatch #pragma warning( disable: 4355 )	// this used in base
 // initializers #pragma warning( disable: 4511 )	// no copy constructor #pragma
 // warning( disable: 4512 )	// no assignment operator #pragma warning( disable:

@@ -2,7 +2,7 @@
 #include "vfx.h"
 #include <stdio.h>
 
-extern char AlphaTable[256 * 256];
+extern wchar_t AlphaTable[256 * 256];
 
 typedef struct SHAPEHEADER
 {
@@ -22,13 +22,13 @@ typedef struct SHAPEHEADER
 // 0			End of line
 // 1			Skip next bytes
 // Bit 0 = 0	Repeat next byte [7654321] times
-// Bit 0 = 1	String packet [7654321] bytes
+// Bit 0 = 1	string packet [7654321] bytes
 //
 
 uint32_t lookaside;
 static uint32_t tempXmax, tempXmin;
-static uint32_t minX, minY, maxY, SkipLeft, NewWidth, StartofLine, StartofClip, EndofClip;
-static uint32_t lines, DestWidth, paneX0, paneX1, paneY0, paneY1;
+static uint32_t minX, minY, maxY, SkipLeft, Newwidth, StartofLine, StartofClip, EndofClip;
+static uint32_t lines, Destwidth, paneX0, paneX1, paneY0, paneY1;
 
 /*
 ;
@@ -55,7 +55,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 
 		mov ecx, [esi+eax*8+8]
 		cmp word ptr [esi+ecx+SIZE SHAPEHEADER], 3		;
-		(String packet, 0)
+		(string packet, 0)
 		jz AlphaDraw
 
 		mov edi, pane
@@ -100,7 +100,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		nop
 
 		sub ecx, eax
-		mov DestWidth, eax
+		mov Destwidth, eax
 
 		setge bl
 
@@ -150,7 +150,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		mov eax, [esi + SHAPEHEADER.ymin - SIZE SHAPEHEADER]
 
 		sub ecx, eax							;
-		ecx = Height of sprite
+		ecx = height of sprite
 		add eax, edx							;
 		eax = top line
 
@@ -190,7 +190,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 	mov edx, paneX0
 
 	sub ebx, ecx							;
-	ebx = Width of sprite
+	ebx = width of sprite
 	add ecx, hotX						;
 	ecx = offset to left edge
 
@@ -210,7 +210,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		Work out screen position
 		;
 //NowDraw:
-		imul DestWidth
+		imul Destwidth
 
 		add eax, ecx
 		xor ecx, ecx
@@ -284,7 +284,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		jmp lineLoop
 
 		EndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov edi, StartofLine
 
 		add edi, edx
@@ -363,7 +363,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		jbe Exit
 
 		ClippedX :
-		imul DestWidth
+		imul Destwidth
 
 		add edi, eax
 		mov eax, paneX0
@@ -438,7 +438,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 
 
 		cEndPacket:
-		mov eax, DestWidth
+		mov eax, Destwidth
 		mov edi, StartofLine
 
 		add edx, eax
@@ -512,7 +512,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		nop
 
 		sub ecx, eax
-		mov DestWidth, eax
+		mov Destwidth, eax
 
 		setge bl
 
@@ -562,7 +562,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		mov eax, [esi + SHAPEHEADER.ymin - SIZE SHAPEHEADER]
 
 		sub ecx, eax							;
-		ecx = Height of sprite
+		ecx = height of sprite
 		add eax, edx							;
 		eax = top line
 
@@ -602,7 +602,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 	mov edx, paneX0
 
 	sub ebx, ecx							;
-	ebx = Width of sprite
+	ebx = width of sprite
 	add ecx, hotX						;
 	ecx = offset to left edge
 
@@ -625,7 +625,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		Work out screen position
 		;
 //aNowDraw:
-		imul DestWidth
+		imul Destwidth
 
 		add eax, ecx
 		xor ecx, ecx
@@ -683,7 +683,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		jmp alineLoop
 
 		aEndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov edi, StartofLine
 
 		add edi, edx
@@ -762,7 +762,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 		jbe Exit
 
 		aClippedX :
-		imul DestWidth
+		imul Destwidth
 
 		add edi, eax
 		mov eax, paneX0
@@ -838,7 +838,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 
 
 		acEndPacket:
-		mov eax, DestWidth
+		mov eax, Destwidth
 		mov edi, StartofLine
 
 		add edx, eax
@@ -861,7 +861,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 /*
 ;----------------------------------------------------------------------------
 ;
-; void cdecl VFX_shape_lookaside (puint8_t table)
+; void cdecl VFX_shape_lookaside (uint8_t* table)
 ;
 ; Establishes a color translation lookaside table for use by future calls
 ; to VFX_shape_translate_draw().
@@ -873,7 +873,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 ;----------------------------------------------------------------------------
 */
 void
-AG_shape_lookaside(puint8_t table)
+AG_shape_lookaside(uint8_t* table)
 {
 	_asm
 	{
@@ -922,7 +922,7 @@ AG_shape_translate_draw(
 
 		mov ecx, [esi+eax*8+8]
 		cmp word ptr [esi+ecx+SIZE SHAPEHEADER], 3		;
-		(String packet, 0)
+		(string packet, 0)
 		jz AlphaDraw
 
 		mov edi, pane
@@ -967,7 +967,7 @@ AG_shape_translate_draw(
 		nop
 
 		sub ecx, eax
-		mov DestWidth, eax
+		mov Destwidth, eax
 
 		setge bl
 
@@ -1017,7 +1017,7 @@ AG_shape_translate_draw(
 		mov eax, [esi + SHAPEHEADER.ymin - SIZE SHAPEHEADER]
 
 		sub ecx, eax							;
-		ecx = Height of sprite
+		ecx = height of sprite
 		add eax, edx							;
 		eax = top line
 
@@ -1057,7 +1057,7 @@ AG_shape_translate_draw(
 	mov edx, paneX0
 
 	sub ebx, ecx							;
-	ebx = Width of sprite
+	ebx = width of sprite
 	add ecx, hotX						;
 	ecx = offset to left edge
 
@@ -1077,7 +1077,7 @@ AG_shape_translate_draw(
 		Work out screen position
 		;
 //NowDraw:
-		imul DestWidth
+		imul Destwidth
 
 		add eax, ecx
 		xor ecx, ecx
@@ -1190,7 +1190,7 @@ AG_shape_translate_draw(
 		jmp lineLoop
 
 		EndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov edi, StartofLine
 
 		add edi, edx
@@ -1271,7 +1271,7 @@ AG_shape_translate_draw(
 		jbe Exit
 
 		ClippedX :
-		imul DestWidth
+		imul Destwidth
 
 		add edi, eax
 		mov eax, paneX0
@@ -1359,7 +1359,7 @@ AG_shape_translate_draw(
 
 
 		cEndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov eax, EndofClip
 
 		add eax, edx
@@ -1433,7 +1433,7 @@ AG_shape_translate_draw(
 		nop
 
 		sub ecx, eax
-		mov DestWidth, eax
+		mov Destwidth, eax
 
 		setge bl
 
@@ -1483,7 +1483,7 @@ AG_shape_translate_draw(
 		mov eax, [esi + SHAPEHEADER.ymin - SIZE SHAPEHEADER]
 
 		sub ecx, eax							;
-		ecx = Height of sprite
+		ecx = height of sprite
 		add eax, edx							;
 		eax = top line
 
@@ -1523,7 +1523,7 @@ AG_shape_translate_draw(
 	mov edx, paneX0
 
 	sub ebx, ecx							;
-	ebx = Width of sprite
+	ebx = width of sprite
 	add ecx, hotX						;
 	ecx = offset to left edge
 
@@ -1543,7 +1543,7 @@ AG_shape_translate_draw(
 		Work out screen position
 		;
 //aNowDraw:
-		imul DestWidth
+		imul Destwidth
 
 		add eax, ecx
 		xor ecx, ecx
@@ -1608,7 +1608,7 @@ AG_shape_translate_draw(
 		jmp alineLoop
 
 		aEndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov edi, StartofLine
 
 		add edi, edx
@@ -1689,7 +1689,7 @@ AG_shape_translate_draw(
 		jbe Exit
 
 		aClippedX :
-		imul DestWidth
+		imul Destwidth
 
 		add edi, eax
 		mov eax, paneX0
@@ -1773,7 +1773,7 @@ AG_shape_translate_draw(
 
 
 		acEndPacket:
-		mov edx, DestWidth
+		mov edx, Destwidth
 		mov eax, EndofClip
 
 		add eax, edx
@@ -1806,11 +1806,11 @@ AG_shape_translate_draw(
 		mov saveEdi, edi
 	}
 	// PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY
-	char msg[1024];
+	wchar_t msg[1024];
 	//-------------------------------------
 	// Save off the shape data table start
 	const std::wstring_view& shapeTable = (const std::wstring_view&)shape_table;
-	char version[5];
+	wchar_t version[5];
 	for (size_t i = 0; i < 4; i++)
 	{
 		version[i] = *shapeTable;

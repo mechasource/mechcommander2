@@ -36,7 +36,7 @@ protected:
 	ObjectTypeNumber destroyedObject; // What I turn into when I die.
 	ObjectTypeNumber explosionObject; // How I blow up
 	bool potentialContact; // Can I can be a contact?
-	char* appearName; // Base Name of appearance Files.
+	wchar_t* appearName; // Base Name of appearance Files.
 	float extentRadius; // Smallest sphere which will hold me.
 	bool keepMe; // Do not EVER cache this objType out.
 	int32_t iconNumber; // my index into the big strip o' icons

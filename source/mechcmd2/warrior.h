@@ -273,7 +273,7 @@ enum class
 
 typedef struct
 {
-	char code;
+	wchar_t code;
 	uint8_t numTriggers;
 	int32_t trigger[MAX_ALARM_TRIGGERS];
 } PilotAlarm;
@@ -392,11 +392,11 @@ typedef struct _MoveOrders
 	//------------------
 	// order parameters
 	float time;
-	char origin;
+	wchar_t origin;
 	int32_t speedType; // best, max, slow, moderate
 	float speedVelocity; // based upon speedType (m/s)
-	char speedState; // based upon speedVelocity (walk, etc.)
-	char speedThrottle; // if speedState is walk, else ignored
+	wchar_t speedState; // based upon speedVelocity (walk, etc.)
+	wchar_t speedThrottle; // if speedState is walk, else ignored
 	uint32_t goalType; // is there no goal, a location or object?
 	GameObjectWatchID goalObjectWID; // if our goal is an object...
 	Stuff::Vector3D goalObjectPosition; // object's position at time of path calc
@@ -406,15 +406,15 @@ typedef struct _MoveOrders
 	float nextUpdate;
 	bool newGoal;
 	Stuff::Vector3D wayPath[MAX_WAYPTS]; // if this move order has a way path...
-	char numWayPts; // how many way points?
-	char curWayPt; // current goal waypoint
-	char curWayDir; // waypath direction: 1 = forward, -1 = backward
-	char pathType; // "quick" path or global/int32_t-range?
+	wchar_t numWayPts; // how many way points?
+	wchar_t curWayPt; // current goal waypoint
+	wchar_t curWayDir; // waypath direction: 1 = forward, -1 = backward
+	wchar_t pathType; // "quick" path or global/int32_t-range?
 	Stuff::Vector3D originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
 	Stuff::Vector3D globalGoalLocation;
 	GlobalPathStep globalPath[MAX_GLOBAL_PATH];
-	char numGlobalSteps;
-	char curGlobalStep;
+	wchar_t numGlobalSteps;
+	wchar_t curGlobalStep;
 	MovePathPtr path[2]; // 0 = current path, 1 = next path
 	float timeOfLastStep; // last time a step was reached for this order
 	int32_t moveState; // forward, reverse, paused, etc.
@@ -434,11 +434,11 @@ typedef struct _SaveableMoveOrders
 	//------------------
 	// order parameters
 	float time;
-	char origin;
+	wchar_t origin;
 	int32_t speedType; // best, max, slow, moderate
 	float speedVelocity; // based upon speedType (m/s)
-	char speedState; // based upon speedVelocity (walk, etc.)
-	char speedThrottle; // if speedState is walk, else ignored
+	wchar_t speedState; // based upon speedVelocity (walk, etc.)
+	wchar_t speedThrottle; // if speedState is walk, else ignored
 	uint32_t goalType; // is there no goal, a location or object?
 	GameObjectWatchID goalObjectWID; // if our goal is an object...
 	Stuff::Vector3D goalObjectPosition; // object's position at time of path calc
@@ -448,15 +448,15 @@ typedef struct _SaveableMoveOrders
 	float nextUpdate;
 	bool newGoal;
 	Stuff::Vector3D wayPath[MAX_WAYPTS]; // if this move order has a way path...
-	char numWayPts; // how many way points?
-	char curWayPt; // current goal waypoint
-	char curWayDir; // waypath direction: 1 = forward, -1 = backward
-	char pathType; // "quick" path or global/int32_t-range?
+	wchar_t numWayPts; // how many way points?
+	wchar_t curWayPt; // current goal waypoint
+	wchar_t curWayDir; // waypath direction: 1 = forward, -1 = backward
+	wchar_t pathType; // "quick" path or global/int32_t-range?
 	Stuff::Vector3D originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
 	Stuff::Vector3D globalGoalLocation;
 	GlobalPathStep globalPath[MAX_GLOBAL_PATH];
-	char numGlobalSteps;
-	char curGlobalStep;
+	wchar_t numGlobalSteps;
+	wchar_t curGlobalStep;
 	MovePath path[2]; // 0 = current path, 1 = next path
 	float timeOfLastStep; // last time a step was reached for this order
 	int32_t moveState; // forward, reverse, paused, etc.
@@ -547,7 +547,7 @@ typedef struct _SaveableMoveOrders
 typedef struct _AttackOrders
 {
 	float time;
-	char origin;
+	wchar_t origin;
 	int32_t type; // to kill, to disable, etc.
 	GameObjectWatchID targetWID; // current object targeted for attack, if attacking object
 	Stuff::Vector3D targetpoint; // target location targeted for attack, if attacking point
@@ -639,24 +639,24 @@ enum class
 typedef struct _MechWarriorData
 {
 	bool used;
-	char name[MAXLEN_PILOT_NAME];
-	char callsign[MAXLEN_PILOT_CALLSIGN];
-	char videoStr[MAXLEN_PILOT_VIDEO];
-	char audioStr[MAXLEN_PILOT_AUDIO];
-	char brainStr[MAXLEN_PILOT_BRAIN];
+	wchar_t name[MAXLEN_PILOT_NAME];
+	wchar_t callsign[MAXLEN_PILOT_CALLSIGN];
+	wchar_t videoStr[MAXLEN_PILOT_VIDEO];
+	wchar_t audioStr[MAXLEN_PILOT_AUDIO];
+	wchar_t brainStr[MAXLEN_PILOT_BRAIN];
 	int32_t index;
 	int32_t paintScheme;
 	int32_t photoIndex;
 
-	char rank;
-	char skills[Skill::numberofskills]; // Current
-	char professionalism;
-	char professionalismModifier;
-	char decorum;
-	char decorumModifier;
-	char aggressiveness;
-	char courage;
-	char baseCourage;
+	wchar_t rank;
+	wchar_t skills[Skill::numberofskills]; // Current
+	wchar_t professionalism;
+	wchar_t professionalismModifier;
+	wchar_t decorum;
+	wchar_t decorumModifier;
+	wchar_t aggressiveness;
+	wchar_t courage;
+	wchar_t baseCourage;
 
 	float wounds;
 	float health;
@@ -674,8 +674,8 @@ typedef struct _MechWarriorData
 	int32_t numPhysicalAttacks[NUM_PHYSICAL_ATTACKS][NUM_COMBAT_STATS];
 	float skillRank[Skill::numberofskills];
 	float skillPoints[Skill::numberofskills];
-	char originalSkills[Skill::numberofskills];
-	char startingSkills[Skill::numberofskills];
+	wchar_t originalSkills[Skill::numberofskills];
+	wchar_t startingSkills[Skill::numberofskills];
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
 	GameObjectWatchID killed[MAX_MOVERS / 3];
 	int32_t numKilled;
@@ -689,7 +689,7 @@ typedef struct _MechWarriorData
 	float attackRadius;
 
 	MemoryCell memory[NUM_MEMORY_CELLS];
-	char debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
+	wchar_t debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
 
 	float brainUpdate;
 	float combatUpdate;
@@ -716,7 +716,7 @@ typedef struct _MechWarriorData
 	bool tacOrderQueueLocked;
 	bool tacOrderQueueExecuting;
 	bool tacOrderQueueLooping;
-	char numTacOrdersQueued; // Currently, only player orders may be queued...
+	wchar_t numTacOrdersQueued; // Currently, only player orders may be queued...
 	QueuedTacOrder tacOrderQueue[MAX_QUEUED_TACORDERS_PER_WARRIOR];
 	int32_t tacOrderQueueIndex;
 	int32_t nextTacOrderId;
@@ -740,7 +740,7 @@ typedef struct _MechWarriorData
 	bool keepMoving; // If true, he won't find his "optimal" spot and stand
 		// there.
 
-	char orderState;
+	wchar_t orderState;
 
 	uint32_t debugFlags;
 
@@ -768,24 +768,24 @@ class MechWarrior
 protected:
 	// Misc.
 	bool used;
-	char name[MAXLEN_PILOT_NAME];
-	char callsign[MAXLEN_PILOT_CALLSIGN];
-	char videoStr[MAXLEN_PILOT_VIDEO];
-	char audioStr[MAXLEN_PILOT_AUDIO];
-	char brainStr[MAXLEN_PILOT_BRAIN];
+	wchar_t name[MAXLEN_PILOT_NAME];
+	wchar_t callsign[MAXLEN_PILOT_CALLSIGN];
+	wchar_t videoStr[MAXLEN_PILOT_VIDEO];
+	wchar_t audioStr[MAXLEN_PILOT_AUDIO];
+	wchar_t brainStr[MAXLEN_PILOT_BRAIN];
 	int32_t index;
 	int32_t paintScheme;
 	int32_t photoIndex;
 
 	// Skills and Traits
-	char rank;
-	char professionalism;
-	char professionalismModifier;
-	char decorum;
-	char decorumModifier;
-	char aggressiveness;
-	char courage;
-	char baseCourage;
+	wchar_t rank;
+	wchar_t professionalism;
+	wchar_t professionalismModifier;
+	wchar_t decorum;
+	wchar_t decorumModifier;
+	wchar_t aggressiveness;
+	wchar_t courage;
+	wchar_t baseCourage;
 
 	// Status
 	float wounds;
@@ -805,11 +805,11 @@ public:
 	int32_t numSkillSuccesses[Skill::numberofskills][NUM_COMBAT_STATS];
 	int32_t numMechKills[NUM_VEHICLE_CLASSES][NUM_COMBAT_STATS];
 	int32_t numPhysicalAttacks[NUM_PHYSICAL_ATTACKS][NUM_COMBAT_STATS];
-	char skills[Skill::numberofskills]; // Current
+	wchar_t skills[Skill::numberofskills]; // Current
 	float skillRank[Skill::numberofskills];
 	float skillPoints[Skill::numberofskills];
-	char originalSkills[Skill::numberofskills]; // How I arrived in MechCommander
-	char startingSkills[Skill::numberofskills]; // How I arrived in the mission
+	wchar_t originalSkills[Skill::numberofskills]; // How I arrived in MechCommander
+	wchar_t startingSkills[Skill::numberofskills]; // How I arrived in the mission
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
 	GameObjectWatchID killed[MAX_MOVERS / 3];
 	int32_t numKilled;
@@ -831,7 +831,7 @@ protected:
 	const std::unique_ptr<ABLModule>& brain;
 	int32_t warriorBrainHandle;
 	const std::unique_ptr<SymTableNode>& brainAlarmCallback[NUM_PILOT_ALARMS];
-	char debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
+	wchar_t debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
 
 	// Orders
 	float brainUpdate;
@@ -859,7 +859,7 @@ protected:
 	bool tacOrderQueueLocked;
 	bool tacOrderQueueExecuting;
 	bool tacOrderQueueLooping;
-	char numTacOrdersQueued; // Currently, only player orders may be queued...
+	wchar_t numTacOrdersQueued; // Currently, only player orders may be queued...
 	QueuedTacOrderPtr tacOrderQueue;
 	int32_t tacOrderQueueIndex;
 	int32_t nextTacOrderId;
@@ -884,7 +884,7 @@ protected:
 	bool keepMoving; // If true, he won't find his "optimal" spot and stand
 		// there.
 
-	char orderState;
+	wchar_t orderState;
 
 	std::unique_ptr<PathQueueRec> movePathRequest;
 
@@ -966,7 +966,7 @@ public:
 
 	uint32_t getLastMessage(void) { return radioLog.lastMessage; }
 
-	char getRank(void) { return (rank); }
+	wchar_t getRank(void) { return (rank); }
 
 	uint32_t getSkill(uint32_t skillId) { return (skills[skillId]); }
 
@@ -1208,7 +1208,7 @@ public:
 	void updateClientOrderQueue(int32_t curTacOrderId);
 
 	//------------------
-	// Group routines...
+	// group routines...
 
 	MoverGroupPtr getGroup(void);
 

@@ -7,7 +7,7 @@
 #ifndef MLR_MLRLINECLOUD_HPP
 #define MLR_MLRLINECLOUD_HPP
 
-#include <mlr/mlreffect.hpp>
+#include "mlr/mlreffect.h"
 
 namespace MidLevelRenderer
 {
@@ -33,7 +33,7 @@ public:
 	~MLRLineCloud(void);
 
 	void SetData(
-		pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data);
+		const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data);
 
 	virtual uint32_t GetType(uint32_t) { return type; }
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
@@ -54,7 +54,7 @@ public:
 
 protected:
 	uint32_t type;
-	pcsize_t usedNrOfVertices;
+	const size_t* usedNrOfVertices;
 };
 } // namespace MidLevelRenderer
 #endif

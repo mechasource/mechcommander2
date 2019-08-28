@@ -90,8 +90,8 @@ public:
 	void forceUseCheckSum(void) { usesCheckSum = true; }
 
 	int32_t readPacketOffset(int32_t packet, int32_t* lastType = 0);
-	int32_t readPacket(int32_t packet, puint8_t buffer);
-	int32_t readPackedPacket(int32_t packet, puint8_t buffer);
+	int32_t readPacket(int32_t packet, uint8_t* buffer);
+	int32_t readPackedPacket(int32_t packet, uint8_t* buffer);
 
 	int32_t seekPacket(int32_t packet);
 
@@ -115,10 +115,10 @@ public:
 	// Functions to Write Packet Files
 	void reserve(int32_t count, bool withCheckSum = FALSE);
 	int32_t writePacket(
-		int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+		int32_t packet, uint8_t* buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
 	int32_t insertPacket(
-		int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
-	int32_t writePacket(int32_t packet, puint8_t buffer);
+		int32_t packet, uint8_t* buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+	int32_t writePacket(int32_t packet, uint8_t* buffer);
 };
 
 //---------------------------------------------------------------------------

@@ -11,7 +11,7 @@
 //#include <string.h>
 
 #include "tgainfo.h"
-#include "gameos.hpp"
+//#include "gameos.hpp"
 //---------------------------------------------------------------------------
 typedef struct _RGB
 {
@@ -22,18 +22,18 @@ typedef struct _RGB
 
 //---------------------------------------------------------------------------
 void
-tgaDecomp(puint8_t dest, puint8_t source, TGAFileHeader* tga_header)
+tgaDecomp(uint8_t* dest, uint8_t* source, TGAFileHeader* tga_header)
 {
 	//---------------------------------------------------------------------
 	// Display Image based on Format 10 (0x0a).  RLE true color.
 	//----------------------------------------------
 	// Parse RLE data -- Check for RLE/RAW byte
-	puint8_t data_offset = source;
-	int32_t currentHeight = 0;
-	int32_t currentWidth = 0;
-	while (currentHeight != tga_header->height)
+	uint8_t* data_offset = source;
+	int32_t currentheight = 0;
+	int32_t currentwidth = 0;
+	while (currentheight != tga_header->height)
 	{
-		while (currentWidth != tga_header->width)
+		while (currentwidth != tga_header->width)
 		{
 			byte rep_count = *data_offset;
 			data_offset++;
@@ -83,7 +83,7 @@ tgaDecomp(puint8_t dest, puint8_t source, TGAFileHeader* tga_header)
 							*dest = 0xff;
 						dest++;
 					}
-					currentWidth++;
+					currentwidth++;
 				}
 			}
 			else
@@ -128,32 +128,32 @@ tgaDecomp(puint8_t dest, puint8_t source, TGAFileHeader* tga_header)
 							*dest = 0xff;
 						dest++;
 					}
-					currentWidth++;
+					currentwidth++;
 				}
 			}
 		}
-		currentWidth = 0;
-		currentHeight++;
+		currentwidth = 0;
+		currentheight++;
 	}
 }
 
 //---------------------------------------------------------------------------
 void
-flipTopToBottom(puint8_t buffer, uint8_t depth, int32_t width, int32_t height)
+flipTopToBottom(uint8_t* buffer, uint8_t depth, int32_t width, int32_t height)
 {
 	//-----------------------------------------------------------
 	// ScanLine by Scanline
-	puint8_t tmpBuffer = (puint8_t)malloc(width * height * (depth >> 3));
-	puint8_t tmpPointer = tmpBuffer;
+	uint8_t* tmpBuffer = (uint8_t*)malloc(width * height * (depth >> 3));
+	uint8_t* tmpPointer = tmpBuffer;
 	//----------------------------------
 	// Point to last scanline.
-	int32_t pixelWidth = width * (depth >> 3);
-	puint8_t workBuffer = buffer + ((height - 1) * pixelWidth);
+	int32_t pixelwidth = width * (depth >> 3);
+	uint8_t* workBuffer = buffer + ((height - 1) * pixelwidth);
 	for (size_t i = 0; i < height; i++)
 	{
-		memcpy(tmpBuffer, workBuffer, pixelWidth);
-		workBuffer -= pixelWidth;
-		tmpBuffer += pixelWidth;
+		memcpy(tmpBuffer, workBuffer, pixelwidth);
+		workBuffer -= pixelwidth;
+		tmpBuffer += pixelwidth;
 	}
 	memcpy(buffer, tmpPointer, width * height * (depth >> 3));
 	free(tmpPointer);
@@ -161,7 +161,7 @@ flipTopToBottom(puint8_t buffer, uint8_t depth, int32_t width, int32_t height)
 
 //---------------------------------------------------------------------------
 void
-tgaCopy(puint8_t dest, puint8_t src, int32_t size)
+tgaCopy(uint8_t* dest, uint8_t* src, int32_t size)
 {
 	int32_t numCopied = 0;
 	while (numCopied != size)
@@ -182,25 +182,25 @@ tgaCopy(puint8_t dest, puint8_t src, int32_t size)
 }
 
 //---------------------------------------------------------------------------
-static cint32_t g_textureCache_BufferSize = 16384 /*64*64*sizeof(uint32_t)*/;
+static const int32_t g_textureCache_BufferSize = 16384 /*64*64*sizeof(uint32_t)*/;
 static uint8_t g_textureCache_Buffer[g_textureCache_BufferSize];
 const std::wstring_view&* g_textureCache_FilenameOfLastLoadedTexture =
 	nullptr; /*This is an (const std::wstring_view& *) instead of an const std::wstring_view& because apparently
 				gos memory management has a problem with global static
 				allocation of EStrings.*/
-static int32_t g_textureCache_WidthOfLastLoadedTexture = 0; /*just to be sure*/
-static int32_t g_textureCache_HeightOfLastLoadedTexture = 0; /*just to be sure*/
+static int32_t g_textureCache_widthOfLastLoadedTexture = 0; /*just to be sure*/
+static int32_t g_textureCache_heightOfLastLoadedTexture = 0; /*just to be sure*/
 static int32_t g_textureCache_NumberOfConsecutiveLoads = 0;
 static bool g_textureCache_LastTextureIsCached = false;
 
 void
-loadTGATexture(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
+loadTGATexture(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height)
 {
 	if (!g_textureCache_FilenameOfLastLoadedTexture)
 		g_textureCache_FilenameOfLastLoadedTexture = new const std::wstring_view&;
 	if (width * height * sizeof(uint32_t) <= g_textureCache_BufferSize)
 	{
-		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) && (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) && ((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture) && ((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture))
+		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) && (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) && ((const int32_t)width == g_textureCache_widthOfLastLoadedTexture) && ((const int32_t)height == g_textureCache_heightOfLastLoadedTexture))
 		{
 			if (g_textureCache_LastTextureIsCached)
 			{
@@ -210,7 +210,7 @@ loadTGATexture(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, in
 			}
 		}
 	}
-	puint8_t tgaBuffer = (puint8_t)malloc(tgaFile->fileSize());
+	uint8_t* tgaBuffer = (uint8_t*)malloc(tgaFile->fileSize());
 	tgaFile->read(tgaBuffer, tgaFile->fileSize());
 	//---------------------------------------
 	// Parse out TGAHeader.
@@ -229,7 +229,7 @@ loadTGATexture(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, in
 	{
 		//------------------------------------------------
 		// This is just a bitmap.  Copy it into ourRAM.
-		puint8_t image = tgaBuffer + sizeof(TGAFileHeader);
+		uint8_t* image = tgaBuffer + sizeof(TGAFileHeader);
 		if (header->pixel_depth == 32)
 			memcpy(ourRAM, image, width * height * 4);
 		else
@@ -264,7 +264,7 @@ loadTGATexture(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, in
 	break;
 	case RLE_TRUE:
 	{
-		puint8_t image = tgaBuffer + sizeof(TGAFileHeader);
+		uint8_t* image = tgaBuffer + sizeof(TGAFileHeader);
 		tgaDecomp(ourRAM, image, header);
 		//------------------------------------------------------------------------
 		// Must check image_descriptor to see if we need to un upside down
@@ -292,23 +292,23 @@ loadTGATexture(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, in
 	free(tgaBuffer);
 	if (width * height * sizeof(uint32_t) <= g_textureCache_BufferSize)
 	{
-		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) && (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) && ((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture) && ((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture))
+		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) && (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) && ((const int32_t)width == g_textureCache_widthOfLastLoadedTexture) && ((const int32_t)height == g_textureCache_heightOfLastLoadedTexture))
 		{
 			g_textureCache_NumberOfConsecutiveLoads += 1;
 			if (2 == g_textureCache_NumberOfConsecutiveLoads)
 			{
 				memcpy(g_textureCache_Buffer, ourRAM, width * height * sizeof(uint32_t));
 				(*g_textureCache_FilenameOfLastLoadedTexture) = tgaFile->getFilename();
-				g_textureCache_WidthOfLastLoadedTexture = width;
-				g_textureCache_HeightOfLastLoadedTexture = height;
+				g_textureCache_widthOfLastLoadedTexture = width;
+				g_textureCache_heightOfLastLoadedTexture = height;
 				g_textureCache_LastTextureIsCached = true;
 			}
 		}
 		else
 		{
 			(*g_textureCache_FilenameOfLastLoadedTexture) = tgaFile->getFilename();
-			g_textureCache_WidthOfLastLoadedTexture = width;
-			g_textureCache_HeightOfLastLoadedTexture = height;
+			g_textureCache_widthOfLastLoadedTexture = width;
+			g_textureCache_heightOfLastLoadedTexture = height;
 			g_textureCache_NumberOfConsecutiveLoads = 1;
 			g_textureCache_LastTextureIsCached = false;
 		}
@@ -316,9 +316,9 @@ loadTGATexture(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, in
 }
 
 void
-loadTGAMask(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, int32_t height)
+loadTGAMask(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height)
 {
-	puint8_t tgaBuffer = (puint8_t)malloc(tgaFile->fileSize());
+	uint8_t* tgaBuffer = (uint8_t*)malloc(tgaFile->fileSize());
 	tgaFile->read(tgaBuffer, tgaFile->fileSize());
 	//---------------------------------------
 	// Parse out TGAHeader.
@@ -335,7 +335,7 @@ loadTGAMask(std::unique_ptr<File> tgaFile, puint8_t ourRAM, int32_t width, int32
 	{
 		//------------------------------------------------
 		// This is just a bitmap.  Copy it into ourRAM.
-		puint8_t image = tgaBuffer + sizeof(TGAFileHeader);
+		uint8_t* image = tgaBuffer + sizeof(TGAFileHeader);
 		if (header->color_map)
 			image += header->cm_length * (header->cm_entry_size >> 3);
 		memcpy(ourRAM, image, width * height);

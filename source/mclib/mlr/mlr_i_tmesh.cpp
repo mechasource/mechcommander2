@@ -130,7 +130,7 @@ MLR_I_TMesh::Copy(MLR_I_PMesh* pMesh)
 	Check_Object(pMesh);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	size_t len;
-	puint16_t _index;
+	uint16_t* _index;
 	Point3D* _coords;
 	Stuff::Vector2DScalar* _texCoords;
 	pMesh->GetCoordData(&_coords, &len);
@@ -184,7 +184,7 @@ MLR_I_TMesh::FindBackFace(const Point3D& u)
 {
 	// Check_Object(this);
 	int32_t ret = 0;
-	puint8_t iPtr;
+	uint8_t* iPtr;
 	Plane* p;
 	if (numOfTriangles <= 0)
 	{
@@ -220,7 +220,7 @@ void
 MLR_I_TMesh::ResetTestList()
 {
 	int32_t i, numPrimitives = GetNumPrimitives();
-	puint8_t iPtr = &testList[0];
+	uint8_t* iPtr = &testList[0];
 	for (i = 0; i < numPrimitives; i++, iPtr++)
 	{
 		*iPtr = 1;
@@ -289,7 +289,7 @@ void
 	Stuff::Vector4D *v4d = transformedCoords.GetData();
 	Stuff::Point3D *p3d = coords.GetData();
 	MLRClippingState *cs = clipPerVertex.GetData();
-	puint8_t viv = visibleIndexedVertices.GetData();
+	uint8_t* viv = visibleIndexedVertices.GetData();
 
 	for(i=0;i<len;i++,p3d++,v4d++,cs++,viv++)
 	{
@@ -379,7 +379,7 @@ MLR_I_TMesh::Lighting(MLRLight* const* lights, int32_t nrLights)
 	}
 }
 
-extern RGBAColor errorColor;
+extern RGBAcolour errorcolour;
 extern bool
 CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs, int32_t stride);
 
@@ -474,8 +474,8 @@ MLR_I_TMesh::LightMapLighting(MLRLight* light)
 					SPEW(("micgaert", "projection = %f,%f,%f", hitPoint.x, hitPoint.y, hitPoint.z));
 #endif
 				float sq_falloff = falloff * falloff * light->GetIntensity();
-				RGBAColor color(sq_falloff, sq_falloff, sq_falloff, 1.0f);
-				lightMap->AddColor(color);
+				RGBAcolour color(sq_falloff, sq_falloff, sq_falloff, 1.0f);
+				lightMap->Addcolour(color);
 				for (k = 0; k < 3; k++)
 				{
 					lightMap->AddCoord(coords[index[k + j]]);
@@ -634,7 +634,7 @@ MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor((*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k],
+					lightMap->Addcolour((*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k],
 						(*lightMapSqFalloffs)[k], 1.0f);
 				}
 				for (k = 0; k < 3; k++)
@@ -667,7 +667,7 @@ MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(RGBAColor(0.0f, 0.0f, 0.5f, 1.0f));
+					lightMap->Addcolour(RGBAcolour(0.0f, 0.0f, 0.5f, 1.0f));
 				}
 				for (k = 0; k < 3; k++)
 				{
@@ -686,7 +686,7 @@ MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(RGBAColor(0.5f, 0.0f, 0.0f, 1.0f));
+					lightMap->Addcolour(RGBAcolour(0.5f, 0.0f, 0.0f, 1.0f));
 				}
 				for (k = 0; k < 3; k++)
 				{
@@ -705,7 +705,7 @@ MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(
+					lightMap->Addcolour(
 						lightMapSqFalloffs[k], lightMapSqFalloffs[k], lightMapSqFalloffs[k], 1.0f);
 				}
 				for (k = 0; k < 3; k++)
@@ -725,7 +725,7 @@ MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(errorColor);
+					lightMap->Addcolour(errorcolour);
 				}
 				for (k = 0; k < 3; k++)
 				{
@@ -881,7 +881,7 @@ MLR_I_TMesh::CastRay(Line3D* line, Normal3D* normal)
 		//
 		//
 		//----------------------------------------------------
-		// Handle the hit status, and move to the next polygon
+		// handle the hit status, and move to the next polygon
 		//----------------------------------------------------
 		//
 		if (local_hit)
@@ -906,7 +906,7 @@ MLR_I_TMesh::CastRay(Line3D* line, Normal3D* normal)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_TMesh*
-MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit(float half, MLRState* state)
+MidLevelRenderer::CreateIndexedTriCube_Nocolour_NoLit(float half, MLRState* state)
 {
 #if 0
 	gos_PushCurrentHeap(Heap);
@@ -922,7 +922,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit(float half, MLRState* state
 	coords[5] = Point3D(half,  half,  half);
 	coords[6] = Point3D(half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
-	puint8_t lengths = new uint8_t [6];
+	uint8_t* lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 	int32_t i;
 	for(i = 0; i < 6; i++)
@@ -931,7 +931,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit(float half, MLRState* state
 	}
 	ret->SetSubprimitiveLengths(lengths, 6);
 	ret->SetCoordData(coords, 8);
-	puint16_t index = new uint16_t [6 * 4];
+	uint16_t* index = new uint16_t [6 * 4];
 	Register_Pointer(index);
 	index[0] = 0;
 	index[1] = 2;
@@ -1002,7 +1002,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit(float half, MLRState* state
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit(
+MidLevelRenderer::CreateIndexedTriIcosahedron_Nocolour_NoLit(
 	IcoInfo& icoInfo, MLRState* state)
 {
 #ifdef _GAMEOS_HPP_
@@ -1025,7 +1025,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit(
 		collapsedCoords = new Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);

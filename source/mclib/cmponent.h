@@ -23,10 +23,10 @@
 #include <string.h>
 
 #ifndef _MBCS
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #else
-#include <assert.h>
-#define gosASSERT assert
+#include <_ASSERT.h>
+#define gosASSERT _ASSERT
 #define gos_Malloc malloc
 #define gos_Free free
 #endif
@@ -145,7 +145,7 @@ typedef union {
 		uint8_t range; // int16_t, med or int32_t
 		uint8_t flags;
 		int16_t type; // which weapon type is this
-		char specialEffect; // used to cue whatever visual/sound effects this
+		wchar_t specialEffect; // used to cue whatever visual/sound effects this
 			// needs
 	} weapon;
 	struct
@@ -171,14 +171,14 @@ private:
 	int32_t masterID; // unique ID for component
 	int32_t resourcePoints; // resource cost of object
 	ComponentFormType form; // form of component
-	char name[MAXLEN_COMPONENT_NAME]; // name string/description
-	char abbreviation[MAXLEN_COMPONENT_ABBREV]; // abbreviated name
+	wchar_t name[MAXLEN_COMPONENT_NAME]; // name string/description
+	wchar_t abbreviation[MAXLEN_COMPONENT_ABBREV]; // abbreviated name
 	float tonnage; // in tons
-	char size; // # of total spaces used
-	char health; // # of hits before destroyed
-	char criticalSpacesReq[NUM_BODY_LOCATIONS]; // # of critical spaces required
+	wchar_t size; // # of total spaces used
+	wchar_t health; // # of hits before destroyed
+	wchar_t criticalSpacesReq[NUM_BODY_LOCATIONS]; // # of critical spaces required
 		// in specific location
-	char disableLevel; // # of critical spaces to disable
+	wchar_t disableLevel; // # of critical spaces to disable
 	uint8_t uses;
 	uint8_t techBase;
 	float CV; // CV for this component
@@ -231,21 +231,21 @@ public:
 
 	int32_t getHealth(void) { return (health); }
 
-	char getCriticalSpacesReq(int32_t location)
+	wchar_t getCriticalSpacesReq(int32_t location)
 	{
 		if ((location < 0) && (location > NUM_BODY_LOCATIONS))
 			return -1;
 		return (criticalSpacesReq[location]);
 	}
 
-	void setCriticalSpacesReq(int32_t location, char value)
+	void setCriticalSpacesReq(int32_t location, wchar_t value)
 	{
 		if ((location < 0) && (location > NUM_BODY_LOCATIONS))
 			return;
 		criticalSpacesReq[location] = value;
 	}
 
-	char getDisableLevel(void) { return (disableLevel); }
+	wchar_t getDisableLevel(void) { return (disableLevel); }
 
 	float getCV(void) { return (CV); }
 

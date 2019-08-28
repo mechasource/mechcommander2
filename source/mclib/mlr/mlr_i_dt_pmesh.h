@@ -7,8 +7,8 @@
 #ifndef MLR_MLR_I_DT_PMESH_HPP
 #define MLR_MLR_I_DT_PMESH_HPP
 
-#include <mlr/gosvertex.hpp>
-#include <mlr/mlr_i_pmesh.hpp>
+#include "mlr/gosvertex.h"
+#include "mlr/mlr_i_pmesh.h"
 
 namespace MidLevelRenderer
 {
@@ -97,7 +97,7 @@ public:
 			return gos_vertices + numGOSVertices;
 	}
 #if 0
-		virtual puint16_t
+		virtual uint16_t*
 		GetGOSIndices(size_t pass = 0)
 		{
 			// Check_Object(this);
@@ -135,8 +135,8 @@ protected:
 };
 
 MLR_I_DT_PMesh*
-CreateIndexedCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
+CreateIndexedCube_Nocolour_NoLit_2Tex(float, MLRState*, MLRState*);
 MLRShape*
-CreateIndexedIcosahedron_NoColor_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
+CreateIndexedIcosahedron_Nocolour_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

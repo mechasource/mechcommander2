@@ -3,7 +3,7 @@
 
  codetest
 
- 2018-09-03 Jerker Beck, created
+ 2018-09-03 Jerker Back, created
 
  $LastChangedBy$
 
@@ -11,7 +11,7 @@
  RcsID = $Id$ */
 
 #include "stdinc.h"
-#include <resource.h>
+#include "resource.h"
 
 #ifndef IN_TEST_MODE
 #define IN_TEST_MODE 0
@@ -31,7 +31,7 @@ typedef struct _RES_STRINGTABLE
 } RES_STRINGTABLE;
 typedef RES_STRINGTABLE* PRES_STRINGTABLE;
 
-extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Out_ std::wstring& resstring,
+extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Out_ const std::wstring_view& resstring,
 	_In_ uint32_t resid, _In_ uint16_t langid);
 
 /// <summary>
@@ -44,7 +44,7 @@ extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Ou
 /// <param name="resid">resource ID</param>
 /// <param name="langid">resource language</param>
 /// <returns>HRESULT</returns>
-extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Out_ std::wstring& resstring,
+extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Out_ const std::wstring_view& resstring,
 	_In_ uint32_t resid, _In_ uint16_t langid = USHRT_MAX)
 {
 	HRSRC reshandle;
@@ -54,7 +54,7 @@ extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Ou
 	// string tables are counted UTF16 strings grouped together in bundles of sixteen
 	// https://blogs.msdn.microsoft.com/oldnewthing/20040130-00/?p=40813/
 
-	PWSTR txtid = MAKEINTRESOURCEW(((resid >> 4) + 1) & USHRT_MAX);
+	const std::wstring_view& txtid = MAKEINTRESOURCEW(((resid >> 4) + 1) & USHRT_MAX);
 	if (langid == USHRT_MAX) // invalid
 		langid = MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US); // 1033, 0x409
 
@@ -94,7 +94,7 @@ extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Ou
 		index--;
 	}
 
-	resstring = std::wstring(pstringtable->charray, pstringtable->count);
+	resstring = const std::wstring_view&(pstringtable->charray, pstringtable->count);
 
 	return S_OK;
 }
@@ -112,11 +112,11 @@ testresource()
 	if (hModule == nullptr)
 		return EXIT_FAILURE;
 
-	PWSTR pBuffer = nullptr;
-	result = ::LoadStringW(hModule, IDS_LARGE_PULSE_DESC, reinterpret_cast<PWSTR>(&pBuffer), 0);
-	std::wstring resstring1(pBuffer, static_cast<size_t>(result));
+	const std::wstring_view& pBuffer = nullptr;
+	result = ::LoadStringW(hModule, IDS_LARGE_PULSE_DESC, reinterpret_cast<const std::wstring_view&>(&pBuffer), 0);
+	const std::wstring_view& resstring1(pBuffer, static_cast<size_t>(result));
 
-	std::wstring resstring2;
+	const std::wstring_view& resstring2;
 	result = LoadResourceString(hModule, resstring2, IDS_LARGE_PULSE_DESC, USHRT_MAX);
 
 	return (SUCCEEDED(result)) ? S_OK : E_FAIL;
@@ -124,7 +124,7 @@ testresource()
 #endif
 
 #if 0
-int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_t uID,_In_ uint16_t wLanguage = USHRT_MAX)
+int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& pBuffer,_In_ uint32_t uID,_In_ uint16_t wLanguage = USHRT_MAX)
 {
 	HRSRC		hResource;
 	HGLOBAL		hGlobal;
@@ -132,20 +132,20 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 	uint32_t	nResourceSize;
 	uint32_t	iIndex;
 
-	//_In_opt_ HINSTANCE hInstance,
+	//_In_opt_ HINSTANCE hinstance,
 	//_In_ uint32_t uID,
 	//_Out_writes_to_(cchBufferMax,return + 1) LPWSTR lpBuffer,
 	//_In_ int cchBufferMax
 
 	//HANDLE	hStringSeg;
-	PWSTR		pszResource;
+	const std::wstring_view&		pszResource;
 	size_t		ncount;
 	
 	(void)hModule;(void)uID;(void)wLanguage;(void)pBuffer;
 
 	//const ATLSTRINGRESOURCEIMAGE* pImage;
 	//const ATLSTRINGRESOURCEIMAGE* pImageEnd;
-	//ULONG nResourceSize;
+	//ulong32_t nResourceSize;
 	//HGLOBAL hGlobal;
 	//uint32_t iIndex;
 
@@ -156,12 +156,12 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 	 */
 	ncount = 0;
 	/*
-	 * String Tables are broken up into 16 string segments. Find the segment
+	 * string Tables are broken up into 16 string segments. Find the segment
 	 * containing the string we are interested in.
 	 */
 
 
-	PWSTR pszID = MAKEINTRESOURCEW(((uID >> 4) + 1) & USHRT_MAX);
+	const std::wstring_view& pszID = MAKEINTRESOURCEW(((uID >> 4) + 1) & USHRT_MAX);
 	if (wLanguage == USHRT_MAX)	// invalid
 		wLanguage = MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US);	// 1033, 0x409
 
@@ -192,7 +192,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 	* Move past the other strings in this segment.
 	* (16 strings in a segment -> & 0x0F)
 	*/
-	pszResource = static_cast<PWSTR>(pStringResource);
+	pszResource = static_cast<const std::wstring_view&>(pStringResource);
 	iIndex = uID & 0x000f;
 	while (true)
 	{
@@ -202,13 +202,13 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 		pszResource += ncount;                    // Step to start if next string
 	}
 
-	std::wstring winbasestring(pszResource, ncount);
+	const std::wstring_view& winbasestring(pszResource, ncount);
 
 #if 0
 	struct ATLSTRINGRESOURCEIMAGE
 	{
 		uint16_t nLength;
-		WCHAR achString[];
+		wchar_t achString[];
 	};
 	typedef struct _UNICODE_STRING {
 		USHORT Length;
@@ -234,7 +234,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 		iIndex--;
 	}
 
-	std::wstring atlcorestring(pImage->charray, pImage->count);
+	const std::wstring_view& atlcorestring(pImage->charray, pImage->count);
 
 #if 0
 	if( pImage >= pImageEnd )
@@ -278,17 +278,17 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 #endif
 
 #if 0
-	if (hResInfo = FINDRESOURCEEXW(hModule, (LPTSTR)ULongToPtr(((LONG)(((USHORT)wID >> 4) + 1))), RT_STRING, wLangId))
+	if (hResInfo = FINDRESOURCEEXW(hModule, (const std::wstring_view&)ULongToPtr(((long32_t)(((USHORT)wID >> 4) + 1))), RT_STRING, wLangId))
 	{
 		/*
 		 * Load that segment.
 		 */
-		hGlobal = ::LoadResource( hInstance, hResource );
+		hGlobal = ::LoadResource( hinstance, hResource );
 		hStringSeg = LOADRESOURCE(hModule, hResInfo);
 		/*
 		 * Lock the resource.
 		 */
-		if (lpsz = (LPTSTR)LOCKRESOURCE(hStringSeg, hModule))
+		if (lpsz = (const std::wstring_view&)LOCKRESOURCE(hStringSeg, hModule))
 		{
 			/*
 			 * Move past the other strings in this segment.
@@ -307,7 +307,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 			 */
 			if (cchBufferMax == 0)
 			{
-				*(LPTSTR*)lpBuffer = lpsz;
+				*(const std::wstring_view&*)lpBuffer = lpsz;
 			}
 			else
 			{
@@ -323,7 +323,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 				/*
 				 * Copy the string into the buffer.
 				 */
-				RtlCopyMemory(lpBuffer, lpsz, cch * sizeof(WCHAR));
+				RtlCopyMemory(lpBuffer, lpsz, cch * sizeof(wchar_t));
 			}
 			/*
 			 * Unlock resource, but don't free it - better performance this
@@ -342,7 +342,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ PWSTR& pBuffer,_In_ uint32_
 
 #endif
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 	UnlockResource(pStringResource);
 	FreeResource(hGlobal);
 #endif

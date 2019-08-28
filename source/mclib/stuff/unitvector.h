@@ -10,7 +10,7 @@
 #ifndef _UNITVECTOR_HPP_
 #define _UNITVECTOR_HPP_
 
-#include <stuff/vector3d.hpp>
+#include "stuff/vector3d.h"
 
 namespace Stuff
 {
@@ -97,13 +97,13 @@ private:
 	UnitVector3D& operator-=(const Vector3D& V);
 	UnitVector3D& Cross(const Vector3D& V1, const Vector3D& V2);
 	UnitVector3D& Multiply(const Vector3D& V, float Scale);
-	UnitVector3D& operator*=(float Value);
+	UnitVector3D& operator*=(float value);
 	UnitVector3D& Multiply(const Vector3D& V1, const Vector3D& V2);
 	UnitVector3D& operator*=(const Vector3D& V);
 	UnitVector3D& Multiply(const Vector3D& Source, const AffineMatrix4D& M);
 	UnitVector3D& MultiplyByInverse(const Vector3D& Source, const LinearMatrix4D& M);
 	UnitVector3D& Divide(const Vector3D& V, float Scale);
-	UnitVector3D& operator/=(float Value);
+	UnitVector3D& operator/=(float value);
 	UnitVector3D& Combine(const Vector3D& V1, float t1, const Vector3D& V2, float t2);
 };
 

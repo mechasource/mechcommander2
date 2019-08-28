@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -24,34 +24,24 @@
 
 #pragma warning(disable : 4191) // 'type cast' : unsafe conversion from 'FARPROC'
 
-typedef int32_t(__stdcall* PDIRECTXSETUPGETVERSION)(
-	uint32_t* pdwVersion, uint32_t* pdwMinorVersion);
-typedef HRESULT(__stdcall* PDIRECTDRAWCREATEEX)(
-	GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN pUnkOuter);
-typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEA)(LPDDENUMCALLBACKA pCallback, PVOID pContext);
-typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEEXA)(
-	LPDDENUMCALLBACKEXA pCallback, PVOID pContext, uint32_t dwFlags);
-typedef HRESULT(__stdcall* PDIRECTSOUNDCREATE)(
-	LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter);
-typedef HRESULT(__stdcall* PDIRECTSOUNDENUMERATEA)(
-	LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
-typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(
-	HINSTANCE hinstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
-
+typedef int32_t(__stdcall* PDIRECTXSETUPGETVERSION)(uint32_t* pdwVersion, uint32_t* pdwMinorVersion);
+typedef HRESULT(__stdcall* PDIRECTDRAWCREATEEX)(GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN punkouter);
+typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEA)(LPDDENUMCALLBACKA pCallback, PVOID pcontext);
+typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEEXA)(LPDDENUMCALLBACKEXA pCallback, PVOID pcontext, uint32_t flags);
+typedef HRESULT(__stdcall* PDIRECTSOUNDCREATE)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN punkouter);
+typedef HRESULT(__stdcall* PDIRECTSOUNDENUMERATEA)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pcontext);
+typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(HINSTANCE hinstance, uint32_t version, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
 typedef LPDIRECT3DVERTEXBUFFER7(__stdcall* GETDXFUNC)(LPDIRECT3DVERTEXBUFFER7, LPDIRECT3DDEVICE7);
 
-enum class IJLERR(__stdcall* PIJLINIT)(struct _JPEG_CORE_PROPERTIES* jcprops);
-enum class IJLERR(__stdcall* PIJLFREE)(struct _JPEG_CORE_PROPERTIES* jcprops);
-enum class IJLERR(__stdcall* PIJLREAD)(
-	struct _JPEG_CORE_PROPERTIES* jcprops, enum IJLIOTYPE iotype);
-enum class IJLERR(__stdcall* PIJLWRITE)(
-	struct _JPEG_CORE_PROPERTIES* jcprops, enum IJLIOTYPE iotype);
+enum IJLERR(__stdcall* PIJLINIT)(struct _JPEG_CORE_PROPERTIES* jcprops);
+enum IJLERR(__stdcall* PIJLFREE)(struct _JPEG_CORE_PROPERTIES* jcprops);
+enum IJLERR(__stdcall* PIJLREAD)(struct _JPEG_CORE_PROPERTIES* jcprops, enum IJLIOTYPE iotype);
+enum IJLERR(__stdcall* PIJLWRITE)(struct _JPEG_CORE_PROPERTIES* jcprops, enum IJLIOTYPE iotype);
 
 typedef HIMC(__stdcall* PIMMASSOCIATECONTEXT)(HWND, HIMC);
 typedef HIMC(__stdcall* PIMMGETCONTEXT)(HWND);
 typedef int32_t(__stdcall* PIMMRELEASECONTEXT)(HWND, HIMC);
-typedef int32_t(__stdcall* PIMMGETCOMPOSITIONSTRINGA)(
-	HIMC, uint32_t, PVOID pBuf, uint32_t dwBufLen);
+typedef int32_t(__stdcall* PIMMGETCOMPOSITIONSTRINGA)(HIMC, uint32_t, PVOID pBuf, uint32_t dwBufLen);
 typedef HWND(__stdcall* PIMMGETDEFAULTIMEWND)(HWND);
 typedef HWND(__stdcall* PIMMGETIMEFILENAME)(HKL, char*, uint32_t);
 typedef PVOID(__stdcall* PIMMLOCKIMCC)(HIMCC);
@@ -64,35 +54,28 @@ typedef int32_t(__stdcall* PIMMSETOPENSTATUS)(HIMC, int32_t);
 typedef int32_t(__stdcall* PIMMSIMULATEHOTKEY)(HWND, uint32_t);
 typedef int32_t(__stdcall* PIMMUNLOCKIMC)(HIMC);
 typedef int32_t(__stdcall* PIMMUNLOCKIMCC)(HIMCC);
-typedef uint32_t(__stdcall* PIMMGETCANDIDATELISTA)(
-	HIMC, uint32_t deIndex, struct tagCANDIDATELIST* pCandList, uint32_t dwBufLen);
+typedef uint32_t(__stdcall* PIMMGETCANDIDATELISTA)(HIMC, uint32_t deIndex, struct tagCANDIDATELIST* pCandList, uint32_t dwBufLen);
 typedef uint32_t(__stdcall* PIMMGETVIRTUALKEY)(HWND);
 typedef struct tagINPUTCONTEXT*(__stdcall* PIMMLOCKIMC)(HIMC);
 
 typedef int32_t(__stdcall* PEMPTYWORKINGSET)(HANDLE hProcess);
 typedef int32_t(__stdcall* PINITIALIZEPROCESSFORWSWATCH)(HANDLE hProcess);
-typedef int32_t(__stdcall* PGETWSCHANGES)(
-	HANDLE hProcess, struct _PSAPI_WS_WATCH_INFORMATION* lpWatchInfo, uint32_t cb);
-typedef uint32_t(__stdcall* PGETMAPPEDFILENAMEA)(
-	HANDLE hProcess, PVOID lpv, PSTR lpFilename, uint32_t nSize);
+typedef int32_t(__stdcall* PGETWSCHANGES)(HANDLE hProcess, struct _PSAPI_WS_WATCH_INFORMATION* lpWatchInfo, uint32_t cb);
+typedef uint32_t(__stdcall* PGETMAPPEDFILENAMEA)(HANDLE hProcess, PVOID lpv, PSTR lpFilename, uint32_t nSize);
 
 typedef uint32_t(__stdcall* PAMGETERRORTEXTA)(HRESULT hr, PSTR pbuffer, uint32_t MaxLen);
 
 typedef int16_t(__stdcall* PSQLALLOCHANDLE)(int16_t, void*, void**);
 typedef int16_t(__stdcall* PSQLBINDCOL)(void*, uint16_t, int16_t, void*, int32_t, int32_t*);
-typedef int16_t(__stdcall* PSQLBINDPARAMETER)(
-	void*, uint16_t, int16_t, int16_t, int16_t, uint32_t, int16_t, void*, int32_t, int32_t*);
+typedef int16_t(__stdcall* PSQLBINDPARAMETER)(void*, uint16_t, int16_t, int16_t, int16_t, uint32_t, int16_t, void*, int32_t, int32_t*);
 typedef int16_t(__stdcall* PSQLDISCONNECT)(void*);
-typedef int16_t(__stdcall* PSQLDRIVERCONNECT)(
-	void*, HWND, uint8_t*, int16_t, uint8_t*, int16_t, int16_t*, uint16_t);
+typedef int16_t(__stdcall* PSQLDRIVERCONNECT)(void*, HWND, uint8_t*, int16_t, uint8_t*, int16_t, int16_t*, uint16_t);
 typedef int16_t(__stdcall* PSQLEXECDIRECT)(void*, uint8_t*, int32_t);
 typedef int16_t(__stdcall* PSQLFETCH)(void*);
 typedef int16_t(__stdcall* PSQLFREEHANDLE)(int16_t, void*);
 typedef int16_t(__stdcall* PSQLFREESTMT)(void*, uint16_t);
-typedef int16_t(__stdcall* PSQLGETDIAGFIELD)(
-	int16_t, void*, int16_t, int16_t, void*, int16_t, int16_t*);
-typedef int16_t(__stdcall* PSQLGETDIAGREC)(
-	int16_t, void*, int16_t, uint8_t*, int32_t*, uint8_t*, int16_t, int16_t*);
+typedef int16_t(__stdcall* PSQLGETDIAGFIELD)(int16_t, void*, int16_t, int16_t, void*, int16_t, int16_t*);
+typedef int16_t(__stdcall* PSQLGETDIAGREC)(int16_t, void*, int16_t, uint8_t*, int32_t*, uint8_t*, int16_t, int16_t*);
 typedef int16_t(__stdcall* PSQLNUMRESULTCOLS)(void*, int16_t*);
 typedef int16_t(__stdcall* PSQLSETENVATTR)(void*, int32_t, void*, int32_t);
 
@@ -105,11 +88,9 @@ typedef int32_t(__stdcall* PCLOSESOCKET)(uint32_t);
 typedef int32_t(__stdcall* PGETHOSTNAME)(char*, int32_t);
 typedef int32_t(__stdcall* PLISTEN)(uint32_t, int32_t);
 typedef int32_t(__stdcall* PRECV)(uint32_t, char*, int32_t, int32_t);
-typedef int32_t(__stdcall* PRECVFROM)(
-	uint32_t, char*, int32_t, int32_t, struct sockaddr*, int32_t*);
+typedef int32_t(__stdcall* PRECVFROM)(uint32_t, char*, int32_t, int32_t, struct sockaddr*, int32_t*);
 typedef int32_t(__stdcall* PSEND)(uint32_t, char*, int32_t, int32_t);
-typedef int32_t(__stdcall* PSENDTO)(
-	uint32_t, const char*, int32_t, int32_t, const struct sockaddr*, int32_t);
+typedef int32_t(__stdcall* PSENDTO)(uint32_t, const char*, int32_t, int32_t, const struct sockaddr*, int32_t);
 typedef struct hostent*(__stdcall* PGETHOSTBYNAME)(const char* name);
 typedef struct servent*(__stdcall* PGETSERVBYNAME)(char*, char*);
 typedef uint16_t(__stdcall* PHTONS)(uint16_t);
@@ -251,9 +232,9 @@ PSTR __stdcall GetDirectXVersion(void);
 /// <returns></returns>
 void __stdcall InitLibraries(void)
 {
-	PSTR pszFormat;
-	PSTR pszMessage;
-	size_t nBufferSize;
+	PSTR format;
+	PSTR message;
+	size_t buffersize;
 	char szAssetsPathMessage[MAX_PATH * 2];
 	bool bbladepath1;
 	bool bbladepath2;
@@ -284,9 +265,9 @@ void __stdcall InitLibraries(void)
 		if (hModule_dsetup == nullptr)
 		{
 			// pszFormat = gos_GetResourceString(gLanguageDLL, 10051u);
-			pszFormat = "Cannot find dsetup.dll in %s\\assets\\binaries or %s, "
+			format = "Cannot find dsetup.dll in %s\\assets\\binaries or %s, "
 						"this file is required";
-			sprintf_s(szDsetupMessage, _countof(szDsetupMessage), pszFormat, AssetsDirectory1,
+			sprintf_s(szDsetupMessage, _countof(szDsetupMessage), format, AssetsDirectory1,
 				AssetsDirectory2);
 			MessageBoxA(nullptr, szDsetupMessage, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
@@ -306,10 +287,10 @@ void __stdcall InitLibraries(void)
 	{
 		if ((WindowsNT == false) && ((DXdwVersion < 7) || ((DXdwVersion == 7) && (DXdwRevision < 716))))
 		{
-			pszFormat = "Requires DirectX 7.0a or later, found %s";
-			pszMessage = GetDirectXVersion();
-			sprintf_s(szDirectXVersionMessage1, _countof(szDirectXVersionMessage1), pszFormat,
-				pszMessage);
+			format = "Requires DirectX 7.0a or later, found %s";
+			message = GetDirectXVersion();
+			sprintf_s(szDirectXVersionMessage1, _countof(szDirectXVersionMessage1), format,
+				message);
 			MessageBoxA(nullptr, szDirectXVersionMessage1, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
@@ -321,10 +302,10 @@ void __stdcall InitLibraries(void)
 		{
 			// pszFormat = gos_GetResourceString(gLanguageDLL, 10030u);	//
 			// language.dll : "Requires DirectX 8 or later, found %s"
-			pszFormat = "Requires DirectX 8 or later, found %s";
-			pszMessage = GetDirectXVersion();
-			sprintf_s(szDirectXVersionMessage2, _countof(szDirectXVersionMessage2), pszFormat,
-				pszMessage);
+			format = "Requires DirectX 8 or later, found %s";
+			message = GetDirectXVersion();
+			sprintf_s(szDirectXVersionMessage2, _countof(szDirectXVersionMessage2), format,
+				message);
 			MessageBoxA(nullptr, szDirectXVersionMessage2, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
@@ -335,10 +316,10 @@ void __stdcall InitLibraries(void)
 		LibBlade = LoadLibraryA("ddraw.dll");
 		if (LibBlade == nullptr)
 		{
-			// pszMessage = gos_GetResourceString(gLanguageDLL, 10031u);
-			pszMessage = "Cannot find ddraw.dll, this file is required";
-			// sprintf_s(szDdrawMessage, _countof(szDdrawMessage), pszMessage);
-			MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			// message = gos_GetResourceString(gLanguageDLL, 10031u);
+			message = "Cannot find ddraw.dll, this file is required";
+			// sprintf_s(szDdrawMessage, _countof(szDdrawMessage), message);
+			MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -353,8 +334,8 @@ void __stdcall InitLibraries(void)
 			/* typo bug (_DirectDrawEnumerate == nullptr)*/
 			(_DirectDrawEnumerateEx == nullptr))
 		{
-			pszMessage = "Cannot find ddraw functions";
-			MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			message = "Cannot find ddraw functions";
+			MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -377,9 +358,9 @@ void __stdcall InitLibraries(void)
 			{
 				if (strlen(AssetsDirectory2) >= 16)
 				{
-					nBufferSize = strlen(AssetsDirectory2);
+					buffersize = strlen(AssetsDirectory2);
 					if (!_strnicmp(
-							&AssetsDirectory2[nBufferSize - 16], "\\assets\\binaries", 0x10u))
+							&AssetsDirectory2[buffersize - 16], "\\assets\\binaries", 0x10u))
 						bbladepath2 = true;
 				}
 				bbladepath1 = false;
@@ -396,10 +377,10 @@ void __stdcall InitLibraries(void)
 					{
 						// pszFormat = gos_GetResourceString(gLanguageDLL,
 						// 10033u);
-						pszFormat = "Cannot find blade.dll in "
+						format = "Cannot find blade.dll in "
 									"%s\\assets\\binaries or %s, this file is "
 									"required";
-						sprintf_s(szAssetsPathMessage, _countof(szAssetsPathMessage), pszFormat,
+						sprintf_s(szAssetsPathMessage, _countof(szAssetsPathMessage), format,
 							AssetsDirectory1, AssetsDirectory2);
 						MessageBoxA(
 							nullptr, szAssetsPathMessage, ApplicationName, MB_ICONEXCLAMATION);
@@ -433,8 +414,8 @@ void __stdcall InitLibraries(void)
 			/* typo bug (_DirectDrawEnumerate == nullptr)*/
 			(_DirectDrawEnumerateEx == nullptr) || (g_pGetDXVB == nullptr))
 		{
-			pszMessage = "Cannot find Blade functions";
-			MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			message = "Cannot find Blade functions";
+			MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -460,9 +441,9 @@ void __stdcall InitLibraries(void)
 	LibDsound = LoadLibraryA("dsound.dll");
 	if (LibDsound == nullptr)
 	{
-		// pszMessage = gos_GetResourceString(gLanguageDLL, 10036u);
-		pszMessage = "Cannot load DirectSound dll";
-		MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+		// message = gos_GetResourceString(gLanguageDLL, 10036u);
+		message = "Cannot load DirectSound dll";
+		MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
@@ -472,8 +453,8 @@ void __stdcall InitLibraries(void)
 		GetProcAddress(LibDsound, "DirectSoundEnumerateA"));
 	if ((_DirectSoundCreate == nullptr) && (_DirectSoundEnumerate == nullptr))
 	{
-		pszMessage = "Cannot find DirectSound functions";
-		MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+		message = "Cannot find DirectSound functions";
+		MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
@@ -481,9 +462,9 @@ void __stdcall InitLibraries(void)
 	LibDinput = LoadLibraryA("dinput.dll");
 	if (LibDinput == nullptr)
 	{
-		// pszMessage = gos_GetResourceString(gLanguageDLL, 10038u);
-		pszMessage = "Cannot load DirectInput dll";
-		MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+		// message = gos_GetResourceString(gLanguageDLL, 10038u);
+		message = "Cannot load DirectInput dll";
+		MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
@@ -491,8 +472,8 @@ void __stdcall InitLibraries(void)
 		reinterpret_cast<PDIRECTINPUTCREATEEX>(GetProcAddress(LibDinput, "DirectInputCreateEx"));
 	if (_DirectInputCreateEx == nullptr)
 	{
-		pszMessage = "Cannot find DirectInput functions";
-		MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+		message = "Cannot find DirectInput functions";
+		MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
@@ -587,30 +568,30 @@ void __stdcall InitLibraries(void)
 	LibMSADP32 = LoadLibraryA("msadp32.acm");
 	if ((LibAmstream == nullptr) || (LibQuartz == nullptr))
 	{
-		// pszMessage = gos_GetResourceString(gLanguageDLL, 10040u);
-		pszMessage = "DirectX Media not installed";
-		MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+		// message = gos_GetResourceString(gLanguageDLL, 10040u);
+		message = "DirectX Media not installed";
+		MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
 	if (LibMSADP32 == nullptr)
 	{
-		// pszMessage = gos_GetResourceString(gLanguageDLL, 10042Au);
-		pszMessage = "Microsoft audio compression not installed";
-		MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+		// message = gos_GetResourceString(gLanguageDLL, 10042Au);
+		message = "Microsoft audio compression not installed";
+		MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
 	// NOTE: useless code => meant to be moved up?
 	if (LibAmstream == nullptr)
 	{
-		nBufferSize = strlen("amstream.dll  - Version 6.01");
-		pszMessage = GetDLLInfo("amstream.dll", 0);
-		if (strncmp(pszMessage, "amstream.dll  - Version 6.01", nBufferSize) < 0)
+		buffersize = strlen("amstream.dll  - Version 6.01");
+		message = GetDLLInfo("amstream.dll", 0);
+		if (strncmp(message, "amstream.dll  - Version 6.01", buffersize) < 0)
 		{
-			// pszMessage = gos_GetResourceString(gLanguageDLL, 10043u);
-			pszMessage = "Please install DirectX Media 6.0 or later";
-			MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			// message = gos_GetResourceString(gLanguageDLL, 10043u);
+			message = "Please install DirectX Media 6.0 or later";
+			MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -619,8 +600,8 @@ void __stdcall InitLibraries(void)
 		reinterpret_cast<PAMGETERRORTEXTA>(GetProcAddress(LibQuartz, "AMGetErrorTextA"));
 	if (_AMGetErrorText == nullptr)
 	{
-		pszMessage = "Cannot find DirectShow functions";
-		MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+		message = "Cannot find DirectShow functions";
+		MessageBoxA(nullptr, message, ApplicationName, MB_ICONEXCLAMATION);
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}

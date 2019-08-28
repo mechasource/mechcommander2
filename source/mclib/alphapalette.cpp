@@ -11,7 +11,7 @@
 #endif
 
 #include "vfx.h"
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 uint8_t
 FindClosest(VFX_RGB* Palette, int32_t r, int32_t g, int32_t b);
@@ -28,11 +28,11 @@ FindClosest(VFX_RGB* Palette, int32_t r, int32_t g, int32_t b);
 //  Low byte  = Background
 //  High byte = Sprite
 //
-char AlphaTable[NUM_ALPHACOLORS * 256];
+wchar_t AlphaTable[NUM_ALPHACOLORS * 256];
 //
 // Flag set to 1 when an alpha pixel is used
 //
-char SpecialColor[NUM_ALPHACOLORS];
+wchar_t Specialcolour[NUM_ALPHACOLORS];
 
 enum
 {
@@ -53,14 +53,14 @@ InitAlphaLookup(VFX_RGB* Palette)
 	const std::wstring_view& pAlphaTable = AlphaTable;
 	int32_t r, g, b, i;
 	MechFile* IniFile;
-	char Line[256];
+	wchar_t Line[256];
 	float AlphaIni[NUM_ALPHACOLORS][5];
 	int32_t LineNumber;
 	//
 	// Clear the AlphaPal.ini array
 	//
 	memset(AlphaIni, 0, sizeof(AlphaIni));
-	memset(SpecialColor, 0, sizeof(SpecialColor));
+	memset(Specialcolour, 0, sizeof(Specialcolour));
 	//
 	// Read in and parse the AlphaPal.ini file containing all the color
 	// information
@@ -74,14 +74,14 @@ InitAlphaLookup(VFX_RGB* Palette)
 	LineNumber = 0;
 	while (!IniFile->eof())
 	{
-		IniFile->readLine((puint8_t)&Line[0], 256);
+		IniFile->readLine((uint8_t*)&Line[0], 256);
 		LineNumber++;
 		if (Line[0] != '#' && Line[0] != ';' && Line[0] != 0xa && Line[0] != 0)
 		{
 			if (EOF == sscanf_s(Line, "%d", &i))
 				break;
 			gosASSERT(i >= 0 && i < NUM_ALPHACOLORS);
-			SpecialColor[i] = 1;
+			Specialcolour[i] = 1;
 			gosASSERT(EOF != sscanf_s(Line, "%f %f %f %f %f", &AlphaIni[i][R], &AlphaIni[i][G], &AlphaIni[i][B], &AlphaIni[i][SourceAlpha], &AlphaIni[i][DestAlpha]));
 			gosASSERT((AlphaIni[i][SourceAlpha] != 0.0 || AlphaIni[i][DestAlpha] != 0.0) && (AlphaIni[i][R] != 255 && AlphaIni[i][G] != 255 && AlphaIni[i][B] != 255));
 		}
@@ -96,19 +96,19 @@ InitAlphaLookup(VFX_RGB* Palette)
 	{
 		for (size_t dest = 0; dest < 256; dest++)
 		{
-			if (source == 255 || source == 0) // Color 255 and 0 - dest color
+			if (source == 255 || source == 0) // colour 255 and 0 - dest color
 				// remains the same (totally
 				// transparent)
 			{
 				*pAlphaTable++ = dest;
 			}
-			else if (SpecialColor[source] == 0) // If not specified, make a solid color
+			else if (Specialcolour[source] == 0) // If not specified, make a solid color
 			{
 				*pAlphaTable++ = source;
 			}
 			else if (dest < 10 || dest > 245)
 			{
-				*pAlphaTable++ = char(-1); // Is dest is ever a bad pixel, make white
+				*pAlphaTable++ = wchar_t(-1); // Is dest is ever a bad pixel, make white
 			}
 			else
 			{

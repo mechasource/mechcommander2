@@ -8,7 +8,7 @@
 #include "resource.h"
 #include "ObjectiveDlg.h"
 
-#include "assert.h"
+#include "_ASSERT.h"
 #include "EditorInterface.h"
 #include "ResourceStringSelectionDlg.h"
 #include "UserTextEdit.h"
@@ -18,7 +18,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+static wchar_t THIS_FILE[] = __FILE__;
 #endif
 #endif /*gos doesn't like this */
 
@@ -158,7 +158,7 @@ syncActionsListWithListBox(
 static BOOL
 CSLoadString(int32_t resourceID, CString& targetStr)
 {
-	char szTmp[16384 /*max string length*/];
+	wchar_t szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
 	targetStr = szTmp;
 	CString tmpStr;
@@ -293,14 +293,14 @@ ObjectiveDlg::LoadDialogValues()
 	syncConditionsListWithListBox(
 		&(m_ModifiedObjective.m_failureConditionList), (&m_FailureConditionList));
 	syncActionsListWithListBox(&(m_ModifiedObjective.m_failureActionList), (&m_FailureActionList));
-	int32_t color = m_ModifiedObjective.BaseColor();
-	char tmp[256];
+	int32_t color = m_ModifiedObjective.Basecolour();
+	wchar_t tmp[256];
 	sprintf(tmp, "0x%x", color);
 	GetDlgItem(IDC_BASE2)->SetWindowText(tmp);
-	color = m_ModifiedObjective.HighlightColor();
+	color = m_ModifiedObjective.Highlightcolour();
 	sprintf(tmp, "0x%x", color);
 	GetDlgItem(IDC_HIGHLIGHT1)->SetWindowText(tmp);
-	color = m_ModifiedObjective.HighlightColor2();
+	color = m_ModifiedObjective.Highlightcolour2();
 	sprintf(tmp, "0x%x", color);
 	GetDlgItem(IDC_HIGHLIGHT2)->SetWindowText(tmp);
 	int32_t modelID = m_ModifiedObjective.ModelID();
@@ -397,7 +397,7 @@ ObjectiveDlg::SaveDialogValues()
 			tmpStr.Replace("0x", "");
 			sscanf_s(tmpStr, "%x", &base);
 			base |= 0xff000000;
-			m_ModifiedObjective.BaseColor(base);
+			m_ModifiedObjective.Basecolour(base);
 		}
 	}
 	pWnd = GetDlgItem(IDC_HIGHLIGHT1);
@@ -410,7 +410,7 @@ ObjectiveDlg::SaveDialogValues()
 			tmpStr.Replace("0x", "");
 			sscanf_s(tmpStr, "%x", &highlight1);
 			highlight1 |= 0xff000000;
-			m_ModifiedObjective.HighlightColor(highlight1);
+			m_ModifiedObjective.Highlightcolour(highlight1);
 		}
 	}
 	pWnd = GetDlgItem(IDC_HIGHLIGHT2);
@@ -423,7 +423,7 @@ ObjectiveDlg::SaveDialogValues()
 			tmpStr.Replace("0x", "");
 			sscanf_s(tmpStr, "%x", &highlight2);
 			highlight2 |= 0xff000000;
-			m_ModifiedObjective.HighlightColor2(highlight2);
+			m_ModifiedObjective.Highlightcolour2(highlight2);
 		}
 	}
 	int32_t group = m_modelGroup.GetCurSel();
@@ -602,7 +602,7 @@ ObjectiveDlg::OnObjectiveAddConditionButton()
 			return;
 		}
 	}
-	assert(pNewCondition);
+	_ASSERT(pNewCondition);
 	/* This call may set the editor into ObjectSelectOnlyMode (i.e.: set the
 	value of EditorInterface::instance()->ObjectSelectOnlyMode() to true) */
 	bool result = pNewCondition->EditDialog();
@@ -681,7 +681,7 @@ ObjectiveDlg::OnObjectiveAddActionButton()
 			return;
 		}
 	}
-	assert(pNewAction);
+	_ASSERT(pNewAction);
 	/* This call may set the editor into ObjectSelectOnlyMode (i.e.: set the
 	value of EditorInterface::instance()->ObjectSelectOnlyMode() to true) */
 	bool result = pNewAction->EditDialog();
@@ -768,25 +768,25 @@ void
 ObjectiveDlg::OnBaseedit2()
 {
 	CWnd* pWnd = GetDlgItem(IDC_BASE2);
-	DoColorBox(pWnd);
+	DocolourBox(pWnd);
 }
 
 void
 ObjectiveDlg::OnHighilight2edit2()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT2);
-	DoColorBox(pWnd);
+	DocolourBox(pWnd);
 }
 
 void
 ObjectiveDlg::OnHighlight1edit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT1);
-	DoColorBox(pWnd);
+	DocolourBox(pWnd);
 }
 
 void
-ObjectiveDlg::DoEditColorChange(int32_t ID)
+ObjectiveDlg::DoEditcolourChange(int32_t ID)
 {
 	CString text;
 	GetDlgItem(ID)->GetWindowText(text);
@@ -810,23 +810,23 @@ ObjectiveDlg::DoEditColorChange(int32_t ID)
 void
 ObjectiveDlg::OnChangeHighlight1()
 {
-	DoEditColorChange(IDC_HIGHLIGHT1);
+	DoEditcolourChange(IDC_HIGHLIGHT1);
 }
 
 void
 ObjectiveDlg::OnChangeHighlight2()
 {
-	DoEditColorChange(IDC_HIGHLIGHT2);
+	DoEditcolourChange(IDC_HIGHLIGHT2);
 }
 
 void
 ObjectiveDlg::OnChangeBase2()
 {
-	DoEditColorChange(IDC_BASE2);
+	DoEditcolourChange(IDC_BASE2);
 }
 
 void
-ObjectiveDlg::DoColorBox(CWnd* pWnd)
+ObjectiveDlg::DocolourBox(CWnd* pWnd)
 {
 	if (pWnd)
 	{
@@ -836,10 +836,10 @@ ObjectiveDlg::DoColorBox(CWnd* pWnd)
 		int32_t base;
 		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
-		CColorDialog dlg(reverseRGB(base), nullptr, this);
+		CcolourDialog dlg(reverseRGB(base), nullptr, this);
 		if (IDOK == dlg.DoModal())
 		{
-			base = reverseRGB(dlg.GetColor());
+			base = reverseRGB(dlg.Getcolour());
 			tmpStr.Format("0x%x", base);
 			pWnd->SetWindowText(tmpStr);
 		}
@@ -847,9 +847,9 @@ ObjectiveDlg::DoColorBox(CWnd* pWnd)
 }
 
 HBRUSH
-ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
+ObjectiveDlg::OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour)
 {
-	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	HBRUSH hbr = CDialog::OnCtlcolour(pDC, pWnd, nCtlcolour);
 	if (GetDlgItem(IDC_BASE2)->m_hWnd == pWnd->m_hWnd)
 	{
 		CString tmpStr;
@@ -862,9 +862,9 @@ ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		if (baseBrush.m_hObject)
 			baseBrush.DeleteObject();
 		baseBrush.CreateSolidBrush(base);
-		pDC->SetBkColor(base);
+		pDC->SetBkcolour(base);
 		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
-			pDC->SetTextColor(0x00ffffff);
+			pDC->SetTextcolour(0x00ffffff);
 		return (HBRUSH)baseBrush.m_hObject;
 	}
 	if (GetDlgItem(IDC_HIGHLIGHT1)->m_hWnd == pWnd->m_hWnd)
@@ -879,9 +879,9 @@ ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		if (brush1.m_hObject)
 			brush1.DeleteObject();
 		brush1.CreateSolidBrush(base);
-		pDC->SetBkColor(base);
+		pDC->SetBkcolour(base);
 		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
-			pDC->SetTextColor(0x00ffffff);
+			pDC->SetTextcolour(0x00ffffff);
 		return (HBRUSH)brush1.m_hObject;
 	}
 	if (GetDlgItem(IDC_HIGHLIGHT2)->m_hWnd == pWnd->m_hWnd)
@@ -896,9 +896,9 @@ ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		if (brush2.m_hObject)
 			brush2.DeleteObject();
 		brush2.CreateSolidBrush(base);
-		pDC->SetBkColor(base);
+		pDC->SetBkcolour(base);
 		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
-			pDC->SetTextColor(0x00ffffff);
+			pDC->SetTextcolour(0x00ffffff);
 		return (HBRUSH)brush2.m_hObject;
 	}
 	return hbr;
@@ -957,7 +957,7 @@ ObjectiveDlg::OnObjectiveAddFailureConditionButton()
 			return;
 		}
 	}
-	assert(pNewCondition);
+	_ASSERT(pNewCondition);
 	/* This call may set the editor into ObjectSelectOnlyMode (i.e.: set the
 	value of EditorInterface::instance()->ObjectSelectOnlyMode() to true) */
 	bool result = pNewCondition->EditDialog();
@@ -1039,7 +1039,7 @@ ObjectiveDlg::OnObjectiveAddFailureActionButton()
 			return;
 		}
 	}
-	assert(pNewAction);
+	_ASSERT(pNewAction);
 	/* This call may set the editor into ObjectSelectOnlyMode (i.e.: set the
 	value of EditorInterface::instance()->ObjectSelectOnlyMode() to true) */
 	bool result = pNewAction->EditDialog();

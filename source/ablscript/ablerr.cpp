@@ -23,9 +23,9 @@ extern const std::wstring_view& tokenp;
 extern int32_t execLineNumber;
 extern int32_t lineNumber;
 extern int32_t FileNumber;
-extern char SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
+extern wchar_t SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
 extern const std::unique_ptr<ABLModule>& CurModule;
-extern char wordString[];
+extern wchar_t wordString[];
 
 //---------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ const std::wstring_view& syntaxErrorMessages[] = {"No syntax error", // 0
 // RUNTIME ERROR messages
 
 const std::wstring_view& runtimeErrorMessages[] = {"Runtime stack overflow", "Infinite Loop", "Nested function call",
-	"Unimplemented feature", "Value out of range", "Division by zero", "Invalid function argument",
+	"Unimplemented feature", "value out of range", "Division by zero", "Invalid function argument",
 	"Invalid case value", "Abort", "No Previous State"};
 
 //---------------------------------------------------------------------------
@@ -103,7 +103,7 @@ ABL_Assert(bool test, int32_t errCode, const std::wstring_view& s)
 void
 syntaxError(int32_t errCode)
 {
-	char errMessage[MAXLEN_ERROR_MESSAGE];
+	wchar_t errMessage[MAXLEN_ERROR_MESSAGE];
 	sprintf(errMessage, "SYNTAX ERROR %s [line %d] - (type %d) %s \"%s\"\n",
 		SourceFiles[FileNumber], lineNumber, errCode, syntaxErrorMessages[errCode], wordString);
 	ABL_Fatal(0, errMessage);
@@ -121,7 +121,7 @@ syntaxError(int32_t errCode)
 void
 runtimeError(int32_t errCode)
 {
-	char message[512];
+	wchar_t message[512];
 	if (debugger)
 	{
 		sprintf(message, "RUNTIME ERROR:  [%d] %s", errCode, runtimeErrorMessages[errCode]);

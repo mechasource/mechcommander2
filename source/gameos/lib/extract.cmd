@@ -21,13 +21,14 @@
 ::         mfcplatform.lib
 ::         zlib.lib
 
-::
+:: Run the script in place to generate the tree and object files
 :: Note: Object files with spaces in the name will not be found by the loop
 ::
 
+
 @set CURDIR=%CD%
-@set VSINSTALLDIR=E:\Development\msdev\VS2013\
-@set VCINSTALLDIR=%VSINSTALLDIR%VC\
+:: @set VSINSTALLDIR=E:\Development\msdev\VS2013\
+:: @set VCINSTALLDIR=%VSINSTALLDIR%VC\
 
 @set CPUDIR=x86
 @set LIBDIR=debug

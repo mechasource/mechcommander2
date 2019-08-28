@@ -44,7 +44,7 @@ ON_LBN_SELCHANGE(IDC_LIST_FILES, OnSelchangeListFiles)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-static char szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
+static wchar_t szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
 
 /////////////////////////////////////////////////////////////////////////////
 // EditForestDlg message handlers
@@ -131,9 +131,9 @@ EditForestDlg::OnInitDialog()
 	{
 		pForests = (Forest**)_alloca(count * sizeof(Forest*));
 		EditorObjectMgr::instance()->getForests(pForests, count);
-		char name[256];
+		wchar_t name[256];
 		cLoadString(IDS_UNNAMDE_FOREST, name, 255);
-		char final[256];
+		wchar_t final[256];
 		for (size_t i = 0; i < count; i++)
 		{
 			const std::wstring_view& pName = pForests[i]->getName();

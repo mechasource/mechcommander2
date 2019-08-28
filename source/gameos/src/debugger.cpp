@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -50,23 +50,23 @@ void __stdcall CleanMenu(MenuItem*);
 void __stdcall CleanUpDebugger(void);
 void __stdcall DestroyDebugger(void);
 void __stdcall SpewNextLine(void);
-void __stdcall SpewToDebugger(PSTR Message);
+void __stdcall SpewToDebugger(PSTR message);
 float __stdcall DoUV(float);
 int32_t __stdcall GetMipmapUsed(
-	uint32_t Handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
+	uint32_t handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
 void __stdcall ShowTriangleSizeInfo(void);
 void __stdcall DoExamineMipmaps(void);
 void __stdcall DoExamineMipmaps2(void);
 void __stdcall DoExamineRenderer(void);
 void __stdcall DrawSquare(
-	int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color);
-void __stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
+	int32_t topx, int32_t topy, int32_t width, int32_t height, uint32_t colour);
+void __stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t colour);
 void __stdcall DoExamineDepth(void);
 void __stdcall DoExamineArea(void);
 void __stdcall DoExamineDrawing(void);
-uint32_t __stdcall GetColor(uint32_t, uint32_t);
-PSTR __stdcall ShowColor(uint32_t);
-void __stdcall DoExamineColor(void);
+uint32_t __stdcall Getcolour(uint32_t, uint32_t);
+PSTR __stdcall Showcolour(uint32_t);
+void __stdcall DoExaminecolour(void);
 void __stdcall DisplayUV(float, float);
 void __stdcall DoExamineScene(void);
 void __stdcall DoDebugger(void);
@@ -80,8 +80,8 @@ void __stdcall DoSpewInterface(char);
 void __stdcall CheckSpewButton(uint32_t, uint32_t);
 
 CTexInfo::Area(void);
-CTexInfo::Width(void);
-CTexInfo::Height(void);
+CTexInfo::width(void);
+CTexInfo::height(void);
 CTexInfo::Hints(void);
 CTexInfo::Detected(void);
 CTexInfo::MipmapDisabled(void);
@@ -116,7 +116,7 @@ InitTextDisplay(void);
 gos_SetRenderState(gos_RenderState, int);
 InternalFunctionSpew(char const*, char const*, ...);
 fabs;
-GetMipmapColor(int);
+GetMipmapcolour(int);
 gos_SetupViewport(bool, float, bool, uint32_t, float, float, float, float, bool, uint32_t);
 gos_GetKey(void);
 End3DScene(void);

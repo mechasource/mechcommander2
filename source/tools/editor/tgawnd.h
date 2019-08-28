@@ -23,7 +23,7 @@ class TGAWnd : public CStatic
 public:
 	TGAWnd(void);
 	void SetTGAFileName(const CString& str);
-	void SetTGAFileData(puint8_t data, int32_t size);
+	void SetTGAFileData(uint8_t* data, int32_t size);
 
 	const std::wstring_view& GetImageData() { return m_pImage; }
 

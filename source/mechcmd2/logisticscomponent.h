@@ -44,8 +44,8 @@ public:
 	inline int32_t getHelpID(void) const { return helpStringID; }
 	inline const std::wstring_view& getIconFileName(void) const { return iconFileName; }
 	inline const std::wstring_view& getPictureFileName(void) const { return pictureFileName; }
-	inline int32_t getComponentWidth(void) const { return iconX; }
-	inline int32_t getComponentHeight(void) const { return iconY; }
+	inline int32_t getComponentwidth(void) const { return iconX; }
+	inline int32_t getComponentheight(void) const { return iconY; }
 	bool compare(LogisticsComponent* second, int32_t type);
 	bool isAvailable() { return bAvailable; }
 	void setAvailable(bool avail) { bAvailable = avail; }

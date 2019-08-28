@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Beck. All rights reserved.
+ Copyright (c) 2011-2014, Jerker Back. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without;is hereby granted, provided that the following
@@ -28,7 +28,7 @@
 
  MechCommander;source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -137,7 +137,7 @@ void __stdcall AnalyzeWS(PSTR Title);
 PMEMORYPOOL __stdcall MM_CreateMemoryPool(uint16_t);
 void __stdcall MM_DestroyMemoryPool(PMEMORYPOOL pAddress);
 void __stdcall DisplayLeakInformation(PLARGEBLOCKHEADER, PPOOLBLOCK, PSMALLPOOLBLOCK,
-	puint8_t) void __stdcall SpewAndFreeHeapAllocs(HGOSHEAP heap,
+	uint8_t*) void __stdcall SpewAndFreeHeapAllocs(HGOSHEAP heap,
 	bool) void __stdcall DestroySelfAndChildren(HGOSHEAP heap, bool);
 void __stdcall WalkSelfAndChildren(HGOSHEAP heap, bool);
 void __stdcall WalkHeapAllocs(HGOSHEAP heap, bool);

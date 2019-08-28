@@ -7,7 +7,7 @@
 #ifndef MLR_MLRCLIPTRICK_HPP
 #define MLR_MLRCLIPTRICK_HPP
 
-#include <stuff/vector4d.hpp>
+#include "stuff/vector4d.h"
 
 // defined in mlrprimitivebase.cpp
 extern size_t clipTrick[6][2];

@@ -36,7 +36,7 @@ private:
 	// suppressed
 	SelectionBrush(const SelectionBrush& electionBrush);
 	SelectionBrush& operator=(const SelectionBrush& electionBrush);
-	static float calcNewHeight(int32_t vertexRow, int32_t vertexCol, float screenDeltaY);
+	static float calcNewheight(int32_t vertexRow, int32_t vertexCol, float screenDeltaY);
 	bool paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, float radiusX,
 		float radiusY, int32_t j, int32_t i);
 

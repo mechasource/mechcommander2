@@ -38,7 +38,7 @@ int32_t
 LogisticsChassis::init(CSVFile* file, int32_t chassisID)
 {
 	ID = chassisID;
-	char buffer[256];
+	wchar_t buffer[256];
 	fileName = file->getFilename();
 	fileName.MakeLower();
 	int32_t result = file->readLong(11, 5, baseCost);
@@ -85,9 +85,9 @@ LogisticsChassis::init(CSVFile* file, int32_t chassisID)
 	gosASSERT(result == NO_ERROR);
 	result = file->readLong(6, 5, baseArmor);
 	gosASSERT(result == NO_ERROR);
-	result = file->readLong(13, 2, componentAreaWidth);
+	result = file->readLong(13, 2, componentAreawidth);
 	gosASSERT(result == NO_ERROR);
-	result = file->readLong(14, 2, componentAreaHeight);
+	result = file->readLong(14, 2, componentAreaheight);
 	gosASSERT(result == NO_ERROR);
 	int32_t ID = IDS_VERY_LIGHT;
 	for (size_t i = 4; i > -1; --i)
@@ -98,7 +98,7 @@ LogisticsChassis::init(CSVFile* file, int32_t chassisID)
 			break;
 		}
 	}
-	char tmpWeightClass[256];
+	wchar_t tmpWeightClass[256];
 	cLoadString(ID, tmpWeightClass, 256);
 	mechClass = tmpWeightClass;
 	return 0;
@@ -276,7 +276,7 @@ LogisticsVariant::init(CSVFile* file, LogisticsChassis* pChassis, int32_t Varian
 
 	pChassis->refCount++;
 	file->readBoolean(21 + offset, 4, bHidden);
-	char buffer[256];
+	wchar_t buffer[256];
 	if (NO_ERROR == file->readString(23 + offset, 2, buffer, 256))
 	{
 		variantName = buffer;
@@ -308,11 +308,11 @@ LogisticsVariant::init(CSVFile* file, LogisticsChassis* pChassis, int32_t Varian
 			for (i = 0; i < componentCount; i++)
 			{
 				LogisticsComponent* pComponent = pComps[i];
-				if (pComponent && pComponent->getComponentWidth() == k && pComponent->getComponentHeight() == j)
+				if (pComponent && pComponent->getComponentwidth() == k && pComponent->getComponentheight() == j)
 				{
 					if (!addComponent(pComps[i]->getID(), xLocs[i], yLocs[i]))
 					{
-						char errorString[256];
+						wchar_t errorString[256];
 						sprintf(
 							errorString, "Couldn't add component with id %ld", pComponent->getID());
 					}
@@ -347,20 +347,20 @@ LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y)
 	else
 	{
 		// need to see if this thing will fit
-		int32_t componentWidth = pComponent->getComponentWidth();
-		int32_t componentHeight = pComponent->getComponentHeight();
+		int32_t componentwidth = pComponent->getComponentwidth();
+		int32_t componentheight = pComponent->getComponentheight();
 		if (x == -1 && y == -1)
 		{
-			for (size_t j = 0; j < chassis->componentAreaHeight && x == -1; j++)
+			for (size_t j = 0; j < chassis->componentAreaheight && x == -1; j++)
 			{
-				for (size_t i = 0; i < chassis->componentAreaWidth && x == -1; i++)
+				for (size_t i = 0; i < chassis->componentAreawidth && x == -1; i++)
 				{
 					bool bAdd = true;
-					for (size_t l = 0; l < componentHeight; ++l)
+					for (size_t l = 0; l < componentheight; ++l)
 					{
-						for (size_t k = 0; k < componentWidth; ++k)
+						for (size_t k = 0; k < componentwidth; ++k)
 						{
-							if (getComponentAtLocation(i + k, j + l) || (i + k >= chassis->componentAreaWidth) || (j + l >= chassis->componentAreaHeight))
+							if (getComponentAtLocation(i + k, j + l) || (i + k >= chassis->componentAreawidth) || (j + l >= chassis->componentAreaheight))
 							{
 								bAdd = false;
 								break;
@@ -380,13 +380,13 @@ LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y)
 			return 0;
 		if (x > -1)
 		{
-			for (size_t i = 0; i < componentWidth; ++i)
+			for (size_t i = 0; i < componentwidth; ++i)
 			{
-				for (size_t j = 0; j < componentHeight; ++j)
+				for (size_t j = 0; j < componentheight; ++j)
 				{
 					if (getComponentAtLocation(x + i, y + j))
 					{
-						char errorString[1024];
+						wchar_t errorString[1024];
 						sprintf(errorString,
 							"couldn't add component %s to variant %s because "
 							"another object was in the specified location",
@@ -407,7 +407,7 @@ LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y)
 }
 
 int32_t
-LogisticsVariant::getCost() const
+LogisticsVariant::getCost(void) const
 {
 	int32_t cost = chassis->baseCost;
 	for (size_t i = 0; i < componentCount; ++i)
@@ -470,7 +470,7 @@ LogisticsVariant::getHeat(void) const
 
 // BOGUS -- range isn't really the right thing to add...
 int32_t
-LogisticsVariant::getArmor() const
+LogisticsVariant::getArmor(void) const
 {
 	int32_t retArmor = chassis->baseArmor;
 	for (size_t i = 0; i < componentCount; ++i)
@@ -533,29 +533,29 @@ LogisticsVariant::canAddComponent(
 		return COMPONENT_SLOT_FULL;
 	if (x != -1 && y != -1)
 	{
-		for (size_t i = 0; i < pComponent->getComponentWidth(); i++)
+		for (size_t i = 0; i < pComponent->getComponentwidth(); i++)
 		{
-			for (size_t j = 0; j < pComponent->getComponentHeight(); j++)
+			for (size_t j = 0; j < pComponent->getComponentheight(); j++)
 			{
-				if (getComponentAtLocation(x + i, y + j) || x + i >= chassis->componentAreaWidth || j + y >= chassis->componentAreaHeight)
+				if (getComponentAtLocation(x + i, y + j) || x + i >= chassis->componentAreawidth || j + y >= chassis->componentAreaheight)
 					return COMPONENT_SLOT_FULL;
 			}
 		}
 	}
 	else
 	{
-		for (size_t j = 0; j < chassis->componentAreaHeight && x == -1; j++)
+		for (size_t j = 0; j < chassis->componentAreaheight && x == -1; j++)
 		{
-			for (size_t i = 0; i < chassis->componentAreaWidth && x == -1; i++)
+			for (size_t i = 0; i < chassis->componentAreawidth && x == -1; i++)
 			{
 				if (!getComponentAtLocation(i, j))
 				{
 					bool bAdd = true;
-					for (size_t l = 0; l < pComponent->getComponentHeight(); ++l)
+					for (size_t l = 0; l < pComponent->getComponentheight(); ++l)
 					{
-						for (size_t k = 0; k < pComponent->getComponentWidth(); ++k)
+						for (size_t k = 0; k < pComponent->getComponentwidth(); ++k)
 						{
-							if (getComponentAtLocation(i + k, j + l) || (i + k >= chassis->componentAreaWidth) || (j + l >= chassis->componentAreaHeight))
+							if (getComponentAtLocation(i + k, j + l) || (i + k >= chassis->componentAreawidth) || (j + l >= chassis->componentAreaheight))
 							{
 								bAdd = false;
 								break;
@@ -607,9 +607,9 @@ LogisticsVariant::getComponentAtLocation(
 	for (size_t i = 0; i < componentCount; ++i)
 	{
 		LogisticsComponent* pComponent = components[i].component;
-		for (size_t j = 0; j < pComponent->getComponentHeight(); ++j)
+		for (size_t j = 0; j < pComponent->getComponentheight(); ++j)
 		{
-			for (size_t k = 0; k < pComponent->getComponentWidth(); ++k)
+			for (size_t k = 0; k < pComponent->getComponentwidth(); ++k)
 			{
 				if (components[i].xCoord + k == x && components[i].yCoord + j == y)
 				{
@@ -726,8 +726,8 @@ LogisticsVariant::addComponent(
 int32_t
 LogisticsVariant::save(FitIniFile& file, int32_t counter)
 {
-	char tmp[256];
-	char tmp2[256];
+	wchar_t tmp[256];
+	wchar_t tmp2[256];
 	sprintf(tmp, "Variant%ld", counter);
 	file.writeBlock(tmp);
 	file.writeIdString("Chassis", chassis->fileName);
@@ -814,7 +814,7 @@ int32_t
 LogisticsVariant::getOptimalRangeString(int32_t& color) const
 {
 	float rangeDamage[3];
-	int32_t rangeColors[3] = {0xff6e7c00, 0xff005392, 0xffa21600};
+	int32_t rangecolours[3] = {0xff6e7c00, 0xff005392, 0xffa21600};
 	memset(rangeDamage, 0, sizeof(float) * 3);
 	float maxDamage = -1.f;
 	int32_t i;
@@ -834,7 +834,7 @@ LogisticsVariant::getOptimalRangeString(int32_t& color) const
 	{
 		if (rangeDamage[i] == maxDamage)
 		{
-			color = rangeColors[i];
+			color = rangecolours[i];
 			return IDS_HOTKEY1 + i;
 		}
 	}
@@ -870,13 +870,13 @@ LogisticsVehicle::init(FitIniFile& file)
 {
 	componentCount = 0;
 	file.seekBlock("ObjectType");
-	char tmp[256];
+	wchar_t tmp[256];
 	file.readIdString("AppearanceName", tmp, 255);
 	fileName = tmp;
 	file.seekBlock("General");
 	file.readIdLong("DescIndex", chassisNameID);
 	file.readIdFloat("CurTonnage", maxWeight);
-	char tmpWeightClass[256];
+	wchar_t tmpWeightClass[256];
 	cLoadString(IDS_VEHICLE_CLASS, tmpWeightClass, 256);
 	mechClass = tmpWeightClass;
 	if (NO_ERROR != file.readIdLong("HouseID", houseID))
@@ -903,7 +903,7 @@ LogisticsVehicle::init(FitIniFile& file)
 	}
 	file.seekBlock("InventoryInfo");
 	file.readIdUChar("NumWeapons", pts);
-	char blockName[256];
+	wchar_t blockName[256];
 	for (i = 4; i < 4 + pts; i++)
 	{
 		sprintf(blockName, "Item:%ld", i);

@@ -15,7 +15,7 @@
 #if defined(_ARMOR)
 #include "stuff/armoron.h"
 #else
-#include "stuff/armoron.h"
+#include "stuff/armoroff.h"
 #endif
 
 namespace Stuff
@@ -50,21 +50,21 @@ enum
 	{                                                            \
 		AddStatistic(name, "%", gos_timedata, &t##FrameTime, 0); \
 	}                                                            \
-	SUPPRESS_WARNING(4127)                                       \
+	MSSUPPRESS_WARNING(4127)                                       \
 	while (0);
 #define Start_Timer(t)               \
 	do                               \
 	{                                \
 		t##FrameTime -= GetCycles(); \
 	}                                \
-	SUPPRESS_WARNING(4127)           \
+	MSSUPPRESS_WARNING(4127)           \
 	while (0);
 #define Stop_Timer(t)                \
 	do                               \
 	{                                \
 		t##FrameTime += GetCycles(); \
 	}                                \
-	SUPPRESS_WARNING(4127)           \
+	MSSUPPRESS_WARNING(4127)           \
 	while (0);
 #define Set_Statistic(s, v) (s = v)
 #else
@@ -131,19 +131,19 @@ Is_Signature_Bad(const volatile void* p)
 //
 #if !defined(Spew)
 inline void
-Spew(PCSTR group, int32_t value)
+Spew(const std::wstring_view& group, int32_t value)
 {
 	SPEW((group, "%d+", value));
 }
 
 inline void
-Spew(PCSTR group, float value)
+Spew(const std::wstring_view& group, float value)
 {
 	SPEW((group, "%f+", value));
 }
 
 inline void
-Spew(PCSTR group, PCSTR value)
+Spew(const std::wstring_view& group, const std::wstring_view& value)
 {
 	SPEW((group, "%s+", value));
 }

@@ -10,9 +10,9 @@
 #ifndef _SLOT_HPP_
 #define _SLOT_HPP_
 
-#include <stuff/link.hpp>
-#include <stuff/memoryblock.hpp>
-#include <stuff/socket.hpp>
+#include "stuff/link.h"
+#include "stuff/memoryblock.h"
+#include "stuff/socket.h"
 
 namespace Stuff
 {

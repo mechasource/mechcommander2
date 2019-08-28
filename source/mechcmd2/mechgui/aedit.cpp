@@ -23,7 +23,7 @@ aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 
 #define ENTRY_MAX_CHARS 1000
 #define ENTRY_MARGIN 4.f
-#define HalfColorValue(color) \
+#define HalfcolourValue(color) \
 	(((color >> 1) & 0x007f0000) | ((color >> 1) & 0x00007f00) | ((color >> 1) & 0x0000007f))
 
 static int32_t acp = 0;
@@ -39,28 +39,28 @@ aEdit::aEdit()
 		acp = GetACP();
 		gos_SetIMELevel(2);
 		gos_GetIMEAppearance(&g_ia);
-		char szSetting[8];
+		wchar_t szSetting[8];
 		szSetting[0] = '1';
 		cLoadString(IDS_IME_USE_LANGDLL_SETTING, szSetting, sizeof(szSetting));
 		g_bUseLangDll = szSetting[0] == '1';
 		if (!g_bUseLangDll)
 		{
 			// setup fixed colors
-			g_ia.symbolColor = 0xff5c96c2;
-			g_ia.symbolColorText = 0x7f000000;
+			g_ia.symbolcolour = 0xff5c96c2;
+			g_ia.symbolcolourText = 0x7f000000;
 			g_ia.symbolTranslucence = 0x7f;
 			g_ia.symbolPlacement = 0;
-			g_ia.candColorBase = 0xff43311c;
-			g_ia.compColorTargetConv = 0xff5c96c2;
-			g_ia.compColorTargetNotConv = 0xff002f55;
-			g_ia.compColorInputErr = 0xffff00ff;
+			g_ia.candcolourBase = 0xff43311c;
+			g_ia.compcolourTargetConv = 0xff5c96c2;
+			g_ia.compcolourTargetNotConv = 0xff002f55;
+			g_ia.compcolourInputErr = 0xffff00ff;
 			g_ia.compTranslucence = 0x7f;
 			if (acp != 949) // other than Korean version, reduce color value by
 				// half so that composition string can be seen
 			{
-				g_ia.compColorTargetConv = HalfColorValue(g_ia.compColorTargetConv);
-				g_ia.compColorTargetNotConv = HalfColorValue(g_ia.compColorTargetNotConv);
-				g_ia.compColorInputErr = HalfColorValue(g_ia.compColorInputErr);
+				g_ia.compcolourTargetConv = HalfcolourValue(g_ia.compcolourTargetConv);
+				g_ia.compcolourTargetNotConv = HalfcolourValue(g_ia.compcolourTargetNotConv);
+				g_ia.compcolourInputErr = HalfcolourValue(g_ia.compcolourInputErr);
 			}
 		}
 	}
@@ -72,7 +72,7 @@ aEdit::aEdit()
 	bFocus = 0;
 	dwStyleFlags = 0;
 	cursorTime = 0.f;
-	setColor(0xff000000);
+	setcolour(0xff000000);
 	bAllowIME = true;
 	bIMEInitialized = false;
 	bWierdChars = true;
@@ -90,11 +90,11 @@ aEdit::operator=(const aEdit& src)
 	bCursorVisible = FALSE;
 	dwStyleFlags = src.dwStyleFlags;
 	text = src.text;
-	textColor = src.textColor;
-	highlightColor = src.highlightColor;
-	cursorColor = src.cursorColor;
-	selectedColor = src.selectedColor; // selected text
-	outlineColor = src.outlineColor;
+	textcolour = src.textcolour;
+	highlightcolour = src.highlightcolour;
+	cursorcolour = src.cursorcolour;
+	selectedcolour = src.selectedcolour; // selected text
+	outlinecolour = src.outlinecolour;
 	font = src.font;
 	bAllowIME = src.bAllowIME;
 	return *this;
@@ -132,7 +132,7 @@ aEdit::handleMouse()
 	int32_t nOffset = mouseX - (globalX() + ENTRY_MARGIN);
 
 	nOffset += nLeftOffset;
-	// find char position of nOffset and set insertion point there
+	// find wchar_t position of nOffset and set insertion point there
 	int32_t nChar = findChar(nOffset);
 	if (bMouseDown && userInput->isLeftDrag() && bFocus)
 	{
@@ -223,7 +223,7 @@ aEdit::handleKeyboard()
 			if (key)
 			{
 				clearSelection();
-				char str[3];
+				wchar_t str[3];
 				str[0] = key;
 				int32_t amountToAdd = 1;
 				if (key2)
@@ -254,12 +254,12 @@ aEdit::renderWithDropShadow()
 	// do not do this for .ttf where we already are having performance issues
 	if (font.getSize() == 1)
 	{
-		int32_t realTextColor = textColor;
-		textColor = 0xff000000;
+		int32_t realTextcolour = textcolour;
+		textcolour = 0xff000000;
 		move(-1, 1);
 		render();
 		move(1, -1);
-		textColor = realTextColor;
+		textcolour = realTextcolour;
 		render();
 	}
 	else
@@ -304,15 +304,15 @@ aEdit::render()
 		if (text.Length())
 		{
 			font.render(&textToDraw[startChar], (int32_t)(globalX() + ENTRY_MARGIN),
-				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), textColor, 0, 0);
+				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), textcolour, 0, 0);
 		}
-		drawRect(rect, highlightColor);
+		drawRect(rect, highlightcolour);
 		if (text.Length())
 		{
-			char tmp = textToDraw[nMax];
+			wchar_t tmp = textToDraw[nMax];
 			textToDraw[nMax] = nullptr;
 			font.render(&textToDraw[nMin], (int32_t)nXSelStart, (int32_t)globalY(), nXSelEnd,
-				(int32_t)height(), selectedColor, 0, 0);
+				(int32_t)height(), selectedcolour, 0, 0);
 			textToDraw[nMax] = tmp;
 		}
 	}
@@ -327,12 +327,12 @@ aEdit::render()
 		if (textToDraw.Length())
 		{
 			font.render(&textToDraw[startChar], (int32_t)(globalX() + ENTRY_MARGIN),
-				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), textColor, 0, 0);
+				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), textcolour, 0, 0);
 		}
 		else
 		{
 			font.render("", (int32_t)(globalX() + ENTRY_MARGIN), (int32_t)globalY(),
-				(int32_t)width(), (int32_t)height(), textColor, 0, 0);
+				(int32_t)width(), (int32_t)height(), textcolour, 0, 0);
 		}
 	}
 	if (bFocus && bAllowIME)
@@ -378,20 +378,20 @@ aEdit::setFocus(bool bHasFocus)
 		gos_EnableIME(true);
 		bCursorVisible = bFocus;
 		if (!g_bUseLangDll || g_ia.symbolPlacement == 0)
-			g_ia.symbolHeight = height() - 2;
+			g_ia.symbolheight = height() - 2;
 		if (!g_bUseLangDll)
 		{
 			// setup dynamic colors
-			g_ia.candColorBorder = textColor;
-			g_ia.candColorText = textColor;
-			g_ia.compColorInput = textColor;
-			g_ia.compColorConverted = textColor;
-			g_ia.compColorText = textColor;
+			g_ia.candcolourBorder = textcolour;
+			g_ia.candcolourText = textcolour;
+			g_ia.compcolourInput = textcolour;
+			g_ia.compcolourConverted = textcolour;
+			g_ia.compcolourText = textcolour;
 			if (acp != 949) // other than Korean version, reduce color value by half
 			{
-				g_ia.compColorInput = HalfColorValue(g_ia.compColorInput);
-				g_ia.compColorConverted = HalfColorValue(g_ia.compColorConverted);
-				g_ia.compColorInputErr = HalfColorValue(g_ia.compColorInputErr);
+				g_ia.compcolourInput = HalfcolourValue(g_ia.compcolourInput);
+				g_ia.compcolourConverted = HalfcolourValue(g_ia.compcolourConverted);
+				g_ia.compcolourInputErr = HalfcolourValue(g_ia.compcolourInputErr);
 			}
 		}
 		gos_SetIMEAppearance(&g_ia);
@@ -444,8 +444,8 @@ aEdit::backSpace(int32_t nPosition)
 	nCharCount = 1;
 	if (nPosition > 1)
 	{
-		puint8_t pPrev = _mbsdec((pcuint8_t)(const std::wstring_view&)text, (pcuint8_t)(const std::wstring_view&)text + nPosition);
-		nCharCount = (pcuint8_t)(const std::wstring_view&)text + nPosition - pPrev;
+		uint8_t* pPrev = _mbsdec((const uint8_t*)(const std::wstring_view&)text, (const uint8_t*)(const std::wstring_view&)text + nPosition);
+		nCharCount = (const uint8_t*)(const std::wstring_view&)text + nPosition - pPrev;
 	}
 	text.Remove(nPosition - nCharCount, nPosition - 1);
 	nInsertion2 = nInsertion1 = nPosition - nCharCount;
@@ -460,7 +460,7 @@ aEdit::drawCursor()
 		gos_VERTEX v[2];
 		memset(v, 0, sizeof(gos_VERTEX) * 2);
 		v[0].rhw = v[1].rhw = .5;
-		v[0].argb = v[1].argb = cursorColor;
+		v[0].argb = v[1].argb = cursorcolour;
 		int32_t nCursorX = charXPos(nInsertion1);
 		nCursorX -= nLeftOffset;
 		v[0].y = globalY();
@@ -526,9 +526,9 @@ aEdit::handleFormattingKeys(int32_t keycode)
 				int32_t decrementCount = 1;
 				if (nInsertion2 > 1)
 				{
-					puint8_t pPrev =
-						_mbsdec((pcuint8_t)(const std::wstring_view&)text, (pcuint8_t)(const std::wstring_view&)text + nInsertion2);
-					decrementCount = (pcuint8_t)(const std::wstring_view&)text + nInsertion2 - pPrev;
+					uint8_t* pPrev =
+						_mbsdec((const uint8_t*)(const std::wstring_view&)text, (const uint8_t*)(const std::wstring_view&)text + nInsertion2);
+					decrementCount = (const uint8_t*)(const std::wstring_view&)text + nInsertion2 - pPrev;
 				}
 				nInsertion2 -= decrementCount;
 			}
@@ -542,9 +542,9 @@ aEdit::handleFormattingKeys(int32_t keycode)
 				int32_t decrementCount = 1;
 				if (nInsertion1 > 1)
 				{
-					puint8_t pPrev =
-						_mbsdec((pcuint8_t)(const std::wstring_view&)text, (pcuint8_t)(const std::wstring_view&)text + nInsertion2);
-					decrementCount = (pcuint8_t)(const std::wstring_view&)text + nInsertion2 - pPrev;
+					uint8_t* pPrev =
+						_mbsdec((const uint8_t*)(const std::wstring_view&)text, (const uint8_t*)(const std::wstring_view&)text + nInsertion2);
+					decrementCount = (const uint8_t*)(const std::wstring_view&)text + nInsertion2 - pPrev;
 				}
 				nInsertion1 -= decrementCount;
 			}
@@ -644,9 +644,9 @@ aEdit::findChar(int32_t nXPos)
 	int32_t nLastPos, nNextPos, n;
 	nNextPos = nLastPos = 0;
 	n = 0;
-	puint8_t pBegin = (puint8_t)&text[0];
-	puint8_t pCur = pBegin;
-	puint8_t pNext = pBegin;
+	uint8_t* pBegin = (uint8_t*)&text[0];
+	uint8_t* pCur = pBegin;
+	uint8_t* pNext = pBegin;
 	if (text.Length())
 	{
 		do
@@ -676,7 +676,7 @@ aEdit::init(FitIniFile* file, const std::wstring_view& header)
 	int32_t result = file->seekBlock(header);
 	if (result != NO_ERROR)
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't find the text block%s", header);
 		Assert(result == NO_ERROR, 0, errorStr);
 		return;
@@ -684,16 +684,16 @@ aEdit::init(FitIniFile* file, const std::wstring_view& header)
 	int32_t left, top, width, height;
 	file->readIdLong("XLocation", left);
 	file->readIdLong("YLocation", top);
-	file->readIdLong("Width", width);
-	file->readIdLong("Height", height);
+	file->readIdLong("width", width);
+	file->readIdLong("height", height);
 	aObject::init(left, top, width, height);
-	file->readIdLong("Color", textColor);
+	file->readIdLong("colour", textcolour);
 	int32_t lfont;
 	file->readIdLong("Font", lfont);
 	font.init(lfont);
-	file->readIdLong("CursorColor", cursorColor);
-	file->readIdLong("HighlightColor", highlightColor);
-	file->readIdLong("SelectedColor", selectedColor);
+	file->readIdLong("Cursorcolour", cursorcolour);
+	file->readIdLong("Highlightcolour", highlightcolour);
+	file->readIdLong("Selectedcolour", selectedcolour);
 	file->readIdLong("HelpCaption", helpHeader);
 	file->readIdLong("HelpDesc", helpid);
 }
@@ -705,7 +705,7 @@ aEdit::charLength(int32_t index)
 		return 0;
 	if (index > text.Length())
 		return 0;
-	char tmp = text[index];
+	wchar_t tmp = text[index];
 	if (isleadbyte(tmp))
 		return 2;
 	return 1;

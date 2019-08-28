@@ -28,9 +28,9 @@ struct RadioData
 	uint32_t msgType;
 	uint32_t noiseId;
 	int32_t numFragments;
-	puint8_t data[MAX_FRAGMENTS];
+	uint8_t* data[MAX_FRAGMENTS];
 	int32_t dataSize[MAX_FRAGMENTS];
-	puint8_t noise[MAX_FRAGMENTS];
+	uint8_t* noise[MAX_FRAGMENTS];
 	int32_t noiseSize[MAX_FRAGMENTS];
 	UserHeapPtr msgHeap;
 	uint32_t turnQueued;
@@ -44,7 +44,7 @@ struct RadioMessageInfo
 {
 	byte priority;
 	float shelfLife;
-	char movieCode;
+	wchar_t movieCode;
 	byte styleCount;
 	byte styleChance[3];
 	uint32_t messageMapping;

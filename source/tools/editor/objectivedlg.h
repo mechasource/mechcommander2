@@ -114,7 +114,7 @@ protected:
 	afx_msg void OnChangeHighlight1(void);
 	afx_msg void OnChangeHighlight2(void);
 	afx_msg void OnChangeBase2(void);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
+	afx_msg HBRUSH OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour);
 	afx_msg void OnObjectiveTitleEditButton(void);
 	afx_msg void OnObjectiveDescriptionEditButton(void);
 	afx_msg void OnObjectiveAddFailureConditionButton(void);
@@ -129,8 +129,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	void DoColorBox(CWnd* pWnd);
-	void DoEditColorChange(int32_t ID);
+	void DocolourBox(CWnd* pWnd);
+	void DoEditcolourChange(int32_t ID);
 
 	CBrush baseBrush;
 	CBrush brush1;

@@ -142,7 +142,7 @@ protected:
 	bool startEnding;
 
 	bool inFadeMode;
-	uint32_t fadeColor;
+	uint32_t fadecolour;
 	uint32_t fadeAlpha;
 	uint32_t fadeStart;
 	float timeLeftToFade;
@@ -177,7 +177,7 @@ public:
 	uint8_t ambientGreen; // Green component of World Light
 	uint8_t ambientBlue; // Blue component of World Light
 
-	bool terrainShadowColorEnabled;
+	bool terrainShadowcolourEnabled;
 	uint8_t terrainShadowRed; // Red component of World Light
 	uint8_t terrainShadowGreen; // Green component of World Light
 	uint8_t terrainShadowBlue; // Blue component of World Light
@@ -234,9 +234,9 @@ public:
 
 	float fogStart; // Altitude at which fog starts
 	float fogFull; // Altitude at which fog is Full;
-	uint32_t dayFogColor; // Color of FOG.
+	uint32_t dayFogcolour; // colour of FOG.
 	float fogTransparency; // How much of the sky color will show through
-	uint32_t fogColor; // Color of FOG.
+	uint32_t fogcolour; // colour of FOG.
 	float cameraAltitude;
 	float cameraAltitudeDesired; // What would I like the camera to be at!
 		// Maybe smaller due to low angle!
@@ -302,9 +302,9 @@ public:
 		activeLights = nullptr;
 		terrainLights = nullptr;
 		fogStart = fogFull = 0.0;
-		dayFogColor = 0xffffffff;
+		dayFogcolour = 0xffffffff;
 		fogTransparency = 1.0;
-		fogColor = 0xffffffff;
+		fogcolour = 0xffffffff;
 		usePerspective = false;
 		viewMulX = viewMulY = viewAddX = viewAddY = 0.0f;
 		isNight = false;
@@ -327,7 +327,7 @@ public:
 		letterBoxAlpha = 0x0;
 		startEnding = false;
 		inFadeMode = false;
-		fadeColor = 0x0;
+		fadecolour = 0x0;
 		fadeAlpha = 0x0;
 		timeLeftToFade = 0.0f;
 		startFadeTime = 0.0f;
@@ -423,13 +423,13 @@ public:
 
 	void deactivate(void);
 
-	void setLightColor(int32_t index, uint32_t argb)
+	void setLightcolour(int32_t index, uint32_t argb)
 	{
 		if ((index >= 0) && (index < numLights) && worldLights[index])
 			worldLights[index]->SetaRGB(argb);
 	}
 
-	uint32_t getLightColor(int32_t index)
+	uint32_t getLightcolour(int32_t index)
 	{
 		if ((index >= 0) && (index < numLights) && worldLights[index])
 			return worldLights[index]->GetaRGB(void);
@@ -629,13 +629,13 @@ public:
 				// shrunk, inMovieMode goes false!
 	}
 
-	void fadeToColor(uint32_t color, float timeToFade)
+	void fadeTocolour(uint32_t color, float timeToFade)
 	{
 		if (!inFadeMode && (timeToFade > Stuff::SMALL))
 		{
 			inFadeMode = true;
-			fadeStart = fadeColor;
-			fadeColor = color;
+			fadeStart = fadecolour;
+			fadecolour = color;
 			timeLeftToFade = 0.0f;
 			startFadeTime = timeToFade;
 		}

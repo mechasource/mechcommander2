@@ -23,9 +23,9 @@ namespace mclib::abl {
 //---------------------
 // DEFINITION structure
 
-union Value {
+union value {
 	int32_t integer;
-	char character;
+	wchar_t character;
 	float real;
 	std::wstring_view stringPtr;
 };
@@ -70,12 +70,12 @@ enum class RoutineKey : uint8_t
 
 struct Constant
 {
-	Value value;
+	value value;
 };
 
 struct StateHandleInfo
 {
-	char name[128];
+	wchar_t name[128];
 	const std::unique_ptr<SymTableNode>& state;
 };
 

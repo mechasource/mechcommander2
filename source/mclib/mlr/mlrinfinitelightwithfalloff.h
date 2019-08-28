@@ -7,7 +7,7 @@
 #ifndef MLR_MLRINFINITELIGHTWITHFALLOFF_HPP
 #define MLR_MLRINFINITELIGHTWITHFALLOFF_HPP
 
-#include <mlr/mlrlight.hpp>
+#include "mlr/mlrlight.h"
 
 namespace MidLevelRenderer
 {

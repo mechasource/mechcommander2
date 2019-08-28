@@ -78,7 +78,7 @@
 
 #include "malloc.h"
 
-#include "assert.h"
+#include "_ASSERT.h"
 
 // ARM
 #include "../ARM/Microsoft.Xna.Arm.h"
@@ -196,10 +196,10 @@ EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstr
 		bldg.specialType = UNSPECIAL;
 		bldg.varNames = 0;
 		bldg.forestId = 0;
-		char tmpBuffer[64];
+		wchar_t tmpBuffer[64];
 		int32_t bufferLength = 64;
-		puint8_t pCur = buffer;
-		char GroupName[64];
+		uint8_t* pCur = buffer;
+		wchar_t GroupName[64];
 		// extract the file name
 		if (ExtractNextString(pCur, tmpBuffer, bufferLength))
 			strcpy(bldg.fileName, tmpBuffer);
@@ -248,7 +248,7 @@ EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstr
 			bldg.isHoverCraft = false;
 			bldgFile.readIdBoolean("HoverCraft", bldg.isHoverCraft);
 			bldgFile.seekBlock("ObjectType");
-			char tmpBuf[2000];
+			wchar_t tmpBuf[2000];
 			strcpy(tmpBuf, "");
 			bldgFile.readIdString("Name", tmpBuf, 1000);
 			if (0 == strcmp(tmpBuf, "monsoon"))
@@ -314,7 +314,7 @@ EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstr
 		CSVFile csvFile;
 		FullPathFileName csvFileName;
 		csvFileName.init(objectPath, bldg.fileName, ".csv");
-		char varName[256];
+		wchar_t varName[256];
 		if (NO_ERROR == csvFile.open(csvFileName))
 		{
 			bldg.varNames = (const std::wstring_view&*)malloc(sizeof(const std::wstring_view&) * 16);
@@ -322,7 +322,7 @@ EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstr
 			{
 				if (NO_ERROR == csvFile.readString(23 + 97 * i, 2, varName, 256) && strlen(varName))
 				{
-					bldg.varNames[i] = (const std::wstring_view&)malloc(sizeof(char) * (strlen(varName) + 1));
+					bldg.varNames[i] = (const std::wstring_view&)malloc(sizeof(wchar_t) * (strlen(varName) + 1));
 					strcpy(bldg.varNames[i], varName);
 				}
 				else
@@ -348,7 +348,7 @@ EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstr
 			}
 			if (bNeedGroup)
 			{
-				Group grp;
+				group grp;
 				strcpy(grp.name, GroupName);
 				grp.buildings.Append(bldg);
 				groups.Append(grp);
@@ -358,7 +358,7 @@ EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstr
 }
 
 int32_t
-EditorObjectMgr::ExtractNextString(puint8_t& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength)
+EditorObjectMgr::ExtractNextString(uint8_t*& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength)
 {
 	for (size_t i = 0; i < 512; ++i)
 	{
@@ -431,9 +431,9 @@ textToLong(const std::wstring_view& num)
 }
 
 int32_t
-EditorObjectMgr::ExtractNextInt(puint8_t& pFileLine)
+EditorObjectMgr::ExtractNextInt(uint8_t*& pFileLine)
 {
-	char buffer[1024];
+	wchar_t buffer[1024];
 	int32_t count = ExtractNextString(pFileLine, buffer, 1024);
 	if (count > 0)
 	{
@@ -443,9 +443,9 @@ EditorObjectMgr::ExtractNextInt(puint8_t& pFileLine)
 }
 
 float
-EditorObjectMgr::ExtractNextFloat(puint8_t& pFileLine)
+EditorObjectMgr::ExtractNextFloat(uint8_t*& pFileLine)
 {
-	char buffer[1024];
+	wchar_t buffer[1024];
 	int32_t count = ExtractNextString(pFileLine, buffer, 1024);
 	if (count > 0)
 	{
@@ -660,7 +660,7 @@ EditorObjectMgr::addBuilding(const Stuff::Vector3D& position, uint32_t group,
 		info = tmp;
 		info->appearInfo->appearance = getAppearance(group, indexWithinGroup);
 		uint32_t c1, c2, c3;
-		tmp->getColors(c1, c2, c3);
+		tmp->getcolours(c1, c2, c3);
 		tmp->appearance()->resetPaintScheme(c1, c2, c3);
 	}
 	land->worldToCell(position, info->cellRow, info->cellColumn);
@@ -768,7 +768,7 @@ void
 EditorObjectMgr::getBuildingNamesInGroup(
 	int32_t group, const std::wstring_view&* names, int32_t& NumberOfNames) const
 {
-	Group* pGroup = &groups[group];
+	group* pGroup = &groups[group];
 	if (NumberOfNames < groups.Count())
 		NumberOfNames = pGroup->buildings.Count();
 	int32_t i = 0;
@@ -895,8 +895,8 @@ EditorObjectMgr::render()
 					if ((*iter)->getDamage())
 						(*iter)->appearance()->drawBars();
 					(*iter)->appearance()->render();
-					if ((*iter)->getColor() & 0xff000000)
-						(*iter)->appearance()->drawSelectBrackets((*iter)->getColor());
+					if ((*iter)->getcolour() & 0xff000000)
+						(*iter)->appearance()->drawSelectBrackets((*iter)->getcolour());
 				}
 			}
 		}
@@ -911,8 +911,8 @@ EditorObjectMgr::render()
 			pObj->appearance()->render();
 			if ((*mIter)->getDamage())
 				pObj->appearance()->drawBars();
-			if ((*mIter)->getColor() & 0xff000000)
-				pObj->appearance()->drawSelectBrackets(pObj->getColor());
+			if ((*mIter)->getcolour() & 0xff000000)
+				pObj->appearance()->drawSelectBrackets(pObj->getcolour());
 		}
 	}
 	// draw the building links
@@ -1070,13 +1070,13 @@ EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 	}
 	int32_t pos = file.getLogicalPosition();
 	file.seek(0);
-	if (!PakFile.writePacket(whichPacket, (puint8_t)pBuffer, pos))
+	if (!PakFile.writePacket(whichPacket, (uint8_t*)pBuffer, pos))
 	{
 		gosASSERT(false);
 	}
 	*pTacMapPoints = pointCounter;
 	PakFile.writePacket(
-		whichPacket + 1, (puint8_t)pTacMapPoints, (pointCounter * 2 + 1) * sizeof(int32_t));
+		whichPacket + 1, (uint8_t*)pTacMapPoints, (pointCounter * 2 + 1) * sizeof(int32_t));
 	free(pTacMapPoints);
 	free(pBuffer);
 	if (!justResaveAllMaps)
@@ -1109,7 +1109,7 @@ EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 	PakFile.seekPacket(whichPacket);
 	int32_t size = PakFile.getPacketSize();
 	const std::wstring_view& pBuffer = (const std::wstring_view&)malloc(size);
-	PakFile.readPacket(whichPacket, (puint8_t)pBuffer);
+	PakFile.readPacket(whichPacket, (uint8_t*)pBuffer);
 	File file;
 	file.open(pBuffer, size);
 	int32_t count = file.readLong();
@@ -1457,7 +1457,7 @@ EditorObjectMgr::deleteSelectedObjects()
 }
 
 void
-EditorObjectMgr::adjustObjectsToNewTerrainHeights()
+EditorObjectMgr::adjustObjectsToNewTerrainheights()
 {
 	for (BUILDING_LIST::EIterator iter = buildings.End(); !iter.IsDone(); iter++)
 	{
@@ -1467,7 +1467,7 @@ EditorObjectMgr::adjustObjectsToNewTerrainHeights()
 	}
 	for (LINK_LIST::EIterator lIter = links.Begin(); !lIter.IsDone(); lIter++)
 	{
-		(*lIter)->FixHeights();
+		(*lIter)->Fixheights();
 	}
 	for (UNIT_LIST::EIterator uIter = units.Begin(); !uIter.IsDone(); uIter++)
 	{
@@ -1508,7 +1508,7 @@ ObjectAppearance*
 EditorObjectMgr::getAppearance(uint32_t group, uint32_t indexWithinGroup)
 {
 	gosASSERT(group >= 0 && group < groups.Count());
-	Group* pGroup = &groups[group];
+	group* pGroup = &groups[group];
 	gosASSERT(pGroup->buildings.Count() > indexWithinGroup);
 	Building* pBuilding = &pGroup->buildings[indexWithinGroup];
 	return getAppearance(pBuilding);
@@ -1525,7 +1525,7 @@ EditorObjectMgr::loadMechs(FitIniFile& file)
 	int32_t alternativeInstancesCounter = count + 1;
 	Stuff::Vector3D position;
 	position.x = position.y = position.z = 0;
-	char buffer[256];
+	wchar_t buffer[256];
 	for (size_t i = 1; i < count + 1; ++i)
 	{
 		sprintf(buffer, "Part%ld", i);
@@ -1578,7 +1578,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 			}
 			else
 			{
-				assert(false);
+				_ASSERT(false);
 			}
 		}
 	}
@@ -1615,7 +1615,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 			}
 			else
 			{
-				assert(false);
+				_ASSERT(false);
 			}
 		}
 		UNIT_LIST::EIterator iter;
@@ -1624,7 +1624,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 			reorderedUnits.Append(*iter);
 		}
 	}
-	assert(reorderedUnits.Count() == units.Count());
+	_ASSERT(reorderedUnits.Count() == units.Count());
 	{
 		/*When saving, each player's units need to be grouped into "lances" of
 		12 units for historical reasons.*/
@@ -1699,7 +1699,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 	file.writeBlock("Parts");
 	file.writeIdULong("NumParts", units.Count());
 	// file.writeIdBoolean( "AlliedTeam", alignmentCount[NONE] ? true : false );
-	char buffer[256];
+	wchar_t buffer[256];
 	int32_t counter = 1; // for some unknown reason we index from 1
 	int32_t alternativeInstancesCounter = reorderedUnits.Count() + 1;
 	UNIT_LIST::EIterator iter;
@@ -1709,7 +1709,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 		file.writeBlock(buffer);
 		// ARM
 		// Make a new name of the form "level23_warrior8"
-		char armName[512] = {0};
+		wchar_t armName[512] = {0};
 		strcpy(armName, file.getFilename());
 		_strlwr(armName);
 		const std::wstring_view& fitExt = strstr(armName, ".fit");
@@ -1795,7 +1795,7 @@ bool
 EditorObjectMgr::saveForests(FitIniFile& file)
 {
 	int32_t counter = 0;
-	char header[256];
+	wchar_t header[256];
 	for (FOREST_LIST::EIterator iter = forests.Begin(); !iter.IsDone(); iter++, counter++)
 	{
 		sprintf(header, "Forest%ld", counter);
@@ -1809,7 +1809,7 @@ bool
 EditorObjectMgr::loadForests(FitIniFile& file)
 {
 	int32_t counter = 0;
-	char header[256];
+	wchar_t header[256];
 	int32_t tmp;
 	while (true)
 	{
@@ -2021,8 +2021,8 @@ EditorObjectMgr::doForest(const Forest& forest)
 							treePos.x += (float)RandomNumber(Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 							treePos.y += (float)RandomNumber(Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 							int32_t rotation = RandomNumber(32);
-							float scale = RandomNumber(100 * (forest.maxHeight - forest.minHeight));
-							scale = forest.minHeight + (scale) / 100.f;
+							float scale = RandomNumber(100 * (forest.maxheight - forest.minheight));
+							scale = forest.minheight + (scale) / 100.f;
 							if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() < 1000 /*arbitrary*/) || (AppearanceTypeList::appearanceHeap->totalCoreLeft() < 0.01 /*arbitrary*/ * AppearanceTypeList::appearanceHeap->size()))
 							{
 								AfxMessageBox(IDS_APPEARANCE_HEAP_EXHAUSTED);
@@ -2082,7 +2082,7 @@ EditorObjectMgr::getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, int32
 	index = 0;
 	int32_t treeCount = 0;
 	// figure out how many trees are in the group
-	Group* pGroup = &groups[TREE_GROUP];
+	group* pGroup = &groups[TREE_GROUP];
 	if (pGroup)
 	{
 		for (EList<Building, Building&>::EIterator buildIter = groups[group].buildings.Begin();
@@ -2113,7 +2113,7 @@ bool
 EditorObjectMgr::saveDropZones(FitIniFile& file)
 {
 	int32_t counter = 0;
-	char Header[256];
+	wchar_t Header[256];
 	for (DROP_LIST::EIterator iter = dropZones.Begin(); !iter.IsDone(); iter++, counter++)
 	{
 		sprintf(Header, "DropZone%ld", counter);
@@ -2158,7 +2158,7 @@ bool
 EditorObjectMgr::loadDropZones(FitIniFile& file)
 {
 	int32_t counter = 0;
-	char Header[256];
+	wchar_t Header[256];
 	while (true)
 	{
 		sprintf(Header, "DropZone%ld", counter);
@@ -2182,7 +2182,7 @@ EditorObjectMgr::loadDropZones(FitIniFile& file)
 int32_t
 EditorObjectMgr::getType(uint32_t group, uint32_t indexWithinGroup)
 {
-	Group* pGroup = &groups[group];
+	group* pGroup = &groups[group];
 	gosASSERT(pGroup->buildings.Count() > indexWithinGroup);
 	Building* pBuilding = &pGroup->buildings[indexWithinGroup];
 	return pBuilding->type;
@@ -2334,7 +2334,7 @@ EditorObjectMgr::getGroupName(int32_t ID) const
 }
 
 void
-EditorObjectMgr::getUnitGroupNames(const std::wstring_view&* names, pint32_t ids, int32_t& numberOfEm) const
+EditorObjectMgr::getUnitGroupNames(const std::wstring_view&* names, int32_t* ids, int32_t& numberOfEm) const
 {
 	int32_t counter = 0;
 	int32_t index = 0;
@@ -2354,7 +2354,7 @@ EditorObjectMgr::getUnitGroupNames(const std::wstring_view&* names, pint32_t ids
 }
 
 int32_t
-EditorObjectMgr::getUnitGroupCount() const
+EditorObjectMgr::getUnitGroupCount(void) const
 {
 	int32_t counter = 0;
 	for (GROUP_LIST::EConstIterator iter = groups.Begin(); !iter.IsDone(); iter++)

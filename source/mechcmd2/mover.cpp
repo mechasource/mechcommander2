@@ -137,7 +137,7 @@ int32_t goalMap[GOALMAP_CELL_DIM * GOALMAP_CELL_DIM];
 int32_t goalMapRowStart[GOALMAP_CELL_DIM] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-char goalMapRowCol[GOALMAP_CELL_DIM * GOALMAP_CELL_DIM][2];
+wchar_t goalMapRowCol[GOALMAP_CELL_DIM * GOALMAP_CELL_DIM][2];
 int32_t Mover::numMovers = 0;
 SortListPtr Mover::sortList = nullptr;
 
@@ -155,8 +155,8 @@ DebugWeaponFireChunk(
 extern uint32_t NextIdNumber;
 
 #ifdef USE_SOUNDS
-extern bool friendlyDestroyed;
-extern bool enemyDestroyed;
+extern bool friendlydestroyed;
+extern bool enemydestroyed;
 #endif
 
 extern TeamPtr homeTeam;
@@ -219,14 +219,14 @@ int32_t TargetRolo = -1;
 WeaponFireChunk CurMoverWeaponFireChunk;
 
 extern const std::wstring_view& ExceptionGameMsg;
-extern char ChunkDebugMsg[5120];
+extern wchar_t ChunkDebugMsg[5120];
 
-extern char OverlayIsBridge[NUM_OVERLAY_TYPES];
+extern wchar_t OverlayIsBridge[NUM_OVERLAY_TYPES];
 
 float GroundVehiclePivotYawMultiplier = 0.25;
 
-extern bool friendlyDestroyed;
-extern bool enemyDestroyed;
+extern bool friendlydestroyed;
+extern bool enemydestroyed;
 
 extern GameLog* CombatLog;
 
@@ -252,7 +252,7 @@ bool Mover::inRecoverUpdate = false;
 
 int32_t StatusChunkUnpackErr = 0;
 
-char AttackParameters[14][3] = {
+wchar_t AttackParameters[14][3] = {
 	{ATTACK_TO_DESTROY, FIRERANGE_OPTIMAL, 1}, // DESTROY
 	{ATTACK_TO_DESTROY, FIRERANGE_SHORT, 0}, // STOP AND HOLD FIRE
 	{ATTACK_TO_DESTROY, FIRERANGE_SHORT, 1}, // DESTROY - SR
@@ -349,9 +349,9 @@ float FireArc[3];
 
 // bool LongRangeMovementEnabled[MAX_TEAMS];
 
-extern char ProfessionalismOffsetTable[NUM_OFFSET_RANGES][2];
-extern char DecorumOffsetTable[NUM_OFFSET_RANGES][2];
-extern char AmmoConservationModifiers[2][2];
+extern wchar_t ProfessionalismOffsetTable[NUM_OFFSET_RANGES][2];
+extern wchar_t DecorumOffsetTable[NUM_OFFSET_RANGES][2];
+extern wchar_t AmmoConservationModifiers[2][2];
 // extern int32_t OverlayWeightTable[NUM_OVERLAY_WEIGHT_CLASSES *
 // NUM_OVERLAY_TYPES * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM];  extern int32_t
 // OverlayWeightIndex[NUM_OVERLAY_TYPES];  extern float MoveMarginOfError[2];
@@ -359,7 +359,7 @@ extern float MoveTimeOut;
 extern float MoveYieldTime;
 extern int32_t DefaultMechJumpCost;
 
-extern char SensorSkillMoveRange[4];
+extern wchar_t SensorSkillMoveRange[4];
 extern float SensorSkillMoveFactor[8];
 
 float SkillTry[4];
@@ -377,10 +377,10 @@ float MaxTimeRevealed = 0.0f;
 #define IS_SEEN_FLAG 1
 
 extern float worldUnitsPerMeter;
-char Mover::optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
+wchar_t Mover::optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
 int32_t Mover::numOptimalIncrements = 0;
 int16_t Mover::rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
-char Mover::rangedCells[RANGED_CELLS_DIM][2];
+wchar_t Mover::rangedCells[RANGED_CELLS_DIM][2];
 TriggerAreaManager* Mover::triggerAreaMgr = nullptr;
 
 uint32_t Mover::holdFireIconHandle = 0;
@@ -428,7 +428,7 @@ void
 DebugMoveChunk(std::unique_ptr<Mover> mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2)
 {
 	ChunkDebugMsg[0] = nullptr;
-	char outString[512];
+	wchar_t outString[512];
 	if (mover)
 	{
 		sprintf(outString, "Mover = %s (%d)\n", mover->getName(), mover->getPartId());
@@ -753,7 +753,7 @@ MoveChunk::pack(std::unique_ptr<Mover> mover)
 	if ((numSteps < 1) || (numSteps > 4))
 	{
 		DebugMoveChunk(mover, this, nullptr);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg, " MoveChunk.pack: bad numSteps %d (save mvchunk.dbg file) ", numSteps);
 		Assert(false, numSteps, errMsg);
 	}
@@ -816,7 +816,7 @@ MoveChunk::unpack(std::unique_ptr<Mover> mover)
 	if ((numSteps < 1) || (numSteps > 4))
 	{
 		DebugMoveChunk(mover, this, nullptr);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg, " MoveChunk.unpack: bad numSteps %d (save mvchunk.dbg file) ", numSteps);
 		Assert(false, numSteps, errMsg);
 	}
@@ -890,7 +890,7 @@ void
 DebugStatusChunk(std::unique_ptr<Mover> mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2)
 {
 	ChunkDebugMsg[0] = nullptr;
-	char outString[512];
+	wchar_t outString[512];
 	if (mover)
 	{
 		sprintf(outString, "\nmover = %s (%d)\n", mover->name, mover->getPartId());
@@ -1198,7 +1198,7 @@ StatusChunk::pack(std::unique_ptr<Mover> mover)
 		{
 #ifdef ASSERT_STATUSCHUNK
 			DebugStatusChunk(mover, this, nullptr);
-			char errMsg[1024];
+			wchar_t errMsg[1024];
 			sprintf(
 				errMsg, " StatusChunk.pack: bad targetId %d (save stchunk.dbg file) ", targetId);
 			Assert(false, targetId, errMsg);
@@ -1213,7 +1213,7 @@ StatusChunk::pack(std::unique_ptr<Mover> mover)
 		// if (!target) {
 		//	#ifdef ASSERT_STATUSCHUNK
 		//		DebugStatusChunk(mover, this, nullptr);
-		//		char errMsg[1024];
+		//		wchar_t errMsg[1024];
 		//		sprintf(errMsg, " StatusChunk.pack: nullptr Mover Target (save
 		// stchunk.dbg file) "); 		Assert(false, targetId, errMsg);
 		//	#else
@@ -1229,7 +1229,7 @@ StatusChunk::pack(std::unique_ptr<Mover> mover)
 		{
 #ifdef ASSERT_STATUSCHUNK
 			DebugStatusChunk(mover, this, nullptr);
-			char errMsg[1024];
+			wchar_t errMsg[1024];
 			sprintf(errMsg,
 				" StatusChunk.pack: nullptr Terrain Target (save "
 				"stchunk.dbg file) ");
@@ -1247,7 +1247,7 @@ StatusChunk::pack(std::unique_ptr<Mover> mover)
 		{
 #ifdef ASSERT_STATUSCHUNK
 			DebugStatusChunk(mover, this, nullptr);
-			char errMsg[1024];
+			wchar_t errMsg[1024];
 			sprintf(errMsg,
 				" StatusChunk.pack: nullptr Special Target (save "
 				"stchunk.dbg file) ");
@@ -1263,7 +1263,7 @@ StatusChunk::pack(std::unique_ptr<Mover> mover)
 	default:
 		//#ifdef ASSERT_STATUSCHUNK
 		//	DebugStatusChunk(mover, this, nullptr);
-		//	char errMsg[1024];
+		//	wchar_t errMsg[1024];
 		//	sprintf(errMsg, " StatusChunk.pack: bad targetType %d (save
 		// stchunk.dbg file) ", targetType); 	Assert(false, targetType,
 		// errMsg); #else 	StatusChunkUnpackErr = 5; #endif
@@ -1345,7 +1345,7 @@ StatusChunk::unpack(std::unique_ptr<Mover> mover)
 		{
 #ifdef ASSERT_STATUSCHUNK
 			DebugStatusChunk(mover, this, nullptr);
-			char errMsg[1024];
+			wchar_t errMsg[1024];
 			sprintf(
 				errMsg, " StatusChunk.unpack: bad targetId %d (save stchunk.dbg file) ", targetId);
 			Assert(false, targetId, errMsg);
@@ -1360,7 +1360,7 @@ StatusChunk::unpack(std::unique_ptr<Mover> mover)
 		// if (!target) {
 		//	#ifdef ASSERT_STATUSCHUNK
 		//		DebugStatusChunk(mover, this, nullptr);
-		//		char errMsg[1024];
+		//		wchar_t errMsg[1024];
 		//		sprintf(errMsg, " StatusChunk.unpack: nullptr Mover Target (save
 		// stchunk.dbg file) "); 		Assert(false, targetId, errMsg);
 		//	#else
@@ -1376,7 +1376,7 @@ StatusChunk::unpack(std::unique_ptr<Mover> mover)
 		{
 #ifdef ASSERT_STATUSCHUNK
 			DebugStatusChunk(mover, this, nullptr);
-			char errMsg[1024];
+			wchar_t errMsg[1024];
 			sprintf(errMsg,
 				" StatusChunk.unpack: nullptr Terrain Target (save "
 				"stchunk.dbg file) ");
@@ -1394,7 +1394,7 @@ StatusChunk::unpack(std::unique_ptr<Mover> mover)
 		{
 #ifdef ASSERT_STATUSCHUNK
 			DebugStatusChunk(mover, this, nullptr);
-			char errMsg[1024];
+			wchar_t errMsg[1024];
 			sprintf(errMsg,
 				" StatusChunk.unpack: nullptr Special Target (save "
 				"stchunk.dbg file) ");
@@ -1410,7 +1410,7 @@ StatusChunk::unpack(std::unique_ptr<Mover> mover)
 	default:
 		//#ifdef ASSERT_STATUSCHUNK
 		//	DebugStatusChunk(mover, this, nullptr);
-		//	char errMsg[1024];
+		//	wchar_t errMsg[1024];
 		//	sprintf(errMsg, " StatusChunk.unpack: bad targetType %d (save
 		// stchunk.dbg file) ", targetType); 	Assert(false, targetType,
 		// errMsg); #else 	StatusChunkUnpackErr = 5; #endif
@@ -1890,7 +1890,7 @@ Mover::loadGameSystem(FitIniFilePtr mechFile, float visualRange)
 	result = mechFile->readIdFloatArray("WarriorRankScale", WarriorRankScale, WarriorRank::numberofranks);
 	if (result != NO_ERROR)
 		return (result);
-	char profData[NUM_OFFSET_RANGES * 2];
+	wchar_t profData[NUM_OFFSET_RANGES * 2];
 	result = mechFile->readIdCharArray("ProfessionalismTable", profData, NUM_OFFSET_RANGES * 2);
 	if (result != NO_ERROR)
 		return (result);
@@ -1920,7 +1920,7 @@ Mover::loadGameSystem(FitIniFilePtr mechFile, float visualRange)
 	result = mechFile->readIdFloat("DamageRateFrequency", DamageRateFrequency);
 	if (result != NO_ERROR)
 		return (result);
-	char charData[NUM_ATTITUDES * 6];
+	wchar_t charData[NUM_ATTITUDES * 6];
 	result = mechFile->readIdCharArray("AttitudeEffect", charData, NUM_ATTITUDES * 6);
 	if (result != NO_ERROR)
 		return (result);
@@ -2248,7 +2248,7 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 {
 	debugPage %= 3;
 	debugWindow->clear();
-	static char s[128];
+	static wchar_t s[128];
 	MovePathPtr path = getPilot()->getMovePath();
 	int32_t distToObj1 = -1;
 	if (DebugGameObject[2])
@@ -2307,14 +2307,14 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 		{
 			if (getPilot()->getExecutingTacOrderQueue())
 			{
-				char ts[40];
+				wchar_t ts[40];
 				sprintf(ts, "[%d%c] ", getPilot()->getNumTacOrdersQueued(),
 					getPilot()->getTacOrderQueueLooping() ? "@" : ".");
 				strcat(s, ts);
 			}
 			else
 			{
-				char ts[40];
+				wchar_t ts[40];
 				sprintf(ts, "[%d] ", getPilot()->getNumTacOrdersQueued());
 				strcat(s, ts);
 			}
@@ -2344,7 +2344,7 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 			{
 				std::unique_ptr<Mover> contact = (std::unique_ptr<Mover>)ObjectManager->get(sensorSystem->contacts[i] & 0x7FFF);
 				Assert(contact != nullptr, sensorSystem->contacts[i] & 0x7FFF, " null contact ");
-				char s2[10];
+				wchar_t s2[10];
 				sprintf(s2, " %d.%d", sensorSystem->contacts[i] & 0x7FFF,
 					contact->getContactStatus(teamId, true));
 				strcat(s, s2);
@@ -2355,7 +2355,7 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 		debugWindow->print(s);
 		if (getPilot()->getCurrentTarget())
 		{
-			char ts[50];
+			wchar_t ts[50];
 			getPilot()->printWeaponsStatus(ts);
 			sprintf(s, "%s", ts);
 		}
@@ -2401,7 +2401,7 @@ Mover::updateDebugWindow(GameDebugWindow* debugWindow)
 				lastIndex = moveOrders->numGlobalSteps;
 			for (size_t i = 0; i < lastIndex; i++)
 			{
-				char ss[15];
+				wchar_t ss[15];
 				if (i == moveOrders->curGlobalStep)
 					sprintf(ss, " [%d]", moveOrders->globalPath[i].thruArea);
 				else
@@ -3122,7 +3122,7 @@ Mover::handleTacticalOrder(TacticalOrder tacOrder, int32_t priority, bool queueP
 		break;
 	default:
 	{
-		// char s[256];
+		// wchar_t s[256];
 		// sprintf(s, "Mover::handleTacticalOrder->Bad TacOrder Code (%d)",
 		// tacOrder.code);  Assert(false, tacOrder.code, s);
 		NODEFAULT;
@@ -3375,7 +3375,7 @@ Mover::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpoi
 		if (target)
 		{
 			const std::wstring_view& targetName = target->getName();
-			char s[1024];
+			wchar_t s[1024];
 			if (getObjectClass() == BATTLEMECH)
 				sprintf(s, "[%.2f] mech.fireWeapon HIT: (%05d)%s @ (%05d)%s", scenarioTime,
 					getPartId(), name, target->getPartId(), targetName ? targetName : "unknown");
@@ -3412,7 +3412,7 @@ Mover::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpoi
 		if (target)
 		{
 			const std::wstring_view& targetName = target->getName();
-			char s[1024];
+			wchar_t s[1024];
 			if (getObjectClass() == BATTLEMECH)
 				sprintf(s, "[%.2f] mech.fireWeapon MISS: (%05d)%s @ (%05d)%s", scenarioTime,
 					getPartId(), name, target->getPartId(), targetName ? targetName : "unknown");
@@ -3458,8 +3458,8 @@ Mover::printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo)
 	static const std::wstring_view& locationStrings[] = {"head", "center torso", "left torso", "right torso",
 		"left arm", "right arm", "left leg", "right leg", "rear center torso", "rear left torso",
 		"rear right torso"};
-	char s[1024];
-	char statusStr[15];
+	wchar_t s[1024];
+	wchar_t statusStr[15];
 	if (FromMP)
 	{
 		if (isDestroyed())
@@ -3679,7 +3679,7 @@ Mover::addCriticalHitChunk(int32_t which, int32_t bodyLocation, int32_t critical
 //---------------------------------------------------------------------------
 
 int32_t
-Mover::addCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChunks)
+Mover::addCriticalHitChunks(int32_t which, uint8_t* packedChunkBuffer, int32_t numChunks)
 {
 	if ((numCriticalHitChunks[which] + numChunks) >= MAX_CRITICALHIT_CHUNKS)
 		Fatal(0, " Mover::addCriticalHitChunks--Too many criticalhit chunks ");
@@ -3691,7 +3691,7 @@ Mover::addCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer, int32_t n
 //---------------------------------------------------------------------------
 
 int32_t
-Mover::grabCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer)
+Mover::grabCriticalHitChunks(int32_t which, uint8_t* packedChunkBuffer)
 {
 	if (numCriticalHitChunks[which] > 0)
 		memcpy(packedChunkBuffer, criticalHitChunks[which], numCriticalHitChunks[which]);
@@ -3734,7 +3734,7 @@ Mover::addRadioChunk(int32_t which, uint8_t msg)
 //---------------------------------------------------------------------------
 
 int32_t
-Mover::addRadioChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChunks)
+Mover::addRadioChunks(int32_t which, uint8_t* packedChunkBuffer, int32_t numChunks)
 {
 	//	if ((numRadioChunks[which] + numChunks) >= MAX_RADIO_CHUNKS)
 	//		Fatal(0, " Mover::addRadioChunks--Too many radio chunks ");
@@ -3748,7 +3748,7 @@ Mover::addRadioChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChun
 //---------------------------------------------------------------------------
 
 int32_t
-Mover::grabRadioChunks(int32_t which, puint8_t packedChunkBuffer)
+Mover::grabRadioChunks(int32_t which, uint8_t* packedChunkBuffer)
 {
 	if (numRadioChunks[which] > 0)
 		memcpy(packedChunkBuffer, radioChunks[which], numRadioChunks[which]);
@@ -3974,9 +3974,9 @@ insertMoveGoal(int32_t goalList[MAX_MOVE_GOALS][3], int32_t r, int32_t c, int32_
 //---------------------------------------------------------------------------
 
 inline bool
-inMapBounds(int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth)
+inMapBounds(int32_t r, int32_t c, int32_t mapheight, int32_t mapwidth)
 {
-	return ((r >= 0) && (r < mapHeight) && (c >= 0) && (c < mapWidth));
+	return ((r >= 0) && (r < mapheight) && (c >= 0) && (c < mapwidth));
 }
 
 //---------------------------------------------------------------------------
@@ -4001,7 +4001,7 @@ calcBestGoalFromTarget(
 	deltaCellVec.y = maxPos[0] - targetPos[0];
 	deltaCellVec.x = maxPos[1] - targetPos[1];
 	deltaCellVec.z = 0.0f;
-	float startHeight = startPos.z;
+	float startheight = startPos.z;
 	float cellLength = (Terrain::worldUnitsPerCell * metersPerWorldUnit);
 	float length = deltaCellVec.GetApproximateLength();
 	int32_t lastCellR = -1;
@@ -4039,14 +4039,14 @@ calcBestGoalFromTarget(
 				startCellCol = (endCellCol - lastCol);
 				colDone = true;
 			}
-			startHeight += heightLen;
+			startheight += heightLen;
 			int32_t startCellC = startCellCol;
 			int32_t startCellR = startCellRow;
 			land->getCellPos(startCellR, startCellC, currentPos);
 			float localElev =
-				(worldUnitsPerMeter * (float)GameMap->getLocalHeight(startCellR, startCellC));
+				(worldUnitsPerMeter * (float)GameMap->getLocalheight(startCellR, startCellC));
 			currentPos.z += localElev;
-			if (startHeight + startLocal < currentPos.z)
+			if (startheight + startLocal < currentPos.z)
 				if (GameMap->inBounds(lastCellR, lastCellC) && GameMap->getCell(lastCellR, lastCellC)->getPassable())
 				{
 					bestCell[0] = lastCellR;
@@ -4232,7 +4232,7 @@ extern int64_t MCTimeCalcGoal6Update;
 int32_t
 Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float moveRadius,
 	Stuff::Vector3D moveGoal, int32_t selectionindex, Stuff::Vector3D& newGoal,
-	int32_t numValidAreas, pint16_t validAreas, uint32_t moveparams)
+	int32_t numValidAreas, int16_t* validAreas, uint32_t moveparams)
 {
 	int64_t startTime = 0;
 	if (goalMapRowStart[0] == -1)
@@ -4495,7 +4495,7 @@ Mover::calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float move
 	}
 	//-----------------------
 	// Init the area lists...
-	char validAreaTable[MAX_GLOBALMAP_AREAS];
+	wchar_t validAreaTable[MAX_GLOBALMAP_AREAS];
 	for (size_t i = 0; i < GlobalMoveMap[moveLevel]->numAreas; i++)
 		validAreaTable[i] = -1;
 	int32_t curArea = GlobalMoveMap[moveLevel]->calcArea(cellPositionRow, cellPositionCol);
@@ -6317,10 +6317,10 @@ Mover::disable(uint32_t cause)
 		setStatus(OBJECT_STATUS_DISABLED);
 		disableThisFrame = true;
 		if (Team::home->isFriendly(getTeam()))
-			friendlyDestroyed = true;
+			friendlydestroyed = true;
 		else
 		{
-			enemyDestroyed = true;
+			enemydestroyed = true;
 		}
 		//-----------------------------
 		// Immediately lose contacts...
@@ -6719,7 +6719,7 @@ Mover::drawSensorTextHelp(
 	Stuff::Vector4D moveHere;
 	moveHere.x = screenX;
 	moveHere.y = screenY;
-	char buffer[256];
+	wchar_t buffer[256];
 	cLoadString(resID, buffer, 255);
 	FloatHelp::getTextStringLength(buffer, color, 1.0f, true, drawBOLD, true, false, width, height);
 	moveHere.x -= width / 2;
@@ -6774,17 +6774,17 @@ Mover::initOptimalCells(int32_t numIncrements)
 		for (size_t i = 0; i < numIncrements; i++)
 		{
 			if (doptimalCells[r][i][0] < 0.00)
-				optimalCells[r][i][0] = (char)(doptimalCells[r][i][0] - 0.50);
+				optimalCells[r][i][0] = (wchar_t)(doptimalCells[r][i][0] - 0.50);
 			else
-				optimalCells[r][i][0] = (char)(doptimalCells[r][i][0] + 0.50);
+				optimalCells[r][i][0] = (wchar_t)(doptimalCells[r][i][0] + 0.50);
 			if (doptimalCells[r][i][1] < 0.00)
-				optimalCells[r][i][1] = (char)(doptimalCells[r][i][1] - 0.50);
+				optimalCells[r][i][1] = (wchar_t)(doptimalCells[r][i][1] - 0.50);
 			else
-				optimalCells[r][i][1] = (char)(doptimalCells[r][i][1] + 0.50);
+				optimalCells[r][i][1] = (wchar_t)(doptimalCells[r][i][1] + 0.50);
 		}
 	//-----------------------------------------------
 	// Now, initialize the tables for Ranged Areas...
-	char rangedMap[MAX_ATTACK_CELLRANGE * 2 + 1][MAX_ATTACK_CELLRANGE * 2 + 1];
+	wchar_t rangedMap[MAX_ATTACK_CELLRANGE * 2 + 1][MAX_ATTACK_CELLRANGE * 2 + 1];
 	for (r = 0; r < (MAX_ATTACK_CELLRANGE * 2 + 1); r++)
 		for (size_t c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++)
 		{
@@ -6796,7 +6796,7 @@ Mover::initOptimalCells(int32_t numIncrements)
 			goal.y = MAX_ATTACK_CELLRANGE;
 			goal.z = 0.0;
 			double dist = distance_from(start, goal);
-			rangedMap[r][c] = (char)(dist + 0.5);
+			rangedMap[r][c] = (wchar_t)(dist + 0.5);
 		}
 	int32_t index = 0;
 	for (size_t range = 0; range < MAX_ATTACK_CELLRANGE; range++)
@@ -6925,12 +6925,12 @@ PlaceStationaryMovers(MoveMap* map)
 			{
 				if ((cellRow != map->startR) || (cellCol != map->startC))
 				{
-					if ((map->map[cellRow * map->maxWidth + cellCol].flags & MOVEFLAG_GOAL) == 0)
+					if ((map->map[cellRow * map->maxwidth + cellCol].flags & MOVEFLAG_GOAL) == 0)
 					{
 						MovePathPtr path = mover->getPilot()->getMovePath();
 						if (path && (path->numSteps == 0))
 						{
-							map->map[cellRow * map->maxWidth + cellCol].setFlag(
+							map->map[cellRow * map->maxwidth + cellCol].setFlag(
 								MOVEFLAG_MOVER_HERE);
 #ifdef USE_OVERLAYS
 							int32_t bridgeCost = COST_BLOCKED / 3;
@@ -6999,9 +6999,9 @@ Mover::handleEjection()
 		//------------------------------------
 		// What heroic music should be played?
 		if (alignment == homeTeam->getAlignment())
-			friendlyDestroyed = true;
+			friendlydestroyed = true;
 		else
-			enemyDestroyed = true;
+			enemydestroyed = true;
 #endif
 	}
 	return (true);
@@ -7024,7 +7024,7 @@ Mover::Save(PacketFilePtr file, int32_t packetNum)
 	MoverData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(MoverData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(MoverData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
@@ -7035,7 +7035,7 @@ Mover::CopyTo(MoverData* data)
 	data->lost = lost;
 	data->positionNormal = positionNormal;
 	data->velocity = velocity;
-	memcpy(data->name, name, sizeof(char) * MAXLEN_MOVER_NAME);
+	memcpy(data->name, name, sizeof(wchar_t) * MAXLEN_MOVER_NAME);
 	data->chassis = chassis;
 	data->startDisabled = startDisabled;
 	data->creationTime = creationTime;
@@ -7052,7 +7052,7 @@ Mover::CopyTo(MoverData* data)
 	data->attackRange = attackRange;
 	memcpy(data->armor, armor, sizeof(ArmorLocation) * MAX_MOVER_ARMOR_LOCATIONS);
 	data->numArmorLocations = numArmorLocations;
-	memcpy(data->longName, longName, sizeof(char) * MAXLEN_MECH_LONGNAME);
+	memcpy(data->longName, longName, sizeof(wchar_t) * MAXLEN_MECH_LONGNAME);
 	memcpy(data->inventory, inventory, sizeof(InventoryItem) * MAX_MOVER_INVENTORY_ITEMS);
 	data->numOther = numOther;
 	data->numWeapons = numWeapons;
@@ -7153,7 +7153,7 @@ Mover::Load(MoverData* data)
 	lost = data->lost;
 	positionNormal = data->positionNormal;
 	velocity = data->velocity;
-	memcpy(name, data->name, sizeof(char) * MAXLEN_MOVER_NAME);
+	memcpy(name, data->name, sizeof(wchar_t) * MAXLEN_MOVER_NAME);
 	chassis = data->chassis;
 	startDisabled = data->startDisabled;
 	creationTime = data->creationTime;
@@ -7170,7 +7170,7 @@ Mover::Load(MoverData* data)
 	attackRange = data->attackRange;
 	memcpy(armor, data->armor, sizeof(ArmorLocation) * MAX_MOVER_ARMOR_LOCATIONS);
 	numArmorLocations = data->numArmorLocations;
-	memcpy(longName, data->longName, sizeof(char) * MAXLEN_MECH_LONGNAME);
+	memcpy(longName, data->longName, sizeof(wchar_t) * MAXLEN_MECH_LONGNAME);
 	memcpy(inventory, data->inventory, sizeof(InventoryItem) * MAX_MOVER_INVENTORY_ITEMS);
 	numOther = data->numOther;
 	numWeapons = data->numWeapons;

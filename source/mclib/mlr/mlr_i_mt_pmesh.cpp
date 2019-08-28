@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_mt_pmesh.h"
 
@@ -140,11 +140,11 @@ MLR_I_MT_PMesh::Copy(MLR_I_PMesh* pMesh)
 	SetTexCoordData(tex, num);
 	multiTexCoords[0] = &texCoords;
 	multiTexCoordsPointers[0] = texCoords.GetData();
-	puint8_t length_array;
+	uint8_t* length_array;
 	pMesh->GetSubprimitiveLengths(&length_array, &num);
 	SetSubprimitiveLengths(length_array, num);
 	drawMode = pMesh->GetSortDataMode();
-	puint16_t index_array;
+	uint16_t* index_array;
 	pMesh->GetIndexData(&index_array, &num);
 	SetIndexData(index_array, num);
 	facePlanes.SetLength(GetNumPrimitives());
@@ -263,11 +263,11 @@ MLR_I_MT_PMesh::SetTexCoordData(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-GetTexCoordData(Stuff::Vector2DScalar** data, psize_t dataSize, size_t pass = 0);
+GetTexCoordData(Stuff::Vector2DScalar** data, size_t* dataSize, size_t pass = 0);
 
 void
 MLR_I_MT_PMesh::GetTexCoordData(
-	/*const*/ Stuff::Vector2DScalar** ppdata, psize_t pdataSize, size_t pass)
+	/*const*/ Stuff::Vector2DScalar** ppdata, size_t* pdataSize, size_t pass)
 {
 	// Check_Object(this);
 	Check_Pointer(ppdata);
@@ -316,7 +316,7 @@ MLR_I_MT_PMesh::SetTexCoordDataPointer(const Stuff::Vector2DScalar* data)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
+MidLevelRenderer::CreateIndexedIcosahedron_Nocolour_NoLit_MultiTexture(
 	IcoInfo& icoInfo, std::vector<MLRState>* states)
 {
 #ifdef _GAMEOS_HPP_
@@ -332,7 +332,7 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
 	{
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-	puint8_t lengths = new uint8_t[nrTri];
+	uint8_t* lengths = new uint8_t[nrTri];
 	Register_Pointer(lengths);
 	for (i = 0; i < nrTri; i++)
 	{
@@ -352,7 +352,7 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
 		texCoords[i] = new Stuff::Vector2DScalar[nrTri * 3];
 		Register_Pointer(texCoords[i]);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	size_t uniquePoints = 0;
 	for (k = 0; k < 20; k++)

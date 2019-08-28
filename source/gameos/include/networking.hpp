@@ -37,7 +37,7 @@ public:
 	uint32_t type;
 
 	// {data} is the information sent across the network.
-	puint8_t buffer;
+	uint8_t* buffer;
 
 	// Number of bytes to be sent or number of bytes received.
 	uint32_t messageSize;

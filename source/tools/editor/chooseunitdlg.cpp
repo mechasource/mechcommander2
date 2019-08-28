@@ -9,7 +9,7 @@ ChooseUnitDlg.cpp			: Implementation of the ChooseUnitDlg component.
 #include "resource.h"
 
 //#include <stdlib.h>
-//#include <assert.h>
+//#include <_ASSERT.h>
 //#include "estring.h"
 //#include "chooseunitdlg.h"
 //#include "pointerselectobjectdlg.h"
@@ -34,13 +34,13 @@ BOOL
 ChooseUnitDlg::OnInitDialog()
 {
 	m_pComboBox = (CComboBox*)GetDlgItem(IDC_CHOOSE_UNIT_COMBO);
-	assert(m_pComboBox);
+	_ASSERT(m_pComboBox);
 	m_pUsingPointerButton = (CButton*)GetDlgItem(IDC_CHOOSE_UNIT_USING_POINTER_BUTTON);
-	assert(m_pUsingPointerButton);
+	_ASSERT(m_pUsingPointerButton);
 	m_pCancelButton = (CButton*)GetDlgItem(IDCANCEL);
-	assert(m_pCancelButton);
+	_ASSERT(m_pCancelButton);
 	m_pOKButton = (CButton*)GetDlgItem(IDOK);
-	assert(m_pOKButton);
+	_ASSERT(m_pOKButton);
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
 		m_pModifiedUnitPtr =
@@ -70,7 +70,7 @@ ChooseUnitDlg::OnInitDialog()
 			const std::wstring_view& tmpEStr;
 			Stuff::Vector3D pos = (*it)->getPosition();
 			const std::wstring_view& szDisplayName = (*it)->getDisplayName(); // nb: localization
-			assert(szDisplayName);
+			_ASSERT(szDisplayName);
 			tmpEStr.Format("(pos: %.3f, %.3f) %s", pos.x, pos.y, szDisplayName);
 			m_pComboBox->AddString(tmpEStr.Data());
 			it++;
@@ -97,8 +97,8 @@ BOOL
 ChooseUnitDlg::OnCommand(WPARAM wparam,
 	LPARAM lparam) // called by child controls to inform of an event
 {
-	assert(m_pCancelButton);
-	assert(m_pOKButton);
+	_ASSERT(m_pCancelButton);
+	_ASSERT(m_pOKButton);
 	HWND hWndCtrl = (HWND)lparam;
 	int32_t nCode = HIWORD(wparam);
 	if (hWndCtrl == m_pComboBox->m_hWnd)
@@ -175,7 +175,7 @@ ChooseUnitDlg::OnUsePointer()
 void
 ChooseUnitDlg::OnCancel()
 {
-	// assert(false); // haven't decided what to do on cancel yet
+	// _ASSERT(false); // haven't decided what to do on cancel yet
 	delete m_pModifiedUnitPtr;
 	EndDialog(IDCANCEL);
 }
@@ -184,7 +184,7 @@ void
 ChooseUnitDlg::OnOK()
 {
 	int32_t nSelectionIndex = m_pComboBox->GetCurSel();
-	assert(0 <= nSelectionIndex);
+	_ASSERT(0 <= nSelectionIndex);
 	//(*m_pModifiedUnitPtr) = m_unitList[nSelectionIndex];
 	(*m_pModifiedUnitPtr) = *(m_unitList.Iterator(nSelectionIndex));
 	(*m_pUnitPtr) = (*m_pModifiedUnitPtr);

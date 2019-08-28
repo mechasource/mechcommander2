@@ -17,7 +17,7 @@
 //#include "dstd.h"
 //#include "dheap.h"
 //#include <memory.h>
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -81,7 +81,7 @@ class HeapManager
 	// Data Members
 	//-------------
 protected:
-	puint8_t heap;
+	uint8_t* heap;
 	bool memReserved;
 	size_t totalSize;
 	size_t committedSize;
@@ -110,8 +110,8 @@ public:
 	int32_t commitHeap(uint32_t commitSize = 0);
 	int32_t decommitHeap(uint32_t decommitSize = 0);
 
-	puint8_t getHeapPtr(void);
-	operator puint8_t(void);
+	uint8_t* getHeapPtr(void);
+	operator uint8_t*(void);
 
 	void HeapManager::MemoryDump(void);
 

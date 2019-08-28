@@ -79,7 +79,7 @@ GameCamera::render(void)
 	// add elements to the draw list and sort and draw.
 	// The later time has arrived.  We begin sorting immediately.
 	// NO LONGER NEED TO SORT!
-	// ZBuffer time has arrived.  Share and Enjoy!
+	// zbuffer time has arrived.  Share and Enjoy!
 	// Everything SIMPLY draws at the execution point into the zBuffer
 	// at the correct depth.  Miracles occur at that point!
 	// Big code change but it removes a WHOLE bunch of code and memory!
@@ -95,10 +95,10 @@ GameCamera::render(void)
 	default_state.SetZBufferWriteOn();
 	default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 	float z = 1.0f;
-	Stuff::RGBAColor fColor;
-	fColor.red = ((fogColor >> 16) & 0xff);
-	fColor.green = ((fogColor >> 8) & 0xff);
-	fColor.blue = ((fogColor)&0xff);
+	Stuff::RGBAcolour fcolour;
+	fcolour.red = ((fogcolour >> 16) & 0xff);
+	fcolour.green = ((fogcolour >> 8) & 0xff);
+	fcolour.blue = ((fogcolour)&0xff);
 	//--------------------------------------------------------
 	// Get new viewport values to scale stuff.  No longer uses
 	// VFX stuff for this.  ALL GOS NOW!
@@ -119,10 +119,10 @@ GameCamera::render(void)
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering
 	uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
-	eye->setLightColor(1, lightRGB);
+	eye->setLightcolour(1, lightRGB);
 	eye->setLightIntensity(1, 1.0);
 	MidLevelRenderer::PerspectiveMode = usePerspective;
-	theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
+	theClipper->StartDraw(cameraOrigin, cameraToClip, fcolour, &fcolour, default_state, &z);
 	MidLevelRenderer::GOSVertex::farClipReciprocal =
 		(1.0f - cameraToClip(2, 2)) / cameraToClip(3, 2);
 	if (active && turn > 1)
@@ -176,8 +176,8 @@ GameCamera::render(void)
 	{
 		// Figure out the two faces we need to draw based on letterBox Pos and
 		// Alpha
-		float barTopX = screenResolution.y * letterBoxPos;
-		float barBotX = screenResolution.y - barTopX;
+		float bartopx = screenResolution.y * letterBoxPos;
+		float barBotX = screenResolution.y - bartopx;
 		gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 		gos_SetRenderState(gos_State_ShadeMode, gos_ShadeGouraud);
 		gos_SetRenderState(gos_State_MonoEnable, 0);
@@ -203,7 +203,7 @@ GameCamera::render(void)
 		gVertex[0].argb = (letterBoxAlpha << 24);
 		gVertex[0].frgb = 0xff000000;
 		gVertex[1].x = 0.0f;
-		gVertex[1].y = barTopX;
+		gVertex[1].y = bartopx;
 		gVertex[1].z = 0.00001f;
 		gVertex[1].rhw = 0.00001f;
 		gVertex[1].u = 0.0f;
@@ -211,7 +211,7 @@ GameCamera::render(void)
 		gVertex[1].argb = (letterBoxAlpha << 24);
 		gVertex[1].frgb = 0xff000000;
 		gVertex[2].x = screenResolution.x;
-		gVertex[2].y = barTopX;
+		gVertex[2].y = bartopx;
 		gVertex[2].z = 0.00001f;
 		gVertex[2].rhw = 0.00001f;
 		gVertex[2].u = 0.0f;
@@ -286,7 +286,7 @@ GameCamera::render(void)
 		gVertex[0].rhw = 0.00001f;
 		gVertex[0].u = 0.0f;
 		gVertex[0].v = 0.0f;
-		gVertex[0].argb = (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
+		gVertex[0].argb = (fadeAlpha << 24) + (fadecolour & 0x00ffffff);
 		gVertex[0].frgb = 0xff000000;
 		gVertex[1].x = 0.0f;
 		gVertex[1].y = screenResolution.y;
@@ -294,7 +294,7 @@ GameCamera::render(void)
 		gVertex[1].rhw = 0.00001f;
 		gVertex[1].u = 0.0f;
 		gVertex[1].v = 0.0f;
-		gVertex[1].argb = (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
+		gVertex[1].argb = (fadeAlpha << 24) + (fadecolour & 0x00ffffff);
 		gVertex[1].frgb = 0xff000000;
 		gVertex[2].x = screenResolution.x;
 		gVertex[2].y = screenResolution.y;
@@ -302,7 +302,7 @@ GameCamera::render(void)
 		gVertex[2].rhw = 0.00001f;
 		gVertex[2].u = 0.0f;
 		gVertex[2].v = 0.0f;
-		gVertex[2].argb = (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
+		gVertex[2].argb = (fadeAlpha << 24) + (fadecolour & 0x00ffffff);
 		gVertex[2].frgb = 0xff000000;
 		gVertex[3].x = screenResolution.x;
 		gVertex[3].y = 0.0f;
@@ -310,7 +310,7 @@ GameCamera::render(void)
 		gVertex[3].rhw = 0.00001f;
 		gVertex[3].u = 0.0f;
 		gVertex[3].v = 0.0f;
-		gVertex[3].argb = (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
+		gVertex[3].argb = (fadeAlpha << 24) + (fadecolour & 0x00ffffff);
 		gVertex[3].frgb = 0xff000000;
 		gos_DrawQuads(gVertex, 4);
 	}
@@ -360,7 +360,7 @@ GameCamera::activate(void)
 	genericAppearanceType = appearanceTypeList->getAppearance(appearanceType, "skybox");
 	if (!genericAppearanceType)
 	{
-		char msg[1024];
+		wchar_t msg[1024];
 		sprintf(msg, "No Generic Appearance Named %s", "skybox");
 		Fatal(0, msg);
 	}
@@ -436,7 +436,7 @@ GameCamera::update(void)
 	{
 		Camera::FarPlaneDistance += 1005.0f;
 	}
-	char text[1024];
+	wchar_t text[1024];
 	sprintf(text, "Near Plane: %f     Far Plane: %f", Camera::NearPlaneDistance,
 		Camera::FarPlaneDistance);
 	uint32_t width, height;
@@ -449,8 +449,8 @@ GameCamera::update(void)
 	moveHere.w = height;
 	globalFloatHelp[currentFloatHelp].setHelpText(text);
 	globalFloatHelp[currentFloatHelp].setScreenPos(moveHere);
-	globalFloatHelp[currentFloatHelp].setForegroundColor(SD_GREEN);
-	globalFloatHelp[currentFloatHelp].setBackgroundColor(SD_BLACK);
+	globalFloatHelp[currentFloatHelp].setForegroundcolour(SD_GREEN);
+	globalFloatHelp[currentFloatHelp].setBackgroundcolour(SD_BLACK);
 	globalFloatHelp[currentFloatHelp].setScale(1.0f);
 	globalFloatHelp[currentFloatHelp].setProportional(true);
 	globalFloatHelp[currentFloatHelp].setBold(false);
@@ -461,7 +461,7 @@ GameCamera::update(void)
 #endif
 	if (DisplayCameraAngle)
 	{
-		char text[1024];
+		wchar_t text[1024];
 		sprintf(text,
 			"Camera Angle: %f degrees    Camera Altitude: %f    "
 			"CameraPosition: X=%f Y=%f Z=%f   CameraRotation: %f",

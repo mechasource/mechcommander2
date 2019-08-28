@@ -18,12 +18,12 @@
 typedef struct D3DFontData
 {
 	uint32_t dwSig; // 0x46443344
-	uint32_t dwWidth;
-	uint32_t dwFontHeight;
-	uint32_t dwHeight;
+	uint32_t width;
+	uint32_t dwFontheight;
+	uint32_t height;
 	uint32_t dwX[256];
 	uint32_t dwY[256];
-	uint32_t dwWidths[256];
+	uint32_t widths[256];
 	int32_t nA[256];
 	int32_t nC[256];
 	uint8_t bPixels[0];
@@ -42,7 +42,7 @@ typedef struct D3DFontData1
 	bool bItalic; // italic on or off when this font was created
 	int32_t iWeight; // weight of font created
 	int32_t iTextureCount;
-	uint32_t dwFontHeight; // height in pixels of the resulatant font
+	uint32_t dwFontheight; // height in pixels of the resulatant font
 	uint8_t bTexture[256]; // indicate which texture each character is on
 	uint8_t bX[256]; // indicates x position of each character on it's texture
 	uint8_t bY[256]; // indicates y position of each character on it's texture
@@ -55,7 +55,7 @@ typedef struct D3DFontData1
 
 typedef struct
 {
-	uint32_t dwSize;
+	uint32_t size;
 	uint8_t bPixels[0];
 } D3DFontTexture;
 
@@ -70,20 +70,20 @@ typedef struct _FontInfo
 	char FontFile[MAX_PATH]; // Path name of font texture
 	uint32_t StartLine; // texture line where font starts
 	int32_t CharCount; // number of chars in font (valid range 33 to 256)
-	uint32_t TextureSize; // Width and Height of texture
+	uint32_t TextureSize; // width and height of texture
 	float rhSize; // 1.0 / Size
 	uint32_t TexturePitch; // Pitch of texture
-	int32_t Width; // Width of font grid
-	int32_t Height; // Height of font grid
+	int32_t width; // width of font grid
+	int32_t height; // height of font grid
 	uint32_t Across; // Number of characters across one line
 	uint32_t Aliased; // True if 4444 texture (may be aliased - else 1555 keyed)
 	uint32_t FromTextureHandle; // True is from a texture handle
 	uint8_t BlankPixels[256 - 32]; // Empty pixels before character
-	uint8_t UsedPixels[256 - 32]; // Width of character
+	uint8_t UsedPixels[256 - 32]; // width of character
 	uint8_t TopU[256 - 32];
 	uint8_t TopV[256 - 32]; // Position of character
 	uint8_t TopOffset[256 - 32]; // Offset from top (number of blank lines)
-	uint8_t RealHeight[256 - 32]; // Height of character
+	uint8_t Realheight[256 - 32]; // height of character
 	uint8_t TextureHandle[256 - 32]; // Which texture handle to use
 	uint32_t NumberOfTextures; // Number of texture handles used (normally 1)
 	HFONT hFontTTF; // handle to a GDI font

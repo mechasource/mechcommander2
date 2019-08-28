@@ -44,7 +44,7 @@
 #define DW_MANIFEST_EVENTSOURCE L"EventLogSource="
 #define DW_MANIFEST_EVENTID L"EventID="
 #define DW_MANIFEST_DATAFILES L"DataFiles="
-#define DW_MANIFEST_FLAGS L"Flags="
+#define DW_MANIFEST_FLAGS L"flags="
 
 // Seperator for file lists (Manifest DataFiles and Exception Additional Files
 #define DW_FILESEPA '|'
@@ -120,17 +120,17 @@ enum // EDwBehaviorFlags
 
 typedef struct _DWSharedMem
 {
-	uint32_t dwSize; // should be set to size of DWSharedMem
+	uint32_t size; // should be set to size of DWSharedMem
 	uint32_t pid; // Process Id of caller
 	uint32_t tid; // Id of excepting thread
 	DWORD_PTR eip; // EIP of the excepting instruction
 	PEXCEPTION_POINTERS pep; // Exception pointers given to the callee's
 	// exception handler
-	HANDLE hEventDone; // event DW signals when done
+	HANDLE heventDone; // event DW signals when done
 	// caller will also signal this if it things
 	// DW has hung and restarts itself
-	HANDLE hEventNotifyDone; // App sets when it's done w/ notifcation phase
-	HANDLE hEventAlive; // heartbeat event DW signals per EVENT_TIMEOUT
+	HANDLE heventNotifyDone; // App sets when it's done w/ notifcation phase
+	HANDLE heventAlive; // heartbeat event DW signals per EVENT_TIMEOUT
 	HANDLE hMutex; // to protect the signaling of EventDone
 	HANDLE hProc; // handle to the calling process (! in Assert)
 
@@ -146,8 +146,8 @@ typedef struct _DWSharedMem
 	// app wants control back instead of simply being
 	// terminated by DW.  The app will then be
 	// responsible for pinging DW (if desired) with
-	// hEventAlive and for notify DW it's ok to
-	// terminate the app w/ hEventDone
+	// heventAlive and for notify DW it's ok to
+	// terminate the app w/ heventDone
 
 	uint32_t bfmsoctdsLetRun; // bitfield of user choices for which the
 	// app wants control back instead of being
@@ -157,27 +157,27 @@ typedef struct _DWSharedMem
 	int32_t iPingCurrent; // current count for the recovery progress bar
 	int32_t iPingEnd; // index for the end of the recovery progress bar
 
-	char szFormalAppName[DW_APPNAME_LENGTH]; // the app name for display to user
+	wchar_t szFormalAppName[DW_APPNAME_LENGTH]; // the app name for display to user
 		// (ie "Microsoft Word")
-	char szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to
+	wchar_t szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to
 		// user (ie "Word")
-	char szModuleFileName[DW_MAX_PATH]; // The result of
+	wchar_t szModuleFileName[DW_MAX_PATH]; // The result of
 		// GetModuleFileNameA(nullptr)
 	wchar_t wzErrorMessage[DW_MAX_ERROR_CWC]; // Error message to show user.
 
-	char szServer[DW_MAX_SERVERNAME]; // name of server to try by default
-	char szLCIDKeyValue[DW_MAX_PATH]; // name of key value uint32_t containing
+	wchar_t szServer[DW_MAX_SERVERNAME]; // name of server to try by default
+	wchar_t szLCIDKeyValue[DW_MAX_PATH]; // name of key value uint32_t containing
 		// the
 	// PlugUI LCID, if this string fails to
 	// be a valid key-value, DW will use the
 	// system LCID, and if it can't find
 	// an intl dll for that, will fall
 	// back on US English (1033)
-	char szPIDRegKey[DW_MAX_PATH]; // name of the key that holds the PID
+	wchar_t szPIDRegKey[DW_MAX_PATH]; // name of the key that holds the PID
 	// can be used by the Server for
 	// spoof-detection
 
-	char szRegSubPath[DW_MAX_REGSUBPATH]; // path to the key to contian the DW
+	wchar_t szRegSubPath[DW_MAX_REGSUBPATH]; // path to the key to contian the DW
 	// registry hive from both
 	// HKCU\Software and
 	// HKCU\Software\Policies (for policy)
@@ -191,13 +191,13 @@ typedef struct _DWSharedMem
 	// each of these files gets added to the
 	// cab at upload time
 
-	char szBrand[DW_APPNAME_LENGTH]; // passed as a param to Privacy Policy link
+	wchar_t szBrand[DW_APPNAME_LENGTH]; // passed as a param to Privacy Policy link
 #ifdef DEBUG
 	// for Assert communication
 	uint32_t dwTag; // [in] AssertTag
-	char szFile[DW_MAX_PATH]; // [in] File name of the assert
-	int32_t line; // [in] Line number of the assert
-	char szAssert[DW_MAX_ASSERT_CCH]; // [in] Sz from the assert
+	wchar_t szFile[DW_MAX_PATH]; // [in] File name of the _ASSERT
+	int32_t line; // [in] Line number of the _ASSERT
+	wchar_t szAssert[DW_MAX_ASSERT_CCH]; // [in] Sz from the _ASSERT
 	int32_t AssertActionCode; // [out] action code to take
 #endif
 } DWSharedMem;

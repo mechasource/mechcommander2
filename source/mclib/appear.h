@@ -63,7 +63,7 @@ protected:
 	Stuff::Vector4D lowerRight; // used to draw select boxes.
 
 	float barStatus; // Status Bar Length.
-	uint32_t barColor; // Status Bar Color.
+	uint32_t barcolour; // Status Bar colour.
 
 	// Member Functions
 	//-----------------
@@ -78,7 +78,7 @@ public:
 		upperLeft.x = upperLeft.y = upperLeft.z = upperLeft.w = -999.0f;
 		lowerRight.x = lowerRight.y = lowerRight.z = lowerRight.w = -999.0f;
 		barStatus = 1.0;
-		barColor = 0x0;
+		barcolour = 0x0;
 		visible = seen = false;
 	}
 	virtual ~Appearance(void) { destroy(); }
@@ -90,7 +90,7 @@ public:
 		upperLeft.x = upperLeft.y = upperLeft.z = upperLeft.w = -999.0f;
 		lowerRight.x = lowerRight.y = lowerRight.z = lowerRight.w = -999.0f;
 		barStatus = 1.0;
-		barColor = 0x0;
+		barcolour = 0x0;
 		visible = seen = false;
 		(void)tree;
 		(void)obj;
@@ -158,7 +158,7 @@ public:
 			barStatus = 1.0f;
 	}
 
-	virtual void setBarColor(uint32_t clr) { barColor = clr; }
+	virtual void setBarcolour(uint32_t clr) { barcolour = clr; }
 
 	virtual bool getInTransition(void) { return false; }
 
@@ -284,7 +284,7 @@ public:
 	virtual void hitRight(void) {}
 	virtual void setObjStatus(int32_t /*oStatus*/) {}
 
-	virtual int32_t calcCellsCovered(Stuff::Vector3D& /*pos*/, pint16_t /*cellList*/)
+	virtual int32_t calcCellsCovered(Stuff::Vector3D& /*pos*/, int16_t* /*cellList*/)
 	{
 		return (0);
 	}
@@ -294,7 +294,7 @@ public:
 	}
 
 	virtual int32_t markMoveMap(bool /*passable*/, int32_t* /*lineOfSightRect*/,
-		bool useheight = false, pint16_t cellList = nullptr)
+		bool useheight = false, int16_t* cellList = nullptr)
 	{
 		(void)useheight;
 		(void)cellList;
@@ -303,12 +303,12 @@ public:
 
 	virtual void markLOS(bool clearIt = false) { (void)clearIt; }
 	virtual void scale(float scaleFactor) { (void)scaleFactor; }
-	virtual bool playDestruction(void) { return false; }
+	virtual bool playdestruction(void) { return false; }
 	virtual float getRadius(void) { return 0.0f; }
 
 	virtual void flashBuilding(float /*duration*/, float /*flashDuration*/, uint32_t /*color*/) {}
 
-	virtual void setHighlightColor(int32_t /*argb*/) {}
+	virtual void setHighlightcolour(int32_t /*argb*/) {}
 	virtual float getTopZ(void) { return 0.0f; }
 	virtual void blowLeftArm(void) {}
 	virtual void blowRightArm(void) {}
@@ -341,7 +341,7 @@ public:
 	virtual void setAlphaValue(uint8_t /*aVal*/) {}
 
 	void drawIcon(
-		size_t bmpHandle, size_t bmpWidth, size_t bmpHeight, size_t color, size_t where = 0);
+		size_t bmpHandle, size_t bmpwidth, size_t bmpheight, size_t color, size_t where = 0);
 
 	virtual void setSkyNumber(int32_t /*skyNum*/) {}
 	virtual void setMechName(const std::wstring_view& /*pName*/) {}

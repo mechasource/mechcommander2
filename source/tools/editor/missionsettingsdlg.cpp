@@ -8,7 +8,7 @@
 #include "stdinc.h"
 #include "resource.h"
 #include "MissionSettingsDlg.h"
-#include "assert.h"
+#include "_ASSERT.h"
 
 #include "EditorData.h" /* just for definition of GAME_MAX_PLAYERS */
 #include "ResourceStringSelectionDlg.h"
@@ -22,7 +22,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+static wchar_t THIS_FILE[] = __FILE__;
 #endif
 #endif /*gos doesn't like this */
 
@@ -132,7 +132,7 @@ END_MESSAGE_MAP()
 static BOOL
 CSLoadString(int32_t resourceID, CString& targetStr)
 {
-	char szTmp[16384 /*max string length*/];
+	wchar_t szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
 	targetStr = szTmp;
 	CString tmpStr;
@@ -234,13 +234,13 @@ MissionSettingsDlg::OnBrowseButton()
 		{
 			CString pathname = selectAVIFileDialog.GetPathName();
 			int32_t CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
-			assert(1 <= CurrentDirectoryBufferLength);
+			_ASSERT(1 <= CurrentDirectoryBufferLength);
 			// TCHAR *CurrentDirectoryBuffer = new
 			// TCHAR[CurrentDirectoryBufferLength];
 			TCHAR* CurrentDirectoryBuffer =
 				(TCHAR*)malloc(sizeof(TCHAR) * CurrentDirectoryBufferLength);
 			int32_t ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
-			assert(CurrentDirectoryBufferLength - 1 == ret);
+			_ASSERT(CurrentDirectoryBufferLength - 1 == ret);
 			ret = -1;
 			if (pathname.GetLength() > (CurrentDirectoryBufferLength - 1))
 			{

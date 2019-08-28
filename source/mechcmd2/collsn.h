@@ -80,8 +80,8 @@ class CollisionGrid
 	// Data Members
 	//-------------
 protected:
-	uint32_t xGridWidth; // Number of gridNodes in x direction
-	uint32_t yGridWidth; // Number of gridNodes in y direction
+	uint32_t xGridwidth; // Number of gridNodes in x direction
+	uint32_t yGridwidth; // Number of gridNodes in y direction
 	// In theory we would need a z but not for a mech game!!
 
 	uint32_t maxGridRadius; // Max radius in (m) of each grid node.
@@ -117,7 +117,7 @@ public:
 		giantObjects = nullptr;
 		grid = nullptr;
 		nodes = nullptr;
-		xGridWidth = yGridWidth = 0;
+		xGridwidth = yGridwidth = 0;
 		maxGridRadius = 0;
 		nextAvailableNode = 0;
 		gridOrigin.Zero(void);

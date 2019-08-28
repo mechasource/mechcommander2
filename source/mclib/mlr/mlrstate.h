@@ -7,8 +7,8 @@
 #ifndef MLR_MLRSTATE_HPP
 #define MLR_MLRSTATE_HPP
 
-#include <stuff/iterator.hpp>
-#include <mlr/mlr.hpp>
+#include "stuff/iterator.h"
+#include "mlr/mlr.h"
 
 namespace MidLevelRenderer
 {
@@ -98,10 +98,10 @@ public:
 		SpecularBit = ZBufferCompareBit + 1,
 		SpecularMask = 1 << SpecularBit,
 
-		FlatColoringBit = SpecularBit + 1,
-		FlatColoringMask = 1 << FlatColoringBit,
+		FlatcolouringBit = SpecularBit + 1,
+		FlatcolouringMask = 1 << FlatcolouringBit,
 
-		UsedRenderBits = FlatColoringBit + 1,
+		UsedRenderBits = FlatcolouringBit + 1,
 		UsedRenderMask = 0xFFFFFFFF >> (Stuff::INT_BITS - UsedRenderBits)
 	};
 
@@ -167,10 +167,10 @@ public:
 		ZBufferCompareOnMode = 1 << ZBufferCompareBit
 	};
 
-	enum FlatColoringMode
+	enum FlatcolouringMode
 	{
-		FlatColoringOffMode = 0,
-		FlatColoringOnMode = 1 << FlatColoringBit
+		FlatcolouringOffMode = 0,
+		FlatcolouringOnMode = 1 << FlatcolouringBit
 	};
 
 	// manipulate render state
@@ -341,22 +341,22 @@ public:
 		return static_cast<ZBufferCompareMode>(renderState & ZBufferCompareMask);
 	}
 
-	void SetFlatColoringOn(void)
+	void SetFlatcolouringOn(void)
 	{
 		// Check_Object(this);
-		renderState |= FlatColoringOnMode;
-		renderDeltaMask |= FlatColoringMask;
+		renderState |= FlatcolouringOnMode;
+		renderDeltaMask |= FlatcolouringMask;
 	}
-	void SetFlatColoringOff(void)
+	void SetFlatcolouringOff(void)
 	{
 		// Check_Object(this);
-		renderState &= ~FlatColoringOnMode;
-		renderDeltaMask |= FlatColoringMask;
+		renderState &= ~FlatcolouringOnMode;
+		renderDeltaMask |= FlatcolouringMask;
 	}
-	FlatColoringMode GetFlatColoringMode(void) const
+	FlatcolouringMode GetFlatcolouringMode(void) const
 	{
 		// Check_Object(this);
-		return static_cast<FlatColoringMode>(renderState & FlatColoringMask);
+		return static_cast<FlatcolouringMode>(renderState & FlatcolouringMask);
 	}
 
 	void SetRenderDeltaMask(uint32_t mask)
@@ -628,7 +628,7 @@ public:
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Assignment operators
 	//
-	MLRState& operator=(cuint32_t& s)
+	MLRState& operator=(const uint32_t& s)
 	{
 		// Check_Pointer(this);
 		renderState = s;
@@ -673,13 +673,13 @@ protected:
 	static float maxUV;
 
 #ifdef OLDFOG
-	uint32_t fogColor;
+	uint32_t fogcolour;
 	float fogDensity;
 	float nearFog;
 	float farFog;
 #else
 public:
-	static uint32_t fogColor;
+	static uint32_t fogcolour;
 #endif
 };
 } // namespace MidLevelRenderer

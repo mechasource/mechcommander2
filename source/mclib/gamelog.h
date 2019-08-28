@@ -34,11 +34,11 @@ class GameLog
 public:
 	int32_t handle;
 	bool inUse;
-	char fileName[MAXLEN_GAMELOG_NAME];
+	wchar_t fileName[MAXLEN_GAMELOG_NAME];
 	MechFile* pfile;
 	int32_t numLines;
 	int32_t totalLines;
-	char lines[MAX_GAMELOG_LINES][MAX_GAMELOG_LINELEN];
+	wchar_t lines[MAX_GAMELOG_LINES][MAX_GAMELOG_LINELEN];
 
 	static GameLogPtr files[MAX_GAMELOGS];
 

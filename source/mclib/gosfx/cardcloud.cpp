@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "gosfxheaders.hpp"
+#include "gosfx/gosfxheaders.h"
 #include "mlr/mlrcardcloud.h"
 
 //------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification(
 	Check_Object(stream);
 	_ASSERT(m_class == CardCloudClassID);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	m_halfHeight.Load(stream, gfx_version);
+	m_halfheight.Load(stream, gfx_version);
 	m_aspectRatio.Load(stream, gfx_version);
 	//
 	//-------------------------------------------------------------------
@@ -54,7 +54,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification(
 		m_VSize.Load(stream, gfx_version);
 		*stream >> m_animated;
 	}
-	SetWidth();
+	Setwidth();
 	m_totalParticleSize = gosFX::CardCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::CardCloud::Particle);
 }
@@ -95,7 +95,7 @@ gosFX::CardCloud__Specification::Save(std::iostream stream)
 	// Check_Object(this);
 	Check_Object(stream);
 	SpinningCloud__Specification::Save(stream);
-	m_halfHeight.Save(stream);
+	m_halfheight.Save(stream);
 	m_aspectRatio.Save(stream);
 	m_pIndex.Save(stream);
 	m_UOffset.Save(stream);
@@ -112,9 +112,9 @@ gosFX::CardCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
-	m_halfHeight.m_ageCurve.SetCurve(1.0f);
-	m_halfHeight.m_seeded = false;
-	m_halfHeight.m_seedCurve.SetCurve(1.0f);
+	m_halfheight.m_ageCurve.SetCurve(1.0f);
+	m_halfheight.m_seeded = false;
+	m_halfheight.m_seedCurve.SetCurve(1.0f);
 	m_aspectRatio.m_ageCurve.SetCurve(1.0f);
 	m_aspectRatio.m_seeded = false;
 	m_aspectRatio.m_seedCurve.SetCurve(1.0f);
@@ -201,7 +201,7 @@ gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	m_halfHeight = spec->m_halfHeight;
+	m_halfheight = spec->m_halfheight;
 	m_aspectRatio = spec->m_aspectRatio;
 	m_pIndex = spec->m_pIndex;
 	m_UOffset = spec->m_UOffset;
@@ -216,7 +216,7 @@ gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
 //------------------------------------------------------------------------------
 //
 void
-gosFX::CardCloud__Specification::SetWidth()
+gosFX::CardCloud__Specification::Setwidth()
 {
 	m_width = static_cast<uint8_t>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
@@ -264,11 +264,11 @@ gosFX::CardCloud::CardCloud(Specification* spec, uint32_t flags) :
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += 4 * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
-	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
-	index += spec->m_maxParticleCount * sizeof(Stuff::RGBAColor);
+	m_P_color = Cast_Pointer(Stuff::RGBAcolour*, &m_data[index]);
+	index += spec->m_maxParticleCount * sizeof(Stuff::RGBAcolour);
 	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<float>*, &m_data[index]);
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_vertices, m_P_color, m_P_uvs);
+		Cast_Pointer(const size_t*, &m_activeParticleCount), m_P_vertices, m_P_color, m_P_uvs);
 }
 
 //------------------------------------------------------------------------------
@@ -316,7 +316,7 @@ gosFX::CardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 	Check_Object(spec);
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
-	particle->m_halfY = spec->m_halfHeight.ComputeValue(m_age, particle->m_seed);
+	particle->m_halfY = spec->m_halfheight.ComputeValue(m_age, particle->m_seed);
 	particle->m_halfX =
 		particle->m_halfY * spec->m_aspectRatio.ComputeValue(m_age, particle->m_seed);
 	particle->m_radius =
@@ -496,7 +496,7 @@ gosFX::CardCloud::Draw(DrawInfo* info)
 			}
 			//
 			//-----------------------
-			// Handle X-only rotation
+			// handle X-only rotation
 			//-----------------------
 			//
 			else

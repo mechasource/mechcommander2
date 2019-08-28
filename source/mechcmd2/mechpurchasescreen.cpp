@@ -118,10 +118,10 @@ MechPurchaseScreen::update()
 			color = 0xffff0000;
 		}
 	}
-	char tmp[64];
+	wchar_t tmp[64];
 	sprintf(tmp, "%ld ", amount);
 	textObjects[1].setText(tmp);
-	textObjects[1].setColor(color);
+	textObjects[1].setcolour(color);
 	int32_t oldSell = inventoryListBox.GetSelectedItem();
 	inventoryListBox.update();
 	int32_t newSell = inventoryListBox.GetSelectedItem();
@@ -286,7 +286,7 @@ MechPurchaseScreen::end()
 		uint32_t base, color1, color2;
 		for (MECH_LIST::EIterator pIter = prevInventory.Begin(); !pIter.IsDone(); pIter++)
 		{
-			(*pIter).getColors(base, color1, color2);
+			(*pIter).getcolours(base, color1, color2);
 			LogisticsData::instance->addMechToInventory(
 				(*pIter).getVariant(), (*pIter).getPilot(), (*pIter).getForceGroup(), true);
 		}

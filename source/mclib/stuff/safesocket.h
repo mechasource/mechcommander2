@@ -10,7 +10,7 @@
 #ifndef _SAFESOCKET_HPP_
 #define _SAFESOCKET_HPP_
 
-#include <stuff/socket.hpp>
+#include "stuff/socket.h"
 
 namespace Stuff
 {

@@ -61,7 +61,7 @@ ChatWindow::initInstance()
 	path.init(artPath, "mcl_mp_chatwidget", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char buffer2[512];
+		wchar_t buffer2[512];
 		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return false;
@@ -78,10 +78,10 @@ ChatWindow::initInstance()
 		buttons[i].setHighlightFX(LOG_DIGITALHIGHLIGHT);
 	}
 	ChatMessageItem item;
-	float itemHeight = item.height();
-	maxItems = listBox.height() / itemHeight;
+	float itemheight = item.height();
+	maxItems = listBox.height() / itemheight;
 	edits[0].limitEntry(128);
-	edits[0].setSelectedColor(0xffffffff);
+	edits[0].setSelectedcolour(0xffffffff);
 	return true;
 }
 
@@ -178,10 +178,10 @@ ChatWindow::update()
 	if (getButton(MP_CHAT_HELPTOGGLE)->isPressed())
 	{
 		edits[0].showGUIWindow(false);
-		rects[2].setColor(rects[2].getColor() & 0x00ffffff);
+		rects[2].setcolour(rects[2].getcolour() & 0x00ffffff);
 	}
 	else
-		rects[2].setColor(rects[2].getColor() | 0xff000000);
+		rects[2].setcolour(rects[2].getcolour() | 0xff000000);
 	const std::wstring_view& chatTexts[MAX_STORED_CHATS];
 	int32_t playerIDs[MAX_STORED_CHATS];
 	int32_t count = MAX_STORED_CHATS;
@@ -235,14 +235,14 @@ ChatWindow::refillListBox(aListBox& listBox, const std::wstring_view&* chatTexts
 				break;
 			}
 		}
-		pItems[item].setPlayerColor(MPlayer->colors[player->baseColor[0]]);
+		pItems[item].setPlayercolour(MPlayer->colors[player->basecolour[0]]);
 		if ((playerIDs[i] & 0x01000000))
 			pItems[item].setPlayerName("");
 		else
 			pItems[item].setPlayerName(player->name);
 		int32_t lineCount = pItems[item].setText(chatTexts[i]);
 		linesToAdd += lineCount;
-		pItems[item].setTextColor((playerIDs[i] & 0x10000000) ? 0xff41c700 : 0xffffffff);
+		pItems[item].setTextcolour((playerIDs[i] & 0x10000000) ? 0xff41c700 : 0xffffffff);
 		pItems[item].moveTo(0, 0);
 	}
 	int32_t curLinesInListBox = 0;
@@ -294,7 +294,7 @@ ChatWidget::init()
 	path.init(artPath, "mcl_mp_chatwidget_up", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char buffer2[512];
+		wchar_t buffer2[512];
 		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return;
@@ -311,8 +311,8 @@ ChatMessageItem::ChatMessageItem()
 {
 	name.font.init(IDS_CHAT_FONT);
 	playerText.font.init(IDS_CHAT_FONT);
-	playerText.setColor(0xffffffff);
-	name.setColor(0xffffffff);
+	playerText.setcolour(0xffffffff);
+	name.setcolour(0xffffffff);
 	name.move(1, 1);
 	playerText.move(0, 1);
 	playerRect.move(0, 1);
@@ -328,9 +328,9 @@ ChatMessageItem::setPlayerName(const std::wstring_view& pName)
 {
 	name.setText(pName);
 	name.moveTo(globalX() + 1, globalY() + 1);
-	int32_t tmpWidth = name.font.width(pName);
-	playerText.moveTo(globalX() + tmpWidth + 3, globalY() + 1);
-	playerRect.resize(tmpWidth + 2, playerText.font.height() - 2);
+	int32_t tmpwidth = name.font.width(pName);
+	playerText.moveTo(globalX() + tmpwidth + 3, globalY() + 1);
+	playerRect.resize(tmpwidth + 2, playerText.font.height() - 2);
 	playerText.resize(437 - playerRect.width() - 2, playerText.font.height());
 	lineCount = 1;
 }
@@ -354,19 +354,19 @@ ChatMessageItem::setText(const std::wstring_view& pText)
 }
 
 void
-ChatMessageItem::setPlayerColor(int32_t newColor)
+ChatMessageItem::setPlayercolour(int32_t newcolour)
 {
-	playerRect.setColor(newColor);
-	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) + ((newColor & 0xff0000) >> 16)) / 3 < 85)
-		name.setColor(0xffffffff);
+	playerRect.setcolour(newcolour);
+	if (((newcolour & 0xff) + ((newcolour & 0xff00) >> 8) + ((newcolour & 0xff0000) >> 16)) / 3 < 85)
+		name.setcolour(0xffffffff);
 	else
-		name.setColor(0xff000000);
+		name.setcolour(0xff000000);
 }
 
 void
-ChatMessageItem::setTextColor(int32_t newColor)
+ChatMessageItem::setTextcolour(int32_t newcolour)
 {
-	playerText.setColor(newColor);
+	playerText.setcolour(newcolour);
 }
 
 // end of file ( ChatWindow.cpp )

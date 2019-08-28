@@ -174,7 +174,7 @@ Radio::playMessage(RadioMessageType msgType)
 		if (messagesFile[radioID]->seekPacket(callsign) == NO_ERROR)
 		{
 			uint32_t messageSize = messagesFile[radioID]->getPacketSize();
-			msgData->data[fragmentNum] = (puint8_t)radioHeap->Malloc(messageSize);
+			msgData->data[fragmentNum] = (uint8_t*)radioHeap->Malloc(messageSize);
 			if (!msgData->data[fragmentNum])
 			{
 				radioHeap->Free(msgData);
@@ -188,7 +188,7 @@ Radio::playMessage(RadioMessageType msgType)
 	if (messagesFile[radioID]->seekPacket(msgData->msgId) == NO_ERROR)
 	{
 		uint32_t messageSize = messagesFile[radioID]->getPacketSize();
-		msgData->data[fragmentNum] = (puint8_t)radioHeap->Malloc(messageSize);
+		msgData->data[fragmentNum] = (uint8_t*)radioHeap->Malloc(messageSize);
 		if (!msgData->data[fragmentNum])
 		{
 			while (fragmentNum >= 0)
@@ -204,7 +204,7 @@ Radio::playMessage(RadioMessageType msgType)
 		if (noiseFile->seekPacket(msgData->noiseId) == NO_ERROR)
 		{
 			uint32_t messageSize = noiseFile->getPacketSize();
-			msgData->noise[0] = (puint8_t)radioHeap->Malloc(messageSize);
+			msgData->noise[0] = (uint8_t*)radioHeap->Malloc(messageSize);
 			if (!msgData->noise[0])
 			{
 				radioHeap->Free(msgData);
@@ -249,7 +249,7 @@ Radio::loadMessageInfo(void)
 	FullPathFileName messageInfoPath;
 	std::unique_ptr<File> messageInfoFile;
 	int32_t result;
-	char dataLine[512];
+	wchar_t dataLine[512];
 	const std::wstring_view& field;
 	messageInfoPath.init(soundPath, "radio", ".csv");
 	messageInfoFile = new File;
@@ -261,12 +261,12 @@ Radio::loadMessageInfo(void)
 		delete messageInfoFile;
 		return result;
 	}
-	messageInfoFile->readLine((puint8_t)dataLine, 511); // skip title line
+	messageInfoFile->readLine((uint8_t*)dataLine, 511); // skip title line
 	for (size_t i = 0; i < RADIO_MESSAGE_COUNT; i++)
 	{
-		result = messageInfoFile->readLine((puint8_t)dataLine, 511);
+		result = messageInfoFile->readLine((uint8_t*)dataLine, 511);
 		if (!result)
-			Fatal(0, "Bad Message Info File");
+			Fatal(0, "Bad message Info File");
 		field = strtok(dataLine, ","); // get past command name
 		field = strtok(nullptr, ",");
 		if (field)

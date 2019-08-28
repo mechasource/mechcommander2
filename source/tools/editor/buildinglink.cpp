@@ -79,7 +79,7 @@ BuildingLink::AddChild(const EditorObject* pObject)
 }
 
 int32_t
-BuildingLink::GetLinkCount() const
+BuildingLink::GetLinkCount(void) const
 {
 	return children.Count();
 }
@@ -354,7 +354,7 @@ BuildingLink::SetParentAlignment(int32_t alignment)
 }
 
 void
-BuildingLink::FixHeights()
+BuildingLink::Fixheights()
 {
 	parent.pos.z = land->getTerrainElevation(parent.pos);
 	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)

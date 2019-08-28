@@ -111,8 +111,8 @@ PauseWindow::update()
 			{
 				t0 = moveInfo[j].time;
 				t1 = moveInfo[j + 1].time;
-				p0 = -(800.f - moveInfo[j].position) + ((float)Environment.screenWidth);
-				p1 = -(800.f - moveInfo[j + 1].position) + ((float)Environment.screenWidth);
+				p0 = -(800.f - moveInfo[j].position) + ((float)Environment.screenwidth);
+				p1 = -(800.f - moveInfo[j + 1].position) + ((float)Environment.screenwidth);
 				break;
 			}
 		}
@@ -174,7 +174,7 @@ PauseWindow::update()
 	if (currentTime == 0)
 	{
 		currentTime = .0001f;
-		currentPos = -(800 - PauseWindow::moveInfo[0].position) + ((float)Environment.screenWidth);
+		currentPos = -(800 - PauseWindow::moveInfo[0].position) + ((float)Environment.screenwidth);
 		float delta = backgrounds[0].left - currentPos;
 		for (size_t i = 0; i < buttonCount; i++)
 		{
@@ -199,7 +199,7 @@ PauseWindow::update()
 	}
 	wasDragging = userInput->wasLeftDrag();
 	const std::wstring_view& campaignName = LogisticsData::instance->getCampaignName().Data();
-	char campName[1024];
+	wchar_t campName[1024];
 	_splitpath(campaignName, nullptr, nullptr, campName, nullptr);
 	if (MPlayer || LogisticsData::instance->isSingleMission() || (_stricmp("tutorial", campName) == 0))
 	{
@@ -227,7 +227,7 @@ PauseWindow::render()
 	{
 		statics[i].render();
 	}
-	char buffer[256];
+	wchar_t buffer[256];
 	cLoadString(IDS_GAMEPAUSED, buffer, 256);
 	headerFont.render(buffer, backgrounds[1].left, backgrounds[1].top,
 		backgrounds[1].right - backgrounds[1].left, backgrounds[1].bottom - backgrounds[1].top,
@@ -268,7 +268,7 @@ PauseWindow::init(FitIniFile& file)
 	if (staticCount)
 	{
 		statics = new StaticInfo[staticCount];
-		char buffer[256];
+		wchar_t buffer[256];
 		for (size_t i = 0; i < staticCount; i++)
 		{
 			sprintf(buffer, "PauseStatic%ld", i);

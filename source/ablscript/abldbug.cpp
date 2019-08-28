@@ -38,16 +38,16 @@ extern const std::unique_ptr<SymTableNode>& CurRoutineIdPtr;
 extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
 
 extern int32_t errorCount;
-extern char curChar;
+extern wchar_t curChar;
 extern TokenCodeType curToken;
 extern int32_t lineNumber;
 extern Literal curLiteral;
 extern int32_t bufferOffset;
-extern char sourceBuffer[MAXLEN_SOURCELINE];
+extern wchar_t sourceBuffer[MAXLEN_SOURCELINE];
 // extern int32_t				bufferOffset;
 extern const std::wstring_view& bufferp;
 // extern const std::wstring_view&			tokenp;
-extern char wordString[MAXLEN_TOKENSTRING];
+extern wchar_t wordString[MAXLEN_TOKENSTRING];
 
 extern const std::unique_ptr<Type>& IntegerTypePtr;
 extern const std::unique_ptr<Type>& CharTypePtr;
@@ -80,7 +80,7 @@ int32_t MaxBreaks = 50;
 int32_t MaxWatches = 50;
 const std::unique_ptr<Debugger>& debugger = nullptr;
 
-char Debugger::message[512];
+wchar_t Debugger::message[512];
 
 extern bool takeScreenShot;
 
@@ -859,7 +859,7 @@ Debugger::sprintValue(const std::wstring_view& dest, const std::wstring_view& ex
 	{
 		//--------------------------------
 		// Looking for specific element...
-		char subscriptString[255];
+		wchar_t subscriptString[255];
 		strcpy(subscriptString, subscript);
 		*subscript = nullptr;
 		const std::unique_ptr<SymTableNode>& symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
@@ -949,13 +949,13 @@ Debugger::traceDataStore(
 	//			print("Unknown identifier in current scope.\n");
 	//			return;
 	//		}
-	//		char message[255];
+	//		wchar_t message[255];
 	//		sprintSymbolValue(message, idPtr);
 	//		print(message);
 	//		}
 	if (id->info && ((WatchPtr)id->info)->store)
 	{
-		char valString[255];
+		wchar_t valString[255];
 		sprintDataValue(valString, target, targetType);
 		if (idType->form == FRM_ARRAY)
 			sprintf(message, "STORE: (%d) %s [%d] -> %s[#] = %s\n", module->getId(),
@@ -981,7 +981,7 @@ Debugger::traceDataFetch(const std::unique_ptr<SymTableNode>& id, const std::uni
 	const std::unique_ptr<Type>& idTypePtr = id->ptype;
 	if (id->info && ((WatchPtr)id->info)->fetch)
 	{
-		char valString[255];
+		wchar_t valString[255];
 		sprintDataValue(valString, data, idType);
 		if (idTypePtr->form == FRM_ARRAY)
 			sprintf(message, "FETCH: (%d) %s [%d] - %s[#] = %s\n", module->getId(),
@@ -1028,7 +1028,7 @@ Debugger::showValue(void)
 		}
 		else
 		{
-			char message[255];
+			wchar_t message[255];
 			sprintDataValue(message, tos, ptype);
 			strcat(message, "\n");
 			print(message);
@@ -1078,7 +1078,7 @@ Debugger::assignVariable(void)
 void
 Debugger::displayModuleInstanceRegistry(void)
 {
-	char buffer1[200], buffer2[40];
+	wchar_t buffer1[200], buffer2[40];
 	for (size_t i = 0; i < ((NumModuleInstances + 1) / 2); i++)
 	{
 		sprintf(buffer1, "(%02d) %-20s ", ModuleInstanceRegistry[i * 2]->getId(),

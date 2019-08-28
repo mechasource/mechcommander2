@@ -65,7 +65,7 @@ TerrainQuad::init(VertexPtr v0, VertexPtr v1, VertexPtr v2, VertexPtr v3)
 float twoFiveFive = 255.0;
 #define HUD_DEPTH 0.0001f // HUD Objects draw over everything else.
 extern float cosineEyeHalfFOV;
-extern uint32_t BaseVertexColor;
+extern uint32_t BaseVertexcolour;
 extern bool useShadows;
 extern bool useFog;
 extern int32_t sprayFrame;
@@ -763,15 +763,15 @@ TerrainQuad::setupTextures(void)
 				lightr = eye->getLightRed(lightIntensity);
 				lightg = eye->getLightGreen(lightIntensity);
 				lightb = eye->getLightBlue(lightIntensity);
-				if (BaseVertexColor)
+				if (BaseVertexcolour)
 				{
-					lightr += ((BaseVertexColor >> 16) & 0x000000ff);
+					lightr += ((BaseVertexcolour >> 16) & 0x000000ff);
 					if (lightr > 0xff)
 						lightr = 0xff;
-					lightg += ((BaseVertexColor >> 8) & 0x000000ff);
+					lightg += ((BaseVertexcolour >> 8) & 0x000000ff);
 					if (lightg > 0xff)
 						lightg = 0xff;
-					lightb += (BaseVertexColor & 0x000000ff);
+					lightb += (BaseVertexcolour & 0x000000ff);
 					if (lightb > 0xff)
 						lightb = 0xff;
 				}
@@ -895,15 +895,15 @@ TerrainQuad::setupTextures(void)
 				lightr = eye->getLightRed(lightIntensity);
 				lightg = eye->getLightGreen(lightIntensity);
 				lightb = eye->getLightBlue(lightIntensity);
-				if (BaseVertexColor)
+				if (BaseVertexcolour)
 				{
-					lightr += ((BaseVertexColor >> 16) & 0x000000ff);
+					lightr += ((BaseVertexcolour >> 16) & 0x000000ff);
 					if (lightr > 0xff)
 						lightr = 0xff;
-					lightg += ((BaseVertexColor >> 8) & 0x000000ff);
+					lightg += ((BaseVertexcolour >> 8) & 0x000000ff);
 					if (lightg > 0xff)
 						lightg = 0xff;
-					lightb += (BaseVertexColor & 0x000000ff);
+					lightb += (BaseVertexcolour & 0x000000ff);
 					if (lightb > 0xff)
 						lightb = 0xff;
 				}
@@ -1027,15 +1027,15 @@ TerrainQuad::setupTextures(void)
 				lightr = eye->getLightRed(lightIntensity);
 				lightg = eye->getLightGreen(lightIntensity);
 				lightb = eye->getLightBlue(lightIntensity);
-				if (BaseVertexColor)
+				if (BaseVertexcolour)
 				{
-					lightr += ((BaseVertexColor >> 16) & 0x000000ff);
+					lightr += ((BaseVertexcolour >> 16) & 0x000000ff);
 					if (lightr > 0xff)
 						lightr = 0xff;
-					lightg += ((BaseVertexColor >> 8) & 0x000000ff);
+					lightg += ((BaseVertexcolour >> 8) & 0x000000ff);
 					if (lightg > 0xff)
 						lightg = 0xff;
-					lightb += (BaseVertexColor & 0x000000ff);
+					lightb += (BaseVertexcolour & 0x000000ff);
 					if (lightb > 0xff)
 						lightb = 0xff;
 				}
@@ -1159,15 +1159,15 @@ TerrainQuad::setupTextures(void)
 				lightr = eye->getLightRed(lightIntensity);
 				lightg = eye->getLightGreen(lightIntensity);
 				lightb = eye->getLightBlue(lightIntensity);
-				if (BaseVertexColor)
+				if (BaseVertexcolour)
 				{
-					lightr += ((BaseVertexColor >> 16) & 0x000000ff);
+					lightr += ((BaseVertexcolour >> 16) & 0x000000ff);
 					if (lightr > 0xff)
 						lightr = 0xff;
-					lightg += ((BaseVertexColor >> 8) & 0x000000ff);
+					lightg += ((BaseVertexcolour >> 8) & 0x000000ff);
 					if (lightg > 0xff)
 						lightg = 0xff;
-					lightb += (BaseVertexColor & 0x000000ff);
+					lightb += (BaseVertexcolour & 0x000000ff);
 					if (lightb > 0xff)
 						lightb = 0xff;
 				}
@@ -1761,8 +1761,8 @@ TerrainQuad::drawWater(void)
 		// FOG time.  Set Render state to FOG on!
 		if (useFog)
 		{
-			uint32_t fogColor = eye->fogColor;
-			gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+			uint32_t fogcolour = eye->fogcolour;
+			gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 		}
 		else
 		{
@@ -2410,8 +2410,8 @@ TerrainQuad::drawLine(void)
 		//--------------------------------------------------------------------
 		// Display the ScenarioMap cell grid, as well, displaying open\blocked
 		// states...
-		float cellWidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
-		// cellWidth -= 5.0;
+		float cellwidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
+		// cellwidth -= 5.0;
 		int32_t rowCol = vertices[0]->posTile;
 		int32_t tileR = rowCol >> 16;
 		int32_t tileC = rowCol & 0x0000ffff;
@@ -2434,17 +2434,17 @@ TerrainQuad::drawLine(void)
 						Stuff::Vector4D pos4;
 						Stuff::Vector3D thePoint(
 							vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
-						thePoint.x += (cellC)*cellWidth;
-						thePoint.y -= (cellR)*cellWidth;
+						thePoint.x += (cellC)*cellwidth;
+						thePoint.y -= (cellR)*cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos4);
-						thePoint.x += cellWidth;
+						thePoint.x += cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos1);
-						thePoint.y -= cellWidth;
+						thePoint.y -= cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos2);
-						thePoint.x -= cellWidth;
+						thePoint.x -= cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos3);
 						pos1.z -= 0.002f;
@@ -2505,8 +2505,8 @@ TerrainQuad::drawLine(void)
 		return;
 	if (clipped1 != 0)
 	{
-		float cellWidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
-		cellWidth -= 5.0;
+		float cellwidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
+		cellwidth -= 5.0;
 		int32_t rowCol = vertices[0]->posTile;
 		int32_t tileR = rowCol >> 16;
 		int32_t tileC = rowCol & 0x0000ffff;
@@ -2532,17 +2532,17 @@ TerrainQuad::drawLine(void)
 				}
 				Stuff::Vector3D thePoint(
 					vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
-				thePoint.x += (GlobalMoveMap[0]->doors[currentDoor].col - cellC) * cellWidth;
-				thePoint.y -= (GlobalMoveMap[0]->doors[currentDoor].row - cellR) * cellWidth;
+				thePoint.x += (GlobalMoveMap[0]->doors[currentDoor].col - cellC) * cellwidth;
+				thePoint.y -= (GlobalMoveMap[0]->doors[currentDoor].row - cellR) * cellwidth;
 				thePoint.z = land->getTerrainElevation(thePoint);
 				eye->projectZ(thePoint, pos4);
-				thePoint.x += (xLength)*cellWidth;
+				thePoint.x += (xLength)*cellwidth;
 				thePoint.z = land->getTerrainElevation(thePoint);
 				eye->projectZ(thePoint, pos1);
-				thePoint.y -= (yLength)*cellWidth;
+				thePoint.y -= (yLength)*cellwidth;
 				thePoint.z = land->getTerrainElevation(thePoint);
 				eye->projectZ(thePoint, pos2);
-				thePoint.x -= (xLength)*cellWidth;
+				thePoint.x -= (xLength)*cellwidth;
 				thePoint.z = land->getTerrainElevation(thePoint);
 				eye->projectZ(thePoint, pos3);
 				pos1.z -= 0.002f;
@@ -2590,7 +2590,7 @@ TerrainQuad::drawLOSLine(void)
 	if (clipped1 != 0)
 	{
 		//--------------------------------------------------------------------
-		float cellWidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
+		float cellwidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
 		int32_t rowCol = vertices[0]->posTile;
 		int32_t tileR = rowCol >> 16;
 		int32_t tileC = rowCol & 0x0000ffff;
@@ -2605,7 +2605,7 @@ TerrainQuad::drawLOSLine(void)
 					MapCellPtr curCell = nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
 						curCell = GameMap->getCell(actualCellRow, actualCellCol);
-					if (curCell && curCell->getLocalHeight())
+					if (curCell && curCell->getLocalheight())
 					{
 						Stuff::Vector4D pos1;
 						Stuff::Vector4D pos2;
@@ -2613,17 +2613,17 @@ TerrainQuad::drawLOSLine(void)
 						Stuff::Vector4D pos4;
 						Stuff::Vector3D thePoint(
 							vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
-						thePoint.x += (cellC)*cellWidth;
-						thePoint.y -= (cellR)*cellWidth;
+						thePoint.x += (cellC)*cellwidth;
+						thePoint.y -= (cellR)*cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos4);
-						thePoint.x += cellWidth;
+						thePoint.x += cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos1);
-						thePoint.y -= cellWidth;
+						thePoint.y -= cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos2);
-						thePoint.x -= cellWidth;
+						thePoint.x -= cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos3);
 						pos1.z -= 0.002f;
@@ -2631,35 +2631,35 @@ TerrainQuad::drawLOSLine(void)
 						pos3.z -= 0.002f;
 						pos4.z -= 0.002f;
 						uint32_t color = XP_BLACK;
-						if (curCell->getLocalHeight() < 2)
+						if (curCell->getLocalheight() < 2)
 						{
 							color = XP_BLACK;
 						}
-						else if (curCell->getLocalHeight() < 4)
+						else if (curCell->getLocalheight() < 4)
 						{
 							color = XP_GRAY;
 						}
-						else if (curCell->getLocalHeight() < 6)
+						else if (curCell->getLocalheight() < 6)
 						{
 							color = XP_RED;
 						}
-						else if (curCell->getLocalHeight() < 8)
+						else if (curCell->getLocalheight() < 8)
 						{
 							color = XP_ORANGE;
 						}
-						else if (curCell->getLocalHeight() < 10)
+						else if (curCell->getLocalheight() < 10)
 						{
 							color = XP_YELLOW;
 						}
-						else if (curCell->getLocalHeight() < 12)
+						else if (curCell->getLocalheight() < 12)
 						{
 							color = XP_GREEN;
 						}
-						else if (curCell->getLocalHeight() < 14)
+						else if (curCell->getLocalheight() < 14)
 						{
 							color = XP_BLUE;
 						}
-						else if (curCell->getLocalHeight() <= 16)
+						else if (curCell->getLocalheight() <= 16)
 						{
 							color = XP_WHITE;
 						}
@@ -2822,8 +2822,8 @@ TerrainQuad::drawDebugCellLine(void)
 		//--------------------------------------------------------------------
 		// Display the ScenarioMap cell grid, as well, displaying open\blocked
 		// states...
-		float cellWidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
-		// cellWidth -= 5.0;
+		float cellwidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
+		// cellwidth -= 5.0;
 		int32_t rowCol = vertices[0]->posTile;
 		int32_t tileR = rowCol >> 16;
 		int32_t tileC = rowCol & 0x0000ffff;
@@ -2846,17 +2846,17 @@ TerrainQuad::drawDebugCellLine(void)
 						Stuff::Vector4D pos4;
 						Stuff::Vector3D thePoint(
 							vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
-						thePoint.x += (cellC)*cellWidth;
-						thePoint.y -= (cellR)*cellWidth;
+						thePoint.x += (cellC)*cellwidth;
+						thePoint.y -= (cellR)*cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos4);
-						thePoint.x += cellWidth;
+						thePoint.x += cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos1);
-						thePoint.y -= cellWidth;
+						thePoint.y -= cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos2);
-						thePoint.x -= cellWidth;
+						thePoint.x -= cellwidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
 						eye->projectZ(thePoint, pos3);
 						pos1.z = pos2.z = pos3.z = pos4.z = HUD_DEPTH;
@@ -2867,10 +2867,10 @@ TerrainQuad::drawDebugCellLine(void)
 						}
 						else
 						{
-							static uint32_t debugColors[4] = {0, XP_RED, XP_WHITE, XP_BLUE};
+							static uint32_t debugcolours[4] = {0, XP_RED, XP_WHITE, XP_BLUE};
 							uint32_t cellDebugValue = curCell->getDebug();
 							if (cellDebugValue)
-								color = debugColors[cellDebugValue];
+								color = debugcolours[cellDebugValue];
 						}
 						/*						else if (curCell->getPathlock())
 												{
@@ -2927,7 +2927,7 @@ TerrainQuad::drawMine(void)
 	if ((clipped1 != 0) || (clipped2 != 0))
 	{
 		int32_t cellPos = 0;
-		float cellWidth = Terrain::worldUnitsPerCell;
+		float cellwidth = Terrain::worldUnitsPerCell;
 		for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 		{
 			for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++, cellPos++)
@@ -2951,17 +2951,17 @@ TerrainQuad::drawMine(void)
 					// only interpolation and not Giant Matrix multiplies.
 					Stuff::Vector3D thePoint(
 						vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
-					thePoint.x += (cellC)*cellWidth;
-					thePoint.y -= (cellR)*cellWidth;
+					thePoint.x += (cellC)*cellwidth;
+					thePoint.y -= (cellR)*cellwidth;
 					thePoint.z = land->getTerrainElevation(thePoint);
 					eye->projectZ(thePoint, pos4);
-					thePoint.x += cellWidth;
+					thePoint.x += cellwidth;
 					thePoint.z = land->getTerrainElevation(thePoint);
 					eye->projectZ(thePoint, pos1);
-					thePoint.y -= cellWidth;
+					thePoint.y -= cellwidth;
 					thePoint.z = land->getTerrainElevation(thePoint);
 					eye->projectZ(thePoint, pos2);
-					thePoint.x -= cellWidth;
+					thePoint.x -= cellwidth;
 					thePoint.z = land->getTerrainElevation(thePoint);
 					eye->projectZ(thePoint, pos3);
 					//------------------------------------

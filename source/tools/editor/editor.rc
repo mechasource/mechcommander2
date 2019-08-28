@@ -200,7 +200,7 @@ END
 
 IDD_HEIGHT_DLG DIALOG  0, 0, 114, 78
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Map Heights"
+CAPTION "Map heights"
 FONT 10, "Arial Narrow"
 BEGIN
     EDITTEXT        IDC_MIN,41,13,48,13,ES_AUTOHSCROLL
@@ -225,8 +225,8 @@ BEGIN
     PUSHBUTTON      "Refractalize Terrain (Recalculate Terrain Texture Shadows)",IDC_REFRACTALIZE_TERRAIN_BUTTON,15,145,108,29,BS_MULTILINE
     DEFPUSHBUTTON   "OK",IDOK,15,186,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,75,186,50,14
-    RTEXT           "Sun Color:",IDC_STATIC,15,16,46,8
-    RTEXT           "Ambient Color:",IDC_STATIC,16,38,46,8
+    RTEXT           "Sun colour:",IDC_STATIC,15,16,46,8
+    RTEXT           "Ambient colour:",IDC_STATIC,16,38,46,8
     RTEXT           "Sun Angle of Elevation (in degrees) (min: 5; max: 90):",IDC_STATIC,7,62,89,19
     RTEXT           "Azimuth of the Sun (in degrees):",IDC_STATIC,7,88,90,19
 END
@@ -242,13 +242,13 @@ END
 
 IDD_VALUE DIALOG  0, 0, 160, 61
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Assign Heights"
+CAPTION "Assign heights"
 FONT 10, "Arial Narrow"
 BEGIN
     EDITTEXT        IDC_HEIGHT,78,11,60,15,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,23,40,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,85,40,50,14
-    LTEXT           "New Height:",IDC_TEXT,32,15,40,8
+    LTEXT           "New height:",IDC_TEXT,32,15,40,8
 END
 
 IDD_WAVES DIALOG  0, 0, 186, 197
@@ -383,9 +383,9 @@ BEGIN
     LTEXT           "Actions",IDC_OBJECTIVE_ACTIONS_STATIC2,373,241,164,10
     LTEXT           "*Note: Failure of any success condition already implies failure of the objective. Use this area for additional failure conditions or to address success conditions whose failure cannot be determined automatically (i.e. ""Flag Is Set"").",IDC_STATIC,375,298,174,43
     GROUPBOX        "Logistics Model",IDC_STATIC,303,6,244,57
-    LTEXT           "&Base Color",IDC_STATIC,311,32,36,9
-    LTEXT           "Highlight Color 1",IDC_STATIC,371,32,52,9
-    LTEXT           "Highlight Color 2",IDC_STATIC,433,32,55,9
+    LTEXT           "&Base colour",IDC_STATIC,311,32,36,9
+    LTEXT           "Highlight colour 1",IDC_STATIC,371,32,52,9
+    LTEXT           "Highlight colour 2",IDC_STATIC,433,32,55,9
     GROUPBOX        "",IDC_STATIC,303,63,189,34
     CTEXT           "Marker Location",IDC_OBJECTIVE_MARKER_LOCATION_STATIC,401,70,61,11
     LTEXT           "x",IDC_OBJECTIVE_X_STATIC,377,84,8,11
@@ -526,7 +526,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,191,187,50,14
     GROUPBOX        "&Pilot",IDC_STATIC,7,7,165,36
     GROUPBOX        "&Type",IDC_STATIC,7,45,234,38
-    GROUPBOX        "&Colors",IDC_STATIC,7,85,234,45
+    GROUPBOX        "&colours",IDC_STATIC,7,85,234,45
     GROUPBOX        "&Player",IDC_STATIC,7,132,234,31
     GROUPBOX        "Self-&Repair Behavior",IDC_STATIC,7,165,103,32
     GROUPBOX        "&Squad",IDC_STATIC,181,7,60,36
@@ -651,7 +651,7 @@ END
 
 IDD_GROUP DIALOG  0, 0, 354, 301
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Group"
+CAPTION "group"
 FONT 10, "Arial Narrow"
 BEGIN
     EDITTEXT        IDC_GR_LABEL_EDIT,57,13,167,14,ES_AUTOHSCROLL
@@ -669,7 +669,7 @@ BEGIN
     PUSHBUTTON      "Edit",IDC_GR_EDIT_BUTTON,206,202,50,14
     DEFPUSHBUTTON   "OK",IDOK,297,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,297,24,50,14
-    LTEXT           "Group Label",IDC_STATIC,7,16,40,8
+    LTEXT           "group Label",IDC_STATIC,7,16,40,8
     LTEXT           "Number of missions required to complete",IDC_STATIC,7,38,128,8
     LTEXT           "Operation File",IDC_STATIC,7,61,44,8
     LTEXT           "Pre-Video File",IDC_STATIC,7,82,44,8
@@ -732,12 +732,12 @@ BEGIN
     LTEXT           "Red:",IDC_STATIC,21,42,16,8
     LTEXT           "Green:",IDC_STATIC,15,57,22,8
     LTEXT           "Blue:",IDC_STATIC,19,72,17,8
-    GROUPBOX        "Color",IDC_STATIC,14,28,111,58
+    GROUPBOX        "colour",IDC_STATIC,14,28,111,58
 END
 
 IDD_TEXT_MESSAGE DIALOG  0, 0, 344, 87
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Text Message"
+CAPTION "Text message"
 FONT 10, "Arial Narrow"
 BEGIN
     EDITTEXT        IDC_TEXT_MESSAGE,7,7,272,72,ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN
@@ -747,7 +747,7 @@ END
 
 IDD_RESOURCE_STRING_SELECTION DIALOG  0, 0, 327, 47
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Resource String Selection"
+CAPTION "Resource string Selection"
 FONT 10, "Arial Narrow"
 BEGIN
     COMBOBOX        IDC_RESOURCE_STRING_SELECTION_COMBO,7,17,255,217,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
@@ -828,7 +828,7 @@ BEGIN
     GROUPBOX        "Density (Trees per tile)",IDC_STATIC,7,176,142,31
     RTEXT           "&Center",IDC_STATIC,13,189,23,9
     RTEXT           "&Edges",IDC_STATIC,81,189,24,9
-    GROUPBOX        "Height Variation",IDC_STATIC,153,176,107,31
+    GROUPBOX        "height Variation",IDC_STATIC,153,176,107,31
     RTEXT           "Max:",IDC_STATIC,160,190,16,8
     RTEXT           "Min:",IDC_STATIC,216,190,14,8
     GROUPBOX        "Center",IDC_STATIC,7,208,253,31
@@ -888,7 +888,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,262,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,262,24,50,14
     LTEXT           "Flag Name",IDC_STATIC,7,16,35,8
-    LTEXT           "Value",IDC_STATIC,7,39,19,8
+    LTEXT           "value",IDC_STATIC,7,39,19,8
 END
 
 IDD_USER_TEXT_EDIT_DIALOG DIALOG  0, 0, 278, 89
@@ -897,7 +897,7 @@ CAPTION "Text Edit"
 FONT 10, "Arial Narrow"
 BEGIN
     PUSHBUTTON      "Enter Text",IDC_USER_TEXT_EDIT_ENTER_TEXT_BUTTON,12,12,51,14
-    PUSHBUTTON      "Select Resource String",IDC_USER_TEXT_EDIT_SELECT_RESOURCE_STRING_BUTTON,80,11,99,14
+    PUSHBUTTON      "Select Resource string",IDC_USER_TEXT_EDIT_SELECT_RESOURCE_STRING_BUTTON,80,11,99,14
     DEFPUSHBUTTON   "OK",IDOK,220,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,220,24,50,14
     EDITTEXT        IDC_USER_TEXT_EDIT_RESOURCE_STRING_ID_EDIT,13,38,33,14,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
@@ -943,8 +943,8 @@ BEGIN
         MENUITEM "&Quick Save\tCtrl + Q",       ID_FILE_QUICKSAVE
         MENUITEM "&Save\tCtrl + S",             ID_FILE_SAVE
         MENUITEM "Sa&ve As...",                 ID_FILE_SAVEAS
-        MENUITEM "Save &Height Map",            ID_SAVE_HEIGHT_MAP
-        MENUITEM "&Assign Height Map",          ID_FILE_ASSIGNHEIGHTMAP
+        MENUITEM "Save &height Map",            ID_SAVE_HEIGHT_MAP
+        MENUITEM "&Assign height Map",          ID_FILE_ASSIGNHEIGHTMAP
         MENUITEM "E&xit",                       ID_FILE_EXIT
     END
     POPUP "&Edit"
@@ -1529,7 +1529,7 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// String Table
+// string Table
 //
 
 STRINGTABLE 
@@ -1539,8 +1539,8 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MUSTBEGRAYSCALE     "Height maps must be gray scale."
-    IDS_MUSTBERIGHTFORMAT   "Base TGA must be True Color (24-bit) or 256 color."
+    IDS_MUSTBEGRAYSCALE     "height maps must be gray scale."
+    IDS_MUSTBERIGHTFORMAT   "Base TGA must be True colour (24-bit) or 256 color."
     IDS_UNNAMDE_FOREST      "Unanmed Forest %ld"
     IDS_NO_STRUCTURES       "There are no appropriate structures."
     IDS_NO_BUILDINGS_SELECTED "No valid buildings were selected."

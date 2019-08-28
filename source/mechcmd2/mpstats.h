@@ -33,7 +33,7 @@ public:
 	int32_t getRankingX(void);
 	int32_t getKillsX(void);
 	int32_t getLossesX(void);
-	int32_t overlayColor;
+	int32_t overlaycolour;
 };
 
 class MPStatsResultsEntry : public LogisticsScreen
@@ -44,8 +44,8 @@ public:
 	virtual void render(int32_t x, int32_t y);
 
 	void init();
-	void setData(const _MC2Player*, uint32_t laurelColor, bool bShowScore);
-	int32_t overlayColor;
+	void setData(const _MC2Player*, uint32_t laurelcolour, bool bShowScore);
+	int32_t overlaycolour;
 };
 
 class MPStats : public LogisticsScreen

@@ -68,13 +68,13 @@ public:
 
 	enum
 	{
-		ParticleSize = sizeof(Particle) + sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAColor)
+		ParticleSize = sizeof(Particle) + sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAcolour)
 	};
 
 protected:
 	MidLevelRenderer::MLRPointCloud* m_cloudImplementation;
 	Stuff::Point3D* m_P_localTranslation;
-	Stuff::RGBAColor* m_P_color;
+	Stuff::RGBAcolour* m_P_color;
 
 	//----------------------------------------------------------------------------
 	// Constructor/Destructor

@@ -36,7 +36,7 @@ and tree appearance keep their common elements here
 
 typedef struct _NodeData
 {
-	char* nodeId; // Used to determine where jumpjets, smoke and weapon fire
+	wchar_t* nodeId; // Used to determine where jumpjets, smoke and weapon fire
 		// come from.
 	int32_t weaponType; // What kind of weapon can use this node
 	bool isRArmNode; // Used to stop firing from node when RArm is gone.
@@ -64,10 +64,10 @@ public:
 	int32_t objectNameId;
 	int32_t damage;
 	int32_t pilotNameID;
-	char pilotName[32];
+	wchar_t pilotName[32];
 
 	int32_t paintScheme;
-	puint8_t fadeTable;
+	uint8_t* fadeTable;
 
 	void setDamage(int32_t Damage) // editor uses this... nobody else should
 	{
@@ -79,17 +79,17 @@ public:
 			setObjStatus(OBJECT_STATUS_NORMAL); // Change the shape!!
 	}
 
-	virtual void setHighlightColor(int32_t argb) { highlightColor = argb; }
+	virtual void setHighlightcolour(int32_t argb) { highlightcolour = argb; }
 
 	virtual int32_t getObjectNameId() { return objectNameId; }
 
 	virtual ~ObjectAppearance() {}
 
 protected:
-	int32_t highlightColor;
+	int32_t highlightcolour;
 	ObjectAppearance()
 	{
-		highlightColor = 0;
+		highlightcolour = 0;
 		damage = 0;
 		lightIntensity = rotation = 0.0;
 		selected = 0;

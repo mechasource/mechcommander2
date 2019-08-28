@@ -40,7 +40,7 @@ DlgFileOpen::Init()
 	CListBox* m_pList = (CListBox*)GetDlgItem(IDC_FILEOPEN_FILELIST);
 	// Not Used.
 	// CEdit* m_pEntry = (CEdit*)GetDlgItem(IDC_FILEOPEN_EDITBOX);
-	char dirBuffer[1024];
+	wchar_t dirBuffer[1024];
 	strcpy(dirBuffer, m_directory);
 	strcat(dirBuffer, "*.");
 	strcat(dirBuffer, extension);
@@ -64,10 +64,10 @@ void
 DlgFileOpen::OnOK()
 {
 	CEdit* m_pEntry = (CEdit*)GetDlgItem(IDC_FILEOPEN_EDITBOX);
-	char pszEntryString[1024 /*MAX_STRING_LENGTH*/];
+	wchar_t pszEntryString[1024 /*MAX_STRING_LENGTH*/];
 	m_pEntry->GetWindowText(pszEntryString, 1024 /*MAX_STRING_LENGTH*/);
 	strcat(fileName, pszEntryString);
-	char tmpExtension[32];
+	wchar_t tmpExtension[32];
 	tmpExtension[0] = '.';
 	tmpExtension[1] = 0;
 	strcat(tmpExtension, extension);
@@ -103,7 +103,7 @@ DlgFileOpen::OnSelchangeFileopenFilelist()
 	int32_t nStringLength = m_pList->GetTextLen(nSelectionIndex);
 	if (0 < nStringLength)
 	{
-		const std::wstring_view& pszSelectionString = new char[nStringLength + 1];
+		const std::wstring_view& pszSelectionString = new wchar_t[nStringLength + 1];
 		m_pList->GetText(nSelectionIndex, pszSelectionString);
 		CEdit* m_pEntry = (CEdit*)GetDlgItem(IDC_FILEOPEN_EDITBOX);
 		m_pEntry->SetWindowText(pszSelectionString);

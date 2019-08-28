@@ -142,10 +142,10 @@ aButton::render()
 		gos_DrawQuads(location, 4);
 		if (data.textID && data.textFont)
 		{
-			char buffer[256];
+			wchar_t buffer[256];
 			cLoadString(data.textID, buffer, 256);
 			uint32_t width, height;
-			gos_TextSetAttributes(data.textFont, data.textColors[state], data.textSize, true, true,
+			gos_TextSetAttributes(data.textFont, data.textcolours[state], data.textSize, true, true,
 				false, false, data.textAlign);
 			gos_TextSetRegion(
 				data.textRect.left, data.textRect.top, data.textRect.right, data.textRect.bottom);
@@ -155,7 +155,7 @@ aButton::render()
 			gos_TextDraw(buffer);
 			if (data.outlineText)
 			{
-				drawEmptyRect(data.textRect, data.textColors[state], data.textColors[state]);
+				drawEmptyRect(data.textRect, data.textcolours[state], data.textcolours[state]);
 			}
 		}
 		if (data.outline)
@@ -239,42 +239,42 @@ aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data
 	{
 		SPEW((0, "makeUVs given an Invalid state\n"));
 	}
-	float width = data.textureWidth;
-	float height = data.textureHeight;
+	float width = data.texturewidth;
+	float height = data.textureheight;
 	float right = left + width;
 	float bottom = top + height;
-	if (data.fileWidth && data.fileHeight) // will crash if 0
+	if (data.filewidth && data.fileheight) // will crash if 0
 	{
 		if (data.textureRotated)
 		{
-			vertices[0].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[0].u = right / (float)data.filewidth + (.1f / (float)data.filewidth);
 			;
-			vertices[1].u = left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[1].u = left / (float)data.filewidth + (.1f / (float)data.filewidth);
 			;
-			vertices[2].u = left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-			vertices[3].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-			vertices[0].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+			vertices[2].u = left / (float)data.filewidth + (.1f / (float)data.filewidth);
+			vertices[3].u = right / (float)data.filewidth + (.1f / (float)data.filewidth);
+			vertices[0].v = top / (float)data.fileheight + (.1f / (float)data.filewidth);
 			;
-			vertices[1].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+			vertices[1].v = top / (float)data.fileheight + (.1f / (float)data.filewidth);
 			;
-			vertices[2].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
+			vertices[2].v = bottom / (float)data.fileheight + (.1f / (float)data.fileheight);
 			;
-			vertices[3].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
+			vertices[3].v = bottom / (float)data.fileheight + (.1f / (float)data.fileheight);
 			;
 		}
 		else
 		{
 			{
 				vertices[0].u = vertices[1].u =
-					left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+					left / (float)data.filewidth + (.1f / (float)data.filewidth);
 				;
 				vertices[2].u = vertices[3].u =
-					right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+					right / (float)data.filewidth + (.1f / (float)data.filewidth);
 				vertices[0].v = vertices[3].v =
-					top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+					top / (float)data.fileheight + (.1f / (float)data.filewidth);
 				;
 				vertices[1].v = vertices[2].v =
-					bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
+					bottom / (float)data.fileheight + (.1f / (float)data.fileheight);
 			}
 		}
 	}
@@ -287,7 +287,7 @@ aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D f
 	int32_t result = buttonFile.seekBlock(str);
 	if (result != NO_ERROR)
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't find button %s", str);
 		Assert(0, 0, errorStr);
 		return;
@@ -297,9 +297,9 @@ aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D f
 	buttonFile.readIdLong("HelpCaption", helpHeader);
 	buttonFile.readIdLong("HelpDesc", helpid);
 	buttonFile.readIdLong("TextID", data.textID);
-	buttonFile.readIdLong("TextNormal", data.textColors[0]);
-	buttonFile.readIdLong("TextPressed", data.textColors[1]);
-	buttonFile.readIdLong("TextDisabled", data.textColors[2]);
+	buttonFile.readIdLong("TextNormal", data.textcolours[0]);
+	buttonFile.readIdLong("TextPressed", data.textcolours[1]);
+	buttonFile.readIdLong("TextDisabled", data.textcolours[2]);
 	buttonFile.readIdBoolean("Toggle", toggleButton);
 	buttonFile.readIdBoolean("outline", data.outline);
 	int32_t fontID;
@@ -311,8 +311,8 @@ aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D f
 	int32_t x, y, width, height;
 	buttonFile.readIdLong("XLocation", x);
 	buttonFile.readIdLong("YLocation", y);
-	buttonFile.readIdLong("Width", width);
-	buttonFile.readIdLong("Height", height);
+	buttonFile.readIdLong("width", width);
+	buttonFile.readIdLong("height", height);
 	buttonFile.readIdLong("HelpCaption", helpHeader);
 	buttonFile.readIdLong("HelpDesc", helpid);
 	buttonFile.readIdBoolean("texturesRotated", data.textureRotated);
@@ -333,7 +333,7 @@ aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D f
 	}
 	if (0 == textureHandle && data.fileName && strlen(data.fileName))
 	{
-		char file[256];
+		wchar_t file[256];
 		strcpy(file, artPath);
 		strcat(file, data.fileName);
 		_strlwr(file);
@@ -345,8 +345,8 @@ aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D f
 		gos_LockTexture(gosID, 0, 0, &textureData);
 		gos_UnLockTexture(gosID);
 		textureHandle = ID;
-		data.fileWidth = textureData.Width;
-		data.fileHeight = data.fileWidth;
+		data.filewidth = textureData.width;
+		data.fileheight = data.filewidth;
 	}
 	if (NO_ERROR != buttonFile.readIdLong("UNormal", data.stateCoords[0][0]))
 		data.stateCoords[0][0] = -1.f;
@@ -372,15 +372,15 @@ aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D f
 	{
 		data.stateCoords[4][1] = data.stateCoords[0][1];
 	}
-	buttonFile.readIdLong("UWidth", data.textureWidth);
-	buttonFile.readIdLong("VHeight", data.textureHeight);
+	buttonFile.readIdLong("Uwidth", data.texturewidth);
+	buttonFile.readIdLong("Vheight", data.textureheight);
 	if (data.textID)
 		buttonFile.readIdBoolean("TextOutline", data.outlineText);
 	if (NO_ERROR == buttonFile.readIdLong("XTextLocation", data.textRect.left))
 	{
 		buttonFile.readIdLong("YTextLocation", data.textRect.top);
-		buttonFile.readIdLong("TextWidth", width);
-		buttonFile.readIdLong("TextHeight", height);
+		buttonFile.readIdLong("Textwidth", width);
+		buttonFile.readIdLong("Textheight", height);
 		data.textRect.right = data.textRect.left + width;
 		data.textRect.bottom = data.textRect.top + height;
 		buttonFile.readIdBoolean("TextOutline", data.outlineText);
@@ -392,10 +392,10 @@ aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D f
 		data.textRect.top = y;
 		data.textRect.bottom = y + height;
 	}
-	char bmpName[256];
+	wchar_t bmpName[256];
 	strcpy(bmpName, str);
 	strcat(bmpName, "Bmp");
-	char finalName[256];
+	wchar_t finalName[256];
 	int32_t counter = 0;
 	while (true)
 	{
@@ -464,7 +464,7 @@ aAnimButton::init(FitIniFile& file, const std::wstring_view& headerName, HGOSFON
 {
 	if (NO_ERROR != file.seekBlock(headerName))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't find block %s in file %s", headerName, file.getFilename());
 		Assert(0, 0, errorStr);
 		animateBmp = 0;
@@ -627,25 +627,25 @@ aAnimButton::update(const aAnimation& animData)
 {
 	if (!isShowing())
 		return;
-	int32_t color = animData.getColor();
+	int32_t color = animData.getcolour();
 	if (animateBmp)
-		setColor(color, 0);
+		setcolour(color, 0);
 	if (animateText)
-		data.textColors[state] = color;
+		data.textcolours[state] = color;
 	int32_t xPos = animData.getXDelta();
 	int32_t yPos = animData.getYDelta();
 	move(xPos, yPos);
 	if (bAnimateChildren)
 	{
 		for (size_t i = 0; i < numberOfChildren(); i++)
-			pChildren[i]->setColor(color);
+			pChildren[i]->setcolour(color);
 	}
 	float fXcaleX = animData.getScaleX();
 	float fScaleY = animData.getScaleX();
 	if (fXcaleX != 1.0 && fScaleY != 1.0)
 	{
-		float oldWidth = width();
-		float oldHeight = height();
+		float oldwidth = width();
+		float oldheight = height();
 		float oldLeft = globalX();
 		float oldTop = globalY();
 		float scaleX = .5 * fXcaleX * width();
@@ -657,7 +657,7 @@ aAnimButton::update(const aAnimation& animData)
 		moveToNoRecurse(newLeft, newTop);
 		resize(width() * scaleX, height() * scaleY);
 		aButton::render();
-		resize(oldWidth, oldHeight);
+		resize(oldwidth, oldheight);
 		moveToNoRecurse(oldLeft, oldTop);
 	}
 	else

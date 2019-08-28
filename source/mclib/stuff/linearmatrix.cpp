@@ -6,9 +6,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 #include "stuff/scalar.h"
 #include "stuff/linearmatrix.h"
 

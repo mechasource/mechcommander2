@@ -66,7 +66,7 @@ MLRLookUpLight::MLRLookUpLight(std::iostream stream, uint32_t version) :
 	*stream >> mapName;
 	one_Over_zoneSizeX = 1.0f / zoneSizeX;
 	one_Over_zoneSizeZ = 1.0f / zoneSizeZ;
-	maps = new puint8_t[mapZoneCountX * mapZoneCountZ];
+	maps = new uint8_t*[mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 	for (size_t i = 0; i < mapZoneCountX * mapZoneCountZ; i++)
 	{
@@ -156,7 +156,7 @@ MLRLookUpLight::Write(Stuff::Page* page)
 	// Check_Object(this);
 	Check_Object(page);
 	MLRInfiniteLight::Write(page);
-	char data[256];
+	wchar_t data[256];
 	sprintf(data, "%f %f %f", mapOrigin.x, mapOrigin.y, mapOrigin.z);
 	_ASSERT(strlen(data) < sizeof(data));
 	page->SetEntry("MapOrigin", data);
@@ -200,11 +200,11 @@ MLRLookUpLight::LoadMap()
 {
 	// Check_Object(this);
 	std::fstream element_stream(mapName);
-	puint8_t map = new uint8_t[mapZoneCountX * mapZoneCountZ * 256 * 256];
+	uint8_t* map = new uint8_t[mapZoneCountX * mapZoneCountZ * 256 * 256];
 	Check_Pointer(map);
 	element_stream.ReadBytes(map, mapZoneCountX * mapZoneCountZ * 256 * 256);
 	_ASSERT(maps == nullptr);
-	maps = new puint8_t[mapZoneCountX * mapZoneCountZ];
+	maps = new uint8_t*[mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 	int32_t i, j, k;
 	for (j = 0; j < mapZoneCountZ; j++)
@@ -215,7 +215,7 @@ MLRLookUpLight::LoadMap()
 			Check_Pointer(maps[j * mapZoneCountX + i]);
 		}
 	}
-	puint8_t uptr = map;
+	uint8_t* uptr = map;
 	for (j = 0; j < mapZoneCountZ; j++)
 	{
 		for (k = 0; k < 256; k++)
@@ -284,7 +284,7 @@ MLRLookUpLight::LightVertex(const MLRVertexData& vertexData)
 #if COLOR_AS_DWORD
 	TO_DO;
 #else // COLOR_AS_DWORD
-	RGBColor light_color(color);
+	RGBcolour light_color(color);
 	if (cosine > SMALL)
 	{
 		light_color.red *= cosine;

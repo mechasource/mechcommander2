@@ -45,9 +45,9 @@ struct Part
 {
 	GameObjectWatchID objectWID; // Pointer to my physical incarnation
 	uint32_t objNumber; // What kind of object am I?
-	uint32_t baseColor; // Base color of mech -- Overrides the RED in RGB
-	uint32_t highlightColor1; // First Highlight Color -- Overrides the GREEN in RGB
-	uint32_t highlightColor2; // Second Highlight Color -- Overrides the BLUE in RGB
+	uint32_t basecolour; // Base color of mech -- Overrides the RED in RGB
+	uint32_t highlightcolour1; // First Highlight colour -- Overrides the GREEN in RGB
+	uint32_t highlightcolour2; // Second Highlight colour -- Overrides the BLUE in RGB
 	int32_t active; // Am I currently awake?
 	int32_t exists; // Am I currently in Existance?
 	bool destroyed; // Have I been destroyed for this scenario?
@@ -55,14 +55,14 @@ struct Part
 	float velocity; // How fast am I going?
 	float rotation; // Which direction am I facing?
 	uint32_t gestureId; // What gesture do I start in?
-	char alignment; // Who do I fight for?
-	char teamId; // Which team am I on?
+	wchar_t alignment; // Who do I fight for?
+	wchar_t teamId; // Which team am I on?
 	int32_t commanderid; // Used when setting up multiplayer
-	char squadId; // Which team am I on?
-	char myIcon; // If set, start with Icon on Screen for this part.
+	wchar_t squadId; // Which team am I on?
+	wchar_t myIcon; // If set, start with Icon on Screen for this part.
 	uint32_t controlType; // How am I controlled?
 	uint32_t controlDataType; // What data do you need to control me?
-	char profileName[9]; // Name of Object Profile file.
+	wchar_t profileName[9]; // Name of Object Profile file.
 	uint32_t pilot; // Name of Pilot File.
 	bool captureable; // Is this a capturable "enemy" mech?
 	uint32_t variantNum; // Variant number of the Part.
@@ -121,7 +121,7 @@ enum class
 
 struct Objective
 {
-	char name[80];
+	wchar_t name[80];
 	ObjectiveType type;
 	float timeLeft;
 	ObjectiveStatus status;
@@ -147,8 +147,8 @@ protected:
 	int32_t operationId; // aka operation id
 	int32_t missionId; // aka mission id
 
-	char missionFileName[80];
-	char missionScriptName[80];
+	wchar_t missionFileName[80];
+	wchar_t missionScriptName[80];
 	const std::unique_ptr<ABLModule>& missionBrain;
 	const std::unique_ptr<ABLParam>& missionParams;
 	const std::unique_ptr<SymTableNode>& missionBrainCallback;
@@ -224,10 +224,10 @@ public:
 
 	Mission(void) { init(void); }
 
-	bool calcComplexDropZones(const std::wstring_view& missionName, char dropZoneList[MAX_MC_PLAYERS]);
+	bool calcComplexDropZones(const std::wstring_view& missionName, wchar_t dropZoneList[MAX_MC_PLAYERS]);
 
 	void init(const std::wstring_view& missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList,
-		char commandersToLoad[8][3], int32_t numMoversPerCommander);
+		wchar_t commandersToLoad[8][3], int32_t numMoversPerCommander);
 
 	static void initBareMinimum(void);
 
@@ -236,7 +236,7 @@ public:
 
 	void start(void);
 
-	Stuff::Vector3D getDropZone() const { return dropZone; }
+	Stuff::Vector3D getDropZone(void) const { return dropZone; }
 
 	int32_t update(void);
 	int32_t render(void);

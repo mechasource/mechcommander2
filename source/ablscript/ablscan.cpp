@@ -85,7 +85,7 @@ const std::wstring_view& TokenStrings[NUM_TOKENS] = {"{BAD TOKEN}", "{IDENTIFIER
 //--------
 // GLOBALS
 
-char curChar;
+wchar_t curChar;
 TokenCodeType curToken;
 Literal curLiteral;
 int32_t level = 0;
@@ -101,11 +101,11 @@ bool DumbGetCharOn = false;
 
 int32_t NumOpenFiles = 0;
 int32_t NumSourceFiles = 0;
-char SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
+wchar_t SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
 SourceFile openFiles[MAX_INCLUDE_DEPTH];
-char sourceBuffer[MAXLEN_SOURCELINE];
-char tokenString[MAXLEN_TOKENSTRING];
-char wordString[MAXLEN_TOKENSTRING];
+wchar_t sourceBuffer[MAXLEN_SOURCELINE];
+wchar_t tokenString[MAXLEN_TOKENSTRING];
+wchar_t wordString[MAXLEN_TOKENSTRING];
 int32_t bufferOffset = 0;
 const std::wstring_view& bufferp = sourceBuffer;
 const std::wstring_view& tokenp = tokenString;
@@ -116,8 +116,8 @@ bool countError = false;
 int32_t pageNumber = 0;
 int32_t lineCount = MAX_LINES_PER_PAGE;
 
-char sourceName[MAXLEN_FILENAME];
-char date[LEN_DATESTRING];
+wchar_t sourceName[MAXLEN_FILENAME];
+wchar_t date[LEN_DATESTRING];
 
 CharCodeType charTable[256];
 
@@ -132,11 +132,11 @@ int32_t (*ABLFile::createCB)(PVOID* file, const std::wstring_view& filename) = n
 int32_t (*ABLFile::openCB)(PVOID* file, const std::wstring_view& filename) = nullptr;
 int32_t (*ABLFile::closeCB)(PVOID* file) = nullptr;
 bool (*ABLFile::eofCB)(PVOID file) = nullptr;
-int32_t (*ABLFile::readCB)(PVOID file, puint8_t buffer, int32_t length) = nullptr;
+int32_t (*ABLFile::readCB)(PVOID file, uint8_t* buffer, int32_t length) = nullptr;
 int32_t (*ABLFile::readLongCB)(PVOID file) = nullptr;
-int32_t (*ABLFile::readStringCB)(PVOID file, puint8_t buffer) = nullptr;
-int32_t (*ABLFile::readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength) = nullptr;
-int32_t (*ABLFile::writeCB)(PVOID file, puint8_t buffer, int32_t length) = nullptr;
+int32_t (*ABLFile::readStringCB)(PVOID file, uint8_t* buffer) = nullptr;
+int32_t (*ABLFile::readLineExCB)(PVOID file, uint8_t* buffer, int32_t maxLength) = nullptr;
+int32_t (*ABLFile::writeCB)(PVOID file, uint8_t* buffer, int32_t length) = nullptr;
 int32_t (*ABLFile::writeByteCB)(PVOID file, uint8_t byte) = nullptr;
 int32_t (*ABLFile::writeLongCB)(PVOID file, int32_t value) = nullptr;
 int32_t (*ABLFile::writeStringCB)(PVOID file, const std::wstring_view& buffer) = nullptr;
@@ -233,7 +233,7 @@ ABLFile::eof(void)
 //-----------------------------------------------------------------------------
 
 int32_t
-ABLFile::read(puint8_t buffer, int32_t length)
+ABLFile::read(uint8_t* buffer, int32_t length)
 {
 	if (file)
 		return (readCB(file, buffer, length));
@@ -253,7 +253,7 @@ ABLFile::readLong(void)
 //-----------------------------------------------------------------------------
 
 int32_t
-ABLFile::readString(puint8_t buffer)
+ABLFile::readString(uint8_t* buffer)
 {
 	if (file)
 		return (readStringCB(file, buffer));
@@ -263,7 +263,7 @@ ABLFile::readString(puint8_t buffer)
 //-----------------------------------------------------------------------------
 
 int32_t
-ABLFile::readLineEx(puint8_t buffer, int32_t maxLength)
+ABLFile::readLineEx(uint8_t* buffer, int32_t maxLength)
 {
 	if (file)
 		return (readLineExCB(file, buffer, maxLength));
@@ -273,7 +273,7 @@ ABLFile::readLineEx(puint8_t buffer, int32_t maxLength)
 //-----------------------------------------------------------------------------
 
 int32_t
-ABLFile::write(puint8_t buffer, int32_t length)
+ABLFile::write(uint8_t* buffer, int32_t length)
 {
 	if (file)
 		return (writeCB(file, buffer, length));
@@ -444,7 +444,7 @@ languageDirective(void)
 {
 	DumbGetCharOn = true;
 	getChar();
-	char directive[32];
+	wchar_t directive[32];
 	int32_t directiveLength = 0;
 	while ((curChar != ' ') && (curChar != '\n') && (curChar != '\r') && (directiveLength < 31))
 	{
@@ -461,7 +461,7 @@ languageDirective(void)
 		if (curChar == '"')
 		{
 			getChar();
-			char fileName[128];
+			wchar_t fileName[128];
 			int32_t fileNameLength = 0;
 			while ((curChar != '"') && (fileNameLength < 127))
 			{
@@ -496,7 +496,7 @@ languageDirective(void)
 		if (curChar == '"')
 		{
 			getChar();
-			char fileName[128];
+			wchar_t fileName[128];
 			int32_t fileNameLength = 0;
 			while ((curChar != '"') && (fileNameLength < 127))
 			{
@@ -513,7 +513,7 @@ languageDirective(void)
 			int32_t openErr = ABL_NO_ERR;
 			//---------------------------------------
 			// What's the current module's directory?
-			char fullPath[255];
+			wchar_t fullPath[255];
 			int32_t curChar = strlen(SourceFiles[0]);
 			while ((curChar > -1) && (SourceFiles[0][curChar] != '\\'))
 				curChar--;
@@ -599,7 +599,7 @@ languageDirective(void)
 					getChar();
 				if (curChar == '#')
 				{
-					char directive2[32];
+					wchar_t directive2[32];
 					int32_t directiveLength = 0;
 					while ((curChar != ' ') && (curChar != '\n') && (curChar != '\r') && (directiveLength < 31))
 					{
@@ -718,7 +718,7 @@ downShiftWord(void)
 		ABL_Fatal(-1, " Boy did Glenn screw the pooch here!! ");
 	do
 	{
-		*wp = ((*tp >= 'A') && (*tp <= 'Z')) ? (*tp + (char)offset) : *tp;
+		*wp = ((*tp >= 'A') && (*tp <= 'Z')) ? (*tp + (wchar_t)offset) : *tp;
 		wp++;
 		tp++;
 	} while (*tp != nullptr);
@@ -829,7 +829,7 @@ getNumber(void)
 {
 	int32_t wholeCount = 0;
 	int32_t decimalOffset = 0;
-	char exponentSign = '+';
+	wchar_t exponentSign = '+';
 	int32_t exponent = 0;
 	float numberValue = (float)0.0;
 	float exponentValue = (float)0.0;
@@ -1116,13 +1116,13 @@ getSourceLine(void)
 {
 	if (!sourceFile->eof())
 	{
-		int32_t numChars = sourceFile->readLineEx((puint8_t)sourceBuffer, MAXLEN_SOURCELINE);
+		int32_t numChars = sourceFile->readLineEx((uint8_t*)sourceBuffer, MAXLEN_SOURCELINE);
 		if (numChars == 0)
 			return (false);
 		lineNumber++;
 		if (printFlag)
 		{
-			char printBuffer[MAXLEN_SOURCELINE + 9];
+			wchar_t printBuffer[MAXLEN_SOURCELINE + 9];
 			sprintf(printBuffer, "%4d %d: %s", lineNumber, level, sourceBuffer);
 			printLine(printBuffer);
 		}
@@ -1200,7 +1200,7 @@ printLine(const std::wstring_view& line)
 		lineCount = 1;
 	}
 	const std::wstring_view& saveChPtr = nullptr;
-	char saveCh = ' ';
+	wchar_t saveCh = ' ';
 	if (strlen(line) > MAXLEN_PRINTLINE)
 	{
 		saveCh = line[MAXLEN_PRINTLINE];

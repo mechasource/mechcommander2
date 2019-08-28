@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -52,25 +52,25 @@ Appears unused
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="D3Dvb7"></param>
-/// <param name="dwFlags"></param>
-/// <param name="lplpData"></param>
-/// <param name="lpdwSize"></param>
+/// <param name="d3dvb7"></param>
+/// <param name="flags"></param>
+/// <param name="lppdata"></param>
+/// <param name="lpsize"></param>
 /// <returns></returns>
 HRESULT __stdcall wLock(
-	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, uint32_t dwFlags, PVOID* lplpData, puint32_t lpdwSize)
+	LPDIRECT3DVERTEXBUFFER7 d3dvb7, uint32_t flags, PVOID* lppdata, uint32_t* lpsize)
 {
 
-	// InternalFunctionSpew("GameOS_Direct3D", "Lock(0x%x)", D3Dvb7);
+	// InternalFunctionSpew("GameOS_Direct3D", "Lock(0x%x)", d3dvb7);
 
-	HRESULT hResult = D3Dvb7->Lock(dwFlags, lplpData, lpdwSize);
-	if (FAILED(hResult))
+	HRESULT hr = d3dvb7->Lock(flags, lppdata, lpsize);
+	if (FAILED(hr))
 	{
-		PSTR pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - Lock(0x%x)", hResult, pszErrorMessage, D3Dvb7))
+		PSTR pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - Lock(0x%x)", hr, pszErrorMessage, d3dvb7))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wUnlock
@@ -83,21 +83,21 @@ HRESULT __stdcall wLock(
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="D3Dvb7"></param>
+/// <param name="d3dvb7"></param>
 /// <returns></returns>
-HRESULT __stdcall wUnlock(LPDIRECT3DVERTEXBUFFER7 D3Dvb7)
+HRESULT __stdcall wUnlock(LPDIRECT3DVERTEXBUFFER7 d3dvb7)
 {
-	// InternalFunctionSpew("GameOS_Direct3D", "Unlock(0x%x)", D3Dvb7);
+	// InternalFunctionSpew("GameOS_Direct3D", "Unlock(0x%x)", d3dvb7);
 
-	HRESULT hResult = D3Dvb7->Unlock();
-	if (FAILED(hResult))
+	HRESULT hr = d3dvb7->Unlock();
+	if (FAILED(hr))
 	{
-		PSTR pszErrorMessage = ErrorNumberToMessage(hResult);
+		PSTR pszErrorMessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - Unlock(0x%x)", hResult, pszErrorMessage, D3Dvb7))
+				"FAILED (0x%x - %s) - Unlock(0x%x)", hr, pszErrorMessage, d3dvb7))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wOptimize
@@ -110,25 +110,25 @@ HRESULT __stdcall wUnlock(LPDIRECT3DVERTEXBUFFER7 D3Dvb7)
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="D3Dvb7"></param>
+/// <param name="d3dvb7"></param>
 /// <param name="lpD3DDevice"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns></returns>
 HRESULT __stdcall wOptimize(
-	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, LPDIRECT3DDEVICE7 lpD3DDevice, uint32_t dwFlags)
+	LPDIRECT3DVERTEXBUFFER7 d3dvb7, LPDIRECT3DDEVICE7 lpD3DDevice, uint32_t flags)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
-	InternalFunctionSpew("GameOS_Direct3D", "Optimize(0x%x)", D3Dvb7);
-	hResult = D3Dvb7->Optimize(lpD3DDevice, dwFlags);
-	if (FAILED(hResult))
+	HRESULT hr;
+	InternalFunctionSpew("GameOS_Direct3D", "Optimize(0x%x)", d3dvb7);
+	hr = d3dvb7->Optimize(lpD3DDevice, flags);
+	if (FAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
+		pszErrorMessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - Optimize(0x%x)", hResult, pszErrorMessage, D3Dvb7))
+				"FAILED (0x%x - %s) - Optimize(0x%x)", hr, pszErrorMessage, d3dvb7))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wProcessVertices
@@ -141,35 +141,35 @@ HRESULT __stdcall wOptimize(
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="D3Dvb7"></param>
+/// <param name="d3dvb7"></param>
 /// <param name="dwVertexOp"></param>
-/// <param name="dwDestIndex"></param>
-/// <param name="dwCount"></param>
+/// <param name="dwdestIndex"></param>
+/// <param name="count"></param>
 /// <param name="lpSrcBuffer"></param>
-/// <param name="dwSrcIndex"></param>
+/// <param name="dwsrcIndex"></param>
 /// <param name="lpD3DDevice"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns></returns>
-HRESULT __stdcall wProcessVertices(LPDIRECT3DVERTEXBUFFER7 D3Dvb7, uint32_t dwVertexOp,
-	uint32_t dwDestIndex, uint32_t dwCount, LPDIRECT3DVERTEXBUFFER7 lpSrcBuffer,
-	uint32_t dwSrcIndex, LPDIRECT3DDEVICE7 lpD3DDevice, uint32_t dwFlags)
+HRESULT __stdcall wProcessVertices(LPDIRECT3DVERTEXBUFFER7 d3dvb7, uint32_t dwVertexOp,
+	uint32_t dwdestIndex, uint32_t count, LPDIRECT3DVERTEXBUFFER7 lpSrcBuffer,
+	uint32_t dwsrcIndex, LPDIRECT3DDEVICE7 lpD3DDevice, uint32_t flags)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew("GameOS_Direct3D", "ProcessVertices(Dest=0x%x, Src=0x%x, Vertices=%d)",
-		D3Dvb7, lpSrcBuffer, dwCount);
-	hResult = D3Dvb7->ProcessVertices(
-		dwVertexOp, dwDestIndex, dwCount, lpSrcBuffer, dwSrcIndex, lpD3DDevice, dwFlags);
-	if (FAILED(hResult))
+		d3dvb7, lpSrcBuffer, count);
+	hr = d3dvb7->ProcessVertices(
+		dwVertexOp, dwdestIndex, count, lpSrcBuffer, dwsrcIndex, lpD3DDevice, flags);
+	if (FAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
+		pszErrorMessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - "
 								  "ProcessVertices(Dest=0x%x, Src=0x%x, "
 								  "Vertices=%d)",
-				hResult, pszErrorMessage, D3Dvb7, lpSrcBuffer, dwCount))
+				hr, pszErrorMessage, d3dvb7, lpSrcBuffer, count))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wCreateDevice
@@ -184,28 +184,28 @@ HRESULT __stdcall wProcessVertices(LPDIRECT3DVERTEXBUFFER7 D3Dvb7, uint32_t dwVe
 /// </remarks>
 /// <param name="d3d7"></param>
 /// <param name="rclsid"></param>
-/// <param name="lpDDS"></param>
-/// <param name="lplpD3DDevice7"></param>
+/// <param name="pdds"></param>
+/// <param name="ppd3ddevice7"></param>
 /// <returns></returns>
-HRESULT __stdcall wCreateDevice(LPDIRECT3D7 d3d7, REFCLSID rclsid, LPDIRECTDRAWSURFACE7 lpDDS,
-	LPDIRECT3DDEVICE7* lplpD3DDevice7)
+HRESULT __stdcall wCreateDevice(LPDIRECT3D7 d3d7, REFCLSID rclsid, LPDIRECTDRAWSURFACE7 pdds,
+	LPDIRECT3DDEVICE7* ppd3ddevice7)
 {
 	PSTR pszDevice;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	pszDevice = Get3DDevice(rclsid);
-	InternalFunctionSpew("GameOS_Direct3D", "CreateDevice(%s from 0x%x)+", pszDevice, lpDDS);
-	hResult = d3d7->CreateDevice(rclsid, lpDDS, lplpD3DDevice7);
-	InternalFunctionSpew("GameOS_Direct3D", " -0x%x", *lplpD3DDevice7);
-	if (FAILED(hResult))
+	InternalFunctionSpew("GameOS_Direct3D", "CreateDevice(%s from 0x%x)+", pszDevice, pdds);
+	hr = d3d7->CreateDevice(rclsid, pdds, ppd3ddevice7);
+	InternalFunctionSpew("GameOS_Direct3D", " -0x%x", *ppd3ddevice7);
+	if (FAILED(hr))
 	{
 		pszDevice = Get3DDevice(rclsid);
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateDevice(%s from 0x%x)", hResult,
-				pszErrorMessage, pszDevice, lpDDS))
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateDevice(%s from 0x%x)", hr,
+				pszErrorMessage, pszDevice, pdds))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wEnumDevices
@@ -220,22 +220,22 @@ HRESULT __stdcall wCreateDevice(LPDIRECT3D7 d3d7, REFCLSID rclsid, LPDIRECTDRAWS
 /// </remarks>
 /// <param name="d3d7"></param>
 /// <param name="lpEnumDevicesCallback"></param>
-/// <param name="lpUserArg"></param>
+/// <param name="puserarg"></param>
 /// <returns></returns>
 HRESULT __stdcall wEnumDevices(
-	LPDIRECT3D7 d3d7, LPD3DENUMDEVICESCALLBACK7 lpEnumDevicesCallback, PVOID lpUserArg)
+	LPDIRECT3D7 d3d7, LPD3DENUMDEVICESCALLBACK7 lpEnumDevicesCallback, PVOID puserarg)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew("GameOS_Direct3D", "EnumDevices()");
-	hResult = d3d7->EnumDevices(lpEnumDevicesCallback, lpUserArg);
-	if (FAILED(hResult))
+	hr = d3d7->EnumDevices(lpEnumDevicesCallback, puserarg);
+	if (FAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - EnumDevices()", hResult, pszErrorMessage))
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - EnumDevices()", hr, pszErrorMessage))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wEnumZBufferFormats
@@ -250,27 +250,27 @@ HRESULT __stdcall wEnumDevices(
 /// </remarks>
 /// <param name="d3d7"></param>
 /// <param name="riidDevice"></param>
-/// <param name="lpEnumCallback"></param>
-/// <param name="lpContext"></param>
+/// <param name="penumcallback"></param>
+/// <param name="pcontext"></param>
 /// <returns></returns>
 HRESULT __stdcall wEnumZBufferFormats(LPDIRECT3D7 d3d7, REFCLSID riidDevice,
-	LPD3DENUMPIXELFORMATSCALLBACK lpEnumCallback, PVOID lpContext)
+	LPD3DENUMPIXELFORMATSCALLBACK penumcallback, PVOID pcontext)
 {
 	PSTR pszDevice;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	pszDevice = Get3DDevice(riidDevice);
 	InternalFunctionSpew("GameOS_Direct3D", "EnumZBufferFormats(%s)", pszDevice);
-	hResult = d3d7->EnumZBufferFormats(riidDevice, lpEnumCallback, lpContext);
-	if (FAILED(hResult))
+	hr = d3d7->EnumZBufferFormats(riidDevice, penumcallback, pcontext);
+	if (FAILED(hr))
 	{
 		pszDevice = Get3DDevice(riidDevice);
-		pszErrorMessage = ErrorNumberToMessage(hResult);
+		pszErrorMessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - EnumZBufferFormats(%s)", hResult, pszErrorMessage, pszDevice))
+				"FAILED (0x%x - %s) - EnumZBufferFormats(%s)", hr, pszErrorMessage, pszDevice))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wCreateVertexBuffer
@@ -286,27 +286,27 @@ HRESULT __stdcall wEnumZBufferFormats(LPDIRECT3D7 d3d7, REFCLSID riidDevice,
 /// <param name="d3d7"></param>
 /// <param name="lpVBDesc"></param>
 /// <param name="lplpD3DVertexBuffer"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns></returns>
 HRESULT __stdcall wCreateVertexBuffer(LPDIRECT3D7 d3d7, LPD3DVERTEXBUFFERDESC lpVBDesc,
-	LPDIRECT3DVERTEXBUFFER7* lplpD3DVertexBuffer, uint32_t dwFlags)
+	LPDIRECT3DVERTEXBUFFER7* lplpD3DVertexBuffer, uint32_t flags)
 {
 	uint32_t dwNumVertices;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew(
 		"GameOS_Direct3D", "CreateVertexBuffer(%d Vertices)+", lpVBDesc->dwNumVertices);
-	hResult = d3d7->CreateVertexBuffer(lpVBDesc, lplpD3DVertexBuffer, dwFlags);
+	hr = d3d7->CreateVertexBuffer(lpVBDesc, lplpD3DVertexBuffer, flags);
 	InternalFunctionSpew("GameOS_Direct3D", " -0x%x", *lplpD3DVertexBuffer);
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
 		dwNumVertices = lpVBDesc->dwNumVertices;
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateVertexBuffer(%d Vertices)", hResult,
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - CreateVertexBuffer(%d Vertices)", hr,
 				pszErrorMessage, dwNumVertices))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wBeginScene
@@ -319,25 +319,25 @@ HRESULT __stdcall wCreateVertexBuffer(LPDIRECT3D7 d3d7, LPD3DVERTEXBUFFERDESC lp
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <returns></returns>
-HRESULT __stdcall wBeginScene(LPDIRECT3DDEVICE7 d3dDevice7)
+HRESULT __stdcall wBeginScene(LPDIRECT3DDEVICE7 d3ddevice7)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew("GameOS_Direct3D", "BeginScene()");
-	hResult = d3dDevice7->BeginScene();
-	if (FAILED(hResult))
+	hr = d3ddevice7->BeginScene();
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
-			pszErrorMessage = ErrorNumberToMessage(hResult);
+			pszErrorMessage = ErrorNumberToMessage(hr);
 			if (InternalFunctionPause(
-					"FAILED (0x%x - %s) - BeginScene()", hResult, pszErrorMessage))
+					"FAILED (0x%x - %s) - BeginScene()", hr, pszErrorMessage))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wEndScene
@@ -350,21 +350,21 @@ HRESULT __stdcall wBeginScene(LPDIRECT3DDEVICE7 d3dDevice7)
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <returns></returns>
-HRESULT __stdcall wEndScene(LPDIRECT3DDEVICE7 d3dDevice7)
+HRESULT __stdcall wEndScene(LPDIRECT3DDEVICE7 d3ddevice7)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew("GameOS_Direct3D", "EndScene()");
-	hResult = d3dDevice7->EndScene();
-	if (FAILED(hResult))
+	hr = d3ddevice7->EndScene();
+	if (FAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - EndScene()", hResult, pszErrorMessage))
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - EndScene()", hr, pszErrorMessage))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wSetTransform
@@ -377,28 +377,28 @@ HRESULT __stdcall wEndScene(LPDIRECT3DDEVICE7 d3dDevice7)
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="dtstTransformStateType"></param>
-/// <param name="lpD3DMatrix"></param>
+/// <param name="pd3dmatrix"></param>
 /// <returns></returns>
-HRESULT __stdcall wSetTransform(LPDIRECT3DDEVICE7 d3dDevice7,
-	D3DTRANSFORMSTATETYPE dtstTransformStateType, LPD3DMATRIX lpD3DMatrix)
+HRESULT __stdcall wSetTransform(LPDIRECT3DDEVICE7 d3ddevice7,
+	D3DTRANSFORMSTATETYPE dtstTransformStateType, LPD3DMATRIX pd3dmatrix)
 {
 	PSTR pszTransformType;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	pszTransformType = GetTransformType(dtstTransformStateType);
 	InternalFunctionSpew("GameOS_Direct3D", "SetTransform(%s)", pszTransformType);
-	hResult = d3dDevice7->SetTransform(dtstTransformStateType, lpD3DMatrix);
-	if (FAILED(hResult))
+	hr = d3ddevice7->SetTransform(dtstTransformStateType, pd3dmatrix);
+	if (FAILED(hr))
 	{
 		pszTransformType = GetTransformType(dtstTransformStateType);
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - SetTransform(%s)", hResult, pszErrorMessage,
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - SetTransform(%s)", hr, pszErrorMessage,
 				pszTransformType))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wMultiplyTransform
@@ -411,28 +411,28 @@ HRESULT __stdcall wSetTransform(LPDIRECT3DDEVICE7 d3dDevice7,
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="dtstTransformStateType"></param>
-/// <param name="lpD3DMatrix"></param>
+/// <param name="pd3dmatrix"></param>
 /// <returns></returns>
-HRESULT __stdcall wMultiplyTransform(LPDIRECT3DDEVICE7 d3dDevice7,
-	D3DTRANSFORMSTATETYPE dtstTransformStateType, LPD3DMATRIX lpD3DMatrix)
+HRESULT __stdcall wMultiplyTransform(LPDIRECT3DDEVICE7 d3ddevice7,
+	D3DTRANSFORMSTATETYPE dtstTransformStateType, LPD3DMATRIX pd3dmatrix)
 {
 	PSTR pszTransformType;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	pszTransformType = GetTransformType(dtstTransformStateType);
 	InternalFunctionSpew("GameOS_Direct3D", "MultiplyTransform(%s)", pszTransformType);
-	hResult = d3dDevice7->MultiplyTransform(dtstTransformStateType, lpD3DMatrix);
-	if (FAILED(hResult))
+	hr = d3ddevice7->MultiplyTransform(dtstTransformStateType, pd3dmatrix);
+	if (FAILED(hr))
 	{
 		pszTransformType = GetTransformType(dtstTransformStateType);
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - MultiplyTransform()", hResult,
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - MultiplyTransform()", hr,
 				pszErrorMessage, pszTransformType))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wSetLight
@@ -445,28 +445,28 @@ HRESULT __stdcall wMultiplyTransform(LPDIRECT3DDEVICE7 d3dDevice7,
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="dwLightIndex"></param>
 /// <param name="lpLight"></param>
 /// <returns></returns>
 HRESULT __stdcall wSetLight(
-	LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwLightIndex, LPD3DLIGHT7 lpLight)
+	LPDIRECT3DDEVICE7 d3ddevice7, uint32_t dwLightIndex, LPD3DLIGHT7 lpLight)
 {
 	PSTR pszLightInfo;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	pszLightInfo = GetLightInfo(lpLight);
 	InternalFunctionSpew("GameOS_Direct3D", "SetLight(%d, %s)", dwLightIndex, pszLightInfo);
-	hResult = d3dDevice7->SetLight(dwLightIndex, lpLight);
-	if (FAILED(hResult))
+	hr = d3ddevice7->SetLight(dwLightIndex, lpLight);
+	if (FAILED(hr))
 	{
 		pszLightInfo = GetLightInfo(lpLight);
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - SetLight(%d, %s)", hResult, pszErrorMessage,
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - SetLight(%d, %s)", hr, pszErrorMessage,
 				dwLightIndex, pszLightInfo))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wLightEnable
@@ -479,33 +479,33 @@ HRESULT __stdcall wSetLight(
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="dwLightIndex"></param>
 /// <param name="Enable"></param>
 /// <returns></returns>
-HRESULT __stdcall wLightEnable(LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwLightIndex, bool Enable)
+HRESULT __stdcall wLightEnable(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t dwLightIndex, bool Enable)
 {
 	PSTR pszEnable;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	if (Enable)
 		pszEnable = "enable";
 	else
 		pszEnable = "disable";
 	InternalFunctionSpew("GameOS_Direct3D", "LightEnable(%d, %s)", dwLightIndex, pszEnable);
-	hResult = d3dDevice7->LightEnable(dwLightIndex, Enable);
-	if (FAILED(hResult))
+	hr = d3ddevice7->LightEnable(dwLightIndex, Enable);
+	if (FAILED(hr))
 	{
 		if (Enable)
 			pszEnable = "enable";
 		else
 			pszEnable = "disable";
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - LightEnable(%d, %s)", hResult,
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - LightEnable(%d, %s)", hr,
 				pszErrorMessage, dwLightIndex, pszEnable))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wSetMaterial
@@ -518,26 +518,26 @@ HRESULT __stdcall wLightEnable(LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwLightInd
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="pMaterial"></param>
 /// <returns></returns>
-HRESULT __stdcall wSetMaterial(LPDIRECT3DDEVICE7 d3dDevice7, LPD3DMATERIAL7 pMaterial)
+HRESULT __stdcall wSetMaterial(LPDIRECT3DDEVICE7 d3ddevice7, LPD3DMATERIAL7 pMaterial)
 {
 	PSTR pszMaterialInfo;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	pszMaterialInfo = GetMaterialInfo(pMaterial);
 	InternalFunctionSpew("GameOS_Direct3D", "SetMaterial(%s)", pszMaterialInfo);
-	hResult = d3dDevice7->SetMaterial(pMaterial);
-	if (FAILED(hResult))
+	hr = d3ddevice7->SetMaterial(pMaterial);
+	if (FAILED(hr))
 	{
 		pszMaterialInfo = GetMaterialInfo(pMaterial);
-		pszErrorMessage = ErrorNumberToMessage(hResult);
+		pszErrorMessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - SetMaterial(%s)", hResult, pszErrorMessage, pszMaterialInfo))
+				"FAILED (0x%x - %s) - SetMaterial(%s)", hr, pszErrorMessage, pszMaterialInfo))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wSetViewport
@@ -550,22 +550,22 @@ HRESULT __stdcall wSetMaterial(LPDIRECT3DDEVICE7 d3dDevice7, LPD3DMATERIAL7 pMat
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
-/// <param name="lpViewport"></param>
+/// <param name="d3ddevice7"></param>
+/// <param name="pviewport"></param>
 /// <returns></returns>
-HRESULT __stdcall wSetViewport(LPDIRECT3DDEVICE7 d3dDevice7, LPD3DVIEWPORT7 lpViewport)
+HRESULT __stdcall wSetViewport(LPDIRECT3DDEVICE7 d3ddevice7, LPD3DVIEWPORT7 pviewport)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew("GameOS_Direct3D", "SetViewport()");
-	hResult = d3dDevice7->SetViewport(lpViewport);
-	if (FAILED(hResult))
+	hr = d3ddevice7->SetViewport(pviewport);
+	if (FAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - SetViewport()", hResult, pszErrorMessage))
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - SetViewport()", hr, pszErrorMessage))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wClear
@@ -578,35 +578,35 @@ HRESULT __stdcall wSetViewport(LPDIRECT3DDEVICE7 d3dDevice7, LPD3DVIEWPORT7 lpVi
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
-/// <param name="dwCount"></param>
-/// <param name="lpRects"></param>
-/// <param name="dwFlags"></param>
-/// <param name="dwColor"></param>
+/// <param name="d3ddevice7"></param>
+/// <param name="count"></param>
+/// <param name="pd3drect"></param>
+/// <param name="flags"></param>
+/// <param name="colour"></param>
 /// <param name="dvZ"></param>
-/// <param name="dwStencil"></param>
+/// <param name="stencil"></param>
 /// <returns></returns>
-HRESULT __stdcall wClear(LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwCount, LPD3DRECT lpRects,
-	uint32_t dwFlags, uint32_t dwColor, D3DVALUE dvZ, uint32_t dwStencil)
+HRESULT __stdcall wClear(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t count, LPD3DRECT pd3drect,
+	uint32_t flags, uint32_t colour, D3DVALUE dvZ, uint32_t stencil)
 {
 	PSTR pszClearArea;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
-	pszClearArea = GetClearArea(dwCount, lpRects, dwFlags);
+	HRESULT hr;
+	pszClearArea = GetClearArea(count, pd3drect, flags);
 	InternalFunctionSpew("GameOS_Direct3D", "Clear(%s)", pszClearArea);
-	hResult = d3dDevice7->Clear(dwCount, lpRects, dwFlags, dwColor, dvZ, dwStencil);
-	if (FAILED(hResult))
+	hr = d3ddevice7->Clear(count, pd3drect, flags, colour, dvZ, stencil);
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
-			pszClearArea = GetClearArea(dwCount, lpRects, dwFlags);
-			pszErrorMessage = ErrorNumberToMessage(hResult);
+			pszClearArea = GetClearArea(count, pd3drect, flags);
+			pszErrorMessage = ErrorNumberToMessage(hr);
 			if (InternalFunctionPause(
-					"FAILED (0x%x - %s) - Clear(%s)", hResult, pszErrorMessage, pszClearArea))
+					"FAILED (0x%x - %s) - Clear(%s)", hr, pszErrorMessage, pszClearArea))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wGetCaps
@@ -619,23 +619,23 @@ HRESULT __stdcall wClear(LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwCount, LPD3DRE
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
-/// <param name="lpD3DHWDevDesc"></param>
+/// <param name="d3ddevice7"></param>
+/// <param name="pd3dhwdevdesc"></param>
 /// <returns></returns>
-HRESULT __stdcall wGetCaps(LPDIRECT3DDEVICE7 d3dDevice7, LPD3DDEVICEDESC7 lpD3DHWDevDesc)
+HRESULT __stdcall wGetCaps(LPDIRECT3DDEVICE7 d3ddevice7, LPD3DDEVICEDESC7 pd3dhwdevdesc)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
-	InternalFunctionSpew("GameOS_Direct3D", "GetCaps(0x%x)", d3dDevice7);
-	hResult = d3dDevice7->GetCaps(lpD3DHWDevDesc);
-	if (FAILED(hResult))
+	HRESULT hr;
+	InternalFunctionSpew("GameOS_Direct3D", "GetCaps(0x%x)", d3ddevice7);
+	hr = d3ddevice7->GetCaps(pd3dhwdevdesc);
+	if (FAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
+		pszErrorMessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - GetCaps(0x%x)", hResult, pszErrorMessage, d3dDevice7))
+				"FAILED (0x%x - %s) - GetCaps(0x%x)", hr, pszErrorMessage, d3ddevice7))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wSetRenderState
@@ -648,29 +648,29 @@ HRESULT __stdcall wGetCaps(LPDIRECT3DDEVICE7 d3dDevice7, LPD3DDEVICEDESC7 lpD3DH
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
-/// <param name="dwRenderStateType"></param>
-/// <param name="dwRenderState"></param>
+/// <param name="d3ddevice7"></param>
+/// <param name="renderstatetype"></param>
+/// <param name="renderstate"></param>
 /// <returns></returns>
 HRESULT __stdcall wSetRenderState(
-	LPDIRECT3DDEVICE7 d3dDevice7, D3DRENDERSTATETYPE dwRenderStateType, uint32_t dwRenderState)
+	LPDIRECT3DDEVICE7 d3ddevice7, D3DRENDERSTATETYPE renderstatetype, uint32_t renderstate)
 {
 	PSTR pszRenderState;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	++TotalRenderStateChanges;
-	pszRenderState = GetRenderState(dwRenderStateType, dwRenderState);
+	pszRenderState = GetRenderState(renderstatetype, renderstate);
 	InternalFunctionSpew("GameOS_Direct3D", "SetRenderState(%s)", pszRenderState);
-	hResult = d3dDevice7->SetRenderState(dwRenderStateType, dwRenderState);
-	if (FAILED(hResult))
+	hr = d3ddevice7->SetRenderState(renderstatetype, renderstate);
+	if (FAILED(hr))
 	{
-		pszRenderState = GetRenderState(dwRenderStateType, dwRenderState);
-		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause("FAILED (0x%x - %s) - SetRenderState(%s)", hResult,
+		pszRenderState = GetRenderState(renderstatetype, renderstate);
+		pszErrorMessage = ErrorNumberToMessage(hr);
+		if (InternalFunctionPause("FAILED (0x%x - %s) - SetRenderState(%s)", hr,
 				pszErrorMessage, pszRenderState))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wEnumTextureFormats
@@ -683,25 +683,25 @@ HRESULT __stdcall wSetRenderState(
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
-/// <param name="lpd3dEnumPixelProc"></param>
-/// <param name="lpArg"></param>
+/// <param name="d3ddevice7"></param>
+/// <param name="pd3denumpixelproc"></param>
+/// <param name="parg"></param>
 /// <returns></returns>
 HRESULT __stdcall wEnumTextureFormats(
-	LPDIRECT3DDEVICE7 d3dDevice7, LPD3DENUMPIXELFORMATSCALLBACK lpd3dEnumPixelProc, PVOID lpArg)
+	LPDIRECT3DDEVICE7 d3ddevice7, LPD3DENUMPIXELFORMATSCALLBACK pd3denumpixelproc, PVOID parg)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew("GameOS_Direct3D", "EnumTextureFormats()");
-	hResult = d3dDevice7->EnumTextureFormats(lpd3dEnumPixelProc, lpArg);
-	if (FAILED(hResult))
+	hr = d3ddevice7->EnumTextureFormats(pd3denumpixelproc, parg);
+	if (FAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
+		pszErrorMessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - EnumTextureFormats()", hResult, pszErrorMessage))
+				"FAILED (0x%x - %s) - EnumTextureFormats()", hr, pszErrorMessage))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wSetTexture
@@ -714,28 +714,28 @@ HRESULT __stdcall wEnumTextureFormats(
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
-/// <param name="dwStage"></param>
-/// <param name="lpTexture"></param>
+/// <param name="d3ddevice7"></param>
+/// <param name="stage"></param>
+/// <param name="ptexture"></param>
 /// <returns></returns>
 HRESULT __stdcall wSetTexture(
-	LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwStage, LPDIRECTDRAWSURFACE7 lpTexture)
+	LPDIRECT3DDEVICE7 d3ddevice7, uint32_t stage, LPDIRECTDRAWSURFACE7 ptexture)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
-	InternalFunctionSpew("GameOS_Direct3D", "SetTexture(%d,0x%x)", dwStage, lpTexture);
-	hResult = d3dDevice7->SetTexture(dwStage, lpTexture);
-	if (FAILED(hResult))
+	HRESULT hr;
+	InternalFunctionSpew("GameOS_Direct3D", "SetTexture(%d,0x%x)", stage, ptexture);
+	hr = d3ddevice7->SetTexture(stage, ptexture);
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
-			pszErrorMessage = ErrorNumberToMessage(hResult);
-			if (InternalFunctionPause("FAILED (0x%x - %s) - SetTexture(%d,0x%x)", hResult,
-					pszErrorMessage, dwStage, lpTexture))
+			pszErrorMessage = ErrorNumberToMessage(hr);
+			if (InternalFunctionPause("FAILED (0x%x - %s) - SetTexture(%d,0x%x)", hr,
+					pszErrorMessage, stage, ptexture))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wSetTextureStageState
@@ -748,33 +748,33 @@ HRESULT __stdcall wSetTexture(
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
-/// <param name="dwStage"></param>
-/// <param name="dwState"></param>
-/// <param name="dwValue"></param>
+/// <param name="d3ddevice7"></param>
+/// <param name="stage"></param>
+/// <param name="state"></param>
+/// <param name="value"></param>
 /// <returns></returns>
-HRESULT __stdcall wSetTextureStageState(LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwStage,
-	D3DTEXTURESTAGESTATETYPE dwState, uint32_t dwValue)
+HRESULT __stdcall wSetTextureStageState(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t stage,
+	D3DTEXTURESTAGESTATETYPE state, uint32_t value)
 {
 	PSTR pszStageSet;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	++TotalRenderStateChanges;
-	pszStageSet = GetStageSet(dwState, dwValue);
-	InternalFunctionSpew("GameOS_Direct3D", "SetTextureStageState(%d,%s)", dwStage, pszStageSet);
-	hResult = d3dDevice7->SetTextureStageState(dwStage, dwState, dwValue);
-	if (FAILED(hResult))
+	pszStageSet = GetStageSet(state, value);
+	InternalFunctionSpew("GameOS_Direct3D", "SetTextureStageState(%d,%s)", stage, pszStageSet);
+	hr = d3ddevice7->SetTextureStageState(stage, state, value);
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
-			pszStageSet = GetStageSet(dwState, dwValue);
-			pszErrorMessage = ErrorNumberToMessage(hResult);
-			if (InternalFunctionPause("FAILED (0x%x - %s) - SetTextureStageState(%d,%s)", hResult,
-					pszErrorMessage, dwStage, pszStageSet))
+			pszStageSet = GetStageSet(state, value);
+			pszErrorMessage = ErrorNumberToMessage(hr);
+			if (InternalFunctionPause("FAILED (0x%x - %s) - SetTextureStageState(%d,%s)", hr,
+					pszErrorMessage, stage, pszStageSet))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wValidateDevice
@@ -787,24 +787,24 @@ HRESULT __stdcall wSetTextureStageState(LPDIRECT3DDEVICE7 d3dDevice7, uint32_t d
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="pExtraPasses"></param>
 /// <returns></returns>
-HRESULT __stdcall wValidateDevice(LPDIRECT3DDEVICE7 d3dDevice7, puint32_t pExtraPasses)
+HRESULT __stdcall wValidateDevice(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t* pExtraPasses)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew("GameOS_Direct3D", "ValidateDevice()+");
-	hResult = d3dDevice7->ValidateDevice(pExtraPasses);
+	hr = d3ddevice7->ValidateDevice(pExtraPasses);
 	InternalFunctionSpew("GameOS_Direct3D", " -0x%x", *pExtraPasses);
-	if (FAILED(hResult))
+	if (FAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hResult);
+		pszErrorMessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - ValidateDevice()", hResult, pszErrorMessage))
+				"FAILED (0x%x - %s) - ValidateDevice()", hr, pszErrorMessage))
 			ENTER_DEBUGGER;
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wLoad
@@ -817,31 +817,31 @@ HRESULT __stdcall wValidateDevice(LPDIRECT3DDEVICE7 d3dDevice7, puint32_t pExtra
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="lpDestTex"></param>
 /// <param name="lpDestPoint"></param>
 /// <param name="lpSrcTex"></param>
 /// <param name="lprcSrcRect"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns></returns>
-HRESULT __stdcall wLoad(LPDIRECT3DDEVICE7 d3dDevice7, LPDIRECTDRAWSURFACE7 lpDestTex,
-	LPPOINT lpDestPoint, LPDIRECTDRAWSURFACE7 lpSrcTex, LPRECT lprcSrcRect, uint32_t dwFlags)
+HRESULT __stdcall wLoad(LPDIRECT3DDEVICE7 d3ddevice7, LPDIRECTDRAWSURFACE7 lpDestTex,
+	LPPOINT lpDestPoint, LPDIRECTDRAWSURFACE7 lpSrcTex, LPRECT lprcSrcRect, uint32_t flags)
 {
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	InternalFunctionSpew("GameOS_Direct3D", "Load(0x%x with 0x%x)", lpDestTex, lpSrcTex);
-	hResult = d3dDevice7->Load(lpDestTex, lpDestPoint, lpSrcTex, lprcSrcRect, dwFlags);
-	if (FAILED(hResult))
+	hr = d3ddevice7->Load(lpDestTex, lpDestPoint, lpSrcTex, lprcSrcRect, flags);
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
-			pszErrorMessage = ErrorNumberToMessage(hResult);
-			if (InternalFunctionPause("FAILED (0x%x - %s) - Load(0x%x with 0x%x)", hResult,
+			pszErrorMessage = ErrorNumberToMessage(hr);
+			if (InternalFunctionPause("FAILED (0x%x - %s) - Load(0x%x with 0x%x)", hr,
 					pszErrorMessage, lpDestTex, lpSrcTex))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wDrawPrimitive
@@ -854,37 +854,37 @@ HRESULT __stdcall wLoad(LPDIRECT3DDEVICE7 d3dDevice7, LPDIRECTDRAWSURFACE7 lpDes
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="dptPrimitiveType"></param>
 /// <param name="dvtVertexType"></param>
 /// <param name="lpvVertices"></param>
 /// <param name="dwVertexCount"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns></returns>
-HRESULT __stdcall wDrawPrimitive(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE dptPrimitiveType,
-	uint32_t dvtVertexType, PVOID lpvVertices, uint32_t dwVertexCount, uint32_t dwFlags)
+HRESULT __stdcall wDrawPrimitive(LPDIRECT3DDEVICE7 d3ddevice7, D3DPRIMITIVETYPE dptPrimitiveType,
+	uint32_t dvtVertexType, PVOID lpvVertices, uint32_t dwVertexCount, uint32_t flags)
 {
 	PSTR pszPrimitiveData;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	pszPrimitiveData =
-		GetDrawPrimitiveData(dptPrimitiveType, dvtVertexType, lpvVertices, dwVertexCount, dwFlags);
+		GetDrawPrimitiveData(dptPrimitiveType, dvtVertexType, lpvVertices, dwVertexCount, flags);
 	InternalFunctionSpew("GameOS_Direct3D", "DrawPrimitive( %s)", pszPrimitiveData);
-	hResult = d3dDevice7->DrawPrimitive(
-		dptPrimitiveType, dvtVertexType, lpvVertices, dwVertexCount, dwFlags);
-	if (FAILED(hResult))
+	hr = d3ddevice7->DrawPrimitive(
+		dptPrimitiveType, dvtVertexType, lpvVertices, dwVertexCount, flags);
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
 			pszPrimitiveData = GetDrawPrimitiveData(
-				dptPrimitiveType, dvtVertexType, lpvVertices, dwVertexCount, dwFlags);
-			pszErrorMessage = ErrorNumberToMessage(hResult);
-			if (InternalFunctionPause("FAILED (0x%x - %s) - DrawPrimitive( %s)", hResult,
+				dptPrimitiveType, dvtVertexType, lpvVertices, dwVertexCount, flags);
+			pszErrorMessage = ErrorNumberToMessage(hr);
+			if (InternalFunctionPause("FAILED (0x%x - %s) - DrawPrimitive( %s)", hr,
 					pszErrorMessage, pszPrimitiveData))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wDrawIndexedPrimitive
@@ -897,40 +897,40 @@ HRESULT __stdcall wDrawPrimitive(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE 
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="d3dptPrimitiveType"></param>
 /// <param name="dwVertexTypeDesc"></param>
 /// <param name="pvVertices"></param>
 /// <param name="dwVertexCount"></param>
 /// <param name="pwIndices"></param>
 /// <param name="dwIndexCount"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns></returns>
-HRESULT __stdcall wDrawIndexedPrimitive(LPDIRECT3DDEVICE7 d3dDevice7,
+HRESULT __stdcall wDrawIndexedPrimitive(LPDIRECT3DDEVICE7 d3ddevice7,
 	D3DPRIMITIVETYPE d3dptPrimitiveType, uint32_t dwVertexTypeDesc, PVOID pvVertices,
-	uint32_t dwVertexCount, puint16_t pwIndices, uint32_t dwIndexCount, uint32_t dwFlags)
+	uint32_t dwVertexCount, uint16_t* pwIndices, uint32_t dwIndexCount, uint32_t flags)
 {
 	PSTR pszPrimitiveData;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 	pszPrimitiveData = GetDrawIndexedPrimitiveData(d3dptPrimitiveType, dwVertexTypeDesc, pvVertices,
-		dwVertexCount, pwIndices, dwIndexCount, dwFlags);
+		dwVertexCount, pwIndices, dwIndexCount, flags);
 	InternalFunctionSpew("GameOS_Direct3D", "DrawIndexedPrimitive( %s)", pszPrimitiveData);
-	hResult = d3dDevice7->DrawIndexedPrimitive(d3dptPrimitiveType, dwVertexTypeDesc, pvVertices,
-		dwVertexCount, pwIndices, dwIndexCount, dwFlags);
-	if (FAILED(hResult))
+	hr = d3ddevice7->DrawIndexedPrimitive(d3dptPrimitiveType, dwVertexTypeDesc, pvVertices,
+		dwVertexCount, pwIndices, dwIndexCount, flags);
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
 			pszPrimitiveData = GetDrawIndexedPrimitiveData(d3dptPrimitiveType, dwVertexTypeDesc,
-				pvVertices, dwVertexCount, pwIndices, dwIndexCount, dwFlags);
-			pszErrorMessage = ErrorNumberToMessage(hResult);
-			if (InternalFunctionPause("FAILED (0x%x - %s) - DrawIndexedPrimitive( %s)", hResult,
+				pvVertices, dwVertexCount, pwIndices, dwIndexCount, flags);
+			pszErrorMessage = ErrorNumberToMessage(hr);
+			if (InternalFunctionPause("FAILED (0x%x - %s) - DrawIndexedPrimitive( %s)", hr,
 					pszErrorMessage, pszPrimitiveData))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wDrawIndexedPrimitiveVB
@@ -942,47 +942,47 @@ HRESULT __stdcall wDrawIndexedPrimitive(LPDIRECT3DDEVICE7 d3dDevice7,
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="d3dptPrimitiveType"></param>
 /// <param name="lpd3dVertexBuffer"></param>
 /// <param name="dwStartVertex"></param>
 /// <param name="dwNumVertices"></param>
 /// <param name="lpwIndices"></param>
 /// <param name="dwIndexCount"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns></returns>
-HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7,
+HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3ddevice7,
 	D3DPRIMITIVETYPE d3dptPrimitiveType, LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer,
-	uint32_t dwStartVertex, uint32_t dwNumVertices, puint16_t lpwIndices, uint32_t dwIndexCount,
-	uint32_t dwFlags)
+	uint32_t dwStartVertex, uint32_t dwNumVertices, uint16_t* lpwIndices, uint32_t dwIndexCount,
+	uint32_t flags)
 {
 	LPDIRECT3DVERTEXBUFFER7 pd3dVertexBufferUsed;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 
 	//InternalFunctionSpew("GameOS_Direct3D", "DrawIndexedPrimitiveVB(0x%x)", lpd3dVertexBuffer);
 
 	if (g_pGetDXVB)
 	{
-		pd3dVertexBufferUsed = g_pGetDXVB(lpd3dVertexBuffer, d3dDevice7);
+		pd3dVertexBufferUsed = g_pGetDXVB(lpd3dVertexBuffer, d3ddevice7);
 	}
 	else
 	{
 		pd3dVertexBufferUsed = lpd3dVertexBuffer;
 	}
-	hResult = d3dDevice7->DrawIndexedPrimitiveVB(d3dptPrimitiveType, pd3dVertexBufferUsed,
-		dwStartVertex, dwNumVertices, lpwIndices, dwIndexCount, dwFlags);
-	if (FAILED(hResult))
+	hr = d3ddevice7->DrawIndexedPrimitiveVB(d3dptPrimitiveType, pd3dVertexBufferUsed,
+		dwStartVertex, dwNumVertices, lpwIndices, dwIndexCount, flags);
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
-			pszErrorMessage = ErrorNumberToMessage(hResult);
-			if (InternalFunctionPause("FAILED (0x%x - %s) - DrawIndexedPrimitiveVB(0x%x)", hResult,
+			pszErrorMessage = ErrorNumberToMessage(hr);
+			if (InternalFunctionPause("FAILED (0x%x - %s) - DrawIndexedPrimitiveVB(0x%x)", hr,
 					pszErrorMessage, lpd3dVertexBuffer))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }
 
 #pragma region wDrawPrimitiveVB
@@ -995,42 +995,42 @@ HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7,
 /// </summary>
 /// <remarks>
 /// </remarks>
-/// <param name="d3dDevice7"></param>
+/// <param name="d3ddevice7"></param>
 /// <param name="d3dptPrimitiveType"></param>
 /// <param name="lpd3dVertexBuffer"></param>
 /// <param name="dwStartVertex"></param>
 /// <param name="dwNumVertices"></param>
-/// <param name="dwFlags"></param>
+/// <param name="flags"></param>
 /// <returns></returns>
-HRESULT __stdcall wDrawPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7,
+HRESULT __stdcall wDrawPrimitiveVB(LPDIRECT3DDEVICE7 d3ddevice7,
 	D3DPRIMITIVETYPE d3dptPrimitiveType, LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer,
-	uint32_t dwStartVertex, uint32_t dwNumVertices, uint32_t dwFlags)
+	uint32_t dwStartVertex, uint32_t dwNumVertices, uint32_t flags)
 {
 	LPDIRECT3DVERTEXBUFFER7 pd3dVertexBufferUsed;
 	PSTR pszErrorMessage;
-	HRESULT hResult;
+	HRESULT hr;
 
 	// InternalFunctionSpew("GameOS_Direct3D", "DrawPrimitiveVB(0x%x)", lpd3dVertexBuffer);
 
 	if (g_pGetDXVB)
 	{
-		pd3dVertexBufferUsed = g_pGetDXVB(lpd3dVertexBuffer, d3dDevice7);
+		pd3dVertexBufferUsed = g_pGetDXVB(lpd3dVertexBuffer, d3ddevice7);
 	}
 	else
 	{
 		pd3dVertexBufferUsed = lpd3dVertexBuffer;
 	}
-	hResult = d3dDevice7->DrawPrimitiveVB(
-		d3dptPrimitiveType, pd3dVertexBufferUsed, dwStartVertex, dwNumVertices, dwFlags);
-	if (FAILED(hResult))
+	hr = d3ddevice7->DrawPrimitiveVB(
+		d3dptPrimitiveType, pd3dVertexBufferUsed, dwStartVertex, dwNumVertices, flags);
+	if (FAILED(hr))
 	{
-		if (hResult != DDERR_SURFACELOST)
+		if (hr != DDERR_SURFACELOST)
 		{
-			pszErrorMessage = ErrorNumberToMessage(hResult);
-			if (InternalFunctionPause("FAILED (0x%x - %s) - DrawPrimitiveVB(0x%x)", hResult,
+			pszErrorMessage = ErrorNumberToMessage(hr);
+			if (InternalFunctionPause("FAILED (0x%x - %s) - DrawPrimitiveVB(0x%x)", hr,
 					pszErrorMessage, lpd3dVertexBuffer))
 				ENTER_DEBUGGER;
 		}
 	}
-	return hResult;
+	return hr;
 }

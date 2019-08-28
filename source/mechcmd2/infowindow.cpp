@@ -75,7 +75,7 @@ ControlButton InfoWindow::buttons[2] = {0};
 
 InfoWindow* InfoWindow::s_instance = nullptr;
 
-#define SCROLLAMOUNT 3.f * Environment.screenWidth / 640.f
+#define SCROLLAMOUNT 3.f * Environment.screenwidth / 640.f
 extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 
 // initialize statics
@@ -139,8 +139,8 @@ InfoWindow::init(FitIniFile& file)
 	}
 	file.readIdLong("XLocation", InfoWindow::INFOLEFT);
 	file.readIdLong("YLocation", InfoWindow::INFOTOP);
-	file.readIdLong("Width", InfoWindow::INFOWIDTH);
-	file.readIdLong("Height", InfoWindow::INFOHEIGHT);
+	file.readIdLong("width", InfoWindow::INFOWIDTH);
+	file.readIdLong("height", InfoWindow::INFOHEIGHT);
 	InfoWindow::INFOLEFT += ControlGui::hiResOffsetX;
 	InfoWindow::INFOTOP += ControlGui::hiResOffsetY;
 	file.readIdLong("SkipBetweenSections", InfoWindow::SECTIONSKIP);
@@ -156,7 +156,7 @@ InfoWindow::init(FitIniFile& file)
 	file.readIdLong("ScrollBarBottom", InfoWindow::SCROLLBOTTOM);
 	file.readIdLong("ScrollBarLeft", InfoWindow::SCROLLLEFT);
 	file.readIdLong("ScrollBarRight", InfoWindow::SCROLLRIGHT);
-	file.readIdLong("ScrollBarColor", InfoWindow::SCROLLCOLOR);
+	file.readIdLong("ScrollBarcolour", InfoWindow::SCROLLCOLOR);
 	InfoWindow::SCROLLTOP += ControlGui::hiResOffsetY;
 	InfoWindow::SCROLLBOTTOM += ControlGui::hiResOffsetY;
 	InfoWindow::SCROLLLEFT += ControlGui::hiResOffsetX;
@@ -187,22 +187,22 @@ InfoWindow::init(FitIniFile& file)
 	InfoWindow::HEALTHBOTTOM += ControlGui::hiResOffsetY;
 	file.readIdLong("DividerLeft", InfoWindow::DIVIDERLEFT);
 	file.readIdLong("DividerRight", InfoWindow::DIVIDERRIGHT);
-	file.readIdLong("DividerColor", InfoWindow::DIVIDERCOLOR);
+	file.readIdLong("Dividercolour", InfoWindow::DIVIDERCOLOR);
 	InfoWindow::DIVIDERLEFT += ControlGui::hiResOffsetX;
 	InfoWindow::DIVIDERRIGHT += ControlGui::hiResOffsetX;
 	file.readIdLong("PilotLeft", InfoWindow::PILOTLEFT);
 	file.readIdLong("PilotRight", InfoWindow::PILOTRIGHT);
 	InfoWindow::PILOTLEFT += ControlGui::hiResOffsetX;
 	InfoWindow::PILOTRIGHT += ControlGui::hiResOffsetX;
-	file.readIdLong("PilotHeight", InfoWindow::PILOTHEIGHT);
+	file.readIdLong("Pilotheight", InfoWindow::PILOTHEIGHT);
 	file.readIdLong("PilotNameLeft", PILOTNAMELEFT);
 	PILOTNAMELEFT += ControlGui::hiResOffsetX;
 	file.readIdLong("MechIconLeft", InfoWindow::MECHLEFT);
 	file.readIdLong("MechIconRight", InfoWindow::MECHRIGHT);
-	file.readIdLong("MechIconHeight", InfoWindow::MECHHEIGHT);
+	file.readIdLong("MechIconheight", InfoWindow::MECHHEIGHT);
 	file.readIdLong("MechIconBackLeft", InfoWindow::MECHBACKLEFT);
 	file.readIdLong("MechIconBackRight", InfoWindow::MECHBACKRIGHT);
-	file.readIdLong("MechIconBackHeight", InfoWindow::MECHBACKHEIGHT);
+	file.readIdLong("MechIconBackheight", InfoWindow::MECHBACKHEIGHT);
 	InfoWindow::MECHLEFT += ControlGui::hiResOffsetX;
 	InfoWindow::MECHRIGHT += ControlGui::hiResOffsetX;
 	InfoWindow::MECHBACKLEFT += ControlGui::hiResOffsetX;
@@ -212,9 +212,9 @@ InfoWindow::init(FitIniFile& file)
 	file.readIdLong("Right", InfoWindow::SKILLRIGHT);
 	InfoWindow::SKILLLEFT += ControlGui::hiResOffsetX;
 	InfoWindow::SKILLRIGHT += ControlGui::hiResOffsetX;
-	file.readIdLong("Height", InfoWindow::SKILLHEIGHT);
+	file.readIdLong("height", InfoWindow::SKILLHEIGHT);
 	file.readIdLong("Skip", InfoWindow::SKILLSKIP);
-	file.readIdLong("UnitWidth", InfoWindow::SKILLUNITWIDTH);
+	file.readIdLong("Unitwidth", InfoWindow::SKILLUNITWIDTH);
 	file.readIdLong("NumberUnits", InfoWindow::NUMBERSKILLBARS);
 	file.seekBlock("ScrollButton");
 	file.readIdLong("Min", SCROLLMIN);
@@ -223,12 +223,12 @@ InfoWindow::init(FitIniFile& file)
 	SCROLLMIN += ControlGui::hiResOffsetY;
 	SCROLLMAX += ControlGui::hiResOffsetY;
 	SCROLLBUTTONX += ControlGui::hiResOffsetX;
-	file.readIdLong("Width", SCROLLBUTTONWIDTH);
-	file.readIdLong("Height", SCROLLBUTTONHEIGHT);
+	file.readIdLong("width", SCROLLBUTTONWIDTH);
+	file.readIdLong("height", SCROLLBUTTONHEIGHT);
 	file.readIdLong("UNormal", SCROLLBUTTONU);
 	file.readIdLong("VNormal", SCROLLBUTTONV);
 	ControlButton::initButtons(file, 2, buttons, buttonData, "InfoButton");
-	char SkillText[32];
+	wchar_t SkillText[32];
 	for (i = 0; i < 7; i++)
 	{
 		sprintf(SkillText, "Skill%ld", i);
@@ -330,15 +330,15 @@ InfoWindow::render()
 		buttons[0].disable(0);
 		buttons[1].disable(0);
 		float physicalRange = buttons[1].location[0].y - buttons[0].location[2].y;
-		float buttonHeight = SCROLLBUTTONHEIGHT;
+		float buttonheight = SCROLLBUTTONHEIGHT;
 		float RealRange = infoLength;
-		buttonHeight = physicalRange * physicalRange / (physicalRange + RealRange);
-		if (buttonHeight < SCROLLBUTTONHEIGHT)
-			buttonHeight = SCROLLBUTTONHEIGHT;
-		SCROLLMAX = buttons[1].location[0].y - buttonHeight - 2;
+		buttonheight = physicalRange * physicalRange / (physicalRange + RealRange);
+		if (buttonheight < SCROLLBUTTONHEIGHT)
+			buttonheight = SCROLLBUTTONHEIGHT;
+		SCROLLMAX = buttons[1].location[0].y - buttonheight - 2;
 		v[2].x = v[3].x = SCROLLBUTTONX + SCROLLBUTTONWIDTH;
 		v[1].y = v[2].y = SCROLLBOTTOM;
-		v[1].y = v[2].y = v[0].y + buttonHeight;
+		v[1].y = v[2].y = v[0].y + buttonheight;
 		//	v[2].u = v[3].u = .1/256.f + (float)(SCROLLBUTTONU +
 		//((float)SCROLLBUTTONWIDTH))/256.f; 	v[1].v = v[2].v = .1/256.f +
 		//(float)(SCROLLBUTTONV + ((float)SCROLLBUTTONHEIGHT))/256.f;
@@ -365,9 +365,9 @@ InfoWindow::render()
 		v[2].x = v[3].x = HEALTHRIGHT;
 		v[0].y = v[3].y = HEALTHTOP;
 		v[1].y = v[2].y = HEALTHBOTTOM;
-		uint32_t dimColor = (color & 0xff7f7f7f);
+		uint32_t dimcolour = (color & 0xff7f7f7f);
 		for (size_t i = 0; i < 4; i++)
-			v[i].argb = dimColor;
+			v[i].argb = dimcolour;
 		gos_DrawQuads(v, 4);
 		v[2].x = v[3].x = HEALTHLEFT + (HEALTHRIGHT - HEALTHLEFT) * barStatus;
 		for (i = 0; i < 4; i++)
@@ -376,7 +376,7 @@ InfoWindow::render()
 	}
 	else
 	{
-		char noUnit[256];
+		wchar_t noUnit[256];
 		cLoadString(IDS_NOUNIT, noUnit, 255);
 		drawName(noUnit);
 	}
@@ -426,12 +426,12 @@ InfoWindow::update()
 	{
 		// if its in the thumbdrag thingie, save the y
 		float physicalRange = buttons[1].location[0].y - buttons[0].location[2].y;
-		float buttonHeight = SCROLLBUTTONHEIGHT;
+		float buttonheight = SCROLLBUTTONHEIGHT;
 		float RealRange = infoLength;
-		buttonHeight = physicalRange * physicalRange / (physicalRange + RealRange);
-		if (buttonHeight < SCROLLBUTTONHEIGHT)
-			buttonHeight = SCROLLBUTTONHEIGHT;
-		if (mouseY > scrollPos + SCROLLMIN && mouseY < scrollPos + SCROLLMIN + buttonHeight)
+		buttonheight = physicalRange * physicalRange / (physicalRange + RealRange);
+		if (buttonheight < SCROLLBUTTONHEIGHT)
+			buttonheight = SCROLLBUTTONHEIGHT;
+		if (mouseY > scrollPos + SCROLLMIN && mouseY < scrollPos + SCROLLMIN + buttonheight)
 		{
 			lastYClick = scrollPos;
 		}
@@ -444,11 +444,11 @@ InfoWindow::update()
 				// if above the thumb, page up, otherwise page down
 				if (mouseY < SCROLLMIN + scrollPos)
 				{
-					newScrollPos = scrollPos - buttonHeight;
+					newScrollPos = scrollPos - buttonheight;
 				}
-				else if (mouseY > SCROLLMIN + scrollPos + buttonHeight)
+				else if (mouseY > SCROLLMIN + scrollPos + buttonheight)
 				{
-					newScrollPos = scrollPos + buttonHeight;
+					newScrollPos = scrollPos + buttonheight;
 				}
 				if (newScrollPos < 0)
 					newScrollPos = 0;
@@ -485,14 +485,14 @@ InfoWindow::drawScrollingStuff()
 		if (curY > NAMEBOTTOM) // draw divider if visible
 			drawDivider(curY);
 	}
-	int32_t textColors[4] = {0xff6E7C00, 0xff005392, 0xffA21600};
-	char disabledCount[60][2];
+	int32_t textcolours[4] = {0xff6E7C00, 0xff005392, 0xffA21600};
+	wchar_t disabledCount[60][2];
 	int32_t ammo[60];
-	char ranges[60];
+	wchar_t ranges[60];
 	int32_t names[60];
-	memset(disabledCount, 0, sizeof(char) * 60 * 2);
+	memset(disabledCount, 0, sizeof(wchar_t) * 60 * 2);
 	memset(names, 0, sizeof(const std::wstring_view&) * 60);
-	memset(ranges, 0, sizeof(char) * 60);
+	memset(ranges, 0, sizeof(wchar_t) * 60);
 	memset(ammo, 0, sizeof(int32_t) * 60);
 	bool bDraw[4];
 	memset(bDraw, 0, sizeof(bool) * 4);
@@ -540,28 +540,28 @@ InfoWindow::drawScrollingStuff()
 	uint32_t height = componentFont.height();
 	// removing headers for now
 	//	int32_t stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG,
-	// IDS_COMPONENT}; 	int32_t headerColors[4] = { 0xFFC8E100, 0xff0091FF,
+	// IDS_COMPONENT}; 	int32_t headercolours[4] = { 0xFFC8E100, 0xff0091FF,
 	// 0xFFFF0000, 0xffFF8A00 };
 	const std::wstring_view& capHeader;
 	for (size_t j = 0; j < 3; j++)
 	{
 		if (!bDraw[j]) // make sure we have one
 			continue;
-		//		char header[64];
+		//		wchar_t header[64];
 		if (curY > NAMETOP)
 		{
 			//			cLoadString( stringIDs[j], header, 63 );
 			//			capHeader = header;
 			// capHeader.MakeUpper();
 			//			componentFont.render( capHeader, COMPONENTLEFT, curY,
-			// SCROLLLEFT - COMPONENTLEFT, height, headerColors[j], 0, 0 );
+			// SCROLLLEFT - COMPONENTLEFT, height, headercolours[j], 0, 0 );
 		}
 		//		curY += height;
 		for (i = 0; i < curComponentCount; i++)
 		{
 			if (!names[i])
 				break;
-			char tmpName[256];
+			wchar_t tmpName[256];
 			if (ranges[i] == j)
 			{
 				if (curY > NAMETOP)
@@ -570,7 +570,7 @@ InfoWindow::drawScrollingStuff()
 					capHeader.Format(
 						"%ld/%ld  %s", disabledCount[i][0], disabledCount[i][1], tmpName);
 					componentFont.render(capHeader, COMPONENTLEFT, curY, SCROLLLEFT - COMPONENTLEFT,
-						height, textColors[j], 0, 0);
+						height, textcolours[j], 0, 0);
 				}
 				curY += height;
 				if (ammo[i] != -1)
@@ -578,12 +578,12 @@ InfoWindow::drawScrollingStuff()
 					if (curY > NAMETOP)
 					{
 						// make the ammo number
-						char tmpNumber[64];
-						char tmpNumber2[64];
+						wchar_t tmpNumber[64];
+						wchar_t tmpNumber2[64];
 						cLoadString(IDS_MISSION_SHOTSLEFT, tmpNumber, 63);
 						sprintf(tmpNumber2, tmpNumber, ammo[i]);
 						componentFont.render(tmpNumber2, COMPONENTLEFT, curY,
-							SCROLLLEFT - COMPONENTLEFT, height, textColors[j], 0, 0);
+							SCROLLLEFT - COMPONENTLEFT, height, textcolours[j], 0, 0);
 					}
 					curY += height;
 				}
@@ -606,7 +606,7 @@ InfoWindow::drawScrollingStuff()
 		{
 			//			cLoadString( stringIDs[j], header, 63 );
 			//			componentFont.render( header, COMPONENTLEFT, curY,
-			// SCROLLLEFT - COMPONENTLEFT, height, headerColors[j], 0, 0 );
+			// SCROLLLEFT - COMPONENTLEFT, height, headercolours[j], 0, 0 );
 		}
 		//		curY += height;
 	}
@@ -619,7 +619,7 @@ InfoWindow::drawScrollingStuff()
 			// disabled. No matter what the setting is!!
 			//			if (pUnit->inventory[count[curWeapon]].disabled)
 			//				color = 0xff7f7f7f;
-			char tmpName[256];
+			wchar_t tmpName[256];
 			cLoadString(IDS_COMP_ABBR0 + pUnit->inventory[count[curWeapon]].masterID, tmpName, 255);
 			if (curY > NAMETOP)
 			{
@@ -649,7 +649,7 @@ InfoWindow::drawScrollingStuff()
 				float top = curY + PILOTHEIGHT / 2 - height / 2;
 				float bottom = top + height;
 				// draw the name of the pilot
-				char deadPilotName[256];
+				wchar_t deadPilotName[256];
 				cLoadString(IDS_NOPILOT, deadPilotName, 255);
 				capHeader = pWarrior->active() ? pWarrior->getName() : deadPilotName;
 				componentFont.render(capHeader, PILOTNAMELEFT, top, right - PILOTNAMELEFT,
@@ -661,7 +661,7 @@ InfoWindow::drawScrollingStuff()
 		curY += SECTIONSKIP;
 		int32_t rank = pWarrior->getRank();
 		int32_t skills[2] = {Skill::gunnery, Skill::piloting};
-		char buffer[256];
+		wchar_t buffer[256];
 		// ACE not continguous with other ranks.  Added too late!
 		if (rank != 4)
 			cLoadString(IDS_GREEN + rank, buffer, 256);
@@ -787,7 +787,7 @@ InfoWindow::drawSkillBar(int32_t skill, float yVal, float height)
 		rect.left += SKILLUNITWIDTH + 1;
 		rect.right = rect.left + SKILLUNITWIDTH;
 	}
-	char buffer[32];
+	wchar_t buffer[32];
 	sprintf(buffer, "%ld", skill);
 	componentFont.render(
 		buffer, SKILLRIGHT + 2, yVal, SCROLLLEFT - SKILLRIGHT - 2, SKILLHEIGHT, 0xff005392, 0, 0);

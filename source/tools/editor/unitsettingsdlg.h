@@ -41,7 +41,7 @@ protected:
 
 	// Implementation
 protected:
-	void DoColorBox(CWnd* pWnd);
+	void DocolourBox(CWnd* pWnd);
 
 	//{{AFX_MSG(UnitSettingsDlg)
 	afx_msg void OnSelchangeGroup(void);
@@ -53,7 +53,7 @@ protected:
 	afx_msg void OnBaseedit(void);
 	virtual void OnOK(void);
 	virtual BOOL OnInitDialog(void);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
+	afx_msg HBRUSH OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour);
 	afx_msg void OnSelchangeMech(void);
 	virtual void OnCancel(void);
 	//}}AFX_MSG

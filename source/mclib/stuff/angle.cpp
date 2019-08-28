@@ -6,9 +6,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 #include "stuff/angle.h"
 
 using namespace Stuff;
@@ -18,9 +18,9 @@ using namespace Stuff;
 //#############################################################################
 //
 float
-Radian::Normalize(float Value)
+Radian::Normalize(float value)
 {
-	float temp = static_cast<float>(fmod(Value, Two_Pi));
+	float temp = static_cast<float>(fmod(value, Two_Pi));
 	if (temp > Pi)
 	{
 		temp -= Two_Pi;

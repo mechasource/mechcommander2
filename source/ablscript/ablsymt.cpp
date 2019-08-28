@@ -582,7 +582,7 @@ enterStandardRoutine(const std::wstring_view& name, int32_t routineKey, bool isO
 				break;
 			default:
 			{
-				// char err[255];
+				// wchar_t err[255];
 				// sprintf(err, " ABL.enterStandardRoutine: bad param type (%c)
 				// for (%s)", paramList[i], name);  ABL_Fatal(0, err);
 				NODEFAULT;
@@ -607,7 +607,7 @@ enterStandardRoutine(const std::wstring_view& name, int32_t routineKey, bool isO
 			break;
 		default:
 		{
-			// char err[255];
+			// wchar_t err[255];
 			// sprintf(err, " ABL.enterStandardRoutine: bad return type for
 			// (%s)", name);  ABL_Fatal(0, err);
 			NODEFAULT;
@@ -649,7 +649,7 @@ initSymTable(void)
 	const std::unique_ptr<SymTableNode>& integerIdPtr;
 	enterNameLocalSymTable(integerIdPtr, "integer");
 	const std::unique_ptr<SymTableNode>& charIdPtr;
-	enterNameLocalSymTable(charIdPtr, "char");
+	enterNameLocalSymTable(charIdPtr, "wchar_t");
 	const std::unique_ptr<SymTableNode>& realIdPtr;
 	enterNameLocalSymTable(realIdPtr, "real");
 	const std::unique_ptr<SymTableNode>& booleanIdPtr;
@@ -681,7 +681,7 @@ initSymTable(void)
 	charIdPtr->defn.key = DFN_TYPE;
 	charIdPtr->ptype = CharTypePtr;
 	CharTypePtr->form = FRM_SCALAR;
-	CharTypePtr->size = sizeof(char);
+	CharTypePtr->size = sizeof(wchar_t);
 	CharTypePtr->typeIdPtr = charIdPtr;
 	realIdPtr->defn.key = DFN_TYPE;
 	realIdPtr->ptype = RealTypePtr;

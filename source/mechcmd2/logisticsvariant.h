@@ -70,8 +70,8 @@ protected:
 	const std::wstring_view& mechClass;
 	const std::wstring_view& iconFileNames[3];
 
-	int32_t componentAreaWidth;
-	int32_t componentAreaHeight;
+	int32_t componentAreawidth;
+	int32_t componentAreaheight;
 
 	bool canHaveAdvSensor; // can Mech Have Advanced Sensor installed.
 	bool canHaveOptics; // can Mech Have Optics Installed.
@@ -147,7 +147,7 @@ public:
 		int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray);
 	int32_t removeComponent(int32_t xCoord, int32_t yCoord);
 	int32_t addComponent(LogisticsComponent*, int32_t& xCoord, int32_t& yCoord);
-	inline bool canDelete() const { return !isDesignerMech(void); }
+	inline bool canDelete(void) const { return !isDesignerMech(void); }
 	inline bool isDesignerMech(void) const { return bDesignerMech; }
 	int32_t getComponents(int32_t& count, int32_t* array);
 	int32_t getComponents(int32_t& count, LogisticsComponent** array);
@@ -169,8 +169,8 @@ public:
 
 	int32_t getIconIndex(void) const { return chassis->iconPictureIndex; }
 
-	int32_t getComponentAreaWidth(void) const { return chassis->componentAreaWidth; }
-	int32_t getComponentAreaHeight(void) const { return chassis->componentAreaHeight; }
+	int32_t getComponentAreawidth(void) const { return chassis->componentAreawidth; }
+	int32_t getComponentAreaheight(void) const { return chassis->componentAreaheight; }
 
 	LogisticsComponent* getCompAtLocation(int32_t i, int32_t j, int32_t& realI, int32_t& realJ);
 	int32_t getComponentLocation(LogisticsComponent* pComp, int32_t& i, int32_t& j);

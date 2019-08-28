@@ -34,13 +34,13 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 	if (pComp)
 	{
 		name.setText(pComponent->getName());
-		char numericText[32];
+		wchar_t numericText[32];
 		sprintf(numericText, "%ld", pComponent->getCost());
 		costText.setText(numericText);
 		sprintf(numericText, "%.0lf", pComponent->getHeat());
 		heatText.setText(numericText);
-		int32_t sizeX = pComponent->getComponentWidth();
-		int32_t sizeY = pComponent->getComponentHeight();
+		int32_t sizeX = pComponent->getComponentwidth();
+		int32_t sizeY = pComponent->getComponentheight();
 		const std::wstring_view& pFile = pComponent->getIconFileName();
 		FullPathFileName path;
 		path.init(artPath, pFile, "tga");
@@ -90,7 +90,7 @@ ComponentListItem::init(FitIniFile& file)
 	if (!s_templateItem)
 	{
 		s_templateItem = new ComponentListItem(nullptr);
-		char animName[COMP_ANIMATION_COUNT][32];
+		wchar_t animName[COMP_ANIMATION_COUNT][32];
 		for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 		{
 			sprintf(animName[i], "Animation%ld", i);
@@ -117,10 +117,10 @@ ComponentListItem::init(FitIniFile& file)
 
 void
 ComponentListItem::assignAnimation(
-	FitIniFile& file, int32_t whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* object)
+	FitIniFile& file, int32_t whichChild, wchar_t animNames[COMP_ANIMATION_COUNT][32], aObject* object)
 {
 	s_templateItem->pChildAnims[whichChild] = 0;
-	char tmpAnimName[32];
+	wchar_t tmpAnimName[32];
 	file.readIdString("Animation", tmpAnimName, 31);
 	for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 	{
@@ -139,26 +139,26 @@ ComponentListItem::render()
 	aListItem::render();
 	// draw rects, these aren't children
 	outline.moveTo(globalX(), globalY());
-	outline.setColor(animations[0].getCurrentColor(animations[0].getState()));
+	outline.setcolour(animations[0].getCurrentcolour(animations[0].getState()));
 	outline.render();
 	iconOutline.moveTo(globalX() + s_templateItem->iconOutline.left(),
 		globalY() + s_templateItem->iconOutline.top());
-	iconOutline.setColor(animations[0].getCurrentColor(animations[0].getState()));
+	iconOutline.setcolour(animations[0].getCurrentcolour(animations[0].getState()));
 	iconOutline.render();
 	for (size_t i = 0; i < 6; i++)
 	{
 		if (pChildAnims[i])
 		{
-			int32_t color = pChildAnims[i]->getCurrentColor(pChildAnims[i]->getState());
-			child(i)->setColor(color);
+			int32_t color = pChildAnims[i]->getCurrentcolour(pChildAnims[i]->getState());
+			child(i)->setcolour(color);
 		}
 	}
 	if (MechLabScreen::instance()->canAddComponent(pComponent))
 	{
-		icon.setColor(0xff404040);
+		icon.setcolour(0xff404040);
 	}
 	else
-		icon.setColor(0xffffffff);
+		icon.setcolour(0xffffffff);
 }
 
 void
@@ -395,11 +395,11 @@ void
 ComponentIconListBox::addSortedItem(ComponentListItem* pItem)
 {
 	int32_t size =
-		pItem->getComponent()->getComponentHeight() * pItem->getComponent()->getComponentWidth();
+		pItem->getComponent()->getComponentheight() * pItem->getComponent()->getComponentwidth();
 	for (size_t i = 0; i < itemCount; i++)
 	{
 		LogisticsComponent* pTmp = ((ComponentListItem*)items[i])->getComponent();
-		int32_t tmpSize = pTmp->getComponentHeight() * pTmp->getComponentWidth();
+		int32_t tmpSize = pTmp->getComponentheight() * pTmp->getComponentwidth();
 		if (size > tmpSize)
 		{
 			InsertItem(pItem, i);

@@ -23,17 +23,17 @@
 #include "zlib.h"
 
 #ifndef _MBCS
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #else
-#include <assert.h>
-#define gosASSERT assert
+#include <_ASSERT.h>
+#define gosASSERT _ASSERT
 #define gos_Malloc malloc
 #define gos_Free free
 #endif
 
 #include <string.h>
 //---------------------------------------------------------------------------
-extern puint8_t LZPacketBuffer;
+extern uint8_t* LZPacketBuffer;
 extern uint32_t LZPacketBufferSize;
 //---------------------------------------------------------------------------
 // class PacketFile
@@ -96,7 +96,7 @@ PacketFile::atClose(void)
 		if (seekTable)
 		{
 			seek(sizeof(int32_t) * 2); // File Version & File Length
-			write(puint8_t(seekTable), (numPackets * sizeof(int32_t)));
+			write(uint8_t*(seekTable), (numPackets * sizeof(int32_t)));
 		}
 		//------------------------------------------------------
 		// Is we were using a checkSum, calc it and write it to
@@ -118,10 +118,10 @@ PacketFile::checkSumFile(void)
 	//-----------------------------------------
 	int32_t currentPosition = logicalPosition;
 	seek(4);
-	puint8_t fileMap = (puint8_t)malloc(fileSize());
+	uint8_t* fileMap = (uint8_t*)malloc(fileSize());
 	read(fileMap, fileSize());
 	int32_t sum = 0;
-	puint8_t curFileByte = fileMap;
+	uint8_t* curFileByte = fileMap;
 	for (uint32_t i = 4; i < fileSize(); i++, curFileByte++)
 	{
 		sum += *curFileByte;
@@ -161,7 +161,7 @@ PacketFile::afterOpen(void)
 			seekTable = (int32_t*)systemHeap->Malloc(numPackets * sizeof(int32_t));
 			gosASSERT(seekTable != nullptr);
 			seek(sizeof(int32_t) * 2); // File Version & File Length
-			read(puint8_t(seekTable), (numPackets * sizeof(int32_t)));
+			read(uint8_t*(seekTable), (numPackets * sizeof(int32_t)));
 		}
 	}
 	return (NO_ERROR);
@@ -256,7 +256,7 @@ PacketFile::readPacketOffset(int32_t packet, int32_t* lastType)
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::readPacket(int32_t packet, puint8_t buffer)
+PacketFile::readPacket(int32_t packet, uint8_t* buffer)
 {
 	int32_t result = 0;
 	if ((packet == -1) || (packet == currentPacket) || (seekPacket(packet) == NO_ERROR))
@@ -275,14 +275,14 @@ PacketFile::readPacket(int32_t packet, puint8_t buffer)
 				seek(packetBase + sizeof(int32_t));
 				if (!LZPacketBuffer)
 				{
-					LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
+					LZPacketBuffer = (uint8_t*)malloc(LZPacketBufferSize);
 					gosASSERT(LZPacketBuffer);
 				}
 				if ((int32_t)LZPacketBufferSize < packetSize)
 				{
 					LZPacketBufferSize = packetSize;
 					free(LZPacketBuffer);
-					LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
+					LZPacketBuffer = (uint8_t*)malloc(LZPacketBufferSize);
 					gosASSERT(LZPacketBuffer);
 				}
 				if (LZPacketBuffer)
@@ -302,14 +302,14 @@ PacketFile::readPacket(int32_t packet, puint8_t buffer)
 				seek(packetBase + sizeof(int32_t));
 				if (!LZPacketBuffer)
 				{
-					LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
+					LZPacketBuffer = (uint8_t*)malloc(LZPacketBufferSize);
 					gosASSERT(LZPacketBuffer);
 				}
 				if ((int32_t)LZPacketBufferSize < packetSize)
 				{
 					LZPacketBufferSize = packetSize;
 					free(LZPacketBuffer);
-					LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
+					LZPacketBuffer = (uint8_t*)malloc(LZPacketBufferSize);
 					gosASSERT(LZPacketBuffer);
 				}
 				if (LZPacketBuffer)
@@ -337,7 +337,7 @@ PacketFile::readPacket(int32_t packet, puint8_t buffer)
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::readPackedPacket(int32_t packet, puint8_t buffer)
+PacketFile::readPackedPacket(int32_t packet, uint8_t* buffer)
 {
 	int32_t result = 0;
 	if ((packet == -1) || (packet == currentPacket) || (seekPacket(packet) == NO_ERROR))
@@ -499,14 +499,14 @@ PacketFile::reserve(int32_t count, bool useCheckSum)
 		if (seekTable != nullptr)
 		{
 			seek(sizeof(int32_t) * 2); // File Version & File Length
-			read(puint8_t(seekTable), (numPackets * sizeof(int32_t)));
+			read(uint8_t*(seekTable), (numPackets * sizeof(int32_t)));
 		}
 	}
 }
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::writePacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t pType)
+PacketFile::writePacket(int32_t packet, uint8_t* buffer, int32_t nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -519,13 +519,13 @@ PacketFile::writePacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t
 	// exists.  In theory, it could be smaller but the check
 	// right now doesn't allow anything but same size.
 	int32_t result = 0;
-	puint8_t workBuffer = nullptr;
+	uint8_t* workBuffer = nullptr;
 	if (pType == ANY_PACKET_TYPE || pType == STORAGE_TYPE_LZD || pType == STORAGE_TYPE_ZLIB)
 	{
 		if ((nbytes << 1) < 4096)
-			workBuffer = (puint8_t)malloc(4096);
+			workBuffer = (uint8_t*)malloc(4096);
 		else
-			workBuffer = (puint8_t)malloc(nbytes << 1);
+			workBuffer = (uint8_t*)malloc(nbytes << 1);
 		gosASSERT(workBuffer != nullptr);
 	}
 	gosASSERT((packet > 0) || (packet < numPackets));
@@ -612,7 +612,7 @@ PacketFile::writePacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t
 #define DEFAULT_MAX_PACKET 65535
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t pType)
+PacketFile::insertPacket(int32_t packet, uint8_t* buffer, int32_t nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -629,7 +629,7 @@ PacketFile::insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_
 	}
 	//---------------------------------------------------------------
 	// Only used here, so OK if regular WINDOWS(tm) malloc!
-	puint8_t workBuffer = (puint8_t)malloc(DEFAULT_MAX_PACKET);
+	uint8_t* workBuffer = (uint8_t*)malloc(DEFAULT_MAX_PACKET);
 	//-------------------------------------------------------------
 	// All new code here.  Basically, open a new packet file,
 	// write each of the old packets and this new one.  Close all
@@ -651,7 +651,7 @@ PacketFile::insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_
 				//----------------------------------------------------
 				// Not sure what to do here.  We'll try reallocating
 				::free(workBuffer);
-				workBuffer = (puint8_t)malloc(packetSize);
+				workBuffer = (uint8_t*)malloc(packetSize);
 			}
 			tmpFile.writePacket(i, buffer, nbytes, pType);
 		}
@@ -665,7 +665,7 @@ PacketFile::insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_
 				//----------------------------------------------------
 				// Not sure what to do here.  We'll try reallocating
 				::free(workBuffer);
-				workBuffer = (puint8_t)malloc(packetSize);
+				workBuffer = (uint8_t*)malloc(packetSize);
 			}
 			readPacket(i, workBuffer);
 			tmpFile.writePacket(i, workBuffer, packetSize, storageType);
@@ -673,7 +673,7 @@ PacketFile::insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_
 	}
 	//------------------------------------
 	// Now close and reassign everything.
-	char ourFileName[250];
+	wchar_t ourFileName[250];
 	int32_t ourFileMode = 0;
 	strcpy(ourFileName, m_fileName);
 	ourFileMode = fileMode;
@@ -689,7 +689,7 @@ PacketFile::insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::writePacket(int32_t packet, puint8_t buffer)
+PacketFile::writePacket(int32_t packet, uint8_t* buffer)
 {
 	//--------------------------------------------------------
 	// This function replaces the packet with the contents

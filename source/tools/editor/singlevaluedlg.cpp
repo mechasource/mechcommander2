@@ -1,5 +1,5 @@
 /*************************************************************************************************\
-HeightDlg.cpp			: Implementation of the AssignHeight component.  This
+heightDlg.cpp			: Implementation of the Assignheight component.  This
 thing lets you assign a particular elevation to selected vertices
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
@@ -26,7 +26,7 @@ SingleValueDlg::~SingleValueDlg() {}
 void
 SingleValueDlg::Init()
 {
-	char minTxt[256];
+	wchar_t minTxt[256];
 	itoa(val, minTxt, 10);
 	((CEdit*)GetDlgItem(IDC_HEIGHT))->SetWindowText(minTxt);
 	((CStatic*)GetDlgItem(IDC_TEXT))->SetWindowText(staticText);
@@ -36,7 +36,7 @@ SingleValueDlg::Init()
 void
 SingleValueDlg::OnOK()
 {
-	char wcsMinTxt[256];
+	wchar_t wcsMinTxt[256];
 	((CEdit*)GetDlgItem(IDC_HEIGHT))->GetWindowText(wcsMinTxt, 256);
 	val = atoi(wcsMinTxt);
 	CDialog::OnOK();
@@ -49,7 +49,7 @@ SingleValueDlg::OnOK()
 	{
 		wchar_t wcsMinTxt[256];
 		((Entry*)GetDlgItem( IDC_HEIGHT ))->GetEntry( wcsMinTxt, 256 );
-		char minTxt[256];
+		wchar_t minTxt[256];
 		WcsToStr( minTxt, wcsMinTxt );
 		val = atoi( minTxt );
 		szText = 0; // otherwise it will try and free this
@@ -63,10 +63,10 @@ SingleValueDlg::OnOK()
 void
 SingleValueDlg::Update()
 {
-	char minTxt[256];
+	wchar_t minTxt[256];
 	itoa(val, minTxt, 10);
 	((CEdit*)GetDlgItem(IDC_HEIGHT))->SetWindowText(minTxt);
 	((CStatic*)GetDlgItem(IDC_TEXT))->SetWindowText(staticText);
 }
 
-// end of file ( HeightDlg.cpp )
+// end of file ( heightDlg.cpp )

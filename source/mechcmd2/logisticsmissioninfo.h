@@ -63,7 +63,7 @@ public:
 	void incrementCBills(int32_t amount) { CBills += amount; }
 	void decrementCBills(int32_t amount) { CBills -= amount; }
 
-	const std::wstring_view& getCampaignName() const { return campaignName; }
+	const std::wstring_view& getCampaignName(void) const { return campaignName; }
 	const std::wstring_view& getCampaignDisplayName(void) const { return campaignDisplayName; }
 
 	bool campaignOver(void) const;

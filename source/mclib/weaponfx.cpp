@@ -14,7 +14,7 @@
 //---------------------------------------------------------------------------------
 // weapon FX Equivalancy.  Stores names now for GOS FX
 WeaponEffects* weaponEffects = nullptr;
-char mc2_word_none[5] = "NONE";
+wchar_t mc2_word_none[5] = "NONE";
 
 //---------------------------------------------------------------------------------
 void

@@ -12,12 +12,12 @@
 #include "campaigndata.h"
 #include "MissionDialog.h"
 #include "paths.h"
-#include "assert.h"
+#include "_ASSERT.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+static wchar_t THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -228,7 +228,7 @@ CGroupDialog::OnGrRemoveButton()
 		for (index = 0; index < selectedItemIndex; index++)
 		{
 			it++;
-			assert(!it.IsDone());
+			_ASSERT(!it.IsDone());
 		}
 		m_MissionList.Delete(it);
 		UpdateData(TRUE);

@@ -7,8 +7,8 @@
 #ifndef MLR_MLR_I_MT_PMESH_HPP
 #define MLR_MLR_I_MT_PMESH_HPP
 
-#include <mlr/gosvertex.hpp>
-#include <mlr/mlr_i_pmesh.hpp>
+#include "mlr/gosvertex.h"
+#include "mlr/mlr_i_pmesh.h"
 
 namespace MidLevelRenderer
 {
@@ -49,7 +49,7 @@ public:
 	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass = 0);
-	void GetTexCoordData(Stuff::Vector2DScalar** data, psize_t dataSize, size_t pass = 0);
+	void GetTexCoordData(Stuff::Vector2DScalar** data, size_t* dataSize, size_t pass = 0);
 
 	virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 	{
@@ -138,7 +138,7 @@ protected:
 };
 
 MLRShape*
-CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
+CreateIndexedIcosahedron_Nocolour_NoLit_MultiTexture(
 	IcoInfo&, std::vector<MLRState>*);
 } // namespace MidLevelRenderer
 #endif

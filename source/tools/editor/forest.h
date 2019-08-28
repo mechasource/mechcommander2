@@ -48,8 +48,8 @@ private:
 
 	bool bRandom;
 
-	float maxHeight;
-	float minHeight;
+	float maxheight;
+	float minheight;
 	float maxDensity;
 	float minDensity;
 

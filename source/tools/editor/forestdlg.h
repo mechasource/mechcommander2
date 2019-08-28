@@ -22,8 +22,8 @@ public:
 	};
 	float m_maxDensity;
 	float m_minDensity;
-	float m_maxHeight;
-	float m_minHeight;
+	float m_maxheight;
+	float m_minheight;
 	BOOL m_randomPlacement;
 	float m_xLoc;
 	float m_yLoc;

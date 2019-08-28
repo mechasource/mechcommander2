@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -160,7 +160,7 @@ static BOOL __stdcall EnumIcons(HMODULE hModule, PSTR pszType, PSTR pszName, LON
 MECH_IMPEXP void __stdcall InitializeWindows(void)
 {
 	HMODULE hKernel32;
-	PSTR pszMessage;
+	PSTR message;
 	PSTR pszFormat;
 	RECT Rect;
 	char Buffer2[260] = {0};
@@ -209,8 +209,8 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 #if _CONSIDERED_OUTDATED
 	if (IsWindowsVersionOrGreater(5, 0, 0) == FALSE)
 	{
-		pszMessage = "Please upgrade to Windows 2000 RTM (Build 2195)";
-		MessageBoxA(0, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+		message = "Please upgrade to Windows 2000 RTM (Build 2195)";
+		MessageBoxA(0, message, ApplicationName, MB_ICONEXCLAMATION);
 		status = AfterExit;
 		ExitGameOS();
 	}
@@ -220,11 +220,11 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 	{
 		if ((DesktopBpp == 1) || ((RunFullScreen == false) && (DesktopBpp != 16) && (DesktopBpp != 32)))
 		{
-			// pszMessage = gos_GetResourceString(gLanguageDLL, 1020u);
-			pszMessage = "Please select a color depth of 16 bit or 32 bit from "
+			// message = gos_GetResourceString(gLanguageDLL, 1020u);
+			message = "Please select a color depth of 16 bit or 32 bit from "
 						 "the settings tab of the display properties dialog "
 						 "located in the control panel.";
-			MessageBoxA(0, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			MessageBoxA(0, message, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			ExitGameOS();
 
@@ -233,7 +233,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 			// pszFormat = gos_GetResourceString(gLanguageDLL, 1021u);
 			pszFormat = "Desktop is in %1 mode. Hardware acceleration will not "
 						"be available when running in a window";
-			FormatMessageA(FORMAT_MESSAGE_ARGUMENT_ARRAY | FORMAT_MESSAGE_FROM_STRING, pszMessage,
+			FormatMessageA(FORMAT_MESSAGE_ARGUMENT_ARRAY | FORMAT_MESSAGE_FROM_STRING, message,
 				0, 0, Buffer1, _countof(Buffer1), &Arguments);
 #if CONSIDERED_UNSUPPORTED
 			// Pointer to local array Buffer1 is stored outside the scope of
@@ -242,7 +242,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 #endif
 			if (gNoDialogs == false)
 			{
-				DoColorDialog();
+				DocolourDialog();
 				if (DesktopBpp == 1)
 					ExitGameOS();
 				if (ErrorReturn == -1)
@@ -251,8 +251,8 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 					RunFullScreen = true;
 			}
 		}
-		widthX = Environment.screenWidth;
-		heightY = Environment.screenHeight;
+		widthX = Environment.screenwidth;
+		heightY = Environment.screenheight;
 		wndClass.style = CS_BYTEALIGNCLIENT | CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 		if (Environment.allowDoubleClicks)
 			wndClass.style |= CS_DBLCLKS;

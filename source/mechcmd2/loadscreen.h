@@ -86,7 +86,7 @@ private:
 	aAnimation outAnims[5];
 	aAnimation inAnims[5];
 	aText text;
-	pint32_t animIndices;
+	int32_t* animIndices;
 };
 
 #endif // end of file ( LoadScreen.h )

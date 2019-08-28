@@ -135,15 +135,15 @@ extern "C"
 	// VFX data structures
 	//
 	typedef uint8_t STENCIL;
-	typedef puint8_t PSTENCIL;
+	typedef uint8_t* PSTENCIL;
 
 	typedef struct _window
 	{
-		puint8_t buffer;
+		uint8_t* buffer;
 		int32_t x_max;
 		int32_t y_max;
 		PSTENCIL stencil;
-		puint8_t shadow;
+		uint8_t* shadow;
 	} WINDOW;
 	typedef WINDOW* PWINDOW;
 
@@ -160,16 +160,16 @@ extern "C"
 	typedef struct _pane_list
 	{
 		PPANE array;
-		puint32_t flags;
+		uint32_t* flags;
 		size_t size;
 	} PANE_LIST;
 	typedef PANE_LIST* PPANE_LIST;
 
 	typedef union _flex_ptr {
 		PVOID v;
-		puint8_t b;
-		puint16_t w;
-		puint32_t d;
+		uint8_t* b;
+		uint16_t* w;
+		uint32_t* d;
 	} FLEX_PTR;
 
 	typedef struct _vfx_desc
@@ -217,7 +217,7 @@ extern "C"
 	{
 		int32_t x; // Screen X
 		int32_t y; // Screen Y
-		FIXED16 c; // Color/addition value used by some primitives
+		FIXED16 c; // colour/addition value used by some primitives
 		FIXED16 u; // Texture source X
 		FIXED16 v; // Texture source Y
 		FIXED30 w; // Homogeneous perspective divisor (unused by VFX3D)
@@ -265,7 +265,7 @@ extern "C"
 	*VFX_DAC_read)(int32_t color_number, PVFX_RGB triplet); extern void  (VFX_CALL
 	*VFX_DAC_write)(int32_t color_number, PVFX_RGB triplet); extern void  (VFX_CALL
 	*VFX_bank_reset)(void); extern void  (VFX_CALL *VFX_line_address)(int32_t x,
-	int32_t y, puint8_t *addr, uint32_t *nbytes);
+	int32_t y, uint8_t* *addr, uint32_t *nbytes);
 	*/
 
 	//
@@ -292,29 +292,29 @@ extern "C"
 	//
 	// Device-independent VFX API functions (VFXA.ASM)
 	//
-	extern puint8_t VFX_CALL VFX_driver_name(PVOID VFXScanDLL);
+	extern uint8_t* VFX_CALL VFX_driver_name(PVOID VFXScanDLL);
 	extern int32_t VFX_CALL VFX_register_driver(PVOID DLLbase);
 	extern int32_t VFX_CALL VFX_line_draw(
 		PPANE pane, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t mode, int32_t parm);
 	extern int32_t VFX_CALL VFX_shape_draw(
 		PPANE pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
 	extern int32_t VFX_CALL VFX_nTile_draw(
-		PPANE pane, PVOID tile, int32_t hotX, int32_t hotY, puint8_t fadeTable = 0);
+		PPANE pane, PVOID tile, int32_t hotX, int32_t hotY, uint8_t* fadeTable = 0);
 	extern int32_t VFX_CALL VFX_newShape_count(PVOID shape);
-	extern void VFX_CALL VFX_shape_lookaside(puint8_t table);
+	extern void VFX_CALL VFX_shape_lookaside(uint8_t* table);
 	extern int32_t VFX_CALL VFX_shape_translate_draw(
 		PPANE pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
 	extern void VFX_CALL VFX_shape_remap_colors(PVOID shape_table, uint32_t shape_number);
 	extern void VFX_CALL VFX_shape_visible_rectangle(PVOID shape_table, int32_t shape_number,
 		int32_t hotX, int32_t hotY, int32_t mirror, int32_t* rectangle);
 	extern int32_t VFX_CALL VFX_shape_scan(
-		PPANE pane, COLORREF transparentColor, int32_t hotX, int32_t hotY, PVOID buffer);
+		PPANE pane, COLORREF transparentcolour, int32_t hotX, int32_t hotY, PVOID buffer);
 	extern int32_t VFX_CALL VFX_newShape_scan(
-		PPANE shapePane, uint8_t xparentColor, uint8_t Hsx, uint8_t Hsy, puint8_t* shapeBuffer);
+		PPANE shapePane, uint8_t xparentcolour, uint8_t Hsx, uint8_t Hsy, uint8_t** shapeBuffer);
 	extern int32_t VFX_CALL VFX_deltaShape_scan(
-		PPANE shapePane, uint8_t xparentColor, uint8_t Hsx, uint8_t Hsy, puint8_t* shapeBuffer);
+		PPANE shapePane, uint8_t xparentcolour, uint8_t Hsx, uint8_t Hsy, uint8_t** shapeBuffer);
 	extern int32_t VFX_CALL VFX_tile_scan(
-		PPANE shapePane, uint8_t xparentColor, uint8_t Hsx, uint8_t Hsy, puint8_t* shapeBuffer);
+		PPANE shapePane, uint8_t xparentcolour, uint8_t Hsx, uint8_t Hsy, uint8_t** shapeBuffer);
 	extern int32_t VFX_CALL VFX_shape_bounds(PVOID shape_table, int32_t shape_num);
 	extern int32_t VFX_CALL VFX_shape_origin(PVOID shape_table, int32_t shape_num);
 	extern int32_t VFX_CALL VFX_shape_resolution(PVOID shape_table, int32_t shape_num);
@@ -325,8 +325,8 @@ extern "C"
 	extern int32_t VFX_CALL VFX_shape_set_colors(
 		PVOID shape_table, int32_t shape_number, PVFX_CRGB colors);
 	extern int32_t VFX_CALL VFX_shape_count(PVOID shape_table);
-	extern int32_t VFX_CALL VFX_shape_list(PVOID shape_table, puint32_t index_list);
-	extern int32_t VFX_CALL VFX_shape_palette_list(PVOID shape_table, puint32_t index_list);
+	extern int32_t VFX_CALL VFX_shape_list(PVOID shape_table, uint32_t* index_list);
+	extern int32_t VFX_CALL VFX_shape_palette_list(PVOID shape_table, uint32_t* index_list);
 	extern int32_t VFX_CALL VFX_pixel_write(PPANE pane, int32_t x, int32_t y, COLORREF color);
 	extern int32_t VFX_CALL VFX_pixel_read(PPANE pane, int32_t x, int32_t y);
 	extern int32_t VFX_CALL VFX_rectangle_hash(
@@ -347,19 +347,19 @@ extern "C"
 	extern int32_t VFX_CALL VFX_font_height(PVOID font);
 	extern int32_t VFX_CALL VFX_character_width(PVOID font, int32_t character);
 	extern int32_t VFX_CALL VFX_character_draw(
-		PPANE pane, int32_t x, int32_t y, PVOID font, int32_t character, puint8_t color_translate);
+		PPANE pane, int32_t x, int32_t y, PVOID font, int32_t character, uint8_t* color_translate);
 	extern void VFX_CALL VFX_string_draw(
-		PPANE pane, int32_t x, int32_t y, PVOID font, const std::wstring_view& string, puint8_t color_translate);
-	extern int32_t VFX_CALL VFX_ILBM_draw(PPANE pane, puint8_t ILBM_buffer);
-	extern void VFX_CALL VFX_ILBM_palette(puint8_t ILBM_buffer, PVFX_RGB palette);
-	extern int32_t VFX_CALL VFX_ILBM_resolution(puint8_t ILBM_buffer);
-	extern void VFX_CALL VFX_PCX_draw(PPANE pane, puint8_t PCX_buffer);
+		PPANE pane, int32_t x, int32_t y, PVOID font, const std::wstring_view& string, uint8_t* color_translate);
+	extern int32_t VFX_CALL VFX_ILBM_draw(PPANE pane, uint8_t* ILBM_buffer);
+	extern void VFX_CALL VFX_ILBM_palette(uint8_t* ILBM_buffer, PVFX_RGB palette);
+	extern int32_t VFX_CALL VFX_ILBM_resolution(uint8_t* ILBM_buffer);
+	extern void VFX_CALL VFX_PCX_draw(PPANE pane, uint8_t* PCX_buffer);
 	extern void VFX_CALL VFX_PCX_palette(
-		puint8_t PCX_buffer, int32_t PCX_file_size, PVFX_RGB palette);
-	extern int32_t VFX_CALL VFX_PCX_resolution(puint8_t PCX_buffer);
-	extern int32_t VFX_CALL VFX_GIF_draw(PPANE pane, puint8_t GIF_buffer, PVOID GIF_scratch);
-	extern void VFX_CALL VFX_GIF_palette(puint8_t GIF_buffer, PVFX_RGB palette);
-	extern int32_t VFX_CALL VFX_GIF_resolution(puint8_t GIF_buffer);
+		uint8_t* PCX_buffer, int32_t PCX_file_size, PVFX_RGB palette);
+	extern int32_t VFX_CALL VFX_PCX_resolution(uint8_t* PCX_buffer);
+	extern int32_t VFX_CALL VFX_GIF_draw(PPANE pane, uint8_t* GIF_buffer, PVOID GIF_scratch);
+	extern void VFX_CALL VFX_GIF_palette(uint8_t* GIF_buffer, PVFX_RGB palette);
+	extern int32_t VFX_CALL VFX_GIF_resolution(uint8_t* GIF_buffer);
 	extern int32_t VFX_CALL VFX_pixel_fade(
 		PPANE source, PPANE destination, int32_t intervals, int32_t rnd);
 	extern void VFX_CALL VFX_window_fade(PWINDOW buffer, PVFX_RGB palette, int32_t intervals);
@@ -375,7 +375,7 @@ extern "C"
 	extern void VFX_CALL VFX_Gouraud_polygon(PPANE pane, int32_t vcnt, PSCRNVERTEX vlist);
 	extern void VFX_CALL VFX_dithered_Gouraud_polygon(
 		PPANE pane, FIXED16 dither_amount, int32_t vcnt, PSCRNVERTEX vlist);
-	extern void VFX_CALL VFX_map_lookaside(puint8_t table);
+	extern void VFX_CALL VFX_map_lookaside(uint8_t* table);
 	extern void VFX_CALL VFX_map_polygon(
 		PPANE pane, int32_t vcnt, PSCRNVERTEX vlist, PWINDOW texture, uint32_t flags);
 	extern void VFX_CALL VFX_translate_polygon(

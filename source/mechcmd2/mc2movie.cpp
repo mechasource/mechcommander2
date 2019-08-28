@@ -21,13 +21,13 @@
 #endif
 
 #include "resource.h"
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //-----------------------------------------------------------------------
-cuint32_t MAX_TEXTURE_WIDTH = 256;
-cuint32_t MAX_TEXTURE_HEIGHT = 256;
-cuint32_t MAX_MOVIE_WIDTH = 640;
-cuint32_t MAX_MOVIE_HEIGHT = 480;
+const uint32_t MAX_TEXTURE_WIDTH = 256;
+const uint32_t MAX_TEXTURE_HEIGHT = 256;
+const uint32_t MAX_MOVIE_WIDTH = 640;
+const uint32_t MAX_MOVIE_HEIGHT = 480;
 const float TEXTURE_ADJUST_MIN = (0.4f / MAX_TEXTURE_WIDTH);
 const float TEXTURE_ADJUST_MAX = (1.0f - TEXTURE_ADJUST_MIN);
 
@@ -37,7 +37,7 @@ float last30Frames[30] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 
 	0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 0.0f};
 
-extern char CDInstallPath[];
+extern wchar_t CDInstallPath[];
 void
 EnterWindowMode();
 void
@@ -49,9 +49,9 @@ void __stdcall ExitGameOS();
 void
 MC2Movie::init(const std::wstring_view& MC2Name, RECT mRect, bool useWaveFile)
 {
-	char MOVIEName[1024];
+	wchar_t MOVIEName[1024];
 	_splitpath(MC2Name, nullptr, nullptr, MOVIEName, nullptr);
-	m_MC2Name = new char[strlen(MOVIEName) + 1];
+	m_MC2Name = new wchar_t[strlen(MOVIEName) + 1];
 	memset(m_MC2Name, 0, strlen(MOVIEName) + 1);
 	strcpy(m_MC2Name, MOVIEName);
 	// Set the volume based on master system volume.
@@ -60,9 +60,9 @@ MC2Movie::init(const std::wstring_view& MC2Name, RECT mRect, bool useWaveFile)
 	{
 		separateWAVE = true;
 		soundStarted = false;
-		char MOVIEName[1024];
+		wchar_t MOVIEName[1024];
 		_splitpath(MC2Name, nullptr, nullptr, MOVIEName, nullptr);
-		waveName = new char[strlen(MOVIEName) + 1];
+		waveName = new wchar_t[strlen(MOVIEName) + 1];
 		memset(waveName, 0, strlen(MOVIEName) + 1);
 		strcpy(waveName, MOVIEName);
 	}

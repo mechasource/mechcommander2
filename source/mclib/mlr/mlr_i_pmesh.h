@@ -7,8 +7,8 @@
 #ifndef MLR_MLR_I_PMESH_HPP
 #define MLR_MLR_I_PMESH_HPP
 
-#include <stuff/plane.hpp>
-#include <mlr/mlrindexedprimitivebase.hpp>
+#include "stuff/plane.h"
+#include "mlr/mlrindexedprimitivebase.h"
 
 namespace Stuff
 {
@@ -54,8 +54,8 @@ public:
 
 	virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
 
-	virtual void SetSubprimitiveLengths(puint8_t, size_t);
-	virtual void GetSubprimitiveLengths(puint8_t*, psize_t);
+	virtual void SetSubprimitiveLengths(uint8_t*, size_t);
+	virtual void GetSubprimitiveLengths(uint8_t**, size_t*);
 
 	void FindFacePlanes(void);
 
@@ -72,12 +72,12 @@ public:
 	virtual void LightMapLighting(MLRLight*);
 
 #if COLOR_AS_DWORD
-	virtual void PaintMe(pcuint32_t paintMe)
+	virtual void PaintMe(const uint32_t* paintMe)
 	{
 		(void)paintMe;
 	};
 #else
-	virtual void PaintMe(const Stuff::RGBAColor* paintMe)
+	virtual void PaintMe(const Stuff::RGBAcolour* paintMe)
 	{
 		(void)paintMe;
 	};
@@ -135,8 +135,8 @@ subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1, Stuff::Point3D& v2, Stuff:
 	uint32_t depth, uint32_t tri2draw, float rad = 1.0f);
 
 MLR_I_PMesh*
-CreateIndexedCube_NoColor_NoLit(float, MLRState*);
+CreateIndexedCube_Nocolour_NoLit(float, MLRState*);
 MLRShape*
-CreateIndexedIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
+CreateIndexedIcosahedron_Nocolour_NoLit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 #endif

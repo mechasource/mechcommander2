@@ -39,7 +39,7 @@ aObject::aObject()
 		location[i].rhw = .5;
 	showWindow = 1;
 	helpid = 0;
-	fileWidth = 0.0f;
+	filewidth = 0.0f;
 }
 
 aObject::~aObject()
@@ -79,12 +79,12 @@ void
 aObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t neverFlush)
 {
 	memset(location, 0, sizeof(location));
-	char fileName[256];
+	wchar_t fileName[256];
 	textureHandle = 0;
-	fileWidth = 256.;
+	filewidth = 256.;
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
-		char errBuffer[256];
+		wchar_t errBuffer[256];
 		sprintf(errBuffer, "couldn't find static block %s", blockName);
 		Assert(0, 0, errBuffer);
 		return;
@@ -92,8 +92,8 @@ aObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t nev
 	int32_t x, y, width, height;
 	file->readIdLong("XLocation", x);
 	file->readIdLong("YLocation", y);
-	file->readIdLong("Width", width);
-	file->readIdLong("Height", height);
+	file->readIdLong("width", width);
+	file->readIdLong("height", height);
 	file->readIdLong("HelpCaption", helpHeader);
 	file->readIdLong("HelpDesc", helpid);
 	if (NO_ERROR == file->readIdString("fileName", fileName, 32))
@@ -102,7 +102,7 @@ aObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t nev
 		file->readIdBoolean("Alpha", bAlpha);
 		if (!textureHandle)
 		{
-			char buffer[256];
+			wchar_t buffer[256];
 			strcpy(buffer, artPath);
 			strcat(buffer, fileName);
 			_strlwr(buffer);
@@ -114,16 +114,16 @@ aObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t nev
 			uint32_t gosID = mcTextureManager->get_gosTextureHandle(ID);
 			TEXTUREPTR textureData;
 			gos_LockTexture(gosID, 0, 0, &textureData);
-			fileWidth = textureData.Width;
+			filewidth = textureData.width;
 			gos_UnLockTexture(gosID);
 		}
 	}
-	int32_t u, v, uWidth, vHeight;
+	int32_t u, v, uwidth, vheight;
 	bool bRotated = 0;
 	file->readIdLong("UNormal", u);
 	file->readIdLong("VNormal", v);
-	file->readIdLong("UWidth", uWidth);
-	file->readIdLong("VHeight", vHeight);
+	file->readIdLong("Uwidth", uwidth);
+	file->readIdLong("Vheight", vheight);
 	file->readIdBoolean("texturesRotated", bRotated);
 	for (size_t k = 0; k < 4; k++)
 	{
@@ -133,34 +133,34 @@ aObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t nev
 		location[k].y = y;
 		location[k].z = 0.f;
 		location[k].rhw = .5;
-		if (fileWidth)
-			location[k].u = (float)u / (float)fileWidth + (.1f / (float)fileWidth);
-		if (fileWidth)
-			location[k].v = (float)v / (float)fileWidth + (.1f / (float)fileWidth);
+		if (filewidth)
+			location[k].u = (float)u / (float)filewidth + (.1f / (float)filewidth);
+		if (filewidth)
+			location[k].v = (float)v / (float)filewidth + (.1f / (float)filewidth);
 	}
 	location[3].x = location[2].x = x + width;
 	location[2].y = location[1].y = y + height;
-	if (fileWidth)
+	if (filewidth)
 		location[2].u = location[3].u =
-			((float)(u + uWidth)) / ((float)fileWidth) + (.1f / (float)fileWidth);
-	if (fileWidth)
+			((float)(u + uwidth)) / ((float)filewidth) + (.1f / (float)filewidth);
+	if (filewidth)
 		location[1].v = location[2].v =
-			((float)(v + vHeight)) / ((float)fileWidth) + (.1f / (float)fileWidth);
+			((float)(v + vheight)) / ((float)filewidth) + (.1f / (float)filewidth);
 	if (bRotated)
 	{
-		location[0].u = (u + uWidth) / (float)fileWidth + (.1f / (float)fileWidth);
+		location[0].u = (u + uwidth) / (float)filewidth + (.1f / (float)filewidth);
 		;
-		location[1].u = u / (float)fileWidth + (.1f / (float)fileWidth);
+		location[1].u = u / (float)filewidth + (.1f / (float)filewidth);
 		;
-		location[2].u = u / (float)fileWidth + (.1f / (float)fileWidth);
-		location[3].u = (u + uWidth) / (float)fileWidth + (.1f / (float)fileWidth);
-		location[0].v = v / (float)fileWidth + (.1f / (float)fileWidth);
+		location[2].u = u / (float)filewidth + (.1f / (float)filewidth);
+		location[3].u = (u + uwidth) / (float)filewidth + (.1f / (float)filewidth);
+		location[0].v = v / (float)filewidth + (.1f / (float)filewidth);
 		;
-		location[1].v = v / (float)fileWidth + (.1f / (float)fileWidth);
+		location[1].v = v / (float)filewidth + (.1f / (float)filewidth);
 		;
-		location[2].v = (v + vHeight) / (float)fileWidth + (.1f / (float)fileWidth);
+		location[2].v = (v + vheight) / (float)filewidth + (.1f / (float)filewidth);
 		;
-		location[3].v = (v + vHeight) / (float)fileWidth + (.1f / (float)fileWidth);
+		location[3].v = (v + vheight) / (float)filewidth + (.1f / (float)filewidth);
 		;
 	}
 }
@@ -435,11 +435,11 @@ aObject::setTexture(const std::wstring_view& fileName)
 	{
 		TEXTUREPTR textureData;
 		gos_LockTexture(gosID, 0, 0, &textureData);
-		fileWidth = textureData.Width;
+		filewidth = textureData.width;
 		gos_UnLockTexture(gosID);
 	}
 	else
-		fileWidth = 256; // guess
+		filewidth = 256; // guess
 }
 
 void
@@ -459,24 +459,24 @@ aObject::setTexture(uint32_t newHandle)
 		int32_t gosID = mcTextureManager->get_gosTextureHandle(newHandle);
 		TEXTUREPTR textureData;
 		gos_LockTexture(gosID, 0, 0, &textureData);
-		fileWidth = textureData.Width;
+		filewidth = textureData.width;
 		gos_UnLockTexture(gosID);
 	}
 }
 
 void
-aObject::setColor(uint32_t newColor, bool bRecurse)
+aObject::setcolour(uint32_t newcolour, bool bRecurse)
 {
 	for (size_t i = 0; i < 4; i++)
 	{
-		location[i].argb = newColor;
+		location[i].argb = newcolour;
 	}
 	// set the kids?
 	if (bRecurse)
 	{
 		for (size_t i = 0; i < this->pNumberOfChildren; i++)
 		{
-			pChildren[i]->setColor(newColor, 1);
+			pChildren[i]->setcolour(newcolour, 1);
 		}
 	}
 }
@@ -484,10 +484,10 @@ aObject::setColor(uint32_t newColor, bool bRecurse)
 void
 aObject::setUVs(float u1, float v1, float u2, float v2)
 {
-	location[0].u = location[1].u = u1 / fileWidth + (.1f / (float)fileWidth);
-	location[2].u = location[3].u = u2 / fileWidth + (.1f / (float)fileWidth);
-	location[0].v = location[3].v = v1 / fileWidth + (.1f / (float)fileWidth);
-	location[1].v = location[2].v = v2 / fileWidth + (.1f / (float)fileWidth);
+	location[0].u = location[1].u = u1 / filewidth + (.1f / (float)filewidth);
+	location[2].u = location[3].u = u2 / filewidth + (.1f / (float)filewidth);
+	location[0].v = location[3].v = v1 / filewidth + (.1f / (float)filewidth);
+	location[1].v = location[2].v = v2 / filewidth + (.1f / (float)filewidth);
 }
 
 void
@@ -512,7 +512,7 @@ aObject::copyData(const aObject& src)
 			textureHandle = mcTextureManager->copyTexture(src.textureHandle);
 		for (size_t i = 0; i < 4; i++)
 			location[i] = src.location[i];
-		fileWidth = src.fileWidth;
+		filewidth = src.filewidth;
 		showWindow = src.showWindow;
 		nNumberOfChildren = 0; // not copying the kids.
 		ID = src.ID;
@@ -541,7 +541,7 @@ aRect::aRect()
 void
 aRect::render()
 {
-	int32_t color = getColor();
+	int32_t color = getcolour();
 	if (isShowing())
 		// bOutline ? drawEmptyRect( getGUI_RECT(), color, color ) : drawRect(
 		// getGUI_RECT(), color );
@@ -558,7 +558,7 @@ aRect::render(int32_t x, int32_t y)
 	tmpRect.right += x;
 	tmpRect.top += y;
 	tmpRect.bottom += y;
-	int32_t color = getColor();
+	int32_t color = getcolour();
 	bOutline ? drawEmptyRect(tmpRect, color, color) : drawRect(tmpRect, color);
 }
 
@@ -567,7 +567,7 @@ aRect::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't find block %s in file %s", blockName, file->getFilename());
 		Assert(0, 0, errorStr);
 	}
@@ -587,13 +587,13 @@ aRect::init(FitIniFile* file, const std::wstring_view& blockName)
 		int32_t x, y, width, height;
 		file->readIdLong("XLocation", x);
 		file->readIdLong("YLocation", y);
-		file->readIdLong("Width", width);
-		file->readIdLong("Height", height);
+		file->readIdLong("width", width);
+		file->readIdLong("height", height);
 		aObject::init(x, y, width, height);
 	}
 	int32_t color = 0xff000000;
 	file->readIdLong("color", color);
-	setColor(color);
+	setcolour(color);
 	file->readIdBoolean("outline", bOutline);
 	file->readIdLong("HelpCaption", helpHeader);
 	file->readIdLong("HelpDesc", helpid);
@@ -645,7 +645,7 @@ aText::init(FitIniFile* file, const std::wstring_view& header)
 	int32_t result = file->seekBlock(header);
 	if (result != NO_ERROR)
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't find the text block%s", header);
 		Assert(result == NO_ERROR, 0, errorStr);
 		return;
@@ -656,11 +656,11 @@ aText::init(FitIniFile* file, const std::wstring_view& header)
 	int32_t left, top, width, height;
 	file->readIdLong("XLocation", left);
 	file->readIdLong("YLocation", top);
-	file->readIdLong("Width", width);
-	file->readIdLong("Height", height);
+	file->readIdLong("width", width);
+	file->readIdLong("height", height);
 	aObject::init(left, top, width, height);
 	int32_t color;
-	file->readIdLong("Color", color);
+	file->readIdLong("colour", color);
 	for (size_t i = 0; i < 4; i++)
 		location[i].argb = color;
 	file->readIdLong("Alignment", alignment);
@@ -670,7 +670,7 @@ aText::init(FitIniFile* file, const std::wstring_view& header)
 		// WAY too small.  Good crash.  Only crashes in profile.
 		// cLoadString now checks buffer length and keeps game from crashing!!
 		// -fs
-		char tmp[1024];
+		wchar_t tmp[1024];
 		cLoadString(textID, tmp, 1023);
 		text = tmp;
 	}
@@ -703,13 +703,13 @@ aText::render(int32_t x, int32_t y)
 void
 aText::setText(int32_t resID)
 {
-	char tmp[1280];
+	wchar_t tmp[1280];
 	cLoadString(resID, tmp, 1279);
 	if (tmp[0] != 0)
 		text = tmp;
 	else
 	{
-		char tmpy[1280];
+		wchar_t tmpy[1280];
 		memset(tmpy, 0, 1280);
 		sprintf(tmpy, "nullptr for ID: %d", resID);
 		text = tmpy;

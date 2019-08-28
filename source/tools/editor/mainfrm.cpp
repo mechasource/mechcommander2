@@ -111,7 +111,7 @@ MainFrame::AssertValid(void) const
 }
 
 void
-MainFrame::Dump(CDumpContext& dc) const
+MainFrame::Dump(CDumpcontext& dc) const
 {
 	CFrameWnd::Dump(dc);
 }

@@ -18,7 +18,7 @@
 //#include <windows.h>
 
 //--------------------------------------------------------------------------
-cuint32_t MAX_TEXTURES_NEEDED = 6;
+const uint32_t MAX_TEXTURES_NEEDED = 6;
 
 //--------------------------------------------------------------------------
 class MC2Movie
@@ -119,8 +119,8 @@ protected:
 	bool separateWAVE; // Tells us if this MC2 movie has a separate soundtrack.
 	bool soundStarted; // If this MC2 movie has a separate soundtrack, this
 		// tells us when to start it.
-	char* waveName; // Name of the wavefile.
-	char* m_MC2Name; // Name of the Movie.
+	wchar_t* waveName; // Name of the wavefile.
+	wchar_t* m_MC2Name; // Name of the Movie.
 
 	void BltMovieFrame(void); // Actually moves frame data from MC2 movie to
 		// surface and/or texture(s)

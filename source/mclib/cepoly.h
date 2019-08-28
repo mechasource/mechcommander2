@@ -29,13 +29,13 @@ struct PolyElementData
 	bool isClipped; // Set by zclip to let me know
 	bool drawTranslucent; // Used for FX
 	bool StatusBar; // Is this a status bar?
-	int32_t BarWidth; // Width of status bar
-	int32_t BarColor; // Color of status bar
+	int32_t Barwidth; // width of status bar
+	int32_t Barcolour; // colour of status bar
 
-	puint8_t textureMap; // Pointer to Bitmap for Texture
-	int32_t width; // Width of texture
-	int32_t height; // Height of texture
-	char* hazePalette; // Translucency/haze table
+	uint8_t* textureMap; // Pointer to Bitmap for Texture
+	int32_t width; // width of texture
+	int32_t height; // height of texture
+	wchar_t* hazePalette; // Translucency/haze table
 
 	void init(void)
 	{

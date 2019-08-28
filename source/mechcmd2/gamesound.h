@@ -52,7 +52,7 @@ public:
 		playingNoise = false;
 		radioHandle = nullptr;
 		//------------------------------------------------------------
-		// Startup the Radio Message Queue.
+		// Startup the Radio message Queue.
 		messagesInQueue = 0;
 		wholeMsgDone = true;
 		for (size_t i = 0; i < MAX_QUEUED_MESSAGES; i++)

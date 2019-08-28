@@ -42,7 +42,7 @@ protected:
 
 	// Implementation
 protected:
-	void DoColorBox(CWnd* pWnd);
+	void DocolourBox(CWnd* pWnd);
 
 	//{{AFX_MSG(BuildingSettingsDlg)
 	afx_msg void OnSelchangeGroup(void);

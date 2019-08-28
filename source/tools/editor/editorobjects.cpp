@@ -137,7 +137,7 @@ EditorObject::setDamage(bool bDamage)
 }
 
 bool
-EditorObject::getDamage() const
+EditorObject::getDamage(void) const
 {
 	return appearance()->damage ? true : false;
 }
@@ -177,20 +177,20 @@ EditorObject::getGroup(void) const
 }
 
 void
-EditorObject::setAppearance(int32_t Group, int32_t indexInGroup)
+EditorObject::setAppearance(int32_t group, int32_t indexInGroup)
 {
 	// make sure the thing has changed....
-	if (Group != EditorObjectMgr::getGroup(id) || indexInGroup != EditorObjectMgr::getIndexInGroup(id))
+	if (group != EditorObjectMgr::getGroup(id) || indexInGroup != EditorObjectMgr::getIndexInGroup(id))
 	{
 		AppearanceInfo* appearInfo2 = new AppearanceInfo();
-		appearInfo2->appearance = EditorObjectMgr::instance()->getAppearance(Group, indexInGroup);
+		appearInfo2->appearance = EditorObjectMgr::instance()->getAppearance(group, indexInGroup);
 		appearInfo2->refCount = 1;
 		static int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 		gosASSERT((8 > appearance()->teamId) && (-1 <= appearance()->teamId));
 		appearInfo2->appearance->setObjectParameters(appearance()->position, appearance()->rotation,
 			appearance()->selected, appearance()->teamId, homeRelations[appearance()->teamId + 1]);
 		appearInfo2->appearance->setDamage(appearance()->damage);
-		id = EditorObjectMgr::instance()->getID(Group, indexInGroup);
+		id = EditorObjectMgr::instance()->getID(group, indexInGroup);
 		if (appearInfo)
 		{
 			gosASSERT(appearInfo->refCount != 0);
@@ -215,7 +215,7 @@ EditorObject::select(bool bSelect)
 }
 
 uint32_t
-EditorObject::getColor(void) const
+EditorObject::getcolour(void) const
 {
 	switch (appearInfo->appearance->teamId)
 	{
@@ -286,9 +286,9 @@ Unit::Unit(int32_t align)
 	EditorObjectMgr::instance()->registerSquadNum(squadNum);
 	setSelfRepairBehaviorEnabled(true);
 	pilot.info = align == 0 ? &Pilot::s_GoodPilots[0] : &Pilot::s_BadPilots[0];
-	baseColor = 0x00ffffff;
-	highlightColor = 0x00c0c0c0;
-	highlightColor2 = 0x00808080;
+	basecolour = 0x00ffffff;
+	highlightcolour = 0x00c0c0c0;
+	highlightcolour2 = 0x00808080;
 	variant = 0;
 }
 
@@ -307,8 +307,8 @@ Unit::Unit(const Unit& src) :
 		lanceIndex = src.lanceIndex;
 		pilot = src.pilot;
 		uint32_t color1, color2, color3;
-		src.getColors(color1, color2, color3);
-		setColors(color1, color2, color3);
+		src.getcolours(color1, color2, color3);
+		setcolours(color1, color2, color3);
 		setSelfRepairBehaviorEnabled(src.getSelfRepairBehaviorEnabled());
 		setVariant(src.getVariant());
 		pAlternativeInstances = new CUnitList;
@@ -353,7 +353,7 @@ Unit::save(
 	if (mechAsset)
 	{
 		const std::wstring_view& iniFilename = (const std::wstring_view&)EditorObjectMgr::instance()->getFileName(id);
-		char buf[512] = {0};
+		wchar_t buf[512] = {0};
 		if (iniFilename && iniFilename[0])
 		{
 			strcpy(buf, "Data\\TGL\\");
@@ -384,7 +384,7 @@ Unit::save(
 	}
 	pilot.save(file, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
 	brain.save(file, WarriorNumber, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
-	char tmp[256];
+	wchar_t tmp[256];
 	sprintf(tmp, "Part%ld", WarriorNumber);
 	file->writeBlock(tmp);
 	file->writeIdULong("ObjectNumber", EditorObjectMgr::instance()->getFitID(id));
@@ -402,9 +402,9 @@ Unit::save(
 	file->writeIdLong("Active", 1);
 	file->writeIdLong("Exists", 1);
 	file->writeIdFloat("Damage", (float)((int32_t)getDamage()));
-	file->writeIdULong("BaseColor", baseColor);
-	file->writeIdULong("HighlightColor1", highlightColor);
-	file->writeIdULong("HighlightColor2", highlightColor2);
+	file->writeIdULong("Basecolour", basecolour);
+	file->writeIdULong("Highlightcolour1", highlightcolour);
+	file->writeIdULong("Highlightcolour2", highlightcolour2);
 	uint32_t tmpULong = 0;
 	if (getSelfRepairBehaviorEnabled())
 	{
@@ -424,7 +424,7 @@ bool
 Unit::load(FitIniFile* file, int32_t warriorNumber)
 {
 	int32_t result = 0;
-	char tmp;
+	wchar_t tmp;
 	file->readIdChar("CommanderID", tmp);
 	appearance()->teamId = tmp;
 	file->readIdFloat("PositionX", appearance()->position.x);
@@ -437,9 +437,9 @@ Unit::load(FitIniFile* file, int32_t warriorNumber)
 	{
 		setDamage(true);
 	}
-	file->readIdULong("BaseColor", baseColor);
-	file->readIdULong("HighlightColor1", highlightColor);
-	file->readIdULong("HighlightColor2", highlightColor2);
+	file->readIdULong("Basecolour", basecolour);
+	file->readIdULong("Highlightcolour1", highlightcolour);
+	file->readIdULong("Highlightcolour2", highlightcolour2);
 	uint32_t tmpULong = 1;
 	result = file->readIdULong("SelfRepairBehavior", tmpULong);
 	if ((NO_ERROR == result) && (0 == tmpULong))
@@ -470,29 +470,29 @@ Unit::load(FitIniFile* file, int32_t warriorNumber)
 	{
 		file->readIdULong("AlternativeStartIndex", tmpAlternativeStartIndex);
 	}
-	char blockId[256];
+	wchar_t blockId[256];
 	sprintf(blockId, "Warrior%d", warriorNumber);
 	file->seekBlock(blockId);
 	pilot.load(file, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
 	brain.load(file, warriorNumber);
-	setColors(baseColor, highlightColor, highlightColor2);
+	setcolours(basecolour, highlightcolour, highlightcolour2);
 	return true;
 }
 
 void
-Unit::getColors(uint32_t& color1, uint32_t& color2, uint32_t& color3) const
+Unit::getcolours(uint32_t& color1, uint32_t& color2, uint32_t& color3) const
 {
-	color1 = baseColor;
-	color2 = highlightColor;
-	color3 = highlightColor2;
+	color1 = basecolour;
+	color2 = highlightcolour;
+	color3 = highlightcolour2;
 }
 
 void
-Unit::setColors(uint32_t color1, uint32_t color2, uint32_t color3)
+Unit::setcolours(uint32_t color1, uint32_t color2, uint32_t color3)
 {
-	baseColor = color1;
-	highlightColor = color2;
-	highlightColor2 = color3;
+	basecolour = color1;
+	highlightcolour = color2;
+	highlightcolour2 = color3;
 	appearance()->resetPaintScheme(color2, color3, color1);
 }
 
@@ -506,8 +506,8 @@ Unit::operator=(const Unit& src)
 		lanceIndex = src.lanceIndex;
 		pilot = src.pilot;
 		uint32_t color1, color2, color3;
-		src.getColors(color1, color2, color3);
-		setColors(color1, color2, color3);
+		src.getcolours(color1, color2, color3);
+		setcolours(color1, color2, color3);
 		setSelfRepairBehaviorEnabled(src.getSelfRepairBehaviorEnabled());
 		setVariant(src.getVariant());
 		(*pAlternativeInstances) = *(src.pAlternativeInstances);
@@ -589,19 +589,19 @@ Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 		file->writeIdString("Brain", brainName);
 		file->writeIdLong("NumCells", numCells);
 		file->writeIdLong("NumStaticVars", numStaticVars);
-		char text[256];
+		wchar_t text[256];
 		for (size_t i = 0; i < numCells; i++)
 		{
 			sprintf(text, "Warrior%ldCell%d", warriorNumber, i);
 			file->writeBlock(text);
 			file->writeIdLong("Cell", cellNum[i]);
 			file->writeIdLong("MemType", cellType[i]);
-			file->writeIdFloat("Value", cellData[i]);
+			file->writeIdFloat("value", cellData[i]);
 		}
 		// ARM
 		if (mechAsset && brainName[0])
 		{
-			char buf[512] = {0};
+			wchar_t buf[512] = {0};
 			strcpy(buf, "Data\\Missions\\Warriors\\");
 			strcat(buf, brainName);
 			strcat(buf, ".abl");
@@ -615,7 +615,7 @@ Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 			file->writeIdString("Brain", "DredAttack01");
 			file->writeIdLong("NumCells", 3);
 			file->writeIdLong("NumStaticVars", 0);
-			char text[256];
+			wchar_t text[256];
 			for (size_t i = 0; i < 3; i++)
 			{
 				sprintf(text, "Warrior%ldCell%d", warriorNumber, i);
@@ -625,17 +625,17 @@ Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 				case 0:
 					file->writeIdLong("Cell", 2);
 					file->writeIdLong("MemType", 1);
-					file->writeIdFloat("Value", 150);
+					file->writeIdFloat("value", 150);
 					break;
 				case 1:
 					file->writeIdLong("Cell", 9);
 					file->writeIdLong("MemType", 0);
-					file->writeIdFloat("Value", 0.0f);
+					file->writeIdFloat("value", 0.0f);
 					break;
 				case 2:
 					file->writeIdLong("Cell", 28);
 					file->writeIdLong("MemType", 0);
-					file->writeIdFloat("Value", 0.0f);
+					file->writeIdFloat("value", 0.0f);
 					break;
 				}
 			}
@@ -673,14 +673,14 @@ Brain::load(FitIniFile* file, int32_t warriorNumber)
 		cellType = (int32_t*)0;
 		cellData = (float*)0;
 	}
-	char text[256];
+	wchar_t text[256];
 	for (size_t i = 0; i < numCells; i++)
 	{
 		sprintf(text, "Warrior%ldCell%d", warriorNumber, i);
 		file->seekBlock(text);
 		file->readIdLong("Cell", cellNum[i]);
 		file->readIdLong("MemType", cellType[i]);
-		file->readIdFloat("Value", cellData[i]);
+		file->readIdFloat("value", cellData[i]);
 	}
 	return true;
 }
@@ -737,7 +737,7 @@ Pilot::save(FitIniFile* file, int32_t bGoodGuy)
 	// ARM
 	if (mechAsset && info->fileName[0])
 	{
-		char buf[512] = {0};
+		wchar_t buf[512] = {0};
 		strcpy(buf, "Data\\Missions\\Warriors\\");
 		strcat(buf, info->fileName);
 		strcat(buf, ".fit");
@@ -749,7 +749,7 @@ void
 Pilot::load(FitIniFile* file, int32_t bGoodGuy)
 {
 	int32_t result = 0;
-	char buffer[256];
+	wchar_t buffer[256];
 	result = file->readIdString("Profile", buffer, 256);
 	bool bFound = 0;
 	if (NO_ERROR == result)
@@ -791,7 +791,7 @@ void
 Pilot::initPilots()
 {
 	CSVFile file;
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, objectPath);
 	strcat(path, "pilots.csv");
 	if (NO_ERROR != file.open(path))
@@ -799,7 +799,7 @@ Pilot::initPilots()
 		STOP(("couldn't find pilots.csv file"));
 		return;
 	}
-	char pilotFileName[256];
+	wchar_t pilotFileName[256];
 	strcpy(pilotFileName, "");
 	PilotInfo* infos = s_GoodPilots;
 	int32_t* counter = &goodCount;
@@ -807,7 +807,7 @@ Pilot::initPilots()
 	{
 		while (true)
 		{
-			int32_t bytesRead = file.readLine((puint8_t)pilotFileName, 256);
+			int32_t bytesRead = file.readLine((uint8_t*)pilotFileName, 256);
 			if (bytesRead < 2)
 				break;
 			CString postFix;
@@ -835,12 +835,12 @@ Pilot::initPilots()
 			tmpPath.init(warriorPath, pilotFileName, ".fit");
 			if (NO_ERROR != pilotFile.open(tmpPath))
 			{
-				char errorString[256];
+				wchar_t errorString[256];
 				sprintf(errorString, "Couldn't open file %s", tmpPath);
 				Assert(0, 0, errorString);
 				return;
 			}
-			infos[*counter].fileName = new char[strlen(pilotFileName) + 1];
+			infos[*counter].fileName = new wchar_t[strlen(pilotFileName) + 1];
 			strcpy(infos[*counter].fileName, pilotFileName);
 			// if we got this far we have a file, make a pilot
 			int32_t result = pilotFile.seekBlock("General");
@@ -851,7 +851,7 @@ Pilot::initPilots()
 			cLoadString(tmp, pilotFileName, 64);
 			strcat(pilotFileName, "  ");
 			strncat(pilotFileName, postFix.GetBuffer(0), 64);
-			infos[*counter].name = new char[strlen(pilotFileName) + 1];
+			infos[*counter].name = new wchar_t[strlen(pilotFileName) + 1];
 			strcpy(infos[*counter].name, pilotFileName);
 			(*counter)++;
 			if (goodCount > MAX_PILOT)
@@ -895,7 +895,7 @@ Pilot::setName(const std::wstring_view& newName)
 bool
 NavMarker::save(FitIniFile* file, int32_t warriorNumber)
 {
-	char text[32];
+	wchar_t text[32];
 	sprintf(text, "NavMarker%ld", warriorNumber);
 	file->writeBlock(text);
 	file->writeIdFloat("xPos", appearance()->position.x);

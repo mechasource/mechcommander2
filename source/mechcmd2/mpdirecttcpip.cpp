@@ -18,9 +18,9 @@ MPDirectTcpip.cpp			: Implementation of the MPDirectTcpip component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
-static cint32_t CANCEL_BUTTON_ID = 1000002;
+static const int32_t FIRST_BUTTON_ID = 1000010;
+static const int32_t OK_BUTTON_ID = 1000001;
+static const int32_t CANCEL_BUTTON_ID = 1000002;
 
 MPDirectTcpip::MPDirectTcpip()
 {
@@ -60,13 +60,13 @@ MPDirectTcpip::init(FitIniFile* file)
 		}
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_tcpip_combobox0.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -202,10 +202,10 @@ aStyle7TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	aTextListItem::init(fontResID);
 	setText(textID);
 	int32_t color = 0xff808080;
-	file->readIdLong("Color", color);
-	normalColor = color;
-	setColor(color);
-	char tmpStr[64];
+	file->readIdLong("colour", color);
+	normalcolour = color;
+	setcolour(color);
+	wchar_t tmpStr[64];
 	strcpy(tmpStr, "");
 	file->readIdString("Animation", tmpStr, 63);
 	if (0 == strcmp("", tmpStr))
@@ -227,17 +227,17 @@ aStyle7TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
+		color = 0.33 * ((uint32_t)normalcolour) + 0.67 * ((uint32_t)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
+		color = 0.67 * ((uint32_t)normalcolour) + 0.33 * ((uint32_t)0xffffffff);
 	}
 	else
 	{
-		color = normalColor;
+		color = normalcolour;
 	}
-	aTextListItem::setColor((uint32_t)color);
+	aTextListItem::setcolour((uint32_t)color);
 	aTextListItem::render();
 }
 

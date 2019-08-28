@@ -7,8 +7,8 @@
 #ifndef MLR_MLR_I_DeT_PMESH_HPP
 #define MLR_MLR_I_DeT_PMESH_HPP
 
-#include <mlr/gosvertex.hpp>
-#include <mlr/mlr_i_pmesh.hpp>
+#include "mlr/gosvertex.h"
+#include "mlr/mlr_i_pmesh.h"
 
 namespace MidLevelRenderer
 {
@@ -26,7 +26,7 @@ struct DetailTextureInfo
 		dEnd = 64.0f;
 		alphaMode = MLRState::AlphaInvAlphaMode;
 	}
-	PCSTR name;
+	const std::wstring_view& name;
 	float xOff, zOff;
 	float xFac, zFac;
 	float dStart, dEnd;
@@ -161,9 +161,9 @@ protected:
 };
 
 MLR_I_DeT_PMesh*
-CreateIndexedCube_NoColor_NoLit_DetTex(
+CreateIndexedCube_Nocolour_NoLit_DetTex(
 	float radius, MLRState*, MLRState*, float xOff, float yOff, float xFac, float yFac);
 MLRShape*
-CreateIndexedIcosahedron_NoColor_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
+CreateIndexedIcosahedron_Nocolour_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

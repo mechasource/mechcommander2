@@ -25,7 +25,7 @@ namespace mclib::abl {
 
 struct SourceFile
 {
-	char fileName[MAXLEN_FILENAME];
+	wchar_t fileName[MAXLEN_FILENAME];
 	uint8_t fileNumber;
 	ABLFile* pfile;
 	int32_t lineNumber;
@@ -71,11 +71,11 @@ public:
 protected:
 	int32_t handle;
 	bool inUse;
-	char fileName[MAXLEN_FILENAME];
+	wchar_t fileName[MAXLEN_FILENAME];
 	ABLFile* pfile;
 	int32_t numLines;
 	int32_t totalLines;
-	char lines[MAX_USER_FILE_LINES][MAX_USER_FILE_LINELEN];
+	wchar_t lines[MAX_USER_FILE_LINES][MAX_USER_FILE_LINELEN];
 
 	static std::array<UserFile, MAX_USER_FILES> files;
 };
@@ -89,20 +89,20 @@ protected:
 
 struct VariableInfo
 {
-	char name[128];
+	wchar_t name[128];
 	int32_t size;
 };
 
 struct RoutineInfo
 {
-	char name[128];
+	wchar_t name[128];
 	int32_t codeSegmentSize;
 };
 
 struct ModuleInfo
 {
-	char name[128];
-	char fileName[128];
+	wchar_t name[128];
+	wchar_t fileName[128];
 	int32_t numStaticVars;
 	int32_t totalSizeStaticVars;
 	VariableInfo largestStaticVar;
@@ -222,7 +222,7 @@ public:
 
 private:
 	int32_t id;
-	char name[MAX_ABLMODULE_NAME];
+	wchar_t name[MAX_ABLMODULE_NAME];
 	int32_t handle;
 	const std::unique_ptr<StackItem>& staticData;
 	size_t* orderCallFlags;

@@ -57,7 +57,7 @@ public:
 	size_t appearanceNum; // What kind am I.
 	AppearanceType* next; // Pointer to next type in list.
 
-	char* name; // Appearance Base FileName.
+	wchar_t* name; // Appearance Base FileName.
 
 	Stuff::Vector3D typeUpperLeft; // For Designer defined extents of objects
 	Stuff::Vector3D typeLowerRight; // For Designer defined extents of objects

@@ -15,12 +15,12 @@ BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 #include "editorinterface.h"
 #include "resource.h"
 
-BuildingBrush::BuildingBrush(int32_t Group, int32_t IndexInGroup, int32_t Alignment)
+BuildingBrush::BuildingBrush(int32_t group, int32_t IndexInGroup, int32_t Alignment)
 {
-	group = Group;
+	group = group;
 	indexInGroup = IndexInGroup;
 	pAction = nullptr;
-	pCursor = EditorObjectMgr::instance()->getAppearance(Group, IndexInGroup);
+	pCursor = EditorObjectMgr::instance()->getAppearance(group, IndexInGroup);
 	pCursor->teamId = Alignment;
 	pCursor->setInView(true);
 	pCursor->setVisibility(true, true);
@@ -49,10 +49,10 @@ BuildingBrush::canPaint(
 	if (!EditorObjectMgr::instance()->canAddBuilding(
 			worldPos, pCursor->rotation, group, indexInGroup))
 	{
-		pCursor->setHighlightColor(0x007f0000);
+		pCursor->setHighlightcolour(0x007f0000);
 		return false; // no two things on top of each other
 	}
-	pCursor->setHighlightColor(0x00007f00);
+	pCursor->setHighlightcolour(0x00007f00);
 	return true;
 }
 
@@ -192,9 +192,9 @@ BuildingBrush::update(int32_t ScreenMouseX, int32_t ScreenMouseY)
 	pt.y = ScreenMouseY;
 	eye->inverseProject(pt, pos);
 	if (!EditorObjectMgr::instance()->canAddBuilding(pos, pCursor->rotation, group, indexInGroup))
-		pCursor->setHighlightColor(0x00400000);
+		pCursor->setHighlightcolour(0x00400000);
 	else
-		pCursor->setHighlightColor(0x00004000);
+		pCursor->setHighlightcolour(0x00004000);
 	pCursor->position = pos;
 	pCursor->recalcBounds();
 	pCursor->update(); // Safe tp call here now because we run the first update
@@ -217,9 +217,9 @@ BuildingBrush::render(int32_t ScreenMouseX, int32_t ScreenMouseY)
 	eye->inverseProject( pt, pos );
 
 	if ( !EditorObjectMgr::instance()->canAddBuilding( pos, group, indexInGroup ) )
-		pCursor->setHighlightColor( 0x00400000 );
+		pCursor->setHighlightcolour( 0x00400000 );
 	else
-		pCursor->setHighlightColor( 0x00004000 );
+		pCursor->setHighlightcolour( 0x00004000 );
 
 	pCursor->position = pos;
 	pCursor->recalcBounds();

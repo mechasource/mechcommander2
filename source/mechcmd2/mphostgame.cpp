@@ -19,9 +19,9 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
-static cint32_t CANCEL_BUTTON_ID = 1000002;
+static const int32_t FIRST_BUTTON_ID = 1000010;
+static const int32_t OK_BUTTON_ID = 1000001;
+static const int32_t CANCEL_BUTTON_ID = 1000002;
 
 extern CPrefs prefs;
 
@@ -55,7 +55,7 @@ MPHostGame::init()
 	path.init(artPath, "mcl_mp_hostgamedialog", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -84,7 +84,7 @@ MPHostGame::init()
 		file.readIdLong( "YLocation", tmpY );
 
 
-		char tmpStr[256];
+		wchar_t tmpStr[256];
 		file.readIdString( "FileName", tmpStr, 255 );
 		{
 			FullPathFileName tmpPath;
@@ -93,7 +93,7 @@ MPHostGame::init()
 			FitIniFile PNfile;
 			if ( NO_ERROR != PNfile.open( tmpPath ) )
 			{
-				char error[256];
+				wchar_t error[256];
 				sprintf( error, "couldn't open file %s", (const std::wstring_view&)tmpPath );
 				Assert( 0, 0, error );
 				return;
@@ -106,12 +106,12 @@ MPHostGame::init()
 			{
 				pTmp2 = new aStyle5TextListItem;
 				pTmp2->init(&PNfile, "Text0");
-				char txt[32];
+				wchar_t txt[32];
 				sprintf( txt, "%ld", i );
 				pTmp2->setText( txt );
 				pTmp2->sizeToText();
 				pTmp2->resize( numPlayersDropList.width() -
-	   numPlayersDropList.ListBox().getScrollBarWidth() + 5, pTmp2->height() );
+	   numPlayersDropList.ListBox().getScrollBarwidth() + 5, pTmp2->height() );
 				numPlayersDropList.AddItem(pTmp2);
 			}
 			numPlayersDropList.SelectItem(0);
@@ -234,10 +234,10 @@ aStyle5TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	aTextListItem::init(fontResID);
 	setText(textID);
 	int32_t color = 0xff808080;
-	file->readIdLong("Color", color);
-	normalColor = color;
-	setColor(color);
-	char tmpStr[64];
+	file->readIdLong("colour", color);
+	normalcolour = color;
+	setcolour(color);
+	wchar_t tmpStr[64];
 	strcpy(tmpStr, "");
 	file->readIdString("Animation", tmpStr, 63);
 	if (0 == strcmp("", tmpStr))
@@ -258,17 +258,17 @@ aStyle5TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
+		color = 0.33 * ((uint32_t)normalcolour) + 0.67 * ((uint32_t)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
+		color = 0.67 * ((uint32_t)normalcolour) + 0.33 * ((uint32_t)0xffffffff);
 	}
 	else
 	{
-		color = normalColor;
+		color = normalcolour;
 	}
-	aTextListItem::setColor((uint32_t)color);
+	aTextListItem::setcolour((uint32_t)color);
 	aTextListItem::render();
 }
 

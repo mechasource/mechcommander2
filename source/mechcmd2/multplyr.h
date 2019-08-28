@@ -90,7 +90,7 @@ enum class
 	BASECOLOR_PREFERENCE,
 	BASECOLOR_SELF,
 	BASECOLOR_TEAM
-} BaseColorType;
+} BasecolourType;
 
 enum class 
 {
@@ -177,27 +177,27 @@ enum class
 
 typedef struct _MC2Session
 {
-	char name[MAXLEN_SESSION_NAME];
-	char maxPlayers;
-	char numPlayers;
-	char map[MAXLEN_MAP_NAME];
+	wchar_t name[MAXLEN_SESSION_NAME];
+	wchar_t maxPlayers;
+	wchar_t numPlayers;
+	wchar_t map[MAXLEN_MAP_NAME];
 	int32_t ping;
 	bool locked;
 	bool inProgress;
 	bool cancelled;
-	char versionStamp[15];
+	wchar_t versionStamp[15];
 	GUID handle;
 } MC2Session;
 
 #pragma pack(1)
 typedef struct _MC2SessionData
 {
-	char map[MAXLEN_MAP_NAME];
+	wchar_t map[MAXLEN_MAP_NAME];
 	bool locked;
 	bool inProgress;
-	char maxPlayers;
-	char numPlayers;
-	char versionStamp[15];
+	wchar_t maxPlayers;
+	wchar_t numPlayers;
+	wchar_t versionStamp[15];
 	bool cancelled;
 } MC2SessionData;
 #pragma pack()
@@ -211,26 +211,26 @@ typedef struct _TeamInfo
 typedef struct _MC2PlayerSlot
 {
 	NETPLAYER player;
-	char commanderid;
-	char name[MAXLEN_PLAYER_NAME];
+	wchar_t commanderid;
+	wchar_t name[MAXLEN_PLAYER_NAME];
 } MC2PlayerSlot;
 
 typedef struct _MC2Player
 {
 	bool checkedIn;
 	NETPLAYER player;
-	char commanderid;
-	char dropZone;
-	char name[MAXLEN_PLAYER_NAME];
-	char ipAddress[16];
-	char unitName[MAXLEN_UNIT_NAME];
-	char insigniaFile[MAXLEN_INSIGNIA_FILE];
-	char baseColor[3];
-	char stripeColor;
-	char teamSelected;
-	char team;
+	wchar_t commanderid;
+	wchar_t dropZone;
+	wchar_t name[MAXLEN_PLAYER_NAME];
+	wchar_t ipAddress[16];
+	wchar_t unitName[MAXLEN_UNIT_NAME];
+	wchar_t insigniaFile[MAXLEN_INSIGNIA_FILE];
+	wchar_t basecolour[3];
+	wchar_t stripecolour;
+	wchar_t teamSelected;
+	wchar_t team;
 	uint32_t teamSeniority;
-	char faction;
+	wchar_t faction;
 	int32_t cBills;
 	int32_t resourcePointsAtStart;
 	int32_t resourcePointsGained;
@@ -247,10 +247,10 @@ typedef struct _MC2Player
 
 typedef struct _MissionSettings
 {
-	char map[MAXLEN_MAP_NAME]; // file name
-	char name[MAXLEN_MAP_DESC]; // displayNmae
+	wchar_t map[MAXLEN_MAP_NAME]; // file name
+	wchar_t name[MAXLEN_MAP_DESC]; // displayNmae
 	GUID mapGuid; // Insures maps are the same version!!
-	char url[256]; /// GLENN, you probably want this somewhere else....
+	wchar_t url[256]; /// GLENN, you probably want this somewhere else....
 	int32_t defaultCBills;
 	int32_t resourcePoints;
 	float timeLimit;
@@ -266,11 +266,11 @@ typedef struct _MissionSettings
 	bool mineLayer;
 	bool resourceBuilding;
 	bool resourceForMechs;
-	char missionType;
+	wchar_t missionType;
 	bool quickStart;
-	char maxTeams;
-	char maxPlayers;
-	char numPlayers;
+	wchar_t maxTeams;
+	wchar_t maxPlayers;
+	wchar_t numPlayers;
 	int32_t dropWeight;
 	bool locked;
 	bool inProgress;
@@ -280,14 +280,14 @@ typedef struct _CompressedMech
 {
 	bool lastMech;
 	int32_t objNumber;
-	char commanderid;
-	uint32_t baseColor;
-	uint32_t highlightColor1;
-	uint32_t highlightColor2;
-	char pilotFile[50];
-	char mechFile[50];
-	char variantName[64];
-	char variantNum;
+	wchar_t commanderid;
+	uint32_t basecolour;
+	uint32_t highlightcolour1;
+	uint32_t highlightcolour2;
+	wchar_t pilotFile[50];
+	wchar_t mechFile[50];
+	wchar_t variantName[64];
+	wchar_t variantNum;
 	float pos[2];
 	int32_t cBills;
 	bool designerMech;
@@ -305,12 +305,12 @@ class WorldChunk
 {
 
 public:
-	char type;
+	wchar_t type;
 	int16_t tileRC[2];
 	int32_t objectId;
 	int32_t objectBlockOrTrainNumber;
 	int32_t objectVertexOrCarNumber;
-	char objectItemNumber;
+	wchar_t objectItemNumber;
 	int32_t param1;
 	int32_t param2;
 
@@ -518,8 +518,8 @@ class MCMSG_JoinTeam:public FIGuaranteedMessageHeader
 		}
 
 		DPID player;
-		char team;
-		char slot;
+		wchar_t team;
+		wchar_t slot;
 };
 */
 
@@ -563,7 +563,7 @@ class MCMSG_PlayerCID
 
 public:
 	uint8_t type;
-	char commanderid;
+	wchar_t commanderid;
 	uint8_t subType;
 
 public:
@@ -584,10 +584,10 @@ class MCMSG_PlayerUpdate
 
 public:
 	uint8_t type;
-	char stage;
+	wchar_t stage;
 	float senderTime;
-	char sessionIPAddress[16];
-	char versionStamp[15];
+	wchar_t sessionIPAddress[16];
+	wchar_t versionStamp[15];
 	MC2Player info;
 
 public:
@@ -624,8 +624,8 @@ class MCMSG_MissionSetup
 public:
 	uint8_t type;
 	int32_t randomSeed;
-	char subType;
-	char commandersToLoad[MAX_MC_PLAYERS][3];
+	wchar_t subType;
+	wchar_t commandersToLoad[MAX_MC_PLAYERS][3];
 	CompressedMech mechData;
 
 public:
@@ -645,7 +645,7 @@ class MCMSG_PlayerInfo
 
 public:
 	uint8_t type;
-	char commanderid;
+	wchar_t commanderid;
 
 public:
 	MCMSG_PlayerInfo(void) { init(void); }
@@ -669,7 +669,7 @@ public:
 	bool allPlayers;
 	bool isDeadChat;
 	bool hideName;
-	char string[];
+	wchar_t string[];
 
 public:
 	MCMSG_Chat(void) { init(void); }
@@ -693,7 +693,7 @@ class MCMSG_PlayerCheckIn
 
 public:
 	uint8_t type;
-	char commanderid;
+	wchar_t commanderid;
 
 public:
 	MCMSG_PlayerCheckIn(void) { init(void); }
@@ -734,8 +734,8 @@ class MCMSG_PlayerInsignia
 
 public:
 	uint8_t type;
-	char commanderid;
-	char fileName[64];
+	wchar_t commanderid;
+	wchar_t fileName[64];
 	int32_t dataSize;
 	uint8_t data[];
 
@@ -797,7 +797,7 @@ class MCMSG_LeaveSession
 public:
 	uint8_t type;
 	uint8_t subType;
-	char commanderid;
+	wchar_t commanderid;
 
 public:
 	MCMSG_LeaveSession(void) { init(void); }
@@ -819,7 +819,7 @@ class MCMSG_PlayerOrder
 
 public:
 	uint8_t type;
-	char commanderid;
+	wchar_t commanderid;
 	uint8_t flags;
 	float location[2];
 	uint32_t tacOrderChunk[2];
@@ -846,7 +846,7 @@ class MCMSG_HoldPosition
 
 public:
 	uint8_t type;
-	char commanderid;
+	wchar_t commanderid;
 	uint16_t flags;
 
 public:
@@ -874,8 +874,8 @@ class MCMSG_PlayerMoverGroup
 public:
 	uint8_t type;
 	uint8_t action;
-	char commanderid;
-	char groupId;
+	wchar_t commanderid;
+	wchar_t groupId;
 	uint16_t moverGroupInfo;
 
 public:
@@ -946,7 +946,7 @@ class MCMSG_TurretUpdate
 public:
 	uint8_t type;
 	uint16_t updateId;
-	char targetList[];
+	wchar_t targetList[];
 
 public:
 	MCMSG_TurretUpdate(void) { init(void); }
@@ -991,7 +991,7 @@ class MCMSG_TurretWeaponFireUpdate
 
 public:
 	uint8_t type;
-	char numTurrets;
+	wchar_t numTurrets;
 	uint16_t info[];
 
 public:
@@ -1087,8 +1087,8 @@ public:
 	uint8_t stage;
 	uint8_t rosterIndex;
 	int32_t vehicleID;
-	char pilotName[24];
-	char commanderid;
+	wchar_t pilotName[24];
+	wchar_t commanderid;
 	float location[2];
 
 public:
@@ -1114,7 +1114,7 @@ class MCMSG_NewServer
 
 public:
 	uint8_t type;
-	char ipAddress[16];
+	wchar_t ipAddress[16];
 
 public:
 	MCMSG_NewServer(void) { init(void); }
@@ -1137,7 +1137,7 @@ public:
 	uint8_t type;
 	uint32_t checkSum;
 	GUID fileGuid;
-	char fileName[];
+	wchar_t fileName[];
 
 	MCMSG_FileReport(void) { init(void); }
 
@@ -1198,15 +1198,15 @@ public:
 	MC2Session sessionList[MAX_SESSIONS];
 	uint32_t teamSeniority[MAX_TEAMS];
 	static int32_t colors[MAX_COLORS];
-	char colorsCID[MAX_COLORS];
-	char sessionIPAddress[16];
+	wchar_t colorsCID[MAX_COLORS];
+	wchar_t sessionIPAddress[16];
 	bool sessionScanning;
 	bool sessionScanningError;
 	bool sessionScanningPersistent;
 	bool fitStart;
 	int32_t numFitPlayers;
 	MissionSettings missionSettings;
-	char commandersToLoad[MAX_MC_PLAYERS][3];
+	wchar_t commandersToLoad[MAX_MC_PLAYERS][3];
 	CompressedMech mechData[MAX_MC_PLAYERS][12];
 	bool locked;
 	bool inProgress;
@@ -1241,7 +1241,7 @@ public:
 
 	int32_t mode;
 	int32_t sessionEntry;
-	puint8_t msgBuffer;
+	uint8_t* msgBuffer;
 	int32_t numLocalMovers;
 	int32_t numMovers;
 	int32_t numTurrets;
@@ -1260,8 +1260,8 @@ public:
 	bool inSession;
 	bool hostDroppedOut;
 	int32_t commanderid; // same as commanderId
-	char sessionName[80];
-	char playerName[80];
+	wchar_t sessionName[80];
+	wchar_t playerName[80];
 
 	// MC2Player			playerList[MAX_MC_PLAYERS];		// list of
 	// players--order doesn't matter
@@ -1309,7 +1309,7 @@ public:
 	int32_t reinforcements[MAX_MC_PLAYERS][2]; // index 0 = current
 		// reinforcement, index 1 =
 		// current recoverery
-	char reinforcementPilot[MAX_MC_PLAYERS][32];
+	wchar_t reinforcementPilot[MAX_MC_PLAYERS][32];
 
 	bool isMPlayerGame;
 	int32_t badSessionCounter;
@@ -1331,7 +1331,7 @@ public:
 	int32_t maxReceiveSize;
 	int32_t worldChunkTally[NUM_WORLDCHUNK_TYPES];
 
-	char currentChatMessages[MAX_STORED_CHATS][MAX_CHAT_LENGTH];
+	wchar_t currentChatMessages[MAX_STORED_CHATS][MAX_CHAT_LENGTH];
 	int32_t currentChatMessagePlayerIDs[MAX_STORED_CHATS];
 	int32_t chatCount;
 
@@ -1366,7 +1366,7 @@ public:
 
 	bool isServer(void) { return (false); }
 
-	void setServer(NETPLAYER player, char playerIPAddress[16]);
+	void setServer(NETPLAYER player, wchar_t playerIPAddress[16]);
 
 	bool isHost(void) { return (isServer()); }
 
@@ -1449,7 +1449,7 @@ public:
 
 	void setDefaultPlayerInfo(void);
 
-	void initSpecialBuildings(char commandersToLoad[8][3]);
+	void initSpecialBuildings(wchar_t commandersToLoad[8][3]);
 
 	const std::wstring_view& getPlayerName(void) { return (nullptr); }
 
@@ -1473,13 +1473,13 @@ public:
 
 	void clearWorldChunks(void) { numWorldChunks = 0; }
 
-	int32_t setClosestColor(int32_t colorIndex, int32_t commanderid);
+	int32_t setClosestcolour(int32_t colorIndex, int32_t commanderid);
 
-	int32_t setNextFreeColor(int32_t commanderid);
+	int32_t setNextFreecolour(int32_t commanderid);
 
-	void setColor(int32_t colorIndex, int32_t commanderid);
+	void setcolour(int32_t colorIndex, int32_t commanderid);
 
-	void setPlayerBaseColor(int32_t commanderid, int32_t colorIndex);
+	void setPlayerBasecolour(int32_t commanderid, int32_t colorIndex);
 
 	void setPlayerTeam(int32_t commanderid, int32_t teamID);
 
@@ -1594,10 +1594,10 @@ public:
 
 	void handleWorldUpdate(NETPLAYER sender, MCMSG_WorldUpdate* msg);
 
-	void sendChat(NETPLAYER receiver, char team, const std::wstring_view& chatString);
+	void sendChat(NETPLAYER receiver, wchar_t team, const std::wstring_view& chatString);
 	void sendPlayerActionChat(NETPLAYER receiver, const std::wstring_view& playerName, uint32_t resID);
 
-	void sendPlayerCID(NETPLAYER receiver, uint8_t subType, char CID);
+	void sendPlayerCID(NETPLAYER receiver, uint8_t subType, wchar_t CID);
 
 	void sendPlayerUpdate(NETPLAYER receiver, int32_t stage, int32_t commanderid);
 
@@ -1609,7 +1609,7 @@ public:
 
 	void sendPlayerSetup(void);
 
-	void sendPlayerInsignia(const std::wstring_view& insigniaFileName, puint8_t insigniaData, int32_t insigniaDataSize);
+	void sendPlayerInsignia(const std::wstring_view& insigniaFileName, uint8_t* insigniaData, int32_t insigniaDataSize);
 
 	void sendMissionSetup(NETPLAYER receiver, int32_t stage, CompressedMech* mechData);
 
@@ -1619,12 +1619,12 @@ public:
 
 	void sendEndMission(int32_t result);
 
-	void sendReinforcement(int32_t vehicleID, int32_t rosterIndex, char pilotName[16],
+	void sendReinforcement(int32_t vehicleID, int32_t rosterIndex, wchar_t pilotName[16],
 		int32_t commanderid, Stuff::Vector3D pos, uint8_t stage);
 
 	void sendNewServer(void);
 
-	void sendLeaveSession(char subType, char commanderid);
+	void sendLeaveSession(wchar_t subType, wchar_t commanderid);
 
 	void sendPlayerOrder(TacticalOrderPtr tacOrder, bool needsSelection, int32_t numMovers,
 		std::unique_ptr<Mover>* moverList, int32_t numGroups = 0, MoverGroupPtr* groupList = nullptr,
@@ -1675,7 +1675,7 @@ public:
 
 	void switchServers(void);
 
-	void calcDropZones(char dropZonesCID[8], char hqs[MAX_TEAMS]);
+	void calcDropZones(wchar_t dropZonesCID[8], wchar_t hqs[MAX_TEAMS]);
 
 	int32_t saveTranscript(const std::wstring_view& fileName, bool debugging = false);
 

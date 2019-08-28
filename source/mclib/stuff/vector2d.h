@@ -197,7 +197,7 @@ public:
 	}
 
 #if !defined(Spew)
-	friend void Spew(PCSTR group, const Vector2DOf<T>& vector);
+	friend void Spew(const std::wstring_view& group, const Vector2DOf<T>& vector);
 #endif
 	void TestInstance(void) const
 	{
@@ -230,7 +230,7 @@ typedef Vector2DOf<float> Vector2DScalar;
 #if !defined(Spew)
 template <class T>
 void
-Spew(PCSTR group, const Stuff::Vector2DOf<T>& vector)
+Spew(const std::wstring_view& group, const Stuff::Vector2DOf<T>& vector)
 {
 	// Check_Object(this);
 	SPEW((group, "<+"));

@@ -6,9 +6,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 #include "stuff/scalar.h"
 #include "stuff/affinematrix.h"
 #include "stuff/matrix.h"
@@ -133,7 +133,7 @@ Spew(const std::wstring_view& group, const Vector4D& vector)
 #endif
 
 Vector4D&
-Vector4D::MultiplySetClip(const Point3D& v, const Matrix4D& m, puint32_t clipper)
+Vector4D::MultiplySetClip(const Point3D& v, const Matrix4D& m, uint32_t* clipper)
 {
 	// Check_Pointer(this);
 	Check_Object(&v);

@@ -132,7 +132,7 @@ public:
 
 	static MapDataPtr mapData; // Pointer to class that manages terrain mesh data.
 	static TerrainTexturesPtr terrainTextures; // Pointer to class that manages terrain textures.
-	static TerrainColorMapPtr terrainTextures2; // Pointer to class that manages
+	static TerraincolourMapPtr terrainTextures2; // Pointer to class that manages
 		// the NEW color map terrain
 		// texture.
 	static UserHeapPtr terrainHeap; // Heap used for terrain.
@@ -140,8 +140,8 @@ public:
 	//		static ByteFlag							*VisibleBits;				//What
 	// can  currently  be seen
 
-	static char* terrainName; // Name of terrain data file.
-	static char* colorMapName; // Name of colormap, if different from terrainName.
+	static wchar_t* terrainName; // Name of terrain data file.
+	static wchar_t* colorMapName; // Name of colormap, if different from terrainName.
 
 	static float oneOverWorldUnitsPerElevationLevel;
 
@@ -231,8 +231,8 @@ public:
 	uint32_t getTexture(int32_t tileR, int32_t tileC);
 	float getTerrainElevation(int32_t tileR, int32_t tileC);
 
-	void setVertexHeight(int32_t vertexIndex, float value);
-	float getVertexHeight(int32_t vertexIndex);
+	void setVertexheight(int32_t vertexIndex, float value);
+	float getVertexheight(int32_t vertexIndex);
 
 	void calcWater(float waterDepth, float waterShallowDepth, float waterAlphaDepth);
 
@@ -295,9 +295,9 @@ public:
 
 	void resetVisibleVertices(int32_t maxVisibleVertices);
 
-	void getColorMapName(FitIniFile* file);
-	void setColorMapName(const std::wstring_view& mapName);
-	void saveColorMapName(FitIniFile* file);
+	void getcolourMapName(FitIniFile* file);
+	void setcolourMapName(const std::wstring_view& mapName);
+	void savecolourMapName(FitIniFile* file);
 };
 
 typedef Terrain* TerrainPtr;

@@ -40,7 +40,7 @@
 #endif
 
 #include <math.h>
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "stuff/stuff.h"
 //---------------------------------------------------------------------------
 // Macro Defintiions
@@ -85,7 +85,7 @@ typedef struct _SoundBite
 	uint32_t cacheStatus;
 	uint32_t soundId;
 	uint32_t biteSize;
-	puint8_t biteData;
+	uint8_t* biteData;
 	float volume;
 	HGOSAUDIO resourceHandle;
 } SoundBite;
@@ -131,17 +131,17 @@ protected:
 	HGOSAUDIO stream3Handle;
 	bool stream3Active;
 
-	char** digitalMusicIds;
+	wchar_t** digitalMusicIds;
 	bool* digitalMusicLoopFlags;
 	float* digitalMusicVolume;
 
 	float maxSoundDistance;
 
-	puint8_t bettySoundBite; // Used to store current bitching betty sample
+	uint8_t* bettySoundBite; // Used to store current bitching betty sample
 	int32_t lastBettyId;
 	HGOSAUDIO bettyHandle;
 
-	puint8_t supportSoundBite; // USed to store current support officer sample
+	uint8_t* supportSoundBite; // USed to store current support officer sample
 	int32_t lastSupportId;
 	HGOSAUDIO supportHandle;
 

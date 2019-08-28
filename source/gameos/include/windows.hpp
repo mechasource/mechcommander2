@@ -77,20 +77,20 @@ extern BOOL(__stdcall* _GetWsChanges)(HANDLE hProcess, struct _PSAPI_WS_WATCH_IN
 extern uint32_t(__stdcall* _GetMappedFileName)(HANDLE hProcess, PVOID pv, PSTR pFilename, uint32_t nSize);
 
 typedef int32_t(__stdcall* PDIRECTXSETUPGETVERSION)(uint32_t* pdwVersion, uint32_t* pdwMinorVersion);
-typedef HRESULT(__stdcall* PDIRECTDRAWCREATEEX)(GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN pUnkOuter);
-typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEA)(LPDDENUMCALLBACKA pCallback, PVOID pContext);
-typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEEXA)(LPDDENUMCALLBACKEXA pCallback, PVOID pContext, uint32_t dwFlags);
-typedef HRESULT(__stdcall* PDIRECTSOUNDCREATE)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter);
-typedef HRESULT(__stdcall* PDIRECTSOUNDENUMERATEA)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
-typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(HINSTANCE hinstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
+typedef HRESULT(__stdcall* PDIRECTDRAWCREATEEX)(GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN punkouter);
+typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEA)(LPDDENUMCALLBACKA pCallback, PVOID pcontext);
+typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEEXA)(LPDDENUMCALLBACKEXA pCallback, PVOID pcontext, uint32_t flags);
+typedef HRESULT(__stdcall* PDIRECTSOUNDCREATE)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN punkouter);
+typedef HRESULT(__stdcall* PDIRECTSOUNDENUMERATEA)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pcontext);
+typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(HINSTANCE hinstance, uint32_t version, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
 
-extern HRESULT(__stdcall* _DirectDrawCreateEx)(GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN pUnkOuter);
-extern HRESULT(__stdcall* _DirectDrawEnumerate)(LPDDENUMCALLBACKA pCallback, PVOID pContext);
-extern HRESULT(__stdcall* _DirectDrawEnumerateEx)(LPDDENUMCALLBACKEXA pCallback, PVOID pContext, uint32_t dwFlags);
-extern HRESULT(__stdcall* _DirectSoundCreate)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter);
-extern HRESULT(__stdcall* _DirectSoundEnumerate)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
-extern HRESULT(__stdcall* _DirectInputCreate)(HINSTANCE hinst, uint32_t dwVersion, LPDIRECTINPUT* lplpDirectInput, LPUNKNOWN punkOuter);
-extern HRESULT(__stdcall* _DirectInputCreateEx)(HINSTANCE hinstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
+extern HRESULT(__stdcall* _DirectDrawCreateEx)(GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN punkouter);
+extern HRESULT(__stdcall* _DirectDrawEnumerate)(LPDDENUMCALLBACKA pCallback, PVOID pcontext);
+extern HRESULT(__stdcall* _DirectDrawEnumerateEx)(LPDDENUMCALLBACKEXA pCallback, PVOID pcontext, uint32_t flags);
+extern HRESULT(__stdcall* _DirectSoundCreate)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN punkouter);
+extern HRESULT(__stdcall* _DirectSoundEnumerate)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pcontext);
+extern HRESULT(__stdcall* _DirectInputCreate)(HINSTANCE hinst, uint32_t version, LPDIRECTINPUT* lplpDirectInput, LPUNKNOWN punkOuter);
+extern HRESULT(__stdcall* _DirectInputCreateEx)(HINSTANCE hinstance, uint32_t version, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
 extern HWND(__stdcall* _CallmyHelp)(HWND hwnd, HINSTANCE hinstance, bool Window, uint32_t HelpItem);
 extern void(__stdcall* _FreeHlpLib)(void);
 extern uint32_t(__stdcall* _AMGetErrorText)(HRESULT hr, PSTR pbuffer, uint32_t MaxLen);
@@ -107,6 +107,6 @@ extern uint32_t SkipRendering;
 extern bool gNoBlade;
 extern void __stdcall RestartGameOS(void);
 extern void __stdcall DoGame(void);
-extern void __stdcall gos_UpdateDisplay(bool Everything);
+extern void __stdcall gos_UpdateDisplay(bool everything);
 
 // clang-format on

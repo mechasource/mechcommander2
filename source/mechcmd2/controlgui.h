@@ -38,14 +38,14 @@ struct ButtonData
 	int32_t helpTextHeader;
 	int32_t helpTextID;
 	int32_t textID;
-	int32_t textColors[4];
+	int32_t textcolours[4];
 	aFont textFont;
-	char fileName[32];
+	wchar_t fileName[32];
 	int32_t stateCoords[4][2];
-	int32_t textureWidth;
-	int32_t textureHeight;
-	int32_t fileWidth;
-	int32_t fileHeight;
+	int32_t texturewidth;
+	int32_t textureheight;
+	int32_t filewidth;
+	int32_t fileheight;
 	uint32_t textureHandle;
 	bool textureRotated;
 };
@@ -67,7 +67,7 @@ public:
 	void makeAmbiguous(bool bAmbiguous);
 	void hide(bool);
 	void move(float deltaX, float deltaY);
-	void setColor(uint32_t newColor);
+	void setcolour(uint32_t newcolour);
 	static void makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data);
 
 	static void initButtons(FitIniFile& file, int32_t buttonCount, ControlButton* buttons,
@@ -97,8 +97,8 @@ public:
 	bool inRegion(int32_t mouseX, int32_t mouseY, bool bPaused);
 	void render(bool bPaused);
 	void update(bool bPaused, bool bLOS);
-	void initTacMapBuildings(puint8_t data, int32_t size) { tacMap.initBuildings(data, size); }
-	void initTacMap(puint8_t data, int32_t size) { tacMap.init(data, size); }
+	void initTacMapBuildings(uint8_t* data, int32_t size) { tacMap.initBuildings(data, size); }
+	void initTacMap(uint8_t* data, int32_t size) { tacMap.init(data, size); }
 	void initMechs(void);
 	void unPressAllVehicleButtons(void);
 	void disableAllVehicleButtons(void);
@@ -121,7 +121,7 @@ public:
 	void playMovie(const std::wstring_view& fileName);
 	bool isMoviePlaying(void);
 
-	bool playPilotVideo(MechWarrior* pPilot, char movieCode);
+	bool playPilotVideo(MechWarrior* pPilot, wchar_t movieCode);
 	void endPilotVideo(void);
 	bool isSelectingInfoObject(void);
 
@@ -248,7 +248,7 @@ public:
 
 	void setRolloverHelpText(uint32_t textID);
 
-	void setChatText(const std::wstring_view& playerName, const std::wstring_view& message, uint32_t backgroundColor, uint32_t textColor);
+	void setChatText(const std::wstring_view& playerName, const std::wstring_view& message, uint32_t backgroundcolour, uint32_t textcolour);
 	void toggleChat(bool setTeamOnly);
 	void eatChatKey(void);
 	void cancelInfo(void);
@@ -264,12 +264,12 @@ public:
 private:
 	struct ChatInfo
 	{
-		char playerName[32];
-		char message[128];
-		uint32_t backgroundColor;
+		wchar_t playerName[32];
+		wchar_t message[128];
+		uint32_t backgroundcolour;
 		uint32_t time;
 		uint32_t messageLength; // number of lines
-		uint32_t chatTextColor;
+		uint32_t chatTextcolour;
 	};
 
 	ChatInfo chatInfos[MAX_CHAT_COUNT]; // max five lines -- could change

@@ -43,14 +43,14 @@ private:
 	const std::wstring_view& objectiveModels[MAX_OBJECTIVES];
 	int32_t modelTypes[MAX_OBJECTIVES];
 	float modelScales[MAX_OBJECTIVES];
-	int32_t modelColors[MAX_OBJECTIVES][3];
+	int32_t modelcolours[MAX_OBJECTIVES][3];
 	aListBox missionListBox;
 
 	int32_t addLBItem(const std::wstring_view& itemName, uint32_t color, int32_t ID);
 	int32_t addItem(int32_t ID, uint32_t color, int32_t LBid);
 	void addObjectiveButton(float fMakerX, float fMarkerY, int32_t count, int32_t priority,
-		float mapWidth, float mapHeight, bool display);
-	void setupDropZone(float fX, float fY, float mapWidth, float mapHeight);
+		float mapwidth, float mapheight, bool display);
+	void setupDropZone(float fX, float fY, float mapwidth, float mapheight);
 
 	float runTime;
 	bool bClicked;

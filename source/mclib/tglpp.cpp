@@ -15,12 +15,12 @@ TG_Shape::PerPolySelect(float mouseX, float mouseY)
 {
 	if (!InEditor)
 	{
-		if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || ((lastTurnTransformed != (turn - 1)) /*&& (lastTurnTransformed != turn)*/))
+		if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || ((lastTurnTransformed != (turn - 1)) /*&& (lastTurnTransformed != turn)*/))
 			return false;
 	}
 	else
 	{
-		if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || (/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != turn)))
+		if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || (/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != turn)))
 			return false;
 	}
 	TG_TypeShapePtr theShape = (TG_TypeShapePtr)myType;

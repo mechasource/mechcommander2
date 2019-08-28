@@ -58,7 +58,7 @@ MPPrefs::init(FitIniFile& file)
 	file.seekBlock("ComboBoxes");
 	int32_t count = 0;
 	file.readIdLong("ComboBoxCount", count);
-	char blockName[256];
+	wchar_t blockName[256];
 	const std::wstring_view& headers[3] = {"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox"};
 	for (i = 0; i < count; i++)
 	{
@@ -74,7 +74,7 @@ MPPrefs::init(FitIniFile& file)
 		path.init(artPath, blockName, ".fit");
 		if (NO_ERROR != tmpFile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return -1;
@@ -129,8 +129,8 @@ MPPrefs::begin()
 	comboBox[2].ListBox().removeAllItems(true);
 	comboBox[2].SelectItem(-1);
 	// need to add items to the save game list
-	char findString[512];
-	char path[256];
+	wchar_t findString[512];
+	wchar_t path[256];
 	sprintf(path, "data\\multiplayer\\insignia\\");
 	sprintf(findString, "%s*.tga", path);
 	WIN32_FIND_DATA findResult;
@@ -189,8 +189,8 @@ MPPrefs::begin()
 		getButton(MP_PREFS_BASE)->press(true);
 		getButton(MP_PREFS_STRIPE)->press(0);
 	}
-	camera.setMech("Bushwacker", MPlayer->colors[player->baseColor[BASECOLOR_SELF]],
-		MPlayer->colors[player->stripeColor], MPlayer->colors[player->stripeColor]);
+	camera.setMech("Bushwacker", MPlayer->colors[player->basecolour[BASECOLOR_SELF]],
+		MPlayer->colors[player->stripecolour], MPlayer->colors[player->stripecolour]);
 	camera.zoomIn(1.5);
 }
 void
@@ -251,7 +251,7 @@ MPPrefs::update()
 		File file;
 		file.open(path);
 		int32_t size = file.getLength();
-		puint8_t pData = new uint8_t[size];
+		uint8_t* pData = new uint8_t[size];
 		file.read(pData, size);
 		MPlayer->sendPlayerInsignia((const std::wstring_view&)pName, pData, size);
 		MPlayer->insigniaList[MPlayer->commanderid] = 1;
@@ -267,10 +267,10 @@ MPPrefs::update()
 				// x out colors that are already taken
 				if (getButton(MP_PREFS_BASE)->isPressed())
 				{
-					setColor(rects[j].getColor());
+					setcolour(rects[j].getcolour());
 				}
 				else
-					setHighlightColor(rects[j].getColor());
+					setHighlightcolour(rects[j].getcolour());
 				break;
 			}
 		}
@@ -280,41 +280,41 @@ MPPrefs::update()
 }
 
 void
-MPPrefs::setColor(uint32_t color)
+MPPrefs::setcolour(uint32_t color)
 {
 	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	for (size_t i = 0; i < playerCount; i++)
 	{
-		if (MPlayer->colors[players[i].baseColor[BASECOLOR_SELF]] == color && i != MPlayer->commanderid)
+		if (MPlayer->colors[players[i].basecolour[BASECOLOR_SELF]] == color && i != MPlayer->commanderid)
 		{
 			soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 			return;
 		}
 	}
-	// GD:MPlayer->setPlayerBaseColor( MPlayer->commanderid, getColorIndex(
+	// GD:MPlayer->setPlayerBasecolour( MPlayer->commanderid, getcolourIndex(
 	// color ) );
 	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderid);
-	player->baseColor[BASECOLOR_PREFERENCE] = getColorIndex(color);
+	player->basecolour[BASECOLOR_PREFERENCE] = getcolourIndex(color);
 	MPlayer->sendPlayerUpdate(0, 6, -1);
 	// GD:camera.setMech( "Bushwacker", color,
-	// MPlayer->colors[player->stripeColor], MPlayer->colors[player->stripeColor]
+	// MPlayer->colors[player->stripecolour], MPlayer->colors[player->stripecolour]
 	// );  GD:camera.zoomIn( 1.5 );
 }
 
 void
-MPPrefs::setHighlightColor(uint32_t color)
+MPPrefs::setHighlightcolour(uint32_t color)
 {
 	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderid);
-	player->stripeColor = getColorIndex(color);
+	player->stripecolour = getcolourIndex(color);
 	MPlayer->sendPlayerUpdate(0, 6, -1);
 	camera.setMech(
-		"Bushwacker", MPlayer->colors[player->baseColor[BASECOLOR_PREFERENCE]], color, color);
+		"Bushwacker", MPlayer->colors[player->basecolour[BASECOLOR_PREFERENCE]], color, color);
 	camera.zoomIn(1.5);
 }
 
-char
-MPPrefs::getColorIndex(uint32_t color)
+wchar_t
+MPPrefs::getcolourIndex(uint32_t color)
 {
 	for (size_t i = 0; i < MAX_COLORS; i++)
 	{
@@ -325,7 +325,7 @@ MPPrefs::getColorIndex(uint32_t color)
 }
 
 void
-MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bool bDrawRect)
+MPPrefs::updateBasecolours(const MC2Player* players, int32_t playerCount, bool bDrawRect)
 {
 	if (getButton(MP_PREFS_BASE)->isPressed())
 	{
@@ -335,7 +335,7 @@ MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bool bD
 			{
 				for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
-					if (MPlayer->colors[players[i].baseColor[BASECOLOR_PREFERENCE]] == rects[j].getColor())
+					if (MPlayer->colors[players[i].basecolour[BASECOLOR_PREFERENCE]] == rects[j].getcolour())
 					{
 						RECT rect = {rects[j].globalX() - 1, rects[j].globalY() - 1,
 							rects[j].right(), rects[j].bottom()};
@@ -349,7 +349,7 @@ MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bool bD
 			{
 				for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
-					if (MPlayer->colors[players[i].baseColor[BASECOLOR_SELF]] == rects[j].getColor() && bDrawRect)
+					if (MPlayer->colors[players[i].basecolour[BASECOLOR_SELF]] == rects[j].getcolour() && bDrawRect)
 					{
 						statics[21].moveTo(rects[j].globalX(), rects[j].globalY());
 						statics[21].render();
@@ -360,11 +360,11 @@ MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bool bD
 		}
 	}
 	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
-	rects[BASE_RECT].setColor(MPlayer->colors[pInfo->baseColor[BASECOLOR_PREFERENCE]]);
+	rects[BASE_RECT].setcolour(MPlayer->colors[pInfo->basecolour[BASECOLOR_PREFERENCE]]);
 }
 
 void
-MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, bool bDrawRect)
+MPPrefs::updateStripecolours(const MC2Player* players, int32_t playerCount, bool bDrawRect)
 {
 	if (getButton(MP_PREFS_STRIPE)->isPressed())
 	{
@@ -374,7 +374,7 @@ MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, bool 
 			{
 				for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
-					if (MPlayer->colors[players[i].stripeColor] == rects[j].getColor())
+					if (MPlayer->colors[players[i].stripecolour] == rects[j].getcolour())
 					{
 						RECT rect = {rects[j].globalX() - 1, rects[j].globalY() - 1,
 							rects[j].right(), rects[j].bottom()};
@@ -387,7 +387,7 @@ MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, bool 
 		}
 	}
 	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
-	rects[STRIPE_RECT].setColor(MPlayer->colors[pInfo->stripeColor]);
+	rects[STRIPE_RECT].setcolour(MPlayer->colors[pInfo->stripecolour]);
 }
 
 void
@@ -411,8 +411,8 @@ MPPrefs ::render(int32_t OffsetX, int32_t OffsetY)
 		bool bRect = (pObject == &comboBox[2] || pObject == &comboBox[1]) ? 0 : 1;
 		int32_t playerCount;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
-		updateBaseColors(players, playerCount, bRect);
-		updateStripeColors(players, playerCount, bRect);
+		updateBasecolours(players, playerCount, bRect);
+		updateStripecolours(players, playerCount, bRect);
 		textObjects[helpTextArrayID].render();
 	}
 	if (MPlayer && ChatWindow::instance())
@@ -491,8 +491,8 @@ MPPrefs::saveSettings()
 	}
 	//	if ( MPlayer->isHost() )
 	{
-		prefs.baseColor = MPlayer->colors[pInfo->baseColor[BASECOLOR_PREFERENCE]];
-		prefs.highlightColor = MPlayer->colors[pInfo->stripeColor];
+		prefs.basecolour = MPlayer->colors[pInfo->basecolour[BASECOLOR_PREFERENCE]];
+		prefs.highlightcolour = MPlayer->colors[pInfo->stripecolour];
 	}
 	MPlayer->sendPlayerUpdate(0, 5, -1);
 	prefs.save();
@@ -510,12 +510,12 @@ MPPrefs::cancelSettings()
 }
 
 void
-MPPrefs::initColors()
+MPPrefs::initcolours()
 {
 	for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 	{
 		if (MPlayer)
-			MPlayer->colors[j - FIRST_COLOR_RECT] = rects[j].getColor();
+			MPlayer->colors[j - FIRST_COLOR_RECT] = rects[j].getcolour();
 	}
 }
 
@@ -530,7 +530,7 @@ aBmpListItem::setBmp(const std::wstring_view& pFileName)
 	File file;
 	if (NO_ERROR == file.open(path))
 	{
-		file.read((puint8_t)&header, sizeof(header));
+		file.read((uint8_t*)&header, sizeof(header));
 		if (header.width != 32 || header.height != 32 || header.pixel_depth < 24)
 			return 0;
 	}
@@ -541,7 +541,7 @@ aBmpListItem::setBmp(const std::wstring_view& pFileName)
 	bmp.resize(32, 32);
 	bmp.setTexture(path);
 	bmp.setUVs(0, 0, 32, 32);
-	bmp.setColor(0xffffffff);
+	bmp.setcolour(0xffffffff);
 	resize(64, 36);
 	addChild(&bmp);
 	fileName = pFileName;
@@ -549,7 +549,7 @@ aBmpListItem::setBmp(const std::wstring_view& pFileName)
 }
 
 void
-MPPrefs::setMechColors(uint32_t base, uint32_t highlight)
+MPPrefs::setMechcolours(uint32_t base, uint32_t highlight)
 {
 	if (status == RUNNING)
 	{

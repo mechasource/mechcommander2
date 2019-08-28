@@ -11,7 +11,7 @@
 // Include files
 
 int32_t
-scaleDraw(puint8_t shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool reverse,
-	puint8_t fadeTable = nullptr, bool scaleUp = 0);
+scaleDraw(uint8_t* shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool reverse,
+	uint8_t* fadeTable = nullptr, bool scaleUp = 0);
 //---------------------------------------------------------------------------
 #endif

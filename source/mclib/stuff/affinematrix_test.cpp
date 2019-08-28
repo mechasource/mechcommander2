@@ -6,8 +6,8 @@
 //===========================================================================//
 
 #include "stdinc.h"
-// #include "stuffheaders.hpp"
-#include "gameos.hpp"
+// #include "stuff/stuffheaders.h"
+//#include "gameos.hpp"
 
 // test compiling headers one by one to find out dependencies
 
@@ -19,7 +19,7 @@
 //#include "stuff/auto_container.h"
 //#include "stuff/auto_ptr.h"
 //#include "stuff/average.h"
-//#include "stuff/chain.h"
+// #include "stuff/chain.h"
 //#include "stuff/color.h"
 //#include "stuff/database.h"
 //#include "stuff/extentbox.h"

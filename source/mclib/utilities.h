@@ -6,7 +6,7 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 //#include <string.h>
 
 class FitIniFile;
@@ -30,17 +30,17 @@ public:
 	float width() { return location[2].x - location[0].x; }
 	float height() { return location[2].y - location[0].y; }
 
-	void getData(puint8_t buffer);
+	void getData(uint8_t* buffer);
 
 	void showGUIWindow(bool doshow);
 
-	void setColor(int32_t newColor);
+	void setcolour(int32_t newcolour);
 
 	uint32_t textureHandle;
 	gos_VERTEX location[4];
-	int32_t u, v, uWidth, vHeight;
+	int32_t u, v, uwidth, vheight;
 
-	uint32_t textureWidth; // textures are square
+	uint32_t texturewidth; // textures are square
 };
 
 #if CONSIDERED_OBSOLETE
@@ -54,8 +54,8 @@ typedef struct _GUI_RECTd
 #endif
 
 void
-drawEmptyRect(const RECT& rect, uint32_t leftBorderColor = 0xffffffff,
-	uint32_t rightBorderColor = 0xff000000);
+drawEmptyRect(const RECT& rect, uint32_t leftBordercolour = 0xffffffff,
+	uint32_t rightBordercolour = 0xff000000);
 
 void
 drawRect(const RECT& rect, uint32_t color);
@@ -75,7 +75,7 @@ drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t l
 	float scale, int32_t xOffset, int32_t yOffset);
 
 uint32_t
-interpolateColor(uint32_t color1, uint32_t color2, float percent);
+interpolatecolour(uint32_t color1, uint32_t color2, float percent);
 
 inline COLORREF
 reverseRGB(COLORREF oldVal)
@@ -88,7 +88,7 @@ reverseRGB(COLORREF oldVal)
 // There are cases where windows does NOT append a null.
 // THANKS!
 //
-// Replace with GOS String Resource get when available
+// Replace with GOS string Resource get when available
 // Replaced.  Andy wants us to call everytime.  Will try and see if practical.
 extern uint32_t gosResourceHandle;
 
@@ -103,7 +103,7 @@ cLoadString(uint32_t uID, // resource identifier
 	const std::wstring_view& tmpBuffer = gos_GetResourceString(handle, uID);
 	size_t stringLength = strlen(tmpBuffer);
 	if (stringLength >= nBufferMax)
-		STOP(("String too int32_t for buffer.  String Id %d, bufferLen %d, StringLen %d",
+		STOP(("string too int32_t for buffer.  string Id %d, bufferLen %d, StringLen %d",
 			uID, nBufferMax, stringLength));
 	memcpy(lpBuffer, tmpBuffer, stringLength);
 	return stringLength;

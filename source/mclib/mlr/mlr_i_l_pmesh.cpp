@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/gosvertexpool.h"
 #include "mlr/mlrtexture.h"
 #include "mlr/mlrtexturepool.h"
@@ -78,8 +78,8 @@ MLR_I_L_PMesh::MLR_I_L_PMesh(ClassData* class_data, std::iostream stream, uint32
 	}
 	break;
 	}
-	litColors.SetLength(colors.GetLength());
-	actualColors = &colors;
+	litcolours.SetLength(colors.GetLength());
+	actualcolours = &colors;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,7 +89,7 @@ MLR_I_L_PMesh::MLR_I_L_PMesh(ClassData* class_data) :
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	actualColors = &colors;
+	actualcolours = &colors;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -165,7 +165,7 @@ MLR_I_L_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_PMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
+MLR_I_L_PMesh::GetNormalData(Stuff::Vector3D** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = normals.GetData();
@@ -175,11 +175,11 @@ MLR_I_L_PMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_PMesh::SetColorData(
+MLR_I_L_PMesh::SetcolourData(
 #if COLOR_AS_DWORD
-	pcuint32_t data,
+	const uint32_t* data,
 #else
-	const Stuff::RGBAColor* data,
+	const Stuff::RGBAcolour* data,
 #endif
 	size_t dataSize)
 {
@@ -188,7 +188,7 @@ MLR_I_L_PMesh::SetColorData(
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	_ASSERT(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	_ASSERT(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
-	litColors.SetLength(dataSize);
+	litcolours.SetLength(dataSize);
 	colors.AssignData(data, dataSize);
 }
 
@@ -197,9 +197,9 @@ MLR_I_L_PMesh::SetColorData(
 void
 MLR_I_L_PMesh::PaintMe(
 #if COLOR_AS_DWORD
-	pcuint32_t paintMe
+	const uint32_t* paintMe
 #else
-	const Stuff::RGBAColor* paintMe
+	const Stuff::RGBAcolour* paintMe
 #endif
 
 )
@@ -207,29 +207,29 @@ MLR_I_L_PMesh::PaintMe(
 	// Check_Object(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 #if 0
-	_ASSERT(colors.GetLength() == litColors.GetLength());
+	_ASSERT(colors.GetLength() == litcolours.GetLength());
 #else
-	if (colors.GetLength() == litColors.GetLength())
+	if (colors.GetLength() == litcolours.GetLength())
 	{
-		litColors.SetLength(colors.GetLength());
+		litcolours.SetLength(colors.GetLength());
 	}
 #endif
-	size_t k, len = litColors.GetLength();
+	size_t k, len = litcolours.GetLength();
 #if COLOR_AS_DWORD
-	uint32_t argb = GOSCopyColor(paintMe);
+	uint32_t argb = GOSCopycolour(paintMe);
 	for (k = 0; k < len; k++)
 	{
-		litColors[k] = argb;
+		litcolours[k] = argb;
 	}
 #else
 	for (k = 0; k < len; k++)
 	{
-		litColors[k] = *paintMe;
+		litcolours[k] = *paintMe;
 	}
 #endif
 	// set the to use colors to the original colors ...
 	// only lighting could overwrite this;
-	actualColors = &litColors;
+	actualcolours = &litcolours;
 }
 
 #undef I_SAY_YES_TO_DUAL_TEXTURES
@@ -268,7 +268,7 @@ MLR_I_L_PMesh::PaintMe(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRState* state)
+MidLevelRenderer::CreateIndexedIcosahedron_colour_Lit(IcoInfo& icoInfo, MLRState* state)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
@@ -282,7 +282,7 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRState*
 	{
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-	puint8_t lengths = new uint8_t[nrTri];
+	uint8_t* lengths = new uint8_t[nrTri];
 	Register_Pointer(lengths);
 	for (i = 0; i < nrTri; i++)
 	{
@@ -296,11 +296,11 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRState*
 		collapsedCoords = new Stuff::Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);
-	Stuff::RGBAColor* colors = new Stuff::RGBAColor[nrTri * 3];
+	Stuff::RGBAcolour* colors = new Stuff::RGBAcolour[nrTri * 3];
 	Register_Pointer(colors);
 	Stuff::Vector3D* normals = new Stuff::Vector3D[nrTri * 3];
 	Register_Pointer(normals);
@@ -400,7 +400,7 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRState*
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = Stuff::RGBAColor((1.0f + collapsedCoords[i].x) / 2.0f,
+				colors[i] = Stuff::RGBAcolour((1.0f + collapsedCoords[i].x) / 2.0f,
 					(1.0f + collapsedCoords[i].y) / 2.0f, (1.0f + collapsedCoords[i].z) / 2.0f,
 					1.0f);
 				normals[i].Normalize(collapsedCoords[i]);
@@ -410,12 +410,12 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRState*
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = Stuff::RGBAColor((1.0f + coords[i].x) / 2.0f,
+				colors[i] = Stuff::RGBAcolour((1.0f + coords[i].x) / 2.0f,
 					(1.0f + coords[i].y) / 2.0f, (1.0f + coords[i].z) / 2.0f, 1.0f);
 				normals[i].Normalize(coords[i]);
 			}
 		}
-		mesh->SetColorData(colors, uniquePoints);
+		mesh->SetcolourData(colors, uniquePoints);
 		mesh->SetNormalData(normals, uniquePoints);
 		ret->Add(mesh);
 		mesh->DetachReference();
@@ -446,7 +446,7 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit(IcoInfo& icoInfo, MLRState*
 MLR_I_L_PMesh*
 MidLevelRenderer::CreateIndexedCube(
 float half,
-Stuff::RGBAColor *eightColors,
+Stuff::RGBAcolour *eightcolours,
 Stuff::Vector3D *eightNormals,
 MLRState *state
 )
@@ -467,7 +467,7 @@ coords[5] = Stuff::Point3D( half, half, half);
 coords[6] = Stuff::Point3D( half, half, -half);
 coords[7] = Stuff::Point3D(-half, half, -half);
 
-puint8_t lengths = new uint8_t [6];
+uint8_t* lengths = new uint8_t [6];
 Register_Pointer(lengths);
 
 size_t i;
@@ -481,7 +481,7 @@ ret->SetPrimitiveLength(lengths, 6);
 
 ret->SetCoordData(coords, 8);
 
-puint16_t index = new uint16_t [6*4];
+uint16_t* index = new uint16_t [6*4];
 Register_Pointer(index);
 
 index[0] = 0;
@@ -518,23 +518,23 @@ ret->SetIndexData(index, 6*4);
 
 ret->FindFacePlanes();
 
-if(eightColors!=nullptr)
+if(eightcolours!=nullptr)
 {
 #if COLOR_AS_DWORD
-uint32_t *dwColor = new uint32_t [8];
-Register_Pointer(dwColor);
+uint32_t *colour = new uint32_t [8];
+Register_Pointer(colour);
 
 for(i=0;i<8;i++)
 {
-dwColor[i] = GOSCopyColor(eightColors+i);
+colour[i] = GOSCopycolour(eightcolours+i);
 }
 
-ret->SetColorData(dwColor, 8);
+ret->SetcolourData(colour, 8);
 
-Unregister_Pointer(dwColor);
-delete [] dwColor;
+Unregister_Pointer(colour);
+delete [] colour;
 #else
-ret->SetColorData(eightColors, 8);
+ret->SetcolourData(eightcolours, 8);
 #endif
 }
 

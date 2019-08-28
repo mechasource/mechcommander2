@@ -203,7 +203,7 @@ public:
 		int32_t weight;
 		int32_t encycloID;
 		int32_t componentIDs[4];
-		char fileName[64];
+		wchar_t fileName[64];
 		float scale;
 	};
 

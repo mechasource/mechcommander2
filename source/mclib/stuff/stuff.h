@@ -56,76 +56,76 @@ void __stdcall TerminateClasses(void);
 #define GROUP_STUFF_MEMORY "Stuff::Memory"
 #define GROUP_STUFF_TRACE "Stuff::Trace"
 
-#if _CONSIDERED_OBSOLETE
-#include <gameos.hpp>
+#if CONSIDERED_OBSOLETE
+#include <gameos.hpp"
 #if defined(_ARMOR)
-#include <stuff/armoron.hpp>
+#include "stuff/armoron.h"
 #else
-#include <stuff/armoroff.hpp>
+#include "stuff/armoroff.h"
 #endif
-#include <stuff/style.hpp>
+#include "stuff/style.h"
 
-#include <stuff/registeredclass.hpp>
-// #include <stuff/memorystream.hpp>
-#include <stuff/memoryblock.hpp>
-#include <stuff/iterator.hpp>
-#include <stuff/plug.hpp>
-#include <stuff/link.hpp>
-//#include <stuff/mstring.hpp>
-#include <stuff/socket.hpp>
-#include <stuff/safesocket.hpp>
-#include <stuff/sortedsocket.hpp>
-#include <stuff/slot.hpp>
-#include <stuff/chain.hpp>
-#include <stuff/safechain.hpp>
-#include <stuff/sortedchain.hpp>
-#include <stuff/table.hpp>
-#include <stuff/tree.hpp>
-#include <stuff/hash.hpp>
-//#include <stuff/marray.hpp>
+#include "stuff/registeredclass.h"
+// #include "stuff/memorystream.h"
+#include "stuff/memoryblock.h"
+#include "stuff/iterator.h"
+#include "stuff/plug.h"
+#include "stuff/link.h"
+//#include "stuff/mstring.h"
+#include "stuff/socket.h"
+#include "stuff/safesocket.h"
+#include "stuff/sortedsocket.h"
+#include "stuff/slot.h"
+// #include "stuff/chain.h"
+#include "stuff/safechain.h"
+#include "stuff/sortedchain.h"
+#include "stuff/table.h"
+#include "stuff/tree.h"
+#include "stuff/hash.h"
+//#include "stuff/marray.h"
 
 #include "stuff/scalar.h"
-#include <stuff/angle.hpp>
-#include <stuff/color.hpp>
-#include <stuff/vector3d.hpp>
-#include <stuff/point3d.hpp>
-#include <stuff/unitvector.hpp>
-#include <stuff/normal.hpp>
-#include <stuff/plane.hpp>
-#include <stuff/extentbox.hpp>
-#include <stuff/filestream.hpp>
-#include <stuff/filestreammanager.hpp>
-#include <stuff/ray.hpp>
-#include <stuff/rotation.hpp>
-#include <stuff/line.hpp>
-#include <stuff/node.hpp>
-#include <stuff/affinematrix.hpp>
-#include <stuff/matrix.hpp>
-#include <stuff/linearmatrix.hpp>
+#include "stuff/angle.h"
+#include "stuff/color.h"
+#include "stuff/vector3d.h"
+#include "stuff/point3d.h"
+#include "stuff/unitvector.h"
+#include "stuff/normal.h"
+#include "stuff/plane.h"
+#include "stuff/extentbox.h"
+#include "stuff/filestream.h"
+#include "stuff/filestreammanager.h"
+#include "stuff/ray.h"
+#include "stuff/rotation.h"
+#include "stuff/line.h"
+#include "stuff/node.h"
+#include "stuff/affinematrix.h"
+#include "stuff/matrix.h"
+#include "stuff/linearmatrix.h"
 
-//#include <stuff/matrixstack.hpp>
-//#include <stuff/auto_ptr.hpp>
-//#include <stuff/auto_container.hpp>
-//#include <stuff/noncopyable.hpp>
-//#include <stuff/initialized_ptr.hpp>
-#include <stuff/motion.hpp>
-#include <stuff/sphere.hpp>
+//#include "stuff/matrixstack.h"
+//#include "stuff/auto_ptr.h"
+//#include "stuff/auto_container.h"
+//#include "stuff/noncopyable.h"
+//#include "stuff/initialized_ptr.h"
+#include "stuff/motion.h"
+#include "stuff/sphere.h"
 
-#include <stuff/notationfile.hpp>
-#include <stuff/page.hpp>
-#include <stuff/note.hpp>
-#include <stuff/obb.hpp>
-#include <stuff/origin.hpp>
-#include <stuff/plane.hpp>
-#include <stuff/point3d.hpp>
-#include <stuff/polar.hpp>
-#include <stuff/random.hpp>
-#include <stuff/sphere.hpp>
-#include <stuff/vector2d.hpp>
-#include <stuff/vector4d.hpp>
-#include <stuff/trace.hpp>
-#include <stuff/average.hpp>
-#include <stuff/database.hpp>
+#include "stuff/notationfile.h"
+#include "stuff/page.h"
+#include "stuff/note.h"
+#include "stuff/obb.h"
+#include "stuff/origin.h"
+#include "stuff/plane.h"
+#include "stuff/point3d.h"
+#include "stuff/polar.h"
+#include "stuff/random.h"
+#include "stuff/sphere.h"
+#include "stuff/vector2d.h"
+#include "stuff/vector4d.h"
+#include "stuff/trace.h"
+#include "stuff/average.h"
+#include "stuff/database.h"
 #endif
 
 #endif

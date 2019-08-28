@@ -45,7 +45,7 @@ extern UserHeapPtr systemHeap;
 extern float metersPerWorldUnit;
 
 extern const std::wstring_view& ExceptionGameMsg;
-extern char ChunkDebugMsg[5120];
+extern wchar_t ChunkDebugMsg[5120];
 
 int32_t GlobalMap::minRow = 0;
 int32_t GlobalMap::maxRow = 0;
@@ -80,9 +80,9 @@ int32_t DebugMovePathType = 0;
 
 int32_t SimpleMovePathRange = 21;
 
-char reverseDir[NUM_DIRECTIONS] = {4, 5, 6, 7, 0, 1, 2, 3};
-char rowShift[NUM_DIRECTIONS] = {-1, -1, 0, 1, 1, 1, 0, -1};
-char colShift[NUM_DIRECTIONS] = {0, 1, 1, 1, 0, -1, -1, -1};
+wchar_t reverseDir[NUM_DIRECTIONS] = {4, 5, 6, 7, 0, 1, 2, 3};
+wchar_t rowShift[NUM_DIRECTIONS] = {-1, -1, 0, 1, 1, 1, 0, -1};
+wchar_t colShift[NUM_DIRECTIONS] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 #define NUM_CELL_OFFSETS 128
 int32_t cellShift[NUM_CELL_OFFSETS * 2] = {-1, 0, -1, 1, 0, 1, 1, 1, 1, 0, 1, -1, 0, -1, -1, -1,
@@ -118,7 +118,7 @@ int32_t cellShift[NUM_CELL_OFFSETS * 2] = {-1, 0, -1, 1, 0, 1, 1, 1, 1, 0, 1, -1
 	-15, 0, -15, 15, 0, 15, 15, 15, 15, 0, 15, -15, 0, -15, -15, -15};
 
 float cellShiftDistance[NUM_CELL_OFFSETS];
-char reverseShift[NUM_CELL_OFFSETS] = {4, 5, 6, 7, 0, 1, 2, 3, 12, 13, 14, 15, 8, 9, 10, 11, 20, 21,
+wchar_t reverseShift[NUM_CELL_OFFSETS] = {4, 5, 6, 7, 0, 1, 2, 3, 12, 13, 14, 15, 8, 9, 10, 11, 20, 21,
 	22, 23, 16, 17, 18, 19, 28, 29, 30, 31, 24, 25, 26, 27, 36, 37, 38, 39, 32, 33, 34, 35, 44, 45,
 	46, 47, 40, 41, 42, 43, 52, 53, 54, 55, 48, 49, 50, 51, 60, 61, 62, 63, 56, 57, 58, 59, 68, 69,
 	70, 71, 64, 65, 66, 67, 76, 77, 78, 79, 72, 73, 74, 75, 84, 85, 86, 87, 80, 81, 82, 83, 92, 93,
@@ -155,11 +155,11 @@ agsqrt(float _a, float _b)
 
 //-------------------------------------------------
 // Only pattern 2 is used now.
-char mineLayout[4][terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM] = {
+wchar_t mineLayout[4][terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM] = {
 	{0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 1, 0, 1, 0, 1, 0, 1},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-char TeamRelations[MAX_TEAMS][MAX_TEAMS] = {{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2},
+wchar_t TeamRelations[MAX_TEAMS][MAX_TEAMS] = {{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2},
 	{2, 0, 2, 2, 2, 2, 2, 2}, {RELATION_NEUTRAL, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
 	{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2}, {2, 2, 2, 2, 2, 2, 0, 2},
 	{2, 2, 2, 2, 2, 2, 2, 0}};
@@ -198,9 +198,9 @@ calcAdjNode(int32_t& r, int32_t& c, int32_t direction)
 //---------------------------------------------------------------------------
 
 inline bool
-inMapBounds(int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth)
+inMapBounds(int32_t r, int32_t c, int32_t mapheight, int32_t mapwidth)
 {
-	return ((r >= 0) && (r < mapHeight) && (c >= 0) && (c < mapWidth));
+	return ((r >= 0) && (r < mapheight) && (c >= 0) && (c < mapwidth));
 }
 
 //---------------------------------------------------------------------------
@@ -461,7 +461,7 @@ MOVE_saveData(PacketFile* packetFile, int32_t whichPacket)
 	int32_t numGlobalMap2Packets = GlobalMoveMap[2]->write(packetFile,
 		whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets);
 	int32_t result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets,
-		(puint8_t)&tempNumSpecialAreas, sizeof(int32_t));
+		(uint8_t*)&tempNumSpecialAreas, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " MOVE_saveData: Unable to write num special area ");
 	//-------------------------------------------------------------------------------------------------
@@ -469,10 +469,10 @@ MOVE_saveData(PacketFile* packetFile, int32_t whichPacket)
 	// filler for the packet...
 	if (tempNumSpecialAreas == 0)
 		result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1,
-			(puint8_t)&tempNumSpecialAreas, sizeof(int32_t));
+			(uint8_t*)&tempNumSpecialAreas, sizeof(int32_t));
 	else
 		result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1,
-			(puint8_t)tempSpecialAreaFootPrints, sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
+			(uint8_t*)tempSpecialAreaFootPrints, sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
 	if (result <= 0)
 		Fatal(result, " MOVE_saveData: Unable to write special area footprints ");
 	return (numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 2);
@@ -547,7 +547,7 @@ MOVE_readData(PacketFile* packetFile, int32_t whichPacket)
 		systemHeap->Free(GlobalMoveMap[2]->pathExistsTable);
 		GlobalMoveMap[2]->pathExistsTable = nullptr;
 		int32_t numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets,
-			(puint8_t)&tempNumSpecialAreas);
+			(uint8_t*)&tempNumSpecialAreas);
 		if (numBytes <= 0)
 			Fatal(numBytes, " MOVE_readData: Unable to read num special areas ");
 		if (tempSpecialAreaFootPrints)
@@ -560,7 +560,7 @@ MOVE_readData(PacketFile* packetFile, int32_t whichPacket)
 			tempSpecialAreaFootPrints = (GameObjectFootPrint*)systemHeap->Malloc(
 				sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
 			numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1,
-				(puint8_t)tempSpecialAreaFootPrints);
+				(uint8_t*)tempSpecialAreaFootPrints);
 			if (numBytes <= 0)
 				Fatal(numBytes, " MOVE_readData: Unable to read num special areas ");
 		}
@@ -646,12 +646,12 @@ MissionMap::init(int32_t h, int32_t w)
 	int32_t i;
 	for (i = 0; i < MAX_MAP_CELL_WIDTH; i++)
 		tileMulMAPCELL_DIM[i] = i * terrain_const::MAPCELL_DIM;
-	int32_t tileWidth = width / terrain_const::MAPCELL_DIM;
-	int32_t tileHeight = height / terrain_const::MAPCELL_DIM;
-	for (i = 0; i < tileHeight; i++)
+	int32_t tilewidth = width / terrain_const::MAPCELL_DIM;
+	int32_t tileheight = height / terrain_const::MAPCELL_DIM;
+	for (i = 0; i < tileheight; i++)
 		Terrain::tileRowToWorldCoord[i] =
 			(Terrain::worldUnitsMapSide / 2.0) - (i * Terrain::worldUnitsPerVertex);
-	for (i = 0; i < tileWidth; i++)
+	for (i = 0; i < tilewidth; i++)
 		Terrain::tileColToWorldCoord[i] =
 			(i * Terrain::worldUnitsPerVertex) - (Terrain::worldUnitsMapSide / 2.0);
 	for (i = 0; i < terrain_const::MAPCELL_DIM; i++)
@@ -683,11 +683,11 @@ MissionMap::init(int32_t h, int32_t w)
 int32_t
 MissionMap::init(PacketFile* packetFile, int32_t whichPacket)
 {
-	packetFile->readPacket(whichPacket++, (puint8_t)&height);
-	packetFile->readPacket(whichPacket++, (puint8_t)&width);
-	packetFile->readPacket(whichPacket++, (puint8_t)&planet);
+	packetFile->readPacket(whichPacket++, (uint8_t*)&height);
+	packetFile->readPacket(whichPacket++, (uint8_t*)&width);
+	packetFile->readPacket(whichPacket++, (uint8_t*)&planet);
 	init(height, width);
-	packetFile->readPacket(whichPacket++, (puint8_t)map);
+	packetFile->readPacket(whichPacket++, (uint8_t*)map);
 	//-----------------------
 	// Just some debugging...
 	// int32_t numOffMap = 0;
@@ -718,17 +718,17 @@ MissionMap::write(PacketFile* packetFile, int32_t whichPacket)
 	// Return number of packets if !packetFile...
 	if (!packetFile)
 		return (NUM_MISSIONMAP_PACKETS);
-	int32_t result = packetFile->writePacket(whichPacket++, (puint8_t)&height, sizeof(int32_t));
+	int32_t result = packetFile->writePacket(whichPacket++, (uint8_t*)&height, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write height packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&width, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&width, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write width packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&planet, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&planet, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write planet packet ");
 	result =
-		packetFile->writePacket(whichPacket++, (puint8_t)map, sizeof(MapCell) * height * width);
+		packetFile->writePacket(whichPacket++, (uint8_t*)map, sizeof(MapCell) * height * width);
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write map packet ");
 	return (NUM_MISSIONMAP_PACKETS);
@@ -748,10 +748,10 @@ MissionMap::getPassable(Stuff::Vector3D cellPosition)
 
 int32_t
 MissionMap::init(
-	int32_t cellHeight, int32_t cellWidth, int32_t curPlanet, MissionMapCellInfo* mapData)
+	int32_t cellheight, int32_t cellwidth, int32_t curPlanet, MissionMapCellInfo* mapData)
 {
 	if (!map)
-		init(cellHeight, cellWidth);
+		init(cellheight, cellwidth);
 	planet = curPlanet;
 	//---------------------------------------------------------------------------
 	// Be damned sure map is empty.  This is required or mines will NOT go away.
@@ -771,7 +771,7 @@ MissionMap::init(
 				setGate(row, col, mapData[row * width + col].gate);
 				setRoad(row, col, mapData[row * width + col].road);
 				setPassable(row, col, mapData[row * width + col].passable);
-				setLocalHeight(row, col, mapData[row * width + col].lineOfSight);
+				setLocalheight(row, col, mapData[row * width + col].lineOfSight);
 				setPreserved(row, col, false);
 				setMine(row, col, mapData[row * width + col].mine);
 				setForest(row, col, mapData[row * width + col].forest);
@@ -1055,7 +1055,7 @@ MissionMap::print(const std::wstring_view& fileName)
 	debugFile->create(fileName);
 	for (size_t cellR = 0; cellR < height; cellR++)
 	{
-		char outString[1024];
+		wchar_t outString[1024];
 		outString[0] = nullptr;
 		for (size_t cellC = 0; cellC < width; cellC++)
 		{
@@ -1329,14 +1329,14 @@ GlobalMap::init(int32_t w, int32_t h)
 {
 	width = w;
 	height = h;
-	areaMap = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * w * h);
+	areaMap = (int16_t*)systemHeap->Malloc(sizeof(int16_t) * w * h);
 	gosASSERT(areaMap != nullptr);
 	for (size_t r = 0; r < height; r++)
 		for (size_t c = 0; c < width; c++)
 			areaMap[r * width + c] = -1;
 	gosASSERT(((width % SECTOR_DIM) == 0) && ((height % SECTOR_DIM) == 0));
-	sectorWidth = w / SECTOR_DIM;
-	sectorHeight = w / SECTOR_DIM;
+	sectorwidth = w / SECTOR_DIM;
+	sectorheight = w / SECTOR_DIM;
 	numAreas = 0;
 	areas = nullptr;
 	numDoors = 0;
@@ -1358,38 +1358,38 @@ GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 {
 	int32_t startPacket = whichPacket;
 	uint32_t version = 0;
-	int32_t result = packetFile->readPacket(whichPacket++, (puint8_t)&version);
+	int32_t result = packetFile->readPacket(whichPacket++, (uint8_t*)&version);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read version packet ");
 	bool badVersion = false;
 	if (version != GLOBALMAP_VERSION_NUMBER)
 		badVersion = true;
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&height);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&height);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read height packet ");
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&width);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&width);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read width packet ");
 	int32_t sectorDim; // this is no longer used...
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&sectorDim);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&sectorDim);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read sectorDim packet ");
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&sectorHeight);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&sectorheight);
 	if (result == 0)
-		Fatal(result, " GlobalMap.init: unable to read sectorHeight packet ");
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&sectorWidth);
+		Fatal(result, " GlobalMap.init: unable to read sectorheight packet ");
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&sectorwidth);
 	if (result == 0)
-		Fatal(result, " GlobalMap.init: unable to read sectorWidth packet ");
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&numAreas);
+		Fatal(result, " GlobalMap.init: unable to read sectorwidth packet ");
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&numAreas);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read numAreas packet ");
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&numDoors);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&numDoors);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read numDoors packet ");
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&numDoorInfos);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&numDoorInfos);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read numDoorInfos packet ");
-	result = packetFile->readPacket(whichPacket++, (puint8_t)&numDoorLinks);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)&numDoorLinks);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read numDoorLinks packet ");
 	if (badVersion)
@@ -1404,14 +1404,14 @@ GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 		return (13 + numDoorInfos + (numDoors + NUM_DOOR_OFFSETS) * 2);
 #endif
 	}
-	areaMap = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * height * width);
+	areaMap = (int16_t*)systemHeap->Malloc(sizeof(int16_t) * height * width);
 	gosASSERT(areaMap != nullptr);
-	result = packetFile->readPacket(whichPacket++, (puint8_t)areaMap);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)areaMap);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read areaMap packet ");
 	areas = (GlobalMapAreaPtr)systemHeap->Malloc(sizeof(GlobalMapArea) * numAreas);
 	gosASSERT(areas != nullptr);
-	result = packetFile->readPacket(whichPacket++, (puint8_t)areas);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)areas);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read areas packet ");
 	doorInfos = (DoorInfoPtr)systemHeap->Malloc(sizeof(DoorInfo) * numDoorInfos);
@@ -1421,7 +1421,7 @@ GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 	for (i = 0; i < numAreas; i++)
 		if (areas[i].numDoors)
 		{
-			result = packetFile->readPacket(whichPacket++, (puint8_t)&doorInfos[curDoorInfo]);
+			result = packetFile->readPacket(whichPacket++, (uint8_t*)&doorInfos[curDoorInfo]);
 			if (result == 0)
 				Fatal(result, " GlobalMap.init: unable to read doorInfos packet ");
 			curDoorInfo += areas[i].numDoors;
@@ -1438,7 +1438,7 @@ GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 	doors =
 		(GlobalMapDoorPtr)systemHeap->Malloc(sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
 	gosASSERT(doors != nullptr);
-	result = packetFile->readPacket(whichPacket++, (puint8_t)doors);
+	result = packetFile->readPacket(whichPacket++, (uint8_t*)doors);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read doors packet ");
 	//--------------
@@ -1450,14 +1450,14 @@ GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 	{
 		int32_t numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->readPacket(whichPacket++, (puint8_t)&doorLinks[numLinksRead]);
+		result = packetFile->readPacket(whichPacket++, (uint8_t*)&doorLinks[numLinksRead]);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.init: Unable to write doorLinks packet ");
 		doors[i].links[0] = &doorLinks[numLinksRead];
 		numLinksRead += numLinks;
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->readPacket(whichPacket++, (puint8_t)&doorLinks[numLinksRead]);
+		result = packetFile->readPacket(whichPacket++, (uint8_t*)&doorLinks[numLinksRead]);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.init: Unable to write doorLinks packet ");
 		doors[i].links[1] = &doorLinks[numLinksRead];
@@ -1475,13 +1475,13 @@ GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 			openArea(i);
 	//--------------------------
 	// Create pathExistsTable...
-	pathExistsTable = (puint8_t)systemHeap->Malloc(numAreas * (numAreas / 4 + 1));
+	pathExistsTable = (uint8_t*)systemHeap->Malloc(numAreas * (numAreas / 4 + 1));
 	if (!pathExistsTable)
 		STOP(("GlobalMap.init: unable to malloc pathExistsTable"));
 	clearPathExistsTable();
 	if (logEnabled && !blank)
 	{
-		char s[256];
+		wchar_t s[256];
 		for (i = 0; i < numDoors; i++)
 		{
 			sprintf(s, "door %05d, %s(%d), areas %d & %d", i, doors[i].open ? "opened" : "CLOSED",
@@ -1547,39 +1547,39 @@ GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 	if (!packetFile)
 		return (numPackets);
 	uint32_t version = GLOBALMAP_VERSION_NUMBER;
-	int32_t result = packetFile->writePacket(whichPacket++, (puint8_t)&version, sizeof(int32_t));
+	int32_t result = packetFile->writePacket(whichPacket++, (uint8_t*)&version, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write version packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&height, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&height, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write height packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&width, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&width, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write width packet ");
 	int32_t sectorDim = SECTOR_DIM;
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&sectorDim, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&sectorDim, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write sectorDim packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&sectorHeight, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&sectorheight, sizeof(int32_t));
 	if (result <= 0)
-		Fatal(result, " GlobalMap.write: Unable to write sectorHeight packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&sectorWidth, sizeof(int32_t));
+		Fatal(result, " GlobalMap.write: Unable to write sectorheight packet ");
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&sectorwidth, sizeof(int32_t));
 	if (result <= 0)
-		Fatal(result, " GlobalMap.write: Unable to write sectorWidth packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&numAreas, sizeof(int32_t));
+		Fatal(result, " GlobalMap.write: Unable to write sectorwidth packet ");
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&numAreas, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numAreas packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&numDoors, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&numDoors, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoors packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&numDoorInfos, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&numDoorInfos, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoorInfos packet ");
-	result = packetFile->writePacket(whichPacket++, (puint8_t)&numDoorLinks, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)&numDoorLinks, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoorLinks packet ");
 	result =
-		packetFile->writePacket(whichPacket++, (puint8_t)areaMap, sizeof(int16_t) * height * width);
+		packetFile->writePacket(whichPacket++, (uint8_t*)areaMap, sizeof(int16_t) * height * width);
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write areaMap packet ");
 	//----------------------------------
@@ -1597,7 +1597,7 @@ GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		areas[i].open = true;
 	}
 	result =
-		packetFile->writePacket(whichPacket++, (puint8_t)areas, sizeof(GlobalMapArea) * numAreas);
+		packetFile->writePacket(whichPacket++, (uint8_t*)areas, sizeof(GlobalMapArea) * numAreas);
 	for (i = 0; i < numAreas; i++)
 	{
 		//---------------------
@@ -1627,7 +1627,7 @@ GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		if (areas[i].numDoors)
 		{
 			int32_t packetSize = sizeof(DoorInfo) * areas[i].numDoors;
-			result = packetFile->writePacket(whichPacket++, (puint8_t)areas[i].doors, packetSize);
+			result = packetFile->writePacket(whichPacket++, (uint8_t*)areas[i].doors, packetSize);
 			if (result <= 0)
 				Fatal(result, " GlobalMap.write: Unable to write doorInfos packet ");
 			numDoorInfosWritten += areas[i].numDoors;
@@ -1651,7 +1651,7 @@ GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		doors[i].fPrime = 0;
 	}
 	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)doors, sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
+		whichPacket++, (uint8_t*)doors, sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
 	for (i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++)
 	{
 		//---------------------
@@ -1669,14 +1669,14 @@ GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		int32_t numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
 		result = packetFile->writePacket(
-			whichPacket++, (puint8_t)doors[i].links[0], sizeof(DoorLink) * numLinks);
+			whichPacket++, (uint8_t*)doors[i].links[0], sizeof(DoorLink) * numLinks);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.write: Unable to write doorLinks packet ");
 		numberL += numLinks;
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
 		result = packetFile->writePacket(
-			whichPacket++, (puint8_t)doors[i].links[1], sizeof(DoorLink) * numLinks);
+			whichPacket++, (uint8_t*)doors[i].links[1], sizeof(DoorLink) * numLinks);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.write: Unable to write doorLinks packet ");
 		numberL += numLinks;
@@ -1688,7 +1688,7 @@ GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		calcPathCostTable();
 	else
 		initPathCostTable();
-	result = packetFile->writePacket(whichPacket++, (puint8_t)pathCostTable, numAreas * numAreas);
+	result = packetFile->writePacket(whichPacket++, (uint8_t*)pathCostTable, numAreas * numAreas);
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write doors packet ");
 #endif
@@ -1946,8 +1946,8 @@ GlobalMap::calcAreas(void)
 	// always return -1 for blocked-area cells.
 	//-----------------------------------------
 	// First, process each sector's area map...
-	for (size_t r = 0; r < sectorHeight; r++)
-		for (size_t c = 0; c < sectorWidth; c++)
+	for (size_t r = 0; r < sectorheight; r++)
+		for (size_t c = 0; c < sectorwidth; c++)
 			calcSectorAreas(r, c);
 	//-----------------------------------------------------------------------
 	// NOTE: We allocate one extra area--this is used by the calcPath routine
@@ -1970,8 +1970,8 @@ GlobalMap::calcAreas(void)
 	}
 	//-----------------------------------------
 	// Set each area's sector row and column...
-	for (size_t sectorR = 0; sectorR < sectorHeight; sectorR++)
-		for (size_t sectorC = 0; sectorC < sectorWidth; sectorC++)
+	for (size_t sectorR = 0; sectorR < sectorheight; sectorR++)
+		for (size_t sectorC = 0; sectorC < sectorwidth; sectorC++)
 		{
 			minRow = sectorR * SECTOR_DIM;
 			maxRow = minRow + SECTOR_DIM;
@@ -2174,9 +2174,9 @@ GlobalMap::calcGlobalDoors(void)
 {
 	int16_t doorMap[SECTOR_DIM][SECTOR_DIM];
 	beginDoorProcessing();
-	for (size_t sectorR = 0; sectorR < sectorHeight; sectorR++)
+	for (size_t sectorR = 0; sectorR < sectorheight; sectorR++)
 	{
-		for (size_t sectorC = 0; sectorC < sectorWidth; sectorC++)
+		for (size_t sectorC = 0; sectorC < sectorwidth; sectorC++)
 		{
 			for (size_t dir = 1; dir < 3; dir++)
 			{
@@ -2532,14 +2532,14 @@ GlobalMap::calcDoorLinks(void)
 		int32_t numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
 		// result = packetFile->writePacket(whichPacket++,
-		// (puint8_t)doors[i].links[0], sizeof(DoorLink) * numLinks);  if (result
+		// (uint8_t*)doors[i].links[0], sizeof(DoorLink) * numLinks);  if (result
 		// <= 0) 	Fatal(result, " GlobalMap.write: Unable to write doorLinks
 		// packet ");
 		numberL += numLinks;
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
 		// result = packetFile->writePacket(whichPacket++,
-		// (puint8_t)doors[i].links[1], sizeof(DoorLink) * numLinks);  if (result
+		// (uint8_t*)doors[i].links[1], sizeof(DoorLink) * numLinks);  if (result
 		// <= 0) 	Fatal(result, " GlobalMap.write: Unable to write doorLinks
 		// packet ");
 		numberL += numLinks;
@@ -2710,7 +2710,7 @@ GlobalMap::initPathCostTable(void)
 	int32_t oldNumAreas = numAreas;
 	//	if (numAreas > 600)
 	//		numAreas = 600;
-	pathCostTable = (puint8_t)systemHeap->Malloc(numAreas * numAreas);
+	pathCostTable = (uint8_t*)systemHeap->Malloc(numAreas * numAreas);
 	gosASSERT(pathCostTable != nullptr);
 	for (size_t startArea = 0; startArea < numAreas; startArea++)
 		for (goalArea = 0; goalArea < numAreas; goalArea++)
@@ -2756,7 +2756,7 @@ GlobalMap::calcPathCostTable(void)
 		systemHeap->Free(pathCostTable);
 		pathCostTable = nullptr;
 	}
-	pathCostTable = (puint8_t)systemHeap->Malloc(numAreas * numAreas);
+	pathCostTable = (uint8_t*)systemHeap->Malloc(numAreas * numAreas);
 	gosASSERT(pathCostTable != nullptr);
 	for (size_t i = 0; i < numAreas; i++)
 		openArea(i);
@@ -2816,9 +2816,9 @@ GlobalMap::setPathExists(int32_t fromArea, int32_t toArea, uint8_t set)
 		return;
 	if (toArea < 0)
 		return;
-	int32_t rowWidth = numAreas / 4 + 1;
-	puint8_t pathByte = pathExistsTable;
-	pathByte += (rowWidth * fromArea + (toArea / 4));
+	int32_t rowwidth = numAreas / 4 + 1;
+	uint8_t* pathByte = pathExistsTable;
+	pathByte += (rowwidth * fromArea + (toArea / 4));
 	uint8_t pathShift = (toArea % 4) * 2;
 	uint8_t pathBit = 0x03 << pathShift;
 	*pathByte &= (pathBit ^ 0xFF);
@@ -2837,9 +2837,9 @@ GlobalMap::getPathExists(int32_t fromArea, int32_t toArea)
 		return (false);
 	if (toArea < 0)
 		return (false);
-	int32_t rowWidth = numAreas / 4 + 1;
-	puint8_t pathByte = pathExistsTable;
-	pathByte += (rowWidth * fromArea + (toArea / 4));
+	int32_t rowwidth = numAreas / 4 + 1;
+	uint8_t* pathByte = pathExistsTable;
+	pathByte += (rowwidth * fromArea + (toArea / 4));
 	uint8_t pathShift = (toArea % 4) * 2;
 	uint8_t pathBit = 0x03 << pathShift;
 	return (*pathByte & pathBit);
@@ -2959,8 +2959,8 @@ GlobalMap::build(MissionMapCellInfo* mapData)
 	calcDoorLinks();
 	//----------------------------------------------
 	// Now, build the path tables for each sector...
-	/*	for (r = 0; r < tileHeight; r++)
-			for (int32_t c = 0; c < tileWidth; c++)
+	/*	for (r = 0; r < tileheight; r++)
+			for (int32_t c = 0; c < tilewidth; c++)
 				calcSectorPaths(scenarioMap, r, c);
 	*/
 #ifdef _DEBUG
@@ -2976,7 +2976,7 @@ GlobalMap::build(MissionMapCellInfo* mapData)
 #ifdef DEBUG_GLOBALMAP_BUILD
 	if (logEnabled && !blank)
 	{
-		char s[256];
+		wchar_t s[256];
 		for (size_t i = 0; i < numDoors; i++)
 		{
 			sprintf(s, "door %05d, %s(%d), areas %d & %d", i, doors[i].open ? "opened" : "CLOSED",
@@ -3093,7 +3093,7 @@ GlobalMap::resetStartDoor(int32_t startArea)
 //---------------------------------------------------------------------------
 
 void
-GlobalMap::setAreaTeamID(int32_t area, char teamID)
+GlobalMap::setAreaTeamID(int32_t area, wchar_t teamID)
 {
 	//-----------------------------------------------------------------------
 	// NOTE: This assumes there won't be adjacent areas with team alignments.
@@ -3127,7 +3127,7 @@ GlobalMap::setGoalDoor(int32_t goalArea)
 {
 	if ((goalArea < 0) || (goalArea >= numAreas))
 	{
-		char errMsg[256];
+		wchar_t errMsg[256];
 		sprintf(errMsg, " GlobalMap.setGoalDoor: bad goalArea (%d of %d) ", goalArea, numAreas);
 		gosASSERT((goalArea >= 0) || (goalArea < numAreas));
 	}
@@ -3233,7 +3233,7 @@ GlobalMap::propogateCost(int32_t door, int32_t cost, int32_t fromAreaIndex, int3
 			int32_t openIndex = openList->find(door);
 			if (!openIndex)
 			{
-				char s[128];
+				wchar_t s[128];
 				sprintf(s,
 					"GlobalMap.propogateCost: Cannot find globalmap door [%d, "
 					"%d, %d, %d] for change\n",
@@ -3305,7 +3305,7 @@ GlobalMap::calcPath(int32_t startArea, int32_t goalArea, GlobalPathStepPtr path,
 	goalCell[1] = goalCol;
 	if (logEnabled)
 	{
-		char s[50];
+		wchar_t s[50];
 		sprintf(s, "     start = %d, goal = %d", startArea, goalArea);
 		log->write(s);
 		if (useClosedAreas)
@@ -3420,7 +3420,7 @@ GlobalMap::calcPath(int32_t startArea, int32_t goalArea, GlobalPathStepPtr path,
 		int32_t numLinks = bestMapDoor->numLinks[toAreaIndex];
 		if (logEnabled)
 		{
-			char s[50];
+			wchar_t s[50];
 			sprintf(s, "     thruArea = %d, bestDoor = %d, numLinks = %d", thruArea, bestDoor,
 				numLinks);
 			log->write(s);
@@ -3437,7 +3437,7 @@ GlobalMap::calcPath(int32_t startArea, int32_t goalArea, GlobalPathStepPtr path,
 			GlobalMapDoorPtr succMapDoor = &doors[succDoor];
 			if (logEnabled)
 			{
-				char s[50];
+				wchar_t s[50];
 				sprintf(s, "          %02d) succDoor = %d", curLink, succDoor);
 				log->write(s);
 			}
@@ -3464,7 +3464,7 @@ GlobalMap::calcPath(int32_t startArea, int32_t goalArea, GlobalPathStepPtr path,
 			}
 			if (logEnabled)
 			{
-				char s[50];
+				wchar_t s[50];
 				sprintf(s, "                  succDoorCost = %d", succDoorCost);
 				log->write(s);
 			}
@@ -3494,7 +3494,7 @@ GlobalMap::calcPath(int32_t startArea, int32_t goalArea, GlobalPathStepPtr path,
 						int32_t openIndex = openList->find(succDoor);
 						if (!openIndex)
 						{
-							char s[128];
+							wchar_t s[128];
 							sprintf(s,
 								"GlobalMap.calcPath: Cannot find globalmap "
 								"door [%d, %d, %d, %d] for change\n",
@@ -3605,7 +3605,7 @@ GlobalMap::calcPath(int32_t startArea, int32_t goalArea, GlobalPathStepPtr path,
 #endif
 		if (logEnabled)
 		{
-			char s[50];
+			wchar_t s[50];
 			sprintf(s, "     PATH FOUND: %d steps", numDoors);
 			log->write(s);
 			log->write(" ");
@@ -3725,7 +3725,7 @@ GlobalMap::print(const std::wstring_view& fileName)
 		return;
 	MechFile* debugFile = new MechFile;
 	debugFile->create(fileName);
-	char outString[500];
+	wchar_t outString[500];
 	for (size_t row = 0; row < height; row++)
 	{
 		outString[0] = nullptr;
@@ -3737,7 +3737,7 @@ GlobalMap::print(const std::wstring_view& fileName)
 				strcat(outString, "** ");
 			else
 			{
-				char chStr[8];
+				wchar_t chStr[8];
 				sprintf(chStr, "%02x ", areaMap[row * width + col]);
 				strcat(outString, chStr);
 			}
@@ -3845,7 +3845,7 @@ GlobalMap::toggleLog(void)
 		GlobalMapPtr map = GlobalMoveMap[0];
 		if (true)
 		{
-			char s[256];
+			wchar_t s[256];
 			for (i = 0; i < map->numDoors; i++)
 			{
 				sprintf(s, "door %05d, %s(%d), areas %d & %d", i,
@@ -3930,38 +3930,38 @@ MoveMap::operator delete(PVOID us)
 void
 MoveMap::init(int32_t maxW, int32_t maxH)
 {
-	width = maxWidth = maxW;
-	height = maxHeight = maxH;
-	int32_t mapByteSize = sizeof(MoveMapNode) * maxWidth * maxHeight;
+	width = maxwidth = maxW;
+	height = maxheight = maxH;
+	int32_t mapByteSize = sizeof(MoveMapNode) * maxwidth * maxheight;
 	map = (MoveMapNodePtr)systemHeap->Malloc(mapByteSize);
 	gosASSERT(map != nullptr);
-	mapRowStartTable = (int32_t*)systemHeap->Malloc(maxHeight * sizeof(int32_t));
+	mapRowStartTable = (int32_t*)systemHeap->Malloc(maxheight * sizeof(int32_t));
 	gosASSERT(mapRowStartTable != nullptr);
 	int32_t r;
-	for (r = 0; r < maxHeight; r++)
-		mapRowStartTable[r] = r * maxWidth;
-	mapRowTable = (int32_t*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(int32_t));
+	for (r = 0; r < maxheight; r++)
+		mapRowStartTable[r] = r * maxwidth;
+	mapRowTable = (int32_t*)systemHeap->Malloc(maxheight * maxwidth * sizeof(int32_t));
 	gosASSERT(mapRowTable != nullptr);
-	mapColTable = (int32_t*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(int32_t));
+	mapColTable = (int32_t*)systemHeap->Malloc(maxheight * maxwidth * sizeof(int32_t));
 	gosASSERT(mapColTable != nullptr);
-	for (r = 0; r < maxHeight; r++)
-		for (size_t c = 0; c < maxWidth; c++)
+	for (r = 0; r < maxheight; r++)
+		for (size_t c = 0; c < maxwidth; c++)
 		{
 			int32_t index = mapRowStartTable[r] + c;
 			mapRowTable[index] = r;
 			mapColTable[index] = c;
 		}
-	for (r = 0; r < maxHeight; r++)
-		for (size_t c = 0; c < maxWidth; c++)
+	for (r = 0; r < maxheight; r++)
+		for (size_t c = 0; c < maxwidth; c++)
 		{
-			int32_t mapCellIndex = r * maxWidth + c;
+			int32_t mapCellIndex = r * maxwidth + c;
 			for (size_t d = 0; d < NUM_ADJ_CELLS; d++)
 			{
 				int32_t indexStart = d * 2;
 				int32_t adjRow = r + cellShift[indexStart];
 				int32_t adjCol = c + cellShift[indexStart + 1];
 				if (inMapBounds(adjRow, adjCol, height, width))
-					map[mapCellIndex].adjCells[d] = adjRow * maxWidth + adjCol;
+					map[mapCellIndex].adjCells[d] = adjRow * maxwidth + adjCol;
 				else
 					map[mapCellIndex].adjCells[d] = -1;
 			}
@@ -3981,7 +3981,7 @@ MoveMap::init(int32_t maxW, int32_t maxH)
 void
 MoveMap::clear(void)
 {
-	int32_t numMapCells = maxWidth * height;
+	int32_t numMapCells = maxwidth * height;
 	int32_t initHPrime = ZeroHPrime ? 0 : HPRIME_NOT_CALCED;
 	for (size_t i = 0; i < numMapCells; i++)
 	{
@@ -4112,7 +4112,7 @@ MoveMap::markGoals(Stuff::Vector3D finalGoal)
 {
 	//--------------------------------------
 	// First, mark the blocked goal cells...
-	static char doorCellState[1024];
+	static wchar_t doorCellState[1024];
 	for (size_t j = 0; j < GlobalMoveMap[moveLevel]->doors[door].length; j++)
 		doorCellState[j] = 1;
 	if (blockedDoorCallback)
@@ -4156,7 +4156,7 @@ MoveMap::markGoals(Stuff::Vector3D finalGoal)
 				{
 					//-----------------------------------------------------
 					// Our global goal is on the other side of this door...
-					map[cellR * maxWidth + finalGoalC].setFlag(MOVEFLAG_GOAL);
+					map[cellR * maxwidth + finalGoalC].setFlag(MOVEFLAG_GOAL);
 					numGoalCells++;
 					nextToGoal = true;
 				}
@@ -4166,7 +4166,7 @@ MoveMap::markGoals(Stuff::Vector3D finalGoal)
 		{
 			int32_t adjCost = clearCost / 2;
 			int32_t doorCenter = doorLength / 2;
-			int32_t cellIndex = cellR * maxWidth + cellC;
+			int32_t cellIndex = cellR * maxwidth + cellC;
 			int32_t curCost = doorCenter * adjCost;
 			for (c = 0; c < doorCenter; c++)
 			{
@@ -4179,7 +4179,7 @@ MoveMap::markGoals(Stuff::Vector3D finalGoal)
 				cellIndex++;
 				curCost -= adjCost;
 			}
-			cellIndex = cellR * maxWidth + cellC + doorCenter;
+			cellIndex = cellR * maxwidth + cellC + doorCenter;
 			curCost = 0;
 			for (c = doorCenter; c < doorLength; c++)
 			{
@@ -4204,7 +4204,7 @@ MoveMap::markGoals(Stuff::Vector3D finalGoal)
 			{
 				//-----------------------------------------------------
 				// Our global goal is on the other side of this door...
-				map[finalGoalR * maxWidth + cellC].setFlag(MOVEFLAG_GOAL);
+				map[finalGoalR * maxwidth + cellC].setFlag(MOVEFLAG_GOAL);
 				numGoalCells++;
 				nextToGoal = true;
 			}
@@ -4213,7 +4213,7 @@ MoveMap::markGoals(Stuff::Vector3D finalGoal)
 		{
 			int32_t adjCost = clearCost / 2;
 			int32_t doorCenter = doorLength / 2;
-			int32_t cellIndex = cellR * maxWidth + cellC;
+			int32_t cellIndex = cellR * maxwidth + cellC;
 			int32_t curCost = doorCenter * adjCost;
 			for (r = 0; r < doorCenter; r++)
 			{
@@ -4223,11 +4223,11 @@ MoveMap::markGoals(Stuff::Vector3D finalGoal)
 					numGoalCells++;
 					adjustMoveMapCellCost(&map[cellIndex], curCost);
 				}
-				cellIndex += maxWidth;
+				cellIndex += maxwidth;
 				curCost -= adjCost;
 			}
 			curCost = 0;
-			cellIndex = (cellR + doorCenter) * maxWidth + cellC;
+			cellIndex = (cellR + doorCenter) * maxwidth + cellC;
 			for (r = doorCenter; r < doorLength; r++)
 			{
 				if (doorCellState[r])
@@ -4236,7 +4236,7 @@ MoveMap::markGoals(Stuff::Vector3D finalGoal)
 					numGoalCells++;
 					adjustMoveMapCellCost(&map[cellIndex], curCost);
 				}
-				cellIndex += maxWidth;
+				cellIndex += maxwidth;
 				curCost += adjCost;
 			}
 		}
@@ -4284,7 +4284,7 @@ MoveMap::markEscapeGoals(Stuff::Vector3D finalGoal)
 //---------------------------------------------------------------------------
 
 int32_t
-MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth, int32_t mapHeight,
+MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapwidth, int32_t mapheight,
 	int32_t level, Stuff::Vector3D* startPos, int32_t startRow, int32_t startCol,
 	Stuff::Vector3D goalPos, int32_t goalRow, int32_t goalCol, int32_t clearCellCost,
 	int32_t jumpCellCost, int32_t offsets, uint32_t params)
@@ -4297,14 +4297,14 @@ MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth, int32_t mapHeig
 		jumpCellCost = clearCellCost;
 	if (!map)
 	{
-		init(mapHeight, mapWidth);
+		init(mapheight, mapwidth);
 		setClearCost(clearCellCost);
 		setJumpCost(jumpCellCost, offsets);
 	}
 	else
 	{
-		width = mapWidth;
-		height = mapHeight;
+		width = mapwidth;
+		height = mapheight;
 		setClearCost(clearCellCost);
 		setJumpCost(jumpCellCost, offsets);
 		clear();
@@ -4317,8 +4317,8 @@ MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth, int32_t mapHeig
 	ULc = mapULc;
 	minRow = 0;
 	minCol = 0;
-	maxRow = mapHeight - 1;
-	maxCol = mapWidth - 1;
+	maxRow = mapheight - 1;
+	maxCol = mapwidth - 1;
 	moveLevel = level;
 	startRow -= ULr;
 	startCol -= ULc;
@@ -4357,7 +4357,7 @@ MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth, int32_t mapHeig
 			if (GameMap->inBounds(ULr + cellRow, ULc + cellCol))
 			{
 				MapCellPtr mapCell = GameMap->getCell(ULr + cellRow, ULc + cellCol);
-				int32_t moveMapIndex = cellRow * maxWidth + cellCol;
+				int32_t moveMapIndex = cellRow * maxwidth + cellCol;
 				int32_t cost = clearCost;
 				bool offMapCell = mapCell->getOffMap();
 				if (offMapCell)
@@ -4434,13 +4434,13 @@ MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth, int32_t mapHeig
 				// they're set as an overlay, we'll just treat them as such for
 				// now.
 				if (mapCell->getPathlock(moveLevel == 2))
-					adjustMoveMapCellCost(&map[cellRow * maxWidth + cellCol], pathLockCost);
+					adjustMoveMapCellCost(&map[cellRow * maxwidth + cellCol], pathLockCost);
 			}
 		}
 	if (FindingEscapePath)
 		markEscapeGoals(goalPos);
 	else
-		map[goalR * maxWidth + goalC].setFlag(MOVEFLAG_GOAL);
+		map[goalR * maxwidth + goalC].setFlag(MOVEFLAG_GOAL);
 #ifdef LAB_ONLY
 	int64_t startTime = GetCycles();
 #endif
@@ -4593,7 +4593,7 @@ MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos, int32_t startRow, int32
 			if (GameMap->inBounds(ULr + cellRow, ULc + cellCol) && inBounds(cellRow, cellCol))
 			{
 				MapCellPtr mapCell = GameMap->getCell(ULr + cellRow, ULc + cellCol);
-				int32_t moveMapIndex = cellRow * maxWidth + cellCol;
+				int32_t moveMapIndex = cellRow * maxwidth + cellCol;
 				int32_t cost = clearCost;
 				bool offMapCell = mapCell->getOffMap();
 				if (offMapCell)
@@ -4658,7 +4658,7 @@ MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos, int32_t startRow, int32
 				}
 				setCost(cellRow, cellCol, cost);
 				if (mapCell->getPathlock(moveLevel == 2))
-					adjustMoveMapCellCost(&map[cellRow * maxWidth + cellCol], pathLockCost);
+					adjustMoveMapCellCost(&map[cellRow * maxwidth + cellCol], pathLockCost);
 			}
 		}
 	if (markGoals(finalGoal) == 0)
@@ -4707,7 +4707,7 @@ MoveMap::adjacentCellOpenJUMP(int32_t r, int32_t c, int32_t dir)
 	int32_t adjCol = c + cellShift[indexStart + 1];
 	if (!inMapBounds(adjRow, adjCol, height, width))
 		return (false);
-	if (map[adjRow * maxWidth + adjCol].flags & MOVEFLAG_MOVER_HERE)
+	if (map[adjRow * maxwidth + adjCol].flags & MOVEFLAG_MOVER_HERE)
 		return (false);
 #ifdef USE_MINES_IN_MC2
 	if (moverRelation == RELATION_ENEMY)
@@ -4721,7 +4721,7 @@ MoveMap::adjacentCellOpenJUMP(int32_t r, int32_t c, int32_t dir)
 			return (false);
 	}
 #endif
-	return (map[adjRow * maxWidth + adjCol].cost < COST_BLOCKED);
+	return (map[adjRow * maxwidth + adjCol].cost < COST_BLOCKED);
 }
 
 //---------------------------------------------------------------------------
@@ -4767,7 +4767,7 @@ MoveMap::propogateCost(int32_t mapCellIndex, int32_t cost, int32_t g)
 			int32_t openIndex = openList->find(mapCellIndex);
 			if (!openIndex)
 			{
-				char s[128];
+				wchar_t s[128];
 				sprintf(s,
 					"MoveMap.propogateCost: Cannot find movemap node [%d] for "
 					"change\n",
@@ -4815,7 +4815,7 @@ MoveMap::propogateCost(int32_t mapCellIndex, int32_t cost, int32_t g)
 					if (succMapNode->cost < COST_BLOCKED)
 						if ((succMapNode->hPrime != HPRIME_NOT_CALCED) && (succMapNode->hPrime < MaxHPrime))
 						{
-							char dirToParent = reverseShift[dir];
+							wchar_t dirToParent = reverseShift[dir];
 							int32_t cost = succMapNode->cost;
 							//------------------------------------
 							// Diagonal movement is more costly...
@@ -4843,7 +4843,7 @@ MoveMap::propogateCostJUMP(int32_t r, int32_t c, int32_t cost, int32_t g)
 {
 	gosASSERT(cost > 0);
 	gosASSERT(g >= 0);
-	MoveMapNodePtr curMapNode = &map[r * maxWidth + c];
+	MoveMapNodePtr curMapNode = &map[r * maxwidth + c];
 	if (curMapNode->g > (g + cost))
 	{
 		curMapNode->cost = cost;
@@ -4854,7 +4854,7 @@ MoveMap::propogateCostJUMP(int32_t r, int32_t c, int32_t cost, int32_t g)
 			int32_t openIndex = openList->find(r * MAX_MAPWIDTH + c);
 			if (!openIndex)
 			{
-				char s[128];
+				wchar_t s[128];
 				sprintf(s,
 					"MoveMap.propogateCost: Cannot find movemap node [%d, %d, "
 					"%d] for change\n",
@@ -4889,11 +4889,11 @@ MoveMap::propogateCostJUMP(int32_t r, int32_t c, int32_t cost, int32_t g)
 				// If it's on the map, check it...
 				if (inMapBounds(succRow, succCol, height, width))
 				{
-					MoveMapNodePtr succMapNode = &map[succRow * maxWidth + succCol];
+					MoveMapNodePtr succMapNode = &map[succRow * maxwidth + succCol];
 					if (succMapNode->cost < COST_BLOCKED)
 						if ((succMapNode->hPrime != HPRIME_NOT_CALCED) && (succMapNode->hPrime < MaxHPrime))
 						{
-							char dirToParent = reverseShift[dir];
+							wchar_t dirToParent = reverseShift[dir];
 							bool jumping = false;
 							int32_t cost = succMapNode->cost;
 							//------------------------------------
@@ -4943,7 +4943,7 @@ MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goal
 		p.x = (float)(goalC)*Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
 		p.y = (Terrain::worldUnitsMapSide / 2) - ((float)(goalR)*Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 		p.z = (float)0; // How do we get the elevation for this point? Do we care?
-		char msg[200];
+		wchar_t msg[200];
 		sprintf(msg, " Bad Move Goal: %d [%d(%d), %d(%d)], (%.2f, %.2f, %.2f)", DebugMovePathType,
 			goalR, height, goalC, width, p.x, p.y, p.z);
 		gosASSERT((goalR >= 0) && (goalR < height) && (goalC >= 0) && (goalC < width));
@@ -5080,7 +5080,7 @@ MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goal
 #endif
 						//--------------------------------------------------
 						// How can we get back to BESTNODE from SUCCESSOR...
-						char dirToParent = reverseShift[dir];
+						wchar_t dirToParent = reverseShift[dir];
 						//----------------------------------------------------
 						// What's our cost to go from START to this SUCCESSOR?
 						int32_t cost = succMapNode->cost;
@@ -5107,7 +5107,7 @@ MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goal
 								int32_t openIndex = openList->find(succCellIndex);
 								if (!openIndex)
 								{
-									char s[128];
+									wchar_t s[128];
 									sprintf(s,
 										"MoveMap.calcPath: Cannot find movemap "
 										"node [%d, %d] for change\n",
@@ -5198,7 +5198,7 @@ MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goal
 		{
 			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("longpath.dbg");
-			char s[512];
+			wchar_t s[512];
 			sprintf(s,
 				"Path Too Long: %d steps (Max = %d) (please save longpath.dbg "
 				"file:)",
@@ -5228,7 +5228,7 @@ MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goal
 			{
 				MechFile* pathDebugFile = new MechFile;
 				pathDebugFile->create("longpath.dbg");
-				char s[512];
+				wchar_t s[512];
 				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n", numCells,
 					MAX_STEPS_PER_MOVEPATH);
 				pathDebugFile->writeString(s);
@@ -5323,11 +5323,11 @@ MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goal
 				path->setDestination(curCell, stepDest);
 				path->setCell(curCell, cell[0], cell[1]);
 				path->stepList[curCell].area = GlobalMoveMap[moveLevel]->calcArea(cell[0], cell[1]);
-				map[curRow * maxWidth + curCol].setFlag(MOVEFLAG_STEP);
+				map[curRow * maxwidth + curCol].setFlag(MOVEFLAG_STEP);
 				int32_t cellOffsetIndex = map[mapRowStartTable[curRow] + curCol].parent << 1;
 				curRow += cellShift[cellOffsetIndex++];
 				curCol += cellShift[cellOffsetIndex];
-				// calcAdjNode(curRow, curCol, map[curRow * maxCellWidth +
+				// calcAdjNode(curRow, curCol, map[curRow * maxCellwidth +
 				// curCol].parent);
 			}
 			if (thruAreas[1] != -1)
@@ -5366,7 +5366,7 @@ MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goal
 		calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 		if (debugger && (scenarioTime > 0.0))
 		{
-			char s[50];
+			wchar_t s[50];
 			sprintf(s, "path calc: %.4f\n", calcTime);
 			OutputDebugString(s);
 			debugger->print(s);
@@ -5384,7 +5384,7 @@ MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goal
 	calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 	if (debugger && (scenarioTime > 0.0))
 	{
-		char s[50];
+		wchar_t s[50];
 		sprintf(s, "path calc: %.4f", calcTime);
 		debugger->print(s);
 	}
@@ -5403,7 +5403,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 #endif
 	//------------------------------------------------------------------
 	// Clear the start cell, in case we're starting in a blocked cell...
-	// map[startR * maxCellWidth + startC].cost = clearCost;
+	// map[startR * maxCellwidth + startC].cost = clearCost;
 	//-------------------------------------------------------------------
 	// If the start tile is blocked, let's clear it so we may move off of
 	// it, at least. Change the blocked tiles to just barely passable...
@@ -5413,9 +5413,9 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 			for (int32_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++) {
 				int32_t curCellR = startULr + cellR;
 				int32_t curCellC = startULc + cellC;
-				int32_t mapIndex = curCellR * maxCellWidth + curCellC;
-				if ((curCellR >= 0) && (curCellR < cellHeight) && (curCellC >=
-	   0) && (curCellC < cellWidth)) if (map[mapIndex].cost >= COST_BLOCKED)
+				int32_t mapIndex = curCellR * maxCellwidth + curCellC;
+				if ((curCellR >= 0) && (curCellR < cellheight) && (curCellC >=
+	   0) && (curCellC < cellwidth)) if (map[mapIndex].cost >= COST_BLOCKED)
 						map[mapIndex].cost = COST_BLOCKED - 1;
 			}
 	*/
@@ -5425,7 +5425,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 		p.x = (float)(goalC)*Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
 		p.y = (Terrain::worldUnitsMapSide / 2) - ((float)(goalR)*Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 		p.z = (float)0; // How do we get the elevation for this point? Do we care?
-		char msg[200];
+		wchar_t msg[200];
 		sprintf(msg, " Bad Move Goal: %d [%d(%d), %d(%d)], (%.2f, %.2f, %.2f)", DebugMovePathType,
 			goalR, height, goalC, width, p.x, p.y, p.z);
 		gosASSERT((goalR >= 0) && (goalR < height) && (goalC >= 0) && (goalC < width));
@@ -5445,7 +5445,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 	}
 	int32_t curCol = startC;
 	int32_t curRow = startR;
-	MoveMapNodePtr curMapNode = &map[curRow * maxWidth + curCol];
+	MoveMapNodePtr curMapNode = &map[curRow * maxwidth + curCol];
 	curMapNode->g = 0;
 	if (!ZeroHPrime)
 		curMapNode->hPrime = calcHPrime(curRow, curCol);
@@ -5494,7 +5494,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 		openList->remove(bestPQNode);
 		bestRow = bestPQNode.row;
 		bestCol = bestPQNode.col;
-		MoveMapNodePtr bestMapNode = &map[bestRow * maxWidth + bestCol];
+		MoveMapNodePtr bestMapNode = &map[bestRow * maxwidth + bestCol];
 		bestMapNode->clearFlag(MOVEFLAG_OPEN);
 		int32_t bestNodeG = bestMapNode->g;
 		//----------------------------
@@ -5531,7 +5531,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 			// If it's on the map, check it...
 			if (inMapBounds(succRow, succCol, height, width))
 			{
-				MoveMapNodePtr succMapNode = &map[succRow * maxWidth + succCol];
+				MoveMapNodePtr succMapNode = &map[succRow * maxwidth + succCol];
 				if (succMapNode->cost < COST_BLOCKED)
 				{
 					if (succMapNode->hPrime == HPRIME_NOT_CALCED)
@@ -5543,7 +5543,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 #endif
 						//--------------------------------------------------
 						// How can we get back to BESTNODE from SUCCESSOR...
-						char dirToParent = reverseShift[dir];
+						wchar_t dirToParent = reverseShift[dir];
 						//----------------------------------------------------
 						// What's our cost to go from START to this SUCCESSOR?
 						bool jumping = false;
@@ -5583,7 +5583,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 									openList->find(succRow * MAX_MAPWIDTH + succCol);
 								if (!openIndex)
 								{
-									char s[128];
+									wchar_t s[128];
 									sprintf(s,
 										"MoveMap.calcPath: Cannot find movemap "
 										"node [%d, %d, %d, %d] for change\n",
@@ -5675,7 +5675,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 		while ((curRow != startR) || (curCol != startC))
 		{
 			numCells += 1;
-			int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent * 2;
+			int32_t cellOffsetIndex = map[curRow * maxwidth + curCol].parent * 2;
 			// if ((cellOffsetIndex < 0) || (cellOffsetIndex > 14))
 			//	OutputDebugString("PathFinder: whoops\n");
 			curRow += cellShift[cellOffsetIndex++];
@@ -5691,7 +5691,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 		{
 			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("longpath.dbg");
-			char s[512];
+			wchar_t s[512];
 			sprintf(s,
 				"Path Too Long: %d steps (Max = %d) (please save longpath.dbg "
 				"file:)",
@@ -5721,7 +5721,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 			{
 				MechFile* pathDebugFile = new MechFile;
 				pathDebugFile->create("longpath.dbg");
-				char s[512];
+				wchar_t s[512];
 				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n", numCells,
 					MAX_STEPS_PER_MOVEPATH);
 				pathDebugFile->writeString(s);
@@ -5732,7 +5732,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 			}
 #endif
 			path->target = target;
-			path->cost = map[bestRow * maxWidth + bestCol].g;
+			path->cost = map[bestRow * maxwidth + bestCol].g;
 			curRow = (int32_t)bestRow;
 			curCol = (int32_t)bestCol;
 			int32_t curCell = numCells;
@@ -5792,7 +5792,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 			while ((curRow != startR) || (curCol != startC))
 			{
 				curCell--;
-				int32_t parent = reverseShift[map[curRow * maxWidth + curCol].parent];
+				int32_t parent = reverseShift[map[curRow * maxwidth + curCol].parent];
 				if (parent > 7)
 					path->setDirection(curCell, parent);
 				else
@@ -5815,11 +5815,11 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 				}
 				path->setDestination(curCell, stepDest);
 				path->setCell(curCell, cell[0], cell[1]);
-				map[curRow * maxWidth + curCol].setFlag(MOVEFLAG_STEP);
-				int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent << 1;
+				map[curRow * maxwidth + curCol].setFlag(MOVEFLAG_STEP);
+				int32_t cellOffsetIndex = map[curRow * maxwidth + curCol].parent << 1;
 				curRow += cellShift[cellOffsetIndex++];
 				curCol += cellShift[cellOffsetIndex];
-				// calcAdjNode(curRow, curCol, map[curRow * maxCellWidth +
+				// calcAdjNode(curRow, curCol, map[curRow * maxCellwidth +
 				// curCol].parent);
 			}
 #ifdef BLOCKED_PATH_TEST
@@ -5843,7 +5843,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 		calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 		if (debugger && (scenarioTime > 0.0))
 		{
-			char s[50];
+			wchar_t s[50];
 			sprintf(s, "path calc: %.4f\n", calcTime);
 			OutputDebugString(s);
 			debugger->print(s);
@@ -5856,7 +5856,7 @@ MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* 
 	calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 	if (debugger && (scenarioTime > 0.0))
 	{
-		char s[50];
+		wchar_t s[50];
 		sprintf(s, "path calc: %.4f", calcTime);
 		debugger->print(s);
 	}
@@ -5875,7 +5875,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 #endif
 	//------------------------------------------------------------------
 	// Clear the start cell, in case we're starting in a blocked cell...
-	// map[startR * maxCellWidth + startC].cost = clearCost;
+	// map[startR * maxCellwidth + startC].cost = clearCost;
 	//-------------------------------------------------------------------
 	// If the start tile is blocked, let's clear it so we may move off of
 	// it, at least. Change the blocked tiles to just barely passable...
@@ -5885,21 +5885,21 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 			for (int32_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++) {
 				int32_t curCellR = startULr + cellR;
 				int32_t curCellC = startULc + cellC;
-				int32_t mapIndex = curCellR * maxCellWidth + curCellC;
-				if ((curCellR >= 0) && (curCellR < cellHeight) && (curCellC >=
-	   0) && (curCellC < cellWidth)) if (map[mapIndex].cost >= COST_BLOCKED)
+				int32_t mapIndex = curCellR * maxCellwidth + curCellC;
+				if ((curCellR >= 0) && (curCellR < cellheight) && (curCellC >=
+	   0) && (curCellC < cellwidth)) if (map[mapIndex].cost >= COST_BLOCKED)
 						map[mapIndex].cost = COST_BLOCKED - 1;
 			}
 	*/
 	/*
-		if ((goalR < 0) || (goalR >= cellHeight) || (goalC < 0) || (goalC >=
-	   cellWidth)) { Stuff::Vector3D p; p.x = (float)(goalC) * MetersPerCell +
+		if ((goalR < 0) || (goalR >= cellheight) || (goalC < 0) || (goalC >=
+	   cellwidth)) { Stuff::Vector3D p; p.x = (float)(goalC) * MetersPerCell +
 	   MetersPerCell / 2 - Terrain::worldUnitsMapSide / 2; p.y =
 	   (Terrain::worldUnitsMapSide / 2) - ((float)(goalR) * MetersPerCell) -
 	   MetersPerCell / 2; p.z = (float)0; // How do we get the elevation for
-	   this point? Do we care? char msg[200]; sprintf(msg, " Bad Move Goal: %d
+	   this point? Do we care? wchar_t msg[200]; sprintf(msg, " Bad Move Goal: %d
 	   [%d(%d), %d(%d)], (%.2f, %.2f, %.2f)", DebugMovePathType, goalR,
-	   cellHeight, goalC, cellWidth, p.x, p.y, p.z); Fatal(0, msg);
+	   cellheight, goalC, cellwidth, p.x, p.y, p.z); Fatal(0, msg);
 		}
 	*/
 	//------------------------------------------------------------------
@@ -5917,7 +5917,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 	}
 	int32_t curCol = startC;
 	int32_t curRow = startR;
-	MoveMapNodePtr curMapNode = &map[curRow * maxWidth + curCol];
+	MoveMapNodePtr curMapNode = &map[curRow * maxwidth + curCol];
 	curMapNode->g = 0;
 	curMapNode->hPrime = 10; // calcHPrime(curRow, curCol);
 	curMapNode->fPrime = curMapNode->hPrime;
@@ -5965,7 +5965,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 		openList->remove(bestPQNode);
 		bestRow = bestPQNode.row;
 		bestCol = bestPQNode.col;
-		MoveMapNodePtr bestMapNode = &map[bestRow * maxWidth + bestCol];
+		MoveMapNodePtr bestMapNode = &map[bestRow * maxwidth + bestCol];
 		bestMapNode->clearFlag(MOVEFLAG_OPEN);
 		int32_t bestNodeG = bestMapNode->g;
 		//----------------------------
@@ -6002,7 +6002,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 			// If it's on the map, check it...
 			if (inMapBounds(succRow, succCol, height, width))
 			{
-				MoveMapNodePtr succMapNode = &map[succRow * maxWidth + succCol];
+				MoveMapNodePtr succMapNode = &map[succRow * maxwidth + succCol];
 				if (succMapNode->cost < COST_BLOCKED)
 				{
 					if (succMapNode->hPrime == HPRIME_NOT_CALCED)
@@ -6014,7 +6014,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 #endif
 						//--------------------------------------------------
 						// How can we get back to BESTNODE from SUCCESSOR...
-						char dirToParent = reverseShift[dir];
+						wchar_t dirToParent = reverseShift[dir];
 						//----------------------------------------------------
 						// What's our cost to go from START to this SUCCESSOR?
 						bool jumping = false;
@@ -6053,7 +6053,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 									openList->find(succRow * MAX_MAPWIDTH + succCol);
 								if (!openIndex)
 								{
-									char s[128];
+									wchar_t s[128];
 									sprintf(s,
 										"MoveMap.calcEscapePath: Cannot find "
 										"movemap node [%d, %d, %d, %d] for "
@@ -6146,7 +6146,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 		while ((curRow != startR) || (curCol != startC))
 		{
 			numCells += 1;
-			int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent * 2;
+			int32_t cellOffsetIndex = map[curRow * maxwidth + curCol].parent * 2;
 			// if ((cellOffsetIndex < 0) || (cellOffsetIndex > 14))
 			//	OutputDebugString("PathFinder: whoops\n");
 			curRow += cellShift[cellOffsetIndex++];
@@ -6162,7 +6162,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 		{
 			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("longpath.dbg");
-			char s[512];
+			wchar_t s[512];
 			sprintf(s,
 				"Path Too Long: %d steps (Max = %d) (please save longpath.dbg "
 				"file:)",
@@ -6189,7 +6189,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 			{
 				MechFile* pathDebugFile = new MechFile;
 				pathDebugFile->create("longpath.dbg");
-				char s[512];
+				wchar_t s[512];
 				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n", numCells,
 					MAX_STEPS_PER_MOVEPATH);
 				pathDebugFile->writeString(s);
@@ -6200,7 +6200,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 			}
 #endif
 			path->target = target;
-			path->cost = map[bestRow * maxWidth + bestCol].g;
+			path->cost = map[bestRow * maxwidth + bestCol].g;
 			curRow = (int32_t)bestRow;
 			curCol = (int32_t)bestCol;
 			int32_t curCell = numCells;
@@ -6260,7 +6260,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 			while ((curRow != startR) || (curCol != startC))
 			{
 				curCell--;
-				int32_t parent = reverseShift[map[curRow * maxWidth + curCol].parent];
+				int32_t parent = reverseShift[map[curRow * maxwidth + curCol].parent];
 				if (parent > 7)
 					path->setDirection(curCell, parent);
 				else
@@ -6280,11 +6280,11 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 						cellShiftDistance[path->getDirection(curCell + 1)] + path->getDistanceToGoal(curCell + 1));
 				path->setDestination(curCell, stepDest);
 				path->setCell(curCell, cell[0], cell[1]);
-				map[curRow * maxWidth + curCol].setFlag(MOVEFLAG_STEP);
-				int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent << 1;
+				map[curRow * maxwidth + curCol].setFlag(MOVEFLAG_STEP);
+				int32_t cellOffsetIndex = map[curRow * maxwidth + curCol].parent << 1;
 				curRow += cellShift[cellOffsetIndex++];
 				curCol += cellShift[cellOffsetIndex];
-				// calcAdjNode(curRow, curCol, map[curRow * maxCellWidth +
+				// calcAdjNode(curRow, curCol, map[curRow * maxCellwidth +
 				// curCol].parent);
 			}
 #ifdef BLOCKED_PATH_TEST
@@ -6308,7 +6308,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 		calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 		if (debugger && (scenarioTime > 0.0))
 		{
-			char s[50];
+			wchar_t s[50];
 			sprintf(s, "path calc: %.4f\n", calcTime);
 			OutputDebugString(s);
 			debugger->print(s);
@@ -6321,7 +6321,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 	calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 	if (debugger && (scenarioTime > 0.0))
 	{
-		char s[50];
+		wchar_t s[50];
 		sprintf(s, "path calc: %.4f", calcTime);
 		debugger->print(s);
 	}
@@ -6334,7 +6334,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 void
 MoveMap::writeDebug(MechFile* debugFile)
 {
-	char outString[512];
+	wchar_t outString[512];
 	sprintf(outString, "Time = %.6f\n\n", calcTime);
 	debugFile->writeString(outString);
 	sprintf(outString, "Start = (%d, %d)\n", startR, startC);
@@ -6349,7 +6349,7 @@ MoveMap::writeDebug(MechFile* debugFile)
 	for (r = 0; r < height; r++)
 	{
 		outString[0] = nullptr;
-		char numStr[10];
+		wchar_t numStr[10];
 		for (size_t c = 0; c < width; c++)
 		{
 			/*if ((goalR == r) && (goalC == c))
@@ -6357,12 +6357,12 @@ MoveMap::writeDebug(MechFile* debugFile)
 			else*/
 			if ((startR == r) && (startC == c))
 				sprintf(numStr, "S");
-			else if (map[r * maxWidth + c].parent == -1)
+			else if (map[r * maxwidth + c].parent == -1)
 				sprintf(numStr, ".");
-			else if (map[r * maxWidth + c].flags & MOVEFLAG_STEP)
+			else if (map[r * maxwidth + c].flags & MOVEFLAG_STEP)
 				sprintf(numStr, "X");
 			else
-				sprintf(numStr, "%d", map[r * maxWidth + c].parent);
+				sprintf(numStr, "%d", map[r * maxwidth + c].parent);
 			strcat(outString, numStr);
 		}
 		strcat(outString, "\n");
@@ -6374,19 +6374,19 @@ MoveMap::writeDebug(MechFile* debugFile)
 	for (r = 0; r < height; r++)
 	{
 		outString[0] = nullptr;
-		char numStr[10];
+		wchar_t numStr[10];
 		for (size_t c = 0; c < width; c++)
 		{
 			if ((goalR == r) && (goalC == c))
 				sprintf(numStr, "G");
 			else if ((startR == r) && (startC == c))
 				sprintf(numStr, "S");
-			else if (map[r * maxWidth + c].cost == clearCost)
+			else if (map[r * maxwidth + c].cost == clearCost)
 				sprintf(numStr, ".");
-			else if (map[r * maxWidth + c].cost >= COST_BLOCKED)
+			else if (map[r * maxwidth + c].cost >= COST_BLOCKED)
 				sprintf(numStr, " ");
-			else if (map[r * maxWidth + c].cost < 256)
-				sprintf(numStr, "%x", map[r * maxWidth + c].cost);
+			else if (map[r * maxwidth + c].cost < 256)
+				sprintf(numStr, "%x", map[r * maxwidth + c].cost);
 			strcat(outString, numStr);
 		}
 		strcat(outString, "\n");
@@ -6398,21 +6398,21 @@ MoveMap::writeDebug(MechFile* debugFile)
 	for (r = 0; r < height; r++)
 	{
 		outString[0] = nullptr;
-		char numStr[10];
+		wchar_t numStr[10];
 		for (size_t c = 0; c < width; c++)
 		{
 			if ((goalR == r) && (goalC == c))
 				sprintf(numStr, "G");
 			else if ((startR == r) && (startC == c))
 				sprintf(numStr, "S");
-			else if (map[r * maxWidth + c].flags & MOVEFLAG_STEP)
+			else if (map[r * maxwidth + c].flags & MOVEFLAG_STEP)
 				sprintf(numStr, "*");
-			else if (map[r * maxWidth + c].cost == clearCost)
+			else if (map[r * maxwidth + c].cost == clearCost)
 				sprintf(numStr, ".");
-			else if (map[r * maxWidth + c].cost >= COST_BLOCKED)
+			else if (map[r * maxwidth + c].cost >= COST_BLOCKED)
 				sprintf(numStr, " ");
 			else
-				sprintf(numStr, "%d", map[r * maxWidth + c].cost);
+				sprintf(numStr, "%d", map[r * maxwidth + c].cost);
 			strcat(outString, numStr);
 		}
 		strcat(outString, "\n");

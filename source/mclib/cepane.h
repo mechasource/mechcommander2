@@ -44,11 +44,11 @@ public:
 class DeltaElement : public Element
 {
 public:
-	puint8_t shapeTable;
+	uint8_t* shapeTable;
 	int32_t frameNum;
 	int32_t x, y;
 	bool reverse;
-	puint8_t fadeTable;
+	uint8_t* fadeTable;
 	bool noScaleDraw;
 	bool scaleUp;
 
@@ -63,8 +63,8 @@ public:
 		scaleUp = false;
 	}
 
-	DeltaElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
-		puint8_t fTable = nullptr, bool noScale = false, bool scaleUp = false);
+	DeltaElement(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+		uint8_t* fTable = nullptr, bool noScale = false, bool scaleUp = false);
 
 	virtual void draw(void);
 };

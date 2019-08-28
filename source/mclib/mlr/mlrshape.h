@@ -7,10 +7,10 @@
 #ifndef MLR_MLRSHAPE_HPP
 #define MLR_MLRSHAPE_HPP
 
-#include <stuff/plug.hpp>
-#include <stuff/matrix.hpp>
-//#include <stuff/marray.hpp>
-#include <mlr/mlrstate.hpp>
+#include "stuff/plug.h"
+#include "stuff/matrix.h"
+//#include "stuff/marray.h"
+#include "mlr/mlrstate.h"
 
 namespace Stuff
 {

@@ -81,7 +81,7 @@ void
 UnitSettingsDlg::OnHighilight2edit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT2);
-	DoColorBox(pWnd);
+	DocolourBox(pWnd);
 }
 
 void
@@ -114,7 +114,7 @@ void
 UnitSettingsDlg::OnHighlight1edit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT1);
-	DoColorBox(pWnd);
+	DocolourBox(pWnd);
 }
 
 void
@@ -165,11 +165,11 @@ void
 UnitSettingsDlg::OnBaseedit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_BASE);
-	DoColorBox(pWnd);
+	DocolourBox(pWnd);
 }
 
 void
-UnitSettingsDlg::DoColorBox(CWnd* pWnd)
+UnitSettingsDlg::DocolourBox(CWnd* pWnd)
 {
 	if (pWnd)
 	{
@@ -179,10 +179,10 @@ UnitSettingsDlg::DoColorBox(CWnd* pWnd)
 		int32_t base;
 		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
-		CColorDialog dlg(reverseRGB(base), nullptr, this);
+		CcolourDialog dlg(reverseRGB(base), nullptr, this);
 		if (IDOK == dlg.DoModal())
 		{
-			base = reverseRGB(dlg.GetColor());
+			base = reverseRGB(dlg.Getcolour());
 			tmpStr.Format("0x%x", base);
 			pWnd->SetWindowText(tmpStr);
 		}
@@ -261,8 +261,8 @@ UnitSettingsDlg::applyChanges()
 	}
 	uint32_t base = 0, color1 = 0, color2 = 0;
 	bool bBase = false;
-	bool bColor1 = false;
-	bool bColor2 = false;
+	bool bcolour1 = false;
+	bool bcolour2 = false;
 	// now figure out the colors
 	CWnd* pWnd = GetDlgItem(IDC_BASE);
 	if (pWnd)
@@ -284,7 +284,7 @@ UnitSettingsDlg::applyChanges()
 		pWnd->GetWindowText(tmpStr);
 		if (tmpStr.GetLength())
 		{
-			bColor1 = true;
+			bcolour1 = true;
 			tmpStr.Replace("0x", "");
 			sscanf_s(tmpStr, "%x", &color1);
 			color1 |= 0xff000000;
@@ -297,17 +297,17 @@ UnitSettingsDlg::applyChanges()
 		pWnd->GetWindowText(tmpStr);
 		if (tmpStr.GetLength())
 		{
-			bColor2 = true;
+			bcolour2 = true;
 			tmpStr.Replace("0x", "");
 			sscanf_s(tmpStr, "%x", &color2);
 			color2 |= 0xff000000;
 		}
 	}
-	if (bBase && bColor1 && bColor2)
+	if (bBase && bcolour1 && bcolour2)
 	{
 		for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 		{
-			(*iter)->setColors(base, color1, color2);
+			(*iter)->setcolours(base, color1, color2);
 		}
 	}
 }
@@ -359,9 +359,9 @@ UnitSettingsDlg::updatePossibiltyControls()
 }
 
 HBRUSH
-UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
+UnitSettingsDlg::OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour)
 {
-	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	HBRUSH hbr = CDialog::OnCtlcolour(pDC, pWnd, nCtlcolour);
 	if (GetDlgItem(IDC_BASE)->m_hWnd == pWnd->m_hWnd)
 	{
 		CString tmpStr;
@@ -374,9 +374,9 @@ UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		if (baseBrush.m_hObject)
 			baseBrush.DeleteObject();
 		baseBrush.CreateSolidBrush(base);
-		pDC->SetBkColor(base);
+		pDC->SetBkcolour(base);
 		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
-			pDC->SetTextColor(0x00ffffff);
+			pDC->SetTextcolour(0x00ffffff);
 		return (HBRUSH)baseBrush.m_hObject;
 	}
 	if (GetDlgItem(IDC_HIGHLIGHT1)->m_hWnd == pWnd->m_hWnd)
@@ -391,9 +391,9 @@ UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		if (brush1.m_hObject)
 			brush1.DeleteObject();
 		brush1.CreateSolidBrush(base);
-		pDC->SetBkColor(base);
+		pDC->SetBkcolour(base);
 		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
-			pDC->SetTextColor(0x00ffffff);
+			pDC->SetTextcolour(0x00ffffff);
 		return (HBRUSH)brush1.m_hObject;
 	}
 	if (GetDlgItem(IDC_HIGHLIGHT2)->m_hWnd == pWnd->m_hWnd)
@@ -408,9 +408,9 @@ UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		if (brush2.m_hObject)
 			brush2.DeleteObject();
 		brush2.CreateSolidBrush(base);
-		pDC->SetBkColor(base);
+		pDC->SetBkcolour(base);
 		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
-			pDC->SetTextColor(0x00ffffff);
+			pDC->SetTextcolour(0x00ffffff);
 		return (HBRUSH)brush2.m_hObject;
 	}
 	// TODO: Return a different brush if the default is not desired
@@ -507,13 +507,13 @@ UnitSettingsDlg::updateMemberVariables()
 		}
 	}
 	UpdateData(false);
-	pUnit->getColors(base, highlight1, highlight2);
-	char pBase[256];
-	char pH1[256];
-	char pH2[256];
+	pUnit->getcolours(base, highlight1, highlight2);
+	wchar_t pBase[256];
+	wchar_t pH1[256];
+	wchar_t pH2[256];
 	for (iter = units.Begin(); !iter.IsDone(); iter++)
 	{
-		(*iter)->getColors(tmpBase, tmpHighlight1, tmpHighlight2);
+		(*iter)->getcolours(tmpBase, tmpHighlight1, tmpHighlight2);
 		if (tmpBase != base)
 			bBase = false;
 		if (tmpHighlight1 != highlight1)
@@ -538,7 +538,7 @@ UnitSettingsDlg::updateMemberVariables()
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	int32_t groupCount = pMgr->getUnitGroupCount();
 	const std::wstring_view&* pGroups = new const std::wstring_view&[groupCount];
-	pint32_t groupIDs = new int32_t[groupCount];
+	int32_t* groupIDs = new int32_t[groupCount];
 	m_Group.ResetContent();
 	pMgr->getUnitGroupNames(pGroups, groupIDs, groupCount);
 	for (size_t i = 0; i < groupCount; ++i)

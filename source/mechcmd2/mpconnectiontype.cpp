@@ -8,7 +8,7 @@ component.
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mechgui/asystem.h"
 
 //#include "mechgui/logisticsscreen.h"
@@ -95,13 +95,13 @@ MPConnectionType::init(FitIniFile* file)
 		}
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_contype_zone.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -109,13 +109,13 @@ MPConnectionType::init(FitIniFile* file)
 		zonePanel.init(&PNfile, this);
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_contype_lan.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -123,13 +123,13 @@ MPConnectionType::init(FitIniFile* file)
 		lanPanel.init(&PNfile);
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_contype_tcpip.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -538,7 +538,7 @@ aTcpipPanel::init(FitIniFile* pFile)
 	path.init(artPath, "mcl_mp_tcpip_combobox0", ".fit");
 	if (NO_ERROR != tmpFile.open(path))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
 		Assert(0, 0, errorStr);
 	}
@@ -717,7 +717,7 @@ aTcpipPanel::update()
 		else if (dotIndex[3] < str.Length() - 1)
 		{
 			bValid = 1;
-			char tmp[256];
+			wchar_t tmp[256];
 			strcpy(tmp, str);
 			for (size_t i = 0; i < 4; i++)
 			{
@@ -758,7 +758,7 @@ aTcpipPanel::render()
 int32_t
 aTcpipPanel::getNum(const std::wstring_view& pStr, int32_t index1, int32_t index2)
 {
-	char tmp = pStr[index2];
+	wchar_t tmp = pStr[index2];
 	pStr[index2] = 0;
 	return atoi(&pStr[index1]);
 }
@@ -773,8 +773,8 @@ aTcpipPanel::handleMessage(uint32_t message, uint32_t who)
 		bFoundConnection = 0;
 		LogisticsOneButtonDialog::instance()->setText(
 			IDS_MP_CON_MODEM_CONNECTING, IDS_PM_CANCEL, IDS_PM_CANCEL);
-		char text[256];
-		char Display[256];
+		wchar_t text[256];
+		wchar_t Display[256];
 		cLoadString(IDS_MP_CON_MODEM_CONNECTING, text, 255);
 		const std::wstring_view& str;
 		comboBox.EditBox().getEntry(str);

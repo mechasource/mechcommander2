@@ -29,7 +29,7 @@ typedef struct _MemoryMappedFiles
 	_MemoryMappedFiles* pNext; // Pointer to next structure
 	HANDLE hFile; // File handle
 	HANDLE hFileMapping; // Mapping handle
-	puint8_t pFile; // Pointer to start of data
+	uint8_t* pFile; // Pointer to start of data
 	size_t Size; // Size of data
 	size_t RefCount; // Reference count (number of times a file is opened)
 	char Name[MAX_PATH]; // Copy of the file name
@@ -47,7 +47,7 @@ typedef struct gosFileStream
 	~gosFileStream(void);
 
 	uint32_t Seek(int32_t where, gosEnum_FileSeekType from_end);
-	uint32_t Read(PVOIDbuffer, uint32_t length);
+	uint32_t Read(PVOID buffer, uint32_t length);
 	uint32_t Write(PCVOID buffer, uint32_t length);
 
 	uint32_t BytesTransfered;

@@ -25,12 +25,12 @@
 #include "file.h"
 #endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 // Static Globals
-static char CorruptMsg[] = "Heap check failed.\n";
-static char pformat[] = "%s %s\n";
+static wchar_t CorruptMsg[] = "Heap check failed.\n";
+static wchar_t pformat[] = "%s %s\n";
 
 GlobalHeapRec HeapList::heapRecords[MAX_HEAPS];
 HeapListPtr globalHeapList = nullptr;
@@ -139,13 +139,13 @@ HeapManager::init(void)
 }
 
 //---------------------------------------------------------------------------
-HeapManager::operator puint8_t(void)
+HeapManager::operator uint8_t*(void)
 {
 	return getHeapPtr();
 }
 
 //---------------------------------------------------------------------------
-puint8_t
+uint8_t*
 HeapManager::getHeapPtr(void)
 {
 	if (memReserved && totalSize && committedSize && heap)
@@ -157,7 +157,7 @@ HeapManager::getHeapPtr(void)
 int32_t
 HeapManager::createHeap(uint32_t memSize)
 {
-	heap = (puint8_t)VirtualAlloc(nullptr, memSize, MEM_RESERVE, PAGE_READWRITE);
+	heap = (uint8_t*)VirtualAlloc(nullptr, memSize, MEM_RESERVE, PAGE_READWRITE);
 	if (heap)
 	{
 		memReserved = TRUE;
@@ -186,7 +186,7 @@ HeapManager::commitHeap(uint32_t commitSize)
 	{
 		commitSize = memLeft;
 	}
-	puint8_t result = (puint8_t)VirtualAlloc(heap, commitSize, MEM_COMMIT, PAGE_READWRITE);
+	uint8_t* result = (uint8_t*)VirtualAlloc(heap, commitSize, MEM_COMMIT, PAGE_READWRITE);
 	if (result == heap)
 	{
 		int32_t actualSize = commitSize;
@@ -306,7 +306,7 @@ UserHeap::init(uint32_t memSize, const std::wstring_view& heapId, bool useGOS)
 		//--------------------------------
 		//	Set all free memory to -1.
 		// Any access before ready and Exception city.
-		puint8_t start = (puint8_t)heapBottom;
+		uint8_t* start = (uint8_t*)heapBottom;
 		start += sizeof(HeapBlock);
 		uint32_t length = heapTop - heapBottom;
 		length -= sizeof(HeapBlock);
@@ -368,7 +368,7 @@ UserHeap::dumpRecordLog(void)
 	if (recordArray)
 	{
 		MechFile log;
-		char msg[256];
+		wchar_t msg[256];
 		sprintf(msg, "heapdump.%s.log", heapName);
 		log.create(msg);
 		for (size_t i = 0; i < NUMMEMRECORDS; i++)
@@ -1259,7 +1259,7 @@ UserHeap::walkHeap(bool printIt, bool skipAllocated)
 		allocated = walker->blockSize & 1;
 		if ((printIt && !allocated) || (printIt && !skipAllocated))
 		{
-			char errMessage[256];
+			wchar_t errMessage[256];
 #ifdef _DEBUG
 			if (allocated)
 			{
@@ -1537,7 +1537,7 @@ HeapList::initializeStatistics()
 		StatisticFormat("");
 		for (size_t i = 0; i < 50; i++)
 		{
-			char heapString[255];
+			wchar_t heapString[255];
 			sprintf(heapString, "Heap %d - HeapSize", i);
 			AddStatistic(heapString, "bytes", gos_DWORD, &(heapRecords[i].heapSize),
 				Stat_AutoReset | Stat_Total);
@@ -1614,7 +1614,7 @@ textToLong(const std::wstring_view& num)
 int32_t
 longToText(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%08X", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -1637,27 +1637,27 @@ getStringFromMap(MechFile& mapFile, uint32_t addr, const std::wstring_view& resu
 #endif
 	uint32_t function = addr;
 	function -= offsetAdd;
-	char actualAddr[10];
+	wchar_t actualAddr[10];
 	longToText(actualAddr, function, 9);
 	//------------------------------------
 	// Find the first code entry address.
 	// This is the first line encountered with "  Address" as the first nine
 	// characters.
-	char mapFileLine[512];
+	wchar_t mapFileLine[512];
 	mapFile.seek(0);
-	mapFile.readLine((puint8_t)mapFileLine, 511);
+	mapFile.readLine((uint8_t*)mapFileLine, 511);
 	while (strstr(mapFileLine, "  Address") == nullptr)
 	{
-		mapFile.readLine((puint8_t)mapFileLine, 511);
+		mapFile.readLine((uint8_t*)mapFileLine, 511);
 	}
-	mapFile.readLine((puint8_t)mapFileLine, 511);
-	mapFile.readLine((puint8_t)mapFileLine, 511);
+	mapFile.readLine((uint8_t*)mapFileLine, 511);
+	mapFile.readLine((uint8_t*)mapFileLine, 511);
 	//-------------------------------------------------------------
 	// We've found the first code entry.  Now, scan until
 	// the current address is greater than the address asked for.
 	// The previous function name is the function in question.
 	const std::wstring_view& currentAddress = &(mapFileLine[6]);
-	char previousAddress[511];
+	wchar_t previousAddress[511];
 	strncpy(previousAddress, &(mapFileLine[6]), 510);
 	while (strstr(mapFileLine, "0001:") != nullptr)
 	{
@@ -1669,7 +1669,7 @@ getStringFromMap(MechFile& mapFile, uint32_t addr, const std::wstring_view& resu
 			return (strlen(result));
 		}
 		strncpy(previousAddress, &(mapFileLine[6]), 510);
-		mapFile.readLine((puint8_t)mapFileLine, 511);
+		mapFile.readLine((uint8_t*)mapFileLine, 511);
 	}
 	return (0);
 }
@@ -1695,8 +1695,8 @@ HeapList::dumpLog(void)
 	HeapManagerPtr currentHeap = nullptr;
 	uint32_t heapNumber = 1;
 	uint32_t mapStringSize = 0;
-	char msg[1024];
-	char mapInfo[513];
+	wchar_t msg[1024];
+	wchar_t mapInfo[513];
 	uint32_t totalCommit = 0;
 	uint32_t totalFree = 0;
 	for (size_t i = 0; i < MAX_HEAPS; i++)

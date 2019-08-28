@@ -148,7 +148,7 @@ MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
 	//-------------------------------------------------------------------
 	//
 	float cosine = -(light_z * (*vertexData.normal)) * intensity;
-	RGBColor light_color(color);
+	RGBcolour light_color(color);
 	Point3D vertex_to_light;
 	_ASSERT(GetFalloffDistance(vertex_to_light.x, vertex_to_light.y));
 	GetInShapePosition(vertex_to_light);

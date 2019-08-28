@@ -10,8 +10,8 @@
 #ifndef _ORIGIN_HPP_
 #define _ORIGIN_HPP_
 
-#include <stuff/point3d.hpp>
-#include <stuff/rotation.hpp>
+#include "stuff/point3d.h"
+#include "stuff/rotation.h"
 
 namespace Stuff
 {
@@ -20,7 +20,7 @@ class Origin3D;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::Origin3D& origin);
+Spew(const std::wstring_view& group, const Stuff::Origin3D& origin);
 #endif
 
 namespace Stuff
@@ -117,7 +117,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Origin3D& origin);
+	friend void ::Spew(const std::wstring_view& group, const Origin3D& origin);
 #endif
 	void TestInstance(void) const;
 	static bool TestClass(void);
@@ -144,7 +144,7 @@ UnitQuaternion::operator=(const Origin3D& p)
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, Stuff::Origin3D* output)
 {

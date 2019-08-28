@@ -43,14 +43,14 @@ protected:
 	uint32_t columns;
 	uint8_t maskValue;
 	uint32_t divValue;
-	uint32_t colWidth;
+	uint32_t colwidth;
 	uint32_t totalFlags;
 	uint32_t totalRAM;
 
 public:
 	BitFlag(void) :
 		flagHeap(nullptr), numBitsPerFlag(0), rows(0), columns(0), maskValue(0), divValue(1),
-		colWidth(1)
+		colwidth(1)
 	{
 	}
 	~BitFlag(void) { destroy(); }
@@ -93,10 +93,10 @@ public:
 
 	void destroy(void);
 
-	puint8_t memDump(void);
+	uint8_t* memDump(void);
 
-	uint32_t getWidth(void) { return rows; }
-	uint32_t getHeight(void) { return columns; }
+	uint32_t getwidth(void) { return rows; }
+	uint32_t getheight(void) { return columns; }
 
 	void resetAll(uint32_t byte);
 

@@ -7,7 +7,7 @@
 #ifndef MLR_MLRTRIANGLECLOUD_HPP
 #define MLR_MLRTRIANGLECLOUD_HPP
 
-#include <mlr/mlreffect.hpp>
+#include "mlr/mlreffect.h"
 
 namespace MidLevelRenderer
 {
@@ -33,11 +33,11 @@ public:
 	~MLRTriangleCloud(void);
 
 	void SetData(
-		pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data);
+		const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data);
 
 	// added due to warning C4263 in MLRIndexedTriangleCloud
-	virtual void SetData(pcsize_t tri_count, pcsize_t point_count, pcuint16_t index_data,
-		const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data,
+	virtual void SetData(const size_t* tri_count, const size_t* point_count, const uint16_t* index_data,
+		const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data,
 		const Stuff::Vector2DScalar* uv_data);
 
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
@@ -57,10 +57,10 @@ public:
 	void TestInstance(void) const;
 
 protected:
-	pcsize_t usedNrOfTriangles;
+	const size_t* usedNrOfTriangles;
 
-	static std::vector<Stuff::RGBAColor>*
-		clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::RGBAcolour>*
+		clipExtracolours; // , Max_Number_Vertices_Per_Mesh
 
 	static std::vector<MLRClippingState>* clipPerVertex; // , Max_Number_Vertices_Per_Mesh
 

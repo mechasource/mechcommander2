@@ -30,7 +30,7 @@
 #include "camera.h"
 #endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 extern void
 AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable, int32_t frameNum,
@@ -39,7 +39,7 @@ extern void
 AG_shape_transform(PANE* globalPane, PVOIDshapeTable, int32_t frameNum, int32_t hotX,
 	int32_t hotY, PVOIDtempBuffer, int32_t reverse, int32_t scaleUp);
 extern void
-AG_shape_lookaside(puint8_t table);
+AG_shape_lookaside(uint8_t* table);
 extern void
 AG_shape_draw(
 	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
@@ -51,12 +51,12 @@ AG_shape_translate_draw(
 #define MAX_X 360
 #define MAX_Y 360
 
-puint8_t tempBuffer = nullptr;
+uint8_t* tempBuffer = nullptr;
 //---------------------------------------------------------------------------
 //
 int32_t
-scaleDraw(puint8_t shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool reverse,
-	puint8_t fadeTable, bool scaleUp)
+scaleDraw(uint8_t* shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool reverse,
+	uint8_t* fadeTable, bool scaleUp)
 {
 	//--------------------------------------------------------------
 	// Check GlobalPane and GlobalWindow for validity.
@@ -66,7 +66,7 @@ scaleDraw(puint8_t shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool r
 		scaleUp = 0;
 	//----------------------------------------------------------------
 	// Check if shape is actually valid.
-	if ((*(pint32_t)shapeTable != *(pint32_t) "1.10"))
+	if ((*(int32_t*)shapeTable != *(int32_t*) "1.10"))
 		return (TRUE);
 	int32_t result = VFX_shape_count(shapeTable);
 	if (result <= (int32_t)frameNum)
@@ -87,7 +87,7 @@ scaleDraw(puint8_t shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool r
 		return -1;
 	}
 	if (!tempBuffer)
-		tempBuffer = (puint8_t)systemHeap->Malloc(MAX_X * MAX_Y);
+		tempBuffer = (uint8_t*)systemHeap->Malloc(MAX_X * MAX_Y);
 	gosASSERT((yMax * xMax) < (MAX_Y * MAX_X));
 	if (fadeTable)
 	{

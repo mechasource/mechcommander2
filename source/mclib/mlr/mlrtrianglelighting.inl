@@ -19,7 +19,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 	// If no lights or normals are specified, use the original vertex colors
 	//----------------------------------------------------------------------
 	//
-	actualColors		= &colors;
+	actualcolours		= &colors;
 	uint32_t state_mask = GetCurrentState().GetLightingMode();
 	if (nrLights == 0 || normals.GetLength() == 0 || state_mask == MLRState::LightingOffMode)
 		return;
@@ -32,7 +32,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 	if (state_mask & MLRState::VertexLightingMode)
 	{
 		Start_Timer(Vertex_Light_Time);
-		_ASSERT(colors.GetLength() == litColors.GetLength());
+		_ASSERT(colors.GetLength() == litcolours.GetLength());
 		_ASSERT(normals.GetLength() == colors.GetLength());
 		_ASSERT(coords.GetLength() == colors.GetLength());
 		size_t i, k, len = colors.GetLength();
@@ -40,7 +40,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 #if COLOR_AS_DWORD
 		TO_DO;
 #else
-		Stuff::RGBAColor* color = &colors[0];
+		Stuff::RGBAcolour* color = &colors[0];
 #endif
 		//
 		//--------------------------------
@@ -48,7 +48,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 		//--------------------------------
 		//
 		vertexData.point  = &coords[0];
-		vertexData.color  = &litColors[0];
+		vertexData.color  = &litcolours[0];
 		vertexData.normal = &normals[0];
 		for (k = 0; k < len; k++)
 		{
@@ -85,7 +85,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 			vertexData.normal++;
 			color++;
 		}
-		actualColors = &litColors;
+		actualcolours = &litcolours;
 		Stop_Timer(Vertex_Light_Time);
 	}
 	if (state_mask & MLRState::LightMapLightingMode)

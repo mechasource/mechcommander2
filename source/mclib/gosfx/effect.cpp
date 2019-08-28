@@ -14,7 +14,7 @@
 
 #include "effect.hpp"
 
-//#include "gosFXHeaders.hpp"
+//#include "gosfx/gosfxheaders.h"
 
 //------------------------------------------------------------------------------
 //

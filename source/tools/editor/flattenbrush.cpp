@@ -72,13 +72,13 @@ FlattenBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 Action*
 FlattenBrush::applyToSelection()
 {
-	float height = getAverageHeightOfSelection();
-	return applyHeightToSelection(height);
+	float height = getAverageheightOfSelection();
+	return applyheightToSelection(height);
 }
 
 //-------------------------------------------------------------------------------------------------
 float
-FlattenBrush::getAverageHeightOfSelection()
+FlattenBrush::getAverageheightOfSelection()
 {
 	float height = 0.f;
 	float count = 0.0f;
@@ -99,7 +99,7 @@ FlattenBrush::getAverageHeightOfSelection()
 
 //-------------------------------------------------------------------------------------------------
 Action*
-FlattenBrush::applyHeightToSelection(float height)
+FlattenBrush::applyheightToSelection(float height)
 {
 	beginPaint();
 	for (size_t j = 0; j < land->realVerticesMapSide; ++j)
@@ -126,7 +126,7 @@ FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 		if (i > -1 && i < land->realVerticesMapSide && j > -1 && j < land->realVerticesMapSide)
 		{
 			pCurAction->addChangedVertexInfo(j, i);
-			land->setVertexHeight(j * land->realVerticesMapSide + i, val);
+			land->setVertexheight(j * land->realVerticesMapSide + i, val);
 		}
 	}
 #else /*flattening without "area effect"*/
@@ -137,7 +137,7 @@ FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 			if (i > -1 && i < land->realVerticesMapSide && j > -1 && j < land->realVerticesMapSide)
 			{
 				pCurAction->addChangedVertexInfo(j, i);
-				land->setVertexHeight(j * land->realVerticesMapSide + i, val);
+				land->setVertexheight(j * land->realVerticesMapSide + i, val);
 			}
 		}
 	}

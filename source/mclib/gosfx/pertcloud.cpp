@@ -6,7 +6,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "gosFXHeaders.hpp"
+#include "gosfx/gosfxheaders.h"
 #include "mlr/mlrngoncloud.h"
 
 //------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ gosFX::PertCloud__Specification::PertCloud__Specification(
 	m_particleClassSize = sizeof(gosFX::PertCloud::Particle);
 	_ASSERT(gfx_version > 5);
 	*stream >> m_vertices;
-	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) + 2 * sizeof(Stuff::RGBAColor);
+	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) + 2 * sizeof(Stuff::RGBAcolour);
 }
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides) :
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_particleClassSize = sizeof(gosFX::PertCloud::Particle);
 	m_vertices = sides + 2;
-	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) + 2 * sizeof(Stuff::RGBAColor);
+	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) + 2 * sizeof(Stuff::RGBAcolour);
 }
 
 //------------------------------------------------------------------------------
@@ -200,9 +200,9 @@ gosFX::PertCloud::PertCloud(Specification* spec, uint32_t flags) :
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += spec->m_vertices * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
-	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
+	m_P_color = Cast_Pointer(Stuff::RGBAcolour*, &m_data[index]);
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_vertices, m_P_color);
+		Cast_Pointer(const size_t*, &m_activeParticleCount), m_P_vertices, m_P_color);
 }
 
 //------------------------------------------------------------------------------
@@ -411,7 +411,7 @@ gosFX::PertCloud::Draw(DrawInfo* info)
 			}
 			//
 			//-----------------------
-			// Handle X-only rotation
+			// handle X-only rotation
 			//-----------------------
 			//
 			else

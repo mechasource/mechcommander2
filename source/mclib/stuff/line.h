@@ -9,7 +9,7 @@
 #ifndef _LINE_HPP_
 #define _LINE_HPP_
 
-#include <stuff/ray.hpp>
+#include "stuff/ray.h"
 
 namespace Stuff
 {

@@ -10,8 +10,8 @@
 #ifndef _ROTATION_HPP_
 #define _ROTATION_HPP_
 
-#include <stuff/angle.hpp>
-#include <stuff/vector3d.hpp>
+#include "stuff/angle.h"
+#include "stuff/vector3d.h"
 
 namespace Stuff
 {
@@ -22,11 +22,11 @@ class EulerAngles;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::EulerAngles& angle);
+Spew(const std::wstring_view& group, const Stuff::EulerAngles& angle);
 void
-Spew(PCSTR group, const Stuff::YawPitchRoll& angle);
+Spew(const std::wstring_view& group, const Stuff::YawPitchRoll& angle);
 void
-Spew(PCSTR group, const Stuff::UnitQuaternion& angle);
+Spew(const std::wstring_view& group, const Stuff::UnitQuaternion& angle);
 #endif
 
 namespace Stuff
@@ -126,7 +126,7 @@ public:
 	EulerAngles& Normalize(void);
 
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const EulerAngles& angle);
+	friend void ::Spew(const std::wstring_view& group, const EulerAngles& angle);
 #endif
 
 	//
@@ -220,7 +220,7 @@ public:
 	//
 	YawPitchRoll& Normalize(void);
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const YawPitchRoll& angle);
+	friend void ::Spew(const std::wstring_view& group, const YawPitchRoll& angle);
 #endif
 	YawPitchRoll& AlignWithVector(const Vector3D& v);
 
@@ -420,7 +420,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const UnitQuaternion& quat);
+	friend void ::Spew(const std::wstring_view& group, const UnitQuaternion& quat);
 #endif
 	void TestInstance(void) const;
 	static bool TestClass(void);
@@ -429,7 +429,7 @@ public:
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, Stuff::EulerAngles* output)
 {

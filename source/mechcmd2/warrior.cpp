@@ -82,12 +82,12 @@ const std::wstring_view& pilotAlarmFunctionName[NUM_PILOT_ALARMS] = {"handletarg
 	"handlematefiredweapon", "handleplayerorder", "handlenomovepath", "handlegateclosing",
 	"handlefiredweapon", "handlenewmover"};
 
-char ProfessionalismOffsetTable[NUM_OFFSET_RANGES][2] = {
+wchar_t ProfessionalismOffsetTable[NUM_OFFSET_RANGES][2] = {
 	{10, 10}, {20, 5}, {30, 0}, {40, 5}, {100, -10}};
 
-char DecorumOffsetTable[NUM_OFFSET_RANGES][2] = {{10, 10}, {20, 5}, {30, 0}, {40, 5}, {100, -10}};
+wchar_t DecorumOffsetTable[NUM_OFFSET_RANGES][2] = {{10, 10}, {20, 5}, {30, 0}, {40, 5}, {100, -10}};
 
-char AmmoConservationModifiers[2][2] = {{50, -5}, {20, -10}};
+wchar_t AmmoConservationModifiers[2][2] = {{50, -5}, {20, -10}};
 
 const std::wstring_view& SkillsTable[Skill::numberofskills] = {"Piloting", "Sensors", "Gunnery"};
 
@@ -151,7 +151,7 @@ int32_t TacOrderQueuePos = 0;
 
 extern int32_t SimpleMovePathRange;
 extern int32_t AttitudeEffectOnMovePath[NUM_ATTITUDES][3];
-extern char AttitudeEffect[NUM_ATTITUDES][6];
+extern wchar_t AttitudeEffect[NUM_ATTITUDES][6];
 #ifdef USE_TEAMS
 extern TeamPtr homeTeam;
 #endif
@@ -171,7 +171,7 @@ extern const std::unique_ptr<Debugger>& debugger;
 
 extern float MechClassWeights[NUM_MECH_CLASSES];
 
-extern char OverlayIsBridge[NUM_OVERLAY_TYPES];
+extern wchar_t OverlayIsBridge[NUM_OVERLAY_TYPES];
 
 extern float SkillTry[4];
 extern float SkillSuccess[4];
@@ -1004,7 +1004,7 @@ MechWarrior::init(FitIniFile* warriorFile)
 	{
 		for (i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 		{
-			char tmpChar;
+			wchar_t tmpChar;
 			result = warriorFile->readIdChar(SpecialtySkillsTable[i], tmpChar);
 			if (result == NO_ERROR)
 				specialtySkills[i] = (tmpChar == 1);
@@ -1067,7 +1067,7 @@ MechWarrior::init(FitIniFile* warriorFile)
 	result = warriorFile->seekBlock("Status");
 	if (result != NO_ERROR)
 		return (result);
-	char wnds;
+	wchar_t wnds;
 	result = warriorFile->readIdChar("Wounds", wnds);
 	if (result != NO_ERROR)
 		return (result);
@@ -1654,7 +1654,7 @@ MechWarrior::updateClientOrderQueue(int32_t curTacOrderId)
 		{
 			removeQueuedTacOrder(&nextTacOrder);
 			/*
-			char s[256];
+			wchar_t s[256];
 			sprintf(s, "%s - removed tacorder, %d remaining\n", getName(),
 			numTacOrdersQueued); OutputDebugString(s);
 			*/
@@ -1951,7 +1951,7 @@ MechWarrior::setBrain(int32_t brainHandle)
 		brainErr = brain->init(brainHandle);
 		if (brainErr == NO_ERROR)
 		{
-			char brainName[500];
+			wchar_t brainName[500];
 			sprintf(brainName, "Pilot %s", name);
 			brain->setName(brainName);
 			//-----------------------------------------
@@ -2979,7 +2979,7 @@ MechWarrior::calcMovePath(int32_t selectionindex, uint32_t moveparams)
 				startTime = GetCycles();
 				if (GlobalMap::logEnabled)
 				{
-					static char s[256];
+					static wchar_t s[256];
 					sprintf(s, "[%.2f] calcPath: [%05d]%s", scenarioTime, myVehicle->getPartId(),
 						myVehicle->getName());
 					GlobalMap::writeLog(s);
@@ -3497,7 +3497,7 @@ MechWarrior::combatDecisionTree(void)
 #if WARRIOR_DEBUGGING_ENABLED
 		if (debugFlags & WARRIOR_DEBUG_FLAG_COMBAT)
 		{
-			char s[128];
+			wchar_t s[128];
 			sprintf(s, "%s (%.2f) has no attack target.\n", callsign, getSituationFireRange());
 			debugPrint(s, true);
 		}
@@ -3511,7 +3511,7 @@ MechWarrior::combatDecisionTree(void)
 #if WARRIOR_DEBUGGING_ENABLED
 			if (debugFlags & WARRIOR_DEBUG_FLAG_COMBAT)
 			{
-				char s[128];
+				wchar_t s[128];
 				sprintf(
 					s, "%s (%.2f) has a destroyed target.\n", callsign, getSituationFireRange());
 				debugPrint(s, true);
@@ -3524,7 +3524,7 @@ MechWarrior::combatDecisionTree(void)
 #if WARRIOR_DEBUGGING_ENABLED
 			if (debugFlags & WARRIOR_DEBUG_FLAG_COMBAT)
 			{
-				char s[128];
+				wchar_t s[128];
 				sprintf(s, "%s (%.2f) has a disabled target.\n", callsign, getSituationFireRange());
 				debugPrint(s, true);
 			}
@@ -3535,7 +3535,7 @@ MechWarrior::combatDecisionTree(void)
 #if WARRIOR_DEBUGGING_ENABLED
 	if (debugFlags & WARRIOR_DEBUG_FLAG_COMBAT)
 	{
-		char s[512];
+		wchar_t s[512];
 		if (!myVehicle->canFireWeapons())
 		{
 			sprintf(s, "%s's (%.2f) vehicle cannot fire now.\n", callsign, getSituationFireRange());
@@ -4665,7 +4665,7 @@ MechWarrior::handleAlarm(int32_t alarmCode, uint32_t triggerId)
 	if (!myVehicle->getAwake())
 		return (NO_ERROR);
 	//------------------------------------------------------------------
-	// Handle Alarm Events. Only three alarms may be called outside the
+	// handle Alarm Events. Only three alarms may be called outside the
 	// normal pilot alarm procedure: basically, the three that cause the
 	// mover to be wiped from the game before the normal pilot alarm
 	// update would be called.
@@ -4785,7 +4785,7 @@ MechWarrior::checkAlarms(void)
 		CurContact = nullptr;
 	}
 	//-----------------------
-	// Handle Alarm Events...
+	// handle Alarm Events...
 	for (size_t code = 0; code < NUM_PILOT_ALARMS; code++)
 		if (alarm[code].numTriggers > 0)
 		{
@@ -5198,7 +5198,7 @@ MechWarrior::debugPrint(const std::wstring_view& s, bool debugMode)
 void
 MechWarrior::debugOrders(void)
 {
-	char s[256];
+	wchar_t s[256];
 	switch (curTacOrder.code)
 	{
 	case TACTICAL_ORDER_NONE:
@@ -6477,7 +6477,7 @@ MechWarrior::orderAttackObject(bool unitOrder, int32_t origin, GameObjectPtr tar
 		setGeneralTacOrder(tacOrder);
 	/*
 	if (GameSystemWindow) {
-		char debugStr[200];
+		wchar_t debugStr[200];
 		GameSystemWindow->print("");
 		GameSystemWindow->print("-----------------------------------");
 		sprintf(debugStr, "%s:", name);
@@ -6537,7 +6537,7 @@ MechWarrior::orderAttackPoint(bool unitOrder, int32_t origin, Stuff::Vector3D lo
 		setGeneralTacOrder(tacOrder);
 	/*
 	if (GameSystemWindow) {
-		char debugStr[200];
+		wchar_t debugStr[200];
 		GameSystemWindow->print("");
 		GameSystemWindow->print("-----------------------------------");
 		sprintf(debugStr, "%s:", name);
@@ -7158,7 +7158,7 @@ MechWarrior::missionLog(std::unique_ptr<File> file, int32_t unitLevel)
 #if 0
 	for(size_t i = 0; i < (unitLevel * 2); i++)
 		file->writeString(" ");
-	char s[80];
+	wchar_t s[80];
 	sprintf(s, "MechWarrior: %s\n", name);
 	file->writeString(s);
 	for(size_t skill = 0; skill < Skill::numberofskills; skill)
@@ -7219,7 +7219,7 @@ MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 		Fatal(0, " Warrior.loadBrainParameters: nullptr brain ");
 	//------------------
 	// Main Info section
-	char warriorName[32];
+	wchar_t warriorName[32];
 	sprintf(warriorName, "Warrior%d", warriorId);
 	int32_t result = brainFile->seekBlock(warriorName);
 	if (result != NO_ERROR)
@@ -7234,7 +7234,7 @@ MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 		return (result);
 	for (size_t i = 0; i < numCells; i++)
 	{
-		char blockName[64];
+		wchar_t blockName[64];
 		sprintf(blockName, "%sCell%d", warriorName, i);
 		int32_t result = brainFile->seekBlock(blockName);
 		if (result != NO_ERROR)
@@ -7253,7 +7253,7 @@ MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 		{
 			// Integer Memory
 			int32_t value = 0;
-			result = brainFile->readIdLong("Value", value);
+			result = brainFile->readIdLong("value", value);
 			if (result != NO_ERROR)
 				return (result);
 			setIntegerMemory(cell, value);
@@ -7263,7 +7263,7 @@ MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 		{
 			// Real Memory
 			float value = 0.0;
-			result = brainFile->readIdFloat("Value", value);
+			result = brainFile->readIdFloat("value", value);
 			if (result != NO_ERROR)
 				return (result);
 			setRealMemory(cell, value);
@@ -7277,7 +7277,7 @@ MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 	}
 	for (i = 0; i < numStaticVars; i++)
 	{
-		char blockName[64];
+		wchar_t blockName[64];
 		sprintf(blockName, "%sStatic%d", warriorName, i);
 		int32_t result = brainFile->seekBlock(blockName);
 		if (result != NO_ERROR)
@@ -7286,7 +7286,7 @@ MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 		result = brainFile->readIdLong("type", type);
 		if (result != NO_ERROR)
 			return (result);
-		char varName[256];
+		wchar_t varName[256];
 		result = brainFile->readIdString("Name", varName, 255);
 		if (result != NO_ERROR)
 			return (result);
@@ -7296,7 +7296,7 @@ MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 		{
 			// Integer
 			int32_t value = 0;
-			result = brainFile->readIdLong("Value", value);
+			result = brainFile->readIdLong("value", value);
 			if (result != NO_ERROR)
 				return (result);
 			brain->setStaticInteger(varName, value);
@@ -7306,7 +7306,7 @@ MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 		{
 			// Real
 			float value = 0;
-			result = brainFile->readIdFloat("Value", value);
+			result = brainFile->readIdFloat("value", value);
 			if (result != NO_ERROR)
 				return (result);
 			brain->setStaticReal(varName, value);
@@ -8121,7 +8121,7 @@ MechWarrior::logPilots(GameLogPtr log)
 		std::unique_ptr<Mover> mover = ObjectManager->getMover(i);
 		if (mover)
 		{
-			char s[256];
+			wchar_t s[256];
 			sprintf(s, "pilot = (%d)%s", i, mover->getPilot()->getName());
 			log->write(s);
 			sprintf(s, "     vehicle = (%d)%s", mover->getPartId(), mover->getName());
@@ -8143,7 +8143,7 @@ MechWarrior::copyToData(MechWarriorData& data)
 	data.paintScheme = paintScheme;
 	data.photoIndex = photoIndex;
 	data.rank = rank;
-	memcpy(data.skills, skills, sizeof(char) * Skill::numberofskills);
+	memcpy(data.skills, skills, sizeof(wchar_t) * Skill::numberofskills);
 	data.professionalism = professionalism;
 	data.professionalismModifier = professionalismModifier;
 	data.decorum = decorum;
@@ -8168,8 +8168,8 @@ MechWarrior::copyToData(MechWarriorData& data)
 		sizeof(int32_t) * NUM_PHYSICAL_ATTACKS * NUM_COMBAT_STATS);
 	memcpy(data.skillRank, skillRank, sizeof(float) * Skill::numberofskills);
 	memcpy(data.skillPoints, skillPoints, sizeof(float) * Skill::numberofskills);
-	memcpy(data.originalSkills, originalSkills, sizeof(char) * Skill::numberofskills);
-	memcpy(data.startingSkills, startingSkills, sizeof(char) * Skill::numberofskills);
+	memcpy(data.originalSkills, originalSkills, sizeof(wchar_t) * Skill::numberofskills);
+	memcpy(data.startingSkills, startingSkills, sizeof(wchar_t) * Skill::numberofskills);
 	memcpy(data.specialtySkills, specialtySkills, sizeof(bool) * NUM_SPECIALTY_SKILLS);
 	memcpy(data.killed, killed, sizeof(GameObjectWatchID) * (MAX_MOVERS / 3));
 	data.numKilled = numKilled;
@@ -8181,7 +8181,7 @@ MechWarrior::copyToData(MechWarriorData& data)
 	data.attackRadius = attackRadius;
 	memcpy(data.memory, memory, sizeof(MemoryCell) * NUM_MEMORY_CELLS);
 	memcpy(data.debugStrings, debugStrings,
-		sizeof(char) * NUM_PILOT_DEBUG_STRINGS * MAXLEN_PILOT_DEBUG_STRING);
+		sizeof(wchar_t) * NUM_PILOT_DEBUG_STRINGS * MAXLEN_PILOT_DEBUG_STRING);
 	data.brainUpdate = brainUpdate;
 	data.combatUpdate = combatUpdate;
 	data.movementUpdate = movementUpdate;
@@ -8252,7 +8252,7 @@ MechWarrior::copyFromData(MechWarriorData& data)
 	paintScheme = data.paintScheme;
 	photoIndex = data.photoIndex;
 	rank = data.rank;
-	memcpy(skills, data.skills, sizeof(char) * Skill::numberofskills);
+	memcpy(skills, data.skills, sizeof(wchar_t) * Skill::numberofskills);
 	professionalism = data.professionalism;
 	professionalismModifier = data.professionalismModifier;
 	decorum = data.decorum;
@@ -8277,8 +8277,8 @@ MechWarrior::copyFromData(MechWarriorData& data)
 		sizeof(int32_t) * NUM_PHYSICAL_ATTACKS * NUM_COMBAT_STATS);
 	memcpy(skillRank, data.skillRank, sizeof(float) * Skill::numberofskills);
 	memcpy(skillPoints, data.skillPoints, sizeof(float) * Skill::numberofskills);
-	memcpy(originalSkills, data.originalSkills, sizeof(char) * Skill::numberofskills);
-	memcpy(startingSkills, data.startingSkills, sizeof(char) * Skill::numberofskills);
+	memcpy(originalSkills, data.originalSkills, sizeof(wchar_t) * Skill::numberofskills);
+	memcpy(startingSkills, data.startingSkills, sizeof(wchar_t) * Skill::numberofskills);
 	memcpy(specialtySkills, data.specialtySkills, sizeof(bool) * NUM_SPECIALTY_SKILLS);
 	memcpy(killed, data.killed, sizeof(GameObjectWatchID) * (MAX_MOVERS / 3));
 	numKilled = data.numKilled;
@@ -8290,7 +8290,7 @@ MechWarrior::copyFromData(MechWarriorData& data)
 	attackRadius = data.attackRadius;
 	memcpy(memory, data.memory, sizeof(MemoryCell) * NUM_MEMORY_CELLS);
 	memcpy(debugStrings, data.debugStrings,
-		sizeof(char) * NUM_PILOT_DEBUG_STRINGS * MAXLEN_PILOT_DEBUG_STRING);
+		sizeof(wchar_t) * NUM_PILOT_DEBUG_STRINGS * MAXLEN_PILOT_DEBUG_STRING);
 	brainUpdate = data.brainUpdate;
 	combatUpdate = data.combatUpdate;
 	movementUpdate = data.movementUpdate;
@@ -8363,7 +8363,7 @@ MechWarrior::init(MechWarriorData data)
 	// First, copy all of the data to the class.
 	copyFromData(data);
 #ifdef USE_ABL_LOAD
-	// Set the brain Pointer from the Handle.
+	// Set the brain Pointer from the handle.
 	// NOT IMPLEMENTED BY GLENNDOR YET!!!!!!!!!
 	if (warriorBrainHandle > -1)
 	{
@@ -8413,7 +8413,7 @@ MechWarrior::save(PacketFilePtr file, int32_t packetNum)
 {
 	MechWarriorData warriorData;
 	copyToData(warriorData);
-	file->writePacket(packetNum, (puint8_t)&warriorData, sizeof(warriorData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&warriorData, sizeof(warriorData), STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------
@@ -8431,7 +8431,7 @@ MechWarrior::Save(PacketFilePtr file, int32_t packetNum)
 	staticData.curEventID = curEventID;
 	staticData.curEventTrigger = curEventTrigger;
 	file->writePacket(
-		packetNum, (puint8_t)&staticData, sizeof(StaticMechWarriorData), STORAGE_TYPE_RAW);
+		packetNum, (uint8_t*)&staticData, sizeof(StaticMechWarriorData), STORAGE_TYPE_RAW);
 	packetNum++;
 	for (size_t i = 0; i < numWarriors; i++)
 	{
@@ -8446,7 +8446,7 @@ void
 MechWarrior::load(PacketFilePtr file, int32_t packetNum)
 {
 	MechWarriorData warriorData;
-	file->readPacket(packetNum, (puint8_t)&warriorData);
+	file->readPacket(packetNum, (uint8_t*)&warriorData);
 	init(warriorData);
 }
 
@@ -8455,7 +8455,7 @@ int32_t
 MechWarrior::Load(PacketFilePtr file, int32_t packetNum)
 {
 	StaticMechWarriorData staticData;
-	file->readPacket(packetNum, (puint8_t)&staticData);
+	file->readPacket(packetNum, (uint8_t*)&staticData);
 	packetNum++;
 	numWarriors = staticData.numWarriors;
 	numWarriorsInCombat = staticData.numWarriorsInCombat;

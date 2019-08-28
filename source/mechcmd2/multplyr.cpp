@@ -552,7 +552,7 @@ MultiPlayer::setDefaultPlayerInfo(void)
 //-----------------------------------------------------------------------------
 
 int32_t
-MultiPlayer::setClosestColor(int32_t colorIndex, int32_t commanderid)
+MultiPlayer::setClosestcolour(int32_t colorIndex, int32_t commanderid)
 {
 	int32_t curIndex = colorIndex;
 	return (curIndex);
@@ -561,7 +561,7 @@ MultiPlayer::setClosestColor(int32_t colorIndex, int32_t commanderid)
 //-----------------------------------------------------------------------------
 
 int32_t
-MultiPlayer::setNextFreeColor(int32_t commanderid)
+MultiPlayer::setNextFreecolour(int32_t commanderid)
 {
 	int32_t i = 0;
 	return (i);
@@ -570,7 +570,7 @@ MultiPlayer::setNextFreeColor(int32_t commanderid)
 //-----------------------------------------------------------------------------
 
 void
-MultiPlayer::setPlayerBaseColor(int32_t commanderid, int32_t colorIndex)
+MultiPlayer::setPlayerBasecolour(int32_t commanderid, int32_t colorIndex)
 {
 }
 
@@ -584,7 +584,7 @@ MultiPlayer::setPlayerTeam(int32_t commanderid, int32_t teamID)
 //-----------------------------------------------------------------------------
 
 void
-MultiPlayer::setColor(int32_t colorIndex, int32_t commanderid)
+MultiPlayer::setcolour(int32_t colorIndex, int32_t commanderid)
 {
 }
 
@@ -689,7 +689,7 @@ MultiPlayer::addToTurretRoster(TurretPtr turret)
 //---------------------------------------------------------------------------
 
 void
-MultiPlayer::initSpecialBuildings(char commandersToLoad[8][3])
+MultiPlayer::initSpecialBuildings(wchar_t commandersToLoad[8][3])
 {
 }
 
@@ -824,7 +824,7 @@ MultiPlayer::sendPlayerInfo(NETPLAYER receiver)
 //---------------------------------------------------------------------------
 
 void
-MultiPlayer::sendPlayerCID(NETPLAYER receiver, uint8_t subType, char CID)
+MultiPlayer::sendPlayerCID(NETPLAYER receiver, uint8_t subType, wchar_t CID)
 {
 }
 
@@ -845,7 +845,7 @@ MultiPlayer::sendMissionSettingsUpdate(NETPLAYER receiver)
 //---------------------------------------------------------------------------
 
 void
-MultiPlayer::sendChat(NETPLAYER receiver, char team, const std::wstring_view& chatMessage)
+MultiPlayer::sendChat(NETPLAYER receiver, wchar_t team, const std::wstring_view& chatMessage)
 {
 }
 
@@ -871,7 +871,7 @@ MultiPlayer::sendPlayerSetup(void)
 //---------------------------------------------------------------------------
 
 void
-MultiPlayer::sendPlayerInsignia(const std::wstring_view& insigniaFileName, puint8_t insigniaData, size_t dataSize)
+MultiPlayer::sendPlayerInsignia(const std::wstring_view& insigniaFileName, uint8_t* insigniaData, size_t dataSize)
 {
 }
 
@@ -885,7 +885,7 @@ MultiPlayer::sendMissionSetup(NETPLAYER receiver, int32_t subType, CompressedMec
 //---------------------------------------------------------------------------
 
 void
-MultiPlayer::setServer(NETPLAYER player, char playerIPAddress[16])
+MultiPlayer::setServer(NETPLAYER player, wchar_t playerIPAddress[16])
 {
 }
 
@@ -909,7 +909,7 @@ BringInReinforcement(
 	int32_t vehicleID, int32_t rosterIndex, int32_t commanderid, Stuff::Vector3D pos, bool exists);
 
 void
-MultiPlayer::sendReinforcement(int32_t vehicleID, int32_t rosterIndex, char pilotName[16],
+MultiPlayer::sendReinforcement(int32_t vehicleID, int32_t rosterIndex, wchar_t pilotName[16],
 	int32_t commanderid, Stuff::Vector3D pos, uint8_t stage)
 {
 }
@@ -924,7 +924,7 @@ MultiPlayer::sendNewServer(void)
 //-----------------------------------------------------------------------------
 
 void
-MultiPlayer::sendLeaveSession(char subType, char commanderid)
+MultiPlayer::sendLeaveSession(wchar_t subType, wchar_t commanderid)
 {
 }
 
@@ -1288,7 +1288,7 @@ MultiPlayer::switchServers(void)
 //---------------------------------------------------------------------------
 
 void
-MultiPlayer::calcDropZones(char dropZonesCID[MAX_MC_PLAYERS], char hqs[MAX_TEAMS])
+MultiPlayer::calcDropZones(wchar_t dropZonesCID[MAX_MC_PLAYERS], wchar_t hqs[MAX_TEAMS])
 {
 }
 

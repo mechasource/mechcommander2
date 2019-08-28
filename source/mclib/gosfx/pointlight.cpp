@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "gosFXHeaders.hpp"
+#include "gosfx/gosfxheaders.h"
 #include "mlr/mlrpointlight.h"
 
 gosFX::LightManager* gosFX::LightManager::Instance = nullptr;

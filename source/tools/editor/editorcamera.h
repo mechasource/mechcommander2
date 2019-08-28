@@ -67,7 +67,7 @@ public:
 		// add elements to the draw list and sort and draw.
 		// The later time has arrived.  We begin sorting immediately.
 		// NO LONGER NEED TO SORT!
-		// ZBuffer time has arrived.  Share and Enjoy!
+		// zbuffer time has arrived.  Share and Enjoy!
 		// Everything SIMPLY draws at the execution point into the zBuffer
 		// at the correct depth.  Miracles occur at that point!
 		// Big code change but it removes a WHOLE bunch of code and memory!
@@ -83,11 +83,11 @@ public:
 		calculateProjectionConstants(void);
 		TG_Shape::SetViewport(viewMulX, viewMulY, viewAddX, viewAddY);
 		globalScaleFactor = getScaleFactor(void);
-		globalScaleFactor *= viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
+		globalScaleFactor *= viewMulX / Environment.screenwidth; // Scale Mechs to ScreenRES
 		//-----------------------------------------------
 		// Set Ambient for this pass of rendering
 		uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
-		eye->setLightColor(1, lightRGB);
+		eye->setLightcolour(1, lightRGB);
 		eye->setLightIntensity(1, 1.0);
 		MidLevelRenderer::MLRState default_state;
 		default_state.SetBackFaceOn(void);
@@ -97,12 +97,12 @@ public:
 		default_state.SetZBufferWriteOn(void);
 		default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 		float z = 1.0f;
-		Stuff::RGBAColor fColor;
-		fColor.red = (float)((fogColor >> 16) & 0xff);
-		fColor.green = (float)((fogColor >> 8) & 0xff);
-		fColor.blue = (float)((fogColor)&0xff);
+		Stuff::RGBAcolour fcolour;
+		fcolour.red = (float)((fogcolour >> 16) & 0xff);
+		fcolour.green = (float)((fogcolour >> 8) & 0xff);
+		fcolour.blue = (float)((fogcolour)&0xff);
 		MidLevelRenderer::PerspectiveMode = usePerspective;
-		theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
+		theClipper->StartDraw(cameraOrigin, cameraToClip, fcolour, &fcolour, default_state, &z);
 		MidLevelRenderer::GOSVertex::farClipReciprocal =
 			(1.0f - cameraToClip(2, 2)) / cameraToClip(3, 2);
 		if (active && turn > 1)
@@ -201,7 +201,7 @@ public:
 			genericAppearanceType = appearanceTypeList->getAppearance(appearanceType, "skybox");
 			if (!genericAppearanceType)
 			{
-				char msg[1024];
+				wchar_t msg[1024];
 				sprintf(msg, "No Generic Appearance Named %s", "skybox");
 				Fatal(0, msg);
 			}

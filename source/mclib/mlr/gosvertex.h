@@ -14,22 +14,25 @@
 #include "mlr/mlrstate.h"
 
 #ifndef _GAMEOS_HPP_
-typedef struct _gos_VERTEX
+struct gos_VERTEX
 {
-	float x, y; // Screen coords    - must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
-	float z; // 0.0 to 0.99999   - Used for visibility check in ZBuffer (1.0 is not valid)
+	float x, y; // Screen coords    - must be 0.0 to Environment.screenwidth/height (no clipping occurs unless gos_State_Clipping is true)
+	float z; // 0.0 to 0.99999   - Used for visibility check in zbuffer (1.0 is not valid)
 	float rhw; // 0.0 to 1.0       - reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
 	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid, 0=transparent)
 	uint32_t frgb; // Specular color and fog
 	float u, v; // Texture coordinates
-} gos_VERTEX;
+};
 typedef gos_VERTEX* pgos_VERTEX;
 #endif
+
+ID3D11Buffer buf1;
+ID3D12Buffer buf2;
 
 namespace Stuff
 {
 class Vector4D;
-class RGBAColor;
+class RGBAcolour;
 class Point3D;
 class Matrix4D;
 } // namespace Stuff
@@ -77,7 +80,7 @@ public:
 		return *this;
 	}
 
-	inline GOSVertex& operator=(const Stuff::RGBAColor& c)
+	inline GOSVertex& operator=(const Stuff::RGBAcolour& c)
 	{
 		// Check_Pointer(this);
 		//					DEBUG_STREAM << "c = <" << c.alpha << ", " << c.red << ",
@@ -101,7 +104,7 @@ public:
 		return *this;
 	}
 
-	inline GOSVertex& operator=(cuint32_t c)
+	inline GOSVertex& operator=(const uint32_t c)
 	{
 		// Check_Pointer(this);
 		argb = c;
@@ -306,11 +309,11 @@ GOSVertex::GOSTransformNoClip(const Stuff::Point3D& _v, const Stuff::Matrix4D& m
 #if FOG_HACK
 	if (foggy)
 	{
-		*((puint8_t)&frgb + 3) = fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
+		*((uint8_t*)&frgb + 3) = fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
 	}
 	else
 	{
-		*((puint8_t)&frgb + 3) = 0xff;
+		*((uint8_t*)&frgb + 3) = 0xff;
 	}
 #endif
 	rhw = 1.0f / rhw;
@@ -339,7 +342,7 @@ GOSVertex::GOSTransformNoClip(const Stuff::Point3D& _v, const Stuff::Matrix4D& m
 
 //	create a dword color out of 4 rgba floats
 inline uint32_t
-GOSCopyColor(const Stuff::RGBAColor* color)
+GOSCopycolour(const Stuff::RGBAcolour* color)
 {
 	float f;
 	uint32_t argb = 0;
@@ -501,9 +504,9 @@ GOSCopyColor(const Stuff::RGBAColor* color)
 }
 
 inline uint32_t
-Color_DWORD_Lerp(uint32_t _from, uint32_t _to, float _lerp)
+colour_DWORD_Lerp(uint32_t _from, uint32_t _to, float _lerp)
 {
-	Stuff::RGBAColor from, to, lerp;
+	Stuff::RGBAcolour from, to, lerp;
 	from.blue = (_from & 0xff) * One_Over_256;
 	_from = _from >> 8;
 	from.green = (_from & 0xff) * One_Over_256;
@@ -520,30 +523,30 @@ Color_DWORD_Lerp(uint32_t _from, uint32_t _to, float _lerp)
 	_to = _to >> 8;
 	to.alpha = (_to & 0xff) * One_Over_256;
 	lerp.Lerp(from, to, _lerp);
-	return GOSCopyColor(&lerp);
+	return GOSCopycolour(&lerp);
 }
 
 //######################################################################################################################
 //	the lines below will produce following functions:
 //
 //	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, int32_t);
-//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , int32_t);
-//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*,
+//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const uint32_t* , int32_t);
+//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAcolour*,
 // int32_t); 	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const
 // Vector2DScalar*, int32_t); 	bool GOSCopyData(GOSVertex*, const
-// Stuff::Vector4D*, pcuint32_t , const Vector2DScalar*, int32_t); 	bool
-// GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const
+// Stuff::Vector4D*, const uint32_t* , const Vector2DScalar*, int32_t); 	bool
+// GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAcolour*, const
 // Vector2DScalar*, int32_t);
 //
 //	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, int32_t,
 // int32_t, int32_t); 	bool GOSCopyTriangleData(GOSVertex*, const
-// Stuff::Vector4D*, pcuint32_t , int32_t, int32_t, int32_t); 	bool
-// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*,
+// Stuff::Vector4D*, const uint32_t* , int32_t, int32_t, int32_t); 	bool
+// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAcolour*,
 // int32_t, int32_t, int32_t); 	bool GOSCopyTriangleData(GOSVertex*, const
 // Stuff::Vector4D*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
-// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , const
+// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const uint32_t* , const
 // Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
-// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*,
+// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAcolour*,
 // const Vector2DScalar*, int32_t, int32_t, int32_t);
 //#######################################################################################################################
 

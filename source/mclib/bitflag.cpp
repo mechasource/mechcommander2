@@ -25,7 +25,7 @@
 #include "tgainfo.h"
 #endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 extern void
 AG_ellipse_draw(
@@ -50,7 +50,7 @@ BitFlag::init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
 	divValue = BITS_PER_BYTE;
 	totalFlags = numRows * numColumns;
 	totalRAM = totalFlags / divValue;
-	colWidth = columns / divValue;
+	colwidth = columns / divValue;
 	flagHeap = new HeapManager;
 	if (!flagHeap)
 		return (NO_RAM_FOR_FLAG_HEAP);
@@ -69,7 +69,7 @@ void
 BitFlag::resetAll(uint32_t initialValue)
 {
 	//------------------------------------------
-	// Set memory to initial Flag Value
+	// Set memory to initial Flag value
 	if (initialValue == 0)
 	{
 		// memclear(flagHeap->getHeapPtr(),totalRAM);
@@ -103,11 +103,11 @@ BitFlag::setFlag(uint32_t r, uint32_t c)
 		return;
 	//-------------------------------
 	// find out where we are setting.
-	uint32_t location = (c >> 3) + (r * colWidth);
+	uint32_t location = (c >> 3) + (r * colwidth);
 	uint8_t shiftValue = (c % divValue);
 	//----------------------------------------
 	// find the location we care about.
-	puint8_t bitResult = flagHeap->getHeapPtr();
+	uint8_t* bitResult = flagHeap->getHeapPtr();
 	bitResult += location;
 	//----------------------------------------
 	// Shift bits to correct place.
@@ -126,11 +126,11 @@ BitFlag::setGroup(uint32_t r, uint32_t c, uint32_t length)
 			return;
 		//-------------------------------
 		// find out where we are setting.
-		uint32_t location = (c >> 3) + (r * colWidth);
+		uint32_t location = (c >> 3) + (r * colwidth);
 		uint8_t shiftValue = (c % divValue);
 		//----------------------------------------
 		// find the location we care about.
-		puint8_t bitResult = flagHeap->getHeapPtr();
+		uint8_t* bitResult = flagHeap->getHeapPtr();
 		bitResult += location;
 		//--------------------------------------------------
 		// We are only setting bits in the current location
@@ -203,7 +203,7 @@ BitFlag::getFlag(uint32_t r, uint32_t c)
 		return 0;
 	//------------------------------------
 	// Find out where we are getting from
-	uint32_t location = (c >> 3) + (r * colWidth);
+	uint32_t location = (c >> 3) + (r * colwidth);
 	uint8_t shiftValue = (c % divValue);
 	//-------------------------------------
 	// Create mask to remove unwanted bits
@@ -262,7 +262,7 @@ ByteFlag::initTGA(const std::wstring_view& tgaFileName)
 #endif
 		tgaFile.open(tgaFileName);
 	gosASSERT(result == NO_ERROR);
-	puint8_t tgaBuffer = (puint8_t)malloc(tgaFile.fileSize());
+	uint8_t* tgaBuffer = (uint8_t*)malloc(tgaFile.fileSize());
 	if (tgaBuffer == nullptr)
 		return;
 	tgaFile.read(tgaBuffer, tgaFile.fileSize());
@@ -281,10 +281,10 @@ ByteFlag::initTGA(const std::wstring_view& tgaFileName)
 	{
 		//------------------------------------------------
 		// This is just a bitmap.  Copy it into ourRAM.
-		puint8_t image = tgaBuffer + sizeof(TGAFileHeader);
+		uint8_t* image = tgaBuffer + sizeof(TGAFileHeader);
 		if (header->color_map)
 			image += header->cm_length * (header->cm_entry_size >> 3);
-		puint8_t ourRAM = memDump();
+		uint8_t* ourRAM = memDump();
 		memcpy(ourRAM, image,
 			tgaFile.fileSize() - sizeof(TGAFileHeader) - (header->cm_length * (header->cm_entry_size >> 3)));
 		//------------------------------------------------------------------------
@@ -334,7 +334,7 @@ void
 ByteFlag::resetAll(uint32_t initialValue)
 {
 	//------------------------------------------
-	// Set memory to initial Flag Value
+	// Set memory to initial Flag value
 	if (initialValue == 0)
 	{
 		// memclear(flagHeap->getHeapPtr(),totalRAM);
@@ -359,7 +359,7 @@ ByteFlag::destroy(void)
 	init();
 }
 
-puint8_t
+uint8_t*
 ByteFlag::memDump(void)
 {
 	return (flagHeap->getHeapPtr());
@@ -377,7 +377,7 @@ ByteFlag::setFlag(uint32_t r, uint32_t c)
 	uint32_t location = c + (r * columns);
 	//----------------------------------------
 	// find the location we care about.
-	puint8_t bitResult = flagHeap->getHeapPtr();
+	uint8_t* bitResult = flagHeap->getHeapPtr();
 	bitResult += location;
 	//--------------------------------------------
 	// Set is Zero because we use this to DRAW!!!
@@ -397,7 +397,7 @@ ByteFlag::setGroup(uint32_t r, uint32_t c, uint32_t length)
 		uint32_t location = c + (r * columns);
 		//----------------------------------------
 		// find the location we care about.
-		puint8_t bitResult = flagHeap->getHeapPtr();
+		uint8_t* bitResult = flagHeap->getHeapPtr();
 		bitResult += location;
 		//--------------------------------------------------
 		// We are only setting bits in the current location

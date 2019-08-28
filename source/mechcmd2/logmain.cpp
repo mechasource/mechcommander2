@@ -20,7 +20,7 @@
 #include "version.h"
 #endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "toolos.hpp"
 #include "gosscript/gosscriptheaders.hpp"
 #include "stuff/stuff.h"
@@ -69,7 +69,7 @@ FloatHelpPtr globalFloatHelp = nullptr;
 uint32_t currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
-uint32_t BaseVertexColor = 0x00000000; // This color is applied to all vertices
+uint32_t BaseVertexcolour = 0x00000000; // This color is applied to all vertices
 	// in game as Brightness correction.
 
 enum
@@ -89,11 +89,11 @@ extern bool useMusic;
 
 bool inViewMode = false;
 uint32_t viewObject = 0x0;
-char missionName[1024];
+wchar_t missionName[1024];
 
 const std::wstring_view& ExceptionGameMsg = nullptr;
 
-char buildNumber[80];
+wchar_t buildNumber[80];
 
 extern int32_t TERRAIN_TXM_SIZE;
 int32_t ObjectTextureSize = 128;
@@ -128,10 +128,10 @@ UpdateRenderers()
 	// Doesn't work.  Always returns 0 for TNT in Win2K build 2183 with 3.55
 	// detonator  Assume worst case is +/- 8.0 for now.  MaxMinUV =
 	// gos_GetMachineInformation(gos_Info_GetMaximumUVSize);
-	uint32_t bColor = 0x0;
+	uint32_t bcolour = 0x0;
 	if (eye)
-		bColor = eye->fogColor;
-	gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
+		bcolour = eye->fogcolour;
+	gos_SetupViewport(1, 1.0, 1, bcolour, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
 	gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, TRUE);
@@ -170,7 +170,7 @@ InitializeGameEngine()
 #ifdef _DEBUG
 	if (systemOpenResult != NO_ERROR)
 	{
-		char Buffer[256];
+		wchar_t Buffer[256];
 		gos_GetCurrentPath(Buffer, 256);
 		STOP(("Cannot find \"system.cfg\" file in %s", Buffer));
 	}
@@ -246,8 +246,8 @@ InitializeGameEngine()
 				fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
 				memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 				int32_t fileNum = 0;
-				char fastFileId[10];
-				char fileName[100];
+				wchar_t fastFileId[10];
+				wchar_t fileName[100];
 				sprintf(fastFileId, "File%d", fileNum);
 				while (systemFile->readIdString(fastFileId, fileName, 99) == NO_ERROR)
 				{
@@ -346,9 +346,9 @@ InitializeGameEngine()
 			result = prefs->readIdLong("DragThreshold", dragThreshold);
 			if (result != NO_ERROR)
 				dragThreshold = 10;
-			result = prefs->readIdULong("BaseVertexColor", BaseVertexColor);
+			result = prefs->readIdULong("BaseVertexcolour", BaseVertexcolour);
 			if (result != NO_ERROR)
-				BaseVertexColor = 0x00000000;
+				BaseVertexcolour = 0x00000000;
 			result = prefs->readIdBoolean("UnlimitedAmmo", useUnlimitedAmmo);
 			if (result != NO_ERROR)
 				useUnlimitedAmmo = true;
@@ -597,7 +597,7 @@ ParseCommandLine(const std::wstring_view& command_line)
 	int32_t n_args = 0;
 	int32_t index = 0;
 	const std::wstring_view& argv[30];
-	char tempCommandLine[4096];
+	wchar_t tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
 	while (tempCommandLine[index] != '\0') // until we null out
@@ -677,8 +677,8 @@ GetGameOSEnvironment(const std::wstring_view& commandline)
 	Environment.NetworkGUID[13] = 0x3c;
 	Environment.NetworkGUID[14] = 0xfb;
 	Environment.NetworkGUID[15] = 0x2c;
-	Environment.screenWidth = 640;
-	Environment.screenHeight = 480;
+	Environment.screenwidth = 640;
+	Environment.screenheight = 480;
 	Environment.bitDepth = 16;
 	Environment.fullScreen = 0;
 	Environment.version = versionStamp;

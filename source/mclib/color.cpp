@@ -1,5 +1,5 @@
 //******************************************************************************************
-//	color.cpp - This file contains the code for the Color Tables
+//	color.cpp - This file contains the code for the colour Tables
 //
 //	MechCommander 2
 //
@@ -29,15 +29,15 @@
 #include "heap.h"
 #endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 //----------------------------------------------------------------------------------
-puint32_t* colorRGBLookup = nullptr;
-int32_t numColorRGBTables = 0;
+uint32_t** colorRGBLookup = nullptr;
+int32_t numcolourRGBTables = 0;
 
 #define MAX_COLOR_ENTRIES 56
 //----------------------------------------------------------------------------------
 void
-initColorTables(void)
+initcolourTables(void)
 {
 	stdfs::path colorPath; // FullPathFileName colorPath;
 	GetMcDataPath(colorPath, data_paths::cameraPath);
@@ -48,14 +48,14 @@ initColorTables(void)
 	gosASSERT(result == NO_ERROR);
 	result = colorFile.seekBlock("Main");
 	gosASSERT(result == NO_ERROR);
-	result = colorFile.readIdLong("NumTables", numColorRGBTables);
+	result = colorFile.readIdLong("NumTables", numcolourRGBTables);
 	gosASSERT(result == NO_ERROR);
-	colorRGBLookup = (puint32_t*)systemHeap->Malloc(sizeof(uint32_t*) * numColorRGBTables);
+	colorRGBLookup = (uint32_t**)systemHeap->Malloc(sizeof(uint32_t*) * numcolourRGBTables);
 	gosASSERT(colorRGBLookup != nullptr);
-	memset(colorRGBLookup, 0, sizeof(uint32_t*) * numColorRGBTables);
-	for (size_t i = 0; i < numColorRGBTables; i++)
+	memset(colorRGBLookup, 0, sizeof(uint32_t*) * numcolourRGBTables);
+	for (size_t i = 0; i < numcolourRGBTables; i++)
 	{
-		char tableBlock[256];
+		wchar_t tableBlock[256];
 		sprintf(tableBlock, "Table%d", i);
 		result = colorFile.seekBlock(tableBlock);
 		gosASSERT(result == NO_ERROR);
@@ -64,8 +64,8 @@ initColorTables(void)
 		uint32_t* table = colorRGBLookup[i];
 		for (size_t j = 0; j < MAX_COLOR_ENTRIES; j++)
 		{
-			char colorBlock[256];
-			sprintf(colorBlock, "Color%d", j);
+			wchar_t colorBlock[256];
+			sprintf(colorBlock, "colour%d", j);
 			result = colorFile.readIdULong(colorBlock, table[j]);
 			gosASSERT(result == NO_ERROR);
 		}
@@ -75,9 +75,9 @@ initColorTables(void)
 
 //----------------------------------------------------------------------------------
 void
-destroyColorTables(void)
+destroycolourTables(void)
 {
-	for (size_t i = 0; i < numColorRGBTables; i++)
+	for (size_t i = 0; i < numcolourRGBTables; i++)
 	{
 		systemHeap->Free(colorRGBLookup[i]);
 		colorRGBLookup[i] = nullptr;
@@ -89,9 +89,9 @@ destroyColorTables(void)
 
 //----------------------------------------------------------------------------------
 uint32_t*
-getColorTable(int32_t tableNum)
+getcolourTable(int32_t tableNum)
 {
-	if ((tableNum >= 0) && (tableNum < numColorRGBTables))
+	if ((tableNum >= 0) && (tableNum < numcolourRGBTables))
 	{
 		return (colorRGBLookup[tableNum]);
 	}

@@ -7,7 +7,7 @@
 #ifndef ASYSTEM_H
 #define ASYSTEM_H
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 //#include "estring.h"
 //#include "mechgui/afont.h"
 //#include "utilities.h"
@@ -115,7 +115,7 @@ public:
 	void setTexture(const std::wstring_view& fileName);
 	void setTexture(uint32_t newHandle);
 	void setUVs(float u1, float v1, float u2, float v2);
-	void setColor(uint32_t color, bool bRecurse = 0); // color the vertices
+	void setcolour(uint32_t color, bool bRecurse = 0); // color the vertices
 
 	void init(FitIniFile* file, const std::wstring_view& block, uint32_t neverFlush = 0); // for statics
 
@@ -146,18 +146,18 @@ public:
 	virtual void render(int32_t x, int32_t y);
 	virtual void update(void);
 
-	COLORREF getColor(void) { return location[0].argb; }
+	COLORREF getcolour(void) { return location[0].argb; }
 
 	void showGUIWindow(bool show) { showWindow = show; }
 	bool isShowing(void) const { return showWindow; }
 
-	void FillBox(int16_t left, int16_t top, int16_t bottom, int16_t right, char color);
-	void SetBit(int32_t xpos, int32_t ypos, char value);
+	void FillBox(int16_t left, int16_t top, int16_t bottom, int16_t right, wchar_t color);
+	void SetBit(int32_t xpos, int32_t ypos, wchar_t value);
 	void removeAllChildren(bool bDelete = 0);
 	virtual void move(float offsetX, float offsetY);
 	virtual void moveNoRecurse(float offsetX, float offsetY);
 
-	void setFileWidth(float newWidth) { fileWidth = newWidth; }
+	void setFilewidth(float newwidth) { filewidth = newwidth; }
 	int32_t getID(void) const { return ID; }
 	void setID(int32_t newID) { ID = newID; }
 
@@ -174,7 +174,7 @@ protected:
 	gos_VERTEX location[4];
 
 	uint32_t textureHandle;
-	float fileWidth;
+	float filewidth;
 	bool showWindow;
 
 	aObject* pChildren[MAX_CHILDREN];

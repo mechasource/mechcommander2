@@ -34,7 +34,7 @@
 #include "mission.h"
 #endif
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 extern bool hasGuardBand;
@@ -107,7 +107,7 @@ WeaponBoltType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 		result = bullFile.readIdBoolean("PointLight", lightSource);
 		if (result != NO_ERROR)
 			lightSource = false;
-		char txmName[1024];
+		wchar_t txmName[1024];
 		result = bullFile.readIdString("TextureName", txmName, 1023);
 		if (result != NO_ERROR)
 			strcpy(txmName, "NONE");
@@ -130,9 +130,9 @@ WeaponBoltType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 		result = bullFile.readIdLong("FiringSoundFX", fireSoundFX);
 		if (result != NO_ERROR)
 			fireSoundFX = 0;
-		result = bullFile.readIdFloat("BulgeWidth", bulgeWidth);
+		result = bullFile.readIdFloat("Bulgewidth", bulgewidth);
 		if (result != NO_ERROR)
-			bulgeWidth = 1.0f;
+			bulgewidth = 1.0f;
 		result = bullFile.readIdULong("MidEdgeRGB", midEdgeRGB);
 		if (result != NO_ERROR)
 			midEdgeRGB = 0x00ffffff;
@@ -171,9 +171,9 @@ WeaponBoltType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 		result = bullFile.readIdFloat("BulgeLength", bulgeLength);
 		if (result != NO_ERROR)
 			Fatal(result, "WeaponBoltType::init -- Unable to find bulgeLength");
-		result = bullFile.readIdFloat("BulgeWidth", bulgeWidth);
+		result = bullFile.readIdFloat("Bulgewidth", bulgewidth);
 		if (result != NO_ERROR)
-			Fatal(result, "WeaponBoltType::init -- Unable to find bulgeWidth");
+			Fatal(result, "WeaponBoltType::init -- Unable to find bulgewidth");
 		result = bullFile.readIdFloat("Velocity", velocity);
 		if (result != NO_ERROR)
 			Fatal(result, "WeaponBoltType::init -- Unable to find velocity");
@@ -219,9 +219,9 @@ WeaponBoltType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 		result = bullFile.readIdBoolean("ArcEffect", arcEffect);
 		if (result != NO_ERROR)
 			arcEffect = false;
-		result = bullFile.readIdFloat("ArcHeight", arcHeight);
+		result = bullFile.readIdFloat("Archeight", archeight);
 		if (result != NO_ERROR)
-			arcHeight = -1.0f;
+			archeight = -1.0f;
 		result = bullFile.readIdFloat("AfterHitTime", afterHitTime);
 		if (result != NO_ERROR)
 			afterHitTime = 0.0f;
@@ -429,8 +429,8 @@ WeaponBolt::update(void)
 		float distance = laserVelocity.x * laserVelocity.x + laserVelocity.y * laserVelocity.y;
 		distanceToTarget = distance;
 		halfDistanceToTarget = distance / 2.0f;
-		goalHeight = ((WeaponBoltTypePtr)getObjectType())->arcHeight;
-		goalHeight *= 10.0f;
+		goalheight = ((WeaponBoltTypePtr)getObjectType())->archeight;
+		goalheight *= 10.0f;
 	}
 	//-------------------------------------------------------------
 	// Update position relative to my owner
@@ -494,14 +494,14 @@ WeaponBolt::update(void)
 	bool isArcing = false;
 	if (((WeaponBoltTypePtr)getObjectType())->arcEffect)
 	{
-		// GoalHeight is actually the velocity
-		if (goalHeight > 0.0f)
+		// Goalheight is actually the velocity
+		if (goalheight > 0.0f)
 		{
-			float accel = -((WeaponBoltTypePtr)getObjectType())->arcHeight * 10.0f;
-			goalHeight += accel * frameLength;
-			if (goalHeight >= 0.0f)
+			float accel = -((WeaponBoltTypePtr)getObjectType())->archeight * 10.0f;
+			goalheight += accel * frameLength;
+			if (goalheight >= 0.0f)
 			{
-				laserVelocity.z = goalHeight;
+				laserVelocity.z = goalheight;
 				isArcing = true;
 			}
 		}
@@ -1079,10 +1079,10 @@ WeaponBolt::update(void)
 		laserVertices[0].Add(laserPosition, lDir);
 		laserVertices[1] = laserVertices[0];
 		laserVertices[3] = laserVertices[0];
-		laserVertices[1].x += laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[1].y -= laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[0].x -= laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[0].y += laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
+		laserVertices[1].x += laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[1].y -= laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[0].x -= laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[0].y += laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
 		laserDirection *= ((WeaponBoltTypePtr)getObjectType())->projLength;
 		laserVertices[2].Add(laserPosition, laserDirection);
 		if (((WeaponBoltTypePtr)getObjectType())->lightSource && !pointLight && (lightId != -1))
@@ -1107,12 +1107,12 @@ WeaponBolt::update(void)
 		laserVertices[1] = position;
 		laserSide[0] = position;
 		laserSide[1] = position;
-		laserVertices[0].x -= laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[0].y += laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[1].x += laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[1].y -= laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserSide[0].z += ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserSide[1].z -= ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
+		laserVertices[0].x -= laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[0].y += laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[1].x += laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[1].y -= laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserSide[0].z += ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserSide[1].z -= ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
 		hsPos = *targetposition;
 		if (target)
 		{
@@ -1140,12 +1140,12 @@ WeaponBolt::update(void)
 		laserVertices[3] = hsPos;
 		laserSide[2] = hsPos;
 		laserSide[3] = hsPos;
-		laserVertices[2].x -= laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[2].y += laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[3].x += laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserVertices[3].y -= laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserSide[2].z += ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
-		laserSide[3].z -= ((WeaponBoltTypePtr)getObjectType())->bulgeWidth;
+		laserVertices[2].x -= laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[2].y += laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[3].x += laserDirection.y * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserVertices[3].y -= laserDirection.x * ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserSide[2].z += ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
+		laserSide[3].z -= ((WeaponBoltTypePtr)getObjectType())->bulgewidth;
 	}
 	if (pointLight)
 	{
@@ -2087,11 +2087,11 @@ WeaponBolt::init(bool create, ObjectTypePtr _type)
 		}
 	}
 	//----------------------------------------------
-	// Get a texture Handle from the textureManager
+	// Get a texture handle from the textureManager
 	// Assume ALPHA!
 	if (((WeaponBoltTypePtr)_type)->textureName && _stricmp(((WeaponBoltTypePtr)_type)->textureName, "NONE") != 0)
 	{
-		char tPath[1024];
+		wchar_t tPath[1024];
 		sprintf(tPath, "%s128\\", tglPath);
 		FullPathFileName textureName;
 		textureName.init(tPath, ((WeaponBoltTypePtr)_type)->textureName, ".tga");
@@ -2144,7 +2144,7 @@ WeaponBolt::Save(PacketFilePtr file, int32_t packetNum)
 	WeaponBoltData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(WeaponBoltData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(WeaponBoltData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
@@ -2175,7 +2175,7 @@ WeaponBolt::CopyTo(WeaponBoltData* data)
 	data->mcTextureHandle = mcTextureHandle;
 	data->gosTextureHandle = gosTextureHandle;
 	data->startUV = startUV;
-	data->goalHeight = goalHeight;
+	data->goalheight = goalheight;
 	GameObject::CopyTo(dynamic_cast<GameObjectData*>(data));
 }
 
@@ -2207,7 +2207,7 @@ WeaponBolt::Load(WeaponBoltData* data)
 	hsPos = data->hsPos;
 	hitLeft = data->hitLeft;
 	startUV = data->startUV;
-	goalHeight = data->goalHeight;
+	goalheight = data->goalheight;
 }
 
 //---------------------------------------------------------------------------

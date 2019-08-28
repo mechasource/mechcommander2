@@ -7,7 +7,7 @@
 #ifndef MLR_MLRINDEXEDTRIANGLECLOUD_HPP
 #define MLR_MLRINDEXEDTRIANGLECLOUD_HPP
 
-#include <mlr/mlrtrianglecloud.hpp>
+#include "mlr/mlrtrianglecloud.h"
 
 namespace MidLevelRenderer
 {
@@ -57,15 +57,15 @@ public:
 	//
 	MLRIndexedTriangleCloud::~MLRIndexedTriangleCloud(void)
 
-		void SetData(pcsize_t tri_count, pcsize_t point_count, pcuint16_t index_data,
-			const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data,
+		void SetData(const size_t* tri_count, const size_t* point_count, const uint16_t* index_data,
+			const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data,
 			const Stuff::Vector2DScalar* uv_data);
 
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
 	uint32_t Clip(MLRClippingState, GOSVertexPool*);
 
-	virtual puint16_t GetGOSIndices(int32_t = 0)
+	virtual uint16_t* GetGOSIndices(int32_t = 0)
 	{
 		// Check_Object(this);
 		return gos_indices;
@@ -90,8 +90,8 @@ public:
 	void TestInstance(void) const;
 
 protected:
-	pcsize_t usedNrOfPoints;
-	pcuint16_t index;
+	const size_t* usedNrOfPoints;
+	const uint16_t* index;
 	const Stuff::Vector2DScalar* texCoords;
 
 	static std::vector<Stuff::Vector2DScalar>*
@@ -99,7 +99,7 @@ protected:
 	static std::vector<uint16_t>* clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
 	static std::vector<uint8_t>* visibleIndexedVertices;
 
-	puint16_t gos_indices;
+	uint16_t* gos_indices;
 	uint16_t numGOSIndices;
 };
 } // namespace MidLevelRenderer

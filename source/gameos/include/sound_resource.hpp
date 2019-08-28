@@ -13,8 +13,8 @@ struct SoundResource
 public:
 	gosAudio_ResourceType m_Type; // Specifies which other structure members are valid
 	PSTR m_FileName; // SOUNDTYPE_FILE and SOUNDTYPE_STREAMINGFILE
-	puint8_t m_FileDataPointer; // SOUNDTYPE_MEMORY
-	puint8_t m_DataPointer; // SOUNDTYPE_MEMORY
+	uint8_t* m_FileDataPointer; // SOUNDTYPE_MEMORY
+	uint8_t* m_DataPointer; // SOUNDTYPE_MEMORY
 	uint32_t m_FileLength, // SOUNDTYPE_MEMORY only
 		m_DataLength, // SOUNDTYPE_MEMORY only
 		m_Frequency, // SOUNDTYPE_MEMORY only
@@ -59,12 +59,12 @@ public:
 	SoundResource(PSTR identifier_name, HGOSFILE file, uint32_t offset, bool only2D);
 
 	~SoundResource(void);
-	void GetWaveInfo(puint8_t lpBuffer, WAVEFORMATEX* lplpWaveFormatEX, puint8_t* lplpWaveData,
+	void GetWaveInfo(uint8_t* lpBuffer, WAVEFORMATEX* lplpWaveFormatEX, uint8_t** lplpWaveData,
 		uint32_t* lpWaveSize);
 	void LoadFile(void);
 	int32_t SoundResource::ReadPCM(
-		puint8_t pbDest, uint32_t bytestofill, bool loopMe, bool prevFailed = false);
-	int32_t ReadACM(puint8_t pbDest, uint32_t bytestoFill, bool loopflag, bool prevFailed = false);
+		uint8_t* pbDest, uint32_t bytestofill, bool loopMe, bool prevFailed = false);
+	int32_t ReadACM(uint8_t* pbDest, uint32_t bytestoFill, bool loopflag, bool prevFailed = false);
 	void CloseStream(void);
 	void PauseStream(void);
 	void PlayStream(void);

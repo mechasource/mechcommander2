@@ -156,11 +156,11 @@ MasterComponent::initEXCEL(const std::wstring_view& dataLine, float baseSensorRa
 	field = strtok_s(nullptr, ",", &next_token);
 	int32_t specialEffect = 0;
 	if (field)
-		specialEffect = (char)atoi(field);
+		specialEffect = (wchar_t)atoi(field);
 	field = strtok_s(nullptr, ",", &next_token);
 	int32_t ammoMasterId = 0;
 	if (field)
-		ammoMasterId = (char)atoi(field);
+		ammoMasterId = (wchar_t)atoi(field);
 	switch (form)
 	{
 	case COMPONENT_FORM_SIMPLE:
@@ -233,9 +233,9 @@ MasterComponent::initEXCEL(const std::wstring_view& dataLine, float baseSensorRa
 int32_t
 MasterComponent::saveEXCEL(std::unique_ptr<File> componentFile, uint8_t masterId, float baseSensorRange)
 {
-	char dataLine[512];
-	char piece[512];
-	char comma[2] = ",";
+	wchar_t dataLine[512];
+	wchar_t piece[512];
+	wchar_t comma[2] = ",";
 	if (masterID == -1)
 	{
 		//---------------------------------------
@@ -561,14 +561,14 @@ MasterComponent::loadMasterList(const std::wstring_view& fileName, int32_t listS
 		return (result);
 	//-----------------------
 	// Special Component Data
-	char dataLine[512];
+	wchar_t dataLine[512];
 	int32_t lineLength;
-	lineLength = componentFile.readLine((puint8_t)dataLine, 511);
+	lineLength = componentFile.readLine((uint8_t*)dataLine, 511);
 	for (size_t componentNum = 0; componentNum < numComponents; componentNum++)
 	{
 		//----------------------------------------
 		// Read in the line from the table file...
-		lineLength = componentFile.readLine((puint8_t)dataLine, 511);
+		lineLength = componentFile.readLine((uint8_t*)dataLine, 511);
 		if (!lineLength)
 			return (-1);
 		masterList[componentNum].initEXCEL(dataLine, baseSensorRange);
@@ -589,7 +589,7 @@ MasterComponent::saveMasterList(const std::wstring_view& fileName, int32_t listS
 		return (result);
 	//----------------------------------------------------
 	// Comment header so we know who screwed the file up!
-	char dataLine[512];
+	wchar_t dataLine[512];
 	sprintf(dataLine,
 		"// <Built by Editor v3.0> Special Component "
 		"Data,,,,,******REVISED FOR NEW MECH "

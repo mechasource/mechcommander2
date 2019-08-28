@@ -51,15 +51,15 @@ public:
 	void limitEntry(int32_t nNewLimit) { nLimit = nNewLimit; }
 	void setFocus(bool bHasFocus);
 	void setFont(int32_t fontID);
-	void setTextColor(int32_t color) { textColor = color; }
-	void setSelectedColor(int32_t color) { selectedColor = color; }
-	bool hasFocus() const { return bFocus; }
+	void setTextcolour(int32_t color) { textcolour = color; }
+	void setSelectedcolour(int32_t color) { selectedcolour = color; }
+	bool hasFocus(void) const { return bFocus; }
 
 	void init(FitIniFile* file, const std::wstring_view& header);
-	int32_t getHighlightColor() const { return highlightColor; }
-	int32_t getColor(void) const { return textColor; }
-	int32_t getCursorColor(void) const { return cursorColor; }
-	int32_t getSelectedColor(void) const { return selectedColor; }
+	int32_t getHighlightcolour(void) const { return highlightcolour; }
+	int32_t getcolour(void) const { return textcolour; }
+	int32_t getCursorcolour(void) const { return cursorcolour; }
+	int32_t getSelectedcolour(void) const { return selectedcolour; }
 
 	void allowWierdChars(bool bAllow) { bWierdChars = bAllow; }
 
@@ -115,11 +115,11 @@ private:
 
 	int32_t charLength(int32_t index);
 
-	int32_t cursorColor;
-	int32_t highlightColor; // backdrop
-	int32_t textColor;
-	int32_t selectedColor; // selected text
-	int32_t outlineColor;
+	int32_t cursorcolour;
+	int32_t highlightcolour; // backdrop
+	int32_t textcolour;
+	int32_t selectedcolour; // selected text
+	int32_t outlinecolour;
 	int32_t nLimit;
 	int32_t nInsertion1, nInsertion2; // beginning and ending highlight
 		// positions (when equal there is no

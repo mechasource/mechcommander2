@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -51,7 +51,7 @@ bool OddSize; // weak
 bool FontWordWrap; // weak
 struct _FontInfo* Fonts;
 struct _FontInfo* FontHandle;
-uint32_t FontColor; // weak
+uint32_t Fontcolour; // weak
 float FontSize; // weak
 uint32_t FontWrapType; // weak
 bool FontProportional; // weak
@@ -59,7 +59,7 @@ bool FontBold; // weak
 bool FontItalic; // weak
 bool FontDisableCodes; // weak
 uint32_t MarginBuffer; // weak
-int LargestHeight; // idb
+int Largestheight; // idb
 float MagicOffset = 0.4375; // weak
 int32_t CurrentFontTexture = 4294967295; // idb
 float FontScale = 1.0; // weak
@@ -74,12 +74,12 @@ void __stdcall gos_TextSetAttributes(HGOSFONT3D FontHandle, uint32_t Foreground,
 void __stdcall gos_TextSetPosition(int32_t XPosition, int32_t YPosition);
 void __stdcall gos_TextGetPrintPosition(int32_t* pXPosition, int32_t* pYPosition);
 void __stdcall gos_TextSetRegion(int32_t Left, int32_t Top, int32_t Right, int32_t Bottom);
-void __stdcall gos_TextStringLength(uint32_t* pWidth, uint32_t* pHeight, PSTR Message, ...);
+void __stdcall gos_TextStringLength(uint32_t* pwidth, uint32_t* pheight, PSTR message, ...);
 void __stdcall gos_TextDrawBackground(
-	int32_t Left, int32_t Top, int32_t Right, int32_t Bottom, uint32_t Color);
+	int32_t Left, int32_t Top, int32_t Right, int32_t Bottom, uint32_t colour);
 void __stdcall SetupFontRenderstates(void);
-void __stdcall gos_TextDraw(PSTR Message, ...);
-void __stdcall gos_TextDrawV(PSTR Message, PSTR arglist);
+void __stdcall gos_TextDraw(PSTR message, ...);
+void __stdcall gos_TextDrawV(PSTR message, PSTR arglist);
 
 // global implemented functions not listed in headers
 void __stdcall FontDrawQuad(bool);

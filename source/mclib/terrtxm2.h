@@ -35,39 +35,39 @@
 #define TOTAL_COLORMAP_TYPES 5
 //---------------------------------------------------------------------------
 // Class Definitions
-typedef struct _ColorMapTextures
+typedef struct _colourMapTextures
 {
 	uint32_t mcTextureNodeIndex;
-} ColorMapTextures;
+} colourMapTextures;
 
-typedef struct _ColorMapRAM
+typedef struct _colourMapRAM
 {
-	puint8_t ourRAM;
-} ColorMapRAM;
+	uint8_t* ourRAM;
+} colourMapRAM;
 
-class TerrainColorMap
+class TerraincolourMap
 {
 	// Data Members
 	//-------------
 protected:
-	puint8_t ColorMap;
+	uint8_t* colourMap;
 
 	uint32_t numTextures;
 
 	float numTexturesAcross;
 	float fractionPerTexture;
 
-	ColorMapTextures* textures;
-	ColorMapRAM* txmRAM;
+	colourMapTextures* textures;
+	colourMapRAM* txmRAM;
 
 	UserHeapPtr colorMapHeap;
 	UserHeapPtr colorMapRAMHeap;
 
-	puint8_t detailTextureRAM;
+	uint8_t* detailTextureRAM;
 	uint32_t detailTextureNodeIndex;
 	float detailTextureTilingFactor;
 
-	puint8_t waterTextureRAM;
+	uint8_t* waterTextureRAM;
 	uint32_t waterTextureNodeIndex;
 	float waterTextureTilingFactor;
 
@@ -90,15 +90,15 @@ protected:
 public:
 	void init(void);
 
-	TerrainColorMap(void) { init(void); }
+	TerraincolourMap(void) { init(void); }
 
 	void destroy(void);
 
-	~TerrainColorMap(void) { destroy(void); }
+	~TerraincolourMap(void) { destroy(void); }
 
 	int32_t init(const std::wstring_view& fileName);
 
-	void getColorMapData(puint8_t ourRAM, int32_t index, int32_t width);
+	void getcolourMapData(uint8_t* ourRAM, int32_t index, int32_t width);
 
 	uint32_t getTextureHandle(VertexPtr vMin, VertexPtr vMax, TerrainUVData* uvData);
 
@@ -173,9 +173,9 @@ public:
 	}
 
 	// Used by editor for TacMap
-	void getScaledColorMap(puint8_t bfr, int32_t width);
+	void getScaledcolourMap(uint8_t* bfr, int32_t width);
 };
 
-typedef TerrainColorMap* TerrainColorMapPtr;
+typedef TerraincolourMap* TerraincolourMapPtr;
 //---------------------------------------------------------------------------
 #endif

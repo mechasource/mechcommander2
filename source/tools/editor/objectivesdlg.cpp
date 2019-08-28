@@ -9,14 +9,14 @@
 #include "resource.h"
 #include "ObjectivesDlg.h"
 
-#include "assert.h"
+#include "_ASSERT.h"
 #include "EditorInterface.h"
 
 #if 0 /*gos doesn't like this */
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+static wchar_t THIS_FILE[] = __FILE__;
 #endif
 #endif /*gos doesn't like this */
 
@@ -138,7 +138,7 @@ ObjectivesDlg::OnInitDialog()
 		}
 		else
 		{
-			assert(false);
+			_ASSERT(false);
 		}
 	}
 	else
@@ -156,7 +156,7 @@ void
 ObjectivesDlg::OnObjectivesAddButton()
 {
 	CObjective* pNewObjective = new CObjective(m_ModifiedObjectives.Alignment());
-	assert(pNewObjective);
+	_ASSERT(pNewObjective);
 	/* This call may set the editor into ObjectSelectOnlyMode (i.e.: set the
 	value of EditorInterface::instance()->ObjectSelectOnlyMode() to true) */
 	bool result = pNewObjective->EditDialog();
@@ -233,11 +233,11 @@ ObjectivesDlg::OnObjectivesEditButton()
 	}
 	else
 	{
-		assert(CObjectivesEditState::EDIT == EditorInterface::instance()->objectivesEditState.objectiveFunction);
+		_ASSERT(CObjectivesEditState::EDIT == EditorInterface::instance()->objectivesEditState.objectiveFunction);
 		pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
 	}
-	assert(0 != pSelectedObjective);
-	assert(0 <= nSelectionIndex);
+	_ASSERT(0 != pSelectedObjective);
+	_ASSERT(0 <= nSelectionIndex);
 	/* This call may set the editor into ObjectSelectOnlyMode (i.e.: set the
 	value of EditorInterface::instance()->ObjectSelectOnlyMode() to true) */
 	pSelectedObjective->EditDialog();
@@ -274,7 +274,7 @@ ObjectivesDlg::OnObjectivesCopyButton()
 	{
 		CObjective* pSelectedObjective = 0;
 		pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
-		assert(0 != pSelectedObjective);
+		_ASSERT(0 != pSelectedObjective);
 		CObjective* pNewObjective = new CObjective(pSelectedObjective->Alignment());
 		pNewObjective->Init();
 		*pNewObjective = *pSelectedObjective;
@@ -293,7 +293,7 @@ ObjectivesDlg::OnObjectivesMoveUpButton()
 	{
 		CObjective* pSelectedObjective = 0;
 		pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
-		assert(0 != pSelectedObjective);
+		_ASSERT(0 != pSelectedObjective);
 		m_ModifiedObjectives.Delete(nSelectionIndex);
 		m_ModifiedObjectives.Insert(pSelectedObjective, nSelectionIndex - 1);
 		syncObjectivesListWithListBox(&m_ModifiedObjectives, &m_List);
@@ -310,7 +310,7 @@ ObjectivesDlg::OnObjectivesMoveDownButton()
 	{
 		CObjective* pSelectedObjective = 0;
 		pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
-		assert(0 != pSelectedObjective);
+		_ASSERT(0 != pSelectedObjective);
 		m_ModifiedObjectives.Delete(nSelectionIndex);
 		if (m_ModifiedObjectives.Count() - 1 == nSelectionIndex)
 		{

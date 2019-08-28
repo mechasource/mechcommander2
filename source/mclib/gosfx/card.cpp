@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "gosfxheaders.hpp"
+#include "gosfx/gosfxheaders.h"
 #include "mlr/mlrcardcloud.h"
 
 //############################################################################
@@ -19,7 +19,7 @@ gosFX::Card__Specification::Card__Specification(std::iostream stream, uint32_t g
 	// Check_Pointer(this);
 	_ASSERT(m_class == CardClassID);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	m_halfHeight.Load(stream, gfx_version);
+	m_halfheight.Load(stream, gfx_version);
 	m_aspectRatio.Load(stream, gfx_version);
 	//
 	//-------------------------------------------------------------------
@@ -57,7 +57,7 @@ gosFX::Card__Specification::Card__Specification(std::iostream stream, uint32_t g
 		m_VSize.Load(stream, gfx_version);
 		*stream >> m_animated;
 	}
-	SetWidth();
+	Setwidth();
 }
 
 //------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ gosFX::Card__Specification::Save(std::iostream stream)
 	// Check_Object(this);
 	Check_Object(stream);
 	Singleton__Specification::Save(stream);
-	m_halfHeight.Save(stream);
+	m_halfheight.Save(stream);
 	m_aspectRatio.Save(stream);
 	m_index.Save(stream);
 	m_UOffset.Save(stream);
@@ -115,9 +115,9 @@ gosFX::Card__Specification::BuildDefaults()
 	Singleton__Specification::BuildDefaults();
 	m_alignZUsingX = false;
 	m_alignZUsingY = false;
-	m_halfHeight.m_ageCurve.SetCurve(1.0f);
-	m_halfHeight.m_seeded = false;
-	m_halfHeight.m_seedCurve.SetCurve(1.0f);
+	m_halfheight.m_ageCurve.SetCurve(1.0f);
+	m_halfheight.m_seeded = false;
+	m_halfheight.m_seedCurve.SetCurve(1.0f);
 	m_aspectRatio.m_ageCurve.SetCurve(1.0f);
 	m_aspectRatio.m_seeded = false;
 	m_aspectRatio.m_seedCurve.SetCurve(1.0f);
@@ -202,7 +202,7 @@ gosFX::Card__Specification::Copy(Card__Specification* spec)
 	Singleton__Specification::Copy(spec);
 #if CONSIDERED_OBSOLETE
 	// gos_PushCurrentHeap(Heap);
-	m_halfHeight = spec->m_halfHeight;
+	m_halfheight = spec->m_halfheight;
 	m_aspectRatio = spec->m_aspectRatio;
 	m_index = spec->m_index;
 	m_UOffset = spec->m_UOffset;
@@ -218,7 +218,7 @@ gosFX::Card__Specification::Copy(Card__Specification* spec)
 //------------------------------------------------------------------------------
 //
 void
-gosFX::Card__Specification::SetWidth()
+gosFX::Card__Specification::Setwidth()
 {
 	m_width = static_cast<uint8_t>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
@@ -299,7 +299,7 @@ gosFX::Card::Start(ExecuteInfo* info)
 	Singleton::Start(info);
 	Specification* spec = GetSpecification();
 	Check_Object(spec);
-	m_halfY = spec->m_halfHeight.ComputeValue(m_age, m_seed);
+	m_halfY = spec->m_halfheight.ComputeValue(m_age, m_seed);
 	m_halfX = m_halfY * spec->m_aspectRatio.ComputeValue(m_age, m_seed);
 	m_radius = Stuff::Sqrt(m_halfX * m_halfX + m_halfY * m_halfY);
 	m_cardCloud->TurnOn(0);

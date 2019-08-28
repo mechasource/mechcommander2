@@ -19,8 +19,8 @@ public:
 	PIDIRECTDRAWMEDIASTREAM m_pDDStream;
 	LPDIRECTDRAWSURFACE m_pSurface;
 	IDirectDrawStreamSample* m_pSample;
-	LPDIRECTDRAWSURFACE m_hDestSurf;
-	LPDIRECTDRAWSURFACE m_hSrcSurf;
+	LPDIRECTDRAWSURFACE m_hdestSurf;
+	LPDIRECTDRAWSURFACE m_hsrcSurf;
 	//
 	// Surface that is used to decompress the video to (DirectX 1 surface) and
 	// it's description

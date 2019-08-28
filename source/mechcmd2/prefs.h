@@ -40,20 +40,20 @@ public:
 	bool fullScreen;
 	int32_t gammaLevel;
 	bool useLeftRightMouseProfile; // if false, use old style commands
-	int32_t baseColor;
-	int32_t highlightColor;
+	int32_t basecolour;
+	int32_t highlightcolour;
 	int32_t faction;
-	char insigniaFile[256];
-	char unitName[10][256];
-	char playerName[10][256];
-	char ipAddresses[10][24];
+	wchar_t insigniaFile[256];
+	wchar_t unitName[10][256];
+	wchar_t playerName[10][256];
+	wchar_t ipAddresses[10][24];
 
 	bool pilotVideos;
 	bool useNonWeaponEffects;
 	bool useLocalShadows;
 	bool asyncMouse;
 	int32_t fogPos;
-	char bitDepth; // 0 == 16, 1 == 32
+	wchar_t bitDepth; // 0 == 16, 1 == 32
 
 	bool saveTranscripts;
 	bool tutorials;
@@ -65,7 +65,7 @@ public:
 	bool	useRealLOS;
 	float doubleClickThreshold;
 	int32_t dragThreshold;
-	uint32_t BaseVertexColor;		//This color is applied to all vertices in game as Brightness correction.
+	uint32_t BaseVertexcolour;		//This color is applied to all vertices in game as Brightness correction.
 #endif
 };
 

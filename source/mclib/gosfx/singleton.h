@@ -63,7 +63,7 @@ public:
 	typedef Singleton__Specification Specification;
 
 protected:
-	std::vector<char> m_data;
+	std::vector<wchar_t> m_data;
 
 	Singleton(ClassData* class_data, Specification* spec, uint32_t flags);
 
@@ -84,7 +84,7 @@ public:
 	bool Execute(ExecuteInfo* info);
 
 protected:
-	Stuff::RGBAColor m_color;
+	Stuff::RGBAcolour m_color;
 	float m_radius, m_scale;
 
 	//----------------------------------------------------------------------------

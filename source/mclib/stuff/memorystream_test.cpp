@@ -6,7 +6,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "stuffheaders.hpp"
+#include "stuff/stuffheaders.h"
 #include "toolos.hpp"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MMIOstream ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,7 +65,7 @@ SingeBitStreamTest(size_t total_sections_to_write)
 	{
 		total_number_of_bytes += 1;
 	}
-	puint8_t big_byte_array = new uint8_t[total_number_of_bytes];
+	uint8_t* big_byte_array = new uint8_t[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 	MemoryStream bit_stream(big_byte_array, total_number_of_bytes);
 	for (i = 0; i < total_sections_to_write; ++i)
@@ -141,17 +141,17 @@ FloatIntBitStreamTest(size_t total_sections_to_write)
 	Register_Pointer(source_array_of_bools);
 	bool* comp_array_of_bools = new bool[total_sections_to_write];
 	Register_Pointer(comp_array_of_bools);
-	pint32_t convert_int_array = new int32_t[total_sections_to_write];
+	int32_t* convert_int_array = new int32_t[total_sections_to_write];
 	Register_Pointer(convert_int_array);
 	float* convert_float_array = new float[total_sections_to_write];
 	Register_Pointer(convert_float_array);
-	pint32_t comp_int_array = new int32_t[total_sections_to_write];
+	int32_t* comp_int_array = new int32_t[total_sections_to_write];
 	Register_Pointer(comp_int_array);
 	float* comp_float_array = new float[total_sections_to_write];
 	Register_Pointer(comp_float_array);
-	pint32_t float_bit_depth = new int32_t[total_sections_to_write];
+	int32_t* float_bit_depth = new int32_t[total_sections_to_write];
 	Register_Pointer(float_bit_depth);
-	pint32_t int_bit_depth = new int32_t[total_sections_to_write];
+	int32_t* int_bit_depth = new int32_t[total_sections_to_write];
 	Register_Pointer(int_bit_depth);
 	MinMaxHolderOf<int32_t>* int_min_max = new MinMaxHolderOf<int32_t>[total_sections_to_write];
 	Register_Pointer(int_min_max);
@@ -187,7 +187,7 @@ FloatIntBitStreamTest(size_t total_sections_to_write)
 	{
 		total_number_of_bytes += 1;
 	}
-	puint8_t big_byte_array = new uint8_t[total_number_of_bytes];
+	uint8_t* big_byte_array = new uint8_t[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 	MemoryStream bit_stream(big_byte_array, total_number_of_bytes);
 	for (i = 0; i < total_sections_to_write; ++i)
@@ -269,7 +269,7 @@ FloatIntBitStreamTest(size_t total_sections_to_write)
 bool
 MultipleBitStreamTest(size_t total_sections_to_write)
 {
-	pint32_t bit_depth = new int32_t[total_sections_to_write];
+	int32_t* bit_depth = new int32_t[total_sections_to_write];
 	Register_Pointer(bit_depth);
 	double* bits_to_write = new double[total_sections_to_write];
 	Register_Pointer(bits_to_write);
@@ -288,7 +288,7 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 		// SPEW((GROUP_STUFF_TEST, "%d ---- Bit Depth : %d", i, bit_depth[i]));
 		bits_to_write[i] = 0x00;
 		bits_to_read[i] = 0x00;
-		puint8_t byte_array = Cast_Pointer(puint8_t, &bits_to_write[i]);
+		uint8_t* byte_array = Cast_Pointer(uint8_t*, &bits_to_write[i]);
 		int32_t number_of_bytes = (int32_t)(bit_depth[i] / 8.0f);
 		int32_t remainder_bits = bit_depth[i] - (number_of_bytes * 8);
 		if (remainder_bits != 0)
@@ -314,7 +314,7 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 	{
 		total_number_of_bytes += 1;
 	}
-	puint8_t big_byte_array = new uint8_t[total_number_of_bytes];
+	uint8_t* big_byte_array = new uint8_t[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 	MemoryStream bit_stream(big_byte_array, total_number_of_bytes);
 	int32_t bit_depth_test = total_bit_depth;
@@ -347,11 +347,11 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 	}
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
-		puint8_t source_byte_array = Cast_Pointer(puint8_t, &bits_to_write[i]);
-		puint8_t copy_byte_array = Cast_Pointer(puint8_t, &bits_to_read[i]);
+		uint8_t* source_byte_array = Cast_Pointer(uint8_t*, &bits_to_write[i]);
+		uint8_t* copy_byte_array = Cast_Pointer(uint8_t*, &bits_to_read[i]);
 		SPEW((GROUP_STUFF_TEST, "%d\t---- Bit Depth : %d", i, bit_depth[i]));
-		// SPEW((GROUP_STUFF_TEST, "%d ---- Src Bit Value : +", i));
-		Stuff::MString text = "\t---- Src Bit Value : ";
+		// SPEW((GROUP_STUFF_TEST, "%d ---- Src Bit value : +", i));
+		Stuff::MString text = "\t---- Src Bit value : ";
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{
 			// Test_Assumption(source_byte_array == copy_byte_array);
@@ -381,8 +381,8 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 			text += value;
 		}
 		SPEW((GROUP_STUFF_TEST, "%s", (const std::wstring_view&)text));
-		// SPEW((GROUP_STUFF_TEST, "%d ---- Dst Bit Value : +", i));
-		text = "\t---- Dst Bit Value : ";
+		// SPEW((GROUP_STUFF_TEST, "%d ---- Dst Bit value : +", i));
+		text = "\t---- Dst Bit value : ";
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{
 			for (size_t bit_count = 7; bit_count > -1; --bit_count)
@@ -410,13 +410,13 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 			text += value;
 		}
 		SPEW((GROUP_STUFF_TEST, "%s", (const std::wstring_view&)text));
-		SPEW((GROUP_STUFF_TEST, "\t---- Src Hex Value : +", i));
+		SPEW((GROUP_STUFF_TEST, "\t---- Src Hex value : +", i));
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{
 			SPEW((GROUP_STUFF_TEST, "%02x +", source_byte_array[byte_count]));
 		}
 		SPEW((GROUP_STUFF_TEST, ""));
-		SPEW((GROUP_STUFF_TEST, "\t---- Dst Hex Value : +", i));
+		SPEW((GROUP_STUFF_TEST, "\t---- Dst Hex value : +", i));
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{
 			SPEW((GROUP_STUFF_TEST, "%02x +", copy_byte_array[byte_count]));

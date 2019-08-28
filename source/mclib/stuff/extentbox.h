@@ -10,7 +10,7 @@
 #ifndef _EXTENTBOX_HPP_
 #define _EXTENTBOX_HPP_
 
-#include <stuff/plane.hpp>
+#include "stuff/plane.h"
 
 namespace Stuff
 {
@@ -19,7 +19,7 @@ class ExtentBox;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::ExtentBox& box);
+Spew(const std::wstring_view& group, const Stuff::ExtentBox& box);
 #endif
 
 namespace Stuff
@@ -67,17 +67,17 @@ public:
 	void TestInstance(void) const;
 	static bool TestClass(void);
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const ExtentBox& box);
+	friend void ::Spew(const std::wstring_view& group, const ExtentBox& box);
 #endif
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~ ExtentBox functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void
-Convert_From_Ascii(PCSTR str, ExtentBox* extent_box);
+Convert_From_Ascii(const std::wstring_view& str, ExtentBox* extent_box);
 
 void
-Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, puint32_t max_index,
+Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, uint32_t* max_index,
 	uint32_t block_size, float threshold = SMALL);
 
 void
@@ -86,7 +86,7 @@ Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& b
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
 Read(std::istream& stream, Stuff::ExtentBox* output)
 {

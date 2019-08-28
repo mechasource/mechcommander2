@@ -10,7 +10,7 @@
 #ifndef _POINT3D_HPP_
 #define _POINT3D_HPP_
 
-#include <stuff/vector3d.hpp>
+#include "stuff/vector3d.h"
 
 namespace Stuff
 {
@@ -154,5 +154,5 @@ public:
 	static bool TestClass(void);
 };
 } // namespace Stuff
-// #include <stuff/affinematrix.hpp>
+// #include "stuff/affinematrix.h"
 #endif

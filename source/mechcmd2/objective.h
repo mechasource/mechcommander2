@@ -175,7 +175,7 @@ public:
 		}
 		else
 		{
-			/*assert(false);*/
+			/*_ASSERT(false);*/
 			return false;
 		}
 	}
@@ -937,7 +937,7 @@ private:
 	int32_t m_displayMarker;
 	float m_markerX;
 	float m_markerY;
-	char m_markerText[4];
+	wchar_t m_markerText[4];
 	bool m_isHiddenTrigger;
 	bool m_isActive;
 	bool m_activateOnFlag;
@@ -950,13 +950,13 @@ private:
 	objective_status_type m_resolvedStatus;
 	const std::wstring_view& m_modelName;
 	int32_t m_modelType;
-	int32_t m_modelBaseColor;
-	int32_t m_modelHighlightColor;
-	int32_t m_modelHighlightColor2;
+	int32_t m_modelBasecolour;
+	int32_t m_modelHighlightcolour;
+	int32_t m_modelHighlightcolour2;
 	float m_modelScale;
 	static float s_blinkLength;
 	static float s_lastBlinkTime;
-	static uint32_t s_blinkColor;
+	static uint32_t s_blinkcolour;
 	static aFont* s_markerFont;
 
 public: /* we could make this protected if only the editdialog is to access
@@ -984,7 +984,7 @@ public:
 	int32_t Alignment() { return m_alignment; }
 	void Alignment(int32_t alignment);
 	bool Read(FitIniFile* missionFile, int32_t objectiveNum, uint32_t version, int32_t markerNum,
-		char secondaryMarkerNum);
+		wchar_t secondaryMarkerNum);
 	bool Save(FitIniFile* file, int32_t objectiveNum);
 	/* The following function evaluates the status of the objective irrespective
 	of the other objectives (i.e. it disregards qualifiers like
@@ -1070,17 +1070,17 @@ public:
 	void ModelName(const std::wstring_view& modelName) { m_modelName = modelName; }
 	int32_t ModelType() { return m_modelType; }
 	void ModelType(int32_t modelType) { m_modelType = modelType; }
-	int32_t ModelBaseColor() { return m_modelBaseColor; }
-	void ModelBaseColor(int32_t modelBaseColor) { m_modelBaseColor = modelBaseColor; }
-	int32_t ModelHighlightColor() { return m_modelHighlightColor; }
-	void ModelHighlightColor(int32_t modelHighlightColor)
+	int32_t ModelBasecolour() { return m_modelBasecolour; }
+	void ModelBasecolour(int32_t modelBasecolour) { m_modelBasecolour = modelBasecolour; }
+	int32_t ModelHighlightcolour() { return m_modelHighlightcolour; }
+	void ModelHighlightcolour(int32_t modelHighlightcolour)
 	{
-		m_modelHighlightColor = modelHighlightColor;
+		m_modelHighlightcolour = modelHighlightcolour;
 	}
-	int32_t ModelHighlightColor2() { return m_modelHighlightColor2; }
-	void ModelHighlightColor2(int32_t modelHighlightColor2)
+	int32_t ModelHighlightcolour2() { return m_modelHighlightcolour2; }
+	void ModelHighlightcolour2(int32_t modelHighlightcolour2)
 	{
-		m_modelHighlightColor2 = modelHighlightColor2;
+		m_modelHighlightcolour2 = modelHighlightcolour2;
 	}
 	float ModelScale() { return m_modelScale; }
 	void ModelScale(float modelScale) { m_modelScale = modelScale; }

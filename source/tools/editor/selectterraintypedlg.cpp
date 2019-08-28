@@ -16,7 +16,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+static wchar_t THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ SelectTerrainTypeDlg::OnInitDialog()
 	{
 		if (land->terrainTextures->getTextureNameID(i)) // if we start to repeat, quit
 		{
-			char buffer[256];
+			wchar_t buffer[256];
 			cLoadString(land->terrainTextures->getTextureNameID(i), buffer, 256);
 			CString newStr(buffer);
 			int32_t count = m_terrainTypeList.GetCount();

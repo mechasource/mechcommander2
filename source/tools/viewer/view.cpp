@@ -55,11 +55,11 @@ extern int32_t MusicVolume;
 extern int32_t sfxVolume;
 extern int32_t RadioVolume;
 
-extern char FileMissingString[];
-extern char CDMissingString[];
-extern char MissingTitleString[];
+extern wchar_t FileMissingString[];
+extern wchar_t CDMissingString[];
+extern wchar_t MissingTitleString[];
 
-extern char CDInstallPath[];
+extern wchar_t CDInstallPath[];
 
 int32_t FilterState = gos_FilterNone;
 int32_t gammaLevel = 0;
@@ -69,7 +69,7 @@ int32_t resolution = 0;
 bool useUnlimitedAmmo = true;
 
 Camera* eye = nullptr;
-uint32_t BaseVertexColor = 0;
+uint32_t BaseVertexcolour = 0;
 
 enum
 {
@@ -82,7 +82,7 @@ enum
 
 bool reloadBounds = false;
 int32_t ObjectTextureSize = 128;
-// char missionName[1024];
+// wchar_t missionName[1024];
 float gosFontScale = 1.0;
 
 float doubleClickThreshold;
@@ -137,8 +137,8 @@ const std::wstring_view& __stdcall GetGameInformation()
 //---------------------------------------------------------------------------
 void __stdcall UpdateRenderers()
 {
-	uint32_t bColor = 0x0;
-	gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
+	uint32_t bcolour = 0x0;
+	gos_SetupViewport(1, 1.0, 1, bcolour, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
 	gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, TRUE);
@@ -182,7 +182,7 @@ void __stdcall DoGameLogic()
 void __stdcall InitializeGameEngine()
 {
 	gosResourceHandle = gos_OpenResourceDLL("mc2res.dll");
-	char temp[256];
+	wchar_t temp[256];
 	cLoadString(IDS_FLOAT_HELP_FONT, temp, 255);
 	const std::wstring_view& pStr = strstr(temp, ",");
 	if (pStr)
@@ -190,7 +190,7 @@ void __stdcall InitializeGameEngine()
 		gosFontScale = atoi(pStr + 2);
 		*pStr = 0;
 	}
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, "assets\\graphics\\");
 	strcat(path, temp);
 	gosFontHandle = gos_LoadFont(path);
@@ -227,7 +227,7 @@ void __stdcall InitializeGameEngine()
 #ifdef _DEBUG
 	if (systemOpenResult != NO_ERROR)
 	{
-		char Buffer[256];
+		wchar_t Buffer[256];
 		gos_GetCurrentPath(Buffer, 256);
 		STOP(("Cannot find \"system.cfg\" file in %s", Buffer));
 	}
@@ -302,8 +302,8 @@ void __stdcall InitializeGameEngine()
 				fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
 				memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 				int32_t fileNum = 0;
-				char fastFileId[10];
-				char fileName[100];
+				wchar_t fastFileId[10];
+				wchar_t fileName[100];
 				sprintf(fastFileId, "File%d", fileNum);
 				while (systemFile.readIdString(fastFileId, fileName, 99) == NO_ERROR)
 				{
@@ -381,9 +381,9 @@ void __stdcall InitializeGameEngine()
 			result = prefs->readIdLong("DragThreshold", dragThreshold);
 			if (result != NO_ERROR)
 				dragThreshold = .016667;
-			result = prefs->readIdULong("BaseVertexColor", BaseVertexColor);
+			result = prefs->readIdULong("BaseVertexcolour", BaseVertexcolour);
 			if (result != NO_ERROR)
-				BaseVertexColor = 0x00000000;
+				BaseVertexcolour = 0x00000000;
 			result = prefs->readIdBoolean("FullScreen", fullScreen);
 			if (result != NO_ERROR)
 				fullScreen = true;
@@ -426,7 +426,7 @@ void __stdcall InitializeGameEngine()
 	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
 	int32_t effectsSize = effectFile.fileSize();
-	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
+	uint8_t* effectsData = (uint8_t*)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
 	effectStream = new std::iostream(effectsData, effectsSize);
@@ -571,6 +571,6 @@ void __stdcall GetGameOSEnvironment(const std::wstring_view& commandline)
 	Environment.RaidDataSource = "MechCommander 2:Raid4";
 	Environment.RaidFilePath = "\\\\aas1\\MC2\\Test\\GOSRaid";
 	Environment.RaidCustomFields = "Area=GOSRaid";
-	Environment.screenWidth = 800;
-	Environment.screenHeight = 600;
+	Environment.screenwidth = 800;
+	Environment.screenheight = 600;
 }

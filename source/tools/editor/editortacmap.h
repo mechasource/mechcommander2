@@ -25,7 +25,7 @@ public:
 	TacMapTGA picture;
 	//}}AFX_DATA
 
-	void SetData(puint8_t pData, size_t size) { picture.SetTGAFileData(pData, size); }
+	void SetData(uint8_t* pData, size_t size) { picture.SetTGAFileData(pData, size); }
 	void UpdateMap() { picture.refreshBmp(void); }
 
 	void ReleaseFocus(void);

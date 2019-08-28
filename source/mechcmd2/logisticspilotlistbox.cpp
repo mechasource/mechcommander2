@@ -115,7 +115,7 @@ LogisticsPilotListBoxItem::init(FitIniFile* file)
 void
 LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 {
-	char animationText[64];
+	wchar_t animationText[64];
 	if (NO_ERROR == file.readIdString("Animation", animationText, 63))
 	{
 		for (size_t i = 0; i < strlen(animationText); i++)
@@ -136,19 +136,19 @@ LogisticsPilotListBoxItem::render()
 {
 	for (size_t i = 0; i < this->pNumberOfChildren; i++)
 	{
-		int32_t newColor = 0xffffffff;
+		int32_t newcolour = 0xffffffff;
 		if (pChildAnimations[i] != -1)
-			newColor = animations[pChildAnimations[i]].getCurrentColor((aAnimGroup::STATE)state);
-		pChildren[i]->setColor(newColor, 1);
+			newcolour = animations[pChildAnimations[i]].getCurrentcolour((aAnimGroup::STATE)state);
+		pChildren[i]->setcolour(newcolour, 1);
 		pChildren[i]->render();
 	}
-	/*	int32_t newColor = animations[pChildAnimations[4]].getCurrentColor(
-	   (aAnimGroup::STATE)state ); outline.setColor(newColor); outline.render(
+	/*	int32_t newcolour = animations[pChildAnimations[4]].getCurrentcolour(
+	   (aAnimGroup::STATE)state ); outline.setcolour(newcolour); outline.render(
 	   location[0].x, location[0].y );
 
 
-		newColor = animations[pChildAnimations[5]].getCurrentColor(
-	   (aAnimGroup::STATE)state ); line.setColor( newColor ); line.render(
+		newcolour = animations[pChildAnimations[5]].getCurrentcolour(
+	   (aAnimGroup::STATE)state ); line.setcolour( newcolour ); line.render(
 	   location[0].x, location[0].y );*/
 }
 
@@ -175,11 +175,11 @@ LogisticsPilotListBoxItem::update()
 		if (userInput->isLeftDrag() && isInside && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 		{
 			PilotReadyScreen::instance()->beginDrag(pPilot);
-			icon.setColor(0x7f000000);
+			icon.setcolour(0x7f000000);
 		}
 		else if (!userInput->isLeftDrag())
 		{
-			icon.setColor(0xffffffff);
+			icon.setcolour(0xffffffff);
 		}
 	}
 	else if (state == aListItem::HIGHLITE)
@@ -219,7 +219,7 @@ LogisticsPilotListBox::makeUVs(LogisticsPilot* pPilot, aObject& icon)
 	fY += 1.f;
 	float u2 = (fX * width);
 	float v2 = (fY * height);
-	icon.setFileWidth(256.f);
+	icon.setFilewidth(256.f);
 	icon.setUVs(u, v, u2, v2);
 }
 

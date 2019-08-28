@@ -4,14 +4,15 @@
 
 #include "stdinc.h"
 
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "toolos.hpp"
+
 #include "stuff/plug.h"
 #include "stuff/node.h"
 #include "stuff/slot.h"
-#include "stuff/chain.h"
+// #include "stuff/chain.h"
 #include "stuff/safechain.h"
 #include "stuff/rotation.h"
 #include "stuff/random.h"
@@ -30,7 +31,7 @@ void __stdcall Stuff::Flood_Memory_With_NAN(PVOID where, size_t how_much)
 {
 	_ASSERT(!(reinterpret_cast<intptr_t>(where) & 3));
 	Check_Pointer(where);
-	pint32_t filler = Cast_Pointer(pint32_t, where);
+	int32_t* filler = Cast_Pointer(int32_t*, where);
 	for (size_t i = how_much >> 2; i; --i)
 	{
 		*filler++ = SNAN_NEGATIVE_LONG;

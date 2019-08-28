@@ -58,7 +58,7 @@ SplashIntro::init()
 	FitIniFile file;
 	if (NO_ERROR != file.open(path))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, errorStr);
 	}
@@ -100,7 +100,7 @@ MainMenu::init(FitIniFile& file)
 	FitIniFile file2;
 	if (NO_ERROR != file2.open(name))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)name);
 		Assert(0, 0, errorStr);
 	}
@@ -119,7 +119,7 @@ MainMenu::init(FitIniFile& file)
 	FitIniFile mpFile;
 	if (NO_ERROR != mpFile.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return -1;
@@ -130,8 +130,8 @@ MainMenu::init(FitIniFile& file)
 	RECT movieRect;
 	movieRect.top = 0;
 	movieRect.left = 0;
-	movieRect.right = Environment.screenWidth;
-	movieRect.bottom = Environment.screenHeight;
+	movieRect.right = Environment.screenwidth;
+	movieRect.bottom = Environment.screenheight;
 	introMovie = new MC2Movie;
 	introMovie->init(path, movieRect, true);
 	return 0;
@@ -179,7 +179,7 @@ MainMenu::begin()
 		if (Environment.fullScreen && prefs.fullScreen)
 			localFullScreen = false;
 		// make sure we get into 800 x 600 mode
-		if (Environment.screenWidth != 800)
+		if (Environment.screenwidth != 800)
 		{
 			if (prefs.renderer == 3)
 				gos_SetScreenMode(
@@ -362,11 +362,11 @@ MainMenu::handleMessage(uint32_t what, uint32_t who)
 		LogisticsLegalDialog::instance()->setText(IDS_DIALOG_OK, IDS_DIALOG_OK, IDS_DIALOG_OK);
 		// Needs to be this int32_t for LOC!
 		// -fs
-		char realText[2048];
+		wchar_t realText[2048];
 		cLoadString(IDS_LAWYER_BABBLE, realText, 2047);
-		char lawyerBabble[2048];
+		wchar_t lawyerBabble[2048];
 		uint32_t pIDLen = 64;
-		char pID[64];
+		wchar_t pID[64];
 		sprintf(pID, "INVALID ID");
 		gos_LoadDataFromRegistry("PID", pID, &pIDLen);
 		sprintf(lawyerBabble, realText, pID);
@@ -458,7 +458,7 @@ MainMenu::update()
 		LogisticsSaveDialog::instance()->update();
 		if (LogisticsSaveDialog::instance()->getStatus() == LogisticsScreen::YES && LogisticsSaveDialog::instance()->isDone())
 		{
-			char name[1024];
+			wchar_t name[1024];
 			strcpy(name, savePath);
 			strcat(name, LogisticsSaveDialog::instance()->getFileName());
 			int32_t index = strlen(name) - 4;
@@ -471,7 +471,7 @@ MainMenu::update()
 				CreateDirectory(savePath, nullptr);
 				if (NO_ERROR != file.createWithCase(name))
 				{
-					char errorStr[1024];
+					wchar_t errorStr[1024];
 					sprintf(errorStr, "couldn't open the file %s", name);
 					Assert(0, 0, errorStr);
 				}
@@ -497,7 +497,7 @@ MainMenu::update()
 			{
 				if (NO_ERROR != file.open(name))
 				{
-					char errorStr[1024];
+					wchar_t errorStr[1024];
 					sprintf(errorStr, "couldn't open the file %s", name);
 					Assert(0, 0, errorStr);
 				}
@@ -675,7 +675,7 @@ MainMenu::render()
 			float endTime = beginAnim.getMaxTime();
 			if (endTime)
 			{
-				color = interpolateColor(0x00000000, 0x7f000000, time / endTime);
+				color = interpolatecolour(0x00000000, 0x7f000000, time / endTime);
 			}
 		}
 		else if (endAnim.isAnimating() /*&& !endAnim.isDone()*/)
@@ -686,10 +686,10 @@ MainMenu::render()
 			float endTime = endAnim.getMaxTime();
 			if (endTime && (time <= endTime))
 			{
-				color = interpolateColor(0x7f000000, 0x00000000, time / endTime);
+				color = interpolatecolour(0x7f000000, 0x00000000, time / endTime);
 			}
 		}
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 		drawRect(rect, color);
 		if (bDrawBackground)
 		{
@@ -701,7 +701,7 @@ MainMenu::render()
 	}
 	else
 	{
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 		drawRect(rect, color);
 	}
 	if (!xDelta && !yDelta)
@@ -735,8 +735,8 @@ MainMenu::render()
 void
 MainMenu::setHostLeftDlg(const std::wstring_view& playerName)
 {
-	char leaveStr[256];
-	char formatStr[256];
+	wchar_t leaveStr[256];
+	wchar_t formatStr[256];
 	cLoadString(IDS_PLAYER_LEFT, leaveStr, 255);
 	sprintf(formatStr, leaveStr, playerName);
 	LogisticsOneButtonDialog::instance()->setText(IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);

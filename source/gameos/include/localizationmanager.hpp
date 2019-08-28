@@ -21,15 +21,15 @@ struct gos_CaretInfo
 	uint32_t fontY;
 	float fontSize;
 	HGOSFONT3D fontHandle;
-	uint32_t fontColorComp;
-	uint32_t fontColorCand;
+	uint32_t fontcolourComp;
+	uint32_t fontcolourCand;
 	bool fontBold;
 	bool fontItalic;
 	bool fontProportional;
 	RECT margins;
 };
 
-void __stdcall TextDrawDBCS(PSTR Message);
+void __stdcall TextDrawDBCS(PSTR message);
 
 void
 InitLocalization(void);

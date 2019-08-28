@@ -88,13 +88,13 @@ public:
 		syncVScroll(void);
 	}
 
-	int32_t Width()
+	int32_t width()
 	{
 		RECT tmp;
 		GetWindowRect(&tmp);
 		return tmp.right - tmp.left;
 	}
-	int32_t Height()
+	int32_t height()
 	{
 		RECT tmp;
 		GetWindowRect(&tmp);
@@ -168,7 +168,7 @@ protected:
 	afx_msg void OnCommand(WPARAM wparam);
 
 private:
-	// Message handlers
+	// message handlers
 	int32_t Undo(void);
 	int32_t Redo(void);
 	int32_t FileOpen(void);
@@ -194,13 +194,13 @@ private:
 	int32_t PaintTerrain(int32_t type);
 	int32_t PaintOverlay(int32_t type, int32_t message);
 
-	int32_t NewHeightMap(void);
+	int32_t NewheightMap(void);
 	int32_t SaveCameras(void);
 	int32_t SelectSlopes(void);
 	int32_t SelectAltitude(void);
 	int32_t SelectTerrainType(void);
 	int32_t Waves(void);
-	int32_t SaveHeightMap(void);
+	int32_t SaveheightMap(void);
 
 	int32_t DragSmooth(void);
 	int32_t DragRough(void);

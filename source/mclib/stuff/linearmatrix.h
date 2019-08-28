@@ -10,8 +10,8 @@
 #ifndef _LINEARMATRIX_HPP_
 #define _LINEARMATRIX_HPP_
 
-#include <stuff/unitvector.hpp>
-#include <stuff/affinematrix.hpp>
+#include "stuff/unitvector.h"
+#include "stuff/affinematrix.h"
 
 namespace Stuff
 {

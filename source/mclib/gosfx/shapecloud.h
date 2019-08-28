@@ -60,7 +60,7 @@ protected:
 class ShapeCloud__Particle : public SpinningCloud__Particle
 {
 public:
-	Stuff::RGBAColor m_color;
+	Stuff::RGBAcolour m_color;
 };
 
 //############################################################################

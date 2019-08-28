@@ -95,7 +95,7 @@ MLRInfiniteLight::LightVertex(const MLRVertexData& vertexData)
 #if COLOR_AS_DWORD
 	TO_DO;
 #else
-	RGBColor light_color(color);
+	RGBcolour light_color(color);
 	if (cosine > SMALL)
 	{
 		light_color.red *= cosine;

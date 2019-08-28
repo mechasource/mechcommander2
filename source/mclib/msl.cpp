@@ -192,7 +192,7 @@ TG_TypeMultiShape::LoadBinaryCopy(const std::wstring_view& fileName)
 			listOfTextures =
 				(TG_TexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Texture) * numTextures);
 			gosASSERT(listOfTextures != nullptr);
-			binFile.read((puint8_t)listOfTextures, sizeof(TG_Texture) * numTextures);
+			binFile.read((uint8_t*)listOfTextures, sizeof(TG_Texture) * numTextures);
 		}
 		else
 		{
@@ -279,7 +279,7 @@ TG_TypeMultiShape::SaveBinaryCopy(const std::wstring_view& fileName)
 	// ListOfTextures
 	if (numTextures)
 	{
-		binFile.write((puint8_t)listOfTextures, sizeof(TG_Texture) * numTextures);
+		binFile.write((uint8_t*)listOfTextures, sizeof(TG_Texture) * numTextures);
 	}
 	// listOfShapes
 	for (size_t i = 0; i < numTG_TypeShapes; i++)
@@ -361,10 +361,10 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 	//
 	bool makeBinary = false;
 	int32_t i, j;
-	char drive[MAX_PATH];
-	char dir[MAX_PATH];
-	char name[MAX_PATH];
-	char ext[MAX_PATH];
+	wchar_t drive[MAX_PATH];
+	wchar_t dir[MAX_PATH];
+	wchar_t name[MAX_PATH];
+	wchar_t ext[MAX_PATH];
 	_splitpath(fileName, drive, dir, name, ext);
 #ifdef _DEBUG
 	shapeName = (const std::wstring_view&)malloc(strlen(name) + 1);
@@ -443,7 +443,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 			return (-1);
 		//---------------------------------------
 		// Create Buffer to read entire file into
-		puint8_t aseContents = (puint8_t)malloc(aseFileSize + 1);
+		uint8_t* aseContents = (uint8_t*)malloc(aseFileSize + 1);
 		gosASSERT(aseContents != nullptr);
 		//---------------------------------------
 		// Open File and read it and close it
@@ -464,9 +464,9 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 		// Texture Data Next.
 		// If the Material Class is Standard, ONLY one texture possible.
 		// If the Material Class is Sub-Object, Multiple textures possible.
-		char textureId[256];
+		wchar_t textureId[256];
 		const std::wstring_view& textureData;
-		char numberData[256];
+		wchar_t numberData[256];
 		sprintf(textureId, ASE_MATERIAL_COUNT);
 		textureData = strstr((const std::wstring_view&)aseContents, textureId);
 		if (!textureData)
@@ -475,7 +475,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 		GetNumberData(textureData, numberData);
 		int32_t numMaterials = atol(numberData);
 		numTextures = 0;
-		puint8_t aseBuffer = aseContents;
+		uint8_t* aseBuffer = aseContents;
 		for (size_t nmt = 0; nmt < numMaterials; nmt++)
 		{
 			sprintf(textureId, ASE_MATERIAL_CLASS);
@@ -499,7 +499,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 				GetNumberData(textureData, numberData);
 				numTextures += atol(numberData);
 			}
-			aseBuffer = (puint8_t)textureData;
+			aseBuffer = (uint8_t*)textureData;
 		}
 		IProviderAssetPtr armAssetPtr = nullptr;
 		if (armProvider)
@@ -521,7 +521,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 				//-------------------------------------------------------------------------------
 				// Get and store texture Name.  Will need multiple for Multi-Sub
 				// if implemented
-				char textId[256];
+				wchar_t textId[256];
 				sprintf(textId, "%s", ASE_MATERIAL_BITMAP_ID, i);
 				const std::wstring_view& txmTemp = txmData;
 				txmData = strstr(txmData, textId);
@@ -554,7 +554,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 					const std::wstring_view& baseFilename = strrchr(listOfTextures[i].textureName, '\\');
 					if (baseFilename)
 					{
-						char localFilename[1024] = "Data\\TGL\\128\\";
+						wchar_t localFilename[1024] = "Data\\TGL\\128\\";
 						strcat(localFilename, baseFilename + 1);
 						armAssetPtr->AddRelationship("Texture", localFilename);
 					}
@@ -583,9 +583,9 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 			for (i = 0; i < numTextures; i++)
 			{
 				// Try to touch all of the textures we need.
-				char txmName[1024];
+				wchar_t txmName[1024];
 				GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -621,7 +621,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 			aseScan = strstr(aseScan, ASE_NODE_NAME);
 			gosASSERT(aseScan != nullptr); // Node must have a NAME, right?
 			aseScan += strlen(ASE_NODE_NAME) + 1;
-			char chkWord[512];
+			wchar_t chkWord[512];
 			GetWordData(aseScan, chkWord);
 			if (strstr(chkWord, "handle_") == nullptr && strstr(chkWord, "World") == nullptr)
 			{
@@ -661,14 +661,14 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 				aseScan = strstr(aseScan, ASE_NODE_NAME);
 				gosASSERT(aseScan != nullptr); // Node must have a NAME, right?
 				aseScan += strlen(ASE_NODE_NAME) + 1;
-				char chkWord[512];
+				wchar_t chkWord[512];
 				GetWordData(aseScan, chkWord);
 				//-------------------------------------------------------------------
 				// Is this a forbidden helper object?
 				if ((strstr(chkWord, "handle") == nullptr) && (strstr(chkWord, "World") == nullptr))
 				{
 					int32_t parseResult =
-						listOfTypeShapes[startIndex]->MakeFromHelper((puint8_t)aseData, fileName);
+						listOfTypeShapes[startIndex]->MakeFromHelper((uint8_t*)aseData, fileName);
 					if (parseResult != 0)
 						return (parseResult);
 					startIndex++;
@@ -685,7 +685,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 				gosASSERT(scanStart != nullptr); // Node must have a NAME,
 					// right?
 				scanStart += strlen(ASE_NODE_NAME) + 1;
-				char chkWord[512];
+				wchar_t chkWord[512];
 				GetWordData(scanStart, chkWord);
 				//-------------------------------------------------------------------
 				// Is this a forbidden helper object?
@@ -693,7 +693,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 				{
 					//-------------------------------------------------------------------
 					int32_t parseResult =
-						listOfTypeShapes[startIndex]->MakeFromHelper((puint8_t)aseScan, fileName);
+						listOfTypeShapes[startIndex]->MakeFromHelper((uint8_t*)aseScan, fileName);
 					if (parseResult != 0)
 						return (parseResult);
 					startIndex++;
@@ -722,7 +722,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 				ZeroMemory(aseData, aseFileSize + 1);
 				memcpy(aseData, aseScan, aseEnd - aseScan);
 				int32_t parseResult =
-					listOfTypeShapes[startIndex]->ParseASEFile((puint8_t)aseData, fileName);
+					listOfTypeShapes[startIndex]->ParseASEFile((uint8_t*)aseData, fileName);
 				if (parseResult != 0)
 					return (parseResult);
 				free(aseData);
@@ -730,7 +730,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 			else
 			{
 				int32_t parseResult =
-					listOfTypeShapes[startIndex]->ParseASEFile((puint8_t)aseScan, fileName);
+					listOfTypeShapes[startIndex]->ParseASEFile((uint8_t*)aseScan, fileName);
 				if (parseResult != 0)
 					return (parseResult);
 			}
@@ -838,10 +838,10 @@ TG_TypeMultiShape::GetTextureName(uint32_t textureNum, const std::wstring_view& 
 {
 	if (textureNum >= numTextures)
 		return (-1);
-	char baseName[512];
-	char extension[256];
+	wchar_t baseName[512];
+	wchar_t extension[256];
 	_splitpath(listOfTextures[textureNum].textureName, nullptr, nullptr, baseName, extension);
-	char basePath[1024];
+	wchar_t basePath[1024];
 	sprintf(basePath, "%s%s", baseName, extension);
 	if (nameLength < (strlen(basePath) + 1))
 		return (strlen(basePath) + 1);
@@ -1687,7 +1687,7 @@ _TG_Animation::SaveBinaryCopy(MechFile* binFile)
 {
 	if (_stricmp(nodeId, "NONE") != 0)
 	{
-		binFile->write((puint8_t)nodeId, TG_NODE_ID);
+		binFile->write((uint8_t*)nodeId, TG_NODE_ID);
 		binFile->writeLong(-1); // ShapeIds ALWAYS start with -1.  We will scan
 			// on frame 1 please!
 		binFile->writeLong(numFrames);
@@ -1702,9 +1702,9 @@ _TG_Animation::SaveBinaryCopy(MechFile* binFile)
 		else
 			binFile->writeLong(0);
 		if (quat)
-			binFile->write((puint8_t)quat, sizeof(Stuff::UnitQuaternion) * numFrames);
+			binFile->write((uint8_t*)quat, sizeof(Stuff::UnitQuaternion) * numFrames);
 		if (pos)
-			binFile->write((puint8_t)pos, sizeof(Stuff::Point3D) * numFrames);
+			binFile->write((uint8_t*)pos, sizeof(Stuff::Point3D) * numFrames);
 	}
 }
 
@@ -1712,7 +1712,7 @@ _TG_Animation::SaveBinaryCopy(MechFile* binFile)
 void
 _TG_Animation::LoadBinaryCopy(MechFile* binFile)
 {
-	binFile->read((puint8_t)nodeId, TG_NODE_ID);
+	binFile->read((uint8_t*)nodeId, TG_NODE_ID);
 	shapeId = binFile->readLong();
 	numFrames = binFile->readLong();
 	frameRate = binFile->readFloat();
@@ -1723,14 +1723,14 @@ _TG_Animation::LoadBinaryCopy(MechFile* binFile)
 	{
 		quat = (Stuff::UnitQuaternion*)TG_Shape::tglHeap->Malloc(
 			sizeof(Stuff::UnitQuaternion) * numFrames);
-		binFile->read((puint8_t)quat, quatRAM);
+		binFile->read((uint8_t*)quat, quatRAM);
 	}
 	else
 		quat = nullptr;
 	if (posRAM)
 	{
 		pos = (Stuff::Point3D*)TG_Shape::tglHeap->Malloc(sizeof(Stuff::Point3D) * numFrames);
-		binFile->read((puint8_t)pos, posRAM);
+		binFile->read((uint8_t*)pos, posRAM);
 	}
 	else
 		pos = nullptr;
@@ -1836,10 +1836,10 @@ TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(
 	// MUCH FASTER!
 	//
 	bool makeBinary = false;
-	char drive[MAX_PATH];
-	char dir[MAX_PATH];
-	char name[MAX_PATH];
-	char ext[MAX_PATH];
+	wchar_t drive[MAX_PATH];
+	wchar_t dir[MAX_PATH];
+	wchar_t name[MAX_PATH];
+	wchar_t ext[MAX_PATH];
 	_splitpath(fileName, drive, dir, name, ext);
 	FullPathFileName binaryFileName;
 	binaryFileName.init(tglPath, name, ".agl");
@@ -1890,7 +1890,7 @@ TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(
 			return (-1);
 		//---------------------------------------
 		// Create Buffer to read entire file into
-		puint8_t aseContents = (puint8_t)malloc(aseFileSize + 1);
+		uint8_t* aseContents = (uint8_t*)malloc(aseFileSize + 1);
 		gosASSERT(aseContents != nullptr);
 		//---------------------------------------
 		// Open File and read it and close it
@@ -1913,7 +1913,7 @@ TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(
 		const std::wstring_view& frameId = strstr((const std::wstring_view&)aseContents, ASE_ANIM_FIRST_FRAME);
 		gosASSERT(frameId != nullptr);
 		frameId += strlen(ASE_ANIM_FIRST_FRAME) + 1;
-		char numData[512];
+		wchar_t numData[512];
 		GetNumberData(frameId, numData);
 		firstFrame = atol(numData);
 		frameId = strstr((const std::wstring_view&)aseContents, ASE_ANIM_LAST_FRAME);
@@ -1953,7 +1953,7 @@ TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(
 			gosASSERT(nodeId != nullptr);
 			const std::wstring_view& animScan = (const std::wstring_view&)aseContents;
 			animScan = strstr(animScan, ASE_ANIMATION);
-			char nodeName[512];
+			wchar_t nodeName[512];
 			sprintf(nodeName, "*NODE_NAME \"%s\"", nodeId);
 			while (animScan != nullptr)
 			{
@@ -1961,7 +1961,7 @@ TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(
 				//------------------------------------------------------
 				// We found a TM_ANIMATION Section.
 				// Check if the VERY NEXT LINE is the correct NodeName
-				char nextLine[1024];
+				wchar_t nextLine[1024];
 				GetNextLine(animScan, nextLine);
 				if (strstr(nextLine, nodeName) == nullptr)
 				{
@@ -1997,8 +1997,8 @@ TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(
 				//---------------------------------
 				// Check for positional data first!
 				const std::wstring_view& scanStart = animScan;
-				char numData[512];
-				char nextLine[1024];
+				wchar_t numData[512];
+				wchar_t nextLine[1024];
 				float timeStamp = firstFrame * tickRate;
 				//----------------------------------------------------
 				// Then the very NEXT LINE most be POS_TRACK data OR
@@ -2023,7 +2023,7 @@ TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(
 						listOfAnimation[i].tickRate = tickRate;
 						listOfAnimation[i].shapeId = 0xffffffff;
 						Stuff::Point3D thisOffset = shape->GetNodeCenter(i);
-						char LineData[1024];
+						wchar_t LineData[1024];
 						GetNextLine(animScan, LineData);
 						animScan += strlen(LineData) + 1;
 						for (size_t j = 0; j < listOfAnimation[i].numFrames; j++)
@@ -2084,7 +2084,7 @@ TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(
 						listOfAnimation[i].numFrames = numFrames;
 						listOfAnimation[i].frameRate = frameRate;
 						listOfAnimation[i].tickRate = tickRate;
-						char LineData[1024];
+						wchar_t LineData[1024];
 						GetNextLine(animScan, LineData);
 						animScan += strlen(LineData) + 1;
 						for (size_t j = 0; j < listOfAnimation[i].numFrames; j++)

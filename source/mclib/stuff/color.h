@@ -1,6 +1,6 @@
 //===========================================================================//
 // File: color.hpp //
-// Title: Declaration of Color classes. //
+// Title: Declaration of colour classes. //
 // Purpose: Stores color information. //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved. //
@@ -11,60 +11,60 @@
 #ifndef _COLOR_HPP_
 #define _COLOR_HPP_
 
-// #include <stuff/memorystream.hpp>
+// #include "stuff/memorystream.h"
 
 namespace Stuff
 {
-class RGBColor;
-class RGBAColor;
-class HSVColor;
-class HSVAColor;
+class RGBcolour;
+class RGBAcolour;
+class HSVcolour;
+class HSVAcolour;
 } // namespace Stuff
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::RGBColor& color);
+Spew(const std::wstring_view& group, const Stuff::RGBcolour& color);
 void
-Spew(PCSTR group, const Stuff::RGBAColor& color);
+Spew(const std::wstring_view& group, const Stuff::RGBAcolour& color);
 void
-Spew(PCSTR group, const Stuff::HSVColor& color);
+Spew(const std::wstring_view& group, const Stuff::HSVcolour& color);
 void
-Spew(PCSTR group, const Stuff::HSVAColor& color);
+Spew(const std::wstring_view& group, const Stuff::HSVAcolour& color);
 #endif
 
 namespace Stuff
 {
 
 //##########################################################################
-//############## RGBColor ############################################
+//############## RGBcolour ############################################
 //##########################################################################
 
-class RGBColor
+class RGBcolour
 {
-	//	friend class RGBAColor;
+	//	friend class RGBAcolour;
 
 public:
-	RGBColor(void) { red = green = blue = -1.0f; }
+	RGBcolour(void) { red = green = blue = -1.0f; }
 
-	RGBColor(float r, float g, float b)
+	RGBcolour(float r, float g, float b)
 	{
 		red = r;
 		green = g;
 		blue = b;
 	}
 
-	friend bool Close_Enough(const RGBColor& c1, const RGBColor& c2, float e = SMALL);
-	bool operator==(const RGBColor& color) const
+	friend bool Close_Enough(const RGBcolour& c1, const RGBcolour& c2, float e = SMALL);
+	bool operator==(const RGBcolour& color) const
 	{
 		// Check_Object(this);
 		return Close_Enough(*this, color, SMALL);
 	}
-	bool operator!=(const RGBColor& color) const
+	bool operator!=(const RGBcolour& color) const
 	{
 		// Check_Object(this);
 		return !Close_Enough(*this, color, SMALL);
 	}
-	RGBColor& operator=(const RGBColor& color)
+	RGBcolour& operator=(const RGBcolour& color)
 	{
 		// Check_Object(this);
 		Check_Object(&color);
@@ -73,7 +73,7 @@ public:
 		blue = color.blue;
 		return *this;
 	}
-	RGBColor& operator=(const HSVColor& color);
+	RGBcolour& operator=(const HSVcolour& color);
 
 	void TestInstance(void) const {}
 
@@ -83,7 +83,7 @@ public:
 		return 0.3f * red + 0.5f * green + 0.2f * blue;
 	}
 
-	RGBColor& Combine(const RGBColor& c1, float t1, const RGBColor& c2, float t2)
+	RGBcolour& Combine(const RGBcolour& c1, float t1, const RGBcolour& c2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -94,7 +94,7 @@ public:
 		return *this;
 	}
 
-	RGBColor& Lerp(const RGBColor& c1, const RGBColor& c2, float t)
+	RGBcolour& Lerp(const RGBcolour& c1, const RGBcolour& c2, float t)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -109,36 +109,36 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const RGBColor& color);
+	friend void ::Spew(const std::wstring_view& group, const RGBcolour& color);
 #endif
 
 protected:
-	// static const RGBColor Unassigned;
+	// static const RGBcolour Unassigned;
 	float red, green, blue;
 };
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void
-Convert_From_Ascii(PCSTR str, RGBColor* color);
+Convert_From_Ascii(const std::wstring_view& str, RGBcolour* color);
 
 //##########################################################################
-//############## RGBAColor ###########################################
+//############## RGBAcolour ###########################################
 //##########################################################################
 
-class RGBAColor : public RGBColor
+class RGBAcolour : public RGBcolour
 {
 public:
-	RGBAColor(void) :
-		RGBColor() { alpha = -1.0f; }
-	RGBAColor(float r, float g, float b, float a) :
-		RGBColor(r, g, b) { alpha = a; }
+	RGBAcolour(void) :
+		RGBcolour() { alpha = -1.0f; }
+	RGBAcolour(float r, float g, float b, float a) :
+		RGBcolour(r, g, b) { alpha = a; }
 
-	friend bool Close_Enough(const RGBAColor& c1, const RGBAColor& c2, float e = SMALL);
-	bool operator==(const RGBAColor& color) const { return Close_Enough(*this, color, SMALL); }
-	bool operator!=(const RGBAColor& color) const { return !Close_Enough(*this, color, SMALL); }
+	friend bool Close_Enough(const RGBAcolour& c1, const RGBAcolour& c2, float e = SMALL);
+	bool operator==(const RGBAcolour& color) const { return Close_Enough(*this, color, SMALL); }
+	bool operator!=(const RGBAcolour& color) const { return !Close_Enough(*this, color, SMALL); }
 
-	RGBAColor& operator=(const RGBAColor& color)
+	RGBAcolour& operator=(const RGBAcolour& color)
 	{
 		// Check_Object(this);
 		Check_Object(&color);
@@ -148,9 +148,9 @@ public:
 		alpha = color.alpha;
 		return *this;
 	}
-	RGBAColor& operator=(const HSVAColor& color);
+	RGBAcolour& operator=(const HSVAcolour& color);
 
-	RGBAColor& Combine(const RGBAColor& c1, float t1, const RGBAColor& c2, float t2)
+	RGBAcolour& Combine(const RGBAcolour& c1, float t1, const RGBAcolour& c2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -162,7 +162,7 @@ public:
 		return *this;
 	}
 
-	RGBAColor& Lerp(const RGBAColor& c1, const RGBAColor& c2, float t)
+	RGBAcolour& Lerp(const RGBAcolour& c1, const RGBAcolour& c2, float t)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -183,51 +183,51 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const RGBAColor& color);
+	friend void ::Spew(const std::wstring_view& group, const RGBAcolour& color);
 #endif
 
 protected:
-	//static const RGBAColor Unassigned;
+	//static const RGBAcolour Unassigned;
 	float alpha;
 };
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBAColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBAcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void
-Convert_From_Ascii(PCSTR str, RGBAColor* color);
+Convert_From_Ascii(const std::wstring_view& str, RGBAcolour* color);
 
 //##########################################################################
-//############## HSVColor ############################################
+//############## HSVcolour ############################################
 //##########################################################################
 
-class HSVColor
+class HSVcolour
 {
-	friend class HSVAColor;
+	friend class HSVAcolour;
 
 public:
-	HSVColor(void) { hue = saturation = value = -1.0f; }
+	HSVcolour(void) { hue = saturation = value = -1.0f; }
 
-	HSVColor(float h, float s, float v)
+	HSVcolour(float h, float s, float v)
 	{
 		hue = h;
 		saturation = s;
 		value = v;
 	}
 
-	friend bool Close_Enough(const HSVColor& c1, const HSVColor& c2, float e = SMALL);
-	bool operator==(const HSVColor& color) const
+	friend bool Close_Enough(const HSVcolour& c1, const HSVcolour& c2, float e = SMALL);
+	bool operator==(const HSVcolour& color) const
 	{
 		// Check_Object(this);
 		return Close_Enough(*this, color, SMALL);
 	}
-	bool operator!=(const HSVColor& color) const
+	bool operator!=(const HSVcolour& color) const
 	{
 		// Check_Object(this);
 		return !Close_Enough(*this, color, SMALL);
 	}
 
-	HSVColor& operator=(const RGBColor& color);
-	HSVColor& operator=(const HSVColor& color)
+	HSVcolour& operator=(const RGBcolour& color);
+	HSVcolour& operator=(const HSVcolour& color)
 	{
 		// Check_Object(this);
 		Check_Object(&color);
@@ -239,7 +239,7 @@ public:
 
 	void TestInstance(void) const {}
 
-	HSVColor& Combine(const HSVColor& c1, float t1, const HSVColor& c2, float t2)
+	HSVcolour& Combine(const HSVcolour& c1, float t1, const HSVcolour& c2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -250,7 +250,7 @@ public:
 		return *this;
 	}
 
-	HSVColor& Lerp(const HSVColor& c1, const HSVColor& c2, float t)
+	HSVcolour& Lerp(const HSVcolour& c1, const HSVcolour& c2, float t)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -265,48 +265,48 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const HSVColor& color);
+	friend void ::Spew(const std::wstring_view& group, const HSVcolour& color);
 #endif
 
 protected:
-	//static const HSVColor Unassigned;
+	//static const HSVcolour Unassigned;
 	float hue, saturation, value;
 };
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void
-Convert_From_Ascii(PCSTR str, HSVColor* color);
+Convert_From_Ascii(const std::wstring_view& str, HSVcolour* color);
 
 //##########################################################################
-//############## HSVAColor ###########################################
+//############## HSVAcolour ###########################################
 //##########################################################################
 
-class HSVAColor : public HSVColor
+class HSVAcolour : public HSVcolour
 {
 public:
-	static const HSVAColor Unassigned;
+	static const HSVAcolour Unassigned;
 
 	float alpha;
 
-	HSVAColor(void) :
-		HSVColor() { alpha = -1.0f; }
-	HSVAColor(float h, float s, float v, float a) :
-		HSVColor(h, s, v) { alpha = a; }
+	HSVAcolour(void) :
+		HSVcolour() { alpha = -1.0f; }
+	HSVAcolour(float h, float s, float v, float a) :
+		HSVcolour(h, s, v) { alpha = a; }
 
-	friend bool Close_Enough(const HSVAColor& c1, const HSVAColor& c2, float e = SMALL);
-	bool operator==(const HSVAColor& color) const { return Close_Enough(*this, color, SMALL); }
-	bool operator!=(const HSVAColor& color) const { return !Close_Enough(*this, color, SMALL); }
+	friend bool Close_Enough(const HSVAcolour& c1, const HSVAcolour& c2, float e = SMALL);
+	bool operator==(const HSVAcolour& color) const { return Close_Enough(*this, color, SMALL); }
+	bool operator!=(const HSVAcolour& color) const { return !Close_Enough(*this, color, SMALL); }
 
-	HSVAColor& operator=(const RGBAColor& color)
+	HSVAcolour& operator=(const RGBAcolour& color)
 	{
 		// Check_Object(this);
 		Check_Object(&color);
-		HSVColor::operator=(color);
+		HSVcolour::operator=(color);
 		alpha = color.GetAlpha();
 		return *this;
 	}
-	HSVAColor& operator=(const HSVAColor& color)
+	HSVAcolour& operator=(const HSVAcolour& color)
 	{
 		// Check_Object(this);
 		Check_Object(&color);
@@ -317,7 +317,7 @@ public:
 		return *this;
 	}
 
-	HSVAColor& Combine(const HSVAColor& c1, float t1, const HSVAColor& c2, float t2)
+	HSVAcolour& Combine(const HSVAcolour& c1, float t1, const HSVAcolour& c2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -329,7 +329,7 @@ public:
 		return *this;
 	}
 
-	HSVAColor& Lerp(const HSVAColor& c1, const HSVAColor& c2, float t)
+	HSVAcolour& Lerp(const HSVAcolour& c1, const HSVAcolour& c2, float t)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -345,21 +345,21 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const HSVAColor& color);
+	friend void ::Spew(const std::wstring_view& group, const HSVAcolour& color);
 #endif
 };
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVAColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVAcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void
-Convert_From_Ascii(PCSTR str, HSVAColor* color);
+Convert_From_Ascii(const std::wstring_view& str, HSVAcolour* color);
 
-inline RGBAColor&
-RGBAColor::operator=(const HSVAColor& color)
+inline RGBAcolour&
+RGBAcolour::operator=(const HSVAcolour& color)
 {
 	// Check_Object(this);
 	Check_Object(&color);
-	RGBColor::operator=(color);
+	RGBcolour::operator=(color);
 	alpha = color.alpha;
 	return *this;
 }
@@ -367,47 +367,47 @@ RGBAColor::operator=(const HSVAColor& color)
 
 namespace MemoryStreamIO
 {
-#if _CONSIDERED_TEMPORARILY_DISABLED
+#if CONSIDERED_DISABLED
 inline std::istream&
-Read(std::istream& stream, Stuff::RGBColor* output)
+Read(std::istream& stream, Stuff::RGBcolour* output)
 {
 	return stream.read(output, sizeof(*output));
 }
 inline std::ostream&
-Write(std::ostream& stream, const Stuff::RGBColor* input)
+Write(std::ostream& stream, const Stuff::RGBcolour* input)
 {
 	return stream.write(input, sizeof(*input));
 }
 
 inline std::istream&
-Read(std::istream& stream, Stuff::RGBAColor* output)
+Read(std::istream& stream, Stuff::RGBAcolour* output)
 {
 	return stream.read(output, sizeof(*output));
 }
 inline std::ostream&
-Write(std::ostream& stream, const Stuff::RGBAColor* input)
+Write(std::ostream& stream, const Stuff::RGBAcolour* input)
 {
 	return stream.write(input, sizeof(*input));
 }
 
 inline std::istream&
-Read(std::istream& stream, Stuff::HSVColor* output)
+Read(std::istream& stream, Stuff::HSVcolour* output)
 {
 	return stream.read(output, sizeof(*output));
 }
 inline std::ostream&
-Write(std::ostream& stream, const Stuff::HSVColor* input)
+Write(std::ostream& stream, const Stuff::HSVcolour* input)
 {
 	return stream.write(input, sizeof(*input));
 }
 
 inline std::istream&
-Read(std::istream& stream, Stuff::HSVAColor* output)
+Read(std::istream& stream, Stuff::HSVAcolour* output)
 {
 	return stream.read(output, sizeof(*output));
 }
 inline std::ostream&
-Write(std::ostream& stream, const Stuff::HSVAColor* input)
+Write(std::ostream& stream, const Stuff::HSVAcolour* input)
 {
 	return stream.write(input, sizeof(*input));
 }

@@ -23,8 +23,8 @@
 class Shape
 {
 public:
-	puint8_t frameList; // This is binary image of VFX file
-	puint8_t stupidHeader;
+	uint8_t* frameList; // This is binary image of VFX file
+	uint8_t* stupidHeader;
 	uint32_t lastTurnUsed;
 	Shape* next;
 	AppearanceTypePtr owner;
@@ -40,7 +40,7 @@ public:
 
 	Shape(void) { init(void); }
 
-	int32_t init(puint8_t fileBlock, AppearanceTypePtr, int32_t shapeSize);
+	int32_t init(uint8_t* fileBlock, AppearanceTypePtr, int32_t shapeSize);
 
 	void destroy(void);
 

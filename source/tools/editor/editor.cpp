@@ -25,7 +25,7 @@ uint32_t systemHeapSize = 8192000;
 uint32_t guiHeapSize = 1023999;
 uint32_t tglHeapSize = 65536000;
 
-uint32_t BaseVertexColor = 0x00000000; // This color is applied to all vertices
+uint32_t BaseVertexcolour = 0x00000000; // This color is applied to all vertices
 	// in game as Brightness correction.
 
 int32_t gammaLevel = 0;
@@ -35,11 +35,11 @@ extern int32_t terrainLineChanged; // the terrain uses this
 extern float frameRate; // tiny geometry needs this
 
 extern bool InEditor;
-extern char FileMissingString[];
-extern char CDMissingString[];
-extern char MissingTitleString[];
+extern wchar_t FileMissingString[];
+extern wchar_t CDMissingString[];
+extern wchar_t MissingTitleString[];
 
-extern char CDInstallPath[];
+extern wchar_t CDInstallPath[];
 
 uint32_t gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
@@ -82,7 +82,7 @@ int32_t ObjectTextureSize = 128;
 
 Editor* editor = nullptr;
 
-char missionName[1024] = "\0";
+wchar_t missionName[1024] = "\0";
 
 enum
 {
@@ -116,10 +116,10 @@ UpdateRenderers()
 	Sleep(0.25 /*seconds*/ * 1000.0); /* limit the frame rate when displaying on remote console */
 #endif /*RUNNING_REMOTELY*/
 	hasGuardBand = true;
-	uint32_t bColor = 0x0;
+	uint32_t bcolour = 0x0;
 	if (eye)
-		bColor = eye->fogColor;
-	gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
+		bcolour = eye->fogcolour;
+	gos_SetupViewport(1, 1.0, 1, bcolour, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
 	gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, TRUE);
@@ -195,7 +195,7 @@ InitializeGameEngine()
 	cLoadString(IDS_MC2_FILEMISSING, FileMissingString, 511);
 	cLoadString(IDS_MC2_CDMISSING, CDMissingString, 1023);
 	cLoadString(IDS_MC2_MISSING_TITLE, MissingTitleString, 255);
-	char temp[256];
+	wchar_t temp[256];
 	cLoadString(IDS_FLOAT_HELP_FONT, temp, 255);
 	const std::wstring_view& pStr = strstr(temp, ",");
 	if (pStr)
@@ -203,7 +203,7 @@ InitializeGameEngine()
 		gosFontScale = atoi(pStr + 2);
 		*pStr = 0;
 	}
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, "assets\\graphics\\");
 	strcat(path, temp);
 	gosFontHandle = gos_LoadFont(path);
@@ -216,10 +216,10 @@ InitializeGameEngine()
 		dev.dmSize = sizeof(DEVMODE);
 		dev.dmSpecVersion = DM_SPECVERSION;
 		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
-		if ((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) || (dev.dmBitsPerPel > 16))
+		if ((dev.dmPelswidth > 1024) || (dev.dmPelsheight > 768) || (dev.dmBitsPerPel > 16))
 		{
-			char title[256];
-			char msg[2048];
+			wchar_t title[256];
+			wchar_t msg[2048];
 			cLoadString(IDS_EDITOR_ERROR, title, 255);
 			cLoadString(IDS_EDITOR_VOODOO3, msg, 2047);
 			MessageBox(nullptr, msg, title, MB_OK | MB_ICONWARNING);
@@ -272,7 +272,7 @@ InitializeGameEngine()
 	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
 	int32_t effectsSize = effectFile.fileSize();
-	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
+	uint8_t* effectsData = (uint8_t*)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
 	effectStream = new std::iostream(effectsData, effectsSize);
@@ -294,7 +294,7 @@ InitializeGameEngine()
 #ifdef _DEBUG
 	if (systemOpenResult != NO_ERROR)
 	{
-		char Buffer[256];
+		wchar_t Buffer[256];
 		gos_GetCurrentPath(Buffer, 256);
 		STOP(("Cannot find \"system.cfg\" file in %s", Buffer));
 	}
@@ -368,8 +368,8 @@ InitializeGameEngine()
 				fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
 				memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 				int32_t fileNum = 0;
-				char fastFileId[10];
-				char fileName[100];
+				wchar_t fastFileId[10];
+				wchar_t fileName[100];
 				sprintf(fastFileId, "File%d", fileNum);
 				while (systemFile->readIdString(fastFileId, fileName, 99) == NO_ERROR)
 				{
@@ -506,9 +506,9 @@ InitializeGameEngine()
 			result = prefs->readIdLong("DragThreshold", dragThreshold);
 			if (result != NO_ERROR)
 				dragThreshold = 10;
-			result = prefs->readIdULong("BaseVertexColor", BaseVertexColor);
+			result = prefs->readIdULong("BaseVertexcolour", BaseVertexcolour);
 			if (result != NO_ERROR)
-				BaseVertexColor = 0x00000000;
+				BaseVertexcolour = 0x00000000;
 		}
 	}
 	prefs->close();
@@ -566,8 +566,8 @@ InitializeGameEngine()
 	timerManager = new TimerManager;
 	timerManager->init();
 	//---------------------------------------------------------
-	// Start the Color table code
-	initColorTables();
+	// Start the colour table code
+	initcolourTables();
 	if (!statisticsInitialized)
 	{
 		statisticsInitialized = true;
@@ -586,8 +586,8 @@ TerminateGameEngine()
 	else
 		alreadyTermed = true;
 	//---------------------------------------------------------
-	// End the Color table code
-	destroyColorTables();
+	// End the colour table code
+	destroycolourTables();
 	//---------------------------------------------------------
 	// End the Timers
 	delete timerManager;
@@ -715,7 +715,7 @@ ParseCommandLine(const std::wstring_view& command_line)
 	int32_t n_args = 0;
 	int32_t index = 0;
 	const std::wstring_view& argv[30];
-	char tempCommandLine[4096];
+	wchar_t tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
 	while (tempCommandLine[index] != '\0') // until we null out
@@ -837,50 +837,50 @@ GetGameOSEnvironment(const std::wstring_view& commandline)
 	dev.dmSize = sizeof(DEVMODE);
 	dev.dmSpecVersion = DM_SPECVERSION;
 	EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
-	Environment.screenWidth = dev.dmPelsWidth;
-	Environment.screenHeight = dev.dmPelsHeight;
-	if (((512 > Environment.screenWidth) || (384 > Environment.screenHeight) || (1600 < Environment.screenWidth) || (1200 < Environment.screenHeight)) && (0 == dev.dmDeviceName[0]))
+	Environment.screenwidth = dev.dmPelswidth;
+	Environment.screenheight = dev.dmPelsheight;
+	if (((512 > Environment.screenwidth) || (384 > Environment.screenheight) || (1600 < Environment.screenwidth) || (1200 < Environment.screenheight)) && (0 == dev.dmDeviceName[0]))
 	{
 		/* might be a buggy driver reporting incorrectly (like the permedia2
 		 * win95 driver */
-		Environment.screenWidth = GetDeviceCaps(GetDC(nullptr), HORZRES);
-		Environment.screenHeight = GetDeviceCaps(GetDC(nullptr), VERTRES);
+		Environment.screenwidth = GetDeviceCaps(GetDC(nullptr), HORZRES);
+		Environment.screenheight = GetDeviceCaps(GetDC(nullptr), VERTRES);
 	}
 	// CHeck for non-standard resolutions.  Like LapTops or ATI cards or BOTH!!
-	if (Environment.screenWidth < 512)
+	if (Environment.screenwidth < 512)
 	{
-		Environment.screenWidth = 512;
-		Environment.screenHeight = 384;
+		Environment.screenwidth = 512;
+		Environment.screenheight = 384;
 	}
-	else if ((Environment.screenWidth > 512) && (Environment.screenWidth < 640))
+	else if ((Environment.screenwidth > 512) && (Environment.screenwidth < 640))
 	{
-		Environment.screenWidth = 640;
-		Environment.screenHeight = 480;
+		Environment.screenwidth = 640;
+		Environment.screenheight = 480;
 	}
-	else if ((Environment.screenWidth > 640) && (Environment.screenWidth < 800))
+	else if ((Environment.screenwidth > 640) && (Environment.screenwidth < 800))
 	{
-		Environment.screenWidth = 512;
-		Environment.screenHeight = 384;
+		Environment.screenwidth = 512;
+		Environment.screenheight = 384;
 	}
-	else if ((Environment.screenWidth > 800) && (Environment.screenWidth < 1024))
+	else if ((Environment.screenwidth > 800) && (Environment.screenwidth < 1024))
 	{
-		Environment.screenWidth = 800;
-		Environment.screenHeight = 600;
+		Environment.screenwidth = 800;
+		Environment.screenheight = 600;
 	}
-	else if ((Environment.screenWidth > 1024) && (Environment.screenWidth < 1280))
+	else if ((Environment.screenwidth > 1024) && (Environment.screenwidth < 1280))
 	{
-		Environment.screenWidth = 1024;
-		Environment.screenHeight = 768;
+		Environment.screenwidth = 1024;
+		Environment.screenheight = 768;
 	}
-	else if ((Environment.screenWidth > 1280) && (Environment.screenWidth < 1600))
+	else if ((Environment.screenwidth > 1280) && (Environment.screenwidth < 1600))
 	{
-		Environment.screenWidth = 1280;
-		Environment.screenHeight = 1024;
+		Environment.screenwidth = 1280;
+		Environment.screenheight = 1024;
 	}
-	else if (Environment.screenWidth > 1600)
+	else if (Environment.screenwidth > 1600)
 	{
-		Environment.screenWidth = 1600;
-		Environment.screenHeight = 1200;
+		Environment.screenwidth = 1600;
+		Environment.screenheight = 1200;
 	}
 	Environment.Suppress3DFullScreenWarning = 0;
 	EditorData::setMapName(nullptr);

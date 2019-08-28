@@ -25,12 +25,12 @@ HRESULT __stdcall wACMStreamConvert(
 HRESULT __stdcall wACMStreamUnprepareHeader(
 	HACMSTREAM hACMStream, LPACMSTREAMHEADER pACMHeader, uint32_t fdwPrepare);
 HRESULT __stdcall wACMStreamClose(HACMSTREAM hACMStream, uint32_t flags);
-HRESULT __stdcall wACMStreamOpen(LPHACMSTREAM phas, HACMDRIVER had, LPWAVEFORMATEX pwfxSrc,
+HRESULT __stdcall wACMStreamOpen(LPHACMSTREAM phas, HACMDRIVER had, LPWAVEFORMATEX pwfxsrc,
 	LPWAVEFORMATEX pwfxDst, LPWAVEFILTER pwfltr, uint32_t dwCallback, uint32_t dwInstance,
 	uint32_t fdwOpen);
 HRESULT __stdcall wACMStreamSize(
-	HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint32_t fdwSize);
-HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst,
+	HACMSTREAM has, uint32_t cbInput, uint32_t* pdwOutputBytes, uint32_t fsize);
+HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, LPWAVEFORMATEX pwfxsrc, LPWAVEFORMATEX pwfxDst,
 	uint32_t cbwfxDst, uint32_t fdwSuggest);
 
 #endif

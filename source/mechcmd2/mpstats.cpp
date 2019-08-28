@@ -35,7 +35,7 @@ MPStats::init()
 	path.init(artPath, "mcl_mp_stats", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char buffer2[512];
+		wchar_t buffer2[512];
 		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return false;
@@ -87,17 +87,17 @@ MPStats::begin()
 	beginFadeIn(.5);
 	for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		entries[i].showGUIWindow(0);
-	statics[15].setColor(0);
+	statics[15].setcolour(0);
 	// need to set up map name
 	bool bRes = 0;
-	char text2[256];
-	char text[256];
+	wchar_t text2[256];
+	wchar_t text[256];
 	cLoadString(IDS_MP_LM_MAP_LIST_MAP_NAME, text, 255);
 	sprintf(text2, text, MPlayer->missionSettings.name);
 	textObjects[1].setText(text2);
 	uint32_t type = MPlayer->missionSettings.missionType;
 	cLoadString(IDS_MP_LM_MAP_LIST_TYPE, text, 255);
-	char mType[128];
+	wchar_t mType[128];
 	cLoadString(IDS_MP_LM_TYPE0 + type, mType, 127);
 	sprintf(text2, text, mType);
 	textObjects[6].setText(text2);
@@ -121,7 +121,7 @@ MPStats::handleMessage(uint32_t what, uint32_t who)
 		end();
 		beginFadeOut(.5f);
 		statics[15].setTexture((uint32_t)0);
-		statics[15].setColor(0);
+		statics[15].setcolour(0);
 	}
 	return 1;
 }
@@ -148,12 +148,12 @@ MPStats::render(int32_t xOffset, int32_t yOffset)
 void
 MPStats::update()
 {
-	if (status == RUNNING && !statics[15].getColor())
+	if (status == RUNNING && !statics[15].getcolour())
 	{
 		int32_t textureHandle = MissionBriefingScreen::getMissionTGA(MPlayer->missionSettings.map);
 		statics[15].setTexture(textureHandle);
 		statics[15].setUVs(0, 127, 127, 0);
-		statics[15].setColor(0xffffffff);
+		statics[15].setcolour(0xffffffff);
 		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		const MC2Player* sorted[MAX_MC_PLAYERS];
@@ -166,15 +166,15 @@ MPStats::update()
 		}
 		bool scoreShown[MAX_MC_PLAYERS]; // keep track of whose shown the score
 		memset(scoreShown, 0, sizeof(bool) * MAX_MC_PLAYERS);
-		uint32_t winnerColor = 0xffFFCC00; // gold
+		uint32_t winnercolour = 0xffFFCC00; // gold
 		if (winnerCount > 1)
-			winnerColor = 0xffA6A6A6;
+			winnercolour = 0xffA6A6A6;
 		qsort(sorted, playerCount, sizeof(MC2Player*), sortStats);
 		for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		{
 			if (i < playerCount)
 			{
-				entries[i].setData(sorted[i], winnerColor, !scoreShown[sorted[i]->team]);
+				entries[i].setData(sorted[i], winnercolour, !scoreShown[sorted[i]->team]);
 				scoreShown[sorted[i]->team] = true;
 				entries[i].showGUIWindow(true);
 			}
@@ -220,8 +220,8 @@ MPStats::update()
 void
 MPStats::setHostLeftDlg(const std::wstring_view& hostName)
 {
-	char leaveStr[256];
-	char formatStr[256];
+	wchar_t leaveStr[256];
+	wchar_t formatStr[256];
 	cLoadString(IDS_PLAYER_LEFT, leaveStr, 255);
 	sprintf(formatStr, leaveStr, hostName);
 	LogisticsOneButtonDialog::instance()->setText(IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
@@ -232,7 +232,7 @@ MPStats::setHostLeftDlg(const std::wstring_view& hostName)
 
 MPStatsEntry::MPStatsEntry()
 {
-	overlayColor = 0;
+	overlaycolour = 0;
 }
 
 void
@@ -251,7 +251,7 @@ MPStatsEntry::init()
 	path.init(artPath, "mcl_mp_scoreboard", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char buffer2[512];
+		wchar_t buffer2[512];
 		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return;
@@ -259,22 +259,22 @@ MPStatsEntry::init()
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button", "Edit");
 	aObject::init(
 		rects[2].left(), rects[2].top(), rects[5].right() - rects[0].left(), rects[2].height());
-	overlayColor = 0;
+	overlaycolour = 0;
 }
 
 void
 MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 {
-	int32_t color = data ? MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] : 0x00000000;
-	int32_t color2 = data ? MPlayer->colors[data->stripeColor] : 0x00000000;
-	int32_t scoreColor = 0xffffffff;
+	int32_t color = data ? MPlayer->colors[data->basecolour[BASECOLOR_TEAM]] : 0x00000000;
+	int32_t color2 = data ? MPlayer->colors[data->stripecolour] : 0x00000000;
+	int32_t scorecolour = 0xffffffff;
 	if (data && MPlayer->allUnitsDestroyed[data->commanderid])
-		scoreColor = 0xff7f7f7f;
-	rects[0].setColor(color2);
-	rects[1].setColor(color);
-	int32_t textColor = 0xff000000;
+		scorecolour = 0xff7f7f7f;
+	rects[0].setcolour(color2);
+	rects[1].setcolour(color);
+	int32_t textcolour = 0xff000000;
 	if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
-		textColor = 0xffffffff;
+		textcolour = 0xffffffff;
 	if (!data)
 	{
 		textObjects[0].setText(IDS_MP_STATS_PLAYER_NAME);
@@ -285,13 +285,13 @@ MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 	}
 	else
 	{
-		textObjects[1].setColor(scoreColor);
-		textObjects[2].setColor(scoreColor);
-		textObjects[3].setColor(scoreColor);
-		textObjects[4].setColor(scoreColor);
-		textObjects[0].setColor(textColor);
+		textObjects[1].setcolour(scorecolour);
+		textObjects[2].setcolour(scorecolour);
+		textObjects[3].setcolour(scorecolour);
+		textObjects[4].setcolour(scorecolour);
+		textObjects[0].setcolour(textcolour);
 		textObjects[0].setText(data->name);
-		char team[32];
+		wchar_t team[32];
 		sprintf(team, "%ld", data->teamSelected + 1);
 		textObjects[1].setText(team);
 		// score needs to do here
@@ -334,7 +334,7 @@ MPStatsEntry::getLossesX()
 
 MPStatsResultsEntry::MPStatsResultsEntry()
 {
-	overlayColor = 0;
+	overlaycolour = 0;
 }
 
 MPStatsResultsEntry::~MPStatsResultsEntry() {}
@@ -343,10 +343,10 @@ void
 MPStatsResultsEntry::render(int32_t x, int32_t y)
 {
 	LogisticsScreen::render(x, y);
-	// if ( overlayColor )
+	// if ( overlaycolour )
 	//{
 	//	RECT rect = { textObjects[5].left(), rects[0].top(), rects[5].right(),
-	// rects[0].y() + rects[0].height() }; 	drawRect( rect, overlayColor );
+	// rects[0].y() + rects[0].height() }; 	drawRect( rect, overlaycolour );
 	//}
 }
 
@@ -358,7 +358,7 @@ MPStatsResultsEntry::init()
 	path.init(artPath, "mcl_mp_stats_entry", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char buffer2[512];
+		wchar_t buffer2[512];
 		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return;
@@ -368,23 +368,23 @@ MPStatsResultsEntry::init()
 }
 
 void
-MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool bShowScore)
+MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelcolour, bool bShowScore)
 {
-	rects[4].setColor(MPlayer->colors[data->baseColor[BASECOLOR_TEAM]]);
-	rects[2].setColor(MPlayer->colors[data->stripeColor]);
+	rects[4].setcolour(MPlayer->colors[data->basecolour[BASECOLOR_TEAM]]);
+	rects[2].setcolour(MPlayer->colors[data->stripecolour]);
 	if (data && MPlayer->allUnitsDestroyed[data->commanderid])
-		overlayColor = 0x7f000000;
+		overlaycolour = 0x7f000000;
 	else
-		overlayColor = 0;
-	int32_t color = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
-	int32_t textColor = 0xff000000;
+		overlaycolour = 0;
+	int32_t color = MPlayer->colors[data->basecolour[BASECOLOR_TEAM]];
+	int32_t textcolour = 0xff000000;
 	if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
-		textColor = 0xffffffff;
+		textcolour = 0xffffffff;
 	textObjects[3].setText(data->name);
 	textObjects[4].setText(data->unitName);
-	textObjects[3].setColor(textColor);
-	textObjects[4].setColor(textColor);
-	char text[64];
+	textObjects[3].setcolour(textcolour);
+	textObjects[4].setcolour(textcolour);
+	wchar_t text[64];
 	sprintf(text, "%ld", MPlayer->teamScore[data->team]);
 	if (MPlayer->missionSettings.missionType == MISSION_TYPE_KING_OF_THE_HILL)
 	{
@@ -401,18 +401,18 @@ MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool b
 	textObjects[2].setText(text);
 	sprintf(text, "%ld", data->teamSelected + 1);
 	textObjects[5].setText(text);
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, "data\\multiplayer\\insignia\\");
 	strcat(path, data->insigniaFile);
 	if (data->winner)
 	{
-		statics[1].setColor(laurelColor);
-		rects[7].setColor(laurelColor);
+		statics[1].setcolour(laurelcolour);
+		rects[7].setcolour(laurelcolour);
 	}
 	else
 	{
-		statics[1].setColor(0);
-		rects[7].setColor(0);
+		statics[1].setcolour(0);
+		rects[7].setcolour(0);
 	}
 	if (fileExists(path))
 	{

@@ -88,7 +88,7 @@ bool drawExtents = false;
 extern bool somethingOnFire;
 extern bool useOldProject;
 extern bool useSound;
-extern char lastName[];
+extern wchar_t lastName[];
 
 extern GameLog* CombatLog;
 
@@ -99,7 +99,7 @@ extern float scenarioTime;
 //#endif
 
 extern int32_t DefaultPilotId;
-extern char marineProfileName[];
+extern wchar_t marineProfileName[];
 // extern ObjectMapPtr GameObjectMap;
 
 extern int32_t NumMarines;
@@ -268,7 +268,7 @@ BuildingType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 		objectNameID += IDS_MC2_STRING_START;
 	if (objectNameID != -1)
 	{
-		char s[255];
+		wchar_t s[255];
 		cLoadString(objectNameID, s, 254);
 	}
 	for (size_t i = 0; i < 18; i++)
@@ -801,18 +801,18 @@ Building::update(void)
 		}
 	}
 	//-------------------------------------------
-	// Handle power out.
+	// handle power out.
 	if (powerSupply && (ObjectManager->getByWatchID(powerSupply)->getStatus() == OBJECT_STATUS_DESTROYED))
 		appearance->setLightsOut(true);
 	//---------------------------------------
-	// Handle Lookout tower
+	// handle Lookout tower
 	if ((((BuildingTypePtr)getObjectType())->lookoutTowerRange > 0.0f) && getTeam() && (!parent || (parent && !ObjectManager->getByWatchID(parent)->isDisabled() && !ObjectManager->getByWatchID(parent)->isDestroyed())))
 	{
 		float lookoutRange = ((BuildingTypePtr)getObjectType())->lookoutTowerRange;
 		getTeam()->markSeen(position, lookoutRange);
 	}
 	//-------------------------------------------
-	// Handle Sensor Building
+	// handle Sensor Building
 	if (parent && sensorSystem)
 	{
 		if (ObjectManager->getByWatchID(parent)->isDisabled() || ObjectManager->getByWatchID(parent)->isDestroyed())
@@ -822,7 +822,7 @@ Building::update(void)
 		}
 	}
 	//---------------------------------------
-	// Handle Building captured.
+	// handle Building captured.
 	if (parent && !ObjectManager->getByWatchID(parent)->isDisabled() && !ObjectManager->getByWatchID(parent)->isDestroyed() && (ObjectManager->getByWatchID(parent)->getTeamId() != getTeamId()))
 	{
 		// if building recaptured play a sound
@@ -831,7 +831,7 @@ Building::update(void)
 		setTeamId(ObjectManager->getByWatchID(parent)->getTeam()->getId(), false);
 	}
 	//-----------------------------------------------
-	// Handle parent disabled or destroyed or asleep
+	// handle parent disabled or destroyed or asleep
 	if (parent && (ObjectManager->getByWatchID(parent)->isDisabled() || ObjectManager->getByWatchID(parent)->isDestroyed() || !ObjectManager->getByWatchID(parent)->getAwake()))
 	{
 		//--------------------------------------------------
@@ -1022,7 +1022,7 @@ Building::render(void)
 				else if (getTeam()->isEnemy(Team::home))
 					color = SB_RED;
 			}
-			appearance->setBarColor(color);
+			appearance->setBarcolour(color);
 			appearance->setBarStatus(barStatus);
 		}
 		if (((BuildingTypePtr)getObjectType())->buildingTypeName < IDS_MC2_STRING_START)
@@ -1149,7 +1149,7 @@ Building::init(bool create, ObjectTypePtr objType)
 		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 		if (!buildingAppearanceType)
 		{
-			char msg[1024];
+			wchar_t msg[1024];
 			sprintf(msg, "No Building Appearance Named %s", appearName);
 			Fatal(0, msg);
 		}
@@ -1379,7 +1379,7 @@ Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 				// Now, blow the building up using its type->explosion
 				// ONLY if the building has no special MAGIC gos FX version!
 				Stuff::Vector3D hitNodePos = appearance->getHitNode();
-				if (!appearance->playDestruction())
+				if (!appearance->playdestruction())
 					ObjectManager->createExplosion(
 						BUILDING_EXPLOSION_ID, nullptr, hitNodePos, explDamage, explRadius);
 				else // Play the sound effect and do splash damage but don't
@@ -1414,7 +1414,7 @@ Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 #endif
 				if (CombatLog)
 				{
-					char s[1024];
+					wchar_t s[1024];
 					sprintf(s, "[%.2f] building.destroyed: [%05d]%s", scenarioTime,
 						this->getPartId(), this->getName());
 					CombatLog->write(s);
@@ -1428,7 +1428,7 @@ Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 					// able to salvage it either!! UNFORTUNATELY, the move code
 					// does not store the landBridge stuff. ALL I can do is blow
 					// a guy for standing on impassable terrain now.
-					pint16_t curCoord = cellsCovered;
+					int16_t* curCoord = cellsCovered;
 					for (size_t i = 0; i < numCellsCovered; i++)
 					{
 						int32_t r = *curCoord++;
@@ -1509,7 +1509,7 @@ Building::Save(PacketFilePtr file, int32_t packetNum)
 	BuildingData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(BuildingData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(BuildingData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

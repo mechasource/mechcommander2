@@ -114,7 +114,7 @@ public:
 	virtual void render(void);
 
 	void setHiddenText(const std::wstring_view& pText) { hiddenText = pText; }
-	const std::wstring_view& getHiddenText() const { return hiddenText; }
+	const std::wstring_view& getHiddenText(void) const { return hiddenText; }
 
 protected:
 	const std::wstring_view& hiddenText;
@@ -157,7 +157,7 @@ public:
 	virtual void move(float offsetX, float offsetY);
 	void setScrollPos(int32_t pos);
 
-	int32_t getScrollBarWidth(void);
+	int32_t getScrollBarwidth(void);
 
 	void setOrange(bool bOrange);
 	void enableAllItems(void);
@@ -178,7 +178,7 @@ protected:
 
 	aListItem* items[MAX_LIST_ITEMS];
 	mcScrollBar* scrollBar;
-	int32_t itemHeight;
+	int32_t itemheight;
 	bool scrollActive;
 	bool singleCheck;
 
@@ -232,7 +232,7 @@ protected:
 	int32_t rectCount;
 	aAnimButton expandButton;
 	aListBox listBox;
-	float listBoxMaxHeight;
+	float listBoxMaxheight;
 	int32_t selectionindex;
 	aAnimTextListItem templateItem;
 	aDropList(const aDropList&);
@@ -276,7 +276,7 @@ protected:
 	int32_t rectCount;
 	aAnimButton expandButton;
 	aListBox listBox;
-	float listBoxMaxHeight;
+	float listBoxMaxheight;
 	int32_t selectionindex;
 
 	aComboBox(const aComboBox&);

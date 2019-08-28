@@ -28,10 +28,10 @@ Forest::Forest(int32_t newID)
 	}
 	maxDensity = 7.f;
 	minDensity = .001f;
-	maxHeight = 1.25;
-	minHeight = .75;
+	maxheight = 1.25;
+	minheight = .75;
 	bRandom = true;
-	char tmp[256];
+	wchar_t tmp[256];
 	cLoadString(IDS_UNNAMDE_FOREST, tmp, 255, gameResourceHandle);
 	name.Format(tmp, ID);
 }
@@ -42,8 +42,8 @@ Forest::Forest(const Forest& src)
 	centerY = src.centerY;
 	fileName = src.fileName;
 	bRandom = src.bRandom;
-	maxHeight = src.maxHeight;
-	minHeight = src.minHeight;
+	maxheight = src.maxheight;
+	minheight = src.minheight;
 	maxDensity = src.maxDensity;
 	minDensity = src.minDensity;
 	name = src.name;
@@ -64,8 +64,8 @@ Forest::operator=(const Forest& src)
 		centerY = src.centerY;
 		fileName = src.fileName;
 		bRandom = src.bRandom;
-		maxHeight = src.maxHeight;
-		minHeight = src.minHeight;
+		maxheight = src.maxheight;
+		minheight = src.minheight;
 		maxDensity = src.maxDensity;
 		minDensity = src.minDensity;
 		radius = src.radius;
@@ -85,7 +85,7 @@ Forest::init()
 	FitIniFile file;
 	if (NO_ERROR != file.open(fileName))
 	{
-		char errorString[256];
+		wchar_t errorString[256];
 		sprintf(errorString, "Couldn't open file %s", (const std::wstring_view&)fileName);
 		Assert(0, 0, errorString);
 		return;
@@ -97,16 +97,16 @@ Forest::init()
 void
 Forest::init(FitIniFile& file)
 {
-	char headerName[256];
+	wchar_t headerName[256];
 	for (size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		sprintf(headerName, "TreeType%ld", i);
 		file.readIdFloat(headerName, percentages[i]);
 	}
-	char tmp[256];
+	wchar_t tmp[256];
 	tmp[0] = 0;
-	file.readIdFloat("HeightMin", minHeight);
-	file.readIdFloat("HeightMax", maxHeight);
+	file.readIdFloat("heightMin", minheight);
+	file.readIdFloat("heightMax", maxheight);
 	file.readIdFloat("DensityMin", minDensity);
 	file.readIdFloat("DensityMax", maxDensity);
 	file.readIdFloat("CenterX", centerX);
@@ -126,7 +126,7 @@ Forest::save()
 	FitIniFile file;
 	if (NO_ERROR != file.create((const std::wstring_view&)(const std::wstring_view&)fileName))
 	{
-		char errorString[256];
+		wchar_t errorString[256];
 		sprintf(errorString, "Couldn't create file %s", (const std::wstring_view&)fileName);
 		Assert(0, 0, errorString);
 		return;
@@ -138,14 +138,14 @@ Forest::save()
 void
 Forest::save(FitIniFile& file)
 {
-	char headerName[256];
+	wchar_t headerName[256];
 	for (size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		sprintf(headerName, "TreeType%ld", i);
 		file.writeIdFloat(headerName, percentages[i]);
 	}
-	file.writeIdFloat("HeightMin", minHeight);
-	file.writeIdFloat("HeightMax", maxHeight);
+	file.writeIdFloat("heightMin", minheight);
+	file.writeIdFloat("heightMax", maxheight);
 	file.writeIdFloat("DensityMin", minDensity);
 	file.writeIdFloat("DensityMax", maxDensity);
 	file.writeIdFloat("CenterX", centerX);

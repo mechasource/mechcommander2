@@ -61,8 +61,8 @@ CPrefs::CPrefs()
 		playerName[i][0] = 0;
 	for (i = 0; i < 10; i++)
 		ipAddresses[i][0] = 0;
-	baseColor = 0xffff7e00;
-	highlightColor = 0xffff7e00;
+	basecolour = 0xffff7e00;
+	highlightcolour = 0xffff7e00;
 	faction = 0;
 	insigniaFile[0] = 0;
 	for (i = 0; i < 10; i++)
@@ -74,7 +74,7 @@ CPrefs::CPrefs()
 	useRealLOS = true;
 	doubleClickThreshold = 0.2f;
 	dragThreshold = 10;
-	BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
+	BaseVertexcolour = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
 #endif
 }
 
@@ -165,7 +165,7 @@ CPrefs::load(const std::wstring_view& pFileName)
 			result = prefsFile->readIdBoolean("useLeftRightMouseProfile", useLeftRightMouseProfile);
 			if (result != NO_ERROR)
 				useLeftRightMouseProfile = true;
-			char blockName[64];
+			wchar_t blockName[64];
 			for (size_t i = 0; i < 10; i++)
 			{
 				sprintf(blockName, "PlayerName%ld", i);
@@ -181,12 +181,12 @@ CPrefs::load(const std::wstring_view& pFileName)
 				sprintf(blockName, "UnitName%ld", i);
 				result = prefsFile->readIdString(blockName, &unitName[i][0], 255);
 			}
-			result = prefsFile->readIdLong("BaseColor", baseColor);
+			result = prefsFile->readIdLong("Basecolour", basecolour);
 			if (result != NO_ERROR)
-				baseColor = 0xffff7e00;
-			result = prefsFile->readIdLong("Highlightcolor", highlightColor);
+				basecolour = 0xffff7e00;
+			result = prefsFile->readIdLong("Highlightcolor", highlightcolour);
 			if (result != NO_ERROR)
-				highlightColor = 0xffff7e00;
+				highlightcolour = 0xffff7e00;
 			result = prefsFile->readIdLong("faction", faction);
 			result = prefsFile->readIdString("InsigniaFile", insigniaFile, 255);
 			result = prefsFile->readIdBoolean("PilotVideos", pilotVideos);
@@ -235,8 +235,8 @@ CPrefs::load(const std::wstring_view& pFileName)
 int32_t
 CPrefs::save()
 {
-	char backupPath[256];
-	char originalPath[256];
+	wchar_t backupPath[256];
+	wchar_t originalPath[256];
 	strcpy(originalPath, "options.cfg");
 	strcpy(backupPath, originalPath);
 	strcat(backupPath, ".old");
@@ -276,7 +276,7 @@ CPrefs::save()
 			result = prefsFile->writeIdLong("Brightness", gammaLevel);
 			result =
 				prefsFile->writeIdBoolean("useLeftRightMouseProfile", useLeftRightMouseProfile);
-			char blockName[64];
+			wchar_t blockName[64];
 			for (size_t i = 0; i < 10; i++)
 			{
 				sprintf(blockName, "PlayerName%ld", i);
@@ -286,8 +286,8 @@ CPrefs::save()
 				sprintf(blockName, "IPAddress%ld", i);
 				result = prefsFile->writeIdString(blockName, &ipAddresses[i][0]);
 			}
-			result = prefsFile->writeIdLong("BaseColor", baseColor);
-			result = prefsFile->writeIdLong("Highlightcolor", highlightColor);
+			result = prefsFile->writeIdLong("Basecolour", basecolour);
+			result = prefsFile->writeIdLong("Highlightcolor", highlightcolour);
 			result = prefsFile->writeIdLong("faction", faction);
 			result = prefsFile->writeIdString("InsigniaFile", insigniaFile);
 			result = prefsFile->writeIdBoolean("PilotVideos", pilotVideos);
@@ -434,21 +434,21 @@ CPrefs::setNewName(const std::wstring_view& pNewName)
 			{
 				strcpy(playerName[j], playerName[j + 1]);
 			}
-			memmove(playerName[1], playerName[0], sizeof(char) * 9 * 256);
+			memmove(playerName[1], playerName[0], sizeof(wchar_t) * 9 * 256);
 			strcpy(playerName[0], pNewName);
 			break;
 		}
 		else if (!strlen(playerName[i]))
 		{
 			// found the last one...
-			memmove(playerName[1], playerName[0], sizeof(char) * 9 * 256);
+			memmove(playerName[1], playerName[0], sizeof(wchar_t) * 9 * 256);
 			strcpy(playerName[0], pNewName);
 			break;
 		}
 	}
 	if (i == 10)
 	{
-		memmove(playerName[1], playerName[0], sizeof(char) * 9 * 256);
+		memmove(playerName[1], playerName[0], sizeof(wchar_t) * 9 * 256);
 		strcpy(playerName[0], pNewName);
 	}
 }
@@ -469,14 +469,14 @@ CPrefs::setNewIP(const std::wstring_view& pNewIP)
 			{
 				strcpy(ipAddresses[j], ipAddresses[j + 1]);
 			}
-			memmove(ipAddresses[1], ipAddresses[0], sizeof(char) * 9 * 24);
+			memmove(ipAddresses[1], ipAddresses[0], sizeof(wchar_t) * 9 * 24);
 			strcpy(ipAddresses[0], pNewIP);
 			break;
 		}
 		else if (!strlen(ipAddresses[i]))
 		{
 			// found the last one...
-			memmove(ipAddresses[1], ipAddresses[0], sizeof(char) * 9 * 24);
+			memmove(ipAddresses[1], ipAddresses[0], sizeof(wchar_t) * 9 * 24);
 			strcpy(ipAddresses[0], pNewIP);
 			break;
 		}
@@ -499,21 +499,21 @@ CPrefs::setNewUnit(const std::wstring_view& pNewUnit)
 			{
 				strcpy(unitName[j], unitName[j + 1]);
 			}
-			memmove(unitName[1], unitName[0], sizeof(char) * 9 * 256);
+			memmove(unitName[1], unitName[0], sizeof(wchar_t) * 9 * 256);
 			strcpy(unitName[0], pNewUnit);
 			break;
 		}
 		else if (!strlen(unitName[i]))
 		{
 			// found the last one...
-			memmove(unitName[1], unitName[0], sizeof(char) * 9 * 256);
+			memmove(unitName[1], unitName[0], sizeof(wchar_t) * 9 * 256);
 			strcpy(unitName[0], pNewUnit);
 			break;
 		}
 	}
 	if (i == 10)
 	{
-		memmove(unitName[1], unitName[0], sizeof(char) * 9 * 256);
+		memmove(unitName[1], unitName[0], sizeof(wchar_t) * 9 * 256);
 		strcpy(unitName[0], pNewUnit);
 	}
 }

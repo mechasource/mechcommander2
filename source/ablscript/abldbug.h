@@ -160,7 +160,7 @@ protected:
 	bool traceEntry;
 	bool traceExit;
 
-	static char message[512];
+	static wchar_t message[512];
 
 	void (*printCallback)(const std::wstring_view& s);
 

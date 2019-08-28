@@ -42,8 +42,8 @@ public:
 	float getScaleX(void) const;
 	float getScaleY(void) const;
 
-	uint32_t getColor(void) const;
-	uint32_t getColor(float time) const;
+	uint32_t getcolour(void) const;
+	uint32_t getcolour(float time) const;
 
 	void setReferencePoints(float X, float Y);
 
@@ -96,7 +96,7 @@ public:
 	void setState(STATE);
 	STATE getState(void) const;
 
-	int32_t getCurrentColor(STATE) const;
+	int32_t getCurrentcolour(STATE) const;
 	int32_t getXDelta(STATE) const;
 	int32_t getYDelta(STATE) const;
 	float getCurrnetScale(STATE) const;

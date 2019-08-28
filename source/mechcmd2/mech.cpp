@@ -140,8 +140,8 @@ extern uint32_t NextIdNumber;
 extern float MetersPerCell;
 extern int32_t AttitudeEffectOnMovePath[NUM_ATTITUDES][3];
 extern bool useSound;
-extern bool friendlyDestroyed;
-extern bool enemyDestroyed;
+extern bool friendlydestroyed;
+extern bool enemydestroyed;
 extern TeamPtr homeTeam;
 
 extern int32_t MechSalvageChance;
@@ -172,7 +172,7 @@ extern float SkillSuccess[4];
 
 extern void
 addMoverToList(int32_t blockNum);
-extern char mechSpeedStateArray[28];
+extern wchar_t mechSpeedStateArray[28];
 
 extern int32_t TargetRolo;
 extern float MapCellDiagonal;
@@ -349,7 +349,7 @@ int32_t AttackerMoveModifier[NUM_MECH_STATES] = {
 	0 // Fallen Backward
 };
 
-char CriticalHitTable[4] = {
+wchar_t CriticalHitTable[4] = {
 	58, // 0 Hits
 	83, // 1 Hits
 	97, // 2 Hits
@@ -376,7 +376,7 @@ float BodyStateHeat[NUM_MECH_STATES] = {
 };
 #endif
 
-char MechHitLocationTable[NUM_MECH_HIT_SECTIONS * NUM_MECH_HIT_ARCS * NUM_MECH_ARMOR_LOCATIONS] = {
+wchar_t MechHitLocationTable[NUM_MECH_HIT_SECTIONS * NUM_MECH_HIT_ARCS * NUM_MECH_ARMOR_LOCATIONS] = {
 	30, 20, 25, 25, 0, 0, 0, 0, 0, 0, 0, // Top Front
 	30, 0, 0, 0, 0, 0, 0, 0, 20, 25, 25, // Top Rear
 	20, 15, 25, 0, 0, 0, 0, 0, 15, 25, 0, // Top Left
@@ -391,11 +391,11 @@ char MechHitLocationTable[NUM_MECH_HIT_SECTIONS * NUM_MECH_HIT_ARCS * NUM_MECH_A
 	0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0 // Bottom Right
 };
 
-char MechTransferHitTable[NUM_MECH_BODY_LOCATIONS] = {MECH_BODY_LOCATION_CTORSO, -1,
+wchar_t MechTransferHitTable[NUM_MECH_BODY_LOCATIONS] = {MECH_BODY_LOCATION_CTORSO, -1,
 	MECH_BODY_LOCATION_CTORSO, MECH_BODY_LOCATION_CTORSO, MECH_BODY_LOCATION_LTORSO,
 	MECH_BODY_LOCATION_RTORSO, MECH_BODY_LOCATION_LTORSO, MECH_BODY_LOCATION_RTORSO};
 
-char MechArmorToBodyLocation[NUM_MECH_ARMOR_LOCATIONS] = {
+wchar_t MechArmorToBodyLocation[NUM_MECH_ARMOR_LOCATIONS] = {
 	MECH_BODY_LOCATION_HEAD,
 	MECH_BODY_LOCATION_CTORSO,
 	MECH_BODY_LOCATION_LTORSO,
@@ -598,7 +598,7 @@ BattleMechType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 	result = mechFile.seekBlock("MechProfile");
 	if (result != NO_ERROR)
 		return (result);
-	char fileType[512];
+	wchar_t fileType[512];
 	result = mechFile.readIdString("ProfileName", fileType, 511);
 	if (result != NO_ERROR)
 		return (result);
@@ -985,13 +985,13 @@ BattleMechType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider
 		//------------------------------------
 		// What heroic music should be played?
 		if (collidee->getAlignment() == Team::home->getAlignment())
-			friendlyDestroyed = true;
+			friendlydestroyed = true;
 		else
-			enemyDestroyed = true;
+			enemydestroyed = true;
 #endif
 		if (CombatLog)
 		{
-			char s[1024];
+			wchar_t s[1024];
 			sprintf(s, "[%.2f] mech.destroyed HD: [%05d]%s", scenarioTime, mech->getPartId(),
 				mech->getName());
 			CombatLog->write(s);
@@ -1281,7 +1281,7 @@ BattleMech::init(uint32_t variantNum)
 	//--------------------------------------------------------------------
 	// CSV file open.  Variant Num controls offsets to data in the file.
 	// Same rules as before,  Rows start at one.  Columns start at zero.
-	char thisMechName[128];
+	wchar_t thisMechName[128];
 	mechFile->readString(3, 2, thisMechName, 127);
 	strncpy(name, thisMechName, MAXLEN_MOVER_NAME - 1);
 	name[MAXLEN_MOVER_NAME] = nullptr;
@@ -1289,7 +1289,7 @@ BattleMech::init(uint32_t variantNum)
 	mechFile->readFloat(3, 5, tonnage);
 	mechFile->readLong(5, 2, descID);
 	cLoadString(descID, thisMechName, 127);
-	char tmp[256];
+	wchar_t tmp[256];
 	cLoadString(IDS_MFDMCH_PRINTSTRING, tmp, 256);
 	sprintf(longName, tmp, thisMechName, tonnage);
 	mechFile->readLong(12, 2, iconPictureIndex);
@@ -2417,7 +2417,7 @@ BattleMech::init(FitIniFile* mechFile)
 	int32_t result = mechFile->seekBlock("Header");
 	if (result != NO_ERROR)
 		return (result);
-	char fileType[128];
+	wchar_t fileType[128];
 	result = mechFile->readIdString("FileType", fileType, 127);
 	if (result != NO_ERROR)
 		return (result);
@@ -2426,7 +2426,7 @@ BattleMech::init(FitIniFile* mechFile)
 	result = mechFile->seekBlock("General");
 	if (result != NO_ERROR)
 		return (result);
-	char thisMechName[128];
+	wchar_t thisMechName[128];
 	result = mechFile->readIdString("Name", thisMechName, 127);
 	strncpy(name, thisMechName, MAXLEN_MOVER_NAME - 1);
 	name[MAXLEN_MOVER_NAME] = nullptr;
@@ -2449,7 +2449,7 @@ BattleMech::init(FitIniFile* mechFile)
 	result = mechFile->readIdLong("Pilot", pilotNum);
 	if (result != NO_ERROR)
 		pilotNum = -1;
-	char cStatus = 0;
+	wchar_t cStatus = 0;
 	// result = mechFile->readIdChar("Status", cStatus);
 	// if (result != NO_ERROR)
 	//	return(result);
@@ -2612,7 +2612,7 @@ BattleMech::init(FitIniFile* mechFile)
 	int32_t curItem = 0;
 	while (curItem < numOther)
 	{
-		char itemString[128];
+		wchar_t itemString[128];
 		sprintf(itemString, "Item:%d", curItem);
 		result = mechFile->seekBlock(itemString);
 		if (result != NO_ERROR)
@@ -2647,7 +2647,7 @@ BattleMech::init(FitIniFile* mechFile)
 	// Read in the mech's weapons...
 	while (curItem < (numOther + numWeapons))
 	{
-		char itemString[128];
+		wchar_t itemString[128];
 		sprintf(itemString, "Item:%d", curItem);
 		result = mechFile->seekBlock(itemString);
 		if (result != NO_ERROR)
@@ -2680,7 +2680,7 @@ BattleMech::init(FitIniFile* mechFile)
 	// Read in the mech's ammo...
 	while (curItem < (numOther + numWeapons + numAmmos))
 	{
-		char itemString[128];
+		wchar_t itemString[128];
 		sprintf(itemString, "Item:%d", curItem);
 		result = mechFile->seekBlock(itemString);
 		if (result != NO_ERROR)
@@ -2755,7 +2755,7 @@ BattleMech::init(FitIniFile* mechFile)
 		body[curLocation].totalSpaces = 0;
 		for (size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
-			char componentString[128];
+			wchar_t componentString[128];
 			sprintf(componentString, "Component:%d", curSpace);
 			uint8_t spaceData[2];
 			result = mechFile->readIdUCHARArray(componentString, spaceData, 2);
@@ -2766,7 +2766,7 @@ BattleMech::init(FitIniFile* mechFile)
 			if (spaceData[0] < 255)
 			{
 #ifdef _DEBUG
-				char msg[256];
+				wchar_t msg[256];
 				sprintf(msg, " Bad Mech Profile : %s ", mechFile->getFilename());
 				Assert(spaceData[0] < numOther + numWeapons + numAmmos, spaceData[0], msg);
 #endif
@@ -2778,7 +2778,7 @@ BattleMech::init(FitIniFile* mechFile)
 #if 0
 				if(body[curLocation].totalSpaces > NumLocationCriticalSpaces[curLocation])
 				{
-					char fatalMsg[250];
+					wchar_t fatalMsg[250];
 					sprintf(fatalMsg, "Too Many Critical Spaces in %s", mechFile->getFilename());
 					Fatal(curLocation, fatalMsg);
 				}
@@ -2960,7 +2960,7 @@ BattleMech::write(std::unique_ptr<File> mechFile)
 	for(size_t i = 0; i < NUM_MECH_BODY_LOCATIONS; i++)
 	{
 		mechFile->writeLong((int32_t)body[i].CASE);
-		mechFile->write((puint8_t)body[i].criticalSpaces, sizeof(CriticalSpace) * NumLocationCriticalSpaces[i]);
+		mechFile->write((uint8_t*)body[i].criticalSpaces, sizeof(CriticalSpace) * NumLocationCriticalSpaces[i]);
 		mechFile->writeFloat(body[i].curInternalStructure);
 		mechFile->writeByte((byte)body[i].maxInternalStructure);
 		mechFile->writeByte((byte)body[i].hotSpotNumber);
@@ -2972,7 +2972,7 @@ BattleMech::write(std::unique_ptr<File> mechFile)
 	mechFile->writeByte((byte)armorType);
 	mechFile->writeFloat(armorTonnage);
 	//mechFile->writeByte(NUM_MECH_ARMOR_LOCATIONS); //again, we know this for mechs...
-	mechFile->write((puint8_t)armor, sizeof(ArmorLocation) * NUM_MECH_ARMOR_LOCATIONS);
+	mechFile->write((uint8_t*)armor, sizeof(ArmorLocation) * NUM_MECH_ARMOR_LOCATIONS);
 	//--------------------------------------------------------------------------
 	// NOTE: The following line will be needed once we have the Team Data Files.
 	//mechFile->writeByte(pilotIndex); //points to pilot on PlayerTeam, or -1 if none
@@ -3014,7 +3014,7 @@ BattleMech::write(std::unique_ptr<File> mechFile)
 	mechFile->writeByte((byte)probe);
 	mechFile->writeByte((byte)jammer);
 	mechFile->writeByte((byte)numAntiMissileSystems);
-	mechFile->write((puint8_t)antiMissileSystem, MAX_ANTI_MISSILE_SYSTEMS);
+	mechFile->write((uint8_t*)antiMissileSystem, MAX_ANTI_MISSILE_SYSTEMS);
 	mechFile->writeFloat(maxMoveSpeed);
 	//---------------------------------------------------------------------------------
 	// Do we need to preserve the object type data? Yes, at least the type id so we can
@@ -3816,7 +3816,7 @@ BattleMech::updateMoveStateGoal(void)
 float DistanceToWaypoint;
 
 bool
-BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
+BattleMech::updateMovePath(float& newRotate, wchar_t& newThrottleSetting,
 	int32_t& newGestureStateGoal, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle,
 	float& facingRotate)
 {
@@ -3831,7 +3831,7 @@ BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 	if (selected)
 	{
 		int32_t area = GlobalMoveMap->calcArea(objPosition->tileRow, objPosition->tileCol);
-		char debugStr[256];
+		wchar_t debugStr[256];
 		sprintf(debugStr, "Area = %d\n", area);
 		OutputDebugString(debugStr);
 	}
@@ -4195,7 +4195,7 @@ BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 //---------------------------------------------------------------------------
 
 void
-BattleMech::setNextMovePath(char& newThrottleSetting, int32_t& newGestureStateGoal)
+BattleMech::setNextMovePath(wchar_t& newThrottleSetting, int32_t& newGestureStateGoal)
 {
 	//----------------------------------------
 	// If this is only an intermediate path,
@@ -4273,8 +4273,8 @@ BattleMech::updateTorso(float newRotatePerSec)
 	}
 	/*
 		if (target && CombatLog) {
-			static char moveStateChar[NUM_MOVESTATES] = {' ', ' ', ' ', '*',
-	   '*', '*'}; static char s[512]; sprintf(s, "TORSO ROTATE: %-15s %-06d
+			static wchar_t moveStateChar[NUM_MOVESTATES] = {' ', ' ', ' ', '*',
+	   '*', '*'}; static wchar_t s[512]; sprintf(s, "TORSO ROTATE: %-15s %-06d
 	   %-05d %-5c, relF = %-06d    torR = %06d   nRot = %06d torRF = %06d(%06d)
 	   turnR = %06d", getName(), target->getWatchID(), turn,
 				moveStateChar[getMoveState()],
@@ -4293,7 +4293,7 @@ BattleMech::updateTorso(float newRotatePerSec)
 //---------------------------------------------------------------------------
 
 void
-BattleMech::setControlSettings(float& newRotate, char& newThrottleSetting,
+BattleMech::setControlSettings(float& newRotate, wchar_t& newThrottleSetting,
 	int32_t& newGestureStateGoal, int32_t& minThrottle, int32_t& maxThrottle, float& facingRotate)
 {
 	//-----------------------------------------
@@ -4481,7 +4481,7 @@ BattleMech::updateMovement(void)
 	float facingRotate = 0.0f;
 	int32_t newGestureStateGoal = -1;
 	int32_t newMoveState = -1;
-	char newThrottleSetting = -1;
+	wchar_t newThrottleSetting = -1;
 	bool goalReached = false;
 	goalReached = updateMovePath(newRotate, newThrottleSetting, newGestureStateGoal, newMoveState,
 		minThrottle, maxThrottle, facingRotate);
@@ -4500,7 +4500,7 @@ BattleMech::updateMovement(void)
 //---------------------------------------------------------------------------
 
 bool
-BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
+BattleMech::netUpdateMovePath(float& newRotate, wchar_t& newThrottleSetting,
 	int32_t& newGestureStateGoal, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	DistanceToWaypoint = 9999.0;
@@ -4952,7 +4952,7 @@ BattleMech::netUpdateMovement(void)
 	float newRotate = 0.0;
 	int32_t newGestureStateGoal = -1;
 	int32_t newMoveState = -1;
-	char newThrottleSetting = -1;
+	wchar_t newThrottleSetting = -1;
 	bool goalReached = false;
 	goalReached = netUpdateMovePath(
 		newRotate, newThrottleSetting, newGestureStateGoal, newMoveState, minThrottle, maxThrottle);
@@ -5441,7 +5441,7 @@ BattleMech::update(void)
 			// Check if anyone on our side is within range.
 			// Until otherwise noted, if I have LOS to them, thats enough.
 			// Powerup, add ourselves to the GUI and select ourselves
-			// Maybe we should send a Radio Message saying "hi"?
+			// Maybe we should send a Radio message saying "hi"?
 			if (Team::home->teamLineOfSight(position, getAppearRadius()))
 			{
 				mission->missionInterface->addMover(this);
@@ -5896,7 +5896,7 @@ BattleMech::update(void)
 		else
 			color = SB_BLUE;
 	}
-	appearance->setBarColor(color);
+	appearance->setBarcolour(color);
 	appearance->setBarStatus(barStatus);
 	// Must make room for holdFireIcons on HUD if this mech might need one!
 	if (isOnGui && !mechRemoved && (attackRange == FIRERANGE_CURRENT) && !isDisabled())
@@ -5932,7 +5932,7 @@ BattleMech::render(void)
 					else
 						color = SB_BLUE;
 				}
-				appearance->setBarColor(color);
+				appearance->setBarcolour(color);
 				appearance->setBarStatus(barStatus);
 				appearance->setObjectNameId(descID);
 				appearance->setVisibility(true, true);
@@ -5940,21 +5940,21 @@ BattleMech::render(void)
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_1)
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->setVisibility(true, true);
 				appearance->render();
 				// No more text help for this level
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_2)
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->setVisibility(true, true);
 				appearance->render();
 				// No more text help for this level
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_3)
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->setVisibility(true, true);
 				appearance->render();
 				if (appearance->canBeSeen())
@@ -5979,7 +5979,7 @@ BattleMech::render(void)
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_4)
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->setVisibility(true, true);
 				appearance->render();
 				if (appearance->canBeSeen())
@@ -6008,7 +6008,7 @@ BattleMech::render(void)
 				{
 					color = 0x00ff0000;
 				}
-				appearance->setBarColor(color);
+				appearance->setBarcolour(color);
 				appearance->setBarStatus(barStatus);
 				appearance->setObjectNameId(descID);
 				appearance->setVisibility(true, true);
@@ -6305,7 +6305,7 @@ BattleMech::handleEjection(void)
 		// WHEN READY -fs
 		if (CombatLog)
 		{
-			char s[1024];
+			wchar_t s[1024];
 			sprintf(s, "[%.2f] mech.Ejected HE: [%05d]%s", scenarioTime, getPartId(), getName());
 			CombatLog->write(s);
 			CombatLog->write(" ");
@@ -6322,9 +6322,9 @@ BattleMech::handleEjection(void)
 		//------------------------------------
 		// What heroic music should be played?
 		if (alignment == homeTeam->getAlignment())
-			friendlyDestroyed = true;
+			friendlydestroyed = true;
 		else
-			enemyDestroyed = true;
+			enemydestroyed = true;
 #endif
 	}
 	return (true);
@@ -6520,7 +6520,7 @@ BattleMech::destroyBodyLocation(int32_t bodyLocation)
 {
 	if (body[bodyLocation].damageState == IS_DAMAGE_DESTROYED)
 		return;
-	//	char report[50];
+	//	wchar_t report[50];
 	//	sprintf(report, "body location %d destroyed.", bodyLocation);
 	//	pilot->postReport(REPORTCODE_DEBUGGING, report);
 	//----------------------------------------------------------------------
@@ -6992,7 +6992,7 @@ BattleMech::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 						destroyBodyLocation(i);
 					if (CombatLog)
 					{
-						char s[1024];
+						wchar_t s[1024];
 						sprintf(s, "[%.2f] mech.destroyed HWH: [%05d]%s", scenarioTime, getPartId(),
 							getName());
 						CombatLog->write(s);
@@ -7013,13 +7013,13 @@ BattleMech::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 			//------------------------------------
 			// What heroic music should be played?
 			if (collidee->getAlignment() == Team::home->getAlignment())
-				friendlyDestroyed = true;
+				friendlydestroyed = true;
 			else
-				enemyDestroyed = true;
+				enemydestroyed = true;
 #endif
 			if (CombatLog)
 			{
-				char s[1024];
+				wchar_t s[1024];
 				sprintf(s, "[%.2f] helicopter.destroyed: [%05d]%s", scenarioTime, getPartId(),
 					getName());
 				CombatLog->write(s);
@@ -8518,7 +8518,7 @@ BattleMech::Save(PacketFilePtr file, int32_t packetNum)
 	MechData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(MechData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(MechData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
@@ -8528,7 +8528,7 @@ BattleMech::CopyTo(MechData* data)
 	data->chassisClass = chassisClass;
 	data->chassisBR = chassisBR;
 	data->variantID = variantID;
-	memcpy(data->variantName, variantName, sizeof(char) * 64);
+	memcpy(data->variantName, variantName, sizeof(wchar_t) * 64);
 	data->legStatus = legStatus;
 	data->torsoStatus = torsoStatus;
 	memcpy(data->actuator, actuator, sizeof(uint8_t) * NUM_ACTUATORS);
@@ -8555,7 +8555,7 @@ BattleMech::CopyTo(MechData* data)
 	data->playedJumpSFX = playedJumpSFX;
 	data->playedCriticalHit = playedCriticalHit;
 	data->maxWeaponDamage = maxWeaponDamage;
-	memcpy(data->longName, longName, sizeof(char) * MAXLEN_MECH_LONGNAME);
+	memcpy(data->longName, longName, sizeof(wchar_t) * MAXLEN_MECH_LONGNAME);
 	data->pilotNum = pilotNum;
 	data->captureable = captureable;
 	data->notMineYet = notMineYet;
@@ -8581,7 +8581,7 @@ BattleMech::Load(MechData* data)
 	chassisClass = data->chassisClass;
 	chassisBR = data->chassisBR;
 	variantID = data->variantID;
-	memcpy(variantName, data->variantName, sizeof(char) * 64);
+	memcpy(variantName, data->variantName, sizeof(wchar_t) * 64);
 	legStatus = data->legStatus;
 	torsoStatus = data->torsoStatus;
 	memcpy(actuator, data->actuator, sizeof(uint8_t) * NUM_ACTUATORS);
@@ -8604,7 +8604,7 @@ BattleMech::Load(MechData* data)
 	playedJumpSFX = data->playedJumpSFX;
 	playedCriticalHit = data->playedCriticalHit;
 	maxWeaponDamage = data->maxWeaponDamage;
-	memcpy(longName, data->longName, sizeof(char) * MAXLEN_MECH_LONGNAME);
+	memcpy(longName, data->longName, sizeof(wchar_t) * MAXLEN_MECH_LONGNAME);
 	pilotNum = data->pilotNum;
 	captureable = data->captureable;
 	notMineYet = data->notMineYet;

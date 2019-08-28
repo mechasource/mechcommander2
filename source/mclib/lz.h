@@ -10,11 +10,11 @@
 #define LZ_H
 
 //---------------------------------------------------------------------------
-typedef uint8_t* puint8_t;
+typedef uint8_t* uint8_t*;
 size_t
-LZDecomp(puint8_t dest, puint8_t src, size_t srcLen);
+LZDecomp(uint8_t* dest, uint8_t* src, size_t srcLen);
 size_t
-LZCompress(puint8_t dest, puint8_t src, size_t len);
+LZCompress(uint8_t* dest, uint8_t* src, size_t len);
 
 //---------------------------------------------------------------------------
 #endif

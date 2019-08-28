@@ -4,16 +4,18 @@
 
 #include "stdinc.h"
 
-#ifndef STUFF_STUFF_HPP
 #include "stuff/stuff.h"
-#endif
-
-#ifndef DSTD_H
 #include "dstd.h"
-#endif
-
-#ifndef MATHFUNC_H
 #include "mathfunc.h"
+
+#if CONSIDERED_UNUSED
+Vector2 <-> XMFLOAT2, XMVECTOR
+Vector3 <-> XMFLOAT3, XMVECTOR
+Vector4 <-> XMFLOAT4, XMVECTOR
+Quaternion <-> XMFLOAT4, XMVECTOR
+colour <-> XMFLOAT4, XMVECTOR
+Plane <-> XMFLOAT4, XMVECTOR
+Matrix <-> XMFLOAT4X4, XMMATRIX
 #endif
 
 Stuff::Vector3D UnitI(-1.0f, 0.0f, 0.0f);

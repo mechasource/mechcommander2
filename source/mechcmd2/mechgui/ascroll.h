@@ -20,7 +20,7 @@ public:
 
 	uint32_t lightEdge;
 	uint32_t darkEdge;
-	uint32_t regularColor;
+	uint32_t regularcolour;
 };
 
 class aScrollBar : public aObject

@@ -23,8 +23,8 @@ extern uint32_t gameResourceHandle;
 inline int32_t
 EMessageBox(int32_t MessageID, int32_t CaptionID, uint32_t dwS)
 {
-	char buffer[512];
-	char bufferCaption[512];
+	wchar_t buffer[512];
+	wchar_t bufferCaption[512];
 	cLoadString(MessageID, buffer, 512, gameResourceHandle);
 	cLoadString(CaptionID, bufferCaption, 512, gameResourceHandle);
 	if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized())

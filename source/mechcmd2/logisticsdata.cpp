@@ -103,7 +103,7 @@ LogisticsData::init()
 void
 LogisticsData::initComponents()
 {
-	char componentPath[256];
+	wchar_t componentPath[256];
 	strcpy(componentPath, objectPath);
 	strcat(componentPath, "compbas.csv");
 	File componentFile;
@@ -112,7 +112,7 @@ LogisticsData::initComponents()
 #endif
 		componentFile.open(componentPath);
 	gosASSERT(result == NO_ERROR);
-	puint8_t data = new uint8_t[componentFile.getLength()];
+	uint8_t* data = new uint8_t[componentFile.getLength()];
 	componentFile.read(data, componentFile.getLength());
 	File dataFile;
 	dataFile.open((const std::wstring_view&)data, componentFile.getLength());
@@ -155,7 +155,7 @@ void
 LogisticsData::initPilots()
 {
 	pilots.Clear();
-	char pilotPath[256];
+	wchar_t pilotPath[256];
 	strcpy(pilotPath, objectPath);
 	strcat(pilotPath, "pilots.csv");
 	File pilotFile;
@@ -180,7 +180,7 @@ LogisticsData::initPilots()
 void
 LogisticsData::initVariants()
 {
-	char variantPath[256];
+	wchar_t variantPath[256];
 	strcpy(variantPath, artPath);
 	strcat(variantPath, "buildings.csv");
 	CSVFile variantFile;
@@ -190,14 +190,14 @@ LogisticsData::initVariants()
 	PacketFile pakFile;
 	if (NO_ERROR != pakFile.open(pakPath))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)pakPath);
 		Assert(0, 0, errorStr);
 	}
-	char variantFileName[256];
-	char variantFullPath[1024];
+	wchar_t variantFileName[256];
+	wchar_t variantFullPath[1024];
 	int32_t chassisID = 0;
-	char tmpStr[256];
+	wchar_t tmpStr[256];
 	int32_t i = 1;
 	while (true)
 	{
@@ -240,7 +240,7 @@ LogisticsData::initVariants()
 		CSVFile mechFile;
 		if (NO_ERROR != mechFile.open(variantFullPath))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", variantFullPath);
 			Assert(0, 0, error);
 			return;
@@ -250,7 +250,7 @@ LogisticsData::initVariants()
 		chassis->setFitID(fitID);
 		chassis->setScale(scale);
 		int32_t row = 23;
-		char buffer[256];
+		wchar_t buffer[256];
 		int32_t varCount = 0;
 		while (NO_ERROR == mechFile.readString(row, 2, buffer, 256))
 		{
@@ -700,7 +700,7 @@ LogisticsData::addMechToInventory(
 }
 void
 LogisticsData::addMechToInventory(LogisticsVariant* pVar, int32_t addToForceGroup,
-	LogisticsPilot* pPilot, uint32_t baseColor, uint32_t highlight1, uint32_t highlight2)
+	LogisticsPilot* pPilot, uint32_t basecolour, uint32_t highlight1, uint32_t highlight2)
 {
 	if (pVar)
 	{
@@ -711,7 +711,7 @@ LogisticsData::addMechToInventory(LogisticsVariant* pVar, int32_t addToForceGrou
 			pMech->setForceGroup(addToForceGroup);
 		if (pPilot && !pPilot->isDead())
 			pMech->setPilot(pPilot);
-		pMech->setColors(baseColor, highlight1, highlight2);
+		pMech->setcolours(basecolour, highlight1, highlight2);
 		return;
 	}
 	else
@@ -951,7 +951,7 @@ LogisticsData::load(FitIniFile& file)
 	file.readIdLong("PilotCount", pilotCount);
 	file.readIdLong("InventoryCount", inventoryCount);
 	file.readIdBoolean("FirstTimeResults", MissionResults::FirstTimeResults);
-	char tmp[64];
+	wchar_t tmp[64];
 	// load variants
 	int32_t i;
 	for (i = 0; i < variantCount; i++)
@@ -1004,7 +1004,7 @@ LogisticsData::load(FitIniFile& file)
 int32_t
 LogisticsData::loadVariant(FitIniFile& file)
 {
-	char tmp[256];
+	wchar_t tmp[256];
 	file.readIdString("Chassis", tmp, 255);
 	const LogisticsChassis* pChassis = nullptr;
 	// go out and find that chassis
@@ -1031,7 +1031,7 @@ LogisticsData::loadVariant(FitIniFile& file)
 	int32_t y = 0;
 	int32_t location = 0;
 	int32_t id = 0;
-	char tmp2[256];
+	wchar_t tmp2[256];
 	// read number of components
 	file.readIdLong("ComponentCount", componentCount);
 	// add those components
@@ -1056,7 +1056,7 @@ LogisticsData::loadVariant(FitIniFile& file)
 int32_t
 LogisticsData::loadMech(FitIniFile& file, int32_t& count)
 {
-	char tmp[256];
+	wchar_t tmp[256];
 	file.readIdString("Variant", tmp, 255);
 	for (VARIANT_LIST::EIterator mIter = variants.Begin(); !mIter.IsDone(); mIter++)
 	{
@@ -1276,7 +1276,7 @@ LogisticsData::updateAvailability()
 	{
 		Assert(0, 0, "No components in the purchase file");
 	}
-	char tmp[32];
+	wchar_t tmp[32];
 	int32_t component;
 	bool bAll = 0;
 	file.readIdBoolean("AllComponents", bAll);
@@ -1328,7 +1328,7 @@ LogisticsData::updateAvailability()
 		}
 	}
 	// go through each variant, and see if it's available
-	char chassisFileName[255];
+	wchar_t chassisFileName[255];
 	int32_t componentArray[255];
 	int32_t componentCount;
 	file.seekBlock("Mechs");
@@ -1342,7 +1342,7 @@ LogisticsData::updateAvailability()
 		for (vIter = variants.Begin(); !vIter.IsDone(); vIter++)
 		{
 			const std::wstring_view& mechName = (*vIter)->getFileName();
-			char realName[1024];
+			wchar_t realName[1024];
 			_splitpath(mechName, nullptr, nullptr, realName, nullptr);
 			if (_stricmp(realName, chassisFileName) == 0)
 			{
@@ -1353,7 +1353,7 @@ LogisticsData::updateAvailability()
 				{
 					if (!available[componentArray[i]]) // unavailable componets
 					{
-						// char errorStr[256];
+						// wchar_t errorStr[256];
 						// sprintf( errorStr, "mech %s discarded because it
 						// contains a %ld", 	chassisFileName, componentArray[i]
 						//);  PAUSE(( errorStr ));
@@ -1375,7 +1375,7 @@ LogisticsData::updateAvailability()
 	else
 		bNewMechs = false;
 	// add new pilots
-	char pilotName[255];
+	wchar_t pilotName[255];
 	file.seekBlock("Pilots");
 	for (i = 0; i < 255; i++)
 	{
@@ -1413,7 +1413,7 @@ LogisticsData::appendAvailability(const std::wstring_view& pFileName, bool* avai
 	int32_t result = file.seekBlock("Components");
 	if (result == NO_ERROR)
 	{
-		char tmp[32];
+		wchar_t tmp[32];
 		int32_t component;
 		bool bAll = 0;
 		file.readIdBoolean("AllComponents", bAll);
@@ -1432,8 +1432,8 @@ LogisticsData::appendAvailability(const std::wstring_view& pFileName, bool* avai
 		}
 	}
 	// add new pilots
-	char pilotName[255];
-	char tmp[256];
+	wchar_t pilotName[255];
+	wchar_t tmp[256];
 	file.seekBlock("Pilots");
 	int32_t i;
 	for (i = 0; i < 255; i++)
@@ -1452,7 +1452,7 @@ LogisticsData::appendAvailability(const std::wstring_view& pFileName, bool* avai
 	}
 	file.seekBlock("Mechs");
 	int32_t newAvailableCount = 0;
-	char chassisFileName[256];
+	wchar_t chassisFileName[256];
 	for (i = 0; i < 255; i++)
 	{
 		sprintf(tmp, "Mech%ld", i);
@@ -1463,7 +1463,7 @@ LogisticsData::appendAvailability(const std::wstring_view& pFileName, bool* avai
 		for (VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone(); vIter++)
 		{
 			const std::wstring_view& mechName = (*vIter)->getFileName();
-			char realName[255];
+			wchar_t realName[255];
 			_splitpath(mechName, nullptr, nullptr, realName, nullptr);
 			if (_stricmp(realName, chassisFileName) == 0)
 			{
@@ -1476,7 +1476,7 @@ LogisticsData::appendAvailability(const std::wstring_view& pFileName, bool* avai
 					LogisticsComponent* pComp = getComponent(componentArray[i]);
 					if (!pComp->isAvailable()) // unavailable componets
 					{
-						// char errorStr[256];
+						// wchar_t errorStr[256];
 						// sprintf( errorStr, "mech %s discarded because it
 						// contains a %ld", 	chassisFileName, componentArray[i]
 						//);  PAUSE(( errorStr ));
@@ -1662,15 +1662,15 @@ encryptFile(const std::wstring_view& inputFile, const std::wstring_view& outputF
 	// Then LZ Compressing the resulting zlib data.
 	// Since our LZ compression is pretty much non-standard, that should be
 	// enough.
-	puint8_t rawData = nullptr;
-	puint8_t zlibData = nullptr;
-	puint8_t LZData = nullptr;
+	uint8_t* rawData = nullptr;
+	uint8_t* zlibData = nullptr;
+	uint8_t* LZData = nullptr;
 	File dataFile;
 	dataFile.open(inputFile);
 	uint32_t fileSize = dataFile.fileSize();
-	rawData = (puint8_t)malloc(fileSize);
-	zlibData = (puint8_t)malloc(fileSize * 2);
-	LZData = (puint8_t)malloc(fileSize * 2);
+	rawData = (uint8_t*)malloc(fileSize);
+	zlibData = (uint8_t*)malloc(fileSize * 2);
+	LZData = (uint8_t*)malloc(fileSize * 2);
 	dataFile.read(rawData, fileSize);
 	uint32_t zlibSize = fileSize * 2;
 	compress2(zlibData, &zlibSize, rawData, fileSize, 0);
@@ -1695,9 +1695,9 @@ decryptFile(const std::wstring_view& inputFile, const std::wstring_view& outputF
 	// Then zlib deCompressing the resulting zlib data into the raw File again.
 	// Since our LZ compression is pretty much non-standard, that should be
 	// enough.
-	puint8_t rawData = nullptr;
-	puint8_t zlibData = nullptr;
-	puint8_t LZData = nullptr;
+	uint8_t* rawData = nullptr;
+	uint8_t* zlibData = nullptr;
+	uint8_t* LZData = nullptr;
 	File dataFile;
 	int32_t result = dataFile.open(inputFile);
 	if (result == NO_ERROR)
@@ -1705,15 +1705,15 @@ decryptFile(const std::wstring_view& inputFile, const std::wstring_view& outputF
 		uint32_t lzSize = dataFile.readLong();
 		uint32_t zlibSize = dataFile.readLong();
 		uint32_t fileSize = dataFile.readLong();
-		rawData = (puint8_t)malloc(fileSize);
-		zlibData = (puint8_t)malloc(zlibSize);
-		LZData = (puint8_t)malloc(lzSize);
+		rawData = (uint8_t*)malloc(fileSize);
+		zlibData = (uint8_t*)malloc(zlibSize);
+		LZData = (uint8_t*)malloc(lzSize);
 		dataFile.read(LZData, lzSize);
 		uint32_t testSize = fileSize;
 		uint32_t test2Size = LZDecomp(zlibData, LZData, lzSize);
 		if (test2Size != zlibSize)
 			STOP(("Didn't Decompress to same size as started with!!"));
-		uncompress((puint8_t)rawData, &testSize, zlibData, zlibSize);
+		uncompress((uint8_t*)rawData, &testSize, zlibData, zlibSize);
 		if (testSize != fileSize)
 			STOP(("Didn't Decompress to correct format"));
 		dataFile.close();
@@ -1964,7 +1964,7 @@ LogisticsData::startMultiPlayer()
 	// kill all old designer mechs
 	clearVariants();
 	// need to initialize multiplayer variants here...
-	char findString[512];
+	wchar_t findString[512];
 	sprintf(findString, "data\\multiplayer\\*.var");
 	WIN32_FIND_DATA findResult;
 	HANDLE searchHandle = FindFirstFile(findString, &findResult);
@@ -2110,7 +2110,7 @@ LogisticsData::getVehicles(const LogisticsVehicle** pChassis, int32_t& count)
 LogisticsVehicle*
 LogisticsData::getVehicle(const std::wstring_view& pName)
 {
-	char tmpStr[256];
+	wchar_t tmpStr[256];
 	for (VEHICLE_LIST::EIterator vIter = vehicles.Begin(); !vIter.IsDone(); vIter++)
 	{
 		cLoadString((*vIter)->getNameID(), tmpStr, 255);
@@ -2146,7 +2146,7 @@ LogisticsData::addBuilding(int32_t fitID, PacketFile& objectFile, float scale)
 				{
 					if (NO_ERROR != file.seekBlock("General")) // hack for artillery piece
 					{
-						char errorStr[256];
+						wchar_t errorStr[256];
 						sprintf(
 							errorStr, "coudn't find appropriate block in file %s", bldg.fileName);
 						Assert(0, 0, errorStr);
@@ -2162,7 +2162,7 @@ LogisticsData::addBuilding(int32_t fitID, PacketFile& objectFile, float scale)
 		bldg.weight = tmp;
 		if (bIsTurret)
 		{
-			char weaponNameStr[64];
+			wchar_t weaponNameStr[64];
 			strcpy(weaponNameStr, "WeaponType");
 			for (size_t i = 0; i < 4; i++)
 			{

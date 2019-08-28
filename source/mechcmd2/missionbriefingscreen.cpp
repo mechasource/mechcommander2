@@ -126,17 +126,17 @@ MissionBriefingScreen::update()
 		{
 			if (missionListBox.GetItem(i)->getID() != -1)
 			{
-				missionListBox.GetItem(i)->setColor(0xffffffff);
+				missionListBox.GetItem(i)->setcolour(0xffffffff);
 				if (objectiveButtons[missionListBox.GetItem(i)->getID()])
-					objectiveButtons[missionListBox.GetItem(i)->getID()]->setColor(0xffffffff);
+					objectiveButtons[missionListBox.GetItem(i)->getID()]->setcolour(0xffffffff);
 			}
 		}
 		if (ID != -1)
 		{
 			if (objectiveModels[ID].Length())
 			{
-				camera.setObject(objectiveModels[ID], modelTypes[ID], modelColors[ID][0],
-					modelColors[ID][1], modelColors[ID][2]);
+				camera.setObject(objectiveModels[ID], modelTypes[ID], modelcolours[ID][0],
+					modelcolours[ID][1], modelcolours[ID][2]);
 				camera.setScale(modelScales[ID]);
 				soundSystem->playDigitalSample(LOG_VIDEOBUTTONS);
 				statics[35].showGUIWindow(0);
@@ -146,9 +146,9 @@ MissionBriefingScreen::update()
 				camera.setObject(nullptr, -1);
 				statics[35].showGUIWindow(true);
 			}
-			missionListBox.GetItem(selItem)->setColor(0xffff0000);
+			missionListBox.GetItem(selItem)->setcolour(0xffff0000);
 			if (objectiveButtons[ID])
-				objectiveButtons[ID]->setColor(0xffff0000);
+				objectiveButtons[ID]->setcolour(0xffff0000);
 		}
 	}
 	if (!bClicked && runTime > 3.0) // every second switch selection until user clicks
@@ -157,9 +157,9 @@ MissionBriefingScreen::update()
 		// turn old sel back into white
 		if (selItem != -1 && ID != -1)
 		{
-			missionListBox.GetItem(selItem)->setColor(0xffffffff);
+			missionListBox.GetItem(selItem)->setcolour(0xffffffff);
 			if (objectiveButtons[ID])
-				objectiveButtons[ID]->setColor(0xffffffff);
+				objectiveButtons[ID]->setcolour(0xffffffff);
 		}
 		selItem++;
 		// wrap if necessary
@@ -184,11 +184,11 @@ MissionBriefingScreen::update()
 			int32_t ID = missionListBox.GetItem(selItem)->getID();
 			if (ID != -1)
 			{
-				missionListBox.GetItem(selItem)->setColor(0xffff0000);
+				missionListBox.GetItem(selItem)->setcolour(0xffff0000);
 				if (objectiveButtons[ID])
-					objectiveButtons[ID]->setColor(0xffff0000);
-				camera.setObject(objectiveModels[ID], modelTypes[ID], modelColors[ID][0],
-					modelColors[ID][1], modelColors[ID][2]);
+					objectiveButtons[ID]->setcolour(0xffff0000);
+				camera.setObject(objectiveModels[ID], modelTypes[ID], modelcolours[ID][0],
+					modelcolours[ID][1], modelcolours[ID][2]);
 				camera.setScale(modelScales[ID]);
 				if (objectiveModels[ID].Length())
 					statics[35].showGUIWindow(0);
@@ -240,15 +240,15 @@ MissionBriefingScreen::getMissionTGA(const std::wstring_view& missionName)
 		{
 			file.seekPacket(3);
 			int32_t size = file.getPacketSize();
-			puint8_t mem = new uint8_t[size];
+			uint8_t* mem = new uint8_t[size];
 			file.readPacket(3, mem);
 			TGAFileHeader* pHeader = (TGAFileHeader*)mem;
-			int32_t bmpWidth = pHeader->width;
-			int32_t bmpHeight = pHeader->height;
-			flipTopToBottom((puint8_t)(pHeader + 1), pHeader->pixel_depth, bmpWidth, bmpHeight);
+			int32_t bmpwidth = pHeader->width;
+			int32_t bmpheight = pHeader->height;
+			flipTopToBottom((uint8_t*)(pHeader + 1), pHeader->pixel_depth, bmpwidth, bmpheight);
 			// set up the texture
 			int32_t tmpMapTextureHandle = mcTextureManager->textureFromMemory(
-				(uint32_t*)(pHeader + 1), gos_Texture_Solid, 0, bmpWidth);
+				(uint32_t*)(pHeader + 1), gos_Texture_Solid, 0, bmpwidth);
 			delete mem;
 			return tmpMapTextureHandle;
 		}
@@ -262,14 +262,14 @@ MissionBriefingScreen::begin()
 	missionListBox.removeAllItems(true);
 	runTime = 0;
 	bClicked = 0;
-	statics[VIDEO_SCREEN].setColor(0);
+	statics[VIDEO_SCREEN].setcolour(0);
 	memset(objectiveButtons, 0, sizeof(aObject*) * MAX_OBJECTIVES);
 	// need to set up all pertinent mission info
 	const std::wstring_view& missionName = LogisticsData::instance->getCurrentMission();
 	int32_t tmpMapTextureHandle = getMissionTGA(missionName);
 	statics[MAP_INDEX].setTexture(tmpMapTextureHandle);
 	statics[MAP_INDEX].setUVs(0, 127, 127, 0);
-	statics[MAP_INDEX].setColor(0xffffffff);
+	statics[MAP_INDEX].setcolour(0xffffffff);
 	// need to get all the objectives and stuff
 	FullPathFileName fitPath;
 	fitPath.init(missionPath, missionName, ".fit");
@@ -292,7 +292,7 @@ MissionBriefingScreen::begin()
 	}
 	else
 	{
-		char missionName[256];
+		wchar_t missionName[256];
 		fitFile.readIdString("MissionName", missionName, 255);
 		addLBItem(missionName, 0xff005392, -1);
 	}
@@ -344,9 +344,9 @@ MissionBriefingScreen::begin()
 					addLBItem((pObjective->LocalizedDescription()).Data(), 0xffffffff, count);
 					objectiveModels[count] = (pObjective->ModelName()).Data();
 					modelTypes[count] = pObjective->ModelType();
-					modelColors[count][0] = pObjective->ModelBaseColor();
-					modelColors[count][1] = pObjective->ModelHighlightColor();
-					modelColors[count][2] = pObjective->ModelHighlightColor2();
+					modelcolours[count][0] = pObjective->ModelBasecolour();
+					modelcolours[count][1] = pObjective->ModelHighlightcolour();
+					modelcolours[count][2] = pObjective->ModelHighlightcolour2();
 					modelScales[count] = pObjective->ModelScale();
 					count++;
 					buttonCount++;
@@ -356,7 +356,7 @@ MissionBriefingScreen::begin()
 	}
 	addItem(IDS_MN_DIVIDER, 0xff005392, -1);
 	fitFile.seekBlock("MissionSettings");
-	char blurb[4096];
+	wchar_t blurb[4096];
 	result = fitFile.readIdString("Blurb", blurb, 4095);
 	bool tmpBool = false;
 	result = fitFile.readIdBoolean("BlurbUseResourceString", tmpBool);
@@ -371,7 +371,7 @@ MissionBriefingScreen::begin()
 	}
 	addLBItem(blurb, 0xff005392, -1);
 	int32_t RP = LogisticsData::instance->getCBills();
-	char text[32];
+	wchar_t text[32];
 	sprintf(text, "%ld ", RP);
 	textObjects[RP_INDEX].setText(text);
 	// need to find a drop zone, because our designers were never convinced to
@@ -379,7 +379,7 @@ MissionBriefingScreen::begin()
 	int32_t i = 1;
 	while (true)
 	{
-		char blockName[32];
+		wchar_t blockName[32];
 		sprintf(blockName, "Part%ld", i);
 		i++;
 		if (NO_ERROR != fitFile.seekBlock(blockName))
@@ -401,14 +401,14 @@ MissionBriefingScreen::begin()
 }
 
 void
-MissionBriefingScreen::setupDropZone(float fX, float fY, float mapWidth, float mapHeight)
+MissionBriefingScreen::setupDropZone(float fX, float fY, float mapwidth, float mapheight)
 {
 	dropZoneButton = statics[BUTTON_TEXT];
 	float bmpX = statics[MAP_INDEX].width();
 	float bmpY = statics[MAP_INDEX].height();
 	// in terms of map, this is where the button goes
-	float xLoc = fX / mapWidth * bmpX / 2.f;
-	float yLoc = -fY / mapHeight * bmpY / 2.f;
+	float xLoc = fX / mapwidth * bmpX / 2.f;
+	float yLoc = -fY / mapheight * bmpY / 2.f;
 	// offset by the map...
 	xLoc += statics[MAP_INDEX].globalX() + bmpX / 2.f;
 	yLoc += statics[MAP_INDEX].globalY() + bmpY / 2.f;
@@ -420,7 +420,7 @@ MissionBriefingScreen::setupDropZone(float fX, float fY, float mapWidth, float m
 
 void
 MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int32_t priority,
-	float mapWidth, float mapHeight, bool display)
+	float mapwidth, float mapheight, bool display)
 {
 	float lineOffset = 0;
 	if (priority == 1)
@@ -430,8 +430,8 @@ MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int
 	float bmpX = statics[MAP_INDEX].width();
 	float bmpY = statics[MAP_INDEX].height();
 	// in terms of map, this is where the button goes
-	float xLoc = fX / mapWidth * bmpX / 2.f;
-	float yLoc = -fY / mapHeight * bmpY / 2.f;
+	float xLoc = fX / mapwidth * bmpX / 2.f;
+	float yLoc = -fY / mapheight * bmpY / 2.f;
 	// offset by the map...
 	xLoc += statics[MAP_INDEX].globalX() + bmpX / 2.f;
 	yLoc += statics[MAP_INDEX].globalY() + bmpY / 2.f;
@@ -442,14 +442,14 @@ MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int
 	else
 		pButtonText->showGUIWindow(false);
 	// need to reset the uv's based on count....
-	float textWidth = pButtonText->width();
-	float textHeight = pButtonText->height();
-	lineOffset *= textHeight;
-	int32_t itemsPerLine = 128 / textWidth;
+	float textwidth = pButtonText->width();
+	float textheight = pButtonText->height();
+	lineOffset *= textheight;
+	int32_t itemsPerLine = 128 / textwidth;
 	int32_t iIndex = count % itemsPerLine;
 	int32_t jIndex = count / itemsPerLine;
-	pButtonText->setUVs(iIndex * textWidth, jIndex * textHeight + lineOffset,
-		(iIndex + 1) * textWidth, (jIndex + 1) * textHeight + lineOffset);
+	pButtonText->setUVs(iIndex * textwidth, jIndex * textheight + lineOffset,
+		(iIndex + 1) * textwidth, (jIndex + 1) * textheight + lineOffset);
 	pButtonText->moveTo(xLoc, yLoc);
 	for (size_t i = 0; i < MAX_OBJECTIVES; i++)
 	{
@@ -470,7 +470,7 @@ MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int
 /*int32_t MissionBriefingScreen::addLBItem( FitIniFile& file, const std::wstring_view& itemName,
 uint32_t color, int32_t ID)
 {
-	char buffer[1024];
+	wchar_t buffer[1024];
 	file.readIdString( itemName, buffer, 1023 );
 	return addLBItem( buffer, color, ID);
 }*/
@@ -481,9 +481,9 @@ MissionBriefingScreen::addLBItem(const std::wstring_view& text, uint32_t color, 
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->setID(ID);
 	pEntry->resize(
-		missionListBox.width() - missionListBox.getScrollBarWidth() - 10, pEntry->height());
+		missionListBox.width() - missionListBox.getScrollBarwidth() - 10, pEntry->height());
 	pEntry->setText(text);
-	pEntry->setColor(color);
+	pEntry->setcolour(color);
 	pEntry->sizeToText();
 	pEntry->forceToTop(true);
 	return missionListBox.AddItem(pEntry);
@@ -495,9 +495,9 @@ MissionBriefingScreen::addItem(int32_t ID, uint32_t color, int32_t LBid)
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->setID(LBid);
 	pEntry->resize(
-		missionListBox.width() - missionListBox.getScrollBarWidth() - 10, pEntry->height());
+		missionListBox.width() - missionListBox.getScrollBarwidth() - 10, pEntry->height());
 	pEntry->setText(ID);
-	pEntry->setColor(color);
+	pEntry->setcolour(color);
 	return missionListBox.AddItem(pEntry);
 }
 
@@ -505,7 +505,7 @@ void
 MissionBriefingScreen::end()
 {
 	//	statics[MAP_INDEX].setTexture( (int32_t)0 );
-	// 	statics[MAP_INDEX].setColor( 0 );
+	// 	statics[MAP_INDEX].setcolour( 0 );
 	camera.setMech(nullptr);
 }
 

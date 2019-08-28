@@ -26,7 +26,7 @@ AG_ellipse_fill(
 	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
 extern void
 AG_StatusBar(
-	PANE* pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t Color, int32_t Width);
+	PANE* pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t colour, int32_t width);
 extern void
 AG_shape_draw(
 	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
@@ -34,7 +34,7 @@ extern void
 AG_shape_translate_draw(
 	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
 extern void
-AG_shape_lookaside(puint8_t palette);
+AG_shape_lookaside(uint8_t* palette);
 
 //#pragma warning(disable:4305/*double to float truncation*/)
 
@@ -47,7 +47,7 @@ agsqrt(float _a, float _b)
 //---------------------------------------------------------------------------
 // Static Globals
 
-char WindowTitle[1024]; // Global window title (GetWindowText is VERY slow)
+wchar_t WindowTitle[1024]; // Global window title (GetWindowText is VERY slow)
 
 int32_t topCtrlUpd = 0;
 
@@ -83,8 +83,8 @@ extern int32_t tileCacheMiss;
 bool drawCameraCircle = false;
 extern bool gamePaused;
 extern bool gameAsked;
-puint8_t pauseShape = nullptr;
-puint8_t askedShape = nullptr;
+uint8_t* pauseShape = nullptr;
+uint8_t* askedShape = nullptr;
 extern bool gRestartRender;
 bool MaxObjectsDrawn = false;
 
@@ -181,14 +181,14 @@ Camera::init(FitIniFilePtr cameraFile)
 	result = cameraFile->readIdUChar("AmbientBlue", ambientBlue);
 	gosASSERT(result == NO_ERROR);
 	uint8_t tmpUCHAR;
-	result = cameraFile->readIdUChar("TerrainShadowColorEnabled", tmpUCHAR);
+	result = cameraFile->readIdUChar("TerrainShadowcolourEnabled", tmpUCHAR);
 	if ((result != NO_ERROR) || (0 == tmpUCHAR))
 	{
-		terrainShadowColorEnabled = false;
+		terrainShadowcolourEnabled = false;
 	}
 	else
 	{
-		terrainShadowColorEnabled = true;
+		terrainShadowcolourEnabled = true;
 	}
 	result = cameraFile->readIdUChar("TerrainShadowRed", terrainShadowRed);
 	if (result != NO_ERROR)
@@ -365,21 +365,21 @@ Camera::init(FitIniFilePtr cameraFile)
 	gosASSERT(result == NO_ERROR);
 	result = cameraFile->readIdFloat("FogFull", fogFull);
 	gosASSERT(result == NO_ERROR);
-	result = cameraFile->readIdULong("FogColor", fogColor);
-	dayFogColor = fogColor;
+	result = cameraFile->readIdULong("Fogcolour", fogcolour);
+	dayFogcolour = fogcolour;
 	gosASSERT(result == NO_ERROR);
 	result = cameraFile->readIdFloat("FogTransparency", fogTransparency);
 #if 0
 	if(result != NO_ERROR)
 	{
-		/* This is an old file where FogColor includes the color of the sky showing through. */
+		/* This is an old file where Fogcolour includes the color of the sky showing through. */
 		/* arbitrary assumed daytime sky color */
 		static const float fDaySkyRed = 100.0f;
 		static const float fDaySkyGreen = 162.0f;
 		static const float fDaySkyBlue = 255.0f;
-		const float fDayFogRed = (float)((dayFogColor >> 16) & 0xff);
-		const float fDayFogGreen = (float)((dayFogColor >> 8) & 0xff);
-		const float fDayFogBlue = (float)((dayFogColor) & 0xff);
+		const float fDayFogRed = (float)((dayFogcolour >> 16) & 0xff);
+		const float fDayFogGreen = (float)((dayFogcolour >> 8) & 0xff);
+		const float fDayFogBlue = (float)((dayFogcolour) & 0xff);
 		/* We assume that the fog color specified by the user is a combination of the diffuse
 		light scattered by the fog and the light from the sky showing through the fog. There's
 		no way to know how transparent the fog is meant to be without the user specifying it,
@@ -405,7 +405,7 @@ Camera::init(FitIniFilePtr cameraFile)
 		gosASSERT(0 == ((~0xff) & opaqueDayFogRed));
 		gosASSERT(0 == ((~0xff) & opaqueDayFogGreen));
 		gosASSERT(0 == ((~0xff) & opaqueDayFogBlue));
-		dayFogColor = (opaqueDayFogRed << 16) + (opaqueDayFogGreen << 8) + opaqueDayFogBlue;
+		dayFogcolour = (opaqueDayFogRed << 16) + (opaqueDayFogGreen << 8) + opaqueDayFogBlue;
 		fogTransparency = fFogTransparency;
 	}
 	gosASSERT(result == NO_ERROR);
@@ -713,8 +713,8 @@ Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Vector3D& p
 		Stuff::Vector4D cellCenter;
 		int32_t cellCenterC = -1;
 		int32_t cellCenterR = -1;
-		float cellWidth = Terrain::worldUnitsPerCell;
-		float halfCellWidth = cellWidth / 2.0f;
+		float cellwidth = Terrain::worldUnitsPerCell;
+		float halfCellwidth = cellwidth / 2.0f;
 		int32_t tileC = -1, tileR = -1;
 		int32_t VerticesMapSideDivTwo = Terrain::realVerticesMapSide / 2;
 		int32_t MetersMapSideDivTwo =
@@ -727,8 +727,8 @@ Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Vector3D& p
 				point.x = closestVertex->vx;
 				point.y = closestVertex->vy;
 				point.z = closestVertex->pVertex->elevation;
-				point.x += (cellC)*cellWidth + halfCellWidth;
-				point.y -= (cellR)*cellWidth + halfCellWidth;
+				point.x += (cellC)*cellwidth + halfCellwidth;
+				point.y -= (cellR)*cellwidth + halfCellwidth;
 				point.z = land->getTerrainElevation(point);
 				eye->projectZ(point, cellCenter);
 				dx = (tvx - float2long(cellCenter.x));
@@ -1301,9 +1301,9 @@ Camera::updateDaylight(bool bInitialize)
 		color, but in our game fog color more reflects "sky color near the
 		horizon" */
 		float fFogTransparency = fogTransparency;
-		float fOpaqueDayFogRed = (float)((dayFogColor >> 16) & 0xff);
-		float fOpaqueDayFogGreen = (float)((dayFogColor >> 8) & 0xff);
-		float fOpaqueDayFogBlue = (float)((dayFogColor)&0xff);
+		float fOpaqueDayFogRed = (float)((dayFogcolour >> 16) & 0xff);
+		float fOpaqueDayFogGreen = (float)((dayFogcolour >> 8) & 0xff);
+		float fOpaqueDayFogBlue = (float)((dayFogcolour)&0xff);
 		static const float fBlackSkyLevel = 32.0f; /* If the light is below this level, the sky is
 													  effectively black. */
 		// float fFogRed = fLightRed - fBlackSkyLevel;
@@ -1366,7 +1366,7 @@ Camera::updateDaylight(bool bInitialize)
 		{
 			fogBlue = 0xff;
 		}
-		fogColor = (fogRed << 16) + (fogGreen << 8) + fogBlue;
+		fogcolour = (fogRed << 16) + (fogGreen << 8) + fogBlue;
 		dayLightTime += frameLength;
 	}
 }
@@ -1416,7 +1416,7 @@ Camera::updateLetterboxAndFade(void)
 			inFadeMode = false;
 		}
 		fadeAlpha =
-			(fadeStart >> 24) + (fadePercent * (float(fadeColor >> 24) - float(fadeStart >> 24)));
+			(fadeStart >> 24) + (fadePercent * (float(fadecolour >> 24) - float(fadeStart >> 24)));
 	}
 }
 
@@ -1546,11 +1546,11 @@ Camera::update(void)
 	screenResolution.y = viewMulY;
 	calculateProjectionConstants();
 	globalScaleFactor = getScaleFactor();
-	globalScaleFactor *= viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
+	globalScaleFactor *= viewMulX / Environment.screenwidth; // Scale Mechs to ScreenRES
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering
 	uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
-	setLightColor(1, lightRGB);
+	setLightcolour(1, lightRGB);
 	setLightIntensity(1, 1.0);
 	//---------------------------------------------------------------------------------
 	// Check which lights are on screen and deactivate those which are NOT on
@@ -1596,7 +1596,7 @@ Camera::update(void)
 		}
 	}
 	TG_Shape::SetCameraMatrices(&cameraOrigin, &cameraToClip);
-	TG_Shape::SetFog(fogColor, fogStart, fogFull);
+	TG_Shape::SetFog(fogcolour, fogStart, fogFull);
 	active = true;
 	terrainLightCalc = false;
 	return NO_ERROR;
@@ -1614,7 +1614,7 @@ Camera::render(void)
 	// add elements to the draw list and sort and draw.
 	// The later time has arrived.  We begin sorting immediately.
 	// NO LONGER NEED TO SORT!
-	// ZBuffer time has arrived.  Share and Enjoy!
+	// zbuffer time has arrived.  Share and Enjoy!
 	// Everything SIMPLY draws at the execution point into the zBuffer
 	// at the correct depth.  Miracles occur at that point!
 	// Big code change but it removes a WHOLE bunch of code and memory!
@@ -1637,11 +1637,11 @@ Camera::render(void)
 	screenResolution.y = viewMulY;
 	calculateProjectionConstants();
 	globalScaleFactor = getScaleFactor();
-	globalScaleFactor *= viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
+	globalScaleFactor *= viewMulX / Environment.screenwidth; // Scale Mechs to ScreenRES
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering
 	uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
-	eye->setLightColor(1, lightRGB);
+	eye->setLightcolour(1, lightRGB);
 	eye->setLightIntensity(1, 1.0);
 	if (active && turn > 1)
 	{
@@ -1735,10 +1735,10 @@ Camera::setOrthogonal(void)
 		float invCamScale = 1.0 / newScaleFactor;
 		float left_clip, right_clip, top_clip, bottom_clip, far_clip, near_clip;
 		left_clip = invCamScale * 300.0;
-		top_clip = left_clip * ((float)Environment.screenHeight / (float)Environment.screenWidth);
+		top_clip = left_clip * ((float)Environment.screenheight / (float)Environment.screenwidth);
 		right_clip = -invCamScale * 300.0;
 		bottom_clip =
-			right_clip * ((float)Environment.screenHeight / (float)Environment.screenWidth);
+			right_clip * ((float)Environment.screenheight / (float)Environment.screenwidth);
 		near_clip = -2000.0;
 		far_clip = 8000.0;
 		//
@@ -1775,7 +1775,7 @@ Camera::setOrthogonal(void)
 		near_clip = Camera::NearPlaneDistance;
 		far_clip = Camera::FarPlaneDistance;
 		float horizontal_fov = camera_fov * DEGREES_TO_RADS;
-		float height2width = ((float)Environment.screenHeight / (float)Environment.screenWidth);
+		float height2width = ((float)Environment.screenheight / (float)Environment.screenwidth);
 		//
 		//-------------------------------------------------------
 		// Calculate the horizontal, vertical, and forward ranges
@@ -1853,7 +1853,7 @@ CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition)
 	deltaCellVec.y = tCellRow - mCellRow;
 	deltaCellVec.x = tCellCol - mCellCol;
 	deltaCellVec.z = 0.0f;
-	float startHeight = startPos.z;
+	float startheight = startPos.z;
 	float length = deltaCellVec.GetApproximateLength();
 	if (length > Stuff::SMALL)
 	{
@@ -1888,14 +1888,14 @@ CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition)
 			{
 				colDone = true;
 			}
-			startHeight += heightLen;
+			startheight += heightLen;
 			int32_t startCellC = startCellCol;
 			int32_t startCellR = startCellRow;
 			land->getCellPos(startCellR, startCellC, currentPos);
 			// float localElev = (worldUnitsPerMeter * 4.0f *
-			// (float)GameMap->getLocalHeight(startCellR,startCellC));
+			// (float)GameMap->getLocalheight(startCellR,startCellC));
 			// currentPos.z += localElev;
-			if (startHeight < currentPos.z)
+			if (startheight < currentPos.z)
 			{
 				return false;
 			}
@@ -2819,13 +2819,13 @@ Camera::save(FitIniFile* file)
 	file->writeIdUChar("AmbientBlue", ambientBlue);
 	file->writeIdUChar("AmbientGreen", ambientGreen);
 	file->writeIdUChar("AmbientRed", ambientRed);
-	if (terrainShadowColorEnabled)
+	if (terrainShadowcolourEnabled)
 	{
-		file->writeIdUChar("TerrainShadowColorEnabled", 1);
+		file->writeIdUChar("TerrainShadowcolourEnabled", 1);
 	}
 	else
 	{
-		file->writeIdUChar("TerrainShadowColorEnabled", 0);
+		file->writeIdUChar("TerrainShadowcolourEnabled", 0);
 	}
 	file->writeIdUChar("TerrainShadowBlue", terrainShadowBlue);
 	file->writeIdUChar("TerrainShadowGreen", terrainShadowGreen);
@@ -2865,7 +2865,7 @@ Camera::save(FitIniFile* file)
 	file->writeIdFloat("FOVMin", FOVMin);
 	file->writeIdFloat("FogStart", fogStart);
 	file->writeIdFloat("FogFull", fogFull);
-	file->writeIdULong("FogColor", dayFogColor);
+	file->writeIdULong("Fogcolour", dayFogcolour);
 	file->writeIdFloat("FogTransparency", fogTransparency);
 	int32_t userMin, userMax;
 	int32_t baseTerrain;

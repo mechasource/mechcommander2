@@ -34,10 +34,10 @@ public:
 
 	void setValue(float val) { m_percent = val < 0 ? 0 : val; }
 	void setAddedValue(float val) { m_addedpercent = val < 0 ? 0 : val; }
-	void setColorMin(uint32_t newColor) { m_mincolour = newColor; }
-	void setColorMax(uint32_t newColor) { m_maxcolour = newColor; }
-	void setAddedColorMin(uint32_t newColor) { m_addedmincolour = newColor; }
-	void setAddedColorMax(uint32_t newColor) { m_addedmaxcolour = newColor; }
+	void setcolourMin(uint32_t newcolour) { m_mincolour = newcolour; }
+	void setcolourMax(uint32_t newcolour) { m_maxcolour = newcolour; }
+	void setAddedcolourMin(uint32_t newcolour) { m_addedmincolour = newcolour; }
+	void setAddedcolourMax(uint32_t newcolour) { m_addedmaxcolour = newcolour; }
 	void showGUIWindow(bool show) { m_doshow = show; }
 	bool pointInside(int32_t mouseX, int32_t mouseY) const;
 

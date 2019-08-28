@@ -20,7 +20,7 @@ namespace mclib::abl {
 //***************************************************************************
 
 extern TokenCodeType curToken;
-extern char wordString[];
+extern wchar_t wordString[];
 extern Literal curLiteral;
 
 extern const std::unique_ptr<SymTableNode>& SymTableDisplay[];

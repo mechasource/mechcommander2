@@ -44,7 +44,7 @@ PaneElement::PaneElement(PANE* _shapePane, int32_t _x, int32_t _y, int32_t _midx
 
 extern int32_t
 DrawTransparent(
-	PANE* pane, WINDOW* texture, int32_t X, int32_t Y, int32_t Width, int32_t Height);
+	PANE* pane, WINDOW* texture, int32_t X, int32_t Y, int32_t width, int32_t height);
 
 //---------------------------------------------------------------------------
 void
@@ -62,13 +62,13 @@ extern void
 AG_shape_translate_draw(
 	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
 extern void
-AG_shape_lookaside(puint8_t table);
+AG_shape_lookaside(uint8_t* table);
 //---------------------------------------------------------------------------
 // Static Globals
 
 //---------------------------------------------------------------------------
-DeltaElement::DeltaElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
-	puint8_t fTable, bool noScale, bool upScale) :
+DeltaElement::DeltaElement(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+	uint8_t* fTable, bool noScale, bool upScale) :
 	Element(-_y)
 {
 	shapeTable = _shape;
@@ -106,7 +106,7 @@ DeltaElement::draw(void)
 	{
 		//----------------------------------------------------------------
 		// Check if shape is actually valid.
-		if ((*(pint32_t)shapeTable != *(pint32_t) "1.10"))
+		if ((*(int32_t*)shapeTable != *(int32_t*) "1.10"))
 			return;
 		//----------------------------------------------------
 		// DEBUG TEMP Until all are correct delta shapes!!!!!!

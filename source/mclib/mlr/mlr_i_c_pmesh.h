@@ -7,7 +7,7 @@
 #ifndef MLR_MLR_I_C_PMESH_HPP
 #define MLR_MLR_I_C_PMESH_HPP
 
-#include <mlr/mlr_i_pmesh.hpp>
+#include "mlr/mlr_i_pmesh.h"
 
 namespace MidLevelRenderer
 {
@@ -43,18 +43,18 @@ public:
 	//		void Copy(MLRIndexedPolyMesh*);
 
 #if COLOR_AS_DWORD
-	virtual void SetColorData(pcuint32_t array, size_t point_count);
-	virtual void GetColorData(puint32_t* array, psize_t point_count);
+	virtual void SetcolourData(const uint32_t* array, size_t point_count);
+	virtual void GetcolourData(uint32_t** array, size_t* point_count);
 #else
-	virtual void SetColorData(const Stuff::RGBAColor* array, size_t point_count);
-	virtual void GetColorData(Stuff::RGBAColor** array, psize_t point_count);
+	virtual void SetcolourData(const Stuff::RGBAcolour* array, size_t point_count);
+	virtual void GetcolourData(Stuff::RGBAcolour** array, size_t* point_count);
 #endif
 
 	virtual void
 #if COLOR_AS_DWORD
-	PaintMe(pcuint32_t paintMe);
+	PaintMe(const uint32_t* paintMe);
 #else
-	PaintMe(const Stuff::RGBAColor* paintMe);
+	PaintMe(const Stuff::RGBAcolour* paintMe);
 #endif
 
 	virtual uint32_t TransformAndClip(
@@ -86,18 +86,18 @@ protected:
 #if COLOR_AS_DWORD
 	std::vector<uint32_t> colors; // Base address of color list
 #else
-	std::vector<Stuff::RGBAColor> colors; // Base address of color list
+	std::vector<Stuff::RGBAcolour> colors; // Base address of color list
 #endif
 };
 
 MLR_I_C_PMesh*
-CreateIndexedCube_Color_NoLit(float, Stuff::RGBAColor*, MLRState*);
+CreateIndexedCube_colour_NoLit(float, Stuff::RGBAcolour*, MLRState*);
 
 MLR_I_PMesh*
-CreateIndexedViewFrustrum_Color_NoLit(float near_clip, float far_clip, float left_clip,
-	float right_clip, float top_clip, float bottom_clip, Stuff::RGBAColor&, MLRState*);
+CreateIndexedViewFrustrum_colour_NoLit(float near_clip, float far_clip, float left_clip,
+	float right_clip, float top_clip, float bottom_clip, Stuff::RGBAcolour&, MLRState*);
 
 MLRShape*
-CreateIndexedIcosahedron_Color_NoLit(IcoInfo&, MLRState*);
+CreateIndexedIcosahedron_colour_NoLit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 #endif

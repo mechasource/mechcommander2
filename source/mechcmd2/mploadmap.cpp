@@ -20,9 +20,9 @@ MPLoadMap.cpp			: Implementation of the MPLoadMap component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
-static cint32_t CANCEL_BUTTON_ID = 1000002;
+static const int32_t FIRST_BUTTON_ID = 1000010;
+static const int32_t OK_BUTTON_ID = 1000001;
+static const int32_t CANCEL_BUTTON_ID = 1000002;
 
 MPLoadMap::MPLoadMap()
 {
@@ -70,13 +70,13 @@ MPLoadMap::init(FitIniFile* file)
 	file->seekBlock("LeaveAnim");
 	exitAnim.init(file, "");
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_loadmap_list0.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -112,7 +112,7 @@ MPLoadMap::seedDialog(bool bSeedSingle)
 {
 	mapList.removeAllItems(true);
 	// need to add items to the save game list
-	char findString[512];
+	wchar_t findString[512];
 	sprintf(findString, "%s*.fit", missionPath);
 	WIN32_FIND_DATA findResult;
 	HANDLE searchHandle = FindFirstFile(findString, &findResult);
@@ -168,9 +168,9 @@ MPLoadMap::addFile(const std::wstring_view& pFileName, bool bSeedSingle)
 				aLocalizedListItem* pEntry = new aLocalizedListItem();
 				*pEntry = templateItem;
 				pEntry->resize(
-					mapList.width() - mapList.getScrollBarWidth() - 30, pEntry->height());
+					mapList.width() - mapList.getScrollBarwidth() - 30, pEntry->height());
 				pEntry->setHiddenText(pFileName);
-				char missionDisplayName[256];
+				wchar_t missionDisplayName[256];
 				strcpy(missionDisplayName, "");
 				getMapNameFromFile(pFileName, missionDisplayName, 255);
 				if (0 == strcmp("", missionDisplayName))
@@ -199,7 +199,7 @@ MPLoadMap::addFile(const std::wstring_view& pFileName, bool bSeedSingle)
 						aLocalizedListItem* pHeaderEntry = new aLocalizedListItem();
 						*pHeaderEntry = templateItem;
 						pHeaderEntry->setText(IDS_MP_LM_TYPE0 + type);
-						pHeaderEntry->resize(mapList.width() - mapList.getScrollBarWidth() - 30,
+						pHeaderEntry->resize(mapList.width() - mapList.getScrollBarwidth() - 30,
 							pHeaderEntry->height());
 						pHeaderEntry->sizeToText();
 						pHeaderEntry->setID(IDS_MP_LM_TYPE0 + type);
@@ -228,7 +228,7 @@ MPLoadMap::seedFromFile(const std::wstring_view& pFileName)
 		return;
 	}
 	int32_t i = 1;
-	char fileName[255];
+	wchar_t fileName[255];
 	while (true)
 	{
 		if (NO_ERROR != file.readString(i, 1, fileName, 255))
@@ -245,7 +245,7 @@ MPLoadMap::seedFromFile(const std::wstring_view& pFileName)
 void
 MPLoadMap::seedFromCampaign()
 {
-	char searchStr[255];
+	wchar_t searchStr[255];
 	cLoadString(IDS_AUTOSAVE_NAME, searchStr, 255);
 	const std::wstring_view& finalStr;
 	finalStr = "*.fit";
@@ -269,7 +269,7 @@ MPLoadMap::seedFromCampaign()
 				if (NO_ERROR == tmpFile.seekBlock("General"))
 				{
 					int32_t group, missions;
-					tmpFile.readIdLong("Group ", group);
+					tmpFile.readIdLong("group ", group);
 					if (group > groupCount)
 					{
 						groupCount = group;
@@ -296,13 +296,13 @@ MPLoadMap::seedFromCampaign()
 		FitIniFile file;
 		int32_t group;
 		int32_t missions;
-		char campaignFileName[256];
+		wchar_t campaignFileName[256];
 		campaignFileName[0] = 0;
 		if (NO_ERROR == file.open(findPath))
 		{
 			if (NO_ERROR == file.seekBlock("General"))
 			{
-				file.readIdLong("Group ", group);
+				file.readIdLong("group ", group);
 				file.readIdLong("CompletedMissions", missions);
 				file.readIdString("CampaignFile", campaignFileName, 255);
 			}
@@ -314,8 +314,8 @@ MPLoadMap::seedFromCampaign()
 			{
 				for (size_t i = 0; i < group + 1; i++)
 				{
-					char blockName[64];
-					sprintf(blockName, "Group%ld", i);
+					wchar_t blockName[64];
+					sprintf(blockName, "group%ld", i);
 					if (NO_ERROR == campaignFile.seekBlock(blockName))
 					{
 						int32_t count = missions;
@@ -325,17 +325,17 @@ MPLoadMap::seedFromCampaign()
 						}
 						for (size_t j = 0; j < count; j++)
 						{
-							sprintf(blockName, "Group%ldMission%ld", i, j);
+							sprintf(blockName, "group%ldMission%ld", i, j);
 							if (NO_ERROR == campaignFile.seekBlock(blockName))
 							{
-								char tmpFileName[255];
+								wchar_t tmpFileName[255];
 								campaignFile.readIdString("FileName", tmpFileName, 255);
 								aLocalizedListItem* pEntry = new aLocalizedListItem();
 								*pEntry = templateItem;
-								pEntry->resize(mapList.width() - mapList.getScrollBarWidth() - 20,
+								pEntry->resize(mapList.width() - mapList.getScrollBarwidth() - 20,
 									pEntry->height());
 								pEntry->setHiddenText(tmpFileName);
-								char displayName[256];
+								wchar_t displayName[256];
 								getMapNameFromFile(tmpFileName, displayName, 255);
 								pEntry->setText(displayName);
 								pEntry->sizeToText();
@@ -354,7 +354,7 @@ MPLoadMap::end()
 {
 	LogisticsDialog::end();
 	statics[18].setTexture((uint32_t) nullptr);
-	statics[18].setColor(0);
+	statics[18].setcolour(0);
 }
 
 void MPLoadMap::render(int32_t, int32_t)
@@ -366,7 +366,7 @@ void MPLoadMap::render(int32_t, int32_t)
 		float endTime = enterAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x00000000, 0x7f000000, time / endTime);
+			color = interpolatecolour(0x00000000, 0x7f000000, time / endTime);
 		}
 	}
 	else if (exitAnim.isAnimating() && !exitAnim.isDone())
@@ -375,10 +375,10 @@ void MPLoadMap::render(int32_t, int32_t)
 		float endTime = exitAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x7f000000, 0x00000000, time / endTime);
+			color = interpolatecolour(0x7f000000, 0x00000000, time / endTime);
 		}
 	}
-	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, color);
 	if ((!enterAnim.isAnimating() || enterAnim.isDone()) && !exitAnim.isAnimating())
 	{
@@ -481,11 +481,11 @@ MPLoadMap::updateMapInfo()
 		path.init(missionPath, selMapName, ".fit");
 		if (NO_ERROR == file.open(path))
 		{
-			char missionName[256];
+			wchar_t missionName[256];
 			missionName[0] = 0;
 			bool bRes = 0;
-			char text[1024];
-			char text2[1024];
+			wchar_t text[1024];
+			wchar_t text2[1024];
 			file.seekBlock("MissionSettings");
 			file.readIdBoolean("MissionNameUseResourceString", bRes);
 			if (bRes)
@@ -501,7 +501,7 @@ MPLoadMap::updateMapInfo()
 			int32_t textureHandle = MissionBriefingScreen::getMissionTGA(selMapName);
 			statics[18].setTexture(textureHandle);
 			statics[18].setUVs(0, 127, 127, 0);
-			statics[18].setColor(0xffffffff);
+			statics[18].setcolour(0xffffffff);
 			cLoadString(IDS_MP_LM_MAP_LIST_MAP_NAME, text, 255);
 			sprintf(text2, text, missionName);
 			textObjects[3].setText(text2);
@@ -510,7 +510,7 @@ MPLoadMap::updateMapInfo()
 				uint32_t type = 0;
 				file.readIdULong("MissionType", type);
 				cLoadString(IDS_MP_LM_MAP_LIST_TYPE, text, 255);
-				char mType[128];
+				wchar_t mType[128];
 				cLoadString(IDS_MP_LM_TYPE0 + type, mType, 127);
 				sprintf(text2, text, mType);
 				textObjects[4].setText(text2);
@@ -525,7 +525,7 @@ MPLoadMap::updateMapInfo()
 				textObjects[4].setText("");
 				textObjects[2].setText("");
 			}
-			char blurb[1024];
+			wchar_t blurb[1024];
 			blurb[0] = 0;
 			int32_t result = file.readIdString("Blurb2", blurb, 1023);
 			bool tmpBool = false;
@@ -548,7 +548,7 @@ MPLoadMap::updateMapInfo()
 		textObjects[3].setText("");
 		textObjects[2].setText("");
 		textObjects[5].setText("");
-		statics[18].setColor(0);
+		statics[18].setcolour(0);
 	}
 }
 
@@ -560,7 +560,7 @@ MPLoadMap::getMapNameFromFile(const std::wstring_view& pFileName, const std::wst
 	FitIniFile file;
 	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
 		Assert(0, 0, errorStr);
 	}

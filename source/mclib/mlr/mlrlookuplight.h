@@ -7,8 +7,8 @@
 #ifndef MLR_MLRLOOKUPLIGHT_HPP
 #define MLR_MLRLOOKUPLIGHT_HPP
 
-#include <stuff/point3d.hpp>
-#include <mlr/mlrinfinitelight.hpp>
+#include "stuff/point3d.h"
+#include "mlr/mlrinfinitelight.h"
 
 namespace MidLevelRenderer
 {
@@ -56,7 +56,7 @@ public:
 		return mapOrigin;
 	}
 
-	void SetMapSizeAndName(int32_t x, int32_t z, PCSTR name);
+	void SetMapSizeAndName(int32_t x, int32_t z, const std::wstring_view& name);
 
 	int32_t GetMapZoneCountX(void)
 	{
@@ -69,7 +69,7 @@ public:
 		return mapZoneCountZ;
 	}
 
-	PCSTR
+	const std::wstring_view&
 	GetMapName(void)
 	{
 		// Check_Object(this);
@@ -126,7 +126,7 @@ protected:
 	int32_t mapZoneCountX, mapZoneCountZ;
 	std::wstring mapName;
 
-	puint8_t* maps;
+	uint8_t** maps;
 
 	Stuff::LinearMatrix4D shapeToWorld;
 };

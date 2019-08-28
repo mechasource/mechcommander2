@@ -7,9 +7,9 @@
 #ifndef MLR_MLRTEXTUREPOOL_HPP
 #define MLR_MLRTEXTUREPOOL_HPP
 
-//#include <stuff/marray.hpp>
-#include <mlr/mlrstate.hpp>
-#include <mlr/gosimagepool.hpp>
+//#include "stuff/marray.h"
+#include "mlr/mlrstate.h"
+#include "mlr/gosimagepool.h"
 
 namespace MidLevelRenderer
 {
@@ -19,7 +19,7 @@ class MLRState;
 class GOSImage;
 class GOSImagePool;
 
-class MLRTexturePool : public Stuff::RegisteredClass
+class MLRTexturePool // : public Stuff::RegisteredClass
 
 {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,9 +43,9 @@ public:
 
 	static MLRTexturePool* Make(std::iostream stream);
 	void Save(std::iostream stream);
-	MLRTexture* Add(PCSTR textureName, int32_t instance = 0);
+	MLRTexture* Add(const std::wstring_view& textureName, int32_t instance = 0);
 	MLRTexture* Add(GOSImage*);
-	MLRTexture* Add(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
+	MLRTexture* Add(const std::wstring_view& imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
 		/*gos_TextureHints*/ uint32_t hints)
 	{
 		return Add(imagePool->GetImage(imageName, format, size, hints));
@@ -55,7 +55,7 @@ public:
 	// texture
 	void Remove(MLRTexture*);
 	uint32_t LoadImages(void);
-	MLRTexture* operator()(PCSTR name, int32_t = 0);
+	MLRTexture* operator()(const std::wstring_view& name, int32_t = 0);
 	MLRTexture* operator[](size_t index)
 	{
 		// Check_Object(this);
@@ -69,7 +69,7 @@ public:
 		return textureArray[state->GetTextureHandle() - 1];
 	}
 
-	GOSImage* GetImage(PCSTR imageName)
+	GOSImage* GetImage(const std::wstring_view& imageName)
 	{
 		// Check_Object(this);
 		return imagePool->GetImage(imageName);
@@ -121,7 +121,7 @@ protected:
 
 	std::array<MLRTexture*, MLRState::TextureMask + 1> textureArray;
 
-	pint32_t freeHandle;
+	int32_t* freeHandle;
 	int32_t firstFreeHandle;
 	int32_t lastFreeHandle;
 

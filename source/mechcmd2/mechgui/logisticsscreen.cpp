@@ -30,7 +30,7 @@ LogisticsScreen::LogisticsScreen()
 	staticCount = rectCount = buttonCount = textCount = editCount = animObjectsCount = 0;
 	helpTextArrayID = -1;
 	fadeInTime = fadeOutTime = fadeTime = 0;
-	fadeOutMaxColor = 0xff000000;
+	fadeOutMaxcolour = 0xff000000;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 	const std::wstring_view& buttonName, const std::wstring_view& editName, const std::wstring_view& animObjectName, uint32_t neverFlush)
 {
 	clear();
-	char blockName[256];
+	wchar_t blockName[256];
 	// init statics
 	if (staticName)
 	{
@@ -93,7 +93,7 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 			if (staticCount)
 			{
 				statics = new aObject[staticCount];
-				char blockName[128];
+				wchar_t blockName[128];
 				for (size_t i = 0; i < staticCount; i++)
 				{
 					sprintf(blockName, "%s%ld", staticName, i);
@@ -112,7 +112,7 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 			if (rectCount)
 			{
 				rects = new aRect[rectCount];
-				char blockName[128];
+				wchar_t blockName[128];
 				for (size_t i = 0; i < rectCount; i++)
 				{
 					sprintf(blockName, "%s%ld", rectName, i);
@@ -130,7 +130,7 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 			file.readIdLong("buttonCount", buttonCount);
 			if (buttonCount)
 			{
-				char blockName[128];
+				wchar_t blockName[128];
 				buttons = new aAnimButton[buttonCount];
 				for (size_t i = 0; i < buttonCount; i++)
 				{
@@ -152,7 +152,7 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 			if (textCount)
 			{
 				textObjects = new aText[textCount];
-				char blockName[64];
+				wchar_t blockName[64];
 				for (size_t i = 0; i < textCount; i++)
 				{
 					sprintf(blockName, "%s%ld", textName, i);
@@ -171,7 +171,7 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 			if (editCount)
 			{
 				edits = new aEdit[editCount];
-				char blockName[64];
+				wchar_t blockName[64];
 				for (size_t i = 0; i < editCount; i++)
 				{
 					sprintf(blockName, "%s%ld", editName, i);
@@ -189,7 +189,7 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 			if (animObjectsCount)
 			{
 				animObjects = new aAnimObject[animObjectsCount];
-				char blockName[64];
+				wchar_t blockName[64];
 				for (size_t i = 0; i < animObjectsCount; i++)
 				{
 					sprintf(blockName, "%s%ld", animObjectName, i);
@@ -246,7 +246,7 @@ LogisticsScreen::update()
 		if (::helpTextID)
 		{
 			const std::wstring_view& helpText;
-			char tmp[1024];
+			wchar_t tmp[1024];
 			//	if ( helpTextHeaderID )
 			//	{
 			//		cLoadString( helpTextHeaderID, tmp, 255 );
@@ -295,7 +295,7 @@ LogisticsScreen::render()
 	int32_t i;
 	for (i = 0; i < rectCount; i++)
 	{
-		if (!rects[i].bOutline && ((rects[i].getColor() & 0xff000000) == 0xff000000))
+		if (!rects[i].bOutline && ((rects[i].getcolour() & 0xff000000) == 0xff000000))
 			rects[i].render();
 	}
 	for (i = 0; i < staticCount; i++)
@@ -308,7 +308,7 @@ LogisticsScreen::render()
 	// transparencies after statics
 	for (i = 0; i < rectCount; i++)
 	{
-		if ((rects[i].getColor() & 0xff000000) != 0xff000000)
+		if ((rects[i].getcolour() & 0xff000000) != 0xff000000)
 			rects[i].render();
 	}
 	for (i = 0; i < buttonCount; i++)
@@ -324,15 +324,15 @@ LogisticsScreen::render()
 	if (fadeOutTime)
 	{
 		fadeTime += frameLength;
-		int32_t color = interpolateColor(0, fadeOutMaxColor, fadeTime / fadeOutTime);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		int32_t color = interpolatecolour(0, fadeOutMaxcolour, fadeTime / fadeOutTime);
+		RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 		drawRect(rect, color);
 	}
 	else if (fadeInTime && fadeInTime > fadeTime)
 	{
 		fadeTime += frameLength;
-		int32_t color = interpolateColor(fadeOutMaxColor, 0, fadeTime / fadeInTime);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		int32_t color = interpolatecolour(fadeOutMaxcolour, 0, fadeTime / fadeInTime);
+		RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 		drawRect(rect, color);
 	}
 }
@@ -360,7 +360,7 @@ LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
 	int32_t i;
 	for (i = 0; i < rectCount; i++)
 	{
-		if (!rects[i].bOutline && ((rects[i].getColor() & 0xff000000) == 0xff000000))
+		if (!rects[i].bOutline && ((rects[i].getcolour() & 0xff000000) == 0xff000000))
 		{
 			rects[i].move(xOffset, yOffset);
 			rects[i].render();
@@ -385,7 +385,7 @@ LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
 	// transparencies after statics
 	for (i = 0; i < rectCount; i++)
 	{
-		if ((rects[i].getColor() & 0xff000000) != 0xff000000)
+		if ((rects[i].getcolour() & 0xff000000) != 0xff000000)
 		{
 			rects[i].move(xOffset, yOffset);
 			rects[i].render();
@@ -419,15 +419,15 @@ LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
 	if (fadeOutTime)
 	{
 		fadeTime += frameLength;
-		int32_t color = interpolateColor(0, 0xff000000, fadeTime / fadeOutTime);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		int32_t color = interpolatecolour(0, 0xff000000, fadeTime / fadeOutTime);
+		RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 		drawRect(rect, color);
 	}
 	else if (fadeInTime && fadeInTime > fadeTime)
 	{
 		fadeTime += frameLength;
-		int32_t color = interpolateColor(0xff000000, 0, fadeTime / fadeInTime);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		int32_t color = interpolatecolour(0xff000000, 0, fadeTime / fadeInTime);
+		RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 		drawRect(rect, color);
 	}
 }

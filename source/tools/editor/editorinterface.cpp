@@ -55,7 +55,7 @@
 #endif
 
 #ifndef HEIGHTDLG_H
-#include "HeightDlg.h"
+#include "heightDlg.h"
 #endif
 
 #include "SelectSlopeDialog.h"
@@ -146,7 +146,7 @@
 extern bool silentMode;
 
 // ARM
-extern char versionStamp[];
+extern wchar_t versionStamp[];
 
 #include "../ARM/Microsoft.Xna.Arm.h"
 using namespace Microsoft::Xna::Arm;
@@ -183,14 +183,14 @@ extern volatile int32_t ProcessingError;
 const float HSCROLLBAR_RANGE = 30000.0;
 const float VSCROLLBAR_RANGE = 30000.0;
 
-extern char missionName[];
+extern wchar_t missionName[];
 
-static char szTGAFilter[] = "TGA Files (*.TGA)|*.tga||";
-static char szPAKFilter[] = "Pak Files (*.PAK)|*.pak||";
+static wchar_t szTGAFilter[] = "TGA Files (*.TGA)|*.tga||";
+static wchar_t szPAKFilter[] = "Pak Files (*.PAK)|*.pak||";
 
 static bool windowSizeChanged = false;
-static float g_newWidth = 0.0;
-static float g_newHeight = 0.0;
+static float g_newwidth = 0.0;
+static float g_newheight = 0.0;
 
 // EDITOR stuff
 
@@ -247,7 +247,7 @@ Editor::init(const std::wstring_view& loader)
 							msdlg.mapSize = 0;
 							if (IDOK == msdlg.DoModal())
 							{
-								char path[256];
+								wchar_t path[256];
 								strcpy(path, cameraPath);
 								strcat(path, "cameras.fit");
 								FitIniFile camFile;
@@ -350,7 +350,7 @@ Editor::resaveAll(void)
 	CoInitialize(nullptr);
 	armProvider = CreateProviderEngine("MC2Editor", versionStamp);
 	silentMode = true; // shut up the warnings from tgl export
-	char campaignFiles[2][256] = {0};
+	wchar_t campaignFiles[2][256] = {0};
 	strcpy(campaignFiles[0], "Data\\Campaign\\campaign.fit");
 	strcpy(campaignFiles[1], "Data\\Campaign\\tutorial.fit");
 	for (size_t i = 0; i < 2; i++) // once for the campaign, then the tutorial
@@ -361,7 +361,7 @@ Editor::resaveAll(void)
 			armProvider->OpenAsset(campaignFiles[i], AssetType_Physical, ProviderType_Primary);
 		campaignAssetPtr->AddProperty("Type", "Campaign");
 		int32_t count = 0;
-		char buf[512] = {0};
+		wchar_t buf[512] = {0};
 		// for all groups
 		for (EList<CGroupData, CGroupData>::EConstIterator iter = campaignData.m_GroupList.Begin();
 			 !iter.IsDone(); count++, iter++)
@@ -373,15 +373,15 @@ Editor::resaveAll(void)
 			buf[campaignLen - 4] = '_';
 			buf[campaignLen - 3] = 0;
 			strcat(buf, "group");
-			char groupId[4] = {0};
+			wchar_t groupId[4] = {0};
 			sprintf(groupId, "%02d", count + 1);
 			strcat(buf, groupId);
 			// Add a relationship from the campaign to the virtual group
-			campaignAssetPtr->AddRelationship("Group", buf);
+			campaignAssetPtr->AddRelationship("group", buf);
 			// Open the virtual asset
 			IProviderAssetPtr groupAssetPtr =
 				armProvider->OpenAsset(buf, AssetType_Virtual, ProviderType_Primary);
-			groupAssetPtr->AddProperty("Type", "Mission Group");
+			groupAssetPtr->AddProperty("Type", "Mission group");
 			// Add all the relationships
 			if (groupData.m_OperationFile != "")
 			{
@@ -440,11 +440,11 @@ Editor::resaveAll(void)
 		campaignAssetPtr->Close();
 	}
 	Pilot::initPilots();
-	char bdgFileName[256];
+	wchar_t bdgFileName[256];
 	strcpy(bdgFileName, artPath);
 	strcat(bdgFileName, "Buildings.csv");
 	_strlwr(bdgFileName);
-	char objFileName[256];
+	wchar_t objFileName[256];
 	strcpy(objFileName, objectPath);
 	strcat(objFileName, "object2.pak");
 	_strlwr(objFileName);
@@ -453,7 +453,7 @@ Editor::resaveAll(void)
 	//----------------------------------------------------------------------------
 	// Recurse through the data\missions directory and resave every .PAK you
 	// find!
-	char findString[512];
+	wchar_t findString[512];
 	sprintf(findString, "%s*.pak", missionPath);
 	WIN32_FIND_DATA findResult;
 	HANDLE searchHandle = FindFirstFile(findString, &findResult);
@@ -461,7 +461,7 @@ Editor::resaveAll(void)
 	{
 		if ((findResult.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
 		{
-			char baseName[1024];
+			wchar_t baseName[1024];
 			_splitpath(findResult.cFileName, nullptr, nullptr, baseName, nullptr);
 			FullPathFileName pakName;
 			pakName.init(missionPath, baseName, ".pak");
@@ -501,7 +501,7 @@ Editor::update()
 	if (windowSizeChanged)
 	{
 		windowSizeChanged = false;
-		gos_SetScreenMode(g_newWidth, g_newHeight);
+		gos_SetScreenMode(g_newwidth, g_newheight);
 	}
 	// interMgr.update();
 	mcTextureManager->clearArrays();
@@ -685,8 +685,8 @@ void
 EditorInterface::addBuildingsToNewMenu()
 {
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
-	char BuildingHeader[64];
-	char TerrainHeader[64];
+	wchar_t BuildingHeader[64];
+	wchar_t TerrainHeader[64];
 	cLoadString(IDS_BUILDINGS, BuildingHeader, 64, gameResourceHandle);
 	cLoadString(IDS_TERRAINS, TerrainHeader, 64, gameResourceHandle);
 	CMenu* pMenu = new CMenu;
@@ -752,7 +752,7 @@ EditorInterface::addBuildingsToNewMenu()
 	numTerrains = land->terrainTextures->getNumTypes();
 	for (i = groupCount; i < numTerrains + groupCount; i++)
 	{
-		char buffer[256];
+		wchar_t buffer[256];
 		int32_t nameID = land->terrainTextures->getTextureNameID(i - groupCount);
 		bool continueFlag = true;
 		switch (nameID)
@@ -910,7 +910,7 @@ EditorInterface::handleNewMenuMessage(int32_t specificMessage)
 		break;
 		case ID_FILE_ASSIGNHEIGHTMAP:
 		{
-			NewHeightMap();
+			NewheightMap();
 		}
 		break;
 		case ID_FILE_EXIT:
@@ -1034,7 +1034,7 @@ EditorInterface::handleNewMenuMessage(int32_t specificMessage)
 			SmoothRadius();
 			break;
 		case ID_SAVE_HEIGHT_MAP:
-			SaveHeightMap();
+			SaveheightMap();
 			break;
 		case ID_MISSION_SETTINGS:
 			MissionSettings();
@@ -1373,13 +1373,13 @@ EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 		tacMap.RedrawWindow();
 		syncScrollBars();
 	}
-	char buffer2[256];
+	wchar_t buffer2[256];
 	sprintf(buffer2, "%.3f, %.3f", vector.x, vector.y);
 	// need to put this value in the appropriate place.
 	((MainFrame*)AfxGetMainWnd())
 		->m_wndDlgBar.GetDlgItem(IDC_COORDINATES_EDIT)
 		->SetWindowText(buffer2);
-	char buffer3[256];
+	wchar_t buffer3[256];
 	sprintf(buffer3, "%.3f", vector.z);
 	// need to put this value in the appropriate place.
 	((MainFrame*)AfxGetMainWnd())
@@ -1387,7 +1387,7 @@ EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 		->SetWindowText(buffer3);
 	vector -= lastClickPos;
 	float distance = vector.GetLength();
-	char buffer[256];
+	wchar_t buffer[256];
 	sprintf(buffer, "%.3f", distance);
 	// need to put this value in the appropriate place.
 	((MainFrame*)AfxGetMainWnd())->m_wndDlgBar.GetDlgItem(IDC_DISTANCE_EDIT)->SetWindowText(buffer);
@@ -1682,7 +1682,7 @@ EditorInterface::handleKeyDown(int32_t Key)
 	}
 	//------------------------------------------------
 	// IF there is a selected object, find distance to it from camera.
-	char buffer[256];
+	wchar_t buffer[256];
 	float eyeDistance = 0.0f;
 	int32_t selectionCount = EditorObjectMgr::instance()->getSelectionCount();
 	if (selectionCount)
@@ -1836,13 +1836,13 @@ EditorInterface::SaveAs()
 		// Must resave the following for the new map methods to insure goodness.
 		// 	-Base height Map (in terrainPath)
 		//	-Hi-res height Map (in terrainPath)
-		//	-Color Map (texturePath)
-		//	-Color Map Burnin (texturePath)
+		//	-colour Map (texturePath)
+		//	-colour Map Burnin (texturePath)
 		//	-Detail Map (texturePath)
 		//	-Water Map (texturePath)
 		//	-Water Detail Maps (texturePath)
-		char name[1024];
-		char name2[1024];
+		wchar_t name[1024];
+		wchar_t name2[1024];
 		_splitpath(pFile, nullptr, nullptr, name2, nullptr);
 		if (EditorData::instance->getMapName())
 			_splitpath(EditorData::instance->getMapName(), nullptr, nullptr, name, nullptr);
@@ -1876,7 +1876,7 @@ EditorInterface::SaveAs()
 		CopyFile(oldBaseFile, newBaseFile, false);
 		for (size_t i = 0; i < MAX_WATER_DETAIL_TEXTURES; i++)
 		{
-			char detailExt[256];
+			wchar_t detailExt[256];
 			sprintf(detailExt, ".water%04d.tga", i);
 			oldBaseFile.init(texturePath, name, detailExt);
 			newBaseFile.init(texturePath, name2, detailExt);
@@ -2014,8 +2014,8 @@ EditorInterface::render()
 	ModifyStyle(0, WS_HSCROLL | WS_VSCROLL);
 	Stuff::Vector3D worldPos;
 	Stuff::Vector2DOf<int32_t> screenPos;
-	screenPos.x = Environment.screenWidth / 2;
-	screenPos.y = Environment.screenHeight / 2;
+	screenPos.x = Environment.screenwidth / 2;
+	screenPos.y = Environment.screenheight / 2;
 	// eye->inverseProject( screenPos, worldPos );
 	/*if ( worldPos.x != 0.0 || worldPos.y != 0.0 )
 	{
@@ -2083,9 +2083,9 @@ EditorInterface::render()
 			int32_t PosY = (int32_t)pt.y;
 			// scroll if painting
 			int32_t scrollLf = (PosX <= (screenScrollLeft));
-			int32_t scrollRt = (PosX >= (Width() - screenScrollRight));
+			int32_t scrollRt = (PosX >= (width() - screenScrollRight));
 			int32_t scrollUp = (PosY <= (screenScrollUp));
-			int32_t scrollDn = (PosY >= (Height() - screenScrollDown));
+			int32_t scrollDn = (PosY >= (height() - screenScrollDown));
 			float frameFactor = frameLength / baseFrameLength;
 			float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
 			if (scrollLf)
@@ -2113,7 +2113,7 @@ EditorInterface::render()
 }
 
 int32_t
-EditorInterface::NewHeightMap()
+EditorInterface::NewheightMap()
 {
 	CFileDialog fileDlg(
 		1, "tga", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter);
@@ -2132,7 +2132,7 @@ EditorInterface::NewHeightMap()
 				int32_t result = tgaFile.open(const_cast<const std::wstring_view&>(pFile));
 				gosASSERT(result == NO_ERROR);
 				struct TGAFileHeader theader;
-				tgaFile.read((puint8_t)&theader, sizeof(TGAFileHeader));
+				tgaFile.read((uint8_t*)&theader, sizeof(TGAFileHeader));
 				if ((theader.width != land->realVerticesMapSide) || (theader.height != land->realVerticesMapSide))
 				{
 					/*wrong size*/
@@ -2147,7 +2147,7 @@ EditorInterface::NewHeightMap()
 				endFlag = false;
 				continue;
 			}
-			HeightDlg htDlg;
+			heightDlg htDlg;
 			int32_t tileR, tileC;
 			htDlg.SetMin((int32_t)land->getLowestVertex(tileR, tileC));
 			htDlg.SetMax((int32_t)land->getHighestVertex(tileR, tileC));
@@ -2156,7 +2156,7 @@ EditorInterface::NewHeightMap()
 			{
 				SetBusyMode();
 				chkStatus =
-					EditorData::reassignHeightsFromTGA(pFile, htDlg.GetMin(), htDlg.GetMax());
+					EditorData::reassignheightsFromTGA(pFile, htDlg.GetMin(), htDlg.GetMax());
 				UnsetBusyMode();
 			}
 			if (chkStatus)
@@ -2262,7 +2262,7 @@ EditorInterface::SaveCameras()
 	}
 	else
 	{
-		char base[256];
+		wchar_t base[256];
 		strcpy(base, cameraPath);
 		strcat(base, EditorData::getMapName());
 		strcat(base, "cam");
@@ -2282,9 +2282,9 @@ EditorInterface::SelectSlopes()
 	{
 		float minAngle = dlg.m_MinEdit;
 		float maxAngle = dlg.m_MaxEdit;
-		float minHeight =
+		float minheight =
 			float(fabs(float(tan(minAngle * float(PI) / 180.f) * land->worldUnitsPerVertex)));
-		float maxHeight =
+		float maxheight =
 			float(fabs(float(tan(maxAngle * float(PI) / 180.f) * land->worldUnitsPerVertex)));
 		float centerElv;
 		float tmpElv;
@@ -2301,31 +2301,31 @@ EditorInterface::SelectSlopes()
 				right = i < land->realVerticesMapSide ? i + 1 : i;
 				top = j > 0 ? j - 1 : 0;
 				bottom = j < land->realVerticesMapSide ? j + 1 : j;
-				centerElv = land->getVertexHeight(j * land->realVerticesMapSide + i);
-				tmpElv = land->getVertexHeight(top * land->realVerticesMapSide + left);
-				if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
+				centerElv = land->getVertexheight(j * land->realVerticesMapSide + i);
+				tmpElv = land->getVertexheight(top * land->realVerticesMapSide + left);
+				if (fabs(tmpElv - centerElv) >= minheight && fabs(tmpElv - centerElv) <= maxheight)
 				{
 					land->selectVertex(j, i);
 				}
 				else
 				{
-					tmpElv = land->getVertexHeight(top * land->realVerticesMapSide + right);
-					if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
+					tmpElv = land->getVertexheight(top * land->realVerticesMapSide + right);
+					if (fabs(tmpElv - centerElv) >= minheight && fabs(tmpElv - centerElv) <= maxheight)
 					{
 						land->selectVertex(j, i);
 					}
 					else
 					{
-						tmpElv = land->getVertexHeight(bottom * land->realVerticesMapSide + right);
-						if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
+						tmpElv = land->getVertexheight(bottom * land->realVerticesMapSide + right);
+						if (fabs(tmpElv - centerElv) >= minheight && fabs(tmpElv - centerElv) <= maxheight)
 						{
 							land->selectVertex(j, i);
 						}
 						else
 						{
 							tmpElv =
-								land->getVertexHeight(bottom * land->realVerticesMapSide + left);
-							if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
+								land->getVertexheight(bottom * land->realVerticesMapSide + left);
+							if (fabs(tmpElv - centerElv) >= minheight && fabs(tmpElv - centerElv) <= maxheight)
 							{
 								land->selectVertex(j, i);
 							}
@@ -2342,19 +2342,19 @@ EditorInterface::SelectSlopes()
 int32_t
 EditorInterface::SelectAltitude()
 {
-	HeightDlg dlg;
+	heightDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		float minHeight = (float)dlg.GetMin();
-		float maxHeight = (float)dlg.GetMax();
+		float minheight = (float)dlg.GetMin();
+		float maxheight = (float)dlg.GetMax();
 		float centerElv;
 		land->unselectAll();
 		for (size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
 			for (size_t i = 0; i < land->realVerticesMapSide; ++i)
 			{
-				centerElv = land->getVertexHeight(j * land->realVerticesMapSide + i);
-				if ((centerElv >= minHeight) && (centerElv <= maxHeight))
+				centerElv = land->getVertexheight(j * land->realVerticesMapSide + i);
+				if ((centerElv >= minheight) && (centerElv <= maxheight))
 				{
 					land->selectVertex(j, i);
 				}
@@ -2372,7 +2372,7 @@ EditorInterface::SelectTerrainType()
 	dlg.SelectedTerrainType(-1);
 	if ((dlg.DoModal() == IDOK) && (ID_TERRAINS_BLUEWATER <= dlg.SelectedTerrainType()))
 	{
-		cint32_t selectedTerrainType = dlg.SelectedTerrainType() - ID_TERRAINS_BLUEWATER;
+		const int32_t selectedTerrainType = dlg.SelectedTerrainType() - ID_TERRAINS_BLUEWATER;
 		land->unselectAll();
 		for (size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
@@ -2414,16 +2414,16 @@ int32_t
 EditorInterface::Fog()
 {
 	FogDlg dlg;
-	dlg.m_blue = (eye->dayFogColor) & 0xff;
-	dlg.m_green = (eye->dayFogColor >> 8) & 0xff;
-	dlg.m_red = (eye->dayFogColor >> 16) & 0xff;
+	dlg.m_blue = (eye->dayFogcolour) & 0xff;
+	dlg.m_green = (eye->dayFogcolour >> 8) & 0xff;
+	dlg.m_red = (eye->dayFogcolour >> 16) & 0xff;
 	dlg.m_start = eye->fogStart;
 	dlg.m_end = eye->fogFull;
 	if (IDOK == dlg.DoModal())
 	{
-		eye->dayFogColor =
+		eye->dayFogcolour =
 			((uint32_t)dlg.m_blue) + (((uint32_t)dlg.m_green) << 8) + (((uint32_t)dlg.m_red) << 16);
-		eye->fogColor = eye->dayFogColor;
+		eye->fogcolour = eye->dayFogcolour;
 		eye->fogStart = dlg.m_start;
 		eye->fogFull = dlg.m_end;
 		//		land->reCalcLight();
@@ -2510,14 +2510,14 @@ EditorInterface::AssignElevation()
 	if (!land->hasSelection())
 	{
 		// nothing to assign heights to, let the user know
-		char buffer[256];
+		wchar_t buffer[256];
 		cLoadString(IDS_NO_VERTEX_SEL, buffer, 256, gameResourceHandle);
 		MessageBox(buffer);
 	}
 	else
 	{
 		FlattenBrush tmp;
-		float val = tmp.getAverageHeightOfSelection();
+		float val = tmp.getAverageheightOfSelection();
 		SingleValueDlg dlg(IDS_ASSIGN_ELEVATION, IDS_ELEVATION, (int32_t)val);
 		dlg.SetVal((int32_t)val);
 		if (IDOK == dlg.DoModal())
@@ -2529,12 +2529,12 @@ EditorInterface::AssignElevation()
 				{
 					if (land->isVertexSelected(j, i))
 					{
-						land->setVertexHeight(
+						land->setVertexheight(
 							j * land->realVerticesMapSide + i, (float)dlg.GetVal());
 					}
 				}
 			}
-			// Action* pAction = tmp.applyHeightToSelection( (float)dlg.GetVal()
+			// Action* pAction = tmp.applyheightToSelection( (float)dlg.GetVal()
 			// );
 			if (pAction)
 				undoMgr.AddAction(pAction);
@@ -2579,7 +2579,7 @@ EditorInterface::Alignment(int32_t specific)
 }
 
 int32_t
-EditorInterface::SaveHeightMap()
+EditorInterface::SaveheightMap()
 {
 	CreateDirectory(terrainPath, nullptr);
 	CFileDialog fileDlg(
@@ -2595,7 +2595,7 @@ EditorInterface::SaveHeightMap()
 			return false;
 		}
 		SetBusyMode();
-		bool ret = EditorData::saveHeightMap(&file);
+		bool ret = EditorData::saveheightMap(&file);
 		UnsetBusyMode();
 		return ret;
 	}
@@ -2749,10 +2749,10 @@ EditorInterface::syncHScroll()
 		/* figure out what proportion of the map is visible */
 		Stuff::Vector2DOf<int32_t> screen;
 		Stuff::Vector3D world1, world2;
-		screen.y = Environment.screenHeight / 2;
+		screen.y = Environment.screenheight / 2;
 		screen.x = 1;
 		eye->inverseProject(screen, world1);
-		screen.x = Environment.screenWidth - 1;
+		screen.x = Environment.screenwidth - 1;
 		eye->inverseProject(screen, world2);
 		float dx = world2.x - world1.x;
 		float dy = world2.y - world1.y;
@@ -2800,10 +2800,10 @@ EditorInterface::syncVScroll()
 		/* figure out what proportion of the map is visible */
 		Stuff::Vector2DOf<int32_t> screen;
 		Stuff::Vector3D world1, world2;
-		screen.x = Environment.screenWidth / 2;
+		screen.x = Environment.screenwidth / 2;
 		screen.y = 1;
 		eye->inverseProject(screen, world1);
-		screen.y = Environment.screenHeight - 1;
+		screen.y = Environment.screenheight - 1;
 		eye->inverseProject(screen, world2);
 		float dx = world2.x - world1.x;
 		float dy = world2.y - world1.y;
@@ -2948,14 +2948,14 @@ EditorInterface::SelectWaterTexture()
 inline bool
 colorMapIsOKFormat(const std::wstring_view& fileName)
 {
-	uint32_t localColorMapSizeCheck = land->realVerticesMapSide * 12.8;
+	uint32_t localcolourMapSizeCheck = land->realVerticesMapSide * 12.8;
 	File tgaFile;
 	int32_t result = tgaFile.open(fileName);
 	if (result == NO_ERROR)
 	{
 		struct TGAFileHeader tgaHeader;
-		tgaFile.read((puint8_t)&tgaHeader, sizeof(TGAFileHeader));
-		if ((tgaHeader.image_type == UNC_TRUE) && (tgaHeader.width == tgaHeader.height) && (tgaHeader.width == localColorMapSizeCheck))
+		tgaFile.read((uint8_t*)&tgaHeader, sizeof(TGAFileHeader));
+		if ((tgaHeader.image_type == UNC_TRUE) && (tgaHeader.width == tgaHeader.height) && (tgaHeader.width == localcolourMapSizeCheck))
 			return true;
 		tgaFile.close();
 	}
@@ -2974,12 +2974,12 @@ EditorInterface::SetBaseTexture()
 		// Check that this is a valid colormap of EXACTLY the same size!!!
 		if (colorMapIsOKFormat(path))
 		{
-			char name[1024];
+			wchar_t name[1024];
 			_splitpath(path, nullptr, nullptr, name, nullptr);
 			const std::wstring_view& testLoc = strstr(name, ".burnin");
 			if (testLoc)
 				testLoc[0] = 0; // Prune off the burnin name.
-			land->setColorMapName(name);
+			land->setcolourMapName(name);
 			if (land->terrainTextures2 && (land->terrainTextures2->colorMapStarted))
 			{
 				if (land->colorMapName)
@@ -3168,8 +3168,8 @@ EditorInterface::WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam)
 			float w = LOWORD(lparam);
 			float h = HIWORD(lparam);
 			windowSizeChanged = true;
-			g_newWidth = w + 16 /*scrollbar thickness*/;
-			g_newHeight = h + 16 /*scrollbar thickness*/;
+			g_newwidth = w + 16 /*scrollbar thickness*/;
+			g_newheight = h + 16 /*scrollbar thickness*/;
 			retVal = GameOSWinProc(m_hWnd, message, wparam, lparam);
 			if (editor && bThisIsInitialized)
 			{
@@ -3389,7 +3389,7 @@ EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 		}
 	}
 	// need to put this value in the appropriate place.
-	char buffer[1024];
+	wchar_t buffer[1024];
 	sprintf(buffer, "%.3f", eyeDistance);
 	((MainFrame*)AfxGetMainWnd())
 		->m_wndDlgBar.GetDlgItem(IDC_OBJDISTANCEEDIT)
@@ -3599,7 +3599,7 @@ EditorInterface::initTacMap()
 	// We go through all the damned trouble to save it every time!
 	// This takes a int32_t time.
 	// -fs
-	puint8_t pData = nullptr;
+	uint8_t* pData = nullptr;
 	int32_t size = 0;
 	FullPathFileName mPath;
 	bool bFile = false;
@@ -3680,10 +3680,10 @@ EditorInterface::OnPaint()
 					pSplashBitmap->GetBitmap(&bm_struct);
 					pbmOld = dcMem.SelectObject(pSplashBitmap);
 				}
-				int32_t gbmLeft = rcClient.right / 2 - bm_struct.bmWidth / 2;
-				int32_t gbmTop = rcClient.bottom / 2 - bm_struct.bmHeight / 2;
-				int32_t gbmRight = gbmLeft + bm_struct.bmWidth;
-				int32_t gbmBottom = gbmTop + bm_struct.bmHeight;
+				int32_t gbmLeft = rcClient.right / 2 - bm_struct.bmwidth / 2;
+				int32_t gbmTop = rcClient.bottom / 2 - bm_struct.bmheight / 2;
+				int32_t gbmRight = gbmLeft + bm_struct.bmwidth;
+				int32_t gbmBottom = gbmTop + bm_struct.bmheight;
 				CRect rcTmp;
 				rcTmp = rcClient;
 				rcTmp.bottom = gbmTop;
@@ -3697,9 +3697,9 @@ EditorInterface::OnPaint()
 				rcTmp = rcClient;
 				rcTmp.left = gbmRight;
 				dc.FillSolidRect(&rcTmp, RGB(0, 0, 0));
-				dc.BitBlt(rcClient.right / 2 - bm_struct.bmWidth / 2,
-					rcClient.bottom / 2 - bm_struct.bmHeight / 2, bm_struct.bmWidth,
-					bm_struct.bmHeight, &dcMem, 0, 0, SRCCOPY);
+				dc.BitBlt(rcClient.right / 2 - bm_struct.bmwidth / 2,
+					rcClient.bottom / 2 - bm_struct.bmheight / 2, bm_struct.bmwidth,
+					bm_struct.bmheight, &dcMem, 0, 0, SRCCOPY);
 				dcMem.SelectObject(pbmOld);
 				dcMem.DeleteDC();
 			}

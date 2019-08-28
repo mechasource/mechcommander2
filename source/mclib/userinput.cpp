@@ -60,9 +60,9 @@ MouseCursorData::initCursors(const std::wstring_view& cursorFileName)
 	// New
 	// add an "a" to the end of the cursorFileName IF we are running in 800x600
 	// or less. Loads different sized cursors.
-	char realHackName[1024];
+	wchar_t realHackName[1024];
 	strcpy(realHackName, cursorFileName);
-	if (Environment.screenWidth <= 800)
+	if (Environment.screenwidth <= 800)
 		sprintf(realHackName, "%sa", cursorFileName);
 	FullPathFileName cursorName;
 	cursorName.init(artPath, realHackName, ".fit");
@@ -79,7 +79,7 @@ MouseCursorData::initCursors(const std::wstring_view& cursorFileName)
 	// Each cursor is defined as a number of frames
 	// and a TGA File Name which we use to create
 	// the texture handle.
-	char blockName[32];
+	wchar_t blockName[32];
 	for (size_t i = 0; i < numCursors; i++)
 	{
 		sprintf(blockName, "Cursor%ld", i);
@@ -165,8 +165,8 @@ UserInput::update(void)
 	//-----------------
 	// Poll the mouse.
 	uint32_t buttonStates;
-	gos_GetMouseInfo(&mouseXPosition, &mouseYPosition, (pint32_t)&mouseXDelta,
-		(pint32_t)&mouseYDelta, (pint32_t)&mouseWheelDelta, &buttonStates);
+	gos_GetMouseInfo(&mouseXPosition, &mouseYPosition, (int32_t*)&mouseXDelta,
+		(int32_t*)&mouseYDelta, (int32_t*)&mouseWheelDelta, &buttonStates);
 	//	leftMouseButtonState = buttonStates & 1;
 	//	rightMouseButtonState = (buttonStates & 2) >> 1;
 	//	middleMouseButtonState = (buttonStates & 4) >> 2;
@@ -333,7 +333,7 @@ UserInput::update(void)
 		mc2IsInDisplayBackBuffer = true;
 		if (!mc2MouseData)
 		{
-			mc2MouseData = (puint8_t)malloc(sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
+			mc2MouseData = (uint8_t*)malloc(sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
 			memset(mc2MouseData, 0, sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
 		}
 		// Need to update the mouse in the mouse thread to inform it that the
@@ -341,20 +341,20 @@ UserInput::update(void)
 		// possibly changed size and shape.
 		mc2MouseHotSpotX = cursors->getMouseHSX(mouseState);
 		mc2MouseHotSpotY = cursors->getMouseHSY(mouseState);
-		mc2MouseWidth = cursors->cursorInfos[mouseState].width();
-		mc2MouseHeight = cursors->cursorInfos[mouseState].height();
+		mc2Mousewidth = cursors->cursorInfos[mouseState].width();
+		mc2Mouseheight = cursors->cursorInfos[mouseState].height();
 		uint32_t totalMouseFrames = cursors->getNumFrames(mouseState);
 		if (totalMouseFrames > 1)
 		{
-			int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth / cursors->cursorInfos[mouseState].width();
+			int32_t framesPerRow = cursors->cursorInfos[mouseState].texturewidth / cursors->cursorInfos[mouseState].width();
 			int32_t iIndex = mouseFrame % framesPerRow;
 			int32_t jIndex = mouseFrame / framesPerRow;
 			float oldU = cursors->cursorInfos[mouseState].u;
 			float oldV = cursors->cursorInfos[mouseState].v;
-			float newU = (.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth + ((float)iIndex * cursors->cursorInfos[mouseState].width() / cursors->cursorInfos[mouseState].textureWidth);
-			float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth + (float)jIndex * cursors->cursorInfos[mouseState].height() / cursors->cursorInfos[mouseState].textureWidth;
-			float newU2 = newU + (cursors->cursorInfos[mouseState].width() + .1) / cursors->cursorInfos[mouseState].textureWidth;
-			float newV2 = newV + (cursors->cursorInfos[mouseState].height() + .1) / cursors->cursorInfos[mouseState].textureWidth;
+			float newU = (.1f + oldU) / cursors->cursorInfos[mouseState].texturewidth + ((float)iIndex * cursors->cursorInfos[mouseState].width() / cursors->cursorInfos[mouseState].texturewidth);
+			float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].texturewidth + (float)jIndex * cursors->cursorInfos[mouseState].height() / cursors->cursorInfos[mouseState].texturewidth;
+			float newU2 = newU + (cursors->cursorInfos[mouseState].width() + .1) / cursors->cursorInfos[mouseState].texturewidth;
+			float newV2 = newV + (cursors->cursorInfos[mouseState].height() + .1) / cursors->cursorInfos[mouseState].texturewidth;
 			cursors->cursorInfos[mouseState].setNewUVs(newU, newV, newU2, newV2);
 			cursors->cursorInfos[mouseState].getData(mc2MouseData);
 			cursors->cursorInfos[mouseState].u = oldU;
@@ -457,15 +457,15 @@ UserInput::render(void) // Last thing rendered.  Draws Mouse.
 			int32_t totalMouseFrames = cursors->getNumFrames(mouseState);
 			if (totalMouseFrames > 1)
 			{
-				int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth / cursors->cursorInfos[mouseState].width();
+				int32_t framesPerRow = cursors->cursorInfos[mouseState].texturewidth / cursors->cursorInfos[mouseState].width();
 				int32_t iIndex = mouseFrame % framesPerRow;
 				int32_t jIndex = mouseFrame / framesPerRow;
 				float oldU = cursors->cursorInfos[mouseState].u;
 				float oldV = cursors->cursorInfos[mouseState].v;
-				float newU = (.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth + ((float)iIndex * cursors->cursorInfos[mouseState].width() / cursors->cursorInfos[mouseState].textureWidth);
-				float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth + (float)jIndex * cursors->cursorInfos[mouseState].height() / cursors->cursorInfos[mouseState].textureWidth;
-				float newU2 = newU + (cursors->cursorInfos[mouseState].width() + .1) / cursors->cursorInfos[mouseState].textureWidth;
-				float newV2 = newV + (cursors->cursorInfos[mouseState].height() + .1) / cursors->cursorInfos[mouseState].textureWidth;
+				float newU = (.1f + oldU) / cursors->cursorInfos[mouseState].texturewidth + ((float)iIndex * cursors->cursorInfos[mouseState].width() / cursors->cursorInfos[mouseState].texturewidth);
+				float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].texturewidth + (float)jIndex * cursors->cursorInfos[mouseState].height() / cursors->cursorInfos[mouseState].texturewidth;
+				float newU2 = newU + (cursors->cursorInfos[mouseState].width() + .1) / cursors->cursorInfos[mouseState].texturewidth;
+				float newV2 = newV + (cursors->cursorInfos[mouseState].height() + .1) / cursors->cursorInfos[mouseState].texturewidth;
 				cursors->cursorInfos[mouseState].setNewUVs(newU, newV, newU2, newV2);
 				cursors->cursorInfos[mouseState].render();
 				cursors->cursorInfos[mouseState].u = oldU;

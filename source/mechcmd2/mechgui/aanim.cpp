@@ -92,7 +92,7 @@ aAnimation::init(FitIniFile* file, const std::wstring_view& headerName)
 		{
 			strToCheck.Format("%s%s%ld", headerName, "Time", i);
 			file->readIdFloat(strToCheck, infos[i].time);
-			strToCheck.Format("%s%s%ld", headerName, "Color", i);
+			strToCheck.Format("%s%s%ld", headerName, "colour", i);
 			if (NO_ERROR != file->readIdLong(strToCheck, infos[i].color))
 				infos[i].color = 0xffffffff;
 			strToCheck.Format("%s%s%ld%s", headerName, "Pos", i, "X");
@@ -304,13 +304,13 @@ aAnimation::getScaleY(void) const
 }
 
 uint32_t
-aAnimation::getColor() const
+aAnimation::getcolour(void) const
 {
-	return getColor(currentTime);
+	return getcolour(currentTime);
 }
 
 uint32_t
-aAnimation::getColor(float time) const
+aAnimation::getcolour(float time) const
 {
 	float t0, t1;
 	if (infoCount && (time > infos[infoCount - 1].time) && bLoops)
@@ -341,7 +341,7 @@ aAnimation::getColor(float time) const
 		float totalTime = t1 - t0;
 		float tmpTime = time - t0;
 		float percent = tmpTime / totalTime;
-		return interpolateColor(color1, color2, percent);
+		return interpolatecolour(color1, color2, percent);
 	}
 	else if (infos)
 	{
@@ -376,7 +376,7 @@ aAnimation::initWithBlockName(FitIniFile* file, const std::wstring_view& blockNa
 {
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
-		char errorStr[255];
+		wchar_t errorStr[255];
 		sprintf(errorStr, "couldn't find block %s in file %s", blockName, file->getFilename());
 		Assert(0, 0, errorStr);
 		return -1;
@@ -399,7 +399,7 @@ aAnimGroup::init(FitIniFile* file, const std::wstring_view& blockName)
 {
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
-		char errorStr[255];
+		wchar_t errorStr[255];
 		sprintf(errorStr, "couldn't find block %s in file %s", blockName, file->getFilename());
 		Assert(0, 0, errorStr);
 		return -1;
@@ -420,9 +420,9 @@ aAnimGroup::update()
 }
 
 int32_t
-aAnimGroup::getCurrentColor(aAnimGroup::STATE state) const
+aAnimGroup::getCurrentcolour(aAnimGroup::STATE state) const
 {
-	return animations[state].getColor();
+	return animations[state].getcolour();
 }
 
 void

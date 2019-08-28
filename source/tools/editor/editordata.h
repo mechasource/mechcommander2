@@ -12,7 +12,7 @@
 //#include "estring.h"
 //#include "objective.h"
 
-static cint32_t GAME_MAX_PLAYERS = 8;
+static const int32_t GAME_MAX_PLAYERS = 8;
 
 #define EDITOR_VISIBLE_VERTICES 60
 
@@ -131,11 +131,11 @@ public:
 	static bool initTerrainFromTGA(
 		int32_t mapSize, int32_t min = 0, int32_t max = 512, int32_t terrain = 0);
 	static bool initTerrainFromPCV(const std::wstring_view& fileName);
-	static bool reassignHeightsFromTGA(const std::wstring_view& fileName, int32_t min, int32_t max);
+	static bool reassignheightsFromTGA(const std::wstring_view& fileName, int32_t min, int32_t max);
 
 	bool save(const std::wstring_view& fileName, bool quickSave = false);
 	bool quickSave(const std::wstring_view& fileName);
-	static bool saveHeightMap(File* file);
+	static bool saveheightMap(File* file);
 	bool saveMissionFitFileStuff(FitIniFile& fitFile);
 
 	static void setMapName(const std::wstring_view& name);
@@ -364,10 +364,10 @@ public:
 		TeamsRef().handleObjectInvalidation(pObj);
 	}
 
-	void makeTacMap(puint8_t& pOutput, int32_t& dataSize,
+	void makeTacMap(uint8_t*& pOutput, int32_t& dataSize,
 		int32_t tacMapSize); // this allocates memory, below just draws
-	void drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize);
-	void loadTacMap(PacketFile* file, puint8_t& pDest, size_t dataSize,
+	void drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize);
+	void loadTacMap(PacketFile* file, uint8_t*& pDest, size_t dataSize,
 		int32_t tacMapSize); // this allocates memory.  Saves millions of CPU
 		// cycles on load
 
@@ -415,7 +415,7 @@ private:
 	bool m_artilleryPieceEnabledDefault;
 	bool m_rPsForMechsEnabledDefault;
 
-	static char mapName[256];
+	static wchar_t mapName[256];
 
 	static uint32_t* tacMapBmp; // tac map data, keep around so we can update
 

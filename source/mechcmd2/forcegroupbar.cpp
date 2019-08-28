@@ -20,21 +20,21 @@ ForceGroupBar.cpp			: Implementation of the ForceGroupBar component.
 #include "prefs.h"
 #include "GameSound.h"
 
-float ForceGroupBar::iconWidth = 48;
-float ForceGroupBar::iconHeight = 42;
+float ForceGroupBar::iconwidth = 48;
+float ForceGroupBar::iconheight = 42;
 int32_t ForceGroupBar::iconsPerRow = 8;
 
 StaticInfo* ForceGroupBar::s_coverIcon = nullptr;
 
 extern bool useLeftRightMouseProfile;
-extern char CDInstallPath[];
+extern wchar_t CDInstallPath[];
 void
 EnterWindowMode();
 void
 EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
-#define BOTTOM_OFFSET 5 * Environment.screenHeight / 640.f
+#define BOTTOM_OFFSET 5 * Environment.screenheight / 640.f
 
 #define FORCEGROUP_LEFT ForceGroupIcon::selectionRect[0].left
 #define FORCEGROUP_WIDTH \
@@ -275,7 +275,7 @@ ForceGroupBar::inRegion(int32_t x, int32_t y)
 void
 ForceGroupBar::render()
 {
-	s_coverIcon->setColor(0);
+	s_coverIcon->setcolour(0);
 	int32_t maxUnits = 16;
 	if (MPlayer)
 	{
@@ -309,9 +309,9 @@ ForceGroupBar::render()
 			{
 				s_coverIcon->setLocation(
 					ForceGroupIcon::selectionRect[i].left, ForceGroupIcon::selectionRect[i].top);
-				s_coverIcon->setColor(0xffffffff);
+				s_coverIcon->setcolour(0xffffffff);
 				s_coverIcon->render();
-				s_coverIcon->setColor(0);
+				s_coverIcon->setcolour(0);
 			}
 		}
 	}
@@ -408,7 +408,7 @@ ForceGroupBar::setPilotVideo(const std::wstring_view& pVideo, MechWarrior* pPilo
 				}
 				else // make a still texture
 				{
-					char realPilotName[9];
+					wchar_t realPilotName[9];
 					// Set everything to zero so the strncpy below doesn't go
 					// off into LALA land!!
 					memset(realPilotName, 0, 9);
@@ -420,12 +420,12 @@ ForceGroupBar::setPilotVideo(const std::wstring_view& pVideo, MechWarrior* pPilo
 							gos_NewTextureFromFile(gos_Texture_Solid, path, 0);
 					else
 					{
-						char realMovieName[256];
-						char realMoviePath[1024];
+						wchar_t realMovieName[256];
+						wchar_t realMoviePath[1024];
 						_splitpath(path, nullptr, realMoviePath, realMovieName, nullptr);
 						// Not in main installed directory and not in fastfile.
 						// Look on CD.
-						char actualPath[2048];
+						wchar_t actualPath[2048];
 						strcpy(actualPath, CDInstallPath);
 						strcat(actualPath, realMoviePath);
 						strcat(actualPath, realMovieName);
@@ -439,10 +439,10 @@ ForceGroupBar::setPilotVideo(const std::wstring_view& pVideo, MechWarrior* pPilo
 						{
 							openFailed = true;
 							EnterWindowMode();
-							char data[2048];
-							char msg[1024];
-							char msg1[512];
-							char title[256];
+							wchar_t data[2048];
+							wchar_t msg[1024];
+							wchar_t msg1[512];
+							wchar_t title[256];
 							cLoadString(IDS_MC2_movieMISSING, msg1, 511);
 							cLoadString(IDS_MC2_CDMISSING, msg, 1023);
 							cLoadString(IDS_MC2_MISSING_TITLE, title, 255);

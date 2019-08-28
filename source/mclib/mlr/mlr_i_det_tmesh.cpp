@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_det_tmesh.h"
 
@@ -104,7 +104,7 @@ MLR_I_DeT_TMesh::Copy(
 	Check_Object(tMesh);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	size_t len;
-	puint16_t _index;
+	uint16_t* _index;
 	Stuff::Point3D* _coords;
 	Stuff::Vector2DScalar* _texCoords;
 
@@ -238,7 +238,7 @@ MLR_I_DeT_TMesh::TestInstance(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_DeT_TMesh*
-MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
+MidLevelRenderer::CreateIndexedTriCube_Nocolour_NoLit_DetTex(
 	float half, MLRState* state, MLRState* state1)
 {
 	(void)half;
@@ -259,7 +259,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
 	coords[5] = Stuff::Point3D(half,  half,  half);
 	coords[6] = Stuff::Point3D(half,  half, -half);
 	coords[7] = Stuff::Point3D(-half,  half, -half);
-	puint8_t lengths = new uint8_t [6];
+	uint8_t* lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 	size_t i;
 	for(i = 0; i < 6; i++)
@@ -268,7 +268,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
 	}
 	ret->SetSubprimitiveLengths(lengths, 6);
 	ret->SetCoordData(coords, 8);
-	puint16_t index = new uint16_t [6 * 4];
+	uint16_t* index = new uint16_t [6 * 4];
 	Register_Pointer(index);
 	index[0] = 0;
 	index[1] = 2;
@@ -339,7 +339,7 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
+MidLevelRenderer::CreateIndexedTriIcosahedron_Nocolour_NoLit_DetTex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* stateDet)
 {
 #ifdef _GAMEOS_HPP_
@@ -362,7 +362,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
 		collapsedCoords = new Stuff::Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);

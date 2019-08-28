@@ -14,7 +14,7 @@ public:
 	int32_t m_width;
 	int32_t m_offsety;
 	LPDIRECTDRAWSURFACE7 m_lpdds7;
-	puint8_t m_lpDynData;
+	uint8_t* m_lpDynData;
 
 	DBCSSurface(uint32_t width, uint32_t height);
 	~DBCSSurface(void);

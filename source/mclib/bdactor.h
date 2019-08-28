@@ -47,8 +47,8 @@ public:
 	bool bdRandom[MAX_BD_ANIMATIONS];
 	int32_t bdStartF[MAX_BD_ANIMATIONS];
 
-	char rotationalNodeId[TG_NODE_ID];
-	char destructEffect[60];
+	wchar_t rotationalNodeId[TG_NODE_ID];
+	wchar_t destructEffect[60];
 
 	bool spinMe;
 	bool isForestClump;
@@ -172,7 +172,7 @@ public:
 	float duration;
 	float currentFlash;
 	bool drawFlash;
-	uint32_t flashColor;
+	uint32_t flashcolour;
 
 	int32_t currentLOD;
 
@@ -214,7 +214,7 @@ public:
 
 	virtual bool getInTransition(void) { return (canTransition == false); }
 
-	void setFadeTable(puint8_t fTable) { fadeTable = fTable; }
+	void setFadeTable(uint8_t* fTable) { fadeTable = fTable; }
 
 	virtual void setGesture(size_t gestureId);
 
@@ -234,12 +234,12 @@ public:
 
 	virtual void setObjStatus(int32_t oStatus);
 
-	virtual int32_t calcCellsCovered(Stuff::Vector3D& pos, pint16_t cellList);
+	virtual int32_t calcCellsCovered(Stuff::Vector3D& pos, int16_t* cellList);
 
 	virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 
 	virtual int32_t markMoveMap(bool passable, int32_t* lineOfSightRect, bool useheight = false,
-		pint16_t cellList = nullptr);
+		int16_t* cellList = nullptr);
 
 	virtual void markLOS(bool clearIt = false);
 
@@ -247,7 +247,7 @@ public:
 
 	virtual void scale(float scaleFactor) { bldgShape->ScaleShape(scaleFactor); }
 
-	virtual bool playDestruction(void);
+	virtual bool playdestruction(void);
 
 	virtual float getRadius(void) { return OBBRadius; }
 
@@ -393,7 +393,7 @@ public:
 
 	virtual bool recalcBounds(void);
 
-	void setFadeTable(puint8_t fTable) { fadeTable = fTable; }
+	void setFadeTable(uint8_t* fTable) { fadeTable = fTable; }
 
 	virtual void setObjectNameId(int32_t objId) { objectNameId = objId; }
 

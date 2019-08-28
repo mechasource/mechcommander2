@@ -116,7 +116,7 @@ SoundSystem::init(const std::wstring_view& soundFileName)
 		int32_t i;
 		for (i = 0; i < (int32_t)numSoundBites; i++)
 		{
-			char biteBlock[20];
+			wchar_t biteBlock[20];
 			sprintf(biteBlock, "SoundBite%d", i);
 			result = soundFile.seekBlock(biteBlock);
 			gosASSERT(result == NO_ERROR);
@@ -149,11 +149,11 @@ SoundSystem::init(const std::wstring_view& soundFileName)
 		digitalMusicVolume = (float*)soundHeap->Malloc(sizeof(float) * numDMS);
 		for (i = 0; i < numDMS; i++)
 		{
-			char digitalMSId[20];
+			wchar_t digitalMSId[20];
 			sprintf(digitalMSId, "DMS%d", i);
-			char digitalMSBId[20];
+			wchar_t digitalMSBId[20];
 			sprintf(digitalMSBId, "DMSLoop%d", i);
-			char digitalMSVId[25];
+			wchar_t digitalMSVId[25];
 			sprintf(digitalMSVId, "DMSVolume%d", i);
 			digitalMusicIds[i] = (const std::wstring_view&)soundHeap->Malloc(30);
 			result = soundFile.readIdString(digitalMSId, digitalMusicIds[i], 29);
@@ -188,8 +188,8 @@ SoundSystem::init(const std::wstring_view& soundFileName)
 //
 //////////////////////////////////////////////////////////////////
 bool
-wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
-	puint8_t* lplpWaveSamples, uint32_t* lpcbWaveSize)
+wave_ParseWaveMemory(uint8_t* lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
+	uint8_t** lplpWaveSamples, uint32_t* lpcbWaveSize)
 {
 	uint32_t* pdw;
 	uint32_t* pdwEnd;
@@ -217,7 +217,7 @@ wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader
 	if (dwType != 0x45564157)
 		return FALSE; // not a WAV
 	// Find the pointer to the end of the chunk of memory
-	pdwEnd = (uint32_t*)((puint8_t)pdw + dwLength - 4);
+	pdwEnd = (uint32_t*)((uint8_t*)pdw + dwLength - 4);
 	// Run through the bytes looking for the tags
 	while (pdw < pdwEnd)
 	{
@@ -251,7 +251,7 @@ wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader
 				// Point the samples pointer to this part of the
 				// chunk of memory.
 				if (*lplpWaveSamples == nullptr)
-					*lplpWaveSamples = (puint8_t)pdw;
+					*lplpWaveSamples = (uint8_t*)pdw;
 				// Set the size of the wave
 				if (lpcbWaveSize)
 					*lpcbWaveSize = dwLength;
@@ -263,7 +263,7 @@ wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader
 			break;
 		} // End case
 		// Move the pointer through the chunk of memory
-		pdw = (uint32_t*)((puint8_t)pdw + ((dwLength + 1) & ~1));
+		pdw = (uint32_t*)((uint8_t*)pdw + ((dwLength + 1) & ~1));
 	}
 	// Failed! If we made it here, we did not get all the peices
 	// of the wave
@@ -289,17 +289,17 @@ SoundSystem::preloadSoundBite(int32_t soundId)
 		if (thisSoundBite->biteSize == 0 || thisSoundBite->biteData == nullptr)
 		{
 			thisSoundBite->biteSize = packetSize;
-			thisSoundBite->biteData = (puint8_t)soundHeap->Malloc(packetSize);
+			thisSoundBite->biteData = (uint8_t*)soundHeap->Malloc(packetSize);
 			if (!thisSoundBite->biteData)
 				return;
 		}
 		soundDataFile->readPacket(soundId, thisSoundBite->biteData);
 		//--------------------------------------------------------------------
-		// Hand GOS sound the data it needs to create the resource Handle
+		// Hand GOS sound the data it needs to create the resource handle
 		gosAudio_Format soundFormat;
 		soundFormat.wFormatTag = 1; // PCM
 		MC2_WAVEFORMATEX* waveFormat = nullptr;
-		puint8_t dataOffset = nullptr;
+		uint8_t* dataOffset = nullptr;
 		uint32_t length = 0;
 		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(thisSoundBite->biteData, &waveFormat, &dataOffset, &length);
@@ -674,7 +674,7 @@ SoundSystem::playDigitalStream(const std::wstring_view& streamName)
 	// Make sure we have a real music filename.
 	if (useSound)
 	{
-		char actualName[1024];
+		wchar_t actualName[1024];
 		_splitpath(streamName, nullptr, nullptr, actualName, nullptr);
 		//---------------------------------------------------------------------------------------------
 		// Just start tune.  No fade necessary.  Set fadeTime to 0.0 to tell
@@ -731,15 +731,15 @@ SoundSystem::playBettySample(uint32_t bettySampleId)
 		if (result != NO_ERROR)
 			return (-1);
 		int32_t bettySize = bettyDataFile->getPacketSize();
-		bettySoundBite = (puint8_t)soundHeap->Malloc(bettySize);
+		bettySoundBite = (uint8_t*)soundHeap->Malloc(bettySize);
 		gosASSERT(bettySoundBite != nullptr);
 		bettyDataFile->readPacket(bettySampleId, bettySoundBite);
 		//--------------------------------------------------------------------
-		// Hand GOS sound the data it needs to create the resource Handle
+		// Hand GOS sound the data it needs to create the resource handle
 		gosAudio_Format soundFormat;
 		soundFormat.wFormatTag = 1; // PCM
 		MC2_WAVEFORMATEX* waveFormat = nullptr;
-		puint8_t dataOffset = nullptr;
+		uint8_t* dataOffset = nullptr;
 		uint32_t length = 0;
 		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(bettySoundBite, &waveFormat, &dataOffset, &length);
@@ -790,7 +790,7 @@ SoundSystem::playSupportSample(uint32_t supportSampleId, const std::wstring_view
 			int32_t supportSize = supportDataFile->getPacketSize();
 			if (supportSize > 0)
 			{
-				supportSoundBite = (puint8_t)soundHeap->Malloc(supportSize);
+				supportSoundBite = (uint8_t*)soundHeap->Malloc(supportSize);
 				gosASSERT(supportSoundBite != nullptr);
 			}
 			else
@@ -800,11 +800,11 @@ SoundSystem::playSupportSample(uint32_t supportSampleId, const std::wstring_view
 			supportDataFile->readPacket(supportSampleId, supportSoundBite);
 		}
 		//--------------------------------------------------------------------
-		// Hand GOS sound the data it needs to create the resource Handle
+		// Hand GOS sound the data it needs to create the resource handle
 		gosAudio_Format soundFormat;
 		soundFormat.wFormatTag = 1; // PCM
 		MC2_WAVEFORMATEX* waveFormat = nullptr;
-		puint8_t dataOffset = nullptr;
+		uint8_t* dataOffset = nullptr;
 		uint32_t length = 0;
 		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(supportSoundBite, &waveFormat, &dataOffset, &length);

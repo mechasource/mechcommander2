@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_l_tmesh.h"
 #include "mlr/mlr_i_l_det_pmesh.h"
@@ -79,7 +79,7 @@ MLR_I_L_DeT_TMesh::MLR_I_L_DeT_TMesh(ClassData* class_data, std::iostream stream
 	}
 	break;
 	}
-	litColors.SetLength(colors.GetLength());
+	litcolours.SetLength(colors.GetLength());
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -173,7 +173,7 @@ MLR_I_L_DeT_TMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_DeT_TMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
+MLR_I_L_DeT_TMesh::GetNormalData(Stuff::Vector3D** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = normals.GetData();
@@ -183,11 +183,11 @@ MLR_I_L_DeT_TMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_DeT_TMesh::SetColorData(
+MLR_I_L_DeT_TMesh::SetcolourData(
 #if COLOR_AS_DWORD
-	pcuint32_t data,
+	const uint32_t* data,
 #else
-	const Stuff::RGBAColor* data,
+	const Stuff::RGBAcolour* data,
 #endif
 	size_t dataSize)
 {
@@ -196,7 +196,7 @@ MLR_I_L_DeT_TMesh::SetColorData(
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	_ASSERT(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	_ASSERT(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
-	litColors.SetLength(dataSize);
+	litcolours.SetLength(dataSize);
 	colors.AssignData(data, dataSize);
 }
 
@@ -205,38 +205,38 @@ MLR_I_L_DeT_TMesh::SetColorData(
 void
 MLR_I_L_DeT_TMesh::PaintMe(
 #if COLOR_AS_DWORD
-	pcuint32_t paintMe
+	const uint32_t* paintMe
 #else
-	const Stuff::RGBAColor* paintMe
+	const Stuff::RGBAcolour* paintMe
 #endif
 
 )
 {
 	// Check_Object(this);
 #if 1
-	_ASSERT(colors.GetLength() == litColors.GetLength());
+	_ASSERT(colors.GetLength() == litcolours.GetLength());
 #else
-	if (colors.GetLength() == litColors.GetLength())
+	if (colors.GetLength() == litcolours.GetLength())
 	{
-		litColors.SetLength(colors.GetLength());
+		litcolours.SetLength(colors.GetLength());
 	}
 #endif
-	size_t k, len = litColors.GetLength();
+	size_t k, len = litcolours.GetLength();
 #if COLOR_AS_DWORD
-	uint32_t argb = GOSCopyColor(paintMe);
+	uint32_t argb = GOSCopycolour(paintMe);
 	for (k = 0; k < len; k++)
 	{
-		litColors[k] = argb;
+		litcolours[k] = argb;
 	}
 #else
 	for (k = 0; k < len; k++)
 	{
-		litColors[k] = *paintMe;
+		litcolours[k] = *paintMe;
 	}
 #endif
 	// set the to use colors to the original colors ...
 	// only lighting could overwrite this;
-	actualColors = &litColors;
+	actualcolours = &litcolours;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -287,7 +287,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
+MidLevelRenderer::CreateIndexedTriIcosahedron_colour_Lit_DetTex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* stateDet)
 {
 #ifdef _GAMEOS_HPP_
@@ -310,11 +310,11 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
 		collapsedCoords = new Stuff::Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);
-	Stuff::RGBAColor* colors = new Stuff::RGBAColor[nrTri * 3];
+	Stuff::RGBAcolour* colors = new Stuff::RGBAcolour[nrTri * 3];
 	Register_Pointer(colors);
 	Stuff::Vector3D* normals = new Stuff::Vector3D[nrTri * 3];
 	Register_Pointer(normals);
@@ -416,7 +416,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = Stuff::RGBAColor((1.0f + collapsedCoords[i].x) / 2.0f,
+				colors[i] = Stuff::RGBAcolour((1.0f + collapsedCoords[i].x) / 2.0f,
 					(1.0f + collapsedCoords[i].y) / 2.0f, (1.0f + collapsedCoords[i].z) / 2.0f,
 					1.0f);
 				normals[i].Normalize(collapsedCoords[i]);
@@ -426,13 +426,13 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = Stuff::RGBAColor((1.0f + coords[i].x) / 2.0f,
+				colors[i] = Stuff::RGBAcolour((1.0f + coords[i].x) / 2.0f,
 					(1.0f + coords[i].y) / 2.0f, (1.0f + coords[i].z) / 2.0f, 1.0f);
 				normals[i].Normalize(coords[i]);
 			}
 		}
 		mesh->SetNormalData(normals, uniquePoints);
-		mesh->SetColorData(colors, uniquePoints);
+		mesh->SetcolourData(colors, uniquePoints);
 		mesh->SetDetailData(0.0f, 0.0f, 16.0f, 16.0f, 50.0f, 70.0f);
 		mesh->SetReferenceState(*stateDet, 1);
 		ret->Add(mesh);

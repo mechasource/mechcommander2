@@ -12,8 +12,8 @@
 #ifndef _RAY_HPP_
 #define _RAY_HPP_
 
-#include <stuff/point3d.hpp>
-#include <stuff/unitvector.hpp>
+#include "stuff/point3d.h"
+#include "stuff/unitvector.h"
 
 namespace Stuff
 {

@@ -109,13 +109,13 @@ MechListBox::init()
 {
 	if (MechListBoxItem::s_templateItem)
 		return 0;
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, artPath);
 	strcat(path, "mcl_gn_availablemechentry.fit");
 	FitIniFile file;
 	if (NO_ERROR != file.open(path))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
 		Assert(0, 0, errorStr);
 		return -1;
@@ -149,9 +149,9 @@ MechListBoxItem::MechListBoxItem(LogisticsMech* pRefMech, int32_t count)
 	if (!pMech)
 		return;
 	aObject::init(0, outline.top(), outline.width(), outline.height());
-	setColor(0, 0);
+	setcolour(0, 0);
 	chassisName.setText(pMech->getChassisName());
-	char text[32];
+	wchar_t text[32];
 	sprintf(text, "%ld", pMech->getCost());
 	costText.setText(text);
 	mechCount =
@@ -188,8 +188,8 @@ MechListBoxItem::init(FitIniFile& file)
 		s_templateItem = new MechListBoxItem(nullptr, 0);
 		file.seekBlock("MainBox");
 		int32_t width, height;
-		file.readIdLong("Width", width);
-		file.readIdLong("Height", height);
+		file.readIdLong("width", width);
+		file.readIdLong("height", height);
 		((aObject*)s_templateItem)->init(0, 0, width, height);
 		memset(s_templateItem->animationIDs, 0, sizeof(int32_t) * 9);
 		// rects
@@ -214,7 +214,7 @@ MechListBoxItem::init(FitIniFile& file)
 		assignAnimation(file, curAnim);
 		s_templateItem->costText.init(&file, "Text4");
 		assignAnimation(file, curAnim);
-		char blockName[64];
+		wchar_t blockName[64];
 		for (size_t i = 0; i < 4; i++)
 		{
 			sprintf(blockName, "OrangeAnimation%ld", i);
@@ -228,7 +228,7 @@ MechListBoxItem::init(FitIniFile& file)
 void
 MechListBoxItem::assignAnimation(FitIniFile& file, int32_t& curAnim)
 {
-	char tmpStr[64];
+	wchar_t tmpStr[64];
 	s_templateItem->animationIDs[curAnim] = -1;
 	if (NO_ERROR == file.readIdString("Animation", tmpStr, 63))
 	{
@@ -274,7 +274,7 @@ MechListBoxItem::operator=(const MechListBoxItem& src)
 void
 MechListBoxItem::update()
 {
-	char text[32];
+	wchar_t text[32];
 	int32_t oldMechCount = mechCount;
 	if (!pMech)
 	{
@@ -293,10 +293,10 @@ MechListBoxItem::update()
 	{
 		if (animTime < .25f || (animTime > .5f && animTime <= .75f))
 		{
-			countText.setColor(0);
+			countText.setcolour(0);
 		}
 		else
-			countText.setColor(0xffffffff);
+			countText.setcolour(0xffffffff);
 		animTime += frameLength;
 		if (animTime > 1.0f)
 			animTime = 0.f;
@@ -360,9 +360,9 @@ MechListBoxItem::render()
 			{
 				if (!animTime || pChildren[i] != &countText)
 				{
-					int32_t color = animations[bOrange][index].getCurrentColor(
+					int32_t color = animations[bOrange][index].getCurrentcolour(
 						animations[bOrange][index].getState());
-					pChildren[i]->setColor(color);
+					pChildren[i]->setcolour(color);
 				}
 			}
 		}
@@ -370,12 +370,12 @@ MechListBoxItem::render()
 	}
 	if (bDim)
 	{
-		mechIcon.setColor(0xa0000000);
+		mechIcon.setcolour(0xa0000000);
 		mechIcon.render();
 	}
-	outline.setColor(animations[bOrange][2].getCurrentColor(animations[bOrange][2].getState()));
+	outline.setcolour(animations[bOrange][2].getCurrentcolour(animations[bOrange][2].getState()));
 	outline.render(location[0].x, location[0].y);
-	line.setColor(animations[bOrange][2].getCurrentColor(animations[bOrange][2].getState()));
+	line.setcolour(animations[bOrange][2].getCurrentcolour(animations[bOrange][2].getState()));
 	line.render(location[0].x, location[0].y);
 }
 
@@ -425,7 +425,7 @@ MechListBox::initIcon(LogisticsMech* pMech, aObject& mechIcon)
 	fY += 1.f;
 	float u2 = (fX * width);
 	float v2 = (fY * height);
-	mechIcon.setFileWidth(256.f);
+	mechIcon.setFilewidth(256.f);
 	mechIcon.setUVs(u, v, u2, v2);
 }
 
@@ -435,7 +435,7 @@ MechListBox::AddItem(aListItem* itemString)
 	itemString->setID(ID);
 	MechListBoxItem* pItem = dynamic_cast<MechListBoxItem*>(itemString);
 	const std::wstring_view& addedName;
-	char tmp[256];
+	wchar_t tmp[256];
 	cLoadString(pItem->getMech()->getChassisName(), tmp, 255);
 	addedName = tmp;
 	if (pItem)
@@ -444,14 +444,14 @@ MechListBox::AddItem(aListItem* itemString)
 		pItem->bIncludeForceGroup = bIncludeForceGroup;
 		if (!bDeleteIfNoInventory)
 		{
-			pItem->countText.setColor(0);
+			pItem->countText.setcolour(0);
 			pItem->countText.showGUIWindow(0);
 		}
 		const std::wstring_view& chassisName;
 		for (size_t i = 0; i < itemCount; i++)
 		{
 			int32_t ID = ((MechListBoxItem*)items[i])->pMech->getChassisName();
-			char tmpChassisName[256];
+			wchar_t tmpChassisName[256];
 			cLoadString(ID, tmpChassisName, 255);
 			chassisName = tmpChassisName;
 			if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() < pItem->pMech->getMaxWeight())

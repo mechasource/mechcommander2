@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -38,7 +38,7 @@ extern uint32_t gEnableParallel;
 void __stdcall RegistryManagerInstall();
 void __stdcall RegistryManagerUninstall();
 void __stdcall gos_LoadDataFromRegistry(
-	PSTR valuename, PBYTE pdata, puint32_t pcbdata, bool ishklm);
+	PSTR valuename, PBYTE pdata, uint32_t* pcbdata, bool ishklm);
 void __stdcall gos_SaveDataToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbdata);
 void __stdcall gos_SaveStringToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbdata);
 PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, bool ishklm);
@@ -155,9 +155,9 @@ void __stdcall RegistryManagerInstall(void)
 	// cbdata = 4;
 	WindowStartY = 0x80000000;
 	gos_LoadDataFromRegistry("Window_Y", reinterpret_cast<PBYTE>(&WindowStartY), &cbdata, false);
-	if (WindowStartX > GetDeviceCaps(DesktopDC, HORZRES)) // Width, in millimeters, of the physical screen
+	if (WindowStartX > GetDeviceCaps(DesktopDC, HORZRES)) // width, in millimeters, of the physical screen
 		WindowStartX = 0x80000000;
-	if (WindowStartY > GetDeviceCaps(DesktopDC, VERTRES)) // Height, in millimeters, of the physical screen
+	if (WindowStartY > GetDeviceCaps(DesktopDC, VERTRES)) // height, in millimeters, of the physical screen
 		WindowStartY = 0x80000000;
 
 	PerfCounterSelected = static_cast<uint32_t>(-1); // 0xffffffff
@@ -181,7 +181,7 @@ void __stdcall RegistryManagerInstall(void)
 			"DebuggerGraphMode", reinterpret_cast<PBYTE>(&GraphMode), &cbdata, false);
 		// cbdata = 32;
 		gos_LoadDataFromRegistry(
-			"DebuggerGraphInfo", reinterpret_cast<PBYTE>(&ShowColorInfo), &cbdata, false);
+			"DebuggerGraphInfo", reinterpret_cast<PBYTE>(&ShowcolourInfo), &cbdata, false);
 	}
 
 	cbdata = 32;
@@ -241,9 +241,9 @@ void __stdcall RegistryManagerUninstall(void)
 	uint32_t ix = 0;
 	while (pStatistics)
 	{
-		if (!(pStatistics->Flags & 0x40000000))
+		if (!(pStatistics->flags & 0x40000000))
 		{
-			if (pStatistics->Flags & 2)
+			if (pStatistics->flags & 2)
 				ProfileFlags[ix >> 3] |= 1 << (ix & 7);
 			++ix;
 		}
@@ -252,7 +252,7 @@ void __stdcall RegistryManagerUninstall(void)
 
 	gos_SaveDataToRegistry("DebuggerGraphs", &ProfileFlags, 0x20u);
 	gos_SaveDataToRegistry("DebuggerGraphMode", &GraphMode, 4u);
-	gos_SaveDataToRegistry("DebuggerGraphInfo", &ShowColorInfo, 4u);
+	gos_SaveDataToRegistry("DebuggerGraphInfo", &ShowcolourInfo, 4u);
 
 	hfile =
 		::CreateFileA(_pgmptr, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
@@ -278,7 +278,7 @@ void __stdcall RegistryManagerUninstall(void)
 /// <param name="pcbdata"></param>
 /// <param name="ishklm"></param>
 /// <returns></returns>
-void __stdcall gos_LoadDataFromRegistry(PSTR valuename, PBYTE pdata, puint32_t pcbdata, bool ishklm)
+void __stdcall gos_LoadDataFromRegistry(PSTR valuename, PBYTE pdata, uint32_t* pcbdata, bool ishklm)
 {
 	HKEY hkey;
 	LSTATUS status;

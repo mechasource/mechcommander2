@@ -7,7 +7,7 @@
 #ifndef MLR_MLR_I_C_TMESH_HPP
 #define MLR_MLR_I_C_TMESH_HPP
 
-#include <mlr/mlr_i_tmesh.hpp>
+#include "mlr/mlr_i_tmesh.h"
 
 namespace MidLevelRenderer
 {
@@ -43,18 +43,18 @@ public:
 
 public:
 #if COLOR_AS_DWORD
-	virtual void SetColorData(pcuint32_t array, size_t point_count);
-	virtual void GetColorData(puint32_t* array, psize_t point_count);
+	virtual void SetcolourData(const uint32_t* array, size_t point_count);
+	virtual void GetcolourData(uint32_t** array, size_t* point_count);
 #else
-	virtual void SetColorData(const Stuff::RGBAColor* array, size_t point_count);
-	virtual void GetColorData(Stuff::RGBAColor** array, psize_t point_count);
+	virtual void SetcolourData(const Stuff::RGBAcolour* array, size_t point_count);
+	virtual void GetcolourData(Stuff::RGBAcolour** array, size_t* point_count);
 #endif
 
 	virtual void
 #if COLOR_AS_DWORD
-	PaintMe(pcuint32_t paintMe);
+	PaintMe(const uint32_t* paintMe);
 #else
-	PaintMe(const Stuff::RGBAColor* paintMe);
+	PaintMe(const Stuff::RGBAcolour* paintMe);
 #endif
 
 	virtual uint32_t TransformAndClip(
@@ -71,28 +71,28 @@ public:
 	//
 	void
 #if COLOR_AS_DWORD
-	SetClipColor(uint32_t& color, size_t index)
+	SetClipcolour(uint32_t& color, size_t index)
 #else
-	SetClipColor(Stuff::RGBAColor& color, size_t index)
+	SetClipcolour(Stuff::RGBAcolour& color, size_t index)
 #endif
 	{
 		// Check_Object(this);
-		_ASSERT(clipExtraColors.size() > index);
-		(*clipExtraColors)[index] = color;
+		_ASSERT(clipExtracolours.size() > index);
+		(*clipExtracolours)[index] = color;
 	}
 
-	void FlashClipColors(size_t num)
+	void FlashClipcolours(size_t num)
 	{
 		// Check_Object(this);
 		_ASSERT(clipExtraTexCoords.size() > num);
 		colors.SetLength(num);
 		visibleIndexedVertices.SetLength(num);
 #if COLOR_AS_DWORD
-		Mem_Copy(colors.GetData(), clipExtraColors->GetData(), sizeof(uint32_t) * num,
+		Mem_Copy(colors.GetData(), clipExtracolours->GetData(), sizeof(uint32_t) * num,
 			sizeof(uint32_t) * num);
 #else
-		Mem_Copy(colors.GetData(), clipExtraColors->GetData(), sizeof(Stuff::RGBAColor) * num,
-			sizeof(Stuff::RGBAColor) * num);
+		Mem_Copy(colors.GetData(), clipExtracolours->GetData(), sizeof(Stuff::RGBAcolour) * num,
+			sizeof(Stuff::RGBAcolour) * num);
 #endif
 	}
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,17 +118,17 @@ public:
 protected:
 #if COLOR_AS_DWORD
 	std::vector<uint32_t> colors; // Base address of color list
-	std::vector<uint32_t>* actualColors;
+	std::vector<uint32_t>* actualcolours;
 #else
-	std::vector<Stuff::RGBAColor> colors; // Base address of color list
-	std::vector<Stuff::RGBAColor>* actualColors;
+	std::vector<Stuff::RGBAcolour> colors; // Base address of color list
+	std::vector<Stuff::RGBAcolour>* actualcolours;
 #endif
 };
 
 MLR_I_C_TMesh*
-CreateIndexedTriCube_Color_NoLit(float, MLRState*);
+CreateIndexedTriCube_colour_NoLit(float, MLRState*);
 MLRShape*
-CreateIndexedTriIcosahedron_Color_NoLit(IcoInfo&, MLRState*);
+CreateIndexedTriIcosahedron_colour_NoLit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 
 #endif // MLR_MLR_I_C_TMESH_HPP

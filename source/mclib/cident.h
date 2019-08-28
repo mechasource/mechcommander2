@@ -27,7 +27,7 @@
 class IDString
 {
 protected:
-	char id[ID_SIZE]; // 8 characters and a terminator...
+	wchar_t id[ID_SIZE]; // 8 characters and a terminator...
 
 public:
 	void init(void) { memset(id, 0, ID_SIZE); }

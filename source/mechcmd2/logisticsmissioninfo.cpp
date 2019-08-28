@@ -18,7 +18,7 @@ component.
 #include "logisticserrors.h"
 #include "multplyr.h"
 
-extern char missionName[1024];
+extern wchar_t missionName[1024];
 
 LogisticsMissionInfo::LogisticsMissionInfo()
 {
@@ -74,7 +74,7 @@ LogisticsMissionInfo::init(FitIniFile& file)
 	campaignName = file.getFilename();
 	// read the number of mission groups
 	file.seekBlock("Campaign");
-	char resultName[256];
+	wchar_t resultName[256];
 	resultName[0] = 0;
 	int32_t lName = 0;
 	int32_t result = file.readIdLong("NameID", lName);
@@ -95,7 +95,7 @@ LogisticsMissionInfo::init(FitIniFile& file)
 		return -1;
 	}
 	result = file.readIdLong("CBills", CBills);
-	char tmp[256];
+	wchar_t tmp[256];
 	if (NO_ERROR == file.readIdString("FinalVideo", tmp, 255))
 	{
 		finalVideoName = tmp;
@@ -103,11 +103,11 @@ LogisticsMissionInfo::init(FitIniFile& file)
 	// create storage for 'em
 	groups = new MissionGroup[groupCount];
 	currentStage = 0;
-	char blockName[32];
+	wchar_t blockName[32];
 	for (size_t i = 0; i < groupCount; i++)
 	{
 		groups[i].numberToBeCompleted = -1; // initialize
-		sprintf(blockName, "Group%ld", i);
+		sprintf(blockName, "group%ld", i);
 		if (NO_ERROR != file.seekBlock(blockName))
 		{
 			Assert(0, i, "couldn't find this group in the campaign file");
@@ -126,7 +126,7 @@ LogisticsMissionInfo::init(FitIniFile& file)
 		}
 		if (NO_ERROR != file.readIdString("Video", tmp, 255))
 		{
-			char errorStr[256];
+			wchar_t errorStr[256];
 			sprintf(errorStr, "couldn't find the video for operation %ld", i);
 			Assert(0, 0, errorStr);
 		}
@@ -148,10 +148,10 @@ LogisticsMissionInfo::init(FitIniFile& file)
 		for (size_t j = 0; j < missionCount; j++)
 		{
 			MissionInfo* pInfo = new MissionInfo;
-			sprintf(blockName, "Group%ldMission%ld", i, j);
+			sprintf(blockName, "group%ldMission%ld", i, j);
 			if (NO_ERROR == file.seekBlock(blockName))
 			{
-				char fileName[1024];
+				wchar_t fileName[1024];
 				if (NO_ERROR != file.readIdString("FileName", fileName, 1023))
 				{
 					Assert(0, j,
@@ -168,13 +168,13 @@ LogisticsMissionInfo::init(FitIniFile& file)
 				FitIniFile missionFile;
 				if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 				{
-					char errorStr[256];
+					wchar_t errorStr[256];
 					sprintf(errorStr, "couldn't open file %s", fileName);
 					Assert(0, 0, errorStr);
 					continue;
 				}
 				readMissionInfo(missionFile, pInfo);
-				char videoFileName[255];
+				wchar_t videoFileName[255];
 				if (NO_ERROR == file.readIdString("VideoOverride", videoFileName, 255))
 					pInfo->videoName = videoFileName;
 				file.readIdBoolean("Mandatory", pInfo->mandatory);
@@ -212,7 +212,7 @@ LogisticsMissionInfo::readMissionInfo(
 {
 	int32_t result = file.seekBlock("MissionSettings");
 	Assert(result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file");
-	char missionName[256];
+	wchar_t missionName[256];
 	missionName[0] = 0;
 	bool bRes = 0;
 	result = file.readIdBoolean("MissionNameUseResourceString", bRes);
@@ -231,7 +231,7 @@ LogisticsMissionInfo::readMissionInfo(
 		Assert(result == NO_ERROR, 0, "couldn't find the missionName");
 	}
 	pInfo->missionDescriptiveName = missionName;
-	char blurb[4096];
+	wchar_t blurb[4096];
 	result = file.readIdString("Blurb2", blurb, 4095);
 	Assert(result == NO_ERROR, 0, "couldn't find the mission blurb");
 	bool tmpBool = false;
@@ -274,15 +274,15 @@ int32_t
 LogisticsMissionInfo::load(FitIniFile& file)
 {
 	// read the campaign file name
-	char path[1024];
-	char fileName[64];
+	wchar_t path[1024];
+	wchar_t fileName[64];
 	int32_t result = file.seekBlock("General");
 	Assert(result == NO_ERROR, 0, "couldn't find general block in campaign file");
 	result = file.readIdString("CampaignFile", fileName, 63);
 	FitIniFile campaignFile;
 	if (NO_ERROR != campaignFile.open(fileName))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't find file %s", path);
 		return -1;
 	}
@@ -297,13 +297,13 @@ LogisticsMissionInfo::load(FitIniFile& file)
 	// reset rp
 	file.readIdLong("CBills", CBills);
 	// set the current mission group
-	file.readIdLong("Group", currentStage);
+	file.readIdLong("group", currentStage);
 	if (currentStage >= groupCount)
 		currentStage = groupCount - 1;
 	// set completed missions
 	int32_t count;
 	file.readIdLong("CompletedMissions", count);
-	char header[32];
+	wchar_t header[32];
 	MissionGroup* pGroup = &groups[currentStage];
 	file.readIdBoolean("BigMoviePlayed", pGroup->bigVideoShown);
 	int32_t numberCompleted = 0;
@@ -336,7 +336,7 @@ LogisticsMissionInfo::load(FitIniFile& file)
 	}
 	if (count < pGroup->infos.Count())
 		setNextMission(pGroup->infos[count]->fileName);
-	char tmpPlayerName[64];
+	wchar_t tmpPlayerName[64];
 	file.readIdString("PlayerName", tmpPlayerName, 63);
 	playerName = tmpPlayerName;
 	if (NO_ERROR == file.seekBlock("AdditionalPurchaseFiles"))
@@ -345,10 +345,10 @@ LogisticsMissionInfo::load(FitIniFile& file)
 		while (true)
 		{
 			sprintf(header, "File%ld", i);
-			char tmp[256];
+			wchar_t tmp[256];
 			if (NO_ERROR == file.readIdString(header, tmp, 255))
 			{
-				const std::wstring_view& pfName = new char[strlen(tmp) + 1];
+				const std::wstring_view& pfName = new wchar_t[strlen(tmp) + 1];
 				strcpy(pfName, tmp);
 				additionalPurchaseFiles.Append(pfName);
 				i++;
@@ -373,9 +373,9 @@ LogisticsMissionInfo::save(FitIniFile& file)
 	// save the rp
 	file.writeIdLong("CBills", CBills);
 	// save the current mission group
-	file.writeIdLong("Group", currentStage);
+	file.writeIdLong("group", currentStage);
 	int32_t count = 0;
-	char header[32];
+	wchar_t header[32];
 	if (currentStage < groupCount)
 	{
 		// save the missions completed thus far in the mission group
@@ -481,7 +481,7 @@ LogisticsMissionInfo::setNextMission(const std::wstring_view& missionName)
 		FitIniFile missionFile;
 		if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 		{
-			char errorStr[256];
+			wchar_t errorStr[256];
 			sprintf(errorStr, "couldn't open file %s", missionName);
 			Assert(0, 0, errorStr);
 			return -1;
@@ -580,7 +580,7 @@ LogisticsMissionInfo::setSingleMission(const std::wstring_view& missionFileName)
 	FitIniFile missionFile;
 	if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", missionName);
 		Assert(0, 0, errorStr);
 		return;
@@ -888,7 +888,7 @@ LogisticsMissionInfo::addBonusPurchaseFile(const std::wstring_view& fileName)
 {
 	if (!fileName)
 		return;
-	const std::wstring_view& pNewFile = new char[strlen(fileName) + 1];
+	const std::wstring_view& pNewFile = new wchar_t[strlen(fileName) + 1];
 	strcpy(pNewFile, fileName);
 	additionalPurchaseFiles.Append(pNewFile);
 }

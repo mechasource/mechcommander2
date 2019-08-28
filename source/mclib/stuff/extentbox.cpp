@@ -6,9 +6,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 #include "stuff/scalar.h"
 #include "stuff/obb.h"
 // #include "stuff/mstring.h"
@@ -246,7 +246,7 @@ Stuff::Convert_From_Ascii(const std::wstring_view& str, ExtentBox* extent_box)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, puint32_t max_index,
+Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, uint32_t* max_index,
 	uint32_t block_size, float threshold)
 {
 	Check_Object(values);

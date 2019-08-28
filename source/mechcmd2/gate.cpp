@@ -233,7 +233,7 @@ Gate::update(void)
 		// Figure out what the box should be for the tBuilding.
 		appearance->update();
 		appearance->recalcBounds();
-		appearance->setHighlightColor(0x00000000);
+		appearance->setHighlightcolour(0x00000000);
 		//-----------------------------------------------------
 		// Check if ParentId is NOT 0xffffffff.
 		// if not, find parent in ObjMgr and get its pointer.
@@ -267,7 +267,7 @@ Gate::update(void)
 	{
 		updatedTurn = turn;
 		//---------------------------------------
-		// Handle Building captured.
+		// handle Building captured.
 		if (parent && !ObjectManager->getByWatchID(parent)->isDisabled() && !ObjectManager->getByWatchID(parent)->isDestroyed() && (ObjectManager->getByWatchID(parent)->getTeamId() != getTeamId()))
 		{
 			if ((ObjectManager->getByWatchID(parent)->getTeamId() != Team::home->getId()) && (turn > 5) && (getTeamId() != -1))
@@ -280,7 +280,7 @@ Gate::update(void)
 			setSelected(true);
 		}
 		//-----------------------------------------------
-		// Handle parent disabled or destroyed or asleep
+		// handle parent disabled or destroyed or asleep
 		if (parent && (ObjectManager->getByWatchID(parent)->isDisabled() || ObjectManager->getByWatchID(parent)->isDestroyed() || !ObjectManager->getByWatchID(parent)->getAwake()))
 		{
 			//--------------------------------------------------
@@ -483,7 +483,7 @@ Gate::openGate(void)
 		{
 			//-----------------------------------------------------------------------------------------
 			// MARK True when open so that the side pieces of the gate are still
-			// IMPASSABLE!! First mark ENTIRE block PASSABLE. THEN Use Height to
+			// IMPASSABLE!! First mark ENTIRE block PASSABLE. THEN Use height to
 			// mark out areas which are IMPASSABLE!
 			// MUST use appearance here!!!!  Glenn's other way does NOT assume
 			// animation!
@@ -566,7 +566,7 @@ Gate::render(void)
 				else
 					color = SB_BLUE;
 			}
-			appearance->setBarColor(color);
+			appearance->setBarcolour(color);
 			appearance->setBarStatus(barStatus);
 		}
 		if (((GateTypePtr)getObjectType())->gateTypeName < IDS_MC2_STRING_START)
@@ -631,7 +631,7 @@ Gate::init(bool create, ObjectTypePtr _type)
 		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 		if (!buildingAppearanceType)
 		{
-			char msg[1024];
+			wchar_t msg[1024];
 			sprintf(msg, "No Building Appearance Named %s", appearName);
 			Fatal(0, msg);
 		}
@@ -698,7 +698,7 @@ Gate::destroyGate(void)
 		GlobalMoveMap[1]->clearPathExistsTable();
 		//----------------------------------------------------------
 		// Unmark these cells as gate cells, so it'll be passable...
-		pint16_t curCoord = cellsCovered;
+		int16_t* curCoord = cellsCovered;
 		for (size_t i = 0; i < numCellsCovered; i++)
 		{
 			int32_t r = *curCoord++;
@@ -785,7 +785,7 @@ Gate::Save(PacketFilePtr file, int32_t packetNum)
 	GateData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(GateData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(GateData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

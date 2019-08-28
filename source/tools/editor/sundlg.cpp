@@ -38,7 +38,7 @@ SunDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(SunDlg)
-	DDX_Control(pDX, IDC_LIGHTCOLOR, m_LightColor);
+	DDX_Control(pDX, IDC_LIGHTCOLOR, m_Lightcolour);
 	DDX_Control(pDX, IDC_AMBIENT, m_AmbientEdit);
 	DDX_Text(pDX, IDC_YAW, m_Yaw);
 	DDX_Text(pDX, IDC_INITIAL_PITCH, m_InitialSunPitch);
@@ -51,7 +51,7 @@ SunDlg::Init()
 	uint32_t color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8) | (eye->dayAmbientRed << 16);
 	displayInHex(color, m_AmbientEdit);
 	color = eye->dayLightBlue | (eye->dayLightGreen << 8) | (eye->dayLightRed << 16);
-	displayInHex(color, m_LightColor);
+	displayInHex(color, m_Lightcolour);
 	m_InitialSunPitch = eye->lightPitch;
 	m_Yaw = eye->lightYaw;
 	UpdateData(0);
@@ -82,11 +82,11 @@ void
 SunDlg::applyChanges()
 {
 	UpdateData();
-	int32_t color = getHexValue(m_LightColor);
+	int32_t color = getHexValue(m_Lightcolour);
 	eye->lightBlue = eye->dayLightBlue = (color & 0xff);
 	eye->lightGreen = eye->dayLightGreen = (color & 0x0000ff00) >> 8;
 	eye->lightRed = eye->dayLightRed = (color & 0x00ff0000) >> 16;
-	eye->setLightColor(0, color);
+	eye->setLightcolour(0, color);
 	color = getHexValue(m_AmbientEdit);
 	eye->ambientBlue = eye->dayAmbientBlue = (color & 0xff);
 	eye->ambientGreen = eye->dayAmbientGreen = (color & 0x0000ff00) >> 8;
@@ -113,10 +113,10 @@ SunDlg::OnOK()
 }
 
 HBRUSH
-SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
+SunDlg::OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour)
 {
 	int32_t ID = pWnd->GetDlgCtrlID();
-	HBRUSH hbr = CDialog ::OnCtlColor(pDC, pWnd, nCtlColor);
+	HBRUSH hbr = CDialog ::OnCtlcolour(pDC, pWnd, nCtlcolour);
 	if (ID == IDC_LIGHTCOLOR || ID == IDC_AMBIENT || ID == IDC_LIGHTCOLOR2 || ID == IDC_AMBIENT2 || ID == IDC_SUNSETCOLOR)
 	{
 		int32_t i = getHexValue(*(CEdit*)pWnd);
@@ -125,9 +125,9 @@ SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		// need to swap r's and blue's.
 		uint32_t reverse = reverseRGB(i);
 		backgroundBrush.CreateSolidBrush(reverse);
-		pDC->SetBkColor(reverse);
+		pDC->SetBkcolour(reverse);
 		if (((i & 0xff) + ((i & 0xff00) >> 8) + ((i & 0xff0000) >> 16)) / 3 < 85)
-			pDC->SetTextColor(0x00ffffff);
+			pDC->SetTextcolour(0x00ffffff);
 		return (HBRUSH)backgroundBrush.m_hObject;
 	}
 	// TODO: Return a different brush if the default is not desired
@@ -148,19 +148,19 @@ SunDlg::OnInitDialog()
 void
 SunDlg::OnAmbientButton()
 {
-	DoColorDlg(m_AmbientEdit);
+	DocolourDlg(m_AmbientEdit);
 }
 
 void
-SunDlg::DoColorDlg(CEdit& edit)
+SunDlg::DocolourDlg(CEdit& edit)
 {
 	CString tmpStr;
 	int32_t base = getHexValue(edit);
 	base &= 0x00ffffff;
-	CColorDialog dlg(reverseRGB(base), nullptr, this);
+	CcolourDialog dlg(reverseRGB(base), nullptr, this);
 	if (IDOK == dlg.DoModal())
 	{
-		base = reverseRGB(dlg.GetColor());
+		base = reverseRGB(dlg.Getcolour());
 		tmpStr.Format("0x%x", base);
 		edit.SetWindowText(tmpStr);
 	}
@@ -169,7 +169,7 @@ SunDlg::DoColorDlg(CEdit& edit)
 void
 SunDlg::OnLightButton()
 {
-	DoColorDlg(m_LightColor);
+	DocolourDlg(m_Lightcolour);
 }
 
 void

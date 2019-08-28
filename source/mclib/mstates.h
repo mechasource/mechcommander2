@@ -54,15 +54,15 @@
 constexpr const uint32_t MAX_TRANSITION_GESTURES = 10;
 constexpr const uint32_t GESTURE_OFFSET_SIZE = 100;
 
-char hotSpotFinderArray[28] = {
+wchar_t hotSpotFinderArray[28] = {
 	//  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 	0, 0, 0, 1, 2, 3, 4, 5, 6, 2, 3, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 11, 10, 0, 19,
 	19};
 
-char mechSpeedStateArray[28] = {
+wchar_t mechSpeedStateArray[28] = {
 	0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0};
 
-char transitionArray[1000] = {
+wchar_t transitionArray[1000] = {
 	//--------------------------------------------------------------------------------
 	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 0,0  From Park to Park (nullptr)
 	1, 2, -1, -1, -1, -1, -1, -1, -1, -1, // 0,1  From Park to Stand

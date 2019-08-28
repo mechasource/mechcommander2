@@ -91,7 +91,7 @@ protected:
 	float rainUpdateTime; // Time until next RainTrend check in seconds.
 	int32_t baseRainChance; // Chance of it raining on any given rainUpdateTime.
 
-	float oldFog; // Original FOGFull Height value.
+	float oldFog; // Original FOGFull height value.
 
 public:
 	Weather(void) { init(void); }

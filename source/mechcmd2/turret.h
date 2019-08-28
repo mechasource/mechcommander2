@@ -102,7 +102,7 @@ public:
 //---------------------------------------------------------------------------
 typedef struct _TurretData : public TerrainObjectData
 {
-	char teamId;
+	wchar_t teamId;
 	float turretRotation;
 	bool didReveal;
 	GameObjectWatchID targetWID;
@@ -124,7 +124,7 @@ class Turret : public TerrainObject
 {
 
 public:
-	char teamId;
+	wchar_t teamId;
 	float turretRotation;
 	bool didReveal;
 	GameObjectWatchID targetWID;

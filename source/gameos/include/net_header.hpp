@@ -137,7 +137,7 @@ extern bool IAmTheServer;
 extern uint32_t MyDirectPlayID;
 
 //
-// String containing my address (when TCPIP)
+// string containing my address (when TCPIP)
 //
 extern PSTR MyIPAddress;
 
@@ -177,7 +177,7 @@ extern ListOfNames* CurrentPlayers;
 //
 // Buffer used while receiving messages
 //
-extern puint8_t MessageBuffer;
+extern uint8_t* MessageBuffer;
 extern uint32_t MessageBufferSize;
 
 //
@@ -247,15 +247,15 @@ void __stdcall ReceivePackets(void);
 void __stdcall GetCurrentPlayers(void);
 void __stdcall AddGOSMessage(Messages* pMessage);
 BOOL __stdcall EnumSessionsCallback(
-	LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+	LPCDPSESSIONDESC2 lpSessionDesc, uint32_t* lpdwTimeOut, uint32_t flags, PVOID pcontext);
 BOOL __stdcall EnumJoinSessionCallback(
-	LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+	LPCDPSESSIONDESC2 lpSessionDesc, uint32_t* lpdwTimeOut, uint32_t flags, PVOID pcontext);
 BOOL __stdcall EnumPlayersCallback(
-	DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags, LPVOID lpContext);
+	DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t flags, LPVOID pcontext);
 BOOL __stdcall ModemCallback(
-	REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext);
+	REFGUID guidDataType, uint32_t dwDataSize, LPCVOID pdata, PVOID pcontext);
 BOOL __stdcall TCPIPCallback(
-	REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext);
+	REFGUID guidDataType, uint32_t dwDataSize, LPCVOID pdata, PVOID pcontext);
 void __stdcall WaitTillQueueEmpty(void);
 void __stdcall AddPlayerToGame(ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
 void __stdcall RemovePlayerFromGame(ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
@@ -345,7 +345,7 @@ typedef struct tagPACKETQUEUE
 class OutboundWindow
 {
 public:
-	static cint32_t m_WindowSize;
+	static const int32_t m_WindowSize;
 	static const double m_ResendTime;
 
 	// we only have one constructor: you MUST supply the DPID when you create

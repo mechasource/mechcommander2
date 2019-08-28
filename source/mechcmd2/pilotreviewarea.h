@@ -141,7 +141,7 @@ public:
 
 	static void init(FitIniFile* file);
 	ActivePilotListItem(LogisticsPilot* pUnit);
-	static int32_t s_totalWidth;
+	static int32_t s_totalwidth;
 
 	float flashTime(void);
 

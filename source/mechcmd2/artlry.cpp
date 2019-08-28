@@ -321,7 +321,7 @@ ArtilleryType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 	result = miFile.seekBlock("Artillery");
 	if (result != NO_ERROR)
 		return (result);
-	char artillerySpriteName[80];
+	wchar_t artillerySpriteName[80];
 	result = miFile.readIdString("ArtillerySpriteName", artillerySpriteName, 79);
 	if (result != NO_ERROR)
 		return (result);
@@ -370,7 +370,7 @@ ArtilleryType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 	result = miFile.readIdFloat("fontYOffset", fontYOffset);
 	if (result != NO_ERROR)
 		return (result);
-	result = miFile.readIdULong("fontColor", fontColor);
+	result = miFile.readIdULong("fontcolour", fontcolour);
 	if (result != NO_ERROR)
 		return (result);
 	if (nominalDamage)
@@ -386,7 +386,7 @@ ArtilleryType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 		gosASSERT(explosionDelay != nullptr);
 		for (size_t i = 0; i < numExplosions; i++)
 		{
-			char explosionId[50];
+			wchar_t explosionId[50];
 			sprintf(explosionId, "ExplosionDelay%d", i);
 			result = miFile.readIdFloat(explosionId, explosionDelay[i]);
 			if (result != NO_ERROR)
@@ -597,14 +597,14 @@ Artillery::handleStaticCollision(void)
 		//-------------------------------------------------------------------------
 		// We must now move out into other tiles for the artillery strike to
 		// work. Remember, Its pretty big! Just grab the nine vertices around
-		// this one.  Problems arise when on Block border.  Handle it.
+		// this one.  Problems arise when on Block border.  handle it.
 		blockNumber = 0;
 		vertexNumber = 0;
 		getBlockAndVertexNumber(blockNumber, vertexNumber);
 		//-------------------------------------------------------------------------
 		// We must now move out into other tiles for the artillery strike to
 		// work. Remember, Its pretty big! Just grab the nine vertices around
-		// this one.  Problems arise when on Block border.  Handle it.
+		// this one.  Problems arise when on Block border.  handle it.
 		int32_t topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
 		int32_t currentBlockNumber = topLeftBlockNumber;
 		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
@@ -1169,7 +1169,7 @@ Artillery::render(void)
 		{
 			// We are drawing the timer.
 			// Draw it.
-			char text[256];
+			wchar_t text[256];
 			switch (artilleryType)
 			{
 			case ARTILLERY_LARGE:
@@ -1312,7 +1312,7 @@ Artillery::init(bool create, ObjectTypePtr _type)
 		init(ARTILLERY_LARGE);
 		//--------------------------------------------
 		// Load up the strike appearance before hit.
-		char appearName[1024];
+		wchar_t appearName[1024];
 		strcpy(appearName, AIRSTRIKE_NAME);
 		//--------------------------------------------------------------
 		// New code!!!
@@ -1335,7 +1335,7 @@ Artillery::init(bool create, ObjectTypePtr _type)
 			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 			if (!buildingAppearanceType)
 			{
-				char msg[1024];
+				wchar_t msg[1024];
 				sprintf(msg, "No Building Appearance Named %s", appearName);
 				Fatal(0, msg);
 			}
@@ -1372,7 +1372,7 @@ Artillery::init(bool create, ObjectTypePtr _type)
 		init(ARTILLERY_SMALL);
 		//--------------------------------------------
 		// Load up the strike appearance before hit.
-		char appearName[1024];
+		wchar_t appearName[1024];
 		strcpy(appearName, AIRSTRIKE_NAME);
 		//--------------------------------------------------------------
 		// New code!!!
@@ -1395,7 +1395,7 @@ Artillery::init(bool create, ObjectTypePtr _type)
 			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 			if (!buildingAppearanceType)
 			{
-				char msg[1024];
+				wchar_t msg[1024];
 				sprintf(msg, "No Building Appearance Named %s", appearName);
 				Fatal(0, msg);
 			}
@@ -1432,7 +1432,7 @@ Artillery::init(bool create, ObjectTypePtr _type)
 		init(create, ARTILLERY_SENSOR);
 		//--------------------------------------------
 		// Load up the strike appearance before hit.
-		char appearName[1024];
+		wchar_t appearName[1024];
 		strcpy(appearName, SENSOR_NAME);
 		//--------------------------------------------------------------
 		// New code!!!
@@ -1455,7 +1455,7 @@ Artillery::init(bool create, ObjectTypePtr _type)
 			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 			if (!buildingAppearanceType)
 			{
-				char msg[1024];
+				wchar_t msg[1024];
 				sprintf(msg, "No Building Appearance Named %s", appearName);
 				Fatal(0, msg);
 			}
@@ -1478,7 +1478,7 @@ Artillery::Save(PacketFilePtr file, int32_t packetNum)
 	ArtilleryData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(ArtilleryData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(ArtilleryData), STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------

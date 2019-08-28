@@ -741,9 +741,9 @@ private:
 	bool m_resetStatusOnFlag;
 	const std::wstring_view& m_resetStatusFlagID;
 	int32_t m_modelID;
-	int32_t m_baseColor;
-	int32_t m_highlightColor;
-	int32_t m_highlightColor2;
+	int32_t m_basecolour;
+	int32_t m_highlightcolour;
+	int32_t m_highlightcolour2;
 
 public: /* we could make this protected if only the editdialog is to acces
 		   these functions */
@@ -846,12 +846,12 @@ public:
 		m_resetStatusFlagID = resetStatusFlagID;
 	}
 	const std::wstring_view& ResetStatusFlagID() { return m_resetStatusFlagID; }
-	int32_t BaseColor() const { return m_baseColor; }
-	void BaseColor(int32_t newColor) { m_baseColor = newColor; }
-	int32_t HighlightColor() const { return m_highlightColor; }
-	void HighlightColor(int32_t newColor) { m_highlightColor = newColor; }
-	int32_t HighlightColor2() const { return m_highlightColor2; }
-	void HighlightColor2(int32_t newColor) { m_highlightColor2 = newColor; }
+	int32_t Basecolour(void) const { return m_basecolour; }
+	void Basecolour(int32_t newcolour) { m_basecolour = newcolour; }
+	int32_t Highlightcolour(void) const { return m_highlightcolour; }
+	void Highlightcolour(int32_t newcolour) { m_highlightcolour = newcolour; }
+	int32_t Highlightcolour2(void) const { return m_highlightcolour2; }
+	void Highlightcolour2(int32_t newcolour) { m_highlightcolour2 = newcolour; }
 	int32_t ModelID(void) const { return m_modelID; }
 	void ModelID(int32_t newID) { m_modelID = newID; }
 };

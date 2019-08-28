@@ -10,7 +10,7 @@
 #ifndef _RANDOM_HPP_
 #define _RANDOM_HPP_
 
-#include <stuff/style.hpp>
+#include "stuff/style.h"
 
 namespace Stuff
 {

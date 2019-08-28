@@ -9,7 +9,7 @@ component.
 #include "stdinc.h"
 
 #include "LogisticsComponent.h"
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "cmponent.h"
 
 #include "resource.h"
@@ -78,7 +78,7 @@ LogisticsComponent::init(const std::wstring_view& dataLine)
 {
 	const std::wstring_view& line = dataLine;
 	const std::wstring_view& pLine = line;
-	char pBuffer[1025];
+	wchar_t pBuffer[1025];
 	ID = (extractInt(pLine));
 	// the type
 	extractString(pLine, pBuffer, 1024);
@@ -134,7 +134,7 @@ LogisticsComponent::init(const std::wstring_view& dataLine)
 	extractString(pLine, pBuffer, 1024);
 	if (*pBuffer && (pBuffer[0] != '0'))
 	{
-		iconFileName = new char[strlen(pBuffer) + 1];
+		iconFileName = new wchar_t[strlen(pBuffer) + 1];
 		strcpy(iconFileName, pBuffer);
 	}
 	else
@@ -143,16 +143,16 @@ LogisticsComponent::init(const std::wstring_view& dataLine)
 	if (*pBuffer)
 	{
 		pictureFileName =
-			new char[strlen(pBuffer) + 1]; // Forgot the nullptr all over the place did we?
+			new wchar_t[strlen(pBuffer) + 1]; // Forgot the nullptr all over the place did we?
 		strcpy(pictureFileName, pBuffer);
 	}
 	stringID = extractInt(pLine);
 	helpStringID = extractInt(pLine);
 	iconX = extractInt(pLine);
 	iconY = extractInt(pLine);
-	char nameBuffer[256];
+	wchar_t nameBuffer[256];
 	cLoadString(stringID, nameBuffer, 256);
-	name = flavorText = new char[strlen(nameBuffer) + 1]; // Lets not forget the nullptr!!!
+	name = flavorText = new wchar_t[strlen(nameBuffer) + 1]; // Lets not forget the nullptr!!!
 	strcpy(name, nameBuffer);
 	return ID;
 }
@@ -184,7 +184,7 @@ LogisticsComponent::extractString(const std::wstring_view&& pFileLine, const std
 int32_t
 LogisticsComponent::extractInt(const std::wstring_view&& pFileLine)
 {
-	char buffer[1024];
+	wchar_t buffer[1024];
 	int32_t count = extractString(pFileLine, buffer, 1024);
 	if (count > 0)
 	{
@@ -196,7 +196,7 @@ LogisticsComponent::extractInt(const std::wstring_view&& pFileLine)
 float
 LogisticsComponent::extractFloat(const std::wstring_view&& pFileLine)
 {
-	char buffer[1024];
+	wchar_t buffer[1024];
 	int32_t count = extractString(pFileLine, buffer, 1024);
 	if (count > 0)
 	{

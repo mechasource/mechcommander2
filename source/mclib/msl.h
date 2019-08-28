@@ -73,7 +73,7 @@ protected:
 	TG_TexturePtr listOfTextures; // List of texture Structures for all shapes.
 
 #ifdef _DEBUG
-	char* shapeName; // FileName of shape
+	wchar_t* shapeName; // FileName of shape
 #endif
 
 public:

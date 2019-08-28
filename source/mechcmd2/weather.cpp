@@ -434,7 +434,7 @@ Weather::render(void)
 				if (onScreen)
 				{
 					uint8_t amb = ambientFactor * (1.0f - screen1.z);
-					uint32_t rainColor = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
+					uint32_t raincolour = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
 					// Gotta draw this one!
 					gos_VERTEX sVertices[2];
 					sVertices[0].x = screen1.x;
@@ -442,14 +442,14 @@ Weather::render(void)
 					sVertices[0].z = screen1.z;
 					sVertices[0].rhw = screen1.w;
 					sVertices[0].u = sVertices[0].v = 0.0f;
-					sVertices[0].argb = rainColor;
+					sVertices[0].argb = raincolour;
 					sVertices[0].frgb = 0xff000000;
 					sVertices[1].x = screen2.x;
 					sVertices[1].y = screen2.y;
 					sVertices[1].z = screen2.z;
 					sVertices[1].rhw = screen2.w;
 					sVertices[1].u = sVertices[1].v = 0.0f;
-					sVertices[1].argb = rainColor;
+					sVertices[1].argb = raincolour;
 					sVertices[1].frgb = 0xff000000;
 					gos_DrawLines(sVertices, 2);
 				}

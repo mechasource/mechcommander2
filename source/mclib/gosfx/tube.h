@@ -123,13 +123,13 @@ protected:
 	float m_birthAccumulator;
 
 	std::vector<Profile> m_profiles;
-	std::vector<char> m_data;
+	std::vector<wchar_t> m_data;
 	MidLevelRenderer::MLRIndexedTriangleCloud* m_mesh;
 	Stuff::Point3D* m_P_vertices;
-	Stuff::RGBAColor* m_P_colors;
+	Stuff::RGBAcolour* m_P_colors;
 	Stuff::Vector2DOf<float>* m_P_uvs;
 
-	void BuildMesh(puint16_t indices);
+	void BuildMesh(uint16_t* indices);
 
 	Tube(Specification* spec, uint32_t flags);
 

@@ -46,7 +46,7 @@ LogisticsMech::setVariant(LogisticsVariant* pVar)
 int32_t
 LogisticsMech::save(FitIniFile& file, int32_t counter)
 {
-	char tmp[256];
+	wchar_t tmp[256];
 	sprintf(tmp, "Inventory%ld", counter);
 	file.writeBlock(tmp);
 	file.writeIdString("Chassis", pVariant->getFileName());
@@ -58,19 +58,19 @@ LogisticsMech::save(FitIniFile& file, int32_t counter)
 }
 
 void
-LogisticsMech::setColors(uint32_t base, uint32_t high1, uint32_t high2)
+LogisticsMech::setcolours(uint32_t base, uint32_t high1, uint32_t high2)
 {
-	baseColor = base;
-	highlightColor1 = high1;
-	highlightColor2 = high2;
+	basecolour = base;
+	highlightcolour1 = high1;
+	highlightcolour2 = high2;
 }
 
 void
-LogisticsMech::getColors(uint32_t& base, uint32_t& high1, uint32_t& high2) const
+LogisticsMech::getcolours(uint32_t& base, uint32_t& high1, uint32_t& high2) const
 {
-	base = baseColor;
-	high1 = highlightColor1;
-	high2 = highlightColor2;
+	base = basecolour;
+	high1 = highlightcolour1;
+	high2 = highlightcolour2;
 }
 
 // end of file ( LogisticsMech.cpp )

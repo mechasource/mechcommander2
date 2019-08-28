@@ -24,7 +24,7 @@ extern uint32_t gShowClippedPolys;
 
 // std::vector<MLRClippingState>*		MLRCardCloud::clipPerVertex;
 // std::vector<Stuff::Vector4D>* MLRCardCloud::clipExtraCoords;
-// std::vector<Stuff::RGBAColor>*		MLRCardCloud::clipExtraColors;
+// std::vector<Stuff::RGBAcolour>*		MLRCardCloud::clipExtracolours;
 // std::vector<Stuff::Vector2DScalar>*
 // MLRCardCloud::clipExtraTexCoords;  std::vector<uint32_t>*
 // MLRCardCloud::clipExtraLength;
@@ -45,8 +45,8 @@ MLRCardCloud::InitializeClass(void)
 	Register_Object(clipPerVertex);
 	clipExtraCoords = new std::vector<Stuff::Vector4D>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraCoords);
-	clipExtraColors = new std::vector<Stuff::RGBAColor>(Limits::Max_Number_Vertices_Per_Mesh);
-	Register_Object(clipExtraColors);
+	clipExtracolours = new std::vector<Stuff::RGBAcolour>(Limits::Max_Number_Vertices_Per_Mesh);
+	Register_Object(clipExtracolours);
 	clipExtraTexCoords =
 		new std::vector<Stuff::Vector2DScalar>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraTexCoords);
@@ -63,8 +63,8 @@ MLRCardCloud::TerminateClass(void)
 	delete clipPerVertex;
 	Unregister_Object(clipExtraCoords);
 	delete clipExtraCoords;
-	Unregister_Object(clipExtraColors);
-	delete clipExtraColors;
+	Unregister_Object(clipExtracolours);
+	delete clipExtracolours;
 	Unregister_Object(clipExtraTexCoords);
 	delete clipExtraTexCoords;
 	Unregister_Object(clipExtraLength);
@@ -96,7 +96,7 @@ MLRCardCloud::~MLRCardCloud(void)
 //
 void
 MLRCardCloud::SetData(
-	pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data)
+	const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data)
 {
 	// Check_Pointer(this);
 	usedNrOfCards = count;
@@ -109,8 +109,8 @@ MLRCardCloud::SetData(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRCardCloud::SetData(pcsize_t count, const Stuff::Point3D* point_data,
-	const Stuff::RGBAColor* color_data, const Stuff::Vector2DScalar* uv_data)
+MLRCardCloud::SetData(const size_t* count, const Stuff::Point3D* point_data,
+	const Stuff::RGBAcolour* color_data, const Stuff::Vector2DScalar* uv_data)
 {
 	// Check_Pointer(this);
 	usedNrOfCards = count;
@@ -167,7 +167,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		{
 			//
 			//-------------------------------
-			// Handle the non-indexed version
+			// handle the non-indexed version
 			//-------------------------------
 			//
 			for (i = 0, j = 0; i < len; i++, j += 4)
@@ -178,16 +178,16 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				}
 				GOSCopyTriangleData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
 					texCoords, j, j + 1, j + 2, true);
-				uint32_t tmpColor = GOSCopyColor(&colors[i]);
+				uint32_t tmpcolour = GOSCopycolour(&colors[i]);
 				for (k = numGOSVertices; k < numGOSVertices + 3u; k++)
 				{
-					gos_vertices[k].argb = tmpColor;
+					gos_vertices[k].argb = tmpcolour;
 				}
 				gos_vertices[numGOSVertices + 3] = gos_vertices[numGOSVertices];
 				gos_vertices[numGOSVertices + 4] = gos_vertices[numGOSVertices + 2];
 				GOSCopyData(&gos_vertices[numGOSVertices + 5], transformedCoords->GetData(),
 					texCoords, j + 3, true);
-				gos_vertices[numGOSVertices + 5].argb = tmpColor;
+				gos_vertices[numGOSVertices + 5].argb = tmpcolour;
 				numGOSVertices += 6;
 			}
 			Check_Object(vt);
@@ -201,7 +201,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 	size_t myNumberUsedClipLength = 0;
 	//
 	//-------------------------------
-	// Handle the non-indexed version
+	// handle the non-indexed version
 	//-------------------------------
 	//
 	//
@@ -264,15 +264,15 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			TurnVisible(i);
 			GOSCopyTriangleData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
 				texCoords, j, j + 1, j + 2, true);
-			uint32_t tmpColor = GOSCopyColor(&colors[i]);
-			gos_vertices[numGOSVertices].argb = tmpColor;
-			gos_vertices[numGOSVertices + 1].argb = tmpColor;
-			gos_vertices[numGOSVertices + 2].argb = tmpColor;
+			uint32_t tmpcolour = GOSCopycolour(&colors[i]);
+			gos_vertices[numGOSVertices].argb = tmpcolour;
+			gos_vertices[numGOSVertices + 1].argb = tmpcolour;
+			gos_vertices[numGOSVertices + 2].argb = tmpcolour;
 			gos_vertices[numGOSVertices + 3] = gos_vertices[numGOSVertices];
 			gos_vertices[numGOSVertices + 4] = gos_vertices[numGOSVertices + 2];
 			GOSCopyData(&gos_vertices[numGOSVertices + 5], transformedCoords->GetData(), texCoords,
 				j + 3, true);
-			gos_vertices[numGOSVertices + 5].argb = tmpColor;
+			gos_vertices[numGOSVertices + 5].argb = tmpcolour;
 #ifdef LAB_ONLY
 			if (gShowClippedPolys)
 			{
@@ -303,7 +303,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			uint32_t numberVerticesPerPolygon = 0;
 			//
 			//---------------------------------------------------------------
-			// Handle the case of a single clipping plane by stepping through
+			// handle the case of a single clipping plane by stepping through
 			// the vertices and finding the edge it originates
 			//---------------------------------------------------------------
 			//
@@ -324,7 +324,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					{
 						(*clipExtraCoords)[clipped_index] = (*transformedCoords)[k];
 						(*clipExtraTexCoords)[clipped_index] = texCoords[k];
-						(*clipExtraColors)[clipped_index] = colors[i];
+						(*clipExtracolours)[clipped_index] = colors[i];
 						numberVerticesPerPolygon++;
 						clipped_index++;
 						//
@@ -398,7 +398,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					//----------------------------------------------------------
 					//
 					(*clipExtraTexCoords)[clipped_index].Lerp(texCoords[k], texCoords[k1], a);
-					(*clipExtraColors)[clipped_index] = colors[i];
+					(*clipExtracolours)[clipped_index] = colors[i];
 					//
 					//--------------------------------
 					// Bump the polygon's vertex count
@@ -426,7 +426,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				srcPolygon.clipPerVertex = &((*clipPerVertex)[j]);
 				srcPolygon.flags = 0;
 				// srcPolygon.colors =
-				// const_cast<Stuff::RGBAColor*>(&colors[j]);
+				// const_cast<Stuff::RGBAcolour*>(&colors[j]);
 				srcPolygon.flags |= 2;
 				srcPolygon.texCoords = const_cast<Stuff::Vector2DScalar*>(&texCoords[j]);
 				srcPolygon.length = 4;
@@ -601,7 +601,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					}
 					(*clipExtraCoords)[clipped_index] = srcPolygon.coords[k];
 					(*clipExtraTexCoords)[clipped_index] = srcPolygon.texCoords[k];
-					(*clipExtraColors)[clipped_index] = colors[i];
+					(*clipExtracolours)[clipped_index] = colors[i];
 				}
 				numberVerticesPerPolygon = srcPolygon.length;
 			}
@@ -623,7 +623,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			{
 				_ASSERT((vt->GetLast() + 3 + numGOSVertices) < vt.size());
 				GOSCopyTriangleData(&gos_vertices[numGOSVertices], clipExtraCoords->GetData(),
-					clipExtraColors->GetData(), clipExtraTexCoords->GetData(), j, j + k + 1, j + k,
+					clipExtracolours->GetData(), clipExtraTexCoords->GetData(), j, j + k + 1, j + k,
 					true);
 #ifdef LAB_ONLY
 				if (gShowClippedPolys)

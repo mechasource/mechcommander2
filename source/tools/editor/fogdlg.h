@@ -45,7 +45,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(FogDlg)
 	afx_msg void OnChangeBlue1(void);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
+	afx_msg HBRUSH OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

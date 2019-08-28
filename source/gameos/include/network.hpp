@@ -79,7 +79,7 @@ bool __stdcall gos_ConnectZoneMatch(PSTR IPAddress, uint16_t port);
 // 4=Waiting for answer
 //
 int32_t __stdcall gos_CreateGame(PSTR GameName, PSTR PlayerName, int32_t MaxPlayers,
-	PSTR GamePassword = 0, bool Secure = 0, PSTR UserPassword = 0, uint32_t dwFlags = 0);
+	PSTR GamePassword = 0, bool Secure = 0, PSTR UserPassword = 0, uint32_t flags = 0);
 
 //
 // Join the game specified
@@ -105,7 +105,7 @@ void __stdcall gos_Disconnect(void);
 // Functionality: If browser services are available, advertise the indicated
 // key/value pair
 //
-bool __stdcall gos_NetSetAdvertItem(uint32_t player, PSTR Name, PSTR Value);
+bool __stdcall gos_NetSetAdvertItem(uint32_t player, PSTR Name, PSTR value);
 
 void
 NGStatsSetPlayerId(PSTR name, PSTR passwd);
@@ -122,7 +122,7 @@ int32_t __stdcall GetGUNRegStatus(void);
 int32_t __stdcall GetGUNNetStatus(void);
 int32_t __stdcall GetGUNLastError(void);
 PSTR __stdcall GetGUNErrorMessage(void);
-void __stdcall GetGUNDownloadStats(pint32_t tableSize, pint32_t progress);
+void __stdcall GetGUNDownloadStats(int32_t* tableSize, int32_t* progress);
 
 #if CONSIDERED_OBSOLETE
 // -----------------MD5 Hashing stuff
@@ -131,7 +131,7 @@ void __stdcall GetGUNDownloadStats(pint32_t tableSize, pint32_t progress);
 // Alphas really have 8 bytes for longs, which this code
 // assumes only 4.  The original line is commented in case
 // something is terribly terribly wrong with the fix.
-// typedef unsigned int long UINT4;
+// typedef uint32_t long UINT4;
 
 typedef struct
 {
@@ -146,7 +146,7 @@ void __stdcall MD5SecurityCheckStart(void);
 void __stdcall MD5SecurityCheckStop(void);
 
 void __stdcall MD5Init(MD5_CTX*);
-void __stdcall MD5Update(MD5_CTX*, puint8_t, uint32_t);
+void __stdcall MD5Update(MD5_CTX*, uint8_t*, uint32_t);
 void __stdcall MD5Final(uint8_t[16], MD5_CTX*);
 #endif
 
@@ -272,14 +272,14 @@ public:
 	static bool __stdcall InitializeAll(void);
 	static bool __stdcall SynchronizeAll(void);
 	static bool __stdcall CreateGameAll(PSTR szGameName, PSTR szPlayerName, int32_t MaxPlayers,
-		PSTR szPassword, const GUID& guidInstance, uint32_t dwFlags);
+		PSTR szPassword, const GUID& guidInstance, uint32_t flags);
 	static bool __stdcall AddPlayerAll(uint32_t dwItemID, PSTR szPlayerName, bool bBot = false);
 	static bool __stdcall DisconnectAll(void);
 	static bool __stdcall RemovePlayerAll(uint32_t dwItemID, PSTR szPlayerName, bool bBot);
 	static bool __stdcall ReleaseAll(void);
 	static bool __stdcall AdvertiseItem(uint32_t dwPlayer, PSTR szName, PSTR szValue);
 	static uint32_t __stdcall GetFlagsAllAdvertisers(void);
-	static bool __stdcall SetFlagsAllAdvertisers(uint32_t dwFlags);
+	static bool __stdcall SetFlagsAllAdvertisers(uint32_t flags);
 
 	static bool __stdcall GetAdvertiseOK(void);
 
@@ -298,13 +298,13 @@ protected:
 
 	// for servers
 	virtual bool __stdcall CreateGame(PSTR szGameName, PSTR szPlayerName, int32_t MaxPlayers,
-		PSTR szPassword, const GUID& guidInstance, uint32_t dwFlags) = 0;
+		PSTR szPassword, const GUID& guidInstance, uint32_t flags) = 0;
 	virtual bool __stdcall CreatePlayer(
 		uint32_t dwItemID, PSTR szPlayerName, bool bBot = false) = 0;
 	virtual bool __stdcall RemovePlayer(
 		uint32_t dwItemID, PSTR szPlayerName, bool bBot = false) = 0;
 	virtual bool __stdcall SetItemValue(uint32_t dwPlayer, PSTR szName, PSTR szValue) = 0;
-	virtual bool __stdcall SetFlags(uint32_t dwFlags) = 0;
+	virtual bool __stdcall SetFlags(uint32_t flags) = 0;
 
 	//
 	// server browsers can call these members

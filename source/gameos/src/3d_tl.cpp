@@ -12,7 +12,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Beck, created
+ 2014-07-24 Jerker Back, created
 
 *******************************************************************************/
 
@@ -53,9 +53,8 @@
 void __stdcall gos_SetTransform(D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX pMatrixData)
 {
 	gosASSERT(InsideBeginScene);
-	gosASSERT(
-		TransformType >= D3DTRANSFORMSTATE_WORLD && TransformType <= D3DTRANSFORMSTATE_WORLD1);
-	wSetTransform(d3dDevice7, TransformType, pMatrixData);
+	gosASSERT(TransformType >= D3DTRANSFORMSTATE_WORLD && TransformType <= D3DTRANSFORMSTATE_WORLD1);
+	wSetTransform(d3ddevice7, TransformType, pMatrixData);
 	GameOSFPU();
 }
 
@@ -75,7 +74,7 @@ void __stdcall gos_MultiplyTransform(D3DTRANSFORMSTATETYPE TransformType, LPD3DM
 {
 	gosASSERT(InsideBeginScene);
 	gosASSERT(TransformType >= D3DTRANSFORMSTATE_WORLD && TransformType <= D3DTRANSFORMSTATE_WORLD1);
-	wMultiplyTransform(d3dDevice7, TransformType, pMatrixData);
+	wMultiplyTransform(d3ddevice7, TransformType, pMatrixData);
 	GameOSFPU();
 }
 
@@ -94,7 +93,7 @@ void __stdcall gos_MultiplyTransform(D3DTRANSFORMSTATETYPE TransformType, LPD3DM
 void __stdcall gos_SetLight(uint32_t LightNumber, LPD3DLIGHT7 pLightData)
 {
 	gosASSERT(InsideBeginScene);
-	wSetLight(d3dDevice7, LightNumber, pLightData);
+	wSetLight(d3ddevice7, LightNumber, pLightData);
 	GameOSFPU();
 }
 
@@ -113,7 +112,7 @@ void __stdcall gos_SetLight(uint32_t LightNumber, LPD3DLIGHT7 pLightData)
 void __stdcall gos_LightEnable(uint32_t LightNumber, uint8_t Enable)
 {
 	gosASSERT(InsideBeginScene);
-	wLightEnable(d3dDevice7, LightNumber, Enable);
+	wLightEnable(d3ddevice7, LightNumber, Enable);
 	GameOSFPU();
 }
 
@@ -130,6 +129,6 @@ void __stdcall gos_LightEnable(uint32_t LightNumber, uint8_t Enable)
 void __stdcall gos_SetMaterial(LPD3DMATERIAL7 pMaterialData)
 {
 	gosASSERT(InsideBeginScene);
-	wSetMaterial(d3dDevice7, pMaterialData);
+	wSetMaterial(d3ddevice7, pMaterialData);
 	GameOSFPU();
 }

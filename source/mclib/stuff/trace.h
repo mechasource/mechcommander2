@@ -9,7 +9,7 @@
 
 //#if defined(TRACE_ENABLED)
 
-#include <stuff/chain.hpp>
+// #include "stuff/chain.h"
 
 namespace Stuff
 {
@@ -26,7 +26,7 @@ struct TraceSample
 	uint8_t traceNumber;
 	uint8_t sampleType;
 
-	typedef enum Type
+	enum class Type : uint8_t
 	{
 		GoingUp = 0,
 		GoingDown,
@@ -69,11 +69,11 @@ public:
 protected:
 	static uint8_t NextTraceID;
 
-	PCSTR traceName;
+	const std::wstring_view& traceName;
 	int64_t lastActivity;
 	uint8_t traceNumber, traceType;
 
-	Trace(PCSTR name, Type type);
+	Trace(const std::wstring_view& name, Type type);
 
 	std::iostream& GetTraceLog(void);
 	void IncrementSampleCount(void);
@@ -112,7 +112,7 @@ protected:
 #endif
 
 public:
-	BitTrace(PCSTR name);
+	BitTrace(const std::wstring_view& name);
 
 	void Set(void);
 	void Clear(void);
@@ -158,7 +158,7 @@ protected:
 #endif
 
 public:
-	TraceOf(PCSTR name, const T& initial_value, Type trace_type, TraceSample::Type sample_type);
+	TraceOf(const std::wstring_view& name, const T& initial_value, Type trace_type, TraceSample::Type sample_type);
 
 	void TakeSnapshot(const T& value);
 };
@@ -167,7 +167,7 @@ public:
 //
 template <class T>
 TraceOf<T>::TraceOf(
-	PCSTR name, const T& initial_value, Type trace_type, TraceSample::Type sample_type) :
+	const std::wstring_view& name, const T& initial_value, Type trace_type, TraceSample::Type sample_type) :
 	Trace(name, trace_type)
 {
 	currentValue = initial_value;
@@ -312,7 +312,7 @@ public:
 		// Check_Object(this);
 		return activeBits;
 	}
-	PCSTR
+	const std::wstring_view&
 	GetNameOfTrace(int32_t bit_no);
 
 #if defined(USE_TIME_ANALYSIS)
@@ -322,7 +322,7 @@ public:
 
 #if defined(USE_TRACE_LOG)
 	void CreateTraceLog(size_t max_trace_samples, bool start_sampling);
-	void SaveTraceLog(PCSTR filename);
+	void SaveTraceLog(const std::wstring_view& filename);
 	void MarkTraceLog(void);
 	void SuspendTraceLogging(void);
 	void ResumeTraceLogging(void);

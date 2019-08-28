@@ -60,14 +60,14 @@ void __stdcall gos_TriggerThread(uint32_t ThreadHandle, bool* ThreadFinished, PV
 // LZ Compression - returns length of compressed destination buffer
 //
 //
-uint32_t __stdcall gos_LZCompress(puint8_t dest, puint8_t src, size_t srcLen, size_t destLen = 0);
+uint32_t __stdcall gos_LZCompress(uint8_t* dest, uint8_t* src, size_t srcLen, size_t destLen = 0);
 //
 //
 // LZ Decompression routine, returns length to decompressed output in dest
 // buffer
 //
 //
-uint32_t __stdcall gos_LZDecompress(puint8_t dest, puint8_t src, size_t srcLen);
+uint32_t __stdcall gos_LZDecompress(uint8_t* dest, uint8_t* src, size_t srcLen);
 
 //
 // Gets a pointer to text data in the windows clip board (nullptr=No text)

@@ -21,13 +21,13 @@ void
 TerrainDlg::Init()
 {
 	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_TERRAINS);
-	int32_t numTerrains = TerrainColorMap::getNumTypes();
+	int32_t numTerrains = TerraincolourMap::getNumTypes();
 	for (size_t i = 0; i < numTerrains; i++)
 	{
-		char buffer[256];
-		if (!TerrainColorMap::getTextureNameID(i)) // if we start to repeat, quit
+		wchar_t buffer[256];
+		if (!TerraincolourMap::getTextureNameID(i)) // if we start to repeat, quit
 			break;
-		cLoadString(TerrainColorMap::getTextureNameID(i), buffer, 256);
+		cLoadString(TerraincolourMap::getTextureNameID(i), buffer, 256);
 		int32_t index = pListBox->AddString(buffer);
 		pListBox->SetItemData(index, i);
 	}

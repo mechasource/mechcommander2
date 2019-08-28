@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Beck. All rights reserved.
+ Copyright (c) 2011-2014, Jerker Back. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without fee is hereby granted, provided that the following
@@ -28,7 +28,7 @@
 
  MechCommander 2 source code
 
- 2014-08-07 Jerker Beck, created
+ 2014-08-07 Jerker Back, created
 
  $LastChangedBy$
 
@@ -40,7 +40,7 @@
 #ifndef MC2VERSION_H
 #define MC2VERSION_H
 
-// char versionStamp[1024] = "00.06.01.0614";
+// wchar_t versionStamp[1024] = "00.06.01.0614";
 
 #define MC2_VERSION_MAJOR 1
 #define MC2_VERSION_MINOR 1

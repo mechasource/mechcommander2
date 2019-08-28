@@ -28,13 +28,13 @@ aAnimObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t
 {
 	aObject::init(file, blockName, neverFlush);
 	int32_t color = 0xffffffff;
-	if (NO_ERROR == file->readIdLong("Color", color))
+	if (NO_ERROR == file->readIdLong("colour", color))
 	{
-		setColor(color);
+		setcolour(color);
 	}
 	else
-		setColor(0xffffffff);
-	char animName[256];
+		setcolour(0xffffffff);
+	wchar_t animName[256];
 	file->readIdString("Animation", animName, 255);
 	if (NO_ERROR == file->seekBlock(animName))
 		animInfo.init(file, "");
@@ -52,17 +52,17 @@ aAnimObject::render()
 {
 	if (!isShowing())
 		return;
-	int32_t color = animInfo.getColor();
+	int32_t color = animInfo.getcolour();
 	float xNewOffset = animInfo.getXDelta() + .5f;
 	float yNewOffset = animInfo.getYDelta() + .5f;
 	move(xNewOffset, yNewOffset);
-	setColor(color);
+	setcolour(color);
 	float fScaleX = animInfo.getScaleX();
 	float fScaleY = animInfo.getScaleY();
 	if (fScaleX != 1.0 || fScaleY != 1.0)
 	{
-		float oldWidth = width() + .5f;
-		float oldHeight = height() + .5f;
+		float oldwidth = width() + .5f;
+		float oldheight = height() + .5f;
 		;
 		float oldLeft = globalX();
 		float oldTop = globalY();
@@ -75,7 +75,7 @@ aAnimObject::render()
 		moveToNoRecurse(newLeft, newTop);
 		resize(fScaleX * width(), fScaleY * height());
 		aObject::render();
-		resize(oldWidth, oldHeight);
+		resize(oldwidth, oldheight);
 		moveToNoRecurse(oldLeft, oldTop);
 	}
 	else

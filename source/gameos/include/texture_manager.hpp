@@ -34,39 +34,36 @@ extern int32_t HasMipMap; // Can do mipmapping
 extern D3DDEVICEDESC7 CapsDirect3D; // Current 3D device caps
 
 // Pixel conversion helper functions
-uint32_t
-GetPixelColor(uint32_t In);
-uint32_t
-GetBackBufferColor(uint16_t In);
-void
-UpdateBackBufferFormat(void);
+uint32_t __stdcall GetPixelColor(uint32_t in);
+uint32_t GetBackBufferColor(uint16_t in);
+void UpdateBackBufferFormat(void);
 
-void __stdcall DecodeBMPDimensions(PSTR FileName, puint8_t Data, uint32_t DataSize,
-	puint32_t pTextureWidth, puint32_t pTextureHeight);
-void __stdcall DecodeJPGDimensions(PSTR FileName, puint8_t Data, uint32_t DataSize,
-	puint32_t pTextureWidth, puint32_t pTextureHeight);
+void __stdcall DecodeBMPDimensions(PSTR FileName, uint8_t* Data, uint32_t DataSize,
+	uint32_t* pTexturewidth, uint32_t* pTextureheight);
+void __stdcall DecodeJPGDimensions(PSTR FileName, uint8_t* Data, uint32_t DataSize,
+	uint32_t* pTexturewidth, uint32_t* pTextureheight);
 #ifdef USEPNG
-PVOID __stdcall DecodePNG(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
-	puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf = nullptr);
-void __stdcall DecodePNGDimensions(PSTR FileName, puint8_t Data, uint32_t DataSize,
-	puint32_t pTextureWidth, puint32_t pTextureHeight);
+PVOID __stdcall DecodePNG(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
+	uint32_t* Textureheight, bool TextureLoad, PVOID pDestSurf = nullptr);
+void __stdcall DecodePNGDimensions(PSTR FileName, uint8_t* Data, uint32_t DataSize,
+	uint32_t* pTexturewidth, uint32_t* pTextureheight);
 #endif
 void
-DecodeTGADimensions(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t pTextureWidth,
-	puint32_t pTextureHeight);
+DecodeTGADimensions(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* pTexturewidth,
+	uint32_t* pTextureheight);
 
 PVOID
-DecodeBMP(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
-	puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf = nullptr);
+DecodeBMP(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
+	uint32_t* Textureheight, bool TextureLoad, PVOID pDestSurf = nullptr);
 PVOID
-DecodeJPG(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
-	puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf = nullptr);
+DecodeJPG(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
+	uint32_t* Textureheight, bool TextureLoad, PVOID pDestSurf = nullptr);
 PVOID
-DecodeTGA(PSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth,
-	puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf = nullptr);
+DecodeTGA(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
+	uint32_t* Textureheight, bool TextureLoad, PVOID pDestSurf = nullptr);
 
 int32_t
-MipLevelsRequired(uint16_t Width, uint16_t Height);
+MipLevelsRequired(uint16_t width, uint16_t height);
 
 // GOS Internal textures
 extern uint32_t FontTexture; // The font and mouse pointer
@@ -79,25 +76,25 @@ extern int32_t TextureDescScore[5][2][4]; // validity of current entry in Textru
 
 // Maximum number of textures that are supported (can be altered independently
 // from display cards)
-cuint32_t MaximumTextures = 3000;
+const uint32_t MaximumTextures = 3000;
 extern uint32_t MaximumVidTextures; // limit the number simultaneously loaded
 
-cuint32_t MaximumTextureLogs = 32;
+const uint32_t MaximumTextureLogs = 32;
 
 // Texture flags
-cuint16_t tFlag_InVidMem = 1; // Currently loaded in Video Memory or AGP
-cuint16_t tFlag_InAGP = 2; // Allocation is in AGP ( tFlag_InVidMem set separately )
-cuint16_t tFlag_Valid = 4; // This CTexInfo has been allocated
-cuint16_t tFlag_Alpha = 8; // Texture format has ALPHA (either keyed or full channel)
-cuint16_t tFlag_InSysMem = 16; // Texture has been converted into system memory format
-cuint16_t tFlag_LockRW = 32; // Set when a texture is locked for writing
-cuint16_t tFlag_Preload = 64; // Preload this texture at the end of the current frame
-cuint16_t tFlag_Locked = 128; // Set when texture locked
-cuint16_t tFlag_Filler = 256; // Indicates a debug texture used to fill vidmem
-cuint16_t tFlag_Detect = 512; // GameOS detected the format
-cint32_t tFlag_FormatShift = 10; // Bits 10,11,12 used for format
-cuint16_t FormatMask = (7 << tFlag_FormatShift);
-cuint16_t tFlag_Special = 8192; // Special texture (font, chess, or color mipmap)
+const uint16_t tFlag_InVidMem = 1; // Currently loaded in Video Memory or AGP
+const uint16_t tFlag_InAGP = 2; // Allocation is in AGP ( tFlag_InVidMem set separately )
+const uint16_t tFlag_Valid = 4; // This CTexInfo has been allocated
+const uint16_t tFlag_Alpha = 8; // Texture format has ALPHA (either keyed or full channel)
+const uint16_t tFlag_InSysMem = 16; // Texture has been converted into system memory format
+const uint16_t tFlag_LockRW = 32; // Set when a texture is locked for writing
+const uint16_t tFlag_Preload = 64; // Preload this texture at the end of the current frame
+const uint16_t tFlag_Locked = 128; // Set when texture locked
+const uint16_t tFlag_Filler = 256; // Indicates a debug texture used to fill vidmem
+const uint16_t tFlag_Detect = 512; // GameOS detected the format
+const int32_t tFlag_FormatShift = 10; // Bits 10,11,12 used for format
+const uint16_t FormatMask = (7 << tFlag_FormatShift);
+const uint16_t tFlag_Special = 8192; // Special texture (font, chess, or color mipmap)
 
 enum class EGraphicsMemType
 {
@@ -115,8 +112,8 @@ enum class EGraphicsMemType
 class CTexInfo
 {
 private:
-	uint16_t m_nWidth; // Width in texels of original image
-	uint16_t m_nHeight; // Height of original image
+	uint16_t m_nwidth; // width in texels of original image
+	uint16_t m_nheight; // height of original image
 	uint16_t m_Flags; // tFlag_...
 	uint16_t m_Hints; // gosHint_...
 	LPDIRECTDRAWSURFACE7 m_pOriginalSurf; // Original 32bpp image (if any)
@@ -128,7 +125,7 @@ private:
 	gos_RebuildFunction m_pRebuild; // Application function to repopulate surface
 	PVOID m_pInstance; // Instance handle to pass to rebuild function
 	uint32_t m_nLastFrameUsed; // Frame number when this texture was last used
-	uint32_t m_nLastTimeUsed; // Value of TimeNo when this texture was last used
+	uint32_t m_nLastTimeUsed; // value of TimeNo when this texture was last used
 	uint32_t m_nOriginalBytes; // Size of m_pOriginalSurf (even if not allocated)
 	uint32_t m_nSysMemBytes; // Size of m_pSysMemSurf (even if not allocated)
 	uint32_t m_nVidMemBytes; // Size of m_pVidMemSurf (even if not allocated)
@@ -154,8 +151,8 @@ private:
 
 public:
 	// Read-only operations
-	uint16_t Width(void) { return m_nWidth; }
-	uint16_t Height(void) { return m_nHeight; }
+	uint16_t width(void) { return m_nwidth; }
+	uint16_t height(void) { return m_nheight; }
 	uint16_t Hints(void) { return m_Hints; }
 	bool HasAlpha(void) { return (m_Flags & tFlag_Alpha) != 0; }
 	bool IsLocked(void) { return (m_Flags & tFlag_Locked) != 0; }
@@ -166,10 +163,10 @@ public:
 	bool MipmapDisabled(void) { return (m_Hints & gosHint_DisableMipmap) != 0; }
 	bool CanRebuild(void) { return m_pRebuild != nullptr; }
 	int32_t MipFilter(void) { return (m_Hints / gosHint_MipmapFilter0) & 3; }
-	uint32_t Area(void) { return uint32_t(m_nWidth * m_nHeight); }
+	uint32_t Area(void) { return uint32_t(m_nwidth * m_nheight); }
 	int32_t MipMapLevels(void)
 	{
-		return (MipmapDisabled()) ? 1 : MipLevelsRequired(m_nWidth, m_nHeight);
+		return (MipmapDisabled()) ? 1 : MipLevelsRequired(m_nwidth, m_nheight);
 	}
 	PSTR Name(void) { return m_pName; }
 	PVOID pInstance(void) { return m_pInstance; }
@@ -194,9 +191,9 @@ public:
 		return (gos_TextureFormat)((m_Flags & FormatMask) >> tFlag_FormatShift);
 	}
 	bool Used(void) { return m_nLastFrameUsed == FrameNo; }
-	uint16_t ScaledHeightWidth(bool WantHeight);
-	uint16_t ScaledWidth(void) { return ScaledHeightWidth(false); }
-	uint16_t ScaledHeight(void) { return ScaledHeightWidth(true); }
+	uint16_t Scaledheightwidth(bool Wantheight);
+	uint16_t Scaledwidth(void) { return Scaledheightwidth(false); }
+	uint16_t Scaledheight(void) { return Scaledheightwidth(true); }
 	static int32_t GlobalScaleShift(void) { return ScaleShift; }
 	bool SysMemSurfUsable(void);
 	// Texture Update.cpp
@@ -216,8 +213,8 @@ public:
 	// Texture Create.cpp
 	// Fundamental new/init/delete of a CtexInfo
 	static CTexInfo* Allocate(void);
-	void Initialize(gos_TextureFormat Format, PSTR FileName, puint8_t pBitmap, uint32_t Size,
-		uint16_t Width, uint16_t Height, uint32_t Hints, gos_RebuildFunction pFunc,
+	void Initialize(gos_TextureFormat Format, PSTR FileName, uint8_t* pBitmap, uint32_t Size,
+		uint16_t width, uint16_t height, uint32_t Hints, gos_RebuildFunction pFunc,
 		PVOID pInstance);
 	void Free(void);
 
@@ -226,11 +223,11 @@ public:
 	// handle
 	uint32_t GetD3DTextureHandle(void); // HW Rasterizer: VidMemSurf, SW Rasterizer: SysMemSurf
 	// Altering the surface contents of a texture
-	void Lock(uint32_t MipMapWidth, bool ReadOnly, TEXTUREPTR* TextureInfo);
+	void Lock(uint32_t MipMapwidth, bool ReadOnly, TEXTUREPTR* TextureInfo);
 	void Unlock(void);
 	void InvalidateVidMem(void); // mark vidmem as invalid and check if current texture
 	void UpdateRect(uint32_t DestLeft, uint32_t DestTop, uint32_t* Source, uint32_t SourcePitch,
-		uint32_t Width, uint32_t Height);
+		uint32_t width, uint32_t height);
 	// Various setters
 	void SetPreload(void);
 	void SetName(PSTR name);
@@ -241,13 +238,13 @@ public:
 	}
 	// Active private routines used within the texture manager
 
-	// Notes on Get...( bool populate, uint16_t MipMapWidth=0 )
+	// Notes on Get...( bool populate, uint16_t MipMapwidth=0 )
 	// Get..() Allocates, and/or populates the different versions of the texture
 	// Each function allocates the surface if required and if populate is true
 	// and the surface contents are not already valid, copies/converts the
 	// contents from the prior level(s) GetOriginalSurf(true) will use the
 	// reload or rebuild operation as required to populate the surface If
-	// MipMapWidth is non-zero, returns specific level Notes on Allocate...()
+	// MipMapwidth is non-zero, returns specific level Notes on Allocate...()
 	// Assumes surface does not already exist
 	// Allocates all mip levels required for the texture (factoring in flags)
 	// Does not touch validity flags (e.g. tFlag_InVidmem)
@@ -262,22 +259,22 @@ public:
 	// Texture Original.cpp
 	// Original surface
 public:
-	LPDIRECTDRAWSURFACE7 GetOriginalSurf(bool populate, uint16_t MipMapWidth = 0);
+	LPDIRECTDRAWSURFACE7 GetOriginalSurf(bool populate, uint16_t MipMapwidth = 0);
 
 private:
 	void AllocateOriginal(void); // Allocates original 32bpp surface
 	void PopulateOriginal(void); // Rebuilds or Reloads (assumes surface exists but is not valid)
 	void Reload(
-		puint8_t pData, uint32_t Size, bool Detect); // reloads 32bpp surface from file or pData
+		uint8_t* pData, uint32_t Size, bool Detect); // reloads 32bpp surface from file or pData
 	void Rebuild(void); // Calls rebuild function of app to re-populate the surface
 	void FreeOriginal(void); // Frees the original surface (assumes it exists and is ok to free)
 	void DecodeImageLevel(
-		PSTR FileName, puint8_t pSourceData, uint32_t Size, LPDIRECTDRAWSURFACE7 pSurface);
+		PSTR FileName, uint8_t* pSourceData, uint32_t Size, LPDIRECTDRAWSURFACE7 pSurface);
 
 	// Texture SysMem.cpp
 	// System Memory Surface
 public:
-	LPDIRECTDRAWSURFACE7 GetSysMemSurf(bool populate, uint16_t MipMapWidth = 0);
+	LPDIRECTDRAWSURFACE7 GetSysMemSurf(bool populate, uint16_t MipMapwidth = 0);
 
 private:
 	void AllocateSysMem(void); // Allocates (probably 16bpp) system memory surface
@@ -290,7 +287,7 @@ private:
 	void GenerateMipMaps(void); // Filters top level of SysMem chain to all lower levels
 	// Texture VidMem.cpp
 	// Video Memory or AGP Surface
-	LPDIRECTDRAWSURFACE7 GetVidMemSurf(bool populate, uint16_t MipMapWidth = 0);
+	LPDIRECTDRAWSURFACE7 GetVidMemSurf(bool populate, uint16_t MipMapwidth = 0);
 	bool CreateTexture(void); // Called by AllocateVidMem(void) to attempt texture creation
 	void AllocateVidMem(void); // Uses various techniques to allocate video memory
 	void PopulateVidMem(void); // Uploads level(s) from SysMem to VidMem/AGP
@@ -306,9 +303,9 @@ private:
 		m_Flags = (uint16_t)((m_Flags & ~FormatMask) | ((uint16_t)(Format) << tFlag_FormatShift));
 	}
 	LPDIRECTDRAWSURFACE7 FindTextureLevel(
-		LPDIRECTDRAWSURFACE7 pSurf, uint16_t MipMapWidth); // Helper function
+		LPDIRECTDRAWSURFACE7 pSurf, uint16_t MipMapwidth); // Helper function
 public:
-	static CTexInfo* TextureHandleToPtr(uint32_t Handle);
+	static CTexInfo* TextureHandleToPtr(uint32_t handle);
 	uint32_t TexturePointerToHandle(void);
 
 	static void NewAGPLimit(void); // called by debugger when AGP limit changes
@@ -361,9 +358,9 @@ inline void __stdcall CheckPreloadTextures(void)
 {
 	CTexInfo::PreloadTextures();
 }
-inline void __stdcall ReleaseTextureHeap(bool ReleaseSysmem)
+inline void __stdcall ReleaseTextureHeap(bool releasesysmem)
 {
-	CTexInfo::ReleaseTextures(ReleaseSysmem);
+	CTexInfo::ReleaseTextures(releasesysmem);
 }
 inline void __stdcall InitTextureManager(void)
 {

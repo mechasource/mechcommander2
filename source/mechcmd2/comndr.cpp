@@ -183,7 +183,7 @@ Commander::Save(PacketFilePtr file, int32_t packetNum)
 	staticData.numCommanders = numCommanders;
 	staticData.homeCommanderId = home->getId();
 	file->writePacket(
-		packetNum, (puint8_t)&staticData, sizeof(StaticCommanderData), STORAGE_TYPE_RAW);
+		packetNum, (uint8_t*)&staticData, sizeof(StaticCommanderData), STORAGE_TYPE_RAW);
 	packetNum++;
 	for (size_t i = 0; i < numCommanders; i++)
 	{
@@ -197,7 +197,7 @@ Commander::Save(PacketFilePtr file, int32_t packetNum)
 			data.teamId = Team::home->getId();
 		for (size_t j = 0; j < MAX_MOVERGROUPS; j++)
 			commanders[i]->groups[j]->copyTo(data.groups[j]);
-		file->writePacket(packetNum, (puint8_t)&data, sizeof(CommanderData), STORAGE_TYPE_RAW);
+		file->writePacket(packetNum, (uint8_t*)&data, sizeof(CommanderData), STORAGE_TYPE_RAW);
 		packetNum++;
 	}
 	return packetNum;
@@ -208,13 +208,13 @@ int32_t
 Commander::Load(PacketFilePtr file, int32_t packetNum)
 {
 	StaticCommanderData staticData;
-	file->readPacket(packetNum, (puint8_t)&staticData);
+	file->readPacket(packetNum, (uint8_t*)&staticData);
 	packetNum++;
 	numCommanders = staticData.numCommanders;
 	for (size_t i = 0; i < numCommanders; i++)
 	{
 		CommanderData data;
-		file->readPacket(packetNum, (puint8_t)&data);
+		file->readPacket(packetNum, (uint8_t*)&data);
 		packetNum++;
 		commanders[i] = new Commander;
 		// Same drill as all the others.  HACK!

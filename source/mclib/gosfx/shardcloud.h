@@ -80,14 +80,14 @@ public:
 
 	enum
 	{
-		ParticleSize = sizeof(Particle) + 3 * sizeof(Stuff::Point3D) + 3 * sizeof(Stuff::RGBAColor)
+		ParticleSize = sizeof(Particle) + 3 * sizeof(Stuff::Point3D) + 3 * sizeof(Stuff::RGBAcolour)
 	};
 
 protected:
 	MidLevelRenderer::MLRTriangleCloud*
 		m_cloudImplementation; // point to an MLR triangle cloud by Michael
 	Stuff::Point3D* m_P_vertices;
-	Stuff::RGBAColor* m_P_color;
+	Stuff::RGBAcolour* m_P_color;
 
 	//----------------------------------------------------------------------------
 	// Class Data Support

@@ -23,7 +23,7 @@ uint32_t gosResourceHandle = 0;
 
 std::iostream effectStream;
 
-extern char CDInstallPath[];
+extern wchar_t CDInstallPath[];
 
 bool hasGuardBand = false;
 bool justResaveAllMaps = false;
@@ -40,7 +40,7 @@ enum class Processor
 
 float MaxMinUV = 8.0f;
 
-uint32_t BaseVertexColor = 0x00000000;
+uint32_t BaseVertexcolour = 0x00000000;
 
 static const std::wstring_view& lpszAppName = "MechCmdr2";
 
@@ -73,8 +73,8 @@ extern HGOSFONT3D FontHandle;
 FloatHelpPtr globalFloatHelp = nullptr;
 uint32_t currentFloatHelp = 0;
 
-char fileName[1024];
-char listName[1024];
+wchar_t fileName[1024];
+wchar_t listName[1024];
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
@@ -85,7 +85,7 @@ ParseCommandLine(const std::wstring_view& command_line)
 	int32_t n_args = 0;
 	int32_t index = 0;
 	const std::wstring_view& argv[30];
-	char tempCommandLine[4096];
+	wchar_t tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
 	while (tempCommandLine[index] != '\0') // until we null out
@@ -193,8 +193,8 @@ convertASE2TGL(const std::wstring_view& file)
 {
 	//---------------------------------------------------
 	// Get all of the .ASE files in the tgl directory.
-	char findString[1024];
-	char armFileName[1024];
+	wchar_t findString[1024];
+	wchar_t armFileName[1024];
 	if (file[0] == '\0')
 	{
 		sprintf(findString, "%s*.ini", tglPath);
@@ -228,7 +228,7 @@ convertASE2TGL(const std::wstring_view& file)
 			result = iniFile.seekBlock("TGLData");
 			if (result == NO_ERROR)
 			{
-				char fileName[1024];
+				wchar_t fileName[1024];
 				result = iniFile.readIdString("FileName", fileName, 1023);
 				if (result != NO_ERROR)
 				{
@@ -236,7 +236,7 @@ convertASE2TGL(const std::wstring_view& file)
 					// We have LODs -- handle differently
 					// We will get animation from LAST LOD loaded
 					int32_t i = 0;
-					char fileCheck[1024];
+					wchar_t fileCheck[1024];
 					sprintf(fileCheck, "FileName%d", i);
 					result = iniFile.readIdString(fileCheck, fileName, 1023);
 					while (result == NO_ERROR)
@@ -246,14 +246,14 @@ convertASE2TGL(const std::wstring_view& file)
 							delete shape;
 							shape = nullptr;
 						}
-						char aseName[1024];
+						wchar_t aseName[1024];
 						sprintf(aseName, "%s%s%s", tglPath, fileName, ".ase");
 						//---------------------------------------------------------------------------------------------
 						// Load Base Shape or LOD 0 Shape.
 						shape = new TG_TypeMultiShape;
 						gosASSERT(shape != nullptr);
 						printf("Processing Main Shape %s\n", aseName);
-						char lodID[4];
+						wchar_t lodID[4];
 						sprintf(lodID, "%02d", count);
 						IProviderRelationshipPtr armLink =
 							iniAsset->AddRelationship("LOD Shape", aseName);
@@ -264,7 +264,7 @@ convertASE2TGL(const std::wstring_view& file)
 						result = iniFile.readIdString(fileCheck, fileName, 1023);
 					}
 				}
-				char aseName[1024];
+				wchar_t aseName[1024];
 				sprintf(aseName, "%s%s%s", tglPath, fileName, ".ase");
 				//---------------------------------------------------------------------------------------------
 				// Load Base Shape or LOD 0 Shape.
@@ -280,7 +280,7 @@ convertASE2TGL(const std::wstring_view& file)
 				result = iniFile.readIdString("ShadowName", fileName, 1023);
 				if (result == NO_ERROR)
 				{
-					char aseName[1024];
+					wchar_t aseName[1024];
 					sprintf(aseName, "%s%s%s", tglPath, fileName, ".ase");
 					//---------------------------------------------------------------------------------------------
 					// Load Base Shape or LOD 0 Shape.
@@ -294,12 +294,12 @@ convertASE2TGL(const std::wstring_view& file)
 					shadowShape = nullptr;
 				}
 				int32_t i = 0;
-				char animCheck[1024];
+				wchar_t animCheck[1024];
 				sprintf(animCheck, "Animation:%d", i);
 				result = iniFile.seekBlock(animCheck);
 				while (result == NO_ERROR) // This thing has animations. Process them!
 				{
-					char fileName[1024];
+					wchar_t fileName[1024];
 					result = iniFile.readIdString("AnimationName", fileName, 1023);
 					if (result == NO_ERROR)
 					{
@@ -329,9 +329,9 @@ convertASE2TGL(const std::wstring_view& file)
 						// mech and write 'em out.
 						for (size_t i = 0; i < MaxGestures; i++)
 						{
-							char name[MAX_PATH];
+							wchar_t name[MAX_PATH];
 							_splitpath(findResult.cFileName, nullptr, nullptr, name, nullptr);
-							char mechFileName[1024];
+							wchar_t mechFileName[1024];
 							sprintf(
 								mechFileName, "%s%s%s.ase", tglPath, name, MechAnimationNames[i]);
 							TG_AnimateShape* anim = new TG_AnimateShape;
@@ -356,9 +356,9 @@ convertASE2TGL(const std::wstring_view& file)
 						// this mech and write 'em out.
 						for (size_t i = MaxGestures; i < MaxGestures + 2; i++)
 						{
-							char name[MAX_PATH];
+							wchar_t name[MAX_PATH];
 							_splitpath(findResult.cFileName, nullptr, nullptr, name, nullptr);
-							char mechFileName[1024];
+							wchar_t mechFileName[1024];
 							sprintf(
 								mechFileName, "%s%s%s.ase", tglPath, name, MechAnimationNames[i]);
 							//-----------------------------------------------
@@ -375,7 +375,7 @@ convertASE2TGL(const std::wstring_view& file)
 				}
 				if (iniFile.seekBlock("TGLDamage") == NO_ERROR)
 				{
-					char fileName[1024];
+					wchar_t fileName[1024];
 					result = iniFile.readIdString("FileName", fileName, 1023);
 					if (result == NO_ERROR)
 					{
@@ -384,7 +384,7 @@ convertASE2TGL(const std::wstring_view& file)
 							delete shape;
 							shape = nullptr;
 						}
-						char aseName[1024];
+						wchar_t aseName[1024];
 						sprintf(aseName, "%s%s%s", tglPath, fileName, ".ase");
 						//---------------------------------------------------------------------------------------------
 						// Load Base Shape or LOD 0 Shape.
@@ -402,7 +402,7 @@ convertASE2TGL(const std::wstring_view& file)
 					result = iniFile.readIdString("ShadowName", fileName, 1023);
 					if (result == NO_ERROR)
 					{
-						char aseName[1024];
+						wchar_t aseName[1024];
 						sprintf(aseName, "%s%s%s", tglPath, fileName, ".ase");
 						//---------------------------------------------------------------------------------------------
 						// Load Base Shape or LOD 0 Shape.
@@ -462,16 +462,16 @@ WinMain(
 			return false;
 	}
 	g_hinstance = hinstance;
-	char appTitle[1024];
+	wchar_t appTitle[1024];
 	sprintf(appTitle, "MechCommander 2 Data Editor %s", versionStamp);
 	appWnd = CreateWindow(lpszAppName, appTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 		640, 480, nullptr, nullptr, hinstance, nullptr);
 	if (appWnd == nullptr)
 		return false;
 	globalHeapList = new HeapList;
-	assert(globalHeapList != nullptr);
+	_ASSERT(globalHeapList != nullptr);
 	systemHeap = new UserHeap;
-	assert(systemHeap != nullptr);
+	_ASSERT(systemHeap != nullptr);
 	systemHeap->init(2048000);
 	//---------------------------------------------------------
 	// Start the Tiny Geometry Layer Heap.
@@ -485,55 +485,55 @@ WinMain(
 #endif
 		systemFile->open("system.cfg");
 #ifdef _DEBUG
-	assert(systemOpenResult == NO_ERROR);
+	_ASSERT(systemOpenResult == NO_ERROR);
 #endif
 	{
 #ifdef _DEBUG
 		int32_t systemPathResult =
 #endif
 			systemFile->seekBlock("systemPaths");
-		assert(systemPathResult == NO_ERROR);
+		_ASSERT(systemPathResult == NO_ERROR);
 		{
 			int32_t result = systemFile->readIdString("terrainPath", terrainPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("artPath", artPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("fontPath", fontPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("savePath", savePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("spritePath", spritePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("shapesPath", shapesPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("soundPath", soundPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("objectPath", objectPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("cameraPath", cameraPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("tilePath", tilePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("missionPath", missionPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("warriorPath", warriorPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("profilePath", profilePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("interfacepath", interfacePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("moviepath", moviePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("tglpath", tglPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("texturepath", texturePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("CDsoundPath", CDsoundPath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("CDmoviepath", CDmoviePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("CDspritePath", CDspritePath, 79);
-			assert(result == NO_ERROR);
+			_ASSERT(result == NO_ERROR);
 		}
 	}
 	systemFile->close();
@@ -566,7 +566,7 @@ WinMain(
 	// class:
 	CoInitialize(nullptr);
 	armProvider = CreateProviderEngine("AseConv", versionStamp);
-	assert(armProvider);
+	_ASSERT(armProvider);
 	if (listName[0] == 0)
 	{
 		convertASE2TGL(fileName);
@@ -581,8 +581,8 @@ WinMain(
 		{
 			while (!file.eof())
 			{
-				char line[1024];
-				file.readLine((puint8_t)line, 1024);
+				wchar_t line[1024];
+				file.readLine((uint8_t*)line, 1024);
 				if (line[0] != 0)
 					convertASE2TGL(line);
 			}
@@ -642,8 +642,8 @@ GetGameOSEnvironment(const std::wstring_view& commandline)
 {
 	commandline = commandline;
 	Environment.applicationName = "MechCmdr2";
-	Environment.screenWidth = 640;
-	Environment.screenHeight = 480;
+	Environment.screenwidth = 640;
+	Environment.screenheight = 480;
 	Environment.bitDepth = 16;
 	Environment.DoGameLogic = DoGameLogic;
 	Environment.UpdateRenderers = UpdateRenderers;

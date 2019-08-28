@@ -11,7 +11,7 @@
 //############################################################################
 
 #include "stdinc.h"
-#include "gosfxheaders.hpp"
+#include "gosfx/gosfxheaders.h"
 #include "mlr/mlrindexedtrianglecloud.h"
 
 //------------------------------------------------------------------------------
@@ -181,7 +181,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 		if (fix_data)
 		{
 			m_maxProfileCount = 2;
-			// PAUSE(("Warning: Value \"maxProfileCount\" in Effect \"%s\" Is
+			// PAUSE(("Warning: value \"maxProfileCount\" in Effect \"%s\" Is
 			// Out of Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else
@@ -502,7 +502,7 @@ gosFX::Tube::Tube(Specification* spec, uint32_t flags) :
 	_ASSERT(vertex_count < 8);
 	uint32_t index_count = (vertex_count - 1) * 6;
 	uint32_t size =
-		sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAColor) + sizeof(Stuff::Vector2DOf<float>);
+		sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAcolour) + sizeof(Stuff::Vector2DOf<float>);
 	size *= vertex_count * spec->m_maxProfileCount;
 	size += sizeof(uint16_t) * (spec->m_maxProfileCount - 1) * index_count;
 	//
@@ -525,11 +525,11 @@ gosFX::Tube::Tube(Specification* spec, uint32_t flags) :
 	m_data.SetLength(size);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[0]);
 	size = spec->m_maxProfileCount * vertex_count * sizeof(Stuff::Point3D);
-	m_P_colors = Cast_Pointer(Stuff::RGBAColor*, &m_data[size]);
-	size += spec->m_maxProfileCount * vertex_count * sizeof(Stuff::RGBAColor);
+	m_P_colors = Cast_Pointer(Stuff::RGBAcolour*, &m_data[size]);
+	size += spec->m_maxProfileCount * vertex_count * sizeof(Stuff::RGBAcolour);
 	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<float>*, &m_data[size]);
 	size += spec->m_maxProfileCount * vertex_count * sizeof(Stuff::Vector2DOf<float>);
-	puint16_t mesh_indices = Cast_Pointer(puint16_t, &m_data[size]);
+	uint16_t* mesh_indices = Cast_Pointer(uint16_t*, &m_data[size]);
 	m_mesh->SetData(
 		&m_triangleCount, &m_vertexCount, mesh_indices, m_P_vertices, m_P_colors, m_P_uvs);
 	BuildMesh(mesh_indices);
@@ -547,7 +547,7 @@ gosFX::Tube::Tube(Specification* spec, uint32_t flags) :
 //------------------------------------------------------------------------------
 //
 void
-gosFX::Tube::BuildMesh(puint16_t indices)
+gosFX::Tube::BuildMesh(uint16_t* indices)
 {
 	// Check_Object(this);
 	Check_Pointer(indices);
@@ -1014,7 +1014,7 @@ gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
 	//---------------------------
 	//
 	Check_Pointer(m_P_colors);
-	Stuff::RGBAColor color;
+	Stuff::RGBAcolour color;
 	color.red = spec->m_pRed.ComputeValue(age, seed);
 	color.green = spec->m_pGreen.ComputeValue(age, seed);
 	color.blue = spec->m_pBlue.ComputeValue(age, seed);

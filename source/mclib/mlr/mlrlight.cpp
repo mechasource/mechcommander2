@@ -45,7 +45,7 @@ MLRLight::MLRLight(ClassData* class_data) :
 	intensity = 1.0f;
 	lightToWorld = LinearMatrix4D::Identity;
 	lightToShape = LinearMatrix4D::Identity;
-	color = RGBColor(0.0f, 0.0f, 0.0f);
+	color = RGBcolour(0.0f, 0.0f, 0.0f);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,8 +78,8 @@ MLRLight::MLRLight(ClassData* class_data, Stuff::Page* page) :
 	lightName = page->GetName();
 	intensity = 1.0f;
 	page->GetEntry("Intensity", &intensity);
-	color = RGBColor(0.0f, 0.0f, 0.0f);
-	page->GetEntry("Color", &color);
+	color = RGBcolour(0.0f, 0.0f, 0.0f);
+	page->GetEntry("colour", &color);
 	LinearMatrix4D matrix(true);
 	Point3D position = Point3D::Identity;
 	page->GetEntry("Position", &position);
@@ -194,7 +194,7 @@ MLRLight::Write(Stuff::Page* page)
 		break;
 	}
 	page->SetEntry("Intensity", intensity);
-	page->SetEntry("Color", color);
+	page->SetEntry("colour", color);
 	Point3D position(lightToWorld);
 	page->SetEntry("Position", position);
 	UnitVector3D direction;
@@ -231,15 +231,15 @@ MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRLight::SetColor(float r, float g, float b)
+MLRLight::Setcolour(float r, float g, float b)
 {
-	SetColor(RGBColor(r, b, b));
+	Setcolour(RGBcolour(r, b, b));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRLight::GetColor(float& r, float& g, float& b)
+MLRLight::Getcolour(float& r, float& g, float& b)
 {
 	// Check_Object(this);
 	r = color.red;

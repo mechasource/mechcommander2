@@ -44,7 +44,7 @@ class TerrainObjectType : public ObjectType
 {
 
 public:
-	char subType;
+	wchar_t subType;
 	float damageLevel;
 	int32_t collisionOffsetX;
 	int32_t collisionOffsetY;
@@ -129,7 +129,7 @@ public:
 	uint8_t listID;
 
 	uint8_t numCellsCovered;
-	pint16_t cellsCovered;
+	int16_t* cellsCovered;
 	gosFX::Effect* bldgDustPoofEffect;
 
 	static int32_t cellArray[9];

@@ -7,16 +7,16 @@
 #ifndef MLR_GOSVERTEX2UV_HPP
 #define MLR_GOSVERTEX2UV_HPP
 
-#include <stuff/vector4d.hpp>
-#include <stuff/color.hpp>
-#include <mlr/mlr.hpp>
-#include <mlr/mlrstate.hpp>
-#include <mlr/gosvertex.hpp>
+#include "stuff/vector4d.h"
+#include "stuff/color.h"
+#include "mlr/mlr.h"
+#include "mlr/mlrstate.h"
+#include "mlr/gosvertex.h"
 
 namespace Stuff
 {
 class Vector4D;
-class RGBAColor;
+class RGBAcolour;
 class Point3D;
 class Matrix4D;
 } // namespace Stuff
@@ -25,9 +25,9 @@ class Matrix4D;
 typedef struct _gos_VERTEX_2UV
 {
 	float x,
-		y; // Screen coords	- must be 0.0 to Environment.screenWidth/Height (no
+		y; // Screen coords	- must be 0.0 to Environment.screenwidth/height (no
 		// clipping occurs unless gos_State_Clipping is true)
-	float z; // 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is
+	float z; // 0.0 to 0.99999	- Used for visiblity check in zbuffer (1.0 is
 		// not valid)
 	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
 		// perspective correct textures, fog and clipping
@@ -82,7 +82,7 @@ public:
 		return *this;
 	}
 
-	inline GOSVertex2UV& operator=(const Stuff::RGBAColor& c)
+	inline GOSVertex2UV& operator=(const Stuff::RGBAcolour& c)
 	{
 		// Check_Pointer(this);
 		//					DEBUG_STREAM << "c = <" << c.alpha << ", " << c.red << ",
@@ -106,7 +106,7 @@ public:
 		return *this;
 	}
 
-	inline GOSVertex2UV& operator=(cuint32_t c)
+	inline GOSVertex2UV& operator=(const uint32_t c)
 	{
 		// Check_Pointer(this);
 		argb = c;
@@ -285,11 +285,11 @@ GOSVertex2UV::GOSTransformNoClip(
 #if FOG_HACK
 	if (foggy)
 	{
-		*((puint8_t)&frgb + 3) = GOSVertex::fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
+		*((uint8_t*)&frgb + 3) = GOSVertex::fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
 	}
 	else
 	{
-		*((puint8_t)&frgb + 3) = 0xff;
+		*((uint8_t*)&frgb + 3) = 0xff;
 	}
 #endif
 	rhw = 1.0f / rhw;
@@ -329,16 +329,16 @@ GOSVertex2UV::GOSTransformNoClip(
 //
 //	bool GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const
 // Vector2DScalar*, const Vector2DScalar*, int32_t); 	bool
-// GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, pcuint32_t , const
+// GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const uint32_t* , const
 // Vector2DScalar*, const Vector2DScalar*, int32_t); 	bool
-// GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*, const
+// GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAcolour*, const
 // Vector2DScalar*, const Vector2DScalar*, int32_t);
 //
 //	bool GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const
 // Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
-// GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, pcuint32_t , const
+// GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const uint32_t* , const
 // Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
-// GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*,
+// GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAcolour*,
 // const Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t);
 //#######################################################################################################################
 
@@ -346,13 +346,13 @@ GOSVertex2UV::GOSTransformNoClip(
 #define I_SAY_YES_TO_TEXTURE
 #define I_SAY_YES_TO_DWORD_COLOR
 #define I_SAY_YES_TO_MULTI_TEXTURE
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 #undef I_SAY_YES_TO_DWORD_COLOR
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 #undef I_SAY_YES_TO_COLOR
-#include <mlr/gosvertexmanipulation.inl>
+#include "mlr/gosvertexmanipulation.inl"
 
 #undef I_SAY_YES_TO_MULTI_TEXTURE
 

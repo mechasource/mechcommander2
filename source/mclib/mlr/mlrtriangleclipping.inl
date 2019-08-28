@@ -7,7 +7,7 @@
 //#ifndef MLRTRIANGLECLIPPING_HPP
 //#define MLRTRIANGLECLIPPING_HPP
 
-// #include "gameos.hpp"
+// //#include "gameos.hpp"
 
 #include "mlr/mlrcliptrick.h"
 #include "mlr/mlrtexture.h"
@@ -16,7 +16,7 @@
 #include "mlr/gosvertexpool.h"
 
 extern uint32_t gEnableTextureSort, gShowClippedPolys, gEnableDetailTexture;
-extern puint16_t indexOffset; // [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
+extern uint16_t* indexOffset; // [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
 
 #define HUNT_CLIP_ERROR 0
 
@@ -100,7 +100,7 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 #endif //	LAB_ONLY
 			ATLASSERT(j >= stride);
 			indexOffset[j] =
-				static_cast<uint16_t>(j - stride); // *(pint32_t)(&indexOffset[j]) = (j - stride);
+				static_cast<uint16_t>(j - stride); // *(int32_t*)(&indexOffset[j]) = (j - stride);
 #ifdef I_SAY_YES_TO_TERRAIN
 			terrainUV[0] = borderPixelFun + (coords[j].x - minX) * xUVFac;
 			terrainUV[1] = borderPixelFun + (coords[j].z - minZ) * zUVFac;
@@ -118,9 +118,9 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 				);
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
-				gos_vertices2uv[numGOSVertices].argb = (*actualColors)[j];
+				gos_vertices2uv[numGOSVertices].argb = (*actualcolours)[j];
 #else  //	COLOR_AS_DWORD
-				gos_vertices2uv[numGOSVertices].argb = GOSCopyColor(&(*actualColors)[j]);
+				gos_vertices2uv[numGOSVertices].argb = GOSCopycolour(&(*actualcolours)[j]);
 #endif //	COLOR_AS_DWORD
 #else  //	I_SAY_YES_TO_COLOR
 				gos_vertices2uv[numGOSVertices].argb = 0xffffffff;
@@ -164,9 +164,9 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 				);
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
-				gos_vertices2uv[numGOSVertices].argb = (*actualColors)[j];
+				gos_vertices2uv[numGOSVertices].argb = (*actualcolours)[j];
 #else  //	COLOR_AS_DWORD
-				gos_vertices2uv[numGOSVertices].argb = GOSCopyColor(&(*actualColors)[j]);
+				gos_vertices2uv[numGOSVertices].argb = GOSCopycolour(&(*actualcolours)[j]);
 #endif //	COLOR_AS_DWORD
 #else  //	I_SAY_YES_TO_COLOR
 				gos_vertices2uv[numGOSVertices].argb = 0xffffffff;
@@ -203,9 +203,9 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 				);
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
-				gos_vertices[numGOSVertices].argb = (*actualColors)[j];
+				gos_vertices[numGOSVertices].argb = (*actualcolours)[j];
 #else  //	COLOR_AS_DWORD
-				gos_vertices[numGOSVertices].argb	= GOSCopyColor(&(*actualColors)[j]);
+				gos_vertices[numGOSVertices].argb	= GOSCopycolour(&(*actualcolours)[j]);
 #endif //	COLOR_AS_DWORD
 #else  //	I_SAY_YES_TO_COLOR
 				gos_vertices[numGOSVertices].argb = 0xffffffff;
@@ -462,8 +462,8 @@ uint32_t CLASSNAME::TransformAndClip(
 	}
 	Stuff::Vector4D* v4d = transformedCoords->GetData();
 	Stuff::Point3D* p3d  = coords.GetData();
-	puint32_t cs		 = reinterpret_cast<puint32_t>(clipPerVertex->GetData()); // HAKKAPILITA
-	puint8_t viv		 = visibleIndexedVertices.GetData();
+	uint32_t* cs		 = reinterpret_cast<uint32_t*>(clipPerVertex->GetData()); // HAKKAPILITA
+	uint8_t* viv		 = visibleIndexedVertices.GetData();
 	for (i = 0; i < len; i++, p3d++, v4d++, cs++, viv++)
 	{
 		if (*viv == 0)
@@ -560,7 +560,7 @@ uint32_t CLASSNAME::TransformAndClip(
 	_ASSERT(index.GetLength() > 0);
 	//
 	//------------------------
-	// Handle the indexed case
+	// handle the indexed case
 	//------------------------
 	//
 	//
@@ -569,7 +569,7 @@ uint32_t CLASSNAME::TransformAndClip(
 	// backfaced polygons
 	//-----------------------------------------------------------------
 	//
-	cs = reinterpret_cast<puint32_t>(clipPerVertex->GetData()); // Hack
+	cs = reinterpret_cast<uint32_t*>(clipPerVertex->GetData()); // Hack
 	size_t index0, index1, index2;
 	for (i = 0, j = 0; i < numOfTriangles; j += 3, ++i)
 	{
@@ -644,7 +644,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif //	I_SAY_YES_TO_TERRAIN
 	   //
 	   //---------------------------------------------------------------
-	   // Handle the case of a single clipping plane by stepping through
+	   // handle the case of a single clipping plane by stepping through
 	   // the vertices and finding the edge it originates
 	   //---------------------------------------------------------------
 	   //
@@ -671,8 +671,8 @@ uint32_t CLASSNAME::TransformAndClip(
 						firstIsIn						  = true;
 						(*clipExtraCoords)[clipped_index] = (*transformedCoords)[k0];
 #ifdef I_SAY_YES_TO_COLOR
-						_ASSERT((*actualColors).GetLength() > 0);
-						(*clipExtraColors)[clipped_index] = (*actualColors)[k0];
+						_ASSERT((*actualcolours).GetLength() > 0);
+						(*clipExtracolours)[clipped_index] = (*actualcolours)[k0];
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 						(*clipExtraTexCoords)[clipped_index] = (*clipTexCoords)[k0];
@@ -780,13 +780,13 @@ uint32_t CLASSNAME::TransformAndClip(
 						//----------------------------------------------------------
 						//
 #ifdef I_SAY_YES_TO_COLOR
-						_ASSERT((*actualColors).GetLength() > 0);
+						_ASSERT((*actualcolours).GetLength() > 0);
 #if COLOR_AS_DWORD
-						(*clipExtraColors)[clipped_index] =
-							Color_DWORD_Lerp((*actualColors)[k0], (*actualColors)[k1], a);
+						(*clipExtracolours)[clipped_index] =
+							colour_DWORD_Lerp((*actualcolours)[k0], (*actualcolours)[k1], a);
 #else  //	COLOR_AS_DWORD
-						(*clipExtraColors)[clipped_index].Lerp(
-							(*actualColors)[k0], (*actualColors)[k1], a);
+						(*clipExtracolours)[clipped_index].Lerp(
+							(*actualcolours)[k0], (*actualcolours)[k1], a);
 #endif //	COLOR_AS_DWORD
 #endif //	I_SAY_YES_TO_COLOR
 	   //
@@ -826,13 +826,13 @@ uint32_t CLASSNAME::TransformAndClip(
 						//----------------------------------------------------------
 						//
 #ifdef I_SAY_YES_TO_COLOR
-						_ASSERT((*actualColors).GetLength() > 0);
+						_ASSERT((*actualcolours).GetLength() > 0);
 #if COLOR_AS_DWORD
-						(*clipExtraColors)[clipped_index] =
-							Color_DWORD_Lerp((*actualColors)[k1], (*actualColors)[k0], a);
+						(*clipExtracolours)[clipped_index] =
+							colour_DWORD_Lerp((*actualcolours)[k1], (*actualcolours)[k0], a);
 #else  //	COLOR_AS_DWORD
-						(*clipExtraColors)[clipped_index].Lerp(
-							(*actualColors)[k1], (*actualColors)[k0], a);
+						(*clipExtracolours)[clipped_index].Lerp(
+							(*actualcolours)[k1], (*actualcolours)[k0], a);
 #endif //	COLOR_AS_DWORD
 #endif //	I_SAY_YES_TO_COLOR
 	   //
@@ -890,7 +890,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif //	I_SAY_YES_TO_TERRAIN
 				srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
-				_ASSERT((*actualColors).GetLength() > 0);
+				_ASSERT((*actualcolours).GetLength() > 0);
 				srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 #endif //	I_SAY_YES_TO_COLOR
 				srcPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
@@ -905,7 +905,7 @@ uint32_t CLASSNAME::TransformAndClip(
 					size_t indexK		 = index[k];
 					srcPolygon.coords[l] = (*transformedCoords)[indexK];
 #ifdef I_SAY_YES_TO_COLOR
-					srcPolygon.colors[l] = (*actualColors)[indexK];
+					srcPolygon.colors[l] = (*actualcolours)[indexK];
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 					srcPolygon.texCoords[2 * l]		= texCoords[indexK];
@@ -1084,7 +1084,7 @@ uint32_t CLASSNAME::TransformAndClip(
 									//
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
-									dstPolygon.colors[dstPolygon.length] = Color_DWORD_Lerp(
+									dstPolygon.colors[dstPolygon.length] = colour_DWORD_Lerp(
 										srcPolygon.colors[k], srcPolygon.colors[k1], a);
 #else  //	COLOR_AS_DWORD
 									dstPolygon.colors[dstPolygon.length].Lerp(
@@ -1150,7 +1150,7 @@ uint32_t CLASSNAME::TransformAndClip(
 									//
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
-									dstPolygon.colors[dstPolygon.length] = Color_DWORD_Lerp(
+									dstPolygon.colors[dstPolygon.length] = colour_DWORD_Lerp(
 										srcPolygon.colors[k1], srcPolygon.colors[k], a);
 #else  //	COLOR_AS_DWORD
 									dstPolygon.colors[dstPolygon.length].Lerp(
@@ -1263,7 +1263,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif //	HUNT_CLIP_ERROR
 					(*clipExtraCoords)[clipped_index] = srcPolygon.coords[k];
 #ifdef I_SAY_YES_TO_COLOR
-					(*clipExtraColors)[clipped_index] = srcPolygon.colors[k];
+					(*clipExtracolours)[clipped_index] = srcPolygon.colors[k];
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 					(*clipExtraTexCoords)[clipped_index]  = srcPolygon.texCoords[2 * k];
@@ -1319,7 +1319,7 @@ uint32_t CLASSNAME::TransformAndClip(
 			{
 				GOSCopyData(&gos_vertices2uv[numGOSVertices], transformedCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
-					actualColors->GetData(),
+					actualcolours->GetData(),
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
@@ -1338,7 +1338,7 @@ uint32_t CLASSNAME::TransformAndClip(
 			{
 				GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
-					actualColors->GetData(),
+					actualcolours->GetData(),
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
@@ -1361,7 +1361,7 @@ uint32_t CLASSNAME::TransformAndClip(
 			{
 				GOSCopyData(&gos_vertices2uv[numGOSVertices], transformedCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
-					actualColors->GetData(),
+					actualcolours->GetData(),
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
@@ -1385,7 +1385,7 @@ uint32_t CLASSNAME::TransformAndClip(
 			{
 				GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
-					actualColors->GetData(),
+					actualcolours->GetData(),
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
@@ -1473,7 +1473,7 @@ uint32_t CLASSNAME::TransformAndClip(
 					GOSCopyTriangleData(
 						&gos_vertices2uv[numGOSVertices], clipExtraCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
-						clipExtraColors->GetData(),
+						clipExtracolours->GetData(),
 #endif //	I_SAY_YES_TO_COLOR
 						clipExtraTexCoords->GetData(), clipExtraTexCoords2->GetData(), j, j + k + 1,
 						j + k
@@ -1488,7 +1488,7 @@ uint32_t CLASSNAME::TransformAndClip(
 				{
 					GOSCopyTriangleData(&gos_vertices[numGOSVertices], clipExtraCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
-						clipExtraColors->GetData(),
+						clipExtracolours->GetData(),
 #endif //	I_SAY_YES_TO_COLOR
 						clipExtraTexCoords->GetData(), j, j + k + 1, j + k
 #if FOG_HACK
@@ -1509,7 +1509,7 @@ uint32_t CLASSNAME::TransformAndClip(
 					GOSCopyTriangleData(
 						&gos_vertices2uv[numGOSVertices], clipExtraCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
-						clipExtraColors->GetData(),
+						clipExtracolours->GetData(),
 #endif //	I_SAY_YES_TO_COLOR
 						clipExtraTexCoords->GetData(), clipExtraTexCoords->GetData(), j, j + k + 1,
 						j + k
@@ -1524,7 +1524,7 @@ uint32_t CLASSNAME::TransformAndClip(
 				{
 					GOSCopyTriangleData(&gos_vertices[numGOSVertices], clipExtraCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
-						clipExtraColors->GetData(),
+						clipExtracolours->GetData(),
 #endif //	I_SAY_YES_TO_COLOR
 						clipExtraTexCoords->GetData(), j, j + k + 1, j + k
 #if FOG_HACK

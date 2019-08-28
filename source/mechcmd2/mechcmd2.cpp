@@ -8,7 +8,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 //#include "toolos.hpp"
 //#include "stuff/stuff.h"
 //#include "mlr/mlr.h"
@@ -112,7 +112,7 @@ FloatHelpPtr globalFloatHelp = nullptr;
 uint32_t currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
-uint32_t BaseVertexColor = 0x00000000; // This color is applied to all vertices
+uint32_t BaseVertexcolour = 0x00000000; // This color is applied to all vertices
 	// in game as Brightness correction.
 
 enum
@@ -136,15 +136,15 @@ bool EnemiesGoalPlan = false;
 bool inViewMode = false;
 extern bool CullPathAreas;
 uint32_t viewObject = 0x0;
-char missionName[1024];
+wchar_t missionName[1024];
 
-extern char FileMissingString[];
-extern char CDMissingString[];
-extern char MissingTitleString[];
+extern wchar_t FileMissingString[];
+extern wchar_t CDMissingString[];
+extern wchar_t MissingTitleString[];
 
 const std::wstring_view& ExceptionGameMsg = nullptr;
 
-char buildNumber[80];
+wchar_t buildNumber[80];
 
 extern int32_t TERRAIN_TXM_SIZE;
 int32_t ObjectTextureSize = 128;
@@ -211,7 +211,7 @@ bool bInvokeOptionsScreenFlag = false;
 
 bool SnifferMode = false;
 gos_VERTEX* testVertex = nullptr;
-puint16_t indexArray = nullptr;
+uint16_t* indexArray = nullptr;
 uint32_t testTextureHandle = 0xffffffff;
 float totalTime = 0;
 uint32_t numIterations = 4;
@@ -222,7 +222,7 @@ bool isUsingSoftware = false;
 float trisPerSecond[MAX_HARDWARE_CARDS] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
 extern bool loadInMissionSave;
-extern char CDInstallPath[];
+extern wchar_t CDInstallPath[];
 
 extern float averageFrameRate;
 extern int32_t currentFrameNum;
@@ -239,7 +239,7 @@ bool checkedBomb = false;
 //***************************************************************************
 
 #define NUM_DEBUG_WINDOWS 4
-char DebugStatusBarString[256];
+wchar_t DebugStatusBarString[256];
 GameDebugWindow* DebugWindow[NUM_DEBUG_WINDOWS] = {nullptr, nullptr, nullptr, nullptr};
 GameObjectPtr DebugGameObject[3] = {nullptr, nullptr, nullptr};
 int32_t GameObjectWindowList[3] = {0, 0, 0};
@@ -316,7 +316,7 @@ initDialogs()
 	FitIniFile file;
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file % s", (const std::wstring_view&)path);
 		Assert(0, 0, error);
 		return;
@@ -329,7 +329,7 @@ initDialogs()
 
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, error);
 		return;
@@ -341,7 +341,7 @@ initDialogs()
 	path.init(artPath, "mcl_dialog_onebutton", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file % s", (const std::wstring_view&)path);
 		Assert(0, 0, error);
 		return;
@@ -484,7 +484,7 @@ DEBUGWINS_renderSpecialWindows(void)
 {
 
 	gos_TextSetAttributes(DebugWindow[0]->font, 0xffffffff, 1.0, true, true, false, false);
-	gos_TextSetRegion(0, 0, Environment.screenWidth, Environment.screenHeight);
+	gos_TextSetRegion(0, 0, Environment.screenwidth, Environment.screenheight);
 	gos_TextSetPosition(15, 10);
 	if (DebugStatusBarOpen && DebugStatusBarString[0])
 		gos_TextDraw(DebugStatusBarString);
@@ -492,12 +492,12 @@ DEBUGWINS_renderSpecialWindows(void)
 	{
 		if (MPlayer)
 		{
-			int32_t curY = Environment.screenHeight - 390;
+			int32_t curY = Environment.screenheight - 390;
 			for (size_t i = 0; i < MPlayer->numTeams; i++)
 			{
-				char s[256];
+				wchar_t s[256];
 				sprintf(s, "Team % d score = % d", i, MPlayer->teamScore[i]);
-				gos_TextSetPosition(Environment.screenWidth - 380, curY);
+				gos_TextSetPosition(Environment.screenwidth - 380, curY);
 				gos_TextDraw(s);
 				curY += 10;
 			}
@@ -505,18 +505,18 @@ DEBUGWINS_renderSpecialWindows(void)
 			for (i = 0; i < MAX_MC_PLAYERS; i++)
 				if (MPlayer->playerInfo[i].commanderid > -1)
 				{
-					char s[256];
+					wchar_t s[256];
 					sprintf(s, "Player % d( % s) score = % d, % d kills, % d losses", i,
 						MPlayer->playerInfo[i].name, MPlayer->playerInfo[i].score,
 						MPlayer->playerInfo[i].kills, MPlayer->playerInfo[i].losses);
-					gos_TextSetPosition(Environment.screenWidth - 380, curY);
+					gos_TextSetPosition(Environment.screenwidth - 380, curY);
 					gos_TextDraw(s);
 					curY += 10;
 				}
 		}
 		else
 		{
-			gos_TextSetPosition(Environment.screenWidth - 275, Environment.screenHeight - 120);
+			gos_TextSetPosition(Environment.screenwidth - 275, Environment.screenheight - 120);
 			gos_TextDraw("Single - player Mission");
 		}
 	}
@@ -667,11 +667,11 @@ UpdateRenderers()
 		// detonator  Assume worst case is +/- 8.0 for now.  MaxMinUV =
 		// gos_GetMachineInformation(gos_Info_GetMaximumUVSize);
 
-		uint32_t bColor = 0x0;
+		uint32_t bcolour = 0x0;
 		if (eye && mission->isActive())
-			bColor = eye->fogColor;
+			bcolour = eye->fogcolour;
 
-		gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0,
+		gos_SetupViewport(1, 1.0, 1, bcolour, 0.0, 0.0, 1.0,
 			1.0); // ALWAYS FULL SCREEN for now
 		gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 
@@ -748,8 +748,8 @@ UpdateRenderers()
 				gos_SetRenderState(gos_State_TextureAddress, gos_TextureWrap);
 				gos_SetRenderState(gos_State_ZCompare, 1);
 				gos_SetRenderState(gos_State_ZWrite, 1);
-				// uint32_t fogColor = 0x009f9f9f;
-				// gos_SetRenderState( gos_State_Fog, (int32_t)&fogColor);
+				// uint32_t fogcolour = 0x009f9f9f;
+				// gos_SetRenderState( gos_State_Fog, (int32_t)&fogcolour);
 			}
 			else
 			{
@@ -766,8 +766,8 @@ UpdateRenderers()
 				gos_SetRenderState(gos_State_TextureAddress, gos_TextureWrap);
 				gos_SetRenderState(gos_State_ZCompare, 1);
 				gos_SetRenderState(gos_State_ZWrite, 1);
-				uint32_t fogColor = 0x009f9f9f;
-				gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+				uint32_t fogcolour = 0x009f9f9f;
+				gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 			}
 
 			// Send down 5000 triangles
@@ -821,12 +821,12 @@ InitializeGameEngine()
 
 	if (ms.dwTotalPageFile < 250000000)
 	{
-		char txt[4096];
-		char msg[4096];
+		wchar_t txt[4096];
+		wchar_t msg[4096];
 		cLoadString(IDS_SWAPFILE_TOO_SMALL, txt, 4095);
 		sprintf(msg, txt, (ms.dwAvailPageFile / (1024 * 1024)));
 
-		char caption[1024];
+		wchar_t caption[1024];
 		cLoadString(IDS_SWAPFILE_CAPTION, caption, 1023);
 
 		MessageBox(nullptr, msg, caption, MB_OK | MB_ICONWARNING);
@@ -852,13 +852,13 @@ InitializeGameEngine()
 	}
 
 	// Check for sufficient hard Drive space on drive game is running from
-	char currentPath[1024];
+	wchar_t currentPath[1024];
 	gos_GetCurrentPath(currentPath, 1023);
 	int64_t driveSpace = gos_GetDriveFreeSpace(currentPath);
 	if (driveSpace < (20 * 1024 * 1024))
 	{
-		char title[256];
-		char msg[2048];
+		wchar_t title[256];
+		wchar_t msg[2048];
 		cLoadString(IDS_GAME_HDSPACE_ERROR, title, 255);
 		cLoadString(IDS_GAME_HDSPACE_MSG, msg, 2047);
 		uint32_t result = MessageBox(nullptr, msg, title, MB_OKCANCEL | MB_ICONWARNING);
@@ -876,10 +876,10 @@ InitializeGameEngine()
 		dev.dmSpecVersion = DM_SPECVERSION;
 		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
 
-		if ((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) || (dev.dmBitsPerPel > 16))
+		if ((dev.dmPelswidth > 1024) || (dev.dmPelsheight > 768) || (dev.dmBitsPerPel > 16))
 		{
-			char title[256];
-			char msg[2048];
+			wchar_t title[256];
+			wchar_t msg[2048];
 			cLoadString(IDS_GAME_ERROR, title, 255);
 			cLoadString(IDS_GAME_VOODOO3, msg, 2047);
 			MessageBox(nullptr, msg, title, MB_OK | MB_ICONWARNING);
@@ -978,7 +978,7 @@ InitializeGameEngine()
 #ifdef _DEBUG
 		if (systemOpenResult != NO_ERROR)
 		{
-			char Buffer[256];
+			wchar_t Buffer[256];
 			gos_GetCurrentPath(Buffer, 256);
 			STOP(("Cannot find \"system.cfg\" file in %s", Buffer));
 		}
@@ -1078,8 +1078,8 @@ InitializeGameEngine()
 					fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
 					memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 					int32_t fileNum = 0;
-					char fastFileId[10];
-					char fileName[100];
+					wchar_t fastFileId[10];
+					wchar_t fileName[100];
 					sprintf(fastFileId, "File%d", fileNum);
 					while (systemFile->readIdString(fastFileId, fileName, 99) == NO_ERROR)
 					{
@@ -1300,9 +1300,9 @@ InitializeGameEngine()
 				result = prefsFile->readIdLong("DragThreshold", dragThreshold);
 				if (FAILED(result))
 					dragThreshold = .01667f;
-				result = prefsFile->readIdULong("BaseVertexColor", BaseVertexColor);
+				result = prefsFile->readIdULong("BaseVertexcolour", BaseVertexcolour);
 				if (FAILED(result))
-					BaseVertexColor = 0x00000000;
+					BaseVertexcolour = 0x00000000;
 				result = prefsFile->readIdBoolean("RealLOS", useRealLOS);
 				if (FAILED(result))
 					useRealLOS = true;
@@ -1352,7 +1352,7 @@ InitializeGameEngine()
 		optsFile = nullptr;
 
 		//---------------------------------------------------------------------
-		// void __stdcall gos_SetScreenMode( uint32_t Width, uint32_t Height,
+		// void __stdcall gos_SetScreenMode( uint32_t width, uint32_t height,
 		// uint32_t bitDepth=16, uint32_t Device=0, bool disableZBuffer=0, bool
 		// AntiAlias=0, bool RenderToVram=0, bool GotoFullScreen=0, int32_t
 		// DirtyRectangle=0, bool GotoWindowMode=0, bool EnableStencil=0,
@@ -1412,7 +1412,7 @@ InitializeGameEngine()
 		userInput->setMouseDragThreshold(dragThreshold);
 		//--------------------------------------------------
 
-		char temp[256];
+		wchar_t temp[256];
 		cLoadString(IDS_FLOAT_HELP_FONT, temp, 255);
 		const std::wstring_view& pStr = strstr(temp, ",");
 		if (pStr)
@@ -1420,7 +1420,7 @@ InitializeGameEngine()
 			gosFontScale = -atoi(pStr + 1);
 			*pStr = 0;
 		}
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, "assets\\graphics\\");
 		strcat(path, temp);
 
@@ -1473,7 +1473,7 @@ InitializeGameEngine()
 			STOP(("Could not find MC2.fx"));
 
 		int32_t effectsSize = effectFile.fileSize();
-		puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
+		uint8_t* effectsData = (uint8_t*)systemHeap->Malloc(effectsSize);
 		effectFile.read(effectsData, effectsSize);
 		effectFile.close();
 
@@ -1519,8 +1519,8 @@ InitializeGameEngine()
 		globalPane->window = globalWindow;
 		globalPane->x0 = 0;
 		globalPane->y0 = 0;
-		globalPane->x1 = Environment.screenWidth;
-		globalPane->y1 = Environment.screenHeight;
+		globalPane->x1 = Environment.screenwidth;
+		globalPane->y1 = Environment.screenheight;
 
 		globalWindow->buffer = nullptr; // This is set at the start of Renders.
 			// For now we HOLD LOCK during entire old
@@ -1537,8 +1537,8 @@ InitializeGameEngine()
 		timerManager->init();
 
 		//---------------------------------------------------------
-		// Start the Color table code
-		initColorTables();
+		// Start the colour table code
+		initcolourTables();
 
 		//---------------------------------------------------------
 		// Start the Mission, Scenario and Logistics classes here
@@ -1558,7 +1558,7 @@ InitializeGameEngine()
 		if (justStartMission)
 		{
 			logistics->setLogisticsState(log_STARTMISSIONFROMCMDLINE);
-			char commandersToLoad[MAX_MC_PLAYERS][3] = {{0, 0, 0}, {1, 1, 1}, {2, 0, 2}, {3, 3, 3},
+			wchar_t commandersToLoad[MAX_MC_PLAYERS][3] = {{0, 0, 0}, {1, 1, 1}, {2, 0, 2}, {3, 3, 3},
 				{4, 4, 4}, {5, 5, 5}, {6, 6, 6}, {7, 7, 7}};
 			mission->init(missionName, MISSION_LOAD_SP_QUICKSTART, 0, nullptr, commandersToLoad, 2);
 			eye->activate();
@@ -1620,8 +1620,8 @@ InitializeGameEngine()
 	}
 	else
 	{
-		char msgBuffer[4096];
-		char msgTitle[1024];
+		wchar_t msgBuffer[4096];
+		wchar_t msgTitle[1024];
 		cLoadString(IDS_SNIFFER_INIT_MSG, msgBuffer, 4095);
 		cLoadString(IDS_SNIFFER_INIT_TITLE, msgTitle, 1023);
 		MessageBox(nullptr, msgBuffer, msgTitle, MB_OK);
@@ -1648,7 +1648,7 @@ InitializeGameEngine()
 			gos_SetScreenMode(800, 600, 16, curDevice, 0, 0, 0, true, 0, 0, 0, 0);
 		// Create about a thousand textured random triangles.
 		testVertex = (gos_VERTEX*)malloc(sizeof(gos_VERTEX) * 3000);
-		indexArray = (puint16_t)malloc(sizeof(uint16_t) * 3000);
+		indexArray = (uint16_t*)malloc(sizeof(uint16_t) * 3000);
 		for (size_t i = 0; i < 3000; i++)
 		{
 			testVertex[i].x = RandomNumber(1000) - 100;
@@ -1718,8 +1718,8 @@ TerminateGameEngine()
 			optionsScreenWrapper = nullptr;
 		}
 		//---------------------------------------------------------
-		// Start the Color table code
-		destroyColorTables();
+		// Start the colour table code
+		destroycolourTables();
 		GameLog::cleanup();
 		//---------------------------------------------------------
 		// End the Timers
@@ -2102,7 +2102,7 @@ DoGameLogic()
 					FILE* sniffData = fopen("sniff.dat", "wt");
 					if (sniffData)
 					{
-						char sniff[2048];
+						wchar_t sniff[2048];
 						sprintf(sniff, "%f,%f,%f,%f,%f,%f\n", trisPerSecond[0], ProcessorSpeed,
 							trisPerSecond[1], trisPerSecond[2], trisPerSecond[3], trisPerSecond[4]);
 						fputs(sniff, sniffData);
@@ -2167,8 +2167,8 @@ DoGameLogic()
 			DoneSniffing = true;
 			if (Environment.fullScreen == 0)
 			{
-				char msgBuffer[4096];
-				char msgTitle[1024];
+				wchar_t msgBuffer[4096];
+				wchar_t msgTitle[1024];
 				cLoadString(IDS_SNIFFER_DONE_MSG, msgBuffer, 4095);
 				cLoadString(IDS_SNIFFER_INIT_TITLE, msgTitle, 1023);
 				MessageBox(nullptr, msgBuffer, msgTitle, MB_OK);
@@ -2238,7 +2238,7 @@ ParseCommandLine(const std::wstring_view& command_line)
 	int32_t n_args = 0;
 	int32_t index = 0;
 	const std::wstring_view& argv[30];
-	char tempCommandLine[4096];
+	wchar_t tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
 	while (tempCommandLine[index] != '\0') // until we null out
@@ -2523,13 +2523,13 @@ GetGameOSEnvironment(const std::wstring_view& commandline)
 	Environment.Key_FullScreen = 0;
 	Environment.Key_SwitchMonitors = 0;
 	Environment.Key_Exit = 0;
-	Environment.screenWidth = 800;
-	Environment.screenHeight = 600;
+	Environment.screenwidth = 800;
+	Environment.screenheight = 600;
 	Environment.bitDepth = 16;
 	Environment.fullScreen = 0;
 	HKEY hKey;
 	int32_t result;
-	char pData[1024];
+	wchar_t pData[1024];
 	uint32_t szData = 1023;
 	result = RegOpenKey(HKEY_CURRENT_USER, GAME_REG_KEY, &hKey);
 	if (ERROR_SUCCESS == result)

@@ -51,16 +51,16 @@ public:
 
 	inline BOOL IsPasswordRequired()
 	{
-		return SessionDescriptor.dwFlags & DPSESSION_PASSWORDREQUIRED;
+		return SessionDescriptor.flags & DPSESSION_PASSWORDREQUIRED;
 	}
 
-	inline BOOL IsLocked() { return SessionDescriptor.dwFlags & DPSESSION_NEWPLAYERSDISABLED; }
+	inline BOOL IsLocked() { return SessionDescriptor.flags & DPSESSION_NEWPLAYERSDISABLED; }
 
 	inline void Lock()
 	{
 		if (!IsLocked())
 		{
-			SessionDescriptor.dwFlags |= DPSESSION_NEWPLAYERSDISABLED;
+			SessionDescriptor.flags |= DPSESSION_NEWPLAYERSDISABLED;
 			PropagateSettings(void);
 		}
 	}

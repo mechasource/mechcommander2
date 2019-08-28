@@ -27,10 +27,10 @@
 #include <ctype.h>
 
 #ifndef _MBCS
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #else
-#include <assert.h>
-#define gosASSERT assert
+#include <_ASSERT.h>
+#define gosASSERT _ASSERT
 #define gos_Malloc malloc
 #define gos_Free free
 #endif
@@ -61,12 +61,12 @@ CSVFile::countRows(void)
 	int32_t count = 0;
 	int32_t oldPosition = logicalPosition;
 	seek(0); // Start at the top.
-	char tmp[2048];
-	readLine((puint8_t)tmp, 2047);
+	wchar_t tmp[2048];
+	readLine((uint8_t*)tmp, 2047);
 	while (!eof())
 	{
 		count++;
-		readLine((puint8_t)tmp, 2047);
+		readLine((uint8_t*)tmp, 2047);
 	}
 	//----------------------------------
 	// Move back to where we were.
@@ -81,9 +81,9 @@ CSVFile::countCols(void)
 	int32_t count = 0, maxCols = 0;
 	int32_t oldPosition = logicalPosition;
 	seek(0); // Start at the top.
-	char tmp[2048];
+	wchar_t tmp[2048];
 	const std::wstring_view& currentChk = tmp;
-	readLine((puint8_t)tmp, 2047);
+	readLine((uint8_t*)tmp, 2047);
 	currentChk = strstr(tmp, ",");
 	while (currentChk && (*currentChk != '\n') && (*currentChk != '\r'))
 	{
@@ -93,7 +93,7 @@ CSVFile::countCols(void)
 	}
 	if (count > maxCols)
 		maxCols = count;
-	readLine((puint8_t)tmp, 2047);
+	readLine((uint8_t*)tmp, 2047);
 	//----------------------------------
 	// Move back to where we were.
 	seek(oldPosition);
@@ -289,10 +289,10 @@ CSVFile::textToShort(const std::wstring_view& num)
 }
 
 //---------------------------------------------------------------------------
-char
+wchar_t
 CSVFile::textToChar(const std::wstring_view& num)
 {
-	char result = 0;
+	wchar_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
 	const std::wstring_view& hexOffset = strstr(num, "0x");
@@ -496,7 +496,7 @@ CSVFile::textToUCHAR(const std::wstring_view& num)
 bool
 CSVFile::booleanToLong(const std::wstring_view& num)
 {
-	char testChar = 0;
+	wchar_t testChar = 0;
 	while (num[testChar] && isspace(num[testChar]))
 		testChar++;
 	// 'N' == NO if you can believe that
@@ -510,7 +510,7 @@ CSVFile::booleanToLong(const std::wstring_view& num)
 int32_t
 CSVFile::floatToText(const std::wstring_view& result, float num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%f4", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -524,7 +524,7 @@ CSVFile::floatToText(const std::wstring_view& result, float num, uint32_t bufLen
 int32_t
 CSVFile::longToTextDec(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%d", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -538,7 +538,7 @@ CSVFile::longToTextDec(const std::wstring_view& result, int32_t num, uint32_t bu
 int32_t
 CSVFile::longToTextHex(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -552,7 +552,7 @@ CSVFile::longToTextHex(const std::wstring_view& result, int32_t num, uint32_t bu
 int32_t
 CSVFile::shortToTextDec(const std::wstring_view& result, int16_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%d", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -566,7 +566,7 @@ CSVFile::shortToTextDec(const std::wstring_view& result, int16_t num, uint32_t b
 int32_t
 CSVFile::shortToTextHex(const std::wstring_view& result, int16_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -580,7 +580,7 @@ CSVFile::shortToTextHex(const std::wstring_view& result, int16_t num, uint32_t b
 int32_t
 CSVFile::byteToTextDec(const std::wstring_view& result, byte num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%d", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -594,7 +594,7 @@ CSVFile::byteToTextDec(const std::wstring_view& result, byte num, uint32_t bufLe
 int32_t
 CSVFile::byteToTextHex(const std::wstring_view& result, byte num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -656,11 +656,11 @@ CSVFile::seekRowCol(uint32_t row, uint32_t col)
 		return -1;
 	uint32_t rowCount = 0;
 	seek(0); // Start at the top.
-	char tmp[2048];
+	wchar_t tmp[2048];
 	do
 	{
 		rowCount++;
-		readLine((puint8_t)tmp, 2047);
+		readLine((uint8_t*)tmp, 2047);
 	} while (rowCount != row);
 	const std::wstring_view& currentChk = tmp;
 	if (col)
@@ -749,7 +749,7 @@ CSVFile::readShort(uint32_t row, uint32_t col, int16_t& value)
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::readChar(uint32_t row, uint32_t col, char& value)
+CSVFile::readChar(uint32_t row, uint32_t col, wchar_t& value)
 {
 	int32_t result = seekRowCol(row, col);
 	if (result == NO_ERROR)

@@ -59,7 +59,7 @@ public:
 	int32_t readShort(uint32_t row, uint32_t col, int16_t& value);
 	int32_t readUShort(uint32_t row, uint32_t col, uint16_t& value);
 
-	int32_t readChar(uint32_t row, uint32_t col, char& value);
+	int32_t readChar(uint32_t row, uint32_t col, wchar_t& value);
 	int32_t readUCHAR(uint32_t row, uint32_t col, uint8_t& value);
 
 	int32_t readString(uint32_t row, uint32_t col, const std::wstring_view& result, size_t bufferSize);
@@ -81,7 +81,7 @@ protected:
 	int16_t textToShort(const std::wstring_view& num);
 	uint16_t textToUShort(const std::wstring_view& num);
 
-	char textToChar(const std::wstring_view& num);
+	wchar_t textToChar(const std::wstring_view& num);
 	uint8_t textToUCHAR(const std::wstring_view& num);
 
 	bool booleanToLong(const std::wstring_view& num);
@@ -103,7 +103,7 @@ protected:
 	uint32_t totalRows; // Number of ROWS CSV file has.
 	uint32_t totalCols; // NUmber of COLS CSV file has.
 
-	char dataBuffer[2048];
+	wchar_t dataBuffer[2048];
 
 };
 

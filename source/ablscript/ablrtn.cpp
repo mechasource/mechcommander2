@@ -99,10 +99,10 @@ extern int32_t FileNumber;
 extern int32_t errorCount;
 extern int32_t execStatementCount;
 extern int32_t NumSourceFiles;
-extern char SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
+extern wchar_t SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
 
 extern TokenCodeType curToken;
-extern char wordString[];
+extern wchar_t wordString[];
 extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
 extern int32_t level;
 extern bool blockFlag;
@@ -121,11 +121,11 @@ extern TokenCodeType statementStartList[];
 extern TokenCodeType statementEndList[];
 extern TokenCodeType declarationStartList[];
 
-extern char tokenString[MAXLEN_TOKENSTRING];
+extern wchar_t tokenString[MAXLEN_TOKENSTRING];
 
 extern CharCodeType charTable[256];
 
-extern char sourceBuffer[MAXLEN_SOURCELINE];
+extern wchar_t sourceBuffer[MAXLEN_SOURCELINE];
 extern int32_t bufferOffset;
 extern const std::wstring_view& bufferp;
 extern const std::wstring_view& tokenp;
@@ -159,7 +159,7 @@ extern bool DebugCodeEnabled;
 extern const std::unique_ptr<Debugger>& debugger;
 
 bool ABLenabled = false;
-char buffer[MAXLEN_PRINTLINE];
+wchar_t buffer[MAXLEN_PRINTLINE];
 
 extern int32_t CallStackLevel;
 extern bool SkipOrder;
@@ -286,10 +286,10 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 	void (*symbolFreeCallback)(PVOID memBlock), int32_t (*fileCreateCB)(PVOID* file, const std::wstring_view& filename),
 	int32_t (*fileOpenCB)(PVOID* file, const std::wstring_view& filename), int32_t (*fileCloseCB)(PVOID* file),
 	bool (*fileEofCB)(PVOID file),
-	int32_t (*fileReadCB)(PVOID file, puint8_t buffer, int32_t length),
-	int32_t (*fileReadLongCB)(PVOID file), int32_t (*fileReadStringCB)(PVOID file, puint8_t buffer),
-	int32_t (*fileReadLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength),
-	int32_t (*fileWriteCB)(PVOID file, puint8_t buffer, int32_t length),
+	int32_t (*fileReadCB)(PVOID file, uint8_t* buffer, int32_t length),
+	int32_t (*fileReadLongCB)(PVOID file), int32_t (*fileReadStringCB)(PVOID file, uint8_t* buffer),
+	int32_t (*fileReadLineExCB)(PVOID file, uint8_t* buffer, int32_t maxLength),
+	int32_t (*fileWriteCB)(PVOID file, uint8_t* buffer, int32_t length),
 	int32_t (*fileWriteByteCB)(PVOID file, uint8_t byte),
 	int32_t (*fileWriteLongCB)(PVOID file, int32_t value),
 	int32_t (*fileWriteStringCB)(PVOID file, const std::wstring_view& buffer), void (*debuggerPrintCallback)(const std::wstring_view& s),
@@ -1558,7 +1558,7 @@ actualParamList(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t param
 
 //***************************************************************************
 
-extern char SetStateDebugStr[256];
+extern wchar_t SetStateDebugStr[256];
 
 void
 transState(const std::unique_ptr<SymTableNode>& newState)

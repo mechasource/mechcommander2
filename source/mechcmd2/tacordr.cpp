@@ -130,7 +130,7 @@ extern float scenarioTime;
 extern float FireArc;
 extern int32_t LastMoveCalcErr;
 
-extern char OverlayIsBridge[NUM_OVERLAY_TYPES];
+extern wchar_t OverlayIsBridge[NUM_OVERLAY_TYPES];
 
 int32_t statusCode;
 
@@ -1743,7 +1743,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 					//-----------------------------------------------------
 					// Why is it blocked, and can we do something about it?
 					if (MPlayer)
-						Fatal(0, " MULTIPLAYER! Handle this case:
+						Fatal(0, " MULTIPLAYER! handle this case:
 				tacorder.status--capture "); if ((origin == ORDER_ORIGIN_SELF)
 				&& (numBlockers > 3)) { TacticalOrder alarmTacOrder;
 						alarmTacOrder.init(ORDER_ORIGIN_PLAYER,

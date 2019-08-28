@@ -10,8 +10,8 @@
 #ifndef _REGISTEREDCLASS_HPP_
 #define _REGISTEREDCLASS_HPP_
 
-//#include <stuff/stuff.hpp>
-#include <stuff/style.hpp>
+//#include "stuff/stuff.h"
+#include "stuff/style.h"
 #include <mechclassids.h>
 
 namespace Stuff
@@ -64,9 +64,9 @@ public:
 	}
 	bool IsDerivedFrom(ClassData* parent) const;
 	bool IsDerivedFrom(ClassID class_id) const;
-	bool IsDerivedFrom(PCSTR parent) const;
+	bool IsDerivedFrom(const std::wstring_view& parent) const;
 
-	static ClassData* FindClassData(PCSTR name);
+	static ClassData* FindClassData(const std::wstring_view& name);
 	static ClassData* FindClassData(ClassID class_id)
 	{
 		_ASSERT(class_id < static_cast<ClassID>(__stuff_classids::ClassIDCount));
@@ -82,7 +82,7 @@ protected:
 	//
 public:
 	ClassID GetClassID(void) const;
-	PCSTR GetClassString(void) const;
+	const std::wstring_view& GetClassString(void) const;
 	static ClassID AllocateTemporaryClassID(void)
 	{
 		_ASSERT(FirstTemporaryClassID < static_cast<ClassID>(__stuff_classids::ClassIDCount));
@@ -114,7 +114,7 @@ class RegisteredClass__ClassData
 	// Construction, destruction, testing
 	//
 public:
-	RegisteredClass__ClassData(RegisteredClass::ClassID class_id, PCSTR class_name,
+	RegisteredClass__ClassData(RegisteredClass::ClassID class_id, const std::wstring_view& class_name,
 		RegisteredClass__ClassData* parent = nullptr);
 
 	~RegisteredClass__ClassData(void);
@@ -130,7 +130,7 @@ public:
 		// Check_Object(this);
 		return classID;
 	}
-	PCSTR GetClassName(void)
+	const std::wstring_view& GetClassName(void)
 	{
 		// Check_Object(this);
 		return className;
@@ -143,13 +143,13 @@ public:
 
 protected:
 	void DeriveClass(RegisteredClass__ClassData* child);
-	RegisteredClass__ClassData* FindClassData(PCSTR name);
+	RegisteredClass__ClassData* FindClassData(const std::wstring_view& name);
 
 	RegisteredClass__ClassData* parentClass;
 	RegisteredClass__ClassData* firstChildClass;
 	RegisteredClass__ClassData* nextSiblingClass;
 
-	PCSTR className;
+	const std::wstring_view& className;
 	union {
 		RegisteredClass::ClassID classID;
 		size_t padding;
@@ -185,7 +185,7 @@ RegisteredClass::IsDerivedFrom(ClassID class_id) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 inline bool
-RegisteredClass::IsDerivedFrom(PCSTR parent) const
+RegisteredClass::IsDerivedFrom(const std::wstring_view& parent) const
 {
 	// Check_Object(this);
 	// Check_Object(classData);
@@ -206,7 +206,7 @@ RegisteredClass::GetClassID(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 inline RegisteredClass::ClassData*
-RegisteredClass::FindClassData(PCSTR name)
+RegisteredClass::FindClassData(const std::wstring_view& name)
 {
 	return DefaultData->FindClassData(name);
 }

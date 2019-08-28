@@ -1,5 +1,5 @@
 /*************************************************************************************************\
-HeightDlg.h			: Interface for the HeightDlg component.
+heightDlg.h			: Interface for the heightDlg component.
 //-------------------------------------------------------------------------------------------------
 Notes				: lets the user enter a minimum and maximum height for the
 map
@@ -16,12 +16,12 @@ map
 
 /**************************************************************************************************
 CLASS DESCRIPTION
-HeightDlg:
+heightDlg:
 **************************************************************************************************/
-class HeightDlg : public CDialog
+class heightDlg : public CDialog
 {
 public:
-	HeightDlg(int32_t min = 0, int32_t max = 0);
+	heightDlg(int32_t min = 0, int32_t max = 0);
 	void Init(void);
 	void OnOK(void);
 	// virtual	void OnCommand(Window *wnd,int32_t nCommand);
@@ -42,4 +42,4 @@ private:
 	int32_t max;
 };
 
-#endif // end of file ( HeightDlg.h )
+#endif // end of file ( heightDlg.h )

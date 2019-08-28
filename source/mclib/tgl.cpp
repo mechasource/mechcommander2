@@ -33,7 +33,7 @@ float TG_Shape::viewAddX = 0.0;
 float TG_Shape::viewMulY = 0.0;
 float TG_Shape::viewAddY = 0.0;
 
-uint32_t TG_Shape::fogColor = 0xffffffff;
+uint32_t TG_Shape::fogcolour = 0xffffffff;
 float TG_Shape::fogStart = 0.0f;
 float TG_Shape::fogFull = 0.0f;
 
@@ -60,7 +60,7 @@ extern bool useVertexLighting;
 extern bool useFaceLighting;
 extern bool hasGuardBand;
 extern bool useFog;
-extern uint32_t BaseVertexColor;
+extern uint32_t BaseVertexcolour;
 bool drawOldWay = false;
 extern bool useShadows;
 bool useLocalShadows = false;
@@ -164,7 +164,7 @@ TG_TypeNode::CreateFrom(void)
 	gosASSERT(newShape != nullptr);
 	// listOfVertices
 	newShape->numVertices = 0;
-	newShape->listOfColors = nullptr;
+	newShape->listOfcolours = nullptr;
 	newShape->listOfVertices = nullptr;
 	newShape->listOfShadowVertices = nullptr;
 	// listOfTriangles
@@ -203,13 +203,13 @@ TG_TypeNode::CreateFrom(void)
 // at present.
 //
 int32_t
-TG_TypeNode::MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& fileName)
+TG_TypeNode::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
 	const std::wstring_view& nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_NAME);
 	gosASSERT(nodeName != nullptr);
-	char nodeString[1024];
+	wchar_t nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME) + 1;
 	GetNameData(nodeName, nodeString);
 #ifdef _DEBUG
@@ -241,7 +241,7 @@ TG_TypeNode::MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& fileNam
 	nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_POS);
 	gosASSERT(nodeName != nullptr);
 	nodeName += strlen(ASE_NODE_POS) + 1;
-	char numData[512];
+	wchar_t numData[512];
 	GetNumberData(nodeName, numData);
 	nodeCenter.x = -(float)atof(numData);
 	nodeName += strlen(numData) + 1;
@@ -264,8 +264,8 @@ TG_TypeNode::LoadBinaryCopy(MechFile& binFile)
 	relativeNodeCenter.x = binFile.readFloat();
 	relativeNodeCenter.y = binFile.readFloat();
 	relativeNodeCenter.z = binFile.readFloat();
-	binFile.read((puint8_t)nodeId, TG_NODE_ID);
-	binFile.read((puint8_t)parentId, TG_NODE_ID);
+	binFile.read((uint8_t*)nodeId, TG_NODE_ID);
+	binFile.read((uint8_t*)parentId, TG_NODE_ID);
 }
 
 //-------------------------------------------------------------------------------
@@ -281,8 +281,8 @@ TG_TypeNode::SaveBinaryCopy(MechFile& binFile)
 	binFile.writeFloat(relativeNodeCenter.x);
 	binFile.writeFloat(relativeNodeCenter.y);
 	binFile.writeFloat(relativeNodeCenter.z);
-	binFile.write((puint8_t)nodeId, TG_NODE_ID);
-	binFile.write((puint8_t)parentId, TG_NODE_ID);
+	binFile.write((uint8_t*)nodeId, TG_NODE_ID);
+	binFile.write((uint8_t*)parentId, TG_NODE_ID);
 }
 
 //-------------------------------------------------------------------------------
@@ -304,13 +304,13 @@ TG_TypeShape::CreateFrom(void)
 	{
 		// Mark with invalid pointer so we now to get RAM from POOL!
 		newShape->listOfVertices = nullptr;
-		newShape->listOfColors = nullptr;
+		newShape->listOfcolours = nullptr;
 	}
 	else
 	{
 		// Otherwise mark with nullptr so we know not to reference!!
 		newShape->listOfVertices = nullptr;
-		newShape->listOfColors = nullptr;
+		newShape->listOfcolours = nullptr;
 	}
 	// listOfShadowVertices
 	if (numTypeVertices)
@@ -397,7 +397,7 @@ TG_TypeShape::LoadBinaryCopy(MechFile& binFile)
 		listOfTypeVertices =
 			(TG_TypeVertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeVertex) * numTypeVertices);
 		gosASSERT(listOfTypeVertices != nullptr);
-		binFile.read((puint8_t)listOfTypeVertices, sizeof(TG_TypeVertex) * numTypeVertices);
+		binFile.read((uint8_t*)listOfTypeVertices, sizeof(TG_TypeVertex) * numTypeVertices);
 	}
 	else
 	{
@@ -410,7 +410,7 @@ TG_TypeShape::LoadBinaryCopy(MechFile& binFile)
 		listOfTypeTriangles = (TG_TypeTrianglePtr)TG_Shape::tglHeap->Malloc(
 			sizeof(TG_TypeTriangle) * numTypeTriangles);
 		gosASSERT(listOfTypeTriangles != nullptr);
-		binFile.read((puint8_t)listOfTypeTriangles, sizeof(TG_TypeTriangle) * numTypeTriangles);
+		binFile.read((uint8_t*)listOfTypeTriangles, sizeof(TG_TypeTriangle) * numTypeTriangles);
 	}
 	else
 	{
@@ -423,7 +423,7 @@ TG_TypeShape::LoadBinaryCopy(MechFile& binFile)
 		listOfTextures =
 			(TG_TinyTexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TinyTexture) * numTextures);
 		gosASSERT(listOfTextures != nullptr);
-		binFile.read((puint8_t)listOfTextures, sizeof(TG_TinyTexture) * numTextures);
+		binFile.read((uint8_t*)listOfTextures, sizeof(TG_TinyTexture) * numTextures);
 	}
 	else
 	{
@@ -438,8 +438,8 @@ TG_TypeShape::LoadBinaryCopy(MechFile& binFile)
 	relativeNodeCenter.z = binFile.readFloat();
 	alphaTestOn = false;
 	filterOn = true;
-	binFile.read((puint8_t)nodeId, TG_NODE_ID);
-	binFile.read((puint8_t)parentId, TG_NODE_ID);
+	binFile.read((uint8_t*)nodeId, TG_NODE_ID);
+	binFile.read((uint8_t*)parentId, TG_NODE_ID);
 }
 
 //-------------------------------------------------------------------------------
@@ -452,19 +452,19 @@ TG_TypeShape::SaveBinaryCopy(MechFile& binFile)
 	binFile.writeLong(numTypeVertices);
 	if (numTypeVertices)
 	{
-		binFile.write((puint8_t)listOfTypeVertices, sizeof(TG_TypeVertex) * numTypeVertices);
+		binFile.write((uint8_t*)listOfTypeVertices, sizeof(TG_TypeVertex) * numTypeVertices);
 	}
 	// listOfTypeTriangles
 	binFile.writeLong(numTypeTriangles);
 	if (numTypeTriangles)
 	{
-		binFile.write((puint8_t)listOfTypeTriangles, sizeof(TG_TypeTriangle) * numTypeTriangles);
+		binFile.write((uint8_t*)listOfTypeTriangles, sizeof(TG_TypeTriangle) * numTypeTriangles);
 	}
 	// listOfTextures
 	binFile.writeLong(numTextures);
 	if (numTextures)
 	{
-		binFile.write((puint8_t)listOfTextures, sizeof(TG_TinyTexture) * numTextures);
+		binFile.write((uint8_t*)listOfTextures, sizeof(TG_TinyTexture) * numTextures);
 	}
 	// Other Data
 	binFile.writeFloat(nodeCenter.x);
@@ -473,8 +473,8 @@ TG_TypeShape::SaveBinaryCopy(MechFile& binFile)
 	binFile.writeFloat(relativeNodeCenter.x);
 	binFile.writeFloat(relativeNodeCenter.y);
 	binFile.writeFloat(relativeNodeCenter.z);
-	binFile.write((puint8_t)nodeId, TG_NODE_ID);
-	binFile.write((puint8_t)parentId, TG_NODE_ID);
+	binFile.write((uint8_t*)nodeId, TG_NODE_ID);
+	binFile.write((uint8_t*)parentId, TG_NODE_ID);
 }
 
 //-------------------------------------------------------------------------------
@@ -502,7 +502,7 @@ TG_Shape::destroy(void)
 	// THIS IS CORRECT!!!!
 	// They come from a common pool now, Deleteing them would be BAD!!
 	listOfVertices = nullptr;
-	listOfColors = nullptr;
+	listOfcolours = nullptr;
 	listOfTriangles = nullptr;
 	listOfVisibleFaces = nullptr;
 	listOfVisibleShadows = nullptr;
@@ -523,13 +523,13 @@ TG_Shape::destroy(void)
 // NOTE: Only takes the first HELPOBJECT from the ASE file.  Multi-object
 // Files will require user intervention to parse!!
 int32_t
-TG_TypeShape::MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& fileName)
+TG_TypeShape::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
 	const std::wstring_view& nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_NAME);
 	gosASSERT(nodeName != nullptr);
-	char nodeString[1024];
+	wchar_t nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME) + 1;
 	GetNameData(nodeName, nodeString);
 #ifdef _DEBUG
@@ -561,7 +561,7 @@ TG_TypeShape::MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& fileNa
 	nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_POS);
 	gosASSERT(nodeName != nullptr);
 	nodeName += strlen(ASE_NODE_POS) + 1;
-	char numData[512];
+	wchar_t numData[512];
 	GetNumberData(nodeName, numData);
 	nodeCenter.x = -(float)atof(numData);
 	nodeName += strlen(numData) + 1;
@@ -589,13 +589,13 @@ TG_TypeShape::MakeFromHelper(puint8_t aseBuffer, const std::wstring_view& fileNa
 // NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 // Files will require user intervention to parse!!
 int32_t
-TG_TypeShape::ParseASEFile(puint8_t aseBuffer, const std::wstring_view& fileName)
+TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
 	const std::wstring_view& nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_NAME);
 	gosASSERT(nodeName != nullptr);
-	char nodeString[1024];
+	wchar_t nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME) + 1;
 	GetNameData(nodeName, nodeString);
 #ifdef _DEBUG
@@ -627,7 +627,7 @@ TG_TypeShape::ParseASEFile(puint8_t aseBuffer, const std::wstring_view& fileName
 	nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_POS);
 	gosASSERT(nodeName != nullptr);
 	nodeName += strlen(ASE_NODE_POS) + 1;
-	char numData[512];
+	wchar_t numData[512];
 	GetNumberData(nodeName, numData);
 	nodeCenter.x = -(float)atof(numData);
 	nodeName += strlen(numData) + 1;
@@ -673,10 +673,10 @@ TG_TypeShape::ParseASEFile(puint8_t aseBuffer, const std::wstring_view& fileName
 	int32_t i;
 	for (i = 0; i < numTypeVertices; i++)
 	{
-		char numberData[256];
+		wchar_t numberData[256];
 		//------------------------------------------------
 		// First the Vertex Position
-		char vertexID[256];
+		wchar_t vertexID[256];
 		sprintf(vertexID, "%s% 5d", ASE_MESH_VERTEX_ID, i);
 		const std::wstring_view& vertexData = strstr((const std::wstring_view&)aseBuffer, vertexID);
 		gosASSERT(vertexData != nullptr);
@@ -700,7 +700,7 @@ TG_TypeShape::ParseASEFile(puint8_t aseBuffer, const std::wstring_view& fileName
 		listOfTypeVertices[i].normal.x = listOfTypeVertices[i].normal.y =
 			listOfTypeVertices[i].normal.z = 0.0f;
 		//-----------------------------------------------------
-		// Next, Read in Vertex Colors
+		// Next, Read in Vertex colours
 		listOfTypeVertices[i].aRGBLight = 0xff000000;
 		//-----------------------------------------------------
 	}
@@ -712,10 +712,10 @@ TG_TypeShape::ParseASEFile(puint8_t aseBuffer, const std::wstring_view& fileName
 	memset(listOfTypeTriangles, 0xff, sizeof(TG_TypeTriangle) * numTypeTriangles);
 	for (i = 0; i < numTypeTriangles; i++)
 	{
-		char numberData[256];
+		wchar_t numberData[256];
 		//-----------------------------------------------
 		// First the Vertices for the face
-		char faceId[256];
+		wchar_t faceId[256];
 		sprintf(faceId, "%s% 5d:", ASE_MESH_FACE_ID, i);
 		const std::wstring_view& faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
 		gosASSERT(faceData != nullptr);
@@ -747,7 +747,7 @@ TG_TypeShape::ParseASEFile(puint8_t aseBuffer, const std::wstring_view& fileName
 				matLid = (numTextures / 2) - 1;
 			listOfTypeTriangles[i].localTextureHandle = matLid;
 		}
-		listOfTypeTriangles[i].renderStateFlags = 0; // No Flags yet.
+		listOfTypeTriangles[i].renderStateFlags = 0; // No flags yet.
 		//---------------------------------------------------------------------
 		// UVData for the face.
 		// This should be nummies!
@@ -874,7 +874,7 @@ TG_TypeShape::ParseASEFile(puint8_t aseBuffer, const std::wstring_view& fileName
 		}
 		//------------------------------------------------------------
 		//---------------------------------------------------------------------
-		// Color Data for the face.
+		// colour Data for the face.
 		// Load up the CFaces
 		sprintf(faceId, "%s", ASE_NUM_CVFACES);
 		faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
@@ -982,7 +982,7 @@ TG_TypeShape::ParseASEFile(puint8_t aseBuffer, const std::wstring_view& fileName
 		GetNumberData(faceData, numberData);
 		listOfTypeTriangles[i].faceNormal.y = (float)atof(numberData);
 		//------------------------------------------------------------
-		char vertexID[256];
+		wchar_t vertexID[256];
 		sprintf(vertexID, "%s", ASE_VERTEX_NORMAL_ID);
 		const std::wstring_view& vertexData = strstr((const std::wstring_view&)faceData, vertexID);
 		GetNumberData(vertexData, numberData);
@@ -1067,7 +1067,7 @@ TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
 	gosASSERT(aseFileSize > 0);
 	//---------------------------------------
 	// Create Buffer to read entire file into
-	puint8_t aseContents = (puint8_t)TG_Shape::tglHeap->Malloc(aseFileSize);
+	uint8_t* aseContents = (uint8_t*)TG_Shape::tglHeap->Malloc(aseFileSize);
 	gosASSERT(aseContents != nullptr);
 	//---------------------------------------
 	// Open File and read it and close it
@@ -1084,9 +1084,9 @@ TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
 	gosASSERT(strnicmp(ASE_HEADER, (const std::wstring_view&)aseContents, strlen(ASE_HEADER)) == 0);
 	//---------------------------------------
 	// Find the number of Textures
-	char textureId[256];
+	wchar_t textureId[256];
 	const std::wstring_view& textureData;
-	char numberData[256];
+	wchar_t numberData[256];
 	sprintf(textureId, ASE_MATERIAL_COUNT);
 	textureData = strstr((const std::wstring_view&)aseContents, textureId);
 	if (!textureData)
@@ -1095,7 +1095,7 @@ TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
 	GetNumberData(textureData, numberData);
 	int32_t numMaterials = atol(numberData);
 	numTextures = 0;
-	puint8_t aseBuffer = aseContents;
+	uint8_t* aseBuffer = aseContents;
 	for (size_t nmt = 0; nmt < numMaterials; nmt++)
 	{
 		sprintf(textureId, ASE_MATERIAL_CLASS);
@@ -1119,7 +1119,7 @@ TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
 			GetNumberData(textureData, numberData);
 			numTextures += atol(numberData);
 		}
-		aseBuffer = (puint8_t)textureData;
+		aseBuffer = (uint8_t*)textureData;
 	}
 	listOfTextures =
 		(TG_TinyTexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TinyTexture) * numTextures);
@@ -1229,7 +1229,7 @@ TG_Shape::SetCameraMatrices(Stuff::LinearMatrix4D* camOrigin, Stuff::Matrix4D* c
 void
 TG_Shape::SetFog(uint32_t fRGB, float fStart, float fFull)
 {
-	fogColor = fRGB;
+	fogcolour = fRGB;
 	fogStart = fStart;
 	fogFull = fFull;
 	if (fogStart == fogFull)
@@ -1331,12 +1331,12 @@ TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* back
 	// At this point, we know we are going to process this shape,
 	// Get memory for its components from the pools!
 	listOfVertices = vertexPool->getVerticesFromPool(numVertices);
-	listOfColors = colorPool->getColorsFromPool(numVertices);
+	listOfcolours = colorPool->getcoloursFromPool(numVertices);
 	listOfShadowTVertices = shadowPool->getShadowsFromPool(numVertices);
 	listOfTriangles = trianglePool->getTrianglesFromPool(numTriangles);
 	listOfVisibleFaces = facePool->getFacesFromPool(numTriangles);
 	listOfVisibleShadows = facePool->getFacesFromPool(numTriangles);
-	if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows)
+	if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows)
 		return (1);
 	lastTurnTransformed = turn;
 	int32_t j;
@@ -1378,7 +1378,7 @@ TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* back
 		listOfVertices[j].z = screen.z;
 		listOfVertices[j].rhw = screen.w;
 		listOfVertices[j].frgb = fogRGB;
-		memset(&listOfColors[j], 0, sizeof(listOfColors[j]));
+		memset(&listOfcolours[j], 0, sizeof(listOfcolours[j]));
 		//----------------------------------------------------
 		// Lighting goes here.
 		uint32_t redFinal = 0, greenFinal = 0, blueFinal = 0;
@@ -1473,15 +1473,15 @@ TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* back
 		{
 			redFinal = blueFinal = greenFinal = 0xff; // Just max out its light.
 		}
-		if (BaseVertexColor)
+		if (BaseVertexcolour)
 		{
-			redFinal += ((BaseVertexColor >> 16) & 0x000000ff);
+			redFinal += ((BaseVertexcolour >> 16) & 0x000000ff);
 			if (redFinal > 0xff)
 				redFinal = 0xff;
-			greenFinal += ((BaseVertexColor >> 8) & 0x000000ff);
+			greenFinal += ((BaseVertexcolour >> 8) & 0x000000ff);
 			if (greenFinal > 0xff)
 				greenFinal = 0xff;
-			blueFinal += (BaseVertexColor & 0x000000ff);
+			blueFinal += (BaseVertexcolour & 0x000000ff);
 			if (blueFinal > 0xff)
 				blueFinal = 0xff;
 		}
@@ -1657,9 +1657,9 @@ TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* back
 										red = float((startLight >> 16) & 0x000000ff) * falloff;
 										green = float((startLight >> 8) & 0x000000ff) * falloff;
 										blue = float((startLight)&0x000000ff) * falloff;
-										listOfColors[j].redSpec = (uint32_t)red;
-										listOfColors[j].greenSpec = (uint32_t)green;
-										listOfColors[j].blueSpec = (uint32_t)blue;
+										listOfcolours[j].redSpec = (uint32_t)red;
+										listOfcolours[j].greenSpec = (uint32_t)green;
+										listOfcolours[j].blueSpec = (uint32_t)blue;
 									}
 								}
 								else
@@ -1726,9 +1726,9 @@ TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* back
 			// Add in the pre-calced or calced this frame terrain lights.
 			// Terrain lights will only be made ACTIVE when day/night changes.
 			// One frame of active is enough to store new values!
-			redSpec += listOfColors[j].redSpec;
-			greenSpec += listOfColors[j].greenSpec;
-			blueSpec += listOfColors[j].blueSpec;
+			redSpec += listOfcolours[j].redSpec;
+			greenSpec += listOfcolours[j].greenSpec;
+			blueSpec += listOfcolours[j].blueSpec;
 			if (redSpec > 255)
 				redSpec = 255;
 			if (greenSpec > 255)
@@ -2057,11 +2057,11 @@ TG_Shape::Render(float forceZ, bool isHudElement, uint8_t alphaValue, bool isCla
 	if (!numVertices) // WE are the root Shape which may have no shape or a
 		// helper shape which defintely has no shape!
 		return;
-	if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || (/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (uint32_t)turn)))
+	if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || (/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (uint32_t)turn)))
 		return;
-	if (fogColor != 0xffffffff)
+	if (fogcolour != 0xffffffff)
 	{
-		gos_SetRenderState(gos_State_Fog, (int32_t) & (fogColor));
+		gos_SetRenderState(gos_State_Fog, (int32_t) & (fogcolour));
 	}
 	else
 	{
@@ -2193,12 +2193,12 @@ TG_Shape::PerPolySelect(float mouseX, float mouseY)
 {
 	if (!InEditor)
 	{
-		if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || ((lastTurnTransformed != (uint32_t)(turn - 1)) /*&& (lastTurnTransformed != turn)*/))
+		if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || ((lastTurnTransformed != (uint32_t)(turn - 1)) /*&& (lastTurnTransformed != turn)*/))
 			return false;
 	}
 	else
 	{
-		if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || ((lastTurnTransformed != (uint32_t)(turn - 1)) && (lastTurnTransformed != (uint32_t)turn)))
+		if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || ((lastTurnTransformed != (uint32_t)(turn - 1)) && (lastTurnTransformed != (uint32_t)turn)))
 			return false;
 	}
 	TG_TypeShapePtr theShape = (TG_TypeShapePtr)myType;
@@ -2273,7 +2273,7 @@ TG_Shape::MultiTransformShadows(
 	// Can make this a flag to optimize!
 	if (noShadow)
 		return;
-	if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows)
+	if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows)
 		return;
 	Stuff::Matrix4D identityMatrix;
 	identityMatrix.BuildIdentity();
@@ -2614,11 +2614,11 @@ TG_Shape::RenderShadows(int32_t startFace)
 	// Can make this a flag to optimize!
 	if (strnicmp(getNodeName(), "SpotLight_", 10) == 0)
 		return startFace;
-	if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || (/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (uint32_t)turn)))
+	if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || (/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (uint32_t)turn)))
 		return startFace;
-	if (fogColor != 0xffffffff)
+	if (fogcolour != 0xffffffff)
 	{
-		gos_SetRenderState(gos_State_Fog, (int32_t) & (fogColor));
+		gos_SetRenderState(gos_State_Fog, (int32_t) & (fogcolour));
 	}
 	else
 	{

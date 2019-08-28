@@ -54,7 +54,7 @@ enum __inifile_constants : uint32_t
 // Structs
 struct IniBlockNode
 {
-	char blockId[50];
+	wchar_t blockId[50];
 	size_t blockOffset;
 };
 
@@ -98,12 +98,12 @@ public:
 	HRESULT readIdString(const std::wstring_view& varName, const std::wstring_view& result, size_t bufferSize);
 	HRESULT getIdStringLength(const std::wstring_view& varName);
 	HRESULT readIdFloatArray(const std::wstring_view& varName, float* result, size_t numElements);
-	HRESULT readIdLongArray(const std::wstring_view& varName, pint32_t result, size_t numElements);
-	HRESULT readIdULongArray(const std::wstring_view& varName, puint32_t result, size_t numElements);
-	HRESULT readIdShortArray(const std::wstring_view& varName, pint16_t result, size_t numElements);
-	HRESULT readIdUShortArray(const std::wstring_view& varName, puint16_t result, size_t numElements);
-	HRESULT readIdCharArray(const std::wstring_view& varName, pint8_t result, size_t numElements);
-	HRESULT readIdUCharArray(const std::wstring_view& varName, puint8_t result, size_t numElements);
+	HRESULT readIdLongArray(const std::wstring_view& varName, int32_t* result, size_t numElements);
+	HRESULT readIdULongArray(const std::wstring_view& varName, uint32_t* result, size_t numElements);
+	HRESULT readIdShortArray(const std::wstring_view& varName, int16_t* result, size_t numElements);
+	HRESULT readIdUShortArray(const std::wstring_view& varName, uint16_t* result, size_t numElements);
+	HRESULT readIdCharArray(const std::wstring_view& varName, int8_t* result, size_t numElements);
+	HRESULT readIdUCharArray(const std::wstring_view& varName, uint8_t* result, size_t numElements);
 
 	size_t getIdFloatArrayElements(const std::wstring_view& varName);
 	size_t getIdLongArrayElements(const std::wstring_view& varName);
@@ -124,9 +124,9 @@ public:
 	HRESULT writeIdUChar(const std::wstring_view& varName, uint8_t value);
 	HRESULT writeIdString(const std::wstring_view& varName, const std::wstring_view& result);
 	HRESULT writeIdFloatArray(const std::wstring_view& varName, float* parray, size_t numElements);
-	HRESULT writeIdLongArray(const std::wstring_view& varName, pint32_t parray, size_t numElements);
-	HRESULT writeIdUShortArray(const std::wstring_view& varName, puint16_t parray, size_t numElements);
-	HRESULT writeIdUCharArray(const std::wstring_view& varName, puint8_t parray, size_t numElements);
+	HRESULT writeIdLongArray(const std::wstring_view& varName, int32_t* parray, size_t numElements);
+	HRESULT writeIdUShortArray(const std::wstring_view& varName, uint16_t* parray, size_t numElements);
+	HRESULT writeIdUCharArray(const std::wstring_view& varName, uint8_t* parray, size_t numElements);
 
 protected:
 	HRESULT afterOpen(void);
@@ -155,7 +155,7 @@ protected:
 	size_t mathToULong(const std::wstring_view& num);
 	int16_t mathToShort(const std::wstring_view& num);
 	uint16_t mathToUShort(const std::wstring_view& num);
-	char mathToChar(const std::wstring_view& num);
+	wchar_t mathToChar(const std::wstring_view& num);
 	uint8_t mathToUChar(const std::wstring_view& num);
 	int32_t floatToText(const std::wstring_view& result, float num, size_t bufLen);
 	int32_t longToTextDec(const std::wstring_view& result, int32_t num, size_t bufLen);

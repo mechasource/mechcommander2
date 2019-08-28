@@ -7,7 +7,7 @@
 #ifndef _POLAR_HPP_
 #define _POLAR_HPP_
 
-#include <stuff/rotation.hpp>
+#include "stuff/rotation.h"
 
 namespace Stuff
 {
@@ -16,7 +16,7 @@ class YawPitchRange;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::YawPitchRange& polar);
+Spew(const std::wstring_view& group, const Stuff::YawPitchRange& polar);
 #endif
 
 namespace Stuff
@@ -78,7 +78,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const YawPitchRange& polar);
+	friend void ::Spew(const std::wstring_view& group, const YawPitchRange& polar);
 #endif
 
 	//

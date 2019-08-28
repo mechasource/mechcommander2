@@ -70,8 +70,8 @@ private:
 
 	int32_t weightCenterX;
 	int32_t weightCenterY;
-	int32_t weightStartColor;
-	int32_t weightEndColor;
+	int32_t weightStartcolour;
+	int32_t weightEndcolour;
 
 	static MechBayScreen* s_instance;
 

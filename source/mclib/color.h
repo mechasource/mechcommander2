@@ -1,5 +1,5 @@
 //******************************************************************************************
-//	color.h - This file contains the definitions for the Color Tables
+//	color.h - This file contains the definitions for the colour Tables
 //
 //	MechCommander 2
 //
@@ -17,12 +17,12 @@
 
 //----------------------------------------------------------------------------------
 void
-initColorTables(void);
+initcolourTables(void);
 
 void
-destroyColorTables(void);
+destroycolourTables(void);
 
 uint32_t*
-getColorTable(int32_t tableNum);
+getcolourTable(int32_t tableNum);
 //----------------------------------------------------------------------------------
 #endif

@@ -15,7 +15,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // ForestDlg dialog
 
-static char szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
+static wchar_t szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
 
 ForestDlg::ForestDlg(CWnd* pParent /*=nullptr*/) :
 	CDialog(ForestDlg::IDD, pParent), forest(-1)
@@ -23,8 +23,8 @@ ForestDlg::ForestDlg(CWnd* pParent /*=nullptr*/) :
 	//{{AFX_DATA_INIT(ForestDlg)
 	m_maxDensity = 10.0f;
 	m_minDensity = 2.0f;
-	m_maxHeight = 1.0f;
-	m_minHeight = 1.0f;
+	m_maxheight = 1.0f;
+	m_minheight = 1.0f;
 	m_randomPlacement = TRUE;
 	m_xLoc = 0.0f;
 	m_yLoc = 0.0f;
@@ -58,10 +58,10 @@ ForestDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxFloat(pDX, m_maxDensity, 0.f, 10.f);
 	DDX_Text(pDX, IDC_DENSITY_MIN, m_minDensity);
 	DDV_MinMaxFloat(pDX, m_minDensity, 0.f, 10.f);
-	DDX_Text(pDX, IDC_HEIGHT_MAX, m_maxHeight);
-	DDV_MinMaxFloat(pDX, m_maxHeight, 0.5f, 1.5f);
-	DDX_Text(pDX, IDC_HEIGHT_MIN, m_minHeight);
-	DDV_MinMaxFloat(pDX, m_minHeight, 0.5f, 1.5f);
+	DDX_Text(pDX, IDC_HEIGHT_MAX, m_maxheight);
+	DDV_MinMaxFloat(pDX, m_maxheight, 0.5f, 1.5f);
+	DDX_Text(pDX, IDC_HEIGHT_MIN, m_minheight);
+	DDV_MinMaxFloat(pDX, m_minheight, 0.5f, 1.5f);
 	DDX_Check(pDX, IDC_RANDOM, m_randomPlacement);
 	DDX_Text(pDX, IDC_XLOC, m_xLoc);
 	DDX_Text(pDX, IDC_YLOC, m_yLoc);
@@ -139,8 +139,8 @@ ForestDlg::OnSave()
 		}
 		forest.minDensity = m_minDensity;
 		forest.maxDensity = m_maxDensity;
-		forest.minHeight = m_minHeight;
-		forest.maxHeight = m_maxHeight;
+		forest.minheight = m_minheight;
+		forest.maxheight = m_maxheight;
 		forest.bRandom = m_randomPlacement;
 		forest.centerX = m_xLoc;
 		forest.centerY = m_yLoc;
@@ -172,8 +172,8 @@ ForestDlg::OnOK()
 	}
 	forest.minDensity = m_minDensity;
 	forest.maxDensity = m_maxDensity;
-	forest.minHeight = m_minHeight;
-	forest.maxHeight = m_maxHeight;
+	forest.minheight = m_minheight;
+	forest.maxheight = m_maxheight;
 	forest.bRandom = m_randomPlacement;
 	forest.centerX = m_xLoc;
 	forest.centerY = m_yLoc;
@@ -232,8 +232,8 @@ ForestDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	m_minDensity = forest.minDensity;
 	m_maxDensity = forest.maxDensity;
-	m_minHeight = forest.minHeight;
-	m_maxHeight = forest.maxHeight;
+	m_minheight = forest.minheight;
+	m_maxheight = forest.maxheight;
 	m_randomPlacement = forest.bRandom;
 	m_Name = forest.name;
 	if (!m_xLoc)
@@ -269,7 +269,7 @@ ForestDlg::OnInitDialog()
 			pSlider->SetPos(forest.percentages[(i - IDC_FOREST_EDIT1) / 2]);
 		}
 	}
-	char tmp[256];
+	wchar_t tmp[256];
 	_splitpath(forest.getFileName(), nullptr, nullptr, tmp, 0);
 	if (0 != strcmp("", tmp))
 	{

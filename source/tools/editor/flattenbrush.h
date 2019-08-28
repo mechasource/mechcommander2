@@ -36,8 +36,8 @@ public:
 	virtual bool canPaintSelection() { return true; }
 	virtual Action* applyToSelection(void);
 
-	Action* applyHeightToSelection(float height);
-	float getAverageHeightOfSelection();
+	Action* applyheightToSelection(float height);
+	float getAverageheightOfSelection();
 
 private:
 	ActionPaintTile* pCurAction;

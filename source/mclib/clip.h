@@ -15,7 +15,7 @@
 // and simply not to draw the shape.  Profiling will indicate if this is
 // necessary.
 //
-// Color space clipping is HUGELY painful and we are cheating until it
+// colour space clipping is HUGELY painful and we are cheating until it
 // becomes necessary to do otherwise.
 //
 // Triangles will be converted into polygons with as many as five sides.
@@ -27,7 +27,7 @@
 //---------------------------------------------------------------------------------------------------
 #ifndef CLIP_H
 #define CLIP_H
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //---------------------------------------------------------------------------------------------------
 inline void

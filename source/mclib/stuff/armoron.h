@@ -10,7 +10,7 @@
 #define _ARMORON_HPP_
 
 #ifndef SPEW
-extern "C" void __cdecl InternalFunctionSpew(PCSTR Group, PCSTR Message, ...);
+extern "C" void __cdecl InternalFunctionSpew(const std::wstring_view& group, const std::wstring_view& message, ...);
 #define SPEW(x) InternalFunctionSpew x
 #endif
 
@@ -23,14 +23,14 @@ namespace Stuff
 #define USE_EVENT_STATISTICS
 #endif
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 #define _ASSERT(c)                         \
 	do                                     \
 	{                                      \
 		if (Stuff::ArmorLevel > 0 && !(c)) \
 			PAUSE(("Failed " #c));         \
 	}                                      \
-	SUPPRESS_WARNING(4127)                 \
+	MSSUPPRESS_WARNING(4127)                 \
 	while (0)
 #endif
 #define Verify(c) ATLASSERT(c)
@@ -41,7 +41,7 @@ namespace Stuff
 		if (Stuff::ArmorLevel > 0 && (c)) \
 			SPEW((0, #c));                \
 	}                                     \
-	SUPPRESS_WARNING(4127)                \
+	MSSUPPRESS_WARNING(4127)                \
 	while (0)
 
 #if defined(_M_IX86)
@@ -49,6 +49,7 @@ namespace Stuff
 #else
 #define Check_Pointer(p) _ASSERT(p)
 #endif
+
 
 template <class T>
 T
@@ -60,7 +61,7 @@ Cast_Pointer_Function(T p)
 }
 
 #define Cast_Pointer(type, ptr) \
-	SUPPRESS_WARNING(4946)      \
+	MSSUPPRESS_WARNING(4946)      \
 	Stuff::Cast_Pointer_Function(reinterpret_cast<type>(ptr))
 
 #define Mem_Copy(destination, source, length, available)                                                         \
@@ -69,10 +70,10 @@ Cast_Pointer_Function(T p)
 		Check_Pointer(destination);                                                                              \
 		Check_Pointer(source);                                                                                   \
 		_ASSERT((length) <= (available));                                                                        \
-		_ASSERT((size_t)(abs(reinterpret_cast<PSTR>(destination) - reinterpret_cast<PCSTR>(source))) >= length); \
+		_ASSERT((size_t)(abs(reinterpret_cast<PSTR>(destination) - reinterpret_cast<const std::wstring_view&>(source))) >= length); \
 		memcpy(destination, source, length);                                                                     \
 	}                                                                                                            \
-	SUPPRESS_WARNING(4127)                                                                                       \
+	MSSUPPRESS_WARNING(4127)                                                                                       \
 	while (0)
 
 #define Str_Copy(destination, source, available)                            \
@@ -84,7 +85,7 @@ Cast_Pointer_Function(T p)
 		_ASSERT(size_t(abs(destination - source)) >= (strlen(source) + 1)); \
 		strcpy_s(destination, available, source);                           \
 	}                                                                       \
-	SUPPRESS_WARNING(4127)                                                  \
+	MSSUPPRESS_WARNING(4127)                                                  \
 	while (0)
 
 #define Str_Cat(destination, source, available)                             \
@@ -95,7 +96,7 @@ Cast_Pointer_Function(T p)
 		_ASSERT((strlen(destination) + strlen(source) + 1) <= (available)); \
 		strcat(destination, source);                                        \
 	}                                                                       \
-	SUPPRESS_WARNING(4127)                                                  \
+	MSSUPPRESS_WARNING(4127)                                                  \
 	while (0)
 
 #define Check_Signature(p) Stuff::Is_Signature_Bad(p)

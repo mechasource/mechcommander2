@@ -25,11 +25,11 @@
 GameSoundSystem* soundSystem = nullptr;
 
 extern bool
-wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
-	puint8_t* lplpWaveSamples, uint32_t* lpcbWaveSize);
+wave_ParseWaveMemory(uint8_t* lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
+	uint8_t** lplpWaveSamples, uint32_t* lpcbWaveSize);
 
-bool friendlyDestroyed = false;
-bool enemyDestroyed = false;
+bool friendlydestroyed = false;
+bool enemydestroyed = false;
 extern bool GeneralAlarm;
 
 #define ALARM_TIME 5.0f
@@ -45,7 +45,7 @@ GameSoundSystem::purgeSoundSystem(void)
 	playingNoise = false;
 	radioHandle = nullptr;
 	//------------------------------------------------------------
-	// dump the Radio Message Queue.
+	// dump the Radio message Queue.
 	messagesInQueue = 0;
 	wholeMsgDone = true;
 	int32_t i;
@@ -113,7 +113,7 @@ GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 			if (queue[test])
 				continue;
 			else
-				Fatal(-1, " Bad Message in Queue -- RmoveQMsg");
+				Fatal(-1, " Bad message in Queue -- RmoveQMsg");
 		}
 #endif
 		for (i = msgNumber; i < MAX_QUEUED_MESSAGES - 1; i++)
@@ -125,7 +125,7 @@ GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 			if (queue[test])
 				continue;
 			else
-				Fatal(-1, " Bad Message in Queue -- RmoveQMsg");
+				Fatal(-1, " Bad message in Queue -- RmoveQMsg");
 		}
 #endif
 	}
@@ -247,7 +247,7 @@ GameSoundSystem::queueRadioMessage(RadioData* msgData)
 		if (queue[test])
 			continue;
 		else
-			Fatal(-1, " Bad Message in Queue -- RmoveQMsg");
+			Fatal(-1, " Bad message in Queue -- RmoveQMsg");
 	}
 #endif
 	messagesInQueue++;
@@ -257,7 +257,7 @@ GameSoundSystem::queueRadioMessage(RadioData* msgData)
 		if (queue[test])
 			continue;
 		else
-			Fatal(-1, " Bad Message in Queue -- RmoveQMsg");
+			Fatal(-1, " Bad message in Queue -- RmoveQMsg");
 	}
 #endif
 	return NO_ERROR;
@@ -296,11 +296,11 @@ GameSoundSystem::update(void)
 				{
 					//--------------------------------------------------------------------
 					// Hand GOS sound the data it needs to create the resource
-					// Handle
+					// handle
 					gosAudio_Format soundFormat;
 					soundFormat.wFormatTag = 1; // PCM
 					MC2_WAVEFORMATEX* waveFormat = nullptr;
-					puint8_t dataOffset = nullptr;
+					uint8_t* dataOffset = nullptr;
 					uint32_t length = 0;
 					uint32_t bitsPerSec = 0;
 					wave_ParseWaveMemory(
@@ -335,11 +335,11 @@ GameSoundSystem::update(void)
 				{
 					//--------------------------------------------------------------------
 					// Hand GOS sound the data it needs to create the resource
-					// Handle
+					// handle
 					gosAudio_Format soundFormat;
 					soundFormat.wFormatTag = 1; // PCM
 					MC2_WAVEFORMATEX* waveFormat = nullptr;
-					puint8_t dataOffset = nullptr;
+					uint8_t* dataOffset = nullptr;
 					uint32_t length = 0;
 					uint32_t bitsPerSec = 0;
 					wave_ParseWaveMemory(
@@ -372,11 +372,11 @@ GameSoundSystem::update(void)
 					{
 						//--------------------------------------------------------------------
 						// Hand GOS sound the data it needs to create the
-						// resource Handle
+						// resource handle
 						gosAudio_Format soundFormat;
 						soundFormat.wFormatTag = 1; // PCM
 						MC2_WAVEFORMATEX* waveFormat = nullptr;
-						puint8_t dataOffset = nullptr;
+						uint8_t* dataOffset = nullptr;
 						uint32_t length = 0;
 						uint32_t bitsPerSec = 0;
 						wave_ParseWaveMemory(currentMessage->data[currentFragment], &waveFormat,
@@ -447,11 +447,11 @@ GameSoundSystem::update(void)
 		if (currentMessage->noise[currentFragment])
 		{
 			//--------------------------------------------------------------------
-			// Hand GOS sound the data it needs to create the resource Handle
+			// Hand GOS sound the data it needs to create the resource handle
 			gosAudio_Format soundFormat;
 			soundFormat.wFormatTag = 1; // PCM
 			MC2_WAVEFORMATEX* waveFormat = nullptr;
-			puint8_t dataOffset = nullptr;
+			uint8_t* dataOffset = nullptr;
 			uint32_t length = 0;
 			uint32_t bitsPerSec = 0;
 			wave_ParseWaveMemory(
@@ -484,11 +484,11 @@ GameSoundSystem::update(void)
 			{
 				//--------------------------------------------------------------------
 				// Hand GOS sound the data it needs to create the resource
-				// Handle
+				// handle
 				gosAudio_Format soundFormat;
 				soundFormat.wFormatTag = 1; // PCM
 				MC2_WAVEFORMATEX* waveFormat = nullptr;
-				puint8_t dataOffset = nullptr;
+				uint8_t* dataOffset = nullptr;
 				uint32_t length = 0;
 				uint32_t bitsPerSec = 0;
 				wave_ParseWaveMemory(

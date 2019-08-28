@@ -6,9 +6,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 #include "stuff/registeredclass.h"
 
 using namespace Stuff;
@@ -157,7 +157,7 @@ RegisteredClass__ClassData::IsDerivedFrom(RegisteredClass__ClassData* parent)
 	// Check_Object(this);
 	//
 	//---------------------------
-	// Handle null parent pointer
+	// handle null parent pointer
 	//---------------------------
 	//
 	if (!parent)

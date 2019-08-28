@@ -54,8 +54,8 @@ public:
 	bool flashJumpers(int32_t numFlashes);
 
 private:
-	static float iconWidth;
-	static float iconHeight;
+	static float iconwidth;
+	static float iconheight;
 	static int32_t iconsPerRow;
 
 	static StaticInfo* s_coverIcon;

@@ -54,8 +54,8 @@ public:
 	bool genRandom[MAX_GEN_ANIMATIONS];
 	int32_t genStartF[MAX_GEN_ANIMATIONS];
 
-	char rotationalNodeId[TG_NODE_ID];
-	char textureName[50];
+	wchar_t rotationalNodeId[TG_NODE_ID];
+	wchar_t textureName[50];
 	uint32_t dotRGB;
 
 public:

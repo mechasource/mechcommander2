@@ -7,7 +7,7 @@
 #include "campaigndata.h"
 //#include "estring.h"
 //#include "echarstring.h"
-//#include "assert.h"
+//#include "_ASSERT.h"
 
 static int32_t
 sReadIdBoolean(FitIniFile& missionFile, const std::wstring_view& varName, bool& value)
@@ -17,7 +17,7 @@ sReadIdBoolean(FitIniFile& missionFile, const std::wstring_view& varName, bool& 
 	result = missionFile.readIdBoolean((const std::wstring_view&)varName, tmpBool);
 	if (NO_ERROR != result)
 	{
-		// assert(false);
+		// _ASSERT(false);
 	}
 	else
 	{
@@ -34,7 +34,7 @@ sReadIdInteger(FitIniFile& missionFile, const std::wstring_view& varName, int32_
 	result = missionFile.readIdLong((const std::wstring_view&)varName, tmpLong);
 	if (NO_ERROR != result)
 	{
-		// assert(false);
+		// _ASSERT(false);
 	}
 	else
 	{
@@ -47,12 +47,12 @@ static int32_t
 sReadIdString(FitIniFile& missionFile, const std::wstring_view& varName, CString& CStr)
 {
 	int32_t result = 0;
-	char buffer[2001 /*buffer size*/];
+	wchar_t buffer[2001 /*buffer size*/];
 	buffer[0] = '\0';
 	result = missionFile.readIdString((const std::wstring_view&)varName, buffer, 2001 /*buffer size*/ - 1);
 	if (NO_ERROR != result)
 	{
-		// assert(false);
+		// _ASSERT(false);
 	}
 	else
 	{
@@ -185,14 +185,14 @@ CGroupData::Read(FitIniFile& fitFile, const std::wstring_view& groupName)
 		result = fitFile.seekBlock(blockName.Data());
 		if (NO_ERROR != result)
 		{
-			assert(false);
+			_ASSERT(false);
 			continue;
 		}
 		CMissionData missionData;
 		bool bresult = missionData.Read(fitFile);
 		if (true != bresult)
 		{
-			assert(false);
+			_ASSERT(false);
 			continue;
 		}
 		m_MissionList.Append(missionData);
@@ -247,7 +247,7 @@ CCampaignData::Save(CString pathName)
 	for (it = m_GroupList.Begin(), index = 0; !it.IsDone(); it++, index += 1)
 	{
 		ECharString blockName;
-		blockName.Format("Group%d", index);
+		blockName.Format("group%d", index);
 		fitFile.writeBlock(blockName.Data());
 		(*it).Save(fitFile, blockName.Data());
 	}
@@ -262,13 +262,13 @@ CCampaignData::Read(CString pathName)
 	int32_t result = fitFile.open(pathName.GetBuffer(0));
 	if (NO_ERROR != result)
 	{
-		assert(false);
+		_ASSERT(false);
 		return false;
 	}
 	result = fitFile.seekBlock("Campaign");
 	if (NO_ERROR != result)
 	{
-		assert(false);
+		_ASSERT(false);
 	}
 	result = sReadIdString(fitFile, "CampaignName", m_Name);
 	if (NO_ERROR == result)
@@ -293,18 +293,18 @@ CCampaignData::Read(CString pathName)
 	for (index = 0; groupCount > index; index += 1)
 	{
 		ECharString blockName;
-		blockName.Format("Group%d", index);
+		blockName.Format("group%d", index);
 		result = fitFile.seekBlock(blockName.Data());
 		if (NO_ERROR != result)
 		{
-			assert(false);
+			_ASSERT(false);
 			continue;
 		}
 		CGroupData groupData;
 		bool bresult = groupData.Read(fitFile, blockName.Data());
 		if (true != bresult)
 		{
-			assert(false);
+			_ASSERT(false);
 			continue;
 		}
 		m_GroupList.Append(groupData);

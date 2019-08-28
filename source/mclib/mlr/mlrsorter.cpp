@@ -86,7 +86,7 @@ SortData::DrawTriIndexedList()
 				// void __stdcall gos_RenderIndexedArray(
 				//	PVOID pVertexArray,
 				//	uint32_t NumberVertices,
-				//	puint16_t lpwIndices,
+				//	uint16_t* lpwIndices,
 				//	uint32_t NumberIndices,
 				//	gosVERTEXTYPE VertexType,
 				//	gosPRIMITIVETYPE PrimitiveType = PRIMITIVE_TRIANGLELIST);
@@ -181,13 +181,13 @@ SortData::DrawLineCloud()
 	Start_Timer(GOS_Draw_Time);
 	for (size_t i = 0; i < numVertices; i++)
 	{
-		if (((GOSVertex*)vertices)[i].x > Environment.screenWidth - 1)
+		if (((GOSVertex*)vertices)[i].x > Environment.screenwidth - 1)
 		{
-			((GOSVertex*)vertices)[i].x = static_cast<float>(Environment.screenWidth - 1);
+			((GOSVertex*)vertices)[i].x = static_cast<float>(Environment.screenwidth - 1);
 		}
-		if (((GOSVertex*)vertices)[i].y > Environment.screenHeight - 1)
+		if (((GOSVertex*)vertices)[i].y > Environment.screenheight - 1)
 		{
-			((GOSVertex*)vertices)[i].y = static_cast<float>(Environment.screenHeight - 1);
+			((GOSVertex*)vertices)[i].y = static_cast<float>(Environment.screenheight - 1);
 		}
 	}
 #ifdef LAB_ONLY
@@ -418,7 +418,7 @@ MLRSorter::DrawPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 //
 SortData*
 MLRSorter::SetRawData(
-	PVOID vertices, uint32_t numVertices, const MLRState& state, cint32_t& mode, int32_t tex2)
+	PVOID vertices, uint32_t numVertices, const MLRState& state, const int32_t& mode, int32_t tex2)
 {
 	// Check_Object(this);
 	SortData* sd = rawDrawData.GetData();
@@ -439,8 +439,8 @@ MLRSorter::SetRawData(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 SortData*
-MLRSorter::SetRawIndexedData(PVOID vertices, uint32_t numVertices, puint16_t indices,
-	int32_t numIndices, const MLRState& state, cint32_t& mode, int32_t tex2)
+MLRSorter::SetRawIndexedData(PVOID vertices, uint32_t numVertices, uint16_t* indices,
+	int32_t numIndices, const MLRState& state, const int32_t& mode, int32_t tex2)
 {
 	// Check_Object(this);
 	SortData* sd = rawDrawData.GetData();
@@ -578,7 +578,7 @@ MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 		{
 			if (newer.renderState & MLRState::FogMask)
 			{
-				gos_SetRenderState(gos_State_Fog, (int32_t)&newer.fogColor);
+				gos_SetRenderState(gos_State_Fog, (int32_t)&newer.fogcolour);
 			}
 			else
 			{
@@ -607,15 +607,15 @@ MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 		{
 			if (newer.renderState & MLRState::WireFrameOnlyMode)
 			{
-				uint32_t wfColor = 0xffffff;
-				gos_SetRenderState(gos_State_WireframeMode, (uint32_t)&wfColor);
+				uint32_t wfcolour = 0xffffff;
+				gos_SetRenderState(gos_State_WireframeMode, (uint32_t)&wfcolour);
 			}
 			else
 			{
 				gos_SetRenderState(gos_State_WireframeMode, 0);
 			}
 		}
-		if (changed & MLRState::FlatColoringMask)
+		if (changed & MLRState::FlatcolouringMask)
 		{
 			gos_SetRenderState(gos_State_ShadeMode, gos_ShadeGouraud);
 		}

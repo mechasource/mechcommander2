@@ -39,7 +39,7 @@ public:
 	{
 		IDD = IDD_LIGHT
 	};
-	CEdit m_LightColor;
+	CEdit m_Lightcolour;
 	CEdit m_AmbientEdit;
 	float m_Yaw;
 	float m_InitialSunPitch;
@@ -50,7 +50,7 @@ public:
 
 protected:
 	//{{AFX_MSG(SunDlg)
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
+	afx_msg HBRUSH OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour);
 	afx_msg void OnAmbientButton(void);
 	afx_msg void OnLightButton(void);
 	virtual void OnOK(void);
@@ -64,7 +64,7 @@ protected:
 
 	void displayInHex(int32_t number, CEdit& edit);
 	int32_t getHexValue(CEdit& edit);
-	void DoColorDlg(CEdit& edit);
+	void DocolourDlg(CEdit& edit);
 
 	void applyChanges(void);
 

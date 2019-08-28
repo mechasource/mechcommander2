@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_c_dt_pmesh.h"
 #include "mlr/mlr_i_c_dt_tmesh.h"
@@ -76,27 +76,27 @@ MLR_I_C_DT_TMesh::MLR_I_C_DT_TMesh(ClassData* class_data, std::iostream stream, 
 #if COLOR_AS_DWORD
 		MemoryStreamIO_Read(stream, &colors);
 #else
-		std::vector<uint32_t> smallColors;
-		MemoryStreamIO_Read(stream, &smallColors);
-		size_t i, len = smallColors.GetLength();
+		std::vector<uint32_t> smallcolours;
+		MemoryStreamIO_Read(stream, &smallcolours);
+		size_t i, len = smallcolours.GetLength();
 		colors.SetLength(len);
-		uint32_t theColor;
+		uint32_t thecolour;
 		for (i = 0; i < len; i++)
 		{
-			theColor = smallColors[i];
-			colors[i].blue = (theColor & 0xff) * One_Over_256;
-			theColor = theColor >> 8;
-			colors[i].green = (theColor & 0xff) * One_Over_256;
-			theColor = theColor >> 8;
-			colors[i].red = (theColor & 0xff) * One_Over_256;
-			theColor = theColor >> 8;
-			colors[i].alpha = (theColor & 0xff) * One_Over_256;
+			thecolour = smallcolours[i];
+			colors[i].blue = (thecolour & 0xff) * One_Over_256;
+			thecolour = thecolour >> 8;
+			colors[i].green = (thecolour & 0xff) * One_Over_256;
+			thecolour = thecolour >> 8;
+			colors[i].red = (thecolour & 0xff) * One_Over_256;
+			thecolour = thecolour >> 8;
+			colors[i].alpha = (thecolour & 0xff) * One_Over_256;
 		}
 #endif
 	}
 	break;
 	}
-	actualColors = &colors;
+	actualcolours = &colors;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,7 +106,7 @@ MLR_I_C_DT_TMesh::MLR_I_C_DT_TMesh(ClassData* class_data) :
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
-	actualColors = &colors;
+	actualcolours = &colors;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -144,15 +144,15 @@ MLR_I_C_DT_TMesh::Save(std::iostream stream)
 #if COLOR_AS_DWORD
 	MemoryStreamIO_Write(stream, &colors);
 #else
-	std::vector<uint32_t> smallColors;
+	std::vector<uint32_t> smallcolours;
 	size_t i, len = colors.GetLength();
-	const Stuff::RGBAColor* data = colors.GetData();
-	smallColors.SetLength(len);
+	const Stuff::RGBAcolour* data = colors.GetData();
+	smallcolours.SetLength(len);
 	for (i = 0; i < len; i++)
 	{
-		smallColors[i] = GOSCopyColor(data + i);
+		smallcolours[i] = GOSCopycolour(data + i);
 	}
-	MemoryStreamIO_Write(stream, &smallColors);
+	MemoryStreamIO_Write(stream, &smallcolours);
 #endif
 }
 
@@ -167,11 +167,11 @@ MLR_I_C_DT_TMesh::Copy(MLR_I_C_DT_PMesh* pMesh)
 #if COLOR_AS_DWORD
 	uint32_t* _colors;
 #else
-	Stuff::RGBAColor* _colors;
+	Stuff::RGBAcolour* _colors;
 #endif
 	MLR_I_DT_TMesh::Copy(pMesh);
-	pMesh->GetColorData(&_colors, &len);
-	SetColorData(_colors, len);
+	pMesh->GetcolourData(&_colors, &len);
+	SetcolourData(_colors, len);
 
 	return true;
 }
@@ -179,11 +179,11 @@ MLR_I_C_DT_TMesh::Copy(MLR_I_C_DT_PMesh* pMesh)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_C_DT_TMesh::SetColorData(
+MLR_I_C_DT_TMesh::SetcolourData(
 #if COLOR_AS_DWORD
-	pcuint32_t data,
+	const uint32_t* data,
 #else
-	const Stuff::RGBAColor* data,
+	const Stuff::RGBAcolour* data,
 #endif
 	size_t dataSize)
 {
@@ -197,13 +197,13 @@ MLR_I_C_DT_TMesh::SetColorData(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_C_DT_TMesh::GetColorData(
+MLR_I_C_DT_TMesh::GetcolourData(
 #if COLOR_AS_DWORD
-	puint32_t* data,
+	uint32_t** data,
 #else
-	Stuff::RGBAColor** data,
+	Stuff::RGBAcolour** data,
 #endif
-	psize_t dataSize)
+	size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = colors.GetData();
@@ -215,16 +215,16 @@ MLR_I_C_DT_TMesh::GetColorData(
 void
 MLR_I_C_DT_TMesh::PaintMe(
 #if COLOR_AS_DWORD
-	pcuint32_t paintMe)
+	const uint32_t* paintMe)
 #else
-	const Stuff::RGBAColor* paintMe)
+	const Stuff::RGBAcolour* paintMe)
 #endif
 {
 	// Check_Object(this);
 	// original color is lost !!!;
 	size_t k, len = colors.GetLength();
 #if COLOR_AS_DWORD
-	uint32_t argb = GOSCopyColor(paintMe);
+	uint32_t argb = GOSCopycolour(paintMe);
 	for (k = 0; k < len; k++)
 	{
 		colors[k] = argb;
@@ -276,7 +276,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_C_DT_TMesh*
-MidLevelRenderer::CreateIndexedTriCube_Color_NoLit_2Tex(
+MidLevelRenderer::CreateIndexedTriCube_colour_NoLit_2Tex(
 	float half, MLRState* state)
 {
 	(void)half;
@@ -296,7 +296,7 @@ MidLevelRenderer::CreateIndexedTriCube_Color_NoLit_2Tex(
 	coords[5] = Stuff::Point3D(half, half, half);
 	coords[6] = Stuff::Point3D(half, half, -half);
 	coords[7] = Stuff::Point3D(-half, half, -half);
-	puint8_t lengths = new uint8_t [6];
+	uint8_t* lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 	int32_t i;
 	for(i = 0; i < 6; i++)
@@ -305,7 +305,7 @@ MidLevelRenderer::CreateIndexedTriCube_Color_NoLit_2Tex(
 	}
 	ret->SetSubprimitiveLengths(lengths, 6);
 	ret->SetCoordData(coords, 8);
-	puint16_t index = new uint16_t [6 * 4];
+	uint16_t* index = new uint16_t [6 * 4];
 	Register_Pointer(index);
 	index[0] = 0;
 	index[1] = 2;
@@ -376,7 +376,7 @@ MidLevelRenderer::CreateIndexedTriCube_Color_NoLit_2Tex(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit_2Tex(
+MidLevelRenderer::CreateIndexedTriIcosahedron_colour_NoLit_2Tex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* state2)
 {
 #ifdef _GAMEOS_HPP_
@@ -399,11 +399,11 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit_2Tex(
 		collapsedCoords = new Stuff::Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[2 * nrTri * 3];
 	Register_Pointer(texCoords);
-	Stuff::RGBAColor* colors = new Stuff::RGBAColor[nrTri * 3];
+	Stuff::RGBAcolour* colors = new Stuff::RGBAcolour[nrTri * 3];
 	Register_Pointer(colors);
 	uint32_t uniquePoints = 0;
 	for (k = 0; k < 20; k++)
@@ -514,7 +514,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit_2Tex(
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = Stuff::RGBAColor((1.0f + collapsedCoords[i].x) / 2.0f,
+				colors[i] = Stuff::RGBAcolour((1.0f + collapsedCoords[i].x) / 2.0f,
 					(1.0f + collapsedCoords[i].y) / 2.0f, (1.0f + collapsedCoords[i].z) / 2.0f,
 					1.0f);
 			}
@@ -523,11 +523,11 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit_2Tex(
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = Stuff::RGBAColor((1.0f + coords[i].x) / 2.0f,
+				colors[i] = Stuff::RGBAcolour((1.0f + coords[i].x) / 2.0f,
 					(1.0f + coords[i].y) / 2.0f, (1.0f + coords[i].z) / 2.0f, 1.0f);
 			}
 		}
-		mesh->SetColorData(colors, uniquePoints);
+		mesh->SetcolourData(colors, uniquePoints);
 		mesh->SetReferenceState(*state2, 1);
 		ret->Add(mesh);
 		mesh->DetachReference();

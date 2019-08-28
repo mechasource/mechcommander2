@@ -7,17 +7,17 @@
 #ifndef MLR_MLRCLIPPER_HPP
 #define MLR_MLRCLIPPER_HPP
 
-#include <stuff/vector2d.hpp>
-#include <stuff/linearmatrix.hpp>
-#include <mlr/mlrshape.hpp>
-#include <mlr/mlrclippingstate.hpp>
-#include <mlr/gosvertexpool.hpp>
-#include <mlr/mlrsorter.hpp>
+#include "stuff/vector2d.h"
+#include "stuff/linearmatrix.h"
+#include "mlr/mlrshape.h"
+#include "mlr/mlrclippingstate.h"
+#include "mlr/gosvertexpool.h"
+#include "mlr/mlrsorter.h"
 
 namespace Stuff
 {
 class LinearMatrix4D;
-class RGBAColor;
+class RGBAcolour;
 class Vector4D;
 } // namespace Stuff
 
@@ -52,7 +52,7 @@ class DrawScalableShapeInformation : public DrawShapeInformation
 public:
 	DrawScalableShapeInformation(void);
 	const Stuff::Vector3D* scaling;
-	const Stuff::RGBAColor* paintMe;
+	const Stuff::RGBAcolour* paintMe;
 
 	void TestInstance(void) const {}
 };
@@ -90,7 +90,7 @@ public:
 	DrawScreenQuadsInformation(void);
 
 	const Stuff::Vector4D* coords;
-	const Stuff::RGBAColor* colors;
+	const Stuff::RGBAcolour* colors;
 	const Stuff::Vector2DScalar* texCoords;
 	const bool* onOrOff;
 
@@ -105,7 +105,7 @@ public:
 //#########################    MLRClipper   #################################
 //##########################################################################
 
-class MLRClipper : public Stuff::RegisteredClass
+class MLRClipper // : public Stuff::RegisteredClass
 {
 public:
 	static void __stdcall InitializeClass(void);
@@ -117,8 +117,8 @@ public:
 
 	//	lets begin the dance
 	void StartDraw(const Stuff::LinearMatrix4D& camera_to_world, const Stuff::Matrix4D& clip_matrix,
-		const Stuff::RGBAColor& fog_color, // NOT USED ANYMORE
-		const Stuff::RGBAColor* background_color, const MLRState& default_state,
+		const Stuff::RGBAcolour& fog_color, // NOT USED ANYMORE
+		const Stuff::RGBAcolour* background_color, const MLRState& default_state,
 		const float* z_value);
 
 	//	add another shape

@@ -41,7 +41,7 @@ public:
 	// FCurves
 	//
 public:
-	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_halfHeight;
+	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_halfheight;
 	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_aspectRatio;
 	SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType> m_pIndex;
 	ConstantCurve m_UOffset;
@@ -52,7 +52,7 @@ public:
 	bool m_animated;
 	uint8_t m_width;
 
-	void SetWidth(void);
+	void Setwidth(void);
 };
 
 //############################################################################
@@ -85,14 +85,14 @@ public:
 public:
 	enum
 	{
-		ParticleSize = sizeof(Particle) + 4 * sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAColor) + 4 * sizeof(Stuff::Vector2DOf<float>)
+		ParticleSize = sizeof(Particle) + 4 * sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAcolour) + 4 * sizeof(Stuff::Vector2DOf<float>)
 	};
 
 protected:
 	MidLevelRenderer::MLRCardCloud*
 		m_cloudImplementation; // point to an MLR triangle cloud by Michael
 	Stuff::Point3D* m_P_vertices;
-	Stuff::RGBAColor* m_P_color;
+	Stuff::RGBAcolour* m_P_color;
 	Stuff::Vector2DOf<float>* m_P_uvs;
 
 	//----------------------------------------------------------------------------

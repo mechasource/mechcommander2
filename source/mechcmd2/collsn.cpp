@@ -155,11 +155,11 @@ CollisionGrid::init(Stuff::Vector3D& newOrigin)
 	// simply reinit and check if allocs already go.
 	if (!gridIsGo)
 	{
-		xGridWidth = CollisionSystem::xGridSize;
-		yGridWidth = CollisionSystem::yGridSize;
+		xGridwidth = CollisionSystem::xGridSize;
+		yGridwidth = CollisionSystem::yGridSize;
 		maxGridRadius = CollisionSystem::gridRadius;
 		maxObjects = CollisionSystem::maxObjects;
-		gridSize = sizeof(CollisionGridNodePtr) * xGridWidth * yGridWidth;
+		gridSize = sizeof(CollisionGridNodePtr) * xGridwidth * yGridwidth;
 		nodeSize = sizeof(CollisionGridNode) * maxObjects;
 		if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 			grid = (CollisionGridNodePtr*)CollisionSystem::collisionHeap->Malloc(gridSize);
@@ -167,10 +167,10 @@ CollisionGrid::init(Stuff::Vector3D& newOrigin)
 		if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 			nodes = (CollisionGridNodePtr)CollisionSystem::collisionHeap->Malloc(nodeSize);
 		gosASSERT(nodes != nullptr);
-		gridXOffset = ((xGridWidth + 1) * maxGridRadius) / 2;
-		gridYOffset = ((yGridWidth + 1) * maxGridRadius) / 2;
-		gridXCheck = xGridWidth * maxGridRadius;
-		gridYCheck = yGridWidth * maxGridRadius;
+		gridXOffset = ((xGridwidth + 1) * maxGridRadius) / 2;
+		gridYOffset = ((yGridwidth + 1) * maxGridRadius) / 2;
+		gridXCheck = xGridwidth * maxGridRadius;
+		gridYCheck = yGridwidth * maxGridRadius;
 		gridIsGo = TRUE;
 	}
 	//-----------------------------
@@ -206,7 +206,7 @@ int32_t
 CollisionGrid::add(uint32_t gridIndex, GameObjectPtr object)
 {
 	gosASSERT(nextAvailableNode < maxObjects);
-	gosASSERT((gridIndex >= 0) && (gridIndex < (xGridWidth * yGridWidth)));
+	gosASSERT((gridIndex >= 0) && (gridIndex < (xGridwidth * yGridwidth)));
 	CollisionGridNodePtr prev = grid[gridIndex];
 	CollisionGridNodePtr node = &nodes[nextAvailableNode++];
 	grid[gridIndex] = node;
@@ -248,7 +248,7 @@ CollisionGrid::add(GameObjectPtr object)
 		if (gy >= gridYCheck)
 			gy = gridYCheck - 1;
 		gy /= maxGridRadius;
-		uint32_t gridIndex = float2long(gx - 0.5f) + float2long(gy - 0.5f) * xGridWidth;
+		uint32_t gridIndex = float2long(gx - 0.5f) + float2long(gy - 0.5f) * xGridwidth;
 		int32_t result = add(gridIndex, object);
 		return result;
 	}
@@ -273,11 +273,11 @@ CollisionGrid::createGrid(void)
 		}
 		g = g->next;
 	}
-	for (size_t y = 0; y < (int32_t)yGridWidth; y++)
+	for (size_t y = 0; y < (int32_t)yGridwidth; y++)
 	{
-		for (size_t x = 0; x < (int32_t)xGridWidth; x++)
+		for (size_t x = 0; x < (int32_t)xGridwidth; x++)
 		{
-			uint32_t gridIndex = x + y * xGridWidth;
+			uint32_t gridIndex = x + y * xGridwidth;
 			CollisionGridNodePtr g = grid[gridIndex];
 			while (g)
 			{
@@ -291,27 +291,27 @@ CollisionGrid::createGrid(void)
 				// Check same grid as object
 				if (area)
 					checkGrid(obj, area);
-				if (x < int32_t(xGridWidth - 1))
+				if (x < int32_t(xGridwidth - 1))
 				{
 					//---------------------
 					// Check grid at x+1,y
 					area = grid[gridIndex + 1];
 					if (area)
 						checkGrid(obj, area);
-					if (y < int32_t(yGridWidth - 1))
+					if (y < int32_t(yGridwidth - 1))
 					{
 						//-----------------------
 						// Check grid at x+1,y+1
-						area = grid[gridIndex + 1 + xGridWidth];
+						area = grid[gridIndex + 1 + xGridwidth];
 						if (area)
 							checkGrid(obj, area);
 					}
 				}
-				if (y < int32_t(yGridWidth - 1))
+				if (y < int32_t(yGridwidth - 1))
 				{
 					//---------------------
 					// Check grid at x,y+1
-					area = grid[gridIndex + xGridWidth];
+					area = grid[gridIndex + xGridwidth];
 					if (area)
 						checkGrid(obj, area);
 				}

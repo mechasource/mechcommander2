@@ -21,7 +21,7 @@
 
 
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 
 int32_t MovePathManager::m_numpaths = 0;
 int32_t MovePathManager::m_peakpaths = 0;
@@ -233,7 +233,7 @@ MovePathManager::update(void)
 			break;
 		calcPath();
 	}
-//	char s[50];
+//	wchar_t s[50];
 //	sprintf(s, "num paths = %d", numpaths);
 //	DEBUGWINS_print(s, 0);
 #ifdef MC_PROFILE

@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "stuff/polar.h"
 #include "mlr/mlrlight.h"
 #include "mlr/mlrlightmap.h"
@@ -115,8 +115,8 @@ MLRClipper::~MLRClipper()
 void
 MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	const Stuff::Matrix4D& clip_matrix,
-	const Stuff::RGBAColor& fog_color, // NOT USED ANYMORE
-	const Stuff::RGBAColor* background_color, const MLRState& default_state, const float* z_value)
+	const Stuff::RGBAcolour& fog_color, // NOT USED ANYMORE
+	const Stuff::RGBAcolour* background_color, const MLRState& default_state, const float* z_value)
 {
 	// Check_Object(this);
 	(void)fog_color;
@@ -165,10 +165,10 @@ MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	if (background_color)
 	{
 		Check_Pointer(background_color);
-		back_color = GOSCopyColor(background_color);
+		back_color = GOSCopycolour(background_color);
 		clear = true;
 	}
-	MLRState::fogColor = back_color;
+	MLRState::fogcolour = back_color;
 	/* Already done in MC2
 	gos_SetupViewport(
 	fill,
@@ -291,7 +291,7 @@ MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	{
 		DrawShapeInformation drawShapeInfo;
 		float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;
-		Stuff::RGBAColor fruCol(0.0f, 0.5f, 0.0f, 0.5f);
+		Stuff::RGBAcolour fruCol(0.0f, 0.5f, 0.0f, 0.5f);
 		MLRState fruState;
 		clip_matrix.GetPerspective(
 			&near_clip, &far_clip, &left_clip, &right_clip, &top_clip, &bottom_clip);
@@ -311,7 +311,7 @@ MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 		fruState.SetFilterMode(MLRState::BiLinearFilterMode);
 		fruState.SetAlphaMode(MLRState::AlphaInvAlphaMode);
 		fruState.SetPriority(MLRState::PriorityCount - 1);
-		MLRPrimitiveBase* primitive = CreateIndexedViewFrustrum_Color_NoLit(
+		MLRPrimitiveBase* primitive = CreateIndexedViewFrustrum_colour_NoLit(
 			near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip, fruCol, &fruState);
 		drawShapeInfo.shape->Add(primitive);
 		drawShapeInfo.clippingFlags.SetClippingState(0x3f);
@@ -441,7 +441,7 @@ MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 				if (primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 				{
 					Stuff::Point3D* coords;
-					puint16_t indices;
+					uint16_t* indices;
 					size_t nr;
 					(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))
 						->GetIndexData(&indices, &nr);
@@ -608,7 +608,7 @@ MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 				vertices[j].y = (1.0f - dInfo->coords[offset].y) * ViewportScalars::MulY + ViewportScalars::AddY;
 				vertices[j].z = dInfo->coords[offset].z;
 				vertices[j].rhw = dInfo->coords[offset].w;
-				vertices[j].argb = GOSCopyColor(dInfo->colors + offset);
+				vertices[j].argb = GOSCopycolour(dInfo->colors + offset);
 				vertices[j].u = dInfo->texCoords[offset][0];
 				vertices[j].v = dInfo->texCoords[offset][1];
 			}

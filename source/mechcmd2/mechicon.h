@@ -43,7 +43,7 @@ private:
 	static float pilotIconY;
 
 	static uint32_t s_pilotTextureHandle;
-	static uint32_t s_pilotTextureWidth;
+	static uint32_t s_pilotTexturewidth;
 
 	friend class ForceGroupIcon;
 	friend class MechIcon;
@@ -88,7 +88,7 @@ public:
 	bool isAnimatingDeath() { return deathAnimationTime ? 1 : 0; }
 
 protected:
-	static int32_t damageColors[4][3];
+	static int32_t damagecolours[4][3];
 
 	static uint32_t s_textureHandle[5];
 	static bool s_slotUsed[240];
@@ -96,7 +96,7 @@ protected:
 
 	static float unitIconX;
 	static float unitIconY;
-	static int32_t curScreenWidth;
+	static int32_t curScreenwidth;
 
 	static StaticInfo* jumpJetIcon;
 
@@ -113,7 +113,7 @@ protected:
 	static float pilotLocation[17][4];
 	Mover* unit;
 
-	static int32_t ForceGroupColors[11];
+	static int32_t ForceGroupcolours[11];
 
 	void drawBar(float barStatus);
 	static void setIconVariables(void);
@@ -163,8 +163,8 @@ public:
 	virtual void setDrawBack(bool bSet);
 
 private:
-	char damage[8];
-	char backDamage[8];
+	wchar_t damage[8];
+	wchar_t backDamage[8];
 	bool init(int32_t whichIndex);
 	bool initTextures(void);
 };
@@ -182,7 +182,7 @@ public:
 	static TGAFileHeader* s_VehicleTextures;
 
 private:
-	char damage[5];
+	wchar_t damage[5];
 };
 
 #endif // end of file ( MechIcon.h )

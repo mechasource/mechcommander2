@@ -128,10 +128,10 @@ public:
 	bool canAddDropZone(const Stuff::Vector3D& position, int32_t alignment, bool bVTol);
 
 	int32_t getBuildingGroupCount(void) const; // mechs count too!
-	int32_t getNumberBuildingsInGroup(int32_t Group) const;
+	int32_t getNumberBuildingsInGroup(int32_t group) const;
 	void getBuildingGroupNames(const std::wstring_view&* names, int32_t& numberOfNames) const;
 	void getNamesOfObjectsInGroup(const std::wstring_view& groupName, const std::wstring_view&* names, int32_t& numberOfNames) const;
-	void getBuildingNamesInGroup(int32_t Group, const std::wstring_view&* names, int32_t& numberOfNames) const;
+	void getBuildingNamesInGroup(int32_t group, const std::wstring_view&* names, int32_t& numberOfNames) const;
 	int32_t getNumberOfVariants(int32_t group, int32_t indexInGroup) const;
 	void getVariantNames(
 		int32_t group, int32_t indexInGroup, const std::wstring_view&* names, int32_t& numberOfNames) const;
@@ -139,7 +139,7 @@ public:
 	const std::wstring_view& getObjectName(int32_t ID) const;
 
 	int32_t getUnitGroupCount(void) const;
-	void getUnitGroupNames(const std::wstring_view&* names, pint32_t IDs, int32_t& numberOfNames) const;
+	void getUnitGroupNames(const std::wstring_view&* names, int32_t* IDs, int32_t& numberOfNames) const;
 
 	bool save(PacketFile& file, int32_t whichPacket);
 	bool load(PacketFile& file, int32_t whichPacket);
@@ -189,7 +189,7 @@ public:
 
 	void deleteSelectedObjects(void);
 
-	void adjustObjectsToNewTerrainHeights(void);
+	void adjustObjectsToNewTerrainheights(void);
 
 	ObjectAppearance* getAppearance(uint32_t group, uint32_t indexWithinGroup);
 	ObjectAppearance* getAppearance(Building* pBuilding);
@@ -208,7 +208,7 @@ public:
 	inline int32_t getObjectTypeNum(int32_t ID);
 	inline const std::wstring_view& getFileName(int32_t ID) const;
 	inline const std::wstring_view& getTGAFileName(int32_t ID) const;
-	inline uint32_t getTacMapColor(int32_t ID) const;
+	inline uint32_t getTacMapcolour(int32_t ID) const;
 
 	typedef EList<EditorObject*, EditorObject*> BUILDING_LIST; // buildings on the map
 	typedef EList<Unit*, Unit*> UNIT_LIST;
@@ -233,10 +233,10 @@ public:
 private:
 	struct Building
 	{
-		char name[64];
+		wchar_t name[64];
 		const std::wstring_view&* varNames;
 		int32_t nameID;
-		char fileName[64];
+		wchar_t fileName[64];
 		AppearanceType* appearanceType;
 		int32_t type;
 		uint32_t fitID;
@@ -246,29 +246,29 @@ private:
 		bool capturable;
 		bool alignable;
 		uint32_t writeOnTacMap;
-		char tgaName[64];
+		wchar_t tgaName[64];
 		int32_t objectTypeNum;
-		char forestId;
+		wchar_t forestId;
 		float scale;
 		bool isHoverCraft;
 		~Building(void);
 	};
 
-	struct Group
+	struct group
 	{
-		char name[64];
+		wchar_t name[64];
 		EList<Building, Building&> buildings;
 	};
 
 	typedef EList<EditorObject*, EditorObject*> BUILDING_LIST; // buildings on the map
 	typedef EList<Unit*, Unit*> UNIT_LIST;
-	typedef EList<Group, Group&> GROUP_LIST;
+	typedef EList<group, group&> GROUP_LIST;
 	typedef EList<BuildingLink*, BuildingLink*> LINK_LIST;
 	typedef EList<DropZone*, DropZone*> DROP_LIST;
 	typedef EList<Forest*, Forest*> FOREST_LIST;
 
 	GROUP_LIST groups; // list of possible buildings
-	Group dropZoneGroup;
+	group dropZoneGroup;
 	BUILDING_LIST buildings;
 	UNIT_LIST units;
 	LINK_LIST links;
@@ -283,9 +283,9 @@ private:
 		// marked as selected
 
 	// HELPERS
-	int32_t ExtractNextString(puint8_t& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength);
-	int32_t ExtractNextInt(puint8_t& pFileLine);
-	float ExtractNextFloat(puint8_t& pFileLine);
+	int32_t ExtractNextString(uint8_t*& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength);
+	int32_t ExtractNextInt(uint8_t*& pFileLine);
+	float ExtractNextFloat(uint8_t*& pFileLine);
 
 	int32_t getType(uint32_t group, uint32_t indexWithinGroup);
 	void getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, int32_t& index);
@@ -345,7 +345,7 @@ EditorObjectMgr::getTGAFileName(int32_t ID) const
 }
 
 inline uint32_t
-EditorObjectMgr::getTacMapColor(int32_t ID) const
+EditorObjectMgr::getTacMapcolour(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].writeOnTacMap;
 }

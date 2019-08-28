@@ -6,7 +6,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "stuffheaders.hpp"
+#include "stuff/stuffheaders.h"
 #include "toolos.hpp"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MMIOstream ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,7 +19,7 @@
 bool
 FileStream::TestClass()
 {
-	char buffer[65535];
+	wchar_t buffer[65535];
 	int32_t i;
 	Time total;
 	Time s;

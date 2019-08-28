@@ -82,8 +82,8 @@ TerrainTextures::init(const std::wstring_view& fileName, const std::wstring_view
 		{
 			while (!listFile.eof())
 			{
-				char listName[1024];
-				listFile.readString((puint8_t)listName);
+				wchar_t listName[1024];
+				listFile.readString((uint8_t*)listName);
 				if (!fileExists(listName))
 				{
 					quickLoad = false;
@@ -155,14 +155,14 @@ TerrainTextures::init(const std::wstring_view& fileName, const std::wstring_view
 	int32_t i;
 	for (i = 0; i < numTypes; i++)
 	{
-		char blockName[512];
+		wchar_t blockName[512];
 		sprintf(blockName, "TerrainType%d", i);
 		result = textureFile.seekBlock(blockName);
 		if (result == NO_ERROR)
 		{
 			result = textureFile.readIdLong("TerrainId", types[i].terrainId);
 			gosASSERT(result == NO_ERROR);
-			char tmpy[2048];
+			wchar_t tmpy[2048];
 			result = textureFile.readIdString("TerrainName", tmpy, 2047);
 			gosASSERT(result == NO_ERROR);
 			types[i].terrainName = (const std::wstring_view&)tileRAMHeap->Malloc(strlen(tmpy) + 1);
@@ -202,20 +202,20 @@ TerrainTextures::init(const std::wstring_view& fileName, const std::wstring_view
 		if ((i && (types[i].terrainId != types[0].terrainId)) || !i)
 		{
 			types[i].textureData =
-				(puint8_t*)tileRAMHeap->Malloc(sizeof(puint8_t) * MC_MAX_MIP_LEVELS);
+				(uint8_t**)tileRAMHeap->Malloc(sizeof(uint8_t*) * MC_MAX_MIP_LEVELS);
 			gosASSERT(types[i].textureData != nullptr);
-			memset(types[i].textureData, 0, sizeof(puint8_t) * MC_MAX_MIP_LEVELS);
+			memset(types[i].textureData, 0, sizeof(uint8_t*) * MC_MAX_MIP_LEVELS);
 			types[i].maskData =
-				(puint8_t*)tileRAMHeap->Malloc(sizeof(puint8_t) * MC_MASK_NUM * MC_MAX_MIP_LEVELS);
+				(uint8_t**)tileRAMHeap->Malloc(sizeof(uint8_t*) * MC_MASK_NUM * MC_MAX_MIP_LEVELS);
 			gosASSERT(types[i].maskData != nullptr);
-			memset(types[i].maskData, 0, sizeof(puint8_t) * MC_MASK_NUM);
+			memset(types[i].maskData, 0, sizeof(uint8_t*) * MC_MASK_NUM);
 			int32_t terrainTextureIndex = initTexture(i);
 			types[i].baseTXMIndex = terrainTextureIndex;
 			initMask(i);
 		}
 		else if (i && (types[i].terrainId == types[0].terrainId))
 		{
-			puint8_t ourRAM = (puint8_t)tileRAMHeap->Malloc(16 * 16 * sizeof(uint32_t));
+			uint8_t* ourRAM = (uint8_t*)tileRAMHeap->Malloc(16 * 16 * sizeof(uint32_t));
 			gosASSERT(ourRAM != nullptr);
 			memset(ourRAM, 0, 16 * 16 * sizeof(uint32_t));
 			textures[nextAvailable].mcTextureNodeIndex =
@@ -231,13 +231,13 @@ TerrainTextures::init(const std::wstring_view& fileName, const std::wstring_view
 	// Read in the Overlay Textures and Shapes.
 	for (i = 0; i < numOverlays; i++)
 	{
-		char blockName[512];
+		wchar_t blockName[512];
 		sprintf(blockName, "OverlayType%d", i);
 		result = textureFile.seekBlock(blockName);
 		gosASSERT(result == NO_ERROR);
 		result = textureFile.readIdLong("OverlayId", overlays[i].overlayId);
 		gosASSERT(result == NO_ERROR);
-		char tmpy[2048];
+		wchar_t tmpy[2048];
 		result = textureFile.readIdString("OverlayName", tmpy, 2047);
 		gosASSERT(result == NO_ERROR);
 		overlays[i].overlayName = (const std::wstring_view&)tileRAMHeap->Malloc(strlen(tmpy) + 1);
@@ -257,11 +257,11 @@ TerrainTextures::init(const std::wstring_view& fileName, const std::wstring_view
 	// Now preload the overlay texture data
 	for (i = 0; i < numOverlays; i++)
 	{
-		overlays[i].overlayData = (puint8_t*)tileRAMHeap->Malloc(
-			sizeof(puint8_t) * overlays[i].numTextures * MC_MAX_MIP_LEVELS);
+		overlays[i].overlayData = (uint8_t**)tileRAMHeap->Malloc(
+			sizeof(uint8_t*) * overlays[i].numTextures * MC_MAX_MIP_LEVELS);
 		gosASSERT(overlays[i].overlayData != nullptr);
 		memset(overlays[i].overlayData, 0,
-			sizeof(puint8_t) * overlays[i].numTextures * MC_MAX_MIP_LEVELS);
+			sizeof(uint8_t*) * overlays[i].numTextures * MC_MAX_MIP_LEVELS);
 		for (size_t j = 0; j < overlays[i].numTextures; j++)
 		{
 			int32_t overlayTextureIndex = initOverlay(i, j, overlays[i].overlayName);
@@ -275,13 +275,13 @@ TerrainTextures::init(const std::wstring_view& fileName, const std::wstring_view
 	// Read in the Detail Textures
 	for (i = 0; i < numDetails; i++)
 	{
-		char blockName[512];
+		wchar_t blockName[512];
 		sprintf(blockName, "DetailType%d", i);
 		result = textureFile.seekBlock(blockName);
 		gosASSERT(result == NO_ERROR);
 		result = textureFile.readIdLong("DetailId", details[i].detailId);
 		gosASSERT(result == NO_ERROR);
-		char tmpy[2048];
+		wchar_t tmpy[2048];
 		result = textureFile.readIdString("DetailName", tmpy, 2047);
 		gosASSERT(result == NO_ERROR);
 		details[i].detailName = (const std::wstring_view&)tileRAMHeap->Malloc(strlen(tmpy) + 1);
@@ -299,11 +299,11 @@ TerrainTextures::init(const std::wstring_view& fileName, const std::wstring_view
 	// Now preload the detail texture data
 	for (i = 0; i < numDetails; i++)
 	{
-		details[i].detailData = (puint8_t*)tileRAMHeap->Malloc(
-			sizeof(puint8_t) * details[i].numDetails * MC_MAX_MIP_LEVELS);
+		details[i].detailData = (uint8_t**)tileRAMHeap->Malloc(
+			sizeof(uint8_t*) * details[i].numDetails * MC_MAX_MIP_LEVELS);
 		gosASSERT(details[i].detailData != nullptr);
 		memset(
-			details[i].detailData, 0, sizeof(puint8_t) * details[i].numDetails * MC_MAX_MIP_LEVELS);
+			details[i].detailData, 0, sizeof(uint8_t*) * details[i].numDetails * MC_MAX_MIP_LEVELS);
 		for (size_t j = 0; j < details[i].numDetails; j++)
 		{
 			int32_t detailTextureIndex = initDetail(i, j);
@@ -333,7 +333,7 @@ TerrainTextures::initializeStatistics()
 }
 //---------------------------------------------------------------------------
 int32_t
-TerrainTextures::textureFromMemoryAlpha(puint8_t ourRAM, int32_t mipLevel)
+TerrainTextures::textureFromMemoryAlpha(uint8_t* ourRAM, int32_t mipLevel)
 {
 	textures[nextAvailable].mcTextureNodeIndex = mcTextureManager->textureFromMemory(
 		(uint32_t*)ourRAM, gos_Texture_Keyed, gosHint_DisableMipmap | gosHint_DontShrink, mipLevel);
@@ -345,7 +345,7 @@ TerrainTextures::textureFromMemoryAlpha(puint8_t ourRAM, int32_t mipLevel)
 
 //---------------------------------------------------------------------------
 int32_t
-TerrainTextures::textureFromMemory(puint8_t ourRAM, int32_t mipLevel)
+TerrainTextures::textureFromMemory(uint8_t* ourRAM, int32_t mipLevel)
 {
 	textures[nextAvailable].mcTextureNodeIndex = mcTextureManager->textureFromMemory(
 		(uint32_t*)ourRAM, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink, mipLevel);
@@ -404,7 +404,7 @@ TerrainTextures::initDetail(int32_t typeNum, int32_t detailNum)
 	{
 		//---------------------------------------------
 		// Change Texture Path to reflect texture size
-		char mipPath[512];
+		wchar_t mipPath[512];
 		int32_t mipSize = 0;
 		switch (j)
 		{
@@ -425,7 +425,7 @@ TerrainTextures::initDetail(int32_t typeNum, int32_t detailNum)
 			mipSize = (TERRAIN_TXM_SIZE >> 3);
 			break;
 		}
-		char tmpy[512];
+		wchar_t tmpy[512];
 		sprintf(tmpy, "%s%04d", details[typeNum].detailName, detailNum);
 		FullPathFileName fileName;
 		fileName.init(mipPath, tmpy, ".tga");
@@ -449,7 +449,7 @@ TerrainTextures::initTexture(int32_t typeNum)
 	{
 		//---------------------------------------------
 		// Change Texture Path to reflect texture size
-		char mipPath[512];
+		wchar_t mipPath[512];
 		int32_t mipSize = 0;
 		switch (j)
 		{
@@ -479,11 +479,11 @@ TerrainTextures::initTexture(int32_t typeNum)
 			result = tgaFile.open(fileName);
 			gosASSERT(result == NO_ERROR);
 			struct TGAFileHeader header;
-			tgaFile.read((puint8_t)&header, sizeof(TGAFileHeader));
+			tgaFile.read((uint8_t*)&header, sizeof(TGAFileHeader));
 			if (mipSize != header.width)
 				mipSize = header.width;
 			tgaFile.seek(0);
-			puint8_t ourRAM = (puint8_t)tileRAMHeap->Malloc(mipSize * mipSize * sizeof(uint32_t));
+			uint8_t* ourRAM = (uint8_t*)tileRAMHeap->Malloc(mipSize * mipSize * sizeof(uint32_t));
 			gosASSERT(ourRAM != nullptr);
 			loadTGATexture(&tgaFile, ourRAM, mipSize, mipSize);
 			types[typeNum].textureData[j] = ourRAM;
@@ -509,7 +509,7 @@ TerrainTextures::initMask(int32_t typeNum)
 	{
 		//---------------------------------------------
 		// Change Texture Path to reflect texture size
-		char mipPath[512];
+		wchar_t mipPath[512];
 		int32_t mipSize = 0;
 		switch (i)
 		{
@@ -532,7 +532,7 @@ TerrainTextures::initMask(int32_t typeNum)
 		}
 		for (size_t j = 0; j < MC_MASK_NUM; j++)
 		{
-			char tmpy[512];
+			wchar_t tmpy[512];
 			sprintf(tmpy, "%s%04d", types[typeNum].maskName, j);
 			FullPathFileName fileName;
 			fileName.init(mipPath, tmpy, ".tga");
@@ -542,7 +542,7 @@ TerrainTextures::initMask(int32_t typeNum)
 #endif
 				tgaFile.open(fileName);
 			gosASSERT(result == NO_ERROR);
-			puint8_t ourRAM = (puint8_t)tileRAMHeap->Malloc(mipSize * mipSize * sizeof(uint8_t));
+			uint8_t* ourRAM = (uint8_t*)tileRAMHeap->Malloc(mipSize * mipSize * sizeof(uint8_t));
 			gosASSERT(ourRAM != nullptr);
 			loadTGAMask(&tgaFile, ourRAM, mipSize, mipSize);
 			types[typeNum].maskData[j + (i * MC_MASK_NUM)] = ourRAM;
@@ -560,7 +560,7 @@ TerrainTextures::initOverlay(int32_t overlayNum, int32_t txmNum, const std::wstr
 	{
 		//---------------------------------------------
 		// Change Texture Path to reflect texture size
-		char mipPath[512];
+		wchar_t mipPath[512];
 		int32_t mipSize = 0;
 		switch (j)
 		{
@@ -581,7 +581,7 @@ TerrainTextures::initOverlay(int32_t overlayNum, int32_t txmNum, const std::wstr
 			mipSize = (TERRAIN_TXM_SIZE >> 3);
 			break;
 		}
-		char tmpy[512];
+		wchar_t tmpy[512];
 		sprintf(tmpy, "%s%04d", txmName, txmNum);
 		FullPathFileName fileName;
 		fileName.init(mipPath, tmpy, ".tga");
@@ -592,7 +592,7 @@ TerrainTextures::initOverlay(int32_t overlayNum, int32_t txmNum, const std::wstr
 			MechFile tgaFile;
 			result = tgaFile.open(fileName);
 			gosASSERT(result == NO_ERROR);
-			puint8_t ourRAM = (puint8_t)tileRAMHeap->Malloc(mipSize * mipSize * sizeof(uint32_t));
+			uint8_t* ourRAM = (uint8_t*)tileRAMHeap->Malloc(mipSize * mipSize * sizeof(uint32_t));
 			gosASSERT(ourRAM != nullptr);
 			loadTGATexture(&tgaFile, ourRAM, mipSize, mipSize);
 			overlays[overlayNum].overlayData[txmNum] = ourRAM;
@@ -695,10 +695,10 @@ TerrainTextures::getOverlayInfoFromHandle(int32_t handle, Overlays& id, uint32_t
 
 //---------------------------------------------------------------------------
 void
-TerrainTextures::combineTxm(puint8_t dest, uint32_t binNumber, int32_t type, int32_t mipLevel)
+TerrainTextures::combineTxm(uint8_t* dest, uint32_t binNumber, int32_t type, int32_t mipLevel)
 {
-	puint8_t combineRAM = types[type].textureData[mipLevel];
-	puint8_t maskRAM = types[type].maskData[(binNumber - 1) + (mipLevel * MC_MASK_NUM)];
+	uint8_t* combineRAM = types[type].textureData[mipLevel];
+	uint8_t* maskRAM = types[type].maskData[(binNumber - 1) + (mipLevel * MC_MASK_NUM)];
 	int32_t mipSize = 0;
 	switch (mipLevel)
 	{
@@ -782,7 +782,7 @@ TerrainTextures::combineTxm(puint8_t dest, uint32_t binNumber, int32_t type, int
 
 //---------------------------------------------------------------------------
 void
-forceAlphaOpaque(puint8_t dest, int32_t mipLevel)
+forceAlphaOpaque(uint8_t* dest, int32_t mipLevel)
 {
 	int32_t mipSize = 0;
 	switch (mipLevel)
@@ -812,7 +812,7 @@ forceAlphaOpaque(puint8_t dest, int32_t mipLevel)
 
 //---------------------------------------------------------------------------
 void
-TerrainTextures::combineOverlayTxm(puint8_t dest, int32_t type, int32_t mipLevel)
+TerrainTextures::combineOverlayTxm(uint8_t* dest, int32_t type, int32_t mipLevel)
 {
 	// Convert overlay Type to actual overlay Index.
 	int32_t oType = 0;
@@ -827,7 +827,7 @@ TerrainTextures::combineOverlayTxm(puint8_t dest, int32_t type, int32_t mipLevel
 			break;
 		}
 	}
-	puint8_t combineRAM = overlays[oType].overlayData[oIndx];
+	uint8_t* combineRAM = overlays[oType].overlayData[oIndx];
 	gosASSERT(combineRAM != nullptr);
 	int32_t mipSize = 0;
 	switch (mipLevel)
@@ -964,7 +964,7 @@ TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInfo)
 		// About 20 Mb larger build.
 		if (quickLoad)
 		{
-			char nameData[256];
+			wchar_t nameData[256];
 			sprintf(nameData, "%08d.%08d.txm", typeInfo, overlayInfo);
 			FullPathFileName testPath;
 			testPath.init(texturePath, nameData, "");
@@ -974,11 +974,11 @@ TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInfo)
 			{
 				int32_t mipSize = TERRAIN_TXM_SIZE;
 				uint32_t fileSize = txmFile.fileSize();
-				puint8_t fileRAM = (puint8_t)malloc(fileSize);
+				uint8_t* fileRAM = (uint8_t*)malloc(fileSize);
 				int32_t result = txmFile.read(fileRAM, fileSize);
 				if (result != (int32_t)fileSize)
 					STOP(("Read Error with Texture %s", testPath));
-				puint8_t lzBuffer = (puint8_t)malloc(mipSize * mipSize * sizeof(uint32_t));
+				uint8_t* lzBuffer = (uint8_t*)malloc(mipSize * mipSize * sizeof(uint32_t));
 				int32_t bufferSize = LZDecomp(lzBuffer, fileRAM, fileSize);
 				if (bufferSize != (int32_t)(mipSize * mipSize * sizeof(uint32_t)))
 					STOP(("Texture not correct size!"));
@@ -1010,7 +1010,7 @@ TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInfo)
 		{
 			//---------------------------------------------
 			// Change Texture Path to reflect texture size
-			char mipPath[512];
+			wchar_t mipPath[512];
 			int32_t mipSize = 0;
 			switch (kmp)
 			{
@@ -1033,7 +1033,7 @@ TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInfo)
 			}
 			//-------------------------------------------------------
 			// This one does not exist.  Make it.
-			puint8_t ourRAM = (puint8_t)tileRAMHeap->Malloc(mipSize * mipSize * sizeof(uint32_t));
+			uint8_t* ourRAM = (uint8_t*)tileRAMHeap->Malloc(mipSize * mipSize * sizeof(uint32_t));
 			uint8_t v0Type = typeInfo & 0x000000ff;
 			uint8_t v1Type = typeInfo >> 8;
 			uint8_t v2Type = typeInfo >> 16;
@@ -1061,7 +1061,7 @@ TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInfo)
 			// Draw by Priority and Mask.
 			// Priority 0 is ALWAYS just copy that texture.
 			// Use a random one if possible.
-			puint8_t texture = types[priTypes[0]].textureData[kmp];
+			uint8_t* texture = types[priTypes[0]].textureData[kmp];
 			if (!Terrain::terrainTextures2 || isCementType(priTypes[0]))
 			{
 				// Base is now a BLANK ALPHA MASK for new Terrain
@@ -1130,7 +1130,7 @@ TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInfo)
 			// every time we load?  Should lower load time.  Lets see how big
 			// for all of the textures...
 			//
-			char nameData[256];
+			wchar_t nameData[256];
 			sprintf(nameData, "%08d.%08d.txm", typeInfo, overlayInfo);
 			FullPathFileName testPath;
 			testPath.init(texturePath, nameData, "");
@@ -1139,7 +1139,7 @@ TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInfo)
 				listTransitionFile->writeString(testPath);
 				listTransitionFile->writeByte(0);
 			}
-			puint8_t lzBuffer = (puint8_t)malloc(mipSize * mipSize * sizeof(uint32_t) * 2);
+			uint8_t* lzBuffer = (uint8_t*)malloc(mipSize * mipSize * sizeof(uint32_t) * 2);
 			int32_t bufferSize =
 				LZCompress(lzBuffer, ourRAM, (mipSize * mipSize * sizeof(uint32_t)));
 			MechFile txmFile;

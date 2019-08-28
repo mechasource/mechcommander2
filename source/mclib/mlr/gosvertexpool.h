@@ -7,9 +7,9 @@
 #ifndef MLR_GOSVERTEXPOOL_HPP
 #define MLR_GOSVERTEXPOOL_HPP
 
-//#include <stuff/marray.hpp>
-#include <mlr/gosvertex.hpp>
-#include <mlr/gosvertex2uv.hpp>
+//#include "stuff/marray.h"
+#include "mlr/gosvertex.h"
+#include "mlr/gosvertex2uv.h"
 
 extern bool MLRVertexLimitReached;
 
@@ -117,7 +117,7 @@ public:
 		return lastUsedIndex;
 	}
 
-	puint16_t GetActualIndexPool(bool usedb = false)
+	uint16_t* GetActualIndexPool(bool usedb = false)
 	{
 		// Check_Object(this);
 		if (usedb)
@@ -126,7 +126,7 @@ public:
 		}
 		else
 		{
-			return (puint16_t)((char*)(indices.GetData() + lastUsedIndex) + indicesAlignment);
+			return (uint16_t*)((wchar_t*)(indices.GetData() + lastUsedIndex) + indicesAlignment);
 		}
 	}
 

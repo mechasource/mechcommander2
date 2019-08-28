@@ -17,7 +17,7 @@
 //#include "utilities.h"
 
 //#include <string.h>
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 
 //---------------------------------------------------------------------------
 
@@ -97,13 +97,13 @@ enum mstate_const : uint32_t
 
 constexpr const float mouseFrameRate = 0.10f;
 
-extern volatile char mc2MouseHotSpotX;
-extern volatile char mc2MouseHotSpotY;
-extern volatile char mc2MouseWidth;
-extern volatile char mc2MouseHeight;
+extern volatile wchar_t mc2MouseHotSpotX;
+extern volatile wchar_t mc2MouseHotSpotY;
+extern volatile wchar_t mc2Mousewidth;
+extern volatile wchar_t mc2Mouseheight;
 extern volatile bool mc2UseAsyncMouse; // Should mouse draw and update in separate thread?
 extern volatile bool mc2MouseThreadStarted; // Has the thread starting running yet?
-extern volatile puint8_t mc2MouseData;
+extern volatile uint8_t* mc2MouseData;
 
 //---------------------------------------------------------------------------
 class MouseCursorData
@@ -120,7 +120,7 @@ protected:
 	StaticInfo* cursorInfos; // gotta be pointer, so destructor is called before
 		// texmgr quits
 
-	char mouseHS[mouse_input_const::MAX_MOUSE_STATES][2];
+	wchar_t mouseHS[mouse_input_const::MAX_MOUSE_STATES][2];
 	uint32_t numFrames[mouse_input_const::MAX_MOUSE_STATES];
 	float frameLengths[mouse_input_const::MAX_MOUSE_STATES];
 
@@ -148,14 +148,14 @@ public:
 		return 0;
 	}
 
-	char getMouseHSX(int32_t state)
+	wchar_t getMouseHSX(int32_t state)
 	{
 		if ((state >= 0) && (state < numCursors))
 			return mouseHS[state][0];
 		return 0;
 	}
 
-	char getMouseHSY(int32_t state)
+	wchar_t getMouseHSY(int32_t state)
 	{
 		if ((state >= 0) && (state < numCursors))
 			return mouseHS[state][1];

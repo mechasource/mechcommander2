@@ -14,7 +14,7 @@ component.
 #include "IniFile.h"
 #include "userinput.h"
 #include "resource.h"
-#include "assert.h"
+#include "_ASSERT.h"
 #include "Multplyr.h"
 #include "MechBayScreen.h"
 #include "LogisticsData.h"
@@ -57,9 +57,9 @@ extern bool quitGame;
 #define MP_INCREMENT_PLAYER_CBILLS 250
 #define MP_DECREMENT_PLAYER_CBILLS 251
 
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
-static cint32_t CANCEL_BUTTON_ID = 1000002;
+static const int32_t FIRST_BUTTON_ID = 1000010;
+static const int32_t OK_BUTTON_ID = 1000001;
+static const int32_t CANCEL_BUTTON_ID = 1000002;
 
 MPParameterScreen* MPParameterScreen::s_instance = nullptr;
 
@@ -149,7 +149,7 @@ MPParameterScreen::init(FitIniFile* file)
 	FitIniFile mpFile;
 	if (NO_ERROR != mpFile.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -308,7 +308,7 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 			if (MPlayer->isHost())
 				MPlayer->setInProgress(true);
 			delayTime += frameLength;
-			char text[256];
+			wchar_t text[256];
 			cLoadString(IDS_MPLAYER_GAME_ABOUT_TO_START, text, 255);
 			MPlayer->sendChat(0, -1, text);
 		}
@@ -366,9 +366,9 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 						soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 						return 0;
 					}
-					char str[256];
+					wchar_t str[256];
 					cLoadString(IDS_MP_PARAMTERS_BOOT_PROMPT, str, 255);
-					char finalStr[256];
+					wchar_t finalStr[256];
 					for (size_t j = 0; j < MAX_MC_PLAYERS; j++)
 					{
 						if (MPlayer->playerList[j].commanderid == playerParameters[i].getCommanderID())
@@ -517,7 +517,7 @@ MPParameterScreen::setMission(const std::wstring_view& fileName, bool resetData)
 	FitIniFile missionFile;
 	if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", fileName);
 		Assert(0, 0, errorStr);
 		return;
@@ -525,7 +525,7 @@ MPParameterScreen::setMission(const std::wstring_view& fileName, bool resetData)
 	if (resetData)
 	{
 		int32_t result = 0;
-		char missionName[256];
+		wchar_t missionName[256];
 		result = missionFile.seekBlock("MissionSettings");
 		Assert(
 			result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file");
@@ -603,7 +603,7 @@ MPParameterScreen::setMission(const std::wstring_view& fileName, bool resetData)
 	int32_t textureHandle = MissionBriefingScreen::getMissionTGA(fileName);
 	statics[15].setTexture(textureHandle);
 	statics[15].setUVs(0, 127, 127, 0);
-	statics[15].setColor(0xffffffff);
+	statics[15].setcolour(0xffffffff);
 	getButton(MAP_INFO)->disable(false);
 	GUID tmpGuid = getGUIDFromFile(fileName);
 	MPlayer->missionSettings.mapGuid = tmpGuid;
@@ -654,7 +654,7 @@ MPParameterScreen::update()
 		}
 		return;
 	}
-	char text[256];
+	wchar_t text[256];
 	// game not front and center at the top of the screen
 	textObjects[0].setText(MPlayer->sessionName);
 	if (!MPlayer->sessionName || !strlen(MPlayer->sessionName))
@@ -678,9 +678,9 @@ MPParameterScreen::update()
 	}
 	else
 		getButton(MB_MSG_NEXT)->setText(IDS_NEXT);
-	char str[256];
+	wchar_t str[256];
 	cLoadString(IDS_MP_PARAM_HOST_IP, str, 255);
-	char IPAddressStr[256];
+	wchar_t IPAddressStr[256];
 	sprintf(IPAddressStr, str, MPlayer->sessionIPAddress);
 	textObjects[11].setText(IPAddressStr);
 	if (!bWaitingToStart && MPlayer->missionSettings.inProgress)
@@ -729,7 +729,7 @@ MPParameterScreen::update()
 		else
 		{
 			getButton(MAP_INFO)->disable(false);
-			if (!statics[15].getColor())
+			if (!statics[15].getcolour())
 			{
 				int32_t textureHandle =
 					MissionBriefingScreen::getMissionTGA(MPlayer->missionSettings.map);
@@ -737,7 +737,7 @@ MPParameterScreen::update()
 				{
 					statics[15].setTexture(textureHandle);
 					statics[15].setUVs(0, 127, 127, 0);
-					statics[15].setColor(0xffffffff);
+					statics[15].setcolour(0xffffffff);
 				}
 			}
 		}
@@ -757,7 +757,7 @@ MPParameterScreen::update()
 			{
 				int32_t size = file.getLength();
 
-				puint8_t pData = new uint8_t[size];
+				uint8_t* pData = new uint8_t[size];
 
 				file.read( pData, size );
 				MPlayer->sendPlayerInsignia( (const std::wstring_view&)pPlayer->insigniaFile, pData,
@@ -810,8 +810,8 @@ MPParameterScreen::update()
 			if (bShowNoMapDlg)
 			{
 				mapName = MPlayer->missionSettings.map;
-				char chatStr[256];
-				char final[1024];
+				wchar_t chatStr[256];
+				wchar_t final[1024];
 				cLoadString(chatToSend, chatStr, 255);
 				sprintf(final, chatStr, prefs.playerName[0]);
 				MPlayer->sendChat(nullptr, -1, final);
@@ -932,7 +932,7 @@ MPParameterScreen::update()
 			{
 				if (userInput->isLeftClick() && getButton(MB_MSG_NEXT)->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 				{
-					char errorStr[256];
+					wchar_t errorStr[256];
 					LogisticsOneButtonDialog::instance()->setText(
 						IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
 					cLoadString(IDS_MP_PARAM_ERROR_TOO_MANY_PLAYERS, errorStr, 255);
@@ -1150,7 +1150,7 @@ MPParameterScreen::update()
 				getButton(MB_MSG_NEXT)->disable(true);
 				if (delayTime)
 				{
-					char text[256];
+					wchar_t text[256];
 					cLoadString(IDS_MP_LAUNCH_ABORTED, text, 255);
 					MPlayer->sendChat(0, -1, text);
 					delayTime = 0.f;
@@ -1195,7 +1195,7 @@ MPParameterScreen::getGUIDFromFile(const std::wstring_view& pNewMapName)
 	pakFile.seekPacket(packetCount - 1);
 	if (sizeof(GUID) == pakFile.getPacketSize())
 	{
-		pakFile.readPacket(packetCount - 1, (puint8_t)&retVal);
+		pakFile.readPacket(packetCount - 1, (uint8_t*)&retVal);
 		return retVal;
 	}
 	else
@@ -1213,8 +1213,8 @@ MPParameterScreen::setMissionClientOnly(const std::wstring_view& pNewMapName)
 	FitIniFile missionFile;
 	if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
-		char tmp[256];
-		char final[1024];
+		wchar_t tmp[256];
+		wchar_t final[1024];
 		cLoadString(IDS_MP_PARAM_NO_MAP, tmp, 255);
 		sprintf(final, tmp, MPlayer->missionSettings.map, MPlayer->missionSettings.url);
 		LogisticsOKDialog::instance()->setFont(IDS_MP_PARAM_NO_MAP_FONT);
@@ -1223,7 +1223,7 @@ MPParameterScreen::setMissionClientOnly(const std::wstring_view& pNewMapName)
 		bShowNoMapDlg = true;
 		getButton(MAP_INFO)->disable(true);
 		chatToSend = IDS_MP_PARAMETER_NO_MAP_CHAT;
-		statics[15].setColor(0);
+		statics[15].setcolour(0);
 		return;
 	}
 	checkVersionClientOnly(pNewMapName);
@@ -1233,7 +1233,7 @@ MPParameterScreen::setMissionClientOnly(const std::wstring_view& pNewMapName)
 	{
 		statics[15].setTexture(textureHandle);
 		statics[15].setUVs(0, 127, 127, 0);
-		statics[15].setColor(0xffffffff);
+		statics[15].setcolour(0xffffffff);
 	}
 	mapName = MPlayer->missionSettings.map;
 }
@@ -1246,8 +1246,8 @@ MPParameterScreen::checkVersionClientOnly(const std::wstring_view& pNewMapName)
 		// should take this out as soon as maps are
 		// resaved
 	{
-		char tmp[256];
-		char final[1024];
+		wchar_t tmp[256];
+		wchar_t final[1024];
 		cLoadString(IDS_MP_PARAM_MAP_WRONG_VERSION, tmp, 255);
 		sprintf(final, tmp, MPlayer->missionSettings.url);
 		LogisticsOKDialog::instance()->setFont(IDS_MP_PARAM_NO_MAP_FONT);
@@ -1256,7 +1256,7 @@ MPParameterScreen::checkVersionClientOnly(const std::wstring_view& pNewMapName)
 		bShowNoMapDlg = true;
 		getButton(MAP_INFO)->disable(true);
 		chatToSend = IDS_MAP_WRONG_VERSION_CHAT;
-		statics[15].setColor(0);
+		statics[15].setcolour(0);
 		// need to disable the ready button
 		for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		{
@@ -1288,8 +1288,8 @@ MPParameterScreen::resetCheckBoxes()
 void
 MPParameterScreen::setHostLeftDlg(const std::wstring_view& playerName)
 {
-	char leaveStr[256];
-	char formatStr[256];
+	wchar_t leaveStr[256];
+	wchar_t formatStr[256];
 	cLoadString(IDS_PLAYER_LEFT, leaveStr, 255);
 	sprintf(formatStr, leaveStr, playerName);
 	LogisticsOneButtonDialog::instance()->setText(IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
@@ -1406,7 +1406,7 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 	const std::wstring_view& staticName = "PlayerParamsStatic";
 	const std::wstring_view& textName = "PlayerParamsText";
 	const std::wstring_view& rectName = "PlayerParamsRect";
-	char blockName[256];
+	wchar_t blockName[256];
 	// init statics
 	if (staticName)
 	{
@@ -1417,7 +1417,7 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 			if (staticCount)
 			{
 				statics = new aObject[staticCount];
-				char blockName[128];
+				wchar_t blockName[128];
 				for (size_t i = 0; i < staticCount; i++)
 				{
 					sprintf(blockName, "%s%ld", staticName, i);
@@ -1437,7 +1437,7 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 			if (rectCount)
 			{
 				rects = new aRect[rectCount];
-				char blockName[128];
+				wchar_t blockName[128];
 				for (size_t i = 0; i < rectCount; i++)
 				{
 					sprintf(blockName, "%s%ld", rectName, i);
@@ -1458,7 +1458,7 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 			if (textCount)
 			{
 				textObjects = new aText[textCount];
-				char blockName[64];
+				wchar_t blockName[64];
 				for (size_t i = 0; i < textCount; i++)
 				{
 					sprintf(blockName, "%s%ld", textName, i);
@@ -1469,13 +1469,13 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 		}
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_param_droplist3.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -1487,13 +1487,13 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 	}
 	addChild(&teamNumberDropList);
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_param_droplist4.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -1508,7 +1508,7 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + i);
 			pTmp2->resize(
-				factionDropList.width() - factionDropList.ListBox().getScrollBarWidth() - 8,
+				factionDropList.width() - factionDropList.ListBox().getScrollBarwidth() - 8,
 				pTmp2->height());
 			pTmp2->sizeToText();
 			factionDropList.AddItem(pTmp2);
@@ -1603,7 +1603,7 @@ aPlayerParams::update()
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + 5);
 			pTmp2->resize(
-				factionDropList.width() - factionDropList.ListBox().getScrollBarWidth() - 8,
+				factionDropList.width() - factionDropList.ListBox().getScrollBarwidth() - 8,
 				pTmp2->height());
 			pTmp2->sizeToText();
 			factionDropList.AddItem(pTmp2);
@@ -1621,7 +1621,7 @@ aPlayerParams::update()
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + i);
 			pTmp2->resize(
-				factionDropList.width() - factionDropList.ListBox().getScrollBarWidth() - 8,
+				factionDropList.width() - factionDropList.ListBox().getScrollBarwidth() - 8,
 				pTmp2->height());
 			pTmp2->sizeToText();
 			factionDropList.AddItem(pTmp2);
@@ -1729,7 +1729,7 @@ aPlayerParams::update()
 		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 		pInfo->cBills = newCBills;
 		MPlayer->sendPlayerUpdate(0, 5, commanderid);
-		char text[256];
+		wchar_t text[256];
 		sprintf(text, "%ld",
 			pInfo->cBills / 5000 * (5)); // need to round to nearest 5000
 		edit.setEntry(text);
@@ -1790,23 +1790,23 @@ aPlayerParams::setData(const _MC2Player* data)
 		ReadyButton.press(0);
 	}
 	commanderid = data->commanderid;
-	int32_t textColor = 0xff000000;
-	int32_t newColor = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
-	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) + ((newColor & 0xff0000) >> 16)) / 3 < 85)
-		textColor = 0xffffffff;
+	int32_t textcolour = 0xff000000;
+	int32_t newcolour = MPlayer->colors[data->basecolour[BASECOLOR_TEAM]];
+	if (((newcolour & 0xff) + ((newcolour & 0xff00) >> 8) + ((newcolour & 0xff0000) >> 16)) / 3 < 85)
+		textcolour = 0xffffffff;
 	if (textObjects)
 	{
 		textObjects[0].setText(data->name);
 		textObjects[1].setText(data->unitName);
-		textObjects[0].setColor(textColor);
-		textObjects[1].setColor(textColor);
-		char text[256];
+		textObjects[0].setcolour(textcolour);
+		textObjects[1].setcolour(textcolour);
+		wchar_t text[256];
 		sprintf(text, "%ld", data->cBills / 5000 * 5);
 		if (!edit.hasFocus())
 			edit.setEntry(text);
 	}
-	rects[4].setColor(MPlayer->colors[data->stripeColor]);
-	rects[6].setColor(MPlayer->colors[data->baseColor[BASECOLOR_TEAM]]);
+	rects[4].setcolour(MPlayer->colors[data->stripecolour]);
+	rects[6].setcolour(MPlayer->colors[data->basecolour[BASECOLOR_TEAM]]);
 	// set up the insignia...
 	// I really need to store this... really don't want to allocate a texture
 	// every time
@@ -1832,11 +1832,11 @@ aPlayerParams::setData(const _MC2Player* data)
 			for (size_t i = 0; i < MPlayer->missionSettings.maxTeams; i++)
 			{
 				aStyle2TextListItem* pTmp2 = new aStyle2TextListItem;
-				char tmpStr[32];
+				wchar_t tmpStr[32];
 				sprintf(tmpStr, "%ld", i + 1);
 				*pTmp2 = templateItem;
 				pTmp2->setText(tmpStr);
-				pTmp2->resize(teamNumberDropList.width() - teamNumberDropList.ListBox().getScrollBarWidth() - 8,
+				pTmp2->resize(teamNumberDropList.width() - teamNumberDropList.ListBox().getScrollBarwidth() - 8,
 					pTmp2->height());
 				pTmp2->sizeToText();
 				teamNumberDropList.AddItem(pTmp2);
@@ -1868,7 +1868,7 @@ aPlayerParams::handleMessage(uint32_t message, uint32_t who)
 	{
 		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 		pInfo->cBills += increment;
-		char text[256];
+		wchar_t text[256];
 		sprintf(text, "%ld",
 			pInfo->cBills / 5000 * (5)); // need to round to nearest 5000
 		edit.setEntry(text);
@@ -1879,7 +1879,7 @@ aPlayerParams::handleMessage(uint32_t message, uint32_t who)
 	{
 		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 		pInfo->cBills -= increment;
-		char text[256];
+		wchar_t text[256];
 		sprintf(text, "%ld", pInfo->cBills / 5000 * (5));
 		edit.setEntry(text);
 		MPParameterScreen::resetCheckBoxes();
@@ -1912,10 +1912,10 @@ aStyle2TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	aTextListItem::init(fontResID);
 	setText(textID);
 	int32_t color = 0xff808080;
-	file->readIdLong("Color", color);
-	normalColor = color;
-	setColor(color);
-	char tmpStr[64];
+	file->readIdLong("colour", color);
+	normalcolour = color;
+	setcolour(color);
+	wchar_t tmpStr[64];
 	strcpy(tmpStr, "");
 	file->readIdString("Animation", tmpStr, 63);
 	if (0 == strcmp("", tmpStr))
@@ -1933,29 +1933,29 @@ aStyle2TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 void
 aStyle2TextListItem::render()
 {
-	int32_t color = normalColor;
+	int32_t color = normalcolour;
 	if (hasAnimation)
 	{
 		if (animGroup.getState() != getState())
 			animGroup.setState((aAnimGroup::STATE)(int32_t)getState());
 		animGroup.update();
-		color = animGroup.getCurrentColor(animGroup.getState());
+		color = animGroup.getCurrentcolour(animGroup.getState());
 	}
 	/*	if (aListItem::SELECTED == getState())
 		{
-			color = 0.33 * ((uint32_t)normalColor) + 0.67 *
+			color = 0.33 * ((uint32_t)normalcolour) + 0.67 *
 	   ((uint32_t)0xffffffff);
 		}
 		else if (aListItem::HIGHLITE == getState())
 		{
-			color = 0.67 * ((uint32_t)normalColor) + 0.33 *
+			color = 0.67 * ((uint32_t)normalcolour) + 0.33 *
 	   ((uint32_t)0xffffffff);
 		}
 		else
 		{
-			color = normalColor;
+			color = normalcolour;
 		}*/
-	aTextListItem::setColor((uint32_t)color);
+	aTextListItem::setcolour((uint32_t)color);
 	aTextListItem::render();
 }
 
@@ -2062,7 +2062,7 @@ CFocusManager::pControlThatHasTheFocus()
 			return pDropListThatHasTheFocus;
 			break;
 		}
-		assert(false);
+		_ASSERT(false);
 	}
 	return nullptr;
 }

@@ -90,16 +90,16 @@ class WeaponFireChunk
 {
 
 public:
-	char targetType;
+	wchar_t targetType;
 	int32_t targetId;
 	int32_t targetCell[2];
-	char specialType;
+	wchar_t specialType;
 	int32_t specialId;
 	uint8_t weaponIndex;
 	bool hit;
-	char entryAngle;
-	char numMissiles;
-	char hitLocation;
+	wchar_t entryAngle;
+	wchar_t numMissiles;
+	wchar_t hitLocation;
 
 	uint32_t data;
 
@@ -155,15 +155,15 @@ class WeaponHitChunk
 {
 
 public:
-	char targetType;
+	wchar_t targetType;
 	int32_t targetId;
 	int32_t targetCell[2];
-	char specialType;
+	wchar_t specialType;
 	int32_t specialId;
-	char cause;
+	wchar_t cause;
 	float damage;
-	char hitLocation;
-	char entryAngle;
+	wchar_t hitLocation;
+	wchar_t entryAngle;
 	bool refit;
 
 	uint32_t data;
@@ -233,7 +233,7 @@ typedef struct _GameObjectData
 
 	float tonnage;
 	float rotation;
-	char appearanceTypeID[256];
+	wchar_t appearanceTypeID[256];
 	GameObjectWatchID collisionFreeFromWID;
 	float collisionFreeTime;
 	Stuff::Vector4D screenPos;
@@ -619,10 +619,10 @@ public:
 			flags &= (OBJECT_FLAG_TARGETED ^ 0xFFFFFFFF);
 		setDrawBars(set);
 		setDrawText(set);
-		setDrawColored(set);
+		setDrawcoloured(set);
 		if (isSelected())
 			setSelected(true); // reset flags
-		setDrawColored(set);
+		setDrawcoloured(set);
 	}
 
 	virtual bool getTargeted(void) { return ((flags & OBJECT_FLAG_TARGETED) != 0); }
@@ -659,7 +659,7 @@ public:
 
 	virtual int32_t getDrawBrackets() { return drawFlags & DRAW_BRACKETS; }
 
-	virtual void setDrawColored(bool set)
+	virtual void setDrawcoloured(bool set)
 	{
 		if (set)
 			drawFlags |= DRAW_COLORED;
@@ -667,7 +667,7 @@ public:
 			drawFlags &= (DRAW_COLORED ^ 0xffffffff);
 	}
 
-	virtual int32_t getDrawColored() { return drawFlags & DRAW_COLORED; }
+	virtual int32_t getDrawcoloured() { return drawFlags & DRAW_COLORED; }
 
 	virtual void setObscured(bool set)
 	{

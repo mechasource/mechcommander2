@@ -45,7 +45,7 @@ ComponentListBox::setMech(LogisticsVariant* pMech)
 		{
 			aTextListItem* textItem = new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
 			textItem->setText(32000 + sensor);
-			textItem->setColor(0xffc29b00);
+			textItem->setcolour(0xffc29b00);
 			textItem->setHelpID(IDS_HELP_COMP0 + sensor);
 			AddItem(textItem);
 		}
@@ -53,7 +53,7 @@ ComponentListBox::setMech(LogisticsVariant* pMech)
 		{
 			aTextListItem* textItem = new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
 			textItem->setText(32000 + ECM);
-			textItem->setColor(0xffc29b00);
+			textItem->setcolour(0xffc29b00);
 			textItem->setHelpID(IDS_HELP_COMP0 + ECM);
 			AddItem(textItem);
 		}
@@ -81,7 +81,7 @@ ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** com
 	//		int32_t stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG,
 	// IDS_COMPONENT};
 	int32_t colors[4] = {0xff6E7C00, 0xff005392, 0xffA21600, 0xffc29b00};
-	//		int32_t headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000,
+	//		int32_t headercolours[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000,
 	// 0xffFF8A00 };
 	int32_t i, j, k;
 	for (i = 0; i < 4; i++) // do int16_t, medium int32_t
@@ -118,7 +118,7 @@ ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** com
 			// no more headers, keeping code just in case
 			//				aTextListItem* textItem = new aTextListItem(
 			// IDS_SALVAGE_AREA_COMPONENTS ); 				textItem->setText(
-			// stringIDs[i] ); 				textItem->setColor( headerColors[i]
+			// stringIDs[i] ); 				textItem->setcolour( headercolours[i]
 			//); 				AddItem( textItem );
 			// add each componet
 			for (j = 0; j < 64; j++)
@@ -134,7 +134,7 @@ ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** com
 				}
 				else
 					textItem->setText(finalList[j]->getName());
-				textItem->setColor(colors[i]);
+				textItem->setcolour(colors[i]);
 				textItem->setHelpID(IDS_HELP_COMP0 + finalList[j]->getID());
 				AddItem(textItem);
 			}

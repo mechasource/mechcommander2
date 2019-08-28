@@ -43,7 +43,7 @@ public:
 	virtual ~MainFrame(void);
 #ifdef _DEBUG
 	virtual void AssertValid(void) const;
-	virtual void Dump(CDumpContext& dc) const;
+	virtual void Dump(CDumpcontext& dc) const;
 #endif
 
 public: // control bar embedded members

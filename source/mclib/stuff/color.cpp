@@ -1,31 +1,31 @@
 //===========================================================================//
 // File:     color.cpp                                                       //
-// Title:    Definition of Color classes.                                    //
+// Title:    Definition of colour classes.                                    //
 // Contents: Implementation details for color classes                        //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 #include "stuff/scalar.h"
 // #include "stuff/mstring.h"
 #include "stuff/color.h"
 
 using namespace Stuff;
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const RGBColor RGBColor::Unassigned(-1.0f, -1.0f, -1.0f);
+const RGBcolour RGBcolour::Unassigned(-1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
 bool
-Stuff::Close_Enough(const RGBColor& c1, const RGBColor& c2,
+Stuff::Close_Enough(const RGBcolour& c1, const RGBcolour& c2,
 	float e // = SMALL
 )
 {
@@ -38,8 +38,8 @@ Stuff::Close_Enough(const RGBColor& c1, const RGBColor& c2,
 //###########################################################################
 //###########################################################################
 //
-RGBColor&
-RGBColor::operator=(const HSVColor& color)
+RGBcolour&
+RGBcolour::operator=(const HSVcolour& color)
 {
 	// Check_Object(this);
 	Check_Object(&color);
@@ -120,7 +120,7 @@ RGBColor::operator=(const HSVColor& color)
 //###########################################################################
 //
 void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, RGBColor* color)
+Stuff::Convert_From_Ascii(const std::wstring_view& str, RGBcolour* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
@@ -137,14 +137,14 @@ Stuff::Convert_From_Ascii(const std::wstring_view& str, RGBColor* color)
 	Check_Object(color);
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBAColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBAcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const RGBAColor RGBAColor::Unassigned(-1.0f, -1.0f, -1.0f, -1.0f);
+const RGBAcolour RGBAcolour::Unassigned(-1.0f, -1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
 bool
-Stuff::Close_Enough(const RGBAColor& c1, const RGBAColor& c2,
+Stuff::Close_Enough(const RGBAcolour& c1, const RGBAcolour& c2,
 	float e // = SMALL
 )
 {
@@ -158,7 +158,7 @@ Stuff::Close_Enough(const RGBAColor& c1, const RGBAColor& c2,
 //###########################################################################
 //
 void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, RGBAColor* color)
+Stuff::Convert_From_Ascii(const std::wstring_view& str, RGBAcolour* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
@@ -178,16 +178,16 @@ Stuff::Convert_From_Ascii(const std::wstring_view& str, RGBAColor* color)
 	Check_Object(color);
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const HSVColor HSVColor::Unassigned(-1.0f, -1.0f, -1.0f);
+const HSVcolour HSVcolour::Unassigned(-1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
 bool
-Stuff::Close_Enough(const HSVColor& c1, const HSVColor& c2,
+Stuff::Close_Enough(const HSVcolour& c1, const HSVcolour& c2,
 	float e // = SMALL
 )
 {
@@ -200,8 +200,8 @@ Stuff::Close_Enough(const HSVColor& c1, const HSVColor& c2,
 //###########################################################################
 //###########################################################################
 //
-HSVColor&
-HSVColor::operator=(const RGBColor& color)
+HSVcolour&
+HSVcolour::operator=(const RGBcolour& color)
 {
 	// Check_Object(this);
 	Check_Object(&color);
@@ -268,7 +268,7 @@ HSVColor::operator=(const RGBColor& color)
 //###########################################################################
 //
 void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, HSVColor* color)
+Stuff::Convert_From_Ascii(const std::wstring_view& str, HSVcolour* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
@@ -285,14 +285,14 @@ Stuff::Convert_From_Ascii(const std::wstring_view& str, HSVColor* color)
 	Check_Object(color);
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVAColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVAcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const HSVAColor HSVAColor::Unassigned(-1.0f, -1.0f, -1.0f, -1.0f);
+const HSVAcolour HSVAcolour::Unassigned(-1.0f, -1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
 bool
-Stuff::Close_Enough(const HSVAColor& c1, const HSVAColor& c2,
+Stuff::Close_Enough(const HSVAcolour& c1, const HSVAcolour& c2,
 	float e // = SMALL
 )
 {
@@ -306,7 +306,7 @@ Stuff::Close_Enough(const HSVAColor& c1, const HSVAColor& c2,
 //###########################################################################
 //
 void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, HSVAColor* color)
+Stuff::Convert_From_Ascii(const std::wstring_view& str, HSVAcolour* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);

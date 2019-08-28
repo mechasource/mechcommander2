@@ -8,7 +8,7 @@ PointerSelectObjectDlg component.
 
 //#include "resource.h"
 //#include <stdlib.h>
-//#include <assert.h>
+//#include <_ASSERT.h>
 //#include "estring.h"
 //#include "pointerselectobjectdlg.h"
 //#include "objective.h"
@@ -16,7 +16,7 @@ PointerSelectObjectDlg component.
 //#include "mfcplatform.hpp"
 //#include "afxpriv.h" // just for definition of WM_KICKIDLE
 
-static cint32_t WM_DOTICK = WM_USER + 1;
+static const int32_t WM_DOTICK = WM_USER + 1;
 
 //-------------------------------------------------------------------------------------------------
 PointerSelectObjectDlg::PointerSelectObjectDlg() :
@@ -37,7 +37,7 @@ BOOL
 PointerSelectObjectDlg::OnInitDialog()
 {
 	// m_pButton = (CButton *)GetDlgItem(IDC_POINTER_SELECT_OBJECT_BUTTON);
-	// assert( m_pButton );
+	// _ASSERT( m_pButton );
 	RECT rc;
 	EditorInterface::instance()->GetClientRect(&rc);
 	EditorInterface::instance()->ClientToScreen(&rc);
@@ -160,7 +160,7 @@ PointerSelectObjectDlg::OnWndMsg(
 			{
 				uint32_t ui = ::SetTimer(
 					GetSafeHwnd(), 1 /*arbitrary non-zero ID*/, 2 /*milliseconds*/, nullptr);
-				assert(ui);
+				_ASSERT(ui);
 				m_bTimerIsReset = false;
 			}
 		}

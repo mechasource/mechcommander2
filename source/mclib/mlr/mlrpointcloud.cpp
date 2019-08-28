@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "mlr/mlrsorter.h"
 #include "mlr/mlrclipper.h"
 #include "mlr/mlrpointcloud.h"
@@ -60,7 +60,7 @@ MLRPointCloud::~MLRPointCloud()
 //
 void
 MLRPointCloud::SetData(
-	pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data)
+	const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data)
 {
 	// Check_Pointer(this);
 	usedNrOfVertices = count;
@@ -178,7 +178,7 @@ MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		//		if(
 		//			//clippingFlags.IsLeftClipped() &&
 		//			(gos_vertices[numGOSVertices].x + ((type)?type*4.f : 4.f)) >
-		// Environment.screenWidth
+		// Environment.screenwidth
 		//			)
 		//		{
 		//			continue;
@@ -187,7 +187,7 @@ MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		//		if(
 		//			//clippingFlags.IsTopClipped() &&
 		//			(gos_vertices[numGOSVertices].y + ((type)?type*4.f : 4.f)) >
-		// Environment.screenHeight
+		// Environment.screenheight
 		//			)
 		//		{
 		//			continue;

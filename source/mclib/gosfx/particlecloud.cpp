@@ -11,7 +11,7 @@
 //############################################################################
 
 #include "stdinc.h"
-#include "gosFXHeaders.hpp"
+#include "gosfx/gosfxheaders.h"
 
 //------------------------------------------------------------------------------
 //
@@ -187,7 +187,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 		if (fix_data)
 		{
 			m_maxParticleCount = 1;
-			// PAUSE(("Warning: Value \"maxParticleCount\" in Effect \"%s\" Is
+			// PAUSE(("Warning: value \"maxParticleCount\" in Effect \"%s\" Is
 			// Out of Range and has been Reset", (const std::wstring_view&)m_name));
 		}
 		else

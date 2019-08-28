@@ -3,7 +3,7 @@
 
  codetest
 
- 2018-09-03 Jerker Beck, created
+ 2018-09-03 Jerker Back, created
 
  $LastChangedBy$
 
@@ -21,19 +21,19 @@ testresource();
 /// </summary>
 /// <remarks>override _AtlModule.WinMain and _AtlModule.Run for custom implementations
 /// </remarks>
-/// <param name="hInstance">application handle</param>
+/// <param name="hinstance">application handle</param>
 /// <param name="hPrevInstance">reserved</param>
-/// <param name="lpCmdLine">pointer to command line arguments</param>
+/// <param name="commandline">pointer to command line arguments</param>
 /// <param name="nShowCmd">initial window state</param>
 /// <returns>application exit code</returns>
 extern "C" int WINAPI
-wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
-	_In_ PWSTR lpCmdLine, _In_ int nShowCmd)
+wWinMain(_In_ HINSTANCE hinstance, _In_opt_ HINSTANCE hPrevInstance,
+	_In_ const std::wstring_view& commandline, _In_ int nShowCmd)
 {
-	(void)hInstance;
+	(void)hinstance;
 	(void)hPrevInstance;
-	(void)lpCmdLine;
-	(void)lpCmdLine;
+	(void)commandline;
+	(void)commandline;
 	(void)nShowCmd;
 
 	int result = EXIT_SUCCESS;

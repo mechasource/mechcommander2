@@ -93,7 +93,7 @@ GenericAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.seekBlock("TGLData");
 	if (result != NO_ERR)
 		Fatal(result, "Could not find block in building appearance INI file");
-	char aseFileName[512];
+	wchar_t aseFileName[512];
 	result = iniFile.readIdString("FileName", aseFileName, 511);
 	if (result != NO_ERR)
 		Fatal(result, "Could not find ASE FileName in building appearance INI file");
@@ -132,12 +132,12 @@ GenericAppearanceType::init(const std::wstring_view& fileName)
 	// We can load up to 10 Animation States.
 	for (size_t i = 0; i < MAX_BD_ANIMATIONS; i++)
 	{
-		char blockId[512];
+		wchar_t blockId[512];
 		sprintf(blockId, "Animation:%d", i);
 		result = iniFile.seekBlock(blockId);
 		if (result == NO_ERR)
 		{
-			char animName[512];
+			wchar_t animName[512];
 			result = iniFile.readIdString("AnimationName", animName, 511);
 			gosASSERT(result == NO_ERR);
 			result = iniFile.readIdBoolean("LoopAnimation", genAnimLoop[i]);
@@ -253,12 +253,12 @@ GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		// Load the texture and store its handle.
 		for (i = 0; i < genShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			if ((i == 0) && (appearType->textureName[0]))
 				strcpy(txmName, appearType->textureName);
 			else
 				genShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -348,9 +348,9 @@ GenericAppearance::setObjStatus(int32_t oStatus)
 				// Load the texture and store its handle.
 				for (size_t i = 0; i < genShape->GetNumTextures(); i++)
 				{
-					char txmName[1024];
+					wchar_t txmName[1024];
 					genShape->GetTextureName(i, txmName, 256);
-					char texturePath[1024];
+					wchar_t texturePath[1024];
 					sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 					FullPathFileName textureName;
 					textureName.init(texturePath, txmName, "");
@@ -454,13 +454,13 @@ GenericAppearance::setSkyNumber(int32_t skyNum)
 	// Load the texture and store its handle.
 	for (size_t i = 0; i < genShape->GetNumTextures(); i++)
 	{
-		char txmName[1024];
-		char newName[1024];
+		wchar_t txmName[1024];
+		wchar_t newName[1024];
 		if ((i == 0) && (appearType->textureName[0]))
 			strcpy(txmName, appearType->textureName);
 		else
 			genShape->GetTextureName(i, txmName, 256);
-		char texturePath[1024];
+		wchar_t texturePath[1024];
 		sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 		// Make txmName into a SKY%02d texture and load it!!
 		skyNumber = skyNum;
@@ -688,7 +688,7 @@ GenericAppearance::render(int32_t depthFixup)
 		}
 		else
 		{
-			genShape->SetARGBHighLight(highlightColor);
+			genShape->SetARGBHighLight(highlightcolour);
 		}
 		//---------------------------------------------
 		// Call Multi-shape render stuff here.
@@ -736,7 +736,7 @@ GenericAppearance::render(int32_t depthFixup)
 			drawSelectBrackets(color);
 		if (selected & DRAW_TEXT && objectNameId != -1)
 		{
-			char tmpString[255];
+			wchar_t tmpString[255];
 			cLoadString(objectNameId, tmpString, 254);
 			drawTextHelp(tmpString, color);
 		}
@@ -906,7 +906,7 @@ GenericAppearance::update(bool animate)
 		lightg = eye->getLightGreen(lightIntensity);
 		lightb = eye->getLightBlue(lightIntensity);
 		uint32_t lightRGB = (lightr << 16) + (lightg << 8) + lightb;
-		eye->setLightColor(0, lightRGB);
+		eye->setLightcolour(0, lightRGB);
 		eye->setLightIntensity(0, 1.0);
 		uint32_t fogRGB = 0xff << 24;
 		float fogStart = eye->fogStart;

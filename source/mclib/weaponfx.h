@@ -42,14 +42,14 @@
 #define INFANTRY_BOOM_EFFECT 55
 #define INFANTRY_BLOOD_EFFECT 82
 
-extern char mc2_word_none[];
+extern wchar_t mc2_word_none[];
 
 typedef struct _EffectData
 {
-	char effectName[50];
-	char muzzleFlashName[50];
-	char hitEffectName[50];
-	char missEffectName[50];
+	wchar_t effectName[50];
+	wchar_t muzzleFlashName[50];
+	wchar_t hitEffectName[50];
+	wchar_t missEffectName[50];
 	int32_t effectObjNum;
 } EffectData;
 

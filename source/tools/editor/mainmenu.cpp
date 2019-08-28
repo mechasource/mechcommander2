@@ -9,13 +9,13 @@
 #include "wlib.h"
 #include "mainmenu.h"
 //#include "resource.h"
-#include <assert.h>
+#include <_ASSERT.h>
 
 #include "editorinterface.h"
 
 MainMenu* pMainMenu = nullptr;
 MainMenu::MainMenu(EditorInterface* pEditorInterface) :
-	Window(L"MainMenu", 0, 0, Environment.screenWidth, Environment.screenHeight,
+	Window(L"MainMenu", 0, 0, Environment.screenwidth, Environment.screenheight,
 		pEditorInterface /*pgWinMan->Root()*/, 0, 0)
 {
 	pMenu = nullptr;
@@ -25,7 +25,7 @@ MainMenu::MainMenu(EditorInterface* pEditorInterface) :
 	Show();
 	pMainMenu = this;
 	m_pEditorInterface = pEditorInterface;
-	assert(m_pEditorInterface);
+	_ASSERT(m_pEditorInterface);
 	/*
 	uint32_t dwCheck =
 	gos_NewTextureFromFile(gos_Texture_Alpha,"data/wlib/check.tga",gosHint_VideoMemory|gosHint_DisableMipmap);

@@ -7,7 +7,7 @@
 #ifndef MLR_MLR_I_L_DeT_PMESH_HPP
 #define MLR_MLR_I_L_DeT_PMESH_HPP
 
-#include <mlr/mlr_i_c_det_pmesh.hpp>
+#include "mlr/mlr_i_c_det_pmesh.h"
 
 namespace MidLevelRenderer
 {
@@ -41,21 +41,21 @@ public:
 
 public:
 	virtual void SetNormalData(const Stuff::Vector3D* array, size_t point_count);
-	virtual void GetNormalData(Stuff::Vector3D** array, psize_t point_count);
+	virtual void GetNormalData(Stuff::Vector3D** array, size_t* point_count);
 
 #if COLOR_AS_DWORD
-	virtual void SetColorData(pcuint32_t array, size_t point_count);
+	virtual void SetcolourData(const uint32_t* array, size_t point_count);
 #else
-	virtual void SetColorData(const Stuff::RGBAColor* array, size_t point_count);
+	virtual void SetcolourData(const Stuff::RGBAcolour* array, size_t point_count);
 #endif
 
 	virtual void Lighting(MLRLight* const*, uint32_t nrLights);
 
 	virtual void
 #if COLOR_AS_DWORD
-	PaintMe(pcuint32_t paintMe);
+	PaintMe(const uint32_t* paintMe);
 #else
-	PaintMe(const Stuff::RGBAColor* paintMe);
+	PaintMe(const Stuff::RGBAcolour* paintMe);
 #endif
 
 	virtual uint32_t TransformAndClip(
@@ -80,7 +80,7 @@ public:
 		// Check_Object(this);
 		size_t ret = MLR_I_C_DeT_PMesh::GetSize();
 		ret += normals.GetSize();
-		ret += litColors.GetSize();
+		ret += litcolours.GetSize();
 		return ret;
 	}
 
@@ -88,17 +88,17 @@ protected:
 	std::vector<Stuff::Vector3D> normals; // Base address of normal list
 
 #if COLOR_AS_DWORD
-	std::vector<uint32_t> litColors;
-	std::vector<uint32_t>* actualColors;
+	std::vector<uint32_t> litcolours;
+	std::vector<uint32_t>* actualcolours;
 #else
-	std::vector<Stuff::RGBAColor> litColors;
-	std::vector<Stuff::RGBAColor>* actualColors;
+	std::vector<Stuff::RGBAcolour> litcolours;
+	std::vector<Stuff::RGBAcolour>* actualcolours;
 #endif
 };
 
 // MLR_I_L_DeT_PMesh*
-// CreateIndexedCube(float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
+// CreateIndexedCube(float, Stuff::RGBAcolour*, Stuff::Vector3D*, MLRState*);
 MLRShape*
-CreateIndexedIcosahedron_Color_Lit_DetTex(IcoInfo&, MLRState*, MLRState*);
+CreateIndexedIcosahedron_colour_Lit_DetTex(IcoInfo&, MLRState*, MLRState*);
 } // namespace MidLevelRenderer
 #endif

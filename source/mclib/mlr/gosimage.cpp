@@ -29,7 +29,7 @@ GOSImage::GOSImage(const std::wstring_view& iName) :
 GOSImage::GOSImage(uint32_t iHandle) :
 	Plug(DefaultData)
 {
-	char str[20];
+	wchar_t str[20];
 	sprintf(str, "image%03d", iHandle);
 	imageName = str;
 	flags = Loaded;
@@ -76,7 +76,7 @@ GOSImage::~GOSImage(void)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int32_t
-GOSImage::GetWidth()
+GOSImage::Getwidth()
 {
 	return 0;
 }
@@ -84,7 +84,7 @@ GOSImage::GetWidth()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int32_t
-GOSImage::GetHeight()
+GOSImage::Getheight()
 {
 	return 0;
 }
@@ -122,10 +122,10 @@ GOSImage::UnlockImage()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-puint8_t
+uint8_t*
 GOSImage::GetImagePtr()
 {
-	return (puint8_t)ptr.pTexture;
+	return (uint8_t*)ptr.pTexture;
 }
 
 #endif

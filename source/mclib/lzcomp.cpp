@@ -9,16 +9,16 @@
 #include "lz.h"
 
 //#ifndef _MBCS
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 //
 //#ifndef HEAP_H
 //#include "heap.h"
 //#endif
 //
 //#else
-//#include <assert.h>
+//#include <_ASSERT.h>
 //#include <malloc.h>
-//#define gosASSERT assert
+//#define gosASSERT _ASSERT
 //#define gos_Malloc malloc
 //#define gos_Free free
 //#endif
@@ -30,16 +30,16 @@
 #define nullptr 0
 #endif
 
-typedef uint8_t* puint8_t;
+typedef uint8_t* uint8_t*;
 
 //-----------------------------
 // Used by Compressor Routine
-puint8_t LZCHashBuf = nullptr;
+uint8_t* LZCHashBuf = nullptr;
 size_t InBufferUpperLimit = 0;
 size_t InBufferPos = 0;
-puint8_t InBuffer = nullptr;
+uint8_t* InBuffer = nullptr;
 size_t OutBufferPos = 0;
-puint8_t OutBuffer = nullptr;
+uint8_t* OutBuffer = nullptr;
 uint32_t PrefixCode = 0;
 uint32_t FreeCode = 0;
 uint32_t MaxCode = 0;
@@ -70,14 +70,14 @@ static uint8_t tag_LZCHashBuf[sizeof(Hash) * MaxMax + 1024];
 // LZ Compress Routine
 // Takes a pointer to dest buffer, a pointer to source buffer and len of source.
 // returns length of compressed image.
-size_t __stdcall LZCompress(puint8_t dest, puint8_t src, size_t srcLen)
+size_t __stdcall LZCompress(uint8_t* dest, uint8_t* src, size_t srcLen)
 {
 	size_t result = 0;
 	if (!LZCHashBuf)
 	{
 		/* allocating LZCHashBuf off a gos heap causes problems for applications
 		that need to reset gos or its heaps*/
-		LZCHashBuf = (puint8_t) & (tag_LZCHashBuf[0]);
+		LZCHashBuf = (uint8_t*) & (tag_LZCHashBuf[0]);
 	}
 	// Initialize:
 	uint32_t clearSize = sizeof(Hash) * 256;
@@ -158,7 +158,7 @@ doneRC1:
 Make_Into_Code:
 	__asm
 		{
-		movzx	eax, al // turn char into code
+		movzx	eax, al // turn wchar_t into code
 		}
 	//-------------------------------------------------------------------------
 Set_AX_Prefix:
@@ -180,7 +180,7 @@ doneRC2:
 	__asm
 		{
 		jc		FoundEOF // No more input
-		mov		[K], al // Save returned char
+		mov		[K], al // Save returned wchar_t
 		mov		ebx, [PrefixCode] // check for this pair
 			// call	LookUpCode            		//in the table
 
@@ -355,7 +355,7 @@ save2:
 		mov		[FreeCode], First_Free // Next code to use is first_free
 
 
-		mov		al, [K] // Last char
+		mov		al, [K] // Last wchar_t
 		jmp		Make_Into_Code
 	}
 	//---------------------------------------------------------------

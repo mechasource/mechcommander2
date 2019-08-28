@@ -16,16 +16,16 @@
 #endif
 
 #include <float.h>
-#include "gameos.hpp"
+//#include "gameos.hpp"
 //---------------------------------------------------------------------------
 class VFXElement : public Element
 {
 public:
-	puint8_t shapeTable;
+	uint8_t* shapeTable;
 	int32_t frameNum;
 	int32_t x, y;
 	bool reverse;
-	puint8_t fadeTable;
+	uint8_t* fadeTable;
 	bool noScaleDraw;
 	bool scaleUp;
 
@@ -40,10 +40,10 @@ public:
 		scaleUp = false;
 	}
 
-	VFXElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
-		puint8_t fTable = nullptr, bool noScale = false, bool scaleUp = false);
-	VFXElement(puint8_t _shape, float _x, float _y, int32_t frame, bool rev,
-		puint8_t fTable = nullptr, bool noScale = false, bool scaleUp = false);
+	VFXElement(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+		uint8_t* fTable = nullptr, bool noScale = false, bool scaleUp = false);
+	VFXElement(uint8_t* _shape, float _x, float _y, int32_t frame, bool rev,
+		uint8_t* fTable = nullptr, bool noScale = false, bool scaleUp = false);
 
 	virtual void draw(void);
 };
@@ -58,13 +58,13 @@ public:
 	// the shapes into a single Texture for
 	// rendering.  Can be used for vehicles
 	// and mechs in MechCmdr 2.
-	puint8_t shapeTable[MAX_ELEMENT_SHAPES];
+	uint8_t* shapeTable[MAX_ELEMENT_SHAPES];
 	int32_t frameNum[MAX_ELEMENT_SHAPES];
 	bool reverse[MAX_ELEMENT_SHAPES];
 	int32_t x, y, xHS, yHS;
 	size_t* fadeTable;
 	uint32_t textureMemoryHandle;
-	int32_t actualHeight;
+	int32_t actualheight;
 	float textureFactor;
 	uint32_t lightRGB;
 	uint32_t fogRGB;
@@ -78,12 +78,12 @@ public:
 		reverse[0] = reverse[1] = reverse[2] = reverse[3] = false;
 		fadeTable = nullptr;
 		textureMemoryHandle = 0xffffffff;
-		actualHeight = -1;
+		actualheight = -1;
 		lightRGB = 0xffffffff; // Fully Lit
 		fogRGB = 0xffffffff; // NO Fog
 	}
 
-	void init(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+	void init(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
 		size_t* fTable = nullptr, float _z = 0.0, float tZ = 0.0);
 
 	int32_t getTextureHandle(int32_t height = -1); // Return the block of memory
@@ -109,7 +109,7 @@ public:
 	// Texture is passed in when inited.
 	// For use with Cards.  Not real 3D faces!
 	int32_t x, y, xHS, yHS;
-	float tWidth;
+	float twidth;
 	float z, topZ;
 	uint32_t textureMemoryHandle;
 	uint32_t lightRGB;
@@ -128,7 +128,7 @@ public:
 	void setFog(uint32_t fog) { fogRGB = fog; }
 
 	void init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy,
-		float tWidth, float _z, float tZ);
+		float twidth, float _z, float tZ);
 	virtual void draw(void);
 };
 

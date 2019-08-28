@@ -321,7 +321,7 @@ MissionInterfaceManager::Command MissionInterfaceManager::commands[MAX_COMMAND] 
 extern bool drawTerrainGrid;
 extern int32_t turn; // What frame of the scenario is it?
 
-extern char DebugStatusBarString[256];
+extern wchar_t DebugStatusBarString[256];
 
 void
 MissionInterfaceManager::init(void)
@@ -344,7 +344,7 @@ MissionInterfaceManager::init(void)
 	}
 	bPaused = 0;
 	bPausedWithoutMenu = 0;
-	resolution = Environment.screenWidth;
+	resolution = Environment.screenwidth;
 	s_instance = this;
 	bEnergyWeapons = 0;
 	zoomChoice = 2;
@@ -414,7 +414,7 @@ MissionInterfaceManager::startAnimation(
 	return true;
 }
 
-static char tutorialPlayerName[1024];
+static wchar_t tutorialPlayerName[1024];
 void
 MissionInterfaceManager::setTutorialText(const std::wstring_view& text)
 {
@@ -425,7 +425,7 @@ MissionInterfaceManager::setTutorialText(const std::wstring_view& text)
 void
 MissionInterfaceManager::update(void)
 {
-	if (Environment.screenWidth != resolution)
+	if (Environment.screenwidth != resolution)
 	{
 		swapResolutions();
 	}
@@ -484,13 +484,13 @@ MissionInterfaceManager::update(void)
 					buttonFlashTime += frameLength;
 					if (buttonFlashTime > .5f)
 					{
-						controlGui.getButton(targetButtonId)->setColor(0xffffffff);
+						controlGui.getButton(targetButtonId)->setcolour(0xffffffff);
 						buttonFlashTime = 0.0f;
 						buttonNumFlashes--;
 					}
 					else if (buttonFlashTime > .25f)
 					{
-						controlGui.getButton(targetButtonId)->setColor(0xff7f7f7f);
+						controlGui.getButton(targetButtonId)->setcolour(0xff7f7f7f);
 					}
 				}
 				else
@@ -498,7 +498,7 @@ MissionInterfaceManager::update(void)
 					// Flashing is done.  We now return you to your regularly
 					// scheduled program.
 					animationRunning = false;
-					controlGui.getButton(targetButtonId)->setColor(0xffffffff);
+					controlGui.getButton(targetButtonId)->setcolour(0xffffffff);
 					if (targetIsPressed)
 						controlGui.pushButton(targetButtonId);
 				}
@@ -562,7 +562,7 @@ MissionInterfaceManager::update(void)
 	if (guiFrozen)
 	{
 		userInput->setMouseCursor(mState_TUTORIALS);
-		userInput->setMousePos(Environment.screenWidth * 0.5f, Environment.screenHeight * 0.5f);
+		userInput->setMousePos(Environment.screenwidth * 0.5f, Environment.screenheight * 0.5f);
 		controlGui.update(isPaused() && !isPausedWithoutMenu(), false);
 		return;
 	}
@@ -729,7 +729,7 @@ MissionInterfaceManager::update(void)
 		wPos.z, PathManager->m_numpaths, PathManager->m_peakpaths);
 	if (MPlayer)
 	{
-		char mpStr[256];
+		wchar_t mpStr[256];
 		if (MPlayer->isServer())
 			sprintf(mpStr, ", MULTIPLAY: %s-(%d)SERVER {%d,%d}", MPlayer->getPlayerName(),
 				MPlayer->commanderid, MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
@@ -2681,7 +2681,7 @@ MissionInterfaceManager::init(FitIniFilePtr loader)
 	float missionDragThreshold;
 	result = loader->readIdFloat("MouseDragThreshold", missionDragThreshold);
 	gosASSERT(result == NO_ERROR);
-	float newThreshold = missionDragThreshold / Environment.screenHeight;
+	float newThreshold = missionDragThreshold / Environment.screenheight;
 	userInput->setMouseDragThreshold(newThreshold);
 	float missionDblClkThreshold;
 	result = loader->readIdFloat("MouseDoubleClickThreshold", missionDblClkThreshold);
@@ -2907,20 +2907,20 @@ MissionInterfaceManager::render(void)
 	/* 	if ( scenarioTime  < 7.0 )
 		{
 			int32_t color = 0xff000000;
-			if ( (prefs.resolution == 0 && Environment.screenWidth == 640)
-			  || (prefs.resolution == 1 && Environment.screenWidth == 800)
-			  || (prefs.resolution == 2 && Environment.screenWidth == 1024)
-			  || (prefs.resolution == 3 && Environment.screenWidth == 1280)
-			  ||(prefs.resolution == 4 && Environment.screenWidth == 1600))
+			if ( (prefs.resolution == 0 && Environment.screenwidth == 640)
+			  || (prefs.resolution == 1 && Environment.screenwidth == 800)
+			  || (prefs.resolution == 2 && Environment.screenwidth == 1024)
+			  || (prefs.resolution == 3 && Environment.screenwidth == 1280)
+			  ||(prefs.resolution == 4 && Environment.screenwidth == 1600))
 			{
-				color = interpolateColor( 0xff000000, 0x00000000,
+				color = interpolatecolour( 0xff000000, 0x00000000,
 	(scenarioTime-swapTime)/(7.0-swapTime) );
 			}
 			else
 				swapTime = scenarioTime;
 
-			RECT tmpRect = { 0,0, Environment.screenWidth,
-	Environment.screenHeight }; drawRect( tmpRect, color );
+			RECT tmpRect = { 0,0, Environment.screenwidth,
+	Environment.screenheight }; drawRect( tmpRect, color );
 
 	}*/
 }
@@ -2930,7 +2930,7 @@ MissionInterfaceManager::initTacMap(PacketFile* file, int32_t packet)
 {
 	file->seekPacket(packet);
 	int32_t size = file->getPacketSize();
-	puint8_t mem = new uint8_t[size];
+	uint8_t* mem = new uint8_t[size];
 	file->readPacket(packet, mem);
 	controlGui.initTacMapBuildings(mem, size);
 	delete mem;
@@ -2955,7 +2955,7 @@ MissionInterfaceManager::printDebugInfo()
 	{
 		int32_t row, col;
 		land->worldToCell(wPos, row, col);
-		char debugString[256];
+		wchar_t debugString[256];
 		if (target)
 			sprintf(debugString, "POS = %s(%c) %d,%d [%d, %d] (%.4f, %.4f, %.4f) OBJ = %s\n",
 				terrainStr[GameMap->getTerrain(row, col)],
@@ -3152,11 +3152,11 @@ MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable, bool 
 	{
 		if (mouseX <= (screenScrollLeft))
 			scrollLeft();
-		if ((mouseX >= (Environment.screenWidth - screenScrollRight)))
+		if ((mouseX >= (Environment.screenwidth - screenScrollRight)))
 			scrollRight();
 		if ((mouseY <= (screenScrollUp) && mouseY >= -screenScrollUp))
 			scrollUp();
-		if ((mouseY >= (Environment.screenHeight - screenScrollDown)))
+		if ((mouseY >= (Environment.screenheight - screenScrollDown)))
 			scrollDown();
 	}
 	if (attilaXAxis < -ATTILA_THRESHOLD)
@@ -3883,7 +3883,7 @@ BringInReinforcement(
 		(const std::wstring_view&)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(vehicleID);
 	if (!vehicleFile)
 	{
-		char s[1024];
+		wchar_t s[1024];
 		sprintf(s, "BringInReinforcement: null behicleFile (%d)", vehicleID);
 		STOP((s));
 		// return(nullptr);
@@ -3901,17 +3901,17 @@ BringInReinforcement(
 	data.active = 1;
 	data.exists = exists;
 	data.capturable = 0;
-	data.baseColor = prefs.baseColor;
-	data.highlightColor1 = prefs.highlightColor;
-	data.highlightColor2 = prefs.highlightColor;
+	data.basecolour = prefs.basecolour;
+	data.highlightcolour1 = prefs.highlightcolour;
+	data.highlightcolour2 = prefs.highlightcolour;
 	if (MPlayer)
 	{
 		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderid);
 		if (pInfo)
 		{
-			data.baseColor = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
-			data.highlightColor1 = MPlayer->colors[pInfo->stripeColor];
-			data.highlightColor2 = MPlayer->colors[pInfo->stripeColor];
+			data.basecolour = MPlayer->colors[pInfo->basecolour[BASECOLOR_TEAM]];
+			data.highlightcolour1 = MPlayer->colors[pInfo->stripecolour];
+			data.highlightcolour2 = MPlayer->colors[pInfo->stripecolour];
 		}
 	}
 	int32_t moverId = mission->addMover(&data);
@@ -3976,7 +3976,7 @@ MissionInterfaceManager::beginVtol(
 	}
 	if (vehicleID[commanderid] == 0)
 	{
-		char s[1024];
+		wchar_t s[1024];
 		sprintf(s,
 			"beginvtol: supportID = %d, commanderid = %d, vehicleID = %d, "
 			"vehicleFile = %s",
@@ -4356,8 +4356,8 @@ MissionInterfaceManager::isPausedWithoutMenu()
 void
 MissionInterfaceManager::swapResolutions()
 {
-	controlGui.swapResolutions(Environment.screenWidth);
-	resolution = Environment.screenWidth;
+	controlGui.swapResolutions(Environment.screenwidth);
+	resolution = Environment.screenwidth;
 	keyboardRef->init();
 }
 
@@ -4463,7 +4463,7 @@ MissionInterfaceManager::quickDebugInfo()
 	{
 		int32_t row, col;
 		land->worldToCell(wPos, row, col);
-		char debugString[256];
+		wchar_t debugString[256];
 		if (target)
 			sprintf(debugString,
 				"INFO = %s(%c%c) %d(W%d) [%d, %d] (%.4f, %.4f, %.4f) "
@@ -4486,7 +4486,7 @@ MissionInterfaceManager::quickDebugInfo()
 				row, col, wPos.x, wPos.y, wPos.z, PathManager->m_numpaths, PathManager->m_peakpaths);
 		DEBUGWINS_print(debugString);
 		sprintf(debugString, "REQ =");
-		char s[10];
+		wchar_t s[10];
 		for (size_t i = 0; i < 25; i++)
 		{
 			sprintf(s, " %02d", PathManager->m_sourcetally[i]);
@@ -5042,7 +5042,7 @@ MissionInterfaceManager::saveHotKeys(FitIniFile& file)
 	file.writeBlock("Keyboard");
 	for (size_t i = 0; i < MAX_COMMAND; i++)
 	{
-		char header[256];
+		wchar_t header[256];
 		sprintf(header, "Key%ld", i);
 		file.writeIdLong(header, commands[i].key);
 	}
@@ -5064,7 +5064,7 @@ MissionInterfaceManager::loadHotKeys(FitIniFile& file)
 	{
 		for (size_t i = 0; i < MAX_COMMAND; i++)
 		{
-			char header[256];
+			wchar_t header[256];
 			sprintf(header, "Key%ld", i);
 			file.readIdLong(header, commands[i].key);
 		}
@@ -5232,9 +5232,9 @@ MissionInterfaceManager::drawHotKeys()
 void
 MissionInterfaceManager::drawHotKey(const std::wstring_view& keyString, const std::wstring_view& descString, int32_t x, int32_t y)
 {
-	hotKeyFont.render(keyString, 0, y, x, Environment.screenHeight, 0xffffffff, 0, 1);
-	hotKeyFont.render(descString, x + (10 * Environment.screenWidth / 640.f), y,
-		Environment.screenWidth, Environment.screenHeight, 0xffffffff, 0, 0);
+	hotKeyFont.render(keyString, 0, y, x, Environment.screenheight, 0xffffffff, 0, 1);
+	hotKeyFont.render(descString, x + (10 * Environment.screenwidth / 640.f), y,
+		Environment.screenwidth, Environment.screenheight, 0xffffffff, 0, 0);
 }
 
 void

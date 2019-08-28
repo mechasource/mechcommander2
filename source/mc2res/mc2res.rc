@@ -74,7 +74,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// String Table
+// string Table
 //
 
 STRINGTABLE 
@@ -1791,9 +1791,9 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_HELP_PILOTING_INDICATOR "PILOTING Value ="
+    IDS_HELP_PILOTING_INDICATOR "PILOTING value ="
     IDS_HELP_SENSOR         "SENSOR  This displays the relative ability of the pilot to read his sensors"
-    IDS_HELP_SENSOR_INDICATOR "SENSOR Value ="
+    IDS_HELP_SENSOR_INDICATOR "SENSOR value ="
     IDS_HELP_RANK           "RANKING This displays the ranking of the pilot"
     IDS_HELP_HELP           "HELP This area displays help information."
     IDS_HELP_PLAY           "PLAY This will play the movie."
@@ -1803,9 +1803,9 @@ BEGIN
     IDS_HELP_DROPWEIGHT     "DROPWEIGHT  This displays how much your DEPLOYMENT TEAM weighs.  You can only take a limited weight on every mission.   "
     IDS_HELP_MECHWEIGHT     "WEIGHT This displays the weight of the mech"
     IDS_HELP_ARMOR          "ARMOR This displays the relative amount of Armour on the mech"
-    IDS_HELP_ARMOR_INDICATOR "ARMOR Value ="
+    IDS_HELP_ARMOR_INDICATOR "ARMOR value ="
     IDS_HELP_SPEED          "SPEED This displays the relative speed of the mech"
-    IDS_HELP_SPEED_INDICATOR "SPEED Value ="
+    IDS_HELP_SPEED_INDICATOR "SPEED value ="
     IDS_MCL_SCRIPTS_LAST    "The last of Brennan's space"
 END
 
@@ -2084,11 +2084,11 @@ BEGIN
     IDS_HELP_SPEC3          "PILOT SPECIALTY 3 This is help information for the pilot's first specialty"
     IDS_HELP_SPEC4          "PILOT SPECIALTY 4 This is help information for the pilot's first specialty"
     IDS_HELP_JUMPING        "JUMPING This displays the relative jumping capability of the mech"
-    IDS_HELP_JUMPING_INDICATOR "JUMPING Value ="
+    IDS_HELP_JUMPING_INDICATOR "JUMPING value ="
     IDS_HELP_EXPERIENCE     "EXPERIENCE This displays the relative expercience of the pilot"
-    IDS_HELP_EXPERIENCE_INDICATOR "EXPERIENCE Value ="
+    IDS_HELP_EXPERIENCE_INDICATOR "EXPERIENCE value ="
     IDS_HELP_TARGETING      "TARGETING This displays the relative targeting ability of the pilot"
-    IDS_HELP_TARGETING_INDICATOR "TARGETING Value ="
+    IDS_HELP_TARGETING_INDICATOR "TARGETING value ="
     IDS_HELP_PILOTING       "PILOTING This displays the relative piloting ability of the pilot"
 END
 
@@ -4661,7 +4661,7 @@ BEGIN
     IDS_DeadOrFledAllEnemyUnits "All Enemy Units Are Dead or Have Fled"
     IDS_DeadOrFledNumberOfEnemyUnits 
                             "Number of Enemy Units Are Dead or Have Fled"
-    IDS_DeadOrFledEnemyUnitGroup "Enemy Unit Group Is Dead or Has Fled"
+    IDS_DeadOrFledEnemyUnitGroup "Enemy Unit group Is Dead or Has Fled"
     IDS_DeadOrFledSpecificEnemyUnit "Specific Enemy Unit Is Dead or Has Fled"
     IDS_CaptureSpecificUnit "Specific Enemy Unit Is Captured"
     IDS_CaptureSpecificStructure "Specific Enemy Structure Is Captured"
@@ -4680,8 +4680,8 @@ STRINGTABLE
 BEGIN
     IDS_PlayBIK             "Play BIK"
     IDS_PlayWAV             "Play WAV"
-    IDS_DisplayTextMessage  "Display Text Message"
-    IDS_DisplayResourceTextMessage "Display Resource Text Message"
+    IDS_DisplayTextMessage  "Display Text message"
+    IDS_DisplayResourceTextMessage "Display Resource Text message"
     IDS_SetBooleanFlag      "Set Flag"
     IDS_MakeNewTechnologyAvailable "Make New Technology Available"
 END
@@ -4699,7 +4699,7 @@ BEGIN
     IDS_MP_PLAYERPREFS_INSIGNIA_HELP 
                             "UNIT INSIGNIA     Select an insignia in the drop-down list to represent your unit. Your own customized insignia will appear in this list if it is saved in the \\Multiplayer\\Insignia folder as a 32-by-32 24-bit Targa (.tga) file."
     IDS_MP_PLAYERPREFS_COLORS_HELP 
-                            "COLORS     Select a base or stripe color for your unit. Colors marked with an X are not available."
+                            "COLORS     Select a base or stripe color for your unit. colours marked with an X are not available."
     IDS_MP_PARAM_LOADMAP_HELP 
                             "LOAD MAP     Open the Load Map dialog box, where the host chooses the map for the game."
     IDS_MP_PARAM_MAPINFO_HELP 
@@ -5610,7 +5610,7 @@ STRINGTABLE
 BEGIN
     IDS_UNNAMDE_FOREST      "Unnamed Forest %ld"
     IDS_TOO_MANY_PILOTS     "Too many units on map.  Limit is 104."
-    IDS_INVALID_COLOR_MAP   "Color Map wrong size or not valid TGA."
+    IDS_INVALID_COLOR_MAP   "colour Map wrong size or not valid TGA."
 END
 
 STRINGTABLE 

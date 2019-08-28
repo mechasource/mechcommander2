@@ -29,10 +29,10 @@
 //#include <windows.h>
 
 //#ifndef _MBCS
-//#include "gameos.hpp"
+////#include "gameos.hpp"
 //#else
-//#include <assert.h>
-//#define gosASSERT assert
+//#include <_ASSERT.h>
+//#define gosASSERT _ASSERT
 //#define gos_Malloc malloc
 //#define gos_Free free
 //#endif
@@ -44,16 +44,16 @@
 
 #if CONSIDERED_OBSOLETE
 File* fileTrafficLog = nullptr;
-char CDInstallPath[1024];
+wchar_t CDInstallPath[1024];
 void
 EnterWindowMode();
 void
 EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
-extern char FileMissingString[];
-extern char CDMissingString[];
-extern char MissingTitleString[];
+extern wchar_t FileMissingString[];
+extern wchar_t CDMissingString[];
+extern wchar_t MissingTitleString[];
 #endif
 
 #if CONSIDERED_OBSOLETE
@@ -92,7 +92,7 @@ int32_t __stdcall fileExists(const std::wstring_view& filename)
 int32_t __stdcall fileExistsOnCD(const std::wstring_view& filename)
 {
 	// Just add the CD path here and see if its there.
-	char bigPath[2048];
+	wchar_t bigPath[2048];
 	strcpy(bigPath, CDInstallPath);
 	strcat(bigPath, filename);
 	struct _stat st;
@@ -185,7 +185,7 @@ MechFile::open(stdfs::path& path)
 	// todo: error handling
 
 	// check file exists and is accessible
-	if (stdfs::exists(path) == false)
+	if (!stdfs::exists(path))
 		throw std::system_error(ERROR_PATH_NOT_FOUND, std::system_category(), __func__);
 
 	m_stream.open(path, std::ios::in);
@@ -228,7 +228,7 @@ MechFile::open(stdfs::path& path)
 			{
 				// Not in main installed directory and not in fastfile.  Look on
 				// CD.
-				char actualPath[2048];
+				wchar_t actualPath[2048];
 				strcpy(actualPath, CDInstallPath);
 				strcat(actualPath, m_fileName);
 				handle = _open(actualPath, _O_RDONLY);
@@ -244,7 +244,7 @@ MechFile::open(stdfs::path& path)
 						// If its there, the CD is present BUT the file is
 						// missing. MANY files in MechCommander 2 are LEGALLY
 						// missing! Tell it to the art staff.
-						char testCDPath[2048];
+						wchar_t testCDPath[2048];
 						strcpy(testCDPath, CDInstallPath);
 						strcat(testCDPath, "tgl.fst");
 						uint32_t findCD = fileExists(testCDPath);
@@ -252,7 +252,7 @@ MechFile::open(stdfs::path& path)
 							// 2 to indicate file not found.
 							return 2;
 						EnterWindowMode();
-						char data[2048];
+						wchar_t data[2048];
 						sprintf(data, FileMissingString, m_fileName, CDMissingString);
 						uint32_t result1 = MessageBox(
 							nullptr, data, MissingTitleString, MB_OKCANCEL | MB_ICONWARNING);
@@ -275,7 +275,7 @@ MechFile::open(stdfs::path& path)
 						{
 							createTrafficLog();
 						}
-						char msg[300];
+						wchar_t msg[300];
 						sprintf(msg, "CFHandle  Length: %010d    File: %s", fileSize(), m_fileName);
 						fileTrafficLog->writeLine(msg);
 					}
@@ -313,7 +313,7 @@ MechFile::open(stdfs::path& path)
 				{
 					createTrafficLog();
 				}
-				char msg[300];
+				wchar_t msg[300];
 				sprintf(msg, "FASTF     Length: %010d    File: %s", fileSize(), m_fileName);
 				fileTrafficLog->writeLine(msg);
 			}
@@ -322,7 +322,7 @@ MechFile::open(stdfs::path& path)
 			// RAM
 			//-- Then close fastfile!!!!!
 			inRAM = TRUE;
-			fileImage = (puint8_t)malloc(fileSize());
+			fileImage = (uint8_t*)malloc(fileSize());
 			if (fileImage)
 			{
 				fastFile->readFast(fastFileHandle, fileImage, fileSize());
@@ -344,7 +344,7 @@ MechFile::open(stdfs::path& path)
 				{
 					createTrafficLog();
 				}
-				char msg[300];
+				wchar_t msg[300];
 				sprintf(msg, "CFHandle  Length: %010d    File: %s", fileSize(), m_fileName);
 				fileTrafficLog->writeLine(msg);
 			}
@@ -402,7 +402,7 @@ MechFile::open(std::unique_ptr<File> _parent, uint32_t fileSize, int32_t numChil
 			{
 				createTrafficLog();
 			}
-			char msg[300];
+			wchar_t msg[300];
 			sprintf(msg, "CHILD     Length: %010d    File: %s", fileSize, _parent->getFilename());
 			fileTrafficLog->writeLine(msg);
 		}
@@ -440,7 +440,7 @@ MechFile::open(std::unique_ptr<File> _parent, uint32_t fileSize, int32_t numChil
 			maxChildren = 0;
 			inRAM = TRUE;
 			uint32_t result = 0;
-			fileImage = (puint8_t)malloc(fileSize);
+			fileImage = (uint8_t*)malloc(fileSize);
 			if (!fileImage)
 				inRAM = false;
 			if (_parent->getFileClass() == FileClass::packetfile)
@@ -468,7 +468,7 @@ MechFile::open(const std::wstring_view& buffer, int32_t bufferLength)
 {
 	if (buffer && bufferLength > 0)
 	{
-		fileImage = (puint8_t)buffer;
+		fileImage = (uint8_t*)buffer;
 		physicalLength = bufferLength;
 		logicalPosition = 0;
 		fileMode = RDWRITE;
@@ -723,7 +723,7 @@ MechFile::seek(int32_t pos, int32_t from)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::read(uint32_t pos, puint8_t buffer, int32_t length)
+MechFile::read(uint32_t pos, uint8_t* buffer, int32_t length)
 {
 	int32_t result = 0;
 	if (inRAM && fileImage)
@@ -871,7 +871,7 @@ isNAN(float* pFloat)
 	/* We're assuming ansi/ieee 754 floating point representation. See
 	 * http://www.research.microsoft.com/~hollasch/cgindex/coding/ieeefloat.html.
 	 */
-	puint8_t byteArray = (puint8_t)pFloat;
+	uint8_t* byteArray = (uint8_t*)pFloat;
 	if ((0x7f == (0x7f & byteArray[3])) && (0x80 == (0x80 & byteArray[2])))
 	{
 		if (0x80 == (0x80 & byteArray[3]))
@@ -929,7 +929,7 @@ MechFile::readFloat(void)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::readString(puint8_t buffer)
+MechFile::readString(uint8_t* buffer)
 {
 	int32_t last = 0;
 	if (isOpen())
@@ -953,7 +953,7 @@ MechFile::readString(puint8_t buffer)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::read(puint8_t buffer, int32_t length)
+MechFile::read(uint8_t* buffer, int32_t length)
 {
 	int32_t result = 0;
 	if (inRAM && fileImage)
@@ -1003,14 +1003,14 @@ MechFile::readRAW(uint32_t*& buffer, UserHeapPtr heap)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::readLine(puint8_t buffer, int32_t maxLength)
+MechFile::readLine(uint8_t* buffer, int32_t maxLength)
 {
 	int32_t i = 0;
 	if (inRAM && fileImage)
 	{
 		if (isOpen())
 		{
-			puint8_t readAddress = (puint8_t)fileImage + logicalPosition;
+			uint8_t* readAddress = (uint8_t*)fileImage + logicalPosition;
 			while (
 				(i < maxLength) && ((i + logicalPosition) < fileSize()) && readAddress[i] != '\r')
 				i++;
@@ -1067,14 +1067,14 @@ MechFile::readLine(puint8_t buffer, int32_t maxLength)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::readLineEx(puint8_t buffer, int32_t maxLength)
+MechFile::readLineEx(uint8_t* buffer, int32_t maxLength)
 {
 	int32_t i = 0;
 	if (inRAM && fileImage)
 	{
 		if (isOpen())
 		{
-			puint8_t readAddress = (puint8_t)fileImage + logicalPosition;
+			uint8_t* readAddress = (uint8_t*)fileImage + logicalPosition;
 			while (i < maxLength && readAddress[i] != '\n')
 				i++;
 			i++; // Include Newline
@@ -1124,7 +1124,7 @@ MechFile::readLineEx(puint8_t buffer, int32_t maxLength)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::write(uint32_t pos, puint8_t buffer, int32_t bytes)
+MechFile::write(uint32_t pos, uint8_t* buffer, int32_t bytes)
 {
 	uint32_t result = 0;
 	if (m_parent == nullptr)
@@ -1385,7 +1385,7 @@ MechFile::writeLine(const std::wstring_view& buffer)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::write(puint8_t buffer, int32_t bytes)
+MechFile::write(uint8_t* buffer, int32_t bytes)
 {
 	int32_t result = 0;
 	if (m_parent == nullptr)

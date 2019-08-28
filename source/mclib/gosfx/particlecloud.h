@@ -93,7 +93,7 @@ protected:
 	int32_t m_activeParticleCount;
 	float m_birthAccumulator;
 
-	std::vector<char> m_data;
+	std::vector<wchar_t> m_data;
 
 	ParticleCloud(ClassData* class_data, Specification* spec, uint32_t flags);
 

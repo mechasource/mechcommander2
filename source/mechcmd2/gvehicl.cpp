@@ -116,8 +116,8 @@ extern float worldUnitsPerMeter;
 extern int32_t StatusChunkUnpackErr;
 
 extern TeamPtr homeTeam;
-extern bool friendlyDestroyed;
-extern bool enemyDestroyed;
+extern bool friendlydestroyed;
+extern bool enemydestroyed;
 extern bool useSound;
 extern bool useOldProject;
 extern bool drawExtents;
@@ -150,7 +150,7 @@ LogWeaponFireChunk(
 	WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameObjectPtr target);
 
 int32_t DefaultPilotId = 653;
-char marineProfileName[80] = "PEM00001";
+wchar_t marineProfileName[80] = "PEM00001";
 
 //**********************************************************************************
 
@@ -554,7 +554,7 @@ GroundVehicleType::handleDestruction(GameObjectPtr collidee, GameObjectPtr colli
 		// What heroic music should be played?
 		if (CombatLog)
 		{
-			char s[1024];
+			wchar_t s[1024];
 			sprintf(s, "[%.2f] vehicle.destroyed: (%05d)%s", scenarioTime, vehicle->getPartId(),
 				vehicle->getName());
 			CombatLog->write(s);
@@ -575,7 +575,7 @@ GroundVehicleType::loadHotSpots(FitIniFilePtr vehicleFile)
 		int32_t result = vehicleFile->seekBlock("HotSpots");
 		if(result != NO_ERROR)
 			return(result);
-		char hotSpotFileName[80];
+		wchar_t hotSpotFileName[80];
 		result = vehicleFile->readIdString("HotSpotFileName", hotSpotFileName, 79);
 		if(result != NO_ERROR)
 			return(result);
@@ -594,7 +594,7 @@ GroundVehicleType::loadHotSpots(FitIniFilePtr vehicleFile)
 		{
 			int32_t lNum = i * 2;
 			int32_t rNum = lNum + 1;
-			char footBlock[80];
+			wchar_t footBlock[80];
 			sprintf(footBlock, "%sLeftFoot", HSGestureName[i]);
 			result = hsFile.seekBlock(footBlock);
 			if(result != NO_ERROR)
@@ -928,11 +928,11 @@ GroundVehicle::init(FitIniFile* vehicleFile)
 	else
 	{
 		cLoadString(descID, name, MAXLEN_MOVER_NAME);
-		char buffer[256];
+		wchar_t buffer[256];
 		cLoadString(IDS_MFDVEHICLE_PRINTSTRING, buffer, 256);
 		sprintf(longName, buffer, name, tonnage);
 	}
-	char cStatus = 0;
+	wchar_t cStatus = 0;
 	result = vehicleFile->readIdChar("Status", cStatus);
 	if (result != NO_ERROR)
 		return (result);
@@ -961,7 +961,7 @@ GroundVehicle::init(FitIniFile* vehicleFile)
 	int32_t curItem = 0;
 	while (curItem < numOther)
 	{
-		char itemString[128];
+		wchar_t itemString[128];
 		sprintf(itemString, "Item:%d", curItem);
 		result = vehicleFile->seekBlock(itemString);
 		if (result != NO_ERROR)
@@ -1012,7 +1012,7 @@ GroundVehicle::init(FitIniFile* vehicleFile)
 	// Read in the vehicle's weapons...
 	while (curItem < (numOther + numWeapons))
 	{
-		char itemString[128];
+		wchar_t itemString[128];
 		sprintf(itemString, "Item:%d", curItem);
 		result = vehicleFile->seekBlock(itemString);
 		if (result != NO_ERROR)
@@ -1041,7 +1041,7 @@ GroundVehicle::init(FitIniFile* vehicleFile)
 	// Read in the vehicle's ammo...
 	while (curItem < (numOther + numWeapons + numAmmos))
 	{
-		char itemString[128];
+		wchar_t itemString[128];
 		sprintf(itemString, "Item:%d", curItem);
 		result = vehicleFile->seekBlock(itemString);
 		if (result != NO_ERROR)
@@ -1654,7 +1654,7 @@ GroundVehicle::updateMoveStateGoal(void)
 //---------------------------------------------------------------------------
 
 bool
-GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
+GroundVehicle::updateMovePath(float& newRotate, wchar_t& newThrottleSetting,
 	int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	DistanceToWaypoint = 9999.0;
@@ -1944,7 +1944,7 @@ GroundVehicle::updateMovePath(float& newRotate, char& newThrottleSetting,
 //---------------------------------------------------------------------------
 
 void
-GroundVehicle::setNextMovePath(char& newThrottleSetting)
+GroundVehicle::setNextMovePath(wchar_t& newThrottleSetting)
 {
 	//----------------------------------------
 	// If this is only an intermediate path,
@@ -1971,7 +1971,7 @@ GroundVehicle::setNextMovePath(char& newThrottleSetting)
 
 void
 GroundVehicle::setControlSettings(
-	float& newRotate, char& newThrottleSetting, int32_t& minThrottle, int32_t& maxThrottle)
+	float& newRotate, wchar_t& newThrottleSetting, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	//-----------------------------------------------------------------------------
 	// If we have no move path, then we shouldn't be moving. Let's set our
@@ -2079,7 +2079,7 @@ GroundVehicle::updateMovement(void)
 	int32_t minThrottle = -100;
 	int32_t maxThrottle = 100;
 	float newRotate = 0.0;
-	char newThrottleSetting = 0;
+	wchar_t newThrottleSetting = 0;
 	int32_t newMoveState = -1;
 	bool goalReached = false;
 	calcThrottleLimits(minThrottle, maxThrottle);
@@ -2100,7 +2100,7 @@ GroundVehicle::updateMovement(void)
 //---------------------------------------------------------------------------
 
 bool
-GroundVehicle::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
+GroundVehicle::netUpdateMovePath(float& newRotate, wchar_t& newThrottleSetting,
 	int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	DistanceToWaypoint = 9999.0;
@@ -2376,7 +2376,7 @@ GroundVehicle::netUpdateMovement(void)
 	int32_t minThrottle = -100;
 	int32_t maxThrottle = 100;
 	float newRotate = 0;
-	char newThrottleSetting = 0;
+	wchar_t newThrottleSetting = 0;
 	int32_t newMoveState = -1;
 	bool goalReached = false;
 	calcThrottleLimits(minThrottle, maxThrottle);
@@ -3137,7 +3137,7 @@ GroundVehicle::update(void)
 			}
 			//------------------------------------------------
 			// Blow the Vehicle and leave the hulk next frame
-			if (!appearance->playDestruction())
+			if (!appearance->playdestruction())
 			{
 				if (((GroundVehicleTypePtr)getObjectType())->explDmg > 0.0f)
 					ObjectManager->createExplosion(SPLASH_VEHICLE_EXPLOSION_ID, nullptr, position,
@@ -3651,26 +3651,26 @@ GroundVehicle::render(void)
 					else
 						color = SB_BLUE;
 				}
-				appearance->setBarColor(color);
+				appearance->setBarcolour(color);
 				appearance->setBarStatus(barStatus);
 				appearance->setObjectNameId(descID);
 				appearance->render();
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_1)
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->render();
 				// No more text help at this quality level
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_2)
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->render();
 				// No more text help at this quality level
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_3)
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->render();
 				int32_t resourceID = 0;
 				if (tonnage <= 40)
@@ -3685,7 +3685,7 @@ GroundVehicle::render(void)
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_4)
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->render();
 				if (appearance->canBeSeen())
 					drawSensorTextHelp(appearance->getScreenPos().x,
@@ -3694,7 +3694,7 @@ GroundVehicle::render(void)
 			else if (alphaValue != 0x0) // What if we are out of LOS and NOT on
 				// sensors!!!  Let 'em fade out.
 			{
-				appearance->setBarColor(SB_RED);
+				appearance->setBarcolour(SB_RED);
 				appearance->render();
 			}
 		}
@@ -3716,7 +3716,7 @@ GroundVehicle::render(void)
 			{
 				color = 0x00ff0000;
 			}
-			appearance->setBarColor(color);
+			appearance->setBarcolour(color);
 			appearance->setBarStatus(barStatus);
 			appearance->setObjectNameId(descID);
 			appearance->render();
@@ -4076,7 +4076,7 @@ GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChun
 	GameObjectPtr attacker = ObjectManager->getByWatchID(shotInfo->attackerWID);
 	if ((shotInfo->hitLocation < 0) || (shotInfo->hitLocation >= NUM_GROUNDVEHICLE_LOCATIONS))
 	{
-		char attackerStr[30];
+		wchar_t attackerStr[30];
 		if (attacker)
 		{
 			if (attacker->isMover())
@@ -4086,7 +4086,7 @@ GroundVehicle::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChun
 		}
 		else
 			strcpy(attackerStr, "attacker?");
-		char err[128];
+		wchar_t err[128];
 		sprintf(err, "GVehicle.handleWeaponHit: [%s]%d for %.2f at %d", attackerStr,
 			shotInfo->masterId, shotInfo->damage, shotInfo->hitLocation);
 		Fatal(0, err);
@@ -5146,7 +5146,7 @@ GroundVehicle::Save(PacketFilePtr file, int32_t packetNum)
 	GroundVehicleData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(GroundVehicleData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(GroundVehicleData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

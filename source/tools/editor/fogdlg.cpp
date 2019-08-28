@@ -55,9 +55,9 @@ FogDlg::OnChangeBlue1()
 }
 
 HBRUSH
-FogDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
+FogDlg::OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour)
 {
-	if (CTLCOLOR_STATIC == nCtlColor && GetDlgItem(IDC_SOURCE_COLOR)->m_hWnd == pWnd->m_hWnd)
+	if (CTLCOLOR_STATIC == nCtlcolour && GetDlgItem(IDC_SOURCE_COLOR)->m_hWnd == pWnd->m_hWnd)
 	{
 		UpdateData();
 		if (brush.m_hObject)
@@ -65,7 +65,7 @@ FogDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		brush.CreateSolidBrush(RGB(m_red, m_green, m_blue));
 		return (HBRUSH)brush.m_hObject;
 	}
-	HBRUSH hbr = CDialog ::OnCtlColor(pDC, pWnd, nCtlColor);
+	HBRUSH hbr = CDialog ::OnCtlcolour(pDC, pWnd, nCtlcolour);
 	// TODO: Change any attributes of the DC here
 	// TODO: Return a different brush if the default is not desired
 	return hbr;

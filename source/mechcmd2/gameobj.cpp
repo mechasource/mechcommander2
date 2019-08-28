@@ -79,7 +79,7 @@ extern TeamPtr homeTeam;
 extern float MechClassWeights[NUM_MECH_CLASSES];
 
 extern const std::wstring_view& ExceptionGameMsg;
-char ChunkDebugMsg[5120];
+wchar_t ChunkDebugMsg[5120];
 
 uint32_t GameObject::spanMask = 0;
 float GameObject::blockCaptureRange = 0.0;
@@ -235,7 +235,7 @@ void
 DebugWeaponFireChunk(WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker)
 {
 	ChunkDebugMsg[0] = nullptr;
-	char outString[512];
+	wchar_t outString[512];
 	if (attacker)
 	{
 		if (attacker->isMover())
@@ -426,14 +426,14 @@ DumpWeaponFireLog(void)
 		chunk.init();
 		chunk.data = data;
 		chunk.unpack(attacker);
-		char s[512];
-		char attackerName[128];
+		wchar_t s[512];
+		wchar_t attackerName[128];
 		if (attacker->isMover())
 			sprintf(attackerName, "%s (%d)", attacker->getName(), attacker->getPartId());
 		else
 			sprintf(attackerName, "objClass %d (%d)", attacker->getObjectClass(),
 				attacker->getPartId());
-		char targetName[128];
+		wchar_t targetName[128];
 		if (target)
 			if (target->isMover())
 				sprintf(targetName, "%s (%d)", target->getName(), target->getPartId());
@@ -459,7 +459,7 @@ CloseWeaponFireLog(void)
 	if (WeaponFireLog)
 	{
 		DumpWeaponFireLog();
-		char s[512];
+		wchar_t s[512];
 		sprintf(s, "\nNum Total WeaponFires = %d\n", NumWeaponFiresInLog);
 		WeaponFireLog->writeString(s);
 		WeaponFireLog->close();
@@ -680,7 +680,7 @@ WeaponFireChunk::pack(GameObjectPtr attacker)
 	if ((targetType < 0) || (targetType > 3))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.pack: bad targetType %d (save wfchunk.dbg file) ",
 			targetType);
 		Assert(false, targetType, errMsg);
@@ -688,7 +688,7 @@ WeaponFireChunk::pack(GameObjectPtr attacker)
 	if ((weaponIndex < 0) || (weaponIndex > 31))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg,
 			" WeaponFireChunk.pack: bad weaponIndex %d (save wfchunk.dbg "
 			"file) ",
@@ -698,7 +698,7 @@ WeaponFireChunk::pack(GameObjectPtr attacker)
 	if ((hitLocation < -1) || (hitLocation >= 12))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg,
 			" WeaponFireChunk.pack: bad hitLocation %d (save wfchunk.dbg "
 			"file) ",
@@ -708,7 +708,7 @@ WeaponFireChunk::pack(GameObjectPtr attacker)
 	if ((entryAngle < 0) || (entryAngle > 3))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.pack: bad entryAngle %d (save wfchunk.dbg file) ",
 			entryAngle);
 		Assert(false, entryAngle, errMsg);
@@ -716,7 +716,7 @@ WeaponFireChunk::pack(GameObjectPtr attacker)
 	if ((numMissiles < 0) || (numMissiles > 15))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg,
 			" WeaponFireChunk.pack: bad numMissiles %d (save wfchunk.dbg "
 			"file) ",
@@ -821,7 +821,7 @@ WeaponFireChunk::unpack(GameObjectPtr attacker)
 	if ((targetType < 0) || (targetType > 3))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg,
 			" WeaponFireChunk.unpack: bad targetType %d (save wfchunk.dbg "
 			"file) ",
@@ -831,7 +831,7 @@ WeaponFireChunk::unpack(GameObjectPtr attacker)
 	if ((weaponIndex < 0) || (weaponIndex > 31))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg,
 			" WeaponFireChunk.unpack: bad weaponIndex %d (save wfchunk.dbg "
 			"file) ",
@@ -841,7 +841,7 @@ WeaponFireChunk::unpack(GameObjectPtr attacker)
 	if ((hitLocation < -1) || (hitLocation >= 12))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg,
 			" WeaponFireChunk.unpack: bad hitLocation %d (save wfchunk.dbg "
 			"file) ",
@@ -851,7 +851,7 @@ WeaponFireChunk::unpack(GameObjectPtr attacker)
 	if ((entryAngle < 0) || (entryAngle > 3))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg,
 			" WeaponFireChunk.unpack: bad entryAngle %d (save wfchunk.dbg "
 			"file) ",
@@ -861,7 +861,7 @@ WeaponFireChunk::unpack(GameObjectPtr attacker)
 	if ((numMissiles < 0) || (numMissiles > 15))
 	{
 		DebugWeaponFireChunk(this, nullptr, attacker);
-		char errMsg[1024];
+		wchar_t errMsg[1024];
 		sprintf(errMsg,
 			" WeaponFireChunk.unpack: bad numMissiles %d (save wfchunk.dbg "
 			"file) ",
@@ -1005,7 +1005,7 @@ void
 DebugWeaponHitChunk(WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2)
 {
 	ChunkDebugMsg[0] = nullptr;
-	char outString[512];
+	wchar_t outString[512];
 	if (chunk1)
 	{
 		strcat(ChunkDebugMsg, "\nCHUNK1\n");
@@ -1450,7 +1450,7 @@ WeaponHitChunk::valid(int32_t from)
 			GameObjectPtr target = ObjectManager->findByPartId(targetId);
 			if (!target)
 			{
-				char s[512];
+				wchar_t s[512];
 				int32_t r = (targetId - MIN_TERRAIN_PART_ID) / MAX_MAP_CELL_WIDTH;
 				int32_t c = targetId - MIN_TERRAIN_PART_ID - (MAX_MAP_CELL_WIDTH * r);
 				sprintf(s,
@@ -1769,9 +1769,9 @@ GameObject::setPosition(const Stuff::Vector3D& newPosition, bool calcPositions)
 		cellPositionCol = newCellCol + tileCol * terrain_const::MAPCELL_DIM;
 		d_vertexNum = tileRow * Terrain::realVerticesMapSide + tileCol;
 	}
-	Assert((cellPositionRow >= 0) && (cellPositionRow < GameMap->getHeight()), 0,
+	Assert((cellPositionRow >= 0) && (cellPositionRow < GameMap->getheight()), 0,
 		" Object moved off map ");
-	Assert((cellPositionCol >= 0) && (cellPositionCol < GameMap->getWidth()), 0,
+	Assert((cellPositionCol >= 0) && (cellPositionCol < GameMap->getwidth()), 0,
 		" Object moved off map ");
 }
 
@@ -1920,7 +1920,7 @@ GameObject::lineOfSight(GameObjectPtr target, float startExtRad, bool checkVisib
 		if (isMover() && ObjectManager->useMoverLineOfSightTable)
 		{
 			int32_t index = (handle * ObjectManager->maxMovers) + target->handle;
-			char losStatus = ObjectManager->moverLineOfSightTable[index];
+			wchar_t losStatus = ObjectManager->moverLineOfSightTable[index];
 			if (losStatus == -1)
 			{
 				bool los = Team::lineOfSight(getLOSPosition(), target->getLOSPosition(),

@@ -31,7 +31,7 @@ public:
 	aStyle4TextListItem()
 	{
 		hasAnimation = false;
-		normalColor = 0xff808080;
+		normalcolour = 0xff808080;
 	}
 	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void render(void);
@@ -39,7 +39,7 @@ public:
 protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
-	int32_t normalColor;
+	int32_t normalcolour;
 };
 
 class MPAddAIPlayer : public LogisticsScreen

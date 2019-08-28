@@ -71,16 +71,16 @@ protected:
 	{
 		int32_t ID;
 		int32_t textID;
-		int32_t textColors[5];
+		int32_t textcolours[5];
 		HGOSFONT3D textFont;
 		int32_t textSize; // for ttf
 
-		char fileName[32];
+		wchar_t fileName[32];
 		int32_t stateCoords[5][2];
-		int32_t textureWidth;
-		int32_t textureHeight;
-		int32_t fileWidth;
-		int32_t fileHeight;
+		int32_t texturewidth;
+		int32_t textureheight;
+		int32_t filewidth;
+		int32_t fileheight;
 		bool textureRotated;
 		RECT textRect; // center text in here
 		bool outlineText; // draw empty square around text rect

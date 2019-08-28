@@ -19,7 +19,7 @@ typedef struct _quad
 typedef struct _paneTextures
 {
 	_paneTextures* pNext;
-	uint32_t Handle;
+	uint32_t handle;
 	uint32_t Size;
 } paneTextures;
 
@@ -49,10 +49,10 @@ public:
 	float m_LastFontY;
 	char m_msg[8192];
 	bool m_bRendered;
-	bool embeddedColorChange;
+	bool embeddedcolourChange;
 	float m_FontSize;
 	bool m_FontBold;
-	uint32_t m_FontColor;
+	uint32_t m_Fontcolour;
 
 public:
 	gos_DBCS(PSTR msg, int32_t w, int32_t h, bool cc);
@@ -60,12 +60,12 @@ public:
 	void Render(void);
 	void Update(void);
 	DBCSSurface* GetSurface() { return m_surf; }
-	int32_t GetWidth() { return m_width; }
-	int32_t GetHeight() { return m_height; }
+	int32_t Getwidth() { return m_width; }
+	int32_t Getheight() { return m_height; }
 	void PrepareTextures(void);
 	void Texture(DBCSSurface* surf);
 	void Translate(float x, float y, float z);
-	void Color(uint32_t c);
+	void colour(uint32_t c);
 	void AlphaMode(enum gos_AlphaMode mode);
 	void MakeQuads(void);
 	bool NeedClip(float x, float y);
@@ -73,7 +73,7 @@ public:
 	void Fill(float r, float g, float b, float a);
 
 	uint32_t AddTexture(uint32_t Size);
-	void AddQuad(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height, uint32_t Texture,
+	void AddQuad(uint32_t X, uint32_t Y, uint32_t width, uint32_t height, uint32_t Texture,
 		uint32_t U, uint32_t V, uint32_t TextureSize);
 
 	void AddRef(void) { m_RefCount++; }

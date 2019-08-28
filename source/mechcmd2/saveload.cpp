@@ -104,7 +104,7 @@
 #endif
 
 #include "resource.h"
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include <ddraw.h>
 
 //----------------------------------------------------------------------------------------------------
@@ -209,20 +209,20 @@ IsGateOpen(int32_t objectWID);
 uint32_t
 elfHash(const std::wstring_view& name);
 
-extern char versionStamp[];
+extern wchar_t versionStamp[];
 //----------------------------------------------------------------------------------------------------
 // Save.
 void
 Part::Save(FitIniFilePtr file, int32_t partNum)
 {
-	char partId[1024];
+	wchar_t partId[1024];
 	sprintf(partId, "Part%d", partNum + 1);
 	file->writeBlock(partId);
 	file->writeIdLong("ObjectWID", objectWID);
 	file->writeIdULong("ObjectNumber", objNumber);
-	file->writeIdULong("BaseColor", baseColor);
-	file->writeIdULong("HighlightColor1", highlightColor1);
-	file->writeIdULong("HighlightColor2", highlightColor2);
+	file->writeIdULong("Basecolour", basecolour);
+	file->writeIdULong("Highlightcolour1", highlightcolour1);
+	file->writeIdULong("Highlightcolour2", highlightcolour2);
 	file->writeIdLong("Active", active);
 	file->writeIdLong("Exists", exists);
 	file->writeIdBoolean("Destroyed", destroyed);
@@ -249,7 +249,7 @@ void
 Mission::save(const std::wstring_view& saveFileName)
 {
 	// Check for sufficient hard Drive space on drive game is running from
-	char currentPath[1024];
+	wchar_t currentPath[1024];
 	gos_GetCurrentPath(currentPath, 1023);
 	int64_t driveSpace = gos_GetDriveFreeSpace(currentPath);
 	if (driveSpace < (5 * 1024 * 1024))
@@ -279,15 +279,15 @@ Mission::save(const std::wstring_view& saveFileName)
 	saveFile.reserve(20000);
 	uint32_t currentPacket = 0;
 	saveFile.writePacket(
-		currentPacket, (puint8_t)versionStamp, strlen(versionStamp) + 1, STORAGE_TYPE_RAW);
+		currentPacket, (uint8_t*)versionStamp, strlen(versionStamp) + 1, STORAGE_TYPE_RAW);
 	currentPacket++;
-	saveFile.writePacket(currentPacket, (puint8_t)cmpName, strlen(cmpName) + 1, STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket, (uint8_t*)cmpName, strlen(cmpName) + 1, STORAGE_TYPE_RAW);
 	currentPacket++;
 	loadProgress = 3.0f;
 	// Mission Settings
 	// Create a temp fit file and shove it into Packet 0.
 	// COmpress the Wee-wee out of it!!
-	char tmpString[2048];
+	wchar_t tmpString[2048];
 	sprintf(tmpString, "%d", timeGetTime());
 	FullPathFileName tmpName;
 	tmpName.init(savePath, tmpString, ".fti");
@@ -339,7 +339,7 @@ Mission::save(const std::wstring_view& saveFileName)
 	File dmyFile;
 	result = dmyFile.open(tmpName);
 	uint32_t fileSz = dmyFile.fileSize();
-	puint8_t tmpRAM = (puint8_t)malloc(fileSz);
+	uint8_t* tmpRAM = (uint8_t*)malloc(fileSz);
 	dmyFile.read(tmpRAM, fileSz);
 	saveFile.writePacket(currentPacket, tmpRAM, fileSz, STORAGE_TYPE_ZLIB);
 	currentPacket++;
@@ -365,7 +365,7 @@ Mission::save(const std::wstring_view& saveFileName)
 	// Create a dummy file to stick in the packet file
 	result = dmyFile.open(tmpName);
 	fileSz = dmyFile.fileSize();
-	tmpRAM = (puint8_t)malloc(fileSz);
+	tmpRAM = (uint8_t*)malloc(fileSz);
 	dmyFile.read(tmpRAM, fileSz);
 	saveFile.writePacket(currentPacket, tmpRAM, fileSz, STORAGE_TYPE_ZLIB);
 	currentPacket++;
@@ -409,7 +409,7 @@ Mission::save(const std::wstring_view& saveFileName)
 	// Create a dummy file to stick in the packet file
 	result = dmyFile.open(tmpName);
 	fileSz = dmyFile.fileSize();
-	tmpRAM = (puint8_t)malloc(fileSz);
+	tmpRAM = (uint8_t*)malloc(fileSz);
 	dmyFile.read(tmpRAM, fileSz);
 	saveFile.writePacket(currentPacket, tmpRAM, fileSz, STORAGE_TYPE_ZLIB);
 	currentPacket++;
@@ -421,10 +421,10 @@ Mission::save(const std::wstring_view& saveFileName)
 	// Save the CurrentMission number in logistics cause Heidi don't save it
 	// with logisticsData.
 	int32_t currentMissionNum = LogisticsData::instance->getCurrentMissionNum();
-	saveFile.writePacket(currentPacket, (puint8_t)&currentMissionNum, 4, STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket, (uint8_t*)&currentMissionNum, 4, STORAGE_TYPE_RAW);
 	currentPacket++;
 	//-------------------------------------------------------------------------------------------
-	saveFile.writePacket(currentPacket, (puint8_t) "END", 4, STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket, (uint8_t*) "END", 4, STORAGE_TYPE_RAW);
 	currentPacket++;
 	saveFile.close();
 	// YIKES!!  We could be checking the if before the null and executing
@@ -450,7 +450,7 @@ Mission::save(const std::wstring_view& saveFileName)
 void
 Part::Load(FitIniFilePtr file, int32_t partNum)
 {
-	char partId[1024];
+	wchar_t partId[1024];
 	sprintf(partId, "Part%d", partNum);
 	int32_t result = file->seekBlock(partId);
 	if (result != NO_ERROR)
@@ -461,15 +461,15 @@ Part::Load(FitIniFilePtr file, int32_t partNum)
 	result = file->readIdULong("ObjectNumber", objNumber);
 	if (result != NO_ERROR)
 		STOP(("Part %d ObjectNumber missing from In-Mission Save", partNum));
-	result = file->readIdULong("BaseColor", baseColor);
+	result = file->readIdULong("Basecolour", basecolour);
 	if (result != NO_ERROR)
-		STOP(("Part %d BaseColor missing from In-Mission Save", partNum));
-	result = file->readIdULong("HighlightColor1", highlightColor1);
+		STOP(("Part %d Basecolour missing from In-Mission Save", partNum));
+	result = file->readIdULong("Highlightcolour1", highlightcolour1);
 	if (result != NO_ERROR)
-		STOP(("Part %d HighlightColor1 missing from In-Mission Save", partNum));
-	result = file->readIdULong("HighlightColor2", highlightColor2);
+		STOP(("Part %d Highlightcolour1 missing from In-Mission Save", partNum));
+	result = file->readIdULong("Highlightcolour2", highlightcolour2);
 	if (result != NO_ERROR)
-		STOP(("Part %d HighlightColor2 missing from In-Mission Save", partNum));
+		STOP(("Part %d Highlightcolour2 missing from In-Mission Save", partNum));
 	result = file->readIdLong("Active", active);
 	if (result != NO_ERROR)
 		STOP(("Part %d Active missing from In-Mission Save", partNum));
@@ -552,19 +552,19 @@ Mission::load(const std::wstring_view& loadFileName)
 	if (result != NO_ERROR)
 		return; // Can't load.  No File.  Dialog?  Probably not.
 	uint32_t currentPacket = 0;
-	char versionCheck[1024];
-	loadFile.readPacket(currentPacket, (puint8_t)versionCheck);
+	wchar_t versionCheck[1024];
+	loadFile.readPacket(currentPacket, (uint8_t*)versionCheck);
 	currentPacket++;
 	if (strcmp(versionCheck, versionStamp) != 0)
 	{
-		char msg[2048];
+		wchar_t msg[2048];
 		cLoadString(IDS_QUICKSAVE_VERSION_WRONG, msg, 2047);
 		PAUSE((msg));
 		return;
 	}
 	loadFile.seekPacket(currentPacket);
-	const std::wstring_view& campName = new char[loadFile.getPacketSize() + 1];
-	loadFile.readPacket(currentPacket, (puint8_t)(campName));
+	const std::wstring_view& campName = new wchar_t[loadFile.getPacketSize() + 1];
+	loadFile.readPacket(currentPacket, (uint8_t*)(campName));
 	currentPacket++;
 	// Get the campaign name for the campaign we are currently playing.
 	const std::wstring_view& campaignName = LogisticsData::instance->getCampaignName();
@@ -572,7 +572,7 @@ Mission::load(const std::wstring_view& loadFileName)
 	/*
 	if (_stricmp(campName,cmpName) != 0)
 	{
-		char msg[2048];
+		wchar_t msg[2048];
 		cLoadString(IDS_QUICKSAVE_CAMPAIGN_WRONG,msg,2047);
 		PAUSE((msg,campName,cmpName));
 		return;
@@ -583,7 +583,7 @@ Mission::load(const std::wstring_view& loadFileName)
 	// Used to call this before the version check.  Wow.
 	destroy();
 	loadProgress = 1.0f;
-	char tmpString[2048];
+	wchar_t tmpString[2048];
 	sprintf(tmpString, "%d", timeGetTime());
 	//-------------------------------------------
 	// Relationships saved with TEAMs!
@@ -744,7 +744,7 @@ Mission::load(const std::wstring_view& loadFileName)
 		File dmyFile;
 		result = dmyFile.create(tmpName);
 		uint32_t fileSz = loadFile.getPacketSize();
-		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
+		uint8_t* tmpRAM = (uint8_t*)malloc(fileSz);
 		loadFile.readPacket(currentPacket, tmpRAM);
 		dmyFile.write(tmpRAM, fileSz);
 		currentPacket++;
@@ -781,7 +781,7 @@ Mission::load(const std::wstring_view& loadFileName)
 		STOP(("MissionId missing from IN-Mission Save"));
 	result = missionFile.readIdLong("ABLScriptHandle", missionScriptHandle);
 	if (result != NO_ERROR)
-		STOP(("ABL Script Handle missing from IN-Mission Save"));
+		STOP(("ABL Script handle missing from IN-Mission Save"));
 	result = missionFile.readIdBoolean("Active", active);
 	if (result != NO_ERROR)
 		STOP(("Active flag missing from IN-Mission Save"));
@@ -938,7 +938,7 @@ Mission::load(const std::wstring_view& loadFileName)
 		File dmyFile;
 		result = dmyFile.create(dmpName);
 		uint32_t fileSz = loadFile.getPacketSize();
-		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
+		uint8_t* tmpRAM = (uint8_t*)malloc(fileSz);
 		loadFile.readPacket(currentPacket, tmpRAM);
 		dmyFile.write(tmpRAM, fileSz);
 		currentPacket++;
@@ -994,7 +994,7 @@ Mission::load(const std::wstring_view& loadFileName)
 		int32_t i;
 		for (i = 1; i < int32_t(numParts + 1); i++)
 		{
-			char partName[12];
+			wchar_t partName[12];
 			sprintf(partName, "Part%d", i);
 			//------------------------------------------------------------------
 			// Find the object to load
@@ -1030,7 +1030,7 @@ Mission::load(const std::wstring_view& loadFileName)
 			gosASSERT(result == NO_ERROR);
 			result = missionFile.readIdChar("TeamId", parts[i].teamId);
 			gosASSERT(result == NO_ERROR);
-			char cmdId = 0;
+			wchar_t cmdId = 0;
 			result = missionFile.readIdChar("CommanderId", cmdId);
 			if (result != NO_ERROR)
 			{
@@ -1042,15 +1042,15 @@ Mission::load(const std::wstring_view& loadFileName)
 				parts[i].commanderid = cmdId;
 			}
 			parts[i].gestureId = 2; // this has never changed
-			result = missionFile.readIdULong("BaseColor", parts[i].baseColor);
+			result = missionFile.readIdULong("Basecolour", parts[i].basecolour);
 			if (result != NO_ERROR)
-				parts[i].baseColor = 0xffffffff;
-			result = missionFile.readIdULong("HighlightColor1", parts[i].highlightColor1);
+				parts[i].basecolour = 0xffffffff;
+			result = missionFile.readIdULong("Highlightcolour1", parts[i].highlightcolour1);
 			if (result != NO_ERROR)
-				parts[i].highlightColor1 = 0xffffffff;
-			result = missionFile.readIdULong("HighlightColor2", parts[i].highlightColor2);
+				parts[i].highlightcolour1 = 0xffffffff;
+			result = missionFile.readIdULong("Highlightcolour2", parts[i].highlightcolour2);
 			if (result != NO_ERROR)
-				parts[i].highlightColor2 = 0xffffffff;
+				parts[i].highlightcolour2 = 0xffffffff;
 			parts[i].velocity = 0;
 			result = missionFile.readIdLong("Active", parts[i].active);
 			gosASSERT(result == NO_ERROR);
@@ -1193,7 +1193,7 @@ Mission::load(const std::wstring_view& loadFileName)
 		File dmyFile;
 		result = dmyFile.create(tmpName);
 		uint32_t fileSz = loadFile.getPacketSize();
-		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
+		uint8_t* tmpRAM = (uint8_t*)malloc(fileSz);
 		loadFile.readPacket(currentPacket, tmpRAM);
 		dmyFile.write(tmpRAM, fileSz);
 		currentPacket++;
@@ -1213,7 +1213,7 @@ Mission::load(const std::wstring_view& loadFileName)
 	// Load the CurrentMission number in logistics cause Heidi don't save it
 	// with logisticsData.
 	int32_t currentMissionNum = 0;
-	loadFile.readPacket(currentPacket, (puint8_t)&currentMissionNum);
+	loadFile.readPacket(currentPacket, (uint8_t*)&currentMissionNum);
 	LogisticsData::instance->setCurrentMissionNum(currentMissionNum);
 	currentPacket++;
 	//-------------------------------------------------------------------------------------------

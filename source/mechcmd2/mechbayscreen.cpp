@@ -59,7 +59,7 @@ MechBayScreen::init(FitIniFile* file)
 		->init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	// initialize little icons
 	FitIniFile iconFile;
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, artPath);
 	strcat(path, "mcl_gn_deploymentteams.fit");
 	strlwr(path);
@@ -96,8 +96,8 @@ MechBayScreen::init(FitIniFile* file)
 	dropWeightMeter.init(file, "DropWeightMeter");
 	file->readIdLong("RayCenterX", weightCenterX);
 	file->readIdLong("RayCenterY", weightCenterY);
-	file->readIdLong("RayStartColor ", weightStartColor);
-	file->readIdLong("RayEndColor ", weightEndColor);
+	file->readIdLong("RayStartcolour ", weightStartcolour);
+	file->readIdLong("RayEndcolour ", weightEndcolour);
 	file->seekBlock("weightAddAnimation");
 	addWeightAnim.init(file, "");
 	file->seekBlock("weightRemoveAnimation");
@@ -228,8 +228,8 @@ MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 	float maxDropWeight = LogisticsData::instance->getMaxDropWeight();
 	int32_t numAddBars = 0;
 	int32_t numRemoveBars = 0;
-	int32_t addColor = 0;
-	int32_t removeColor = 0;
+	int32_t addcolour = 0;
+	int32_t removecolour = 0;
 	int32_t numberOfBars = 20;
 	if (maxDropWeight != 0)
 	{
@@ -239,7 +239,7 @@ MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 	}
 	if (addWeightAnim.isAnimating() && !addWeightAnim.isDone())
 	{
-		addColor = addWeightAnim.getColor();
+		addcolour = addWeightAnim.getcolour();
 		float percent = (currentDropWeight - addWeightAmount) / maxDropWeight;
 		percent *= 20.f;
 		numAddBars = percent + .5;
@@ -247,7 +247,7 @@ MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 	}
 	if (removeWeightAnim.isAnimating() && !removeWeightAnim.isDone())
 	{
-		addColor = removeWeightAnim.getColor();
+		addcolour = removeWeightAnim.getcolour();
 		float percent = removeWeightAmount / maxDropWeight;
 		percent *= 20.f;
 		numRemoveBars = percent + .5;
@@ -277,12 +277,12 @@ MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 		v[2].x = curX + weightCenterX + xOffset;
 		v[2].y = curY + weightCenterY + yOffset;
 		if (i >= numberOfBars - numAddBars)
-			v[0].argb = v[1].argb = v[2].argb = addColor;
+			v[0].argb = v[1].argb = v[2].argb = addcolour;
 		else if (i >= numberOfBars)
-			v[0].argb = v[1].argb = v[2].argb = removeColor;
+			v[0].argb = v[1].argb = v[2].argb = removecolour;
 		else
 			v[0].argb = v[1].argb = v[2].argb =
-				interpolateColor(weightStartColor, weightEndColor, i * .05);
+				interpolatecolour(weightStartcolour, weightEndcolour, i * .05);
 		gos_DrawTriangles(v, 3);
 	}
 	dropWeightMeter.render(xOffset, yOffset);
@@ -295,7 +295,7 @@ MechBayScreen::update()
 	if (!pIcons[0].getMech())
 		getButton(MB_MSG_REMOVE)->disable(true);
 	// update current text
-	char str[64];
+	wchar_t str[64];
 	// RP
 	sprintf(str, "%ld ", LogisticsData::instance->getCBills());
 	textObjects[1].setText(str);
@@ -306,7 +306,7 @@ MechBayScreen::update()
 		soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 	}
 	// current drop weight
-	char tmpStr[128];
+	wchar_t tmpStr[128];
 	cLoadString(IDS_MB_WEIGHT, tmpStr, 63);
 	int32_t currentDropWeight = LogisticsData::instance->getCurrentDropWeight();
 	int32_t maxDropWeight = LogisticsData::instance->getMaxDropWeight();
@@ -622,7 +622,7 @@ MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 		fileName = fileName.Left(index);
 		index = fileName.ReverseFind('\\');
 		fileName = fileName.Right(fileName.Length() - index - 1);
-		mechCamera->setMech(fileName, prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
+		mechCamera->setMech(fileName, prefs.basecolour, prefs.highlightcolour, prefs.highlightcolour);
 		mechCamera->setScale(pMech->getVariant()->getChassis()->getScale());
 	}
 	else
@@ -634,17 +634,17 @@ MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 	}
 	if (pCurMech)
 	{
-		char tmpStr[256];
+		wchar_t tmpStr[256];
 		// update current text
-		char str[64];
+		wchar_t str[64];
 		// weight
 		cLoadString(IDS_MB_MECH_WEIGHT, tmpStr, 63);
 		sprintf(str, tmpStr, pCurMech->getMaxWeight(), (const std::wstring_view&)pCurMech->getMechClass());
 		textObjects[7].setText(str);
 		// firing range
-		int32_t tmpColor;
-		textObjects[14].setText(pCurMech->getVariant()->getOptimalRangeString(tmpColor));
-		textObjects[14].setColor(tmpColor);
+		int32_t tmpcolour;
+		textObjects[14].setText(pCurMech->getVariant()->getOptimalRangeString(tmpcolour));
+		textObjects[14].setcolour(tmpcolour);
 		// armor
 		int32_t armor = pCurMech->getArmor();
 		sprintf(str, "%ld", armor);

@@ -4,7 +4,7 @@
 
 #include "stdinc.h"
 
-#include "mlr/gosvertex2uv.hpp"
+#include "mlr/gosvertex2uv.h"
 
 namespace MidLevelRenderer {
 

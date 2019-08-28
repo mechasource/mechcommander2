@@ -23,9 +23,9 @@
 //#include <string.h>
 //#include <ctype.h>
 
-//#include "gameos.hpp"
-//#include <assert.h>
-//#define gosASSERT assert
+////#include "gameos.hpp"
+//#include <_ASSERT.h>
+//#define gosASSERT _ASSERT
 //#define gos_Malloc malloc
 //#define gos_Free free
 
@@ -63,18 +63,18 @@ constexpr const std::wstring_view& fitIniFooterLE = "FITend\r\n";
 HRESULT
 FitIniFile::findNextBlockStart(const std::wstring_view& line, size_t lineLen)
 {
-	char thisLine[BUFFERSIZE];
+	wchar_t thisLine[BUFFERSIZE];
 	const std::wstring_view& common = nullptr;
 	do
 	{
 		if (line)
 		{
-			readLine((puint8_t)line, lineLen);
+			readLine((uint8_t*)line, lineLen);
 			common = line;
 		}
 		else
 		{
-			readLine((puint8_t)thisLine, BUFFERSIZE - 1);
+			readLine((uint8_t*)thisLine, BUFFERSIZE - 1);
 			common = thisLine;
 		}
 	} while (!eof() && (common[0] != '['));
@@ -147,22 +147,22 @@ FitIniFile::getNextWord(const std::wstring_view&& line, const std::wstring_view&
 HRESULT
 FitIniFile::afterOpen(void)
 {
-	// char line[BUFFERSIZE];
+	// wchar_t line[BUFFERSIZE];
 	//-------------------------------------------------------
 	// Check if we opened this with CREATE and write the
 	// FITini Header and position to Write Start.
 	if (fileMode == CREATE && m_parent == nullptr)
 	{
 		// sprintf_s(line, BUFFERSIZE, "%s \r\n", fitIniHeader);
-		write(const_cast<puint8_t>(fitIniHeaderLE), strlen(fitIniHeaderLE));
+		write(const_cast<uint8_t*>(fitIniHeaderLE), strlen(fitIniHeaderLE));
 		m_totalBlocks = 0;
 	}
 	else
 	{
 		//------------------------------------------------------
 		// Check if this is a FitIniFile by looking for header.
-		char chkHeader[12];
-		readLine(static_cast<puint8_t>(chkHeader), 11);
+		wchar_t chkHeader[12];
+		readLine(static_cast<uint8_t*>(chkHeader), 11);
 		if (strstr(chkHeader, fitIniHeader) == nullptr)
 			return (NOT_A_FITINIFILE);
 		//------------------------------------------------------
@@ -196,7 +196,7 @@ FitIniFile::afterOpen(void)
 				STOP(("BlockId To large in Fit File %s", m_fileName));
 			if (line[count] == '\n')
 			{
-				char error[BUFFERSIZE + 1];
+				wchar_t error[BUFFERSIZE + 1];
 				sprintf_s(error, BUFFERSIZE + 1, "couldn't resolve block %s in file %s", line,
 					getFilename());
 				Assert(0, 0, error);
@@ -224,12 +224,12 @@ FitIniFile::atClose(void)
 {
 	//------------------------------------------------------------
 	// Check if we are in create mode and if so, write the footer
-	char line[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
 	if (fileMode == CREATE)
 	{
 		seek(0, SEEK_END);
 		sprintf_s(line, BUFFERSIZE, "%s \r\n", fitIniFooter);
-		write((puint8_t)line, strlen(line));
+		write((uint8_t*)line, strlen(line));
 	}
 	//-----------------------------
 	// Free up the fileBlocks
@@ -357,10 +357,10 @@ FitIniFile::textToShort(const std::wstring_view& num)
 }
 
 //---------------------------------------------------------------------------
-char
+wchar_t
 FitIniFile::textToChar(const std::wstring_view& num)
 {
-	char result = 0;
+	wchar_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
 	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
@@ -564,7 +564,7 @@ FitIniFile::textToUChar(const std::wstring_view& num)
 bool
 FitIniFile::booleanToLong(const std::wstring_view& num)
 {
-	char testChar = 0;
+	wchar_t testChar = 0;
 	while (num[testChar] && isspace(num[testChar]))
 		testChar++;
 	if ((toupper(num[testChar]) == 'F') || (toupper(num[testChar]) == '0'))
@@ -577,7 +577,7 @@ FitIniFile::booleanToLong(const std::wstring_view& num)
 int32_t
 FitIniFile::floatToText(const std::wstring_view& result, float num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%f4", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -591,7 +591,7 @@ FitIniFile::floatToText(const std::wstring_view& result, float num, uint32_t buf
 int32_t
 FitIniFile::longToTextDec(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%d", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -605,7 +605,7 @@ FitIniFile::longToTextDec(const std::wstring_view& result, int32_t num, uint32_t
 int32_t
 FitIniFile::longToTextHex(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -619,7 +619,7 @@ FitIniFile::longToTextHex(const std::wstring_view& result, int32_t num, uint32_t
 int32_t
 FitIniFile::shortToTextDec(const std::wstring_view& result, int16_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%d", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -633,7 +633,7 @@ FitIniFile::shortToTextDec(const std::wstring_view& result, int16_t num, uint32_
 int32_t
 FitIniFile::shortToTextHex(const std::wstring_view& result, int16_t num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -647,7 +647,7 @@ FitIniFile::shortToTextHex(const std::wstring_view& result, int16_t num, uint32_
 int32_t
 FitIniFile::byteToTextDec(const std::wstring_view& result, byte num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "%d", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -661,7 +661,7 @@ FitIniFile::byteToTextDec(const std::wstring_view& result, byte num, uint32_t bu
 int32_t
 FitIniFile::byteToTextHex(const std::wstring_view& result, byte num, uint32_t bufLen)
 {
-	char temp[250];
+	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
 	uint32_t numLength = strlen(temp);
 	if (numLength >= bufLen)
@@ -759,8 +759,8 @@ FitIniFile::seekBlock(const std::wstring_view& blockId)
 HRESULT
 FitIniFile::readIdFloat(const std::wstring_view& varName, float& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -773,7 +773,7 @@ FitIniFile::readIdFloat(const std::wstring_view& varName, float& value)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -806,8 +806,8 @@ FitIniFile::readIdFloat(const std::wstring_view& varName, float& value)
 HRESULT
 FitIniFile::readIdDouble(const std::wstring_view& varName, double& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -820,7 +820,7 @@ FitIniFile::readIdDouble(const std::wstring_view& varName, double& value)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -860,8 +860,8 @@ HRESULT FitIniFile::readIdUInt(const std::wstring_view& varName, uint32_t& value
 //---------------------------------------------------------------------------
 HRESULT FitIniFile::readIdLong(const std::wstring_view& varName, long32_t& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -874,7 +874,7 @@ HRESULT FitIniFile::readIdLong(const std::wstring_view& varName, long32_t& value
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -907,8 +907,8 @@ HRESULT FitIniFile::readIdLong(const std::wstring_view& varName, long32_t& value
 HRESULT
 FitIniFile::readIdBoolean(const std::wstring_view& varName, bool& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -921,7 +921,7 @@ FitIniFile::readIdBoolean(const std::wstring_view& varName, bool& value)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -954,8 +954,8 @@ FitIniFile::readIdBoolean(const std::wstring_view& varName, bool& value)
 HRESULT
 FitIniFile::readIdShort(const std::wstring_view& varName, int16_t& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -968,7 +968,7 @@ FitIniFile::readIdShort(const std::wstring_view& varName, int16_t& value)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -999,10 +999,10 @@ FitIniFile::readIdShort(const std::wstring_view& varName, int16_t& value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdChar(const std::wstring_view& varName, char& value)
+FitIniFile::readIdChar(const std::wstring_view& varName, wchar_t& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1015,7 +1015,7 @@ FitIniFile::readIdChar(const std::wstring_view& varName, char& value)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1048,8 +1048,8 @@ FitIniFile::readIdChar(const std::wstring_view& varName, char& value)
 HRESULT
 FitIniFile::readIdULong(const std::wstring_view& varName, ulong32_t& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1062,7 +1062,7 @@ FitIniFile::readIdULong(const std::wstring_view& varName, ulong32_t& value)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1095,8 +1095,8 @@ FitIniFile::readIdULong(const std::wstring_view& varName, ulong32_t& value)
 int32_t
 FitIniFile::readIdUShort(const std::wstring_view& varName, uint16_t& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1109,7 +1109,7 @@ FitIniFile::readIdUShort(const std::wstring_view& varName, uint16_t& value)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1142,8 +1142,8 @@ FitIniFile::readIdUShort(const std::wstring_view& varName, uint16_t& value)
 int32_t
 FitIniFile::readIdUChar(const std::wstring_view& varName, uint8_t& value)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1156,7 +1156,7 @@ FitIniFile::readIdUChar(const std::wstring_view& varName, uint8_t& value)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1221,8 +1221,8 @@ FitIniFile::copyString(const std::wstring_view& dest, const std::wstring_view& s
 int32_t
 FitIniFile::readIdString(const std::wstring_view& varName, const std::wstring_view& result, uint32_t bufferSize)
 {
-	char line[2048];
-	char searchString[BUFFERSIZE];
+	wchar_t line[2048];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1235,7 +1235,7 @@ FitIniFile::readIdString(const std::wstring_view& varName, const std::wstring_vi
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, 2047);
+		readLine((uint8_t*)line, 2047);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1261,10 +1261,10 @@ FitIniFile::readIdString(const std::wstring_view& varName, const std::wstring_vi
 		if (pFirstEqual && !strstr(pFirstEqual + 1, "\""))
 		{
 			int32_t curLen = strlen(equalSign);
-			char tmpLine[2047];
+			wchar_t tmpLine[2047];
 			do
 			{
-				readLine((puint8_t)tmpLine, 2047);
+				readLine((uint8_t*)tmpLine, 2047);
 				pFound = strstr(tmpLine, "\"");
 				int32_t addedLen = strlen(tmpLine) + 1;
 				if (curLen + addedLen < 2048)
@@ -1292,8 +1292,8 @@ FitIniFile::readIdString(const std::wstring_view& varName, const std::wstring_vi
 int32_t
 FitIniFile::getIdStringLength(const std::wstring_view& varName)
 {
-	char line[BUFFERSIZE];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1306,7 +1306,7 @@ FitIniFile::getIdStringLength(const std::wstring_view& varName)
 	int32_t testy;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1340,9 +1340,9 @@ FitIniFile::getIdStringLength(const std::wstring_view& varName)
 int32_t
 FitIniFile::readIdFloatArray(const std::wstring_view& varName, float* result, uint32_t numElements)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1357,7 +1357,7 @@ FitIniFile::readIdFloatArray(const std::wstring_view& varName, float* result, ui
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1367,7 +1367,7 @@ FitIniFile::readIdFloatArray(const std::wstring_view& varName, float* result, ui
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 2; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1384,7 +1384,7 @@ FitIniFile::readIdFloatArray(const std::wstring_view& varName, float* result, ui
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
-		equalSign++; // Move to char past equal sign.
+		equalSign++; // Move to wchar_t past equal sign.
 		//--------------------------------------------------------------------------------
 		// Now, loop until we reach the end of block or we've read in all of the
 		// elements
@@ -1393,7 +1393,7 @@ FitIniFile::readIdFloatArray(const std::wstring_view& varName, float* result, ui
 			int32_t errorCode = getNextWord(equalSign, elementString, 9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((puint8_t)line, BUFFERSIZE - 1);
+				readLine((uint8_t*)line, BUFFERSIZE - 1);
 				equalSign = line;
 				continue;
 			}
@@ -1418,9 +1418,9 @@ FitIniFile::readIdFloatArray(const std::wstring_view& varName, float* result, ui
 int32_t
 FitIniFile::readIdLongArray(const std::wstring_view& varName, int32_t* result, uint32_t numElements)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1435,7 +1435,7 @@ FitIniFile::readIdLongArray(const std::wstring_view& varName, int32_t* result, u
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1445,7 +1445,7 @@ FitIniFile::readIdLongArray(const std::wstring_view& varName, int32_t* result, u
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 2; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1462,7 +1462,7 @@ FitIniFile::readIdLongArray(const std::wstring_view& varName, int32_t* result, u
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
-		equalSign++; // Move to char past equal sign.
+		equalSign++; // Move to wchar_t past equal sign.
 		//--------------------------------------------------------------------------------
 		// Now, loop until we reach the end of block or we've read in all of the
 		// elements
@@ -1471,7 +1471,7 @@ FitIniFile::readIdLongArray(const std::wstring_view& varName, int32_t* result, u
 			int32_t errorCode = getNextWord(equalSign, elementString, 9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((puint8_t)line, BUFFERSIZE - 1);
+				readLine((uint8_t*)line, BUFFERSIZE - 1);
 				equalSign = line;
 				continue;
 			}
@@ -1496,9 +1496,9 @@ FitIniFile::readIdLongArray(const std::wstring_view& varName, int32_t* result, u
 int32_t
 FitIniFile::readIdULongArray(const std::wstring_view& varName, uint32_t* result, uint32_t numElements)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1513,7 +1513,7 @@ FitIniFile::readIdULongArray(const std::wstring_view& varName, uint32_t* result,
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1523,7 +1523,7 @@ FitIniFile::readIdULongArray(const std::wstring_view& varName, uint32_t* result,
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 3; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1540,7 +1540,7 @@ FitIniFile::readIdULongArray(const std::wstring_view& varName, uint32_t* result,
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
-		equalSign++; // Move to char past equal sign.
+		equalSign++; // Move to wchar_t past equal sign.
 		//--------------------------------------------------------------------------------
 		// Now, loop until we reach the end of block or we've read in all of the
 		// elements
@@ -1549,7 +1549,7 @@ FitIniFile::readIdULongArray(const std::wstring_view& varName, uint32_t* result,
 			int32_t errorCode = getNextWord(equalSign, elementString, 9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((puint8_t)line, BUFFERSIZE - 1);
+				readLine((uint8_t*)line, BUFFERSIZE - 1);
 				equalSign = line;
 				continue;
 			}
@@ -1572,11 +1572,11 @@ FitIniFile::readIdULongArray(const std::wstring_view& varName, uint32_t* result,
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdShortArray(const std::wstring_view& varName, pint16_t result, uint32_t numElements)
+FitIniFile::readIdShortArray(const std::wstring_view& varName, int16_t* result, uint32_t numElements)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1591,7 +1591,7 @@ FitIniFile::readIdShortArray(const std::wstring_view& varName, pint16_t result, 
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1601,7 +1601,7 @@ FitIniFile::readIdShortArray(const std::wstring_view& varName, pint16_t result, 
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 2; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1618,7 +1618,7 @@ FitIniFile::readIdShortArray(const std::wstring_view& varName, pint16_t result, 
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
-		equalSign++; // Move to char past equal sign.
+		equalSign++; // Move to wchar_t past equal sign.
 		//--------------------------------------------------------------------------------
 		// Now, loop until we reach the end of block or we've read in all of the
 		// elements
@@ -1627,7 +1627,7 @@ FitIniFile::readIdShortArray(const std::wstring_view& varName, pint16_t result, 
 			int32_t errorCode = getNextWord(equalSign, elementString, 9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((puint8_t)line, BUFFERSIZE - 1);
+				readLine((uint8_t*)line, BUFFERSIZE - 1);
 				equalSign = line;
 				continue;
 			}
@@ -1650,11 +1650,11 @@ FitIniFile::readIdShortArray(const std::wstring_view& varName, pint16_t result, 
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdUShortArray(const std::wstring_view& varName, puint16_t result, uint32_t numElements)
+FitIniFile::readIdUShortArray(const std::wstring_view& varName, uint16_t* result, uint32_t numElements)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1669,7 +1669,7 @@ FitIniFile::readIdUShortArray(const std::wstring_view& varName, puint16_t result
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1679,7 +1679,7 @@ FitIniFile::readIdUShortArray(const std::wstring_view& varName, puint16_t result
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 3; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1696,7 +1696,7 @@ FitIniFile::readIdUShortArray(const std::wstring_view& varName, puint16_t result
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
-		equalSign++; // Move to char past equal sign.
+		equalSign++; // Move to wchar_t past equal sign.
 		//--------------------------------------------------------------------------------
 		// Now, loop until we reach the end of block or we've read in all of the
 		// elements
@@ -1705,7 +1705,7 @@ FitIniFile::readIdUShortArray(const std::wstring_view& varName, puint16_t result
 			int32_t errorCode = getNextWord(equalSign, elementString, 9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((puint8_t)line, BUFFERSIZE - 1);
+				readLine((uint8_t*)line, BUFFERSIZE - 1);
 				equalSign = line;
 				continue;
 			}
@@ -1730,9 +1730,9 @@ FitIniFile::readIdUShortArray(const std::wstring_view& varName, puint16_t result
 int32_t
 FitIniFile::readIdCharArray(const std::wstring_view& varName, const std::wstring_view& result, uint32_t numElements)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1747,7 +1747,7 @@ FitIniFile::readIdCharArray(const std::wstring_view& varName, const std::wstring
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1757,7 +1757,7 @@ FitIniFile::readIdCharArray(const std::wstring_view& varName, const std::wstring
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 2; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1774,7 +1774,7 @@ FitIniFile::readIdCharArray(const std::wstring_view& varName, const std::wstring
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
-		equalSign++; // Move to char past equal sign.
+		equalSign++; // Move to wchar_t past equal sign.
 		//--------------------------------------------------------------------------------
 		// Now, loop until we reach the end of block or we've read in all of the
 		// elements
@@ -1783,7 +1783,7 @@ FitIniFile::readIdCharArray(const std::wstring_view& varName, const std::wstring
 			int32_t errorCode = getNextWord(equalSign, elementString, 9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((puint8_t)line, BUFFERSIZE - 1);
+				readLine((uint8_t*)line, BUFFERSIZE - 1);
 				equalSign = line;
 				continue;
 			}
@@ -1806,11 +1806,11 @@ FitIniFile::readIdCharArray(const std::wstring_view& varName, const std::wstring
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::readIdUCharArray(const std::wstring_view& varName, puint8_t result, uint32_t numElements)
+FitIniFile::readIdUCharArray(const std::wstring_view& varName, uint8_t* result, uint32_t numElements)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1825,7 +1825,7 @@ FitIniFile::readIdUCharArray(const std::wstring_view& varName, puint8_t result, 
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1835,7 +1835,7 @@ FitIniFile::readIdUCharArray(const std::wstring_view& varName, puint8_t result, 
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 3; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1852,7 +1852,7 @@ FitIniFile::readIdUCharArray(const std::wstring_view& varName, puint8_t result, 
 	uint32_t elementsRead = 0;
 	if (equalSign)
 	{
-		equalSign++; // Move to char past equal sign.
+		equalSign++; // Move to wchar_t past equal sign.
 		//--------------------------------------------------------------------------------
 		// Now, loop until we reach the end of block or we've read in all of the
 		// elements
@@ -1861,7 +1861,7 @@ FitIniFile::readIdUCharArray(const std::wstring_view& varName, puint8_t result, 
 			int32_t errorCode = getNextWord(equalSign, elementString, 9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((puint8_t)line, BUFFERSIZE - 1);
+				readLine((uint8_t*)line, BUFFERSIZE - 1);
 				equalSign = line;
 				continue;
 			}
@@ -1886,9 +1886,9 @@ FitIniFile::readIdUCharArray(const std::wstring_view& varName, puint8_t result, 
 uint32_t
 FitIniFile::getIdFloatArrayElements(const std::wstring_view& varName)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1903,7 +1903,7 @@ FitIniFile::getIdFloatArrayElements(const std::wstring_view& varName)
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1913,7 +1913,7 @@ FitIniFile::getIdFloatArrayElements(const std::wstring_view& varName)
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 2; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1929,9 +1929,9 @@ FitIniFile::getIdFloatArrayElements(const std::wstring_view& varName)
 uint32_t
 FitIniFile::getIdLongArrayElements(const std::wstring_view& varName)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1946,7 +1946,7 @@ FitIniFile::getIdLongArrayElements(const std::wstring_view& varName)
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1956,7 +1956,7 @@ FitIniFile::getIdLongArrayElements(const std::wstring_view& varName)
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 2; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -1972,9 +1972,9 @@ FitIniFile::getIdLongArrayElements(const std::wstring_view& varName)
 uint32_t
 FitIniFile::getIdULongArrayElements(const std::wstring_view& varName)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -1989,7 +1989,7 @@ FitIniFile::getIdULongArrayElements(const std::wstring_view& varName)
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -1999,7 +1999,7 @@ FitIniFile::getIdULongArrayElements(const std::wstring_view& varName)
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 3; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -2015,9 +2015,9 @@ FitIniFile::getIdULongArrayElements(const std::wstring_view& varName)
 uint32_t
 FitIniFile::getIdShortArrayElements(const std::wstring_view& varName)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -2032,7 +2032,7 @@ FitIniFile::getIdShortArrayElements(const std::wstring_view& varName)
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -2042,7 +2042,7 @@ FitIniFile::getIdShortArrayElements(const std::wstring_view& varName)
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 2; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -2058,9 +2058,9 @@ FitIniFile::getIdShortArrayElements(const std::wstring_view& varName)
 uint32_t
 FitIniFile::getIdUShortArrayElements(const std::wstring_view& varName)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -2075,7 +2075,7 @@ FitIniFile::getIdUShortArrayElements(const std::wstring_view& varName)
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -2085,7 +2085,7 @@ FitIniFile::getIdUShortArrayElements(const std::wstring_view& varName)
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 3; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -2101,9 +2101,9 @@ FitIniFile::getIdUShortArrayElements(const std::wstring_view& varName)
 uint32_t
 FitIniFile::getIdCharArrayElements(const std::wstring_view& varName)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -2118,7 +2118,7 @@ FitIniFile::getIdCharArrayElements(const std::wstring_view& varName)
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -2128,7 +2128,7 @@ FitIniFile::getIdCharArrayElements(const std::wstring_view& varName)
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 2; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -2144,9 +2144,9 @@ FitIniFile::getIdCharArrayElements(const std::wstring_view& varName)
 uint32_t
 FitIniFile::getIdUCharArrayElements(const std::wstring_view& varName)
 {
-	char line[BUFFERSIZE];
-	char frontSearch[10];
-	char searchString[BUFFERSIZE];
+	wchar_t line[BUFFERSIZE];
+	wchar_t frontSearch[10];
+	wchar_t searchString[BUFFERSIZE];
 	//--------------------------------
 	// Always read from top of Block.
 	seek(m_currentBlockOffset);
@@ -2161,7 +2161,7 @@ FitIniFile::getIdUCharArrayElements(const std::wstring_view& varName)
 	const std::wstring_view& bSearch = nullptr;
 	do
 	{
-		readLine((puint8_t)line, BUFFERSIZE - 1);
+		readLine((uint8_t*)line, BUFFERSIZE - 1);
 		fSearch = strstr(line, frontSearch);
 		bSearch = strstr(line, searchString);
 	} while (((fSearch == nullptr) || (bSearch == nullptr)) && (logicalPosition < endOfBlock));
@@ -2171,7 +2171,7 @@ FitIniFile::getIdUCharArrayElements(const std::wstring_view& varName)
 	}
 	//--------------------------------------
 	// Get number of elements in array.
-	char elementString[10];
+	wchar_t elementString[10];
 	uint32_t actualElements;
 	fSearch += 3; // Move pointer to first number in brackets.
 	int32_t numDigits = bSearch - fSearch;
@@ -2189,7 +2189,7 @@ std::string output(size + 1, '\0');
 std::sprintf(&output[0], format, /* Arguments go here*/);
 
 int
-sprintf_s(char* buffer, size_t sizeOfBuffer, const char* format[, argument]...);
+sprintf_s(wchar_t* buffer, size_t sizeOfBuffer, const wchar_t* format[, argument]...);
 
 //---------------------------------------------------------------------------
 
@@ -2198,7 +2198,7 @@ static HRESULT
 writeformatted(const std::wstring_view& varName, const std::wstring_view& format, TVAR value)
 {
 	uint8_t thisLine[BUFFERSIZE];
-	int lenght = sprintf_s(static_cast<char*>(thisLine), BUFFERSIZE - 1, format, value);
+	int lenght = sprintf_s(static_cast<wchar_t*>(thisLine), BUFFERSIZE - 1, format, value);
 	if (lenght == -1)
 		throw std::system_error(errno, std::system_category(), __func__);
 
@@ -2209,19 +2209,19 @@ writeformatted(const std::wstring_view& varName, const std::wstring_view& format
 HRESULT
 FitIniFile::writeBlock(const std::wstring_view& blockId)
 {
-	constexpr const char* format = "\r\n[%s]\r\n";
+	constexpr const wchar_t* format = "\r\n[%s]\r\n";
 
-	return writeformatted<char>(blockId, format, 0);
+	return writeformatted<wchar_t>(blockId, format, 0);
 }
 
 //---------------------------------------------------------------------------
 HRESULT
 FitIniFile::writeIdBoolean(const std::wstring_view& varName, bool value)
 {
-	constexpr const char* formattrue = "b %s = true\r\n";
-	constexpr const char* formatfalse = "b %s = false\r\n";
+	constexpr const wchar_t* formattrue = "b %s = true\r\n";
+	constexpr const wchar_t* formatfalse = "b %s = false\r\n";
 
-	return (value == true) ? writeformatted<char>(varName, formattrue, 0)
+	return (value == true) ? writeformatted<wchar_t>(varName, formattrue, 0)
 						   : writeformatted<bool>(varName, formatfalse, 0);
 }
 
@@ -2229,7 +2229,7 @@ FitIniFile::writeIdBoolean(const std::wstring_view& varName, bool value)
 HRESULT
 FitIniFile::writeIdFloat(const std::wstring_view& varName, float value)
 {
-	constexpr const char* format = "f %s = %f\r\n";
+	constexpr const wchar_t* format = "f %s = %f\r\n";
 
 	return writeformatted<float>(varName, format, value);
 }
@@ -2238,7 +2238,7 @@ FitIniFile::writeIdFloat(const std::wstring_view& varName, float value)
 int32_t
 FitIniFile::writeIdLong(const std::wstring_view& varName, long32_t value)
 {
-	constexpr const char* format = "l %s = %d\r\n";
+	constexpr const wchar_t* format = "l %s = %d\r\n";
 
 	return writeformatted<long32_t>(varName, format, value);
 }
@@ -2247,7 +2247,7 @@ FitIniFile::writeIdLong(const std::wstring_view& varName, long32_t value)
 HRESULT
 FitIniFile::writeIdULong(const std::wstring_view& varName, ulong32_t value)
 {
-	constexpr const char* format = "ul %s = %d\r\n";
+	constexpr const wchar_t* format = "ul %s = %d\r\n";
 
 	return writeformatted<ulong32_t>(varName, format, value);
 }
@@ -2256,7 +2256,7 @@ FitIniFile::writeIdULong(const std::wstring_view& varName, ulong32_t value)
 HRESULT
 FitIniFile::writeIdShort(const std::wstring_view& varName, int16_t value)
 {
-	constexpr const char* format = "s %s = %d\r\n";
+	constexpr const wchar_t* format = "s %s = %d\r\n";
 
 	return writeformatted<int16_t>(varName, format, value);
 }
@@ -2265,25 +2265,25 @@ FitIniFile::writeIdShort(const std::wstring_view& varName, int16_t value)
 HRESULT
 FitIniFile::writeIdUShort(const std::wstring_view& varName, uint16_t value)
 {
-	constexpr const char* format = "us %s = %d\r\n";
+	constexpr const wchar_t* format = "us %s = %d\r\n";
 
 	return writeformatted<uint16_t>(varName, format, value);
 }
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdChar(const std::wstring_view& varName, char value)
+FitIniFile::writeIdChar(const std::wstring_view& varName, wchar_t value)
 {
-	constexpr const char* format = "c %s = %d\r\n";
+	constexpr const wchar_t* format = "c %s = %d\r\n";
 
-	return writeformatted<char>(varName, format, value);
+	return writeformatted<wchar_t>(varName, format, value);
 }
 
 //---------------------------------------------------------------------------
 HRESULT
 FitIniFile::writeIdUChar(const std::wstring_view& varName, uint8_t value)
 {
-	constexpr const char* format = "uc %s = %d\r\n";
+	constexpr const wchar_t* format = "uc %s = %d\r\n";
 
 	return writeformatted<uint8_t>(varName, format, value);
 }
@@ -2292,31 +2292,31 @@ FitIniFile::writeIdUChar(const std::wstring_view& varName, uint8_t value)
 int32_t
 FitIniFile::writeIdString(const std::wstring_view& varName, const std::wstring_view& result)
 {
-	char thisLine[4096];
-	char tmpString[4000];
+	wchar_t thisLine[4096];
+	wchar_t tmpString[4000];
 	memset(tmpString, 0, 4000);
 	strncpy(tmpString, result, 3999);
 	if (strlen(result) >= 4000)
-		PAUSE(("String passed to WriteIdString is longer then 4000 characters"));
+		PAUSE(("string passed to WriteIdString is longer then 4000 characters"));
 	sprintf(thisLine, "st %s = \"%s\"\r\n", varName, result);
-	int32_t bytesWritten = write((puint8_t)thisLine, strlen(thisLine));
+	int32_t bytesWritten = write((uint8_t*)thisLine, strlen(thisLine));
 	return (bytesWritten);
 }
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdUShortArray(const std::wstring_view& varName, puint16_t array, uint32_t numElements)
+FitIniFile::writeIdUShortArray(const std::wstring_view& varName, uint16_t* array, uint32_t numElements)
 {
-	char thisLine[BUFFERSIZE];
+	wchar_t thisLine[BUFFERSIZE];
 	sprintf(thisLine, "us[%d] %s = %d,", numElements, varName, array[0]);
-	int32_t bytesWritten = write((puint8_t)thisLine, strlen(thisLine));
+	int32_t bytesWritten = write((uint8_t*)thisLine, strlen(thisLine));
 	for (size_t i = 1; i < (int32_t)numElements; i++)
 	{
 		sprintf(thisLine, "%d,", array[i]);
-		bytesWritten += write((puint8_t)thisLine, strlen(thisLine));
+		bytesWritten += write((uint8_t*)thisLine, strlen(thisLine));
 	}
 	sprintf(thisLine, "\r\n");
-	bytesWritten += write((puint8_t)thisLine, strlen(thisLine));
+	bytesWritten += write((uint8_t*)thisLine, strlen(thisLine));
 	return (bytesWritten);
 }
 
@@ -2324,16 +2324,16 @@ FitIniFile::writeIdUShortArray(const std::wstring_view& varName, puint16_t array
 int32_t
 FitIniFile::writeIdLongArray(const std::wstring_view& varName, int32_t* array, uint32_t numElements)
 {
-	char thisLine[BUFFERSIZE];
+	wchar_t thisLine[BUFFERSIZE];
 	sprintf(thisLine, "l[%d] %s = %d,", numElements, varName, array[0]);
-	int32_t bytesWritten = write((puint8_t)thisLine, strlen(thisLine));
+	int32_t bytesWritten = write((uint8_t*)thisLine, strlen(thisLine));
 	for (size_t i = 1; i < (int32_t)numElements; i++)
 	{
 		sprintf(thisLine, "%d,", array[i]);
-		bytesWritten += write((puint8_t)thisLine, strlen(thisLine));
+		bytesWritten += write((uint8_t*)thisLine, strlen(thisLine));
 	}
 	sprintf(thisLine, "\r\n");
-	bytesWritten += write((puint8_t)thisLine, strlen(thisLine));
+	bytesWritten += write((uint8_t*)thisLine, strlen(thisLine));
 	return (bytesWritten);
 }
 
@@ -2341,33 +2341,33 @@ FitIniFile::writeIdLongArray(const std::wstring_view& varName, int32_t* array, u
 int32_t
 FitIniFile::writeIdFloatArray(const std::wstring_view& varName, float* array, uint32_t numElements)
 {
-	char thisLine[BUFFERSIZE];
+	wchar_t thisLine[BUFFERSIZE];
 	sprintf(thisLine, "f[%d] %s = %.2f,", numElements, varName, array[0]);
-	int32_t bytesWritten = write((puint8_t)thisLine, strlen(thisLine));
+	int32_t bytesWritten = write((uint8_t*)thisLine, strlen(thisLine));
 	for (size_t i = 1; i < (int32_t)numElements; i++)
 	{
 		sprintf(thisLine, " %.2f,", array[i]);
-		bytesWritten += write((puint8_t)thisLine, strlen(thisLine));
+		bytesWritten += write((uint8_t*)thisLine, strlen(thisLine));
 	}
 	sprintf(thisLine, "\r\n");
-	bytesWritten += write((puint8_t)thisLine, strlen(thisLine));
+	bytesWritten += write((uint8_t*)thisLine, strlen(thisLine));
 	return (bytesWritten);
 }
 
 //---------------------------------------------------------------------------
 int32_t
-FitIniFile::writeIdUCharArray(const std::wstring_view& varName, puint8_t array, uint32_t numElements)
+FitIniFile::writeIdUCharArray(const std::wstring_view& varName, uint8_t* array, uint32_t numElements)
 {
-	char thisLine[BUFFERSIZE];
+	wchar_t thisLine[BUFFERSIZE];
 	sprintf(thisLine, "uc[%d] %s = %d,", numElements, varName, array[0]);
-	int32_t bytesWritten = write((puint8_t)thisLine, strlen(thisLine));
+	int32_t bytesWritten = write((uint8_t*)thisLine, strlen(thisLine));
 	for (size_t i = 1; i < (int32_t)numElements; i++)
 	{
 		sprintf(thisLine, " %d,", array[i]);
-		bytesWritten += write((puint8_t)thisLine, strlen(thisLine));
+		bytesWritten += write((uint8_t*)thisLine, strlen(thisLine));
 	}
 	sprintf(thisLine, "\r\n");
-	bytesWritten += write((puint8_t)thisLine, strlen(thisLine));
+	bytesWritten += write((uint8_t*)thisLine, strlen(thisLine));
 	return (bytesWritten);
 }
 

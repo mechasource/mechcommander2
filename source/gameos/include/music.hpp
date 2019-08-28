@@ -54,13 +54,13 @@ typedef struct _gosMusic_Info
 // Send a command to an existing music resource or create a new video resource.
 // Consult the structures/enums listed above for more information.
 //
-void __stdcall gosMusic_CreateResource(HGOSMUSIC* Handle, PSTR filename);
-void __stdcall gosMusic_DestroyResource(HGOSMUSIC* Handle);
-void __stdcall gosMusic_GetResourceInfo(HGOSMUSIC Handle, gosMusic_ResourceInfo* gmi);
+void __stdcall gosMusic_CreateResource(HGOSMUSIC* handle, PSTR filename);
+void __stdcall gosMusic_DestroyResource(HGOSMUSIC* handle);
+void __stdcall gosMusic_GetResourceInfo(HGOSMUSIC handle, gosMusic_ResourceInfo* gmi);
 
-void __stdcall gosMusic_SetPlayMode(HGOSMUSIC Handle, enum gosMusic_PlayMode gmpm);
-gosMusic_PlayMode __stdcall gosMusic_GetPlayMode(HGOSMUSIC Handle);
-void __stdcall gosMusic_Command(HGOSMUSIC Handle, enum gosMusic_Command gmc, float x, float y = 0.0f);
+void __stdcall gosMusic_SetPlayMode(HGOSMUSIC handle, enum gosMusic_PlayMode gmpm);
+gosMusic_PlayMode __stdcall gosMusic_GetPlayMode(HGOSMUSIC handle);
+void __stdcall gosMusic_Command(HGOSMUSIC handle, enum gosMusic_Command gmc, float x, float y = 0.0f);
 
 struct gos_Music
 {

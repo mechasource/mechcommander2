@@ -115,17 +115,17 @@
 //---------------------------------------------------------------------------
 // Static Globals
 #if 1 // ids can be 8 int32_t, INCLUDING TERMINATOR!!!!!
-char DEFAULT_LIST_ID[] = "DEFAULT";
-char CLANMECH_LIST_ID[] = "CLANMEC";
-char ISMECH_LIST_ID[] = "ISMECH";
-char ICON_LIST_ID[] = "ICONS";
-char WEAPON_LIST_ID[] = "WEAPON";
+wchar_t DEFAULT_LIST_ID[] = "DEFAULT";
+wchar_t CLANMECH_LIST_ID[] = "CLANMEC";
+wchar_t ISMECH_LIST_ID[] = "ISMECH";
+wchar_t ICON_LIST_ID[] = "ICONS";
+wchar_t WEAPON_LIST_ID[] = "WEAPON";
 #else
-char DEFAULT_LIST_ID[] = "DEFAULT!";
-char CLANMECH_LIST_ID[] = "CLANMECH";
-char ISMECH_LIST_ID[] = "ISMECH";
-char ICON_LIST_ID[] = "ICONS";
-char WEAPON_LIST_ID[] = "WEAPON";
+wchar_t DEFAULT_LIST_ID[] = "DEFAULT!";
+wchar_t CLANMECH_LIST_ID[] = "CLANMECH";
+wchar_t ISMECH_LIST_ID[] = "ISMECH";
+wchar_t ICON_LIST_ID[] = "ICONS";
+wchar_t WEAPON_LIST_ID[] = "WEAPON";
 #endif
 // int32_t ObjectQueue::objectsInList = 0;
 
@@ -779,7 +779,7 @@ GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHan
 {
 	int32_t packet = terrainFile->getCurrentPacket();
 	int32_t size = terrainFile->getPacketSize();
-	puint8_t pBuffer = new uint8_t[size];
+	uint8_t* pBuffer = new uint8_t[size];
 #ifdef _DEBUG
 	int32_t bytesRead =
 #endif
@@ -1240,7 +1240,7 @@ GameObjectManager::addObject(ObjDataLoader* objData, int32_t& curTerrainObjectIn
 						}
 					}
 					((GatePtr)obj)->setTeamId(obj->getTeamId(), true);
-					pint16_t curCoord = ((GatePtr)obj)->cellsCovered;
+					int16_t* curCoord = ((GatePtr)obj)->cellsCovered;
 					for (i = 0; i < ((GatePtr)obj)->numCellsCovered; i++)
 					{
 						int32_t r = *curCoord++;
@@ -2934,7 +2934,7 @@ GameObjectManager::Save(PacketFilePtr file, int32_t packetNum)
 	memset(watchSave, 0, sizeof(int32_t) * (getMaxObjects() + 1));
 	ObjectManagerData data;
 	CopyTo(&data);
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(ObjectManagerData), STORAGE_TYPE_RAW);
+	file->writePacket(packetNum, (uint8_t*)&data, sizeof(ObjectManagerData), STORAGE_TYPE_RAW);
 	packetNum++;
 	for (size_t i = 0; i <= getMaxObjects(); i++)
 	{
@@ -2960,7 +2960,7 @@ GameObjectManager::Save(PacketFilePtr file, int32_t packetNum)
 		}
 	}
 	file->writePacket(
-		packetNum, (puint8_t)watchSave, sizeof(int32_t) * (getMaxObjects() + 1), STORAGE_TYPE_ZLIB);
+		packetNum, (uint8_t*)watchSave, sizeof(int32_t) * (getMaxObjects() + 1), STORAGE_TYPE_ZLIB);
 	packetNum++;
 	free(watchSave);
 	watchSave = nullptr;
@@ -2972,7 +2972,7 @@ int32_t
 GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 {
 	ObjectManagerData data;
-	file->readPacket(packetNum, (puint8_t)&data);
+	file->readPacket(packetNum, (uint8_t*)&data);
 	packetNum++;
 	CopyFrom(&data);
 	//------------------------------------------------------------------
@@ -3112,7 +3112,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 			// We have a TerrainObject.
 			// Get its data.
 			TerrainObjectData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			TerrainObjectPtr obj = new TerrainObject;
 			objList[i] = terrainObjects[curTerrObjNum] = obj;
@@ -3146,7 +3146,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 		{
 			// We have a Building.
 			BuildingData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			BuildingPtr obj = new Building;
 			objList[i] = buildings[curBuildingNum] = obj;
@@ -3183,7 +3183,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 		{
 			// We have a Turret.
 			TurretData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			TurretPtr obj = new Turret;
 			objList[i] = turrets[curTurretNum] = obj;
@@ -3217,7 +3217,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 		{
 			// We have a Gate.
 			GateData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			GatePtr obj = new Gate;
 			objList[i] = gates[curGateNum] = obj;
@@ -3251,7 +3251,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 		{
 			// We have an Artillery.
 			ArtilleryData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			ArtilleryPtr obj = new Artillery;
 			objList[i] = artillery[curArtilleryNum] = obj;
@@ -3276,7 +3276,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 		{
 			// We have a Carnage.
 			CarnageData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			CarnagePtr obj = new Carnage;
 			objList[i] = carnage[curCarnageNum] = obj;
@@ -3301,7 +3301,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 		{
 			// We have a BattleMech.
 			MechData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			BattleMechPtr obj = new BattleMech;
 			objList[i] = mechs[curMechNum] = obj;
@@ -3326,7 +3326,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 		{
 			// We have a groundVehicle.
 			GroundVehicleData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			GroundVehiclePtr obj = new GroundVehicle;
 			objList[i] = vehicles[curVehicleNum] = obj;
@@ -3351,7 +3351,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 		{
 			// We have a WeaponBolt.
 			WeaponBoltData data;
-			file->readPacket(packetNum, (puint8_t)(&data));
+			file->readPacket(packetNum, (uint8_t*)(&data));
 			packetNum++;
 			WeaponBoltPtr obj = new WeaponBolt;
 			objList[i] = weapons[curBoltNum] = obj;
@@ -3507,7 +3507,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 	// Reload the Object Watchers
 	int32_t* watchSave = (int32_t*)malloc(sizeof(int32_t) * (getMaxObjects() + 1));
 	memset(watchSave, 0, sizeof(int32_t) * (getMaxObjects() + 1));
-	file->readPacket(packetNum, (puint8_t)watchSave);
+	file->readPacket(packetNum, (uint8_t*)watchSave);
 	packetNum++;
 	// Find the watchID from the watchlist for this object.
 	// If none, let it be.  It'll be zero already

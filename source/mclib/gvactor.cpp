@@ -116,7 +116,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.seekBlock("TGLData");
 	if (result != NO_ERR)
 		Fatal(result, "Could not find block in vehicle appearance INI file");
-	char aseFileName[512];
+	wchar_t aseFileName[512];
 	result = iniFile.readIdString("FileName", aseFileName, 511);
 	int32_t i;
 	if (result != NO_ERR)
@@ -124,8 +124,8 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 		// Check for LOD filenames instead
 		for (i = 0; i < MAX_LODS; i++)
 		{
-			char baseName[256];
-			char baseLODDist[256];
+			wchar_t baseName[256];
+			wchar_t baseLODDist[256];
 			sprintf(baseName, "FileName%d", i);
 			sprintf(baseLODDist, "Distance%d", i);
 			result = iniFile.readIdString(baseName, aseFileName, 511);
@@ -207,12 +207,12 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 	// We can load up to 10 Animation States.
 	for (i = 0; i < MAX_GV_ANIMATIONS; i++)
 	{
-		char blockId[512];
+		wchar_t blockId[512];
 		sprintf(blockId, "Animation:%d", i);
 		result = iniFile.seekBlock(blockId);
 		if (result == NO_ERR)
 		{
-			char animName[512];
+			wchar_t animName[512];
 			result = iniFile.readIdString("AnimationName", animName, 511);
 			gosASSERT(result == NO_ERR);
 			result = iniFile.readIdBoolean("LoopAnimation", gvAnimLoop[i]);
@@ -271,7 +271,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 	memset(nodeData, 0, sizeof(NodeData) * (numWeaponNodes + numSmokeNodes + numFootNodes));
 	for (i = 1; i <= numSmokeNodes; i++)
 	{
-		char blockId[512];
+		wchar_t blockId[512];
 		sprintf(blockId, "Smoke_%02d", i);
 		nodeData[i - 1].nodeId =
 			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
@@ -281,7 +281,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 	}
 	for (i = 1; i <= numWeaponNodes; i++)
 	{
-		char blockId[512];
+		wchar_t blockId[512];
 		sprintf(blockId, "Weapon_%02d", i);
 		nodeData[(i - 1) + numSmokeNodes].nodeId =
 			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
@@ -291,7 +291,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 	}
 	for (i = 1; i <= numFootNodes; i++)
 	{
-		char blockId[512];
+		wchar_t blockId[512];
 		sprintf(blockId, "FootNode_%02d", i);
 		nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId =
 			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
@@ -615,7 +615,7 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 	pilotNameID = -1;
 	hazeFactor = 0.0f;
 	currentFlash = duration = flashDuration = 0.0f;
-	flashColor = 0x00000000;
+	flashcolour = 0x00000000;
 	drawFlash = false;
 	rotationalNodeIndex = -1;
 	dustNodeIndex = activityNodeIndex = hitNodeId = weaponNodeId[0] = weaponNodeId[1] =
@@ -663,9 +663,9 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		// Load the texture and store its handle.
 		for (i = 0; i < gvShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			gvShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -721,9 +721,9 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			// Load the texture and store its handle.
 			for (size_t i = 0; i < gvShadowShape->GetNumTextures(); i++)
 			{
-				char txmName[1024];
+				wchar_t txmName[1024];
 				gvShadowShape->GetTextureName(i, txmName, 256);
-				char texturePath[1024];
+				wchar_t texturePath[1024];
 				sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 				FullPathFileName textureName;
 				textureName.init(texturePath, txmName, "");
@@ -761,9 +761,9 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		// Load the texture and store its handle.
 		for (i = 0; i < sensorTriangleShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			sensorTriangleShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -795,9 +795,9 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		// Load the texture and store its handle.
 		for (i = 0; i < sensorCircleShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			sensorCircleShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -942,9 +942,9 @@ GVAppearance::setObjStatus(int32_t oStatus)
 		// Load the texture and store its handle.
 		for (size_t i = 0; i < gvShape->GetNumTextures(); i++)
 		{
-			char txmName[1024];
+			wchar_t txmName[1024];
 			gvShape->GetTextureName(i, txmName, 256);
-			char texturePath[1024];
+			wchar_t texturePath[1024];
 			sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 			FullPathFileName textureName;
 			textureName.init(texturePath, txmName, "");
@@ -1014,70 +1014,70 @@ GVAppearance::setPaintScheme(void)
 		gos_LockTexture(gosHandle, 0, 0, &textureData);
 		//-------------------------------------------------------
 		uint32_t* textureMemory = textureData.pTexture;
-		for (size_t i = 0; i < textureData.Height; i++)
+		for (size_t i = 0; i < textureData.height; i++)
 		{
-			for (size_t j = 0; j < textureData.Height; j++)
+			for (size_t j = 0; j < textureData.height; j++)
 			{
 				//---------------------------------------------
-				// Make Color from PaintScheme.
-				uint32_t baseColor = *textureMemory;
-				uint8_t baseColorAlpha = ((baseColor & 0xff000000) >> 24);
-				float baseColorRed = float((baseColor & 0x00ff0000) >> 16);
-				float baseColorGreen = float((baseColor & 0x0000ff00) >> 8);
-				float baseColorBlue = float(baseColor & 0x000000ff);
-				uint32_t newColor = *textureMemory; // Black by default.
-				if ((!baseColorGreen) && (!baseColorBlue))
+				// Make colour from PaintScheme.
+				uint32_t basecolour = *textureMemory;
+				uint8_t basecolourAlpha = ((basecolour & 0xff000000) >> 24);
+				float basecolourRed = float((basecolour & 0x00ff0000) >> 16);
+				float basecolourGreen = float((basecolour & 0x0000ff00) >> 8);
+				float basecolourBlue = float(basecolour & 0x000000ff);
+				uint32_t newcolour = *textureMemory; // Black by default.
+				if ((!basecolourGreen) && (!basecolourBlue))
 				{
-					baseColorRed *= 0.00390625f; // Divide by 256;
-					baseColorRed = 1.0 - baseColorRed;
-					baseColorRed *= baseColorRed; // Log colors
-					baseColorRed = 1.0 - baseColorRed;
-					float newColorRed = float((psRed & 0x00ff0000) >> 16);
-					newColorRed *= baseColorRed;
-					uint8_t red = (uint8_t)newColorRed;
-					float newColorGreen = float((psRed & 0x0000ff00) >> 8);
-					newColorGreen *= baseColorRed;
-					uint8_t green = (uint8_t)newColorGreen;
-					float newColorBlue = float(psRed & 0x000000ff);
-					newColorBlue *= baseColorRed;
-					uint8_t blue = (uint8_t)newColorBlue;
-					newColor = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
+					basecolourRed *= 0.00390625f; // Divide by 256;
+					basecolourRed = 1.0 - basecolourRed;
+					basecolourRed *= basecolourRed; // Log colors
+					basecolourRed = 1.0 - basecolourRed;
+					float newcolourRed = float((psRed & 0x00ff0000) >> 16);
+					newcolourRed *= basecolourRed;
+					uint8_t red = (uint8_t)newcolourRed;
+					float newcolourGreen = float((psRed & 0x0000ff00) >> 8);
+					newcolourGreen *= basecolourRed;
+					uint8_t green = (uint8_t)newcolourGreen;
+					float newcolourBlue = float(psRed & 0x000000ff);
+					newcolourBlue *= basecolourRed;
+					uint8_t blue = (uint8_t)newcolourBlue;
+					newcolour = (basecolourAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
-				else if ((!baseColorRed) && (!baseColorBlue))
+				else if ((!basecolourRed) && (!basecolourBlue))
 				{
-					baseColorGreen *= 0.00390625f; // Divide by 256;
-					baseColorGreen = 1.0 - baseColorGreen;
-					baseColorGreen *= baseColorGreen; // Log colors
-					baseColorGreen = 1.0 - baseColorGreen;
-					float newColorRed = float((psGreen & 0x00ff0000) >> 16);
-					newColorRed *= baseColorGreen;
-					uint8_t red = (uint8_t)newColorRed;
-					float newColorGreen = float((psGreen & 0x0000ff00) >> 8);
-					newColorGreen *= baseColorGreen;
-					uint8_t green = (uint8_t)newColorGreen;
-					float newColorBlue = float(psGreen & 0x000000ff);
-					newColorBlue *= baseColorGreen;
-					uint8_t blue = (uint8_t)newColorBlue;
-					newColor = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
+					basecolourGreen *= 0.00390625f; // Divide by 256;
+					basecolourGreen = 1.0 - basecolourGreen;
+					basecolourGreen *= basecolourGreen; // Log colors
+					basecolourGreen = 1.0 - basecolourGreen;
+					float newcolourRed = float((psGreen & 0x00ff0000) >> 16);
+					newcolourRed *= basecolourGreen;
+					uint8_t red = (uint8_t)newcolourRed;
+					float newcolourGreen = float((psGreen & 0x0000ff00) >> 8);
+					newcolourGreen *= basecolourGreen;
+					uint8_t green = (uint8_t)newcolourGreen;
+					float newcolourBlue = float(psGreen & 0x000000ff);
+					newcolourBlue *= basecolourGreen;
+					uint8_t blue = (uint8_t)newcolourBlue;
+					newcolour = (basecolourAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
-				else if ((!baseColorRed) && (!baseColorGreen))
+				else if ((!basecolourRed) && (!basecolourGreen))
 				{
-					baseColorBlue *= 0.00390625f; // Divide by 256;
-					baseColorBlue = 1.0 - baseColorBlue;
-					baseColorBlue *= baseColorBlue; // Log colors
-					baseColorBlue = 1.0 - baseColorBlue;
-					float newColorRed = float((psBlue & 0x00ff0000) >> 16);
-					newColorRed *= baseColorBlue;
-					uint8_t red = (uint8_t)newColorRed;
-					float newColorGreen = float((psBlue & 0x0000ff00) >> 8);
-					newColorGreen *= baseColorBlue;
-					uint8_t green = (uint8_t)newColorGreen;
-					float newColorBlue = float(psBlue & 0x000000ff);
-					newColorBlue *= baseColorBlue;
-					uint8_t blue = (uint8_t)newColorBlue;
-					newColor = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
+					basecolourBlue *= 0.00390625f; // Divide by 256;
+					basecolourBlue = 1.0 - basecolourBlue;
+					basecolourBlue *= basecolourBlue; // Log colors
+					basecolourBlue = 1.0 - basecolourBlue;
+					float newcolourRed = float((psBlue & 0x00ff0000) >> 16);
+					newcolourRed *= basecolourBlue;
+					uint8_t red = (uint8_t)newcolourRed;
+					float newcolourGreen = float((psBlue & 0x0000ff00) >> 8);
+					newcolourGreen *= basecolourBlue;
+					uint8_t green = (uint8_t)newcolourGreen;
+					float newcolourBlue = float(psBlue & 0x000000ff);
+					newcolourBlue *= basecolourBlue;
+					uint8_t blue = (uint8_t)newcolourBlue;
+					newcolour = (basecolourAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
-				*textureMemory = newColor;
+				*textureMemory = newcolour;
 				textureMemory++;
 			}
 		}
@@ -1134,9 +1134,9 @@ GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 	mcTextureManager->removeTexture(gosHandle);
 	//-------------------------------------------------
 	// Load the texture and store its handle.
-	char txmName[1024];
+	wchar_t txmName[1024];
 	gvShape->GetTextureName(0, txmName, 256);
-	char texturePath[1024];
+	wchar_t texturePath[1024];
 	sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 	FullPathFileName textureName;
 	textureName.init(texturePath, txmName, "");
@@ -1578,9 +1578,9 @@ GVAppearance::recalcBounds(void)
 							// Load the texture and store its handle.
 							for (size_t j = 0; j < gvShape->GetNumTextures(); j++)
 							{
-								char txmName[1024];
+								wchar_t txmName[1024];
 								gvShape->GetTextureName(j, txmName, 256);
-								char texturePath[1024];
+								wchar_t texturePath[1024];
 								sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 								FullPathFileName textureName;
 								textureName.init(texturePath, txmName, "");
@@ -1629,9 +1629,9 @@ GVAppearance::recalcBounds(void)
 							// Load the texture and store its handle.
 							for (size_t i = 0; i < gvShape->GetNumTextures(); i++)
 							{
-								char txmName[1024];
+								wchar_t txmName[1024];
 								gvShape->GetTextureName(i, txmName, 256);
-								char texturePath[1024];
+								wchar_t texturePath[1024];
 								sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 								FullPathFileName textureName;
 								textureName.init(texturePath, txmName, "");
@@ -1684,7 +1684,7 @@ GVAppearance::recalcBounds(void)
 
 //-----------------------------------------------------------------------------
 bool
-GVAppearance::playDestruction(void)
+GVAppearance::playdestruction(void)
 {
 	// Check if there is a Destruct FX
 	if (appearType->destructEffect[0])
@@ -1815,12 +1815,12 @@ GVAppearance::render(int32_t depthFixup)
 			}
 			else
 			{
-				gvShape->SetARGBHighLight(highlightColor);
+				gvShape->SetARGBHighLight(highlightcolour);
 			}
 			Camera::HazeFactor = hazeFactor;
 			if (drawFlash)
 			{
-				gvShape->SetARGBHighLight(flashColor);
+				gvShape->SetARGBHighLight(flashcolour);
 			}
 			//---------------------------------------------
 			// Call Multi-shape render stuff here.
@@ -1846,7 +1846,7 @@ GVAppearance::render(int32_t depthFixup)
 			{
 				if (objectNameId != -1)
 				{
-					char tmpString[255];
+					wchar_t tmpString[255];
 					cLoadString(objectNameId, tmpString, 254);
 					drawTextHelp(tmpString, color);
 				}
@@ -2064,7 +2064,7 @@ GVAppearance::updateGeometry(void)
 	lightg = eye->getLightGreen(lightIntensity);
 	lightb = eye->getLightBlue(lightIntensity);
 	uint32_t lightRGB = (lightr << 16) + (lightg << 8) + lightb;
-	eye->setLightColor(0, lightRGB);
+	eye->setLightcolour(0, lightRGB);
 	eye->setLightIntensity(0, 1.0);
 	uint32_t fogRGB = 0xff << 24;
 	float fogStart = eye->fogStart;
@@ -2533,7 +2533,7 @@ GVAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;
-	flashColor = color;
+	flashcolour = color;
 	drawFlash = true;
 	currentFlash = flashDuration;
 }

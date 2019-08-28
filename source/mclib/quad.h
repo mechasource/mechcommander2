@@ -60,11 +60,11 @@ class TerrainQuad
 public:
 	VertexPtr vertices[4]; // Pointers to vertices defining this tile.
 
-	uint32_t terrainHandle; // Handle to texture to draw.
-	uint32_t terrainDetailHandle; // Handle to detail texture to draw.
-	uint32_t waterHandle; // Handle to water texture to draw.
-	uint32_t waterDetailHandle; // Handle to Water Detail texture to draw.
-	uint32_t overlayHandle; // Handle to overlay texture to draw.
+	uint32_t terrainHandle; // handle to texture to draw.
+	uint32_t terrainDetailHandle; // handle to detail texture to draw.
+	uint32_t waterHandle; // handle to water texture to draw.
+	uint32_t waterDetailHandle; // handle to Water Detail texture to draw.
+	uint32_t overlayHandle; // handle to overlay texture to draw.
 
 	uint32_t uvMode; // Is this a top or bottom triangle?
 	MineResult mineResult; // Is there a mine or exploded mine in this cell on
@@ -77,7 +77,7 @@ public:
 
 	static float rainLightLevel; // How much to darken terrain based on rain
 	static uint32_t lighteningLevel; // How much to lighten terrain based on lightening.
-	static uint32_t mineTextureHandle; // Handle to the mine textures.
+	static uint32_t mineTextureHandle; // handle to the mine textures.
 	static uint32_t blownTextureHandle;
 
 #ifdef _DEBUG

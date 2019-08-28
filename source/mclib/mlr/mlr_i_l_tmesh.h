@@ -7,7 +7,7 @@
 #ifndef MLR_MLR_I_L_TMESH_HPP
 #define MLR_MLR_I_L_TMESH_HPP
 
-#include <mlr/mlr_i_c_tmesh.hpp>
+#include "mlr/mlr_i_c_tmesh.h"
 
 namespace MidLevelRenderer
 {
@@ -43,21 +43,21 @@ public:
 
 public:
 	virtual void SetNormalData(const Stuff::Vector3D* array, size_t point_count);
-	virtual void GetNormalData(Stuff::Vector3D** array, psize_t point_count);
+	virtual void GetNormalData(Stuff::Vector3D** array, size_t* point_count);
 
 #if COLOR_AS_DWORD
-	virtual void SetColorData(pcuint32_t array, size_t point_count);
+	virtual void SetcolourData(const uint32_t* array, size_t point_count);
 #else
-	virtual void SetColorData(const Stuff::RGBAColor* array, size_t point_count);
+	virtual void SetcolourData(const Stuff::RGBAcolour* array, size_t point_count);
 #endif
 
 	virtual void Lighting(MLRLight* const*, uint32_t nrLights);
 
 	virtual void
 #if COLOR_AS_DWORD
-	PaintMe(pcuint32_t paintMe);
+	PaintMe(const uint32_t* paintMe);
 #else
-	PaintMe(const Stuff::RGBAColor* paintMe);
+	PaintMe(const Stuff::RGBAcolour* paintMe);
 #endif
 
 	virtual uint32_t TransformAndClip(
@@ -84,7 +84,7 @@ public:
 		// Check_Object(this);
 		size_t ret = MLR_I_C_TMesh::GetSize();
 		ret += normals.GetSize();
-		ret += litColors.GetSize();
+		ret += litcolours.GetSize();
 		return ret;
 	}
 
@@ -92,15 +92,15 @@ protected:
 	std::vector<Stuff::Vector3D> normals; // Base address of normal list
 
 #if COLOR_AS_DWORD
-	std::vector<uint32_t> litColors;
+	std::vector<uint32_t> litcolours;
 #else
-	std::vector<Stuff::RGBAColor> litColors;
+	std::vector<Stuff::RGBAcolour> litcolours;
 #endif
 };
 
 //	MLR_I_L_TMesh*
-//		CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
+//		CreateIndexedTriCube_Nocolour_NoLit(float, MLRState*);
 MLRShape*
-CreateIndexedTriIcosahedron_Color_Lit(IcoInfo&, MLRState*);
+CreateIndexedTriIcosahedron_colour_Lit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 #endif

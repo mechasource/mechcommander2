@@ -45,7 +45,7 @@ public:
 
 	TG_TypeMultiShapePtr gvDmgShape;
 
-	char destructEffect[60];
+	wchar_t destructEffect[60];
 
 	TG_AnimateShapePtr gvAnimData[MAX_GV_ANIMATIONS];
 	bool gvAnimLoop[MAX_GV_ANIMATIONS];
@@ -53,7 +53,7 @@ public:
 	bool gvRandom[MAX_GV_ANIMATIONS];
 	int32_t gvStartF[MAX_GV_ANIMATIONS];
 
-	char rotationalNodeId[TG_NODE_ID];
+	wchar_t rotationalNodeId[TG_NODE_ID];
 
 	int32_t numSmokeNodes; // Where damage smoke comes from.
 	int32_t numWeaponNodes; // Where weapons fire from.
@@ -198,7 +198,7 @@ public:
 	float duration;
 	float currentFlash;
 	bool drawFlash;
-	uint32_t flashColor;
+	uint32_t flashcolour;
 
 	int32_t rotationalNodeIndex;
 	int32_t dustNodeIndex;
@@ -238,7 +238,7 @@ public:
 
 	virtual void flashBuilding(float duration, float flashDuration, uint32_t color);
 
-	void setFadeTable(puint8_t fTable) { fadeTable = fTable; }
+	void setFadeTable(uint8_t* fTable) { fadeTable = fTable; }
 
 	virtual void setObjectNameId(int32_t objId) { objectNameId = objId; }
 
@@ -256,7 +256,7 @@ public:
 
 	virtual void setObjStatus(int32_t oStatus);
 
-	virtual bool playDestruction(void);
+	virtual bool playdestruction(void);
 
 	virtual bool getInTransition(void) { return (canTransition == false); }
 

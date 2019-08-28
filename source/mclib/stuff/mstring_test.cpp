@@ -3,10 +3,10 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "stuffheaders.hpp"
+#include "stuff/stuffheaders.h"
 
-#define TEST_STRING "Test String"
-#define TEST_STRING_2 "Test StringTest String"
+#define TEST_STRING "Test string"
+#define TEST_STRING_2 "Test StringTest string"
 #define TEST_STRING_3 "Test StringZ"
 
 bool

@@ -35,7 +35,7 @@ extern int32_t errorCount;
 extern int32_t execStatementCount;
 
 extern TokenCodeType curToken;
-extern char wordString[];
+extern wchar_t wordString[];
 extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
 extern int32_t level;
 extern bool blockFlag;
@@ -60,12 +60,12 @@ extern TokenCodeType statementStartList[];
 extern TokenCodeType statementEndList[];
 extern TokenCodeType declarationStartList[];
 
-extern char tokenString[MAXLEN_TOKENSTRING];
+extern wchar_t tokenString[MAXLEN_TOKENSTRING];
 
 extern CharCodeType charTable[256];
 extern ABLFile* sourceFile;
 
-extern char sourceBuffer[MAXLEN_SOURCELINE];
+extern wchar_t sourceBuffer[MAXLEN_SOURCELINE];
 extern int32_t bufferOffset;
 extern const std::wstring_view& bufferp;
 extern const std::wstring_view& tokenp;
@@ -118,7 +118,7 @@ int32_t CallStackLevel = 0;
 
 int32_t NumProfileLogLines = 0;
 int32_t TotalProfileLogLines = 0;
-char ProfileLogBuffer[MAX_PROFILE_LINES][MAX_PROFILE_LINELEN];
+wchar_t ProfileLogBuffer[MAX_PROFILE_LINES][MAX_PROFILE_LINELEN];
 ABLFile* ProfileLog = nullptr;
 int32_t ProfileLogFunctionTimeLimit = 5;
 
@@ -146,7 +146,7 @@ ABL_CloseProfileLog(void)
 	if (ProfileLog)
 	{
 		DumpProfileLog();
-		char s[512];
+		wchar_t s[512];
 		sprintf(s, "\nNum Total Lines = %d\n", TotalProfileLogLines);
 		ProfileLog->writeString(s);
 		ProfileLog->close();
@@ -225,7 +225,7 @@ UserFile::close(void)
 	if (pfile && inUse)
 	{
 		dump();
-		char s[512];
+		wchar_t s[512];
 		sprintf(s, "\nNum Total Lines = %d\n", totalLines);
 		pfile->writeString(s);
 		pfile->close();
@@ -253,7 +253,7 @@ UserFile::open(const std::wstring_view& fileName)
 void
 UserFile::write(const std::wstring_view& s)
 {
-	static char buffer[MAX_USER_FILE_LINELEN];
+	static wchar_t buffer[MAX_USER_FILE_LINELEN];
 	if (numLines == MAX_USER_FILE_LINES)
 		dump();
 	if (strlen(s) > (MAX_USER_FILE_LINELEN - 1))
@@ -474,7 +474,7 @@ ABLModule::init(int32_t moduleHandle)
 		staticData = (const std::unique_ptr<StackItem>&)ABLStackMallocCallback(sizeof(StackItem) * numStatics);
 		if (!staticData)
 		{
-			char err[255];
+			wchar_t err[255];
 			sprintf(err, "ABL: Unable to AblStackHeap->malloc staticData [Module %d]", id);
 			ABL_Fatal(0, err);
 		}
@@ -485,7 +485,7 @@ ABLModule::init(int32_t moduleHandle)
 				staticData[i].address = (const std::wstring_view&)ABLStackMallocCallback(sizeList[i]);
 				if (!staticData)
 				{
-					char err[255];
+					wchar_t err[255];
 					sprintf(err,
 						"ABL: Unable to AblStackHeap->malloc staticData "
 						"address [Module %d]",
@@ -502,7 +502,7 @@ ABLModule::init(int32_t moduleHandle)
 		orderCallFlags = (uint32_t*)ABLStackMallocCallback(sizeof(uint32_t) * numLongs);
 		if (!orderCallFlags)
 		{
-			char err[255];
+			wchar_t err[255];
 			sprintf(err,
 				"ABL: Unable to AblStackHeap->malloc orderCallFlags [Module "
 				"%d]",
@@ -540,7 +540,7 @@ ABLModule::init(int32_t moduleHandle)
 			"start", ModuleRegistry[handle].moduleIdPtr->defn.info.routine.localSymTable);
 		if (!startState)
 		{
-			char err[255];
+			wchar_t err[255];
 			sprintf(err, "ABL: FSM has no Start state [%s]", CurModule->getName());
 			ABL_Fatal(0, err);
 		}
@@ -576,9 +576,9 @@ ABLModule::write(ABLFile* moduleFile)
 	for (size_t i = 0; i < numStatics; i++)
 	{
 		if (sizeList[i] > 0)
-			moduleFile->write((puint8_t)staticData[i].address, sizeList[i]);
+			moduleFile->write((uint8_t*)staticData[i].address, sizeList[i]);
 		else
-			moduleFile->write((puint8_t)&staticData[i], sizeof(StackItem));
+			moduleFile->write((uint8_t*)&staticData[i], sizeof(StackItem));
 	}
 }
 
@@ -596,24 +596,24 @@ ABLModule::read(ABLFile* moduleFile)
 	if (fresh)
 	{
 		id = NumModules++;
-		moduleFile->readString((puint8_t)name);
+		moduleFile->readString((uint8_t*)name);
 		handle = moduleFile->readLong();
 		staticData = nullptr;
 	}
 	else
 	{
-		char tempName[1024];
-		moduleFile->readString((puint8_t)tempName);
+		wchar_t tempName[1024];
+		moduleFile->readString((uint8_t*)tempName);
 		// int32_t ignore = moduleFile->readLong();
 	}
-	char stateName[256];
+	wchar_t stateName[256];
 	memset(stateName, 0, 256);
-	moduleFile->readString((puint8_t)stateName);
+	moduleFile->readString((uint8_t*)stateName);
 	prevState = nullptr;
 	if (strcmp(stateName, "NULLPrevState"))
 		prevState = findState(stateName);
 	memset(stateName, 0, 256);
-	moduleFile->readString((puint8_t)stateName);
+	moduleFile->readString((uint8_t*)stateName);
 	state = nullptr;
 	if (strcmp(stateName, "NULLState"))
 		state = findState(stateName);
@@ -626,7 +626,7 @@ ABLModule::read(ABLFile* moduleFile)
 			staticData = (const std::unique_ptr<StackItem>&)ABLStackMallocCallback(sizeof(StackItem) * numStatics);
 			if (!staticData)
 			{
-				char err[255];
+				wchar_t err[255];
 				sprintf(err,
 					"ABL: Unable to AblStackHeap->malloc staticData [Module "
 					"%d]",
@@ -643,7 +643,7 @@ ABLModule::read(ABLFile* moduleFile)
 					staticData[i].address = (const std::wstring_view&)ABLStackMallocCallback(sizeList[i]);
 					if (!staticData)
 					{
-						char err[255];
+						wchar_t err[255];
 						sprintf(err,
 							"ABL: Unable to AblStackHeap->malloc staticData "
 							"address [Module %d]",
@@ -651,10 +651,10 @@ ABLModule::read(ABLFile* moduleFile)
 						ABL_Fatal(0, err);
 					}
 				}
-				int32_t result = moduleFile->read((puint8_t)staticData[i].address, sizeList[i]);
+				int32_t result = moduleFile->read((uint8_t*)staticData[i].address, sizeList[i]);
 				if (!result)
 				{
-					char err[255];
+					wchar_t err[255];
 					sprintf(err, "ABL: Unable to read staticData.address [Module %d]", id);
 					ABL_Fatal(0, err);
 				}
@@ -662,10 +662,10 @@ ABLModule::read(ABLFile* moduleFile)
 			else
 			{
 				staticData[i].integer = 0;
-				int32_t result = moduleFile->read((puint8_t)&staticData[i], sizeof(StackItem));
+				int32_t result = moduleFile->read((uint8_t*)&staticData[i], sizeof(StackItem));
 				if (!result)
 				{
-					char err[255];
+					wchar_t err[255];
 					sprintf(err, "ABL: Unable to read staticData [Module %d]", id);
 					ABL_Fatal(0, err);
 				}
@@ -677,7 +677,7 @@ ABLModule::read(ABLFile* moduleFile)
 		orderCallFlags = (uint32_t*)ABLStackMallocCallback(sizeof(uint32_t) * numLongs);
 		if (!orderCallFlags)
 		{
-			char err[255];
+			wchar_t err[255];
 			sprintf(err,
 				"ABLModule.read: Unable to AblStackHeap->malloc orderCallFlags "
 				"[Module %d]",
@@ -884,7 +884,7 @@ ABLModule::execute(const std::unique_ptr<ABLParam>& paramList)
 					const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
 					if (!dest)
 					{
-						char err[255];
+						wchar_t err[255];
 						sprintf(err,
 							"ABL: Unable to AblStackHeap->malloc array "
 							"parameter [Module %d]",
@@ -1020,7 +1020,7 @@ ABLModule::execute(const std::unique_ptr<ABLParam>& moduleParamList, const std::
 					const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
 					if (!dest)
 					{
-						char err[255];
+						wchar_t err[255];
 						sprintf(err,
 							"ABL: Unable to AblStackHeap->malloc array "
 							"parameter [Module %d]",
@@ -1097,7 +1097,7 @@ ABLModule::findFunction(const std::wstring_view& functionName, bool searchLibrar
 	{
 		for (size_t i = 0; i < ModuleRegistry[handle].numLibrariesUsed; i++)
 		{
-			char temp[1024];
+			wchar_t temp[1024];
 			memset(temp, 0, 1024);
 			strncpy(
 				temp, functionName, (strlen(functionName) > 1020) ? 1020 : strlen(functionName));
@@ -1409,9 +1409,9 @@ ABLi_saveEnvironment(ABLFile* ablFile)
 	{
 		const std::unique_ptr<StackItem>& dataPtr = (const std::unique_ptr<StackItem>&)stack + i;
 		if (EternalVariablesSizes[i] > 0)
-			ablFile->write((puint8_t)dataPtr->address, EternalVariablesSizes[i]);
+			ablFile->write((uint8_t*)dataPtr->address, EternalVariablesSizes[i]);
 		else
-			ablFile->write((puint8_t)dataPtr, sizeof(StackItem));
+			ablFile->write((uint8_t*)dataPtr, sizeof(StackItem));
 	}
 	for (i = 0; i < NumModules; i++)
 	{
@@ -1435,7 +1435,7 @@ ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
 		int32_t result = ablFile->readString(fileName);
 		if (!result)
 		{
-			char err[255];
+			wchar_t err[255];
 			sprintf(err, "ABLi_loadEnvironment: Unable to read filename [Module %d]", i);
 			ABL_Fatal(0, err);
 		}
@@ -1446,7 +1446,7 @@ ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
 				(const std::wstring_view&)fileName, &numErrors, &numLinesProcessed, nullptr, false, false);
 			if (!library)
 			{
-				char err[255];
+				wchar_t err[255];
 				sprintf(err, "ABLi_loadEnvironment: Unable to load library [Module %d]", i);
 				ABL_Fatal(0, err);
 			}
@@ -1458,7 +1458,7 @@ ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
 		int32_t result = ablFile->readString(fileName);
 		if (!result)
 		{
-			char err[255];
+			wchar_t err[255];
 			sprintf(err, "ABLi_loadEnvironment: Unable to read filename [Module %d]", i);
 			ABL_Fatal(0, err);
 		}
@@ -1468,7 +1468,7 @@ ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
 			int32_t handle = ABLi_preProcess((const std::wstring_view&)fileName, &numErrors, &numLinesProcessed);
 			if (handle < 0)
 			{
-				char err[255];
+				wchar_t err[255];
 				sprintf(err, "ABLi_loadEnvironment: Unable to preprocess [Module %d]", i);
 				ABL_Fatal(0, err);
 			}
@@ -1479,9 +1479,9 @@ ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
 	{
 		const std::unique_ptr<StackItem>& dataPtr = (const std::unique_ptr<StackItem>&)stack + i;
 		if (EternalVariablesSizes[i] > 0)
-			ablFile->read((puint8_t)dataPtr->address, EternalVariablesSizes[i]);
+			ablFile->read((uint8_t*)dataPtr->address, EternalVariablesSizes[i]);
 		else
-			ablFile->read((puint8_t)dataPtr, sizeof(StackItem));
+			ablFile->read((uint8_t*)dataPtr, sizeof(StackItem));
 	}
 	for (i = 0; i < numLibs; i++)
 	{

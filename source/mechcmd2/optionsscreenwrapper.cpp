@@ -34,13 +34,13 @@ OptionsScreenWrapper::begin()
 	if (!pOptionsScreen)
 	{
 		pOptionsScreen = new OptionsXScreen();
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_options.fit");
 		FitIniFile file;
 		if (NO_ERROR != file.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;

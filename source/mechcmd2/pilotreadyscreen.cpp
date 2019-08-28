@@ -55,7 +55,7 @@ PilotReadyScreen::init(FitIniFile* file)
 		*file, "PilotReadyStatic", "PilotReadyTextEntry", "PilotReadyRect", "PilotReadyButton");
 	// initialize little icons
 	FitIniFile iconFile;
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, artPath);
 	strcat(path, "mcl_gn_deploymentteams.fit");
 	strlwr(path);
@@ -100,7 +100,7 @@ PilotReadyScreen::init(FitIniFile* file)
 		Assert(0, 0, "couldn't open MCL_PR_AvailablePilotEntry.fit");
 	}
 	LogisticsPilotListBoxItem::init(&tmpFile);
-	char blockName[32];
+	wchar_t blockName[32];
 	for (i = 0; i < 4; i++)
 	{
 		sprintf(blockName, "PilotSpecialtySkillIcon%ld", i);
@@ -267,8 +267,8 @@ PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 	if (launchFadeTime)
 	{
 		launchFadeTime += frameLength;
-		int32_t color = interpolateColor(0x00000000, 0x7f000000, launchFadeTime / .5f);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		int32_t color = interpolatecolour(0x00000000, 0x7f000000, launchFadeTime / .5f);
+		RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 		drawRect(rect, color);
 	}
 	if (MPlayer && ChatWindow::instance())
@@ -289,7 +289,7 @@ PilotReadyScreen::update()
 		// already pressed launch )
 	{
 		// update current text
-		char str[64];
+		wchar_t str[64];
 		// RP
 		sprintf(str, "%ld ", LogisticsData::instance->getCBills());
 		textObjects[1].setText(str);
@@ -608,10 +608,10 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		// set up the big bitmap
 		if (!pCurPilot)
 		{
-			statics[staticCount - 1].setColor(0);
+			statics[staticCount - 1].setcolour(0);
 			return;
 		}
-		char fileName[256];
+		wchar_t fileName[256];
 		strcpy(fileName, artPath);
 		strcat(fileName, "MCL_PR_");
 		strcat(fileName, pPilot->getName());
@@ -619,13 +619,13 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		const std::wstring_view& str = fileName;
 		str.MakeLower();
 		statics[67].setTexture(str);
-		statics[67].setColor(0xffffffff);
+		statics[67].setcolour(0xffffffff);
 		statics[67].setUVs(0, 0, 92, 128);
 	}
 	// update pilot specific stuff
 	if (pCurPilot)
 	{
-		char str[256];
+		wchar_t str[256];
 		// ACE not continguous with other ranks.  Added too late!
 		if (pCurPilot->getRank() != 4)
 			textObjects[4].setText(IDS_GREEN + pCurPilot->getRank());
@@ -634,7 +634,7 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		sprintf(str, "%ld", (int32_t)pCurPilot->getGunnery());
 		textObjects[5].setText(str);
 		attributeMeters[0].setValue(((float)pCurPilot->getGunnery()) / 80.f);
-		char number[64];
+		wchar_t number[64];
 		sprintf(number, "%ld", (int32_t)pCurPilot->getPiloting());
 		textObjects[6].setText(number);
 		attributeMeters[1].setValue(pCurPilot->getPiloting() / 80.f);
@@ -661,18 +661,18 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 				skillIcons[i].resize(skillLocations[i].right - skillLocations[i].left,
 					skillLocations[i].bottom - skillLocations[i].top);
 				skillIcons[i].moveTo(skillLocations[i].left, skillLocations[i].top);
-				skillIcons[i].setColor(0xffffffff);
+				skillIcons[i].setcolour(0xffffffff);
 				skillIcons[i].setHelpID(skillIDs[i] + IDS_SPECIALTY_HELP1);
 			}
 			else
 			{
 				textObjects[9 + i].setText("");
-				skillIcons[i].setColor(0);
+				skillIcons[i].setcolour(0);
 				skillIcons[i].setHelpID(0);
 			}
 		}
 		for (; i < 4; i++)
-			skillIcons[i].setColor(0);
+			skillIcons[i].setcolour(0);
 		const bool* medals = pCurPilot->getMedalArray();
 		int32_t medalCount = 0;
 		for (i = 0; i < MAX_MEDAL; i++)
@@ -684,7 +684,7 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 				medalIcons[i].resize(
 					medalLocations[medalCount].right - medalLocations[medalCount].left,
 					medalLocations[medalCount].bottom - medalLocations[medalCount].top);
-				medalIcons[i].setColor(0xffffffff);
+				medalIcons[i].setcolour(0xffffffff);
 				medalCount++;
 				medalIcons[i].showGUIWindow(true);
 				medalIcons[i].setHelpID(IDS_HELP_MEDAL1 + i);
@@ -699,7 +699,7 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 	{
 		for (size_t i = 4; i < 13; i++)
 			textObjects[i].setText("");
-		statics[staticCount - 1].setColor(0);
+		statics[staticCount - 1].setcolour(0);
 	}
 }
 

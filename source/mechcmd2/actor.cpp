@@ -89,7 +89,7 @@ VFXAppearanceType::loadIniFile(std::unique_ptr<File> apprFile, uint32_t fileSize
 	memset(actorStateData, 0, sizeof(ActorData) * MAX_ACTOR_STATES);
 	for (size_t curState = 0; curState < numStates; curState++)
 	{
-		char stateBlockName[20];
+		wchar_t stateBlockName[20];
 		sprintf(stateBlockName, "State%d", curState);
 		result = VFXAppearanceFile.seekBlock(stateBlockName);
 		gosASSERT(result == NO_ERROR);

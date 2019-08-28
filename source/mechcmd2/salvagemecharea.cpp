@@ -166,8 +166,8 @@ SalvageMechScreen::render()
 	// this animation draw a big white square and looks like crap
 	//	if ( !entryAnim.isDone() )
 	//	{
-	//		uint32_t color = entryAnim.getColor();
-	//		RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight
+	//		uint32_t color = entryAnim.getcolour();
+	//		RECT rect = { 0, 0, Environment.screenwidth, Environment.screenheight
 	//}; 		drawRect( rect, color );
 	//	}
 }
@@ -227,10 +227,10 @@ SalvageMechScreen::update()
 		if (curAmount > 0)
 			color = 0xffa21600;
 	}
-	char cBillText[32];
+	wchar_t cBillText[32];
 	sprintf(cBillText, "%ld", amount);
 	textObjects[RP_TEXTID].setText(cBillText);
-	textObjects[RP_TEXTID].setColor(color);
+	textObjects[RP_TEXTID].setcolour(color);
 	salvageListBox.update();
 	for (size_t i = 0; i < buttonCount; i++)
 	{
@@ -294,8 +294,8 @@ SalvageListItem::init(FitIniFile* file)
 	file->readIdLong("XLocation", rect.left);
 	file->readIdLong("YLocation", rect.top);
 	int32_t width, height;
-	file->readIdLong("Width", width);
-	file->readIdLong("Height", height);
+	file->readIdLong("width", width);
+	file->readIdLong("height", height);
 	rect.right = rect.left + width;
 	rect.bottom = rect.top + height;
 	s_normalAnim = new aAnimation;
@@ -307,8 +307,8 @@ SalvageListItem::init(FitIniFile* file)
 	file->seekBlock("MechEntryIcon");
 	file->readIdLong("XLocation", iconRect.left);
 	file->readIdLong("YLocation", iconRect.right);
-	file->readIdLong("Width", width);
-	file->readIdLong("Height", height);
+	file->readIdLong("width", width);
+	file->readIdLong("height", height);
 	iconRect.right = iconRect.left + width;
 	iconRect.bottom = iconRect.top + height;
 }
@@ -333,7 +333,7 @@ SalvageListItem::SalvageListItem(BattleMech* pMech)
 	aText* pText = new aText();
 	*pText = *mechNameText;
 	int32_t nameID = pVariant->getChassisName();
-	char tmp[64];
+	wchar_t tmp[64];
 	cLoadString(nameID, tmp, 63);
 	pText->setText(tmp);
 	addChild(pText);
@@ -343,7 +343,7 @@ SalvageListItem::SalvageListItem(BattleMech* pMech)
 	pText->setText(pVariant->getName());
 	addChild(pText);
 	// add salvage
-	char text[64];
+	wchar_t text[64];
 	int32_t salvageAmount = costToSalvage;
 	sprintf(text, "%ld", salvageAmount);
 	pText = new aText();
@@ -447,14 +447,14 @@ SalvageListItem::render()
 	aObject::render();
 	icon->renderUnitIcon(iconRect.left + location[0].x + 3, iconRect.top + location[0].y + 5,
 		iconRect.right + location[0].x, iconRect.bottom + location[0].y);
-	int32_t color = state == HIGHLITE ? highlightAnim.getColor() : normalAnim.getColor();
+	int32_t color = state == HIGHLITE ? highlightAnim.getcolour() : normalAnim.getcolour();
 	if (state == SELECTED)
-		color = pressedAnim.getColor();
+		color = pressedAnim.getcolour();
 	if (state == DISABLED)
 		color = 0xff373737;
 	for (size_t i = 0; i < this->pNumberOfChildren; i++)
 	{
-		pChildren[i]->setColor(color, 1);
+		pChildren[i]->setcolour(color, 1);
 	}
 	RECT tmp;
 	tmp.left = location[0].x + templateCheckButton->width() + 3;
@@ -524,7 +524,7 @@ SalvageMechArea::init(FitIniFile* file)
 	file->readIdLong("bottom", bottom);
 	mechCamera.init(left, top, right, bottom);
 	LogisticsScreen::init(*file, 0, "SalvageAreaMechText", 0, 0);
-	char blockName[64];
+	wchar_t blockName[64];
 	for (size_t i = 0; i < 3; i++)
 	{
 		sprintf(blockName, "AttributeMeter%ld", i);
@@ -553,7 +553,7 @@ SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, in
 		fileName = fileName.Right(fileName.Length() - index - 1);
 		mechCamera.setMech(fileName, red, green, blue);
 		textObjects[NAME_TEXTID].setText(pMech->getName());
-		char text[256];
+		wchar_t text[256];
 		sprintf(text, "%ld", pMech->getMaxWeight());
 		textObjects[WEIGHT_TEXTID].setText(text);
 		sprintf(text, "%ld", pMech->getArmor());
@@ -562,9 +562,9 @@ SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, in
 		textObjects[SPEED_TEXTID].setText(text);
 		sprintf(text, "%ld", pMech->getJumpRange() * 25);
 		textObjects[JUMP_TEXTID].setText(text);
-		int32_t tmpColor;
-		textObjects[RANGE_TEXTID].setText(pMech->getOptimalRangeString(tmpColor));
-		textObjects[RANGE_TEXTID].setColor((tmpColor));
+		int32_t tmpcolour;
+		textObjects[RANGE_TEXTID].setText(pMech->getOptimalRangeString(tmpcolour));
+		textObjects[RANGE_TEXTID].setcolour((tmpcolour));
 		attributeMeters[0].setValue(((float)pMech->getArmor()) / MAX_ARMOR_RANGE);
 		attributeMeters[1].setValue(((float)pMech->getSpeed()) / MAX_SPEED_RANGE);
 		attributeMeters[2].setValue(((float)pMech->getJumpRange() * 25.0f) / MAX_JUMP_RANGE);

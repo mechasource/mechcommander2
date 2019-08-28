@@ -109,7 +109,7 @@ LoadScreenWrapper::changeRes()
 		// Assert( 0, 0, "Unexpected resolution found in prefs" );
 		break;
 	}
-	char fileName[256];
+	wchar_t fileName[256];
 	sprintf(fileName, "mcl_loadingscreen");
 	if (Appendix)
 		strcat(fileName, Appendix);
@@ -118,7 +118,7 @@ LoadScreenWrapper::changeRes()
 	FitIniFile outFile;
 	if (NO_ERROR != outFile.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 		return;
@@ -142,8 +142,8 @@ LoadScreen::changeRes(FitIniFile& outFile)
 	waitingForPlayersMemory = nullptr;
 	if (!progressBackground)
 	{
-		char progressPath[256];
-		char progressBackgroundPath[256];
+		wchar_t progressPath[256];
+		wchar_t progressBackgroundPath[256];
 		int32_t result = outFile.seekBlock("LoadingBar");
 		gosASSERT(result == NO_ERROR);
 		outFile.readIdLong("XLocation", xProgressLoc);
@@ -155,27 +155,27 @@ LoadScreen::changeRes(FitIniFile& outFile)
 		path.init(artPath, progressBackgroundPath, ".tga");
 		if (NO_ERROR != tgaFile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
 		}
 		int32_t size = tgaFile.fileSize();
-		progressBackground = (TGAFileHeader*)new char[size];
-		tgaFile.read((puint8_t)progressBackground, tgaFile.fileSize());
+		progressBackground = (TGAFileHeader*)new wchar_t[size];
+		tgaFile.read((uint8_t*)progressBackground, tgaFile.fileSize());
 		tgaFile.close();
 		path.init(artPath, progressPath, ".tga");
 		if (NO_ERROR != tgaFile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
 		}
 		size = tgaFile.fileSize();
-		progressTextureMemory = (TGAFileHeader*)new char[size];
-		tgaFile.read((puint8_t)progressTextureMemory, tgaFile.fileSize());
-		mergedTexture = (TGAFileHeader*)new char[size];
+		progressTextureMemory = (TGAFileHeader*)new wchar_t[size];
+		tgaFile.read((uint8_t*)progressTextureMemory, tgaFile.fileSize());
+		mergedTexture = (TGAFileHeader*)new wchar_t[size];
 		memcpy(mergedTexture, progressTextureMemory, size);
 		tgaFile.close();
 		result = outFile.seekBlock("WaitImage");
@@ -186,15 +186,15 @@ LoadScreen::changeRes(FitIniFile& outFile)
 		path.init(artPath, progressPath, ".tga");
 		if (NO_ERROR != tgaFile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
 		}
 		size = tgaFile.fileSize();
-		waitingForPlayersMemory = (TGAFileHeader*)new char[size];
-		tgaFile.read((puint8_t)waitingForPlayersMemory, tgaFile.fileSize());
-		flipTopToBottom((puint8_t)(waitingForPlayersMemory + 1),
+		waitingForPlayersMemory = (TGAFileHeader*)new wchar_t[size];
+		tgaFile.read((uint8_t*)waitingForPlayersMemory, tgaFile.fileSize());
+		flipTopToBottom((uint8_t*)(waitingForPlayersMemory + 1),
 			waitingForPlayersMemory->pixel_depth, waitingForPlayersMemory->width,
 			waitingForPlayersMemory->height);
 	}
@@ -223,7 +223,7 @@ LoadScreenWrapper::update()
 	}
 	else
 	{
-		if (Environment.screenWidth == 800)
+		if (Environment.screenwidth == 800)
 		{
 			enterScreen->update();
 			status = enterScreen->getStatus();
@@ -245,7 +245,7 @@ LoadScreenWrapper::update()
 void
 LoadScreenWrapper::render(int32_t xOffset, int32_t yOffset)
 {
-	if (Environment.screenWidth == 800)
+	if (Environment.screenwidth == 800)
 	{
 		enterScreen->render(xOffset, yOffset);
 	}
@@ -327,7 +327,7 @@ LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 	text.init(&file, "AnimObject18");
 	if (animObjectsCount)
 	{
-		char blockName[256];
+		wchar_t blockName[256];
 		animIndices = new int32_t[animObjectsCount];
 		for (size_t i = 0; i < animObjectsCount; i++)
 		{
@@ -427,28 +427,28 @@ ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 		return;
 	int32_t destX = 0;
 	int32_t destY = 0;
-	puint8_t pMem = (puint8_t)(LoadScreen::mergedTexture + 1);
+	uint8_t* pMem = (uint8_t*)(LoadScreen::mergedTexture + 1);
 	int32_t destRight = 0;
 	int32_t destBottom = 0;
-	int32_t srcWidth = 0;
+	int32_t srcwidth = 0;
 	int32_t srcDepth = 0;
 	if (loadProgress > 0 && loadProgress < 100)
 	{
 		destX = 0;
 		destY = 0;
-		int32_t destWidth = LoadScreen::progressBackground->width;
-		int32_t destHeight = LoadScreen::progressBackground->height;
-		float widthIncPerProgress = (float)destWidth * 0.01f;
+		int32_t destwidth = LoadScreen::progressBackground->width;
+		int32_t destheight = LoadScreen::progressBackground->height;
+		float widthIncPerProgress = (float)destwidth * 0.01f;
 		int32_t* pLSrc = (int32_t*)(LoadScreen::progressBackground + 1);
 		int32_t* pLDest = (int32_t*)(LoadScreen::mergedTexture + 1);
 		// merge background and current progress together...
 		for (size_t i = 0; i < 2; i++)
 		{
-			for (size_t y = 0; y < destHeight; y++)
+			for (size_t y = 0; y < destheight; y++)
 			{
 				for (size_t x = 0; x < LoadScreen::progressBackground->width; x++)
 				{
-					if (x < destWidth)
+					if (x < destwidth)
 						*pLDest++ = *pLSrc++;
 					else
 					{
@@ -459,51 +459,51 @@ ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 			}
 			pLSrc = (int32_t*)(LoadScreen::progressTextureMemory + 1);
 			pLDest = (int32_t*)(LoadScreen::mergedTexture + 1);
-			destWidth = loadProgress * widthIncPerProgress;
+			destwidth = loadProgress * widthIncPerProgress;
 		}
 		destX = WinRect.left + (LoadScreen::xProgressLoc);
 		destY = WinRect.top + (LoadScreen::yProgressLoc);
-		pMem = (puint8_t)(LoadScreen::mergedTexture + 1);
+		pMem = (uint8_t*)(LoadScreen::mergedTexture + 1);
 		destRight = destX + LoadScreen::progressBackground->width;
 		destBottom = (destY + LoadScreen::progressBackground->height);
-		srcWidth = LoadScreen::progressBackground->width;
+		srcwidth = LoadScreen::progressBackground->width;
 		srcDepth = LoadScreen::progressBackground->pixel_depth / 8;
 	}
 	else if (loadProgress == 1000)
 	{
 		destX = WinRect.left + LoadScreen::xWaitLoc;
 		destY = WinRect.top + LoadScreen::yWaitLoc;
-		pMem = (puint8_t)(LoadScreen::waitingForPlayersMemory + 1);
+		pMem = (uint8_t*)(LoadScreen::waitingForPlayersMemory + 1);
 		destRight = destX + LoadScreen::waitingForPlayersMemory->width;
 		destBottom = (destY + LoadScreen::waitingForPlayersMemory->height);
 		destRight = destRight > WinRect.right ? WinRect.right : destRight;
 		destBottom = destBottom > WinRect.bottom ? WinRect.top : destBottom;
-		srcWidth = LoadScreen::waitingForPlayersMemory->width;
+		srcwidth = LoadScreen::waitingForPlayersMemory->width;
 		srcDepth = LoadScreen::waitingForPlayersMemory->pixel_depth / 8;
 	}
 	else
 		return;
 	// now put it on the screen...
-	int32_t destWidth = destRight - destX;
-	int32_t destHeight = destBottom - destY;
-	for (size_t y = 0; y < destHeight; y++)
+	int32_t destwidth = destRight - destX;
+	int32_t destheight = destBottom - destY;
+	for (size_t y = 0; y < destheight; y++)
 	{
-		puint8_t pSrc = pMem + y * srcWidth * srcDepth;
-		puint8_t pDest = (puint8_t)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount / 8 + ((destY + y) * mouseSurfaceDesc.lPitch);
-		for (size_t x = 0; x < destWidth; x++)
+		uint8_t* pSrc = pMem + y * srcwidth * srcDepth;
+		uint8_t* pDest = (uint8_t*)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfpixelformat.dwRGBBitCount / 8 + ((destY + y) * mouseSurfaceDesc.lPitch);
+		for (size_t x = 0; x < destwidth; x++)
 		{
-			uint32_t mColor = *(int32_t*)pSrc;
+			uint32_t mcolour = *(int32_t*)pSrc;
 			uint8_t baseAlpha = 0;
-			uint8_t baseColorRed = (mColor & 0x00ff0000) >> 16;
-			uint8_t baseColorGreen = (mColor & 0x0000ff00) >> 8;
-			uint8_t baseColorBlue = (mColor & 0x000000ff);
+			uint8_t basecolourRed = (mcolour & 0x00ff0000) >> 16;
+			uint8_t basecolourGreen = (mcolour & 0x0000ff00) >> 8;
+			uint8_t basecolourBlue = (mcolour & 0x000000ff);
 			pSrc += 4;
-			if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32)
+			if (mouseSurfaceDesc.ddpfpixelformat.dwRGBBitCount == 32)
 			{
-				(*(int32_t*)pDest) = mColor;
+				(*(int32_t*)pDest) = mcolour;
 				pDest += 4;
 			}
-			else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24)
+			else if (mouseSurfaceDesc.ddpfpixelformat.dwRGBBitCount == 24)
 			{
 				if (!baseAlpha)
 				{
@@ -511,29 +511,29 @@ ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 					pDest++;
 					pDest++;
 				}
-				*pDest++ = baseColorRed;
-				*pDest++ = baseColorGreen;
-				*pDest++ = baseColorBlue;
+				*pDest++ = basecolourRed;
+				*pDest++ = basecolourGreen;
+				*pDest++ = basecolourBlue;
 			}
-			else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
+			else if (mouseSurfaceDesc.ddpfpixelformat.dwRGBBitCount == 16)
 			{
 				bool in555Mode = false;
-				if (GetNumberOfBits(mouseSurfaceDesc.ddpfPixelFormat.dwGBitMask) == 5)
+				if (GetNumberOfBits(mouseSurfaceDesc.ddpfpixelformat.dwGBitMask) == 5)
 					in555Mode = true;
 				if (!baseAlpha)
 				{
 					int32_t clr;
 					if (in555Mode)
 					{
-						clr = (baseColorRed >> 3) << 10;
-						clr += (baseColorGreen >> 3) << 5;
-						clr += (baseColorBlue >> 3);
+						clr = (basecolourRed >> 3) << 10;
+						clr += (basecolourGreen >> 3) << 5;
+						clr += (basecolourBlue >> 3);
 					}
 					else
 					{
-						clr = (baseColorRed >> 3) << 11;
-						clr += (baseColorGreen >> 2) << 5;
-						clr += (baseColorBlue >> 3);
+						clr = (basecolourRed >> 3) << 11;
+						clr += (basecolourGreen >> 2) << 5;
+						clr += (basecolourBlue >> 3);
 					}
 					*pDest++ = clr & 0xff;
 					*pDest++ = clr >> 8;

@@ -76,7 +76,7 @@ public:
 	bool used;
 	GoalType type;
 	uint16_t id;
-	char name[20];
+	wchar_t name[20];
 	GoalLinkPtr links;
 	GoalObjectPtr controller;
 	GoalInfo info;
@@ -116,7 +116,7 @@ public:
 	GoalObjectPtr goalObjectPool;
 	int16_t regionMap[2 /*MAX_MAP_CELL_WIDTH*/][2 /*MAX_MAP_CELL_WIDTH*/];
 	int32_t numRegions;
-	pint16_t fillStack;
+	int16_t* fillStack;
 	int32_t fillStackIndex;
 
 public:

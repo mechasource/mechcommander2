@@ -14,7 +14,7 @@ aFont::init(const std::wstring_view& newFontName)
 	destroy();
 	gosFont = 0;
 	strcpy(fontName, newFontName);
-	char path[256];
+	wchar_t path[256];
 	const std::wstring_view& pStr = strstr(fontName, ",");
 	if (pStr)
 	{
@@ -47,7 +47,7 @@ aFont::~aFont()
 }
 
 uint32_t
-aFont::height() const
+aFont::height(void) const
 {
 	uint32_t width, height;
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
@@ -63,18 +63,18 @@ aFont::getSize(uint32_t& width, uint32_t& height, const std::wstring_view& pText
 }
 
 uint32_t
-aFont::height(const std::wstring_view& st, int32_t areaWidth) const
+aFont::height(const std::wstring_view& st, int32_t areawidth) const
 {
 	uint32_t width, height;
 	gos_TextSetAttributes(gosFont, 0, size, false, true, false, false);
-	gos_TextSetRegion(0, 0, areaWidth, Environment.screenHeight);
+	gos_TextSetRegion(0, 0, areawidth, Environment.screenheight);
 	gos_TextStringLength(&width, &height, st);
 	uint32_t lineCount = 1;
-	if (width > areaWidth - 1)
+	if (width > areawidth - 1)
 	{
-		uint32_t curLineWidth = 0;
+		uint32_t curLinewidth = 0;
 		gosASSERT(strlen(st) < 2048);
-		char pLine[2048]; // should be more than adequate
+		wchar_t pLine[2048]; // should be more than adequate
 		const std::wstring_view& pLastWord = (const std::wstring_view&)st;
 		const std::wstring_view& pTmp = (const std::wstring_view&)st;
 		const std::wstring_view& pTmpLine = (const std::wstring_view&)pLine;
@@ -91,7 +91,7 @@ aFont::height(const std::wstring_view& st, int32_t areaWidth) const
 			{
 				lineCount++;
 				numberOfWordsPerLine = 0;
-				curLineWidth = 0;
+				curLinewidth = 0;
 				pTmpLine = pLine;
 				pLastWord = pTmp + 1;
 			}
@@ -99,17 +99,17 @@ aFont::height(const std::wstring_view& st, int32_t areaWidth) const
 			{
 				if (pTmp > st)
 				{
-					char tmp = *(pTmp - 1);
+					wchar_t tmp = *(pTmp - 1);
 					if (!isleadbyte(tmp))
 					{
 						*(pTmpLine) = nullptr;
-						gos_TextStringLength(&curLineWidth, &height, pLine);
-						if (curLineWidth > areaWidth)
+						gos_TextStringLength(&curLinewidth, &height, pLine);
+						if (curLinewidth > areawidth)
 						{
 							lineCount++;
 							pTmp--;
 							pTmpLine = pLine;
-							curLineWidth = 0;
+							curLinewidth = 0;
 							numberOfWordsPerLine = 0;
 						}
 					}
@@ -118,11 +118,11 @@ aFont::height(const std::wstring_view& st, int32_t areaWidth) const
 			else if (isspace(*pTmp))
 			{
 				*(pTmpLine) = nullptr;
-				gos_TextStringLength(&curLineWidth, &height, pLine);
-				if (curLineWidth > areaWidth)
+				gos_TextStringLength(&curLinewidth, &height, pLine);
+				if (curLinewidth > areawidth)
 				{
-					gos_TextStringLength(&curLineWidth, &height, pLastWord);
-					if (numberOfWordsPerLine == 0 || curLineWidth > areaWidth)
+					gos_TextStringLength(&curLinewidth, &height, pLastWord);
+					if (numberOfWordsPerLine == 0 || curLinewidth > areawidth)
 					{
 						static bool firstTime = true;
 						if (firstTime)
@@ -141,7 +141,7 @@ aFont::height(const std::wstring_view& st, int32_t areaWidth) const
 					lineCount++;
 					pTmpLine = pLine;
 					pTmp = pLastWord - 1;
-					curLineWidth = 0;
+					curLinewidth = 0;
 					numberOfWordsPerLine = 0;
 				}
 				pLastWord = pTmp;
@@ -152,13 +152,13 @@ aFont::height(const std::wstring_view& st, int32_t areaWidth) const
 			{
 				*(pTmpLine + 1) = *(pTmp + 1);
 			}
-			pTmpLine = (const std::wstring_view&)_mbsinc((puint8_t)pTmpLine);
-			pTmp = (const std::wstring_view&)_mbsinc((puint8_t)pTmp);
+			pTmpLine = (const std::wstring_view&)_mbsinc((uint8_t*)pTmpLine);
+			pTmp = (const std::wstring_view&)_mbsinc((uint8_t*)pTmp);
 		}
 		// one last check
 		*pTmpLine = nullptr;
-		gos_TextStringLength(&curLineWidth, &height, pLine);
-		if (curLineWidth > areaWidth)
+		gos_TextStringLength(&curLinewidth, &height, pLine);
+		if (curLinewidth > areawidth)
 		{
 			lineCount++;
 		}
@@ -196,35 +196,35 @@ aFont::destroy()
 }
 
 void
-aFont::render(const std::wstring_view& text, int32_t xPos, int32_t yPos, int32_t areaWidth, int32_t areaHeight,
+aFont::render(const std::wstring_view& text, int32_t xPos, int32_t yPos, int32_t areawidth, int32_t areaheight,
 	uint32_t color, bool bBold, int32_t alignment)
 {
 	gos_TextSetAttributes(gosFont, color, size, true, true, bBold, false, alignment);
-	if (areaWidth < 1)
+	if (areawidth < 1)
 	{
 		if (alignment == 1)
 		{
 			uint32_t width, height;
 			gos_TextStringLength(&width, &height, text);
 			xPos -= width;
-			areaWidth = width + 1;
+			areawidth = width + 1;
 		}
 		else
-			areaWidth = Environment.screenWidth;
+			areawidth = Environment.screenwidth;
 	}
-	if (areaHeight < 1)
+	if (areaheight < 1)
 	{
 		if (alignment == 3) // bottom
 		{
 			uint32_t width, height;
 			gos_TextStringLength(&width, &height, text);
 			yPos -= height;
-			areaHeight = height + 1;
+			areaheight = height + 1;
 		}
 		else
-			areaHeight = Environment.screenHeight;
+			areaheight = Environment.screenheight;
 	}
-	gos_TextSetRegion(xPos, yPos, xPos + areaWidth, yPos + areaHeight);
+	gos_TextSetRegion(xPos, yPos, xPos + areawidth, yPos + areaheight);
 	gos_TextSetPosition(xPos, yPos);
 	gos_TextDraw(text);
 }
@@ -233,7 +233,7 @@ HGOSFONT3D
 aFont::loadFont(int32_t resourceID, int32_t& size)
 {
 	size = 1;
-	char buffer[256];
+	wchar_t buffer[256];
 	cLoadString(resourceID, buffer, 255);
 	const std::wstring_view& pStr = strstr(buffer, ",");
 	if (pStr)
@@ -241,7 +241,7 @@ aFont::loadFont(int32_t resourceID, int32_t& size)
 		size = -atoi(pStr + 1);
 		*pStr = nullptr;
 	}
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, "assets\\graphics\\");
 	strcat(path, buffer);
 	_strlwr(path);
@@ -282,7 +282,7 @@ gos_TextSetAttributes(_FontInfo*, ulong, float, bool, bool, bool, bool, ulong, b
 gos_TextSetPosition(int, int);
 gos_TextGetPrintPosition(int*, int*);
 gos_TextSetRegion(int, int, int, int);
-gos_TextStringLength(ulong*, ulong*, char const*, ...);
+gos_TextStringLength(ulong*, ulong*, wchar_t const*, ...);
 FontDrawQuad(bool);
 gos_TextDrawBackground(int, int, int, int, ulong);
 GetChrSize(int*, int*, uchar);
@@ -291,19 +291,19 @@ GetNextWordLen(uchar*);
 GetNextLineLen(uchar*, uchar**);
 gos_ChrDraw(uchar);
 SetupFontRenderstates(void);
-gos_TextDraw(char const*, ...);
-gos_TextDrawV(char const*, char*);
-HandleTags(char**);
+gos_TextDraw(wchar_t const*, ...);
+gos_TextDrawV(wchar_t const*, wchar_t*);
+HandleTags(wchar_t**);
 float2long(float);
-CTexInfo::Width(void);
+CTexInfo::width(void);
 
-InternalFunctionStop(char const*, ...);
+InternalFunctionStop(wchar_t const*, ...);
 ErrorHandler(x, x);
-GDIGetStringLen(char*, ulong*, ulong*);
+GDIGetStringLen(wchar_t*, ulong*, ulong*);
 gos_PopRenderStates(void);
 gos_DrawQuads(gos_VERTEX*, int);
 gos_SetRenderState(gos_RenderState, int);
 gos_PushRenderStates(void);
 GetCycles(void);
-gos_GetFullPathName(char*, char const*);
-TextDrawDBCS(char*);
+gos_GetFullPathName(wchar_t*, wchar_t const*);
+TextDrawDBCS(wchar_t*);

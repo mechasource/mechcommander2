@@ -81,16 +81,16 @@ MLRShape::MLRShape(std::iostream stream, uint32_t version) :
 			#if COLOR_AS_DWORD
 							uint32_t* colors;
 			#else
-							RGBAColor *colors, testColor(1.0f, 1.0f,
+							RGBAcolour *colors, testcolour(1.0f, 1.0f,
 			1.0f, 1.0f); #endif Cast_Pointer(MLRIndexedPolyMesh*,
-			pt_old)->GetColorData(&colors, &nr);
+			pt_old)->GetcolourData(&colors, &nr);
 
 							for(i=0;i<nr;i++)
 							{
 			#if COLOR_AS_DWORD
 								if(colors[i] != 0xffffffff)
 			#else
-								if(colors[i] != testColor)
+								if(colors[i] != testcolour)
 			#endif
 								{
 									break;
@@ -133,7 +133,7 @@ MLRShape::MLRShape(std::iostream stream, uint32_t version) :
 			Register_Object(pt);
 			if (ConvertToTriangleMeshes == true && (pt->IsDerivedFrom(MLR_I_PMesh::DefaultData) || pt->IsDerivedFrom(MLR_I_C_PMesh::DefaultData) || pt->IsDerivedFrom(MLR_I_L_PMesh::DefaultData)))
 			{
-				puint8_t length;
+				uint8_t* length;
 				int32_t i, num, threes, nonThrees;
 				pt->GetSubprimitiveLengths(&length, &num);
 				for (i = 0, threes = 0, nonThrees = 0; i < num; i++)

@@ -137,8 +137,8 @@ public:
 	void setTerrain(int32_t tileR, int32_t tileC, int32_t terrainType);
 	int32_t getTerrain(int32_t tileR, int32_t tileC);
 
-	void setVertexHeight(int32_t vertexIndex, float value);
-	float getVertexHeight(int32_t vertexIndex);
+	void setVertexheight(int32_t vertexIndex, float value);
+	float getVertexheight(int32_t vertexIndex);
 
 	PostcompVertexPtr getData(void) { return blocks; }
 

@@ -20,9 +20,9 @@ MPGameBrowser.cpp			: Implementation of the MPGameBrowser component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
-static cint32_t CANCEL_BUTTON_ID = 1000002;
+static const int32_t FIRST_BUTTON_ID = 1000010;
+static const int32_t OK_BUTTON_ID = 1000001;
+static const int32_t CANCEL_BUTTON_ID = 1000002;
 
 #define SORT_ORDER_NAME 200
 #define SORT_ORDER_PLAYERS 201
@@ -80,13 +80,13 @@ MPGameBrowser::init(FitIniFile* file)
 		}
 	}
 	{
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
 		strcat(path, "mcl_mp_lanbrowsercombobox0.fit");
 		FitIniFile PNfile;
 		if (NO_ERROR != PNfile.open(path))
 		{
-			char error[256];
+			wchar_t error[256];
 			sprintf(error, "couldn't open file %s", path);
 			Assert(0, 0, error);
 			return;
@@ -377,10 +377,10 @@ aStyle3TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	aTextListItem::init(fontResID);
 	setText(textID);
 	int32_t color = 0xff808080;
-	file->readIdLong("Color", color);
-	normalColor = color;
-	setColor(color);
-	char tmpStr[64];
+	file->readIdLong("colour", color);
+	normalcolour = color;
+	setcolour(color);
+	wchar_t tmpStr[64];
 	strcpy(tmpStr, "");
 	file->readIdString("Animation", tmpStr, 63);
 	if (0 == strcmp("", tmpStr))
@@ -404,24 +404,24 @@ aStyle3TextListItem::render()
 	if (aListItem::SELECTED == getState())
 	{
 		animGroup.setState(aAnimGroup::PRESSED);
-		color = animGroup.getCurrentColor(aAnimGroup::PRESSED);
+		color = animGroup.getCurrentcolour(aAnimGroup::PRESSED);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
 		animGroup.setState(aAnimGroup::HIGHLIGHT);
-		color = animGroup.getCurrentColor(aAnimGroup::HIGHLIGHT);
+		color = animGroup.getCurrentcolour(aAnimGroup::HIGHLIGHT);
 	}
 	else if (aListItem::DISABLED == getState())
 	{
 		animGroup.setState(aAnimGroup::DISABLED);
-		color = animGroup.getCurrentColor(aAnimGroup::DISABLED);
+		color = animGroup.getCurrentcolour(aAnimGroup::DISABLED);
 	}
 	else
 	{
 		animGroup.setState(aAnimGroup::NORMAL);
-		color = animGroup.getCurrentColor(aAnimGroup::NORMAL);
+		color = animGroup.getCurrentcolour(aAnimGroup::NORMAL);
 	}
-	aTextListItem::setColor((uint32_t)color);
+	aTextListItem::setcolour((uint32_t)color);
 	aTextListItem::render();
 }
 
@@ -463,8 +463,8 @@ aGameListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	file->seekBlock(blockName);
 	int32_t width = 0;
 	int32_t height = 0;
-	file->readIdLong("Width", width);
-	file->readIdLong("Height", height);
+	file->readIdLong("width", width);
+	file->readIdLong("height", height);
 	const std::wstring_view& graphicBlockName;
 	graphicBlockName += "Static0";
 	allTechGraphic.init(file, graphicBlockName.Data());
@@ -590,7 +590,7 @@ aGameListItem::setSessionInfo(MC2Session* pSession)
 	memcpy(&session, pSession, sizeof(MC2Session));
 	gameName.setText(pSession->name);
 	mapName.setText(pSession->map);
-	char tmp[256];
+	wchar_t tmp[256];
 	sprintf(tmp, "%ld/%ld", pSession->numPlayers, pSession->maxPlayers);
 	numPlayers.setText(tmp);
 	sprintf(tmp, "%ld", pSession->ping);
@@ -613,8 +613,8 @@ aGameListItem::setSessionInfo(MC2Session* pSession)
 		color = 0xffff0000;
 	else if (pSession->ping > 300)
 		color = 0xffffff00;
-	latency.setColor(color);
-	pingIcon.setColor(color);
+	latency.setcolour(color);
+	pingIcon.setcolour(color);
 	//<300ms	 - 	green
 	// 301-500ms	 - 	yellow
 	//>501ms	 - 	red

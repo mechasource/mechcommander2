@@ -16,7 +16,7 @@ int32_t MLRState::systemFlags;
 float MLRState::maxUV;
 
 #ifndef OLDFOG
-uint32_t MLRState::fogColor;
+uint32_t MLRState::fogcolour;
 #endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,7 +38,7 @@ MLRState::MLRState()
 	processState = processDeltaMask = 0;
 	processPermissionMask = 0xFFFFFFFF;
 #ifdef OLDFOG
-	fogColor = 0xffffffff;
+	fogcolour = 0xffffffff;
 	fogDensity = 0.0f;
 	nearFog = 1.0f;
 	farFog = 100.0f;
@@ -91,7 +91,7 @@ MLRState::Save(std::ostream& stream)
 	stream << renderState << renderDeltaMask << renderPermissionMask;
 	stream << processState << processDeltaMask << processPermissionMask;
 #if OLDFOG
-	stream << nearFog << farFog << fogDensity << fogColor;
+	stream << nearFog << farFog << fogDensity << fogcolour;
 #endif
 	if (renderState & TextureMask)
 	{
@@ -131,7 +131,7 @@ MLRState::Load(std::istream& stream, uint32_t version)
 	if (version > 3)
 	{
 #ifdef OLDFOG
-		stream >> fogDensity >> fogColor;
+		stream >> fogDensity >> fogcolour;
 #else
 		if (version < 6)
 		{
@@ -145,7 +145,7 @@ MLRState::Load(std::istream& stream, uint32_t version)
 	{
 #ifdef OLDFOG
 		fogDensity = 0.0f;
-		fogColor = 0;
+		fogcolour = 0;
 #endif
 		if (renderDeltaMask & FogMask)
 			renderDeltaMask |= FogMask;
@@ -195,20 +195,20 @@ MLRState::Combine(const MLRState& master, const MLRState& slave)
 		fogDensity = slave.fogDensity;
 		nearFog = slave.nearFog;
 		farFog = slave.farFog;
-		if ((renderState & fog_mode) == OverrideFogAndColorMode)
+		if ((renderState & fog_mode) == OverrideFogAndcolourMode)
 		{
-			fogColor = slave.fogColor;
+			fogcolour = slave.fogcolour;
 		}
 		else
 		{
 			nearFog = master.nearFog;
 			farFog = master.farFog;
-			fogColor = master.fogColor;
+			fogcolour = master.fogcolour;
 		}
 	}
 	else
 	{
-		fogColor = master.fogColor;
+		fogcolour = master.fogcolour;
 		fogDensity = master.fogDensity;
 		nearFog = master.nearFog;
 		farFog = master.farFog;
@@ -227,7 +227,7 @@ void
 		float far_fog
 	)
 {
-	fogColor = fog_color;
+	fogcolour = fog_color;
 	fogDensity = fog_density;
 	nearFog = near_fog;
 	farFog = far_fog;
@@ -237,31 +237,31 @@ void
 //
 void
 	MLRState::SetFogData (
-		RGBAColor fog_color,
+		RGBAcolour fog_color,
 		float fog_density,
 		float near_fog,
 		float far_fog
 	)
 {
-	SetFogData(GOSCopyColor(&fog_color), fog_density, near_fog, far_fog);
+	SetFogData(GOSCopycolour(&fog_color), fog_density, near_fog, far_fog);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
 	MLRState::GetFogData (
-		RGBAColor *fog_color,
+		RGBAcolour *fog_color,
 		float *fog_density,
 		float *near_fog,
 		float *far_fog
 	) const
 {
 	*fog_color =
-		RGBAColor(
-			((fogColor>>16)&0xFF)/255.0f,
-			((fogColor>>8)&0xFF)/255.0f,
-			(fogColor&0xFF)/255.0f,
-			((fogColor>>24)&0xFF)/255.0f
+		RGBAcolour(
+			((fogcolour>>16)&0xFF)/255.0f,
+			((fogcolour>>8)&0xFF)/255.0f,
+			(fogcolour&0xFF)/255.0f,
+			((fogcolour>>24)&0xFF)/255.0f
 		);
 	*fog_density = fogDensity;
 	*near_fog = nearFog;
@@ -325,8 +325,8 @@ MLRState::SetRendererState(MLRTexturePool* texturePool)
 	gos_SetRenderState(gos_State_Dither, renderState & MLRState::DitherOnMode);
 	if (renderState & MLRState::WireFrameOnlyMode)
 	{
-		uint32_t wfColor = 0xffffff;
-		gos_SetRenderState(gos_State_WireframeMode, (uint32_t)&wfColor);
+		uint32_t wfcolour = 0xffffff;
+		gos_SetRenderState(gos_State_WireframeMode, (uint32_t)&wfcolour);
 	}
 	else
 	{
@@ -335,7 +335,7 @@ MLRState::SetRendererState(MLRTexturePool* texturePool)
 	gos_SetRenderState(gos_State_Perspective, renderState & MLRState::TextureCorrectionOnMode);
 	if (renderState & MLRState::FogMask)
 	{
-		gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+		gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 	}
 	else
 	{

@@ -90,7 +90,7 @@ public:
 //---------------------------------------------------------------------------
 typedef struct _GateData : public TerrainObjectData
 {
-	char teamId;
+	wchar_t teamId;
 
 	bool lockedOpen;
 	bool lockedClose;
@@ -117,7 +117,7 @@ class Gate : public TerrainObject
 	// Data Members
 	//-------------
 public:
-	char teamId;
+	wchar_t teamId;
 
 	bool lockedOpen;
 	bool lockedClose;

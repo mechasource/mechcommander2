@@ -187,7 +187,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
 		collapsedCoords = new Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t[nrTri * 3];
+	uint16_t* index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	int32_t uniquePoints = 0;
 	for (k = 0; k < 20; k++)

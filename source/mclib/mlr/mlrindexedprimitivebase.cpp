@@ -147,7 +147,7 @@ MLRIndexedPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRIndexedPrimitiveBase::SetIndexData(puint16_t index_array, int32_t index_count)
+MLRIndexedPrimitiveBase::SetIndexData(uint16_t* index_array, int32_t index_count)
 {
 	// Check_Object(this);
 	Check_Pointer(index_array);
@@ -169,7 +169,7 @@ MLRIndexedPrimitiveBase::SetIndexData(puint16_t index_array, int32_t index_count
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRIndexedPrimitiveBase::GetIndexData(puint16_t* index_array, pint32_t index_count)
+MLRIndexedPrimitiveBase::GetIndexData(uint16_t** index_array, int32_t* index_count)
 {
 	// Check_Object(this);
 	*index_array = colorIndexes.GetData();

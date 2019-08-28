@@ -13,10 +13,10 @@
 #define _NOTATIONFILE_HPP_
 
 #include "stuff/scalar.h"
-#include <stuff/chain.hpp>
-#include <stuff/filestream.hpp>
-#include <stuff/filestreammanager.hpp>
-#include <stuff/tree.hpp>
+// #include "stuff/chain.h"
+#include "stuff/filestream.h"
+#include "stuff/filestreammanager.h"
+#include "stuff/tree.h"
 
 namespace Stuff
 {
@@ -37,10 +37,10 @@ public:
 
 	Macro(std::wstring* macro, std::wstring* replace);
 
-	static void AddValue(MacroTree* macro_tree, PCSTR name, PCSTR value);
+	static void AddValue(MacroTree* macro_tree, const std::wstring_view& name, const std::wstring_view& value);
 
 	static void ReplaceMacros(
-		MacroTree* macro_tree, PCSTR buffer, PSTR new_buf, size_t new_buf_size);
+		MacroTree* macro_tree, const std::wstring_view& buffer, PSTR new_buf, size_t new_buf_size);
 };
 
 //=======================================================================
@@ -97,7 +97,7 @@ public:
 		Raw
 	};
 
-	NotationFile(PCSTR file_name, Type type = Standard);
+	NotationFile(const std::wstring_view& file_name, Type type = Standard);
 	NotationFile(std::iostream& stream = nullptr, MacroTree* macro_tree = nullptr);
 
 	~NotationFile(void);
@@ -118,14 +118,14 @@ public:
 		return &m_fileDependencies;
 	}
 
-	PCSTR
+	const std::wstring_view&
 	GetFileName(void) const
 	{
 		// Check_Object(this);
 		return m_fileName;
 	}
 
-	void SaveAs(PCSTR file_name);
+	void SaveAs(const std::wstring_view& file_name);
 	void Save(void);
 
 	void IgnoreChanges()
@@ -169,14 +169,14 @@ public:
 		return m_pages.IsEmpty();
 	}
 
-	bool DoesPageExist(PCSTR pagename)
+	bool DoesPageExist(const std::wstring_view& pagename)
 	{
 		// Check_Object(this);
 		return FindPage(pagename) != nullptr;
 	}
-	Page* FindPage(PCSTR pagename);
+	Page* FindPage(const std::wstring_view& pagename);
 	Page* GetPage(uint32_t index);
-	Page* GetPage(PCSTR pagename);
+	Page* GetPage(const std::wstring_view& pagename);
 
 	typedef ChainIteratorOf<Page*> PageIterator;
 	PageIterator* MakePageIterator()
@@ -185,10 +185,10 @@ public:
 		return new PageIterator(&m_pages);
 	}
 
-	Page* AddPage(PCSTR pagename);
-	Page* SetPage(PCSTR pagename);
+	Page* AddPage(const std::wstring_view& pagename);
+	Page* SetPage(const std::wstring_view& pagename);
 
-	void DeletePage(PCSTR pagename);
+	void DeletePage(const std::wstring_view& pagename);
 	void DeleteAllPages(void);
 
 protected:

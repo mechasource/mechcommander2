@@ -35,10 +35,10 @@ MC2MoviePtr ForceGroupIcon::bMovie = nullptr;
 uint32_t ForceGroupIcon::pilotVideoTexture = 0;
 MechWarrior* ForceGroupIcon::pilotVideoPilot = nullptr;
 
-#define HEALTH_BAROFFSET 12.0f * Environment.screenHeight / 600.f
-#define HEALTH_BARLENGTH 31.0f * Environment.screenWidth / 600.f
-#define HEALTH_BARHEIGHT 2.0f * Environment.screenHeight / 600.f
-#define TEXT_HEIGHT 8.0f * Environment.screenHeight / 480.f
+#define HEALTH_BAROFFSET 12.0f * Environment.screenheight / 600.f
+#define HEALTH_BARLENGTH 31.0f * Environment.screenwidth / 600.f
+#define HEALTH_BARHEIGHT 2.0f * Environment.screenheight / 600.f
+#define TEXT_HEIGHT 8.0f * Environment.screenheight / 480.f
 
 float MechIcon::unitIconX = 32;
 float MechIcon::unitIconY = 38;
@@ -47,10 +47,10 @@ float PilotIcon::pilotIconY = 36;
 const int32_t PilotIcon::DEAD_PILOT_INDEX = 27;
 
 uint32_t PilotIcon::s_pilotTextureHandle = 0;
-uint32_t PilotIcon::s_pilotTextureWidth = 0;
+uint32_t PilotIcon::s_pilotTexturewidth = 0;
 int32_t ForceGroupIcon::pilotTextTop[17] = {0};
 
-int32_t MechIcon::damageColors[4][3] = {194 << 16 | 229 << 8 | 255 | 0xff << 24,
+int32_t MechIcon::damagecolours[4][3] = {194 << 16 | 229 << 8 | 255 | 0xff << 24,
 	92 << 16 | 150 << 8 | 194 | 0xff << 24, 0 << 16 | 83 << 8 | 146 | 0xff << 24,
 	248 << 16 | 241 << 8 | 193 | 0xff << 24, 248 << 16 | 206 << 8 | 31 | 0xff << 24,
 	139 << 16 | 114 << 8 | 0 | 0xff << 24, 248 << 16 | 193 << 8 | 193 | 0xff << 24,
@@ -58,7 +58,7 @@ int32_t MechIcon::damageColors[4][3] = {194 << 16 | 229 << 8 | 255 | 0xff << 24,
 	94 << 16 | 101 << 8 | 101 | 0xff << 24, 56 << 16 | 64 << 8 | 64 | 0xff << 24,
 	26 << 16 | 33 << 8 | 33 | 0xff << 24};
 
-int32_t MechIcon::ForceGroupColors[11] = {0xff005392, 0xffC66600, 0xff6E7C00, 0xffB70000,
+int32_t MechIcon::ForceGroupcolours[11] = {0xff005392, 0xffC66600, 0xff6E7C00, 0xffB70000,
 	0xff620053, 0xffD8AD00, 0xff8B00BE, 0xffFF0000, 0xffFF8A00, 0xff0091FF, 0xff505050
 
 };
@@ -82,7 +82,7 @@ float ForceGroupIcon::pilotLocation[17][4] = {0};
 
 aFont* ForceGroupIcon::gosFontHandle = 0;
 
-int32_t ForceGroupIcon::curScreenWidth = 800;
+int32_t ForceGroupIcon::curScreenwidth = 800;
 
 #define ICON_REALSIZE 256
 
@@ -97,7 +97,7 @@ ForceGroupIcon::ForceGroupIcon()
 	{
 		// this is the textures that all icons are using
 		int32_t size = (256 * 256 * sizeof(int32_t) + sizeof(TGAFileHeader));
-		s_textureMemory = (TGAFileHeader*)new char[size];
+		s_textureMemory = (TGAFileHeader*)new wchar_t[size];
 		memset(s_textureMemory, 0, size);
 		s_textureMemory->height = 256;
 		s_textureMemory->width = 256;
@@ -105,7 +105,7 @@ ForceGroupIcon::ForceGroupIcon()
 		s_textureMemory->image_type = UNC_PAL;
 		if (s_textureHandle[0] == -1)
 			s_textureHandle[0] = gos_NewTextureFromMemory(
-				gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0);
+				gos_Texture_Alpha, ".tga", (uint8_t*)s_textureMemory, size, 0);
 		memset(s_slotUsed, 0, 240 * sizeof(bool));
 	}
 	bool bFound = 0;
@@ -127,7 +127,7 @@ ForceGroupIcon::ForceGroupIcon()
 void
 ForceGroupIcon::resetResolution(bool bForce)
 {
-	if (curScreenWidth != Environment.screenWidth || bForce)
+	if (curScreenwidth != Environment.screenwidth || bForce)
 	{
 		delete[] MechIcon::s_MechTextures;
 		MechIcon::s_MechTextures = 0;
@@ -136,7 +136,7 @@ ForceGroupIcon::resetResolution(bool bForce)
 		setIconVariables();
 		PilotIcon::swapResolutions();
 	}
-	curScreenWidth = Environment.screenWidth;
+	curScreenwidth = Environment.screenwidth;
 }
 
 void
@@ -166,7 +166,7 @@ ForceGroupIcon::~ForceGroupIcon()
 void
 ForceGroupIcon::init(FitIniFile& file, int32_t which)
 {
-	char buffer[256];
+	wchar_t buffer[256];
 	sprintf(buffer, "MechIcon%ld", which);
 	if (NO_ERROR != file.seekBlock(buffer))
 		Assert(0, 0, "couldn't find the icon");
@@ -274,12 +274,12 @@ MechIcon::setDrawBack(bool bSet)
 	{
 		int32_t size = (256 * 256 * sizeof(int32_t) + sizeof(TGAFileHeader));
 		s_textureHandle[textureIndex] =
-			gos_NewTextureFromMemory(gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0);
+			gos_NewTextureFromMemory(gos_Texture_Alpha, ".tga", (uint8_t*)s_textureMemory, size, 0);
 	}
 	// now need to make a copy of the data
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[textureIndex], 0, 0, &textureData);
-	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
+	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.width + offsetX;
 	const std::wstring_view& pTmp = (const std::wstring_view&)s_MechTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	int32_t whichMech = unit->getIconPictureIndex();
@@ -298,12 +298,12 @@ MechIcon::setDrawBack(bool bSet)
 			// compare colors, only draw back ones which are 4, 5, 6, and 7
 			for (size_t i = 0; i < 3; i++)
 			{
-				int32_t compColor = damageColors[0][i];
-				int32_t srcColor = *pSrcData;
-				int32_t compMin = compColor >> 16;
+				int32_t compcolour = damagecolours[0][i];
+				int32_t srccolour = *pSrcData;
+				int32_t compMin = compcolour >> 16;
 				compMin += 4;
 				int32_t compMax = compMin + 3;
-				if (srcColor >> 16 >= compMin && srcColor >> 16 <= compMax)
+				if (srccolour >> 16 >= compMin && srccolour >> 16 <= compMax)
 				{
 					bDraw = 1;
 				}
@@ -317,7 +317,7 @@ MechIcon::setDrawBack(bool bSet)
 			pSrcData++;
 		}
 		pSrcRow += s_MechTextures->width;
-		pDestRow += textureData.Width;
+		pDestRow += textureData.width;
 	}
 	gos_UnLockTexture(s_textureHandle[textureIndex]);
 }
@@ -362,11 +362,11 @@ MechIcon::initTextures()
 	if (!s_MechTextures)
 	{
 		File file;
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
-		if (Environment.screenWidth == 800)
+		if (Environment.screenwidth == 800)
 			strcat(path, "mcui_med4.tga");
-		else if (Environment.screenWidth == 640)
+		else if (Environment.screenwidth == 640)
 			strcat(path, "mcui_low4.tga");
 		else
 			strcat(path, "mcui_high7.tga");
@@ -378,9 +378,9 @@ MechIcon::initTextures()
 		}
 		setIconVariables();
 		int32_t size = file.getLength();
-		s_MechTextures = (TGAFileHeader*)new char[size];
-		file.read((puint8_t)s_MechTextures, size);
-		puint8_t pTmp = (puint8_t)(s_MechTextures + 1);
+		s_MechTextures = (TGAFileHeader*)new wchar_t[size];
+		file.read((uint8_t*)s_MechTextures, size);
+		uint8_t* pTmp = (uint8_t*)(s_MechTextures + 1);
 		flipTopToBottom(
 			pTmp, s_MechTextures->pixel_depth, s_MechTextures->width, s_MechTextures->height);
 	}
@@ -423,12 +423,12 @@ MechIcon::init(int32_t whichIndex)
 	{
 		int32_t size = (256 * 256 * sizeof(int32_t) + sizeof(TGAFileHeader));
 		s_textureHandle[textureIndex] =
-			gos_NewTextureFromMemory(gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0);
+			gos_NewTextureFromMemory(gos_Texture_Alpha, ".tga", (uint8_t*)s_textureMemory, size, 0);
 	}
 	// now need to make a copy of the data
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[textureIndex], 0, 0, &textureData);
-	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
+	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.width + offsetX;
 	const std::wstring_view& pTmp = (const std::wstring_view&)s_MechTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	offsetY = 0;
@@ -445,7 +445,7 @@ MechIcon::init(int32_t whichIndex)
 			*pDestData++ = *pSrcData++;
 		}
 		pSrcRow += s_MechTextures->width;
-		pDestRow += textureData.Width;
+		pDestRow += textureData.width;
 	}
 	gos_UnLockTexture(s_textureHandle[textureIndex]);
 	for (size_t i = 0; i < 5; ++i)
@@ -466,8 +466,8 @@ void
 MechIcon::update()
 {
 	// need to check object's status here
-	char newDamage[8];
-	char rearDamage[8];
+	wchar_t newDamage[8];
+	wchar_t rearDamage[8];
 	memset(newDamage, 0, 8);
 	memset(rearDamage, 0, 8);
 	// do check against armor location
@@ -668,7 +668,7 @@ MechIcon::doDraw(const std::wstring_view& newDamage, const std::wstring_view& ol
 			{
 				int32_t size = (256 * 256 * sizeof(int32_t) + sizeof(TGAFileHeader));
 				s_textureHandle[texIndex] = gos_NewTextureFromMemory(
-					gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0);
+					gos_Texture_Alpha, ".tga", (uint8_t*)s_textureMemory, size, 0);
 			}
 			TEXTUREPTR textureData;
 			gos_LockTexture(s_textureHandle[texIndex], 0, 0, &textureData);
@@ -676,21 +676,21 @@ MechIcon::doDraw(const std::wstring_view& newDamage, const std::wstring_view& ol
 			// go to write spot in texture
 			int32_t jLine = yIndex * unitIconY;
 			int32_t iLine = xIndex * unitIconX;
-			uint32_t* pLine = (uint32_t*)(pData + (jLine * textureData.Width) + iLine);
+			uint32_t* pLine = (uint32_t*)(pData + (jLine * textureData.width) + iLine);
 			uint32_t* pChange = pLine;
-			uint32_t oldColors[3];
-			uint32_t newColors[3];
+			uint32_t oldcolours[3];
+			uint32_t newcolours[3];
 			// find the colors we're looking for
 			for (size_t p = 0; p < 3; p++)
 			{
-				int32_t tmp = damageColors[damage[i]][p];
+				int32_t tmp = damagecolours[damage[i]][p];
 				int32_t redVal = (tmp >> 16) & 0x000000ff;
 				redVal += i;
-				oldColors[p] = (tmp & 0xff00ffff) | (redVal << 16);
-				tmp = damageColors[newDamage[i]][p];
+				oldcolours[p] = (tmp & 0xff00ffff) | (redVal << 16);
+				tmp = damagecolours[newDamage[i]][p];
 				redVal = (tmp >> 16) & 0x000000ff;
 				redVal += i;
-				newColors[p] = (tmp & 0xff00ffff) | (redVal << 16);
+				newcolours[p] = (tmp & 0xff00ffff) | (redVal << 16);
 			}
 			// look through the entire bitmap, changing old colors to new colors
 			for (size_t k = 0; k < unitIconY; ++k)
@@ -702,15 +702,15 @@ MechIcon::doDraw(const std::wstring_view& newDamage, const std::wstring_view& ol
 					{
 						for (p = 0; p < 3; p++)
 						{
-							if (oldColors[p] == *pChange)
+							if (oldcolours[p] == *pChange)
 							{
-								*pChange = newColors[p];
+								*pChange = newcolours[p];
 							}
 						}
 					}
 					pChange++;
 				}
-				pLine += textureData.Width;
+				pLine += textureData.width;
 			}
 			gos_UnLockTexture(s_textureHandle[texIndex]);
 		}
@@ -748,13 +748,13 @@ ForceGroupIcon::render()
 	// draw little colored background
 	if (forceGroup == 0)
 		forceGroup = 10;
-	int32_t color = forceGroup == -1 ? ForceGroupColors[10] : ForceGroupColors[forceGroup - 1];
+	int32_t color = forceGroup == -1 ? ForceGroupcolours[10] : ForceGroupcolours[forceGroup - 1];
 	float health = unit->getAppearance()->barStatus;
 	// draw pilotName
 	RECT tmpRect = {textArea[locationIndex].left, textArea[locationIndex].top,
 		textArea[locationIndex].right, textArea[locationIndex].bottom};
 	drawRect(tmpRect, color);
-	char buffer[256];
+	wchar_t buffer[256];
 	strcpy(buffer, unit->getPilot()->getName());
 	for (i = 0; i < strlen(buffer); i++)
 		CharUpper(buffer);
@@ -925,11 +925,11 @@ VehicleIcon::init(Mover* pMover)
 	if (!s_VehicleTextures)
 	{
 		File file;
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, artPath);
-		if (Environment.screenWidth == 800)
+		if (Environment.screenwidth == 800)
 			strcat(path, "mcui_med5.tga");
-		else if (Environment.screenWidth == 640)
+		else if (Environment.screenwidth == 640)
 			strcat(path, "mcui_low5.tga");
 		else
 			strcat(path, "mcui_high8.tga");
@@ -940,9 +940,9 @@ VehicleIcon::init(Mover* pMover)
 			return false;
 		}
 		int32_t size = file.getLength();
-		s_VehicleTextures = (TGAFileHeader*)new char[size];
-		file.read((puint8_t)s_VehicleTextures, size);
-		puint8_t pTmp = (puint8_t)(s_VehicleTextures + 1);
+		s_VehicleTextures = (TGAFileHeader*)new wchar_t[size];
+		file.read((uint8_t*)s_VehicleTextures, size);
+		uint8_t* pTmp = (uint8_t*)(s_VehicleTextures + 1);
 		flipTopToBottom(pTmp, s_VehicleTextures->pixel_depth, s_VehicleTextures->width,
 			s_VehicleTextures->height);
 	}
@@ -971,11 +971,11 @@ VehicleIcon::init(Mover* pMover)
 	{
 		int32_t size = (256 * 256 * sizeof(int32_t) + sizeof(TGAFileHeader));
 		s_textureHandle[texIndex] =
-			gos_NewTextureFromMemory(gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0);
+			gos_NewTextureFromMemory(gos_Texture_Alpha, ".tga", (uint8_t*)s_textureMemory, size, 0);
 	}
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[texIndex], 0, 0, &textureData);
-	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
+	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.width + offsetX;
 	const std::wstring_view& pTmp = (const std::wstring_view&)s_VehicleTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	int32_t whichMech = pMover->getIconPictureIndex();
@@ -993,7 +993,7 @@ VehicleIcon::init(Mover* pMover)
 			*pDestData++ = *pSrcData++;
 		}
 		pSrcRow += s_VehicleTextures->width;
-		pDestRow += textureData.Width;
+		pDestRow += textureData.width;
 	}
 	gos_UnLockTexture(s_textureHandle[texIndex]);
 	unit = pMover;
@@ -1013,7 +1013,7 @@ VehicleIcon::init(Mover* pMover)
 void
 VehicleIcon::update()
 {
-	char newDamage[5];
+	wchar_t newDamage[5];
 	memset(newDamage, 0, 5);
 	// do check against armor location
 	ArmorLocation armor = unit->armor[GROUNDVEHICLE_LOCATION_FRONT];
@@ -1073,20 +1073,20 @@ VehicleIcon::update()
 			// go to write spot in texture
 			int32_t jLine = yIndex * unitIconY;
 			int32_t iLine = xIndex * unitIconX;
-			uint32_t* pLine = (uint32_t*)(pData + (jLine * textureData.Width) + iLine);
+			uint32_t* pLine = (uint32_t*)(pData + (jLine * textureData.width) + iLine);
 			uint32_t* pChange = pLine;
-			uint32_t oldColors[3];
-			uint32_t newColors[3];
+			uint32_t oldcolours[3];
+			uint32_t newcolours[3];
 			for (size_t p = 0; p < 3; p++)
 			{
-				int32_t tmp = damageColors[damage[i]][p];
+				int32_t tmp = damagecolours[damage[i]][p];
 				int32_t redVal = (tmp >> 16) & 0x000000ff;
 				redVal += i;
-				oldColors[p] = (tmp & 0xff00ffff) | (redVal << 16);
-				tmp = damageColors[newDamage[i]][p];
+				oldcolours[p] = (tmp & 0xff00ffff) | (redVal << 16);
+				tmp = damagecolours[newDamage[i]][p];
 				redVal = (tmp >> 16) & 0x000000ff;
 				redVal += i;
-				newColors[p] = (tmp & 0xff00ffff) | (redVal << 16);
+				newcolours[p] = (tmp & 0xff00ffff) | (redVal << 16);
 			}
 			for (size_t k = 0; k < unitIconY; ++k)
 			{
@@ -1097,15 +1097,15 @@ VehicleIcon::update()
 					{
 						for (size_t p = 0; p < 3; p++)
 						{
-							if (oldColors[p] == *pChange)
+							if (oldcolours[p] == *pChange)
 							{
-								*pChange = newColors[p];
+								*pChange = newcolours[p];
 							}
 						}
 					}
 					pChange++;
 				}
-				pLine += textureData.Width;
+				pLine += textureData.width;
 			}
 			gos_UnLockTexture(s_textureHandle[texIndex]);
 		}
@@ -1206,8 +1206,8 @@ ForceGroupIcon::drawDeathEffect()
 			int32_t blueMin = animationInfos[i].color & 0x000000ff;
 			int32_t blueMax = animationInfos[i + 1].color & 0x000000ff;
 			int32_t newBlue = (float)blueMin + ((float)(blueMax - blueMin)) * percent;
-			int32_t newColor = newBlue + (newGreen << 8) + (newRed << 16) + (newAlpha << 24);
-			drawRect(selectionRect[locationIndex], newColor);
+			int32_t newcolour = newBlue + (newGreen << 8) + (newRed << 16) + (newAlpha << 24);
+			drawRect(selectionRect[locationIndex], newcolour);
 			bFinished = false;
 			if (i == 0)
 			{
@@ -1235,7 +1235,7 @@ ForceGroupIcon::drawDeathEffect()
 void
 ForceGroupIcon::setIconVariables()
 {
-	switch (Environment.screenWidth)
+	switch (Environment.screenwidth)
 	{
 	case 800:
 		PilotIcon::pilotIconX = 25;
@@ -1256,7 +1256,7 @@ ForceGroupIcon::setIconVariables()
 		unitIconY = 48;
 		break;
 	}
-	curScreenWidth = Environment.screenWidth;
+	curScreenwidth = Environment.screenwidth;
 }
 
 PilotIcon::PilotIcon()
@@ -1265,13 +1265,13 @@ PilotIcon::PilotIcon()
 	if (!s_pilotTextureHandle)
 	{
 		// find proper file based on resolution
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, "data\\art\\");
-		if (Environment.screenWidth == 640)
+		if (Environment.screenwidth == 640)
 		{
 			strcat(path, "mcui_low2.tga");
 		}
-		else if (Environment.screenWidth == 800)
+		else if (Environment.screenwidth == 800)
 		{
 			strcat(path, "mcui_med2.tga");
 		}
@@ -1284,7 +1284,7 @@ PilotIcon::PilotIcon()
 		int32_t gosID = mcTextureManager->get_gosTextureHandle(s_pilotTextureHandle);
 		TEXTUREPTR textureData;
 		gos_LockTexture(gosID, 0, 0, &textureData);
-		s_pilotTextureWidth = textureData.Width;
+		s_pilotTexturewidth = textureData.width;
 		gos_UnLockTexture(gosID);
 	}
 }
@@ -1305,19 +1305,19 @@ PilotIcon::render(float left, float top, float right, float bottom)
 	pilotLocation[0].y = pilotLocation[3].y = top;
 	pilotLocation[1].y = pilotLocation[2].y = bottom;
 	pilotLocation[4] = pilotLocation[0];
-	int32_t iconsPerRow = s_pilotTextureWidth / pilotIconX;
+	int32_t iconsPerRow = s_pilotTexturewidth / pilotIconX;
 	int32_t xIndex = pilotTextureIndex % iconsPerRow;
 	int32_t yIndex = pilotTextureIndex / iconsPerRow;
 	float xLocation = xIndex * pilotIconX;
 	float yLocation = yIndex * pilotIconY;
 	pilotLocation[0].u = pilotLocation[1].u =
-		xLocation / s_pilotTextureWidth + (.1f / s_pilotTextureWidth);
+		xLocation / s_pilotTexturewidth + (.1f / s_pilotTexturewidth);
 	pilotLocation[3].u = pilotLocation[2].u =
-		(xLocation + pilotIconX) / s_pilotTextureWidth + (.1f / s_pilotTextureWidth);
+		(xLocation + pilotIconX) / s_pilotTexturewidth + (.1f / s_pilotTexturewidth);
 	pilotLocation[0].v = pilotLocation[3].v =
-		yLocation / s_pilotTextureWidth + (.1f / s_pilotTextureWidth);
+		yLocation / s_pilotTexturewidth + (.1f / s_pilotTexturewidth);
 	pilotLocation[1].v = pilotLocation[2].v =
-		(yLocation + pilotIconY) / s_pilotTextureWidth + (.1f / s_pilotTextureWidth);
+		(yLocation + pilotIconY) / s_pilotTexturewidth + (.1f / s_pilotTexturewidth);
 	pilotLocation[4] = pilotLocation[0];
 	int32_t gosID = mcTextureManager->get_gosTextureHandle(s_pilotTextureHandle);
 	gos_SetRenderState(gos_State_Texture, gosID);
@@ -1345,13 +1345,13 @@ PilotIcon::swapResolutions(bool bForce)
 	if (!s_pilotTextureHandle)
 	{
 		// find proper file based on resolution
-		char path[256];
+		wchar_t path[256];
 		strcpy(path, "data\\art\\");
-		if (Environment.screenWidth == 640)
+		if (Environment.screenwidth == 640)
 		{
 			strcat(path, "mcui_low2.tga");
 		}
-		else if (Environment.screenWidth == 800)
+		else if (Environment.screenwidth == 800)
 		{
 			strcat(path, "mcui_med2.tga");
 		}
@@ -1364,7 +1364,7 @@ PilotIcon::swapResolutions(bool bForce)
 		int32_t gosID = mcTextureManager->get_gosTextureHandle(s_pilotTextureHandle);
 		TEXTUREPTR textureData;
 		gos_LockTexture(gosID, 0, 0, &textureData);
-		s_pilotTextureWidth = textureData.Width;
+		s_pilotTexturewidth = textureData.width;
 		gos_UnLockTexture(gosID);
 	}
 }

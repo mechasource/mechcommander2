@@ -8,9 +8,9 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "stuff/angle.h"
 #include "stuff/rotation.h"
 #include "stuff/note.h"
@@ -36,7 +36,7 @@ Note::WriteNotation(std::iostream& stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Note::GetEntry(pint32_t value)
+Note::GetEntry(int32_t* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -52,7 +52,7 @@ void
 Note::SetEntry(int32_t value)
 {
 	// Check_Object(this);
-	char contents[12];
+	wchar_t contents[12];
 	_itoa_s(value, contents, _countof(contents), 10);
 	_ASSERT(strlen(contents) < (_countof(contents)));
 	SetEntry(contents);
@@ -77,7 +77,7 @@ void
 Note::SetEntry(float value)
 {
 	// Check_Object(this);
-	char contents[32];
+	wchar_t contents[32];
 	sprintf_s(contents, _countof(contents), "%f", value);
 	_ASSERT(strlen(contents) < sizeof(contents));
 	SetEntry(contents);
@@ -133,7 +133,7 @@ void
 Note::SetEntry(const Vector3D& value)
 {
 	// Check_Object(this);
-	static char contents[64];
+	static wchar_t contents[64];
 	int32_t temp;
 	temp = sprintf_s(contents, _countof(contents), "%f %f %f", value.x, value.y, value.z);
 	_ASSERT(temp < sizeof(contents));
@@ -175,7 +175,7 @@ void
 Note::SetEntry(const YawPitchRoll& value)
 {
 	// Check_Object(this);
-	static char contents[32];
+	static wchar_t contents[32];
 	sprintf_s(contents, _countof(contents), "%f %f %f", value.yaw * Degrees_Per_Radian,
 		value.pitch * Degrees_Per_Radian, value.roll * Degrees_Per_Radian);
 	_ASSERT(strlen(contents) < sizeof(contents));
@@ -219,7 +219,7 @@ void
 Note::SetEntry(const UnitQuaternion& value)
 {
 	// Check_Object(this);
-	static char contents[32] = {0};
+	static wchar_t contents[32] = {0};
 	YawPitchRoll ypr(value);
 	_ASSERT(strlen(contents) < sizeof(contents));
 	sprintf_s(contents, _countof(contents), "%f %f %f", ypr.yaw * Degrees_Per_Radian,
@@ -257,7 +257,7 @@ void
 Note::SetEntry(const Motion3D& value)
 {
 	// Check_Object(this);
-	static char contents[64];
+	static wchar_t contents[64];
 	sprintf_s(contents, _countof(contents), "%f %f %f %f %f %f", value.linearMotion.x,
 		value.linearMotion.y, value.linearMotion.z, value.angularMotion.x, value.angularMotion.y,
 		value.angularMotion.z);
@@ -268,7 +268,7 @@ Note::SetEntry(const Motion3D& value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Note::GetEntry(RGBColor* value)
+Note::GetEntry(RGBcolour* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -282,7 +282,7 @@ Note::GetEntry(RGBColor* value)
 		Check_Object(page);
 		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
-		STOP(("%s: {[%s]%s=%s} is not an RGBColor!", file->GetFileName(), page->m_name, m_name,
+		STOP(("%s: {[%s]%s=%s} is not an RGBcolour!", file->GetFileName(), page->m_name, m_name,
 			contents));
 	}
 }
@@ -290,10 +290,10 @@ Note::GetEntry(RGBColor* value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Note::SetEntry(const RGBColor& value)
+Note::SetEntry(const RGBcolour& value)
 {
 	// Check_Object(this);
-	static char contents[32];
+	static wchar_t contents[32];
 	sprintf_s(contents, _countof(contents), "%f %f %f", value.red, value.green, value.blue);
 	_ASSERT(strlen(contents) < sizeof(contents));
 	SetEntry(contents);
@@ -302,7 +302,7 @@ Note::SetEntry(const RGBColor& value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Note::GetEntry(RGBAColor* value)
+Note::GetEntry(RGBAcolour* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
@@ -319,7 +319,7 @@ Note::GetEntry(RGBAColor* value)
 		Check_Object(page);
 		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
-		STOP(("%s: {[%s]%s=%s} is not an RGBAColor!", file->GetFileName(), page->m_name, m_name,
+		STOP(("%s: {[%s]%s=%s} is not an RGBAcolour!", file->GetFileName(), page->m_name, m_name,
 			contents));
 	}
 }
@@ -327,10 +327,10 @@ Note::GetEntry(RGBAColor* value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-Note::SetEntry(const RGBAColor& value)
+Note::SetEntry(const RGBAcolour& value)
 {
 	// Check_Object(this);
-	static char contents[48];
+	static wchar_t contents[48];
 	sprintf_s(contents, _countof(contents), "%f %f %f %f", value.red, value.green, value.blue,
 		value.alpha);
 	_ASSERT(strlen(contents) < sizeof(contents));

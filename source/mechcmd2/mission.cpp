@@ -109,7 +109,7 @@
 
 #include "resource.h"
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
@@ -172,7 +172,7 @@ extern bool inViewMode;
 extern uint32_t viewObject;
 extern float loadProgress;
 
-extern char TeamRelations[MAX_TEAMS][MAX_TEAMS];
+extern wchar_t TeamRelations[MAX_TEAMS][MAX_TEAMS];
 
 ByteFlag* VisibleBits = nullptr; // What can currently be seen
 ByteFlag* SeenBits = nullptr; // What HAS been seen
@@ -642,7 +642,7 @@ Mission::update(void)
 		}
 		if (showFrameRate)
 		{
-			char text[1024];
+			wchar_t text[1024];
 			sprintf(text, "FrameRate: %f", 1.0f / frameLength);
 			uint32_t width, height;
 			Stuff::Vector4D moveHere;
@@ -690,10 +690,10 @@ Mission::render(void)
 		GameMap->clearCellDebugs(0);
 		//-----------------------------------------------------
 		// FOG time.  Set Render state to FOG on!
-		uint32_t fogColor = eye->fogColor;
+		uint32_t fogcolour = eye->fogcolour;
 		if (useFog)
 		{
-			gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
+			gos_SetRenderState(gos_State_Fog, (int32_t)&fogcolour);
 		}
 		else
 		{
@@ -946,18 +946,18 @@ Mission::createPartObject(int32_t partIndex, std::unique_ptr<Mover> mover)
 			AppearancePtr myActor = mover->getAppearance();
 			if (MPlayer)
 				myActor->resetPaintScheme(
-					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripeColor],
-					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripeColor],
+					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripecolour],
+					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripecolour],
 					MPlayer->colors[MPlayer->playerInfo[mover->commanderId]
-										.baseColor[BASECOLOR_TEAM]]);
+										.basecolour[BASECOLOR_TEAM]]);
 			else
 			{
 				if (mover->getCommanderId() == Commander::home->getId())
 					myActor->resetPaintScheme(
-						prefs.highlightColor, prefs.highlightColor, prefs.baseColor);
+						prefs.highlightcolour, prefs.highlightcolour, prefs.basecolour);
 				else
-					myActor->resetPaintScheme(parts[partIndex].highlightColor1,
-						parts[partIndex].highlightColor2, parts[partIndex].baseColor);
+					myActor->resetPaintScheme(parts[partIndex].highlightcolour1,
+						parts[partIndex].highlightcolour2, parts[partIndex].basecolour);
 				// myActor->setGesture(parts[partIndex].gestureId);  DOn't do
 				// this unless you want the mechs to start shutdown and power up!
 			}
@@ -968,18 +968,18 @@ Mission::createPartObject(int32_t partIndex, std::unique_ptr<Mover> mover)
 			AppearancePtr myActor = mover->getAppearance();
 			if (MPlayer)
 				myActor->resetPaintScheme(
-					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripeColor],
-					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripeColor],
+					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripecolour],
+					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripecolour],
 					MPlayer->colors[MPlayer->playerInfo[mover->commanderId]
-										.baseColor[BASECOLOR_TEAM]]);
+										.basecolour[BASECOLOR_TEAM]]);
 			else
 			{
 				if (mover->getCommanderId() == Commander::home->getId())
 					myActor->resetPaintScheme(
-						prefs.highlightColor, prefs.highlightColor, prefs.baseColor);
+						prefs.highlightcolour, prefs.highlightcolour, prefs.basecolour);
 				else
-					myActor->resetPaintScheme(parts[partIndex].highlightColor1,
-						parts[partIndex].highlightColor2, parts[partIndex].baseColor);
+					myActor->resetPaintScheme(parts[partIndex].highlightcolour1,
+						parts[partIndex].highlightcolour2, parts[partIndex].basecolour);
 				// myActor->setGesture(parts[partIndex].gestureId);  DOn't do
 				// this unless you want the mechs to start shutdown and power up!
 			}
@@ -1087,21 +1087,21 @@ Mission::addMover(MoverInitData* moverSpec)
 	pilot->setBrain(moduleHandle);
 	/*
 	typedef struct _MoverInitData {
-		char			pilotFileName[50];
-		char			brainFileName[50];
-		char			profileName[50];
+		wchar_t			pilotFileName[50];
+		wchar_t			brainFileName[50];
+		wchar_t			profileName[50];
 		int32_t			objNumber;
 		uint32_t	controlType;
 		uint32_t	controlDataType;
 		uint32_t	variant;
 		float			position[2];
 		int32_t			rotation;
-		char			teamID;
-		char			commanderid;
+		wchar_t			teamID;
+		wchar_t			commanderid;
 		int32_t			paintScheme;
 		bool			active;
 		bool			exists;
-		char			icon;
+		wchar_t			icon;
 		bool			capturable;
 	} MoverInitData;
 	*/
@@ -1192,7 +1192,7 @@ Mission::addMover(MoverInitData* moverSpec)
 				// Make sure the pilot paints his Mech!!
 				AppearancePtr myActor = mover->getAppearance();
 				myActor->resetPaintScheme(
-					moverSpec->highlightColor1, moverSpec->highlightColor2, moverSpec->baseColor);
+					moverSpec->highlightcolour1, moverSpec->highlightcolour2, moverSpec->basecolour);
 				// myActor->setGesture(moverSpec->gestureID);  Don't do this
 				// unless you want things to start shutdown and power up!
 			}
@@ -1201,7 +1201,7 @@ Mission::addMover(MoverInitData* moverSpec)
 			{
 				AppearancePtr myActor = mover->getAppearance();
 				myActor->resetPaintScheme(
-					moverSpec->highlightColor1, moverSpec->highlightColor2, moverSpec->baseColor);
+					moverSpec->highlightcolour1, moverSpec->highlightcolour2, moverSpec->basecolour);
 			}
 			break;
 			case ELEMENTAL:
@@ -1281,9 +1281,9 @@ Mission::addMover(MoverInitData* moveSpec, LogisticsMech* mechData)
 	mData.rotation = moveSpec->rotation;
 	mData.teamID = moveSpec->teamID;
 	mData.commanderid = moveSpec->commanderid;
-	mData.baseColor = moveSpec->baseColor;
-	mData.highlightColor1 = moveSpec->highlightColor1;
-	mData.highlightColor2 = moveSpec->highlightColor2;
+	mData.basecolour = moveSpec->basecolour;
+	mData.highlightcolour1 = moveSpec->highlightcolour1;
+	mData.highlightcolour2 = moveSpec->highlightcolour2;
 	mData.gestureID = 2;
 	mData.active = true;
 	mData.exists = true;
@@ -1343,7 +1343,7 @@ Mission::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t new
 	}
 	if (newCommanderID > -1)
 	{
-		char realPilotName[256];
+		wchar_t realPilotName[256];
 		strcpy(realPilotName, &(pilotFileName[MPlayer ? 4 : 3]));
 		LogisticsPilot* lPilot = LogisticsData::instance->getPilot(realPilotName);
 		mover->loadPilot(pilotFileName, brainFileName, lPilot);
@@ -1364,7 +1364,7 @@ Mission::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t new
 }
 //----------------------------------------------------------------------------
 bool
-Mission::calcComplexDropZones(const std::wstring_view& missionName, char dropZoneCID[MAX_MC_PLAYERS])
+Mission::calcComplexDropZones(const std::wstring_view& missionName, wchar_t dropZoneCID[MAX_MC_PLAYERS])
 {
 	for (size_t p = 0; p < MAX_MC_PLAYERS; p++)
 		dropZoneCID[p] = -1;
@@ -1394,25 +1394,25 @@ Mission::calcComplexDropZones(const std::wstring_view& missionName, char dropZon
 	if (numParts)
 		for (size_t i = 1; i < int32_t(numParts + 1); i++)
 		{
-			char partName[12];
+			wchar_t partName[12];
 			sprintf(partName, "Part%d", i);
 			//------------------------------------------------------------------
 			// Find the object to load
 			result = missionFile->seekBlock(partName);
 			gosASSERT(result == NO_ERROR);
-			char teamID = -1;
+			wchar_t teamID = -1;
 			result = missionFile->readIdChar("TeamId", teamID);
 			gosASSERT(result == NO_ERROR);
 			if ((teamID < 0) || (teamID >= MAX_TEAMS))
 				STOP(("Mission.calcComplexDropZones: bad teamID"));
-			char commanderid = -1;
+			wchar_t commanderid = -1;
 			result = missionFile->readIdChar("CommanderId", commanderid);
 			if (result != NO_ERROR)
 			{
 				int32_t cID;
 				result = missionFile->readIdLong("CommanderId", cID);
 				gosASSERT(result == NO_ERROR);
-				commanderid = (char)cID;
+				commanderid = (wchar_t)cID;
 			}
 			if ((commanderid < 0) || (commanderid >= MAX_MC_PLAYERS))
 				STOP(("Mission.calcComplexDropZones: bad commanderid"));
@@ -1496,7 +1496,7 @@ IsGateOpen(int32_t objectWID)
 //----------------------------------------------------------------------------
 void
 Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dropZoneID,
-	Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], int32_t numMoversPerCommander)
+	Stuff::Vector3D* dropZoneList, wchar_t commandersToLoad[8][3], int32_t numMoversPerCommander)
 {
 	neverEndingStory = false;
 	invulnerableON = false;
@@ -1508,7 +1508,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 	loadProgress = 1.0f;
 	if ((loadType == MISSION_LOAD_SP_QUICKSTART) || (loadType == MISSION_LOAD_SP_LOGISTICS))
 	{
-		char teamRelationsForSP[MAX_TEAMS][MAX_TEAMS] = {{0, 2, 1, 2, 2, 2, 2, 2},
+		wchar_t teamRelationsForSP[MAX_TEAMS][MAX_TEAMS] = {{0, 2, 1, 2, 2, 2, 2, 2},
 			{2, 0, 2, 2, 2, 2, 2, 2}, {1, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
 			{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2}, {2, 2, 2, 2, 2, 2, 0, 2},
 			{2, 2, 2, 2, 2, 2, 2, 0}};
@@ -1521,7 +1521,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 	}
 	else
 	{
-		char teamRelationsForMP[MAX_TEAMS][MAX_TEAMS] = {{0, 2, 2, 2, 2, 2, 2, 2},
+		wchar_t teamRelationsForMP[MAX_TEAMS][MAX_TEAMS] = {{0, 2, 2, 2, 2, 2, 2, 2},
 			{2, 0, 2, 2, 2, 2, 2, 2}, {2, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
 			{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2}, {2, 2, 2, 2, 2, 2, 0, 2},
 			{2, 2, 2, 2, 2, 2, 2, 0}};
@@ -1716,10 +1716,10 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 				gosASSERT(result == NO_ERROR);
 				result = missionFile->readIdULong("CommanderId", MultiPlayCommanderId);
 				gosASSERT(result == NO_ERROR);
-				char sessionName[128];
+				wchar_t sessionName[128];
 				result = missionFile->readIdString("SessionName", sessionName, 127);
 				gosASSERT(result == NO_ERROR);
-				char playerName[128];
+				wchar_t playerName[128];
 				result = missionFile->readIdString("PlayerName", playerName, 127);
 				gosASSERT(result == NO_ERROR);
 				bool isServer = false;
@@ -1814,23 +1814,23 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 		if (numParts)
 			for (i = 1; i < int32_t(numParts + 1); i++)
 			{
-				char partName[12];
+				wchar_t partName[12];
 				sprintf(partName, "Part%d", i);
 				//------------------------------------------------------------------
 				// Find the object to load
 				result = missionFile->seekBlock(partName);
 				gosASSERT(result == NO_ERROR);
-				char teamID = -1;
+				wchar_t teamID = -1;
 				result = missionFile->readIdChar("TeamId", teamID);
 				gosASSERT(result == NO_ERROR);
-				char commanderid = -1;
+				wchar_t commanderid = -1;
 				result = missionFile->readIdChar("CommanderId", commanderid);
 				if (result != NO_ERROR)
 				{
 					int32_t cID;
 					result = missionFile->readIdLong("CommanderId", cID);
 					gosASSERT(result == NO_ERROR);
-					commanderid = (char)cID;
+					commanderid = (wchar_t)cID;
 				}
 				if (MPlayer && dropZoneList)
 				{
@@ -1959,7 +1959,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 	result = pakFile.open(terrainFileName);
 	gosASSERT(result == NO_ERROR);
 	land = new Terrain;
-	land->getColorMapName(missionFile);
+	land->getcolourMapName(missionFile);
 	gosASSERT(land != nullptr);
 	loadProgress = 15.0f;
 #ifdef LAB_ONLY
@@ -2070,13 +2070,13 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 	{
 		for (size_t i = 1; i <= numWarriors; i++)
 		{
-			char warriorName[12];
+			wchar_t warriorName[12];
 			sprintf(warriorName, "Warrior%d", i);
 			//-------------------------
 			// Find the warrior to load
 			result = missionFile->seekBlock(warriorName);
 			Assert(result == NO_ERROR, i, " Could not find Warrior Number Block ");
-			char warriorFile[100];
+			wchar_t warriorFile[100];
 			result = missionFile->readIdString("Profile", warriorFile, 99);
 			Assert(
 				result == NO_ERROR, 0, " Could not find Warrior Profile in Warrior Number Block ");
@@ -2098,7 +2098,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 			pilotFile = nullptr;
 			//----------------------------
 			// Read in the Brain module...
-			char moduleName[128];
+			wchar_t moduleName[128];
 			result = missionFile->readIdString("Brain", moduleName, 127);
 			gosASSERT(result == NO_ERROR);
 			//------------------------------------------------------------
@@ -2187,7 +2187,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 		int32_t bigAlternatives = 0;
 		for (i = 1; i < int32_t(numParts + 1); i++)
 		{
-			char partName[12];
+			wchar_t partName[12];
 			sprintf(partName, "Part%d", i);
 			result = missionFile->seekBlock(partName);
 			gosASSERT(result == NO_ERROR);
@@ -2233,7 +2233,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 		if (result == NO_ERROR)
 			for (size_t i = 0; i < numSquads; i++)
 			{
-				char s[128];
+				wchar_t s[128];
 				sprintf(s, "Squad%d", i);
 				uint32_t alternate = -1;
 				result = missionFile->readIdULong(s, alternate);
@@ -2245,7 +2245,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 #endif
 		for (i = 1; i < int32_t(numParts + 1); i++)
 		{
-			char partName[12];
+			wchar_t partName[12];
 			sprintf(partName, "Part%d", i);
 			//------------------------------------------------------------------
 			// Find the object to load
@@ -2330,7 +2330,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 				parts[i].teamId = 0;
 			if (dropZoneList && (dropZoneID == parts[i].teamId))
 				dropZoneList[numDropZonePositions++] = parts[i].position;
-			char cmdId = 0;
+			wchar_t cmdId = 0;
 			result = missionFile->readIdChar("CommanderId", cmdId);
 			if (result != NO_ERROR)
 			{
@@ -2358,15 +2358,15 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 				}
 			}
 			parts[i].gestureId = 2; // this has never changed
-			result = missionFile->readIdULong("BaseColor", parts[i].baseColor);
+			result = missionFile->readIdULong("Basecolour", parts[i].basecolour);
 			if (result != NO_ERROR || MPlayer)
-				parts[i].baseColor = prefs.baseColor;
-			result = missionFile->readIdULong("HighlightColor1", parts[i].highlightColor1);
+				parts[i].basecolour = prefs.basecolour;
+			result = missionFile->readIdULong("Highlightcolour1", parts[i].highlightcolour1);
 			if (result != NO_ERROR || MPlayer)
-				parts[i].highlightColor1 = prefs.highlightColor;
-			result = missionFile->readIdULong("HighlightColor2", parts[i].highlightColor2);
+				parts[i].highlightcolour1 = prefs.highlightcolour;
+			result = missionFile->readIdULong("Highlightcolour2", parts[i].highlightcolour2);
 			if (result != NO_ERROR || MPlayer)
-				parts[i].highlightColor2 = prefs.highlightColor;
+				parts[i].highlightcolour2 = prefs.highlightcolour;
 			parts[i].velocity = 0;
 			result = missionFile->readIdLong("Active", parts[i].active);
 			gosASSERT(result == NO_ERROR);
@@ -2549,7 +2549,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 	for (size_t curCommanderId = 0; curCommanderId < MAX_MC_PLAYERS; curCommanderId++)
 	{
 		int32_t numGroups = 0;
-		char headingStr[128];
+		wchar_t headingStr[128];
 		if (commandersToLoad[curCommanderId][0] == -1)
 			continue;
 		sprintf(headingStr, "Commander%dGroup:%d", curCommanderId, numGroups);
@@ -2557,11 +2557,11 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 		while (result == NO_ERROR)
 		{
 			//---------------------------
-			// Read in the Group Mates...
+			// Read in the group Mates...
 			bool pointSet = FALSE;
 			int32_t groupMates[MAX_MOVERGROUP_COUNT_START];
 			result = missionFile->readIdLongArray("Mates", groupMates, MAX_MOVERGROUP_COUNT_START);
-			Assert(result == NO_ERROR, result, " could not find Mates in Group in Scenario File ");
+			Assert(result == NO_ERROR, result, " could not find Mates in group in Scenario File ");
 			for (size_t curMate = 0; curMate < MAX_MOVERGROUP_COUNT_START; curMate++)
 			{
 				if ((groupMates[curMate] > 0) && parts[groupMates[curMate]].objectWID)

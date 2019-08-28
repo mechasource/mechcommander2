@@ -1,7 +1,7 @@
 #pragma once
 //===========================================================================//
-// File:	 String.hpp														 //
-// Contents: String Routines												 //
+// File:	 string.hpp														 //
+// Contents: string Routines												 //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -119,10 +119,10 @@ public:
 	//
 	// Strings can be appended with integers
 	//
-	inline FixedLengthString& operator<<(int32_t Value)
+	inline FixedLengthString& operator<<(int32_t value)
 	{
 		char Source[30];
-		_itoa(Value, Source, 10);
+		_itoa(value, Source, 10);
 		size_t Length = strlen(Source) + 1;
 		if (CurrentSize + Length > MaximumLength)
 			Length = MaximumLength - CurrentSize;
@@ -134,10 +134,10 @@ public:
 	//
 	// Strings can be appended with int16_t integers
 	//
-	inline FixedLengthString& operator<<(int16_t int32_t Value)
+	inline FixedLengthString& operator<<(int16_t int32_t value)
 	{
 		char Source[30];
-		_itoa(Value, Source, 10);
+		_itoa(value, Source, 10);
 		size_t Length = strlen(Source) + 1;
 		if (CurrentSize + Length > MaximumLength)
 			Length = MaximumLength - CurrentSize;

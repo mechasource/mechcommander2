@@ -50,23 +50,23 @@ extern int32_t tileMulMAPCELL_DIM[MAX_MAP_CELL_WIDTH];
 /*
 int32_t GroupMoveOffsetsIndex[MAX_GROUPMOVE_OFFSETS] = {0, 1, 3, 6};
 float GroupMoveOffsets[10][2] = {
-	// 2-member Group
+	// 2-member group
 	{180.0, 50.0},
-	// 3-member Group
+	// 3-member group
 	{-135.0, 50.0},
 	{135.0, 50.0},
-	// 4-member Group
+	// 4-member group
 	{-135.0, 50.0},
 	{135.0, 50.0},
 	{180.0, 50.0},
-	// 5-member Group
+	// 5-member group
 	{-135.0, 50.0},
 	{135.0, 50.0},
 	{180.0, 50.0},
 	{180.0, 75.0}
 };
 */
-extern char OverlayIsBridge[NUM_OVERLAY_TYPES];
+extern wchar_t OverlayIsBridge[NUM_OVERLAY_TYPES];
 extern PriorityQueuePtr openList;
 GoalMapNode* MoverGroup::goalMap = nullptr;
 
@@ -103,7 +103,7 @@ MoverGroup::add(std::unique_ptr<Mover> mover)
 {
 	if (numMovers == MAX_MOVERGROUP_COUNT)
 	{
-		Fatal(0, " MoverGroup.add: Group too big ");
+		Fatal(0, " MoverGroup.add: group too big ");
 		//----------------------------------------
 		// Should we choose to remove the fatal...
 		return (false);
@@ -289,9 +289,9 @@ MoverGroup::addToGUI(bool visible)
 //---------------------------------------------------------------------------
 
 inline bool
-inMapBounds(int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth)
+inMapBounds(int32_t r, int32_t c, int32_t mapheight, int32_t mapwidth)
 {
-	return ((r >= 0) && (r < mapHeight) && (c >= 0) && (c < mapWidth));
+	return ((r >= 0) && (r < mapheight) && (c >= 0) && (c < mapwidth));
 }
 
 //---------------------------------------------------------------------------
@@ -299,7 +299,7 @@ inMapBounds(int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth)
 #define JUMPMAP_TILE_DIM 3
 #define JUMPMAP_CELL_DIM terrain_const::MAPCELL_DIM* JUMPMAP_TILE_DIM
 
-char CellSpiralIncrement[JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2] = {-1, 0, 0, 1, 1, 0, 1, 0, 0, -1,
+wchar_t CellSpiralIncrement[JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2] = {-1, 0, 0, 1, 1, 0, 1, 0, 0, -1,
 	0, -1, -1, 0, -1, 0,
 
 	-1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, -1, 0, -1, 0, -1, 0, -1, -1, 0, -1, 0, -1,
@@ -574,7 +574,7 @@ MoverGroup::calcJumpGoals(
 	}
 #ifdef _DEBUG
 #if DEBUGJUMPGOALS
-	char debugStr[256];
+	wchar_t debugStr[256];
 	sprintf(debugStr, "GROUP JUMP(%.2f,%.2f,%.2f)--UL = %d,%d: ", goal.x, goal.y, goal.z,
 		mapCellUL[0], mapCellUL[1]);
 #endif
@@ -604,7 +604,7 @@ MoverGroup::calcJumpGoals(
 				notFound = false;
 #ifdef _DEBUG
 #if DEBUGJUMPGOALS
-				char s[30];
+				wchar_t s[30];
 				sprintf(s, "[%d,%d] ", curCellRow, curCellCol);
 				strcat(debugStr, s);
 #endif
@@ -793,7 +793,7 @@ MoverGroup::handleTacticalOrder(
 	default:
 	{
 		NODEFAULT;
-		// char s[256];
+		// wchar_t s[256];
 		// sprintf(s, "Unit::handleTacticalOrder->Bad TacOrder Code (%d)",
 		// tacOrder.code);  Assert(false, tacOrder.code, s);
 		return (1);

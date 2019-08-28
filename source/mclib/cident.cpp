@@ -19,10 +19,10 @@
 #include "heap.h"
 
 #ifndef _MBCS
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #else
-#include <assert.h>
-#define gosASSERT assert
+#include <_ASSERT.h>
+#define gosASSERT _ASSERT
 #define gos_Malloc malloc
 #define gos_Free free
 #endif

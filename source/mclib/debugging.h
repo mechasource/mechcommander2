@@ -12,7 +12,7 @@
 #define DEBUGGING_H
 
 #include <stdio.h>
-#include "gameos.hpp"
+//#include "gameos.hpp"
 //#include "toolos.hpp"
 
 //---------------------------------------------------------------------------
@@ -26,12 +26,12 @@ class GameDebugWindow
 public:
 	bool display;
 	int32_t pos[2];
-	char textBuffer[MAX_DEBUG_WINDOW_LINES][MAX_DEBUG_WINDOW_LINELEN];
+	wchar_t textBuffer[MAX_DEBUG_WINDOW_LINES][MAX_DEBUG_WINDOW_LINELEN];
 	int32_t linePos;
 	int32_t numLines;
 
 	static HGOSFONT3D font;
-	static int32_t fontHeight;
+	static int32_t fontheight;
 
 public:
 	PVOID operator new(size_t ourSize);

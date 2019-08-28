@@ -130,7 +130,7 @@ MissionSelectionScreen::update()
 	int32_t highlightButton = -1;
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
-	uint32_t highlightColor = 0;
+	uint32_t highlightcolour = 0;
 	for (size_t i = 0; i < operationScreen.buttonCount; i++)
 	{
 		if (operationScreen.buttons[i].isShowing())
@@ -138,7 +138,7 @@ MissionSelectionScreen::update()
 			if (operationScreen.buttons[i].pointInside(mouseX, mouseY))
 			{
 				highlightButton = i;
-				highlightColor = operationScreen.buttons[i].getColor();
+				highlightcolour = operationScreen.buttons[i].getcolour();
 			}
 			if (operationScreen.buttons[i].isPressed() && i != pressedButton)
 			{
@@ -156,8 +156,8 @@ MissionSelectionScreen::update()
 	{
 		operationScreen.textObjects[0].setText(
 			LogisticsData::instance->getMissionFriendlyName(missionNames[pressedButton]));
-		//		if ( highlightColor )
-		//			operationScreen.textObjects[0].setColor( highlightColor );
+		//		if ( highlightcolour )
+		//			operationScreen.textObjects[0].setcolour( highlightcolour );
 	}
 	else
 	{
@@ -185,7 +185,7 @@ MissionSelectionScreen::begin()
 	FitIniFile file;
 	if (NO_ERROR != file.open(fileName))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", fileName);
 		Assert(0, 0, errorStr);
 	}
@@ -333,7 +333,7 @@ void
 MissionSelectionScreen::setMission(int32_t whichOne)
 {
 	LogisticsData::instance->setCurrentMission(missionNames[whichOne]);
-	char text[64];
+	wchar_t text[64];
 	sprintf(text, "%ld ", LogisticsData::instance->getCBills());
 	textObjects[RP_TEXT].setText(text);
 	updateListBox();
@@ -345,31 +345,31 @@ MissionSelectionScreen::updateListBox()
 	missionDescriptionListBox.removeAllItems(true);
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->resize(
-		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
+		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarwidth() - 2,
 		pEntry->height());
 	pEntry->setText(IDS_MN_DIVIDER);
-	pEntry->setColor(0xffC66600);
+	pEntry->setcolour(0xffC66600);
 	missionDescriptionListBox.AddItem(pEntry);
 	pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->resize(
-		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
+		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarwidth() - 2,
 		pEntry->height());
 	pEntry->setText(LogisticsData::instance->getCurrentMissionFriendlyName());
-	pEntry->setColor(0xffC66600);
+	pEntry->setcolour(0xffC66600);
 	missionDescriptionListBox.AddItem(pEntry);
 	pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->resize(
-		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
+		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarwidth() - 2,
 		pEntry->height());
 	pEntry->setText(IDS_MN_DIVIDER);
-	pEntry->setColor(0xffC66600);
+	pEntry->setcolour(0xffC66600);
 	missionDescriptionListBox.AddItem(pEntry);
 	pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->resize(
-		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
+		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarwidth() - 2,
 		pEntry->height());
 	pEntry->setText(LogisticsData::instance->getCurrentMissionDescription());
-	pEntry->setColor(0xffC66600);
+	pEntry->setcolour(0xffC66600);
 	pEntry->sizeToText();
 	missionDescriptionListBox.AddItem(pEntry);
 }

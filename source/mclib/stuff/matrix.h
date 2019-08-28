@@ -10,7 +10,7 @@
 #ifndef _MATRIX_HPP_
 #define _MATRIX_HPP_
 
-#include <stuff/affinematrix.hpp>
+#include "stuff/affinematrix.h"
 
 namespace Stuff
 {
@@ -19,7 +19,7 @@ class Matrix4D;
 
 #if !defined(Spew)
 void
-Spew(PCSTR group, const Stuff::Matrix4D& matrix);
+Spew(const std::wstring_view& group, const Stuff::Matrix4D& matrix);
 #endif
 
 namespace Stuff
@@ -489,7 +489,7 @@ public:
 	// Viewpoint Calculation
 	//
 #if !defined(Spew)
-	friend void ::Spew(PCSTR group, const Matrix4D& matrix);
+	friend void ::Spew(const std::wstring_view& group, const Matrix4D& matrix);
 #endif
 	static bool TestClass(void);
 	void TestInstance(void) const {}

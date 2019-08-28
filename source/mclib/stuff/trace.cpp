@@ -6,12 +6,12 @@
 //===========================================================================//
 
 #include "stdinc.h"
-//#include "stuffheaders.hpp"
+//#include "stuff/stuffheaders.h"
 
 //#define TRACE_ENABLED
 #if defined(TRACE_ENABLED)
 
-#include "gameos.hpp"
+//#include "gameos.hpp"
 #include "toolos.hpp"
 #include "stuff/filestream.h"
 #include "stuff/trace.h"

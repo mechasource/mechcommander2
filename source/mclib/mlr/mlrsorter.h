@@ -7,12 +7,12 @@
 #ifndef MLR_MLRSORTER_HPP
 #define MLR_MLRSORTER_HPP
 
-#include <stuff/point3d.hpp>
-#include <stuff/linearmatrix.hpp>
-//#include <stuff/marray.hpp>
-#include <mlr/mlrstate.hpp>
-#include <mlr/mlrclippingstate.hpp>
-#include <mlr/mlrtexturepool.hpp>
+#include "stuff/point3d.h"
+#include "stuff/linearmatrix.h"
+//#include "stuff/marray.h"
+#include "mlr/mlrstate.h"
+#include "mlr/mlrclippingstate.h"
+#include "mlr/mlrtexturepool.h"
 
 namespace MidLevelRenderer
 {
@@ -65,7 +65,7 @@ public:
 
 	MLRState state;
 	PVOID vertices;
-	puint16_t indices;
+	uint16_t* indices;
 	uint32_t numVertices;
 	uint32_t numIndices;
 	uint32_t type;
@@ -101,7 +101,7 @@ struct ToBeDrawnPrimitive
 //######################### MLRSorter ################################
 //##########################################################################
 
-class _declspec(novtable) MLRSorter : public Stuff::RegisteredClass
+class _declspec(novtable) MLRSorter // : public Stuff::RegisteredClass
 {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
@@ -146,10 +146,10 @@ public:
 
 	// enter raw data
 	SortData* SetRawData(PVOID vertices, uint32_t numVertices, const MLRState& state,
-		cint32_t& mode, int32_t tex2 = 0);
+		const int32_t& mode, int32_t tex2 = 0);
 
-	SortData* SetRawIndexedData(PVOID vertices, uint32_t numVertices, puint16_t indices,
-		int32_t numIndices, const MLRState& state, cint32_t& mode, int32_t tex2 = 0);
+	SortData* SetRawIndexedData(PVOID vertices, uint32_t numVertices, uint16_t* indices,
+		int32_t numIndices, const MLRState& state, const int32_t& mode, int32_t tex2 = 0);
 
 	SortData* SetRawData(MLRPrimitiveBase*, int32_t = 0);
 

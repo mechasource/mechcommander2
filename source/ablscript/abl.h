@@ -36,10 +36,10 @@ ABLi_init(size_t runtimeStackSize, // = 20480,
 	int32_t (*fileCreateCB)(PVOID* file, const std::wstring_view& filename),
 	int32_t (*fileOpenCB)(PVOID* file, const std::wstring_view& filename), int32_t (*fileCloseCB)(PVOID* file),
 	bool (*fileEofCB)(PVOID file),
-	int32_t (*fileReadCB)(PVOID file, puint8_t buffer, int32_t length),
-	int32_t (*fileReadLongCB)(PVOID file), int32_t (*fileReadStringCB)(PVOID file, puint8_t buffer),
-	int32_t (*fileReadLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength),
-	int32_t (*fileWriteCB)(PVOID file, puint8_t buffer, int32_t length),
+	int32_t (*fileReadCB)(PVOID file, uint8_t* buffer, int32_t length),
+	int32_t (*fileReadLongCB)(PVOID file), int32_t (*fileReadStringCB)(PVOID file, uint8_t* buffer),
+	int32_t (*fileReadLineExCB)(PVOID file, uint8_t* buffer, int32_t maxLength),
+	int32_t (*fileWriteCB)(PVOID file, uint8_t* buffer, int32_t length),
 	int32_t (*fileWriteByteCB)(PVOID file, uint8_t byte),
 	int32_t (*fileWriteLongCB)(PVOID file, int32_t value),
 	int32_t (*fileWriteStringCB)(PVOID file, const std::wstring_view& buffer), void (*debuggerPrintCallback)(const std::wstring_view& s),
@@ -81,7 +81,7 @@ void ABLi_setDebugPrintCallback(void (*ABLDebugPrintCallback)(const std::wstring
 void ABLi_setGetTimeCallback(size_t (*ABLGetTimeCallback)(void));
 void ABLi_setEndlessStateCallback(void (*endlessStateCallback)(UserFile* log));
 
-char ABLi_popChar(void);
+wchar_t ABLi_popChar(void);
 int32_t ABLi_popInteger(void);
 float ABLi_popReal(void);
 bool ABLi_popBoolean(void);

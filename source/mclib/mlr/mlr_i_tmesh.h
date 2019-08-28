@@ -7,10 +7,10 @@
 #ifndef MLR_MLR_I_TMESH_HPP
 #define MLR_MLR_I_TMESH_HPP
 
-#include <stuff/plane.hpp>
-#include <mlr/mlrindexedprimitivebase.hpp>
+#include "stuff/plane.h"
+#include "mlr/mlrindexedprimitivebase.h"
 
-//#include <mlr/mlr_i_pmesh.hpp>
+//#include "mlr/mlr_i_pmesh.h"
 
 namespace Stuff
 {
@@ -58,7 +58,7 @@ public:
 		return numOfTriangles;
 	}
 
-	virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count)
+	virtual void SetSubprimitiveLengths(uint8_t* length_array, size_t subprimitive_count)
 	{
 		// Check_Object(this);
 		(void)length_array;
@@ -84,12 +84,12 @@ public:
 	virtual void LightMapLighting(MLRLight*);
 
 #if COLOR_AS_DWORD
-	virtual void PaintMe(pcuint32_t paintMe)
+	virtual void PaintMe(const uint32_t* paintMe)
 	{
 		(void)paintMe;
 	};
 #else
-	virtual void PaintMe(const Stuff::RGBAColor* paintMe)
+	virtual void PaintMe(const Stuff::RGBAcolour* paintMe)
 	{
 		(void)paintMe;
 	};
@@ -148,8 +148,8 @@ extern float vdata[12][3];
 extern uint32_t tindices[20][3];
 extern uint32_t triDrawn;
 MLR_I_TMesh*
-CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
+CreateIndexedTriCube_Nocolour_NoLit(float, MLRState*);
 MLRShape*
-CreateIndexedTriIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
+CreateIndexedTriIcosahedron_Nocolour_NoLit(IcoInfo&, MLRState*);
 } // namespace MidLevelRenderer
 #endif

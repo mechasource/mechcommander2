@@ -24,7 +24,7 @@ SimpleCamera::SimpleCamera()
 {
 	pObject = nullptr;
 	Camera::init();
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, cameraPath);
 	strcat(path, "cameras.fit");
 	FitIniFile camFile;
@@ -116,9 +116,9 @@ SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 		calculateProjectionConstants();
 		TG_Shape::SetViewport(viewMulX, viewMulY, viewAddX, viewAddY);
 		globalScaleFactor = getScaleFactor();
-		globalScaleFactor *= viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
+		globalScaleFactor *= viewMulX / Environment.screenwidth; // Scale Mechs to ScreenRES
 		//-----------------------------------------------
-		setLightColor(1, 0xffffffff);
+		setLightcolour(1, 0xffffffff);
 		setLightIntensity(1, 1.0);
 		MidLevelRenderer::MLRState default_state;
 		default_state.SetBackFaceOn();
@@ -127,13 +127,13 @@ SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 		default_state.SetZBufferCompareOn();
 		default_state.SetZBufferWriteOn();
 		default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
-		Stuff::RGBAColor fColor;
-		fColor.red = 0;
-		fColor.green = 0;
-		fColor.blue = 0;
+		Stuff::RGBAcolour fcolour;
+		fcolour.red = 0;
+		fcolour.green = 0;
+		fcolour.blue = 0;
 		float z = 1.0;
 		MidLevelRenderer::PerspectiveMode = usePerspective;
-		theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
+		theClipper->StartDraw(cameraOrigin, cameraToClip, fcolour, &fcolour, default_state, &z);
 		MidLevelRenderer::GOSVertex::farClipReciprocal =
 			(1.0f - cameraToClip(2, 2)) / cameraToClip(3, 2);
 		//--------------------------------
@@ -236,7 +236,7 @@ SimpleCamera::update()
 
 void
 SimpleCamera::setMech(
-	const std::wstring_view& fileName, int32_t baseColor, int32_t highlight1, int32_t highlight2)
+	const std::wstring_view& fileName, int32_t basecolour, int32_t highlight1, int32_t highlight2)
 {
 	shapeScale = 0.0f;
 	bIsComponent = 0;
@@ -255,9 +255,9 @@ SimpleCamera::setMech(
 		//		allNormal();
 		return;
 	}
-	char NoPathFileName[256];
+	wchar_t NoPathFileName[256];
 	_splitpath(fileName, nullptr, nullptr, NoPathFileName, nullptr);
-	char testName[256];
+	wchar_t testName[256];
 	strcpy(testName, NoPathFileName);
 	strcat(testName, "enc");
 	FullPathFileName path;
@@ -274,7 +274,7 @@ SimpleCamera::setMech(
 	pObject = new Mech3DAppearance;
 	pObject->init(appearanceType);
 	pObject->setGestureGoal(2);
-	pObject->resetPaintScheme(highlight1, highlight2, baseColor);
+	pObject->resetPaintScheme(highlight1, highlight2, basecolour);
 	pObject->rotation = rotation;
 	activate();
 	setPosition(position, 0);
@@ -297,9 +297,9 @@ SimpleCamera::setVehicle(const std::wstring_view& fileName, int32_t base, int32_
 	pObject = nullptr;
 	if (!fileName)
 		return;
-	char NoPathFileName[256];
+	wchar_t NoPathFileName[256];
 	_splitpath(fileName, nullptr, nullptr, NoPathFileName, nullptr);
-	char testName[256];
+	wchar_t testName[256];
 	strcpy(testName, fileName);
 	strcat(testName, "enc");
 	FullPathFileName path;
@@ -338,7 +338,7 @@ SimpleCamera::setComponent(const std::wstring_view& fileName)
 	pObject = nullptr;
 	if (!fileName)
 		return;
-	char testName[256];
+	wchar_t testName[256];
 	strcpy(testName, fileName);
 	strcat(testName, "enc");
 	FullPathFileName path;
@@ -410,7 +410,7 @@ SimpleCamera::setObject(
 }
 
 void
-SimpleCamera::setColors(int32_t base, int32_t highlight, int32_t h2)
+SimpleCamera::setcolours(int32_t base, int32_t highlight, int32_t h2)
 {
 	pObject->resetPaintScheme(base, highlight, h2);
 }

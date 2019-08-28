@@ -256,22 +256,22 @@ typedef union {
 	} elemental;
 	struct
 	{
-		char throttle;
+		wchar_t throttle;
 		float rotate;
 		float rotateTurret;
-		char gestureGoal;
+		wchar_t gestureGoal;
 		bool pivot;
 		bool isWalking;
 	} groundVehicle;
 	struct
 	{
-		char throttle;
+		wchar_t throttle;
 		float rotate; // aka mechYaw
 		float facingRotate; // Direction mech is FACING, NOT MOVING!!!!!
 		float rotateTorso;
 		float rotateLeftArm; // aka leftArmYaw
 		float rotateRightArm; // aka rightArmYaw
-		char gestureGoal;
+		wchar_t gestureGoal;
 		bool blowLeftArm;
 		bool blowRightArm;
 		bool pivot;
@@ -487,11 +487,11 @@ class StatusChunk
 
 public:
 	uint32_t bodyState;
-	char targetType;
+	wchar_t targetType;
 	int32_t targetId;
 	int32_t targetBlockOrTrainNumber;
 	int32_t targetVertexOrCarNumber;
-	char targetItemNumber;
+	wchar_t targetItemNumber;
 	int16_t targetCellRC[2];
 	bool ejectOrderGiven;
 	bool jumpOrder;
@@ -552,7 +552,7 @@ typedef struct _MoverData : public GameObjectData
 	bool lost;
 	Stuff::Vector3D positionNormal;
 	Stuff::Vector3D velocity;
-	char name[MAXLEN_MOVER_NAME];
+	wchar_t name[MAXLEN_MOVER_NAME];
 	uint8_t chassis;
 	bool startDisabled;
 	float creationTime;
@@ -568,21 +568,21 @@ typedef struct _MoverData : public GameObjectData
 	float pilotCheckDamageTally;
 
 	BodyLocation body[MAX_MOVER_BODY_LOCATIONS];
-	char numBodyLocations;
+	wchar_t numBodyLocations;
 	int32_t fieldedCV;
 
 	int32_t attackRange;
 
 	ArmorLocation armor[MAX_MOVER_ARMOR_LOCATIONS];
-	char numArmorLocations;
-	char longName[MAXLEN_MECH_LONGNAME];
+	wchar_t numArmorLocations;
+	wchar_t longName[MAXLEN_MECH_LONGNAME];
 
 	InventoryItem inventory[MAX_MOVER_INVENTORY_ITEMS];
 	uint8_t numOther;
 	uint8_t numWeapons;
 	uint8_t numAmmos;
 	AmmoTally ammoTypeTotal[MAX_AMMO_TYPES];
-	char numAmmoTypes;
+	wchar_t numAmmoTypes;
 	int32_t pilotHandle;
 
 	uint8_t cockpit;
@@ -601,7 +601,7 @@ typedef struct _MoverData : public GameObjectData
 	float optimalRange;
 	int32_t numFunctionalWeapons;
 
-	char numAntiMissileSystems;
+	wchar_t numAntiMissileSystems;
 	uint8_t antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];
 
 	float engineBlowTime;
@@ -610,12 +610,12 @@ typedef struct _MoverData : public GameObjectData
 	bool startUpThisFrame;
 	bool disableThisFrame;
 
-	char teamId;
-	char groupId;
+	wchar_t teamId;
+	wchar_t groupId;
 	int32_t squadId;
 	int32_t selectionindex;
 	int32_t teamRosterIndex;
-	char commanderId;
+	wchar_t commanderId;
 	int32_t unitGroup;
 
 	int32_t iconPictureIndex;
@@ -630,7 +630,7 @@ typedef struct _MoverData : public GameObjectData
 	float lastOptimalRangeCalc;
 	GameObjectWatchID challengerWID;
 
-	char lastGesture;
+	wchar_t lastGesture;
 
 	MoverControl control;
 	MoverDynamics dynamics;
@@ -642,7 +642,7 @@ typedef struct _MoverData : public GameObjectData
 
 	float yieldTimeLeft;
 	Stuff::Vector3D lastValidPosition;
-	char pivotDirection;
+	wchar_t pivotDirection;
 	float lastHustleTime;
 
 	bool salvageVehicle;
@@ -711,7 +711,7 @@ class Mover : public GameObject
 public:
 	Stuff::Vector3D positionNormal; // normal to terrain at current position
 	Stuff::Vector3D velocity; // How fast am I going?
-	char name[MAXLEN_MOVER_NAME]; // Name of this particular mover
+	wchar_t name[MAXLEN_MOVER_NAME]; // Name of this particular mover
 	uint8_t chassis; // type of mover's chassis
 	bool startDisabled;
 	float creationTime;
@@ -729,7 +729,7 @@ public:
 	float pilotCheckDamageTally; // damage points taken since last pilot check
 
 	BodyLocation body[MAX_MOVER_BODY_LOCATIONS]; // body parts of this mech
-	char numBodyLocations; // should be set based upon mover type
+	wchar_t numBodyLocations; // should be set based upon mover type
 	int32_t fieldedCV;
 
 	int32_t attackRange; // attack range
@@ -738,8 +738,8 @@ public:
 
 	// Armor
 	ArmorLocation armor[MAX_MOVER_ARMOR_LOCATIONS]; // armor locations of this mover
-	char numArmorLocations;
-	char longName[MAXLEN_MECH_LONGNAME]; // Used by logistics (and the
+	wchar_t numArmorLocations;
+	wchar_t longName[MAXLEN_MECH_LONGNAME]; // Used by logistics (and the
 		// interface) to get int32_t name.
 
 	// Inventory
@@ -748,7 +748,7 @@ public:
 	uint8_t numWeapons;
 	uint8_t numAmmos;
 	AmmoTally ammoTypeTotal[MAX_AMMO_TYPES]; // tracks total ammo per ammo type
-	char numAmmoTypes; // number of different ammo types
+	wchar_t numAmmoTypes; // number of different ammo types
 	std::unique_ptr<MechWarrior> pilot;
 	int32_t pilotHandle;
 	SensorSystemPtr sensorSystem;
@@ -771,7 +771,7 @@ public:
 	float optimalRange; // current optimum attack range
 	int32_t numFunctionalWeapons; // takes into account damage, etc.
 
-	char numAntiMissileSystems; // number of anti-missile systems
+	wchar_t numAntiMissileSystems; // number of anti-missile systems
 	uint8_t antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS]; // anti-missile system list
 
 	// Engine
@@ -784,19 +784,19 @@ public:
 	// Team
 	// MoverGroupPtr		group;							// what group am I a
 	// member of?
-	char teamId;
-	char groupId;
+	wchar_t teamId;
+	wchar_t groupId;
 	int32_t squadId;
 	int32_t selectionindex; // > 0 when in selected group
 	int32_t teamRosterIndex; // where am I in my team's roster?
-	char commanderId;
+	wchar_t commanderId;
 	int32_t unitGroup; // the thing the user sets by hitting ctrl and a number
 	// this is a field since they can belong to more than one
 	int32_t iconPictureIndex; // the little picture that shows arms and stuff
 		// falling off
 	bool suppressionFire; // is this guy permanently shooting at ground
-	char prevTeamId;
-	char prevCommanderId;
+	wchar_t prevTeamId;
+	wchar_t prevCommanderId;
 
 	// Update Info
 	int32_t pilotCheckModifier;
@@ -810,7 +810,7 @@ public:
 	float lastOptimalRangeCalc; // time of last calc
 	GameObjectWatchID challengerWID;
 
-	char lastGesture;
+	wchar_t lastGesture;
 
 	//		AppearancePtr		appearance;						// pointer to the
 	// Actor  which  is the appearance.
@@ -819,7 +819,7 @@ public:
 
 	// Network
 	// uint32_t				netPlayerId;
-	char netPlayerName[MAXLEN_NET_PLAYER_NAME]; // netPlayerName is the player
+	wchar_t netPlayerName[MAXLEN_NET_PLAYER_NAME]; // netPlayerName is the player
 		// who owns this mover
 	int32_t localMoverId; // if >= 0, is locally controlled
 	int32_t netRosterIndex; // used for mover id in net packets
@@ -841,7 +841,7 @@ public:
 
 	float yieldTimeLeft; // How much time do I have left to wait
 	Stuff::Vector3D lastValidPosition; // Last valid move path point I've been to
-	char pivotDirection; // Used in pivotTo(): -1 = not pivoting
+	wchar_t pivotDirection; // Used in pivotTo(): -1 = not pivoting
 	float lastHustleTime; // last time we had to hustle (on bridge, etc.)
 
 	static int32_t numMovers;
@@ -892,10 +892,10 @@ public:
 	static float recoverCost;
 	static float recoverAmount;
 	static bool inRecoverUpdate;
-	static char optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
+	static wchar_t optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
 	static int32_t numOptimalIncrements;
 	static int16_t rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
-	static char rangedCells[RANGED_CELLS_DIM][2];
+	static wchar_t rangedCells[RANGED_CELLS_DIM][2];
 	static int32_t IndirectFireWeapons[20];
 	static int32_t AreaEffectWeapons[20];
 	static uint32_t holdFireIconHandle;
@@ -1110,12 +1110,12 @@ public:
 	}
 #endif
 
-	virtual void setSquadId(char newSquadId)
+	virtual void setSquadId(wchar_t newSquadId)
 	{
 		squadId = newSquadId;
 	}
 
-	virtual char getSquadId(void) { return (squadId); }
+	virtual wchar_t getSquadId(void) { return (squadId); }
 
 	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
@@ -1201,9 +1201,9 @@ public:
 
 	int32_t addCriticalHitChunk(int32_t which, int32_t bodyLocation, int32_t criticalSpace);
 
-	int32_t addCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
+	int32_t addCriticalHitChunks(int32_t which, uint8_t* packedChunkBuffer, int32_t numChunks);
 
-	int32_t grabCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer);
+	int32_t grabCriticalHitChunks(int32_t which, uint8_t* packedChunkBuffer);
 
 	virtual int32_t updateCriticalHitChunks(int32_t which);
 
@@ -1213,9 +1213,9 @@ public:
 
 	int32_t addRadioChunk(int32_t which, uint8_t msg);
 
-	int32_t addRadioChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
+	int32_t addRadioChunks(int32_t which, uint8_t* packedChunkBuffer, int32_t numChunks);
 
-	int32_t grabRadioChunks(int32_t which, puint8_t packedChunkBuffer);
+	int32_t grabRadioChunks(int32_t which, uint8_t* packedChunkBuffer);
 
 	virtual int32_t updateRadioChunks(int32_t which);
 
@@ -1315,7 +1315,7 @@ public:
 
 	virtual int32_t calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float moveRadius,
 		Stuff::Vector3D moveGoal, int32_t selectionindex, Stuff::Vector3D& newGoal,
-		int32_t numValidAreas, pint16_t validAreas, uint32_t moveparams);
+		int32_t numValidAreas, int16_t* validAreas, uint32_t moveparams);
 
 	virtual int32_t calcMovePath(MovePathPtr path, int32_t pathType, Stuff::Vector3D start,
 		Stuff::Vector3D goal, int32_t* goalCell, uint32_t moveparams = MOVEPARAM_NONE);
@@ -1568,13 +1568,13 @@ public:
 
 typedef struct _MoverInitData
 {
-	char pilotFileName[50];
+	wchar_t pilotFileName[50];
 	bool overrideLoadedPilot;
 	float gunnerySkill;
 	float pilotingSkill;
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
-	char brainFileName[50];
-	char csvFileName[50];
+	wchar_t brainFileName[50];
+	wchar_t csvFileName[50];
 	int32_t objNumber;
 	int32_t rosterIndex;
 	uint32_t controlType;
@@ -1582,15 +1582,15 @@ typedef struct _MoverInitData
 	uint32_t variant;
 	Stuff::Vector3D position;
 	int32_t rotation;
-	char teamID;
-	char commanderid;
-	uint32_t baseColor;
-	uint32_t highlightColor1;
-	uint32_t highlightColor2;
-	char gestureID;
+	wchar_t teamID;
+	wchar_t commanderid;
+	uint32_t basecolour;
+	uint32_t highlightcolour1;
+	uint32_t highlightcolour2;
+	wchar_t gestureID;
 	bool active;
 	bool exists;
-	char icon;
+	wchar_t icon;
 	bool capturable;
 	int32_t numComponents;
 	int32_t components[50];

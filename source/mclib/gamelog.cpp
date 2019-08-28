@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "gameos.hpp"
+//#include "gameos.hpp"
 
 bool isSetup = false;
 
@@ -68,7 +68,7 @@ GameLog::close(void)
 	if (pfile && inUse)
 	{
 		dump();
-		char s[512];
+		wchar_t s[512];
 		sprintf(s, "\nNum Total Lines = %d\n", totalLines);
 		pfile->writeString(s);
 		pfile->close();
@@ -104,7 +104,7 @@ GameLog::open(const std::wstring_view& fileName)
 void
 GameLog::write(const std::wstring_view& s)
 {
-	static char buffer[MAX_GAMELOG_LINELEN];
+	static wchar_t buffer[MAX_GAMELOG_LINELEN];
 	if (numLines == MAX_GAMELOG_LINES)
 		dump();
 	if (strlen(s) > (MAX_GAMELOG_LINELEN - 1))

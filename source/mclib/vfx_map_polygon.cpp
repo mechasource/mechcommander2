@@ -5,9 +5,9 @@ extern enum { CPU_UNKNOWN,
 	CPU_MMX,
 	CPU_KATMAI } Processor;
 
-extern char AlphaTable[];
-static uint32_t SourceWidth, tWidth, tHeight,
-	DestWidth; // Used for code optimizing
+extern wchar_t AlphaTable[];
+static uint32_t Sourcewidth, twidth, theight,
+	Destwidth; // Used for code optimizing
 static int64_t xmask = -1;
 
 //
@@ -17,34 +17,34 @@ static int64_t xmask = -1;
 //
 void
 AG_StatusBar(
-	PANE* pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t Color, int32_t Width)
+	PANE* pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t colour, int32_t width)
 {
-	static int32_t TopY, BottomY;
-	DestWidth = pane->window->x_max + 1;
+	static int32_t topy, BottomY;
+	Destwidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneX1 = (pane->x1 >= (int32_t)Destwidth) ? pane->window->x_max : pane->x1;
 	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	if (X0 > X1)
 	{
-		Width = -Width;
-		TopY = X0;
+		width = -width;
+		topy = X0;
 		X0 = X1;
-		X1 = TopY;
+		X1 = topy;
 	}
 	if (Y0 > Y1)
 	{
-		TopY = Y0;
+		topy = Y0;
 		Y0 = Y1;
-		Y1 = TopY;
+		Y1 = topy;
 	}
-	TopY = Y0;
+	topy = Y0;
 	BottomY = Y1;
 	if ((X0 >= paneX1) || (Y0 >= paneY1) || (X1 <= paneX0) || (Y1 <= paneY0))
 		return;
 	if (X0 < paneX0)
 	{
-		Width -= paneX0 - X0;
+		width -= paneX0 - X0;
 		X0 = paneX0;
 	}
 	if (Y0 < paneY0)
@@ -53,16 +53,16 @@ AG_StatusBar(
 		X1 = paneX1;
 	if (Y1 > paneY1)
 		Y1 = paneY1;
-	if ((X0 + Width) >= X1)
-		Width = X1 - X0 - 2;
-	if (Width < 0)
-		Width = 0;
+	if ((X0 + width) >= X1)
+		width = X1 - X0 - 2;
+	if (width < 0)
+		width = 0;
 	if (X1 - X0 < 3)
 		return;
-	puint8_t DestPointer = pane->window->buffer + X0 + Y0 * DestWidth;
+	uint8_t* DestPointer = pane->window->buffer + X0 + Y0 * Destwidth;
 	_asm {
 
-		mov esi, Color
+		mov esi, colour
 		mov edi, DestPointer
 
 		sal esi, 8
@@ -74,7 +74,7 @@ AG_StatusBar(
 		mov ecx, Y0
 
 		lp0:
-		mov eax, TopY
+		mov eax, topy
 		mov edx, BottomY
 
 		cmp ecx, eax
@@ -97,7 +97,7 @@ AG_StatusBar(
 		mov [edi], al
 		mov [edi+ebx], dl
 
-		mov edx, Width
+		mov edx, width
 		and edx, edx
 
 		jz lp3
@@ -140,7 +140,7 @@ AG_StatusBar(
 		nop
 
 		lp3:
-		mov eax, DestWidth
+		mov eax, Destwidth
 		mov edx, Y1
 
 		add edi, eax
@@ -173,38 +173,38 @@ AG_pixel_write(PANE* pane, int32_t x, int32_t y, uint32_t color)
 //
 int32_t
 DrawTransparent(
-	PANE* pane, WINDOW* texture, int32_t X, int32_t Y, int32_t Width, int32_t Height)
+	PANE* pane, WINDOW* texture, int32_t X, int32_t Y, int32_t width, int32_t height)
 {
-	DestWidth = pane->window->x_max + 1;
+	Destwidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneX1 = (pane->x1 >= (int32_t)Destwidth) ? pane->window->x_max : pane->x1;
 	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	X += paneX0;
 	Y += paneY0;
-	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - Width)) || (Y <= (paneY0 - Height)))
+	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - width)) || (Y <= (paneY0 - height)))
 		return (1);
-	puint8_t SourcePointer = texture->buffer;
+	uint8_t* SourcePointer = texture->buffer;
 	if (X < paneX0)
 	{
-		Width -= paneX0 - X;
+		width -= paneX0 - X;
 		SourcePointer += paneX0 - X;
 		X = paneX0;
 	}
 	if (Y < paneY0)
 	{
-		Height -= paneY0 - Y;
+		height -= paneY0 - Y;
 		SourcePointer += (paneY0 - Y) * (texture->x_max + 1);
 		Y = paneY0;
 	}
-	if (X + Width > (paneX1 + 1))
-		Width = paneX1 + 1 - X;
-	if (Y + Height > (paneY1 + 1))
-		Height = paneY1 + 1 - Y;
-	puint8_t DestPointer = pane->window->buffer + X + Y * DestWidth;
-	SourceWidth = texture->x_max + 1;
-	tWidth = Width;
-	tHeight = Height;
+	if (X + width > (paneX1 + 1))
+		width = paneX1 + 1 - X;
+	if (Y + height > (paneY1 + 1))
+		height = paneY1 + 1 - Y;
+	uint8_t* DestPointer = pane->window->buffer + X + Y * Destwidth;
+	Sourcewidth = texture->x_max + 1;
+	twidth = width;
+	theight = height;
 	_asm {
 
 		cmp Processor, CPU_MMX
@@ -213,7 +213,7 @@ DrawTransparent(
 		push ebp
 		mov edi, DestPointer
 		mov esi, SourcePointer
-		mov ebp, tWidth
+		mov ebp, twidth
 		movq mm3, xmask
 
 		Drawlpx:
@@ -331,20 +331,20 @@ DrawTransparent(
 		jnz mt6
 
 		mt7:
-		mov ebp, tWidth
-		mov eax, tHeight
+		mov ebp, twidth
+		mov eax, theight
 
 		sub edi, ebp
 		sub esi, ebp
 
-		mov ebx, DestWidth
-		mov edx, SourceWidth
+		mov ebx, Destwidth
+		mov edx, Sourcewidth
 
 		add edi, ebx
 		dec eax
 
 		lea esi, [esi + edx]
-		mov tHeight, eax
+		mov theight, eax
 
 		jnz Drawlpx
 		pop ebp
@@ -362,7 +362,7 @@ DrawTransparent(
 		push ebp
 		mov edi, DestPointer
 		mov esi, SourcePointer
-		mov ebp, tWidth
+		mov ebp, twidth
 
 		Drawlp:
 		mov edx, ebp
@@ -443,20 +443,20 @@ DrawTransparent(
 		jnz dt6
 
 		dt7:
-		mov ebp, tWidth
-		mov eax, tHeight
+		mov ebp, twidth
+		mov eax, theight
 
 		sub edi, ebp
 		sub esi, ebp
 
-		mov ebx, DestWidth
-		mov edx, SourceWidth
+		mov ebx, Destwidth
+		mov edx, Sourcewidth
 
 		add edi, ebx
 		dec eax
 
 		lea esi, [esi + edx]
-		mov tHeight, eax
+		mov theight, eax
 
 		jnz Drawlp
 		pop ebp

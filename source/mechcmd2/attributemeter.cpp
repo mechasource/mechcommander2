@@ -69,14 +69,14 @@ AttributeMeter::render(int32_t xOffset, int32_t yOffset)
 	for (i = 0; i < nBarCount; i++)
 	{
 		drawRect(tmpRect, color);
-		color = interpolateColor(m_mincolour, m_maxcolour, static_cast<float>(i / m_numbars));
+		color = interpolatecolour(m_mincolour, m_maxcolour, static_cast<float>(i / m_numbars));
 		tmpRect.left += m_unitwidth + m_skipwidth;
 		tmpRect.right = tmpRect.left + m_unitwidth;
 	}
 	for (i = 0u; i < nAddedCount; i++)
 	{
 		drawRect(tmpRect, color);
-		color = interpolateColor(m_addedmincolour, m_addedmaxcolour, static_cast<float>(i / m_numbars));
+		color = interpolatecolour(m_addedmincolour, m_addedmaxcolour, static_cast<float>(i / m_numbars));
 		tmpRect.left += m_unitwidth + m_skipwidth;
 		tmpRect.right = tmpRect.left + m_unitwidth;
 	}
@@ -96,7 +96,7 @@ AttributeMeter::init(FitIniFile* file, const std::wstring_view& headerName)
 	if (NO_ERROR != file->seekBlock(headerName))
 	{
 #if CONSIDERED_OBSOLETE
-		char errorTxt[256];
+		wchar_t errorTxt[256];
 		sprintf(errorTxt, "couldn't find block %s in file %s", headerName, file->getFilename());
 		ASSERT(0, 0, errorTxt);
 #endif
@@ -113,22 +113,22 @@ AttributeMeter::init(FitIniFile* file, const std::wstring_view& headerName)
 		file->readIdLong("XLocation", m_outsiderect.left);
 		file->readIdLong("YLocation", m_outsiderect.top);
 		long32_t tmp;
-		file->readIdLong("Width", tmp);
+		file->readIdLong("width", tmp);
 		m_outsiderect.right = m_outsiderect.left + tmp;
-		file->readIdLong("Height", tmp);
+		file->readIdLong("height", tmp);
 		m_outsiderect.bottom = m_outsiderect.top + tmp;
 	}
-	file->readIdLong("UnitWidth", m_unitwidth);
+	file->readIdLong("Unitwidth", m_unitwidth);
 	file->readIdLong("Skip", m_skipwidth);
 	file->readIdUInt("NumberUnits", m_numbars);
-	file->readIdUInt("Color", m_rectcolour);
+	file->readIdUInt("colour", m_rectcolour);
 	file->readIdUInt("HelpDesc", m_helpid);
 	uint32_t tmp;
-	if (NO_ERROR == file->readIdUInt("ColorMin", tmp))
+	if (NO_ERROR == file->readIdUInt("colourMin", tmp))
 	{
 		m_mincolour = tmp;
 	}
-	if (NO_ERROR == file->readIdUInt("ColorMax", tmp))
+	if (NO_ERROR == file->readIdUInt("colourMax", tmp))
 	{
 		m_maxcolour = tmp;
 	}

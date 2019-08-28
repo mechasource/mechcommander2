@@ -16,6 +16,6 @@
 typedef struct
 {
 	int32_t position;
-	char name[250];
+	wchar_t name[250];
 } FILEENTRY, *LPFILEENTRY;
 #pragma pack()

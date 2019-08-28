@@ -89,7 +89,7 @@ LogisticsDialog::render()
 		float endTime = enterAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x00000000, 0x7f000000, time / endTime);
+			color = interpolatecolour(0x00000000, 0x7f000000, time / endTime);
 		}
 	}
 	else if (exitAnim.isAnimating() && !exitAnim.isDone())
@@ -98,10 +98,10 @@ LogisticsDialog::render()
 		float endTime = exitAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x7f000000, 0x00000000, time / endTime);
+			color = interpolatecolour(0x7f000000, 0x00000000, time / endTime);
 		}
 	}
-	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, color);
 	float xOffset = 0;
 	float yOffset = 0;
@@ -431,7 +431,7 @@ LogisticsSaveDialog::initDialog(const std::wstring_view& path, bool bCampaign)
 {
 	gameListBox.removeAllItems(true);
 	// need to add items to the save game list
-	char findString[512];
+	wchar_t findString[512];
 	sprintf(findString, "%s*.fit", path);
 	WIN32_FIND_DATA findResult;
 	HANDLE searchHandle = FindFirstFile(findString, &findResult);
@@ -456,14 +456,14 @@ LogisticsSaveDialog::initDialog(const std::wstring_view& path, bool bCampaign)
 					pEntry->setText(findResult.cFileName);
 				if (bCampaign)
 				{
-					char campaignName[1024];
+					wchar_t campaignName[1024];
 					readCampaignNameFromFile(findResult.cFileName, campaignName, 1023);
 					pEntry->setText(campaignName);
 				}
 				if (bCampaign || isCorrectVersionSaveGame(findResult.cFileName))
 				{
 					pEntry->setHiddenText(findResult.cFileName);
-					pEntry->setColor(edits[0].getColor());
+					pEntry->setcolour(edits[0].getcolour());
 					gameListBox.AddItem(pEntry);
 				}
 			}
@@ -481,11 +481,11 @@ LogisticsSaveDialog::initDialog(const std::wstring_view& path, bool bCampaign)
 		{
 			aLocalizedListItem* pEntry = new aLocalizedListItem();
 			*pEntry = s_instance->templateItem;
-			char campaignName[1024];
+			wchar_t campaignName[1024];
 			readCampaignNameFromFile("campaign", campaignName, 1023);
 			pEntry->setText(campaignName);
 			pEntry->setHiddenText("campaign");
-			pEntry->setColor(edits[0].getColor());
+			pEntry->setcolour(edits[0].getcolour());
 			gameListBox.AddItem(pEntry);
 		}
 		path.init(campaignPath, "tutorial", ".fit");
@@ -494,11 +494,11 @@ LogisticsSaveDialog::initDialog(const std::wstring_view& path, bool bCampaign)
 		{
 			aLocalizedListItem* pEntry = new aLocalizedListItem();
 			*pEntry = s_instance->templateItem;
-			char campaignName[1024];
+			wchar_t campaignName[1024];
 			readCampaignNameFromFile("tutorial", campaignName, 1023);
 			pEntry->setText(campaignName);
 			pEntry->setHiddenText("tutorial");
-			pEntry->setColor(edits[0].getColor());
+			pEntry->setcolour(edits[0].getcolour());
 			gameListBox.AddItem(pEntry);
 		}
 	}
@@ -512,7 +512,7 @@ LogisticsSaveDialog::isCorrectVersionSaveGame(const std::wstring_view& fileName)
 	FitIniFile file;
 	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
 		STOP((errorStr));
 	}
@@ -534,7 +534,7 @@ LogisticsSaveDialog::readCampaignNameFromFile(const std::wstring_view& fileName,
 	FitIniFile file;
 	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
 	{
-		char errorStr[256];
+		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
 		Assert(0, 0, errorStr);
 	}
@@ -690,9 +690,9 @@ LogisticsSaveDialog::update()
 			{
 				for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 				{
-					gameListBox.GetItem(i)->setColor(edits[0].getColor());
+					gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 				}
-				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
+				gameListBox.GetItem(item)->setcolour(edits[0].getHighlightcolour());
 				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = ((aLocalizedListItem*)gameListBox.GetItem(item))->getHiddenText();
@@ -705,7 +705,7 @@ LogisticsSaveDialog::update()
 			gameListBox.SelectItem(-1);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 			{
-				gameListBox.GetItem(i)->setColor(edits[0].getColor());
+				gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 			}
 		}
 	}
@@ -721,7 +721,7 @@ LogisticsSaveDialog::updateCampaignMissionInfo()
 	{
 		Assert(0, 0, "coudln't find the campaign file\n");
 	}
-	char fileName[256];
+	wchar_t fileName[256];
 	if (NO_ERROR == file.seekBlock("Group0Mission0"))
 	{
 		if (NO_ERROR != file.readIdString("FileName", fileName, 1023))
@@ -741,7 +741,7 @@ LogisticsSaveDialog::updateMissionInfo()
 {
 	if (!selectedName.Length())
 	{
-		statics[MAP_STATIC].setColor(0);
+		statics[MAP_STATIC].setcolour(0);
 		return;
 	}
 	if (bCampaign)
@@ -754,9 +754,9 @@ LogisticsSaveDialog::updateMissionInfo()
 	FitIniFile file;
 	if (NO_ERROR == file.open(fileName))
 	{
-		char tmp[256];
-		char tmp2[256];
-		char real[1024];
+		wchar_t tmp[256];
+		wchar_t tmp2[256];
+		wchar_t real[1024];
 		file.seekBlock("General");
 		tmp[0] = 0;
 		file.readIdString("CampaignName", tmp, 255);
@@ -773,10 +773,10 @@ LogisticsSaveDialog::updateMissionInfo()
 			int32_t textureHandle = MissionBriefingScreen::getMissionTGA(tmp);
 			statics[MAP_STATIC].setTexture(textureHandle);
 			statics[MAP_STATIC].setUVs(0, 127, 127, 0);
-			statics[MAP_STATIC].setColor(0xffffffff);
+			statics[MAP_STATIC].setcolour(0xffffffff);
 		}
 		else
-			statics[MAP_STATIC].setColor(0);
+			statics[MAP_STATIC].setcolour(0);
 		int32_t cBills;
 		file.readIdLong("CBills", cBills);
 		cLoadString(IDS_DIALOG_CBILLS, tmp2, 255);
@@ -795,7 +795,7 @@ LogisticsSaveDialog::updateMissionInfo()
 	else
 	{
 		textObjects[2].setText("");
-		statics[MAP_STATIC].setColor(0);
+		statics[MAP_STATIC].setcolour(0);
 	}
 }
 
@@ -807,13 +807,13 @@ LogisticsSaveDialog::setMission(const std::wstring_view& fileName)
 		int32_t textureHandle = MissionBriefingScreen::getMissionTGA(fileName);
 		statics[MAP_STATIC].setTexture(textureHandle);
 		statics[MAP_STATIC].setUVs(0, 127, 127, 0);
-		statics[MAP_STATIC].setColor(0xffffffff);
+		statics[MAP_STATIC].setcolour(0xffffffff);
 		FullPathFileName path;
 		FitIniFile file;
 		path.init(missionPath, fileName, ".fit");
 		if (NO_ERROR == file.open(path))
 		{
-			char missionName[256];
+			wchar_t missionName[256];
 			missionName[0] = 0;
 			bool bRes = 0;
 			file.seekBlock("MissionSettings");
@@ -837,7 +837,7 @@ LogisticsSaveDialog::setMission(const std::wstring_view& fileName)
 	}
 	else
 	{
-		statics[MAP_STATIC].setColor(0);
+		statics[MAP_STATIC].setcolour(0);
 		textObjects[2].setText("");
 	}
 }
@@ -863,7 +863,7 @@ LogisticsSaveDialog::render()
 		float endTime = enterAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x00000000, 0x7f000000, time / endTime);
+			color = interpolatecolour(0x00000000, 0x7f000000, time / endTime);
 		}
 	}
 	else if (exitAnim.isAnimating() && !exitAnim.isDone() && !bLoad)
@@ -872,12 +872,12 @@ LogisticsSaveDialog::render()
 		float endTime = exitAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x7f000000, 0x00000000, time / endTime);
+			color = interpolatecolour(0x7f000000, 0x00000000, time / endTime);
 		}
 	}
 	if (fadeOutTime)
 		color = 0;
-	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, color);
 	if (xOffset || yOffset)
 	{
@@ -911,9 +911,9 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 			{
 				// do prompt here
 				selectedName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
-				char str[256];
+				wchar_t str[256];
 				cLoadString(IDS_DIALOG_OVERWRITE_PROMPT, str, 255);
-				char promptString[256];
+				wchar_t promptString[256];
 				sprintf(promptString, str, (const std::wstring_view&)selectedName);
 				LogisticsOKDialog::instance()->setText(
 					IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
@@ -958,9 +958,9 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 					break;
 				}
 			}
-			char str[256];
+			wchar_t str[256];
 			cLoadString(IDS_DIALOG_DELETE_PROMPT, str, 255);
-			char promptString[256];
+			wchar_t promptString[256];
 			sprintf(promptString, str, (const std::wstring_view&)tmpName);
 			LogisticsOKDialog::instance()->setText(
 				IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
@@ -1053,7 +1053,7 @@ LogisticsVariantDialog::beginTranscript()
 void
 LogisticsVariantDialog::initTranscript()
 {
-	char findString[512];
+	wchar_t findString[512];
 	sprintf(findString, "%s*.txt", "data\\multiplayer\\transcripts\\");
 	gameListBox.removeAllItems(true);
 	WIN32_FIND_DATA findResult;
@@ -1067,7 +1067,7 @@ LogisticsVariantDialog::initTranscript()
 				aAnimTextListItem* pEntry = new aAnimTextListItem(IDS_DIALOG_LIST_FONT);
 				*pEntry = s_instance->templateItem;
 				pEntry->setText(findResult.cFileName);
-				pEntry->setColor(edits[0].getColor());
+				pEntry->setcolour(edits[0].getcolour());
 				gameListBox.AddItem(pEntry);
 			}
 		} while (FindNextFile(searchHandle, &findResult) != 0);
@@ -1090,12 +1090,12 @@ LogisticsVariantDialog::initVariantList()
 			aAnimTextListItem* pEntry = new aAnimTextListItem(IDS_DIALOG_LIST_FONT);
 			*pEntry = s_instance->templateItem;
 			pEntry->setText(pNames[i]);
-			pEntry->setColor(edits[0].getColor());
+			pEntry->setcolour(edits[0].getcolour());
 			gameListBox.AddItem(pEntry);
 			if (!LogisticsData::instance->canReplaceVariant(pNames[i]))
 			{
 				pEntry->setState(aListItem::DISABLED);
-				pEntry->setColor(0xff373737);
+				pEntry->setcolour(0xff373737);
 			}
 			else if (!bValid)
 			{
@@ -1174,9 +1174,9 @@ LogisticsVariantDialog::update()
 			{
 				for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 				{
-					gameListBox.GetItem(i)->setColor(edits[0].getColor());
+					gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 				}
-				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
+				gameListBox.GetItem(item)->setcolour(edits[0].getHighlightcolour());
 				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = text;
@@ -1187,7 +1187,7 @@ LogisticsVariantDialog::update()
 			gameListBox.SelectItem(-1);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 			{
-				gameListBox.GetItem(i)->setColor(edits[0].getColor());
+				gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 			}
 		}
 	}
@@ -1236,7 +1236,7 @@ LogisticsVariantDialog::render()
 		float endTime = enterAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x00000000, 0x7f000000, time / endTime);
+			color = interpolatecolour(0x00000000, 0x7f000000, time / endTime);
 		}
 	}
 	else if (exitAnim.isAnimating() && !exitAnim.isDone())
@@ -1245,10 +1245,10 @@ LogisticsVariantDialog::render()
 		float endTime = exitAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x7f000000, 0x00000000, time / endTime);
+			color = interpolatecolour(0x7f000000, 0x00000000, time / endTime);
 		}
 	}
-	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, color);
 	float xOffset = 0;
 	float yOffset = 0;
@@ -1287,9 +1287,9 @@ LogisticsVariantDialog::handleMessage(uint32_t what, uint32_t who)
 			if (selectedName.Compare(((aTextListItem*)gameListBox.GetItem(i))->getText(), 0) == 0)
 			{
 				// do prompt here
-				char str[256];
+				wchar_t str[256];
 				cLoadString(IDS_DIALOG_OVERWRITE_PROMPT, str, 255);
-				char promptString[256];
+				wchar_t promptString[256];
 				sprintf(promptString, str, (const std::wstring_view&)selectedName);
 				LogisticsOKDialog::instance()->setText(
 					IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
@@ -1315,9 +1315,9 @@ LogisticsVariantDialog::handleMessage(uint32_t what, uint32_t who)
 	if (DELETE_BUTTON == who)
 	{
 		edits[0].getEntry(selectedName);
-		char str[256];
+		wchar_t str[256];
 		cLoadString(IDS_DIALOG_DELETE_PROMPT, str, 255);
-		char promptString[256];
+		wchar_t promptString[256];
 		sprintf(promptString, str, (const std::wstring_view&)selectedName);
 		LogisticsOKDialog::instance()->setText(
 			IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
@@ -1390,9 +1390,9 @@ LogisticsAcceptVariantDialog::update()
 			{
 				for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 				{
-					gameListBox.GetItem(i)->setColor(edits[0].getColor());
+					gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 				}
-				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
+				gameListBox.GetItem(item)->setcolour(edits[0].getHighlightcolour());
 				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = text;
@@ -1403,7 +1403,7 @@ LogisticsAcceptVariantDialog::update()
 			gameListBox.SelectItem(-1);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 			{
-				gameListBox.GetItem(i)->setColor(edits[0].getColor());
+				gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 			}
 		}
 	}
@@ -1428,7 +1428,7 @@ LogisticsAcceptVariantDialog::render()
 		float endTime = enterAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x00000000, 0x7f000000, time / endTime);
+			color = interpolatecolour(0x00000000, 0x7f000000, time / endTime);
 		}
 	}
 	else if (exitAnim.isAnimating() && !exitAnim.isDone())
@@ -1437,10 +1437,10 @@ LogisticsAcceptVariantDialog::render()
 		float endTime = enterAnim.getMaxTime();
 		if (endTime)
 		{
-			color = interpolateColor(0x7f000000, 0x00000000, time / endTime);
+			color = interpolatecolour(0x7f000000, 0x00000000, time / endTime);
 		}
 	}
-	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, color);
 	float xOffset = 0;
 	float yOffset = 0;
@@ -1494,7 +1494,7 @@ void
 LogisticsMapInfoDialog::end()
 {
 	statics[10].setTexture((uint32_t)0);
-	statics[10].setColor((int32_t)0);
+	statics[10].setcolour((int32_t)0);
 }
 void
 LogisticsMapInfoDialog::setMap(const std::wstring_view& pFileName)
@@ -1502,19 +1502,19 @@ LogisticsMapInfoDialog::setMap(const std::wstring_view& pFileName)
 	int32_t textureHandle = MissionBriefingScreen::getMissionTGA(pFileName);
 	statics[10].setTexture(textureHandle);
 	statics[10].setUVs(0, 127, 127, 0);
-	statics[10].setColor(0xffffffff);
+	statics[10].setcolour(0xffffffff);
 	// need to set all the map info too....
 	FitIniFile file;
 	FullPathFileName path;
 	path.init(missionPath, pFileName, ".fit");
 	if (NO_ERROR == file.open(path))
 	{
-		char missionName[256];
-		char text[1024];
+		wchar_t missionName[256];
+		wchar_t text[1024];
 		missionName[0] = 0;
-		char text2[1024];
+		wchar_t text2[1024];
 		bool bRes = 0;
-		char totalText[1024];
+		wchar_t totalText[1024];
 		file.seekBlock("MissionSettings");
 		file.readIdBoolean("MissionNameUseResourceString", bRes);
 		if (bRes)
@@ -1534,7 +1534,7 @@ LogisticsMapInfoDialog::setMap(const std::wstring_view& pFileName)
 		uint32_t type = 0;
 		file.readIdULong("MissionType", type);
 		cLoadString(IDS_MP_LM_MAP_LIST_TYPE, text, 255);
-		char mType[128];
+		wchar_t mType[128];
 		cLoadString(IDS_MP_LM_TYPE0 + type, mType, 127);
 		sprintf(text2, text, mType);
 		strcat(totalText, text2);
@@ -1546,7 +1546,7 @@ LogisticsMapInfoDialog::setMap(const std::wstring_view& pFileName)
 		strcat(totalText, text2);
 		strcat(totalText, "\n");
 		textObjects[1].setText(totalText);
-		char blurb[1024];
+		wchar_t blurb[1024];
 		int32_t result = file.readIdString("Blurb2", blurb, 1023);
 		bool tmpBool = false;
 		result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
@@ -1571,7 +1571,7 @@ LogisticsMapInfoDialog::init()
 	path.init(artPath, "mcl_mp_mapinfo", ".fit");
 	if (NO_ERROR != file.open(path))
 	{
-		char buffer2[512];
+		wchar_t buffer2[512];
 		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
 		Assert(0, 0, buffer2);
 		return false;

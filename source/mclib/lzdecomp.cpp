@@ -15,7 +15,7 @@ enum class __lzdecomp_const
 {
 	HASH_CLEAR = 256, // clear hash table command code
 	HASH_EOF = 257, // End Of Data command code
-	HASH_FREE = 258, // First Hash Table Chain Offset Value
+	HASH_FREE = 258, // First Hash Table Chain Offset value
 	BASE_BITS = 9,
 	MAX_BIT_INDEX = (1 << BASE_BITS),
 	NO_RAM_FOR_LZ_DECOMP = 0xCBCB0002,
@@ -25,7 +25,7 @@ enum class __lzdecomp_const
 #define nullptr 0
 #endif
 
-typedef uint8_t* puint8_t;
+typedef uint8_t* uint8_t*;
 
 typedef struct HashStruct
 {
@@ -34,15 +34,15 @@ typedef struct HashStruct
 } HashStruct;
 typedef HashStruct* HashStructPtr;
 
-HashStructPtr LZOldChain = nullptr; // Old Chain Value Found
-HashStructPtr LZChain = nullptr; // Current Chain Value Found
+HashStructPtr LZOldChain = nullptr; // Old Chain value Found
+HashStructPtr LZChain = nullptr; // Current Chain value Found
 uint32_t LZMaxIndex = 0; // Max index value in Hash Table
 uint32_t LZCodeMask = 0;
 uint32_t LZFreeIndex = 0; // Current Free index into Hash Table
-puint8_t LZSrcBufEnd = nullptr; // ptr to 3rd from last byte in src buffer
-puint8_t LZOrigDOSBuf = nullptr; // original offset to start of src buffer
-char LZHashBuffer[16384];
-char LZOldSuffix = 0; // Current Suffix Value found
+uint8_t* LZSrcBufEnd = nullptr; // ptr to 3rd from last byte in src buffer
+uint8_t* LZOrigDOSBuf = nullptr; // original offset to start of src buffer
+wchar_t LZHashBuffer[16384];
+wchar_t LZOldSuffix = 0; // Current Suffix value found
 
 //-----------------------------
 
@@ -51,7 +51,7 @@ char LZOldSuffix = 0; // Current Suffix Value found
 // Takes a pointer to dest buffer, a pointer to source buffer and len of source.
 // returns length of decompressed image.
 size_t
-LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
+LZDecomp(uint8_t* dest, uint8_t* src, size_t srcLen)
 {
 	size_t result = 0;
 	__asm {
@@ -154,7 +154,7 @@ LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		je		ClearHash
 				//---------------------------------------------------------------------------
 				//
-				// Handle Chain acts on two types of Codes, A previously tabled
+				// handle Chain acts on two types of Codes, A previously tabled
 				// one and a new one. On a previously tabled one, the chain
 				// value and suffix for that code are preserved into OldSuffix
 				// and OldChain. The block operates on searching backward in the

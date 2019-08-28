@@ -29,7 +29,7 @@ public:
 	virtual Light* MakePointLight(const std::wstring_view& light_map = nullptr);
 	struct Info
 	{
-		Stuff::RGBColor m_color;
+		Stuff::RGBcolour m_color;
 		Stuff::LinearMatrix4D m_origin;
 		float m_intensity, float m_inner;
 		float m_outer;

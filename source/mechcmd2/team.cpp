@@ -25,7 +25,7 @@
 #include "missionGui.h"
 #include "warrior.h"
 
-char Team::relations[MAX_TEAMS][MAX_TEAMS] = {{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2},
+wchar_t Team::relations[MAX_TEAMS][MAX_TEAMS] = {{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2},
 	{2, 0, 2, 2, 2, 2, 2, 2}, {RELATION_NEUTRAL, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
 	{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2}, {2, 2, 2, 2, 2, 2, 0, 2},
 	{2, 2, 2, 2, 2, 2, 2, 0}};
@@ -919,7 +919,7 @@ Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, int32_t 
 		deltaCellVec.y = tCellRow - mCellRow;
 		deltaCellVec.x = tCellCol - mCellCol;
 		deltaCellVec.z = 0.0f;
-		float startHeight = startPos.z;
+		float startheight = startPos.z;
 		float length = deltaCellVec.GetApproximateLength();
 		if (length > Stuff::SMALL)
 		{
@@ -957,13 +957,13 @@ Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, int32_t 
 					//					startCellCol = (endCellCol - lastCol);
 					colDone = true;
 				}
-				startHeight += heightLen;
+				startheight += heightLen;
 				int32_t startCellC = startCellCol;
 				int32_t startCellR = startCellRow;
 				land->getCellPos(startCellR, startCellC, currentPos);
-				float localElev = (worldUnitsPerMeter * 4.0f * (float)GameMap->getLocalHeight(startCellR, startCellC));
+				float localElev = (worldUnitsPerMeter * 4.0f * (float)GameMap->getLocalheight(startCellR, startCellC));
 				currentPos.z += localElev;
-				if (startHeight + startLocal < currentPos.z)
+				if (startheight + startLocal < currentPos.z)
 				{
 #ifdef LAB_ONLY
 					x = GetCycles() - x;
@@ -1092,7 +1092,7 @@ Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float en
 		deltaCellVec.y = tCellRow - mCellRow;
 		deltaCellVec.x = tCellCol - mCellCol;
 		deltaCellVec.z = 0.0f;
-		float startHeight = startPos.z;
+		float startheight = startPos.z;
 		float length = deltaCellVec.GetApproximateLength();
 		length *= ACCURACY_ADJUST;
 		if (length > Stuff::SMALL)
@@ -1122,11 +1122,11 @@ Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float en
 					if (dist <= startExtRad)
 						outsideStartRadius = false;
 				}
-				startHeight += heightLen;
+				startheight += heightLen;
 				int32_t curCellRow, curCellCol;
 				land->worldToCell(currentPos, curCellRow, curCellCol);
-				float localElev = (worldUnitsPerMeter * 4.0f * (float)GameMap->getLocalHeight(curCellRow, curCellCol));
-				float thisHeight = currentPos.z + localElev;
+				float localElev = (worldUnitsPerMeter * 4.0f * (float)GameMap->getLocalheight(curCellRow, curCellCol));
+				float thisheight = currentPos.z + localElev;
 				// First, check if we are now inside the extent radius of the
 				// thing we are calcing LOS to.
 				// If we are and we haven't returned false since we're here, we
@@ -1138,7 +1138,7 @@ Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float en
 					if (remainingDist <= extRad)
 						break;
 				}
-				if (outsideStartRadius && (startHeight < thisHeight))
+				if (outsideStartRadius && (startheight < thisheight))
 				{
 					bool isTree = false;
 					if (GameMap->getForest(curCellRow, curCellCol))
@@ -1231,9 +1231,9 @@ Team::Save(PacketFilePtr file, int32_t packetNum)
 	TeamStaticData staticData;
 	staticData.numTeams = numTeams;
 	staticData.homeTeamId = home->getId();
-	memcpy(staticData.relations, relations, sizeof(char) * MAX_TEAMS * MAX_TEAMS);
+	memcpy(staticData.relations, relations, sizeof(wchar_t) * MAX_TEAMS * MAX_TEAMS);
 	memcpy(staticData.noPain, noPain, sizeof(bool) * MAX_TEAMS);
-	file->writePacket(packetNum, (puint8_t)&staticData, sizeof(TeamStaticData), STORAGE_TYPE_RAW);
+	file->writePacket(packetNum, (uint8_t*)&staticData, sizeof(TeamStaticData), STORAGE_TYPE_RAW);
 	packetNum++;
 	for (size_t i = 0; i < numTeams; i++)
 	{
@@ -1241,7 +1241,7 @@ Team::Save(PacketFilePtr file, int32_t packetNum)
 		data.id = teams[i]->getId();
 		data.rosterSize = teams[i]->rosterSize;
 		memcpy(data.roster, teams[i]->roster, sizeof(GameObjectWatchID) * MAX_MOVERS_PER_TEAM);
-		file->writePacket(packetNum, (puint8_t)&data, sizeof(TeamData), STORAGE_TYPE_RAW);
+		file->writePacket(packetNum, (uint8_t*)&data, sizeof(TeamData), STORAGE_TYPE_RAW);
 		packetNum++;
 	}
 	return packetNum;
@@ -1252,15 +1252,15 @@ int32_t
 Team::Load(PacketFilePtr file, int32_t packetNum)
 {
 	TeamStaticData staticData;
-	file->readPacket(packetNum, (puint8_t)&staticData);
+	file->readPacket(packetNum, (uint8_t*)&staticData);
 	packetNum++;
 	numTeams = staticData.numTeams;
-	memcpy(relations, staticData.relations, sizeof(char) * MAX_TEAMS * MAX_TEAMS);
+	memcpy(relations, staticData.relations, sizeof(wchar_t) * MAX_TEAMS * MAX_TEAMS);
 	memcpy(noPain, staticData.noPain, sizeof(bool) * MAX_TEAMS);
 	for (size_t i = 0; i < numTeams; i++)
 	{
 		TeamData data;
-		file->readPacket(packetNum, (puint8_t)&data);
+		file->readPacket(packetNum, (uint8_t*)&data);
 		packetNum++;
 		teams[i] = new Team;
 		// Yet another Haxor.

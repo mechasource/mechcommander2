@@ -7,8 +7,8 @@
 #ifndef MLR_MLRSORTBYORDER_HPP
 #define MLR_MLRSORTBYORDER_HPP
 
-#include <mlr/gosvertex.hpp>
-#include <mlr/mlrsorter.hpp>
+#include "mlr/gosvertex.h"
+#include "mlr/mlrsorter.h"
 
 namespace MidLevelRenderer
 {

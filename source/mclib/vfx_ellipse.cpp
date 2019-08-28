@@ -1,12 +1,12 @@
 #include "vfx.h"
-extern char AlphaTable[];
-extern char SpecialColor[];
+extern wchar_t AlphaTable[];
+extern wchar_t Specialcolour[];
 
 // extern void AG_ellipse_draw(PANE *pane, int32_t xc, int32_t yc, int32_t
 // width, int32_t height, int32_t color);  extern void AG_ellipse_fill(PANE *pane,
 // int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
 
-static int32_t paneY0, paneY1, paneX0, paneX1, DestWidth, DestBuffer, x_top, y_top, Bsquared,
+static int32_t paneY0, paneY1, paneX0, paneX1, Destwidth, DestBuffer, x_top, y_top, Bsquared,
 	TwoBsquared, Asquared, TwoAsquared, var_dx, var_dy, x_vector, line_left, line_right;
 static int32_t DrawRoutine;
 
@@ -19,19 +19,19 @@ AG_ellipse_draw(
 		VFX_line_draw(pane, xc - width, yc - height, xc + width, yc + height, 0, color);
 		return;
 	}
-	DestWidth = pane->window->x_max + 1;
+	Destwidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 = (pane->x1 >= DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneX1 = (pane->x1 >= Destwidth) ? pane->window->x_max : pane->x1;
 	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
-	puint8_t DestBuffer = pane->window->buffer;
+	uint8_t* DestBuffer = pane->window->buffer;
 	xc += paneX0;
 	yc += paneY0;
 	_asm {
 
 		mov eax, color
 		mov ebx, offset ALPHA_ELLIPSE_PIXELS
-		cmp byte ptr SpecialColor[eax], 1
+		cmp byte ptr Specialcolour[eax], 1
 		jz ow1
 		mov ebx, offset ELLIPSE_PIXELS
 		ow1:	mov DrawRoutine, ebx
@@ -181,7 +181,7 @@ AG_ellipse_draw(
 		jl P1
 		cmp ebx, paneY1
 		jg P1
-		imul ebx, DestWidth
+		imul ebx, Destwidth
 		add ebx, DestBuffer
 		mov byte ptr [edi + ebx], cl
 		P1:
@@ -197,7 +197,7 @@ AG_ellipse_draw(
 		jl P2
 		cmp ebx, paneY1
 		jg P2
-		imul ebx, DestWidth
+		imul ebx, Destwidth
 		add ebx, DestBuffer
 		mov byte ptr [edi + ebx], cl
 		P2:
@@ -213,7 +213,7 @@ AG_ellipse_draw(
 		jl P3
 		cmp ebx, paneY1
 		jg P3
-		imul ebx, DestWidth
+		imul ebx, Destwidth
 		add ebx, DestBuffer
 		mov byte ptr [edi + ebx], cl
 		P3:
@@ -229,7 +229,7 @@ AG_ellipse_draw(
 		jl P4
 		cmp ebx, paneY1
 		jg P4
-		imul ebx, DestWidth
+		imul ebx, Destwidth
 		add ebx, DestBuffer
 		mov byte ptr [edi + ebx], cl
 		P4:
@@ -258,7 +258,7 @@ AG_ellipse_draw(
 		jl TP1
 		cmp ebx, paneY1
 		jg TP1
-		imul ebx, DestWidth
+		imul ebx, Destwidth
 		add ebx, DestBuffer
 		mov cl, [edi + ebx]
 		mov cl, AlphaTable[ecx]
@@ -276,7 +276,7 @@ AG_ellipse_draw(
 		jl TP2
 		cmp ebx, paneY1
 		jg TP2
-		imul ebx, DestWidth
+		imul ebx, Destwidth
 		add ebx, DestBuffer
 		mov cl, [edi + ebx]
 		mov cl, AlphaTable[ecx]
@@ -294,7 +294,7 @@ AG_ellipse_draw(
 		jl TP3
 		cmp ebx, paneY1
 		jg TP3
-		imul ebx, DestWidth
+		imul ebx, Destwidth
 		add ebx, DestBuffer
 		mov cl, [edi + ebx]
 		mov cl, AlphaTable[ecx]
@@ -312,7 +312,7 @@ AG_ellipse_draw(
 		jl TP4
 		cmp ebx, paneY1
 		jg TP4
-		imul ebx, DestWidth
+		imul ebx, Destwidth
 		add ebx, DestBuffer
 		mov cl, [edi + ebx]
 		mov cl, AlphaTable[ecx]
@@ -334,19 +334,19 @@ AG_ellipse_fill(
 		VFX_line_draw(pane, xc - width, yc - height, xc + width, yc + height, 0, color);
 		return;
 	}
-	DestWidth = pane->window->x_max + 1;
+	Destwidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 = (pane->x1 >= DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneX1 = (pane->x1 >= Destwidth) ? pane->window->x_max : pane->x1;
 	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
-	puint8_t DestBuffer = pane->window->buffer;
+	uint8_t* DestBuffer = pane->window->buffer;
 	xc += paneX0;
 	yc += paneY0;
 	_asm {
 
 		mov eax, color
 		mov ebx, offset ALPHA_ELLIPSE_LINES
-		cmp byte ptr SpecialColor[eax], 1
+		cmp byte ptr Specialcolour[eax], 1
 		jz ow2
 		mov ebx, offset ELLIPSE_LINES
 		ow2:	mov DrawRoutine, ebx
@@ -493,7 +493,7 @@ AG_ellipse_fill(
 		cmp edx, paneY1
 		jg LN1
 
-		imul    edx, DestWidth
+		imul    edx, Destwidth
 		add     edx, DestBuffer
 		add edi, edx
 
@@ -519,7 +519,7 @@ AG_ellipse_fill(
 		jg LN2                  ;;
 		top line below window
 
-		imul    edx, DestWidth
+		imul    edx, Destwidth
 		add     edx, DestBuffer
 		add edi, edx
 
@@ -579,7 +579,7 @@ AG_ellipse_fill(
 		cmp edx, paneY1
 		jg ALN1
 
-		imul    edx, DestWidth
+		imul    edx, Destwidth
 		add     edx, DestBuffer
 		add edi, edx
 
@@ -608,7 +608,7 @@ AG_ellipse_fill(
 		jg ALN2                  ;;
 		top line below window
 
-		imul    edx, DestWidth
+		imul    edx, Destwidth
 		add     edx, DestBuffer
 		add edi, edx
 
@@ -637,13 +637,13 @@ AG_ellipse_fill(
 }
 
 PANE* xorgPane = 0;
-uint8_t gColor = 0;
+uint8_t gcolour = 0;
 
 void
 orLineCallback(int32_t x, int32_t y)
 {
 	int32_t result = VFX_pixel_read(xorgPane, x, y);
-	result |= gColor;
+	result |= gcolour;
 	VFX_pixel_write(xorgPane, x, y, result);
 }
 
@@ -654,17 +654,17 @@ AG_ellipse_fillOr(
 	if (width == 0 || height == 0)
 	{
 		xorgPane = pane;
-		gColor = (uint8_t)color;
+		gcolour = (uint8_t)color;
 		VFX_line_draw(pane, xc - width, yc - height, xc + width, yc + height, LD_EXECUTE,
 			(int32_t)(&orLineCallback));
 		return;
 	}
-	DestWidth = pane->window->x_max + 1;
+	Destwidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 = (pane->x1 >= DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneX1 = (pane->x1 >= Destwidth) ? pane->window->x_max : pane->x1;
 	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
-	puint8_t DestBuffer = pane->window->buffer;
+	uint8_t* DestBuffer = pane->window->buffer;
 	xc += paneX0;
 	yc += paneY0;
 	_asm {
@@ -815,7 +815,7 @@ AG_ellipse_fillOr(
 		cmp edx, paneY1
 		jg LN1
 
-		imul    edx, DestWidth
+		imul    edx, Destwidth
 		add     edx, DestBuffer
 		add edi, edx
 
@@ -842,7 +842,7 @@ AG_ellipse_fillOr(
 		jg LN2                  ;;
 		top line below window
 
-		imul    edx, DestWidth
+		imul    edx, Destwidth
 		add     edx, DestBuffer
 		add edi, edx
 
@@ -869,7 +869,7 @@ void
 andLineCallback(int32_t x, int32_t y)
 {
 	int32_t result = VFX_pixel_read(xorgPane, x, y);
-	result &= gColor;
+	result &= gcolour;
 	VFX_pixel_write(xorgPane, x, y, result);
 }
 
@@ -878,21 +878,21 @@ AG_ellipse_fillXor(
 	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
 	int32_t xorResult = color ^ 0xff;
-	uint8_t xorColor = (uint8_t)xorResult;
+	uint8_t xorcolour = (uint8_t)xorResult;
 	if (width == 0 || height == 0)
 	{
 		xorgPane = pane;
-		gColor = (uint8_t)color;
+		gcolour = (uint8_t)color;
 		VFX_line_draw(pane, xc - width, yc - height, xc + width, yc + height, LD_EXECUTE,
 			(int32_t)(&andLineCallback));
 		return;
 	}
-	DestWidth = pane->window->x_max + 1;
+	Destwidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 = (pane->x1 >= DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneX1 = (pane->x1 >= Destwidth) ? pane->window->x_max : pane->x1;
 	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
-	puint8_t DestBuffer = pane->window->buffer;
+	uint8_t* DestBuffer = pane->window->buffer;
 	xc += paneX0;
 	yc += paneY0;
 	_asm {
@@ -1043,7 +1043,7 @@ AG_ellipse_fillXor(
 		cmp edx, paneY1
 		jg LN1
 
-		imul    edx, DestWidth
+		imul    edx, Destwidth
 		add     edx, DestBuffer
 		add edi, edx
 
@@ -1053,7 +1053,7 @@ AG_ellipse_fillXor(
 
 		lo1:
 		mov al, byte ptr [edi]
-		and al, xorColor
+		and al, xorcolour
 		mov byte ptr [edi], al
 		inc edi
 		dec ecx
@@ -1070,7 +1070,7 @@ AG_ellipse_fillXor(
 		jg LN2                  ;;
 		top line below window
 
-		imul    edx, DestWidth
+		imul    edx, Destwidth
 		add     edx, DestBuffer
 		add edi, edx
 
@@ -1080,7 +1080,7 @@ AG_ellipse_fillXor(
 
 		lo2:
 		mov al, byte ptr [edi]
-		and al, xorColor
+		and al, xorcolour
 		mov byte ptr [edi], al
 		inc edi
 		dec ecx

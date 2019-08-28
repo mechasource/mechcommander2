@@ -47,7 +47,7 @@ public:
 	void setAlignment(int32_t align);
 	inline int32_t getAlignment(void) const { return appearInfo->appearance->teamId; }
 
-	uint32_t getColor(void) const;
+	uint32_t getcolour(void) const;
 	int32_t getID(void) const { return id; }
 
 	void getCells(int32_t& cellJ, int32_t& cellI) const;
@@ -72,7 +72,7 @@ public:
 		appearInfo->appearance->markTerrain(pInfo, type, counter);
 	}
 
-	void setAppearance(int32_t Group, int32_t indexInGroup);
+	void setAppearance(int32_t group, int32_t indexInGroup);
 
 	ObjectAppearance* appearance(void) { return appearInfo->appearance; }
 	const ObjectAppearance* appearance(void) const { return appearInfo->appearance; }
@@ -81,7 +81,7 @@ public:
 	void setForestID(int32_t newID) { forestId = newID; }
 
 	void setScale(int32_t newScale) { scale = newScale; }
-	int32_t getScale() const { return scale; }
+	int32_t getScale(void) const { return scale; }
 
 protected:
 	struct AppearanceInfo
@@ -153,7 +153,7 @@ class Brain
 
 	int32_t numStaticVars;
 
-	char brainName[256];
+	wchar_t brainName[256];
 
 public:
 	Brain(void)
@@ -213,8 +213,8 @@ public:
 	virtual bool save(FitIniFile* file, int32_t warriorNumber);
 	virtual bool load(FitIniFile* file, int32_t warriorNumber);
 
-	void getColors(uint32_t& base, uint32_t& color1, uint32_t& color2) const;
-	void setColors(uint32_t base, uint32_t color1, uint32_t color2);
+	void getcolours(uint32_t& base, uint32_t& color1, uint32_t& color2) const;
+	void setcolours(uint32_t base, uint32_t color1, uint32_t color2);
 
 	bool getSelfRepairBehaviorEnabled(void) const { return selfRepairBehaviorEnabled; }
 	void setSelfRepairBehaviorEnabled(bool val) { selfRepairBehaviorEnabled = val; }
@@ -238,9 +238,9 @@ protected:
 	uint32_t squad;
 	Pilot pilot;
 
-	uint32_t baseColor;
-	uint32_t highlightColor;
-	uint32_t highlightColor2;
+	uint32_t basecolour;
+	uint32_t highlightcolour;
+	uint32_t highlightcolour2;
 
 	uint32_t variant;
 };

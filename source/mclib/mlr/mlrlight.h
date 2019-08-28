@@ -7,19 +7,19 @@
 #ifndef MLR_MLRLIGHT_HPP
 #define MLR_MLRLIGHT_HPP
 
-#include <stuff/linearmatrix.hpp>
-#include <stuff/color.hpp>
-#include <stuff/registeredclass.hpp>
-// #include <stuff/mstring.hpp>
-#include <mlr/mlrstate.hpp>
-#include <mlr/mlr.hpp>
+#include "stuff/linearmatrix.h"
+#include "stuff/color.h"
+#include "stuff/registeredclass.h"
+// #include "stuff/mstring.h"
+#include "mlr/mlrstate.h"
+#include "mlr/mlr.h"
 
 namespace Stuff
 {
 class Point3D;
 class Vector3D;
-class RGBAColor;
-class RGBColor;
+class RGBAcolour;
+class RGBcolour;
 class Page;
 } // namespace Stuff
 
@@ -35,7 +35,7 @@ struct MLRVertexData
 #if COLOR_AS_DWORD
 	uint32_t* color;
 #else
-	Stuff::RGBAColor* color;
+	Stuff::RGBAcolour* color;
 #endif
 	Stuff::Vector3D* normal;
 	size_t index;
@@ -45,7 +45,7 @@ struct MLRVertexData
 //######################### MLRLight #################################
 //##########################################################################
 
-class MLRLight : public Stuff::RegisteredClass
+class MLRLight // : public Stuff::RegisteredClass
 {
 public:
 	static void __stdcall InitializeClass(void);
@@ -84,18 +84,18 @@ public:
 		// Check_Object(this);
 		return intensity;
 	};
-	void SetColor(Stuff::RGBColor col)
+	void Setcolour(Stuff::RGBcolour col)
 	{
 		// Check_Object(this);
 		color = col;
 	}
-	void SetColor(float, float, float);
-	void GetColor(Stuff::RGBColor& col)
+	void Setcolour(float, float, float);
+	void Getcolour(Stuff::RGBcolour& col)
 	{
 		// Check_Object(this);
 		col = color;
 	};
-	void GetColor(float&, float&, float&);
+	void Getcolour(float&, float&, float&);
 	void GetInWorldPosition(Stuff::Point3D& pos)
 	{
 		// Check_Object(this);
@@ -183,7 +183,7 @@ public:
 
 protected:
 	float intensity;
-	Stuff::RGBColor color;
+	Stuff::RGBcolour color;
 	Stuff::LinearMatrix4D lightToWorld;
 	Stuff::LinearMatrix4D lightToShape;
 	uint32_t lightMask;

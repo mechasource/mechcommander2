@@ -38,12 +38,12 @@ TacMapTGA::OnPaint()
 		TacMap::worldToTacMap(world, 0, 0, TACMAP_SIZE, TACMAP_SIZE, tmp);
 		pts[0].x = tmp.x;
 		pts[0].y = tmp.y;
-		screen.y = Environment.screenHeight - 1;
+		screen.y = Environment.screenheight - 1;
 		eye->inverseProject(screen, world);
 		TacMap::worldToTacMap(world, 0, 0, TACMAP_SIZE, TACMAP_SIZE, tmp);
 		pts[1].x = tmp.x;
 		pts[1].y = tmp.y;
-		screen.x = Environment.screenWidth - 1;
+		screen.x = Environment.screenwidth - 1;
 		eye->inverseProject(screen, world);
 		TacMap::worldToTacMap(world, 0, 0, TACMAP_SIZE, TACMAP_SIZE, tmp);
 		pts[2].x = tmp.x;
@@ -69,7 +69,7 @@ TacMapTGA::OnPaint()
 void
 TacMapTGA::refreshBmp()
 {
-	EditorData::instance->drawTacMap((puint8_t)m_pBits, 128 * 128 * 4, 128);
+	EditorData::instance->drawTacMap((uint8_t*)m_pBits, 128 * 128 * 4, 128);
 	RedrawWindow();
 }
 

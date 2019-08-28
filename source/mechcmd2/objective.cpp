@@ -26,7 +26,7 @@ Objective.cpp			: Implementation of the Objective component.
 
 float CObjective::s_blinkLength = .5;
 float CObjective::s_lastBlinkTime = 0.f;
-uint32_t CObjective::s_blinkColor = SB_YELLOW;
+uint32_t CObjective::s_blinkcolour = SB_YELLOW;
 aFont* CObjective::s_markerFont = 0;
 float MaxExtractUnitDistance = 0.0f;
 
@@ -36,11 +36,11 @@ string_format(const std::string fmt_str, ...)
 	int final_n,
 		n = ((int)fmt_str.size()) * 2; /* reserve 2 times as much as the length of the fmt_str */
 	std::string str;
-	std::unique_ptr<char[]> formatted;
+	std::unique_ptr<wchar_t[]> formatted;
 	va_list ap;
 	while (1)
 	{
-		formatted.reset(new char[n]); /* wrap the plain char array into the unique_ptr */
+		formatted.reset(new wchar_t[n]); /* wrap the plain wchar_t array into the unique_ptr */
 		strcpy(&formatted[0], fmt_str.c_str());
 		va_start(ap, fmt_str);
 		final_n = vsnprintf(&formatted[0], n, fmt_str.c_str(), ap);
@@ -237,7 +237,7 @@ sReplace(ECharString& ECStr, const std::wstring_view& szOldSub, const std::wstri
 	}
 	int32_t retval = 0;
 	ECharString newStr;
-	cint32_t lengthOfOldSub = strlen(szOldSub);
+	const int32_t lengthOfOldSub = strlen(szOldSub);
 	int32_t endIndexOfLastOldSub = -1;
 	int32_t startIndexOfOldSub = ECStr.Find(szOldSub, endIndexOfLastOldSub + 1);
 	while ((ECharString::INVALID_INDEX != startIndexOfOldSub) && (0 <= startIndexOfOldSub) && (ECStr.Length() - lengthOfOldSub >= startIndexOfOldSub))
@@ -266,7 +266,7 @@ static int32_t
 sReadIdString(FitIniFile* missionFile, const std::wstring_view& varName, ECharString& ECStr)
 {
 	int32_t result = 0;
-	char buffer[2001 /*buffer size*/];
+	wchar_t buffer[2001 /*buffer size*/];
 	buffer[0] = '\0';
 	result = missionFile->readIdString((const std::wstring_view&)varName, buffer, 2001 /*buffer size*/ - 1);
 	if ((NO_ERROR != result) && (BUFFER_TOO_SMALL != result))
@@ -322,17 +322,17 @@ areCloseEnough(float f1, float f2)
 void
 CBooleanArray::save(int32_t alignment, FitIniFile* file)
 {
-	char blockID[256];
+	wchar_t blockID[256];
 	sprintf(blockID, "Team%dBooleanFlags", alignment);
 	int32_t result = file->writeBlock(blockID);
 	CEStringList::EIterator flagIDListIter;
 	int32_t count = 0;
 	for (flagIDListIter = m_FlagIDList.Begin(); !flagIDListIter.IsDone(); flagIDListIter++)
 	{
-		char stringName[1024];
+		wchar_t stringName[1024];
 		sprintf(stringName, "BooleanString%d", count);
 		sWriteIdString(file, stringName, (*flagIDListIter).Data());
-		char booleanName[1024];
+		wchar_t booleanName[1024];
 		sprintf(booleanName, "BooleanValue%d", count);
 		file->writeIdBoolean(booleanName, m_valueList[count]);
 		count++;
@@ -342,7 +342,7 @@ CBooleanArray::save(int32_t alignment, FitIniFile* file)
 void
 CBooleanArray::load(int32_t alignment, FitIniFile* file)
 {
-	char blockID[256];
+	wchar_t blockID[256];
 	sprintf(blockID, "Team%dBooleanFlags", alignment);
 	int32_t result = file->seekBlock(blockID);
 	if (result == NO_ERROR)
@@ -351,12 +351,12 @@ CBooleanArray::load(int32_t alignment, FitIniFile* file)
 		const std::wstring_view& element;
 		bool value;
 		int32_t count = 0;
-		char stringName[1024];
+		wchar_t stringName[1024];
 		sprintf(stringName, "BooleanString%d", count);
 		result = sReadIdString(file, stringName, tmpECStr);
 		while (result == NO_ERROR)
 		{
-			char booleanName[1024];
+			wchar_t booleanName[1024];
 			sprintf(booleanName, "BooleanValue%d", count);
 			result = file->readIdBoolean(booleanName, value);
 			element = tmpECStr.Data();
@@ -1292,7 +1292,7 @@ CBooleanFlagIsSet::Read(FitIniFile* missionFile)
 	{
 		m_flagID = tmpECStr.Data();
 	}
-	result = sReadIdBoolean(missionFile, "Value", m_value);
+	result = sReadIdBoolean(missionFile, "value", m_value);
 	return true;
 }
 
@@ -1413,7 +1413,7 @@ CDisplayTextMessage::Read(FitIniFile* missionFile)
 {
 	int32_t result = 0;
 	ECharString tmpECStr;
-	result = sReadIdString(missionFile, "Message", tmpECStr);
+	result = sReadIdString(missionFile, "message", tmpECStr);
 	if (NO_ERROR != result)
 	{
 		return false;
@@ -1452,7 +1452,7 @@ CDisplayResourceTextMessage::Read(FitIniFile* missionFile)
 static bool
 ESLoadString(int32_t resourceID, const std::wstring_view& targetStr)
 {
-	char szTmp[16384 /*max string length*/];
+	wchar_t szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
 	targetStr = szTmp;
 	const std::wstring_view& tmpStr;
@@ -1504,7 +1504,7 @@ CSetBooleanFlag::Read(FitIniFile* missionFile)
 	{
 		m_flagID = tmpECStr.Data();
 	}
-	result = sReadIdBoolean(missionFile, "Value", m_value);
+	result = sReadIdBoolean(missionFile, "value", m_value);
 	return true;
 }
 
@@ -1838,9 +1838,9 @@ CObjective::operator=(const CObjective& master)
 	m_resetStatusFlagID = master.m_resetStatusFlagID;
 	m_modelName = master.m_modelName;
 	m_modelType = master.m_modelType;
-	m_modelBaseColor = master.m_modelBaseColor;
-	m_modelHighlightColor = master.m_modelHighlightColor;
-	m_modelHighlightColor2 = master.m_modelHighlightColor2;
+	m_modelBasecolour = master.m_modelBasecolour;
+	m_modelHighlightcolour = master.m_modelHighlightcolour;
+	m_modelHighlightcolour2 = master.m_modelHighlightcolour2;
 	m_modelScale = master.m_modelScale;
 	m_resolved = master.m_resolved;
 	m_changedStatus = master.m_changedStatus;
@@ -2014,7 +2014,7 @@ ActionSpeciesMap(const std::wstring_view& speciesString)
 
 bool
 CObjective::Read(FitIniFile* missionFile, int32_t objectiveNum, uint32_t version,
-	int32_t MarkerNum, char secondary)
+	int32_t MarkerNum, wchar_t secondary)
 {
 	// Load this up here to make ATLASSERT at program start go away!
 	if (!s_markerFont)
@@ -2089,9 +2089,9 @@ CObjective::Read(FitIniFile* missionFile, int32_t objectiveNum, uint32_t version
 	result = sReadIdString(missionFile, "ObjectiveModel", tmpECStr);
 	ModelName(_T(tmpECStr.Data()));
 	result = sReadIdLongInt(missionFile, "ModelType", m_modelType);
-	result = sReadIdLongInt(missionFile, "BaseColor", m_modelBaseColor);
-	result = sReadIdLongInt(missionFile, "HighlightColor", m_modelHighlightColor);
-	result = sReadIdLongInt(missionFile, "HighlightColor2", m_modelHighlightColor2);
+	result = sReadIdLongInt(missionFile, "Basecolour", m_modelBasecolour);
+	result = sReadIdLongInt(missionFile, "Highlightcolour", m_modelHighlightcolour);
+	result = sReadIdLongInt(missionFile, "Highlightcolour2", m_modelHighlightcolour2);
 	result = sReadIdFloat(missionFile, "ModelScale", m_modelScale);
 	{
 		/*these items should only be present in "in-mission" saved games*/
@@ -2625,7 +2625,7 @@ CObjectives::Read(FitIniFile* missionFile)
 		boolFlags.load(Alignment(), missionFile);
 		int32_t i;
 		int32_t markerI = 1;
-		char secondaryMarkers = 'a';
+		wchar_t secondaryMarkers = 'a';
 		for (i = 0; i < numObjectives; i += 1)
 		{
 			ECharString tmpStr;
@@ -2749,11 +2749,11 @@ CObjectives::Status()
 
 /*void CObjective::Render( uint32_t xPos, uint32_t yPos, HGOSFONT3D guiFont )
 {
-	uint32_t fontWidth, fontHeight;
-	gos_TextStringLength( &fontWidth, &fontHeight, "ABC" );
+	uint32_t fontwidth, fontheight;
+	gos_TextStringLength( &fontwidth, &fontheight, "ABC" );
 
 	// draw little box first
-	RECT rect = { xPos, yPos, xPos + fontHeight, yPos + fontHeight };
+	RECT rect = { xPos, yPos, xPos + fontheight, yPos + fontheight };
 	drawEmptyRect( rect, 0xffffffff, 0xffffffff );
 
 	uint32_t color = 0xffffffff;
@@ -2762,7 +2762,7 @@ CObjectives::Status()
 	{
 		color = m_resolvedStatus == OS_FAILED ?  0xffff0000 : 0xff00ff00;
 		gos_TextSetAttributes( guiFont, color, 1.0, false, true, false, false, 0
-); gos_TextSetPosition(xPos + (fontWidth >> 1), yPos );
+); gos_TextSetPosition(xPos + (fontwidth >> 1), yPos );
 
 		if ( m_resolvedStatus == OS_FAILED )
 			gos_TextDraw( "X" );
@@ -2773,7 +2773,7 @@ CObjectives::Status()
 	}
 
 	gos_TextSetAttributes( guiFont, color, 1.0, false, true, false, false, 0 );
-	gos_TextSetPosition(xPos + 2 * fontWidth, yPos );
+	gos_TextSetPosition(xPos + 2 * fontwidth, yPos );
 
 	gos_TextDraw( (const std::wstring_view&)m_description );
 
@@ -2802,12 +2802,12 @@ CObjective::RenderMarkers(GameTacMap* tacMap, bool blink)
 				if (s_lastBlinkTime > s_blinkLength)
 				{
 					s_lastBlinkTime = 0.f;
-					if (!s_blinkColor)
-						s_blinkColor = SD_YELLOW;
+					if (!s_blinkcolour)
+						s_blinkcolour = SD_YELLOW;
 					else
-						s_blinkColor = 0;
+						s_blinkcolour = 0;
 				}
-				color = s_blinkColor;
+				color = s_blinkcolour;
 			}
 		}
 		else
@@ -2961,7 +2961,7 @@ bool
 CBooleanFlagIsSet::Save(FitIniFile* file)
 {
 	file->writeIdString("FlagID", m_flagID.Data());
-	file->writeIdBoolean("Value", m_value);
+	file->writeIdBoolean("value", m_value);
 	return true;
 }
 
@@ -2989,7 +2989,7 @@ CPlayWAV::Save(FitIniFile* file)
 bool
 CDisplayTextMessage::Save(FitIniFile* file)
 {
-	file->writeIdString("Message", m_message.Data());
+	file->writeIdString("message", m_message.Data());
 	return true;
 }
 
@@ -3004,7 +3004,7 @@ bool
 CSetBooleanFlag::Save(FitIniFile* file)
 {
 	file->writeIdString("FlagID", m_flagID.Data());
-	file->writeIdBoolean("Value", m_value);
+	file->writeIdBoolean("value", m_value);
 	return true;
 }
 
@@ -3045,9 +3045,9 @@ CObjective::Save(FitIniFile* file, int32_t objectiveNum)
 	if (m_modelName.Data())
 		file->writeIdString("ObjectiveModel", m_modelName.Data());
 	file->writeIdLong("ModelType", m_modelType);
-	file->writeIdLong("BaseColor", m_modelBaseColor);
-	file->writeIdLong("HighlightColor", m_modelHighlightColor);
-	file->writeIdLong("HighlightColor2", m_modelHighlightColor2);
+	file->writeIdLong("Basecolour", m_modelBasecolour);
+	file->writeIdLong("Highlightcolour", m_modelHighlightcolour);
+	file->writeIdLong("Highlightcolour2", m_modelHighlightcolour2);
 	//	file->writeIdLong( "ModelID", m_modelID );
 	file->writeIdFloat("ModelScale", m_modelScale);
 	/*state data*/

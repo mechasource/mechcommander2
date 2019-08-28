@@ -7,8 +7,8 @@
 #ifndef MLR_GOSIMAGE_HPP
 #define MLR_GOSIMAGE_HPP
 
-#include <stuff/plug.hpp>
-// #include <stuff/mstring.hpp>
+#include "stuff/plug.h"
+// #include "stuff/mstring.h"
 
 namespace MidLevelRenderer
 {
@@ -19,17 +19,17 @@ class GOSImage : public Stuff::Plug
 	// Constructors/Destructors
 	//
 public:
-	GOSImage(PCSTR imageName);
+	GOSImage(const std::wstring_view& imageName);
 	GOSImage(uint32_t imageHandle);
-	GOSImage(PCSTR, gos_TextureHints);
+	GOSImage(const std::wstring_view&, gos_TextureHints);
 	~GOSImage(void);
 
-#if _CONSIDERED_OBSOLETE
+#if CONSIDERED_OBSOLETE
 
-	int32_t GetWidth(void);
-	int32_t GetHeight(void);
+	int32_t Getwidth(void);
+	int32_t Getheight(void);
 
-	PCSTR GetName(void)
+	const std::wstring_view& GetName(void)
 	{
 		// Check_Object(this);
 		return imageName;
@@ -85,7 +85,7 @@ public:
 
 	void LockImage(void);
 	void UnlockImage(void);
-	puint8_t GetImagePtr(void) { return (puint8_t)ptr.pTexture; }
+	uint8_t* GetImagePtr(void) { return (uint8_t*)ptr.pTexture; }
 	int32_t GetPitch(void) { return ptr.Pitch; }
 
 #endif

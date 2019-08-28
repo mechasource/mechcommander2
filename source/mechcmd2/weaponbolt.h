@@ -46,7 +46,7 @@ public:
 
 	float projLength;
 	float bulgeLength;
-	float bulgeWidth;
+	float bulgewidth;
 	float velocity;
 
 	uint8_t boltAlpha;
@@ -61,13 +61,13 @@ public:
 	bool isBeam;
 	float beamDuration;
 	float beamWiggle;
-	char* textureName;
+	wchar_t* textureName;
 	float uvAnimRate;
 	float uvRepeat;
 	float unitLength;
 	bool mipTexture;
 	bool arcEffect;
-	float arcHeight;
+	float archeight;
 	float afterHitTime;
 	float areaEffectDmg;
 	float areaEffectRad;
@@ -83,7 +83,7 @@ public:
 		fireSoundFX = hitEffectObjNum = missEffectObjNum = lightEffectObjNum = fireEffect =
 			trailEffect = 0;
 		frontRGB = middleRGB = backRGB = midEdgeRGB = 0;
-		projLength = bulgeLength = bulgeWidth = velocity = 0.0;
+		projLength = bulgeLength = bulgewidth = velocity = 0.0;
 		boltAlpha = edgeAlpha = 0xff;
 		lightSource = false;
 		maxRadius = outRadius = 0.0f;
@@ -95,7 +95,7 @@ public:
 		mipTexture = false;
 		textureName = nullptr;
 		arcEffect = false;
-		arcHeight = -1.0f;
+		archeight = -1.0f;
 		afterHitTime = 0.0f;
 		areaEffectDmg = areaEffectRad = 0.0f;
 	}
@@ -147,7 +147,7 @@ typedef struct _WeaponBoltData : public GameObjectData
 	uint32_t mcTextureHandle;
 	uint32_t gosTextureHandle;
 	float startUV;
-	float goalHeight;
+	float goalheight;
 } WeaponBoltData;
 
 class WeaponBolt : public GameObject
@@ -190,7 +190,7 @@ protected:
 	uint32_t mcTextureHandle;
 	uint32_t gosTextureHandle;
 	float startUV;
-	float goalHeight;
+	float goalheight;
 
 	// Member Functions
 	//-----------------
@@ -222,7 +222,7 @@ public:
 		mcTextureHandle = 0;
 		gosTextureHandle = 0xffffffff;
 		weaponShot.damage = 0.0f;
-		goalHeight = 0.0f;
+		goalheight = 0.0f;
 	}
 
 	~WeaponBolt(void) { destroy(void); }

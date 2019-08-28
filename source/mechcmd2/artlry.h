@@ -42,10 +42,10 @@ class ArtilleryChunk
 {
 
 public:
-	char commanderId;
-	char striketype;
+	wchar_t commanderId;
+	wchar_t striketype;
 	int32_t cellRC[2];
-	char secondsToImpact;
+	wchar_t secondsToImpact;
 
 	uint32_t data;
 
@@ -85,7 +85,7 @@ class ArtilleryType : public ObjectType
 {
 
 public:
-	puint8_t frameList; // Pointer to JMiles shape file binary
+	uint8_t* frameList; // Pointer to JMiles shape file binary
 	uint32_t frameCount; // Number of frames in shape file
 	uint32_t startFrame; // Frame in List to start with.
 	float frameRate; // Speed at which frames playback
@@ -105,7 +105,7 @@ public:
 	float fontScale;
 	float fontXOffset;
 	float fontYOffset;
-	uint32_t fontColor;
+	uint32_t fontcolour;
 
 	int32_t numExplosions;
 	float* explosionOffsetX;
@@ -149,16 +149,16 @@ typedef union _ArtilleryInfo {
 		float timeToBlind; // How int32_t do I return sensor data.
 		int16_t sensorSystemIndex;
 		float contactUpdate;
-		char timeString[5];
+		wchar_t timeString[5];
 		uint32_t explosionOffFlags;
 	} strike;
 } ArtilleryInfo;
 
 typedef struct _ArtilleryData : public GameObjectData
 {
-	char artilleryType;
-	char teamId;
-	char commanderId;
+	wchar_t artilleryType;
+	wchar_t teamId;
+	wchar_t commanderId;
 	ArtilleryInfo info;
 	int32_t effectId;
 
@@ -174,9 +174,9 @@ class Artillery : public GameObject
 	// Data Members
 
 public:
-	char artilleryType;
-	char teamId;
-	char commanderId;
+	wchar_t artilleryType;
+	wchar_t teamId;
+	wchar_t commanderId;
 	ArtilleryInfo info;
 	int32_t effectId;
 

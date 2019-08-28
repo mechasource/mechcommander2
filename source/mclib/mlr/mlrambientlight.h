@@ -7,7 +7,7 @@
 #ifndef MLR_MLRAMBIENTLIGHT_HPP
 #define MLR_MLRAMBIENTLIGHT_HPP
 
-#include <mlr/mlrlight.hpp>
+#include "mlr/mlrlight.h"
 
 namespace MidLevelRenderer
 {

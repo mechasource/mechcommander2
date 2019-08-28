@@ -36,7 +36,7 @@ KeyboardRef::init()
 	// clear out old stuff first
 	clear();
 	FullPathFileName path;
-	switch (Environment.screenWidth)
+	switch (Environment.screenwidth)
 	{
 	case 640:
 		path.init(artPath, "mcui_keyref_640", ".fit");
@@ -81,7 +81,7 @@ KeyboardRef::update()
 void
 KeyboardRef::render()
 {
-	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, 0xff000000);
 	listBox.render();
 	LogisticsScreen::render();
@@ -91,11 +91,11 @@ void
 KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 {
 	listBox.removeAllItems(true);
-	char shift[32];
-	char control[32];
-	char alt[32];
-	char descText[128];
-	char keysString[128];
+	wchar_t shift[32];
+	wchar_t control[32];
+	wchar_t alt[32];
+	wchar_t descText[128];
+	wchar_t keysString[128];
 	cLoadString(IDS_SHIFT, shift, 31);
 	cLoadString(IDS_CONTROL, control, 31);
 	cLoadString(IDS_ALT, alt, 31);

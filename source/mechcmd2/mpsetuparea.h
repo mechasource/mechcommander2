@@ -20,10 +20,10 @@ MPSetupArea.h			: Interface for the MPSetupArea component.
 
 class aButton;
 
-class aColorPicker : public aObject
+class acolourPicker : public aObject
 {
 public:
-	aColorPicker(void);
+	acolourPicker(void);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 	void init(FitIniFile* file, const std::wstring_view& blockName);
@@ -33,22 +33,22 @@ public:
 	virtual void update(void);
 	virtual int32_t handleMessage(uint32_t message, uint32_t who);
 	virtual void move(float offsetX, float offsetY);
-	void setColor0(int32_t color);
-	int32_t getColor0(void) const { return color0; }
-	void setColor1(int32_t color);
-	int32_t getColor1(void) const { return color1; }
+	void setcolour0(int32_t color);
+	int32_t getcolour0(void) const { return color0; }
+	void setcolour1(int32_t color);
+	int32_t getcolour1(void) const { return color1; }
 
 protected:
 	aRect mainRect;
 
 	aText tab0text;
-	aRect tab0ColorOutlineRect;
-	aRect tab0ColorRect;
+	aRect tab0colourOutlineRect;
+	aRect tab0colourRect;
 	aButton tab0Button;
 
 	aText tab1text;
-	aRect tab1ColorOutlineRect;
-	aRect tab1ColorRect;
+	aRect tab1colourOutlineRect;
+	aRect tab1colourRect;
 	aButton tab1Button;
 
 	aObject colorPlaneStatic;
@@ -66,7 +66,7 @@ public:
 	aStyle1TextListItem()
 	{
 		hasAnimation = false;
-		normalColor = 0xff808080;
+		normalcolour = 0xff808080;
 	}
 	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
 	virtual void render(void);
@@ -74,7 +74,7 @@ public:
 protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
-	int32_t normalColor;
+	int32_t normalcolour;
 };
 
 class aInsigniaListItem : public aListItem
@@ -120,9 +120,9 @@ private:
 	aComboBox unitNameComboBox;
 	aDropList insigniaDropList;
 
-	aColorPicker colorPicker;
-	int32_t baseColor;
-	int32_t stripeColor;
+	acolourPicker colorPicker;
+	int32_t basecolour;
+	int32_t stripecolour;
 
 	SimpleCamera mechCamera;
 	bool bPaintSchemeInitialized;

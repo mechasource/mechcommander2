@@ -7,7 +7,7 @@
 #ifndef MLR_MLRNGONCLOUD_HPP
 #define MLR_MLRNGONCLOUD_HPP
 
-#include <mlr/mlreffect.hpp>
+#include "mlr/mlreffect.h"
 
 namespace MidLevelRenderer
 {
@@ -33,7 +33,7 @@ public:
 	~MLRNGonCloud(void);
 
 	void SetData(
-		pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data);
+		const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data);
 
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 	uint32_t Clip(MLRClippingState, GOSVertexPool*);
@@ -52,10 +52,10 @@ public:
 
 protected:
 	size_t numOfVertices;
-	pcsize_t usedNrOfNGons;
+	const size_t* usedNrOfNGons;
 
-	static std::vector<Stuff::RGBAColor>* clipExtraColors;
-	std::vector<Stuff::RGBAColor> specialClipColors;
+	static std::vector<Stuff::RGBAcolour>* clipExtracolours;
+	std::vector<Stuff::RGBAcolour> specialClipcolours;
 
 	static std::vector<MLRClippingState>* clipPerVertex;
 

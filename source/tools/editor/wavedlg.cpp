@@ -11,7 +11,7 @@ WaveDlg.cpp			: Implementation of the WaveDlg component.
 void
 WaveDlg::Init()
 {
-	char buffer[256];
+	wchar_t buffer[256];
 	itoa((alphaDeep >> 24) & 0x000000ff, buffer, 10);
 	((CEdit*)GetDlgItem(IDC_ALPHA_DEEP))->SetWindowText(buffer);
 	_gcvt((alphaElevation), 6, buffer);
@@ -40,7 +40,7 @@ WaveDlg::OnOK()
 void
 WaveDlg::UpdateData()
 {
-	char buffer[256];
+	wchar_t buffer[256];
 	((CEdit*)GetDlgItem(IDC_ALPHA_DEEP))->GetWindowText(buffer, 256);
 	alphaDeep = atoi(buffer);
 	alphaDeep <<= 24;

@@ -15,24 +15,24 @@
 
 // #include <windows.h>
 // #include <string.h>
-// #include "gameos.hpp"
+// //#include "gameos.hpp"
 
 union {
 	uint32_t numval;
-	char buffer[4];
+	wchar_t buffer[4];
 } readtype32;
 
 std::unique_ptr<uint8_t> LZPacketBuffer;
 size_t LZPacketBufferSize = 512000;
 
-extern char CDInstallPath[];
+extern wchar_t CDInstallPath[];
 void __stdcall EnterWindowMode();
 void __stdcall EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
-char FileMissingString[512];
-char CDMissingString[1024];
-char MissingTitleString[256];
+wchar_t FileMissingString[512];
+wchar_t CDMissingString[1024];
+wchar_t MissingTitleString[256];
 
 //---------------------------------------------------------------------------
 //	class FastFile member functions
@@ -252,7 +252,7 @@ FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 		{
 			if (!LZPacketBuffer)
 			{
-				LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
+				LZPacketBuffer = (uint8_t*)malloc(LZPacketBufferSize);
 				if (!LZPacketBuffer)
 					return 0;
 			}
@@ -260,7 +260,7 @@ FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 			{
 				LZPacketBufferSize = m_files[fastFileHandle].fentry.size;
 				free(LZPacketBuffer);
-				LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
+				LZPacketBuffer = (uint8_t*)malloc(LZPacketBufferSize);
 				if (!LZPacketBuffer)
 					return 0;
 			}
@@ -277,7 +277,7 @@ FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 					{
 						openFailed = true;
 						EnterWindowMode();
-						char data[2048];
+						wchar_t data[2048];
 						sprintf(data, FileMissingString, m_fileName, CDMissingString);
 						uint32_t result1 = MessageBox(
 							nullptr, data, MissingTitleString, MB_OKCANCEL | MB_ICONWARNING);
@@ -305,12 +305,12 @@ FastFile::readFast(int32_t fastFileHandle, PVOID bfr, int32_t size)
 				if (m_useLZCompress)
 				{
 					decompLength = LZDecomp(
-						(puint8_t)bfr, LZPacketBuffer, m_files[fastFileHandle].fentry.size);
+						(uint8_t*)bfr, LZPacketBuffer, m_files[fastFileHandle].fentry.size);
 				}
 				else
 				{
 					decompLength = m_files[fastFileHandle].fentry->realSize;
-					int32_t error = uncompress((puint8_t)bfr, &decompLength, LZPacketBuffer,
+					int32_t error = uncompress((uint8_t*)bfr, &decompLength, LZPacketBuffer,
 						m_files[fastFileHandle].fentry.size);
 					if (error != Z_OK)
 						STOP(("Error %d UnCompressing File %s from FastFile %s", error,
@@ -354,7 +354,7 @@ FastFile::readFastRAW(int32_t fastFileHandle, PVOIDbfr, int32_t size)
 			{
 				openFailed = true;
 				EnterWindowMode();
-				char data[2048];
+				wchar_t data[2048];
 				sprintf(data, FileMissingString, m_fileName, CDMissingString);
 				uint32_t result1 =
 					MessageBox(nullptr, data, MissingTitleString, MB_OKCANCEL | MB_ICONWARNING);

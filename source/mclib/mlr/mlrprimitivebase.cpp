@@ -51,9 +51,9 @@ std::vector<Stuff::Vector2DScalar>* MLRPrimitiveBase::clipExtraTexCoords;
 #if COLOR_AS_DWORD
 std::vector<uint32_t>
 #else
-std::vector<RGBAColor>
+std::vector<RGBAcolour>
 #endif
-	* MLR_I_C_PMesh::clipExtraColors;
+	* MLR_I_C_PMesh::clipExtracolours;
 
 std::vector<uint16_t>* MLRPrimitiveBase::clipExtraLength;
 
@@ -78,14 +78,14 @@ MLRPrimitiveBase::InitializeClass()
 	clipExtraTexCoords =
 		new std::vector<Stuff::Vector2DScalar>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraTexCoords);
-	clipExtraColors = new std::vector<
+	clipExtracolours = new std::vector<
 #if COLOR_AS_DWORD
 		uint32_t
 #else
-		RGBAColor
+		RGBAcolour
 #endif
 		>(Limits::Max_Number_Primitives_Per_Frame);
-	Register_Object(clipExtraColors);
+	Register_Object(clipExtracolours);
 	clipExtraLength = new std::vector<uint16_t>(Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraLength);
 	clipBuffer = new ClipPolygon2[2];
@@ -111,8 +111,8 @@ MLRPrimitiveBase::TerminateClass()
 	delete clipExtraCoords;
 	Unregister_Object(clipExtraTexCoords);
 	delete clipExtraTexCoords;
-	Unregister_Object(clipExtraColors);
-	delete clipExtraColors;
+	Unregister_Object(clipExtracolours);
+	delete clipExtracolours;
 	Unregister_Object(clipExtraLength);
 	delete clipExtraLength;
 	Unregister_Object(DefaultData);
@@ -212,7 +212,7 @@ MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
+MLRPrimitiveBase::SetSubprimitiveLengths(uint8_t* data, int32_t l)
 {
 	// Check_Object(this);
 	lengths.AssignData(data, l);
@@ -221,7 +221,7 @@ MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t* data, pint32_t len)
+MLRPrimitiveBase::GetSubprimitiveLengths(uint8_t** data, int32_t* len)
 {
 	// Check_Object(this);
 	*data = lengths.GetData();
@@ -254,7 +254,7 @@ MLRPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRPrimitiveBase::GetCoordData(Point3D** data, psize_t dataSize)
+MLRPrimitiveBase::GetCoordData(Point3D** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = coords.GetData();
@@ -275,7 +275,7 @@ MLRPrimitiveBase::SetTexCoordData(const Stuff::Vector2DScalar* data, size_t data
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRPrimitiveBase::GetTexCoordData(Stuff::Vector2DScalar** data, psize_t dataSize)
+MLRPrimitiveBase::GetTexCoordData(Stuff::Vector2DScalar** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = texCoords.GetData();
@@ -362,64 +362,64 @@ MidLevelRenderer::CreateIndexedIcosahedron(
 	switch (icoInfo.type)
 	{
 	case MLR_I_PMeshClassID:
-		return CreateIndexedIcosahedron_NoColor_NoLit(icoInfo, &(*states)[0]);
+		return CreateIndexedIcosahedron_Nocolour_NoLit(icoInfo, &(*states)[0]);
 		break;
 	case MLR_I_C_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_NoLit(icoInfo, &(*states)[0]);
+		return CreateIndexedIcosahedron_colour_NoLit(icoInfo, &(*states)[0]);
 		break;
 	case MLR_I_L_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_Lit(icoInfo, &(*states)[0]);
+		return CreateIndexedIcosahedron_colour_Lit(icoInfo, &(*states)[0]);
 		break;
 	case MLR_I_DT_PMeshClassID:
-		return CreateIndexedIcosahedron_NoColor_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_Nocolour_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_C_DT_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_colour_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_L_DT_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_Lit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_colour_Lit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_MT_PMeshClassID:
-		return CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(icoInfo, states);
+		return CreateIndexedIcosahedron_Nocolour_NoLit_MultiTexture(icoInfo, states);
 		break;
 	case MLR_I_DeT_PMeshClassID:
-		return CreateIndexedIcosahedron_NoColor_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_Nocolour_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_C_DeT_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_colour_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_L_DeT_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_Lit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_colour_Lit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_TMeshClassID:
-		return CreateIndexedTriIcosahedron_NoColor_NoLit(icoInfo, &(*states)[0]);
+		return CreateIndexedTriIcosahedron_Nocolour_NoLit(icoInfo, &(*states)[0]);
 		break;
 	case MLR_I_C_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_NoLit(icoInfo, &(*states)[0]);
+		return CreateIndexedTriIcosahedron_colour_NoLit(icoInfo, &(*states)[0]);
 		break;
 	case MLR_I_L_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_Lit(icoInfo, &(*states)[0]);
+		return CreateIndexedTriIcosahedron_colour_Lit(icoInfo, &(*states)[0]);
 		break;
 	case MLR_I_DeT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
+		return CreateIndexedTriIcosahedron_Nocolour_NoLit_DetTex(
 			icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_C_DeT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_NoLit_DetTex(
+		return CreateIndexedTriIcosahedron_colour_NoLit_DetTex(
 			icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_L_DeT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_Lit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedTriIcosahedron_colour_Lit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_DT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
+		return CreateIndexedTriIcosahedron_Nocolour_NoLit_2Tex(
 			icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_C_DT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedTriIcosahedron_colour_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_L_DT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_Lit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedTriIcosahedron_colour_Lit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_TerrainClassID:
 		return CreateIndexedTriIcosahedron_TerrainTest(icoInfo, &(*states)[0], &(*states)[1]);

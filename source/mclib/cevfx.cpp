@@ -24,7 +24,7 @@ extern void
 AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum, int32_t hotX,
 	int32_t hotY, PVOID tempBuffer, int32_t reverse, int32_t scaleUp);
 extern void
-AG_shape_lookaside(puint8_t table);
+AG_shape_lookaside(uint8_t* table);
 extern void
 AG_shape_draw(
 	PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
@@ -34,15 +34,15 @@ AG_shape_translate_draw(
 // void memclear(PVOID Dest,size_t Length);
 //---------------------------------------------------------------------------
 // Static Globals
-puint8_t shapeBuffer16 = nullptr;
-puint8_t shapeBuffer32 = nullptr;
-puint8_t shapeBuffer64 = nullptr;
-puint8_t shapeBuffer128 = nullptr;
-puint8_t shapeBuffer256 = nullptr;
+uint8_t* shapeBuffer16 = nullptr;
+uint8_t* shapeBuffer32 = nullptr;
+uint8_t* shapeBuffer64 = nullptr;
+uint8_t* shapeBuffer128 = nullptr;
+uint8_t* shapeBuffer256 = nullptr;
 
 //---------------------------------------------------------------------------
-VFXElement::VFXElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
-	puint8_t fTable, bool noScale, bool upScale) :
+VFXElement::VFXElement(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+	uint8_t* fTable, bool noScale, bool upScale) :
 	Element(-_y)
 {
 	shapeTable = _shape;
@@ -74,8 +74,8 @@ VFXElement::VFXElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, b
 }
 
 //---------------------------------------------------------------------------
-VFXElement::VFXElement(puint8_t _shape, float _x, float _y, int32_t frame, bool rev,
-	puint8_t fTable, bool noScale, bool upScale) :
+VFXElement::VFXElement(uint8_t* _shape, float _x, float _y, int32_t frame, bool rev,
+	uint8_t* fTable, bool noScale, bool upScale) :
 	Element(-_y)
 {
 	shapeTable = _shape;
@@ -106,7 +106,7 @@ VFXElement::VFXElement(puint8_t _shape, float _x, float _y, int32_t frame, bool 
 #endif
 }
 
-extern puint8_t tempBuffer;
+extern uint8_t* tempBuffer;
 //---------------------------------------------------------------------------
 void
 VFXElement::draw(void)
@@ -117,7 +117,7 @@ VFXElement::draw(void)
 	{
 		//----------------------------------------------------------------
 		// Check if shape is actually valid.
-		if ((*(pint32_t)shapeTable != *(pint32_t) "1.10"))
+		if ((*(int32_t*)shapeTable != *(int32_t*) "1.10"))
 			return;
 		if (!reverse)
 		{
@@ -132,7 +132,7 @@ VFXElement::draw(void)
 		else // 45Pixel mechs dealt with here.
 		{
 			if (!tempBuffer)
-				tempBuffer = (puint8_t)systemHeap->Malloc(MAX_X * MAX_Y);
+				tempBuffer = (uint8_t*)systemHeap->Malloc(MAX_X * MAX_Y);
 			if (fadeTable)
 			{
 				AG_shape_lookaside(fadeTable);
@@ -278,7 +278,7 @@ int32_t mechCmdr1PaletteLookup[256];
 
 //---------------------------------------------------------------------------
 void
-VFXShapeElement::init(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+VFXShapeElement::init(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
 	uint32_t* fTable, float _z, float tZ)
 {
 	gosASSERT(_shape != nullptr);
@@ -345,7 +345,7 @@ VFXShapeElement::getTextureHandle(int32_t height)
 			gos_NewEmptyTexture(gos_Texture_Keyed, "ShapeTable", height, gosHint_DisableMipmap);
 	}
 	textureMemoryHandle = textureResult;
-	actualHeight = height;
+	actualheight = height;
 	//-------------------------------------------------------------------
 	// Try setting up the texture buffer here instead of right before
 	// we force D3D to draw the damned thing.  Maybe helps LockTexture?
@@ -369,100 +369,100 @@ VFXShapeElement::drawShape(void)
 	gPane.window = &gWindow;
 	gPane.x0 = gPane.y0 = 0;
 	gWindow.stencil = gWindow.shadow = nullptr;
-	int32_t textureWidth = 0;
+	int32_t texturewidth = 0;
 	int32_t maxFrames = VFX_shape_count(shapeTable[0]);
 	if (frameNum[0] >= maxFrames)
 		frameNum[0] = maxFrames - 1;
 	int32_t textureSize = VFX_shape_bounds(shapeTable[0], frameNum[0]);
 	int32_t xRes = textureSize >> 16;
 	int32_t yRes = textureSize & 0x0000ffff;
-	if (actualHeight == -1)
+	if (actualheight == -1)
 	{
 		if ((xRes < 16) && (yRes < 16))
 		{
 			if (!shapeBuffer16)
-				shapeBuffer16 = (puint8_t)systemHeap->Malloc(16 * 16);
+				shapeBuffer16 = (uint8_t*)systemHeap->Malloc(16 * 16);
 			gWindow.buffer = shapeBuffer16;
 			memset(gWindow.buffer, 0, 16 * 16);
 			gPane.x1 = gPane.y1 = 16;
 			gWindow.x_max = gWindow.y_max = 15;
-			textureWidth = 16;
+			texturewidth = 16;
 		}
 		else if ((xRes < 32) && (yRes < 32))
 		{
 			if (!shapeBuffer32)
-				shapeBuffer32 = (puint8_t)systemHeap->Malloc(32 * 32);
+				shapeBuffer32 = (uint8_t*)systemHeap->Malloc(32 * 32);
 			gWindow.buffer = shapeBuffer32;
 			memset(gWindow.buffer, 0, 32 * 32);
 			gPane.x1 = gPane.y1 = 32;
 			gWindow.x_max = gWindow.y_max = 31;
-			textureWidth = 32;
+			texturewidth = 32;
 		}
 		else if ((xRes < 64) && (yRes < 64))
 		{
 			if (!shapeBuffer64)
-				shapeBuffer64 = (puint8_t)systemHeap->Malloc(64 * 64);
+				shapeBuffer64 = (uint8_t*)systemHeap->Malloc(64 * 64);
 			gWindow.buffer = shapeBuffer64;
 			memset(gWindow.buffer, 0, 64 * 64);
 			gPane.x1 = gPane.y1 = 64;
 			gWindow.x_max = gWindow.y_max = 63;
-			textureWidth = 64;
+			texturewidth = 64;
 		}
 		else if ((xRes < 128) && (yRes < 128))
 		{
 			if (!shapeBuffer128)
-				shapeBuffer128 = (puint8_t)systemHeap->Malloc(128 * 128);
+				shapeBuffer128 = (uint8_t*)systemHeap->Malloc(128 * 128);
 			gWindow.buffer = shapeBuffer128;
 			memset(gWindow.buffer, 0, 128 * 128);
 			gPane.x1 = gPane.y1 = 128;
 			gWindow.x_max = gWindow.y_max = 127;
-			textureWidth = 128;
+			texturewidth = 128;
 		}
 		else if ((xRes < 256) && (yRes < 256))
 		{
 			if (!shapeBuffer256)
-				shapeBuffer256 = (puint8_t)systemHeap->Malloc(256 * 256);
+				shapeBuffer256 = (uint8_t*)systemHeap->Malloc(256 * 256);
 			gWindow.buffer = shapeBuffer256;
 			memset(gWindow.buffer, 0, 256 * 256);
 			gPane.x1 = gPane.y1 = 256;
 			gWindow.x_max = gWindow.y_max = 255;
-			textureWidth = 256;
+			texturewidth = 256;
 		}
 	}
 	else
 	{
-		switch (actualHeight)
+		switch (actualheight)
 		{
 		case 16:
 			if (!shapeBuffer16)
-				shapeBuffer16 = (puint8_t)systemHeap->Malloc(16 * 16);
+				shapeBuffer16 = (uint8_t*)systemHeap->Malloc(16 * 16);
 			gWindow.buffer = shapeBuffer16;
 			break;
 		case 32:
 			if (!shapeBuffer32)
-				shapeBuffer32 = (puint8_t)systemHeap->Malloc(32 * 32);
+				shapeBuffer32 = (uint8_t*)systemHeap->Malloc(32 * 32);
 			gWindow.buffer = shapeBuffer32;
 			break;
 		case 64:
 			if (!shapeBuffer64)
-				shapeBuffer64 = (puint8_t)systemHeap->Malloc(64 * 64);
+				shapeBuffer64 = (uint8_t*)systemHeap->Malloc(64 * 64);
 			gWindow.buffer = shapeBuffer64;
 			break;
 		case 128:
 			if (!shapeBuffer128)
-				shapeBuffer128 = (puint8_t)systemHeap->Malloc(128 * 128);
+				shapeBuffer128 = (uint8_t*)systemHeap->Malloc(128 * 128);
 			gWindow.buffer = shapeBuffer128;
 			break;
 		case 256:
 			if (!shapeBuffer256)
-				shapeBuffer256 = (puint8_t)systemHeap->Malloc(256 * 256);
+				shapeBuffer256 = (uint8_t*)systemHeap->Malloc(256 * 256);
 			gWindow.buffer = shapeBuffer256;
 			break;
 		}
-		memset(gWindow.buffer, 0, actualHeight * actualHeight);
-		gPane.x1 = gPane.y1 = actualHeight;
-		gWindow.x_max = gWindow.y_max = actualHeight - 1;
-		textureWidth = actualHeight;
+		memset(gWindow.buffer, 0, actualheight * actualheight);
+		gPane.x1 = gPane.y1 = actualheight;
+		gWindow.x_max = gWindow.y_max = actualheight - 1;
+		texturewidth = actualheight;
 	}
 	//------------------------------------------
 	// Draw the shapes in order to the buffer
@@ -470,17 +470,17 @@ VFXShapeElement::drawShape(void)
 	xHS = 0.0;
 	yHS = 0.0;
 	float uxHS = 0.0, uyHS = 0.0;
-	textureFactor = float(textureWidth) * Camera::globalScaleFactor;
+	textureFactor = float(texturewidth) * Camera::globalScaleFactor;
 	if (!tempBuffer)
-		tempBuffer = (puint8_t)systemHeap->Malloc(MAX_X * MAX_Y);
+		tempBuffer = (uint8_t*)systemHeap->Malloc(MAX_X * MAX_Y);
 	while (shapeTable[i] && (i < MAX_ELEMENT_SHAPES))
 	{
 		int32_t oldHSX, oldHSY;
 		int32_t HS = VFX_shape_origin(shapeTable[i], frameNum[i]);
 		oldHSX = HS >> 16;
 		oldHSY = HS & 0x0000ffff;
-		uxHS = float(textureWidth) * oldHSX / xRes;
-		uyHS = float(textureWidth) * oldHSY / yRes;
+		uxHS = float(texturewidth) * oldHSX / xRes;
+		uyHS = float(texturewidth) * oldHSY / yRes;
 		xHS = uxHS * Camera::globalScaleFactor;
 		yHS = uyHS * Camera::globalScaleFactor;
 		AG_shape_transform(
@@ -495,12 +495,12 @@ VFXShapeElement::drawShape(void)
 	// Copy 8 bit data to 32 bit texture surface using table
 	// Could easily assemblify and much improve speed!
 	uint32_t* textureMemory = textureData.pTexture;
-	puint8_t bufferMemory = gWindow.buffer;
+	uint8_t* bufferMemory = gWindow.buffer;
 	if (fadeTable)
 	{
-		for (i = 0; i < textureWidth; i++)
+		for (i = 0; i < texturewidth; i++)
 		{
-			for (size_t j = 0; j < textureWidth; j++)
+			for (size_t j = 0; j < texturewidth; j++)
 			{
 				*textureMemory = fadeTable[*bufferMemory];
 				bufferMemory++;
@@ -510,10 +510,10 @@ VFXShapeElement::drawShape(void)
 	}
 	else
 	{
-		// memclear(textureMemory,textureWidth * textureWidth);	//Nothing to
+		// memclear(textureMemory,texturewidth * texturewidth);	//Nothing to
 		// draw.  Wipe it.
 		memset(textureMemory, 0,
-			textureWidth * textureWidth); // Nothing to draw.  Wipe it.
+			texturewidth * texturewidth); // Nothing to draw.  Wipe it.
 	}
 	//------------------------
 	// Unlock the texture
@@ -525,7 +525,7 @@ void
 VFXShapeElement::setTextureHandle(uint32_t handle, int32_t height)
 {
 	textureMemoryHandle = handle;
-	actualHeight = height;
+	actualheight = height;
 	//-------------------------------------------------------------------
 	// Try setting up the texture buffer here instead of right before
 	// we force D3D to draw the damned thing.  Maybe helps LockTexture?
@@ -620,7 +620,7 @@ TextureElement::init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx
 	topZ = tZ;
 	xHS = hsx;
 	yHS = hsy;
-	tWidth = tW;
+	twidth = tW;
 	textureMemoryHandle = textureHandle;
 }
 
@@ -631,7 +631,7 @@ TextureElement::draw(void)
 	//-------------------------------------
 	// Nothing else to do with this bUt
 	// -gosDraw!
-	float textureFactor = float(tWidth) * Camera::globalScaleFactor;
+	float textureFactor = float(twidth) * Camera::globalScaleFactor;
 	xHS *= Camera::globalScaleFactor;
 	yHS *= Camera::globalScaleFactor;
 	//----------------------------

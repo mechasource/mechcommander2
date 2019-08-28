@@ -254,14 +254,14 @@ public:
 //---------------------------------------------------------------------------
 typedef struct _MechData : public MoverData
 {
-	char chassisClass;
+	wchar_t chassisClass;
 	int32_t chassisBR;
 
 	int32_t variantID;
-	char variantName[64];
+	wchar_t variantName[64];
 
-	char legStatus;
-	char torsoStatus;
+	wchar_t legStatus;
+	wchar_t torsoStatus;
 
 	uint8_t actuator[NUM_ACTUATORS];
 	uint8_t gyro;
@@ -293,7 +293,7 @@ typedef struct _MechData : public MoverData
 
 	float maxWeaponDamage;
 
-	char longName[MAXLEN_MECH_LONGNAME];
+	wchar_t longName[MAXLEN_MECH_LONGNAME];
 	int32_t pilotNum;
 
 	bool captureable;
@@ -323,16 +323,16 @@ class BattleMech : public Mover
 	// Data Members
 
 public:
-	char chassisClass; // none, light, medium, heavy, assault
+	wchar_t chassisClass; // none, light, medium, heavy, assault
 	int32_t chassisBR; // chassis Battle Rating
 
 	int32_t variantID; // need to store this for logistics
-	char variantName[64]; // user defined
+	wchar_t variantName[64]; // user defined
 
 	//------------------
 	// Additional status
-	char legStatus; // normal, hurting, impaired, disabled
-	char torsoStatus; // normal, impaired
+	wchar_t legStatus; // normal, hurting, impaired, disabled
+	wchar_t torsoStatus; // normal, impaired
 
 	//--------------------------------------
 	// Additional Critical Component Indices
@@ -369,7 +369,7 @@ public:
 
 	float maxWeaponDamage; // max total damage possible
 
-	char longName[MAXLEN_MECH_LONGNAME]; // Used by logistics (and the
+	wchar_t longName[MAXLEN_MECH_LONGNAME]; // Used by logistics (and the
 		// interface) to get int32_t name.
 	int32_t pilotNum; // Used by logistics to restore pilot on return.
 
@@ -465,15 +465,15 @@ public:
 
 	void updateMoveStateGoal(void);
 
-	bool updateMovePath(float& newRotate, char& newThrottleSetting, int32_t& newGestureStateGoal,
+	bool updateMovePath(float& newRotate, wchar_t& newThrottleSetting, int32_t& newGestureStateGoal,
 		int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle, float& facingRotate);
 
-	bool netUpdateMovePath(float& newRotate, char& newThrottleSetting, int32_t& newGestureStateGoal,
+	bool netUpdateMovePath(float& newRotate, wchar_t& newThrottleSetting, int32_t& newGestureStateGoal,
 		int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle);
 
-	void setNextMovePath(char& newThrottleSetting, int32_t& newGestureStateGoal);
+	void setNextMovePath(wchar_t& newThrottleSetting, int32_t& newGestureStateGoal);
 
-	void setControlSettings(float& newRotate, char& newThrottleSetting,
+	void setControlSettings(float& newRotate, wchar_t& newThrottleSetting,
 		int32_t& newGestureStateGoal, int32_t& minThrottle, int32_t& maxThrottle,
 		float& facingRotate);
 

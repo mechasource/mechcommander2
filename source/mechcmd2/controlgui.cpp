@@ -70,7 +70,7 @@ extern bool useLeftRightMouseProfile;
 extern bool drawGUIOn; // Used to shut off GUI for Screen Shots and Movie Mode
 extern bool paintingMyVtol;
 
-#define TEXT_SKIP 5.f * Environment.screenHeight / 600.f
+#define TEXT_SKIP 5.f * Environment.screenheight / 600.f
 #define CHAT_DISPLAY_TIME 30
 
 int32_t __cdecl sortStats(PCVOID pPlayer1, PCVOID pPlayer2);
@@ -138,7 +138,7 @@ ControlGui::ControlGui()
 		infoWnd = new InfoWindow;
 	}
 	objectiveInfos = 0;
-	swapResolutions(Environment.screenWidth);
+	swapResolutions(Environment.screenwidth);
 	resultsTime = 0;
 	twoMinWarningPlayed = false;
 	thirtySecondWarningPlayed = false;
@@ -299,7 +299,7 @@ ControlGui::render(bool bPaused)
 			{
 				time = 0;
 			}
-			char buffer[32];
+			wchar_t buffer[32];
 			uint32_t minutes = time / 60;
 			uint32_t seconds = time % 60;
 			sprintf(buffer, "%03ld : %02ld", minutes, seconds);
@@ -334,9 +334,9 @@ ControlGui::render(bool bPaused)
 		renderChatText();
 		// l XLocation = 80
 		// l YLocation = 505
-		// l Width = 41
-		// l Height = 34
-		// l Color = 0xff000000
+		// l width = 41
+		// l height = 34
+		// l colour = 0xff000000
 		// b outline = FALSE
 		// flash the rp tab if we just got kudos
 		if (LogisticsData::instance->rpJustAdded)
@@ -348,8 +348,8 @@ ControlGui::render(bool bPaused)
 			}
 			else if (tabFlashTime > .25)
 			{
-				float scaleX = Environment.screenWidth <= 1024 ? Environment.screenWidth : 1024;
-				float scaleY = Environment.screenHeight <= 768 ? Environment.screenHeight : 768;
+				float scaleX = Environment.screenwidth <= 1024 ? Environment.screenwidth : 1024;
+				float scaleY = Environment.screenheight <= 768 ? Environment.screenheight : 768;
 				RECT rect = {51 * scaleX / 640.f + ControlGui::hiResOffsetX,
 					317 * scaleY / 480.f + ControlGui::hiResOffsetY,
 					74 * scaleX / 640.f + ControlGui::hiResOffsetX,
@@ -415,8 +415,8 @@ ControlGui::renderResults()
 				t0 = missionResultsMoveInfo[j].time;
 				t1 = missionResultsMoveInfo[j + 1].time;
 				p0 =
-					(missionResultsMoveInfo[j].position) * ((float)Environment.screenWidth) / 640.f;
-				p1 = (missionResultsMoveInfo[j + 1].position) * ((float)Environment.screenWidth) / 640.f;
+					(missionResultsMoveInfo[j].position) * ((float)Environment.screenwidth) / 640.f;
+				p1 = (missionResultsMoveInfo[j + 1].position) * ((float)Environment.screenwidth) / 640.f;
 				break;
 			}
 		}
@@ -431,7 +431,7 @@ ControlGui::renderResults()
 		{
 			delta = missionResultsMoveInfo[OBJECTVE_MOVE_COUNT - 1].position - missionStatusInfos[0].location[0].y;
 			// grey down the screen
-			RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+			RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 			drawEmptyRect(rect, 0x44000000);
 			if (resultsTime < missionResultsMoveInfo[OBJECTVE_MOVE_COUNT - 1].time + .25)
 				startObjectives(1);
@@ -443,7 +443,7 @@ ControlGui::renderResults()
 		}
 		missionStatusRect.rect.top += delta;
 		missionStatusRect.rect.bottom += delta;
-		char text[256];
+		wchar_t text[256];
 		if (Team::home->objectives.Status() == OS_SUCCESSFUL)
 			cLoadString(IDS_MISSION_SUCCESS, text, 256);
 		else
@@ -464,8 +464,8 @@ ControlGui::renderResults()
 		float fadeTime = objectiveTime - objectiveMoveInfo[OBJECTVE_MOVE_COUNT - 1].time - 3.0f - Team::home->objectives.Count();
 		if (!neverEndingStory && (fadeTime > 0.f))
 		{
-			int32_t color = interpolateColor(0x00000000, 0xff000000, fadeTime / 1.0f);
-			RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+			int32_t color = interpolatecolour(0x00000000, 0xff000000, fadeTime / 1.0f);
+			RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 			drawRect(rect, color);
 		}
 	}
@@ -497,8 +497,8 @@ ControlGui::RenderObjectives()
 			{
 				t0 = objectiveMoveInfo[j].time;
 				t1 = objectiveMoveInfo[j + 1].time;
-				p0 = (objectiveMoveInfo[j].position) * ((float)Environment.screenWidth) / 640.f;
-				p1 = (objectiveMoveInfo[j + 1].position) * ((float)Environment.screenWidth) / 640.f;
+				p0 = (objectiveMoveInfo[j].position) * ((float)Environment.screenwidth) / 640.f;
+				p1 = (objectiveMoveInfo[j + 1].position) * ((float)Environment.screenwidth) / 640.f;
 				break;
 			}
 		}
@@ -530,7 +530,7 @@ ControlGui::RenderObjectives()
 			return;
 		}
 		// draw "Primary"
-		char buffer[256];
+		wchar_t buffer[256];
 		cLoadString(IDS_PRIMARY, buffer, 245);
 		drawShadowText(0xffffffff, 0xff000000, guiFont.getTempHandle(), OBJECTIVEHEADERLEFT,
 			OBJECTIVESTOP, 1, buffer, 0, guiFont.getSize());
@@ -593,8 +593,8 @@ ControlGui::RenderObjectives()
 		if (renderStatusInfo) // draw the total
 		{
 			pos += OBJECTIVESSKIP;
-			char total[256];
-			char total2[256];
+			wchar_t total[256];
+			wchar_t total2[256];
 			cLoadString(IDS_TOTAL, total2, 255);
 			sprintf(total, total2, sum);
 			uint32_t width = guiFont.width(total);
@@ -653,7 +653,7 @@ ControlGui::renderPlayerStatus(float xDelta)
 							IDS_MP_STATS_LOSSES
 							};
 
-		char text[256];
+		wchar_t text[256];
 		for ( i = 0; i < 4; i++ )
 		{
 			cLoadString( textIDs[i], text, 255 );
@@ -692,9 +692,9 @@ ControlGui::renderObjective(
 		values in arithmetic expressions can be bad news if any intermediate
 		result is negative */
 		int32_t width, height;
-		int32_t descWidth;
-		int32_t dotWidth;
-		char total[64];
+		int32_t descwidth;
+		int32_t dotwidth;
+		wchar_t total[64];
 		int32_t amount = pObjective->Status(Team::home->objectives) == OS_SUCCESSFUL
 			? pObjective->ResourcePoints()
 			: 0;
@@ -706,24 +706,24 @@ ControlGui::renderObjective(
 		// draw .............
 		uint32_t tmpULong1, tmpULong2;
 		gos_TextStringLength(&tmpULong1, &tmpULong2, pObjective->LocalizedDescription());
-		descWidth = (int32_t)tmpULong1;
+		descwidth = (int32_t)tmpULong1;
 		height = (int32_t)tmpULong2;
 		gos_TextStringLength(&tmpULong1, &tmpULong2, "....................");
-		dotWidth = (int32_t)tmpULong1;
+		dotwidth = (int32_t)tmpULong1;
 		height = (int32_t)tmpULong2;
-		gosASSERT(0 < dotWidth);
-		float dotRealWidth = (((float)dotWidth) / 20.f);
-		float totalLength = (OBJECTIVESTOTALRIGHT - width - xPos - descWidth);
-		int32_t numberOfDots = ((float)totalLength) / dotRealWidth;
+		gosASSERT(0 < dotwidth);
+		float dotRealwidth = (((float)dotwidth) / 20.f);
+		float totalLength = (OBJECTIVESTOTALRIGHT - width - xPos - descwidth);
+		int32_t numberOfDots = ((float)totalLength) / dotRealwidth;
 		if (3 > numberOfDots)
 		{
 			numberOfDots = 3;
 		}
-		const std::wstring_view& dots = (const std::wstring_view&)_alloca(sizeof(char) * (numberOfDots + 1));
+		const std::wstring_view& dots = (const std::wstring_view&)_alloca(sizeof(wchar_t) * (numberOfDots + 1));
 		for (size_t i = 0; i < numberOfDots - 2; i++)
 			dots[i] = '.';
 		dots[i] = 0;
-		float dotFinalLength = dotRealWidth * (float)(numberOfDots - 2);
+		float dotFinalLength = dotRealwidth * (float)(numberOfDots - 2);
 		drawShadowText(color, 0xff000000, guiFont.getTempHandle(),
 			OBJECTIVESTOTALRIGHT - width - dotFinalLength, yPos, 0, dots, 0, guiFont.getSize());
 	}
@@ -1221,12 +1221,12 @@ ControlButton::render()
 		gos_DrawQuads(location, 4);
 		if (data->textID)
 		{
-			char buffer[256];
+			wchar_t buffer[256];
 			cLoadString(data->textID, buffer, 256);
 			uint32_t height = data->textFont.height();
 			data->textFont.render(buffer, location[0].x,
 				(location[0].y + location[2].y) / 2 - height / 2 + 1, location[2].x - location[0].x,
-				location[2].y - location[0].y, data->textColors[state], 0, 2);
+				location[2].y - location[0].y, data->textcolours[state], 0, 2);
 		}
 	}
 }
@@ -1466,42 +1466,42 @@ ControlButton::makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data)
 	{
 		SPEW((0, "makeUVs given an Invalid state\n"));
 	}
-	float width = data.textureWidth;
-	float height = data.textureHeight;
+	float width = data.texturewidth;
+	float height = data.textureheight;
 	float right = left + width;
 	float bottom = top + height;
-	if (data.fileWidth && data.fileHeight) // will crash if 0
+	if (data.filewidth && data.fileheight) // will crash if 0
 	{
 		if (data.textureRotated)
 		{
-			vertices[0].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[0].u = right / (float)data.filewidth + (.1f / (float)data.filewidth);
 			;
-			vertices[1].u = left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[1].u = left / (float)data.filewidth + (.1f / (float)data.filewidth);
 			;
-			vertices[2].u = left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-			vertices[3].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-			vertices[0].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+			vertices[2].u = left / (float)data.filewidth + (.1f / (float)data.filewidth);
+			vertices[3].u = right / (float)data.filewidth + (.1f / (float)data.filewidth);
+			vertices[0].v = top / (float)data.fileheight + (.1f / (float)data.filewidth);
 			;
-			vertices[1].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+			vertices[1].v = top / (float)data.fileheight + (.1f / (float)data.filewidth);
 			;
-			vertices[2].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
+			vertices[2].v = bottom / (float)data.fileheight + (.1f / (float)data.fileheight);
 			;
-			vertices[3].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
+			vertices[3].v = bottom / (float)data.fileheight + (.1f / (float)data.fileheight);
 			;
 		}
 		else
 		{
 			{
 				vertices[0].u = vertices[1].u =
-					left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+					left / (float)data.filewidth + (.1f / (float)data.filewidth);
 				;
 				vertices[2].u = vertices[3].u =
-					right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+					right / (float)data.filewidth + (.1f / (float)data.filewidth);
 				vertices[0].v = vertices[3].v =
-					top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+					top / (float)data.fileheight + (.1f / (float)data.filewidth);
 				;
 				vertices[1].v = vertices[2].v =
-					bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
+					bottom / (float)data.fileheight + (.1f / (float)data.fileheight);
 			}
 		}
 	}
@@ -1615,7 +1615,7 @@ void
 ControlGui::renderVehicleTab()
 {
 	int32_t cost = -1;
-	char buffer[256];
+	wchar_t buffer[256];
 	LogisticsData::instance->rpJustAdded = 0;
 	for (size_t i = 0; i < LAST_VEHICLE; i++)
 	{
@@ -1646,7 +1646,7 @@ ControlGui::renderVehicleTab()
 	int32_t left = RPLEFT;
 	int32_t top = RPTOP;
 	// draw in RP
-	char originalStr[256];
+	wchar_t originalStr[256];
 	cLoadString(IDS_RP, originalStr, 256);
 	sprintf(buffer, originalStr, (int32_t)LogisticsData::instance->getResourcePoints());
 	// We are there.  Start flashing.
@@ -1800,7 +1800,7 @@ ControlGui::getVehicleName(int32_t& ID)
 			return vehiclePilots[i - REPAIR_VEHICLE];
 		}
 	}
-	//	char s[1024];
+	//	wchar_t s[1024];
 	//	sprintf(s, "getvehiclename: ID = %d", ID);
 	//	PAUSE((s));
 	return 0;
@@ -1851,14 +1851,14 @@ ControlGui::renderHelpText()
 {
 	if (helpTextID)
 	{
-		char buffer[1024];
+		wchar_t buffer[1024];
 		cLoadString(helpTextID, buffer, 1024);
 		uint32_t width, height;
 		width = helpFont.width(buffer);
 		height = helpFont.height(buffer, width);
 		gos_TextStringLength(&width, &height, buffer);
-		gos_TextSetRegion(HELPAREA_LEFT, HELPAREA_BOTTOM - 3 * height, Environment.screenWidth,
-			Environment.screenHeight);
+		gos_TextSetRegion(HELPAREA_LEFT, HELPAREA_BOTTOM - 3 * height, Environment.screenwidth,
+			Environment.screenheight);
 		drawShadowText(0xffffffff, 0xff000000, helpFont.getTempHandle(), HELPAREA_LEFT,
 			HELPAREA_BOTTOM - height, true, buffer, false, helpFont.getSize());
 		if (helpTextHeaderID)
@@ -1954,7 +1954,7 @@ void
 ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlButton* Buttons,
 	ButtonData* Data, const std::wstring_view& str, aFont* font)
 {
-	char path[256];
+	wchar_t path[256];
 	for (size_t i = 0; i < buttonCount; ++i)
 	{
 		sprintf(path, "%s%ld", str, i);
@@ -1962,7 +1962,7 @@ ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlB
 		int32_t result = buttonFile.seekBlock(path);
 		if (result != NO_ERROR)
 		{
-			char errorStr[256];
+			wchar_t errorStr[256];
 			sprintf(errorStr, "couldn't find button %s", path);
 			Assert(0, 0, errorStr);
 			continue;
@@ -1972,10 +1972,10 @@ ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlB
 		buttonFile.readIdLong("HelpCaption", Data[i].helpTextHeader);
 		buttonFile.readIdLong("HelpDesc", Data[i].helpTextID);
 		buttonFile.readIdLong("TextID", Data[i].textID);
-		buttonFile.readIdLong("TextNormal", Data[i].textColors[0]);
-		buttonFile.readIdLong("TextPressed", Data[i].textColors[1]);
-		buttonFile.readIdLong("TextDisabled", Data[i].textColors[2]);
-		buttonFile.readIdLong("TextHighlight", Data[i].textColors[3]);
+		buttonFile.readIdLong("TextNormal", Data[i].textcolours[0]);
+		buttonFile.readIdLong("TextPressed", Data[i].textcolours[1]);
+		buttonFile.readIdLong("TextDisabled", Data[i].textcolours[2]);
+		buttonFile.readIdLong("TextHighlight", Data[i].textcolours[3]);
 		if (font)
 			Data[i].textFont = *font;
 		int32_t x, y, width, height;
@@ -1983,8 +1983,8 @@ ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlB
 		buttonFile.readIdLong("YLocation", y);
 		x += ControlGui::hiResOffsetX;
 		y += ControlGui::hiResOffsetY;
-		buttonFile.readIdLong("Width", width);
-		buttonFile.readIdLong("Height", height);
+		buttonFile.readIdLong("width", width);
+		buttonFile.readIdLong("height", height);
 		buttonFile.readIdLong("HelpCaption", Data[i].helpTextHeader);
 		buttonFile.readIdLong("HelpDesc", Data[i].helpTextID);
 		buttonFile.readIdBoolean("texturesRotated", Data[i].textureRotated);
@@ -2004,7 +2004,7 @@ ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlB
 		}
 		if (0 == Buttons[i].data->textureHandle)
 		{
-			char file[256];
+			wchar_t file[256];
 			strcpy(file, artPath);
 			strcat(file, Buttons[i].data->fileName);
 			strcat(file, ".tga");
@@ -2015,8 +2015,8 @@ ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlB
 			gos_LockTexture(gosID, 0, 0, &textureData);
 			gos_UnLockTexture(gosID);
 			Buttons[i].data->textureHandle = ID;
-			Buttons[i].data->fileWidth = textureData.Width;
-			Buttons[i].data->fileHeight = Buttons[i].data->fileWidth;
+			Buttons[i].data->filewidth = textureData.width;
+			Buttons[i].data->fileheight = Buttons[i].data->filewidth;
 		}
 		if (NO_ERROR != buttonFile.readIdLong("UNormal", Buttons[i].data->stateCoords[0][0]))
 			Buttons[i].data->stateCoords[0][0] = -1.f;
@@ -2040,8 +2040,8 @@ ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlB
 			if (NO_ERROR != buttonFile.readIdLong("VHighlight", Buttons[i].data->stateCoords[3][1]))
 				Buttons[i].data->stateCoords[3][1] = -1.f;
 		}
-		buttonFile.readIdLong("UWidth", Buttons[i].data->textureWidth);
-		buttonFile.readIdLong("VHeight", Buttons[i].data->textureHeight);
+		buttonFile.readIdLong("Uwidth", Buttons[i].data->texturewidth);
+		buttonFile.readIdLong("Vheight", Buttons[i].data->textureheight);
 		Buttons[i].disable(0);
 		Buttons[i].press(0);
 	}
@@ -2075,7 +2075,7 @@ ControlGui::initStatics(FitIniFile& file)
 	staticInfos = new StaticInfo[staticCount];
 	for (size_t i = 0; i < staticCount; i++)
 	{
-		char buffer[32];
+		wchar_t buffer[32];
 		sprintf(buffer, "Static%ld", i);
 		staticInfos[i].init(file, buffer, hiResOffsetX, hiResOffsetY);
 	}
@@ -2115,7 +2115,7 @@ ControlGui::initStatics(FitIniFile& file)
 	file.readIdLong("HeaderLeft", OBJECTIVEHEADERLEFT);
 	file.readIdLong("HeaderTop", OBJECTIVESTOP);
 	objectiveInfos = new StaticInfo[objectiveInfoCount + 3];
-	char blockName[64];
+	wchar_t blockName[64];
 	for (i = 0; i < objectiveInfoCount; i++)
 	{
 		sprintf(blockName, "ObjStatic%ld", i);
@@ -2188,33 +2188,33 @@ ControlGui::initStatics(FitIniFile& file)
 	file.readIdLong("right", missionStatusRect.rect.right);
 	file.readIdLong("top", missionStatusRect.rect.top);
 	file.readIdLong("bottom", missionStatusRect.rect.bottom);
-	file.readIdLong("ResultsTextColor", missionStatusRect.color);
+	file.readIdLong("ResultsTextcolour", missionStatusRect.color);
 	file.seekBlock("ChatPlayerNameRect");
 	int32_t left, top, width, height;
 	file.readIdLong("xlocation", left);
 	file.readIdLong("yLocation", top);
-	file.readIdLong("Width", width);
-	file.readIdLong("Height", height);
+	file.readIdLong("width", width);
+	file.readIdLong("height", height);
 	((aObject*)&playerNameEdit)->init(left + 2, top, width, height);
 	playerNameEdit.setFont(IDS_CHAT_PLAYERNAME_FONT);
 	timerFont.init(IDS_OUTLINE_CHAT_FONT);
-	int32_t fontHeight = playerNameEdit.getFontObject()->height();
-	playerNameEdit.resize(playerNameEdit.width(), fontHeight);
-	playerNameEdit.setTextColor(0xffffffff);
+	int32_t fontheight = playerNameEdit.getFontObject()->height();
+	playerNameEdit.resize(playerNameEdit.width(), fontheight);
+	playerNameEdit.setTextcolour(0xffffffff);
 	file.seekBlock("ChatTextRect");
 	file.readIdLong("xlocation", left);
 	file.readIdLong("yLocation", top);
-	file.readIdLong("Width", width);
-	file.readIdLong("Height", height);
+	file.readIdLong("width", width);
+	file.readIdLong("height", height);
 	((aObject*)&chatEdit)->init(left, top, width, height);
 	chatEdit.font.init(IDS_OUTLINE_CHAT_FONT);
-	chatEdit.setColor(0xffffffff);
-	chatEdit.resize(chatEdit.width(), fontHeight);
+	chatEdit.setcolour(0xffffffff);
+	chatEdit.resize(chatEdit.width(), fontheight);
 	((aObject*)&personalEdit)->init(left, top, width, height);
 	personalEdit.setFont(IDS_OUTLINE_CHAT_FONT);
-	personalEdit.setTextColor(0xffffffff);
-	personalEdit.resize(personalEdit.width(), fontHeight);
-	personalEdit.setColor(0); // make tranparent
+	personalEdit.setTextcolour(0xffffffff);
+	personalEdit.resize(personalEdit.width(), fontheight);
+	personalEdit.setcolour(0); // make tranparent
 }
 
 void
@@ -2230,7 +2230,7 @@ ControlGui::initRects(FitIniFile& file)
 	if (rectCount)
 	{
 		rectInfos = new RectInfo[rectCount];
-		char buffer[32];
+		wchar_t buffer[32];
 		for (size_t i = 0; i < rectCount; i++)
 		{
 			sprintf(buffer, "Rect%ld", i);
@@ -2257,9 +2257,9 @@ void
 ControlGui::swapResolutions(int32_t resolution)
 {
 	FitIniFile buttonFile;
-	char path[256];
+	wchar_t path[256];
 	strcpy(path, artPath);
-	char fileName[32];
+	wchar_t fileName[32];
 	if (resolution == 1600)
 		strcpy(fileName, "buttonlayout1600.fit");
 	else if (resolution == 1280)
@@ -2275,7 +2275,7 @@ ControlGui::swapResolutions(int32_t resolution)
 	strcat(path, fileName);
 	if (NO_ERROR != buttonFile.open(path))
 	{
-		char error[256];
+		wchar_t error[256];
 		sprintf(error, "couldn't find the file %s", path);
 		Assert(0, 0, error);
 	}
@@ -2338,8 +2338,8 @@ ControlGui::swapResolutions(int32_t resolution)
 		buttonData = new ButtonData[buttonCount];
 	memset(buttonData, 0, buttonCount * sizeof(ButtonData));
 	ControlButton::initButtons(buttonFile, buttonCount, buttons, buttonData, "Button");
-	// getButton( REPAIR )->setColor( 0 );
-	getButton(SALVAGE)->setColor(0);
+	// getButton( REPAIR )->setcolour( 0 );
+	getButton(SALVAGE)->setcolour(0);
 	result = buttonFile.seekBlock("VehicleButtons");
 	if (result != NO_ERROR)
 	{
@@ -2423,7 +2423,7 @@ ControlGui::playMovie(const std::wstring_view& fileName)
 	// Chop everything but the actual name.
 	// Assume extension is BIK.
 	// Assume the movie is in data\movies.
-	char realName[1024];
+	wchar_t realName[1024];
 	_splitpath(fileName, nullptr, nullptr, realName, nullptr);
 	FullPathFileName movieName;
 	movieName.init(moviePath, realName, ".bik");
@@ -2471,10 +2471,10 @@ ControlGui::resultsDone()
 }
 
 void
-ControlButton::setColor(uint32_t newColor)
+ControlButton::setcolour(uint32_t newcolour)
 {
 	for (size_t i = 0; i < 4; i++)
-		location[i].argb = newColor;
+		location[i].argb = newcolour;
 }
 
 void
@@ -2552,7 +2552,7 @@ ControlGui::toggleChat(bool isTeamOnly)
 		personalEdit.getEntry(tmp);
 		if (tmp.Length())
 		{
-			char team = chatIsTeamOnly ? MPlayer->getPlayerInfo(MPlayer->commanderid)->team : -1;
+			wchar_t team = chatIsTeamOnly ? MPlayer->getPlayerInfo(MPlayer->commanderid)->team : -1;
 			MPlayer->sendChat(0, team, (const std::wstring_view&)(const std::wstring_view&)tmp);
 		}
 		personalEdit.setFocus(0);
@@ -2576,7 +2576,7 @@ ControlGui::eatChatKey()
 }
 
 void
-ControlGui::setChatText(const std::wstring_view& playerName, const std::wstring_view& message, uint32_t color, uint32_t chatColor)
+ControlGui::setChatText(const std::wstring_view& playerName, const std::wstring_view& message, uint32_t color, uint32_t chatcolour)
 {
 	for (size_t i = 0; i < MAX_CHAT_COUNT - 1; i++)
 	{
@@ -2585,14 +2585,14 @@ ControlGui::setChatText(const std::wstring_view& playerName, const std::wstring_
 	i = MAX_CHAT_COUNT - 1;
 	gosASSERT(strlen(message) < 128);
 	gosASSERT(strlen(playerName) < 32);
-	chatInfos[i].backgroundColor = color;
+	chatInfos[i].backgroundcolour = color;
 	strcpy(chatInfos[i].message, message);
 	strcpy(chatInfos[i].playerName, playerName);
 	chatInfos[i].time = scenarioTime;
-	chatInfos[i].chatTextColor = chatColor;
-	int32_t totalHeight = chatEdit.font.height(message, chatEdit.width());
-	int32_t lineHeight = chatEdit.font.height("A", chatEdit.width());
-	chatInfos[i].messageLength = totalHeight / lineHeight;
+	chatInfos[i].chatTextcolour = chatcolour;
+	int32_t totalheight = chatEdit.font.height(message, chatEdit.width());
+	int32_t lineheight = chatEdit.font.height("A", chatEdit.width());
+	chatInfos[i].messageLength = totalheight / lineheight;
 	if (chatInfos[i].messageLength > 1)
 		chatInfos[i].messageLength--;
 	if (MPlayer && ChatWindow::instance())
@@ -2607,16 +2607,16 @@ ControlGui::renderChatText()
 	int32_t curLine = 0;
 	if (bChatting && MPlayer)
 	{
-		playerNameEdit.setColor(0xff007f00);
+		playerNameEdit.setcolour(0xff007f00);
 		if (MPlayer)
 		{
 			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
-			int32_t color = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
-			int32_t textColor = 0xff000000;
+			int32_t color = MPlayer->colors[pInfo->basecolour[BASECOLOR_TEAM]];
+			int32_t textcolour = 0xff000000;
 			if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
-				textColor = 0xffffffff;
-			playerNameEdit.setColor(color);
-			playerNameEdit.setTextColor(textColor);
+				textcolour = 0xffffffff;
+			playerNameEdit.setcolour(color);
+			playerNameEdit.setTextcolour(textcolour);
 			int32_t width = playerNameEdit.getFontObject()->width(pInfo->name) + playerNameEdit.getFontObject()->width(" ");
 			playerNameEdit.resize(width + 8, playerNameEdit.height());
 			playerNameEdit.setEntry(pInfo->name);
@@ -2659,26 +2659,26 @@ ControlGui::renderChatText()
 		{
 			if (chatInfos[i].messageLength)
 			{
-				int32_t color = chatInfos[i].backgroundColor;
-				int32_t textColor = 0xff000000;
+				int32_t color = chatInfos[i].backgroundcolour;
+				int32_t textcolour = 0xff000000;
 				if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
-					textColor = 0xffffffff;
+					textcolour = 0xffffffff;
 				chatEdit.resize(
 					chatEdit.width(), (chatEdit.height() + 2) * chatInfos[i].messageLength);
-				playerNameEdit.setColor(color);
-				playerNameEdit.setTextColor(textColor);
+				playerNameEdit.setcolour(color);
+				playerNameEdit.setTextcolour(textcolour);
 				playerNameEdit.move(0, curLine * (height + 1));
 				int32_t width = playerNameEdit.getFontObject()->width(chatInfos[i].playerName) + playerNameEdit.getFontObject()->width(" ");
 				playerNameEdit.resize(width + 8, playerNameEdit.height());
 				playerNameEdit.setEntry(chatInfos[i].playerName);
 				chatEdit.setText(chatInfos[i].message);
-				chatEdit.setColor(chatInfos[i].chatTextColor);
+				chatEdit.setcolour(chatInfos[i].chatTextcolour);
 				chatEdit.move(playerNameEdit.right() - chatEdit.left() + 4, curLine * (height + 1));
-				int32_t oldHeight = chatEdit.font.height();
-				chatEdit.resize(chatEdit.width(), chatInfos->messageLength * oldHeight);
+				int32_t oldheight = chatEdit.font.height();
+				chatEdit.resize(chatEdit.width(), chatInfos->messageLength * oldheight);
 				playerNameEdit.render();
 				chatEdit.render();
-				chatEdit.resize(chatEdit.width(), oldHeight);
+				chatEdit.resize(chatEdit.width(), oldheight);
 				chatEdit.move(0, -curLine * (height + 1));
 				playerNameEdit.move(0, -curLine * (height + 1));
 			}
@@ -2699,17 +2699,17 @@ ControlGui::isMoviePlaying()
 }
 
 bool
-ControlGui::playPilotVideo(MechWarrior* pPilot, char movieCode)
+ControlGui::playPilotVideo(MechWarrior* pPilot, wchar_t movieCode)
 {
 	// stupid name format = "Worm 1 filter.avi"
 	// CHANGED to "worm1"  for CD 8.3 reasons.
 	// -fs
-	char fileName[512];
+	wchar_t fileName[512];
 	strcpy(fileName, moviePath);
-	char realPilotName[8];
+	wchar_t realPilotName[8];
 	strncpy(realPilotName, pPilot->getName(), 7);
 	strcat(fileName, realPilotName); // swap in pilot name when videos are done
-	char tmp[3];
+	wchar_t tmp[3];
 	tmp[0] = movieCode;
 	tmp[1] = nullptr;
 	tmp[2] = nullptr;
@@ -2743,7 +2743,7 @@ ControlGui::showServerMissing()
 		// send a chat message
 		if (!bServerWarningShown)
 		{
-			char text[256];
+			wchar_t text[256];
 			cLoadString(IDS_SERVER_MIGRATING, text, 255);
 			setChatText("", text, 0, 0xffffffff);
 			bServerWarningShown = true;

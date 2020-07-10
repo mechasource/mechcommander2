@@ -22,7 +22,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\bin\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
@@ -48,16 +48,17 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="$(directxtk_dir)src;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="directx_pch.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
-				DebugInformationFormat="1"
+				DebugInformationFormat="3"
 				CallingConvention="2"
-				ForcedIncludeFiles="directx_pch.h"
+				ForcedIncludeFiles=""
 				EnablePREfast="true"
 				OmitDefaultLibName="true"
 			/>
@@ -72,11 +73,14 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				IgnoreAllDefaultLibraries="true"
+				Name="VCLinkerTool"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -86,6 +90,9 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -94,7 +101,8 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\bin\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="4"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
@@ -121,16 +129,17 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="$(directxtk_dir)src;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="directx_pch.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
-				DebugInformationFormat="1"
+				DebugInformationFormat="3"
 				CallingConvention="2"
-				ForcedIncludeFiles="directx_pch.h"
+				ForcedIncludeFiles=""
 				EnablePREfast="true"
 				OmitDefaultLibName="true"
 			/>
@@ -145,11 +154,14 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				IgnoreAllDefaultLibraries="true"
+				Name="VCLinkerTool"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -161,17 +173,20 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\bin\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -195,16 +210,17 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
+				AdditionalIncludeDirectories="$(directxtk_dir)src;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="directx_pch.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
-				DebugInformationFormat="1"
+				DebugInformationFormat="3"
 				CallingConvention="2"
-				ForcedIncludeFiles="directx_pch.h"
+				ForcedIncludeFiles=""
 				OmitDefaultLibName="true"
 			/>
 			<Tool
@@ -218,11 +234,16 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				IgnoreAllDefaultLibraries="true"
+				Name="VCLinkerTool"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -234,17 +255,20 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
 			OutputDirectory="..\bin\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -269,16 +293,17 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
+				AdditionalIncludeDirectories="$(directxtk_dir)src;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="directx_pch.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
-				DebugInformationFormat="1"
+				DebugInformationFormat="3"
 				CallingConvention="2"
-				ForcedIncludeFiles="directx_pch.h"
+				ForcedIncludeFiles=""
 				OmitDefaultLibName="true"
 			/>
 			<Tool
@@ -292,11 +317,16 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				IgnoreAllDefaultLibraries="true"
+				Name="VCLinkerTool"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -306,6 +336,9 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -323,10 +356,202 @@
 			<Filter
 				Name="directxtk12"
 				>
+				<File
+					RelativePath="..\directxtk\src\alphatesteffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\basiceffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\basicpostprocess.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\binaryreader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\commonstates.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\ddstextureloader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\debugeffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\descriptorheap.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\directxhelpers.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\dualpostprocess.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\dualtextureeffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\effectcommon.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\effectfactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\effectpipelinestatedescription.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\effecttexturefactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\environmentmapeffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\gamepad.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\geometricprimitive.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\geometry.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\graphicsmemory.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\keyboard.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\linearallocator.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\model.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\modelloadsdkmesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\modelloadvbo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\mouse.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\normalmapeffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\pbreffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\pbreffectfactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\primitivebatch.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\resourceuploadbatch.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\screengrab.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\simplemath.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\skinnedeffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\spritebatch.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\spritefont.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\tonemappostprocess.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\vertextypes.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\wictextureloader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\xboxddstextureloader.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
-				Name="COM"
+				Name="audio"
 				>
+				<File
+					RelativePath="..\directxtk\audio\audioengine.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\dynamicsoundeffectinstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\soundcommon.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\soundeffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\soundeffectinstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\wavebank.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\wavebankreader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\wavfilereader.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -337,6 +562,218 @@
 			<Filter
 				Name="directxtk12"
 				>
+				<File
+					RelativePath="..\directxtk\inc\audio.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\commonstates.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\ddstextureloader.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\descriptorheap.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\directxhelpers.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\effectpipelinestatedescription.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\effects.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\gamepad.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\geometricprimitive.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\graphicsmemory.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\keyboard.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\model.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\mouse.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\postprocess.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\primitivebatch.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\rendertargetstate.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\resourceuploadbatch.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\screengrab.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\simplemath.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\spritebatch.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\spritefont.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\vertextypes.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\wictextureloader.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\xboxddstextureloader.h"
+					>
+				</File>
+				<Filter
+					Name="june2010"
+					>
+					<File
+						RelativePath="..\directxtk\inc\june2010\comdecl.h"
+						>
+					</File>
+					<File
+						RelativePath="..\directxtk\inc\june2010\x3daudio.h"
+						>
+					</File>
+					<File
+						RelativePath="..\directxtk\inc\june2010\xapofx.h"
+						>
+					</File>
+					<File
+						RelativePath="..\directxtk\inc\june2010\xaudio2.h"
+						>
+					</File>
+					<File
+						RelativePath="..\directxtk\inc\june2010\xaudio2fx.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="inlines"
+				>
+				<File
+					RelativePath="..\directxtk\inc\simplemath.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="internals"
+				>
+				<File
+					RelativePath="..\directxtk\src\alignednew.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\bezier.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\binaryreader.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\d3dx12.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\dds.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\demandcreate.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\effectcommon.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\geometry.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\linearallocator.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\loaderhelpers.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\platformhelpers.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\sdkmesh.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\sharedresourcepool.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\vbo.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="data"
+				>
+				<File
+					RelativePath="..\directxtk\src\teapotdata.inc"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="audio"
+				>
+				<File
+					RelativePath="..\directxtk\audio\soundcommon.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\wavebankreader.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\wavfilereader.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -405,7 +842,11 @@
 				Name="precompiled"
 				>
 				<File
-					RelativePath=".\directx_pch.cpp"
+					RelativePath="..\pch\directx_pch.h"
+					>
+				</File>
+				<File
+					RelativePath="..\pch\stdinc.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -441,7 +882,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\directx_pch.h"
+					RelativePath="..\pch\stdinc.h"
 					>
 				</File>
 			</Filter>

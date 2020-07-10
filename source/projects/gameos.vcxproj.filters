@@ -6,51 +6,54 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Sources\gameos">
-      <UniqueIdentifier>{8a4aa02a-1eb6-4f49-9f0b-4779e75ef83b}</UniqueIdentifier>
+      <UniqueIdentifier>{de2bd1e8-3a1f-47fd-98ef-cb6c3ae64547}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\startup">
-      <UniqueIdentifier>{4781f468-ba49-4d85-937f-60b4933cd283}</UniqueIdentifier>
+      <UniqueIdentifier>{584439c5-b032-4358-8bc6-1dfe99ead819}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\raw pseudo c">
-      <UniqueIdentifier>{537a032c-674f-406d-a14f-3ca9f9243c6e}</UniqueIdentifier>
+      <UniqueIdentifier>{7bcd8048-21cb-4b8e-b2f9-5ab1f6413d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\raw pseudo c\includes">
+      <UniqueIdentifier>{5a441b75-81b5-422a-8936-fe2520ecad76}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Headers\gameos">
-      <UniqueIdentifier>{e9b8661f-969b-4a6b-afaa-5c90417b8cef}</UniqueIdentifier>
+      <UniqueIdentifier>{436697eb-d4a5-419a-899c-9b841ac43cd3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\xnamath">
-      <UniqueIdentifier>{c45ad5e6-e492-454b-9cc1-b2a061994824}</UniqueIdentifier>
+      <UniqueIdentifier>{cf987f9c-317c-41f9-9a52-5d23a9a9864b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\zlib">
+      <UniqueIdentifier>{69203ccb-5a45-42cd-b731-7d2d9e6ae810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{87ab825a-b4b5-4b6a-8dbf-eaa59bcc92aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Resources\gameos">
-      <UniqueIdentifier>{8e541321-3425-43e5-a976-95a07afd7027}</UniqueIdentifier>
+      <UniqueIdentifier>{d093b11a-cece-4a1a-8c50-4a17a4d04a01}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources\Registryscripts">
-      <UniqueIdentifier>{66e8587b-7390-410d-a067-aaddb29457fc}</UniqueIdentifier>
+      <UniqueIdentifier>{5943402a-2789-4790-85c3-b701373966a7}</UniqueIdentifier>
     </Filter>
     <Filter Include="build">
-      <UniqueIdentifier>{acf5e325-2dd5-458e-a57a-dc09151dc408}</UniqueIdentifier>
+      <UniqueIdentifier>{5cdc0895-58a3-44fd-8cf6-5f5e8d4a891b}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\WinDDK">
-      <UniqueIdentifier>{99cadae1-6ec8-4314-9e12-464444d44696}</UniqueIdentifier>
+      <UniqueIdentifier>{d5705c04-ff0a-4fbb-8961-42edffe65fe9}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\precompiled">
-      <UniqueIdentifier>{328388c7-c4ff-4ade-884d-6a80ec269069}</UniqueIdentifier>
+      <UniqueIdentifier>{6ac1b0f9-ce5a-44ac-8415-4bdaf96588f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\DLL">
-      <UniqueIdentifier>{710fb564-6c56-45a3-b1ef-2e5e9a5fa25a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\common">
-      <UniqueIdentifier>{1e186baf-b20e-4a41-986b-3d3be5bb957e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\zlib">
-      <UniqueIdentifier>{d029d258-3955-4d82-a36c-dd40be3bd582}</UniqueIdentifier>
+      <UniqueIdentifier>{053e8b73-ab5d-4099-8632-91cd38f75080}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -384,47 +387,68 @@
     <ClCompile Include="..\gameos\lib\x86\gameos\controlmanager.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\cpu.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\debugger.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
     <ClCompile Include="..\gameos\lib\x86\gameos\direct3d.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
     <ClCompile Include="..\gameos\lib\x86\gameos\directdraw.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\winmain.c">
-      <Filter>Sources\raw pseudo c</Filter>
-    </ClCompile>
-    <ClCompile Include="..\pch\stdinc.cpp">
-      <Filter>build\precompiled</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\winproc.c">
-      <Filter>Sources\raw pseudo c</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\windowsdebugging.c">
-      <Filter>Sources\raw pseudo c</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\windows.c">
-      <Filter>Sources\raw pseudo c</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\memorymanager.c">
-      <Filter>Sources\raw pseudo c</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\libraries.c">
+    <ClCompile Include="..\gameos\lib\x86\gameos\directinput.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
     <ClCompile Include="..\gameos\lib\x86\gameos\directx.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\directinput.c">
+    <ClCompile Include="..\gameos\lib\x86\gameos\dxrasterizer.obj.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\debugger.c">
+    <ClCompile Include="..\gameos\lib\x86\gameos\font3d.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
-    <ClCompile Include="..\gameos\lib\x86\gameos\cpu.c">
+    <ClCompile Include="..\gameos\lib\x86\gameos\libraries.c">
       <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\memorymanager.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\perf.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\registry.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\windows.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\windowsdebugging.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\winmain.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\winproc.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\gameos\lib\x86\gameos\ddraw_ida.h">
+      <Filter>Sources\raw pseudo c\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gameos\lib\x86\gameos\idaref.h">
+      <Filter>Sources\raw pseudo c\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gameos\include\3drasterizer.hpp">
+      <Filter>Headers\gameos</Filter>
+    </ClInclude>
     <ClInclude Include="..\gameos\include\acm.hpp">
       <Filter>Headers\gameos</Filter>
     </ClInclude>
@@ -465,9 +489,6 @@
       <Filter>Headers\gameos</Filter>
     </ClInclude>
     <ClInclude Include="..\gameos\include\fileio.hpp">
-      <Filter>Headers\gameos</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\filestream.hpp">
       <Filter>Headers\gameos</Filter>
     </ClInclude>
     <ClInclude Include="..\gameos\include\filetransfer.hpp">
@@ -608,23 +629,22 @@
     <ClInclude Include="..\gameos\include\zping.h">
       <Filter>Headers\gameos</Filter>
     </ClInclude>
-    <ClInclude Include="..\pch\stdinc.h">
-      <Filter>build\precompiled</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\3drasterizer.hpp">
-      <Filter>Headers\gameos</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\dplay.h">
-      <Filter>Headers\common</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\mechresources.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\gameos\lib\x86\gameos\idaref.h">
-      <Filter>Sources\raw pseudo c</Filter>
+    <ClInclude Include="..\gameos\src\resource.h">
+      <Filter>Resources\gameos</Filter>
     </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\gameos\src\gameos.rc">
+      <Filter>Resources\gameos</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

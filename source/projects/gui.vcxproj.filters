@@ -5,37 +5,37 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Sources\mechgui">
+      <UniqueIdentifier>{0923dc69-4090-46db-bf63-a952804cace4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\mechgui">
+      <UniqueIdentifier>{08fa8f11-18d2-4b5c-8955-0c3c8d92eda9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{7b2ecd1a-0fa3-4186-88b4-95d760ed7354}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resources\mechgui">
+      <UniqueIdentifier>{24b92c0e-571f-4383-899d-c76f3ff1e653}</UniqueIdentifier>
+    </Filter>
     <Filter Include="build">
-      <UniqueIdentifier>{e76656b6-5ba9-4fc7-9df8-44246c6e44ef}</UniqueIdentifier>
+      <UniqueIdentifier>{097de572-e90f-4d5d-a0b1-d8f6f0a28f6d}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\WinDDK">
-      <UniqueIdentifier>{17054647-a2c9-47c9-b8ed-c38edbba3a2e}</UniqueIdentifier>
+      <UniqueIdentifier>{dc376baf-bb83-4972-9cb9-3e493d2da42f}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\precompiled">
-      <UniqueIdentifier>{4d2fc811-e172-4b23-9cdd-ee5caeef5e82}</UniqueIdentifier>
+      <UniqueIdentifier>{4bf75a23-4c66-49e2-a9af-818f63b5a3a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\DLL">
-      <UniqueIdentifier>{28a402ea-2280-4f0e-bbef-bf7329a7f643}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\common">
-      <UniqueIdentifier>{a47bb544-d2d0-4e4c-8a8f-e34deec49175}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\mechgui">
-      <UniqueIdentifier>{a7af0fcb-d336-4f0e-8024-57d965974de4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\mechgui">
-      <UniqueIdentifier>{15499b5e-c3b3-4314-b77a-36d5837c1577}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\mechgui">
-      <UniqueIdentifier>{8fe957b2-e838-4bc3-a9cb-45a8e6e64816}</UniqueIdentifier>
+      <UniqueIdentifier>{c7e21b72-f25b-4048-bda3-feb2dc752c82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

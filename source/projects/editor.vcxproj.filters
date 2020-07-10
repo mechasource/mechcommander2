@@ -6,54 +6,54 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Sources\editor">
-      <UniqueIdentifier>{b77f2e51-77f8-475f-b149-f9855588f48c}</UniqueIdentifier>
+      <UniqueIdentifier>{a707e05d-7dcd-403d-8d75-6a97d6e05f8f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2">
-      <UniqueIdentifier>{93679ba7-f317-4183-81e7-2cbf889c43db}</UniqueIdentifier>
+      <UniqueIdentifier>{fab47eab-0c9d-4dbd-ab04-34b3c6806f2e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\extra">
-      <UniqueIdentifier>{20eb30c2-417c-4a36-a111-751eb3ebb1a6}</UniqueIdentifier>
+      <UniqueIdentifier>{ee5a55ba-7547-4061-8535-59ace7f130b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Headers\editor">
-      <UniqueIdentifier>{593dc230-8f9c-4c2b-81e5-18fc1c57a8f2}</UniqueIdentifier>
+      <UniqueIdentifier>{b4b623bf-dd73-44e3-a6f4-5a638944c977}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\extra">
-      <UniqueIdentifier>{f88625da-9893-430e-8782-9f5805dcbd48}</UniqueIdentifier>
+      <UniqueIdentifier>{3cbed649-3c37-421b-9ead-ce98f7fd8c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{3ae1698f-024d-4a81-a652-53f10f91d89a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Resources\editor">
-      <UniqueIdentifier>{0d1f5b58-99ce-4526-9c7c-2b3a986731f8}</UniqueIdentifier>
+      <UniqueIdentifier>{4d1fd8ab-4670-45fc-98f1-8e28bc6bf44c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources\bitmaps">
-      <UniqueIdentifier>{5a3498aa-9995-4706-ae4d-71cf3b9dae68}</UniqueIdentifier>
+      <UniqueIdentifier>{ecc423c9-87a8-4a77-9dac-cc604e382aba}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources\cursors">
-      <UniqueIdentifier>{c9961760-e230-4743-9e26-3e2b5715d24c}</UniqueIdentifier>
+      <UniqueIdentifier>{f606b92a-01f0-4e34-a09a-f9c9b0c0f008}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources\icons">
-      <UniqueIdentifier>{864606be-772e-4b69-b0e6-8ac725a55e79}</UniqueIdentifier>
+      <UniqueIdentifier>{52f3e20a-5f11-4d3a-b549-8f773b1bb623}</UniqueIdentifier>
     </Filter>
     <Filter Include="build">
-      <UniqueIdentifier>{708ef1b9-4913-4a87-a1c5-dbab1a2a1b5b}</UniqueIdentifier>
+      <UniqueIdentifier>{970e75bc-76d8-4c79-8176-082e0147c2f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\WinDDK">
-      <UniqueIdentifier>{8cc68802-3bec-42b1-898a-eac8ae70d368}</UniqueIdentifier>
+      <UniqueIdentifier>{548b00ca-9fc4-4c62-8345-fad97ad25bf0}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\precompiled">
-      <UniqueIdentifier>{03201280-41fb-4d49-9ef9-ecf7d7edc775}</UniqueIdentifier>
+      <UniqueIdentifier>{c5899ff7-1ef8-4dd6-9359-970194a9a919}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\DLL">
-      <UniqueIdentifier>{9ec21340-1a12-4d6a-8190-0df3132d10a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\common">
-      <UniqueIdentifier>{3e8f809b-cc15-4621-88cb-dd07108c95fc}</UniqueIdentifier>
+      <UniqueIdentifier>{18e451da-41bc-4f7f-a1c9-0c8202277f33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -252,7 +252,7 @@
     <ClCompile Include="..\tools\editor\wavedlg.cpp">
       <Filter>Sources\extra</Filter>
     </ClCompile>
-    <ClCompile Include="..\tools\editor\stdinc.cpp">
+    <ClCompile Include="..\pch\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
@@ -413,9 +413,6 @@
     <ClInclude Include="..\tools\editor\sundlg.h">
       <Filter>Headers\editor</Filter>
     </ClInclude>
-    <ClInclude Include="..\tools\editor\tacmaptga.h">
-      <Filter>Headers\editor</Filter>
-    </ClInclude>
     <ClInclude Include="..\tools\editor\targetareadlg.h">
       <Filter>Headers\editor</Filter>
     </ClInclude>
@@ -455,17 +452,17 @@
     <ClInclude Include="..\tools\editor\wavedlg.h">
       <Filter>Headers\extra</Filter>
     </ClInclude>
-    <ClInclude Include="..\tools\editor\resource.h">
-      <Filter>Resources\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tools\editor\stdinc.h">
-      <Filter>build\precompiled</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\mechresources.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tools\editor\resource.h">
+      <Filter>Resources\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

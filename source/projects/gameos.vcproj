@@ -22,10 +22,8 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			>
 			<Tool
@@ -46,7 +44,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -71,8 +68,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				
-				
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
@@ -105,10 +100,9 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			>
 			<Tool
@@ -129,7 +123,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -154,8 +147,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				
-				
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
@@ -189,10 +180,8 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -214,7 +203,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -239,8 +227,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				
-				
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
@@ -275,10 +261,8 @@
 		<Configuration
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -300,7 +284,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -325,8 +308,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				
-				
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
@@ -1132,6 +1113,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\gameos\lib\x86\gameos\dxrasterizer.obj.c"
+					>
+				</File>
+				<File
 					RelativePath="..\gameos\lib\x86\gameos\font3d.c"
 					>
 				</File>
@@ -1141,6 +1126,10 @@
 				</File>
 				<File
 					RelativePath="..\gameos\lib\x86\gameos\memorymanager.c"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\lib\x86\gameos\perf.c"
 					>
 				</File>
 				<File
@@ -1199,6 +1188,18 @@
 					RelativePath="..\gameos\lib\x86\gameos\winproc.c"
 					>
 				</File>
+				<Filter
+					Name="includes"
+					>
+					<File
+						RelativePath="..\gameos\lib\x86\gameos\ddraw_ida.h"
+						>
+					</File>
+					<File
+						RelativePath="..\gameos\lib\x86\gameos\idaref.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1206,10 +1207,6 @@
 			Filter="h;hh;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\gameos\lib\x86\gameos\idaref.h"
-				>
-			</File>
 			<Filter
 				Name="gameos"
 				>

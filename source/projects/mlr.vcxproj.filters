@@ -6,105 +6,105 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Sources\mlr">
-      <UniqueIdentifier>{8ff19a61-a734-4779-87b6-a0b98cdc8621}</UniqueIdentifier>
+      <UniqueIdentifier>{01e4b2d6-ec73-4ad9-bbe9-84e881030d07}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Geometries">
-      <UniqueIdentifier>{173124ca-6497-453f-a567-f945c15ad19e}</UniqueIdentifier>
+      <UniqueIdentifier>{2beef30a-fe0c-475b-bd96-cd838f682f2a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Geometries\Indexed Polygon Meshes">
-      <UniqueIdentifier>{05f2b599-ccd9-4617-b188-e46454626f75}</UniqueIdentifier>
+      <UniqueIdentifier>{9c512225-e97b-43be-9d1b-bfacb3887590}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Geometries\Indexed Triangle Meshes">
-      <UniqueIdentifier>{24aad790-5b22-4d13-9a31-1f65e13e58ec}</UniqueIdentifier>
+      <UniqueIdentifier>{18167a9c-ed64-4cd0-9b56-3dcd70348c75}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Geometries\Terrain">
-      <UniqueIdentifier>{b281d132-d28c-4aaa-89c0-19805982d0e2}</UniqueIdentifier>
+      <UniqueIdentifier>{f2cb3642-1e76-4368-8c89-acbc80a8625d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Lighting">
-      <UniqueIdentifier>{cb768cec-a3f2-4ba7-90d8-4bf86ee98909}</UniqueIdentifier>
+      <UniqueIdentifier>{e21acb8f-d11e-4d94-b6d0-04a85e8a82cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Sorting">
-      <UniqueIdentifier>{b7fd86e9-4d61-466e-ba8f-30b720f33773}</UniqueIdentifier>
+      <UniqueIdentifier>{4fcc2f99-51cf-4b0e-a2f4-1f74d371a157}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Texture">
-      <UniqueIdentifier>{1eaaee93-cee0-43ae-9a2e-7e7a83096fef}</UniqueIdentifier>
+      <UniqueIdentifier>{a5175dae-f1bc-41ff-9bc0-d616e846aae6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Rasterizer">
-      <UniqueIdentifier>{a61721c9-7e4c-4564-815c-7f60f78e40f6}</UniqueIdentifier>
+      <UniqueIdentifier>{f9eb2bbc-f72c-40ee-abd6-7f891695e818}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Clipping">
-      <UniqueIdentifier>{96c86d4a-3d15-4cb9-9f52-5eff599bb3d2}</UniqueIdentifier>
+      <UniqueIdentifier>{e1d79671-4ce1-49b9-becd-5ea025b589dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mlr\Effects">
-      <UniqueIdentifier>{d48154ad-63c2-4300-b339-8d53fcb80d88}</UniqueIdentifier>
+      <UniqueIdentifier>{758eb7c9-f3e2-4b93-bd25-d5f6b8946c20}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\extra">
-      <UniqueIdentifier>{f3126f18-3fd1-4c6f-9cb6-c44e257d8833}</UniqueIdentifier>
+      <UniqueIdentifier>{6bcd11ab-afa1-47ad-8ce4-1ea9682f96ad}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Headers\mlr">
-      <UniqueIdentifier>{863bdefa-8392-461a-94fc-f1f2558a9b2f}</UniqueIdentifier>
+      <UniqueIdentifier>{28f9dfe5-4d25-48c1-8879-190483149bab}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Geometries">
-      <UniqueIdentifier>{4a06d58b-37cc-47e5-a1a6-899fb3b43367}</UniqueIdentifier>
+      <UniqueIdentifier>{b20d47e9-222c-4578-869c-b73aaba9a0c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Geometries\Indexed Polygon Meshes">
-      <UniqueIdentifier>{23766f00-9ead-4958-80cc-4713498e71bb}</UniqueIdentifier>
+      <UniqueIdentifier>{499491a3-3f5c-4e07-a066-261eaf964b0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Geometries\Indexed Triangle Meshes">
-      <UniqueIdentifier>{88f4be7f-af44-4f6c-81b5-1bb5d2838d0a}</UniqueIdentifier>
+      <UniqueIdentifier>{196ebd6a-dd86-4af7-86ee-cdf27c118626}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Geometries\Terrain">
-      <UniqueIdentifier>{349682ff-95a1-47b0-a78f-8d9147ea1450}</UniqueIdentifier>
+      <UniqueIdentifier>{9907472f-e0f1-4159-8bd3-53e3e6743ae0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Lighting">
-      <UniqueIdentifier>{e1be152b-8331-4821-aee9-c0eaa4990d80}</UniqueIdentifier>
+      <UniqueIdentifier>{54607952-c7a2-4466-b532-69ff4d2cb82b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Sorting">
-      <UniqueIdentifier>{9b11cfeb-cf6b-4fba-8265-e59db9b6e605}</UniqueIdentifier>
+      <UniqueIdentifier>{f9d9a075-eed1-4e10-82ce-046f7228cc47}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Texture">
-      <UniqueIdentifier>{e32afe45-9906-4e7d-8a50-33b709ffa58d}</UniqueIdentifier>
+      <UniqueIdentifier>{3eca4e28-4489-4381-8f9b-dd69c2f2de08}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Rasterizer">
-      <UniqueIdentifier>{c738c288-9cc1-45ca-9cf3-6358fdcf95cb}</UniqueIdentifier>
+      <UniqueIdentifier>{97aa8786-12a2-45a9-af98-0ff5f858b2b0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Clipping">
-      <UniqueIdentifier>{a9661ecd-5fe7-4512-8934-890948ca3016}</UniqueIdentifier>
+      <UniqueIdentifier>{4303bf02-26d4-4032-8a67-28960342b3a6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mlr\Effects">
-      <UniqueIdentifier>{a08e6a49-9e4d-496d-b2fe-25142123ad51}</UniqueIdentifier>
+      <UniqueIdentifier>{8a28fde0-2e50-4b8b-b74f-3fc99155111c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\extra">
-      <UniqueIdentifier>{12c13ae5-c968-4d7e-91eb-1b00897abaae}</UniqueIdentifier>
+      <UniqueIdentifier>{8898014f-bedc-489a-a952-e49f515c2bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{5064b4e6-334e-4549-82ee-e85769c30306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\inlines">
+      <UniqueIdentifier>{d9007382-2f9b-47f6-80a7-e3136671e4b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Resources\mlr">
-      <UniqueIdentifier>{c416a971-78c0-4d99-ba74-0efc97e44f5d}</UniqueIdentifier>
+      <UniqueIdentifier>{08227831-2336-4276-9763-8d29d9f988bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="build">
-      <UniqueIdentifier>{bc9bde1d-e123-434d-be34-63618ec35336}</UniqueIdentifier>
+      <UniqueIdentifier>{6de1e3c0-3042-4a3a-9599-e3d5b315e9f3}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\WinDDK">
-      <UniqueIdentifier>{2ff99160-1397-4e4e-b1df-51aecfb5a98b}</UniqueIdentifier>
+      <UniqueIdentifier>{b132eeb1-0b9e-4e32-901c-a5612c1fad16}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\precompiled">
-      <UniqueIdentifier>{96cc0e05-411f-4fc4-be78-bd6fca801f4c}</UniqueIdentifier>
+      <UniqueIdentifier>{d5885b1d-5373-450d-ad35-c42d2d99afee}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\DLL">
-      <UniqueIdentifier>{71854007-1b61-458a-9c16-ad70a3e0ff33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\common">
-      <UniqueIdentifier>{37b5dad9-b8b1-4b13-a1df-f804aedfd5af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\mlr\inlines">
-      <UniqueIdentifier>{007a9972-86d6-4415-ac2b-62a79d046031}</UniqueIdentifier>
+      <UniqueIdentifier>{8395c294-4962-4254-9462-34328dc1beaa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +261,9 @@
     <ClCompile Include="..\mclib\mlr\mlrtrianglecloud.cpp">
       <Filter>Sources\mlr\Effects</Filter>
     </ClCompile>
+    <ClCompile Include="junktest.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
     <ClCompile Include="..\mclib\mlr\mlrheaders.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
@@ -269,170 +272,167 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\mclib\mlr\mlr.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr.h">
       <Filter>Headers\mlr</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrcliptrick.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrcliptrick.h">
       <Filter>Headers\mlr\Geometries</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrindexedprimitivebase.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrindexedprimitivebase.h">
       <Filter>Headers\mlr\Geometries</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrprimitivebase.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrprimitivebase.h">
       <Filter>Headers\mlr\Geometries</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrshape.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrshape.h">
       <Filter>Headers\mlr\Geometries</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_c_det_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_c_det_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_c_dt_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_c_dt_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_c_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_c_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_det_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_det_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_dt_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_dt_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_l_det_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_l_det_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_l_dt_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_l_dt_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_l_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_l_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_mt_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_mt_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_pmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_pmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Polygon Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_c_det_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_c_det_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_c_dt_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_c_dt_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_c_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_c_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_det_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_det_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_dt_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_dt_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_l_det_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_l_det_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_l_dt_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_l_dt_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_l_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_l_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_i_tmesh.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_i_tmesh.h">
       <Filter>Headers\mlr\Geometries\Indexed Triangle Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_terrain.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_terrain.h">
       <Filter>Headers\mlr\Geometries\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlr_terrain2.hpp">
+    <ClInclude Include="..\mclib\mlr\mlr_terrain2.h">
       <Filter>Headers\mlr\Geometries\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrambientlight.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrambientlight.h">
       <Filter>Headers\mlr\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrinfinitelight.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrinfinitelight.h">
       <Filter>Headers\mlr\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrinfinitelightwithfalloff.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrinfinitelightwithfalloff.h">
       <Filter>Headers\mlr\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrlight.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrlight.h">
       <Filter>Headers\mlr\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrlightmap.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrlightmap.h">
       <Filter>Headers\mlr\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrlookuplight.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrlookuplight.h">
       <Filter>Headers\mlr\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrpointlight.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrpointlight.h">
       <Filter>Headers\mlr\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrspotlight.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrspotlight.h">
       <Filter>Headers\mlr\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrsortbyorder.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrsortbyorder.h">
       <Filter>Headers\mlr\Sorting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrsorter.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrsorter.h">
       <Filter>Headers\mlr\Sorting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrstate.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrstate.h">
       <Filter>Headers\mlr\Sorting</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrtexture.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrtexture.h">
       <Filter>Headers\mlr\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrtexturepool.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrtexturepool.h">
       <Filter>Headers\mlr\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\gosimage.hpp">
+    <ClInclude Include="..\mclib\mlr\gosimage.h">
       <Filter>Headers\mlr\Rasterizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\gosimagepool.hpp">
+    <ClInclude Include="..\mclib\mlr\gosimagepool.h">
       <Filter>Headers\mlr\Rasterizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\gosvertex.hpp">
+    <ClInclude Include="..\mclib\mlr\gosvertex.h">
       <Filter>Headers\mlr\Rasterizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\gosvertex2uv.hpp">
+    <ClInclude Include="..\mclib\mlr\gosvertex2uv.h">
       <Filter>Headers\mlr\Rasterizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\gosvertexpool.hpp">
+    <ClInclude Include="..\mclib\mlr\gosvertexpool.h">
       <Filter>Headers\mlr\Rasterizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrclipper.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrclipper.h">
       <Filter>Headers\mlr\Clipping</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrclippingstate.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrclippingstate.h">
       <Filter>Headers\mlr\Clipping</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrcardcloud.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrcardcloud.h">
       <Filter>Headers\mlr\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlreffect.hpp">
+    <ClInclude Include="..\mclib\mlr\mlreffect.h">
       <Filter>Headers\mlr\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrindexedtrianglecloud.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrindexedtrianglecloud.h">
       <Filter>Headers\mlr\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrlinecloud.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrlinecloud.h">
       <Filter>Headers\mlr\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrngoncloud.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrngoncloud.h">
       <Filter>Headers\mlr\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrpointcloud.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrpointcloud.h">
       <Filter>Headers\mlr\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrtrianglecloud.hpp">
+    <ClInclude Include="..\mclib\mlr\mlrtrianglecloud.h">
       <Filter>Headers\mlr\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrheaders.hpp">
-      <Filter>build\precompiled</Filter>
-    </ClInclude>
-    <ClInclude Include="..\pch\stdinc.h">
-      <Filter>build\precompiled</Filter>
+    <ClInclude Include="..\include\mechclassids.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechresources.h">
       <Filter>Headers\common</Filter>
@@ -440,20 +440,28 @@
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\gosvertexmanipulation.inl">
-      <Filter>Headers\mlr\inlines</Filter>
+    <ClInclude Include="..\mclib\mlr\mlrheaders.h">
+      <Filter>build\precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrtrianglelighting.inl">
-      <Filter>Headers\mlr\inlines</Filter>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrtriangleclipping.inl">
-      <Filter>Headers\mlr\inlines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrprimitivelighting.inl">
-      <Filter>Headers\mlr\inlines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrprimitiveclipping.inl">
-      <Filter>Headers\mlr\inlines</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\mclib\mlr\gosvertexmanipulation.inl">
+      <Filter>Headers\inlines</Filter>
+    </None>
+    <None Include="..\mclib\mlr\mlrprimitiveclipping.inl">
+      <Filter>Headers\inlines</Filter>
+    </None>
+    <None Include="..\mclib\mlr\mlrprimitivelighting.inl">
+      <Filter>Headers\inlines</Filter>
+    </None>
+    <None Include="..\mclib\mlr\mlrtriangleclipping.inl">
+      <Filter>Headers\inlines</Filter>
+    </None>
+    <None Include="..\mclib\mlr\mlrtrianglelighting.inl">
+      <Filter>Headers\inlines</Filter>
+    </None>
   </ItemGroup>
 </Project>

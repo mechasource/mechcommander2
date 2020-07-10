@@ -3,36 +3,64 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="mechcommander"
+	OutputDirectory="$(SolutionDir)bin\$(PlatformName)_$(ConfigurationName)\"
+	IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -std:c++latest -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew"
-		AdditionalIncludeDirectories=".;$(IntDir);$(mech_inc);$(mclib_dir);$(gameos_dir)/include;$(pch_dir);$(mc2res_dir)"
+		AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -std:c++latest -permissive- -await -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew"
+		Optimization="3"
+		EnableIntrinsicFunctions="true"
+		FavorSizeOrSpeed="2"
+		OmitFramePointers="true"
+		AdditionalIncludeDirectories=".;$(IntDir);$(mech_inc);$(mclib_dir);$(directxtk_dir)/inc;$(gameos_dir)/include;$(pch_dir);$(mc2res_dir)"
 		PreprocessorDefinitions=""
+		StringPooling="true"
+		RuntimeLibrary="2"
+		EnableFunctionLevelLinking="true"
+		UsePrecompiledHeader="2"
+		PrecompiledHeaderThrough="stdinc.h"
+		CallingConvention="2"
+	/>
+	<Tool
+		Name="VCLibrarianTool"
+		IgnoreAllDefaultLibraries="true"
 	/>
 	<Tool
 		Name="VCLinkerTool"
 		AdditionalOptions="-ignore:4199 -pdbcompress"
-		AdditionalDependencies=""
-		Version="1.0"
+		AdditionalDependencies="kernel32.lib advapi32.lib ntdll.lib"
+		Version="2.1"
 		AdditionalLibraryDirectories="$(OutDir);$(IntDir)"
+		DelayLoadDLLs="advapi32.dll;comdlg32.dll;ole32.dll;oleaut32.dll;shell32.dll;shlwapi.dll"
+		GenerateDebugInformation="true"
+		SubSystem="2"
+		SetChecksum="true"
+		SupportUnloadOfDelayLoadedDLL="true"
+	/>
+	<Tool
+		Name="VCMIDLTool"
+		GenerateStublessProxies="true"
+		TypeLibraryName="$(IntDir)$(TargetName).tlb"
+		OutputDirectory="$(IntDir)"
+		HeaderFileName="$(IntDir)$(TargetName)_i.h"
+		DLLDataFileName=""
+		InterfaceIdentifierFileName="$(IntDir)$(TargetName)_i.c"
+		ProxyFileName="$(IntDir)$(TargetName)_p.c"
 	/>
 	<Tool
 		Name="VCResourceCompilerTool"
 		PreprocessorDefinitions="PLATFORM=$(PlatformName);PROJECTNAME=L\&quot;$(ProjectName)\&quot;;TARGETFILENAME=L\&quot;$(TargetFileName)\&quot;;TARGETEXT=L\&quot;$(TargetExt)\&quot;"
 		AdditionalIncludeDirectories=".;$(IntDir);$(mc2res_dir)"
 	/>
-    <Tool
-		Name="VCMIDLTool"
-		GenerateStublessProxies="true"
-		TypeLibraryName="$(IntDir)$(TargetName).tlb"
-		HeaderFileName="$(IntDir)$(TargetName)_i.h"
-		InterfaceIdentifierFileName="$(IntDir)$(TargetName)_i.c"
-		ProxyFileName="$(IntDir)$(TargetName)_p.c"
-	/>
 	<UserMacro
 		Name="gameos_dir"
 		Value="../gameos"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="directxtk_dir"
+		Value="../directxtk/"
 		PerformEnvironmentSet="true"
 	/>
 	<UserMacro
@@ -60,18 +88,9 @@
 		Value="../include"
 		PerformEnvironmentSet="true"
 	/>
-  <UserMacro
+	<UserMacro
 		Name="pch_dir"
 		Value="../pch"
 		PerformEnvironmentSet="true"
-	/>  
-  <UserMacro
-		Name="mfc42_include"
-		Value="H:\WinSDK\7600.16385.1\inc\mfc42"
-		PerformEnvironmentSet="true"
-	/>
-	<UserMacro
-		Name="mfc42_lib"
-		Value="H:\WinSDK\7600.16385.1\lib\mfc\$(PlatformName)"
 	/>
 </VisualStudioPropertySheet>

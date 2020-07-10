@@ -1,9 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets">
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
+    <IgnoreWarnIntDirInTempDetected>true</IgnoreWarnIntDirInTempDetected>
     <gameos_dir>../gameos</gameos_dir>
+    <directxtk_dir>../directxtk/</directxtk_dir>
     <mclib_dir>../mclib</mclib_dir>
     <mechcmd2_dir>../mechcmd2</mechcmd2_dir>
     <mechgui_dir>../mechcmd2/mechgui</mechgui_dir>
@@ -11,21 +13,70 @@
     <mech_inc>../include</mech_inc>
     <pch_dir>../pch</pch_dir>
   </PropertyGroup>
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)bin\$(PlatformName)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup>
+    <Midl>
+      <OutputDirectory>$(IntDir)\</OutputDirectory>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
+      <HeaderFileName>$(IntDir)$(TargetName)_i.h</HeaderFileName>
+      <DllDataFileName />
+      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
+    </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;$(IntDir);$(mech_inc);$(mclib_dir);$(gameos_dir)/include;$(pch_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-await -Zo -Zc:__cplusplus -Zc:externConstexpr -Zc:throwingNew %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;$(IntDir);$(mech_inc);$(mclib_dir);$(directxtk_dir)/inc;$(gameos_dir)/include;$(pch_dir);$(mc2res_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <ConformanceMode>true</ConformanceMode>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      <CallingConvention>StdCall</CallingConvention>
+      <StringPooling>true</StringPooling>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
     <Link>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>-ignore:4199 -pdbcompress %(AdditionalOptions)</AdditionalOptions>
+      <Version>2.1</Version>
+      <AdditionalLibraryDirectories>$(OutDir);$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <AdditionalDependencies>kernel32.lib;advapi32.lib;ntdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>advapi32.dll;comdlg32.dll;ole32.dll;oleaut32.dll;shell32.dll;shlwapi.dll</DelayLoadDLLs>
     </Link>
     <ResourceCompile>
-      <PreprocessorDefinitions>APP_NAME="$(TargetName)";PLATFORM=$(Platform);$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(mc2res_dir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>PLATFORM=$(Platform);PROJECTNAME=L"$(ProjectName)";TARGETFILENAME=L"$(TargetFileName)";TARGETEXT=L"$(TargetExt)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;$(IntDir);$(mc2res_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <BuildMacro Include="IgnoreWarnIntDirInTempDetected">
+      <Value>$(IgnoreWarnIntDirInTempDetected)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
     <BuildMacro Include="gameos_dir">
       <Value>$(gameos_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="directxtk_dir">
+      <Value>$(directxtk_dir)</Value>
     </BuildMacro>
     <BuildMacro Include="mclib_dir">
       <Value>$(mclib_dir)</Value>
@@ -41,11 +92,9 @@
     </BuildMacro>
     <BuildMacro Include="mech_inc">
       <Value>$(mech_inc)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="pch_dir">
       <Value>$(pch_dir)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
 </Project>

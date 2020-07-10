@@ -19,30 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>mechgui</ProjectName>
-    <ProjectGuid>{97985315-F026-4AB8-A765-2DBE7B78CC6C}</ProjectGuid>
+    <ProjectGuid>{463F3947-C6F1-4833-B2C6-B111AD44F604}</ProjectGuid>
     <RootNamespace>MechCommander</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -82,15 +79,17 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </Midl>
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>true</EnablePREfast>
-      <OmitDefaultLibName>true</OmitDefaultLibName>
-      <Optimization>Disabled</Optimization>
+      <ConformanceMode>true</ConformanceMode>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <StringPooling>false</StringPooling>
@@ -98,83 +97,111 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-    </Lib>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Midl>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </Midl>
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>true</EnablePREfast>
-      <OmitDefaultLibName>true</OmitDefaultLibName>
-      <Optimization>Disabled</Optimization>
+      <ConformanceMode>true</ConformanceMode>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <StringPooling>false</StringPooling>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-    </Lib>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </Midl>
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <OmitDefaultLibName>true</OmitDefaultLibName>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ConformanceMode>true</ConformanceMode>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-    </Lib>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </Midl>
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <OmitDefaultLibName>true</OmitDefaultLibName>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ConformanceMode>true</ConformanceMode>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ResourceCompile>
-    <Lib>
-      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-    </Lib>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\mechcmd2\mechgui\aanim.cpp" />
-    <ClCompile Include="..\mechcmd2\mechgui\aanimobject.cpp" />
-    <ClCompile Include="..\mechcmd2\mechgui\abutton.cpp" />
-    <ClCompile Include="..\mechcmd2\mechgui\aedit.cpp" />
-    <ClCompile Include="..\mechcmd2\mechgui\afont.cpp" />
-    <ClCompile Include="..\mechcmd2\mechgui\alistbox.cpp" />
-    <ClCompile Include="..\mechcmd2\mechgui\ascroll.cpp" />
-    <ClCompile Include="..\mechcmd2\mechgui\asystem.cpp" />
-    <ClCompile Include="..\mechcmd2\mechgui\logisticsscreen.cpp" />
+    <ClInclude Include="..\ablscript\abl.h" />
+    <ClInclude Include="..\ablscript\abldbug.h" />
+    <ClInclude Include="..\ablscript\ablenv.h" />
+    <ClInclude Include="..\ablscript\ablerr.h" />
+    <ClInclude Include="..\ablscript\ablexec.h" />
+    <ClInclude Include="..\ablscript\ablgen.h" />
+    <ClInclude Include="..\ablscript\ablparse.h" />
+    <ClInclude Include="..\ablscript\ablscan.h" />
+    <ClInclude Include="..\ablscript\ablsymt.h" />
+    <ClInclude Include="..\pch\stdinc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\ablscript\abldbug.cpp" />
+    <ClCompile Include="..\ablscript\abldecl.cpp" />
+    <ClCompile Include="..\ablscript\ablenv.cpp" />
+    <ClCompile Include="..\ablscript\ablerr.cpp" />
+    <ClCompile Include="..\ablscript\ablexec.cpp" />
+    <ClCompile Include="..\ablscript\ablexpr.cpp" />
+    <ClCompile Include="..\ablscript\ablrtn.cpp" />
+    <ClCompile Include="..\ablscript\ablscan.cpp" />
+    <ClCompile Include="..\ablscript\ablstd.cpp" />
+    <ClCompile Include="..\ablscript\ablstmt.cpp" />
+    <ClCompile Include="..\ablscript\ablsymt.cpp" />
+    <ClCompile Include="..\ablscript\ablxexpr.cpp" />
+    <ClCompile Include="..\ablscript\ablxstd.cpp" />
+    <ClCompile Include="..\ablscript\ablxstmt.cpp" />
     <ClCompile Include="..\pch\stdinc.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -183,18 +210,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\mechresources.h" />
-    <ClInclude Include="..\include\mechtypes.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\aanim.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\aanimobject.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\abutton.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\aedit.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\afont.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\alistbox.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\ascroll.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\asystem.h" />
-    <ClInclude Include="..\mechcmd2\mechgui\logisticsscreen.h" />
-    <ClInclude Include="..\pch\stdinc.h" />
+    <None Include="mechcommander.vsprops" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

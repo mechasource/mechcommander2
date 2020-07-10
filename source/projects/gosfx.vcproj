@@ -22,10 +22,8 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -47,8 +45,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="0"
+				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -73,6 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -93,10 +92,9 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -118,8 +116,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="0"
+				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -144,6 +142,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -164,10 +163,8 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -189,9 +186,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="3"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -215,6 +213,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -235,10 +234,8 @@
 		<Configuration
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -260,9 +257,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="3"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -286,6 +284,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"

@@ -6,96 +6,96 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Sources\mechcmd2">
-      <UniqueIdentifier>{a86776c3-db98-4097-91eb-111b71c4b7a6}</UniqueIdentifier>
+      <UniqueIdentifier>{b64eedbd-8cdd-4b3e-9a51-6522e06dc543}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2\Object">
-      <UniqueIdentifier>{9ac1f786-271f-42db-8b9e-f0329185abf3}</UniqueIdentifier>
+      <UniqueIdentifier>{0c0fd5a0-1f13-4432-976a-14a7db37dfb4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2\Mission">
-      <UniqueIdentifier>{b5ab8e60-b4db-4582-bd5d-3d8d39824f56}</UniqueIdentifier>
+      <UniqueIdentifier>{746afe4b-4eec-4df1-ad65-7892ac555c21}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2\GUI">
-      <UniqueIdentifier>{db2f1d20-ba6b-4130-a01a-86826ac6b4eb}</UniqueIdentifier>
+      <UniqueIdentifier>{d73d8b17-89ac-4323-ace6-8abbc1805f5a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2\Logistics">
-      <UniqueIdentifier>{4954d5b0-a875-4dc1-a5f7-e9a5208c4f6a}</UniqueIdentifier>
+      <UniqueIdentifier>{b32ae615-5661-4d52-8ae7-818c7e5d3be5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2\Sound">
-      <UniqueIdentifier>{c5141089-e06e-4d05-8ee7-03ad5ceaf13e}</UniqueIdentifier>
+      <UniqueIdentifier>{f6fd0b97-9091-425b-8abb-d4d595bee20c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2\Movement">
-      <UniqueIdentifier>{78cd9eff-b69a-4a10-9536-8fcf266c1d7f}</UniqueIdentifier>
+      <UniqueIdentifier>{f5831463-20d4-489e-863b-8696eec708a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2\Multiplayer">
-      <UniqueIdentifier>{f81abe2c-4235-4786-916c-f2b6ac9ca55f}</UniqueIdentifier>
+      <UniqueIdentifier>{d2500517-f9de-40d3-8ef5-cff3d7570c12}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mechcmd2\Movie">
-      <UniqueIdentifier>{7f62f095-5fcd-4a11-af24-a597950f1985}</UniqueIdentifier>
+      <UniqueIdentifier>{392d6b6b-ce1b-4b0d-81c7-01f0f6a2c512}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\extra">
-      <UniqueIdentifier>{c78c9a48-394d-4ad6-98f7-439795a82381}</UniqueIdentifier>
+      <UniqueIdentifier>{36420669-9330-40a3-9778-fc9c80157057}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Headers\extra">
-      <UniqueIdentifier>{70989f7a-64ea-4a03-b2ed-557c6af84cf1}</UniqueIdentifier>
+      <UniqueIdentifier>{56c0fe0f-c572-476b-b6bf-13f6c85988f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2">
-      <UniqueIdentifier>{caad8ff9-9c70-4f69-ae5c-1235f37ac0fa}</UniqueIdentifier>
+      <UniqueIdentifier>{6656bbeb-d77a-4737-83fd-02c8c4646ac7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2\GUI">
-      <UniqueIdentifier>{a3890686-30d1-4ebb-8c96-5d106d983a0c}</UniqueIdentifier>
+      <UniqueIdentifier>{e53da2ed-0cb0-48a6-af16-24923f5e9b90}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2\Logistics">
-      <UniqueIdentifier>{585c9f2a-3dff-44e8-aceb-9c8cfc9fc40c}</UniqueIdentifier>
+      <UniqueIdentifier>{763fa464-1210-4c03-b824-bba8dc96c04d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2\Mission">
-      <UniqueIdentifier>{6f466ac3-7e0a-4d84-af27-12843293e1b5}</UniqueIdentifier>
+      <UniqueIdentifier>{6c481916-07e0-4853-b64c-eb092826947f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2\Movement">
-      <UniqueIdentifier>{ada1f200-9a90-4bf8-a000-88bab81bb17e}</UniqueIdentifier>
+      <UniqueIdentifier>{8c16abd2-4a20-4a57-ab33-5785da57d500}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2\Movie">
-      <UniqueIdentifier>{d251c5f0-de85-4408-a99c-1233c47afcbb}</UniqueIdentifier>
+      <UniqueIdentifier>{094cc34f-a671-4eb7-89fc-1caaf104e365}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2\Multiplayer">
-      <UniqueIdentifier>{d406c288-5e84-4469-aa32-faa35ea94c34}</UniqueIdentifier>
+      <UniqueIdentifier>{fde6f80e-84dc-4634-a217-bbf301f93766}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2\Object">
-      <UniqueIdentifier>{7a8718ec-88f3-40ba-a54d-0a29e8b20e72}</UniqueIdentifier>
+      <UniqueIdentifier>{06df50e4-d3aa-4bc2-ae4a-b9cdf7bceba2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mechcmd2\Sound">
-      <UniqueIdentifier>{1c11e525-87ed-4add-b0f4-6b65d0951ed1}</UniqueIdentifier>
+      <UniqueIdentifier>{97c3fadd-8e2e-4dde-a6f8-686ddb031301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{3eda4433-7bde-4428-a92b-4e6c975409ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Resources\mechcmd2">
-      <UniqueIdentifier>{a5f1eff4-8b09-4c29-b3d8-682338b3bd49}</UniqueIdentifier>
+      <UniqueIdentifier>{8cc61e97-882d-4e63-802d-908c7d9c09f3}</UniqueIdentifier>
     </Filter>
     <Filter Include="build">
-      <UniqueIdentifier>{667c81d9-1fb3-411b-8bd7-2ad607252501}</UniqueIdentifier>
+      <UniqueIdentifier>{4e35139a-2a24-4f8b-86f2-331f926a779b}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\WinDDK">
-      <UniqueIdentifier>{e177bf5f-82d3-4f6e-a347-76a16e60b893}</UniqueIdentifier>
+      <UniqueIdentifier>{b1c2a39e-4137-4903-8f33-2622f05fcd1a}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\precompiled">
-      <UniqueIdentifier>{fb81c2af-2c93-4876-ab85-873eacd5d076}</UniqueIdentifier>
+      <UniqueIdentifier>{f9acdb65-c4c4-49f8-a766-ba40a0e3c6af}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\DLL">
-      <UniqueIdentifier>{8b2731bc-e4ce-42a3-b7e7-34e0724f3404}</UniqueIdentifier>
+      <UniqueIdentifier>{e2cb2ce4-cec1-47eb-a07c-7fdc58582e1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headers\common">
-      <UniqueIdentifier>{da7de515-d2d3-43d8-844e-4a4924401312}</UniqueIdentifier>
+    <Filter Include="build\config">
+      <UniqueIdentifier>{2dab2a01-e135-4158-a132-d2fcb68f77d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\mechcmd2\dw.cpp">
-      <Filter>Sources\mechcmd2</Filter>
-    </ClCompile>
     <ClCompile Include="..\mechcmd2\mechcmd2.cpp">
       <Filter>Sources\mechcmd2</Filter>
     </ClCompile>
@@ -488,9 +488,6 @@
     <ClInclude Include="..\mechcmd2\logisticsmechicon.h">
       <Filter>Headers\mechcmd2\Logistics</Filter>
     </ClInclude>
-    <ClInclude Include="..\mechcmd2\logisticsmechlistbox.h">
-      <Filter>Headers\mechcmd2\Logistics</Filter>
-    </ClInclude>
     <ClInclude Include="..\mechcmd2\logisticsmissioninfo.h">
       <Filter>Headers\mechcmd2\Logistics</Filter>
     </ClInclude>
@@ -725,22 +722,27 @@
     <ClInclude Include="..\mechcmd2\radio.h">
       <Filter>Headers\mechcmd2\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechutils.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
     <ClInclude Include="..\mechcmd2\resource.h">
       <Filter>Resources\mechcmd2</Filter>
     </ClInclude>
     <ClInclude Include="..\pch\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\mechresources.h">
-      <Filter>Headers\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\mechtypes.h">
-      <Filter>Headers\common</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\mechcmd2\mechcmd2.rc">
       <Filter>Resources\mechcmd2</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mechcommander.vsprops">
+      <Filter>build\config</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -21,118 +21,84 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{09582E8D-FAA3-4A07-AB43-74C33436CDDF}</ProjectGuid>
     <RootNamespace>MechCommander</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseOfAtl>false</UseOfAtl>
-    <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseOfAtl>false</UseOfAtl>
-    <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseOfAtl>false</UseOfAtl>
-    <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseOfAtl>false</UseOfAtl>
-    <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="mechcommander.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="mechcommander.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="mechcommander.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="mechcommander.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <GenerateStublessProxies>true</GenerateStublessProxies>
-      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
-      <HeaderFileName>$(IntDir)$(TargetName).h</HeaderFileName>
-      <DllDataFileName />
-      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
-      <ValidateAllParameters>true</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>-guard:cf -Zo -Zc:inline -Zc:referenceBinding -Zc:strictStrings</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <CallingConvention>StdCall</CallingConvention>
       <EnablePREfast>true</EnablePREfast>
-      <SDLCheck>true</SDLCheck>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ConformanceMode>true</ConformanceMode>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <StringPooling>false</StringPooling>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions> -ignore:4199 -pdbcompress -dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
-      <Version>1.1</Version>
-      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <SetChecksum>true</SetChecksum>
@@ -142,41 +108,28 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
       <TargetEnvironment>X64</TargetEnvironment>
-      <GenerateStublessProxies>true</GenerateStublessProxies>
-      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
-      <HeaderFileName>$(IntDir)$(TargetName).h</HeaderFileName>
-      <DllDataFileName />
-      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>-guard:cf -Zo -Zc:inline -Zc:referenceBinding -Zc:strictStrings</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <CallingConvention>StdCall</CallingConvention>
       <EnablePREfast>true</EnablePREfast>
-      <SDLCheck>true</SDLCheck>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ConformanceMode>true</ConformanceMode>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <StringPooling>false</StringPooling>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions> -ignore:4199 -pdbcompress -dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
-      <Version>1.1</Version>
-      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <SetChecksum>true</SetChecksum>
@@ -187,42 +140,22 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <GenerateStublessProxies>true</GenerateStublessProxies>
-      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
-      <HeaderFileName>$(IntDir)$(TargetName).h</HeaderFileName>
-      <DllDataFileName />
-      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
-      <ValidateAllParameters>true</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>-guard:cf -Zo -Zc:inline -Zc:referenceBinding -Zc:strictStrings</AdditionalOptions>
-      <Optimization>Full</Optimization>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <CallingConvention>StdCall</CallingConvention>
-      <SDLCheck>true</SDLCheck>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ConformanceMode>true</ConformanceMode>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions> -ignore:4199 -pdbcompress -dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
-      <Version>1.1</Version>
-      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -234,41 +167,22 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>false</MkTypLibCompatible>
       <TargetEnvironment>X64</TargetEnvironment>
-      <GenerateStublessProxies>true</GenerateStublessProxies>
-      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
-      <HeaderFileName>$(IntDir)$(TargetName).h</HeaderFileName>
-      <DllDataFileName />
-      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>-guard:cf -Zo -Zc:inline -Zc:referenceBinding -Zc:strictStrings</AdditionalOptions>
-      <Optimization>Full</Optimization>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <CallingConvention>StdCall</CallingConvention>
-      <SDLCheck>true</SDLCheck>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ConformanceMode>true</ConformanceMode>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions> -ignore:4199 -pdbcompress -dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
-      <Version>1.1</Version>
-      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -279,20 +193,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\mclib\abldbug.cpp" />
-    <ClCompile Include="..\mclib\abldecl.cpp" />
-    <ClCompile Include="..\mclib\ablenv.cpp" />
-    <ClCompile Include="..\mclib\ablerr.cpp" />
-    <ClCompile Include="..\mclib\ablexec.cpp" />
-    <ClCompile Include="..\mclib\ablexpr.cpp" />
-    <ClCompile Include="..\mclib\ablrtn.cpp" />
-    <ClCompile Include="..\mclib\ablscan.cpp" />
-    <ClCompile Include="..\mclib\ablstd.cpp" />
-    <ClCompile Include="..\mclib\ablstmt.cpp" />
-    <ClCompile Include="..\mclib\ablsymt.cpp" />
-    <ClCompile Include="..\mclib\ablxexpr.cpp" />
-    <ClCompile Include="..\mclib\ablxstd.cpp" />
-    <ClCompile Include="..\mclib\ablxstmt.cpp" />
     <ClCompile Include="..\mclib\alphapalette.cpp" />
     <ClCompile Include="..\mclib\appear.cpp" />
     <ClCompile Include="..\mclib\apprtype.cpp" />
@@ -320,10 +220,16 @@
     <ClCompile Include="..\mclib\genactor.cpp" />
     <ClCompile Include="..\mclib\gvactor.cpp" />
     <ClCompile Include="..\mclib\heap.cpp" />
+    <ClCompile Include="..\mclib\includes_test.cpp" />
     <ClCompile Include="..\mclib\inifile.cpp" />
-    <ClCompile Include="..\mclib\llist.cpp" />
-    <ClCompile Include="..\mclib\lzcomp.cpp" />
-    <ClCompile Include="..\mclib\lzdecomp.cpp" />
+    <ClCompile Include="..\mclib\lzcomp.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\mclib\lzdecomp.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\mclib\mapdata.cpp" />
     <ClCompile Include="..\mclib\mathfunc.cpp" />
     <ClCompile Include="..\mclib\mech3d.cpp" />
@@ -338,12 +244,6 @@
     <ClCompile Include="..\mclib\scale.cpp" />
     <ClCompile Include="..\mclib\sortlist.cpp" />
     <ClCompile Include="..\mclib\soundsys.cpp" />
-    <ClCompile Include="..\pch\stdinc.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\mclib\tacmap.cpp" />
     <ClCompile Include="..\mclib\terrain.cpp" />
     <ClCompile Include="..\mclib\terrtxm.cpp" />
@@ -368,6 +268,12 @@
     <ClCompile Include="..\mclib\vfx_translatedraw.cpp" />
     <ClCompile Include="..\mclib\vport.cpp" />
     <ClCompile Include="..\mclib\weaponfx.cpp" />
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\mechresources.h" />
@@ -399,26 +305,16 @@
     <ClInclude Include="..\mclib\color.h" />
     <ClInclude Include="..\mclib\crater.h" />
     <ClInclude Include="..\mclib\csvfile.h" />
-    <ClInclude Include="..\mclib\dabldbug.h" />
-    <ClInclude Include="..\mclib\dablenv.h" />
-    <ClInclude Include="..\mclib\dappear.h" />
-    <ClInclude Include="..\mclib\daprtype.h" />
     <ClInclude Include="..\mclib\dbasegui.h" />
     <ClInclude Include="..\mclib\dbitflag.h" />
     <ClInclude Include="..\mclib\dcamera.h" />
-    <ClInclude Include="..\mclib\dcsvfile.h" />
     <ClInclude Include="..\mclib\debugging.h" />
-    <ClInclude Include="..\mclib\dffile.h" />
-    <ClInclude Include="..\mclib\dfile.h" />
-    <ClInclude Include="..\mclib\dgamelog.h" />
     <ClInclude Include="..\mclib\dheap.h" />
     <ClInclude Include="..\mclib\dident.h" />
-    <ClInclude Include="..\mclib\dinifile.h" />
     <ClInclude Include="..\mclib\dmapdata.h" />
     <ClInclude Include="..\mclib\dmovemgr.h" />
     <ClInclude Include="..\mclib\dobjblck.h" />
     <ClInclude Include="..\mclib\dobjclass.h" />
-    <ClInclude Include="..\mclib\dpacket.h" />
     <ClInclude Include="..\mclib\dquad.h" />
     <ClInclude Include="..\mclib\dstd.h" />
     <ClInclude Include="..\mclib\dterrain.h" />
@@ -435,7 +331,6 @@
     <ClInclude Include="..\mclib\gvactor.h" />
     <ClInclude Include="..\mclib\heap.h" />
     <ClInclude Include="..\mclib\inifile.h" />
-    <ClInclude Include="..\mclib\llist.h" />
     <ClInclude Include="..\mclib\lz.h" />
     <ClInclude Include="..\mclib\mapdata.h" />
     <ClInclude Include="..\mclib\mathfunc.h" />
@@ -452,11 +347,11 @@
     <ClInclude Include="..\mclib\pqueue.h" />
     <ClInclude Include="..\mclib\quad.h" />
     <ClInclude Include="..\mclib\resizeimage.h" />
+    <ClInclude Include="..\mclib\resource.h" />
     <ClInclude Include="..\mclib\scale.h" />
     <ClInclude Include="..\mclib\sortlist.h" />
     <ClInclude Include="..\mclib\sounds.h" />
     <ClInclude Include="..\mclib\soundsys.h" />
-    <ClInclude Include="..\pch\stdinc.h" />
     <ClInclude Include="..\mclib\tacmap.h" />
     <ClInclude Include="..\mclib\terrain.h" />
     <ClInclude Include="..\mclib\terrtxm.h" />
@@ -472,6 +367,10 @@
     <ClInclude Include="..\mclib\vfx.h" />
     <ClInclude Include="..\mclib\vport.h" />
     <ClInclude Include="..\mclib\weaponfx.h" />
+    <ClInclude Include="..\pch\stdinc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mechcommander.vsprops" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

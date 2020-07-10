@@ -22,10 +22,8 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -48,6 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -72,6 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -92,6 +92,7 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			CharacterSet="1"
@@ -116,6 +117,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -140,6 +142,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -162,7 +165,6 @@
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -185,7 +187,9 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -209,6 +213,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -231,7 +236,6 @@
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="0"
 			>
@@ -254,7 +258,9 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -278,6 +284,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -1662,26 +1669,26 @@
 				Name="stuff"
 				>
 				<File
-					RelativePath="..\mclib\stuff\stuff.hpp"
+					RelativePath="..\mclib\stuff\stuff.h"
 					>
 				</File>
 				<Filter
 					Name="Armor"
 					>
 					<File
-						RelativePath="..\mclib\stuff\armoroff.hpp"
+						RelativePath="..\mclib\stuff\armoroff.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\armoron.hpp"
+						RelativePath="..\mclib\stuff\armoron.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\style.hpp"
+						RelativePath="..\mclib\stuff\style.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\trace.hpp"
+						RelativePath="..\mclib\stuff\trace.h"
 						>
 					</File>
 				</Filter>
@@ -1689,99 +1696,99 @@
 					Name="Math Library"
 					>
 					<File
-						RelativePath="..\mclib\stuff\affinematrix.hpp"
+						RelativePath="..\mclib\stuff\affinematrix.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\angle.hpp"
+						RelativePath="..\mclib\stuff\angle.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\average.hpp"
+						RelativePath="..\mclib\stuff\average.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\color.hpp"
+						RelativePath="..\mclib\stuff\color.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\extentbox.hpp"
+						RelativePath="..\mclib\stuff\extentbox.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\line.hpp"
+						RelativePath="..\mclib\stuff\line.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\linearmatrix.hpp"
+						RelativePath="..\mclib\stuff\linearmatrix.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\matrix.hpp"
+						RelativePath="..\mclib\stuff\matrix.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\motion.hpp"
+						RelativePath="..\mclib\stuff\motion.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\normal.hpp"
+						RelativePath="..\mclib\stuff\normal.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\obb.hpp"
+						RelativePath="..\mclib\stuff\obb.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\origin.hpp"
+						RelativePath="..\mclib\stuff\origin.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\plane.hpp"
+						RelativePath="..\mclib\stuff\plane.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\point3d.hpp"
+						RelativePath="..\mclib\stuff\point3d.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\polar.hpp"
+						RelativePath="..\mclib\stuff\polar.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\random.hpp"
+						RelativePath="..\mclib\stuff\random.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\ray.hpp"
+						RelativePath="..\mclib\stuff\ray.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\rotation.hpp"
+						RelativePath="..\mclib\stuff\rotation.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\scalar.hpp"
+						RelativePath="..\mclib\stuff\scalar.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\sphere.hpp"
+						RelativePath="..\mclib\stuff\sphere.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\unitvector.hpp"
+						RelativePath="..\mclib\stuff\unitvector.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\vector2d.hpp"
+						RelativePath="..\mclib\stuff\vector2d.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\vector3d.hpp"
+						RelativePath="..\mclib\stuff\vector3d.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\vector4d.hpp"
+						RelativePath="..\mclib\stuff\vector4d.h"
 						>
 					</File>
 				</Filter>
@@ -1793,27 +1800,27 @@
 					Name="Connection Engine"
 					>
 					<File
-						RelativePath="..\mclib\stuff\plug.hpp"
+						RelativePath="..\mclib\stuff\plug.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\registeredclass.hpp"
+						RelativePath="..\mclib\stuff\registeredclass.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\safechain.hpp"
+						RelativePath="..\mclib\stuff\safechain.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\safesocket.hpp"
+						RelativePath="..\mclib\stuff\safesocket.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\slot.hpp"
+						RelativePath="..\mclib\stuff\slot.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\socket.hpp"
+						RelativePath="..\mclib\stuff\socket.h"
 						>
 					</File>
 				</Filter>
@@ -1821,15 +1828,15 @@
 					Name="Stream Functions"
 					>
 					<File
-						RelativePath="..\mclib\stuff\notationfile.hpp"
+						RelativePath="..\mclib\stuff\notationfile.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\note.hpp"
+						RelativePath="..\mclib\stuff\note.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\stuff\page.hpp"
+						RelativePath="..\mclib\stuff\page.h"
 						>
 					</File>
 				</Filter>
@@ -1952,7 +1959,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\mclib\stuff\stuffheaders.hpp"
+					RelativePath="..\mclib\stuff\stuffheaders.h"
 					>
 				</File>
 			</Filter>

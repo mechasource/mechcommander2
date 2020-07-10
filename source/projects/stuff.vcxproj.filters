@@ -6,75 +6,78 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Sources\stuff">
-      <UniqueIdentifier>{02179b71-1f9e-4708-90e1-86c5607594d0}</UniqueIdentifier>
+      <UniqueIdentifier>{ff6b1b2d-dc70-474b-9646-63191114fc40}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\stuff\Armor">
-      <UniqueIdentifier>{05c44af5-c517-4598-b1ea-81532a85fca7}</UniqueIdentifier>
+      <UniqueIdentifier>{9de4eae3-d069-4606-9d69-b5311b19dc85}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\stuff\Math Library">
-      <UniqueIdentifier>{11c27f46-a772-44f3-a9d6-d066c4b2885e}</UniqueIdentifier>
+      <UniqueIdentifier>{de130557-e48e-4ae2-a8b5-657d8ff690d9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\stuff\Memory Allocation">
-      <UniqueIdentifier>{33418d1a-d2f7-4a1d-8565-ad45dcf25a0a}</UniqueIdentifier>
+      <UniqueIdentifier>{447f5ce1-d32a-491d-b090-20d8712a43c3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\stuff\Connection Engine">
-      <UniqueIdentifier>{c757c37b-f045-4fea-8e0a-3a61c833928d}</UniqueIdentifier>
+      <UniqueIdentifier>{bd1a5333-a658-4301-85bd-03a5f5da9a5a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\stuff\Stream Functions">
-      <UniqueIdentifier>{b3fda685-4bbe-4429-8c4b-c9dd0561f569}</UniqueIdentifier>
+      <UniqueIdentifier>{2e523d2a-23c5-48a5-9bbf-d5e760c99104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\stuff\tests">
+      <UniqueIdentifier>{f6c119da-d52e-4202-870b-d13a6860d769}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\extra">
-      <UniqueIdentifier>{32ef9b49-6876-47d3-aa7b-2ae26b54ef8f}</UniqueIdentifier>
+      <UniqueIdentifier>{509d7c65-631d-4470-8593-7551c1a08292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\not used">
+      <UniqueIdentifier>{e903f57e-c1c4-4056-bda0-3d0232276202}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Headers\stuff">
-      <UniqueIdentifier>{653a1b41-6f59-4017-a5ef-2db30da3a2fb}</UniqueIdentifier>
+      <UniqueIdentifier>{1f4ee8a8-ad92-4914-bef4-2f41493ff27a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\stuff\Armor">
-      <UniqueIdentifier>{de58bed9-5187-4d76-b20e-f11598ca9141}</UniqueIdentifier>
+      <UniqueIdentifier>{f67cd35e-a6e0-4290-8699-ef3b66528d91}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\stuff\Math Library">
-      <UniqueIdentifier>{acdeb029-acd0-4b36-8983-7c2ac28052c5}</UniqueIdentifier>
+      <UniqueIdentifier>{916d8899-07b5-478a-a413-bb60fe6fc1b4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\stuff\Memory Allocation">
-      <UniqueIdentifier>{e024142a-458c-402d-a1e1-66c81617713d}</UniqueIdentifier>
+      <UniqueIdentifier>{752b168a-8ea7-43ce-9271-dab9329a727d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\stuff\Connection Engine">
-      <UniqueIdentifier>{51538c67-e587-46a0-b9dd-807934d13279}</UniqueIdentifier>
+      <UniqueIdentifier>{ac78fc14-53cd-474e-b7cc-a3220d0721f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\stuff\Stream Functions">
-      <UniqueIdentifier>{745d7cdd-fa99-4e47-ba78-fe432d60dc79}</UniqueIdentifier>
+      <UniqueIdentifier>{9f53bdd6-a81d-4f84-94f1-f519278cda6e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\extra">
-      <UniqueIdentifier>{7003d042-41e4-4fba-93ef-d2fbf7944c64}</UniqueIdentifier>
+      <UniqueIdentifier>{bc96b9bc-1594-411f-81bb-1ecf526568e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{6d635947-d588-4594-8719-9c9094945c1b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Resources\stuff">
-      <UniqueIdentifier>{8608b5b6-c1cd-4ad3-91c0-b1695c841fdf}</UniqueIdentifier>
+      <UniqueIdentifier>{c9f1d694-9b2c-412c-a006-ac1529803b0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="build">
-      <UniqueIdentifier>{d43236fd-ff80-428b-9b61-bcef992fb54b}</UniqueIdentifier>
+      <UniqueIdentifier>{855f1307-a464-403d-9b4d-c7affff2d861}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\WinDDK">
-      <UniqueIdentifier>{4c438072-f41d-478d-b38e-fb43a0462e56}</UniqueIdentifier>
+      <UniqueIdentifier>{c39856c2-a9d1-43d5-b10f-095bc93c3064}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\precompiled">
-      <UniqueIdentifier>{d290ec32-380a-460e-a015-72e3d7a4d11c}</UniqueIdentifier>
+      <UniqueIdentifier>{55c14e8c-e7fd-43e3-9df2-8c78d4a276d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\DLL">
-      <UniqueIdentifier>{25beb4d6-a4d0-437e-a032-53b0e7351206}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\common">
-      <UniqueIdentifier>{21553958-638f-4f25-bbd6-1c70fec40112}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\stuff\tests">
-      <UniqueIdentifier>{ca33f76e-1471-4d6a-a5ee-f018f606922c}</UniqueIdentifier>
+      <UniqueIdentifier>{85ab7d95-6aec-41ef-bfa6-fa7989b70bf7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,30 +156,6 @@
     <ClCompile Include="..\mclib\stuff\vector4d.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\matrixstack.cpp">
-      <Filter>Sources\stuff\Memory Allocation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\memoryblock.cpp">
-      <Filter>Sources\stuff\Memory Allocation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\mstring.cpp">
-      <Filter>Sources\stuff\Memory Allocation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\chain.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\hash.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\iterator.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\link.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\node.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\plug.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
@@ -193,18 +172,6 @@
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\socket.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\sortedchain.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\sortedsocket.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\table.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\tree.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\database.cpp">
@@ -231,34 +198,19 @@
     <ClCompile Include="..\mclib\stuff\page.cpp">
       <Filter>Sources\stuff\Stream Functions</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stdafx.cpp">
-      <Filter>build\precompiled</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\stuffheaders.cpp">
-      <Filter>build\precompiled</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\chain_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\hash_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\safechain_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\sortedchain_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\table_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\tree_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\affinematrix_test.cpp">
       <Filter>Sources\stuff\tests</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\angle_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\chain_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\filestream_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\hash_test.cpp">
       <Filter>Sources\stuff\tests</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\linearmatrix_test.cpp">
@@ -267,7 +219,22 @@
     <ClCompile Include="..\mclib\stuff\matrix_test.cpp">
       <Filter>Sources\stuff\tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\mclib\stuff\memoryblock_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\memorystream_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\mstring_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\namelist_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
     <ClCompile Include="..\mclib\stuff\normal_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\notationfile_test.cpp">
       <Filter>Sources\stuff\tests</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\origin_test.cpp">
@@ -285,6 +252,18 @@
     <ClCompile Include="..\mclib\stuff\rotation_test.cpp">
       <Filter>Sources\stuff\tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\mclib\stuff\safechain_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\sortedchain_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\table_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\tree_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
     <ClCompile Include="..\mclib\stuff\unitvector_test.cpp">
       <Filter>Sources\stuff\tests</Filter>
     </ClCompile>
@@ -294,217 +273,142 @@
     <ClCompile Include="..\mclib\stuff\vector4d_test.cpp">
       <Filter>Sources\stuff\tests</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\filestream_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <Filter>build\precompiled</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\memoryblock_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\memorystream_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\mstring_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\namelist_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\notationfile_test.cpp">
-      <Filter>Sources\stuff\tests</Filter>
+    <ClCompile Include="..\mclib\stuff\stuffheaders.cpp">
+      <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\mclib\stuff\stuff.hpp">
+    <ClInclude Include="..\mclib\stuff\stuff.h">
       <Filter>Headers\stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\armoroff.hpp">
+    <ClInclude Include="..\mclib\stuff\armoroff.h">
       <Filter>Headers\stuff\Armor</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\armoron.hpp">
+    <ClInclude Include="..\mclib\stuff\armoron.h">
       <Filter>Headers\stuff\Armor</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\style.hpp">
+    <ClInclude Include="..\mclib\stuff\style.h">
       <Filter>Headers\stuff\Armor</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\trace.hpp">
+    <ClInclude Include="..\mclib\stuff\trace.h">
       <Filter>Headers\stuff\Armor</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\affinematrix.hpp">
+    <ClInclude Include="..\mclib\stuff\affinematrix.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\angle.hpp">
+    <ClInclude Include="..\mclib\stuff\angle.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\average.hpp">
+    <ClInclude Include="..\mclib\stuff\average.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\color.hpp">
+    <ClInclude Include="..\mclib\stuff\color.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\extentbox.hpp">
+    <ClInclude Include="..\mclib\stuff\extentbox.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\line.hpp">
+    <ClInclude Include="..\mclib\stuff\line.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\linearmatrix.hpp">
+    <ClInclude Include="..\mclib\stuff\linearmatrix.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\matrix.hpp">
+    <ClInclude Include="..\mclib\stuff\matrix.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\motion.hpp">
+    <ClInclude Include="..\mclib\stuff\motion.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\normal.hpp">
+    <ClInclude Include="..\mclib\stuff\normal.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\obb.hpp">
+    <ClInclude Include="..\mclib\stuff\obb.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\origin.hpp">
+    <ClInclude Include="..\mclib\stuff\origin.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\plane.hpp">
+    <ClInclude Include="..\mclib\stuff\plane.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\point3d.hpp">
+    <ClInclude Include="..\mclib\stuff\point3d.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\polar.hpp">
+    <ClInclude Include="..\mclib\stuff\polar.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\random.hpp">
+    <ClInclude Include="..\mclib\stuff\random.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\ray.hpp">
+    <ClInclude Include="..\mclib\stuff\ray.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\rotation.hpp">
+    <ClInclude Include="..\mclib\stuff\rotation.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\scalar.hpp">
+    <ClInclude Include="..\mclib\stuff\scalar.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\sphere.hpp">
+    <ClInclude Include="..\mclib\stuff\sphere.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\unitvector.hpp">
+    <ClInclude Include="..\mclib\stuff\unitvector.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\vector2d.hpp">
+    <ClInclude Include="..\mclib\stuff\vector2d.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\vector3d.hpp">
+    <ClInclude Include="..\mclib\stuff\vector3d.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\vector4d.hpp">
+    <ClInclude Include="..\mclib\stuff\vector4d.h">
       <Filter>Headers\stuff\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\auto_container.hpp">
-      <Filter>Headers\stuff\Memory Allocation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\auto_ptr.hpp">
-      <Filter>Headers\stuff\Memory Allocation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\initialized_ptr.hpp">
-      <Filter>Headers\stuff\Memory Allocation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\marray.hpp">
-      <Filter>Headers\stuff\Memory Allocation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\matrixstack.hpp">
-      <Filter>Headers\stuff\Memory Allocation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\memoryblock.hpp">
-      <Filter>Headers\stuff\Memory Allocation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\mstring.hpp">
-      <Filter>Headers\stuff\Memory Allocation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\noncopyable.hpp">
-      <Filter>Headers\stuff\Memory Allocation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\chain.hpp">
+    <ClInclude Include="..\mclib\stuff\plug.h">
       <Filter>Headers\stuff\Connection Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\hash.hpp">
+    <ClInclude Include="..\mclib\stuff\registeredclass.h">
       <Filter>Headers\stuff\Connection Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\iterator.hpp">
+    <ClInclude Include="..\mclib\stuff\safechain.h">
       <Filter>Headers\stuff\Connection Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\link.hpp">
+    <ClInclude Include="..\mclib\stuff\safesocket.h">
       <Filter>Headers\stuff\Connection Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\node.hpp">
+    <ClInclude Include="..\mclib\stuff\slot.h">
       <Filter>Headers\stuff\Connection Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\plug.hpp">
+    <ClInclude Include="..\mclib\stuff\socket.h">
       <Filter>Headers\stuff\Connection Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\registeredclass.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\safechain.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\safesocket.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\slot.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\socket.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\sortedchain.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\sortedsocket.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\table.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\tree.hpp">
-      <Filter>Headers\stuff\Connection Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\database.hpp">
+    <ClInclude Include="..\mclib\stuff\notationfile.h">
       <Filter>Headers\stuff\Stream Functions</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\filestream.hpp">
+    <ClInclude Include="..\mclib\stuff\note.h">
       <Filter>Headers\stuff\Stream Functions</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\filestreammanager.hpp">
+    <ClInclude Include="..\mclib\stuff\page.h">
       <Filter>Headers\stuff\Stream Functions</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stuff\memorystream.hpp">
-      <Filter>Headers\stuff\Stream Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\namelist.hpp">
-      <Filter>Headers\stuff\Stream Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\notationfile.hpp">
-      <Filter>Headers\stuff\Stream Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\note.hpp">
-      <Filter>Headers\stuff\Stream Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\page.hpp">
-      <Filter>Headers\stuff\Stream Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stdafx.h">
-      <Filter>build\precompiled</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\stuffheaders.hpp">
-      <Filter>build\precompiled</Filter>
+    <ClInclude Include="..\include\mechclassids.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechresources.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\stuff\stuffheaders.h">
+      <Filter>build\precompiled</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

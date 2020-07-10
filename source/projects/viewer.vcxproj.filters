@@ -6,42 +6,42 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Sources\viewer">
-      <UniqueIdentifier>{7116f105-d674-4f89-bf06-649c486ee6e1}</UniqueIdentifier>
+      <UniqueIdentifier>{d2639fd6-fa8d-45ad-abaa-e9f95b59c5d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\external dependencies">
+      <UniqueIdentifier>{7234b918-5768-4895-bbb6-736d2ef4ca80}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\gameplatform">
-      <UniqueIdentifier>{8b632901-4cb6-4ade-9cf3-06fc25e73072}</UniqueIdentifier>
+      <UniqueIdentifier>{7db8bc6b-6ec6-4687-a69d-0b09c07744ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Headers\viewer">
-      <UniqueIdentifier>{f0cf5284-dbfd-4d8b-bee4-6f1909ea23da}</UniqueIdentifier>
+      <UniqueIdentifier>{3869a6a8-81d2-47fd-bdd8-061f51e29bf4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\extra">
-      <UniqueIdentifier>{53824c40-eac2-4a5f-bc34-246c6680536d}</UniqueIdentifier>
+      <UniqueIdentifier>{08e59913-b357-4106-84e9-0f6f0db47ee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{42734e74-6992-4c9e-8994-2b528180be65}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Resources\viewer">
-      <UniqueIdentifier>{e1c38299-51b5-4bc9-96b2-669732e446df}</UniqueIdentifier>
+      <UniqueIdentifier>{cc7e8006-5b93-49a7-82f0-f36714a9e722}</UniqueIdentifier>
     </Filter>
     <Filter Include="build">
-      <UniqueIdentifier>{8c5a21e9-13df-4561-b435-125d671cf019}</UniqueIdentifier>
+      <UniqueIdentifier>{721b0998-55ed-4129-9fbd-fad02fe46512}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\WinDDK">
-      <UniqueIdentifier>{1fcca9ba-55f8-4bcc-ab66-b66029cbbcae}</UniqueIdentifier>
+      <UniqueIdentifier>{c99587ef-90d1-4809-bc64-1941ecc18659}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\precompiled">
-      <UniqueIdentifier>{076daf42-eb8e-4284-b391-56e7b1010778}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\common">
-      <UniqueIdentifier>{3cff28c4-b85e-4fd3-b21b-9669e805a870}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\external dependencies">
-      <UniqueIdentifier>{22184169-b59d-42d6-8fd3-f6bd38ffbfac}</UniqueIdentifier>
+      <UniqueIdentifier>{9ab16214-c0b1-43e3-89ec-17e570c274a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,28 +93,28 @@
     <ClCompile Include="..\gameos\src\startup\gameplatform.cpp">
       <Filter>Sources\gameplatform</Filter>
     </ClCompile>
-    <ClCompile Include="..\tools\viewer\stdafx.cpp">
+    <ClCompile Include="..\pch\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\tools\viewer\mechlopedia.ico">
-      <Filter>Resources\viewer</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\tools\viewer\resource.h">
-      <Filter>Resources\viewer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tools\viewer\stdafx.h">
-      <Filter>build\precompiled</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\mechresources.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
+    <ClInclude Include="..\tools\viewer\resource.h">
+      <Filter>Resources\viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\tools\viewer\mechlopedia.ico">
+      <Filter>Resources\viewer</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\tools\viewer\viewer.rc">

@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\ablscript">
+      <UniqueIdentifier>{e97002d4-4912-49a1-be27-e6bf5bd261d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;odl;idl;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\ablscript">
+      <UniqueIdentifier>{ddec774b-4e49-4686-874f-4cca7c810967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms;manifest;ver</Extensions>
+    </Filter>
+    <Filter Include="Resources\ablscript">
+      <UniqueIdentifier>{d4b5eb3d-b4bc-4b58-b2da-a83a4fa21252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Build">
+      <UniqueIdentifier>{EE89365A-C086-4bb4-98C3-6AF90833C39C}</UniqueIdentifier>
+      <Extensions>def;vsprops;props;txt;mak;in;am;hpj;bat;cmd</Extensions>
+    </Filter>
+    <Filter Include="Build\precompiled">
+      <UniqueIdentifier>{e616351c-c4f2-4745-b013-e711f9f774e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Build\config">
+      <UniqueIdentifier>{816166a1-27d8-405e-9d47-59f5ca560a17}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\ablscript\abl.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ablscript\abldbug.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ablscript\ablenv.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ablscript\ablerr.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ablscript\ablexec.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ablscript\ablgen.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ablscript\ablparse.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ablscript\ablscan.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ablscript\ablsymt.h">
+      <Filter>Headers\ablscript</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>Build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\ablscript\abldbug.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\abldecl.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablenv.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablerr.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablexec.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablexpr.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablrtn.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablscan.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablstd.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablstmt.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablsymt.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablxexpr.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablxstd.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ablscript\ablxstmt.cpp">
+      <Filter>Sources\ablscript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <Filter>Build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mechcommander.vsprops">
+      <Filter>Build\config</Filter>
+    </None>
+  </ItemGroup>
+</Project>

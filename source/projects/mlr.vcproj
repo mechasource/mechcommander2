@@ -44,20 +44,21 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
+				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -76,13 +77,14 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -125,19 +127,20 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
+				
 				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
+				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -156,13 +159,14 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -205,21 +209,23 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -237,13 +243,14 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -286,20 +293,22 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
+				
 				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -317,13 +326,14 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -649,69 +659,69 @@
 				Name="mlr"
 				>
 				<File
-					RelativePath="..\mclib\mlr\mlr.hpp"
+					RelativePath="..\mclib\mlr\mlr.h"
 					>
 				</File>
 				<Filter
 					Name="Geometries"
 					>
 					<File
-						RelativePath="..\mclib\mlr\mlrcliptrick.hpp"
+						RelativePath="..\mclib\mlr\mlrcliptrick.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrindexedprimitivebase.hpp"
+						RelativePath="..\mclib\mlr\mlrindexedprimitivebase.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrprimitivebase.hpp"
+						RelativePath="..\mclib\mlr\mlrprimitivebase.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrshape.hpp"
+						RelativePath="..\mclib\mlr\mlrshape.h"
 						>
 					</File>
 					<Filter
 						Name="Indexed Polygon Meshes"
 						>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_det_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_c_det_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_dt_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_c_dt_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_c_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_det_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_det_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_dt_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_dt_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_det_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_l_det_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_dt_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_l_dt_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_l_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_mt_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_mt_pmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_pmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_pmesh.h"
 							>
 						</File>
 					</Filter>
@@ -719,39 +729,39 @@
 						Name="Indexed Triangle Meshes"
 						>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_det_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_c_det_tmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_dt_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_c_dt_tmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_c_tmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_det_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_det_tmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_dt_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_dt_tmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_det_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_l_det_tmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_dt_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_l_dt_tmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_l_tmesh.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_i_tmesh.hpp"
+							RelativePath="..\mclib\mlr\mlr_i_tmesh.h"
 							>
 						</File>
 					</Filter>
@@ -759,11 +769,11 @@
 						Name="Terrain"
 						>
 						<File
-							RelativePath="..\mclib\mlr\mlr_terrain.hpp"
+							RelativePath="..\mclib\mlr\mlr_terrain.h"
 							>
 						</File>
 						<File
-							RelativePath="..\mclib\mlr\mlr_terrain2.hpp"
+							RelativePath="..\mclib\mlr\mlr_terrain2.h"
 							>
 						</File>
 					</Filter>
@@ -772,35 +782,35 @@
 					Name="Lighting"
 					>
 					<File
-						RelativePath="..\mclib\mlr\mlrambientlight.hpp"
+						RelativePath="..\mclib\mlr\mlrambientlight.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrinfinitelight.hpp"
+						RelativePath="..\mclib\mlr\mlrinfinitelight.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrinfinitelightwithfalloff.hpp"
+						RelativePath="..\mclib\mlr\mlrinfinitelightwithfalloff.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrlight.hpp"
+						RelativePath="..\mclib\mlr\mlrlight.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrlightmap.hpp"
+						RelativePath="..\mclib\mlr\mlrlightmap.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrlookuplight.hpp"
+						RelativePath="..\mclib\mlr\mlrlookuplight.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrpointlight.hpp"
+						RelativePath="..\mclib\mlr\mlrpointlight.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrspotlight.hpp"
+						RelativePath="..\mclib\mlr\mlrspotlight.h"
 						>
 					</File>
 				</Filter>
@@ -808,15 +818,15 @@
 					Name="Sorting"
 					>
 					<File
-						RelativePath="..\mclib\mlr\mlrsortbyorder.hpp"
+						RelativePath="..\mclib\mlr\mlrsortbyorder.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrsorter.hpp"
+						RelativePath="..\mclib\mlr\mlrsorter.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrstate.hpp"
+						RelativePath="..\mclib\mlr\mlrstate.h"
 						>
 					</File>
 				</Filter>
@@ -824,11 +834,11 @@
 					Name="Texture"
 					>
 					<File
-						RelativePath="..\mclib\mlr\mlrtexture.hpp"
+						RelativePath="..\mclib\mlr\mlrtexture.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrtexturepool.hpp"
+						RelativePath="..\mclib\mlr\mlrtexturepool.h"
 						>
 					</File>
 				</Filter>
@@ -836,23 +846,23 @@
 					Name="Rasterizer"
 					>
 					<File
-						RelativePath="..\mclib\mlr\gosimage.hpp"
+						RelativePath="..\mclib\mlr\gosimage.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\gosimagepool.hpp"
+						RelativePath="..\mclib\mlr\gosimagepool.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\gosvertex.hpp"
+						RelativePath="..\mclib\mlr\gosvertex.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\gosvertex2uv.hpp"
+						RelativePath="..\mclib\mlr\gosvertex2uv.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\gosvertexpool.hpp"
+						RelativePath="..\mclib\mlr\gosvertexpool.h"
 						>
 					</File>
 				</Filter>
@@ -860,11 +870,11 @@
 					Name="Clipping"
 					>
 					<File
-						RelativePath="..\mclib\mlr\mlrclipper.hpp"
+						RelativePath="..\mclib\mlr\mlrclipper.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrclippingstate.hpp"
+						RelativePath="..\mclib\mlr\mlrclippingstate.h"
 						>
 					</File>
 				</Filter>
@@ -872,31 +882,31 @@
 					Name="Effects"
 					>
 					<File
-						RelativePath="..\mclib\mlr\mlrcardcloud.hpp"
+						RelativePath="..\mclib\mlr\mlrcardcloud.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlreffect.hpp"
+						RelativePath="..\mclib\mlr\mlreffect.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrindexedtrianglecloud.hpp"
+						RelativePath="..\mclib\mlr\mlrindexedtrianglecloud.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrlinecloud.hpp"
+						RelativePath="..\mclib\mlr\mlrlinecloud.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrngoncloud.hpp"
+						RelativePath="..\mclib\mlr\mlrngoncloud.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrpointcloud.hpp"
+						RelativePath="..\mclib\mlr\mlrpointcloud.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrtrianglecloud.hpp"
+						RelativePath="..\mclib\mlr\mlrtrianglecloud.h"
 						>
 					</File>
 				</Filter>
@@ -1003,7 +1013,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\mclib\mlr\mlrheaders.hpp"
+					RelativePath="..\mclib\mlr\mlrheaders.h"
 					>
 				</File>
 				<File

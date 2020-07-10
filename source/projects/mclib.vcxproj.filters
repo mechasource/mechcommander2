@@ -6,111 +6,117 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Sources\mclib">
-      <UniqueIdentifier>{875b7e86-bca0-4c74-a99b-521366112b05}</UniqueIdentifier>
+      <UniqueIdentifier>{bc6661e6-64d9-4f4f-a721-9c4a1628e029}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\lib">
-      <UniqueIdentifier>{79d097a7-b7c8-4c6c-95de-8f14027f1caa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\mclib\abl">
-      <UniqueIdentifier>{1eaa0649-a32e-431b-ab14-bb0cf2c05551}</UniqueIdentifier>
+      <UniqueIdentifier>{268379e6-485b-44ae-941f-5d5fc8a8a5e8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\appear">
-      <UniqueIdentifier>{32efb2bd-280b-49e8-9d5f-fa4d1f661366}</UniqueIdentifier>
+      <UniqueIdentifier>{f3f8e170-d8e1-4a2a-9475-01eb8652dec4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\camera">
-      <UniqueIdentifier>{249f8ae4-39b6-46ba-862d-553bf1754bde}</UniqueIdentifier>
+      <UniqueIdentifier>{3014e117-564f-42af-b7ee-f4966d1cc0e6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\element">
-      <UniqueIdentifier>{ebcc6c58-a53c-4840-8b31-8fc4d328d108}</UniqueIdentifier>
+      <UniqueIdentifier>{ae8c4f95-eaeb-4e1d-b2d2-b514db6e8f5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\file">
-      <UniqueIdentifier>{f45f1f04-35ef-454d-ad53-d1d6595db6e3}</UniqueIdentifier>
+      <UniqueIdentifier>{f90a31de-6878-4c1a-aa96-64232cbee96e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\move">
-      <UniqueIdentifier>{a4cfcab1-b5bb-480d-a1d6-889bcbcd0df9}</UniqueIdentifier>
+      <UniqueIdentifier>{918f2d2f-ba38-4b00-b72d-79cd3ea47a2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\sound">
-      <UniqueIdentifier>{20deafca-2f86-4879-aad8-2cefb14a437c}</UniqueIdentifier>
+      <UniqueIdentifier>{1f0031c9-b8b3-4c6a-9692-754a2f0cdc41}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\vfx">
-      <UniqueIdentifier>{5fbea6b0-7781-402e-83a7-23810991cee4}</UniqueIdentifier>
+      <UniqueIdentifier>{e7214765-3825-4c54-88b0-cbc132c29a3c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\utilities">
-      <UniqueIdentifier>{d4162b1d-e926-496d-8c37-c54874eafcd9}</UniqueIdentifier>
+      <UniqueIdentifier>{92a0d0b1-3cdd-48f3-b30e-affa42f2a97d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\terrain">
-      <UniqueIdentifier>{3f1ce15f-6ce7-4fa6-81d1-7997380273cf}</UniqueIdentifier>
+      <UniqueIdentifier>{41de1645-542f-4d4d-8835-ae75b87a5d36}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\mclib\misc">
-      <UniqueIdentifier>{9d959835-693d-41bf-bf48-3b7069889ea1}</UniqueIdentifier>
+      <UniqueIdentifier>{c1835ff9-b5d4-41f7-81b8-ddb3760e7ce7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\extra">
-      <UniqueIdentifier>{016ad08d-d5fb-4a1e-af00-42e81c74674c}</UniqueIdentifier>
+      <UniqueIdentifier>{d896fc51-ff06-4bf6-9aae-3d2ecb668878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\test">
+      <UniqueIdentifier>{3e8eed3f-c3f0-45b1-bef1-58d7464684f1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Headers\mclib">
-      <UniqueIdentifier>{4ec089a8-1bb8-46c3-8f87-cb71ee706920}</UniqueIdentifier>
+      <UniqueIdentifier>{64ef6930-8c1a-4e08-901e-a3ec8f6977cd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\move">
-      <UniqueIdentifier>{b580d91e-4ec6-4a96-ab28-5dc0300911e6}</UniqueIdentifier>
+      <UniqueIdentifier>{abe29816-b2ba-43ae-b654-9238529c5780}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\sound">
-      <UniqueIdentifier>{968a3a46-b948-4cd7-87bc-f0609d6aa6b9}</UniqueIdentifier>
+      <UniqueIdentifier>{28a0c668-a47f-48f7-b1e7-0c37309ae2b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\lib">
-      <UniqueIdentifier>{23b14342-7507-4f2d-a7a7-1e81be5827bc}</UniqueIdentifier>
+      <UniqueIdentifier>{033499d7-df2a-4907-ab49-2f05249fa14b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\abl">
-      <UniqueIdentifier>{1237f1e8-e73f-4ffd-9e98-6e649bfea3b0}</UniqueIdentifier>
+      <UniqueIdentifier>{0a5d03d7-840b-4934-b301-0e93255ad279}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\appear">
-      <UniqueIdentifier>{75a30625-0df9-4264-9a97-00b21472e810}</UniqueIdentifier>
+      <UniqueIdentifier>{c555907e-24bd-4d4f-8daa-0bbe0c394ccd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\camera">
-      <UniqueIdentifier>{4e2c0a44-ac2f-4732-bd71-9c4331998717}</UniqueIdentifier>
+      <UniqueIdentifier>{7aa731d8-7e68-4e34-841c-50b40cffe95f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\element">
-      <UniqueIdentifier>{cab60be2-684e-4731-bc61-ba0d54a3e0d6}</UniqueIdentifier>
+      <UniqueIdentifier>{931958fc-ee32-4900-b294-6f08d89a1aa4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\file">
-      <UniqueIdentifier>{7f278017-ff40-4dab-87ae-c0404c70cf7b}</UniqueIdentifier>
+      <UniqueIdentifier>{de8e2044-f39a-41f3-a65f-9b164a4544eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\gui">
-      <UniqueIdentifier>{72bd9086-6f30-49f7-b770-d24f0c86960d}</UniqueIdentifier>
+      <UniqueIdentifier>{08b0499f-1825-4085-9899-87f965f57e16}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\terrain">
-      <UniqueIdentifier>{8464128f-0319-43a5-aa62-bae568b2df8c}</UniqueIdentifier>
+      <UniqueIdentifier>{6ab39dfa-26ad-4986-8c6c-2af5f31b8560}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\mclib\utilities">
-      <UniqueIdentifier>{d74667d1-441b-4697-a6cb-917e30278f57}</UniqueIdentifier>
+      <UniqueIdentifier>{51b8caf2-9e25-4a4d-b70a-53207cfa96cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{12ee0676-8f77-41af-b326-b72a51e064a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Resources\mclib">
-      <UniqueIdentifier>{f930d74f-3ced-4a7f-8c1e-516ef83528da}</UniqueIdentifier>
+    <Filter Include="Headers\Resources\mclib">
+      <UniqueIdentifier>{ece048fa-54c3-4c9e-92c4-d4ac8d7f8c98}</UniqueIdentifier>
     </Filter>
     <Filter Include="build">
-      <UniqueIdentifier>{d370cc5c-9aec-427c-a8b4-c200bb1095b9}</UniqueIdentifier>
+      <UniqueIdentifier>{9960ea02-fd0f-4451-bc1f-fe5b9b8625e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\WinDDK">
-      <UniqueIdentifier>{06865e55-f543-4f4c-9e6c-47a9e5146d96}</UniqueIdentifier>
+      <UniqueIdentifier>{8904a5c6-dc4c-41be-a083-5a9cdbc50e60}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\precompiled">
-      <UniqueIdentifier>{f7c6863a-fb05-434f-b912-e6e99f5208aa}</UniqueIdentifier>
+      <UniqueIdentifier>{25533e71-5b58-46b1-b5b9-b7ebfddf879a}</UniqueIdentifier>
     </Filter>
     <Filter Include="build\DLL">
-      <UniqueIdentifier>{2c1752ce-4ce7-4e45-a4e9-611394be7be2}</UniqueIdentifier>
+      <UniqueIdentifier>{852763fb-074b-4370-b89d-efe761d7c5e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headers\common">
-      <UniqueIdentifier>{d10caced-d43a-4bd3-b2f5-637e67266b2f}</UniqueIdentifier>
+    <Filter Include="build\config">
+      <UniqueIdentifier>{26878137-848e-47ec-ba76-10589d9f2ef3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\mclib\includes_test.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="..\mclib\alphapalette.cpp">
       <Filter>Sources\mclib\lib</Filter>
     </ClCompile>
@@ -191,48 +197,6 @@
     </ClCompile>
     <ClCompile Include="..\mclib\weaponfx.cpp">
       <Filter>Sources\mclib\lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\abldbug.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\abldecl.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablenv.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablerr.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablexec.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablexpr.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablrtn.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablscan.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablstd.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablstmt.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablsymt.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablxexpr.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablxstd.cpp">
-      <Filter>Sources\mclib\abl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ablxstmt.cpp">
-      <Filter>Sources\mclib\abl</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\appear.cpp">
       <Filter>Sources\mclib\appear</Filter>
@@ -342,17 +306,11 @@
     <ClCompile Include="..\mclib\utilities.cpp">
       <Filter>Sources\mclib\misc</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\llist.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
     <ClCompile Include="..\pch\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\mclib\llist.h">
-      <Filter>Sources\extra</Filter>
-    </ClInclude>
     <ClInclude Include="..\mclib\mclib.h">
       <Filter>Headers\mclib</Filter>
     </ClInclude>
@@ -500,12 +458,6 @@
     <ClInclude Include="..\mclib\ablsymt.h">
       <Filter>Headers\mclib\abl</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\dabldbug.h">
-      <Filter>Headers\mclib\abl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\dablenv.h">
-      <Filter>Headers\mclib\abl</Filter>
-    </ClInclude>
     <ClInclude Include="..\mclib\appear.h">
       <Filter>Headers\mclib\appear</Filter>
     </ClInclude>
@@ -513,12 +465,6 @@
       <Filter>Headers\mclib\appear</Filter>
     </ClInclude>
     <ClInclude Include="..\mclib\bdactor.h">
-      <Filter>Headers\mclib\appear</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\dappear.h">
-      <Filter>Headers\mclib\appear</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\daprtype.h">
       <Filter>Headers\mclib\appear</Filter>
     </ClInclude>
     <ClInclude Include="..\mclib\genactor.h">
@@ -558,24 +504,6 @@
       <Filter>Headers\mclib\element</Filter>
     </ClInclude>
     <ClInclude Include="..\mclib\csvfile.h">
-      <Filter>Headers\mclib\file</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\dcsvfile.h">
-      <Filter>Headers\mclib\file</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\dffile.h">
-      <Filter>Headers\mclib\file</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\dfile.h">
-      <Filter>Headers\mclib\file</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\dgamelog.h">
-      <Filter>Headers\mclib\file</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\dinifile.h">
-      <Filter>Headers\mclib\file</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\dpacket.h">
       <Filter>Headers\mclib\file</Filter>
     </ClInclude>
     <ClInclude Include="..\mclib\fastfile.h">
@@ -647,14 +575,22 @@
     <ClInclude Include="..\mclib\vertex.h">
       <Filter>Headers\mclib\terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\pch\stdinc.h">
-      <Filter>build\precompiled</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\mechresources.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
+    <ClInclude Include="..\mclib\resource.h">
+      <Filter>Headers\Resources\mclib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mechcommander.vsprops">
+      <Filter>build\config</Filter>
+    </None>
   </ItemGroup>
 </Project>

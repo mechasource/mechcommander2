@@ -43,19 +43,18 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -74,7 +73,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -136,18 +135,17 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
+				
 				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -166,7 +164,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -230,19 +228,18 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -261,7 +258,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -326,18 +323,17 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
+				
 				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -356,7 +352,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -406,6 +402,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath="..\mclib\includes_test.cpp"
+				>
+			</File>
 			<Filter
 				Name="mclib"
 				>
@@ -566,66 +566,6 @@
 					</File>
 					<File
 						RelativePath="..\mclib\weaponfx.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="abl"
-					>
-					<File
-						RelativePath="..\mclib\abldbug.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\abldecl.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablenv.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablerr.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablexec.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablexpr.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablrtn.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablscan.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablstd.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablstmt.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablsymt.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablxexpr.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablxstd.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablxstmt.cpp"
 						>
 					</File>
 				</Filter>
@@ -816,6 +756,10 @@
 			</Filter>
 			<Filter
 				Name="extra"
+				>
+			</Filter>
+			<Filter
+				Name="test"
 				>
 			</Filter>
 		</Filter>
@@ -1036,14 +980,6 @@
 					</File>
 					<File
 						RelativePath="..\mclib\ablsymt.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dabldbug.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dablenv.h"
 						>
 					</File>
 				</Filter>
@@ -1319,6 +1255,14 @@
 				>
 				<File
 					RelativePath="..\mclib\$(TargetName).def"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="config"
+				>
+				<File
+					RelativePath=".\mechcommander.vsprops"
 					>
 				</File>
 			</Filter>

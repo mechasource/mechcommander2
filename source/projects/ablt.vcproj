@@ -22,10 +22,8 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			>
 			<Tool
@@ -46,7 +44,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
@@ -73,8 +70,6 @@
 				Name="VCLinkerTool"
 				RegisterOutput="true"
 				IgnoreImportLibrary="true"
-				
-				
 				LinkIncremental="1"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
@@ -107,10 +102,9 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			>
 			<Tool
@@ -131,7 +125,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
@@ -158,8 +151,6 @@
 				Name="VCLinkerTool"
 				RegisterOutput="true"
 				IgnoreImportLibrary="true"
-				
-				
 				LinkIncremental="1"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
@@ -193,10 +184,8 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -218,7 +207,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
@@ -245,8 +233,6 @@
 				Name="VCLinkerTool"
 				RegisterOutput="true"
 				IgnoreImportLibrary="true"
-				
-				
 				LinkIncremental="1"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
@@ -281,10 +267,8 @@
 		<Configuration
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			
 			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
-			
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -306,7 +290,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
@@ -333,8 +316,6 @@
 				Name="VCLinkerTool"
 				RegisterOutput="true"
 				IgnoreImportLibrary="true"
-				
-				
 				LinkIncremental="1"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"

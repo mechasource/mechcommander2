@@ -43,19 +43,18 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -75,7 +74,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -137,18 +136,17 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
+				
 				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -168,7 +166,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -232,19 +230,18 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
-				TargetEnvironment="1"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
-				ValidateParameters="true"
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -264,7 +261,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -329,18 +326,17 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
+				
 				TargetEnvironment="3"
-				GenerateStublessProxies="true"
-				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
-				HeaderFileName="$(IntDir)/$(TargetName).h"
-				DLLDataFileName=""
-				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
-				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+				
+				
+				
+				
+				
+				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -360,7 +356,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -413,10 +409,6 @@
 			<Filter
 				Name="mechcmd2"
 				>
-				<File
-					RelativePath="..\mechcmd2\dw.cpp"
-					>
-				</File>
 				<File
 					RelativePath="..\mechcmd2\mechcmd2.cpp"
 					>
@@ -1560,7 +1552,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\include\mechtypes.h"
+					RelativePath="..\include\mechutils.h"
 					>
 				</File>
 			</Filter>
@@ -1639,6 +1631,14 @@
 				>
 				<File
 					RelativePath="..\mechcmd2\$(TargetName).def"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="config"
+				>
+				<File
+					RelativePath=".\mechcommander.vsprops"
 					>
 				</File>
 			</Filter>

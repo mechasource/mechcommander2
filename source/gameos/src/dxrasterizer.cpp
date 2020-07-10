@@ -22,11 +22,80 @@
 
 // -----------------------------------------------------------------------------
 // Uninitialised global data exported from this module
-struct _D3DDeviceDesc7 CapsDirect3D
-gosViewportAddY
-struct _D3DVIEWPORT7 viewData
-unsigned char * GammaTable
-DepthResults
+uint32_t AppWidth;
+bool GlobalFullScreen;
+bool AppStencil;
+bool GlobalZBuffer;
+bool DontFastPath;
+uint32_t HasClamp;
+uint32_t HasAlphaModes;
+DDSURFACEDESC2 BackBufferddsd;
+uint32_t HasAlphaTest;
+DDSURFACEDESC2 ZBddsd;
+uint32_t GlobalWidth;
+DDSURFACEDESC2 BBddsd;
+uint32_t AppHeight;
+uint32_t HasMultitextureSpecularmapFilter;
+uint32_t HasMultitextureLightmapFilter;
+BOOL FoundNetMeeting;
+unsigned int BGMask;
+unsigned int ShowFrame;
+bool ModeChanged;
+bool AppAA;
+unsigned int DBPixelColor;
+uint32_t App32T;
+D3DDEVICEDESC7 CapsDirect3D;
+uint32_t HasMultitextureSpecularmap;
+int32_t ParallelFrame;
+uint32_t DepthPixels;
+D3DVIEWPORT7 viewData;
+uint32_t AppRenderer;
+unsigned __int8 *GammaTable;
+uint32_t GlobalHeight;
+DDCAPS CapsDirectDraw;
+uint32_t HasVertexBlending;
+uint32_t DepthResults[8];
+uint32_t HasFog;
+uint32_t HasMultitextureLightmap;
+uint32_t HasMultitextureDetailTextureFilter;
+uint32_t HasMultitextureDetailTexture;
+WINDOWPLACEMENT WindowPlacement;
+char DisplayInfoText[128];
+uint32_t CurrentRefreshRate;
+BOOL HasTLHAL;
+bool StencilValid;
+bool Rendererd;
+bool ChangingModes;
+volatile bool mc2IsInDisplayBackBuffer;
+uint32_t AllowBrightness;
+unsigned int AllowContrast; // weak
+uint32_t StencilActive;
+volatile bool mc2IsInMouseTimer; // weak
+volatile bool mc2DisplayHasFlipped; // weak
+bool UseGammaCorrection;
+unsigned int TripleBuffer; // weak
+LPDIRECTDRAWSURFACE7 FrontBufferSurface;
+LPDIRECTDRAWSURFACE7 BackBufferSurface;
+LPDIRECTDRAWSURFACE7 g_RefBackBuffer;
+LPDIRECTDRAWSURFACE7 g_CopyBackBuffer;
+LPDIRECTDRAWGAMMACONTROL GammaControlInterface;
+LPDIRECTDRAWCOLORCONTROL ColorControlInterface;
+LPDIRECTDRAWCLIPPER ClipperObject;
+LPDIRECTDRAW7 DDobject;
+LPDIRECTDRAW7 CurrentDDobject;
+LPDIRECTDRAWSURFACE7 ZBufferSurface;
+LPDIRECTSOUNDBUFFER RefZBufferSurface;
+LPDIRECT3D7 d3d7;
+LPDIRECT3DDEVICE7 d3dDevice7;
+LPDIRECT3DDEVICE7 Refd3dDevice7;
+LPDIRECT3DDEVICE7 Maind3dDevice7;
+BOOL HardwareRenderer;
+uint32_t HasBiLinear;
+uint32_t HasTriLinear;
+uint32_t GlobalGotoFullScreen;
+uint32_t GlobalGotoWindowMode;
+float GammaSetting; // weak
+unsigned int EnableDisplayInfo; // weak
 // initialised global data exported from this module
 uint32_t FirstTime = 1;
 float UserGamma = 1.0:

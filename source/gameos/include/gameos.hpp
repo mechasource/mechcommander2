@@ -189,7 +189,7 @@ typedef struct gosEnvironment	// size: 0x0130
 	int32_t Renderer; // 0=Try hardware, fallback to software, 1=RGB, 2=Refrast, 3=Blade
 	uint8_t fullScreen; // Application start running full screen or in a window?
 	uint8_t disableZBuffer; // When true no Z buffer surface will be created
-	uint8_t AntiAlias; // When true full screen antialiasing will be enabled if possible
+	bool AntiAlias; // When true full screen antialiasing will be enabled if possible
 	uint8_t RenderToVram; // When true Blade applications will render directly to video memory (speed-up if no alpha is used)
 	uint8_t Stencil; // When true an 8 bit stencil buffer will be enabled if possible
 	uint8_t TripleBuffer; // When true, full screen modes will be triple buffered, else double buffered

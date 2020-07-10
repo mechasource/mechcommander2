@@ -27,14 +27,13 @@ testresource();
 /// <param name="nShowCmd">initial window state</param>
 /// <returns>application exit code</returns>
 extern "C" int WINAPI
-wWinMain(_In_ HINSTANCE hinstance, _In_opt_ HINSTANCE hPrevInstance,
-	_In_ const std::wstring_view& commandline, _In_ int nShowCmd)
+wWinMain(_In_ HINSTANCE hinstance,_In_opt_ HINSTANCE notused,
+	_In_ const wchar_t* commandline,_In_ int windowshow)
 {
 	(void)hinstance;
-	(void)hPrevInstance;
+	(void)notused;
 	(void)commandline;
-	(void)commandline;
-	(void)nShowCmd;
+	(void)windowshow;
 
 	int result = EXIT_SUCCESS;
 	{

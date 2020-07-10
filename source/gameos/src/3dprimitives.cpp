@@ -151,14 +151,10 @@ MECH_IMPEXP HRESULT __stdcall gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVe
 			{
 				memcpy(&vVertices1, &Vertices[i], sizeof(vVertices1));
 				memcpy(&vVertices2, &Vertices[i + 1], sizeof(vVertices2));
-				vVertices1.x =
-					(float)(vVertices1.x - (((double)DBMouseX - vVertices1.x) * (double)ZoomMode));
-				vVertices1.y =
-					(float)(vVertices1.y - (((double)DBMouseY - vVertices1.y) * (double)ZoomMode));
-				vVertices2.x =
-					(float)(vVertices2.x - (((double)DBMouseX - vVertices2.x) * (double)ZoomMode));
-				vVertices2.y =
-					(float)(vVertices2.y - (((double)DBMouseY - vVertices2.y) * (double)ZoomMode));
+				vVertices1.x = (float)(vVertices1.x - (((double)DBMouseX - vVertices1.x) * (double)ZoomMode));
+				vVertices1.y = (float)(vVertices1.y - (((double)DBMouseY - vVertices1.y) * (double)ZoomMode));
+				vVertices2.x = (float)(vVertices2.x - (((double)DBMouseX - vVertices2.x) * (double)ZoomMode));
+				vVertices2.y = (float)(vVertices2.y - (((double)DBMouseY - vVertices2.y) * (double)ZoomMode));
 				wDrawPrimitive(d3ddevice7, D3DPT_LINELIST, vertextype_unk1, &vVertices1, 2u, 0);
 			}
 		}

@@ -63,7 +63,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -104,7 +103,6 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfMFC="2"

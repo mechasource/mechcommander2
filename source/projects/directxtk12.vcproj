@@ -21,7 +21,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\$(PlatformName)_$(ConfigurationName)\"
+			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
@@ -100,8 +100,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
@@ -181,7 +180,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\$(PlatformName)_$(ConfigurationName)\"
+			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
@@ -263,7 +262,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="..\bin\$(PlatformName)_$(ConfigurationName)\"
+			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"

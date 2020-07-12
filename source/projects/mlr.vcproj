@@ -44,15 +44,6 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				
-				
-				
-				
-				
-				
-				
-				
-				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -77,7 +68,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -105,7 +95,6 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
@@ -127,14 +116,7 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				
 				TargetEnvironment="3"
-				
-				
-				
-				
-				
-				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -159,7 +141,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -209,15 +190,6 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				
-				
-				
-				
-				
-				
-				
-				
-				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -243,7 +215,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -293,14 +264,7 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				
 				TargetEnvironment="3"
-				
-				
-				
-				
-				
-				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -326,7 +290,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"

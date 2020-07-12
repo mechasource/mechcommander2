@@ -102,7 +102,6 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			CharacterSet="1"
@@ -204,15 +203,6 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				
-				
-				
-				
-				
-				
-				
-				
-				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -234,7 +224,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -297,14 +286,7 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				
 				TargetEnvironment="3"
-				
-				
-				
-				
-				
-				
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -326,7 +308,6 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"

@@ -92,7 +92,6 @@
 		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			CharacterSet="1"

@@ -13,8 +13,7 @@
 #include "stdinc.h"
 #include "module.h"
 
-int
-testresource();
+HRESULT testresource();
 
 /// <summary>
 /// <c>WinMain</c> application entry-point function
@@ -26,19 +25,19 @@ testresource();
 /// <param name="commandline">pointer to command line arguments</param>
 /// <param name="nShowCmd">initial window state</param>
 /// <returns>application exit code</returns>
-extern "C" int WINAPI
+extern "C" int32_t WINAPI
 wWinMain(_In_ HINSTANCE hinstance,_In_opt_ HINSTANCE notused,
-	_In_ const wchar_t* commandline,_In_ int windowshow)
+	_In_ PWSTR commandline,_In_ int32_t windowshow)
 {
 	(void)hinstance;
 	(void)notused;
 	(void)commandline;
 	(void)windowshow;
 
-	int result = EXIT_SUCCESS;
+	int ir = EXIT_SUCCESS;
 	{
-		result = testresource();
+		ir = testresource();
 	}
 
-	return result;
+	return ir;
 }

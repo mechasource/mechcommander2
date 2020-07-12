@@ -98,9 +98,9 @@ struct _MenuItem* pLibrariesMenu;
 struct _MenuItem* pRasterizerMenu;
 struct _MenuItem* pDebuggerMenu;
 struct _MenuItem* pGameMenu;
-unsigned long PickNumber;
-unsigned long EnableDisplayInfo;
-unsigned long gStopRendering;
+ULONG PickNumber;
+ULONG EnableDisplayInfo;
+ULONG gStopRendering;
 
 struct _TextureHeap* pTextureHeap;
 

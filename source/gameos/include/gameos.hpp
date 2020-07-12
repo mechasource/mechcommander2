@@ -124,28 +124,6 @@
 #define SPEW(x) ((void)0)
 #endif
 
-#if CONSIDERED_OBSOLETE
-//
-// Types used by GameOS
-//
-typedef unsigned long DWORD;
-typedef unsigned short WORD;
-typedef unsigned char BYTE;
-#define FALSE 0
-#define TRUE 1
-
-#ifndef GUID_DEFINED
-#define GUID_DEFINED
-typedef struct _GUID
-{
-	unsigned long Data1;
-	unsigned short Data2;
-	unsigned short Data3;
-	unsigned char Data4[8];
-} GUID;
-#endif
-#endif
-
 // Handles to internal structures
 typedef struct SoundResource* HGOSAUDIO;
 typedef struct gos_Music* HGOSMUSIC;

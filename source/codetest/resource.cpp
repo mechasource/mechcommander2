@@ -23,7 +23,7 @@
 */
 
 // Resource string storage - note structure packing!
-typedef struct _RES_STRINGTABLE
+typedef struct RES_STRINGTABLE
 {
 	uint16_t count;
 #pragma warning(suppress : 4200)
@@ -31,8 +31,11 @@ typedef struct _RES_STRINGTABLE
 } RES_STRINGTABLE;
 typedef RES_STRINGTABLE* PRES_STRINGTABLE;
 
-extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Out_ const std::wstring_view& resstring,
-	_In_ uint32_t resid, _In_ uint16_t langid);
+std::wstring_view __stdcall LoadResourceString(
+	_In_opt_ HMODULE insthandle,
+	_Out_ HRESULT& hr,
+	_In_ uint32_t resid,
+	_In_ uint16_t langid);
 
 /// <summary>
 /// <c>LoadResourceString</c> is a modified version of the LoadString function.
@@ -40,21 +43,22 @@ extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Ou
 /// <remarks>
 /// </remarks>
 /// <param name="insthandle">resource DLL handle</param>
-/// <param name="resstring">string to recieve resource</param>
+/// <param name="hr">HRESULT</param>
 /// <param name="resid">resource ID</param>
 /// <param name="langid">resource language</param>
-/// <returns>HRESULT</returns>
-extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Out_ const std::wstring_view& resstring,
-	_In_ uint32_t resid, _In_ uint16_t langid = USHRT_MAX)
+/// <returns>const reference to resource</returns>
+std::wstring_view __stdcall 
+LoadResourceString(_In_opt_ HMODULE insthandle,_Out_ HRESULT& hr,
+	_In_ uint32_t resid,_In_ uint16_t langid)
 {
-	HRSRC reshandle;
-	HGLOBAL memhandle;
-	PRES_STRINGTABLE pstringtable;
+	HRSRC reshandle = nullptr;
+	HGLOBAL memhandle = nullptr;
+	PRES_STRINGTABLE pstringtable = nullptr;
 
 	// string tables are counted UTF16 strings grouped together in bundles of sixteen
 	// https://blogs.msdn.microsoft.com/oldnewthing/20040130-00/?p=40813/
 
-	const std::wstring_view& txtid = MAKEINTRESOURCEW(((resid >> 4) + 1) & USHRT_MAX);
+	const wchar_t* txtid = MAKEINTRESOURCEW(((resid >> 4) + 1) & USHRT_MAX);
 	if (langid == USHRT_MAX) // invalid
 		langid = MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US); // 1033, 0x409
 
@@ -94,32 +98,32 @@ extern "C" HRESULT __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Ou
 		index--;
 	}
 
-	resstring = const std::wstring_view&(pstringtable->charray, pstringtable->count);
-
-	return S_OK;
+	hr = S_OK;
+	return std::wstring_view(pstringtable->charray, pstringtable->count);
 }
 
 #if IN_TEST_MODE
-int
-testresource()
+HRESULT testresource()
 {
-	HRESULT result = EXIT_SUCCESS;
+	HRESULT hr = EXIT_SUCCESS;
 
-	HMODULE hModule = ::LoadLibraryW(L"mc2res.dll");
-	HMODULE hModule2 = ::LoadLibraryW(L"mc2res.dll");
-	_ASSERT(hModule == hModule2);
+	HMODULE modulehandle = ::LoadLibraryW(L"mc2res.dll");
+	HMODULE modulehandle2 = ::LoadLibraryW(L"mc2res.dll");
+	_ASSERT(modulehandle == modulehandle2);
 
-	if (hModule == nullptr)
+	if (modulehandle == nullptr)
 		return EXIT_FAILURE;
 
-	const std::wstring_view& pBuffer = nullptr;
-	result = ::LoadStringW(hModule, IDS_LARGE_PULSE_DESC, reinterpret_cast<const std::wstring_view&>(&pBuffer), 0);
-	const std::wstring_view& resstring1(pBuffer, static_cast<size_t>(result));
+	// MSDN: If nBufferMax is zero, then lpBuffer receives a read-only pointer to the resource itself.
+	PWSTR bufferptr = nullptr;
+	hr = ::LoadStringW(modulehandle, IDS_LARGE_PULSE_DESC, reinterpret_cast<PWSTR>(&bufferptr), 0);
+	std::wstring_view resstring1(bufferptr, static_cast<size_t>(hr));
 
-	const std::wstring_view& resstring2;
-	result = LoadResourceString(hModule, resstring2, IDS_LARGE_PULSE_DESC, USHRT_MAX);
+	std::wstring_view resstring2 = LoadResourceString(modulehandle, hr, IDS_LARGE_PULSE_DESC, USHRT_MAX);
 
-	return (SUCCEEDED(result)) ? S_OK : E_FAIL;
+	_ASSERT(resstring1.compare(resstring2) == 0);
+
+	return (SUCCEEDED(hr)) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 #endif
 

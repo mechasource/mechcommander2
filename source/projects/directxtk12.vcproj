@@ -139,7 +139,7 @@
 				DebugInformationFormat="3"
 				CallingConvention="2"
 				ForcedIncludeFiles=""
-				EnablePREfast="true"
+				EnablePREfast="false"
 				OmitDefaultLibName="true"
 			/>
 			<Tool
@@ -372,6 +372,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\directxtk\src\bufferhelpers.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\directxtk\src\commonstates.cpp"
 					>
 				</File>
@@ -511,10 +515,6 @@
 					RelativePath="..\directxtk\src\wictextureloader.cpp"
 					>
 				</File>
-				<File
-					RelativePath="..\directxtk\src\xboxddstextureloader.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="audio"
@@ -537,6 +537,10 @@
 				</File>
 				<File
 					RelativePath="..\directxtk\audio\soundeffectinstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\audio\soundstreaminstance.cpp"
 					>
 				</File>
 				<File
@@ -563,6 +567,10 @@
 				>
 				<File
 					RelativePath="..\directxtk\inc\audio.h"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\inc\bufferhelpers.h"
 					>
 				</File>
 				<File
@@ -653,13 +661,13 @@
 					RelativePath="..\directxtk\inc\wictextureloader.h"
 					>
 				</File>
-				<File
-					RelativePath="..\directxtk\inc\xboxddstextureloader.h"
-					>
-				</File>
 				<Filter
 					Name="june2010"
 					>
+					<File
+						RelativePath="..\directxtk\inc\june2010\audiodefs.h"
+						>
+					</File>
 					<File
 						RelativePath="..\directxtk\inc\june2010\comdecl.h"
 						>
@@ -678,6 +686,10 @@
 					</File>
 					<File
 						RelativePath="..\directxtk\inc\june2010\xaudio2fx.h"
+						>
+					</File>
+					<File
+						RelativePath="..\directxtk\inc\june2010\xma2defs.h"
 						>
 					</File>
 				</Filter>

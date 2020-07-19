@@ -4,18 +4,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
     <IgnoreWarnIntDirInTempDetected>true</IgnoreWarnIntDirInTempDetected>
-    <gameos_dir>../gameos</gameos_dir>
+    <userlib_dir>$(CodeLibraries)</userlib_dir>
+    <xaudio2redist_dir>../packages/Microsoft.XAudio2.Redist.1.2.2/build/native/</xaudio2redist_dir>
+    <gameos_dir>../gameos/</gameos_dir>
     <directxtk_dir>../directxtk/</directxtk_dir>
-    <mclib_dir>../mclib</mclib_dir>
-    <mechcmd2_dir>../mechcmd2</mechcmd2_dir>
-    <mechgui_dir>../mechcmd2/mechgui</mechgui_dir>
-    <mc2res_dir>../mc2res</mc2res_dir>
-    <mech_inc>../include</mech_inc>
-    <pch_dir>../pch</pch_dir>
+    <mclib_dir>../mclib/</mclib_dir>
+    <mechcmd2_dir>../mechcmd2/</mechcmd2_dir>
+    <mechgui_dir>../mechcmd2/mechgui/</mechgui_dir>
+    <mc2res_dir>../mc2res/</mc2res_dir>
+    <mech_inc>../include/</mech_inc>
+    <pch_dir>../pch/</pch_dir>
   </PropertyGroup>
   <PropertyGroup>
     <OutDir>$(SolutionDir)bin\$(PlatformName)_$(Configuration)\</OutDir>
-    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -30,7 +31,7 @@
     </Midl>
     <ClCompile>
       <AdditionalOptions>-await -Zo -Zc:__cplusplus -Zc:externConstexpr -Zc:throwingNew %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.;$(IntDir);$(mech_inc);$(mclib_dir);$(directxtk_dir)/inc;$(gameos_dir)/include;$(pch_dir);$(mc2res_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IntDir);$(mech_inc);$(mclib_dir);$(xaudio2redist_dir)include;$(directxtk_dir)inc;$(gameos_dir)include;$(pch_dir);$(mc2res_dir);$(userlib_dir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -54,7 +55,7 @@
     <Link>
       <AdditionalOptions>-ignore:4199 -pdbcompress %(AdditionalOptions)</AdditionalOptions>
       <Version>2.1</Version>
-      <AdditionalLibraryDirectories>$(OutDir);$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(IntDir);$(userlib_dir)lib/$(PlatformTarget);$(xaudio2redist_dir)release/lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <SetChecksum>true</SetChecksum>
@@ -72,29 +73,45 @@
       <Value>$(IgnoreWarnIntDirInTempDetected)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
+    <BuildMacro Include="userlib_dir">
+      <Value>$(userlib_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="xaudio2redist_dir">
+      <Value>$(xaudio2redist_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
     <BuildMacro Include="gameos_dir">
       <Value>$(gameos_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="directxtk_dir">
       <Value>$(directxtk_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="mclib_dir">
       <Value>$(mclib_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="mechcmd2_dir">
       <Value>$(mechcmd2_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="mechgui_dir">
       <Value>$(mechgui_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="mc2res_dir">
       <Value>$(mc2res_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="mech_inc">
       <Value>$(mech_inc)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="pch_dir">
       <Value>$(pch_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
 </Project>

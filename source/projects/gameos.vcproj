@@ -1466,11 +1466,19 @@
 				Name="common"
 				>
 				<File
+					RelativePath="..\include\mechclassids.h"
+					>
+				</File>
+				<File
 					RelativePath="..\include\mechresources.h"
 					>
 				</File>
 				<File
 					RelativePath="..\include\mechtypes.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\mechutils.h"
 					>
 				</File>
 			</Filter>

@@ -13,7 +13,7 @@
 		EnableIntrinsicFunctions="true"
 		FavorSizeOrSpeed="2"
 		OmitFramePointers="true"
-		AdditionalIncludeDirectories=".;$(IntDir);$(mech_inc);$(mclib_dir);$(directxtk_dir)/inc;$(gameos_dir)/include;$(pch_dir);$(mc2res_dir)"
+		AdditionalIncludeDirectories=".;$(IntDir);$(mech_inc);$(mclib_dir);$(xaudio2redist_dir)include;$(directxtk_dir)/inc;$(gameos_dir)/include;$(pch_dir);$(mc2res_dir)"
 		PreprocessorDefinitions=""
 		StringPooling="true"
 		RuntimeLibrary="2"
@@ -53,7 +53,12 @@
 		PreprocessorDefinitions="PLATFORM=$(PlatformName);PROJECTNAME=L\&quot;$(ProjectName)\&quot;;TARGETFILENAME=L\&quot;$(TargetFileName)\&quot;;TARGETEXT=L\&quot;$(TargetExt)\&quot;"
 		AdditionalIncludeDirectories=".;$(IntDir);$(mc2res_dir)"
 	/>
-	<UserMacro
+  <UserMacro
+		Name="xaudio2redist_dir"
+		Value="../packages/Microsoft.XAudio2.Redist.1.2.2/build/native/"
+		PerformEnvironmentSet="true"
+	/>
+  <UserMacro
 		Name="gameos_dir"
 		Value="../gameos"
 		PerformEnvironmentSet="true"

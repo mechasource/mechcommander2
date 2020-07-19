@@ -111,21 +111,35 @@ MSDISABLE_WARNING_PUSH(4061 4191 4365 4986 5039 5045 5204 6011 6385 6387 28204 2
 //#include <windows.h>
 MSDISABLE_WARNING_POP
 
-MSDISABLE_WARNING_PUSH(4062 4191 4265 4355 4365 4571 4619 4625 4626 4668 4710 4820 5026 5027 5039 5045 5204 6001 6340 28204)
+MSDISABLE_WARNING_PUSH(4062 4191 4265 4355 4365 4571 4619 4623 4625 4626 4668 4710 4820 5026 5027 5039 5045 5204 6001 6340 28204)
 #include <comdef.h>
 #include <wrl/wrappers/corewrappers.h>
 #include <wrl/client.h>
 namespace mswrl = Microsoft::WRL;
+#include <winrt/base.h>
 #include <wil/resource.h>
 #include <wil/result.h>
 #include <wil/com.h>
 #include <wil/safecast.h>
 MSDISABLE_WARNING_POP
 
+#define D3DX12_NO_STATE_OBJECT_HELPERS
+#define _XM_NO_XMVECTOR_OVERLOADS_
+#define XAUDIO2_HELPER_FUNCTIONS
+#define USING_XAUDIO2_REDIST
+#define _WIN7_PLATFORM_UPDATE
+
 MSDISABLE_WARNING_PUSH(4061 4191 4365 4668 4820 5039 5045 5204 6011 6387 28204 28251)
+#include <imagehlp.h>
+#include <wincodec.h>
+#include <mmreg.h>
+#include <mmstream.h>
+#include <mmsystem.h>
+#include <uianimation.h>
+#include <dcompanimation.h>
 #include <Audioclient.h>
 #include <DirectXCollision.h>
-//#include <DirectXcolours.h>
+#include <DirectXColors.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
 #include <Xinput.h>
@@ -133,28 +147,22 @@ MSDISABLE_WARNING_PUSH(4061 4191 4365 4668 4820 5039 5045 5204 6011 6387 28204 2
 #include <dxgi1_2.h>
 #include <d3d11_1.h>
 
-#include <imagehlp.h>
-#include <mmsystem.h>
 #include <d3dtypes.h>
 #include <ddraw.h>
 #include <d3d.h>
 #include <dsound.h>
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
-#include <mmstream.h>
 #include <directxmath.h>
 #include <d2d1_2.h>
 #include <d3d11_2.h>
 #include <dwrite_2.h>
 #include <d3d12.h>
-#include <wincodec.h>
-#include <uianimation.h>
-#include <dcompanimation.h>
 MSDISABLE_WARNING_POP
 
 //namespace dxmath = DirectX::SimpleMath;
 
-MSDISABLE_WARNING_PUSH(4061 4127 4365 4514 4571 4623 4625 4626 4820 4946 5026 5027 6326 28020)
+MSDISABLE_WARNING_PUSH(4061 4127 4365 4514 4571 4623 4625 4626 4820 4946 5026 5027 6326 26439 28020)
 #include <nlohmann/json.hpp>
 MSDISABLE_WARNING_POP
 // namespace json = nlohmann::json;
@@ -164,11 +172,15 @@ MSDISABLE_WARNING_POP
 // comment out for diagnostic messages
 //#pragma warning(disable : 4266 4625 4820)
 
+#pragma warning(disable : 4061) // enumerator in switch of enum is not explicitly handled by a case label
 #pragma warning(disable : 4514) // unreferenced inline function has been removed
-//#pragma warning(disable : 4626) // assignment operator was implicitly defined as deleted
+#pragma warning(disable : 4625) // copy constructor was implicitly defined as deleted
+#pragma warning(disable : 4626) // assignment operator was implicitly defined as deleted
 #pragma warning(disable : 4710) // function not inlined
 #pragma warning(disable : 4820) // bytes padding added
-//#pragma warning(disable : 5027) // move assignment operator was implicitly defined as deleted
+#pragma warning(disable : 5026) // move constructor was implicitly defined as deleted
+#pragma warning(disable : 5027) // move assignment operator was implicitly defined as deleted
+#pragma warning(disable : 5045) // Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
 
 // give more meaning to temporary and disabled code
 #define CONSIDERED_OBSOLETE 0

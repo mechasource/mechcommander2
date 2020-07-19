@@ -149,7 +149,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 
 	//const ATLSTRINGRESOURCEIMAGE* pImage;
 	//const ATLSTRINGRESOURCEIMAGE* pImageEnd;
-	//ulong32_t nResourceSize;
+	//ULONG nResourceSize;
 	//HGLOBAL hGlobal;
 	//uint32_t iIndex;
 

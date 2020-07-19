@@ -15,7 +15,7 @@
 #include "stuff/matrix.h"
 #include "stuff/rotation.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ EulerAngles ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

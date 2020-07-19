@@ -95,9 +95,9 @@ wQueryInterface(IUnknown* punk, REFIID riid, PVOID* ppv)
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-ulong32_t __stdcall wRelease(IUnknown *punk)
+ULONG __stdcall wRelease(IUnknown *punk)
 {
-	ulong32_t ur;
+	ULONG ur;
 
 	InternalFunctionSpew("GameOS_DirectX", "Release(0x%x)+", punk);
 	ur = punk->Release(punk);
@@ -112,9 +112,9 @@ ulong32_t __stdcall wRelease(IUnknown *punk)
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-ulong32_t __stdcall wAddRef(IUnknown *punk)
+ULONG __stdcall wAddRef(IUnknown *punk)
 {
-	ulong32_t ur;
+	ULONG ur;
 
 	InternalFunctionSpew("GameOS_DirectX", "AddRef(0x%x)+", punk);
 	ur = punk->AddRef(punk);

@@ -27,7 +27,7 @@ typedef struct _MemoryMappedFiles
 
 	size_t Magic; // Identify this structure
 	_MemoryMappedFiles* pNext; // Pointer to next structure
-	HANDLE hFile; // File handle
+	HANDLE filehandle; // File handle
 	HANDLE hFileMapping; // Mapping handle
 	uint8_t* pFile; // Pointer to start of data
 	size_t Size; // Size of data

@@ -15,7 +15,7 @@
 #include "stuff/rotation.h"
 #include "stuff/note.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 #define MAX_LINE_SIZE 512
 

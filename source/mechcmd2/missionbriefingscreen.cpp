@@ -226,11 +226,11 @@ MissionBriefingScreen::getMissionTGA(const std::wstring_view& missionName)
 	{
 		// big hack here for some reason we can open files while they're being
 		// transferred.
-		HANDLE hFile = CreateFile(path, GENERIC_READ, 0, nullptr, OPEN_EXISTING, 0, 0);
+		HANDLE filehandle = CreateFile(path, GENERIC_READ, 0, nullptr, OPEN_EXISTING, 0, 0);
 		int32_t error = GetLastError();
-		if (hFile == INVALID_HANDLE_VALUE)
+		if (filehandle == INVALID_HANDLE_VALUE)
 			return 0;
-		CloseHandle(hFile);
+		CloseHandle(filehandle);
 	}
 	// read the tga out of the pak file
 	PacketFile file;

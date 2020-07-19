@@ -80,7 +80,7 @@ void __stdcall RegistryManagerInstall(void)
 	FILETIME FileTime;
 	FILETIME exedate;
 	HKEY hkey;
-	HANDLE hFile;
+	HANDLE filehandle;
 	uint32_t cbdata;
 	uint32_t data;
 	PBYTE pdata;
@@ -139,10 +139,10 @@ void __stdcall RegistryManagerInstall(void)
 	data = 0;
 	pdata = reinterpret_cast<PBYTE>(&data);
 
-	hFile =
+	filehandle =
 		::CreateFileA(_pgmptr, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
-	::GetFileTime(hFile, nullptr, nullptr, &exedate);
-	::CloseHandle(hFile);
+	::GetFileTime(filehandle, nullptr, nullptr, &exedate);
+	::CloseHandle(filehandle);
 
 	gos_LoadDataFromRegistry("ExeDate", pdata, &cbdata, false);
 	UpdatedExe = (exedate.dwLowDateTime != data)

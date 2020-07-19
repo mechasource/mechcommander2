@@ -12,7 +12,7 @@
 #include "stuff/scalar.h"
 #include "stuff/polar.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ YawPitchRange
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

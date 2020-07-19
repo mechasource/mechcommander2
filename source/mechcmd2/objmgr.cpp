@@ -781,10 +781,10 @@ GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHan
 	int32_t size = terrainFile->getPacketSize();
 	uint8_t* pBuffer = new uint8_t[size];
 #ifdef _DEBUG
-	int32_t bytesRead =
+	int32_t bytesread =
 #endif
 		terrainFile->readPacket(packet, pBuffer);
-	gosASSERT(bytesRead == size);
+	gosASSERT(bytesread == size);
 	File* terrainObjectFile = new File;
 	terrainObjectFile->open((const std::wstring_view&)pBuffer, size);
 	totalObjCount = terrainObjectFile->readLong();

@@ -38,8 +38,8 @@
 HRESULT __stdcall wDirectDrawCreateEx(LPGUID pGUID, PVOID* ppDD, REFIID iid, IUnknown* punkouter);
 HRESULT __stdcall wDirectDrawEnumerate(LPDDENUMCALLBACKA pCallback, LPDDENUMCALLBACKEXA pCallbackEx, PVOID pcontext);
 HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t flags, HWND hwnd);
-HRESULT __stdcall wGetAvailableVidMem(LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, ulong32_t* lpdwTotal, ulong32_t* lpdwFree);
-HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, ulong32_t* pNumCodes, ulong32_t* pCodes);
+HRESULT __stdcall wGetAvailableVidMem(LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, PULONG lpdwTotal, PULONG lpdwFree);
+HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, PULONG pNumCodes, PULONG pCodes);
 HRESULT __stdcall wGetDeviceIdentifier(LPDIRECTDRAW7 pdd7, LPDDDEVICEIDENTIFIER2 pdddi2, uint32_t flags);
 HRESULT __stdcall wGetCaps(LPDIRECTDRAW7 pdd7, LPDDCAPS pdddrivercaps, LPDDCAPS pddhelcaps);
 HRESULT __stdcall wCreatePalette(LPDIRECTDRAW7 pdd7, uint32_t flags, LPPALETTEENTRY pcolourTable,LPDIRECTDRAWPALETTE* lplpDDPalette, IUnknown* punkouter);
@@ -197,7 +197,7 @@ HRESULT __stdcall wSetHWnd(LPDIRECTDRAWCLIPPER pddc, uint32_t flags, HWND hwnd)
 /// <param name="pdwFree"></param>
 /// <returns>HRESULT success</returns>
 HRESULT __stdcall wGetAvailableVidMem(
-	LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, ulong32_t* pdwTotal, ulong32_t* pdwFree)
+	LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pDDSCaps2, PULONG pdwTotal, PULONG pdwFree)
 {
 	HRESULT hr;
 
@@ -229,7 +229,7 @@ HRESULT __stdcall wGetAvailableVidMem(
 /// <param name="pNumCodes"></param>
 /// <param name="pCodes"></param>
 /// <returns>HRESULT success</returns>
-HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, ulong32_t* pNumCodes, ulong32_t* pCodes)
+HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, PULONG pNumCodes, PULONG pCodes)
 {
 	HRESULT hr;
 

@@ -12,7 +12,7 @@
 #include "stuff/scalar.h"
 #include "stuff/random.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 int32_t Random::Numbers[250];
 int32_t Random::Index = -1;

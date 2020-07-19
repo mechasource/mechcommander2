@@ -13,7 +13,7 @@
 #include "stuff/affinematrix.h"
 #include "stuff/normal.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 const Normal3D Normal3D::Forward(FORWARD_X, FORWARD_Y, FORWARD_Z);
 const Normal3D Normal3D::Backward(BACKWARD_X, BACKWARD_Y, BACKWARD_Z);

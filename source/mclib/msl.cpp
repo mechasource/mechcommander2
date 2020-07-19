@@ -52,7 +52,7 @@
 #include "toolos.hpp"
 
 #include "../ARM/Microsoft.Xna.Arm.h"
-using namespace Microsoft::Xna::Arm;
+//using namespace Microsoft::Xna::Arm;
 
 //-------------------------------------------------------------------------------
 extern void

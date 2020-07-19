@@ -16,7 +16,7 @@
 #include "stuff/plane.h"
 #include "stuff/ray.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

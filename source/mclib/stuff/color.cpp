@@ -14,7 +14,7 @@
 // #include "stuff/mstring.h"
 #include "stuff/color.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

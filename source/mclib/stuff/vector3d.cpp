@@ -16,7 +16,7 @@
 #include "stuff/linearmatrix.h"
 #include "stuff/vector3d.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

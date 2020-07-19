@@ -12,7 +12,7 @@
 #include "stuff/scalar.h"
 #include "stuff/linearmatrix.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 const LinearMatrix4D LinearMatrix4D::Identity(true);
 

@@ -9,7 +9,7 @@
 #include "stuff/scalar.h"
 #include "stuff/obb.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 OBB OBB::Identity(LinearMatrix4D::Identity, Vector3D::Identity, 0.0f);
 

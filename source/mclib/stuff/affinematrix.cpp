@@ -13,7 +13,7 @@
 #include "stuff/linearmatrix.h"
 #include "stuff/matrix.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 const AffineMatrix4D AffineMatrix4D::Identity(true);
 

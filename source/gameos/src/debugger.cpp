@@ -98,9 +98,9 @@ struct _MenuItem* pLibrariesMenu;
 struct _MenuItem* pRasterizerMenu;
 struct _MenuItem* pDebuggerMenu;
 struct _MenuItem* pGameMenu;
-ULONG PickNumber;
-ULONG EnableDisplayInfo;
-ULONG gStopRendering;
+uint32_t PickNumber;
+uint32_t EnableDisplayInfo;
+uint32_t gStopRendering;
 
 struct _TextureHeap* pTextureHeap;
 
@@ -108,7 +108,7 @@ int32_t __stdcall DrawTextA(HDC hdc, PSTR lpchText, int32_t cchText, PRECT lprc,
 
 InternalFunctionStop(char const*, ...);
 gos_Free(void*);
-gos_Malloc(uint, gos_Heap*);
+gos_Malloc(uint32_t, gos_Heap*);
 ErrorHandler(x, x);
 wRelease(IUnknown*);
 DrawChr(char);

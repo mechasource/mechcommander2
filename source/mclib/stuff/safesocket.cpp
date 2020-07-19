@@ -11,7 +11,7 @@
 //#include "gameos.hpp"
 #include "stuff/safesocket.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //
 //###########################################################################

@@ -46,8 +46,8 @@ extern PSTR __stdcall ErrorNumberToMessage(HRESULT hr);
 //
 HRESULT __stdcall wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN punkouter, uint32_t clscontext, REFIID riid, PVOID* ppv);
 HRESULT __stdcall wQueryInterface(IUnknown* iun, REFIID riid, PVOID* obp);
-ulong32_t __stdcall wRelease(IUnknown* punk);
-ulong32_t __stdcall wAddRef(IUnknown* punk);
+ULONG __stdcall wRelease(IUnknown* punk);
+ULONG __stdcall wAddRef(IUnknown* punk);
 
 //
 // Direct Setup
@@ -132,8 +132,8 @@ HRESULT __stdcall wRestoreDisplayMode(LPDIRECTDRAW7 pdd7);
 HRESULT __stdcall wGetDisplayMode(LPDIRECTDRAW7 pdd7, LPDDSURFACEDESC2 pddsurfacedesc);
 HRESULT __stdcall wCreateClipper(LPDIRECTDRAW7 pdd7, uint32_t flags, LPDIRECTDRAWCLIPPER* ppddclipper, IUnknown* punkouter);
 HRESULT __stdcall wSetDisplayMode(LPDIRECTDRAW7 pdd7, uint32_t width, uint32_t height,uint32_t bpp, uint32_t refreshrate, uint32_t flags);
-HRESULT __stdcall wGetAvailableVidMem(LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pddscaps2, ulong32_t* lpdwTotal, ulong32_t* lpdwFree);
-HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, ulong32_t* lpNumCodes, ulong32_t* lpCodes);
+HRESULT __stdcall wGetAvailableVidMem(LPDIRECTDRAW7 pdd7, LPDDSCAPS2 pddscaps2, PULONG lpdwTotal, PULONG lpdwFree);
+HRESULT __stdcall wGetFourCCCodes(LPDIRECTDRAW7 pdd7, PULONG lpNumCodes, PULONG lpCodes);
 
 // Direct Sound
 HRESULT __stdcall wDirectSoundEnumerate(LPDSENUMCALLBACK cb, PVOID vp);

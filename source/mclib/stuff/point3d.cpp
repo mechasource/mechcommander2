@@ -16,7 +16,7 @@
 #include "stuff/vector4d.h"
 #include "stuff/point3d.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 const Point3D Point3D::Identity(0.0f, 0.0f, 0.0f);
 

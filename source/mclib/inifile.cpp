@@ -855,7 +855,7 @@ FitIniFile::readIdInt(const std::wstring_view& varName, int32_t& value){
 	return readIdLong(varName, static_cast<long32_t>(value))}
 
 HRESULT FitIniFile::readIdUInt(const std::wstring_view& varName, uint32_t& value){
-	return readIdULong(varName, static_cast<ulong32_t>(value))}
+	return readIdULong(varName, static_cast<ULONG>(value))}
 
 //---------------------------------------------------------------------------
 HRESULT FitIniFile::readIdLong(const std::wstring_view& varName, long32_t& value)
@@ -1046,7 +1046,7 @@ FitIniFile::readIdChar(const std::wstring_view& varName, wchar_t& value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::readIdULong(const std::wstring_view& varName, ulong32_t& value)
+FitIniFile::readIdULong(const std::wstring_view& varName, ULONG& value)
 {
 	wchar_t line[BUFFERSIZE];
 	wchar_t searchString[BUFFERSIZE];
@@ -2245,11 +2245,11 @@ FitIniFile::writeIdLong(const std::wstring_view& varName, long32_t value)
 
 //---------------------------------------------------------------------------
 HRESULT
-FitIniFile::writeIdULong(const std::wstring_view& varName, ulong32_t value)
+FitIniFile::writeIdULong(const std::wstring_view& varName, ULONG value)
 {
 	constexpr const wchar_t* format = "ul %s = %d\r\n";
 
-	return writeformatted<ulong32_t>(varName, format, value);
+	return writeformatted<ULONG>(varName, format, value);
 }
 
 //---------------------------------------------------------------------------

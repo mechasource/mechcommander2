@@ -12,7 +12,7 @@
 #include "stuff/scalar.h"
 #include "stuff/motion.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 const Motion3D Motion3D::Identity(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f));
 

@@ -149,7 +149,7 @@ extern bool silentMode;
 extern wchar_t versionStamp[];
 
 #include "../ARM/Microsoft.Xna.Arm.h"
-using namespace Microsoft::Xna::Arm;
+//using namespace Microsoft::Xna::Arm;
 IProviderEngine* armProvider;
 
 //#pragma warning( disable:4244 )

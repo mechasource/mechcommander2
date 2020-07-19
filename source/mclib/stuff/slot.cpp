@@ -12,7 +12,7 @@
 #include "stuff/node.h"
 #include "stuff/slot.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 MemoryBlock* SlotLink::AllocatedMemory = nullptr;
 

@@ -13,7 +13,7 @@
 #include "stuff/linearmatrix.h"
 #include "stuff/origin.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 const Origin3D Origin3D::Identity(
 	Point3D(0.0f, 0.0f, 0.0f), UnitQuaternion(0.0f, 0.0f, 0.0f, 1.0f));

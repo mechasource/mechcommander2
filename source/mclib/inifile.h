@@ -88,7 +88,7 @@ public:
 	HRESULT readIdDouble(const std::wstring_view& varName, double& value);
 	HRESULT readIdBoolean(const std::wstring_view& varName, bool& value);
 	HRESULT readIdLong(const std::wstring_view& varName, long32_t& value);
-	HRESULT readIdULong(const std::wstring_view& varName, ulong32_t& value);
+	HRESULT readIdULong(const std::wstring_view& varName, ULONG& value);
 	HRESULT readIdInt(const std::wstring_view& varName, int32_t& value);
 	HRESULT readIdUInt(const std::wstring_view& varName, uint32_t& value);
 	HRESULT readIdShort(const std::wstring_view& varName, int16_t& value);

@@ -16,7 +16,7 @@
 #include "stuff/extentbox.h"
 #include "stuff/plane.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //
 //#############################################################################

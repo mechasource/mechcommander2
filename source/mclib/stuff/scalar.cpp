@@ -11,7 +11,7 @@
 ////#include "gameos.hpp"
 #include "stuff/scalar.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 int32_t
 Stuff::Round(float value)

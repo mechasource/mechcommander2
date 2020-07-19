@@ -164,8 +164,8 @@ LogisticsData::initPilots()
 	int32_t id = 1;
 	while (true)
 	{
-		int32_t bytesRead = pilotFile.readLine(pilotFileName, 256);
-		if (bytesRead < 2)
+		int32_t bytesread = pilotFile.readLine(pilotFileName, 256);
+		if (bytesread < 2)
 			break;
 		LogisticsPilot tmpPilot;
 		pilots.Append(tmpPilot);

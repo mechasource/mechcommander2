@@ -12,7 +12,7 @@
 #include "stuff/scalar.h"
 #include "stuff/matrix.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 const Matrix4D Matrix4D::Identity(true);
 

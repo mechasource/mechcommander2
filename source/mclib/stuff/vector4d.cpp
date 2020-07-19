@@ -14,7 +14,7 @@
 #include "stuff/matrix.h"
 #include "stuff/vector4d.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector4D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

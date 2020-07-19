@@ -21,7 +21,7 @@
 #include "stuff/trace.h"
 #include "stuff/stuff.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //#include "trace.cpp"
 

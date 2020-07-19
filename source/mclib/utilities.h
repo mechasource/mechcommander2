@@ -43,16 +43,6 @@ public:
 	uint32_t texturewidth; // textures are square
 };
 
-#if CONSIDERED_OBSOLETE
-typedef struct _GUI_RECTd
-{
-	int32_t left;
-	int32_t top;
-	int32_t right;
-	int32_t bottom;
-} RECT;
-#endif
-
 void
 drawEmptyRect(const RECT& rect, uint32_t leftBordercolour = 0xffffffff,
 	uint32_t rightBordercolour = 0xff000000);

@@ -82,7 +82,7 @@
 
 // ARM
 #include "../ARM/Microsoft.Xna.Arm.h"
-using namespace Microsoft::Xna::Arm;
+//using namespace Microsoft::Xna::Arm;
 
 EditorObjectMgr* EditorObjectMgr::s_instance = nullptr;
 uint32_t gameResourceHandle = 0;

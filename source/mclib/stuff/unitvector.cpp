@@ -12,7 +12,7 @@
 #include "stuff/scalar.h"
 #include "stuff/unitvector.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 const UnitVector3D UnitVector3D::Forward(FORWARD_X, FORWARD_Y, FORWARD_Z);
 const UnitVector3D UnitVector3D::Backward(BACKWARD_X, BACKWARD_Y, BACKWARD_Z);

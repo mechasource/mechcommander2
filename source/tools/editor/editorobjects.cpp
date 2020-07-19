@@ -33,7 +33,7 @@
 
 // ARM
 #include "../ARM/Microsoft.Xna.Arm.h"
-using namespace Microsoft::Xna::Arm;
+//using namespace Microsoft::Xna::Arm;
 extern IProviderEngine* armProvider;
 
 extern uint32_t gameResourceHandle;
@@ -807,8 +807,8 @@ Pilot::initPilots()
 	{
 		while (true)
 		{
-			int32_t bytesRead = file.readLine((uint8_t*)pilotFileName, 256);
-			if (bytesRead < 2)
+			int32_t bytesread = file.readLine((uint8_t*)pilotFileName, 256);
+			if (bytesread < 2)
 				break;
 			CString postFix;
 			if (0 == i)

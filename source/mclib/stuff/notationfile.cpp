@@ -11,7 +11,7 @@
 #include "stuff/note.h"
 #include "stuff/notationfile.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 #define MAX_LINE_SIZE 512
 

@@ -11,7 +11,7 @@
 //#include "gameos.hpp"
 #include "stuff/socket.h"
 
-using namespace Stuff;
+// using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Socket ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

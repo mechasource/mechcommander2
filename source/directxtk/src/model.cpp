@@ -7,17 +7,18 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
+
+#include "d3dx12.h"
 #include "Model.h"
+#include "commonstates.h"
+#include "descriptorheap.h"
+#include "directxhelpers.h"
+#include "effects.h"
+#include "platformhelpers.h"
+#include "resourceuploadbatch.h"
 
-#include "CommonStates.h"
-#include "DescriptorHeap.h"
-#include "DirectXHelpers.h"
-#include "Effects.h"
-#include "PlatformHelpers.h"
-#include "ResourceUploadBatch.h"
-
-using namespace DirectX;
+using namespace directxtk;
 
 #ifndef _CPPRTTI 
 #error Model requires RTTI
@@ -230,14 +231,14 @@ Model::~Model()
 
 
 // Load texture resources
-int Model::LoadTextures(IEffectTextureFactory& texFactory, int destinationDescriptorOffset) const
+int32_t Model::LoadTextures(IEffectTextureFactory& texFactory, int32_t destinationDescriptorOffset) const
 {
-    for (size_t i = 0; i < textureNames.size(); ++i)
+    for (auto i = 0u; i < textureNames.size(); ++i)
     {
-        texFactory.CreateTexture(textureNames[i].c_str(), destinationDescriptorOffset + static_cast<int>(i));
+        texFactory.CreateTexture(textureNames[i].c_str(), destinationDescriptorOffset + static_cast<int32_t>(i));
     }
 
-    return static_cast<int>(textureNames.size());
+    return static_cast<int32_t>(textureNames.size());
 }
 
 
@@ -246,7 +247,7 @@ _Use_decl_annotations_
 std::unique_ptr<EffectTextureFactory> Model::LoadTextures(
     ID3D12Device* device,
     ResourceUploadBatch& resourceUploadBatch,
-    const wchar_t* texturesPath,
+    const std::wstring_view& texturesPath,
     D3D12_DESCRIPTOR_HEAP_FLAGS flags) const
 {
     if (textureNames.empty())
@@ -314,14 +315,14 @@ void Model::LoadStaticBuffers(
                 &desc,
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
-                IID_GRAPHICS_PPV_ARGS(part->staticVertexBuffer.GetAddressOf())
+                IID_GRAPHICS_PPV_ARGS(part->staticVertexBuffer.addressof())
             ));
 
-            SetDebugObjectName(part->staticVertexBuffer.Get(), L"ModelMeshPart");
+            SetDebugObjectName(part->staticVertexBuffer.get(), L"ModelMeshPart");
 
-            resourceUploadBatch.Upload(part->staticVertexBuffer.Get(), part->vertexBuffer);
+            resourceUploadBatch.Upload(part->staticVertexBuffer.get(), part->vertexBuffer);
 
-            resourceUploadBatch.Transition(part->staticVertexBuffer.Get(),
+            resourceUploadBatch.Transition(part->staticVertexBuffer.get(),
                 D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
             // Scan for any other part with the same vertex buffer for sharing
@@ -340,14 +341,14 @@ void Model::LoadStaticBuffers(
 
                     if (!keepMemory)
                     {
-                        sharePart->vertexBuffer.Reset();
+                        sharePart->vertexBuffer.reset();
                     }
                 }
             }
 
             if (!keepMemory)
             {
-                part->vertexBuffer.Reset();
+                part->vertexBuffer.reset();
             }
         }
 
@@ -370,14 +371,14 @@ void Model::LoadStaticBuffers(
                 &desc,
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
-                IID_GRAPHICS_PPV_ARGS(part->staticIndexBuffer.GetAddressOf())
+                IID_GRAPHICS_PPV_ARGS(part->staticIndexBuffer.addressof())
             ));
 
-            SetDebugObjectName(part->staticIndexBuffer.Get(), L"ModelMeshPart");
+            SetDebugObjectName(part->staticIndexBuffer.get(), L"ModelMeshPart");
 
-            resourceUploadBatch.Upload(part->staticIndexBuffer.Get(), part->indexBuffer);
+            resourceUploadBatch.Upload(part->staticIndexBuffer.get(), part->indexBuffer);
 
-            resourceUploadBatch.Transition(part->staticIndexBuffer.Get(),
+            resourceUploadBatch.Transition(part->staticIndexBuffer.get(),
                 D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
 
             // Scan for any other part with the same index buffer for sharing
@@ -396,14 +397,14 @@ void Model::LoadStaticBuffers(
 
                     if (!keepMemory)
                     {
-                        sharePart->indexBuffer.Reset();
+                        sharePart->indexBuffer.reset();
                     }
                 }
             }
 
             if (!keepMemory)
             {
-                part->indexBuffer.Reset();
+                part->indexBuffer.reset();
             }
         }
     }
@@ -415,8 +416,8 @@ std::vector<std::shared_ptr<IEffect>> Model::CreateEffects(
     IEffectFactory& fxFactory,
     const EffectPipelineStateDescription& opaquePipelineState,
     const EffectPipelineStateDescription& alphaPipelineState,
-    int textureDescriptorOffset,
-    int samplerDescriptorOffset) const
+    int32_t textureDescriptorOffset,
+    int32_t samplerDescriptorOffset) const
 {
     if (materials.empty())
     {
@@ -484,8 +485,8 @@ std::shared_ptr<IEffect> Model::CreateEffectForMeshPart(
     IEffectFactory& fxFactory,
     const EffectPipelineStateDescription& opaquePipelineState,
     const EffectPipelineStateDescription& alphaPipelineState,
-    int textureDescriptorOffset,
-    int samplerDescriptorOffset,
+    int32_t textureDescriptorOffset,
+    int32_t samplerDescriptorOffset,
     const ModelMeshPart* part) const
 {
     assert(part->materialIndex < materials.size());
@@ -498,7 +499,7 @@ std::shared_ptr<IEffect> Model::CreateEffectForMeshPart(
         throw std::exception("Model mesh part input layout size is too large for DirectX 12");
 
     D3D12_INPUT_LAYOUT_DESC il = {};
-    il.NumElements = static_cast<UINT>(part->vbDecl->size());
+    il.NumElements = static_cast<uint32_t>(part->vbDecl->size());
     il.pInputElementDescs = part->vbDecl->data();
 
     return fxFactory.CreateEffect(m, opaquePipelineState, alphaPipelineState, il, textureDescriptorOffset, samplerDescriptorOffset);
@@ -511,8 +512,8 @@ std::vector<std::shared_ptr<IEffect>> Model::CreateEffects(
     const EffectPipelineStateDescription& alphaPipelineState,
     ID3D12DescriptorHeap* textureDescriptorHeap,
     ID3D12DescriptorHeap* samplerDescriptorHeap,
-    int textureDescriptorOffset,
-    int samplerDescriptorOffset) const
+    int32_t textureDescriptorOffset,
+    int32_t samplerDescriptorOffset) const
 {
     EffectFactory fxFactory(textureDescriptorHeap, samplerDescriptorHeap);
     return CreateEffects(fxFactory, opaquePipelineState, alphaPipelineState, textureDescriptorOffset, samplerDescriptorOffset);
@@ -543,7 +544,7 @@ void Model::Transition(
     D3D12_RESOURCE_STATES stateBeforeIB,
     D3D12_RESOURCE_STATES stateAfterIB)
 {
-    UINT count = 0;
+    uint32_t count = 0;
     D3D12_RESOURCE_BARRIER barrier[64] = {};
 
     for (auto& mit : meshes)
@@ -557,7 +558,7 @@ void Model::Transition(
             {
                 barrier[count].Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
                 barrier[count].Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-                barrier[count].Transition.pResource = pit->staticIndexBuffer.Get();
+                barrier[count].Transition.pResource = pit->staticIndexBuffer.get();
                 barrier[count].Transition.StateBefore = stateBeforeIB;
                 barrier[count].Transition.StateAfter = stateAfterIB;
                 ++count;
@@ -573,7 +574,7 @@ void Model::Transition(
             {
                 barrier[count].Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
                 barrier[count].Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-                barrier[count].Transition.pResource = pit->staticVertexBuffer.Get();
+                barrier[count].Transition.pResource = pit->staticVertexBuffer.get();
                 barrier[count].Transition.StateBefore = stateBeforeVB;
                 barrier[count].Transition.StateAfter = stateAfterVB;
                 ++count;
@@ -595,7 +596,7 @@ void Model::Transition(
             {
                 barrier[count].Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
                 barrier[count].Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-                barrier[count].Transition.pResource = pit->staticIndexBuffer.Get();
+                barrier[count].Transition.pResource = pit->staticIndexBuffer.get();
                 barrier[count].Transition.StateBefore = stateBeforeIB;
                 barrier[count].Transition.StateAfter = stateAfterIB;
                 ++count;
@@ -611,7 +612,7 @@ void Model::Transition(
             {
                 barrier[count].Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
                 barrier[count].Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-                barrier[count].Transition.pResource = pit->staticVertexBuffer.Get();
+                barrier[count].Transition.pResource = pit->staticVertexBuffer.get();
                 barrier[count].Transition.StateBefore = stateBeforeVB;
                 barrier[count].Transition.StateAfter = stateAfterVB;
                 ++count;

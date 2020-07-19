@@ -10,16 +10,16 @@
 
 #pragma once
 
-#include "PlatformHelpers.h"
+#include "platformhelpers.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     // Helper for lazily creating a D3D resource.
     template<typename T, typename TCreateFunc>
-    inline T* DemandCreate(Microsoft::WRL::ComPtr<T>& comPtr, std::mutex& mutex, TCreateFunc createFunc)
+    inline T* DemandCreate(wil::com_ptr<T>& iptr, std::mutex& mutex, TCreateFunc createFunc)
     {
-        T* result = comPtr.Get();
+        T* result = iptr.get();
 
         // Double-checked lock pattern.
         MemoryBarrier();
@@ -28,7 +28,7 @@ namespace DirectX
         {
             std::lock_guard<std::mutex> lock(mutex);
 
-            result = comPtr.Get();
+            result = iptr.get();
         
             if (!result)
             {
@@ -39,7 +39,7 @@ namespace DirectX
 
                 MemoryBarrier();
 
-                comPtr.Attach(result);
+                iptr.attach(result);
             }
         }
 

@@ -7,15 +7,15 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 #include "PrimitiveBatch.h"
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "GraphicsMemory.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "graphicsmemory.h"
 
-using namespace DirectX;
-using namespace DirectX::Internal;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+using namespace directxtk::Internal;
+// using Microsoft::WRL::ComPtr;
 
 
 // Internal PrimitiveBatch implementation class.
@@ -35,8 +35,8 @@ private:
     GraphicsResource mVertexSegment;
     GraphicsResource mIndexSegment;
 
-    ComPtr<ID3D12Device> mDevice;
-    ComPtr<ID3D12GraphicsCommandList> mCommandList;
+    wil::com_ptr<ID3D12Device> mDevice;
+    wil::com_ptr<ID3D12GraphicsCommandList> mCommandList;
 
     size_t mMaxIndices;
     size_t mMaxVertices;
@@ -108,9 +108,9 @@ void PrimitiveBatchBase::Impl::End()
     FlushBatch();
 
     // Release our smart pointers and end the block
-    mIndexSegment.Reset();
-    mVertexSegment.Reset();
-    mCommandList.Reset();
+    mIndexSegment.reset();
+    mVertexSegment.reset();
+    mCommandList.reset();
     mInBeginEndPair = false;
 }
 
@@ -178,9 +178,9 @@ void PrimitiveBatchBase::Impl::Draw(D3D_PRIMITIVE_TOPOLOGY topology, bool isInde
 
         // Allocate a page for the primitive data
         if (isIndexed)
-            mIndexSegment = GraphicsMemory::Get(mDevice.Get()).Allocate(mIndexPageSize);
+            mIndexSegment = GraphicsMemory::Get(mDevice.get()).Allocate(mIndexPageSize);
 
-        mVertexSegment = GraphicsMemory::Get(mDevice.Get()).Allocate(mVertexPageSize);
+        mVertexSegment = GraphicsMemory::Get(mDevice.get()).Allocate(mVertexPageSize);
     }
 
     // Copy over the index data.
@@ -188,7 +188,7 @@ void PrimitiveBatchBase::Impl::Draw(D3D_PRIMITIVE_TOPOLOGY topology, bool isInde
     {
         auto outputIndices = static_cast<uint16_t*>(mIndexSegment.Memory()) + mIndexCount;
 
-        for (size_t i = 0; i < indexCount; i++)
+        for (auto i = 0u; i < indexCount; i++)
         {
             outputIndices[i] = static_cast<uint16_t>(indices[i] + mVertexCount - mBaseIndex);
         }
@@ -215,8 +215,8 @@ void PrimitiveBatchBase::Impl::FlushBatch()
     // Set the vertex buffer view
     D3D12_VERTEX_BUFFER_VIEW vbv;
     vbv.BufferLocation = mVertexSegment.GpuAddress();
-    vbv.SizeInBytes = static_cast<UINT>(mVertexSize * (mVertexCount - mBaseVertex));
-    vbv.StrideInBytes = static_cast<UINT>(mVertexSize);
+    vbv.SizeInBytes = static_cast<uint32_t>(mVertexSize * (mVertexCount - mBaseVertex));
+    vbv.StrideInBytes = static_cast<uint32_t>(mVertexSize);
     mCommandList->IASetVertexBuffers(0, 1, &vbv);
 
     if (mCurrentlyIndexed)
@@ -225,16 +225,16 @@ void PrimitiveBatchBase::Impl::FlushBatch()
         D3D12_INDEX_BUFFER_VIEW ibv;
         ibv.BufferLocation = mIndexSegment.GpuAddress();
         ibv.Format = DXGI_FORMAT_R16_UINT;
-        ibv.SizeInBytes = static_cast<UINT>(mIndexCount - mBaseIndex) * sizeof(uint16_t);
+        ibv.SizeInBytes = static_cast<uint32_t>(mIndexCount - mBaseIndex) * sizeof(uint16_t);
         mCommandList->IASetIndexBuffer(&ibv);
 
         // Draw indexed geometry.
-        mCommandList->DrawIndexedInstanced(static_cast<UINT>(mIndexCount - mBaseIndex), 1, 0, 0, 0);
+        mCommandList->DrawIndexedInstanced(static_cast<uint32_t>(mIndexCount - mBaseIndex), 1, 0, 0, 0);
     }
     else
     {
         // Draw non-indexed geometry.
-        mCommandList->DrawInstanced(static_cast<UINT>(mVertexCount - mBaseVertex), 1, 0, 0);
+        mCommandList->DrawInstanced(static_cast<uint32_t>(mVertexCount - mBaseVertex), 1, 0, 0);
     }
 
     mCurrentTopology = D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
@@ -243,14 +243,14 @@ void PrimitiveBatchBase::Impl::FlushBatch()
 
 // Public constructor.
 PrimitiveBatchBase::PrimitiveBatchBase(_In_ ID3D12Device* device, size_t maxIndices, size_t maxVertices, size_t vertexSize)
-    : pImpl(std::make_unique<Impl>(device, maxIndices, maxVertices, vertexSize))
+    : pimpl(std::make_unique<Impl>(device, maxIndices, maxVertices, vertexSize))
 {
 }
 
 
 // Move constructor.
 PrimitiveBatchBase::PrimitiveBatchBase(PrimitiveBatchBase&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -258,7 +258,7 @@ PrimitiveBatchBase::PrimitiveBatchBase(PrimitiveBatchBase&& moveFrom) noexcept
 // Move assignment.
 PrimitiveBatchBase& PrimitiveBatchBase::operator= (PrimitiveBatchBase&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -271,18 +271,18 @@ PrimitiveBatchBase::~PrimitiveBatchBase()
 
 void PrimitiveBatchBase::Begin(_In_ ID3D12GraphicsCommandList* cmdList)
 {
-    pImpl->Begin(cmdList);
+    pimpl->Begin(cmdList);
 }
 
 
 void PrimitiveBatchBase::End()
 {
-    pImpl->End();
+    pimpl->End();
 }
 
 
 _Use_decl_annotations_
 void PrimitiveBatchBase::Draw(D3D12_PRIMITIVE_TOPOLOGY topology, bool isIndexed, uint16_t const* indices, size_t indexCount, size_t vertexCount, void** pMappedVertices)
 {
-    pImpl->Draw(topology, isIndexed, indices, indexCount, vertexCount, pMappedVertices);
+    pimpl->Draw(topology, isIndexed, indices, indexCount, vertexCount, pMappedVertices);
 }

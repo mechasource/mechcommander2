@@ -7,32 +7,32 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 
-using namespace DirectX;
+using namespace directxtk;
 
 namespace
 {
     // Constant buffer layout. Must match the shader!
     struct NormalMapEffectConstants
     {
-        XMVECTOR diffuseColor;
-        XMVECTOR emissiveColor;
-        XMVECTOR specularColorAndPower;
+        DirectX::XMVECTOR diffuseColor;
+        DirectX::XMVECTOR emissiveColor;
+        DirectX::XMVECTOR specularColorAndPower;
 
-        XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
-        XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
-        XMVECTOR lightSpecularColor[IEffectLights::MaxDirectionalLights];
+        DirectX::XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
+        DirectX::XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
+        DirectX::XMVECTOR lightSpecularColor[IEffectLights::MaxDirectionalLights];
 
-        XMVECTOR eyePosition;
+        DirectX::XMVECTOR eyePosition;
 
-        XMVECTOR fogColor;
-        XMVECTOR fogVector;
+        DirectX::XMVECTOR fogColor;
+        DirectX::XMVECTOR fogVector;
 
-        XMMATRIX world;
-        XMVECTOR worldInverseTranspose[3];
-        XMMATRIX worldViewProj;
+        DirectX::XMMATRIX world;
+        DirectX::XMVECTOR worldInverseTranspose[3];
+        DirectX::XMMATRIX worldViewProj;
     };
 
     static_assert((sizeof(NormalMapEffectConstants) % 16) == 0, "CB size not padded correctly");
@@ -43,10 +43,10 @@ namespace
     {
         using ConstantBufferType = NormalMapEffectConstants;
 
-        static constexpr int VertexShaderCount = 8;
-        static constexpr int PixelShaderCount = 4;
-        static constexpr int ShaderPermutationCount = 16;
-        static constexpr int RootSignatureCount = 2;
+        static constexpr int32_t VertexShaderCount = 8;
+        static constexpr int32_t PixelShaderCount = 4;
+        static constexpr int32_t ShaderPermutationCount = 16;
+        static constexpr int32_t RootSignatureCount = 2;
     };
 }
 
@@ -75,7 +75,7 @@ public:
 
     EffectLights lights;
 
-    int GetPipelineStatePermutation(uint32_t effectFlags) const noexcept;
+    int32_t GetPipelineStatePermutation(uint32_t effectFlags) const noexcept;
 
     void Apply(_In_ ID3D12GraphicsCommandList* commandList);
 };
@@ -136,7 +136,7 @@ const D3D12_SHADER_BYTECODE EffectBase<NormalMapEffectTraits>::VertexShaderBytec
 
 
 template<>
-const int EffectBase<NormalMapEffectTraits>::VertexShaderIndices[] =
+const int32_t EffectBase<NormalMapEffectTraits>::VertexShaderIndices[] =
 {
     0,     // pixel lighting + texture
     0,     // pixel lighting + texture, no fog
@@ -171,7 +171,7 @@ const D3D12_SHADER_BYTECODE EffectBase<NormalMapEffectTraits>::PixelShaderByteco
 
 
 template<>
-const int EffectBase<NormalMapEffectTraits>::PixelShaderIndices[] =
+const int32_t EffectBase<NormalMapEffectTraits>::PixelShaderIndices[] =
 {
     0,      // pixel lighting + texture
     1,      // pixel lighting + texture, no fog
@@ -205,7 +205,7 @@ NormalMapEffect::Impl::Impl(
     uint32_t effectFlags,
     const EffectPipelineStateDescription& pipelineDescription)
     : EffectBase(device),
-        specularMap((effectFlags & EffectFlags::Specular) != 0),
+        specularMap(effectFlags & EffectFlags::Specular),
         texture{},
         specular{},
         normal{},
@@ -246,46 +246,46 @@ NormalMapEffect::Impl::Impl(
 
             rsigDesc.Init(_countof(rootParameters), rootParameters, 0, nullptr, rootSignatureFlags);
 
-            mRootSignature = GetRootSignature(1, rsigDesc);
+            m_prootsignature = GetRootSignature(1, rsigDesc);
         }
         else
         {
             rsigDesc.Init(_countof(rootParameters) - 1, rootParameters, 0, nullptr, rootSignatureFlags);
 
-            mRootSignature = GetRootSignature(0, rsigDesc);
+            m_prootsignature = GetRootSignature(0, rsigDesc);
         }
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     fog.enabled = (effectFlags & EffectFlags::Fog) != 0;
 
     // Create pipeline state.
-    int sp = GetPipelineStatePermutation(effectFlags);
+    int32_t sp = GetPipelineStatePermutation(effectFlags);
     assert(sp >= 0 && sp < NormalMapEffectTraits::ShaderPermutationCount);
     _Analysis_assume_(sp >= 0 && sp < NormalMapEffectTraits::ShaderPermutationCount);
 
-    int vi = EffectBase<NormalMapEffectTraits>::VertexShaderIndices[sp];
+    int32_t vi = EffectBase<NormalMapEffectTraits>::VertexShaderIndices[sp];
     assert(vi >= 0 && vi < NormalMapEffectTraits::VertexShaderCount);
     _Analysis_assume_(vi >= 0 && vi < NormalMapEffectTraits::VertexShaderCount);
-    int pi = EffectBase<NormalMapEffectTraits>::PixelShaderIndices[sp];
+    int32_t pi = EffectBase<NormalMapEffectTraits>::PixelShaderIndices[sp];
     assert(pi >= 0 && pi < NormalMapEffectTraits::PixelShaderCount);
     _Analysis_assume_(pi >= 0 && pi < NormalMapEffectTraits::PixelShaderCount);
 
     pipelineDescription.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         EffectBase<NormalMapEffectTraits>::VertexShaderBytecode[vi],
         EffectBase<NormalMapEffectTraits>::PixelShaderBytecode[pi],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"NormalMapEffect");
+    SetDebugObjectName(m_ppipelinestate.get(), L"NormalMapEffect");
 }
 
 
-int NormalMapEffect::Impl::GetPipelineStatePermutation(uint32_t effectFlags) const noexcept
+int32_t NormalMapEffect::Impl::GetPipelineStatePermutation(uint32_t effectFlags) const noexcept
 {
-    int permutation = 0;
+    int32_t permutation = 0;
 
     // Use optimized shaders if fog is disabled.
     if (!fog.enabled)
@@ -325,7 +325,7 @@ void NormalMapEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     UpdateConstants();
 
     // Set the root signature
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set the texture
     if (!texture.ptr || !sampler.ptr || !normal.ptr)
@@ -353,7 +353,7 @@ void NormalMapEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
     // Set the pipeline state
-    commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+    commandList->SetPipelineState(EffectBase::m_ppipelinestate.get());
 }
 
 
@@ -362,14 +362,14 @@ NormalMapEffect::NormalMapEffect(
     _In_ ID3D12Device* device,
     uint32_t effectFlags,
     const EffectPipelineStateDescription& pipelineDescription)
-    : pImpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription))
+    : pimpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription))
 {
 }
 
 
 // Move constructor.
 NormalMapEffect::NormalMapEffect(NormalMapEffect&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -377,7 +377,7 @@ NormalMapEffect::NormalMapEffect(NormalMapEffect&& moveFrom) noexcept
 // Move assignment.
 NormalMapEffect& NormalMapEffect::operator= (NormalMapEffect&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -391,77 +391,77 @@ NormalMapEffect::~NormalMapEffect()
 // IEffect methods
 void NormalMapEffect::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 {
-    pImpl->Apply(commandList);
+    pimpl->Apply(commandList);
 }
 
 
 // Camera settings
-void XM_CALLCONV NormalMapEffect::SetWorld(FXMMATRIX value)
+void XM_CALLCONV NormalMapEffect::SetWorld(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.world = value;
+    pimpl->matrices.world = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetView(FXMMATRIX value)
+void XM_CALLCONV NormalMapEffect::SetView(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.view = value;
+    pimpl->matrices.view = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetProjection(FXMMATRIX value)
+void XM_CALLCONV NormalMapEffect::SetProjection(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.projection = value;
+    pimpl->matrices.projection = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
+void XM_CALLCONV NormalMapEffect::SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection)
 {
-    pImpl->matrices.world = world;
-    pImpl->matrices.view = view;
-    pImpl->matrices.projection = projection;
+    pimpl->matrices.world = world;
+    pimpl->matrices.view = view;
+    pimpl->matrices.projection = projection;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
 // Material settings
-void XM_CALLCONV NormalMapEffect::SetDiffuseColor(FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetDiffuseColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.diffuseColor = value;
+    pimpl->lights.diffuseColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetEmissiveColor(FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetEmissiveColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.emissiveColor = value;
+    pimpl->lights.emissiveColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetSpecularColor(FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetSpecularColor(DirectX::FXMVECTOR value)
 {
     // Set xyz to new value, but preserve existing w (specular power).
-    pImpl->constants.specularColorAndPower = XMVectorSelect(pImpl->constants.specularColorAndPower, value, g_XMSelect1110);
+    pimpl->constants.specularColorAndPower = DirectX::XMVectorSelect(pimpl->constants.specularColorAndPower, value, DirectX::g_XMSelect1110);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 void NormalMapEffect::SetSpecularPower(float value)
 {
     // Set w to new value, but preserve existing xyz (specular color).
-    pImpl->constants.specularColorAndPower = XMVectorSetW(pImpl->constants.specularColorAndPower, value);
+    pimpl->constants.specularColorAndPower = DirectX::XMVectorSetW(pimpl->constants.specularColorAndPower, value);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
@@ -470,63 +470,63 @@ void NormalMapEffect::DisableSpecular()
     // Set specular color to black, power to 1
     // Note: Don't use a power of 0 or the shader will generate strange highlights on non-specular materials
 
-    pImpl->constants.specularColorAndPower = g_XMIdentityR3; 
+    pimpl->constants.specularColorAndPower = DirectX::g_XMIdentityR3; 
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 void NormalMapEffect::SetAlpha(float value)
 {
-    pImpl->lights.alpha = value;
+    pimpl->lights.alpha = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetColorAndAlpha(FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetColorAndAlpha(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.diffuseColor = value;
-    pImpl->lights.alpha = XMVectorGetW(value);
+    pimpl->lights.diffuseColor = value;
+    pimpl->lights.alpha = DirectX::XMVectorGetW(value);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
 // Light settings
-void XM_CALLCONV NormalMapEffect::SetAmbientLightColor(FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetAmbientLightColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.ambientLightColor = value;
+    pimpl->lights.ambientLightColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void NormalMapEffect::SetLightEnabled(int whichLight, bool value)
+void NormalMapEffect::SetLightEnabled(int32_t whichLight, bool value)
 {
-    pImpl->dirtyFlags |= pImpl->lights.SetLightEnabled(whichLight, value, pImpl->constants.lightDiffuseColor, pImpl->constants.lightSpecularColor);
+    pimpl->dirtyFlags |= pimpl->lights.SetLightEnabled(whichLight, value, pimpl->constants.lightDiffuseColor, pimpl->constants.lightSpecularColor);
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetLightDirection(int whichLight, FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value)
 {
     EffectLights::ValidateLightIndex(whichLight);
 
-    pImpl->constants.lightDirection[whichLight] = value;
+    pimpl->constants.lightDirection[whichLight] = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetLightDiffuseColor(int whichLight, FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value)
 {
-    pImpl->dirtyFlags |= pImpl->lights.SetLightDiffuseColor(whichLight, value, pImpl->constants.lightDiffuseColor);
+    pimpl->dirtyFlags |= pimpl->lights.SetLightDiffuseColor(whichLight, value, pimpl->constants.lightDiffuseColor);
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetLightSpecularColor(int whichLight, FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value)
 {
-    pImpl->dirtyFlags |= pImpl->lights.SetLightSpecularColor(whichLight, value, pImpl->constants.lightSpecularColor);
+    pimpl->dirtyFlags |= pimpl->lights.SetLightSpecularColor(whichLight, value, pimpl->constants.lightSpecularColor);
 }
 
 
@@ -539,48 +539,48 @@ void NormalMapEffect::EnableDefaultLighting()
 // Fog settings.
 void NormalMapEffect::SetFogStart(float value)
 {
-    pImpl->fog.start = value;
+    pimpl->fog.start = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
 void NormalMapEffect::SetFogEnd(float value)
 {
-    pImpl->fog.end = value;
+    pimpl->fog.end = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV NormalMapEffect::SetFogColor(FXMVECTOR value)
+void XM_CALLCONV NormalMapEffect::SetFogColor(DirectX::FXMVECTOR value)
 {
-    pImpl->constants.fogColor = value;
+    pimpl->constants.fogColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 // Texture settings.
 void NormalMapEffect::SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor)
 {
-    pImpl->texture = srvDescriptor;
-    pImpl->sampler = samplerDescriptor;
+    pimpl->texture = srvDescriptor;
+    pimpl->sampler = samplerDescriptor;
 }
 
 
 void NormalMapEffect::SetNormalTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor)
 {
-    pImpl->normal = srvDescriptor;
+    pimpl->normal = srvDescriptor;
 }
 
 
 void NormalMapEffect::SetSpecularTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor)
 {
-    if (!pImpl->specularMap)
+    if (!pimpl->specularMap)
     {
         DebugTrace("WARNING: Specular texture set on NormalMapEffect instance created without specular shader (texture %llu)\n", srvDescriptor.ptr);
     }
 
-    pImpl->specular = srvDescriptor;
+    pimpl->specular = srvDescriptor;
 }

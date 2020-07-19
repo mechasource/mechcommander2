@@ -73,7 +73,7 @@
 // 
 
 
-namespace DirectX
+namespace directxtk
 {
     constexpr D3D12_CPU_DESCRIPTOR_HANDLE D3D12_CPU_DESCRIPTOR_HANDLE_ZERO = {};
 
@@ -90,9 +90,9 @@ namespace DirectX
         _In_ const D3D12_ROOT_SIGNATURE_DESC* rootSignatureDesc,
         _Out_ ID3D12RootSignature** rootSignature) noexcept
     {
-        Microsoft::WRL::ComPtr<ID3DBlob> pSignature;
-        Microsoft::WRL::ComPtr<ID3DBlob> pError;
-        HRESULT hr = D3D12SerializeRootSignature(rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, pSignature.GetAddressOf(), pError.GetAddressOf());
+        wil::com_ptr<ID3DBlob> pSignature;
+        wil::com_ptr<ID3DBlob> pError;
+        HRESULT hr = D3D12SerializeRootSignature(rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, pSignature.addressof(), pError.addressof());
         if (SUCCEEDED(hr))
         {
             hr = device->CreateRootSignature(0, pSignature->GetBufferPointer(), pSignature->GetBufferSize(),
@@ -103,10 +103,10 @@ namespace DirectX
     }
 
     // Helper for obtaining texture size
-    inline XMUINT2 GetTextureSize(_In_ ID3D12Resource* tex) noexcept
+    inline DirectX::XMUINT2 GetTextureSize(_In_ ID3D12Resource* tex) noexcept
     {
         const auto desc = tex->GetDesc();
-        return XMUINT2(static_cast<uint32_t>(desc.Width), static_cast<uint32_t>(desc.Height));
+        return DirectX::XMUINT2(static_cast<uint32_t>(desc.Width), static_cast<uint32_t>(desc.Height));
     }
 
 #if defined(_PIX_H_) || defined(_PIX3_H_)
@@ -114,7 +114,7 @@ namespace DirectX
     class ScopedPixEvent
     {
     public:
-        ScopedPixEvent(_In_ ID3D12GraphicsCommandList* pCommandList, UINT64 /*metadata*/, PCWSTR pFormat) noexcept
+        ScopedPixEvent(_In_ ID3D12GraphicsCommandList* pCommandList, uint64_t /*metadata*/, const std::wstring_view& pFormat) noexcept
             : mCommandList(pCommandList)
         {
             PIXBeginEvent(pCommandList, 0, pFormat);
@@ -130,12 +130,12 @@ namespace DirectX
 #endif
 
     // Helper sets a D3D resource name string (used by PIX and debug layer leak reporting).
-    template<UINT TNameLength>
+    template<uint32_t TNameLength>
     inline void SetDebugObjectName(_In_ ID3D12DeviceChild* resource, _In_z_ const char(&name)[TNameLength]) noexcept
     {
     #if !defined(NO_D3D12_DEBUG_NAME) && (defined(_DEBUG) || defined(PROFILE))
         wchar_t wname[MAX_PATH];
-        int result = MultiByteToWideChar(CP_UTF8, 0, name, TNameLength, wname, MAX_PATH);
+        int32_t result = MultiByteToWideChar(CP_UTF8, 0, name, TNameLength, wname, MAX_PATH);
         if (result > 0)
         {
             resource->SetName(wname);
@@ -146,7 +146,7 @@ namespace DirectX
     #endif
     }
 
-    template<UINT TNameLength>
+    template<uint32_t TNameLength>
     inline void SetDebugObjectName(_In_ ID3D12DeviceChild* resource, _In_z_ const wchar_t(&name)[TNameLength]) noexcept
     {
     #if !defined(NO_D3D12_DEBUG_NAME) && (defined(_DEBUG) || defined(PROFILE))
@@ -193,7 +193,7 @@ namespace DirectX
             assert(mBarriers.size() <= UINT32_MAX);
 
             // Set barriers
-            mCommandList->ResourceBarrier(static_cast<UINT>(mBarriers.size()), mBarriers.data());
+            mCommandList->ResourceBarrier(static_cast<uint32_t>(mBarriers.size()), mBarriers.data());
         }
 
         ScopedBarrier(ScopedBarrier&&) = default;
@@ -211,7 +211,7 @@ namespace DirectX
             }
 
             // Set barriers
-            mCommandList->ResourceBarrier(static_cast<UINT>(mBarriers.size()), mBarriers.data());
+            mCommandList->ResourceBarrier(static_cast<uint32_t>(mBarriers.size()), mBarriers.data());
         }
 
     private:

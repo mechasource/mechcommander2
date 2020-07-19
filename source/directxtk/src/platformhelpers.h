@@ -23,7 +23,7 @@
                 | (static_cast<uint32_t>(static_cast<uint8_t>(ch3)) << 24))
 #endif /* defined(MAKEFOURCC) */
 
-namespace DirectX
+namespace directxtk
 {
     // Helper class for COM exceptions
     class com_exception : public std::exception
@@ -34,7 +34,7 @@ namespace DirectX
         const char* what() const override
         {
             static char s_str[64] = {};
-            sprintf_s(s_str, "Failure with HRESULT of %08X", static_cast<unsigned int>(result));
+            sprintf_s(s_str, "Failure with HRESULT of %08X", static_cast<uint32_t>(result));
             return s_str;
         }
 
@@ -55,7 +55,7 @@ namespace DirectX
 
 
     // Helper for output debug tracing
-    inline void DebugTrace(_In_z_ _Printf_format_string_ const char* format, ...) noexcept
+    inline void DebugTrace(_In_z_ _Printf_format_string_ PCSTR format, ...) noexcept
     {
     #ifdef _DEBUG
         va_list args;

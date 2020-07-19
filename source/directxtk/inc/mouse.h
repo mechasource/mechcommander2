@@ -22,7 +22,7 @@ namespace ABI { namespace Windows { namespace UI { namespace Core { struct ICore
 #endif
 
 
-namespace DirectX
+namespace directxtk
 {
     class Mouse
     {
@@ -49,9 +49,9 @@ namespace DirectX
             bool    rightButton;
             bool    xButton1;
             bool    xButton2;
-            int     x;
-            int     y;
-            int     scrollWheelValue;
+            int32_t     x;
+            int32_t     y;
+            int32_t     scrollWheelValue;
             Mode    positionMode;
         };
 
@@ -72,12 +72,12 @@ namespace DirectX
             ButtonState xButton1;
             ButtonState xButton2;
 
-            #pragma prefast(suppress: 26495, "Reset() performs the initialization")
-            ButtonStateTracker() noexcept { Reset(); }
+            #pragma prefast(suppress: 26495, "reset() performs the initialization")
+            ButtonStateTracker() noexcept { reset(); }
 
             void __cdecl Update(const State& state) noexcept;
 
-            void __cdecl Reset() noexcept;
+            void __cdecl reset() noexcept;
 
             State __cdecl GetLastState() const noexcept { return lastState; }
 
@@ -103,7 +103,7 @@ namespace DirectX
 
     #if (!defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)) && defined(WM_USER)
         void __cdecl SetWindow(HWND window);
-        static void __cdecl ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
+        static void __cdecl ProcessMessage(uint32_t message, WPARAM wParam, LPARAM lParam);
     #endif
 
     #if (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)) || (defined(_XBOX_ONE) && defined(_TITLE) && (_XDK_VER >= 0x42D907D1))
@@ -133,7 +133,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 }
 

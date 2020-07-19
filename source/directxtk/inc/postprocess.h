@@ -21,7 +21,7 @@
 #include "RenderTargetState.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     //----------------------------------------------------------------------------------
     // Abstract interface representing a post-process pass
@@ -48,7 +48,7 @@ namespace DirectX
     class BasicPostProcess : public IPostProcess
     {
     public:
-        enum Effect : unsigned int
+        enum Effect : uint32_t
         {
             Copy,
             Monochrome,
@@ -89,7 +89,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -98,7 +98,7 @@ namespace DirectX
     class DualPostProcess : public IPostProcess
     {
     public:
-        enum Effect : unsigned int
+        enum Effect : uint32_t
         {
             Merge,
             BloomCombine,
@@ -131,7 +131,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -141,7 +141,7 @@ namespace DirectX
     {
     public:
         // Tone-mapping operator
-        enum Operator : unsigned int
+        enum Operator : uint32_t
         {
             None,               // Pass-through
             Saturate,           // Clamp [0,1]
@@ -151,7 +151,7 @@ namespace DirectX
         };
 
         // Electro-Optical Transfer Function (EOTF)
-        enum TransferFunction : unsigned int
+        enum TransferFunction : uint32_t
         {
             Linear,             // Pass-through
             SRGB,               // sRGB (Rec.709 and approximate sRGB display curve)
@@ -190,6 +190,6 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 }

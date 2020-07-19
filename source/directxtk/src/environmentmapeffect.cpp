@@ -7,36 +7,36 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 namespace
 {
     // Constant buffer layout. Must match the shader!
     struct EnvironmentMapEffectConstants
     {
-        XMVECTOR environmentMapSpecular;
+        DirectX::XMVECTOR environmentMapSpecular;
         float environmentMapAmount;
         float fresnelFactor;
         float pad[2];
 
-        XMVECTOR diffuseColor;
-        XMVECTOR emissiveColor;
+        DirectX::XMVECTOR diffuseColor;
+        DirectX::XMVECTOR emissiveColor;
 
-        XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
-        XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
+        DirectX::XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
+        DirectX::XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
 
-        XMVECTOR eyePosition;
+        DirectX::XMVECTOR eyePosition;
 
-        XMVECTOR fogColor;
-        XMVECTOR fogVector;
+        DirectX::XMVECTOR fogColor;
+        DirectX::XMVECTOR fogVector;
 
-        XMMATRIX world;
-        XMVECTOR worldInverseTranspose[3];
-        XMMATRIX worldViewProj;
+        DirectX::XMMATRIX world;
+        DirectX::XMVECTOR worldInverseTranspose[3];
+        DirectX::XMMATRIX worldViewProj;
     };
 
     static_assert((sizeof(EnvironmentMapEffectConstants) % 16) == 0, "CB size not padded correctly");
@@ -47,10 +47,10 @@ namespace
     {
         using ConstantBufferType = EnvironmentMapEffectConstants;
 
-        static constexpr int VertexShaderCount = 6;
-        static constexpr int PixelShaderCount = 16;
-        static constexpr int ShaderPermutationCount = 40;
-        static constexpr int RootSignatureCount = 1;
+        static constexpr int32_t VertexShaderCount = 6;
+        static constexpr int32_t PixelShaderCount = 16;
+        static constexpr int32_t ShaderPermutationCount = 40;
+        static constexpr int32_t RootSignatureCount = 1;
     };
 }
 
@@ -80,7 +80,7 @@ public:
     D3D12_GPU_DESCRIPTOR_HANDLE environmentMap;
     D3D12_GPU_DESCRIPTOR_HANDLE environmentMapSampler;
 
-    int GetPipelineStatePermutation(EnvironmentMapEffect::Mapping mapping, uint32_t effectFlags) const noexcept;
+    int32_t GetPipelineStatePermutation(EnvironmentMapEffect::Mapping mapping, uint32_t effectFlags) const noexcept;
 
     void Apply(_In_ ID3D12GraphicsCommandList* commandList);
 };
@@ -161,7 +161,7 @@ const D3D12_SHADER_BYTECODE EffectBase<EnvironmentMapEffectTraits>::VertexShader
 
 
 template<>
-const int EffectBase<EnvironmentMapEffectTraits>::VertexShaderIndices[] =
+const int32_t EffectBase<EnvironmentMapEffectTraits>::VertexShaderIndices[] =
 {
     0,      // basic
     0,      // basic, no fog
@@ -238,7 +238,7 @@ const D3D12_SHADER_BYTECODE EffectBase<EnvironmentMapEffectTraits>::PixelShaderB
 
 
 template<>
-const int EffectBase<EnvironmentMapEffectTraits>::PixelShaderIndices[] =
+const int32_t EffectBase<EnvironmentMapEffectTraits>::PixelShaderIndices[] =
 {
     0,      // basic
     1,      // basic, no fog
@@ -339,10 +339,10 @@ EnvironmentMapEffect::Impl::Impl(
         CD3DX12_ROOT_SIGNATURE_DESC rsigDesc = {};
         rsigDesc.Init(_countof(rootParameters), rootParameters, 0, nullptr, rootSignatureFlags);
 
-        mRootSignature = GetRootSignature(0, rsigDesc);
+        m_prootsignature = GetRootSignature(0, rsigDesc);
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     fog.enabled = (effectFlags & EffectFlags::Fog) != 0;
 
@@ -355,40 +355,40 @@ EnvironmentMapEffect::Impl::Impl(
     constants.environmentMapAmount = 1;
     constants.fresnelFactor = 1;
 
-    XMVECTOR unwantedOutput[MaxDirectionalLights];
+    DirectX::XMVECTOR unwantedOutput[MaxDirectionalLights];
 
     lights.InitializeConstants(unwantedOutput[0], constants.lightDirection, constants.lightDiffuseColor, unwantedOutput);
 
     // Create pipeline state.
-    int sp = GetPipelineStatePermutation(mapping, effectFlags);
+    int32_t sp = GetPipelineStatePermutation(mapping, effectFlags);
 
     assert(sp >= 0 && sp < EnvironmentMapEffectTraits::ShaderPermutationCount);
     _Analysis_assume_(sp >= 0 && sp < EnvironmentMapEffectTraits::ShaderPermutationCount);
-    int vi = EffectBase<EnvironmentMapEffectTraits>::VertexShaderIndices[sp];
+    int32_t vi = EffectBase<EnvironmentMapEffectTraits>::VertexShaderIndices[sp];
     assert(vi >= 0 && vi < EnvironmentMapEffectTraits::VertexShaderCount);
     _Analysis_assume_(vi >= 0 && vi < EnvironmentMapEffectTraits::VertexShaderCount);
-    int pi = EffectBase<EnvironmentMapEffectTraits>::PixelShaderIndices[sp];
+    int32_t pi = EffectBase<EnvironmentMapEffectTraits>::PixelShaderIndices[sp];
     assert(pi >= 0 && pi < EnvironmentMapEffectTraits::PixelShaderCount);
     _Analysis_assume_(pi >= 0 && pi < EnvironmentMapEffectTraits::PixelShaderCount);
 
     pipelineDescription.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         EffectBase<EnvironmentMapEffectTraits>::VertexShaderBytecode[vi],
         EffectBase<EnvironmentMapEffectTraits>::PixelShaderBytecode[pi],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"EnvironmentMapEffect");
+    SetDebugObjectName(m_ppipelinestate.get(), L"EnvironmentMapEffect");
 }
 
 
-int EnvironmentMapEffect::Impl::GetPipelineStatePermutation(
+int32_t EnvironmentMapEffect::Impl::GetPipelineStatePermutation(
     EnvironmentMapEffect::Mapping mapping,
     uint32_t effectFlags) const noexcept
 {
     bool biasedVertexNormals = (effectFlags & EffectFlags::BiasedVertexNormals) != 0;
 
-    int permutation = 0;
+    int32_t permutation = 0;
 
     // Use optimized shaders if fog is disabled.
     if (!fog.enabled)
@@ -458,7 +458,7 @@ void EnvironmentMapEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandLi
     UpdateConstants();
 
     // Set the resources and state
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set the textures
     if (!texture.ptr || !environmentMap.ptr)
@@ -482,7 +482,7 @@ void EnvironmentMapEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandLi
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
     // Set the pipeline state
-    commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+    commandList->SetPipelineState(EffectBase::m_ppipelinestate.get());
 }
 
 
@@ -492,14 +492,14 @@ EnvironmentMapEffect::EnvironmentMapEffect(
     uint32_t effectFlags,
     const EffectPipelineStateDescription& pipelineDescription,
     EnvironmentMapEffect::Mapping mapping)
-    : pImpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription, mapping))
+    : pimpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription, mapping))
 {
 }
 
 
 // Move constructor.
 EnvironmentMapEffect::EnvironmentMapEffect(EnvironmentMapEffect&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -507,7 +507,7 @@ EnvironmentMapEffect::EnvironmentMapEffect(EnvironmentMapEffect&& moveFrom) noex
 // Move assignment.
 EnvironmentMapEffect& EnvironmentMapEffect::operator= (EnvironmentMapEffect&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -522,113 +522,113 @@ EnvironmentMapEffect::~EnvironmentMapEffect()
 void EnvironmentMapEffect::Apply(
     _In_ ID3D12GraphicsCommandList* cmdList)
 {
-    pImpl->Apply(cmdList);
+    pimpl->Apply(cmdList);
 }
 
 
 // Camera settings.
-void XM_CALLCONV EnvironmentMapEffect::SetWorld(FXMMATRIX value)
+void XM_CALLCONV EnvironmentMapEffect::SetWorld(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.world = value;
+    pimpl->matrices.world = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetView(FXMMATRIX value)
+void XM_CALLCONV EnvironmentMapEffect::SetView(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.view = value;
+    pimpl->matrices.view = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetProjection(FXMMATRIX value)
+void XM_CALLCONV EnvironmentMapEffect::SetProjection(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.projection = value;
+    pimpl->matrices.projection = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
+void XM_CALLCONV EnvironmentMapEffect::SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection)
 {
-    pImpl->matrices.world = world;
-    pImpl->matrices.view = view;
-    pImpl->matrices.projection = projection;
+    pimpl->matrices.world = world;
+    pimpl->matrices.view = view;
+    pimpl->matrices.projection = projection;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
 // Material settings.
-void XM_CALLCONV EnvironmentMapEffect::SetDiffuseColor(FXMVECTOR value)
+void XM_CALLCONV EnvironmentMapEffect::SetDiffuseColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.diffuseColor = value;
+    pimpl->lights.diffuseColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetEmissiveColor(FXMVECTOR value)
+void XM_CALLCONV EnvironmentMapEffect::SetEmissiveColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.emissiveColor = value;
+    pimpl->lights.emissiveColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
 void EnvironmentMapEffect::SetAlpha(float value)
 {
-    pImpl->lights.alpha = value;
+    pimpl->lights.alpha = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetColorAndAlpha(FXMVECTOR value)
+void XM_CALLCONV EnvironmentMapEffect::SetColorAndAlpha(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.diffuseColor = value;
-    pImpl->lights.alpha = XMVectorGetW(value);
+    pimpl->lights.diffuseColor = value;
+    pimpl->lights.alpha = DirectX::XMVectorGetW(value);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
 // Light settings.
-void XM_CALLCONV EnvironmentMapEffect::SetAmbientLightColor(FXMVECTOR value)
+void XM_CALLCONV EnvironmentMapEffect::SetAmbientLightColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.ambientLightColor = value;
+    pimpl->lights.ambientLightColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void EnvironmentMapEffect::SetLightEnabled(int whichLight, bool value)
+void EnvironmentMapEffect::SetLightEnabled(int32_t whichLight, bool value)
 {
-    XMVECTOR unwantedOutput[MaxDirectionalLights] = {};
+    DirectX::XMVECTOR unwantedOutput[MaxDirectionalLights] = {};
 
-    pImpl->dirtyFlags |= pImpl->lights.SetLightEnabled(whichLight, value, pImpl->constants.lightDiffuseColor, unwantedOutput);
+    pimpl->dirtyFlags |= pimpl->lights.SetLightEnabled(whichLight, value, pimpl->constants.lightDiffuseColor, unwantedOutput);
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetLightDirection(int whichLight, FXMVECTOR value)
+void XM_CALLCONV EnvironmentMapEffect::SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value)
 {
     EffectLights::ValidateLightIndex(whichLight);
 
-    pImpl->constants.lightDirection[whichLight] = value;
+    pimpl->constants.lightDirection[whichLight] = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetLightDiffuseColor(int whichLight, FXMVECTOR value)
+void XM_CALLCONV EnvironmentMapEffect::SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value)
 {
-    pImpl->dirtyFlags |= pImpl->lights.SetLightDiffuseColor(whichLight, value, pImpl->constants.lightDiffuseColor);
+    pimpl->dirtyFlags |= pimpl->lights.SetLightDiffuseColor(whichLight, value, pimpl->constants.lightDiffuseColor);
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetLightSpecularColor(int, FXMVECTOR)
+void XM_CALLCONV EnvironmentMapEffect::SetLightSpecularColor(int32_t, DirectX::FXMVECTOR)
 {
     // Unsupported interface method.
 }
@@ -643,63 +643,63 @@ void EnvironmentMapEffect::EnableDefaultLighting()
 // Fog settings.
 void EnvironmentMapEffect::SetFogStart(float value)
 {
-    pImpl->fog.start = value;
+    pimpl->fog.start = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
 void EnvironmentMapEffect::SetFogEnd(float value)
 {
-    pImpl->fog.end = value;
+    pimpl->fog.end = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetFogColor(FXMVECTOR value)
+void XM_CALLCONV EnvironmentMapEffect::SetFogColor(DirectX::FXMVECTOR value)
 {
-    pImpl->constants.fogColor = value;
+    pimpl->constants.fogColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 // Texture settings.
 void EnvironmentMapEffect::SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE texture, D3D12_GPU_DESCRIPTOR_HANDLE sampler)
 {
-    pImpl->texture = texture;
-    pImpl->textureSampler = sampler;
+    pimpl->texture = texture;
+    pimpl->textureSampler = sampler;
 }
 
 
 void EnvironmentMapEffect::SetEnvironmentMap(D3D12_GPU_DESCRIPTOR_HANDLE texture, D3D12_GPU_DESCRIPTOR_HANDLE sampler)
 {
-    pImpl->environmentMap = texture;
-    pImpl->environmentMapSampler = sampler;
+    pimpl->environmentMap = texture;
+    pimpl->environmentMapSampler = sampler;
 }
 
 
 // Additional settings.
 void EnvironmentMapEffect::SetEnvironmentMapAmount(float value)
 {
-    pImpl->constants.environmentMapAmount = value;
+    pimpl->constants.environmentMapAmount = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
-void XM_CALLCONV EnvironmentMapEffect::SetEnvironmentMapSpecular(FXMVECTOR value)
+void XM_CALLCONV EnvironmentMapEffect::SetEnvironmentMapSpecular(DirectX::FXMVECTOR value)
 {
-    pImpl->constants.environmentMapSpecular = value;
+    pimpl->constants.environmentMapSpecular = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 void EnvironmentMapEffect::SetFresnelFactor(float value)
 {
-    pImpl->constants.fresnelFactor = value;
+    pimpl->constants.fresnelFactor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }

@@ -73,7 +73,7 @@ namespace DXUT
         D3DDECLTYPE_FLOAT4    =  3,  // 4D float
         D3DDECLTYPE_D3DCOLOR  =  4,  // 4D packed unsigned bytes mapped to 0. to 1. range
                                      // Input is in D3DCOLOR format (ARGB) expanded to (R, G, B, A)
-        D3DDECLTYPE_UBYTE4    =  5,  // 4D unsigned uint8_t
+        D3DDECLTYPE_UBYTE4    =  5,  // 4D unsigned bytes
         D3DDECLTYPE_UBYTE4N   =  8,  // Each of 4 bytes is normalized by dividing to 255.0
         D3DDECLTYPE_SHORT4N   = 10,  // 4D signed short normalized (v[0]/32767.0,v[1]/32767.0,v[2]/32767.0,v[3]/32767.0)
         D3DDECLTYPE_DEC3N     = 14,  // 3D signed normalized (v[0]/511.0, v[1]/511.0, v[2]/511.0, 1.)
@@ -216,7 +216,7 @@ namespace DXUT
         union
         {
             uint64_t SubsetOffset;
-            INT* pSubsets;
+            int32_t* pSubsets;
         };
         union
         {

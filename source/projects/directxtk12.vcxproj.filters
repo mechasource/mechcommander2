@@ -1,0 +1,370 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\directxtk12">
+      <UniqueIdentifier>{bfeb13a2-3aa1-4cbf-a213-a84746e3bc38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\audio">
+      <UniqueIdentifier>{93b5e4a5-732a-4e2a-91c4-f30c704f267d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\directxtk12">
+      <UniqueIdentifier>{75fbaf86-8ec8-44a0-9fc1-92ad5073b082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\directxtk12\june2010">
+      <UniqueIdentifier>{28b44589-646f-48be-8d75-b2301e700e50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\inlines">
+      <UniqueIdentifier>{1c984ca7-f39b-4b67-bc05-5a5b2e10c6cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\internals">
+      <UniqueIdentifier>{c9049903-8eef-4b33-b20d-22b4671ddd62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\data">
+      <UniqueIdentifier>{afbc33dc-218e-45eb-b64f-416db025fbc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\audio">
+      <UniqueIdentifier>{6cfcb91c-3db7-415c-99a5-9baa753c0da5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\directxtk12">
+      <UniqueIdentifier>{2e6b0c4c-fe57-486b-9b78-5c5e99d81a68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{ffdb7a84-cca4-4931-9ba0-6260d3fbd6d6}</UniqueIdentifier>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{ef8d8722-d0f4-4bae-8465-a9808edbf366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{8c4aeb13-24e8-4e76-b4b8-045356f668c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\config">
+      <UniqueIdentifier>{b548e8ea-1d7e-42e4-a998-762128aa29b3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\directxtk\src\alphatesteffect.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\basiceffect.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\basicpostprocess.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\binaryreader.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\bufferhelpers.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\commonstates.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\ddstextureloader.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\debugeffect.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\descriptorheap.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\directxhelpers.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\dualpostprocess.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\dualtextureeffect.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\effectcommon.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\effectfactory.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\effectpipelinestatedescription.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\effecttexturefactory.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\environmentmapeffect.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\gamepad.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\geometricprimitive.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\geometry.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\graphicsmemory.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\keyboard.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\linearallocator.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\model.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\modelloadsdkmesh.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\modelloadvbo.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\mouse.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\normalmapeffect.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\pbreffect.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\pbreffectfactory.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\primitivebatch.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\resourceuploadbatch.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\screengrab.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\simplemath.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\skinnedeffect.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\spritebatch.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\spritefont.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\tonemappostprocess.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\vertextypes.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\src\wictextureloader.cpp">
+      <Filter>Sources\directxtk12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\audioengine.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\dynamicsoundeffectinstance.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\soundcommon.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\soundeffect.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\soundeffectinstance.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\soundstreaminstance.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\wavebank.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\wavebankreader.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\directxtk\audio\wavfilereader.cpp">
+      <Filter>Sources\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\directxtk\inc\audio.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\bufferhelpers.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\commonstates.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\ddstextureloader.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\descriptorheap.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\directxhelpers.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\effectpipelinestatedescription.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\effects.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\gamepad.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\geometricprimitive.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\graphicsmemory.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\keyboard.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\model.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\mouse.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\postprocess.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\primitivebatch.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\rendertargetstate.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\resourceuploadbatch.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\screengrab.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\simplemath.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\spritebatch.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\spritefont.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\vertextypes.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\wictextureloader.h">
+      <Filter>Headers\directxtk12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\june2010\audiodefs.h">
+      <Filter>Headers\directxtk12\june2010</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\june2010\comdecl.h">
+      <Filter>Headers\directxtk12\june2010</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\june2010\x3daudio.h">
+      <Filter>Headers\directxtk12\june2010</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\june2010\xapofx.h">
+      <Filter>Headers\directxtk12\june2010</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\june2010\xaudio2.h">
+      <Filter>Headers\directxtk12\june2010</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\june2010\xaudio2fx.h">
+      <Filter>Headers\directxtk12\june2010</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\inc\june2010\xma2defs.h">
+      <Filter>Headers\directxtk12\june2010</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\alignednew.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\bezier.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\binaryreader.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\d3dx12.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\dds.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\demandcreate.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\effectcommon.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\geometry.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\linearallocator.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\loaderhelpers.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\platformhelpers.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\sdkmesh.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\sharedresourcepool.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\src\vbo.h">
+      <Filter>Headers\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\audio\soundcommon.h">
+      <Filter>Headers\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\audio\wavebankreader.h">
+      <Filter>Headers\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\directxtk\audio\wavfilereader.h">
+      <Filter>Headers\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\directxtk\inc\simplemath.inl">
+      <Filter>Headers\inlines</Filter>
+    </None>
+    <None Include="..\directxtk\src\teapotdata.inc">
+      <Filter>Headers\data</Filter>
+    </None>
+    <None Include="packages.config" />
+    <None Include="mechcommander.props">
+      <Filter>build\config</Filter>
+    </None>
+  </ItemGroup>
+</Project>

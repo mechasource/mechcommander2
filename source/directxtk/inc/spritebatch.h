@@ -24,7 +24,7 @@
 #include "RenderTargetState.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     class ResourceUploadBatch;
 
@@ -99,27 +99,27 @@ namespace DirectX
         void XM_CALLCONV Begin(
             _In_ ID3D12GraphicsCommandList* commandList,
             SpriteSortMode sortMode = SpriteSortMode_Deferred,
-            FXMMATRIX transformMatrix = MatrixIdentity);
+            DirectX::FXMMATRIX transformMatrix = MatrixIdentity);
         void XM_CALLCONV Begin(
             _In_ ID3D12GraphicsCommandList* commandList,
             D3D12_GPU_DESCRIPTOR_HANDLE sampler,
             SpriteSortMode sortMode = SpriteSortMode_Deferred,
-            FXMMATRIX transformMatrix = MatrixIdentity);
+            DirectX::FXMMATRIX transformMatrix = MatrixIdentity);
         void __cdecl End();
 
-        // Draw overloads specifying position, origin and scale as XMFLOAT2.
-        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, XMFLOAT2 const& position, FXMVECTOR color = Colors::White);
-        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, XMFLOAT2 const& position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = Colors::White, float rotation = 0, XMFLOAT2 const& origin = Float2Zero, float scale = 1, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
-        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, XMFLOAT2 const& position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, XMFLOAT2 const& scale, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
+        // Draw overloads specifying position, origin and scale as DirectX::XMFLOAT2.
+        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, DirectX::XMUINT2 const& textureSize, DirectX::XMFLOAT2 const& position, DirectX::FXMVECTOR color = DirectX::Colors::White);
+        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, DirectX::XMUINT2 const& textureSize, DirectX::XMFLOAT2 const& position, _In_opt_ RECT const* sourceRectangle, DirectX::FXMVECTOR color = DirectX::Colors::White, float rotation = 0, DirectX::XMFLOAT2 const& origin = Float2Zero, float scale = 1, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
+        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, DirectX::XMUINT2 const& textureSize, DirectX::XMFLOAT2 const& position, _In_opt_ RECT const* sourceRectangle, DirectX::FXMVECTOR color, float rotation, DirectX::XMFLOAT2 const& origin, DirectX::XMFLOAT2 const& scale, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
 
-        // Draw overloads specifying position, origin and scale via the first two components of an XMVECTOR.
-        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, FXMVECTOR position, FXMVECTOR color = Colors::White);
-        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, FXMVECTOR position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = Colors::White, float rotation = 0, FXMVECTOR origin = g_XMZero, float scale = 1, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
-        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, FXMVECTOR position, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color, float rotation, FXMVECTOR origin, GXMVECTOR scale, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
+        // Draw overloads specifying position, origin and scale via the first two components of an DirectX::XMVECTOR.
+        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, DirectX::XMUINT2 const& textureSize, DirectX::FXMVECTOR position, DirectX::FXMVECTOR color = DirectX::Colors::White);
+        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, DirectX::XMUINT2 const& textureSize, DirectX::FXMVECTOR position, _In_opt_ RECT const* sourceRectangle, DirectX::FXMVECTOR color = DirectX::Colors::White, float rotation = 0, DirectX::FXMVECTOR origin = DirectX::g_XMZero, float scale = 1, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
+        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, DirectX::XMUINT2 const& textureSize, DirectX::FXMVECTOR position, _In_opt_ RECT const* sourceRectangle, DirectX::FXMVECTOR color, float rotation, DirectX::FXMVECTOR origin, DirectX::GXMVECTOR scale, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
 
         // Draw overloads specifying position as a RECT.
-        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, RECT const& destinationRectangle, FXMVECTOR color = Colors::White);
-        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, XMUINT2 const& textureSize, RECT const& destinationRectangle, _In_opt_ RECT const* sourceRectangle, FXMVECTOR color = Colors::White, float rotation = 0, XMFLOAT2 const& origin = Float2Zero, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
+        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, DirectX::XMUINT2 const& textureSize, RECT const& destinationRectangle, DirectX::FXMVECTOR color = DirectX::Colors::White);
+        void XM_CALLCONV Draw(D3D12_GPU_DESCRIPTOR_HANDLE textureSRV, DirectX::XMUINT2 const& textureSize, RECT const& destinationRectangle, _In_opt_ RECT const* sourceRectangle, DirectX::FXMVECTOR color = DirectX::Colors::White, float rotation = 0, DirectX::XMFLOAT2 const& origin = Float2Zero, SpriteEffects effects = SpriteEffects_None, float layerDepth = 0);
 
         // Rotation mode to be applied to the sprite transformation
         void __cdecl SetRotation(DXGI_MODE_ROTATION mode);
@@ -132,9 +132,9 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
 
-        static const XMMATRIX MatrixIdentity;
-        static const XMFLOAT2 Float2Zero;
+        static const DirectX::XMMATRIX MatrixIdentity;
+        static const DirectX::XMFLOAT2 Float2Zero;
     };
 }

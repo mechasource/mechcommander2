@@ -7,14 +7,14 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 #include "EffectPipelineStateDescription.h"
 
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
 
 
-using namespace DirectX;
+using namespace directxtk;
 
 namespace
 {
@@ -75,7 +75,7 @@ uint32_t EffectPipelineStateDescription::ComputeHash() const noexcept
 
     // Ignores the input layout which contains pointers
     auto ptr = reinterpret_cast<const uint8_t*>(this) + sizeof(D3D12_INPUT_LAYOUT_DESC);
-    for (size_t j = 0; j < (sizeof(EffectPipelineStateDescription) - sizeof(D3D12_INPUT_LAYOUT_DESC)); ++j)
+    for (auto j = 0u; j < (sizeof(EffectPipelineStateDescription) - sizeof(D3D12_INPUT_LAYOUT_DESC)); ++j)
     {
         crc = (crc >> 8) ^ s_crc32[(crc & 0xff) ^ *ptr++];
     }
@@ -102,7 +102,7 @@ void EffectPipelineStateDescription::CreatePipelineState(
 
     if (FAILED(hr))
     { 
-        DebugTrace("ERROR: CreatePipelineState failed to create a PSO. Enable the Direct3D Debug Layer for more information (%08X)\n", static_cast<unsigned int>(hr));
+        DebugTrace("ERROR: CreatePipelineState failed to create a PSO. Enable the Direct3D Debug Layer for more information (%08X)\n", static_cast<uint32_t>(hr));
         throw std::exception("CreateGraphicsPipelineState");
     }
 }

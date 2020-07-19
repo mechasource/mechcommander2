@@ -7,17 +7,17 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 #include "DemandCreate.h"
-#include "ResourceUploadBatch.h"
+#include "resourceuploadbatch.h"
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 
 // IEffectMatrices default method
-void XM_CALLCONV IEffectMatrices::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
+void XM_CALLCONV IEffectMatrices::SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection)
 {
     SetWorld(world);
     SetView(view);
@@ -28,7 +28,7 @@ void XM_CALLCONV IEffectMatrices::SetMatrices(FXMMATRIX world, CXMMATRIX view, C
 // Constructor initializes default matrix values.
 EffectMatrices::EffectMatrices() noexcept
 {
-    XMMATRIX id = XMMatrixIdentity();
+    DirectX::XMMATRIX id = DirectX::XMMatrixIdentity();
     world = id;
     view = id;
     projection = id;
@@ -37,7 +37,7 @@ EffectMatrices::EffectMatrices() noexcept
 
 
 // Lazily recomputes the combined world+view+projection matrix.
-_Use_decl_annotations_ void EffectMatrices::SetConstants(int& dirtyFlags, XMMATRIX& worldViewProjConstant)
+_Use_decl_annotations_ void EffectMatrices::SetConstants(int32_t& dirtyFlags, DirectX::XMMATRIX& worldViewProjConstant)
 {
     if (dirtyFlags & EffectDirtyFlags::WorldViewProj)
     {
@@ -62,7 +62,7 @@ EffectFog::EffectFog() noexcept :
 
 // Lazily recomputes the derived vector used by shader fog calculations.
 _Use_decl_annotations_
-void XM_CALLCONV EffectFog::SetConstants(int& dirtyFlags, FXMMATRIX worldView, XMVECTOR& fogVectorConstant)
+void XM_CALLCONV EffectFog::SetConstants(int32_t& dirtyFlags, DirectX::FXMMATRIX worldView, DirectX::XMVECTOR& fogVectorConstant)
 {
     if (enabled)
     {
@@ -71,7 +71,7 @@ void XM_CALLCONV EffectFog::SetConstants(int& dirtyFlags, FXMMATRIX worldView, X
             if (start == end)
             {
                 // Degenerate case: force everything to 100% fogged if start and end are the same.
-                static const XMVECTORF32 fullyFogged = { { { 0, 0, 0, 1 } } };
+                static const DirectX::XMVECTORF32 fullyFogged = { { { 0, 0, 0, 1 } } };
 
                 fogVectorConstant = fullyFogged;
             }
@@ -83,14 +83,15 @@ void XM_CALLCONV EffectFog::SetConstants(int& dirtyFlags, FXMMATRIX worldView, X
                 // with a single dot product, using only the Z row of the world+view matrix.
         
                 // _13, _23, _33, _43
-                XMVECTOR worldViewZ = XMVectorMergeXY(XMVectorMergeZW(worldView.r[0], worldView.r[2]),
-                                                      XMVectorMergeZW(worldView.r[1], worldView.r[3]));
+                DirectX::XMVECTOR worldViewZ = DirectX::XMVectorMergeXY(
+					DirectX::XMVectorMergeZW(worldView.r[0], worldView.r[2]),
+					DirectX::XMVectorMergeZW(worldView.r[1], worldView.r[3]));
 
                 // 0, 0, 0, fogStart
-                XMVECTOR wOffset = XMVectorSwizzle<1, 2, 3, 0>(XMLoadFloat(&start));
+                DirectX::XMVECTOR wOffset = DirectX::XMVectorSwizzle<1, 2, 3, 0>(DirectX::XMLoadFloat(&start));
 
                 // (worldViewZ + wOffset) / (start - end);
-                fogVectorConstant = XMVectorDivide(XMVectorAdd(worldViewZ, wOffset), XMVectorReplicate(start - end));
+                fogVectorConstant = DirectX::XMVectorDivide(DirectX::XMVectorAdd(worldViewZ, wOffset), DirectX::XMVectorReplicate(start - end));
             }
 
             dirtyFlags &= ~(EffectDirtyFlags::FogVector | EffectDirtyFlags::FogEnable);
@@ -102,7 +103,7 @@ void XM_CALLCONV EffectFog::SetConstants(int& dirtyFlags, FXMMATRIX worldView, X
         // When fog is disabled, make sure the fog vector is reset to zero.
         if (dirtyFlags & EffectDirtyFlags::FogEnable)
         {
-            fogVectorConstant = g_XMZero;
+            fogVectorConstant = DirectX::g_XMZero;
 
             dirtyFlags &= ~EffectDirtyFlags::FogEnable;
             dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
@@ -113,21 +114,21 @@ void XM_CALLCONV EffectFog::SetConstants(int& dirtyFlags, FXMMATRIX worldView, X
 
 // Constructor initializes default material color settings.
 EffectColor::EffectColor() noexcept :
-    diffuseColor(g_XMOne),
+    diffuseColor(DirectX::g_XMOne),
     alpha(1.f)
 {
 }
 
 
 // Lazily recomputes the material color parameter for shaders that do not support realtime lighting.
-void EffectColor::SetConstants(_Inout_ int& dirtyFlags, _Inout_ XMVECTOR& diffuseColorConstant)
+void EffectColor::SetConstants(_Inout_ int32_t& dirtyFlags, _Inout_ DirectX::XMVECTOR& diffuseColorConstant)
 {
     if (dirtyFlags & EffectDirtyFlags::MaterialColor)
     {
-        XMVECTOR alphaVector = XMVectorReplicate(alpha);
+        DirectX::XMVECTOR alphaVector = DirectX::XMVectorReplicate(alpha);
 
         // xyz = diffuse * alpha, w = alpha.
-        diffuseColorConstant = XMVectorSelect(alphaVector, XMVectorMultiply(diffuseColor, alphaVector), g_XMSelect1110);
+        diffuseColorConstant = DirectX::XMVectorSelect(alphaVector, DirectX::XMVectorMultiply(diffuseColor, alphaVector), DirectX::g_XMSelect1110);
 
         dirtyFlags &= ~EffectDirtyFlags::MaterialColor;
         dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
@@ -143,10 +144,10 @@ EffectLights::EffectLights() noexcept :
     lightDiffuseColor{},
     lightSpecularColor{}
 {
-    for (int i = 0; i < MaxDirectionalLights; i++)
+    for (int32_t i = 0; i < MaxDirectionalLights; i++)
     {
         lightEnabled[i] = (i == 0);
-        lightDiffuseColor[i] = g_XMOne;
+        lightDiffuseColor[i] = DirectX::g_XMOne;
     }
 }
 
@@ -157,19 +158,19 @@ EffectLights::EffectLights() noexcept :
 #endif
 
 // Initializes constant buffer fields to match the current lighting state.
-_Use_decl_annotations_ void EffectLights::InitializeConstants(XMVECTOR& specularColorAndPowerConstant, XMVECTOR* lightDirectionConstant, XMVECTOR* lightDiffuseConstant, XMVECTOR* lightSpecularConstant) const
+_Use_decl_annotations_ void EffectLights::InitializeConstants(DirectX::XMVECTOR& specularColorAndPowerConstant, DirectX::XMVECTOR* lightDirectionConstant, DirectX::XMVECTOR* lightDiffuseConstant, DirectX::XMVECTOR* lightSpecularConstant) const
 {
-    static const XMVECTORF32 defaultSpecular = { { { 1, 1, 1, 16 } } };
-    static const XMVECTORF32 defaultLightDirection = { { { 0, -1, 0, 0 } } };
+    static const DirectX::XMVECTORF32 defaultSpecular = { { { 1, 1, 1, 16 } } };
+    static const DirectX::XMVECTORF32 defaultLightDirection = { { { 0, -1, 0, 0 } } };
     
     specularColorAndPowerConstant = defaultSpecular;
 
-    for (int i = 0; i < MaxDirectionalLights; i++)
+    for (int32_t i = 0; i < MaxDirectionalLights; i++)
     {
         lightDirectionConstant[i] = defaultLightDirection;
 
-        lightDiffuseConstant[i]  = lightEnabled[i] ? lightDiffuseColor[i]  : g_XMZero;
-        lightSpecularConstant[i] = lightEnabled[i] ? lightSpecularColor[i] : g_XMZero;
+        lightDiffuseConstant[i]  = lightEnabled[i] ? lightDiffuseColor[i]  : DirectX::g_XMZero;
+        lightSpecularConstant[i] = lightEnabled[i] ? lightSpecularColor[i] : DirectX::g_XMZero;
     }
 }
 
@@ -180,7 +181,7 @@ _Use_decl_annotations_ void EffectLights::InitializeConstants(XMVECTOR& specular
 
 // Lazily recomputes derived parameter values used by shader lighting calculations.
 _Use_decl_annotations_
-void EffectLights::SetConstants(int& dirtyFlags, EffectMatrices const& matrices, XMMATRIX& worldConstant, XMVECTOR worldInverseTransposeConstant[3], XMVECTOR& eyePositionConstant, XMVECTOR& diffuseColorConstant, XMVECTOR& emissiveColorConstant, bool lightingEnabled)
+void EffectLights::SetConstants(int32_t& dirtyFlags, EffectMatrices const& matrices, DirectX::XMMATRIX& worldConstant, DirectX::XMVECTOR worldInverseTransposeConstant[3], DirectX::XMVECTOR& eyePositionConstant, DirectX::XMVECTOR& diffuseColorConstant, DirectX::XMVECTOR& emissiveColorConstant, bool lightingEnabled)
 {
     if (lightingEnabled)
     {
@@ -189,7 +190,7 @@ void EffectLights::SetConstants(int& dirtyFlags, EffectMatrices const& matrices,
         {
             worldConstant = XMMatrixTranspose(matrices.world);
 
-            XMMATRIX worldInverse = XMMatrixInverse(nullptr, matrices.world);
+            DirectX::XMMATRIX worldInverse = XMMatrixInverse(nullptr, matrices.world);
 
             worldInverseTransposeConstant[0] = worldInverse.r[0];
             worldInverseTransposeConstant[1] = worldInverse.r[1];
@@ -202,7 +203,7 @@ void EffectLights::SetConstants(int& dirtyFlags, EffectMatrices const& matrices,
         // Eye position vector.
         if (dirtyFlags & EffectDirtyFlags::EyePosition)
         {
-            XMMATRIX viewInverse = XMMatrixInverse(nullptr, matrices.view);
+            DirectX::XMMATRIX viewInverse = XMMatrixInverse(nullptr, matrices.view);
         
             eyePositionConstant = viewInverse.r[3];
 
@@ -234,23 +235,23 @@ void EffectLights::SetConstants(int& dirtyFlags, EffectMatrices const& matrices,
 
     if (dirtyFlags & EffectDirtyFlags::MaterialColor)
     {
-        XMVECTOR diffuse = diffuseColor;
-        XMVECTOR alphaVector = XMVectorReplicate(alpha);
+        DirectX::XMVECTOR diffuse = diffuseColor;
+        DirectX::XMVECTOR alphaVector = DirectX::XMVectorReplicate(alpha);
 
         if (lightingEnabled)
         {
             // Merge emissive and ambient light contributions.
             // (emissiveColor + ambientLightColor * diffuse) * alphaVector;
-            emissiveColorConstant = XMVectorMultiply(XMVectorMultiplyAdd(ambientLightColor, diffuse, emissiveColor), alphaVector);
+            emissiveColorConstant = DirectX::XMVectorMultiply(DirectX::XMVectorMultiplyAdd(ambientLightColor, diffuse, emissiveColor), alphaVector);
         }
         else
         {
             // Merge diffuse and emissive light contributions.
-            diffuse = XMVectorAdd(diffuse, emissiveColor);
+            diffuse = DirectX::XMVectorAdd(diffuse, emissiveColor);
         }
 
         // xyz = diffuse * alpha, w = alpha.
-        diffuseColorConstant = XMVectorSelect(alphaVector, XMVectorMultiply(diffuse, alphaVector), g_XMSelect1110);
+        diffuseColorConstant = DirectX::XMVectorSelect(alphaVector, DirectX::XMVectorMultiply(diffuse, alphaVector), DirectX::g_XMSelect1110);
 
         dirtyFlags &= ~EffectDirtyFlags::MaterialColor;
         dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
@@ -264,7 +265,7 @@ void EffectLights::SetConstants(int& dirtyFlags, EffectMatrices const& matrices,
 #endif
 
 // Helper for turning one of the directional lights on or off.
-_Use_decl_annotations_ int EffectLights::SetLightEnabled(int whichLight, bool value, XMVECTOR* lightDiffuseConstant, XMVECTOR* lightSpecularConstant)
+_Use_decl_annotations_ int32_t EffectLights::SetLightEnabled(int32_t whichLight, bool value, DirectX::XMVECTOR* lightDiffuseConstant, DirectX::XMVECTOR* lightSpecularConstant)
 {
     ValidateLightIndex(whichLight);
 
@@ -282,8 +283,8 @@ _Use_decl_annotations_ int EffectLights::SetLightEnabled(int whichLight, bool va
     else
     {
         // If the light is off, reset constant buffer colors to zero.
-        lightDiffuseConstant[whichLight] = g_XMZero;
-        lightSpecularConstant[whichLight] = g_XMZero;
+        lightDiffuseConstant[whichLight] = DirectX::g_XMZero;
+        lightSpecularConstant[whichLight] = DirectX::g_XMZero;
     }
 
     return EffectDirtyFlags::ConstantBuffer;
@@ -292,7 +293,7 @@ _Use_decl_annotations_ int EffectLights::SetLightEnabled(int whichLight, bool va
 
 // Helper for setting diffuse color of one of the directional lights.
 _Use_decl_annotations_
-int XM_CALLCONV EffectLights::SetLightDiffuseColor(int whichLight, FXMVECTOR value, XMVECTOR* lightDiffuseConstant)
+int32_t XM_CALLCONV EffectLights::SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value, DirectX::XMVECTOR* lightDiffuseConstant)
 {
     ValidateLightIndex(whichLight);
 
@@ -313,7 +314,7 @@ int XM_CALLCONV EffectLights::SetLightDiffuseColor(int whichLight, FXMVECTOR val
 
 // Helper for setting specular color of one of the directional lights.
 _Use_decl_annotations_
-int XM_CALLCONV EffectLights::SetLightSpecularColor(int whichLight, FXMVECTOR value, XMVECTOR* lightSpecularConstant)
+int32_t XM_CALLCONV EffectLights::SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value, DirectX::XMVECTOR* lightSpecularConstant)
 {
     ValidateLightIndex(whichLight);
 
@@ -337,7 +338,7 @@ int XM_CALLCONV EffectLights::SetLightSpecularColor(int whichLight, FXMVECTOR va
 
 
 // Parameter validation helper.
-void EffectLights::ValidateLightIndex(int whichLight)
+void EffectLights::ValidateLightIndex(int32_t whichLight)
 {
     if (whichLight < 0 || whichLight >= MaxDirectionalLights)
     {
@@ -349,32 +350,32 @@ void EffectLights::ValidateLightIndex(int whichLight)
 // Activates the default lighting rig (key, fill, and back lights).
 void EffectLights::EnableDefaultLighting(_In_ IEffectLights* effect)
 {
-    static const XMVECTORF32 defaultDirections[MaxDirectionalLights] =
+    static const DirectX::XMVECTORF32 defaultDirections[MaxDirectionalLights] =
     {
         { { { -0.5265408f, -0.5735765f, -0.6275069f, 0 } } },
         { { {  0.7198464f,  0.3420201f,  0.6040227f, 0 } } },
         { { {  0.4545195f, -0.7660444f,  0.4545195f, 0 } } },
     };
 
-    static const XMVECTORF32 defaultDiffuse[MaxDirectionalLights] =
+    static const DirectX::XMVECTORF32 defaultDiffuse[MaxDirectionalLights] =
     {
         { { { 1.0000000f, 0.9607844f, 0.8078432f, 0 } } },
         { { { 0.9647059f, 0.7607844f, 0.4078432f, 0 } } },
         { { { 0.3231373f, 0.3607844f, 0.3937255f, 0 } } },
     };
 
-    static const XMVECTORF32 defaultSpecular[MaxDirectionalLights] =
+    static const DirectX::XMVECTORF32 defaultSpecular[MaxDirectionalLights] =
     {
         { { { 1.0000000f, 0.9607844f, 0.8078432f, 0 } } },
         { { { 0.0000000f, 0.0000000f, 0.0000000f, 0 } } },
         { { { 0.3231373f, 0.3607844f, 0.3937255f, 0 } } },
     };
 
-    static const XMVECTORF32 defaultAmbient = { { { 0.05333332f, 0.09882354f, 0.1819608f, 0 } } };
+    static const DirectX::XMVECTORF32 defaultAmbient = { { { 0.05333332f, 0.09882354f, 0.1819608f, 0 } } };
 
     effect->SetAmbientLightColor(defaultAmbient);
 
-    for (int i = 0; i < MaxDirectionalLights; i++)
+    for (int32_t i = 0; i < MaxDirectionalLights; i++)
     {
         effect->SetLightEnabled(i, true);
         effect->SetLightDirection(i, defaultDirections[i]);
@@ -385,11 +386,11 @@ void EffectLights::EnableDefaultLighting(_In_ IEffectLights* effect)
 
 
 // Gets or lazily creates the specified root signature.
-ID3D12RootSignature* EffectDeviceResources::DemandCreateRootSig(_Inout_ Microsoft::WRL::ComPtr<ID3D12RootSignature>& rootSig, D3D12_ROOT_SIGNATURE_DESC const& desc)
+ID3D12RootSignature* EffectDeviceResources::DemandCreateRootSig(_Inout_ wil::com_ptr<ID3D12RootSignature>& rootSig, D3D12_ROOT_SIGNATURE_DESC const& desc)
 {
-    return DemandCreate(rootSig, mMutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
+    return DemandCreate(rootSig, m_mutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
     {
-        HRESULT hr = CreateRootSignature(mDevice.Get(), &desc, pResult);
+        HRESULT hr = CreateRootSignature(m_pdevice.get(), &desc, pResult);
 
         if (SUCCEEDED(hr))
             SetDebugObjectName(*pResult, L"DirectXTK:Effect");

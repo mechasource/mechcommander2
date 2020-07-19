@@ -7,26 +7,28 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "BufferHelpers.h"
-#include "DirectXHelpers.h"
-#include "ResourceUploadBatch.h"
-#include "LoaderHelpers.h"
-#include "PlatformHelpers.h"
+#include "stdinc.h"
+
+#include "d3dx12.h"
+#include "bufferhelpers.h"
+#include "directxhelpers.h"
+#include "resourceuploadbatch.h"
+#include "loaderhelpers.h"
+#include "platformhelpers.h"
 
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-HRESULT DirectX::CreateStaticBuffer(
+HRESULT directxtk::CreateStaticBuffer(
     ID3D12Device* device,
     ResourceUploadBatch& resourceUpload,
     const void* ptr,
     size_t count,
     size_t stride,
-    D3D12_RESOURCE_STATES afterState,
+    D3D12_RESOURCE_STATES afterstate,
     ID3D12Resource** pBuffer,
     D3D12_RESOURCE_FLAGS resFlags) noexcept
 {
@@ -52,14 +54,14 @@ HRESULT DirectX::CreateStaticBuffer(
 
     CD3DX12_HEAP_PROPERTIES heapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
-    ComPtr<ID3D12Resource> res;
+    wil::com_ptr<ID3D12Resource> res;
     HRESULT hr = device->CreateCommittedResource(
         &heapProperties,
         D3D12_HEAP_FLAG_NONE,
         &desc,
         D3D12_RESOURCE_STATE_COPY_DEST,
         nullptr,
-        IID_GRAPHICS_PPV_ARGS(res.GetAddressOf()));
+        IID_GRAPHICS_PPV_ARGS(res.addressof()));
     if (FAILED(hr))
         return hr;
 
@@ -67,9 +69,9 @@ HRESULT DirectX::CreateStaticBuffer(
 
     try
     {
-        resourceUpload.Upload(res.Get(), 0, &initData, 1);
+        resourceUpload.Upload(res.get(), 0, &initData, 1);
 
-        resourceUpload.Transition(res.Get(), D3D12_RESOURCE_STATE_COPY_DEST, afterState);
+        resourceUpload.Transition(res.get(), D3D12_RESOURCE_STATE_COPY_DEST, afterstate);
     }
     catch (com_exception e)
     {
@@ -80,7 +82,7 @@ HRESULT DirectX::CreateStaticBuffer(
         return E_FAIL;
     }
 
-    *pBuffer = res.Detach();
+    *pBuffer = res.detach();
 
     return S_OK;
 }
@@ -88,14 +90,14 @@ HRESULT DirectX::CreateStaticBuffer(
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-HRESULT DirectX::CreateTextureFromMemory(
+HRESULT directxtk::CreateTextureFromMemory(
     ID3D12Device* device,
     ResourceUploadBatch& resourceUpload,
     size_t width,
     DXGI_FORMAT format,
     const D3D12_SUBRESOURCE_DATA& initData,
     ID3D12Resource** texture,
-    D3D12_RESOURCE_STATES afterState,
+    D3D12_RESOURCE_STATES afterstate,
     D3D12_RESOURCE_FLAGS resFlags) noexcept
 {
     if (!texture)
@@ -114,26 +116,26 @@ HRESULT DirectX::CreateTextureFromMemory(
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
     }
 
-    auto desc = CD3DX12_RESOURCE_DESC::Tex1D(format, static_cast<UINT64>(width), 1u, 1u, resFlags);
+    auto desc = CD3DX12_RESOURCE_DESC::Tex1D(format, static_cast<uint64_t>(width), 1u, 1u, resFlags);
 
     CD3DX12_HEAP_PROPERTIES heapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
-    ComPtr<ID3D12Resource> res;
+    wil::com_ptr<ID3D12Resource> res;
     HRESULT hr = device->CreateCommittedResource(
         &heapProperties,
         D3D12_HEAP_FLAG_NONE,
         &desc,
         D3D12_RESOURCE_STATE_COPY_DEST,
         nullptr,
-        IID_GRAPHICS_PPV_ARGS(res.GetAddressOf()));
+        IID_GRAPHICS_PPV_ARGS(res.addressof()));
     if (FAILED(hr))
         return hr;
 
     try
     {
-        resourceUpload.Upload(res.Get(), 0, &initData, 1);
+        resourceUpload.Upload(res.get(), 0, &initData, 1);
 
-        resourceUpload.Transition(res.Get(), D3D12_RESOURCE_STATE_COPY_DEST, afterState);
+        resourceUpload.Transition(res.get(), D3D12_RESOURCE_STATE_COPY_DEST, afterstate);
     }
     catch (com_exception e)
     {
@@ -144,13 +146,13 @@ HRESULT DirectX::CreateTextureFromMemory(
         return E_FAIL;
     }
 
-    *texture = res.Detach();
+    *texture = res.detach();
 
     return S_OK;
 }
 
 _Use_decl_annotations_
-HRESULT DirectX::CreateTextureFromMemory(
+HRESULT directxtk::CreateTextureFromMemory(
     ID3D12Device* device,
     ResourceUploadBatch& resourceUpload,
     size_t width,
@@ -159,7 +161,7 @@ HRESULT DirectX::CreateTextureFromMemory(
     const D3D12_SUBRESOURCE_DATA& initData,
     ID3D12Resource** texture,
     bool generateMips,
-    D3D12_RESOURCE_STATES afterState,
+    D3D12_RESOURCE_STATES afterstate,
     D3D12_RESOURCE_FLAGS resFlags) noexcept
 {
     if (!texture)
@@ -190,31 +192,31 @@ HRESULT DirectX::CreateTextureFromMemory(
         }
     }
 
-    auto desc = CD3DX12_RESOURCE_DESC::Tex2D(format, static_cast<UINT64>(width), static_cast<UINT>(height),
+    auto desc = CD3DX12_RESOURCE_DESC::Tex2D(format, static_cast<uint64_t>(width), static_cast<uint32_t>(height),
         1u, mipCount, 1u, 0u, resFlags);
 
     CD3DX12_HEAP_PROPERTIES heapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
-    ComPtr<ID3D12Resource> res;
+    wil::com_ptr<ID3D12Resource> res;
     HRESULT hr = device->CreateCommittedResource(
         &heapProperties,
         D3D12_HEAP_FLAG_NONE,
         &desc,
         D3D12_RESOURCE_STATE_COPY_DEST,
         nullptr,
-        IID_GRAPHICS_PPV_ARGS(res.GetAddressOf()));
+        IID_GRAPHICS_PPV_ARGS(res.addressof()));
     if (FAILED(hr))
         return hr;
 
     try
     {
-        resourceUpload.Upload(res.Get(), 0, &initData, 1);
+        resourceUpload.Upload(res.get(), 0, &initData, 1);
 
-        resourceUpload.Transition(res.Get(), D3D12_RESOURCE_STATE_COPY_DEST, afterState);
+        resourceUpload.Transition(res.get(), D3D12_RESOURCE_STATE_COPY_DEST, afterstate);
 
         if (generateMips)
         {
-            resourceUpload.GenerateMips(res.Get());
+            resourceUpload.GenerateMips(res.get());
         }
     }
     catch (com_exception e)
@@ -226,21 +228,21 @@ HRESULT DirectX::CreateTextureFromMemory(
         return E_FAIL;
     }
 
-    *texture = res.Detach();
+    *texture = res.detach();
 
     return S_OK;
 }
 
 
 _Use_decl_annotations_
-HRESULT DirectX::CreateTextureFromMemory(
+HRESULT directxtk::CreateTextureFromMemory(
     ID3D12Device* device,
     ResourceUploadBatch& resourceUpload,
     size_t width, size_t height, size_t depth,
     DXGI_FORMAT format,
     const D3D12_SUBRESOURCE_DATA& initData,
     ID3D12Resource** texture,
-    D3D12_RESOURCE_STATES afterState,
+    D3D12_RESOURCE_STATES afterstate,
     D3D12_RESOURCE_FLAGS resFlags) noexcept
 {
     if (!texture)
@@ -263,27 +265,27 @@ HRESULT DirectX::CreateTextureFromMemory(
     }
 
     auto desc = CD3DX12_RESOURCE_DESC::Tex3D(format,
-        static_cast<UINT64>(width), static_cast<UINT>(height), static_cast<UINT16>(depth),
+        static_cast<uint64_t>(width), static_cast<uint32_t>(height), static_cast<uint16_t>(depth),
         1u, resFlags);
 
     CD3DX12_HEAP_PROPERTIES heapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
-    ComPtr<ID3D12Resource> res;
+    wil::com_ptr<ID3D12Resource> res;
     HRESULT hr = device->CreateCommittedResource(
         &heapProperties,
         D3D12_HEAP_FLAG_NONE,
         &desc,
         D3D12_RESOURCE_STATE_COPY_DEST,
         nullptr,
-        IID_GRAPHICS_PPV_ARGS(res.GetAddressOf()));
+        IID_GRAPHICS_PPV_ARGS(res.addressof()));
     if (FAILED(hr))
         return hr;
 
     try
     {
-        resourceUpload.Upload(res.Get(), 0, &initData, 1);
+        resourceUpload.Upload(res.get(), 0, &initData, 1);
 
-        resourceUpload.Transition(res.Get(), D3D12_RESOURCE_STATE_COPY_DEST, afterState);
+        resourceUpload.Transition(res.get(), D3D12_RESOURCE_STATE_COPY_DEST, afterstate);
     }
     catch (com_exception e)
     {
@@ -294,7 +296,7 @@ HRESULT DirectX::CreateTextureFromMemory(
         return E_FAIL;
     }
 
-    *texture = res.Detach();
+    *texture = res.detach();
 
     return S_OK;
 }

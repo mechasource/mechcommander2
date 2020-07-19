@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>directxtk</ProjectName>
+    <ProjectGuid>{3E0E8608-CD9B-4C76-AF33-29CA38F2C9F0}</ProjectGuid>
+    <RootNamespace>MechCommander</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformTarget)_$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformTarget)_$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformTarget)_$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformTarget)_$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(directxtk_dir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      <EnablePREfast>true</EnablePREfast>
+      <Optimization>Disabled</Optimization>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <StringPooling>false</StringPooling>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(directxtk_dir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      <EnablePREfast>false</EnablePREfast>
+      <Optimization>Disabled</Optimization>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <StringPooling>false</StringPooling>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(directxtk_dir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(directxtk_dir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\directxtk\audio\audioengine.cpp" />
+    <ClCompile Include="..\directxtk\audio\dynamicsoundeffectinstance.cpp" />
+    <ClCompile Include="..\directxtk\audio\soundcommon.cpp" />
+    <ClCompile Include="..\directxtk\audio\soundeffect.cpp" />
+    <ClCompile Include="..\directxtk\audio\soundeffectinstance.cpp" />
+    <ClCompile Include="..\directxtk\audio\soundstreaminstance.cpp" />
+    <ClCompile Include="..\directxtk\audio\wavebank.cpp" />
+    <ClCompile Include="..\directxtk\audio\wavebankreader.cpp" />
+    <ClCompile Include="..\directxtk\audio\wavfilereader.cpp" />
+    <ClCompile Include="..\directxtk\src\alphatesteffect.cpp" />
+    <ClCompile Include="..\directxtk\src\basiceffect.cpp" />
+    <ClCompile Include="..\directxtk\src\basicpostprocess.cpp" />
+    <ClCompile Include="..\directxtk\src\binaryreader.cpp" />
+    <ClCompile Include="..\directxtk\src\bufferhelpers.cpp" />
+    <ClCompile Include="..\directxtk\src\commonstates.cpp" />
+    <ClCompile Include="..\directxtk\src\ddstextureloader.cpp" />
+    <ClCompile Include="..\directxtk\src\debugeffect.cpp" />
+    <ClCompile Include="..\directxtk\src\descriptorheap.cpp" />
+    <ClCompile Include="..\directxtk\src\directxhelpers.cpp" />
+    <ClCompile Include="..\directxtk\src\dualpostprocess.cpp" />
+    <ClCompile Include="..\directxtk\src\dualtextureeffect.cpp" />
+    <ClCompile Include="..\directxtk\src\effectcommon.cpp" />
+    <ClCompile Include="..\directxtk\src\effectfactory.cpp" />
+    <ClCompile Include="..\directxtk\src\effectpipelinestatedescription.cpp" />
+    <ClCompile Include="..\directxtk\src\effecttexturefactory.cpp" />
+    <ClCompile Include="..\directxtk\src\environmentmapeffect.cpp" />
+    <ClCompile Include="..\directxtk\src\gamepad.cpp" />
+    <ClCompile Include="..\directxtk\src\geometricprimitive.cpp" />
+    <ClCompile Include="..\directxtk\src\geometry.cpp" />
+    <ClCompile Include="..\directxtk\src\graphicsmemory.cpp" />
+    <ClCompile Include="..\directxtk\src\keyboard.cpp" />
+    <ClCompile Include="..\directxtk\src\linearallocator.cpp" />
+    <ClCompile Include="..\directxtk\src\model.cpp" />
+    <ClCompile Include="..\directxtk\src\modelloadsdkmesh.cpp" />
+    <ClCompile Include="..\directxtk\src\modelloadvbo.cpp" />
+    <ClCompile Include="..\directxtk\src\mouse.cpp" />
+    <ClCompile Include="..\directxtk\src\normalmapeffect.cpp" />
+    <ClCompile Include="..\directxtk\src\pbreffect.cpp" />
+    <ClCompile Include="..\directxtk\src\pbreffectfactory.cpp" />
+    <ClCompile Include="..\directxtk\src\primitivebatch.cpp" />
+    <ClCompile Include="..\directxtk\src\resourceuploadbatch.cpp" />
+    <ClCompile Include="..\directxtk\src\screengrab.cpp" />
+    <ClCompile Include="..\directxtk\src\simplemath.cpp" />
+    <ClCompile Include="..\directxtk\src\skinnedeffect.cpp" />
+    <ClCompile Include="..\directxtk\src\spritebatch.cpp" />
+    <ClCompile Include="..\directxtk\src\spritefont.cpp" />
+    <ClCompile Include="..\directxtk\src\tonemappostprocess.cpp" />
+    <ClCompile Include="..\directxtk\src\vertextypes.cpp" />
+    <ClCompile Include="..\directxtk\src\wictextureloader.cpp" />
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\directxtk\audio\soundcommon.h" />
+    <ClInclude Include="..\directxtk\audio\wavebankreader.h" />
+    <ClInclude Include="..\directxtk\audio\wavfilereader.h" />
+    <ClInclude Include="..\directxtk\inc\audio.h" />
+    <ClInclude Include="..\directxtk\inc\bufferhelpers.h" />
+    <ClInclude Include="..\directxtk\inc\commonstates.h" />
+    <ClInclude Include="..\directxtk\inc\ddstextureloader.h" />
+    <ClInclude Include="..\directxtk\inc\descriptorheap.h" />
+    <ClInclude Include="..\directxtk\inc\directxhelpers.h" />
+    <ClInclude Include="..\directxtk\inc\effectpipelinestatedescription.h" />
+    <ClInclude Include="..\directxtk\inc\effects.h" />
+    <ClInclude Include="..\directxtk\inc\gamepad.h" />
+    <ClInclude Include="..\directxtk\inc\geometricprimitive.h" />
+    <ClInclude Include="..\directxtk\inc\graphicsmemory.h" />
+    <ClInclude Include="..\directxtk\inc\june2010\audiodefs.h" />
+    <ClInclude Include="..\directxtk\inc\june2010\comdecl.h" />
+    <ClInclude Include="..\directxtk\inc\june2010\x3daudio.h" />
+    <ClInclude Include="..\directxtk\inc\june2010\xapofx.h" />
+    <ClInclude Include="..\directxtk\inc\june2010\xaudio2.h" />
+    <ClInclude Include="..\directxtk\inc\june2010\xaudio2fx.h" />
+    <ClInclude Include="..\directxtk\inc\june2010\xma2defs.h" />
+    <ClInclude Include="..\directxtk\inc\keyboard.h" />
+    <ClInclude Include="..\directxtk\inc\model.h" />
+    <ClInclude Include="..\directxtk\inc\mouse.h" />
+    <ClInclude Include="..\directxtk\inc\postprocess.h" />
+    <ClInclude Include="..\directxtk\inc\primitivebatch.h" />
+    <ClInclude Include="..\directxtk\inc\rendertargetstate.h" />
+    <ClInclude Include="..\directxtk\inc\resourceuploadbatch.h" />
+    <ClInclude Include="..\directxtk\inc\screengrab.h" />
+    <ClInclude Include="..\directxtk\inc\simplemath.h" />
+    <ClInclude Include="..\directxtk\inc\spritebatch.h" />
+    <ClInclude Include="..\directxtk\inc\spritefont.h" />
+    <ClInclude Include="..\directxtk\inc\vertextypes.h" />
+    <ClInclude Include="..\directxtk\inc\wictextureloader.h" />
+    <ClInclude Include="..\directxtk\src\alignednew.h" />
+    <ClInclude Include="..\directxtk\src\bezier.h" />
+    <ClInclude Include="..\directxtk\src\binaryreader.h" />
+    <ClInclude Include="..\directxtk\src\d3dx12.h" />
+    <ClInclude Include="..\directxtk\src\dds.h" />
+    <ClInclude Include="..\directxtk\src\demandcreate.h" />
+    <ClInclude Include="..\directxtk\src\effectcommon.h" />
+    <ClInclude Include="..\directxtk\src\geometry.h" />
+    <ClInclude Include="..\directxtk\src\linearallocator.h" />
+    <ClInclude Include="..\directxtk\src\loaderhelpers.h" />
+    <ClInclude Include="..\directxtk\src\platformhelpers.h" />
+    <ClInclude Include="..\directxtk\src\sdkmesh.h" />
+    <ClInclude Include="..\directxtk\src\sharedresourcepool.h" />
+    <ClInclude Include="..\directxtk\src\vbo.h" />
+    <ClInclude Include="..\pch\stdinc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\directxtk\inc\simplemath.inl" />
+    <None Include="..\directxtk\src\teapotdata.inc" />
+    <None Include="mechcommander.props" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.XAudio2.Redist.1.2.2\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('..\packages\Microsoft.XAudio2.Redist.1.2.2\build\native\Microsoft.XAudio2.Redist.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.XAudio2.Redist.1.2.2\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.XAudio2.Redist.1.2.2\build\native\Microsoft.XAudio2.Redist.targets'))" />
+  </Target>
+</Project>

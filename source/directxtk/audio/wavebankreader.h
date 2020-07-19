@@ -19,7 +19,7 @@
 #include <memory>
 
 
-namespace DirectX
+namespace directxtk
 {
     class WaveBankReader
     {
@@ -34,9 +34,9 @@ namespace DirectX
 
         ~WaveBankReader();
 
-        HRESULT Open(_In_z_ const wchar_t* szFileName) noexcept;
+        HRESULT Open(_In_ const std::wstring_view& filename) noexcept;
 
-        uint32_t Find(_In_z_ const char* name) const;
+        uint32_t Find(_In_z_ const std::string_view& name) const;
 
         bool IsPrepared() noexcept;
         void WaitOnPrepare() noexcept;
@@ -48,7 +48,7 @@ namespace DirectX
         bool HasXMA() const noexcept;
     #endif
 
-        const char* BankName() const noexcept;
+        const std::string_view BankName() const noexcept;
 
         uint32_t Count() const noexcept;
 
@@ -56,7 +56,7 @@ namespace DirectX
 
         HRESULT GetFormat(_In_ uint32_t index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* pFormat, _In_ size_t maxsize) const noexcept;
 
-        HRESULT GetWaveData(_In_ uint32_t index, _Outptr_ const uint8_t** pData, _Out_ uint32_t& dataSize) const noexcept;
+        HRESULT GetWaveData(_In_ uint32_t index, _Outptr_ const uint8_t** pData, _Out_ uint32_t& datasize) const noexcept;
 
         HRESULT GetSeekTable(_In_ uint32_t index, _Out_ const uint32_t** pData, _Out_ uint32_t& dataCount, _Out_ uint32_t& tag) const noexcept;
 
@@ -76,6 +76,6 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 }

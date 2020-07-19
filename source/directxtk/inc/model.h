@@ -32,11 +32,11 @@
 
 #include <wrl/client.h>
 
-#include "GraphicsMemory.h"
-#include "Effects.h"
+#include "graphicsmemory.h"
+#include "effects.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     class IEffect;
     class IEffectFactory;
@@ -79,8 +79,8 @@ namespace DirectX
         DXGI_FORMAT                                             indexFormat;
         SharedGraphicsResource                                  indexBuffer;
         SharedGraphicsResource                                  vertexBuffer;
-        Microsoft::WRL::ComPtr<ID3D12Resource>                  staticIndexBuffer;
-        Microsoft::WRL::ComPtr<ID3D12Resource>                  staticVertexBuffer;
+        wil::com_ptr<ID3D12Resource>                  staticIndexBuffer;
+        wil::com_ptr<ID3D12Resource>                  staticVertexBuffer;
         std::shared_ptr<std::vector<D3D12_INPUT_ELEMENT_DESC>>  vbDecl;
 
         using Collection = std::vector<std::unique_ptr<ModelMeshPart>>;
@@ -150,8 +150,8 @@ namespace DirectX
 
         virtual ~ModelMesh();
 
-        BoundingSphere              boundingSphere;
-        BoundingBox                 boundingBox;
+        DirectX::BoundingSphere              boundingSphere;
+        DirectX::BoundingBox                 boundingBox;
         ModelMeshPart::Collection   opaqueMeshParts;
         ModelMeshPart::Collection   alphaMeshParts;
         std::wstring                name;
@@ -247,13 +247,13 @@ namespace DirectX
         }
 
         // Load texture resources into an existing Effect Texture Factory
-        int __cdecl LoadTextures(IEffectTextureFactory& texFactory, int destinationDescriptorOffset = 0) const;
+        int32_t __cdecl LoadTextures(IEffectTextureFactory& texFactory, int32_t destinationDescriptorOffset = 0) const;
 
         // Load texture resources into a new Effect Texture Factory
         std::unique_ptr<EffectTextureFactory> __cdecl LoadTextures(
             _In_ ID3D12Device* device,
             ResourceUploadBatch& resourceUploadBatch,
-            _In_opt_z_ const wchar_t* texturesPath = nullptr,
+            _In_opt_ const std::wstring_view& texturesPath = nullptr,
             D3D12_DESCRIPTOR_HEAP_FLAGS flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE) const;
 
         // Load VB/IB resources for static geometry
@@ -268,35 +268,35 @@ namespace DirectX
             const EffectPipelineStateDescription& alphaPipelineState,
             _In_ ID3D12DescriptorHeap* textureDescriptorHeap,
             _In_ ID3D12DescriptorHeap* samplerDescriptorHeap,
-            int textureDescriptorOffset = 0,
-            int samplerDescriptorOffset = 0) const;
+            int32_t textureDescriptorOffset = 0,
+            int32_t samplerDescriptorOffset = 0) const;
 
         // Create effects using a custom effect factory
         std::vector<std::shared_ptr<IEffect>> __cdecl CreateEffects(
             IEffectFactory& fxFactory,
             const EffectPipelineStateDescription& opaquePipelineState,
             const EffectPipelineStateDescription& alphaPipelineState,
-            int textureDescriptorOffset = 0,
-            int samplerDescriptorOffset = 0) const;
+            int32_t textureDescriptorOffset = 0,
+            int32_t samplerDescriptorOffset = 0) const;
 
         // Loads a model from a DirectX SDK .SDKMESH file
         static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(
             _In_opt_ ID3D12Device* device,
-            _In_reads_bytes_(dataSize) const uint8_t* meshData, _In_ size_t dataSize,
+            _In_reads_bytes_(datasize) const uint8_t* meshData, _In_ size_t datasize,
             ModelLoaderFlags flags = ModelLoader_Default);
         static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(
             _In_opt_ ID3D12Device* device,
-            _In_z_ const wchar_t* szFileName,
+            _In_ const std::wstring_view& filename,
             ModelLoaderFlags flags = ModelLoader_Default);
 
         // Loads a model from a .VBO file
         static std::unique_ptr<Model> __cdecl CreateFromVBO(
             _In_opt_ ID3D12Device* device,
-            _In_reads_bytes_(dataSize) const uint8_t* meshData, _In_ size_t dataSize,
+            _In_reads_bytes_(datasize) const uint8_t* meshData, _In_ size_t datasize,
             ModelLoaderFlags flags = ModelLoader_Default);
         static std::unique_ptr<Model> __cdecl CreateFromVBO(
             _In_opt_ ID3D12Device* device,
-            _In_z_ const wchar_t* szFileName,
+            _In_ const std::wstring_view& filename,
             ModelLoaderFlags flags = ModelLoader_Default);
 
         // Utility function for getting a GPU descriptor for a mesh part/material index. If there is no texture the 
@@ -308,12 +308,12 @@ namespace DirectX
             if (materialIndex >= materials.size())
                 return handle;
 
-            int textureIndex = materials[materialIndex].diffuseTextureIndex;
+            int32_t textureIndex = materials[materialIndex].diffuseTextureIndex;
             if (textureIndex == -1)
                 return handle;
 
             handle = heap->GetGPUDescriptorHandleForHeapStart();
-            handle.ptr += static_cast<UINT64>(descriptorSize * (UINT64(textureIndex) + UINT64(descriptorOffset)));
+            handle.ptr += static_cast<uint64_t>(descriptorSize * (uint64_t(textureIndex) + uint64_t(descriptorOffset)));
 
             return handle;
         }
@@ -344,8 +344,8 @@ namespace DirectX
             IEffectFactory& fxFactory,
             const EffectPipelineStateDescription& opaquePipelineState,
             const EffectPipelineStateDescription& alphaPipelineState,
-            int textureDescriptorOffset,
-            int samplerDescriptorOffset,
+            int32_t textureDescriptorOffset,
+            int32_t samplerDescriptorOffset,
             _In_ const ModelMeshPart* part) const;
     };
 

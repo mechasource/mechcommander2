@@ -10,10 +10,10 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //-------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 #include "WaveBankReader.h"
 #include "Audio.h"
-#include "PlatformHelpers.h"
+#include "platformhelpers.h"
 #include "SoundCommon.h"
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
@@ -37,25 +37,25 @@ namespace
 
     struct REGION
     {
-        uint32_t    dwOffset;   // Region offset, in bytes.
-        uint32_t    dwLength;   // Region length, in bytes.
+        uint32_t    regionoffset;   // Region offset, in bytes.
+        uint32_t    regionlength;   // Region length, in bytes.
 
         void BigEndian() noexcept
         {
-            dwOffset = _byteswap_ulong(dwOffset);
-            dwLength = _byteswap_ulong(dwLength);
+            regionoffset = _byteswap_ulong(regionoffset);
+            regionlength = _byteswap_ulong(regionlength);
         }
     };
 
     struct SAMPLEREGION
     {
-        uint32_t    dwStartSample;  // Start sample for the region.
-        uint32_t    dwTotalSamples; // Region length in samples.
+        uint32_t    startsample;  // Start sample for the region.
+        uint32_t    totalsamples; // Region length in samples.
 
         void BigEndian() noexcept
         {
-            dwStartSample = _byteswap_ulong(dwStartSample);
-            dwTotalSamples = _byteswap_ulong(dwTotalSamples);
+            startsample = _byteswap_ulong(startsample);
+            totalsamples = _byteswap_ulong(totalsamples);
         }
     };
 
@@ -75,20 +75,20 @@ namespace
             SEGIDX_COUNT
         };
 
-        uint32_t    dwSignature;            // File signature
-        uint32_t    dwVersion;              // Version of the tool that created the file
-        uint32_t    dwHeaderVersion;        // Version of the file format
-        REGION      Segments[SEGIDX_COUNT]; // Segment lookup table
+        uint32_t    headersignature;            // File signature
+        uint32_t    toolversion;              // Version of the tool that created the file
+        uint32_t    headerversion;        // Version of the file format
+        REGION      regionsegments[SEGIDX_COUNT]; // Segment lookup table
 
         void BigEndian() noexcept
         {
             // Leave dwSignature alone as indicator of BE vs. LE
 
-            dwVersion = _byteswap_ulong(dwVersion);
-            dwHeaderVersion = _byteswap_ulong(dwHeaderVersion);
-            for (size_t j = 0; j < SEGIDX_COUNT; ++j)
+            toolversion = _byteswap_ulong(toolversion);
+            headerversion = _byteswap_ulong(headerversion);
+            for (auto j = 0u; j < SEGIDX_COUNT; ++j)
             {
-                Segments[j].BigEndian();
+                regionsegments[j].BigEndian();
             }
         }
     };
@@ -136,7 +136,7 @@ namespace
             return (wBitsPerSample == BITDEPTH_16) ? 16u : 8u;
         }
 
-        DWORD BlockAlign() const noexcept
+        uint32_t BlockAlign() const noexcept
         {
             switch (wFormatTag)
             {
@@ -182,7 +182,7 @@ namespace
             return 0;
         }
 
-        DWORD AvgBytesPerSec() const noexcept
+        uint32_t AvgBytesPerSec() const noexcept
         {
             switch (wFormatTag)
             {
@@ -223,7 +223,7 @@ namespace
             return 0;
         }
 
-        DWORD AdpcmSamplesPerBlock() const noexcept
+        uint32_t AdpcmSamplesPerBlock() const noexcept
         {
             uint32_t nBlockAlign = (wBlockAlign + ADPCM_BLOCKALIGN_CONVERSION_OFFSET) * nChannels;
             return nBlockAlign * 2 / uint32_t(nChannels) - 12;
@@ -301,44 +301,44 @@ namespace
             uint32_t dwFlagsAndDuration;
         };
 
-        MINIWAVEFORMAT  Format;         // Entry format.
-        REGION          PlayRegion;     // Region within the wave data segment that contains this entry.
-        SAMPLEREGION    LoopRegion;     // Region within the wave data (in samples) that should loop.
+        MINIWAVEFORMAT  miniwaveformat;         // Entry format.
+        REGION          playregion;     // Region within the wave data segment that contains this entry.
+        SAMPLEREGION    loopregion;     // Region within the wave data (in samples) that should loop.
 
         void BigEndian() noexcept
         {
             dwFlagsAndDuration = _byteswap_ulong(dwFlagsAndDuration);
-            Format.BigEndian();
-            PlayRegion.BigEndian();
-            LoopRegion.BigEndian();
+            miniwaveformat.BigEndian();
+            playregion.BigEndian();
+            loopregion.BigEndian();
         }
     };
 
     struct ENTRYCOMPACT
     {
-        uint32_t       dwOffset : 21;       // Data offset, in multiplies of the bank alignment
-        uint32_t       dwLengthDeviation : 11;       // Data length deviation, in bytes
+        uint32_t       dataoffset : 21;       // Data offset, in multiplies of the bank alignment
+        uint32_t       lengthdeviation : 11;       // Data length deviation, in bytes
 
         void BigEndian() noexcept
         {
             *reinterpret_cast<uint32_t*>(this) = _byteswap_ulong(*reinterpret_cast<const uint32_t*>(this));
         }
 
-        void ComputeLocations(DWORD& offset, DWORD& length, uint32_t index, const HEADER& header, const BANKDATA& data, const ENTRYCOMPACT* entries) const noexcept
+        void ComputeLocations(uint32_t& offset, uint32_t& length, uint32_t index, const HEADER& header, const BANKDATA& data, const ENTRYCOMPACT* entries) const noexcept
         {
-            offset = dwOffset * data.dwAlignment;
+            offset = dataoffset * data.dwAlignment;
 
             if (index < (data.dwEntryCount - 1))
             {
-                length = (entries[index + 1].dwOffset * data.dwAlignment) - offset - dwLengthDeviation;
+                length = (entries[index + 1].dataoffset * data.dwAlignment) - offset - lengthdeviation;
             }
             else
             {
-                length = header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwLength - offset - dwLengthDeviation;
+                length = header.regionsegments[HEADER::SEGIDX_ENTRYWAVEDATA].regionlength - offset - lengthdeviation;
             }
         }
 
-        static uint32_t GetDuration(DWORD length, const BANKDATA& data, const uint32_t* seekTable) noexcept
+        static uint32_t GetDuration(uint32_t length, const BANKDATA& data, const uint32_t* seekTable) noexcept
         {
             switch (data.CompactFormat.wFormatTag)
             {
@@ -390,7 +390,7 @@ namespace
         if (!seekTable || index >= data.dwEntryCount)
             return nullptr;
 
-        uint32_t seekSize = header.Segments[HEADER::SEGIDX_SEEKTABLES].dwLength;
+        uint32_t seekSize = header.regionsegments[HEADER::SEGIDX_SEEKTABLES].regionlength;
 
         if ((index * sizeof(uint32_t)) > seekSize)
             return nullptr;
@@ -418,23 +418,13 @@ static_assert(sizeof(ENTRY) == 24, "Mismatch with xact3wb.h");
 static_assert(sizeof(ENTRYCOMPACT) == 4, "Mismatch with xact3wb.h");
 static_assert(sizeof(BANKDATA) == 96, "Mismatch with xact3wb.h");
 
-using namespace DirectX;
+using namespace directxtk;
 
 //--------------------------------------------------------------------------------------
 class WaveBankReader::Impl
 {
 public:
-    Impl() noexcept :
-        m_async(INVALID_HANDLE_VALUE),
-        m_request{},
-        m_prepared(false),
-        m_header{},
-        m_data{}
-    #ifdef DIRECTX_ENABLE_XMA2
-        , m_xmaMemory(nullptr)
-    #endif
-    {
-    }
+	Impl(void) noexcept {}
 
     Impl(Impl&&) = default;
     Impl& operator= (Impl&&) = default;
@@ -444,12 +434,12 @@ public:
 
     ~Impl() { Close(); }
 
-    HRESULT Open(_In_z_ const wchar_t* szFileName) noexcept(false);
+    HRESULT Open(_In_ const std::wstring_view& filename) noexcept(false);
     void Close() noexcept;
 
     HRESULT GetFormat(_In_ uint32_t index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* pFormat, _In_ size_t maxsize) const noexcept;
 
-    HRESULT GetWaveData(_In_ uint32_t index, _Outptr_ const uint8_t** pData, _Out_ uint32_t& dataSize) const noexcept;
+    HRESULT GetWaveData(_In_ uint32_t index, _Outptr_ const uint8_t** pData, _Out_ uint32_t& datasize) const noexcept;
 
     HRESULT GetSeekTable(_In_ uint32_t index, _Out_ const uint32_t** pData, _Out_ uint32_t& dataCount, _Out_ uint32_t& tag) const noexcept;
 
@@ -464,49 +454,49 @@ public:
 
         m_names.clear();
         m_entries.reset();
-        m_seekData.reset();
-        m_waveData.reset();
+        m_seekdata.reset();
+        m_wavedata.reset();
 
     #ifdef DIRECTX_ENABLE_XMA2
-        if (m_xmaMemory)
+        if (m_xmamemory)
         {
-            ApuFree(m_xmaMemory);
-            m_xmaMemory = nullptr;
+            ApuFree(m_xmamemory);
+            m_xmamemory = nullptr;
         }
     #endif
     }
 
-    HANDLE                              m_async;
-    ScopedHandle                        m_event;
-    OVERLAPPED                          m_request;
-    bool                                m_prepared;
+	wil::unique_hfile                   m_asyncfilehandle;
+    wil::unique_handle                  m_readerevent;
+	OVERLAPPED                          m_request{};
+    bool                                m_prepared = false;
 
-    HEADER                              m_header;
-    BANKDATA                            m_data;
+	HEADER                              m_header{};
+	BANKDATA                            m_data{};
     std::map<std::string, uint32_t>     m_names;
 
 private:
     std::unique_ptr<uint8_t[]>          m_entries;
-    std::unique_ptr<uint8_t[]>          m_seekData;
-    std::unique_ptr<uint8_t[]>          m_waveData;
+    std::unique_ptr<uint8_t[]>          m_seekdata;
+    std::unique_ptr<uint8_t[]>          m_wavedata;
 
 #ifdef DIRECTX_ENABLE_XMA2
 public:
-    void*                               m_xmaMemory;
+    void*                               m_xmamemory = nullptr;
 #endif
 };
 
 
 _Use_decl_annotations_
-HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
+HRESULT WaveBankReader::Impl::Open(const std::wstring_view& filename) noexcept(false)
 {
     Close();
     Clear();
 
     m_prepared = false;
 
-    m_event.reset(CreateEventEx(nullptr, nullptr, CREATE_EVENT_MANUAL_RESET, EVENT_MODIFY_STATE | SYNCHRONIZE));
-    if (!m_event)
+    m_readerevent.reset(::CreateEventEx(nullptr, nullptr, CREATE_EVENT_MANUAL_RESET, EVENT_MODIFY_STATE | SYNCHRONIZE));
+    if (!m_readerevent)
     {
         return HRESULT_FROM_WIN32(GetLastError());
     }
@@ -515,47 +505,47 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
     CREATEFILE2_EXTENDED_PARAMETERS params = { sizeof(CREATEFILE2_EXTENDED_PARAMETERS), 0, 0, 0, {}, nullptr };
     params.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
     params.dwFileFlags = FILE_FLAG_OVERLAPPED | FILE_FLAG_SEQUENTIAL_SCAN;
-    ScopedHandle hFile(safe_handle(CreateFile2(szFileName,
+    wil::unique_hfile filehandle(::CreateFile2(filename.data(),
                        GENERIC_READ,
                        FILE_SHARE_READ,
                        OPEN_EXISTING,
-                       &params)));
+                       &params));
 #else
-    ScopedHandle hFile(safe_handle(CreateFileW(szFileName,
+    wil::unique_hfile filehandle(::CreateFileW(filename.data(),
                        GENERIC_READ,
                        FILE_SHARE_READ,
                        nullptr,
                        OPEN_EXISTING,
                        FILE_FLAG_OVERLAPPED | FILE_FLAG_SEQUENTIAL_SCAN,
-                       nullptr)));
+                       nullptr));
 #endif
 
-    if (!hFile)
+    if (!filehandle)
     {
         return HRESULT_FROM_WIN32(GetLastError());
     }
 
     // Read and verify header
     OVERLAPPED request = {};
-    request.hEvent = m_event.get();
+    request.hEvent = m_readerevent.get();
 
     bool wait = false;
-    if (!ReadFile(hFile.get(), &m_header, sizeof(m_header), nullptr, &request))
+    if (!::ReadFile(filehandle.get(), &m_header, sizeof(m_header), nullptr, &request))
     {
-        DWORD error = GetLastError();
+        uint32_t error = GetLastError();
         if (error != ERROR_IO_PENDING)
             return HRESULT_FROM_WIN32(error);
         wait = true;
     }
 
-    DWORD bytes;
+    uint32_t bytes;
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-    BOOL result = GetOverlappedResultEx(hFile.get(), &request, &bytes, INFINITE, FALSE);
+    BOOL result = ::GetOverlappedResultEx(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), INFINITE, FALSE);
 #else
     if (wait)
-        (void)WaitForSingleObject(m_event.get(), INFINITE);
+        (void)::WaitForSingleObject(m_readerevent.get(), INFINITE);
 
-    BOOL result = GetOverlappedResult(hFile.get(), &request, &bytes, FALSE);
+    BOOL result = ::GetOverlappedResult(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), FALSE);
 #endif
 
     if (!result || (bytes != sizeof(m_header)))
@@ -563,44 +553,44 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
         return HRESULT_FROM_WIN32(GetLastError());
     }
 
-    if (m_header.dwSignature != HEADER::SIGNATURE && m_header.dwSignature != HEADER::BE_SIGNATURE)
+    if (m_header.headersignature != HEADER::SIGNATURE && m_header.headersignature != HEADER::BE_SIGNATURE)
     {
         return E_FAIL;
     }
 
-    bool be = (m_header.dwSignature == HEADER::BE_SIGNATURE);
+    bool be = (m_header.headersignature == HEADER::BE_SIGNATURE);
     if (be)
     {
-        DebugTrace("INFO: \"%ls\" is a big-endian (Xbox 360) wave bank\n", szFileName);
+        DebugTrace("INFO: \"%ls\" is a big-endian (Xbox 360) wave bank\n", filename);
         m_header.BigEndian();
     }
 
-    if (m_header.dwHeaderVersion != HEADER::VERSION)
+    if (m_header.headerversion != HEADER::VERSION)
     {
         return E_FAIL;
     }
 
     // Load bank data
     memset(&request, 0, sizeof(request));
-    request.Offset = m_header.Segments[HEADER::SEGIDX_BANKDATA].dwOffset;
-    request.hEvent = m_event.get();
+    request.Offset = m_header.regionsegments[HEADER::SEGIDX_BANKDATA].regionoffset;
+    request.hEvent = m_readerevent.get();
 
     wait = false;
-    if (!ReadFile(hFile.get(), &m_data, sizeof(m_data), nullptr, &request))
+    if (!::ReadFile(filehandle.get(), &m_data, sizeof(m_data), nullptr, &request))
     {
-        DWORD error = GetLastError();
+        uint32_t error = GetLastError();
         if (error != ERROR_IO_PENDING)
             return HRESULT_FROM_WIN32(error);
         wait = true;
     }
 
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-    result = GetOverlappedResultEx(hFile.get(), &request, &bytes, INFINITE, FALSE);
+    result = ::GetOverlappedResultEx(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), INFINITE, FALSE);
 #else
     if (wait)
-        (void)WaitForSingleObject(m_event.get(), INFINITE);
+        (void)::WaitForSingleObject(m_readerevent.get(), INFINITE);
 
-    result = GetOverlappedResult(hFile.get(), &request, &bytes, FALSE);
+    result = ::GetOverlappedResult(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), FALSE);
 #endif
 
     if (!result || (bytes != sizeof(m_data)))
@@ -635,7 +625,7 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
             return E_FAIL;
         }
 
-        if (m_header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwLength > (MAX_COMPACT_DATA_SEGMENT_SIZE * m_data.dwAlignment))
+        if (m_header.regionsegments[HEADER::SEGIDX_ENTRYWAVEDATA].regionlength > (MAX_COMPACT_DATA_SEGMENT_SIZE * m_data.dwAlignment))
         {
             // Data segment is too large to be valid compact wavebank
             return E_FAIL;
@@ -649,14 +639,14 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
         }
     }
 
-    DWORD metadataBytes = m_header.Segments[HEADER::SEGIDX_ENTRYMETADATA].dwLength;
+    uint32_t metadataBytes = m_header.regionsegments[HEADER::SEGIDX_ENTRYMETADATA].regionlength;
     if (metadataBytes != (m_data.dwEntryCount * m_data.dwEntryMetaDataElementSize))
     {
         return E_FAIL;
     }
 
     // Load names
-    DWORD namesBytes = m_header.Segments[HEADER::SEGIDX_ENTRYNAMES].dwLength;
+    uint32_t namesBytes = m_header.regionsegments[HEADER::SEGIDX_ENTRYNAMES].regionlength;
     if (namesBytes > 0)
     {
         if (namesBytes >= (m_data.dwEntryNameElementSize * m_data.dwEntryCount))
@@ -666,25 +656,25 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
                 return E_OUTOFMEMORY;
 
             memset(&request, 0, sizeof(request));
-            request.Offset = m_header.Segments[HEADER::SEGIDX_ENTRYNAMES].dwOffset;
-            request.hEvent = m_event.get();
+            request.Offset = m_header.regionsegments[HEADER::SEGIDX_ENTRYNAMES].regionoffset;
+            request.hEvent = m_readerevent.get();
 
             wait = false;
-            if (!ReadFile(hFile.get(), temp.get(), namesBytes, nullptr, &request))
+            if (!::ReadFile(filehandle.get(), temp.get(), namesBytes, nullptr, &request))
             {
-                DWORD error = GetLastError();
+                uint32_t error = GetLastError();
                 if (error != ERROR_IO_PENDING)
                     return HRESULT_FROM_WIN32(error);
                 wait = true;
             }
 
         #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-            result = GetOverlappedResultEx(hFile.get(), &request, &bytes, INFINITE, FALSE);
+            result = ::GetOverlappedResultEx(filehandle.get(), &request, &bytes, INFINITE, FALSE);
         #else
             if (wait)
-                (void)WaitForSingleObject(m_event.get(), INFINITE);
+                (void)::WaitForSingleObject(m_readerevent.get(), INFINITE);
 
-            result = GetOverlappedResult(hFile.get(), &request, &bytes, FALSE);
+            result = ::GetOverlappedResult(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), FALSE);
         #endif
 
             if (!result || (namesBytes != bytes))
@@ -694,7 +684,7 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
 
             for (uint32_t j = 0; j < m_data.dwEntryCount; ++j)
             {
-                DWORD n = m_data.dwEntryNameElementSize * j;
+                uint32_t n = m_data.dwEntryNameElementSize * j;
 
                 char name[64] = {};
                 strncpy_s(name, &temp[n], sizeof(name));
@@ -717,25 +707,25 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
         return E_OUTOFMEMORY;
 
     memset(&request, 0, sizeof(request));
-    request.Offset = m_header.Segments[HEADER::SEGIDX_ENTRYMETADATA].dwOffset;
-    request.hEvent = m_event.get();
+    request.Offset = m_header.regionsegments[HEADER::SEGIDX_ENTRYMETADATA].regionoffset;
+    request.hEvent = m_readerevent.get();
 
     wait = false;
-    if (!ReadFile(hFile.get(), m_entries.get(), metadataBytes, nullptr, &request))
+    if (!::ReadFile(filehandle.get(), m_entries.get(), metadataBytes, nullptr, &request))
     {
-        DWORD error = GetLastError();
+        uint32_t error = GetLastError();
         if (error != ERROR_IO_PENDING)
             return HRESULT_FROM_WIN32(error);
         wait = true;
     }
 
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-    result = GetOverlappedResultEx(hFile.get(), &request, &bytes, INFINITE, FALSE);
+    result = ::GetOverlappedResultEx(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), INFINITE, FALSE);
 #else
     if (wait)
-        (void)WaitForSingleObject(m_event.get(), INFINITE);
+        (void)::WaitForSingleObject(m_readerevent.get(), INFINITE);
 
-    result = GetOverlappedResult(hFile.get(), &request, &bytes, FALSE);
+    result = ::GetOverlappedResult(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), FALSE);
 #endif
 
     if (!result || (metadataBytes != bytes))
@@ -748,45 +738,45 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
         if (m_data.dwFlags & BANKDATA::FLAGS_COMPACT)
         {
             auto ptr = reinterpret_cast<ENTRYCOMPACT*>(m_entries.get());
-            for (size_t j = 0; j < m_data.dwEntryCount; ++j, ++ptr)
+            for (auto j = 0u; j < m_data.dwEntryCount; ++j, ++ptr)
                 ptr->BigEndian();
         }
         else
         {
             auto ptr = reinterpret_cast<ENTRY*>(m_entries.get());
-            for (size_t j = 0; j < m_data.dwEntryCount; ++j, ++ptr)
+            for (auto j = 0u; j < m_data.dwEntryCount; ++j, ++ptr)
                 ptr->BigEndian();
         }
     }
 
     // Load seek tables (XMA2 / xWMA)
-    DWORD seekLen = m_header.Segments[HEADER::SEGIDX_SEEKTABLES].dwLength;
+    uint32_t seekLen = m_header.regionsegments[HEADER::SEGIDX_SEEKTABLES].regionlength;
     if (seekLen > 0)
     {
-        m_seekData.reset(new (std::nothrow) uint8_t[seekLen]);
-        if (!m_seekData)
+        m_seekdata.reset(new (std::nothrow) uint8_t[seekLen]);
+        if (!m_seekdata)
             return E_OUTOFMEMORY;
 
         memset(&request, 0, sizeof(OVERLAPPED));
-        request.Offset = m_header.Segments[HEADER::SEGIDX_SEEKTABLES].dwOffset;
-        request.hEvent = m_event.get();
+        request.Offset = m_header.regionsegments[HEADER::SEGIDX_SEEKTABLES].regionoffset;
+        request.hEvent = m_readerevent.get();
 
         wait = false;
-        if (!ReadFile(hFile.get(), m_seekData.get(), seekLen, nullptr, &request))
+        if (!::ReadFile(filehandle.get(), m_seekdata.get(), seekLen, nullptr, &request))
         {
-            DWORD error = GetLastError();
+            uint32_t error = GetLastError();
             if (error != ERROR_IO_PENDING)
                 return HRESULT_FROM_WIN32(error);
             wait = true;
         }
 
     #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-        result = GetOverlappedResultEx(hFile.get(), &request, &bytes, INFINITE, FALSE);
+        result = ::GetOverlappedResultEx(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), INFINITE, FALSE);
     #else
         if (wait)
-            (void)WaitForSingleObject(m_event.get(), INFINITE);
+            (void)::WaitForSingleObject(m_readerevent.get(), INFINITE);
 
-        result = GetOverlappedResult(hFile.get(), &request, &bytes, FALSE);
+        result = ::GetOverlappedResult(filehandle.get(), &request, reinterpret_cast<PULONG>(&bytes), FALSE);
     #endif
 
         if (!result || (seekLen != bytes))
@@ -796,16 +786,16 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
 
         if (be)
         {
-            auto ptr = reinterpret_cast<uint32_t*>(m_seekData.get());
-            for (size_t j = 0; j < seekLen; j += 4, ++ptr)
+            auto ptr = reinterpret_cast<uint32_t*>(m_seekdata.get());
+            for (auto j = 0u; j < seekLen; j += 4, ++ptr)
             {
                 *ptr = _byteswap_ulong(*ptr);
             }
         }
     }
 
-    DWORD waveLen = m_header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwLength;
-    if (!waveLen)
+    uint32_t wavelength = m_header.regionsegments[HEADER::SEGIDX_ENTRYWAVEDATA].regionlength;
+    if (!wavelength)
     {
         return HRESULT_FROM_WIN32(ERROR_NO_DATA);
     }
@@ -813,28 +803,28 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
     if (m_data.dwFlags & BANKDATA::TYPE_STREAMING)
     {
         // If streaming, reopen without buffering
-        hFile.reset();
+        filehandle.reset();
 
     #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
         CREATEFILE2_EXTENDED_PARAMETERS params2 = { sizeof(CREATEFILE2_EXTENDED_PARAMETERS), 0, 0, 0, {}, nullptr };
         params2.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
         params2.dwFileFlags = FILE_FLAG_OVERLAPPED | FILE_FLAG_NO_BUFFERING;
-        m_async = CreateFile2(szFileName,
+        m_asyncfilehandle.reset(::CreateFile2(filename.data(),
                               GENERIC_READ,
                               FILE_SHARE_READ,
                               OPEN_EXISTING,
-                              &params2);
+                              &params2));
     #else
-        m_async = CreateFileW(szFileName,
+        m_asyncfilehandle.reset(::CreateFileW(filename.data(),
                               GENERIC_READ,
                               FILE_SHARE_READ,
                               nullptr,
                               OPEN_EXISTING,
                               FILE_FLAG_OVERLAPPED | FILE_FLAG_NO_BUFFERING,
-                              nullptr);
+                              nullptr));
     #endif
 
-        if (m_async == INVALID_HANDLE_VALUE)
+        if (!m_asyncfilehandle)
         {
             return HRESULT_FROM_WIN32(GetLastError());
         }
@@ -858,7 +848,7 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
             for (uint32_t j = 0; j < m_data.dwEntryCount; ++j)
             {
                 auto& entry = reinterpret_cast<const ENTRY*>(m_entries.get())[j];
-                if (entry.Format.wFormatTag == MINIWAVEFORMAT::TAG_XMA)
+                if (entry.miniwaveformat.wFormatTag == MINIWAVEFORMAT::TAG_XMA)
                 {
                     xma = true;
                     break;
@@ -868,32 +858,32 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
 
         if (xma)
         {
-            HRESULT hr = ApuAlloc(&m_xmaMemory, nullptr, waveLen, SHAPE_XMA_INPUT_BUFFER_ALIGNMENT);
+            HRESULT hr = ApuAlloc(&m_xmamemory, nullptr, wavelength, SHAPE_XMA_INPUT_BUFFER_ALIGNMENT);
             if (FAILED(hr))
             {
                 DebugTrace("ERROR: ApuAlloc failed. Did you allocate a large enough heap with ApuCreateHeap for all your XMA wave data?\n");
                 return hr;
             }
 
-            dest = m_xmaMemory;
+            dest = m_xmamemory;
         }
         else
         #endif // XMA2
         {
-            m_waveData.reset(new (std::nothrow) uint8_t[waveLen]);
-            if (!m_waveData)
+            m_wavedata.reset(new (std::nothrow) uint8_t[wavelength]);
+            if (!m_wavedata)
                 return E_OUTOFMEMORY;
 
-            dest = m_waveData.get();
+            dest = m_wavedata.get();
         }
 
         memset(&m_request, 0, sizeof(OVERLAPPED));
-        m_request.Offset = m_header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwOffset;
-        m_request.hEvent = m_event.get();
+        m_request.Offset = m_header.regionsegments[HEADER::SEGIDX_ENTRYWAVEDATA].regionoffset;
+        m_request.hEvent = m_readerevent.get();
 
-        if (!ReadFile(hFile.get(), dest, waveLen, nullptr, &m_request))
+        if (!::ReadFile(filehandle.get(), dest, wavelength, nullptr, &m_request))
         {
-            DWORD error = GetLastError();
+            uint32_t error = GetLastError();
             if (error != ERROR_IO_PENDING)
                 return HRESULT_FROM_WIN32(error);
         }
@@ -903,7 +893,7 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
             memset(&m_request, 0, sizeof(OVERLAPPED));
         }
 
-        m_async = hFile.release();
+        m_asyncfilehandle.swap(filehandle);
     }
 
     return S_OK;
@@ -912,30 +902,28 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
 
 void WaveBankReader::Impl::Close() noexcept
 {
-    if (m_async != INVALID_HANDLE_VALUE)
+    if (m_asyncfilehandle)
     {
         if (m_request.hEvent)
         {
-            DWORD bytes;
+            uint32_t bytes;
         #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-            (void)GetOverlappedResultEx(m_async, &m_request, &bytes, INFINITE, FALSE);
+            (void)::GetOverlappedResultEx(m_asyncfilehandle.get(), &m_request, reinterpret_cast<PULONG>(&bytes), INFINITE, FALSE);
         #else
-            (void)WaitForSingleObject(m_request.hEvent, INFINITE);
+            (void)::WaitForSingleObject(m_request.hEvent, INFINITE);
 
-            (void)GetOverlappedResult(m_async, &m_request, &bytes, FALSE);
+            (void)::GetOverlappedResult(m_asyncfilehandle.get(), &m_request, reinterpret_cast<PULONG>(&bytes), FALSE);
         #endif
         }
-
-        CloseHandle(m_async);
-        m_async = INVALID_HANDLE_VALUE;
+		m_asyncfilehandle.reset();
     }
-    m_event.reset();
+    m_readerevent.reset();
 
 #ifdef DIRECTX_ENABLE_XMA2
-    if (m_xmaMemory)
+    if (m_xmamemory)
     {
-        ApuFree(m_xmaMemory);
-        m_xmaMemory = nullptr;
+        ApuFree(m_xmamemory);
+        m_xmamemory = nullptr;
     }
 #endif
 }
@@ -952,7 +940,7 @@ HRESULT WaveBankReader::Impl::GetFormat(uint32_t index, WAVEFORMATEX* pFormat, s
         return E_FAIL;
     }
 
-    auto& miniFmt = (m_data.dwFlags & BANKDATA::FLAGS_COMPACT) ? m_data.CompactFormat : (reinterpret_cast<const ENTRY*>(m_entries.get())[index].Format);
+    auto& miniFmt = (m_data.dwFlags & BANKDATA::FLAGS_COMPACT) ? m_data.CompactFormat : (reinterpret_cast<const ENTRY*>(m_entries.get())[index].miniwaveformat);
 
     switch (miniFmt.wFormatTag)
     {
@@ -1003,7 +991,7 @@ HRESULT WaveBankReader::Impl::GetFormat(uint32_t index, WAVEFORMATEX* pFormat, s
                 xmaFmt->BytesPerBlock = 65536 /* XACT_FIXED_XMA_BLOCK_SIZE */;
                 xmaFmt->EncoderVersion = 4 /* XMAENCODER_VERSION_XMA2 */;
 
-                auto seekTable = FindSeekTable(index, m_seekData.get(), m_header, m_data);
+                auto seekTable = FindSeekTable(index, m_seekdata.get(), m_header, m_data);
                 if (seekTable)
                 {
                     xmaFmt->BlockCount = static_cast<WORD>(*seekTable);
@@ -1023,17 +1011,18 @@ HRESULT WaveBankReader::Impl::GetFormat(uint32_t index, WAVEFORMATEX* pFormat, s
                     case 6: xmaFmt->ChannelMask = SPEAKER_5POINT1; break;
                     case 7: xmaFmt->ChannelMask = SPEAKER_5POINT1 | SPEAKER_BACK_CENTER; break;
                     case 8: xmaFmt->ChannelMask = SPEAKER_7POINT1; break;
-                    default: xmaFmt->ChannelMask = DWORD(-1); break;
+                    default: xmaFmt->ChannelMask = uint32_t(-1); break;
                 }
 
                 if (m_data.dwFlags & BANKDATA::FLAGS_COMPACT)
                 {
                     auto& entry = reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get())[index];
 
-                    DWORD dwOffset, dwLength;
-                    entry.ComputeLocations(dwOffset, dwLength, index, m_header, m_data, reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get()));
+                    uint32_t offset;
+					uint32_t length;
+                    entry.ComputeLocations(offset, length, index, m_header, m_data, reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get()));
 
-                    xmaFmt->SamplesEncoded = entry.GetDuration(dwLength, m_data, seekTable);
+                    xmaFmt->SamplesEncoded = entry.GetDuration(length, m_data, seekTable);
 
                     xmaFmt->PlayBegin = xmaFmt->PlayLength =
                         xmaFmt->LoopBegin = xmaFmt->LoopLength = xmaFmt->LoopCount = 0;
@@ -1044,12 +1033,12 @@ HRESULT WaveBankReader::Impl::GetFormat(uint32_t index, WAVEFORMATEX* pFormat, s
 
                     xmaFmt->SamplesEncoded = entry.Duration;
                     xmaFmt->PlayBegin = 0;
-                    xmaFmt->PlayLength = entry.PlayRegion.dwLength;
+                    xmaFmt->PlayLength = entry.playregion.length;
 
-                    if (entry.LoopRegion.dwTotalSamples > 0)
+                    if (entry.loopregion.totalsamples > 0)
                     {
-                        xmaFmt->LoopBegin = entry.LoopRegion.dwStartSample;
-                        xmaFmt->LoopLength = entry.LoopRegion.dwTotalSamples;
+                        xmaFmt->LoopBegin = entry.loopregion.startsample;
+                        xmaFmt->LoopLength = entry.loopregion.totalsamples;
                         xmaFmt->LoopCount = 0xff /* XACTLOOPCOUNT_INFINITE */;
                     }
                     else
@@ -1078,7 +1067,7 @@ HRESULT WaveBankReader::Impl::GetFormat(uint32_t index, WAVEFORMATEX* pFormat, s
 
 
 _Use_decl_annotations_
-HRESULT WaveBankReader::Impl::GetWaveData(uint32_t index, const uint8_t** pData, uint32_t& dataSize) const noexcept
+HRESULT WaveBankReader::Impl::GetWaveData(uint32_t index, const uint8_t** pData, uint32_t& datasize) const noexcept
 {
     if (!pData)
         return E_INVALIDARG;
@@ -1089,12 +1078,12 @@ HRESULT WaveBankReader::Impl::GetWaveData(uint32_t index, const uint8_t** pData,
     }
 
 #ifdef DIRECTX_ENABLE_XMA2
-    const uint8_t* waveData = (m_xmaMemory) ? reinterpret_cast<uint8_t*>(m_xmaMemory) : m_waveData.get();
+    const uint8_t* wavedata = (m_xmamemory) ? reinterpret_cast<uint8_t*>(m_xmamemory) : m_wavedata.get();
 #else
-    const uint8_t* waveData = m_waveData.get();
+    const uint8_t* wavedata = m_wavedata.get();
 #endif
 
-    if (!waveData)
+    if (!wavedata)
         return E_FAIL;
 
     if (m_data.dwFlags & BANKDATA::TYPE_STREAMING)
@@ -1111,28 +1100,29 @@ HRESULT WaveBankReader::Impl::GetWaveData(uint32_t index, const uint8_t** pData,
     {
         auto& entry = reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get())[index];
 
-        DWORD dwOffset, dwLength;
-        entry.ComputeLocations(dwOffset, dwLength, index, m_header, m_data, reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get()));
+        uint32_t offset;
+		uint32_t length;
+        entry.ComputeLocations(offset, length, index, m_header, m_data, reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get()));
 
-        if ((uint64_t(dwOffset) + uint64_t(dwLength)) > uint64_t(m_header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwLength))
+        if ((uint64_t(offset) + uint64_t(length)) > uint64_t(m_header.regionsegments[HEADER::SEGIDX_ENTRYWAVEDATA].regionlength))
         {
             return HRESULT_FROM_WIN32(ERROR_HANDLE_EOF);
         }
 
-        *pData = &waveData[dwOffset];
-        dataSize = dwLength;
+        *pData = &wavedata[offset];
+        datasize = length;
     }
     else
     {
         auto& entry = reinterpret_cast<const ENTRY*>(m_entries.get())[index];
 
-        if ((uint64_t(entry.PlayRegion.dwOffset) + uint64_t(entry.PlayRegion.dwLength)) > uint64_t(m_header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwLength))
+        if ((uint64_t(entry.playregion.regionoffset) + uint64_t(entry.playregion.regionlength)) > uint64_t(m_header.regionsegments[HEADER::SEGIDX_ENTRYWAVEDATA].regionlength))
         {
             return HRESULT_FROM_WIN32(ERROR_HANDLE_EOF);
         }
 
-        *pData = &waveData[entry.PlayRegion.dwOffset];
-        dataSize = entry.PlayRegion.dwLength;
+        *pData = &wavedata[entry.playregion.regionoffset];
+        datasize = entry.playregion.regionlength;
     }
 
     return S_OK;
@@ -1154,10 +1144,10 @@ HRESULT WaveBankReader::Impl::GetSeekTable(uint32_t index, const uint32_t** pDat
         return E_FAIL;
     }
 
-    if (!m_seekData)
+    if (!m_seekdata)
         return S_OK;
 
-    auto& miniFmt = (m_data.dwFlags & BANKDATA::FLAGS_COMPACT) ? m_data.CompactFormat : (reinterpret_cast<const ENTRY*>(m_entries.get())[index].Format);
+    auto& miniFmt = (m_data.dwFlags & BANKDATA::FLAGS_COMPACT) ? m_data.CompactFormat : (reinterpret_cast<const ENTRY*>(m_entries.get())[index].miniwaveformat);
 
     switch (miniFmt.wFormatTag)
     {
@@ -1173,7 +1163,7 @@ HRESULT WaveBankReader::Impl::GetSeekTable(uint32_t index, const uint32_t** pDat
             return S_OK;
     }
 
-    auto seekTable = FindSeekTable(index, m_seekData.get(), m_header, m_data);
+    auto seekTable = FindSeekTable(index, m_seekdata.get(), m_header, m_data);
     if (!seekTable)
         return S_OK;
 
@@ -1196,29 +1186,29 @@ HRESULT WaveBankReader::Impl::GetMetadata(uint32_t index, Metadata& metadata) co
     {
         auto& entry = reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get())[index];
 
-        DWORD dwOffset, dwLength;
-        entry.ComputeLocations(dwOffset, dwLength, index, m_header, m_data, reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get()));
+        uint32_t offset, length;
+        entry.ComputeLocations(offset, length, index, m_header, m_data, reinterpret_cast<const ENTRYCOMPACT*>(m_entries.get()));
 
-        auto seekTable = FindSeekTable(index, m_seekData.get(), m_header, m_data);
-        metadata.duration = entry.GetDuration(dwLength, m_data, seekTable);
+        auto seekTable = FindSeekTable(index, m_seekdata.get(), m_header, m_data);
+        metadata.duration = entry.GetDuration(length, m_data, seekTable);
         metadata.loopStart = metadata.loopLength = 0;
-        metadata.offsetBytes = dwOffset;
-        metadata.lengthBytes = dwLength;
+        metadata.offsetBytes = offset;
+        metadata.lengthBytes = length;
     }
     else
     {
         auto& entry = reinterpret_cast<const ENTRY*>(m_entries.get())[index];
 
         metadata.duration = entry.Duration;
-        metadata.loopStart = entry.LoopRegion.dwStartSample;
-        metadata.loopLength = entry.LoopRegion.dwTotalSamples;
-        metadata.offsetBytes = entry.PlayRegion.dwOffset;
-        metadata.lengthBytes = entry.PlayRegion.dwLength;
+        metadata.loopStart = entry.loopregion.startsample;
+        metadata.loopLength = entry.loopregion.totalsamples;
+        metadata.offsetBytes = entry.playregion.regionoffset;
+        metadata.lengthBytes = entry.playregion.regionlength;
     }
 
     if (m_data.dwFlags & BANKDATA::TYPE_STREAMING)
     {
-        uint64_t offset = uint64_t(metadata.offsetBytes) + uint64_t(m_header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwOffset);
+        uint64_t offset = uint64_t(metadata.offsetBytes) + uint64_t(m_header.regionsegments[HEADER::SEGIDX_ENTRYWAVEDATA].regionoffset);
         if (offset > UINT32_MAX)
             return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
@@ -1234,15 +1224,15 @@ bool WaveBankReader::Impl::UpdatePrepared() noexcept
     if (m_prepared)
         return true;
 
-    if (m_async == INVALID_HANDLE_VALUE)
+    if (!m_asyncfilehandle)
         return false;
 
     if (m_request.hEvent)
     {
 
     #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-        DWORD bytes;
-        BOOL result = GetOverlappedResultEx(m_async, &m_request, &bytes, 0, FALSE);
+        uint32_t bytes;
+        BOOL result = ::GetOverlappedResultEx(m_asyncfilehandle.get(), &m_request, reinterpret_cast<PULONG>(&bytes), 0, FALSE);
     #else
         bool result = HasOverlappedIoCompleted(&m_request);
     #endif
@@ -1261,7 +1251,7 @@ bool WaveBankReader::Impl::UpdatePrepared() noexcept
 
 //--------------------------------------------------------------------------------------
 WaveBankReader::WaveBankReader() noexcept(false) :
-    pImpl(std::make_unique<Impl>())
+    pimpl(std::make_unique<Impl>())
 {
 }
 
@@ -1272,17 +1262,17 @@ WaveBankReader::~WaveBankReader()
 
 
 _Use_decl_annotations_
-HRESULT WaveBankReader::Open(const wchar_t* szFileName) noexcept
+HRESULT WaveBankReader::Open(const std::wstring_view& filename) noexcept
 {
-    return pImpl->Open(szFileName);
+    return pimpl->Open(filename);
 }
 
 
 _Use_decl_annotations_
-uint32_t WaveBankReader::Find(const char* name) const
+uint32_t WaveBankReader::Find(const std::string_view& name) const
 {
-    auto it = pImpl->m_names.find(name);
-    if (it != pImpl->m_names.cend())
+    auto it = pimpl->m_names.find(name.data());
+    if (it != pimpl->m_names.cend())
     {
         return it->second;
     }
@@ -1293,94 +1283,94 @@ uint32_t WaveBankReader::Find(const char* name) const
 
 bool WaveBankReader::IsPrepared() noexcept
 {
-    if (pImpl->m_prepared)
+    if (pimpl->m_prepared)
         return true;
 
-    return pImpl->UpdatePrepared();
+    return pimpl->UpdatePrepared();
 }
 
 
 void WaveBankReader::WaitOnPrepare() noexcept
 {
-    if (pImpl->m_prepared)
+    if (pimpl->m_prepared)
         return;
 
-    if (pImpl->m_request.hEvent)
+    if (pimpl->m_request.hEvent)
     {
-        (void)WaitForSingleObjectEx(pImpl->m_request.hEvent, INFINITE, FALSE);
+        (void)WaitForSingleObjectEx(pimpl->m_request.hEvent, INFINITE, FALSE);
 
-        pImpl->UpdatePrepared();
+        pimpl->UpdatePrepared();
     }
 }
 
 
 bool WaveBankReader::HasNames() const noexcept
 {
-    return !pImpl->m_names.empty();
+    return !pimpl->m_names.empty();
 }
 
 
 bool WaveBankReader::IsStreamingBank() const noexcept
 {
-    return (pImpl->m_data.dwFlags  & BANKDATA::TYPE_STREAMING) != 0;
+    return (pimpl->m_data.dwFlags  & BANKDATA::TYPE_STREAMING) != 0;
 }
 
 
 #ifdef DIRECTX_ENABLE_XMA2
 bool WaveBankReader::HasXMA() const noexcept
 {
-    return (pImpl->m_xmaMemory != nullptr);
+    return (pimpl->m_xmamemory != nullptr);
 }
 #endif
 
 
-const char* WaveBankReader::BankName() const noexcept
+const std::string_view WaveBankReader::BankName() const noexcept
 {
-    return pImpl->m_data.szBankName;
+    return pimpl->m_data.szBankName;
 }
 
 
 uint32_t WaveBankReader::Count() const noexcept
 {
-    return pImpl->m_data.dwEntryCount;
+    return pimpl->m_data.dwEntryCount;
 }
 
 
 uint32_t WaveBankReader::BankAudioSize() const noexcept
 {
-    return pImpl->m_header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwLength;
+    return pimpl->m_header.regionsegments[HEADER::SEGIDX_ENTRYWAVEDATA].regionlength;
 }
 
 
 _Use_decl_annotations_
 HRESULT WaveBankReader::GetFormat(uint32_t index, WAVEFORMATEX* pFormat, size_t maxsize) const noexcept
 {
-    return pImpl->GetFormat(index, pFormat, maxsize);
+    return pimpl->GetFormat(index, pFormat, maxsize);
 }
 
 
 _Use_decl_annotations_
-HRESULT WaveBankReader::GetWaveData(uint32_t index, const uint8_t** pData, uint32_t& dataSize) const noexcept
+HRESULT WaveBankReader::GetWaveData(uint32_t index, const uint8_t** pData, uint32_t& datasize) const noexcept
 {
-    return pImpl->GetWaveData(index, pData, dataSize);
+    return pimpl->GetWaveData(index, pData, datasize);
 }
 
 
 _Use_decl_annotations_
 HRESULT WaveBankReader::GetSeekTable(uint32_t index, const uint32_t** pData, uint32_t& dataCount, uint32_t& tag) const noexcept
 {
-    return pImpl->GetSeekTable(index, pData, dataCount, tag);
+    return pimpl->GetSeekTable(index, pData, dataCount, tag);
 }
 
 
 _Use_decl_annotations_
 HRESULT WaveBankReader::GetMetadata(uint32_t index, Metadata& metadata) const noexcept
 {
-    return pImpl->GetMetadata(index, metadata);
+    return pimpl->GetMetadata(index, metadata);
 }
 
 
 HANDLE WaveBankReader::GetAsyncHandle() const noexcept
 {
-    return (pImpl->m_data.dwFlags & BANKDATA::TYPE_STREAMING) ? pImpl->m_async : INVALID_HANDLE_VALUE;
+    return (pimpl->m_data.dwFlags & BANKDATA::TYPE_STREAMING) ? pimpl->m_asyncfilehandle.get() : INVALID_HANDLE_VALUE;
 }

@@ -20,7 +20,7 @@
 #include <utility>
 
 
-namespace DirectX
+namespace directxtk
 {
     namespace Internal
     {
@@ -51,7 +51,7 @@ namespace DirectX
             // Private implementation.
             class Impl;
 
-            std::unique_ptr<Impl> pImpl;
+            std::unique_ptr<Impl> pimpl;
         };
     }
 

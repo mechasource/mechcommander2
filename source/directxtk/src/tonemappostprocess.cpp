@@ -7,32 +7,33 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PostProcess.h"
+#include "stdinc.h"
 
+#include "d3dx12.h"
+#include "postprocess.h"
 #include "AlignedNew.h"
-#include "CommonStates.h"
+#include "commonstates.h"
 #include "DemandCreate.h"
-#include "DirectXHelpers.h"
+#include "directxhelpers.h"
 #include "EffectPipelineStateDescription.h"
-#include "GraphicsMemory.h"
+#include "graphicsmemory.h"
 #include "SharedResourcePool.h"
 
-using namespace DirectX;
+using namespace directxtk;
 
-using Microsoft::WRL::ComPtr;
+// using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    constexpr int Dirty_ConstantBuffer  = 0x01;
-    constexpr int Dirty_Parameters      = 0x02;
+    constexpr int32_t Dirty_ConstantBuffer  = 0x01;
+    constexpr int32_t Dirty_Parameters      = 0x02;
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    constexpr int PixelShaderCount = 15;
-    constexpr int ShaderPermutationCount = 24;
+    constexpr int32_t PixelShaderCount = 15;
+    constexpr int32_t ShaderPermutationCount = 24;
 #else
-    constexpr int PixelShaderCount = 9;
-    constexpr int ShaderPermutationCount = 12;
+    constexpr int32_t PixelShaderCount = 9;
+    constexpr int32_t ShaderPermutationCount = 12;
 #endif
 
     // Constant buffer layout. Must match the shader!
@@ -40,7 +41,7 @@ namespace
     {
         // linearExposure is .x
         // paperWhiteNits is .y
-        XMVECTOR parameters;
+        DirectX::XMVECTOR parameters;
     };
 
     static_assert((sizeof(ToneMapConstants) % 16) == 0, "CB size not padded correctly");
@@ -112,7 +113,7 @@ namespace
 
     static_assert(_countof(pixelShaders) == PixelShaderCount, "array/max mismatch");
 
-    const int pixelShaderIndices[] =
+    const int32_t pixelShaderIndices[] =
     {
         // Linear EOTF
         0,  // Copy
@@ -165,9 +166,9 @@ namespace
 
         ID3D12RootSignature* GetRootSignature(const D3D12_ROOT_SIGNATURE_DESC& desc)
         {
-            return DemandCreate(mRootSignature, mMutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
+            return DemandCreate(m_prootsignature, mMutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
             {
-                HRESULT hr = CreateRootSignature(mDevice.Get(), &desc, pResult);
+                HRESULT hr = CreateRootSignature(mDevice.get(), &desc, pResult);
 
                 if (SUCCEEDED(hr))
                     SetDebugObjectName(*pResult, L"ToneMapPostProcess");
@@ -176,11 +177,11 @@ namespace
             });
         }
 
-        ID3D12Device* GetDevice() const noexcept { return mDevice.Get(); }
+        ID3D12Device* GetDevice() const noexcept { return mDevice.get(); }
 
     protected:
-        ComPtr<ID3D12Device>                        mDevice;
-        Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature;
+        wil::com_ptr<ID3D12Device>                        mDevice;
+        wil::com_ptr<ID3D12RootSignature> m_prootsignature;
         std::mutex                                  mMutex;
     };
 }
@@ -208,16 +209,16 @@ public:
     float                                   paperWhiteNits;
 
 private:
-    int                                     mDirtyFlags;
+    int32_t                                     mDirtyFlags;
 
    // D3D constant buffer holds a copy of the same data as the public 'constants' field.
     GraphicsResource mConstantBuffer;
 
     // Per instance cache of PSOs, populated with variants for each shader & layout
-    Microsoft::WRL::ComPtr<ID3D12PipelineState> mPipelineState;
+    wil::com_ptr<ID3D12PipelineState> m_ppipelinestate;
 
     // Per instance root signature
-    ID3D12RootSignature* mRootSignature;
+    ID3D12RootSignature* m_prootsignature;
 
     // Per-device resources.
     std::shared_ptr<DeviceResources> mDeviceResources;
@@ -283,24 +284,24 @@ ToneMapPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetStat
 
         rsigDesc.Init(_countof(rootParameters), rootParameters, 1, &sampler, rootSignatureFlags);
 
-        mRootSignature = mDeviceResources->GetRootSignature(rsigDesc);
+        m_prootsignature = mDeviceResources->GetRootSignature(rsigDesc);
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     // Determine shader permutation.
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    int permutation = (mrt) ? 12 : 0;
-    permutation += (static_cast<int>(func) * static_cast<int>(Operator_Max)) + static_cast<int>(op);
+    int32_t permutation = (mrt) ? 12 : 0;
+    permutation += (static_cast<int32_t>(func) * static_cast<int32_t>(Operator_Max)) + static_cast<int32_t>(op);
 #else
     UNREFERENCED_PARAMETER(mrt);
-    int permutation = (static_cast<int>(func) * static_cast<int>(Operator_Max)) + static_cast<int>(op);
+    int32_t permutation = (static_cast<int32_t>(func) * static_cast<int32_t>(Operator_Max)) + static_cast<int32_t>(op);
 #endif
 
     assert(permutation >= 0 && permutation < ShaderPermutationCount);
     _Analysis_assume_(permutation >= 0 && permutation < ShaderPermutationCount);
 
-    int shaderIndex = pixelShaderIndices[permutation];
+    int32_t shaderIndex = pixelShaderIndices[permutation];
     assert(shaderIndex >= 0 && shaderIndex < PixelShaderCount);
     _Analysis_assume_(shaderIndex >= 0 && shaderIndex < PixelShaderCount);
 
@@ -314,12 +315,12 @@ ToneMapPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetStat
 
     psd.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         vertexShader,
         pixelShaders[shaderIndex],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"ToneMapPostProcess");
+    SetDebugObjectName(m_ppipelinestate.get(), L"ToneMapPostProcess");
 }
 
 
@@ -327,7 +328,7 @@ ToneMapPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetStat
 void ToneMapPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList)
 {
     // Set the root signature.
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set the texture.
     if (!texture.ptr)
@@ -343,7 +344,7 @@ void ToneMapPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandLi
         mDirtyFlags &= ~Dirty_Parameters;
         mDirtyFlags |= Dirty_ConstantBuffer;
 
-        constants.parameters = XMVectorSet(linearExposure, paperWhiteNits, 0.f, 0.f);
+        constants.parameters = DirectX::XMVectorSet(linearExposure, paperWhiteNits, 0.f, 0.f);
     }
 
     if (mDirtyFlags & Dirty_ConstantBuffer)
@@ -355,7 +356,7 @@ void ToneMapPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandLi
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, mConstantBuffer.GpuAddress());
 
     // Set the pipeline state.
-    commandList->SetPipelineState(mPipelineState.Get());
+    commandList->SetPipelineState(m_ppipelinestate.get());
 
     // Draw quad.
     commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -366,10 +367,10 @@ void ToneMapPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandLi
 // Public constructor.
 #if defined(_XBOX_ONE) && defined(_TITLE)
 ToneMapPostProcess::ToneMapPostProcess(_In_ ID3D12Device* device, const RenderTargetState& rtState, Operator op, TransferFunction func, bool mrt)
-  : pImpl(std::make_unique<Impl>(device, rtState, op, func, mrt))
+  : pimpl(std::make_unique<Impl>(device, rtState, op, func, mrt))
 #else
 ToneMapPostProcess::ToneMapPostProcess(_In_ ID3D12Device* device, const RenderTargetState& rtState, Operator op, TransferFunction func)
-    : pImpl(std::make_unique<Impl>(device, rtState, op, func))
+    : pimpl(std::make_unique<Impl>(device, rtState, op, func))
 #endif
 {
 }
@@ -377,7 +378,7 @@ ToneMapPostProcess::ToneMapPostProcess(_In_ ID3D12Device* device, const RenderTa
 
 // Move constructor.
 ToneMapPostProcess::ToneMapPostProcess(ToneMapPostProcess&& moveFrom) noexcept
-  : pImpl(std::move(moveFrom.pImpl))
+  : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -385,7 +386,7 @@ ToneMapPostProcess::ToneMapPostProcess(ToneMapPostProcess&& moveFrom) noexcept
 // Move assignment.
 ToneMapPostProcess& ToneMapPostProcess::operator= (ToneMapPostProcess&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -399,26 +400,26 @@ ToneMapPostProcess::~ToneMapPostProcess()
 // IPostProcess methods.
 void ToneMapPostProcess::Process(_In_ ID3D12GraphicsCommandList* commandList)
 {
-    pImpl->Process(commandList);
+    pimpl->Process(commandList);
 }
 
 
 // Properties
 void ToneMapPostProcess::SetHDRSourceTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor)
 {
-    pImpl->texture = srvDescriptor;
+    pimpl->texture = srvDescriptor;
 }
 
 
 void ToneMapPostProcess::SetExposure(float exposureValue)
 {
-    pImpl->linearExposure = powf(2.f, exposureValue);
-    pImpl->SetDirtyFlag();
+    pimpl->linearExposure = powf(2.f, exposureValue);
+    pimpl->SetDirtyFlag();
 }
 
 
 void ToneMapPostProcess::SetST2084Parameter(float paperWhiteNits)
 {
-    pImpl->paperWhiteNits = paperWhiteNits;
-    pImpl->SetDirtyFlag();
+    pimpl->paperWhiteNits = paperWhiteNits;
+    pimpl->SetDirtyFlag();
 }

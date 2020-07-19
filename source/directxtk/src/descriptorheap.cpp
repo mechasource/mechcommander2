@@ -7,13 +7,13 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PlatformHelpers.h"
-#include "DirectXHelpers.h"
-#include "DescriptorHeap.h"
+#include "stdinc.h"
+#include "platformhelpers.h"
+#include "directxhelpers.h"
+#include "descriptorheap.h"
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 namespace
 {
@@ -41,8 +41,8 @@ DescriptorHeap::DescriptorHeap(
     m_hGPU = pExistingHeap->GetGPUDescriptorHandleForHeapStart();
     m_desc = pExistingHeap->GetDesc();
 
-    ComPtr<ID3D12Device> device;
-    pExistingHeap->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+    wil::com_ptr<ID3D12Device> device;
+    pExistingHeap->GetDevice(IID_GRAPHICS_PPV_ARGS(device.addressof()));
 
     m_increment = device->GetDescriptorHandleIncrementSize(m_desc.Type);
 }
@@ -75,7 +75,7 @@ DescriptorHeap::DescriptorHeap(
 
     D3D12_DESCRIPTOR_HEAP_DESC desc = {};
     desc.Flags = flags;
-    desc.NumDescriptors = static_cast<UINT>(count);
+    desc.NumDescriptors = static_cast<uint32_t>(count);
     desc.Type = type;
     Create(device, &desc);
 }
@@ -116,7 +116,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::WriteDescriptors(
     uint32_t descriptorRangeCount)
 {
     uint32_t totalDescriptorCount = 0;
-    for (uint32_t i = 0; i < descriptorRangeCount; ++i)
+    for (auto i = 0u; i < descriptorRangeCount; ++i)
         totalDescriptorCount += pDescriptorRangeSizes[i];
 
     return WriteDescriptors(
@@ -156,7 +156,7 @@ void DescriptorHeap::Create(
 
     if (pDesc->NumDescriptors == 0)
     {
-        m_pHeap.Reset();
+        m_pHeap.reset();
         m_hCPU.ptr = 0;
         m_hGPU.ptr = 0;
     }
@@ -164,9 +164,9 @@ void DescriptorHeap::Create(
     {
         ThrowIfFailed(pDevice->CreateDescriptorHeap(
             pDesc,
-            IID_GRAPHICS_PPV_ARGS(m_pHeap.ReleaseAndGetAddressOf())));
+            IID_GRAPHICS_PPV_ARGS(m_pHeap.put())));
 
-        SetDebugObjectName(m_pHeap.Get(), L"DescriptorHeap");
+        SetDebugObjectName(m_pHeap.get(), L"DescriptorHeap");
 
         m_hCPU = m_pHeap->GetCPUDescriptorHandleForHeapStart();
 

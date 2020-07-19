@@ -7,22 +7,22 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 
-using namespace DirectX;
+using namespace directxtk;
 
 namespace
 {
     // Constant buffer layout. Must match the shader!
     struct DebugEffectConstants
     {
-        XMVECTOR ambientDownAndAlpha;
-        XMVECTOR ambientRange;
+        DirectX::XMVECTOR ambientDownAndAlpha;
+        DirectX::XMVECTOR ambientRange;
 
-        XMMATRIX world;
-        XMVECTOR worldInverseTranspose[3];
-        XMMATRIX worldViewProj;
+        DirectX::XMMATRIX world;
+        DirectX::XMVECTOR worldInverseTranspose[3];
+        DirectX::XMMATRIX worldViewProj;
     };
 
     static_assert((sizeof(DebugEffectConstants) % 16) == 0, "CB size not padded correctly");
@@ -33,10 +33,10 @@ namespace
     {
         using ConstantBufferType = DebugEffectConstants;
 
-        static constexpr int VertexShaderCount = 4;
-        static constexpr int PixelShaderCount = 4;
-        static constexpr int ShaderPermutationCount = 16;
-        static constexpr int RootSignatureCount = 1;
+        static constexpr int32_t VertexShaderCount = 4;
+        static constexpr int32_t PixelShaderCount = 4;
+        static constexpr int32_t ShaderPermutationCount = 16;
+        static constexpr int32_t RootSignatureCount = 1;
     };
 }
 
@@ -53,7 +53,7 @@ public:
         RootParameterCount
     };
 
-    int GetPipelineStatePermutation(bool vertexColorEnabled, DebugEffect::Mode debugMode, bool biasedVertexNormals) const noexcept;
+    int32_t GetPipelineStatePermutation(bool vertexColorEnabled, DebugEffect::Mode debugMode, bool biasedVertexNormals) const noexcept;
 
     void Apply(_In_ ID3D12GraphicsCommandList* commandList);
 };
@@ -100,7 +100,7 @@ const D3D12_SHADER_BYTECODE EffectBase<DebugEffectTraits>::VertexShaderBytecode[
 
 
 template<>
-const int EffectBase<DebugEffectTraits>::VertexShaderIndices[] =
+const int32_t EffectBase<DebugEffectTraits>::VertexShaderIndices[] =
 {    
     0,      // default
     0,      // normals
@@ -135,7 +135,7 @@ const D3D12_SHADER_BYTECODE EffectBase<DebugEffectTraits>::PixelShaderBytecode[]
 
 
 template<>
-const int EffectBase<DebugEffectTraits>::PixelShaderIndices[] =
+const int32_t EffectBase<DebugEffectTraits>::PixelShaderIndices[] =
 {    
     0,      // default
     1,      // normals
@@ -177,10 +177,10 @@ DebugEffect::Impl::Impl(
     static_assert(_countof(EffectBase<DebugEffectTraits>::PixelShaderBytecode) == DebugEffectTraits::PixelShaderCount, "array/max mismatch");
     static_assert(_countof(EffectBase<DebugEffectTraits>::PixelShaderIndices) == DebugEffectTraits::ShaderPermutationCount, "array/max mismatch");
 
-    static const XMVECTORF32 s_lower = { { { 0.f, 0.f, 0.f, 1.f } } };
+    static const DirectX::XMVECTORF32 s_lower = { { { 0.f, 0.f, 0.f, 1.f } } };
 
     constants.ambientDownAndAlpha = s_lower;
-    constants.ambientRange = g_XMOne;
+    constants.ambientRange = DirectX::g_XMOne;
 
     // Create root signature.
     {
@@ -199,40 +199,40 @@ DebugEffect::Impl::Impl(
 
         rsigDesc.Init(1, rootParameters, 0, nullptr, rootSignatureFlags);
 
-        mRootSignature = GetRootSignature(0, rsigDesc);
+        m_prootsignature = GetRootSignature(0, rsigDesc);
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     // Create pipeline state.
-    int sp = GetPipelineStatePermutation(
+    int32_t sp = GetPipelineStatePermutation(
         (effectFlags & EffectFlags::VertexColor) != 0,
         debugMode,
         (effectFlags & EffectFlags::BiasedVertexNormals) != 0);
     assert(sp >= 0 && sp < DebugEffectTraits::ShaderPermutationCount);
     _Analysis_assume_(sp >= 0 && sp < DebugEffectTraits::ShaderPermutationCount);
 
-    int vi = EffectBase<DebugEffectTraits>::VertexShaderIndices[sp];
+    int32_t vi = EffectBase<DebugEffectTraits>::VertexShaderIndices[sp];
     assert(vi >= 0 && vi < DebugEffectTraits::VertexShaderCount);
     _Analysis_assume_(vi >= 0 && vi < DebugEffectTraits::VertexShaderCount);
-    int pi = EffectBase<DebugEffectTraits>::PixelShaderIndices[sp];
+    int32_t pi = EffectBase<DebugEffectTraits>::PixelShaderIndices[sp];
     assert(pi >= 0 && pi < DebugEffectTraits::PixelShaderCount);
     _Analysis_assume_(pi >= 0 && pi < DebugEffectTraits::PixelShaderCount);
 
     pipelineDescription.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         EffectBase<DebugEffectTraits>::VertexShaderBytecode[vi],
         EffectBase<DebugEffectTraits>::PixelShaderBytecode[pi],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"DebugEffect");
+    SetDebugObjectName(m_ppipelinestate.get(), L"DebugEffect");
 }
 
 
-int DebugEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled, DebugEffect::Mode debugMode, bool biasedVertexNormals) const noexcept
+int32_t DebugEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled, DebugEffect::Mode debugMode, bool biasedVertexNormals) const noexcept
 {
-    int permutation = static_cast<int>(debugMode);
+    int32_t permutation = static_cast<int32_t>(debugMode);
 
     // Support vertex coloring?
     if (vertexColorEnabled)
@@ -261,7 +261,7 @@ void DebugEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     {
         constants.world = XMMatrixTranspose(matrices.world);
 
-        XMMATRIX worldInverse = XMMatrixInverse(nullptr, matrices.world);
+        DirectX::XMMATRIX worldInverse = XMMatrixInverse(nullptr, matrices.world);
 
         constants.worldInverseTranspose[0] = worldInverse.r[0];
         constants.worldInverseTranspose[1] = worldInverse.r[1];
@@ -274,13 +274,13 @@ void DebugEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     UpdateConstants();
 
     // Set the root signature
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set constants
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
     // Set the pipeline state
-    commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+    commandList->SetPipelineState(EffectBase::m_ppipelinestate.get());
 }
 
 
@@ -290,14 +290,14 @@ DebugEffect::DebugEffect(
     uint32_t effectFlags,
     const EffectPipelineStateDescription& pipelineDescription,
     Mode debugMode)
-    : pImpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription, debugMode))
+    : pimpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription, debugMode))
 {
 }
 
 
 // Move constructor.
 DebugEffect::DebugEffect(DebugEffect&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -305,7 +305,7 @@ DebugEffect::DebugEffect(DebugEffect&& moveFrom) noexcept
 // Move assignment.
 DebugEffect& DebugEffect::operator= (DebugEffect&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -319,60 +319,60 @@ DebugEffect::~DebugEffect()
 // IEffect methods.
 void DebugEffect::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 {
-    pImpl->Apply(commandList);
+    pimpl->Apply(commandList);
 }
 
 
 // Camera settings.
-void XM_CALLCONV DebugEffect::SetWorld(FXMMATRIX value)
+void XM_CALLCONV DebugEffect::SetWorld(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.world = value;
+    pimpl->matrices.world = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose;
 }
 
 
-void XM_CALLCONV DebugEffect::SetView(FXMMATRIX value)
+void XM_CALLCONV DebugEffect::SetView(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.view = value;
+    pimpl->matrices.view = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
 }
 
 
-void XM_CALLCONV DebugEffect::SetProjection(FXMMATRIX value)
+void XM_CALLCONV DebugEffect::SetProjection(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.projection = value;
+    pimpl->matrices.projection = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
 }
 
 
-void XM_CALLCONV DebugEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
+void XM_CALLCONV DebugEffect::SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection)
 {
-    pImpl->matrices.world = world;
-    pImpl->matrices.view = view;
-    pImpl->matrices.projection = projection;
+    pimpl->matrices.world = world;
+    pimpl->matrices.view = view;
+    pimpl->matrices.projection = projection;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose;
 }
 
 
 // Material settings.
-void XM_CALLCONV DebugEffect::SetHemisphericalAmbientColor(FXMVECTOR upper, FXMVECTOR lower)
+void XM_CALLCONV DebugEffect::SetHemisphericalAmbientColor(DirectX::FXMVECTOR upper, DirectX::FXMVECTOR lower)
 {
     // Set xyz to new value, but preserve existing w (alpha).
-    pImpl->constants.ambientDownAndAlpha = XMVectorSelect(pImpl->constants.ambientDownAndAlpha, lower, g_XMSelect1110);
+    pimpl->constants.ambientDownAndAlpha = DirectX::XMVectorSelect(pimpl->constants.ambientDownAndAlpha, lower, DirectX::g_XMSelect1110);
 
-    pImpl->constants.ambientRange = XMVectorSubtract(upper, lower);
+    pimpl->constants.ambientRange = DirectX::XMVectorSubtract(upper, lower);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 void DebugEffect::SetAlpha(float value)
 {
     // Set w to new value, but preserve existing xyz (ambient down).
-    pImpl->constants.ambientDownAndAlpha = XMVectorSetW(pImpl->constants.ambientDownAndAlpha, value);
+    pimpl->constants.ambientDownAndAlpha = DirectX::XMVectorSetW(pimpl->constants.ambientDownAndAlpha, value);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }

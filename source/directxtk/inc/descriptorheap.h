@@ -23,7 +23,7 @@
 #include <wrl/client.h>
 
 
-namespace DirectX
+namespace directxtk
 {
     // A contiguous linear random-access descriptor heap
     class DescriptorHeap
@@ -96,7 +96,7 @@ namespace DirectX
             assert(m_desc.Flags & D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
 
             D3D12_GPU_DESCRIPTOR_HANDLE handle;
-            handle.ptr = m_hGPU.ptr + UINT64(index) * UINT64(m_increment);
+            handle.ptr = m_hGPU.ptr + uint64_t(index) * uint64_t(m_increment);
             return handle;
         }
 
@@ -109,15 +109,15 @@ namespace DirectX
             }
 
             D3D12_CPU_DESCRIPTOR_HANDLE handle;
-            handle.ptr = static_cast<SIZE_T>(m_hCPU.ptr + UINT64(index) * UINT64(m_increment));
+            handle.ptr = static_cast<SIZE_T>(m_hCPU.ptr + uint64_t(index) * uint64_t(m_increment));
             return handle;
         }
 
         size_t Count() const noexcept { return m_desc.NumDescriptors; }
-        unsigned int Flags() const noexcept { return m_desc.Flags; }
+        uint32_t Flags() const noexcept { return m_desc.Flags; }
         D3D12_DESCRIPTOR_HEAP_TYPE Type() const noexcept { return m_desc.Type; }
         size_t Increment() const noexcept { return m_increment; }
-        ID3D12DescriptorHeap* Heap() const noexcept { return m_pHeap.Get(); }
+        ID3D12DescriptorHeap* Heap() const noexcept { return m_pHeap.get(); }
 
         static void __cdecl DefaultDesc(
             _In_ D3D12_DESCRIPTOR_HEAP_TYPE type,
@@ -126,7 +126,7 @@ namespace DirectX
     private:
         void Create(_In_ ID3D12Device* pDevice, _In_ const D3D12_DESCRIPTOR_HEAP_DESC* pDesc);
 
-        Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>    m_pHeap;
+        wil::com_ptr<ID3D12DescriptorHeap>    m_pHeap;
         D3D12_DESCRIPTOR_HEAP_DESC                      m_desc;
         D3D12_CPU_DESCRIPTOR_HANDLE                     m_hCPU;
         D3D12_GPU_DESCRIPTOR_HANDLE                     m_hGPU;

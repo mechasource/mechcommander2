@@ -31,7 +31,7 @@
 #pragma comment(lib,"uuid.lib")
 
 
-namespace DirectX
+namespace directxtk
 {
     enum WIC_LOADER_FLAGS : uint32_t
     {
@@ -60,7 +60,7 @@ namespace DirectX
 
     HRESULT __cdecl LoadWICTextureFromFile(
         _In_ ID3D12Device* d3dDevice,
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         _Outptr_ ID3D12Resource** texture,
         std::unique_ptr<uint8_t[]>& decodedData,
         D3D12_SUBRESOURCE_DATA& subresource,
@@ -79,7 +79,7 @@ namespace DirectX
     HRESULT __cdecl CreateWICTextureFromFile(
         _In_ ID3D12Device* d3dDevice,
         ResourceUploadBatch& resourceUpload,
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         _Outptr_ ID3D12Resource** texture,
         bool generateMips = false,
         size_t maxsize = 0);
@@ -98,7 +98,7 @@ namespace DirectX
 
     HRESULT __cdecl LoadWICTextureFromFileEx(
         _In_ ID3D12Device* d3dDevice,
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         size_t maxsize,
         D3D12_RESOURCE_FLAGS resFlags,
         WIC_LOADER_FLAGS loadFlags,
@@ -120,7 +120,7 @@ namespace DirectX
     HRESULT __cdecl CreateWICTextureFromFileEx(
         _In_ ID3D12Device* d3dDevice,
         ResourceUploadBatch& resourceUpload,
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         size_t maxsize,
         D3D12_RESOURCE_FLAGS resFlags,
         WIC_LOADER_FLAGS loadFlags,

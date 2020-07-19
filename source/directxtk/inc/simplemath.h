@@ -29,7 +29,7 @@
 #endif
 
 
-namespace DirectX
+namespace directxtk
 {
     namespace SimpleMath
     {
@@ -43,14 +43,14 @@ namespace DirectX
         // 2D rectangle
         struct Rectangle
         {
-            long x;
-            long y;
-            long width;
-            long height;
+            int32_t x;
+            int32_t y;
+            int32_t width;
+            int32_t height;
 
             // Creators
             Rectangle() noexcept : x(0), y(0), width(0), height(0) {}
-            constexpr Rectangle(long ix, long iy, long iw, long ih) noexcept : x(ix), y(iy), width(iw), height(ih) {}
+            constexpr Rectangle(int32_t ix, int32_t iy, int32_t iw, int32_t ih) noexcept : x(ix), y(iy), width(iw), height(ih) {}
             explicit Rectangle(const RECT& rct) noexcept : x(rct.left), y(rct.top), width(rct.right - rct.left), height(rct.bottom - rct.top) {}
 
             Rectangle(const Rectangle&) = default;
@@ -80,17 +80,17 @@ namespace DirectX
 
             bool IsEmpty() const noexcept { return (width == 0 && height == 0 && x == 0 && y == 0); }
 
-            bool Contains(long ix, long iy) const noexcept { return (x <= ix) && (ix < (x + width)) && (y <= iy) && (iy < (y + height)); }
+            bool Contains(int32_t ix, int32_t iy) const noexcept { return (x <= ix) && (ix < (x + width)) && (y <= iy) && (iy < (y + height)); }
             bool Contains(const Vector2& point) const noexcept;
             bool Contains(const Rectangle& r) const noexcept { return (x <= r.x) && ((r.x + r.width) <= (x + width)) && (y <= r.y) && ((r.y + r.height) <= (y + height)); }
             bool Contains(const RECT& rct) const noexcept { return (x <= rct.left) && (rct.right <= (x + width)) && (y <= rct.top) && (rct.bottom <= (y + height)); }
 
-            void Inflate(long horizAmount, long vertAmount) noexcept;
+            void Inflate(int32_t horizAmount, int32_t vertAmount) noexcept;
 
             bool Intersects(const Rectangle& r) const noexcept { return (r.x < (x + width)) && (x < (r.x + r.width)) && (r.y < (y + height)) && (y < (r.y + r.height)); }
             bool Intersects(const RECT& rct) const noexcept { return (rct.left < (x + width)) && (x < rct.right) && (rct.top < (y + height)) && (y < rct.bottom); }
 
-            void Offset(long ox, long oy) noexcept { x += ox; y += oy; }
+            void Offset(int32_t ox, int32_t oy) noexcept { x += ox; y += oy; }
 
             // Static functions
             static Rectangle Intersect(const Rectangle& ra, const Rectangle& rb) noexcept;
@@ -102,15 +102,15 @@ namespace DirectX
 
         //------------------------------------------------------------------------------
         // 2D vector
-        struct Vector2 : public XMFLOAT2
+        struct Vector2 : public DirectX::XMFLOAT2
         {
-            Vector2() noexcept : XMFLOAT2(0.f, 0.f) {}
-            constexpr explicit Vector2(float ix) noexcept : XMFLOAT2(ix, ix) {}
-            constexpr Vector2(float ix, float iy) noexcept : XMFLOAT2(ix, iy) {}
-            explicit Vector2(_In_reads_(2) const float *pArray) noexcept : XMFLOAT2(pArray) {}
-            Vector2(FXMVECTOR V) noexcept { XMStoreFloat2(this, V); }
-            Vector2(const XMFLOAT2& V) noexcept { this->x = V.x; this->y = V.y; }
-            explicit Vector2(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; }
+            Vector2() noexcept : DirectX::XMFLOAT2(0.f, 0.f) {}
+            constexpr explicit Vector2(float ix) noexcept : DirectX::XMFLOAT2(ix, ix) {}
+            constexpr Vector2(float ix, float iy) noexcept : DirectX::XMFLOAT2(ix, iy) {}
+            explicit Vector2(_In_reads_(2) const float *pArray) noexcept : DirectX::XMFLOAT2(pArray) {}
+            Vector2(DirectX::FXMVECTOR V) noexcept { XMStoreFloat2(this, V); }
+            Vector2(const DirectX::XMFLOAT2& V) noexcept { this->x = V.x; this->y = V.y; }
+            explicit Vector2(const DirectX::XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; }
 
             Vector2(const Vector2&) = default;
             Vector2& operator=(const Vector2&) = default;
@@ -118,14 +118,14 @@ namespace DirectX
             Vector2(Vector2&&) = default;
             Vector2& operator=(Vector2&&) = default;
 
-            operator XMVECTOR() const noexcept { return XMLoadFloat2(this); }
+            operator DirectX::XMVECTOR() const noexcept { return XMLoadFloat2(this); }
 
             // Comparison operators
             bool operator == (const Vector2& V) const noexcept;
             bool operator != (const Vector2& V) const noexcept;
 
             // Assignment operators
-            Vector2& operator= (const XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; return *this; }
+            Vector2& operator= (const DirectX::XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; return *this; }
             Vector2& operator+= (const Vector2& V) noexcept;
             Vector2& operator-= (const Vector2& V) noexcept;
             Vector2& operator*= (const Vector2& V) noexcept;
@@ -215,15 +215,15 @@ namespace DirectX
 
         //------------------------------------------------------------------------------
         // 3D vector
-        struct Vector3 : public XMFLOAT3
+        struct Vector3 : public DirectX::XMFLOAT3
         {
-            Vector3() noexcept : XMFLOAT3(0.f, 0.f, 0.f) {}
-            constexpr explicit Vector3(float ix) noexcept : XMFLOAT3(ix, ix, ix) {}
-            constexpr Vector3(float ix, float iy, float iz) noexcept : XMFLOAT3(ix, iy, iz) {}
-            explicit Vector3(_In_reads_(3) const float *pArray) noexcept : XMFLOAT3(pArray) {}
-            Vector3(FXMVECTOR V) noexcept { XMStoreFloat3(this, V); }
-            Vector3(const XMFLOAT3& V) noexcept { this->x = V.x; this->y = V.y; this->z = V.z; }
-            explicit Vector3(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; }
+            Vector3() noexcept : DirectX::XMFLOAT3(0.f, 0.f, 0.f) {}
+            constexpr explicit Vector3(float ix) noexcept : DirectX::XMFLOAT3(ix, ix, ix) {}
+            constexpr Vector3(float ix, float iy, float iz) noexcept : DirectX::XMFLOAT3(ix, iy, iz) {}
+            explicit Vector3(_In_reads_(3) const float *pArray) noexcept : DirectX::XMFLOAT3(pArray) {}
+            Vector3(DirectX::FXMVECTOR V) noexcept { XMStoreFloat3(this, V); }
+            Vector3(const DirectX::XMFLOAT3& V) noexcept { this->x = V.x; this->y = V.y; this->z = V.z; }
+            explicit Vector3(const DirectX::XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; }
 
             Vector3(const Vector3&) = default;
             Vector3& operator=(const Vector3&) = default;
@@ -231,14 +231,14 @@ namespace DirectX
             Vector3(Vector3&&) = default;
             Vector3& operator=(Vector3&&) = default;
 
-            operator XMVECTOR() const noexcept { return XMLoadFloat3(this); }
+            operator DirectX::XMVECTOR() const noexcept { return XMLoadFloat3(this); }
 
             // Comparison operators
             bool operator == (const Vector3& V) const noexcept;
             bool operator != (const Vector3& V) const noexcept;
 
             // Assignment operators
-            Vector3& operator= (const XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; return *this; }
+            Vector3& operator= (const DirectX::XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; return *this; }
             Vector3& operator+= (const Vector3& V) noexcept;
             Vector3& operator-= (const Vector3& V) noexcept;
             Vector3& operator*= (const Vector3& V) noexcept;
@@ -335,15 +335,15 @@ namespace DirectX
 
         //------------------------------------------------------------------------------
         // 4D vector
-        struct Vector4 : public XMFLOAT4
+        struct Vector4 : public DirectX::XMFLOAT4
         {
-            Vector4() noexcept : XMFLOAT4(0.f, 0.f, 0.f, 0.f) {}
-            constexpr explicit Vector4(float ix) noexcept : XMFLOAT4(ix, ix, ix, ix) {}
-            constexpr Vector4(float ix, float iy, float iz, float iw) noexcept : XMFLOAT4(ix, iy, iz, iw) {}
-            explicit Vector4(_In_reads_(4) const float *pArray) noexcept : XMFLOAT4(pArray) {}
-            Vector4(FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
-            Vector4(const XMFLOAT4& V) noexcept { this->x = V.x; this->y = V.y; this->z = V.z; this->w = V.w; }
-            explicit Vector4(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
+            Vector4() noexcept : DirectX::XMFLOAT4(0.f, 0.f, 0.f, 0.f) {}
+            constexpr explicit Vector4(float ix) noexcept : DirectX::XMFLOAT4(ix, ix, ix, ix) {}
+            constexpr Vector4(float ix, float iy, float iz, float iw) noexcept : DirectX::XMFLOAT4(ix, iy, iz, iw) {}
+            explicit Vector4(_In_reads_(4) const float *pArray) noexcept : DirectX::XMFLOAT4(pArray) {}
+            Vector4(DirectX::FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
+            Vector4(const DirectX::XMFLOAT4& V) noexcept { this->x = V.x; this->y = V.y; this->z = V.z; this->w = V.w; }
+            explicit Vector4(const DirectX::XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
 
             Vector4(const Vector4&) = default;
             Vector4& operator=(const Vector4&) = default;
@@ -351,14 +351,14 @@ namespace DirectX
             Vector4(Vector4&&) = default;
             Vector4& operator=(Vector4&&) = default;
 
-            operator XMVECTOR() const  noexcept { return XMLoadFloat4(this); }
+            operator DirectX::XMVECTOR() const  noexcept { return XMLoadFloat4(this); }
 
             // Comparison operators
             bool operator == (const Vector4& V) const noexcept;
             bool operator != (const Vector4& V) const noexcept;
 
             // Assignment operators
-            Vector4& operator= (const XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; w = F.f[3]; return *this; }
+            Vector4& operator= (const DirectX::XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; w = F.f[3]; return *this; }
             Vector4& operator+= (const Vector4& V) noexcept;
             Vector4& operator-= (const Vector4& V) noexcept;
             Vector4& operator*= (const Vector4& V) noexcept;
@@ -449,10 +449,10 @@ namespace DirectX
 
         //------------------------------------------------------------------------------
         // 4x4 Matrix (assumes right-handed cooordinates)
-        struct Matrix : public XMFLOAT4X4
+        struct Matrix : public DirectX::XMFLOAT4X4
         {
             Matrix() noexcept
-                : XMFLOAT4X4(1.f, 0, 0, 0,
+                : DirectX::XMFLOAT4X4(1.f, 0, 0, 0,
                             0, 1.f, 0, 0,
                             0, 0, 1.f, 0,
                             0, 0, 0, 1.f) {}
@@ -460,26 +460,26 @@ namespace DirectX
                              float m10, float m11, float m12, float m13,
                              float m20, float m21, float m22, float m23,
                              float m30, float m31, float m32, float m33) noexcept
-                : XMFLOAT4X4(m00, m01, m02, m03,
+                : DirectX::XMFLOAT4X4(m00, m01, m02, m03,
                              m10, m11, m12, m13,
                              m20, m21, m22, m23,
                              m30, m31, m32, m33) {}
             explicit Matrix(const Vector3& r0, const Vector3& r1, const Vector3& r2) noexcept
-                : XMFLOAT4X4(r0.x, r0.y, r0.z, 0,
+                : DirectX::XMFLOAT4X4(r0.x, r0.y, r0.z, 0,
                              r1.x, r1.y, r1.z, 0,
                              r2.x, r2.y, r2.z, 0,
                              0, 0, 0, 1.f) {}
             explicit Matrix(const Vector4& r0, const Vector4& r1, const Vector4& r2, const Vector4& r3) noexcept
-                : XMFLOAT4X4(r0.x, r0.y, r0.z, r0.w,
+                : DirectX::XMFLOAT4X4(r0.x, r0.y, r0.z, r0.w,
                              r1.x, r1.y, r1.z, r1.w,
                              r2.x, r2.y, r2.z, r2.w,
                              r3.x, r3.y, r3.z, r3.w) {}
-            Matrix(const XMFLOAT4X4& M) noexcept { memcpy_s(this, sizeof(float) * 16, &M, sizeof(XMFLOAT4X4)); }
-            Matrix(const XMFLOAT3X3& M) noexcept;
-            Matrix(const XMFLOAT4X3& M) noexcept;
+            Matrix(const DirectX::XMFLOAT4X4& M) noexcept { memcpy_s(this, sizeof(float) * 16, &M, sizeof(DirectX::XMFLOAT4X4)); }
+            Matrix(const DirectX::XMFLOAT3X3& M) noexcept;
+            Matrix(const DirectX::XMFLOAT4X3& M) noexcept;
 
-            explicit Matrix(_In_reads_(16) const float *pArray) noexcept : XMFLOAT4X4(pArray) {}
-            Matrix(CXMMATRIX M) noexcept { XMStoreFloat4x4(this, M); }
+            explicit Matrix(_In_reads_(16) const float *pArray) noexcept : DirectX::XMFLOAT4X4(pArray) {}
+            Matrix(DirectX::CXMMATRIX M) noexcept { XMStoreFloat4x4(this, M); }
 
             Matrix(const Matrix&) = default;
             Matrix& operator=(const Matrix&) = default;
@@ -487,15 +487,15 @@ namespace DirectX
             Matrix(Matrix&&) = default;
             Matrix& operator=(Matrix&&) = default;
 
-            operator XMMATRIX() const noexcept { return XMLoadFloat4x4(this); }
+            operator DirectX::XMMATRIX() const noexcept { return DirectX::XMLoadFloat4x4(this); }
 
             // Comparison operators
             bool operator == (const Matrix& M) const noexcept;
             bool operator != (const Matrix& M) const noexcept;
 
             // Assignment operators
-            Matrix& operator= (const XMFLOAT3X3& M) noexcept;
-            Matrix& operator= (const XMFLOAT4X3& M) noexcept;
+            Matrix& operator= (const DirectX::XMFLOAT3X3& M) noexcept;
+            Matrix& operator= (const DirectX::XMFLOAT4X3& M) noexcept;
             Matrix& operator+= (const Matrix& M) noexcept;
             Matrix& operator-= (const Matrix& M) noexcept;
             Matrix& operator*= (const Matrix& M) noexcept;
@@ -603,18 +603,18 @@ namespace DirectX
 
         //-----------------------------------------------------------------------------
         // Plane
-        struct Plane : public XMFLOAT4
+        struct Plane : public DirectX::XMFLOAT4
         {
-            Plane() noexcept : XMFLOAT4(0.f, 1.f, 0.f, 0.f) {}
-            constexpr Plane(float ix, float iy, float iz, float iw) noexcept : XMFLOAT4(ix, iy, iz, iw) {}
-            Plane(const Vector3& normal, float d) noexcept : XMFLOAT4(normal.x, normal.y, normal.z, d) {}
+            Plane() noexcept : DirectX::XMFLOAT4(0.f, 1.f, 0.f, 0.f) {}
+            constexpr Plane(float ix, float iy, float iz, float iw) noexcept : DirectX::XMFLOAT4(ix, iy, iz, iw) {}
+            Plane(const Vector3& normal, float d) noexcept : DirectX::XMFLOAT4(normal.x, normal.y, normal.z, d) {}
             Plane(const Vector3& point1, const Vector3& point2, const Vector3& point3) noexcept;
             Plane(const Vector3& point, const Vector3& normal) noexcept;
-            explicit Plane(const Vector4& v) noexcept : XMFLOAT4(v.x, v.y, v.z, v.w) {}
-            explicit Plane(_In_reads_(4) const float *pArray) noexcept : XMFLOAT4(pArray) {}
-            Plane(FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
-            Plane(const XMFLOAT4& p) noexcept { this->x = p.x; this->y = p.y; this->z = p.z; this->w = p.w; }
-            explicit Plane(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
+            explicit Plane(const Vector4& v) noexcept : DirectX::XMFLOAT4(v.x, v.y, v.z, v.w) {}
+            explicit Plane(_In_reads_(4) const float *pArray) noexcept : DirectX::XMFLOAT4(pArray) {}
+            Plane(DirectX::FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
+            Plane(const DirectX::XMFLOAT4& p) noexcept { this->x = p.x; this->y = p.y; this->z = p.z; this->w = p.w; }
+            explicit Plane(const DirectX::XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
 
             Plane(const Plane&) = default;
             Plane& operator=(const Plane&) = default;
@@ -622,14 +622,14 @@ namespace DirectX
             Plane(Plane&&) = default;
             Plane& operator=(Plane&&) = default;
 
-            operator XMVECTOR() const noexcept { return XMLoadFloat4(this); }
+            operator DirectX::XMVECTOR() const noexcept { return XMLoadFloat4(this); }
 
             // Comparison operators
             bool operator == (const Plane& p) const noexcept;
             bool operator != (const Plane& p) const noexcept;
 
             // Assignment operators
-            Plane& operator= (const XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; w = F.f[3]; return *this; }
+            Plane& operator= (const DirectX::XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; w = F.f[3]; return *this; }
 
             // Properties
             Vector3 Normal() const noexcept { return Vector3(x, y, z); }
@@ -657,16 +657,16 @@ namespace DirectX
 
         //------------------------------------------------------------------------------
         // Quaternion
-        struct Quaternion : public XMFLOAT4
+        struct Quaternion : public DirectX::XMFLOAT4
         {
-            Quaternion() noexcept : XMFLOAT4(0, 0, 0, 1.f) {}
-            constexpr Quaternion(float ix, float iy, float iz, float iw) noexcept : XMFLOAT4(ix, iy, iz, iw) {}
-            Quaternion(const Vector3& v, float scalar) noexcept : XMFLOAT4(v.x, v.y, v.z, scalar) {}
-            explicit Quaternion(const Vector4& v) noexcept : XMFLOAT4(v.x, v.y, v.z, v.w) {}
-            explicit Quaternion(_In_reads_(4) const float *pArray) noexcept : XMFLOAT4(pArray) {}
-            Quaternion(FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
-            Quaternion(const XMFLOAT4& q) noexcept { this->x = q.x; this->y = q.y; this->z = q.z; this->w = q.w; }
-            explicit Quaternion(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
+            Quaternion() noexcept : DirectX::XMFLOAT4(0, 0, 0, 1.f) {}
+            constexpr Quaternion(float ix, float iy, float iz, float iw) noexcept : DirectX::XMFLOAT4(ix, iy, iz, iw) {}
+            Quaternion(const Vector3& v, float scalar) noexcept : DirectX::XMFLOAT4(v.x, v.y, v.z, scalar) {}
+            explicit Quaternion(const Vector4& v) noexcept : DirectX::XMFLOAT4(v.x, v.y, v.z, v.w) {}
+            explicit Quaternion(_In_reads_(4) const float *pArray) noexcept : DirectX::XMFLOAT4(pArray) {}
+            Quaternion(DirectX::FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
+            Quaternion(const DirectX::XMFLOAT4& q) noexcept { this->x = q.x; this->y = q.y; this->z = q.z; this->w = q.w; }
+            explicit Quaternion(const DirectX::XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
 
             Quaternion(const Quaternion&) = default;
             Quaternion& operator=(const Quaternion&) = default;
@@ -674,14 +674,14 @@ namespace DirectX
             Quaternion(Quaternion&&) = default;
             Quaternion& operator=(Quaternion&&) = default;
 
-            operator XMVECTOR() const noexcept { return XMLoadFloat4(this); }
+            operator DirectX::XMVECTOR() const noexcept { return XMLoadFloat4(this); }
 
             // Comparison operators
             bool operator == (const Quaternion& q) const noexcept;
             bool operator != (const Quaternion& q) const noexcept;
 
             // Assignment operators
-            Quaternion& operator= (const XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; w = F.f[3]; return *this; }
+            Quaternion& operator= (const DirectX::XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; w = F.f[3]; return *this; }
             Quaternion& operator+= (const Quaternion& q) noexcept;
             Quaternion& operator-= (const Quaternion& q) noexcept;
             Quaternion& operator*= (const Quaternion& q) noexcept;
@@ -734,17 +734,17 @@ namespace DirectX
 
         //------------------------------------------------------------------------------
         // Color
-        struct Color : public XMFLOAT4
+        struct Color : public DirectX::XMFLOAT4
         {
-            Color() noexcept : XMFLOAT4(0, 0, 0, 1.f) {}
-            constexpr Color(float _r, float _g, float _b) noexcept : XMFLOAT4(_r, _g, _b, 1.f) {}
-            constexpr Color(float _r, float _g, float _b, float _a) noexcept : XMFLOAT4(_r, _g, _b, _a) {}
-            explicit Color(const Vector3& clr) noexcept : XMFLOAT4(clr.x, clr.y, clr.z, 1.f) {}
-            explicit Color(const Vector4& clr) noexcept : XMFLOAT4(clr.x, clr.y, clr.z, clr.w) {}
-            explicit Color(_In_reads_(4) const float *pArray) noexcept : XMFLOAT4(pArray) {}
-            Color(FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
-            Color(const XMFLOAT4& c) noexcept { this->x = c.x; this->y = c.y; this->z = c.z; this->w = c.w; }
-            explicit Color(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
+            Color() noexcept : DirectX::XMFLOAT4(0, 0, 0, 1.f) {}
+            constexpr Color(float _r, float _g, float _b) noexcept : DirectX::XMFLOAT4(_r, _g, _b, 1.f) {}
+            constexpr Color(float _r, float _g, float _b, float _a) noexcept : DirectX::XMFLOAT4(_r, _g, _b, _a) {}
+            explicit Color(const Vector3& clr) noexcept : DirectX::XMFLOAT4(clr.x, clr.y, clr.z, 1.f) {}
+            explicit Color(const Vector4& clr) noexcept : DirectX::XMFLOAT4(clr.x, clr.y, clr.z, clr.w) {}
+            explicit Color(_In_reads_(4) const float *pArray) noexcept : DirectX::XMFLOAT4(pArray) {}
+            Color(DirectX::FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
+            Color(const DirectX::XMFLOAT4& c) noexcept { this->x = c.x; this->y = c.y; this->z = c.z; this->w = c.w; }
+            explicit Color(const DirectX::XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
 
             explicit Color(const DirectX::PackedVector::XMCOLOR& Packed) noexcept;
                 // BGRA Direct3D 9 D3DCOLOR packed color
@@ -758,7 +758,7 @@ namespace DirectX
             Color(Color&&) = default;
             Color& operator=(Color&&) = default;
 
-            operator XMVECTOR() const noexcept { return XMLoadFloat4(this); }
+            operator DirectX::XMVECTOR() const noexcept { return XMLoadFloat4(this); }
             operator const float*() const noexcept { return reinterpret_cast<const float*>(this); }
 
             // Comparison operators
@@ -766,7 +766,7 @@ namespace DirectX
             bool operator != (const Color& c) const noexcept;
 
             // Assignment operators
-            Color& operator= (const XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; w = F.f[3]; return *this; }
+            Color& operator= (const DirectX::XMVECTORF32& F) noexcept { x = F.f[0]; y = F.f[1]; z = F.f[2]; w = F.f[3]; return *this; }
             Color& operator= (const DirectX::PackedVector::XMCOLOR& Packed) noexcept;
             Color& operator= (const DirectX::PackedVector::XMUBYTEN4& Packed) noexcept;
             Color& operator+= (const Color& c) noexcept;
@@ -852,8 +852,8 @@ namespace DirectX
             bool operator != (const Ray& r) const noexcept;
 
             // Ray operations
-            bool Intersects(const BoundingSphere& sphere, _Out_ float& Dist) const noexcept;
-            bool Intersects(const BoundingBox& box, _Out_ float& Dist) const noexcept;
+            bool Intersects(const DirectX::BoundingSphere& sphere, _Out_ float& Dist) const noexcept;
+            bool Intersects(const DirectX::BoundingBox& box, _Out_ float& Dist) const noexcept;
             bool Intersects(const Vector3& tri0, const Vector3& tri1, const Vector3& tri2, _Out_ float& Dist) const noexcept;
             bool Intersects(const Plane& plane, _Out_ float& Dist) const noexcept;
         };
@@ -927,24 +927,24 @@ namespace DirectX
             void Unproject(const Vector3& p, const Matrix& proj, const Matrix& view, const Matrix& world, Vector3& result) const noexcept;
 
             // Static methods
-            static RECT __cdecl ComputeDisplayArea(DXGI_SCALING scaling, UINT backBufferWidth, UINT backBufferHeight, int outputWidth, int outputHeight) noexcept;
-            static RECT __cdecl ComputeTitleSafeArea(UINT backBufferWidth, UINT backBufferHeight) noexcept;
+            static RECT __cdecl ComputeDisplayArea(DXGI_SCALING scaling, uint32_t backBufferWidth, uint32_t backBufferHeight, int32_t outputWidth, int32_t outputHeight) noexcept;
+            static RECT __cdecl ComputeTitleSafeArea(uint32_t backBufferWidth, uint32_t backBufferHeight) noexcept;
         };
 
     #include "SimpleMath.inl"
 
     } // namespace SimpleMath
 
-} // namespace DirectX
+} // namespace directxtk
 
 //------------------------------------------------------------------------------
 // Support for SimpleMath and Standard C++ Library containers
 namespace std
 {
 
-    template<> struct less<DirectX::SimpleMath::Rectangle>
+    template<> struct less<directxtk::SimpleMath::Rectangle>
     {
-        bool operator()(const DirectX::SimpleMath::Rectangle& r1, const DirectX::SimpleMath::Rectangle& r2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Rectangle& r1, const directxtk::SimpleMath::Rectangle& r2) const noexcept
         {
             return ((r1.x < r2.x)
                     || ((r1.x == r2.x) && (r1.y < r2.y))
@@ -953,17 +953,17 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Vector2>
+    template<> struct less<directxtk::SimpleMath::Vector2>
     {
-        bool operator()(const DirectX::SimpleMath::Vector2& V1, const DirectX::SimpleMath::Vector2& V2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Vector2& V1, const directxtk::SimpleMath::Vector2& V2) const noexcept
         {
             return ((V1.x < V2.x) || ((V1.x == V2.x) && (V1.y < V2.y)));
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Vector3>
+    template<> struct less<directxtk::SimpleMath::Vector3>
     {
-        bool operator()(const DirectX::SimpleMath::Vector3& V1, const DirectX::SimpleMath::Vector3& V2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Vector3& V1, const directxtk::SimpleMath::Vector3& V2) const noexcept
         {
             return ((V1.x < V2.x)
                     || ((V1.x == V2.x) && (V1.y < V2.y))
@@ -971,9 +971,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Vector4>
+    template<> struct less<directxtk::SimpleMath::Vector4>
     {
-        bool operator()(const DirectX::SimpleMath::Vector4& V1, const DirectX::SimpleMath::Vector4& V2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Vector4& V1, const directxtk::SimpleMath::Vector4& V2) const noexcept
         {
             return ((V1.x < V2.x)
                     || ((V1.x == V2.x) && (V1.y < V2.y))
@@ -982,9 +982,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Matrix>
+    template<> struct less<directxtk::SimpleMath::Matrix>
     {
-        bool operator()(const DirectX::SimpleMath::Matrix& M1, const DirectX::SimpleMath::Matrix& M2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Matrix& M1, const directxtk::SimpleMath::Matrix& M2) const noexcept
         {
             if (M1._11 != M2._11) return M1._11 < M2._11;
             if (M1._12 != M2._12) return M1._12 < M2._12;
@@ -1007,9 +1007,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Plane>
+    template<> struct less<directxtk::SimpleMath::Plane>
     {
-        bool operator()(const DirectX::SimpleMath::Plane& P1, const DirectX::SimpleMath::Plane& P2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Plane& P1, const directxtk::SimpleMath::Plane& P2) const noexcept
         {
             return ((P1.x < P2.x)
                     || ((P1.x == P2.x) && (P1.y < P2.y))
@@ -1018,9 +1018,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Quaternion>
+    template<> struct less<directxtk::SimpleMath::Quaternion>
     {
-        bool operator()(const DirectX::SimpleMath::Quaternion& Q1, const DirectX::SimpleMath::Quaternion& Q2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Quaternion& Q1, const directxtk::SimpleMath::Quaternion& Q2) const noexcept
         {
             return ((Q1.x < Q2.x)
                     || ((Q1.x == Q2.x) && (Q1.y < Q2.y))
@@ -1029,9 +1029,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Color>
+    template<> struct less<directxtk::SimpleMath::Color>
     {
-        bool operator()(const DirectX::SimpleMath::Color& C1, const DirectX::SimpleMath::Color& C2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Color& C1, const directxtk::SimpleMath::Color& C2) const noexcept
         {
             return ((C1.x < C2.x)
                     || ((C1.x == C2.x) && (C1.y < C2.y))
@@ -1040,9 +1040,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Ray>
+    template<> struct less<directxtk::SimpleMath::Ray>
     {
-        bool operator()(const DirectX::SimpleMath::Ray& R1, const DirectX::SimpleMath::Ray& R2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Ray& R1, const directxtk::SimpleMath::Ray& R2) const noexcept
         {
             if (R1.position.x != R2.position.x) return R1.position.x < R2.position.x;
             if (R1.position.y != R2.position.y) return R1.position.y < R2.position.y;
@@ -1056,9 +1056,9 @@ namespace std
         }
     };
 
-    template<> struct less<DirectX::SimpleMath::Viewport>
+    template<> struct less<directxtk::SimpleMath::Viewport>
     {
-        bool operator()(const DirectX::SimpleMath::Viewport& vp1, const DirectX::SimpleMath::Viewport& vp2) const noexcept
+        bool operator()(const directxtk::SimpleMath::Viewport& vp1, const directxtk::SimpleMath::Viewport& vp2) const noexcept
         {
             if (vp1.x != vp2.x) return (vp1.x < vp2.x);
             if (vp1.y != vp2.y) return (vp1.y < vp2.y);

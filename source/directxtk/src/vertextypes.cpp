@@ -7,10 +7,10 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 #include "VertexTypes.h"
 
-using namespace DirectX;
+using namespace directxtk;
 
 //--------------------------------------------------------------------------------------
 // Vertex struct holding position information.

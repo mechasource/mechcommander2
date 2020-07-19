@@ -7,20 +7,20 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 #include "Model.h"
 
-#include "Effects.h"
+#include "effects.h"
 #include "VertexTypes.h"
 
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
-#include "BinaryReader.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "binaryreader.h"
 
 #include "vbo.h"
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 static_assert(sizeof(VertexPositionNormalTexture) == 32, "VBO vertex size mismatch");
 
@@ -47,9 +47,9 @@ namespace
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-std::unique_ptr<Model> DirectX::Model::CreateFromVBO(
+std::unique_ptr<Model> directxtk::Model::CreateFromVBO(
     ID3D12Device* device,
-    const uint8_t* meshData, size_t dataSize,
+    const uint8_t* meshData, size_t datasize,
     ModelLoaderFlags flags)
 {
     if (!InitOnceExecuteOnce(&g_InitOnce, InitializeDecl, nullptr, nullptr))
@@ -59,7 +59,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(
         throw std::exception("meshData cannot be null");
 
     // File Header
-    if (dataSize < sizeof(VBO::header_t))
+    if (datasize < sizeof(VBO::header_t))
         throw std::exception("End of file");
     auto header = reinterpret_cast<const VBO::header_t*>(meshData);
 
@@ -78,7 +78,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(
 
     auto vertSize = static_cast<size_t>(sizeInBytes);
 
-    if (dataSize < (vertSize + sizeof(VBO::header_t)))
+    if (datasize < (vertSize + sizeof(VBO::header_t)))
         throw std::exception("End of file");
     auto verts = reinterpret_cast<const VertexPositionNormalTexture*>(meshData + sizeof(VBO::header_t));
 
@@ -94,7 +94,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(
 
     auto indexSize = static_cast<size_t>(sizeInBytes);
 
-    if (dataSize < (sizeof(VBO::header_t) + vertSize + indexSize))
+    if (datasize < (sizeof(VBO::header_t) + vertSize + indexSize))
         throw std::exception("End of file");
     auto indices = reinterpret_cast<const uint16_t*>(meshData + sizeof(VBO::header_t) + vertSize);
 
@@ -119,8 +119,8 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(
     part->vbDecl = g_vbdecl;
 
     auto mesh = std::make_shared<ModelMesh>();
-    BoundingSphere::CreateFromPoints(mesh->boundingSphere, header->numVertices, &verts->position, sizeof(VertexPositionNormalTexture));
-    BoundingBox::CreateFromPoints(mesh->boundingBox, header->numVertices, &verts->position, sizeof(VertexPositionNormalTexture));
+    DirectX::BoundingSphere::CreateFromPoints(mesh->boundingSphere, header->numVertices, &verts->position, sizeof(VertexPositionNormalTexture));
+    DirectX::BoundingBox::CreateFromPoints(mesh->boundingBox, header->numVertices, &verts->position, sizeof(VertexPositionNormalTexture));
     mesh->opaqueMeshParts.emplace_back(part);
 
     auto model = std::make_unique<Model>();
@@ -132,24 +132,24 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-std::unique_ptr<Model> DirectX::Model::CreateFromVBO(
+std::unique_ptr<Model> directxtk::Model::CreateFromVBO(
     ID3D12Device* device,
-    const wchar_t* szFileName,
+    const std::wstring_view& filename,
     ModelLoaderFlags flags)
 {
-    size_t dataSize = 0;
+    size_t datasize = 0;
     std::unique_ptr<uint8_t[]> data;
-    HRESULT hr = BinaryReader::ReadEntireFile(szFileName, data, &dataSize);
+    HRESULT hr = BinaryReader::ReadEntireFile(filename, data, &datasize);
     if (FAILED(hr))
     {
         DebugTrace("ERROR: CreateFromVBO failed (%08X) loading '%ls'\n",
-            static_cast<unsigned int>(hr), szFileName);
+            static_cast<uint32_t>(hr), filename);
         throw std::exception("CreateFromVBO");
     }
 
-    auto model = CreateFromVBO(device, data.get(), dataSize, flags);
+    auto model = CreateFromVBO(device, data.get(), datasize, flags);
 
-    model->name = szFileName;
+    model->name = filename;
 
     return model;
 }

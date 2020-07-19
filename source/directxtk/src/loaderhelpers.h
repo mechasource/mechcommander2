@@ -12,12 +12,12 @@
 
 #pragma once
 
-#include "DDS.h"
-#include "DDSTextureLoader.h"
-#include "PlatformHelpers.h"
+#include "dds.h"
+#include "ddstextureloader.h"
+#include "platformhelpers.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     namespace LoaderHelpers
     {
@@ -257,7 +257,7 @@ namespace DirectX
         //--------------------------------------------------------------------------------------
         inline DXGI_FORMAT EnsureNotTypeless(DXGI_FORMAT fmt) noexcept
         {
-            // Assumes UNORM or FLOAT; doesn't use UINT or SINT
+            // Assumes UNORM or float; doesn't use uint32_t or SINT
             switch (fmt)
             {
                 case DXGI_FORMAT_R32G32B32A32_TYPELESS: return DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -349,7 +349,7 @@ namespace DirectX
 
         //--------------------------------------------------------------------------------------
         inline HRESULT LoadTextureDataFromFile(
-            _In_z_ const wchar_t* fileName,
+            _In_ const std::wstring_view& filename,
             std::unique_ptr<uint8_t[]>& ddsData,
             const DDS_HEADER** header,
             const uint8_t** bitData,
@@ -362,65 +362,65 @@ namespace DirectX
 
             // open the file
         #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-            ScopedHandle hFile(safe_handle(CreateFile2(fileName,
+            wil::unique_hfile filehandle(::CreateFile2(filename.data(),
                                GENERIC_READ,
                                FILE_SHARE_READ,
                                OPEN_EXISTING,
-                               nullptr)));
+                               nullptr));
         #else
-            ScopedHandle hFile(safe_handle(CreateFileW(fileName,
+            wil::unique_hfile filehandle(::CreateFileW(filename.data(),
                                GENERIC_READ,
                                FILE_SHARE_READ,
                                nullptr,
                                OPEN_EXISTING,
                                FILE_ATTRIBUTE_NORMAL,
-                               nullptr)));
+                               nullptr));
         #endif
 
-            if (!hFile)
+            if (!filehandle)
             {
                 return HRESULT_FROM_WIN32(GetLastError());
             }
 
             // Get the file size
-            FILE_STANDARD_INFO fileInfo;
-            if (!GetFileInformationByHandleEx(hFile.get(), FileStandardInfo, &fileInfo, sizeof(fileInfo)))
+            FILE_STANDARD_INFO fileinfo;
+            if (!::GetFileInformationByHandleEx(filehandle.get(), FileStandardInfo, &fileinfo, sizeof(fileinfo)))
             {
                 return HRESULT_FROM_WIN32(GetLastError());
             }
 
             // File is too big for 32-bit allocation, so reject read
-            if (fileInfo.EndOfFile.HighPart > 0)
+            if (fileinfo.EndOfFile.HighPart > 0)
             {
                 return E_FAIL;
             }
 
             // Need at least enough data to fill the header and magic number to be a valid DDS
-            if (fileInfo.EndOfFile.LowPart < (sizeof(uint32_t) + sizeof(DDS_HEADER)))
+            if (fileinfo.EndOfFile.LowPart < (sizeof(uint32_t) + sizeof(DDS_HEADER)))
             {
                 return E_FAIL;
             }
 
             // create enough space for the file data
-            ddsData.reset(new (std::nothrow) uint8_t[fileInfo.EndOfFile.LowPart]);
+            ddsData.reset(new (std::nothrow) uint8_t[fileinfo.EndOfFile.LowPart]);
             if (!ddsData)
             {
                 return E_OUTOFMEMORY;
             }
 
             // read the data in
-            DWORD BytesRead = 0;
-            if (!ReadFile(hFile.get(),
+            uint32_t BytesRead = 0;
+            if (!::ReadFile(filehandle.get(),
                 ddsData.get(),
-                fileInfo.EndOfFile.LowPart,
-                &BytesRead,
+                fileinfo.EndOfFile.LowPart,
+                reinterpret_cast<PULONG>(&BytesRead),
                 nullptr
                 ))
             {
                 return HRESULT_FROM_WIN32(GetLastError());
             }
 
-            if (BytesRead < fileInfo.EndOfFile.LowPart)
+            if (BytesRead < fileinfo.EndOfFile.LowPart)
             {
                 return E_FAIL;
             }
@@ -447,7 +447,7 @@ namespace DirectX
                 (MAKEFOURCC('D', 'X', '1', '0') == hdr->ddspf.fourCC))
             {
                 // Must be long enough for both headers and magic value
-                if (fileInfo.EndOfFile.LowPart < (sizeof(DDS_HEADER) + sizeof(uint32_t) + sizeof(DDS_HEADER_DXT10)))
+                if (fileinfo.EndOfFile.LowPart < (sizeof(DDS_HEADER) + sizeof(uint32_t) + sizeof(DDS_HEADER_DXT10)))
                 {
                     return E_FAIL;
                 }
@@ -460,7 +460,7 @@ namespace DirectX
             auto offset = sizeof(uint32_t) + sizeof(DDS_HEADER)
                 + (bDXT10Header ? sizeof(DDS_HEADER_DXT10) : 0u);
             *bitData = ddsData.get() + offset;
-            *bitSize = fileInfo.EndOfFile.LowPart - offset;
+            *bitSize = fileinfo.EndOfFile.LowPart - offset;
 
             return S_OK;
         }
@@ -876,7 +876,7 @@ namespace DirectX
     #undef ISBITMASK
 
         //--------------------------------------------------------------------------------------
-        inline DirectX::DDS_ALPHA_MODE GetAlphaMode(_In_ const DDS_HEADER* header) noexcept
+        inline directxtk::DDS_ALPHA_MODE GetAlphaMode(_In_ const DDS_HEADER* header) noexcept
         {
             if (header->ddspf.flags & DDS_FOURCC)
             {
@@ -911,7 +911,7 @@ namespace DirectX
         class auto_delete_file
         {
         public:
-            auto_delete_file(HANDLE hFile) noexcept : m_handle(hFile) {}
+            auto_delete_file(HANDLE filehandle) noexcept : m_filehandle(filehandle) {}
 
             auto_delete_file(const auto_delete_file&) = delete;
             auto_delete_file& operator=(const auto_delete_file&) = delete;
@@ -921,24 +921,27 @@ namespace DirectX
 
             ~auto_delete_file()
             {
-                if (m_handle)
+                if (m_filehandle)
                 {
-                    FILE_DISPOSITION_INFO info = {};
+                    FILE_DISPOSITION_INFO info{};
                     info.DeleteFile = TRUE;
-                    (void)SetFileInformationByHandle(m_handle, FileDispositionInfo, &info, sizeof(info));
+                    (void)::SetFileInformationByHandle(m_filehandle, FileDispositionInfo, &info, sizeof(info));
                 }
             }
 
-            void clear() noexcept { m_handle = nullptr; }
+            void clear() noexcept { m_filehandle = nullptr; }
 
         private:
-            HANDLE m_handle;
+            HANDLE m_filehandle;
         };
 
         class auto_delete_file_wic
         {
         public:
-            auto_delete_file_wic(Microsoft::WRL::ComPtr<IWICStream>& hFile, LPCWSTR szFile) noexcept : m_filename(szFile), m_handle(hFile) {}
+            auto_delete_file_wic(
+				wil::com_ptr<IWICStream>& filehandle, 
+				std::wstring_view& filename) noexcept 
+				: m_filename(filename), m_filehandle(filehandle) {}
 
             auto_delete_file_wic(const auto_delete_file_wic&) = delete;
             auto_delete_file_wic& operator=(const auto_delete_file_wic&) = delete;
@@ -948,18 +951,18 @@ namespace DirectX
 
             ~auto_delete_file_wic()
             {
-                if (m_filename)
+                if (!m_filename.empty())
                 {
-                    m_handle.Reset();
-                    DeleteFileW(m_filename);
+                    m_filehandle.reset();
+                    ::DeleteFileW(m_filename.data());
                 }
             }
 
-            void clear() noexcept { m_filename = nullptr; }
+            void clear() noexcept { /*m_filename.swap(std::wstring_view());*/ }
 
         private:
-            LPCWSTR m_filename;
-            Microsoft::WRL::ComPtr<IWICStream>& m_handle;
+            std::wstring_view& m_filename;
+            wil::com_ptr<IWICStream>& m_filehandle;
         };
 
         inline uint32_t CountMips(uint32_t width, uint32_t height) noexcept
@@ -977,7 +980,7 @@ namespace DirectX
             return count;
         }
 
-        inline void FitPowerOf2(UINT origx, UINT origy, UINT& targetx, UINT& targety, size_t maxsize)
+        inline void FitPowerOf2(uint32_t origx, uint32_t origy, uint32_t& targetx, uint32_t& targety, size_t maxsize)
         {
             float origAR = float(origx) / float(origy);
 
@@ -985,7 +988,7 @@ namespace DirectX
             {
                 size_t x;
                 for (x = maxsize; x > 1; x >>= 1) { if (x <= targetx) break; }
-                targetx = UINT(x);
+                targetx = uint32_t(x);
 
                 float bestScore = FLT_MAX;
                 for (size_t y = maxsize; y > 0; y >>= 1)
@@ -994,7 +997,7 @@ namespace DirectX
                     if (score < bestScore)
                     {
                         bestScore = score;
-                        targety = UINT(y);
+                        targety = uint32_t(y);
                     }
                 }
             }
@@ -1002,7 +1005,7 @@ namespace DirectX
             {
                 size_t y;
                 for (y = maxsize; y > 1; y >>= 1) { if (y <= targety) break; }
-                targety = UINT(y);
+                targety = uint32_t(y);
 
                 float bestScore = FLT_MAX;
                 for (size_t x = maxsize; x > 0; x >>= 1)
@@ -1011,7 +1014,7 @@ namespace DirectX
                     if (score < bestScore)
                     {
                         bestScore = score;
-                        targetx = UINT(x);
+                        targetx = uint32_t(x);
                     }
                 }
             }

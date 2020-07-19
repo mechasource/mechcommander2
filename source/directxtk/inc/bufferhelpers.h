@@ -16,7 +16,7 @@
 #endif
 
 
-namespace DirectX
+namespace directxtk
 {
     class ResourceUploadBatch;
 
@@ -26,7 +26,7 @@ namespace DirectX
         _In_reads_bytes_(count* stride) const void* ptr,
         size_t count,
         size_t stride,
-        D3D12_RESOURCE_STATES afterState,
+        D3D12_RESOURCE_STATES afterstate,
         _COM_Outptr_ ID3D12Resource** pBuffer,
         D3D12_RESOURCE_FLAGS resFlags = D3D12_RESOURCE_FLAG_NONE) noexcept;
 
@@ -35,23 +35,23 @@ namespace DirectX
         ResourceUploadBatch& resourceUpload,
         _In_reads_(count) T const* data,
         size_t count,
-        D3D12_RESOURCE_STATES afterState,
+        D3D12_RESOURCE_STATES afterstate,
         _COM_Outptr_ ID3D12Resource** pBuffer,
         D3D12_RESOURCE_FLAGS resFlags = D3D12_RESOURCE_FLAG_NONE) noexcept
     {
-        return CreateStaticBuffer(device, resourceUpload, data, count, sizeof(T), afterState, pBuffer, resFlags);
+        return CreateStaticBuffer(device, resourceUpload, data, count, sizeof(T), afterstate, pBuffer, resFlags);
     }
 
     template<typename T>
     HRESULT CreateStaticBuffer(_In_ ID3D12Device* device,
         ResourceUploadBatch& resourceUpload,
         T const& data,
-        D3D12_RESOURCE_STATES afterState,
+        D3D12_RESOURCE_STATES afterstate,
         _COM_Outptr_ ID3D12Resource** pBuffer,
         D3D12_RESOURCE_FLAGS resFlags = D3D12_RESOURCE_FLAG_NONE) noexcept
     {
         return CreateStaticBuffer(device, resourceUpload, data.data(), data.size(), sizeof(typename T::value_type),
-            afterState, pBuffer, resFlags);
+            afterstate, pBuffer, resFlags);
     }
 
     // Helpers for creating texture from memory arrays.
@@ -61,7 +61,7 @@ namespace DirectX
         DXGI_FORMAT format,
         const D3D12_SUBRESOURCE_DATA& initData,
         _COM_Outptr_ ID3D12Resource** texture,
-        D3D12_RESOURCE_STATES afterState = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+        D3D12_RESOURCE_STATES afterstate = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
         D3D12_RESOURCE_FLAGS resFlags = D3D12_RESOURCE_FLAG_NONE) noexcept;
 
     HRESULT __cdecl CreateTextureFromMemory(_In_ ID3D12Device* device,
@@ -71,7 +71,7 @@ namespace DirectX
         const D3D12_SUBRESOURCE_DATA& initData,
         _COM_Outptr_ ID3D12Resource** texture,
         bool generateMips = false,
-        D3D12_RESOURCE_STATES afterState = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+        D3D12_RESOURCE_STATES afterstate = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
         D3D12_RESOURCE_FLAGS resFlags = D3D12_RESOURCE_FLAG_NONE) noexcept;
 
     HRESULT __cdecl CreateTextureFromMemory(_In_ ID3D12Device* device,
@@ -80,6 +80,6 @@ namespace DirectX
         DXGI_FORMAT format,
         const D3D12_SUBRESOURCE_DATA& initData,
         _COM_Outptr_ ID3D12Resource** texture,
-        D3D12_RESOURCE_STATES afterState = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+        D3D12_RESOURCE_STATES afterstate = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
         D3D12_RESOURCE_FLAGS resFlags = D3D12_RESOURCE_FLAG_NONE) noexcept;
 }

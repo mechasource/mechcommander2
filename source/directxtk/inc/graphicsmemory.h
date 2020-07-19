@@ -18,7 +18,7 @@
 #include <memory>
 
 
-namespace DirectX
+namespace directxtk
 {
     class LinearAllocatorPage;
 
@@ -53,8 +53,8 @@ namespace DirectX
         explicit operator bool () const noexcept { return mResource != nullptr; }
 
         // Clear the pointer. Using operator -> will produce bad results.
-        void __cdecl Reset() noexcept;
-        void __cdecl Reset(GraphicsResource&&) noexcept;
+        void __cdecl reset() noexcept;
+        void __cdecl reset(GraphicsResource&&) noexcept;
 
     private:
         LinearAllocatorPage*        mPage;
@@ -96,10 +96,10 @@ namespace DirectX
         bool operator != (const SharedGraphicsResource& other) const noexcept { return mSharedResource.get() != other.mSharedResource.get(); }
 
         // Clear the pointer. Using operator -> will produce bad results.
-        void __cdecl Reset() noexcept;
-        void __cdecl Reset(GraphicsResource&&);
-        void __cdecl Reset(SharedGraphicsResource&&) noexcept;
-        void __cdecl Reset(const SharedGraphicsResource& resource) noexcept;
+        void __cdecl reset() noexcept;
+        void __cdecl reset(GraphicsResource&&);
+        void __cdecl reset(SharedGraphicsResource&&) noexcept;
+        void __cdecl reset(const SharedGraphicsResource& resource) noexcept;
         
     private:
         std::shared_ptr<GraphicsResource> mSharedResource;
@@ -171,7 +171,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 }
 

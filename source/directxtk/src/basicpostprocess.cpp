@@ -7,35 +7,36 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PostProcess.h"
+#include "stdinc.h"
 
-#include "AlignedNew.h"
-#include "CommonStates.h"
-#include "DemandCreate.h"
-#include "DirectXHelpers.h"
-#include "EffectPipelineStateDescription.h"
-#include "GraphicsMemory.h"
-#include "SharedResourcePool.h"
+#include "d3dx12.h"
+#include "postprocess.h"
+#include "alignednew.h"
+#include "commonstates.h"
+#include "demandcreate.h"
+#include "directxhelpers.h"
+#include "effectpipelinestatedescription.h"
+#include "graphicsmemory.h"
+#include "sharedresourcepool.h"
 
-using namespace DirectX;
+using namespace directxtk;
 
-using Microsoft::WRL::ComPtr;
+// using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    constexpr int c_MaxSamples = 16;
+    constexpr int32_t c_MaxSamples = 16;
 
-    constexpr int Dirty_ConstantBuffer  = 0x01;
-    constexpr int Dirty_Parameters      = 0x02;
+    constexpr int32_t Dirty_ConstantBuffer  = 0x01;
+    constexpr int32_t Dirty_Parameters      = 0x02;
 
-    constexpr int RootSignatureCount = 2;
+    constexpr int32_t RootSignatureCount = 2;
 
     // Constant buffer layout. Must match the shader!
     __declspec(align(16)) struct PostProcessConstants
     {
-        XMVECTOR sampleOffsets[c_MaxSamples];
-        XMVECTOR sampleWeights[c_MaxSamples];
+        DirectX::XMVECTOR sampleOffsets[c_MaxSamples];
+        DirectX::XMVECTOR sampleWeights[c_MaxSamples];
     };
 
     static_assert((sizeof(PostProcessConstants) % 16) == 0, "CB size not padded correctly");
@@ -43,7 +44,7 @@ namespace
     // 2-parameter Gaussian distribution given standard deviation (rho)
     inline float GaussianDistribution(float x, float y, float rho) noexcept
     {
-        return expf(-(x * x + y * y) / (2 * rho * rho)) / sqrtf(2 * XM_PI * rho * rho);
+        return expf(-(x * x + y * y) / (2 * rho * rho)) / sqrtf(2 * DirectX::XM_PI * rho * rho);
     }
 }
 
@@ -105,18 +106,18 @@ namespace
     public:
         DeviceResources(_In_ ID3D12Device* device) noexcept
             : mDevice(device),
-            mRootSignature{},
+            m_prootsignature{},
             mMutex{}
         { }
 
-        ID3D12RootSignature* GetRootSignature(int slot, const D3D12_ROOT_SIGNATURE_DESC& desc)
+        ID3D12RootSignature* GetRootSignature(int32_t slot, const D3D12_ROOT_SIGNATURE_DESC& desc)
         {
             assert(slot >= 0 && slot < RootSignatureCount);
             _Analysis_assume_(slot >= 0 && slot < RootSignatureCount);
 
-            return DemandCreate(mRootSignature[slot], mMutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
+            return DemandCreate(m_prootsignature[slot], mMutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
             {
-                HRESULT hr = CreateRootSignature(mDevice.Get(), &desc, pResult);
+                HRESULT hr = CreateRootSignature(mDevice.get(), &desc, pResult);
 
                 if (SUCCEEDED(hr))
                     SetDebugObjectName(*pResult, L"BasicPostProcess");
@@ -125,11 +126,11 @@ namespace
             });
         }
 
-        ID3D12Device* GetDevice() const noexcept { return mDevice.Get(); }
+        ID3D12Device* GetDevice() const noexcept { return mDevice.get(); }
 
     protected:
-        ComPtr<ID3D12Device>                        mDevice;
-        Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature[RootSignatureCount];
+        wil::com_ptr<ID3D12Device>                        mDevice;
+        wil::com_ptr<ID3D12RootSignature> m_prootsignature[RootSignatureCount];
         std::mutex                                  mMutex;
     };
 }
@@ -154,8 +155,8 @@ public:
     BasicPostProcess::Effect                fx;
     PostProcessConstants                    constants;
     D3D12_GPU_DESCRIPTOR_HANDLE             texture;
-    unsigned                                texWidth;
-    unsigned                                texHeight;
+    uint32_t                                texWidth;
+    uint32_t                                texHeight;
     float                                   guassianMultiplier;
     float                                   bloomSize;
     float                                   bloomBrightness;
@@ -164,7 +165,7 @@ public:
 
 private:
     bool                                    mUseConstants;
-    int                                     mDirtyFlags;
+    int32_t                                     mDirtyFlags;
 
     void                                    DownScale2x2();
     void                                    DownScale4x4();
@@ -175,10 +176,10 @@ private:
     GraphicsResource mConstantBuffer;
 
     // Per instance cache of PSOs, populated with variants for each shader & layout
-    Microsoft::WRL::ComPtr<ID3D12PipelineState> mPipelineState;
+    wil::com_ptr<ID3D12PipelineState> m_ppipelinestate;
 
     // Per instance root signature
-    ID3D12RootSignature* mRootSignature;
+    ID3D12RootSignature* m_prootsignature;
 
     // Per-device resources.
     std::shared_ptr<DeviceResources> mDeviceResources;
@@ -262,18 +263,18 @@ BasicPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState&
             // use all parameters
             rsigDesc.Init(_countof(rootParameters), rootParameters, 1, &sampler, rootSignatureFlags);
 
-            mRootSignature = mDeviceResources->GetRootSignature(1, rsigDesc);
+            m_prootsignature = mDeviceResources->GetRootSignature(1, rsigDesc);
         }
         else
         {
             // only use constant
             rsigDesc.Init(1, rootParameters, 1, &sampler, rootSignatureFlags);
 
-            mRootSignature = mDeviceResources->GetRootSignature(0, rsigDesc);
+            m_prootsignature = mDeviceResources->GetRootSignature(0, rsigDesc);
         }
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     // Create pipeline state.
     EffectPipelineStateDescription psd(nullptr,
@@ -285,12 +286,12 @@ BasicPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState&
 
     psd.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         vertexShader[mUseConstants ? 1 : 0],
         pixelShaders[ifx],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"BasicPostProcess");
+    SetDebugObjectName(m_ppipelinestate.get(), L"BasicPostProcess");
 }
 
 
@@ -298,7 +299,7 @@ BasicPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState&
 void BasicPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList)
 {
     // Set the root signature.
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set the texture.
     if (!texture.ptr)
@@ -331,7 +332,7 @@ void BasicPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList
                 break;
 
             case BloomExtract:
-                constants.sampleWeights[0] = XMVectorReplicate(bloomThreshold);
+                constants.sampleWeights[0] = DirectX::XMVectorReplicate(bloomThreshold);
                 break;
 
             case BloomBlur:
@@ -353,7 +354,7 @@ void BasicPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList
     }
 
     // Set the pipeline state.
-    commandList->SetPipelineState(mPipelineState.Get());
+    commandList->SetPipelineState(m_ppipelinestate.get());
 
     // Draw quad.
     commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -375,10 +376,10 @@ void BasicPostProcess::Impl::DownScale2x2()
 
     // Sample from the 4 surrounding points. Since the center point will be in the exact
     // center of 4 texels, a 0.5f offset is needed to specify a texel center.
-    auto ptr = reinterpret_cast<XMFLOAT4*>(constants.sampleOffsets);
-    for (int y = 0; y < 2; ++y)
+    auto ptr = reinterpret_cast<DirectX::XMFLOAT4*>(constants.sampleOffsets);
+    for (int32_t y = 0; y < 2; ++y)
     {
-        for (int x = 0; x < 2; ++x)
+        for (int32_t x = 0; x < 2; ++x)
         {
             ptr->x = (float(x) - 0.5f) * tu;
             ptr->y = (float(y) - 0.5f) * tv;
@@ -402,10 +403,10 @@ void BasicPostProcess::Impl::DownScale4x4()
 
     // Sample from the 16 surrounding points. Since the center point will be in the
     // exact center of 16 texels, a 1.5f offset is needed to specify a texel center.
-    auto ptr = reinterpret_cast<XMFLOAT4*>(constants.sampleOffsets);
-    for (int y = 0; y < 4; ++y)
+    auto ptr = reinterpret_cast<DirectX::XMFLOAT4*>(constants.sampleOffsets);
+    for (int32_t y = 0; y < 4; ++y)
     {
-        for (int x = 0; x < 4; ++x)
+        for (int32_t x = 0; x < 4; ++x)
         {
             ptr->x = (float(x) - 1.5f) * tu;
             ptr->y = (float(y) - 1.5f) * tv;
@@ -430,11 +431,11 @@ void BasicPostProcess::Impl::GaussianBlur5x5(float multiplier)
 
     float totalWeight = 0.0f;
     size_t index = 0;
-    auto offsets = reinterpret_cast<XMFLOAT4*>(constants.sampleOffsets);
+    auto offsets = reinterpret_cast<DirectX::XMFLOAT4*>(constants.sampleOffsets);
     auto weights = constants.sampleWeights;
-    for (int x = -2; x <= 2; ++x)
+    for (int32_t x = -2; x <= 2; ++x)
     {
-        for (int y = -2; y <= 2; ++y)
+        for (int32_t y = -2; y <= 2; ++y)
         {
             // Exclude pixels with a block distance greater than 2. This will
             // create a kernel which approximates a 5x5 kernel using only 13
@@ -450,9 +451,9 @@ void BasicPostProcess::Impl::GaussianBlur5x5(float multiplier)
             offsets[index].w = 0.0f;
 
             float g = GaussianDistribution(float(x), float(y), 1.0f);
-            weights[index] = XMVectorReplicate(g);
+            weights[index] = DirectX::XMVectorReplicate(g);
 
-            totalWeight += XMVectorGetX(weights[index]);
+            totalWeight += DirectX::XMVectorGetX(weights[index]);
 
             ++index;
         }
@@ -462,12 +463,12 @@ void BasicPostProcess::Impl::GaussianBlur5x5(float multiplier)
     // blur kernels add to 1.0f to ensure that the intensity of the image isn't
     // changed when the blur occurs. An optional multiplier variable is used to
     // add or remove image intensity during the blur.
-    XMVECTOR vtw = XMVectorReplicate(totalWeight);
-    XMVECTOR vm = XMVectorReplicate(multiplier);
-    for (size_t i = 0; i < index; ++i)
+    DirectX::XMVECTOR vtw = DirectX::XMVectorReplicate(totalWeight);
+    DirectX::XMVECTOR vm = DirectX::XMVectorReplicate(multiplier);
+    for (auto i = 0u; i < index; ++i)
     {
-        XMVECTOR w = XMVectorDivide(weights[i], vtw);
-        weights[i] = XMVectorMultiply(w, vm);
+        DirectX::XMVECTOR w = DirectX::XMVectorDivide(weights[i], vtw);
+        weights[i] = DirectX::XMVectorMultiply(w, vm);
     }
 }
 
@@ -492,42 +493,42 @@ void  BasicPostProcess::Impl::Bloom(bool horizontal, float size, float brightnes
         tv = 1.f / float(texHeight);
     }
 
-    auto weights = reinterpret_cast<XMFLOAT4*>(constants.sampleWeights);
-    auto offsets = reinterpret_cast<XMFLOAT4*>(constants.sampleOffsets);
+    auto weights = reinterpret_cast<DirectX::XMFLOAT4*>(constants.sampleWeights);
+    auto offsets = reinterpret_cast<DirectX::XMFLOAT4*>(constants.sampleOffsets);
 
     // Fill the center texel
     float weight = brightness * GaussianDistribution(0, 0, size);
-    weights[0] = XMFLOAT4(weight, weight, weight, 1.0f);
+    weights[0] = DirectX::XMFLOAT4(weight, weight, weight, 1.0f);
     offsets[0].x = offsets[0].y = offsets[0].z = offsets[0].w = 0.f;
 
     // Fill the first half
-    for (int i = 1; i < 8; ++i)
+    for (int32_t i = 1; i < 8; ++i)
     {
         // Get the Gaussian intensity for this offset
         weight = brightness * GaussianDistribution(float(i), 0, size);
-        weights[i] = XMFLOAT4(weight, weight, weight, 1.0f);
-        offsets[i] = XMFLOAT4(float(i) * tu, float(i) * tv, 0.f, 0.f);
+        weights[i] = DirectX::XMFLOAT4(weight, weight, weight, 1.0f);
+        offsets[i] = DirectX::XMFLOAT4(float(i) * tu, float(i) * tv, 0.f, 0.f);
     }
 
     // Mirror to the second half
-    for (int i = 8; i < 15; i++)
+    for (int32_t i = 8; i < 15; i++)
     {
         weights[i] = weights[i - 7];
-        offsets[i] = XMFLOAT4(-offsets[i - 7].x, -offsets[i - 7].y, 0.f, 0.f);
+        offsets[i] = DirectX::XMFLOAT4(-offsets[i - 7].x, -offsets[i - 7].y, 0.f, 0.f);
     }
 }
 
 
 // Public constructor.
 BasicPostProcess::BasicPostProcess(_In_ ID3D12Device* device, const RenderTargetState& rtState, Effect fx)
-  : pImpl(std::make_unique<Impl>(device, rtState, fx))
+  : pimpl(std::make_unique<Impl>(device, rtState, fx))
 {
 }
 
 
 // Move constructor.
 BasicPostProcess::BasicPostProcess(BasicPostProcess&& moveFrom) noexcept
-  : pImpl(std::move(moveFrom.pImpl))
+  : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -535,7 +536,7 @@ BasicPostProcess::BasicPostProcess(BasicPostProcess&& moveFrom) noexcept
 // Move assignment.
 BasicPostProcess& BasicPostProcess::operator= (BasicPostProcess&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -549,46 +550,46 @@ BasicPostProcess::~BasicPostProcess()
 // IPostProcess methods.
 void BasicPostProcess::Process(_In_ ID3D12GraphicsCommandList* commandList)
 {
-    pImpl->Process(commandList);
+    pimpl->Process(commandList);
 }
 
 
 // Properties
 void BasicPostProcess::SetSourceTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, _In_opt_ ID3D12Resource* resource)
 {
-    pImpl->texture = srvDescriptor;
+    pimpl->texture = srvDescriptor;
 
     if (resource)
     {
         const auto desc = resource->GetDesc();
-        pImpl->texWidth = static_cast<unsigned>(desc.Width);
-        pImpl->texHeight = desc.Height;
+        pimpl->texWidth = static_cast<uint32_t>(desc.Width);
+        pimpl->texHeight = desc.Height;
     }
     else
     {
-        pImpl->texWidth = pImpl->texHeight = 0;
+        pimpl->texWidth = pimpl->texHeight = 0;
     }
 }
 
 
 void BasicPostProcess::SetGaussianParameter(float multiplier)
 {
-    pImpl->guassianMultiplier = multiplier;
-    pImpl->SetDirtyFlag();
+    pimpl->guassianMultiplier = multiplier;
+    pimpl->SetDirtyFlag();
 }
 
 
 void BasicPostProcess::SetBloomExtractParameter(float threshold)
 {
-    pImpl->bloomThreshold = threshold;
-    pImpl->SetDirtyFlag();
+    pimpl->bloomThreshold = threshold;
+    pimpl->SetDirtyFlag();
 }
 
 
 void BasicPostProcess::SetBloomBlurParameters(bool horizontal, float size, float brightness)
 {
-    pImpl->bloomSize = size;
-    pImpl->bloomBrightness = brightness;
-    pImpl->bloomHorizontal = horizontal;
-    pImpl->SetDirtyFlag();
+    pimpl->bloomSize = size;
+    pimpl->bloomBrightness = brightness;
+    pimpl->bloomHorizontal = horizontal;
+    pimpl->SetDirtyFlag();
 }

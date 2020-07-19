@@ -14,7 +14,7 @@
 #include <exception>
 
 
-namespace DirectX
+namespace directxtk
 {
     // Derive from this to customize operator new and delete for
     // types that have special heap alignment requirements.

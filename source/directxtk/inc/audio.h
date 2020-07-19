@@ -30,7 +30,8 @@
 #elif (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/)
 #define USING_XAUDIO2_8
 #elif (_WIN32_WINNT >= 0x0601 /*_WIN32_WINNT_WIN7*/)
-#error Windows 7 SP1 requires the XAudio2Redist NuGet package https://aka.ms/xaudio2redist
+//#error Windows 7 SP1 requires the XAudio2Redist NuGet package https://aka.ms/xaudio2redist
+#pragma message("Windows 7 SP1 requires the XAudio2Redist NuGet package https://aka.ms/xaudio2redist")
 #else
 #error DirectX Tool Kit for Audio not supported on this platform
 #endif
@@ -41,7 +42,7 @@
 #include <xapofx.h>
 
 #ifndef USING_XAUDIO2_REDIST
-#pragma comment(lib,"xaudio2.lib")
+#pragma comment(lib,"m_pxaudio2.lib")
 #endif
 
 #include <DirectXMath.h>
@@ -54,7 +55,7 @@
 #include <vector>
 
 
-namespace DirectX
+namespace directxtk
 {
     class SoundEffectInstance;
     class SoundStreamInstance;
@@ -143,7 +144,7 @@ namespace DirectX
         SoundEffectInstance_UseRedirectLFE      = 0x10000,
     };
 
-    enum AUDIO_ENGINE_REVERB : unsigned int
+    enum AUDIO_ENGINE_REVERB : uint32_t
     {
         Reverb_Off,
         Reverb_Default,
@@ -194,7 +195,7 @@ namespace DirectX
         explicit AudioEngine(
             AUDIO_ENGINE_FLAGS flags = AudioEngine_Default,
             _In_opt_ const WAVEFORMATEX* wfx = nullptr,
-            _In_opt_z_ const wchar_t* deviceId = nullptr,
+            _In_opt_ const std::wstring_view& devicename = std::wstring_view(),
             AUDIO_STREAM_CATEGORY category = AudioCategory_GameEffects) noexcept(false);
 
         AudioEngine(AudioEngine&& moveFrom) noexcept;
@@ -208,7 +209,7 @@ namespace DirectX
         bool __cdecl Update();
             // Performs per-frame processing for the audio engine, returns false if in 'silent mode'
 
-        bool __cdecl Reset(_In_opt_ const WAVEFORMATEX* wfx = nullptr, _In_opt_z_ const wchar_t* deviceId = nullptr);
+        bool __cdecl reset(_In_opt_ const WAVEFORMATEX* wfx = nullptr,_In_opt_ const std::wstring_view& devicename = std::wstring_view());
             // Reset audio engine from critical error/silent mode using a new device; can also 'migrate' the graph
             // Returns true if succesfully reset, false if in 'silent mode' due to no default device
             // Note: One shots are lost, all SoundEffectInstances are in the STOPPED state after successful reset
@@ -225,7 +226,7 @@ namespace DirectX
         void __cdecl SetReverb(_In_opt_ const XAUDIO2FX_REVERB_PARAMETERS* native);
             // Sets environmental reverb for 3D positional audio (if active)
 
-        void __cdecl SetMasteringLimit(int release, int loudness);
+        void __cdecl SetMasteringLimit(int32_t release, int32_t loudness);
             // Sets the mastering volume limiter properties (if active)
 
         AudioStatistics __cdecl GetStatistics() const;
@@ -237,7 +238,7 @@ namespace DirectX
         uint32_t __cdecl GetChannelMask() const noexcept;
             // Returns the output channel mask
 
-        unsigned int __cdecl GetOutputChannels() const noexcept;
+        uint32_t __cdecl GetOutputChannels() const noexcept;
             // Returns the number of output channels
 
         bool __cdecl IsAudioDevicePresent() const noexcept;
@@ -247,7 +248,7 @@ namespace DirectX
             // Returns true if the audio graph is halted due to a critical error (which also places the engine into 'silent mode')
 
         // Voice pool management.
-        void __cdecl SetDefaultSampleRate(int sampleRate);
+        void __cdecl SetDefaultSampleRate(int32_t sampleRate);
             // Sample rate for voices in the reuse pool (defaults to 44100)
 
         void __cdecl SetMaxVoicePool(size_t maxOneShots, size_t maxInstances);
@@ -276,7 +277,7 @@ namespace DirectX
         // Static functions
         struct RendererDetail
         {
-            std::wstring deviceId;
+            std::wstring devicename;
             std::wstring description;
         };
 
@@ -286,7 +287,7 @@ namespace DirectX
     private:
         // Private implementation.
         class Impl;
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -294,7 +295,7 @@ namespace DirectX
     class WaveBank
     {
     public:
-        WaveBank(_In_ AudioEngine* engine, _In_z_ const wchar_t* wbFileName);
+        WaveBank(_In_ AudioEngine* engine, _In_ const std::wstring_view& wbfilename);
 
         WaveBank(WaveBank&& moveFrom) noexcept;
         WaveBank& operator= (WaveBank&& moveFrom) noexcept;
@@ -304,56 +305,56 @@ namespace DirectX
 
         virtual ~WaveBank();
 
-        void __cdecl Play(unsigned int index);
-        void __cdecl Play(unsigned int index, float volume, float pitch, float pan);
+        void __cdecl Play(uint32_t index);
+        void __cdecl Play(uint32_t index, float volume, float pitch, float pan);
 
-        void __cdecl Play(_In_z_ const char* name);
-        void __cdecl Play(_In_z_ const char* name, float volume, float pitch, float pan);
+        void __cdecl Play(_In_z_ const std::string_view& name);
+        void __cdecl Play(_In_z_ const std::string_view& name, float volume, float pitch, float pan);
 
-        std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(unsigned int index,
+        std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(uint32_t index,
             SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
-        std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(_In_z_ const char* name,
+        std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(_In_z_ const std::string_view& name,
             SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
 
-        std::unique_ptr<SoundStreamInstance> __cdecl CreateStreamInstance(unsigned int index,
+        std::unique_ptr<SoundStreamInstance> __cdecl CreateStreamInstance(uint32_t index,
             SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
-        std::unique_ptr<SoundStreamInstance> __cdecl CreateStreamInstance(_In_z_ const char* name,
+        std::unique_ptr<SoundStreamInstance> __cdecl CreateStreamInstance(_In_z_ const std::string_view& name,
             SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
 
         bool __cdecl IsPrepared() const noexcept;
         bool __cdecl IsInUse() const noexcept;
         bool __cdecl IsStreamingBank() const noexcept;
 
-        size_t __cdecl GetSampleSizeInBytes(unsigned int index) const noexcept;
+        size_t __cdecl GetSampleSizeInBytes(uint32_t index) const noexcept;
         // Returns size of wave audio data
 
-        size_t __cdecl GetSampleDuration(unsigned int index) const noexcept;
+        size_t __cdecl GetSampleDuration(uint32_t index) const noexcept;
         // Returns the duration in samples
 
-        size_t __cdecl GetSampleDurationMS(unsigned int index) const noexcept;
+        size_t __cdecl GetSampleDurationMS(uint32_t index) const noexcept;
         // Returns the duration in milliseconds
 
-        const WAVEFORMATEX* __cdecl GetFormat(unsigned int index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* wfx, size_t maxsize) const noexcept;
+        const WAVEFORMATEX* __cdecl GetFormat(uint32_t index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* wfx, size_t maxsize) const noexcept;
 
-        int __cdecl Find(_In_z_ const char* name) const;
+        int32_t __cdecl Find(_In_z_ const std::string_view& name) const;
 
 #ifdef USING_XAUDIO2_9
-        bool __cdecl FillSubmitBuffer(unsigned int index, _Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
+        bool __cdecl FillSubmitBuffer(uint32_t index, _Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
 #else
-        void __cdecl FillSubmitBuffer(unsigned int index, _Out_ XAUDIO2_BUFFER& buffer) const;
+        void __cdecl FillSubmitBuffer(uint32_t index, _Out_ XAUDIO2_BUFFER& buffer) const;
 #endif
 
         void __cdecl UnregisterInstance(_In_ IVoiceNotify* instance);
 
         HANDLE __cdecl GetAsyncHandle() const noexcept;
 
-        bool __cdecl GetPrivateData(unsigned int index, _Out_writes_bytes_(datasize) void* data, size_t datasize);
+        bool __cdecl GetPrivateData(uint32_t index, _Out_writes_bytes_(datasize) void* data, size_t datasize);
 
     private:
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -361,7 +362,7 @@ namespace DirectX
     class SoundEffect
     {
     public:
-        SoundEffect(_In_ AudioEngine* engine, _In_z_ const wchar_t* waveFileName);
+        SoundEffect(_In_ AudioEngine* engine, _In_ const std::wstring_view& waveFileName);
 
         SoundEffect(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
             _In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes);
@@ -416,7 +417,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -432,72 +433,72 @@ namespace DirectX
             OrientTop.y = 1.f;
         }
 
-        void XM_CALLCONV SetPosition(FXMVECTOR v) noexcept
+        void XM_CALLCONV SetPosition(DirectX::FXMVECTOR v) noexcept
         {
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&Position), v);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), v);
         }
-        void __cdecl SetPosition(const XMFLOAT3& pos) noexcept
+        void __cdecl SetPosition(const DirectX::XMFLOAT3& pos) noexcept
         {
             Position.x = pos.x;
             Position.y = pos.y;
             Position.z = pos.z;
         }
 
-        void XM_CALLCONV SetVelocity(FXMVECTOR v) noexcept
+        void XM_CALLCONV SetVelocity(DirectX::FXMVECTOR v) noexcept
         {
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&Velocity), v);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
         }
-        void __cdecl SetVelocity(const XMFLOAT3& vel) noexcept
+        void __cdecl SetVelocity(const DirectX::XMFLOAT3& vel) noexcept
         {
             Velocity.x = vel.x;
             Velocity.y = vel.y;
             Velocity.z = vel.z;
         }
 
-        void XM_CALLCONV SetOrientation(FXMVECTOR forward, FXMVECTOR up) noexcept
+        void XM_CALLCONV SetOrientation(DirectX::FXMVECTOR forward, DirectX::FXMVECTOR up) noexcept
         {
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientFront), forward);
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientTop), up);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
         }
-        void __cdecl SetOrientation(const XMFLOAT3& forward, const XMFLOAT3& up) noexcept
+        void __cdecl SetOrientation(const DirectX::XMFLOAT3& forward, const DirectX::XMFLOAT3& up) noexcept
         {
             OrientFront.x = forward.x;  OrientTop.x = up.x;
             OrientFront.y = forward.y;  OrientTop.y = up.y;
             OrientFront.z = forward.z;  OrientTop.z = up.z;
         }
 
-        void XM_CALLCONV SetOrientationFromQuaternion(FXMVECTOR quat) noexcept
+        void XM_CALLCONV SetOrientationFromQuaternion(DirectX::FXMVECTOR quat) noexcept
         {
-            XMVECTOR forward = XMVector3Rotate(g_XMIdentityR2, quat);
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientFront), forward);
+            DirectX::XMVECTOR forward = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR2, quat);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
 
-            XMVECTOR up = XMVector3Rotate(g_XMIdentityR1, quat);
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientTop), up);
+            DirectX::XMVECTOR up = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR1, quat);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
         }
 
-        void XM_CALLCONV Update(FXMVECTOR newPos, XMVECTOR upDir, float dt) noexcept
+        void XM_CALLCONV Update(DirectX::FXMVECTOR newPos, DirectX::XMVECTOR upDir, float dt) noexcept
             // Updates velocity and orientation by tracking changes in position over time...
         {
             if (dt > 0.f)
             {
-                XMVECTOR lastPos = XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&Position));
+                DirectX::XMVECTOR lastPos = XMLoadFloat3(reinterpret_cast<const DirectX::XMFLOAT3*>(&Position));
 
-                XMVECTOR vDelta = XMVectorSubtract(newPos, lastPos);
-                XMVECTOR vt = XMVectorReplicate(dt);
-                XMVECTOR v = XMVectorDivide(vDelta, vt);
-                XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&Velocity), v);
+                DirectX::XMVECTOR vDelta = DirectX::XMVectorSubtract(newPos, lastPos);
+                DirectX::XMVECTOR vt = DirectX::XMVectorReplicate(dt);
+                DirectX::XMVECTOR v = DirectX::XMVectorDivide(vDelta, vt);
+                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
 
-                vDelta = XMVector3Normalize(vDelta);
-                XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientFront), vDelta);
+                vDelta = DirectX::XMVector3Normalize(vDelta);
+                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), vDelta);
 
-                v = XMVector3Cross(upDir, vDelta);
-                v = XMVector3Normalize(v);
+                v = DirectX::XMVector3Cross(upDir, vDelta);
+                v = DirectX::XMVector3Normalize(v);
 
-                v = XMVector3Cross(vDelta, v);
-                v = XMVector3Normalize(v);
-                XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientTop), v);
+                v = DirectX::XMVector3Cross(vDelta, v);
+                v = DirectX::XMVector3Normalize(v);
+                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), v);
 
-                XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&Position), newPos);
+                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), newPos);
             }
         }
     };
@@ -526,72 +527,72 @@ namespace DirectX
             InnerRadiusAngle = X3DAUDIO_PI / 4.0f;
         }
 
-        void XM_CALLCONV SetPosition(FXMVECTOR v) noexcept
+        void XM_CALLCONV SetPosition(DirectX::FXMVECTOR v) noexcept
         {
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&Position), v);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), v);
         }
-        void __cdecl SetPosition(const XMFLOAT3& pos) noexcept
+        void __cdecl SetPosition(const DirectX::XMFLOAT3& pos) noexcept
         {
             Position.x = pos.x;
             Position.y = pos.y;
             Position.z = pos.z;
         }
 
-        void XM_CALLCONV SetVelocity(FXMVECTOR v) noexcept
+        void XM_CALLCONV SetVelocity(DirectX::FXMVECTOR v) noexcept
         {
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&Velocity), v);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
         }
-        void __cdecl SetVelocity(const XMFLOAT3& vel) noexcept
+        void __cdecl SetVelocity(const DirectX::XMFLOAT3& vel) noexcept
         {
             Velocity.x = vel.x;
             Velocity.y = vel.y;
             Velocity.z = vel.z;
         }
 
-        void XM_CALLCONV SetOrientation(FXMVECTOR forward, FXMVECTOR up) noexcept
+        void XM_CALLCONV SetOrientation(DirectX::FXMVECTOR forward, DirectX::FXMVECTOR up) noexcept
         {
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientFront), forward);
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientTop), up);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
         }
-        void __cdecl SetOrientation(const XMFLOAT3& forward, const XMFLOAT3& up) noexcept
+        void __cdecl SetOrientation(const DirectX::XMFLOAT3& forward, const DirectX::XMFLOAT3& up) noexcept
         {
             OrientFront.x = forward.x;  OrientTop.x = up.x;
             OrientFront.y = forward.y;  OrientTop.y = up.y;
             OrientFront.z = forward.z;  OrientTop.z = up.z;
         }
 
-        void XM_CALLCONV SetOrientationFromQuaternion(FXMVECTOR quat) noexcept
+        void XM_CALLCONV SetOrientationFromQuaternion(DirectX::FXMVECTOR quat) noexcept
         {
-            XMVECTOR forward = XMVector3Rotate(g_XMIdentityR2, quat);
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientFront), forward);
+            DirectX::XMVECTOR forward = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR2, quat);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
 
-            XMVECTOR up = XMVector3Rotate(g_XMIdentityR1, quat);
-            XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientTop), up);
+            DirectX::XMVECTOR up = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR1, quat);
+            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
         }
 
-        void XM_CALLCONV Update(FXMVECTOR newPos, XMVECTOR upDir, float dt) noexcept
+        void XM_CALLCONV Update(DirectX::FXMVECTOR newPos, DirectX::XMVECTOR upDir, float dt) noexcept
             // Updates velocity and orientation by tracking changes in position over time...
         {
             if (dt > 0.f)
             {
-                XMVECTOR lastPos = XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&Position));
+                DirectX::XMVECTOR lastPos = XMLoadFloat3(reinterpret_cast<const DirectX::XMFLOAT3*>(&Position));
 
-                XMVECTOR vDelta = XMVectorSubtract(newPos, lastPos);
-                XMVECTOR vt = XMVectorReplicate(dt);
-                XMVECTOR v = XMVectorDivide(vDelta, vt);
-                XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&Velocity), v);
+                DirectX::XMVECTOR vDelta = DirectX::XMVectorSubtract(newPos, lastPos);
+                DirectX::XMVECTOR vt = DirectX::XMVectorReplicate(dt);
+                DirectX::XMVECTOR v = DirectX::XMVectorDivide(vDelta, vt);
+                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
 
-                vDelta = XMVector3Normalize(vDelta);
-                XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientFront), vDelta);
+                vDelta = DirectX::XMVector3Normalize(vDelta);
+                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), vDelta);
 
-                v = XMVector3Cross(upDir, vDelta);
-                v = XMVector3Normalize(v);
+                v = DirectX::XMVector3Cross(upDir, vDelta);
+                v = DirectX::XMVector3Normalize(v);
 
-                v = XMVector3Cross(vDelta, v);
-                v = XMVector3Normalize(v);
-                XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&OrientTop), v);
+                v = DirectX::XMVector3Cross(vDelta, v);
+                v = DirectX::XMVector3Normalize(v);
+                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), v);
 
-                XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&Position), newPos);
+                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), newPos);
             }
         }
     };
@@ -630,14 +631,14 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
 
         // Private constructors
         SoundEffectInstance(_In_ AudioEngine* engine, _In_ SoundEffect* effect, SOUND_EFFECT_INSTANCE_FLAGS flags);
-        SoundEffectInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags);
+        SoundEffectInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags);
 
         friend std::unique_ptr<SoundEffectInstance> __cdecl SoundEffect::CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS);
-        friend std::unique_ptr<SoundEffectInstance> __cdecl WaveBank::CreateInstance(unsigned int, SOUND_EFFECT_INSTANCE_FLAGS);
+        friend std::unique_ptr<SoundEffectInstance> __cdecl WaveBank::CreateInstance(uint32_t, SOUND_EFFECT_INSTANCE_FLAGS);
     };
 
 
@@ -674,12 +675,12 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
 
         // Private constructors
-        SoundStreamInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags);
+        SoundStreamInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags);
 
-        friend std::unique_ptr<SoundStreamInstance> __cdecl WaveBank::CreateStreamInstance(unsigned int, SOUND_EFFECT_INSTANCE_FLAGS);
+        friend std::unique_ptr<SoundStreamInstance> __cdecl WaveBank::CreateStreamInstance(uint32_t, SOUND_EFFECT_INSTANCE_FLAGS);
     };
 
 
@@ -689,7 +690,7 @@ namespace DirectX
     public:
         DynamicSoundEffectInstance(_In_ AudioEngine* engine,
             _In_opt_ std::function<void __cdecl(DynamicSoundEffectInstance*)> bufferNeeded,
-            int sampleRate, int channels, int sampleBits = 16,
+            int32_t sampleRate, int32_t channels, int32_t sampleBits = 16,
             SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
         DynamicSoundEffectInstance(DynamicSoundEffectInstance&& moveFrom) noexcept;
         DynamicSoundEffectInstance& operator= (DynamicSoundEffectInstance&& moveFrom) noexcept;
@@ -724,7 +725,7 @@ namespace DirectX
         size_t __cdecl GetSampleSizeInBytes(uint64_t duration) const noexcept;
         // Returns size of a buffer for a duration given in milliseconds
 
-        int __cdecl GetPendingBufferCount() const noexcept;
+        int32_t __cdecl GetPendingBufferCount() const noexcept;
 
         const WAVEFORMATEX* __cdecl GetFormat() const noexcept;
 
@@ -732,7 +733,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 #ifdef __clang__

@@ -36,7 +36,7 @@
 #endif
 
 
-namespace DirectX
+namespace directxtk
 {
     class GamePad
     {
@@ -51,9 +51,9 @@ namespace DirectX
         virtual ~GamePad();
 
     #if (_WIN32_WINNT >= 0x0A00 /*_WIN32_WINNT_WIN10*/) || defined(_XBOX_ONE)
-        static constexpr int MAX_PLAYER_COUNT = 8;
+        static constexpr int32_t MAX_PLAYER_COUNT = 8;
     #else
-        static constexpr int MAX_PLAYER_COUNT = 4;
+        static constexpr int32_t MAX_PLAYER_COUNT = 4;
     #endif
 
         enum DeadZone
@@ -238,12 +238,12 @@ namespace DirectX
             ButtonState leftTrigger;
             ButtonState rightTrigger;
 
-            #pragma prefast(suppress: 26495, "Reset() performs the initialization")
-            ButtonStateTracker() noexcept { Reset(); }
+            #pragma prefast(suppress: 26495, "reset() performs the initialization")
+            ButtonStateTracker() noexcept { reset(); }
 
             void __cdecl Update(const State& state) noexcept;
 
-            void __cdecl Reset() noexcept;
+            void __cdecl reset() noexcept;
 
             State __cdecl GetLastState() const noexcept { return lastState; }
 
@@ -252,13 +252,13 @@ namespace DirectX
         };
 
         // Retrieve the current state of the gamepad of the associated player index
-        State __cdecl GetState(int player, DeadZone deadZoneMode = DEAD_ZONE_INDEPENDENT_AXES);
+        State __cdecl GetState(int32_t player, DeadZone deadZoneMode = DEAD_ZONE_INDEPENDENT_AXES);
 
         // Retrieve the current capabilities of the gamepad of the associated player index
-        Capabilities __cdecl GetCapabilities(int player);
+        Capabilities __cdecl GetCapabilities(int32_t player);
 
         // Set the vibration motor speeds of the gamepad
-        bool __cdecl SetVibration(int player, float leftMotor, float rightMotor, float leftTrigger = 0.f, float rightTrigger = 0.f) noexcept;
+        bool __cdecl SetVibration(int32_t player, float leftMotor, float rightMotor, float leftTrigger = 0.f, float rightTrigger = 0.f) noexcept;
 
         // Handle suspending/resuming
         void __cdecl Suspend() noexcept;
@@ -275,7 +275,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 }
 

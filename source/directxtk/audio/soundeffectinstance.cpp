@@ -8,10 +8,10 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 #include "SoundCommon.h"
 
-using namespace DirectX;
+using namespace directxtk;
 
 
 //======================================================================================
@@ -203,7 +203,7 @@ void SoundEffectInstance::Impl::Play(bool loop)
     if (FAILED(hr))
     {
     #ifdef _DEBUG
-        DebugTrace("ERROR: SoundEffectInstance failed (%08X) when submitting buffer:\n", static_cast<unsigned int>(hr));
+        DebugTrace("ERROR: SoundEffectInstance failed (%08X) when submitting buffer:\n", static_cast<uint32_t>(hr));
 
         char buff[64] = {};
         auto wfx = (mWaveBank) ? mWaveBank->GetFormat(mIndex, reinterpret_cast<WAVEFORMATEX*>(buff), sizeof(buff))
@@ -227,20 +227,20 @@ void SoundEffectInstance::Impl::Play(bool loop)
 // Private constructors
 _Use_decl_annotations_
 SoundEffectInstance::SoundEffectInstance(AudioEngine* engine, SoundEffect* effect, SOUND_EFFECT_INSTANCE_FLAGS flags) :
-    pImpl(std::make_unique<Impl>(engine, effect, flags))
+    pimpl(std::make_unique<Impl>(engine, effect, flags))
 {
 }
 
 _Use_decl_annotations_
-SoundEffectInstance::SoundEffectInstance(AudioEngine* engine, WaveBank* waveBank, unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags) :
-    pImpl(std::make_unique<Impl>(engine, waveBank, index, flags))
+SoundEffectInstance::SoundEffectInstance(AudioEngine* engine, WaveBank* waveBank, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags) :
+    pimpl(std::make_unique<Impl>(engine, waveBank, index, flags))
 {
 }
 
 
 // Move constructor.
 SoundEffectInstance::SoundEffectInstance(SoundEffectInstance&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -248,7 +248,7 @@ SoundEffectInstance::SoundEffectInstance(SoundEffectInstance&& moveFrom) noexcep
 // Move assignment.
 SoundEffectInstance& SoundEffectInstance::operator= (SoundEffectInstance&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -256,18 +256,18 @@ SoundEffectInstance& SoundEffectInstance::operator= (SoundEffectInstance&& moveF
 // Public destructor.
 SoundEffectInstance::~SoundEffectInstance()
 {
-    if (pImpl)
+    if (pimpl)
     {
-        if (pImpl->mWaveBank)
+        if (pimpl->mWaveBank)
         {
-            pImpl->mWaveBank->UnregisterInstance(pImpl.get());
-            pImpl->mWaveBank = nullptr;
+            pimpl->mWaveBank->UnregisterInstance(pimpl.get());
+            pimpl->mWaveBank = nullptr;
         }
 
-        if (pImpl->mEffect)
+        if (pimpl->mEffect)
         {
-            pImpl->mEffect->UnregisterInstance(pImpl.get());
-            pImpl->mEffect = nullptr;
+            pimpl->mEffect->UnregisterInstance(pimpl.get());
+            pimpl->mEffect = nullptr;
         }
     }
 }
@@ -276,66 +276,66 @@ SoundEffectInstance::~SoundEffectInstance()
 // Public methods.
 void SoundEffectInstance::Play(bool loop)
 {
-    pImpl->Play(loop);
+    pimpl->Play(loop);
 }
 
 
 void SoundEffectInstance::Stop(bool immediate) noexcept
 {
-    pImpl->mBase.Stop(immediate, pImpl->mLooped);
+    pimpl->mBase.Stop(immediate, pimpl->mLooped);
 }
 
 
 void SoundEffectInstance::Pause() noexcept
 {
-    pImpl->mBase.Pause();
+    pimpl->mBase.Pause();
 }
 
 
 void SoundEffectInstance::Resume()
 {
-    pImpl->mBase.Resume();
+    pimpl->mBase.Resume();
 }
 
 
 void SoundEffectInstance::SetVolume(float volume)
 {
-    pImpl->mBase.SetVolume(volume);
+    pimpl->mBase.SetVolume(volume);
 }
 
 
 void SoundEffectInstance::SetPitch(float pitch)
 {
-    pImpl->mBase.SetPitch(pitch);
+    pimpl->mBase.SetPitch(pitch);
 }
 
 
 void SoundEffectInstance::SetPan(float pan)
 {
-    pImpl->mBase.SetPan(pan);
+    pimpl->mBase.SetPan(pan);
 }
 
 
 void SoundEffectInstance::Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords)
 {
-    pImpl->mBase.Apply3D(listener, emitter, rhcoords);
+    pimpl->mBase.Apply3D(listener, emitter, rhcoords);
 }
 
 
 // Public accessors.
 bool SoundEffectInstance::IsLooped() const noexcept
 {
-    return pImpl->mLooped;
+    return pimpl->mLooped;
 }
 
 
 SoundState SoundEffectInstance::GetState() noexcept
 {
-    return pImpl->mBase.GetState(true);
+    return pimpl->mBase.GetState(true);
 }
 
 
 IVoiceNotify* SoundEffectInstance::GetVoiceNotify() const noexcept
 {
-    return pImpl.get();
+    return pimpl.get();
 }

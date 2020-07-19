@@ -23,7 +23,7 @@ namespace ABI { namespace Windows { namespace UI { namespace Core { struct ICore
 #endif
 
 
-namespace DirectX
+namespace directxtk
 {
     class Keyboard
     {
@@ -37,7 +37,7 @@ namespace DirectX
 
         virtual ~Keyboard();
 
-        enum Keys : unsigned char
+        enum Keys : uint8_t
         {
             None                = 0,
 
@@ -409,7 +409,7 @@ namespace DirectX
                 if (key <= 0xfe)
                 {
                     auto ptr = reinterpret_cast<const uint32_t*>(this);
-                    unsigned int bf = 1u << (key & 0x1f);
+                    uint32_t bf = 1u << (key & 0x1f);
                     return (ptr[(key >> 5)] & bf) != 0;
                 }
                 return false;
@@ -420,7 +420,7 @@ namespace DirectX
                 if (key <= 0xfe)
                 {
                     auto ptr = reinterpret_cast<const uint32_t*>(this);
-                    unsigned int bf = 1u << (key & 0x1f);
+                    uint32_t bf = 1u << (key & 0x1f);
                     return (ptr[(key >> 5)] & bf) == 0;
                 }
                 return false;
@@ -433,12 +433,12 @@ namespace DirectX
             State released;
             State pressed;
 
-            #pragma prefast(suppress: 26495, "Reset() performs the initialization")
-            KeyboardStateTracker() noexcept { Reset(); }
+            #pragma prefast(suppress: 26495, "reset() performs the initialization")
+            KeyboardStateTracker() noexcept { reset(); }
 
             void __cdecl Update(const State& state) noexcept;
 
-            void __cdecl Reset() noexcept;
+            void __cdecl reset() noexcept;
 
             bool __cdecl IsKeyPressed(Keys key) const noexcept { return pressed.IsKeyDown(key); }
             bool __cdecl IsKeyReleased(Keys key) const noexcept { return released.IsKeyDown(key); }
@@ -453,13 +453,13 @@ namespace DirectX
         State __cdecl GetState() const;
 
         // Reset the keyboard state
-        void __cdecl Reset() noexcept;
+        void __cdecl reset() noexcept;
 
         // Feature detection
         bool __cdecl IsConnected() const;
 
     #if (!defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)) && defined(WM_USER)
-        static void __cdecl ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
+        static void __cdecl ProcessMessage(uint32_t message, WPARAM wParam, LPARAM lParam);
     #endif
 
     #if (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)) || (defined(_XBOX_ONE) && defined(_TITLE))
@@ -487,7 +487,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 }
 

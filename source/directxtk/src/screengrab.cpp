@@ -20,32 +20,32 @@
 
 // For 2D array textures and cubemaps, it captures only the first image in the array
 
-#include "pch.h"
+#include "stdinc.h"
 
+#include "d3dx12.h"
 #include "ScreenGrab.h"
-#include "DirectXHelpers.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
+#include "dds.h"
+#include "loaderhelpers.h"
 
-#include "PlatformHelpers.h"
-#include "DDS.h"
-#include "LoaderHelpers.h"
-
-using Microsoft::WRL::ComPtr;
-using namespace DirectX;
-using namespace DirectX::LoaderHelpers;
+// using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+using namespace directxtk::LoaderHelpers;
 
 namespace
 {
     //--------------------------------------------------------------------------------------
     HRESULT CaptureTexture(_In_ ID3D12Device* device,
-        _In_ ID3D12CommandQueue* pCommandQ,
-        _In_ ID3D12Resource* pSource,
-        UINT64 srcPitch,
+        _In_ ID3D12CommandQueue* pcommandq,
+        _In_ ID3D12Resource* psource,
+        uint64_t srcPitch,
         const D3D12_RESOURCE_DESC& desc,
-        ComPtr<ID3D12Resource>& pStaging,
-        D3D12_RESOURCE_STATES beforeState,
-        D3D12_RESOURCE_STATES afterState) noexcept
+        wil::com_ptr<ID3D12Resource>& pstaging,
+        D3D12_RESOURCE_STATES beforestate,
+        D3D12_RESOURCE_STATES afterstate) noexcept
     {
-        if (!pCommandQ || !pSource)
+        if (!pcommandq || !psource)
             return E_INVALIDARG;
 
         if (desc.Dimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D)
@@ -62,46 +62,46 @@ namespace
         if (srcPitch > UINT32_MAX)
             return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
-        UINT numberOfPlanes = D3D12GetFormatPlaneCount(device, desc.Format);
+        uint32_t numberOfPlanes = D3D12GetFormatPlaneCount(device, desc.Format);
         if (numberOfPlanes != 1)
             return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
         D3D12_HEAP_PROPERTIES sourceHeapProperties;
         D3D12_HEAP_FLAGS sourceHeapFlags;
-        HRESULT hr = pSource->GetHeapProperties(&sourceHeapProperties, &sourceHeapFlags);
+        HRESULT hr = psource->GetHeapProperties(&sourceHeapProperties, &sourceHeapFlags);
         if (FAILED(hr))
             return hr;
 
         if (sourceHeapProperties.Type == D3D12_HEAP_TYPE_READBACK)
         {
             // Handle case where the source is already a staging texture we can use directly
-            pStaging = pSource;
+            pstaging = psource;
             return S_OK;
         }
 
         // Create a command allocator
-        ComPtr<ID3D12CommandAllocator> commandAlloc;
-        hr = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_GRAPHICS_PPV_ARGS(commandAlloc.GetAddressOf()));
+        wil::com_ptr<ID3D12CommandAllocator> commandAlloc;
+        hr = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_GRAPHICS_PPV_ARGS(commandAlloc.addressof()));
         if (FAILED(hr))
             return hr;
 
-        SetDebugObjectName(commandAlloc.Get(), L"ScreenGrab");
+        SetDebugObjectName(commandAlloc.get(), L"ScreenGrab");
 
         // Spin up a new command list
-        ComPtr<ID3D12GraphicsCommandList> commandList;
-        hr = device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAlloc.Get(), nullptr, IID_GRAPHICS_PPV_ARGS(commandList.GetAddressOf()));
+        wil::com_ptr<ID3D12GraphicsCommandList> commandList;
+        hr = device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAlloc.get(), nullptr, IID_GRAPHICS_PPV_ARGS(commandList.addressof()));
         if (FAILED(hr))
             return hr;
 
-        SetDebugObjectName(commandList.Get(), L"ScreenGrab");
+        SetDebugObjectName(commandList.get(), L"ScreenGrab");
 
         // Create a fence
-        ComPtr<ID3D12Fence> fence;
-        hr = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_GRAPHICS_PPV_ARGS(fence.GetAddressOf()));
+        wil::com_ptr<ID3D12Fence> fence;
+        hr = device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_GRAPHICS_PPV_ARGS(fence.addressof()));
         if (FAILED(hr))
             return hr;
 
-        SetDebugObjectName(fence.Get(), L"ScreenGrab");
+        SetDebugObjectName(fence.get(), L"ScreenGrab");
 
         assert((srcPitch & 0xFF) == 0);
 
@@ -120,7 +120,7 @@ namespace
         bufferDesc.MipLevels = 1;
         bufferDesc.SampleDesc.Count = 1;
 
-        ComPtr<ID3D12Resource> copySource(pSource);
+        wil::com_ptr<ID3D12Resource> copySource(psource);
         if (desc.SampleDesc.Count > 1)
         {
             // MSAA content must be resolved before being copied to a staging texture
@@ -128,20 +128,20 @@ namespace
             descCopy.SampleDesc.Count = 1;
             descCopy.SampleDesc.Quality = 0;
 
-            ComPtr<ID3D12Resource> pTemp;
+            wil::com_ptr<ID3D12Resource> pTemp;
             hr = device->CreateCommittedResource(
                 &defaultHeapProperties,
                 D3D12_HEAP_FLAG_NONE,
                 &descCopy,
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
-                IID_GRAPHICS_PPV_ARGS(pTemp.GetAddressOf()));
+                IID_GRAPHICS_PPV_ARGS(pTemp.addressof()));
             if (FAILED(hr))
                 return hr;
 
             assert(pTemp);
 
-            SetDebugObjectName(pTemp.Get(), L"ScreenGrab temporary");
+            SetDebugObjectName(pTemp.get(), L"ScreenGrab temporary");
 
             DXGI_FORMAT fmt = EnsureNotTypeless(desc.Format);
 
@@ -153,12 +153,12 @@ namespace
             if (!(formatInfo.Support1 & D3D12_FORMAT_SUPPORT1_TEXTURE2D))
                 return E_FAIL;
 
-            for (UINT item = 0; item < desc.DepthOrArraySize; ++item)
+            for (uint32_t item = 0; item < desc.DepthOrArraySize; ++item)
             {
-                for (UINT level = 0; level < desc.MipLevels; ++level)
+                for (uint32_t level = 0; level < desc.MipLevels; ++level)
                 {
-                    UINT index = D3D12CalcSubresource(level, item, 0, desc.MipLevels, desc.DepthOrArraySize);
-                    commandList->ResolveSubresource(pTemp.Get(), index, pSource, index, fmt);
+                    uint32_t index = D3D12CalcSubresource(level, item, 0, desc.MipLevels, desc.DepthOrArraySize);
+                    commandList->ResolveSubresource(pTemp.get(), index, psource, index, fmt);
                 }
             }
 
@@ -172,43 +172,43 @@ namespace
             &bufferDesc,
             D3D12_RESOURCE_STATE_COPY_DEST,
             nullptr,
-            IID_GRAPHICS_PPV_ARGS(pStaging.ReleaseAndGetAddressOf()));
+            IID_GRAPHICS_PPV_ARGS(pstaging.put()));
         if (FAILED(hr))
             return hr;
 
-        SetDebugObjectName(pStaging.Get(), L"ScreenGrab staging");
+        SetDebugObjectName(pstaging.get(), L"ScreenGrab staging");
 
-        assert(pStaging);
+        assert(pstaging);
 
         // Transition the resource if necessary
-        TransitionResource(commandList.Get(), pSource, beforeState, D3D12_RESOURCE_STATE_COPY_SOURCE);
+        TransitionResource(commandList.get(), psource, beforestate, D3D12_RESOURCE_STATE_COPY_SOURCE);
 
         // Get the copy target location
         D3D12_PLACED_SUBRESOURCE_FOOTPRINT bufferFootprint = {};
-        bufferFootprint.Footprint.Width = static_cast<UINT>(desc.Width);
+        bufferFootprint.Footprint.Width = static_cast<uint32_t>(desc.Width);
         bufferFootprint.Footprint.Height = desc.Height;
         bufferFootprint.Footprint.Depth = 1;
-        bufferFootprint.Footprint.RowPitch = static_cast<UINT>(srcPitch);
+        bufferFootprint.Footprint.RowPitch = static_cast<uint32_t>(srcPitch);
         bufferFootprint.Footprint.Format = desc.Format;
 
-        CD3DX12_TEXTURE_COPY_LOCATION copyDest(pStaging.Get(), bufferFootprint);
-        CD3DX12_TEXTURE_COPY_LOCATION copySrc(copySource.Get(), 0);
+        CD3DX12_TEXTURE_COPY_LOCATION copyDest(pstaging.get(), bufferFootprint);
+        CD3DX12_TEXTURE_COPY_LOCATION copySrc(copySource.get(), 0);
 
         // Copy the texture
         commandList->CopyTextureRegion(&copyDest, 0, 0, 0, &copySrc, nullptr);
 
         // Transition the resource to the next state
-        TransitionResource(commandList.Get(), pSource, D3D12_RESOURCE_STATE_COPY_SOURCE, afterState);
+        TransitionResource(commandList.get(), psource, D3D12_RESOURCE_STATE_COPY_SOURCE, afterstate);
 
         hr = commandList->Close();
         if (FAILED(hr))
             return hr;
 
         // Execute the command list
-        pCommandQ->ExecuteCommandLists(1, CommandListCast(commandList.GetAddressOf()));
+        pcommandq->ExecuteCommandLists(1, CommandListCast(commandList.addressof()));
 
         // Signal the fence
-        hr = pCommandQ->Signal(fence.Get(), 1);
+        hr = pcommandq->Signal(fence.get(), 1);
         if (FAILED(hr))
             return hr;
 
@@ -223,28 +223,28 @@ namespace
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-HRESULT DirectX::SaveDDSTextureToFile(
-    ID3D12CommandQueue* pCommandQ,
-    ID3D12Resource* pSource,
-    const wchar_t* fileName,
-    D3D12_RESOURCE_STATES beforeState,
-    D3D12_RESOURCE_STATES afterState) noexcept
+HRESULT directxtk::SaveDDSTextureToFile(
+    ID3D12CommandQueue* pcommandq,
+    ID3D12Resource* psource,
+    const std::wstring_view& filename,
+    D3D12_RESOURCE_STATES beforestate,
+    D3D12_RESOURCE_STATES afterstate) noexcept
 {
-    if (!fileName)
+    if (filename.empty())
         return E_INVALIDARG;
 
-    ComPtr<ID3D12Device> device;
-    pCommandQ->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+    wil::com_ptr<ID3D12Device> device;
+    pcommandq->GetDevice(IID_GRAPHICS_PPV_ARGS(device.addressof()));
 
     // Get the size of the image
-    const auto desc = pSource->GetDesc();
+    const auto desc = psource->GetDesc();
 
     if (desc.Width > UINT32_MAX)
         return E_INVALIDARG;
 
-    UINT64 totalResourceSize = 0;
-    UINT64 fpRowPitch = 0;
-    UINT fpRowCount = 0;
+    uint64_t totalResourceSize = 0;
+    uint64_t fpRowPitch = 0;
+    uint32_t fpRowCount = 0;
     // Get the rowcount, pitch and size of the top mip
     device->GetCopyableFootprints(
         &desc,
@@ -258,26 +258,26 @@ HRESULT DirectX::SaveDDSTextureToFile(
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
     // Round up the srcPitch to multiples of 1024
-    UINT64 dstRowPitch = (fpRowPitch + static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u) & ~(static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u);
+    uint64_t dstrowpitch = (fpRowPitch + static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u) & ~(static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u);
 #else
     // Round up the srcPitch to multiples of 256
-    UINT64 dstRowPitch = (fpRowPitch + 255) & ~0xFFu;
+    uint64_t dstrowpitch = (fpRowPitch + 255) & ~0xFFu;
 #endif
 
-    if (dstRowPitch > UINT32_MAX)
+    if (dstrowpitch > UINT32_MAX)
         return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
-    ComPtr<ID3D12Resource> pStaging;
-    HRESULT hr = CaptureTexture(device.Get(), pCommandQ, pSource, dstRowPitch, desc, pStaging, beforeState, afterState);
+    wil::com_ptr<ID3D12Resource> pstaging;
+    HRESULT hr = CaptureTexture(device.get(), pcommandq, psource, dstrowpitch, desc, pstaging, beforestate, afterstate);
     if (FAILED(hr))
         return hr;
 
     // Create file
-    ScopedHandle hFile(safe_handle(CreateFile2(fileName, GENERIC_WRITE, 0, CREATE_ALWAYS, nullptr)));
-    if (!hFile)
+    wil::unique_hfile filehandle(::CreateFile2(filename.data(), GENERIC_WRITE, 0, CREATE_ALWAYS, nullptr));
+    if (!filehandle)
         return HRESULT_FROM_WIN32(GetLastError());
 
-    auto_delete_file delonfail(hFile.get());
+    auto_delete_file delonfail(filehandle.get());
 
     // Setup header
     const size_t MAX_HEADER_SIZE = sizeof(uint32_t) + sizeof(DDS_HEADER) + sizeof(DDS_HEADER_DXT10);
@@ -286,7 +286,7 @@ HRESULT DirectX::SaveDDSTextureToFile(
     *reinterpret_cast<uint32_t*>(&fileHeader[0]) = DDS_MAGIC;
 
     auto header = reinterpret_cast<DDS_HEADER*>(&fileHeader[0] + sizeof(uint32_t));
-    size_t headerSize = sizeof(uint32_t) + sizeof(DDS_HEADER);
+    size_t headersize = sizeof(uint32_t) + sizeof(DDS_HEADER);
     header->size = sizeof(DDS_HEADER);
     header->flags = DDS_HEADER_FLAGS_TEXTURE | DDS_HEADER_FLAGS_MIPMAP;
     header->height = desc.Height;
@@ -343,7 +343,7 @@ HRESULT DirectX::SaveDDSTextureToFile(
         default:
             memcpy_s(&header->ddspf, sizeof(header->ddspf), &DDSPF_DX10, sizeof(DDS_PIXELFORMAT));
 
-            headerSize += sizeof(DDS_HEADER_DXT10);
+            headersize += sizeof(DDS_HEADER_DXT10);
             extHeader = reinterpret_cast<DDS_HEADER_DXT10*>(fileHeader + sizeof(uint32_t) + sizeof(DDS_HEADER));
             extHeader->dxgiFormat = desc.Format;
             extHeader->resourceDimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -351,75 +351,75 @@ HRESULT DirectX::SaveDDSTextureToFile(
             break;
     }
 
-    size_t rowPitch, slicePitch, rowCount;
-    hr = GetSurfaceInfo(static_cast<size_t>(desc.Width), desc.Height, desc.Format, &slicePitch, &rowPitch, &rowCount);
+    size_t rowpitch, slicepitch, rowcount;
+    hr = GetSurfaceInfo(static_cast<size_t>(desc.Width), desc.Height, desc.Format, &slicepitch, &rowpitch, &rowcount);
     if (FAILED(hr))
         return hr;
 
-    if (rowPitch > UINT32_MAX || slicePitch > UINT32_MAX)
+    if (rowpitch > UINT32_MAX || slicepitch > UINT32_MAX)
         return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
     if (IsCompressed(desc.Format))
     {
         header->flags |= DDS_HEADER_FLAGS_LINEARSIZE;
-        header->pitchOrLinearSize = static_cast<uint32_t>(slicePitch);
+        header->pitchOrLinearSize = static_cast<uint32_t>(slicepitch);
     }
     else
     {
         header->flags |= DDS_HEADER_FLAGS_PITCH;
-        header->pitchOrLinearSize = static_cast<uint32_t>(rowPitch);
+        header->pitchOrLinearSize = static_cast<uint32_t>(rowpitch);
     }
 
     // Setup pixels
-    std::unique_ptr<uint8_t[]> pixels(new (std::nothrow) uint8_t[slicePitch]);
+    std::unique_ptr<uint8_t[]> pixels(new (std::nothrow) uint8_t[slicepitch]);
     if (!pixels)
         return E_OUTOFMEMORY;
 
-    assert(fpRowCount == rowCount);
-    assert(fpRowPitch == rowPitch);
+    assert(fpRowCount == rowcount);
+    assert(fpRowPitch == rowpitch);
 
-    UINT64 imageSize = dstRowPitch * UINT64(rowCount);
+    uint64_t imageSize = dstrowpitch * uint64_t(rowcount);
     if (imageSize > UINT32_MAX)
         return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
     void* pMappedMemory = nullptr;
     D3D12_RANGE readRange = { 0, static_cast<SIZE_T>(imageSize) };
     D3D12_RANGE writeRange = { 0, 0 };
-    hr = pStaging->Map(0, &readRange, &pMappedMemory);
+    hr = pstaging->Map(0, &readRange, &pMappedMemory);
     if (FAILED(hr))
         return hr;
 
     auto sptr = static_cast<const uint8_t*>(pMappedMemory);
     if (!sptr)
     {
-        pStaging->Unmap(0, &writeRange);
+        pstaging->Unmap(0, &writeRange);
         return E_POINTER;
     }
 
     uint8_t* dptr = pixels.get();
 
-    size_t msize = std::min<size_t>(rowPitch, size_t(dstRowPitch));
-    for (size_t h = 0; h < rowCount; ++h)
+    size_t msize = std::min<size_t>(rowpitch, size_t(dstrowpitch));
+    for (size_t h = 0; h < rowcount; ++h)
     {
-        memcpy_s(dptr, rowPitch, sptr, msize);
-        sptr += dstRowPitch;
-        dptr += rowPitch;
+        memcpy_s(dptr, rowpitch, sptr, msize);
+        sptr += dstrowpitch;
+        dptr += rowpitch;
     }
 
-    pStaging->Unmap(0, &writeRange);
+    pstaging->Unmap(0, &writeRange);
 
     // Write header & pixels
-    DWORD bytesWritten;
-    if (!WriteFile(hFile.get(), fileHeader, static_cast<DWORD>(headerSize), &bytesWritten, nullptr))
+    uint32_t byteswritten;
+	if (!::WriteFile(filehandle.get(), fileHeader, static_cast<uint32_t>(headersize), reinterpret_cast<PULONG>(&byteswritten), nullptr))
         return HRESULT_FROM_WIN32(GetLastError());
 
-    if (bytesWritten != headerSize)
+    if (byteswritten != headersize)
         return E_FAIL;
 
-    if (!WriteFile(hFile.get(), pixels.get(), static_cast<DWORD>(slicePitch), &bytesWritten, nullptr))
+	if (!::WriteFile(filehandle.get(), pixels.get(), static_cast<uint32_t>(slicepitch), reinterpret_cast<PULONG>(&byteswritten), nullptr))
         return HRESULT_FROM_WIN32(GetLastError());
 
-    if (bytesWritten != slicePitch)
+    if (byteswritten != slicepitch)
         return E_FAIL;
 
     delonfail.clear();
@@ -428,38 +428,38 @@ HRESULT DirectX::SaveDDSTextureToFile(
 }
 
 //--------------------------------------------------------------------------------------
-namespace DirectX
+namespace directxtk
 {
     extern IWICImagingFactory2* _GetWIC() noexcept;
 }
 
 _Use_decl_annotations_
-HRESULT DirectX::SaveWICTextureToFile(
-    ID3D12CommandQueue* pCommandQ,
-    ID3D12Resource* pSource,
+HRESULT directxtk::SaveWICTextureToFile(
+    ID3D12CommandQueue* pcommandq,
+    ID3D12Resource* psource,
     REFGUID guidContainerFormat,
-    const wchar_t* fileName,
-    D3D12_RESOURCE_STATES beforeState,
-    D3D12_RESOURCE_STATES afterState,
+    const std::wstring_view& filename,
+    D3D12_RESOURCE_STATES beforestate,
+    D3D12_RESOURCE_STATES afterstate,
     const GUID* targetFormat,
     std::function<void(IPropertyBag2*)> setCustomProps,
     bool forceSRGB)
 {
-    if (!fileName)
+    if (!filename)
         return E_INVALIDARG;
 
-    ComPtr<ID3D12Device> device;
-    pCommandQ->GetDevice(IID_GRAPHICS_PPV_ARGS(device.GetAddressOf()));
+    wil::com_ptr<ID3D12Device> device;
+    pcommandq->GetDevice(IID_GRAPHICS_PPV_ARGS(device.addressof()));
 
     // Get the size of the image
-    const auto desc = pSource->GetDesc();
+    const auto desc = psource->GetDesc();
 
     if (desc.Width > UINT32_MAX)
         return E_INVALIDARG;
 
-    UINT64 totalResourceSize = 0;
-    UINT64 fpRowPitch = 0;
-    UINT fpRowCount = 0;
+    uint64_t totalResourceSize = 0;
+    uint64_t fpRowPitch = 0;
+    uint32_t fpRowCount = 0;
     // Get the rowcount, pitch and size of the top mip
     device->GetCopyableFootprints(
         &desc,
@@ -473,17 +473,17 @@ HRESULT DirectX::SaveWICTextureToFile(
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
     // Round up the srcPitch to multiples of 1024
-    UINT64 dstRowPitch = (fpRowPitch + static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u) & ~(static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u);
+    uint64_t dstrowpitch = (fpRowPitch + static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u) & ~(static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u);
 #else
     // Round up the srcPitch to multiples of 256
-    UINT64 dstRowPitch = (fpRowPitch + 255) & ~0xFFu;
+    uint64_t dstrowpitch = (fpRowPitch + 255) & ~0xFFu;
 #endif
 
-    if (dstRowPitch > UINT32_MAX)
+    if (dstrowpitch > UINT32_MAX)
         return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
-    ComPtr<ID3D12Resource> pStaging;
-    HRESULT hr = CaptureTexture(device.Get(), pCommandQ, pSource, dstRowPitch, desc, pStaging, beforeState, afterState);
+    wil::com_ptr<ID3D12Resource> pstaging;
+    HRESULT hr = CaptureTexture(device.get(), pcommandq, psource, dstrowpitch, desc, pstaging, beforestate, afterstate);
     if (FAILED(hr))
         return hr;
 
@@ -541,29 +541,29 @@ HRESULT DirectX::SaveWICTextureToFile(
     if (!pWIC)
         return E_NOINTERFACE;
 
-    ComPtr<IWICStream> stream;
-    hr = pWIC->CreateStream(stream.GetAddressOf());
+    wil::com_ptr<IWICStream> stream;
+    hr = pWIC->CreateStream(stream.addressof());
     if (FAILED(hr))
         return hr;
 
-    hr = stream->InitializeFromFilename(fileName, GENERIC_WRITE);
+    hr = stream->InitializeFromFilename(filename, GENERIC_WRITE);
     if (FAILED(hr))
         return hr;
 
-    auto_delete_file_wic delonfail(stream, fileName);
+    auto_delete_file_wic delonfail(stream, filename);
 
-    ComPtr<IWICBitmapEncoder> encoder;
-    hr = pWIC->CreateEncoder(guidContainerFormat, nullptr, encoder.GetAddressOf());
+    wil::com_ptr<IWICBitmapEncoder> encoder;
+    hr = pWIC->CreateEncoder(guidContainerFormat, nullptr, encoder.addressof());
     if (FAILED(hr))
         return hr;
 
-    hr = encoder->Initialize(stream.Get(), WICBitmapEncoderNoCache);
+    hr = encoder->Initialize(stream.get(), WICBitmapEncoderNoCache);
     if (FAILED(hr))
         return hr;
 
-    ComPtr<IWICBitmapFrameEncode> frame;
-    ComPtr<IPropertyBag2> props;
-    hr = encoder->CreateNewFrame(frame.GetAddressOf(), props.GetAddressOf());
+    wil::com_ptr<IWICBitmapFrameEncode> frame;
+    wil::com_ptr<IPropertyBag2> props;
+    hr = encoder->CreateNewFrame(frame.addressof(), props.addressof());
     if (FAILED(hr))
         return hr;
 
@@ -581,14 +581,14 @@ HRESULT DirectX::SaveWICTextureToFile(
 
     if (setCustomProps)
     {
-        setCustomProps(props.Get());
+        setCustomProps(props.get());
     }
 
-    hr = frame->Initialize(props.Get());
+    hr = frame->Initialize(props.get());
     if (FAILED(hr))
         return hr;
 
-    hr = frame->SetSize(static_cast<UINT>(desc.Width), desc.Height);
+    hr = frame->SetSize(static_cast<uint32_t>(desc.Width), desc.Height);
     if (FAILED(hr))
         return hr;
 
@@ -641,8 +641,8 @@ HRESULT DirectX::SaveWICTextureToFile(
     }
 
     // Encode WIC metadata
-    ComPtr<IWICMetadataQueryWriter> metawriter;
-    if (SUCCEEDED(frame->GetMetadataQueryWriter(metawriter.GetAddressOf())))
+    wil::com_ptr<IWICMetadataQueryWriter> metawriter;
+    if (SUCCEEDED(frame->GetMetadataQueryWriter(metawriter.addressof())))
     {
         PROPVARIANT value;
         PropVariantInit(&value);
@@ -717,36 +717,36 @@ HRESULT DirectX::SaveWICTextureToFile(
     #endif
     }
 
-    UINT64 imageSize = dstRowPitch * UINT64(desc.Height);
+    uint64_t imageSize = dstrowpitch * uint64_t(desc.Height);
     if (imageSize > UINT32_MAX)
         return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
     void* pMappedMemory = nullptr;
     D3D12_RANGE readRange = { 0, static_cast<SIZE_T>(imageSize) };
     D3D12_RANGE writeRange = { 0, 0 };
-    hr = pStaging->Map(0, &readRange, &pMappedMemory);
+    hr = pstaging->Map(0, &readRange, &pMappedMemory);
     if (FAILED(hr))
         return hr;
 
     if (memcmp(&targetGuid, &pfGuid, sizeof(WICPixelFormatGUID)) != 0)
     {
         // Conversion required to write
-        ComPtr<IWICBitmap> source;
-        hr = pWIC->CreateBitmapFromMemory(static_cast<UINT>(desc.Width), desc.Height,
+        wil::com_ptr<IWICBitmap> source;
+        hr = pWIC->CreateBitmapFromMemory(static_cast<uint32_t>(desc.Width), desc.Height,
             pfGuid,
-            static_cast<UINT>(dstRowPitch), static_cast<UINT>(imageSize),
-            static_cast<BYTE*>(pMappedMemory), source.GetAddressOf());
+            static_cast<uint32_t>(dstrowpitch), static_cast<uint32_t>(imageSize),
+            static_cast<uint8_t*>(pMappedMemory), source.addressof());
         if (FAILED(hr))
         {
-            pStaging->Unmap(0, &writeRange);
+            pstaging->Unmap(0, &writeRange);
             return hr;
         }
 
-        ComPtr<IWICFormatConverter> FC;
-        hr = pWIC->CreateFormatConverter(FC.GetAddressOf());
+        wil::com_ptr<IWICFormatConverter> FC;
+        hr = pWIC->CreateFormatConverter(FC.addressof());
         if (FAILED(hr))
         {
-            pStaging->Unmap(0, &writeRange);
+            pstaging->Unmap(0, &writeRange);
             return hr;
         }
 
@@ -754,27 +754,27 @@ HRESULT DirectX::SaveWICTextureToFile(
         hr = FC->CanConvert(pfGuid, targetGuid, &canConvert);
         if (FAILED(hr) || !canConvert)
         {
-            pStaging->Unmap(0, &writeRange);
+            pstaging->Unmap(0, &writeRange);
             return E_UNEXPECTED;
         }
 
-        hr = FC->Initialize(source.Get(), targetGuid, WICBitmapDitherTypeNone, nullptr, 0, WICBitmapPaletteTypeMedianCut);
+        hr = FC->Initialize(source.get(), targetGuid, WICBitmapDitherTypeNone, nullptr, 0, WICBitmapPaletteTypeMedianCut);
         if (FAILED(hr))
         {
-            pStaging->Unmap(0, &writeRange);
+            pstaging->Unmap(0, &writeRange);
             return hr;
         }
 
-        WICRect rect = { 0, 0, static_cast<INT>(desc.Width), static_cast<INT>(desc.Height) };
-        hr = frame->WriteSource(FC.Get(), &rect);
+        WICRect rect = { 0, 0, static_cast<int32_t>(desc.Width), static_cast<int32_t>(desc.Height) };
+        hr = frame->WriteSource(FC.get(), &rect);
     }
     else
     {
         // No conversion required
-        hr = frame->WritePixels(desc.Height, static_cast<UINT>(dstRowPitch), static_cast<UINT>(imageSize), static_cast<BYTE*>(pMappedMemory));
+        hr = frame->WritePixels(desc.Height, static_cast<uint32_t>(dstrowpitch), static_cast<uint32_t>(imageSize), static_cast<uint8_t*>(pMappedMemory));
     }
 
-    pStaging->Unmap(0, &writeRange);
+    pstaging->Unmap(0, &writeRange);
 
     if (FAILED(hr))
         return hr;

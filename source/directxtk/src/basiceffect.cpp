@@ -7,32 +7,33 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
 
-using namespace DirectX;
+#include "effectcommon.h"
+
+using namespace directxtk;
 
 namespace
 {
     // Constant buffer layout. Must match the shader!
     struct BasicEffectConstants
     {
-        XMVECTOR diffuseColor;
-        XMVECTOR emissiveColor;
-        XMVECTOR specularColorAndPower;
+        DirectX::XMVECTOR diffuseColor;
+        DirectX::XMVECTOR emissiveColor;
+        DirectX::XMVECTOR specularColorAndPower;
 
-        XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
-        XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
-        XMVECTOR lightSpecularColor[IEffectLights::MaxDirectionalLights];
+        DirectX::XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
+        DirectX::XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
+        DirectX::XMVECTOR lightSpecularColor[IEffectLights::MaxDirectionalLights];
 
-        XMVECTOR eyePosition;
+        DirectX::XMVECTOR eyePosition;
 
-        XMVECTOR fogColor;
-        XMVECTOR fogVector;
+        DirectX::XMVECTOR fogColor;
+        DirectX::XMVECTOR fogVector;
 
-        XMMATRIX world;
-        XMVECTOR worldInverseTranspose[3];
-        XMMATRIX worldViewProj;
+        DirectX::XMMATRIX world;
+        DirectX::XMVECTOR worldInverseTranspose[3];
+        DirectX::XMMATRIX worldViewProj;
     };
 
     static_assert((sizeof(BasicEffectConstants) % 16) == 0, "CB size not padded correctly");
@@ -43,10 +44,10 @@ namespace
     {
         using ConstantBufferType = BasicEffectConstants;
 
-        static constexpr int VertexShaderCount = 24;
-        static constexpr int PixelShaderCount = 10;
-        static constexpr int ShaderPermutationCount = 40;
-        static constexpr int RootSignatureCount = 2;
+        static constexpr int32_t VertexShaderCount = 24;
+        static constexpr int32_t PixelShaderCount = 10;
+        static constexpr int32_t ShaderPermutationCount = 40;
+        static constexpr int32_t RootSignatureCount = 2;
     };
 }
 
@@ -72,7 +73,7 @@ public:
 
     EffectLights lights;
 
-    int GetPipelineStatePermutation(bool preferPerPixelLighting, bool vertexColorEnabled, bool biasedVertexNormals) const noexcept;
+    int32_t GetPipelineStatePermutation(bool preferPerPixelLighting, bool vertexColorEnabled, bool biasedVertexNormals) const noexcept;
 
     void Apply(_In_ ID3D12GraphicsCommandList* commandList);
 };
@@ -204,7 +205,7 @@ const D3D12_SHADER_BYTECODE EffectBase<BasicEffectTraits>::VertexShaderBytecode[
 
 
 template<>
-const int EffectBase<BasicEffectTraits>::VertexShaderIndices[] =
+const int32_t EffectBase<BasicEffectTraits>::VertexShaderIndices[] =
 {
     0,      // basic
     1,      // no fog
@@ -272,7 +273,7 @@ const D3D12_SHADER_BYTECODE EffectBase<BasicEffectTraits>::PixelShaderBytecode[]
 
 
 template<>
-const int EffectBase<BasicEffectTraits>::PixelShaderIndices[] =
+const int32_t EffectBase<BasicEffectTraits>::PixelShaderIndices[] =
 {
     0,      // basic
     1,      // no fog
@@ -372,48 +373,48 @@ BasicEffect::Impl::Impl(
             // use all parameters
             rsigDesc.Init(_countof(rootParameters), rootParameters, 0, nullptr, rootSignatureFlags);
 
-            mRootSignature = GetRootSignature(1, rsigDesc);
+            m_prootsignature = GetRootSignature(1, rsigDesc);
         }
         else
         {
             // only use constant
             rsigDesc.Init(1, rootParameters, 0, nullptr, rootSignatureFlags);
 
-            mRootSignature = GetRootSignature(0, rsigDesc);
+            m_prootsignature = GetRootSignature(0, rsigDesc);
         }
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     // Create pipeline state.
-    int sp = GetPipelineStatePermutation(
+    int32_t sp = GetPipelineStatePermutation(
         (effectFlags & EffectFlags::PerPixelLightingBit) != 0,
         (effectFlags & EffectFlags::VertexColor) != 0,
         (effectFlags & EffectFlags::BiasedVertexNormals) != 0);
     assert(sp >= 0 && sp < BasicEffectTraits::ShaderPermutationCount);
     _Analysis_assume_(sp >= 0 && sp < BasicEffectTraits::ShaderPermutationCount);
 
-    int vi = EffectBase<BasicEffectTraits>::VertexShaderIndices[sp];
+    int32_t vi = EffectBase<BasicEffectTraits>::VertexShaderIndices[sp];
     assert(vi >= 0 && vi < BasicEffectTraits::VertexShaderCount);
     _Analysis_assume_(vi >= 0 && vi < BasicEffectTraits::VertexShaderCount);
-    int pi = EffectBase<BasicEffectTraits>::PixelShaderIndices[sp];
+    int32_t pi = EffectBase<BasicEffectTraits>::PixelShaderIndices[sp];
     assert(pi >= 0 && pi < BasicEffectTraits::PixelShaderCount);
     _Analysis_assume_(pi >= 0 && pi < BasicEffectTraits::PixelShaderCount);
 
     pipelineDescription.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         EffectBase<BasicEffectTraits>::VertexShaderBytecode[vi],
         EffectBase<BasicEffectTraits>::PixelShaderBytecode[pi],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"BasicEffect");
+    SetDebugObjectName(m_ppipelinestate.get(), L"BasicEffect");
 }
 
 
-int BasicEffect::Impl::GetPipelineStatePermutation(bool preferPerPixelLighting, bool vertexColorEnabled, bool biasedVertexNormals) const noexcept
+int32_t BasicEffect::Impl::GetPipelineStatePermutation(bool preferPerPixelLighting, bool vertexColorEnabled, bool biasedVertexNormals) const noexcept
 {
-    int permutation = 0;
+    int32_t permutation = 0;
 
     // Use optimized shaders if fog is disabled.
     if (!fog.enabled)
@@ -467,7 +468,7 @@ void BasicEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     UpdateConstants();
 
     // Set the root signature
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set the texture
     if (textureEnabled)
@@ -487,7 +488,7 @@ void BasicEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
     // Set the pipeline state
-    commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+    commandList->SetPipelineState(EffectBase::m_ppipelinestate.get());
 }
 
 
@@ -496,14 +497,14 @@ BasicEffect::BasicEffect(
     _In_ ID3D12Device* device,
     uint32_t effectFlags,
     const EffectPipelineStateDescription& pipelineDescription)
-  : pImpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription))
+  : pimpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription))
 {
 }
 
 
 // Move constructor.
 BasicEffect::BasicEffect(BasicEffect&& moveFrom) noexcept
-  : pImpl(std::move(moveFrom.pImpl))
+  : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -511,7 +512,7 @@ BasicEffect::BasicEffect(BasicEffect&& moveFrom) noexcept
 // Move assignment.
 BasicEffect& BasicEffect::operator= (BasicEffect&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -525,77 +526,77 @@ BasicEffect::~BasicEffect()
 // IEffect methods
 void BasicEffect::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 {
-    pImpl->Apply(commandList);
+    pimpl->Apply(commandList);
 }
 
 
 // Camera settings
-void XM_CALLCONV BasicEffect::SetWorld(FXMMATRIX value)
+void XM_CALLCONV BasicEffect::SetWorld(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.world = value;
+    pimpl->matrices.world = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV BasicEffect::SetView(FXMMATRIX value)
+void XM_CALLCONV BasicEffect::SetView(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.view = value;
+    pimpl->matrices.view = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV BasicEffect::SetProjection(FXMMATRIX value)
+void XM_CALLCONV BasicEffect::SetProjection(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.projection = value;
+    pimpl->matrices.projection = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
 }
 
 
-void XM_CALLCONV BasicEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
+void XM_CALLCONV BasicEffect::SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection)
 {
-    pImpl->matrices.world = world;
-    pImpl->matrices.view = view;
-    pImpl->matrices.projection = projection;
+    pimpl->matrices.world = world;
+    pimpl->matrices.view = view;
+    pimpl->matrices.projection = projection;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
 // Material settings
-void XM_CALLCONV BasicEffect::SetDiffuseColor(FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetDiffuseColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.diffuseColor = value;
+    pimpl->lights.diffuseColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV BasicEffect::SetEmissiveColor(FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetEmissiveColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.emissiveColor = value;
+    pimpl->lights.emissiveColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV BasicEffect::SetSpecularColor(FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetSpecularColor(DirectX::FXMVECTOR value)
 {
     // Set xyz to new value, but preserve existing w (specular power).
-    pImpl->constants.specularColorAndPower = XMVectorSelect(pImpl->constants.specularColorAndPower, value, g_XMSelect1110);
+    pimpl->constants.specularColorAndPower = DirectX::XMVectorSelect(pimpl->constants.specularColorAndPower, value, DirectX::g_XMSelect1110);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 void BasicEffect::SetSpecularPower(float value)
 {
     // Set w to new value, but preserve existing xyz (specular color).
-    pImpl->constants.specularColorAndPower = XMVectorSetW(pImpl->constants.specularColorAndPower, value);
+    pimpl->constants.specularColorAndPower = DirectX::XMVectorSetW(pimpl->constants.specularColorAndPower, value);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
@@ -604,63 +605,63 @@ void BasicEffect::DisableSpecular()
     // Set specular color to black, power to 1
     // Note: Don't use a power of 0 or the shader will generate strange highlights on non-specular materials
 
-    pImpl->constants.specularColorAndPower = g_XMIdentityR3; 
+    pimpl->constants.specularColorAndPower = DirectX::g_XMIdentityR3; 
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 void BasicEffect::SetAlpha(float value)
 {
-    pImpl->lights.alpha = value;
+    pimpl->lights.alpha = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV BasicEffect::SetColorAndAlpha(FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetColorAndAlpha(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.diffuseColor = value;
-    pImpl->lights.alpha = XMVectorGetW(value);
+    pimpl->lights.diffuseColor = value;
+    pimpl->lights.alpha = DirectX::XMVectorGetW(value);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
 // Light settings
-void XM_CALLCONV BasicEffect::SetAmbientLightColor(FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetAmbientLightColor(DirectX::FXMVECTOR value)
 {
-    pImpl->lights.ambientLightColor = value;
+    pimpl->lights.ambientLightColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void BasicEffect::SetLightEnabled(int whichLight, bool value)
+void BasicEffect::SetLightEnabled(int32_t whichLight, bool value)
 {
-    pImpl->dirtyFlags |= pImpl->lights.SetLightEnabled(whichLight, value, pImpl->constants.lightDiffuseColor, pImpl->constants.lightSpecularColor);
+    pimpl->dirtyFlags |= pimpl->lights.SetLightEnabled(whichLight, value, pimpl->constants.lightDiffuseColor, pimpl->constants.lightSpecularColor);
 }
 
 
-void XM_CALLCONV BasicEffect::SetLightDirection(int whichLight, FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value)
 {
     EffectLights::ValidateLightIndex(whichLight);
 
-    pImpl->constants.lightDirection[whichLight] = value;
+    pimpl->constants.lightDirection[whichLight] = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
-void XM_CALLCONV BasicEffect::SetLightDiffuseColor(int whichLight, FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value)
 {
-    pImpl->dirtyFlags |= pImpl->lights.SetLightDiffuseColor(whichLight, value, pImpl->constants.lightDiffuseColor);
+    pimpl->dirtyFlags |= pimpl->lights.SetLightDiffuseColor(whichLight, value, pimpl->constants.lightDiffuseColor);
 }
 
 
-void XM_CALLCONV BasicEffect::SetLightSpecularColor(int whichLight, FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value)
 {
-    pImpl->dirtyFlags |= pImpl->lights.SetLightSpecularColor(whichLight, value, pImpl->constants.lightSpecularColor);
+    pimpl->dirtyFlags |= pimpl->lights.SetLightSpecularColor(whichLight, value, pimpl->constants.lightSpecularColor);
 }
 
 
@@ -673,31 +674,31 @@ void BasicEffect::EnableDefaultLighting()
 // Fog settings.
 void BasicEffect::SetFogStart(float value)
 {
-    pImpl->fog.start = value;
+    pimpl->fog.start = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
 void BasicEffect::SetFogEnd(float value)
 {
-    pImpl->fog.end = value;
+    pimpl->fog.end = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV BasicEffect::SetFogColor(FXMVECTOR value)
+void XM_CALLCONV BasicEffect::SetFogColor(DirectX::FXMVECTOR value)
 {
-    pImpl->constants.fogColor = value;
+    pimpl->constants.fogColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 // Texture settings.
 void BasicEffect::SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor)
 {
-    pImpl->texture = srvDescriptor;
-    pImpl->sampler = samplerDescriptor;
+    pimpl->texture = srvDescriptor;
+    pimpl->sampler = samplerDescriptor;
 }

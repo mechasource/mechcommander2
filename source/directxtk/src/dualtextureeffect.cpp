@@ -7,21 +7,21 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
+#include "effectcommon.h"
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 namespace
 {
     // Constant buffer layout. Must match the shader!
     struct DualTextureEffectConstants
     {
-        XMVECTOR diffuseColor;
-        XMVECTOR fogColor;
-        XMVECTOR fogVector;
-        XMMATRIX worldViewProj;
+        DirectX::XMVECTOR diffuseColor;
+        DirectX::XMVECTOR fogColor;
+        DirectX::XMVECTOR fogVector;
+        DirectX::XMMATRIX worldViewProj;
     };
 
     static_assert((sizeof(DualTextureEffectConstants) % 16) == 0, "CB size not padded correctly");
@@ -32,10 +32,10 @@ namespace
     {
         using ConstantBufferType = DualTextureEffectConstants;
 
-        static constexpr int VertexShaderCount = 4;
-        static constexpr int PixelShaderCount = 2;
-        static constexpr int ShaderPermutationCount = 4;
-        static constexpr int RootSignatureCount = 1;
+        static constexpr int32_t VertexShaderCount = 4;
+        static constexpr int32_t PixelShaderCount = 2;
+        static constexpr int32_t ShaderPermutationCount = 4;
+        static constexpr int32_t RootSignatureCount = 1;
     };
 }
 
@@ -62,7 +62,7 @@ public:
     D3D12_GPU_DESCRIPTOR_HANDLE texture2;
     D3D12_GPU_DESCRIPTOR_HANDLE texture2Sampler;
 
-    int GetPipelineStatePermutation(bool vertexColorEnabled) const noexcept;
+    int32_t GetPipelineStatePermutation(bool vertexColorEnabled) const noexcept;
 
     void Apply(_In_ ID3D12GraphicsCommandList* commandList);
 };
@@ -103,7 +103,7 @@ const D3D12_SHADER_BYTECODE EffectBase<DualTextureEffectTraits>::VertexShaderByt
 
 
 template<>
-const int EffectBase<DualTextureEffectTraits>::VertexShaderIndices[] =
+const int32_t EffectBase<DualTextureEffectTraits>::VertexShaderIndices[] =
 {
     0,      // basic
     1,      // no fog
@@ -122,7 +122,7 @@ const D3D12_SHADER_BYTECODE EffectBase<DualTextureEffectTraits>::PixelShaderByte
 
 
 template<>
-const int EffectBase<DualTextureEffectTraits>::PixelShaderIndices[] =
+const int32_t EffectBase<DualTextureEffectTraits>::PixelShaderIndices[] =
 {
     0,      // basic
     1,      // no fog
@@ -179,10 +179,10 @@ DualTextureEffect::Impl::Impl(
         CD3DX12_ROOT_SIGNATURE_DESC rsigDesc = {};
         rsigDesc.Init(_countof(rootParameters), rootParameters, 0, nullptr, rootSignatureFlags);
 
-        mRootSignature = GetRootSignature(0, rsigDesc);
+        m_prootsignature = GetRootSignature(0, rsigDesc);
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     // Validate flags & state.
     fog.enabled = (effectFlags & EffectFlags::Fog) != 0;
@@ -199,32 +199,32 @@ DualTextureEffect::Impl::Impl(
     }
 
     // Create pipeline state.
-    int sp = GetPipelineStatePermutation(
+    int32_t sp = GetPipelineStatePermutation(
         (effectFlags & EffectFlags::VertexColor) != 0);
     assert(sp >= 0 && sp < DualTextureEffectTraits::ShaderPermutationCount);
     _Analysis_assume_(sp >= 0 && sp < DualTextureEffectTraits::ShaderPermutationCount);
 
-    int vi = EffectBase<DualTextureEffectTraits>::VertexShaderIndices[sp];
+    int32_t vi = EffectBase<DualTextureEffectTraits>::VertexShaderIndices[sp];
     assert(vi >= 0 && vi < DualTextureEffectTraits::VertexShaderCount);
     _Analysis_assume_(vi >= 0 && vi < DualTextureEffectTraits::VertexShaderCount);
-    int pi = EffectBase<DualTextureEffectTraits>::PixelShaderIndices[sp];
+    int32_t pi = EffectBase<DualTextureEffectTraits>::PixelShaderIndices[sp];
     assert(pi >= 0 && pi < DualTextureEffectTraits::PixelShaderCount);
     _Analysis_assume_(pi >= 0 && pi < DualTextureEffectTraits::PixelShaderCount);
 
     pipelineDescription.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         EffectBase<DualTextureEffectTraits>::VertexShaderBytecode[vi],
         EffectBase<DualTextureEffectTraits>::PixelShaderBytecode[pi],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"DualTextureEffect");
+    SetDebugObjectName(m_ppipelinestate.get(), L"DualTextureEffect");
 }
 
 
-int DualTextureEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled) const noexcept
+int32_t DualTextureEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled) const noexcept
 {
-    int permutation = 0;
+    int32_t permutation = 0;
 
     // Use optimized shaders if fog is disabled.
     if (!fog.enabled)
@@ -255,7 +255,7 @@ void DualTextureEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     UpdateConstants();
 
     // Set the root signature
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set the textures
     if (!texture1.ptr || !texture2.ptr)
@@ -279,7 +279,7 @@ void DualTextureEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
     // Set the pipeline state
-    commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+    commandList->SetPipelineState(EffectBase::m_ppipelinestate.get());
 }
 
 
@@ -288,14 +288,14 @@ DualTextureEffect::DualTextureEffect(
     _In_ ID3D12Device* device,
     uint32_t effectFlags,
     const EffectPipelineStateDescription& pipelineDescription)
-    : pImpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription))
+    : pimpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription))
 {
 }
 
 
 // Move constructor.
 DualTextureEffect::DualTextureEffect(DualTextureEffect&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -303,7 +303,7 @@ DualTextureEffect::DualTextureEffect(DualTextureEffect&& moveFrom) noexcept
 // Move assignment.
 DualTextureEffect& DualTextureEffect::operator= (DualTextureEffect&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -317,106 +317,106 @@ DualTextureEffect::~DualTextureEffect()
 // IEffect methods
 void DualTextureEffect::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 {
-    pImpl->Apply(commandList);
+    pimpl->Apply(commandList);
 }
 
 
 // Camera settings
-void XM_CALLCONV DualTextureEffect::SetWorld(FXMMATRIX value)
+void XM_CALLCONV DualTextureEffect::SetWorld(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.world = value;
+    pimpl->matrices.world = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV DualTextureEffect::SetView(FXMMATRIX value)
+void XM_CALLCONV DualTextureEffect::SetView(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.view = value;
+    pimpl->matrices.view = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV DualTextureEffect::SetProjection(FXMMATRIX value)
+void XM_CALLCONV DualTextureEffect::SetProjection(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.projection = value;
+    pimpl->matrices.projection = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
 }
 
 
-void XM_CALLCONV DualTextureEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
+void XM_CALLCONV DualTextureEffect::SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection)
 {
-    pImpl->matrices.world = world;
-    pImpl->matrices.view = view;
-    pImpl->matrices.projection = projection;
+    pimpl->matrices.world = world;
+    pimpl->matrices.view = view;
+    pimpl->matrices.projection = projection;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
 // Material settings
-void XM_CALLCONV DualTextureEffect::SetDiffuseColor(FXMVECTOR value)
+void XM_CALLCONV DualTextureEffect::SetDiffuseColor(DirectX::FXMVECTOR value)
 {
-    pImpl->color.diffuseColor = value;
+    pimpl->color.diffuseColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
 void DualTextureEffect::SetAlpha(float value)
 {
-    pImpl->color.alpha = value;
+    pimpl->color.alpha = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV DualTextureEffect::SetColorAndAlpha(FXMVECTOR value)
+void XM_CALLCONV DualTextureEffect::SetColorAndAlpha(DirectX::FXMVECTOR value)
 {
-    pImpl->color.diffuseColor = value;
-    pImpl->color.alpha = XMVectorGetW(value);
+    pimpl->color.diffuseColor = value;
+    pimpl->color.alpha = DirectX::XMVectorGetW(value);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
 // Fog settings.
 void DualTextureEffect::SetFogStart(float value)
 {
-    pImpl->fog.start = value;
+    pimpl->fog.start = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
 void DualTextureEffect::SetFogEnd(float value)
 {
-    pImpl->fog.end = value;
+    pimpl->fog.end = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV DualTextureEffect::SetFogColor(FXMVECTOR value)
+void XM_CALLCONV DualTextureEffect::SetFogColor(DirectX::FXMVECTOR value)
 {
-    pImpl->constants.fogColor = value;
+    pimpl->constants.fogColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 // Texture settings.
 void DualTextureEffect::SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor)
 {
-    pImpl->texture1 = srvDescriptor;
-    pImpl->texture1Sampler = samplerDescriptor;
+    pimpl->texture1 = srvDescriptor;
+    pimpl->texture1Sampler = samplerDescriptor;
 }
 
 
 void DualTextureEffect::SetTexture2(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor)
 {
-    pImpl->texture2 = srvDescriptor;
-    pImpl->texture2Sampler = samplerDescriptor;
+    pimpl->texture2 = srvDescriptor;
+    pimpl->texture2Sampler = samplerDescriptor;
 }

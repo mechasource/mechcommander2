@@ -8,10 +8,10 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "DirectXHelpers.h"
+#include "stdinc.h"
+#include "directxhelpers.h"
 #include "WaveBankReader.h"
-#include "PlatformHelpers.h"
+#include "platformhelpers.h"
 #include "SoundCommon.h"
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
@@ -19,7 +19,7 @@
 #include <shapexmacontext.h>
 #endif
 
-using namespace DirectX;
+using namespace directxtk;
 
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wcovered-switch-default"
@@ -127,18 +127,18 @@ public:
         mLengthInBytes = metadata.lengthBytes;
 
         #ifdef DIRECTX_ENABLE_SEEK_TABLES
-        WaveBankSeekData seekData = {};
-        (void)mWaveBank->GetPrivateData(index, &seekData, sizeof(seekData));
-        if (seekData.tag == WAVE_FORMAT_WMAUDIO2 || seekData.tag == WAVE_FORMAT_WMAUDIO3)
+        WaveBankSeekData seekdata = {};
+        (void)mWaveBank->GetPrivateData(index, &seekdata, sizeof(seekdata));
+        if (seekdata.tag == WAVE_FORMAT_WMAUDIO2 || seekdata.tag == WAVE_FORMAT_WMAUDIO3)
         {
-            mSeekCount = seekData.seekCount;
-            mSeekTable = seekData.seekTable;
+            mSeekCount = seekdata.seekCount;
+            mSeekTable = seekdata.seekTable;
         }
         #endif
 
-        mBufferEnd.reset(CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
-        mBufferRead.reset(CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
-        if (!mBufferEnd || !mBufferRead)
+        m_endbufferevent.reset(::CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
+        m_bufferreadevent.reset(::CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
+        if (!m_endbufferevent || !m_bufferreadevent)
         {
             throw std::exception("CreateEvent");
         }
@@ -159,7 +159,7 @@ public:
 
         if (mWaveBank && mWaveBank->GetAsyncHandle())
         {
-            for (size_t j = 0; j < MAX_BUFFER_COUNT; ++j)
+            for (auto j = 0u; j < MAX_BUFFER_COUNT; ++j)
             {
                 (void)CancelIoEx(mWaveBank->GetAsyncHandle(), &mPackets[j].request);
             }
@@ -171,7 +171,7 @@ public:
             mBase.engine = nullptr;
         }
 
-        for (size_t j = 0; j < MAX_BUFFER_COUNT; ++j)
+        for (auto j = 0u; j < MAX_BUFFER_COUNT; ++j)
         {
             mPackets[j] = {};
         }
@@ -231,7 +231,7 @@ public:
         if (!mPlaying)
             return;
 
-        HANDLE events[] = { mBufferRead.get(), mBufferEnd.get() };
+        HANDLE events[] = { m_bufferreadevent.get(), m_endbufferevent.get() };
         switch (WaitForMultipleObjectsEx(_countof(events), events, FALSE, 0, FALSE))
         {
         case WAIT_TIMEOUT:
@@ -242,7 +242,7 @@ public:
             DebugTrace("INFO (Streaming): Playing... (readpos %zu) [", mCurrentPosition);
             for (uint32_t k = 0; k < MAX_BUFFER_COUNT; ++k)
             {
-                DebugTrace("%ls ", s_debugState[static_cast<int>(mPackets[k].state)]);
+                DebugTrace("%ls ", s_debugState[static_cast<int32_t>(mPackets[k].state)]);
             }
             DebugTrace("]\n");
 #endif
@@ -255,7 +255,7 @@ public:
             DebugTrace("INFO (Streaming): Reading... (readpos %zu) [", mCurrentPosition);
             for (uint32_t k = 0; k < MAX_BUFFER_COUNT; ++k)
             {
-                DebugTrace("%ls ", s_debugState[static_cast<int>(mPackets[k].state)]);
+                DebugTrace("%ls ", s_debugState[static_cast<int32_t>(mPackets[k].state)]);
             }
             DebugTrace("]\n");
 #endif
@@ -299,8 +299,8 @@ public:
     bool                            mPrefetch;
     bool                            mSitching;
 
-    ScopedHandle                    mBufferEnd;
-    ScopedHandle                    mBufferRead;
+    wil::unique_handle                    m_endbufferevent;
+    wil::unique_handle                    m_bufferreadevent;
 
     enum class State : uint32_t
     {
@@ -311,7 +311,7 @@ public:
     };
 
 #ifdef VERBOSE_TRACE
-    static const wchar_t* s_debugState[4];
+    static const std::wstring_view& s_debugState[4];
 #endif
 
     struct BufferNotify : public IVoiceNotify
@@ -324,7 +324,7 @@ public:
         {
             assert(mParent != nullptr);
             mParent->mPackets[mIndex].state = State::FREE;
-            SetEvent(mParent->mBufferEnd.get());
+            ::SetEvent(mParent->m_endbufferevent.get());
         }
 
         void __cdecl OnCriticalError() override { assert(mParent != nullptr); mParent->OnCriticalError(); }
@@ -433,14 +433,14 @@ HRESULT SoundStreamInstance::Impl::AllocateStreamingBuffers(const WAVEFORMATEX* 
         mXMAMemory.reset();
         if (tag == WAVE_FORMAT_XMA2)
         {
-            void* xmaMemory = nullptr;
-            HRESULT hr = ApuAlloc(&xmaMemory, nullptr, static_cast<UINT32>(totalSize), SHAPE_XMA_INPUT_BUFFER_ALIGNMENT);
+            void* xmamemory = nullptr;
+            HRESULT hr = ApuAlloc(&xmamemory, nullptr, static_cast<uint32_t>(totalSize), SHAPE_XMA_INPUT_BUFFER_ALIGNMENT);
             if (FAILED(hr))
             {
                 DebugTrace("ERROR: ApuAlloc failed (%llu bytes). Did you allocate a large enough heap with ApuCreateHeap for all your XMA wave data?\n", totalSize);
                 return hr;
             }
-            mXMAMemory.reset(static_cast<uint8_t*>(xmaMemory));
+            mXMAMemory.reset(static_cast<uint8_t*>(xmamemory));
         }
         else
     #endif
@@ -465,18 +465,18 @@ HRESULT SoundStreamInstance::Impl::AllocateStreamingBuffers(const WAVEFORMATEX* 
     #else
         uint8_t* ptr = mStreamBuffer.get();
     #endif
-        for (size_t j = 0; j < MAX_BUFFER_COUNT; ++j)
+        for (auto j = 0u; j < MAX_BUFFER_COUNT; ++j)
         {
             mPackets[j].buffer = ptr;
             mPackets[j].stitchBuffer = nullptr;
-            mPackets[j].request.hEvent = mBufferRead.get();
+            mPackets[j].request.hEvent = m_bufferreadevent.get();
             mPackets[j].notify.Set(this, j);
             ptr += packetSize;
         }
 
         if (stitchSize > 0)
         {
-            for (size_t j = 0; j < MAX_BUFFER_COUNT; ++j)
+            for (auto j = 0u; j < MAX_BUFFER_COUNT; ++j)
             {
                 mPackets[j].stitchBuffer = ptr;
                 ptr += stitchSize;
@@ -520,11 +520,11 @@ HRESULT SoundStreamInstance::Impl::ReadBuffers() noexcept
                 mPackets[entry].valid = cbValid;
                 mPackets[entry].audioBytes = 0;
                 mPackets[entry].startPosition = static_cast<uint32_t>(mCurrentPosition);
-                mPackets[entry].request.Offset = static_cast<DWORD>(mOffsetBytes + mCurrentPosition);
+                mPackets[entry].request.Offset = static_cast<uint32_t>(mOffsetBytes + mCurrentPosition);
 
-                if (!ReadFile(async, mPackets[entry].buffer, uint32_t(mPacketSize), nullptr, &mPackets[entry].request))
+                if (!::ReadFile(async, mPackets[entry].buffer, uint32_t(mPacketSize), nullptr, &mPackets[entry].request))
                 {
-                    DWORD error = GetLastError();
+                    uint32_t error = GetLastError();
                     if (error != ERROR_IO_PENDING)
                     {
                         return HRESULT_FROM_WIN32(error);
@@ -560,11 +560,11 @@ HRESULT SoundStreamInstance::Impl::PlayBuffers() noexcept
     {
         if (mPackets[j].state == State::PENDING)
         {
-            DWORD cb = 0;
+            uint32_t bytes = 0;
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-            BOOL result = GetOverlappedResultEx(async, &mPackets[j].request, &cb, 0, FALSE);
+            BOOL result = ::GetOverlappedResultEx(async, &mPackets[j].request, reinterpret_cast<PULONG>(&bytes), 0, FALSE);
 #else
-            BOOL result = GetOverlappedResult(async, &mPackets[j].request, &cb, FALSE);
+            BOOL result = ::GetOverlappedResult(async, &mPackets[j].request, reinterpret_cast<PULONG>(&bytes), FALSE);
 #endif
             if (result)
             {
@@ -572,7 +572,7 @@ HRESULT SoundStreamInstance::Impl::PlayBuffers() noexcept
             }
             else
             {
-                DWORD error = GetLastError();
+                uint32_t error = GetLastError();
                 if (error != ERROR_IO_INCOMPLETE)
                 {
                     ThrowIfFailed(HRESULT_FROM_WIN32(error));
@@ -674,7 +674,7 @@ HRESULT SoundStreamInstance::Impl::PlayBuffers() noexcept
             mPackets[mCurrentPlayBuffer].audioBytes = valid;
 
             XAUDIO2_BUFFER buf = {};
-            buf.Flags = (endstream) ? XAUDIO2_END_OF_STREAM : 0;
+            buf.Flags = (endstream) ? XAUDIO2_END_OF_STREAM : 0u;
             buf.AudioBytes = valid;
             buf.pAudioData = ptr;
             buf.pContext = &mPackets[mCurrentPlayBuffer].notify;
@@ -694,7 +694,7 @@ HRESULT SoundStreamInstance::Impl::PlayBuffers() noexcept
                 }
                 else if (seekOffset > 0)
                 {
-                    for (uint32_t i = 0; i < wmaBuf.PacketCount; ++i)
+                    for (auto i = 0u; i < wmaBuf.PacketCount; ++i)
                     {
                         mSeekTableCopy[i] = mSeekTable[i + seekOffset] - mSeekTable[seekOffset - 1];
                     }
@@ -723,7 +723,7 @@ HRESULT SoundStreamInstance::Impl::PlayBuffers() noexcept
 }
 
 #ifdef VERBOSE_TRACE
-const wchar_t* SoundStreamInstance::Impl::s_debugState[4] =
+const std::wstring_view& SoundStreamInstance::Impl::s_debugState[4] =
 {
     L"FREE",
     L"PENDING",
@@ -739,15 +739,15 @@ const wchar_t* SoundStreamInstance::Impl::s_debugState[4] =
 
 // Private constructors
 _Use_decl_annotations_
-SoundStreamInstance::SoundStreamInstance(AudioEngine* engine, WaveBank* waveBank, unsigned int index, SOUND_EFFECT_INSTANCE_FLAGS flags) :
-    pImpl(std::make_unique<Impl>(engine, waveBank, index, flags))
+SoundStreamInstance::SoundStreamInstance(AudioEngine* engine, WaveBank* waveBank, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags) :
+    pimpl(std::make_unique<Impl>(engine, waveBank, index, flags))
 {
 }
 
 
 // Move constructor.
 SoundStreamInstance::SoundStreamInstance(SoundStreamInstance&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -755,7 +755,7 @@ SoundStreamInstance::SoundStreamInstance(SoundStreamInstance&& moveFrom) noexcep
 // Move assignment.
 SoundStreamInstance& SoundStreamInstance::operator= (SoundStreamInstance&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -763,12 +763,12 @@ SoundStreamInstance& SoundStreamInstance::operator= (SoundStreamInstance&& moveF
 // Public destructor.
 SoundStreamInstance::~SoundStreamInstance()
 {
-    if (pImpl)
+    if (pimpl)
     {
-        if (pImpl->mWaveBank)
+        if (pimpl->mWaveBank)
         {
-            pImpl->mWaveBank->UnregisterInstance(pImpl.get());
-            pImpl->mWaveBank = nullptr;
+            pimpl->mWaveBank->UnregisterInstance(pimpl.get());
+            pimpl->mWaveBank = nullptr;
         }
     }
 }
@@ -777,67 +777,67 @@ SoundStreamInstance::~SoundStreamInstance()
 // Public methods.
 void SoundStreamInstance::Play(bool loop)
 {
-    pImpl->Play(loop);
-    pImpl->mPlaying = true;
+    pimpl->Play(loop);
+    pimpl->mPlaying = true;
 }
 
 
 void SoundStreamInstance::Stop(bool immediate) noexcept
 {
-    pImpl->mBase.Stop(immediate, pImpl->mLooped);
-    pImpl->mPlaying = !immediate;
+    pimpl->mBase.Stop(immediate, pimpl->mLooped);
+    pimpl->mPlaying = !immediate;
 }
 
 
 void SoundStreamInstance::Pause() noexcept
 {
-    pImpl->mBase.Pause();
+    pimpl->mBase.Pause();
 }
 
 
 void SoundStreamInstance::Resume()
 {
-    pImpl->mBase.Resume();
+    pimpl->mBase.Resume();
 }
 
 
 void SoundStreamInstance::SetVolume(float volume)
 {
-    pImpl->mBase.SetVolume(volume);
+    pimpl->mBase.SetVolume(volume);
 }
 
 
 void SoundStreamInstance::SetPitch(float pitch)
 {
-    pImpl->mBase.SetPitch(pitch);
+    pimpl->mBase.SetPitch(pitch);
 }
 
 
 void SoundStreamInstance::SetPan(float pan)
 {
-    pImpl->mBase.SetPan(pan);
+    pimpl->mBase.SetPan(pan);
 }
 
 
 void SoundStreamInstance::Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords)
 {
-    pImpl->mBase.Apply3D(listener, emitter, rhcoords);
+    pimpl->mBase.Apply3D(listener, emitter, rhcoords);
 }
 
 
 // Public accessors.
 bool SoundStreamInstance::IsLooped() const noexcept
 {
-    return pImpl->mLooped;
+    return pimpl->mLooped;
 }
 
 
 SoundState SoundStreamInstance::GetState() noexcept
 {
-    SoundState state = pImpl->mBase.GetState(pImpl->mEndStream);
+    SoundState state = pimpl->mBase.GetState(pimpl->mEndStream);
     if (state == STOPPED)
     {
-        pImpl->mPlaying = false;
+        pimpl->mPlaying = false;
     }
     return state;
 }
@@ -845,5 +845,5 @@ SoundState SoundStreamInstance::GetState() noexcept
 
 IVoiceNotify* SoundStreamInstance::GetVoiceNotify() const noexcept
 {
-    return pImpl.get();
+    return pimpl.get();
 }

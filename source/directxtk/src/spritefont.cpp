@@ -7,20 +7,18 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "stdinc.h"
 
-#include <algorithm>
-#include <vector>
+#include "d3dx12.h"
+#include "spritefont.h"
+#include "directxhelpers.h"
+#include "binaryreader.h"
+#include "loaderhelpers.h"
+#include "resourceuploadbatch.h"
+#include "descriptorheap.h"
 
-#include "SpriteFont.h"
-#include "DirectXHelpers.h"
-#include "BinaryReader.h"
-#include "LoaderHelpers.h"
-#include "ResourceUploadBatch.h"
-#include "DescriptorHeap.h"
-
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 
 // Internal SpriteFont implementation class.
@@ -34,9 +32,9 @@ public:
         D3D12_GPU_DESCRIPTOR_HANDLE gpuDesc,
         bool forceSRGB) noexcept(false);
     Impl(D3D12_GPU_DESCRIPTOR_HANDLE texture,
-        XMUINT2 textureSize,
-        _In_reads_(glyphCount) Glyph const* glyphs,
-        size_t glyphCount,
+        DirectX::XMUINT2 textureSize,
+        _In_reads_(glyphcount) Glyph const* glyphs,
+        size_t glyphcount,
         float lineSpacing) noexcept(false);
 
     Glyph const* FindGlyph(wchar_t character) const;
@@ -44,7 +42,7 @@ public:
     void SetDefaultCharacter(wchar_t character);
 
     template<typename TAction>
-    void ForEachGlyph(_In_z_ wchar_t const* text, TAction action, bool ignoreWhitespace) const;
+    void ForEachGlyph(_In_ const std::wstring_view&  text, TAction action, bool ignorewhitespace) const;
 
     void CreateTextureResource(_In_ ID3D12Device* device,
         ResourceUploadBatch& upload,
@@ -53,31 +51,31 @@ public:
         uint32_t stride, uint32_t rows,
         _In_reads_(stride * rows) const uint8_t* data) noexcept(false);
 
-    const wchar_t* ConvertUTF8(_In_z_ const char *text) noexcept(false);
+    const std::wstring_view& ConvertUTF8(_In_z_ const std::string_view& text) noexcept(false);
 
     // Fields.
-    ComPtr<ID3D12Resource> textureResource;
+    wil::com_ptr<ID3D12Resource> textureResource;
     D3D12_GPU_DESCRIPTOR_HANDLE texture;
-    XMUINT2 textureSize;
+    DirectX::XMUINT2 textureSize;
     std::vector<Glyph> glyphs;
     std::vector<uint32_t> glyphsIndex;
     Glyph const* defaultGlyph;
     float lineSpacing;
 
 private:
-    size_t utfBufferSize;
-    std::unique_ptr<wchar_t[]> utfBuffer;
+    size_t m_utfbuffersize;
+    std::unique_ptr<wchar_t[]> m_utfbuffer;
 };
 
 
 // Constants.
-const XMFLOAT2 SpriteFont::Float2Zero(0, 0);
+const DirectX::XMFLOAT2 SpriteFont::Float2Zero(0, 0);
 
 static const char spriteFontMagic[] = "DXTKfont";
 
 
 // Comparison operators make our sorted glyph vector work with std::binary_search and lower_bound.
-namespace DirectX
+namespace directxtk
 {
     static inline bool operator< (SpriteFont::Glyph const& left, SpriteFont::Glyph const& right) noexcept
     {
@@ -109,7 +107,7 @@ SpriteFont::Impl::Impl(
         textureSize{},
         defaultGlyph(nullptr),
         lineSpacing(0),
-        utfBufferSize(0)
+        m_utfbuffersize(0)
 {
     // Validate the header.
     for (char const* magic = spriteFontMagic; *magic; magic++)
@@ -122,10 +120,10 @@ SpriteFont::Impl::Impl(
     }
 
     // Read the glyph data.
-    auto glyphCount = reader->Read<uint32_t>();
-    auto glyphData = reader->ReadArray<Glyph>(glyphCount);
+    auto glyphcount = reader->Read<uint32_t>();
+    auto glyphdata = reader->ReadArray<Glyph>(glyphcount);
 
-    glyphs.assign(glyphData, glyphData + glyphCount);
+    glyphs.assign(glyphdata, glyphdata + glyphcount);
     glyphsIndex.reserve(glyphs.size());
 
     for (auto& glyph : glyphs)
@@ -145,14 +143,14 @@ SpriteFont::Impl::Impl(
     auto textureStride = reader->Read<uint32_t>();
     auto textureRows = reader->Read<uint32_t>();
 
-    uint64_t dataSize = uint64_t(textureStride) * uint64_t(textureRows);
-    if (dataSize > UINT32_MAX)
+    uint64_t datasize = uint64_t(textureStride) * uint64_t(textureRows);
+    if (datasize > UINT32_MAX)
     {
         DebugTrace("ERROR: SpriteFont provided with an invalid .spritefont file\n");
         throw std::overflow_error("Invalid .spritefont file");
     }
 
-    auto textureData = reader->ReadArray<uint8_t>(static_cast<size_t>(dataSize));
+    auto textureData = reader->ReadArray<uint8_t>(static_cast<size_t>(datasize));
 
     if (forceSRGB)
     {
@@ -170,12 +168,12 @@ SpriteFont::Impl::Impl(
 
     // Create the shader resource view
     CreateShaderResourceView(
-        device, textureResource.Get(),
+        device, textureResource.get(),
         cpuDesc, false);
 
     // Save off the GPU descriptor pointer and size.
     texture = gpuDesc;
-    textureSize = XMUINT2(textureWidth, textureHeight);
+    textureSize = DirectX::XMUINT2(textureWidth, textureHeight);
 }
 
 
@@ -183,18 +181,18 @@ SpriteFont::Impl::Impl(
 _Use_decl_annotations_
 SpriteFont::Impl::Impl(
     D3D12_GPU_DESCRIPTOR_HANDLE itexture,
-    XMUINT2 itextureSize,
+    DirectX::XMUINT2 itextureSize,
     Glyph const* iglyphs,
-    size_t glyphCount,
+    size_t glyphcount,
     float ilineSpacing) noexcept(false) :
         texture(itexture),
         textureSize(itextureSize),
-        glyphs(iglyphs, iglyphs + glyphCount),
+        glyphs(iglyphs, iglyphs + glyphcount),
         defaultGlyph(nullptr),
         lineSpacing(ilineSpacing),
-        utfBufferSize(0)
+        m_utfbuffersize(0)
 {
-    if (!std::is_sorted(iglyphs, iglyphs + glyphCount))
+    if (!std::is_sorted(iglyphs, iglyphs + glyphcount))
     {
         throw std::exception("Glyphs must be in ascending codepoint order");
     }
@@ -270,16 +268,14 @@ void SpriteFont::Impl::SetDefaultCharacter(wchar_t character)
 
 // The core glyph layout algorithm, shared between DrawString and MeasureString.
 template<typename TAction>
-void SpriteFont::Impl::ForEachGlyph(_In_z_ wchar_t const* text, TAction action, bool ignoreWhitespace) const
+void SpriteFont::Impl::ForEachGlyph(_In_ const std::wstring_view& text, TAction action, bool ignorewhitespace) const
 {
     float x = 0;
     float y = 0;
 
-    for (; *text; text++)
-    {
-        wchar_t character = *text;
-
-        switch (character)
+	for(wchar_t character : text) 
+	{
+		switch (character)
         {
             case '\r':
                 // Skip carriage returns.
@@ -302,7 +298,7 @@ void SpriteFont::Impl::ForEachGlyph(_In_z_ wchar_t const* text, TAction action, 
 
                 float advance = float(glyph->Subrect.right) - float(glyph->Subrect.left) + glyph->XAdvance;
 
-                if (!ignoreWhitespace
+                if (!ignorewhitespace
                     || !iswspace(character)
                     || ((glyph->Subrect.right - glyph->Subrect.left) > 1)
                     || ((glyph->Subrect.bottom - glyph->Subrect.top) > 1))
@@ -350,43 +346,43 @@ void SpriteFont::Impl::CreateTextureResource(
         &desc,
         D3D12_RESOURCE_STATE_COPY_DEST,
         nullptr,
-        IID_GRAPHICS_PPV_ARGS(textureResource.ReleaseAndGetAddressOf())));
+        IID_GRAPHICS_PPV_ARGS(textureResource.put())));
 
-    SetDebugObjectName(textureResource.Get(), L"SpriteFont:Texture");
+    SetDebugObjectName(textureResource.get(), L"SpriteFont:Texture");
 
-    D3D12_SUBRESOURCE_DATA initData = { data, static_cast<LONG_PTR>(stride), static_cast<LONG_PTR>(sliceBytes) };
+    D3D12_SUBRESOURCE_DATA initData = { data, static_cast<intptr_t>(stride), static_cast<intptr_t>(sliceBytes) };
 
     upload.Upload(
-        textureResource.Get(),
+        textureResource.get(),
         0,
         &initData,
         1);
 
     upload.Transition(
-        textureResource.Get(),
+        textureResource.get(),
         D3D12_RESOURCE_STATE_COPY_DEST,
         D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
 
-const wchar_t* SpriteFont::Impl::ConvertUTF8(_In_z_ const char *text) noexcept(false)
+const std::wstring_view& SpriteFont::Impl::ConvertUTF8(_In_ const std::string_view& text) noexcept(false)
 {
-    if (!utfBuffer)
+    if (!m_utfbuffer)
     {
-        utfBufferSize = 1024;
-        utfBuffer.reset(new wchar_t[1024]);
+        m_utfbuffersize = 1024;
+        m_utfbuffer.reset(new wchar_t[1024]);
     }
 
-    int result = MultiByteToWideChar(CP_UTF8, 0, text, -1, utfBuffer.get(), static_cast<int>(utfBufferSize));
+    int32_t result = MultiByteToWideChar(CP_UTF8, 0, text.data(), -1, m_utfbuffer.get(), static_cast<int32_t>(m_utfbuffersize));
     if (!result && (GetLastError() == ERROR_INSUFFICIENT_BUFFER))
     {
         // Compute required buffer size
-        result = MultiByteToWideChar(CP_UTF8, 0, text, -1, nullptr, 0);
-        utfBufferSize = AlignUp(static_cast<size_t>(result), 1024u);
-        utfBuffer.reset(new wchar_t[utfBufferSize]);
+        result = MultiByteToWideChar(CP_UTF8, 0, text.data(), -1, nullptr, 0);
+        m_utfbuffersize = AlignUp(static_cast<size_t>(result), 1024u);
+        m_utfbuffer.reset(new wchar_t[m_utfbuffersize]);
 
         // Retry conversion
-        result = MultiByteToWideChar(CP_UTF8, 0, text, -1, utfBuffer.get(), static_cast<int>(utfBufferSize));
+        result = MultiByteToWideChar(CP_UTF8, 0, text.data(), -1, m_utfbuffer.get(), static_cast<int32_t>(m_utfbuffersize));
     }
 
     if (!result)
@@ -395,41 +391,41 @@ const wchar_t* SpriteFont::Impl::ConvertUTF8(_In_z_ const char *text) noexcept(f
         throw std::exception("MultiByteToWideChar");
     }
 
-    return utfBuffer.get();
+    return m_utfbuffer.get();	// C4172: returning address of local variable or temporary
 }
 
 
 // Construct from a binary file created by the MakeSpriteFont utility.
 _Use_decl_annotations_
-SpriteFont::SpriteFont(ID3D12Device* device, ResourceUploadBatch& upload, wchar_t const* fileName, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorDest, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorDest, bool forceSRGB)
+SpriteFont::SpriteFont(ID3D12Device* device, ResourceUploadBatch& upload, const std::wstring_view& filename, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorDest, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorDest, bool forceSRGB)
 {
-    BinaryReader reader(fileName);
+    BinaryReader reader(filename);
 
-    pImpl = std::make_unique<Impl>(device, upload, &reader, cpuDescriptorDest, gpuDescriptorDest, forceSRGB);
+    pimpl = std::make_unique<Impl>(device, upload, &reader, cpuDescriptorDest, gpuDescriptorDest, forceSRGB);
 }
 
 
 // Construct from a binary blob created by the MakeSpriteFont utility and already loaded into memory.
 _Use_decl_annotations_
-SpriteFont::SpriteFont(ID3D12Device* device, ResourceUploadBatch& upload, uint8_t const* dataBlob, size_t dataSize, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorDest, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorDest, bool forceSRGB)
+SpriteFont::SpriteFont(ID3D12Device* device, ResourceUploadBatch& upload, uint8_t const* datablob, size_t datasize, D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorDest, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorDest, bool forceSRGB)
 {
-    BinaryReader reader(dataBlob, dataSize);
+    BinaryReader reader(datablob, datasize);
 
-    pImpl = std::make_unique<Impl>(device, upload, &reader, cpuDescriptorDest, gpuDescriptorDest, forceSRGB);
+    pimpl = std::make_unique<Impl>(device, upload, &reader, cpuDescriptorDest, gpuDescriptorDest, forceSRGB);
 }
 
 
 // Construct from arbitrary user specified glyph data (for those not using the MakeSpriteFont utility).
 _Use_decl_annotations_
-SpriteFont::SpriteFont(D3D12_GPU_DESCRIPTOR_HANDLE texture, XMUINT2 textureSize, Glyph const* glyphs, size_t glyphCount, float lineSpacing)
-    : pImpl(std::make_unique<Impl>(texture, textureSize, glyphs, glyphCount, lineSpacing))
+SpriteFont::SpriteFont(D3D12_GPU_DESCRIPTOR_HANDLE texture, DirectX::XMUINT2 textureSize, Glyph const* glyphs, size_t glyphcount, float lineSpacing)
+    : pimpl(std::make_unique<Impl>(texture, textureSize, glyphs, glyphcount, lineSpacing))
 {
 }
 
 
 // Move constructor.
 SpriteFont::SpriteFont(SpriteFont&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -437,7 +433,7 @@ SpriteFont::SpriteFont(SpriteFont&& moveFrom) noexcept
 // Move assignment.
 SpriteFont& SpriteFont::operator= (SpriteFont&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -449,31 +445,31 @@ SpriteFont::~SpriteFont()
 
 
 // Wide-character / UTF-16LE
-void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, float scale, SpriteEffects effects, float layerDepth) const
+void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_ const std::wstring_view&  text, DirectX::XMFLOAT2 const& position, DirectX::FXMVECTOR color, float rotation, DirectX::XMFLOAT2 const& origin, float scale, SpriteEffects effects, float layerDepth) const
 {
-    DrawString(spriteBatch, text, XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMVectorReplicate(scale), effects, layerDepth);
+    DrawString(spriteBatch, text, XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), DirectX::XMVectorReplicate(scale), effects, layerDepth);
 }
 
 
-void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, XMFLOAT2 const& scale, SpriteEffects effects, float layerDepth) const
+void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_ const std::wstring_view& text, DirectX::XMFLOAT2 const& position, DirectX::FXMVECTOR color, float rotation, DirectX::XMFLOAT2 const& origin, DirectX::XMFLOAT2 const& scale, SpriteEffects effects, float layerDepth) const
 {
     DrawString(spriteBatch, text, XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMLoadFloat2(&scale), effects, layerDepth);
 }
 
 
-void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, float scale, SpriteEffects effects, float layerDepth) const
+void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_ const std::wstring_view& text, DirectX::FXMVECTOR position, DirectX::FXMVECTOR color, float rotation, DirectX::FXMVECTOR origin, float scale, SpriteEffects effects, float layerDepth) const
 {
-    DrawString(spriteBatch, text, position, color, rotation, origin, XMVectorReplicate(scale), effects, layerDepth);
+    DrawString(spriteBatch, text, position, color, rotation, origin, DirectX::XMVectorReplicate(scale), effects, layerDepth);
 }
 
 
-void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wchar_t const* text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, GXMVECTOR scale, SpriteEffects effects, float layerDepth) const
+void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_ const std::wstring_view& text, DirectX::FXMVECTOR position, DirectX::FXMVECTOR color, float rotation, DirectX::FXMVECTOR origin, DirectX::GXMVECTOR scale, SpriteEffects effects, float layerDepth) const
 {
     static_assert(SpriteEffects_FlipHorizontally == 1 &&
                   SpriteEffects_FlipVertically == 2, "If you change these enum values, the following tables must be updated to match");
 
     // Lookup table indicates which way to move along each axis per SpriteEffects enum value.
-    static XMVECTORF32 axisDirectionTable[4] =
+    static DirectX::XMVECTORF32 axisDirectionTable[4] =
     {
         { { { -1, -1, 0, 0 } } },
         { { {  1, -1, 0, 0 } } },
@@ -482,7 +478,7 @@ void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wc
     };
 
     // Lookup table indicates which axes are mirrored for each SpriteEffects enum value.
-    static XMVECTORF32 axisIsMirroredTable[4] =
+    static DirectX::XMVECTORF32 axisIsMirroredTable[4] =
     {
         { { { 0, 0, 0, 0 } } },
         { { { 1, 0, 0, 0 } } },
@@ -490,7 +486,7 @@ void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wc
         { { { 1, 1, 0, 0 } } },
     };
 
-    XMVECTOR baseOffset = origin;
+    DirectX::XMVECTOR baseOffset = origin;
 
     // If the text is mirrored, offset the start position accordingly.
     if (effects)
@@ -502,33 +498,33 @@ void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wc
     }
 
     // Draw each character in turn.
-    pImpl->ForEachGlyph(text, [&](Glyph const* glyph, float x, float y, float advance)
+    pimpl->ForEachGlyph(text, [&](Glyph const* glyph, float x, float y, float advance)
     {
         UNREFERENCED_PARAMETER(advance);
 
-        XMVECTOR offset = XMVectorMultiplyAdd(XMVectorSet(x, y + glyph->YOffset, 0, 0), axisDirectionTable[effects & 3], baseOffset);
+        DirectX::XMVECTOR offset = DirectX::XMVectorMultiplyAdd(DirectX::XMVectorSet(x, y + glyph->YOffset, 0, 0), axisDirectionTable[effects & 3], baseOffset);
 
         if (effects)
         {
             // For mirrored characters, specify bottom and/or right instead of top left.
-            XMVECTOR glyphRect = XMConvertVectorIntToFloat(XMLoadInt4(reinterpret_cast<uint32_t const*>(&glyph->Subrect)), 0);
+            DirectX::XMVECTOR glyphRect = DirectX::XMConvertVectorIntToFloat(DirectX::XMLoadInt4(reinterpret_cast<uint32_t const*>(&glyph->Subrect)), 0);
 
             // xy = glyph width/height.
-            glyphRect = XMVectorSubtract(XMVectorSwizzle<2, 3, 0, 1>(glyphRect), glyphRect);
+            glyphRect = DirectX::XMVectorSubtract(DirectX::XMVectorSwizzle<2, 3, 0, 1>(glyphRect), glyphRect);
 
-            offset = XMVectorMultiplyAdd(glyphRect, axisIsMirroredTable[effects & 3], offset);
+            offset = DirectX::XMVectorMultiplyAdd(glyphRect, axisIsMirroredTable[effects & 3], offset);
         }
 
-        spriteBatch->Draw(pImpl->texture, pImpl->textureSize, position, &glyph->Subrect, color, rotation, offset, scale, effects, layerDepth);
+        spriteBatch->Draw(pimpl->texture, pimpl->textureSize, position, &glyph->Subrect, color, rotation, offset, scale, effects, layerDepth);
     }, true);
 }
 
 
-XMVECTOR XM_CALLCONV SpriteFont::MeasureString(_In_z_ wchar_t const* text, bool ignoreWhitespace) const
+DirectX::XMVECTOR XM_CALLCONV SpriteFont::MeasureString(_In_ const std::wstring_view& text, bool ignorewhitespace) const
 {
-    XMVECTOR result = XMVectorZero();
+    DirectX::XMVECTOR result = DirectX::XMVectorZero();
 
-    pImpl->ForEachGlyph(text, [&](Glyph const* glyph, float x, float y, float advance)
+    pimpl->ForEachGlyph(text, [&](Glyph const* glyph, float x, float y, float advance)
         {
             UNREFERENCED_PARAMETER(advance);
 
@@ -536,26 +532,26 @@ XMVECTOR XM_CALLCONV SpriteFont::MeasureString(_In_z_ wchar_t const* text, bool 
             auto h = static_cast<float>(glyph->Subrect.bottom - glyph->Subrect.top) + glyph->YOffset;
 
             h = iswspace(wchar_t(glyph->Character)) ?
-                pImpl->lineSpacing :
-                std::max(h, pImpl->lineSpacing);
+                pimpl->lineSpacing :
+                std::max(h, pimpl->lineSpacing);
 
-            result = XMVectorMax(result, XMVectorSet(x + w, y + h, 0, 0));
-        }, ignoreWhitespace);
+            result = DirectX::XMVectorMax(result, DirectX::XMVectorSet(x + w, y + h, 0, 0));
+        }, ignorewhitespace);
 
     return result;
 }
 
 
-RECT SpriteFont::MeasureDrawBounds(_In_z_ wchar_t const* text, XMFLOAT2 const& position, bool ignoreWhitespace) const
+RECT SpriteFont::MeasureDrawBounds(_In_ const std::wstring_view& text, DirectX::XMFLOAT2 const& position, bool ignorewhitespace) const
 {
     RECT result = { LONG_MAX, LONG_MAX, 0, 0 };
 
-    pImpl->ForEachGlyph(text, [&](Glyph const* glyph, float x, float y, float advance) noexcept
+    pimpl->ForEachGlyph(text, [&](Glyph const* glyph, float x, float y, float advance) noexcept
         {
             auto isWhitespace = iswspace(wchar_t(glyph->Character));
             auto w = static_cast<float>(glyph->Subrect.right - glyph->Subrect.left);
             auto h = isWhitespace ?
-                pImpl->lineSpacing :
+                pimpl->lineSpacing :
                 static_cast<float>(glyph->Subrect.bottom - glyph->Subrect.top);
 
             float minX = position.x + x;
@@ -565,17 +561,17 @@ RECT SpriteFont::MeasureDrawBounds(_In_z_ wchar_t const* text, XMFLOAT2 const& p
             float maxY = minY + h;
 
             if (minX < float(result.left))
-                result.left = long(minX);
+                result.left = int32_t(minX);
 
             if (minY < float(result.top))
-                result.top = long(minY);
+                result.top = int32_t(minY);
 
             if (float(result.right) < maxX)
-                result.right = long(maxX);
+                result.right = int32_t(maxX);
 
             if (float(result.bottom) < maxY)
-                result.bottom = long(maxY);
-        }, ignoreWhitespace);
+                result.bottom = int32_t(maxY);
+        }, ignorewhitespace);
 
     if (result.left == LONG_MAX)
     {
@@ -587,107 +583,107 @@ RECT SpriteFont::MeasureDrawBounds(_In_z_ wchar_t const* text, XMFLOAT2 const& p
 }
 
 
-RECT XM_CALLCONV SpriteFont::MeasureDrawBounds(_In_z_ wchar_t const* text, FXMVECTOR position, bool ignoreWhitespace) const
+RECT XM_CALLCONV SpriteFont::MeasureDrawBounds(_In_ const std::wstring_view& text, DirectX::FXMVECTOR position, bool ignorewhitespace) const
 {
-    XMFLOAT2 pos;
+    DirectX::XMFLOAT2 pos;
     XMStoreFloat2(&pos, position);
 
-    return MeasureDrawBounds(text, pos, ignoreWhitespace);
+    return MeasureDrawBounds(text, pos, ignorewhitespace);
 }
 
 
 // UTF-8
-void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ char const* text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, float scale, SpriteEffects effects, float layerDepth) const
+void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_ const std::string_view& text, DirectX::XMFLOAT2 const& position, DirectX::FXMVECTOR color, float rotation, DirectX::XMFLOAT2 const& origin, float scale, SpriteEffects effects, float layerDepth) const
 {
-    DrawString(spriteBatch, pImpl->ConvertUTF8(text), XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMVectorReplicate(scale), effects, layerDepth);
+    DrawString(spriteBatch, pimpl->ConvertUTF8(text), XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), DirectX::XMVectorReplicate(scale), effects, layerDepth);
 }
 
 
-void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ char const* text, XMFLOAT2 const& position, FXMVECTOR color, float rotation, XMFLOAT2 const& origin, XMFLOAT2 const& scale, SpriteEffects effects, float layerDepth) const
+void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_ const std::string_view& text, DirectX::XMFLOAT2 const& position, DirectX::FXMVECTOR color, float rotation, DirectX::XMFLOAT2 const& origin, DirectX::XMFLOAT2 const& scale, SpriteEffects effects, float layerDepth) const
 {
-    DrawString(spriteBatch, pImpl->ConvertUTF8(text), XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMLoadFloat2(&scale), effects, layerDepth);
+    DrawString(spriteBatch, pimpl->ConvertUTF8(text), XMLoadFloat2(&position), color, rotation, XMLoadFloat2(&origin), XMLoadFloat2(&scale), effects, layerDepth);
 }
 
 
-void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ char const* text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, float scale, SpriteEffects effects, float layerDepth) const
+void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_ const std::string_view& text, DirectX::FXMVECTOR position, DirectX::FXMVECTOR color, float rotation, DirectX::FXMVECTOR origin, float scale, SpriteEffects effects, float layerDepth) const
 {
-    DrawString(spriteBatch, pImpl->ConvertUTF8(text), position, color, rotation, origin, XMVectorReplicate(scale), effects, layerDepth);
+    DrawString(spriteBatch, pimpl->ConvertUTF8(text), position, color, rotation, origin, DirectX::XMVectorReplicate(scale), effects, layerDepth);
 }
 
 
-void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ char const* text, FXMVECTOR position, FXMVECTOR color, float rotation, FXMVECTOR origin, GXMVECTOR scale, SpriteEffects effects, float layerDepth) const
+void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_ const std::string_view& text, DirectX::FXMVECTOR position, DirectX::FXMVECTOR color, float rotation, DirectX::FXMVECTOR origin, DirectX::GXMVECTOR scale, SpriteEffects effects, float layerDepth) const
 {
-    DrawString(spriteBatch, pImpl->ConvertUTF8(text), position, color, rotation, origin, scale, effects, layerDepth);
+    DrawString(spriteBatch, pimpl->ConvertUTF8(text), position, color, rotation, origin, scale, effects, layerDepth);
 }
 
 
-XMVECTOR XM_CALLCONV SpriteFont::MeasureString(_In_z_ char const* text, bool ignoreWhitespace) const
+DirectX::XMVECTOR XM_CALLCONV SpriteFont::MeasureString(_In_ const std::string_view& text, bool ignorewhitespace) const
 {
-    return MeasureString(pImpl->ConvertUTF8(text), ignoreWhitespace);
+    return MeasureString(pimpl->ConvertUTF8(text), ignorewhitespace);
 }
 
 
-RECT SpriteFont::MeasureDrawBounds(_In_z_ char const* text, XMFLOAT2 const& position, bool ignoreWhitespace) const
+RECT SpriteFont::MeasureDrawBounds(_In_ const std::string_view& text, DirectX::XMFLOAT2 const& position, bool ignorewhitespace) const
 {
-    return MeasureDrawBounds(pImpl->ConvertUTF8(text), position, ignoreWhitespace);
+    return MeasureDrawBounds(pimpl->ConvertUTF8(text), position, ignorewhitespace);
 }
 
 
-RECT XM_CALLCONV SpriteFont::MeasureDrawBounds(_In_z_ char const* text, FXMVECTOR position, bool ignoreWhitespace) const
+RECT XM_CALLCONV SpriteFont::MeasureDrawBounds(_In_ const std::string_view& text, DirectX::FXMVECTOR position, bool ignorewhitespace) const
 {
-    XMFLOAT2 pos;
+    DirectX::XMFLOAT2 pos;
     XMStoreFloat2(&pos, position);
 
-    return MeasureDrawBounds(pImpl->ConvertUTF8(text), pos, ignoreWhitespace);
+    return MeasureDrawBounds(pimpl->ConvertUTF8(text), pos, ignorewhitespace);
 }
 
 
 // Spacing properties
 float SpriteFont::GetLineSpacing() const noexcept
 {
-    return pImpl->lineSpacing;
+    return pimpl->lineSpacing;
 }
 
 
 void SpriteFont::SetLineSpacing(float spacing)
 {
-    pImpl->lineSpacing = spacing;
+    pimpl->lineSpacing = spacing;
 }
 
 
 // Font properties
 wchar_t SpriteFont::GetDefaultCharacter() const noexcept
 {
-    return static_cast<wchar_t>(pImpl->defaultGlyph ? pImpl->defaultGlyph->Character : 0);
+    return static_cast<wchar_t>(pimpl->defaultGlyph ? pimpl->defaultGlyph->Character : 0);
 }
 
 
 void SpriteFont::SetDefaultCharacter(wchar_t character)
 {
-    pImpl->SetDefaultCharacter(character);
+    pimpl->SetDefaultCharacter(character);
 }
 
 
 bool SpriteFont::ContainsCharacter(wchar_t character) const
 {
-    return std::binary_search(pImpl->glyphs.begin(), pImpl->glyphs.end(), character);
+    return std::binary_search(pimpl->glyphs.begin(), pimpl->glyphs.end(), character);
 }
 
 
 // Custom layout/rendering
 SpriteFont::Glyph const* SpriteFont::FindGlyph(wchar_t character) const
 {
-    return pImpl->FindGlyph(character);
+    return pimpl->FindGlyph(character);
 }
 
 
 D3D12_GPU_DESCRIPTOR_HANDLE SpriteFont::GetSpriteSheet() const noexcept
 {
-    return pImpl->texture;
+    return pimpl->texture;
 }
 
 
-XMUINT2 SpriteFont::GetSpriteSheetSize() const noexcept
+DirectX::XMUINT2 SpriteFont::GetSpriteSheetSize() const noexcept
 {
-    return pImpl->textureSize;
+    return pimpl->textureSize;
 }

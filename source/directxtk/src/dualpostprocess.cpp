@@ -7,33 +7,34 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "PostProcess.h"
+#include "stdinc.h"
 
+#include "d3dx12.h"
+#include "postprocess.h"
 #include "AlignedNew.h"
-#include "CommonStates.h"
+#include "commonstates.h"
 #include "DemandCreate.h"
-#include "DirectXHelpers.h"
+#include "directxhelpers.h"
 #include "EffectPipelineStateDescription.h"
-#include "GraphicsMemory.h"
+#include "graphicsmemory.h"
 #include "SharedResourcePool.h"
 
-using namespace DirectX;
+using namespace directxtk;
 
-using Microsoft::WRL::ComPtr;
+// using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    constexpr int c_MaxSamples = 16;
+    constexpr int32_t c_MaxSamples = 16;
 
-    constexpr int Dirty_ConstantBuffer  = 0x01;
-    constexpr int Dirty_Parameters      = 0x02;
+    constexpr int32_t Dirty_ConstantBuffer  = 0x01;
+    constexpr int32_t Dirty_Parameters      = 0x02;
 
     // Constant buffer layout. Must match the shader!
     __declspec(align(16)) struct PostProcessConstants
     {
-        XMVECTOR sampleOffsets[c_MaxSamples];
-        XMVECTOR sampleWeights[c_MaxSamples];
+        DirectX::XMVECTOR sampleOffsets[c_MaxSamples];
+        DirectX::XMVECTOR sampleWeights[c_MaxSamples];
     };
 
     static_assert((sizeof(PostProcessConstants) % 16) == 0, "CB size not padded correctly");
@@ -78,9 +79,9 @@ namespace
 
         ID3D12RootSignature* GetRootSignature(const D3D12_ROOT_SIGNATURE_DESC& desc)
         {
-            return DemandCreate(mRootSignature, mMutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
+            return DemandCreate(m_prootsignature, mMutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
             {
-                HRESULT hr = CreateRootSignature(mDevice.Get(), &desc, pResult);
+                HRESULT hr = CreateRootSignature(mDevice.get(), &desc, pResult);
 
                 if (SUCCEEDED(hr))
                     SetDebugObjectName(*pResult, L"DualPostProcess");
@@ -89,11 +90,11 @@ namespace
             });
         }
 
-        ID3D12Device* GetDevice() const noexcept { return mDevice.Get(); }
+        ID3D12Device* GetDevice() const noexcept { return mDevice.get(); }
 
     protected:
-        ComPtr<ID3D12Device>                        mDevice;
-        Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature;
+        wil::com_ptr<ID3D12Device>                        mDevice;
+        wil::com_ptr<ID3D12RootSignature> m_prootsignature;
         std::mutex                                  mMutex;
     };
 }
@@ -128,16 +129,16 @@ public:
     float                                   bloomBaseSaturation;
 
 private:
-    int                                     mDirtyFlags;
+    int32_t                                     mDirtyFlags;
 
    // D3D constant buffer holds a copy of the same data as the public 'constants' field.
     GraphicsResource mConstantBuffer;
 
     // Per instance cache of PSOs, populated with variants for each shader & layout
-    Microsoft::WRL::ComPtr<ID3D12PipelineState> mPipelineState;
+    wil::com_ptr<ID3D12PipelineState> m_ppipelinestate;
 
     // Per instance root signature
-    ID3D12RootSignature* mRootSignature;
+    ID3D12RootSignature* m_prootsignature;
 
     // Per-device resources.
     std::shared_ptr<DeviceResources> mDeviceResources;
@@ -207,10 +208,10 @@ DualPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState& 
 
         rsigDesc.Init(_countof(rootParameters), rootParameters, 1, &sampler, rootSignatureFlags);
 
-        mRootSignature = mDeviceResources->GetRootSignature(rsigDesc);
+        m_prootsignature = mDeviceResources->GetRootSignature(rsigDesc);
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     // Create pipeline state.
     EffectPipelineStateDescription psd(nullptr,
@@ -222,12 +223,12 @@ DualPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState& 
 
     psd.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         vertexShader,
         pixelShaders[ifx],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"DualPostProcess");
+    SetDebugObjectName(m_ppipelinestate.get(), L"DualPostProcess");
 }
 
 
@@ -235,7 +236,7 @@ DualPostProcess::Impl::Impl(_In_ ID3D12Device* device, const RenderTargetState& 
 void DualPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList)
 {
     // Set the root signature.
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set the texture.
     if (!texture.ptr || !texture2.ptr)
@@ -255,14 +256,14 @@ void DualPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList)
         switch (fx)
         {
         case Merge:
-            constants.sampleWeights[0] = XMVectorReplicate(mergeWeight1);
-            constants.sampleWeights[1] = XMVectorReplicate(mergeWeight2);
+            constants.sampleWeights[0] = DirectX::XMVectorReplicate(mergeWeight1);
+            constants.sampleWeights[1] = DirectX::XMVectorReplicate(mergeWeight2);
             break;
 
         case BloomCombine:
-            constants.sampleWeights[0] = XMVectorSet(bloomBaseSaturation, bloomSaturation, 0.f, 0.f);
-            constants.sampleWeights[1] = XMVectorReplicate(bloomBaseIntensity);
-            constants.sampleWeights[2] = XMVectorReplicate(bloomIntensity);
+            constants.sampleWeights[0] = DirectX::XMVectorSet(bloomBaseSaturation, bloomSaturation, 0.f, 0.f);
+            constants.sampleWeights[1] = DirectX::XMVectorReplicate(bloomBaseIntensity);
+            constants.sampleWeights[2] = DirectX::XMVectorReplicate(bloomIntensity);
             break;
 
         default:
@@ -279,7 +280,7 @@ void DualPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList)
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, mConstantBuffer.GpuAddress());
 
     // Set the pipeline state.
-    commandList->SetPipelineState(mPipelineState.Get());
+    commandList->SetPipelineState(m_ppipelinestate.get());
 
     // Draw quad.
     commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -289,14 +290,14 @@ void DualPostProcess::Impl::Process(_In_ ID3D12GraphicsCommandList* commandList)
 
 // Public constructor.
 DualPostProcess::DualPostProcess(_In_ ID3D12Device* device, const RenderTargetState& rtState, Effect fx)
-  : pImpl(std::make_unique<Impl>(device, rtState, fx))
+  : pimpl(std::make_unique<Impl>(device, rtState, fx))
 {
 }
 
 
 // Move constructor.
 DualPostProcess::DualPostProcess(DualPostProcess&& moveFrom) noexcept
-  : pImpl(std::move(moveFrom.pImpl))
+  : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -304,7 +305,7 @@ DualPostProcess::DualPostProcess(DualPostProcess&& moveFrom) noexcept
 // Move assignment.
 DualPostProcess& DualPostProcess::operator= (DualPostProcess&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -318,36 +319,36 @@ DualPostProcess::~DualPostProcess()
 // IPostProcess methods.
 void DualPostProcess::Process(_In_ ID3D12GraphicsCommandList* commandList)
 {
-    pImpl->Process(commandList);
+    pimpl->Process(commandList);
 }
 
 
 // Properties
 void DualPostProcess::SetSourceTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor)
 {
-    pImpl->texture = srvDescriptor;
+    pimpl->texture = srvDescriptor;
 }
 
 
 void DualPostProcess::SetSourceTexture2(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor)
 {
-    pImpl->texture2 = srvDescriptor;
+    pimpl->texture2 = srvDescriptor;
 }
 
 
 void DualPostProcess::SetMergeParameters(float weight1, float weight2)
 {
-    pImpl->mergeWeight1 = weight1;
-    pImpl->mergeWeight2 = weight2;
-    pImpl->SetDirtyFlag();
+    pimpl->mergeWeight1 = weight1;
+    pimpl->mergeWeight2 = weight2;
+    pimpl->SetDirtyFlag();
 }
 
 
 void DualPostProcess::SetBloomCombineParameters(float bloom, float base, float bloomSaturation, float baseSaturation)
 {
-    pImpl->bloomIntensity = bloom;
-    pImpl->bloomBaseIntensity = base;
-    pImpl->bloomSaturation = bloomSaturation;
-    pImpl->bloomBaseSaturation = baseSaturation;
-    pImpl->SetDirtyFlag();
+    pimpl->bloomIntensity = bloom;
+    pimpl->bloomBaseIntensity = base;
+    pimpl->bloomSaturation = bloomSaturation;
+    pimpl->bloomBaseSaturation = baseSaturation;
+    pimpl->SetDirtyFlag();
 }

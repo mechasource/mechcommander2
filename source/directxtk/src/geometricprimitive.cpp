@@ -7,19 +7,20 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "GeometricPrimitive.h"
+#include "stdinc.h"
 
-#include "CommonStates.h"
-#include "DirectXHelpers.h"
-#include "Effects.h"
-#include "Geometry.h"
-#include "GraphicsMemory.h"
-#include "PlatformHelpers.h"
-#include "ResourceUploadBatch.h"
+#include "d3dx12.h"
+#include "geometricprimitive.h"
+#include "commonstates.h"
+#include "directxhelpers.h"
+#include "effects.h"
+#include "geometry.h"
+#include "graphicsmemory.h"
+#include "platformhelpers.h"
+#include "resourceuploadbatch.h"
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 // Internal GeometricPrimitive implementation class.
 class GeometricPrimitive::Impl
@@ -42,11 +43,11 @@ public:
 
     void Draw(_In_ ID3D12GraphicsCommandList* commandList) const;
     
-    UINT                        mIndexCount;
+    uint32_t                        mIndexCount;
     SharedGraphicsResource      mIndexBuffer;
     SharedGraphicsResource      mVertexBuffer;
-    ComPtr<ID3D12Resource>      mStaticIndexBuffer;
-    ComPtr<ID3D12Resource>      mStaticVertexBuffer;
+    wil::com_ptr<ID3D12Resource>      mStaticIndexBuffer;
+    wil::com_ptr<ID3D12Resource>      mStaticVertexBuffer;
     D3D12_VERTEX_BUFFER_VIEW    mVertexBufferView;
     D3D12_INDEX_BUFFER_VIEW     mIndexBufferView;
 };
@@ -89,15 +90,15 @@ void GeometricPrimitive::Impl::Initialize(
     memcpy(mIndexBuffer.Memory(), ind, indSizeBytes);
 
     // Record index count for draw
-    mIndexCount = static_cast<UINT>(indices.size());
+    mIndexCount = static_cast<uint32_t>(indices.size());
 
     // Create views
     mVertexBufferView.BufferLocation = mVertexBuffer.GpuAddress();
-    mVertexBufferView.StrideInBytes = static_cast<UINT>(sizeof(VertexCollection::value_type));
-    mVertexBufferView.SizeInBytes = static_cast<UINT>(mVertexBuffer.Size());
+    mVertexBufferView.StrideInBytes = static_cast<uint32_t>(sizeof(VertexCollection::value_type));
+    mVertexBufferView.SizeInBytes = static_cast<uint32_t>(mVertexBuffer.Size());
 
     mIndexBufferView.BufferLocation = mIndexBuffer.GpuAddress();
-    mIndexBufferView.SizeInBytes = static_cast<UINT>(mIndexBuffer.Size());
+    mIndexBufferView.SizeInBytes = static_cast<uint32_t>(mIndexBuffer.Size());
     mIndexBufferView.Format = DXGI_FORMAT_R16_UINT;
 }
 
@@ -123,20 +124,20 @@ void GeometricPrimitive::Impl::LoadStaticBuffers(
             &desc,
             D3D12_RESOURCE_STATE_COPY_DEST,
             nullptr,
-            IID_GRAPHICS_PPV_ARGS(mStaticVertexBuffer.GetAddressOf())
+            IID_GRAPHICS_PPV_ARGS(mStaticVertexBuffer.addressof())
         ));
 
-        SetDebugObjectName(mStaticVertexBuffer.Get(), L"GeometricPrimitive");
+        SetDebugObjectName(mStaticVertexBuffer.get(), L"GeometricPrimitive");
 
-        resourceUploadBatch.Upload(mStaticVertexBuffer.Get(), mVertexBuffer);
+        resourceUploadBatch.Upload(mStaticVertexBuffer.get(), mVertexBuffer);
 
-        resourceUploadBatch.Transition(mStaticVertexBuffer.Get(),
+        resourceUploadBatch.Transition(mStaticVertexBuffer.get(),
             D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
         // Update view
         mVertexBufferView.BufferLocation = mStaticVertexBuffer->GetGPUVirtualAddress();
 
-        mVertexBuffer.Reset();
+        mVertexBuffer.reset();
     }
 
     // Convert dynamic IB to static IB
@@ -152,20 +153,20 @@ void GeometricPrimitive::Impl::LoadStaticBuffers(
             &desc,
             D3D12_RESOURCE_STATE_COPY_DEST,
             nullptr,
-            IID_GRAPHICS_PPV_ARGS(mStaticIndexBuffer.GetAddressOf())
+            IID_GRAPHICS_PPV_ARGS(mStaticIndexBuffer.addressof())
         ));
 
-        SetDebugObjectName(mStaticIndexBuffer.Get(), L"GeometricPrimitive");
+        SetDebugObjectName(mStaticIndexBuffer.get(), L"GeometricPrimitive");
 
-        resourceUploadBatch.Upload(mStaticIndexBuffer.Get(), mIndexBuffer);
+        resourceUploadBatch.Upload(mStaticIndexBuffer.get(), mIndexBuffer);
 
-        resourceUploadBatch.Transition(mStaticIndexBuffer.Get(),
+        resourceUploadBatch.Transition(mStaticIndexBuffer.get(),
             D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
 
         // Update view
         mIndexBufferView.BufferLocation = mStaticIndexBuffer->GetGPUVirtualAddress();
 
-        mIndexBuffer.Reset();
+        mIndexBuffer.reset();
     }
 }
 
@@ -179,17 +180,17 @@ void GeometricPrimitive::Impl::Transition(
     D3D12_RESOURCE_STATES stateBeforeIB,
     D3D12_RESOURCE_STATES stateAfterIB)
 {
-    UINT start = 0;
-    UINT count = 0;
+    uint32_t start = 0;
+    uint32_t count = 0;
 
     D3D12_RESOURCE_BARRIER barrier[2] = {};
     barrier[0].Type = barrier[1].Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
     barrier[0].Transition.Subresource = barrier[1].Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-    barrier[0].Transition.pResource = mStaticIndexBuffer.Get();
+    barrier[0].Transition.pResource = mStaticIndexBuffer.get();
     barrier[0].Transition.StateBefore = stateBeforeIB;
     barrier[0].Transition.StateAfter = stateAfterIB;
 
-    barrier[1].Transition.pResource = mStaticVertexBuffer.Get();
+    barrier[1].Transition.pResource = mStaticVertexBuffer.get();
     barrier[1].Transition.StateBefore = stateBeforeVB;
     barrier[1].Transition.StateAfter = stateAfterVB;
 
@@ -231,7 +232,7 @@ void GeometricPrimitive::Impl::Draw(ID3D12GraphicsCommandList* commandList) cons
 
 // Constructor.
 GeometricPrimitive::GeometricPrimitive() noexcept(false)
-    : pImpl(std::make_unique<Impl>())
+    : pimpl(std::make_unique<Impl>())
 {
 }
 
@@ -246,7 +247,7 @@ GeometricPrimitive::~GeometricPrimitive()
 _Use_decl_annotations_
 void GeometricPrimitive::LoadStaticBuffers(ID3D12Device* device, ResourceUploadBatch& resourceUploadBatch)
 {
-    pImpl->LoadStaticBuffers(device, resourceUploadBatch);
+    pimpl->LoadStaticBuffers(device, resourceUploadBatch);
 }
 
 
@@ -257,7 +258,7 @@ void GeometricPrimitive::Transition(
     D3D12_RESOURCE_STATES stateBeforeIB,
     D3D12_RESOURCE_STATES stateAfterIB)
 {
-    pImpl->Transition(commandList, stateBeforeVB, stateAfterVB, stateBeforeIB, stateAfterIB);
+    pimpl->Transition(commandList, stateBeforeVB, stateAfterVB, stateBeforeIB, stateAfterIB);
 }
 
 
@@ -265,7 +266,7 @@ void GeometricPrimitive::Transition(
 _Use_decl_annotations_
 void GeometricPrimitive::Draw(ID3D12GraphicsCommandList* commandList) const
 {
-    pImpl->Draw(commandList);
+    pimpl->Draw(commandList);
 }
 
 
@@ -281,12 +282,12 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateCube(
 {
     VertexCollection vertices;
     IndexCollection indices;
-    ComputeBox(vertices, indices, XMFLOAT3(size, size, size), rhcoords, false);
+    ComputeBox(vertices, indices, DirectX::XMFLOAT3(size, size, size), rhcoords, false);
 
     // Create the primitive object.
     std::unique_ptr<GeometricPrimitive> primitive(new GeometricPrimitive());
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -297,13 +298,13 @@ void GeometricPrimitive::CreateCube(
     float size,
     bool rhcoords)
 {
-    ComputeBox(vertices, indices, XMFLOAT3(size, size, size), rhcoords, false);
+    ComputeBox(vertices, indices, DirectX::XMFLOAT3(size, size, size), rhcoords, false);
 }
 
 
 // Creates a box primitive.
 std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateBox(
-    const XMFLOAT3& size,
+    const DirectX::XMFLOAT3& size,
     bool rhcoords,
     bool invertn,
     _In_opt_ ID3D12Device* device)
@@ -315,7 +316,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateBox(
     // Create the primitive object.
     std::unique_ptr<GeometricPrimitive> primitive(new GeometricPrimitive());
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -323,7 +324,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateBox(
 void GeometricPrimitive::CreateBox(
     std::vector<VertexType>& vertices,
     std::vector<uint16_t>& indices,
-    const XMFLOAT3& size,
+    const DirectX::XMFLOAT3& size,
     bool rhcoords,
     bool invertn)
 {
@@ -351,7 +352,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateSphere(
 
     ComputeSphere(vertices, indices, diameter, tessellation, rhcoords, invertn);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -386,7 +387,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateGeoSphere(
     IndexCollection indices;
     ComputeGeoSphere(vertices, indices, diameter, tessellation, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -421,7 +422,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateCylinder(
     IndexCollection indices;
     ComputeCylinder(vertices, indices, height, diameter, tessellation, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -452,7 +453,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateCone(
     IndexCollection indices;
     ComputeCone(vertices, indices, diameter, height, tessellation, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -488,7 +489,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateTorus(
     IndexCollection indices;
     ComputeTorus(vertices, indices, diameter, thickness, tessellation, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -521,7 +522,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateTetrahedron(
     IndexCollection indices;
     ComputeTetrahedron(vertices, indices, size, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -552,7 +553,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateOctahedron(
     IndexCollection indices;
     ComputeOctahedron(vertices, indices, size, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -583,7 +584,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateDodecahedron(
     IndexCollection indices;
     ComputeDodecahedron(vertices, indices, size, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -614,7 +615,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateIcosahedron(
     IndexCollection indices;
     ComputeIcosahedron(vertices, indices, size, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -647,7 +648,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateTeapot(
     IndexCollection indices;
     ComputeTeapot(vertices, indices, size, tessellation, rhcoords);
 
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }
@@ -693,7 +694,7 @@ std::unique_ptr<GeometricPrimitive> GeometricPrimitive::CreateCustom(
     std::unique_ptr<GeometricPrimitive> primitive(new GeometricPrimitive());
 
     // copy geometry
-    primitive->pImpl->Initialize(vertices, indices, device);
+    primitive->pimpl->Initialize(vertices, indices, device);
 
     return primitive;
 }

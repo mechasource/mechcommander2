@@ -7,13 +7,13 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "GraphicsMemory.h"
-#include "PlatformHelpers.h"
+#include "stdinc.h"
+#include "graphicsmemory.h"
+#include "platformhelpers.h"
 #include "LinearAllocator.h"
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 using ScopedLock = std::lock_guard<std::mutex>;
 
 namespace
@@ -53,11 +53,11 @@ namespace
         // 4 - 16k allocator
         // etc...
         // Need to convert to an index.
-        DWORD bitIndex = 0;
+        uint32_t bitindex = 0;
 #ifdef _WIN64
-        return _BitScanForward64(&bitIndex, allocatorPageSize) ? bitIndex + 1 : 0;
+        return _BitScanForward64(reinterpret_cast<PULONG>(&bitindex), allocatorPageSize) ? bitindex + 1 : 0u;
 #else
-        return _BitScanForward(&bitIndex, static_cast<DWORD>(allocatorPageSize)) ? bitIndex + 1 : 0;
+        return _BitScanForward(reinterpret_cast<PULONG>(&bitindex), static_cast<uint32_t>(allocatorPageSize)) ? bitindex + 1 : 0u;
 #endif
     }
 
@@ -79,11 +79,11 @@ namespace
             if (!device)
                 throw std::invalid_argument("Invalid device parameter");
 
-            for (size_t i = 0; i < mPools.size(); ++i)
+            for (auto i = 0u; i < mPools.size(); ++i)
             {
                 size_t pageSize = GetPageSizeFromPoolIndex(i);
                 mPools[i] = std::make_unique<LinearAllocator>(
-                    mDevice.Get(),
+                    mDevice.get(),
                     pageSize);
             }
         }
@@ -133,7 +133,7 @@ namespace
                 page,
                 page->GpuAddress() + offset,
                 page->UploadResource(),
-                static_cast<BYTE*>(page->BaseMemory()) + offset,
+                static_cast<uint8_t*>(page->BaseMemory()) + offset,
                 offset,
                 size);
         }
@@ -191,11 +191,11 @@ namespace
         }
 
     #if !defined(_XBOX_ONE) || !defined(_TITLE)
-        ID3D12Device* GetDevice() const noexcept { return mDevice.Get(); }
+        ID3D12Device* GetDevice() const noexcept { return mDevice.get(); }
     #endif
 
     private:
-        ComPtr<ID3D12Device> mDevice;
+        wil::com_ptr<ID3D12Device> mDevice;
         std::array<std::unique_ptr<LinearAllocator>, AllocatorPoolCount> mPools;
         mutable std::mutex mMutex;
     };
@@ -330,25 +330,25 @@ std::map<ID3D12Device*, GraphicsMemory::Impl*> GraphicsMemory::Impl::s_graphicsM
 
 // Public constructor.
 GraphicsMemory::GraphicsMemory(_In_ ID3D12Device* device)
-    : pImpl(std::make_unique<Impl>(this))
+    : pimpl(std::make_unique<Impl>(this))
 {
-    pImpl->Initialize(device);
+    pimpl->Initialize(device);
 }
 
 
 // Move constructor.
 GraphicsMemory::GraphicsMemory(GraphicsMemory&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
-    pImpl->mOwner = this;
+    pimpl->mOwner = this;
 }
 
 
 // Move assignment.
 GraphicsMemory& GraphicsMemory::operator= (GraphicsMemory&& moveFrom) noexcept
 { 
-    pImpl = std::move(moveFrom.pImpl);
-    pImpl->mOwner = this;
+    pimpl = std::move(moveFrom.pimpl);
+    pimpl->mOwner = this;
     return *this;
 }
 
@@ -361,33 +361,33 @@ GraphicsMemory::~GraphicsMemory()
 
 GraphicsResource GraphicsMemory::Allocate(size_t size, size_t alignment)
 {
-    assert(alignment >= 4); // Should use at least DWORD alignment
-    return pImpl->Allocate(size, alignment);
+    assert(alignment >= 4); // Should use at least uint32_t alignment
+    return pimpl->Allocate(size, alignment);
 }
 
 
 void GraphicsMemory::Commit(_In_ ID3D12CommandQueue* commandQueue)
 {
-    pImpl->Commit(commandQueue);
+    pimpl->Commit(commandQueue);
 }
 
 
 void GraphicsMemory::GarbageCollect()
 {
-    pImpl->GarbageCollect();
+    pimpl->GarbageCollect();
 }
 
 
 GraphicsMemoryStatistics GraphicsMemory::GetStatistics()
 {
     GraphicsMemoryStatistics stats;
-    pImpl->GetStatistics(stats);
+    pimpl->GetStatistics(stats);
     return stats;
 }
 
 void GraphicsMemory::ResetStatistics()
 {
-    pImpl->ResetStatistics();
+    pimpl->ResetStatistics();
 }
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
@@ -465,7 +465,7 @@ GraphicsResource::GraphicsResource(GraphicsResource&& other) noexcept
     , mBufferOffset(0)
     , mSize(0)
 {
-    Reset(std::move(other));
+    reset(std::move(other));
 }
 
 GraphicsResource::~GraphicsResource()
@@ -479,11 +479,11 @@ GraphicsResource::~GraphicsResource()
 
 GraphicsResource&& GraphicsResource::operator= (GraphicsResource&& other) noexcept
 {
-    Reset(std::move(other));
+    reset(std::move(other));
     return std::move(*this);
 }
 
-void GraphicsResource::Reset() noexcept
+void GraphicsResource::reset() noexcept
 {
     if (mPage)
     {
@@ -498,7 +498,7 @@ void GraphicsResource::Reset() noexcept
     mSize = 0;
 }
 
-void GraphicsResource::Reset(GraphicsResource&& alloc) noexcept
+void GraphicsResource::reset(GraphicsResource&& alloc) noexcept
 {
     if (mPage)
     {
@@ -568,22 +568,22 @@ SharedGraphicsResource& SharedGraphicsResource::operator= (const SharedGraphicsR
     return *this;
 }
 
-void SharedGraphicsResource::Reset() noexcept
+void SharedGraphicsResource::reset() noexcept
 {
     mSharedResource.reset();
 }
 
-void SharedGraphicsResource::Reset(GraphicsResource&& resource)
+void SharedGraphicsResource::reset(GraphicsResource&& resource)
 {
     mSharedResource = std::make_shared<GraphicsResource>(std::move(resource));
 }
 
-void SharedGraphicsResource::Reset(SharedGraphicsResource&& resource) noexcept
+void SharedGraphicsResource::reset(SharedGraphicsResource&& resource) noexcept
 {
     mSharedResource = std::move(resource.mSharedResource);
 }
 
-void SharedGraphicsResource::Reset(const SharedGraphicsResource& resource) noexcept
+void SharedGraphicsResource::reset(const SharedGraphicsResource& resource) noexcept
 {
     mSharedResource = resource.mSharedResource;
 }

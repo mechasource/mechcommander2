@@ -7,21 +7,22 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "EffectCommon.h"
+#include "stdinc.h"
 
-using namespace DirectX;
+#include "effectcommon.h"
+
+using namespace directxtk;
 
 namespace
 {
     // Constant buffer layout. Must match the shader!
     struct AlphaTestEffectConstants
     {
-        XMVECTOR diffuseColor;
-        XMVECTOR alphaTest;
-        XMVECTOR fogColor;
-        XMVECTOR fogVector;
-        XMMATRIX worldViewProj;
+        DirectX::XMVECTOR diffuseColor;
+        DirectX::XMVECTOR alphaTest;
+        DirectX::XMVECTOR fogColor;
+        DirectX::XMVECTOR fogVector;
+        DirectX::XMMATRIX worldViewProj;
     };
 
     static_assert((sizeof(AlphaTestEffectConstants) % 16) == 0, "CB size not padded correctly");
@@ -32,10 +33,10 @@ namespace
     {
         using ConstantBufferType = AlphaTestEffectConstants;
 
-        static constexpr int VertexShaderCount = 4;
-        static constexpr int PixelShaderCount = 4;
-        static constexpr int ShaderPermutationCount = 8;
-        static constexpr int RootSignatureCount = 1;
+        static constexpr int32_t VertexShaderCount = 4;
+        static constexpr int32_t PixelShaderCount = 4;
+        static constexpr int32_t ShaderPermutationCount = 8;
+        static constexpr int32_t RootSignatureCount = 1;
     };
 }
 
@@ -55,14 +56,14 @@ public:
     };
 
     D3D12_COMPARISON_FUNC mAlphaFunction;
-    int referenceAlpha;
+    int32_t referenceAlpha;
 
     EffectColor color;
 
     D3D12_GPU_DESCRIPTOR_HANDLE texture;
     D3D12_GPU_DESCRIPTOR_HANDLE textureSampler;
     
-    int GetPipelineStatePermutation(bool vertexColorEnabled) const noexcept;
+    int32_t GetPipelineStatePermutation(bool vertexColorEnabled) const noexcept;
 
     void Apply(_In_ ID3D12GraphicsCommandList* commandList);
 };
@@ -106,7 +107,7 @@ const D3D12_SHADER_BYTECODE EffectBase<AlphaTestEffectTraits>::VertexShaderBytec
 
 
 template<>
-const int EffectBase<AlphaTestEffectTraits>::VertexShaderIndices[] =
+const int32_t EffectBase<AlphaTestEffectTraits>::VertexShaderIndices[] =
 {
     0,      // lt/gt
     1,      // lt/gt, no fog
@@ -131,7 +132,7 @@ const D3D12_SHADER_BYTECODE EffectBase<AlphaTestEffectTraits>::PixelShaderByteco
 
 
 template<>
-const int EffectBase<AlphaTestEffectTraits>::PixelShaderIndices[] =
+const int32_t EffectBase<AlphaTestEffectTraits>::PixelShaderIndices[] =
 {
     0,      // lt/gt
     1,      // lt/gt, no fog
@@ -185,10 +186,10 @@ AlphaTestEffect::Impl::Impl(
         CD3DX12_ROOT_SIGNATURE_DESC rsigDesc = {};
         rsigDesc.Init(_countof(rootParameters), rootParameters, 0, nullptr, rootSignatureFlags);
 
-        mRootSignature = GetRootSignature(0, rsigDesc);
+        m_prootsignature = GetRootSignature(0, rsigDesc);
     }
 
-    assert(mRootSignature != nullptr);
+    assert(m_prootsignature != nullptr);
 
     fog.enabled = (effectFlags & EffectFlags::Fog) != 0;
 
@@ -204,32 +205,32 @@ AlphaTestEffect::Impl::Impl(
     }
 
     // Create pipeline state.
-    int sp = GetPipelineStatePermutation(
+    int32_t sp = GetPipelineStatePermutation(
         (effectFlags & EffectFlags::VertexColor) != 0);
     assert(sp >= 0 && sp < AlphaTestEffectTraits::ShaderPermutationCount);
     _Analysis_assume_(sp >= 0 && sp < AlphaTestEffectTraits::ShaderPermutationCount);
 
-    int vi = EffectBase<AlphaTestEffectTraits>::VertexShaderIndices[sp];
+    int32_t vi = EffectBase<AlphaTestEffectTraits>::VertexShaderIndices[sp];
     assert(vi >= 0 && vi < AlphaTestEffectTraits::VertexShaderCount);
     _Analysis_assume_(vi >= 0 && vi < AlphaTestEffectTraits::VertexShaderCount);
-    int pi = EffectBase<AlphaTestEffectTraits>::PixelShaderIndices[sp];
+    int32_t pi = EffectBase<AlphaTestEffectTraits>::PixelShaderIndices[sp];
     assert(pi >= 0 && pi < AlphaTestEffectTraits::PixelShaderCount);
     _Analysis_assume_(pi >= 0 && pi < AlphaTestEffectTraits::PixelShaderCount);
 
     pipelineDescription.CreatePipelineState(
         device,
-        mRootSignature,
+        m_prootsignature,
         EffectBase<AlphaTestEffectTraits>::VertexShaderBytecode[vi],
         EffectBase<AlphaTestEffectTraits>::PixelShaderBytecode[pi],
-        mPipelineState.GetAddressOf());
+        m_ppipelinestate.addressof());
 
-    SetDebugObjectName(mPipelineState.Get(), L"AlphaTestEffect");
+    SetDebugObjectName(m_ppipelinestate.get(), L"AlphaTestEffect");
 }
 
 
-int AlphaTestEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled) const noexcept
+int32_t AlphaTestEffect::Impl::GetPipelineStatePermutation(bool vertexColorEnabled) const noexcept
 {
-    int permutation = 0;
+    int32_t permutation = 0;
 
     // Use optimized shaders if fog is disabled.
     if (!fog.enabled)
@@ -274,13 +275,13 @@ void AlphaTestEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
         const float threshold = 0.5f / 255.0f;
 
         // What to do if the alpha comparison passes or fails. Positive accepts the pixel, negative clips it.
-        static const XMVECTORF32 selectIfTrue  = { { {  1, -1 } } };
-        static const XMVECTORF32 selectIfFalse = { { { -1,  1 } } };
-        static const XMVECTORF32 selectNever   = { { { -1, -1 } } };
-        static const XMVECTORF32 selectAlways  = { { {  1,  1 } } };
+        static const DirectX::XMVECTORF32 selectIfTrue  = { { {  1, -1 } } };
+        static const DirectX::XMVECTORF32 selectIfFalse = { { { -1,  1 } } };
+        static const DirectX::XMVECTORF32 selectNever   = { { { -1, -1 } } };
+        static const DirectX::XMVECTORF32 selectAlways  = { { {  1,  1 } } };
 
         float compareTo;
-        XMVECTOR resultSelector;
+        DirectX::XMVECTOR resultSelector;
 
         switch (mAlphaFunction)
         {
@@ -337,14 +338,14 @@ void AlphaTestEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
         }
 
         // x = compareTo, y = threshold, zw = resultSelector.
-        constants.alphaTest = XMVectorPermute<0, 1, 4, 5>(XMVectorSet(compareTo, threshold, 0, 0), resultSelector);
+        constants.alphaTest = DirectX::XMVectorPermute<0, 1, 4, 5>(DirectX::XMVectorSet(compareTo, threshold, 0, 0), resultSelector);
                 
         dirtyFlags &= ~EffectDirtyFlags::AlphaTest;
         dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
     }
 
     // Set the root signature
-    commandList->SetGraphicsRootSignature(mRootSignature);
+    commandList->SetGraphicsRootSignature(m_prootsignature);
 
     // Set the texture
     if (!texture.ptr || !textureSampler.ptr)
@@ -361,7 +362,7 @@ void AlphaTestEffect::Impl::Apply(_In_ ID3D12GraphicsCommandList* commandList)
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, GetConstantBufferGpuAddress());
 
     // Set the pipeline state
-    commandList->SetPipelineState(EffectBase::mPipelineState.Get());
+    commandList->SetPipelineState(EffectBase::m_ppipelinestate.get());
 }
 
 // Public constructor.
@@ -370,14 +371,14 @@ AlphaTestEffect::AlphaTestEffect(
     uint32_t effectFlags,
     const EffectPipelineStateDescription& pipelineDescription,
     D3D12_COMPARISON_FUNC alphaFunction)
-    : pImpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription, alphaFunction))
+    : pimpl(std::make_unique<Impl>(device, effectFlags, pipelineDescription, alphaFunction))
 {
 }
 
 
 // Move constructor.
 AlphaTestEffect::AlphaTestEffect(AlphaTestEffect&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
+    : pimpl(std::move(moveFrom.pimpl))
 {
 }
 
@@ -385,7 +386,7 @@ AlphaTestEffect::AlphaTestEffect(AlphaTestEffect&& moveFrom) noexcept
 // Move assignment.
 AlphaTestEffect& AlphaTestEffect::operator= (AlphaTestEffect&& moveFrom) noexcept
 {
-    pImpl = std::move(moveFrom.pImpl);
+    pimpl = std::move(moveFrom.pimpl);
     return *this;
 }
 
@@ -399,107 +400,107 @@ AlphaTestEffect::~AlphaTestEffect()
 // IEffect methods
 void AlphaTestEffect::Apply(_In_ ID3D12GraphicsCommandList* commandList)
 {
-    pImpl->Apply(commandList);
+    pimpl->Apply(commandList);
 }
 
 
 // Camera settings
-void XM_CALLCONV AlphaTestEffect::SetWorld(FXMMATRIX value)
+void XM_CALLCONV AlphaTestEffect::SetWorld(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.world = value;
+    pimpl->matrices.world = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV AlphaTestEffect::SetView(FXMMATRIX value)
+void XM_CALLCONV AlphaTestEffect::SetView(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.view = value;
+    pimpl->matrices.view = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV AlphaTestEffect::SetProjection(FXMMATRIX value)
+void XM_CALLCONV AlphaTestEffect::SetProjection(DirectX::FXMMATRIX value)
 {
-    pImpl->matrices.projection = value;
+    pimpl->matrices.projection = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj;
 }
 
 
-void XM_CALLCONV AlphaTestEffect::SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection)
+void XM_CALLCONV AlphaTestEffect::SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection)
 {
-    pImpl->matrices.world = world;
-    pImpl->matrices.view = view;
-    pImpl->matrices.projection = projection;
+    pimpl->matrices.world = world;
+    pimpl->matrices.view = view;
+    pimpl->matrices.projection = projection;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::WorldViewProj | EffectDirtyFlags::WorldInverseTranspose | EffectDirtyFlags::EyePosition | EffectDirtyFlags::FogVector;
 }
 
 
 // Material settings
-void XM_CALLCONV AlphaTestEffect::SetDiffuseColor(FXMVECTOR value)
+void XM_CALLCONV AlphaTestEffect::SetDiffuseColor(DirectX::FXMVECTOR value)
 {
-    pImpl->color.diffuseColor = value;
+    pimpl->color.diffuseColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
 void AlphaTestEffect::SetAlpha(float value)
 {
-    pImpl->color.alpha = value;
+    pimpl->color.alpha = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
-void XM_CALLCONV AlphaTestEffect::SetColorAndAlpha(FXMVECTOR value)
+void XM_CALLCONV AlphaTestEffect::SetColorAndAlpha(DirectX::FXMVECTOR value)
 {
-    pImpl->color.diffuseColor = value;
-    pImpl->color.alpha = XMVectorGetW(value);
+    pimpl->color.diffuseColor = value;
+    pimpl->color.alpha = DirectX::XMVectorGetW(value);
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
+    pimpl->dirtyFlags |= EffectDirtyFlags::MaterialColor;
 }
 
 
 // Fog settings.
 void AlphaTestEffect::SetFogStart(float value)
 {
-    pImpl->fog.start = value;
+    pimpl->fog.start = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
 void AlphaTestEffect::SetFogEnd(float value)
 {
-    pImpl->fog.end = value;
+    pimpl->fog.end = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::FogVector;
+    pimpl->dirtyFlags |= EffectDirtyFlags::FogVector;
 }
 
 
-void XM_CALLCONV AlphaTestEffect::SetFogColor(FXMVECTOR value)
+void XM_CALLCONV AlphaTestEffect::SetFogColor(DirectX::FXMVECTOR value)
 {
-    pImpl->constants.fogColor = value;
+    pimpl->constants.fogColor = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
+    pimpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }
 
 
 // Texture settings.
 void AlphaTestEffect::SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor)
 {
-    pImpl->texture = srvDescriptor;
-    pImpl->textureSampler = samplerDescriptor;
+    pimpl->texture = srvDescriptor;
+    pimpl->textureSampler = samplerDescriptor;
 }
 
 
-void AlphaTestEffect::SetReferenceAlpha(int value)
+void AlphaTestEffect::SetReferenceAlpha(int32_t value)
 {
-    pImpl->referenceAlpha = value;
+    pimpl->referenceAlpha = value;
 
-    pImpl->dirtyFlags |= EffectDirtyFlags::AlphaTest;
+    pimpl->dirtyFlags |= EffectDirtyFlags::AlphaTest;
 }

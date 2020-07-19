@@ -15,17 +15,17 @@
 #include <stdexcept>
 #include <type_traits>
 
-#include "PlatformHelpers.h"
+#include "platformhelpers.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     // Helper for reading binary data, either from the filesystem a memory buffer.
     class BinaryReader
     {
     public:
-        explicit BinaryReader(_In_z_ wchar_t const* fileName) noexcept(false);
-        BinaryReader(_In_reads_bytes_(dataSize) uint8_t const* dataBlob, size_t dataSize) noexcept;
+        explicit BinaryReader(_In_ const std::wstring_view&  filename) noexcept(false);
+        BinaryReader(_In_reads_bytes_(datasize) uint8_t const* datablob, size_t datasize) noexcept;
 
         BinaryReader(BinaryReader const&) = delete;
         BinaryReader& operator= (BinaryReader const&) = delete;
@@ -40,8 +40,7 @@ namespace DirectX
         // Reads an array of values.
         template<typename T> T const* ReadArray(size_t elementCount)
         {
-            static_assert(std::is_pod<T>::value, "Can only read plain-old-data types");
-
+            static_assert(std::is_standard_layout<T>::value, "Can only read plain-old-data types");
             uint8_t const* newPos = mPos + sizeof(T) * elementCount;
 
             if (newPos < mPos)
@@ -59,7 +58,7 @@ namespace DirectX
 
 
         // Lower level helper reads directly from the filesystem into memory.
-        static HRESULT ReadEntireFile(_In_z_ wchar_t const* fileName, _Inout_ std::unique_ptr<uint8_t[]>& data, _Out_ size_t* dataSize);
+        static HRESULT ReadEntireFile(_In_ const std::wstring_view&  filename, _Inout_ std::unique_ptr<uint8_t[]>& data, _Out_ size_t* datasize);
 
 
     private:

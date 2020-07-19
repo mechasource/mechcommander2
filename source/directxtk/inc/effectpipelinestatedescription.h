@@ -21,7 +21,7 @@
 #include "RenderTargetState.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     // Pipeline state information for creating effects.
     struct EffectPipelineStateDescription

@@ -19,10 +19,10 @@
 #include <future>
 #include <memory>
 
-#include "GraphicsMemory.h"
+#include "graphicsmemory.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     // Has a command list of it's own so it can upload at any time.
     class ResourceUploadBatch
@@ -75,6 +75,6 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 }

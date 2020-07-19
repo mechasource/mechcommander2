@@ -19,7 +19,7 @@
 #include <cstdint>
 
 
-namespace DirectX
+namespace directxtk
 {
     // Encapsulates all render target state when creating pipeline state objects
     class RenderTargetState

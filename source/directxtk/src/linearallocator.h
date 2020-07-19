@@ -45,7 +45,7 @@
 #include <atomic>
 
 
-namespace DirectX
+namespace directxtk
 {
     class LinearAllocatorPage
     {
@@ -61,7 +61,7 @@ namespace DirectX
         size_t Suballocate(_In_ size_t size, _In_ size_t alignment);
 
         void* BaseMemory() const noexcept { return mMemory; }
-        ID3D12Resource* UploadResource() const noexcept { return mUploadResource.Get(); }
+        ID3D12Resource* UploadResource() const noexcept { return mUploadResource.get(); }
         D3D12_GPU_VIRTUAL_ADDRESS GpuAddress() const noexcept { return mGpuAddress; }
         size_t BytesUsed() const noexcept { return mOffset; }
         size_t Size() const noexcept { return mSize; }
@@ -81,7 +81,7 @@ namespace DirectX
         D3D12_GPU_VIRTUAL_ADDRESS               mGpuAddress;
         size_t                                  mOffset;
         size_t                                  mSize;
-        Microsoft::WRL::ComPtr<ID3D12Resource>  mUploadResource;
+        wil::com_ptr<ID3D12Resource>  mUploadResource;
 
     private:
         std::atomic<int32_t>                    mRefCount;
@@ -127,9 +127,9 @@ namespace DirectX
 
 #if defined(_DEBUG) || defined(PROFILE)
         // Debug info
-        const wchar_t* GetDebugName() const noexcept { return m_debugName.c_str(); }
-        void SetDebugName(const wchar_t* name);
-        void SetDebugName(const char* name);
+        const std::wstring_view& GetDebugName() const noexcept { return m_debugName.c_str(); }
+        void SetDebugName(const std::wstring_view& name);
+        void SetDebugName(const std::string_view& name);
 #endif
 
     private:
@@ -140,8 +140,8 @@ namespace DirectX
         size_t                                  m_numPending;
         size_t                                  m_totalPages;
         uint64_t                                m_fenceCount;
-        Microsoft::WRL::ComPtr<ID3D12Device>    m_device;
-        Microsoft::WRL::ComPtr<ID3D12Fence>     m_fence;
+        wil::com_ptr<ID3D12Device>    m_device;
+        wil::com_ptr<ID3D12Fence>     m_fence;
         
         LinearAllocatorPage* GetPageForAlloc(size_t sizeBytes, size_t alignment);
         LinearAllocatorPage* GetCleanPageForAlloc();

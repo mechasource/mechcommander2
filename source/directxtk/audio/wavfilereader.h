@@ -19,7 +19,7 @@
 #include <mmreg.h>
 
 
-namespace DirectX
+namespace directxtk
 {
     HRESULT LoadWAVAudioInMemory(
         _In_reads_bytes_(wavDataSize) const uint8_t* wavData,
@@ -29,7 +29,7 @@ namespace DirectX
         _Out_ uint32_t* audioBytes) noexcept;
 
     HRESULT LoadWAVAudioFromFile(
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         _Inout_ std::unique_ptr<uint8_t[]>& wavData,
         _Outptr_ const WAVEFORMATEX** wfx,
         _Outptr_ const uint8_t** startAudio,
@@ -52,7 +52,7 @@ namespace DirectX
         _Out_ WAVData& result) noexcept;
 
     HRESULT LoadWAVAudioFromFileEx(
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         _Inout_ std::unique_ptr<uint8_t[]>& wavData,
         _Out_ WAVData& result) noexcept;
 }

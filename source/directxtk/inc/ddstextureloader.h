@@ -26,7 +26,7 @@
 #include <vector>
 
 
-namespace DirectX
+namespace directxtk
 {
     class ResourceUploadBatch;
 
@@ -63,7 +63,7 @@ namespace DirectX
 
     HRESULT __cdecl LoadDDSTextureFromFile(
         _In_ ID3D12Device* d3dDevice,
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         _Outptr_ ID3D12Resource** texture,
         std::unique_ptr<uint8_t[]>& ddsData,
         std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
@@ -86,7 +86,7 @@ namespace DirectX
     HRESULT __cdecl CreateDDSTextureFromFile(
         _In_ ID3D12Device* device,
         ResourceUploadBatch& resourceUpload,
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         _Outptr_ ID3D12Resource** texture,
         bool generateMipsIfMissing = false,
         size_t maxsize = 0,
@@ -108,7 +108,7 @@ namespace DirectX
 
     HRESULT __cdecl LoadDDSTextureFromFileEx(
         _In_ ID3D12Device* d3dDevice,
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         size_t maxsize,
         D3D12_RESOURCE_FLAGS resFlags,
         DDS_LOADER_FLAGS loadFlags,
@@ -134,7 +134,7 @@ namespace DirectX
     HRESULT __cdecl CreateDDSTextureFromFileEx(
         _In_ ID3D12Device* device,
         ResourceUploadBatch& resourceUpload,
-        _In_z_ const wchar_t* szFileName,
+        _In_ const std::wstring_view& filename,
         size_t maxsize,
         D3D12_RESOURCE_FLAGS resFlags,
         DDS_LOADER_FLAGS loadFlags,

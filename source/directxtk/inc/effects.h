@@ -23,7 +23,7 @@
 #include "EffectPipelineStateDescription.h"
 
 
-namespace DirectX
+namespace directxtk
 {
     class DescriptorHeap;
     class ResourceUploadBatch;
@@ -60,10 +60,10 @@ namespace DirectX
         IEffectMatrices(IEffectMatrices&&) = delete;
         IEffectMatrices& operator=(IEffectMatrices&&) = delete;
 
-        virtual void XM_CALLCONV SetWorld(FXMMATRIX value) = 0;
-        virtual void XM_CALLCONV SetView(FXMMATRIX value) = 0;
-        virtual void XM_CALLCONV SetProjection(FXMMATRIX value) = 0;
-        virtual void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection);
+        virtual void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) = 0;
+        virtual void XM_CALLCONV SetView(DirectX::FXMMATRIX value) = 0;
+        virtual void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) = 0;
+        virtual void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection);
 
     protected:
         IEffectMatrices() = default;
@@ -82,16 +82,16 @@ namespace DirectX
         IEffectLights(IEffectLights&&) = delete;
         IEffectLights& operator=(IEffectLights&&) = delete;
 
-        virtual void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) = 0;
+        virtual void XM_CALLCONV SetAmbientLightColor(DirectX::FXMVECTOR value) = 0;
 
-        virtual void __cdecl SetLightEnabled(int whichLight, bool value) = 0;
-        virtual void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) = 0;
-        virtual void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) = 0;
-        virtual void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) = 0;
+        virtual void __cdecl SetLightEnabled(int32_t whichLight, bool value) = 0;
+        virtual void XM_CALLCONV SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value) = 0;
+        virtual void XM_CALLCONV SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value) = 0;
+        virtual void XM_CALLCONV SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value) = 0;
 
         virtual void __cdecl EnableDefaultLighting() = 0;
 
-        static constexpr int MaxDirectionalLights = 3;
+        static constexpr int32_t MaxDirectionalLights = 3;
 
     protected:
         IEffectLights() = default;
@@ -112,7 +112,7 @@ namespace DirectX
 
         virtual void __cdecl SetFogStart(float value) = 0;
         virtual void __cdecl SetFogEnd(float value) = 0;
-        virtual void XM_CALLCONV SetFogColor(FXMVECTOR value) = 0;
+        virtual void XM_CALLCONV SetFogColor(DirectX::FXMVECTOR value) = 0;
 
     protected:
         IEffectFog() = default;
@@ -131,10 +131,10 @@ namespace DirectX
         IEffectSkinning(IEffectSkinning&&) = delete;
         IEffectSkinning& operator=(IEffectSkinning&&) = delete;
 
-        virtual void __cdecl SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count) = 0;
+        virtual void __cdecl SetBoneTransforms(_In_reads_(count) DirectX::XMMATRIX const* value, size_t count) = 0;
         virtual void __cdecl ResetBoneTransforms() = 0;
 
-        static constexpr int MaxBones = 72;
+        static constexpr int32_t MaxBones = 72;
 
     protected:
         IEffectSkinning() = default;
@@ -178,34 +178,34 @@ namespace DirectX
         void __cdecl Apply(_In_ ID3D12GraphicsCommandList* commandList) override;
 
         // Camera settings.
-        void XM_CALLCONV SetWorld(FXMMATRIX value) override;
-        void XM_CALLCONV SetView(FXMMATRIX value) override;
-        void XM_CALLCONV SetProjection(FXMMATRIX value) override;
-        void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
+        void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetView(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection) override;
 
         // Material settings.
-        void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
-        void XM_CALLCONV SetEmissiveColor(FXMVECTOR value);
-        void XM_CALLCONV SetSpecularColor(FXMVECTOR value);
+        void XM_CALLCONV SetDiffuseColor(DirectX::FXMVECTOR value);
+        void XM_CALLCONV SetEmissiveColor(DirectX::FXMVECTOR value);
+        void XM_CALLCONV SetSpecularColor(DirectX::FXMVECTOR value);
         void __cdecl SetSpecularPower(float value);
         void __cdecl DisableSpecular();
         void __cdecl SetAlpha(float value);
-        void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+        void XM_CALLCONV SetColorAndAlpha(DirectX::FXMVECTOR value);
 
         // Light settings.
-        void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetAmbientLightColor(DirectX::FXMVECTOR value) override;
 
-        void __cdecl SetLightEnabled(int whichLight, bool value) override;
-        void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-        void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
-        void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+        void __cdecl SetLightEnabled(int32_t whichLight, bool value) override;
+        void XM_CALLCONV SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
 
         void __cdecl EnableDefaultLighting() override;
 
         // Fog settings.
         void __cdecl SetFogStart(float value) override;
         void __cdecl SetFogEnd(float value) override;
-        void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetFogColor(DirectX::FXMVECTOR value) override;
 
         // Texture setting.
         void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
@@ -214,7 +214,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -236,32 +236,32 @@ namespace DirectX
         void __cdecl Apply(_In_ ID3D12GraphicsCommandList* commandList) override;
 
         // Camera settings.
-        void XM_CALLCONV SetWorld(FXMMATRIX value) override;
-        void XM_CALLCONV SetView(FXMMATRIX value) override;
-        void XM_CALLCONV SetProjection(FXMMATRIX value) override;
-        void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
+        void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetView(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection) override;
 
         // Material settings.
-        void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
+        void XM_CALLCONV SetDiffuseColor(DirectX::FXMVECTOR value);
         void __cdecl SetAlpha(float value);
-        void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+        void XM_CALLCONV SetColorAndAlpha(DirectX::FXMVECTOR value);
         
         // Fog settings.
         void __cdecl SetFogStart(float value) override;
         void __cdecl SetFogEnd(float value) override;
-        void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetFogColor(DirectX::FXMVECTOR value) override;
 
         // Texture setting.
         void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
 
         // Alpha test settings.
-        void __cdecl SetReferenceAlpha(int value);
+        void __cdecl SetReferenceAlpha(int32_t value);
 
     private:
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -282,20 +282,20 @@ namespace DirectX
         void __cdecl Apply(_In_ ID3D12GraphicsCommandList* commandList) override;
 
         // Camera settings.
-        void XM_CALLCONV SetWorld(FXMMATRIX value) override;
-        void XM_CALLCONV SetView(FXMMATRIX value) override;
-        void XM_CALLCONV SetProjection(FXMMATRIX value) override;
-        void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
+        void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetView(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection) override;
 
         // Material settings.
-        void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
+        void XM_CALLCONV SetDiffuseColor(DirectX::FXMVECTOR value);
         void __cdecl SetAlpha(float value);
-        void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+        void XM_CALLCONV SetColorAndAlpha(DirectX::FXMVECTOR value);
         
         // Fog settings.
         void __cdecl SetFogStart(float value) override;
         void __cdecl SetFogEnd(float value) override;
-        void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetFogColor(DirectX::FXMVECTOR value) override;
 
         // Texture settings.
         void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
@@ -305,7 +305,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -334,30 +334,30 @@ namespace DirectX
         void __cdecl Apply(_In_ ID3D12GraphicsCommandList* commandList) override;
 
         // Camera settings.
-        void XM_CALLCONV SetWorld(FXMMATRIX value) override;
-        void XM_CALLCONV SetView(FXMMATRIX value) override;
-        void XM_CALLCONV SetProjection(FXMMATRIX value) override;
-        void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
+        void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetView(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection) override;
 
         // Material settings.
-        void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
-        void XM_CALLCONV SetEmissiveColor(FXMVECTOR value);
+        void XM_CALLCONV SetDiffuseColor(DirectX::FXMVECTOR value);
+        void XM_CALLCONV SetEmissiveColor(DirectX::FXMVECTOR value);
         void __cdecl SetAlpha(float value);
-        void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+        void XM_CALLCONV SetColorAndAlpha(DirectX::FXMVECTOR value);
         
         // Light settings.
-        void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetAmbientLightColor(DirectX::FXMVECTOR value) override;
 
-        void __cdecl SetLightEnabled(int whichLight, bool value) override;
-        void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-        void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
+        void __cdecl SetLightEnabled(int32_t whichLight, bool value) override;
+        void XM_CALLCONV SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
 
         void __cdecl EnableDefaultLighting() override;
 
         // Fog settings.
         void __cdecl SetFogStart(float value) override;
         void __cdecl SetFogEnd(float value) override;
-        void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetFogColor(DirectX::FXMVECTOR value) override;
 
         // Texture setting.
         void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE texture, D3D12_GPU_DESCRIPTOR_HANDLE sampler);
@@ -365,17 +365,17 @@ namespace DirectX
         // Environment map settings.
         void __cdecl SetEnvironmentMap(D3D12_GPU_DESCRIPTOR_HANDLE texture, D3D12_GPU_DESCRIPTOR_HANDLE sampler);
         void __cdecl SetEnvironmentMapAmount(float value);
-        void XM_CALLCONV SetEnvironmentMapSpecular(FXMVECTOR value);
+        void XM_CALLCONV SetEnvironmentMapSpecular(DirectX::FXMVECTOR value);
         void __cdecl SetFresnelFactor(float value);
         
     private:
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
 
         // Unsupported interface methods.
-        void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+        void XM_CALLCONV SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
     };
 
 
@@ -384,7 +384,7 @@ namespace DirectX
     {
     public:
         SkinnedEffect(_In_ ID3D12Device* device, uint32_t effectFlags, const EffectPipelineStateDescription& pipelineDescription,
-            int weightsPerVertex = 4);
+            int32_t weightsPerVertex = 4);
         SkinnedEffect(SkinnedEffect&& moveFrom) noexcept;
         SkinnedEffect& operator= (SkinnedEffect&& moveFrom) noexcept;
 
@@ -397,47 +397,47 @@ namespace DirectX
         void __cdecl Apply(_In_ ID3D12GraphicsCommandList* commandList) override;
 
         // Camera settings.
-        void XM_CALLCONV SetWorld(FXMMATRIX value) override;
-        void XM_CALLCONV SetView(FXMMATRIX value) override;
-        void XM_CALLCONV SetProjection(FXMMATRIX value) override;
-        void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
+        void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetView(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection) override;
 
         // Material settings.
-        void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
-        void XM_CALLCONV SetEmissiveColor(FXMVECTOR value);
-        void XM_CALLCONV SetSpecularColor(FXMVECTOR value);
+        void XM_CALLCONV SetDiffuseColor(DirectX::FXMVECTOR value);
+        void XM_CALLCONV SetEmissiveColor(DirectX::FXMVECTOR value);
+        void XM_CALLCONV SetSpecularColor(DirectX::FXMVECTOR value);
         void __cdecl SetSpecularPower(float value);
         void __cdecl DisableSpecular();
         void __cdecl SetAlpha(float value);
-        void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+        void XM_CALLCONV SetColorAndAlpha(DirectX::FXMVECTOR value);
         
         // Light settings.
-        void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetAmbientLightColor(DirectX::FXMVECTOR value) override;
 
-        void __cdecl SetLightEnabled(int whichLight, bool value) override;
-        void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-        void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
-        void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+        void __cdecl SetLightEnabled(int32_t whichLight, bool value) override;
+        void XM_CALLCONV SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
 
         void __cdecl EnableDefaultLighting() override;
 
         // Fog settings.
         void __cdecl SetFogStart(float value) override;
         void __cdecl SetFogEnd(float value) override;
-        void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetFogColor(DirectX::FXMVECTOR value) override;
 
         // Texture setting.
         void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
         
         // Animation settings.
-        void __cdecl SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count) override;
+        void __cdecl SetBoneTransforms(_In_reads_(count) DirectX::XMMATRIX const* value, size_t count) override;
         void __cdecl ResetBoneTransforms() override;
 
     private:
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -459,34 +459,34 @@ namespace DirectX
         void __cdecl Apply(_In_ ID3D12GraphicsCommandList* commandList) override;
 
         // Camera settings.
-        void XM_CALLCONV SetWorld(FXMMATRIX value) override;
-        void XM_CALLCONV SetView(FXMMATRIX value) override;
-        void XM_CALLCONV SetProjection(FXMMATRIX value) override;
-        void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
+        void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetView(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection) override;
 
         // Material settings.
-        void XM_CALLCONV SetDiffuseColor(FXMVECTOR value);
-        void XM_CALLCONV SetEmissiveColor(FXMVECTOR value);
-        void XM_CALLCONV SetSpecularColor(FXMVECTOR value);
+        void XM_CALLCONV SetDiffuseColor(DirectX::FXMVECTOR value);
+        void XM_CALLCONV SetEmissiveColor(DirectX::FXMVECTOR value);
+        void XM_CALLCONV SetSpecularColor(DirectX::FXMVECTOR value);
         void __cdecl SetSpecularPower(float value);
         void __cdecl DisableSpecular();
         void __cdecl SetAlpha(float value);
-        void XM_CALLCONV SetColorAndAlpha(FXMVECTOR value);
+        void XM_CALLCONV SetColorAndAlpha(DirectX::FXMVECTOR value);
 
         // Light settings.
-        void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetAmbientLightColor(DirectX::FXMVECTOR value) override;
 
-        void __cdecl SetLightEnabled(int whichLight, bool value) override;
-        void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-        void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
-        void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+        void __cdecl SetLightEnabled(int32_t whichLight, bool value) override;
+        void XM_CALLCONV SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
 
         void __cdecl EnableDefaultLighting() override;
 
         // Fog settings.
         void __cdecl SetFogStart(float value) override;
         void __cdecl SetFogEnd(float value) override;
-        void XM_CALLCONV SetFogColor(FXMVECTOR value) override;
+        void XM_CALLCONV SetFogColor(DirectX::FXMVECTOR value) override;
 
         // Texture setting - albedo, normal and specular intensity
         void __cdecl SetTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor, D3D12_GPU_DESCRIPTOR_HANDLE samplerDescriptor);
@@ -497,7 +497,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -519,21 +519,21 @@ namespace DirectX
         void __cdecl Apply(_In_ ID3D12GraphicsCommandList* commandList) override;
 
         // Camera settings.
-        void XM_CALLCONV SetWorld(FXMMATRIX value) override;
-        void XM_CALLCONV SetView(FXMMATRIX value) override;
-        void XM_CALLCONV SetProjection(FXMMATRIX value) override;
-        void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
+        void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetView(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection) override;
 
         // Light settings.
-        void __cdecl SetLightEnabled(int whichLight, bool value) override;
-        void XM_CALLCONV SetLightDirection(int whichLight, FXMVECTOR value) override;
-        void XM_CALLCONV SetLightDiffuseColor(int whichLight, FXMVECTOR value) override;
+        void __cdecl SetLightEnabled(int32_t whichLight, bool value) override;
+        void XM_CALLCONV SetLightDirection(int32_t whichLight, DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightDiffuseColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
 
         void __cdecl EnableDefaultLighting() override;
 
         // PBR Settings.
         void __cdecl SetAlpha(float value);
-        void XM_CALLCONV SetConstantAlbedo(FXMVECTOR value);
+        void XM_CALLCONV SetConstantAlbedo(DirectX::FXMVECTOR value);
         void __cdecl SetConstantMetallic(float value);
         void __cdecl SetConstantRoughness(float value);
 
@@ -552,22 +552,22 @@ namespace DirectX
 
         void __cdecl SetIBLTextures(
             D3D12_GPU_DESCRIPTOR_HANDLE radiance,
-            int numRadianceMips,
+            int32_t numRadianceMips,
             D3D12_GPU_DESCRIPTOR_HANDLE irradiance,
             D3D12_GPU_DESCRIPTOR_HANDLE sampler);
 
         // Render target size, required for velocity buffer output.
-        void __cdecl SetRenderTargetSizeInPixels(int width, int height);
+        void __cdecl SetRenderTargetSizeInPixels(int32_t width, int32_t height);
 
     private:
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
 
         // Unsupported interface methods.
-        void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
-        void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+        void XM_CALLCONV SetAmbientLightColor(DirectX::FXMVECTOR value) override;
+        void XM_CALLCONV SetLightSpecularColor(int32_t whichLight, DirectX::FXMVECTOR value) override;
     };
 
 
@@ -598,20 +598,20 @@ namespace DirectX
         void __cdecl Apply(_In_ ID3D12GraphicsCommandList* commandList) override;
 
         // Camera settings.
-        void XM_CALLCONV SetWorld(FXMMATRIX value) override;
-        void XM_CALLCONV SetView(FXMMATRIX value) override;
-        void XM_CALLCONV SetProjection(FXMMATRIX value) override;
-        void XM_CALLCONV SetMatrices(FXMMATRIX world, CXMMATRIX view, CXMMATRIX projection) override;
+        void XM_CALLCONV SetWorld(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetView(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetProjection(DirectX::FXMMATRIX value) override;
+        void XM_CALLCONV SetMatrices(DirectX::FXMMATRIX world, DirectX::CXMMATRIX view, DirectX::CXMMATRIX projection) override;
 
         // Debug Settings.
-        void XM_CALLCONV SetHemisphericalAmbientColor(FXMVECTOR upper, FXMVECTOR lower);
+        void XM_CALLCONV SetHemisphericalAmbientColor(DirectX::FXMVECTOR upper, DirectX::FXMVECTOR lower);
         void __cdecl SetAlpha(float value);
 
     private:
         // Private implementation.
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -628,7 +628,7 @@ namespace DirectX
         IEffectTextureFactory(IEffectTextureFactory&&) = delete;
         IEffectTextureFactory& operator=(IEffectTextureFactory&&) = delete;
 
-        virtual size_t __cdecl CreateTexture(_In_z_ const wchar_t* name, int descriptorIndex) = 0;
+        virtual size_t __cdecl CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorIndex) = 0;
 
     protected:
         IEffectTextureFactory() = default;
@@ -658,7 +658,7 @@ namespace DirectX
 
         ~EffectTextureFactory() override;
 
-        size_t __cdecl CreateTexture(_In_z_ const wchar_t* name, int descriptorIndex) override;
+        size_t __cdecl CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorIndex) override;
 
         ID3D12DescriptorHeap* __cdecl Heap() const noexcept;
 
@@ -680,13 +680,13 @@ namespace DirectX
         void __cdecl EnableForceSRGB(bool forceSRGB) noexcept;
         void __cdecl EnableAutoGenMips(bool generateMips) noexcept;
 
-        void __cdecl SetDirectory(_In_opt_z_ const wchar_t* path) noexcept;
+        void __cdecl SetDirectory(_In_opt_ const std::wstring_view& path) noexcept;
 
     private:
         // Private implementation
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 
 
@@ -706,44 +706,25 @@ namespace DirectX
         struct EffectInfo
         {
             std::wstring        name;
-            bool                perVertexColor;
-            bool                enableSkinning;
-            bool                enableDualTexture;
-            bool                enableNormalMaps;
-            bool                biasedVertexNormals;
-            float               specularPower;
-            float               alphaValue;
-            XMFLOAT3            ambientColor;
-            XMFLOAT3            diffuseColor;
-            XMFLOAT3            specularColor;
-            XMFLOAT3            emissiveColor;
-            int                 diffuseTextureIndex;
-            int                 specularTextureIndex;
-            int                 normalTextureIndex;
-            int                 emissiveTextureIndex;
-            int                 samplerIndex;
-            int                 samplerIndex2;
+            bool                perVertexColor = false;
+            bool                enableSkinning = false;
+            bool                enableDualTexture = false;
+            bool                enableNormalMaps = false;
+            bool                biasedVertexNormals = false;
+			float               specularPower{};
+            float               alphaValue{};
+            DirectX::XMFLOAT3   ambientColor{};
+            DirectX::XMFLOAT3   diffuseColor{};
+            DirectX::XMFLOAT3   specularColor{};
+            DirectX::XMFLOAT3   emissiveColor{};
+            int32_t                 diffuseTextureIndex = -1;
+            int32_t                 specularTextureIndex = -1;
+            int32_t                 normalTextureIndex = -1;
+            int32_t                 emissiveTextureIndex = -1;
+            int32_t                 samplerIndex = -1;
+            int32_t                 samplerIndex2 = -1;
 
-            EffectInfo() noexcept
-                : perVertexColor(false)
-                , enableSkinning(false)
-                , enableDualTexture(false)
-                , enableNormalMaps(false)
-                , biasedVertexNormals(false)
-                , specularPower(0)
-                , alphaValue(0)
-                , ambientColor(0, 0, 0)
-                , diffuseColor(0, 0, 0)
-                , specularColor(0, 0, 0)
-                , emissiveColor(0, 0, 0)
-                , diffuseTextureIndex(-1)
-                , specularTextureIndex(-1)
-                , normalTextureIndex(-1)
-                , emissiveTextureIndex(-1)
-                , samplerIndex(-1)
-                , samplerIndex2(-1)
-            {
-            }
+            EffectInfo() noexcept  = default;
         };
 
         virtual std::shared_ptr<IEffect> __cdecl CreateEffect(
@@ -751,8 +732,8 @@ namespace DirectX
             const EffectPipelineStateDescription& opaquePipelineState,
             const EffectPipelineStateDescription& alphaPipelineState,
             const D3D12_INPUT_LAYOUT_DESC& inputLayout, 
-            int textureDescriptorOffset = 0,
-            int samplerDescriptorOffset = 0) = 0;
+            int32_t textureDescriptorOffset = 0,
+            int32_t samplerDescriptorOffset = 0) = 0;
 
     protected:
         IEffectFactory() = default;
@@ -782,8 +763,8 @@ namespace DirectX
             const EffectPipelineStateDescription& opaquePipelineState,
             const EffectPipelineStateDescription& alphaPipelineState,
             const D3D12_INPUT_LAYOUT_DESC& inputLayout,
-            int textureDescriptorOffset = 0,
-            int samplerDescriptorOffset = 0) override;
+            int32_t textureDescriptorOffset = 0,
+            int32_t samplerDescriptorOffset = 0) override;
 
         // Settings.
         void __cdecl ReleaseCache();
@@ -800,7 +781,7 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::shared_ptr<Impl> pImpl;
+        std::shared_ptr<Impl> pimpl;
     };
 
 
@@ -827,8 +808,8 @@ namespace DirectX
             const EffectPipelineStateDescription& opaquePipelineState,
             const EffectPipelineStateDescription& alphaPipelineState,
             const D3D12_INPUT_LAYOUT_DESC& inputLayout,
-            int textureDescriptorOffset = 0,
-            int samplerDescriptorOffset = 0) override;
+            int32_t textureDescriptorOffset = 0,
+            int32_t samplerDescriptorOffset = 0) override;
 
         // Settings.
         void __cdecl ReleaseCache();
@@ -839,6 +820,6 @@ namespace DirectX
         // Private implementation.
         class Impl;
 
-        std::shared_ptr<Impl> pImpl;
+        std::shared_ptr<Impl> pimpl;
     };
 }

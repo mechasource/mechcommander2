@@ -18,7 +18,7 @@
 #include <memory>
 
 
-namespace DirectX
+namespace directxtk
 {
     class CommonStates
     {
@@ -50,12 +50,12 @@ namespace DirectX
         static const D3D12_RASTERIZER_DESC Wireframe;
 
         // Static sampler states.
-        static const D3D12_STATIC_SAMPLER_DESC StaticPointWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticPointClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticLinearWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticLinearClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicWrap(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicClamp(unsigned int shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, unsigned int registerSpace = 0) noexcept;
+        static const D3D12_STATIC_SAMPLER_DESC StaticPointWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+        static const D3D12_STATIC_SAMPLER_DESC StaticPointClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+        static const D3D12_STATIC_SAMPLER_DESC StaticLinearWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+        static const D3D12_STATIC_SAMPLER_DESC StaticLinearClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+        static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+        static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
 
         // Sampler states.
         D3D12_GPU_DESCRIPTOR_HANDLE PointWrap() const;
@@ -82,6 +82,6 @@ namespace DirectX
     private:
         class Impl;
 
-        std::unique_ptr<Impl> pImpl;
+        std::unique_ptr<Impl> pimpl;
     };
 }

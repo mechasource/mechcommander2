@@ -7,9 +7,11 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "DirectXHelpers.h"
-#include "PlatformHelpers.h"
+#include "stdinc.h"
+
+#include "d3dx12.h"
+#include "directxhelpers.h"
+#include "platformhelpers.h"
 #include "LinearAllocator.h"
 
 // Set this to 1 to enable some additional debug validation
@@ -19,8 +21,8 @@
 #   include <unordered_set>
 #endif
 
-using namespace DirectX;
-using Microsoft::WRL::ComPtr;
+using namespace directxtk;
+// using Microsoft::WRL::ComPtr;
 
 LinearAllocatorPage::LinearAllocatorPage() noexcept
     : pPrevPage(nullptr)
@@ -92,7 +94,7 @@ LinearAllocator::LinearAllocator(
     ThrowIfFailed(pDevice->CreateFence(
         0,
         D3D12_FENCE_FLAG_NONE,
-        IID_GRAPHICS_PPV_ARGS(m_fence.ReleaseAndGetAddressOf())));
+        IID_GRAPHICS_PPV_ARGS(m_fence.put())));
 }
 
 LinearAllocator::~LinearAllocator()
@@ -143,7 +145,7 @@ void LinearAllocator::FenceCommittedPages(_In_ ID3D12CommandQueue* commandQueue)
         return;
 
     // For all the used pages, fence them
-    UINT numReady = 0;
+    uint32_t numReady = 0;
     LinearAllocatorPage* readyPages = nullptr;
     LinearAllocatorPage* unreadyPages = nullptr;
     LinearAllocatorPage* nextPage = nullptr;
@@ -160,7 +162,7 @@ void LinearAllocator::FenceCommittedPages(_In_ ID3D12CommandQueue* commandQueue)
             // Signal the fence
             numReady++;
             page->mPendingFence = ++m_fenceCount;
-            ThrowIfFailed(commandQueue->Signal(m_fence.Get(), m_fenceCount));
+            ThrowIfFailed(commandQueue->Signal(m_fence.get(), m_fenceCount));
 
             // Link to the ready pages list
             page->pNextPage = readyPages;
@@ -289,19 +291,19 @@ LinearAllocatorPage* LinearAllocator::GetNewPage()
     CD3DX12_RESOURCE_DESC bufferDesc = CD3DX12_RESOURCE_DESC::Buffer(m_increment);
 
     // Allocate the upload heap
-    ComPtr<ID3D12Resource> spResource;
+    wil::com_ptr<ID3D12Resource> spResource;
     HRESULT hr = m_device->CreateCommittedResource(
         &uploadHeapProperties,
         D3D12_HEAP_FLAG_NONE,
         &bufferDesc,
         D3D12_RESOURCE_STATE_GENERIC_READ,
         nullptr,
-        IID_GRAPHICS_PPV_ARGS(spResource.ReleaseAndGetAddressOf()));
+        IID_GRAPHICS_PPV_ARGS(spResource.put()));
     if (FAILED(hr))
     {
         if (hr != E_OUTOFMEMORY)
         {
-            DebugTrace("LinearAllocator::GetNewPage resource allocation failed due to unexpected error %08X\n", static_cast<unsigned int>(hr));
+            DebugTrace("LinearAllocator::GetNewPage resource allocation failed due to unexpected error %08X\n", static_cast<uint32_t>(hr));
         }
         return nullptr;
     }
@@ -320,7 +322,7 @@ LinearAllocatorPage* LinearAllocator::GetNewPage()
     page->mMemory = pMemory;
     page->mGpuAddress = spResource->GetGPUVirtualAddress();
     page->mSize = m_increment;
-    page->mUploadResource.Swap(spResource);
+    page->mUploadResource.swap(spResource);
 
     // Set as head of the list
     page->pNextPage = m_unusedPages;
@@ -467,17 +469,17 @@ void LinearAllocator::ValidatePageLists()
 #endif
 
 #if defined(_DEBUG) || defined(PROFILE)
-void LinearAllocator::SetDebugName(const char* name)
+void LinearAllocator::SetDebugName(const std::string_view& name)
 {
     wchar_t wname[MAX_PATH] = {};
-    int result = MultiByteToWideChar(CP_UTF8, 0, name, static_cast<int>(strlen(name)), wname, MAX_PATH);
+    int32_t result = MultiByteToWideChar(CP_UTF8, 0, name, static_cast<int32_t>(strlen(name)), wname, MAX_PATH);
     if (result > 0)
     {
         SetDebugName(wname);
     }
 }
 
-void LinearAllocator::SetDebugName(const wchar_t* name)
+void LinearAllocator::SetDebugName(const std::wstring_view& name)
 {
     m_debugName = name;
 

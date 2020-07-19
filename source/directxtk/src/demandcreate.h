@@ -10,38 +10,39 @@
 
 #pragma once
 
-#include "platformhelpers.h"
+#include "PlatformHelpers.h"
+
 
 namespace DirectX
 {
-// Helper for lazily creating a D3D resource.
-template <typename T, typename TCreateFunc>
-inline T*
-DemandCreate(wil::com_ptr<T>& comPtr, std::mutex& mutex, TCreateFunc createFunc)
-{
-	T* result = comPtr.get();
+    // Helper for lazily creating a D3D resource.
+    template<typename T, typename TCreateFunc>
+    inline T* DemandCreate(Microsoft::WRL::ComPtr<T>& comPtr, std::mutex& mutex, TCreateFunc createFunc)
+    {
+        T* result = comPtr.Get();
 
-	// Double-checked lock pattern.
-	MemoryBarrier();
+        // Double-checked lock pattern.
+        MemoryBarrier();
 
-	if (!result)
-	{
-		std::lock_guard<std::mutex> lock(mutex);
+        if (!result)
+        {
+            std::lock_guard<std::mutex> lock(mutex);
 
-		result = comPtr.get();
+            result = comPtr.Get();
+        
+            if (!result)
+            {
+                // Create the new object.
+                ThrowIfFailed(
+                    createFunc(&result)
+                );
 
-		if (!result)
-		{
-			// Create the new object.
-			ThrowIfFailed(
-				createFunc(&result));
+                MemoryBarrier();
 
-			MemoryBarrier();
+                comPtr.Attach(result);
+            }
+        }
 
-			comPtr.Attach(result);
-		}
-	}
-
-	return result;
+        return result;
+    }
 }
-} // namespace DirectX

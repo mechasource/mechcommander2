@@ -259,26 +259,26 @@ MechIcon::setDrawBack(bool bSet)
 	}
 	int32_t iconsPerLine = ((int32_t)s_textureMemory->width / (int32_t)unitIconX);
 	int32_t iconsPerPage = ((int32_t)s_textureMemory->width / (int32_t)unitIconY);
-	int32_t textureIndex = 0;
+	int32_t textureindex = 0;
 	int32_t row = (backDamageIndex / iconsPerLine);
 	if (row >= iconsPerPage)
 	{
-		textureIndex = row / iconsPerPage;
+		textureindex = row / iconsPerPage;
 		row = row % iconsPerPage;
 	}
 	int32_t column = (backDamageIndex % iconsPerLine);
 	int32_t offsetY = row * unitIconY;
 	int32_t offsetX = column * unitIconX;
 	Assert(bFound, bFound, "out of space for icon textures");
-	if (s_textureHandle[textureIndex] == -1)
+	if (s_textureHandle[textureindex] == -1)
 	{
 		int32_t size = (256 * 256 * sizeof(int32_t) + sizeof(TGAFileHeader));
-		s_textureHandle[textureIndex] =
+		s_textureHandle[textureindex] =
 			gos_NewTextureFromMemory(gos_Texture_Alpha, ".tga", (uint8_t*)s_textureMemory, size, 0);
 	}
 	// now need to make a copy of the data
 	TEXTUREPTR textureData;
-	gos_LockTexture(s_textureHandle[textureIndex], 0, 0, &textureData);
+	gos_LockTexture(s_textureHandle[textureindex], 0, 0, &textureData);
 	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.width + offsetX;
 	const std::wstring_view& pTmp = (const std::wstring_view&)s_MechTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
@@ -319,7 +319,7 @@ MechIcon::setDrawBack(bool bSet)
 		pSrcRow += s_MechTextures->width;
 		pDestRow += textureData.width;
 	}
-	gos_UnLockTexture(s_textureHandle[textureIndex]);
+	gos_UnLockTexture(s_textureHandle[textureindex]);
 }
 bool
 ForceGroupIcon::inRegion(int32_t x, int32_t y)
@@ -409,25 +409,25 @@ MechIcon::init(int32_t whichIndex)
 		PAUSE(("Texture for MechIcon not 32-bit"));
 	int32_t iconsPerLine = ((int32_t)s_textureMemory->width / (int32_t)unitIconX);
 	int32_t iconsPerPage = ((int32_t)s_textureMemory->width / (int32_t)unitIconY);
-	int32_t textureIndex = 0;
+	int32_t textureindex = 0;
 	int32_t row = (damageIconIndex / iconsPerLine);
 	if (row >= iconsPerPage)
 	{
-		textureIndex = row / iconsPerPage;
+		textureindex = row / iconsPerPage;
 		row = row % iconsPerPage;
 	}
 	int32_t column = (damageIconIndex % iconsPerLine);
 	int32_t offsetY = (row)*unitIconY;
 	int32_t offsetX = (column)*unitIconX;
-	if (s_textureHandle[textureIndex] == -1)
+	if (s_textureHandle[textureindex] == -1)
 	{
 		int32_t size = (256 * 256 * sizeof(int32_t) + sizeof(TGAFileHeader));
-		s_textureHandle[textureIndex] =
+		s_textureHandle[textureindex] =
 			gos_NewTextureFromMemory(gos_Texture_Alpha, ".tga", (uint8_t*)s_textureMemory, size, 0);
 	}
 	// now need to make a copy of the data
 	TEXTUREPTR textureData;
-	gos_LockTexture(s_textureHandle[textureIndex], 0, 0, &textureData);
+	gos_LockTexture(s_textureHandle[textureindex], 0, 0, &textureData);
 	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.width + offsetX;
 	const std::wstring_view& pTmp = (const std::wstring_view&)s_MechTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
@@ -447,7 +447,7 @@ MechIcon::init(int32_t whichIndex)
 		pSrcRow += s_MechTextures->width;
 		pDestRow += textureData.width;
 	}
-	gos_UnLockTexture(s_textureHandle[textureIndex]);
+	gos_UnLockTexture(s_textureHandle[textureindex]);
 	for (size_t i = 0; i < 5; ++i)
 	{
 		bmpLocation[locationIndex][i].argb = 0xffffffff;

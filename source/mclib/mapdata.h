@@ -106,8 +106,8 @@ public:
 
 	int32_t init(const std::wstring_view& fileName, int32_t numBlocks, int32_t blockSize);
 
-	void newInit(PacketFile* file, uint32_t numVertices);
-	void newInit(uint32_t numVertices);
+	void newInit(PacketFile* file, uint32_t numvertices);
+	void newInit(uint32_t numvertices);
 
 	int32_t update(void);
 	void makeLists(

@@ -163,7 +163,7 @@ TG_TypeNode::CreateFrom(void)
 	newShape = (TG_ShapePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Shape));
 	gosASSERT(newShape != nullptr);
 	// listOfVertices
-	newShape->numVertices = 0;
+	newShape->numvertices = 0;
 	newShape->listOfcolours = nullptr;
 	newShape->listOfVertices = nullptr;
 	newShape->listOfShadowVertices = nullptr;
@@ -299,7 +299,7 @@ TG_TypeShape::CreateFrom(void)
 	newShape = (TG_ShapePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Shape));
 	gosASSERT(newShape != nullptr);
 	// listOfVertices
-	newShape->numVertices = numTypeVertices;
+	newShape->numvertices = numTypeVertices;
 	if (numTypeVertices)
 	{
 		// Mark with invalid pointer so we now to get RAM from POOL!
@@ -510,7 +510,7 @@ TG_Shape::destroy(void)
 	if (listOfShadowVertices)
 		tglHeap->Free(listOfShadowVertices);
 	listOfShadowVertices = nullptr;
-	numVertices = numTriangles = numVisibleFaces = 0;
+	numvertices = numTriangles = numVisibleFaces = 0;
 }
 
 //-------------------------------------------------------------------------------
@@ -1132,7 +1132,7 @@ TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
 		// implemented NEVER GET ACTUAL TEXTURES HERE.  ALWAYS HAPPENS IN
 		// MULTI!!!!!!!!!! Just set 'em!
 		listOfTextures[i].mcTextureNodeIndex = 0xffffffff;
-		listOfTextures[i].gosTextureHandle = 0xffffffff;
+		listOfTextures[i].texturehandle = 0xffffffff;
 		listOfTextures[i].textureAlpha = false;
 	}
 	//---------------------------------------------------
@@ -1161,7 +1161,7 @@ TG_TypeShape::CreateListOfTextures(TG_TexturePtr list, uint32_t numTxms)
 			// implemented NEVER GET ACTUAL TEXTURES HERE.  ALWAYS HAPPENS IN
 			// MULTI!!!!!!!!!! Just set 'em!
 			listOfTextures[i].mcTextureNodeIndex = list[i].mcTextureNodeIndex;
-			listOfTextures[i].gosTextureHandle = list[i].gosTextureHandle;
+			listOfTextures[i].texturehandle = list[i].texturehandle;
 			listOfTextures[i].textureAlpha = list[i].textureAlpha;
 		}
 	}
@@ -1171,22 +1171,22 @@ TG_TypeShape::CreateListOfTextures(TG_TexturePtr list, uint32_t numTxms)
 
 //-------------------------------------------------------------------------------
 // Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
-// This function takes the gosTextureHandle passed in and assigns it to the
+// This function takes the texturehandle passed in and assigns it to the
 // textureNum entry of the listOfTextures;
 int32_t
-TG_TypeShape::SetTextureHandle(uint32_t textureNum, uint32_t gosTextureHandle)
+TG_TypeShape::SetTextureHandle(uint32_t textureNum, uint32_t texturehandle)
 {
 	if (textureNum >= numTextures)
 		return (-1);
-	listOfTextures[textureNum].mcTextureNodeIndex = gosTextureHandle;
-	listOfTextures[textureNum].gosTextureHandle =
-		mcTextureManager->get_gosTextureHandle(gosTextureHandle);
+	listOfTextures[textureNum].mcTextureNodeIndex = texturehandle;
+	listOfTextures[textureNum].texturehandle =
+		mcTextureManager->get_gosTextureHandle(texturehandle);
 	return (0);
 }
 
 //-------------------------------------------------------------------------------
 // Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
-// This function takes the gosTextureHandle passed in and assigns it to the
+// This function takes the texturehandle passed in and assigns it to the
 // textureNum entry of the listOfTextures;
 int32_t
 TG_TypeShape::SetTextureAlpha(uint32_t textureNum, bool alphaFlag)
@@ -1306,7 +1306,7 @@ int32_t
 TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* backFacePoint,
 	TG_ShapeRecPtr parentNode, bool isHudElement, uint8_t alphaValue, bool isClamped)
 {
-	if (!numVertices) // WE are the root Shape which may have no shape or a
+	if (!numvertices) // WE are the root Shape which may have no shape or a
 		// helper shape which defintely has no shape!
 		return (1);
 	//-------------------------------------------------
@@ -1330,9 +1330,9 @@ TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* back
 	TG_TypeShapePtr theShape = (TG_TypeShapePtr)myType;
 	// At this point, we know we are going to process this shape,
 	// Get memory for its components from the pools!
-	listOfVertices = vertexPool->getVerticesFromPool(numVertices);
-	listOfcolours = colorPool->getcoloursFromPool(numVertices);
-	listOfShadowTVertices = shadowPool->getShadowsFromPool(numVertices);
+	listOfVertices = vertexPool->getVerticesFromPool(numvertices);
+	listOfcolours = colorPool->getcoloursFromPool(numvertices);
+	listOfShadowTVertices = shadowPool->getShadowsFromPool(numvertices);
 	listOfTriangles = trianglePool->getTrianglesFromPool(numTriangles);
 	listOfVisibleFaces = facePool->getFacesFromPool(numTriangles);
 	listOfVisibleShadows = facePool->getFacesFromPool(numTriangles);
@@ -1340,7 +1340,7 @@ TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* back
 		return (1);
 	lastTurnTransformed = turn;
 	int32_t j;
-	for (j = 0; j < numVertices; j++)
+	for (j = 0; j < numvertices; j++)
 	{
 		Stuff::Point3D pos = theShape->listOfTypeVertices[j].position;
 		if (shapeScalar > 0.0f)
@@ -2054,7 +2054,7 @@ TG_Shape::Render(float forceZ, bool isHudElement, uint8_t alphaValue, bool isCla
 {
 	if (!renderTGLShapes)
 		return;
-	if (!numVertices) // WE are the root Shape which may have no shape or a
+	if (!numvertices) // WE are the root Shape which may have no shape or a
 		// helper shape which defintely has no shape!
 		return;
 	if (!listOfVertices || !listOfcolours || !listOfShadowTVertices || !listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows || (/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (uint32_t)turn)))
@@ -2111,19 +2111,19 @@ TG_Shape::Render(float forceZ, bool isHudElement, uint8_t alphaValue, bool isCla
 			}
 			if (drawOldWay)
 			{
-				if (theShape->listOfTextures && (theShape->listOfTextures[triType.localTextureHandle].gosTextureHandle != 0xffffffff))
+				if (theShape->listOfTextures && (theShape->listOfTextures[triType.localTextureHandle].texturehandle != 0xffffffff))
 				{
-					if (theShape->listOfTextures[triType.localTextureHandle].gosTextureHandle != lastTextureUsed)
+					if (theShape->listOfTextures[triType.localTextureHandle].texturehandle != lastTextureUsed)
 					{
 						gos_SetRenderState(gos_State_Texture,
-							theShape->listOfTextures[triType.localTextureHandle].gosTextureHandle);
+							theShape->listOfTextures[triType.localTextureHandle].texturehandle);
 						if (theShape->listOfTextures[triType.localTextureHandle].textureAlpha)
 						{
 							gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 							gos_SetRenderState(gos_State_AlphaTest, true);
 						}
 						lastTextureUsed =
-							theShape->listOfTextures[triType.localTextureHandle].gosTextureHandle;
+							theShape->listOfTextures[triType.localTextureHandle].texturehandle;
 					}
 				}
 				else
@@ -2267,7 +2267,7 @@ void
 TG_Shape::MultiTransformShadows(
 	Stuff::Point3D* pos, Stuff::LinearMatrix4D* s2w, float rotation)
 {
-	if (!numVertices) // WE are the root Shape which may have no shape or a
+	if (!numvertices) // WE are the root Shape which may have no shape or a
 		// helper shape which defintely has no shape!
 		return;
 	// Can make this a flag to optimize!
@@ -2315,9 +2315,9 @@ TG_Shape::MultiTransformShadows(
 				{
 					Stuff::Vector3D lightDir = rootLightDir[i];
 					RotateLight(lightDir, rotation);
-					for (size_t j = 0; j < numVertices; j++)
+					for (size_t j = 0; j < numvertices; j++)
 					{
-						int32_t index = j + (shadowNum * numVertices);
+						int32_t index = j + (shadowNum * numvertices);
 						// if (!recalcShadows)
 						{
 							if (listOfShadowVertices[index].bDataIsNotValid)
@@ -2456,9 +2456,9 @@ TG_Shape::MultiTransformShadows(
 					// enough!!
 					if (listOfLights[i]->GetFalloff(length, falloff) && (falloff > 0.5f))
 					{
-						for (size_t j = 0; j < numVertices; j++)
+						for (size_t j = 0; j < numvertices; j++)
 						{
-							int32_t index = j + (shadowNum * numVertices);
+							int32_t index = j + (shadowNum * numvertices);
 							Stuff::Point3D post = theShape->listOfTypeVertices[j].position;
 							//--------------------------------------------------
 							Stuff::Vector4D up;
@@ -2577,7 +2577,7 @@ TG_Shape::MultiTransformShadows(
 			// So, find out what texture this face is using and mark that
 			// texture as needing 3 more vertices.
 			if (theShape->listOfTextures[triType.localTextureHandle + (theShape->numTextures >> 1)]
-					.gosTextureHandle
+					.texturehandle
 				!= 0xffffffff)
 			{
 				for (size_t k = 0; k < totalShadows; k++)
@@ -2606,7 +2606,7 @@ TG_Shape::RenderShadows(int32_t startFace)
 {
 	if (!renderTGLShapes)
 		return (startFace);
-	if (!numVertices) // WE are the root Shape which may have no shape or a
+	if (!numvertices) // WE are the root Shape which may have no shape or a
 		// helper shape which defintely has no shape!
 		return (startFace);
 	if (!numVisibleShadows)
@@ -2637,11 +2637,11 @@ TG_Shape::RenderShadows(int32_t startFace)
 					TG_TypeTriangle triType =
 						theShape->listOfTypeTriangles[listOfVisibleShadows[j]];
 					TG_ShadowVertexTemp vertex0 =
-						listOfShadowTVertices[triType.Vertices[0] + (i * numVertices)];
+						listOfShadowTVertices[triType.Vertices[0] + (i * numvertices)];
 					TG_ShadowVertexTemp vertex1 =
-						listOfShadowTVertices[triType.Vertices[1] + (i * numVertices)];
+						listOfShadowTVertices[triType.Vertices[1] + (i * numvertices)];
 					TG_ShadowVertexTemp vertex2 =
-						listOfShadowTVertices[triType.Vertices[2] + (i * numVertices)];
+						listOfShadowTVertices[triType.Vertices[2] + (i * numvertices)];
 					gos_VERTEX gVertex[3];
 					gVertex[0].x = vertex0.transformedPosition.x;
 					gVertex[0].y = vertex0.transformedPosition.y;
@@ -2671,18 +2671,18 @@ TG_Shape::RenderShadows(int32_t startFace)
 					{
 						if (theShape
 								->listOfTextures[triType.localTextureHandle + (theShape->numTextures >> 1)]
-								.gosTextureHandle
+								.texturehandle
 							!= 0xffffffff)
 							gos_SetRenderState(gos_State_Texture,
 								theShape
 									->listOfTextures[triType.localTextureHandle + (theShape->numTextures >> 1)]
-									.gosTextureHandle);
+									.texturehandle);
 						else if (theShape->listOfTextures[triType.localTextureHandle]
-									 .gosTextureHandle
+									 .texturehandle
 							!= 0xffffffff)
 							gos_SetRenderState(gos_State_Texture,
 								theShape->listOfTextures[triType.localTextureHandle]
-									.gosTextureHandle);
+									.texturehandle);
 						else
 							gos_SetRenderState(gos_State_Texture, 0);
 						if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
@@ -2700,7 +2700,7 @@ TG_Shape::RenderShadows(int32_t startFace)
 							// mark that texture as needing 3 more vertices.
 							if (theShape
 									->listOfTextures[triType.localTextureHandle + (theShape->numTextures >> 1)]
-									.gosTextureHandle
+									.texturehandle
 								!= 0xffffffff)
 							{
 								mcTextureManager->addVertices(

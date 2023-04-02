@@ -15,23 +15,25 @@ void __stdcall FindVideoCards(void);
 void __stdcall CreateCopyBuffers(void);
 void __stdcall RestoreAreas(void);
 void __stdcall DestroyDirtyRectangles(void);
-void __stdcall InvalidateVertexBuffers(void);
 void __stdcall ReCreateVertexBuffers(void);
+
+// vertexbuffer.cpp
+void __stdcall InvalidateVertexBuffers(void);
 
 // IME displays directly to backbuffer, that's why it's in DXRasterizer.hpp
 void __stdcall RenderIMEToBackBuffer(int32_t POS_X, int32_t POS_Y, float FONTHEIGHT);
 
 // Variables for gamma correction
-extern uint8_t GammaTable[256];
+extern BOOLEAN GammaTable[256];
 extern float GammaSetting;
-extern uint8_t UseGammaCorrection;
+extern BOOLEAN UseGammaCorrection;
 extern uint32_t Globalwidth;
 extern uint32_t Globalheight;
-extern uint8_t GlobalZBuffer;
-extern uint8_t GlobalFullScreen;
+extern BOOLEAN GlobalZBuffer;
+extern BOOLEAN GlobalFullScreen;
 extern uint32_t ValidTextures;
-extern uint8_t ModeChanged;
-extern uint8_t DebuggerUsed;
+extern BOOLEAN ModeChanged;
+extern BOOLEAN DebuggerUsed;
 extern DDSURFACEDESC2 BackBufferddsd;
 extern uint32_t AllowBrightness;
 extern uint32_t AllowContrast;
@@ -127,9 +129,9 @@ typedef struct DeviceInfo
 	uint32_t MultitextureSpecularMapFilter; // Specular support (1=Disable trilinear)
 	uint32_t MultitextureDetailFilter; // Detail support (1=Disable trilinear)
 	uint32_t CurrentCard; // Which entry in the KnownCard array. (-1=Unknown)
-	uint8_t Failed60Hz; // Set to only try full screen 60Hz once
-	uint8_t LinearMemory; // Set if linear memory, not rectangular
-	uint8_t _padding1[2];
+	BOOLEAN Failed60Hz; // Set to only try full screen 60Hz once
+	BOOLEAN LinearMemory; // Set if linear memory, not rectangular
+	BOOLEAN _padding1[2];
 	int32_t MaxRefreshRate; // Maximum refresh rate
 	PSTR CurrentVendor; // If vendor known, point to name, else 0
 } DeviceInfo;
@@ -160,8 +162,8 @@ extern LPDIRECT3DDEVICE7 d3ddevice7; // Current D3D Device
 extern LPDIRECT3DDEVICE7 Refd3ddevice7; // Reference D3D Device
 extern LPDIRECT3DDEVICE7 Maind3ddevice7; // Selected D3D Device
 extern LPDIRECT3DDEVICE7 RenderDevice;
-extern uint8_t InsideBeginScene;
-extern uint8_t NeedToInitRenderStates;
+extern BOOLEAN InsideBeginScene;
+extern BOOLEAN NeedToInitRenderStates;
 extern int32_t HardwareRenderer;
 extern uint32_t BGcolour;
 extern D3DDEVICEDESC7 CapsDirect3D;

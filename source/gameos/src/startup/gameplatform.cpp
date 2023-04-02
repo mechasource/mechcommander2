@@ -29,7 +29,7 @@ WinMain(_In_ HINSTANCE hinstance, _In_opt_ HINSTANCE hPrevInstance,
 }
 
 #if CONSIDERED_OBSOLETE
-extern bool gViaNew;
+extern BOOLEAN gViaNew;
 
 PVOID __cdecl
 operator new(size_t nSize, HGOSHEAP HeapBlock)

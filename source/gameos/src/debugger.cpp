@@ -37,8 +37,8 @@
 
 uint32_t __stdcall CallDebuggerMenuItem(PSTR Name, uint32_t MenuFunction);
 void __stdcall DelDebuggerMenuItem(PSTR Name);
-void __stdcall AddDebuggerMenuItem(PSTR Name, uint8_t(__stdcall* CheckMark)(void),
-	void(__stdcall* Activated)(void), uint8_t(__stdcall* Greyed)(void) = 0,
+void __stdcall AddDebuggerMenuItem(PSTR Name, BOOLEAN(__stdcall* CheckMark)(void),
+	void(__stdcall* Activated)(void), BOOLEAN(__stdcall* Greyed)(void) = 0,
 	uint32_t(__stdcall* Callback)(PSTR Name, uint32_t MenuFunction) = 0);
 void __stdcall EndRenderMode(void);
 void __stdcall RenderMenu(int32_t, int32_t, uint32_t, uint32_t, MenuItem*, int32_t);
@@ -74,7 +74,7 @@ void __stdcall UpdateDisplayInfo(void);
 void __stdcall UpdateDebugger(void);
 uint32_t __stdcall WalkUp(void);
 void __stdcall WalkStack(uint32_t*, uint32_t, uint32_t);
-PSTR __stdcall DecodeAddress(uint32_t, uint8_t);
+PSTR __stdcall DecodeAddress(uint32_t, BOOLEAN);
 void __stdcall DoExamineHeaps(uint32_t);
 void __stdcall DoSpewInterface(char);
 void __stdcall CheckSpewButton(uint32_t, uint32_t);
@@ -117,7 +117,7 @@ gos_SetRenderState(gos_RenderState, int);
 InternalFunctionSpew(char const*, char const*, ...);
 fabs;
 GetMipmapcolour(int);
-gos_SetupViewport(bool, float, bool, uint32_t, float, float, float, float, bool, uint32_t);
+gos_SetupViewport(BOOLEAN, float, BOOLEAN, uint32_t, float, float, float, float, BOOLEAN, uint32_t);
 gos_GetKey(void);
 End3DScene(void);
 CopyBackBuffer(IDirectDrawSurface7*, IDirectDrawSurface7*);

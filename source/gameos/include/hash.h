@@ -68,8 +68,8 @@ public:
 	// Callback typedefs
 	//
 	typedef uint32_t (*PFHASHFUNC)(K);
-	typedef bool (*PFCOMPAREFUNC)(T*, K);
-	typedef bool (*PFITERCALLBACK)(T*, MTListNodeHandle, PVOID);
+	typedef BOOLEAN (*PFCOMPAREFUNC)(T*, K);
+	typedef BOOLEAN (*PFITERCALLBACK)(T*, MTListNodeHandle, PVOID);
 	typedef void (*PFDELFUNC)(T*, PVOID);
 	typedef void (*PFGETFUNC)(T*);
 
@@ -120,13 +120,13 @@ public:
 	//
 	// Callback:
 	// Form:
-	// bool callback_function( T* pObject, MTListNodeHandle hNode, PVOID Cookie
+	// BOOLEAN callback_function( T* pObject, MTListNodeHandle hNode, PVOID Cookie
 	// ) Behavior: If the callback returns false, the iterator immediately
 	// stops. If the callback returns true, the iterator continues on to the
 	// next node. Restrictions: (1) Using any CMTHash function other than
 	// MarkNodeDeleted may result in a deadlock.
 	//
-	bool ForEach(PFITERCALLBACK pfCallback, PVOID Cookie);
+	BOOLEAN ForEach(PFITERCALLBACK pfCallback, PVOID Cookie);
 
 	//
 	// Removed all nodes from hash table.
@@ -144,8 +144,8 @@ public:
 
 protected:
 	typedef uint32_t (*PFHASHFUNC)(K);
-	typedef bool (*PFCOMPAREFUNC)(T*, K);
-	typedef bool (*PFITERCALLBACK)(T*, MTListNodeHandle, PVOID);
+	typedef BOOLEAN (*PFCOMPAREFUNC)(T*, K);
+	typedef BOOLEAN (*PFITERCALLBACK)(T*, MTListNodeHandle, PVOID);
 	typedef void (*PFDELFUNC)(T*, PVOID);
 
 	uint16_t m_NumBuckets;
@@ -378,7 +378,7 @@ CHash<T, K>::MarkNodeDeleted(MTListNodeHandle node, PFDELFUNC pfDelete, PVOID Co
 }
 
 template <class T, class K>
-inline bool
+inline BOOLEAN
 CHash<T, K>::ForEach(PFITERCALLBACK pfCallback, PVOID Cookie)
 {
 	CMTListNode* pBucket;

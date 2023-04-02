@@ -623,7 +623,7 @@ HRESULT directxtk::CreateWICTextureFromMemory(
     const uint8_t* wicData,
     size_t wicDataSize,
     ID3D12Resource** texture,
-    bool generateMips,
+    bool generatemips,
     size_t maxsize)
 {
     return CreateWICTextureFromMemoryEx(
@@ -633,7 +633,7 @@ HRESULT directxtk::CreateWICTextureFromMemory(
         wicDataSize,
         maxsize,
         D3D12_RESOURCE_FLAG_NONE,
-        (generateMips) ? WIC_LOADER_MIP_AUTOGEN : WIC_LOADER_DEFAULT,
+        (generatemips) ? WIC_LOADER_MIP_AUTOGEN : WIC_LOADER_DEFAULT,
         texture);
 }
 
@@ -825,7 +825,7 @@ HRESULT directxtk::CreateWICTextureFromFile(
     ResourceUploadBatch& resourceUpload,
     const std::wstring_view& filename,
     ID3D12Resource** texture,
-    bool generateMips,
+    bool generatemips,
     size_t maxsize)
 {
     return CreateWICTextureFromFileEx(
@@ -834,7 +834,7 @@ HRESULT directxtk::CreateWICTextureFromFile(
         filename,
         maxsize,
         D3D12_RESOURCE_FLAG_NONE,
-        generateMips ? WIC_LOADER_MIP_AUTOGEN : WIC_LOADER_DEFAULT,
+        generatemips ? WIC_LOADER_MIP_AUTOGEN : WIC_LOADER_DEFAULT,
         texture);
 }
 

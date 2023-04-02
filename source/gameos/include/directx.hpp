@@ -9,7 +9,7 @@
 
 // clang-format off
 
-extern uint8_t AllowFail;
+extern BOOLEAN AllowFail;
 extern volatile uint16_t FPUControl; // Current FPU control word
 extern uint16_t FPUDefault;			 // Default FPU control word
 extern PSTR __stdcall ErrorNumberToMessage(HRESULT hr);
@@ -37,8 +37,8 @@ extern PSTR __stdcall ErrorNumberToMessage(HRESULT hr);
 //#define SafeFPU() _asm fldcw FPUDefault
 //#define GameOSFPU() _asm fninit _asm fldcw FPUControl
 //#else
-//#define SafeFPU()
-//#define GameOSFPU()
+#define SafeFPU()
+#define GameOSFPU()
 //#endif
 
 //
@@ -57,18 +57,18 @@ void wDirectXSetupGetVersion(uint32_t* pversion, uint32_t* prevision);
 // IDirect3DDevice7
 //#ifdef LAB_ONLY
 
-HRESULT __stdcall wDrawPrimitive(LPDIRECT3DDEVICE7 d3ddevice7, D3DPRIMITIVETYPE dptPrimitiveType,uint32_t dvtVertexType, PVOID lpvVertices, uint32_t dwVertexCount, uint32_t flags);
-HRESULT __stdcall wDrawIndexedPrimitive(LPDIRECT3DDEVICE7 d3ddevice7,D3DPRIMITIVETYPE d3dptPrimitiveType, uint32_t dwVertexTypeDesc, PVOID pvVertices,uint32_t dwVertexCount, uint16_t* pwIndices, uint32_t dwIndexCount, uint32_t flags);
+HRESULT __stdcall wDrawPrimitive(LPDIRECT3DDEVICE7 d3ddevice7, D3DPRIMITIVETYPE dptprimitivetype,uint32_t dvtvertextype, PVOID pvvertices, uint32_t vertexcount, uint32_t flags);
+HRESULT __stdcall wDrawIndexedPrimitive(LPDIRECT3DDEVICE7 d3ddevice7,D3DPRIMITIVETYPE d3dptprimitivetype, uint32_t vertextypedesc, PVOID pvVertices,uint32_t vertexcount, uint16_t* pwindices, uint32_t indexcount, uint32_t flags);
 
 //#else
-//#define wDrawPrimitive(d3ddevice7,dptPrimitiveType,dvtVertexType,lpvVertices,dwVertexCount,flags) d3ddevice7->DrawPrimitive(dptPrimitiveType,dvtVertexType,lpvVertices,dwVertexCount,flags)
-//#define wDrawIndexedPrimitive(d3ddevice7,d3dptPrimitiveType,dwVertexTypeDesc,lpvVertices,dwVertexCount,lpwIndices,dwIndexCount,flags) d3ddevice7->DrawIndexedPrimitive(d3dptPrimitiveType,dwVertexTypeDesc,lpvVertices,dwVertexCount,lpwIndices,dwIndexCount,flags)
+//#define wDrawPrimitive(d3ddevice7,dptprimitivetype,dvtvertextype,pvvertices,vertexcount,flags) d3ddevice7->DrawPrimitive(dptprimitivetype,dvtvertextype,pvvertices,vertexcount,flags)
+//#define wDrawIndexedPrimitive(d3ddevice7,d3dptprimitivetype,vertextypedesc,pvvertices,vertexcount,pwindices,indexcount,flags) d3ddevice7->DrawIndexedPrimitive(d3dptprimitivetype,vertextypedesc,pvvertices,vertexcount,pwindices,indexcount,flags)
 //#endif
-HRESULT __stdcall wDrawPrimitiveVB(LPDIRECT3DDEVICE7 d3ddevice7,D3DPRIMITIVETYPE d3dptPrimitiveType, LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer,	uint32_t dwStartVertex, uint32_t dwNumVertices, uint32_t flags);
-HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3ddevice7,D3DPRIMITIVETYPE d3dptPrimitiveType, LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer,uint32_t dwStartVertex, uint32_t dwNumVertices, uint16_t* lpwIndices, uint32_t dwIndexCount,	uint32_t flags);
-HRESULT __stdcall wSetMaterial(LPDIRECT3DDEVICE7 d3ddevice7, LPD3DMATERIAL7 lpMaterial);
-HRESULT __stdcall wSetLight(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t dwLightIndex, LPD3DLIGHT7 lpLight);
-HRESULT __stdcall wLightEnable(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t dwLightIndex, uint8_t Enable);
+HRESULT __stdcall wDrawPrimitiveVB(LPDIRECT3DDEVICE7 d3ddevice7,D3DPRIMITIVETYPE d3dptprimitivetype, LPDIRECT3DVERTEXBUFFER7 pd3dvertexbuffer,	uint32_t startvertex, uint32_t numvertices, uint32_t flags);
+HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3ddevice7,D3DPRIMITIVETYPE d3dptprimitivetype, LPDIRECT3DVERTEXBUFFER7 pd3dvertexbuffer,uint32_t startvertex, uint32_t numvertices, uint16_t* pwindices, uint32_t indexcount, uint32_t flags);
+HRESULT __stdcall wSetMaterial(LPDIRECT3DDEVICE7 d3ddevice7, LPD3DMATERIAL7 pmaterial);
+HRESULT __stdcall wSetLight(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t lightindex, LPD3DLIGHT7 plight);
+HRESULT __stdcall wLightEnable(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t lightindex, BOOLEAN Enable);
 HRESULT __stdcall wMultiplyTransform(LPDIRECT3DDEVICE7 d3ddevice7,D3DTRANSFORMSTATETYPE dtstTransformStateType, LPD3DMATRIX pd3dmatrix);
 HRESULT __stdcall wSetTransform(LPDIRECT3DDEVICE7 d3ddevice7,D3DTRANSFORMSTATETYPE dtstTransformStateType, LPD3DMATRIX pd3dmatrix);
 HRESULT __stdcall wBeginScene(LPDIRECT3DDEVICE7 d3ddevice7);
@@ -87,13 +87,13 @@ HRESULT __stdcall wClear(LPDIRECT3DDEVICE7 d3ddevice7, uint32_t count, LPD3DRECT
 HRESULT __stdcall wCreateDevice(LPDIRECT3D7 d3d7, REFCLSID rclsid, LPDIRECTDRAWSURFACE7 pdds,LPDIRECT3DDEVICE7* ppd3ddevice7);
 HRESULT __stdcall wEnumZBufferFormats(LPDIRECT3D7 d3d7, REFCLSID riidDevice,LPD3DENUMPIXELFORMATSCALLBACK penumcallback, PVOID pcontext);
 HRESULT __stdcall wEnumDevices(LPDIRECT3D7 d3d7, LPD3DENUMDEVICESCALLBACK7 lpEnumDevicesCallback, PVOID puserarg);
-HRESULT __stdcall wCreateVertexBuffer(LPDIRECT3D7 d3d7, LPD3DVERTEXBUFFERDESC lpVBDesc,LPDIRECT3DVERTEXBUFFER7* lplpD3DVertexBuffer, uint32_t flags);
+HRESULT __stdcall wCreateVertexBuffer(LPDIRECT3D7 d3d7, LPD3DVERTEXBUFFERDESC pvbdesc,LPDIRECT3DVERTEXBUFFER7* plpd3dvertexbuffer, uint32_t flags);
 
 // IDirect3DVertexBuffer7
 HRESULT __stdcall wLock(LPDIRECT3DVERTEXBUFFER7 d3dvb7, uint32_t flags, PVOID* ppdata, uint32_t* psize);
 HRESULT __stdcall wUnlock(LPDIRECT3DVERTEXBUFFER7 d3dvb7);
-HRESULT __stdcall wOptimize(LPDIRECT3DVERTEXBUFFER7 d3dvb7, LPDIRECT3DDEVICE7 lpD3DDevice, uint32_t flags);
-HRESULT __stdcall wProcessVertices(LPDIRECT3DVERTEXBUFFER7 d3dvb7, uint32_t dwVertexOp,uint32_t dwdestIndex, uint32_t count, LPDIRECT3DVERTEXBUFFER7 lpSrcBuffer,uint32_t dwsrcIndex, LPDIRECT3DDEVICE7 lpD3DDevice, uint32_t flags);
+HRESULT __stdcall wOptimize(LPDIRECT3DVERTEXBUFFER7 d3dvb7, LPDIRECT3DDEVICE7 pd3ddevice, uint32_t flags);
+HRESULT __stdcall wProcessVertices(LPDIRECT3DVERTEXBUFFER7 d3dvb7, uint32_t vertexop,uint32_t destindex, uint32_t count, LPDIRECT3DVERTEXBUFFER7 psrcbuffer,uint32_t srcindex, LPDIRECT3DDEVICE7 pd3ddevice, uint32_t flags);
 
 // Direct Draw
 HRESULT __stdcall wDirectDrawCreateEx(LPGUID pguid, PVOID* ppdd, REFIID iid, IUnknown* punkouter);

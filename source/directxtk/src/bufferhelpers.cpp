@@ -160,7 +160,7 @@ HRESULT directxtk::CreateTextureFromMemory(
     DXGI_FORMAT format,
     const D3D12_SUBRESOURCE_DATA& initData,
     ID3D12Resource** texture,
-    bool generateMips,
+    bool generatemips,
     D3D12_RESOURCE_STATES afterstate,
     D3D12_RESOURCE_FLAGS resFlags) noexcept
 {
@@ -183,10 +183,10 @@ HRESULT directxtk::CreateTextureFromMemory(
     }
 
     uint16_t mipCount = 1;
-    if (generateMips)
+    if (generatemips)
     {
-        generateMips = resourceUpload.IsSupportedForGenerateMips(format);
-        if (generateMips)
+        generatemips = resourceUpload.IsSupportedForGenerateMips(format);
+        if (generatemips)
         {
             mipCount = static_cast<uint16_t>(LoaderHelpers::CountMips(static_cast<uint32_t>(width), static_cast<uint32_t>(height)));
         }
@@ -214,7 +214,7 @@ HRESULT directxtk::CreateTextureFromMemory(
 
         resourceUpload.Transition(res.get(), D3D12_RESOURCE_STATE_COPY_DEST, afterstate);
 
-        if (generateMips)
+        if (generatemips)
         {
             resourceUpload.GenerateMips(res.get());
         }

@@ -33,11 +33,11 @@ MECH_IMPEXP HICON ArrowCursor;
 MECH_IMPEXP uint32_t HitScrollLock;
 
 // global referenced data not listed in headers
-MECH_IMPEXP bool WindowsPause;
+MECH_IMPEXP BOOLEAN WindowsPause;
 
 // local data
-bool ControlDown;
-bool volatile mc2HasLostFocus;
+BOOLEAN ControlDown;
+BOOLEAN volatile mc2HasLostFocus;
 LPARAM LastlParam;
 
 // -----------------------------------------------------------------------------
@@ -51,17 +51,17 @@ MECH_IMPEXP void __stdcall UpdateCursor(void);
 
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
-extern bool ChangingModes;
+extern BOOLEAN ChangingModes;
 extern uint32_t DebuggerMouse;
 extern uint32_t GlobalGotoFullScreen;
 extern uint32_t GlobalGotoWindowMode;
 extern uint32_t gCaptureScreen;
 extern uint32_t gPrintScreen;
-extern bool g_DDperformFlip;
+extern BOOLEAN g_DDperformFlip;
 extern uint32_t g_DDstate;
 
 LRESULT __stdcall ProcessIMEMessages(
-	HWND hwnd, uint32_t message, WPARAM wparam, LPARAM lparam, bool* pbHandled);
+	HWND hwnd, uint32_t message, WPARAM wparam, LPARAM lparam, BOOLEAN* pbHandled);
 
 /******************************************************************************/
 /// <summary>
@@ -99,8 +99,8 @@ void __stdcall UpdateCursor(void)
 /// <returns>LRESULT</returns>
 MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hwnd, uint32_t message, WPARAM wparam, LPARAM lparam)
 {
-	bool bActive;
-	bool bHandled;
+	BOOLEAN bActive;
+	BOOLEAN bHandled;
 	LRESULT lResult;
 	WINDOWPLACEMENT wndpl;
 	PWINDOWPOS winpos;

@@ -132,7 +132,7 @@ public:
 		}
 	};
 
-	void Remove(T* ptr, bool delete_data = false)
+	void Remove(T* ptr, BOOLEAN delete_data = false)
 	{
 		FLink<T>* tmp = m_Head;
 		if ((T*)tmp->linkData == ptr)
@@ -252,7 +252,7 @@ public:
 	}
 	void RemoveCurrentItem() { Remove(m_Iterator->linkData); }
 
-	inline void Clear(bool delete_data = false)
+	inline void Clear(BOOLEAN delete_data = false)
 	{
 		while (m_Size > 0)
 			Remove(m_Head->linkData, delete_data);

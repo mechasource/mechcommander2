@@ -47,7 +47,7 @@ enum class
 //
 typedef void(__stdcall* NETCALLBACK)(PSTR string, uint32_t value);
 
-extern bool Connected;
+extern BOOLEAN Connected;
 
 //
 // Functionality: Creates the networking object.
@@ -69,7 +69,7 @@ void __stdcall gos_ShutdownNetwork(void);
 // 3: Modem
 // 4: Serial
 //
-bool __stdcall CheckConnectionAvailable(int32_t Connection);
+BOOLEAN __stdcall CheckConnectionAvailable(int32_t Connection);
 
 //
 // Open a TCPIP connection
@@ -77,26 +77,26 @@ bool __stdcall CheckConnectionAvailable(int32_t Connection);
 // You can pass the address of the server or nullptr for the sub net.
 //
 //
-bool __stdcall gos_ConnectTCP(PSTR ip_address, uint16_t port);
+BOOLEAN __stdcall gos_ConnectTCP(PSTR ip_address, uint16_t port);
 
 //
 // Open an IPX connection
 //
-bool __stdcall gos_ConnectIPX(void);
+BOOLEAN __stdcall gos_ConnectIPX(void);
 
 //
 // Open a Serial connection
 //
 // You pass the number of the COM port to use
 //
-bool __stdcall gos_ConnectComPort(uint32_t com_port);
+BOOLEAN __stdcall gos_ConnectComPort(uint32_t com_port);
 
 //
 // Open a Modem connection
 //
 // You pass a phone number and optional modem name to use
 //
-bool __stdcall gos_ConnectModem(PSTR phone_number, PSTR modem_name);
+BOOLEAN __stdcall gos_ConnectModem(PSTR phone_number, PSTR modem_name);
 
 //
 // Enumerates all sessions available.

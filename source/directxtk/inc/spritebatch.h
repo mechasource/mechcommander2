@@ -21,7 +21,7 @@
 #include <functional>
 #include <memory>
 
-#include "RenderTargetState.h"
+#include "rendertargetstate.h"
 
 
 namespace directxtk

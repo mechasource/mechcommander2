@@ -23,9 +23,9 @@ struct gos_CaretInfo
 	HGOSFONT3D fontHandle;
 	uint32_t fontcolourComp;
 	uint32_t fontcolourCand;
-	bool fontBold;
-	bool fontItalic;
-	bool fontProportional;
+	BOOLEAN fontBold;
+	BOOLEAN fontItalic;
+	BOOLEAN fontProportional;
 	RECT margins;
 };
 

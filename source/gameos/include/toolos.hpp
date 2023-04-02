@@ -53,21 +53,21 @@ void __stdcall gos_SetThreadPriority(uint32_t ThreadHandle, gosThreadPriority Pr
 // 'ThreadFinished' will be set when the thread has finished executing
 // 'Context' will be passed to the thread function
 //
-void __stdcall gos_TriggerThread(uint32_t ThreadHandle, bool* ThreadFinished, PVOID Context);
+void __stdcall gos_TriggerThread(uint32_t ThreadHandle, BOOLEAN* ThreadFinished, PVOID Context);
 
 //
 //
 // LZ Compression - returns length of compressed destination buffer
 //
 //
-uint32_t __stdcall gos_LZCompress(uint8_t* dest, uint8_t* src, size_t srcLen, size_t destLen = 0);
+uint32_t __stdcall gos_LZCompress(BOOLEAN* dest, BOOLEAN* src, size_t srcLen, size_t destLen = 0);
 //
 //
 // LZ Decompression routine, returns length to decompressed output in dest
 // buffer
 //
 //
-uint32_t __stdcall gos_LZDecompress(uint8_t* dest, uint8_t* src, size_t srcLen);
+uint32_t __stdcall gos_LZDecompress(BOOLEAN* dest, BOOLEAN* src, size_t srcLen);
 
 //
 // Gets a pointer to text data in the windows clip board (nullptr=No text)
@@ -92,7 +92,7 @@ uint32_t __stdcall gos_GetValidDrives(PSTR Buffer, size_t buf_len);
 // Returns the drive label for a root directory specified. eg:  "c:\" might
 // return "DriveC"
 //
-bool __stdcall gos_GetDriveLabel(PSTR RootName, PSTR DriveLabel, size_t DriveLabelBufferLen);
+BOOLEAN __stdcall gos_GetDriveLabel(PSTR RootName, PSTR DriveLabel, size_t DriveLabelBufferLen);
 
 //
 // Get the space available on the drive specified, either "x:" or "x:\"
@@ -107,20 +107,20 @@ void __stdcall gos_GetCurrentPath(PSTR Buffer, size_t buf_len);
 //
 // Create directory. - Returns TRUE for sucess
 //
-bool __stdcall gos_CreateDirectory(PSTR FileName);
+BOOLEAN __stdcall gos_CreateDirectory(PSTR FileName);
 //
 // Delete directory. - Returns TRUE for sucess  (Directories must be empty)
 //
-bool __stdcall gos_DeleteDirectory(PSTR DirectoryName);
+BOOLEAN __stdcall gos_DeleteDirectory(PSTR DirectoryName);
 
 //
 // Rename file/directory. - Returns TRUE for sucess
 //
-bool __stdcall gos_RenameFile(PSTR FileNameFrom, PSTR FileNameTo);
+BOOLEAN __stdcall gos_RenameFile(PSTR FileNameFrom, PSTR FileNameTo);
 //
 // Delete file. - Returns TRUE for sucess
 //
-bool __stdcall gos_DeleteFile(PSTR FileName);
+BOOLEAN __stdcall gos_DeleteFile(PSTR FileName);
 
 //
 // Find files matching pattern - returns nullptr when no more files (Can be used
@@ -175,7 +175,7 @@ PSTR __stdcall gos_FileTimeString(int64_t Time);
 //
 // Get file read only attribute information
 //
-bool __stdcall gos_FileReadOnly(PSTR FileName);
+BOOLEAN __stdcall gos_FileReadOnly(PSTR FileName);
 //
 // Set file to read/write
 //
@@ -205,7 +205,7 @@ enum gosEnum_FileSeekType : uint32_t
 
 //////////////////////////////////////////////////////////////////////////////////
 // If the file or directory exists, return TRUE
-bool __stdcall gos_DoesFileExist(PSTR FileName);
+BOOLEAN __stdcall gos_DoesFileExist(PSTR FileName);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Open the file found at <path> with the method <writeable> and return a handle

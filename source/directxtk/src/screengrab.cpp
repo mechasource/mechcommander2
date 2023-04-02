@@ -22,8 +22,9 @@
 
 #include "stdinc.h"
 
+#include "screengrab.h"
+
 #include "d3dx12.h"
-#include "ScreenGrab.h"
 #include "directxhelpers.h"
 #include "platformhelpers.h"
 #include "dds.h"
@@ -39,14 +40,13 @@ namespace
     HRESULT CaptureTexture(_In_ ID3D12Device* device,
         _In_ ID3D12CommandQueue* pcommandq,
         _In_ ID3D12Resource* psource,
-        uint64_t srcPitch,
+        uint64_t srcpitch,
         const D3D12_RESOURCE_DESC& desc,
         wil::com_ptr<ID3D12Resource>& pstaging,
         D3D12_RESOURCE_STATES beforestate,
         D3D12_RESOURCE_STATES afterstate) noexcept
     {
-        if (!pcommandq || !psource)
-            return E_INVALIDARG;
+        THROW_HR_IF(E_INVALIDARG, (!pcommandq || !psource));
 
         if (desc.Dimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D)
         {
@@ -59,7 +59,7 @@ namespace
             DebugTrace("WARNING: ScreenGrab does not support 2D arrays, cubemaps, or mipmaps; only the first surface is written. Consider using DirectXTex instead.\n");
         }
 
-        if (srcPitch > UINT32_MAX)
+        if (srcpitch > UINT32_MAX)
             return HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW);
 
         uint32_t numberOfPlanes = D3D12GetFormatPlaneCount(device, desc.Format);
@@ -103,7 +103,7 @@ namespace
 
         SetDebugObjectName(fence.get(), L"ScreenGrab");
 
-        assert((srcPitch & 0xFF) == 0);
+        assert((srcpitch & 0xFF) == 0);
 
         CD3DX12_HEAP_PROPERTIES defaultHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
         CD3DX12_HEAP_PROPERTIES readBackHeapProperties(D3D12_HEAP_TYPE_READBACK);
@@ -115,7 +115,7 @@ namespace
         bufferDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
         bufferDesc.Format = DXGI_FORMAT_UNKNOWN;
         bufferDesc.Height = 1;
-        bufferDesc.Width = srcPitch * desc.Height;
+        bufferDesc.Width = srcpitch * desc.Height;
         bufferDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
         bufferDesc.MipLevels = 1;
         bufferDesc.SampleDesc.Count = 1;
@@ -188,7 +188,7 @@ namespace
         bufferFootprint.Footprint.Width = static_cast<uint32_t>(desc.Width);
         bufferFootprint.Footprint.Height = desc.Height;
         bufferFootprint.Footprint.Depth = 1;
-        bufferFootprint.Footprint.RowPitch = static_cast<uint32_t>(srcPitch);
+        bufferFootprint.Footprint.RowPitch = static_cast<uint32_t>(srcpitch);
         bufferFootprint.Footprint.Format = desc.Format;
 
         CD3DX12_TEXTURE_COPY_LOCATION copyDest(pstaging.get(), bufferFootprint);
@@ -257,10 +257,10 @@ HRESULT directxtk::SaveDDSTextureToFile(
         &totalResourceSize);
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    // Round up the srcPitch to multiples of 1024
+    // Round up the srcpitch to multiples of 1024
     uint64_t dstrowpitch = (fpRowPitch + static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u) & ~(static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u);
 #else
-    // Round up the srcPitch to multiples of 256
+    // Round up the srcpitch to multiples of 256
     uint64_t dstrowpitch = (fpRowPitch + 255) & ~0xFFu;
 #endif
 
@@ -441,11 +441,11 @@ HRESULT directxtk::SaveWICTextureToFile(
     const std::wstring_view& filename,
     D3D12_RESOURCE_STATES beforestate,
     D3D12_RESOURCE_STATES afterstate,
-    const GUID* targetFormat,
+    const GUID* targetformat,
     std::function<void(IPropertyBag2*)> setCustomProps,
     bool forceSRGB)
 {
-    if (!filename)
+    if (filename.empty())
         return E_INVALIDARG;
 
     wil::com_ptr<ID3D12Device> device;
@@ -472,10 +472,10 @@ HRESULT directxtk::SaveWICTextureToFile(
         &totalResourceSize);
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    // Round up the srcPitch to multiples of 1024
+    // Round up the srcpitch to multiples of 1024
     uint64_t dstrowpitch = (fpRowPitch + static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u) & ~(static_cast<uint64_t>(D3D12XBOX_TEXTURE_DATA_PITCH_ALIGNMENT) - 1u);
 #else
-    // Round up the srcPitch to multiples of 256
+    // Round up the srcpitch to multiples of 256
     uint64_t dstrowpitch = (fpRowPitch + 255) & ~0xFFu;
 #endif
 
@@ -546,7 +546,7 @@ HRESULT directxtk::SaveWICTextureToFile(
     if (FAILED(hr))
         return hr;
 
-    hr = stream->InitializeFromFilename(filename, GENERIC_WRITE);
+	hr = stream->InitializeFromFilename(filename.data(), GENERIC_WRITE);
     if (FAILED(hr))
         return hr;
 
@@ -567,7 +567,7 @@ HRESULT directxtk::SaveWICTextureToFile(
     if (FAILED(hr))
         return hr;
 
-    if (targetFormat && memcmp(&guidContainerFormat, &GUID_ContainerFormatBmp, sizeof(WICPixelFormatGUID)) == 0)
+    if (targetformat && memcmp(&guidContainerFormat, &GUID_ContainerFormatBmp, sizeof(WICPixelFormatGUID)) == 0)
     {
         // Opt-in to the WIC2 support for writing 32-bit Windows BMP files with an alpha channel
         PROPBAG2 option = {};
@@ -598,9 +598,9 @@ HRESULT directxtk::SaveWICTextureToFile(
 
     // Pick a target format
     WICPixelFormatGUID targetGuid = {};
-    if (targetFormat)
+    if (targetformat)
     {
-        targetGuid = *targetFormat;
+        targetGuid = *targetformat;
     }
     else
     {
@@ -634,7 +634,7 @@ HRESULT directxtk::SaveWICTextureToFile(
     if (FAILED(hr))
         return hr;
 
-    if (targetFormat && memcmp(targetFormat, &targetGuid, sizeof(WICPixelFormatGUID)) != 0)
+    if (targetformat && memcmp(targetformat, &targetGuid, sizeof(WICPixelFormatGUID)) != 0)
     {
         // Requested output pixel format is not supported by the WIC codec
         return E_FAIL;

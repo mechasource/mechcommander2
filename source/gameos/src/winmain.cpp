@@ -29,7 +29,7 @@ MECH_IMPEXP char ApplicationName[256];
 MECH_IMPEXP char AssetsDirectory1[MAX_PATH];
 MECH_IMPEXP char AssetsDirectory2[MAX_PATH];
 MECH_IMPEXP char ImageHelpPath[MAX_PATH];
-MECH_IMPEXP bool gNoBlade;
+MECH_IMPEXP BOOLEAN gNoBlade;
 
 // global referenced data not listed in headers
 MECH_IMPEXP uint32_t gDirectX7;
@@ -67,14 +67,14 @@ uint32_t LastModalLoop;
 uint32_t ModalLoop;
 uint32_t gDisableRDTSC;
 uint32_t gLocalize;
-bool PerfCounters;
-bool RealTerminate;
-bool gShowAllocations;
-bool gUse3D;
+BOOLEAN PerfCounters;
+BOOLEAN RealTerminate;
+BOOLEAN gShowAllocations;
+BOOLEAN gUse3D;
 uint32_t InGameLogicCounter;
-bool gPauseSpew;
-bool gNoDialogs;
-bool gDumpMachineInfo;
+BOOLEAN gPauseSpew;
+BOOLEAN gNoDialogs;
+BOOLEAN gDumpMachineInfo;
 int64_t volatile TimeScripts;
 int64_t volatile TimeScriptsUpdate;
 int64_t volatile TimeGameLogic;
@@ -96,7 +96,7 @@ int64_t volatile TimeElementRenderers;
 uint32_t ModalScripts;
 uint32_t SavedSP;
 uint32_t SavedBP;
-bool RunFullScreen;
+BOOLEAN RunFullScreen;
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
@@ -105,12 +105,12 @@ MECH_IMPEXP void _stdcall RunFromOtherApp(HINSTANCE hinstance, HWND hwnd, PSTR c
 MECH_IMPEXP int32_t _stdcall RunFromWinMain(
 	HINSTANCE hinstance, HINSTANCE hPrevInstance, PSTR commandline, int32_t nCmdShow);
 MECH_IMPEXP void __stdcall RestartGameOS(void);
-MECH_IMPEXP void __stdcall gos_UpdateDisplay(bool Everything);
+MECH_IMPEXP void __stdcall gos_UpdateDisplay(BOOLEAN Everything);
 MECH_IMPEXP uint32_t __stdcall RunGameOSLogic(void);
 MECH_IMPEXP void __stdcall gos_TerminateApplication(void);
 MECH_IMPEXP void __stdcall gos_AbortTermination(void);
-MECH_IMPEXP uint8_t __stdcall gos_UserExit(void);
-MECH_IMPEXP uint8_t __stdcall gos_RunMainLoop(void(__stdcall* DoGameLogic)(void) = nullptr);
+MECH_IMPEXP BOOLEAN __stdcall gos_UserExit(void);
+MECH_IMPEXP BOOLEAN __stdcall gos_RunMainLoop(void(__stdcall* DoGameLogic)(void) = nullptr);
 
 // inline void __stdcall InitTextureManager(void)
 // inline void __stdcall DestroyTextureManager(void);

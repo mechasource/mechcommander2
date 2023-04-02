@@ -80,7 +80,7 @@
 //
 // Common synonyms
 //
-typedef uint8_t U8;
+typedef BOOLEAN U8;
 typedef signed char S8;
 typedef uint16_t U16;
 typedef signed int16_t S16;

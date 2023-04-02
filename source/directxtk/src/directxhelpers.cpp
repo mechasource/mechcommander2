@@ -19,7 +19,7 @@ void directxtk::CreateShaderResourceView(
     ID3D12Device* device,
     ID3D12Resource* tex,
     D3D12_CPU_DESCRIPTOR_HANDLE srvDescriptor,
-    bool isCubeMap)
+    bool iscubemap)
 {
     const auto desc = tex->GetDesc();
 
@@ -44,7 +44,7 @@ void directxtk::CreateShaderResourceView(
             break;
 
         case D3D12_RESOURCE_DIMENSION_TEXTURE2D:
-            if (isCubeMap)
+            if (iscubemap)
             {
                 if (desc.DepthOrArraySize > 6)
                 {

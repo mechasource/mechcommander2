@@ -27,7 +27,7 @@
 MECH_IMPEXP float XDelta;
 MECH_IMPEXP float YDelta;
 MECH_IMPEXP uint32_t gNumberOfJoystickCounts;
-MECH_IMPEXP bool DisablePolling;
+MECH_IMPEXP BOOLEAN DisablePolling;
 
 // -----------------------------------------------------------------------------
 // implemented functions in this module listed in headers
@@ -43,11 +43,11 @@ MECH_IMPEXP void __stdcall CMCreateJoysticks(void);
 MECH_IMPEXP BOOL __stdcall CMCreateJoystick7(LPCDIDEVICEINSTANCEA pdinst, PVOID pvRef);
 MECH_IMPEXP void __stdcall ReInitControlManager(void);
 
-MECH_IMPEXP uint32_t __stdcall gosJoystick_CountJoysticks(uint8_t ReDetect = 1);
+MECH_IMPEXP uint32_t __stdcall gosJoystick_CountJoysticks(BOOLEAN ReDetect = 1);
 MECH_IMPEXP float __stdcall gosJoystick_GetAxis(uint32_t index, GOSJoystickAxis axis);
-MECH_IMPEXP uint8_t __stdcall gosJoystick_ButtonStatus(uint32_t index, uint32_t button);
+MECH_IMPEXP BOOLEAN __stdcall gosJoystick_ButtonStatus(uint32_t index, uint32_t button);
 MECH_IMPEXP void __stdcall gosJoystick_SetPolling(
-	uint32_t index, uint8_t yesNo, float howOften = 0.03333f);
+	uint32_t index, BOOLEAN yesNo, float howOften = 0.03333f);
 MECH_IMPEXP void __stdcall gosJoystick_GetInfo(uint32_t index, gosJoystick_Info* gji);
 
 // implemented functions not listed in headers

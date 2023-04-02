@@ -445,7 +445,7 @@ WeaponBolt::update(void)
 		timeLeft -= frameLength;
 		if (timeLeft >= 0.0f)
 		{
-			gosTextureHandle = mcTextureManager->get_gosTextureHandle(mcTextureHandle);
+			texturehandle = mcTextureManager->get_gosTextureHandle(mcTextureHandle);
 			mcTextureManager->addTriangle(mcTextureHandle, MC2_ISEFFECTS | MC2_DRAWONEIN);
 			mcTextureManager->addTriangle(mcTextureHandle, MC2_ISEFFECTS | MC2_DRAWONEIN);
 			mcTextureManager->addTriangle(mcTextureHandle, MC2_ISEFFECTS | MC2_DRAWONEIN);
@@ -1757,8 +1757,8 @@ WeaponBolt::render(void)
 					gos_SetRenderState(gos_State_ZCompare, 1);
 					gos_SetRenderState(gos_State_ZWrite, 0);
 				}
-				if (gosTextureHandle != 0xffffffff)
-					gos_SetRenderState(gos_State_Texture, gosTextureHandle);
+				if (texturehandle != 0xffffffff)
+					gos_SetRenderState(gos_State_Texture, texturehandle);
 				else
 					gos_SetRenderState(gos_State_Texture, 0);
 				gos_DrawTriangles(lq1Vertices, 3);
@@ -2104,7 +2104,7 @@ WeaponBolt::init(bool create, ObjectTypePtr _type)
 	else
 	{
 		mcTextureHandle = 0;
-		gosTextureHandle = 0xffffffff;
+		texturehandle = 0xffffffff;
 	}
 }
 
@@ -2173,7 +2173,7 @@ WeaponBolt::CopyTo(WeaponBoltData* data)
 	data->hsPos = hsPos;
 	data->hitLeft = hitLeft;
 	data->mcTextureHandle = mcTextureHandle;
-	data->gosTextureHandle = gosTextureHandle;
+	data->texturehandle = texturehandle;
 	data->startUV = startUV;
 	data->goalheight = goalheight;
 	GameObject::CopyTo(dynamic_cast<GameObjectData*>(data));

@@ -44,9 +44,9 @@ public:
 	STREAM_TIME m_nextFrameTime;
 
 public:
-	gos_Video(PSTR path, bool texture);
+	gos_Video(PSTR path, BOOLEAN texture);
 	~gos_Video(void);
-	bool Update(void);
+	BOOLEAN Update(void);
 	void Pause(void);
 	void Continue(void);
 	void Stop(void);

@@ -962,7 +962,7 @@ void directxtk::ComputeDodecahedron(VertexCollection& vertices, IndexCollection&
         { { {        1.f,       0.5f, 0, 0 } } }
     };
 
-    static const uint32_t textureIndex[12][5] =
+    static const uint32_t textureindex[12][5] =
     {
         { 0, 1, 2, 3, 4 },
         { 2, 3, 4, 0, 1 },
@@ -1008,19 +1008,19 @@ void directxtk::ComputeDodecahedron(VertexCollection& vertices, IndexCollection&
 
         // Duplicate vertices to use face normals
         DirectX::XMVECTOR position = DirectX::XMVectorScale(verts[v0], size);
-        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureIndex[t][0]]));
+        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureindex[t][0]]));
 
         position = DirectX::XMVectorScale(verts[v1], size);
-        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureIndex[t][1]]));
+        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureindex[t][1]]));
 
         position = DirectX::XMVectorScale(verts[v2], size);
-        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureIndex[t][2]]));
+        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureindex[t][2]]));
 
         position = DirectX::XMVectorScale(verts[v3], size);
-        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureIndex[t][3]]));
+        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureindex[t][3]]));
 
         position = DirectX::XMVectorScale(verts[v4], size);
-        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureIndex[t][4]]));
+        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinates[textureindex[t][4]]));
     }
 
     // Built LH above

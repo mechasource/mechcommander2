@@ -45,19 +45,19 @@ int dword_80[996]; // weak
 
 uint32_t FontClipping;
 float TexOffset; // weak
-bool FontNoCache; // weak
-bool FontStartOfLine; // weak
-bool OddSize; // weak
-bool FontWordWrap; // weak
+BOOLEAN FontNoCache; // weak
+BOOLEAN FontStartOfLine; // weak
+BOOLEAN OddSize; // weak
+BOOLEAN FontWordWrap; // weak
 struct _FontInfo* Fonts;
 struct _FontInfo* FontHandle;
 uint32_t Fontcolour; // weak
 float FontSize; // weak
 uint32_t FontWrapType; // weak
-bool FontProportional; // weak
-bool FontBold; // weak
-bool FontItalic; // weak
-bool FontDisableCodes; // weak
+BOOLEAN FontProportional; // weak
+BOOLEAN FontBold; // weak
+BOOLEAN FontItalic; // weak
+BOOLEAN FontDisableCodes; // weak
 uint32_t MarginBuffer; // weak
 int Largestheight; // idb
 float MagicOffset = 0.4375; // weak
@@ -69,8 +69,8 @@ char byte_68F3; // weak
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
 void __stdcall gos_TextSetAttributes(HGOSFONT3D FontHandle, uint32_t Foreground, float Size,
-	bool WordWrap, bool Proportional, bool Bold, bool Italic, uint32_t WrapType,
-	bool DisableEmbeddedCodes);
+	BOOLEAN WordWrap, BOOLEAN Proportional, BOOLEAN Bold, BOOLEAN Italic, uint32_t WrapType,
+	BOOLEAN DisableEmbeddedCodes);
 void __stdcall gos_TextSetPosition(int32_t XPosition, int32_t YPosition);
 void __stdcall gos_TextGetPrintPosition(int32_t* pXPosition, int32_t* pYPosition);
 void __stdcall gos_TextSetRegion(int32_t Left, int32_t Top, int32_t Right, int32_t Bottom);
@@ -82,11 +82,11 @@ void __stdcall gos_TextDraw(PSTR message, ...);
 void __stdcall gos_TextDrawV(PSTR message, PSTR arglist);
 
 // global implemented functions not listed in headers
-void __stdcall FontDrawQuad(bool);
+void __stdcall FontDrawQuad(BOOLEAN);
 void __stdcall GetChrSize(int32_t*, int32_t*, char);
-size_t __stdcall IgnoreEmbedded(uint8_t*);
-int32_t __stdcall GetNextWordLen(uint8_t*);
-int32_t __stdcall GetNextLineLen(uint8_t*, uint8_t**);
+size_t __stdcall IgnoreEmbedded(BOOLEAN*);
+int32_t __stdcall GetNextWordLen(BOOLEAN*);
+int32_t __stdcall GetNextLineLen(BOOLEAN*, BOOLEAN**);
 void __stdcall gos_ChrDraw(char c);
 void __stdcall HandleTags(char**);
 

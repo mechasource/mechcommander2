@@ -37,7 +37,7 @@ void __stdcall DestroyThreads(void);
 uint32_t __stdcall gos_CreateThread(void(__stdcall* ThreadRoutine)(PVOID));
 void __stdcall gos_SetThreadPriority(uint32_t ThreadHandle, gosThreadPriority Priority);
 void __stdcall gos_DeleteThread(uint32_t ThreadHandle);
-void __stdcall gos_TriggerThread(uint32_t ThreadHandle, bool* ThreadFinished, PVOID Context);
+void __stdcall gos_TriggerThread(uint32_t ThreadHandle, BOOLEAN* ThreadFinished, PVOID Context);
 
 // global implemented functions not listed in headers
 

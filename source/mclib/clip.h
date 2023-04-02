@@ -31,14 +31,14 @@
 
 //---------------------------------------------------------------------------------------------------
 inline void
-xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float leftEdge)
+xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numvertices, float leftEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
 	gos_VERTEX points[6];
-	memcpy(points, vertices, sizeof(gos_VERTEX) * numVertices);
+	memcpy(points, vertices, sizeof(gos_VERTEX) * numvertices);
 	//------------------------------------------
-	uint32_t first = numVertices - 1;
+	uint32_t first = numvertices - 1;
 	uint32_t second = 0;
 	//----------------------------------------------
 	// Index to current vertex in clipped polygon.
@@ -51,7 +51,7 @@ xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float leftEdge)
 	//----------------------------
 	// process points in edge order
 	//----------------------------
-	for (size_t s = 0; s < numVertices; s++, second++)
+	for (size_t s = 0; s < numvertices; s++, second++)
 	{
 		float clipEdgeTest = points[first].x;
 		//----------------------------------------------------------------
@@ -109,19 +109,19 @@ xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float leftEdge)
 		}
 		first = second;
 	}
-	numVertices = n_points;
+	numvertices = n_points;
 }
 
 //---------------------------------------------------------------------------------------------------
 inline void
-xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float rightEdge)
+xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numvertices, float rightEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
 	gos_VERTEX points[6];
-	memcpy(points, vertices, sizeof(gos_VERTEX) * numVertices);
+	memcpy(points, vertices, sizeof(gos_VERTEX) * numvertices);
 	//------------------------------------------
-	uint32_t first = numVertices - 1;
+	uint32_t first = numvertices - 1;
 	uint32_t second = 0;
 	//----------------------------------------------
 	// Index to current vertex in clipped polygon.
@@ -134,7 +134,7 @@ xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float rightEdge)
 	//----------------------------
 	// process points in edge order
 	//----------------------------
-	for (size_t s = 0; s < numVertices; s++, second++)
+	for (size_t s = 0; s < numvertices; s++, second++)
 	{
 		float clipEdgeTest = points[first].x;
 		//----------------------------------------------------------------
@@ -192,19 +192,19 @@ xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float rightEdge)
 		}
 		first = second;
 	}
-	numVertices = n_points;
+	numvertices = n_points;
 }
 
 //---------------------------------------------------------------------------------------------------
 inline void
-yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topEdge)
+yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numvertices, float topEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
 	gos_VERTEX points[6];
-	memcpy(points, vertices, sizeof(gos_VERTEX) * numVertices);
+	memcpy(points, vertices, sizeof(gos_VERTEX) * numvertices);
 	//------------------------------------------
-	int32_t first = numVertices - 1;
+	int32_t first = numvertices - 1;
 	int32_t second = 0;
 	//----------------------------------------------
 	// Index to current vertex in clipped polygon.
@@ -217,7 +217,7 @@ yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topEdge)
 	//----------------------------
 	// process points in edge order
 	//----------------------------
-	for (size_t s = 0; s < numVertices; s++, second++)
+	for (size_t s = 0; s < numvertices; s++, second++)
 	{
 		float clipEdgeTest = points[first].y;
 		//----------------------------------------------------------------
@@ -275,19 +275,19 @@ yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topEdge)
 		}
 		first = second;
 	}
-	numVertices = n_points;
+	numvertices = n_points;
 }
 
 //---------------------------------------------------------------------------------------------------
 inline void
-yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float bottomEdge)
+yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numvertices, float bottomEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
 	gos_VERTEX points[6];
-	memcpy(points, vertices, sizeof(gos_VERTEX) * numVertices);
+	memcpy(points, vertices, sizeof(gos_VERTEX) * numvertices);
 	//------------------------------------------
-	int32_t first = numVertices - 1;
+	int32_t first = numvertices - 1;
 	int32_t second = 0;
 	//----------------------------------------------
 	// Index to current vertex in clipped polygon.
@@ -300,7 +300,7 @@ yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float bottomEdge)
 	//----------------------------
 	// process points in edge order
 	//----------------------------
-	for (size_t s = 0; s < numVertices; s++, second++)
+	for (size_t s = 0; s < numvertices; s++, second++)
 	{
 		float clipEdgeTest = points[first].y;
 		//----------------------------------------------------------------
@@ -358,7 +358,7 @@ yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float bottomEdge)
 		}
 		first = second;
 	}
-	numVertices = n_points;
+	numvertices = n_points;
 }
 
 //---------------------------------------------------------------------------------------------------

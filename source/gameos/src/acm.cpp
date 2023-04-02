@@ -77,17 +77,17 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX* 
 HRESULT __stdcall wACMStreamPrepareHeader(
 	HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwPrepare)
 {
-	PSTR pszErrorMessage;
+	PSTR errormessage;
 	MMRESULT hr;
 	InternalFunctionSpew(
 		"GameOS_DirectSound", "acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)", has, pash, fdwPrepare);
 	hr = acmStreamPrepareHeader(has, pash, fdwPrepare);
 	if (MMFAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hr); // likely to take a uint32_t
+		errormessage = ErrorNumberToMessage(hr); // likely to take a uint32_t
 		// PAUSE(
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)",
-				hr, pszErrorMessage, has, pash, fdwPrepare))
+				hr, errormessage, has, pash, fdwPrepare))
 			ENTER_DEBUGGER;
 	}
 	return hr;
@@ -109,17 +109,17 @@ HRESULT __stdcall wACMStreamPrepareHeader(
 /// <returns></returns>
 HRESULT __stdcall wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert)
 {
-	PSTR pszErrorMessage;
+	PSTR errormessage;
 	MMRESULT hr;
 	InternalFunctionSpew(
 		"GameOS_DirectSound", "acmStreamConvert(0x%x, 0x%x, 0x%x)", has, pash, fdwConvert);
 	hr = acmStreamConvert(has, pash, fdwConvert);
 	if (MMFAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hr);
+		errormessage = ErrorNumberToMessage(hr);
 		// PAUSE(
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamConvert(0x%x, 0x%x, 0x%x)",
-				hr, pszErrorMessage, has, pash, fdwConvert))
+				hr, errormessage, has, pash, fdwConvert))
 			ENTER_DEBUGGER;
 	}
 	return hr;
@@ -142,18 +142,18 @@ HRESULT __stdcall wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint3
 HRESULT __stdcall wACMStreamUnprepareHeader(
 	HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwUnprepare)
 {
-	PSTR pszErrorMessage;
+	PSTR errormessage;
 	MMRESULT hr;
 	InternalFunctionSpew("GameOS_DirectSound", "acmStreamUnprepareHeader(0x%x, 0x%x, 0x%x)", has,
 		pash, fdwUnprepare);
 	hr = acmStreamUnprepareHeader(has, pash, fdwUnprepare);
 	if (MMFAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hr);
+		errormessage = ErrorNumberToMessage(hr);
 		// PAUSE(
 		if (InternalFunctionPause("FAILED (0x%x - %s) - "
 								  "acmStreamUnprepareHeader(0x%x, 0x%x, 0x%x)",
-				hr, pszErrorMessage, has, pash, fdwUnprepare))
+				hr, errormessage, has, pash, fdwUnprepare))
 			ENTER_DEBUGGER;
 	}
 	return hr;
@@ -174,15 +174,15 @@ HRESULT __stdcall wACMStreamUnprepareHeader(
 /// <returns></returns>
 HRESULT __stdcall wACMStreamClose(HACMSTREAM has, uint32_t fdwClose)
 {
-	PSTR pszErrorMessage;
+	PSTR errormessage;
 	MMRESULT hr;
 	InternalFunctionSpew("GameOS_DirectSound", "acmStreamClose(0x%x, 0x%x)", has, fdwClose);
 	hr = acmStreamClose(has, fdwClose);
 	if (MMFAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hr);
+		errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamClose(0x%x, 0x%x, 0x%x)", hr,
-				pszErrorMessage, has, fdwClose))
+				errormessage, has, fdwClose))
 			ENTER_DEBUGGER;
 	}
 	return hr;
@@ -213,7 +213,7 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFO
 {
 	PSTR pszwfDst;
 	PSTR pszwfSrc;
-	PSTR pszErrorMessage;
+	PSTR errormessage;
 	MMRESULT hr;
 	char BUffer2[128];
 	char Buffer[128];
@@ -227,10 +227,10 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFO
 	{
 		pszwfDst = GetWaveFormat(Buffer, pwfxDst);
 		pszwfSrc = GetWaveFormat(BUffer2, pwfxsrc);
-		pszErrorMessage = ErrorNumberToMessage(hr);
+		errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamOpen(0x%x, "
 								  "0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
-				hr, pszErrorMessage, phas, had, pszwfSrc, pszwfDst, pwfltr, dwCallback,
+				hr, errormessage, phas, had, pszwfSrc, pszwfDst, pwfltr, dwCallback,
 				dwInstance, fdwOpen))
 			ENTER_DEBUGGER;
 	}
@@ -239,10 +239,10 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFO
 	{
 		pszwfDst = GetWaveFormat(Buffer, pwfxDst);
 		pszwfSrc = GetWaveFormat(BUffer2, pwfxsrc);
-		pszErrorMessage = ErrorNumberToMessage(hr);
+		errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamOpen(0x%x, "
 								  "0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
-				hr, pszErrorMessage, phas, had, pszwfSrc, pszwfDst, pwfltr, dwCallback,
+				hr, errormessage, phas, had, pszwfSrc, pszwfDst, pwfltr, dwCallback,
 				dwInstance, fdwOpen))
 			ENTER_DEBUGGER;
 	}
@@ -267,16 +267,16 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFO
 HRESULT __stdcall wACMStreamSize(
 	HACMSTREAM has, uint32_t cbInput, uint32_t* pdwOutputBytes, uint32_t fsize)
 {
-	PSTR pszErrorMessage;
+	PSTR errormessage;
 	MMRESULT hr;
 	InternalFunctionSpew("GameOS_DirectSound", "acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)", has,
 		cbInput, pdwOutputBytes, fsize);
 	hr = acmStreamSize(has, cbInput, pdwOutputBytes, fsize);
 	if (MMFAILED(hr))
 	{
-		pszErrorMessage = ErrorNumberToMessage(hr);
+		errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)",
-				hr, pszErrorMessage, has, cbInput, pdwOutputBytes, fsize))
+				hr, errormessage, has, cbInput, pdwOutputBytes, fsize))
 			ENTER_DEBUGGER;
 	}
 	return hr;
@@ -303,7 +303,7 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxsrc,
 {
 	PSTR pszwfDst;
 	PSTR pszwfSrc;
-	PSTR pszErrorMessage;
+	PSTR errormessage;
 	char Buffer2[128];
 	char Buffer1[128];
 	MMRESULT hr;
@@ -316,10 +316,10 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxsrc,
 	{
 		pszwfDst = GetWaveFormat(Buffer1, pwfxDst);
 		pszwfSrc = GetWaveFormat(Buffer2, pwfxsrc);
-		pszErrorMessage = ErrorNumberToMessage(hr);
+		errormessage = ErrorNumberToMessage(hr);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmFormatSuggest(0x%x, "
 								  "%s, %s, 0x%x, 0x%x)",
-				hr, pszErrorMessage, had, pszwfSrc, pszwfDst, cbwfxDst, fdwSuggest))
+				hr, errormessage, had, pszwfSrc, pszwfDst, cbwfxDst, fdwSuggest))
 			ENTER_DEBUGGER;
 	}
 	return hr;

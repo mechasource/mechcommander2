@@ -775,9 +775,9 @@ UpdateRenderers()
 			for (size_t i = 0; i < nIterations; i++)
 			{
 
-				uint32_t totalVertices = 3000;
+				uint32_t totalvertices = 3000;
 				gos_SetRenderState(gos_State_Texture, testTextureHandle);
-				gos_RenderIndexedArray(testVertex, totalVertices, indexArray, totalVertices);
+				gos_RenderIndexedArray(testVertex, totalvertices, indexArray, totalvertices);
 			}
 
 			endTime = timeGetTime() - startTime;

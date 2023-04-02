@@ -141,15 +141,15 @@ protected:
 public:
 	CList(void);
 	~CList(void);
-	bool IsEmpty(void);
+	BOOLEAN IsEmpty(void);
 	void RemoveAll(void);
 	void AddHead(CItem&);
 	void AddTail(CItem&);
-	bool RemoveHead(void);
-	bool RemoveIt(POSITION pos, CItem& ItemRet);
-	bool Find(CItem&);
-	bool AddNext(POSITION, CItem&);
-	bool AddPrev(POSITION, CItem&);
+	BOOLEAN RemoveHead(void);
+	BOOLEAN RemoveIt(POSITION pos, CItem& ItemRet);
+	BOOLEAN Find(CItem&);
+	BOOLEAN AddNext(POSITION, CItem&);
+	BOOLEAN AddPrev(POSITION, CItem&);
 	POSITION GetHeadPosition(void);
 	POSITION GetTailPosition(void);
 	CItem* GetNext(POSITION&);
@@ -237,13 +237,13 @@ public:
 
 	// create a new entry in the table, either with an auto-id
 	// or with a specified ID.
-	virtual bool CreateEntry(PSTR id);
+	virtual BOOLEAN CreateEntry(PSTR id);
 
 	// data field operations
-	virtual bool SetField(PSTR id, PSTR key, PSTR val);
+	virtual BOOLEAN SetField(PSTR id, PSTR key, PSTR val);
 	PSTR GetDataField(PSTR id, PSTR key);
-	virtual bool RemoveField(PSTR id, PSTR header);
-	virtual bool Remove(PSTR id);
+	virtual BOOLEAN RemoveField(PSTR id, PSTR header);
+	virtual BOOLEAN Remove(PSTR id);
 	void RemoveAll(void);
 
 	// The indexed view is used for array-like access to the
@@ -252,7 +252,7 @@ public:
 
 	// misc operations
 	int32_t GetTotalCount(void); // total number of table items
-	bool Exists(PSTR id);
+	BOOLEAN Exists(PSTR id);
 	void EnumerateAll(CHash<TableItem, PSTR>::PFITERCALLBACK pfnCB, PVOID cookie);
 	PSTR GetIDFromField(PSTR key, PSTR val);
 	PSTR GetIDFromField(PSTR key,
@@ -271,7 +271,7 @@ public:
 protected:
 	// hash table stuff
 	static uint32_t HashLPSTR(PSTR Key);
-	static bool HashCompare(TableItem* obj, PSTR key);
+	static BOOLEAN HashCompare(TableItem* obj, PSTR key);
 	typedef CHash<TableItem, PSTR> ItemHash;
 
 	////////////////////
@@ -283,7 +283,7 @@ protected:
 	void FreeFieldItem(FieldItem* pItem);
 	TableItem* FindItem(PSTR id);
 	static PSTR FindFieldVal(FieldList& pList, PSTR key);
-	static bool ForEachFindField(TableItem* tableItem, MTListNodeHandle handle, PVOID pThis);
+	static BOOLEAN ForEachFindField(TableItem* tableItem, MTListNodeHandle handle, PVOID pThis);
 
 	// this is the callback required for the m_Items.RemoveAll() call in
 	// the RemoveAll function.
@@ -317,18 +317,18 @@ public:
 	GameList(void);
 	virtual ~GameList(void);
 
-	virtual bool CreateEntry(PSTR id);
-	virtual bool SetField(PSTR id, PSTR key, PSTR val);
+	virtual BOOLEAN CreateEntry(PSTR id);
+	virtual BOOLEAN SetField(PSTR id, PSTR key, PSTR val);
 
-	bool GetGUID(PSTR id, GUID& gameGUID);
-	bool GetID(PSTR gameName, PSTR& id);
+	BOOLEAN GetGUID(PSTR id, GUID& gameGUID);
+	BOOLEAN GetID(PSTR gameName, PSTR& id);
 
 	PSTR GetReferenceGameID(void);
 	PlayerList* GetPlayerList(PSTR id);
 
 	// ping management
-	static bool _stdcall StartPingServer(void);
-	static bool _stdcall StartPingClient(uint32_t ping_interval_sec);
+	static BOOLEAN _stdcall StartPingServer(void);
+	static BOOLEAN _stdcall StartPingClient(uint32_t ping_interval_sec);
 	static void _stdcall ShutdownPing(void);
 	int32_t GetPing(PSTR id);
 	int32_t GetPing(int32_t index);
@@ -359,8 +359,8 @@ protected:
 
 	char m_ReferenceGameID[255];
 	static CZonePing* s_ZonePing;
-	static bool s_ZonePingServerStarted;
-	static bool s_ZonePingClientStarted;
+	static BOOLEAN s_ZonePingServerStarted;
+	static BOOLEAN s_ZonePingClientStarted;
 };
 
 /*
@@ -395,7 +395,7 @@ public:
 	TableItemFilter(void);
 	virtual ~TableItemFilter(void);
 
-	virtual bool Filter(TableList::TableItem& tableItem);
+	virtual BOOLEAN Filter(TableList::TableItem& tableItem);
 
 	void SetFilterType(FilterType filterType);
 	FilterType GetFilterType(void) const;
@@ -403,7 +403,7 @@ public:
 	// general field-based filtering
 	void AddNumericFilter(PSTR key, int32_t minVal, int32_t maxVal);
 	void AddStringFilter(PSTR key, PSTR val);
-	virtual bool ClearFilter(PSTR key);
+	virtual BOOLEAN ClearFilter(PSTR key);
 
 	virtual void ClearAllFilters(void);
 
@@ -453,63 +453,63 @@ public:
 	GameListFilter(void);
 	virtual ~GameListFilter(void);
 
-	virtual bool Filter(TableList::TableItem& tableItem);
+	virtual BOOLEAN Filter(TableList::TableItem& tableItem);
 
 	// filter attributes specific to the game list
 	void SetPingFilter(uint32_t minPing, uint32_t maxPing);
 	uint32_t GetMaxPing(void) const;
 	uint32_t GetMinPing(void) const;
-	void EnablePingFilter(bool val);
-	bool GetPingFilterEnabled(void) const;
+	void EnablePingFilter(BOOLEAN val);
+	BOOLEAN GetPingFilterEnabled(void) const;
 
-	void EnableActiveFilter(bool val);
-	bool GetActiveFilterEnabled(void) const;
+	void EnableActiveFilter(BOOLEAN val);
+	BOOLEAN GetActiveFilterEnabled(void) const;
 
-	void EnableAvailableFilter(bool val);
-	bool GetAvailableFilterEnabled(void) const;
+	void EnableAvailableFilter(BOOLEAN val);
+	BOOLEAN GetAvailableFilterEnabled(void) const;
 
-	bool SetPlayerCountFilter(uint32_t minPlayers, uint32_t maxPlayers);
+	BOOLEAN SetPlayerCountFilter(uint32_t minPlayers, uint32_t maxPlayers);
 	uint32_t GetMinPlayers(void) const;
 	uint32_t GetMaxPlayers(void) const;
-	void EnablePlayerCountFilter(bool val);
-	bool GetPlayerCountFilterEnabled(void) const;
+	void EnablePlayerCountFilter(BOOLEAN val);
+	BOOLEAN GetPlayerCountFilterEnabled(void) const;
 
-	bool SetGameTypeFilter(PSTR gameType);
+	BOOLEAN SetGameTypeFilter(PSTR gameType);
 	PSTR GetGameTypeFilter(void) const;
-	void EnableGameTypeFilter(bool val);
-	bool GetGameTypeFilterEnabled(void) const;
+	void EnableGameTypeFilter(BOOLEAN val);
+	BOOLEAN GetGameTypeFilterEnabled(void) const;
 
-	bool SetPlayerFilter(PSTR playerName);
+	BOOLEAN SetPlayerFilter(PSTR playerName);
 	PSTR GetPlayerFilter(void) const;
-	void EnablePlayerFilter(bool val);
-	bool GetPlayerFilterEnabled(void) const;
+	void EnablePlayerFilter(BOOLEAN val);
+	BOOLEAN GetPlayerFilterEnabled(void) const;
 
-	bool SetClanFilter(PSTR clanName);
+	BOOLEAN SetClanFilter(PSTR clanName);
 	PSTR GetClanFilter(void) const;
-	void EnableClanFilter(bool val);
-	bool GetClanFilterEnabled(void) const;
+	void EnableClanFilter(BOOLEAN val);
+	BOOLEAN GetClanFilterEnabled(void) const;
 
 private:
 	// Data
 
 	// pings
-	bool m_pingOn;
+	BOOLEAN m_pingOn;
 	uint32_t m_minPing, m_maxPing;
 	// is game available to be played?
-	bool m_availableOn;
+	BOOLEAN m_availableOn;
 	// does game have at least one player in it?
-	bool m_activeOn;
+	BOOLEAN m_activeOn;
 	// player count
-	bool m_playerCountOn;
+	BOOLEAN m_playerCountOn;
 	uint32_t m_minPlayers, m_maxPlayers;
 	// game type
-	bool m_gameTypeOn;
+	BOOLEAN m_gameTypeOn;
 	PSTR m_gameType;
 	// player name
-	bool m_playerNameOn;
+	BOOLEAN m_playerNameOn;
 	PSTR m_playerName;
 	// clan name
-	bool m_clanNameOn;
+	BOOLEAN m_clanNameOn;
 	PSTR m_clanName;
 };
 
@@ -540,12 +540,12 @@ public:
 
 	// policy settings
 	// Not currently Supported
-	void SetDynamicSorting(bool val);
-	bool GetDynamicSorting(void) const;
-	void SetDynamicFiltering(bool val);
-	bool GetDynamicFiltering(void) const;
+	void SetDynamicSorting(BOOLEAN val);
+	BOOLEAN GetDynamicSorting(void) const;
+	void SetDynamicFiltering(BOOLEAN val);
+	BOOLEAN GetDynamicFiltering(void) const;
 
-	bool GetIndex(int32_t index, PSTR* id);
+	BOOLEAN GetIndex(int32_t index, PSTR* id);
 	int32_t GetCount(void) const;
 
 	// filtering operations
@@ -553,19 +553,19 @@ public:
 	TableItemFilter* GetFilter(void) const;
 	void ClearFilter(void);
 
-	bool Filter(void);
+	BOOLEAN Filter(void);
 
 	// sorting operations
-	bool Sort(PSTR sortKey, SortOrderType sortOrder);
-	bool SortIfDirty(void);
+	BOOLEAN Sort(PSTR sortKey, SortOrderType sortOrder);
+	BOOLEAN SortIfDirty(void);
 	void SetResortFrequency(double seconds);
 	double GetResortFrequency(void) const;
-	bool GetSortDirty(void) const;
-	void SetSortDirty(bool val);
+	BOOLEAN GetSortDirty(void) const;
+	void SetSortDirty(BOOLEAN val);
 
 	// misc operations
 	int32_t GetIndexFromID(PSTR id);
-	bool SetSelection(PSTR id);
+	BOOLEAN SetSelection(PSTR id);
 	PSTR GetSelection(void) const;
 
 	// to override gos memory allocation
@@ -592,15 +592,15 @@ protected:
 	int32_t GetSortedIndex(TableList::TableItem* item);
 	void QSort(SortVec& sortVec, int32_t first, int32_t last);
 
-	static bool HashForEachCB(TableList::TableItem* item, MTListNodeHandle h, PVOID context);
+	static BOOLEAN HashForEachCB(TableList::TableItem* item, MTListNodeHandle h, PVOID context);
 
 private:
 	// Data
 	TableList* m_TableList;
 	TableItemFilter* m_Filter;
 
-	bool m_DynamicSorting; // true if sorting is done dynamically
-	bool m_DynamicFiltering; // true if filtering is done dynamically
+	BOOLEAN m_DynamicSorting; // true if sorting is done dynamically
+	BOOLEAN m_DynamicFiltering; // true if filtering is done dynamically
 
 	// m_SortVec is for full list sorts for speed reasons.
 	SortVec m_SortVec; // for full sorts
@@ -621,7 +621,7 @@ private:
 	// mdm - true if the list has been changed but not resorted
 	double m_LastSortTime; // gos_GetHiResTime() from the last sort
 	double m_ResortFrequency; // maximum frequency at which we will resort the list
-	bool m_bSortDirty; // true if the list has been marked as needing sorting
+	BOOLEAN m_bSortDirty; // true if the list has been marked as needing sorting
 };
 
 } // namespace Browse

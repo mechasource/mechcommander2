@@ -38,29 +38,29 @@ uint32_t __stdcall GetPixelColor(uint32_t in);
 uint32_t GetBackBufferColor(uint16_t in);
 void UpdateBackBufferFormat(void);
 
-void __stdcall DecodeBMPDimensions(PSTR FileName, uint8_t* Data, uint32_t DataSize,
+void __stdcall DecodeBMPDimensions(PSTR FileName, BOOLEAN* Data, uint32_t DataSize,
 	uint32_t* pTexturewidth, uint32_t* pTextureheight);
-void __stdcall DecodeJPGDimensions(PSTR FileName, uint8_t* Data, uint32_t DataSize,
+void __stdcall DecodeJPGDimensions(PSTR FileName, BOOLEAN* Data, uint32_t DataSize,
 	uint32_t* pTexturewidth, uint32_t* pTextureheight);
 #ifdef USEPNG
-PVOID __stdcall DecodePNG(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
-	uint32_t* Textureheight, bool TextureLoad, PVOID pDestSurf = nullptr);
-void __stdcall DecodePNGDimensions(PSTR FileName, uint8_t* Data, uint32_t DataSize,
+PVOID __stdcall DecodePNG(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
+	uint32_t* Textureheight, BOOLEAN TextureLoad, PVOID pDestSurf = nullptr);
+void __stdcall DecodePNGDimensions(PSTR FileName, BOOLEAN* Data, uint32_t DataSize,
 	uint32_t* pTexturewidth, uint32_t* pTextureheight);
 #endif
 void
-DecodeTGADimensions(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* pTexturewidth,
+DecodeTGADimensions(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* pTexturewidth,
 	uint32_t* pTextureheight);
 
 PVOID
-DecodeBMP(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
-	uint32_t* Textureheight, bool TextureLoad, PVOID pDestSurf = nullptr);
+DecodeBMP(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
+	uint32_t* Textureheight, BOOLEAN TextureLoad, PVOID pDestSurf = nullptr);
 PVOID
-DecodeJPG(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
-	uint32_t* Textureheight, bool TextureLoad, PVOID pDestSurf = nullptr);
+DecodeJPG(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
+	uint32_t* Textureheight, BOOLEAN TextureLoad, PVOID pDestSurf = nullptr);
 PVOID
-DecodeTGA(PSTR FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
-	uint32_t* Textureheight, bool TextureLoad, PVOID pDestSurf = nullptr);
+DecodeTGA(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
+	uint32_t* Textureheight, BOOLEAN TextureLoad, PVOID pDestSurf = nullptr);
 
 int32_t
 MipLevelsRequired(uint16_t width, uint16_t height);
@@ -131,7 +131,7 @@ private:
 	uint32_t m_nVidMemBytes; // Size of m_pVidMemSurf (even if not allocated)
 
 	// List management globals
-	static bool Initialized; // Texture manager has been initialized
+	static BOOLEAN Initialized; // Texture manager has been initialized
 	static CTexInfo** PreloadList; // List of unique textures to preload
 	static int32_t NumPreload; // Number of textures in PreloadList
 	static CTexInfo* TexInfo; // Array of CTexInfo for all textures
@@ -154,14 +154,14 @@ public:
 	uint16_t width(void) { return m_nwidth; }
 	uint16_t height(void) { return m_nheight; }
 	uint16_t Hints(void) { return m_Hints; }
-	bool HasAlpha(void) { return (m_Flags & tFlag_Alpha) != 0; }
-	bool IsLocked(void) { return (m_Flags & tFlag_Locked) != 0; }
-	bool InVidMem(void) { return (m_Flags & tFlag_InVidMem) != 0; }
-	bool InAGP(void) { return (m_Flags & tFlag_InAGP) != 0; }
-	bool InSysMem(void) { return (m_Flags & tFlag_InSysMem) != 0; }
-	bool Detected(void) { return (m_Flags & tFlag_Detect) != 0; }
-	bool MipmapDisabled(void) { return (m_Hints & gosHint_DisableMipmap) != 0; }
-	bool CanRebuild(void) { return m_pRebuild != nullptr; }
+	BOOLEAN HasAlpha(void) { return (m_Flags & tFlag_Alpha) != 0; }
+	BOOLEAN IsLocked(void) { return (m_Flags & tFlag_Locked) != 0; }
+	BOOLEAN InVidMem(void) { return (m_Flags & tFlag_InVidMem) != 0; }
+	BOOLEAN InAGP(void) { return (m_Flags & tFlag_InAGP) != 0; }
+	BOOLEAN InSysMem(void) { return (m_Flags & tFlag_InSysMem) != 0; }
+	BOOLEAN Detected(void) { return (m_Flags & tFlag_Detect) != 0; }
+	BOOLEAN MipmapDisabled(void) { return (m_Hints & gosHint_DisableMipmap) != 0; }
+	BOOLEAN CanRebuild(void) { return m_pRebuild != nullptr; }
 	int32_t MipFilter(void) { return (m_Hints / gosHint_MipmapFilter0) & 3; }
 	uint32_t Area(void) { return uint32_t(m_nwidth * m_nheight); }
 	int32_t MipMapLevels(void)
@@ -176,12 +176,12 @@ public:
 				? 1
 				: 0][(m_Hints & (gosHint_Compress0 | gosHint_Compress1)) / gosHint_Compress0];
 	}
-	static bool ManagerInitialized(void) { return Initialized; }
-	bool ValidTexture(void)
+	static BOOLEAN ManagerInitialized(void) { return Initialized; }
+	BOOLEAN ValidTexture(void)
 	{
 		return (CTexInfo::Initialized) && (this >= TexInfo) && (this - MaximumTextures < TexInfo) && (m_Flags & tFlag_Valid);
 	}
-	bool SpecialTexture(void) { return (m_Flags & tFlag_Special) != 0; }
+	BOOLEAN SpecialTexture(void) { return (m_Flags & tFlag_Special) != 0; }
 	void SetSpecial(void) { m_Flags |= tFlag_Special; }
 	gos_RebuildFunction pRebuildFunc(void) { return m_pRebuild; }
 	static CTexInfo* FirstTexture(void) { return pFirstUsedTexture; }
@@ -190,14 +190,14 @@ public:
 	{
 		return (gos_TextureFormat)((m_Flags & FormatMask) >> tFlag_FormatShift);
 	}
-	bool Used(void) { return m_nLastFrameUsed == FrameNo; }
-	uint16_t Scaledheightwidth(bool Wantheight);
+	BOOLEAN Used(void) { return m_nLastFrameUsed == FrameNo; }
+	uint16_t Scaledheightwidth(BOOLEAN Wantheight);
 	uint16_t Scaledwidth(void) { return Scaledheightwidth(false); }
 	uint16_t Scaledheight(void) { return Scaledheightwidth(true); }
 	static int32_t GlobalScaleShift(void) { return ScaleShift; }
-	bool SysMemSurfUsable(void);
+	BOOLEAN SysMemSurfUsable(void);
 	// Texture Update.cpp
-	int32_t MemoryUsage(bool Current = true,
+	int32_t MemoryUsage(BOOLEAN Current = true,
 		EGraphicsMemType MemType = gmt_All); // current or required bytes
 
 	// Operations with effects on texture structures
@@ -207,13 +207,13 @@ public:
 	static void InitializeTextureManager(void); // System startup
 	static void DestroyTextureManager(void); // System shutdown
 	static void PreloadTextures(void); // Once per frame, upload any "preload" textures to VRAM/AGP
-	static bool RecreateHeaps(void); // initializes texture types, ReleaseTextureHeaps()
-	static void ReleaseTextures(bool ReleaseSysmem); // releases vram and optionally sysmem copies
+	static BOOLEAN RecreateHeaps(void); // initializes texture types, ReleaseTextureHeaps()
+	static void ReleaseTextures(BOOLEAN ReleaseSysmem); // releases vram and optionally sysmem copies
 
 	// Texture Create.cpp
 	// Fundamental new/init/delete of a CtexInfo
 	static CTexInfo* Allocate(void);
-	void Initialize(gos_TextureFormat Format, PSTR FileName, uint8_t* pBitmap, uint32_t Size,
+	void Initialize(gos_TextureFormat Format, PSTR FileName, BOOLEAN* pBitmap, uint32_t Size,
 		uint16_t width, uint16_t height, uint32_t Hints, gos_RebuildFunction pFunc,
 		PVOID pInstance);
 	void Free(void);
@@ -223,7 +223,7 @@ public:
 	// handle
 	uint32_t GetD3DTextureHandle(void); // HW Rasterizer: VidMemSurf, SW Rasterizer: SysMemSurf
 	// Altering the surface contents of a texture
-	void Lock(uint32_t MipMapwidth, bool ReadOnly, TEXTUREPTR* TextureInfo);
+	void Lock(uint32_t MipMapwidth, BOOLEAN ReadOnly, TEXTUREPTR* TextureInfo);
 	void Unlock(void);
 	void InvalidateVidMem(void); // mark vidmem as invalid and check if current texture
 	void UpdateRect(uint32_t DestLeft, uint32_t DestTop, uint32_t* Source, uint32_t SourcePitch,
@@ -238,7 +238,7 @@ public:
 	}
 	// Active private routines used within the texture manager
 
-	// Notes on Get...( bool populate, uint16_t MipMapwidth=0 )
+	// Notes on Get...( BOOLEAN populate, uint16_t MipMapwidth=0 )
 	// Get..() Allocates, and/or populates the different versions of the texture
 	// Each function allocates the surface if required and if populate is true
 	// and the surface contents are not already valid, copies/converts the
@@ -259,22 +259,22 @@ public:
 	// Texture Original.cpp
 	// Original surface
 public:
-	LPDIRECTDRAWSURFACE7 GetOriginalSurf(bool populate, uint16_t MipMapwidth = 0);
+	LPDIRECTDRAWSURFACE7 GetOriginalSurf(BOOLEAN populate, uint16_t MipMapwidth = 0);
 
 private:
 	void AllocateOriginal(void); // Allocates original 32bpp surface
 	void PopulateOriginal(void); // Rebuilds or Reloads (assumes surface exists but is not valid)
 	void Reload(
-		uint8_t* pData, uint32_t Size, bool Detect); // reloads 32bpp surface from file or pData
+		BOOLEAN* pData, uint32_t Size, BOOLEAN Detect); // reloads 32bpp surface from file or pData
 	void Rebuild(void); // Calls rebuild function of app to re-populate the surface
 	void FreeOriginal(void); // Frees the original surface (assumes it exists and is ok to free)
 	void DecodeImageLevel(
-		PSTR FileName, uint8_t* pSourceData, uint32_t Size, LPDIRECTDRAWSURFACE7 pSurface);
+		PSTR FileName, BOOLEAN* pSourceData, uint32_t Size, LPDIRECTDRAWSURFACE7 pSurface);
 
 	// Texture SysMem.cpp
 	// System Memory Surface
 public:
-	LPDIRECTDRAWSURFACE7 GetSysMemSurf(bool populate, uint16_t MipMapwidth = 0);
+	LPDIRECTDRAWSURFACE7 GetSysMemSurf(BOOLEAN populate, uint16_t MipMapwidth = 0);
 
 private:
 	void AllocateSysMem(void); // Allocates (probably 16bpp) system memory surface
@@ -287,8 +287,8 @@ private:
 	void GenerateMipMaps(void); // Filters top level of SysMem chain to all lower levels
 	// Texture VidMem.cpp
 	// Video Memory or AGP Surface
-	LPDIRECTDRAWSURFACE7 GetVidMemSurf(bool populate, uint16_t MipMapwidth = 0);
-	bool CreateTexture(void); // Called by AllocateVidMem(void) to attempt texture creation
+	LPDIRECTDRAWSURFACE7 GetVidMemSurf(BOOLEAN populate, uint16_t MipMapwidth = 0);
+	BOOLEAN CreateTexture(void); // Called by AllocateVidMem(void) to attempt texture creation
 	void AllocateVidMem(void); // Uses various techniques to allocate video memory
 	void PopulateVidMem(void); // Uploads level(s) from SysMem to VidMem/AGP
 	void UploadLevel(LPDIRECTDRAWSURFACE7 dest, LPDIRECTDRAWSURFACE7 source);
@@ -326,7 +326,7 @@ private:
 	static char LogString[MaximumTextureLogs][256];
 	static int32_t LogCount; // 0..MaximumTextureLogs
 	static int32_t LogNext; // index of next string to write to in circular log
-	static bool Logging;
+	static BOOLEAN Logging;
 	void LogTextureEvent(PSTR description);
 
 public:
@@ -336,7 +336,7 @@ public:
 			? (nullptr)
 			: (LogString[(LogNext + MaximumTextureLogs - 1 - offset) % MaximumTextureLogs]);
 	}
-	static bool LogEnable(bool enable = Logging)
+	static BOOLEAN LogEnable(BOOLEAN enable = Logging)
 	{
 		Logging = enable;
 		return Logging;
@@ -349,7 +349,7 @@ public:
 
 public:
 	static PSTR GetTextureEvent(int32_t /*offset*/) { return nullptr; }
-	static bool LogEnable(bool /*enable = false*/) { return false; }
+	static BOOLEAN LogEnable(BOOLEAN /*enable = false*/) { return false; }
 #endif
 };
 
@@ -358,7 +358,7 @@ inline void __stdcall CheckPreloadTextures(void)
 {
 	CTexInfo::PreloadTextures();
 }
-inline void __stdcall ReleaseTextureHeap(bool releasesysmem)
+inline void __stdcall ReleaseTextureHeap(BOOLEAN releasesysmem)
 {
 	CTexInfo::ReleaseTextures(releasesysmem);
 }

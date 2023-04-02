@@ -41,7 +41,7 @@ SortData::DrawTriList()
 			GOSVertex* v = (GOSVertex*)vertices;
 			if ((v[0].z >= 0.0f) && (v[0].z < 1.0f) && (v[1].z >= 0.0f) && (v[1].z < 1.0f) && (v[2].z >= 0.0f) && (v[2].z < 1.0f))
 			{
-				gos_DrawTriangles((GOSVertex*)vertices, numVertices);
+				gos_DrawTriangles((GOSVertex*)vertices, numvertices);
 			}
 		}
 		else
@@ -49,7 +49,7 @@ SortData::DrawTriList()
 			STOP(("GOS doesnt suppert gos_DrawTriangles for gos_VERTEX_2UV "
 				  "yet."));
 			//			gos_DrawTriangles( (GOSVertex2UV *)vertices,
-			// numVertices);
+			// numvertices);
 		}
 	}
 	Stop_Timer(GOS_Draw_Time);
@@ -85,16 +85,16 @@ SortData::DrawTriIndexedList()
 			{
 				// void __stdcall gos_RenderIndexedArray(
 				//	PVOID pVertexArray,
-				//	uint32_t NumberVertices,
-				//	uint16_t* lpwIndices,
-				//	uint32_t NumberIndices,
-				//	gosVERTEXTYPE VertexType,
-				//	gosPRIMITIVETYPE PrimitiveType = PRIMITIVE_TRIANGLELIST);
-				gos_RenderIndexedArray((GOSVertex*)vertices, numVertices, newIndicies, startIndex);
+				//	uint32_t numbervertices,
+				//	uint16_t* pwindices,
+				//	uint32_t numberindices,
+				//	gosVERTEXTYPE vertextype,
+				//	gosPRIMITIVETYPE primitivetype = PRIMITIVE_TRIANGLELIST);
+				gos_RenderIndexedArray((GOSVertex*)vertices, numvertices, newIndicies, startIndex);
 			}
 			else
 			{
-				gos_RenderIndexedArray((GOSVertex2UV*)vertices, numVertices, indices, numIndices);
+				gos_RenderIndexedArray((GOSVertex2UV*)vertices, numvertices, indices, numIndices);
 			}
 		}
 	}
@@ -126,7 +126,7 @@ SortData::DrawPointCloud()
 		//
 		// Warning! - These points need clipping!
 		//
-		for (size_t i = numVertices; i; i--)
+		for (size_t i = numvertices; i; i--)
 		{
 			pArray[Triangle + 0] = *((GOSVertex*)vertices + Vertex);
 			pArray[Triangle + 1] = *((GOSVertex*)vertices + Vertex);
@@ -160,13 +160,13 @@ SortData::DrawQuads()
 	{
 		if (texture2 == 0)
 		{
-			//			gos_DrawTriangles( (GOSVertex *)vertices, numVertices);
-			gos_DrawQuads((GOSVertex*)vertices, numVertices);
+			//			gos_DrawTriangles( (GOSVertex *)vertices, numvertices);
+			gos_DrawQuads((GOSVertex*)vertices, numvertices);
 		}
 		else
 		{
 			STOP(("GOS doesnt suppert gos_DrawQuads for gos_VERTEX_2UV yet."));
-			//			gos_DrawQuads( (GOSVertex2UV *)vertices, numVertices);
+			//			gos_DrawQuads( (GOSVertex2UV *)vertices, numvertices);
 		}
 	}
 	Stop_Timer(GOS_Draw_Time);
@@ -179,7 +179,7 @@ SortData::DrawLineCloud()
 {
 	_ASSERT(texture2 == 0);
 	Start_Timer(GOS_Draw_Time);
-	for (size_t i = 0; i < numVertices; i++)
+	for (size_t i = 0; i < numvertices; i++)
 	{
 		if (((GOSVertex*)vertices)[i].x > Environment.screenwidth - 1)
 		{
@@ -194,7 +194,7 @@ SortData::DrawLineCloud()
 	if (dontSeeMe == true)
 #endif
 	{
-		gos_DrawLines((GOSVertex*)vertices, numVertices);
+		gos_DrawLines((GOSVertex*)vertices, numvertices);
 	}
 	Stop_Timer(GOS_Draw_Time);
 }
@@ -205,7 +205,7 @@ int32_t
 SortData::LoadAlphaFromTriList(SortAlpha** alpha)
 {
 	Start_Timer(Alpha_Sorting_Time);
-	int32_t i, index = 0, end = (int32_t)(numVertices * 0.333333333333333333333333);
+	int32_t i, index = 0, end = (int32_t)(numvertices * 0.333333333333333333333333);
 	_ASSERT(texture2 == 0);
 	for (i = 0; i < end; i++)
 	{
@@ -418,17 +418,17 @@ MLRSorter::DrawPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 //
 SortData*
 MLRSorter::SetRawData(
-	PVOID vertices, uint32_t numVertices, const MLRState& state, const int32_t& mode, int32_t tex2)
+	PVOID vertices, uint32_t numvertices, const MLRState& state, const int32_t& mode, int32_t tex2)
 {
 	// Check_Object(this);
 	SortData* sd = rawDrawData.GetData();
 	_ASSERT(lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
 	_ASSERT(vertices != nullptr);
-	_ASSERT(numVertices > 0);
+	_ASSERT(numvertices > 0);
 	(sd + lastUsedRaw)->vertices = vertices;
 	(sd + lastUsedRaw)->indices = 0;
 	(sd + lastUsedRaw)->state = state;
-	(sd + lastUsedRaw)->numVertices = numVertices;
+	(sd + lastUsedRaw)->numvertices = numvertices;
 	(sd + lastUsedRaw)->numIndices = 0;
 	(sd + lastUsedRaw)->type = mode;
 	(sd + lastUsedRaw)->texture2 = tex2;
@@ -439,18 +439,18 @@ MLRSorter::SetRawData(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 SortData*
-MLRSorter::SetRawIndexedData(PVOID vertices, uint32_t numVertices, uint16_t* indices,
+MLRSorter::SetRawIndexedData(PVOID vertices, uint32_t numvertices, uint16_t* indices,
 	int32_t numIndices, const MLRState& state, const int32_t& mode, int32_t tex2)
 {
 	// Check_Object(this);
 	SortData* sd = rawDrawData.GetData();
 	_ASSERT(lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
 	_ASSERT(vertices != nullptr);
-	_ASSERT(numVertices > 0);
+	_ASSERT(numvertices > 0);
 	(sd + lastUsedRaw)->vertices = vertices;
 	(sd + lastUsedRaw)->indices = indices;
 	(sd + lastUsedRaw)->state = state;
-	(sd + lastUsedRaw)->numVertices = numVertices;
+	(sd + lastUsedRaw)->numvertices = numvertices;
 	(sd + lastUsedRaw)->numIndices = numIndices;
 	(sd + lastUsedRaw)->type = mode;
 	(sd + lastUsedRaw)->texture2 = tex2;

@@ -266,16 +266,16 @@ GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-					genShape->SetTextureHandle(i, gosTextureHandle);
+					genShape->SetTextureHandle(i, texturehandle);
 					genShape->SetTextureAlpha(i, true);
 				}
 				else
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-					genShape->SetTextureHandle(i, gosTextureHandle);
+					genShape->SetTextureHandle(i, texturehandle);
 					genShape->SetTextureAlpha(i, false);
 				}
 			}
@@ -356,9 +356,9 @@ GenericAppearance::setObjStatus(int32_t oStatus)
 					textureName.init(texturePath, txmName, "");
 					if (fileExists(textureName))
 					{
-						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						uint32_t texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-						genShape->SetTextureHandle(i, gosTextureHandle);
+						genShape->SetTextureHandle(i, texturehandle);
 					}
 					else
 					{
@@ -471,16 +471,16 @@ GenericAppearance::setSkyNumber(int32_t skyNum)
 		{
 			if (strnicmp(newName, "a_", 2) == 0)
 			{
-				uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+				uint32_t texturehandle = mcTextureManager->loadTexture(
 					textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-				genShape->SetTextureHandle(i, gosTextureHandle);
+				genShape->SetTextureHandle(i, texturehandle);
 				genShape->SetTextureAlpha(i, true);
 			}
 			else
 			{
-				uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+				uint32_t texturehandle = mcTextureManager->loadTexture(
 					textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-				genShape->SetTextureHandle(i, gosTextureHandle);
+				genShape->SetTextureHandle(i, texturehandle);
 				genShape->SetTextureAlpha(i, false);
 			}
 		}

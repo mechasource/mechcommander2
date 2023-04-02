@@ -47,7 +47,7 @@ class Clouds
 protected:
 	uint32_t mcTextureNodeIndex; // Pointer to MCTextureNode which is used to
 		// cache handles if necessary
-	uint32_t gosTextureHandle;
+	uint32_t texturehandle;
 	bool renderClouds;
 	int32_t gridSize;
 	float scrollU;
@@ -58,7 +58,7 @@ protected:
 public:
 	void init(void)
 	{
-		mcTextureNodeIndex = gosTextureHandle = 0xffffffff;
+		mcTextureNodeIndex = texturehandle = 0xffffffff;
 		renderClouds = false;
 		scrollU = scrollV = 0.0f;
 		cloudVertices = nullptr;

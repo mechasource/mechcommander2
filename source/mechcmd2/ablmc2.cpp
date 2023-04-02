@@ -3642,7 +3642,7 @@ execSetSalvage(void)
 	//
 	//				integer				Number of these components
 	//
-	//		RETURN: BOOLEAN				True if function succeeds
+	//		RETURN: bool				True if function succeeds
 	//
 	//-----------------------------------------------------
 	// int32_t objectId =
@@ -3686,9 +3686,9 @@ execSetSalvageStatus(void)
 	//
 	//		PARAMS:	integer				object id
 	//
-	//				BOOLEAN				TRUE = on list, FALSE = off
+	//				bool				TRUE = on list, FALSE = off
 	//
-	//		RETURN: BOOLEAN				True if function succeeds
+	//		RETURN: bool				True if function succeeds
 	//
 	//-----------------------------------------------------
 	// int32_t objectId =

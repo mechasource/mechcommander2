@@ -54,11 +54,11 @@ MECH_IMPEXP HRESULT __stdcall gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVe
 MECH_IMPEXP HRESULT __stdcall gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices);
 MECH_IMPEXP HRESULT __stdcall gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices);
 MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX pVertexArray,
-	uint32_t NumberVertices, uint16_t* lpwIndices, uint32_t NumberIndices);
+	uint32_t numbervertices, uint16_t* pwindices, uint32_t numberindices);
 MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX_2UV pVertexArray,
-	uint32_t NumberVertices, uint16_t* lpwIndices, uint32_t NumberIndices);
+	uint32_t numbervertices, uint16_t* pwindices, uint32_t numberindices);
 MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX_3UV pVertexArray,
-	uint32_t NumberVertices, uint16_t* lpwIndices, uint32_t NumberIndices);
+	uint32_t numbervertices, uint16_t* pwindices, uint32_t numberindices);
 #endif
 
 // global implemented functions not listed in headers
@@ -190,7 +190,7 @@ MECH_IMPEXP HRESULT __stdcall gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t N
 	if (RenderDevice)
 	{
 		// d3ddevice7->DrawPrimitive(
-		// dptPrimitiveType,dvtVertexType,lpvVertices,dwVertexCount,flags )
+		// dptprimitivetype,dvtvertextype,pvvertices,vertexcount,flags )
 		RenderDevice->DrawPrimitive(D3DPT_TRIANGLELIST, vertextype_unk1, Vertices, NumVertices, 0);
 	}
 	else
@@ -394,22 +394,22 @@ MECH_IMPEXP HRESULT __stdcall gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVer
 /// <remarks>
 /// </remarks>
 /// <param name="pVertexArray"></param>
-/// <param name="NumberVertices"></param>
-/// <param name="pwIndices"></param>
-/// <param name="NumberIndices"></param>
+/// <param name="numbervertices"></param>
+/// <param name="pwindices"></param>
+/// <param name="numberindices"></param>
 /// <returns></returns>
 MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray1(
-	pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint16_t* pwIndices, uint32_t NumberIndices)
+	pgos_VERTEX pVertexArray, uint32_t numbervertices, uint16_t* pwindices, uint32_t numberindices)
 {
 	size_t k;
 	size_t j;
 	size_t i;
 	gosASSERT(
-		InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+		InsideBeginScene && numbervertices > 0 && numberindices > 0 && (numberindices % 3) == 0);
 	if (RenderDevice)
 	{
 		RenderDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, vertextype_unk1, pVertexArray,
-			NumberVertices, pwIndices, NumberIndices, 0);
+			numbervertices, pwindices, numberindices, 0);
 	}
 	else
 	{
@@ -417,30 +417,30 @@ MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray1(
 			FlushRenderStates();
 		if (gShowVertexData)
 		{
-			for (i = 0; i < NumberIndices; i += 3)
-				InternalFunctionSpew("GameOS_Direct3D", "Indices %d,%d,%d", pwIndices[i],
-					pwIndices[i + 1], pwIndices[i + 2]);
+			for (i = 0; i < numberindices; i += 3)
+				InternalFunctionSpew("GameOS_Direct3D", "Indices %d,%d,%d", pwindices[i],
+					pwindices[i + 1], pwindices[i + 2]);
 		}
-		for (j = 0; j < NumberIndices; ++j)
+		for (j = 0; j < numberindices; ++j)
 		{
-			gosASSERT(pwIndices[j] < NumberVertices);
-			CheckVertices(&pVertexArray[pwIndices[j]], 1u, 0);
+			gosASSERT(pwindices[j] < numbervertices);
+			CheckVertices(&pVertexArray[pwindices[j]], 1u, 0);
 		}
 		if (!gDisablePrimitives || InDebugger)
 		{
-			PrimitivesRendered += NumberIndices / 3;
-			IndexedTriangleLength = (float)(((double)NumberIndices / 3) + IndexedTriangleLength);
+			PrimitivesRendered += numberindices / 3;
+			IndexedTriangleLength = (float)(((double)numberindices / 3) + IndexedTriangleLength);
 			++IndexedTriangleCalls;
 			if (RenderMode)
 			{
-				for (k = 0; k < NumberIndices; k += 3)
-					DebugTriangle(&pVertexArray[pwIndices[k]], &pVertexArray[pwIndices[k + 1]],
-						&pVertexArray[pwIndices[k + 2]]);
+				for (k = 0; k < numberindices; k += 3)
+					DebugTriangle(&pVertexArray[pwindices[k]], &pVertexArray[pwindices[k + 1]],
+						&pVertexArray[pwindices[k + 2]]);
 			}
 			else
 			{
 				wDrawIndexedPrimitive(d3ddevice7, D3DPT_TRIANGLELIST, vertextype_unk1, pVertexArray,
-					NumberVertices, pwIndices, NumberIndices, 0);
+					numbervertices, pwindices, numberindices, 0);
 				GameOSFPU(); // __asm { fninit }
 			}
 		}
@@ -453,33 +453,33 @@ MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray1(
 }
 
 MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray,
-	uint32_t NumberVertices, uint16_t* pwIndices, uint32_t NumberIndices)
+	uint32_t numbervertices, uint16_t* pwindices, uint32_t numberindices)
 {
 	size_t j;
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+	gosASSERT(!RenderDevice && InsideBeginScene && numbervertices > 0 && numberindices > 0 && (numberindices % 3) == 0);
 	if (DirtyStates)
 		FlushRenderStates();
-	for (i = 0; i < NumberIndices; ++i)
+	for (i = 0; i < numberindices; ++i)
 	{
-		gosASSERT(pwIndices[i] < NumberVertices);
-		CheckVertices2(&pVertexArray[pwIndices[i]], 1u);
+		gosASSERT(pwindices[i] < numbervertices);
+		CheckVertices2(&pVertexArray[pwindices[i]], 1u);
 	}
 	if (!gDisablePrimitives || InDebugger)
 	{
-		PrimitivesRendered += NumberIndices / 3;
-		IndexedTriangleLength = (float)(((double)NumberIndices / 3) + IndexedTriangleLength);
+		PrimitivesRendered += numberindices / 3;
+		IndexedTriangleLength = (float)(((double)numberindices / 3) + IndexedTriangleLength);
 		++IndexedTriangleCalls;
 		if (RenderMode)
 		{
-			for (j = 0; j < NumberIndices; j += 3)
-				DebugTriangle_2UV(&pVertexArray[pwIndices[j]], &pVertexArray[pwIndices[j + 1]],
-					&pVertexArray[pwIndices[j + 2]]);
+			for (j = 0; j < numberindices; j += 3)
+				DebugTriangle_2UV(&pVertexArray[pwindices[j]], &pVertexArray[pwindices[j + 1]],
+					&pVertexArray[pwindices[j + 2]]);
 		}
 		else
 		{
 			wDrawIndexedPrimitive(d3ddevice7, D3DPT_TRIANGLELIST, vertextype_unk2, pVertexArray,
-				NumberVertices, pwIndices, NumberIndices, 0);
+				numbervertices, pwindices, numberindices, 0);
 			GameOSFPU(); // __asm { fninit }
 		}
 	}
@@ -491,33 +491,33 @@ MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArr
 }
 
 MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray,
-	uint32_t NumberVertices, uint16_t* pwIndices, uint32_t NumberIndices)
+	uint32_t numbervertices, uint16_t* pwindices, uint32_t numberindices)
 {
 	size_t j;
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+	gosASSERT(!RenderDevice && InsideBeginScene && numbervertices > 0 && numberindices > 0 && (numberindices % 3) == 0);
 	if (DirtyStates)
 		FlushRenderStates();
-	for (i = 0; i < NumberIndices; ++i)
+	for (i = 0; i < numberindices; ++i)
 	{
-		gosASSERT(pwIndices[i] < NumberVertices);
-		CheckVertices3(&pVertexArray[pwIndices[i]], 1u);
+		gosASSERT(pwindices[i] < numbervertices);
+		CheckVertices3(&pVertexArray[pwindices[i]], 1u);
 	}
 	if (!gDisablePrimitives || InDebugger)
 	{
-		PrimitivesRendered += NumberIndices / 3;
-		IndexedTriangleLength = (float)(((double)NumberIndices / 3) + IndexedTriangleLength);
+		PrimitivesRendered += numberindices / 3;
+		IndexedTriangleLength = (float)(((double)numberindices / 3) + IndexedTriangleLength);
 		++IndexedTriangleCalls;
 		if (RenderMode)
 		{
-			for (j = 0; j < NumberIndices; j += 3)
-				DebugTriangle_3UV(&pVertexArray[pwIndices[j]], &pVertexArray[pwIndices[j + 1]],
-					&pVertexArray[pwIndices[j + 2]]);
+			for (j = 0; j < numberindices; j += 3)
+				DebugTriangle_3UV(&pVertexArray[pwindices[j]], &pVertexArray[pwindices[j + 1]],
+					&pVertexArray[pwindices[j + 2]]);
 		}
 		else
 		{
 			wDrawIndexedPrimitive(d3ddevice7, D3DPT_TRIANGLELIST, vertextype_unk3, pVertexArray,
-				NumberVertices, pwIndices, NumberIndices, 0);
+				numbervertices, pwindices, numberindices, 0);
 			GameOSFPU(); // __asm { fninit }
 		}
 	}

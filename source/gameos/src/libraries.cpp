@@ -69,13 +69,13 @@ typedef int16_t(__stdcall* PSQLALLOCHANDLE)(int16_t, void*, void**);
 typedef int16_t(__stdcall* PSQLBINDCOL)(void*, uint16_t, int16_t, void*, int32_t, int32_t*);
 typedef int16_t(__stdcall* PSQLBINDPARAMETER)(void*, uint16_t, int16_t, int16_t, int16_t, uint32_t, int16_t, void*, int32_t, int32_t*);
 typedef int16_t(__stdcall* PSQLDISCONNECT)(void*);
-typedef int16_t(__stdcall* PSQLDRIVERCONNECT)(void*, HWND, uint8_t*, int16_t, uint8_t*, int16_t, int16_t*, uint16_t);
-typedef int16_t(__stdcall* PSQLEXECDIRECT)(void*, uint8_t*, int32_t);
+typedef int16_t(__stdcall* PSQLDRIVERCONNECT)(void*, HWND, BOOLEAN*, int16_t, BOOLEAN*, int16_t, int16_t*, uint16_t);
+typedef int16_t(__stdcall* PSQLEXECDIRECT)(void*, BOOLEAN*, int32_t);
 typedef int16_t(__stdcall* PSQLFETCH)(void*);
 typedef int16_t(__stdcall* PSQLFREEHANDLE)(int16_t, void*);
 typedef int16_t(__stdcall* PSQLFREESTMT)(void*, uint16_t);
 typedef int16_t(__stdcall* PSQLGETDIAGFIELD)(int16_t, void*, int16_t, int16_t, void*, int16_t, int16_t*);
-typedef int16_t(__stdcall* PSQLGETDIAGREC)(int16_t, void*, int16_t, uint8_t*, int32_t*, uint8_t*, int16_t, int16_t*);
+typedef int16_t(__stdcall* PSQLGETDIAGREC)(int16_t, void*, int16_t, BOOLEAN*, int32_t*, BOOLEAN*, int16_t, int16_t*);
 typedef int16_t(__stdcall* PSQLNUMRESULTCOLS)(void*, int16_t*);
 typedef int16_t(__stdcall* PSQLSETENVATTR)(void*, int32_t, void*, int32_t);
 
@@ -211,7 +211,7 @@ uint32_t DXdwVersion;
 // =============================================================================
 extern uint32_t gDirectX7;
 extern uint32_t gEnableGosView;
-extern bool OnNetwork;
+extern BOOLEAN OnNetwork;
 PSTR __stdcall GetDLLInfo(char*, int32_t);
 
 // implemented functions
@@ -236,8 +236,8 @@ void __stdcall InitLibraries(void)
 	PSTR message;
 	size_t buffersize;
 	char szAssetsPathMessage[MAX_PATH * 2];
-	bool bbladepath1;
-	bool bbladepath2;
+	BOOLEAN bbladepath1;
+	BOOLEAN bbladepath2;
 	// char szDdrawMessage[MAX_PATH * 2];
 	char szDirectXVersionMessage2[128];
 	char szDirectXVersionMessage1[128];

@@ -64,7 +64,7 @@ namespace directxtk
         // Load VB/IB resources for static geometry.
         void __cdecl LoadStaticBuffers(
             _In_ ID3D12Device* device,
-            ResourceUploadBatch& resourceUploadBatch);
+            ResourceUploadBatch& resourceuploadbatch);
 
         // Transition VB/IB resources for static geometry.
         void __cdecl Transition(

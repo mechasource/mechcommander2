@@ -70,7 +70,7 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 		tex2count[m] = 0;
 	}
 #endif
-	uint32_t numVertices = GetNumVertices();
+	uint32_t numvertices = GetNumVertices();
 	gos_vertices		 = vt->GetActualVertexPool(db);
 	numGOSVertices		 = 0;
 	_ASSERT(index.GetLength() > 0);
@@ -79,7 +79,7 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 	{
 		FindVisibleVertices();
 	}
-	for (j = 0, stride = 0; j < numVertices; j++)
+	for (j = 0, stride = 0; j < numvertices; j++)
 	{
 		if (visibleIndexedVertices[j] == 0)
 		{
@@ -130,7 +130,7 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 				gos_vertices[numGOSVertices].v += deltaV;
 			}
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-			(*texCoords2)[tex2count++] = texCoords[numVertices + j];
+			(*texCoords2)[tex2count++] = texCoords[numvertices + j];
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 			for (m = 1; m < currentNrOfPasses; m++)
@@ -335,7 +335,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 	size_t tex2count	 = 0;
-	uint32_t numVertices = GetNumVertices();
+	uint32_t numvertices = GetNumVertices();
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 	size_t m;
@@ -469,7 +469,7 @@ uint32_t CLASSNAME::TransformAndClip(
 						_ASSERT(texCoords.GetLength() > 0);
 						(*clipExtraTexCoords)[clipped_index] = texCoords[k0];
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-						(*clipExtraTexCoords2)[clipped_index] = texCoords[k0 + numVertices];
+						(*clipExtraTexCoords2)[clipped_index] = texCoords[k0 + numvertices];
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
@@ -597,7 +597,7 @@ uint32_t CLASSNAME::TransformAndClip(
 						(*clipExtraTexCoords)[clipped_index].Lerp(texCoords[k0], texCoords[k1], a);
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 						(*clipExtraTexCoords2)[clipped_index].Lerp(
-							texCoords[k0 + numVertices], texCoords[k1 + numVertices], a);
+							texCoords[k0 + numvertices], texCoords[k1 + numvertices], a);
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
@@ -648,7 +648,7 @@ uint32_t CLASSNAME::TransformAndClip(
 						(*clipExtraTexCoords)[clipped_index].Lerp(texCoords[k1], texCoords[k0], a);
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 						(*clipExtraTexCoords2)[clipped_index].Lerp(
-							texCoords[k1 + numVertices], texCoords[k0 + numVertices], a);
+							texCoords[k1 + numvertices], texCoords[k0 + numvertices], a);
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
@@ -713,7 +713,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 					srcPolygon.texCoords[2 * l]		= texCoords[indexK];
-					srcPolygon.texCoords[2 * l + 1] = texCoords[indexK + numVertices];
+					srcPolygon.texCoords[2 * l + 1] = texCoords[indexK + numvertices];
 #else
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 					for (m = 0; m < currentNrOfPasses; m++)
@@ -1150,7 +1150,7 @@ uint32_t CLASSNAME::TransformAndClip(
 			}
 #endif
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-			(*texCoords2)[tex2count++] = texCoords[numVertices + j];
+			(*texCoords2)[tex2count++] = texCoords[numvertices + j];
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 			for (m = 1; m < currentNrOfPasses; m++)

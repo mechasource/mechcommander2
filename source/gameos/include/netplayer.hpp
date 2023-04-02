@@ -46,13 +46,13 @@ public:
 	// sendCount is used for guaranteed messages.  It
 	// is always between 0 and 255 and it represents
 	// the next message sent to this player
-	uint8_t sendCount;
+	BOOLEAN sendCount;
 
 	// The incomingHoldIndex is the next expected sendCount for
 	// incoming messages from this player.
-	uint8_t incomingHoldIndex;
+	BOOLEAN incomingHoldIndex;
 
-	uint8_t nextIncomingSendCount;
+	BOOLEAN nextIncomingSendCount;
 
 	int32_t nItemsInHoldBuffer;
 

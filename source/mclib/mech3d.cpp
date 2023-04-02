@@ -939,16 +939,16 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-					sensorTriangleShape->SetTextureHandle(i, gosTextureHandle);
+					sensorTriangleShape->SetTextureHandle(i, texturehandle);
 					sensorTriangleShape->SetTextureAlpha(i, true);
 				}
 				else
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-					sensorTriangleShape->SetTextureHandle(i, gosTextureHandle);
+					sensorTriangleShape->SetTextureHandle(i, texturehandle);
 					sensorTriangleShape->SetTextureAlpha(i, false);
 				}
 			}
@@ -975,16 +975,16 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName, "a_", 2) == 0)
 					{
-						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						uint32_t texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-						sensorSquareShape->SetTextureHandle(i, gosTextureHandle);
+						sensorSquareShape->SetTextureHandle(i, texturehandle);
 						sensorSquareShape->SetTextureAlpha(i, true);
 					}
 					else
 					{
-						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						uint32_t texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-						sensorSquareShape->SetTextureHandle(i, gosTextureHandle);
+						sensorSquareShape->SetTextureHandle(i, texturehandle);
 						sensorSquareShape->SetTextureAlpha(i, false);
 					}
 				}
@@ -1013,16 +1013,16 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName, "a_", 2) == 0)
 					{
-						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						uint32_t texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-						sensorSquareShape->SetTextureHandle(i, gosTextureHandle);
+						sensorSquareShape->SetTextureHandle(i, texturehandle);
 						sensorSquareShape->SetTextureAlpha(i, true);
 					}
 					else
 					{
-						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						uint32_t texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-						sensorSquareShape->SetTextureHandle(i, gosTextureHandle);
+						sensorSquareShape->SetTextureHandle(i, texturehandle);
 						sensorSquareShape->SetTextureAlpha(i, false);
 					}
 				}
@@ -1154,18 +1154,18 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-					gosASSERT(gosTextureHandle != 0xffffffff);
-					mechShadowShape->SetTextureHandle(i, gosTextureHandle);
+					gosASSERT(texturehandle != 0xffffffff);
+					mechShadowShape->SetTextureHandle(i, texturehandle);
 					mechShadowShape->SetTextureAlpha(i, true);
 				}
 				else
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-					gosASSERT(gosTextureHandle != 0xffffffff);
-					mechShadowShape->SetTextureHandle(i, gosTextureHandle);
+					gosASSERT(texturehandle != 0xffffffff);
+					mechShadowShape->SetTextureHandle(i, texturehandle);
 					mechShadowShape->SetTextureAlpha(i, false);
 				}
 			}
@@ -2475,7 +2475,7 @@ Mech3DAppearance::setObjStatus(int32_t oStatus)
 				{
 					if (strnicmp(txmName, "a_", 2) == 0)
 					{
-						uint32_t gosTextureHandle = 0;
+						uint32_t texturehandle = 0;
 						if (!i)
 						{
 							localTextureHandle =
@@ -2486,15 +2486,15 @@ Mech3DAppearance::setObjStatus(int32_t oStatus)
 						}
 						else
 						{
-							gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							texturehandle = mcTextureManager->loadTexture(textureName,
 								gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-							mechShape->SetTextureHandle(i, gosTextureHandle);
+							mechShape->SetTextureHandle(i, texturehandle);
 							mechShape->SetTextureAlpha(i, true);
 						}
 					}
 					else
 					{
-						uint32_t gosTextureHandle = 0;
+						uint32_t texturehandle = 0;
 						if (!i)
 						{
 							localTextureHandle =
@@ -2505,9 +2505,9 @@ Mech3DAppearance::setObjStatus(int32_t oStatus)
 						}
 						else
 						{
-							gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							texturehandle = mcTextureManager->loadTexture(textureName,
 								gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-							mechShape->SetTextureHandle(i, gosTextureHandle);
+							mechShape->SetTextureHandle(i, texturehandle);
 							mechShape->SetTextureAlpha(i, false);
 						}
 					}

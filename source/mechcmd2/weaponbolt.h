@@ -145,7 +145,7 @@ typedef struct _WeaponBoltData : public GameObjectData
 
 	float hitLeft;
 	uint32_t mcTextureHandle;
-	uint32_t gosTextureHandle;
+	uint32_t texturehandle;
 	float startUV;
 	float goalheight;
 } WeaponBoltData;
@@ -188,7 +188,7 @@ protected:
 
 	float hitLeft;
 	uint32_t mcTextureHandle;
-	uint32_t gosTextureHandle;
+	uint32_t texturehandle;
 	float startUV;
 	float goalheight;
 
@@ -220,7 +220,7 @@ public:
 		hitLeft = 0.0f;
 		startUV = 0.0f;
 		mcTextureHandle = 0;
-		gosTextureHandle = 0xffffffff;
+		texturehandle = 0xffffffff;
 		weaponShot.damage = 0.0f;
 		goalheight = 0.0f;
 	}

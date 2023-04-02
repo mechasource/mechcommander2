@@ -192,10 +192,10 @@ void DescriptorHeap::DefaultDesc(
 // DescriptorPile
 //======================================================================================
 
-void DescriptorPile::AllocateRange(size_t numDescriptors, _Out_ IndexType& start, _Out_ IndexType& end)
+void DescriptorPile::AllocateRange(size_t numdescriptors, _Out_ IndexType& start, _Out_ IndexType& end)
 {
     // make sure we didn't allocate zero
-    if (numDescriptors == 0)
+    if (numdescriptors == 0)
     {
         throw std::out_of_range("Can't allocate zero descriptors");
     }
@@ -204,13 +204,13 @@ void DescriptorPile::AllocateRange(size_t numDescriptors, _Out_ IndexType& start
     start = m_top;
 
     // increment top with new request
-    m_top += numDescriptors;
+    m_top += numdescriptors;
     end = m_top;
 
     // make sure we have enough room
     if (m_top > Count())
     {
-        DebugTrace("DescriptorPile has %zu of %zu descriptors; failed request for %zu more\n", start, Count(), numDescriptors);
+        DebugTrace("DescriptorPile has %zu of %zu descriptors; failed request for %zu more\n", start, Count(), numdescriptors);
         throw std::exception("Can't allocate more descriptors");
     }
 }

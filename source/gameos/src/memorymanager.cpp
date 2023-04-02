@@ -90,7 +90,7 @@ extern uint16_t PoolSizes[MemoryPools] = {
 uint32_t gMemoryBlockOverhead = 0xFF81FF81; // not used
 
 // global referenced data not listed in headers
-bool gViaNew;
+BOOLEAN gViaNew;
 
 // local data
 size_t MemoryFreed;
@@ -105,14 +105,13 @@ void __stdcall MM_Shutdown(void);
 PVOID __stdcall gos_Malloc(size_t nbytes, HGOSHEAP Heap = nullptr);
 PVOID __stdcall gos_Realloc(HGOSHEAP Heap, size_t nbytes);
 void __stdcall gos_Free(PVOID ptr);
-HGOSHEAP __stdcall gos_CreateMemoryHeap(
-	PSTR HeapName, size_t MaximumSize /* = 0*/, HGOSHEAP parentHeap /* = ParentClientHeap*/);
-void __stdcall gos_DestroyMemoryHeap(HGOSHEAP Heap, uint8_t shouldBeEmpty = 1);
-void __stdcall gos_ChangeHeapSize(HGOSHEAP Heap, size_t Change, uint8_t SystemAllocation = 0);
+HGOSHEAP __stdcall gos_CreateMemoryHeap(PSTR HeapName, size_t MaximumSize /* = 0*/, HGOSHEAP parentHeap /* = ParentClientHeap*/);
+void __stdcall gos_DestroyMemoryHeap(HGOSHEAP Heap, BOOLEAN shouldBeEmpty = 1);
+void __stdcall gos_ChangeHeapSize(HGOSHEAP Heap, size_t Change, BOOLEAN SystemAllocation = 0);
 void __stdcall gos_PushCurrentHeap(HGOSHEAP Heap);
 HGOSHEAP __stdcall gos_GetCurrentHeap(void);
 void __stdcall gos_PopCurrentHeap(void);
-void __stdcall gos_WalkMemoryHeap(HGOSHEAP pHeap, uint8_t vociferous = 0);
+void __stdcall gos_WalkMemoryHeap(HGOSHEAP pHeap, BOOLEAN vociferous = 0);
 void __stdcall AnalyzeWS(PSTR Title);
 
 // global implemented functions not listed in headers
@@ -121,13 +120,13 @@ void __stdcall AnalyzeWS(PSTR Title);
 PMEMORYPOOL __stdcall MM_CreateMemoryPool(uint16_t);
 void __stdcall MM_DestroyMemoryPool(PMEMORYPOOL pAddress);
 void __stdcall DisplayLeakInformation(PLARGEBLOCKHEADER, PPOOLBLOCK, PSMALLPOOLBLOCK,
-	uint8_t*) void __stdcall SpewAndFreeHeapAllocs(HGOSHEAP heap,
-	bool) void __stdcall DestroySelfAndChildren(HGOSHEAP heap, bool);
-void __stdcall WalkSelfAndChildren(HGOSHEAP heap, bool);
-void __stdcall WalkHeapAllocs(HGOSHEAP heap, bool);
+	BOOLEAN*) void __stdcall SpewAndFreeHeapAllocs(HGOSHEAP heap,
+	BOOLEAN) void __stdcall DestroySelfAndChildren(HGOSHEAP heap, BOOLEAN);
+void __stdcall WalkSelfAndChildren(HGOSHEAP heap, BOOLEAN);
+void __stdcall WalkHeapAllocs(HGOSHEAP heap, BOOLEAN);
 
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
 extern size_t MemoryFrees;
 extern size_t MemoryAllocs;
-extern bool g_MMInitialized;
+extern BOOLEAN g_MMInitialized;

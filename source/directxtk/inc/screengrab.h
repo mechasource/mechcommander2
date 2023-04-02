@@ -44,7 +44,7 @@ namespace directxtk
         _In_ const std::wstring_view& filename,
         D3D12_RESOURCE_STATES beforestate = D3D12_RESOURCE_STATE_RENDER_TARGET,
         D3D12_RESOURCE_STATES afterstate = D3D12_RESOURCE_STATE_RENDER_TARGET,
-        _In_opt_ const GUID* targetFormat = nullptr,
+        _In_opt_ const GUID* targetformat = nullptr,
         _In_opt_ std::function<void __cdecl(IPropertyBag2*)> setCustomProps = nullptr,
         bool forceSRGB = false);
 }

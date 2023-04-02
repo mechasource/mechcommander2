@@ -564,7 +564,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 					}
 				}
 				listOfTextures[i].mcTextureNodeIndex = 0xffffffff;
-				listOfTextures[i].gosTextureHandle = 0xffffffff;
+				listOfTextures[i].texturehandle = 0xffffffff;
 				listOfTextures[i].textureAlpha = false;
 			}
 			for (i = (numTextures / 2); i < numTextures; i++)
@@ -577,7 +577,7 @@ TG_TypeMultiShape::LoadTGMultiShapeFromASE(
 					strlen(listOfTextures[i - (numTextures / 2)].textureName) - 4);
 				strcat(listOfTextures[i].textureName, "X.tga");
 				listOfTextures[i].mcTextureNodeIndex = 0xffffffff;
-				listOfTextures[i].gosTextureHandle = 0xffffffff;
+				listOfTextures[i].texturehandle = 0xffffffff;
 				listOfTextures[i].textureAlpha = true;
 			}
 			for (i = 0; i < numTextures; i++)
@@ -854,18 +854,18 @@ TG_TypeMultiShape::GetTextureName(uint32_t textureNum, const std::wstring_view& 
 // Assigns a MCTextureNodeIndex to this NOT a GOS handle anymore.  Must go
 // through cache in case of too many handles.
 int32_t
-TG_TypeMultiShape::SetTextureHandle(uint32_t textureNum, uint32_t gosTextureHandle)
+TG_TypeMultiShape::SetTextureHandle(uint32_t textureNum, uint32_t texturehandle)
 {
 	if (textureNum >= numTextures)
 		return (-1);
-	listOfTextures[textureNum].mcTextureNodeIndex = gosTextureHandle;
-	listOfTextures[textureNum].gosTextureHandle = 0xffffffff;
+	listOfTextures[textureNum].mcTextureNodeIndex = texturehandle;
+	listOfTextures[textureNum].texturehandle = 0xffffffff;
 	return (0);
 }
 
 //-------------------------------------------------------------------------------
 // Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
-// This function takes the gosTextureHandle passed in and assigns it to the
+// This function takes the texturehandle passed in and assigns it to the
 // textureNum entry of the listOfTextures;
 int32_t
 TG_TypeMultiShape::SetTextureAlpha(uint32_t textureNum, bool alphaFlag)

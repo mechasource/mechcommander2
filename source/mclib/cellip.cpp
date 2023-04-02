@@ -54,8 +54,8 @@ EllipseElement::draw(void)
 	gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, true);
-	uint32_t gosTextureHandle = mcTextureManager->get_gosTextureHandle(s_textureHandle);
-	gos_SetRenderState(gos_State_Texture, gosTextureHandle);
+	uint32_t texturehandle = mcTextureManager->get_gosTextureHandle(s_textureHandle);
+	gos_SetRenderState(gos_State_Texture, texturehandle);
 	gos_SetRenderState(gos_State_Clipping, 2);
 	gos_SetRenderState(gos_State_Specular, 0);
 	gos_SetRenderState(gos_State_Fog, 0);

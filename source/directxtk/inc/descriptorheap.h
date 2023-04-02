@@ -204,7 +204,7 @@ namespace directxtk
             return start;
         }
 
-        void AllocateRange(size_t numDescriptors, _Out_ IndexType& start, _Out_ IndexType& end);
+        void AllocateRange(size_t numdescriptors, _Out_ IndexType& start, _Out_ IndexType& end);
 
     private:
         IndexType m_top;

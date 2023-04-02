@@ -39,11 +39,11 @@ typedef struct _PacketBuffer
 	uint32_t ToID;
 	uint64_t TimeStamp;
 #if CONSIDERED_OBSOLETE
-	uint8_t Encrypted; // changed from bool due to packing
+	BOOLEAN Encrypted; // changed from BOOLEAN due to packing
 #else
 	uint32_t Encrypted;
 #endif
-	uint8_t Data[0]; // Data follows
+	BOOLEAN Data[0]; // Data follows
 } PacketBuffer;
 
 //
@@ -67,7 +67,7 @@ typedef struct _ListOfGames
 	struct _ListOfGames* pNext; // Pointer to next in chain
 	DPSESSIONDESC2 SessionDescriptor; // Session description
 	ListOfNames* pPlayers; // Pointer to list of player names
-	bool bIPX; // whether the game is hosted with IPX or not (TCP/IP)
+	BOOLEAN bIPX; // whether the game is hosted with IPX or not (TCP/IP)
 	char Name[1]; // Name
 } ListOfGames;
 
@@ -100,16 +100,16 @@ extern DPSESSIONDESC2 CurrentSession;
 // Last time that games and players were enumerated
 //
 extern double LastEnumTime;
-extern bool WaitingForEnum;
+extern BOOLEAN WaitingForEnum;
 
 //
 // Protocols
 //
-extern bool hasTCP;
-extern bool hasIPX; // True when protcol is valid
-extern bool hasModem;
-extern bool hasSerial;
-extern bool hasZoneMatch;
+extern BOOLEAN hasTCP;
+extern BOOLEAN hasIPX; // True when protcol is valid
+extern BOOLEAN hasModem;
+extern BOOLEAN hasSerial;
+extern BOOLEAN hasZoneMatch;
 
 //
 // True when connection exists
@@ -124,12 +124,12 @@ extern HRESULT EnumResult;
 //
 // True when a game created or joined
 //
-extern bool InNetworkGame;
+extern BOOLEAN InNetworkGame;
 
 //
 // True when created the game
 //
-extern bool IAmTheServer;
+extern BOOLEAN IAmTheServer;
 
 //
 // Current players ID
@@ -177,7 +177,7 @@ extern ListOfNames* CurrentPlayers;
 //
 // Buffer used while receiving messages
 //
-extern uint8_t* MessageBuffer;
+extern BOOLEAN* MessageBuffer;
 extern uint32_t MessageBufferSize;
 
 //
@@ -202,7 +202,7 @@ typedef struct _PacketLogging
 	uint32_t FromID; // ID of FROM player
 	uint32_t ToID; // ID of TO player
 	uint32_t Size; // Size of packet
-	uint8_t Data[8]; // 1st 8 bytes
+	BOOLEAN Data[8]; // 1st 8 bytes
 
 } PacketLogging;
 //
@@ -225,7 +225,7 @@ extern PacketLogging* pDebugPacketLog;
 #ifdef OUTBOUND_WINDOW
 typedef struct _PacketHeader
 {
-	uint8_t Type; // User defined type (224-> system messages)
+	BOOLEAN Type; // User defined type (224-> system messages)
 	uint16_t ThisPacketNumber;
 	uint16_t LastPacketReceived;
 
@@ -233,7 +233,7 @@ typedef struct _PacketHeader
 #else
 typedef struct _PacketHeader
 {
-	uint8_t Type; // User defined type (224-> system messages)
+	BOOLEAN Type; // User defined type (224-> system messages)
 
 } PacketHeader;
 #endif
@@ -308,11 +308,11 @@ CheckForInternet(void);
 // InternalJoinGame(void) needs this for joining GUN Games.
 void
 PushGameList(void);
-bool
+BOOLEAN
 GUNPrepareDPlay(PSTR GameName);
 
 HRESULT
-QuickEnum(bool async); // quickly begin dplay enumeration of sessions.
+QuickEnum(BOOLEAN async); // quickly begin dplay enumeration of sessions.
 
 #ifdef OUTBOUND_WINDOW
 typedef struct tagPACKETQUEUE
@@ -352,11 +352,11 @@ public:
 	// one!!!
 	OutboundWindow(DPID);
 
-	static bool __stdcall Synchronize(void); // call every frame
-	static bool __stdcall CleanAll(void);
+	static BOOLEAN __stdcall Synchronize(void); // call every frame
+	static BOOLEAN __stdcall CleanAll(void);
 	static OutboundWindow* Find(DPID dpid);
-	bool __stdcall Add(void);
-	bool __stdcall Remove(void);
+	BOOLEAN __stdcall Add(void);
+	BOOLEAN __stdcall Remove(void);
 	PVOID operator new(size_t size) { return gos_Malloc(size, Heap_Network); }
 	void operator delete(PVOID ptr) { gos_Free(ptr); }
 	void operator delete[](PVOID ptr) { gos_Free(ptr); }

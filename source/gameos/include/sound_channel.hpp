@@ -18,9 +18,9 @@ public:
 	uint32_t m_currentProperties;
 	uint32_t m_oldProperties;
 	SoundResource* m_currentSoundResource;
-	bool m_true3D;
-	bool m_emulatedByGameOS;
-	bool m_changed;
+	BOOLEAN m_true3D;
+	BOOLEAN m_emulatedByGameOS;
+	BOOLEAN m_changed;
 
 	EZVector m_position3D;
 	EZVector m_velocity3D;
@@ -33,10 +33,10 @@ public:
 	} m_innerOuterAngles;
 
 	float m_distanceMin, m_distanceMax;
-	bool m_bLoopFlag;
-	bool m_fCued; // semaphore (stream cued)
-	bool m_fPlaying; // semaphore (stream playing)
-	bool m_fPaused; // semaphore (stream playing)
+	BOOLEAN m_bLoopFlag;
+	BOOLEAN m_fCued; // semaphore (stream cued)
+	BOOLEAN m_fPlaying; // semaphore (stream playing)
+	BOOLEAN m_fPaused; // semaphore (stream playing)
 	uint32_t m_cbBufOffset; // last write position
 	uint32_t m_nBufLength; // length of sound buffer in msec
 	uint32_t m_cbBufSize; // size of sound buffer in bytes
@@ -75,7 +75,7 @@ public:
 	virtual void SetDistanceMinMax(float min, float max);
 	virtual void SetConeAngles(float min, float max);
 	virtual void SetConeOrientation(float x, float y, float z);
-	virtual bool IsPlaying() = 0;
+	virtual BOOLEAN IsPlaying() = 0;
 	virtual void Fake3D() = 0;
 	virtual uint32_t GetBytesPlayed() = 0;
 };

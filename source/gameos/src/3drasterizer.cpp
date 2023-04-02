@@ -58,9 +58,9 @@ uint32_t InUpdateRenderers;
 uint32_t Trianglecolour;
 uint32_t ValidatePasses; // not used
 uint32_t ValidateResult; // not used
-bool InsideBeginScene;
-bool NeedToInitRenderStates;
-bool ViewPortChanged;
+BOOLEAN InsideBeginScene;
+BOOLEAN NeedToInitRenderStates;
+BOOLEAN ViewPortChanged;
 uint32_t PickFound;
 uint32_t PickDepth;
 uint32_t PickNumber;
@@ -130,9 +130,9 @@ uint32_t VerticesUploaded;
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
 void __stdcall CheckVertices(
-	pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines = 0);
-void __stdcall CheckVertices2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices);
-void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices);
+	pgos_VERTEX pVertexArray, uint32_t numbervertices, BOOLEAN PointsLines = 0);
+void __stdcall CheckVertices2(pgos_VERTEX_2UV pVertexArray, uint32_t numbervertices);
+void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t numbervertices);
 uint32_t __stdcall GetMipmapcolour(int32_t Mipmap);
 void __stdcall DebugTriangle(pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3);
 void __stdcall DebugTriangle_2UV(pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3);
@@ -141,8 +141,8 @@ void __stdcall Destroy3D(void);
 void __stdcall ReInit3D(void);
 void __stdcall gos_SetViewport(uint32_t LeftX, uint32_t RightX, uint32_t width, uint32_t height,
 	float MinZ = 0.0f, float MaxZ = 1.0f);
-void __stdcall gos_SetupViewport(uint8_t fillz, float zbuffer, uint8_t fillbg, uint32_t BGcolour,
-	float top, float left, float bottom, float right, uint8_t clearstencil = 0,
+void __stdcall gos_SetupViewport(BOOLEAN fillz, float zbuffer, BOOLEAN fillbg, uint32_t BGcolour,
+	float top, float left, float bottom, float right, BOOLEAN clearstencil = 0,
 	uint32_t stencilvalue = 0);
 void __stdcall gos_GetViewport(
 	float* pViewportMulX, float* pViewportMulY, float* pViewportAddX, float* pViewportAddY);

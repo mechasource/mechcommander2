@@ -8,7 +8,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -std:c++latest -permissive- -await -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew"
+		AdditionalOptions="-Wall -MP -sdl -utf-8 -guard:cf -Zo -std:c++latest -permissive- -Zc:__cplusplus -Zc:enumTypes -Zc:externConstexpr -Zc:inline -Zc:lambda -Zc:preprocessor -Zc:throwingNew"
 		Optimization="3"
 		EnableIntrinsicFunctions="true"
 		FavorSizeOrSpeed="2"

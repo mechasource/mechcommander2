@@ -24,7 +24,7 @@ namespace VBO
 
     struct header_t
     {
-        uint32_t numVertices;
+        uint32_t numvertices;
         uint32_t numIndices;
     };
 

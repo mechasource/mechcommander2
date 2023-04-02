@@ -70,7 +70,7 @@ namespace directxtk
         DXGI_FORMAT format,
         const D3D12_SUBRESOURCE_DATA& initData,
         _COM_Outptr_ ID3D12Resource** texture,
-        bool generateMips = false,
+        bool generatemips = false,
         D3D12_RESOURCE_STATES afterstate = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
         D3D12_RESOURCE_FLAGS resFlags = D3D12_RESOURCE_FLAG_NONE) noexcept;
 

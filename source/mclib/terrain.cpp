@@ -846,7 +846,7 @@ Terrain::geometry(void)
 	mostWY = 0.0f;
 	//-----------------------------------
 	// Transform entire list of vertices
-	VertexPtr currentVertex = vertexList;
+	VertexPtr currentvertex = vertexList;
 	Stuff::Vector3D cameraPos;
 	cameraPos.x = -eye->getCameraOrigin().x;
 	cameraPos.y = eye->getCameraOrigin().z;
@@ -870,9 +870,9 @@ Terrain::geometry(void)
 			// NEW METHOD from the WAY BACK Days
 			onScreen = true;
 			Stuff::Vector3D vPosition;
-			vPosition.x = currentVertex->vx;
-			vPosition.y = currentVertex->vy;
-			vPosition.z = currentVertex->pVertex->elevation;
+			vPosition.x = currentvertex->vx;
+			vPosition.y = currentvertex->vy;
+			vPosition.z = currentvertex->pVertex->elevation;
 			Stuff::Vector3D objectCenter;
 			objectCenter.Subtract(vPosition, cameraPos);
 			Camera::cameraFrame.trans_to_frame(objectCenter);
@@ -910,36 +910,36 @@ Terrain::geometry(void)
 			{
 				if (distanceToEye > Camera::MaxClipDistance)
 				{
-					currentVertex->hazeFactor = 1.0f;
+					currentvertex->hazeFactor = 1.0f;
 				}
 				else if (distanceToEye > Camera::MinHazeDistance)
 				{
-					currentVertex->hazeFactor =
+					currentvertex->hazeFactor =
 						(distanceToEye - Camera::MinHazeDistance) * Camera::DistanceFactor;
 				}
 				else
 				{
-					currentVertex->hazeFactor = 0.0f;
+					currentvertex->hazeFactor = 0.0f;
 				}
 				//---------------------------------------
 				// Vertex is at edge of world or beyond.
 				Stuff::Vector3D vPos(
-					currentVertex->vx, currentVertex->vy, currentVertex->pVertex->elevation);
+					currentvertex->vx, currentvertex->vy, currentvertex->pVertex->elevation);
 				bool isVisible = Terrain::IsGameSelectTerrainPosition(vPos) || drawTerrainGrid;
 				if (!isVisible)
 				{
-					currentVertex->hazeFactor = 1.0f;
+					currentvertex->hazeFactor = 1.0f;
 					onScreen = true;
 				}
 			}
 			else
 			{
-				currentVertex->hazeFactor = 1.0f;
+				currentvertex->hazeFactor = 1.0f;
 			}
 		}
 		else
 		{
-			currentVertex->hazeFactor = 0.0f;
+			currentvertex->hazeFactor = 0.0f;
 			onScreen = true;
 		}
 		bool inView = false;
@@ -947,39 +947,39 @@ Terrain::geometry(void)
 		if (onScreen)
 		{
 			Stuff::Vector3D vertex3D(
-				currentVertex->vx, currentVertex->vy, currentVertex->pVertex->elevation);
+				currentvertex->vx, currentvertex->vy, currentvertex->pVertex->elevation);
 			inView = eye->projectZ(vertex3D, screenPos);
-			currentVertex->px = screenPos.x;
-			currentVertex->py = screenPos.y;
-			currentVertex->pz = screenPos.z;
-			currentVertex->pw = screenPos.w;
+			currentvertex->px = screenPos.x;
+			currentvertex->py = screenPos.y;
+			currentvertex->pz = screenPos.z;
+			currentvertex->pw = screenPos.w;
 			//----------------------------------------------------------------------------------
 			// We must transform these but should NOT draw any face where all
 			// three are fogged.
-			//			if (currentVertex->hazeFactor == 1.0f)
+			//			if (currentvertex->hazeFactor == 1.0f)
 			//				onScreen = false;
 		}
 		else
 		{
-			currentVertex->px = currentVertex->py = 10000.0f;
-			currentVertex->pz = -0.5f;
-			currentVertex->pw = 0.5f;
-			currentVertex->hazeFactor = 0.0f;
+			currentvertex->px = currentvertex->py = 10000.0f;
+			currentvertex->pz = -0.5f;
+			currentvertex->pw = 0.5f;
+			currentvertex->hazeFactor = 0.0f;
 		}
 		//------------------------------------------------------------
 		// Fix clip.  Vertices can all be off screen and triangle
 		// still needs to be drawn!
 		if (eye->usePerspective && Environment.Renderer != 3)
 		{
-			currentVertex->clipInfo = onScreen;
+			currentvertex->clipInfo = onScreen;
 		}
 		else
-			currentVertex->clipInfo = inView;
-		if (currentVertex->clipInfo) // ONLY set TRUE ones.  Otherwise we just
+			currentvertex->clipInfo = inView;
+		if (currentvertex->clipInfo) // ONLY set TRUE ones.  Otherwise we just
 			// reset the FLAG each vertex!
 		{
-			setObjBlockActive(currentVertex->getBlockNumber(), true);
-			setObjVertexActive(currentVertex->vertexNum, true);
+			setObjBlockActive(currentvertex->getBlockNumber(), true);
+			setObjVertexActive(currentvertex->vertexNum, true);
 			if (inView)
 			{
 				if (screenPos.z < leastZ)
@@ -1002,7 +1002,7 @@ Terrain::geometry(void)
 				}
 			}
 		}
-		currentVertex++;
+		currentvertex++;
 	}
 	//-----------------------------------
 	// setup terrain quad textures

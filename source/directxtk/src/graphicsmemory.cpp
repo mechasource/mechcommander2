@@ -74,7 +74,7 @@ namespace
     {
     public:
         DeviceAllocator(_In_ ID3D12Device* device) noexcept(false)
-            : mDevice(device)
+            : m_device(device)
         {
             if (!device)
                 throw std::invalid_argument("Invalid device parameter");
@@ -83,7 +83,7 @@ namespace
             {
                 size_t pageSize = GetPageSizeFromPoolIndex(i);
                 mPools[i] = std::make_unique<LinearAllocator>(
-                    mDevice.get(),
+                    m_device.get(),
                     pageSize);
             }
         }
@@ -191,11 +191,11 @@ namespace
         }
 
     #if !defined(_XBOX_ONE) || !defined(_TITLE)
-        ID3D12Device* GetDevice() const noexcept { return mDevice.get(); }
+        ID3D12Device* GetDevice() const noexcept { return m_device.get(); }
     #endif
 
     private:
-        wil::com_ptr<ID3D12Device> mDevice;
+        wil::com_ptr<ID3D12Device> m_device;
         std::array<std::unique_ptr<LinearAllocator>, AllocatorPoolCount> mPools;
         mutable std::mutex mMutex;
     };
@@ -432,7 +432,7 @@ GraphicsMemory& GraphicsMemory::Get(_In_opt_ ID3D12Device* device)
 GraphicsResource::GraphicsResource() noexcept
     : mPage(nullptr)
     , mGpuAddress {}
-    , mResource(nullptr)
+    , m_resource(nullptr)
     , mMemory(nullptr)
     , mBufferOffset(0)
     , mSize(0)
@@ -448,7 +448,7 @@ GraphicsResource::GraphicsResource(
     _In_ size_t size) noexcept
     : mPage(page)
     , mGpuAddress(gpuAddress)
-    , mResource(resource)
+    , m_resource(resource)
     , mMemory(memory)
     , mBufferOffset(offset)
     , mSize(size)
@@ -460,7 +460,7 @@ GraphicsResource::GraphicsResource(
 GraphicsResource::GraphicsResource(GraphicsResource&& other) noexcept
     : mPage(nullptr)
     , mGpuAddress{}
-    , mResource(nullptr)
+    , m_resource(nullptr)
     , mMemory(nullptr)
     , mBufferOffset(0)
     , mSize(0)
@@ -492,7 +492,7 @@ void GraphicsResource::reset() noexcept
     }
 
     mGpuAddress = {};
-    mResource = nullptr;
+    m_resource = nullptr;
     mMemory = nullptr;
     mBufferOffset = 0;
     mSize = 0;
@@ -507,14 +507,14 @@ void GraphicsResource::reset(GraphicsResource&& alloc) noexcept
     }
 
     mGpuAddress = alloc.GpuAddress();
-    mResource = alloc.Resource();
+    m_resource = alloc.Resource();
     mMemory = alloc.Memory();
     mBufferOffset = alloc.ResourceOffset();
     mSize = alloc.Size();
     mPage = alloc.mPage;
 
     alloc.mGpuAddress = {};
-    alloc.mResource = nullptr;
+    alloc.m_resource = nullptr;
     alloc.mMemory = nullptr;
     alloc.mBufferOffset = 0;
     alloc.mSize = 0;

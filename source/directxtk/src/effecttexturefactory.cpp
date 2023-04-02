@@ -23,117 +23,107 @@
 using namespace directxtk;
 // using Microsoft::WRL::ComPtr;
 
-
 class EffectTextureFactory::Impl
 {
 public:
     struct TextureCacheEntry
     {
-        wil::com_ptr<ID3D12Resource> mResource;
-        bool mIsCubeMap;
-        size_t slot;
+        wil::com_ptr<ID3D12Resource> m_resource;
+        bool m_iscubemap = false;
+        size_t slot = 0;
 
-        TextureCacheEntry() noexcept : mIsCubeMap(false), slot(0) {}
+        TextureCacheEntry(void) noexcept {}
     };
 
     using TextureCache = std::map< std::wstring, TextureCacheEntry >;
 
     Impl(
         _In_ ID3D12Device* device,
-        ResourceUploadBatch& resourceUploadBatch,
-        _In_ ID3D12DescriptorHeap* descriptorHeap)
-        : mPath{}
-        , mTextureDescriptorHeap(descriptorHeap)
-        , mDevice(device)
-        , mResourceUploadBatch(resourceUploadBatch)
-        , mSharing(true)
-        , mForceSRGB(false)
-        , mAutoGenMips(false)
-    { 
-        *mPath = 0; 
+        ResourceUploadBatch& resourceuploadbatch,
+        _In_ ID3D12DescriptorHeap* descriptorheap)
+        : 
+		m_texturedescriptorheap(descriptorheap),
+		m_device(device),
+		m_resourceuploadbatch(resourceuploadbatch)
+	{ 
     }
 
     Impl(
         _In_ ID3D12Device* device,
-        ResourceUploadBatch& resourceUploadBatch,
-        _In_ size_t numDescriptors,
-        _In_ D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags)
-        : mPath{}
-        , mTextureDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, descriptorHeapFlags, numDescriptors)
-        , mDevice(device)
-        , mResourceUploadBatch(resourceUploadBatch)
-        , mSharing(true)
-        , mForceSRGB(false)
-        , mAutoGenMips(false)
+        ResourceUploadBatch& resourceuploadbatch,
+        _In_ size_t numdescriptors,
+        _In_ D3D12_DESCRIPTOR_HEAP_FLAGS descriptorheapflags)
+        : 
+		m_texturedescriptorheap(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, descriptorheapflags, numdescriptors),
+		m_device(device),
+		m_resourceuploadbatch(resourceuploadbatch)
     {
-        SetDebugObjectName(mTextureDescriptorHeap.Heap(), L"EffectTextureFactory");
+        SetDebugObjectName(m_texturedescriptorheap.Heap(), L"EffectTextureFactory");
     }
 
-    size_t CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorSlot);
+    size_t CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorslot);
 
-    void ReleaseCache();
-    void SetSharing(bool enabled) noexcept { mSharing = enabled; }
-    void EnableForceSRGB(bool forceSRGB) noexcept { mForceSRGB = forceSRGB; }
-    void EnableAutoGenMips(bool generateMips) noexcept { mAutoGenMips = generateMips; }
+    void ReleaseCache(void);
+    void SetSharing(bool enablesharing) noexcept { m_sharing = enablesharing; }
+    void EnableForceSRGB(bool forcesrgb) noexcept { m_forcesrgb = forcesrgb; }
+    void EnableAutoGenMips(bool generatemips) noexcept { m_autogenmips = generatemips; }
 
-    wchar_t mPath[MAX_PATH];
-
-    ::DescriptorHeap               mTextureDescriptorHeap;
-    std::vector<TextureCacheEntry> mResources; // flat list of unique resources so we can index into it
+protected:
+	wchar_t m_path[MAX_PATH]{};
+	::DescriptorHeap               m_texturedescriptorheap;
+	std::vector<TextureCacheEntry> m_resources; // flat list of unique resources so we can index into it
 
 private:
-    wil::com_ptr<ID3D12Device>           mDevice;
-    ResourceUploadBatch&           mResourceUploadBatch;
-
-    TextureCache                   mTextureCache;
-
-    bool                           mSharing;
-    bool                           mForceSRGB;
-    bool                           mAutoGenMips;
+	wil::com_ptr<ID3D12Device>	m_device;
+    ResourceUploadBatch&		m_resourceuploadbatch;
+    TextureCache                   m_texturecache;
+    bool                           m_sharing = true;
+    bool                           m_forcesrgb = false;
+    bool                           m_autogenmips = false;
 
     std::mutex                     mutex;
 };
 
 
 _Use_decl_annotations_
-size_t EffectTextureFactory::Impl::CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorSlot)
+size_t EffectTextureFactory::Impl::CreateTexture(_In_ const std::wstring_view& texturename, int32_t descriptorslot)
 {
-    if (!name)
+    if (texturename.empty())
         throw std::exception("invalid arguments");
 
-    auto it = mTextureCache.find(name);
+    auto it = m_texturecache.find(texturename.data());
 
-    TextureCacheEntry textureEntry = {};
+    TextureCacheEntry textureentry = {};
 
-    if (mSharing && it != mTextureCache.end())
+    if (m_sharing && it != m_texturecache.end())
     {
-        textureEntry = it->second;
+        textureentry = it->second;
     }
     else
     {
-        wchar_t fullName[MAX_PATH] = {};
-        wcscpy_s(fullName, mPath);
-        wcscat_s(fullName, name);
+        wchar_t fullname[MAX_PATH] = {};
+        wcscpy_s(fullname, m_path);
+        wcscat_s(fullname, texturename.data());
 
-        WIN32_FILE_ATTRIBUTE_DATA fileAttr = {};
-        if (!GetFileAttributesExW(fullName, GetFileExInfoStandard, &fileAttr))
+        WIN32_FILE_ATTRIBUTE_DATA fileattr = {};
+        if (!GetFileAttributesExW(fullname, GetFileExInfoStandard, &fileattr))
         {
             // Try Current Working Directory (CWD)
-            wcscpy_s(fullName, name);
-            if (!GetFileAttributesExW(fullName, GetFileExInfoStandard, &fileAttr))
+            wcscpy_s(fullname, texturename.data());
+            if (!GetFileAttributesExW(fullname, GetFileExInfoStandard, &fileattr))
             {
-                DebugTrace("ERROR: EffectTextureFactory could not find texture file '%ls'\n", name);
+                DebugTrace("ERROR: EffectTextureFactory could not find texture file '%ls'\n", texturename);
                 throw std::exception("CreateTexture");
             }
         }
 
         wchar_t ext[_MAX_EXT];
-        _wsplitpath_s(name, nullptr, 0, nullptr, 0, nullptr, 0, ext, _MAX_EXT);
+        _wsplitpath_s(texturename.data(), nullptr, 0, nullptr, 0, nullptr, 0, ext, _MAX_EXT);
 
         DDS_LOADER_FLAGS loadFlags = DDS_LOADER_DEFAULT;
-        if (mForceSRGB)
+        if (m_forcesrgb)
             loadFlags |= DDS_LOADER_FORCE_SRGB;
-        if (mAutoGenMips)
+        if (m_autogenmips)
             loadFlags |= DDS_LOADER_MIP_AUTOGEN;
 
         static_assert(static_cast<int32_t>(DDS_LOADER_DEFAULT) == static_cast<int32_t>(WIC_LOADER_DEFAULT), "DDS/WIC Load flags mismatch");
@@ -144,65 +134,65 @@ size_t EffectTextureFactory::Impl::CreateTexture(_In_ const std::wstring_view& n
         if (_wcsicmp(ext, L".dds") == 0)
         {
             HRESULT hr = CreateDDSTextureFromFileEx(
-                mDevice.get(),
-                mResourceUploadBatch,
-                fullName,
+                m_device.get(),
+                m_resourceuploadbatch,
+                fullname,
                 0u,
                 D3D12_RESOURCE_FLAG_NONE,
                 loadFlags,
-                textureEntry.mResource.put(),
+                textureentry.m_resource.put(),
                 nullptr,
-                &textureEntry.mIsCubeMap);
+                &textureentry.m_iscubemap);
             if (FAILED(hr))
             {
                 DebugTrace("ERROR: CreateDDSTextureFromFile failed (%08X) for '%ls'\n",
-                    static_cast<uint32_t>(hr), fullName);
+                    static_cast<uint32_t>(hr), fullname);
                 throw std::exception("CreateDDSTextureFromFile");
             }
         }
         else
         {
-            textureEntry.mIsCubeMap = false;
+            textureentry.m_iscubemap = false;
 
             HRESULT hr = CreateWICTextureFromFileEx(
-                mDevice.get(),
-                mResourceUploadBatch,
-                fullName,
+                m_device.get(),
+                m_resourceuploadbatch,
+                fullname,
                 0u,
                 D3D12_RESOURCE_FLAG_NONE,
                 static_cast<WIC_LOADER_FLAGS>(loadFlags),
-                textureEntry.mResource.put());
+                textureentry.m_resource.put());
             if (FAILED(hr))
             {
                 DebugTrace("ERROR: CreateWICTextureFromFile failed (%08X) for '%ls'\n",
-                    static_cast<uint32_t>(hr), fullName);
+                    static_cast<uint32_t>(hr), fullname);
                 throw std::exception("CreateWICTextureFromFile");
             }
         }
 
         std::lock_guard<std::mutex> lock(mutex);
-        textureEntry.slot = mResources.size();
-        if (mSharing)
+        textureentry.slot = m_resources.size();
+        if (m_sharing)
         {
-            TextureCache::value_type v(name, textureEntry);
-            mTextureCache.insert(v);
+            TextureCache::value_type v(texturename, textureentry);
+            m_texturecache.insert(v);
         }
-        mResources.push_back(textureEntry);
+        m_resources.push_back(textureentry);
     }
 
-    assert(textureEntry.mResource != nullptr);
+    assert(textureentry.m_resource != nullptr);
 
     // bind a new descriptor in slot 
-    auto textureDescriptor = mTextureDescriptorHeap.GetCpuHandle(static_cast<size_t>(descriptorSlot));
-    directxtk::CreateShaderResourceView(mDevice.get(), textureEntry.mResource.get(), textureDescriptor, textureEntry.mIsCubeMap);
+    auto textureDescriptor = m_texturedescriptorheap.GetCpuHandle(static_cast<size_t>(descriptorslot));
+    directxtk::CreateShaderResourceView(m_device.get(), textureentry.m_resource.get(), textureDescriptor, textureentry.m_iscubemap);
 
-    return textureEntry.slot;
+    return textureentry.slot;
 }
 
 void EffectTextureFactory::Impl::ReleaseCache()
 {
     std::lock_guard<std::mutex> lock(mutex);
-    mTextureCache.clear();
+    m_texturecache.clear();
 }
 
 
@@ -214,20 +204,20 @@ void EffectTextureFactory::Impl::ReleaseCache()
 _Use_decl_annotations_
 EffectTextureFactory::EffectTextureFactory(
     ID3D12Device* device,
-    ResourceUploadBatch& resourceUploadBatch,
-    ID3D12DescriptorHeap* descriptorHeap) noexcept(false)
+    ResourceUploadBatch& resourceuploadbatch,
+    ID3D12DescriptorHeap* descriptorheap) noexcept(false)
 {
-    pimpl = std::make_unique<Impl>(device, resourceUploadBatch, descriptorHeap);
+    pimpl = std::make_unique<Impl>(device, resourceuploadbatch, descriptorheap);
 }
 
 _Use_decl_annotations_
 EffectTextureFactory::EffectTextureFactory(
     ID3D12Device* device,
-    ResourceUploadBatch& resourceUploadBatch,
-    size_t numDescriptors,
-    D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags) noexcept(false)
+    ResourceUploadBatch& resourceuploadbatch,
+    size_t numdescriptors,
+    D3D12_DESCRIPTOR_HEAP_FLAGS descriptorheapflags) noexcept(false)
 {
-    pimpl = std::make_unique<Impl>(device, resourceUploadBatch, numDescriptors, descriptorHeapFlags);
+    pimpl = std::make_unique<Impl>(device, resourceuploadbatch, numdescriptors, descriptorheapflags);
 }
 
 EffectTextureFactory::~EffectTextureFactory()
@@ -247,9 +237,9 @@ EffectTextureFactory& EffectTextureFactory::operator= (EffectTextureFactory&& mo
 }
 
 _Use_decl_annotations_
-size_t EffectTextureFactory::CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorIndex)
+size_t EffectTextureFactory::CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorindex)
 {
-    return pimpl->CreateTexture(name, descriptorIndex);
+    return pimpl->CreateTexture(name, descriptorindex);
 }
 
 void EffectTextureFactory::ReleaseCache()
@@ -267,64 +257,64 @@ void EffectTextureFactory::EnableForceSRGB(bool forceSRGB) noexcept
     pimpl->EnableForceSRGB(forceSRGB);
 }
 
-void EffectTextureFactory::EnableAutoGenMips(bool generateMips) noexcept
+void EffectTextureFactory::EnableAutoGenMips(bool generatemips) noexcept
 {
-    pimpl->EnableAutoGenMips(generateMips);
+    pimpl->EnableAutoGenMips(generatemips);
 }
 
 void EffectTextureFactory::SetDirectory(_In_opt_ const std::wstring_view& path) noexcept
 {
-    if (path && *path != 0)
+    if (!path.empty())
     {
-        wcscpy_s(pimpl->mPath, path);
-        size_t len = wcsnlen(pimpl->mPath, MAX_PATH);
+        wcscpy_s(pimpl->m_path, path.data());
+        size_t len = wcsnlen(pimpl->m_path, MAX_PATH);
         if (len > 0 && len < (MAX_PATH - 1))
         {
             // Ensure it has a trailing slash
-            if (pimpl->mPath[len - 1] != L'\\')
+            if (pimpl->m_path[len - 1] != L'\\')
             {
-                pimpl->mPath[len] = L'\\';
-                pimpl->mPath[len + 1] = 0;
+                pimpl->m_path[len] = L'\\';
+                pimpl->m_path[len + 1] = 0;
             }
         }
     }
     else
-        *pimpl->mPath = 0;
+        *pimpl->m_path = 0;
 }
 
-ID3D12DescriptorHeap* EffectTextureFactory::Heap() const noexcept
+ID3D12DescriptorHeap* EffectTextureFactory::Heap(void) const noexcept
 {
-    return pimpl->mTextureDescriptorHeap.Heap();
+    return pimpl->m_texturedescriptorheap.Heap();
 }
 
 // Shorthand accessors for the descriptor heap
 D3D12_CPU_DESCRIPTOR_HANDLE EffectTextureFactory::GetCpuDescriptorHandle(size_t index) const
 {
-    return pimpl->mTextureDescriptorHeap.GetCpuHandle(index);
+    return pimpl->m_texturedescriptorheap.GetCpuHandle(index);
 }
 
 D3D12_GPU_DESCRIPTOR_HANDLE EffectTextureFactory::GetGpuDescriptorHandle(size_t index) const
 {
-    return pimpl->mTextureDescriptorHeap.GetGpuHandle(index);
+    return pimpl->m_texturedescriptorheap.GetGpuHandle(index);
 }
 
 size_t EffectTextureFactory::ResourceCount() const noexcept
 {
-    return pimpl->mResources.size();
+    return pimpl->m_resources.size();
 }
 
 _Use_decl_annotations_
-void EffectTextureFactory::GetResource(size_t slot, ID3D12Resource** resource, bool* isCubeMap)
+void __cdecl directxtk::EffectTextureFactory::GetResource(size_t slotindex, _Out_ ID3D12Resource** resource, _Out_opt_ bool* iscubemap /*= nullptr*/)
 {
-    if (slot >= pimpl->mResources.size())
+    if (slotindex >= pimpl->m_resources.size())
         throw std::exception("Accessing resource out of range.");
 
-    const auto& textureEntry = pimpl->mResources[slot];
+    const auto& textureentry = pimpl->m_resources[slotindex];
 
-    textureEntry.mResource.copy_to(resource);
+    textureentry.m_resource.copy_to(resource);
 
-    if (isCubeMap)
+    if (iscubemap)
     {
-        *isCubeMap = textureEntry.mIsCubeMap;
+        *iscubemap = textureentry.m_iscubemap;
     }
 }

@@ -82,7 +82,7 @@ namespace directxtk
         _In_ ID3D12Device* device,
         _In_ ID3D12Resource* tex,
         D3D12_CPU_DESCRIPTOR_HANDLE srvDescriptor,
-        bool isCubeMap = false);
+        bool iscubemap = false);
 
     // Shorthand for creating a root signature
     inline HRESULT CreateRootSignature(
@@ -90,12 +90,12 @@ namespace directxtk
         _In_ const D3D12_ROOT_SIGNATURE_DESC* rootSignatureDesc,
         _Out_ ID3D12RootSignature** rootSignature) noexcept
     {
-        wil::com_ptr<ID3DBlob> pSignature;
-        wil::com_ptr<ID3DBlob> pError;
-        HRESULT hr = D3D12SerializeRootSignature(rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, pSignature.addressof(), pError.addressof());
+        wil::com_ptr<ID3DBlob> psignature;
+        wil::com_ptr<ID3DBlob> perror;
+        HRESULT hr = D3D12SerializeRootSignature(rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, psignature.addressof(), perror.addressof());
         if (SUCCEEDED(hr))
         {
-            hr = device->CreateRootSignature(0, pSignature->GetBufferPointer(), pSignature->GetBufferSize(),
+            hr = device->CreateRootSignature(0, psignature->GetBufferPointer(), psignature->GetBufferSize(),
                 IID_GRAPHICS_PPV_ARGS(rootSignature)
                 );
         }

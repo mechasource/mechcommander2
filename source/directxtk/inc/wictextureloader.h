@@ -73,7 +73,7 @@ namespace directxtk
         _In_reads_bytes_(wicDataSize) const uint8_t* wicData,
         size_t wicDataSize,
         _Outptr_ ID3D12Resource** texture,
-        bool generateMips = false,
+        bool generatemips = false,
         size_t maxsize = 0);
 
     HRESULT __cdecl CreateWICTextureFromFile(
@@ -81,7 +81,7 @@ namespace directxtk
         ResourceUploadBatch& resourceUpload,
         _In_ const std::wstring_view& filename,
         _Outptr_ ID3D12Resource** texture,
-        bool generateMips = false,
+        bool generatemips = false,
         size_t maxsize = 0);
 
     // Extended version

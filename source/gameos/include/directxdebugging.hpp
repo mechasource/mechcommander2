@@ -16,8 +16,8 @@ typedef struct DPSESSIONDESC2* LPDPSESSIONDESC2;
 // DirectX Debugging support
 PSTR __stdcall GetSBStatus(uint32_t Status);
 PSTR __stdcall GetQSupport(uint32_t Support);
-PSTR __stdcall GetLightInfo(LPD3DLIGHT7 lpLight);
-PSTR __stdcall GetMaterialInfo(LPD3DMATERIAL7 lpMaterial);
+PSTR __stdcall GetLightInfo(LPD3DLIGHT7 plight);
+PSTR __stdcall GetMaterialInfo(LPD3DMATERIAL7 pmaterial);
 PSTR __stdcall GetTransformType(D3DTRANSFORMSTATETYPE dtstTransformStateType);
 PSTR __stdcall GetApplyFlag(uint32_t flag);
 PSTR __stdcall GetPropertyItem(REFGUID rguid, int32_t Item);
@@ -37,7 +37,7 @@ PSTR __stdcall GetCreatePlayerFlags(uint32_t flags);
 PSTR __stdcall GetEnumSessionFlags(uint32_t Timeout, uint32_t flags);
 PSTR __stdcall GetDPSessionDesc2(LPDPSESSIONDESC2 desc);
 PSTR __stdcall GetDPOpenFLags(uint32_t flags);
-PSTR __stdcall GetVertexType(PSTR Buffer, uint32_t VertexType);
+PSTR __stdcall GetVertexType(PSTR Buffer, uint32_t vertextype);
 PSTR __stdcall GetChanProp(uint32_t Prop);
 PSTR __stdcall GetWaveFormat(PSTR Buffer, LPCWAVEFORMATEX lpcfxFormat);
 PSTR __stdcall GetDSoundCoopLevel(uint32_t Level);
@@ -46,11 +46,11 @@ PSTR __stdcall GetStageSet(D3DTEXTURESTAGESTATETYPE state, uint32_t value);
 PSTR __stdcall GetRectangle(PSTR Buffer, LPRECT lp);
 PSTR __stdcall GetDIDevice(REFGUID rguid);
 PSTR __stdcall GetRenderState(uint32_t renderstate, uint32_t value);
-PSTR __stdcall GetDrawPrimitiveData(D3DPRIMITIVETYPE dptPrimitiveType, uint32_t dvtVertexType,
-	PVOID lpvVertices, uint32_t dwVertexCount, uint32_t flags);
-PSTR __stdcall GetDrawIndexedPrimitiveData(D3DPRIMITIVETYPE d3dptPrimitiveType,
-	uint32_t dwVertexTypeDesc, PVOID lpvVertices, uint32_t dwVertexCount, LPWORD lpwIndices,
-	uint32_t dwIndexCount, uint32_t flags);
+PSTR __stdcall GetDrawPrimitiveData(D3DPRIMITIVETYPE dptprimitivetype, uint32_t dvtvertextype,
+	PVOID pvvertices, uint32_t vertexcount, uint32_t flags);
+PSTR __stdcall GetDrawIndexedPrimitiveData(D3DPRIMITIVETYPE d3dptprimitivetype,
+	uint32_t vertextypedesc, PVOID pvvertices, uint32_t vertexcount, LPWORD pwindices,
+	uint32_t indexcount, uint32_t flags);
 PSTR __stdcall GetClearArea(uint32_t count, LPD3DRECT pd3drect, uint32_t flags);
 PSTR __stdcall GetSurfaceDescription(LPDDSURFACEDESC2 pSD);
 PSTR __stdcall GetSurfaceDescriptionOld(LPDDSURFACEDESC pSD);

@@ -63,10 +63,10 @@ std::unique_ptr<Model> directxtk::Model::CreateFromVBO(
         throw std::exception("End of file");
     auto header = reinterpret_cast<const VBO::header_t*>(meshData);
 
-    if (!header->numVertices || !header->numIndices)
+    if (!header->numvertices || !header->numIndices)
         throw std::exception("No vertices or indices found");
 
-    uint64_t sizeInBytes = uint64_t(header->numVertices) * sizeof(VertexPositionNormalTexture);
+    uint64_t sizeInBytes = uint64_t(header->numvertices) * sizeof(VertexPositionNormalTexture);
     if (sizeInBytes > UINT32_MAX)
         throw std::exception("VB too large");
 
@@ -111,7 +111,7 @@ std::unique_ptr<Model> directxtk::Model::CreateFromVBO(
     part->indexCount = header->numIndices;
     part->startIndex = 0;
     part->vertexStride = static_cast<uint32_t>(sizeof(VertexPositionNormalTexture));
-    part->vertexCount = header->numVertices;
+    part->vertexCount = header->numvertices;
     part->indexBufferSize = static_cast<uint32_t>(indexSize);
     part->vertexBufferSize = static_cast<uint32_t>(vertSize);
     part->indexBuffer = std::move(ib);
@@ -119,8 +119,8 @@ std::unique_ptr<Model> directxtk::Model::CreateFromVBO(
     part->vbDecl = g_vbdecl;
 
     auto mesh = std::make_shared<ModelMesh>();
-    DirectX::BoundingSphere::CreateFromPoints(mesh->boundingSphere, header->numVertices, &verts->position, sizeof(VertexPositionNormalTexture));
-    DirectX::BoundingBox::CreateFromPoints(mesh->boundingBox, header->numVertices, &verts->position, sizeof(VertexPositionNormalTexture));
+    DirectX::BoundingSphere::CreateFromPoints(mesh->boundingSphere, header->numvertices, &verts->position, sizeof(VertexPositionNormalTexture));
+    DirectX::BoundingBox::CreateFromPoints(mesh->boundingBox, header->numvertices, &verts->position, sizeof(VertexPositionNormalTexture));
     mesh->opaqueMeshParts.emplace_back(part);
 
     auto model = std::make_unique<Model>();

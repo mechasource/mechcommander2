@@ -9,10 +9,10 @@
 extern uint32_t* TraceBuffer;
 extern gos_VERTEX* LineBuffer;
 
-extern uint8_t ProfileFlags[32]; // Remember graphs activated
+extern BOOLEAN ProfileFlags[32]; // Remember graphs activated
 extern uint32_t DebuggerTextures;
 extern float PercentHistory[512]; // Used to remember cycles per frame
-extern bool NewPerformanceRegister;
+extern BOOLEAN NewPerformanceRegister;
 
 //
 // Structure used to hold statistics
@@ -35,7 +35,7 @@ typedef struct _Stat
 	float Total; // Total (for average)
 
 	float* History; // Last 512 values (for graphing)
-	bool BlockOwner; // Do I own the whole statistic history block?
+	BOOLEAN BlockOwner; // Do I own the whole statistic history block?
 
 	char Name[1]; // Name of statistic
 

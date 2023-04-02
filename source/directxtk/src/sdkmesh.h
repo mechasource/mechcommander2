@@ -229,7 +229,7 @@ namespace DXUT
     {
         char Name[MAX_SUBSET_NAME];
         uint32_t MaterialID;
-        uint32_t PrimitiveType;
+        uint32_t primitivetype;
         uint64_t IndexStart;
         uint64_t IndexCount;
         uint64_t VertexStart;

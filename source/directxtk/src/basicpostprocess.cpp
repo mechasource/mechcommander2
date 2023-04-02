@@ -105,7 +105,7 @@ namespace
     {
     public:
         DeviceResources(_In_ ID3D12Device* device) noexcept
-            : mDevice(device),
+            : m_device(device),
             m_prootsignature{},
             mMutex{}
         { }
@@ -117,7 +117,7 @@ namespace
 
             return DemandCreate(m_prootsignature[slot], mMutex, [&](ID3D12RootSignature** pResult) noexcept -> HRESULT
             {
-                HRESULT hr = CreateRootSignature(mDevice.get(), &desc, pResult);
+                HRESULT hr = CreateRootSignature(m_device.get(), &desc, pResult);
 
                 if (SUCCEEDED(hr))
                     SetDebugObjectName(*pResult, L"BasicPostProcess");
@@ -126,10 +126,10 @@ namespace
             });
         }
 
-        ID3D12Device* GetDevice() const noexcept { return mDevice.get(); }
+        ID3D12Device* GetDevice() const noexcept { return m_device.get(); }
 
     protected:
-        wil::com_ptr<ID3D12Device>                        mDevice;
+        wil::com_ptr<ID3D12Device>                        m_device;
         wil::com_ptr<ID3D12RootSignature> m_prootsignature[RootSignatureCount];
         std::mutex                                  mMutex;
     };

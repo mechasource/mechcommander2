@@ -38,11 +38,11 @@ extern uint32_t gEnableParallel;
 void __stdcall RegistryManagerInstall();
 void __stdcall RegistryManagerUninstall();
 void __stdcall gos_LoadDataFromRegistry(
-	PSTR valuename, PBYTE pdata, uint32_t* pcbdata, bool ishklm);
+	PSTR valuename, PBYTE pdata, uint32_t* pcbdata, BOOLEAN ishklm);
 void __stdcall gos_SaveDataToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbdata);
 void __stdcall gos_SaveStringToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbdata);
-PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, bool ishklm);
-PSTR __stdcall ReadRegistryHKCU(PSTR keyname, PSTR valuename, bool ishklm);
+PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, BOOLEAN ishklm);
+PSTR __stdcall ReadRegistryHKCU(PSTR keyname, PSTR valuename, BOOLEAN ishklm);
 
 // global implemented functions not listed in headers
 
@@ -147,7 +147,7 @@ void __stdcall RegistryManagerInstall(void)
 	gos_LoadDataFromRegistry("ExeDate", pdata, &cbdata, false);
 	UpdatedExe = (exedate.dwLowDateTime != data)
 		? 1
-		: 0; // bool? Note: global UpdatedExe is defined as uint32_t
+		: 0; // BOOLEAN? Note: global UpdatedExe is defined as uint32_t
 
 	WindowStartX = 0x80000000;
 	// cbdata = 4;
@@ -196,7 +196,7 @@ void __stdcall RegistryManagerInstall(void)
 	gEnableParallel = (data >> 4) & 1;
 	NoDebuggerStats = (data >> 5) & 1;
 	gShowGraphsAsTime = (data >> 6) & 1;
-	gShowGraphBackground = (uint8_t)data >> 8;
+	gShowGraphBackground = (BOOLEAN)data >> 8;
 	gShowLFControls = (data >> 9) & 1;
 	gNoGraph = (data >> 10) & 1;
 	gTextureOverrun = (data >> 11) & 1;
@@ -278,14 +278,14 @@ void __stdcall RegistryManagerUninstall(void)
 /// <param name="pcbdata"></param>
 /// <param name="ishklm"></param>
 /// <returns></returns>
-void __stdcall gos_LoadDataFromRegistry(PSTR valuename, PBYTE pdata, uint32_t* pcbdata, bool ishklm)
+void __stdcall gos_LoadDataFromRegistry(PSTR valuename, PBYTE pdata, uint32_t* pcbdata, BOOLEAN ishklm)
 {
 	HKEY hkey;
 	LSTATUS status;
 
 	// if ( !keyname || !pdata || !pcbdata )
 	//{
-	//	if ( ErrorHandler(10, "keyName && pData && szData") )
+	//	if ( ErrorHandler(gos_ErrorVerify|gos_ErrorNoRegisters, "keyName && pData && szData") )
 	//		__debugbreak();
 	//}
 
@@ -313,7 +313,7 @@ void __stdcall gos_SaveDataToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbdata
 {
 	HKEY hkey;
 
-	// if ( (!keyname || !pdata || !cbdata) && ErrorHandler(10, "keyName && pData && szData") )
+	// if ( (!keyname || !pdata || !cbdata) && ErrorHandler(gos_ErrorVerify|gos_ErrorNoRegisters, "keyName && pData && szData") )
 	//	__debugbreak();
 
 	if (RegistryKey)
@@ -341,7 +341,7 @@ void __stdcall gos_SaveStringToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbda
 {
 	HKEY hkey;
 
-	// if ( (!keyname || !pdata || !cbdata) && ErrorHandler(10, "keyName && pData && szData") )
+	// if ( (!keyname || !pdata || !cbdata) && ErrorHandler(gos_ErrorVerify|gos_ErrorNoRegisters, "keyName && pData && szData") )
 	//	__debugbreak();
 
 	if (RegistryKey)
@@ -362,12 +362,12 @@ void __stdcall gos_SaveStringToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbda
 /// <param name="valuename"></param>
 /// <param name="ishklm"></param>
 /// <returns>PSTR</returns>
-PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, bool ishklm)
+PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, BOOLEAN ishklm)
 {
 	LSTATUS status;
 	uint32_t cbdata;
 	HKEY hkey;
-	static uint8_t Buffer[0x200];
+	static BOOLEAN Buffer[0x200];
 
 	cbdata = 0x200;
 	Buffer[0] = 0;
@@ -392,13 +392,13 @@ PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, bool ishklm)
 /// <param name="valuename"></param>
 /// <param name="ishklm"></param>
 /// <returns>PSTR</returns>
-PSTR __stdcall ReadRegistryHKCU(PSTR keyname, PSTR valuename, bool ishklm)
+PSTR __stdcall ReadRegistryHKCU(PSTR keyname, PSTR valuename, BOOLEAN ishklm)
 {
 	LSTATUS status;
 	uint32_t cbdata;
 	HKEY hkey;
 
-	static uint8_t Buffer[0x200];
+	static BOOLEAN Buffer[0x200];
 
 	cbdata = 0x200;
 	Buffer[0] = 0;

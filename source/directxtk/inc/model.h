@@ -252,14 +252,14 @@ namespace directxtk
         // Load texture resources into a new Effect Texture Factory
         std::unique_ptr<EffectTextureFactory> __cdecl LoadTextures(
             _In_ ID3D12Device* device,
-            ResourceUploadBatch& resourceUploadBatch,
-            _In_opt_ const std::wstring_view& texturesPath = nullptr,
+            ResourceUploadBatch& resourceuploadbatch,
+            _In_opt_ const std::wstring_view& texturespath = nullptr,
             D3D12_DESCRIPTOR_HEAP_FLAGS flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE) const;
 
         // Load VB/IB resources for static geometry
         void __cdecl LoadStaticBuffers(
             _In_ ID3D12Device* device,
-            ResourceUploadBatch& resourceUploadBatch,
+            ResourceUploadBatch& resourceuploadbatch,
             bool keepMemory = false);
 
         // Create effects using the default effect factory
@@ -308,12 +308,12 @@ namespace directxtk
             if (materialIndex >= materials.size())
                 return handle;
 
-            int32_t textureIndex = materials[materialIndex].diffuseTextureIndex;
-            if (textureIndex == -1)
+            int32_t textureindex = materials[materialIndex].diffuseTextureIndex;
+            if (textureindex == -1)
                 return handle;
 
             handle = heap->GetGPUDescriptorHandleForHeapStart();
-            handle.ptr += static_cast<uint64_t>(descriptorSize * (uint64_t(textureIndex) + uint64_t(descriptorOffset)));
+            handle.ptr += static_cast<uint64_t>(descriptorSize * (uint64_t(textureindex) + uint64_t(descriptorOffset)));
 
             return handle;
         }
@@ -336,7 +336,7 @@ namespace directxtk
 
         ModelMesh::Collection           meshes;
         ModelMaterialInfoCollection     materials;
-        TextureCollection               textureNames;
+        TextureCollection               texturenames;
         std::wstring                    name;
 
     private:

@@ -468,7 +468,7 @@ Camera::getClosestVertex(Stuff::Vector2DOf<int32_t>& screenPos, int32_t& row, in
 	// where we are by finding the vertex closest to the clicked
 	// position and returning its 3d pos.
 	VertexPtr topVertex = land->getVertexList();
-	uint32_t numVertices = land->getNumVertices();
+	uint32_t numvertices = land->getNumVertices();
 	VertexPtr closestVertex = nullptr;
 	int32_t whichVertex = 0;
 	//
@@ -478,7 +478,7 @@ Camera::getClosestVertex(Stuff::Vector2DOf<int32_t>& screenPos, int32_t& row, in
 	uint32_t tvx = screenPos.x;
 	uint32_t tvy = screenPos.y;
 	float dx, dy, cd = 1e38f, dist;
-	for (i = 0; i < numVertices; i++)
+	for (i = 0; i < numvertices; i++)
 	{
 		dx = (tvx - topVertex->px);
 		dy = (tvy - topVertex->py);

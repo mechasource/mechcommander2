@@ -48,14 +48,14 @@ public:
 	float m_LastFontX;
 	float m_LastFontY;
 	char m_msg[8192];
-	bool m_bRendered;
-	bool embeddedcolourChange;
+	BOOLEAN m_bRendered;
+	BOOLEAN embeddedcolourChange;
 	float m_FontSize;
-	bool m_FontBold;
+	BOOLEAN m_FontBold;
 	uint32_t m_Fontcolour;
 
 public:
-	gos_DBCS(PSTR msg, int32_t w, int32_t h, bool cc);
+	gos_DBCS(PSTR msg, int32_t w, int32_t h, BOOLEAN cc);
 	~gos_DBCS(void);
 	void Render(void);
 	void Update(void);
@@ -68,7 +68,7 @@ public:
 	void colour(uint32_t c);
 	void AlphaMode(enum gos_AlphaMode mode);
 	void MakeQuads(void);
-	bool NeedClip(float x, float y);
+	BOOLEAN NeedClip(float x, float y);
 	void ShiftCoordinates(float x, float y);
 	void Fill(float r, float g, float b, float a);
 

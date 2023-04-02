@@ -354,7 +354,7 @@ MLRSortByOrder::RenderNow()
 							if (gEnableAlphaSort && (sd->type == SortData::TriList || sd->type == SortData::TriIndexedList))
 							{
 								SortData::LoadSortAlphaFunc alphaFunc = sd->LoadSortAlpha[sd->type];
-								_ASSERT(alphaToSort + sd->numVertices / 3 < 2 * Limits::Max_Number_Vertices_Per_Frame);
+								_ASSERT(alphaToSort + sd->numvertices / 3 < 2 * Limits::Max_Number_Vertices_Per_Frame);
 								alphaToSort += (sd->*alphaFunc)(alphaSort.GetData() + alphaToSort);
 							}
 							else
@@ -426,7 +426,7 @@ MLRSortByOrder::RenderNow()
 					if (gEnableAlphaSort && (sd->type == SortData::TriList || sd->type == SortData::TriIndexedList))
 					{
 						SortData::LoadSortAlphaFunc alphaFunc = sd->LoadSortAlpha[sd->type];
-						_ASSERT(alphaToSort + sd->numVertices / 3 < 2 * Limits::Max_Number_Vertices_Per_Frame);
+						_ASSERT(alphaToSort + sd->numvertices / 3 < 2 * Limits::Max_Number_Vertices_Per_Frame);
 						alphaToSort += (sd->*alphaFunc)(alphaSort.GetData() + alphaToSort);
 					}
 					else

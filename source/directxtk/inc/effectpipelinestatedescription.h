@@ -18,7 +18,7 @@
 
 #include <cstdint>
 
-#include "RenderTargetState.h"
+#include "rendertargetstate.h"
 
 
 namespace directxtk

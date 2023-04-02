@@ -11,7 +11,7 @@
 
 void __stdcall RegistryManagerInstall(void);
 void __stdcall RegistryManagerUninstall(void);
-PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, bool ishklm);
-PSTR __stdcall ReadRegistryHKCU(PSTR keyname, PSTR valuename, bool ishklm);
+PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, BOOLEAN ishklm);
+PSTR __stdcall ReadRegistryHKCU(PSTR keyname, PSTR valuename, BOOLEAN ishklm);
 
 extern uint32_t UpdatedExe; // Has the exe been updated since last run?

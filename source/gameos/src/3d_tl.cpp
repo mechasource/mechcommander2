@@ -109,7 +109,7 @@ void __stdcall gos_SetLight(uint32_t LightNumber, LPD3DLIGHT7 pLightData)
 /// <param name="LightNumber"></param>
 /// <param name="Enable"></param>
 /// <returns></returns>
-void __stdcall gos_LightEnable(uint32_t LightNumber, uint8_t Enable)
+void __stdcall gos_LightEnable(uint32_t LightNumber, BOOLEAN Enable)
 {
 	gosASSERT(InsideBeginScene);
 	wLightEnable(d3ddevice7, LightNumber, Enable);

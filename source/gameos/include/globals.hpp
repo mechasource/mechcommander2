@@ -20,15 +20,15 @@ extern int32_t HasMMX; // 1 when MMX instructions are present
 extern int32_t HasRDTSC; // 1 when RDTSC instruction is present
 extern int32_t HasKatmai; // 1 when Katmai instructions available
 extern int32_t Has3DNow; // 1 when 3DNox instructions available
-extern uint8_t CPUID0[17]; // CPUID 0 information (+ terminating 0)
-extern uint8_t CPUID1[16]; // CPUID 1 information
-extern uint8_t CPUID2[16]; // CPUID 2 information
+extern BOOLEAN CPUID0[17]; // CPUID 0 information (+ terminating 0)
+extern BOOLEAN CPUID1[16]; // CPUID 1 information
+extern BOOLEAN CPUID2[16]; // CPUID 2 information
 
 //
 // Global window
 //
-extern bool gActive;
-extern bool gGotFocus;
+extern BOOLEAN gActive;
+extern BOOLEAN gGotFocus;
 extern uint32_t MouseInWindow; // 1=Mouse over window in a window mode
 
 //

@@ -45,12 +45,12 @@ namespace directxtk
         ~GraphicsResource();
 
         D3D12_GPU_VIRTUAL_ADDRESS GpuAddress() const noexcept { return mGpuAddress; }
-        ID3D12Resource* Resource() const noexcept { return mResource; }
+        ID3D12Resource* Resource() const noexcept { return m_resource; }
         void* Memory() const noexcept { return mMemory; }
         size_t ResourceOffset() const noexcept { return mBufferOffset; }
         size_t Size() const noexcept { return mSize; }
         
-        explicit operator bool () const noexcept { return mResource != nullptr; }
+        explicit operator bool () const noexcept { return m_resource != nullptr; }
 
         // Clear the pointer. Using operator -> will produce bad results.
         void __cdecl reset() noexcept;
@@ -59,7 +59,7 @@ namespace directxtk
     private:
         LinearAllocatorPage*        mPage;
         D3D12_GPU_VIRTUAL_ADDRESS   mGpuAddress;
-        ID3D12Resource*             mResource;
+        ID3D12Resource*             m_resource;
         void*                       mMemory;
         size_t                      mBufferOffset;
         size_t                      mSize;

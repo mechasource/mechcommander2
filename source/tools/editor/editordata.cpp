@@ -1737,17 +1737,17 @@ EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 	{
 		return;
 	}
-	PostcompVertexPtr currentVertex = land->mapData->getData();
+	PostcompVertexPtr currentvertex = land->mapData->getData();
 	float maxElv = 0, minElv = 20000000;
 	for (size_t i = 0; i < (land->realVerticesMapSide * land->realVerticesMapSide); i++)
 	{
-		if (currentVertex->elevation > maxElv)
-			maxElv = currentVertex->elevation;
-		if (currentVertex->elevation < minElv)
-			minElv = currentVertex->elevation;
-		currentVertex++;
+		if (currentvertex->elevation > maxElv)
+			maxElv = currentvertex->elevation;
+		if (currentvertex->elevation < minElv)
+			minElv = currentvertex->elevation;
+		currentvertex++;
 	}
-	currentVertex = land->mapData->getData();
+	currentvertex = land->mapData->getData();
 	float elevationRange = maxElv - minElv;
 	elevationRange /= 128.0f; // Used to scale color based on elevation.
 	//------------------------------------------------------
@@ -1767,7 +1767,7 @@ EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
-			PostcompVertex* pVertex1 = currentVertex;
+			PostcompVertex* pVertex1 = currentvertex;
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by
 			// TerrainTextureManager
@@ -1787,12 +1787,12 @@ EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 			tBMP++;
 			if (x && !(x % 3))
 			{
-				currentVertex++;
+				currentvertex++;
 			}
 		}
 		// Reset and read the same vertices until we hit the next set of cells!!
-		currentVertex = land->mapData->getData();
-		currentVertex += land->realVerticesMapSide * (y / 3);
+		currentvertex = land->mapData->getData();
+		currentvertex += land->realVerticesMapSide * (y / 3);
 	}
 	uint32_t* tBMP = tacMapBmp;
 	// now draw on the trees
@@ -1813,7 +1813,7 @@ EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 			tBMP++;
 		}
 	}
-	currentVertex = land->mapData->getData();
+	currentvertex = land->mapData->getData();
 	// now draw on the Roads
 	for (y = 0; y < (land->realVerticesMapSide - 1); y++)
 	{
@@ -1821,7 +1821,7 @@ EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
-			PostcompVertex* pVertex1 = currentVertex;
+			PostcompVertex* pVertex1 = currentvertex;
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by
 			// TerrainTextureManager
@@ -1833,9 +1833,9 @@ EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 				terrainTypeRGB = land->terrainTextures->getOverlayTypeRGB(o);
 			if (terrainTypeRGB == 0xffffffff)
 				continue;
-			PostcompVertex* pVertex2 = currentVertex + 1;
-			PostcompVertex* pVertex3 = currentVertex + land->realVerticesMapSide + 1;
-			PostcompVertex* pVertex4 = currentVertex + land->realVerticesMapSide;
+			PostcompVertex* pVertex2 = currentvertex + 1;
+			PostcompVertex* pVertex3 = currentvertex + land->realVerticesMapSide + 1;
+			PostcompVertex* pVertex4 = currentvertex + land->realVerticesMapSide;
 			float lightIntensity1 = pVertex1->vertexNormal * optimalLight;
 			float lightIntensity2 = pVertex2->vertexNormal * optimalLight;
 			float lightIntensity3 = pVertex3->vertexNormal * optimalLight;
@@ -1946,9 +1946,9 @@ EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 			*tBMP = color4;
 			tBMP++;
 			*tBMP = color3;
-			currentVertex++;
+			currentvertex++;
 		}
-		currentVertex++;
+		currentvertex++;
 	}
 	tBMP = tacMapBmp;
 	// now draw on the Buildings and forests

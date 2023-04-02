@@ -34,3 +34,4 @@
 
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
+void __stdcall gos_RenderIndexedArray(void *, unsigned long, unsigned short *, unsigned long, enum gosVERTEXTYPE, enum gosPRIMITIVETYPE);

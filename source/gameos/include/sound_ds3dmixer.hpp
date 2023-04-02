@@ -26,7 +26,7 @@ public:
 	float m_fVolume;
 	float m_reverbFactor, m_decayFactor;
 	uint32_t m_properties;
-	bool m_changed;
+	BOOLEAN m_changed;
 
 public:
 	DS3DSoundMixer(void);

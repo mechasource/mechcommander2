@@ -13,8 +13,8 @@ struct SoundResource
 public:
 	gosAudio_ResourceType m_Type; // Specifies which other structure members are valid
 	PSTR m_FileName; // SOUNDTYPE_FILE and SOUNDTYPE_STREAMINGFILE
-	uint8_t* m_FileDataPointer; // SOUNDTYPE_MEMORY
-	uint8_t* m_DataPointer; // SOUNDTYPE_MEMORY
+	BOOLEAN* m_FileDataPointer; // SOUNDTYPE_MEMORY
+	BOOLEAN* m_DataPointer; // SOUNDTYPE_MEMORY
 	uint32_t m_FileLength, // SOUNDTYPE_MEMORY only
 		m_DataLength, // SOUNDTYPE_MEMORY only
 		m_Frequency, // SOUNDTYPE_MEMORY only
@@ -26,7 +26,7 @@ public:
 	uint32_t m_nBytesPlayed; // offset into data chunk
 	uint32_t m_nBytesUncompressed;
 	uint32_t m_totalBytesRead;
-	bool m_microsoftPCM;
+	BOOLEAN m_microsoftPCM;
 	WAVEFORMATEX m_suggFormat;
 	HACMSTREAM m_hACMStream;
 	PSTR m_uncompressedData;
@@ -34,10 +34,10 @@ public:
 
 	LPDIRECTSOUNDBUFFER lpMasterBuffer;
 	LPDIRECTSOUNDBUFFER lpDuplicateBuffers[16];
-	bool duplicateInUse[16];
+	BOOLEAN duplicateInUse[16];
 	uint32_t duplicateCount;
 
-	bool m_only2D;
+	BOOLEAN m_only2D;
 
 	HGOSFILE m_FILE;
 
@@ -52,19 +52,19 @@ public:
 	uint32_t m_cueSeekDistance;
 
 public:
-	SoundResource(PSTR file_name, enum gosAudio_ResourceType rt, bool only2D);
+	SoundResource(PSTR file_name, enum gosAudio_ResourceType rt, BOOLEAN only2D);
 	SoundResource(
-		PVOID data, gosAudio_Format* wf, PSTR caching_nametag, int32_t size, bool only2D);
-	SoundResource(PSTR name, gosAudio_PlayList* playlist, bool only2D);
-	SoundResource(PSTR identifier_name, HGOSFILE file, uint32_t offset, bool only2D);
+		PVOID data, gosAudio_Format* wf, PSTR caching_nametag, int32_t size, BOOLEAN only2D);
+	SoundResource(PSTR name, gosAudio_PlayList* playlist, BOOLEAN only2D);
+	SoundResource(PSTR identifier_name, HGOSFILE file, uint32_t offset, BOOLEAN only2D);
 
 	~SoundResource(void);
-	void GetWaveInfo(uint8_t* lpBuffer, WAVEFORMATEX* lplpWaveFormatEX, uint8_t** lplpWaveData,
+	void GetWaveInfo(BOOLEAN* lpBuffer, WAVEFORMATEX* lplpWaveFormatEX, BOOLEAN** lplpWaveData,
 		uint32_t* lpWaveSize);
 	void LoadFile(void);
 	int32_t SoundResource::ReadPCM(
-		uint8_t* pbDest, uint32_t bytestofill, bool loopMe, bool prevFailed = false);
-	int32_t ReadACM(uint8_t* pbDest, uint32_t bytestoFill, bool loopflag, bool prevFailed = false);
+		BOOLEAN* pbDest, uint32_t bytestofill, BOOLEAN loopMe, BOOLEAN prevFailed = false);
+	int32_t ReadACM(BOOLEAN* pbDest, uint32_t bytestoFill, BOOLEAN loopflag, BOOLEAN prevFailed = false);
 	void CloseStream(void);
 	void PauseStream(void);
 	void PlayStream(void);

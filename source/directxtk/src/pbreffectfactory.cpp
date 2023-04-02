@@ -26,15 +26,15 @@ class PBREffectFactory::Impl
 {
 public:
     Impl(_In_ ID3D12Device* device, _In_ ID3D12DescriptorHeap* textureDescriptors, _In_ ID3D12DescriptorHeap* samplerDescriptors) noexcept(false)
-        : mTextureDescriptors(nullptr)
-        , mSamplerDescriptors(nullptr)
-        , mDevice(device)
-        , mSharing(true)
+        : m_texturedescriptors(nullptr)
+        , m_samplerdescriptors(nullptr)
+        , m_device(device)
+        , m_sharing(true)
     { 
         if (textureDescriptors)
-            mTextureDescriptors = std::make_unique<DescriptorHeap>(textureDescriptors);
+            m_texturedescriptors = std::make_unique<DescriptorHeap>(textureDescriptors);
         if (samplerDescriptors)
-            mSamplerDescriptors = std::make_unique<DescriptorHeap>(samplerDescriptors);
+            m_samplerdescriptors = std::make_unique<DescriptorHeap>(samplerDescriptors);
     }
 
     std::shared_ptr<IEffect> CreateEffect(
@@ -46,19 +46,19 @@ public:
         int32_t samplerDescriptorOffset);
 
     void ReleaseCache();
-    void SetSharing(bool enabled) noexcept { mSharing = enabled; }
+    void SetSharing(bool enabled) noexcept { m_sharing = enabled; }
 
-    std::unique_ptr<DescriptorHeap> mTextureDescriptors;
-    std::unique_ptr<DescriptorHeap> mSamplerDescriptors;
+    std::unique_ptr<DescriptorHeap> m_texturedescriptors;
+    std::unique_ptr<DescriptorHeap> m_samplerdescriptors;
 
 private:
-    wil::com_ptr<ID3D12Device> mDevice;
+    wil::com_ptr<ID3D12Device> m_device;
 
     using EffectCache = std::map< std::wstring, std::shared_ptr<IEffect> >;
 
     EffectCache  mEffectCache;
 
-    bool mSharing;
+    bool m_sharing;
 
     std::mutex mutex;
 };
@@ -72,12 +72,12 @@ std::shared_ptr<IEffect> PBREffectFactory::Impl::CreateEffect(
     int32_t textureDescriptorOffset,
     int32_t samplerDescriptorOffset)
 {
-    if (!mTextureDescriptors)
+    if (!m_texturedescriptors)
     {
         DebugTrace("ERROR: PBREffectFactory created without texture descriptor heap!\n");
         throw std::exception("PBREffectFactory");
     }
-    if (!mSamplerDescriptors)
+    if (!m_samplerdescriptors)
     {
         DebugTrace("ERROR: PBREffectFactory created without sampler descriptor heap!\n");
         throw std::exception("PBREffectFactory");
@@ -107,36 +107,36 @@ std::shared_ptr<IEffect> PBREffectFactory::Impl::CreateEffect(
     }
 
     std::wstring cachename;
-    if (mSharing && !info.name.empty())
+    if (m_sharing && !info.name.empty())
     {
         uint32_t hash = derivedPSD.ComputeHash();
         cachename = std::to_wstring(effectflags) + info.name + std::to_wstring(hash);
 
         auto it = mEffectCache.find(cachename);
-        if (mSharing && it != mEffectCache.end())
+        if (m_sharing && it != mEffectCache.end())
         {
             return it->second;
         }
     }
 
-    auto effect = std::make_shared<PBREffect>(mDevice.get(), effectflags, derivedPSD);
+    auto effect = std::make_shared<PBREffect>(m_device.get(), effectflags, derivedPSD);
 
     // We don't use EnableDefaultLighting generally for PBR as it uses Image-Based Lighting instead.
 
     effect->SetAlpha(info.alphaValue);
 
     effect->SetSurfaceTextures(
-        mTextureDescriptors->GetGpuHandle(static_cast<size_t>(albetoTextureIndex)),
-        mTextureDescriptors->GetGpuHandle(static_cast<size_t>(normalTextureIndex)),
-        mTextureDescriptors->GetGpuHandle(static_cast<size_t>(rmaTextureIndex)),
-        mSamplerDescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
+        m_texturedescriptors->GetGpuHandle(static_cast<size_t>(albetoTextureIndex)),
+        m_texturedescriptors->GetGpuHandle(static_cast<size_t>(normalTextureIndex)),
+        m_texturedescriptors->GetGpuHandle(static_cast<size_t>(rmaTextureIndex)),
+        m_samplerdescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
 
     if (emissiveTextureIndex != -1)
     {
-        effect->SetEmissiveTexture(mTextureDescriptors->GetGpuHandle(static_cast<size_t>(emissiveTextureIndex)));
+        effect->SetEmissiveTexture(m_texturedescriptors->GetGpuHandle(static_cast<size_t>(emissiveTextureIndex)));
     }
 
-    if (mSharing && !info.name.empty())
+    if (m_sharing && !info.name.empty())
     {
         std::lock_guard<std::mutex> lock(mutex);
         EffectCache::value_type v(cachename, effect);

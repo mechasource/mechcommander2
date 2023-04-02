@@ -33,20 +33,18 @@ extern uint32_t StackDepth;
 typedef struct _VertexBuffer
 {
 	uint32_t Magic; // Magic number to verify handle valid
-	gosVERTEXTYPE VertexType; // Type of vertex the buffer contains
+	gosVERTEXTYPE vertextype; // Type of vertex the buffer contains
 	struct _VertexBuffer* pNext;
 	LPDIRECT3DVERTEXBUFFER7 vBuffer; // D3D handle
-#if defined(LAB_ONLY)
-	LPDIRECT3DVERTEXBUFFER7
-	DebugvBuffer; // D3D handle to a system memory vertex buffer for debugging D3DTLVERTEX data
-	LPDIRECT3DVERTEXBUFFER7 CopyvBuffer; // D3D handle to a system memory vertex buffer for
-		// debugging (Readable copy of D3DVERTEX data)
-#endif
-	uint32_t NumberVertices; // Number of vertices when created
-	uint8_t Locked; // True when locked
-	uint8_t WantOptimize; // True to optimize after the next unlock
-	uint8_t Optimized; // True once buffer is optimized
-	uint8_t Lost; // True when mode changed and buffer invalid
+//#if defined(LAB_ONLY)	// valid in debug objects
+	LPDIRECT3DVERTEXBUFFER7 DebugvBuffer; // D3D handle to a system memory vertex buffer for debugging D3DTLVERTEX data
+	LPDIRECT3DVERTEXBUFFER7 CopyvBuffer; // D3D handle to a system memory vertex buffer for debugging (Readable copy of D3DVERTEX data)
+//#endif
+	uint32_t numbervertices; // Number of vertices when created
+	BOOLEAN Locked; // True when locked
+	BOOLEAN WantOptimize; // True to optimize after the next unlock
+	BOOLEAN Optimized; // True once buffer is optimized
+	BOOLEAN Lost; // True when mode changed and buffer invalid
 	PVOID Pointer; // Pointer to start of data when locked
 } VertexBuffer;
 typedef VertexBuffer* PVertexBuffer;
@@ -57,7 +55,7 @@ typedef VertexBuffer* PVertexBuffer;
 extern uint16_t QuadIndex[192];
 extern uint32_t AlphaInvAlpha; // Set when alpha blend mode is AlphaInvAlpha
 
-extern uint8_t ViewPortChanged; // Set when game changes viewport
+extern BOOLEAN ViewPortChanged; // Set when game changes viewport
 extern uint32_t InUpdateRenderers; // True when in 'Update Renderers'
 extern uint32_t DrawingPolys; // Current polygon
 extern uint32_t gCulledTriangles; // Number of culled triangles
@@ -74,8 +72,8 @@ void __stdcall InitRenderToTexture(void);
 void __stdcall DestroyRenderToTexture(void);
 
 // RenderStates.cpp
-extern uint8_t DirtyStates;
-extern uint8_t UpdatedState[gos_MaxState];
+extern BOOLEAN DirtyStates;
+extern BOOLEAN UpdatedState[gos_MaxState];
 void __stdcall FlushRenderStates(void);
 
 // 3DRasterizer.hpp
@@ -86,9 +84,9 @@ void __stdcall Restore3DState(void);
 void __stdcall ReInit3D(void);
 void __stdcall Destroy3D(void);
 void __stdcall CheckVertices(
-	pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines = 0);
-void __stdcall CheckVertices2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices);
-void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices);
+	pgos_VERTEX pVertexArray, uint32_t numbervertices, BOOLEAN PointsLines = 0);
+void __stdcall CheckVertices2(pgos_VERTEX_2UV pVertexArray, uint32_t numbervertices);
+void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t numbervertices);
 void __stdcall DebugTriangle(pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3);
 void __stdcall DebugTriangle_2UV(pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3);
 void __stdcall DebugTriangle_3UV(pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VERTEX_3UV v3);

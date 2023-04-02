@@ -8,7 +8,7 @@
 #pragma once
 
 void __stdcall Init_FileSystem(void);
-void __stdcall Destory_FileSystem(bool NoErrors);
+void __stdcall Destory_FileSystem(BOOLEAN NoErrors);
 
 #if defined(LAB_ONLY)
 
@@ -29,7 +29,7 @@ typedef struct _MemoryMappedFiles
 	_MemoryMappedFiles* pNext; // Pointer to next structure
 	HANDLE filehandle; // File handle
 	HANDLE hFileMapping; // Mapping handle
-	uint8_t* pFile; // Pointer to start of data
+	PVOID pFile; // Pointer to start of data
 	size_t Size; // Size of data
 	size_t RefCount; // Reference count (number of times a file is opened)
 	char Name[MAX_PATH]; // Copy of the file name

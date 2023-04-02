@@ -286,7 +286,7 @@ class ResourceUploadBatch::Impl
 public:
     Impl(
         _In_ ID3D12Device* device) noexcept
-        : mDevice(device)
+        : m_device(device)
         , mCommandType(D3D12_COMMAND_LIST_TYPE_DIRECT)
         , mInBeginEndBlock(false)
         , mTypedUAVLoadAdditionalFormats(false)
@@ -322,11 +322,11 @@ public:
             throw std::invalid_argument("ResourceUploadBatch");
         }
 
-        ThrowIfFailed(mDevice->CreateCommandAllocator(commandType, IID_GRAPHICS_PPV_ARGS(mCmdAlloc.put())));
+        ThrowIfFailed(m_device->CreateCommandAllocator(commandType, IID_GRAPHICS_PPV_ARGS(mCmdAlloc.put())));
 
         SetDebugObjectName(mCmdAlloc.get(), L"ResourceUploadBatch");
 
-        ThrowIfFailed(mDevice->CreateCommandList(1, commandType, mCmdAlloc.get(), nullptr, IID_GRAPHICS_PPV_ARGS(mList.put())));
+        ThrowIfFailed(m_device->CreateCommandList(1, commandType, mCmdAlloc.get(), nullptr, IID_GRAPHICS_PPV_ARGS(mList.put())));
 
         SetDebugObjectName(mList.get(), L"ResourceUploadBatch");
 
@@ -355,7 +355,7 @@ public:
 
         // Create a temporary buffer
         wil::com_ptr<ID3D12Resource> scratchResource = nullptr;
-        ThrowIfFailed(mDevice->CreateCommittedResource(
+        ThrowIfFailed(m_device->CreateCommittedResource(
             &heapProps,
             D3D12_HEAP_FLAG_NONE,
             &resDesc,
@@ -431,7 +431,7 @@ public:
             throw std::exception("GenerateMips only supports 2D textures of array size 1");
         }
 
-        bool uavCompat = FormatIsUAVCompatible(mDevice.get(), mTypedUAVLoadAdditionalFormats, desc.Format);
+        bool uavCompat = FormatIsUAVCompatible(m_device.get(), mTypedUAVLoadAdditionalFormats, desc.Format);
 
         if (!uavCompat && !FormatIsSRGB(desc.Format) && !FormatIsBGR(desc.Format))
         {
@@ -441,7 +441,7 @@ public:
         // Ensure that we have valid generate mips data
         if (mGenMipsResources == nullptr)
         {
-            mGenMipsResources = std::make_unique<GenerateMipsResources>(mDevice.get());
+            mGenMipsResources = std::make_unique<GenerateMipsResources>(m_device.get());
         }
 
         // If the texture's format doesn't support UAVs we'll have to copy it to a texture that does first.
@@ -530,7 +530,7 @@ public:
 
         // Set an event so we get notified when the GPU has completed all its work
         wil::com_ptr<ID3D12Fence> fence;
-        ThrowIfFailed(mDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_GRAPHICS_PPV_ARGS(fence.addressof())));
+        ThrowIfFailed(m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_GRAPHICS_PPV_ARGS(fence.addressof())));
 
         SetDebugObjectName(fence.get(), L"ResourceUploadBatch");
 
@@ -591,7 +591,7 @@ public:
         if (mCommandType == D3D12_COMMAND_LIST_TYPE_COPY)
             return false;
 
-        if (FormatIsUAVCompatible(mDevice.get(), mTypedUAVLoadAdditionalFormats, format))
+        if (FormatIsUAVCompatible(m_device.get(), mTypedUAVLoadAdditionalFormats, format))
             return true;
 
         if (FormatIsBGR(format))
@@ -636,7 +636,7 @@ private:
             stagingDesc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
             stagingDesc.Format = ConvertSRVtoResourceFormat(desc.Format);
 
-            ThrowIfFailed(mDevice->CreateCommittedResource(
+            ThrowIfFailed(m_device->CreateCommittedResource(
                 &defaultHeapProperties,
                 D3D12_HEAP_FLAG_NONE,
                 &stagingDesc,
@@ -664,19 +664,19 @@ private:
         }
 
         // Create a descriptor heap that holds our resource descriptors
-        wil::com_ptr<ID3D12DescriptorHeap> descriptorHeap;
+        wil::com_ptr<ID3D12DescriptorHeap> descriptorheap;
         D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc = {};
         descriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
         descriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
         descriptorHeapDesc.NumDescriptors = desc.MipLevels;
-        mDevice->CreateDescriptorHeap(&descriptorHeapDesc, IID_GRAPHICS_PPV_ARGS(descriptorHeap.addressof()));
+        m_device->CreateDescriptorHeap(&descriptorHeapDesc, IID_GRAPHICS_PPV_ARGS(descriptorheap.addressof()));
 
-        SetDebugObjectName(descriptorHeap.get(), L"ResourceUploadBatch");
+        SetDebugObjectName(descriptorheap.get(), L"ResourceUploadBatch");
 
-        auto descriptorSize = static_cast<int32_t>(mDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+        auto descriptorSize = static_cast<int32_t>(m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 
         // Create the top-level SRV
-        CD3DX12_CPU_DESCRIPTOR_HANDLE handleIt(descriptorHeap->GetCPUDescriptorHandleForHeapStart());
+        CD3DX12_CPU_DESCRIPTOR_HANDLE handleIt(descriptorheap->GetCPUDescriptorHandleForHeapStart());
         D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
         srvDesc.Format = desc.Format;
         srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
@@ -684,7 +684,7 @@ private:
         srvDesc.Texture2D.MostDetailedMip = 0;
         srvDesc.Texture2D.MipLevels = desc.MipLevels;
 
-        mDevice->CreateShaderResourceView(staging.get(), &srvDesc, handleIt);
+        m_device->CreateShaderResourceView(staging.get(), &srvDesc, handleIt);
 
         // Create the UAVs for the tail
         for (uint16_t mip = 1; mip < desc.MipLevels; ++mip)
@@ -695,7 +695,7 @@ private:
             uavDesc.Texture2D.MipSlice = mip;
 
             handleIt.Offset(descriptorSize);
-            mDevice->CreateUnorderedAccessView(staging.get(), nullptr, &uavDesc, handleIt);
+            m_device->CreateUnorderedAccessView(staging.get(), nullptr, &uavDesc, handleIt);
         }
 
         // Set up UAV barrier (used in loop)
@@ -726,12 +726,12 @@ private:
         // Set up state
         mList->SetComputeRootSignature(mGenMipsResources->rootSignature.get());
         mList->SetPipelineState(pso.get());
-        mList->SetDescriptorHeaps(1, descriptorHeap.addressof());
-        mList->SetComputeRootDescriptorTable(GenerateMipsResources::SourceTexture, descriptorHeap->GetGPUDescriptorHandleForHeapStart());
+        mList->SetDescriptorHeaps(1, descriptorheap.addressof());
+        mList->SetComputeRootDescriptorTable(GenerateMipsResources::SourceTexture, descriptorheap->GetGPUDescriptorHandleForHeapStart());
 
         // Get the descriptor handle -- uavH will increment over each loop
         CD3DX12_GPU_DESCRIPTOR_HANDLE uavH(
-            descriptorHeap->GetGPUDescriptorHandleForHeapStart(),
+            descriptorheap->GetGPUDescriptorHandleForHeapStart(),
             descriptorSize); // offset by 1 descriptor
 
         // Process each mip
@@ -809,7 +809,7 @@ private:
         mTrackedObjects.push_back(mGenMipsResources->rootSignature);
         mTrackedObjects.push_back(pso);
         mTrackedObjects.push_back(resource);
-        mTrackedObjects.push_back(descriptorHeap);
+        mTrackedObjects.push_back(descriptorheap);
     }
     
     // Resource is not UAV compatible
@@ -827,7 +827,7 @@ private:
 
         // Create a resource with the same description, but without SRGB, and with UAV flags
         wil::com_ptr<ID3D12Resource> resourceCopy;
-        ThrowIfFailed(mDevice->CreateCommittedResource(
+        ThrowIfFailed(m_device->CreateCommittedResource(
             &heapProperties,
             D3D12_HEAP_FLAG_NONE,
             &copyDesc,
@@ -893,18 +893,18 @@ private:
 #endif
 
         D3D12_HEAP_DESC heapDesc = {};
-        auto allocInfo = mDevice->GetResourceAllocationInfo(0, 1, &copyDesc);
+        auto allocInfo = m_device->GetResourceAllocationInfo(0, 1, &copyDesc);
         heapDesc.SizeInBytes = allocInfo.SizeInBytes;
         heapDesc.Flags = D3D12_HEAP_FLAG_ALLOW_ONLY_NON_RT_DS_TEXTURES;
         heapDesc.Properties.Type = D3D12_HEAP_TYPE_DEFAULT;
 
         wil::com_ptr<ID3D12Heap> heap;
-        ThrowIfFailed(mDevice->CreateHeap(&heapDesc, IID_GRAPHICS_PPV_ARGS(heap.addressof())));
+        ThrowIfFailed(m_device->CreateHeap(&heapDesc, IID_GRAPHICS_PPV_ARGS(heap.addressof())));
 
         SetDebugObjectName(heap.get(), L"ResourceUploadBatch");
 
         wil::com_ptr<ID3D12Resource> resourceCopy;
-        ThrowIfFailed(mDevice->CreatePlacedResource(
+        ThrowIfFailed(m_device->CreatePlacedResource(
             heap.get(),
             0,
             &copyDesc,
@@ -920,7 +920,7 @@ private:
         aliasDesc.Layout = copyDesc.Layout;
 
         wil::com_ptr<ID3D12Resource> aliasCopy;
-        ThrowIfFailed(mDevice->CreatePlacedResource(
+        ThrowIfFailed(m_device->CreatePlacedResource(
             heap.get(),
             0,
             &aliasDesc,
@@ -998,7 +998,7 @@ private:
         UploadBatch() noexcept : GpuCompleteEvent(nullptr) {}
     };
 
-    wil::com_ptr<ID3D12Device>                        mDevice;
+    wil::com_ptr<ID3D12Device>                        m_device;
     wil::com_ptr<ID3D12CommandAllocator>              mCmdAlloc;
     wil::com_ptr<ID3D12GraphicsCommandList>           mList;
     std::unique_ptr<GenerateMipsResources>      mGenMipsResources;

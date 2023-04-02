@@ -35,7 +35,7 @@ private:
     GraphicsResource mVertexSegment;
     GraphicsResource mIndexSegment;
 
-    wil::com_ptr<ID3D12Device> mDevice;
+    wil::com_ptr<ID3D12Device> m_device;
     wil::com_ptr<ID3D12GraphicsCommandList> mCommandList;
 
     size_t mMaxIndices;
@@ -58,7 +58,7 @@ private:
 
 // Constructor.
 PrimitiveBatchBase::Impl::Impl(_In_ ID3D12Device* device, size_t maxIndices, size_t maxVertices, size_t vertexSize)
-    : mDevice(device),
+    : m_device(device),
     mCommandList(nullptr),
     mMaxIndices(maxIndices),
     mMaxVertices(maxVertices),
@@ -178,9 +178,9 @@ void PrimitiveBatchBase::Impl::Draw(D3D_PRIMITIVE_TOPOLOGY topology, bool isInde
 
         // Allocate a page for the primitive data
         if (isIndexed)
-            mIndexSegment = GraphicsMemory::Get(mDevice.get()).Allocate(mIndexPageSize);
+            mIndexSegment = GraphicsMemory::Get(m_device.get()).Allocate(mIndexPageSize);
 
-        mVertexSegment = GraphicsMemory::Get(mDevice.get()).Allocate(mVertexPageSize);
+        mVertexSegment = GraphicsMemory::Get(m_device.get()).Allocate(mVertexPageSize);
     }
 
     // Copy over the index data.

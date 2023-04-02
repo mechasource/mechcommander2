@@ -28,18 +28,18 @@ class EffectFactory::Impl
 {
 public:
     Impl(_In_ ID3D12Device* device, _In_ ID3D12DescriptorHeap* textureDescriptors, _In_ ID3D12DescriptorHeap* samplerDescriptors) noexcept(false)
-        : mTextureDescriptors(nullptr)
-        , mSamplerDescriptors(nullptr)
+        : m_texturedescriptors(nullptr)
+        , m_samplerdescriptors(nullptr)
         , mUseNormalMapEffect(true)
         , mEnablePerPixelLighting(true)
         , mEnableFog(false)
-        , mDevice(device)
-        , mSharing(true)
+        , m_device(device)
+        , m_sharing(true)
     { 
         if (textureDescriptors)
-            mTextureDescriptors = std::make_unique<DescriptorHeap>(textureDescriptors);
+            m_texturedescriptors = std::make_unique<DescriptorHeap>(textureDescriptors);
         if (samplerDescriptors)
-            mSamplerDescriptors = std::make_unique<DescriptorHeap>(samplerDescriptors);
+            m_samplerdescriptors = std::make_unique<DescriptorHeap>(samplerDescriptors);
     }
 
     std::shared_ptr<IEffect> CreateEffect(
@@ -51,17 +51,17 @@ public:
         int32_t samplerDescriptorOffset);
 
     void ReleaseCache();
-    void SetSharing(bool enabled) noexcept { mSharing = enabled; }
+    void SetSharing(bool enabled) noexcept { m_sharing = enabled; }
 
-    std::unique_ptr<DescriptorHeap> mTextureDescriptors;
-    std::unique_ptr<DescriptorHeap> mSamplerDescriptors;
+    std::unique_ptr<DescriptorHeap> m_texturedescriptors;
+    std::unique_ptr<DescriptorHeap> m_samplerdescriptors;
 
     bool mUseNormalMapEffect;
     bool mEnablePerPixelLighting;
     bool mEnableFog;
 
 private:
-    wil::com_ptr<ID3D12Device> mDevice;
+    wil::com_ptr<ID3D12Device> m_device;
 
     using EffectCache = std::map< std::wstring, std::shared_ptr<IEffect> >;
 
@@ -70,7 +70,7 @@ private:
     EffectCache  mEffectCacheDualTexture;
     EffectCache  mEffectCacheNormalMap;
 
-    bool mSharing;
+    bool m_sharing;
 
     std::mutex mutex;
 };
@@ -85,13 +85,13 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
     int32_t samplerDescriptorOffset)
 {
     // If textures are required, make sure we have a descriptor heap
-    if (!mTextureDescriptors && (info.diffuseTextureIndex != -1 || info.specularTextureIndex != -1 || info.normalTextureIndex != -1 || info.emissiveTextureIndex != -1))
+    if (!m_texturedescriptors && (info.diffuseTextureIndex != -1 || info.specularTextureIndex != -1 || info.normalTextureIndex != -1 || info.emissiveTextureIndex != -1))
     {
         DebugTrace("ERROR: EffectFactory created without texture descriptor heap with texture index set (diffuse %d, specular %d, normal %d, emissive %d)!\n",
             info.diffuseTextureIndex, info.specularTextureIndex, info.normalTextureIndex, info.emissiveTextureIndex);
         throw std::exception("EffectFactory");
     }
-    if (!mSamplerDescriptors && (info.samplerIndex != -1 || info.samplerIndex2 != -1))
+    if (!m_samplerdescriptors && (info.samplerIndex != -1 || info.samplerIndex2 != -1))
     {
         DebugTrace("ERROR: EffectFactory created without sampler descriptor heap with sampler index set (samplerIndex %d, samplerIndex2 %d)!\n",
             info.samplerIndex, info.samplerIndex2);
@@ -99,7 +99,7 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
     }
 
     // If we have descriptors, make sure we have both texture and sampler descriptors
-    if ((mTextureDescriptors == nullptr) != (mSamplerDescriptors == nullptr))
+    if ((m_texturedescriptors == nullptr) != (m_samplerdescriptors == nullptr))
     {
         DebugTrace("ERROR: A texture or sampler descriptor heap was provided, but both are required.\n");
         throw std::exception("EffectFactory");
@@ -112,12 +112,12 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
         throw std::exception("EffectFactory");
     }
 
-    int32_t diffuseTextureIndex = (info.diffuseTextureIndex != -1 && mTextureDescriptors != nullptr) ? info.diffuseTextureIndex + textureDescriptorOffset : -1;
-    int32_t specularTextureIndex = (info.specularTextureIndex != -1 && mTextureDescriptors != nullptr) ? info.specularTextureIndex + textureDescriptorOffset : -1;
-    int32_t emissiveTextureIndex = (info.emissiveTextureIndex != -1 && mTextureDescriptors != nullptr) ? info.emissiveTextureIndex + textureDescriptorOffset : -1;
-    int32_t normalTextureIndex = (info.normalTextureIndex != -1 && mTextureDescriptors != nullptr) ? info.normalTextureIndex + textureDescriptorOffset : -1;
-    int32_t samplerIndex = (info.samplerIndex != -1 && mSamplerDescriptors != nullptr) ? info.samplerIndex + samplerDescriptorOffset : -1;
-    int32_t samplerIndex2 = (info.samplerIndex2 != -1 && mSamplerDescriptors != nullptr) ? info.samplerIndex2 + samplerDescriptorOffset : -1;
+    int32_t diffuseTextureIndex = (info.diffuseTextureIndex != -1 && m_texturedescriptors != nullptr) ? info.diffuseTextureIndex + textureDescriptorOffset : -1;
+    int32_t specularTextureIndex = (info.specularTextureIndex != -1 && m_texturedescriptors != nullptr) ? info.specularTextureIndex + textureDescriptorOffset : -1;
+    int32_t emissiveTextureIndex = (info.emissiveTextureIndex != -1 && m_texturedescriptors != nullptr) ? info.emissiveTextureIndex + textureDescriptorOffset : -1;
+    int32_t normalTextureIndex = (info.normalTextureIndex != -1 && m_texturedescriptors != nullptr) ? info.normalTextureIndex + textureDescriptorOffset : -1;
+    int32_t samplerIndex = (info.samplerIndex != -1 && m_samplerdescriptors != nullptr) ? info.samplerIndex + samplerDescriptorOffset : -1;
+    int32_t samplerIndex2 = (info.samplerIndex2 != -1 && m_samplerdescriptors != nullptr) ? info.samplerIndex2 + samplerDescriptorOffset : -1;
 
     // Modify base pipeline state
     EffectPipelineStateDescription derivedPSD = (info.alphaValue < 1.0f) ? alphaPipelineState : opaquePipelineState;
@@ -139,19 +139,19 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
             effectflags |= EffectFlags::BiasedVertexNormals;
         }
 
-        if (mSharing && !info.name.empty())
+        if (m_sharing && !info.name.empty())
         {
             uint32_t hash = derivedPSD.ComputeHash();
             cachename = std::to_wstring(effectflags) + info.name + std::to_wstring(hash);
 
             auto it = mEffectCacheSkinning.find(cachename);
-            if (mSharing && it != mEffectCacheSkinning.end())
+            if (m_sharing && it != mEffectCacheSkinning.end())
             {
                 return it->second;
             }
         }
 
-        auto effect = std::make_shared<SkinnedEffect>(mDevice.get(), effectflags, derivedPSD);
+        auto effect = std::make_shared<SkinnedEffect>(m_device.get(), effectflags, derivedPSD);
 
         effect->EnableDefaultLighting();
 
@@ -182,11 +182,11 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
         if (diffuseTextureIndex != -1)
         {
             effect->SetTexture(
-                mTextureDescriptors->GetGpuHandle(static_cast<size_t>(diffuseTextureIndex)),
-                mSamplerDescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
+                m_texturedescriptors->GetGpuHandle(static_cast<size_t>(diffuseTextureIndex)),
+                m_samplerdescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
         }
 
-        if (mSharing && !info.name.empty())
+        if (m_sharing && !info.name.empty())
         {
             std::lock_guard<std::mutex> lock(mutex);
             EffectCache::value_type v(cachename, effect);
@@ -205,13 +205,13 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
             effectflags |= EffectFlags::Fog;
         }
 
-        if (mSharing && !info.name.empty())
+        if (m_sharing && !info.name.empty())
         {
             uint32_t hash = derivedPSD.ComputeHash();
             cachename = std::to_wstring(effectflags) + info.name + std::to_wstring(hash);
 
             auto it = mEffectCacheDualTexture.find(cachename);
-            if (mSharing && it != mEffectCacheDualTexture.end())
+            if (m_sharing && it != mEffectCacheDualTexture.end())
             {
                 return it->second;
             }
@@ -222,7 +222,7 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
             effectflags |= EffectFlags::VertexColor;
         }
 
-        auto effect = std::make_shared<DualTextureEffect>(mDevice.get(), effectflags, derivedPSD);
+        auto effect = std::make_shared<DualTextureEffect>(m_device.get(), effectflags, derivedPSD);
 
         // Dual texture effect doesn't support lighting (usually it's lightmaps)
         effect->SetAlpha(info.alphaValue);
@@ -233,8 +233,8 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
         if (diffuseTextureIndex != -1)
         {
             effect->SetTexture(
-                mTextureDescriptors->GetGpuHandle(static_cast<size_t>(diffuseTextureIndex)),
-                mSamplerDescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
+                m_texturedescriptors->GetGpuHandle(static_cast<size_t>(diffuseTextureIndex)),
+                m_samplerdescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
         }
 
         if (emissiveTextureIndex != -1)
@@ -246,8 +246,8 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
             }
 
             effect->SetTexture2(
-                mTextureDescriptors->GetGpuHandle(static_cast<size_t>(emissiveTextureIndex)),
-                mSamplerDescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex2)));
+                m_texturedescriptors->GetGpuHandle(static_cast<size_t>(emissiveTextureIndex)),
+                m_samplerdescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex2)));
         }
         else if (specularTextureIndex != -1)
         {
@@ -259,11 +259,11 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
             }
 
             effect->SetTexture2(
-                mTextureDescriptors->GetGpuHandle(static_cast<size_t>(specularTextureIndex)),
-                mSamplerDescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex2)));
+                m_texturedescriptors->GetGpuHandle(static_cast<size_t>(specularTextureIndex)),
+                m_samplerdescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex2)));
         }
 
-        if (mSharing && !info.name.empty())
+        if (m_sharing && !info.name.empty())
         {
             std::lock_guard<std::mutex> lock(mutex);
             EffectCache::value_type v(cachename, effect);
@@ -297,19 +297,19 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
             effectflags |= EffectFlags::Specular;
         }
 
-        if (mSharing && !info.name.empty())
+        if (m_sharing && !info.name.empty())
         {
             uint32_t hash = derivedPSD.ComputeHash();
             cachename = std::to_wstring(effectflags) + info.name + std::to_wstring(hash);
 
             auto it = mEffectCacheNormalMap.find(cachename);
-            if (mSharing && it != mEffectCacheNormalMap.end())
+            if (m_sharing && it != mEffectCacheNormalMap.end())
             {
                 return it->second;
             }
         }
 
-        auto effect = std::make_shared<NormalMapEffect>(mDevice.get(), effectflags, derivedPSD);
+        auto effect = std::make_shared<NormalMapEffect>(m_device.get(), effectflags, derivedPSD);
 
         effect->EnableDefaultLighting();
 
@@ -340,21 +340,21 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
         if (diffuseTextureIndex != -1)
         {
             effect->SetTexture(
-                mTextureDescriptors->GetGpuHandle(static_cast<size_t>(diffuseTextureIndex)),
-                mSamplerDescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
+                m_texturedescriptors->GetGpuHandle(static_cast<size_t>(diffuseTextureIndex)),
+                m_samplerdescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
         }
 
         if (specularTextureIndex != -1)
         {
-            effect->SetSpecularTexture(mTextureDescriptors->GetGpuHandle(static_cast<size_t>(specularTextureIndex)));
+            effect->SetSpecularTexture(m_texturedescriptors->GetGpuHandle(static_cast<size_t>(specularTextureIndex)));
         }
 
         if (normalTextureIndex != -1)
         {
-            effect->SetNormalTexture(mTextureDescriptors->GetGpuHandle(static_cast<size_t>(normalTextureIndex)));
+            effect->SetNormalTexture(m_texturedescriptors->GetGpuHandle(static_cast<size_t>(normalTextureIndex)));
         }
 
-        if (mSharing && !info.name.empty())
+        if (m_sharing && !info.name.empty())
         {
             std::lock_guard<std::mutex> lock(mutex);
             EffectCache::value_type v(cachename, effect);
@@ -389,19 +389,19 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
         }
 
         // BasicEffect
-        if (mSharing && !info.name.empty())
+        if (m_sharing && !info.name.empty())
         {
             uint32_t hash = derivedPSD.ComputeHash();
             cachename = std::to_wstring(effectflags) + info.name + std::to_wstring(hash);
 
             auto it = mEffectCache.find(cachename);
-            if (mSharing && it != mEffectCache.end())
+            if (m_sharing && it != mEffectCache.end())
             {
                 return it->second;
             }
         }
 
-        auto effect = std::make_shared<BasicEffect>(mDevice.get(), effectflags, derivedPSD);
+        auto effect = std::make_shared<BasicEffect>(m_device.get(), effectflags, derivedPSD);
 
         effect->EnableDefaultLighting();
 
@@ -431,11 +431,11 @@ std::shared_ptr<IEffect> EffectFactory::Impl::CreateEffect(
         if (diffuseTextureIndex != -1)
         {
             effect->SetTexture(
-                mTextureDescriptors->GetGpuHandle(static_cast<size_t>(diffuseTextureIndex)),
-                mSamplerDescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
+                m_texturedescriptors->GetGpuHandle(static_cast<size_t>(diffuseTextureIndex)),
+                m_samplerdescriptors->GetGpuHandle(static_cast<size_t>(samplerIndex)));
         }
 
-        if (mSharing && !info.name.empty())
+        if (m_sharing && !info.name.empty())
         {
             std::lock_guard<std::mutex> lock(mutex);
             EffectCache::value_type v(cachename, effect);

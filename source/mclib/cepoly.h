@@ -22,7 +22,7 @@
 //---------------------------------------------------------------------------
 struct PolyElementData
 {
-	uint32_t numVertices; // Actually num_vertices + extras for clipping
+	uint32_t numvertices; // Actually num_vertices + extras for clipping
 	SCRNVERTEX vertices[6]; // Draw Vertices
 
 	bool correctTexture; // Should we Correctly Texture?
@@ -39,7 +39,7 @@ struct PolyElementData
 
 	void init(void)
 	{
-		numVertices = 0;
+		numvertices = 0;
 		correctTexture = false;
 		isClipped = false;
 		StatusBar = false;

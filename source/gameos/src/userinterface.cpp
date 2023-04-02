@@ -62,5 +62,5 @@ ConnectSerialPort(void*, int, void** const);
 IsConnectionAvailable(void*, int, void** const);
 UnRegisterData(void);
 gos_NetEndGame(void);
-gos_NetStartGame(char*, bool);
+gos_NetStartGame(char*, BOOLEAN);
 gos_NetDoneStartGame(void);

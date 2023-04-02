@@ -727,37 +727,37 @@ struct CD3DX12_DESCRIPTOR_RANGE : public D3D12_DESCRIPTOR_RANGE
     {}
     CD3DX12_DESCRIPTOR_RANGE(
         D3D12_DESCRIPTOR_RANGE_TYPE rangeType,
-        uint32_t numDescriptors,
+        uint32_t numdescriptors,
         uint32_t baseShaderRegister,
         uint32_t registerSpace = 0,
         uint32_t offsetInDescriptorsFromTableStart =
         D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND) noexcept
     {
-        Init(rangeType, numDescriptors, baseShaderRegister, registerSpace, offsetInDescriptorsFromTableStart);
+        Init(rangeType, numdescriptors, baseShaderRegister, registerSpace, offsetInDescriptorsFromTableStart);
     }
 
     inline void Init(
         D3D12_DESCRIPTOR_RANGE_TYPE rangeType,
-        uint32_t numDescriptors,
+        uint32_t numdescriptors,
         uint32_t baseShaderRegister,
         uint32_t registerSpace = 0,
         uint32_t offsetInDescriptorsFromTableStart =
         D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND) noexcept
     {
-        Init(*this, rangeType, numDescriptors, baseShaderRegister, registerSpace, offsetInDescriptorsFromTableStart);
+        Init(*this, rangeType, numdescriptors, baseShaderRegister, registerSpace, offsetInDescriptorsFromTableStart);
     }
 
     static inline void Init(
         _Out_ D3D12_DESCRIPTOR_RANGE &range,
         D3D12_DESCRIPTOR_RANGE_TYPE rangeType,
-        uint32_t numDescriptors,
+        uint32_t numdescriptors,
         uint32_t baseShaderRegister,
         uint32_t registerSpace = 0,
         uint32_t offsetInDescriptorsFromTableStart =
         D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND) noexcept
     {
         range.RangeType = rangeType;
-        range.NumDescriptors = numDescriptors;
+        range.NumDescriptors = numdescriptors;
         range.BaseShaderRegister = baseShaderRegister;
         range.RegisterSpace = registerSpace;
         range.OffsetInDescriptorsFromTableStart = offsetInDescriptorsFromTableStart;
@@ -1122,32 +1122,32 @@ struct CD3DX12_DESCRIPTOR_RANGE1 : public D3D12_DESCRIPTOR_RANGE1
     {}
     CD3DX12_DESCRIPTOR_RANGE1(
         D3D12_DESCRIPTOR_RANGE_TYPE rangeType,
-        uint32_t numDescriptors,
+        uint32_t numdescriptors,
         uint32_t baseShaderRegister,
         uint32_t registerSpace = 0,
         D3D12_DESCRIPTOR_RANGE_FLAGS flags = D3D12_DESCRIPTOR_RANGE_FLAG_NONE,
         uint32_t offsetInDescriptorsFromTableStart =
         D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND) noexcept
     {
-        Init(rangeType, numDescriptors, baseShaderRegister, registerSpace, flags, offsetInDescriptorsFromTableStart);
+        Init(rangeType, numdescriptors, baseShaderRegister, registerSpace, flags, offsetInDescriptorsFromTableStart);
     }
 
     inline void Init(
         D3D12_DESCRIPTOR_RANGE_TYPE rangeType,
-        uint32_t numDescriptors,
+        uint32_t numdescriptors,
         uint32_t baseShaderRegister,
         uint32_t registerSpace = 0,
         D3D12_DESCRIPTOR_RANGE_FLAGS flags = D3D12_DESCRIPTOR_RANGE_FLAG_NONE,
         uint32_t offsetInDescriptorsFromTableStart =
         D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND) noexcept
     {
-        Init(*this, rangeType, numDescriptors, baseShaderRegister, registerSpace, flags, offsetInDescriptorsFromTableStart);
+        Init(*this, rangeType, numdescriptors, baseShaderRegister, registerSpace, flags, offsetInDescriptorsFromTableStart);
     }
 
     static inline void Init(
         _Out_ D3D12_DESCRIPTOR_RANGE1 &range,
         D3D12_DESCRIPTOR_RANGE_TYPE rangeType,
-        uint32_t numDescriptors,
+        uint32_t numdescriptors,
         uint32_t baseShaderRegister,
         uint32_t registerSpace = 0,
         D3D12_DESCRIPTOR_RANGE_FLAGS flags = D3D12_DESCRIPTOR_RANGE_FLAG_NONE,
@@ -1155,7 +1155,7 @@ struct CD3DX12_DESCRIPTOR_RANGE1 : public D3D12_DESCRIPTOR_RANGE1
         D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND) noexcept
     {
         range.RangeType = rangeType;
-        range.NumDescriptors = numDescriptors;
+        range.NumDescriptors = numdescriptors;
         range.BaseShaderRegister = baseShaderRegister;
         range.RegisterSpace = registerSpace;
         range.Flags = flags;

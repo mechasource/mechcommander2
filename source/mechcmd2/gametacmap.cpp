@@ -224,8 +224,8 @@ GameTacMap::render()
 	gos_SetRenderState(gos_State_TextureAddress, gos_TextureWrap);
 	gos_SetRenderState(gos_State_ZCompare, 0);
 	gos_SetRenderState(gos_State_ZWrite, 0);
-	uint32_t gosTextureHandle = mcTextureManager->get_gosTextureHandle(viewRectHandle);
-	gos_SetRenderState(gos_State_Texture, gosTextureHandle);
+	uint32_t texturehandle = mcTextureManager->get_gosTextureHandle(viewRectHandle);
+	gos_SetRenderState(gos_State_Texture, texturehandle);
 	gos_DrawQuads(&corners[0], 4);
 	uint32_t colors[MAX_MOVERS];
 	uint32_t ringcolours[MAX_MOVERS];

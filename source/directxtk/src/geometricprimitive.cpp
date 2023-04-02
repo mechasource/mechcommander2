@@ -32,7 +32,7 @@ public:
 
     void LoadStaticBuffers(
         _In_ ID3D12Device* device,
-        ResourceUploadBatch& resourceUploadBatch);
+        ResourceUploadBatch& resourceuploadbatch);
 
     void Transition(
         _In_ ID3D12GraphicsCommandList* commandList,
@@ -107,7 +107,7 @@ void GeometricPrimitive::Impl::Initialize(
 _Use_decl_annotations_
 void GeometricPrimitive::Impl::LoadStaticBuffers(
     ID3D12Device* device,
-    ResourceUploadBatch& resourceUploadBatch)
+    ResourceUploadBatch& resourceuploadbatch)
 {
     CD3DX12_HEAP_PROPERTIES heapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
@@ -129,9 +129,9 @@ void GeometricPrimitive::Impl::LoadStaticBuffers(
 
         SetDebugObjectName(mStaticVertexBuffer.get(), L"GeometricPrimitive");
 
-        resourceUploadBatch.Upload(mStaticVertexBuffer.get(), mVertexBuffer);
+        resourceuploadbatch.Upload(mStaticVertexBuffer.get(), mVertexBuffer);
 
-        resourceUploadBatch.Transition(mStaticVertexBuffer.get(),
+        resourceuploadbatch.Transition(mStaticVertexBuffer.get(),
             D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
         // Update view
@@ -158,9 +158,9 @@ void GeometricPrimitive::Impl::LoadStaticBuffers(
 
         SetDebugObjectName(mStaticIndexBuffer.get(), L"GeometricPrimitive");
 
-        resourceUploadBatch.Upload(mStaticIndexBuffer.get(), mIndexBuffer);
+        resourceuploadbatch.Upload(mStaticIndexBuffer.get(), mIndexBuffer);
 
-        resourceUploadBatch.Transition(mStaticIndexBuffer.get(),
+        resourceuploadbatch.Transition(mStaticIndexBuffer.get(),
             D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
 
         // Update view
@@ -245,9 +245,9 @@ GeometricPrimitive::~GeometricPrimitive()
 
 // Public entrypoints.
 _Use_decl_annotations_
-void GeometricPrimitive::LoadStaticBuffers(ID3D12Device* device, ResourceUploadBatch& resourceUploadBatch)
+void GeometricPrimitive::LoadStaticBuffers(ID3D12Device* device, ResourceUploadBatch& resourceuploadbatch)
 {
-    pimpl->LoadStaticBuffers(device, resourceUploadBatch);
+    pimpl->LoadStaticBuffers(device, resourceuploadbatch);
 }
 
 

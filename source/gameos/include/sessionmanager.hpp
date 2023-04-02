@@ -33,39 +33,39 @@ extern FIDPSession* currentSession;
 // Current connection
 //
 extern int32_t currentConnectionType;
-extern bool Connected;
+extern BOOLEAN Connected;
 
 //
 // Modem/Serial has dialed
 //
-extern bool Connected;
+extern BOOLEAN Connected;
 
 //
 // Modem variables
 //
 extern char modemNames[10][64];
 extern uint32_t NumModems;
-extern bool modemChecked;
-extern bool hasModem;
-bool __stdcall FindModems(void);
-bool __stdcall gos_ConnectModem(PSTR phone_number, PSTR modem_name);
+extern BOOLEAN modemChecked;
+extern BOOLEAN hasModem;
+BOOLEAN __stdcall FindModems(void);
+BOOLEAN __stdcall gos_ConnectModem(PSTR phone_number, PSTR modem_name);
 
 //
 // COM port variables
 //
-bool __stdcall gos_ConnectComPort(uint32_t com_port);
+BOOLEAN __stdcall gos_ConnectComPort(uint32_t com_port);
 
 //
 // IPX variables
 //
-extern bool hasIPX;
-bool __stdcall gos_ConnectIPX(void);
+extern BOOLEAN hasIPX;
+BOOLEAN __stdcall gos_ConnectIPX(void);
 
 //
 // TCPIP variables
 //
-extern bool hasTCP;
-bool __stdcall gos_ConnectTCP(PSTR ip_address, uint16_t port);
+extern BOOLEAN hasTCP;
+BOOLEAN __stdcall gos_ConnectTCP(PSTR ip_address, uint16_t port);
 
 /////  AddressInfo is used in connections initialized entirely by
 // user defined data, such as a TCP connection created by calling
@@ -187,7 +187,7 @@ public:
 
 	int32_t NetworkProtocolFlags;
 
-	uint8_t messageBuffer[1024];
+	BOOLEAN messageBuffer[1024];
 
 	DPID newPlayerNumbers[MAXPLAYERS];
 
@@ -410,7 +410,7 @@ public:
 	int32_t SendVerifies(void);
 
 	// Accessor functions to update lists of network specifics
-	FLinkedList<FIDPSession>* GetSessions(bool refresh = true);
+	FLinkedList<FIDPSession>* GetSessions(BOOLEAN refresh = true);
 	FLinkedList<FIDPPlayer>* GetPlayers(FIDPSession* session = nullptr);
 
 	inline FIDPSession* GetCurrentSession(void) { return currentSession; }

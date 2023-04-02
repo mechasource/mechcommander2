@@ -39,27 +39,27 @@ typedef struct _cmd
 	LPDIRECTINPUTDEVICE7 m_lpSysMouse7;
 	LPDIRECTINPUTDEVICE7 m_lpJoystick7[MAX_DI_DEVICES];
 
-	uint8_t m_disabled[MAX_DI_DEVICES];
-	uint8_t m_validAxis[MAX_DI_DEVICES][12];
-	uint8_t m_pollMe[MAX_DI_DEVICES];
+	BOOLEAN m_disabled[MAX_DI_DEVICES];
+	BOOLEAN m_validAxis[MAX_DI_DEVICES][12];
+	BOOLEAN m_pollMe[MAX_DI_DEVICES];
 	float m_howOften[MAX_DI_DEVICES];
 	double m_nextPoll[MAX_DI_DEVICES];
-	uint8_t m_bForceFeedback[MAX_DI_DEVICES];
+	BOOLEAN m_bForceFeedback[MAX_DI_DEVICES];
 
-	uint8_t m_numJoysticks;
-	uint8_t m_numMouseButtons;
-	uint8_t m_numMouseAxes;
-	uint8_t m_numPOVs[MAX_DI_DEVICES];
-	uint8_t m_numSliders[MAX_DI_DEVICES];
-	uint8_t m_numButtons[MAX_DI_DEVICES];
+	BOOLEAN m_numJoysticks;
+	BOOLEAN m_numMouseButtons;
+	BOOLEAN m_numMouseAxes;
+	BOOLEAN m_numPOVs[MAX_DI_DEVICES];
+	BOOLEAN m_numSliders[MAX_DI_DEVICES];
+	BOOLEAN m_numButtons[MAX_DI_DEVICES];
 	int32_t m_mousePos[3];
 	int32_t m_mouseAxis[3];
 	int32_t m_joyAxis[MAX_DI_DEVICES][12];
 
-	uint8_t m_joyButton[MAX_DI_DEVICES][64];
+	BOOLEAN m_joyButton[MAX_DI_DEVICES][64];
 	char m_joyName[MAX_DI_DEVICES][64];
 	gosEnum_KeyStatus m_mouseButton[4];
-	uint8_t m_requiresAcquire;
+	BOOLEAN m_requiresAcquire;
 	HANDLE m_hMouseEvent;
 } ControlManagerDataStruct;
 

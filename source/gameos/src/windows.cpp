@@ -73,13 +73,13 @@ MECH_IMPEXP enum Status status;
 MECH_IMPEXP HDC DesktopDC;
 MECH_IMPEXP uint32_t ForceReStart;
 MECH_IMPEXP BOOL bScreenSaver;
-MECH_IMPEXP bool StoredScreenSaverSetting;
+MECH_IMPEXP BOOLEAN StoredScreenSaverSetting;
 MECH_IMPEXP PSTR commandline;
 
 // -----------------------------------------------------------------------------
 // implemented functions
 
-MECH_IMPEXP bool __stdcall AlreadyRunning(void);
+MECH_IMPEXP BOOLEAN __stdcall AlreadyRunning(void);
 MECH_IMPEXP void __stdcall InitializeWindows(void);
 MECH_IMPEXP void __stdcall DestroyWindows(void);
 MECH_IMPEXP void __stdcall Update(void);
@@ -90,15 +90,15 @@ static BOOL __stdcall EnumIcons(HMODULE hModule, PSTR pszType, PSTR pszName, LON
 
 // -----------------------------------------------------------------------------
 // externals not specified in headers
-extern bool RunFullScreen;
-extern bool gDumpMachineInfo;
-extern bool gNoDialogs;
+extern BOOLEAN RunFullScreen;
+extern BOOLEAN gDumpMachineInfo;
+extern BOOLEAN gNoDialogs;
 extern uint32_t gLanguageDLL;
 extern int32_t LoseFocusBehavior; // enum?
-extern bool WindowsPause;
+extern BOOLEAN WindowsPause;
 
 void __stdcall InitializeIME(HWND hwnd);
-bool __stdcall IgnoreImeHotKey(PMSG pmsg);
+BOOLEAN __stdcall IgnoreImeHotKey(PMSG pmsg);
 
 // -----------------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ bool __stdcall IgnoreImeHotKey(PMSG pmsg);
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-MECH_IMPEXP bool __stdcall AlreadyRunning(void)
+MECH_IMPEXP BOOLEAN __stdcall AlreadyRunning(void)
 {
 	WINDOWPLACEMENT wndpl;
 	HWND hwnd;
@@ -167,7 +167,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 	va_list Arguments;
 	char Buffer1[256];
 	ATOM atom;
-	bool bSuccess;
+	BOOLEAN bSuccess;
 	uint32_t dwStyle;
 #if CONSIDERED_OBSOLETE
 	OSVERSIONINFOA VersionInformation;

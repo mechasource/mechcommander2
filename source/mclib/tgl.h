@@ -260,7 +260,7 @@ typedef struct _TG_Texture
 {
 	wchar_t textureName[256];
 	uint32_t mcTextureNodeIndex;
-	uint32_t gosTextureHandle;
+	uint32_t texturehandle;
 	bool textureAlpha;
 } TG_Texture;
 
@@ -271,7 +271,7 @@ typedef TG_Texture* TG_TexturePtr;
 typedef struct _TG_TinyTexture
 {
 	uint32_t mcTextureNodeIndex;
-	uint32_t gosTextureHandle;
+	uint32_t texturehandle;
 	bool textureAlpha;
 } TG_TinyTexture;
 
@@ -408,15 +408,15 @@ public:
 	virtual int32_t LoadTGShapeFromASE(const std::wstring_view& /*fileName*/) { return 0; }
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
-	// numTextures.  This function takes the gosTextureHandle passed in and
+	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
-	virtual int32_t SetTextureHandle(uint32_t /*textureNum*/, uint32_t /*gosTextureHandle*/)
+	virtual int32_t SetTextureHandle(uint32_t /*textureNum*/, uint32_t /*texturehandle*/)
 	{
 		return 0;
 	}
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
-	// numTextures.  This function takes the gosTextureHandle passed in and
+	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
 	virtual int32_t SetTextureAlpha(uint32_t /*textureNum*/, bool /*alphaFlag*/) { return 0; }
 
@@ -534,12 +534,12 @@ public:
 	virtual int32_t LoadTGShapeFromASE(const std::wstring_view& fileName);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
-	// numTextures.  This function takes the gosTextureHandle passed in and
+	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
-	virtual int32_t SetTextureHandle(uint32_t textureNum, uint32_t gosTextureHandle);
+	virtual int32_t SetTextureHandle(uint32_t textureNum, uint32_t texturehandle);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
-	// numTextures.  This function takes the gosTextureHandle passed in and
+	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
 	virtual int32_t SetTextureAlpha(uint32_t textureNum, bool alphaFlag);
 
@@ -589,7 +589,7 @@ class TG_Shape
 	// Data Members
 protected:
 	TG_TypeNodePtr myType; // Pointer to the instance of the shape.
-	uint32_t numVertices; // Number of vertices in Shape
+	uint32_t numvertices; // Number of vertices in Shape
 	uint32_t numTriangles; // NUmber of triangles in Shape
 	uint32_t numVisibleFaces; // Number of non-backfaced non-clipped faces.
 	uint32_t numVisibleShadows; // Number of visible Shadow Faces.
@@ -665,7 +665,7 @@ public:
 
 	void init(void)
 	{
-		numVertices = numTriangles = numVisibleFaces = 0;
+		numvertices = numTriangles = numVisibleFaces = 0;
 		listOfVertices = nullptr;
 		listOfTriangles = nullptr;
 		listOfLights = nullptr;
@@ -756,14 +756,14 @@ protected:
 	TG_Vertex* tgVertexPool;
 	TG_Vertex* nextVertex;
 
-	uint32_t totalVertices;
-	uint32_t numVertices;
+	uint32_t totalvertices;
+	uint32_t numvertices;
 
 public:
 	TG_VertexPool(void)
 	{
 		tgVertexPool = nextVertex = nullptr;
-		totalVertices = numVertices = 0;
+		totalvertices = numvertices = 0;
 	}
 
 	~TG_VertexPool(void) { destroy(void); }
@@ -772,7 +772,7 @@ public:
 	{
 		TG_Shape::tglHeap->Free(tgVertexPool);
 		tgVertexPool = nextVertex = nullptr;
-		totalVertices = numVertices = 0;
+		totalvertices = numvertices = 0;
 	}
 
 	void init(uint32_t maxVertices)
@@ -780,21 +780,21 @@ public:
 		tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Vertex) * maxVertices);
 		gosASSERT(tgVertexPool != nullptr);
 		nextVertex = tgVertexPool;
-		totalVertices = maxVertices;
-		numVertices = 0;
+		totalvertices = maxVertices;
+		numvertices = 0;
 	}
 
 	void reset(void)
 	{
 		nextVertex = tgVertexPool;
-		numVertices = 0;
+		numvertices = 0;
 	}
 
 	TG_VertexPtr getcoloursFromPool(uint32_t numRequested)
 	{
 		TG_VertexPtr result = nullptr;
-		numVertices += numRequested;
-		if (numVertices < totalVertices)
+		numvertices += numRequested;
+		if (numvertices < totalvertices)
 		{
 			result = nextVertex;
 			nextVertex += numRequested;
@@ -809,14 +809,14 @@ protected:
 	gos_VERTEX* gVertexPool;
 	gos_VERTEX* nextVertex;
 
-	uint32_t totalVertices;
-	uint32_t numVertices;
+	uint32_t totalvertices;
+	uint32_t numvertices;
 
 public:
 	TG_GOSVertexPool(void)
 	{
 		gVertexPool = nextVertex = nullptr;
-		totalVertices = numVertices = 0;
+		totalvertices = numvertices = 0;
 	}
 
 	~TG_GOSVertexPool(void) { destroy(void); }
@@ -825,7 +825,7 @@ public:
 	{
 		TG_Shape::tglHeap->Free(gVertexPool);
 		gVertexPool = nextVertex = nullptr;
-		totalVertices = numVertices = 0;
+		totalvertices = numvertices = 0;
 	}
 
 	void init(uint32_t maxVertices)
@@ -833,21 +833,21 @@ public:
 		gVertexPool = (gos_VERTEX*)TG_Shape::tglHeap->Malloc(sizeof(gos_VERTEX) * maxVertices);
 		gosASSERT(gVertexPool != nullptr);
 		nextVertex = gVertexPool;
-		totalVertices = maxVertices;
-		numVertices = 0;
+		totalvertices = maxVertices;
+		numvertices = 0;
 	}
 
 	void reset(void)
 	{
 		nextVertex = gVertexPool;
-		numVertices = 0;
+		numvertices = 0;
 	}
 
 	gos_VERTEX* getVerticesFromPool(uint32_t numRequested)
 	{
 		gos_VERTEX* result = nullptr;
-		numVertices += numRequested;
-		if (numVertices < totalVertices)
+		numvertices += numRequested;
+		if (numvertices < totalvertices)
 		{
 			result = nextVertex;
 			nextVertex += numRequested;
@@ -915,14 +915,14 @@ protected:
 	TG_ShadowVertexTemp* tVertexPool;
 	TG_ShadowVertexTemp* nextVertex;
 
-	uint32_t totalVertices;
-	uint32_t numVertices;
+	uint32_t totalvertices;
+	uint32_t numvertices;
 
 public:
 	TG_ShadowPool(void)
 	{
 		tVertexPool = nextVertex = nullptr;
-		totalVertices = numVertices = 0;
+		totalvertices = numvertices = 0;
 	}
 
 	~TG_ShadowPool(void) { destroy(void); }
@@ -931,7 +931,7 @@ public:
 	{
 		TG_Shape::tglHeap->Free(tVertexPool);
 		tVertexPool = nextVertex = nullptr;
-		totalVertices = numVertices = 0;
+		totalvertices = numvertices = 0;
 	}
 
 	void init(uint32_t maxVertices)
@@ -940,21 +940,21 @@ public:
 			sizeof(TG_ShadowVertexTemp) * maxVertices);
 		gosASSERT(tVertexPool != nullptr);
 		nextVertex = tVertexPool;
-		totalVertices = maxVertices;
-		numVertices = 0;
+		totalvertices = maxVertices;
+		numvertices = 0;
 	}
 
 	void reset(void)
 	{
 		nextVertex = tVertexPool;
-		numVertices = 0;
+		numvertices = 0;
 	}
 
 	TG_ShadowVertexTempPtr getShadowsFromPool(uint32_t numRequested)
 	{
 		TG_ShadowVertexTempPtr result = nullptr;
-		numVertices += numRequested;
-		if (numVertices < totalVertices)
+		numvertices += numRequested;
+		if (numvertices < totalvertices)
 		{
 			result = nextVertex;
 			nextVertex += numRequested;

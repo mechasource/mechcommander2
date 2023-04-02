@@ -37,7 +37,7 @@ public:
 	uint32_t type;
 
 	// {data} is the information sent across the network.
-	uint8_t* buffer;
+	BOOLEAN* buffer;
 
 	// Number of bytes to be sent or number of bytes received.
 	uint32_t messageSize;
@@ -46,21 +46,21 @@ public:
 	// sent guaranteed.  Use this flag sparingly.
 	//
 	// Receiving: tells us if the message arrived guaranteed.
-	bool guaranteed;
+	BOOLEAN guaranteed;
 
 	// Sending: {server} is false by default.
 	// If {server} is true, the message goes to the server only.
 	// {receiverID} is not used if {server} is true!
 	//
 	// Receiving: Not used.
-	bool server;
+	BOOLEAN server;
 
 	// Sending: Not used.
 	//
 	// Receiving: User callback should look at {system} and interpret this as a
 	// system message if {system} is true.  Otherwise, this is an application
 	// message, and the callback should look at {type} for the specific type.
-	bool system;
+	BOOLEAN system;
 
 	// Priority of zero is the default.  Higher number means a higher priority
 	// message.

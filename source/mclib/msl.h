@@ -121,12 +121,12 @@ public:
 	int32_t GetTextureName(uint32_t textureNum, const std::wstring_view& textureName, int32_t nameLength);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
-	// numTextures.  This function takes the gosTextureHandle passed in and
+	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
-	int32_t SetTextureHandle(uint32_t textureNum, uint32_t gosTextureHandle);
+	int32_t SetTextureHandle(uint32_t textureNum, uint32_t texturehandle);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
-	// numTextures.  This function takes the gosTextureHandle passed in and
+	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
 	int32_t SetTextureAlpha(uint32_t textureNum, bool alphaFlag);
 
@@ -329,11 +329,11 @@ public:
 	int32_t GetNumTextures(void) { return myMultiType->GetNumTextures(void); }
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
-	// numTextures.  This function takes the gosTextureHandle passed in and
+	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
-	int32_t SetTextureHandle(uint32_t textureNum, uint32_t gosTextureHandle)
+	int32_t SetTextureHandle(uint32_t textureNum, uint32_t texturehandle)
 	{
-		return myMultiType->SetTextureHandle(textureNum, gosTextureHandle);
+		return myMultiType->SetTextureHandle(textureNum, texturehandle);
 	}
 
 	uint32_t GetTextureHandle(uint32_t textureNum)
@@ -348,7 +348,7 @@ public:
 	Stuff::Vector3D GetMinBox(void) { return myMultiType->minBox; }
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
-	// numTextures.  This function takes the gosTextureHandle passed in and
+	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
 	int32_t SetTextureAlpha(uint32_t textureNum, bool alphaFlag)
 	{

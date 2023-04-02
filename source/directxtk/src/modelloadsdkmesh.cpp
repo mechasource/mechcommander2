@@ -19,7 +19,7 @@
 #include "descriptorheap.h"
 #include "commonstates.h"
 
-#include "SDKMesh.h"
+#include "sdkmesh.h"
 
 using namespace directxtk;
 // using Microsoft::WRL::ComPtr;
@@ -36,16 +36,17 @@ namespace
         USES_OBSOLETE_DEC3N     = 0x20,
     };
 
-    int32_t GetUniqueTextureIndex(const std::wstring_view& textureName, std::map<std::wstring, int32_t>& textureDictionary)
+    int32_t GetUniqueTextureIndex(const std::wstring_view& texturename, std::map<std::wstring, int32_t>& texturedictionary)
     {
-        if (textureName == nullptr || !textureName[0])
+        if (texturename.empty())
             return -1;
 
-        auto i = textureDictionary.find(textureName);
-        if (i == std::cend(textureDictionary))
+		// !!!!
+        auto i = texturedictionary.find(texturename.data());
+        if (i == std::cend(texturedictionary))
         {
-            int32_t index = static_cast<int32_t>(textureDictionary.size());
-            textureDictionary[textureName] = index;
+            int32_t index = static_cast<int32_t>(texturedictionary.size());
+            texturedictionary[texturename.data()] = index;
             return index;
         }
         else
@@ -72,110 +73,110 @@ namespace
     }
 
     void InitMaterial(
-        const DXUT::SDKMESH_MATERIAL& mh,
+        const DXUT::SDKMESH_MATERIAL& meshmaterial,
         uint32_t flags,
-        _Out_ Model::ModelMaterialInfo& m,
-        _Inout_ std::map<std::wstring, int32_t>& textureDictionary,
+        _Out_ Model::ModelMaterialInfo& materialinfo,
+        _Inout_ std::map<std::wstring, int32_t>& texturedictionary,
         bool srgb)
     {
-        wchar_t matName[DXUT::MAX_MATERIAL_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.Name, -1, matName, DXUT::MAX_MATERIAL_NAME);
+        wchar_t materialname[DXUT::MAX_MATERIAL_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, meshmaterial.Name, -1, materialname, DXUT::MAX_MATERIAL_NAME);
 
-        wchar_t diffuseName[DXUT::MAX_TEXTURE_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.DiffuseTexture, -1, diffuseName, DXUT::MAX_TEXTURE_NAME);
+        wchar_t diffusename[DXUT::MAX_TEXTURE_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, meshmaterial.DiffuseTexture, -1, diffusename, DXUT::MAX_TEXTURE_NAME);
 
-        wchar_t specularName[DXUT::MAX_TEXTURE_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.SpecularTexture, -1, specularName, DXUT::MAX_TEXTURE_NAME);
+        wchar_t specularname[DXUT::MAX_TEXTURE_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, meshmaterial.SpecularTexture, -1, specularname, DXUT::MAX_TEXTURE_NAME);
 
-        wchar_t normalName[DXUT::MAX_TEXTURE_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.NormalTexture, -1, normalName, DXUT::MAX_TEXTURE_NAME);
+        wchar_t normalname[DXUT::MAX_TEXTURE_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, meshmaterial.NormalTexture, -1, normalname, DXUT::MAX_TEXTURE_NAME);
 
-        if ((flags & DUAL_TEXTURE) && !mh.SpecularTexture[0])
+        if ((flags & DUAL_TEXTURE) && !meshmaterial.SpecularTexture[0])
         {
-            DebugTrace("WARNING: Material '%s' has multiple texture coords but not multiple textures\n", mh.Name);
+            DebugTrace("WARNING: Material '%s' has multiple texture coords but not multiple textures\n", meshmaterial.Name);
             flags &= ~static_cast<uint32_t>(DUAL_TEXTURE);
         }
 
         if (flags & NORMAL_MAPS)
         {
-            if (!mh.NormalTexture[0])
+            if (!meshmaterial.NormalTexture[0])
             {
                 flags &= ~static_cast<uint32_t>(NORMAL_MAPS);
-                *normalName = 0;
+                *normalname = 0;
             }
         }
-        else if (mh.NormalTexture[0])
+        else if (meshmaterial.NormalTexture[0])
         {
-            DebugTrace("WARNING: Material '%s' has a normal map, but vertex buffer is missing tangents\n", mh.Name);
-            *normalName = 0;
+            DebugTrace("WARNING: Material '%s' has a normal map, but vertex buffer is missing tangents\n", meshmaterial.Name);
+            *normalname = 0;
         }
 
-        m = {};
-        m.name = matName;
-        m.perVertexColor = (flags & PER_VERTEX_COLOR) != 0;
-        m.enableSkinning = (flags & SKINNING) != 0;
-        m.enableDualTexture = (flags & DUAL_TEXTURE) != 0;
-        m.enableNormalMaps = (flags & NORMAL_MAPS) != 0;
-        m.biasedVertexNormals = (flags & BIASED_VERTEX_NORMALS) != 0;
+        materialinfo = {};
+        materialinfo.name = materialname;
+        materialinfo.perVertexColor = (flags & PER_VERTEX_COLOR) != 0;
+        materialinfo.enableSkinning = (flags & SKINNING) != 0;
+        materialinfo.enableDualTexture = (flags & DUAL_TEXTURE) != 0;
+        materialinfo.enableNormalMaps = (flags & NORMAL_MAPS) != 0;
+        materialinfo.biasedVertexNormals = (flags & BIASED_VERTEX_NORMALS) != 0;
 
-        if (mh.Ambient.x == 0 && mh.Ambient.y == 0 && mh.Ambient.z == 0 && mh.Ambient.w == 0
-            && mh.Diffuse.x == 0 && mh.Diffuse.y == 0 && mh.Diffuse.z == 0 && mh.Diffuse.w == 0)
+        if (meshmaterial.Ambient.x == 0 && meshmaterial.Ambient.y == 0 && meshmaterial.Ambient.z == 0 && meshmaterial.Ambient.w == 0
+            && meshmaterial.Diffuse.x == 0 && meshmaterial.Diffuse.y == 0 && meshmaterial.Diffuse.z == 0 && meshmaterial.Diffuse.w == 0)
         {
             // SDKMESH material color block is uninitalized; assume defaults
-            m.diffuseColor = DirectX::XMFLOAT3(1.f, 1.f, 1.f);
-            m.alphaValue = 1.f;
+            materialinfo.diffuseColor = DirectX::XMFLOAT3(1.f, 1.f, 1.f);
+            materialinfo.alphaValue = 1.f;
         }
         else
         {
-            m.ambientColor = GetMaterialColor(mh.Ambient.x, mh.Ambient.y, mh.Ambient.z, srgb);
-            m.diffuseColor = GetMaterialColor(mh.Diffuse.x, mh.Diffuse.y, mh.Diffuse.z, srgb);
-            m.emissiveColor = GetMaterialColor(mh.Emissive.x, mh.Emissive.y, mh.Emissive.z, srgb);
+            materialinfo.ambientColor = GetMaterialColor(meshmaterial.Ambient.x, meshmaterial.Ambient.y, meshmaterial.Ambient.z, srgb);
+            materialinfo.diffuseColor = GetMaterialColor(meshmaterial.Diffuse.x, meshmaterial.Diffuse.y, meshmaterial.Diffuse.z, srgb);
+            materialinfo.emissiveColor = GetMaterialColor(meshmaterial.Emissive.x, meshmaterial.Emissive.y, meshmaterial.Emissive.z, srgb);
 
-            if (mh.Diffuse.w != 1.f && mh.Diffuse.w != 0.f)
+            if (meshmaterial.Diffuse.w != 1.f && meshmaterial.Diffuse.w != 0.f)
             {
-                m.alphaValue = mh.Diffuse.w;
+                materialinfo.alphaValue = meshmaterial.Diffuse.w;
             }
             else
-                m.alphaValue = 1.f;
+                materialinfo.alphaValue = 1.f;
 
-            if (mh.Power > 0)
+            if (meshmaterial.Power > 0)
             {
-                m.specularPower = mh.Power;
-                m.specularColor = DirectX::XMFLOAT3(mh.Specular.x, mh.Specular.y, mh.Specular.z);
+                materialinfo.specularPower = meshmaterial.Power;
+                materialinfo.specularColor = DirectX::XMFLOAT3(meshmaterial.Specular.x, meshmaterial.Specular.y, meshmaterial.Specular.z);
             }
         }
 
-        m.diffuseTextureIndex = GetUniqueTextureIndex(diffuseName, textureDictionary);
-        m.specularTextureIndex = GetUniqueTextureIndex(specularName, textureDictionary);
-        m.normalTextureIndex = GetUniqueTextureIndex(normalName, textureDictionary);
+        materialinfo.diffuseTextureIndex = GetUniqueTextureIndex(diffusename, texturedictionary);
+        materialinfo.specularTextureIndex = GetUniqueTextureIndex(specularname, texturedictionary);
+        materialinfo.normalTextureIndex = GetUniqueTextureIndex(normalname, texturedictionary);
 
-        m.samplerIndex = (m.diffuseTextureIndex == -1) ? -1 : static_cast<int32_t>(CommonStates::SamplerIndex::AnisotropicWrap);
-        m.samplerIndex2 = (flags & DUAL_TEXTURE) ? static_cast<int32_t>(CommonStates::SamplerIndex::AnisotropicWrap) : -1;
+        materialinfo.samplerIndex = (materialinfo.diffuseTextureIndex == -1) ? -1 : static_cast<int32_t>(CommonStates::SamplerIndex::AnisotropicWrap);
+        materialinfo.samplerIndex2 = (flags & DUAL_TEXTURE) ? static_cast<int32_t>(CommonStates::SamplerIndex::AnisotropicWrap) : -1;
     }
 
     void InitMaterial(
         const DXUT::SDKMESH_MATERIAL_V2& mh,
         uint32_t flags,
         _Out_ Model::ModelMaterialInfo& m,
-        _Inout_ std::map<std::wstring, int32_t>& textureDictionary)
+        _Inout_ std::map<std::wstring, int32_t>& texturedictionary)
     {
-        wchar_t matName[DXUT::MAX_MATERIAL_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.Name, -1, matName, DXUT::MAX_MATERIAL_NAME);
+        wchar_t materialname[DXUT::MAX_MATERIAL_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, mh.Name, -1, materialname, DXUT::MAX_MATERIAL_NAME);
 
-        wchar_t albetoTexture[DXUT::MAX_TEXTURE_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.AlbetoTexture, -1, albetoTexture, DXUT::MAX_TEXTURE_NAME);
+        wchar_t albetoname[DXUT::MAX_TEXTURE_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, mh.AlbetoTexture, -1, albetoname, DXUT::MAX_TEXTURE_NAME);
 
-        wchar_t normalName[DXUT::MAX_TEXTURE_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.NormalTexture, -1, normalName, DXUT::MAX_TEXTURE_NAME);
+        wchar_t normalname[DXUT::MAX_TEXTURE_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, mh.NormalTexture, -1, normalname, DXUT::MAX_TEXTURE_NAME);
 
-        wchar_t rmaName[DXUT::MAX_TEXTURE_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.RMATexture, -1, rmaName, DXUT::MAX_TEXTURE_NAME);
+        wchar_t rmaname[DXUT::MAX_TEXTURE_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, mh.RMATexture, -1, rmaname, DXUT::MAX_TEXTURE_NAME);
 
-        wchar_t emissiveName[DXUT::MAX_TEXTURE_NAME] = {};
-        MultiByteToWideChar(CP_UTF8, 0, mh.EmissiveTexture, -1, emissiveName, DXUT::MAX_TEXTURE_NAME);
+        wchar_t emissivename[DXUT::MAX_TEXTURE_NAME] = {};
+        MultiByteToWideChar(CP_UTF8, 0, mh.EmissiveTexture, -1, emissivename, DXUT::MAX_TEXTURE_NAME);
 
         m = {};
-        m.name = matName;
+        m.name = materialname;
         m.perVertexColor = false;
         m.enableSkinning = false;
         m.enableDualTexture = false;
@@ -183,10 +184,10 @@ namespace
         m.biasedVertexNormals = (flags & BIASED_VERTEX_NORMALS) != 0;
         m.alphaValue = (mh.Alpha == 0.f) ? 1.f : mh.Alpha;
 
-        m.diffuseTextureIndex = GetUniqueTextureIndex(albetoTexture, textureDictionary);
-        m.specularTextureIndex = GetUniqueTextureIndex(rmaName, textureDictionary);
-        m.normalTextureIndex = GetUniqueTextureIndex(normalName, textureDictionary);
-        m.emissiveTextureIndex = GetUniqueTextureIndex(emissiveName, textureDictionary);
+        m.diffuseTextureIndex = GetUniqueTextureIndex(albetoname, texturedictionary);
+        m.specularTextureIndex = GetUniqueTextureIndex(rmaname, texturedictionary);
+        m.normalTextureIndex = GetUniqueTextureIndex(normalname, texturedictionary);
+        m.emissiveTextureIndex = GetUniqueTextureIndex(emissivename, texturedictionary);
 
         m.samplerIndex = m.samplerIndex2 = static_cast<int32_t>(CommonStates::SamplerIndex::AnisotropicWrap);
     }
@@ -555,16 +556,16 @@ std::unique_ptr<Model> directxtk::Model::CreateFromSDKMESH(
     std::vector<ModelMaterialInfo> materials;
     materials.resize(header->NumMaterials);
 
-    std::map<std::wstring, int32_t> textureDictionary;
+    std::map<std::wstring, int32_t> texturedictionary;
 
     auto model = std::make_unique<Model>();
     model->meshes.reserve(header->NumMeshes);
 
-    uint32_t partCount = 0;
+    uint32_t partCount = 0u;
 
-    for (uint32_t meshIndex = 0; meshIndex < header->NumMeshes; ++meshIndex)
+    for (auto meshindex = 0u; meshindex < header->NumMeshes; ++meshindex)
     {
-        auto& mh = meshArray[meshIndex];
+        auto& mh = meshArray[meshindex];
 
         if (!mh.NumSubsets
             || !mh.NumVertexBuffers
@@ -609,7 +610,7 @@ std::unique_ptr<Model> directxtk::Model::CreateFromSDKMESH(
             auto& subset = subsetArray[sIndex];
 
             D3D_PRIMITIVE_TOPOLOGY primType;
-            switch (subset.PrimitiveType)
+            switch (subset.primitivetype)
             {
                 case DXUT::PT_TRIANGLE_LIST:        primType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;       break;
                 case DXUT::PT_TRIANGLE_STRIP:       primType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;      break;
@@ -641,7 +642,7 @@ std::unique_ptr<Model> directxtk::Model::CreateFromSDKMESH(
                     materialArray_v2[subset.MaterialID],
                     materialFlags[vi],
                     mat,
-                    textureDictionary);
+                    texturedictionary);
             }
             else
             {
@@ -649,7 +650,7 @@ std::unique_ptr<Model> directxtk::Model::CreateFromSDKMESH(
                     materialArray[subset.MaterialID],
                     materialFlags[vi],
                     mat,
-                    textureDictionary,
+                    texturedictionary,
                     (flags & ModelLoader_MaterialColorsSRGB) != 0);
             }
 
@@ -694,10 +695,10 @@ std::unique_ptr<Model> directxtk::Model::CreateFromSDKMESH(
 
     // Copy the materials and texture names into contiguous arrays
     model->materials = std::move(materials);
-    model->textureNames.resize(textureDictionary.size());
-    for (auto texture = std::cbegin(textureDictionary); texture != std::cend(textureDictionary); ++texture)
+    model->texturenames.resize(texturedictionary.size());
+    for (auto texture = std::cbegin(texturedictionary); texture != std::cend(texturedictionary); ++texture)
     {
-        model->textureNames[static_cast<size_t>(texture->second)] = texture->first;
+        model->texturenames[static_cast<size_t>(texture->second)] = texture->first;
     }
 
     return model;

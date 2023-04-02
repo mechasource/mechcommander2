@@ -15,7 +15,7 @@
 #endif
 
 // windows.cpp
-MECH_IMPEXP bool __stdcall AlreadyRunning(void);
+MECH_IMPEXP BOOLEAN __stdcall AlreadyRunning(void);
 MECH_IMPEXP void __stdcall InitializeWindows(void);
 MECH_IMPEXP void __stdcall DestroyWindows(void);
 MECH_IMPEXP void __stdcall Update(void);
@@ -48,13 +48,13 @@ extern int32_t widthX;
 extern int32_t heightY;
 extern int32_t WindowStartX;
 extern int32_t WindowStartY;
-extern bool WindowsNT;
+extern BOOLEAN WindowsNT;
 extern uint32_t HitScrollLock;
 extern uint32_t ForceReStart;
 extern uint32_t DesktopBpp;
 extern uint32_t DesktopRes;
-extern bool PerfCounters;
-extern bool WindowClosed;
+extern BOOLEAN PerfCounters;
+extern BOOLEAN WindowClosed;
 
 // Libraries.cpp routines
 void __stdcall InitLibraries(void);	// Load all libraries GOS depends upon
@@ -91,7 +91,7 @@ extern HRESULT(__stdcall* _DirectSoundCreate)(LPCGUID pcGuidDevice, LPDIRECTSOUN
 extern HRESULT(__stdcall* _DirectSoundEnumerate)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pcontext);
 extern HRESULT(__stdcall* _DirectInputCreate)(HINSTANCE hinst, uint32_t version, LPDIRECTINPUT* lplpDirectInput, LPUNKNOWN punkOuter);
 extern HRESULT(__stdcall* _DirectInputCreateEx)(HINSTANCE hinstance, uint32_t version, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
-extern HWND(__stdcall* _CallmyHelp)(HWND hwnd, HINSTANCE hinstance, bool Window, uint32_t HelpItem);
+extern HWND(__stdcall* _CallmyHelp)(HWND hwnd, HINSTANCE hinstance, BOOLEAN Window, uint32_t HelpItem);
 extern void(__stdcall* _FreeHlpLib)(void);
 extern uint32_t(__stdcall* _AMGetErrorText)(HRESULT hr, PSTR pbuffer, uint32_t MaxLen);
 
@@ -104,9 +104,9 @@ extern char ApplicationName[256];
 extern char RegistryKey[256];
 extern uint32_t ThreadId;
 extern uint32_t SkipRendering;
-extern bool gNoBlade;
+extern BOOLEAN gNoBlade;
 extern void __stdcall RestartGameOS(void);
 extern void __stdcall DoGame(void);
-extern void __stdcall gos_UpdateDisplay(bool everything);
+extern void __stdcall gos_UpdateDisplay(BOOLEAN everything);
 
 // clang-format on

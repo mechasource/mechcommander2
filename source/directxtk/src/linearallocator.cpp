@@ -472,7 +472,7 @@ void LinearAllocator::ValidatePageLists()
 void LinearAllocator::SetDebugName(const std::string_view& name)
 {
     wchar_t wname[MAX_PATH] = {};
-    int32_t result = MultiByteToWideChar(CP_UTF8, 0, name, static_cast<int32_t>(strlen(name)), wname, MAX_PATH);
+    int32_t result = ::MultiByteToWideChar(CP_UTF8, 0, name.data(), static_cast<int32_t>(name.length()), wname, MAX_PATH);
     if (result > 0)
     {
         SetDebugName(wname);
@@ -484,7 +484,7 @@ void LinearAllocator::SetDebugName(const std::wstring_view& name)
     m_debugName = name;
 
     // Rename existing pages
-    m_fence->SetName(name);
+    m_fence->SetName(name.data());
     SetPageDebugName(m_pendingPages);
     SetPageDebugName(m_usedPages);
     SetPageDebugName(m_unusedPages);

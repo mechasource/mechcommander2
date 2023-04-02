@@ -13,7 +13,7 @@ struct FFEffectData
 	GUID diGUID;
 	DIEFFECT diEffectData;
 	LPDIRECTINPUTEFFECT diEffect;
-	uint8_t diTypeSpecific[64];
+	BOOLEAN diTypeSpecific[64];
 	DIENVELOPE diEnvelope;
 	uint32_t rgdwAxes[12];
 	int32_t rglDirection[12];
@@ -29,8 +29,8 @@ public:
 	uint32_t dwStick;
 	double longestDuration;
 	double startTime;
-	bool bStatus;
-	bool fromFile;
+	BOOLEAN bStatus;
+	BOOLEAN fromFile;
 
 public:
 	gosForceEffect(gosJoystick_ForceEffect* fe, uint32_t joy);

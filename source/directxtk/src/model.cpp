@@ -233,12 +233,12 @@ Model::~Model()
 // Load texture resources
 int32_t Model::LoadTextures(IEffectTextureFactory& texFactory, int32_t destinationDescriptorOffset) const
 {
-    for (auto i = 0u; i < textureNames.size(); ++i)
+    for (auto i = 0u; i < texturenames.size(); ++i)
     {
-        texFactory.CreateTexture(textureNames[i].c_str(), destinationDescriptorOffset + static_cast<int32_t>(i));
+        texFactory.CreateTexture(texturenames[i].c_str(), destinationDescriptorOffset + static_cast<int32_t>(i));
     }
 
-    return static_cast<int32_t>(textureNames.size());
+    return static_cast<int32_t>(texturenames.size());
 }
 
 
@@ -246,21 +246,21 @@ int32_t Model::LoadTextures(IEffectTextureFactory& texFactory, int32_t destinati
 _Use_decl_annotations_
 std::unique_ptr<EffectTextureFactory> Model::LoadTextures(
     ID3D12Device* device,
-    ResourceUploadBatch& resourceUploadBatch,
-    const std::wstring_view& texturesPath,
+    ResourceUploadBatch& resourceuploadbatch,
+    const std::wstring_view& texturespath,
     D3D12_DESCRIPTOR_HEAP_FLAGS flags) const
 {
-    if (textureNames.empty())
+    if (texturenames.empty())
         return nullptr;
 
     std::unique_ptr<EffectTextureFactory> texFactory = std::make_unique<EffectTextureFactory>(
         device,
-        resourceUploadBatch,
-        textureNames.size(),
+        resourceuploadbatch,
+        texturenames.size(),
         flags);
-    if (texturesPath != nullptr && *texturesPath != 0)
+    if (!texturespath.empty())
     {
-        texFactory->SetDirectory(texturesPath);
+        texFactory->SetDirectory(texturespath);
     }
 
     LoadTextures(*texFactory);
@@ -273,7 +273,7 @@ std::unique_ptr<EffectTextureFactory> Model::LoadTextures(
 _Use_decl_annotations_
 void Model::LoadStaticBuffers(
     ID3D12Device* device,
-    ResourceUploadBatch& resourceUploadBatch,
+    ResourceUploadBatch& resourceuploadbatch,
     bool keepMemory)
 {
     // Gather all unique parts
@@ -320,9 +320,9 @@ void Model::LoadStaticBuffers(
 
             SetDebugObjectName(part->staticVertexBuffer.get(), L"ModelMeshPart");
 
-            resourceUploadBatch.Upload(part->staticVertexBuffer.get(), part->vertexBuffer);
+            resourceuploadbatch.Upload(part->staticVertexBuffer.get(), part->vertexBuffer);
 
-            resourceUploadBatch.Transition(part->staticVertexBuffer.get(),
+            resourceuploadbatch.Transition(part->staticVertexBuffer.get(),
                 D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
             // Scan for any other part with the same vertex buffer for sharing
@@ -376,9 +376,9 @@ void Model::LoadStaticBuffers(
 
             SetDebugObjectName(part->staticIndexBuffer.get(), L"ModelMeshPart");
 
-            resourceUploadBatch.Upload(part->staticIndexBuffer.get(), part->indexBuffer);
+            resourceuploadbatch.Upload(part->staticIndexBuffer.get(), part->indexBuffer);
 
-            resourceUploadBatch.Transition(part->staticIndexBuffer.get(),
+            resourceuploadbatch.Transition(part->staticIndexBuffer.get(),
                 D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
 
             // Scan for any other part with the same index buffer for sharing

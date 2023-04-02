@@ -51,11 +51,11 @@ typedef struct _srdata
 	SoundDeviceInfo m_DeviceArray[8];
 	uint32_t m_numDevices;
 	uint32_t m_PreferredDevice;
-	bool m_reset;
-	bool m_allPaused;
+	BOOLEAN m_reset;
+	BOOLEAN m_allPaused;
 #if defined(LAB_ONLY)
 	char m_playHistory[32][128];
-	bool m_verboseDebugger;
+	BOOLEAN m_verboseDebugger;
 	uint32_t m_playHistoryItr;
 #endif
 
@@ -73,7 +73,7 @@ void __stdcall SoundRendererDestroyTimer(void);
 void __stdcall SoundRendererPause(void);
 void __stdcall SoundRendererContinue(void);
 void __stdcall SoundRendererFF(double sec);
-bool __stdcall IsValidSoundResource(HGOSAUDIO gosAudio);
+BOOLEAN __stdcall IsValidSoundResource(HGOSAUDIO gosAudio);
 
 void __stdcall TimeFunc(
 	uint32_t uTimerID, uint32_t message, uint32_t user, uint32_t dw1, uint32_t dw2);

@@ -33,8 +33,8 @@ extern char SpeedBuffer[16]; // ASCII MHz
 extern float ProcessorSpeed; // Processor speed
 extern char LogBuffer[2048];
 extern HANDLE LoggingThreadID;
-extern bool ThreadDone;
-extern bool InDebugger; // During debugger rendering
+extern BOOLEAN ThreadDone;
+extern BOOLEAN InDebugger; // During debugger rendering
 extern char CacheInformation[128];
 
 #if CONSIDERED_OBSOLETE // and not used BTW
@@ -68,7 +68,7 @@ enum
 
 extern uint32_t SpewWrites;
 extern char DebuggerName[MAX_PATH + 1];
-extern bool LaunchDebugger;
+extern BOOLEAN LaunchDebugger;
 extern int32_t ScreenImageSize;
 
 PSTR __stdcall GetFullErrorMessage(HWND hwnd);
@@ -89,8 +89,8 @@ PSTR __stdcall gosGetUserName(void);
 void __stdcall LogRun(PSTR message);
 void __stdcall InitRunLog(void);
 void __stdcall GetInstalledAudioVideoCodecs(FixedLengthString& Buffer);
-void __stdcall ReadLogData(uint8_t* pData, uint32_t Length);
-void __stdcall WriteLogData(uint8_t* pData, uint32_t Length);
+void __stdcall ReadLogData(BOOLEAN* pData, uint32_t Length);
+void __stdcall WriteLogData(BOOLEAN* pData, uint32_t Length);
 
 typedef struct _pFTOL
 {
@@ -144,8 +144,8 @@ void __stdcall GetEnvironmentSettings(PSTR commandline);
 extern EXCEPTION_RECORD SavedExceptRec;
 extern CONTEXT SavedContext;
 
-extern bool MathExceptions;
-extern bool Mathsingleprecision;
+extern BOOLEAN MathExceptions;
+extern BOOLEAN Mathsingleprecision;
 extern float OneOverProcessorSpeed;
 
 //
@@ -157,8 +157,7 @@ extern PSTR ErrorMessage;
 extern PSTR ErrorMessageTitle;
 extern volatile int32_t ProcessingError; // Renentrancy test flag for _ASSERT error routine
 extern PSTR ErrorExceptionText;
-extern uint8_t* GotScreenImage; // Pointer to buffer containing screen image
-	// (always 24 bit bmp)
+extern PVOID GotScreenImage; // Pointer to buffer containing screen image (always 24 bit bmp)
 extern int32_t AllowDebugButton;
 extern int32_t ErrorFlags, ErrorReturn;
 
@@ -168,14 +167,14 @@ extern PSTR __stdcall Hex8Number(int32_t Number);
 extern void __stdcall GetProcessorDetails(LPSTACKFRAME sf, FixedLengthString& Buffer);
 extern void __stdcall GetMachineDetails(FixedLengthString& Buffer);
 extern PSTR __stdcall GetLineFromFile(PSTR tempLine, PSTR FileName, int32_t LineNumber);
-extern uint8_t* __stdcall GrabScreenImage(void);
+extern PVOID __stdcall GrabScreenImage(void);
 extern void __stdcall GetDirectXDetails(FixedLengthString& Buffer);
 extern void __stdcall GetGameDetails(FixedLengthString& Buffer, uint32_t ErrorFlags);
 extern void __stdcall DoDetailedDialog(void);
 extern void __stdcall DoSimpleDialog(void);
 extern void __stdcall DocolourDialog(void);
 
-bool __stdcall WriteLogFile(PSTR FileName);
+BOOLEAN __stdcall WriteLogFile(PSTR filename);
 
 #define IDC_CONTINUE 3
 #define IDC_IGNORE 4
@@ -195,7 +194,7 @@ bool __stdcall WriteLogFile(PSTR FileName);
 
 typedef struct _IgnoreAddress
 {
-	_IgnoreAddress* pNext;
+	struct _IgnoreAddress* pNext;
 	uint32_t Address;
 } IgnoreAddress;
 
@@ -217,7 +216,7 @@ typedef struct _LogStruct
 	int32_t pXDelta;
 	int32_t pYDelta;
 	int32_t pWheelDelta;
-	uint8_t pButtonsPressed;
+	BOOLEAN pButtonsPressed;
 	uint16_t Length; // Length of bitstream (or 0)
 } LogStructure;
 #pragma pack(pop)
@@ -256,14 +255,14 @@ extern void __stdcall CheckLogInSync(void);
 #define LOGBLOCKSIZE (1024 * 1024 * 4) // 4 Meg of log data maximum (About 10 minutes at 60f/s)
 #define LOGVERSION 11 // Current version number of log file
 
-extern bool AllowFail;
-extern volatile bool SpewSilence; // Set to disable all spews
+extern BOOLEAN AllowFail;
+extern volatile BOOLEAN SpewSilence; // Set to disable all spews
 extern HANDLE hSpewOutput;
 
 void __stdcall ExitGameOS(void);
 void __stdcall InitializeSpew(void);
 void __stdcall TerminateSpew(void);
-void __stdcall Debugcolour(uint8_t red, uint8_t green, uint8_t blue);
+void __stdcall Debugcolour(BOOLEAN red, BOOLEAN green, BOOLEAN blue);
 void __stdcall InitProcessorSpeed(void);
 void __stdcall DestroyExceptions(void);
 

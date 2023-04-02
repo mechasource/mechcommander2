@@ -15,7 +15,7 @@ public:
 	float m_fVolume;
 	float m_reverbFactor, m_decayFactor;
 	uint32_t m_properties;
-	bool m_isCertified;
+	BOOLEAN m_isCertified;
 	uint32_t m_freeHW3DChannels;
 	uint32_t m_totalHW3DChannels;
 	uint32_t m_freeHWMemory;
@@ -26,7 +26,7 @@ public:
 	EZVector m_orientation3DTop;
 	EZVector m_orientation3DFront;
 
-	bool m_changed;
+	BOOLEAN m_changed;
 
 public:
 	SoundMixer(void);

@@ -49,7 +49,7 @@ gosVideo_GetResourceInfo(gos_Video*, _gosVideo_Info*);
 gosVideo_Display(gos_Video*);
 gosVideo_GetVideoPlayMode(gos_Video*);
 gos_Video::OpenMMStream(char const*, IDirectDraw*, IMultiMediaStream**);
-gos_Video::gos_Video(char*, bool);
+gos_Video::gos_Video(char*, BOOLEAN);
 gos_Video::~gos_Video(void);
 gos_Video::Update(void);
 gos_Video::Stop(void);

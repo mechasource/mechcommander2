@@ -48,9 +48,9 @@ HRESULT BinaryReader::ReadEntireFile(_In_ const std::wstring_view&  filename, _I
 {
     // Open the file.
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-    wil::unique_hfile filehandle(::CreateFile2(filename, GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, nullptr));
+    wil::unique_hfile filehandle(::CreateFile2(filename.data(), GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, nullptr));
 #else
-    wil::unique_hfile filehandle(::CreateFileW(filename, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr));
+    wil::unique_hfile filehandle(::CreateFileW(filename.data(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr));
 #endif
     if (!filehandle)
         return HRESULT_FROM_WIN32(GetLastError());

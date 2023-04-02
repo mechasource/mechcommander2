@@ -65,7 +65,7 @@ void __stdcall gosMusic_Command(HGOSMUSIC handle, enum gosMusic_Command gmc, flo
 struct gos_Music
 {
 public:
-	static bool gos_Music::m_hasDirectShow;
+	static BOOLEAN gos_Music::m_hasDirectShow;
 
 	IMultiMediaStream* m_pMMStream;
 	IMediaStream* m_pPrimaryAudStream;
@@ -86,7 +86,7 @@ public:
 	gos_Music(PSTR path);
 	~gos_Music(void);
 	void OpenMMStream(void);
-	bool Update(void);
+	BOOLEAN Update(void);
 	void Pause(void);
 	void Continue(void);
 	void Stop(void);

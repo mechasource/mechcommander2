@@ -19,8 +19,8 @@
 #include <memory>
 #include <string>
 
-#include "RenderTargetState.h"
-#include "EffectPipelineStateDescription.h"
+#include "rendertargetstate.h"
+#include "effectpipelinestatedescription.h"
 
 
 namespace directxtk
@@ -628,7 +628,7 @@ namespace directxtk
         IEffectTextureFactory(IEffectTextureFactory&&) = delete;
         IEffectTextureFactory& operator=(IEffectTextureFactory&&) = delete;
 
-        virtual size_t __cdecl CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorIndex) = 0;
+        virtual size_t __cdecl CreateTexture(_In_ const std::wstring_view& texturename, int32_t descriptorindex) = 0;
 
     protected:
         IEffectTextureFactory() = default;
@@ -641,14 +641,14 @@ namespace directxtk
     public:
         EffectTextureFactory(
             _In_ ID3D12Device* device,
-            ResourceUploadBatch& resourceUploadBatch,
-            _In_ ID3D12DescriptorHeap* descriptorHeap) noexcept(false);
+            ResourceUploadBatch& resourceuploadbatch,
+            _In_ ID3D12DescriptorHeap* descriptorheap) noexcept(false);
 
         EffectTextureFactory(
             _In_ ID3D12Device* device,
-            ResourceUploadBatch& resourceUploadBatch,
-            _In_ size_t numDescriptors,
-            _In_ D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE) noexcept(false);
+            ResourceUploadBatch& resourceuploadbatch,
+            _In_ size_t numdescriptors,
+            _In_ D3D12_DESCRIPTOR_HEAP_FLAGS descriptorheapflags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE) noexcept(false);
 
         EffectTextureFactory(EffectTextureFactory&& moveFrom) noexcept;
         EffectTextureFactory& operator= (EffectTextureFactory&& moveFrom) noexcept;
@@ -658,29 +658,29 @@ namespace directxtk
 
         ~EffectTextureFactory() override;
 
-        size_t __cdecl CreateTexture(_In_ const std::wstring_view& name, int32_t descriptorIndex) override;
+        size_t __cdecl CreateTexture(_In_ const std::wstring_view& texturename, int32_t descriptorindex) override;
 
-        ID3D12DescriptorHeap* __cdecl Heap() const noexcept;
+        ID3D12DescriptorHeap* __cdecl Heap(void) const noexcept;
 
         // Shorthand accessors for the descriptor heap
         D3D12_CPU_DESCRIPTOR_HANDLE __cdecl GetCpuDescriptorHandle(size_t index) const;
         D3D12_GPU_DESCRIPTOR_HANDLE __cdecl GetGpuDescriptorHandle(size_t index) const;
 
         // How many textures are there in this factory?
-        size_t __cdecl ResourceCount() const noexcept;
+        size_t __cdecl ResourceCount(void) const noexcept;
 
         // Get a resource in a specific slot (note: increases reference count on resource)
-        void __cdecl GetResource(size_t slot, _Out_ ID3D12Resource** resource, _Out_opt_ bool* isCubeMap = nullptr);
+        void __cdecl GetResource(size_t slotindex, _Out_ ID3D12Resource** resource, _Out_opt_ bool* iscubemap = nullptr);
 
         // Settings.
-        void __cdecl ReleaseCache();
+        void __cdecl ReleaseCache(void);
 
-        void __cdecl SetSharing(bool enabled) noexcept;
+        void __cdecl SetSharing(bool enableshared) noexcept;
 
-        void __cdecl EnableForceSRGB(bool forceSRGB) noexcept;
-        void __cdecl EnableAutoGenMips(bool generateMips) noexcept;
+        void __cdecl EnableForceSRGB(bool forcesrgb) noexcept;
+        void __cdecl EnableAutoGenMips(bool generatemips) noexcept;
 
-        void __cdecl SetDirectory(_In_opt_ const std::wstring_view& path) noexcept;
+        void __cdecl SetDirectory(_In_opt_ const std::wstring_view& pathname) noexcept;
 
     private:
         // Private implementation

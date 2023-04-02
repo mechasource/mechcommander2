@@ -58,7 +58,7 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 		tex2count[m] = 0;
 	}
 #endif //	I_SAY_YES_TO_MULTI_TEXTURES
-	uint32_t numVertices = GetNumVertices();
+	uint32_t numvertices = GetNumVertices();
 	gos_vertices		 = vt->GetActualVertexPool(db);
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 	size_t tex2count = 0;
@@ -79,7 +79,7 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 #ifdef _ARMOR
 	memset(indexOffset, 0xff, Limits::Max_Number_Vertices_Per_Mesh * sizeof(uint16_t));
 #endif //	_ARMOR
-	for (j = 0, stride = 0; j < numVertices; j++)
+	for (j = 0, stride = 0; j < numvertices; j++)
 	{
 		if (visibleIndexedVertices[j] == 0)
 		{
@@ -110,7 +110,7 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 				state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
 			{
 				gos_vertices2uv[numGOSVertices].GOSTransformNoClip(
-					coords[j], *mat, &texCoords[j][0], &texCoords[numVertices + j][0]
+					coords[j], *mat, &texCoords[j][0], &texCoords[numvertices + j][0]
 #if FOG_HACK
 					,
 					state.GetFogMode()
@@ -134,7 +134,7 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 					state.GetFogMode()
 #endif //	FOG_HACK
 				);
-				(*texCoords2)[tex2count++] = texCoords[numVertices + j];
+				(*texCoords2)[tex2count++] = texCoords[numvertices + j];
 			}
 #else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
@@ -428,9 +428,9 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 
 static MLRClippingState theAnd, theOr, theTest;
 
-//	extern void _stdcall CheckVertices( gos_VERTEX* pVertexArray, uint32_t NumberVertices, bool
+//	extern void _stdcall CheckVertices( gos_VERTEX* pVertexArray, uint32_t numbervertices, bool
 //PointsLines ); 	extern void _stdcall CheckVertices1( gos_VERTEX_2UV* pVertexArray, uint32_t
-//NumberVertices );
+//numbervertices );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Now it gets serious
@@ -541,7 +541,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif //	I_SAY_YES_TO_DUAL_TEXTURES || I_SAY_YES_TO_DETAIL_TEXTURES
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 	size_t tex2count	 = 0;
-	uint32_t numVertices = GetNumVertices();
+	uint32_t numvertices = GetNumVertices();
 #endif //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 	size_t m;
@@ -681,7 +681,7 @@ uint32_t CLASSNAME::TransformAndClip(
 						(*clipExtraTexCoords)[clipped_index] = texCoords[k0];
 #endif // I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-						(*clipExtraTexCoords2)[clipped_index] = texCoords[k0 + numVertices];
+						(*clipExtraTexCoords2)[clipped_index] = texCoords[k0 + numvertices];
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
@@ -804,7 +804,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif //	I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 						(*clipExtraTexCoords2)[clipped_index].Lerp(
-							texCoords[k0 + numVertices], texCoords[k1 + numVertices], a);
+							texCoords[k0 + numvertices], texCoords[k1 + numvertices], a);
 #endif //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
@@ -850,7 +850,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif //	I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 						(*clipExtraTexCoords2)[clipped_index].Lerp(
-							texCoords[k1 + numVertices], texCoords[k0 + numVertices], a);
+							texCoords[k1 + numvertices], texCoords[k0 + numvertices], a);
 #endif //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
@@ -909,7 +909,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 					srcPolygon.texCoords[2 * l]		= texCoords[indexK];
-					srcPolygon.texCoords[2 * l + 1] = texCoords[indexK + numVertices];
+					srcPolygon.texCoords[2 * l + 1] = texCoords[indexK + numvertices];
 #else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 					for (m = 0; m < currentNrOfPasses; m++)
@@ -1326,7 +1326,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #else  //	I_SAY_YES_TO_TERRAIN
 					texCoords.GetData(),
 #endif //	I_SAY_YES_TO_TERRAIN
-					texCoords.GetData() + numVertices, j
+					texCoords.GetData() + numvertices, j
 #if FOG_HACK
 					,
 					state.GetFogMode()
@@ -1351,7 +1351,7 @@ uint32_t CLASSNAME::TransformAndClip(
 					state.GetFogMode()
 #endif //	FOG_HACK
 				);
-				(*texCoords2)[tex2count++] = texCoords[numVertices + j];
+				(*texCoords2)[tex2count++] = texCoords[numvertices + j];
 			}
 #else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES

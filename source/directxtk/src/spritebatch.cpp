@@ -192,7 +192,7 @@ private:
         D3D12_INDEX_BUFFER_VIEW indexBufferView;
         wil::com_ptr<ID3D12RootSignature> rootSignatureStatic;
         wil::com_ptr<ID3D12RootSignature> rootSignatureHeap; 
-        ID3D12Device* mDevice;
+        ID3D12Device* m_device;
 
     private:
         void CreateIndexBuffer(_In_ ID3D12Device* device, ResourceUploadBatch& upload);
@@ -284,7 +284,7 @@ const D3D12_DEPTH_STENCIL_DESC SpriteBatchPipelineStateDescription::s_DefaultDep
 // Per-device constructor.
 SpriteBatch::Impl::DeviceResources::DeviceResources(_In_ ID3D12Device* device, ResourceUploadBatch& upload) :
     indexBufferView{},
-    mDevice(device)
+    m_device(device)
 {
     CreateIndexBuffer(device, upload);
     CreateRootSignatures(device);
@@ -655,7 +655,7 @@ void SpriteBatch::Impl::PrepareForRendering()
         ? mTransformMatrix
         : (mTransformMatrix * GetViewportTransform(mRotation));
 
-    mConstantBuffer = GraphicsMemory::Get(mDeviceResources->mDevice).AllocateConstant(transformMatrix);
+    mConstantBuffer = GraphicsMemory::Get(mDeviceResources->m_device).AllocateConstant(transformMatrix);
     commandList->SetGraphicsRootConstantBufferView(RootParameterIndex::ConstantBuffer, mConstantBuffer.GpuAddress());
 }
 
@@ -815,7 +815,7 @@ void SpriteBatch::Impl::RenderBatch(D3D12_GPU_DESCRIPTOR_HANDLE texture, DirectX
         // Allocate a new page of vertex memory if we're starting the batch
         if (mSpriteCount == 0)
         {
-            mVertexSegment = GraphicsMemory::Get(mDeviceResources->mDevice).Allocate(mVertexPageSize);
+            mVertexSegment = GraphicsMemory::Get(mDeviceResources->m_device).Allocate(mVertexPageSize);
         }
 
         auto vertices = static_cast<VertexPositionColorTexture*>(mVertexSegment.Memory()) + mSpriteCount * VerticesPerSprite;

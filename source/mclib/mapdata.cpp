@@ -108,11 +108,11 @@ MapData::destroy(void)
 
 //---------------------------------------------------------------------------
 void
-MapData::newInit(uint32_t numVertices)
+MapData::newInit(uint32_t numvertices)
 {
 	if (heap)
 		destroy();
-	int32_t result = createHeap((numVertices + 1) * sizeof(PostcompVertex));
+	int32_t result = createHeap((numvertices + 1) * sizeof(PostcompVertex));
 	gosASSERT(result == NO_ERROR);
 	result = commitHeap();
 	gosASSERT(result == NO_ERROR);
@@ -124,7 +124,7 @@ MapData::newInit(uint32_t numVertices)
 	blocks = (PostcompVertexPtr)start;
 	PostcompVertex* pTmp = blocks;
 	// gotta set all of the z's to 1
-	for (size_t i = 0; i < numVertices; ++i)
+	for (size_t i = 0; i < numvertices; ++i)
 	{
 		pTmp->vertexNormal.z = 1.0;
 		pTmp->terrainType = MC_MUD_TYPE;
@@ -138,9 +138,9 @@ MapData::newInit(uint32_t numVertices)
 
 //---------------------------------------------------------------------------
 void
-MapData::newInit(PacketFile* newFile, uint32_t numVertices)
+MapData::newInit(PacketFile* newFile, uint32_t numvertices)
 {
-	newInit(numVertices);
+	newInit(numvertices);
 	newFile->readPacket(newFile->getCurrentPacket(), (uint8_t*)blocks);
 	calcTransitions();
 }
@@ -158,7 +158,7 @@ void
 MapData::highlightAllTransitionsOver2(void)
 {
 	unhighlightAll();
-	PostcompVertexPtr currentVertex = blocks;
+	PostcompVertexPtr currentvertex = blocks;
 	//--------------------------------------------------------------------------
 	// This pass is used to mark the transitions over the value of 2
 	for (size_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
@@ -167,10 +167,10 @@ MapData::highlightAllTransitionsOver2(void)
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
-			PostcompVertex* pVertex1 = currentVertex;
-			PostcompVertex* pVertex2 = currentVertex + 1;
-			PostcompVertex* pVertex3 = currentVertex + Terrain::realVerticesMapSide + 1;
-			PostcompVertex* pVertex4 = currentVertex + Terrain::realVerticesMapSide;
+			PostcompVertex* pVertex1 = currentvertex;
+			PostcompVertex* pVertex2 = currentvertex + 1;
+			PostcompVertex* pVertex3 = currentvertex + Terrain::realVerticesMapSide + 1;
+			PostcompVertex* pVertex4 = currentvertex + Terrain::realVerticesMapSide;
 			//-------------------------------------------------------------------------------
 			int32_t totalNotEqual1 = abs((pVertex1->terrainType != pVertex2->terrainType) + (pVertex3->terrainType != pVertex4->terrainType) + (pVertex2->terrainType != pVertex4->terrainType));
 			int32_t totalNotEqual2 = abs((pVertex2->terrainType != pVertex3->terrainType) + (pVertex1->terrainType != pVertex4->terrainType) + (pVertex1->terrainType != pVertex3->terrainType));
@@ -181,9 +181,9 @@ MapData::highlightAllTransitionsOver2(void)
 				pVertex3->highlighted = true;
 				pVertex4->highlighted = true;
 			}
-			currentVertex++;
+			currentvertex++;
 		}
-		currentVertex++;
+		currentvertex++;
 	}
 }
 
@@ -191,7 +191,7 @@ MapData::highlightAllTransitionsOver2(void)
 void
 MapData::calcTransitions()
 {
-	PostcompVertexPtr currentVertex = blocks;
+	PostcompVertexPtr currentvertex = blocks;
 	//--------------------------------------------------------------------------
 	// This pass is used to calc the transitions.
 	for (size_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
@@ -200,10 +200,10 @@ MapData::calcTransitions()
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
-			PostcompVertex* pVertex1 = currentVertex;
-			PostcompVertex* pVertex2 = currentVertex + 1;
-			PostcompVertex* pVertex3 = currentVertex + Terrain::realVerticesMapSide + 1;
-			PostcompVertex* pVertex4 = currentVertex + Terrain::realVerticesMapSide;
+			PostcompVertex* pVertex1 = currentvertex;
+			PostcompVertex* pVertex2 = currentvertex + 1;
+			PostcompVertex* pVertex3 = currentvertex + Terrain::realVerticesMapSide + 1;
+			PostcompVertex* pVertex4 = currentvertex + Terrain::realVerticesMapSide;
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by
 			// TerrainTextureManager
@@ -219,9 +219,9 @@ MapData::calcTransitions()
 			uint32_t txmResult = Terrain::terrainTextures->setTexture(terrainType, overlayType);
 			pVertex1->textureData += txmResult;
 			gosASSERT((pVertex1->textureData & 0x0000ffff) != 0xffff);
-			currentVertex++;
+			currentvertex++;
 		}
-		currentVertex++;
+		currentvertex++;
 	}
 	uint32_t terrainType = MC_BLUEWATER_TYPE + (MC_BLUEWATER_TYPE << 8) + (MC_BLUEWATER_TYPE << 16) + (MC_BLUEWATER_TYPE << 24);
 	WaterTXMData = Terrain::terrainTextures->setTexture(terrainType, 0xffff);
@@ -236,7 +236,7 @@ int32_t waterTest = 0; // Stores the water test elevation.  Everything at or
 void
 MapData::calcWater(float wDepth, float sDepth, float aDepth)
 {
-	PostcompVertexPtr currentVertex = blocks;
+	PostcompVertexPtr currentvertex = blocks;
 	//---------------------------------------------------------------------------
 	// BETTER.  Store bits in top to indicate which way water goes.  Store 2
 	// bits so water doesn't have to animate either! Try random.  May look way
@@ -248,15 +248,15 @@ MapData::calcWater(float wDepth, float sDepth, float aDepth)
 	{
 		for (size_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
 		{
-			if (currentVertex->elevation < wDepth)
+			if (currentvertex->elevation < wDepth)
 			{
-				currentVertex->water = 1 + marker;
+				currentvertex->water = 1 + marker;
 			}
 			else
 			{
-				currentVertex->water = 0 + marker;
+				currentvertex->water = 0 + marker;
 			}
-			currentVertex++;
+			currentvertex++;
 			if (RollDice(50))
 				odd1 ^= true;
 			if (RollDice(50))
@@ -264,7 +264,7 @@ MapData::calcWater(float wDepth, float sDepth, float aDepth)
 			marker = (odd1 ? 0x80 : 0x0);
 			marker += (odd2 ? 0x40 : 0x0);
 		}
-		currentVertex++; // Do not flip odd here so each row starts opposite the
+		currentvertex++; // Do not flip odd here so each row starts opposite the
 			// previous
 	}
 	Terrain::waterElevation = wDepth + sDepth;
@@ -277,7 +277,7 @@ MapData::calcWater(float wDepth, float sDepth, float aDepth)
 void
 MapData::recalcWater(void)
 {
-	PostcompVertexPtr currentVertex = blocks;
+	PostcompVertexPtr currentvertex = blocks;
 	bool odd1 = false;
 	bool odd2 = false;
 	uint8_t marker = 0;
@@ -285,15 +285,15 @@ MapData::recalcWater(void)
 	{
 		for (size_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
 		{
-			if (currentVertex->elevation < waterDepth)
+			if (currentvertex->elevation < waterDepth)
 			{
-				currentVertex->water = 1 + marker;
+				currentvertex->water = 1 + marker;
 			}
 			else
 			{
-				currentVertex->water = 0 + marker;
+				currentvertex->water = 0 + marker;
 			}
-			currentVertex++;
+			currentvertex++;
 			if (RollDice(50))
 				odd1 ^= true;
 			if (RollDice(50))
@@ -301,7 +301,7 @@ MapData::recalcWater(void)
 			marker = (odd1 ? 0x80 : 0x0);
 			marker += (odd2 ? 0x40 : 0x0);
 		}
-		currentVertex++; // Do not flip odd here so each row starts opposite the
+		currentvertex++; // Do not flip odd here so each row starts opposite the
 			// previous
 	}
 }
@@ -349,7 +349,7 @@ MapData::calcLight(void)
 	// Let's calc the map dimensions...
 	int32_t height, width;
 	height = width = Terrain::verticesBlockSide * Terrain::blocksMapSide;
-	int32_t totalVertices = height * width;
+	int32_t totalvertices = height * width;
 	Stuff::Vector3D lightDir;
 	lightDir.x = lightDir.y = 0.0f;
 	lightDir.z = 1.0f;
@@ -358,8 +358,8 @@ MapData::calcLight(void)
 	lightDir *= 64.0f;
 	//---------------------
 	// Lighting Pass Here
-	PostcompVertexPtr currentVertex = blocks;
-	for (size_t i = 0; i < totalVertices; i++)
+	PostcompVertexPtr currentvertex = blocks;
+	for (size_t i = 0; i < totalvertices; i++)
 	{
 		int32_t diskMapIndex = i;
 		int32_t x = i % Terrain::realVerticesMapSide;
@@ -372,7 +372,7 @@ MapData::calcLight(void)
 			// Cant generate a normal.  TOO close to edge.
 			// Default data please!
 		}
-		else if (((diskMapIndex + 1) >= totalVertices) || ((diskMapIndex + Terrain::realVerticesMapSide) >= totalVertices) || ((diskMapIndex + Terrain::realVerticesMapSide + 1) >= totalVertices))
+		else if (((diskMapIndex + 1) >= totalvertices) || ((diskMapIndex + Terrain::realVerticesMapSide) >= totalvertices) || ((diskMapIndex + Terrain::realVerticesMapSide + 1) >= totalvertices))
 		{
 			//---------------------------------------------
 			// Cant generate a normal.  TOO close to edge.
@@ -384,15 +384,15 @@ MapData::calcLight(void)
 			// No problem
 			// Generate at will!
 			PostcompVertexPtr v0, v1, v2, v3, v4, v5, v6, v7, v8;
-			v0 = currentVertex;
-			v1 = currentVertex - Terrain::realVerticesMapSide - 1;
-			v2 = currentVertex - Terrain::realVerticesMapSide;
-			v3 = currentVertex - Terrain::realVerticesMapSide + 1;
-			v4 = currentVertex + 1;
-			v5 = currentVertex + Terrain::realVerticesMapSide + 1;
-			v6 = currentVertex + Terrain::realVerticesMapSide;
-			v7 = currentVertex + Terrain::realVerticesMapSide - 1;
-			v8 = currentVertex - 1;
+			v0 = currentvertex;
+			v1 = currentvertex - Terrain::realVerticesMapSide - 1;
+			v2 = currentvertex - Terrain::realVerticesMapSide;
+			v3 = currentvertex - Terrain::realVerticesMapSide + 1;
+			v4 = currentvertex + 1;
+			v5 = currentvertex + Terrain::realVerticesMapSide + 1;
+			v6 = currentvertex + Terrain::realVerticesMapSide;
+			v7 = currentvertex + Terrain::realVerticesMapSide - 1;
+			v8 = currentvertex - 1;
 			//-----------------------------------------------------
 			// Try and project shadow lines.
 			if (Terrain::recalcShadows)
@@ -508,15 +508,15 @@ MapData::calcLight(void)
 			normals[7].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[7].z > 0.0);
 			normals[7].Normalize(normals[7]);
-			currentVertex->vertexNormal.x = normals[0].x + normals[1].x + normals[2].x + normals[3].x + normals[4].x + normals[5].x + normals[6].x + normals[7].x;
-			currentVertex->vertexNormal.y = normals[0].y + normals[1].y + normals[2].y + normals[3].y + normals[4].y + normals[5].y + normals[6].y + normals[7].y;
-			currentVertex->vertexNormal.z = normals[0].z + normals[1].z + normals[2].z + normals[3].z + normals[4].z + normals[5].z + normals[6].z + normals[7].z;
-			currentVertex->vertexNormal.x /= 8.0;
-			currentVertex->vertexNormal.y /= 8.0;
-			currentVertex->vertexNormal.z /= 8.0;
-			gosASSERT(currentVertex->vertexNormal.z > 0.0);
+			currentvertex->vertexNormal.x = normals[0].x + normals[1].x + normals[2].x + normals[3].x + normals[4].x + normals[5].x + normals[6].x + normals[7].x;
+			currentvertex->vertexNormal.y = normals[0].y + normals[1].y + normals[2].y + normals[3].y + normals[4].y + normals[5].y + normals[6].y + normals[7].y;
+			currentvertex->vertexNormal.z = normals[0].z + normals[1].z + normals[2].z + normals[3].z + normals[4].z + normals[5].z + normals[6].z + normals[7].z;
+			currentvertex->vertexNormal.x /= 8.0;
+			currentvertex->vertexNormal.y /= 8.0;
+			currentvertex->vertexNormal.z /= 8.0;
+			gosASSERT(currentvertex->vertexNormal.z > 0.0);
 		}
-		currentVertex++;
+		currentvertex++;
 	}
 	Terrain::recalcShadows = false;
 }
@@ -529,12 +529,12 @@ MapData::clearShadows()
 	// Let's calc the map dimensions...
 	int32_t height, width;
 	height = width = Terrain::verticesBlockSide * Terrain::blocksMapSide;
-	int32_t totalVertices = height * width;
-	PostcompVertexPtr currentVertex = blocks;
-	for (size_t i = 0; i < totalVertices; i++)
+	int32_t totalvertices = height * width;
+	PostcompVertexPtr currentvertex = blocks;
+	for (size_t i = 0; i < totalvertices; i++)
 	{
-		currentVertex->shadow = 0;
-		currentVertex++;
+		currentvertex->shadow = 0;
+		currentvertex++;
 	}
 }
 
@@ -657,7 +657,7 @@ MapData::makeLists(
 	int32_t topLeftX = float2long(topLeftVertex.x);
 	int32_t topLeftY = float2long(topLeftVertex.y);
 	PostcompVertexPtr Pvertex = nullptr;
-	VertexPtr currentVertex = vertexList;
+	VertexPtr currentvertex = vertexList;
 	numVerts = 0;
 	int32_t y;
 	for (y = 0; y < Terrain::visibleVerticesPerSide; y++)
@@ -669,36 +669,36 @@ MapData::makeLists(
 				//------------------------------------------------------------
 				// Point this to the Blank Vertex
 				Pvertex = blankVertex;
-				currentVertex->vertexNum = -1;
+				currentvertex->vertexNum = -1;
 			}
 			else
 			{
 				Pvertex = &blocks[topLeftX + (topLeftY * Terrain::realVerticesMapSide)];
-				currentVertex->vertexNum = topLeftX + (topLeftY * Terrain::realVerticesMapSide);
+				currentvertex->vertexNum = topLeftX + (topLeftY * Terrain::realVerticesMapSide);
 			}
 			gosASSERT(Pvertex != nullptr);
-			currentVertex->pVertex = Pvertex;
+			currentvertex->pVertex = Pvertex;
 			//------------------------------------------------
 			// Must be calced from ABS positions now!
 			int32_t blockX = (topLeftX / Terrain::verticesBlockSide);
 			int32_t blockY = (topLeftY / Terrain::verticesBlockSide);
 			int32_t vertexX = topLeftX - (blockX * Terrain::verticesBlockSide);
 			int32_t vertexY = topLeftY - (blockY * Terrain::verticesBlockSide);
-			currentVertex->blockVertex = ((blockX + (blockY * Terrain::blocksMapSide)) << 16) + (vertexX + (vertexY * Terrain::verticesBlockSide));
+			currentvertex->blockVertex = ((blockX + (blockY * Terrain::blocksMapSide)) << 16) + (vertexX + (vertexY * Terrain::verticesBlockSide));
 			//----------------------------------------------------------------------
 			// From Blocks and vertex, calculate the World Position
-			currentVertex->vx =
+			currentvertex->vx =
 				float(topLeftX - Terrain::halfVerticesMapSide) * Terrain::worldUnitsPerVertex;
-			currentVertex->vy =
+			currentvertex->vy =
 				float(Terrain::halfVerticesMapSide - topLeftY) * Terrain::worldUnitsPerVertex;
 			//----------------------------------------------------------------------
 			int32_t posTileR = topLeftY;
 			int32_t posTileC = topLeftX;
-			currentVertex->posTile = (posTileR << 16) + (posTileC & 0x0000ffff);
-			currentVertex->calcThisFrame = 0;
-			currentVertex->px = currentVertex->py = -99999.0f;
-			currentVertex->clipInfo = false;
-			currentVertex++;
+			currentvertex->posTile = (posTileR << 16) + (posTileC & 0x0000ffff);
+			currentvertex->calcThisFrame = 0;
+			currentvertex->px = currentvertex->py = -99999.0f;
+			currentvertex->clipInfo = false;
+			currentvertex++;
 			numVerts++;
 			topLeftX++;
 		}
@@ -708,7 +708,7 @@ MapData::makeLists(
 	//---------------------------------------------------------------
 	// Now that the vertex list is done, use it to create a tile
 	// list which corresponds to the correct vertices.
-	currentVertex = vertexList;
+	currentvertex = vertexList;
 	TerrainQuadPtr currentQuad = quadList;
 	numQuads = 0;
 	topLeftY = float2long(topLeftVertex.y);
@@ -723,10 +723,10 @@ MapData::makeLists(
 		for (size_t x = 0; x < maxX; x++)
 		{
 			VertexPtr v0, v1, v2, v3;
-			v0 = currentVertex;
-			v1 = currentVertex + 1;
-			v2 = currentVertex + Terrain::visibleVerticesPerSide + 1;
-			v3 = currentVertex + Terrain::visibleVerticesPerSide;
+			v0 = currentvertex;
+			v1 = currentvertex + 1;
+			v2 = currentvertex + Terrain::visibleVerticesPerSide + 1;
+			v3 = currentvertex + Terrain::visibleVerticesPerSide;
 #ifdef _DEBUG
 			v0->selected = false;
 #endif
@@ -770,13 +770,13 @@ MapData::makeLists(
 					}
 				}
 			}
-			gosASSERT(currentVertex->pVertex->vertexNormal.z > 0.0);
-			currentVertex++;
+			gosASSERT(currentvertex->pVertex->vertexNormal.z > 0.0);
+			currentvertex++;
 		}
 		//----------------------------------------------------------------
 		// We are pointing to the last vertex in the row.  Increment again
 		// to point to first vertex in next row.
-		currentVertex++;
+		currentvertex++;
 	}
 }
 
@@ -847,16 +847,16 @@ MapData::setTerrain(int32_t indexY, int32_t indexX, int32_t Type)
 		if ((indexX > -1 && indexX < Terrain::realVerticesMapSide - 1) && (indexY > -1 && indexY < Terrain::realVerticesMapSide - 1))
 		{
 			int32_t index = Vertices[i][x] + Vertices[i][y] * Terrain::realVerticesMapSide;
-			PostcompVertexPtr currentVertex = &blocks[index];
-			currentVertex->textureData &= 0xffff0000;
+			PostcompVertexPtr currentvertex = &blocks[index];
+			currentvertex->textureData &= 0xffff0000;
 			if (i == 0 && Type > 0)
-				currentVertex->terrainType = Type;
+				currentvertex->terrainType = Type;
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
-			PostcompVertex* pVertex1 = currentVertex;
-			PostcompVertex* pVertex2 = currentVertex + 1;
-			PostcompVertex* pVertex3 = currentVertex + Terrain::realVerticesMapSide + 1;
-			PostcompVertex* pVertex4 = currentVertex + Terrain::realVerticesMapSide;
+			PostcompVertex* pVertex1 = currentvertex;
+			PostcompVertex* pVertex2 = currentvertex + 1;
+			PostcompVertex* pVertex3 = currentvertex + Terrain::realVerticesMapSide + 1;
+			PostcompVertex* pVertex4 = currentvertex + Terrain::realVerticesMapSide;
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by
 			// TerrainTextureManager

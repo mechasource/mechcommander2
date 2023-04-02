@@ -368,10 +368,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\directxtk\src\binaryreader.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\directxtk\src\bufferhelpers.cpp"
 					>
 				</File>
@@ -424,10 +420,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\directxtk\src\gamepad.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\directxtk\src\geometricprimitive.cpp"
 					>
 				</File>
@@ -437,10 +429,6 @@
 				</File>
 				<File
 					RelativePath="..\directxtk\src\graphicsmemory.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\directxtk\src\keyboard.cpp"
 					>
 				</File>
 				<File
@@ -457,10 +445,6 @@
 				</File>
 				<File
 					RelativePath="..\directxtk\src\modelloadvbo.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\directxtk\src\mouse.cpp"
 					>
 				</File>
 				<File
@@ -485,10 +469,6 @@
 				</File>
 				<File
 					RelativePath="..\directxtk\src\screengrab.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\directxtk\src\simplemath.cpp"
 					>
 				</File>
 				<File
@@ -553,6 +533,30 @@
 				</File>
 				<File
 					RelativePath="..\directxtk\audio\wavfilereader.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="shared"
+				>
+				<File
+					RelativePath="..\directxtk\src\binaryreader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\gamepad.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\keyboard.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\mouse.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\directxtk\src\simplemath.cpp"
 					>
 				</File>
 			</Filter>

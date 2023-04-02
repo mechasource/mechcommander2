@@ -673,7 +673,7 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
-					uint32_t gosTextureHandle = 0;
+					uint32_t texturehandle = 0;
 					if (!i)
 					{
 						localTextureHandle = mcTextureManager->loadTexture(textureName,
@@ -683,15 +683,15 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 					}
 					else
 					{
-						gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-						gvShape->SetTextureHandle(i, gosTextureHandle);
+						gvShape->SetTextureHandle(i, texturehandle);
 						gvShape->SetTextureAlpha(i, true);
 					}
 				}
 				else
 				{
-					uint32_t gosTextureHandle = 0;
+					uint32_t texturehandle = 0;
 					if (!i)
 					{
 						localTextureHandle = mcTextureManager->loadTexture(textureName,
@@ -701,9 +701,9 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 					}
 					else
 					{
-						gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-						gvShape->SetTextureHandle(i, gosTextureHandle);
+						gvShape->SetTextureHandle(i, texturehandle);
 						gvShape->SetTextureAlpha(i, false);
 					}
 				}
@@ -731,18 +731,18 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName, "a_", 2) == 0)
 					{
-						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						uint32_t texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-						gosASSERT(gosTextureHandle != 0xffffffff);
-						gvShadowShape->SetTextureHandle(i, gosTextureHandle);
+						gosASSERT(texturehandle != 0xffffffff);
+						gvShadowShape->SetTextureHandle(i, texturehandle);
 						gvShadowShape->SetTextureAlpha(i, true);
 					}
 					else
 					{
-						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						uint32_t texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-						gosASSERT(gosTextureHandle != 0xffffffff);
-						gvShadowShape->SetTextureHandle(i, gosTextureHandle);
+						gosASSERT(texturehandle != 0xffffffff);
+						gvShadowShape->SetTextureHandle(i, texturehandle);
 						gvShadowShape->SetTextureAlpha(i, false);
 					}
 				}
@@ -771,16 +771,16 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-					sensorTriangleShape->SetTextureHandle(i, gosTextureHandle);
+					sensorTriangleShape->SetTextureHandle(i, texturehandle);
 					sensorTriangleShape->SetTextureAlpha(i, true);
 				}
 				else
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-					sensorTriangleShape->SetTextureHandle(i, gosTextureHandle);
+					sensorTriangleShape->SetTextureHandle(i, texturehandle);
 					sensorTriangleShape->SetTextureAlpha(i, false);
 				}
 			}
@@ -805,16 +805,16 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-					sensorCircleShape->SetTextureHandle(i, gosTextureHandle);
+					sensorCircleShape->SetTextureHandle(i, texturehandle);
 					sensorCircleShape->SetTextureAlpha(i, true);
 				}
 				else
 				{
-					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+					uint32_t texturehandle = mcTextureManager->loadTexture(
 						textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-					sensorCircleShape->SetTextureHandle(i, gosTextureHandle);
+					sensorCircleShape->SetTextureHandle(i, texturehandle);
 					sensorCircleShape->SetTextureAlpha(i, false);
 				}
 			}
@@ -952,7 +952,7 @@ GVAppearance::setObjStatus(int32_t oStatus)
 			{
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
-					uint32_t gosTextureHandle = 0;
+					uint32_t texturehandle = 0;
 					if (!i)
 					{
 						localTextureHandle = mcTextureManager->loadTexture(textureName,
@@ -962,15 +962,15 @@ GVAppearance::setObjStatus(int32_t oStatus)
 					}
 					else
 					{
-						gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
-						gvShape->SetTextureHandle(i, gosTextureHandle);
+						gvShape->SetTextureHandle(i, texturehandle);
 						gvShape->SetTextureAlpha(i, true);
 					}
 				}
 				else
 				{
-					uint32_t gosTextureHandle = 0;
+					uint32_t texturehandle = 0;
 					if (!i)
 					{
 						localTextureHandle = mcTextureManager->loadTexture(textureName,
@@ -980,9 +980,9 @@ GVAppearance::setObjStatus(int32_t oStatus)
 					}
 					else
 					{
-						gosTextureHandle = mcTextureManager->loadTexture(textureName,
+						texturehandle = mcTextureManager->loadTexture(textureName,
 							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
-						gvShape->SetTextureHandle(i, gosTextureHandle);
+						gvShape->SetTextureHandle(i, texturehandle);
 						gvShape->SetTextureAlpha(i, false);
 					}
 				}
@@ -1588,20 +1588,20 @@ GVAppearance::recalcBounds(void)
 								{
 									if (strnicmp(txmName, "a_", 2) == 0)
 									{
-										uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+										uint32_t texturehandle = mcTextureManager->loadTexture(
 											textureName, gos_Texture_Alpha,
 											gosHint_DisableMipmap | gosHint_DontShrink);
-										gosASSERT(gosTextureHandle != 0xffffffff);
-										gvShape->SetTextureHandle(j, gosTextureHandle);
+										gosASSERT(texturehandle != 0xffffffff);
+										gvShape->SetTextureHandle(j, texturehandle);
 										gvShape->SetTextureAlpha(j, true);
 									}
 									else
 									{
-										uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+										uint32_t texturehandle = mcTextureManager->loadTexture(
 											textureName, gos_Texture_Solid,
 											gosHint_DisableMipmap | gosHint_DontShrink);
-										gosASSERT(gosTextureHandle != 0xffffffff);
-										gvShape->SetTextureHandle(j, gosTextureHandle);
+										gosASSERT(texturehandle != 0xffffffff);
+										gvShape->SetTextureHandle(j, texturehandle);
 										gvShape->SetTextureAlpha(j, false);
 									}
 								}

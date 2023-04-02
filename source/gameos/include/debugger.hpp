@@ -40,9 +40,9 @@ extern uint32_t DoUpdateWindow;
 extern uint32_t DoingAdvance;
 extern uint32_t OldgStopSystem;
 extern uint32_t OldgGameLogicActive;
-extern uint8_t MenuActive;
-extern uint8_t SubMenuActive;
-extern uint8_t DebounceMenu;
+extern BOOLEAN MenuActive;
+extern BOOLEAN SubMenuActive;
+extern BOOLEAN DebounceMenu;
 extern uint32_t OldStop;
 extern uint32_t OldRendering;
 extern int32_t AreaL, AreaR, AreaT, AreaB;
@@ -59,7 +59,7 @@ extern uint32_t gScreenBMP;
 
 void __stdcall WalkStack(
 	uint32_t* RoutineAddresses, uint32_t NumberOfLevels, uint32_t IgnoreLevels);
-PSTR __stdcall DecodeAddress(uint32_t Address, uint8_t brief /* = true*/);
+PSTR __stdcall DecodeAddress(uint32_t Address, BOOLEAN brief /* = true*/);
 void __stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t colour);
 
 typedef struct _MenuItem
@@ -68,8 +68,8 @@ typedef struct _MenuItem
 	struct _MenuItem* pSubMenu; // Pointer to sub menu list, or nullptr
 	uint32_t(__stdcall* Callback)(PSTR Name, uint32_t MenuFunction);
 	void(__stdcall* Routine)(void); // Sub menu list pointer
-	uint8_t(__stdcall* Greyed)(void);
-	uint8_t(__stdcall* CheckMark)(void); // 0 When no check mark routine, 1 when sub menu
+	BOOLEAN(__stdcall* Greyed)(void);
+	BOOLEAN(__stdcall* CheckMark)(void); // 0 When no check mark routine, 1 when sub menu
 	PSTR FullName;
 	PSTR Name;
 } MenuItem;
@@ -109,7 +109,7 @@ typedef struct _TextureHeap
 extern TextureHeap* pTextureHeap;
 extern uint32_t SelectedHandle;
 extern uint32_t TextureToUnload;
-bool __stdcall CheckWindow(void);
+BOOLEAN __stdcall CheckWindow(void);
 
 //
 // Main Debugger Screens
@@ -161,9 +161,9 @@ extern uint32_t ShowColorInfo;
 //
 // True when the debugger window is visible on the display
 //
-extern uint8_t DebuggerActive;
-extern uint8_t InDebugger; // During debugger rendering
-extern uint8_t ProcessMemorySize; // When true will calculate each processes
+extern BOOLEAN DebuggerActive;
+extern BOOLEAN InDebugger; // During debugger rendering
+extern BOOLEAN ProcessMemorySize; // When true will calculate each processes
 	// memory size in the exception handler (can
 	// take about 1 second!)
 extern int32_t ZoomMode; // Zoom screen around cursor
@@ -187,9 +187,11 @@ extern uint32_t DebuggerAlpha;
 //
 // Mouse position
 //
-extern int32_t DBMouseX, DBMouseY;
+extern int32_t DBMouseX;
+extern int32_t DBMouseY;
 extern uint32_t DBMouseMoved;
-extern int32_t ExMouseX, ExMouseY;
+extern int32_t ExMouseX;
+extern int32_t ExMouseY;
 extern uint32_t DBButtons;
 
 extern uint32_t gEnableMulti;
@@ -226,7 +228,7 @@ extern uint32_t gStopGameRendering;
 extern uint32_t gStopRendering; // Stop rendering
 extern uint32_t gFreezeLogic; // Stop rendering
 extern uint32_t gShowLFControls;
-extern bool NoDebuggerStats; // When 0 Stats and spews are active during GameOS functions like debugger
+extern BOOLEAN NoDebuggerStats; // When 0 Stats and spews are active during GameOS functions like debugger
 extern uint32_t gEnableRS;
 extern uint32_t gTextureOverrun;
 extern uint32_t gDisableLighting;

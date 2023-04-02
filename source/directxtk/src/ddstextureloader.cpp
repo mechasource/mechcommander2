@@ -292,7 +292,7 @@ namespace
         D3D12_RESOURCE_DIMENSION resDim = D3D12_RESOURCE_DIMENSION_UNKNOWN;
         uint32_t arraySize = 1;
         DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN;
-        bool isCubeMap = false;
+        bool iscubemap = false;
 
         size_t mipCount = header->mipMapCount;
         if (0 == mipCount)
@@ -346,7 +346,7 @@ namespace
                 if (d3d10ext->miscFlag & 0x4 /* RESOURCE_MISC_TEXTURECUBE */)
                 {
                     arraySize *= 6;
-                    isCubeMap = true;
+                    iscubemap = true;
                 }
                 depth = 1;
                 break;
@@ -402,7 +402,7 @@ namespace
                     }
 
                     arraySize = 6;
-                    isCubeMap = true;
+                    iscubemap = true;
                 }
 
                 depth = 1;
@@ -433,7 +433,7 @@ namespace
             break;
 
         case D3D12_RESOURCE_DIMENSION_TEXTURE2D:
-            if (isCubeMap)
+            if (iscubemap)
             {
                 // This is the right bound because we set arraySize to (NumCubes*6) above
                 if ((arraySize > D3D12_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION) ||
@@ -485,7 +485,7 @@ namespace
 
         if (outIsCubeMap != nullptr)
         {
-            *outIsCubeMap = isCubeMap;
+            *outIsCubeMap = iscubemap;
         }
 
         // Create the texture
@@ -555,20 +555,18 @@ namespace
         _In_ ID3D12Resource** texture) noexcept
     {
 #if !defined(NO_D3D12_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
-        if (texture && *texture)
-        {
-            const std::wstring_view& pstrName = wcsrchr(filename, '\\');
-            if (!pstrName)
-            {
-                pstrName = filename;
-            }
-            else
-            {
-                pstrName++;
-            }
-
-            (*texture)->SetName(pstrName);
-        }
+		if (texture && *texture && !filename.empty())
+		{
+			size_t pos = filename.find_last_of('\\');
+			if (pos < filename.length())
+			{
+				(*texture)->SetName(filename.substr(pos + 1).data());
+			}
+			else
+			{
+				(*texture)->SetName(filename.data());
+			}
+		}
 #else
         UNREFERENCED_PARAMETER(filename);
         UNREFERENCED_PARAMETER(texture);
@@ -600,7 +598,7 @@ HRESULT directxtk::LoadDDSTextureFromMemory(
     std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     size_t maxsize,
     DDS_ALPHA_MODE* alphaMode,
-    bool* isCubeMap)
+    bool* iscubemap)
 {
     return LoadDDSTextureFromMemoryEx(
         d3dDevice,
@@ -612,7 +610,7 @@ HRESULT directxtk::LoadDDSTextureFromMemory(
         texture,
         subresources,
         alphaMode,
-        isCubeMap);
+        iscubemap);
 }
 
 
@@ -627,7 +625,7 @@ HRESULT directxtk::LoadDDSTextureFromMemoryEx(
     ID3D12Resource** texture,
     std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     DDS_ALPHA_MODE* alphaMode,
-    bool* isCubeMap)
+    bool* iscubemap)
 {
     if (texture)
     {
@@ -637,9 +635,9 @@ HRESULT directxtk::LoadDDSTextureFromMemoryEx(
     {
         *alphaMode = DDS_ALPHA_MODE_UNKNOWN;
     }
-    if (isCubeMap)
+    if (iscubemap)
     {
-        *isCubeMap = false;
+        *iscubemap = false;
     }
 
     if (!d3dDevice || !ddsData || !texture)
@@ -666,7 +664,7 @@ HRESULT directxtk::LoadDDSTextureFromMemoryEx(
     hr = CreateTextureFromDDS(d3dDevice,
         header, bitData, bitSize, maxsize,
         resFlags, loadFlags,
-        texture, subresources, isCubeMap);
+        texture, subresources, iscubemap);
     if (SUCCEEDED(hr))
     {
         if (texture && *texture)
@@ -692,7 +690,7 @@ HRESULT directxtk::LoadDDSTextureFromFile(
     std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     size_t maxsize,
     DDS_ALPHA_MODE* alphaMode,
-    bool* isCubeMap)
+    bool* iscubemap)
 {
     return LoadDDSTextureFromFileEx(
         d3dDevice,
@@ -704,7 +702,7 @@ HRESULT directxtk::LoadDDSTextureFromFile(
         ddsData,
         subresources,
         alphaMode,
-        isCubeMap);
+        iscubemap);
 }
 
 _Use_decl_annotations_
@@ -718,7 +716,7 @@ HRESULT directxtk::LoadDDSTextureFromFileEx(
     std::unique_ptr<uint8_t[]>& ddsData,
     std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     DDS_ALPHA_MODE* alphaMode,
-    bool* isCubeMap)
+    bool* iscubemap)
 {
     if (texture)
     {
@@ -728,12 +726,12 @@ HRESULT directxtk::LoadDDSTextureFromFileEx(
     {
         *alphaMode = DDS_ALPHA_MODE_UNKNOWN;
     }
-    if (isCubeMap)
+    if (iscubemap)
     {
-        *isCubeMap = false;
+        *iscubemap = false;
     }
 
-    if (!d3dDevice || !filename || !texture)
+    if (!d3dDevice || filename.empty() || !texture)
     {
         return E_INVALIDARG;
     }
@@ -756,7 +754,7 @@ HRESULT directxtk::LoadDDSTextureFromFileEx(
     hr = CreateTextureFromDDS(d3dDevice,
         header, bitData, bitSize, maxsize,
         resFlags, loadFlags,
-        texture, subresources, isCubeMap);
+        texture, subresources, iscubemap);
 
     if (SUCCEEDED(hr))
     {
@@ -780,7 +778,7 @@ HRESULT directxtk::CreateDDSTextureFromMemory(
     bool generateMipsIfMissing,
     size_t maxsize,
     DDS_ALPHA_MODE* alphaMode,
-    bool* isCubeMap)
+    bool* iscubemap)
 {
     return CreateDDSTextureFromMemoryEx(
         d3dDevice,
@@ -792,7 +790,7 @@ HRESULT directxtk::CreateDDSTextureFromMemory(
         generateMipsIfMissing ? DDS_LOADER_MIP_AUTOGEN : DDS_LOADER_DEFAULT,
         texture,
         alphaMode,
-        isCubeMap);
+        iscubemap);
 }
 
 
@@ -807,7 +805,7 @@ HRESULT directxtk::CreateDDSTextureFromMemoryEx(
     DDS_LOADER_FLAGS loadFlags,
     ID3D12Resource** texture,
     DDS_ALPHA_MODE* alphaMode,
-    bool* isCubeMap)
+    bool* iscubemap)
 {
     if (texture)
     {
@@ -817,9 +815,9 @@ HRESULT directxtk::CreateDDSTextureFromMemoryEx(
     {
         *alphaMode = DDS_ALPHA_MODE_UNKNOWN;
     }
-    if (isCubeMap)
+    if (iscubemap)
     {
-        *isCubeMap = false;
+        *iscubemap = false;
     }
 
     if (!d3dDevice || !ddsData || !texture)
@@ -857,7 +855,7 @@ HRESULT directxtk::CreateDDSTextureFromMemoryEx(
     hr = CreateTextureFromDDS(d3dDevice,
         header, bitData, bitSize, maxsize,
         resFlags, loadFlags,
-        texture, subresources, isCubeMap);
+        texture, subresources, iscubemap);
 
     if (SUCCEEDED(hr))
     {
@@ -901,7 +899,7 @@ HRESULT directxtk::CreateDDSTextureFromFile(
     bool generateMipsIfMissing,
     size_t maxsize,
     DDS_ALPHA_MODE* alphaMode,
-    bool* isCubeMap)
+    bool* iscubemap)
 {
     return CreateDDSTextureFromFileEx(
         d3dDevice,
@@ -912,7 +910,7 @@ HRESULT directxtk::CreateDDSTextureFromFile(
         generateMipsIfMissing ? DDS_LOADER_MIP_AUTOGEN : DDS_LOADER_DEFAULT,
         texture,
         alphaMode,
-        isCubeMap);
+        iscubemap);
 }
 
 _Use_decl_annotations_
@@ -925,7 +923,7 @@ HRESULT directxtk::CreateDDSTextureFromFileEx(
     DDS_LOADER_FLAGS loadFlags,
     ID3D12Resource** texture,
     DDS_ALPHA_MODE* alphaMode,
-    bool* isCubeMap)
+    bool* iscubemap)
 {
     if (texture)
     {
@@ -935,12 +933,12 @@ HRESULT directxtk::CreateDDSTextureFromFileEx(
     {
         *alphaMode = DDS_ALPHA_MODE_UNKNOWN;
     }
-    if (isCubeMap)
+    if (iscubemap)
     {
-        *isCubeMap = false;
+        *iscubemap = false;
     }
 
-    if (!d3dDevice || !filename || !texture)
+    if (!d3dDevice || filename.empty() || !texture)
     {
         return E_INVALIDARG;
     }
@@ -975,7 +973,7 @@ HRESULT directxtk::CreateDDSTextureFromFileEx(
     hr = CreateTextureFromDDS(d3dDevice,
         header, bitData, bitSize, maxsize,
         resFlags, loadFlags,
-        texture, subresources, isCubeMap);
+        texture, subresources, iscubemap);
 
     if (SUCCEEDED(hr))
     {

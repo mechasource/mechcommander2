@@ -43,7 +43,7 @@ public:
 	void Init() { flags = 0; }
 
 	// Accessors
-	inline bool IsMulticast()
+	inline BOOLEAN IsMulticast()
 	{
 		if (flags & MulticastFlag)
 			return true;
@@ -51,7 +51,7 @@ public:
 			return false;
 	}
 
-	inline bool IsGuaranteed()
+	inline BOOLEAN IsGuaranteed()
 	{
 		if (flags & GuaranteedFlag)
 			return true;
@@ -83,7 +83,7 @@ public:
 class MessageTagger
 {
 public:
-	uint8_t sendCounts[MAXPLAYERS];
+	BOOLEAN sendCounts[MAXPLAYERS];
 
 	inline void Clear()
 	{
@@ -125,7 +125,7 @@ private:
 		FIGuaranteedMessageHeader() {}
 
 public:
-	uint8_t buffer[0];
+	BOOLEAN buffer[0];
 };
 
 class FIGenericMessage : public FIMessageHeader
@@ -138,7 +138,7 @@ private:
 		FIMessageHeader() {}
 
 public:
-	uint8_t buffer[0];
+	BOOLEAN buffer[0];
 };
 
 class FIVerifyCluster : public FIMessageHeader
@@ -148,7 +148,7 @@ protected:
 		FIMessageHeader() {}
 
 public:
-	uint8_t n_messages;
+	BOOLEAN n_messages;
 	MessageTagger message[0];
 
 	void Init()
@@ -163,7 +163,7 @@ class FIPlayerIDMessage : public FIGuaranteedMessageHeader
 {
 public:
 	uint32_t playerID[MAXPLAYERS];
-	uint8_t serverIndex;
+	BOOLEAN serverIndex;
 
 	FIPlayerIDMessage() :
 		FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERID); }

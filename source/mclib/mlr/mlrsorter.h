@@ -30,7 +30,7 @@ class SortData
 {
 public:
 	SortData(void) :
-		vertices(nullptr), indices(nullptr), numVertices(0), numIndices(0), type(TriList),
+		vertices(nullptr), indices(nullptr), numvertices(0), numIndices(0), type(TriList),
 		texture2(0)
 	{
 	}
@@ -66,7 +66,7 @@ public:
 	MLRState state;
 	PVOID vertices;
 	uint16_t* indices;
-	uint32_t numVertices;
+	uint32_t numvertices;
 	uint32_t numIndices;
 	uint32_t type;
 	uint32_t texture2;
@@ -145,10 +145,10 @@ public:
 	virtual void StartDraw(const MLRState& default_state);
 
 	// enter raw data
-	SortData* SetRawData(PVOID vertices, uint32_t numVertices, const MLRState& state,
+	SortData* SetRawData(PVOID vertices, uint32_t numvertices, const MLRState& state,
 		const int32_t& mode, int32_t tex2 = 0);
 
-	SortData* SetRawIndexedData(PVOID vertices, uint32_t numVertices, uint16_t* indices,
+	SortData* SetRawIndexedData(PVOID vertices, uint32_t numvertices, uint16_t* indices,
 		int32_t numIndices, const MLRState& state, const int32_t& mode, int32_t tex2 = 0);
 
 	SortData* SetRawData(MLRPrimitiveBase*, int32_t = 0);

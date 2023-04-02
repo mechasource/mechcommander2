@@ -294,7 +294,7 @@ protected:
 	// int32_t numPrimitives; // Number of primitives, e.g. - num quads
 	// Replaced by GetNumPrimitives
 
-	// int32_t numVertices; // number of verts for stats and vert arrays
+	// int32_t numvertices; // number of verts for stats and vert arrays
 	// Replaced by GetNumVertices
 
 	std::vector<Stuff::Point3D> coords; // Base address of coordinate list

@@ -5,7 +5,6 @@ MPDirectTcpip.h			: Interface for the MPDirectTcpip component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef MPDIRECTTCPIP_H
@@ -34,7 +33,7 @@ public:
 		hasAnimation = false;
 		normalcolour = 0xff808080;
 	}
-	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	virtual int32_t init(FitIniFile* file, std::wstring_view blockname);
 	virtual void render(void);
 
 protected:

@@ -11,7 +11,8 @@
 #include "mlr/mlr_i_c_pmesh.h"
 #include "mlr/mlr_i_c_tmesh.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -27,8 +28,7 @@ MLR_I_C_TMesh::ClassData* MLR_I_C_TMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_TMesh::InitializeClass()
+void MLR_I_C_TMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -43,8 +43,7 @@ MLR_I_C_TMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_TMesh::TerminateClass()
+void MLR_I_C_TMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -57,8 +56,8 @@ MLR_I_C_TMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_TMesh::MLR_I_C_TMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLR_I_TMesh(class_data, stream, version)
+MLR_I_C_TMesh::MLR_I_C_TMesh(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLR_I_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -103,8 +102,9 @@ MLR_I_C_TMesh::MLR_I_C_TMesh(ClassData* class_data, std::iostream stream, uint32
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_TMesh::MLR_I_C_TMesh(ClassData* class_data) :
-	MLR_I_TMesh(class_data), colors(0)
+MLR_I_C_TMesh::MLR_I_C_TMesh(ClassData* class_data)
+	: MLR_I_TMesh(class_data)
+	, colors(0)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -137,8 +137,7 @@ MLR_I_C_TMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_TMesh::Save(std::iostream stream)
+void MLR_I_C_TMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -160,8 +159,7 @@ MLR_I_C_TMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MLR_I_C_TMesh::Copy(MLR_I_C_PMesh* pMesh)
+bool MLR_I_C_TMesh::Copy(MLR_I_C_PMesh* pMesh)
 {
 	// Check_Object(this);
 	Check_Object(pMesh);
@@ -179,8 +177,7 @@ MLR_I_C_TMesh::Copy(MLR_I_C_PMesh* pMesh)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_TMesh::SetcolourData(
+void MLR_I_C_TMesh::SetcolourData(
 #if COLOR_AS_DWORD
 	const uint32_t* data,
 #else
@@ -197,8 +194,7 @@ MLR_I_C_TMesh::SetcolourData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_TMesh::GetcolourData(
+void MLR_I_C_TMesh::GetcolourData(
 #if COLOR_AS_DWORD
 	uint32_t** data,
 #else
@@ -213,8 +209,7 @@ MLR_I_C_TMesh::GetcolourData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_TMesh::PaintMe(
+void MLR_I_C_TMesh::PaintMe(
 #if COLOR_AS_DWORD
 	const uint32_t* paintMe
 #else
@@ -242,8 +237,7 @@ MLR_I_C_TMesh::PaintMe(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_TMesh::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
+void MLR_I_C_TMesh::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
 {
 	// Check_Object(this);
 	_ASSERT(colors.GetLength() == coords.GetLength());
@@ -285,8 +279,7 @@ MLR_I_C_TMesh::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_TMesh::TestInstance(void) const
+void MLR_I_C_TMesh::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

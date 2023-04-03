@@ -112,12 +112,9 @@
 #define DEFAULT_SKY 1
 extern float loadProgress;
 
-void
-MouseTimerInit();
-void
-MouseTimerKill();
-void
-ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc);
+void MouseTimerInit();
+void MouseTimerKill();
+void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc);
 
 extern volatile bool mc2IsInDisplayBackBuffer;
 extern volatile bool mc2UseAsyncMouse;
@@ -126,10 +123,8 @@ extern void (*AsynFunc)(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc);
 
 #define USE_ABL_LOAD
 
-void
-initABL();
-void
-closeABL();
+void initABL();
+void closeABL();
 
 extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 extern float OptimalRangePoints[NUM_WEAPON_RANGE_TYPES];
@@ -185,35 +180,28 @@ extern float BaseHeadShotElevation;
 extern float CheatHitDamage;
 #endif
 
-void
-InitDifficultySettings(FitIniFile* gameSystemFile);
+void InitDifficultySettings(FitIniFile* gameSystemFile);
 
 extern int32_t GameVisibleVertices;
 
-void
-GetBlockedDoorCells(int32_t moveLevel, int32_t door, const std::wstring_view& openCells);
-void
-PlaceStationaryMovers(MoveMap* map);
-void
-PlaceMovers();
+void GetBlockedDoorCells(int32_t moveLevel, int32_t door, std::wstring_view openCells);
+void PlaceStationaryMovers(MoveMap* map);
+void PlaceMovers();
 
 extern GameObjectFootPrint* tempSpecialAreaFootPrints;
 extern int32_t tempNumSpecialAreas;
 extern GameLog* CombatLog;
 
-bool
-IsGateDisabled(int32_t objectWID);
-bool
-IsGateOpen(int32_t objectWID);
+bool IsGateDisabled(int32_t objectWID);
+bool IsGateOpen(int32_t objectWID);
 
 uint32_t
-elfHash(const std::wstring_view& name);
+elfHash(std::wstring_view name);
 
 extern wchar_t versionStamp[];
 //----------------------------------------------------------------------------------------------------
 // Save.
-void
-Part::Save(FitIniFilePtr file, int32_t partNum)
+void Part::Save(FitIniFilePtr file, int32_t partNum)
 {
 	wchar_t partId[1024];
 	sprintf(partId, "Part%d", partNum + 1);
@@ -245,8 +233,7 @@ Part::Save(FitIniFilePtr file, int32_t partNum)
 	file->writeIdULong("VariantNum", variantNum);
 }
 
-void
-Mission::save(const std::wstring_view& saveFileName)
+void Mission::save(std::wstring_view saveFileName)
 {
 	// Check for sufficient hard Drive space on drive game is running from
 	wchar_t currentPath[1024];
@@ -268,12 +255,12 @@ Mission::save(const std::wstring_view& saveFileName)
 	mc2UseAsyncMouse = true;
 	AsynFunc = ProgressTimer;
 	// Get the campaign name for the campaign we are currently playing.
-	const std::wstring_view& campaignName = LogisticsData::instance->getCampaignName();
-	const std::wstring_view& cmpName = campaignName.Data();
+	std::wstring_view campaignName = LogisticsData::instance->getCampaignName();
+	std::wstring_view cmpName = campaignName.Data();
 	// Open the Save File.
 	// Assume path is correct when we get here.
 	PacketFile saveFile;
-	int32_t result = saveFile.create((const std::wstring_view&)saveFileName);
+	int32_t result = saveFile.create((std::wstring_view)saveFileName);
 	loadProgress = 1.0f;
 	// A thousand packets ought to get it!!
 	saveFile.reserve(20000);
@@ -424,7 +411,7 @@ Mission::save(const std::wstring_view& saveFileName)
 	saveFile.writePacket(currentPacket, (uint8_t*)&currentMissionNum, 4, STORAGE_TYPE_RAW);
 	currentPacket++;
 	//-------------------------------------------------------------------------------------------
-	saveFile.writePacket(currentPacket, (uint8_t*) "END", 4, STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket, (uint8_t*)"END", 4, STORAGE_TYPE_RAW);
 	currentPacket++;
 	saveFile.close();
 	// YIKES!!  We could be checking the if before the null and executing
@@ -447,8 +434,7 @@ Mission::save(const std::wstring_view& saveFileName)
 
 //----------------------------------------------------------------------------------------------------
 // Load.
-void
-Part::Load(FitIniFilePtr file, int32_t partNum)
+void Part::Load(FitIniFilePtr file, int32_t partNum)
 {
 	wchar_t partId[1024];
 	sprintf(partId, "Part%d", partNum);
@@ -532,8 +518,7 @@ Part::Load(FitIniFilePtr file, int32_t partNum)
 		STOP(("Part %d VeriantNum missing from In-Mission Save", partNum));
 }
 
-void
-Mission::load(const std::wstring_view& loadFileName)
+void Mission::load(std::wstring_view loadFileName)
 {
 	userInput->mouseOff();
 	loadProgress = 0.0f;
@@ -548,7 +533,7 @@ Mission::load(const std::wstring_view& loadFileName)
 	AsynFunc = ProgressTimer;
 	// Open the In-Mission Save packet file.
 	PacketFile loadFile;
-	int32_t result = loadFile.open((const std::wstring_view&)loadFileName);
+	int32_t result = loadFile.open((std::wstring_view)loadFileName);
 	if (result != NO_ERROR)
 		return; // Can't load.  No File.  Dialog?  Probably not.
 	uint32_t currentPacket = 0;
@@ -563,12 +548,12 @@ Mission::load(const std::wstring_view& loadFileName)
 		return;
 	}
 	loadFile.seekPacket(currentPacket);
-	const std::wstring_view& campName = new wchar_t[loadFile.getPacketSize() + 1];
+	std::wstring_view campName = new wchar_t[loadFile.getPacketSize() + 1];
 	loadFile.readPacket(currentPacket, (uint8_t*)(campName));
 	currentPacket++;
 	// Get the campaign name for the campaign we are currently playing.
-	const std::wstring_view& campaignName = LogisticsData::instance->getCampaignName();
-	const std::wstring_view& cmpName = campaignName.Data();
+	std::wstring_view campaignName = LogisticsData::instance->getCampaignName();
+	std::wstring_view cmpName = campaignName.Data();
 	/*
 	if (_stricmp(campName,cmpName) != 0)
 	{
@@ -642,7 +627,7 @@ Mission::load(const std::wstring_view& loadFileName)
 	MaxVisualRadius = maxVisualRange * 1.4142;
 	result = gameSystemFile->readIdFloat("FireVisualRange", fireVisualRange);
 	gosASSERT(result == NO_ERROR);
-	result = gameSystemFile->readIdFloatArray("WeaponRange", WeaponRange, NUM_FIRERANGES);
+	result = gameSystemFile->readIdFloatArray("WeaponRange", WeaponRange, FireRangeType::count);
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->readIdFloat("DefaultAttackRange", DefaultAttackRange);
 	if (result != NO_ERROR)

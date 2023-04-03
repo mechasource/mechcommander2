@@ -166,9 +166,15 @@ public:
 	// Member Functions
 	//----------------
 public:
-	SoundSystem(void) { init(void); }
+	SoundSystem(void)
+	{
+		init(void);
+	}
 
-	~SoundSystem(void) { destroy(void); }
+	~SoundSystem(void)
+	{
+		destroy(void);
+	}
 
 	void init(void)
 	{
@@ -209,7 +215,7 @@ public:
 		gamePaused = false;
 	}
 
-	int32_t init(const std::wstring_view& soundFileName);
+	int32_t init(std::wstring_view soundFileName);
 	virtual void destroy(void);
 
 	void preloadSoundBite(int32_t sampleId);
@@ -221,7 +227,7 @@ public:
 
 	int32_t playDigitalMusic(int32_t musicId);
 
-	int32_t playDigitalStream(const std::wstring_view& streamName);
+	int32_t playDigitalStream(std::wstring_view streamName);
 
 	bool isDigitalMusicPlaying(void);
 	bool isPlayingSample(int32_t sampleId);
@@ -231,7 +237,7 @@ public:
 	int32_t playBettySample(uint32_t bettySampleId);
 	void stopBettySample(void);
 
-	int32_t playSupportSample(uint32_t supportSampleId, const std::wstring_view& fileName = nullptr);
+	int32_t playSupportSample(uint32_t supportSampleId, std::wstring_view fileName = nullptr);
 
 	void stopDigitalSample(uint32_t sampleHandleNumber);
 	void stopDigitalMusic(void);
@@ -254,19 +260,31 @@ public:
 
 	void playABLDigitalMusic(int32_t musicId);
 	void stopABLMusic(void);
-	int32_t getCurrentMusicId(void) { return currentMusicId; }
+	int32_t getCurrentMusicId(void)
+	{
+		return currentMusicId;
+	}
 
 	void playABLSFX(int32_t sfxId);
 	void playABLVideo(int32_t videoId);
 	void playABLSpeech(int32_t pilotId, int32_t speechId);
 
-	int32_t playPilotSpeech(const std::wstring_view& pilotSpeechFilename, int32_t msgId);
+	int32_t playPilotSpeech(std::wstring_view pilotSpeechFilename, int32_t msgId);
 
-	void setIsRaining(uint32_t rainLevel) { isRaining = rainLevel; }
+	void setIsRaining(uint32_t rainLevel)
+	{
+		isRaining = rainLevel;
+	}
 
-	void setIsPaused(void) { gamePaused = true; }
+	void setIsPaused(void)
+	{
+		gamePaused = true;
+	}
 
-	void clearIsPaused(void) { gamePaused = false; }
+	void clearIsPaused(void)
+	{
+		gamePaused = false;
+	}
 };
 
 //---------------------------------------------------------------------------

@@ -28,11 +28,11 @@ public:
 	// dymanic naming of the objects represented by that class.  TestHost
 	// provides a means of testing the functionality of ObjectNameList.
 	//--------------------------------------------------------------------
-	const std::wstring_view& name;
+	std::wstring_view name;
 	TestHost* next;
 	static ObjectNameList names;
 
-	TestHost(const std::wstring_view& a_name);
+	TestHost(std::wstring_view a_name);
 	~TestHost();
 
 	bool TestInstance(void) const;
@@ -44,7 +44,7 @@ ObjectNameList TestHost::names;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-TestHost::TestHost(const std::wstring_view& a_name)
+TestHost::TestHost(std::wstring_view a_name)
 {
 	// Check_Pointer(this);
 	Check_Pointer(a_name);
@@ -62,8 +62,7 @@ TestHost::~TestHost()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-TestHost::TestInstance(void) const
+bool TestHost::TestInstance(void) const
 {
 	return true;
 }
@@ -72,8 +71,7 @@ TestHost::TestInstance(void) const
 //##############    ObjectNameList::TestClass    ##############################
 //#############################################################################
 
-bool
-ObjectNameList::TestClass()
+bool ObjectNameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting ObjectNameList test..."));
 	SPEW((GROUP_STUFF_TEST, "ObjectNameList test is stubbed out..."));
@@ -249,8 +247,7 @@ ObjectNameList::TestClass()
 //##############    NameList::TestClass    ####################################
 //#############################################################################
 
-bool
-NameList::TestClass()
+bool NameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting NameList test..."));
 	SPEW((GROUP_STUFF_TEST, "  NameList::TestClass() is stubbed out!"));
@@ -261,8 +258,7 @@ NameList::TestClass()
 //##############    AlphaNameList::TestClass    ###############################
 //#############################################################################
 
-bool
-AlphaNameList::TestClass()
+bool AlphaNameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting AlphaNameList test..."));
 	SPEW((GROUP_STUFF_TEST, "  AlphaNameList::TestClass() is stubbed out!\n"));

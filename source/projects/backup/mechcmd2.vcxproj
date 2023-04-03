@@ -1,0 +1,514 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8FA46A42-5363-4C71-90D8-1106203F0DC7}</ProjectGuid>
+    <RootNamespace>MechCommander</RootNamespace>
+    
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    
+    
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    
+    
+    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    
+    
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    
+    
+    
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <TargetEnvironment>Win32</TargetEnvironment>
+      
+      
+      
+      
+      
+      
+      
+    </Midl>
+    <ClCompile>
+      
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      
+      <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <EnablePREfast>true</EnablePREfast>
+      
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      
+      
+      
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <TargetEnvironment>X64</TargetEnvironment>
+      
+      
+      
+      
+      
+      
+    </Midl>
+    <ClCompile>
+      
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      
+      <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <EnablePREfast>true</EnablePREfast>
+      
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      
+      
+      
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <TargetEnvironment>Win32</TargetEnvironment>
+      
+      
+      
+      
+      
+      
+      
+    </Midl>
+    <ClCompile>
+      
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      
+      <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      
+      
+      
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <TargetEnvironment>X64</TargetEnvironment>
+      
+      
+      
+      
+      
+      
+    </Midl>
+    <ClCompile>
+      
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      
+      <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      
+      
+      
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\mechcmd2\ablmc2.cpp" />
+    <ClCompile Include="..\mechcmd2\actor.cpp" />
+    <ClCompile Include="..\mechcmd2\artlry.cpp" />
+    <ClCompile Include="..\mechcmd2\attributemeter.cpp" />
+    <ClCompile Include="..\mechcmd2\bldng.cpp" />
+    <ClCompile Include="..\mechcmd2\carnage.cpp" />
+    <ClCompile Include="..\mechcmd2\chatwindow.cpp" />
+    <ClCompile Include="..\mechcmd2\collsn.cpp" />
+    <ClCompile Include="..\mechcmd2\comndr.cpp" />
+    <ClCompile Include="..\mechcmd2\componentlistbox.cpp" />
+    <ClCompile Include="..\mechcmd2\contact.cpp" />
+    <ClCompile Include="..\mechcmd2\controlgui.cpp" />
+    <ClCompile Include="..\mechcmd2\debugging.cpp" />
+    <ClCompile Include="..\mechcmd2\dw.cpp" />
+    <ClCompile Include="..\mechcmd2\fastshp.cpp" />
+    <ClCompile Include="..\mechcmd2\forcegroupbar.cpp" />
+    <ClCompile Include="..\mechcmd2\gamecam.cpp" />
+    <ClCompile Include="..\mechcmd2\gameobj.cpp" />
+    <ClCompile Include="..\mechcmd2\gamesound.cpp" />
+    <ClCompile Include="..\mechcmd2\gametacmap.cpp" />
+    <ClCompile Include="..\mechcmd2\gate.cpp" />
+    <ClCompile Include="..\mechcmd2\goal.cpp" />
+    <ClCompile Include="..\mechcmd2\group.cpp" />
+    <ClCompile Include="..\mechcmd2\gvehicl.cpp" />
+    <ClCompile Include="..\mechcmd2\infowindow.cpp" />
+    <ClCompile Include="..\mechcmd2\keyboardref.cpp" />
+    <ClCompile Include="..\mechcmd2\light.cpp" />
+    <ClCompile Include="..\mechcmd2\loadscreen.cpp" />
+    <ClCompile Include="..\mechcmd2\logistics.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticscomponent.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticsdata.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticsdialog.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticsmech.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticsmechdisplay.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticsmechicon.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticsmissioninfo.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticspilot.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticspilotlistbox.cpp" />
+    <ClCompile Include="..\mechcmd2\logisticsvariant.cpp" />
+    <ClCompile Include="..\mechcmd2\logmain.cpp" />
+    <ClCompile Include="..\mechcmd2\mainmenu.cpp" />
+    <ClCompile Include="..\mechcmd2\mc2movie.cpp" />
+    <ClCompile Include="..\mechcmd2\mech.cpp" />
+    <ClCompile Include="..\mechcmd2\mechbayscreen.cpp" />
+    <ClCompile Include="..\mechcmd2\mechcmd2.cpp" />
+    <ClCompile Include="..\mechcmd2\mechicon.cpp" />
+    <ClCompile Include="..\mechcmd2\mechlabscreen.cpp" />
+    <ClCompile Include="..\mechcmd2\mechlistbox.cpp" />
+    <ClCompile Include="..\mechcmd2\mechlopedia.cpp" />
+    <ClCompile Include="..\mechcmd2\mechpurchasescreen.cpp" />
+    <ClCompile Include="..\mechcmd2\mission.cpp" />
+    <ClCompile Include="..\mechcmd2\mission2.cpp" />
+    <ClCompile Include="..\mechcmd2\missionbegin.cpp" />
+    <ClCompile Include="..\mechcmd2\missionbriefingscreen.cpp" />
+    <ClCompile Include="..\mechcmd2\missiongui.cpp" />
+    <ClCompile Include="..\mechcmd2\missionresults.cpp" />
+    <ClCompile Include="..\mechcmd2\missionselectionscreen.cpp" />
+    <ClCompile Include="..\mechcmd2\movemgr.cpp" />
+    <ClCompile Include="..\mechcmd2\mover.cpp" />
+    <ClCompile Include="..\mechcmd2\mpaddaiplayer.cpp" />
+    <ClCompile Include="..\mechcmd2\mpconnectiontype.cpp" />
+    <ClCompile Include="..\mechcmd2\mpdirecttcpip.cpp" />
+    <ClCompile Include="..\mechcmd2\mpgamebrowser.cpp" />
+    <ClCompile Include="..\mechcmd2\mphostgame.cpp" />
+    <ClCompile Include="..\mechcmd2\mploadmap.cpp" />
+    <ClCompile Include="..\mechcmd2\mpparameterscreen.cpp" />
+    <ClCompile Include="..\mechcmd2\mpprefs.cpp" />
+    <ClCompile Include="..\mechcmd2\mpsetuparea.cpp" />
+    <ClCompile Include="..\mechcmd2\mpstats.cpp" />
+    <ClCompile Include="..\mechcmd2\multplyr.cpp" />
+    <ClCompile Include="..\mechcmd2\objective.cpp" />
+    <ClCompile Include="..\mechcmd2\objmgr.cpp" />
+    <ClCompile Include="..\mechcmd2\objtype.cpp" />
+    <ClCompile Include="..\mechcmd2\optionsarea.cpp" />
+    <ClCompile Include="..\mechcmd2\optionsscreenwrapper.cpp" />
+    <ClCompile Include="..\mechcmd2\pausewindow.cpp" />
+    <ClCompile Include="..\mechcmd2\pilotreadyscreen.cpp" />
+    <ClCompile Include="..\mechcmd2\pilotreviewarea.cpp" />
+    <ClCompile Include="..\mechcmd2\prefs.cpp" />
+    <ClCompile Include="..\mechcmd2\radio.cpp" />
+    <ClCompile Include="..\mechcmd2\salvagemecharea.cpp" />
+    <ClCompile Include="..\mechcmd2\saveload.cpp" />
+    <ClCompile Include="..\mechcmd2\simplecamera.cpp" />
+    <ClCompile Include="..\mechcmd2\simplecomponentlistbox.cpp" />
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\tacordr.cpp" />
+    <ClCompile Include="..\mechcmd2\team.cpp" />
+    <ClCompile Include="..\mechcmd2\terrobj.cpp" />
+    <ClCompile Include="..\mechcmd2\trigger.cpp" />
+    <ClCompile Include="..\mechcmd2\turret.cpp" />
+    <ClCompile Include="..\mechcmd2\vfxshape.cpp" />
+    <ClCompile Include="..\mechcmd2\warrior.cpp" />
+    <ClCompile Include="..\mechcmd2\weaponbolt.cpp" />
+    <ClCompile Include="..\mechcmd2\weather.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
+    <ClInclude Include="..\mechcmd2\actor.h" />
+    <ClInclude Include="..\mechcmd2\artlry.h" />
+    <ClInclude Include="..\mechcmd2\attributemeter.h" />
+    <ClInclude Include="..\mechcmd2\bldng.h" />
+    <ClInclude Include="..\mechcmd2\carnage.h" />
+    <ClInclude Include="..\mechcmd2\chatwindow.h" />
+    <ClInclude Include="..\mechcmd2\collsn.h" />
+    <ClInclude Include="..\mechcmd2\comndr.h" />
+    <ClInclude Include="..\mechcmd2\componentlistbox.h" />
+    <ClInclude Include="..\mechcmd2\contact.h" />
+    <ClInclude Include="..\mechcmd2\controlgui.h" />
+    <ClInclude Include="..\mechcmd2\dartlry.h" />
+    <ClInclude Include="..\mechcmd2\dbldng.h" />
+    <ClInclude Include="..\mechcmd2\dcarnage.h" />
+    <ClInclude Include="..\mechcmd2\dcollsn.h" />
+    <ClInclude Include="..\mechcmd2\dcomndr.h" />
+    <ClInclude Include="..\mechcmd2\dcontact.h" />
+    <ClInclude Include="..\mechcmd2\debugging.h" />
+    <ClInclude Include="..\mechcmd2\delemntl.h" />
+    <ClInclude Include="..\mechcmd2\dgameobj.h" />
+    <ClInclude Include="..\mechcmd2\dgate.h" />
+    <ClInclude Include="..\mechcmd2\dgoal.h" />
+    <ClInclude Include="..\mechcmd2\dgroup.h" />
+    <ClInclude Include="..\mechcmd2\dgvehicl.h" />
+    <ClInclude Include="..\mechcmd2\dmech.h" />
+    <ClInclude Include="..\mechcmd2\dmover.h" />
+    <ClInclude Include="..\mechcmd2\dmultplyr.h" />
+    <ClInclude Include="..\mechcmd2\dobjmgr.h" />
+    <ClInclude Include="..\mechcmd2\dobjnum.h" />
+    <ClInclude Include="..\mechcmd2\dobjtype.h" />
+    <ClInclude Include="..\mechcmd2\dradio.h" />
+    <ClInclude Include="..\mechcmd2\dtacordr.h" />
+    <ClInclude Include="..\mechcmd2\dteam.h" />
+    <ClInclude Include="..\mechcmd2\dterrobj.h" />
+    <ClInclude Include="..\mechcmd2\dturret.h" />
+    <ClInclude Include="..\mechcmd2\dwarrior.h" />
+    <ClInclude Include="..\mechcmd2\dweaponbolt.h" />
+    <ClInclude Include="..\mechcmd2\forcegroupbar.h" />
+    <ClInclude Include="..\mechcmd2\gamecam.h" />
+    <ClInclude Include="..\mechcmd2\gameobj.h" />
+    <ClInclude Include="..\mechcmd2\gamesound.h" />
+    <ClInclude Include="..\mechcmd2\gametacmap.h" />
+    <ClInclude Include="..\mechcmd2\gate.h" />
+    <ClInclude Include="..\mechcmd2\goal.h" />
+    <ClInclude Include="..\mechcmd2\group.h" />
+    <ClInclude Include="..\mechcmd2\gvehicl.h" />
+    <ClInclude Include="..\mechcmd2\infowindow.h" />
+    <ClInclude Include="..\mechcmd2\keyboardref.h" />
+    <ClInclude Include="..\mechcmd2\light.h" />
+    <ClInclude Include="..\mechcmd2\loadscreen.h" />
+    <ClInclude Include="..\mechcmd2\logistics.h" />
+    <ClInclude Include="..\mechcmd2\logisticscomponent.h" />
+    <ClInclude Include="..\mechcmd2\logisticsdata.h" />
+    <ClInclude Include="..\mechcmd2\logisticsdialog.h" />
+    <ClInclude Include="..\mechcmd2\logisticserrors.h" />
+    <ClInclude Include="..\mechcmd2\logisticsmech.h" />
+    <ClInclude Include="..\mechcmd2\logisticsmechdisplay.h" />
+    <ClInclude Include="..\mechcmd2\logisticsmechicon.h" />
+    <ClInclude Include="..\mechcmd2\logisticsmechlistbox.h" />
+    <ClInclude Include="..\mechcmd2\logisticsmissioninfo.h" />
+    <ClInclude Include="..\mechcmd2\logisticspilot.h" />
+    <ClInclude Include="..\mechcmd2\logisticspilotlistbox.h" />
+    <ClInclude Include="..\mechcmd2\logisticsvariant.h" />
+    <ClInclude Include="..\mechcmd2\mainmenu.h" />
+    <ClInclude Include="..\mechcmd2\mc2movie.h" />
+    <ClInclude Include="..\mechcmd2\mech.h" />
+    <ClInclude Include="..\mechcmd2\mechbayscreen.h" />
+    <ClInclude Include="..\mechcmd2\mechclass.h" />
+    <ClInclude Include="..\mechcmd2\mechicon.h" />
+    <ClInclude Include="..\mechcmd2\mechlabscreen.h" />
+    <ClInclude Include="..\mechcmd2\mechlistbox.h" />
+    <ClInclude Include="..\mechcmd2\mechlopedia.h" />
+    <ClInclude Include="..\mechcmd2\mechpurchasescreen.h" />
+    <ClInclude Include="..\mechcmd2\mission.h" />
+    <ClInclude Include="..\mechcmd2\missionbegin.h" />
+    <ClInclude Include="..\mechcmd2\missionbriefingscreen.h" />
+    <ClInclude Include="..\mechcmd2\missiongui.h" />
+    <ClInclude Include="..\mechcmd2\missionresults.h" />
+    <ClInclude Include="..\mechcmd2\missionselectionscreen.h" />
+    <ClInclude Include="..\mechcmd2\movemgr.h" />
+    <ClInclude Include="..\mechcmd2\mover.h" />
+    <ClInclude Include="..\mechcmd2\mpaddaiplayer.h" />
+    <ClInclude Include="..\mechcmd2\mpconnectiontype.h" />
+    <ClInclude Include="..\mechcmd2\mpdirecttcpip.h" />
+    <ClInclude Include="..\mechcmd2\mpgamebrowser.h" />
+    <ClInclude Include="..\mechcmd2\mphostgame.h" />
+    <ClInclude Include="..\mechcmd2\mploadmap.h" />
+    <ClInclude Include="..\mechcmd2\mpparameterscreen.h" />
+    <ClInclude Include="..\mechcmd2\mpprefs.h" />
+    <ClInclude Include="..\mechcmd2\mpsetuparea.h" />
+    <ClInclude Include="..\mechcmd2\mpstats.h" />
+    <ClInclude Include="..\mechcmd2\multplyr.h" />
+    <ClInclude Include="..\mechcmd2\objblck.h" />
+    <ClInclude Include="..\mechcmd2\objective.h" />
+    <ClInclude Include="..\mechcmd2\objmgr.h" />
+    <ClInclude Include="..\mechcmd2\objtype.h" />
+    <ClInclude Include="..\mechcmd2\optionsarea.h" />
+    <ClInclude Include="..\mechcmd2\optionsscreenwrapper.h" />
+    <ClInclude Include="..\mechcmd2\pausewindow.h" />
+    <ClInclude Include="..\mechcmd2\pilotreadyscreen.h" />
+    <ClInclude Include="..\mechcmd2\pilotreviewarea.h" />
+    <ClInclude Include="..\mechcmd2\prefs.h" />
+    <ClInclude Include="..\mechcmd2\radio.h" />
+    <ClInclude Include="..\mechcmd2\resource.h" />
+    <ClInclude Include="..\mechcmd2\salvagemecharea.h" />
+    <ClInclude Include="..\mechcmd2\simplecamera.h" />
+    <ClInclude Include="..\mechcmd2\simplecomponentlistbox.h" />
+    <ClInclude Include="..\pch\stdinc.h" />
+    <ClInclude Include="..\mechcmd2\tacordr.h" />
+    <ClInclude Include="..\mechcmd2\team.h" />
+    <ClInclude Include="..\mechcmd2\terrobj.h" />
+    <ClInclude Include="..\mechcmd2\trigger.h" />
+    <ClInclude Include="..\mechcmd2\turret.h" />
+    <ClInclude Include="..\mechcmd2\unitdesg.h" />
+    <ClInclude Include="..\mechcmd2\vfxshape.h" />
+    <ClInclude Include="..\mechcmd2\warrior.h" />
+    <ClInclude Include="..\mechcmd2\weaponbolt.h" />
+    <ClInclude Include="..\mechcmd2\weather.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\mechcmd2\mechcmd2.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -38,28 +38,27 @@ uint32_t __stdcall GetPixelColor(uint32_t in);
 uint32_t GetBackBufferColor(uint16_t in);
 void UpdateBackBufferFormat(void);
 
-void __stdcall DecodeBMPDimensions(PSTR FileName, BOOLEAN* Data, uint32_t DataSize,
+void __stdcall DecodeBMPDimensions(PSTR filename, BOOLEAN* Data, uint32_t DataSize,
 	uint32_t* pTexturewidth, uint32_t* pTextureheight);
-void __stdcall DecodeJPGDimensions(PSTR FileName, BOOLEAN* Data, uint32_t DataSize,
+void __stdcall DecodeJPGDimensions(PSTR filename, BOOLEAN* Data, uint32_t DataSize,
 	uint32_t* pTexturewidth, uint32_t* pTextureheight);
 #ifdef USEPNG
-PVOID __stdcall DecodePNG(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
+PVOID __stdcall DecodePNG(PSTR filename, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
 	uint32_t* Textureheight, BOOLEAN TextureLoad, PVOID pDestSurf = nullptr);
-void __stdcall DecodePNGDimensions(PSTR FileName, BOOLEAN* Data, uint32_t DataSize,
+void __stdcall DecodePNGDimensions(PSTR filename, BOOLEAN* Data, uint32_t DataSize,
 	uint32_t* pTexturewidth, uint32_t* pTextureheight);
 #endif
-void
-DecodeTGADimensions(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* pTexturewidth,
+void DecodeTGADimensions(PSTR filename, BOOLEAN* Data, uint32_t DataSize, uint32_t* pTexturewidth,
 	uint32_t* pTextureheight);
 
 PVOID
-DecodeBMP(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
+DecodeBMP(PSTR filename, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
 	uint32_t* Textureheight, BOOLEAN TextureLoad, PVOID pDestSurf = nullptr);
 PVOID
-DecodeJPG(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
+DecodeJPG(PSTR filename, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
 	uint32_t* Textureheight, BOOLEAN TextureLoad, PVOID pDestSurf = nullptr);
 PVOID
-DecodeTGA(PSTR FileName, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
+DecodeTGA(PSTR filename, BOOLEAN* Data, uint32_t DataSize, uint32_t* Texturewidth,
 	uint32_t* Textureheight, BOOLEAN TextureLoad, PVOID pDestSurf = nullptr);
 
 int32_t
@@ -151,50 +150,125 @@ private:
 
 public:
 	// Read-only operations
-	uint16_t width(void) { return m_nwidth; }
-	uint16_t height(void) { return m_nheight; }
-	uint16_t Hints(void) { return m_Hints; }
-	BOOLEAN HasAlpha(void) { return (m_Flags & tFlag_Alpha) != 0; }
-	BOOLEAN IsLocked(void) { return (m_Flags & tFlag_Locked) != 0; }
-	BOOLEAN InVidMem(void) { return (m_Flags & tFlag_InVidMem) != 0; }
-	BOOLEAN InAGP(void) { return (m_Flags & tFlag_InAGP) != 0; }
-	BOOLEAN InSysMem(void) { return (m_Flags & tFlag_InSysMem) != 0; }
-	BOOLEAN Detected(void) { return (m_Flags & tFlag_Detect) != 0; }
-	BOOLEAN MipmapDisabled(void) { return (m_Hints & gosHint_DisableMipmap) != 0; }
-	BOOLEAN CanRebuild(void) { return m_pRebuild != nullptr; }
-	int32_t MipFilter(void) { return (m_Hints / gosHint_MipmapFilter0) & 3; }
-	uint32_t Area(void) { return uint32_t(m_nwidth * m_nheight); }
+	uint16_t width(void)
+	{
+		return m_nwidth;
+	}
+	uint16_t height(void)
+	{
+		return m_nheight;
+	}
+	uint16_t Hints(void)
+	{
+		return m_Hints;
+	}
+	BOOLEAN HasAlpha(void)
+	{
+		return (m_Flags & tFlag_Alpha) != 0;
+	}
+	BOOLEAN IsLocked(void)
+	{
+		return (m_Flags & tFlag_Locked) != 0;
+	}
+	BOOLEAN InVidMem(void)
+	{
+		return (m_Flags & tFlag_InVidMem) != 0;
+	}
+	BOOLEAN InAGP(void)
+	{
+		return (m_Flags & tFlag_InAGP) != 0;
+	}
+	BOOLEAN InSysMem(void)
+	{
+		return (m_Flags & tFlag_InSysMem) != 0;
+	}
+	BOOLEAN Detected(void)
+	{
+		return (m_Flags & tFlag_Detect) != 0;
+	}
+	BOOLEAN MipmapDisabled(void)
+	{
+		return (m_Hints & gosHint_DisableMipmap) != 0;
+	}
+	BOOLEAN CanRebuild(void)
+	{
+		return m_pRebuild != nullptr;
+	}
+	int32_t MipFilter(void)
+	{
+		return (m_Hints / gosHint_MipmapFilter0) & 3;
+	}
+	uint32_t Area(void)
+	{
+		return uint32_t(m_nwidth * m_nheight);
+	}
 	int32_t MipMapLevels(void)
 	{
 		return (MipmapDisabled()) ? 1 : MipLevelsRequired(m_nwidth, m_nheight);
 	}
-	PSTR Name(void) { return m_pName; }
-	PVOID pInstance(void) { return m_pInstance; }
+	PSTR Name(void)
+	{
+		return m_pName;
+	}
+	PVOID pInstance(void)
+	{
+		return m_pInstance;
+	}
 	DDSURFACEDESC2* Description(void)
 	{
 		return &TextureDesc[Format()][(m_Hints & gosHint_Try32bpp)
 				? 1
 				: 0][(m_Hints & (gosHint_Compress0 | gosHint_Compress1)) / gosHint_Compress0];
 	}
-	static BOOLEAN ManagerInitialized(void) { return Initialized; }
+	static BOOLEAN ManagerInitialized(void)
+	{
+		return Initialized;
+	}
 	BOOLEAN ValidTexture(void)
 	{
 		return (CTexInfo::Initialized) && (this >= TexInfo) && (this - MaximumTextures < TexInfo) && (m_Flags & tFlag_Valid);
 	}
-	BOOLEAN SpecialTexture(void) { return (m_Flags & tFlag_Special) != 0; }
-	void SetSpecial(void) { m_Flags |= tFlag_Special; }
-	gos_RebuildFunction pRebuildFunc(void) { return m_pRebuild; }
-	static CTexInfo* FirstTexture(void) { return pFirstUsedTexture; }
-	CTexInfo* NextTexture(void) { return m_NextOffset ? (this + m_NextOffset) : nullptr; }
+	BOOLEAN SpecialTexture(void)
+	{
+		return (m_Flags & tFlag_Special) != 0;
+	}
+	void SetSpecial(void)
+	{
+		m_Flags |= tFlag_Special;
+	}
+	gos_RebuildFunction pRebuildFunc(void)
+	{
+		return m_pRebuild;
+	}
+	static CTexInfo* FirstTexture(void)
+	{
+		return pFirstUsedTexture;
+	}
+	CTexInfo* NextTexture(void)
+	{
+		return m_NextOffset ? (this + m_NextOffset) : nullptr;
+	}
 	gos_TextureFormat Format(void)
 	{
 		return (gos_TextureFormat)((m_Flags & FormatMask) >> tFlag_FormatShift);
 	}
-	BOOLEAN Used(void) { return m_nLastFrameUsed == FrameNo; }
+	BOOLEAN Used(void)
+	{
+		return m_nLastFrameUsed == FrameNo;
+	}
 	uint16_t Scaledheightwidth(BOOLEAN Wantheight);
-	uint16_t Scaledwidth(void) { return Scaledheightwidth(false); }
-	uint16_t Scaledheight(void) { return Scaledheightwidth(true); }
-	static int32_t GlobalScaleShift(void) { return ScaleShift; }
+	uint16_t Scaledwidth(void)
+	{
+		return Scaledheightwidth(false);
+	}
+	uint16_t Scaledheight(void)
+	{
+		return Scaledheightwidth(true);
+	}
+	static int32_t GlobalScaleShift(void)
+	{
+		return ScaleShift;
+	}
 	BOOLEAN SysMemSurfUsable(void);
 	// Texture Update.cpp
 	int32_t MemoryUsage(BOOLEAN Current = true,
@@ -213,7 +287,7 @@ public:
 	// Texture Create.cpp
 	// Fundamental new/init/delete of a CtexInfo
 	static CTexInfo* Allocate(void);
-	void Initialize(gos_TextureFormat Format, PSTR FileName, BOOLEAN* pBitmap, uint32_t Size,
+	void Initialize(gos_TextureFormat Format, PSTR filename, BOOLEAN* pBitmap, uint32_t Size,
 		uint16_t width, uint16_t height, uint32_t Hints, gos_RebuildFunction pFunc,
 		PVOID pInstance);
 	void Free(void);
@@ -269,7 +343,7 @@ private:
 	void Rebuild(void); // Calls rebuild function of app to re-populate the surface
 	void FreeOriginal(void); // Frees the original surface (assumes it exists and is ok to free)
 	void DecodeImageLevel(
-		PSTR FileName, BOOLEAN* pSourceData, uint32_t Size, LPDIRECTDRAWSURFACE7 pSurface);
+		PSTR filename, BOOLEAN* pSourceData, uint32_t Size, LPDIRECTDRAWSURFACE7 pSurface);
 
 	// Texture SysMem.cpp
 	// System Memory Surface
@@ -313,7 +387,10 @@ public:
 	static void FreeDummyTextures(void); // Free the artificially created vidmem textures
 
 public:
-	static void NextFrame(void) { FrameNo++; }
+	static void NextFrame(void)
+	{
+		FrameNo++;
+	}
 
 private:
 	static void AnalyzeTextureFormats(void);
@@ -348,8 +425,14 @@ public:
 	}
 
 public:
-	static PSTR GetTextureEvent(int32_t /*offset*/) { return nullptr; }
-	static BOOLEAN LogEnable(BOOLEAN /*enable = false*/) { return false; }
+	static PSTR GetTextureEvent(int32_t /*offset*/)
+	{
+		return nullptr;
+	}
+	static BOOLEAN LogEnable(BOOLEAN /*enable = false*/)
+	{
+		return false;
+	}
 #endif
 };
 

@@ -20,7 +20,6 @@ Objective.h			: Interface for the Objective component.
 class FitIniFile;
 class aFont;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 CObjectiveCondition:
@@ -68,7 +67,7 @@ enum MARKER_TYPES
 	NUMERIC = 2
 };
 
-static const std::wstring_view& g_conditionSpeciesStringArray[] = {
+static std::wstring_view g_conditionSpeciesStringArray[] = {
 	"DestroyAllEnemyUnits",
 	"DestroyNumberOfEnemyUnits",
 	"DestroyEnemyUnitGroup",
@@ -108,7 +107,7 @@ enum objective_status_type
 	OS_FAILED
 };
 
-class CEStringList : public EList<const std::wstring_view&, const std::wstring_view&>
+class CEStringList : public EList<std::wstring_view, std::wstring_view>
 {
 };
 class CBoolList : public EList<bool, bool>
@@ -122,14 +121,14 @@ private:
 	CBoolList m_valueList;
 
 public:
-	CBooleanArray() {}
-	~CBooleanArray() {}
+	CBooleanArray() { }
+	~CBooleanArray() { }
 	void Clear()
 	{
 		m_FlagIDList.Clear(void);
 		m_valueList.Clear(void);
 	}
-	int32_t elementPos(const std::wstring_view& element)
+	int32_t elementPos(std::wstring_view element)
 	{
 		bool elementFound = false;
 		int32_t pos = 0;
@@ -153,7 +152,7 @@ public:
 			return -1;
 		}
 	}
-	void setElementValue(const std::wstring_view& element, bool value)
+	void setElementValue(std::wstring_view element, bool value)
 	{
 		int32_t pos = elementPos(element);
 		if (-1 != pos)
@@ -166,7 +165,7 @@ public:
 			m_valueList.Append(value);
 		}
 	}
-	bool getElementValue(const std::wstring_view& element)
+	bool getElementValue(std::wstring_view element)
 	{
 		int32_t pos = elementPos(element);
 		if (-1 != pos)
@@ -191,22 +190,43 @@ private:
 	int32_t m_alignment;
 
 public:
-	CObjectiveCondition(int32_t alignment) { m_alignment = alignment; }
-	virtual ~CObjectiveCondition() {}
-	int32_t Alignment() { return m_alignment; }
-	void Alignment(int32_t alignment) { m_alignment = alignment; }
-	virtual condition_species_type Species() = 0;
-	virtual bool Init() { return true; }
-	virtual bool Read(FitIniFile* /*missionFile */) { return true; }
-	virtual bool Save(FitIniFile* /*file*/) { return true; }
-	virtual objective_status_type Status() = 0;
-	virtual const std::wstring_view& Description() = 0;
-	virtual const std::wstring_view& InstanceDescription()
+	CObjectiveCondition(int32_t alignment)
 	{
-		const std::wstring_view& retval;
+		m_alignment = alignment;
+	}
+	virtual ~CObjectiveCondition() { }
+	int32_t Alignment()
+	{
+		return m_alignment;
+	}
+	void Alignment(int32_t alignment)
+	{
+		m_alignment = alignment;
+	}
+	virtual condition_species_type Species() = 0;
+	virtual bool Init()
+	{
+		return true;
+	}
+	virtual bool Read(FitIniFile* /*missionFile */)
+	{
+		return true;
+	}
+	virtual bool Save(FitIniFile* /*file*/)
+	{
+		return true;
+	}
+	virtual objective_status_type Status() = 0;
+	virtual std::wstring_view Description() = 0;
+	virtual std::wstring_view InstanceDescription()
+	{
+		std::wstring_view retval;
 		return retval;
 	}
-	virtual void CastAndCopy(const CObjectiveCondition* pMaster) { (*this) = (*pMaster); }
+	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
+	{
+		(*this) = (*pMaster);
+	}
 	virtual Stuff::Vector3D GetObjectivePosition() // Used to draw on tacmap
 	{
 		return Stuff::Vector3D(-999999.0f, -999999.0f, -999999.0f);
@@ -216,13 +236,18 @@ public:
 class CDestroyAllEnemyUnits : public CObjectiveCondition
 {
 public:
-	CDestroyAllEnemyUnits(int32_t alignment) :
-		CObjectiveCondition(alignment) {}
-	condition_species_type Species() { return DESTROY_ALL_ENEMY_UNITS; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CDestroyAllEnemyUnits(int32_t alignment)
+		: CObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "DestroyAllEnemyUnits"; /* needs to be put somewhere localizable */
+	}
+	condition_species_type Species()
+	{
+		return DESTROY_ALL_ENEMY_UNITS;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "DestroyAllEnemyUnits"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -233,14 +258,14 @@ protected:
 	int32_t m_num;
 
 public:
-	CNumberOfUnitsObjectiveCondition(int32_t alignment) :
-		CObjectiveCondition(alignment)
+	CNumberOfUnitsObjectiveCondition(int32_t alignment)
+		: CObjectiveCondition(alignment)
 	{
 		m_num = 0;
 	}
 	virtual bool Read(FitIniFile* missionFile);
 	virtual bool Save(FitIniFile* file);
-	virtual const std::wstring_view& InstanceDescription(void);
+	virtual std::wstring_view InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CNumberOfUnitsObjectiveCondition*>(pMaster)));
@@ -250,13 +275,18 @@ public:
 class CDestroyNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 {
 public:
-	CDestroyNumberOfEnemyUnits(int32_t alignment) :
-		CNumberOfUnitsObjectiveCondition(alignment) {}
-	condition_species_type Species() { return DESTROY_NUMBER_OF_ENEMY_UNITS; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CDestroyNumberOfEnemyUnits(int32_t alignment)
+		: CNumberOfUnitsObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "DestroyNumberOfEnemyUnits"; /* needs to be put
+	}
+	condition_species_type Species()
+	{
+		return DESTROY_NUMBER_OF_ENEMY_UNITS;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "DestroyNumberOfEnemyUnits"; /* needs to be put
 														 somewhere localizable
 													   */
 		return retval;
@@ -269,12 +299,12 @@ protected:
 	GameObjectWatchID m_pUnitWID;
 
 public:
-	CSpecificUnitObjectiveCondition(int32_t alignment) :
-		CObjectiveCondition(alignment)
+	CSpecificUnitObjectiveCondition(int32_t alignment)
+		: CObjectiveCondition(alignment)
 	{
 		m_pUnitWID = 0;
 	}
-	virtual const std::wstring_view& InstanceDescription(void);
+	virtual std::wstring_view InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CSpecificUnitObjectiveCondition*>(pMaster)));
@@ -285,8 +315,8 @@ public:
 class CSpecificEnemyUnitObjectiveCondition : public CSpecificUnitObjectiveCondition /*abstract class*/
 {
 public:
-	CSpecificEnemyUnitObjectiveCondition(int32_t alignment) :
-		CSpecificUnitObjectiveCondition(alignment)
+	CSpecificEnemyUnitObjectiveCondition(int32_t alignment)
+		: CSpecificUnitObjectiveCondition(alignment)
 	{
 	}
 	bool Read(FitIniFile* missionFile);
@@ -295,15 +325,18 @@ public:
 class CDestroySpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CDestroySpecificEnemyUnit(int32_t alignment) :
-		CSpecificEnemyUnitObjectiveCondition(alignment)
+	CDestroySpecificEnemyUnit(int32_t alignment)
+		: CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
-	condition_species_type Species() { return DESTROY_SPECIFIC_ENEMY_UNIT; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	condition_species_type Species()
 	{
-		const std::wstring_view& retval = "DestroySpecificEnemyUnit"; /* needs to be put
+		return DESTROY_SPECIFIC_ENEMY_UNIT;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "DestroySpecificEnemyUnit"; /* needs to be put
 														somewhere localizable */
 		return retval;
 	}
@@ -315,14 +348,14 @@ protected:
 	int32_t m_pBuildingWID;
 
 public:
-	CSpecificStructureObjectiveCondition(int32_t alignment) :
-		CObjectiveCondition(alignment)
+	CSpecificStructureObjectiveCondition(int32_t alignment)
+		: CObjectiveCondition(alignment)
 	{
 		m_pBuildingWID = 0;
 	}
 	virtual bool Read(FitIniFile* missionFile);
 	virtual bool Save(FitIniFile* file);
-	virtual const std::wstring_view& InstanceDescription(void);
+	virtual std::wstring_view InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CSpecificStructureObjectiveCondition*>(pMaster)));
@@ -340,15 +373,18 @@ public:
 class CDestroySpecificStructure : public CSpecificStructureObjectiveCondition
 {
 public:
-	CDestroySpecificStructure(int32_t alignment) :
-		CSpecificStructureObjectiveCondition(alignment)
+	CDestroySpecificStructure(int32_t alignment)
+		: CSpecificStructureObjectiveCondition(alignment)
 	{
 	}
-	condition_species_type Species() { return DESTROY_SPECIFIC_STRUCTURE; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	condition_species_type Species()
 	{
-		const std::wstring_view& retval = "DestroySpecificStructure"; /* needs to be put
+		return DESTROY_SPECIFIC_STRUCTURE;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "DestroySpecificStructure"; /* needs to be put
 														somewhere localizable */
 		return retval;
 	}
@@ -357,13 +393,18 @@ public:
 class CCaptureOrDestroyAllEnemyUnits : public CObjectiveCondition
 {
 public:
-	CCaptureOrDestroyAllEnemyUnits(int32_t alignment) :
-		CObjectiveCondition(alignment) {}
-	condition_species_type Species() { return CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CCaptureOrDestroyAllEnemyUnits(int32_t alignment)
+		: CObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "CaptureOrDestroyAllEnemyUnits"; /* needs to be put
+	}
+	condition_species_type Species()
+	{
+		return CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "CaptureOrDestroyAllEnemyUnits"; /* needs to be put
 															 somewhere
 															 localizable */
 		return retval;
@@ -373,15 +414,18 @@ public:
 class CCaptureOrDestroyNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 {
 public:
-	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment) :
-		CNumberOfUnitsObjectiveCondition(alignment)
+	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment)
+		: CNumberOfUnitsObjectiveCondition(alignment)
 	{
 	}
-	condition_species_type Species() { return CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	condition_species_type Species()
 	{
-		const std::wstring_view& retval = "CaptureOrDestroyNumberOfEnemyUnits"; /* needs to be put somewhere
+		return CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "CaptureOrDestroyNumberOfEnemyUnits"; /* needs to be put somewhere
 																	   localizable */
 		return retval;
 	}
@@ -390,16 +434,19 @@ public:
 class CCaptureOrDestroySpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment) :
-		CSpecificEnemyUnitObjectiveCondition(alignment)
+	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment)
+		: CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
-	condition_species_type Species() { return CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT; }
+	condition_species_type Species()
+	{
+		return CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT;
+	}
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "CaptureOrDestroySpecificEnemyUnit"; /* needs to be put somewhere
+		std::wstring_view retval = "CaptureOrDestroySpecificEnemyUnit"; /* needs to be put somewhere
 																	  localizable */
 		return retval;
 	}
@@ -408,16 +455,19 @@ public:
 class CCaptureOrDestroySpecificStructure : public CSpecificStructureObjectiveCondition
 {
 public:
-	CCaptureOrDestroySpecificStructure(int32_t alignment) :
-		CSpecificStructureObjectiveCondition(alignment)
+	CCaptureOrDestroySpecificStructure(int32_t alignment)
+		: CSpecificStructureObjectiveCondition(alignment)
 	{
 	}
-	condition_species_type Species() { return CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE; }
+	condition_species_type Species()
+	{
+		return CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE;
+	}
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "CaptureOrDestroySpecificStructure"; /* needs to be put somewhere
+		std::wstring_view retval = "CaptureOrDestroySpecificStructure"; /* needs to be put somewhere
 																	  localizable */
 		return retval;
 	}
@@ -426,13 +476,18 @@ public:
 class CDeadOrFledAllEnemyUnits : public CObjectiveCondition
 {
 public:
-	CDeadOrFledAllEnemyUnits(int32_t alignment) :
-		CObjectiveCondition(alignment) {}
-	condition_species_type Species() { return DEAD_OR_FLED_ALL_ENEMY_UNITS; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CDeadOrFledAllEnemyUnits(int32_t alignment)
+		: CObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere
+	}
+	condition_species_type Species()
+	{
+		return DEAD_OR_FLED_ALL_ENEMY_UNITS;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere
 													   localizable */
 		return retval;
 	}
@@ -441,15 +496,18 @@ public:
 class CDeadOrFledNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 {
 public:
-	CDeadOrFledNumberOfEnemyUnits(int32_t alignment) :
-		CNumberOfUnitsObjectiveCondition(alignment)
+	CDeadOrFledNumberOfEnemyUnits(int32_t alignment)
+		: CNumberOfUnitsObjectiveCondition(alignment)
 	{
 	}
-	condition_species_type Species() { return DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	condition_species_type Species()
 	{
-		const std::wstring_view& retval = "DeadOrFledNumberOfEnemyUnits"; /* needs to be put
+		return DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "DeadOrFledNumberOfEnemyUnits"; /* needs to be put
 															somewhere
 															localizable */
 		return retval;
@@ -459,15 +517,18 @@ public:
 class CDeadOrFledSpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CDeadOrFledSpecificEnemyUnit(int32_t alignment) :
-		CSpecificEnemyUnitObjectiveCondition(alignment)
+	CDeadOrFledSpecificEnemyUnit(int32_t alignment)
+		: CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
 	}
-	condition_species_type Species() { return DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	condition_species_type Species()
 	{
-		const std::wstring_view& retval = "DeadOrFledSpecificEnemyUnit"; /* needs to be put somewhere
+		return DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "DeadOrFledSpecificEnemyUnit"; /* needs to be put somewhere
 																localizable */
 		return retval;
 	}
@@ -476,14 +537,19 @@ public:
 class CCaptureUnit : public CSpecificEnemyUnitObjectiveCondition
 {
 public:
-	CCaptureUnit(int32_t alignment) :
-		CSpecificEnemyUnitObjectiveCondition(alignment) {}
-	condition_species_type Species() { return CAPTURE_UNIT; }
+	CCaptureUnit(int32_t alignment)
+		: CSpecificEnemyUnitObjectiveCondition(alignment)
+	{
+	}
+	condition_species_type Species()
+	{
+		return CAPTURE_UNIT;
+	}
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "CaptureSpecificUnit"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "CaptureSpecificUnit"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -491,14 +557,19 @@ public:
 class CCaptureStructure : public CSpecificStructureObjectiveCondition
 {
 public:
-	CCaptureStructure(int32_t alignment) :
-		CSpecificStructureObjectiveCondition(alignment) {}
-	condition_species_type Species() { return CAPTURE_STRUCTURE; }
+	CCaptureStructure(int32_t alignment)
+		: CSpecificStructureObjectiveCondition(alignment)
+	{
+	}
+	condition_species_type Species()
+	{
+		return CAPTURE_STRUCTURE;
+	}
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "CaptureStructure"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "CaptureStructure"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -506,14 +577,19 @@ public:
 class CGuardSpecificUnit : public CSpecificUnitObjectiveCondition
 {
 public:
-	CGuardSpecificUnit(int32_t alignment) :
-		CSpecificUnitObjectiveCondition(alignment) {}
-	condition_species_type Species() { return GUARD_SPECIFIC_UNIT; }
+	CGuardSpecificUnit(int32_t alignment)
+		: CSpecificUnitObjectiveCondition(alignment)
+	{
+	}
+	condition_species_type Species()
+	{
+		return GUARD_SPECIFIC_UNIT;
+	}
 	bool Read(FitIniFile* missionFile);
 	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "GuardSpecificUnit"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "GuardSpecificUnit"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -521,13 +597,18 @@ public:
 class CGuardSpecificStructure : public CSpecificStructureObjectiveCondition
 {
 public:
-	CGuardSpecificStructure(int32_t alignment) :
-		CSpecificStructureObjectiveCondition(alignment) {}
-	condition_species_type Species() { return GUARD_SPECIFIC_STRUCTURE; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CGuardSpecificStructure(int32_t alignment)
+		: CSpecificStructureObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "GuardSpecificStructure"; /* needs to be put somewhere localizable
+	}
+	condition_species_type Species()
+	{
+		return GUARD_SPECIFIC_STRUCTURE;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "GuardSpecificStructure"; /* needs to be put somewhere localizable
 														 */
 		return retval;
 	}
@@ -541,8 +622,8 @@ protected:
 	float m_targetRadius;
 
 public:
-	CAreaObjectiveCondition(int32_t alignment) :
-		CObjectiveCondition(alignment)
+	CAreaObjectiveCondition(int32_t alignment)
+		: CObjectiveCondition(alignment)
 	{
 		m_targetCenterX = 0.0;
 		m_targetCenterY = 0.0;
@@ -557,7 +638,7 @@ public:
 	}
 	virtual bool Read(FitIniFile* missionFile);
 	virtual bool Save(FitIniFile* file);
-	virtual const std::wstring_view& InstanceDescription(void);
+	virtual std::wstring_view InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CAreaObjectiveCondition*>(pMaster)));
@@ -572,13 +653,18 @@ public:
 class CMoveAnyUnitToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAnyUnitToArea(int32_t alignment) :
-		CAreaObjectiveCondition(alignment) {}
-	condition_species_type Species() { return MOVE_ANY_UNIT_TO_AREA; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CMoveAnyUnitToArea(int32_t alignment)
+		: CAreaObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "MoveAnyUnitToArea"; /* needs to be put somewhere localizable */
+	}
+	condition_species_type Species()
+	{
+		return MOVE_ANY_UNIT_TO_AREA;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "MoveAnyUnitToArea"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -586,13 +672,18 @@ public:
 class CMoveAllUnitsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllUnitsToArea(int32_t alignment) :
-		CAreaObjectiveCondition(alignment) {}
-	condition_species_type Species() { return MOVE_ALL_UNITS_TO_AREA; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CMoveAllUnitsToArea(int32_t alignment)
+		: CAreaObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "MoveAllUnitsToArea"; /* needs to be put somewhere localizable */
+	}
+	condition_species_type Species()
+	{
+		return MOVE_ALL_UNITS_TO_AREA;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "MoveAllUnitsToArea"; /* needs to be put somewhere localizable */
 		return retval;
 	}
 };
@@ -600,13 +691,18 @@ public:
 class CMoveAllSurvivingUnitsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllSurvivingUnitsToArea(int32_t alignment) :
-		CAreaObjectiveCondition(alignment) {}
-	condition_species_type Species() { return MOVE_ALL_SURVIVING_UNITS_TO_AREA; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CMoveAllSurvivingUnitsToArea(int32_t alignment)
+		: CAreaObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "MoveAllSurvivingUnitsToArea"; /* needs to be put somewhere
+	}
+	condition_species_type Species()
+	{
+		return MOVE_ALL_SURVIVING_UNITS_TO_AREA;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "MoveAllSurvivingUnitsToArea"; /* needs to be put somewhere
 																localizable */
 		return retval;
 	}
@@ -615,13 +711,18 @@ public:
 class CMoveAllSurvivingMechsToArea : public CAreaObjectiveCondition
 {
 public:
-	CMoveAllSurvivingMechsToArea(int32_t alignment) :
-		CAreaObjectiveCondition(alignment) {}
-	condition_species_type Species() { return MOVE_ALL_SURVIVING_MECHS_TO_AREA; }
-	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	CMoveAllSurvivingMechsToArea(int32_t alignment)
+		: CAreaObjectiveCondition(alignment)
 	{
-		const std::wstring_view& retval = "MoveAllSurvivingMechsToArea"; /* needs to be put somewhere
+	}
+	condition_species_type Species()
+	{
+		return MOVE_ALL_SURVIVING_MECHS_TO_AREA;
+	}
+	objective_status_type Status(void);
+	std::wstring_view Description()
+	{
+		std::wstring_view retval = "MoveAllSurvivingMechsToArea"; /* needs to be put somewhere
 																localizable */
 		return retval;
 	}
@@ -630,26 +731,29 @@ public:
 class CBooleanFlagIsSet : public CObjectiveCondition
 {
 protected:
-	const std::wstring_view& m_flagID;
+	std::wstring_view m_flagID;
 	bool m_value;
 
 public:
-	CBooleanFlagIsSet(int32_t alignment) :
-		CObjectiveCondition(alignment)
+	CBooleanFlagIsSet(int32_t alignment)
+		: CObjectiveCondition(alignment)
 	{
 		m_flagID = _TEXT("flag0");
 		m_value = true;
 	}
-	condition_species_type Species() { return BOOLEAN_FLAG_IS_SET; }
+	condition_species_type Species()
+	{
+		return BOOLEAN_FLAG_IS_SET;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "BooleanFlagIsSet"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "BooleanFlagIsSet"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CBooleanFlagIsSet*>(pMaster)));
@@ -662,18 +766,24 @@ protected:
 	float m_time;
 
 public:
-	CElapsedMissionTime(int32_t alignment) :
-		CObjectiveCondition(alignment) { m_time = 0.0; }
-	condition_species_type Species() { return ELAPSED_MISSION_TIME; }
+	CElapsedMissionTime(int32_t alignment)
+		: CObjectiveCondition(alignment)
+	{
+		m_time = 0.0;
+	}
+	condition_species_type Species()
+	{
+		return ELAPSED_MISSION_TIME;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	objective_status_type Status(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "ElapsedMissionTime"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "ElapsedMissionTime"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveCondition* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CElapsedMissionTime*>(pMaster)));
@@ -693,7 +803,7 @@ enum action_species_type
 	NUM_ACTION_SPECIES
 };
 
-static const std::wstring_view& g_actionSpeciesStringArray[] = {
+static std::wstring_view g_actionSpeciesStringArray[] = {
 	"PlayBIK",
 	"PlayWAV",
 	"DisplayTextMessage",
@@ -709,44 +819,64 @@ private:
 	int32_t m_alignment;
 
 public:
-	CObjectiveAction(int32_t alignment) { m_alignment = alignment; }
-	virtual ~CObjectiveAction() {}
-	int32_t Alignment() { return m_alignment; }
-	void Alignment(int32_t alignment) { m_alignment = alignment; }
-	bool DoCommonEditDialog() {}
+	CObjectiveAction(int32_t alignment)
+	{
+		m_alignment = alignment;
+	}
+	virtual ~CObjectiveAction() { }
+	int32_t Alignment()
+	{
+		return m_alignment;
+	}
+	void Alignment(int32_t alignment)
+	{
+		m_alignment = alignment;
+	}
+	bool DoCommonEditDialog() { }
 	virtual action_species_type Species() = 0;
 	virtual bool Init() = 0;
 	virtual bool Read(FitIniFile* missionFile) = 0;
 	virtual bool Save(FitIniFile* file) = 0;
 	virtual int32_t Execute() = 0;
-	virtual const std::wstring_view& Description() = 0;
-	virtual const std::wstring_view& InstanceDescription()
+	virtual std::wstring_view Description() = 0;
+	virtual std::wstring_view InstanceDescription()
 	{
-		const std::wstring_view& retval;
+		std::wstring_view retval;
 		return retval;
 	}
-	virtual void CastAndCopy(const CObjectiveAction* pMaster) { (*this) = (*pMaster); }
+	virtual void CastAndCopy(const CObjectiveAction* pMaster)
+	{
+		(*this) = (*pMaster);
+	}
 };
 
 class CPlayBIK : public CObjectiveAction
 {
 private:
-	const std::wstring_view& m_pathname;
+	std::wstring_view m_pathname;
 
 public:
-	CPlayBIK(int32_t alignment) :
-		CObjectiveAction(alignment) {}
-	action_species_type Species() { return PLAY_BIK; }
-	bool Init() { return true; }
+	CPlayBIK(int32_t alignment)
+		: CObjectiveAction(alignment)
+	{
+	}
+	action_species_type Species()
+	{
+		return PLAY_BIK;
+	}
+	bool Init()
+	{
+		return true;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "PlayBIK"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "PlayBIK"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CPlayBIK*>(pMaster)));
@@ -756,22 +886,30 @@ public:
 class CPlayWAV : public CObjectiveAction
 {
 private:
-	const std::wstring_view& m_pathname;
+	std::wstring_view m_pathname;
 
 public:
-	CPlayWAV(int32_t alignment) :
-		CObjectiveAction(alignment) {}
-	action_species_type Species() { return PLAY_WAV; }
-	bool Init() { return true; }
+	CPlayWAV(int32_t alignment)
+		: CObjectiveAction(alignment)
+	{
+	}
+	action_species_type Species()
+	{
+		return PLAY_WAV;
+	}
+	bool Init()
+	{
+		return true;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "PlayWAV"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "PlayWAV"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CPlayWAV*>(pMaster)));
@@ -781,22 +919,30 @@ public:
 class CDisplayTextMessage : public CObjectiveAction
 {
 private:
-	const std::wstring_view& m_message;
+	std::wstring_view m_message;
 
 public:
-	CDisplayTextMessage(int32_t alignment) :
-		CObjectiveAction(alignment) {}
-	action_species_type Species() { return DISPLAY_TEXT_MESSAGE; }
-	bool Init() { return true; }
+	CDisplayTextMessage(int32_t alignment)
+		: CObjectiveAction(alignment)
+	{
+	}
+	action_species_type Species()
+	{
+		return DISPLAY_TEXT_MESSAGE;
+	}
+	bool Init()
+	{
+		return true;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "DisplayTextMessage"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "DisplayTextMessage"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CDisplayTextMessage*>(pMaster)));
@@ -809,20 +955,28 @@ private:
 	int32_t m_resourceStringID;
 
 public:
-	CDisplayResourceTextMessage(int32_t alignment) :
-		CObjectiveAction(alignment) {}
-	action_species_type Species() { return DISPLAY_RESOURCE_TEXT_MESSAGE; }
-	bool Init() { return true; }
+	CDisplayResourceTextMessage(int32_t alignment)
+		: CObjectiveAction(alignment)
+	{
+	}
+	action_species_type Species()
+	{
+		return DISPLAY_RESOURCE_TEXT_MESSAGE;
+	}
+	bool Init()
+	{
+		return true;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "DisplayResourceTextMessage"; /* needs to be put somewhere
+		std::wstring_view retval = "DisplayResourceTextMessage"; /* needs to be put somewhere
 															   localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CDisplayResourceTextMessage*>(pMaster)));
@@ -832,27 +986,33 @@ public:
 class CSetBooleanFlag : public CObjectiveAction
 {
 private:
-	const std::wstring_view& m_flagID;
+	std::wstring_view m_flagID;
 	bool m_value;
 
 public:
-	CSetBooleanFlag(int32_t alignment) :
-		CObjectiveAction(alignment)
+	CSetBooleanFlag(int32_t alignment)
+		: CObjectiveAction(alignment)
 	{
 		m_flagID = _TEXT("flag0");
 		m_value = true;
 	}
-	action_species_type Species() { return SET_BOOLEAN_FLAG; }
-	bool Init() { return true; }
+	action_species_type Species()
+	{
+		return SET_BOOLEAN_FLAG;
+	}
+	bool Init()
+	{
+		return true;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "SetBooleanFlag"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "SetBooleanFlag"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CSetBooleanFlag*>(pMaster)));
@@ -862,23 +1022,31 @@ public:
 class CMakeNewTechnologyAvailable : public CObjectiveAction
 {
 private:
-	const std::wstring_view& m_purchaseFilePathname;
+	std::wstring_view m_purchaseFilePathname;
 
 public:
-	CMakeNewTechnologyAvailable(int32_t alignment) :
-		CObjectiveAction(alignment) {}
-	action_species_type Species() { return MAKE_NEW_TECHNOLOGY_AVAILABLE; }
-	bool Init() { return true; }
+	CMakeNewTechnologyAvailable(int32_t alignment)
+		: CObjectiveAction(alignment)
+	{
+	}
+	action_species_type Species()
+	{
+		return MAKE_NEW_TECHNOLOGY_AVAILABLE;
+	}
+	bool Init()
+	{
+		return true;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "MakeNewTechnologyAvailable"; /* needs to be put somewhere
+		std::wstring_view retval = "MakeNewTechnologyAvailable"; /* needs to be put somewhere
 															   localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const CMakeNewTechnologyAvailable*>(pMaster)));
@@ -891,20 +1059,28 @@ private:
 	int32_t m_pBuildingWID;
 
 public:
-	C_RemoveStructure(int32_t alignment) :
-		CObjectiveAction(alignment) {}
+	C_RemoveStructure(int32_t alignment)
+		: CObjectiveAction(alignment)
+	{
+	}
 	bool SetParams(float positionX, float positionY);
-	action_species_type Species() { return _REMOVE_STRUCTURE; }
-	bool Init() { return true; }
+	action_species_type Species()
+	{
+		return _REMOVE_STRUCTURE;
+	}
+	bool Init()
+	{
+		return true;
+	}
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
 	int32_t Execute(void);
-	const std::wstring_view& Description()
+	std::wstring_view Description()
 	{
-		const std::wstring_view& retval = "_RemoveStructure"; /* needs to be put somewhere localizable */
+		std::wstring_view retval = "_RemoveStructure"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	const std::wstring_view& InstanceDescription(void);
+	std::wstring_view InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction* pMaster)
 	{
 		(*this) = (*(dynamic_cast<const C_RemoveStructure*>(pMaster)));
@@ -924,10 +1100,10 @@ class CObjective : public /*maybe protected*/ CObjectiveConditionList
 private:
 	typedef CObjectiveConditionList inherited;
 	int32_t m_alignment;
-	const std::wstring_view& m_title;
+	std::wstring_view m_title;
 	bool m_titleUseResourceString;
 	int32_t m_titleResourceStringID;
-	const std::wstring_view& m_description;
+	std::wstring_view m_description;
 	bool m_descriptionUseResourceString;
 	int32_t m_descriptionResourceStringID;
 	int32_t m_priority;
@@ -941,14 +1117,14 @@ private:
 	bool m_isHiddenTrigger;
 	bool m_isActive;
 	bool m_activateOnFlag;
-	const std::wstring_view& m_activateFlagID;
+	std::wstring_view m_activateFlagID;
 	bool m_resetStatusOnFlag;
-	const std::wstring_view& m_resetStatusFlagID;
+	std::wstring_view m_resetStatusFlagID;
 	double m_activationTime;
 	bool m_resolved;
 	bool m_changedStatus;
 	objective_status_type m_resolvedStatus;
-	const std::wstring_view& m_modelName;
+	std::wstring_view m_modelName;
 	int32_t m_modelType;
 	int32_t m_modelBasecolour;
 	int32_t m_modelHighlightcolour;
@@ -963,10 +1139,10 @@ public: /* we could make this protected if only the editdialog is to access
 		   these functions */
 	static CObjectiveCondition* new_CObjectiveCondition(
 		condition_species_type conditionSpecies, int32_t alignment);
-	static const std::wstring_view& DescriptionOfConditionSpecies(condition_species_type conditionSpecies);
+	static std::wstring_view DescriptionOfConditionSpecies(condition_species_type conditionSpecies);
 	static CObjectiveAction* new_CObjectiveAction(
 		action_species_type actionSpecies, int32_t alignment);
-	static const std::wstring_view& DescriptionOfActionSpecies(action_species_type actionSpecies);
+	static std::wstring_view DescriptionOfActionSpecies(action_species_type actionSpecies);
 
 public:
 	typedef CObjectiveConditionList condition_list_type;
@@ -976,12 +1152,21 @@ public:
 	action_list_type m_failureActionList;
 
 	CObjective(int32_t alignment);
-	CObjective(const CObjective& master) { (*this) = master; }
-	~CObjective() { Clear(void); }
+	CObjective(const CObjective& master)
+	{
+		(*this) = master;
+	}
+	~CObjective()
+	{
+		Clear(void);
+	}
 	CObjective& operator=(const CObjective& master);
-	void Init() {}
+	void Init() { }
 	void Clear(void);
-	int32_t Alignment() { return m_alignment; }
+	int32_t Alignment()
+	{
+		return m_alignment;
+	}
 	void Alignment(int32_t alignment);
 	bool Read(FitIniFile* missionFile, int32_t objectiveNum, uint32_t version, int32_t markerNum,
 		wchar_t secondaryMarkerNum);
@@ -999,36 +1184,72 @@ public:
 	objective has failed or been completed since I last checked!*/
 	bool StatusChangedSuccess(void);
 	bool StatusChangedFailed(void);
-	const std::wstring_view& Title(void) const { return m_title; }
-	void Title(const std::wstring_view& title) { m_title = title; }
-	bool TitleUseResourceString(void) const { return m_titleUseResourceString; }
+	std::wstring_view Title(void) const
+	{
+		return m_title;
+	}
+	void Title(std::wstring_view title)
+	{
+		m_title = title;
+	}
+	bool TitleUseResourceString(void) const
+	{
+		return m_titleUseResourceString;
+	}
 	void TitleUseResourceString(bool titleUseResourceString)
 	{
 		m_titleUseResourceString = titleUseResourceString;
 	}
-	int32_t TitleResourceStringID(void) const { return m_titleResourceStringID; }
+	int32_t TitleResourceStringID(void) const
+	{
+		return m_titleResourceStringID;
+	}
 	void TitleResourceStringID(int32_t titleResourceStringID)
 	{
 		m_titleResourceStringID = titleResourceStringID;
 	}
-	const std::wstring_view& LocalizedTitle(void) const;
-	const std::wstring_view& Description(void) const { return m_description; }
-	void Description(const std::wstring_view& description) { m_description = description; }
-	bool DescriptionUseResourceString(void) const { return m_descriptionUseResourceString; }
+	std::wstring_view LocalizedTitle(void) const;
+	std::wstring_view Description(void) const
+	{
+		return m_description;
+	}
+	void Description(std::wstring_view description)
+	{
+		m_description = description;
+	}
+	bool DescriptionUseResourceString(void) const
+	{
+		return m_descriptionUseResourceString;
+	}
 	void DescriptionUseResourceString(bool descriptionUseResourceString)
 	{
 		m_descriptionUseResourceString = descriptionUseResourceString;
 	}
-	int32_t DescriptionResourceStringID(void) const { return m_descriptionResourceStringID; }
+	int32_t DescriptionResourceStringID(void) const
+	{
+		return m_descriptionResourceStringID;
+	}
 	void DescriptionResourceStringID(int32_t descriptionResourceStringID)
 	{
 		m_descriptionResourceStringID = descriptionResourceStringID;
 	}
-	const std::wstring_view& LocalizedDescription(void) const;
-	int32_t Priority() { return m_priority; }
-	void Priority(int32_t priority) { m_priority = priority; }
-	int32_t ResourcePoints() { return m_resourcePoints; }
-	void ResourcePoints(int32_t resourcePoints) { m_resourcePoints = resourcePoints; }
+	std::wstring_view LocalizedDescription(void) const;
+	int32_t Priority()
+	{
+		return m_priority;
+	}
+	void Priority(int32_t priority)
+	{
+		m_priority = priority;
+	}
+	int32_t ResourcePoints()
+	{
+		return m_resourcePoints;
+	}
+	void ResourcePoints(int32_t resourcePoints)
+	{
+		m_resourcePoints = resourcePoints;
+	}
 	bool PreviousPrimaryObjectiveMustBeComplete()
 	{
 		return m_previousPrimaryObjectiveMustBeComplete;
@@ -1045,47 +1266,134 @@ public:
 	{
 		m_allPreviousPrimaryObjectivesMustBeComplete = allPreviousPrimaryObjectivesMustBeComplete;
 	}
-	int32_t DisplayMarker() { return m_displayMarker; }
-	void DisplayMarker(int32_t displayMarker) { m_displayMarker = displayMarker; }
-	float MarkerX() { return m_markerX; }
-	void MarkerX(float markerX) { m_markerX = markerX; }
-	float MarkerY() { return m_markerY; }
-	void MarkerY(float markerY) { m_markerY = markerY; }
-	void IsHiddenTrigger(bool isHiddenTrigger) { m_isHiddenTrigger = isHiddenTrigger; }
-	bool IsHiddenTrigger() { return m_isHiddenTrigger; }
-	void IsActive(bool isActive) { m_isActive = isActive; }
-	bool IsActive() { return m_isActive; }
-	void ActivateOnFlag(bool activateOnFlag) { m_activateOnFlag = activateOnFlag; }
-	bool ActivateOnFlag() { return m_activateOnFlag; }
-	void ActivateFlagID(const std::wstring_view& activateFlagId) { m_activateFlagID = activateFlagId; }
-	const std::wstring_view& ActivateFlagID() { return m_activateFlagID; }
-	void ResetStatusOnFlag(bool resetStatusOnFlag) { m_resetStatusOnFlag = resetStatusOnFlag; }
-	bool ResetStatusOnFlag() { return m_resetStatusOnFlag; }
-	void ResetStatusFlagID(const std::wstring_view& resetStatusFlagID)
+	int32_t DisplayMarker()
+	{
+		return m_displayMarker;
+	}
+	void DisplayMarker(int32_t displayMarker)
+	{
+		m_displayMarker = displayMarker;
+	}
+	float MarkerX()
+	{
+		return m_markerX;
+	}
+	void MarkerX(float markerX)
+	{
+		m_markerX = markerX;
+	}
+	float MarkerY()
+	{
+		return m_markerY;
+	}
+	void MarkerY(float markerY)
+	{
+		m_markerY = markerY;
+	}
+	void IsHiddenTrigger(bool isHiddenTrigger)
+	{
+		m_isHiddenTrigger = isHiddenTrigger;
+	}
+	bool IsHiddenTrigger()
+	{
+		return m_isHiddenTrigger;
+	}
+	void IsActive(bool isActive)
+	{
+		m_isActive = isActive;
+	}
+	bool IsActive()
+	{
+		return m_isActive;
+	}
+	void ActivateOnFlag(bool activateOnFlag)
+	{
+		m_activateOnFlag = activateOnFlag;
+	}
+	bool ActivateOnFlag()
+	{
+		return m_activateOnFlag;
+	}
+	void ActivateFlagID(std::wstring_view activateFlagId)
+	{
+		m_activateFlagID = activateFlagId;
+	}
+	std::wstring_view ActivateFlagID()
+	{
+		return m_activateFlagID;
+	}
+	void ResetStatusOnFlag(bool resetStatusOnFlag)
+	{
+		m_resetStatusOnFlag = resetStatusOnFlag;
+	}
+	bool ResetStatusOnFlag()
+	{
+		return m_resetStatusOnFlag;
+	}
+	void ResetStatusFlagID(std::wstring_view resetStatusFlagID)
 	{
 		m_resetStatusFlagID = resetStatusFlagID;
 	}
-	const std::wstring_view& ResetStatusFlagID() { return m_resetStatusFlagID; }
-	const std::wstring_view& ModelName() { return m_modelName; }
-	void ModelName(const std::wstring_view& modelName) { m_modelName = modelName; }
-	int32_t ModelType() { return m_modelType; }
-	void ModelType(int32_t modelType) { m_modelType = modelType; }
-	int32_t ModelBasecolour() { return m_modelBasecolour; }
-	void ModelBasecolour(int32_t modelBasecolour) { m_modelBasecolour = modelBasecolour; }
-	int32_t ModelHighlightcolour() { return m_modelHighlightcolour; }
+	std::wstring_view ResetStatusFlagID()
+	{
+		return m_resetStatusFlagID;
+	}
+	std::wstring_view ModelName()
+	{
+		return m_modelName;
+	}
+	void ModelName(std::wstring_view modelName)
+	{
+		m_modelName = modelName;
+	}
+	int32_t ModelType()
+	{
+		return m_modelType;
+	}
+	void ModelType(int32_t modelType)
+	{
+		m_modelType = modelType;
+	}
+	int32_t ModelBasecolour()
+	{
+		return m_modelBasecolour;
+	}
+	void ModelBasecolour(int32_t modelBasecolour)
+	{
+		m_modelBasecolour = modelBasecolour;
+	}
+	int32_t ModelHighlightcolour()
+	{
+		return m_modelHighlightcolour;
+	}
 	void ModelHighlightcolour(int32_t modelHighlightcolour)
 	{
 		m_modelHighlightcolour = modelHighlightcolour;
 	}
-	int32_t ModelHighlightcolour2() { return m_modelHighlightcolour2; }
+	int32_t ModelHighlightcolour2()
+	{
+		return m_modelHighlightcolour2;
+	}
 	void ModelHighlightcolour2(int32_t modelHighlightcolour2)
 	{
 		m_modelHighlightcolour2 = modelHighlightcolour2;
 	}
-	float ModelScale() { return m_modelScale; }
-	void ModelScale(float modelScale) { m_modelScale = modelScale; }
-	void ActivationTime(double activationTime) { m_activationTime = activationTime; }
-	double ActivationTime() { return m_activationTime; }
+	float ModelScale()
+	{
+		return m_modelScale;
+	}
+	void ModelScale(float modelScale)
+	{
+		m_modelScale = modelScale;
+	}
+	void ActivationTime(double activationTime)
+	{
+		m_activationTime = activationTime;
+	}
+	double ActivationTime()
+	{
+		return m_activationTime;
+	}
 	void Render(uint32_t xPos, uint32_t yPos, HGOSFONT3D);
 	bool RenderMarkers(GameTacMap* tacMap,
 		bool blink); // TacMap calls this to draw objective markers on tacMap.
@@ -1096,13 +1404,25 @@ public:
 class CObjectives : public /*maybe protected*/ EList<CObjective*, CObjective*>
 {
 public:
-	CObjectives(int32_t alignment = 0) { m_alignment = alignment; }
-	CObjectives(const CObjectives& master) { (*this) = master; }
-	~CObjectives() { Clear(void); }
+	CObjectives(int32_t alignment = 0)
+	{
+		m_alignment = alignment;
+	}
+	CObjectives(const CObjectives& master)
+	{
+		(*this) = master;
+	}
+	~CObjectives()
+	{
+		Clear(void);
+	}
 	CObjectives& operator=(const CObjectives& master);
 	void Init(void);
 	void Clear(void);
-	int32_t Alignment() { return m_alignment; }
+	int32_t Alignment()
+	{
+		return m_alignment;
+	}
 	void Alignment(int32_t alignment);
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* file);
@@ -1115,7 +1435,6 @@ private:
 };
 
 /* Reads Nav Marker info and adds appropriate "hidden trigger" objectives. */
-bool
-ReadNavMarkers(FitIniFile* missionFile, CObjectives& objectives);
+bool ReadNavMarkers(FitIniFile* missionFile, CObjectives& objectives);
 
 #endif // end of file ( Objective.h )

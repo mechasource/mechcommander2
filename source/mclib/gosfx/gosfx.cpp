@@ -121,8 +121,7 @@ gosFX::ReadGFXVersion(std::iostream erf_stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-gosFX::WriteGFXVersion(std::iostream erf_stream)
+void gosFX::WriteGFXVersion(std::iostream erf_stream)
 {
 	Check_Object(erf_stream);
 	*erf_stream << 'GFX#' << static_cast<int32_t>(CurrentGFXVersion);

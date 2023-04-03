@@ -10,8 +10,7 @@ MineBrush.cpp			: Implementation of the MineBrush component.
 #include "editorobjectmgr.h"
 #include "Move.h"
 
-bool
-MineBrush::beginPaint()
+bool MineBrush::beginPaint()
 {
 	if (!pAction)
 		pAction = new MineAction();
@@ -35,8 +34,7 @@ MineBrush::endPaint()
 	return pRetAction;
 }
 
-bool
-MineBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool MineBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	int32_t tileC;
 	int32_t tileR;
@@ -61,14 +59,12 @@ MineBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	return true;
 }
 
-bool
-MineBrush::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool MineBrush::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	return true;
 }
 
-bool
-MineBrush::canPaintSelection()
+bool MineBrush::canPaintSelection()
 {
 	return land->hasSelection();
 }
@@ -95,8 +91,7 @@ MineBrush::applyToSelection()
 	return pRetAction;
 }
 
-bool
-MineBrush::MineAction::undo()
+bool MineBrush::MineAction::undo()
 {
 	for (MINE_INFO_LIST::EIterator iter = mineInfoList.Begin(); !iter.IsDone(); iter++)
 	{
@@ -110,14 +105,12 @@ MineBrush::MineAction::undo()
 	return true;
 }
 
-bool
-MineBrush::MineAction::redo()
+bool MineBrush::MineAction::redo()
 {
 	return undo();
 }
 
-void
-MineBrush::MineAction::AddChangedTileMineInfo(CTileMineInfo& info)
+void MineBrush::MineAction::AddChangedTileMineInfo(CTileMineInfo& info)
 {
 	for (MINE_INFO_LIST::EIterator iter = mineInfoList.Begin(); !iter.IsDone(); iter++)
 	{

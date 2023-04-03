@@ -15,7 +15,8 @@
 //#include "ablparse.h"
 //#include "ablexec.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -27,7 +28,7 @@ extern TokenCodeType statementStartList[];
 extern TokenCodeType statementEndList[];
 extern const std::unique_ptr<SymTableNode>& symTableDisplay[];
 extern int32_t level;
-extern const std::wstring_view& codeBuffer;
+extern std::wstring_view codeBuffer;
 extern const std::unique_ptr<Type>& IntegerTypePtr;
 extern const std::unique_ptr<Type>& RealTypePtr;
 extern const std::unique_ptr<Type>& BooleanTypePtr;
@@ -49,12 +50,11 @@ TokenCodeType CaseLabelStartList[] = {
 	TKN_IDENTIFIER, TKN_NUMBER, TKN_PLUS, TKN_MINUS, TKN_STRING, TKN_NONE};
 
 const std::unique_ptr<SymTableNode>&
-forwardState(const std::wstring_view& stateName);
+forwardState(std::wstring_view stateName);
 
 //***************************************************************************
 
-void
-assignmentStatement(const std::unique_ptr<SymTableNode>& varIdPtr)
+void assignmentStatement(const std::unique_ptr<SymTableNode>& varIdPtr)
 {
 	//-----------------------------------
 	// Grab the variable we're setting...
@@ -71,8 +71,7 @@ assignmentStatement(const std::unique_ptr<SymTableNode>& varIdPtr)
 
 //***************************************************************************
 
-void
-repeatStatement(void)
+void repeatStatement(void)
 {
 	getToken();
 	if (curToken != TKN_UNTIL)
@@ -94,12 +93,11 @@ repeatStatement(void)
 
 //***************************************************************************
 
-void
-whileStatement(void)
+void whileStatement(void)
 {
 	// NEW STYLE, using endwhile keyword...
 	getToken();
-	const std::wstring_view& loopEndLocation = crunchAddressMarker(nullptr);
+	std::wstring_view loopEndLocation = crunchAddressMarker(nullptr);
 	const std::unique_ptr<Type>& exprType = expression();
 	if (exprType != BooleanTypePtr)
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
@@ -121,11 +119,10 @@ whileStatement(void)
 
 //***************************************************************************
 
-void
-ifStatement(void)
+void ifStatement(void)
 {
 	getToken();
-	const std::wstring_view& falseLocation = crunchAddressMarker(nullptr);
+	std::wstring_view falseLocation = crunchAddressMarker(nullptr);
 	const std::unique_ptr<Type>& exprType = expression();
 	if (exprType != BooleanTypePtr)
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
@@ -145,7 +142,7 @@ ifStatement(void)
 	if (curToken == TKN_ELSE)
 	{
 		getToken();
-		const std::wstring_view& ifEndLocation = crunchAddressMarker(nullptr);
+		std::wstring_view ifEndLocation = crunchAddressMarker(nullptr);
 		if (curToken != TKN_END_IF)
 			do
 			{
@@ -162,11 +159,10 @@ ifStatement(void)
 
 //***************************************************************************
 
-void
-forStatement(void)
+void forStatement(void)
 {
 	getToken();
-	const std::wstring_view& loopEndLocation = crunchAddressMarker(nullptr);
+	std::wstring_view loopEndLocation = crunchAddressMarker(nullptr);
 	const std::unique_ptr<Type>& forType = nullptr;
 	if (curToken == TKN_IDENTIFIER)
 	{
@@ -305,8 +301,7 @@ caseLabel(const std::unique_ptr<CaseItem>&& caseItemHead, const std::unique_ptr<
 
 //---------------------------------------------------------------------------
 
-void
-caseBranch(const std::unique_ptr<CaseItem>&& caseItemHead, const std::unique_ptr<CaseItem>&& caseItemTail, int32_t& caseLabelCount,
+void caseBranch(const std::unique_ptr<CaseItem>&& caseItemHead, const std::unique_ptr<CaseItem>&& caseItemTail, int32_t& caseLabelCount,
 	const std::unique_ptr<Type>& expressionType)
 {
 	// static const std::unique_ptr<CaseItem>& oldCaseItemTail = nullptr;
@@ -360,13 +355,12 @@ caseBranch(const std::unique_ptr<CaseItem>&& caseItemHead, const std::unique_ptr
 
 //---------------------------------------------------------------------------
 
-void
-switchStatement(void)
+void switchStatement(void)
 {
 	//-------------------------
 	// Init the branch table...
 	getToken();
-	const std::wstring_view& branchTableLocation = crunchAddressMarker(nullptr);
+	std::wstring_view branchTableLocation = crunchAddressMarker(nullptr);
 	const std::unique_ptr<CaseItem>& caseItemHead = nullptr;
 	const std::unique_ptr<CaseItem>& caseItemTail = nullptr;
 	int32_t caseLabelCount = 0;
@@ -382,7 +376,7 @@ switchStatement(void)
 	//----------------------------
 	// Process each CASE branch...
 	bool moreBranches = (curToken == TKN_CASE);
-	const std::wstring_view& caseEndChain = nullptr;
+	std::wstring_view caseEndChain = nullptr;
 	while (moreBranches)
 	{
 		getToken();
@@ -418,8 +412,7 @@ switchStatement(void)
 
 //***************************************************************************
 
-void
-transStatement(void)
+void transStatement(void)
 {
 	getToken();
 	ifTokenGetElseError(TKN_IDENTIFIER, ABL_ERR_MISSING_STATE_IDENTIFIER);
@@ -437,16 +430,14 @@ transStatement(void)
 
 //***************************************************************************
 
-void
-transBackStatement(void)
+void transBackStatement(void)
 {
 	getToken();
 }
 
 //***************************************************************************
 
-void
-statement(void)
+void statement(void)
 {
 	//-------------------------------------------------------------------
 	// NOTE: Since we currently don't support generic BEGIN/END (compound

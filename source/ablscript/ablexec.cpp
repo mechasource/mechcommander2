@@ -14,17 +14,18 @@
 //#include "ablexec.h"
 //#include "abldbug.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
 //--------
 // GLOBALS
-const std::wstring_view& codeBuffer = nullptr;
-const std::wstring_view& codeBufferPtr = nullptr;
-const std::wstring_view& codeSegmentPtr = nullptr;
-const std::wstring_view& codeSegmentLimit = nullptr;
-const std::wstring_view& statementStartPtr = nullptr;
+std::wstring_view codeBuffer = nullptr;
+std::wstring_view codeBufferPtr = nullptr;
+std::wstring_view codeSegmentPtr = nullptr;
+std::wstring_view codeSegmentLimit = nullptr;
+std::wstring_view statementStartPtr = nullptr;
 
 TokenCodeType codeToken;
 int32_t execLineNumber;
@@ -92,8 +93,7 @@ extern void (*ABLEndlessStateCallback)(UserFile* log);
 // CRUNCH/DECRUNCH routines
 //***************************************************************************
 
-void
-crunchToken(void)
+void crunchToken(void)
 {
 	if (!Crunch)
 		return;
@@ -108,8 +108,7 @@ crunchToken(void)
 
 //***************************************************************************
 
-void
-crunchSymTableNodePtr(const std::unique_ptr<SymTableNode>& nodePtr)
+void crunchSymTableNodePtr(const std::unique_ptr<SymTableNode>& nodePtr)
 {
 	if (!Crunch)
 		return;
@@ -125,8 +124,7 @@ crunchSymTableNodePtr(const std::unique_ptr<SymTableNode>& nodePtr)
 
 //***************************************************************************
 
-void
-crunchStatementMarker(void)
+void crunchStatementMarker(void)
 {
 	if (!Crunch)
 		return;
@@ -151,8 +149,7 @@ crunchStatementMarker(void)
 
 //***************************************************************************
 
-void
-uncrunchStatementMarker(void)
+void uncrunchStatementMarker(void)
 {
 	//-------------------------
 	// Pull code off the buffer
@@ -168,12 +165,12 @@ uncrunchStatementMarker(void)
 
 //***************************************************************************
 
-const std::wstring_view&
+std::wstring_view
 crunchAddressMarker(Address address)
 {
 	if (!Crunch)
 		return (nullptr);
-	const std::wstring_view& saveCodeBufferPtr = nullptr;
+	std::wstring_view saveCodeBufferPtr = nullptr;
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else
@@ -192,20 +189,19 @@ crunchAddressMarker(Address address)
 
 //***************************************************************************
 
-const std::wstring_view&
+std::wstring_view
 fixupAddressMarker(Address address)
 {
 	if (!Crunch)
 		return (nullptr);
-	const std::wstring_view& oldAddress = *((Address*)address);
+	std::wstring_view oldAddress = *((Address*)address);
 	*((int32_t*)address) = codeBufferPtr - address;
 	return (oldAddress);
 }
 
 //***************************************************************************
 
-void
-crunchInteger(int32_t value)
+void crunchInteger(int32_t value)
 {
 	if (!Crunch)
 		return;
@@ -220,8 +216,7 @@ crunchInteger(int32_t value)
 
 //***************************************************************************
 
-void
-crunchByte(uint8_t value)
+void crunchByte(uint8_t value)
 {
 	if (!Crunch)
 		return;
@@ -236,8 +231,7 @@ crunchByte(uint8_t value)
 
 //***************************************************************************
 
-void
-crunchOffset(Address address)
+void crunchOffset(Address address)
 {
 	if (!Crunch)
 		return;
@@ -252,11 +246,11 @@ crunchOffset(Address address)
 
 //***************************************************************************
 
-const std::wstring_view&
+std::wstring_view
 createCodeSegment(int32_t& codeSegmentSize)
 {
 	codeSegmentSize = codeBufferPtr - codeBuffer + 1;
-	const std::wstring_view& codeSegment = (const std::wstring_view&)ABLCodeMallocCallback(codeSegmentSize);
+	std::wstring_view codeSegment = (std::wstring_view)ABLCodeMallocCallback(codeSegmentSize);
 	if (!codeSegment)
 		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc code segment ");
 	for (size_t i = 0; i < codeSegmentSize; i++)
@@ -299,7 +293,7 @@ getCodeStatementMarker(void)
 
 //***************************************************************************
 
-const std::wstring_view&
+std::wstring_view
 getCodeAddressMarker(void)
 {
 	Address address = nullptr;
@@ -333,7 +327,7 @@ getCodeByte(void)
 
 //***************************************************************************
 
-const std::wstring_view&
+std::wstring_view
 getCodeAddress(void)
 {
 	Address address = *((int32_t*)codeSegmentPtr) + codeSegmentPtr - 1;
@@ -345,16 +339,14 @@ getCodeAddress(void)
 // STACK routines
 //***************************************************************************
 
-void
-pop(void)
+void pop(void)
 {
 	--tos;
 }
 
 //***************************************************************************
 
-void
-getCodeToken(void)
+void getCodeToken(void)
 {
 	codeToken = (TokenCodeType)*codeSegmentPtr;
 	codeSegmentPtr++;
@@ -362,8 +354,7 @@ getCodeToken(void)
 
 //***************************************************************************
 
-void
-pushInteger(int32_t value)
+void pushInteger(int32_t value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -373,8 +364,7 @@ pushInteger(int32_t value)
 
 //***************************************************************************
 
-void
-pushReal(float value)
+void pushReal(float value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -384,8 +374,7 @@ pushReal(float value)
 
 //***************************************************************************
 
-void
-pushByte(wchar_t value)
+void pushByte(wchar_t value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -395,8 +384,7 @@ pushByte(wchar_t value)
 
 //***************************************************************************
 
-void
-pushAddress(Address address)
+void pushAddress(Address address)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -406,8 +394,7 @@ pushAddress(Address address)
 
 //***************************************************************************
 
-void
-pushBoolean(bool value)
+void pushBoolean(bool value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -416,8 +403,7 @@ pushBoolean(bool value)
 }
 
 //***************************************************************************
-void
-pushStackFrameHeader(int32_t oldLevel, int32_t newLevel)
+void pushStackFrameHeader(int32_t oldLevel, int32_t newLevel)
 {
 	//-----------------------------------
 	// Make space for the return value...
@@ -467,8 +453,7 @@ pushStackFrameHeader(int32_t oldLevel, int32_t newLevel)
 
 //***************************************************************************
 
-void
-allocLocal(const std::unique_ptr<Type>& ptype)
+void allocLocal(const std::unique_ptr<Type>& ptype)
 {
 	if (ptype == IntegerTypePtr)
 		pushInteger(0);
@@ -490,7 +475,7 @@ allocLocal(const std::unique_ptr<Type>& ptype)
 			//				allocLocal(ptype->info.subrange.rangeTypePtr);
 			//				break;
 		case FRM_ARRAY:
-			const std::wstring_view& ptr = (const std::wstring_view&)ABLStackMallocCallback(ptype->size);
+			std::wstring_view ptr = (std::wstring_view)ABLStackMallocCallback(ptype->size);
 			if (!ptr)
 				ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc local array ");
 			pushAddress((Address)ptr);
@@ -500,8 +485,7 @@ allocLocal(const std::unique_ptr<Type>& ptype)
 
 //***************************************************************************
 
-void
-freeLocal(const std::unique_ptr<SymTableNode>& idPtr)
+void freeLocal(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	//---------------------------------------
 	// Frees data allocated on local stack...
@@ -532,8 +516,7 @@ freeLocal(const std::unique_ptr<SymTableNode>& idPtr)
 // FUNCTION ENTRY/EXIT routines
 //***************************************************************************
 
-void
-routineEntry(const std::unique_ptr<SymTableNode>& routineIdPtr)
+void routineEntry(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	if (debugger)
 		debugger->traceRoutineEntry(routineIdPtr);
@@ -551,8 +534,7 @@ routineEntry(const std::unique_ptr<SymTableNode>& routineIdPtr)
 
 //***************************************************************************
 
-void
-routineExit(const std::unique_ptr<SymTableNode>& routineIdPtr)
+void routineExit(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	if (debugger)
 		debugger->traceRoutineExit(routineIdPtr);
@@ -577,8 +559,7 @@ routineExit(const std::unique_ptr<SymTableNode>& routineIdPtr)
 
 //***************************************************************************
 
-void
-execute(const std::unique_ptr<SymTableNode>& routineIdPtr)
+void execute(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	const std::unique_ptr<SymTableNode>& thisRoutineIdPtr = CurRoutineIdPtr;
 	CurRoutineIdPtr = routineIdPtr;
@@ -670,8 +651,7 @@ execute(const std::unique_ptr<SymTableNode>& routineIdPtr)
 
 //***************************************************************************
 
-void
-executeChild(const std::unique_ptr<SymTableNode>& routineIdPtr, const std::unique_ptr<SymTableNode>& childRoutineIdPtr)
+void executeChild(const std::unique_ptr<SymTableNode>& routineIdPtr, const std::unique_ptr<SymTableNode>& childRoutineIdPtr)
 {
 	// THIS DOES NOT SUPPORT CALLING FUNCTIONS WITH PARAMETERS YET!
 	const std::unique_ptr<SymTableNode>& thisRoutineIdPtr = CurRoutineIdPtr;

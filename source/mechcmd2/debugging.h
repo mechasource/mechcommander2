@@ -47,7 +47,10 @@ public:
 			textBuffer[i][0] = nullptr;
 	}
 
-	GameDebugWindow(void) { init(void); }
+	GameDebugWindow(void)
+	{
+		init(void);
+	}
 
 	void setPos(int32_t x, int32_t y)
 	{
@@ -62,7 +65,10 @@ public:
 		display = true;
 	}
 
-	void close(void) { display = false; }
+	void close(void)
+	{
+		display = false;
+	}
 
 	void toggle(void)
 	{
@@ -72,11 +78,14 @@ public:
 			open(void);
 	}
 
-	~GameDebugWindow(void) { destroy(void); }
+	~GameDebugWindow(void)
+	{
+		destroy(void);
+	}
 
-	virtual void destroy(void) {}
+	virtual void destroy(void) { }
 
-	void print(const std::wstring_view& s);
+	void print(std::wstring_view s);
 
 	void render(void);
 
@@ -87,7 +96,7 @@ public:
 			textBuffer[i][0] = nullptr;
 	}
 
-	static void setFont(const std::wstring_view& fontFile);
+	static void setFont(std::wstring_view fontFile);
 };
 
 //***************************************************************************

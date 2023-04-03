@@ -23,8 +23,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CGroupDialog dialog
 
-CGroupDialog::CGroupDialog(CWnd* pParent /*=nullptr*/) :
-	CDialog(CGroupDialog::IDD, pParent)
+CGroupDialog::CGroupDialog(CWnd* pParent /*=nullptr*/)
+	: CDialog(CGroupDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CGroupDialog)
 	m_OperationFileEdit = _T("");
@@ -35,8 +35,7 @@ CGroupDialog::CGroupDialog(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-CGroupDialog::DoDataExchange(CDataExchange* pDX)
+void CGroupDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CGroupDialog)
@@ -51,21 +50,20 @@ CGroupDialog::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CGroupDialog, CDialog)
-//{{AFX_MSG_MAP(CGroupDialog)
-ON_BN_CLICKED(IDC_GR_OPERATION_FILE_BROWSE_BUTTON, OnGrOperationFileBrowseButton)
-ON_BN_CLICKED(IDC_GR_PREVIDEO_FILE_BROWSE_BUTTON, OnGrPrevideoFileBrowseButton)
-ON_BN_CLICKED(IDC_GR_VIDEO_FILE_BROWSE_BUTTON, OnGrVideoFileBrowseButton)
-ON_BN_CLICKED(IDC_GR_ADD_BUTTON, OnGrAddButton)
-ON_BN_CLICKED(IDC_GR_REMOVE_BUTTON, OnGrRemoveButton)
-ON_BN_CLICKED(IDC_GR_EDIT_BUTTON, OnGrEditButton)
+	//{{AFX_MSG_MAP(CGroupDialog)
+	ON_BN_CLICKED(IDC_GR_OPERATION_FILE_BROWSE_BUTTON, OnGrOperationFileBrowseButton)
+	ON_BN_CLICKED(IDC_GR_PREVIDEO_FILE_BROWSE_BUTTON, OnGrPrevideoFileBrowseButton)
+	ON_BN_CLICKED(IDC_GR_VIDEO_FILE_BROWSE_BUTTON, OnGrVideoFileBrowseButton)
+	ON_BN_CLICKED(IDC_GR_ADD_BUTTON, OnGrAddButton)
+	ON_BN_CLICKED(IDC_GR_REMOVE_BUTTON, OnGrRemoveButton)
+	ON_BN_CLICKED(IDC_GR_EDIT_BUTTON, OnGrEditButton)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CGroupDialog message handlers
 
-void
-CGroupDialog::OnGrOperationFileBrowseButton()
+void CGroupDialog::OnGrOperationFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -79,7 +77,7 @@ CGroupDialog::OnGrOperationFileBrowseButton()
 			CString operationPath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			int32_t result = 0;
-			result = file.open((const std::wstring_view&)(const std::wstring_view&)operationPath);
+			result = file.open((std::wstring_view)(std::wstring_view)operationPath);
 			if (NO_ERROR != result)
 			{
 				AfxMessageBox(IDS_COULDNT_OPEN_OPERATION_FILE);
@@ -105,8 +103,7 @@ CGroupDialog::OnGrOperationFileBrowseButton()
 	UpdateData(FALSE);
 }
 
-void
-CGroupDialog::OnGrPrevideoFileBrowseButton()
+void CGroupDialog::OnGrPrevideoFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -127,8 +124,7 @@ CGroupDialog::OnGrPrevideoFileBrowseButton()
 	UpdateData(FALSE);
 }
 
-void
-CGroupDialog::OnGrVideoFileBrowseButton()
+void CGroupDialog::OnGrVideoFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -164,8 +160,7 @@ setMissionListBoxValues(CListBox& MissionListBox, const CMissionList& MissionLis
 	}
 }
 
-BOOL
-CGroupDialog::OnInitDialog()
+BOOL CGroupDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	setMissionListBoxValues(m_MissionListControl, m_MissionList);
@@ -198,8 +193,7 @@ setMissionDataValues(CMissionData& missionData, const CMissionDialog& missionDia
 	missionData.m_SalvageEnabled = missionDialog.m_SalvageCheck;
 }
 
-void
-CGroupDialog::OnGrAddButton()
+void CGroupDialog::OnGrAddButton()
 {
 	CMissionData missionData;
 	CMissionDialog missionDialog;
@@ -216,8 +210,7 @@ CGroupDialog::OnGrAddButton()
 	}
 }
 
-void
-CGroupDialog::OnGrRemoveButton()
+void CGroupDialog::OnGrRemoveButton()
 {
 	uint32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex))
@@ -246,8 +239,7 @@ CGroupDialog::OnGrRemoveButton()
 	}
 }
 
-void
-CGroupDialog::OnGrEditButton()
+void CGroupDialog::OnGrEditButton()
 {
 	uint32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex))
@@ -265,8 +257,7 @@ CGroupDialog::OnGrEditButton()
 	}
 }
 
-void
-CGroupDialog::OnOK()
+void CGroupDialog::OnOK()
 {
 	int32_t tmpInt = m_TuneComboControl.GetCurSel();
 	if ((CB_ERR != tmpInt) && (0 <= tmpInt))

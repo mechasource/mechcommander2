@@ -69,8 +69,7 @@ YawPitchRange::operator=(const Vector3D& vector)
 //#############################################################################
 //#############################################################################
 //
-bool
-Stuff::Small_Enough(const YawPitchRange& angles, float e)
+bool Stuff::Small_Enough(const YawPitchRange& angles, float e)
 {
 	Check_Object(&angles);
 	return Small_Enough(angles.pitch, e) && Small_Enough(angles.yaw, e) && Small_Enough(angles.range, e);
@@ -80,8 +79,7 @@ Stuff::Small_Enough(const YawPitchRange& angles, float e)
 //#############################################################################
 //#############################################################################
 //
-bool
-Stuff::Close_Enough(const YawPitchRange& a1, const YawPitchRange& a2, float e)
+bool Stuff::Close_Enough(const YawPitchRange& a1, const YawPitchRange& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
@@ -93,8 +91,7 @@ Stuff::Close_Enough(const YawPitchRange& a1, const YawPitchRange& a2, float e)
 //#############################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const YawPitchRange& angle)
+void Spew(std::wstring_view group, const YawPitchRange& angle)
 {
 	SPEW((group, "<+"));
 	Spew(group, angle.yaw);

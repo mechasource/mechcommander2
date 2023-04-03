@@ -12,8 +12,7 @@
 //###########################################################################
 //###########################################################################
 //
-bool
-Vector4D::TestClass()
+bool Vector4D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Vector4D test..."));
 	const Vector4D a(Identity);

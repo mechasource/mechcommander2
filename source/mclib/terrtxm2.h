@@ -90,13 +90,19 @@ protected:
 public:
 	void init(void);
 
-	TerraincolourMap(void) { init(void); }
+	TerraincolourMap(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~TerraincolourMap(void) { destroy(void); }
+	~TerraincolourMap(void)
+	{
+		destroy(void);
+	}
 
-	int32_t init(const std::wstring_view& fileName);
+	int32_t init(std::wstring_view fileName);
 
 	void getcolourMapData(uint8_t* ourRAM, int32_t index, int32_t width);
 
@@ -107,14 +113,14 @@ public:
 		mcTextureManager->get_gosTextureHandle(detailTextureNodeIndex);
 		return (detailTextureNodeIndex);
 	}
-	int32_t saveDetailTexture(const std::wstring_view& fileName);
+	int32_t saveDetailTexture(std::wstring_view fileName);
 
 	uint32_t getWaterTextureHandle(void)
 	{
 		mcTextureManager->get_gosTextureHandle(waterTextureNodeIndex);
 		return waterTextureNodeIndex;
 	}
-	int32_t saveWaterTexture(const std::wstring_view& fileName);
+	int32_t saveWaterTexture(std::wstring_view fileName);
 
 	uint32_t getWaterDetailHandle(int32_t frameNum)
 	{
@@ -126,44 +132,74 @@ public:
 		else
 			return 0xffffffff;
 	}
-	int32_t saveWaterDetail(const std::wstring_view& fileName);
+	int32_t saveWaterDetail(std::wstring_view fileName);
 
-	uint32_t getWaterDetailNumFrames(void) { return numWaterDetailFrames; }
+	uint32_t getWaterDetailNumFrames(void)
+	{
+		return numWaterDetailFrames;
+	}
 
-	float getWaterDetailFrameRate(void) { return waterDetailFrameRate; }
+	float getWaterDetailFrameRate(void)
+	{
+		return waterDetailFrameRate;
+	}
 
-	float getDetailTilingFactor(void) { return detailTextureTilingFactor; }
+	float getDetailTilingFactor(void)
+	{
+		return detailTextureTilingFactor;
+	}
 
-	float getWaterTextureTilingFactor(void) { return waterTextureTilingFactor; }
+	float getWaterTextureTilingFactor(void)
+	{
+		return waterTextureTilingFactor;
+	}
 
-	float getWaterDetailTilingFactor(void) { return waterDetailTilingFactor; }
+	float getWaterDetailTilingFactor(void)
+	{
+		return waterDetailTilingFactor;
+	}
 
-	void setWaterDetailFrameRate(float frameRate) { waterDetailFrameRate = frameRate; }
+	void setWaterDetailFrameRate(float frameRate)
+	{
+		waterDetailFrameRate = frameRate;
+	}
 
-	void setDetailTilingFactor(float tf) { detailTextureTilingFactor = tf; }
+	void setDetailTilingFactor(float tf)
+	{
+		detailTextureTilingFactor = tf;
+	}
 
-	void setWaterTextureTilingFactor(float tf) { waterTextureTilingFactor = tf; }
+	void setWaterTextureTilingFactor(float tf)
+	{
+		waterTextureTilingFactor = tf;
+	}
 
-	void setWaterDetailTilingFactor(float tf) { waterDetailTilingFactor = tf; }
+	void setWaterDetailTilingFactor(float tf)
+	{
+		waterDetailTilingFactor = tf;
+	}
 
 	int32_t saveTilingFactors(FitIniFile* fitFile);
 
 	// Mike, these functions will reload these textures from disk.
 	// This allows us to change them in the editor and reload here.
 	// Pass in the filename of the mission!!!!
-	void resetBaseTexture(const std::wstring_view& fileName);
-	void resetDetailTexture(const std::wstring_view& fileName);
-	void resetWaterTexture(const std::wstring_view& fileName);
-	void resetWaterDetailTextures(const std::wstring_view& fileName);
+	void resetBaseTexture(std::wstring_view fileName);
+	void resetDetailTexture(std::wstring_view fileName);
+	void resetWaterTexture(std::wstring_view fileName);
+	void resetWaterDetailTextures(std::wstring_view fileName);
 
 	// Pass in filename of height map to write new data to.
-	void refractalizeBaseMesh(const std::wstring_view& fileName, int32_t Threshold, int32_t Noise);
+	void refractalizeBaseMesh(std::wstring_view fileName, int32_t Threshold, int32_t Noise);
 
-	void burnInShadows(bool doBumpPass = true, const std::wstring_view& fileName = nullptr);
+	void burnInShadows(bool doBumpPass = true, std::wstring_view fileName = nullptr);
 
-	void recalcLight(const std::wstring_view& fileName);
+	void recalcLight(std::wstring_view fileName);
 
-	static int32_t getNumTypes(void) { return TOTAL_COLORMAP_TYPES; }
+	static int32_t getNumTypes(void)
+	{
+		return TOTAL_COLORMAP_TYPES;
+	}
 
 	static int32_t getTextureNameID(int32_t idNum)
 	{

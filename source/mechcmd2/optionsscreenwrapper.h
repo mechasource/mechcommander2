@@ -6,7 +6,6 @@ component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef OPTIONSSCREENWRAPPER_H
@@ -43,7 +42,10 @@ public:
 
 	void begin(void);
 	void end(void);
-	bool isDone() { return (!isActive); }
+	bool isDone()
+	{
+		return (!isActive);
+	}
 
 private:
 	OptionsXScreen* pOptionsScreen;

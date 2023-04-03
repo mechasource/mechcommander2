@@ -18,8 +18,8 @@ ChooseUnitDlg.cpp			: Implementation of the ChooseUnitDlg component.
 //#include "editorobjectmgr.h"
 
 //-------------------------------------------------------------------------------------------------
-ChooseUnitDlg::ChooseUnitDlg(unit_ptr_type& unitPtr, int32_t alignmentToExclude) :
-	CDialog(IDD_CHOOSE_UNIT)
+ChooseUnitDlg::ChooseUnitDlg(unit_ptr_type& unitPtr, int32_t alignmentToExclude)
+	: CDialog(IDD_CHOOSE_UNIT)
 {
 	m_alignmentToExclude = alignmentToExclude;
 	m_pUnitPtr = &unitPtr;
@@ -30,8 +30,7 @@ ChooseUnitDlg::ChooseUnitDlg(unit_ptr_type& unitPtr, int32_t alignmentToExclude)
 	m_pOKButton = 0;
 }
 
-BOOL
-ChooseUnitDlg::OnInitDialog()
+BOOL ChooseUnitDlg::OnInitDialog()
 {
 	m_pComboBox = (CComboBox*)GetDlgItem(IDC_CHOOSE_UNIT_COMBO);
 	_ASSERT(m_pComboBox);
@@ -67,9 +66,9 @@ ChooseUnitDlg::OnInitDialog()
 		EditorObjectMgr::UNIT_LIST::EConstIterator it = m_unitList.Begin();
 		while (!it.IsDone())
 		{
-			const std::wstring_view& tmpEStr;
+			std::wstring_view tmpEStr;
 			Stuff::Vector3D pos = (*it)->getPosition();
-			const std::wstring_view& szDisplayName = (*it)->getDisplayName(); // nb: localization
+			std::wstring_view szDisplayName = (*it)->getDisplayName(); // nb: localization
 			_ASSERT(szDisplayName);
 			tmpEStr.Format("(pos: %.3f, %.3f) %s", pos.x, pos.y, szDisplayName);
 			m_pComboBox->AddString(tmpEStr.Data());
@@ -93,8 +92,7 @@ ChooseUnitDlg::OnInitDialog()
 	return 1;
 }
 
-BOOL
-ChooseUnitDlg::OnCommand(WPARAM wparam,
+BOOL ChooseUnitDlg::OnCommand(WPARAM wparam,
 	LPARAM lparam) // called by child controls to inform of an event
 {
 	_ASSERT(m_pCancelButton);
@@ -124,8 +122,7 @@ ChooseUnitDlg::OnCommand(WPARAM wparam,
 	return inherited::OnCommand(wparam, lparam);
 }
 
-void
-ChooseUnitDlg::OnUsePointer()
+void ChooseUnitDlg::OnUsePointer()
 {
 	if (!EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -172,16 +169,14 @@ ChooseUnitDlg::OnUsePointer()
 	}
 }
 
-void
-ChooseUnitDlg::OnCancel()
+void ChooseUnitDlg::OnCancel()
 {
 	// _ASSERT(false); // haven't decided what to do on cancel yet
 	delete m_pModifiedUnitPtr;
 	EndDialog(IDCANCEL);
 }
 
-void
-ChooseUnitDlg::OnOK()
+void ChooseUnitDlg::OnOK()
 {
 	int32_t nSelectionIndex = m_pComboBox->GetCurSel();
 	_ASSERT(0 <= nSelectionIndex);
@@ -194,6 +189,6 @@ ChooseUnitDlg::OnOK()
 
 //-------------------------------------------------------------------------------------------------
 
-ChooseUnitDlg::~ChooseUnitDlg() {}
+ChooseUnitDlg::~ChooseUnitDlg() { }
 
 // end of file ( ChooseUnitDlg.cpp )

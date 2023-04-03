@@ -17,7 +17,6 @@ component.
 
 class LogisticsPilot;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 LogisticsPilotListBox:
@@ -35,7 +34,10 @@ public:
 	virtual void render(void);
 	virtual void update(void);
 
-	LogisticsPilot* getPilot() { return pPilot; }
+	LogisticsPilot* getPilot()
+	{
+		return pPilot;
+	}
 
 private:
 	aText nameText;

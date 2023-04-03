@@ -31,8 +31,8 @@ public:
 	// Image handling
 	//
 public:
-	GOSImage* GetImage(const std::wstring_view& imageName);
-	GOSImage* GetImage(const std::wstring_view& imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
+	GOSImage* GetImage(std::wstring_view imageName);
+	GOSImage* GetImage(std::wstring_view imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
 		/*gos_TextureHints*/ uint32_t hints);
 
 	virtual bool LoadImage(GOSImage* image, int32_t = 0) = 0;
@@ -48,7 +48,7 @@ public:
 	// Testing
 	//
 public:
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 protected:
 	Stuff::HashOf<GOSImage*, std::wstring> imageHash;
@@ -61,7 +61,7 @@ class TGAFilePool : public GOSImagePool
 	// Constructors/Destructors
 	//
 public:
-	TGAFilePool(const std::wstring_view& path);
+	TGAFilePool(std::wstring_view path);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Image handling

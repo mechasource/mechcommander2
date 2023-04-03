@@ -14,10 +14,10 @@ class FitIniFile;
 class StaticInfo
 {
 public:
-	StaticInfo() {}
+	StaticInfo() { }
 	~StaticInfo(void);
 
-	void init(FitIniFile& file, const std::wstring_view& blockName, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0,
+	void init(FitIniFile& file, std::wstring_view blockname, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0,
 		uint32_t neverFlush = 0);
 	void render(void);
 	bool isInside(int32_t mouseX, int32_t mouseY);
@@ -27,8 +27,14 @@ public:
 
 	void setNewUVs(float uLeft, float vTop, float uRight, float vBottom);
 
-	float width() { return location[2].x - location[0].x; }
-	float height() { return location[2].y - location[0].y; }
+	float width()
+	{
+		return location[2].x - location[0].x;
+	}
+	float height()
+	{
+		return location[2].y - location[0].y;
+	}
 
 	void getData(uint8_t* buffer);
 
@@ -43,25 +49,20 @@ public:
 	uint32_t texturewidth; // textures are square
 };
 
-void
-drawEmptyRect(const RECT& rect, uint32_t leftBordercolour = 0xffffffff,
+void drawEmptyRect(const RECT& rect, uint32_t leftBordercolour = 0xffffffff,
 	uint32_t rightBordercolour = 0xff000000);
 
-void
-drawRect(const RECT& rect, uint32_t color);
+void drawRect(const RECT& rect, uint32_t color);
 
-void
-drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, bool proportional, const std::wstring_view& text, bool bBold, float scale);
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, bool proportional, std::wstring_view text, bool bBold, float scale);
 
-void
-drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, bool proportional, const std::wstring_view& text, bool bold, float scale, int32_t xOffset,
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, bool proportional, std::wstring_view text, bool bold, float scale, int32_t xOffset,
 	int32_t yOffset);
 
-void
-drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, int32_t right, int32_t bottom, bool proportional, const std::wstring_view& text, bool bold,
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, int32_t right, int32_t bottom, bool proportional, std::wstring_view text, bool bold,
 	float scale, int32_t xOffset, int32_t yOffset);
 
 uint32_t
@@ -85,12 +86,12 @@ extern uint32_t gosResourceHandle;
 #if CONSIDERED_OBSOLETE
 inline size_t
 cLoadString(uint32_t uID, // resource identifier
-	const std::wstring_view& lpBuffer, // pointer to buffer for resource
+	std::wstring_view lpBuffer, // pointer to buffer for resource
 	size_t nBufferMax, // size of buffer
 	uint32_t handle = gosResourceHandle)
 {
 	memset(lpBuffer, 0, nBufferMax);
-	const std::wstring_view& tmpBuffer = gos_GetResourceString(handle, uID);
+	std::wstring_view tmpBuffer = gos_GetResourceString(handle, uID);
 	size_t stringLength = strlen(tmpBuffer);
 	if (stringLength >= nBufferMax)
 		STOP(("string too int32_t for buffer.  string Id %d, bufferLen %d, StringLen %d",
@@ -101,7 +102,7 @@ cLoadString(uint32_t uID, // resource identifier
 
 #else
 
-inline const std::wstring_view&
+inline std::wstring_view
 cLoadString(uint32_t uID)
 {
 	return gos_GetResourceString(gosResourceHandle, uID);

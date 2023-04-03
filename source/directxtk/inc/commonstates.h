@@ -17,71 +17,70 @@
 
 #include <memory>
 
-
 namespace directxtk
 {
-    class CommonStates
-    {
-    public:
-        explicit CommonStates(_In_ ID3D12Device* device);
-        CommonStates(CommonStates&& moveFrom) noexcept;
-        CommonStates& operator = (CommonStates&& moveFrom) noexcept;
+class CommonStates
+{
+public:
+	explicit CommonStates(_In_ ID3D12Device* device);
+	CommonStates(CommonStates&& moveFrom) noexcept;
+	CommonStates& operator=(CommonStates&& moveFrom) noexcept;
 
-        CommonStates(const CommonStates&) = delete;
-        CommonStates& operator = (const CommonStates&) = delete;
+	CommonStates(const CommonStates&) = delete;
+	CommonStates& operator=(const CommonStates&) = delete;
 
-        virtual ~CommonStates();
+	virtual ~CommonStates();
 
-        // Blend states.
-        static const D3D12_BLEND_DESC Opaque;
-        static const D3D12_BLEND_DESC AlphaBlend;
-        static const D3D12_BLEND_DESC Additive;
-        static const D3D12_BLEND_DESC NonPremultiplied;
-        
-        // Depth stencil states.
-        static const D3D12_DEPTH_STENCIL_DESC DepthNone;
-        static const D3D12_DEPTH_STENCIL_DESC DepthDefault;
-        static const D3D12_DEPTH_STENCIL_DESC DepthRead;
+	// Blend states.
+	static const D3D12_BLEND_DESC Opaque;
+	static const D3D12_BLEND_DESC AlphaBlend;
+	static const D3D12_BLEND_DESC Additive;
+	static const D3D12_BLEND_DESC NonPremultiplied;
 
-        // Rasterizer states.
-        static const D3D12_RASTERIZER_DESC CullNone;
-        static const D3D12_RASTERIZER_DESC CullClockwise;
-        static const D3D12_RASTERIZER_DESC CullCounterClockwise;
-        static const D3D12_RASTERIZER_DESC Wireframe;
+	// Depth stencil states.
+	static const D3D12_DEPTH_STENCIL_DESC DepthNone;
+	static const D3D12_DEPTH_STENCIL_DESC DepthDefault;
+	static const D3D12_DEPTH_STENCIL_DESC DepthRead;
 
-        // Static sampler states.
-        static const D3D12_STATIC_SAMPLER_DESC StaticPointWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticPointClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticLinearWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticLinearClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
-        static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+	// Rasterizer states.
+	static const D3D12_RASTERIZER_DESC CullNone;
+	static const D3D12_RASTERIZER_DESC CullClockwise;
+	static const D3D12_RASTERIZER_DESC CullCounterClockwise;
+	static const D3D12_RASTERIZER_DESC Wireframe;
 
-        // Sampler states.
-        D3D12_GPU_DESCRIPTOR_HANDLE PointWrap() const;
-        D3D12_GPU_DESCRIPTOR_HANDLE PointClamp() const;
-        D3D12_GPU_DESCRIPTOR_HANDLE LinearWrap() const;
-        D3D12_GPU_DESCRIPTOR_HANDLE LinearClamp() const;
-        D3D12_GPU_DESCRIPTOR_HANDLE AnisotropicWrap() const;
-        D3D12_GPU_DESCRIPTOR_HANDLE AnisotropicClamp() const;
+	// Static sampler states.
+	static const D3D12_STATIC_SAMPLER_DESC StaticPointWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+	static const D3D12_STATIC_SAMPLER_DESC StaticPointClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+	static const D3D12_STATIC_SAMPLER_DESC StaticLinearWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+	static const D3D12_STATIC_SAMPLER_DESC StaticLinearClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+	static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicWrap(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
+	static const D3D12_STATIC_SAMPLER_DESC StaticAnisotropicClamp(uint32_t shaderRegister, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL, uint32_t registerSpace = 0) noexcept;
 
-        // These index into the heap returned by SamplerDescriptorHeap
-        enum class SamplerIndex
-        {
-            PointWrap,
-            PointClamp,
-            LinearWrap,
-            LinearClamp,
-            AnisotropicWrap,
-            AnisotropicClamp,
-            Count
-        };
+	// Sampler states.
+	D3D12_GPU_DESCRIPTOR_HANDLE PointWrap() const;
+	D3D12_GPU_DESCRIPTOR_HANDLE PointClamp() const;
+	D3D12_GPU_DESCRIPTOR_HANDLE LinearWrap() const;
+	D3D12_GPU_DESCRIPTOR_HANDLE LinearClamp() const;
+	D3D12_GPU_DESCRIPTOR_HANDLE AnisotropicWrap() const;
+	D3D12_GPU_DESCRIPTOR_HANDLE AnisotropicClamp() const;
 
-        ID3D12DescriptorHeap* Heap() const noexcept;
+	// These index into the heap returned by SamplerDescriptorHeap
+	enum class SamplerIndex
+	{
+		PointWrap,
+		PointClamp,
+		LinearWrap,
+		LinearClamp,
+		AnisotropicWrap,
+		AnisotropicClamp,
+		Count
+	};
 
-    private:
-        class Impl;
+	ID3D12DescriptorHeap* Heap() const noexcept;
 
-        std::unique_ptr<Impl> pimpl;
-    };
-}
+private:
+	class Impl;
+
+	std::unique_ptr<Impl> pimpl;
+};
+} // namespace directxtk

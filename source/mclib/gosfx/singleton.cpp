@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::Singleton__Specification::Singleton__Specification(
-	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version) :
-	Effect__Specification(class_id, stream, gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
+	: Effect__Specification(class_id, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -37,8 +37,8 @@ gosFX::Singleton__Specification::Singleton__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::Singleton__Specification::Singleton__Specification(Stuff::RegisteredClass::ClassID class_id) :
-	Effect__Specification(class_id)
+gosFX::Singleton__Specification::Singleton__Specification(Stuff::RegisteredClass::ClassID class_id)
+	: Effect__Specification(class_id)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -46,8 +46,7 @@ gosFX::Singleton__Specification::Singleton__Specification(Stuff::RegisteredClass
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Singleton__Specification::Save(std::iostream stream)
+void gosFX::Singleton__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -67,8 +66,7 @@ gosFX::Singleton__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Singleton__Specification::BuildDefaults()
+void gosFX::Singleton__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
@@ -91,8 +89,7 @@ gosFX::Singleton__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Singleton__Specification::IsDataValid(bool fix_data)
+bool gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float min, max;
@@ -104,7 +101,7 @@ gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 			m_scale.m_seeded = false;
 			m_scale.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"scale\" in Effect \"%s\" Is Out of Range
-			// and has been Reset", (const std::wstring_view&)m_name));
+			// and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -112,8 +109,7 @@ gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 }
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
+void gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -144,8 +140,7 @@ gosFX::Singleton::ClassData* gosFX::Singleton::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Singleton::InitializeClass()
+void gosFX::Singleton::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -156,8 +151,7 @@ gosFX::Singleton::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Singleton::TerminateClass()
+void gosFX::Singleton::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -166,8 +160,8 @@ gosFX::Singleton::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Singleton::Singleton(ClassData* class_data, Specification* spec, uint32_t flags) :
-	Effect(class_data, spec, flags)
+gosFX::Singleton::Singleton(ClassData* class_data, Specification* spec, uint32_t flags)
+	: Effect(class_data, spec, flags)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
@@ -176,16 +170,14 @@ gosFX::Singleton::Singleton(ClassData* class_data, Specification* spec, uint32_t
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Singleton::TestInstance(void) const
+void gosFX::Singleton::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Singleton::Execute(ExecuteInfo* info)
+bool gosFX::Singleton::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);

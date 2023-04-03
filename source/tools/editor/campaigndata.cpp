@@ -10,11 +10,11 @@
 //#include "_ASSERT.h"
 
 static int32_t
-sReadIdBoolean(FitIniFile& missionFile, const std::wstring_view& varName, bool& value)
+sReadIdBoolean(FitIniFile& missionFile, std::wstring_view varName, bool& value)
 {
 	int32_t result = 0;
 	bool tmpBool;
-	result = missionFile.readIdBoolean((const std::wstring_view&)varName, tmpBool);
+	result = missionFile.readIdBoolean((std::wstring_view)varName, tmpBool);
 	if (NO_ERROR != result)
 	{
 		// _ASSERT(false);
@@ -27,11 +27,11 @@ sReadIdBoolean(FitIniFile& missionFile, const std::wstring_view& varName, bool& 
 }
 
 static int32_t
-sReadIdInteger(FitIniFile& missionFile, const std::wstring_view& varName, int32_t& value)
+sReadIdInteger(FitIniFile& missionFile, std::wstring_view varName, int32_t& value)
 {
 	int32_t result = 0;
 	int32_t tmpLong;
-	result = missionFile.readIdLong((const std::wstring_view&)varName, tmpLong);
+	result = missionFile.readIdLong((std::wstring_view)varName, tmpLong);
 	if (NO_ERROR != result)
 	{
 		// _ASSERT(false);
@@ -44,12 +44,12 @@ sReadIdInteger(FitIniFile& missionFile, const std::wstring_view& varName, int32_
 }
 
 static int32_t
-sReadIdString(FitIniFile& missionFile, const std::wstring_view& varName, CString& CStr)
+sReadIdString(FitIniFile& missionFile, std::wstring_view varName, CString& CStr)
 {
 	int32_t result = 0;
 	wchar_t buffer[2001 /*buffer size*/];
 	buffer[0] = '\0';
-	result = missionFile.readIdString((const std::wstring_view&)varName, buffer, 2001 /*buffer size*/ - 1);
+	result = missionFile.readIdString((std::wstring_view)varName, buffer, 2001 /*buffer size*/ - 1);
 	if (NO_ERROR != result)
 	{
 		// _ASSERT(false);
@@ -72,8 +72,7 @@ CMissionData::CMissionData()
 	m_MissionSelectionEnabled = true;
 }
 
-bool
-CMissionData::operator==(const CMissionData& rhs) const
+bool CMissionData::operator==(const CMissionData& rhs) const
 {
 	if ((m_MissionFile == rhs.m_MissionFile) && (m_PurchaseFile == rhs.m_PurchaseFile) && (m_LogisticsEnabled == rhs.m_LogisticsEnabled) && (m_IsMandatory == rhs.m_IsMandatory) && (m_PilotPromotionEnabled == rhs.m_PilotPromotionEnabled) && (m_PurchasingEnabled == rhs.m_PurchasingEnabled) && (m_MissionSelectionEnabled == rhs.m_MissionSelectionEnabled) && (m_SalvageEnabled == rhs.m_SalvageEnabled))
 	{
@@ -85,10 +84,9 @@ CMissionData::operator==(const CMissionData& rhs) const
 	}
 }
 
-bool
-CMissionData::Save(FitIniFile& fitFile)
+bool CMissionData::Save(FitIniFile& fitFile)
 {
-	fitFile.writeIdString("FileName", m_MissionFile.GetBuffer(0));
+	fitFile.writeIdString("filename", m_MissionFile.GetBuffer(0));
 	fitFile.writeIdBoolean("Mandatory", m_IsMandatory);
 	fitFile.writeIdString("PurchaseFile", m_PurchaseFile.GetBuffer(0));
 	fitFile.writeIdBoolean("PlayLogistics", m_LogisticsEnabled);
@@ -99,11 +97,10 @@ CMissionData::Save(FitIniFile& fitFile)
 	return true;
 }
 
-bool
-CMissionData::Read(FitIniFile& fitFile)
+bool CMissionData::Read(FitIniFile& fitFile)
 {
 	int32_t result;
-	result = sReadIdString(fitFile, "FileName", m_MissionFile);
+	result = sReadIdString(fitFile, "filename", m_MissionFile);
 	result = sReadIdBoolean(fitFile, "Mandatory", m_IsMandatory);
 	result = sReadIdString(fitFile, "PurchaseFile", m_PurchaseFile);
 	result = sReadIdBoolean(fitFile, "PlayLogistics", m_LogisticsEnabled);
@@ -121,8 +118,7 @@ CGroupData::CGroupData()
 	m_TuneNumber = 0;
 }
 
-bool
-CGroupData::operator==(const CGroupData& rhs) const
+bool CGroupData::operator==(const CGroupData& rhs) const
 {
 	if ((m_MissionList == rhs.m_MissionList) && (m_OperationFile == rhs.m_OperationFile) && (m_PreVideoFile == rhs.m_PreVideoFile) && (m_VideoFile == rhs.m_VideoFile) && (m_Label == rhs.m_Label) && (m_NumMissionsToComplete == rhs.m_NumMissionsToComplete) && (m_TuneNumber == rhs.m_TuneNumber) && (m_ABLScript == rhs.m_ABLScript))
 	{
@@ -134,8 +130,7 @@ CGroupData::operator==(const CGroupData& rhs) const
 	}
 }
 
-bool
-CGroupData::Save(FitIniFile& fitFile, const std::wstring_view& groupName)
+bool CGroupData::Save(FitIniFile& fitFile, std::wstring_view groupName)
 {
 	fitFile.writeIdString("Label", m_Label.GetBuffer(0));
 	fitFile.writeIdLong("NumberToComplete", m_NumMissionsToComplete);
@@ -150,18 +145,17 @@ CGroupData::Save(FitIniFile& fitFile, const std::wstring_view& groupName)
 	}
 	CMissionList::EIterator it;
 	int32_t index;
-	const std::wstring_view& blockName;
+	std::wstring_view blockname;
 	for (it = m_MissionList.Begin(), index = 0; !it.IsDone(); it++, index += 1)
 	{
-		blockName.Format("%sMission%d", groupName, index);
-		fitFile.writeBlock(blockName.Data());
+		blockname.Format("%sMission%d", groupName, index);
+		fitFile.writeBlock(blockname.Data());
 		(*it).Save(fitFile);
 	}
 	return true;
 }
 
-bool
-CGroupData::Read(FitIniFile& fitFile, const std::wstring_view& groupName)
+bool CGroupData::Read(FitIniFile& fitFile, std::wstring_view groupName)
 {
 	int32_t result;
 	result = sReadIdString(fitFile, "Label", m_Label);
@@ -180,9 +174,9 @@ CGroupData::Read(FitIniFile& fitFile, const std::wstring_view& groupName)
 	int32_t index;
 	for (index = 0; missionCount > index; index += 1)
 	{
-		ECharString blockName;
-		blockName.Format("%sMission%d", groupName, index);
-		result = fitFile.seekBlock(blockName.Data());
+		ECharString blockname;
+		blockname.Format("%sMission%d", groupName, index);
+		result = fitFile.seekBlock(blockname.Data());
 		if (NO_ERROR != result)
 		{
 			_ASSERT(false);
@@ -207,8 +201,7 @@ CCampaignData::CCampaignData()
 	m_CBills = 0;
 }
 
-bool
-CCampaignData::operator==(const CCampaignData& rhs) const
+bool CCampaignData::operator==(const CCampaignData& rhs) const
 {
 	if ((m_GroupList == rhs.m_GroupList) && (m_Name == rhs.m_Name) && (m_NameUseResourceString == rhs.m_NameUseResourceString) && (m_NameResourceStringID == rhs.m_NameResourceStringID) && (m_CBills == rhs.m_CBills) && (m_FinalVideo == rhs.m_FinalVideo))
 	{
@@ -220,8 +213,7 @@ CCampaignData::operator==(const CCampaignData& rhs) const
 	}
 }
 
-bool
-CCampaignData::Save(CString pathName)
+bool CCampaignData::Save(CString pathName)
 {
 	FitIniFile fitFile;
 	int32_t result = fitFile.create(pathName.GetBuffer(0));
@@ -246,17 +238,16 @@ CCampaignData::Save(CString pathName)
 	int32_t index;
 	for (it = m_GroupList.Begin(), index = 0; !it.IsDone(); it++, index += 1)
 	{
-		ECharString blockName;
-		blockName.Format("group%d", index);
-		fitFile.writeBlock(blockName.Data());
-		(*it).Save(fitFile, blockName.Data());
+		ECharString blockname;
+		blockname.Format("group%d", index);
+		fitFile.writeBlock(blockname.Data());
+		(*it).Save(fitFile, blockname.Data());
 	}
 	fitFile.close();
 	return true;
 }
 
-bool
-CCampaignData::Read(CString pathName)
+bool CCampaignData::Read(CString pathName)
 {
 	FitIniFile fitFile;
 	int32_t result = fitFile.open(pathName.GetBuffer(0));
@@ -292,16 +283,16 @@ CCampaignData::Read(CString pathName)
 	int32_t index;
 	for (index = 0; groupCount > index; index += 1)
 	{
-		ECharString blockName;
-		blockName.Format("group%d", index);
-		result = fitFile.seekBlock(blockName.Data());
+		ECharString blockname;
+		blockname.Format("group%d", index);
+		result = fitFile.seekBlock(blockname.Data());
 		if (NO_ERROR != result)
 		{
 			_ASSERT(false);
 			continue;
 		}
 		CGroupData groupData;
-		bool bresult = groupData.Read(fitFile, blockName.Data());
+		bool bresult = groupData.Read(fitFile, blockname.Data());
 		if (true != bresult)
 		{
 			_ASSERT(false);

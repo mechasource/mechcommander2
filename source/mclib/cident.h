@@ -30,9 +30,12 @@ protected:
 	wchar_t id[ID_SIZE]; // 8 characters and a terminator...
 
 public:
-	void init(void) { memset(id, 0, ID_SIZE); }
+	void init(void)
+	{
+		memset(id, 0, ID_SIZE);
+	}
 
-	void init(const std::wstring_view& new_id)
+	void init(std::wstring_view new_id)
 	{
 		strncpy_s(id, ID_SIZE, new_id, ID_SIZE - 1); // pads unused ID with 0s!
 		id[ID_SIZE - 1] = 0;
@@ -44,15 +47,27 @@ public:
 		id[ID_SIZE - 1] = 0;
 	}
 
-	IDString(void) { init(); }
+	IDString(void)
+	{
+		init();
+	}
 
-	IDString(const std::wstring_view& new_id) { init(new_id); }
+	IDString(std::wstring_view new_id)
+	{
+		init(new_id);
+	}
 
-	IDString(IDString& new_ids) { init(new_ids); }
+	IDString(IDString& new_ids)
+	{
+		init(new_ids);
+	}
 
-	inline operator const std::wstring_view&(void) { return id; }
+	inline operator std::wstring_view(void)
+	{
+		return id;
+	}
 
-	bool operator==(const std::wstring_view& other_id)
+	bool operator==(std::wstring_view other_id)
 	{
 		if (other_id[0] != id[0])
 			return false;
@@ -120,39 +135,60 @@ public:
 		//			return (strncmp(id,other_ids.id,ID_SIZE-1) == 0);
 	}
 
-	bool operator!=(const std::wstring_view& other_id) { return !(*this == other_id); }
+	bool operator!=(std::wstring_view other_id)
+	{
+		return !(*this == other_id);
+	}
 
-	bool operator!=(IDString& other_ids) { return !(*this == other_ids); }
+	bool operator!=(IDString& other_ids)
+	{
+		return !(*this == other_ids);
+	}
 
-	void operator=(const std::wstring_view& new_id) { init(new_id); }
+	void operator=(std::wstring_view new_id)
+	{
+		init(new_id);
+	}
 
-	void operator=(IDString& new_ids) { init(new_ids); }
+	void operator=(IDString& new_ids)
+	{
+		init(new_ids);
+	}
 
-	bool isNull(void) { return (id[0] == 0); }
+	bool isNull(void)
+	{
+		return (id[0] == 0);
+	}
 
-	void standardize(void) { _strupr_s(id, ID_SIZE); }
+	void standardize(void)
+	{
+		_strupr_s(id, ID_SIZE);
+	}
 };
 
 //--------------------------------------------------------------------------
 class FullPathFileName
 {
 protected:
-	const std::wstring_view& fullName;
+	std::wstring_view fullName;
 
 public:
-	FullPathFileName(void) {}
+	FullPathFileName(void) { }
 
-	FullPathFileName(const std::wstring_view& dir_path, const std::wstring_view& name, const std::wstring_view& ext)
+	FullPathFileName(std::wstring_view dir_path, std::wstring_view name, std::wstring_view ext)
 	{
 		init(dir_path, name, ext);
 	}
-	~FullPathFileName(void) {}
+	~FullPathFileName(void) { }
 
-	operator const std::wstring_view&() { return fullName; }
-	void changeExt(const std::wstring_view& from, const std::wstring_view& to);
+	operator std::wstring_view()
+	{
+		return fullName;
+	}
+	void changeExt(std::wstring_view from, std::wstring_view to);
 
 protected:
-	void init(const std::wstring_view& dir_path, const std::wstring_view& name, const std::wstring_view& ext);
+	void init(std::wstring_view dir_path, std::wstring_view name, std::wstring_view ext);
 	void destroy(void);
 };
 

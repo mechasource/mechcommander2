@@ -192,8 +192,7 @@ Matrix4D::BuildTranslation(const Point3D& p)
 //###########################################################################
 //###########################################################################
 //
-bool
-Stuff::Close_Enough(const Matrix4D& m1, const Matrix4D& m2, float e)
+bool Stuff::Close_Enough(const Matrix4D& m1, const Matrix4D& m2, float e)
 {
 	Check_Object(&m2);
 	Check_Object(&m1);
@@ -768,8 +767,7 @@ Matrix4D::Invert(const Matrix4D& Source)
 //###########################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Matrix4D& matrix)
+void Spew(std::wstring_view group, const Matrix4D& matrix)
 {
 	Check_Object(&matrix);
 	SPEW((group, "\n\t| %9f, %9f, %9f, %9f |", matrix(0, 0), matrix(0, 1), matrix(0, 2),
@@ -787,8 +785,7 @@ Spew(const std::wstring_view& group, const Matrix4D& matrix)
 //###########################################################################
 //###########################################################################
 //
-void
-Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip, float right_clip,
+void Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip, float right_clip,
 	float top_clip, float bottom_clip)
 {
 	_ASSERT(far_clip - near_clip > SMALL);
@@ -827,8 +824,7 @@ Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip, float
 	(*this)(3, 3) = 0.0f;
 }
 
-void
-Matrix4D::GetPerspective(float* near_clip, float* far_clip, float* left_clip,
+void Matrix4D::GetPerspective(float* near_clip, float* far_clip, float* left_clip,
 	float* right_clip, float* top_clip, float* bottom_clip) const
 {
 	if (near_clip)
@@ -863,8 +859,7 @@ Matrix4D::GetPerspective(float* near_clip, float* far_clip, float* left_clip,
 	}
 }
 
-void
-Matrix4D::SetPerspective(
+void Matrix4D::SetPerspective(
 	float near_clip, float far_clip, const Radian& horizontal_fov, float height_to_width)
 {
 	_ASSERT(far_clip - near_clip > SMALL);
@@ -880,8 +875,7 @@ Matrix4D::SetPerspective(
 	SetPerspective(near_clip, far_clip, width, -width, height, -height);
 }
 
-void
-Matrix4D::GetPerspective(
+void Matrix4D::GetPerspective(
 	float* nearClip, float* farClip, Radian* horizontal_fov, float* height_to_width) const
 {
 	float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;

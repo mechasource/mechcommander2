@@ -11,7 +11,8 @@
 #include "mlr/mlrcliptrick.h"
 #include "mlr/mlrlinecloud.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //#########################    MLRLineCloud    ###############################
@@ -21,8 +22,7 @@ MLRLineCloud::ClassData* MLRLineCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLineCloud::InitializeClass()
+void MLRLineCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -33,8 +33,7 @@ MLRLineCloud::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLineCloud::TerminateClass()
+void MLRLineCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -43,8 +42,9 @@ MLRLineCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLineCloud::MLRLineCloud(uint32_t nr, uint32_t _type) :
-	MLREffect(uint32_t(2 * nr), DefaultData), type(_type)
+MLRLineCloud::MLRLineCloud(uint32_t nr, uint32_t _type)
+	: MLREffect(uint32_t(2 * nr), DefaultData)
+	, type(_type)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
@@ -61,8 +61,7 @@ MLRLineCloud::~MLRLineCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLineCloud::SetData(
+void MLRLineCloud::SetData(
 	const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data)
 {
 	// Check_Pointer(this);
@@ -74,8 +73,7 @@ MLRLineCloud::SetData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLineCloud::Draw(
+void MLRLineCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -277,8 +275,7 @@ MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLineCloud::TestInstance(void) const
+void MLRLineCloud::TestInstance(void) const
 {
 	if (usedNrOfVertices)
 	{

@@ -124,8 +124,7 @@ ForceGroupIcon::ForceGroupIcon()
 	msgPlayTime = 0.0f;
 }
 
-void
-ForceGroupIcon::resetResolution(bool bForce)
+void ForceGroupIcon::resetResolution(bool bForce)
 {
 	if (curScreenwidth != Environment.screenwidth || bForce)
 	{
@@ -139,8 +138,7 @@ ForceGroupIcon::resetResolution(bool bForce)
 	curScreenwidth = Environment.screenwidth;
 }
 
-void
-ForceGroupIcon::swapResolutions(bool bForce)
+void ForceGroupIcon::swapResolutions(bool bForce)
 {
 	resetResolution(bForce);
 	init(unit);
@@ -163,8 +161,7 @@ ForceGroupIcon::~ForceGroupIcon()
 		s_slotUsed[backDamageIndex] = 0;
 }
 
-void
-ForceGroupIcon::init(FitIniFile& file, int32_t which)
+void ForceGroupIcon::init(FitIniFile& file, int32_t which)
 {
 	wchar_t buffer[256];
 	sprintf(buffer, "MechIcon%ld", which);
@@ -242,8 +239,7 @@ ForceGroupIcon::init(FitIniFile& file, int32_t which)
 	jumpJetIcon->init(file, "JumpJetIcon", 0, 0);
 }
 
-void
-MechIcon::setDrawBack(bool bSet)
+void MechIcon::setDrawBack(bool bSet)
 {
 	bDrawBack = bSet;
 	bool bFound = 0;
@@ -280,7 +276,7 @@ MechIcon::setDrawBack(bool bSet)
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[textureindex], 0, 0, &textureData);
 	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.width + offsetX;
-	const std::wstring_view& pTmp = (const std::wstring_view&)s_MechTextures + sizeof(TGAFileHeader);
+	std::wstring_view pTmp = (std::wstring_view)s_MechTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	int32_t whichMech = unit->getIconPictureIndex();
 	offsetY = unitIconY;
@@ -321,20 +317,17 @@ MechIcon::setDrawBack(bool bSet)
 	}
 	gos_UnLockTexture(s_textureHandle[textureindex]);
 }
-bool
-ForceGroupIcon::inRegion(int32_t x, int32_t y)
+bool ForceGroupIcon::inRegion(int32_t x, int32_t y)
 {
 	return (x >= selectionRect[locationIndex].left && x <= selectionRect[locationIndex].right && y >= selectionRect[locationIndex].top && y <= selectionRect[locationIndex].bottom);
 }
 
-void
-ForceGroupIcon::rightClick()
+void ForceGroupIcon::rightClick()
 {
 	((GameCamera*)eye)->setTarget(unit);
 }
 
-void
-ForceGroupIcon::click(bool shiftDn)
+void ForceGroupIcon::click(bool shiftDn)
 {
 	if (shiftDn && !unit->isSelected())
 	{
@@ -351,13 +344,11 @@ ForceGroupIcon::click(bool shiftDn)
 	soundSystem->playDigitalSample(LOG_SELECT);
 }
 
-void
-ForceGroupIcon::init()
+void ForceGroupIcon::init()
 {
 }
 
-bool
-MechIcon::initTextures()
+bool MechIcon::initTextures()
 {
 	if (!s_MechTextures)
 	{
@@ -387,8 +378,7 @@ MechIcon::initTextures()
 	return true;
 }
 
-bool
-MechIcon::init(Mover* pMover)
+bool MechIcon::init(Mover* pMover)
 {
 	ForceGroupIcon::init();
 	if (!pMover)
@@ -400,8 +390,7 @@ MechIcon::init(Mover* pMover)
 	return bRetVal;
 }
 
-bool
-MechIcon::init(int32_t whichIndex)
+bool MechIcon::init(int32_t whichIndex)
 {
 	initTextures();
 	int32_t pixelDepth = s_MechTextures->pixel_depth / 8;
@@ -429,7 +418,7 @@ MechIcon::init(int32_t whichIndex)
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[textureindex], 0, 0, &textureData);
 	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.width + offsetX;
-	const std::wstring_view& pTmp = (const std::wstring_view&)s_MechTextures + sizeof(TGAFileHeader);
+	std::wstring_view pTmp = (std::wstring_view)s_MechTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	offsetY = 0;
 	offsetX = whichIndex * unitIconX;
@@ -462,8 +451,7 @@ MechIcon::init(int32_t whichIndex)
 	return true;
 }
 
-void
-MechIcon::update()
+void MechIcon::update()
 {
 	// need to check object's status here
 	wchar_t newDamage[8];
@@ -640,8 +628,7 @@ MechIcon::update()
 	}
 }
 
-void
-MechIcon::doDraw(const std::wstring_view& newDamage, const std::wstring_view& oldDamage, uint32_t handle, uint32_t index)
+void MechIcon::doDraw(std::wstring_view newDamage, std::wstring_view oldDamage, uint32_t handle, uint32_t index)
 {
 	int32_t i = 0;
 	int32_t maxToCheck = 8;
@@ -718,8 +705,7 @@ MechIcon::doDraw(const std::wstring_view& newDamage, const std::wstring_view& ol
 	}
 }
 
-bool
-IsDbcsString(const std::wstring_view& pszString)
+bool IsDbcsString(std::wstring_view pszString)
 {
 	if (pszString)
 	{
@@ -733,8 +719,7 @@ IsDbcsString(const std::wstring_view& pszString)
 	return false;
 }
 
-void
-ForceGroupIcon::render()
+void ForceGroupIcon::render()
 {
 	// here I draw the text
 	if (!unit)
@@ -845,8 +830,7 @@ ForceGroupIcon::render()
 	}
 }
 
-void
-ForceGroupIcon::renderUnitIcon(float left, float top, float right, float bottom)
+void ForceGroupIcon::renderUnitIcon(float left, float top, float right, float bottom)
 {
 	int32_t texIndex = 0;
 	int32_t iconsPerLine = ((int32_t)s_textureMemory->width / (int32_t)unitIconX);
@@ -879,8 +863,7 @@ ForceGroupIcon::renderUnitIcon(float left, float top, float right, float bottom)
 	gos_DrawTriangles(&bmpLocation[locationIndex][2], 3);
 }
 
-void
-ForceGroupIcon::renderUnitIconBack(float left, float top, float right, float bottom)
+void ForceGroupIcon::renderUnitIconBack(float left, float top, float right, float bottom)
 {
 	int32_t iconsPerLine = ((int32_t)s_textureMemory->width / (int32_t)unitIconX);
 	int32_t yIndex = backDamageIndex / iconsPerLine;
@@ -913,14 +896,12 @@ ForceGroupIcon::renderUnitIconBack(float left, float top, float right, float bot
 	gos_DrawTriangles(vertices, 3);
 	gos_DrawTriangles(&vertices[2], 3);
 }
-void
-ForceGroupIcon::renderPilotIcon(float left, float top, float right, float bottom)
+void ForceGroupIcon::renderPilotIcon(float left, float top, float right, float bottom)
 {
 	pilotIcon.render(left, top, right, bottom);
 }
 
-bool
-VehicleIcon::init(Mover* pMover)
+bool VehicleIcon::init(Mover* pMover)
 {
 	if (!s_VehicleTextures)
 	{
@@ -976,7 +957,7 @@ VehicleIcon::init(Mover* pMover)
 	TEXTUREPTR textureData;
 	gos_LockTexture(s_textureHandle[texIndex], 0, 0, &textureData);
 	uint32_t *pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.width + offsetX;
-	const std::wstring_view& pTmp = (const std::wstring_view&)s_VehicleTextures + sizeof(TGAFileHeader);
+	std::wstring_view pTmp = (std::wstring_view)s_VehicleTextures + sizeof(TGAFileHeader);
 	uint32_t* pSrcRow = (uint32_t*)pTmp;
 	int32_t whichMech = pMover->getIconPictureIndex();
 	offsetY = 0;
@@ -1010,8 +991,7 @@ VehicleIcon::init(Mover* pMover)
 	return true;
 }
 
-void
-VehicleIcon::update()
+void VehicleIcon::update()
 {
 	wchar_t newDamage[5];
 	memset(newDamage, 0, 5);
@@ -1113,8 +1093,7 @@ VehicleIcon::update()
 	}
 }
 
-void
-ForceGroupIcon::drawBar(float barStatus)
+void ForceGroupIcon::drawBar(float barStatus)
 {
 	uint32_t color = SB_GREEN;
 	float barLength = (healthBar[locationIndex].right - healthBar[locationIndex].left) * barStatus;
@@ -1167,20 +1146,18 @@ ForceGroupIcon::sort(PCVOID p1, PCVOID p2)
 	return retVal;
 }
 
-const std::wstring_view&
+std::wstring_view
 ForceGroupIcon::getPilotName()
 {
 	return unit->getPilot()->getName();
 }
 
-void
-ForceGroupIcon::setLocationIndex(int32_t i)
+void ForceGroupIcon::setLocationIndex(int32_t i)
 {
 	locationIndex = i;
 }
 
-void
-ForceGroupIcon::drawDeathEffect()
+void ForceGroupIcon::drawDeathEffect()
 {
 	unit->setSelected(0);
 	bool bFinished = true;
@@ -1232,8 +1209,7 @@ ForceGroupIcon::drawDeathEffect()
 	}
 }
 
-void
-ForceGroupIcon::setIconVariables()
+void ForceGroupIcon::setIconVariables()
 {
 	switch (Environment.screenwidth)
 	{
@@ -1289,8 +1265,7 @@ PilotIcon::PilotIcon()
 	}
 }
 
-void
-PilotIcon::render(float left, float top, float right, float bottom)
+void PilotIcon::render(float left, float top, float right, float bottom)
 {
 	gos_VERTEX pilotLocation[5];
 	for (size_t i = 0; i < 5; i++)
@@ -1326,15 +1301,13 @@ PilotIcon::render(float left, float top, float right, float bottom)
 	gos_DrawTriangles(&pilotLocation[2], 3);
 }
 
-void
-PilotIcon::setPilot(MechWarrior* pWarrior)
+void PilotIcon::setPilot(MechWarrior* pWarrior)
 {
 	if (pWarrior)
 		pilotTextureIndex = pWarrior->getPhoto();
 }
 
-void
-PilotIcon::swapResolutions(bool bForce)
+void PilotIcon::swapResolutions(bool bForce)
 {
 	if (s_pilotTextureHandle)
 	{

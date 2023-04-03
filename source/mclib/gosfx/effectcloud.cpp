@@ -11,8 +11,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::EffectCloud__Specification::EffectCloud__Specification(
-	std::iostream stream, uint32_t gfx_version) :
-	SpinningCloud__Specification(gosFX::EffectCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: SpinningCloud__Specification(gosFX::EffectCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -25,8 +25,8 @@ gosFX::EffectCloud__Specification::EffectCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::EffectCloud__Specification::EffectCloud__Specification() :
-	SpinningCloud__Specification(gosFX::EffectCloudClassID)
+gosFX::EffectCloud__Specification::EffectCloud__Specification()
+	: SpinningCloud__Specification(gosFX::EffectCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -50,8 +50,7 @@ gosFX::EffectCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud__Specification::Save(std::iostream stream)
+void gosFX::EffectCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -61,8 +60,7 @@ gosFX::EffectCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud__Specification::Copy(EffectCloud__Specification* spec)
+void gosFX::EffectCloud__Specification::Copy(EffectCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -79,8 +77,7 @@ gosFX::EffectCloud::ClassData* gosFX::EffectCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::InitializeClass()
+void gosFX::EffectCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -92,8 +89,7 @@ gosFX::EffectCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::TerminateClass()
+void gosFX::EffectCloud::TerminateClass()
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
@@ -102,8 +98,8 @@ gosFX::EffectCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::EffectCloud::EffectCloud(Specification* spec, uint32_t flags) :
-	SpinningCloud(DefaultData, spec, flags)
+gosFX::EffectCloud::EffectCloud(Specification* spec, uint32_t flags)
+	: SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -144,8 +140,7 @@ gosFX::EffectCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void gosFX::EffectCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -183,8 +178,7 @@ gosFX::EffectCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translatio
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::EffectCloud::AnimateParticle(
+bool gosFX::EffectCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -229,8 +223,7 @@ gosFX::EffectCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::DestroyParticle(uint32_t index)
+void gosFX::EffectCloud::DestroyParticle(uint32_t index)
 {
 	// Check_Object(this);
 	Particle* particle = GetParticle(index);
@@ -246,8 +239,7 @@ gosFX::EffectCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::Draw(DrawInfo* info)
+void gosFX::EffectCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -283,8 +275,7 @@ gosFX::EffectCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::TestInstance(void) const
+void gosFX::EffectCloud::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

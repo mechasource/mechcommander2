@@ -5,7 +5,6 @@ SalvageMechArea.h			: Interface for the SalvageMechArea component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef SALVAGEMECHAREA_H
@@ -55,7 +54,10 @@ public:
 
 	void init(FitIniFile* file);
 	bool isDone(void);
-	bool donePressed() { return bDone; }
+	bool donePressed()
+	{
+		return bDone;
+	}
 	virtual void render(void);
 	virtual void update(void);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
@@ -89,7 +91,10 @@ public:
 	virtual int32_t handleMessage(uint32_t message, uint32_t who);
 
 	bool isChecked(void);
-	LogisticsVariant* getMech() { return pVariant; }
+	LogisticsVariant* getMech()
+	{
+		return pVariant;
+	}
 
 	SalvageListItem(BattleMech* pUnit);
 

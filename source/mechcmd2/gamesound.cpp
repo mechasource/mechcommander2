@@ -35,8 +35,7 @@ extern bool GeneralAlarm;
 #define ALARM_TIME 5.0f
 
 //---------------------------------------------------------------------------
-void
-GameSoundSystem::purgeSoundSystem(void)
+void GameSoundSystem::purgeSoundSystem(void)
 {
 	wholeMsgDone = true;
 	currentMessage = nullptr;
@@ -56,7 +55,7 @@ GameSoundSystem::purgeSoundSystem(void)
 	// Toss everybody's radio.  This MUST happen AFTER
 	// all of the currently queued radio messages are dumped.
 	// Radios all come from the Radio Heap now.  This dumps 'em.
-	for (i = 0; i < MAX_RADIOS; i++)
+	for (i = 0; i < radioconst::maxradios; i++)
 	{
 		Radio::radioList[i] = nullptr;
 		delete Radio::messagesFile[i];
@@ -86,8 +85,7 @@ GameSoundSystem::purgeSoundSystem(void)
 }
 
 //---------------------------------------------------------------------------
-void
-GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
+void GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 {
 	int32_t i;
 	if (msgNumber < 0 || msgNumber >= MAX_QUEUED_MESSAGES)
@@ -97,7 +95,7 @@ GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 		if (queue[msgNumber]->pilot)
 			queue[msgNumber]->pilot->clearMessagePlaying();
 		UserHeapPtr msgHeap = queue[msgNumber]->msgHeap;
-		for (i = 0; i < MAX_FRAGMENTS; i++)
+		for (i = 0; i < radioconst::maxfragments; i++)
 		{
 			msgHeap->Free(queue[msgNumber]->data[i]);
 			queue[msgNumber]->data[i] = nullptr;
@@ -132,8 +130,7 @@ GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 }
 
 //---------------------------------------------------------------------------
-bool
-GameSoundSystem::checkMessage(std::unique_ptr<MechWarrior> pilot, byte priority, uint32_t messageType)
+bool GameSoundSystem::checkMessage(std::unique_ptr<MechWarrior> pilot, byte priority, uint32_t messageType)
 {
 	for (size_t i = 0; i < MAX_QUEUED_MESSAGES; i++)
 	{
@@ -148,8 +145,7 @@ GameSoundSystem::checkMessage(std::unique_ptr<MechWarrior> pilot, byte priority,
 }
 
 //---------------------------------------------------------------------------
-void
-GameSoundSystem::moveFromQueueToPlaying(void)
+void GameSoundSystem::moveFromQueueToPlaying(void)
 {
 	removeCurrentMessage();
 	while (queue[0] && queue[0]->pilot && !(queue[0]->pilot->active()) && (queue[0]->msgType != RADIO_DEATH) && (queue[0]->msgType != RADIO_EJECTING))
@@ -165,15 +161,14 @@ GameSoundSystem::moveFromQueueToPlaying(void)
 }
 
 //---------------------------------------------------------------------------
-void
-GameSoundSystem::removeCurrentMessage(void)
+void GameSoundSystem::removeCurrentMessage(void)
 {
 	if (currentMessage)
 	{
 		if (currentMessage->pilot)
 			currentMessage->pilot->clearMessagePlaying();
 		UserHeapPtr msgHeap = currentMessage->msgHeap;
-		for (size_t j = 0; j < MAX_FRAGMENTS; j++)
+		for (size_t j = 0; j < radioconst::maxfragments; j++)
 		{
 			msgHeap->Free(currentMessage->data[j]);
 			currentMessage->data[j] = nullptr;
@@ -195,7 +190,7 @@ GameSoundSystem::queueRadioMessage(RadioData* msgData)
 	//-------------------------------------------------
 	// First, search the Queue and see if this message
 	// was already sent this turn.
-	if (msgData->msgId >= MSG_TOTAL_MSGS) // is this a real message? (why are we asking this???)
+	if (msgData->msgId >= 0/*MSG_TOTAL_MSGS*/) // is this a real message? (why are we asking this???)
 	{
 		for (i = MAX_QUEUED_MESSAGES - 1; i >= 0; i--)
 		{
@@ -264,8 +259,7 @@ GameSoundSystem::queueRadioMessage(RadioData* msgData)
 }
 
 //---------------------------------------------------------------------------
-void
-GameSoundSystem::update(void)
+void GameSoundSystem::update(void)
 {
 	//---------------------------------------------
 	// Dynamic Music Code goes here!!!
@@ -315,10 +309,10 @@ GameSoundSystem::update(void)
 					gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
 						&soundFormat, dataOffset, length);
 					if (isChannelPlaying(BETTY_CHANNEL))
-						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 							SoundSystem::digitalMasterVolume * radioVolume * 0.5f);
 					else
-						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 							SoundSystem::digitalMasterVolume * radioVolume);
 					gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
 					gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
@@ -354,10 +348,10 @@ GameSoundSystem::update(void)
 					gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
 						&soundFormat, dataOffset, length);
 					if (isChannelPlaying(BETTY_CHANNEL))
-						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 							SoundSystem::digitalMasterVolume * radioVolume * 0.5f);
 					else
-						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 							SoundSystem::digitalMasterVolume * radioVolume);
 					gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
 					gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
@@ -391,10 +385,10 @@ GameSoundSystem::update(void)
 						gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
 							&soundFormat, dataOffset, length);
 						if (isChannelPlaying(BETTY_CHANNEL))
-							gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+							gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 								SoundSystem::digitalMasterVolume * radioVolume * 0.5f);
 						else
-							gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+							gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 								SoundSystem::digitalMasterVolume * radioVolume);
 						gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
 						gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
@@ -466,11 +460,11 @@ GameSoundSystem::update(void)
 			gosAudio_CreateResource(
 				&radioHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
 			if (isChannelPlaying(BETTY_CHANNEL))
-				gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+				gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 					SoundSystem::digitalMasterVolume * radioVolume * 0.5f);
 			else
 				gosAudio_SetChannelSlider(
-					RADIO_CHANNEL, gosAudio_Volume, SoundSystem::digitalMasterVolume * radioVolume);
+					RADIO_CHANNEL, gosAudio_Properties::volume, SoundSystem::digitalMasterVolume * radioVolume);
 			gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
 			gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
 			playingNoise = TRUE;
@@ -503,10 +497,10 @@ GameSoundSystem::update(void)
 				gosAudio_CreateResource(
 					&radioHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
 				if (isChannelPlaying(BETTY_CHANNEL))
-					gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+					gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 						SoundSystem::digitalMasterVolume * radioVolume * 0.5f);
 				else
-					gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Volume,
+					gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 						SoundSystem::digitalMasterVolume * radioVolume);
 				gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
 				gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);

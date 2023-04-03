@@ -38,9 +38,15 @@ protected:
 	// Member Functions
 	//----------------
 public:
-	GameSoundSystem(void) { init(void); }
+	GameSoundSystem(void)
+	{
+		init(void);
+	}
 
-	~GameSoundSystem(void) { destroy(void); }
+	~GameSoundSystem(void)
+	{
+		destroy(void);
+	}
 
 	void init(void)
 	{

@@ -38,16 +38,13 @@ float last30Frames[30] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 
 	0.0f, 0.0f};
 
 extern wchar_t CDInstallPath[];
-void
-EnterWindowMode();
-void
-EnterFullScreenMode();
+void EnterWindowMode();
+void EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
 //-----------------------------------------------------------------------
 // Class MC2Movie
-void
-MC2Movie::init(const std::wstring_view& MC2Name, RECT mRect, bool useWaveFile)
+void MC2Movie::init(std::wstring_view MC2Name, RECT mRect, bool useWaveFile)
 {
 	wchar_t MOVIEName[1024];
 	_splitpath(MC2Name, nullptr, nullptr, MOVIEName, nullptr);
@@ -74,8 +71,7 @@ MC2Movie::init(const std::wstring_view& MC2Name, RECT mRect, bool useWaveFile)
 // Changes rect.  If resize, calls malloc which will be QUITE painful during a
 // MC2 playback
 // If just move, its awfully fast.
-void
-MC2Movie::setRect(RECT vRect)
+void MC2Movie::setRect(RECT vRect)
 {
 	if (((vRect.right - vRect.left) != (MC2Rect.right - MC2Rect.left)) || ((vRect.bottom - vRect.top) != (MC2Rect.bottom - MC2Rect.top)))
 	{
@@ -94,8 +90,7 @@ MC2Movie::setRect(RECT vRect)
 
 //-----------------------------------------------------------------------
 // Handles tickling MC2 to make sure we keep playing back
-bool
-MC2Movie::update(void)
+bool MC2Movie::update(void)
 {
 	if (!soundStarted && separateWAVE)
 	{
@@ -118,15 +113,13 @@ MC2Movie::update(void)
 
 //-----------------------------------------------------------------------
 // Actually moves frame data from MC2 to surface and/or texture(s)
-void
-MC2Movie::BltMovieFrame(void)
+void MC2Movie::BltMovieFrame(void)
 {
 }
 
 //-----------------------------------------------------------------------
 // Actually draws the MC2 texture using gos_DrawTriangle.
-void
-MC2Movie::render(void)
+void MC2Movie::render(void)
 {
 	if (!stillPlaying)
 		return;

@@ -22,8 +22,7 @@
 //#############################################################################
 //#############################################################################
 //
-void
-Plane::BuildPlane(const Point3D& p0, const Point3D& p1, const Point3D& p2)
+void Plane::BuildPlane(const Point3D& p0, const Point3D& p1, const Point3D& p2)
 {
 	Vector3D v1, v2;
 	v1.Subtract(p1, p0);
@@ -71,8 +70,7 @@ Plane::Multiply(const Plane& p, const LinearMatrix4D& m)
 //#############################################################################
 //#############################################################################
 //
-float
-Plane::GetDistanceTo(const Sphere& sphere) const
+float Plane::GetDistanceTo(const Sphere& sphere) const
 {
 	// Check_Object(this);
 	Check_Object(&sphere);
@@ -94,8 +92,7 @@ Plane::GetDistanceTo(const Sphere& sphere) const
 //#############################################################################
 //#############################################################################
 //
-float
-Plane::GetDistanceTo(const OBB& box) const
+float Plane::GetDistanceTo(const OBB& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -146,8 +143,7 @@ Plane::GetDistanceTo(const OBB& box) const
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::ContainsSomeOf(const Sphere& sphere, float thickness) const
+bool Plane::ContainsSomeOf(const Sphere& sphere, float thickness) const
 {
 	return normal * sphere.center - offset <= sphere.radius - thickness;
 }
@@ -156,8 +152,7 @@ Plane::ContainsSomeOf(const Sphere& sphere, float thickness) const
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::ContainsAllOf(const Sphere& sphere, float thickness) const
+bool Plane::ContainsAllOf(const Sphere& sphere, float thickness) const
 {
 	return offset - normal * sphere.center >= sphere.radius + thickness;
 }
@@ -166,8 +161,7 @@ Plane::ContainsAllOf(const Sphere& sphere, float thickness) const
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::ContainsSomeOf(const ExtentBox& box, float thickness) const
+bool Plane::ContainsSomeOf(const ExtentBox& box, float thickness) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -182,8 +176,7 @@ Plane::ContainsSomeOf(const ExtentBox& box, float thickness) const
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::ContainsAllOf(const ExtentBox& box, float thickness) const
+bool Plane::ContainsAllOf(const ExtentBox& box, float thickness) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -198,8 +191,7 @@ Plane::ContainsAllOf(const ExtentBox& box, float thickness) const
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::Intersects(const Sphere& sphere, float thickness) const
+bool Plane::Intersects(const Sphere& sphere, float thickness) const
 {
 	float dist = normal * sphere.center - offset;
 	return abs(dist) <= sphere.radius + thickness;
@@ -209,8 +201,7 @@ Plane::Intersects(const Sphere& sphere, float thickness) const
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::Intersects(const ExtentBox& box, float thickness) const
+bool Plane::Intersects(const ExtentBox& box, float thickness) const
 {
 	if (!ContainsSomeOf(box, thickness))
 	{
@@ -227,8 +218,7 @@ Plane::Intersects(const ExtentBox& box, float thickness) const
 //#############################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Plane& plane)
+void Spew(std::wstring_view group, const Plane& plane)
 {
 	Check_Object(&plane);
 	SPEW((group, "\n\tPlane Normal: +"));
@@ -239,8 +229,7 @@ Spew(const std::wstring_view& group, const Plane& plane)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Plane::ComputeBestDividingPlane(std::vector<Point3D>& points)
+bool Plane::ComputeBestDividingPlane(std::vector<Point3D>& points)
 {
 	Check_Object(&points);
 	//

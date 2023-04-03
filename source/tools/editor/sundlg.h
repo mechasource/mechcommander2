@@ -10,7 +10,6 @@ SunDlg.h			: Interface for the SunDlg component.
 #ifndef SUNDLG_H
 #define SUNDLG_H
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 SunDlg:

@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version) :
-	Effect__Specification(class_id, stream, gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
+	: Effect__Specification(class_id, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -53,8 +53,8 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 //------------------------------------------------------------------------------
 //
 gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id) :
-	Effect__Specification(class_id)
+	Stuff::RegisteredClass::ClassID class_id)
+	: Effect__Specification(class_id)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_maxParticleCount = 0;
@@ -63,8 +63,7 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud__Specification::Save(std::iostream stream)
+void gosFX::ParticleCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -99,8 +98,7 @@ gosFX::ParticleCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud__Specification::BuildDefaults()
+void gosFX::ParticleCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
@@ -154,8 +152,7 @@ gosFX::ParticleCloud__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
+bool gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float min, max;
@@ -168,7 +165,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 			m_pLifeSpan.m_seeded = false;
 			m_pLifeSpan.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"pLifeSpan\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -179,7 +176,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 		{
 			m_startingPopulation.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"startingPopulation\" in Effect \"%s\" Is
-			// Out of Range and has been Reset", (const std::wstring_view&)m_name));
+			// Out of Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -188,7 +185,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 		{
 			m_maxParticleCount = 1;
 			// PAUSE(("Warning: value \"maxParticleCount\" in Effect \"%s\" Is
-			// Out of Range and has been Reset", (const std::wstring_view&)m_name));
+			// Out of Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -197,8 +194,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spec)
+void gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -245,8 +241,7 @@ gosFX::ParticleCloud::ClassData* gosFX::ParticleCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud::InitializeClass()
+void gosFX::ParticleCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -257,8 +252,7 @@ gosFX::ParticleCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud::TerminateClass()
+void gosFX::ParticleCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -267,8 +261,8 @@ gosFX::ParticleCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::ParticleCloud::ParticleCloud(ClassData* class_data, Specification* spec, uint32_t flags) :
-	Effect(class_data, spec, flags)
+gosFX::ParticleCloud::ParticleCloud(ClassData* class_data, Specification* spec, uint32_t flags)
+	: Effect(class_data, spec, flags)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
@@ -290,8 +284,7 @@ gosFX::ParticleCloud::ParticleCloud(ClassData* class_data, Specification* spec, 
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud::Start(ExecuteInfo* info)
+void gosFX::ParticleCloud::Start(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -310,8 +303,7 @@ gosFX::ParticleCloud::Start(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::ParticleCloud::Execute(ExecuteInfo* info)
+bool gosFX::ParticleCloud::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -431,8 +423,7 @@ gosFX::ParticleCloud::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::ParticleCloud::HasFinished()
+bool gosFX::ParticleCloud::HasFinished()
 {
 	// Check_Object(this);
 	return Effect::HasFinished() && (m_activeParticleCount == 0);
@@ -440,8 +431,7 @@ gosFX::ParticleCloud::HasFinished()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud::Kill()
+void gosFX::ParticleCloud::Kill()
 {
 	// Check_Object(this);
 	//
@@ -463,8 +453,7 @@ gosFX::ParticleCloud::Kill()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void gosFX::ParticleCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -513,8 +502,7 @@ gosFX::ParticleCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translat
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud::DestroyParticle(uint32_t index)
+void gosFX::ParticleCloud::DestroyParticle(uint32_t index)
 {
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
@@ -523,8 +511,7 @@ gosFX::ParticleCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ParticleCloud::TestInstance(void) const
+void gosFX::ParticleCloud::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

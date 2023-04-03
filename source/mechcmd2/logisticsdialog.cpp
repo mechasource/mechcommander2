@@ -36,8 +36,7 @@ extern int32_t SaveGameVersionNumber;
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsDialog::begin()
+void LogisticsDialog::begin()
 {
 	enterAnim.begin();
 	exitAnim.end();
@@ -54,8 +53,7 @@ LogisticsDialog::LogisticsDialog()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsDialog::end()
+void LogisticsDialog::end()
 {
 	enterAnim.end();
 	exitAnim.begin();
@@ -67,8 +65,7 @@ LogisticsDialog::end()
 	}
 }
 
-void
-LogisticsDialog::setFont(int32_t newFontResID)
+void LogisticsDialog::setFont(int32_t newFontResID)
 {
 	if (textCount)
 	{
@@ -79,8 +76,7 @@ LogisticsDialog::setFont(int32_t newFontResID)
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsDialog::render()
+void LogisticsDialog::render()
 {
 	float color = 0x7f000000;
 	if (enterAnim.isAnimating() && !enterAnim.isDone())
@@ -120,8 +116,7 @@ LogisticsDialog::render()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsDialog::update()
+void LogisticsDialog::update()
 {
 	enterAnim.update();
 	exitAnim.update();
@@ -168,11 +163,11 @@ LogisticsDialog::update()
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-LogisticsOKDialog::LogisticsOKDialog() {}
+LogisticsOKDialog::LogisticsOKDialog() { }
 
 //-------------------------------------------------------------------------------------------------
 
-LogisticsOKDialog::~LogisticsOKDialog() {}
+LogisticsOKDialog::~LogisticsOKDialog() { }
 
 //-------------------------------------------------------------------------------------------------
 
@@ -207,16 +202,14 @@ LogisticsOKDialog::handleMessage(uint32_t, uint32_t who)
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsOKDialog::setText(int32_t textID, int32_t CancelButton, int32_t OKButton)
+void LogisticsOKDialog::setText(int32_t textID, int32_t CancelButton, int32_t OKButton)
 {
 	textObjects[0].setText(textID);
 	buttons[0].setText(CancelButton);
 	buttons[1].setText(OKButton);
 }
 
-void
-LogisticsOKDialog::setText(const std::wstring_view& mainText)
+void LogisticsOKDialog::setText(std::wstring_view mainText)
 {
 	textObjects[0].setText(mainText);
 }
@@ -225,11 +218,11 @@ LogisticsOKDialog::setText(const std::wstring_view& mainText)
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-LogisticsOneButtonDialog::LogisticsOneButtonDialog() {}
+LogisticsOneButtonDialog::LogisticsOneButtonDialog() { }
 
 //-------------------------------------------------------------------------------------------------
 
-LogisticsOneButtonDialog::~LogisticsOneButtonDialog() {}
+LogisticsOneButtonDialog::~LogisticsOneButtonDialog() { }
 
 //-------------------------------------------------------------------------------------------------
 
@@ -283,16 +276,14 @@ LogisticsOneButtonDialog::handleMessage(uint32_t, uint32_t who)
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsOneButtonDialog::setText(int32_t textID, int32_t CancelButton, int32_t OKButton)
+void LogisticsOneButtonDialog::setText(int32_t textID, int32_t CancelButton, int32_t OKButton)
 {
 	textObjects[0].setText(textID);
 	buttons[0].setText(CancelButton);
 	//	buttons[1].setText( OKButton );
 }
 
-void
-LogisticsOneButtonDialog::setText(const std::wstring_view& mainText)
+void LogisticsOneButtonDialog::setText(std::wstring_view mainText)
 {
 	textObjects[0].setText(mainText);
 }
@@ -301,7 +292,7 @@ LogisticsOneButtonDialog::setText(const std::wstring_view& mainText)
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-LogisticsSaveDialog::LogisticsSaveDialog() {}
+LogisticsSaveDialog::LogisticsSaveDialog() { }
 
 //-------------------------------------------------------------------------------------------------
 
@@ -341,8 +332,7 @@ LogisticsSaveDialog::init(FitIniFile& file)
 	return 0;
 }
 
-void
-LogisticsSaveDialog::begin()
+void LogisticsSaveDialog::begin()
 {
 	beginFadeIn(0); // turn off any fades...
 	edits[0].setFocus(true);
@@ -371,8 +361,7 @@ LogisticsSaveDialog::begin()
 	LogisticsDialog::begin();
 }
 
-void
-LogisticsSaveDialog::beginLoad()
+void LogisticsSaveDialog::beginLoad()
 {
 	beginFadeIn(0);
 	edits[0].setFocus(true);
@@ -400,8 +389,7 @@ LogisticsSaveDialog::beginLoad()
 	LogisticsDialog::begin();
 }
 
-void
-LogisticsSaveDialog::beginCampaign()
+void LogisticsSaveDialog::beginCampaign()
 {
 	beginLoad();
 	edits[0].limitEntry(20);
@@ -426,8 +414,7 @@ LogisticsSaveDialog::beginCampaign()
 	updateMissionInfo();
 }
 
-void
-LogisticsSaveDialog::initDialog(const std::wstring_view& path, bool bCampaign)
+void LogisticsSaveDialog::initDialog(std::wstring_view path, bool bCampaign)
 {
 	gameListBox.removeAllItems(true);
 	// need to add items to the save game list
@@ -443,7 +430,7 @@ LogisticsSaveDialog::initDialog(const std::wstring_view& path, bool bCampaign)
 			{
 				aLocalizedListItem* pEntry = new aLocalizedListItem();
 				*pEntry = s_instance->templateItem;
-				const std::wstring_view& pExt = strstr(findResult.cFileName, ".fit");
+				std::wstring_view pExt = strstr(findResult.cFileName, ".fit");
 				if (!pExt)
 				{
 					pExt = (strstr(findResult.cFileName, ".FIT"));
@@ -504,13 +491,12 @@ LogisticsSaveDialog::initDialog(const std::wstring_view& path, bool bCampaign)
 	}
 }
 
-bool
-LogisticsSaveDialog::isCorrectVersionSaveGame(const std::wstring_view& fileName)
+bool LogisticsSaveDialog::isCorrectVersionSaveGame(std::wstring_view fileName)
 {
 	FullPathFileName path;
 	path.init(savePath, fileName, ".fit");
 	FitIniFile file;
-	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
+	if (NO_ERROR != file.open((std::wstring_view)(std::wstring_view)path))
 	{
 		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
@@ -526,13 +512,12 @@ LogisticsSaveDialog::isCorrectVersionSaveGame(const std::wstring_view& fileName)
 	return false;
 }
 
-void
-LogisticsSaveDialog::readCampaignNameFromFile(const std::wstring_view& fileName, const std::wstring_view& resultName, int32_t len)
+void LogisticsSaveDialog::readCampaignNameFromFile(std::wstring_view fileName, std::wstring_view resultName, int32_t len)
 {
 	FullPathFileName path;
 	path.init(campaignPath, fileName, ".fit");
 	FitIniFile file;
-	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
+	if (NO_ERROR != file.open((std::wstring_view)(std::wstring_view)path))
 	{
 		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);
@@ -554,15 +539,13 @@ LogisticsSaveDialog::readCampaignNameFromFile(const std::wstring_view& fileName,
 	}
 }
 
-void
-LogisticsSaveDialog::end()
+void LogisticsSaveDialog::end()
 {
 	statics[MAP_STATIC].setTexture((uint32_t)0);
 	bCampaign = 0;
 	LogisticsDialog::end();
 }
-void
-LogisticsSaveDialog::update()
+void LogisticsSaveDialog::update()
 {
 	if (!bPromptOverwrite && !bDeletePrompt)
 		LogisticsDialog::update();
@@ -570,12 +553,12 @@ LogisticsSaveDialog::update()
 		bDone = true;
 	buttons[2].disable(0);
 	buttons[0].disable(0);
-	const std::wstring_view& fileName;
+	std::wstring_view fileName;
 	edits[0].getEntry(fileName);
 	if (bCampaign)
 	{
 		fileName.Empty();
-		const std::wstring_view& displayName;
+		std::wstring_view displayName;
 		edits[0].getEntry(displayName);
 		{
 			/*if there is a selected item and it matches the text in the
@@ -693,7 +676,7 @@ LogisticsSaveDialog::update()
 					gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 				}
 				gameListBox.GetItem(item)->setcolour(edits[0].getHighlightcolour());
-				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
+				std::wstring_view text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = ((aLocalizedListItem*)gameListBox.GetItem(item))->getHiddenText();
 				// update mission info
@@ -711,8 +694,7 @@ LogisticsSaveDialog::update()
 	}
 }
 
-void
-LogisticsSaveDialog::updateCampaignMissionInfo()
+void LogisticsSaveDialog::updateCampaignMissionInfo()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -724,7 +706,7 @@ LogisticsSaveDialog::updateCampaignMissionInfo()
 	wchar_t fileName[256];
 	if (NO_ERROR == file.seekBlock("Group0Mission0"))
 	{
-		if (NO_ERROR != file.readIdString("FileName", fileName, 1023))
+		if (NO_ERROR != file.readIdString("filename", fileName, 1023))
 		{
 			setMission("");
 		}
@@ -736,8 +718,7 @@ LogisticsSaveDialog::updateCampaignMissionInfo()
 	else
 		setMission("");
 }
-void
-LogisticsSaveDialog::updateMissionInfo()
+void LogisticsSaveDialog::updateMissionInfo()
 {
 	if (!selectedName.Length())
 	{
@@ -785,8 +766,8 @@ LogisticsSaveDialog::updateMissionInfo()
 		strcat(real, "\n");
 		time_t time = file.getFileMTime();
 		struct tm* ptm = localtime(&time);
-		const std::wstring_view& timeStr = gos_GetFormattedTime(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
-		const std::wstring_view& dateStr = gos_GetFormattedDate(0, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday);
+		std::wstring_view timeStr = gos_GetFormattedTime(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
+		std::wstring_view dateStr = gos_GetFormattedDate(0, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday);
 		cLoadString(IDS_DIALOG_TIME, tmp2, 255);
 		sprintf(tmp, tmp2, dateStr, timeStr);
 		strcat(real, tmp);
@@ -799,8 +780,7 @@ LogisticsSaveDialog::updateMissionInfo()
 	}
 }
 
-void
-LogisticsSaveDialog::setMission(const std::wstring_view& fileName)
+void LogisticsSaveDialog::setMission(std::wstring_view fileName)
 {
 	if (strlen(fileName))
 	{
@@ -841,8 +821,7 @@ LogisticsSaveDialog::setMission(const std::wstring_view& fileName)
 		textObjects[2].setText("");
 	}
 }
-void
-LogisticsSaveDialog::render()
+void LogisticsSaveDialog::render()
 {
 	float xOffset = 0;
 	float yOffset = 0;
@@ -901,7 +880,7 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 {
 	if (YES == who)
 	{
-		const std::wstring_view& str;
+		std::wstring_view str;
 		edits[0].getEntry(str);
 		bool bFound = 0;
 		// look and see if you are overwriting anything here...
@@ -914,7 +893,7 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 				wchar_t str[256];
 				cLoadString(IDS_DIALOG_OVERWRITE_PROMPT, str, 255);
 				wchar_t promptString[256];
-				sprintf(promptString, str, (const std::wstring_view&)selectedName);
+				sprintf(promptString, str, (std::wstring_view)selectedName);
 				LogisticsOKDialog::instance()->setText(
 					IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 				LogisticsOKDialog::instance()->setText(promptString);
@@ -947,11 +926,11 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 	{
 		if (gameListBox.GetItemCount())
 		{
-			const std::wstring_view& tmpName;
+			std::wstring_view tmpName;
 			edits[0].getEntry(tmpName);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 			{
-				const std::wstring_view& pFileName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
+				std::wstring_view pFileName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
 				if (tmpName.Compare(pFileName, 0) == 0)
 				{
 					selectedName = pFileName;
@@ -961,7 +940,7 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 			wchar_t str[256];
 			cLoadString(IDS_DIALOG_DELETE_PROMPT, str, 255);
 			wchar_t promptString[256];
-			sprintf(promptString, str, (const std::wstring_view&)tmpName);
+			sprintf(promptString, str, (std::wstring_view)tmpName);
 			LogisticsOKDialog::instance()->setText(
 				IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 			LogisticsOKDialog::instance()->setText(promptString);
@@ -978,8 +957,8 @@ LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-LogisticsVariantDialog::LogisticsVariantDialog() :
-	templateItem(IDS_DIALOG_LB_FONT)
+LogisticsVariantDialog::LogisticsVariantDialog()
+	: templateItem(IDS_DIALOG_LB_FONT)
 {
 	if (!s_instance)
 		s_instance = this;
@@ -1015,8 +994,7 @@ LogisticsVariantDialog::init(FitIniFile& file)
 	return 0;
 }
 
-void
-LogisticsVariantDialog::begin()
+void LogisticsVariantDialog::begin()
 {
 	edits[0].allowIME(false);
 	edits[0].setFocus(true);
@@ -1033,8 +1011,7 @@ LogisticsVariantDialog::begin()
 	LogisticsDialog::begin();
 }
 
-void
-LogisticsVariantDialog::beginTranscript()
+void LogisticsVariantDialog::beginTranscript()
 {
 	edits[0].allowIME(true);
 	edits[0].setFocus(true);
@@ -1050,8 +1027,7 @@ LogisticsVariantDialog::beginTranscript()
 	LogisticsDialog::begin();
 }
 
-void
-LogisticsVariantDialog::initTranscript()
+void LogisticsVariantDialog::initTranscript()
 {
 	wchar_t findString[512];
 	sprintf(findString, "%s*.txt", "data\\multiplayer\\transcripts\\");
@@ -1074,15 +1050,14 @@ LogisticsVariantDialog::initTranscript()
 	}
 	edits[0].setEntry("");
 }
-void
-LogisticsVariantDialog::initVariantList()
+void LogisticsVariantDialog::initVariantList()
 {
 	gameListBox.removeAllItems(true);
 	int32_t count = 0;
 	LogisticsData::instance->getPlayerVariantNames(nullptr, count);
 	if (count)
 	{
-		const std::wstring_view&* pNames = (const std::wstring_view&*)_alloca(count * sizeof(const std::wstring_view&));
+		std::wstring_view* pNames = (std::wstring_view*)_alloca(count * sizeof(std::wstring_view));
 		LogisticsData::instance->getPlayerVariantNames(pNames, count);
 		int32_t bValid = 0;
 		for (size_t i = 0; i < count; i++)
@@ -1108,14 +1083,12 @@ LogisticsVariantDialog::initVariantList()
 	}
 }
 
-void
-LogisticsVariantDialog::end()
+void LogisticsVariantDialog::end()
 {
 	LogisticsDialog::end();
 	bTranscript = 0;
 }
-void
-LogisticsVariantDialog::update()
+void LogisticsVariantDialog::update()
 {
 	if (bPromptOverwrite)
 	{
@@ -1177,7 +1150,7 @@ LogisticsVariantDialog::update()
 					gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 				}
 				gameListBox.GetItem(item)->setcolour(edits[0].getHighlightcolour());
-				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
+				std::wstring_view text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = text;
 			}
@@ -1191,7 +1164,7 @@ LogisticsVariantDialog::update()
 			}
 		}
 	}
-	const std::wstring_view& text;
+	std::wstring_view text;
 	edits[0].getEntry(text);
 	if ((!bTranscript && !LogisticsData.instance->canReplaceVariant(text)) || !text.Length())
 	{
@@ -1226,8 +1199,7 @@ LogisticsVariantDialog::update()
 		buttons[0].disable(1);
 }
 
-void
-LogisticsVariantDialog::render()
+void LogisticsVariantDialog::render()
 {
 	float color = 0x7f000000;
 	if (enterAnim.isAnimating() && !enterAnim.isDone())
@@ -1290,7 +1262,7 @@ LogisticsVariantDialog::handleMessage(uint32_t what, uint32_t who)
 				wchar_t str[256];
 				cLoadString(IDS_DIALOG_OVERWRITE_PROMPT, str, 255);
 				wchar_t promptString[256];
-				sprintf(promptString, str, (const std::wstring_view&)selectedName);
+				sprintf(promptString, str, (std::wstring_view)selectedName);
 				LogisticsOKDialog::instance()->setText(
 					IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 				LogisticsOKDialog::instance()->setText(promptString);
@@ -1318,7 +1290,7 @@ LogisticsVariantDialog::handleMessage(uint32_t what, uint32_t who)
 		wchar_t str[256];
 		cLoadString(IDS_DIALOG_DELETE_PROMPT, str, 255);
 		wchar_t promptString[256];
-		sprintf(promptString, str, (const std::wstring_view&)selectedName);
+		sprintf(promptString, str, (std::wstring_view)selectedName);
 		LogisticsOKDialog::instance()->setText(
 			IDS_DIALOG_QUIT_PROMPT, IDS_DIALOG_NO, IDS_DIALOG_YES);
 		LogisticsOKDialog::instance()->setText(promptString);
@@ -1328,10 +1300,9 @@ LogisticsVariantDialog::handleMessage(uint32_t what, uint32_t who)
 	return 0;
 }
 
-LogisticsAcceptVariantDialog::LogisticsAcceptVariantDialog() {}
-LogisticsAcceptVariantDialog::~LogisticsAcceptVariantDialog() {}
-void
-LogisticsAcceptVariantDialog::begin()
+LogisticsAcceptVariantDialog::LogisticsAcceptVariantDialog() { }
+LogisticsAcceptVariantDialog::~LogisticsAcceptVariantDialog() { }
+void LogisticsAcceptVariantDialog::begin()
 {
 	status = RUNNING;
 	bPromptOverwrite = 0;
@@ -1340,13 +1311,11 @@ LogisticsAcceptVariantDialog::begin()
 	edits[0].setFocus(true);
 	LogisticsDialog::begin();
 }
-void
-LogisticsAcceptVariantDialog::end()
+void LogisticsAcceptVariantDialog::end()
 {
 	LogisticsVariantDialog::end();
 }
-void
-LogisticsAcceptVariantDialog::update()
+void LogisticsAcceptVariantDialog::update()
 {
 	LogisticsDialog::update();
 	buttons[1].disable(0);
@@ -1393,7 +1362,7 @@ LogisticsAcceptVariantDialog::update()
 					gameListBox.GetItem(i)->setcolour(edits[0].getcolour());
 				}
 				gameListBox.GetItem(item)->setcolour(edits[0].getHighlightcolour());
-				const std::wstring_view& text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
+				std::wstring_view text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = text;
 			}
@@ -1407,7 +1376,7 @@ LogisticsAcceptVariantDialog::update()
 			}
 		}
 	}
-	const std::wstring_view& text;
+	std::wstring_view text;
 	edits[0].getEntry(text);
 	if (!LogisticsData.instance->canReplaceVariant(text))
 	{
@@ -1418,8 +1387,7 @@ LogisticsAcceptVariantDialog::update()
 		buttons[1].disable(0);
 	}
 }
-void
-LogisticsAcceptVariantDialog::render()
+void LogisticsAcceptVariantDialog::render()
 {
 	float color = 0x7f000000;
 	if (enterAnim.isAnimating() && !enterAnim.isDone())
@@ -1488,16 +1456,14 @@ LogisticsAcceptVariantDialog::handleMessage(uint32_t p1, uint32_t p2)
 }
 //-------------------------------------------------------------------------------------------------
 
-LogisticsMapInfoDialog::LogisticsMapInfoDialog() {}
-LogisticsMapInfoDialog::~LogisticsMapInfoDialog() {}
-void
-LogisticsMapInfoDialog::end()
+LogisticsMapInfoDialog::LogisticsMapInfoDialog() { }
+LogisticsMapInfoDialog::~LogisticsMapInfoDialog() { }
+void LogisticsMapInfoDialog::end()
 {
 	statics[10].setTexture((uint32_t)0);
 	statics[10].setcolour((int32_t)0);
 }
-void
-LogisticsMapInfoDialog::setMap(const std::wstring_view& pFileName)
+void LogisticsMapInfoDialog::setMap(std::wstring_view pFileName)
 {
 	int32_t textureHandle = MissionBriefingScreen::getMissionTGA(pFileName);
 	statics[10].setTexture(textureHandle);
@@ -1572,7 +1538,7 @@ LogisticsMapInfoDialog::init()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(buffer2, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, buffer2);
 		return false;
 	}

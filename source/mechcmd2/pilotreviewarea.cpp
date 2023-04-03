@@ -110,8 +110,7 @@ PilotReviewScreen::~PilotReviewScreen()
 	}
 }
 
-void
-PilotReviewScreen::init(FitIniFile* file)
+void PilotReviewScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(
 		*file, "PilotReviewStatic", "PilotReviewText", "PilotReviewRect", "PilotReviewButton");
@@ -193,8 +192,7 @@ PilotReviewScreen::init(FitIniFile* file)
 		buttons[0].disable(true);
 }
 
-void
-PilotReviewScreen::render()
+void PilotReviewScreen::render()
 {
 	int32_t xOffset = 0;
 	int32_t yOffset = 0;
@@ -231,13 +229,11 @@ PilotReviewScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-PilotReviewScreen::isDone()
+bool PilotReviewScreen::isDone()
 {
 	return bDone && exitAnim.isDone();
 }
-void
-PilotReviewScreen::update()
+void PilotReviewScreen::update()
 {
 	if (s_curPromotion && !bDone)
 	{
@@ -262,8 +258,7 @@ PilotReviewScreen::update()
 	exitAnim.update();
 }
 
-void
-PilotReviewScreen::updatePilots()
+void PilotReviewScreen::updatePilots()
 {
 }
 
@@ -304,13 +299,11 @@ DeadPilotListItem::~DeadPilotListItem()
 	}
 }
 
-bool
-DeadPilotListItem::isDone()
+bool DeadPilotListItem::isDone()
 {
 	return currentTime > APPEARTIME ? 1 : 0;
 }
-void
-DeadPilotListItem::init(FitIniFile* file)
+void DeadPilotListItem::init(FitIniFile* file)
 {
 	s_area = new aRect;
 	s_missionText = new aText;
@@ -346,7 +339,7 @@ DeadPilotListItem::DeadPilotListItem(LogisticsPilot* pPilot)
 	cLoadString(IDS_PILOT_KILLS, tmpText, 255);
 	sprintf(realText, tmpText, numberOfKills);
 	killsText.setText(realText);
-	const std::wstring_view& name = pPilot->getName();
+	std::wstring_view name = pPilot->getName();
 	cLoadString(IDS_PILOT_NAME, tmpText, 255);
 	sprintf(realText, tmpText, name);
 	nameText.setText(realText);
@@ -371,14 +364,12 @@ DeadPilotListItem::DeadPilotListItem(LogisticsPilot* pPilot)
 	showWindow = 0;
 }
 
-void
-DeadPilotListItem::update()
+void DeadPilotListItem::update()
 {
 	PilotListItem::update();
 }
 
-void
-DeadPilotListItem::render()
+void DeadPilotListItem::render()
 {
 	if (!showWindow)
 		return;
@@ -457,8 +448,7 @@ PilotListBox::AddItem(aListItem* add)
 	return NO_ERROR;
 }
 
-void
-PilotListBox::update()
+void PilotListBox::update()
 {
 	aObject::update();
 	timeSinceStart += frameLength;
@@ -568,8 +558,7 @@ PilotListBox::PilotListBox()
 }
 //////////////////////////////////
 
-void
-ActivePilotListItem::render()
+void ActivePilotListItem::render()
 {
 	if (!showWindow)
 		return;
@@ -684,8 +673,7 @@ ActivePilotListItem::render()
 	}
 }
 
-void
-ActivePilotListItem::update()
+void ActivePilotListItem::update()
 {
 	if (!isShowing()) // do nothing until active
 		return;
@@ -718,8 +706,7 @@ ActivePilotListItem::update()
 	PilotListItem::update();
 }
 
-float
-ActivePilotListItem::flashTime()
+float ActivePilotListItem::flashTime()
 {
 	float flashTime = 1.5f * (float)pilot->promotePilot();
 	flashTime += medalCount ? 2.0f : 0.f;
@@ -816,8 +803,7 @@ ActivePilotListItem::~ActivePilotListItem()
 	}
 }
 
-void
-ActivePilotListItem::init(FitIniFile* file)
+void ActivePilotListItem::init(FitIniFile* file)
 {
 	if (s_area)
 		return;
@@ -890,8 +876,7 @@ ActivePilotListItem::init(FitIniFile* file)
 	s_medalAwardedAnim->initWithBlockName(file, "MedalAwardedAnimation");
 }
 
-bool
-ActivePilotListItem::isDone()
+bool ActivePilotListItem::isDone()
 {
 	return bDone;
 }
@@ -972,7 +957,7 @@ ActivePilotListItem::ActivePilotListItem(LogisticsPilot* pPilot)
 	missionText.setText(realText);
 	cLoadString(IDS_KILLS_NO_COUNT, tmpText, 255);
 	killsText.setText(tmpText);
-	const std::wstring_view& name = pPilot->getName();
+	std::wstring_view name = pPilot->getName();
 	cLoadString(IDS_PILOT_NAME, tmpText, 255);
 	sprintf(realText, tmpText, name);
 	nameText.setText(realText);
@@ -1026,19 +1011,16 @@ ActivePilotListItem::ActivePilotListItem(LogisticsPilot* pPilot)
 	showWindow = 0;
 }
 
-void
-PilotListItem::begin()
+void PilotListItem::begin()
 {
 	currentTime = 0.f;
 }
-void
-PilotListItem::update()
+void PilotListItem::update()
 {
 	currentTime += frameLength;
 }
 
-void
-PilotPromotionArea::init(FitIniFile& file)
+void PilotPromotionArea::init(FitIniFile& file)
 {
 	areaLeft.init(
 		file, "PromoteGadgetLeftStatic", "PromoteGadgetLeftText", "PromoteGadgetLeftRect", nullptr);
@@ -1066,8 +1048,7 @@ PilotPromotionArea::init(FitIniFile& file)
 	pilot = nullptr;
 }
 
-void
-PilotPromotionArea::render()
+void PilotPromotionArea::render()
 {
 	int32_t xOffset = leftInfo.getXDelta();
 	int32_t yOffset = leftInfo.getYDelta();
@@ -1095,8 +1076,7 @@ PilotPromotionArea::render()
 	areaRight.render(xOffset, yOffset);
 }
 
-void
-PilotPromotionArea::update()
+void PilotPromotionArea::update()
 {
 	leftInfo.update();
 	rightInfo.update();
@@ -1148,8 +1128,7 @@ PilotPromotionArea::update()
 		areaLeft.textObjects[8 + specSkills].setcolour(selSkillAnim.getcolour());
 }
 
-void
-PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
+void PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 {
 	PilotReviewScreen::instance->beginFadeOut(1.0f);
 	lastCheck = -1;
@@ -1163,7 +1142,7 @@ PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 	cLoadString(IDS_PILOT_MISSIONS, tmpText, 255);
 	sprintf(realText, tmpText, missions);
 	areaLeft.textObjects[2].setText(realText);
-	const std::wstring_view& name = pPilot->getName();
+	std::wstring_view name = pPilot->getName();
 	cLoadString(IDS_PILOT_NAME, tmpText, 255);
 	sprintf(realText, tmpText, name);
 	areaLeft.textObjects[1].setText(realText);
@@ -1190,7 +1169,7 @@ PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 	int32_t specSkills = pPilot->getSpecialtySkillCount();
 	if (specSkills)
 	{
-		const std::wstring_view& tmp[NUM_SPECIALTY_SKILLS];
+		std::wstring_view tmp[NUM_SPECIALTY_SKILLS];
 		specSkills = 10;
 		pPilot->getSpecialtySkills(tmp, specSkills);
 		for (size_t i = 0; i < specSkills; i++)
@@ -1303,8 +1282,7 @@ PilotPromotionArea::handleMessage(uint32_t msg, uint32_t who)
 	return 0;
 }
 
-bool
-PilotPromotionArea::isDone()
+bool PilotPromotionArea::isDone()
 {
 	if (bDone && rightExitInfo.isDone() && leftExitInfo.isDone())
 		return true;
@@ -1316,13 +1294,11 @@ PilotPromotionArea::~PilotPromotionArea()
 	SpecialtyListItem::deleteStatics();
 }
 
-void
-SpecialtyListItem::render()
+void SpecialtyListItem::render()
 {
 	aObject::render();
 }
-void
-SpecialtyListItem::update()
+void SpecialtyListItem::update()
 {
 	normalAnim.update();
 	uint32_t color = normalAnim.getcolour();
@@ -1361,8 +1337,7 @@ SpecialtyListItem::update()
 	setcolour(0xff000000, 0);
 }
 
-void
-SpecialtyListItem::deleteStatics()
+void SpecialtyListItem::deleteStatics()
 {
 	if (s_itemCount < 1)
 	{
@@ -1401,8 +1376,7 @@ SpecialtyListItem::~SpecialtyListItem()
 	s_itemCount--;
 }
 
-void
-SpecialtyListItem::init(FitIniFile* file)
+void SpecialtyListItem::init(FitIniFile* file)
 {
 	s_radioButton = new aButton;
 	s_highlightAnim = new aAnimation;
@@ -1434,8 +1408,7 @@ SpecialtyListItem::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-SpecialtyListItem::isChecked()
+bool SpecialtyListItem::isChecked()
 {
 	return radioButton.isPressed();
 }
@@ -1468,8 +1441,7 @@ SpecialtyListItem::SpecialtyListItem(int32_t newID)
 	normalAnim.begin();
 }
 
-void
-SpecialtyListItem::setCheck(bool press)
+void SpecialtyListItem::setCheck(bool press)
 {
 	radioButton.press(press);
 	state = press ? SELECTED : ENABLED;

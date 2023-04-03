@@ -30,7 +30,7 @@ MissionSelectionScreen::MissionSelectionScreen()
 	LogisticsScreen::helpTextArrayID = 3;
 	bMovie = 0;
 	missionCount = 0;
-	memset(missionNames, 0, sizeof(const std::wstring_view&) * MAX_MISSIONS_IN_GROUP);
+	memset(missionNames, 0, sizeof(std::wstring_view) * MAX_MISSIONS_IN_GROUP);
 	bStop = 0;
 	missionDescriptionListBox.setPressFX(-1);
 	missionDescriptionListBox.setHighlightFX(-1);
@@ -49,8 +49,7 @@ MissionSelectionScreen::~MissionSelectionScreen()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-MissionSelectionScreen::init(FitIniFile* file)
+void MissionSelectionScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "CMStatic", "CMTextEntry", "CMRect", "CMButton");
 	for (size_t i = 0; i < buttonCount; i++)
@@ -67,8 +66,7 @@ MissionSelectionScreen::init(FitIniFile* file)
 	getButton(MN_MSG_PAUSE)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
 }
 
-void
-MissionSelectionScreen::render(int32_t xOffset, int32_t yOffset)
+void MissionSelectionScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	if (xOffset == 0 && yOffset == 0)
 		missionDescriptionListBox.render();
@@ -108,8 +106,7 @@ MissionSelectionScreen::render(int32_t xOffset, int32_t yOffset)
 	operationScreen.render(xOffset, yOffset);
 }
 
-void
-MissionSelectionScreen::update()
+void MissionSelectionScreen::update()
 {
 	if (!playedLogisticsTune)
 	{
@@ -171,15 +168,14 @@ MissionSelectionScreen::update()
 		buttons[5].showGUIWindow(0);
 }
 
-void
-MissionSelectionScreen::begin()
+void MissionSelectionScreen::begin()
 {
 	status = RUNNING;
 	playedLogisticsTune = false;
 	if (fadeInTime)
 		operationScreen.beginFadeIn(fadeInTime);
 	// initialize the operation
-	const std::wstring_view& str = LogisticsData::instance->getCurrentOperationFileName();
+	std::wstring_view str = LogisticsData::instance->getCurrentOperationFileName();
 	FullPathFileName fileName;
 	fileName.init(artPath, str, ".fit");
 	FitIniFile file;
@@ -228,7 +224,7 @@ MissionSelectionScreen::begin()
 	}
 	missionCount = MAX_MISSIONS_IN_GROUP;
 	int32_t result = LogisticsData::instance->getCurrentMissions(missionNames, missionCount);
-	const std::wstring_view& selMissionName = LogisticsData::instance->getCurrentMission();
+	std::wstring_view selMissionName = LogisticsData::instance->getCurrentMission();
 	gosASSERT(result == NO_ERROR);
 	bool bPressed = 0;
 	for (size_t i = 0; i < missionCount; i++)
@@ -270,8 +266,7 @@ MissionSelectionScreen::begin()
 	bStop = 0;
 }
 
-void
-MissionSelectionScreen::end()
+void MissionSelectionScreen::end()
 {
 	if (bMovie)
 	{
@@ -329,8 +324,7 @@ MissionSelectionScreen::handleMessage(uint32_t msg, uint32_t who)
 	return 0;
 }
 
-void
-MissionSelectionScreen::setMission(int32_t whichOne)
+void MissionSelectionScreen::setMission(int32_t whichOne)
 {
 	LogisticsData::instance->setCurrentMission(missionNames[whichOne]);
 	wchar_t text[64];
@@ -339,8 +333,7 @@ MissionSelectionScreen::setMission(int32_t whichOne)
 	updateListBox();
 }
 
-void
-MissionSelectionScreen::updateListBox()
+void MissionSelectionScreen::updateListBox()
 {
 	missionDescriptionListBox.removeAllItems(true);
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);

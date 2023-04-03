@@ -34,8 +34,7 @@
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-void
-FullPathFileName::destroy(void)
+void FullPathFileName::destroy(void)
 {
 	if (fullName)
 		systemHeap->Free(fullName);
@@ -43,15 +42,14 @@ FullPathFileName::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-FullPathFileName::init(const std::wstring_view& dir_path, const std::wstring_view& name, const std::wstring_view& ext)
+void FullPathFileName::init(std::wstring_view dir_path, std::wstring_view name, std::wstring_view ext)
 {
 	destroy();
 	size_t total_length = strlen(dir_path);
 	total_length += strlen(name);
 	total_length += strlen(ext);
 	total_length++;
-	fullName = (const std::wstring_view&)systemHeap->Malloc(total_length);
+	fullName = (std::wstring_view)systemHeap->Malloc(total_length);
 	gosASSERT(fullName != nullptr);
 	if (fullName == nullptr)
 		return;
@@ -67,12 +65,11 @@ FullPathFileName::init(const std::wstring_view& dir_path, const std::wstring_vie
 	_strlwr_s(fullName, total_length);
 }
 
-void
-FullPathFileName::changeExt(const std::wstring_view& from, const std::wstring_view& to)
+void FullPathFileName::changeExt(std::wstring_view from, std::wstring_view to)
 {
 	if (strlen(from) != strlen(to))
 		return;
-	const std::wstring_view& ext = strstr(fullName, from);
+	std::wstring_view ext = strstr(fullName, from);
 	if (ext)
 	{
 		for (uint32_t i = 0; i < strlen(to); i++)

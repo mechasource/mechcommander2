@@ -27,7 +27,6 @@ class ObjectAppearance;
 
 #define MAX_PILOT 64
 
-
 class EditorObject
 {
 public:
@@ -35,26 +34,50 @@ public:
 	virtual ~EditorObject(void);
 	EditorObject(const EditorObject&);
 	EditorObject& operator=(const EditorObject&);
-	virtual void CastAndCopy(const EditorObject& master) { (*this) = master; }
-	virtual EditorObject* Clone(void) { return (new EditorObject(*this)); }
+	virtual void CastAndCopy(const EditorObject& master)
+	{
+		(*this) = master;
+	}
+	virtual EditorObject* Clone(void)
+	{
+		return (new EditorObject(*this));
+	}
 
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
 	void select(bool bSelect);
-	inline bool isSelected(void) const { return appearInfo->appearance->selected ? true : false; }
+	inline bool isSelected(void) const
+	{
+		return appearInfo->appearance->selected ? true : false;
+	}
 
 	void setAlignment(int32_t align);
-	inline int32_t getAlignment(void) const { return appearInfo->appearance->teamId; }
+	inline int32_t getAlignment(void) const
+	{
+		return appearInfo->appearance->teamId;
+	}
 
 	uint32_t getcolour(void) const;
-	int32_t getID(void) const { return id; }
+	int32_t getID(void) const
+	{
+		return id;
+	}
 
 	void getCells(int32_t& cellJ, int32_t& cellI) const;
 
-	virtual bool save(FitIniFile* file, int32_t warriorNumber) { return false; }
-	virtual bool load(FitIniFile* file, int32_t warriorNumber) { return false; }
-	virtual int32_t getType(void) const { return BLDG_TYPE; }
+	virtual bool save(FitIniFile* file, int32_t warriorNumber)
+	{
+		return false;
+	}
+	virtual bool load(FitIniFile* file, int32_t warriorNumber)
+	{
+		return false;
+	}
+	virtual int32_t getType(void) const
+	{
+		return BLDG_TYPE;
+	}
 
 	int32_t getSpecialType(void) const;
 	int32_t getGroup(void) const;
@@ -63,9 +86,12 @@ public:
 	void setDamage(bool bDamage);
 	bool getDamage(void) const;
 
-	const std::wstring_view& getDisplayName(void) const;
+	std::wstring_view getDisplayName(void) const;
 
-	const Stuff::Vector3D& getPosition(void) const { return appearance()->position; }
+	const Stuff::Vector3D& getPosition(void) const
+	{
+		return appearance()->position;
+	}
 
 	void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 	{
@@ -74,14 +100,32 @@ public:
 
 	void setAppearance(int32_t group, int32_t indexInGroup);
 
-	ObjectAppearance* appearance(void) { return appearInfo->appearance; }
-	const ObjectAppearance* appearance(void) const { return appearInfo->appearance; }
+	ObjectAppearance* appearance(void)
+	{
+		return appearInfo->appearance;
+	}
+	const ObjectAppearance* appearance(void) const
+	{
+		return appearInfo->appearance;
+	}
 
-	int32_t getForestID(void) const { return forestId; }
-	void setForestID(int32_t newID) { forestId = newID; }
+	int32_t getForestID(void) const
+	{
+		return forestId;
+	}
+	void setForestID(int32_t newID)
+	{
+		forestId = newID;
+	}
 
-	void setScale(int32_t newScale) { scale = newScale; }
-	int32_t getScale(void) const { return scale; }
+	void setScale(int32_t newScale)
+	{
+		scale = newScale;
+	}
+	int32_t getScale(void) const
+	{
+		return scale;
+	}
 
 protected:
 	struct AppearanceInfo
@@ -96,7 +140,10 @@ protected:
 			return (result);
 		}
 
-		void operator delete(PVOID us) { systemHeap->Free(us); }
+		void operator delete(PVOID us)
+		{
+			systemHeap->Free(us);
+		}
 
 		AppearanceInfo& operator=(const AppearanceInfo& src);
 	};
@@ -117,14 +164,17 @@ class Pilot
 {
 
 public:
-	Pilot(void) { info = 0; }
+	Pilot(void)
+	{
+		info = 0;
+	}
 
 	static void initPilots(void);
 
 	struct PilotInfo
 	{
-		const std::wstring_view& name;
-		const std::wstring_view& fileName;
+		std::wstring_view name;
+		std::wstring_view fileName;
 	};
 
 	static PilotInfo s_GoodPilots[MAX_PILOT];
@@ -132,8 +182,11 @@ public:
 	static int32_t goodCount;
 	static int32_t badCount;
 
-	const std::wstring_view& getName(void) const { return info->name; }
-	void setName(const std::wstring_view&);
+	std::wstring_view getName(void) const
+	{
+		return info->name;
+	}
+	void setName(std::wstring_view);
 
 	void save(FitIniFile* file, int32_t bGoodGuy);
 	void load(FitIniFile* file, int32_t bGoodGuy);
@@ -142,7 +195,6 @@ public:
 	/*note: The value of info should always be nullptr or a pointer to static
 	data. So the default assignment/copy operator (shallow copy) is valid. */
 };
-
 
 class Brain
 {
@@ -182,7 +234,6 @@ public:
 	bool load(FitIniFile* file, int32_t warriorNumber);
 };
 
-
 class CUnitList;
 
 class Unit : public EditorObject
@@ -193,7 +244,10 @@ public:
 	Unit& operator=(const Unit& src);
 	virtual ~Unit(void);
 	virtual void CastAndCopy(const EditorObject& master);
-	virtual EditorObject* Clone(void) { return (new Unit(*this)); }
+	virtual EditorObject* Clone(void)
+	{
+		return (new Unit(*this));
+	}
 
 	void setLanceInfo(int32_t newLance, int32_t index)
 	{
@@ -205,9 +259,15 @@ public:
 		newLance = lance;
 		index = lanceIndex;
 	}
-	virtual int32_t getType(void) const { return GV_TYPE; }
+	virtual int32_t getType(void) const
+	{
+		return GV_TYPE;
+	}
 
-	uint32_t getSquad(void) const { return squad; }
+	uint32_t getSquad(void) const
+	{
+		return squad;
+	}
 	void setSquad(uint32_t newSquad);
 
 	virtual bool save(FitIniFile* file, int32_t warriorNumber);
@@ -216,20 +276,35 @@ public:
 	void getcolours(uint32_t& base, uint32_t& color1, uint32_t& color2) const;
 	void setcolours(uint32_t base, uint32_t color1, uint32_t color2);
 
-	bool getSelfRepairBehaviorEnabled(void) const { return selfRepairBehaviorEnabled; }
-	void setSelfRepairBehaviorEnabled(bool val) { selfRepairBehaviorEnabled = val; }
+	bool getSelfRepairBehaviorEnabled(void) const
+	{
+		return selfRepairBehaviorEnabled;
+	}
+	void setSelfRepairBehaviorEnabled(bool val)
+	{
+		selfRepairBehaviorEnabled = val;
+	}
 
-	inline Pilot* getPilot(void) { return &pilot; }
+	inline Pilot* getPilot(void)
+	{
+		return &pilot;
+	}
 
-	void setVariant(uint32_t newVar) { variant = newVar; }
-	inline int32_t getVariant(void) const { return variant; }
+	void setVariant(uint32_t newVar)
+	{
+		variant = newVar;
+	}
+	inline int32_t getVariant(void) const
+	{
+		return variant;
+	}
 
 	CUnitList* pAlternativeInstances;
 	uint32_t tmpNumAlternativeInstances;
 	uint32_t tmpAlternativeStartIndex;
 
 protected:
-	bool save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, const std::wstring_view& objectProfile);
+	bool save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, std::wstring_view objectProfile);
 
 	Brain brain;
 	bool selfRepairBehaviorEnabled;
@@ -258,10 +333,16 @@ public:
 		return *this;
 	}
 	virtual void CastAndCopy(const EditorObject& master);
-	virtual EditorObject* Clone(void) { return (new DropZone(*this)); }
+	virtual EditorObject* Clone(void)
+	{
+		return (new DropZone(*this));
+	}
 	virtual bool save(FitIniFile* file, int32_t number);
 
-	bool isVTol(void) { return bVTol; }
+	bool isVTol(void)
+	{
+		return bVTol;
+	}
 
 private:
 	bool bVTol;
@@ -271,9 +352,11 @@ class NavMarker : public EditorObject
 {
 public:
 	NavMarker(void);
-	virtual EditorObject* Clone(void) { return (new NavMarker(*this)); }
+	virtual EditorObject* Clone(void)
+	{
+		return (new NavMarker(*this));
+	}
 	virtual bool save(FitIniFile* file, int32_t number);
 };
-
 
 #endif // end of file ( EditorObjects.h )

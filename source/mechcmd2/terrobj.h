@@ -28,7 +28,7 @@
 
 //---------------------------------------------------------------------------
 
-enum class 
+enum class
 {
 	TERROBJ_NONE,
 	TERROBJ_TREE,
@@ -70,17 +70,29 @@ public:
 
 	int32_t init(FitIniFilePtr objFile);
 
-	~TerrainObjectType(void) { destroy(void); }
+	~TerrainObjectType(void)
+	{
+		destroy(void);
+	}
 
-	float getDamageLevel(void) { return (damageLevel); }
+	float getDamageLevel(void)
+	{
+		return (damageLevel);
+	}
 
 	virtual void destroy(void);
 
 	virtual GameObjectPtr createInstance(void);
 
-	virtual float getBurnDmg(void) { return (0.0); }
+	virtual float getBurnDmg(void)
+	{
+		return (0.0);
+	}
 
-	virtual float getBurnTime(void) { return (0.0); }
+	virtual float getBurnTime(void)
+	{
+		return (0.0);
+	}
 
 	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
@@ -160,14 +172,20 @@ public:
 		bldgDustPoofEffect = nullptr;
 	}
 
-	TerrainObject(void) :
-		GameObject() { init(true); }
+	TerrainObject(void)
+		: GameObject()
+	{
+		init(true);
+	}
 
-	~TerrainObject(void) { destroy(void); }
+	~TerrainObject(void)
+	{
+		destroy(void);
+	}
 
 	virtual void updateDebugWindow(GameDebugWindow* debugWindow);
 
-	virtual const std::wstring_view& getName(void);
+	virtual std::wstring_view getName(void);
 
 	virtual void killFire(void);
 
@@ -192,18 +210,27 @@ public:
 
 	virtual void setRotation(float rot);
 
-	virtual float getDamage(void) { return (damage); }
+	virtual float getDamage(void)
+	{
+		return (damage);
+	}
 
 	virtual float getDamageLevel(void)
 	{
 		return ((TerrainObjectTypePtr)getObjectType())->getDamageLevel(void);
 	}
 
-	virtual float getDestructLevel(void) { return (getDamageLevel() - damage); }
+	virtual float getDestructLevel(void)
+	{
+		return (getDamageLevel() - damage);
+	}
 
 	virtual float getStatusRating(void);
 
-	int32_t getSubType(void) { return (((TerrainObjectTypePtr)getObjectType())->subType); }
+	int32_t getSubType(void)
+	{
+		return (((TerrainObjectTypePtr)getObjectType())->subType);
+	}
 
 	virtual int32_t kill(void)
 	{
@@ -215,7 +242,10 @@ public:
 
 	virtual int32_t getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells);
 
-	virtual bool isTerrainObject(void) { return (true); }
+	virtual bool isTerrainObject(void)
+	{
+		return (true);
+	}
 
 	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
 	{
@@ -225,9 +255,15 @@ public:
 
 	virtual void rotate(float yaw, float pitch);
 
-	virtual float getAppearRadius(void) { return appearance->getRadius(void); }
+	virtual float getAppearRadius(void)
+	{
+		return appearance->getRadius(void);
+	}
 
-	virtual void setPowerSupply(GameObjectPtr power) { powerSupply = power->getWatchID(void); }
+	virtual void setPowerSupply(GameObjectPtr power)
+	{
+		powerSupply = power->getWatchID(void);
+	}
 
 	virtual void calcCellFootprint(Stuff::Vector3D& pos);
 

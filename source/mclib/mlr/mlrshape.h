@@ -128,7 +128,10 @@ public:
 		}
 	}
 
-	int32_t GetReferenceCount() { return referenceCount; }
+	int32_t GetReferenceCount()
+	{
+		return referenceCount;
+	}
 
 protected:
 	int32_t referenceCount;

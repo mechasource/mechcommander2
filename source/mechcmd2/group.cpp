@@ -83,23 +83,20 @@ MoverGroup::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-MoverGroup::operator delete(PVOID us)
+void MoverGroup::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-MoverGroup::destroy(void)
+void MoverGroup::destroy(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-bool
-MoverGroup::add(std::unique_ptr<Mover> mover)
+bool MoverGroup::add(std::unique_ptr<Mover> mover)
 {
 	if (numMovers == MAX_MOVERGROUP_COUNT)
 	{
@@ -115,8 +112,7 @@ MoverGroup::add(std::unique_ptr<Mover> mover)
 
 //---------------------------------------------------------------------------
 
-bool
-MoverGroup::remove(std::unique_ptr<Mover> mover)
+bool MoverGroup::remove(std::unique_ptr<Mover> mover)
 {
 	GameObjectWatchID moverWID = mover->getWatchID();
 	if (moverWID == pointWID)
@@ -141,8 +137,7 @@ MoverGroup::remove(std::unique_ptr<Mover> mover)
 
 //---------------------------------------------------------------------------
 
-bool
-MoverGroup::isMember(std::unique_ptr<Mover> mover)
+bool MoverGroup::isMember(std::unique_ptr<Mover> mover)
 {
 	if (!mover)
 		return (false);
@@ -257,8 +252,7 @@ MoverGroup::getPointPilot(void)
 
 //---------------------------------------------------------------------------
 
-void
-MoverGroup::statusCount(int32_t* statusTally)
+void MoverGroup::statusCount(int32_t* statusTally)
 {
 	for (size_t i = 0; i < numMovers; i++)
 	{
@@ -277,8 +271,7 @@ MoverGroup::statusCount(int32_t* statusTally)
 
 //---------------------------------------------------------------------------
 
-void
-MoverGroup::addToGUI(bool visible)
+void MoverGroup::addToGUI(bool visible)
 {
 #ifdef USE_IFACE
 	for (size_t i = 0; i < numMovers; i++)
@@ -314,8 +307,7 @@ wchar_t CellSpiralIncrement[JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2] = {-1, 0, 0
 
 //---------------------------------------------------------------------------
 
-void
-MoverGroup::sortMovers(
+void MoverGroup::sortMovers(
 	int32_t numMoversInGroup, std::unique_ptr<Mover>* moverList, Stuff::Vector3D destination)
 {
 	Mover::sortList->clear();
@@ -658,12 +650,12 @@ MoverGroup::handleTacticalOrder(
 	Stuff::Vector3D goalList[MAX_MOVERGROUP_COUNT];
 	Stuff::Vector3D location = tacOrder.getWayPoint(0);
 	// std::unique_ptr<Mover> pointVehicle = getPoint();
-	if (tacOrder.code == TACTICAL_ORDER_ATTACK_OBJECT)
-		if (tacOrder.attackParams.method == ATTACKMETHOD_DFA)
+	if (tacOrder.code == TacticalOrderCode::attackobject)
+		if (tacOrder.attackParams.method == AttackMethod::dfa)
 		{
 			//-------------------------------------------------
 			// Let's just make it a move/jump order, for now...
-			tacOrder.code = TACTICAL_ORDER_JUMPTO_OBJECT;
+			tacOrder.code = TacticalOrderCode::jumptoobject;
 			tacOrder.moveparams.wait = false;
 			tacOrder.moveparams.wayPath.mode[0] = TravelModeType::slow;
 			GameObjectPtr target = ObjectManager->getByWatchID(tacOrder.targetWID);
@@ -672,9 +664,9 @@ MoverGroup::handleTacticalOrder(
 				return (NO_ERROR);
 			tacOrder.setWayPoint(0, target->getPosition());
 		}
-	if (tacOrder.code == TACTICAL_ORDER_JUMPTO_OBJECT)
+	if (tacOrder.code == TacticalOrderCode::jumptoobject)
 	{
-		tacOrder.code = TACTICAL_ORDER_JUMPTO_POINT;
+		tacOrder.code = TacticalOrderCode::jumptopoint;
 		GameObjectPtr target = ObjectManager->get(tacOrder.targetWID);
 		Assert(tacOrder.targetWID != 0, 0, " DFA AttackObject WID is 0 ");
 		if (!target)
@@ -685,10 +677,10 @@ MoverGroup::handleTacticalOrder(
 	// int32_t numOffsets = 0;
 	switch (tacOrder.code)
 	{
-	case TACTICAL_ORDER_WAIT:
+	case TacticalOrderCode::wait:
 		break;
-	case TACTICAL_ORDER_MOVETO_POINT:
-	case TACTICAL_ORDER_MOVETO_OBJECT:
+	case TacticalOrderCode::movetopoint:
+	case TacticalOrderCode::movetoobject:
 	{
 		Fatal(0,
 			"Need to support jumpGoalList (and goalList) for MOVETO as "
@@ -741,8 +733,8 @@ MoverGroup::handleTacticalOrder(
 		}
 	}
 	break;
-	case TACTICAL_ORDER_JUMPTO_POINT:
-	case TACTICAL_ORDER_JUMPTO_OBJECT:
+	case TacticalOrderCode::jumptopoint:
+	case TacticalOrderCode::jumptoobject:
 	{
 		//-----------------------------------------------------------
 		// Sort by distance to destination. Their selectionindex will
@@ -770,25 +762,25 @@ MoverGroup::handleTacticalOrder(
 		}
 	}
 	break;
-	case TACTICAL_ORDER_TRAVERSE_PATH:
-	case TACTICAL_ORDER_PATROL_PATH:
-	case TACTICAL_ORDER_ESCORT:
-	case TACTICAL_ORDER_FOLLOW:
-	case TACTICAL_ORDER_GUARD:
-	case TACTICAL_ORDER_STOP:
-	case TACTICAL_ORDER_POWERUP:
-	case TACTICAL_ORDER_POWERDOWN:
-	case TACTICAL_ORDER_WAYPOINTS_DONE:
-	case TACTICAL_ORDER_EJECT:
-	case TACTICAL_ORDER_ATTACK_OBJECT:
-	case TACTICAL_ORDER_ATTACK_POINT:
-	case TACTICAL_ORDER_HOLD_FIRE:
-	case TACTICAL_ORDER_WITHDRAW:
-	case TACTICAL_ORDER_CAPTURE:
-	case TACTICAL_ORDER_LOAD_INTO_CARRIER:
-	case TACTICAL_ORDER_REFIT:
-	case TACTICAL_ORDER_RECOVER:
-	case TACTICAL_ORDER_GETFIXED:
+	case TacticalOrderCode::traversepath:
+	case TacticalOrderCode::patrolpath:
+	case TacticalOrderCode::escort:
+	case TacticalOrderCode::follow:
+	case TacticalOrderCode::guard:
+	case TacticalOrderCode::stop:
+	case TacticalOrderCode::powerup:
+	case TacticalOrderCode::powerdown:
+	case TacticalOrderCode::waypointsdone:
+	case TacticalOrderCode::eject:
+	case TacticalOrderCode::attackobject:
+	case TacticalOrderCode::attackpoint:
+	case TacticalOrderCode::holdfire:
+	case TacticalOrderCode::withdraw:
+	case TacticalOrderCode::capture:
+	case TacticalOrderCode::loadintocarrier:
+	case TacticalOrderCode::refit:
+	case TacticalOrderCode::recover:
+	case TacticalOrderCode::getfixed:
 		break;
 	default:
 	{
@@ -821,7 +813,7 @@ MoverGroup::handleTacticalOrder(
 			}
 			switch (tacOrder.origin)
 			{
-			case ORDER_ORIGIN_PLAYER:
+			case OrderOriginType::player:
 				if (queueGroupOrder)
 					mover->getPilot()->addQueuedTacOrder(tacOrder);
 				else
@@ -835,10 +827,10 @@ MoverGroup::handleTacticalOrder(
 						mover->getPilot()->setPlayerTacOrder(tacOrder);
 				}
 				break;
-			case ORDER_ORIGIN_COMMANDER:
+			case OrderOriginType::commander:
 				mover->getPilot()->setGeneralTacOrder(tacOrder);
 				break;
-			case ORDER_ORIGIN_SELF:
+			case OrderOriginType::self:
 				mover->getPilot()->setAlarmTacOrder(tacOrder, priority);
 				break;
 			}
@@ -1004,8 +996,7 @@ MoverGroup::orderEject(int32_t origin)
 // COMBAT EVENTS
 //---------------------------------------------------------------------------
 
-void
-MoverGroup::triggerAlarm(int32_t alarmCode, uint32_t triggerId)
+void MoverGroup::triggerAlarm(int32_t alarmCode, uint32_t triggerId)
 {
 	for (size_t i = 0; i < numMovers; i++)
 	{
@@ -1053,15 +1044,13 @@ MoverGroup::handleMateEjected(uint32_t mateWID)
 
 //---------------------------------------------------------------------------
 
-void
-MoverGroup::handleMateFiredWeapon(uint32_t mateWID)
+void MoverGroup::handleMateFiredWeapon(uint32_t mateWID)
 {
 	triggerAlarm(PILOT_ALARM_MATE_FIRED_WEAPON, mateWID);
 }
 
 //***************************************************************************
-void
-MoverGroup::copyTo(MoverGroupData& data)
+void MoverGroup::copyTo(MoverGroupData& data)
 {
 	data.id = id;
 	data.numMovers = numMovers;
@@ -1071,8 +1060,7 @@ MoverGroup::copyTo(MoverGroupData& data)
 }
 
 //***************************************************************************
-void
-MoverGroup::init(MoverGroupData& data)
+void MoverGroup::init(MoverGroupData& data)
 {
 	id = data.id;
 	numMovers = data.numMovers;

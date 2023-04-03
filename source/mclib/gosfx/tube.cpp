@@ -16,8 +16,8 @@
 
 //------------------------------------------------------------------------------
 //
-gosFX::Tube__Specification::Tube__Specification(std::iostream stream, uint32_t gfx_version) :
-	Effect__Specification(TubeClassID, stream, gfx_version)
+gosFX::Tube__Specification::Tube__Specification(std::iostream stream, uint32_t gfx_version)
+	: Effect__Specification(TubeClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -60,8 +60,8 @@ gosFX::Tube__Specification::Tube__Specification(std::iostream stream, uint32_t g
 
 //------------------------------------------------------------------------------
 //
-gosFX::Tube__Specification::Tube__Specification() :
-	Effect__Specification(TubeClassID)
+gosFX::Tube__Specification::Tube__Specification()
+	: Effect__Specification(TubeClassID)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_maxProfileCount = 0;
@@ -88,8 +88,7 @@ gosFX::Tube__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube__Specification::Save(std::iostream stream)
+void gosFX::Tube__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -122,8 +121,7 @@ gosFX::Tube__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube__Specification::BuildDefaults()
+void gosFX::Tube__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
@@ -173,8 +171,7 @@ gosFX::Tube__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Tube__Specification::IsDataValid(bool fix_data)
+bool gosFX::Tube__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	if (m_maxProfileCount < 2)
@@ -182,7 +179,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 		{
 			m_maxProfileCount = 2;
 			// PAUSE(("Warning: value \"maxProfileCount\" in Effect \"%s\" Is
-			// Out of Range and has been Reset", (const std::wstring_view&)m_name));
+			// Out of Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -195,7 +192,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pScale.m_seeded = false;
 			m_pScale.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -222,7 +219,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pVOffset.m_seeded = false;
 			m_pVOffset.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -249,7 +246,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pUOffset.m_seeded = false;
 			m_pUOffset.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -259,8 +256,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube__Specification::Copy(Tube__Specification* spec)
+void gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -302,8 +298,7 @@ gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube__Specification::BuildTemplate()
+void gosFX::Tube__Specification::BuildTemplate()
 {
 	// Check_Object(this);
 	switch (m_profileType)
@@ -404,8 +399,7 @@ gosFX::Tube__Specification::BuildTemplate()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Tube__Specification::CalculateUBias(bool adjust)
+bool gosFX::Tube__Specification::CalculateUBias(bool adjust)
 {
 	// Check_Object(this);
 	//
@@ -464,8 +458,7 @@ gosFX::Tube::ClassData* gosFX::Tube::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::InitializeClass()
+void gosFX::Tube::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -476,8 +469,7 @@ gosFX::Tube::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::TerminateClass()
+void gosFX::Tube::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -486,8 +478,8 @@ gosFX::Tube::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Tube::Tube(Specification* spec, uint32_t flags) :
-	Effect(DefaultData, spec, flags)
+gosFX::Tube::Tube(Specification* spec, uint32_t flags)
+	: Effect(DefaultData, spec, flags)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
@@ -546,8 +538,7 @@ gosFX::Tube::Tube(Specification* spec, uint32_t flags) :
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::BuildMesh(uint16_t* indices)
+void gosFX::Tube::BuildMesh(uint16_t* indices)
 {
 	// Check_Object(this);
 	Check_Pointer(indices);
@@ -648,8 +639,7 @@ gosFX::Tube::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::Start(ExecuteInfo* info)
+void gosFX::Tube::Start(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -670,8 +660,7 @@ gosFX::Tube::Start(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Tube::Execute(ExecuteInfo* info)
+bool gosFX::Tube::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -843,8 +832,7 @@ gosFX::Tube::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::Kill()
+void gosFX::Tube::Kill()
 {
 	// Check_Object(this);
 	//
@@ -877,8 +865,7 @@ gosFX::Tube::Kill()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Tube::HasFinished()
+bool gosFX::Tube::HasFinished()
 {
 	// Check_Object(this);
 	return Effect::HasFinished() && (m_activeProfileCount == 0);
@@ -886,8 +873,7 @@ gosFX::Tube::HasFinished()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::CreateNewProfile(uint32_t index, const Stuff::LinearMatrix4D& origin)
+void gosFX::Tube::CreateNewProfile(uint32_t index, const Stuff::LinearMatrix4D& origin)
 {
 	// Check_Object(this);
 	Check_Object(&origin);
@@ -929,8 +915,7 @@ gosFX::Tube::CreateNewProfile(uint32_t index, const Stuff::LinearMatrix4D& origi
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
+bool gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
 	const Stuff::LinearMatrix4D& world_to_new_local, Stuff::Time till, Stuff::Sphere* bounds)
 {
 	// Check_Object(this);
@@ -1026,8 +1011,7 @@ gosFX::Tube::AnimateProfile(uint32_t index, uint32_t profile_index,
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::DestroyProfile(uint32_t index)
+void gosFX::Tube::DestroyProfile(uint32_t index)
 {
 	Profile* profile = GetProfile(index);
 	Check_Object(profile);
@@ -1036,8 +1020,7 @@ gosFX::Tube::DestroyProfile(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::Draw(DrawInfo* info)
+void gosFX::Tube::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -1162,8 +1145,7 @@ gosFX::Tube::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Tube::TestInstance(void) const
+void gosFX::Tube::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

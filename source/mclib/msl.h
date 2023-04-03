@@ -73,7 +73,7 @@ protected:
 	TG_TexturePtr listOfTextures; // List of texture Structures for all shapes.
 
 #ifdef _DEBUG
-	wchar_t* shapeName; // FileName of shape
+	wchar_t* shapeName; // filename of shape
 #endif
 
 public:
@@ -102,23 +102,29 @@ public:
 		extentRadius = 0.0f;
 	}
 
-	TG_TypeMultiShape(void) { init(void); }
+	TG_TypeMultiShape(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~TG_TypeMultiShape(void) { destroy(void); }
+	~TG_TypeMultiShape(void)
+	{
+		destroy(void);
+	}
 
 	// Function returns 0 if OK.  -1 if file not found or file not ASE Format.
 	// Function runs through each piece of ASE file and creates a separate
 	// TG_Shape for each one.  First pass is count number of GEOMOBJECTS.
 	// Second pass is load each one.
-	int32_t LoadTGMultiShapeFromASE(const std::wstring_view& fileName, bool forceMakeBinary = false,
+	int32_t LoadTGMultiShapeFromASE(std::wstring_view fileName, bool forceMakeBinary = false,
 		Microsoft::Xna::Arm::IProviderEngine* armProvider = nullptr);
 
 	// Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 	// This function digs the texture name(s) out of the ASE file so that the
 	// User can load and manage them anyway they want to.
-	int32_t GetTextureName(uint32_t textureNum, const std::wstring_view& textureName, int32_t nameLength);
+	int32_t GetTextureName(uint32_t textureNum, std::wstring_view textureName, int32_t nameLength);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the texturehandle passed in and
@@ -137,11 +143,17 @@ public:
 		return 0xffffffff;
 	}
 
-	uint32_t GetNumShapes(void) { return numTG_TypeShapes; }
+	uint32_t GetNumShapes(void)
+	{
+		return numTG_TypeShapes;
+	}
 
-	uint32_t GetNumTextures(void) { return numTextures; }
+	uint32_t GetNumTextures(void)
+	{
+		return numTextures;
+	}
 
-	const std::wstring_view& GetNodeId(uint32_t shapeNum)
+	std::wstring_view GetNodeId(uint32_t shapeNum)
 	{
 		if ((shapeNum >= 0) && (shapeNum < numTG_TypeShapes))
 			return (listOfTypeShapes[shapeNum]->getNodeId());
@@ -157,7 +169,7 @@ public:
 		return result;
 	}
 
-	Stuff::Point3D GetNodeCenter(const std::wstring_view& nodeId)
+	Stuff::Point3D GetNodeCenter(std::wstring_view nodeId)
 	{
 		Stuff::Point3D result;
 		result.x = result.y = result.z = 0.0f;
@@ -190,8 +202,8 @@ public:
 			listOfTypeShapes[i]->SetLightRGBs(hPink, hGreen, hYellow);
 	}
 
-	int32_t LoadBinaryCopy(const std::wstring_view& fileName);
-	void SaveBinaryCopy(const std::wstring_view& fileName);
+	int32_t LoadBinaryCopy(std::wstring_view fileName);
+	void SaveBinaryCopy(std::wstring_view fileName);
 };
 
 typedef TG_TypeMultiShape* TG_TypeMultiShapePtr;
@@ -245,11 +257,17 @@ public:
 		isClamped = false;
 	}
 
-	TG_MultiShape(void) { init(void); }
+	TG_MultiShape(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~TG_MultiShape(void) { destroy(void); }
+	~TG_MultiShape(void)
+	{
+		destroy(void);
+	}
 
 	// This function sets the list of lights used by the TransformShape function
 	// to light the shape.
@@ -273,7 +291,7 @@ public:
 	// twists, arms, etc.
 	// SHould only be called once this way.  This way is DAMNED SLOW!!!
 	// STRICMP!  IT returns the node num Call that from then on!
-	int32_t SetNodeRotation(const std::wstring_view& nodeName, Stuff::UnitQuaternion* rot);
+	int32_t SetNodeRotation(std::wstring_view nodeName, Stuff::UnitQuaternion* rot);
 
 	void SetNodeRotation(int32_t nodeNum, Stuff::UnitQuaternion* rot)
 	{
@@ -289,7 +307,10 @@ public:
 	// using  gos_DrawTriangle.
 	void RenderShadows(bool refreshTextures = false);
 
-	int32_t GetNumShapes(void) { return numTG_Shapes; }
+	int32_t GetNumShapes(void)
+	{
+		return numTG_Shapes;
+	}
 
 	void ScaleShape(float scaleFactor)
 	{
@@ -312,21 +333,33 @@ public:
 	Stuff::Vector3D GetShapeVertexInWorld(int32_t shapeNum, int32_t vertexNum, float rotation);
 	Stuff::Vector3D GetShapeVertexInEditor(int32_t shapeNum, int32_t vertexNum, float rotation);
 
-	float GetFrameNum(void) { return frameNum; }
+	float GetFrameNum(void)
+	{
+		return frameNum;
+	}
 
-	void SetFrameNum(float frame) { frameNum = frame; }
+	void SetFrameNum(float frame)
+	{
+		frameNum = frame;
+	}
 
-	void SetIsClamped(bool value) { isClamped = value; }
+	void SetIsClamped(bool value)
+	{
+		isClamped = value;
+	}
 
 	// Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 	// This function digs the texture name(s) out of the ASE file so that the
 	// User can load and manage them anyway they want to.
-	int32_t GetTextureName(uint32_t textureNum, const std::wstring_view& textureName, int32_t nameLength)
+	int32_t GetTextureName(uint32_t textureNum, std::wstring_view textureName, int32_t nameLength)
 	{
 		return myMultiType->GetTextureName(textureNum, textureName, nameLength);
 	}
 
-	int32_t GetNumTextures(void) { return myMultiType->GetNumTextures(void); }
+	int32_t GetNumTextures(void)
+	{
+		return myMultiType->GetNumTextures(void);
+	}
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the texturehandle passed in and
@@ -341,11 +374,20 @@ public:
 		return myMultiType->GetTextureHandle(textureNum);
 	}
 
-	float GetExtentRadius(void) { return myMultiType->extentRadius; }
+	float GetExtentRadius(void)
+	{
+		return myMultiType->extentRadius;
+	}
 
-	Stuff::Vector3D GetMaxBox(void) { return myMultiType->maxBox; }
+	Stuff::Vector3D GetMaxBox(void)
+	{
+		return myMultiType->maxBox;
+	}
 
-	Stuff::Vector3D GetMinBox(void) { return myMultiType->minBox; }
+	Stuff::Vector3D GetMinBox(void)
+	{
+		return myMultiType->minBox;
+	}
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the texturehandle passed in and
@@ -410,34 +452,37 @@ public:
 	}
 
 	Stuff::Vector3D GetTransformedNodePosition(
-		Stuff::Point3D* pos, Stuff::UnitQuaternion* rot, const std::wstring_view& nodeId);
+		Stuff::Point3D* pos, Stuff::UnitQuaternion* rot, std::wstring_view nodeId);
 	Stuff::Vector3D GetTransformedNodePosition(
 		Stuff::Point3D* pos, Stuff::UnitQuaternion* rot, int32_t nodeId);
 
-	TG_TypeMultiShapePtr GetMultiType(void) { return myMultiType; }
+	TG_TypeMultiShapePtr GetMultiType(void)
+	{
+		return myMultiType;
+	}
 
 	// This function takes the shape named nodeName and all of its children,
 	// detaches them from the current heirarchy and stuffs them into a new
 	// MultiShape which it passes back Uses are endless but for now limited to
 	// blowing the arms off of the mechs!
-	TG_MultiShape* Detach(const std::wstring_view& nodeName);
+	TG_MultiShape* Detach(std::wstring_view nodeName);
 
 	// This function takes the shape named nodeName and all of its children and
 	// stops processing them forever.  Since we can never re-attach a mech arm
 	// in the field, this is OK!
-	void StopUsing(const std::wstring_view& nodeName);
+	void StopUsing(std::wstring_view nodeName);
 
 	// Tells me if the passed in nodeName is a child of the parentName.
-	bool isChildOf(const std::wstring_view& nodeName, const std::wstring_view& parentName);
+	bool isChildOf(std::wstring_view nodeName, std::wstring_view parentName);
 
-	const std::wstring_view& GetNodeId(int32_t shapeNum)
+	std::wstring_view GetNodeId(int32_t shapeNum)
 	{
 		if ((shapeNum >= 0) && (shapeNum < numTG_Shapes))
 			return (listOfShapes[shapeNum].node->getNodeName());
 		return nullptr;
 	}
 
-	int32_t GetNodeNameId(const std::wstring_view& nodeId)
+	int32_t GetNodeNameId(std::wstring_view nodeId)
 	{
 		for (size_t i = 0; i < numTG_Shapes; i++)
 		{
@@ -451,11 +496,20 @@ public:
 		return -1;
 	}
 
-	void SetIsHudElement(void) { isHudElement = true; }
+	void SetIsHudElement(void)
+	{
+		isHudElement = true;
+	}
 
-	void SetAlphaValue(uint8_t aVal) { alphaValue = aVal; }
+	void SetAlphaValue(uint8_t aVal)
+	{
+		alphaValue = aVal;
+	}
 
-	uint8_t GetAlphaValue(void) { return alphaValue; }
+	uint8_t GetAlphaValue(void)
+	{
+		return alphaValue;
+	}
 
 	bool PerPolySelect(int32_t mouseX, int32_t mouseY)
 	{
@@ -477,7 +531,10 @@ public:
 		}
 	}
 
-	void SetUseShadow(bool flag) { d_useShadows = flag; }
+	void SetUseShadow(bool flag)
+	{
+		d_useShadows = flag;
+	}
 };
 
 typedef TG_MultiShape* TG_MultiShapePtr;
@@ -512,12 +569,18 @@ public:
 		shapeIdsSet = false;
 	}
 
-	TG_AnimateShape(void) { init(void); }
+	TG_AnimateShape(void)
+	{
+		init(void);
+	}
 
-	~TG_AnimateShape(void) { destroy(void); }
+	~TG_AnimateShape(void)
+	{
+		destroy(void);
+	}
 
-	int32_t LoadBinaryCopy(const std::wstring_view& fileName);
-	void SaveBinaryCopy(const std::wstring_view& fileName);
+	int32_t LoadBinaryCopy(std::wstring_view fileName);
+	void SaveBinaryCopy(std::wstring_view fileName);
 
 	// This function frees all of the RAM allocated by this class and resets
 	// vars to initial state.
@@ -527,7 +590,7 @@ public:
 	// It sets up a pointer to the multi-shape so that animation data for each
 	// Node in the Multi-Shape can be loaded.
 	// It mallocs memory.
-	int32_t LoadTGMultiShapeAnimationFromASE(const std::wstring_view& filename, TG_TypeMultiShapePtr shape,
+	int32_t LoadTGMultiShapeAnimationFromASE(std::wstring_view filename, TG_TypeMultiShapePtr shape,
 		bool skipIfBinary = false, bool forceMakeBinary = false);
 
 	// This function copies the pointers to the animation data in this class to
@@ -560,7 +623,10 @@ public:
 		return 0;
 	}
 
-	void resetShapeIds(void) { shapeIdsSet = false; }
+	void resetShapeIds(void)
+	{
+		shapeIdsSet = false;
+	}
 };
 
 typedef TG_AnimateShape* TG_AnimateShapePtr;

@@ -7,7 +7,8 @@
 #include "mlr/gosvertexpool.h"
 #include "mlr/gosvertex.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 float GOSVertex::farClipReciprocal;
 
@@ -36,8 +37,7 @@ GOSVertex::GOSVertex()
 	frgb = 0xffffffff;
 }
 
-void
-GOSVertex::SetFogTableEntry(int32_t entry, float nearFog, float farFog, float fogDensity)
+void GOSVertex::SetFogTableEntry(int32_t entry, float nearFog, float farFog, float fogDensity)
 {
 	float Fog;
 	_ASSERT(farFog > nearFog);
@@ -89,8 +89,7 @@ GOSVertexPool::GOSVertexPool(void)
 	indicesAlignment = 32 - ((size_t)indices.GetData() & 31);
 }
 
-void
-GOSVertexPool::Reset(void)
+void GOSVertexPool::Reset(void)
 {
 	// Check_Object(this);
 	lastUsed = 0;

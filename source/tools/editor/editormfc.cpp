@@ -15,15 +15,15 @@
 // EditorMFCApp
 
 BEGIN_MESSAGE_MAP(EditorMFCApp, CWinApp)
-//{{AFX_MSG_MAP(EditorMFCApp)
-ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
+	//{{AFX_MSG_MAP(EditorMFCApp)
+	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // EditorMFCApp construction
 
-EditorMFCApp::EditorMFCApp() {}
+EditorMFCApp::EditorMFCApp() { }
 
 /////////////////////////////////////////////////////////////////////////////
 // The one and only EditorMFCApp object
@@ -33,8 +33,7 @@ EditorMFCApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // EditorMFCApp initialization
 
-BOOL
-EditorMFCApp::InitInstance()
+BOOL EditorMFCApp::InitInstance()
 {
 	// Standard initialization
 #ifdef _AFXDLL
@@ -91,15 +90,14 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() :
-	CDialog(CAboutDlg::IDD)
+CAboutDlg::CAboutDlg()
+	: CDialog(CAboutDlg::IDD)
 {
 	//{{AFX_DATA_INIT(CAboutDlg)
 	//}}AFX_DATA_INIT
 }
 
-void
-CAboutDlg::DoDataExchange(CDataExchange* pDX)
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAboutDlg)
@@ -113,8 +111,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
-void
-EditorMFCApp::OnAppAbout()
+void EditorMFCApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
@@ -123,8 +120,7 @@ EditorMFCApp::OnAppAbout()
 /////////////////////////////////////////////////////////////////////////////
 // EditorMFCApp message handlers
 
-BOOL
-EditorMFCApp::OnIdle(int32_t lCount)
+BOOL EditorMFCApp::OnIdle(int32_t lCount)
 {
 	const CWnd* pW1 = this->GetMainWnd();
 	const CWnd* pW2 = EditorInterface::instance();

@@ -5,7 +5,8 @@
 #include "stdinc.h"
 #include "mlr/mlrindexedprimitivebase.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 std::vector<uint16_t> clipExtraIndex;
 std::vector<uint16_t> indexOffset;
@@ -21,8 +22,7 @@ std::vector<uint16_t> indexOffset;
 
 MLRIndexedPrimitiveBase::ClassData* MLRIndexedPrimitiveBase::DefaultData = nullptr;
 
-void
-MLRIndexedPrimitiveBase::InitializeClass()
+void MLRIndexedPrimitiveBase::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -37,8 +37,7 @@ MLRIndexedPrimitiveBase::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedPrimitiveBase::TerminateClass()
+void MLRIndexedPrimitiveBase::TerminateClass()
 {
 	Unregister_Pointer(clipExtraIndex);
 	delete clipExtraIndex;
@@ -52,8 +51,8 @@ MLRIndexedPrimitiveBase::TerminateClass()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
-	ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLRPrimitiveBase(class_data, stream, version)
+	ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLRPrimitiveBase(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -80,8 +79,7 @@ MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedPrimitiveBase::Save(std::iostream stream)
+void MLRIndexedPrimitiveBase::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -91,28 +89,27 @@ MLRIndexedPrimitiveBase::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(ClassData* class_data) :
-	MLRPrimitiveBase(class_data), colorIndexes(0)
+MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(ClassData* class_data)
+	: MLRPrimitiveBase(class_data)
+	, colorIndexes(0)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRIndexedPrimitiveBase::~MLRIndexedPrimitiveBase() {}
+MLRIndexedPrimitiveBase::~MLRIndexedPrimitiveBase() { }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedPrimitiveBase::TestInstance(void) const
+void MLRIndexedPrimitiveBase::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
+void MLRIndexedPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLRPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 	// gos_indices = nullptr;
@@ -127,8 +124,7 @@ MLRIndexedPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
+void MLRIndexedPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
@@ -146,8 +142,7 @@ MLRIndexedPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedPrimitiveBase::SetIndexData(uint16_t* index_array, int32_t index_count)
+void MLRIndexedPrimitiveBase::SetIndexData(uint16_t* index_array, int32_t index_count)
 {
 	// Check_Object(this);
 	Check_Pointer(index_array);
@@ -168,8 +163,7 @@ MLRIndexedPrimitiveBase::SetIndexData(uint16_t* index_array, int32_t index_count
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedPrimitiveBase::GetIndexData(uint16_t** index_array, int32_t* index_count)
+void MLRIndexedPrimitiveBase::GetIndexData(uint16_t** index_array, int32_t* index_count)
 {
 	// Check_Object(this);
 	*index_array = colorIndexes.GetData();
@@ -178,8 +172,7 @@ MLRIndexedPrimitiveBase::GetIndexData(uint16_t** index_array, int32_t* index_cou
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedPrimitiveBase::Transform(Matrix4D* mat)
+void MLRIndexedPrimitiveBase::Transform(Matrix4D* mat)
 {
 	// Check_Object(this);
 	int32_t i, len = coords.GetLength();
@@ -194,8 +187,7 @@ MLRIndexedPrimitiveBase::Transform(Matrix4D* mat)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MLRIndexedPrimitiveBase::CheckIndicies()
+bool MLRIndexedPrimitiveBase::CheckIndicies()
 {
 	for (size_t i = 0; i < numGOSIndices; i++)
 	{

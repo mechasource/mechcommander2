@@ -42,16 +42,14 @@ GameLog::operator new(size_t mySize)
 
 //---------------------------------------------------------------------------
 
-void
-GameLog::operator delete(PVOID us)
+void GameLog::operator delete(PVOID us)
 {
 	gos_Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-GameLog::dump(void)
+void GameLog::dump(void)
 {
 	//----------------
 	// Dump to file...
@@ -62,8 +60,7 @@ GameLog::dump(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameLog::close(void)
+void GameLog::close(void)
 {
 	if (pfile && inUse)
 	{
@@ -80,8 +77,7 @@ GameLog::close(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameLog::destroy(void)
+void GameLog::destroy(void)
 {
 	close();
 }
@@ -89,7 +85,7 @@ GameLog::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-GameLog::open(const std::wstring_view& fileName)
+GameLog::open(std::wstring_view fileName)
 {
 	numLines = 0;
 	totalLines = 0;
@@ -101,8 +97,7 @@ GameLog::open(const std::wstring_view& fileName)
 
 //---------------------------------------------------------------------------
 
-void
-GameLog::write(const std::wstring_view& s)
+void GameLog::write(std::wstring_view s)
 {
 	static wchar_t buffer[MAX_GAMELOG_LINELEN];
 	if (numLines == MAX_GAMELOG_LINES)
@@ -135,8 +130,7 @@ GameLog::getNewFile(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameLog::setup(void)
+void GameLog::setup(void)
 {
 	if (isSetup)
 		return;
@@ -154,8 +148,7 @@ GameLog::setup(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameLog::cleanup(void)
+void GameLog::cleanup(void)
 {
 	if (!isSetup)
 		return;

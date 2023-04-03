@@ -28,16 +28,35 @@ public:
 	//
 	// Constructors
 	//
-	Point3D(void) {}
-	Point3D(float x, float y, float z) :
-		Vector3D(x, y, z) {}
-	Point3D(const Point3D& p) :
-		Vector3D(p) {}
-	explicit Point3D(const Vector3D& v) { *this = v; }
-	explicit Point3D(const Vector4D& v) { *this = v; }
-	explicit Point3D(const Origin3D& origin) { *this = origin; }
-	explicit Point3D(const AffineMatrix4D& matrix) { *this = matrix; }
-	explicit Point3D(const YawPitchRange& polar) { *this = polar; }
+	Point3D(void) { }
+	Point3D(float x, float y, float z)
+		: Vector3D(x, y, z)
+	{
+	}
+	Point3D(const Point3D& p)
+		: Vector3D(p)
+	{
+	}
+	explicit Point3D(const Vector3D& v)
+	{
+		*this = v;
+	}
+	explicit Point3D(const Vector4D& v)
+	{
+		*this = v;
+	}
+	explicit Point3D(const Origin3D& origin)
+	{
+		*this = origin;
+	}
+	explicit Point3D(const AffineMatrix4D& matrix)
+	{
+		*this = matrix;
+	}
+	explicit Point3D(const YawPitchRange& polar)
+	{
+		*this = polar;
+	}
 
 	//
 	// Assignment operators
@@ -70,15 +89,24 @@ public:
 		Vector3D::Add(v1, v2);
 		return *this;
 	}
-	Point3D& operator+=(const Vector3D& v) { return Add(*this, v); }
+	Point3D& operator+=(const Vector3D& v)
+	{
+		return Add(*this, v);
+	}
 	Point3D& Subtract(const Point3D& p, const Vector3D& v)
 	{
 		Vector3D::Subtract(p, v);
 		return *this;
 	}
-	Point3D& operator-=(const Vector3D& v) { return Subtract(*this, v); }
+	Point3D& operator-=(const Vector3D& v)
+	{
+		return Subtract(*this, v);
+	}
 
-	float operator*(const Vector3D& v) const { return Vector3D::operator*(v); }
+	float operator*(const Vector3D& v) const
+	{
+		return Vector3D::operator*(v);
+	}
 
 	Point3D& Multiply(const Vector3D& v, float scale)
 	{
@@ -90,27 +118,39 @@ public:
 		Vector3D::Multiply(p, scale);
 		return *this;
 	}
-	Point3D& operator*=(float value) { return Multiply(*this, value); }
+	Point3D& operator*=(float value)
+	{
+		return Multiply(*this, value);
+	}
 	Point3D& Multiply(const Point3D& p, const Vector3D& v)
 	{
 		Vector3D::Multiply(p, v);
 		return *this;
 	}
-	Point3D& operator*=(const Vector3D& v) { return Multiply(*this, v); }
+	Point3D& operator*=(const Vector3D& v)
+	{
+		return Multiply(*this, v);
+	}
 
 	Point3D& Divide(const Vector3D& v, float scale)
 	{
 		Vector3D::Divide(v, scale);
 		return *this;
 	}
-	Point3D& operator/=(float value) { return Divide(*this, value); }
+	Point3D& operator/=(float value)
+	{
+		return Divide(*this, value);
+	}
 
 	Point3D& Divide(const Vector3D& v1, const Vector3D& v2)
 	{
 		Vector3D::Divide(v1, v2);
 		return *this;
 	}
-	Point3D& operator/=(const Vector3D& v) { return Divide(*this, v); }
+	Point3D& operator/=(const Vector3D& v)
+	{
+		return Divide(*this, v);
+	}
 
 	//
 	// Transforms

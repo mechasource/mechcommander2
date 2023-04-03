@@ -36,7 +36,7 @@ typedef struct FILEENTRY
 	size_t size; // LZ Compressed Size
 	size_t realSize; // Uncompressed Size
 	size_t hash; // Hash Compare to weed out stinky files faster then StrCmp
-	// const std::wstring_view& name;
+	// std::wstring_view name;
 	wchar_t name[UCHAR_MAX];
 } FILEENTRY;
 //#pragma pack()
@@ -57,7 +57,7 @@ class FastFile
 protected:
 	std::vector<FILE_HANDLE> m_files;
 	std::fstream m_stream;
-	const std::wstring_view& m_fileName;
+	std::wstring_view m_fileName;
 
 	size_t numFiles;
 	size_t length;
@@ -65,8 +65,13 @@ protected:
 	bool m_useLZCompress;
 
 public:
-	FastFile(void) :
-		numFiles(0), length(0), logicalPosition(0), m_useLZCompress(false) {}
+	FastFile(void)
+		: numFiles(0)
+		, length(0)
+		, logicalPosition(0)
+		, m_useLZCompress(false)
+	{
+	}
 	~FastFile(void)
 	{
 		close();
@@ -80,19 +85,28 @@ public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
-	HRESULT open(const std::wstring_view& fileName);
-	HRESULT open(const std::wstring_view& filename)
+	HRESULT open(std::wstring_view fileName);
+	HRESULT open(std::wstring_view filename)
 	{
-		const std::wstring_view& fileName(filename);
+		std::wstring_view fileName(filename);
 		return open(fileName);
 	};
-	HRESULT openFast(uint32_t hash, const std::wstring_view& fileName, ffindex& index);
+	HRESULT openFast(uint32_t hash, std::wstring_view fileName, ffindex& index);
 	HRESULT closeFast(ffindex index);
 
-	void close(void) { return m_stream.close(); }
-	bool isOpen(void) { return m_stream.is_open(); }
+	void close(void)
+	{
+		return m_stream.close();
+	}
+	bool isOpen(void)
+	{
+		return m_stream.is_open();
+	}
 
-	size_t getNumFiles(void) { return m_files.size(); }
+	size_t getNumFiles(void)
+	{
+		return m_files.size();
+	}
 
 	HRESULT seekFast(ffindex index, size_t position, int32_t how = SEEK_SET);
 	int32_t readFast(int32_t fastFileHandle, PVOID bfr, int32_t size);
@@ -101,7 +115,10 @@ public:
 	int32_t sizeFast(int32_t fastFileHandle);
 	int32_t lzSizeFast(int32_t fastFileHandle);
 
-	bool isLZCompressed(void) { return m_useLZCompress; }
+	bool isLZCompressed(void)
+	{
+		return m_useLZCompress;
+	}
 };
 
 //---------------------------------------------------------------------------

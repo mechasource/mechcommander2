@@ -50,8 +50,7 @@ MPLoadMap::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-MPLoadMap::init(FitIniFile* file)
+void MPLoadMap::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -89,8 +88,7 @@ MPLoadMap::init(FitIniFile* file)
 	mapList.setOrange(true);
 }
 
-void
-MPLoadMap::begin()
+void MPLoadMap::begin()
 {
 	// fill up the dialog....
 	LogisticsDialog::begin();
@@ -98,8 +96,7 @@ MPLoadMap::begin()
 	bIsSingle = false;
 }
 
-void
-MPLoadMap::beginSingleMission()
+void MPLoadMap::beginSingleMission()
 {
 	// fill up the dialog....
 	LogisticsDialog::begin();
@@ -107,8 +104,7 @@ MPLoadMap::beginSingleMission()
 	bIsSingle = true;
 }
 
-void
-MPLoadMap::seedDialog(bool bSeedSingle)
+void MPLoadMap::seedDialog(bool bSeedSingle)
 {
 	mapList.removeAllItems(true);
 	// need to add items to the save game list
@@ -143,8 +139,7 @@ MPLoadMap::seedDialog(bool bSeedSingle)
 	updateMapInfo();
 }
 
-void
-MPLoadMap::addFile(const std::wstring_view& pFileName, bool bSeedSingle)
+void MPLoadMap::addFile(std::wstring_view pFileName, bool bSeedSingle)
 {
 	FitIniFile tmp;
 	FullPathFileName path;
@@ -158,10 +153,10 @@ MPLoadMap::addFile(const std::wstring_view& pFileName, bool bSeedSingle)
 			bool bSingleResult = (bSingle != 0);
 			if ((result == NO_ERROR) && (bSingleResult == bSeedSingle))
 			{
-				const std::wstring_view& pExt = (const std::wstring_view&)strstr(pFileName, ".fit");
+				std::wstring_view pExt = (std::wstring_view)strstr(pFileName, ".fit");
 				if (!pExt)
 				{
-					pExt = (const std::wstring_view&)(strstr(pFileName, ".FIT"));
+					pExt = (std::wstring_view)(strstr(pFileName, ".FIT"));
 				}
 				if (pExt)
 					*pExt = nullptr;
@@ -216,8 +211,7 @@ MPLoadMap::addFile(const std::wstring_view& pFileName, bool bSeedSingle)
 	}
 }
 
-void
-MPLoadMap::seedFromFile(const std::wstring_view& pFileName)
+void MPLoadMap::seedFromFile(std::wstring_view pFileName)
 {
 	FullPathFileName path;
 	path.init(missionPath, pFileName, ".csv");
@@ -242,16 +236,15 @@ MPLoadMap::seedFromFile(const std::wstring_view& pFileName)
 	}
 }
 
-void
-MPLoadMap::seedFromCampaign()
+void MPLoadMap::seedFromCampaign()
 {
 	wchar_t searchStr[255];
 	cLoadString(IDS_AUTOSAVE_NAME, searchStr, 255);
-	const std::wstring_view& finalStr;
+	std::wstring_view finalStr;
 	finalStr = "*.fit";
 	FullPathFileName findPath;
 	findPath.init(savePath, finalStr, ".fit");
-	const std::wstring_view& newestFile;
+	std::wstring_view newestFile;
 	int32_t groupCount = -1;
 	int32_t missionCount = -1;
 	FitIniFile tmpFile;
@@ -314,9 +307,9 @@ MPLoadMap::seedFromCampaign()
 			{
 				for (size_t i = 0; i < group + 1; i++)
 				{
-					wchar_t blockName[64];
-					sprintf(blockName, "group%ld", i);
-					if (NO_ERROR == campaignFile.seekBlock(blockName))
+					wchar_t blockname[64];
+					sprintf(blockname, "group%ld", i);
+					if (NO_ERROR == campaignFile.seekBlock(blockname))
 					{
 						int32_t count = missions;
 						if (i < group)
@@ -325,11 +318,11 @@ MPLoadMap::seedFromCampaign()
 						}
 						for (size_t j = 0; j < count; j++)
 						{
-							sprintf(blockName, "group%ldMission%ld", i, j);
-							if (NO_ERROR == campaignFile.seekBlock(blockName))
+							sprintf(blockname, "group%ldMission%ld", i, j);
+							if (NO_ERROR == campaignFile.seekBlock(blockname))
 							{
 								wchar_t tmpFileName[255];
-								campaignFile.readIdString("FileName", tmpFileName, 255);
+								campaignFile.readIdString("filename", tmpFileName, 255);
 								aLocalizedListItem* pEntry = new aLocalizedListItem();
 								*pEntry = templateItem;
 								pEntry->resize(mapList.width() - mapList.getScrollBarwidth() - 20,
@@ -349,8 +342,7 @@ MPLoadMap::seedFromCampaign()
 	}
 }
 
-void
-MPLoadMap::end()
+void MPLoadMap::end()
 {
 	LogisticsDialog::end();
 	statics[18].setTexture((uint32_t) nullptr);
@@ -399,8 +391,7 @@ void MPLoadMap::render(int32_t, int32_t)
 	LogisticsScreen::render((int32_t)xOffset, (int32_t)yOffset);
 }
 
-void
-MPLoadMap::render()
+void MPLoadMap::render()
 {
 	render(0, 0);
 }
@@ -436,14 +427,12 @@ MPLoadMap::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-MPLoadMap::isDone()
+bool MPLoadMap::isDone()
 {
 	return bDone;
 }
 
-void
-MPLoadMap::update()
+void MPLoadMap::update()
 {
 	LogisticsDialog::update();
 	int32_t oldSel = mapList.GetSelectedItem();
@@ -468,15 +457,14 @@ MPLoadMap::update()
 	*/
 }
 
-void
-MPLoadMap::updateMapInfo()
+void MPLoadMap::updateMapInfo()
 {
 	int32_t sel = mapList.GetSelectedItem();
 	if (sel != -1)
 	{
 		FitIniFile file;
 		FullPathFileName path;
-		const std::wstring_view& fileName = ((aTextListItem*)mapList.GetItem(sel))->getText();
+		std::wstring_view fileName = ((aTextListItem*)mapList.GetItem(sel))->getText();
 		selMapName = ((aLocalizedListItem*)mapList.GetItem(sel))->getHiddenText();
 		path.init(missionPath, selMapName, ".fit");
 		if (NO_ERROR == file.open(path))
@@ -552,13 +540,12 @@ MPLoadMap::updateMapInfo()
 	}
 }
 
-void
-MPLoadMap::getMapNameFromFile(const std::wstring_view& pFileName, const std::wstring_view& missionName, int32_t bufferLength)
+void MPLoadMap::getMapNameFromFile(std::wstring_view pFileName, std::wstring_view missionName, int32_t bufferLength)
 {
 	FullPathFileName path;
 	path.init(missionPath, pFileName, ".fit");
 	FitIniFile file;
-	if (NO_ERROR != file.open((const std::wstring_view&)(const std::wstring_view&)path))
+	if (NO_ERROR != file.open((std::wstring_view)(std::wstring_view)path))
 	{
 		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", path);

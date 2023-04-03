@@ -20,8 +20,8 @@ MechBayScreen.cpp			: Implementation of the MechBayScreen component.
 
 MechBayScreen* MechBayScreen::s_instance = nullptr;
 
-MechBayScreen::MechBayScreen() :
-	mechListBox(1, 0)
+MechBayScreen::MechBayScreen()
+	: mechListBox(1, 0)
 {
 	pCurMech = nullptr;
 	pIcons = nullptr;
@@ -44,8 +44,7 @@ MechBayScreen::~MechBayScreen()
 		delete[] pIcons;
 	mechListBox.destroy();
 }
-void
-MechBayScreen::init(FitIniFile* file)
+void MechBayScreen::init(FitIniFile* file)
 {
 	// init button, texts, statics, rects
 	LogisticsScreen::init(
@@ -120,8 +119,7 @@ MechBayScreen::init(FitIniFile* file)
 	setMech(nullptr, 0);
 }
 
-void
-MechBayScreen::begin()
+void MechBayScreen::begin()
 {
 	status = RUNNING;
 	pDragMech = nullptr;
@@ -192,8 +190,7 @@ MechBayScreen::begin()
 		}
 	}
 }
-void
-MechBayScreen::render(int32_t xOffset, int32_t yOffset)
+void MechBayScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	mechListBox.move(xOffset, yOffset);
 	mechListBox.render();
@@ -219,8 +216,7 @@ MechBayScreen::render(int32_t xOffset, int32_t yOffset)
 		dragIcon.render();
 }
 
-void
-MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
+void MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 {
 	// there are 20 rays, each 9 degrees
 	// they should be 50 pixels int32_t
@@ -288,8 +284,7 @@ MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 	dropWeightMeter.render(xOffset, yOffset);
 }
 
-void
-MechBayScreen::update()
+void MechBayScreen::update()
 {
 	mechListBox.disableItemsThatCanNotGoInFG();
 	if (!pIcons[0].getMech())
@@ -523,8 +518,7 @@ MechBayScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void
-MechBayScreen::addSelectedMech()
+void MechBayScreen::addSelectedMech()
 {
 	if (mechListBox.getCurrentMech())
 	{
@@ -560,8 +554,7 @@ MechBayScreen::addSelectedMech()
 	}
 }
 
-void
-MechBayScreen::removeSelectedMech()
+void MechBayScreen::removeSelectedMech()
 {
 	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
@@ -602,14 +595,12 @@ MechBayScreen::removeSelectedMech()
 		selectFirstViableLBMech();
 }
 
-void
-MechBayScreen::end()
+void MechBayScreen::end()
 {
 	mechCamera->setMech(nullptr);
 }
 
-void
-MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
+void MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 {
 	if (pMech == pCurMech || status != RUNNING)
 		return;
@@ -617,7 +608,7 @@ MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 	if (pMech)
 	{
 		loadoutListBox.setMech(pMech->getVariant());
-		const std::wstring_view& fileName = pMech->getFileName();
+		std::wstring_view fileName = pMech->getFileName();
 		int32_t index = fileName.Find('.');
 		fileName = fileName.Left(index);
 		index = fileName.ReverseFind('\\');
@@ -639,7 +630,7 @@ MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 		wchar_t str[64];
 		// weight
 		cLoadString(IDS_MB_MECH_WEIGHT, tmpStr, 63);
-		sprintf(str, tmpStr, pCurMech->getMaxWeight(), (const std::wstring_view&)pCurMech->getMechClass());
+		sprintf(str, tmpStr, pCurMech->getMaxWeight(), (std::wstring_view)pCurMech->getMechClass());
 		textObjects[7].setText(str);
 		// firing range
 		int32_t tmpcolour;
@@ -679,8 +670,7 @@ MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 	}
 }
 
-void
-MechBayScreen::beginDrag(LogisticsMech* pMech)
+void MechBayScreen::beginDrag(LogisticsMech* pMech)
 {
 	if (pDragMech || status != RUNNING)
 		return;
@@ -742,8 +732,7 @@ MechBayScreen::beginDrag(LogisticsMech* pMech)
 	}
 }
 
-void
-MechBayScreen::reinitMechs()
+void MechBayScreen::reinitMechs()
 {
 	int32_t count = 0;
 	int32_t maxUnits = 12;
@@ -790,8 +779,7 @@ MechBayScreen::reinitMechs()
 	}
 }
 
-void
-MechBayScreen::unselectDeploymentTeam()
+void MechBayScreen::unselectDeploymentTeam()
 {
 	int32_t count = 0;
 	for (size_t j = 0; j < ICON_COUNT_Y; j++)
@@ -804,8 +792,7 @@ MechBayScreen::unselectDeploymentTeam()
 	}
 }
 
-bool
-MechBayScreen::selectFirstFGItem()
+bool MechBayScreen::selectFirstFGItem()
 {
 	bool bRetVal = false;
 	for (size_t i = 0; i < ICON_COUNT_X * ICON_COUNT_Y; i++)
@@ -820,8 +807,7 @@ MechBayScreen::selectFirstFGItem()
 	}
 	return bRetVal;
 }
-bool
-MechBayScreen::selectFirstViableLBMech()
+bool MechBayScreen::selectFirstViableLBMech()
 {
 	for (size_t i = 0; i < mechListBox.GetItemCount(); i++)
 	{

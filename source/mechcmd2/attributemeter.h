@@ -30,19 +30,40 @@ public:
 	void render(void);
 	void render(int32_t xOffset, int32_t yOffset);
 
-	void init(FitIniFile* file, const std::wstring_view& headerName);
+	void init(FitIniFile* file, std::wstring_view headerName);
 
-	void setValue(float val) { m_percent = val < 0 ? 0 : val; }
-	void setAddedValue(float val) { m_addedpercent = val < 0 ? 0 : val; }
-	void setcolourMin(uint32_t newcolour) { m_mincolour = newcolour; }
-	void setcolourMax(uint32_t newcolour) { m_maxcolour = newcolour; }
-	void setAddedcolourMin(uint32_t newcolour) { m_addedmincolour = newcolour; }
-	void setAddedcolourMax(uint32_t newcolour) { m_addedmaxcolour = newcolour; }
-	void showGUIWindow(bool show) { m_doshow = show; }
+	void setValue(float val)
+	{
+		m_percent = val < 0 ? 0 : val;
+	}
+	void setAddedValue(float val)
+	{
+		m_addedpercent = val < 0 ? 0 : val;
+	}
+	void setcolourMin(uint32_t newcolour)
+	{
+		m_mincolour = newcolour;
+	}
+	void setcolourMax(uint32_t newcolour)
+	{
+		m_maxcolour = newcolour;
+	}
+	void setAddedcolourMin(uint32_t newcolour)
+	{
+		m_addedmincolour = newcolour;
+	}
+	void setAddedcolourMax(uint32_t newcolour)
+	{
+		m_addedmaxcolour = newcolour;
+	}
+	void showGUIWindow(bool show)
+	{
+		m_doshow = show;
+	}
 	bool pointInside(int32_t mouseX, int32_t mouseY) const;
 
 private:
-	RECT m_outsiderect{};
+	RECT m_outsiderect {};
 	uint32_t m_unitheight = 0;
 	uint32_t m_unitwidth = 0;
 	uint32_t m_unitcount = 0;

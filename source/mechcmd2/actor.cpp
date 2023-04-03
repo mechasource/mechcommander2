@@ -32,8 +32,7 @@
 
 //-----------------------------------------------------------------------------
 // class VFXAppearanceType
-void
-VFXAppearanceType::init(std::unique_ptr<File> apprFile, uint32_t fileSize)
+void VFXAppearanceType::init(std::unique_ptr<File> apprFile, uint32_t fileSize)
 {
 	loadIniFile(apprFile, fileSize);
 	//------------------------------------------------------------------------------------
@@ -47,8 +46,7 @@ VFXAppearanceType::init(std::unique_ptr<File> apprFile, uint32_t fileSize)
 }
 
 //---------------------------------------------------------------------------
-void
-VFXAppearanceType::removeTexture(TGATexturePtr texture) // Cache texture
+void VFXAppearanceType::removeTexture(TGATexturePtr texture) // Cache texture
 	// out
 {
 	for (size_t i = 0; i < numPackets; i++)
@@ -181,8 +179,7 @@ VFXAppearanceType::getTexture(
 }
 
 //----------------------------------------------------------------------------
-void
-VFXAppearanceType::destroy(void)
+void VFXAppearanceType::destroy(void)
 {
 	//---------------------------------------------------------------------------------------------
 	//-- If we are going away, inform ALL of the shapes in the cache that their
@@ -207,8 +204,7 @@ VFXAppearanceType::destroy(void)
 
 //-----------------------------------------------------------------------------
 // class VFXAppearance
-void
-VFXAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void VFXAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (VFXAppearanceType*)tree;
@@ -230,8 +226,7 @@ VFXAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-bool
-VFXAppearance::isMouseOver(float px, float py)
+bool VFXAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
@@ -251,8 +246,7 @@ VFXAppearance::isMouseOver(float px, float py)
 #define TARGET_COLOR 207
 extern float currentScaleFactor;
 //-----------------------------------------------------------------------------
-bool
-VFXAppearance::recalcBounds(void)
+bool VFXAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
 	inView = FALSE;
@@ -302,8 +296,7 @@ VFXAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-VFXAppearance::setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t sel)
+void VFXAppearance::setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t sel)
 {
 	position = pos;
 	rotation = rot;
@@ -356,8 +349,7 @@ VFXAppearance::render(int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-void
-VFXAppearance::setDamageLvl(uint32_t dmg)
+void VFXAppearance::setDamageLvl(uint32_t dmg)
 {
 	realBuildingDamage = TRUE;
 	if (dmg)
@@ -386,8 +378,7 @@ VFXAppearance::setDamageLvl(uint32_t dmg)
 }
 
 //-----------------------------------------------------------------------------
-void
-VFXAppearance::debugUpdate(void)
+void VFXAppearance::debugUpdate(void)
 {
 	update();
 	recalcBounds();
@@ -452,8 +443,7 @@ VFXAppearance::update(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-VFXAppearance::destroy(void)
+void VFXAppearance::destroy(void)
 {
 	appearType->removeUsers(this);
 	appearanceTypeList->removeAppearance(appearType);

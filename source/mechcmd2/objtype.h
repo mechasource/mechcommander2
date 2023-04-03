@@ -61,67 +61,142 @@ public:
 		subType = 0;
 	}
 
-	ObjectType(void) { init(void); }
+	ObjectType(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
-	virtual ~ObjectType(void) { destroy(void); }
+	virtual ~ObjectType(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 
 	virtual GameObjectPtr createInstance(void);
 
-	void addUser(void) { numUsers++; }
+	void addUser(void)
+	{
+		numUsers++;
+	}
 
-	void removeUser(void) { numUsers--; }
+	void removeUser(void)
+	{
+		numUsers--;
+	}
 
-	void noMoreUsers(void) { numUsers = 0; }
+	void noMoreUsers(void)
+	{
+		numUsers = 0;
+	}
 
-	bool inUse(void) { return (numUsers > 0); }
+	bool inUse(void)
+	{
+		return (numUsers > 0);
+	}
 
-	bool lovable(void) { return keepMe; }
+	bool lovable(void)
+	{
+		return keepMe;
+	}
 
-	void makeLovable(void) { keepMe = true; }
+	void makeLovable(void)
+	{
+		keepMe = true;
+	}
 
-	ObjectTypeNumber whatAmI(void) { return (objTypeNum); }
+	ObjectTypeNumber whatAmI(void)
+	{
+		return (objTypeNum);
+	}
 
-	const std::wstring_view& getAppearanceTypeName(void) { return (appearName); }
+	std::wstring_view getAppearanceTypeName(void)
+	{
+		return (appearName);
+	}
 
-	bool getPotentialContact(void) { return (potentialContact); }
+	bool getPotentialContact(void)
+	{
+		return (potentialContact);
+	}
 
-	int32_t getObjectTypeClass(void) { return (objectTypeClass); }
+	int32_t getObjectTypeClass(void)
+	{
+		return (objectTypeClass);
+	}
 
-	ObjectClass getObjectClass(void) { return (objectClass); }
+	ObjectClass getObjectClass(void)
+	{
+		return (objectClass);
+	}
 
-	ObjectTypeNumber getDestroyedObject(void) { return (destroyedObject); }
+	ObjectTypeNumber getDestroyedObject(void)
+	{
+		return (destroyedObject);
+	}
 
-	ObjectTypeNumber getExplosionObject(void) { return (explosionObject); }
+	ObjectTypeNumber getExplosionObject(void)
+	{
+		return (explosionObject);
+	}
 
-	float getExtentRadius(void) { return (extentRadius); }
+	float getExtentRadius(void)
+	{
+		return (extentRadius);
+	}
 
-	void setExtentRadius(float newRadius) { extentRadius = newRadius; }
+	void setExtentRadius(float newRadius)
+	{
+		extentRadius = newRadius;
+	}
 
-	ObjectTypeNumber getObjTypeNum(void) { return (objTypeNum); }
+	ObjectTypeNumber getObjTypeNum(void)
+	{
+		return (objTypeNum);
+	}
 
-	void setObjTypeNum(ObjectTypeNumber objTNum) { objTypeNum = objTNum; }
+	void setObjTypeNum(ObjectTypeNumber objTNum)
+	{
+		objTypeNum = objTNum;
+	}
 
-	void setIconNumber(int32_t newNumber) { iconNumber = newNumber; }
+	void setIconNumber(int32_t newNumber)
+	{
+		iconNumber = newNumber;
+	}
 
-	int32_t getIconNumber(void) { return iconNumber; }
+	int32_t getIconNumber(void)
+	{
+		return iconNumber;
+	}
 
-	int32_t getTeamId(void) { return teamId; }
+	int32_t getTeamId(void)
+	{
+		return teamId;
+	}
 
-	void setSubType(uint8_t type) { subType = type; }
+	void setSubType(uint8_t type)
+	{
+		subType = type;
+	}
 
-	uint8_t getSubType(void) { return (subType); }
+	uint8_t getSubType(void)
+	{
+		return (subType);
+	}
 
 	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
 	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual float getBurnTime(void) { return (0.0); }
+	virtual float getBurnTime(void)
+	{
+		return (0.0);
+	}
 
 	void createExplosion(Stuff::Vector3D& position, float dmg = 0.0, float rad = 0.0);
 };
@@ -148,16 +223,22 @@ public:
 	static int32_t wallLightTypeHandle;
 
 public:
-	void init(void) {}
+	void init(void) { }
 
-	ObjectTypeManager(void) { init(void); }
+	ObjectTypeManager(void)
+	{
+		init(void);
+	}
 
-	int32_t init(const std::wstring_view& objectFileName, int32_t objectTypeCacheSize, int32_t objectCacheSize,
+	int32_t init(std::wstring_view objectFileName, int32_t objectTypeCacheSize, int32_t objectCacheSize,
 		int32_t maxObjectTypes = 1024);
 
 	void destroy(void);
 
-	~ObjectTypeManager(void) { destroy(void); }
+	~ObjectTypeManager(void)
+	{
+		destroy(void);
+	}
 
 	void remove(int32_t objTypeNum);
 

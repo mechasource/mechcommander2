@@ -6,7 +6,8 @@
 
 #include "mlr/mlrtexturepool.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //############################    MLRTexture    ###############################
@@ -17,8 +18,7 @@ MLRTexturePool::ClassData* MLRTexturePool::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::InitializeClass()
+void MLRTexturePool::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -30,8 +30,7 @@ MLRTexturePool::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::TerminateClass()
+void MLRTexturePool::TerminateClass()
 {
 	if (MLRTexturePool::Instance)
 	{
@@ -45,8 +44,8 @@ MLRTexturePool::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexturePool::MLRTexturePool(std::iostream stream) :
-	RegisteredClass(DefaultData)
+MLRTexturePool::MLRTexturePool(std::iostream stream)
+	: RegisteredClass(DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	unLoadedImages = false;
@@ -55,8 +54,7 @@ MLRTexturePool::MLRTexturePool(std::iostream stream) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::Stop(void)
+void MLRTexturePool::Stop(void)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	int32_t i;
@@ -75,8 +73,7 @@ MLRTexturePool::Stop(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::Restart(void)
+void MLRTexturePool::Restart(void)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	freeHandle = new int32_t[handleMax];
@@ -94,8 +91,8 @@ MLRTexturePool::Restart(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexturePool::MLRTexturePool(GOSImagePool* image_pool, int32_t insDep) :
-	RegisteredClass(DefaultData)
+MLRTexturePool::MLRTexturePool(GOSImagePool* image_pool, int32_t insDep)
+	: RegisteredClass(DefaultData)
 {
 	Check_Object(image_pool);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -153,8 +150,7 @@ MLRTexturePool::Make(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::Save(std::iostream stream)
+void MLRTexturePool::Save(std::iostream stream)
 {
 	STOP(("Not implemented"));
 }
@@ -162,9 +158,9 @@ MLRTexturePool::Save(std::iostream stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture*
-MLRTexturePool::Add(const std::wstring_view& tn, int32_t instance)
+MLRTexturePool::Add(std::wstring_view tn, int32_t instance)
 {
-	const std::wstring_view& textureName(tn);
+	std::wstring_view textureName(tn);
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
 	for (i = 0; i < lastHandle; i++)
 	{
@@ -237,7 +233,7 @@ MLRTexturePool::Add(const std::wstring_view& tn, int32_t instance)
 MLRTexture*
 MLRTexturePool::Add(GOSImage* image)
 {
-	const std::wstring_view& textureName;
+	std::wstring_view textureName;
 	textureName = image->GetName();
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
 	for (i = 0; i < lastHandle; i++)
@@ -279,8 +275,7 @@ MLRTexturePool::Add(GOSImage* image)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::Remove(MLRTexture* tex)
+void MLRTexturePool::Remove(MLRTexture* tex)
 {
 	textureArray[tex->textureHandle - 1] = nullptr;
 	storedTextures--;
@@ -306,10 +301,10 @@ MLRTexturePool::Remove(MLRTexture* tex)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture*
-MLRTexturePool::operator()(const std::wstring_view& tn, int32_t instance)
+MLRTexturePool::operator()(std::wstring_view tn, int32_t instance)
 {
 	// Check_Object(this);
-	const std::wstring_view& textureName = tn;
+	std::wstring_view textureName = tn;
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
 	for (i = 0; i < lastHandle; i++)
 	{

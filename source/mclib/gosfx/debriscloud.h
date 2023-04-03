@@ -92,7 +92,7 @@ public:
 
 	float m_alpha;
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 //############################################################################

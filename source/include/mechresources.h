@@ -8,7 +8,7 @@
  Creative Commons Attribution-NonCommercial 4.0 International Public License
  See the the file license.txt and https://creativecommons.org
 
- 2014-08-16 Jerker Back, created
+ 2014-08-16 Jerker Bäck, created
 
 ================================================================================
  RcsID = $Id$ */

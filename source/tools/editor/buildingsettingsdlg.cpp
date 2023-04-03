@@ -20,9 +20,9 @@
 // BuildingSettingsDlg dialog
 
 BuildingSettingsDlg::BuildingSettingsDlg(
-	EList<EditorObject*, EditorObject*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr) :
-	CDialog(BuildingSettingsDlg::IDD),
-	units(newList)
+	EList<EditorObject*, EditorObject*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr)
+	: CDialog(BuildingSettingsDlg::IDD)
+	, units(newList)
 {
 	//{{AFX_DATA_INIT(BuildingSettingsDlg)
 	m_Alignment = -1;
@@ -35,8 +35,7 @@ BuildingSettingsDlg::BuildingSettingsDlg(
 	pAction = nullptr;
 }
 
-void
-BuildingSettingsDlg::DoDataExchange(CDataExchange* pDX)
+void BuildingSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(BuildingSettingsDlg)
@@ -51,22 +50,21 @@ BuildingSettingsDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(BuildingSettingsDlg, CDialog)
-//{{AFX_MSG_MAP(BuildingSettingsDlg)
-ON_CBN_SELCHANGE(IDC_GROUP, OnSelchangeGroup)
-ON_CBN_SELCHANGE(IDC_MECH, OnSelchangeMech)
+	//{{AFX_MSG_MAP(BuildingSettingsDlg)
+	ON_CBN_SELCHANGE(IDC_GROUP, OnSelchangeGroup)
+	ON_CBN_SELCHANGE(IDC_MECH, OnSelchangeMech)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // BuildingSettingsDlg message handlers
 
-void
-BuildingSettingsDlg::OnSelchangeGroup()
+void BuildingSettingsDlg::OnSelchangeGroup()
 {
 	m_Mech.ResetContent();
 	int32_t group = m_Group.GetCurSel();
 	group = m_Group.GetItemData(group);
-	const std::wstring_view& MechNames[256];
+	std::wstring_view MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
 	for (size_t i = 0; i < count; ++i)
@@ -76,8 +74,7 @@ BuildingSettingsDlg::OnSelchangeGroup()
 	m_Mech.SetCurSel(0);
 }
 
-void
-BuildingSettingsDlg::applyChanges()
+void BuildingSettingsDlg::applyChanges()
 {
 	// get the type info from the dlg box
 	int32_t index = m_Group.GetCurSel();
@@ -149,8 +146,7 @@ BuildingSettingsDlg::applyChanges()
 	}
 }
 
-void
-BuildingSettingsDlg::OnOK()
+void BuildingSettingsDlg::OnOK()
 {
 	if (nullptr != pUndoMgr)
 	{
@@ -165,8 +161,7 @@ BuildingSettingsDlg::OnOK()
 	CDialog::OnOK();
 }
 
-BOOL
-BuildingSettingsDlg::OnInitDialog()
+BOOL BuildingSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	pAction = new ModifyBuildingAction;
@@ -180,16 +175,14 @@ BuildingSettingsDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-BuildingSettingsDlg::OnSelchangeMech()
+void BuildingSettingsDlg::OnSelchangeMech()
 {
 	int32_t group = m_Group.GetCurSel();
 	group = m_Group.GetItemData(group);
 	/*int32_t indexInGroup =*/m_Mech.GetCurSel();
 }
 
-void
-BuildingSettingsDlg::updateMemberVariables()
+void BuildingSettingsDlg::updateMemberVariables()
 {
 	int32_t forest = -1;
 	bool bForests = true;
@@ -222,7 +215,7 @@ BuildingSettingsDlg::updateMemberVariables()
 	}
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	int32_t groupCount = pMgr->getBuildingGroupCount();
-	const std::wstring_view&* pGroups = new const std::wstring_view&[groupCount];
+	std::wstring_view* pGroups = new std::wstring_view[groupCount];
 	m_Group.ResetContent();
 	pMgr->getBuildingGroupNames(pGroups, groupCount);
 	int32_t count = 0;
@@ -249,11 +242,11 @@ BuildingSettingsDlg::updateMemberVariables()
 	}
 	if (group != -1) // we found a valid group
 	{
-		const std::wstring_view& pGroupName = pMgr->getGroupName(group);
+		std::wstring_view pGroupName = pMgr->getGroupName(group);
 		int32_t index = m_Group.FindString(-1, pGroupName);
 		m_Group.SetCurSel(index);
 		// OK, now fill in the index....
-		const std::wstring_view& MechNames[256];
+		std::wstring_view MechNames[256];
 		int32_t count = 256;
 		m_Mech.ResetContent();
 		pMgr->getBuildingNamesInGroup(group, MechNames, count);
@@ -273,7 +266,7 @@ BuildingSettingsDlg::updateMemberVariables()
 		}
 		if (indexInGroup != -1)
 		{
-			const std::wstring_view& pName = units.GetHead()->getDisplayName();
+			std::wstring_view pName = units.GetHead()->getDisplayName();
 			index = m_Mech.FindString(-1, pName);
 			if (index != -1)
 			{
@@ -289,8 +282,7 @@ BuildingSettingsDlg::updateMemberVariables()
 	UpdateData(false);
 }
 
-void
-BuildingSettingsDlg::OnCancel()
+void BuildingSettingsDlg::OnCancel()
 {
 	pAction->undo();
 	delete pAction;

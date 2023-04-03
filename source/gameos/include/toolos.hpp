@@ -107,7 +107,7 @@ void __stdcall gos_GetCurrentPath(PSTR Buffer, size_t buf_len);
 //
 // Create directory. - Returns TRUE for sucess
 //
-BOOLEAN __stdcall gos_CreateDirectory(PSTR FileName);
+BOOLEAN __stdcall gos_CreateDirectory(PSTR filename);
 //
 // Delete directory. - Returns TRUE for sucess  (Directories must be empty)
 //
@@ -120,7 +120,7 @@ BOOLEAN __stdcall gos_RenameFile(PSTR FileNameFrom, PSTR FileNameTo);
 //
 // Delete file. - Returns TRUE for sucess
 //
-BOOLEAN __stdcall gos_DeleteFile(PSTR FileName);
+BOOLEAN __stdcall gos_DeleteFile(PSTR filename);
 
 //
 // Find files matching pattern - returns nullptr when no more files (Can be used
@@ -152,17 +152,17 @@ void __stdcall gos_FindDirectoriesClose(void);
 //
 // Return full path name of file - FullPath should point to a 256 byte buffer
 //
-void __stdcall gos_GetFullPathName(PSTR FullPath, PSTR FileName);
+void __stdcall gos_GetFullPathName(PSTR FullPath, PSTR filename);
 
 //
 // Get file size information (-1 if error)
 //
-uint32_t __stdcall gos_FileSize(PSTR FileName);
+uint32_t __stdcall gos_FileSize(PSTR filename);
 //
 // Get file date/time information (-1 if error) - this can be compared directly,
 // and decoded using gos_FileTimeString
 //
-int64_t __stdcall gos_FileTimeStamp(PSTR FileName);
+int64_t __stdcall gos_FileTimeStamp(PSTR filename);
 //
 // Get current date/time information (only updates one per game logic)
 //
@@ -175,15 +175,15 @@ PSTR __stdcall gos_FileTimeString(int64_t Time);
 //
 // Get file read only attribute information
 //
-BOOLEAN __stdcall gos_FileReadOnly(PSTR FileName);
+BOOLEAN __stdcall gos_FileReadOnly(PSTR filename);
 //
 // Set file to read/write
 //
-void __stdcall gos_FileSetReadWrite(PSTR FileName);
+void __stdcall gos_FileSetReadWrite(PSTR filename);
 //
 // Set file to read only
 //
-void __stdcall gos_FileSetReadOnly(PSTR FileName);
+void __stdcall gos_FileSetReadOnly(PSTR filename);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Ways to specify how to open file.
@@ -205,7 +205,7 @@ enum gosEnum_FileSeekType : uint32_t
 
 //////////////////////////////////////////////////////////////////////////////////
 // If the file or directory exists, return TRUE
-BOOLEAN __stdcall gos_DoesFileExist(PSTR FileName);
+BOOLEAN __stdcall gos_DoesFileExist(PSTR filename);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Open the file found at <path> with the method <writeable> and return a handle

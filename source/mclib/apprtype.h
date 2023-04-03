@@ -57,7 +57,7 @@ public:
 	size_t appearanceNum; // What kind am I.
 	AppearanceType* next; // Pointer to next type in list.
 
-	wchar_t* name; // Appearance Base FileName.
+	wchar_t* name; // Appearance Base filename.
 
 	Stuff::Vector3D typeUpperLeft; // For Designer defined extents of objects
 	Stuff::Vector3D typeLowerRight; // For Designer defined extents of objects
@@ -74,8 +74,14 @@ public:
 	// Member Functions
 	//-----------------
 public:
-	AppearanceType(void) { init(); }
-	virtual ~AppearanceType(void) { destroy(); }
+	AppearanceType(void)
+	{
+		init();
+	}
+	virtual ~AppearanceType(void)
+	{
+		destroy();
+	}
 
 	PVOID operator new(size_t memSize);
 	void operator delete(PVOID treePtr);
@@ -91,7 +97,7 @@ public:
 		designerTypeBounds = false;
 	}
 
-	virtual void init(const std::wstring_view& fileName);
+	virtual void init(std::wstring_view fileName);
 
 	virtual void destroy(void);
 
@@ -102,9 +108,15 @@ public:
 		return true; // Always exists now
 	}
 
-	bool getDesignerTypeBounds(void) { return designerTypeBounds; }
+	bool getDesignerTypeBounds(void)
+	{
+		return designerTypeBounds;
+	}
 
-	size_t getAppearanceClass(void) { return (appearanceNum >> 24); }
+	size_t getAppearanceClass(void)
+	{
+		return (appearanceNum >> 24);
+	}
 };
 
 //---------------------------------------------------------------------------
@@ -130,13 +142,16 @@ public:
 
 	void init(size_t heapSize);
 
-	AppearanceTypePtr getAppearance(size_t apprNum, const std::wstring_view& apprFile);
+	AppearanceTypePtr getAppearance(size_t apprNum, std::wstring_view apprFile);
 
 	int32_t removeAppearance(AppearanceTypePtr which);
 
 	void destroy(void);
 
-	~AppearanceTypeList(void) { destroy(void); }
+	~AppearanceTypeList(void)
+	{
+		destroy(void);
+	}
 
 	bool pointerCanBeDeleted(PVOIDptr);
 };

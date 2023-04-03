@@ -25,12 +25,19 @@ public:
 	//
 	// Constructors
 	//
-	UnitVector3D() {}
-	UnitVector3D(float x, float y, float z) :
-		Vector3D(x, y, z) {}
-	UnitVector3D(const UnitVector3D& v) :
-		Vector3D(v) {}
-	explicit UnitVector3D(const Vector3D& v) { *this = v; }
+	UnitVector3D() { }
+	UnitVector3D(float x, float y, float z)
+		: Vector3D(x, y, z)
+	{
+	}
+	UnitVector3D(const UnitVector3D& v)
+		: Vector3D(v)
+	{
+	}
+	explicit UnitVector3D(const Vector3D& v)
+	{
+		*this = v;
+	}
 
 	static const UnitVector3D Forward;
 	static const UnitVector3D Backward;
@@ -64,7 +71,10 @@ public:
 		return *this;
 	}
 
-	float operator*(const Vector3D& v) const { return Vector3D::operator*(v); }
+	float operator*(const Vector3D& v) const
+	{
+		return Vector3D::operator*(v);
+	}
 
 	//
 	// Transforms

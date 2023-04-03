@@ -14,7 +14,6 @@ class FitIniFile;
 
 #define FOREST_TYPES 15
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 forest:
@@ -33,13 +32,28 @@ public:
 	void save();
 	void save(FitIniFile& file);
 
-	const std::wstring_view& getFileName(void) const { return fileName; }
-	void setFileName(const std::wstring_view& newName) { fileName = newName; }
+	std::wstring_view getFileName(void) const
+	{
+		return fileName;
+	}
+	void setFileName(std::wstring_view newName)
+	{
+		fileName = newName;
+	}
 
-	const std::wstring_view& getName(void) const { return name; }
-	void setName(const std::wstring_view& newName) { name = newName; }
+	std::wstring_view getName(void) const
+	{
+		return name;
+	}
+	void setName(std::wstring_view newName)
+	{
+		name = newName;
+	}
 
-	int32_t getID(void) const { return ID; }
+	int32_t getID(void) const
+	{
+		return ID;
+	}
 
 private:
 	int32_t ID;

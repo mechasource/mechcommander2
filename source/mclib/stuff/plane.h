@@ -20,8 +20,7 @@ class Plane;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::Plane& plane);
+void Spew(std::wstring_view group, const Stuff::Plane& plane);
 #endif
 
 namespace Stuff
@@ -46,12 +45,21 @@ public:
 	//
 	// Constructors
 	//
-	Plane(void) {}
-	Plane(float x, float y, float z, float offset) :
-		normal(x, y, z), offset(offset) {}
-	Plane(const Normal3D& n, float offset) :
-		normal(n), offset(offset) {}
-	Plane(const Point3D& p0, const Point3D& p1, const Point3D& p2) { BuildPlane(p0, p1, p2); }
+	Plane(void) { }
+	Plane(float x, float y, float z, float offset)
+		: normal(x, y, z)
+		, offset(offset)
+	{
+	}
+	Plane(const Normal3D& n, float offset)
+		: normal(n)
+		, offset(offset)
+	{
+	}
+	Plane(const Point3D& p0, const Point3D& p1, const Point3D& p2)
+	{
+		BuildPlane(p0, p1, p2);
+	}
 
 	void BuildPlane(const Point3D& p0, const Point3D& p1, const Point3D& p2);
 
@@ -78,7 +86,10 @@ public:
 	{
 		return ((normal * A_Point) > offset) ? true : false;
 	}
-	float GetDistanceTo(const Point3D& A_Point) const { return ((normal * A_Point) - offset); }
+	float GetDistanceTo(const Point3D& A_Point) const
+	{
+		return ((normal * A_Point) - offset);
+	}
 
 	float GetDistanceTo(const Sphere& sphere) const;
 	float GetDistanceTo(const OBB& box) const;
@@ -106,7 +117,7 @@ public:
 	bool Intersects(const OBB& box, float thickness = SMALL) const;
 
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const Plane& plane);
+	friend void ::Spew(std::wstring_view group, const Plane& plane);
 #endif
 	void TestInstance(void) const
 	{

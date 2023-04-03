@@ -79,9 +79,15 @@ public:
 		spinMe = false;
 	}
 
-	BldgAppearanceType(void) { init(void); }
+	BldgAppearanceType(void)
+	{
+		init(void);
+	}
 
-	~BldgAppearanceType(void) { destroy(void); }
+	~BldgAppearanceType(void)
+	{
+		destroy(void);
+	}
 
 	void setAnimation(TG_MultiShapePtr shape, uint32_t animationNum);
 
@@ -126,7 +132,7 @@ public:
 		return false;
 	}
 
-	virtual void init(const std::wstring_view& fileName);
+	virtual void init(std::wstring_view fileName);
 
 	virtual void destroy(void);
 };
@@ -197,9 +203,15 @@ public:
 public:
 	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
-	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
+	virtual AppearanceTypePtr getAppearanceType(void)
+	{
+		return appearType;
+	}
 
-	BldgAppearance(void) { init(void); }
+	BldgAppearance(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t update(bool animate = true);
 	virtual int32_t render(int32_t depthFixup = 0);
@@ -208,21 +220,39 @@ public:
 
 	virtual void destroy(void);
 
-	~BldgAppearance(void) { destroy(void); }
+	~BldgAppearance(void)
+	{
+		destroy(void);
+	}
 
 	virtual bool recalcBounds(void);
 
-	virtual bool getInTransition(void) { return (canTransition == false); }
+	virtual bool getInTransition(void)
+	{
+		return (canTransition == false);
+	}
 
-	void setFadeTable(uint8_t* fTable) { fadeTable = fTable; }
+	void setFadeTable(uint8_t* fTable)
+	{
+		fadeTable = fTable;
+	}
 
 	virtual void setGesture(size_t gestureId);
 
-	virtual int32_t getCurrentGestureId(void) { return bdAnimationState; }
+	virtual int32_t getCurrentGestureId(void)
+	{
+		return bdAnimationState;
+	}
 
-	virtual size_t getAppearanceClass(void) { return BUILDING_APPR_TYPE; }
+	virtual size_t getAppearanceClass(void)
+	{
+		return BUILDING_APPR_TYPE;
+	}
 
-	virtual void setObjectNameId(int32_t objId) { objectNameId = objId; }
+	virtual void setObjectNameId(int32_t objId)
+	{
+		objectNameId = objId;
+	}
 
 	virtual bool isMouseOver(float px, float py);
 
@@ -245,15 +275,24 @@ public:
 
 	void calcAdjCell(int32_t& row, int32_t& col);
 
-	virtual void scale(float scaleFactor) { bldgShape->ScaleShape(scaleFactor); }
+	virtual void scale(float scaleFactor)
+	{
+		bldgShape->ScaleShape(scaleFactor);
+	}
 
 	virtual bool playdestruction(void);
 
-	virtual float getRadius(void) { return OBBRadius; }
+	virtual float getRadius(void)
+	{
+		return OBBRadius;
+	}
 
 	virtual void flashBuilding(float duration, float flashDuration, uint32_t color);
 
-	virtual float getTopZ(void) { return highZ; }
+	virtual float getTopZ(void)
+	{
+		return highZ;
+	}
 
 	virtual void setWeaponNodeUsed(int32_t nodeId);
 
@@ -263,19 +302,37 @@ public:
 
 	virtual Stuff::Vector3D getWeaponNodePosition(int32_t node);
 
-	virtual bool isSelectable() { return !appearType->spinMe; }
+	virtual bool isSelectable()
+	{
+		return !appearType->spinMe;
+	}
 
-	virtual void setFilterState(bool state) { bldgShape->GetMultiType()->SetFilter(state); }
+	virtual void setFilterState(bool state)
+	{
+		bldgShape->GetMultiType()->SetFilter(state);
+	}
 
-	virtual void setIsHudElement(void) { bldgShape->SetIsHudElement(void); }
+	virtual void setIsHudElement(void)
+	{
+		bldgShape->SetIsHudElement(void);
+	}
 
-	virtual bool getIsLit(void) { return (appearType->terrainLightRGB != 0xffffffff); }
+	virtual bool getIsLit(void)
+	{
+		return (appearType->terrainLightRGB != 0xffffffff);
+	}
 
-	virtual void setLightsOut(bool lightFlag) { forceLightsOut = lightFlag; }
+	virtual void setLightsOut(bool lightFlag)
+	{
+		forceLightsOut = lightFlag;
+	}
 
 	virtual bool PerPolySelect(int32_t mouseX, int32_t mouseY);
 
-	virtual bool isForestClump(void) { return appearType->isForestClump; }
+	virtual bool isForestClump(void)
+	{
+		return appearType->isForestClump;
+	}
 
 	virtual Stuff::Point3D getRootNodeCenter(void)
 	{
@@ -283,7 +340,7 @@ public:
 		return result;
 	}
 
-	virtual Stuff::Vector3D getNodeNamePosition(const std::wstring_view& nodeName);
+	virtual Stuff::Vector3D getNodeNamePosition(std::wstring_view nodeName);
 
 	virtual void startActivity(int32_t effectId, bool loop);
 	virtual void stopActivity(void);
@@ -336,11 +393,17 @@ public:
 		treeDmgShadowShape = nullptr;
 	}
 
-	TreeAppearanceType(void) { init(void); }
+	TreeAppearanceType(void)
+	{
+		init(void);
+	}
 
-	~TreeAppearanceType(void) { destroy(void); }
+	~TreeAppearanceType(void)
+	{
+		destroy(void);
+	}
 
-	virtual void init(const std::wstring_view& fileName);
+	virtual void init(std::wstring_view fileName);
 
 	virtual void destroy(void);
 };
@@ -376,9 +439,15 @@ public:
 public:
 	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
-	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
+	virtual AppearanceTypePtr getAppearanceType(void)
+	{
+		return appearType;
+	}
 
-	TreeAppearance(void) { init(void); }
+	TreeAppearance(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t update(bool animate = true);
 	virtual int32_t render(int32_t depthFixup = 0);
@@ -387,15 +456,27 @@ public:
 
 	virtual void destroy(void);
 
-	~TreeAppearance(void) { destroy(void); }
+	~TreeAppearance(void)
+	{
+		destroy(void);
+	}
 
-	virtual size_t getAppearanceClass(void) { return TREE_APPR_TYPE; }
+	virtual size_t getAppearanceClass(void)
+	{
+		return TREE_APPR_TYPE;
+	}
 
 	virtual bool recalcBounds(void);
 
-	void setFadeTable(uint8_t* fTable) { fadeTable = fTable; }
+	void setFadeTable(uint8_t* fTable)
+	{
+		fadeTable = fTable;
+	}
 
-	virtual void setObjectNameId(int32_t objId) { objectNameId = objId; }
+	virtual void setObjectNameId(int32_t objId)
+	{
+		objectNameId = objId;
+	}
 
 	virtual bool isMouseOver(float px, float py);
 
@@ -407,13 +488,25 @@ public:
 
 	virtual void setObjStatus(int32_t oStatus);
 
-	virtual void scale(float scaleFactor) { treeShape->ScaleShape(scaleFactor); }
+	virtual void scale(float scaleFactor)
+	{
+		treeShape->ScaleShape(scaleFactor);
+	}
 
-	virtual float getRadius(void) { return OBBRadius; }
+	virtual float getRadius(void)
+	{
+		return OBBRadius;
+	}
 
-	virtual void setLightsOut(bool lightFlag) { forceLightsOut = lightFlag; }
+	virtual void setLightsOut(bool lightFlag)
+	{
+		forceLightsOut = lightFlag;
+	}
 
-	virtual bool isForestClump(void) { return appearType->isForestClump; }
+	virtual bool isForestClump(void)
+	{
+		return appearType->isForestClump;
+	}
 
 	virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 

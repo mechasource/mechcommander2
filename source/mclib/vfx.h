@@ -165,7 +165,8 @@ extern "C"
 	} PANE_LIST;
 	typedef PANE_LIST* PPANE_LIST;
 
-	typedef union _flex_ptr {
+	typedef union _flex_ptr
+	{
 		PVOID v;
 		uint8_t* b;
 		uint16_t* w;
@@ -349,7 +350,7 @@ extern "C"
 	extern int32_t VFX_CALL VFX_character_draw(
 		PPANE pane, int32_t x, int32_t y, PVOID font, int32_t character, uint8_t* color_translate);
 	extern void VFX_CALL VFX_string_draw(
-		PPANE pane, int32_t x, int32_t y, PVOID font, const std::wstring_view& string, uint8_t* color_translate);
+		PPANE pane, int32_t x, int32_t y, PVOID font, std::wstring_view string, uint8_t* color_translate);
 	extern int32_t VFX_CALL VFX_ILBM_draw(PPANE pane, uint8_t* ILBM_buffer);
 	extern void VFX_CALL VFX_ILBM_palette(uint8_t* ILBM_buffer, PVFX_RGB palette);
 	extern int32_t VFX_CALL VFX_ILBM_resolution(uint8_t* ILBM_buffer);

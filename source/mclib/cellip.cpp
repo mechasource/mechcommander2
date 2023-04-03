@@ -26,8 +26,8 @@ uint32_t EllipseElement::s_textureHandle = 0;
 
 //---------------------------------------------------------------------------
 EllipseElement::EllipseElement(
-	Stuff::Vector2DOf<int32_t>& cntr, Stuff::Vector2DOf<int32_t>& ortho, int32_t clr, int32_t depth) :
-	Element(depth)
+	Stuff::Vector2DOf<int32_t>& cntr, Stuff::Vector2DOf<int32_t>& ortho, int32_t clr, int32_t depth)
+	: Element(depth)
 {
 	for (size_t i = 0; i < 5; ++i)
 	{
@@ -48,8 +48,7 @@ EllipseElement::EllipseElement(
 }
 
 //---------------------------------------------------------------------------
-void
-EllipseElement::draw(void)
+void EllipseElement::draw(void)
 {
 	gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
@@ -107,8 +106,7 @@ EllipseElement::draw(void)
 	}
 }
 
-void
-EllipseElement::init()
+void EllipseElement::init()
 {
 	if (!s_textureHandle)
 	{
@@ -117,14 +115,12 @@ EllipseElement::init()
 	}
 }
 
-void
-EllipseElement::setClip(const RECT& rect)
+void EllipseElement::setClip(const RECT& rect)
 {
 	clip = rect;
 }
 
-void
-EllipseElement::removeTextureHandle(void)
+void EllipseElement::removeTextureHandle(void)
 {
 	if (s_textureHandle)
 		mcTextureManager->removeTextureNode(s_textureHandle);

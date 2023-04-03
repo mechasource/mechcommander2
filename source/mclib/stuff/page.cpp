@@ -20,8 +20,9 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Page::Page(NotationFile* notation_file) :
-	Plug(DefaultData), m_notes(nullptr)
+Page::Page(NotationFile* notation_file)
+	: Plug(DefaultData)
+	, m_notes(nullptr)
 {
 	// Check_Pointer(this);
 	Check_Object(notation_file);
@@ -39,11 +40,10 @@ Page::~Page()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::WriteNotes(std::iostream& stream)
+void Page::WriteNotes(std::iostream& stream)
 {
 	// Check_Object(this);
-	const std::wstring_view& name = m_name;
+	std::wstring_view name = m_name;
 	if (name)
 		*stream << '[' << name << "]\r\n";
 	NoteIterator notes(&m_notes);
@@ -58,8 +58,7 @@ Page::WriteNotes(std::iostream& stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Note*
-Page::FindNote(const std::wstring_view& entryname)
+Note* Page::FindNote(std::wstring_view entryname)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -76,8 +75,7 @@ Page::FindNote(const std::wstring_view& entryname)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Note*
-Page::GetNote(uint32_t i)
+Note* Page::GetNote(uint32_t i)
 {
 	// Check_Object(this);
 	NoteIterator notes(&m_notes);
@@ -87,7 +85,7 @@ Page::GetNote(uint32_t i)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 ChainOf<Note*>*
-Page::MakeNoteChain(const std::wstring_view& entryname)
+Page::MakeNoteChain(std::wstring_view entryname)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -107,8 +105,7 @@ Page::MakeNoteChain(const std::wstring_view& entryname)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Note*
-Page::AddNote(const std::wstring_view& entryname)
+Note* Page::AddNote(std::wstring_view entryname)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -122,8 +119,7 @@ Page::AddNote(const std::wstring_view& entryname)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::DeleteNote(const std::wstring_view& entryname)
+void Page::DeleteNote(std::wstring_view entryname)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -138,8 +134,7 @@ Page::DeleteNote(const std::wstring_view& entryname)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::DeleteAllNotes()
+void Page::DeleteAllNotes()
 {
 	// Check_Object(this);
 	NoteIterator notes(&m_notes);
@@ -153,8 +148,7 @@ Page::DeleteAllNotes()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, const std::wstring_view&* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, std::wstring_view* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -173,8 +167,7 @@ Page::GetEntry(const std::wstring_view& entryname, const std::wstring_view&* con
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, const std::wstring_view& contents)
+void Page::SetEntry(std::wstring_view entryname, std::wstring_view contents)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -188,8 +181,7 @@ Page::SetEntry(const std::wstring_view& entryname, const std::wstring_view& cont
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, const std::wstring_view& contents)
+void Page::AppendEntry(std::wstring_view entryname, std::wstring_view contents)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -201,8 +193,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const std::wstring_view& c
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, int32_t* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, int32_t* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -221,8 +212,7 @@ Page::GetEntry(const std::wstring_view& entryname, int32_t* contents, bool requi
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, int32_t contents)
+void Page::SetEntry(std::wstring_view entryname, int32_t contents)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -235,8 +225,7 @@ Page::SetEntry(const std::wstring_view& entryname, int32_t contents)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, int32_t contents)
+void Page::AppendEntry(std::wstring_view entryname, int32_t contents)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -247,8 +236,7 @@ Page::AppendEntry(const std::wstring_view& entryname, int32_t contents)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, float* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, float* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -267,8 +255,7 @@ Page::GetEntry(const std::wstring_view& entryname, float* contents, bool require
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, float value)
+void Page::SetEntry(std::wstring_view entryname, float value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -281,8 +268,7 @@ Page::SetEntry(const std::wstring_view& entryname, float value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, float value)
+void Page::AppendEntry(std::wstring_view entryname, float value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -293,8 +279,7 @@ Page::AppendEntry(const std::wstring_view& entryname, float value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, bool* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, bool* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -313,8 +298,7 @@ Page::GetEntry(const std::wstring_view& entryname, bool* contents, bool required
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, bool value)
+void Page::SetEntry(std::wstring_view entryname, bool value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -327,8 +311,7 @@ Page::SetEntry(const std::wstring_view& entryname, bool value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, bool value)
+void Page::AppendEntry(std::wstring_view entryname, bool value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -339,8 +322,7 @@ Page::AppendEntry(const std::wstring_view& entryname, bool value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, Vector3D* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, Vector3D* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -359,8 +341,7 @@ Page::GetEntry(const std::wstring_view& entryname, Vector3D* contents, bool requ
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, const Vector3D& value)
+void Page::SetEntry(std::wstring_view entryname, const Vector3D& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -373,8 +354,7 @@ Page::SetEntry(const std::wstring_view& entryname, const Vector3D& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, const Vector3D& value)
+void Page::AppendEntry(std::wstring_view entryname, const Vector3D& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -385,8 +365,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const Vector3D& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, YawPitchRoll* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, YawPitchRoll* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -405,8 +384,7 @@ Page::GetEntry(const std::wstring_view& entryname, YawPitchRoll* contents, bool 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, const YawPitchRoll& value)
+void Page::SetEntry(std::wstring_view entryname, const YawPitchRoll& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -419,8 +397,7 @@ Page::SetEntry(const std::wstring_view& entryname, const YawPitchRoll& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, const YawPitchRoll& value)
+void Page::AppendEntry(std::wstring_view entryname, const YawPitchRoll& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -431,8 +408,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const YawPitchRoll& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, UnitQuaternion* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, UnitQuaternion* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -451,8 +427,7 @@ Page::GetEntry(const std::wstring_view& entryname, UnitQuaternion* contents, boo
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, const UnitQuaternion& value)
+void Page::SetEntry(std::wstring_view entryname, const UnitQuaternion& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -465,8 +440,7 @@ Page::SetEntry(const std::wstring_view& entryname, const UnitQuaternion& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, const UnitQuaternion& value)
+void Page::AppendEntry(std::wstring_view entryname, const UnitQuaternion& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -477,8 +451,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const UnitQuaternion& valu
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, Motion3D* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, Motion3D* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -497,8 +470,7 @@ Page::GetEntry(const std::wstring_view& entryname, Motion3D* contents, bool requ
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, const Motion3D& value)
+void Page::SetEntry(std::wstring_view entryname, const Motion3D& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -511,8 +483,7 @@ Page::SetEntry(const std::wstring_view& entryname, const Motion3D& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, const Motion3D& value)
+void Page::AppendEntry(std::wstring_view entryname, const Motion3D& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -523,8 +494,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const Motion3D& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, RGBcolour* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, RGBcolour* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -543,8 +513,7 @@ Page::GetEntry(const std::wstring_view& entryname, RGBcolour* contents, bool req
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, const RGBcolour& value)
+void Page::SetEntry(std::wstring_view entryname, const RGBcolour& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -557,8 +526,7 @@ Page::SetEntry(const std::wstring_view& entryname, const RGBcolour& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, const RGBcolour& value)
+void Page::AppendEntry(std::wstring_view entryname, const RGBcolour& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -569,8 +537,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const RGBcolour& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, RGBAcolour* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, RGBAcolour* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -589,8 +556,7 @@ Page::GetEntry(const std::wstring_view& entryname, RGBAcolour* contents, bool re
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, const RGBAcolour& value)
+void Page::SetEntry(std::wstring_view entryname, const RGBAcolour& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -603,8 +569,7 @@ Page::SetEntry(const std::wstring_view& entryname, const RGBAcolour& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, const RGBAcolour& value)
+void Page::AppendEntry(std::wstring_view entryname, const RGBAcolour& value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -615,8 +580,7 @@ Page::AppendEntry(const std::wstring_view& entryname, const RGBAcolour& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Page::GetEntry(const std::wstring_view& entryname, NotationFile* contents, bool required)
+bool Page::GetEntry(std::wstring_view entryname, NotationFile* contents, bool required)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -629,15 +593,14 @@ Page::GetEntry(const std::wstring_view& entryname, NotationFile* contents, bool 
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), (const std::wstring_view&)m_name,
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), (std::wstring_view)m_name,
 			entryname));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::SetEntry(const std::wstring_view& entryname, NotationFile* value)
+void Page::SetEntry(std::wstring_view entryname, NotationFile* value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -650,8 +613,7 @@ Page::SetEntry(const std::wstring_view& entryname, NotationFile* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::AppendEntry(const std::wstring_view& entryname, NotationFile* value)
+void Page::AppendEntry(std::wstring_view entryname, NotationFile* value)
 {
 	// Check_Object(this);
 	Check_Pointer(entryname);
@@ -662,7 +624,6 @@ Page::AppendEntry(const std::wstring_view& entryname, NotationFile* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Page::TestInstance(void) const
+void Page::TestInstance(void) const
 {
 }

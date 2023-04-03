@@ -77,8 +77,7 @@ GateType::createInstance(void)
 }
 
 //---------------------------------------------------------------------------
-void
-GateType::destroy(void)
+void GateType::destroy(void)
 {
 	ObjectType::destroy();
 }
@@ -143,8 +142,7 @@ GateType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 }
 
 //---------------------------------------------------------------------------
-bool
-GateType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool GateType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------------------------
 	// OK.  This handleCollision will open the gate if the
@@ -191,8 +189,7 @@ GateType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 }
 
 //---------------------------------------------------------------------------
-bool
-GateType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool GateType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	return (FALSE);
 }
@@ -200,8 +197,7 @@ GateType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 //---------------------------------------------------------------------------
 // class Gate
 //---------------------------------------------------------------------------
-bool
-Gate::isVisible(CameraPtr camera)
+bool Gate::isVisible(CameraPtr camera)
 {
 	//----------------------------------------------------------------------
 	// This function is the meat and potatoes of the object cull system.
@@ -325,8 +321,7 @@ Gate::update(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::blowAnyOffendingObject(void)
+void Gate::blowAnyOffendingObject(void)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return;
@@ -362,8 +357,7 @@ Gate::blowAnyOffendingObject(void)
 
 //---------------------------------------------------------------------------
 
-void
-Gate::openGate(void)
+void Gate::openGate(void)
 {
 	if (!isDestroyed())
 	{
@@ -534,15 +528,13 @@ Gate::setTeamId(int32_t _teamId, bool setup)
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::lightOnFire(float timeToBurn)
+void Gate::lightOnFire(float timeToBurn)
 {
 	// Gates have never burned
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::render(void)
+void Gate::render(void)
 {
 	if (appearance->canBeSeen())
 	{
@@ -587,8 +579,7 @@ Gate::render(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::destroy(void)
+void Gate::destroy(void)
 {
 	//-----------------------------------------------------
 	// This will free any memory the Building is using.
@@ -600,8 +591,7 @@ Gate::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::init(bool create, ObjectTypePtr _type)
+void Gate::init(bool create, ObjectTypePtr _type)
 {
 	//-------------------------------------------
 	// Initialize the Building Appearance here.
@@ -610,7 +600,7 @@ Gate::init(bool create, ObjectTypePtr _type)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	const std::wstring_view& appearName = _type->getAppearanceTypeName();
+	std::wstring_view appearName = _type->getAppearanceTypeName();
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.
@@ -654,8 +644,7 @@ Gate::init(bool create, ObjectTypePtr _type)
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::setDamage(float newDamage)
+void Gate::setDamage(float newDamage)
 {
 	damage = newDamage;
 	GateTypePtr type = (GateTypePtr)getObjectType();
@@ -684,8 +673,7 @@ Gate::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::destroyGate(void)
+void Gate::destroyGate(void)
 {
 	justDestroyed = false;
 	if (!getFlag(OBJECT_FLAG_JUSTCREATED))
@@ -742,15 +730,13 @@ Gate::destroyGate(void)
 }
 
 //---------------------------------------------------------------------------
-float
-Gate::getLittleExtent(void)
+float Gate::getLittleExtent(void)
 {
 	return (((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))->littleExtent);
 }
 
 //---------------------------------------------------------------------------
-bool
-Gate::isLinked(void)
+bool Gate::isLinked(void)
 {
 	return (parent != 0);
 }
@@ -763,8 +749,7 @@ Gate::getParent(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::setParentId(uint32_t pId)
+void Gate::setParentId(uint32_t pId)
 {
 	parentId = pId;
 }
@@ -779,8 +764,7 @@ Gate::getTeam(void)
 }
 
 //***************************************************************************
-void
-Gate::Save(PacketFilePtr file, int32_t packetNum)
+void Gate::Save(PacketFilePtr file, int32_t packetNum)
 {
 	GateData data;
 	CopyTo(&data);
@@ -789,8 +773,7 @@ Gate::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void
-Gate::CopyTo(GateData* data)
+void Gate::CopyTo(GateData* data)
 {
 	data->teamId = teamId;
 	data->lockedOpen = lockedOpen;
@@ -811,8 +794,7 @@ Gate::CopyTo(GateData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-Gate::Load(GateData* data)
+void Gate::Load(GateData* data)
 {
 	TerrainObject::Load(dynamic_cast<TerrainObjectData*>(data));
 	teamId = data->teamId;

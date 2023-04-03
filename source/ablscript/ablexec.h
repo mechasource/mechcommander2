@@ -16,7 +16,8 @@
 //#include "ablsymt.h"
 //#include "ablparse.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -58,7 +59,8 @@ struct ABLParam
 // RUN-TIME STACK
 typedef wchar_t* Address;
 
-union StackItem {
+union StackItem
+{
 	int32_t integer;
 	float real;
 	uint8_t byte;
@@ -70,7 +72,8 @@ union StackItem {
 struct ABLStackItem
 {
 	int32_t type;
-	union {
+	union
+	{
 		int32_t integer;
 		float real;
 		bool boolean;
@@ -113,11 +116,11 @@ struct StackFrameHeader
 
 //***************************************************************************
 
-extern const std::wstring_view& codeBuffer;
-extern const std::wstring_view& codeBufferPtr;
-extern const std::wstring_view& codeSegmentPtr;
-extern const std::wstring_view& codeSegmentLimit;
-extern const std::wstring_view& statementStartPtr;
+extern std::wstring_view codeBuffer;
+extern std::wstring_view codeBufferPtr;
+extern std::wstring_view codeSegmentPtr;
+extern std::wstring_view codeSegmentLimit;
+extern std::wstring_view statementStartPtr;
 
 extern TokenCodeType codeToken;
 extern int32_t execLineNumber;
@@ -141,109 +144,76 @@ const std::unique_ptr<Type>& execVariable(void);
 // CRUNCH/DECRUNCH routines
 //*************************
 
-void
-crunchToken(void);
-void
-crunchSymTableNodePtr(const std::unique_ptr<SymTableNode>& nodePtr);
-void
-crunchStatementMarker(void);
-void
-uncrunchStatementMarker(void);
-const std::wstring_view&
+void crunchToken(void);
+void crunchSymTableNodePtr(const std::unique_ptr<SymTableNode>& nodePtr);
+void crunchStatementMarker(void);
+void uncrunchStatementMarker(void);
+std::wstring_view
 crunchAddressMarker(Address address);
-const std::wstring_view&
+std::wstring_view
 fixupAddressMarker(Address address);
-void
-crunchInteger(int32_t value);
-void
-crunchByte(uint8_t value);
-void
-crunchOffset(Address address);
-const std::wstring_view&
+void crunchInteger(int32_t value);
+void crunchByte(uint8_t value);
+void crunchOffset(Address address);
+std::wstring_view
 createCodeSegment(int32_t& codeSegmentSize);
 const std::unique_ptr<SymTableNode>&
 getCodeSymTableNodePtr(void);
 int32_t
 getCodeStatementMarker(void);
-const std::wstring_view&
+std::wstring_view
 getCodeAddressMarker(void);
 int32_t
 getCodeInteger(void);
 uint8_t
 getCodeByte(void);
-const std::wstring_view&
+std::wstring_view
 getCodeAddress(void);
 
 //***************
 // STACK routines
 //***************
 
-void
-pop(void);
-void
-getCodeToken(void);
-void
-pushInteger(int32_t value);
-void
-pushReal(float value);
-void
-pushByte(wchar_t value);
-void
-pushAddress(Address address);
-void
-pushBoolean(bool value);
-void
-pushStackFrameHeader(int32_t oldLevel, int32_t newLevel);
-void
-allocLocal(const std::unique_ptr<Type>& ptype);
-void
-freeData(const std::unique_ptr<SymTableNode>& idPtr);
+void pop(void);
+void getCodeToken(void);
+void pushInteger(int32_t value);
+void pushReal(float value);
+void pushByte(wchar_t value);
+void pushAddress(Address address);
+void pushBoolean(bool value);
+void pushStackFrameHeader(int32_t oldLevel, int32_t newLevel);
+void allocLocal(const std::unique_ptr<Type>& ptype);
+void freeData(const std::unique_ptr<SymTableNode>& idPtr);
 
 //*****************************
 // FUNCTION ENTRY/EXIT routines
 //*****************************
 
-void
-routineEntry(const std::unique_ptr<SymTableNode>& routineIdPtr);
-void
-routineExit(const std::unique_ptr<SymTableNode>& routineIdPtr);
-void
-execute(const std::unique_ptr<SymTableNode>& routineIdPtr);
-void
-executeChild(const std::unique_ptr<SymTableNode>& routineIdPtr, const std::unique_ptr<SymTableNode>& childRoutineIdPtr);
+void routineEntry(const std::unique_ptr<SymTableNode>& routineIdPtr);
+void routineExit(const std::unique_ptr<SymTableNode>& routineIdPtr);
+void execute(const std::unique_ptr<SymTableNode>& routineIdPtr);
+void executeChild(const std::unique_ptr<SymTableNode>& routineIdPtr, const std::unique_ptr<SymTableNode>& childRoutineIdPtr);
 
 //******************
 // EXECSTMT routines
 //******************
 
-void
-execStatement(void);
-void
-execAssignmentStatement(const std::unique_ptr<SymTableNode>& idPtr);
+void execStatement(void);
+void execAssignmentStatement(const std::unique_ptr<SymTableNode>& idPtr);
 const std::unique_ptr<Type>&
 execRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool skipOrder);
 const std::unique_ptr<Type>&
 execDeclaredRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool skipOrder);
-void
-execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr);
-void
-execCompoundStatement(void);
-void
-execCaseStatement(void);
-void
-execForStatement(void);
-void
-execIfStatement(void);
-void
-execRepeatStatement(void);
-void
-execWhileStatement(void);
-void
-execSwitchStatement(void);
-void
-execTransStatement(void);
-void
-execTransBackStatement(void);
+void execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr);
+void execCompoundStatement(void);
+void execCaseStatement(void);
+void execForStatement(void);
+void execIfStatement(void);
+void execRepeatStatement(void);
+void execWhileStatement(void);
+void execSwitchStatement(void);
+void execTransStatement(void);
+void execTransBackStatement(void);
 
 //******************
 // EXECEXPR routines

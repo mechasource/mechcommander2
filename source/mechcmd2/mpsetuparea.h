@@ -5,7 +5,6 @@ MPSetupArea.h			: Interface for the MPSetupArea component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef MPSETUP_H
@@ -26,7 +25,7 @@ public:
 	acolourPicker(void);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-	void init(FitIniFile* file, const std::wstring_view& blockName);
+	void init(FitIniFile* file, std::wstring_view blockname);
 
 	virtual void destroy(void);
 	virtual void render(void);
@@ -34,9 +33,15 @@ public:
 	virtual int32_t handleMessage(uint32_t message, uint32_t who);
 	virtual void move(float offsetX, float offsetY);
 	void setcolour0(int32_t color);
-	int32_t getcolour0(void) const { return color0; }
+	int32_t getcolour0(void) const
+	{
+		return color0;
+	}
 	void setcolour1(int32_t color);
-	int32_t getcolour1(void) const { return color1; }
+	int32_t getcolour1(void) const
+	{
+		return color1;
+	}
 
 protected:
 	aRect mainRect;
@@ -68,7 +73,7 @@ public:
 		hasAnimation = false;
 		normalcolour = 0xff808080;
 	}
-	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	virtual int32_t init(FitIniFile* file, std::wstring_view blockname);
 	virtual void render(void);
 
 protected:
@@ -80,8 +85,11 @@ protected:
 class aInsigniaListItem : public aListItem
 {
 public:
-	aInsigniaListItem() { ; }
-	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	aInsigniaListItem()
+	{
+		;
+	}
+	virtual int32_t init(FitIniFile* file, std::wstring_view blockname);
 	virtual void update(void);
 
 protected:

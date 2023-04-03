@@ -6,8 +6,8 @@
 
 #include "mlr/mlrclippingstate.h"
 
-namespace MidLevelRenderer {
-
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //#########################    MLRClippingState    ############################
@@ -19,8 +19,7 @@ uint32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask + 1]
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClippingState::Save(std::iostream stream)
+void MLRClippingState::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -34,8 +33,7 @@ MLRClippingState::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClippingState::Load(std::iostream stream)
+void MLRClippingState::Load(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);

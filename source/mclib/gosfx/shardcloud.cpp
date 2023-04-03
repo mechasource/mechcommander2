@@ -12,8 +12,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::ShardCloud__Specification::ShardCloud__Specification(
-	std::iostream stream, uint32_t gfx_version) :
-	SpinningCloud__Specification(gosFX::ShardCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: SpinningCloud__Specification(gosFX::ShardCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -27,8 +27,8 @@ gosFX::ShardCloud__Specification::ShardCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShardCloud__Specification::ShardCloud__Specification() :
-	SpinningCloud__Specification(gosFX::ShardCloudClassID)
+gosFX::ShardCloud__Specification::ShardCloud__Specification()
+	: SpinningCloud__Specification(gosFX::ShardCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -53,8 +53,7 @@ gosFX::ShardCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud__Specification::Save(std::iostream stream)
+void gosFX::ShardCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -65,8 +64,7 @@ gosFX::ShardCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud__Specification::BuildDefaults()
+void gosFX::ShardCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
@@ -80,8 +78,7 @@ gosFX::ShardCloud__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::ShardCloud__Specification::IsDataValid(bool fix_data)
+bool gosFX::ShardCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	return SpinningCloud__Specification::IsDataValid(fix_data);
@@ -98,8 +95,7 @@ gosFX::ShardCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud__Specification::Copy(ShardCloud__Specification* spec)
+void gosFX::ShardCloud__Specification::Copy(ShardCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -121,8 +117,7 @@ gosFX::ShardCloud::ClassData* gosFX::ShardCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud::InitializeClass()
+void gosFX::ShardCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -133,8 +128,7 @@ gosFX::ShardCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud::TerminateClass()
+void gosFX::ShardCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -143,8 +137,8 @@ gosFX::ShardCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShardCloud::ShardCloud(Specification* spec, uint32_t flags) :
-	SpinningCloud(DefaultData, spec, flags)
+gosFX::ShardCloud::ShardCloud(Specification* spec, uint32_t flags)
+	: SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -184,8 +178,7 @@ gosFX::ShardCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::ShardCloud::AnimateParticle(
+bool gosFX::ShardCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -220,8 +213,7 @@ gosFX::ShardCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void gosFX::ShardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -247,8 +239,7 @@ gosFX::ShardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud::DestroyParticle(uint32_t index)
+void gosFX::ShardCloud::DestroyParticle(uint32_t index)
 {
 	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
@@ -258,8 +249,7 @@ gosFX::ShardCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud::Draw(DrawInfo* info)
+void gosFX::ShardCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -520,8 +510,7 @@ gosFX::ShardCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShardCloud::TestInstance(void) const
+void gosFX::ShardCloud::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

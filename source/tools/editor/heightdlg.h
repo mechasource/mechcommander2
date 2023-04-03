@@ -26,11 +26,23 @@ public:
 	void OnOK(void);
 	// virtual	void OnCommand(Window *wnd,int32_t nCommand);
 
-	int32_t GetMin() { return min; }
-	int32_t GetMax() { return max; }
+	int32_t GetMin()
+	{
+		return min;
+	}
+	int32_t GetMax()
+	{
+		return max;
+	}
 
-	void SetMin(int32_t newMin) { min = newMin; }
-	void SetMax(int32_t newMax) { max = newMax; }
+	void SetMin(int32_t newMin)
+	{
+		min = newMin;
+	}
+	void SetMax(int32_t newMax)
+	{
+		max = newMax;
+	}
 	virtual BOOL OnInitDialog()
 	{
 		Init(void);

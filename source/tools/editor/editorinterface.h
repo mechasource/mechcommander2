@@ -40,14 +40,17 @@ class EditorInterface : public CWnd
 {
 private:
 public:
-	static EditorInterface* instance() { return s_instance; }
+	static EditorInterface* instance()
+	{
+		return s_instance;
+	}
 
 	EditorInterface(void);
 	~EditorInterface(void);
 
 	void handleNewMenuMessage(int32_t specificMessage);
 
-	void init(const std::wstring_view& fileName);
+	void init(std::wstring_view fileName);
 
 	void terminate(void);
 
@@ -60,16 +63,25 @@ public:
 	/* When in "ObjectSelectOnlyMode", the interface is put in selection mode
 	and all features are disabled except those pertaining to selection of
 	objects. This mode is engaged from the objectives dialog. */
-	bool ObjectSelectOnlyMode() { return bObjectSelectOnlyMode; }
-	void ObjectSelectOnlyMode(bool val) { bObjectSelectOnlyMode = val; }
+	bool ObjectSelectOnlyMode()
+	{
+		return bObjectSelectOnlyMode;
+	}
+	void ObjectSelectOnlyMode(bool val)
+	{
+		bObjectSelectOnlyMode = val;
+	}
 	CObjectivesEditState objectivesEditState; /* persistent storage for the
 												 objective(s) dialog */
-	void SelectionMode() { Select(void); }
+	void SelectionMode()
+	{
+		Select(void);
+	}
 
 	int32_t RefractalizeTerrain(int32_t threshold);
 
 	virtual void handleLeftButtonDown(int32_t PosX, int32_t PosY); // mouse button down
-	virtual void handleLeftButtonDbl(int32_t PosX, int32_t PosY) {} // mouse button dbl click
+	virtual void handleLeftButtonDbl(int32_t PosX, int32_t PosY) { } // mouse button dbl click
 	virtual void handleLeftButtonUp(int32_t PosX, int32_t PosY); // pop ups etc need this
 	virtual void handleKeyDown(int32_t Key);
 	virtual void handleMouseMove(int32_t PosX, int32_t PosY);
@@ -78,7 +90,10 @@ public:
 
 	virtual void render(void);
 	void initTacMap(void);
-	void updateTacMap() { tacMap.UpdateMap(void); }
+	void updateTacMap()
+	{
+		tacMap.UpdateMap(void);
+	}
 
 	void syncHScroll(void);
 	void syncVScroll(void);
@@ -106,7 +121,10 @@ public:
 
 	bool SafeRunGameOSLogic(void);
 
-	bool ThisIsInitialized() { return this->bThisIsInitialized; }
+	bool ThisIsInitialized()
+	{
+		return this->bThisIsInitialized;
+	}
 
 	afx_msg void UpdateButton(CCmdUI* button);
 
@@ -295,11 +313,14 @@ public:
 	EditorObjectMgr objectMgr;
 	EditorData data;
 
-	~Editor() { destroy(void); }
+	~Editor()
+	{
+		destroy(void);
+	}
 
 	void destroy(void);
 
-	void init(const std::wstring_view& loader);
+	void init(std::wstring_view loader);
 
 	void render(void);
 
@@ -312,12 +333,20 @@ public:
 class TeamsAction : public Action
 {
 public:
-	TeamsAction() :
-		Action() {}
-	TeamsAction(const CTeams& teams) :
-		Action() { PreviousTeams(teams); }
-	virtual ~TeamsAction() {}
-	virtual bool redo() { return undo(void); }
+	TeamsAction()
+		: Action()
+	{
+	}
+	TeamsAction(const CTeams& teams)
+		: Action()
+	{
+		PreviousTeams(teams);
+	}
+	virtual ~TeamsAction() { }
+	virtual bool redo()
+	{
+		return undo(void);
+	}
 	virtual bool undo(void);
 	CTeams PreviousTeams(void);
 	void PreviousTeams(const CTeams& teams);

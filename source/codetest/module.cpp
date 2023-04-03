@@ -3,7 +3,7 @@
 
  codetest
 
- 2018-09-03 Jerker Back, created
+ 2018-09-03 Jerker Bäck, created
 
  $LastChangedBy$
 
@@ -26,8 +26,8 @@ HRESULT testresource();
 /// <param name="nShowCmd">initial window state</param>
 /// <returns>application exit code</returns>
 extern "C" int32_t WINAPI
-wWinMain(_In_ HINSTANCE hinstance,_In_opt_ HINSTANCE notused,
-	_In_ PWSTR commandline,_In_ int32_t windowshow)
+wWinMain(_In_ HINSTANCE hinstance, _In_opt_ HINSTANCE notused,
+	_In_ PWSTR commandline, _In_ int32_t windowshow)
 {
 	(void)hinstance;
 	(void)notused;

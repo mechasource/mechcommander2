@@ -43,7 +43,7 @@ extern ObjectTypeManagerPtr objectTypeManager;
 #define RELPOS_FLAG_PASSABLE_START 2
 #define RELPOS_FLAG_PASSABLE_GOAL 4
 
-enum class 
+enum class
 {
 	ATTACKSOURCE_WEAPONFIRE,
 	ATTACKSOURCE_COLLISION,
@@ -124,11 +124,17 @@ public:
 		data = 0;
 	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
-	WeaponFireChunk(void) { init(void); }
+	WeaponFireChunk(void)
+	{
+		init(void);
+	}
 
-	~WeaponFireChunk(void) { destroy(void); }
+	~WeaponFireChunk(void)
+	{
+		destroy(void);
+	}
 
 	void buildMoverTarget(GameObjectPtr target, int32_t weaponIndex, bool hit, float entryAngle,
 		int32_t numMissiles, int32_t hitLocation);
@@ -189,11 +195,17 @@ public:
 		data = 0;
 	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
-	WeaponHitChunk(void) { init(void); }
+	WeaponHitChunk(void)
+	{
+		init(void);
+	}
 
-	~WeaponHitChunk(void) { destroy(void); }
+	~WeaponHitChunk(void)
+	{
+		destroy(void);
+	}
 
 	void buildMoverTarget(GameObjectPtr target, int32_t cause, float damage, int32_t hitLocation,
 		float entryAngle, bool isRefit);
@@ -297,40 +309,79 @@ public:
 	void operator delete(PVOID us);
 	virtual void set(GameObject copy);
 
-	GameObject(void) { init(true); }
-	virtual ~GameObject(void) { destroy(void); }
+	GameObject(void)
+	{
+		init(true);
+	}
+	virtual ~GameObject(void)
+	{
+		destroy(void);
+	}
 	virtual void init(bool create);
 	virtual void destroy(void);
 
-	ObjectClass getObjectClass(void) { return (objectClass); }
+	ObjectClass getObjectClass(void)
+	{
+		return (objectClass);
+	}
 
-	virtual int32_t update(void) { return (NO_ERROR); }
+	virtual int32_t update(void)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual void render(void) {}
+	virtual void render(void) { }
 
-	virtual void renderShadows(void) {}
+	virtual void renderShadows(void) { }
 
-	virtual void updateDebugWindow(GameDebugWindow* /*debugWindow*/) {}
+	virtual void updateDebugWindow(GameDebugWindow* /*debugWindow*/) { }
 
-	virtual AppearancePtr getAppearance(void) { return (appearance); }
+	virtual AppearancePtr getAppearance(void)
+	{
+		return (appearance);
+	}
 
-	virtual bool underPlayerControl(void) { return (false); }
+	virtual bool underPlayerControl(void)
+	{
+		return (false);
+	}
 
-	virtual int32_t getGroupId(void) { return (-1); }
+	virtual int32_t getGroupId(void)
+	{
+		return (-1);
+	}
 
-	virtual void setPartId(int32_t newPartId) { partId = newPartId; }
+	virtual void setPartId(int32_t newPartId)
+	{
+		partId = newPartId;
+	}
 
-	int32_t getPartId(void) { return (partId); }
+	int32_t getPartId(void)
+	{
+		return (partId);
+	}
 
-	virtual void setHandle(GameObjectHandle newHandle) { handle = newHandle; }
+	virtual void setHandle(GameObjectHandle newHandle)
+	{
+		handle = newHandle;
+	}
 
-	GameObjectHandle getHandle(void) { return (handle); }
+	GameObjectHandle getHandle(void)
+	{
+		return (handle);
+	}
 
 	uint32_t getWatchID(bool assign = true);
 
-	virtual const std::wstring_view& getName(void) { return (nullptr); }
+	virtual std::wstring_view getName(void)
+	{
+		return (nullptr);
+	}
 
-	virtual float getStatusRating(void) { return (0.0); }
+	virtual float getStatusRating(void)
+	{
+		return (0.0);
+	}
 
 	virtual float getDestructLevel(void)
 	{
@@ -343,24 +394,33 @@ public:
 		cellCol = cellPositionCol;
 	}
 
-	virtual void handleStaticCollision(void) {}
+	virtual void handleStaticCollision(void) { }
 
 	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum);
 
-	virtual int32_t getTypeHandle(void) { return (typeHandle); }
+	virtual int32_t getTypeHandle(void)
+	{
+		return (typeHandle);
+	}
 
 	virtual ObjectTypePtr getObjectType(void);
 
 	virtual void init(bool create, ObjectTypePtr _type);
 
-	virtual int32_t init(FitIniFile* /*objProfile*/) { return (NO_ERROR); }
+	virtual int32_t init(FitIniFile* /*objProfile*/)
+	{
+		return (NO_ERROR);
+	}
 
 	bool isMover(void)
 	{
 		return ((objectClass == BATTLEMECH) || (objectClass == GROUNDVEHICLE) || (objectClass == ELEMENTAL) || (objectClass == MOVER));
 	}
 
-	bool isMech(void) { return ((objectClass == BATTLEMECH)); }
+	bool isMech(void)
+	{
+		return ((objectClass == BATTLEMECH));
+	}
 
 	virtual int32_t calcHitLocation(GameObjectPtr /*attacker*/, int32_t /*weaponIndex*/,
 		int32_t /*attackSource*/, int32_t /*attackType*/)
@@ -374,31 +434,64 @@ public:
 		return (NO_ERROR);
 	}
 
-	virtual void setFireHandle(GameObjectHandle /*handle*/) {}
+	virtual void setFireHandle(GameObjectHandle /*handle*/) { }
 
-	virtual void killFire(void) {}
+	virtual void killFire(void) { }
 
-	virtual float getAppearRadius(void) { return 0.0f; }
+	virtual float getAppearRadius(void)
+	{
+		return 0.0f;
+	}
 
-	virtual int32_t getTeamId(void) { return (-1); }
+	virtual int32_t getTeamId(void)
+	{
+		return (-1);
+	}
 
-	virtual int32_t getVertexNum(void) { return d_vertexNum; }
+	virtual int32_t getVertexNum(void)
+	{
+		return d_vertexNum;
+	}
 
-	virtual int32_t setTeamId(int32_t /*_teamId*/, bool /*setup*/) { return (NO_ERROR); }
+	virtual int32_t setTeamId(int32_t /*_teamId*/, bool /*setup*/)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual TeamPtr getTeam(void) { return (nullptr); }
+	virtual TeamPtr getTeam(void)
+	{
+		return (nullptr);
+	}
 
-	virtual int32_t setTeam(TeamPtr /*_team*/) { return (NO_ERROR); }
+	virtual int32_t setTeam(TeamPtr /*_team*/)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual bool isFriendly(TeamPtr /*team*/) { return (false); }
+	virtual bool isFriendly(TeamPtr /*team*/)
+	{
+		return (false);
+	}
 
-	virtual bool isEnemy(TeamPtr /*team*/) { return (false); }
+	virtual bool isEnemy(TeamPtr /*team*/)
+	{
+		return (false);
+	}
 
-	virtual bool isNeutral(TeamPtr /*team*/) { return (true); }
+	virtual bool isNeutral(TeamPtr /*team*/)
+	{
+		return (true);
+	}
 
-	virtual Stuff::Vector3D getPosition(void) { return (position); }
+	virtual Stuff::Vector3D getPosition(void)
+	{
+		return (position);
+	}
 
-	virtual Stuff::Vector3D getLOSPosition(void) { return (position); }
+	virtual Stuff::Vector3D getLOSPosition(void)
+	{
+		return (position);
+	}
 
 	virtual Stuff::Vector3D relativePosition(float angle, float distance, uint32_t flags);
 
@@ -424,21 +517,36 @@ public:
 		return (result);
 	}
 
-	virtual Stuff::Vector4D getScreenPos(int32_t /*whichOne*/) { return (screenPos); }
+	virtual Stuff::Vector4D getScreenPos(int32_t /*whichOne*/)
+	{
+		return (screenPos);
+	}
 
-	virtual void setVelocity(Stuff::Vector3D& /*newVelocity*/) {}
+	virtual void setVelocity(Stuff::Vector3D& /*newVelocity*/) { }
 
-	virtual float getSpeed(void) { return (0.0); }
+	virtual float getSpeed(void)
+	{
+		return (0.0);
+	}
 
-	virtual int32_t getMoveLevel(void) { return (0); }
+	virtual int32_t getMoveLevel(void)
+	{
+		return (0);
+	}
 
-	virtual float getRotation(void) { return (rotation); }
+	virtual float getRotation(void)
+	{
+		return (rotation);
+	}
 
-	virtual void setRotation(float rot) { rotation = rot; }
+	virtual void setRotation(float rot)
+	{
+		rotation = rot;
+	}
 
-	virtual void rotate(float /*angle*/) {}
+	virtual void rotate(float /*angle*/) { }
 
-	virtual void rotate(float /*yaw*/, float /*pitch*/) {}
+	virtual void rotate(float /*yaw*/, float /*pitch*/) { }
 
 	virtual Stuff::Vector3D getRotationVector(void)
 	{
@@ -456,7 +564,10 @@ public:
 		return (false);
 	}
 
-	uint8_t getStatus(void) { return (status); }
+	uint8_t getStatus(void)
+	{
+		return (status);
+	}
 
 	// NEVER call this with forceStatus UNLESS you are recovering a mech!!!
 	void setStatus(int32_t newStatus, bool forceStatus = false)
@@ -467,20 +578,32 @@ public:
 			status = (uint8_t)newStatus;
 	}
 
-	virtual bool isCrippled(void) { return (false); }
+	virtual bool isCrippled(void)
+	{
+		return (false);
+	}
 
 	virtual bool isDisabled(void)
 	{
 		return ((status == OBJECT_STATUS_DISABLED) || (status == OBJECT_STATUS_DESTROYED));
 	}
 
-	virtual bool isDestroyed(void) { return (status == OBJECT_STATUS_DESTROYED); }
+	virtual bool isDestroyed(void)
+	{
+		return (status == OBJECT_STATUS_DESTROYED);
+	}
 
-	virtual float getDamage(void) { return (0.0); }
+	virtual float getDamage(void)
+	{
+		return (0.0);
+	}
 
-	virtual void setDamage(float /*newDamage*/) {}
+	virtual void setDamage(float /*newDamage*/) { }
 
-	virtual float getDamageLevel(void) { return (0.0); }
+	virtual float getDamageLevel(void)
+	{
+		return (0.0);
+	}
 
 	virtual int32_t getContacts(
 		int32_t* /*contactList*/, int32_t /*contactCriteria*/, int32_t /*sortType*/)
@@ -488,7 +611,10 @@ public:
 		return (0);
 	}
 
-	bool getTangible(void) { return ((flags & OBJECT_FLAG_TANGIBLE) != 0); }
+	bool getTangible(void)
+	{
+		return ((flags & OBJECT_FLAG_TANGIBLE) != 0);
+	}
 
 	void setTangible(bool set)
 	{
@@ -498,13 +624,22 @@ public:
 			flags &= (OBJECT_FLAG_TANGIBLE ^ 0xFFFFFFFF);
 	}
 
-	virtual void setCommanderId(int32_t /*_commanderId*/) {}
+	virtual void setCommanderId(int32_t /*_commanderId*/) { }
 
-	virtual std::unique_ptr<MechWarrior> getPilot(void) { return (nullptr); }
+	virtual std::unique_ptr<MechWarrior> getPilot(void)
+	{
+		return (nullptr);
+	}
 
-	virtual int32_t getCommanderId(void) { return (-1); }
+	virtual int32_t getCommanderId(void)
+	{
+		return (-1);
+	}
 
-	virtual int32_t write(std::unique_ptr<File> /*objFile*/) { return NO_ERROR; }
+	virtual int32_t write(std::unique_ptr<File> /*objFile*/)
+	{
+		return NO_ERROR;
+	}
 
 	virtual float distanceFrom(Stuff::Vector3D goal);
 
@@ -512,7 +647,7 @@ public:
 
 	virtual int32_t cellDistanceFrom(GameObjectPtr obj);
 
-	virtual void calcLineOfSightNodes(void) {}
+	virtual void calcLineOfSightNodes(void) { }
 
 	virtual int32_t getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells);
 
@@ -525,47 +660,86 @@ public:
 
 	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
-	virtual float relViewFacingTo(Stuff::Vector3D goal) { return (GameObject::relFacingTo(goal)); }
+	virtual float relViewFacingTo(Stuff::Vector3D goal)
+	{
+		return (GameObject::relFacingTo(goal));
+	}
 
 	virtual int32_t openStatusWindow(int32_t /*x*/, int32_t /*y*/, int32_t /*w*/, int32_t /*h*/)
 	{
 		return (NO_ERROR);
 	}
 
-	virtual int32_t closeStatusWindow(void) { return (NO_ERROR); }
+	virtual int32_t closeStatusWindow(void)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual int32_t getMoveState(void) { return 0; }
+	virtual int32_t getMoveState(void)
+	{
+		return 0;
+	}
 
 	virtual void orderWithdraw(void)
 	{
 		// Does nothing until this is a mover.
 	}
 
-	virtual bool isWithdrawing(void) { return (false); }
+	virtual bool isWithdrawing(void)
+	{
+		return (false);
+	}
 
 	virtual float getExtentRadius(void);
 
 	virtual void setExtentRadius(float newRadius);
 
-	virtual bool isBuilding(void) { return (false); }
+	virtual bool isBuilding(void)
+	{
+		return (false);
+	}
 
-	virtual bool isTerrainObject(void) { return (false); }
+	virtual bool isTerrainObject(void)
+	{
+		return (false);
+	}
 
-	virtual bool inTransport(void) { return (false); }
+	virtual bool inTransport(void)
+	{
+		return (false);
+	}
 
-	virtual bool isCaptureable(int32_t /*capturingTeamID*/) { return (false); }
+	virtual bool isCaptureable(int32_t /*capturingTeamID*/)
+	{
+		return (false);
+	}
 
-	virtual bool canBeCaptured(void) { return false; }
+	virtual bool canBeCaptured(void)
+	{
+		return false;
+	}
 
-	virtual bool isPrison(void) { return (false); }
+	virtual bool isPrison(void)
+	{
+		return (false);
+	}
 
-	virtual bool isPowerSource(void) { return false; }
+	virtual bool isPowerSource(void)
+	{
+		return false;
+	}
 
-	virtual bool isSpecialBuilding(void) { return false; }
+	virtual bool isSpecialBuilding(void)
+	{
+		return false;
+	}
 
-	virtual bool isLit(void) { return false; }
+	virtual bool isLit(void)
+	{
+		return false;
+	}
 
-	virtual void setPowerSupply(GameObjectPtr /*power*/) {}
+	virtual void setPowerSupply(GameObjectPtr /*power*/) { }
 
 	//----------------------
 	// DEBUG FLAGS functions
@@ -578,7 +752,10 @@ public:
 			debugFlags &= (flag ^ 0xFFFF);
 	}
 
-	virtual bool getDebugFlag(uint16_t flag) { return ((debugFlags & flag) != 0); }
+	virtual bool getDebugFlag(uint16_t flag)
+	{
+		return ((debugFlags & flag) != 0);
+	}
 
 	//---------------
 	// FLAG functions
@@ -591,9 +768,15 @@ public:
 			flags &= (flag ^ 0xFFFFFFFF);
 	}
 
-	virtual bool getFlag(uint32_t flag) { return ((flags & flag) != 0); }
+	virtual bool getFlag(uint32_t flag)
+	{
+		return ((flags & flag) != 0);
+	}
 
-	virtual void initFlags(void) { flags = OBJECT_FLAG_USEME | OBJECT_FLAG_AWAKE; }
+	virtual void initFlags(void)
+	{
+		flags = OBJECT_FLAG_USEME | OBJECT_FLAG_AWAKE;
+	}
 
 	virtual void setSelected(bool set)
 	{
@@ -605,11 +788,20 @@ public:
 		setDrawBrackets(set);
 	}
 
-	virtual bool getSelected(void) { return ((flags & OBJECT_FLAG_SELECTED) != 0); }
+	virtual bool getSelected(void)
+	{
+		return ((flags & OBJECT_FLAG_SELECTED) != 0);
+	}
 
-	virtual bool isSelected(void) { return (getSelected()); }
+	virtual bool isSelected(void)
+	{
+		return (getSelected());
+	}
 
-	virtual bool isSelectable() { return true; }
+	virtual bool isSelectable()
+	{
+		return true;
+	}
 
 	virtual void setTargeted(bool set)
 	{
@@ -625,9 +817,15 @@ public:
 		setDrawcoloured(set);
 	}
 
-	virtual bool getTargeted(void) { return ((flags & OBJECT_FLAG_TARGETED) != 0); }
+	virtual bool getTargeted(void)
+	{
+		return ((flags & OBJECT_FLAG_TARGETED) != 0);
+	}
 
-	virtual void setDrawNormal() { drawFlags = DRAW_NORMAL; }
+	virtual void setDrawNormal()
+	{
+		drawFlags = DRAW_NORMAL;
+	}
 
 	virtual void setDrawText(bool set)
 	{
@@ -637,7 +835,10 @@ public:
 			drawFlags &= (DRAW_TEXT ^ 0xffffffff);
 	}
 
-	virtual int32_t getDrawText() { return drawFlags & DRAW_TEXT; }
+	virtual int32_t getDrawText()
+	{
+		return drawFlags & DRAW_TEXT;
+	}
 
 	virtual void setDrawBars(bool set)
 	{
@@ -647,7 +848,10 @@ public:
 			drawFlags &= (DRAW_BARS ^ 0xffffffff);
 	}
 
-	virtual int32_t getDrawBars() { return drawFlags & DRAW_BARS; }
+	virtual int32_t getDrawBars()
+	{
+		return drawFlags & DRAW_BARS;
+	}
 
 	virtual void setDrawBrackets(bool set)
 	{
@@ -657,7 +861,10 @@ public:
 			drawFlags &= (DRAW_BRACKETS ^ 0xffffffff);
 	}
 
-	virtual int32_t getDrawBrackets() { return drawFlags & DRAW_BRACKETS; }
+	virtual int32_t getDrawBrackets()
+	{
+		return drawFlags & DRAW_BRACKETS;
+	}
 
 	virtual void setDrawcoloured(bool set)
 	{
@@ -667,7 +874,10 @@ public:
 			drawFlags &= (DRAW_COLORED ^ 0xffffffff);
 	}
 
-	virtual int32_t getDrawcoloured() { return drawFlags & DRAW_COLORED; }
+	virtual int32_t getDrawcoloured()
+	{
+		return drawFlags & DRAW_COLORED;
+	}
 
 	virtual void setObscured(bool set)
 	{
@@ -677,9 +887,15 @@ public:
 			flags &= (OBJECT_FLAG_OBSCURED ^ 0xFFFFFFFF);
 	}
 
-	virtual bool getObscured(void) { return ((flags & OBJECT_FLAG_OBSCURED) != 0); }
+	virtual bool getObscured(void)
+	{
+		return ((flags & OBJECT_FLAG_OBSCURED) != 0);
+	}
 
-	virtual bool isTargeted(void) { return (getTargeted()); }
+	virtual bool isTargeted(void)
+	{
+		return (getTargeted());
+	}
 
 	virtual void setExists(bool set)
 	{
@@ -689,7 +905,10 @@ public:
 			flags &= (OBJECT_FLAG_EXISTS ^ 0xFFFFFFFF);
 	}
 
-	virtual bool getExists(void) { return ((flags & OBJECT_FLAG_EXISTS) != 0); }
+	virtual bool getExists(void)
+	{
+		return ((flags & OBJECT_FLAG_EXISTS) != 0);
+	}
 
 	virtual void setAwake(bool set)
 	{
@@ -699,9 +918,15 @@ public:
 			flags &= (OBJECT_FLAG_AWAKE ^ 0xFFFFFFFF);
 	}
 
-	virtual bool getAwake(void) { return ((flags & OBJECT_FLAG_AWAKE) != 0); }
+	virtual bool getAwake(void)
+	{
+		return ((flags & OBJECT_FLAG_AWAKE) != 0);
+	}
 
-	virtual bool getExistsAndAwake(void) { return (getExists() && getAwake()); }
+	virtual bool getExistsAndAwake(void)
+	{
+		return (getExists() && getAwake());
+	}
 
 	virtual void setUseMe(bool set)
 	{
@@ -711,7 +936,10 @@ public:
 			flags &= (OBJECT_FLAG_USEME ^ 0xFFFFFFFF);
 	}
 
-	virtual bool getUseMe(void) { return ((flags & OBJECT_FLAG_USEME) != 0); }
+	virtual bool getUseMe(void)
+	{
+		return ((flags & OBJECT_FLAG_USEME) != 0);
+	}
 
 	virtual void setCaptured(bool set)
 	{
@@ -721,22 +949,40 @@ public:
 			flags &= (OBJECT_FLAG_CAPTURED ^ 0xFFFFFFFF);
 	}
 
-	virtual bool getCaptured(void) { return ((flags & OBJECT_FLAG_CAPTURED) != 0); }
+	virtual bool getCaptured(void)
+	{
+		return ((flags & OBJECT_FLAG_CAPTURED) != 0);
+	}
 
-	virtual void clearCaptured(void) { setCaptured(false); }
+	virtual void clearCaptured(void)
+	{
+		setCaptured(false);
+	}
 
-	virtual bool isCaptured(void) { return (getCaptured()); }
+	virtual bool isCaptured(void)
+	{
+		return (getCaptured());
+	}
 
-	virtual void setTonnage(float _tonnage) { tonnage = _tonnage; }
+	virtual void setTonnage(float _tonnage)
+	{
+		tonnage = _tonnage;
+	}
 
-	virtual float getTonnage(void) { return (tonnage); }
+	virtual float getTonnage(void)
+	{
+		return (tonnage);
+	}
 
 	virtual void setCollisionFreeFromWID(GameObjectWatchID objWID)
 	{
 		collisionFreeFromWID = objWID;
 	}
 
-	virtual GameObjectWatchID getCollisionFreeFromWID(void) { return (collisionFreeFromWID); }
+	virtual GameObjectWatchID getCollisionFreeFromWID(void)
+	{
+		return (collisionFreeFromWID);
+	}
 
 #ifdef USE_COLLISION
 	virtual GameObjectHandle getCollisionFreeFromObject(void)
@@ -750,59 +996,119 @@ public:
 		collisionFreeTime = time;
 	}
 
-	virtual float getCollisionFreeTime(void) { return (collisionFreeTime); }
+	virtual float getCollisionFreeTime(void)
+	{
+		return (collisionFreeTime);
+	}
 
 	virtual void damageObject(float /*dmgAmount*/)
 	{
 		// damage += dmgAmount;
 	}
 
-	virtual void setExplDmg(float newDmg) { explDamage = newDmg; }
+	virtual void setExplDmg(float newDmg)
+	{
+		explDamage = newDmg;
+	}
 
-	virtual void setExplRad(float newRad) { explRadius = newRad; }
+	virtual void setExplRad(float newRad)
+	{
+		explRadius = newRad;
+	}
 
-	virtual float getExplDmg(void) { return (explDamage); }
+	virtual float getExplDmg(void)
+	{
+		return (explDamage);
+	}
 
-	virtual void setSensorRange(float /*range*/) {}
+	virtual void setSensorRange(float /*range*/) { }
 
-	virtual bool hasActiveProbe(void) { return (false); }
+	virtual bool hasActiveProbe(void)
+	{
+		return (false);
+	}
 
-	virtual float getEcmRange(void) { return (0.0); }
+	virtual float getEcmRange(void)
+	{
+		return (0.0);
+	}
 
-	virtual bool hasNullSignature(void) { return (false); }
+	virtual bool hasNullSignature(void)
+	{
+		return (false);
+	}
 
-	virtual void setSalvage(SalvageItemPtr /*newSalvage*/) {}
+	virtual void setSalvage(SalvageItemPtr /*newSalvage*/) { }
 
-	virtual SalvageItemPtr getSalvage(void) { return (nullptr); }
+	virtual SalvageItemPtr getSalvage(void)
+	{
+		return (nullptr);
+	}
 
-	virtual int32_t getWindowsVisible(void) { return (windowsVisible); }
+	virtual int32_t getWindowsVisible(void)
+	{
+		return (windowsVisible);
+	}
 
 	virtual int32_t getCaptureBlocker(
 		GameObjectPtr capturingMover, GameObjectPtr* blockerList = nullptr);
 
 	virtual int32_t kill(void);
 
-	virtual bool isMarine(void) { return (false); }
+	virtual bool isMarine(void)
+	{
+		return (false);
+	}
 
-	virtual float getRefitPoints(void) { return (0.0); }
+	virtual float getRefitPoints(void)
+	{
+		return (0.0);
+	}
 
-	virtual bool burnRefitPoints(float /*pointsToBurn*/) { return (false); }
+	virtual bool burnRefitPoints(float /*pointsToBurn*/)
+	{
+		return (false);
+	}
 
-	virtual float getRecoverPoints(void) { return (0.0); }
+	virtual float getRecoverPoints(void)
+	{
+		return (0.0);
+	}
 
-	virtual bool burnRecoverPoints(float /*pointsToBurn*/) { return (false); }
+	virtual bool burnRecoverPoints(float /*pointsToBurn*/)
+	{
+		return (false);
+	}
 
-	virtual int32_t getCurCV(void) { return (curCV); }
+	virtual int32_t getCurCV(void)
+	{
+		return (curCV);
+	}
 
-	virtual int32_t getMaxCV(void) { return (maxCV); }
+	virtual int32_t getMaxCV(void)
+	{
+		return (maxCV);
+	}
 
-	virtual void setCurCV(int32_t newCV) { curCV = (int16_t)newCV; }
+	virtual void setCurCV(int32_t newCV)
+	{
+		curCV = (int16_t)newCV;
+	}
 
-	virtual int32_t getThreatRating(void) { return (threatRating); }
+	virtual int32_t getThreatRating(void)
+	{
+		return (threatRating);
+	}
 
-	virtual void setThreatRating(int16_t rating) { threatRating = rating; }
+	virtual void setThreatRating(int16_t rating)
+	{
+		threatRating = rating;
+	}
 
-	virtual void incrementAttackers(void) { numAttackers++; }
+	virtual void incrementAttackers(void)
+	{
+		numAttackers++;
+	}
 
 	virtual void decrementAttackers(void)
 	{
@@ -810,7 +1116,10 @@ public:
 		numAttackers--;
 	}
 
-	virtual int32_t getNumAttackers(void) { return (numAttackers); }
+	virtual int32_t getNumAttackers(void)
+	{
+		return (numAttackers);
+	}
 
 	virtual bool onScreen(void);
 
@@ -835,28 +1144,52 @@ public:
 
 	virtual bool isNeutral(GameObjectPtr obj);
 
-	virtual bool isLinked(void) { return false; }
+	virtual bool isLinked(void)
+	{
+		return false;
+	}
 
-	virtual GameObjectPtr getParent(void) { return nullptr; }
+	virtual GameObjectPtr getParent(void)
+	{
+		return nullptr;
+	}
 
 	virtual void setParentId(uint32_t /*pId*/)
 	{
 		// Do Nothing.  Most of the time, this is OK!
 	}
 
-	virtual SensorSystem* getSensorSystem() { return nullptr; }
+	virtual SensorSystem* getSensorSystem()
+	{
+		return nullptr;
+	}
 
-	static void setInitialize(bool setting) { initialize = setting; }
+	static void setInitialize(bool setting)
+	{
+		initialize = setting;
+	}
 
-	virtual int32_t getDescription() { return -1; }
+	virtual int32_t getDescription()
+	{
+		return -1;
+	}
 
-	virtual bool isOnGUI(void) { return false; }
+	virtual bool isOnGUI(void)
+	{
+		return false;
+	}
 
-	virtual void setOnGUI(bool /*onGui*/) {}
+	virtual void setOnGUI(bool /*onGui*/) { }
 
-	virtual float getLOSFactor(void) { return 1.0f; }
+	virtual float getLOSFactor(void)
+	{
+		return 1.0f;
+	}
 
-	virtual bool isLookoutTower(void) { return false; }
+	virtual bool isLookoutTower(void)
+	{
+		return false;
+	}
 
 	virtual void Save(PacketFilePtr file, int32_t packetNum);
 
@@ -864,7 +1197,7 @@ public:
 
 	void CopyTo(GameObjectData* data);
 
-	virtual void repairAll(void) {}
+	virtual void repairAll(void) { }
 };
 
 //---------------------------------------------------------------------------

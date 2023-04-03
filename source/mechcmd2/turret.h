@@ -80,15 +80,24 @@ public:
 		LOSFactor = 1.0f;
 	}
 
-	TurretType(void) { init(void); }
+	TurretType(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
-	~TurretType(void) { destroy(void); }
+	~TurretType(void)
+	{
+		destroy(void);
+	}
 
-	float getDamageLevel(void) { return (damageLevel); }
+	float getDamageLevel(void)
+	{
+		return (damageLevel);
+	}
 
 	virtual void destroy(void);
 
@@ -152,16 +161,25 @@ public:
 public:
 	void init(bool create);
 
-	Turret(void) :
-		TerrainObject() { init(true); }
+	Turret(void)
+		: TerrainObject()
+	{
+		init(true);
+	}
 
-	~Turret(void) { destroy(void); }
+	~Turret(void)
+	{
+		destroy(void);
+	}
 
 	virtual void updateDebugWindow(GameDebugWindow* debugWindow);
 
 	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-	virtual int32_t getTeamId(void) { return (teamId); }
+	virtual int32_t getTeamId(void)
+	{
+		return (teamId);
+	}
 
 	virtual TeamPtr getTeam(void);
 
@@ -181,9 +199,15 @@ public:
 
 	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-	int32_t getNetRosterIndex(void) { return (netRosterIndex); }
+	int32_t getNetRosterIndex(void)
+	{
+		return (netRosterIndex);
+	}
 
-	void setNetRosterIndex(int32_t index) { netRosterIndex = index; }
+	void setNetRosterIndex(int32_t index)
+	{
+		netRosterIndex = index;
+	}
 
 	void lightOnFire(float timeToBurn);
 
@@ -193,7 +217,10 @@ public:
 		return NO_ERROR;
 	}
 
-	virtual bool isBuilding(void) { return (true); }
+	virtual bool isBuilding(void)
+	{
+		return (true);
+	}
 
 	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
 	{
@@ -213,7 +240,10 @@ public:
 
 	void startWeaponRecycle(int32_t weaponId);
 
-	int32_t getNumWeaponFireChunks(int32_t which) { return (numWeaponFireChunks[which]); }
+	int32_t getNumWeaponFireChunks(int32_t which)
+	{
+		return (numWeaponFireChunks[which]);
+	}
 
 	int32_t clearWeaponFireChunks(int32_t which);
 
@@ -240,7 +270,10 @@ public:
 
 	virtual void printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo);
 
-	float getLittleExtent(void) { return (((TurretTypePtr)getObjectType())->littleExtent); }
+	float getLittleExtent(void)
+	{
+		return (((TurretTypePtr)getObjectType())->littleExtent);
+	}
 
 	virtual bool isLinked(void);
 

@@ -15,16 +15,17 @@
 //#include "ablenv.h"
 //#include "abldbug.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 int32_t
-ABLi_preProcess(const std::wstring_view& sourceFileName, int32_t* numErrors = nullptr,
+ABLi_preProcess(std::wstring_view sourceFileName, int32_t* numErrors = nullptr,
 	int32_t* numLinesProcessed = nullptr, int32_t* numFilesProcessed = nullptr,
 	bool printLines = false);
 
 const std::unique_ptr<ABLModule>&
-ABLi_loadLibrary(const std::wstring_view& sourceFileName, int32_t* numErrors = nullptr,
+ABLi_loadLibrary(std::wstring_view sourceFileName, int32_t* numErrors = nullptr,
 	int32_t* numLinesProcessed = nullptr, int32_t* numFilesProcessed = nullptr,
 	bool printLines = false, bool createInstance = true);
 
@@ -48,8 +49,8 @@ extern bool CallModuleInit;
 extern int32_t FileNumber;
 
 extern Type DummyType;
-extern const std::wstring_view& codeBuffer;
-extern const std::wstring_view& codeBufferPtr;
+extern std::wstring_view codeBuffer;
+extern std::wstring_view codeBufferPtr;
 extern StackItem* stack;
 // extern StackItem*		eternalStack;
 extern const std::unique_ptr<StackItem>& tos;
@@ -67,8 +68,8 @@ extern ABLFile* sourceFile;
 
 extern wchar_t sourceBuffer[MAXLEN_SOURCELINE];
 extern int32_t bufferOffset;
-extern const std::wstring_view& bufferp;
-extern const std::wstring_view& tokenp;
+extern std::wstring_view bufferp;
+extern std::wstring_view tokenp;
 
 extern int32_t digitCount;
 extern bool countError;
@@ -128,8 +129,7 @@ const std::unique_ptr<UserFile>& UserFile::files[MAX_USER_FILES];
 // PROFILING LOG routines
 //***************************************************************************
 
-void
-DumpProfileLog(void)
+void DumpProfileLog(void)
 {
 	//----------------
 	// Dump to file...
@@ -140,8 +140,7 @@ DumpProfileLog(void)
 
 //---------------------------------------------------------------------------
 
-void
-ABL_CloseProfileLog(void)
+void ABL_CloseProfileLog(void)
 {
 	if (ProfileLog)
 	{
@@ -159,8 +158,7 @@ ABL_CloseProfileLog(void)
 
 //---------------------------------------------------------------------------
 
-void
-ABL_OpenProfileLog(void)
+void ABL_OpenProfileLog(void)
 {
 	if (ProfileLog)
 		ABL_CloseProfileLog();
@@ -174,8 +172,7 @@ ABL_OpenProfileLog(void)
 
 //---------------------------------------------------------------------------
 
-void
-ABL_AddToProfileLog(const std::wstring_view& profileString)
+void ABL_AddToProfileLog(std::wstring_view profileString)
 {
 	if (NumProfileLogLines == MAX_PROFILE_LINES)
 		DumpProfileLog();
@@ -199,16 +196,14 @@ UserFile::operator new(size_t mySize)
 
 //---------------------------------------------------------------------------
 
-void
-UserFile::operator delete(PVOID us)
+void UserFile::operator delete(PVOID us)
 {
 	ABLSystemFreeCallback(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-UserFile::dump(void)
+void UserFile::dump(void)
 {
 	//----------------
 	// Dump to file...
@@ -219,8 +214,7 @@ UserFile::dump(void)
 
 //---------------------------------------------------------------------------
 
-void
-UserFile::close(void)
+void UserFile::close(void)
 {
 	if (pfile && inUse)
 	{
@@ -238,7 +232,7 @@ UserFile::close(void)
 //---------------------------------------------------------------------------
 
 int32_t
-UserFile::open(const std::wstring_view& fileName)
+UserFile::open(std::wstring_view fileName)
 {
 	numLines = 0;
 	totalLines = 0;
@@ -250,8 +244,7 @@ UserFile::open(const std::wstring_view& fileName)
 
 //---------------------------------------------------------------------------
 
-void
-UserFile::write(const std::wstring_view& s)
+void UserFile::write(std::wstring_view s)
 {
 	static wchar_t buffer[MAX_USER_FILE_LINELEN];
 	if (numLines == MAX_USER_FILE_LINES)
@@ -282,8 +275,7 @@ UserFile::getNewFile(void)
 
 //---------------------------------------------------------------------------
 
-void
-UserFile::setup(void)
+void UserFile::setup(void)
 {
 	for (size_t i = 0; i < MAX_USER_FILES; i++)
 	{
@@ -299,8 +291,7 @@ UserFile::setup(void)
 
 //---------------------------------------------------------------------------
 
-void
-UserFile::cleanup(void)
+void UserFile::cleanup(void)
 {
 	for (size_t i = 0; i < MAX_USER_FILES; i++)
 	{
@@ -321,8 +312,7 @@ UserFile::cleanup(void)
 // MODULE REGISTRY routines
 //***************************************************************************
 
-void
-initModuleRegistry(int32_t maxModules)
+void initModuleRegistry(int32_t maxModules)
 {
 	//---------------------------------------------------------------------
 	// First, set the max number of modules that may be loaded into the ABL
@@ -345,8 +335,7 @@ initModuleRegistry(int32_t maxModules)
 
 //***************************************************************************
 
-void
-destroyModuleRegistry(void)
+void destroyModuleRegistry(void)
 {
 	//-----------------------------------------------------------
 	// First, go through the registry, free'n each module and its
@@ -372,8 +361,7 @@ destroyModuleRegistry(void)
 // LIBRARY REGISTRY routines
 //***************************************************************************
 
-void
-initLibraryRegistry(int32_t maxLibraries)
+void initLibraryRegistry(int32_t maxLibraries)
 {
 	//-----------------------------------------------------------------------
 	// First, set the max number of libraries that may be loaded into the ABL
@@ -390,8 +378,7 @@ initLibraryRegistry(int32_t maxLibraries)
 
 //***************************************************************************
 
-void
-destroyLibraryRegistry(void)
+void destroyLibraryRegistry(void)
 {
 	//-----------------------------------------------------------------
 	// Kinda need to do the same thing here as in the normal Registry.
@@ -424,8 +411,7 @@ ABLModule::operator new(size_t mySize)
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::operator delete(PVOID us)
+void ABLModule::operator delete(PVOID us)
 {
 	ABLSystemFreeCallback(us);
 }
@@ -482,7 +468,7 @@ ABLModule::init(int32_t moduleHandle)
 		for (size_t i = 0; i < numStatics; i++)
 			if (sizeList[i] > 0)
 			{
-				staticData[i].address = (const std::wstring_view&)ABLStackMallocCallback(sizeList[i]);
+				staticData[i].address = (std::wstring_view)ABLStackMallocCallback(sizeList[i]);
 				if (!staticData)
 				{
 					wchar_t err[255];
@@ -554,8 +540,7 @@ ABLModule::init(int32_t moduleHandle)
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::write(ABLFile* moduleFile)
+void ABLModule::write(ABLFile* moduleFile)
 {
 	moduleFile->writeString(name);
 	moduleFile->writeByte(nullptr);
@@ -584,8 +569,7 @@ ABLModule::write(ABLFile* moduleFile)
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::read(ABLFile* moduleFile)
+void ABLModule::read(ABLFile* moduleFile)
 {
 	//----------------------------------------------------------------------------
 	// If this is called on a newly init'd module, then it will do all
@@ -640,7 +624,7 @@ ABLModule::read(ABLFile* moduleFile)
 			{
 				if (fresh)
 				{
-					staticData[i].address = (const std::wstring_view&)ABLStackMallocCallback(sizeList[i]);
+					staticData[i].address = (std::wstring_view)ABLStackMallocCallback(sizeList[i]);
 					if (!staticData)
 					{
 						wchar_t err[255];
@@ -714,7 +698,7 @@ ABLModule::read(ABLFile* moduleFile)
 
 //---------------------------------------------------------------------------
 
-const std::wstring_view&
+std::wstring_view
 ABLModule::getFileName(void)
 {
 	return (ModuleRegistry[handle].fileName);
@@ -722,8 +706,7 @@ ABLModule::getFileName(void)
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::setName(const std::wstring_view& _name)
+void ABLModule::setName(std::wstring_view _name)
 {
 	strncpy(name, _name, MAX_ABLMODULE_NAME);
 	name[MAX_ABLMODULE_NAME] = nullptr;
@@ -731,16 +714,14 @@ ABLModule::setName(const std::wstring_view& _name)
 
 //---------------------------------------------------------------------------
 
-bool
-ABLModule::isLibrary(void)
+bool ABLModule::isLibrary(void)
 {
 	return (ModuleRegistry[handle].moduleIdPtr->library != nullptr);
 }
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::resetOrderCallFlags(void)
+void ABLModule::resetOrderCallFlags(void)
 {
 	if (ModuleRegistry[handle].numOrderCalls == 0)
 		return;
@@ -751,16 +732,14 @@ ABLModule::resetOrderCallFlags(void)
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::setOrderCallFlag(uint8_t dword, uint8_t bit)
+void ABLModule::setOrderCallFlag(uint8_t dword, uint8_t bit)
 {
 	orderCallFlags[dword] |= (1 << bit);
 }
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::clearOrderCallFlag(uint8_t dword, uint8_t bit)
+void ABLModule::clearOrderCallFlag(uint8_t dword, uint8_t bit)
 {
 	orderCallFlags[dword] &= ((1 << bit) ^ 0xFFFFFFFF);
 }
@@ -881,7 +860,7 @@ ABLModule::execute(const std::unique_ptr<ABLParam>& paramList)
 					// way to keep it clear. Once it's verified to work,
 					// optimize...
 					int32_t size = formalTypePtr->size;
-					const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
+					std::wstring_view dest = (std::wstring_view)ABLStackMallocCallback((size_t)size);
 					if (!dest)
 					{
 						wchar_t err[255];
@@ -891,8 +870,8 @@ ABLModule::execute(const std::unique_ptr<ABLParam>& paramList)
 							id);
 						ABL_Fatal(0, err);
 					}
-					const std::wstring_view& src = tos->address;
-					const std::wstring_view& savePtr = dest;
+					std::wstring_view src = tos->address;
+					std::wstring_view savePtr = dest;
 					memcpy(dest, src, size);
 					tos->address = savePtr;
 				}
@@ -1017,7 +996,7 @@ ABLModule::execute(const std::unique_ptr<ABLParam>& moduleParamList, const std::
 					// way to keep it clear. Once it's verified to work,
 					// optimize...
 					int32_t size = formalTypePtr->size;
-					const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
+					std::wstring_view dest = (std::wstring_view)ABLStackMallocCallback((size_t)size);
 					if (!dest)
 					{
 						wchar_t err[255];
@@ -1027,8 +1006,8 @@ ABLModule::execute(const std::unique_ptr<ABLParam>& moduleParamList, const std::
 							id);
 						ABL_Fatal(0, err);
 					}
-					const std::wstring_view& src = tos->address;
-					const std::wstring_view& savePtr = dest;
+					std::wstring_view src = tos->address;
+					std::wstring_view savePtr = dest;
 					memcpy(dest, src, size);
 					tos->address = savePtr;
 				}
@@ -1061,7 +1040,7 @@ ABLModule::execute(const std::unique_ptr<ABLParam>& moduleParamList, const std::
 
 const std::unique_ptr<SymTableNode>&
 ABLModule::findSymbol(
-	const std::wstring_view& symbolName, const std::unique_ptr<SymTableNode>& curFunction, bool searchLibraries)
+	std::wstring_view symbolName, const std::unique_ptr<SymTableNode>& curFunction, bool searchLibraries)
 {
 	if (curFunction)
 	{
@@ -1089,7 +1068,7 @@ ABLModule::findSymbol(
 //---------------------------------------------------------------------------
 
 const std::unique_ptr<SymTableNode>&
-ABLModule::findFunction(const std::wstring_view& functionName, bool searchLibraries)
+ABLModule::findFunction(std::wstring_view functionName, bool searchLibraries)
 {
 	const std::unique_ptr<SymTableNode>& symbol = searchSymTableForFunction(
 		functionName, ModuleRegistry[handle].moduleIdPtr->defn.info.routine.localSymTable);
@@ -1114,7 +1093,7 @@ ABLModule::findFunction(const std::wstring_view& functionName, bool searchLibrar
 //---------------------------------------------------------------------------
 
 const std::unique_ptr<SymTableNode>&
-ABLModule::findState(const std::wstring_view& stateName)
+ABLModule::findState(std::wstring_view stateName)
 {
 	const std::unique_ptr<SymTableNode>& symbol = searchSymTableForState(
 		stateName, ModuleRegistry[handle].moduleIdPtr->defn.info.routine.localSymTable);
@@ -1124,7 +1103,7 @@ ABLModule::findState(const std::wstring_view& stateName)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLModule::findStateHandle(const std::wstring_view& stateName)
+ABLModule::findStateHandle(std::wstring_view stateName)
 {
 	for (size_t i = 1; i < ModuleRegistry[handle].numStateHandles; i++)
 		if (strcmp(stateName, ModuleRegistry[handle].stateHandles[i].name) == 0)
@@ -1135,7 +1114,7 @@ ABLModule::findStateHandle(const std::wstring_view& stateName)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLModule::setStaticInteger(const std::wstring_view& name, int32_t value)
+ABLModule::setStaticInteger(std::wstring_view name, int32_t value)
 {
 	const std::unique_ptr<SymTableNode>& symbol = findSymbol(name);
 	if (!symbol)
@@ -1152,7 +1131,7 @@ ABLModule::setStaticInteger(const std::wstring_view& name, int32_t value)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLModule::getStaticInteger(const std::wstring_view& name)
+ABLModule::getStaticInteger(std::wstring_view name)
 {
 	const std::unique_ptr<SymTableNode>& symbol = findSymbol(name);
 	if (!symbol)
@@ -1168,7 +1147,7 @@ ABLModule::getStaticInteger(const std::wstring_view& name)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLModule::setStaticReal(const std::wstring_view& name, float value)
+ABLModule::setStaticReal(std::wstring_view name, float value)
 {
 	const std::unique_ptr<SymTableNode>& symbol = findSymbol(name);
 	if (!symbol)
@@ -1184,8 +1163,7 @@ ABLModule::setStaticReal(const std::wstring_view& name, float value)
 
 //---------------------------------------------------------------------------
 
-float
-ABLModule::getStaticReal(const std::wstring_view& name)
+float ABLModule::getStaticReal(std::wstring_view name)
 {
 	const std::unique_ptr<SymTableNode>& symbol = findSymbol(name);
 	if (!symbol)
@@ -1201,7 +1179,7 @@ ABLModule::getStaticReal(const std::wstring_view& name)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLModule::setStaticIntegerArray(const std::wstring_view& name, int32_t numValues, int32_t* values)
+ABLModule::setStaticIntegerArray(std::wstring_view name, int32_t numValues, int32_t* values)
 {
 	const std::unique_ptr<SymTableNode>& symbol = findSymbol(name);
 	if (!symbol)
@@ -1221,7 +1199,7 @@ ABLModule::setStaticIntegerArray(const std::wstring_view& name, int32_t numValue
 //---------------------------------------------------------------------------
 
 int32_t
-ABLModule::getStaticIntegerArray(const std::wstring_view& name, int32_t numValues, int32_t* values)
+ABLModule::getStaticIntegerArray(std::wstring_view name, int32_t numValues, int32_t* values)
 {
 	const std::unique_ptr<SymTableNode>& symbol = findSymbol(name);
 	if (!symbol)
@@ -1241,7 +1219,7 @@ ABLModule::getStaticIntegerArray(const std::wstring_view& name, int32_t numValue
 //---------------------------------------------------------------------------
 
 int32_t
-ABLModule::setStaticRealArray(const std::wstring_view& name, int32_t numValues, float* values)
+ABLModule::setStaticRealArray(std::wstring_view name, int32_t numValues, float* values)
 {
 	const std::unique_ptr<SymTableNode>& symbol = findSymbol(name);
 	if (!symbol)
@@ -1261,7 +1239,7 @@ ABLModule::setStaticRealArray(const std::wstring_view& name, int32_t numValues, 
 //---------------------------------------------------------------------------
 
 int32_t
-ABLModule::getStaticRealArray(const std::wstring_view& name, int32_t numValues, float* values)
+ABLModule::getStaticRealArray(std::wstring_view name, int32_t numValues, float* values)
 {
 	const std::unique_ptr<SymTableNode>& symbol = findSymbol(name);
 	if (!symbol)
@@ -1280,7 +1258,7 @@ ABLModule::getStaticRealArray(const std::wstring_view& name, int32_t numValues, 
 
 //---------------------------------------------------------------------------
 
-const std::wstring_view&
+std::wstring_view
 ABLModule::getSourceFile(int32_t fileNumber)
 {
 	return (ModuleRegistry[handle].sourceFiles[fileNumber]);
@@ -1288,10 +1266,10 @@ ABLModule::getSourceFile(int32_t fileNumber)
 
 //---------------------------------------------------------------------------
 
-const std::wstring_view&
-ABLModule::getSourceDirectory(int32_t fileNumber, const std::wstring_view& directory)
+std::wstring_view
+ABLModule::getSourceDirectory(int32_t fileNumber, std::wstring_view directory)
 {
-	const std::wstring_view& fileName = ModuleRegistry[handle].sourceFiles[fileNumber];
+	std::wstring_view fileName = ModuleRegistry[handle].sourceFiles[fileNumber];
 	int32_t curChar = strlen(fileName);
 	while ((curChar > -1) && (fileName[curChar] != '\\'))
 		curChar--;
@@ -1304,8 +1282,7 @@ ABLModule::getSourceDirectory(int32_t fileNumber, const std::wstring_view& direc
 
 //---------------------------------------------------------------------------
 
-void
-buildRoutineList(const std::unique_ptr<SymTableNode>& curSymbol, ModuleInfo* moduleInfo)
+void buildRoutineList(const std::unique_ptr<SymTableNode>& curSymbol, ModuleInfo* moduleInfo)
 {
 	if (curSymbol)
 	{
@@ -1326,8 +1303,7 @@ buildRoutineList(const std::unique_ptr<SymTableNode>& curSymbol, ModuleInfo* mod
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::getInfo(ModuleInfo* moduleInfo)
+void ABLModule::getInfo(ModuleInfo* moduleInfo)
 {
 	int32_t i;
 	strcpy(moduleInfo->name, name);
@@ -1353,8 +1329,7 @@ ABLModule::getInfo(ModuleInfo* moduleInfo)
 
 //---------------------------------------------------------------------------
 
-void
-ABLModule::destroy(void)
+void ABLModule::destroy(void)
 {
 	int32_t i;
 	if ((id > -1) && ModuleInstanceRegistry)
@@ -1392,8 +1367,7 @@ ABLModule::destroy(void)
 // MISC routines
 //***************************************************************************
 
-void
-ABLi_saveEnvironment(ABLFile* ablFile)
+void ABLi_saveEnvironment(ABLFile* ablFile)
 {
 	int32_t i;
 	ablFile->writeLong(numLibrariesLoaded);
@@ -1422,8 +1396,7 @@ ABLi_saveEnvironment(ABLFile* ablFile)
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
+void ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
 {
 	int32_t numLibs = ablFile->readLong();
 	int32_t numModsRegistered = ablFile->readLong();
@@ -1443,7 +1416,7 @@ ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
 		{
 			int32_t numErrors, numLinesProcessed;
 			const std::unique_ptr<ABLModule>& library = ABLi_loadLibrary(
-				(const std::wstring_view&)fileName, &numErrors, &numLinesProcessed, nullptr, false, false);
+				(std::wstring_view)fileName, &numErrors, &numLinesProcessed, nullptr, false, false);
 			if (!library)
 			{
 				wchar_t err[255];
@@ -1465,7 +1438,7 @@ ABLi_loadEnvironment(ABLFile* ablFile, bool malloc)
 		int32_t numErrors, numLinesProcessed;
 		if (malloc)
 		{
-			int32_t handle = ABLi_preProcess((const std::wstring_view&)fileName, &numErrors, &numLinesProcessed);
+			int32_t handle = ABLi_preProcess((std::wstring_view)fileName, &numErrors, &numLinesProcessed);
 			if (handle < 0)
 			{
 				wchar_t err[255];

@@ -23,7 +23,8 @@
 //#include "gosfx/gosfxheaders.h"
 
 //***************************************************************************
-typedef union _CarnageInfo {
+typedef union _CarnageInfo
+{
 	struct
 	{
 		float timeToBurn;
@@ -80,20 +81,32 @@ public:
 public:
 	virtual void init(bool create);
 
-	Carnage(void) :
-		GameObject() { init(true); }
+	Carnage(void)
+		: GameObject()
+	{
+		init(true);
+	}
 
-	~Carnage(void) { destroy(void); }
+	~Carnage(void)
+	{
+		destroy(void);
+	}
 
 	virtual void init(bool create, ObjectTypePtr _type);
 
 	virtual void init(CarnageEnumType _carnageType);
 
-	virtual void init(int32_t fxId) { effectId = fxId; }
+	virtual void init(int32_t fxId)
+	{
+		effectId = fxId;
+	}
 
 	virtual void destroy(void);
 
-	virtual int32_t kill(void) { return (NO_ERROR); }
+	virtual int32_t kill(void)
+	{
+		return (NO_ERROR);
+	}
 
 	virtual bool onScreen(void);
 
@@ -197,13 +210,19 @@ public:
 		fireRandomDelay = nullptr;
 	}
 
-	FireType(void) { init(void); }
+	FireType(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
-	~FireType(void) { destroy(void); }
+	~FireType(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 
@@ -256,13 +275,19 @@ public:
 		duration = 0.0f;
 	}
 
-	ExplosionType(void) { init(void); }
+	ExplosionType(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
-	~ExplosionType(void) { destroy(void); }
+	~ExplosionType(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 

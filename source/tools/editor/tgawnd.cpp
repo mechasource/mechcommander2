@@ -50,8 +50,7 @@ TGAWnd::~TGAWnd()
 		DeleteObject(m_hSplashBitMap);
 }
 
-void
-TGAWnd::SetTGAFileName(const CString& str)
+void TGAWnd::SetTGAFileName(const CString& str)
 {
 	m_FileName = str;
 	m_bTGAChanged = true;
@@ -76,15 +75,14 @@ TGAWnd::SetTGAFileName(const CString& str)
 	File.Read(&header, sizeof(TGAFileHeader));
 	if (header.image_type == UNC_TRUE)
 	{
-		m_pImage = (const std::wstring_view&)malloc(header.width * header.height * 4);
+		m_pImage = (std::wstring_view)malloc(header.width * header.height * 4);
 		File.Read(m_pImage, header.width * header.height * 4);
 		m_pBmi->bmiHeader.biheight = -header.height;
 		m_pBmi->bmiHeader.biwidth = header.width;
 	}
 }
 
-void
-TGAWnd::SetTGAFileData(uint8_t* data, int32_t size)
+void TGAWnd::SetTGAFileData(uint8_t* data, int32_t size)
 {
 	m_FileName = "";
 	m_bTGAChanged = true;
@@ -96,7 +94,7 @@ TGAWnd::SetTGAFileData(uint8_t* data, int32_t size)
 		m_pImage = nullptr;
 	}
 	if (!m_pImage)
-		m_pImage = (const std::wstring_view&)malloc(header->width * header->height * 4);
+		m_pImage = (std::wstring_view)malloc(header->width * header->height * 4);
 	if (header->image_type == UNC_TRUE)
 	{
 		memcpy(m_pImage, data + sizeof(TGAFileHeader), header->width * header->height * 4);
@@ -106,16 +104,15 @@ TGAWnd::SetTGAFileData(uint8_t* data, int32_t size)
 }
 
 BEGIN_MESSAGE_MAP(TGAWnd, CStatic)
-//{{AFX_MSG_MAP(TGAWnd)
-ON_WM_PAINT()
+	//{{AFX_MSG_MAP(TGAWnd)
+	ON_WM_PAINT()
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // TGAWnd message handlers
 
-void
-TGAWnd::OnPaint()
+void TGAWnd::OnPaint()
 {
 	if (!bThisIsInitialized)
 	{

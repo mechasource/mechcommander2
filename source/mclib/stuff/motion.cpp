@@ -40,8 +40,7 @@ Motion3D::operator=(const Motion3D& motion)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Stuff::Close_Enough(const Motion3D& a1, const Motion3D& a2, float e)
+bool Stuff::Close_Enough(const Motion3D& a1, const Motion3D& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
@@ -69,8 +68,7 @@ Motion3D::AddScaled(const Motion3D& source, const Motion3D& delta, float t)
 //###########################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Motion3D& motion)
+void Spew(std::wstring_view group, const Motion3D& motion)
 {
 	Check_Object(&motion);
 	SPEW((group, "{+"));
@@ -85,8 +83,7 @@ Spew(const std::wstring_view& group, const Motion3D& motion)
 //###########################################################################
 //###########################################################################
 //
-void
-Motion3D::TestInstance(void) const
+void Motion3D::TestInstance(void) const
 {
 	Check_Object(&angularMotion);
 }

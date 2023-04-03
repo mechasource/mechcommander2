@@ -98,7 +98,7 @@ FastFile** fastFiles = nullptr;
 size_t numFastFiles = 0;
 size_t maxFastFiles = 0;
 
-const std::wstring_view& ExceptionGameMsg = "";
+std::wstring_view ExceptionGameMsg = "";
 
 bool justResaveAllMaps = 0;
 bool useLOSAngle = 0;
@@ -109,7 +109,7 @@ extern MidLevelRenderer::MLRClipper* theClipper;
 Mechlopedia* pMechlopedia;
 LogisticsData* pLogData;
 
-const std::wstring_view& SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
+std::wstring_view SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
 	"LightMechSpecialist", "LaserSpecialist", "LightACSpecialist", "MediumACSpecialist",
 	"SRMSpecialist", "SmallArmsSpecialist", "SensorProfileSpecialist",
 	"ToughnessSpecialist", // Thoughness Specialty
@@ -128,7 +128,7 @@ const std::wstring_view& SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
 
 // called by gos
 //---------------------------------------------------------------------------
-const std::wstring_view& __stdcall GetGameInformation()
+std::wstring_view __stdcall GetGameInformation()
 {
 	return (ExceptionGameMsg);
 }
@@ -184,7 +184,7 @@ void __stdcall InitializeGameEngine()
 	gosResourceHandle = gos_OpenResourceDLL("mc2res.dll");
 	wchar_t temp[256];
 	cLoadString(IDS_FLOAT_HELP_FONT, temp, 255);
-	const std::wstring_view& pStr = strstr(temp, ",");
+	std::wstring_view pStr = strstr(temp, ",");
 	if (pStr)
 	{
 		gosFontScale = atoi(pStr + 2);
@@ -523,7 +523,7 @@ void __stdcall TerminateGameEngine()
 }
 
 //---------------------------------------------------------------------
-void __stdcall GetGameOSEnvironment(const std::wstring_view& commandline)
+void __stdcall GetGameOSEnvironment(std::wstring_view commandline)
 {
 	Environment.applicationName = "MechCommander 2 Encyclopedia";
 	Environment.debugLog = ""; //"DebugLog.txt";

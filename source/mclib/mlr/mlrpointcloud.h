@@ -34,7 +34,10 @@ public:
 
 	void SetData(
 		const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data);
-	virtual uint32_t GetType(uint32_t) { return type; }
+	virtual uint32_t GetType(uint32_t)
+	{
+		return type;
+	}
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
 	void Transform(size_t, size_t);

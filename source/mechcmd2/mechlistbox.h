@@ -21,7 +21,6 @@ MechListBox.h			: Interface for the MechListBox component.
 class FitIniFile;
 class LogisticsMech;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 MechListBox:
@@ -39,8 +38,14 @@ public:
 	virtual void update(void);
 	virtual void render(void);
 
-	LogisticsMech* getMech() { return pMech; }
-	void resetMech() { pMech = nullptr; }
+	LogisticsMech* getMech()
+	{
+		return pMech;
+	}
+	void resetMech()
+	{
+		pMech = nullptr;
+	}
 	virtual bool pointInside(int32_t xPos, int32_t yPos) const;
 
 	bool bOrange;

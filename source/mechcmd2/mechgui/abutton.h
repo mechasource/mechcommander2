@@ -25,14 +25,17 @@ public:
 	virtual void update(void);
 	virtual void render(void);
 
-	void init(FitIniFile& file, const std::wstring_view& headerName, HGOSFONT3D font = 0);
+	void init(FitIniFile& file, std::wstring_view headerName, HGOSFONT3D font = 0);
 
 	aButton& operator=(const aButton& src);
 	aButton(const aButton& src);
 
 	virtual void move(float offsetX, float offsetY);
 
-	void setHoldTime(float newTime) { holdTime = newTime; }
+	void setHoldTime(float newTime)
+	{
+		holdTime = newTime;
+	}
 
 	virtual bool pointInside(int32_t xPos, int32_t yPos) const;
 
@@ -41,20 +44,41 @@ public:
 
 	void disable(bool);
 	bool isEnabled(void);
-	bool isPressed() { return state == PRESSED; }
+	bool isPressed()
+	{
+		return state == PRESSED;
+	}
 	void makeAmbiguous(bool bAmbiguous);
-	void setSinglePress() { singlePress = true; }
-	void setMessageOnRelease() { messageOnRelease = true; }
+	void setSinglePress()
+	{
+		singlePress = true;
+	}
+	void setMessageOnRelease()
+	{
+		messageOnRelease = true;
+	}
 
 	void hide(bool);
 
 	int32_t getID(void);
 	void setID(int32_t ID);
-	void setText(int32_t newID) { data.textID = newID; }
+	void setText(int32_t newID)
+	{
+		data.textID = newID;
+	}
 
-	void setPressFX(int32_t newFX) { clickSFX = newFX; }
-	void setHighlightFX(int32_t newFX) { highlightSFX = newFX; }
-	void setDisabledFX(int32_t newFX) { disabledSFX = newFX; }
+	void setPressFX(int32_t newFX)
+	{
+		clickSFX = newFX;
+	}
+	void setHighlightFX(int32_t newFX)
+	{
+		highlightSFX = newFX;
+	}
+	void setDisabledFX(int32_t newFX)
+	{
+		disabledSFX = newFX;
+	}
 
 	enum States
 	{
@@ -109,7 +133,7 @@ class aAnimButton : public aButton
 {
 public:
 	aAnimButton(void);
-	void init(FitIniFile& file, const std::wstring_view& headerName, HGOSFONT3D font = 0);
+	void init(FitIniFile& file, std::wstring_view headerName, HGOSFONT3D font = 0);
 	virtual void update(void);
 	virtual void render(void);
 
@@ -121,7 +145,10 @@ public:
 	void setAnimationInfo(
 		aAnimation* normal, aAnimation* highlight, aAnimation* pressed, aAnimation* disabled);
 
-	void animateChildren(bool bAnimate) { bAnimateChildren = bAnimate; }
+	void animateChildren(bool bAnimate)
+	{
+		bAnimateChildren = bAnimate;
+	}
 
 private:
 	aAnimation normalData;

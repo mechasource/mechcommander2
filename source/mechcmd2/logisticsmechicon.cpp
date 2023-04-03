@@ -56,7 +56,7 @@ LogisticsMechIcon::operator=(const LogisticsMechIcon& src)
 
 //-------------------------------------------------------------------------------------------------
 
-LogisticsMechIcon::~LogisticsMechIcon() {}
+LogisticsMechIcon::~LogisticsMechIcon() { }
 
 int32_t
 LogisticsMechIcon::init(FitIniFile& file)
@@ -76,18 +76,17 @@ LogisticsMechIcon::init(FitIniFile& file)
 		assignAnimation(file, s_pTemplateIcon->iconID);
 		s_pTemplateIcon->pilotIcon.init(&file, "PilotIcon");
 		assignAnimation(file, s_pTemplateIcon->pilotIconID);
-		wchar_t blockName[64];
+		wchar_t blockname[64];
 		for (size_t i = 0; i < ICON_ANIM_COUNT; i++)
 		{
-			sprintf(blockName, "Animation%ld", i);
-			s_pTemplateIcon->animations[i].init(&file, blockName);
+			sprintf(blockname, "Animation%ld", i);
+			s_pTemplateIcon->animations[i].init(&file, blockname);
 		}
 	}
 	return true;
 }
 
-void
-LogisticsMechIcon::assignAnimation(FitIniFile& file, int32_t& number)
+void LogisticsMechIcon::assignAnimation(FitIniFile& file, int32_t& number)
 {
 	number = -1;
 	wchar_t buffer[64];
@@ -104,8 +103,7 @@ LogisticsMechIcon::assignAnimation(FitIniFile& file, int32_t& number)
 	}
 }
 
-void
-LogisticsMechIcon::setMech(LogisticsMech* pNewMech)
+void LogisticsMechIcon::setMech(LogisticsMech* pNewMech)
 {
 	pMech = pNewMech;
 	if (pMech)
@@ -141,8 +139,7 @@ LogisticsMechIcon::setMech(LogisticsMech* pNewMech)
 		iconConnector.showGUIWindow(0);
 }
 
-void
-LogisticsMechIcon::render(int32_t xOffset, int32_t yOffset)
+void LogisticsMechIcon::render(int32_t xOffset, int32_t yOffset)
 {
 	if (bDisabled)
 	{
@@ -167,8 +164,7 @@ LogisticsMechIcon::render(int32_t xOffset, int32_t yOffset)
 		pilotIcon.render(xOffset, yOffset);
 }
 
-void
-LogisticsMechIcon::renderObject(
+void LogisticsMechIcon::renderObject(
 	aObject& obj, int32_t animIndex, int32_t xOffset, int32_t yOffset)
 {
 	int32_t color = 0xffffffff;
@@ -180,8 +176,7 @@ LogisticsMechIcon::renderObject(
 	obj.render(xOffset, yOffset);
 }
 
-void
-LogisticsMechIcon::update()
+void LogisticsMechIcon::update()
 {
 	bJustSelected = 0;
 	if (!pMech)
@@ -229,14 +224,12 @@ LogisticsMechIcon::update()
 	}
 }
 
-void
-LogisticsMechIcon::move(int32_t x, int32_t y)
+void LogisticsMechIcon::move(int32_t x, int32_t y)
 {
 	outline.move(x, y);
 }
 
-void
-LogisticsMechIcon::select(bool bSelect)
+void LogisticsMechIcon::select(bool bSelect)
 {
 	if (!bSelect || bDisabled)
 	{
@@ -253,8 +246,7 @@ LogisticsMechIcon::select(bool bSelect)
 	}
 }
 
-bool
-LogisticsMechIcon::isSelected()
+bool LogisticsMechIcon::isSelected()
 {
 	return state == aListItem::SELECTED;
 }
@@ -267,8 +259,7 @@ LogisticsMechIcon::getPilot()
 	return nullptr;
 }
 
-void
-LogisticsMechIcon::setPilot(LogisticsPilot* pPilot)
+void LogisticsMechIcon::setPilot(LogisticsPilot* pPilot)
 {
 	if (pMech)
 	{
@@ -292,8 +283,7 @@ LogisticsMechIcon::setPilot(LogisticsPilot* pPilot)
 		pilotIcon.setUVs(0, 0, 0, 0);
 }
 
-void
-LogisticsMechIcon::dimPilot(bool bDim)
+void LogisticsMechIcon::dimPilot(bool bDim)
 {
 	if (bDim)
 	{

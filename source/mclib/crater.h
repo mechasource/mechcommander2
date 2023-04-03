@@ -95,11 +95,17 @@ public:
 		craterFile = nullptr;
 	}
 
-	CraterManager(void) { init(void); }
+	CraterManager(void)
+	{
+		init(void);
+	}
 
-	int32_t init(int32_t numCraters, uint32_t craterTypeSize, const std::wstring_view& craterFileName);
+	int32_t init(int32_t numCraters, uint32_t craterTypeSize, std::wstring_view craterFileName);
 
-	~CraterManager(void) { destroy(void); }
+	~CraterManager(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void);
 

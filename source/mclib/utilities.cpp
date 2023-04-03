@@ -13,8 +13,7 @@ Utilities.cpp			: Implementation of the Utilities component.
 
 //#pragma warning(disable:4514)
 
-void
-drawRect(const RECT& area, uint32_t color)
+void drawRect(const RECT& area, uint32_t color)
 {
 	if (color & 0xff000000)
 	{
@@ -55,8 +54,7 @@ drawRect(const RECT& area, uint32_t color)
 	}
 }
 
-void
-drawEmptyRect(const RECT& area, uint32_t leftTopBordercolour, uint32_t rightBottomBordercolour)
+void drawEmptyRect(const RECT& area, uint32_t leftTopBordercolour, uint32_t rightBottomBordercolour)
 {
 	gos_VERTEX v[4];
 	memset(v, 0, sizeof(v));
@@ -120,8 +118,7 @@ StaticInfo::~StaticInfo()
 	}
 }
 
-void
-StaticInfo::render()
+void StaticInfo::render()
 {
 	uint32_t gosID = mcTextureManager->get_gosTextureHandle(textureHandle);
 	gos_SetRenderState(gos_State_Texture, gosID);
@@ -131,8 +128,7 @@ StaticInfo::render()
 	gos_DrawQuads(location, 4);
 }
 
-void
-StaticInfo::showGUIWindow(bool doshow)
+void StaticInfo::showGUIWindow(bool doshow)
 {
 	int32_t mask = doshow ? 0xff000000 : 0x00ffffff;
 	for (size_t i = 0; i < 4; i++)
@@ -144,8 +140,7 @@ StaticInfo::showGUIWindow(bool doshow)
 	}
 }
 
-bool
-StaticInfo::isInside(int32_t mouseX, int32_t mouseY)
+bool StaticInfo::isInside(int32_t mouseX, int32_t mouseY)
 {
 	if ((location[0].x) <= mouseX && location[3].x >= mouseX && location[0].y <= mouseY && location[1].y >= mouseY)
 		return true;
@@ -154,8 +149,7 @@ StaticInfo::isInside(int32_t mouseX, int32_t mouseY)
 
 // Fills the buffer with the bitmap data.
 // Used by new mouse cursor draw routines.
-void
-StaticInfo::getData(uint8_t* buffer)
+void StaticInfo::getData(uint8_t* buffer)
 {
 	if ((vheight > 32) || (uwidth > 32))
 	{
@@ -192,18 +186,17 @@ StaticInfo::getData(uint8_t* buffer)
 	}
 }
 
-void
-StaticInfo::init(FitIniFile& file, const std::wstring_view& blockName, int32_t hiResOffsetX, int32_t hiResOffsetY,
+void StaticInfo::init(FitIniFile& file, std::wstring_view blockname, int32_t hiResOffsetX, int32_t hiResOffsetY,
 	uint32_t neverFlush)
 {
 	memset(location, 0, sizeof(location));
 	wchar_t fileName[256];
 	textureHandle = 0;
 	texturewidth = 0;
-	if (NO_ERROR != file.seekBlock(blockName))
+	if (NO_ERROR != file.seekBlock(blockname))
 	{
 		wchar_t errBuffer[256];
-		sprintf(errBuffer, "couldn't find static block %s", blockName);
+		sprintf(errBuffer, "couldn't find static block %s", blockname);
 		Assert(0, 0, errBuffer);
 		return;
 	}
@@ -214,7 +207,7 @@ StaticInfo::init(FitIniFile& file, const std::wstring_view& blockName, int32_t h
 	y += hiResOffsetY;
 	file.readIdLong("width", width);
 	file.readIdLong("height", height);
-	file.readIdString("FileName", fileName, 32);
+	file.readIdString("filename", fileName, 32);
 	if (!textureHandle)
 	{
 		FullPathFileName fullPath;
@@ -270,8 +263,7 @@ StaticInfo::init(FitIniFile& file, const std::wstring_view& blockName, int32_t h
 	}
 }
 
-void
-StaticInfo::setLocation(float newX, float newY)
+void StaticInfo::setLocation(float newX, float newY)
 {
 	float height = location[1].y - location[0].y;
 	float width = location[3].x - location[0].x;
@@ -281,8 +273,7 @@ StaticInfo::setLocation(float newX, float newY)
 	location[1].y = location[2].y = newY + height;
 }
 
-void
-StaticInfo::move(float deltaX, float deltaY)
+void StaticInfo::move(float deltaX, float deltaY)
 {
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -291,15 +282,13 @@ StaticInfo::move(float deltaX, float deltaY)
 	}
 }
 
-void
-StaticInfo::setcolour(int32_t newcolour)
+void StaticInfo::setcolour(int32_t newcolour)
 {
 	for (size_t i = 0; i < 4; i++)
 		location[i].argb = newcolour;
 }
 
-void
-StaticInfo::setNewUVs(float uLeft, float vTop, float uRight, float vBottom)
+void StaticInfo::setNewUVs(float uLeft, float vTop, float uRight, float vBottom)
 {
 	location[0].u = location[1].u = uLeft;
 	location[2].u = location[3].u = uRight;
@@ -307,16 +296,14 @@ StaticInfo::setNewUVs(float uLeft, float vTop, float uRight, float vBottom)
 	location[1].v = location[2].v = vBottom;
 }
 
-void
-drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, bool proportional, const std::wstring_view& text, bool bold, float scale)
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, bool proportional, std::wstring_view text, bool bold, float scale)
 {
 	drawShadowText(colorTop, colorShadow, font, left, top, proportional, text, bold, scale, -1, 1);
 }
 
-void
-drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, bool proportional, const std::wstring_view& text, bool bold, float scale, int32_t xOffset,
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, bool proportional, std::wstring_view text, bool bold, float scale, int32_t xOffset,
 	int32_t yOffset)
 {
 	gos_TextSetAttributes(font, colorShadow, scale, false, proportional, bold, false, 0);
@@ -328,9 +315,8 @@ drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t l
 	gos_TextDraw(text);
 }
 
-void
-drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
-	int32_t top, int32_t right, int32_t bottom, bool proportional, const std::wstring_view& text, bool bold,
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, int32_t right, int32_t bottom, bool proportional, std::wstring_view text, bool bold,
 	float scale, int32_t xOffset, int32_t yOffset)
 {
 	gos_TextSetAttributes(font, colorShadow, scale, true, proportional, bold, false, 2);

@@ -105,11 +105,11 @@ MechLabScreen::init(FitIniFile& file)
 	}
 	acceptDlg->init(saveFile);
 	payloadIcon.init(&file, "PayloadUnit");
-	wchar_t blockName[64];
+	wchar_t blockname[64];
 	for (size_t i = 0; i < MECH_LAB_ATTRIBUTE_METER_COUNT; i++)
 	{
-		sprintf(blockName, "AttributeMeter%ld", i);
-		attributeMeters[i].init(&file, blockName);
+		sprintf(blockname, "AttributeMeter%ld", i);
+		attributeMeters[i].init(&file, blockname);
 	}
 	for (i = 0; i < buttonCount; i++)
 	{
@@ -132,13 +132,13 @@ MechLabScreen::init(FitIniFile& file)
 	file.readIdLong("XLocation", xLoc);
 	file.readIdLong("YLocation", yLoc);
 	wchar_t fileName[256];
-	file.readIdString("FileName", fileName, 255);
+	file.readIdString("filename", fileName, 255);
 	path.init(artPath, fileName, ".fit");
 	FitIniFile comboFile;
 	if (NO_ERROR != comboFile.open(path))
 	{
 		wchar_t errorStr[255];
-		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(errorStr, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, errorStr);
 	}
 	variantList.init(&comboFile, "VariantComboBox");
@@ -181,8 +181,7 @@ MechLabScreen::init(FitIniFile& file)
 	return true;
 }
 
-void
-MechLabScreen::begin()
+void MechLabScreen::begin()
 {
 	componentCount = 0;
 	bSaveDlg = 0;
@@ -233,7 +232,7 @@ MechLabScreen::begin()
 		strcpy(path, artPath);
 		strcat(path, "MCL_MC_");
 		wchar_t mechName[64];
-		const std::wstring_view& fileName = pVariant->getFileName();
+		std::wstring_view fileName = pVariant->getFileName();
 		_splitpath(fileName, nullptr, nullptr, mechName, nullptr);
 		strcat(path, mechName);
 		strcat(path, "_B.tga");
@@ -274,14 +273,12 @@ MechLabScreen::begin()
 	else
 		statics[54].showGUIWindow(false);
 }
-void
-MechLabScreen::end()
+void MechLabScreen::end()
 {
 	camera.setMech(nullptr);
 	pVariant = nullptr;
 }
-void
-MechLabScreen::update()
+void MechLabScreen::update()
 {
 	if (bSaveDlg)
 	{
@@ -352,7 +349,7 @@ MechLabScreen::update()
 		textObjects[helpTextArrayID].setText(helpTextID);
 	}
 	// see if the variant changed
-	const std::wstring_view& tmp;
+	std::wstring_view tmp;
 	variantList.EditBox().getEntry(tmp);
 	if (varName.Compare(tmp) != 0)
 	{
@@ -430,8 +427,7 @@ MechLabScreen::update()
 		ChatWindow::instance()->update();
 }
 
-void
-MechLabScreen::updateDiagramInput()
+void MechLabScreen::updateDiagramInput()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
@@ -601,8 +597,7 @@ MechLabScreen::updateDiagramInput()
 	if (userInput->leftMouseReleased() && pDragComponent)
 		endDrag();
 }
-void
-MechLabScreen::render(int32_t xOffset, int32_t yOffset)
+void MechLabScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	if (!xOffset && !yOffset)
 	{
@@ -696,8 +691,7 @@ MechLabScreen::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void
-MechLabScreen::updateHeatMeter()
+void MechLabScreen::updateHeatMeter()
 {
 	int32_t maxHeat = pVariant->getMaxHeat();
 	int32_t curHeat = pVariant->getHeat();
@@ -750,8 +744,7 @@ MechLabScreen::updateHeatMeter()
 	attributeMeters[MECH_LAB_ATTRIBUTE_METER_COUNT - 4].setValue(fCurHeat / (float)maxHeat);
 }
 
-void
-MechLabScreen::updateArmorMeter()
+void MechLabScreen::updateArmorMeter()
 {
 	int32_t maxarmor = pVariant->getMaxArmor();
 	int32_t curarmor = pVariant->getArmor();
@@ -795,15 +788,14 @@ MechLabScreen::updateArmorMeter()
 	attributeMeters[MECH_LAB_ATTRIBUTE_METER_COUNT - 3].setValue(fCurarmor / (float)maxarmor);
 }
 
-void
-MechLabScreen::swapVariant()
+void MechLabScreen::swapVariant()
 {
 	// variant changed
 	variantList.EditBox().getEntry(varName);
 	LogisticsVariant* pNewVariant = LogisticsData::instance->getVariant(varName);
 	if (pVariant && pNewVariant)
 	{
-		const std::wstring_view& oldName = pVariant->getName();
+		std::wstring_view oldName = pVariant->getName();
 		*pVariant = *pNewVariant;
 		pVariant->setName(oldName);
 	}
@@ -914,8 +906,7 @@ MechLabScreen::handleMessage(uint32_t msg, uint32_t who)
 	return 0;
 }
 
-void
-MechLabScreen::setComponent(LogisticsComponent* pComponent, bool bMessageFromLB)
+void MechLabScreen::setComponent(LogisticsComponent* pComponent, bool bMessageFromLB)
 {
 	if (bMessageFromLB && canAddComponent(pComponent)) // if they clicked on a disabled item
 	{
@@ -1087,8 +1078,7 @@ MechLabScreen::setComponent(LogisticsComponent* pComponent, bool bMessageFromLB)
 	}
 }
 
-void
-MechLabScreen::showJumpJetItems(bool doshow)
+void MechLabScreen::showJumpJetItems(bool doshow)
 {
 	// show jump jet stuff
 	statics[47].showGUIWindow(doshow);
@@ -1167,8 +1157,7 @@ MechLabScreen::addComponent(LogisticsComponent* pComponent, int32_t& x, int32_t&
 	return retVal;
 }
 
-void
-MechLabScreen::beginDrag(LogisticsComponent* pComponent)
+void MechLabScreen::beginDrag(LogisticsComponent* pComponent)
 {
 	if (!pDragComponent)
 	{
@@ -1178,7 +1167,7 @@ MechLabScreen::beginDrag(LogisticsComponent* pComponent)
 			// initialize the drag object
 			int32_t sizeX = pComponent->getComponentwidth();
 			int32_t sizeY = pComponent->getComponentheight();
-			const std::wstring_view& pFile = pComponent->getIconFileName();
+			std::wstring_view pFile = pComponent->getIconFileName();
 			FullPathFileName path;
 			path.init(artPath, pFile, "tga");
 			dragIcon.setTexture(path);
@@ -1195,8 +1184,7 @@ MechLabScreen::beginDrag(LogisticsComponent* pComponent)
 	}
 }
 
-void
-MechLabScreen::endDrag()
+void MechLabScreen::endDrag()
 {
 	float mouseX = userInput->getMouseX();
 	float mouseY = userInput->getMouseY();
@@ -1243,16 +1231,14 @@ MechLabScreen::endDrag()
 	bDragLeft = 0;
 }
 
-void
-MechLabScreen::getMouseDiagramCoords(int32_t& x, int32_t& y)
+void MechLabScreen::getMouseDiagramCoords(int32_t& x, int32_t& y)
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
 	getMouseDiagramCoords(mouseX, mouseY, x, y);
 }
 
-void
-MechLabScreen::getMouseDiagramCoords(int32_t screenX, int32_t screenY, int32_t& x, int32_t& y)
+void MechLabScreen::getMouseDiagramCoords(int32_t screenX, int32_t screenY, int32_t& x, int32_t& y)
 {
 	x = -1;
 	y = -1;
@@ -1281,8 +1267,7 @@ MechLabScreen::getMouseDiagramCoords(int32_t screenX, int32_t screenY, int32_t& 
 	}
 }
 
-void
-MechLabScreen::diagramToScreen(int32_t i, int32_t j, int32_t& x, int32_t& y)
+void MechLabScreen::diagramToScreen(int32_t i, int32_t j, int32_t& x, int32_t& y)
 {
 	if (i == -2 && j == -2)
 	{
@@ -1305,8 +1290,7 @@ MechLabScreen::diagramToScreen(int32_t i, int32_t j, int32_t& x, int32_t& y)
 	y = minY + j * LogisticsComponent::YICON_FACTOR;
 }
 
-void
-MechLabScreen::updateDiagram()
+void MechLabScreen::updateDiagram()
 {
 	if (!pVariant || status != RUNNING)
 		return;
@@ -1331,7 +1315,7 @@ MechLabScreen::updateDiagram()
 		}
 		int32_t sizeX = pComponent->getComponentwidth();
 		int32_t sizeY = pComponent->getComponentheight();
-		const std::wstring_view& pFile = pComponent->getIconFileName();
+		std::wstring_view pFile = pComponent->getIconFileName();
 		FullPathFileName path;
 		path.init(artPath, pFile, "tga");
 		componentIcons[i].setTexture(path);
@@ -1406,8 +1390,7 @@ MechLabScreen::selectFirstLBComponent()
 	}
 	return index;
 }
-void
-MechLabScreen::removeComponent(int32_t i, int32_t j)
+void MechLabScreen::removeComponent(int32_t i, int32_t j)
 {
 	int32_t tmpX, tmpY;
 	LogisticsComponent* pComp = pVariant->getCompAtLocation(i, j, tmpX, tmpY);
@@ -1436,8 +1419,7 @@ MechLabScreen::removeComponent(int32_t i, int32_t j)
 	}
 	updateDiagram();
 }
-bool
-MechLabScreen::canRemoveComponent(LogisticsComponent* pComp)
+bool MechLabScreen::canRemoveComponent(LogisticsComponent* pComp)
 {
 	if (pComp && pComp->getType() == COMPONENT_FORM_HEATSINK)
 	{

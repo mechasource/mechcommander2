@@ -9,8 +9,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::CardCloud__Specification::CardCloud__Specification(
-	std::iostream stream, uint32_t gfx_version) :
-	SpinningCloud__Specification(gosFX::CardCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: SpinningCloud__Specification(gosFX::CardCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -61,8 +61,8 @@ gosFX::CardCloud__Specification::CardCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::CardCloud__Specification::CardCloud__Specification() :
-	SpinningCloud__Specification(gosFX::CardCloudClassID)
+gosFX::CardCloud__Specification::CardCloud__Specification()
+	: SpinningCloud__Specification(gosFX::CardCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -89,8 +89,7 @@ gosFX::CardCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud__Specification::Save(std::iostream stream)
+void gosFX::CardCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -107,8 +106,7 @@ gosFX::CardCloud__Specification::Save(std::iostream stream)
 //------------------------------------------------------------------------------
 //
 
-void
-gosFX::CardCloud__Specification::BuildDefaults()
+void gosFX::CardCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
@@ -132,8 +130,7 @@ gosFX::CardCloud__Specification::BuildDefaults()
 //------------------------------------------------------------------------------
 //
 
-bool
-gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
+bool gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float max_offset, min_offset;
@@ -157,7 +154,7 @@ gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 		{
 			m_VOffset.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -182,7 +179,7 @@ gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 		{
 			m_UOffset.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -192,8 +189,7 @@ gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
+void gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -215,8 +211,7 @@ gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud__Specification::Setwidth()
+void gosFX::CardCloud__Specification::Setwidth()
 {
 	m_width = static_cast<uint8_t>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
@@ -230,8 +225,7 @@ gosFX::CardCloud::ClassData* gosFX::CardCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud::InitializeClass()
+void gosFX::CardCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -242,8 +236,7 @@ gosFX::CardCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud::TerminateClass()
+void gosFX::CardCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -252,8 +245,8 @@ gosFX::CardCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::CardCloud::CardCloud(Specification* spec, uint32_t flags) :
-	SpinningCloud(DefaultData, spec, flags)
+gosFX::CardCloud::CardCloud(Specification* spec, uint32_t flags)
+	: SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -295,8 +288,7 @@ gosFX::CardCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void gosFX::CardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -325,8 +317,7 @@ gosFX::CardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::CardCloud::AnimateParticle(
+bool gosFX::CardCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -397,8 +388,7 @@ gosFX::CardCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud::DestroyParticle(uint32_t index)
+void gosFX::CardCloud::DestroyParticle(uint32_t index)
 {
 	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
@@ -408,8 +398,7 @@ gosFX::CardCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud::Draw(DrawInfo* info)
+void gosFX::CardCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -674,8 +663,7 @@ gosFX::CardCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::CardCloud::TestInstance(void) const
+void gosFX::CardCloud::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

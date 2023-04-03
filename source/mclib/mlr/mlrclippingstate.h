@@ -27,9 +27,18 @@ protected:
 	uint32_t clippingState;
 
 public:
-	MLRClippingState(void) { clippingState = 0; };
-	MLRClippingState(uint32_t state) { clippingState = state; };
-	MLRClippingState(const MLRClippingState& state) { clippingState = state.clippingState; }
+	MLRClippingState(void)
+	{
+		clippingState = 0;
+	};
+	MLRClippingState(uint32_t state)
+	{
+		clippingState = state;
+	};
+	MLRClippingState(const MLRClippingState& state)
+	{
+		clippingState = state.clippingState;
+	}
 
 	//##########################################################################
 	//	Attention !!! when changing the flags also change them in
@@ -260,7 +269,7 @@ public:
 	// Testing
 	//
 public:
-	void TestInstance(void) {}
+	void TestInstance(void) { }
 
 private:
 	static uint32_t numberBitsLookUpTable[ClipMask + 1];

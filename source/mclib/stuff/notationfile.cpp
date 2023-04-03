@@ -17,8 +17,8 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Macro::Macro(const std::wstring_view&* macro, const std::wstring_view&* replace) :
-	Plug(DefaultData)
+Macro::Macro(std::wstring_view* macro, std::wstring_view* replace)
+	: Plug(DefaultData)
 {
 	m_macro = *macro;
 	m_replacement = *replace;
@@ -27,8 +27,7 @@ Macro::Macro(const std::wstring_view&* macro, const std::wstring_view&* replace)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Macro::AddValue(MacroTree* macro_tree, const std::wstring_view& name, const std::wstring_view& value)
+void Macro::AddValue(MacroTree* macro_tree, std::wstring_view name, std::wstring_view value)
 {
 	Check_Object(macro_tree);
 	Check_Pointer(name);
@@ -38,8 +37,8 @@ Macro::AddValue(MacroTree* macro_tree, const std::wstring_view& name, const std:
 	// Create MStrings for all this, and create a new plug
 	//----------------------------------------------------
 	//
-	const std::wstring_view& ms_define(name);
-	const std::wstring_view& ms_replace(value);
+	std::wstring_view ms_define(name);
+	std::wstring_view ms_replace(value);
 	Macro* mr_new = new Macro(&ms_define, &ms_replace);
 	Check_Object(mr_new);
 	//
@@ -59,8 +58,7 @@ Macro::AddValue(MacroTree* macro_tree, const std::wstring_view& name, const std:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Macro::ReplaceMacros(MacroTree* macro_tree, const std::wstring_view& buffer, const std::wstring_view& new_buf, size_t new_buf_size)
+void Macro::ReplaceMacros(MacroTree* macro_tree, std::wstring_view buffer, std::wstring_view new_buf, size_t new_buf_size)
 {
 	//
 	//----------------------------------------------------
@@ -92,7 +90,7 @@ Macro::ReplaceMacros(MacroTree* macro_tree, const std::wstring_view& buffer, con
 		// Find the end of the macro name
 		//-------------------------------
 		//
-		const std::wstring_view& p = strchr(buffer, ')');
+		std::wstring_view p = strchr(buffer, ')');
 		if (!p)
 		{
 			_ASSERT(new_buf_size > 0);
@@ -105,9 +103,9 @@ Macro::ReplaceMacros(MacroTree* macro_tree, const std::wstring_view& buffer, con
 		//-------------------
 		//
 		size_t len = size_t(p - buffer - 2);
-		const std::wstring_view& macro_name;
+		std::wstring_view macro_name;
 		macro_name.AllocateLength(len + 1);
-		const std::wstring_view& t = macro_name;
+		std::wstring_view t = macro_name;
 		size_t i = 0;
 		for (p = buffer + 2; *p != ')'; ++p, ++i)
 		{
@@ -141,8 +139,8 @@ Macro::ReplaceMacros(MacroTree* macro_tree, const std::wstring_view& buffer, con
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-NotationFile::NotationFile(const std::wstring_view& file_name, Type type) :
-	m_pages(nullptr)
+NotationFile::NotationFile(std::wstring_view file_name, Type type)
+	: m_pages(nullptr)
 {
 	// Check_Pointer(this);
 	Check_Pointer(file_name);
@@ -178,8 +176,8 @@ NotationFile::NotationFile(const std::wstring_view& file_name, Type type) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-NotationFile::NotationFile(std::iostream& memory_stream, MacroTree* macro_tree) :
-	m_pages(nullptr)
+NotationFile::NotationFile(std::iostream& memory_stream, MacroTree* macro_tree)
+	: m_pages(nullptr)
 {
 	// Check_Pointer(this);
 	//
@@ -223,15 +221,13 @@ NotationFile::~NotationFile()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::TestInstance(void) const
+void NotationFile::TestInstance(void) const
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::CommonConstruction(std::iostream& memory_stream, MacroTree* macro_tree)
+void NotationFile::CommonConstruction(std::iostream& memory_stream, MacroTree* macro_tree)
 {
 	// Check_Pointer(this);
 	//
@@ -250,8 +246,7 @@ NotationFile::CommonConstruction(std::iostream& memory_stream, MacroTree* macro_
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bool nested)
+void NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bool nested)
 {
 	// Check_Object(this);
 	Check_Pointer(stream);
@@ -283,13 +278,13 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 	wchar_t buffer[MAX_LINE_SIZE];
 	while (stream->ReadLine(buffer, sizeof(buffer)))
 	{
-		const std::wstring_view& p = buffer;
+		std::wstring_view p = buffer;
 		//
 		//----------------------------------------------------------------
 		// Deal with any comments - C++ style are the easiest to deal with
 		//----------------------------------------------------------------
 		//
-		const std::wstring_view& comment_start = nullptr;
+		std::wstring_view comment_start = nullptr;
 		while ((p = strchr(p, '/')) != nullptr)
 		{
 			if (p[1] == '/')
@@ -404,7 +399,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 		//
 		if (m_type != Raw)
 		{
-			const std::wstring_view& q;
+			std::wstring_view q;
 			if (*p == '!')
 				HandleBangStuff(p + 1, macro_tree, page);
 			//
@@ -435,9 +430,9 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 			ProcessLine(stream, macro_tree, page, p);
 	}
 	if (comment_mode)
-		PAUSE(("There is a missing */ in %s", (const std::wstring_view&)m_fileName));
+		PAUSE(("There is a missing */ in %s", (std::wstring_view)m_fileName));
 	if (nested)
-		PAUSE(("There is a missing } in %s", (const std::wstring_view&)m_fileName));
+		PAUSE(("There is a missing } in %s", (std::wstring_view)m_fileName));
 	//
 	//------------------------------------------------------------------------
 	// If we allocated the macro tree, delete it now.  The extra braces are to
@@ -447,7 +442,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 	if (!orig_tree)
 	{
 		{
-			TreeIteratorOf<Macro*, const std::wstring_view&> macros(macro_tree);
+			TreeIteratorOf<Macro*, std::wstring_view> macros(macro_tree);
 			macros.DeletePlugs();
 		}
 		Check_Object(macro_tree);
@@ -463,8 +458,7 @@ NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bo
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::Write(std::iostream& stream)
+void NotationFile::Write(std::iostream& stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -484,8 +478,7 @@ NotationFile::Write(std::iostream& stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::Save()
+void NotationFile::Save()
 {
 	// Check_Object(this);
 	//
@@ -503,8 +496,7 @@ NotationFile::Save()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::SaveAs(const std::wstring_view& file_name)
+void NotationFile::SaveAs(std::wstring_view file_name)
 {
 	// Check_Object(this);
 	//
@@ -520,9 +512,8 @@ NotationFile::SaveAs(const std::wstring_view& file_name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::ProcessLine(
-	std::iostream& stream, MacroTree* macro_tree, Page** notepage, const std::wstring_view& buffer)
+void NotationFile::ProcessLine(
+	std::iostream& stream, MacroTree* macro_tree, Page** notepage, std::wstring_view buffer)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -534,7 +525,7 @@ NotationFile::ProcessLine(
 	// find first non-blank character
 	//--------------------------------
 	//
-	const std::wstring_view& p = buffer;
+	std::wstring_view p = buffer;
 	while (*p == ' ' || *p == '\t')
 		++p;
 	//
@@ -543,7 +534,7 @@ NotationFile::ProcessLine(
 	// new page
 	//----------------------------------------------------------------------
 	//
-	const std::wstring_view& token;
+	std::wstring_view token;
 	if (*p == '[')
 	{
 		token = p + 1;
@@ -566,7 +557,7 @@ NotationFile::ProcessLine(
 	//--------------------------------------------------------------
 	//
 	token = p;
-	const std::wstring_view& entry = nullptr;
+	std::wstring_view entry = nullptr;
 	if ((p = strchr(token, '=')) != nullptr)
 	{
 		*p = '\0';
@@ -613,15 +604,14 @@ NotationFile::ProcessLine(
 			nested_file.Write(&file_buffer);
 			file_buffer << "}" << '\0';
 			file_buffer.Rewind();
-			notation->m_text = static_cast<const std::wstring_view&>(file_buffer.GetPointer());
+			notation->m_text = static_cast<std::wstring_view>(file_buffer.GetPointer());
 		}
 	}
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::HandleBangStuff(const std::wstring_view& buffer, MacroTree* macro_tree, Page** page)
+void NotationFile::HandleBangStuff(std::wstring_view buffer, MacroTree* macro_tree, Page** page)
 {
 	Check_Pointer(buffer);
 	Check_Pointer(page);
@@ -640,7 +630,7 @@ NotationFile::HandleBangStuff(const std::wstring_view& buffer, MacroTree* macro_
 	// handle an include directive
 	//----------------------------
 	//
-	const std::wstring_view& p;
+	std::wstring_view p;
 	if (!_strnicmp(buffer, "include", 7))
 	{
 		p = buffer + 7;
@@ -662,7 +652,7 @@ NotationFile::HandleBangStuff(const std::wstring_view& buffer, MacroTree* macro_
 		// If the filename starts with a quote, strip it off
 		//--------------------------------------------------
 		//
-		const std::wstring_view& file_name;
+		std::wstring_view file_name;
 		if (*p == '"')
 		{
 			file_name = ++p;
@@ -705,7 +695,7 @@ NotationFile::HandleBangStuff(const std::wstring_view& buffer, MacroTree* macro_
 	//
 	else
 	{
-		const std::wstring_view& entry = nullptr;
+		std::wstring_view entry = nullptr;
 		//
 		//--------------------------------
 		// trim the spaces off of the name
@@ -736,8 +726,7 @@ NotationFile::HandleBangStuff(const std::wstring_view& buffer, MacroTree* macro_
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Page*
-NotationFile::FindPage(const std::wstring_view& pagename)
+Page* NotationFile::FindPage(std::wstring_view pagename)
 {
 	// Check_Object(this);
 	Check_Pointer(pagename);
@@ -746,7 +735,7 @@ NotationFile::FindPage(const std::wstring_view& pagename)
 	while ((page = pages.ReadAndNext()) != nullptr)
 	{
 		Check_Object(page);
-		const std::wstring_view& name = page->m_name;
+		std::wstring_view name = page->m_name;
 		if (name && !_stricmp(name, pagename))
 			return page;
 	}
@@ -755,8 +744,7 @@ NotationFile::FindPage(const std::wstring_view& pagename)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Page*
-NotationFile::GetPage(const std::wstring_view& pagename)
+Page* NotationFile::GetPage(std::wstring_view pagename)
 {
 	Page* page = FindPage(pagename);
 	if (!page)
@@ -766,8 +754,7 @@ NotationFile::GetPage(const std::wstring_view& pagename)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Page*
-NotationFile::SetPage(const std::wstring_view& pagename)
+Page* NotationFile::SetPage(std::wstring_view pagename)
 {
 	// Check_Object(this);
 	Check_Pointer(pagename);
@@ -780,8 +767,7 @@ NotationFile::SetPage(const std::wstring_view& pagename)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Page*
-NotationFile::AddPage(const std::wstring_view& pagename)
+Page* NotationFile::AddPage(std::wstring_view pagename)
 {
 	// Check_Object(this);
 	Check_Pointer(pagename);
@@ -795,8 +781,7 @@ NotationFile::AddPage(const std::wstring_view& pagename)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::DeletePage(const std::wstring_view& pagename)
+void NotationFile::DeletePage(std::wstring_view pagename)
 {
 	// Check_Object(this);
 	Check_Pointer(pagename);
@@ -811,8 +796,7 @@ NotationFile::DeletePage(const std::wstring_view& pagename)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-NotationFile::DeleteAllPages()
+void NotationFile::DeleteAllPages()
 {
 	// Check_Object(this);
 	PageIterator pages(&m_pages);

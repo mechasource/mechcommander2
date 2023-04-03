@@ -34,20 +34,22 @@ public:
 	bool RunTest();
 };
 
-HashTestPlug::HashTestPlug(int32_t value) :
-	Plug(DefaultData)
+HashTestPlug::HashTestPlug(int32_t value)
+	: Plug(DefaultData)
 {
 	this->value = value;
 }
 
-HashTestPlug::~HashTestPlug() {}
+HashTestPlug::~HashTestPlug() { }
 
-HashTestNode::HashTestNode() :
-	Node(DefaultData), hash1(TEST_COUNT / 2, this, true), hash2(TEST_COUNT / 2, this, true)
+HashTestNode::HashTestNode()
+	: Node(DefaultData)
+	, hash1(TEST_COUNT / 2, this, true)
+	, hash2(TEST_COUNT / 2, this, true)
 {
 }
 
-HashTestNode::~HashTestNode() {}
+HashTestNode::~HashTestNode() { }
 
 //
 //###########################################################################
@@ -55,8 +57,7 @@ HashTestNode::~HashTestNode() {}
 //###########################################################################
 //
 
-bool
-Hash::ProfileClass()
+bool Hash::ProfileClass()
 {
 	HashTestNode testNode;
 #if defined(_ARMOR)
@@ -74,8 +75,7 @@ Hash::ProfileClass()
 //###########################################################################
 //
 
-bool
-Hash::TestClass()
+bool Hash::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Hash test..."));
 	HashTestNode testNode;
@@ -83,8 +83,7 @@ Hash::TestClass()
 	return true;
 }
 
-bool
-HashTestNode::RunProfile()
+bool HashTestNode::RunProfile()
 {
 	HashTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -177,8 +176,7 @@ HashTestNode::RunProfile()
 	return true;
 }
 
-bool
-HashTestNode::RunTest()
+bool HashTestNode::RunTest()
 {
 	HashTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];

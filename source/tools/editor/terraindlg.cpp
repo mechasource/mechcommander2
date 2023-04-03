@@ -17,8 +17,7 @@ extern uint32_t gameResourceHandle; // Default handle must be used for
 	// mc2res.dll due to shared game/editor code
 
 //----------------------------------------------------------------------
-void
-TerrainDlg::Init()
+void TerrainDlg::Init()
 {
 	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_TERRAINS);
 	int32_t numTerrains = TerraincolourMap::getNumTypes();
@@ -35,8 +34,7 @@ TerrainDlg::Init()
 }
 
 //----------------------------------------------------------------------
-void
-TerrainDlg::OnOK()
+void TerrainDlg::OnOK()
 {
 	int32_t index = ((CListBox*)GetDlgItem(IDC_TERRAINS))->GetCurSel();
 	terrain = ((CListBox*)GetDlgItem(IDC_TERRAINS))->GetItemData(index);

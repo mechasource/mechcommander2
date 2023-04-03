@@ -75,19 +75,28 @@ public:
 public:
 	virtual void init(void);
 
-	Team(void) { init(void); }
+	Team(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(int32_t _id, FitIniFile* pMissionFile = 0);
 
 	virtual int32_t loadObjectives(FitIniFile* pMissionFile = 0);
 
-	int32_t getId(void) { return (id); }
+	int32_t getId(void)
+	{
+		return (id);
+	}
 
 	void buildRoster(void);
 
 	void addToRoster(std::unique_ptr<Mover> mover);
 
-	int32_t getRosterSize(void) { return (rosterSize); }
+	int32_t getRosterSize(void)
+	{
+		return (rosterSize);
+	}
 
 	std::unique_ptr<Mover> getMover(int32_t index);
 
@@ -118,11 +127,17 @@ public:
 
 	void eject(void);
 
-	virtual int32_t init(FitIniFile* unitFile) { return (NO_ERROR); }
+	virtual int32_t init(FitIniFile* unitFile)
+	{
+		return (NO_ERROR);
+	}
 
 	virtual void destroy(void);
 
-	~Team(void) { destroy(void); }
+	~Team(void)
+	{
+		destroy(void);
+	}
 
 	static bool lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float endLocal,
 		int32_t tCellRow, int32_t tCellCol, int32_t teamId, float targetRadius,

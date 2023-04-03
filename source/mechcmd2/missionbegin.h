@@ -10,7 +10,6 @@ MissionBegin.h			: Interface for the MissionBegin component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 MissionBegin:
@@ -36,15 +35,21 @@ public:
 
 	void init(void);
 
-	const std::wstring_view& update(void);
+	std::wstring_view update(void);
 	void render(void);
 
 	void begin(void);
 	void end(void);
-	bool isDone() { return bDone; }
-	bool readyToLoad() { return bReadyToLoad; }
+	bool isDone()
+	{
+		return bDone;
+	}
+	bool readyToLoad()
+	{
+		return bReadyToLoad;
+	}
 
-	void beginSplash(const std::wstring_view& playerName = 0);
+	void beginSplash(std::wstring_view playerName = 0);
 
 	void beginMPlayer(void);
 	void beginSPlayer(void);
@@ -55,11 +60,14 @@ public:
 		void); // Returns screen ID as a function of curScreenX and curScreenY
 	bool startAnimation(int32_t bId, bool isButton, float scrollTime, int32_t nFlashes);
 
-	bool isInCalloutAnimation() { return animationRunning; }
+	bool isInCalloutAnimation()
+	{
+		return animationRunning;
+	}
 
 	void beginAtConnectionScreen(void);
 
-	void restartMPlayer(const std::wstring_view& playerName);
+	void restartMPlayer(std::wstring_view playerName);
 
 private:
 	bool bDone;

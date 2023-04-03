@@ -5,7 +5,6 @@ PilotReviewARea.h			: Interface for the PilotReviewARea component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef PILOTREVIEWAREA_H
@@ -34,7 +33,10 @@ public:
 	virtual int32_t AddItem(aListItem* item);
 	virtual void update(void);
 
-	bool isDone() { return bDone; }
+	bool isDone()
+	{
+		return bDone;
+	}
 
 private:
 	float timeSinceStart;
@@ -102,7 +104,10 @@ public:
 
 	static void init(FitIniFile* file);
 
-	LogisticsPilot* getPilot() { return pPilot; }
+	LogisticsPilot* getPilot()
+	{
+		return pPilot;
+	}
 
 	DeadPilotListItem(LogisticsPilot* pUnit);
 
@@ -207,7 +212,10 @@ public:
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 	virtual ~PilotPromotionArea(void);
 
-	aListBox* getSkillListBox() { return &skillListBox; }
+	aListBox* getSkillListBox()
+	{
+		return &skillListBox;
+	}
 
 private:
 	AttributeMeter attributeMeters[2];

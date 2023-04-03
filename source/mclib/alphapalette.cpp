@@ -43,14 +43,13 @@ enum
 	DestAlpha
 };
 
-const std::wstring_view& g_logistic_fadetable = &AlphaTable[256 * 256];
-const std::wstring_view& g_logistic_bluefade = &AlphaTable[267 * 256];
-const std::wstring_view& g_logistic_dlgfade = &AlphaTable[268 * 256];
+std::wstring_view g_logistic_fadetable = &AlphaTable[256 * 256];
+std::wstring_view g_logistic_bluefade = &AlphaTable[267 * 256];
+std::wstring_view g_logistic_dlgfade = &AlphaTable[268 * 256];
 
-void
-InitAlphaLookup(VFX_RGB* Palette)
+void InitAlphaLookup(VFX_RGB* Palette)
 {
-	const std::wstring_view& pAlphaTable = AlphaTable;
+	std::wstring_view pAlphaTable = AlphaTable;
 	int32_t r, g, b, i;
 	MechFile* IniFile;
 	wchar_t Line[256];
@@ -114,12 +113,9 @@ InitAlphaLookup(VFX_RGB* Palette)
 			{
 				if (AlphaIni[source][SourceAlpha] == 0.0 && AlphaIni[source][DestAlpha] == 0.0)
 				{
-					r = (int32_t)(
-						((float)(Palette[dest].r << 2) * 255) / (255 - AlphaIni[source][R]));
-					g = (int32_t)(
-						((float)(Palette[dest].g << 2) * 255) / (255 - AlphaIni[source][G]));
-					b = (int32_t)(
-						((float)(Palette[dest].b << 2) * 255) / (255 - AlphaIni[source][B]));
+					r = (int32_t)(((float)(Palette[dest].r << 2) * 255) / (255 - AlphaIni[source][R]));
+					g = (int32_t)(((float)(Palette[dest].g << 2) * 255) / (255 - AlphaIni[source][G]));
+					b = (int32_t)(((float)(Palette[dest].b << 2) * 255) / (255 - AlphaIni[source][B]));
 				}
 				else
 				{

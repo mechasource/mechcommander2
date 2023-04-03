@@ -12,11 +12,9 @@
 
 //***************************************************************************
 
-void
-Fatal(int32_t errCode, const std::wstring_view& errMessage);
+void Fatal(int32_t errCode, std::wstring_view errMessage);
 
-void
-Assert(bool test, int32_t errCode, const std::wstring_view& errMessage);
+void Assert(bool test, int32_t errCode, std::wstring_view errMessage);
 
 //***************************************************************************
 

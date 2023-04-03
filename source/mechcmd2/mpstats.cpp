@@ -25,7 +25,7 @@ MPStats::MPStats()
 
 //-------------------------------------------------------------------------------------------------
 
-MPStats::~MPStats() {}
+MPStats::~MPStats() { }
 
 int32_t
 MPStats::init()
@@ -36,7 +36,7 @@ MPStats::init()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(buffer2, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, buffer2);
 		return false;
 	}
@@ -71,15 +71,13 @@ int32_t __cdecl sortStats(PCVOID pPlayer1, PCVOID pPlayer2)
 	return 0;
 }
 
-void
-MPStats::end()
+void MPStats::end()
 {
 	MPlayer->setInProgress(false);
 	bSavingStats = 0;
 }
 
-void
-MPStats::begin()
+void MPStats::begin()
 {
 	MPlayer->setMode(MULTIPLAYER_MODE_RESULTS);
 	bSavingStats = 0;
@@ -126,8 +124,7 @@ MPStats::handleMessage(uint32_t what, uint32_t who)
 	return 1;
 }
 
-void
-MPStats::render(int32_t xOffset, int32_t yOffset)
+void MPStats::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
 	for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
@@ -145,8 +142,7 @@ MPStats::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void
-MPStats::update()
+void MPStats::update()
 {
 	if (status == RUNNING && !statics[15].getcolour())
 	{
@@ -187,7 +183,7 @@ MPStats::update()
 		LogisticsVariantDialog::instance()->update();
 		if (LogisticsVariantDialog::instance()->getStatus() == YES)
 		{
-			const std::wstring_view& str = LogisticsVariantDialog::instance()->getFileName();
+			std::wstring_view str = LogisticsVariantDialog::instance()->getFileName();
 			FullPathFileName oldPath;
 			FullPathFileName newPath;
 			newPath.init("data\\multiplayer\\transcripts\\", str, ".txt");
@@ -217,8 +213,7 @@ MPStats::update()
 		ChatWindow::instance()->update();
 }
 
-void
-MPStats::setHostLeftDlg(const std::wstring_view& hostName)
+void MPStats::setHostLeftDlg(std::wstring_view hostName)
 {
 	wchar_t leaveStr[256];
 	wchar_t formatStr[256];
@@ -235,16 +230,14 @@ MPStatsEntry::MPStatsEntry()
 	overlaycolour = 0;
 }
 
-void
-MPStatsEntry::render(int32_t x, int32_t y)
+void MPStatsEntry::render(int32_t x, int32_t y)
 {
 	LogisticsScreen::render(x, y);
 }
 
-MPStatsEntry::~MPStatsEntry() {}
+MPStatsEntry::~MPStatsEntry() { }
 
-void
-MPStatsEntry::init()
+void MPStatsEntry::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -252,7 +245,7 @@ MPStatsEntry::init()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(buffer2, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, buffer2);
 		return;
 	}
@@ -262,8 +255,7 @@ MPStatsEntry::init()
 	overlaycolour = 0;
 }
 
-void
-MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
+void MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 {
 	int32_t color = data ? MPlayer->colors[data->basecolour[BASECOLOR_TEAM]] : 0x00000000;
 	int32_t color2 = data ? MPlayer->colors[data->stripecolour] : 0x00000000;
@@ -337,10 +329,9 @@ MPStatsResultsEntry::MPStatsResultsEntry()
 	overlaycolour = 0;
 }
 
-MPStatsResultsEntry::~MPStatsResultsEntry() {}
+MPStatsResultsEntry::~MPStatsResultsEntry() { }
 
-void
-MPStatsResultsEntry::render(int32_t x, int32_t y)
+void MPStatsResultsEntry::render(int32_t x, int32_t y)
 {
 	LogisticsScreen::render(x, y);
 	// if ( overlaycolour )
@@ -350,8 +341,7 @@ MPStatsResultsEntry::render(int32_t x, int32_t y)
 	//}
 }
 
-void
-MPStatsResultsEntry::init()
+void MPStatsResultsEntry::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -359,7 +349,7 @@ MPStatsResultsEntry::init()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(buffer2, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, buffer2);
 		return;
 	}
@@ -367,8 +357,7 @@ MPStatsResultsEntry::init()
 	aObject::init(0, 0, rects[0].width(), rects[0].height());
 }
 
-void
-MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelcolour, bool bShowScore)
+void MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelcolour, bool bShowScore)
 {
 	rects[4].setcolour(MPlayer->colors[data->basecolour[BASECOLOR_TEAM]]);
 	rects[2].setcolour(MPlayer->colors[data->stripecolour]);

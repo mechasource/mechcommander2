@@ -5,7 +5,6 @@ PauseWindow.h			: Interface for the PauseWindow component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef PAUSEWINDOW_H
@@ -45,7 +44,10 @@ public:
 
 	bool inRect(int32_t mouseX, int32_t mouseY);
 
-	void begin() { currentTime = 0.f; }
+	void begin()
+	{
+		currentTime = 0.f;
+	}
 	void end(void);
 	void begin(bool objectivesOn);
 

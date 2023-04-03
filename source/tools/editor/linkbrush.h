@@ -17,7 +17,6 @@ LinkBrush.h			: Interface for the LinkBrush component.
 
 class EditorObject;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 LinkBrush:
@@ -32,7 +31,10 @@ public:
 	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
 	virtual bool canPaint(
 		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
-	virtual bool canPaintSelection() { return false; }
+	virtual bool canPaintSelection()
+	{
+		return false;
+	}
 	virtual void render(int32_t screenX, int32_t screenY);
 
 	const EditorObject* parent;
@@ -63,7 +65,7 @@ public:
 
 	public:
 		LinkAction(void);
-		~LinkAction() {}
+		~LinkAction() { }
 
 		virtual bool redo(void);
 		virtual bool undo(void);

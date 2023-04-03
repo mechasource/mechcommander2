@@ -178,11 +178,17 @@ public:
 public:
 	void init(void);
 
-	Terrain(void) { init(void); }
+	Terrain(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~Terrain(void) { destroy(void); }
+	~Terrain(void)
+	{
+		destroy(void);
+	}
 
 	int32_t init(PacketFile* file, int32_t whichPacket, uint32_t visibleVertices,
 		volatile float& progress,
@@ -198,7 +204,10 @@ public:
 	float getTerrainLight(Stuff::Vector3D& position);
 	bool isVisible(Stuff::Vector3D& looker, Stuff::Vector3D& looked_at);
 
-	float getWaterElevation() { return mapData->waterElevation(void); }
+	float getWaterElevation()
+	{
+		return mapData->waterElevation(void);
+	}
 
 	void markSeen(Stuff::Vector3D& looker, byte who, float specialUnitExpand);
 	void markRadiusSeen(Stuff::Vector3D& looker, float dist, byte who);
@@ -272,7 +281,10 @@ public:
 
 	int32_t getWater(Stuff::Vector3D& worldPos);
 
-	float getClipRange() { return 0.5 * worldUnitsPerVertex * (float)(visibleVerticesPerSide); }
+	float getClipRange()
+	{
+		return 0.5 * worldUnitsPerVertex * (float)(visibleVerticesPerSide);
+	}
 
 	void setClipRange(float clipRange)
 	{
@@ -281,13 +293,25 @@ public:
 
 	void purgeTransitions(void);
 
-	TerrainQuadPtr getQuadList(void) { return (quadList); }
+	TerrainQuadPtr getQuadList(void)
+	{
+		return (quadList);
+	}
 
-	VertexPtr getVertexList(void) { return (vertexList); }
+	VertexPtr getVertexList(void)
+	{
+		return (vertexList);
+	}
 
-	int32_t getNumVertices(void) { return (numberVertices); }
+	int32_t getNumVertices(void)
+	{
+		return (numberVertices);
+	}
 
-	int32_t getNumQuads(void) { return (numberQuads); }
+	int32_t getNumQuads(void)
+	{
+		return (numberQuads);
+	}
 
 	void setObjVertexActive(int32_t vertexNum, bool active);
 
@@ -296,7 +320,7 @@ public:
 	void resetVisibleVertices(int32_t maxVisibleVertices);
 
 	void getcolourMapName(FitIniFile* file);
-	void setcolourMapName(const std::wstring_view& mapName);
+	void setcolourMapName(std::wstring_view mapName);
 	void savecolourMapName(FitIniFile* file);
 };
 

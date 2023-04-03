@@ -38,13 +38,19 @@ public:
 		owner = nullptr;
 	}
 
-	Shape(void) { init(void); }
+	Shape(void)
+	{
+		init(void);
+	}
 
 	int32_t init(uint8_t* fileBlock, AppearanceTypePtr, int32_t shapeSize);
 
 	void destroy(void);
 
-	~Shape(void) { destroy(void); }
+	~Shape(void)
+	{
+		destroy(void);
+	}
 };
 
 typedef Shape* ShapePtr;

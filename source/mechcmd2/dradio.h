@@ -13,14 +13,14 @@
 #ifndef DRADIO_H
 #define DRADIO_H
 
-class Radio;
-typedef Radio* RadioPtr;
+//class Radio;
+//typedef Radio* RadioPtr;
 
-#define MSG_TOTAL_MSGS 0
+//#define MSG_TOTAL_MSGS 0
 
-enum RadioMessageType
+enum class RadioMessageType : uint8_t
 {
-	RADIO_ACK = MSG_TOTAL_MSGS, // 3 Types
+	RADIO_ACK = 0,			// MSG_TOTAL_MSGS, // 3 Types
 	RADIO_CALLED_SHOT,
 	RADIO_CANNOT_CAPTURE,
 	RADIO_CAPTURED_BUILDING,
@@ -54,7 +54,7 @@ enum RadioMessageType
 	RADIO_MESSAGE_COUNT
 };
 
-enum RadioNoise
+enum class RadioNoise : uint8_t
 {
 	SHORT_STATIC,
 	LONG_STATIC,

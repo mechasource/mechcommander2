@@ -14,7 +14,6 @@ DamageBrush.h			: Interface for the DamageBrush component.
 //#include "action.h"
 //#include "editorobjects.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 DamageBrush:
@@ -27,7 +26,7 @@ public:
 		damage = bDamage;
 		pAction = nullptr;
 	}
-	virtual ~DamageBrush() {}
+	virtual ~DamageBrush() { }
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
 	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);

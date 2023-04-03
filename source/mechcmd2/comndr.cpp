@@ -52,16 +52,14 @@ Commander::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-Commander::operator delete(PVOID us)
+void Commander::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-Commander::init(void)
+void Commander::init(void)
 {
 	id = -1;
 	team = nullptr;
@@ -75,8 +73,7 @@ Commander::init(void)
 
 //---------------------------------------------------------------------------
 
-void
-Commander::destroy(void)
+void Commander::destroy(void)
 {
 	for (size_t i = 0; i < MAX_MOVERGROUPS; i++)
 	{
@@ -129,8 +126,7 @@ Commander::setGroup(int32_t id, int32_t numMates, std::unique_ptr<Mover>* moverL
 
 //---------------------------------------------------------------------------
 
-void
-Commander::setLocalMoverId(int32_t localMoverId)
+void Commander::setLocalMoverId(int32_t localMoverId)
 {
 	if (getTeam())
 	{
@@ -141,8 +137,7 @@ Commander::setLocalMoverId(int32_t localMoverId)
 
 //---------------------------------------------------------------------------
 
-void
-Commander::eject(void)
+void Commander::eject(void)
 {
 	for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 	{
@@ -152,7 +147,7 @@ Commander::eject(void)
 			if (mover->getObjectClass() == BATTLEMECH)
 			{
 				if (mover->getPilot())
-					mover->getPilot()->orderEject(false, true, ORDER_ORIGIN_COMMANDER);
+					mover->getPilot()->orderEject(false, true, OrderOriginType::commander);
 			}
 			else
 			{
@@ -166,8 +161,7 @@ Commander::eject(void)
 
 //---------------------------------------------------------------------------
 
-void
-Commander::addToGUI(bool visible)
+void Commander::addToGUI(bool visible)
 {
 	//----------------------------------
 	// The GUI only supports 4 groups...

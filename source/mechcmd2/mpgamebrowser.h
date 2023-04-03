@@ -5,7 +5,6 @@ MPGameBrowser.h			: Interface for the MPGameBrowser component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef MPGAMEBROWSER_H
@@ -31,7 +30,7 @@ public:
 		hasAnimation = false;
 		normalcolour = 0xff808080;
 	}
-	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	virtual int32_t init(FitIniFile* file, std::wstring_view blockname);
 	virtual void render(void);
 
 protected:
@@ -44,15 +43,18 @@ class aGameListItem : public aListItem
 {
 public:
 	aGameListItem(void);
-	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	virtual int32_t init(FitIniFile* file, std::wstring_view blockname);
 	virtual void update(void);
 	void setSessionInfo(_MC2Session* pSessions);
 
-	const std::wstring_view& getSessionName(void);
+	std::wstring_view getSessionName(void);
 
-	const std::wstring_view& getText(int32_t which);
+	std::wstring_view getText(int32_t which);
 
-	const MC2Session* getSession(void) { return (&session); }
+	const MC2Session* getSession(void)
+	{
+		return (&session);
+	}
 
 	aGameListItem& operator=(const aGameListItem&);
 

@@ -16,14 +16,16 @@
 //#include "ablscan.h"
 //#include "dablenv.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
 //---------------------
 // DEFINITION structure
 
-union value {
+union value
+{
 	int32_t integer;
 	wchar_t character;
 	float real;
@@ -97,7 +99,7 @@ struct Routine
 	const std::unique_ptr<SymTableNode>& params;
 	const std::unique_ptr<SymTableNode>& locals;
 	const std::unique_ptr<SymTableNode>& localSymTable;
-	const std::wstring_view& codeSegment;
+	std::wstring_view codeSegment;
 	int32_t codeSegmentSize;
 };
 
@@ -110,7 +112,8 @@ struct Data
 	// implementing record structures...
 };
 
-union DefinitionInfo {
+union DefinitionInfo
+{
 	Constant constant;
 	Routine routine;
 	Data data;
@@ -201,7 +204,8 @@ struct Type
 	FormType form;
 	int32_t size;
 	const std::unique_ptr<SymTableNode>& typeIdPtr;
-	union {
+	union
+	{
 		struct
 		{
 			const std::unique_ptr<SymTableNode>& constIdPtr;
@@ -222,59 +226,48 @@ struct Type
 
 //***************************************************************************
 
-void
-searchLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
+void searchLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
 const std::unique_ptr<SymTableNode>&
-searchLocalSymTableForFunction(const std::wstring_view& name);
-void
-searchThisSymTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::unique_ptr<SymTableNode>& thisTable);
-void
-searchAllSymTables(const std::unique_ptr<SymTableNode>&& IdPtr);
-void
-enterLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
-void
-enterNameLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::wstring_view& name);
-void
-searchAndFindAllSymTables(const std::unique_ptr<SymTableNode>&& IdPtr);
-void
-searchAndEnterLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
+searchLocalSymTableForFunction(std::wstring_view name);
+void searchThisSymTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::unique_ptr<SymTableNode>& thisTable);
+void searchAllSymTables(const std::unique_ptr<SymTableNode>&& IdPtr);
+void enterLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
+void enterNameLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr, std::wstring_view name);
+void searchAndFindAllSymTables(const std::unique_ptr<SymTableNode>&& IdPtr);
+void searchAndEnterLocalSymTable(const std::unique_ptr<SymTableNode>&& IdPtr);
 /*inline*/ void
 searchAndEnterThisTable(const std::unique_ptr<SymTableNode>&& IdPtr, const std::unique_ptr<SymTableNode>& thisTable);
 inline const std::unique_ptr<SymTableNode>&
 symTableSuccessor(const std::unique_ptr<SymTableNode>& nodeX);
 
 const std::unique_ptr<SymTableNode>&
-searchSymTable(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr);
+searchSymTable(std::wstring_view name, const std::unique_ptr<SymTableNode>& nodePtr);
 const std::unique_ptr<SymTableNode>&
-searchSymTableForFunction(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr);
+searchSymTableForFunction(std::wstring_view name, const std::unique_ptr<SymTableNode>& nodePtr);
 const std::unique_ptr<SymTableNode>&
-searchSymTableForState(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr);
+searchSymTableForState(std::wstring_view name, const std::unique_ptr<SymTableNode>& nodePtr);
 const std::unique_ptr<SymTableNode>&
-searchSymTableForString(const std::wstring_view& name, const std::unique_ptr<SymTableNode>& nodePtr);
+searchSymTableForString(std::wstring_view name, const std::unique_ptr<SymTableNode>& nodePtr);
 const std::unique_ptr<SymTableNode>&
-searchSymTableDisplay(const std::wstring_view& name);
+searchSymTableDisplay(std::wstring_view name);
 const std::unique_ptr<SymTableNode>&
-enterSymTable(const std::wstring_view& name, const std::unique_ptr<SymTableNode>&* ptrToNodePtr);
+enterSymTable(std::wstring_view name, const std::unique_ptr<SymTableNode>&* ptrToNodePtr);
 const std::unique_ptr<SymTableNode>&
 insertSymTable(const std::unique_ptr<SymTableNode>&* tableRoot, const std::unique_ptr<SymTableNode>& newNode);
 const std::unique_ptr<SymTableNode>&
 extractSymTable(const std::unique_ptr<SymTableNode>&* tableRoot, const std::unique_ptr<SymTableNode>& nodeKill);
-void
-enterStandardRoutine(const std::wstring_view& name, int32_t routineKey, bool isOrder, const std::wstring_view& paramList,
-	const std::wstring_view& returnType, void (*callback)(void));
-void
-enterScope(const std::unique_ptr<SymTableNode>& symTableRoot);
+void enterStandardRoutine(std::wstring_view name, int32_t routineKey, bool isOrder, std::wstring_view paramList,
+	std::wstring_view returnType, void (*callback)(void));
+void enterScope(const std::unique_ptr<SymTableNode>& symTableRoot);
 const std::unique_ptr<SymTableNode>&
 exitScope(void);
-void
-initSymTable(void);
+void initSymTable(void);
 
 const std::unique_ptr<Type>&
 createType(void);
 const std::unique_ptr<Type>&
 setType(const std::unique_ptr<Type>& type);
-void
-clearType(const std::unique_ptr<Type>&& type);
+void clearType(const std::unique_ptr<Type>&& type);
 
 //***************************************************************************
 

@@ -28,8 +28,7 @@ Stuff::Round(float value)
 	}
 }
 
-void
-Stuff::Find_Roots(float a, // a*x*x + b*x + c = 0
+void Stuff::Find_Roots(float a, // a*x*x + b*x + c = 0
 	float b, float c, float* center, float* range)
 {
 	//
@@ -85,8 +84,7 @@ Stuff::Scaled_Float_To_Bits(float in, float min, float max, uint32_t bits)
 	return return_value;
 }
 
-float
-Stuff::Scaled_Float_From_Bits(uint32_t in, float min, float max, uint32_t bits)
+float Stuff::Scaled_Float_From_Bits(uint32_t in, float min, float max, uint32_t bits)
 {
 	_ASSERT(bits < 32);
 	_ASSERT(bits > 0);

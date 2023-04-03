@@ -18,16 +18,15 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // ViewConditionOrActionDlg dialog
 
-ViewConditionOrActionDlg::ViewConditionOrActionDlg(CWnd* pParent /*=nullptr*/) :
-	CDialog(ViewConditionOrActionDlg::IDD, pParent)
+ViewConditionOrActionDlg::ViewConditionOrActionDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(ViewConditionOrActionDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(ViewConditionOrActionDlg)
 	m_Edit = _T("");
 	//}}AFX_DATA_INIT
 }
 
-void
-ViewConditionOrActionDlg::DoDataExchange(CDataExchange* pDX)
+void ViewConditionOrActionDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(ViewConditionOrActionDlg)

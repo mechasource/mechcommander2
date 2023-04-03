@@ -40,26 +40,32 @@ public:
 	aFont(const aFont& src);
 	aFont& operator=(const aFont& src);
 
-	int32_t init(const std::wstring_view& fontName);
+	int32_t init(std::wstring_view fontName);
 	int32_t init(int32_t resourceID);
 	void destroy(void);
-	void render(const std::wstring_view& text, int32_t XPos, int32_t YPos, int32_t areawidth, int32_t areaheight,
+	void render(std::wstring_view text, int32_t XPos, int32_t YPos, int32_t areawidth, int32_t areaheight,
 		uint32_t color, bool bBold, int32_t alignment);
 
-	int32_t load(const std::wstring_view& fontName);
+	int32_t load(std::wstring_view fontName);
 	uint32_t height(void) const;
-	uint32_t width(const std::wstring_view& st) const;
-	uint32_t height(const std::wstring_view& st, int32_t areawidth) const;
-	void getSize(uint32_t& width, uint32_t& height, const std::wstring_view& pText);
+	uint32_t width(std::wstring_view st) const;
+	uint32_t height(std::wstring_view st, int32_t areawidth) const;
+	void getSize(uint32_t& width, uint32_t& height, std::wstring_view pText);
 
 	static HGOSFONT3D loadFont(int32_t resourceID, int32_t& size);
-	int32_t getSize() { return size; }
+	int32_t getSize()
+	{
+		return size;
+	}
 
 	HGOSFONT3D getTempHandle()
 	{
 		return gosFont; // don't you dare hang on to this
 	}
-	int32_t getFontID() { return resID; }
+	int32_t getFontID()
+	{
+		return resID;
+	}
 };
 
 #endif

@@ -91,9 +91,15 @@ public:
 		// mech/vehicle,etc.
 	void setTextureHandle(uint32_t handle, int32_t height = -1);
 
-	void setLight(uint32_t light) { lightRGB = light; }
+	void setLight(uint32_t light)
+	{
+		lightRGB = light;
+	}
 
-	void setFog(uint32_t fog) { fogRGB = fog; }
+	void setFog(uint32_t fog)
+	{
+		fogRGB = fog;
+	}
 
 	void drawShape(void);
 
@@ -123,9 +129,15 @@ public:
 		lightRGB = 0xffffffff;
 	}
 
-	void setLight(uint32_t light) { lightRGB = light; }
+	void setLight(uint32_t light)
+	{
+		lightRGB = light;
+	}
 
-	void setFog(uint32_t fog) { fogRGB = fog; }
+	void setFog(uint32_t fog)
+	{
+		fogRGB = fog;
+	}
 
 	void init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy,
 		float twidth, float _z, float tZ);
@@ -141,7 +153,7 @@ public:
 	// Useful for status bars, etc.
 	gos_VERTEX vertices[4];
 
-	PolygonQuadElement(void) {}
+	PolygonQuadElement(void) { }
 
 	void init(gos_VERTEX* v);
 
@@ -157,7 +169,7 @@ public:
 	// Useful for status bars, etc.
 	gos_VERTEX vertices[3];
 
-	PolygonTriElement(void) {}
+	PolygonTriElement(void) { }
 
 	void init(gos_VERTEX* v);
 
@@ -175,7 +187,7 @@ public:
 	bool zWrite;
 	bool zComp;
 
-	TexturedPolygonQuadElement(void) {}
+	TexturedPolygonQuadElement(void) { }
 
 	void init(gos_VERTEX* v, uint32_t tHandle, bool writeZ = true, bool compZ = true);
 
@@ -191,7 +203,7 @@ public:
 	// Useful everywhere.
 	uint32_t textureHandle;
 
-	TexturedPolygonTriElement(void) {}
+	TexturedPolygonTriElement(void) { }
 
 	void init(gos_VERTEX* v, uint32_t tHandle);
 

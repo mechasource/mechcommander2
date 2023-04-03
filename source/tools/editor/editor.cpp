@@ -50,7 +50,7 @@ extern float CliffTerrainAngle;
 
 extern bool gNoDialogs;
 
-const std::wstring_view& ExceptionGameMsg = nullptr; // some debugging thing I think
+std::wstring_view ExceptionGameMsg = nullptr; // some debugging thing I think
 
 bool quitGame = FALSE;
 
@@ -70,8 +70,7 @@ size_t maxFastFiles = 0;
 // Heidi, turn this FALSE to turn Fog of War ON!
 extern uint8_t godMode; // Can I simply see everything, enemy and friendly?
 
-void
-InitDW();
+void InitDW();
 
 TimerManagerPtr timerManager = nullptr;
 
@@ -97,7 +96,7 @@ MidLevelRenderer::MLRClipper* theClipper = nullptr;
 
 // called by gos
 //---------------------------------------------------------------------------
-const std::wstring_view&
+std::wstring_view
 GetGameInformation()
 {
 	return (ExceptionGameMsg);
@@ -109,8 +108,7 @@ GetGameInformation()
 #ifdef RUNNING_REMOTELY
 #include <windows.h> /* for declaration of Sleep() */
 #endif /*RUNNING_REMOTELY*/
-void
-UpdateRenderers()
+void UpdateRenderers()
 {
 #ifdef RUNNING_REMOTELY
 	Sleep(0.25 /*seconds*/ * 1000.0); /* limit the frame rate when displaying on remote console */
@@ -144,8 +142,7 @@ UpdateRenderers()
 
 bool statisticsInitialized = false;
 //------------------------------------------------------------
-void
-DoGameLogic()
+void DoGameLogic()
 {
 	globalFloatHelp->resetAll();
 	//-------------------------------------
@@ -183,8 +180,7 @@ DoGameLogic()
 }
 
 //---------------------------------------------------------------------------
-void
-InitializeGameEngine()
+void InitializeGameEngine()
 {
 	InEditor = true;
 	if (fileExists("mc2resUS.dll"))
@@ -197,7 +193,7 @@ InitializeGameEngine()
 	cLoadString(IDS_MC2_MISSING_TITLE, MissingTitleString, 255);
 	wchar_t temp[256];
 	cLoadString(IDS_FLOAT_HELP_FONT, temp, 255);
-	const std::wstring_view& pStr = strstr(temp, ",");
+	std::wstring_view pStr = strstr(temp, ",");
 	if (pStr)
 	{
 		gosFontScale = atoi(pStr + 2);
@@ -559,7 +555,7 @@ InitializeGameEngine()
 		FitIniFile loader;
 		int32_t result = loader.open(guiloader);
 		gosASSERT(result == NO_ERROR);
-		editor->init((const std::wstring_view&)guiloader);
+		editor->init((std::wstring_view)guiloader);
 	}
 	//---------------------------------------------------------
 	// Start the Timers
@@ -578,8 +574,7 @@ InitializeGameEngine()
 }
 
 bool alreadyTermed = false;
-void
-TerminateGameEngine()
+void TerminateGameEngine()
 {
 	if (alreadyTermed)
 		return;
@@ -708,13 +703,12 @@ TerminateGameEngine()
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void
-ParseCommandLine(const std::wstring_view& command_line)
+void ParseCommandLine(std::wstring_view command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
 	int32_t index = 0;
-	const std::wstring_view& argv[30];
+	std::wstring_view argv[30];
 	wchar_t tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
@@ -789,8 +783,7 @@ ParseCommandLine(const std::wstring_view& command_line)
 }
 
 //---------------------------------------------------------------------
-void
-GetGameOSEnvironment(const std::wstring_view& commandline)
+void GetGameOSEnvironment(std::wstring_view commandline)
 {
 	ParseCommandLine(commandline);
 	Environment.applicationName = "MC2 Mission Editor";

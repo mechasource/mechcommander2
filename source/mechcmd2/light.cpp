@@ -40,8 +40,7 @@ LightType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void
-LightType::destroy(void)
+void LightType::destroy(void)
 {
 	ObjectType::destroy();
 }
@@ -73,8 +72,7 @@ LightType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool
-LightType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool LightType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-----------------------------
 	// Nothing collides with light!
@@ -83,8 +81,7 @@ LightType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool
-LightType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool LightType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//----------------------------
 	// No destroy'n light, either!
@@ -95,8 +92,7 @@ LightType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 // LIGHT class
 //***************************************************************************
 
-void
-Light::init(bool create)
+void Light::init(bool create)
 {
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
 }
@@ -132,8 +128,7 @@ Light::update(void)
 
 //---------------------------------------------------------------------------
 
-void
-Light::render(void)
+void Light::render(void)
 {
 	if (gamePaused)
 		onScreen();
@@ -147,15 +142,13 @@ Light::render(void)
 
 //---------------------------------------------------------------------------
 
-void
-Light::destroy(void)
+void Light::destroy(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-Light::init(bool create, ObjectTypePtr _type)
+void Light::init(bool create, ObjectTypePtr _type)
 {
 	//-------------------------------------------
 	// Initialize the Light Appearance here.

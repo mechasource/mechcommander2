@@ -48,8 +48,7 @@ PriorityQueue::init(int32_t max, int32_t keyMinValue)
 
 //---------------------------------------------------------------------------
 
-void
-PriorityQueue::upHeap(int32_t curIndex)
+void PriorityQueue::upHeap(int32_t curIndex)
 {
 	PQNode startNode = pqList[curIndex];
 	int32_t stopKey = startNode.key;
@@ -79,8 +78,7 @@ PriorityQueue::insert(PQNode& item)
 
 //---------------------------------------------------------------------------
 
-void
-PriorityQueue::downHeap(int32_t curIndex)
+void PriorityQueue::downHeap(int32_t curIndex)
 {
 	//----------------------------------
 	// Start at the top from curIndex...
@@ -103,8 +101,7 @@ PriorityQueue::downHeap(int32_t curIndex)
 
 //---------------------------------------------------------------------------
 
-void
-PriorityQueue::remove(PQNode& item)
+void PriorityQueue::remove(PQNode& item)
 {
 	item = pqList[1];
 	pqList[1] = pqList[numItems--];
@@ -113,8 +110,7 @@ PriorityQueue::remove(PQNode& item)
 
 //---------------------------------------------------------------------------
 
-void
-PriorityQueue::change(int32_t itemIndex, int32_t newValue)
+void PriorityQueue::change(int32_t itemIndex, int32_t newValue)
 {
 	if (newValue > pqList[itemIndex].key)
 	{
@@ -141,8 +137,7 @@ PriorityQueue::find(int32_t id)
 
 //---------------------------------------------------------------------------
 
-void
-PriorityQueue::destroy(void)
+void PriorityQueue::destroy(void)
 {
 	systemHeap->Free(pqList);
 	pqList = nullptr;

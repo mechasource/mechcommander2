@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
-	std::iostream stream, uint32_t gfx_version) :
-	SpinningCloud__Specification(gosFX::ShapeCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: SpinningCloud__Specification(gosFX::ShapeCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	_ASSERT(m_class == ShapeCloudClassID);
@@ -41,8 +41,8 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShapeCloud__Specification::ShapeCloud__Specification(MidLevelRenderer::MLRShape* shape) :
-	SpinningCloud__Specification(gosFX::ShapeCloudClassID)
+gosFX::ShapeCloud__Specification::ShapeCloud__Specification(MidLevelRenderer::MLRShape* shape)
+	: SpinningCloud__Specification(gosFX::ShapeCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -80,8 +80,7 @@ gosFX::ShapeCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShapeCloud__Specification::Save(std::iostream stream)
+void gosFX::ShapeCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -93,8 +92,7 @@ gosFX::ShapeCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
+void gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -111,8 +109,7 @@ gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShapeCloud__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
+void gosFX::ShapeCloud__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 {
 	// Check_Object(this);
 	//
@@ -170,8 +167,7 @@ gosFX::ShapeCloud::ClassData* gosFX::ShapeCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShapeCloud::InitializeClass()
+void gosFX::ShapeCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -182,8 +178,7 @@ gosFX::ShapeCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShapeCloud::TerminateClass()
+void gosFX::ShapeCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -192,8 +187,8 @@ gosFX::ShapeCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShapeCloud::ShapeCloud(Specification* spec, uint32_t flags) :
-	SpinningCloud(DefaultData, spec, flags)
+gosFX::ShapeCloud::ShapeCloud(Specification* spec, uint32_t flags)
+	: SpinningCloud(DefaultData, spec, flags)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
@@ -214,8 +209,7 @@ gosFX::ShapeCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShapeCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void gosFX::ShapeCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -233,8 +227,7 @@ gosFX::ShapeCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::ShapeCloud::AnimateParticle(
+bool gosFX::ShapeCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -266,8 +259,7 @@ gosFX::ShapeCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShapeCloud::Draw(DrawInfo* info)
+void gosFX::ShapeCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -473,8 +465,7 @@ gosFX::ShapeCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::ShapeCloud::TestInstance(void) const
+void gosFX::ShapeCloud::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

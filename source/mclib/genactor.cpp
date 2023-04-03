@@ -76,8 +76,7 @@ extern int32_t ObjectTextureSize;
 extern bool reloadBounds;
 //-----------------------------------------------------------------------------
 // class GenericAppearanceType
-void
-GenericAppearanceType::init(const std::wstring_view& fileName)
+void GenericAppearanceType::init(std::wstring_view fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -94,9 +93,9 @@ GenericAppearanceType::init(const std::wstring_view& fileName)
 	if (result != NO_ERR)
 		Fatal(result, "Could not find block in building appearance INI file");
 	wchar_t aseFileName[512];
-	result = iniFile.readIdString("FileName", aseFileName, 511);
+	result = iniFile.readIdString("filename", aseFileName, 511);
 	if (result != NO_ERR)
-		Fatal(result, "Could not find ASE FileName in building appearance INI file");
+		Fatal(result, "Could not find ASE filename in building appearance INI file");
 	FullPathFileName genName;
 	genName.init(tglPath, aseFileName, ".ase");
 	genShape->LoadTGMultiShapeFromASE(genName);
@@ -109,9 +108,9 @@ GenericAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.seekBlock("TGLDamage");
 	if (result == NO_ERR)
 	{
-		result = iniFile.readIdString("FileName", aseFileName, 511);
+		result = iniFile.readIdString("filename", aseFileName, 511);
 		if (result != NO_ERR)
-			Fatal(result, "Could not find ASE FileName in building appearance INI file");
+			Fatal(result, "Could not find ASE filename in building appearance INI file");
 		FullPathFileName dmgName;
 		dmgName.init(tglPath, aseFileName, ".ase");
 		genDmgShape = new TG_TypeMultiShape;
@@ -187,8 +186,7 @@ GenericAppearanceType::init(const std::wstring_view& fileName)
 }
 
 //----------------------------------------------------------------------------
-void
-GenericAppearanceType::destroy(void)
+void GenericAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	if (genShape)
@@ -204,8 +202,7 @@ GenericAppearanceType::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
+void GenericAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -218,8 +215,7 @@ GenericAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNu
 
 //-----------------------------------------------------------------------------
 // class GenericAppearance
-void
-GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (GenericAppearanceType*)tree;
@@ -331,8 +327,7 @@ GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::setObjStatus(int32_t oStatus)
+void GenericAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -374,8 +369,7 @@ GenericAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::setGesture(uint32_t gestureId)
+void GenericAppearance::setGesture(uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -410,16 +404,14 @@ GenericAppearance::setGesture(uint32_t gestureId)
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::setMoverParameters(
+void GenericAppearance::setMoverParameters(
 	float turretRot, float lArmRot, float rArmRot, bool isAirborne)
 {
 	pitch = turretRot;
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::setObjectParameters(
+void GenericAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	rotation = Rot;
@@ -431,8 +423,7 @@ GenericAppearance::setObjectParameters(
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::changeSkyToSkyNum(const std::wstring_view& txmName, const std::wstring_view& newName)
+void GenericAppearance::changeSkyToSkyNum(std::wstring_view txmName, std::wstring_view newName)
 {
 	if (strnicmp(txmName, "sky", 3) != 0)
 	{
@@ -447,8 +438,7 @@ GenericAppearance::changeSkyToSkyNum(const std::wstring_view& txmName, const std
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::setSkyNumber(int32_t skyNum)
+void GenericAppearance::setSkyNumber(int32_t skyNum)
 {
 	//-------------------------------------------------
 	// Load the texture and store its handle.
@@ -493,8 +483,7 @@ GenericAppearance::setSkyNumber(int32_t skyNum)
 }
 
 //-----------------------------------------------------------------------------
-bool
-GenericAppearance::isMouseOver(float px, float py)
+bool GenericAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
@@ -511,8 +500,7 @@ GenericAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool
-GenericAppearance::recalcBounds(void)
+bool GenericAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
 	inView = false;
@@ -1000,8 +988,7 @@ GenericAppearance::update(bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::destroy(void)
+void GenericAppearance::destroy(void)
 {
 	if (genShape)
 	{
@@ -1013,14 +1000,12 @@ GenericAppearance::destroy(void)
 
 #define HEIGHT_THRESHOLD 10.0f
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
+void GenericAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 {
 }
 
 //-----------------------------------------------------------------------------
-void
-GenericAppearance::markMoveMap(bool passable)
+void GenericAppearance::markMoveMap(bool passable)
 {
 }
 

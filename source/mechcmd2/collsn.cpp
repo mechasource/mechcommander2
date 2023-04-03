@@ -57,8 +57,7 @@ GlobalCollisionAlert::init(uint32_t maxCollisionAlerts)
 }
 
 //------------------------------------------------------------------------------
-void
-GlobalCollisionAlert::destroy(void)
+void GlobalCollisionAlert::destroy(void)
 {
 	systemHeap->Free(collisionAlerts);
 	collisionAlerts = nullptr;
@@ -113,8 +112,7 @@ GlobalCollisionAlert::findAlert(
 }
 
 //------------------------------------------------------------------------------
-void
-GlobalCollisionAlert::purgeRecords(void)
+void GlobalCollisionAlert::purgeRecords(void)
 {
 	nextRecord = 0;
 	for (size_t i = 0; i < (int32_t)maxAlerts; i++)
@@ -138,8 +136,7 @@ CollisionGrid::operator new(size_t mySize)
 }
 
 //------------------------------------------------------------------------------
-void
-CollisionGrid::operator delete(PVOID us)
+void CollisionGrid::operator delete(PVOID us)
 {
 	if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 		CollisionSystem::collisionHeap->Free(us);
@@ -184,8 +181,7 @@ CollisionGrid::init(Stuff::Vector3D& newOrigin)
 }
 
 //------------------------------------------------------------------------------
-void
-CollisionGrid::destroy(void)
+void CollisionGrid::destroy(void)
 {
 	if (gridIsGo)
 	{
@@ -256,8 +252,7 @@ CollisionGrid::add(GameObjectPtr object)
 }
 
 //------------------------------------------------------------------------------
-void
-CollisionGrid::createGrid(void)
+void CollisionGrid::createGrid(void)
 {
 	//------------------------------------------------
 	// This block of code is only necessary if
@@ -322,8 +317,7 @@ CollisionGrid::createGrid(void)
 }
 
 //------------------------------------------------------------------------------
-void
-CollisionGrid::checkGrid(GameObjectPtr obj1, CollisionGridNodePtr area)
+void CollisionGrid::checkGrid(GameObjectPtr obj1, CollisionGridNodePtr area)
 {
 	while (area)
 	{
@@ -359,8 +353,7 @@ CollisionSystem::operator new(size_t mySize)
 }
 
 //------------------------------------------------------------------------------
-void
-CollisionSystem::operator delete(PVOID us)
+void CollisionSystem::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
@@ -391,8 +384,7 @@ CollisionSystem::init(FitIniFile* scenarioFile)
 
 #define MAX_LISTS_TO_CHECK 3
 //------------------------------------------------------------------------------
-void
-CollisionSystem::checkObjects(void)
+void CollisionSystem::checkObjects(void)
 {
 	Stuff::Vector3D gridCenter(0L, 0L, 0L);
 	collisionGrid->init(gridCenter);
@@ -460,8 +452,7 @@ CollisionSystem::checkObjects(void)
 
 //------------------------------------------------------------------------------
 
-void
-CollisionSystem::detectCollision(GameObjectPtr obj1, GameObjectPtr obj2)
+void CollisionSystem::detectCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 {
 	float timeOfClosest = 0.0;
 	//---------------------------------------------------------
@@ -519,8 +510,7 @@ CollisionSystem::detectCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 }
 
 //------------------------------------------------------------------------------
-void
-CollisionSystem::detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2)
+void CollisionSystem::detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 {
 	float timeOfClosest = 0.0;
 	//--------------------------------------------------------
@@ -557,8 +547,7 @@ CollisionSystem::detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 
 //------------------------------------------------------------------------------
 
-void
-CollisionSystem::checkExtents(GameObjectPtr obj1, GameObjectPtr obj2, float time)
+void CollisionSystem::checkExtents(GameObjectPtr obj1, GameObjectPtr obj2, float time)
 {
 	//---------------------------------------------------------
 	// We may not need any more information for MechCommander2
@@ -622,8 +611,7 @@ CollisionSystem::checkExtents(GameObjectPtr obj1, GameObjectPtr obj2, float time
 }
 
 //------------------------------------------------------------------------------
-float
-CollisionSystem::timeToImpact(GameObjectPtr obj1, GameObjectPtr obj2)
+float CollisionSystem::timeToImpact(GameObjectPtr obj1, GameObjectPtr obj2)
 {
 	float timeOfClosest = -1.0;
 	//--------------------------------------------------------
@@ -698,8 +686,7 @@ CollisionSystem::timeToImpact(GameObjectPtr obj1, GameObjectPtr obj2)
 }
 
 //------------------------------------------------------------------------------
-void
-CollisionSystem::destroy(void)
+void CollisionSystem::destroy(void)
 {
 	delete collisionGrid;
 	collisionGrid = nullptr;

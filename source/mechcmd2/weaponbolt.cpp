@@ -63,8 +63,7 @@ WeaponBoltType::createInstance(void)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBoltType::destroy(void)
+void WeaponBoltType::destroy(void)
 {
 	if (textureName)
 		ObjectTypeManager::objectCache->Free(textureName);
@@ -111,7 +110,7 @@ WeaponBoltType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 		result = bullFile.readIdString("TextureName", txmName, 1023);
 		if (result != NO_ERROR)
 			strcpy(txmName, "NONE");
-		textureName = (const std::wstring_view&)ObjectTypeManager::objectCache->Malloc(strlen(txmName) + 1);
+		textureName = (std::wstring_view)ObjectTypeManager::objectCache->Malloc(strlen(txmName) + 1);
 		strcpy(textureName, txmName);
 		result = bullFile.readIdFloat("UVAnimRate", uvAnimRate);
 		if (result != NO_ERROR)
@@ -261,8 +260,7 @@ WeaponBoltType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 }
 
 //---------------------------------------------------------------------------
-bool
-WeaponBoltType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool WeaponBoltType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// The bolt ceases to exist when its effect is done.
@@ -272,8 +270,7 @@ WeaponBoltType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 }
 
 //---------------------------------------------------------------------------
-bool
-WeaponBoltType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool WeaponBoltType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// The bolt ceases to exist when its effect is done.
@@ -301,8 +298,7 @@ WeaponBoltType::getLight(void)
 //---------------------------------------------------------------------------
 // class WeaponBolt
 //---------------------------------------------------------------------------
-bool
-WeaponBolt::isVisible(void)
+bool WeaponBolt::isVisible(void)
 {
 	//----------------------------------------------------------------------
 	// This function checks to see if this weaponBolt is visible on screen
@@ -1385,8 +1381,7 @@ WeaponBolt::update(void)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBolt::render(void)
+void WeaponBolt::render(void)
 {
 	if (!getFlag(OBJECT_FLAG_JUSTCREATED) && !isTargeted()) // can we be seen by the enemy?
 	{
@@ -1932,8 +1927,7 @@ WeaponBolt::render(void)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBolt::destroy(void)
+void WeaponBolt::destroy(void)
 {
 	if (targetposition)
 	{
@@ -1982,8 +1976,7 @@ WeaponBolt::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBolt::init(bool create, ObjectTypePtr _type)
+void WeaponBolt::init(bool create, ObjectTypePtr _type)
 {
 	GameObject::init(create, _type);
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
@@ -2109,8 +2102,7 @@ WeaponBolt::init(bool create, ObjectTypePtr _type)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBolt::setOwner(GameObjectPtr who)
+void WeaponBolt::setOwner(GameObjectPtr who)
 {
 	if (who)
 		ownerWID = who->getWatchID();
@@ -2119,8 +2111,7 @@ WeaponBolt::setOwner(GameObjectPtr who)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBolt::setTarget(GameObjectPtr who)
+void WeaponBolt::setTarget(GameObjectPtr who)
 {
 	if (who)
 		targetWID = who->getWatchID();
@@ -2129,8 +2120,7 @@ WeaponBolt::setTarget(GameObjectPtr who)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBolt::setTargetPosition(Stuff::Vector3D pos)
+void WeaponBolt::setTargetPosition(Stuff::Vector3D pos)
 {
 	if (!targetposition)
 		targetposition = new Stuff::Vector3D;
@@ -2138,8 +2128,7 @@ WeaponBolt::setTargetPosition(Stuff::Vector3D pos)
 }
 
 //***************************************************************************
-void
-WeaponBolt::Save(PacketFilePtr file, int32_t packetNum)
+void WeaponBolt::Save(PacketFilePtr file, int32_t packetNum)
 {
 	WeaponBoltData data;
 	CopyTo(&data);
@@ -2148,8 +2137,7 @@ WeaponBolt::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void
-WeaponBolt::CopyTo(WeaponBoltData* data)
+void WeaponBolt::CopyTo(WeaponBoltData* data)
 {
 	data->ownerWID = ownerWID;
 	data->hotSpotNumber = hotSpotNumber;
@@ -2180,8 +2168,7 @@ WeaponBolt::CopyTo(WeaponBoltData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBolt::Load(WeaponBoltData* data)
+void WeaponBolt::Load(WeaponBoltData* data)
 {
 	GameObject::Load(dynamic_cast<GameObjectData*>(data));
 	ownerWID = data->ownerWID;
@@ -2211,8 +2198,7 @@ WeaponBolt::Load(WeaponBoltData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-WeaponBolt::finishNow(void)
+void WeaponBolt::finishNow(void)
 {
 	if (getExists())
 	{

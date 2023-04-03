@@ -34,8 +34,8 @@ public:
 	bool RunTest();
 };
 
-TreeTestPlug::TreeTestPlug(int32_t value) :
-	Plug(DefaultData)
+TreeTestPlug::TreeTestPlug(int32_t value)
+	: Plug(DefaultData)
 {
 	this->value = value;
 }
@@ -45,10 +45,14 @@ TreeTestPlug::~TreeTestPlug()
 	this->value = -1;
 }
 
-TreeTestNode::TreeTestNode() :
-	Node(DefaultData), tree1(this, true), tree2(this, true) {}
+TreeTestNode::TreeTestNode()
+	: Node(DefaultData)
+	, tree1(this, true)
+	, tree2(this, true)
+{
+}
 
-TreeTestNode::~TreeTestNode() {}
+TreeTestNode::~TreeTestNode() { }
 
 //
 //###########################################################################
@@ -56,8 +60,7 @@ TreeTestNode::~TreeTestNode() {}
 //###########################################################################
 //
 
-void
-Tree::ProfileClass()
+void Tree::ProfileClass()
 {
 	TreeTestNode testNode;
 #if defined(_ARMOR)
@@ -74,8 +77,7 @@ Tree::ProfileClass()
 //###########################################################################
 //
 
-void
-Tree::TestClass()
+void Tree::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Tree test..."));
 	TreeTestNode testNode;
@@ -87,8 +89,7 @@ Tree::TestClass()
 // TestOrder
 //###########################################################################
 //
-bool
-TreeTestNode::TestOrder()
+bool TreeTestNode::TestOrder()
 {
 	TreeIteratorOf<TreeTestPlug*, int32_t> iterator1(&tree1);
 	TreeIteratorOf<TreeTestPlug*, int32_t> iterator2(&tree2);
@@ -109,8 +110,7 @@ TreeTestNode::TestOrder()
 // RunProfile
 //###########################################################################
 //
-bool
-TreeTestNode::RunProfile()
+bool TreeTestNode::RunProfile()
 {
 	TreeTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -220,8 +220,7 @@ TreeTestNode::RunProfile()
 // RunTest
 //###########################################################################
 //
-bool
-TreeTestNode::RunTest()
+bool TreeTestNode::RunTest()
 {
 	TreeTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];

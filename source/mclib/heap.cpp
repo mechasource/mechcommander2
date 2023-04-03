@@ -47,8 +47,7 @@ bool HeapList::heapInstrumented = 0;
 //
 // Returns a context ready for stack walking from current address
 //
-void
-GetCurrentContext(CONTEXT* Context)
+void GetCurrentContext(CONTEXT* Context)
 {
 	memset(Context, 0, sizeof(CONTEXT));
 	_asm {
@@ -66,11 +65,10 @@ GetCurrentContext(CONTEXT* Context)
 	}
 }
 
-void
-InitStackWalk(STACKFRAME* sf, CONTEXT* Context);
+void InitStackWalk(STACKFRAME* sf, CONTEXT* Context);
 int32_t
 WalkStack(STACKFRAME* sf);
-const std::wstring_view&
+std::wstring_view
 DecodeAddress(uint32_t Address, bool brief);
 
 //---------------------------------------------------------------------------
@@ -97,8 +95,7 @@ DecodeAddress(uint32_t Address, bool brief);
 //}
 
 //---------------------------------------------------------------------------
-void
-HeapManager::destroy(void)
+void HeapManager::destroy(void)
 {
 	int32_t result = 0;
 	//-----------------------------
@@ -128,8 +125,7 @@ HeapManager::destroy(void)
 //}
 
 //---------------------------------------------------------------------------
-void
-HeapManager::init(void)
+void HeapManager::init(void)
 {
 	heap = nullptr;
 	memReserved = false;
@@ -240,8 +236,8 @@ HeapManager::decommitHeap(uint32_t decommitSize)
 
 //---------------------------------------------------------------------------
 // Class UserHeap Member Functions
-UserHeap::UserHeap(void) :
-	HeapManager()
+UserHeap::UserHeap(void)
+	: HeapManager()
 {
 	heapStart = nullptr;
 	heapEnd = nullptr;
@@ -257,11 +253,11 @@ UserHeap::UserHeap(void) :
 
 //---------------------------------------------------------------------------
 int32_t
-UserHeap::init(uint32_t memSize, const std::wstring_view& heapId, bool useGOS)
+UserHeap::init(uint32_t memSize, std::wstring_view heapId, bool useGOS)
 {
 	if (heapId)
 	{
-		heapName = (const std::wstring_view&)::gos_Malloc(strlen(heapId) + 1);
+		heapName = (std::wstring_view)::gos_Malloc(strlen(heapId) + 1);
 		strcpy(heapName, heapId);
 	}
 	else
@@ -342,8 +338,7 @@ UserHeap::init(uint32_t memSize, const std::wstring_view& heapId, bool useGOS)
 
 #ifdef _DEBUG
 //---------------------------------------------------------------------------
-void
-UserHeap::startHeapMallocLog(void)
+void UserHeap::startHeapMallocLog(void)
 {
 	if (!recordArray)
 	{
@@ -355,15 +350,13 @@ UserHeap::startHeapMallocLog(void)
 }
 
 //---------------------------------------------------------------------------
-void
-UserHeap::stopHeapMallocLog(void)
+void UserHeap::stopHeapMallocLog(void)
 {
 	logMallocs = false;
 }
 
 //---------------------------------------------------------------------------
-void
-UserHeap::dumpRecordLog(void)
+void UserHeap::dumpRecordLog(void)
 {
 	if (recordArray)
 	{
@@ -378,14 +371,14 @@ UserHeap::dumpRecordLog(void)
 				sprintf(msg, "Allocated block at DS:%08X, size = %u\n", recordArray[i].ptr,
 					recordArray[i].size);
 				log.writeLine(msg);
-				const std::wstring_view& addressName = DecodeAddress(recordArray[i].stack[0], false);
+				std::wstring_view addressName = DecodeAddress(recordArray[i].stack[0], false);
 				sprintf(msg, "Call stack: %08X : %s", recordArray[i].stack[0], addressName);
 				log.writeLine(msg);
 				for (size_t j = 1; j < 12; j++)
 				{
 					if (recordArray[i].stack[j] == 0x0)
 						break;
-					const std::wstring_view& addressName = DecodeAddress(recordArray[i].stack[j], false);
+					std::wstring_view addressName = DecodeAddress(recordArray[i].stack[j], false);
 					sprintf(msg, "            %08X : %s", recordArray[i].stack[j], addressName);
 					log.writeLine(msg);
 				}
@@ -404,8 +397,7 @@ UserHeap::~UserHeap(void)
 }
 
 //---------------------------------------------------------------------------
-void
-UserHeap::destroy(void)
+void UserHeap::destroy(void)
 {
 	HeapManager::destroy();
 	if (!gosHeap)
@@ -660,35 +652,33 @@ FoundBlock:
 		cmp		[ebx].next, ebx
 		jne		int16_t ULine1
 
-							   //else list is now empty
+								//else list is now empty
 
 		mov		localFirst, 0
 		jmp		int16_t ULine3
 		}
-	ULine1 :
-		__asm
-		{
+	ULine1 : __asm
+			 {
 		mov     edx, localFirst
 		cmp     ebx, edx
 		jne     int16_t ULine2 //unlinking first element?
 		mov     eax, [ebx].next
 		mov     localFirst, eax
-		}
-		ULine2 :
-		__asm
-		{
+			 }
+			 ULine2 : __asm
+					  {
 		mov		edi, [ebx].next //edi = ebx.next
 		mov		ebx, [ebx].previous
 		mov		[edi].previous, ebx //ebx.next.prev = ebx.prev
 		mov		[ebx].next, edi //ebx.prev.next = ebx.next
-		}
-		ULine3 : //End of Unlink code
-				 __asm
-				 {
+					  }
+					  ULine3 : //End of Unlink code
+							   __asm
+							   {
 		mov		eax, blockOffs
 		jmp		int16_t Alloc_Done
-				 }
-				 UnlinkNormal : __asm
+							   }
+							   UnlinkNormal : __asm
 	{
 		mov		edi, ebx
 		add		edi, [ebx].blockSize // edi -> lower block
@@ -747,7 +737,7 @@ __Line2:
 		cmp	    ecx, [edi].blockSize
 		jae		int16_t __Done
 
-				// else we are less than guy to our left
+											 // else we are less than guy to our left
 
 		cmp		ebx, edx // are we the first block in list?
 		je		int16_t __Done
@@ -1044,7 +1034,7 @@ __Line2:
 		cmp	    ecx, [edi].blockSize
 		jae		int16_t __Done
 
-				// else we are less than guy to our left
+											 // else we are less than guy to our left
 
 		cmp		ebx, edx // are we the first block in list?
 		je		int16_t __Done
@@ -1191,8 +1181,7 @@ UserHeap::calloc(uint32_t memSize)
 }
 
 //---------------------------------------------------------------------------
-void
-UserHeap::walkHeap(bool printIt, bool skipAllocated)
+void UserHeap::walkHeap(bool printIt, bool skipAllocated)
 {
 	if (gosHeap)
 	{
@@ -1305,8 +1294,7 @@ UserHeap::getLastError(void)
 }
 
 //---------------------------------------------------------------------------
-void
-UserHeap::relink(HeapBlockPtr newBlock)
+void UserHeap::relink(HeapBlockPtr newBlock)
 {
 	HeapBlockPtr localFirst = firstNearBlock;
 	// empty list?
@@ -1363,8 +1351,7 @@ Line2:
 }
 
 //---------------------------------------------------------------------------
-void
-UserHeap::unlink(HeapBlockPtr oldBlock)
+void UserHeap::unlink(HeapBlockPtr oldBlock)
 {
 	HeapBlockPtr localFirst = firstNearBlock;
 	__asm
@@ -1373,7 +1360,7 @@ UserHeap::unlink(HeapBlockPtr oldBlock)
 		cmp		[ebx].next, ebx
 		jne		int16_t ULine1
 
-												 // else list is now empty
+												  // else list is now empty
 
 		mov		localFirst, 0
 		jmp		int16_t ULine3
@@ -1400,8 +1387,7 @@ ULine3:
 }
 
 //---------------------------------------------------------------------------
-bool
-UserHeap::mergeWithLower(HeapBlockPtr block)
+bool UserHeap::mergeWithLower(HeapBlockPtr block)
 {
 	HeapBlockPtr localFirst = firstNearBlock;
 	bool result = FALSE;
@@ -1450,48 +1436,42 @@ check_ok:
 		cmp		[ebx].next, ebx
 		jne		int16_t ULine1
 
-							   //else list is now empty
+								//else list is now empty
 
 		mov     localFirst, 0
 		jmp     int16_t ULine3
 		}
-	ULine1 :
-		__asm
-		{
+	ULine1 : __asm
+			 {
 		mov     edx, localFirst
 		cmp     ebx, edx
 		jne     int16_t ULine2 //unlinking first element?
 		mov     eax, [ebx].next
 		mov     localFirst, eax
-		}
-		ULine2 :
-		__asm
-		{
+			 }
+			 ULine2 : __asm
+					  {
 		mov		edi, [ebx].next //edi = bx.next
 		mov		ebx, [ebx].previous
 		mov		[edi].previous, ebx //ebx.next.prev = ebx.prev
 		mov		[ebx].next, edi //ebx.prev.next = bx.next
-		}
-		ULine3 :
-		NoMerge :
-		__asm
-	{
+					  }
+					  ULine3 :
+		NoMerge : __asm
+				  {
 		mov		eax, 1 // Return TRUE
-	}
+				  }
 #ifdef SAFE_HEAP
-DoneML:
+				  DoneML :
 #endif
-	__asm
-		{
-		mov		result, al // Move eax into result
-		}
-	firstNearBlock = localFirst;
+		__asm {
+			mov result, al // Move eax into result
+		} firstNearBlock = localFirst;
 	return (result);
 }
 
 //---------------------------------------------------------------------------
-void
-HeapList::addHeap(HeapManagerPtr newHeap)
+void HeapList::addHeap(HeapManagerPtr newHeap)
 {
 	for (size_t i = 0; i < MAX_HEAPS; i++)
 	{
@@ -1505,8 +1485,7 @@ HeapList::addHeap(HeapManagerPtr newHeap)
 }
 
 //---------------------------------------------------------------------------
-void
-HeapList::removeHeap(HeapManagerPtr oldHeap)
+void HeapList::removeHeap(HeapManagerPtr oldHeap)
 {
 	for (size_t i = 0; i < MAX_HEAPS; i++)
 	{
@@ -1519,8 +1498,7 @@ HeapList::removeHeap(HeapManagerPtr oldHeap)
 	}
 }
 
-void
-HeapList::initializeStatistics()
+void HeapList::initializeStatistics()
 {
 	if (heapInstrumented == 0)
 	{
@@ -1554,8 +1532,7 @@ HeapList::initializeStatistics()
 }
 
 //---------------------------------------------------------------------------
-void
-HeapList::update(void)
+void HeapList::update(void)
 {
 	totalSize = totalCoreLeft = totalLeft = 0;
 	for (size_t i = 0; i < 50; i++)
@@ -1581,10 +1558,10 @@ HeapList::update(void)
 
 //---------------------------------------------------------------------------
 uint32_t
-textToLong(const std::wstring_view& num)
+textToLong(std::wstring_view num)
 {
 	int32_t result = 0;
-	const std::wstring_view& hexOffset = num;
+	std::wstring_view hexOffset = num;
 	hexOffset += 2;
 	int32_t numDigits = strlen(hexOffset) - 1;
 	int32_t power = 0;
@@ -1612,7 +1589,7 @@ textToLong(const std::wstring_view& num)
 
 //-----------------------------------------------------------
 int32_t
-longToText(const std::wstring_view& result, int32_t num, uint32_t bufLen)
+longToText(std::wstring_view result, int32_t num, uint32_t bufLen)
 {
 	wchar_t temp[250];
 	sprintf(temp, "%08X", num);
@@ -1626,7 +1603,7 @@ longToText(const std::wstring_view& result, int32_t num, uint32_t bufLen)
 
 //--------------------------------------------------------------------------
 int32_t
-getStringFromMap(MechFile& mapFile, uint32_t addr, const std::wstring_view& result)
+getStringFromMap(MechFile& mapFile, uint32_t addr, std::wstring_view result)
 {
 	//----------------------------------------
 	// Convert function address to raw offset
@@ -1656,7 +1633,7 @@ getStringFromMap(MechFile& mapFile, uint32_t addr, const std::wstring_view& resu
 	// We've found the first code entry.  Now, scan until
 	// the current address is greater than the address asked for.
 	// The previous function name is the function in question.
-	const std::wstring_view& currentAddress = &(mapFileLine[6]);
+	std::wstring_view currentAddress = &(mapFileLine[6]);
 	wchar_t previousAddress[511];
 	strncpy(previousAddress, &(mapFileLine[6]), 510);
 	while (strstr(mapFileLine, "0001:") != nullptr)
@@ -1675,8 +1652,7 @@ getStringFromMap(MechFile& mapFile, uint32_t addr, const std::wstring_view& resu
 }
 
 //---------------------------------------------------------------------------
-void
-HeapList::dumpLog(void)
+void HeapList::dumpLog(void)
 {
 	//----------------------------------------------
 	// This function dumps information on each heap

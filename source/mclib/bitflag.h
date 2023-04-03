@@ -48,12 +48,20 @@ protected:
 	uint32_t totalRAM;
 
 public:
-	BitFlag(void) :
-		flagHeap(nullptr), numBitsPerFlag(0), rows(0), columns(0), maskValue(0), divValue(1),
-		colwidth(1)
+	BitFlag(void)
+		: flagHeap(nullptr)
+		, numBitsPerFlag(0)
+		, rows(0)
+		, columns(0)
+		, maskValue(0)
+		, divValue(1)
+		, colwidth(1)
 	{
 	}
-	~BitFlag(void) { destroy(); }
+	~BitFlag(void)
+	{
+		destroy();
+	}
 
 	int32_t init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
 	void destroy();
@@ -82,21 +90,34 @@ protected:
 	WINDOW* flagWindow;
 
 public:
-	ByteFlag(void) :
-		flagHeap(nullptr), rows(0), columns(0), flagPane(nullptr), flagWindow(nullptr)
+	ByteFlag(void)
+		: flagHeap(nullptr)
+		, rows(0)
+		, columns(0)
+		, flagPane(nullptr)
+		, flagWindow(nullptr)
 	{
 	}
-	~ByteFlag(void) { destroy(); }
+	~ByteFlag(void)
+	{
+		destroy();
+	}
 
 	int32_t init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
-	void initTGA(const std::wstring_view& tgaFileName);
+	void initTGA(std::wstring_view tgaFileName);
 
 	void destroy(void);
 
 	uint8_t* memDump(void);
 
-	uint32_t getwidth(void) { return rows; }
-	uint32_t getheight(void) { return columns; }
+	uint32_t getwidth(void)
+	{
+		return rows;
+	}
+	uint32_t getheight(void)
+	{
+		return columns;
+	}
 
 	void resetAll(uint32_t byte);
 

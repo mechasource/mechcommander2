@@ -136,7 +136,7 @@ int32_t statusCode;
 
 //***************************************************************************
 
-int32_t AttitudeEffectOnMovePath[NUM_ATTITUDES][3] = {
+int32_t AttitudeEffectOnMovePath[AttitudeType::count][3] = {
 	{10, 10, 2}, // Cautious
 	{8, 8, 4}, // Conservative
 	{6, 6, 6}, // Normal
@@ -158,24 +158,22 @@ TacticalOrder::operator new(size_t mySize)
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::operator delete(PVOID us)
+void TacticalOrder::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::init(void)
+void TacticalOrder::init(void)
 {
 	id = 0;
 	time = -1.0;
 	delayedTime = -1.0;
 	lastTime = -1.0;
 	unitOrder = false;
-	origin = ORDER_ORIGIN_COMMANDER;
-	code = TACTICAL_ORDER_NONE;
+	origin = OrderOriginType::commander;
+	code = TacticalOrderCode::none;
 	moveparams.wayPath.numPoints = 0;
 	moveparams.wayPath.curPoint = 0;
 	moveparams.wayPath.points[0] = 0.0;
@@ -189,10 +187,10 @@ TacticalOrder::init(void)
 	moveparams.escapeTile = false;
 	moveparams.jump = false;
 	moveparams.keepMoving = true;
-	attackParams.type = ATTACK_TO_DESTROY;
-	attackParams.method = ATTACKMETHOD_RANGED;
-	attackParams.range = FIRERANGE_OPTIMAL;
-	attackParams.tactic = TACTIC_NONE;
+	attackParams.type = AttackType::destroy;
+	attackParams.method = AttackMethod::ranged;
+	attackParams.range = FireRangeType::optimal;
+	attackParams.tactic = TacticType::none;
 	attackParams.aimLocation = -1;
 	attackParams.pursue = true;
 	attackParams.obliterate = false;
@@ -209,8 +207,7 @@ TacticalOrder::init(void)
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::init(OrderOriginType _origin, TacticalOrderCode _code, bool _unitOrder)
+void TacticalOrder::init(OrderOriginType _origin, TacticalOrderCode _code, bool _unitOrder)
 {
 	init();
 	time = scenarioTime;
@@ -221,8 +218,7 @@ TacticalOrder::init(OrderOriginType _origin, TacticalOrderCode _code, bool _unit
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::initWayPath(LocationNodePtr path)
+void TacticalOrder::initWayPath(LocationNodePtr path)
 {
 	int32_t numPoints = 0;
 	while (path)
@@ -257,8 +253,7 @@ TacticalOrder::getWayPoint(int32_t index)
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::setWayPoint(int32_t index, Stuff::Vector3D wayPoint)
+void TacticalOrder::setWayPoint(int32_t index, Stuff::Vector3D wayPoint)
 {
 	moveparams.wayPath.points[index * 3] = wayPoint.x;
 	moveparams.wayPath.points[index * 3 + 1] = wayPoint.y;
@@ -267,8 +262,7 @@ TacticalOrder::setWayPoint(int32_t index, Stuff::Vector3D wayPoint)
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::addWayPoint(Stuff::Vector3D wayPoint, int32_t travelMode)
+void TacticalOrder::addWayPoint(Stuff::Vector3D wayPoint, int32_t travelMode)
 {
 	if (moveparams.wayPath.numPoints == MAX_WAYPTS)
 		Fatal(MAX_WAYPTS, " tacticalOrder.addWayPoint: too many! ");
@@ -284,8 +278,8 @@ TacticalOrder::addWayPoint(Stuff::Vector3D wayPoint, int32_t travelMode)
 GameObjectPtr
 TacticalOrder::getRamTarget(void)
 {
-	if (code == TACTICAL_ORDER_ATTACK_OBJECT)
-		if (attackParams.method == ATTACKMETHOD_RAMMING)
+	if (code == TacticalOrderCode::attackobject)
+		if (attackParams.method == AttackMethod::ramming)
 			return (ObjectManager->getByWatchID(targetWID));
 	return (nullptr);
 }
@@ -295,55 +289,49 @@ TacticalOrder::getRamTarget(void)
 GameObjectPtr
 TacticalOrder::getJumpTarget(void)
 {
-	if (code == TACTICAL_ORDER_JUMPTO_POINT)
+	if (code == TacticalOrderCode::jumptopoint)
 		return (ObjectManager->get(targetWID));
 	return (nullptr);
 }
 
 //---------------------------------------------------------------------------
 
-bool
-TacticalOrder::isGroupOrder(void)
+bool TacticalOrder::isGroupOrder(void)
 {
 	return (unitOrder);
 }
 
 //---------------------------------------------------------------------------
 
-bool
-TacticalOrder::isCombatOrder(void)
+bool TacticalOrder::isCombatOrder(void)
 {
-	return ((code == TACTICAL_ORDER_ATTACK_OBJECT) || (code == TACTICAL_ORDER_ATTACK_POINT));
+	return ((code == TacticalOrderCode::attackobject) || (code == TacticalOrderCode::attackpoint));
 }
 
 //---------------------------------------------------------------------------
 
-bool
-TacticalOrder::isMoveOrder(void)
+bool TacticalOrder::isMoveOrder(void)
 {
-	return ((code == TACTICAL_ORDER_MOVETO_POINT) || (code == TACTICAL_ORDER_MOVETO_OBJECT));
+	return ((code == TacticalOrderCode::movetopoint) || (code == TacticalOrderCode::movetoobject));
 }
 
 //---------------------------------------------------------------------------
 
-bool
-TacticalOrder::isWayPathOrder(void)
+bool TacticalOrder::isWayPathOrder(void)
 {
-	return ((code == TACTICAL_ORDER_TRAVERSE_PATH) || (code == TACTICAL_ORDER_PATROL_PATH));
+	return ((code == TacticalOrderCode::traversepath) || (code == TacticalOrderCode::patrolpath));
 }
 
 //---------------------------------------------------------------------------
 
-bool
-TacticalOrder::isJumpOrder(void)
+bool TacticalOrder::isJumpOrder(void)
 {
-	return ((code == TACTICAL_ORDER_JUMPTO_POINT) || (code == TACTICAL_ORDER_JUMPTO_OBJECT));
+	return ((code == TacticalOrderCode::jumptopoint) || (code == TacticalOrderCode::jumptoobject));
 }
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::setId(std::unique_ptr<MechWarrior> pilot)
+void TacticalOrder::setId(std::unique_ptr<MechWarrior> pilot)
 {
 	Assert(id == 0, id, " TacticalOrder.setId: id != 0 ");
 	int32_t nextId = pilot->getNextTacOrderId();
@@ -374,20 +362,20 @@ TacticalOrder::getParamData(float* timeOfOrder, int32_t* paramList)
 	paramList[6] = selectionindex;
 	switch (code)
 	{
-	case TACTICAL_ORDER_MOVETO_POINT:
-	case TACTICAL_ORDER_GUARD:
+	case TacticalOrderCode::movetopoint:
+	case TacticalOrderCode::guard:
 		paramList[7] = (moveparams.wayPath.mode[0] == TravelModeType::fast) ? 1 : 0;
 		paramList[8] = moveparams.wait;
 		paramList[9] = moveparams.wayPath.points[0];
 		paramList[10] = moveparams.wayPath.points[1];
 		paramList[11] = moveparams.wayPath.points[2];
 		break;
-	case TACTICAL_ORDER_MOVETO_OBJECT:
+	case TacticalOrderCode::movetoobject:
 		paramList[7] = (moveparams.wayPath.mode[0] == TravelModeType::fast) ? 1 : 0;
 		paramList[8] = moveparams.wait;
 		paramList[9] = moveparams.faceObject;
 		break;
-	case TACTICAL_ORDER_ATTACK_OBJECT:
+	case TacticalOrderCode::attackobject:
 		paramList[7] = (moveparams.wayPath.mode[0] == TravelModeType::fast) ? 1 : 0;
 		paramList[8] = attackParams.type;
 		paramList[9] = attackParams.method;
@@ -396,7 +384,7 @@ TacticalOrder::getParamData(float* timeOfOrder, int32_t* paramList)
 		paramList[12] = attackParams.pursue ? 1 : 0;
 		paramList[13] = attackParams.obliterate ? 1 : 0;
 		break;
-	case TACTICAL_ORDER_ATTACK_POINT:
+	case TacticalOrderCode::attackpoint:
 		break;
 	}
 	return (code);
@@ -424,11 +412,11 @@ TacticalOrder::pack(MoverGroupPtr group, std::unique_ptr<Mover> point)
 	tempData <<= TACORDERCHUNK_CODE_BITS;
 	//------------------------
 	// MAJOR HACK FOR GUARD...
-	if (code == TACTICAL_ORDER_GUARD)
+	if (code == TacticalOrderCode::guard)
 	{
 		// GameObjectPtr curTarget = ObjectManager->getByWatchID(targetWID);
 		if (targetWID)
-			tempData |= (uint32_t)TACTICAL_ORDER_GUARD;
+			tempData |= (uint32_t)TacticalOrderCode::guard;
 		else
 			tempData |= (uint32_t)TACORDERCHUNK_CODE_MASK;
 	}
@@ -444,11 +432,11 @@ TacticalOrder::pack(MoverGroupPtr group, std::unique_ptr<Mover> point)
 	GameObjectPtr curTarget = ObjectManager->getByWatchID(targetWID);
 	switch (code)
 	{
-	case TACTICAL_ORDER_MOVETO_POINT:
-	case TACTICAL_ORDER_JUMPTO_POINT:
+	case TacticalOrderCode::movetopoint:
+	case TacticalOrderCode::jumptopoint:
 		saveLocation = true;
 		break;
-	case TACTICAL_ORDER_GUARD:
+	case TacticalOrderCode::guard:
 		if (curTarget)
 		{
 			saveTarget = true;
@@ -460,20 +448,20 @@ TacticalOrder::pack(MoverGroupPtr group, std::unique_ptr<Mover> point)
 		else
 			saveLocation = true;
 		break;
-	case TACTICAL_ORDER_ATTACK_OBJECT:
-	case TACTICAL_ORDER_MOVETO_OBJECT:
-	case TACTICAL_ORDER_JUMPTO_OBJECT:
-	case TACTICAL_ORDER_CAPTURE:
-	case TACTICAL_ORDER_REFIT:
-	case TACTICAL_ORDER_RECOVER:
-	case TACTICAL_ORDER_GETFIXED:
+	case TacticalOrderCode::attackobject:
+	case TacticalOrderCode::movetoobject:
+	case TacticalOrderCode::jumptoobject:
+	case TacticalOrderCode::capture:
+	case TacticalOrderCode::refit:
+	case TacticalOrderCode::recover:
+	case TacticalOrderCode::getfixed:
 		saveTarget = true;
 		if (curTarget->isMover())
 			targetType = 0;
 		else
 			targetType = 1;
 		break;
-	case TACTICAL_ORDER_ATTACK_POINT:
+	case TacticalOrderCode::attackpoint:
 		saveTarget = true;
 		targetType = 3;
 		break;
@@ -551,7 +539,7 @@ TacticalOrder::unpack(void)
 	bool guardLocation = false;
 	if (code == TACORDERCHUNK_CODE_MASK)
 	{
-		code = TACTICAL_ORDER_GUARD;
+		code = TacticalOrderCode::guard;
 		guardLocation = true;
 	}
 	origin = (OrderOriginType)(tempData & TACORDERCHUNK_ORIGIN_MASK);
@@ -588,8 +576,8 @@ TacticalOrder::unpack(void)
 	tempData >>= TACORDERCHUNK_RUN_BITS;
 	switch (code)
 	{
-	case TACTICAL_ORDER_MOVETO_POINT:
-	case TACTICAL_ORDER_JUMPTO_POINT:
+	case TacticalOrderCode::movetopoint:
+	case TacticalOrderCode::jumptopoint:
 	{
 		int32_t worldCell[2] = {0, 0};
 		worldCell[1] = (tempData & TACORDERCHUNK_CELLPOS_MASK);
@@ -601,7 +589,7 @@ TacticalOrder::unpack(void)
 		moveparams.wayPath.numPoints = 1;
 	}
 	break;
-	case TACTICAL_ORDER_GUARD:
+	case TacticalOrderCode::guard:
 		if (guardLocation)
 		{
 			int32_t worldCell[2] = {0, 0};
@@ -643,13 +631,13 @@ TacticalOrder::unpack(void)
 				Fatal(targetType, " TacticalOrder.unpack: Bad targetType ");
 		}
 		break;
-	case TACTICAL_ORDER_ATTACK_OBJECT:
-	case TACTICAL_ORDER_MOVETO_OBJECT:
-	case TACTICAL_ORDER_JUMPTO_OBJECT:
-	case TACTICAL_ORDER_CAPTURE:
-	case TACTICAL_ORDER_REFIT:
-	case TACTICAL_ORDER_RECOVER:
-	case TACTICAL_ORDER_GETFIXED:
+	case TacticalOrderCode::attackobject:
+	case TacticalOrderCode::movetoobject:
+	case TacticalOrderCode::jumptoobject:
+	case TacticalOrderCode::capture:
+	case TacticalOrderCode::refit:
+	case TacticalOrderCode::recover:
+	case TacticalOrderCode::getfixed:
 	{
 		int32_t targetType = (tempData & TACORDERCHUNK_TARGETTYPE_MASK);
 		tempData >>= TACORDERCHUNK_TARGETTYPE_BITS;
@@ -679,7 +667,7 @@ TacticalOrder::unpack(void)
 			Fatal(0, " Bad targetType ");
 	}
 	break;
-	case TACTICAL_ORDER_ATTACK_POINT:
+	case TacticalOrderCode::attackpoint:
 	{
 		int32_t worldCell[2] = {0, 0};
 		worldCell[1] = (tempData & TACORDERCHUNK_CELLPOS_MASK);
@@ -699,8 +687,7 @@ TacticalOrder::unpack(void)
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::setGroupFlag(int32_t localMoverId, bool set)
+void TacticalOrder::setGroupFlag(int32_t localMoverId, bool set)
 {
 	uint32_t mask = (1 << localMoverId);
 	if (set)
@@ -733,8 +720,7 @@ TacticalOrder::getGroup(
 
 //---------------------------------------------------------------------------
 
-int32_t
-TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
+int32_t TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 {
 	int32_t result = TACORDER_FAILURE;
 	message = -1;
@@ -784,7 +770,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 	GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 	switch (code)
 	{
-	case TACTICAL_ORDER_MOVETO_POINT:
+	case TacticalOrderCode::movetopoint:
 	{
 		if (delayedTime != -1.0)
 		{
@@ -812,7 +798,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		message = -1;
 	}
 	break;
-	case TACTICAL_ORDER_MOVETO_OBJECT:
+	case TacticalOrderCode::movetoobject:
 	{
 		uint32_t params = TACORDER_PARAM_NONE;
 		if (moveparams.wayPath.mode[0] == TravelModeType::fast)
@@ -826,7 +812,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		message = -1;
 	}
 	break;
-	case TACTICAL_ORDER_JUMPTO_POINT:
+	case TacticalOrderCode::jumptopoint:
 	{
 		//-----------------------------------------------------
 		// If we got into here, we know the jump can be done...
@@ -843,7 +829,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		result = warrior->orderJumpToPoint(unitOrder, true, origin, location);
 	}
 	break;
-	case TACTICAL_ORDER_JUMPTO_OBJECT:
+	case TacticalOrderCode::jumptoobject:
 		//-----------------------------------------------------
 		// If we got into here, we know the jump can be done...
 		if (delayedTime != -1.0)
@@ -857,7 +843,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		result = warrior->orderJumpToObject(unitOrder, true, origin, target);
 		break;
 	/*
-			case TACTICAL_ORDER_TRAVERSE_PATH: {
+			case TacticalOrderCode::traversepath: {
 				uint32_t params = TACORDER_PARAM_NONE;
 				if (moveparams.mode == SpecialMoveMode::minelaying)
 					params |= TACORDER_PARAM_LAY_MINES;
@@ -865,28 +851,28 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 	   &moveparams.wayPath, params); message = RADIO_MOVETO;
 				}
 				break;
-			case TACTICAL_ORDER_PATROL_PATH:
+			case TacticalOrderCode::patrolpath:
 				//-------------
 				// NEW BRAIN...
 				warrior->orderPatrolPath( unitOrder, TRUE, origin,
 	   &moveparams.wayPath); message = RADIO_MOVETO; break;
 	*/
-	case TACTICAL_ORDER_ESCORT:
+	case TacticalOrderCode::escort:
 		break;
-	case TACTICAL_ORDER_FOLLOW:
+	case TacticalOrderCode::follow:
 		break;
-	case TACTICAL_ORDER_GUARD:
-		attackParams.type = ATTACK_TO_DESTROY;
-		attackParams.method = ATTACKMETHOD_RANGED;
+	case TacticalOrderCode::guard:
+		attackParams.type = AttackType::destroy;
+		attackParams.method = AttackMethod::ranged;
 		attackParams.pursue = TRUE;
-		attackParams.range = FIRERANGE_OPTIMAL;
+		attackParams.range = FireRangeType::optimal;
 		message = RADIO_GUARD;
 		break;
-	case TACTICAL_ORDER_STOP:
+	case TacticalOrderCode::stop:
 		warrior->orderStop(unitOrder, true);
 		message = RADIO_ACK;
 		break;
-	case TACTICAL_ORDER_POWERUP:
+	case TacticalOrderCode::powerup:
 		if (delayedTime > -1.0)
 		{
 			if (scenarioTime < delayedTime)
@@ -895,7 +881,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		}
 		warrior->orderPowerUp(unitOrder, origin);
 		break;
-	case TACTICAL_ORDER_POWERDOWN:
+	case TacticalOrderCode::powerdown:
 		if (delayedTime > -1.0)
 		{
 			if (scenarioTime < delayedTime)
@@ -904,12 +890,12 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		}
 		warrior->orderPowerDown(unitOrder, origin);
 		break;
-	case TACTICAL_ORDER_WAYPOINTS_DONE:
+	case TacticalOrderCode::waypointsdone:
 		break;
-	case TACTICAL_ORDER_EJECT:
+	case TacticalOrderCode::eject:
 		warrior->orderEject(unitOrder, true, origin);
 		break;
-	case TACTICAL_ORDER_ATTACK_OBJECT:
+	case TacticalOrderCode::attackobject:
 		message = RADIO_ILLEGAL_ORDER;
 		result = -1;
 		if (target)
@@ -934,7 +920,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 					params |= TACORDER_PARAM_OBLITERATE;
 				if (attackParams.pursue)
 					params |= TACORDER_PARAM_PURSUE;
-				if (attackParams.tactic != TACTIC_NONE)
+				if (attackParams.tactic != TacticType::none)
 					params |= (TACORDER_PARAM_TACTIC_FLANK_RIGHT << (attackParams.tactic - 1));
 				// 07-05-00 need to keep run info -- HKG
 				if (moveparams.wayPath.mode[0] == TravelModeType::fast)
@@ -962,13 +948,13 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 			// If we want to refuse the order if the range is beyond our
 			// personal attack range, uncomment the following if/then...
 			// if (warrior->getVehicle()->getFireRange(attackParams.range) <=
-			// warrior->getVehicle()->getFireRange(FIRERANGE_LONGEST)) {
+			// warrior->getVehicle()->getFireRange(FireRangeType::longest)) {
 			uint32_t params = TACORDER_PARAM_NONE;
 			if (attackParams.obliterate)
 				params |= TACORDER_PARAM_OBLITERATE;
 			if (attackParams.pursue)
 				params |= TACORDER_PARAM_PURSUE;
-			if (attackParams.tactic != TACTIC_NONE)
+			if (attackParams.tactic != TacticType::none)
 				params |= (TACORDER_PARAM_TACTIC_FLANK_RIGHT << (attackParams.tactic - 1));
 			result = warrior->orderAttackPoint(unitOrder, origin, attackParams.targetpoint,
 				attackParams.type, attackParams.method, attackParams.range, params);
@@ -985,7 +971,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 			//}
 		}
 		break;
-	case TACTICAL_ORDER_ATTACK_POINT:
+	case TacticalOrderCode::attackpoint:
 	{
 		message = RADIO_ILLEGAL_ORDER;
 		result = -1;
@@ -997,13 +983,13 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		// If we want to refuse the order if the range is beyond our personal
 		// attack range, uncomment the following if/then...
 		// if (warrior->getVehicle()->getFireRange(attackParams.range) <=
-		// warrior->getVehicle()->getFireRange(FIRERANGE_LONGEST)) {
+		// warrior->getVehicle()->getFireRange(FireRangeType::longest)) {
 		uint32_t params = TACORDER_PARAM_NONE;
 		if (attackParams.obliterate)
 			params |= TACORDER_PARAM_OBLITERATE;
 		if (attackParams.pursue)
 			params |= TACORDER_PARAM_PURSUE;
-		if (attackParams.tactic != TACTIC_NONE)
+		if (attackParams.tactic != TacticType::none)
 			params |= (TACORDER_PARAM_TACTIC_FLANK_RIGHT << (attackParams.tactic - 1));
 		result = warrior->orderAttackPoint(unitOrder, origin, attackParams.targetpoint,
 			attackParams.type, attackParams.method, attackParams.range, params);
@@ -1020,10 +1006,10 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		//}
 	}
 	break;
-	case TACTICAL_ORDER_HOLD_FIRE:
+	case TacticalOrderCode::holdfire:
 		warrior->orderWait(unitOrder, origin, 0.0, TRUE);
 		break;
-	case TACTICAL_ORDER_WITHDRAW:
+	case TacticalOrderCode::withdraw:
 	{
 		Stuff::Vector3D location;
 		location.x = moveparams.wayPath.points[0];
@@ -1032,7 +1018,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		warrior->orderWithdraw(unitOrder, origin, location);
 	}
 	break;
-	case TACTICAL_ORDER_SCRAMBLE:
+	case TacticalOrderCode::scramble:
 	{
 		Stuff::Vector3D location;
 		location.x = moveparams.wayPath.points[0];
@@ -1042,7 +1028,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		// moveparams.radius);
 	}
 	break;
-	case TACTICAL_ORDER_REFIT:
+	case TacticalOrderCode::refit:
 		result = TACORDER_SUCCESS;
 		if (target && (target->getObjectClass() == BATTLEMECH) && ((std::unique_ptr<Mover>)target)->needsRefit())
 		{
@@ -1073,7 +1059,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 				stage = -1; // order failed
 		}
 		break;
-	case TACTICAL_ORDER_GETFIXED:
+	case TacticalOrderCode::getfixed:
 		result = TACORDER_SUCCESS;
 		if (target && (target->getObjectClass() == BUILDING))
 		{
@@ -1096,7 +1082,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 				stage = -1;
 		}
 		break;
-	case TACTICAL_ORDER_LOAD_INTO_CARRIER:
+	case TacticalOrderCode::loadintocarrier:
 		result = TACORDER_SUCCESS;
 #ifdef USE_ELEMENTALS
 		if ((warrior->getVehicle()->getObjectClass() == ELEMENTAL) && target && (target->getObjectClass() == GROUNDVEHICLE) && ((GroundVehiclePtr)target)->elementalCarrier)
@@ -1108,7 +1094,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		if (result != TACORDER_FAILURE)
 			stage = -1;
 		break;
-	case TACTICAL_ORDER_DEPLOY_ELEMENTALS:
+	case TacticalOrderCode::deployelementals:
 	{
 		uint32_t params = TACORDER_PARAM_NONE;
 		if (moveparams.wayPath.mode[0] == TravelModeType::fast)
@@ -1120,7 +1106,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 			stage = -1;
 	}
 	break;
-	case TACTICAL_ORDER_CAPTURE:
+	case TacticalOrderCode::capture:
 		result = TACORDER_SUCCESS;
 		if (target && (target->isCaptureable(warrior->getTeam()->getId())) && !warrior->getVehicle()->isFriendly(target->getTeam()))
 		{
@@ -1211,7 +1197,7 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		if (result == TACORDER_SUCCESS)
 			stage = -1;
 		break;
-	case TACTICAL_ORDER_RECOVER:
+	case TacticalOrderCode::recover:
 		result = TACORDER_SUCCESS;
 		if (target && (target->getObjectClass() == BATTLEMECH))
 		{
@@ -1234,11 +1220,11 @@ TacticalOrder::execute(std::unique_ptr<MechWarrior> warrior, int32_t& message)
 		}
 		break;
 	}
-	if (origin == ORDER_ORIGIN_PLAYER)
+	if (origin == OrderOriginType::player)
 		warrior->triggerAlarm(PILOT_ALARM_PLAYER_ORDER, code);
 	else
 		message = -1;
-	if (code != TACTICAL_ORDER_WITHDRAW)
+	if (code != TacticalOrderCode::withdraw)
 	{
 		if (warrior->getVehicle()->getStatus() != OBJECT_STATUS_DESTROYED)
 		{
@@ -1261,10 +1247,10 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 	GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 	switch (code)
 	{
-	case TACTICAL_ORDER_WAIT:
+	case TacticalOrderCode::wait:
 		result = (scenarioTime > delayedTime) ? TACORDER_SUCCESS : TACORDER_FAILURE;
 		break;
-	case TACTICAL_ORDER_MOVETO_POINT:
+	case TacticalOrderCode::movetopoint:
 	{
 		int32_t formation = -1;
 		int32_t formationPos = -1;
@@ -1291,7 +1277,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 			{
 				if (moveparams.wait)
 				{
-					code = TACTICAL_ORDER_WAIT;
+					code = TacticalOrderCode::wait;
 					result = TACORDER_FAILURE;
 				}
 			}
@@ -1300,7 +1286,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 		}
 	}
 	break;
-	case TACTICAL_ORDER_MOVETO_OBJECT:
+	case TacticalOrderCode::movetoobject:
 		if (target)
 		{
 			Stuff::Vector3D location;
@@ -1321,11 +1307,11 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 			//	}
 		}
 		break;
-	case TACTICAL_ORDER_JUMPTO_POINT:
+	case TacticalOrderCode::jumptopoint:
 		if (stage != 3)
 			result = TACORDER_FAILURE;
 		break;
-	case TACTICAL_ORDER_JUMPTO_OBJECT:
+	case TacticalOrderCode::jumptoobject:
 	{
 #ifdef USE_JUMPING
 		BattleMechPtr mech = (BattleMechPtr)warrior->getVehicle();
@@ -1335,26 +1321,26 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 	}
 	break;
 #if 0
-		case TACTICAL_ORDER_TRAVERSE_PATH:
+		case TacticalOrderCode::traversepath:
 			if(stage == 2)
 				result = TACORDER_SUCCESS;
 			else
 				result = TACORDER_FAILURE;
 			break;
-		case TACTICAL_ORDER_PATROL_PATH:
+		case TacticalOrderCode::patrolpath:
 			result = TACORDER_FAILURE;
 			break;
 #endif
-	case TACTICAL_ORDER_ESCORT:
-	case TACTICAL_ORDER_FOLLOW:
+	case TacticalOrderCode::escort:
+	case TacticalOrderCode::follow:
 		break;
-	case TACTICAL_ORDER_GUARD:
+	case TacticalOrderCode::guard:
 		result = TACORDER_FAILURE;
 		break;
-	case TACTICAL_ORDER_STOP:
+	case TacticalOrderCode::stop:
 		result = TACORDER_SUCCESS;
 		break;
-	case TACTICAL_ORDER_POWERUP:
+	case TacticalOrderCode::powerup:
 		if (delayedTime > -1.0)
 		{
 			if (scenarioTime < delayedTime)
@@ -1366,7 +1352,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 		if (warrior->getVehicleStatus() != OBJECT_STATUS_NORMAL)
 			result = TACORDER_FAILURE;
 		break;
-	case TACTICAL_ORDER_POWERDOWN:
+	case TacticalOrderCode::powerdown:
 		if (delayedTime > -1.0)
 		{
 			if (scenarioTime < delayedTime)
@@ -1379,11 +1365,11 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 		// For now, they're always powering down until given a new order...
 		result = TACORDER_FAILURE;
 		break;
-	case TACTICAL_ORDER_WAYPOINTS_DONE:
+	case TacticalOrderCode::waypointsdone:
 		break;
-	case TACTICAL_ORDER_EJECT:
+	case TacticalOrderCode::eject:
 		break;
-	case TACTICAL_ORDER_ATTACK_OBJECT:
+	case TacticalOrderCode::attackobject:
 		if (target)
 		{
 #ifdef USE_ELEMENTALS
@@ -1406,16 +1392,16 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 				result = TACORDER_FAILURE;
 		}
 		break;
-	case TACTICAL_ORDER_ATTACK_POINT:
+	case TacticalOrderCode::attackpoint:
 		result = TACORDER_FAILURE;
 		break;
-	case TACTICAL_ORDER_HOLD_FIRE:
+	case TacticalOrderCode::holdfire:
 		result = TACORDER_FAILURE;
 		break;
-	case TACTICAL_ORDER_WITHDRAW:
+	case TacticalOrderCode::withdraw:
 		result = TACORDER_FAILURE;
 		break;
-	case TACTICAL_ORDER_SCRAMBLE:
+	case TacticalOrderCode::scramble:
 	{
 		result = TACORDER_FAILURE;
 		int32_t formation = -1;
@@ -1440,7 +1426,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 		}
 	}
 	break;
-	case TACTICAL_ORDER_REFIT:
+	case TacticalOrderCode::refit:
 		// has refitter or refitee gotten distracted?
 		if (!target || (warrior->getVehicle()->refitBuddyWID == 0) || (((std::unique_ptr<Mover>)target)->refitBuddyWID == 0))
 			result = TACORDER_SUCCESS;
@@ -1479,7 +1465,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 			case 2: // power-down (or other cool animation...)
 				if (time == 0)
 				{
-					target->getPilot()->orderPowerDown(unitOrder, ORDER_ORIGIN_SELF);
+					target->getPilot()->orderPowerDown(unitOrder, OrderOriginType::self);
 					time = scenarioTime;
 				}
 				else if (scenarioTime > time + 3)
@@ -1500,7 +1486,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 					{
 						// I died trying to repair someone.  Power the someone
 						// back up.
-						target->getPilot()->orderPowerUp(unitOrder, ORDER_ORIGIN_SELF);
+						target->getPilot()->orderPowerUp(unitOrder, OrderOriginType::self);
 						((std::unique_ptr<Mover>)target)->refitBuddyWID = 0;
 						warrior->getVehicle()->refitBuddyWID = 0;
 					}
@@ -1524,7 +1510,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 				break;
 			case 4: // done. power-up (or whatever) and report
 				((GroundVehiclePtr)warrior->getVehicle())->refitting = false;
-				target->getPilot()->orderPowerUp(unitOrder, ORDER_ORIGIN_SELF);
+				target->getPilot()->orderPowerUp(unitOrder, OrderOriginType::self);
 				result = TACORDER_SUCCESS;
 				((std::unique_ptr<Mover>)target)->refitBuddyWID = 0;
 				warrior->getVehicle()->refitBuddyWID = 0;
@@ -1535,7 +1521,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 			}
 		}
 		break;
-	case TACTICAL_ORDER_GETFIXED:
+	case TacticalOrderCode::getfixed:
 		if (!target || (warrior->getVehicle()->refitBuddyWID == 0) || (((BuildingPtr)target)->refitBuddyWID == 0))
 			result = TACORDER_SUCCESS;
 		else
@@ -1553,7 +1539,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 			case 2: // power-down (or other cool animation...)
 				if (time == 0)
 				{
-					warrior->orderPowerDown(unitOrder, ORDER_ORIGIN_SELF);
+					warrior->orderPowerDown(unitOrder, OrderOriginType::self);
 					time = scenarioTime;
 				}
 				else if (scenarioTime > time + 3)
@@ -1596,7 +1582,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 							tileRow++;
 							tileCol++;
 							land->tileCellToWorld(tileRow, tileCol, 2, 2, destination);
-							warrior->orderMoveToPoint(unitOrder, false, ORDER_ORIGIN_SELF,
+							warrior->orderMoveToPoint(unitOrder, false, OrderOriginType::self,
 								destination, selectionindex, 0);
 						}
 					}
@@ -1617,7 +1603,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 			}
 		}
 		break;
-	case TACTICAL_ORDER_LOAD_INTO_CARRIER:
+	case TacticalOrderCode::loadintocarrier:
 	{
 		result = TACORDER_FAILURE;
 #ifdef USE_ELEMENTALS
@@ -1643,7 +1629,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 			{
 				for (size_t i = 0; i < myGroup->getNumMovers(); i++)
 					myGroup->getMover(i)->getPilot()->orderMoveToObject(
-						false, false, ORDER_ORIGIN_SELF, target, moveparams.fromArea);
+						false, false, OrderOriginType::self, target, moveparams.fromArea);
 				stage++;
 			}
 			break;
@@ -1673,7 +1659,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 #endif
 	}
 	break;
-	case TACTICAL_ORDER_DEPLOY_ELEMENTALS:
+	case TacticalOrderCode::deployelementals:
 #ifdef USE_ELEMENTALS
 		if (stage != -1)
 		{
@@ -1716,7 +1702,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 		}
 #endif
 		break;
-	case TACTICAL_ORDER_CAPTURE:
+	case TacticalOrderCode::capture:
 		if (stage != -1)
 		{
 			float distanceToGoal = warrior->getVehicle()->distanceFrom(target->getPosition());
@@ -1744,15 +1730,15 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 					// Why is it blocked, and can we do something about it?
 					if (MPlayer)
 						Fatal(0, " MULTIPLAYER! handle this case:
-				tacorder.status--capture "); if ((origin == ORDER_ORIGIN_SELF)
+				tacorder.status--capture "); if ((origin == OrderOriginType::self)
 				&& (numBlockers > 3)) { TacticalOrder alarmTacOrder;
-						alarmTacOrder.init(ORDER_ORIGIN_PLAYER,
-				TACTICAL_ORDER_ATTACK_OBJECT); alarmTacOrder.playerSubOrder =
+						alarmTacOrder.init(OrderOriginType::player,
+				TacticalOrderCode::attackobject); alarmTacOrder.playerSubOrder =
 				true; alarmTacOrder.targetWID = target->getWatchID();
-						alarmTacOrder.attackParams.type = ATTACK_TO_DESTROY;
-						alarmTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
+						alarmTacOrder.attackParams.type = AttackType::destroy;
+						alarmTacOrder.attackParams.method = AttackMethod::ranged;
 						alarmTacOrder.attackParams.aimLocation = -1;
-						alarmTacOrder.attackParams.range = FIRERANGE_OPTIMAL;
+						alarmTacOrder.attackParams.range = FireRangeType::optimal;
 						alarmTacOrder.attackParams.pursue = true;
 						alarmTacOrder.attackParams.obliterate = false;
 						alarmTacOrder.moveparams.wayPath.mode[0] =
@@ -1760,13 +1746,13 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 					}
 					else {
 						TacticalOrder alarmTacOrder;
-						alarmTacOrder.init(ORDER_ORIGIN_PLAYER,
-				TACTICAL_ORDER_ATTACK_OBJECT); alarmTacOrder.playerSubOrder =
+						alarmTacOrder.init(OrderOriginType::player,
+				TacticalOrderCode::attackobject); alarmTacOrder.playerSubOrder =
 				true; alarmTacOrder.targetWID = blockerList[0]->getWatchID();
-						alarmTacOrder.attackParams.type = ATTACK_TO_DESTROY;
-						alarmTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
+						alarmTacOrder.attackParams.type = AttackType::destroy;
+						alarmTacOrder.attackParams.method = AttackMethod::ranged;
 						alarmTacOrder.attackParams.aimLocation = -1;
-						alarmTacOrder.attackParams.range = FIRERANGE_OPTIMAL;
+						alarmTacOrder.attackParams.range = FireRangeType::optimal;
 						alarmTacOrder.attackParams.pursue = true;
 						alarmTacOrder.attackParams.obliterate = false;
 						alarmTacOrder.moveparams.wayPath.mode[0] =
@@ -1814,7 +1800,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 			}
 		}
 		break;
-	case TACTICAL_ORDER_RECOVER:
+	case TacticalOrderCode::recover:
 		// has recoverer gotten distracted?
 		STOP(("RECOVER TACORDER NO LONGER VALID"));
 #if 0
@@ -1842,7 +1828,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 						if(target->isDisabled())
 							target->setStatus(OBJECT_STATUS_SHUTDOWN);
 						mission->tradeMover((Mover*)target, Team::home->getId(), Commander::home->getId(),
-											(const std::wstring_view&)LogisticsData::instance->getBestPilot((target)->tonnage), "pbrain");
+											(std::wstring_view)LogisticsData::instance->getBestPilot((target)->tonnage), "pbrain");
 						((std::unique_ptr<Mover>)target)->recoverBuddyWID = warrior->getVehicle()->getWatchID();
 						warrior->getVehicle()->recoverBuddyWID = target->getWatchID();
 						stage++;
@@ -1850,7 +1836,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 					case 3:
 						if(time <= 0.0)
 						{
-							target->getPilot()->orderPowerDown(unitOrder, ORDER_ORIGIN_SELF);
+							target->getPilot()->orderPowerDown(unitOrder, OrderOriginType::self);
 							time = scenarioTime;
 						}
 						else if(scenarioTime > time + 3.0)
@@ -1890,7 +1876,7 @@ TacticalOrder::status(std::unique_ptr<MechWarrior> warrior)
 						break;
 					case 5: // done. power-up (or whatever) and report
 						((GroundVehiclePtr)warrior->getVehicle())->recovering = false;
-						target->getPilot()->orderPowerUp(unitOrder, ORDER_ORIGIN_SELF);
+						target->getPilot()->orderPowerUp(unitOrder, OrderOriginType::self);
 						result = TACORDER_SUCCESS;
 						((std::unique_ptr<Mover>)target)->recoverBuddyWID = 0;
 						warrior->getVehicle()->recoverBuddyWID = 0;
@@ -1918,8 +1904,7 @@ TacticalOrder::getTarget(void)
 
 //---------------------------------------------------------------------------
 
-bool
-TacticalOrder::equals(TacticalOrder* tacOrder)
+bool TacticalOrder::equals(TacticalOrder* tacOrder)
 {
 	if (code != tacOrder->code)
 		return (false);
@@ -1935,9 +1920,9 @@ TacticalOrder::equals(TacticalOrder* tacOrder)
 		return (false);
 	switch (code)
 	{
-	case TACTICAL_ORDER_WAIT:
+	case TacticalOrderCode::wait:
 		break;
-	case TACTICAL_ORDER_MOVETO_POINT:
+	case TacticalOrderCode::movetopoint:
 	{
 		if (moveparams.faceObject != tacOrder->moveparams.faceObject)
 			return (false);
@@ -1959,33 +1944,33 @@ TacticalOrder::equals(TacticalOrder* tacOrder)
 		}
 	}
 	break;
-	case TACTICAL_ORDER_MOVETO_OBJECT:
+	case TacticalOrderCode::movetoobject:
 		break;
-	case TACTICAL_ORDER_JUMPTO_POINT:
+	case TacticalOrderCode::jumptopoint:
 		break;
-	case TACTICAL_ORDER_JUMPTO_OBJECT:
+	case TacticalOrderCode::jumptoobject:
 		break;
-	case TACTICAL_ORDER_TRAVERSE_PATH:
+	case TacticalOrderCode::traversepath:
 		break;
-	case TACTICAL_ORDER_PATROL_PATH:
+	case TacticalOrderCode::patrolpath:
 		break;
-	case TACTICAL_ORDER_ESCORT:
+	case TacticalOrderCode::escort:
 		break;
-	case TACTICAL_ORDER_FOLLOW:
+	case TacticalOrderCode::follow:
 		break;
-	case TACTICAL_ORDER_GUARD:
+	case TacticalOrderCode::guard:
 		break;
-	case TACTICAL_ORDER_STOP:
+	case TacticalOrderCode::stop:
 		break;
-	case TACTICAL_ORDER_POWERUP:
+	case TacticalOrderCode::powerup:
 		break;
-	case TACTICAL_ORDER_POWERDOWN:
+	case TacticalOrderCode::powerdown:
 		break;
-	case TACTICAL_ORDER_WAYPOINTS_DONE:
+	case TacticalOrderCode::waypointsdone:
 		break;
-	case TACTICAL_ORDER_EJECT:
+	case TacticalOrderCode::eject:
 		break;
-	case TACTICAL_ORDER_ATTACK_OBJECT:
+	case TacticalOrderCode::attackobject:
 		if (attackParams.method != tacOrder->attackParams.method)
 			return (false);
 		if (attackParams.range != tacOrder->attackParams.range)
@@ -1999,7 +1984,7 @@ TacticalOrder::equals(TacticalOrder* tacOrder)
 		if (attackParams.tactic != tacOrder->attackParams.tactic)
 			return (false);
 		break;
-	case TACTICAL_ORDER_ATTACK_POINT:
+	case TacticalOrderCode::attackpoint:
 		if (attackParams.method != tacOrder->attackParams.method)
 			return (false);
 		if (attackParams.range != tacOrder->attackParams.range)
@@ -2015,21 +2000,21 @@ TacticalOrder::equals(TacticalOrder* tacOrder)
 		if (attackParams.tactic != tacOrder->attackParams.tactic)
 			return (false);
 		break;
-	case TACTICAL_ORDER_HOLD_FIRE:
+	case TacticalOrderCode::holdfire:
 		break;
-	case TACTICAL_ORDER_WITHDRAW:
+	case TacticalOrderCode::withdraw:
 		break;
-	case TACTICAL_ORDER_SCRAMBLE:
+	case TacticalOrderCode::scramble:
 		break;
-	case TACTICAL_ORDER_CAPTURE:
+	case TacticalOrderCode::capture:
 		break;
-	case TACTICAL_ORDER_REFIT:
+	case TacticalOrderCode::refit:
 		break;
-	case TACTICAL_ORDER_GETFIXED:
+	case TacticalOrderCode::getfixed:
 		break;
-	case TACTICAL_ORDER_LOAD_INTO_CARRIER:
+	case TacticalOrderCode::loadintocarrier:
 		break;
-	case TACTICAL_ORDER_DEPLOY_ELEMENTALS:
+	case TacticalOrderCode::deployelementals:
 		break;
 	}
 	return (true);
@@ -2037,26 +2022,24 @@ TacticalOrder::equals(TacticalOrder* tacOrder)
 
 //---------------------------------------------------------------------------
 
-void
-TacticalOrder::destroy(void)
+void TacticalOrder::destroy(void)
 {
 }
 
 //***************************************************************************
 
-void
-TacticalOrder::debugString(std::unique_ptr<MechWarrior> pilot, const std::wstring_view& s)
+void TacticalOrder::debugString(std::unique_ptr<MechWarrior> pilot, std::wstring_view s)
 {
 	GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 	switch (code)
 	{
-	case TACTICAL_ORDER_NONE:
+	case TacticalOrderCode::none:
 		strcpy(s, "none");
 		break;
-	case TACTICAL_ORDER_WAIT:
+	case TacticalOrderCode::wait:
 		strcpy(s, "wait");
 		break;
-	case TACTICAL_ORDER_MOVETO_POINT:
+	case TacticalOrderCode::movetopoint:
 	{
 		Stuff::Vector3D curPos;
 		curPos.x = moveparams.wayPath.points[0];
@@ -2068,10 +2051,10 @@ TacticalOrder::debugString(std::unique_ptr<MechWarrior> pilot, const std::wstrin
 			moveparams.wayPath.points[1], cell[0], cell[1]);
 	}
 	break;
-	case TACTICAL_ORDER_MOVETO_OBJECT:
+	case TacticalOrderCode::movetoobject:
 		sprintf(s, "move to obj (%d)", target ? target->getPartId() : 0);
 		break;
-	case TACTICAL_ORDER_JUMPTO_POINT:
+	case TacticalOrderCode::jumptopoint:
 	{
 		Stuff::Vector3D curPos;
 		curPos.x = moveparams.wayPath.points[0];
@@ -2083,63 +2066,63 @@ TacticalOrder::debugString(std::unique_ptr<MechWarrior> pilot, const std::wstrin
 			moveparams.wayPath.points[1], cell[0], cell[1]);
 	}
 	break;
-	case TACTICAL_ORDER_JUMPTO_OBJECT:
+	case TacticalOrderCode::jumptoobject:
 		sprintf(s, "jump to obj (%d)", target ? target->getPartId() : 0);
 		break;
-	case TACTICAL_ORDER_TRAVERSE_PATH:
+	case TacticalOrderCode::traversepath:
 		strcpy(s, "traverse path");
 		break;
-	case TACTICAL_ORDER_PATROL_PATH:
+	case TacticalOrderCode::patrolpath:
 		strcpy(s, "patrol path");
 		break;
-	case TACTICAL_ORDER_ESCORT:
+	case TacticalOrderCode::escort:
 		strcpy(s, "escort");
 		break;
-	case TACTICAL_ORDER_FOLLOW:
+	case TacticalOrderCode::follow:
 		strcpy(s, "follow");
 		break;
-	case TACTICAL_ORDER_GUARD:
+	case TacticalOrderCode::guard:
 		strcpy(s, "guard");
 		break;
-	case TACTICAL_ORDER_STOP:
+	case TacticalOrderCode::stop:
 		strcpy(s, "stop");
 		break;
-	case TACTICAL_ORDER_POWERUP:
+	case TacticalOrderCode::powerup:
 		strcpy(s, "power up");
 		break;
-	case TACTICAL_ORDER_POWERDOWN:
+	case TacticalOrderCode::powerdown:
 		strcpy(s, "power down");
 		break;
-	case TACTICAL_ORDER_WAYPOINTS_DONE:
+	case TacticalOrderCode::waypointsdone:
 		strcpy(s, "waypoints done");
 		break;
-	case TACTICAL_ORDER_EJECT:
+	case TacticalOrderCode::eject:
 		strcpy(s, "eject");
 		break;
-	case TACTICAL_ORDER_ATTACK_OBJECT:
+	case TacticalOrderCode::attackobject:
 	{
-		const std::wstring_view& tacticCode[] = {"  ", "RT", "LT", "RR", "SF", "TT", "JS"};
+		std::wstring_view tacticCode[] = {"  ", "RT", "LT", "RR", "SF", "TT", "JS"};
 		sprintf(s, "attack obj (%d) %s", target ? target->getPartId() : 0,
 			tacticCode[attackParams.tactic]);
 	}
 	break;
-	case TACTICAL_ORDER_ATTACK_POINT:
+	case TacticalOrderCode::attackpoint:
 	{
-		const std::wstring_view& tacticCode[] = {"  ", "RT", "LT", "RR", "SF", "TT", "JS"};
+		std::wstring_view tacticCode[] = {"  ", "RT", "LT", "RR", "SF", "TT", "JS"};
 		sprintf(s, "attack pt (%.0f, %.0f) %s", attackParams.targetpoint.x,
 			attackParams.targetpoint.y, tacticCode[attackParams.tactic]);
 	}
 	break;
-	case TACTICAL_ORDER_HOLD_FIRE:
+	case TacticalOrderCode::holdfire:
 		strcpy(s, "hold fire");
 		break;
-	case TACTICAL_ORDER_WITHDRAW:
+	case TacticalOrderCode::withdraw:
 		strcpy(s, "withdraw");
 		break;
-	case TACTICAL_ORDER_SCRAMBLE:
+	case TacticalOrderCode::scramble:
 		strcpy(s, "scramble");
 		break;
-	case TACTICAL_ORDER_CAPTURE:
+	case TacticalOrderCode::capture:
 	{
 		Stuff::Vector3D goalPos;
 		GameObjectPtr obj;
@@ -2152,16 +2135,16 @@ TacticalOrder::debugString(std::unique_ptr<MechWarrior> pilot, const std::wstrin
 			sprintf(s, "capture obj (%d) [GOAL?]", target ? target->getPartId() : 0);
 	}
 	break;
-	case TACTICAL_ORDER_REFIT:
+	case TacticalOrderCode::refit:
 		sprintf(s, "refit obj (%d)", target ? target->getPartId() : 0);
 		break;
-	case TACTICAL_ORDER_GETFIXED:
+	case TacticalOrderCode::getfixed:
 		sprintf(s, "get fixed (%d)", target ? target->getPartId() : 0);
 		break;
-	case TACTICAL_ORDER_LOAD_INTO_CARRIER:
+	case TacticalOrderCode::loadintocarrier:
 		strcpy(s, "load carrier");
 		break;
-	case TACTICAL_ORDER_DEPLOY_ELEMENTALS:
+	case TacticalOrderCode::deployelementals:
 		strcpy(s, "deploy elementals");
 		break;
 	}

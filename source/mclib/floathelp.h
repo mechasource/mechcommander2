@@ -52,7 +52,10 @@ public:
 		bold = italic = wordWrap = false;
 	}
 
-	~FloatHelp(void) { destroy(void); }
+	~FloatHelp(void)
+	{
+		destroy(void);
+	}
 
 	void init(int32_t maxHelps);
 
@@ -62,14 +65,14 @@ public:
 
 	static void renderAll(void);
 
-	static void setFloatHelp(const std::wstring_view& txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
+	static void setFloatHelp(std::wstring_view txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
 		float scl, bool proportional, bool bold, bool italic, bool wordWrap);
 
-	static void getTextStringLength(const std::wstring_view& text, uint32_t fcolour, float scl, bool proportional,
+	static void getTextStringLength(std::wstring_view text, uint32_t fcolour, float scl, bool proportional,
 		bool bold, bool italic, bool wordWrap, uint32_t& width, uint32_t& height);
 
 protected:
-	void setHelpText(const std::wstring_view& txt)
+	void setHelpText(std::wstring_view txt)
 	{
 		if (strlen(txt) < 2048)
 		{
@@ -81,14 +84,38 @@ protected:
 		}
 	}
 
-	void setScreenPos(Stuff::Vector4D pos) { screenPos = pos; }
-	void setForegroundcolour(uint32_t clr) { foregroundcolour = clr; }
-	void setBackgroundcolour(uint32_t clr) { backgroundcolour = clr; }
-	void setScale(float scl) { scale = scl; }
-	void setProportional(bool flag) { proportional = flag; }
-	void setBold(bool flag) { bold = flag; }
-	void setItalic(bool flag) { italic = flag; }
-	void setWordWrap(bool flag) { wordWrap = flag; }
+	void setScreenPos(Stuff::Vector4D pos)
+	{
+		screenPos = pos;
+	}
+	void setForegroundcolour(uint32_t clr)
+	{
+		foregroundcolour = clr;
+	}
+	void setBackgroundcolour(uint32_t clr)
+	{
+		backgroundcolour = clr;
+	}
+	void setScale(float scl)
+	{
+		scale = scl;
+	}
+	void setProportional(bool flag)
+	{
+		proportional = flag;
+	}
+	void setBold(bool flag)
+	{
+		bold = flag;
+	}
+	void setItalic(bool flag)
+	{
+		italic = flag;
+	}
+	void setWordWrap(bool flag)
+	{
+		wordWrap = flag;
+	}
 	void reset(void)
 	{
 		// Call every frame.  Otherwise floating help keeps floating!

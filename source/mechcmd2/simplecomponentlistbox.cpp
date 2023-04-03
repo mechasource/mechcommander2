@@ -29,8 +29,7 @@ ComponentListBox::~ComponentListBox()
 	aListBox::destroy();
 }
 
-void
-ComponentListBox::setMech(LogisticsVariant* pMech)
+void ComponentListBox::setMech(LogisticsVariant* pMech)
 {
 	removeAllItems(true);
 	if (pMech)
@@ -60,8 +59,7 @@ ComponentListBox::setMech(LogisticsVariant* pMech)
 	}
 }
 
-void
-ComponentListBox::setVehicle(LogisticsVehicle* pVeh)
+void ComponentListBox::setVehicle(LogisticsVehicle* pVeh)
 {
 	removeAllItems(true);
 	if (pVeh)
@@ -73,8 +71,7 @@ ComponentListBox::setVehicle(LogisticsVehicle* pVeh)
 	}
 }
 
-void
-ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** components)
+void ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** components)
 {
 	LogisticsComponent* finalList[64];
 	int32_t finalListCount[64];
@@ -113,7 +110,7 @@ ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** com
 		}
 		if (finalList[0])
 		{
-			const std::wstring_view& str;
+			std::wstring_view str;
 			// add the header
 			// no more headers, keeping code just in case
 			//				aTextListItem* textItem = new aTextListItem(

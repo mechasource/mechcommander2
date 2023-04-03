@@ -131,9 +131,18 @@ protected:
 			m_pPrev = nullptr;
 		}
 
-		PVOID operator new(size_t size) { return malloc(size); }
-		void operator delete(PVOID ptr) { free(ptr); }
-		void operator delete[](PVOID ptr) { free(ptr); }
+		PVOID operator new(size_t size)
+		{
+			return malloc(size);
+		}
+		void operator delete(PVOID ptr)
+		{
+			free(ptr);
+		}
+		void operator delete[](PVOID ptr)
+		{
+			free(ptr);
+		}
 	};
 	CListNode* m_pHead;
 	CListNode* m_pTail;
@@ -192,7 +201,7 @@ public:
 	class ExtraData
 	{
 	public:
-		virtual ~ExtraData() {}
+		virtual ~ExtraData() { }
 
 		PVOID operator new(size_t size);
 		void operator delete(PVOID ptr);
@@ -248,7 +257,10 @@ public:
 
 	// The indexed view is used for array-like access to the
 	// list, as well as providing sorting and filtering capabilities.
-	IndexedTableView* GetIndexedView(void) const { return m_IndexedView; }
+	IndexedTableView* GetIndexedView(void) const
+	{
+		return m_IndexedView;
+	}
 
 	// misc operations
 	int32_t GetTotalCount(void); // total number of table items

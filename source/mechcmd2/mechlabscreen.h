@@ -59,7 +59,10 @@ public:
 
 	int32_t canAddComponent(LogisticsComponent* pComponent);
 
-	static MechLabScreen* instance() { return s_instance; }
+	static MechLabScreen* instance()
+	{
+		return s_instance;
+	}
 
 	bool canRemoveComponent(LogisticsComponent* pComp);
 
@@ -108,7 +111,7 @@ private:
 
 	SimpleCamera camera;
 
-	const std::wstring_view& varName;
+	std::wstring_view varName;
 
 	static RECT sensorRects[4];
 	static int32_t sensorHelpIDs[4];

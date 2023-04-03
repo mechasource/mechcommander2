@@ -31,7 +31,10 @@ public:
 		Next = 0;
 		Prev = 0;
 	}
-	gosLink* GetNext() { return (gosLink*)linkData; }
+	gosLink* GetNext()
+	{
+		return (gosLink*)linkData;
+	}
 };
 
 template <class T>
@@ -120,7 +123,10 @@ public:
 		}
 	}
 
-	int32_t Size() { return m_Size; }
+	int32_t Size()
+	{
+		return m_Size;
+	}
 	T Get(int32_t index)
 	{
 		gosLink* tmp = m_Head;
@@ -157,7 +163,7 @@ public:
 		m_Iterator = list->m_Head;
 		m_List = list;
 	}
-	~LinkedListIterator() {}
+	~LinkedListIterator() { }
 	T Head()
 	{
 		m_Iterator = m_List->m_Head;

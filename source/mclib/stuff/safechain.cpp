@@ -26,8 +26,7 @@ MemoryBlock* SafeChainLink::AllocatedMemory = nullptr;
 //###########################################################################
 //###########################################################################
 //
-void
-SafeChainLink::InitializeClass(size_t block_count, size_t block_delta)
+void SafeChainLink::InitializeClass(size_t block_count, size_t block_delta)
 {
 	_ASSERT(!AllocatedMemory);
 	AllocatedMemory = new MemoryBlock(sizeof(SafeChainLink), block_count, block_delta,
@@ -38,8 +37,7 @@ SafeChainLink::InitializeClass(size_t block_count, size_t block_delta)
 //###########################################################################
 //###########################################################################
 //
-void
-SafeChainLink::TerminateClass()
+void SafeChainLink::TerminateClass()
 {
 	delete AllocatedMemory;
 	AllocatedMemory = nullptr;
@@ -51,8 +49,8 @@ SafeChainLink::TerminateClass()
 //###########################################################################
 //
 SafeChainLink::SafeChainLink(SafeChain* chain, Plug* plug, SafeChainLink* nextSafeChainLink,
-	SafeChainLink* prevSafeChainLink) :
-	Link(chain, plug)
+	SafeChainLink* prevSafeChainLink)
+	: Link(chain, plug)
 {
 	//
 	//-------------------------
@@ -137,8 +135,7 @@ SafeChainLink::~SafeChainLink()
 // TestInstance
 //###########################################################################
 //
-void
-SafeChainLink::TestInstance()
+void SafeChainLink::TestInstance()
 {
 	Link::TestInstance();
 	if (prevSafeChainLink != nullptr)
@@ -162,8 +159,8 @@ SafeChainLink::TestInstance()
 // SafeChain
 //###########################################################################
 //
-SafeChain::SafeChain(Node* node) :
-	SafeSocket(node)
+SafeChain::SafeChain(Node* node)
+	: SafeSocket(node)
 {
 	head = nullptr;
 	tail = nullptr;
@@ -194,8 +191,7 @@ SafeChain::~SafeChain()
 // TestInstance
 //###########################################################################
 //
-void
-SafeChain::TestInstance()
+void SafeChain::TestInstance()
 {
 	SafeSocket::TestInstance();
 	if (head != nullptr)
@@ -209,8 +205,7 @@ SafeChain::TestInstance()
 // AddImplementation
 //###########################################################################
 //
-void
-SafeChain::AddImplementation(Plug* plug)
+void SafeChain::AddImplementation(Plug* plug)
 {
 	// Check_Object(this);
 	tail = new SafeChainLink(this, plug, nullptr, tail);
@@ -226,8 +221,7 @@ SafeChain::AddImplementation(Plug* plug)
 // IsEmpty
 //#############################################################################
 //
-bool
-SafeChain::IsEmpty()
+bool SafeChain::IsEmpty()
 {
 	// Check_Object(this);
 	return (head == nullptr);
@@ -259,16 +253,16 @@ SafeChain::InsertSafeChainLink(Plug* plug, SafeChainLink* link)
 // SafeChainIterator
 //###########################################################################
 //
-SafeChainIterator::SafeChainIterator(SafeChain* chain, bool move_next_on_remove) :
-	SafeIterator(chain)
+SafeChainIterator::SafeChainIterator(SafeChain* chain, bool move_next_on_remove)
+	: SafeIterator(chain)
 {
 	Check_Object(chain);
 	currentLink = chain->head;
 	moveNextOnRemove = move_next_on_remove;
 }
 
-SafeChainIterator::SafeChainIterator(const SafeChainIterator& iterator) :
-	SafeIterator(Cast_Object(SafeChain*, iterator.socket))
+SafeChainIterator::SafeChainIterator(const SafeChainIterator& iterator)
+	: SafeIterator(Cast_Object(SafeChain*, iterator.socket))
 {
 	Check_Object(&iterator);
 	currentLink = iterator.currentLink;
@@ -285,8 +279,7 @@ SafeChainIterator::~SafeChainIterator()
 // TestInstance
 //###########################################################################
 //
-void
-SafeChainIterator::TestInstance(void) const
+void SafeChainIterator::TestInstance(void) const
 {
 	SafeIterator::TestInstance();
 	if (currentLink != nullptr)
@@ -300,8 +293,7 @@ SafeChainIterator::TestInstance(void) const
 // First
 //###########################################################################
 //
-void
-SafeChainIterator::First()
+void SafeChainIterator::First()
 {
 	// Check_Object(this);
 	currentLink = Cast_Object(SafeChain*, socket)->head;
@@ -312,8 +304,7 @@ SafeChainIterator::First()
 // Last
 //###########################################################################
 //
-void
-SafeChainIterator::Last()
+void SafeChainIterator::Last()
 {
 	// Check_Object(this);
 	currentLink = Cast_Object(SafeChain*, socket)->tail;
@@ -324,8 +315,7 @@ SafeChainIterator::Last()
 // Next
 //###########################################################################
 //
-void
-SafeChainIterator::Next()
+void SafeChainIterator::Next()
 {
 	// Check_Object(this);
 	Check_Object(currentLink);
@@ -337,8 +327,7 @@ SafeChainIterator::Next()
 // Previous
 //###########################################################################
 //
-void
-SafeChainIterator::Previous()
+void SafeChainIterator::Previous()
 {
 	// Check_Object(this);
 	Check_Object(currentLink);
@@ -454,8 +443,7 @@ SafeChainIterator::GetNthImplementation(CollectionSize index)
 // Remove
 //###########################################################################
 //
-void
-SafeChainIterator::Remove()
+void SafeChainIterator::Remove()
 {
 	// Check_Object(this);
 	Check_Object(currentLink);
@@ -468,8 +456,7 @@ SafeChainIterator::Remove()
 // InsertImplementation
 //#############################################################################
 //
-void
-SafeChainIterator::InsertImplementation(Plug* plug)
+void SafeChainIterator::InsertImplementation(Plug* plug)
 {
 	// Check_Object(this);
 	currentLink = Cast_Object(SafeChain*, socket)->InsertSafeChainLink(plug, currentLink);
@@ -481,8 +468,7 @@ SafeChainIterator::InsertImplementation(Plug* plug)
 // ReceiveMemo
 //###########################################################################
 //
-void
-SafeChainIterator::ReceiveMemo(IteratorMemo memo, PVOID content)
+void SafeChainIterator::ReceiveMemo(IteratorMemo memo, PVOID content)
 {
 	// Check_Object(this);
 	if (memo == PlugRemoved)

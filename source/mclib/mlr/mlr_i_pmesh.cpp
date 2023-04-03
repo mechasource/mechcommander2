@@ -14,7 +14,8 @@
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_pmesh.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -36,8 +37,7 @@ std::vector<float>* lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::InitializeClass(void)
+void MLR_I_PMesh::InitializeClass(void)
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -56,8 +56,7 @@ MLR_I_PMesh::InitializeClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::TerminateClass(void)
+void MLR_I_PMesh::TerminateClass(void)
 {
 	Unregister_Object(lightMapSqFalloffs);
 	delete lightMapSqFalloffs;
@@ -74,8 +73,8 @@ MLR_I_PMesh::TerminateClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_PMesh::MLR_I_PMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLRIndexedPrimitiveBase(class_data, stream, version)
+MLR_I_PMesh::MLR_I_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLRIndexedPrimitiveBase(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -87,8 +86,8 @@ MLR_I_PMesh::MLR_I_PMesh(ClassData* class_data, std::iostream stream, uint32_t v
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_PMesh::MLR_I_PMesh(ClassData* class_data) :
-	MLRIndexedPrimitiveBase(class_data)
+MLR_I_PMesh::MLR_I_PMesh(ClassData* class_data)
+	: MLRIndexedPrimitiveBase(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -162,16 +161,14 @@ MLR_I_PMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::TestInstance(void) const
+void MLR_I_PMesh::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
+void MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 	if (parameter & 1)
@@ -182,8 +179,7 @@ MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::SetSubprimitiveLengths(uint8_t* data, size_t numPrimitives)
+void MLR_I_PMesh::SetSubprimitiveLengths(uint8_t* data, size_t numPrimitives)
 {
 	// Check_Object(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -194,8 +190,7 @@ MLR_I_PMesh::SetSubprimitiveLengths(uint8_t* data, size_t numPrimitives)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::GetSubprimitiveLengths(uint8_t** pdata, size_t* plength)
+void MLR_I_PMesh::GetSubprimitiveLengths(uint8_t** pdata, size_t* plength)
 {
 	// Check_Object(this);
 	*plength = lengths.GetLength();
@@ -204,8 +199,7 @@ MLR_I_PMesh::GetSubprimitiveLengths(uint8_t** pdata, size_t* plength)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::FindFacePlanes(void)
+void MLR_I_PMesh::FindFacePlanes(void)
 {
 	// Check_Object(this);
 	size_t i, j, stride, numPrimitives = GetNumPrimitives();
@@ -259,8 +253,7 @@ MLR_I_PMesh::FindBackFace(const Stuff::Point3D& u)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::ResetTestList(void)
+void MLR_I_PMesh::ResetTestList(void)
 {
 	size_t i, numPrimitives = GetNumPrimitives();
 	uint8_t* iPtr = &testList[0];
@@ -303,8 +296,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::Transform(Stuff::Matrix4D* mat)
+void MLR_I_PMesh::Transform(Stuff::Matrix4D* mat)
 {
 	// Check_Object(this);
 	Start_Timer(Transform_Time);
@@ -387,8 +379,7 @@ MLR_I_PMesh::Transform(Stuff::Matrix4D* mat)
 
 //---------------------------------------------------------------------------
 //
-void
-MLR_I_PMesh::Lighting(MLRLight* const* lights, uint32_t nrLights)
+void MLR_I_PMesh::Lighting(MLRLight* const* lights, uint32_t nrLights)
 {
 	size_t i;
 	MLRLightMap* lightMap;
@@ -408,8 +399,7 @@ Stuff::RGBAcolour errorcolour;
 //
 // warning C6244: Local declaration of 'lightMapUVs' hides previous declaration
 // at line '34'
-bool
-CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs2, uint32_t stride)
+bool CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs2, uint32_t stride)
 {
 	size_t k1, k0;
 	float u1v0, u0v1;
@@ -475,8 +465,7 @@ CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs2, uint32_t 
 
 //---------------------------------------------------------------------------
 //
-void
-MLR_I_PMesh::LightMapLighting(MLRLight* light)
+void MLR_I_PMesh::LightMapLighting(MLRLight* light)
 {
 	if (!gEnableLightMaps)
 	{
@@ -742,8 +731,7 @@ MLR_I_PMesh::LightMapLighting(MLRLight* light)
 
 //---------------------------------------------------------------------------
 //
-bool
-MLR_I_PMesh::CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal)
+bool MLR_I_PMesh::CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal)
 {
 	// Check_Object(this);
 	Check_Object(line);
@@ -1022,8 +1010,7 @@ uint32_t MidLevelRenderer::triDrawn = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MidLevelRenderer::subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1, Stuff::Point3D& v2,
+void MidLevelRenderer::subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1, Stuff::Point3D& v2,
 	Stuff::Point3D& v3, uint32_t depth, uint32_t tri2draw, float rad)
 {
 	Stuff::Point3D v12(0.0f, 0.0f, 0.0f), v23(0.0f, 0.0f, 0.0f), v31(0.0f, 0.0f, 0.0f);

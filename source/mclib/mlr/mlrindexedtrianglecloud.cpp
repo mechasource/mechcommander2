@@ -16,7 +16,8 @@
 #define HUNT_CLIP_ERROR 0
 #endif
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 extern uint32_t gShowClippedPolys;
 extern uint16_t* indexOffset; // [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
@@ -33,8 +34,7 @@ MLRIndexedTriangleCloud::ClassData* MLRIndexedTriangleCloud::DefaultData = nullp
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedTriangleCloud::InitializeClass(void)
+void MLRIndexedTriangleCloud::InitializeClass(void)
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -52,8 +52,7 @@ MLRIndexedTriangleCloud::InitializeClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedTriangleCloud::TerminateClass(void)
+void MLRIndexedTriangleCloud::TerminateClass(void)
 {
 	Unregister_Pointer(clipExtraIndex);
 	delete clipExtraIndex;
@@ -68,8 +67,7 @@ MLRIndexedTriangleCloud::TerminateClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedTriangleCloud::SetData(const size_t* tri_count, const size_t* point_count,
+void MLRIndexedTriangleCloud::SetData(const size_t* tri_count, const size_t* point_count,
 	const uint16_t* index_data, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data,
 	const Stuff::Vector2DScalar* uv_data)
 {
@@ -85,8 +83,7 @@ MLRIndexedTriangleCloud::SetData(const size_t* tri_count, const size_t* point_co
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedTriangleCloud::Draw(
+void MLRIndexedTriangleCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -791,8 +788,7 @@ MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRIndexedTriangleCloud::TestInstance(void) const
+void MLRIndexedTriangleCloud::TestInstance(void) const
 {
 	if (usedNrOfTriangles)
 	{

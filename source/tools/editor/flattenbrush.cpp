@@ -14,11 +14,10 @@ FlattenBrush::FlattenBrush()
 }
 
 //-------------------------------------------------------------------------------------------------
-FlattenBrush::~FlattenBrush() {}
+FlattenBrush::~FlattenBrush() { }
 
 //-------------------------------------------------------------------------------------------------
-bool
-FlattenBrush::beginPaint()
+bool FlattenBrush::beginPaint()
 {
 	pCurAction = new ActionPaintTile();
 	return true;
@@ -44,8 +43,7 @@ FlattenBrush::endPaint()
 }
 
 //-------------------------------------------------------------------------------------------------
-bool
-FlattenBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool FlattenBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	int32_t closestX = floor((worldPos.x - land->mapTopLeft3d.x) / land->worldUnitsPerVertex + .5);
 	int32_t closestY = floor((land->mapTopLeft3d.y - worldPos.y) / land->worldUnitsPerVertex + .5);
@@ -77,8 +75,7 @@ FlattenBrush::applyToSelection()
 }
 
 //-------------------------------------------------------------------------------------------------
-float
-FlattenBrush::getAverageheightOfSelection()
+float FlattenBrush::getAverageheightOfSelection()
 {
 	float height = 0.f;
 	float count = 0.0f;
@@ -116,8 +113,7 @@ FlattenBrush::applyheightToSelection(float height)
 }
 
 //-------------------------------------------------------------------------------------------------
-void
-FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
+void FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 {
 #if 1 /*flattening without "area effect"*/
 	{

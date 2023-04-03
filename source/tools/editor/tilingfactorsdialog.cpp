@@ -18,8 +18,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // TilingFactorsDialog dialog
 
-TilingFactorsDialog::TilingFactorsDialog(CWnd* pParent /*=nullptr*/) :
-	CDialog(TilingFactorsDialog::IDD, pParent)
+TilingFactorsDialog::TilingFactorsDialog(CWnd* pParent /*=nullptr*/)
+	: CDialog(TilingFactorsDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(TilingFactorsDialog)
 	m_TerrainDetailTilingFactor = 0.0f;
@@ -28,8 +28,7 @@ TilingFactorsDialog::TilingFactorsDialog(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-TilingFactorsDialog::DoDataExchange(CDataExchange* pDX)
+void TilingFactorsDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(TilingFactorsDialog)

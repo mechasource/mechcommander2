@@ -19,10 +19,10 @@
 #if CONSIDERED_OBSOLETE
 enum class FileMode : uint8_t
 {
-	NOMODE = 0,	// notused
+	NOMODE = 0, // notused
 	READ,
 	CREATE,
-	MC2_APPEND,	// notused
+	MC2_APPEND, // notused
 	WRITE,
 	RDWRITE
 };
@@ -66,9 +66,9 @@ enum __file_constants : uint32_t
 //---------------------------------------------------------------------------
 // Function Declarations
 // Returns 1 if file is on HardDrive and 2 if file is in FastFile
-// int32_t __stdcall fileExists(const std::wstring_view& filename);
-// int32_t __stdcall fileExistsOnCD(const std::wstring_view& filename);
-// bool __stdcall file1OlderThan2(const std::wstring_view& file1, const std::wstring_view& file2);
+// int32_t __stdcall fileExists(std::wstring_view filename);
+// int32_t __stdcall fileExistsOnCD(std::wstring_view filename);
+// bool __stdcall file1OlderThan2(std::wstring_view file1, std::wstring_view file2);
 
 // class UserHeap;
 // class FastFile;
@@ -99,18 +99,18 @@ public:
 	virtual ~MechFile(void) noexcept = default;
 
 	virtual HRESULT open(stdfs::path& path);
-	virtual HRESULT open(const std::wstring_view& filename)
+	virtual HRESULT open(std::wstring_view filename)
 	{
 		stdfs::path path(filename);
 		return open(path);
 	}
 
-	// virtual HRESULT open(const std::wstring_view& filename, FileMode _mode = READ, uint32_t numChildren = 50);
+	// virtual HRESULT open(std::wstring_view filename, FileMode _mode = READ, uint32_t numChildren = 50);
 	// virtual int32_t open(std::unique_ptr<File> _parent, size_t fileSize, uint32_t numChildren = 50);
-	///*virtual*/ int32_t open(const std::wstring_view& buffer, size_t bufferLength); // for streaming from memory
+	///*virtual*/ int32_t open(std::wstring_view buffer, size_t bufferLength); // for streaming from memory
 
-	virtual int32_t create(const std::wstring_view& filename);
-	virtual int32_t createWithCase(const std::wstring_view& filename);
+	virtual int32_t create(std::wstring_view filename);
+	virtual int32_t createWithCase(std::wstring_view filename);
 
 	virtual void close(void);
 
@@ -147,14 +147,17 @@ public:
 	int32_t writeLong(int32_t value);
 	int32_t writeFloat(float value);
 
-	int32_t writeString(const std::wstring_view& buffer);
-	int32_t writeLine(const std::wstring_view& buffer);
+	int32_t writeString(std::wstring_view buffer);
+	int32_t writeLine(std::wstring_view buffer);
 
 	bool isOpen(void);
 
-	virtual FileClass getFileClass(void) { return FileClass::basefile; }
+	virtual FileClass getFileClass(void)
+	{
+		return FileClass::basefile;
+	}
 
-	const std::wstring_view& getFilename(void);
+	std::wstring_view getFilename(void);
 
 	size_t getLength(void);
 	size_t fileSize(void);
@@ -207,5 +210,4 @@ protected:
 	// size_t physicalLength;
 	// bool inRAM;
 	// uint8_t* fileImage;
-
 };

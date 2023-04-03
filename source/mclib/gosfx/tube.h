@@ -96,7 +96,7 @@ public:
 	Stuff::UnitVector3D m_direction;
 	float m_age, m_ageRate, m_seed;
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 //############################################################################

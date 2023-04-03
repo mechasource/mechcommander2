@@ -38,9 +38,15 @@ public:
 	};
 
 public:
-	FIMessageHeader() { flags = 0; }
+	FIMessageHeader()
+	{
+		flags = 0;
+	}
 
-	void Init() { flags = 0; }
+	void Init()
+	{
+		flags = 0;
+	}
 
 	// Accessors
 	inline BOOLEAN IsMulticast()
@@ -61,16 +67,31 @@ public:
 
 	// This message construct limits the application to
 	// 1024 unique types of messages.
-	inline int32_t GetType() { return flags & TypeMask; }
+	inline int32_t GetType()
+	{
+		return flags & TypeMask;
+	}
 
 	// Information setters
-	inline void SetMulticast() { flags |= MulticastFlag; }
+	inline void SetMulticast()
+	{
+		flags |= MulticastFlag;
+	}
 
-	inline void SetUnicast() { flags &= ~MulticastFlag; }
+	inline void SetUnicast()
+	{
+		flags &= ~MulticastFlag;
+	}
 
-	inline void SetGuaranteed() { flags |= GuaranteedFlag; }
+	inline void SetGuaranteed()
+	{
+		flags |= GuaranteedFlag;
+	}
 
-	inline void SetNonGuaranteed() { flags &= ~GuaranteedFlag; }
+	inline void SetNonGuaranteed()
+	{
+		flags &= ~GuaranteedFlag;
+	}
 
 	inline void SetType(uint32_t new_type)
 	{
@@ -99,8 +120,9 @@ class FIGuaranteedMessageHeader : public FIMessageHeader, public MessageTagger
 {
 public:
 	// Constructor just calls Clear
-	FIGuaranteedMessageHeader() :
-		FIMessageHeader(), MessageTagger()
+	FIGuaranteedMessageHeader()
+		: FIMessageHeader()
+		, MessageTagger()
 	{
 		SetGuaranteed(void);
 		Clear(void);
@@ -121,8 +143,10 @@ private:
 	// Keep the constructor private because we don't want
 	// anyone to call it when there is an undefined size
 	// for the class.
-	FIGenericGuaranteedMessage() :
-		FIGuaranteedMessageHeader() {}
+	FIGenericGuaranteedMessage()
+		: FIGuaranteedMessageHeader()
+	{
+	}
 
 public:
 	BOOLEAN buffer[0];
@@ -134,8 +158,10 @@ private:
 	// Keep the constructor private because we don't want
 	// anyone to call it when there is an undefined size
 	// for the class.
-	FIGenericMessage() :
-		FIMessageHeader() {}
+	FIGenericMessage()
+		: FIMessageHeader()
+	{
+	}
 
 public:
 	BOOLEAN buffer[0];
@@ -144,8 +170,10 @@ public:
 class FIVerifyCluster : public FIMessageHeader
 {
 protected:
-	FIVerifyCluster() :
-		FIMessageHeader() {}
+	FIVerifyCluster()
+		: FIMessageHeader()
+	{
+	}
 
 public:
 	BOOLEAN n_messages;
@@ -165,8 +193,11 @@ public:
 	uint32_t playerID[MAXPLAYERS];
 	BOOLEAN serverIndex;
 
-	FIPlayerIDMessage() :
-		FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERID); }
+	FIPlayerIDMessage()
+		: FIGuaranteedMessageHeader()
+	{
+		SetType(FIDP_MSG_PLAYERID);
+	}
 
 	int32_t GetPlayerNumber(uint32_t player_id)
 	{
@@ -181,7 +212,10 @@ public:
 		return -1;
 	}
 
-	uint32_t GetServerID() { return playerID[serverIndex]; }
+	uint32_t GetServerID()
+	{
+		return playerID[serverIndex];
+	}
 };
 
 class FIPlayersInGroupMessage : public FIGuaranteedMessageHeader
@@ -190,8 +224,11 @@ public:
 	uint32_t groupID;
 	uint32_t playerID[MAXPLAYERS];
 
-	FIPlayersInGroupMessage() :
-		FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERS_IN_GROUP); }
+	FIPlayersInGroupMessage()
+		: FIGuaranteedMessageHeader()
+	{
+		SetType(FIDP_MSG_PLAYERS_IN_GROUP);
+	}
 };
 
 class FIServerIDMessage : public FIGuaranteedMessageHeader
@@ -199,8 +236,8 @@ class FIServerIDMessage : public FIGuaranteedMessageHeader
 public:
 	uint32_t serverID;
 
-	FIServerIDMessage(uint32_t server_id) :
-		FIGuaranteedMessageHeader()
+	FIServerIDMessage(uint32_t server_id)
+		: FIGuaranteedMessageHeader()
 	{
 		serverID = server_id;
 		SetType(FIDP_MSG_SERVERID);
@@ -238,15 +275,30 @@ public:
 
 	void Clear(void);
 
-	inline DPID SenderID() { return senderId; }
+	inline DPID SenderID()
+	{
+		return senderId;
+	}
 
-	inline DPID ReceiverID() { return receiverId; }
+	inline DPID ReceiverID()
+	{
+		return receiverId;
+	}
 
-	inline uint32_t MessageSize() { return messageSize; }
+	inline uint32_t MessageSize()
+	{
+		return messageSize;
+	}
 
-	inline PCVOID GetBuffer() { return buffer; }
+	inline PCVOID GetBuffer()
+	{
+		return buffer;
+	}
 
-	inline uint32_t Time() { return time; }
+	inline uint32_t Time()
+	{
+		return time;
+	}
 
 	inline void SetTime(uint32_t new_time)
 	{
@@ -255,9 +307,15 @@ public:
 			originalTime = time;
 	}
 
-	inline void SetSenderID(DPID id) { senderId = id; }
+	inline void SetSenderID(DPID id)
+	{
+		senderId = id;
+	}
 
-	inline void SetReceiverID(DPID id) { receiverId = id; }
+	inline void SetReceiverID(DPID id)
+	{
+		receiverId = id;
+	}
 
 	uint32_t SetMessageBuffer(LPVOID data, uint32_t nbytes);
 

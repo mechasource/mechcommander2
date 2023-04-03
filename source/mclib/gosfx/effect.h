@@ -33,7 +33,7 @@ class Effect__ClassData;
 class Event // : public Stuff::Plug
 {
 public:
-	Event() /* : Plug(DefaultData) */ {}
+	Event() /* : Plug(DefaultData) */ { }
 	Event(const Event& event);
 
 	static Event* Make(std::istream& stream, uint32_t gfx_version);
@@ -87,7 +87,7 @@ protected:
 	Stuff::RegisteredClass::ClassID m_class;
 
 	uint32_t m_effectID;
-	const std::wstring_view& m_name;
+	std::wstring_view m_name;
 
 	//----------------------------------------------------------------------
 	// Events
@@ -118,7 +118,7 @@ protected:
 	// Testing
 	//
 public:
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 //############################################################################
@@ -153,7 +153,7 @@ public:
 			m_ageRate = -1.0f;
 		}
 
-		void TestInstance(void) const {}
+		void TestInstance(void) const { }
 
 	private:
 		ExecuteInfo(float time, const Stuff::LinearMatrix4D* parent_to_world, Stuff::OBB* bounds,
@@ -167,7 +167,7 @@ public:
 		MidLevelRenderer::MLRState m_state;
 		MidLevelRenderer::MLRClipper* m_clipper;
 
-		void TestInstance(void) const {}
+		void TestInstance(void) const { }
 	};
 
 	typedef Effect__Specification Specification;
@@ -321,11 +321,12 @@ class Effect__ClassData //: public Stuff::Plug::ClassData
 	//----------------------------------------------------------------------------
 	//
 public:
-	Effect__ClassData(Stuff::RegisteredClass::ClassID class_id, const std::wstring_view& class_name,
+	Effect__ClassData(Stuff::RegisteredClass::ClassID class_id, std::wstring_view class_name,
 		Stuff::Plug::ClassData* parent_class, Effect::Factory effect_factory,
-		Effect::Specification::Factory spec_factory) :
-		RegisteredClass__ClassData(class_id, class_name, parent_class),
-		effectFactory(effect_factory), specificationFactory(spec_factory)
+		Effect::Specification::Factory spec_factory)
+		: RegisteredClass__ClassData(class_id, class_name, parent_class)
+		, effectFactory(effect_factory)
+		, specificationFactory(spec_factory)
 	{
 	}
 

@@ -14,7 +14,8 @@
 #include "ablparse.h"
 #include "ablenv.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -73,7 +74,7 @@ TokenCodeType statementEndList[] = {TKN_SEMICOLON, TKN_END_IF, TKN_END_WHILE, TK
 TokenCodeType declarationStartList[] = {
 	TKN_CONST, TKN_VAR, TKN_FUNCTION, TKN_ORDER, TKN_STATE, TKN_NONE};
 
-const std::wstring_view& TokenStrings[NUM_TOKENS] = {"{BAD TOKEN}", "{IDENTIFIER}", "{NUMBER}", "{TYPE}", "{STRING}",
+std::wstring_view TokenStrings[NUM_TOKENS] = {"{BAD TOKEN}", "{IDENTIFIER}", "{NUMBER}", "{TYPE}", "{STRING}",
 	"*", "(", ")", "-", "+", "=", "[", "]", ":", ";", "<", ">", ",", ".", "/",
 	"==", "<=", ">=", "<>", "{EOF}", "{ERROR}", "code", "order", "state", "and", "switch", "case",
 	"const", "div", "do", "of", "else", "endif", "endwhile", "endfor", "endfunction", "endorder",
@@ -107,8 +108,8 @@ wchar_t sourceBuffer[MAXLEN_SOURCELINE];
 wchar_t tokenString[MAXLEN_TOKENSTRING];
 wchar_t wordString[MAXLEN_TOKENSTRING];
 int32_t bufferOffset = 0;
-const std::wstring_view& bufferp = sourceBuffer;
-const std::wstring_view& tokenp = tokenString;
+std::wstring_view bufferp = sourceBuffer;
+std::wstring_view tokenp = tokenString;
 
 int32_t digitCount = 0;
 bool countError = false;
@@ -128,8 +129,8 @@ extern bool DebugCodeEnabled;
 
 extern const std::unique_ptr<ABLModule>& CurLibrary;
 
-int32_t (*ABLFile::createCB)(PVOID* file, const std::wstring_view& filename) = nullptr;
-int32_t (*ABLFile::openCB)(PVOID* file, const std::wstring_view& filename) = nullptr;
+int32_t (*ABLFile::createCB)(PVOID* file, std::wstring_view filename) = nullptr;
+int32_t (*ABLFile::openCB)(PVOID* file, std::wstring_view filename) = nullptr;
 int32_t (*ABLFile::closeCB)(PVOID* file) = nullptr;
 bool (*ABLFile::eofCB)(PVOID file) = nullptr;
 int32_t (*ABLFile::readCB)(PVOID file, uint8_t* buffer, int32_t length) = nullptr;
@@ -139,7 +140,7 @@ int32_t (*ABLFile::readLineExCB)(PVOID file, uint8_t* buffer, int32_t maxLength)
 int32_t (*ABLFile::writeCB)(PVOID file, uint8_t* buffer, int32_t length) = nullptr;
 int32_t (*ABLFile::writeByteCB)(PVOID file, uint8_t byte) = nullptr;
 int32_t (*ABLFile::writeLongCB)(PVOID file, int32_t value) = nullptr;
-int32_t (*ABLFile::writeStringCB)(PVOID file, const std::wstring_view& buffer) = nullptr;
+int32_t (*ABLFile::writeStringCB)(PVOID file, std::wstring_view buffer) = nullptr;
 
 //***************************************************************************
 // ABL FILE routines
@@ -154,16 +155,14 @@ ABLFile::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-ABLFile::operator delete(PVOID us)
+void ABLFile::operator delete(PVOID us)
 {
 	ABLSystemFreeCallback(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-ABLFile::init(void)
+void ABLFile::init(void)
 {
 	fileName = 0;
 	file = nullptr;
@@ -171,8 +170,7 @@ ABLFile::init(void)
 
 //-----------------------------------------------------------------------------
 
-void
-ABLFile::destroy(void)
+void ABLFile::destroy(void)
 {
 	if (fileName)
 	{
@@ -185,11 +183,11 @@ ABLFile::destroy(void)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLFile::create(const std::wstring_view& filename)
+ABLFile::create(std::wstring_view filename)
 {
 	if (filename)
 	{
-		fileName = (const std::wstring_view&)ABLSystemMallocCallback(strlen(filename) + 1);
+		fileName = (std::wstring_view)ABLSystemMallocCallback(strlen(filename) + 1);
 		strcpy(fileName, filename);
 		return (createCB(&file, fileName));
 	}
@@ -199,11 +197,11 @@ ABLFile::create(const std::wstring_view& filename)
 //---------------------------------------------------------------------------
 
 int32_t
-ABLFile::open(const std::wstring_view& filename)
+ABLFile::open(std::wstring_view filename)
 {
 	if (filename)
 	{
-		fileName = (const std::wstring_view&)ABLSystemMallocCallback(strlen(filename) + 1);
+		fileName = (std::wstring_view)ABLSystemMallocCallback(strlen(filename) + 1);
 		strcpy(fileName, filename);
 		return (openCB(&file, fileName));
 	}
@@ -222,8 +220,7 @@ ABLFile::close(void)
 
 //-----------------------------------------------------------------------------
 
-bool
-ABLFile::eof(void)
+bool ABLFile::eof(void)
 {
 	if (file)
 		return (eofCB(file));
@@ -303,7 +300,7 @@ ABLFile::writeLong(int32_t val)
 //-----------------------------------------------------------------------------
 
 int32_t
-ABLFile::writeString(const std::wstring_view& buffer)
+ABLFile::writeString(std::wstring_view buffer)
 {
 	if (file)
 		return (writeStringCB(file, buffer));
@@ -344,11 +341,9 @@ isReservedWord(void)
 // INITIALIZATION routines
 //***************************************************************************
 
-void
-getChar();
+void getChar();
 
-void
-initScanner(const std::wstring_view& fileName)
+void initScanner(std::wstring_view fileName)
 {
 	int32_t curCh;
 	//----------------------------------
@@ -381,8 +376,7 @@ initScanner(const std::wstring_view& fileName)
 
 //***************************************************************************
 
-void
-quitScanner(void)
+void quitScanner(void)
 {
 	sourceFile->close();
 	delete sourceFile;
@@ -393,8 +387,7 @@ quitScanner(void)
 // CHARACTER routines
 //***************************************************************************
 
-void
-skipLineComment(void)
+void skipLineComment(void)
 {
 	//-------------------------------------------------------------------
 	// Just blow off the rest of the current source line we've read in...
@@ -404,8 +397,7 @@ skipLineComment(void)
 
 //***************************************************************************
 
-void
-skipBlockComment(void)
+void skipBlockComment(void)
 {
 	//----------------------------------------------------
 	// Snag the asterisk, then continue until we encounter
@@ -430,8 +422,7 @@ skipBlockComment(void)
 
 //***************************************************************************
 
-void
-skipBlanks(void)
+void skipBlanks(void)
 {
 	while (curChar == ' ')
 		getChar();
@@ -439,8 +430,7 @@ skipBlanks(void)
 
 //***************************************************************************
 
-void
-languageDirective(void)
+void languageDirective(void)
 {
 	DumbGetCharOn = true;
 	getChar();
@@ -643,8 +633,7 @@ languageDirective(void)
 
 //***************************************************************************
 
-void
-getChar(void)
+void getChar(void)
 {
 	if (*bufferp == nullptr)
 	{
@@ -706,12 +695,11 @@ getChar(void)
 // TOKEN routines
 //***************************************************************************
 
-void
-downShiftWord(void)
+void downShiftWord(void)
 {
 	int32_t offset = 'a' - 'A';
-	const std::wstring_view& wp = wordString;
-	const std::wstring_view& tp = tokenString;
+	std::wstring_view wp = wordString;
+	std::wstring_view tp = tokenString;
 	int32_t checkLengthWord = strlen(wordString);
 	int32_t checkLengthToken = strlen(tokenString);
 	if ((checkLengthWord >= MAXLEN_TOKENSTRING) || (checkLengthToken >= MAXLEN_TOKENSTRING))
@@ -727,8 +715,7 @@ downShiftWord(void)
 
 //***************************************************************************
 
-void
-getToken(void)
+void getToken(void)
 {
 	skipBlanks();
 	tokenp = tokenString;
@@ -756,8 +743,7 @@ getToken(void)
 
 //***************************************************************************
 
-void
-getWord(void)
+void getWord(void)
 {
 	while ((calcCharCode(curChar) == CHR_LETTER) || (calcCharCode(curChar) == CHR_DIGIT) || (curChar == '_'))
 	{
@@ -797,8 +783,7 @@ getWord(void)
 
 //***************************************************************************
 
-void
-accumulateValue(float* valuePtr, SyntaxErrorType errCode)
+void accumulateValue(float* valuePtr, SyntaxErrorType errCode)
 {
 	float value = *valuePtr;
 	//--------------------------------------------
@@ -824,8 +809,7 @@ accumulateValue(float* valuePtr, SyntaxErrorType errCode)
 
 //***************************************************************************
 
-void
-getNumber(void)
+void getNumber(void)
 {
 	int32_t wholeCount = 0;
 	int32_t decimalOffset = 0;
@@ -918,10 +902,9 @@ getNumber(void)
 //---------------------------------------------------
 // NOTE: Currently, ABL does not have STRING types...
 
-void
-getString(void)
+void getString(void)
 {
-	const std::wstring_view& stringPtr = curLiteral.value.string;
+	std::wstring_view stringPtr = curLiteral.value.string;
 	*tokenp = '\"';
 	getChar();
 	while (curChar != CHAR_EOF)
@@ -943,8 +926,7 @@ getString(void)
 
 //***************************************************************************
 
-void
-getSpecial(void)
+void getSpecial(void)
 {
 	*tokenp = curChar;
 	tokenp++;
@@ -1079,8 +1061,7 @@ getSpecial(void)
 // TOKEN TESTER routines
 //***************************************************************************
 
-bool
-tokenIn(TokenCodeType* tokenList)
+bool tokenIn(TokenCodeType* tokenList)
 {
 	if (!tokenList)
 		return (false);
@@ -1092,8 +1073,7 @@ tokenIn(TokenCodeType* tokenList)
 
 //***************************************************************************
 
-void
-synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3)
+void synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3)
 {
 	bool badLists = (!tokenIn(tokenList1) && !tokenIn(tokenList2) && !tokenIn(tokenList3));
 	if (badLists)
@@ -1111,8 +1091,7 @@ synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType*
 // SOURCE FILE routines
 //***************************************************************************
 
-bool
-getSourceLine(void)
+bool getSourceLine(void)
 {
 	if (!sourceFile->eof())
 	{
@@ -1135,7 +1114,7 @@ getSourceLine(void)
 //---------------------------------------------------------------------------
 
 int32_t
-openSourceFile(const std::wstring_view& sourceFileName)
+openSourceFile(std::wstring_view sourceFileName)
 {
 	//---------------------------------------
 	// Now, let's open the ABL source file...
@@ -1191,15 +1170,14 @@ closeSourceFile(void)
 // PRINTOUT routines
 //***************************************************************************
 
-void
-printLine(const std::wstring_view& line)
+void printLine(std::wstring_view line)
 {
 	if (++lineCount > MAX_LINES_PER_PAGE)
 	{
 		printPageHeader();
 		lineCount = 1;
 	}
-	const std::wstring_view& saveChPtr = nullptr;
+	std::wstring_view saveChPtr = nullptr;
 	wchar_t saveCh = ' ';
 	if (strlen(line) > MAXLEN_PRINTLINE)
 	{
@@ -1214,8 +1192,7 @@ printLine(const std::wstring_view& line)
 
 //***************************************************************************
 
-void
-initPageHeader(const std::wstring_view& fileName)
+void initPageHeader(std::wstring_view fileName)
 {
 	//--------------------------
 	// Save the source file name
@@ -1229,8 +1206,7 @@ initPageHeader(const std::wstring_view& fileName)
 
 //***************************************************************************
 
-void
-printPageHeader(void)
+void printPageHeader(void)
 {
 	// putchar(CHAR_FORMFEED);
 	printf("Page %d   %s   %s\n\n", ++pageNumber, sourceName, date);

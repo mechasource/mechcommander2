@@ -43,8 +43,7 @@ GameTacMap::GameTacMap()
 	objectiveNumFlashes = 0;
 }
 
-void
-GameTacMap::init(uint8_t* bitmapData, size_t dataSize)
+void GameTacMap::init(uint8_t* bitmapData, size_t dataSize)
 {
 	EllipseElement::init();
 	TGAFileHeader* pHeader = (TGAFileHeader*)bitmapData;
@@ -60,8 +59,7 @@ GameTacMap::init(uint8_t* bitmapData, size_t dataSize)
 	blipHandle = mcTextureManager->loadTexture(path, gos_Texture_Alpha, 0);
 }
 
-void
-GameTacMap::update()
+void GameTacMap::update()
 {
 	Stuff::Vector2DOf<int32_t> screen;
 	screen.x = userInput->getMouseX();
@@ -95,8 +93,7 @@ GameTacMap::update()
 	}
 }
 
-bool
-GameTacMap::animate(int32_t objectiveId, int32_t nFlashes)
+bool GameTacMap::animate(int32_t objectiveId, int32_t nFlashes)
 {
 	if (objectiveAnimationId == -1)
 	{
@@ -108,8 +105,7 @@ GameTacMap::animate(int32_t objectiveId, int32_t nFlashes)
 	return false;
 }
 
-void
-GameTacMap::render()
+void GameTacMap::render()
 {
 	if (turn < 2) // Terrain not setup yet.  Left,Right,Top,Bottom are poopy!
 		return;
@@ -360,13 +356,11 @@ GameTacMap::render()
 	}
 }
 
-void
-GameTacMap::worldToTacMap(Stuff::Vector3D& world, gos_VERTEX& tac)
+void GameTacMap::worldToTacMap(Stuff::Vector3D& world, gos_VERTEX& tac)
 {
 	TacMap::worldToTacMap(world, left, top, right - left, bottom - top, tac);
 }
-void
-GameTacMap::initBuildings(uint8_t* data, int32_t size)
+void GameTacMap::initBuildings(uint8_t* data, int32_t size)
 {
 	if (data)
 	{
@@ -391,8 +385,7 @@ GameTacMap::initBuildings(uint8_t* data, int32_t size)
 	}
 }
 
-void
-GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t color)
+void GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t color)
 {
 	if (color == 0)
 		return;
@@ -427,8 +420,7 @@ GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t color)
 	circle.draw();
 }
 
-void
-GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t type)
+void GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t type)
 {
 	if (color == 0)
 		return;
@@ -462,8 +454,7 @@ GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t type)
 	gos_DrawQuads(triangle, 4);
 }
 
-void
-GameTacMap::setPos(const RECT& newPos)
+void GameTacMap::setPos(const RECT& newPos)
 {
 	left = newPos.left;
 	right = newPos.right;

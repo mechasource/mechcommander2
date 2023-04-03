@@ -102,8 +102,7 @@ extern bool useNonWeaponEffects;
 extern bool useHighObjectDetail;
 //-----------------------------------------------------------------------------
 // class GVAppearanceType
-void
-GVAppearanceType::init(const std::wstring_view& fileName)
+void GVAppearanceType::init(std::wstring_view fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -117,7 +116,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 	if (result != NO_ERR)
 		Fatal(result, "Could not find block in vehicle appearance INI file");
 	wchar_t aseFileName[512];
-	result = iniFile.readIdString("FileName", aseFileName, 511);
+	result = iniFile.readIdString("filename", aseFileName, 511);
 	int32_t i;
 	if (result != NO_ERR)
 	{
@@ -126,7 +125,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 		{
 			wchar_t baseName[256];
 			wchar_t baseLODDist[256];
-			sprintf(baseName, "FileName%d", i);
+			sprintf(baseName, "filename%d", i);
 			sprintf(baseLODDist, "Distance%d", i);
 			result = iniFile.readIdString(baseName, aseFileName, 511);
 			if (result == NO_ERR)
@@ -172,9 +171,9 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.seekBlock("TGLDamage");
 	if (result == NO_ERR)
 	{
-		result = iniFile.readIdString("FileName", aseFileName, 511);
+		result = iniFile.readIdString("filename", aseFileName, 511);
 		if (result != NO_ERR)
-			Fatal(result, "Could not find ASE FileName in building appearance INI file");
+			Fatal(result, "Could not find ASE filename in building appearance INI file");
 		FullPathFileName dmgName;
 		dmgName.init(tglPath, aseFileName, ".ase");
 		gvDmgShape = new TG_TypeMultiShape;
@@ -193,7 +192,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.seekBlock("TGLDestructEffect");
 	if (result == NO_ERR)
 	{
-		result = iniFile.readIdString("FileName", destructEffect, 59);
+		result = iniFile.readIdString("filename", destructEffect, 59);
 		if (result != NO_ERR)
 			STOP(("Could not Find DestructEffectName in building appearance "
 				  "INI file"));
@@ -274,7 +273,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 		wchar_t blockId[512];
 		sprintf(blockId, "Smoke_%02d", i);
 		nodeData[i - 1].nodeId =
-			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
+			(std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
 		gosASSERT(nodeData[i - 1].nodeId != nullptr);
 		strcpy(nodeData[i - 1].nodeId, blockId);
 		nodeData[i - 1].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -284,7 +283,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 		wchar_t blockId[512];
 		sprintf(blockId, "Weapon_%02d", i);
 		nodeData[(i - 1) + numSmokeNodes].nodeId =
-			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
+			(std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
 		gosASSERT(nodeData[(i - 1) + numSmokeNodes].nodeId != nullptr);
 		strcpy(nodeData[(i - 1) + numSmokeNodes].nodeId, blockId);
 		nodeData[(i - 1) + numSmokeNodes].weaponType = MECH3D_WEAPONTYPE_ANY;
@@ -294,7 +293,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 		wchar_t blockId[512];
 		sprintf(blockId, "FootNode_%02d", i);
 		nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId =
-			(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
+			(std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
 		gosASSERT(nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId != nullptr);
 		strcpy(nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId, blockId);
 		nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -320,8 +319,7 @@ GVAppearanceType::init(const std::wstring_view& fileName)
 }
 
 //----------------------------------------------------------------------------
-void
-GVAppearanceType::destroy(void)
+void GVAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	int32_t i;
@@ -361,8 +359,7 @@ GVAppearanceType::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
+void GVAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -382,8 +379,7 @@ float debugVelMag = 0.0;
 #define BASE_NODE_RECYCLE_TIME 0.25f
 //-----------------------------------------------------------------------------
 // class GVAppearance
-void
-GVAppearance::setWeaponNodeUsed(int32_t weaponNode)
+void GVAppearance::setWeaponNodeUsed(int32_t weaponNode)
 {
 	weaponNode -= appearType->numSmokeNodes;
 	if ((weaponNode >= 0) && (weaponNode < appearType->numWeaponNodes))
@@ -593,8 +589,7 @@ GVAppearance::getWeaponNode(int32_t weaponType)
 }
 
 //-----------------------------------------------------------------------------
-float
-GVAppearance::getWeaponNodeRecycle(int32_t node)
+float GVAppearance::getWeaponNodeRecycle(int32_t node)
 {
 	node -= appearType->numSmokeNodes;
 	if ((node >= 0) && (node < appearType->numWeaponNodes))
@@ -603,8 +598,7 @@ GVAppearance::getWeaponNodeRecycle(int32_t node)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (GVAppearanceType*)tree;
@@ -912,8 +906,7 @@ GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::setObjStatus(int32_t oStatus)
+void GVAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -999,8 +992,7 @@ GVAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::setPaintScheme(void)
+void GVAppearance::setPaintScheme(void)
 {
 	//----------------------------------------------------------------------------
 	// Simple really.  Get the texture memory, apply the paint scheme, let it
@@ -1092,8 +1084,7 @@ uint32_t
 bgrTorgb(uint32_t frontRGB);
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
+void GVAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
 {
 #ifdef BGR
 	// These come into here bgr instead of RGB.  CONVERT!
@@ -1109,8 +1100,7 @@ GVAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
+void GVAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
 {
 #ifdef BGR
 	red = bgrTorgb(psRed);
@@ -1124,8 +1114,7 @@ GVAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
+void GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 {
 	//---------------------------------------------------------------------------------
 	// Simple really.  Toss the current texture, reload the RGB and reapply the
@@ -1216,8 +1205,7 @@ GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::setGesture(uint32_t gestureId)
+void GVAppearance::setGesture(uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -1262,8 +1250,7 @@ GVAppearance::getHitNode(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::setObjectParameters(
+void GVAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	movedThisFrame = false;
@@ -1279,8 +1266,7 @@ GVAppearance::setObjectParameters(
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::setMoverParameters(
+void GVAppearance::setMoverParameters(
 	float turretRot, float lArmRot, float rArmRot, bool isAirborne)
 {
 	turretRotation = turretRot;
@@ -1290,8 +1276,7 @@ GVAppearance::setMoverParameters(
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::debugUpdate(void)
+void GVAppearance::debugUpdate(void)
 {
 	if (!inDebugMoveMode)
 		return;
@@ -1365,8 +1350,7 @@ GVAppearance::debugUpdate(void)
 }
 
 //-----------------------------------------------------------------------------
-bool
-GVAppearance::isMouseOver(float px, float py)
+bool GVAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
@@ -1383,8 +1367,7 @@ GVAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool
-GVAppearance::recalcBounds(void)
+bool GVAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
 	inView = false;
@@ -1683,8 +1666,7 @@ GVAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-bool
-GVAppearance::playdestruction(void)
+bool GVAppearance::playdestruction(void)
 {
 	// Check if there is a Destruct FX
 	if (appearType->destructEffect[0])
@@ -1721,7 +1703,7 @@ GVAppearance::playdestruction(void)
 
 //-----------------------------------------------------------------------------
 Stuff::Vector3D
-GVAppearance::getNodeNamePosition(const std::wstring_view& nodeName)
+GVAppearance::getNodeNamePosition(std::wstring_view nodeName)
 {
 	Stuff::Vector3D result = position;
 	if (!inView)
@@ -1997,8 +1979,7 @@ GVAppearance::render(int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::updateGeometry(void)
+void GVAppearance::updateGeometry(void)
 {
 	// if (visible)
 	//{
@@ -2346,8 +2327,7 @@ GVAppearance::update(bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::destroy(void)
+void GVAppearance::destroy(void)
 {
 	if (gvShape)
 	{
@@ -2397,8 +2377,7 @@ GVAppearance::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::startWaterWake(void)
+void GVAppearance::startWaterWake(void)
 {
 	// Check if we are already playing one.  If not, wake city.
 	// First, check if its even loaded.
@@ -2444,8 +2423,7 @@ GVAppearance::startWaterWake(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::stopWaterWake(void)
+void GVAppearance::stopWaterWake(void)
 {
 	if (waterWake && isWaking) // Stop the effect if we are running it!!
 	{
@@ -2455,8 +2433,7 @@ GVAppearance::stopWaterWake(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::startActivity(int32_t effectId, bool loop)
+void GVAppearance::startActivity(int32_t effectId, bool loop)
 {
 	// Check if we are already playing one.  If not, be active!
 	// First, check if its even loaded.
@@ -2510,8 +2487,7 @@ GVAppearance::startActivity(int32_t effectId, bool loop)
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::stopActivity(void)
+void GVAppearance::stopActivity(void)
 {
 	if (activity && isActivitying) // Stop the effect if we are running it!!
 	{
@@ -2521,15 +2497,13 @@ GVAppearance::stopActivity(void)
 }
 
 //-----------------------------------------------------------------------------
-bool
-GVAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
+bool GVAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
 {
 	return gvShape->PerPolySelect(mouseX, mouseY);
 }
 
 //-----------------------------------------------------------------------------
-void
-GVAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
+void GVAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;

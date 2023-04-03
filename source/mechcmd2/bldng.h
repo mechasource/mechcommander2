@@ -28,7 +28,7 @@
 
 #define MAX_PRISONERS 4
 
-enum class 
+enum class
 {
 	BUILDING_SUBTYPE_NONE,
 	BUILDING_SUBTYPE_WALL,
@@ -78,9 +78,15 @@ public:
 
 	int32_t init(FitIniFilePtr objFile);
 
-	~BuildingType(void) { destroy(void); }
+	~BuildingType(void)
+	{
+		destroy(void);
+	}
 
-	float getDamageLevel(void) { return (damageLevel); }
+	float getDamageLevel(void)
+	{
+		return (damageLevel);
+	}
 
 	virtual void destroy(void);
 
@@ -155,10 +161,16 @@ public:
 		updatedTurn = -1;
 	}
 
-	Building(void) :
-		TerrainObject() { init(true); }
+	Building(void)
+		: TerrainObject()
+	{
+		init(true);
+	}
 
-	~Building(void) { destroy(void); }
+	~Building(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 
@@ -174,7 +186,10 @@ public:
 
 	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-	virtual int32_t getTeamId(void) { return (teamId); }
+	virtual int32_t getTeamId(void)
+	{
+		return (teamId);
+	}
 
 	virtual int32_t getDescription()
 	{
@@ -197,9 +212,12 @@ public:
 
 	virtual void setDamage(float newDamage); // Damage encodes which groundtile to use, too.
 
-	virtual int32_t kill(void) { return (NO_ERROR); }
+	virtual int32_t kill(void)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual const std::wstring_view& getName(void);
+	virtual std::wstring_view getName(void);
 
 	virtual Stuff::Vector3D getPositionFromHS(int32_t weaponType)
 	{
@@ -237,9 +255,15 @@ public:
 		return (hsPos);
 	}
 
-	virtual float getDestructLevel(void) { return (getDamageLevel() - damage); }
+	virtual float getDestructLevel(void)
+	{
+		return (getDamageLevel() - damage);
+	}
 
-	virtual void setRefitBuddy(GameObjectWatchID objWID) { refitBuddyWID = objWID; }
+	virtual void setRefitBuddy(GameObjectWatchID objWID)
+	{
+		refitBuddyWID = objWID;
+	}
 
 	virtual void openFootPrint(void);
 
@@ -251,7 +275,10 @@ public:
 
 	virtual void setCommanderId(int32_t _commanderId);
 
-	virtual int32_t getCommanderId(void) { return (commanderId); }
+	virtual int32_t getCommanderId(void)
+	{
+		return (commanderId);
+	}
 
 	virtual float getDamageLevel(void);
 
@@ -261,9 +288,15 @@ public:
 		vertexNum = vertexNumber;
 	}
 
-	virtual bool isBuilding(void) { return (true); }
+	virtual bool isBuilding(void)
+	{
+		return (true);
+	}
 
-	virtual bool isTerrainObject(void) { return (true); }
+	virtual bool isTerrainObject(void)
+	{
+		return (true);
+	}
 
 	void createBuildingMarines(void);
 
@@ -273,15 +306,30 @@ public:
 
 	virtual void setParentId(uint32_t pId);
 
-	virtual SensorSystem* getSensorSystem() { return sensorSystem; }
+	virtual SensorSystem* getSensorSystem()
+	{
+		return sensorSystem;
+	}
 
-	virtual float getAppearRadius(void) { return appearance->getRadius(void); }
+	virtual float getAppearRadius(void)
+	{
+		return appearance->getRadius(void);
+	}
 
-	virtual bool canBeCaptured(void) { return ((BuildingTypePtr)getObjectType())->capturable; }
+	virtual bool canBeCaptured(void)
+	{
+		return ((BuildingTypePtr)getObjectType())->capturable;
+	}
 
-	virtual bool isSelectable() { return appearance->isSelectable(void); }
+	virtual bool isSelectable()
+	{
+		return appearance->isSelectable(void);
+	}
 
-	virtual bool isPowerSource(void) { return ((BuildingTypePtr)getObjectType())->powerSource; }
+	virtual bool isPowerSource(void)
+	{
+		return ((BuildingTypePtr)getObjectType())->powerSource;
+	}
 
 	virtual bool isLit(void)
 	{
@@ -317,7 +365,10 @@ public:
 		return false;
 	}
 
-	virtual float getRefitPoints(void) { return getDamageLevel() - getDamage(void); }
+	virtual float getRefitPoints(void)
+	{
+		return getDamageLevel() - getDamage(void);
+	}
 
 	virtual bool burnRefitPoints(float pointsToBurn);
 

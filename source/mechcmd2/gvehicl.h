@@ -50,7 +50,7 @@ extern float metersPerWorldUnit;
 #define MAX_TOADS 10
 #define MAX_SEATS 4
 
-enum class 
+enum class
 {
 	GROUNDVEHICLE_LOCATION_ANY = -1,
 	GROUNDVEHICLE_LOCATION_FRONT,
@@ -61,7 +61,7 @@ enum class
 	NUM_GROUNDVEHICLE_LOCATIONS
 } VehicleLocationType;
 
-enum class 
+enum class
 {
 	GROUNDVEHICLE_CHASSIS_WHEELED,
 	GROUNDVEHICLE_CHASSIS_TRACKED,
@@ -69,7 +69,7 @@ enum class
 	NUM_GROUNDVEHICLE_CHASSIS
 } GroundVehicleChassisType;
 
-enum class 
+enum class
 {
 	GROUNDVEHICLE_CRITICAL_NO_EFFECT,
 	GROUNDVEHICLE_CRITICAL_AMMO_POWER_HIT,
@@ -144,7 +144,10 @@ public:
 
 	virtual void destroy(void);
 
-	~GroundVehicleType(void) { destroy(void); }
+	~GroundVehicleType(void)
+	{
+		destroy(void);
+	}
 
 	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
@@ -253,7 +256,10 @@ public:
 public:
 	virtual void init(bool create);
 
-	GroundVehicle(void) { init(true); }
+	GroundVehicle(void)
+	{
+		init(true);
+	}
 
 	virtual void init(bool create, ObjectTypePtr objType);
 
@@ -382,22 +388,40 @@ public:
 		return (body[GROUNDVEHICLE_LOCATION_TURRET].damageState == IS_DAMAGE_NONE);
 	}
 
-	virtual int32_t getThrottle(void) { return (control.settings.groundVehicle.throttle); }
+	virtual int32_t getThrottle(void)
+	{
+		return (control.settings.groundVehicle.throttle);
+	}
 
-	bool isMoving(void) { return (control.settings.groundVehicle.throttle != 0); }
+	bool isMoving(void)
+	{
+		return (control.settings.groundVehicle.throttle != 0);
+	}
 
-	bool isReversing(void) { return (control.settings.groundVehicle.throttle < 0); }
+	bool isReversing(void)
+	{
+		return (control.settings.groundVehicle.throttle < 0);
+	}
 
 	virtual bool isLayingMines(void)
 	{
 		return (pilot && (pilot->getCurTacOrder()->moveparams.mode == SpecialMoveMode::minelaying));
 	}
 
-	virtual bool isMineSweeper(void) { return (mineSweeper); }
+	virtual bool isMineSweeper(void)
+	{
+		return (mineSweeper);
+	}
 
-	virtual bool isMineLayer(void) { return (mineLayer != 0); }
+	virtual bool isMineLayer(void)
+	{
+		return (mineLayer != 0);
+	}
 
-	~GroundVehicle(void) { destroy(void); }
+	~GroundVehicle(void)
+	{
+		destroy(void);
+	}
 
 #ifdef USE_SALVAGE
 	virtual bool isCaptureable(int32_t capturingTeamID)
@@ -418,7 +442,10 @@ public:
 
 	virtual void handleStaticCollision(void);
 
-	virtual const std::wstring_view& getIfaceName(void) { return (longName); }
+	virtual std::wstring_view getIfaceName(void)
+	{
+		return (longName);
+	}
 
 	void createVehiclePilot(void);
 
@@ -467,14 +494,23 @@ public:
 			return (false);
 	}
 
-	virtual bool isRefit() { return canRefit; }
-	virtual bool isRecover() { return canRecover; }
+	virtual bool isRefit()
+	{
+		return canRefit;
+	}
+	virtual bool isRecover()
+	{
+		return canRecover;
+	}
 
 	static int32_t loadGameSystem(FitIniFilePtr sysFile);
 
 	int32_t updateAnimations(void);
 
-	virtual bool isMech(void) { return false; }
+	virtual bool isMech(void)
+	{
+		return false;
+	}
 
 	virtual bool isVehicle(void)
 	{
@@ -492,7 +528,10 @@ public:
 
 	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-	virtual float getLOSFactor(void) { return (((GroundVehicleType*)getObjectType())->LOSFactor); }
+	virtual float getLOSFactor(void)
+	{
+		return (((GroundVehicleType*)getObjectType())->LOSFactor);
+	}
 
 	virtual void Save(PacketFilePtr file, int32_t packetNum);
 

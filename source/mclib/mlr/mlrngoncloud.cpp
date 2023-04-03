@@ -9,7 +9,8 @@
 #include "mlr/mlrclipper.h"
 #include "mlr/mlrngoncloud.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -28,8 +29,7 @@ MLRNGonCloud::ClassData* MLRNGonCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRNGonCloud::InitializeClass()
+void MLRNGonCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -48,8 +48,7 @@ MLRNGonCloud::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRNGonCloud::TerminateClass()
+void MLRNGonCloud::TerminateClass()
 {
 	Unregister_Object(clipPerVertex);
 	delete clipPerVertex;
@@ -66,8 +65,8 @@ MLRNGonCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRNGonCloud::MLRNGonCloud(uint32_t vertices, uint32_t nr) :
-	MLREffect(nr, DefaultData)
+MLRNGonCloud::MLRNGonCloud(uint32_t vertices, uint32_t nr)
+	: MLREffect(nr, DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfNGons = nullptr;
@@ -87,8 +86,7 @@ MLRNGonCloud::~MLRNGonCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRNGonCloud::SetData(
+void MLRNGonCloud::SetData(
 	const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data)
 {
 	// Check_Pointer(this);
@@ -100,8 +98,7 @@ MLRNGonCloud::SetData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRNGonCloud::Draw(
+void MLRNGonCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -633,8 +630,7 @@ MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRNGonCloud::TestInstance(void) const
+void MLRNGonCloud::TestInstance(void) const
 {
 	if (usedNrOfNGons)
 	{

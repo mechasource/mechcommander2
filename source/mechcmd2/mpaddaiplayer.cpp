@@ -47,8 +47,7 @@ MPAddAIPlayer::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-MPAddAIPlayer::init(FitIniFile* file)
+void MPAddAIPlayer::init(FitIniFile* file)
 {
 	if (g_focusManager)
 	{
@@ -99,7 +98,7 @@ MPAddAIPlayer::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
-			const std::wstring_view& tmpStr;
+			std::wstring_view tmpStr;
 			tmpStr.Format("Text%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			experienceDropList.AddItem(pTmp2);
@@ -127,7 +126,7 @@ MPAddAIPlayer::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
-			const std::wstring_view& tmpStr;
+			std::wstring_view tmpStr;
 			tmpStr.Format("Text%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			factionDropList.AddItem(pTmp2);
@@ -161,7 +160,7 @@ MPAddAIPlayer::init(FitIniFile* file)
 				for (i = 0; i < listItemCount; i += 1)
 				{
 					pTmp2 = new aStyle4TextListItem;
-					const std::wstring_view& tmpStr;
+					std::wstring_view tmpStr;
 					tmpStr.Format("Text%d", i);
 					pTmp2->init(&PNfile, tmpStr.Data());
 					mechSelectionDropLists[row][column].AddItem(pTmp2);
@@ -174,19 +173,16 @@ MPAddAIPlayer::init(FitIniFile* file)
 	}
 }
 
-void
-MPAddAIPlayer::begin()
+void MPAddAIPlayer::begin()
 {
 	status = RUNNING;
 }
 
-void
-MPAddAIPlayer::end()
+void MPAddAIPlayer::end()
 {
 }
 
-void
-MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset)
+void MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
 	if ((0 == xOffset) && (0 == yOffset))
@@ -213,8 +209,7 @@ MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void
-MPAddAIPlayer::render()
+void MPAddAIPlayer::render()
 {
 	render(0, 0);
 }
@@ -250,8 +245,7 @@ MPAddAIPlayer::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void
-MPAddAIPlayer::update()
+void MPAddAIPlayer::update()
 {
 	focusManager.update();
 	aObject* pControlThatHasTheFocus = focusManager.pControlThatHasTheFocus();
@@ -294,9 +288,9 @@ MPAddAIPlayer::update()
 }
 
 int32_t
-aStyle4TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
+aStyle4TextListItem::init(FitIniFile* file, std::wstring_view blockname)
 {
-	file->seekBlock(blockName);
+	file->seekBlock(blockname);
 	int32_t fontResID = 0;
 	file->readIdLong("Font", fontResID);
 	int32_t textID = 0;
@@ -322,8 +316,7 @@ aStyle4TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aStyle4TextListItem::render()
+void aStyle4TextListItem::render()
 {
 	float color;
 	if (aListItem::SELECTED == getState())

@@ -33,20 +33,22 @@ public:
 	bool RunTest();
 };
 
-SortedChainTestPlug::SortedChainTestPlug(int32_t value) :
-	Plug(DefaultData)
+SortedChainTestPlug::SortedChainTestPlug(int32_t value)
+	: Plug(DefaultData)
 {
 	this->value = value;
 }
 
-SortedChainTestPlug::~SortedChainTestPlug() {}
+SortedChainTestPlug::~SortedChainTestPlug() { }
 
-SortedChainTestNode::SortedChainTestNode() :
-	Node(DefaultData), vchain1(this, true), vchain2(this, true)
+SortedChainTestNode::SortedChainTestNode()
+	: Node(DefaultData)
+	, vchain1(this, true)
+	, vchain2(this, true)
 {
 }
 
-SortedChainTestNode::~SortedChainTestNode() {}
+SortedChainTestNode::~SortedChainTestNode() { }
 
 //
 //###########################################################################
@@ -54,8 +56,7 @@ SortedChainTestNode::~SortedChainTestNode() {}
 //###########################################################################
 //
 
-bool
-SortedChain::ProfileClass()
+bool SortedChain::ProfileClass()
 {
 	SortedChainTestNode testNode;
 #if defined(_ARMOR)
@@ -74,8 +75,7 @@ SortedChain::ProfileClass()
 //###########################################################################
 //
 
-bool
-SortedChain::TestClass()
+bool SortedChain::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting SortedChain test..."));
 	SortedChainTestNode testNode;
@@ -83,8 +83,7 @@ SortedChain::TestClass()
 	return true;
 }
 
-bool
-SortedChainTestNode::RunProfile()
+bool SortedChainTestNode::RunProfile()
 {
 	SortedChainTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -193,8 +192,7 @@ SortedChainTestNode::RunProfile()
 	return true;
 }
 
-bool
-SortedChainTestNode::RunTest()
+bool SortedChainTestNode::RunTest()
 {
 	SortedChainTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];

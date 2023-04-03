@@ -102,11 +102,20 @@ public:
 	// Accessors, Casting
 	//
 public:
-	T GetItem(void) const { return item; }
+	T GetItem(void) const
+	{
+		return item;
+	}
 
-	T* GetPointer(void) { return &item; }
+	T* GetPointer(void)
+	{
+		return &item;
+	}
 
-	operator T(void) const { return item; }
+	operator T(void) const
+	{
+		return item;
+	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Private data
@@ -118,8 +127,8 @@ private:
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PlugOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class T>
-PlugOf<T>::PlugOf(const T& the_item) :
-	Plug(DefaultData)
+PlugOf<T>::PlugOf(const T& the_item)
+	: Plug(DefaultData)
 {
 	item = the_item;
 }
@@ -211,32 +220,44 @@ public:
 	// Iterator methods (see Iterator for full listing)
 	//
 public:
-	T ReadAndNext(void) { return (T)ReadAndNextImplementation(void); }
+	T ReadAndNext(void)
+	{
+		return (T)ReadAndNextImplementation(void);
+	}
 
-	T ReadAndPrevious(void) { return (T)ReadAndPreviousImplementation(void); }
+	T ReadAndPrevious(void)
+	{
+		return (T)ReadAndPreviousImplementation(void);
+	}
 
-	T GetCurrent(void) { return (T)GetCurrentImplementation(void); }
+	T GetCurrent(void)
+	{
+		return (T)GetCurrentImplementation(void);
+	}
 
-	T GetNth(CollectionSize index) { return (T)GetNthImplementation(index); }
+	T GetNth(CollectionSize index)
+	{
+		return (T)GetNthImplementation(index);
+	}
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~ PlugIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class T>
-PlugIteratorOf<T>::PlugIteratorOf(Plug* plug, RegisteredClass::ClassID class_to_iterate) :
-	PlugIterator(plug, class_to_iterate)
+PlugIteratorOf<T>::PlugIteratorOf(Plug* plug, RegisteredClass::ClassID class_to_iterate)
+	: PlugIterator(plug, class_to_iterate)
 {
 }
 
 template <class T>
-PlugIteratorOf<T>::PlugIteratorOf(Plug& plug, RegisteredClass::ClassID class_to_iterate) :
-	PlugIterator(&plug, class_to_iterate)
+PlugIteratorOf<T>::PlugIteratorOf(Plug& plug, RegisteredClass::ClassID class_to_iterate)
+	: PlugIterator(&plug, class_to_iterate)
 {
 }
 
 template <class T>
-PlugIteratorOf<T>::PlugIteratorOf(const PlugIteratorOf<T>& iterator) :
-	PlugIterator(iterator)
+PlugIteratorOf<T>::PlugIteratorOf(const PlugIteratorOf<T>& iterator)
+	: PlugIterator(iterator)
 {
 }
 

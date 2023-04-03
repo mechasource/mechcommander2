@@ -13,18 +13,23 @@ namespace mechgui
 class aAnimation;
 class FitIniFile;
 
+aAnimation::~aAnimation(void)
+{
+	destroy();
+}
+
 class aAnimation
 {
 
 public:
-	aAnimation(void);
+	aAnimation(void) noexcept = default;
 	~aAnimation(void);
 	aAnimation(const aAnimation&);
 
 	aAnimation& operator=(const aAnimation& src);
 
-	int32_t init(FitIniFile* file, const std::wstring_view& prependName);
-	int32_t initWithBlockName(FitIniFile* file, const std::wstring_view& blockName);
+	int32_t init(FitIniFile* file, std::wstring_view prependName);
+	int32_t initWithBlockName(FitIniFile* file, std::wstring_view blockname);
 	void destroy(void);
 
 	void begin(void);
@@ -33,7 +38,10 @@ public:
 
 	void update(void);
 
-	bool isAnimating(void) const { return currentTime != -1.f; }
+	bool isAnimating(void) const
+	{
+		return currentTime != -1.f;
+	}
 	bool isDone(void) const;
 
 	float getXDelta(void) const;
@@ -47,12 +55,18 @@ public:
 
 	void setReferencePoints(float X, float Y);
 
-	float getDirection() { return direction; }
-	float getCurrentTime() { return currentTime; }
+	float getDirection()
+	{
+		return direction;
+	}
+	float getCurrentTime()
+	{
+		return currentTime;
+	}
 	float getMaxTime(void);
 
 protected:
-	float currentTime;
+	float currentTime = -1.f;
 
 	struct MoveInfo
 	{
@@ -63,13 +77,12 @@ protected:
 		float scaleY;
 		int32_t color;
 	};
-
-	MoveInfo* infos;
-	size_t infoCount;
-	float refX;
-	float refY;
-	float direction;
-	bool bLoops;
+	float refX = 0;
+	float refY = 0;
+	float direction = 1.0;
+	std::unique_ptr<MoveInfo> infos;
+	size_t infoCount = 0;
+	bool bLoops = false;
 
 private:
 	void copyData(const aAnimation&);
@@ -89,9 +102,12 @@ public:
 		MAX_ANIMATION_STATE
 	};
 
-	aAnimGroup() { curState = NORMAL; }
+	aAnimGroup()
+	{
+		curState = NORMAL;
+	}
 
-	int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	int32_t init(FitIniFile* file, std::wstring_view blockname);
 
 	void setState(STATE);
 	STATE getState(void) const;

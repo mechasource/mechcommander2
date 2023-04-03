@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\ablt">
+      <UniqueIdentifier>{5c9664ac-2e3b-4108-8ddf-c33bc3f5664d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\abl">
+      <UniqueIdentifier>{0fb7ded4-d794-41c4-88a7-b2dd772af935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\abl\headers">
+      <UniqueIdentifier>{9d00996e-e6d2-4e35-bc5d-0fc8207fa88f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\ablt">
+      <UniqueIdentifier>{8646d428-4cc7-4fe0-aff6-c54aafc8c3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\ablt">
+      <UniqueIdentifier>{4fdb76b8-0c6f-40eb-b916-7c9b4e8cee6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{815f5b53-0777-4ba9-8766-04309ff893d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{b13844ac-f583-469d-bc3f-25fbf29684b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{c8932c74-9ccb-40dc-aed0-c6072dbde340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{b2b6b881-1fda-4fdc-92f5-b3e320a34c5f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\mclib\abldbug.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\abldecl.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablenv.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablerr.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablexec.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablexpr.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablrtn.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablscan.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablstd.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablstmt.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablsymt.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablxexpr.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablxstd.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablxstmt.cpp">
+      <Filter>Sources\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ABLT\stdinc.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tools\ablt\ablmc2.cpp">
+      <Filter>Sources\ablt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tools\ablt\ablt.cpp">
+      <Filter>Sources\ablt</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\mclib\abl.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\abldbug.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablenv.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablerr.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablexec.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablgen.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablparse.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablscan.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablsymt.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dabldbug.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dablenv.h">
+      <Filter>Sources\abl\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tools\ablt\resource.h">
+      <Filter>Resources\ablt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ABLT\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\tools\ablt\ablt.rc">
+      <Filter>Resources\ablt</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

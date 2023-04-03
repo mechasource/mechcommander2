@@ -15,7 +15,8 @@
 //#include "dabldbug.h"
 //#include "ablenv.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -72,9 +73,15 @@ public:
 
 	void destroy(void);
 
-	WatchManager(void) { init(void); }
+	WatchManager(void)
+	{
+		init(void);
+	}
 
-	~WatchManager(void) { destroy(void); }
+	~WatchManager(void)
+	{
+		destroy(void);
+	}
 
 	WatchPtr add(const std::unique_ptr<SymTableNode>& idPtr);
 
@@ -119,9 +126,15 @@ public:
 
 	void destroy(void);
 
-	BreakPointManager(void) { init(void); }
+	BreakPointManager(void)
+	{
+		init(void);
+	}
 
-	~BreakPointManager(void) { destroy(void); }
+	~BreakPointManager(void)
+	{
+		destroy(void);
+	}
 
 	int32_t add(int32_t lineNumber);
 
@@ -162,7 +175,7 @@ protected:
 
 	static wchar_t message[512];
 
-	void (*printCallback)(const std::wstring_view& s);
+	void (*printCallback)(std::wstring_view s);
 
 public:
 	PVOID operator new(size_t mySize);
@@ -185,21 +198,36 @@ public:
 		printCallback = nullptr;
 	}
 
-	int32_t init(void (*callback)(const std::wstring_view& s), const std::unique_ptr<ABLModule>& _module);
+	int32_t init(void (*callback)(std::wstring_view s), const std::unique_ptr<ABLModule>& _module);
 
 	void destroy(void);
 
-	Debugger(void) { init(void); }
+	Debugger(void)
+	{
+		init(void);
+	}
 
-	~Debugger(void) { destroy(void); }
+	~Debugger(void)
+	{
+		destroy(void);
+	}
 
-	void enable(void) { enabled = true; }
+	void enable(void)
+	{
+		enabled = true;
+	}
 
-	void disable(void) { enabled = false; }
+	void disable(void)
+	{
+		enabled = false;
+	}
 
-	bool isEnabled(void) { return (enabled); }
+	bool isEnabled(void)
+	{
+		return (enabled);
+	}
 
-	int32_t print(const std::wstring_view& s);
+	int32_t print(std::wstring_view s);
 
 	void setModule(const std::unique_ptr<ABLModule>& _module);
 
@@ -209,17 +237,17 @@ public:
 
 	int32_t removeBreakPoint(void);
 
-	void sprintStatement(const std::wstring_view& dest);
+	void sprintStatement(std::wstring_view dest);
 
-	void sprintLineNumber(const std::wstring_view& dest);
+	void sprintLineNumber(std::wstring_view dest);
 
-	void sprintDataValue(const std::wstring_view& dest, const std::unique_ptr<StackItem>& data, const std::unique_ptr<Type>& dataType);
+	void sprintDataValue(std::wstring_view dest, const std::unique_ptr<StackItem>& data, const std::unique_ptr<Type>& dataType);
 
-	int32_t sprintSimpleValue(const std::wstring_view& dest, const std::unique_ptr<SymTableNode>& symbol);
+	int32_t sprintSimpleValue(std::wstring_view dest, const std::unique_ptr<SymTableNode>& symbol);
 
-	int32_t sprintArrayValue(const std::wstring_view& dest, const std::unique_ptr<SymTableNode>& symbol, const std::wstring_view& subscriptString);
+	int32_t sprintArrayValue(std::wstring_view dest, const std::unique_ptr<SymTableNode>& symbol, std::wstring_view subscriptString);
 
-	int32_t sprintValue(const std::wstring_view& dest, const std::wstring_view& exprString);
+	int32_t sprintValue(std::wstring_view dest, std::wstring_view exprString);
 
 	int32_t traceStatementExecution(void);
 
@@ -239,11 +267,14 @@ public:
 	void displayModuleInstanceRegistry(void);
 
 	void processCommand(
-		int32_t commandId, const std::wstring_view& strParam1, int32_t numParam1, const std::unique_ptr<ABLModule>& moduleParam1);
+		int32_t commandId, std::wstring_view strParam1, int32_t numParam1, const std::unique_ptr<ABLModule>& moduleParam1);
 
 	void debugMode(void);
 
-	const std::unique_ptr<ABLModule>& getDebugModule(void) { return (debugModule); }
+	const std::unique_ptr<ABLModule>& getDebugModule(void)
+	{
+		return (debugModule);
+	}
 };
 
 //***************************************************************************

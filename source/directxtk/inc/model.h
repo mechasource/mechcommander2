@@ -35,328 +35,328 @@
 #include "graphicsmemory.h"
 #include "effects.h"
 
-
 namespace directxtk
 {
-    class IEffect;
-    class IEffectFactory;
-    class ModelMesh;
+class IEffect;
+class IEffectFactory;
+class ModelMesh;
 
-    //----------------------------------------------------------------------------------
-    // Model loading options
-    enum ModelLoaderFlags : uint32_t
-    {
-        ModelLoader_Default             = 0x0,
-        ModelLoader_MaterialColorsSRGB  = 0x1,
-        ModelLoader_AllowLargeModels    = 0x2,
-    };
+//----------------------------------------------------------------------------------
+// Model loading options
+enum ModelLoaderFlags : uint32_t
+{
+	ModelLoader_Default = 0x0,
+	ModelLoader_MaterialColorsSRGB = 0x1,
+	ModelLoader_AllowLargeModels = 0x2,
+};
 
-    //----------------------------------------------------------------------------------
-    // Each mesh part is a submesh with a single effect
-    class ModelMeshPart
-    {
-    public:
-        ModelMeshPart(uint32_t partIndex) noexcept;
+//----------------------------------------------------------------------------------
+// Each mesh part is a submesh with a single effect
+class ModelMeshPart
+{
+public:
+	ModelMeshPart(uint32_t partIndex) noexcept;
 
-        ModelMeshPart(ModelMeshPart&&) = default;
-        ModelMeshPart& operator= (ModelMeshPart&&) = default;
+	ModelMeshPart(ModelMeshPart&&) = default;
+	ModelMeshPart& operator=(ModelMeshPart&&) = default;
 
-        ModelMeshPart(ModelMeshPart const&) = default;
-        ModelMeshPart& operator= (ModelMeshPart const&) = default;
+	ModelMeshPart(ModelMeshPart const&) = default;
+	ModelMeshPart& operator=(ModelMeshPart const&) = default;
 
-        virtual ~ModelMeshPart();
+	virtual ~ModelMeshPart();
 
-        uint32_t                                                partIndex;      // Unique index assigned per-part in a model; used to index effects.
-        uint32_t                                                materialIndex;  // Index of the material spec to use
-        uint32_t                                                indexCount;
-        uint32_t                                                startIndex;
-        int32_t                                                 vertexOffset;
-        uint32_t                                                vertexStride;
-        uint32_t                                                vertexCount;
-        uint32_t                                                indexBufferSize;
-        uint32_t                                                vertexBufferSize;
-        D3D_PRIMITIVE_TOPOLOGY                                  primitiveType;
-        DXGI_FORMAT                                             indexFormat;
-        SharedGraphicsResource                                  indexBuffer;
-        SharedGraphicsResource                                  vertexBuffer;
-        wil::com_ptr<ID3D12Resource>                  staticIndexBuffer;
-        wil::com_ptr<ID3D12Resource>                  staticVertexBuffer;
-        std::shared_ptr<std::vector<D3D12_INPUT_ELEMENT_DESC>>  vbDecl;
+	uint32_t partIndex; // Unique index assigned per-part in a model; used to index effects.
+	uint32_t materialIndex; // Index of the material spec to use
+	uint32_t indexCount;
+	uint32_t startIndex;
+	int32_t vertexOffset;
+	uint32_t vertexStride;
+	uint32_t vertexCount;
+	uint32_t indexBufferSize;
+	uint32_t vertexBufferSize;
+	D3D_PRIMITIVE_TOPOLOGY primitiveType;
+	DXGI_FORMAT indexFormat;
+	SharedGraphicsResource indexBuffer;
+	SharedGraphicsResource vertexBuffer;
+	wil::com_ptr<ID3D12Resource> staticIndexBuffer;
+	wil::com_ptr<ID3D12Resource> staticVertexBuffer;
+	std::shared_ptr<std::vector<D3D12_INPUT_ELEMENT_DESC>> vbDecl;
 
-        using Collection = std::vector<std::unique_ptr<ModelMeshPart>>;
-        using DrawCallback = std::function<void(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart& part)>;
+	using Collection = std::vector<std::unique_ptr<ModelMeshPart>>;
+	using DrawCallback = std::function<void(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart& part)>;
 
-        // Draw mesh part
-        void __cdecl Draw(_In_ ID3D12GraphicsCommandList* commandList) const;
+	// Draw mesh part
+	void __cdecl Draw(_In_ ID3D12GraphicsCommandList* commandList) const;
 
-        void __cdecl DrawInstanced(_In_ ID3D12GraphicsCommandList* commandList, uint32_t instanceCount, uint32_t startInstanceLocation = 0) const;
+	void __cdecl DrawInstanced(_In_ ID3D12GraphicsCommandList* commandList, uint32_t instanceCount, uint32_t startInstanceLocation = 0) const;
 
-        //
-        // Utilities for drawing multiple mesh parts
-        //
+	//
+	// Utilities for drawing multiple mesh parts
+	//
 
-        // Draw the mesh
-        static void __cdecl DrawMeshParts(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart::Collection& meshParts);
+	// Draw the mesh
+	static void __cdecl DrawMeshParts(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart::Collection& meshParts);
 
-        // Draw the mesh with an effect
-        static void __cdecl DrawMeshParts(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart::Collection& meshParts, _In_ IEffect* effect);
+	// Draw the mesh with an effect
+	static void __cdecl DrawMeshParts(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart::Collection& meshParts, _In_ IEffect* effect);
 
-        // Draw the mesh with a callback for each mesh part
-        static void __cdecl DrawMeshParts(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart::Collection& meshParts, DrawCallback callback);
+	// Draw the mesh with a callback for each mesh part
+	static void __cdecl DrawMeshParts(_In_ ID3D12GraphicsCommandList* commandList, _In_ const ModelMeshPart::Collection& meshParts, DrawCallback callback);
 
-        // Draw the mesh with a range of effects that mesh parts will index into. 
-        // Effects can be any IEffect pointer type (including smart pointer). Value or reference types will not compile.
-        // The iterator passed to this method should have random access capabilities for best performance.
-        template<typename TEffectIterator, typename TEffectIteratorCategory = typename TEffectIterator::iterator_category>
-        static void DrawMeshParts(
-            _In_ ID3D12GraphicsCommandList* commandList,
-            _In_ const ModelMeshPart::Collection& meshParts,
-            TEffectIterator partEffects)
-        {
-            // This assert is here to prevent accidental use of containers that would cause undesirable performance penalties.
-            static_assert(
-                std::is_base_of<std::random_access_iterator_tag, TEffectIteratorCategory>::value,
-                "Providing an iterator without random access capabilities -- such as from std::list -- is not supported.");
+	// Draw the mesh with a range of effects that mesh parts will index into.
+	// Effects can be any IEffect pointer type (including smart pointer). Value or reference types will not compile.
+	// The iterator passed to this method should have random access capabilities for best performance.
+	template <typename TEffectIterator, typename TEffectIteratorCategory = typename TEffectIterator::iterator_category>
+	static void DrawMeshParts(
+		_In_ ID3D12GraphicsCommandList* commandList,
+		_In_ const ModelMeshPart::Collection& meshParts,
+		TEffectIterator partEffects)
+	{
+		// This assert is here to prevent accidental use of containers that would cause undesirable performance penalties.
+		static_assert(
+			std::is_base_of<std::random_access_iterator_tag, TEffectIteratorCategory>::value,
+			"Providing an iterator without random access capabilities -- such as from std::list -- is not supported.");
 
-            for (auto it = std::begin(meshParts); it != std::end(meshParts); ++it)
-            {
-                auto part = it->get();
-                assert(part != nullptr);
+		for (auto it = std::begin(meshParts); it != std::end(meshParts); ++it)
+		{
+			auto part = it->get();
+			assert(part != nullptr);
 
-                // Get the effect at the location specified by the part's material
-                TEffectIterator effect_iterator = partEffects;
-                std::advance(effect_iterator, part->partIndex);
+			// Get the effect at the location specified by the part's material
+			TEffectIterator effect_iterator = partEffects;
+			std::advance(effect_iterator, part->partIndex);
 
-                // Apply the effect and draw
-                (*effect_iterator)->Apply(commandList);
-                part->Draw(commandList);
-            }
-        }
-    };
+			// Apply the effect and draw
+			(*effect_iterator)->Apply(commandList);
+			part->Draw(commandList);
+		}
+	}
+};
 
+//----------------------------------------------------------------------------------
+// A mesh consists of one or more model mesh parts
+class ModelMesh
+{
+public:
+	ModelMesh() noexcept;
 
-    //----------------------------------------------------------------------------------
-    // A mesh consists of one or more model mesh parts
-    class ModelMesh
-    {
-    public:
-        ModelMesh() noexcept;
+	ModelMesh(ModelMesh&&) = default;
+	ModelMesh& operator=(ModelMesh&&) = default;
 
-        ModelMesh(ModelMesh&&) = default;
-        ModelMesh& operator= (ModelMesh&&) = default;
+	ModelMesh(ModelMesh const&) = default;
+	ModelMesh& operator=(ModelMesh const&) = default;
 
-        ModelMesh(ModelMesh const&) = default;
-        ModelMesh& operator= (ModelMesh const&) = default;
+	virtual ~ModelMesh();
 
-        virtual ~ModelMesh();
+	DirectX::BoundingSphere boundingSphere;
+	DirectX::BoundingBox boundingBox;
+	ModelMeshPart::Collection opaqueMeshParts;
+	ModelMeshPart::Collection alphaMeshParts;
+	std::wstring name;
 
-        DirectX::BoundingSphere              boundingSphere;
-        DirectX::BoundingBox                 boundingBox;
-        ModelMeshPart::Collection   opaqueMeshParts;
-        ModelMeshPart::Collection   alphaMeshParts;
-        std::wstring                name;
+	using Collection = std::vector<std::shared_ptr<ModelMesh>>;
 
-        using Collection = std::vector<std::shared_ptr<ModelMesh>>;
+	// Draw the mesh
+	void __cdecl DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList) const;
+	void __cdecl DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList) const;
 
-        // Draw the mesh
-        void __cdecl DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList) const;
-        void __cdecl DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList) const;
+	// Draw the mesh with an effect
+	void __cdecl DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, _In_ IEffect* effect) const;
+	void __cdecl DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, _In_ IEffect* effect) const;
 
-        // Draw the mesh with an effect
-        void __cdecl DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, _In_ IEffect* effect) const;
-        void __cdecl DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, _In_ IEffect* effect) const;
+	// Draw the mesh with a callback for each mesh part
+	void __cdecl DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, ModelMeshPart::DrawCallback callback) const;
+	void __cdecl DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, ModelMeshPart::DrawCallback callback) const;
 
-        // Draw the mesh with a callback for each mesh part
-        void __cdecl DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, ModelMeshPart::DrawCallback callback) const;
-        void __cdecl DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, ModelMeshPart::DrawCallback callback) const;
+	// Draw the mesh with a range of effects that mesh parts will index into.
+	// TEffectPtr can be any IEffect pointer type (including smart pointer). Value or reference types will not compile.
+	template <typename TEffectIterator, typename TEffectIteratorCategory = typename TEffectIterator::iterator_category>
+	void DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, TEffectIterator effects) const
+	{
+		ModelMeshPart::DrawMeshParts<TEffectIterator, TEffectIteratorCategory>(commandList, opaqueMeshParts, effects);
+	}
+	template <typename TEffectIterator, typename TEffectIteratorCategory = typename TEffectIterator::iterator_category>
+	void DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, TEffectIterator effects) const
+	{
+		ModelMeshPart::DrawMeshParts<TEffectIterator, TEffectIteratorCategory>(commandList, alphaMeshParts, effects);
+	}
+};
 
-        // Draw the mesh with a range of effects that mesh parts will index into. 
-        // TEffectPtr can be any IEffect pointer type (including smart pointer). Value or reference types will not compile.
-        template<typename TEffectIterator, typename TEffectIteratorCategory = typename TEffectIterator::iterator_category>
-        void DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, TEffectIterator effects) const
-        {
-            ModelMeshPart::DrawMeshParts<TEffectIterator, TEffectIteratorCategory>(commandList, opaqueMeshParts, effects);
-        }
-        template<typename TEffectIterator, typename TEffectIteratorCategory = typename TEffectIterator::iterator_category>
-        void DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, TEffectIterator effects) const
-        {
-            ModelMeshPart::DrawMeshParts<TEffectIterator, TEffectIteratorCategory>(commandList, alphaMeshParts, effects);
-        }
-    };
+//----------------------------------------------------------------------------------
+// A model consists of one or more meshes
+class Model
+{
+public:
+	Model() noexcept;
 
+	Model(Model&&) = default;
+	Model& operator=(Model&&) = default;
 
-    //----------------------------------------------------------------------------------
-    // A model consists of one or more meshes
-    class Model
-    {
-    public:
-        Model() noexcept;
+	Model(Model const&) = default;
+	Model& operator=(Model const&) = default;
 
-        Model(Model&&) = default;
-        Model& operator= (Model&&) = default;
+	virtual ~Model();
 
-        Model(Model const&) = default;
-        Model& operator= (Model const&) = default;
+	using ModelMaterialInfo = IEffectFactory::EffectInfo;
+	using ModelMaterialInfoCollection = std::vector<ModelMaterialInfo>;
+	using TextureCollection = std::vector<std::wstring>;
 
-        virtual ~Model();
+	//
+	// NOTE
+	//
+	// The Model::Draw functions use variadic templates and perfect-forwarding in order to support future overloads to the ModelMesh::Draw
+	// family of functions. This means that a new ModelMesh::Draw overload can be added, removed or altered, but the Model::Draw* routines
+	// will still remain compatible. The correct ModelMesh::Draw overload will be selected by the compiler depending on the arguments you
+	// provide to Model::Draw*.
+	//
 
-        using ModelMaterialInfo = IEffectFactory::EffectInfo;
-        using ModelMaterialInfoCollection = std::vector<ModelMaterialInfo>;
-        using TextureCollection = std::vector<std::wstring>;
+	// Draw all the opaque meshes in the model
+	template <typename... TForwardArgs>
+	void DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, TForwardArgs&&... args) const
+	{
+		// Draw opaque parts
+		for (auto it = std::begin(meshes); it != std::end(meshes); ++it)
+		{
+			auto mesh = it->get();
+			assert(mesh != nullptr);
 
-        //
-        // NOTE
-        // 
-        // The Model::Draw functions use variadic templates and perfect-forwarding in order to support future overloads to the ModelMesh::Draw
-        // family of functions. This means that a new ModelMesh::Draw overload can be added, removed or altered, but the Model::Draw* routines
-        // will still remain compatible. The correct ModelMesh::Draw overload will be selected by the compiler depending on the arguments you 
-        // provide to Model::Draw*.
-        //
+			mesh->DrawOpaque(commandList, std::forward<TForwardArgs>(args)...);
+		}
+	}
 
-        // Draw all the opaque meshes in the model
-        template<typename... TForwardArgs> void DrawOpaque(_In_ ID3D12GraphicsCommandList* commandList, TForwardArgs&&... args) const
-        {
-            // Draw opaque parts
-            for (auto it = std::begin(meshes); it != std::end(meshes); ++it)
-            {
-                auto mesh = it->get();
-                assert(mesh != nullptr);
+	// Draw all the alpha meshes in the model
+	template <typename... TForwardArgs>
+	void DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, TForwardArgs&&... args) const
+	{
+		// Draw opaque parts
+		for (auto it = std::begin(meshes); it != std::end(meshes); ++it)
+		{
+			auto mesh = it->get();
+			assert(mesh != nullptr);
 
-                mesh->DrawOpaque(commandList, std::forward<TForwardArgs>(args)...);
-            }
-        }
+			mesh->DrawAlpha(commandList, std::forward<TForwardArgs>(args)...);
+		}
+	}
 
-        // Draw all the alpha meshes in the model
-        template<typename... TForwardArgs> void DrawAlpha(_In_ ID3D12GraphicsCommandList* commandList, TForwardArgs&&... args) const
-        {
-            // Draw opaque parts
-            for (auto it = std::begin(meshes); it != std::end(meshes); ++it)
-            {
-                auto mesh = it->get();
-                assert(mesh != nullptr);
+	// Draw all the meshes in the model
+	template <typename... TForwardArgs>
+	void Draw(_In_ ID3D12GraphicsCommandList* commandList, TForwardArgs&&... args) const
+	{
+		DrawOpaque(commandList, std::forward<TForwardArgs>(args)...);
+		DrawAlpha(commandList, std::forward<TForwardArgs>(args)...);
+	}
 
-                mesh->DrawAlpha(commandList, std::forward<TForwardArgs>(args)...);
-            }
-        }
+	// Load texture resources into an existing Effect Texture Factory
+	int32_t __cdecl LoadTextures(IEffectTextureFactory& texFactory, int32_t destinationDescriptorOffset = 0) const;
 
-        // Draw all the meshes in the model
-        template<typename... TForwardArgs> void Draw(_In_ ID3D12GraphicsCommandList* commandList, TForwardArgs&&... args) const
-        {
-            DrawOpaque(commandList, std::forward<TForwardArgs>(args)...);
-            DrawAlpha(commandList, std::forward<TForwardArgs>(args)...);
-        }
+	// Load texture resources into a new Effect Texture Factory
+	std::unique_ptr<EffectTextureFactory> __cdecl LoadTextures(
+		_In_ ID3D12Device* device,
+		ResourceUploadBatch& resourceuploadbatch,
+		_In_opt_ std::wstring_view texturespath = nullptr,
+		D3D12_DESCRIPTOR_HEAP_FLAGS flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE) const;
 
-        // Load texture resources into an existing Effect Texture Factory
-        int32_t __cdecl LoadTextures(IEffectTextureFactory& texFactory, int32_t destinationDescriptorOffset = 0) const;
+	// Load VB/IB resources for static geometry
+	void __cdecl LoadStaticBuffers(
+		_In_ ID3D12Device* device,
+		ResourceUploadBatch& resourceuploadbatch,
+		bool keepMemory = false);
 
-        // Load texture resources into a new Effect Texture Factory
-        std::unique_ptr<EffectTextureFactory> __cdecl LoadTextures(
-            _In_ ID3D12Device* device,
-            ResourceUploadBatch& resourceuploadbatch,
-            _In_opt_ const std::wstring_view& texturespath = nullptr,
-            D3D12_DESCRIPTOR_HEAP_FLAGS flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE) const;
+	// Create effects using the default effect factory
+	std::vector<std::shared_ptr<IEffect>> __cdecl CreateEffects(
+		const EffectPipelineStateDescription& opaquePipelineState,
+		const EffectPipelineStateDescription& alphaPipelineState,
+		_In_ ID3D12DescriptorHeap* textureDescriptorHeap,
+		_In_ ID3D12DescriptorHeap* samplerDescriptorHeap,
+		int32_t textureDescriptorOffset = 0,
+		int32_t samplerDescriptorOffset = 0) const;
 
-        // Load VB/IB resources for static geometry
-        void __cdecl LoadStaticBuffers(
-            _In_ ID3D12Device* device,
-            ResourceUploadBatch& resourceuploadbatch,
-            bool keepMemory = false);
+	// Create effects using a custom effect factory
+	std::vector<std::shared_ptr<IEffect>> __cdecl CreateEffects(
+		IEffectFactory& fxFactory,
+		const EffectPipelineStateDescription& opaquePipelineState,
+		const EffectPipelineStateDescription& alphaPipelineState,
+		int32_t textureDescriptorOffset = 0,
+		int32_t samplerDescriptorOffset = 0) const;
 
-        // Create effects using the default effect factory
-        std::vector<std::shared_ptr<IEffect>> __cdecl CreateEffects(
-            const EffectPipelineStateDescription& opaquePipelineState,
-            const EffectPipelineStateDescription& alphaPipelineState,
-            _In_ ID3D12DescriptorHeap* textureDescriptorHeap,
-            _In_ ID3D12DescriptorHeap* samplerDescriptorHeap,
-            int32_t textureDescriptorOffset = 0,
-            int32_t samplerDescriptorOffset = 0) const;
+	// Loads a model from a DirectX SDK .SDKMESH file
+	static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(
+		_In_opt_ ID3D12Device* device,
+		_In_reads_bytes_(datasize) const uint8_t* meshData, _In_ size_t datasize,
+		ModelLoaderFlags flags = ModelLoader_Default);
+	static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(
+		_In_opt_ ID3D12Device* device,
+		_In_ std::wstring_view filename,
+		ModelLoaderFlags flags = ModelLoader_Default);
 
-        // Create effects using a custom effect factory
-        std::vector<std::shared_ptr<IEffect>> __cdecl CreateEffects(
-            IEffectFactory& fxFactory,
-            const EffectPipelineStateDescription& opaquePipelineState,
-            const EffectPipelineStateDescription& alphaPipelineState,
-            int32_t textureDescriptorOffset = 0,
-            int32_t samplerDescriptorOffset = 0) const;
+	// Loads a model from a .VBO file
+	static std::unique_ptr<Model> __cdecl CreateFromVBO(
+		_In_opt_ ID3D12Device* device,
+		_In_reads_bytes_(datasize) const uint8_t* meshData, _In_ size_t datasize,
+		ModelLoaderFlags flags = ModelLoader_Default);
+	static std::unique_ptr<Model> __cdecl CreateFromVBO(
+		_In_opt_ ID3D12Device* device,
+		_In_ std::wstring_view filename,
+		ModelLoaderFlags flags = ModelLoader_Default);
 
-        // Loads a model from a DirectX SDK .SDKMESH file
-        static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(
-            _In_opt_ ID3D12Device* device,
-            _In_reads_bytes_(datasize) const uint8_t* meshData, _In_ size_t datasize,
-            ModelLoaderFlags flags = ModelLoader_Default);
-        static std::unique_ptr<Model> __cdecl CreateFromSDKMESH(
-            _In_opt_ ID3D12Device* device,
-            _In_ const std::wstring_view& filename,
-            ModelLoaderFlags flags = ModelLoader_Default);
+	// Utility function for getting a GPU descriptor for a mesh part/material index. If there is no texture the
+	// descriptor will be zero.
+	D3D12_GPU_DESCRIPTOR_HANDLE __cdecl GetGpuTextureHandleForMaterialIndex(uint32_t materialIndex, _In_ ID3D12DescriptorHeap* heap, _In_ size_t descriptorSize, _In_ size_t descriptorOffset) const
+	{
+		D3D12_GPU_DESCRIPTOR_HANDLE handle = {};
 
-        // Loads a model from a .VBO file
-        static std::unique_ptr<Model> __cdecl CreateFromVBO(
-            _In_opt_ ID3D12Device* device,
-            _In_reads_bytes_(datasize) const uint8_t* meshData, _In_ size_t datasize,
-            ModelLoaderFlags flags = ModelLoader_Default);
-        static std::unique_ptr<Model> __cdecl CreateFromVBO(
-            _In_opt_ ID3D12Device* device,
-            _In_ const std::wstring_view& filename,
-            ModelLoaderFlags flags = ModelLoader_Default);
+		if (materialIndex >= materials.size())
+			return handle;
 
-        // Utility function for getting a GPU descriptor for a mesh part/material index. If there is no texture the 
-        // descriptor will be zero.
-        D3D12_GPU_DESCRIPTOR_HANDLE __cdecl GetGpuTextureHandleForMaterialIndex(uint32_t materialIndex, _In_ ID3D12DescriptorHeap* heap, _In_ size_t descriptorSize, _In_ size_t descriptorOffset) const
-        {
-            D3D12_GPU_DESCRIPTOR_HANDLE handle = {};
+		int32_t textureindex = materials[materialIndex].diffuseTextureIndex;
+		if (textureindex == -1)
+			return handle;
 
-            if (materialIndex >= materials.size())
-                return handle;
+		handle = heap->GetGPUDescriptorHandleForHeapStart();
+		handle.ptr += static_cast<uint64_t>(descriptorSize * (uint64_t(textureindex) + uint64_t(descriptorOffset)));
 
-            int32_t textureindex = materials[materialIndex].diffuseTextureIndex;
-            if (textureindex == -1)
-                return handle;
+		return handle;
+	}
 
-            handle = heap->GetGPUDescriptorHandleForHeapStart();
-            handle.ptr += static_cast<uint64_t>(descriptorSize * (uint64_t(textureindex) + uint64_t(descriptorOffset)));
+	// Utility function for updating the matrices in a list of effects. This will SetWorld, SetView and SetProjection
+	// on any effect in the list that derives from IEffectMatrices.
+	static void XM_CALLCONV UpdateEffectMatrices(
+		_In_ std::vector<std::shared_ptr<IEffect>>& effectList,
+		DirectX::FXMMATRIX world,
+		DirectX::CXMMATRIX view,
+		DirectX::CXMMATRIX proj);
 
-            return handle;
-        }
+	// Utility function to transition VB/IB resources for static geometry.
+	void __cdecl Transition(
+		_In_ ID3D12GraphicsCommandList* commandList,
+		D3D12_RESOURCE_STATES stateBeforeVB,
+		D3D12_RESOURCE_STATES stateAfterVB,
+		D3D12_RESOURCE_STATES stateBeforeIB,
+		D3D12_RESOURCE_STATES stateAfterIB);
 
-        // Utility function for updating the matrices in a list of effects. This will SetWorld, SetView and SetProjection
-        // on any effect in the list that derives from IEffectMatrices.
-        static void XM_CALLCONV UpdateEffectMatrices(
-            _In_ std::vector<std::shared_ptr<IEffect>>& effectList,
-            DirectX::FXMMATRIX world,
-            DirectX::CXMMATRIX view,
-            DirectX::CXMMATRIX proj);
+	ModelMesh::Collection meshes;
+	ModelMaterialInfoCollection materials;
+	TextureCollection texturenames;
+	std::wstring name;
 
-        // Utility function to transition VB/IB resources for static geometry.
-        void __cdecl Transition(
-            _In_ ID3D12GraphicsCommandList* commandList,
-            D3D12_RESOURCE_STATES stateBeforeVB,
-            D3D12_RESOURCE_STATES stateAfterVB,
-            D3D12_RESOURCE_STATES stateBeforeIB,
-            D3D12_RESOURCE_STATES stateAfterIB);
-
-        ModelMesh::Collection           meshes;
-        ModelMaterialInfoCollection     materials;
-        TextureCollection               texturenames;
-        std::wstring                    name;
-
-    private:
-        std::shared_ptr<IEffect> __cdecl CreateEffectForMeshPart(
-            IEffectFactory& fxFactory,
-            const EffectPipelineStateDescription& opaquePipelineState,
-            const EffectPipelineStateDescription& alphaPipelineState,
-            int32_t textureDescriptorOffset,
-            int32_t samplerDescriptorOffset,
-            _In_ const ModelMeshPart* part) const;
-    };
+private:
+	std::shared_ptr<IEffect> __cdecl CreateEffectForMeshPart(
+		IEffectFactory& fxFactory,
+		const EffectPipelineStateDescription& opaquePipelineState,
+		const EffectPipelineStateDescription& alphaPipelineState,
+		int32_t textureDescriptorOffset,
+		int32_t samplerDescriptorOffset,
+		_In_ const ModelMeshPart* part) const;
+};
 
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-dynamic-exception-spec"
 #endif
 
-    DEFINE_ENUM_FLAG_OPERATORS(ModelLoaderFlags);
+DEFINE_ENUM_FLAG_OPERATORS(ModelLoaderFlags);
 
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
-}
+} // namespace directxtk

@@ -41,8 +41,7 @@ extern CPrefs prefs;
 extern volatile bool mc2IsInMouseTimer;
 extern volatile bool mc2IsInDisplayBackBuffer;
 
-void
-MouseTimerKill();
+void MouseTimerKill();
 
 extern void (*AsynFunc)(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc);
 
@@ -50,8 +49,7 @@ extern bool bInvokeOptionsScreenFlag;
 bool MainMenu::bDrawMechlopedia = false;
 ;
 
-void
-SplashIntro::init()
+void SplashIntro::init()
 {
 	FullPathFileName path;
 	path.init(artPath, "mcl_splashscreenintro", ".fit");
@@ -59,7 +57,7 @@ SplashIntro::init()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(errorStr, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, errorStr);
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
@@ -101,7 +99,7 @@ MainMenu::init(FitIniFile& file)
 	if (NO_ERROR != file2.open(name))
 	{
 		wchar_t errorStr[256];
-		sprintf(errorStr, "couldn't open file %s", (const std::wstring_view&)name);
+		sprintf(errorStr, "couldn't open file %s", (std::wstring_view)name);
 		Assert(0, 0, errorStr);
 	}
 	background.init(file2, "Static", "Text", "Rect", "Button");
@@ -137,8 +135,7 @@ MainMenu::init(FitIniFile& file)
 	return 0;
 }
 
-void
-MainMenu::begin()
+void MainMenu::begin()
 {
 	status = RUNNING;
 	promptToQuit = 0;
@@ -191,15 +188,13 @@ MainMenu::begin()
 	}
 }
 
-void
-MainMenu::end()
+void MainMenu::end()
 {
 	endAnim.end();
 	bHostLeftDlg = 0;
 }
 
-void
-MainMenu::setDrawBackground(bool bNewDrawBackground)
+void MainMenu::setDrawBackground(bool bNewDrawBackground)
 {
 	bDrawBackground = bNewDrawBackground;
 	if (bDrawBackground && !introOver)
@@ -383,8 +378,7 @@ MainMenu::handleMessage(uint32_t what, uint32_t who)
 	return 0;
 }
 
-void
-MainMenu::skipIntro()
+void MainMenu::skipIntro()
 {
 	if (introMovie)
 	{
@@ -394,8 +388,7 @@ MainMenu::skipIntro()
 	}
 }
 
-void
-MainMenu::update()
+void MainMenu::update()
 {
 	if (bDrawBackground || MPlayer || LogisticsData::instance->isSingleMission())
 	{
@@ -530,7 +523,7 @@ MainMenu::update()
 		{
 			if (singleLoadDlg.getStatus() == YES)
 			{
-				const std::wstring_view& pName = singleLoadDlg.getMapFileName();
+				std::wstring_view pName = singleLoadDlg.getMapFileName();
 				if (pName)
 				{
 					LogisticsData::instance->setSingleMission(pName);
@@ -642,8 +635,7 @@ MainMenu::update()
 	}
 }
 
-void
-MainMenu::render()
+void MainMenu::render()
 {
 	if (introMovie)
 	{
@@ -732,8 +724,7 @@ MainMenu::render()
 	}
 }
 
-void
-MainMenu::setHostLeftDlg(const std::wstring_view& playerName)
+void MainMenu::setHostLeftDlg(std::wstring_view playerName)
 {
 	wchar_t leaveStr[256];
 	wchar_t formatStr[256];

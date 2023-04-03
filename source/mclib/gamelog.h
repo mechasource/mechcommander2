@@ -59,19 +59,25 @@ public:
 			lines[i][0] = nullptr;
 	}
 
-	GameLog(void) { init(void); }
+	GameLog(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~GameLog(void) { destroy(void); }
+	~GameLog(void)
+	{
+		destroy(void);
+	}
 
 	void dump(void);
 
 	void close(void);
 
-	int32_t open(const std::wstring_view& fileName);
+	int32_t open(std::wstring_view fileName);
 
-	void write(const std::wstring_view& s);
+	void write(std::wstring_view s);
 
 	static void setup(void);
 

@@ -39,8 +39,7 @@ Appearance::operator new(size_t mySize)
 }
 
 //---------------------------------------------------------------------------
-void
-Appearance::operator delete(PVOID us)
+void Appearance::operator delete(PVOID us)
 {
 	int32_t result;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
@@ -51,8 +50,7 @@ Appearance::operator delete(PVOID us)
 #endif
 
 //---------------------------------------------------------------------------
-void
-Appearance::drawTextHelp(const std::wstring_view& text, uint32_t color)
+void Appearance::drawTextHelp(std::wstring_view text, uint32_t color)
 {
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;
@@ -67,14 +65,12 @@ Appearance::drawTextHelp(const std::wstring_view& text, uint32_t color)
 	globalFloatHelp->setFloatHelp(text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
 }
 
-void
-Appearance::drawTextHelp(const std::wstring_view& text)
+void Appearance::drawTextHelp(std::wstring_view text)
 {
 	drawTextHelp(text, SD_GREEN);
 }
 
-void
-Appearance::drawPilotName(const std::wstring_view& text, uint32_t color)
+void Appearance::drawPilotName(std::wstring_view text, uint32_t color)
 {
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;
@@ -89,8 +85,7 @@ Appearance::drawPilotName(const std::wstring_view& text, uint32_t color)
 }
 
 //---------------------------------------------------------------------------
-void
-Appearance::drawSelectBox(uint32_t color)
+void Appearance::drawSelectBox(uint32_t color)
 {
 	Stuff::Vector4D ul, br, pos1, pos2;
 	float offsets;
@@ -205,8 +200,7 @@ Appearance::drawSelectBox(uint32_t color)
 }
 
 //---------------------------------------------------------------------------
-void
-Appearance::drawSelectBrackets(uint32_t color)
+void Appearance::drawSelectBrackets(uint32_t color)
 {
 	float offsets = 5.0 * eye->getScaleFactor();
 	Stuff::Vector4D pos1;
@@ -309,8 +303,7 @@ Appearance::drawSelectBrackets(uint32_t color)
 }
 
 //-----------------------------------------------------------------------------
-void
-DrawBox(float l, float t, float r, float b)
+void DrawBox(float l, float t, float r, float b)
 {
 	Stuff::Vector4D p1, p2;
 	p1.x = l;
@@ -351,8 +344,7 @@ DrawBox(float l, float t, float r, float b)
 	}
 }
 
-void
-Appearance::drawIcon(
+void Appearance::drawIcon(
 	uint32_t bmpHandle, uint32_t bmpwidth, uint32_t bmpheight, uint32_t color, uint32_t where)
 {
 	// ignoring where for now
@@ -385,8 +377,7 @@ Appearance::drawIcon(
 }
 
 //---------------------------------------------------------------------------
-void
-Appearance::drawBars(void)
+void Appearance::drawBars(void)
 {
 	//-----------------------------------------
 	// Change to GOS DrawQuad code for HWare!!

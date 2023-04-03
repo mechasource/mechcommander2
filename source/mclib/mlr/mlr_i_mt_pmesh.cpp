@@ -8,7 +8,8 @@
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_mt_pmesh.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -26,8 +27,7 @@ std::vector<std::vector<Stuff::Vector2DScalar>>* MLR_I_MT_PMesh::extraMultiTexCo
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_MT_PMesh::InitializeClass()
+void MLR_I_MT_PMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -54,8 +54,7 @@ MLR_I_MT_PMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_MT_PMesh::TerminateClass()
+void MLR_I_MT_PMesh::TerminateClass()
 {
 	for (size_t i = 0; i < clipExtraMultiTexCoords.size(); i++)
 	{
@@ -78,8 +77,8 @@ MLR_I_MT_PMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLR_I_PMesh(class_data, stream, version)
+MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLR_I_PMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -105,8 +104,8 @@ MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData* class_data, std::iostream stream, uint
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData* class_data) :
-	MLR_I_PMesh(class_data)
+MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData* class_data)
+	: MLR_I_PMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -122,8 +121,7 @@ MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData* class_data) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_MT_PMesh::Copy(MLR_I_PMesh* pMesh)
+void MLR_I_MT_PMesh::Copy(MLR_I_PMesh* pMesh)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -185,8 +183,7 @@ MLR_I_MT_PMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_MT_PMesh::Save(std::iostream stream)
+void MLR_I_MT_PMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -201,16 +198,14 @@ MLR_I_MT_PMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_MT_PMesh::TestInstance(void) const
+void MLR_I_MT_PMesh::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_MT_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
+void MLR_I_MT_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLR_I_PMesh::InitializeDrawPrimitive(vis, parameter);
 	currentNrOfPasses = passes;
@@ -218,8 +213,7 @@ MLR_I_MT_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_MT_PMesh::SetTexCoordData(
+void MLR_I_MT_PMesh::SetTexCoordData(
 	const Stuff::Vector2DScalar* data, size_t dataSize, size_t pass)
 {
 	// Check_Object(this);
@@ -262,11 +256,9 @@ MLR_I_MT_PMesh::SetTexCoordData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-GetTexCoordData(Stuff::Vector2DScalar** data, size_t* dataSize, size_t pass = 0);
+void GetTexCoordData(Stuff::Vector2DScalar** data, size_t* dataSize, size_t pass = 0);
 
-void
-MLR_I_MT_PMesh::GetTexCoordData(
+void MLR_I_MT_PMesh::GetTexCoordData(
 	/*const*/ Stuff::Vector2DScalar** ppdata, size_t* pdataSize, size_t pass)
 {
 	// Check_Object(this);
@@ -279,8 +271,7 @@ MLR_I_MT_PMesh::GetTexCoordData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_MT_PMesh::SetTexCoordDataPointer(const Stuff::Vector2DScalar* data)
+void MLR_I_MT_PMesh::SetTexCoordDataPointer(const Stuff::Vector2DScalar* data)
 {
 	Check_Pointer(data);
 	_ASSERT(currentNrOfPasses >= passes);

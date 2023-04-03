@@ -42,7 +42,7 @@ public:
 
 	void operator delete(PVOID us);
 
-	void destroy(void) {}
+	void destroy(void) { }
 
 	void init(void)
 	{
@@ -59,9 +59,15 @@ public:
 			sensors[i] = 255;
 	}
 
-	ContactInfo(void) { init(void); }
+	ContactInfo(void)
+	{
+		init(void);
+	}
 
-	~ContactInfo(void) { destroy(void); }
+	~ContactInfo(void)
+	{
+		destroy(void);
+	}
 
 	int32_t getContactStatus(int32_t teamId, bool includingAllies)
 	{
@@ -70,19 +76,40 @@ public:
 		return (contactStatus[teamId]);
 	}
 
-	void incContactCount(int32_t teamId) { contactCount[teamId]++; }
+	void incContactCount(int32_t teamId)
+	{
+		contactCount[teamId]++;
+	}
 
-	void decContactCount(int32_t teamId) { contactCount[teamId]--; }
+	void decContactCount(int32_t teamId)
+	{
+		contactCount[teamId]--;
+	}
 
-	int32_t getContactCount(int32_t teamId) { return (contactCount[teamId]); }
+	int32_t getContactCount(int32_t teamId)
+	{
+		return (contactCount[teamId]);
+	}
 
-	void setSensor(int32_t sensor, int32_t contactIndex) { sensors[sensor] = contactIndex; }
+	void setSensor(int32_t sensor, int32_t contactIndex)
+	{
+		sensors[sensor] = contactIndex;
+	}
 
-	int32_t getSensor(int32_t sensor) { return (sensors[sensor]); }
+	int32_t getSensor(int32_t sensor)
+	{
+		return (sensors[sensor]);
+	}
 
-	void setTeam(int32_t teamId, int32_t contactIndex) { teams[teamId] = contactIndex; }
+	void setTeam(int32_t teamId, int32_t contactIndex)
+	{
+		teams[teamId] = contactIndex;
+	}
 
-	int32_t getTeam(int32_t teamId) { return (teams[teamId]); }
+	int32_t getTeam(int32_t teamId)
+	{
+		return (teams[teamId]);
+	}
 };
 
 //---------------------------------------------------------------------------
@@ -145,9 +172,15 @@ public:
 
 	void setShutdown(bool setting);
 
-	void setMasterIndex(int32_t index) { masterIndex = index; }
+	void setMasterIndex(int32_t index)
+	{
+		masterIndex = index;
+	}
 
-	int32_t getMasterIndex(void) { return (masterIndex); }
+	int32_t getMasterIndex(void)
+	{
+		return (masterIndex);
+	}
 
 	void setRange(float newRange);
 
@@ -155,19 +188,40 @@ public:
 
 	float getEffectiveRange(void);
 
-	void setSkill(uint32_t newSkill) { skill = newSkill; }
+	void setSkill(uint32_t newSkill)
+	{
+		skill = newSkill;
+	}
 
-	int32_t getSkill(void) { return (skill); }
+	int32_t getSkill(void)
+	{
+		return (skill);
+	}
 
-	int32_t getTotalContacts(void) { return (totalContacts); }
+	int32_t getTotalContacts(void)
+	{
+		return (totalContacts);
+	}
 
-	void setNextScanUpdate(float when) { nextScanUpdate = when; }
+	void setNextScanUpdate(float when)
+	{
+		nextScanUpdate = when;
+	}
 
-	void setScanFrequency(float seconds) { scanFrequency = seconds; }
+	void setScanFrequency(float seconds)
+	{
+		scanFrequency = seconds;
+	}
 
-	SensorSystem(void) { init(void); }
+	SensorSystem(void)
+	{
+		init(void);
+	}
 
-	~SensorSystem(void) { destroy(void); }
+	~SensorSystem(void)
+	{
+		destroy(void);
+	}
 
 	int32_t getSensorQuality(void);
 
@@ -195,7 +249,10 @@ public:
 
 	int32_t getTeamContacts(int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
-	void setLOSCapability(bool flag) { hasLOSCapability = flag; }
+	void setLOSCapability(bool flag)
+	{
+		hasLOSCapability = flag;
+	}
 };
 
 //---------------------------------------------------------------------------
@@ -233,9 +290,15 @@ public:
 
 	void destroy(void);
 
-	TeamSensorSystem(void) { init(void); }
+	TeamSensorSystem(void)
+	{
+		init(void);
+	}
 
-	~TeamSensorSystem(void) { destroy(void); }
+	~TeamSensorSystem(void)
+	{
+		destroy(void);
+	}
 
 	void update(void);
 
@@ -311,9 +374,15 @@ public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
-	SensorSystemManager(void) { init(void); }
+	SensorSystemManager(void)
+	{
+		init(void);
+	}
 
-	~SensorSystemManager(void) { destroy(void); }
+	~SensorSystemManager(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void);
 
@@ -330,7 +399,10 @@ public:
 
 	int32_t init(bool debug);
 
-	TeamSensorSystemPtr getTeamSensor(int32_t teamId) { return (teamSensors[teamId]); }
+	TeamSensorSystemPtr getTeamSensor(int32_t teamId)
+	{
+		return (teamSensors[teamId]);
+	}
 
 	SensorSystemPtr newSensor(void);
 

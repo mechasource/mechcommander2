@@ -20,8 +20,7 @@ bool __stdcall FloatIntBitStreamTest(size_t total_sections_to_write);
 //#############################################################################
 //
 
-bool
-MemoryStream::TestClass()
+bool MemoryStream::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting MemoryStream Single BitPacking Test..."));
 	Test_Assumption(SingeBitStreamTest(100));
@@ -38,8 +37,7 @@ MemoryStream::TestClass()
 //
 //#############################################################################
 
-bool
-SingeBitStreamTest(size_t total_sections_to_write)
+bool SingeBitStreamTest(size_t total_sections_to_write)
 {
 	bool* source_array_of_bools = new bool[total_sections_to_write];
 	Register_Pointer(source_array_of_bools);
@@ -102,7 +100,7 @@ public:
 	T maxValue;
 	T value;
 
-	MinMaxHolderOf() {}
+	MinMaxHolderOf() { }
 };
 
 MinMaxHolderOf<int32_t>::MinMaxHolderOf()
@@ -131,8 +129,7 @@ MinMaxHolderOf<float>::MinMaxHolderOf()
 }
 //#############################################################################
 
-bool
-FloatIntBitStreamTest(size_t total_sections_to_write)
+bool FloatIntBitStreamTest(size_t total_sections_to_write)
 {
 	// just to make this test interesting I will misalign the stream by one byte
 	// every number
@@ -266,8 +263,7 @@ FloatIntBitStreamTest(size_t total_sections_to_write)
 //
 //#############################################################################
 
-bool
-MultipleBitStreamTest(size_t total_sections_to_write)
+bool MultipleBitStreamTest(size_t total_sections_to_write)
 {
 	int32_t* bit_depth = new int32_t[total_sections_to_write];
 	Register_Pointer(bit_depth);
@@ -380,7 +376,7 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 			Stuff::MString value = " ";
 			text += value;
 		}
-		SPEW((GROUP_STUFF_TEST, "%s", (const std::wstring_view&)text));
+		SPEW((GROUP_STUFF_TEST, "%s", (std::wstring_view)text));
 		// SPEW((GROUP_STUFF_TEST, "%d ---- Dst Bit value : +", i));
 		text = "\t---- Dst Bit value : ";
 		for (byte_count = 0; byte_count < 8; ++byte_count)
@@ -409,7 +405,7 @@ MultipleBitStreamTest(size_t total_sections_to_write)
 			Stuff::MString value = " ";
 			text += value;
 		}
-		SPEW((GROUP_STUFF_TEST, "%s", (const std::wstring_view&)text));
+		SPEW((GROUP_STUFF_TEST, "%s", (std::wstring_view)text));
 		SPEW((GROUP_STUFF_TEST, "\t---- Src Hex value : +", i));
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{

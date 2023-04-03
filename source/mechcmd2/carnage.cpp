@@ -78,8 +78,7 @@ FireType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void
-FireType::destroy(void)
+void FireType::destroy(void)
 {
 	if (fireOffsetX)
 	{
@@ -165,8 +164,7 @@ FireType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool
-FireType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool FireType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
@@ -201,8 +199,7 @@ FireType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool
-FireType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool FireType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	return (FALSE);
 }
@@ -223,8 +220,7 @@ ExplosionType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void
-ExplosionType::destroy(void)
+void ExplosionType::destroy(void)
 {
 	ObjectType::destroy();
 }
@@ -301,8 +297,7 @@ ExplosionType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool
-ExplosionType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool ExplosionType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
@@ -397,8 +392,7 @@ ExplosionType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool
-ExplosionType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool ExplosionType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// The laser ceases to exist when its effect is done.
@@ -410,8 +404,7 @@ ExplosionType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 //***************************************************************************
 // CARNAGE class
 //***************************************************************************
-void
-Carnage::init(bool create)
+void Carnage::init(bool create)
 {
 	carnageType = CARNAGE_NONE;
 	ownerWID = 0;
@@ -430,8 +423,7 @@ Carnage::init(bool create)
 }
 
 //---------------------------------------------------------------------------
-void
-Carnage::init(CarnageEnumType _carnageType)
+void Carnage::init(CarnageEnumType _carnageType)
 {
 	//--------------------------------------------------------------------
 	// This function not only sets the carnage type, but also re-inits the
@@ -460,8 +452,7 @@ Carnage::getOwner(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Carnage::handleStaticCollision(void)
+void Carnage::handleStaticCollision(void)
 {
 	if (getTangible())
 	{
@@ -543,8 +534,7 @@ Carnage::handleStaticCollision(void)
 }
 
 //---------------------------------------------------------------------------
-bool
-Carnage::onScreen(void)
+bool Carnage::onScreen(void)
 {
 	//----------------------------------------------------------------------
 	// Need a real check here against the OBB Radius of the effect
@@ -552,8 +542,7 @@ Carnage::onScreen(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Carnage::finishNow(void)
+void Carnage::finishNow(void)
 {
 	// When the fire goes out, it may spread.
 	if (carnageType == CARNAGE_FIRE)
@@ -579,8 +568,7 @@ Carnage::finishNow(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Carnage::addTimeLeft(float timeLeft)
+void Carnage::addTimeLeft(float timeLeft)
 {
 	if (carnageType == CARNAGE_FIRE)
 	{
@@ -740,8 +728,7 @@ Carnage::update(void)
 
 //---------------------------------------------------------------------------
 
-void
-Carnage::render(void)
+void Carnage::render(void)
 {
 	if (carnageType == CARNAGE_FIRE)
 	{
@@ -776,8 +763,7 @@ Carnage::render(void)
 
 //---------------------------------------------------------------------------
 
-void
-Carnage::destroy(void)
+void Carnage::destroy(void)
 {
 	if (carnageType == CARNAGE_FIRE)
 	{
@@ -802,8 +788,7 @@ Carnage::destroy(void)
 
 //---------------------------------------------------------------------------
 
-void
-Carnage::init(bool create, ObjectTypePtr _type)
+void Carnage::init(bool create, ObjectTypePtr _type)
 {
 	GameObject::init(true, _type);
 	gosEffect = nullptr;
@@ -836,8 +821,7 @@ Carnage::init(bool create, ObjectTypePtr _type)
 }
 
 //---------------------------------------------------------------------------
-void
-Carnage::Save(PacketFilePtr file, int32_t packetNum)
+void Carnage::Save(PacketFilePtr file, int32_t packetNum)
 {
 	CarnageData data;
 	CopyTo(&data);
@@ -846,8 +830,7 @@ Carnage::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //---------------------------------------------------------------------------
-void
-Carnage::CopyTo(CarnageData* data)
+void Carnage::CopyTo(CarnageData* data)
 {
 	data->carnageType = carnageType;
 	data->ownerWID = ownerWID;
@@ -857,8 +840,7 @@ Carnage::CopyTo(CarnageData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-Carnage::Load(CarnageData* data)
+void Carnage::Load(CarnageData* data)
 {
 	GameObject::Load(dynamic_cast<GameObjectData*>(data));
 	carnageType = data->carnageType;

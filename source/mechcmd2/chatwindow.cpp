@@ -32,8 +32,7 @@ ChatWindow::~ChatWindow()
 }
 
 //-------------------------------------------------------------------------------------------------
-void
-ChatWindow::destroy()
+void ChatWindow::destroy()
 {
 	if (s_instance)
 	{
@@ -44,8 +43,7 @@ ChatWindow::destroy()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-ChatWindow::init()
+void ChatWindow::init()
 {
 	s_instance = new ChatWindow;
 	s_instance->initInstance();
@@ -62,7 +60,7 @@ ChatWindow::initInstance()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(buffer2, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, buffer2);
 		return false;
 	}
@@ -85,16 +83,14 @@ ChatWindow::initInstance()
 	return true;
 }
 
-bool
-ChatWindow::pointInside(int32_t xPos, int32_t yPos)
+bool ChatWindow::pointInside(int32_t xPos, int32_t yPos)
 {
 	if (getButton(MP_CHAT_EXPAND)->isPressed())
 		return chatWidget.inside(xPos, yPos);
 	return LogisticsScreen::inside(xPos, yPos);
 }
 
-bool
-ChatWindow::isExpanded()
+bool ChatWindow::isExpanded()
 {
 	return getButton(MP_CHAT_EXPAND)->isPressed();
 }
@@ -120,8 +116,7 @@ ChatWindow::handleMessage(uint32_t, uint32_t who)
 	return 1;
 }
 
-void
-ChatWindow::render(int32_t xOffset, int32_t yOffset)
+void ChatWindow::render(int32_t xOffset, int32_t yOffset)
 {
 	if (getButton(MP_CHAT_EXPAND)->isPressed())
 	{
@@ -162,8 +157,7 @@ ChatWindow::render(int32_t xOffset, int32_t yOffset)
 	textObjects[0].render(); // render this last, otherwise it gets cut off
 }
 
-void
-ChatWindow::update()
+void ChatWindow::update()
 {
 	bool bEnterPressed = gos_GetKeyStatus(KEY_RETURN) == KEY_PRESSED;
 	bool bFocused = edits[0].hasFocus();
@@ -182,7 +176,7 @@ ChatWindow::update()
 	}
 	else
 		rects[2].setcolour(rects[2].getcolour() | 0xff000000);
-	const std::wstring_view& chatTexts[MAX_STORED_CHATS];
+	std::wstring_view chatTexts[MAX_STORED_CHATS];
 	int32_t playerIDs[MAX_STORED_CHATS];
 	int32_t count = MAX_STORED_CHATS;
 	MPlayer->getChatMessages(chatTexts, playerIDs, count);
@@ -195,14 +189,14 @@ ChatWindow::update()
 	{
 		if (bFocused)
 		{
-			const std::wstring_view& text;
+			std::wstring_view text;
 			edits[0].getEntry(text);
 			int32_t team = getButton(MP_CHAT_TEAMONLY)->isPressed()
 				? MPlayer->getPlayerInfo(MPlayer->commanderid)->team
 				: -1;
 			if (text.Length())
 			{
-				MPlayer->sendChat(0, team, (const std::wstring_view&)(const std::wstring_view&)text);
+				MPlayer->sendChat(0, team, (std::wstring_view)(std::wstring_view)text);
 			}
 			edits[0].setEntry("");
 			edits[0].setFocus(false);
@@ -217,8 +211,7 @@ ChatWindow::update()
 	}
 }
 
-void
-ChatWindow::refillListBox(aListBox& listBox, const std::wstring_view&* chatTexts, int32_t* playerIDs,
+void ChatWindow::refillListBox(aListBox& listBox, std::wstring_view* chatTexts, int32_t* playerIDs,
 	ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount)
 {
 	int32_t linesToAdd = 0;
@@ -286,8 +279,7 @@ ChatWidget::~ChatWidget()
 	//	listBox.destroy();
 }
 
-void
-ChatWidget::init()
+void ChatWidget::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -295,7 +287,7 @@ ChatWidget::init()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t buffer2[512];
-		sprintf(buffer2, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(buffer2, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, buffer2);
 		return;
 	}
@@ -323,8 +315,7 @@ ChatMessageItem::ChatMessageItem()
 	lineCount = 1;
 }
 
-void
-ChatMessageItem::setPlayerName(const std::wstring_view& pName)
+void ChatMessageItem::setPlayerName(std::wstring_view pName)
 {
 	name.setText(pName);
 	name.moveTo(globalX() + 1, globalY() + 1);
@@ -336,7 +327,7 @@ ChatMessageItem::setPlayerName(const std::wstring_view& pName)
 }
 
 int32_t
-ChatMessageItem::setText(const std::wstring_view& pText)
+ChatMessageItem::setText(std::wstring_view pText)
 {
 	playerText.setText(pText);
 	lineCount = 1;
@@ -353,8 +344,7 @@ ChatMessageItem::setText(const std::wstring_view& pText)
 	return retVal;
 }
 
-void
-ChatMessageItem::setPlayercolour(int32_t newcolour)
+void ChatMessageItem::setPlayercolour(int32_t newcolour)
 {
 	playerRect.setcolour(newcolour);
 	if (((newcolour & 0xff) + ((newcolour & 0xff00) >> 8) + ((newcolour & 0xff0000) >> 16)) / 3 < 85)
@@ -363,8 +353,7 @@ ChatMessageItem::setPlayercolour(int32_t newcolour)
 		name.setcolour(0xff000000);
 }
 
-void
-ChatMessageItem::setTextcolour(int32_t newcolour)
+void ChatMessageItem::setTextcolour(int32_t newcolour)
 {
 	playerText.setcolour(newcolour);
 }

@@ -40,11 +40,17 @@ public:
 	//
 	// Destructor
 	//
-	inline ~FixedLengthString() { free(Text); }
+	inline ~FixedLengthString()
+	{
+		free(Text);
+	}
 	//
 	// FixedLengthString can be referenced as a PSTR
 	//
-	inline operator PSTR(void) const { return Text; }
+	inline operator PSTR(void) const
+	{
+		return Text;
+	}
 	//
 	// Individual chars can be referenced
 	//
@@ -58,7 +64,10 @@ public:
 	//
 	// Get Length
 	//
-	inline size_t Length() { return CurrentSize; }
+	inline size_t Length()
+	{
+		return CurrentSize;
+	}
 	//
 	// Reset to null
 	//
@@ -70,7 +79,10 @@ public:
 	//
 	// Strings can be initialized by other FixedLengthStrings
 	//
-	inline FixedLengthString& operator=(const FixedLengthString&) { return *this; }
+	inline FixedLengthString& operator=(const FixedLengthString&)
+	{
+		return *this;
+	}
 	//
 	// Strings can be initialized by PSTR strings
 	//

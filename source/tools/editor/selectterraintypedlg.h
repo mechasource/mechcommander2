@@ -26,7 +26,10 @@ public:
 	//}}AFX_DATA
 
 	int32_t m_selectedTerrainType;
-	int32_t SelectedTerrainType() { return m_selectedTerrainType; }
+	int32_t SelectedTerrainType()
+	{
+		return m_selectedTerrainType;
+	}
 	void SelectedTerrainType(int32_t selectedTerrainType)
 	{
 		m_selectedTerrainType = selectedTerrainType;

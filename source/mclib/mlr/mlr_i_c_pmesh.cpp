@@ -13,7 +13,8 @@
 #include "mlr/mlrcliptrick.h"
 #include "mlr/mlr_i_c_pmesh.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -29,8 +30,7 @@ MLR_I_C_PMesh::ClassData* MLR_I_C_PMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_PMesh::InitializeClass()
+void MLR_I_C_PMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -45,8 +45,7 @@ MLR_I_C_PMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_PMesh::TerminateClass()
+void MLR_I_C_PMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -59,8 +58,8 @@ MLR_I_C_PMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLR_I_PMesh(class_data, stream, version)
+MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLR_I_PMesh(class_data, stream, version)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// Check_Pointer(this);
@@ -102,8 +101,9 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData* class_data, std::iostream stream, uint32
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData* class_data) :
-	MLR_I_PMesh(class_data), colors(0)
+MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData* class_data)
+	: MLR_I_PMesh(class_data)
+	, colors(0)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -155,8 +155,7 @@ MLR_I_C_PMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_PMesh::Save(std::iostream stream)
+void MLR_I_C_PMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -178,16 +177,14 @@ MLR_I_C_PMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_PMesh::TestInstance(void) const
+void MLR_I_C_PMesh::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_PMesh::SetcolourData(
+void MLR_I_C_PMesh::SetcolourData(
 #if COLOR_AS_DWORD
 	const uint32_t* data,
 #else
@@ -204,8 +201,7 @@ MLR_I_C_PMesh::SetcolourData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_PMesh::GetcolourData(
+void MLR_I_C_PMesh::GetcolourData(
 #if COLOR_AS_DWORD
 	uint32_t** data,
 #else
@@ -220,8 +216,7 @@ MLR_I_C_PMesh::GetcolourData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_C_PMesh::PaintMe(
+void MLR_I_C_PMesh::PaintMe(
 #if COLOR_AS_DWORD
 	const uint32_t* paintMe
 #else

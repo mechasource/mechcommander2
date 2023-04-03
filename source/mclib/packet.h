@@ -80,14 +80,17 @@ public:
 	PacketFile(void);
 	~PacketFile(void);
 
-	virtual int32_t open(const std::wstring_view& filename, FileMode _mode = READ, uint32_t numChildren = 50);
+	virtual int32_t open(std::wstring_view filename, FileMode _mode = READ, uint32_t numChildren = 50);
 	virtual int32_t open(std::unique_ptr<File> _parent, size_t fileSize, uint32_t numChildren = 50);
 
-	virtual int32_t create(const std::wstring_view& filename);
-	virtual int32_t createWithCase(const std::wstring_view& filename);
+	virtual int32_t create(std::wstring_view filename);
+	virtual int32_t createWithCase(std::wstring_view filename);
 	virtual void close(void);
 
-	void forceUseCheckSum(void) { usesCheckSum = true; }
+	void forceUseCheckSum(void)
+	{
+		usesCheckSum = true;
+	}
 
 	int32_t readPacketOffset(int32_t packet, int32_t* lastType = 0);
 	int32_t readPacket(int32_t packet, uint8_t* buffer);
@@ -102,12 +105,18 @@ public:
 	int32_t getCurrentPacket(void);
 	int32_t getPacketOffset(void);
 
-	int32_t getPacketSize(void) { return packetUnpackedSize; }
+	int32_t getPacketSize(void)
+	{
+		return packetUnpackedSize;
+	}
 
 	int32_t getPackedPacketSize(void);
 	int32_t getStorageType(void);
 
-	virtual FileClass getFileClass(void) { return FileClass::packetfile; }
+	virtual FileClass getFileClass(void)
+	{
+		return FileClass::packetfile;
+	}
 
 	int32_t checkSumFile(void);
 

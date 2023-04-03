@@ -33,9 +33,10 @@ public:
 	Point3D origin;
 	UnitVector3D direction;
 
-	Ray3D() {}
-	Ray3D(const Point3D& origin, const UnitVector3D& direction) :
-		origin(origin), direction(direction)
+	Ray3D() { }
+	Ray3D(const Point3D& origin, const UnitVector3D& direction)
+		: origin(origin)
+		, direction(direction)
 	{
 	}
 
@@ -87,12 +88,11 @@ public:
 	//
 	// Test support
 	//
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 	static bool TestClass(void);
 };
 
-float
-Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1, Point3D* result1,
+float Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1, Point3D* result1,
 	const Point3D& origin2, const Vector3D& velocity2, Point3D* result2, float* time,
 	bool* constant);
 } // namespace Stuff

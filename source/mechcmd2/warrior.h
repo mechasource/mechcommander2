@@ -204,7 +204,7 @@ enum SpecialtySkillType
 #define FIRST_ELITE_SPECIALTY 14
 #define FIRST_ACE_SPECIALTY 20
 
-enum class 
+enum class
 {
 	CV_CURRENT,
 	CV_FIELDED,
@@ -247,7 +247,7 @@ enum class MoveStateType
 
 #define MAX_ALARM_TRIGGERS 15
 
-enum class 
+enum class
 {
 	PILOT_ALARM_TARGET_OF_WEAPONFIRE,
 	PILOT_ALARM_HIT_BY_WEAPONFIRE,
@@ -295,7 +295,7 @@ typedef struct
 
 #define MAX_TARGET_PRIORITIES 20
 
-enum class 
+enum class
 {
 	TARGET_PRIORITY_NONE,
 	TARGET_PRIORITY_GAMEOBJECT,
@@ -342,11 +342,17 @@ public:
 
 	void init(void);
 
-	TargetPriorityList(void) { init(void); }
+	TargetPriorityList(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~TargetPriorityList(void) { destroy(void); }
+	~TargetPriorityList(void)
+	{
+		destroy(void);
+	}
 
 	int32_t insert(int32_t index, TargetPriorityPtr priority);
 
@@ -362,7 +368,7 @@ public:
 
 //---------------------------------------------------------------------------
 
-enum class 
+enum class
 {
 	ORDERSTATE_GENERAL,
 	ORDERSTATE_PLAYER,
@@ -380,7 +386,7 @@ typedef AttackerRec* AttackerRecPtr;
 
 #define MAX_GLOBAL_PATH 50
 
-enum class 
+enum class
 {
 	MOVEPATH_UNDEFINED,
 	MOVEPATH_SIMPLE,
@@ -393,7 +399,7 @@ typedef struct _MoveOrders
 	// order parameters
 	float time;
 	wchar_t origin;
-	int32_t speedType; // best, max, slow, moderate
+	MoveSpeedType speedType; // best, max, slow, moderate
 	float speedVelocity; // based upon speedType (m/s)
 	wchar_t speedState; // based upon speedVelocity (walk, etc.)
 	wchar_t speedThrottle; // if speedState is walk, else ignored
@@ -591,7 +597,8 @@ typedef struct _RoleOrders
 
 #define NUM_MEMORY_CELLS 60
 
-typedef union _MemoryCell {
+typedef union _MemoryCell
+{
 	float real;
 	int32_t integer;
 } MemoryCell;
@@ -625,7 +632,7 @@ typedef QueuedTacOrder* QueuedTacOrderPtr;
 #define MAXLEN_PILOT_AUDIO 20
 #define MAXLEN_PILOT_BRAIN 40
 
-enum class 
+enum class
 {
 	GOAL_ACTION_NONE,
 	GOAL_ACTION_UNDECIDED,
@@ -924,17 +931,23 @@ public:
 
 	static void freeWarrior(MechWarrior* warrior);
 
-	static bool warriorInUse(const std::wstring_view& warriorName);
+	static bool warriorInUse(std::wstring_view warriorName);
 
 	void init(bool create);
 
 	void init(MechWarriorData data);
 
-	MechWarrior(void) { init(true); }
+	MechWarrior(void)
+	{
+		init(true);
+	}
 
 	void destroy(void);
 
-	~MechWarrior(void) { destroy(void); }
+	~MechWarrior(void)
+	{
+		destroy(void);
+	}
 
 	int32_t init(FitIniFile* warriorFile);
 
@@ -944,31 +957,64 @@ public:
 
 	void updateMissionSkills(void);
 
-	const std::wstring_view& getName(void) { return (name); }
+	std::wstring_view getName(void)
+	{
+		return (name);
+	}
 
-	int32_t getPhoto(void) { return (photoIndex); }
+	int32_t getPhoto(void)
+	{
+		return (photoIndex);
+	}
 
-	const std::wstring_view& getCallsign(void) { return (callsign); }
+	std::wstring_view getCallsign(void)
+	{
+		return (callsign);
+	}
 
-	void setIndex(int32_t i) { index = i; }
+	void setIndex(int32_t i)
+	{
+		index = i;
+	}
 
-	int32_t getIndex(void) { return (index); }
+	int32_t getIndex(void)
+	{
+		return (index);
+	}
 
-	int32_t getPaintScheme(void) { return paintScheme; }
+	int32_t getPaintScheme(void)
+	{
+		return paintScheme;
+	}
 
-	void setPaintScheme(int32_t newPaintScheme) { paintScheme = newPaintScheme; }
+	void setPaintScheme(int32_t newPaintScheme)
+	{
+		paintScheme = newPaintScheme;
+	}
 
-	RadioPtr getRadio(void) { return radio; }
+	RadioPtr getRadio(void)
+	{
+		return radio;
+	}
 
 	void radioMessage(int32_t message, bool propogateIfMultiplayer = false);
 
 	void cancelRadioMessage(int32_t message, bool propogateIfMultiplayer = false);
 
-	uint32_t getLastMessage(void) { return radioLog.lastMessage; }
+	uint32_t getLastMessage(void)
+	{
+		return radioLog.lastMessage;
+	}
 
-	wchar_t getRank(void) { return (rank); }
+	wchar_t getRank(void)
+	{
+		return (rank);
+	}
 
-	uint32_t getSkill(uint32_t skillId) { return (skills[skillId]); }
+	uint32_t getSkill(uint32_t skillId)
+	{
+		return (skills[skillId]);
+	}
 
 	void setSkill(uint32_t skillId, int32_t skillValue)
 	{
@@ -988,57 +1034,117 @@ public:
 		return (numSkillSuccesses[skillId][skillStat]);
 	}
 
-	void incNumSkillUses(int32_t skillStat, int32_t skillId) { numSkillUses[skillId][skillStat]++; }
+	void incNumSkillUses(int32_t skillStat, int32_t skillId)
+	{
+		numSkillUses[skillId][skillStat]++;
+	}
 
 	void incNumSkillSuccesses(int32_t skillStat, int32_t skillId)
 	{
 		numSkillSuccesses[skillId][skillStat]++;
 	}
 
-	int32_t getProfessionalism(void) { return (professionalism); }
+	int32_t getProfessionalism(void)
+	{
+		return (professionalism);
+	}
 
-	int32_t getProfessionalismModifier(void) { return (professionalismModifier); }
+	int32_t getProfessionalismModifier(void)
+	{
+		return (professionalismModifier);
+	}
 
-	int32_t getDecorum(void) { return (decorum); }
+	int32_t getDecorum(void)
+	{
+		return (decorum);
+	}
 
-	int32_t getDecorumModifier(void) { return (decorumModifier); }
+	int32_t getDecorumModifier(void)
+	{
+		return (decorumModifier);
+	}
 
 	int32_t getAggressiveness(bool current = true);
 
-	int32_t getCourage(void) { return (courage); }
+	int32_t getCourage(void)
+	{
+		return (courage);
+	}
 
-	void setCourage(uint8_t _courage) { courage = _courage; }
+	void setCourage(uint8_t _courage)
+	{
+		courage = _courage;
+	}
 
-	int32_t getTeamworkModifier(void) { return (professionalismModifier + decorumModifier); }
+	int32_t getTeamworkModifier(void)
+	{
+		return (professionalismModifier + decorumModifier);
+	}
 
-	float getWounds(void) { return (wounds); }
+	float getWounds(void)
+	{
+		return (wounds);
+	}
 
-	bool alive(void) { return (wounds < 6.0); }
+	bool alive(void)
+	{
+		return (wounds < 6.0);
+	}
 
-	bool active(void) { return (status == WARRIOR_STATUS_NORMAL); }
+	bool active(void)
+	{
+		return (status == WARRIOR_STATUS_NORMAL);
+	}
 
-	void setStatus(int32_t _status) { status = _status; }
+	void setStatus(int32_t _status)
+	{
+		status = _status;
+	}
 
-	int32_t getStatus(void) { return (status); }
+	int32_t getStatus(void)
+	{
+		return (status);
+	}
 
 	bool hasEjected(void)
 	{
 		return (status == WARRIOR_STATUS_EJECTED || status == WARRIOR_STATUS_MIA || status == WARRIOR_STATUS_CAPTURED);
 	}
 
-	void setEscapesThruEjection(bool escapes) { escapesThruEjection = escapes; }
+	void setEscapesThruEjection(bool escapes)
+	{
+		escapesThruEjection = escapes;
+	}
 
-	bool getEscapesThruEjection(void) { return (escapesThruEjection); }
+	bool getEscapesThruEjection(void)
+	{
+		return (escapesThruEjection);
+	}
 
-	void setKeepMoving(bool set) { keepMoving = set; }
+	void setKeepMoving(bool set)
+	{
+		keepMoving = set;
+	}
 
-	bool getKeepMoving(void) { return (keepMoving); }
+	bool getKeepMoving(void)
+	{
+		return (keepMoving);
+	}
 
-	bool getNotMineYet(void) { return notMineYet; }
+	bool getNotMineYet(void)
+	{
+		return notMineYet;
+	}
 
-	void setNotMineYet(bool result) { notMineYet = result; }
+	void setNotMineYet(bool result)
+	{
+		notMineYet = result;
+	}
 
-	bool getSpecialtySkill(int32_t whichSkill) { return (specialtySkills[whichSkill]); }
+	bool getSpecialtySkill(int32_t whichSkill)
+	{
+		return (specialtySkills[whichSkill]);
+	}
 
 	//---------------------------------
 	// Specialty Skills
@@ -1077,7 +1183,10 @@ public:
 		return (specialtySkills[5] == 1);
 	}
 
-	bool isToughnessSpecialist(void) { return (specialtySkills[7] == 1); }
+	bool isToughnessSpecialist(void)
+	{
+		return (specialtySkills[7] == 1);
+	}
 
 	bool isHevayMechSpecialist(void) // DONE
 	{
@@ -1104,9 +1213,15 @@ public:
 		return (specialtySkills[15] == 1);
 	}
 
-	bool isScout(void) { return (specialtySkills[12] == 1); }
+	bool isScout(void)
+	{
+		return (specialtySkills[12] == 1);
+	}
 
-	bool isLongJump(void) { return (specialtySkills[13] == 1); }
+	bool isLongJump(void)
+	{
+		return (specialtySkills[13] == 1);
+	}
 
 	bool isAssaultMechSpecialist(void) // DONE
 	{
@@ -1145,9 +1260,15 @@ public:
 	}
 	*/
 
-	bool isSharpShooter(void) { return (specialtySkills[22] == 1); }
+	bool isSharpShooter(void)
+	{
+		return (specialtySkills[22] == 1);
+	}
 
-	bool isSensorProfileSpecialist(void) { return (specialtySkills[6] == 1); }
+	bool isSensorProfileSpecialist(void)
+	{
+		return (specialtySkills[6] == 1);
+	}
 
 	//--------------------------
 	// TacOrderQueue routines...
@@ -1164,46 +1285,85 @@ public:
 
 	void clearTacOrderQueue(void);
 
-	void setUseGoalPlan(bool set) { useGoalPlan = set; }
+	void setUseGoalPlan(bool set)
+	{
+		useGoalPlan = set;
+	}
 
-	bool getUseGoalPlan(void) { return (useGoalPlan); }
+	bool getUseGoalPlan(void)
+	{
+		return (useGoalPlan);
+	}
 
 	void setMainGoal(int32_t action, GameObjectPtr obj, Stuff::Vector3D* location, float range);
 
 	int32_t getMainGoal(GameObjectPtr& obj, Stuff::Vector3D& location, float& range);
 
-	int32_t getNumTacOrdersQueued(void) { return (numTacOrdersQueued); }
+	int32_t getNumTacOrdersQueued(void)
+	{
+		return (numTacOrdersQueued);
+	}
 
 	void drawWaypointPath(void);
 	void updateDrawWaypointPath(void);
 
 	void executeTacOrderQueue(void);
 
-	void setExecutingQueue(bool setting) { tacOrderQueueExecuting = setting; }
+	void setExecutingQueue(bool setting)
+	{
+		tacOrderQueueExecuting = setting;
+	}
 
-	void setTacOrderQueueLooping(bool setting) { tacOrderQueueLooping = setting; }
+	void setTacOrderQueueLooping(bool setting)
+	{
+		tacOrderQueueLooping = setting;
+	}
 
-	bool getExecutingTacOrderQueue(void) { return (tacOrderQueueExecuting); }
+	bool getExecutingTacOrderQueue(void)
+	{
+		return (tacOrderQueueExecuting);
+	}
 
-	bool getTacOrderQueueLooping(void) { return (tacOrderQueueLooping); }
+	bool getTacOrderQueueLooping(void)
+	{
+		return (tacOrderQueueLooping);
+	}
 
 	void lockTacOrderQueue(void);
 
 	void unlockTacOrderQueue(void);
 
-	bool getTacOrderQueueLocked(void) { return (tacOrderQueueLocked); }
+	bool getTacOrderQueueLocked(void)
+	{
+		return (tacOrderQueueLocked);
+	}
 
 	int32_t getTacOrderQueue(QueuedTacOrderPtr list);
 
-	bool getCurPlayerOrderFromQueue(void) { return (curPlayerOrderFromQueue); }
+	bool getCurPlayerOrderFromQueue(void)
+	{
+		return (curPlayerOrderFromQueue);
+	}
 
-	int32_t getNextTacOrderId(void) { return (nextTacOrderId); }
+	int32_t getNextTacOrderId(void)
+	{
+		return (nextTacOrderId);
+	}
 
-	void setNextTacOrderId(int32_t newId) { nextTacOrderId = newId; }
+	void setNextTacOrderId(int32_t newId)
+	{
+		nextTacOrderId = newId;
+	}
 
-	int32_t getLastTacOrderId(void) { return (lastTacOrderId); }
+	int32_t getLastTacOrderId(void)
+	{
+		return (lastTacOrderId);
+	}
 
-	void setLastTacOrderId(int32_t newId) { lastTacOrderId = newId; }
+	void setLastTacOrderId(int32_t newId)
+	{
+		lastTacOrderId = newId;
+	}
 
 	void updateClientOrderQueue(int32_t curTacOrderId);
 
@@ -1218,13 +1378,25 @@ public:
 
 	CommanderPtr getCommander(void);
 
-	const std::wstring_view& getAudioString(void) { return audioStr; }
+	std::wstring_view getAudioString(void)
+	{
+		return audioStr;
+	}
 
-	const std::wstring_view& getVideoString(void) { return videoStr; }
+	std::wstring_view getVideoString(void)
+	{
+		return videoStr;
+	}
 
-	const std::wstring_view& getBrainString(void) { return brainStr; }
+	std::wstring_view getBrainString(void)
+	{
+		return brainStr;
+	}
 
-	int32_t getPilotPhoto(void) { return photoIndex; }
+	int32_t getPilotPhoto(void)
+	{
+		return photoIndex;
+	}
 
 	bool onHomeTeam(void);
 
@@ -1248,13 +1420,19 @@ public:
 
 	void setVehicle(GameObjectPtr _vehicle);
 
-	void setWounds(float _wounds) { wounds = _wounds; }
+	void setWounds(float _wounds)
+	{
+		wounds = _wounds;
+	}
 
 	int32_t setBrain(int32_t brainHandle);
 
-	void setBrainName(const std::wstring_view& brainName);
+	void setBrainName(std::wstring_view brainName);
 
-	const std::unique_ptr<ABLModule>& getBrain(void) { return (brain); }
+	const std::unique_ptr<ABLModule>& getBrain(void)
+	{
+		return (brain);
+	}
 
 	int32_t runBrain(void);
 
@@ -1264,19 +1442,40 @@ public:
 
 	void eject(void);
 
-	float getTimeOfLastOrders(void) { return (timeOfLastOrders); }
+	float getTimeOfLastOrders(void)
+	{
+		return (timeOfLastOrders);
+	}
 
-	float getAttackRadius(void) { return (attackRadius); }
+	float getAttackRadius(void)
+	{
+		return (attackRadius);
+	}
 
-	void setAttackRadius(float radius) { attackRadius = radius; }
+	void setAttackRadius(float radius)
+	{
+		attackRadius = radius;
+	}
 
-	void setIntegerMemory(int32_t index, int32_t val) { memory[index].integer = val; }
+	void setIntegerMemory(int32_t index, int32_t val)
+	{
+		memory[index].integer = val;
+	}
 
-	void setRealMemory(int32_t index, float val) { memory[index].real = val; }
+	void setRealMemory(int32_t index, float val)
+	{
+		memory[index].real = val;
+	}
 
-	int32_t getIntegerMemory(int32_t index) { return (memory[index].integer); }
+	int32_t getIntegerMemory(int32_t index)
+	{
+		return (memory[index].integer);
+	}
 
-	float getRealMemory(int32_t index) { return (memory[index].real); }
+	float getRealMemory(int32_t index)
+	{
+		return (memory[index].real);
+	}
 
 	void updateAttackerStatus(uint32_t attackerWID, float time);
 
@@ -1291,36 +1490,72 @@ public:
 	//-----------
 	// Tac Orders
 
-	TacticalOrderPtr getCurTacOrder(void) { return (&curTacOrder); }
+	TacticalOrderPtr getCurTacOrder(void)
+	{
+		return (&curTacOrder);
+	}
 
-	TacticalOrderPtr getLastTacOrder(void) { return (&lastTacOrder); }
+	TacticalOrderPtr getLastTacOrder(void)
+	{
+		return (&lastTacOrder);
+	}
 
-	TacticalOrderPtr getTacOrder(int32_t _orderState) { return (&tacOrder[_orderState]); }
+	TacticalOrderPtr getTacOrder(int32_t _orderState)
+	{
+		return (&tacOrder[_orderState]);
+	}
 
-	int32_t getOrderState(void) { return (orderState); }
+	int32_t getOrderState(void)
+	{
+		return (orderState);
+	}
 
-	void setOrderState(int32_t state) { orderState = state; }
+	void setOrderState(int32_t state)
+	{
+		orderState = state;
+	}
 
 	//------------
 	// Move Orders
 
-	MoveOrders* getMoveOrders(void) { return (&moveOrders); }
+	MoveOrders* getMoveOrders(void)
+	{
+		return (&moveOrders);
+	}
 
-	void setMoveOrigin(int32_t origin) { moveOrders.origin = origin; }
+	void setMoveOrigin(int32_t origin)
+	{
+		moveOrders.origin = origin;
+	}
 
-	int32_t getMoveOrigin(void) { return (moveOrders.origin); }
+	int32_t getMoveOrigin(void)
+	{
+		return (moveOrders.origin);
+	}
 
 	void setMoveSpeedType(int32_t type);
 
-	int32_t getMoveSpeedType(void) { return (moveOrders.speedType); }
+	int32_t getMoveSpeedType(void)
+	{
+		return (moveOrders.speedType);
+	}
 
 	void setMoveSpeedVelocity(float speed);
 
-	float getMoveSpeedVelocity(void) { return (moveOrders.speedVelocity); }
+	float getMoveSpeedVelocity(void)
+	{
+		return (moveOrders.speedVelocity);
+	}
 
-	int32_t getMoveSpeedState(void) { return (moveOrders.speedState); }
+	int32_t getMoveSpeedState(void)
+	{
+		return (moveOrders.speedState);
+	}
 
-	int32_t getMoveSpeedThrottle(void) { return (moveOrders.speedThrottle); }
+	int32_t getMoveSpeedThrottle(void)
+	{
+		return (moveOrders.speedThrottle);
+	}
 
 	int32_t setMoveGoal(uint32_t type, Stuff::Vector3D* location, GameObjectPtr obj = nullptr);
 
@@ -1338,7 +1573,7 @@ public:
 
 	void clearMoveGoal(void)
 	{
-		moveOrders.origin = ORDER_ORIGIN_COMMANDER;
+		moveOrders.origin = OrderOriginType::commander;
 		moveOrders.goalType = MOVEGOAL_NONE;
 		moveOrders.goalObjectWID = 0;
 		moveOrders.goalLocation.x = -999999.0;
@@ -1351,27 +1586,57 @@ public:
 										  moveOrders.path[pathNum]->clear(void);
 										  }*/
 
-	bool hasMoveGoal(void) { return (moveOrders.goalType != MOVEGOAL_NONE); }
+	bool hasMoveGoal(void)
+	{
+		return (moveOrders.goalType != MOVEGOAL_NONE);
+	}
 
-	bool getMoveNewGoal(void) { return (moveOrders.newGoal); }
+	bool getMoveNewGoal(void)
+	{
+		return (moveOrders.newGoal);
+	}
 
-	void setMoveNewGoal(bool state) { moveOrders.newGoal = state; }
+	void setMoveNewGoal(bool state)
+	{
+		moveOrders.newGoal = state;
+	}
 
-	MovePathPtr getMovePath(int32_t which) { return (moveOrders.path[which]); }
+	MovePathPtr getMovePath(int32_t which)
+	{
+		return (moveOrders.path[which]);
+	}
 
 	MovePathPtr getMovePath(void);
 
-	void setMoveGoalObjectPos(Stuff::Vector3D pos) { moveOrders.goalObjectPosition = pos; }
+	void setMoveGoalObjectPos(Stuff::Vector3D pos)
+	{
+		moveOrders.goalObjectPosition = pos;
+	}
 
-	Stuff::Vector3D getMoveGoalObjectPos(void) { return (moveOrders.goalObjectPosition); }
+	Stuff::Vector3D getMoveGoalObjectPos(void)
+	{
+		return (moveOrders.goalObjectPosition);
+	}
 
-	void setMoveRun(bool run) { moveOrders.run = run; }
+	void setMoveRun(bool run)
+	{
+		moveOrders.run = run;
+	}
 
-	bool getMoveRun(void) { return (moveOrders.run); }
+	bool getMoveRun(void)
+	{
+		return (moveOrders.run);
+	}
 
-	void setMovePathRequest(std::unique_ptr<PathQueueRec> rec) { movePathRequest = rec; }
+	void setMovePathRequest(std::unique_ptr<PathQueueRec> rec)
+	{
+		movePathRequest = rec;
+	}
 
-	std::unique_ptr<PathQueueRec> getMovePathRequest(void) { return (movePathRequest); }
+	std::unique_ptr<PathQueueRec> getMovePathRequest(void)
+	{
+		return (movePathRequest);
+	}
 
 	void pausePath(void);
 
@@ -1379,47 +1644,104 @@ public:
 
 	void rethinkPath(uint32_t strategy);
 
-	void setMoveState(int32_t state) { moveOrders.moveState = state; }
+	void setMoveState(int32_t state)
+	{
+		moveOrders.moveState = state;
+	}
 
-	int32_t getMoveState(void) { return (moveOrders.moveState); }
+	int32_t getMoveState(void)
+	{
+		return (moveOrders.moveState);
+	}
 
-	void setMoveTimeOfLastStep(float t) { moveOrders.timeOfLastStep = t; }
+	void setMoveTimeOfLastStep(float t)
+	{
+		moveOrders.timeOfLastStep = t;
+	}
 
-	int32_t getMoveTimeOfLastStep(void) { return (moveOrders.timeOfLastStep); }
+	int32_t getMoveTimeOfLastStep(void)
+	{
+		return (moveOrders.timeOfLastStep);
+	}
 
-	void setMoveStateGoal(int32_t state) { moveOrders.moveStateGoal = state; }
+	void setMoveStateGoal(int32_t state)
+	{
+		moveOrders.moveStateGoal = state;
+	}
 
-	int32_t getMoveStateGoal(void) { return (moveOrders.moveStateGoal); }
+	int32_t getMoveStateGoal(void)
+	{
+		return (moveOrders.moveStateGoal);
+	}
 
-	void setMoveTwisting(bool set) { moveOrders.twisting = set; }
+	void setMoveTwisting(bool set)
+	{
+		moveOrders.twisting = set;
+	}
 
-	bool getMoveTwisting(void) { return (moveOrders.twisting); }
+	bool getMoveTwisting(void)
+	{
+		return (moveOrders.twisting);
+	}
 
-	void setMoveYieldTime(float time) { moveOrders.yieldTime = time; }
+	void setMoveYieldTime(float time)
+	{
+		moveOrders.yieldTime = time;
+	}
 
-	void setMoveYieldState(int32_t state) { moveOrders.yieldState = state; }
+	void setMoveYieldState(int32_t state)
+	{
+		moveOrders.yieldState = state;
+	}
 
-	float getMoveYieldTime(void) { return (moveOrders.yieldTime); }
+	float getMoveYieldTime(void)
+	{
+		return (moveOrders.yieldTime);
+	}
 
-	int32_t getMoveYieldState(void) { return (moveOrders.yieldState); }
+	int32_t getMoveYieldState(void)
+	{
+		return (moveOrders.yieldState);
+	}
 
-	bool isYielding(void) { return (moveOrders.yieldTime > -1.0); }
+	bool isYielding(void)
+	{
+		return (moveOrders.yieldTime > -1.0);
+	}
 
-	void setMoveWaitForPointTime(float time) { moveOrders.waitForPointTime = time; }
+	void setMoveWaitForPointTime(float time)
+	{
+		moveOrders.waitForPointTime = time;
+	}
 
-	float getMoveWaitForPointTime(void) { return (moveOrders.waitForPointTime); }
+	float getMoveWaitForPointTime(void)
+	{
+		return (moveOrders.waitForPointTime);
+	}
 
-	bool isWaitingForPoint(void) { return (moveOrders.waitForPointTime > -1.0); }
+	bool isWaitingForPoint(void)
+	{
+		return (moveOrders.waitForPointTime > -1.0);
+	}
 
 	float getMoveDistanceLeft(void);
 
 	bool isJumping(Stuff::Vector3D* jumpGoal = nullptr);
 
-	void setWillHelp(bool setting) { willHelp = setting; }
+	void setWillHelp(bool setting)
+	{
+		willHelp = setting;
+	}
 
-	bool getWillHelp(void) { return (willHelp); }
+	bool getWillHelp(void)
+	{
+		return (willHelp);
+	}
 
-	int32_t getMovePathType(void) { return (moveOrders.pathType); }
+	int32_t getMovePathType(void)
+	{
+		return (moveOrders.pathType);
+	}
 
 	void setMoveWayPath(WayPathPtr wayPath, bool patrol = false);
 
@@ -1427,11 +1749,20 @@ public:
 
 	void setMoveGlobalPath(GlobalPathStepPtr path, int32_t numSteps);
 
-	int32_t getMoveNumGlobalSteps(void) { return (moveOrders.numGlobalSteps); }
+	int32_t getMoveNumGlobalSteps(void)
+	{
+		return (moveOrders.numGlobalSteps);
+	}
 
-	int32_t getMoveCurGlobalStep(void) { return (moveOrders.curGlobalStep); }
+	int32_t getMoveCurGlobalStep(void)
+	{
+		return (moveOrders.curGlobalStep);
+	}
 
-	int32_t getMovePathGlobalStep(void) { return (moveOrders.path[0]->globalStep); }
+	int32_t getMovePathGlobalStep(void)
+	{
+		return (moveOrders.path[0]->globalStep);
+	}
 
 	void requestMovePath(int32_t selectionindex, uint32_t moveparams, int32_t source);
 
@@ -1456,13 +1787,25 @@ public:
 	//--------------
 	// Attack Orders
 
-	void setAttackOrigin(int32_t origin) { attackOrders.origin = origin; }
+	void setAttackOrigin(int32_t origin)
+	{
+		attackOrders.origin = origin;
+	}
 
-	int32_t getAttackOrigin(void) { return (attackOrders.origin); }
+	int32_t getAttackOrigin(void)
+	{
+		return (attackOrders.origin);
+	}
 
-	void setAttackType(int32_t type) { attackOrders.type = type; }
+	void setAttackType(int32_t type)
+	{
+		attackOrders.type = type;
+	}
 
-	int32_t getAttackType(void) { return (attackOrders.type); }
+	int32_t getAttackType(void)
+	{
+		return (attackOrders.type);
+	}
 
 	void changeAttackRange(int32_t newRange);
 
@@ -1472,27 +1815,54 @@ public:
 
 	void setLastTarget(GameObjectPtr target, bool obliterate = false, bool conserveAmmo = 0);
 
-	float getLastTargetTime(void) { return (lastTargetTime); }
+	float getLastTargetTime(void)
+	{
+		return (lastTargetTime);
+	}
 
 	GameObjectPtr getAttackTarget(void);
 
-	GameObjectPtr getCurrentTarget(void) { return (getLastTarget()); }
+	GameObjectPtr getCurrentTarget(void)
+	{
+		return (getLastTarget());
+	}
 
 	void setCurrentTarget(GameObjectPtr target);
 
-	void setAttackPursuit(bool pursue) { attackOrders.pursue = pursue; }
+	void setAttackPursuit(bool pursue)
+	{
+		attackOrders.pursue = pursue;
+	}
 
-	bool getAttackPursuit(void) { return (attackOrders.pursue); }
+	bool getAttackPursuit(void)
+	{
+		return (attackOrders.pursue);
+	}
 
-	void setAttackAimLocation(int32_t location) { attackOrders.aimLocation = location; }
+	void setAttackAimLocation(int32_t location)
+	{
+		attackOrders.aimLocation = location;
+	}
 
-	int32_t getAttackAimLocation(void) { return (attackOrders.aimLocation); }
+	int32_t getAttackAimLocation(void)
+	{
+		return (attackOrders.aimLocation);
+	}
 
-	void setAttackTargetPoint(Stuff::Vector3D location) { attackOrders.targetpoint = location; }
+	void setAttackTargetPoint(Stuff::Vector3D location)
+	{
+		attackOrders.targetpoint = location;
+	}
 
-	Stuff::Vector3D getAttackTargetPoint(void) { return (attackOrders.targetpoint); }
+	Stuff::Vector3D getAttackTargetPoint(void)
+	{
+		return (attackOrders.targetpoint);
+	}
 
-	float getAttackTargetTime(void) { return (attackOrders.targetTime); }
+	float getAttackTargetTime(void)
+	{
+		return (attackOrders.targetTime);
+	}
 
 	GameObjectPtr getAttackTargetPosition(Stuff::Vector3D& pos);
 
@@ -1503,29 +1873,65 @@ public:
 	//-----------------
 	// Situation Orders
 
-	int32_t getSituationMode(void) { return (situationOrders.mode); }
+	int32_t getSituationMode(void)
+	{
+		return (situationOrders.mode);
+	}
 
-	void setSituationMode(int32_t mode) { situationOrders.mode = mode; }
+	void setSituationMode(int32_t mode)
+	{
+		situationOrders.mode = mode;
+	}
 
-	float getSituationDefFormation(void) { return (situationOrders.defFormation); }
+	float getSituationDefFormation(void)
+	{
+		return (situationOrders.defFormation);
+	}
 
-	void setSituationDefFormation(float distance) { situationOrders.defFormation = distance; }
+	void setSituationDefFormation(float distance)
+	{
+		situationOrders.defFormation = distance;
+	}
 
-	float getSituationCurFormation(void) { return (situationOrders.curFormation); }
+	float getSituationCurFormation(void)
+	{
+		return (situationOrders.curFormation);
+	}
 
-	void setSituationCurFormation(float distance) { situationOrders.curFormation = distance; }
+	void setSituationCurFormation(float distance)
+	{
+		situationOrders.curFormation = distance;
+	}
 
-	bool getSituationOpenFire(void) { return (situationOrders.openFire); }
+	bool getSituationOpenFire(void)
+	{
+		return (situationOrders.openFire);
+	}
 
-	void setSituationOpenFire(bool openFire) { situationOrders.openFire = openFire; }
+	void setSituationOpenFire(bool openFire)
+	{
+		situationOrders.openFire = openFire;
+	}
 
-	float getSituationFireRange(void) { return (situationOrders.fireRange); }
+	float getSituationFireRange(void)
+	{
+		return (situationOrders.fireRange);
+	}
 
-	void setSituationFireRange(float range) { situationOrders.fireRange = range; }
+	void setSituationFireRange(float range)
+	{
+		situationOrders.fireRange = range;
+	}
 
-	float getSituationFireOdds(void) { return (situationOrders.fireOdds); }
+	float getSituationFireOdds(void)
+	{
+		return (situationOrders.fireOdds);
+	}
 
-	void setSituationFireOdds(float odds) { situationOrders.fireOdds = odds; }
+	void setSituationFireOdds(float odds)
+	{
+		situationOrders.fireOdds = odds;
+	}
 
 	GameObjectPtr getSituationGuardObject(void);
 
@@ -1533,11 +1939,20 @@ public:
 
 	uint32_t getSituationGuardObjectPartId(void);
 
-	void setMessagePlaying() { isPlayingMsg = true; }
+	void setMessagePlaying()
+	{
+		isPlayingMsg = true;
+	}
 
-	void clearMessagePlaying() { isPlayingMsg = false; }
+	void clearMessagePlaying()
+	{
+		isPlayingMsg = false;
+	}
 
-	bool getMessagePlaying() { return isPlayingMsg; }
+	bool getMessagePlaying()
+	{
+		return isPlayingMsg;
+	}
 
 #if 0
 	//-------------
@@ -1561,7 +1976,7 @@ public:
 	int32_t calcWeaponsStatus(
 		GameObjectPtr target, int32_t* weaponList, _In_ DirectX::XMFLOAT3& targetpoint);
 
-	void printWeaponsStatus(const std::wstring_view& s);
+	void printWeaponsStatus(std::wstring_view s);
 
 	int32_t combatDecisionTree(void);
 
@@ -1607,13 +2022,16 @@ public:
 
 	int32_t mainDecisionTree(void);
 
-	void setDebugFlags(uint32_t flags) { debugFlags = flags; }
+	void setDebugFlags(uint32_t flags)
+	{
+		debugFlags = flags;
+	}
 
 	void setDebugFlag(uint32_t flag, bool on);
 
 	bool getDebugFlag(uint32_t flag);
 
-	void debugPrint(const std::wstring_view& s, bool debugMode = false);
+	void debugPrint(std::wstring_view s, bool debugMode = false);
 
 	void debugOrders(void);
 
@@ -1636,7 +2054,10 @@ public:
 	//--------------
 	// CORE COMMANDS
 
-	int32_t getCoreScanTargetWID(void) { return (coreScanTargetWID); }
+	int32_t getCoreScanTargetWID(void)
+	{
+		return (coreScanTargetWID);
+	}
 
 	int32_t coreMoveTo(Stuff::Vector3D location, uint32_t params);
 
@@ -1783,9 +2204,9 @@ public:
 
 	bool isCloseToFirstTacOrder(Stuff::Vector3D& pos);
 
-	BldgAppearance* getWayPointMarker(const Stuff::Vector3D& pos, const std::wstring_view& name);
+	BldgAppearance* getWayPointMarker(const Stuff::Vector3D& pos, std::wstring_view name);
 
-	void setDebugString(int32_t stringNum, const std::wstring_view& s)
+	void setDebugString(int32_t stringNum, std::wstring_view s)
 	{
 		if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
 			if (s == nullptr)
@@ -1794,7 +2215,7 @@ public:
 				strncpy(debugStrings[stringNum], s, MAXLEN_PILOT_DEBUG_STRING - 1);
 	}
 
-	const std::wstring_view& getDebugString(int32_t stringNum)
+	std::wstring_view getDebugString(int32_t stringNum)
 	{
 		if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
 			return (debugStrings[stringNum]);
@@ -1825,12 +2246,10 @@ public:
 
 extern MovePathManagerPtr PathManager;
 
-void
-SeedRandomNumbers(void);
+void SeedRandomNumbers(void);
 int32_t
 RandomNumber(int32_t range);
-bool
-RollDice(int32_t percent);
+bool RollDice(int32_t percent);
 int32_t
 SignedRandomNumber(int32_t range);
 int32_t

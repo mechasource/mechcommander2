@@ -6,7 +6,8 @@
 
 #include "mlr/mlrlightmap.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //###########################    MLRLightMap    ###############################
@@ -25,8 +26,7 @@ std::vector<MLRClippingState>* clippingStates;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLightMap::InitializeClass()
+void MLRLightMap::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -56,8 +56,7 @@ MLRLightMap::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLightMap::TerminateClass()
+void MLRLightMap::TerminateClass()
 {
 	clipBuffer[1].Destroy();
 	clipBuffer[0].Destroy();
@@ -87,8 +86,8 @@ MLRLightMap::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLightMap::MLRLightMap(MLRTexture* tex) :
-	RegisteredClass(DefaultData)
+MLRLightMap::MLRLightMap(MLRTexture* tex)
+	: RegisteredClass(DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	state.SetTextureHandle(tex->GetTextureHandle());
@@ -117,8 +116,7 @@ MLRLightMap::~MLRLightMap()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLightMap::SetDrawData(
+void MLRLightMap::SetDrawData(
 	GOSVertexPool* vp, Stuff::Matrix4D* mat, MLRClippingState& clippingState, MLRState& _state)
 {
 	vertexPool = vp;
@@ -133,8 +131,7 @@ MLRLightMap::SetDrawData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLightMap::TestInstance()
+void MLRLightMap::TestInstance()
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 	Check_Object(stream);
@@ -142,8 +139,7 @@ MLRLightMap::TestInstance()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLightMap::DrawLightMaps(MLRSorter* sorter)
+void MLRLightMap::DrawLightMaps(MLRSorter* sorter)
 {
 	Check_Object(stream);
 	PVOIDptr, *end = stream->GetPointer();

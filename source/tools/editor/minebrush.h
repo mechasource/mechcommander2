@@ -14,7 +14,6 @@ MineBrush.h			: Interface for the MineBrush component.
 //#include "action.h"
 //#include "editorobjects.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 MineBrush:
@@ -22,8 +21,11 @@ MineBrush:
 class MineBrush : public Brush
 {
 public:
-	MineBrush() { pAction = nullptr; }
-	virtual ~MineBrush() {}
+	MineBrush()
+	{
+		pAction = nullptr;
+	}
+	virtual ~MineBrush() { }
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
 	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
@@ -36,7 +38,7 @@ private:
 	class MineAction : public Action
 	{
 	public:
-		virtual ~MineAction() {}
+		virtual ~MineAction() { }
 		virtual bool redo(void);
 		virtual bool undo(void);
 

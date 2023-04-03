@@ -30,8 +30,8 @@ public:
 	int32_t endcolour;
 	uint8_t* fadeTable;
 
-	LineElement(void) :
-		Element()
+	LineElement(void)
+		: Element()
 	{
 		startPos.x = startPos.y = startPos.z = startPos.w = 0.0f;
 		endPos.x = endPos.y = endPos.z = endPos.w = 0.0f;

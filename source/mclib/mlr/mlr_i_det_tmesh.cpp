@@ -8,8 +8,8 @@
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_det_tmesh.h"
 
-namespace MidLevelRenderer {
-
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -27,8 +27,7 @@ MLR_I_DeT_TMesh::ClassData* MLR_I_DeT_TMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DeT_TMesh::InitializeClass()
+void MLR_I_DeT_TMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -43,8 +42,7 @@ MLR_I_DeT_TMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DeT_TMesh::TerminateClass()
+void MLR_I_DeT_TMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -57,8 +55,8 @@ MLR_I_DeT_TMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLR_I_TMesh(class_data, stream, version)
+MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLR_I_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -81,8 +79,8 @@ MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data, std::iostream stream, ui
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data) :
-	MLR_I_TMesh(class_data)
+MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data)
+	: MLR_I_TMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -95,8 +93,7 @@ MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DeT_TMesh::Copy(
+void MLR_I_DeT_TMesh::Copy(
 	MLR_I_TMesh* tMesh, MLRState detailState, float xOff, float yOff, float xFac, float yFac)
 {
 	(void)yOff;
@@ -152,8 +149,7 @@ MLR_I_DeT_TMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DeT_TMesh::Save(std::iostream stream)
+void MLR_I_DeT_TMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -165,8 +161,7 @@ MLR_I_DeT_TMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DeT_TMesh::SetDetailData(
+void MLR_I_DeT_TMesh::SetDetailData(
 	float xOff, float yOff, float xFac, float yFac, float detailStart, float detailEnd
 
 )
@@ -203,8 +198,7 @@ MLR_I_DeT_TMesh::GetNumPasses(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DeT_TMesh::TestInstance(void) const
+void MLR_I_DeT_TMesh::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

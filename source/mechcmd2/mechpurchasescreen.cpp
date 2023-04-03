@@ -27,8 +27,9 @@ MechPurchaseScreen* MechPurchaseScreen::s_instance = nullptr;
 
 //-------------------------------------------------------------------------------------------------
 
-MechPurchaseScreen::MechPurchaseScreen() :
-	inventoryListBox(1, 0), variantListBox(0, 0)
+MechPurchaseScreen::MechPurchaseScreen()
+	: inventoryListBox(1, 0)
+	, variantListBox(0, 0)
 {
 	status = RUNNING;
 	gosASSERT(!s_instance);
@@ -75,8 +76,7 @@ MechPurchaseScreen::init(FitIniFile& file)
 }
 //-------------------------------------------------------------------------------------------------
 
-void
-MechPurchaseScreen::update()
+void MechPurchaseScreen::update()
 {
 	if (!MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
@@ -176,8 +176,7 @@ MechPurchaseScreen::update()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-MechPurchaseScreen::render(int32_t xOffset, int32_t yOffset)
+void MechPurchaseScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	if (!xOffset && !yOffset)
 	{
@@ -203,8 +202,7 @@ MechPurchaseScreen::render(int32_t xOffset, int32_t yOffset)
 
 //-------------------------------------------------------------------------------------------------
 
-void
-MechPurchaseScreen::begin()
+void MechPurchaseScreen::begin()
 {
 	variantListBox.removeAllItems(true);
 	inventoryListBox.removeAllItems(true);
@@ -270,8 +268,7 @@ MechPurchaseScreen::begin()
 }
 //-------------------------------------------------------------------------------------------------
 
-void
-MechPurchaseScreen::end()
+void MechPurchaseScreen::end()
 {
 	if (!acceptPressed && status != MAINMENU)
 	{
@@ -298,8 +295,7 @@ MechPurchaseScreen::end()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-MechPurchaseScreen::setMech(LogisticsMech* pMech, bool FromLB)
+void MechPurchaseScreen::setMech(LogisticsMech* pMech, bool FromLB)
 {
 	if (status == RUNNING)
 	{
@@ -319,8 +315,7 @@ MechPurchaseScreen::setMech(LogisticsMech* pMech, bool FromLB)
 
 //-------------------------------------------------------------------------------------------------
 
-void
-MechPurchaseScreen::beginDrag(LogisticsMech* pMech)
+void MechPurchaseScreen::beginDrag(LogisticsMech* pMech)
 {
 	if (status != RUNNING)
 		return;
@@ -341,8 +336,7 @@ MechPurchaseScreen::beginDrag(LogisticsMech* pMech)
 	}
 }
 
-void
-MechPurchaseScreen::endDrag()
+void MechPurchaseScreen::endDrag()
 {
 	if (pDragMech)
 	{
@@ -415,8 +409,7 @@ MechPurchaseScreen::handleMessage(uint32_t what, uint32_t who)
 
 //-------------------------------------------------------------------------------------------------
 
-void
-MechPurchaseScreen::addSelectedMech()
+void MechPurchaseScreen::addSelectedMech()
 {
 	LogisticsMech* pMech = variantListBox.getCurrentMech();
 	if (pMech)
@@ -432,8 +425,7 @@ MechPurchaseScreen::addSelectedMech()
 	}
 }
 
-void
-MechPurchaseScreen::addMech(LogisticsMech* pMech)
+void MechPurchaseScreen::addMech(LogisticsMech* pMech)
 {
 	LogisticsData::instance->purchaseMech(pMech->getVariant());
 	for (size_t i = 0; i < inventoryListBox.GetItemCount(); i++)
@@ -449,8 +441,7 @@ MechPurchaseScreen::addMech(LogisticsMech* pMech)
 
 //-------------------------------------------------------------------------------------------------
 
-void
-MechPurchaseScreen::removeSelectedMech()
+void MechPurchaseScreen::removeSelectedMech()
 {
 	LogisticsMech* pMech = inventoryListBox.getCurrentMech();
 	if (pMech)
@@ -459,8 +450,7 @@ MechPurchaseScreen::removeSelectedMech()
 	}
 }
 
-void
-MechPurchaseScreen::removeMech(LogisticsMech* pMech)
+void MechPurchaseScreen::removeMech(LogisticsMech* pMech)
 {
 	int32_t index = inventoryListBox.GetSelectedItem();
 	aListItem* pItem = inventoryListBox.GetItem(index);
@@ -477,8 +467,7 @@ MechPurchaseScreen::removeMech(LogisticsMech* pMech)
 		inventoryListBox.SelectItem(0);
 }
 
-bool
-MechPurchaseScreen::selectFirstBuyableMech()
+bool MechPurchaseScreen::selectFirstBuyableMech()
 {
 	for (size_t i = 0; i < variantListBox.GetItemCount(); i++)
 	{

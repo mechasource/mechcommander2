@@ -92,8 +92,8 @@ int32_t Terrain::realVerticesMapSide = 0;
 Stuff::Vector3D Terrain::mapTopLeft3d; // Calced during load.
 
 UserHeapPtr Terrain::terrainHeap = nullptr; // Setup at load time.
-const std::wstring_view& Terrain::terrainName = nullptr;
-const std::wstring_view& Terrain::colorMapName = nullptr;
+std::wstring_view Terrain::terrainName = nullptr;
+std::wstring_view Terrain::colorMapName = nullptr;
 
 int32_t Terrain::numObjBlocks = 0;
 ObjBlockInfo* Terrain::objBlockInfo = nullptr;
@@ -159,8 +159,7 @@ extern bool justResaveAllMaps;
 //---------------------------------------------------------------------------
 // These are used to determine what terrain objects to process.
 // They date back to GenCon 1996!!
-void
-addBlockToList(int32_t blockNum)
+void addBlockToList(int32_t blockNum)
 {
 	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	for (size_t i = 0; i < totalBlocks; i++)
@@ -178,8 +177,7 @@ addBlockToList(int32_t blockNum)
 }
 
 //---------------------------------------------------------------------------
-void
-addMoverToList(int32_t blockNum)
+void addMoverToList(int32_t blockNum)
 {
 	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	for (size_t i = 0; i < totalBlocks; i++)
@@ -197,8 +195,7 @@ addMoverToList(int32_t blockNum)
 }
 
 //---------------------------------------------------------------------------
-void
-clearList(void)
+void clearList(void)
 {
 	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	blockMemSize = totalBlocks * sizeof(int32_t);
@@ -207,8 +204,7 @@ clearList(void)
 }
 
 //---------------------------------------------------------------------------
-void
-clearMoverList(void)
+void clearMoverList(void)
 {
 	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	blockMemSize = totalBlocks * sizeof(int32_t);
@@ -220,8 +216,7 @@ clearMoverList(void)
 
 //---------------------------------------------------------------------------
 // class Terrain
-void
-Terrain::init(void)
+void Terrain::init(void)
 {
 	vertexList = nullptr;
 	numberVertices = 0;
@@ -230,8 +225,7 @@ Terrain::init(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::initMapCellArrays(void)
+void Terrain::initMapCellArrays(void)
 {
 	if (!tileRowToWorldCoord)
 	{
@@ -300,8 +294,7 @@ Terrain::init(PacketFile* pakFile, int32_t whichPacket, uint32_t visibleVertices
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::getcolourMapName(FitIniFile* file)
+void Terrain::getcolourMapName(FitIniFile* file)
 {
 	if (file)
 	{
@@ -320,8 +313,7 @@ Terrain::getcolourMapName(FitIniFile* file)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::setcolourMapName(const std::wstring_view& mapName)
+void Terrain::setcolourMapName(std::wstring_view mapName)
 {
 	if (colorMapName)
 	{
@@ -336,8 +328,7 @@ Terrain::setcolourMapName(const std::wstring_view& mapName)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::savecolourMapName(FitIniFile* file)
+void Terrain::savecolourMapName(FitIniFile* file)
 {
 	if (file && colorMapName)
 	{
@@ -481,8 +472,7 @@ Terrain::init(uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_t visible
 	return NO_ERROR;
 }
 
-void
-Terrain::resetVisibleVertices(int32_t maxVisibleVertices)
+void Terrain::resetVisibleVertices(int32_t maxVisibleVertices)
 {
 	terrainHeap->Free(vertexList);
 	vertexList = nullptr;
@@ -506,8 +496,7 @@ Terrain::resetVisibleVertices(int32_t maxVisibleVertices)
 }
 
 //---------------------------------------------------------------------------
-bool
-Terrain::IsValidTerrainPosition(Stuff::Vector3D pos)
+bool Terrain::IsValidTerrainPosition(Stuff::Vector3D pos)
 {
 	float metersCheck = (Terrain::worldUnitsMapSide / 2.0f);
 	if ((pos.x > -metersCheck) && (pos.x < metersCheck) && (pos.y > -metersCheck) && (pos.y < metersCheck))
@@ -518,8 +507,7 @@ Terrain::IsValidTerrainPosition(Stuff::Vector3D pos)
 }
 
 //---------------------------------------------------------------------------
-bool
-Terrain::IsEditorSelectTerrainPosition(Stuff::Vector3D pos)
+bool Terrain::IsEditorSelectTerrainPosition(Stuff::Vector3D pos)
 {
 	float metersCheck = (Terrain::worldUnitsMapSide / 2.0f) - Terrain::worldUnitsPerVertex;
 	if ((pos.x > -metersCheck) && (pos.x < metersCheck) && (pos.y > -metersCheck) && (pos.y < metersCheck))
@@ -530,8 +518,7 @@ Terrain::IsEditorSelectTerrainPosition(Stuff::Vector3D pos)
 }
 
 //---------------------------------------------------------------------------
-bool
-Terrain::IsGameSelectTerrainPosition(Stuff::Vector3D pos)
+bool Terrain::IsGameSelectTerrainPosition(Stuff::Vector3D pos)
 {
 	float metersCheck = (Terrain::worldUnitsMapSide / 2.0f) - (Terrain::worldUnitsPerVertex * 2.0f);
 	if ((pos.x > -metersCheck) && (pos.x < metersCheck) && (pos.y > -metersCheck) && (pos.y < metersCheck))
@@ -542,16 +529,14 @@ Terrain::IsGameSelectTerrainPosition(Stuff::Vector3D pos)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::purgeTransitions(void)
+void Terrain::purgeTransitions(void)
 {
 	terrainTextures->purgeTransitions();
 	mapData->calcTransitions();
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::destroy(void)
+void Terrain::destroy(void)
 {
 	if (terrainTextures)
 	{
@@ -694,22 +679,19 @@ Terrain::update(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::setOverlayTile(int32_t block, int32_t vertex, int32_t offset)
+void Terrain::setOverlayTile(int32_t block, int32_t vertex, int32_t offset)
 {
 	mapData->setOverlayTile(block, vertex, offset);
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::setOverlay(int32_t tileR, int32_t tileC, Overlays type, uint32_t offset)
+void Terrain::setOverlay(int32_t tileR, int32_t tileC, Overlays type, uint32_t offset)
 {
 	mapData->setOverlay(tileR, tileC, type, offset);
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::setTerrain(int32_t tileR, int32_t tileC, int32_t terrainType)
+void Terrain::setTerrain(int32_t tileR, int32_t tileC, int32_t terrainType)
 {
 	mapData->setTerrain(tileR, tileC, terrainType);
 }
@@ -722,8 +704,7 @@ Terrain::getTerrain(int32_t tileR, int32_t tileC)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::calcWater(float waterDepth, float waterShallowDepth, float waterAlphaDepth)
+void Terrain::calcWater(float waterDepth, float waterShallowDepth, float waterAlphaDepth)
 {
 	mapData->calcWater(waterDepth, waterShallowDepth, waterAlphaDepth);
 }
@@ -736,23 +717,20 @@ Terrain::getOverlayTile(int32_t block, int32_t vertex)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::getOverlay(int32_t tileR, int32_t tileC, enum Overlays& type, uint32_t& Offset)
+void Terrain::getOverlay(int32_t tileR, int32_t tileC, enum Overlays& type, uint32_t& Offset)
 {
 	mapData->getOverlay(tileR, tileC, type, Offset);
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::setVertexheight(int32_t VertexIndex, float Val)
+void Terrain::setVertexheight(int32_t VertexIndex, float Val)
 {
 	if (VertexIndex > -1 && VertexIndex < realVerticesMapSide * realVerticesMapSide)
 		mapData->setVertexheight(VertexIndex, Val);
 }
 
 //---------------------------------------------------------------------------
-float
-Terrain::getVertexheight(int32_t VertexIndex)
+float Terrain::getVertexheight(int32_t VertexIndex)
 {
 	if (VertexIndex > -1 && VertexIndex < realVerticesMapSide * realVerticesMapSide)
 		return mapData->getVertexheight(VertexIndex);
@@ -760,8 +738,7 @@ Terrain::getVertexheight(int32_t VertexIndex)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::render(void)
+void Terrain::render(void)
 {
 	//-----------------------------------
 	// render the cloud layer
@@ -808,8 +785,7 @@ Terrain::render(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::renderWater(void)
+void Terrain::renderWater(void)
 {
 	//-----------------------------------
 	// Draw resulting terrain quads
@@ -834,8 +810,7 @@ float mostZ = -1.0f, mostW = -1.0;
 float leastWY = 0.0f, mostWY = 0.0f;
 extern bool InEditor;
 //---------------------------------------------------------------------------
-void
-Terrain::geometry(void)
+void Terrain::geometry(void)
 {
 	//---------------------------------------------------------------------
 	leastZ = 1.0f;
@@ -1027,16 +1002,14 @@ Terrain::geometry(void)
 }
 
 //---------------------------------------------------------------------------
-float
-Terrain::getTerrainElevation(Stuff::Vector3D& position)
+float Terrain::getTerrainElevation(Stuff::Vector3D& position)
 {
 	float result = mapData->terrainElevation(position);
 	return (result);
 }
 
 //---------------------------------------------------------------------------
-float
-Terrain::getTerrainElevation(int32_t tileR, int32_t tileC)
+float Terrain::getTerrainElevation(int32_t tileR, int32_t tileC)
 {
 	return mapData->terrainElevation(tileR, tileC);
 }
@@ -1049,16 +1022,14 @@ Terrain::getTexture(int32_t tileR, int32_t tileC)
 }
 
 //---------------------------------------------------------------------------
-float
-Terrain::getTerrainAngle(Stuff::Vector3D& position, Stuff::Vector3D* normal)
+float Terrain::getTerrainAngle(Stuff::Vector3D& position, Stuff::Vector3D* normal)
 {
 	float result = mapData->terrainAngle(position, normal);
 	return (result);
 }
 
 //---------------------------------------------------------------------------
-float
-Terrain::getTerrainLight(Stuff::Vector3D& position)
+float Terrain::getTerrainLight(Stuff::Vector3D& position)
 {
 	float result = mapData->terrainLight(position);
 	return (result);
@@ -1075,8 +1046,7 @@ Terrain::getTerrainNormal(Stuff::Vector3D& position)
 //---------------------------------------------------------------------------
 // Uses a simple value to mark radius.  It never changes now!!
 // First value in range table!!
-void
-Terrain::markSeen(Stuff::Vector3D& looker, byte who, float specialUnitExpand)
+void Terrain::markSeen(Stuff::Vector3D& looker, byte who, float specialUnitExpand)
 {
 	return;
 	/*		Not needed anymore.  Real LOS now.
@@ -1130,8 +1100,7 @@ Terrain::markSeen(Stuff::Vector3D& looker, byte who, float specialUnitExpand)
 
 //---------------------------------------------------------------------------
 // Uses dist passed in as radius.
-void
-Terrain::markRadiusSeen(Stuff::Vector3D& looker, float dist, byte who)
+void Terrain::markRadiusSeen(Stuff::Vector3D& looker, float dist, byte who)
 {
 	return;
 	// Not needed.  Real LOS now!
@@ -1169,32 +1138,28 @@ Terrain::markRadiusSeen(Stuff::Vector3D& looker, float dist, byte who)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::setObjBlockActive(int32_t blockNum, bool active)
+void Terrain::setObjBlockActive(int32_t blockNum, bool active)
 {
 	if ((blockNum >= 0) && (blockNum < numObjBlocks))
 		objBlockInfo[blockNum].active = active;
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::clearObjBlocksActive(void)
+void Terrain::clearObjBlocksActive(void)
 {
 	for (size_t i = 0; i < numObjBlocks; i++)
 		setObjBlockActive(i, false);
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::setObjVertexActive(int32_t vertexNum, bool active)
+void Terrain::setObjVertexActive(int32_t vertexNum, bool active)
 {
 	if ((vertexNum >= 0) && (vertexNum < (realVerticesMapSide * realVerticesMapSide)))
 		objVertexActive[vertexNum] = active;
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::clearObjVerticesActive(void)
+void Terrain::clearObjVerticesActive(void)
 {
 	memset(objVertexActive, 0, sizeof(bool) * realVerticesMapSide * realVerticesMapSide);
 }
@@ -1216,8 +1181,7 @@ Terrain::save(PacketFile* fileName, int32_t whichPacket, bool quickSave)
 }
 
 //-----------------------------------------------------
-bool
-Terrain::save(FitIniFile* fitFile)
+bool Terrain::save(FitIniFile* fitFile)
 {
 	// write out the water info
 #ifdef _DEBUG
@@ -1247,8 +1211,7 @@ Terrain::save(FitIniFile* fitFile)
 	return true;
 }
 
-bool
-Terrain::load(FitIniFile* fitFile)
+bool Terrain::load(FitIniFile* fitFile)
 {
 	// write out the water info
 	int32_t result = fitFile->seekBlock("Water");
@@ -1279,15 +1242,13 @@ Terrain::load(FitIniFile* fitFile)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::unselectAll()
+void Terrain::unselectAll()
 {
 	mapData->unselectAll();
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::selectVerticesInRect(
+void Terrain::selectVerticesInRect(
 	const Stuff::Vector4D& topLeft, const Stuff::Vector4D& bottomRight, bool bToggle)
 {
 	Stuff::Vector3D worldPos;
@@ -1331,22 +1292,19 @@ Terrain::selectVerticesInRect(
 }
 
 //---------------------------------------------------------------------------
-bool
-Terrain::hasSelection()
+bool Terrain::hasSelection()
 {
 	return mapData->selection();
 }
 
 //---------------------------------------------------------------------------
-bool
-Terrain::isVertexSelected(int32_t tileR, int32_t tileC)
+bool Terrain::isVertexSelected(int32_t tileR, int32_t tileC)
 {
 	return mapData->isVertexSelected(tileR, tileC);
 }
 
 //---------------------------------------------------------------------------
-bool
-Terrain::selectVertex(int32_t tileR, int32_t tileC, bool bSelect)
+bool Terrain::selectVertex(int32_t tileR, int32_t tileC, bool bSelect)
 {
 	// We never use the return value so just send back false.
 	if ((tileR <= -1) || (tileR >= realVerticesMapSide))
@@ -1358,8 +1316,7 @@ Terrain::selectVertex(int32_t tileR, int32_t tileC, bool bSelect)
 }
 
 //---------------------------------------------------------------------------
-float
-Terrain::getHighestVertex(int32_t& tileR, int32_t& tileC)
+float Terrain::getHighestVertex(int32_t& tileR, int32_t& tileC)
 {
 	float highest = -9999999.; // an absurdly small number
 	for (size_t i = 0; i < realVerticesMapSide * realVerticesMapSide; ++i)
@@ -1376,8 +1333,7 @@ Terrain::getHighestVertex(int32_t& tileR, int32_t& tileC)
 }
 
 //---------------------------------------------------------------------------
-float
-Terrain::getLowestVertex(int32_t& tileR, int32_t& tileC)
+float Terrain::getLowestVertex(int32_t& tileR, int32_t& tileC)
 {
 	float lowest = 9999999.; // an absurdly big number
 	for (size_t i = 0; i < realVerticesMapSide * realVerticesMapSide; ++i)
@@ -1394,8 +1350,7 @@ Terrain::getLowestVertex(int32_t& tileR, int32_t& tileC)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::setUserSettings(int32_t min, int32_t max, int32_t terrainType)
+void Terrain::setUserSettings(int32_t min, int32_t max, int32_t terrainType)
 {
 	userMin = min;
 	userMax = max;
@@ -1403,8 +1358,7 @@ Terrain::setUserSettings(int32_t min, int32_t max, int32_t terrainType)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::getUserSettings(int32_t& min, int32_t& max, int32_t& terrainType)
+void Terrain::getUserSettings(int32_t& min, int32_t& max, int32_t& terrainType)
 {
 	min = userMin;
 	max = userMax;
@@ -1412,15 +1366,13 @@ Terrain::getUserSettings(int32_t& min, int32_t& max, int32_t& terrainType)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::recalcWater()
+void Terrain::recalcWater()
 {
 	mapData->recalcWater();
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::reCalcLight(bool doShadows)
+void Terrain::reCalcLight(bool doShadows)
 {
 	recalcLight = true;
 	recalcShadows = doShadows;
@@ -1435,8 +1387,7 @@ Terrain::reCalcLight(bool doShadows)
 }
 
 //---------------------------------------------------------------------------
-void
-Terrain::clearShadows()
+void Terrain::clearShadows()
 {
 	mapData->clearShadows();
 }

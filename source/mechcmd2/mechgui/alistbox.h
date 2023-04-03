@@ -33,19 +33,46 @@ public:
 
 	};
 
-	virtual void update() { aObject::update(void); }
-	virtual void render() { aObject::render(void); }
+	virtual void update()
+	{
+		aObject::update(void);
+	}
+	virtual void render()
+	{
+		aObject::render(void);
+	}
 
-	void setState(int32_t newState) { state = (State)newState; }
-	State getState() { return state; }
+	void setState(int32_t newState)
+	{
+		state = (State)newState;
+	}
+	State getState()
+	{
+		return state;
+	}
 
-	void select() { state = SELECTED; }
-	void disable() { state = DISABLED; }
-	void highlite() { state = HIGHLITE; }
-	void deselect() { state = state == DISABLED ? DISABLED : ENABLED; }
+	void select()
+	{
+		state = SELECTED;
+	}
+	void disable()
+	{
+		state = DISABLED;
+	}
+	void highlite()
+	{
+		state = HIGHLITE;
+	}
+	void deselect()
+	{
+		state = state == DISABLED ? DISABLED : ENABLED;
+	}
 
-	virtual bool isChecked() { return false; }
-	virtual void setCheck(bool) {}
+	virtual bool isChecked()
+	{
+		return false;
+	}
+	virtual void setCheck(bool) { }
 
 protected:
 	State state;
@@ -60,24 +87,30 @@ public:
 
 	virtual ~aTextListItem(void);
 
-	void setText(const std::wstring_view& text);
+	void setText(std::wstring_view text);
 	void setText(int32_t resID);
-	const std::wstring_view& getText(void) const;
+	std::wstring_view getText(void) const;
 	void sizeToText(void);
 
-	void init(FitIniFile& file, const std::wstring_view& blockName = "Text0");
+	void init(FitIniFile& file, std::wstring_view blockname = "Text0");
 
 	virtual void render(void);
-	void setAlignment(int32_t newA) { alignment = newA; }
+	void setAlignment(int32_t newA)
+	{
+		alignment = newA;
+	}
 
-	void forceToTop(bool bForce) { bForceToTop = bForce; }
+	void forceToTop(bool bForce)
+	{
+		bForceToTop = bForce;
+	}
 
 protected:
-	aTextListItem() {}
+	aTextListItem() { }
 	void init(int32_t fontResID);
 
 	aFont font;
-	const std::wstring_view& text;
+	std::wstring_view text;
 	int32_t alignment;
 
 	bool bForceToTop;
@@ -87,17 +120,23 @@ class aAnimTextListItem : public aTextListItem
 {
 
 public:
-	aAnimTextListItem(HGOSFONT3D newFont) :
-		aTextListItem(newFont) {}
-	aAnimTextListItem(const aFont& newFont) :
-		aTextListItem(newFont) {}
-	aAnimTextListItem(int32_t fontResID) :
-		aTextListItem(fontResID) {}
+	aAnimTextListItem(HGOSFONT3D newFont)
+		: aTextListItem(newFont)
+	{
+	}
+	aAnimTextListItem(const aFont& newFont)
+		: aTextListItem(newFont)
+	{
+	}
+	aAnimTextListItem(int32_t fontResID)
+		: aTextListItem(fontResID)
+	{
+	}
 
 	aAnimTextListItem(const aAnimTextListItem& src);
 	aAnimTextListItem& operator=(const aAnimTextListItem& src);
 
-	void init(FitIniFile& file, const std::wstring_view& blockName = "Text0");
+	void init(FitIniFile& file, std::wstring_view blockname = "Text0");
 	virtual void render(void);
 	virtual void update(void);
 
@@ -110,14 +149,20 @@ class aLocalizedListItem : public aAnimTextListItem
 {
 public:
 	aLocalizedListItem(void);
-	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	virtual int32_t init(FitIniFile* file, std::wstring_view blockname);
 	virtual void render(void);
 
-	void setHiddenText(const std::wstring_view& pText) { hiddenText = pText; }
-	const std::wstring_view& getHiddenText(void) const { return hiddenText; }
+	void setHiddenText(std::wstring_view pText)
+	{
+		hiddenText = pText;
+	}
+	std::wstring_view getHiddenText(void) const
+	{
+		return hiddenText;
+	}
 
 protected:
-	const std::wstring_view& hiddenText;
+	std::wstring_view hiddenText;
 };
 
 class aListBox : public aObject
@@ -126,7 +171,7 @@ public:
 	aListBox(void);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-	void init(FitIniFile* file, const std::wstring_view& blockName);
+	void init(FitIniFile* file, std::wstring_view blockname);
 
 	virtual void destroy(void);
 	virtual void render(void);
@@ -137,22 +182,40 @@ public:
 	virtual int32_t AddItem(aListItem* itemString);
 	virtual int32_t InsertItem(aListItem* itemString, int32_t where);
 	virtual int32_t RemoveItem(aListItem* itemString, bool bDelete);
-	int32_t ChangeItemString(int16_t itemNumber, const std::wstring_view& newString);
-	int32_t GetSelectedItem(void) { return itemSelected; };
+	int32_t ChangeItemString(int16_t itemNumber, std::wstring_view newString);
+	int32_t GetSelectedItem(void)
+	{
+		return itemSelected;
+	};
 	int32_t GetCheckedItem(void) const;
 	int32_t SelectItem(int32_t itemNumber);
-	bool IsScrollActive(void) { return scrollActive; };
+	bool IsScrollActive(void)
+	{
+		return scrollActive;
+	};
 	int32_t ActivateScrollbar(void);
 
 	aListItem* GetItem(int32_t itemNumber);
-	int32_t GetItemCount() { return itemCount; }
+	int32_t GetItemCount()
+	{
+		return itemCount;
+	}
 
 	void removeAllItems(bool bDelete);
 
-	void setSpaceBetweenItems(int32_t newSpace) { skipAmount = newSpace; }
-	int32_t getSpaceBetweenItems() { return skipAmount; }
+	void setSpaceBetweenItems(int32_t newSpace)
+	{
+		skipAmount = newSpace;
+	}
+	int32_t getSpaceBetweenItems()
+	{
+		return skipAmount;
+	}
 
-	void setSingleCheck(bool checkOnlyOne) { singleCheck = checkOnlyOne; }
+	void setSingleCheck(bool checkOnlyOne)
+	{
+		singleCheck = checkOnlyOne;
+	}
 
 	virtual void move(float offsetX, float offsetY);
 	void setScrollPos(int32_t pos);
@@ -162,14 +225,29 @@ public:
 	void setOrange(bool bOrange);
 	void enableAllItems(void);
 
-	void setPressFX(int32_t newFX) { clickSFX = newFX; }
-	void setHighlightFX(int32_t newFX) { highlightSFX = newFX; }
-	void setDisabledFX(int32_t newFX) { disabledSFX = newFX; }
+	void setPressFX(int32_t newFX)
+	{
+		clickSFX = newFX;
+	}
+	void setHighlightFX(int32_t newFX)
+	{
+		highlightSFX = newFX;
+	}
+	void setDisabledFX(int32_t newFX)
+	{
+		disabledSFX = newFX;
+	}
 
-	void setTopSkip(int32_t newSkip) { topSkip = newSkip; }
+	void setTopSkip(int32_t newSkip)
+	{
+		topSkip = newSkip;
+	}
 
 	bool pointInScrollBar(int32_t mouseX, int32_t mouseY);
-	float getScrollPos() { return scrollBar ? scrollBar->GetScrollPos() : 0; }
+	float getScrollPos()
+	{
+		return scrollBar ? scrollBar->GetScrollPos() : 0;
+	}
 
 protected:
 	int32_t itemCount;
@@ -197,7 +275,7 @@ class aDropList : public aObject
 public:
 	aDropList(void);
 
-	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	virtual int32_t init(FitIniFile* file, std::wstring_view blockname);
 	virtual void destroy(void);
 	void specialDestroy(void);
 	virtual void render(void);
@@ -209,8 +287,14 @@ public:
 	virtual int32_t AddItem(aListItem* itemString);
 	int32_t SelectItem(int32_t item);
 
-	aListBox& ListBox() { return listBox; }
-	bool IsExpanded() { return listBox.isShowing(void); }
+	aListBox& ListBox()
+	{
+		return listBox;
+	}
+	bool IsExpanded()
+	{
+		return listBox.isShowing(void);
+	}
 	void IsExpanded(bool isExpanded);
 	void disable(bool bDisable)
 	{
@@ -222,8 +306,11 @@ public:
 	}
 
 	int32_t AddItem(uint32_t textID, uint32_t color);
-	int32_t AddItem(const std::wstring_view& text, uint32_t color);
-	int32_t GetSelectedItem(void) const { return selectionindex; }
+	int32_t AddItem(std::wstring_view text, uint32_t color);
+	int32_t GetSelectedItem(void) const
+	{
+		return selectionindex;
+	}
 
 	aDropList& operator=(const aDropList&);
 
@@ -245,9 +332,9 @@ class aComboBox : public aObject
 {
 public:
 	aComboBox(void);
-	~aComboBox(){};
+	~aComboBox() {};
 
-	virtual int32_t init(FitIniFile* file, const std::wstring_view& blockName);
+	virtual int32_t init(FitIniFile* file, std::wstring_view blockname);
 	virtual void destroy(void);
 	virtual void render(void);
 	virtual void update(void);
@@ -258,17 +345,32 @@ public:
 	virtual int32_t AddItem(aListItem* itemString);
 	int32_t SelectItem(int32_t item);
 
-	void setReadOnly(bool bReadOnly) { entry.setReadOnly(bReadOnly); }
+	void setReadOnly(bool bReadOnly)
+	{
+		entry.setReadOnly(bReadOnly);
+	}
 	int32_t AddItem(uint32_t textID, uint32_t color);
-	int32_t AddItem(const std::wstring_view& text, uint32_t color);
-	int32_t GetSelectedItem(void) const { return selectionindex; }
+	int32_t AddItem(std::wstring_view text, uint32_t color);
+	int32_t GetSelectedItem(void) const
+	{
+		return selectionindex;
+	}
 
 	aComboBox& operator=(const aComboBox&);
 
-	aEdit& EditBox() { return entry; }
-	aListBox& ListBox() { return listBox; }
+	aEdit& EditBox()
+	{
+		return entry;
+	}
+	aListBox& ListBox()
+	{
+		return listBox;
+	}
 
-	void setFocus(bool bFocus) { EditBox().setFocus(bFocus); }
+	void setFocus(bool bFocus)
+	{
+		EditBox().setFocus(bFocus);
+	}
 
 protected:
 	aEdit entry;

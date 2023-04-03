@@ -47,7 +47,7 @@ protected:
 public:
 	MLRState(void);
 	MLRState(const MLRState&);
-	~MLRState(void) {}
+	~MLRState(void) { }
 
 	static MLRState* Make(std::iostream stream, uint32_t version);
 
@@ -603,7 +603,10 @@ public:
 			systemFlags &= ~HasMaxUVs;
 	}
 
-	static bool GetAGPAvailable(void) { return (systemFlags & HasAGPAvailable) > 0; }
+	static bool GetAGPAvailable(void)
+	{
+		return (systemFlags & HasAGPAvailable) > 0;
+	}
 
 	static bool GetMultitextureLightMap(void)
 	{
@@ -615,7 +618,10 @@ public:
 		return (systemFlags & CanMultitextureSpecularMap) > 0;
 	}
 
-	static bool GetHasMaxUVs(void) { return (systemFlags & HasMaxUVs) > 0; }
+	static bool GetHasMaxUVs(void)
+	{
+		return (systemFlags & HasMaxUVs) > 0;
+	}
 
 	static void SetMaxUV(float mUV)
 	{
@@ -623,7 +629,10 @@ public:
 		SetHasMaxUVs(mUV > 0.0f);
 	}
 
-	static float GetMaxUV(void) { return maxUV; }
+	static float GetMaxUV(void)
+	{
+		return maxUV;
+	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Assignment operators
@@ -660,7 +669,7 @@ public:
 	// Testing
 	//
 public:
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 protected:
 	uint32_t renderState;

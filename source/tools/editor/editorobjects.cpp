@@ -53,8 +53,7 @@ EditorObject::operator new(size_t mySize)
 }
 
 //--------------------------------------------------------------------------------------
-void
-EditorObject::operator delete(PVOID us)
+void EditorObject::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
@@ -129,27 +128,24 @@ EditorObject::~EditorObject()
 	}
 }
 
-void
-EditorObject::setDamage(bool bDamage)
+void EditorObject::setDamage(bool bDamage)
 {
 	appearance()->setDamage(bDamage);
 	//	appearance()->setDamageLvl( 1000000 );
 }
 
-bool
-EditorObject::getDamage(void) const
+bool EditorObject::getDamage(void) const
 {
 	return appearance()->damage ? true : false;
 }
 
-const std::wstring_view&
+std::wstring_view
 EditorObject::getDisplayName(void) const
 {
 	return EditorObjectMgr::instance()->getObjectName(id);
 }
 
-void
-EditorObject::setAlignment(int32_t align)
+void EditorObject::setAlignment(int32_t align)
 {
 	if (appearance()->teamId != align)
 	{
@@ -176,8 +172,7 @@ EditorObject::getGroup(void) const
 	return EditorObjectMgr::getGroup(id);
 }
 
-void
-EditorObject::setAppearance(int32_t group, int32_t indexInGroup)
+void EditorObject::setAppearance(int32_t group, int32_t indexInGroup)
 {
 	// make sure the thing has changed....
 	if (group != EditorObjectMgr::getGroup(id) || indexInGroup != EditorObjectMgr::getIndexInGroup(id))
@@ -207,8 +202,7 @@ EditorObject::setAppearance(int32_t group, int32_t indexInGroup)
 	}
 }
 
-void
-EditorObject::select(bool bSelect)
+void EditorObject::select(bool bSelect)
 {
 	// appearance()->selected = bSelect;
 	EditorObjectMgr::instance()->select(*this, bSelect);
@@ -246,8 +240,7 @@ EditorObject::getcolour(void) const
 	return 0xffffffff;
 }
 
-void
-EditorObject::getCells(int32_t& row, int32_t& col) const
+void EditorObject::getCells(int32_t& row, int32_t& col) const
 {
 	row = cellRow;
 	col = cellColumn;
@@ -277,7 +270,6 @@ EditorObject::getSpecialType(void) const
 	return EditorObjectMgr::instance()->getSpecialType(getID());
 }
 
-
 Unit::Unit(int32_t align)
 {
 	pAlternativeInstances = new CUnitList;
@@ -297,8 +289,8 @@ Unit::~Unit()
 	delete pAlternativeInstances;
 }
 
-Unit::Unit(const Unit& src) :
-	EditorObject(src)
+Unit::Unit(const Unit& src)
+	: EditorObject(src)
 {
 	if (&src != this)
 	{
@@ -318,8 +310,7 @@ Unit::Unit(const Unit& src) :
 	variant = 0;
 }
 
-void
-Unit::CastAndCopy(const EditorObject& master)
+void Unit::CastAndCopy(const EditorObject& master)
 {
 	const Unit* pCastedMaster = dynamic_cast<const Unit*>(&master);
 	if (0 != pCastedMaster)
@@ -333,8 +324,7 @@ Unit::CastAndCopy(const EditorObject& master)
 	}
 }
 
-bool
-Unit::save(FitIniFile* file, int32_t WarriorNumber)
+bool Unit::save(FitIniFile* file, int32_t WarriorNumber)
 {
 	bool bIsVehicle = dynamic_cast<GVAppearance*>(appearance()) ? true : false;
 	if (!bIsVehicle)
@@ -345,14 +335,13 @@ Unit::save(FitIniFile* file, int32_t WarriorNumber)
 			file, WarriorNumber, 2, appearance()->teamId == EDITOR_TEAM1 ? "pv20600" : "pv20500");
 }
 
-bool
-Unit::save(
-	FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, const std::wstring_view& objectProfile)
+bool Unit::save(
+	FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, std::wstring_view objectProfile)
 {
 	// ARM
 	if (mechAsset)
 	{
-		const std::wstring_view& iniFilename = (const std::wstring_view&)EditorObjectMgr::instance()->getFileName(id);
+		std::wstring_view iniFilename = (std::wstring_view)EditorObjectMgr::instance()->getFileName(id);
 		wchar_t buf[512] = {0};
 		if (iniFilename && iniFilename[0])
 		{
@@ -420,8 +409,7 @@ Unit::save(
 	return true;
 }
 
-bool
-Unit::load(FitIniFile* file, int32_t warriorNumber)
+bool Unit::load(FitIniFile* file, int32_t warriorNumber)
 {
 	int32_t result = 0;
 	wchar_t tmp;
@@ -479,16 +467,14 @@ Unit::load(FitIniFile* file, int32_t warriorNumber)
 	return true;
 }
 
-void
-Unit::getcolours(uint32_t& color1, uint32_t& color2, uint32_t& color3) const
+void Unit::getcolours(uint32_t& color1, uint32_t& color2, uint32_t& color3) const
 {
 	color1 = basecolour;
 	color2 = highlightcolour;
 	color3 = highlightcolour2;
 }
 
-void
-Unit::setcolours(uint32_t color1, uint32_t color2, uint32_t color3)
+void Unit::setcolours(uint32_t color1, uint32_t color2, uint32_t color3)
 {
 	basecolour = color1;
 	highlightcolour = color2;
@@ -496,8 +482,7 @@ Unit::setcolours(uint32_t color1, uint32_t color2, uint32_t color3)
 	appearance()->resetPaintScheme(color2, color3, color1);
 }
 
-Unit&
-Unit::operator=(const Unit& src)
+Unit& Unit::operator=(const Unit& src)
 {
 	if (&src != this)
 	{
@@ -517,8 +502,7 @@ Unit::operator=(const Unit& src)
 	return *this;
 }
 
-void
-Unit::setSquad(uint32_t newSquad)
+void Unit::setSquad(uint32_t newSquad)
 {
 	squad = newSquad;
 	CUnitList::EIterator iter = pAlternativeInstances->Begin();
@@ -529,9 +513,7 @@ Unit::setSquad(uint32_t newSquad)
 	}
 }
 
-
-bool
-DropZone::save(FitIniFile* file, int32_t number)
+bool DropZone::save(FitIniFile* file, int32_t number)
 {
 	Stuff::Vector3D pos = getPosition();
 	file->writeIdLong("NumSlots", 4);
@@ -566,8 +548,7 @@ DropZone::DropZone(const Stuff::Vector3D& pos, int32_t alignment, bool bvtol)
 	bVTol = bvtol;
 }
 
-void
-DropZone::CastAndCopy(const EditorObject& master)
+void DropZone::CastAndCopy(const EditorObject& master)
 {
 	const DropZone* pCastedMaster = dynamic_cast<const DropZone*>(&master);
 	if (0 != pCastedMaster)
@@ -581,8 +562,7 @@ DropZone::CastAndCopy(const EditorObject& master)
 	}
 }
 
-bool
-Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
+bool Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 {
 	if (brainName[0])
 	{
@@ -650,8 +630,7 @@ Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 	return true;
 }
 
-bool
-Brain::load(FitIniFile* file, int32_t warriorNumber)
+bool Brain::load(FitIniFile* file, int32_t warriorNumber)
 {
 	file->readIdLong("NumCells", numCells);
 	file->readIdLong("NumStaticVars", numStaticVars);
@@ -730,8 +709,7 @@ Brain::operator=(const Brain& src)
 	return *this;
 }
 
-void
-Pilot::save(FitIniFile* file, int32_t bGoodGuy)
+void Pilot::save(FitIniFile* file, int32_t bGoodGuy)
 {
 	file->writeIdString("Profile", info->fileName);
 	// ARM
@@ -745,8 +723,7 @@ Pilot::save(FitIniFile* file, int32_t bGoodGuy)
 	}
 }
 
-void
-Pilot::load(FitIniFile* file, int32_t bGoodGuy)
+void Pilot::load(FitIniFile* file, int32_t bGoodGuy)
 {
 	int32_t result = 0;
 	wchar_t buffer[256];
@@ -787,8 +764,7 @@ Pilot::load(FitIniFile* file, int32_t bGoodGuy)
 	}
 }
 
-void
-Pilot::initPilots()
+void Pilot::initPilots()
 {
 	CSVFile file;
 	wchar_t path[256];
@@ -870,8 +846,7 @@ Pilot::initPilots()
 	}
 }
 
-void
-Pilot::setName(const std::wstring_view& newName)
+void Pilot::setName(std::wstring_view newName)
 {
 	for (size_t i = 0; i < goodCount; i++)
 	{
@@ -892,8 +867,7 @@ Pilot::setName(const std::wstring_view& newName)
 	gosASSERT(0);
 }
 
-bool
-NavMarker::save(FitIniFile* file, int32_t warriorNumber)
+bool NavMarker::save(FitIniFile* file, int32_t warriorNumber)
 {
 	wchar_t text[32];
 	sprintf(text, "NavMarker%ld", warriorNumber);
@@ -904,6 +878,6 @@ NavMarker::save(FitIniFile* file, int32_t warriorNumber)
 	return true;
 }
 
-NavMarker::NavMarker() {}
+NavMarker::NavMarker() { }
 
 // end of file ( EditorObjects.cpp )

@@ -17,7 +17,6 @@ Eraser.h			: Interface for the Eraser component.
 //#include "linkbrush.h"
 //#include "editorinterface.h" /*only for the definition of teamsaction*/
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 Eraser:
@@ -26,7 +25,10 @@ Eraser:
 class Eraser : public Brush
 {
 public:
-	Eraser() { pCurAction = nullptr; }
+	Eraser()
+	{
+		pCurAction = nullptr;
+	}
 
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
@@ -39,7 +41,10 @@ private:
 	class EraserAction : public ActionPaintTile
 	{
 	public:
-		EraserAction() { teamsActionIsSet = false; }
+		EraserAction()
+		{
+			teamsActionIsSet = false;
+		}
 
 		virtual bool undo(void);
 		virtual bool redo(void);

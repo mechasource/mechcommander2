@@ -20,8 +20,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // WaterDlg dialog
 
-WaterDlg::WaterDlg(CWnd* pParent /*=nullptr*/) :
-	CDialog(WaterDlg::IDD, pParent)
+WaterDlg::WaterDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(WaterDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(WaterDlg)
 	amplitude = 0.0f;
@@ -35,8 +35,7 @@ WaterDlg::WaterDlg(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-WaterDlg::DoDataExchange(CDataExchange* pDX)
+void WaterDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(WaterDlg)
@@ -60,8 +59,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // WaterDlg message handlers
 
-BOOL
-WaterDlg::OnInitDialog()
+BOOL WaterDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	alphaDeep = (alphaDeep >> 24) & 0x000000ff;
@@ -72,8 +70,7 @@ WaterDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-WaterDlg::OnOK()
+void WaterDlg::OnOK()
 {
 	UpdateData(TRUE);
 	alphaDeep <<= 24;

@@ -12,14 +12,14 @@ DlgFileOpen.cpp			: Implementation of the DlgFileOpen component.
 #include "dlgfileopen.h"
 
 BEGIN_MESSAGE_MAP(DlgFileOpen, CDialog)
-//{{AFX_MSG_MAP(DlgFileOpen)
-ON_LBN_SELCHANGE(IDC_FILEOPEN_FILELIST, OnSelchangeFileopenFilelist)
+	//{{AFX_MSG_MAP(DlgFileOpen)
+	ON_LBN_SELCHANGE(IDC_FILEOPEN_FILELIST, OnSelchangeFileopenFilelist)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 //-------------------------------------------------------------------------------------------------
-DlgFileOpen::DlgFileOpen(const std::wstring_view& directory, const std::wstring_view& dlgExtension, bool bsave) :
-	CDialog(IDD_FILEOPEN)
+DlgFileOpen::DlgFileOpen(std::wstring_view directory, std::wstring_view dlgExtension, bool bsave)
+	: CDialog(IDD_FILEOPEN)
 {
 	strcpy(m_directory, directory);
 	strcpy(fileName, directory);
@@ -34,8 +34,7 @@ DlgFileOpen::DlgFileOpen(const std::wstring_view& directory, const std::wstring_
 	m_bSave = bsave;
 }
 
-void
-DlgFileOpen::Init()
+void DlgFileOpen::Init()
 {
 	CListBox* m_pList = (CListBox*)GetDlgItem(IDC_FILEOPEN_FILELIST);
 	// Not Used.
@@ -44,7 +43,7 @@ DlgFileOpen::Init()
 	strcpy(dirBuffer, m_directory);
 	strcat(dirBuffer, "*.");
 	strcat(dirBuffer, extension);
-	const std::wstring_view& pFileFirst = gos_FindFiles(dirBuffer);
+	std::wstring_view pFileFirst = gos_FindFiles(dirBuffer);
 	while (pFileFirst)
 	{
 		m_pList->AddString(pFileFirst);
@@ -53,15 +52,13 @@ DlgFileOpen::Init()
 	strcpy(fileName, m_directory);
 }
 
-void
-DlgFileOpen::OnCancel()
+void DlgFileOpen::OnCancel()
 {
 	// EndDialog(IDCANCEL);
 	EndDialog(IDCANCEL);
 }
 
-void
-DlgFileOpen::OnOK()
+void DlgFileOpen::OnOK()
 {
 	CEdit* m_pEntry = (CEdit*)GetDlgItem(IDC_FILEOPEN_EDITBOX);
 	wchar_t pszEntryString[1024 /*MAX_STRING_LENGTH*/];
@@ -81,12 +78,11 @@ DlgFileOpen::OnOK()
 
 //-------------------------------------------------------------------------------------------------
 
-DlgFileOpen::~DlgFileOpen() {}
+DlgFileOpen::~DlgFileOpen() { }
 
 // end of file ( DlgFileOpen.cpp )
 
-BOOL
-DlgFileOpen::OnInitDialog()
+BOOL DlgFileOpen::OnInitDialog()
 {
 	CDialog ::OnInitDialog();
 	Init();
@@ -94,8 +90,7 @@ DlgFileOpen::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-DlgFileOpen::OnSelchangeFileopenFilelist()
+void DlgFileOpen::OnSelchangeFileopenFilelist()
 {
 	CListBox* m_pList = (CListBox*)GetDlgItem(IDC_FILEOPEN_FILELIST);
 	gosASSERT(m_pList);
@@ -103,7 +98,7 @@ DlgFileOpen::OnSelchangeFileopenFilelist()
 	int32_t nStringLength = m_pList->GetTextLen(nSelectionIndex);
 	if (0 < nStringLength)
 	{
-		const std::wstring_view& pszSelectionString = new wchar_t[nStringLength + 1];
+		std::wstring_view pszSelectionString = new wchar_t[nStringLength + 1];
 		m_pList->GetText(nSelectionIndex, pszSelectionString);
 		CEdit* m_pEntry = (CEdit*)GetDlgItem(IDC_FILEOPEN_EDITBOX);
 		m_pEntry->SetWindowText(pszSelectionString);

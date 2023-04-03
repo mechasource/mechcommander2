@@ -58,20 +58,20 @@ MPPrefs::init(FitIniFile& file)
 	file.seekBlock("ComboBoxes");
 	int32_t count = 0;
 	file.readIdLong("ComboBoxCount", count);
-	wchar_t blockName[256];
-	const std::wstring_view& headers[3] = {"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox"};
+	wchar_t blockname[256];
+	std::wstring_view headers[3] = {"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox"};
 	for (i = 0; i < count; i++)
 	{
-		sprintf(blockName, "ComboBox%ld", i);
-		file.seekBlock(blockName);
-		file.readIdString("FileName", blockName, 255);
+		sprintf(blockname, "ComboBox%ld", i);
+		file.seekBlock(blockname);
+		file.readIdString("filename", blockname, 255);
 		int32_t tmpX;
 		int32_t tmpY;
 		file.readIdLong("XLocation", tmpX);
 		file.readIdLong("YLocation", tmpY);
 		FitIniFile tmpFile;
 		FullPathFileName path;
-		path.init(artPath, blockName, ".fit");
+		path.init(artPath, blockname, ".fit");
 		if (NO_ERROR != tmpFile.open(path))
 		{
 			wchar_t error[256];
@@ -98,8 +98,7 @@ MPPrefs::init(FitIniFile& file)
 	return 0;
 }
 
-void
-MPPrefs::begin()
+void MPPrefs::begin()
 {
 	status = RUNNING;
 	comboBox[0].ListBox().removeAllItems(true);
@@ -193,15 +192,13 @@ MPPrefs::begin()
 		MPlayer->colors[player->stripecolour], MPlayer->colors[player->stripecolour]);
 	camera.zoomIn(1.5);
 }
-void
-MPPrefs::end()
+void MPPrefs::end()
 {
 	camera.setMech(nullptr);
 	status = NEXT;
 }
 
-void
-MPPrefs::update()
+void MPPrefs::update()
 {
 	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	int32_t mySeniority = player->teamSeniority;
@@ -238,7 +235,7 @@ MPPrefs::update()
 	if (newSel != oldSel && newSel != -1)
 	{
 		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem(newSel));
-		const std::wstring_view& pName = pItem->getBmp();
+		std::wstring_view pName = pItem->getBmp();
 		MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 		strcpy(pInfo->insigniaFile, pName);
 		MPlayer->sendPlayerUpdate(0, 5, -1);
@@ -253,7 +250,7 @@ MPPrefs::update()
 		int32_t size = file.getLength();
 		uint8_t* pData = new uint8_t[size];
 		file.read(pData, size);
-		MPlayer->sendPlayerInsignia((const std::wstring_view&)pName, pData, size);
+		MPlayer->sendPlayerInsignia((std::wstring_view)pName, pData, size);
 		MPlayer->insigniaList[MPlayer->commanderid] = 1;
 		delete pData;
 	}
@@ -279,8 +276,7 @@ MPPrefs::update()
 		ChatWindow::instance()->update();
 }
 
-void
-MPPrefs::setcolour(uint32_t color)
+void MPPrefs::setcolour(uint32_t color)
 {
 	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
@@ -302,8 +298,7 @@ MPPrefs::setcolour(uint32_t color)
 	// );  GD:camera.zoomIn( 1.5 );
 }
 
-void
-MPPrefs::setHighlightcolour(uint32_t color)
+void MPPrefs::setHighlightcolour(uint32_t color)
 {
 	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	player->stripecolour = getcolourIndex(color);
@@ -324,8 +319,7 @@ MPPrefs::getcolourIndex(uint32_t color)
 	return 0;
 }
 
-void
-MPPrefs::updateBasecolours(const MC2Player* players, int32_t playerCount, bool bDrawRect)
+void MPPrefs::updateBasecolours(const MC2Player* players, int32_t playerCount, bool bDrawRect)
 {
 	if (getButton(MP_PREFS_BASE)->isPressed())
 	{
@@ -363,8 +357,7 @@ MPPrefs::updateBasecolours(const MC2Player* players, int32_t playerCount, bool b
 	rects[BASE_RECT].setcolour(MPlayer->colors[pInfo->basecolour[BASECOLOR_PREFERENCE]]);
 }
 
-void
-MPPrefs::updateStripecolours(const MC2Player* players, int32_t playerCount, bool bDrawRect)
+void MPPrefs::updateStripecolours(const MC2Player* players, int32_t playerCount, bool bDrawRect)
 {
 	if (getButton(MP_PREFS_STRIPE)->isPressed())
 	{
@@ -390,8 +383,7 @@ MPPrefs::updateStripecolours(const MC2Player* players, int32_t playerCount, bool
 	rects[STRIPE_RECT].setcolour(MPlayer->colors[pInfo->stripecolour]);
 }
 
-void
-MPPrefs ::render(int32_t OffsetX, int32_t OffsetY)
+void MPPrefs ::render(int32_t OffsetX, int32_t OffsetY)
 {
 	statics[21].showGUIWindow(0);
 	LogisticsScreen::render(OffsetX, OffsetY);
@@ -456,11 +448,10 @@ MPPrefs::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void
-MPPrefs::saveSettings()
+void MPPrefs::saveSettings()
 {
 	// check and see if name has changed
-	const std::wstring_view& txt;
+	std::wstring_view txt;
 	comboBox[0].EditBox().getEntry(txt);
 	if (txt != prefs.playerName[0])
 	{
@@ -484,7 +475,7 @@ MPPrefs::saveSettings()
 		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem(index));
 		if (pItem)
 		{
-			const std::wstring_view& pName = pItem->getBmp();
+			std::wstring_view pName = pItem->getBmp();
 			strcpy(prefs.insigniaFile, pName);
 			strcpy(pInfo->insigniaFile, pName);
 		}
@@ -498,8 +489,7 @@ MPPrefs::saveSettings()
 	prefs.save();
 }
 
-void
-MPPrefs::cancelSettings()
+void MPPrefs::cancelSettings()
 {
 	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 	strcpy(pInfo->name, prefs.playerName[0]);
@@ -509,8 +499,7 @@ MPPrefs::cancelSettings()
 	prefs.save();
 }
 
-void
-MPPrefs::initcolours()
+void MPPrefs::initcolours()
 {
 	for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 	{
@@ -520,7 +509,7 @@ MPPrefs::initcolours()
 }
 
 int32_t
-aBmpListItem::setBmp(const std::wstring_view& pFileName)
+aBmpListItem::setBmp(std::wstring_view pFileName)
 {
 	if (strlen(pFileName) >= MAXLEN_INSIGNIA_FILE)
 		return 0;
@@ -548,8 +537,7 @@ aBmpListItem::setBmp(const std::wstring_view& pFileName)
 	return true;
 }
 
-void
-MPPrefs::setMechcolours(uint32_t base, uint32_t highlight)
+void MPPrefs::setMechcolours(uint32_t base, uint32_t highlight)
 {
 	if (status == RUNNING)
 	{

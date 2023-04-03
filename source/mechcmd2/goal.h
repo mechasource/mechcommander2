@@ -17,7 +17,7 @@
 #define MAX_OBJECTS_PER_ROOM 10
 #define MAX_CONTROLLED_OBJECTS 200
 
-enum class 
+enum class
 {
 	GOAL_NONE,
 	GOAL_OBJECT,
@@ -25,7 +25,7 @@ enum class
 	NUM_GOAL_TYPES
 } GoalType;
 
-enum class 
+enum class
 {
 	GOAL_LINK_NONE,
 	GOAL_LINK_MOVE,
@@ -34,7 +34,8 @@ enum class
 	NUM_GOAL_LINK_TYPES
 } GoalLinkType;
 
-typedef union {
+typedef union
+{
 	struct
 	{
 		uint32_t WID;
@@ -91,15 +92,21 @@ public:
 
 	void init(void);
 
-	GoalObject(void) { init(void); }
+	GoalObject(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~GoalObject(void) { destroy(void); }
+	~GoalObject(void)
+	{
+		destroy(void);
+	}
 
-	void initObject(const std::wstring_view& name, GameObjectPtr obj);
+	void initObject(std::wstring_view name, GameObjectPtr obj);
 
-	void initRegion(const std::wstring_view& name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
+	void initRegion(std::wstring_view name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
 
 	void addLink(GoalObjectPtr gobject, GoalLinkType linkType);
 
@@ -126,11 +133,17 @@ public:
 
 	void init(void);
 
-	GoalManager(void) { init(void); }
+	GoalManager(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~GoalManager(void) { destroy(void); }
+	~GoalManager(void)
+	{
+		destroy(void);
+	}
 
 	void setup(int32_t poolSize);
 
@@ -146,11 +159,11 @@ public:
 
 	// int32_t setControl (GoalObjectPtr controller, GoalObjectPtr controllee);
 
-	GoalObjectPtr addRegion(GoalObjectPtr parent, GoalLinkType linkType, const std::wstring_view& name, int32_t minRow,
+	GoalObjectPtr addRegion(GoalObjectPtr parent, GoalLinkType linkType, std::wstring_view name, int32_t minRow,
 		int32_t minCol, int32_t maxRow, int32_t maxCol);
 
 	GoalObjectPtr addObject(
-		GoalObjectPtr parent, GoalLinkType linkType, const std::wstring_view& name, GameObjectPtr object);
+		GoalObjectPtr parent, GoalLinkType linkType, std::wstring_view name, GameObjectPtr object);
 
 	void clear(void);
 

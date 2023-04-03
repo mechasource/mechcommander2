@@ -16,8 +16,7 @@ int32_t ffLastError = 0;
 
 // #define NO_ERROR 0
 //-----------------------------------------------------------------------------------
-bool
-FastFileInit(const std::wstring_view& fname)
+bool FastFileInit(std::wstring_view fname)
 {
 	if (numFastFiles == maxFastFiles)
 	{
@@ -38,8 +37,7 @@ FastFileInit(const std::wstring_view& fname)
 }
 
 //-----------------------------------------------------------------------------------
-void
-FastFileFini(void)
+void FastFileFini(void)
 {
 	if (fastFiles)
 	{
@@ -62,7 +60,7 @@ FastFileFini(void)
 
 //-----------------------------------------------------------------------------------
 FastFile*
-FastFileFind(const std::wstring_view& fname, int32_t& fastFileHandle)
+FastFileFind(std::wstring_view fname, int32_t& fastFileHandle)
 {
 	if (fastFiles)
 	{
@@ -85,7 +83,7 @@ FastFileFind(const std::wstring_view& fname, int32_t& fastFileHandle)
 
 //------------------------------------------------------------------
 uint32_t
-elfHash(const std::wstring_view& name)
+elfHash(std::wstring_view name)
 {
 	uint32_t h = 0, g;
 	while (*name)

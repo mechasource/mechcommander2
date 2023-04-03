@@ -20,11 +20,15 @@ class Line3D : public Ray3D
 public:
 	float length;
 
-	Line3D() {}
-	Line3D(const Ray3D& ray, float length) :
-		Ray3D(ray), length(length) {}
-	Line3D(const Point3D& start, const UnitVector3D& direction, float length) :
-		Ray3D(start, direction), length(length)
+	Line3D() { }
+	Line3D(const Ray3D& ray, float length)
+		: Ray3D(ray)
+		, length(length)
+	{
+	}
+	Line3D(const Point3D& start, const UnitVector3D& direction, float length)
+		: Ray3D(start, direction)
+		, length(length)
 	{
 	}
 

@@ -47,8 +47,7 @@ enum COMMAND_KEY_INDEX
 extern UserHeapPtr guiHeap;
 PVOID
 gMalloc(size_t size);
-void
-gFree(PVOID me);
+void gFree(PVOID me);
 
 #define MAX_COMMAND 107
 //--------------------------------------------------------------------------------------
@@ -85,8 +84,14 @@ public:
 		int32_t hotKeyDescriptionText;
 	};
 
-	static Command* getCommands() { return commands; }
-	static int32_t* getOldKeys() { return OldKeys; }
+	static Command* getCommands()
+	{
+		return commands;
+	}
+	static int32_t* getOldKeys()
+	{
+		return OldKeys;
+	}
 
 protected:
 	static int32_t mouseX;
@@ -122,7 +127,7 @@ protected:
 	// Mouse Event Data
 	bool isDragging;
 	float vTolSpeed;
-	const std::wstring_view& vehicleFile;
+	std::wstring_view vehicleFile;
 	int32_t vehicleID[MAX_TEAMS];
 	Stuff::Vector3D dragStart;
 	Stuff::Vector3D dragEnd;
@@ -173,11 +178,20 @@ protected:
 	static MissionInterfaceManager* s_instance;
 
 public:
-	MissionInterfaceManager(void) { init(void); }
+	MissionInterfaceManager(void)
+	{
+		init(void);
+	}
 
-	~MissionInterfaceManager(void) { destroy(void); }
+	~MissionInterfaceManager(void)
+	{
+		destroy(void);
+	}
 
-	static MissionInterfaceManager* instance() { return s_instance; }
+	static MissionInterfaceManager* instance()
+	{
+		return s_instance;
+	}
 
 	void init(void);
 
@@ -190,12 +204,24 @@ public:
 	virtual void drawVTOL(void);
 	virtual void render(void);
 
-	void initMechs() { controlGui.initMechs(void); }
+	void initMechs()
+	{
+		controlGui.initMechs(void);
+	}
 
-	const std::wstring_view& getSupportVehicleNameFromID(int32_t ID) { return controlGui.getVehicleNameFromID(ID); }
+	std::wstring_view getSupportVehicleNameFromID(int32_t ID)
+	{
+		return controlGui.getVehicleNameFromID(ID);
+	}
 
-	void addMover(std::unique_ptr<Mover> mover) { controlGui.addMover(mover); }
-	void removeMover(std::unique_ptr<Mover> mover) { controlGui.removeMover(mover); }
+	void addMover(std::unique_ptr<Mover> mover)
+	{
+		controlGui.addMover(mover);
+	}
+	void removeMover(std::unique_ptr<Mover> mover)
+	{
+		controlGui.removeMover(mover);
+	}
 
 	int32_t update(bool bLeftClick, bool bRightClick, int32_t mouseX, int32_t mouseY,
 		GameObject* pTarget,
@@ -203,15 +229,24 @@ public:
 
 	void updateVTol(void);
 
-	ControlGui* getControlGui(void) { return &controlGui; }
+	ControlGui* getControlGui(void)
+	{
+		return &controlGui;
+	}
 
-	void playMovie(const std::wstring_view& filename) { controlGui.playMovie(filename); }
+	void playMovie(std::wstring_view filename)
+	{
+		controlGui.playMovie(filename);
+	}
 
 	int32_t handleOrders(TacticalOrder& order);
 	bool anySelectedWithoutAreaEffect(void);
 	void updateWaypoints(void);
 
-	void setTarget(GameObject* pTarget) { target = pTarget; }
+	void setTarget(GameObject* pTarget)
+	{
+		target = pTarget;
+	}
 	static void selectForceGroup(int32_t forceGroup, bool deselectOthers);
 	void doRepair(GameObject* who);
 	void doRepairBay(GameObject* who);
@@ -219,7 +254,10 @@ public:
 	bool canRepair(GameObject* pMover);
 	bool canRepairBay(GameObject* bay);
 
-	void setMechRecovered(int32_t teamID, bool set) { mechRecovered[teamID] = set; }
+	void setMechRecovered(int32_t teamID, bool set)
+	{
+		mechRecovered[teamID] = set;
+	}
 
 	void updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui, bool lineOfSight,
 		bool passable, int32_t moverCount, int32_t nonMoverCount);
@@ -259,11 +297,17 @@ public:
 	// Tutorial Stuff goes here.
 	bool startAnimation(
 		int32_t buttonId, bool isButton, bool isPressed, float timeToScroll, int32_t numFlashes);
-	void setTutorialText(const std::wstring_view& text);
+	void setTutorialText(std::wstring_view text);
 
-	bool isInCalloutAnimation() { return animationRunning; }
+	bool isInCalloutAnimation()
+	{
+		return animationRunning;
+	}
 
-	void freezeGUI(bool flag) { guiFrozen = flag; }
+	void freezeGUI(bool flag)
+	{
+		guiFrozen = flag;
+	}
 
 	// In-Mission Save
 	void Save(FitIniFilePtr file);
@@ -430,7 +474,7 @@ private:
 
 	bool canSalvage(GameObject* pMover);
 	bool selectionIsHelicopters();
-	void drawHotKey(const std::wstring_view& string, const std::wstring_view& descStr, int32_t x, int32_t y);
+	void drawHotKey(std::wstring_view string, std::wstring_view descStr, int32_t x, int32_t y);
 	void drawHotKeys(void);
 
 	Stuff::Vector3D makeAirStrikeTarget(const Stuff::Vector3D& pos);

@@ -43,9 +43,9 @@ public:
 
 	static MLRTexturePool* Make(std::iostream stream);
 	void Save(std::iostream stream);
-	MLRTexture* Add(const std::wstring_view& textureName, int32_t instance = 0);
+	MLRTexture* Add(std::wstring_view textureName, int32_t instance = 0);
 	MLRTexture* Add(GOSImage*);
-	MLRTexture* Add(const std::wstring_view& imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
+	MLRTexture* Add(std::wstring_view imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
 		/*gos_TextureHints*/ uint32_t hints)
 	{
 		return Add(imagePool->GetImage(imageName, format, size, hints));
@@ -55,7 +55,7 @@ public:
 	// texture
 	void Remove(MLRTexture*);
 	uint32_t LoadImages(void);
-	MLRTexture* operator()(const std::wstring_view& name, int32_t = 0);
+	MLRTexture* operator()(std::wstring_view name, int32_t = 0);
 	MLRTexture* operator[](size_t index)
 	{
 		// Check_Object(this);
@@ -69,7 +69,7 @@ public:
 		return textureArray[state->GetTextureHandle() - 1];
 	}
 
-	GOSImage* GetImage(const std::wstring_view& imageName)
+	GOSImage* GetImage(std::wstring_view imageName)
 	{
 		// Check_Object(this);
 		return imagePool->GetImage(imageName);
@@ -108,7 +108,7 @@ public:
 	// Testing
 	//
 public:
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 protected:
 	bool unLoadedImages;

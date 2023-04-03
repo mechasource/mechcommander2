@@ -12,7 +12,6 @@ gameTacMap.h			: Interface for the gameTacMap component.
 
 #include "tacmap.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 gameTacMap:
@@ -39,7 +38,10 @@ public:
 	// if the world coords do not lie on the map, they will be changed.
 	void worldToTacMap(Stuff::Vector3D& world, gos_VERTEX& tac);
 
-	bool inRegion(int32_t x, int32_t y) { return x > left && x < right && y > top && y < bottom; }
+	bool inRegion(int32_t x, int32_t y)
+	{
+		return x > left && x < right && y > top && y < bottom;
+	}
 
 	void initBuildings(uint8_t* data, int32_t size);
 	void setPos(const RECT& newPos);

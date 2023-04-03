@@ -17,7 +17,7 @@
 #include "objmgr.h"
 
 wchar_t LogisticsPilot::skillTexts[NUM_SPECIALTY_SKILLS][255] = {0};
-extern const std::wstring_view& SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
+extern std::wstring_view SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
 LogisticsPilot::LogisticsPilot()
 {
@@ -43,10 +43,10 @@ LogisticsPilot::LogisticsPilot()
 	memset(medals, 0, sizeof(bool) * MAX_MEDAL);
 }
 
-LogisticsPilot::~LogisticsPilot() {}
+LogisticsPilot::~LogisticsPilot() { }
 
 int32_t
-LogisticsPilot::init(const std::wstring_view& pilotFileName)
+LogisticsPilot::init(std::wstring_view pilotFileName)
 {
 	fileName = pilotFileName;
 	wchar_t path[256];
@@ -108,7 +108,7 @@ LogisticsPilot::init(const std::wstring_view& pilotFileName)
 	return 0;
 }
 
-const std::wstring_view&
+std::wstring_view
 LogisticsPilot::getSkillText(int32_t skillID)
 {
 	gosASSERT(skillID <= Skill::numberofskills);
@@ -134,7 +134,7 @@ LogisticsPilot::save(FitIniFile& file, int32_t which)
 	wchar_t tmp[256];
 	sprintf(tmp, "Pilot%ld", which);
 	file.writeBlock(tmp);
-	file.writeIdString("FileName", fileName);
+	file.writeIdString("filename", fileName);
 	file.writeIdLong("Rank", rank);
 	file.writeIdFloat("Gunnery", gunnery);
 	file.writeIdFloat("Piloting", piloting);
@@ -163,7 +163,7 @@ int32_t
 LogisticsPilot::load(FitIniFile& file)
 {
 	wchar_t tmp[256];
-	file.readIdString("FileName", tmp, 255);
+	file.readIdString("filename", tmp, 255);
 	fileName = tmp;
 	file.readIdLong("Rank", rank);
 	file.readIdFloat("Gunnery", gunnery);
@@ -192,8 +192,7 @@ LogisticsPilot::load(FitIniFile& file)
 	return 0;
 }
 
-void
-LogisticsPilot::clearIcons()
+void LogisticsPilot::clearIcons()
 {
 	// clear out the old ones
 	for (EList<ForceGroupIcon*, ForceGroupIcon*>::EIterator iter = killedIcons.Begin();
@@ -365,8 +364,7 @@ LogisticsPilot::update(MechWarrior* pWarrior)
 	return 0;
 }
 
-bool
-LogisticsPilot::promotePilot()
+bool LogisticsPilot::promotePilot()
 {
 	float oldGunnery = gunnery - newGunnery;
 	float oldPiloting = piloting - newPiloting;
@@ -416,7 +414,7 @@ LogisticsPilot::getSpecialtySkillCount(void) const
 	return count;
 }
 int32_t
-LogisticsPilot::getSpecialtySkills(const std::wstring_view&* array, int32_t& count)
+LogisticsPilot::getSpecialtySkills(std::wstring_view* array, int32_t& count)
 {
 	int32_t max = count;
 	count = 0;
@@ -455,8 +453,7 @@ LogisticsPilot::getSpecialtySkills(int32_t* array, int32_t& count)
 	return 0;
 }
 
-void
-LogisticsPilot::setSpecialtySkill(int32_t skill, bool set)
+void LogisticsPilot::setSpecialtySkill(int32_t skill, bool set)
 {
 	if (skill >= NUM_SPECIALTY_SKILLS)
 	{

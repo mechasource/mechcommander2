@@ -22,7 +22,7 @@
 
 // From multplyr.h
 // Can't include because of redefinition of MissionSettings struct
-enum class 
+enum class
 {
 	MISSION_TYPE_ELIMINATION,
 	MISSION_TYPE_KING_OF_THE_HILL,
@@ -48,8 +48,7 @@ EditorData* EditorData::instance = nullptr;
 
 wchar_t missionScriptName[1024] = "M0101";
 
-bool
-MissionSettings::save(FitIniFile* file)
+bool MissionSettings::save(FitIniFile* file)
 {
 	file->writeBlock("Artillery");
 	file->writeIdLong("NumLargeStrikes", largeArtillery);
@@ -79,8 +78,7 @@ EditorData::~EditorData()
 	tacMapBmp = nullptr;
 }
 //-------------------------------------------------------------------------------------------------
-bool
-EditorData::clear()
+bool EditorData::clear()
 {
 	ActionUndoMgr::instance->Reset();
 	if (land)
@@ -154,11 +152,11 @@ EditorData::clear()
 //-------------------------------------------------------------------------------------------------
 
 static int32_t
-sReadIdBoolean(FitIniFile* missionFile, const std::wstring_view& varName, bool& value)
+sReadIdBoolean(FitIniFile* missionFile, std::wstring_view varName, bool& value)
 {
 	int32_t result = 0;
 	bool tmpBool;
-	result = missionFile->readIdBoolean((const std::wstring_view&)varName, tmpBool);
+	result = missionFile->readIdBoolean((std::wstring_view)varName, tmpBool);
 	if (NO_ERROR != result)
 	{
 		// _ASSERT(false);
@@ -171,11 +169,11 @@ sReadIdBoolean(FitIniFile* missionFile, const std::wstring_view& varName, bool& 
 }
 
 static int32_t
-sReadIdWholeNum(FitIniFile* missionFile, const std::wstring_view& varName, int32_t& value)
+sReadIdWholeNum(FitIniFile* missionFile, std::wstring_view varName, int32_t& value)
 {
 	int32_t result = 0;
 	uint32_t tmpULong;
-	result = missionFile->readIdULong((const std::wstring_view&)varName, tmpULong);
+	result = missionFile->readIdULong((std::wstring_view)varName, tmpULong);
 	if (NO_ERROR != result)
 	{
 		// _ASSERT(false);
@@ -188,12 +186,12 @@ sReadIdWholeNum(FitIniFile* missionFile, const std::wstring_view& varName, int32
 }
 
 static int32_t
-sReadIdString(FitIniFile* missionFile, const std::wstring_view& varName, ECharString& ECStr)
+sReadIdString(FitIniFile* missionFile, std::wstring_view varName, ECharString& ECStr)
 {
 	int32_t result = 0;
 	wchar_t buffer[2001 /*buffer size*/];
 	buffer[0] = '\0';
-	result = missionFile->readIdString((const std::wstring_view&)varName, buffer, 2001 /*buffer size*/ - 1);
+	result = missionFile->readIdString((std::wstring_view)varName, buffer, 2001 /*buffer size*/ - 1);
 	CString CStr = buffer;
 	/*readIdString can't read in "\r\n"*/
 	CStr.Replace("\n", "\r\n");
@@ -209,7 +207,7 @@ sReadIdString(FitIniFile* missionFile, const std::wstring_view& varName, ECharSt
 }
 
 static int32_t
-sWriteIdString(FitIniFile* missionFile, const std::wstring_view& varName, const std::wstring_view& szStr)
+sWriteIdString(FitIniFile* missionFile, std::wstring_view varName, std::wstring_view szStr)
 {
 	if (!szStr)
 	{
@@ -226,16 +224,15 @@ sWriteIdString(FitIniFile* missionFile, const std::wstring_view& varName, const 
 //-------------------------------------------------------------------------------------------------
 bool bIsLoading = false;
 
-bool
-EditorData::initTerrainFromPCV(const std::wstring_view& fileName)
+bool EditorData::initTerrainFromPCV(std::wstring_view fileName)
 {
 	bool bRetVal = true;
 	bIsLoading = true;
 	EditorInterface::instance()->SetBusyMode(false /*no redraw*/);
 	clear();
-	_strlwr((const std::wstring_view&)fileName);
+	_strlwr((std::wstring_view)fileName);
 	PacketFile pFile;
-	int32_t result = pFile.open((const std::wstring_view&)fileName);
+	int32_t result = pFile.open((std::wstring_view)fileName);
 	if (result != NO_ERROR)
 	{
 		wchar_t buffer[512];
@@ -253,9 +250,9 @@ EditorData::initTerrainFromPCV(const std::wstring_view& fileName)
 	camFileName.MakeLower();
 	camFileName.Replace(".pak", ".fit");
 	FitIniFile file;
-	if (fileExists((const std::wstring_view&)(const std::wstring_view&)camFileName))
+	if (fileExists((std::wstring_view)(std::wstring_view)camFileName))
 	{
-		file.open((const std::wstring_view&)(const std::wstring_view&)camFileName);
+		file.open((std::wstring_view)(std::wstring_view)camFileName);
 	}
 	else
 	{
@@ -579,14 +576,13 @@ EditorData::initTerrainFromPCV(const std::wstring_view& fileName)
 }
 
 //-------------------------------------------------------------------------------------------------
-bool
-EditorData::reassignheightsFromTGA(const std::wstring_view& fileName, int32_t min, int32_t max)
+bool EditorData::reassignheightsFromTGA(std::wstring_view fileName, int32_t min, int32_t max)
 {
 	float MinVal = min;
 	float MaxVal = max; // should prompt the user for these
 	File tgaFile;
 	gosASSERT(strstr(fileName, ".tga") || strstr(fileName, ".TGA"));
-	int32_t result = tgaFile.open(const_cast<const std::wstring_view&>(fileName));
+	int32_t result = tgaFile.open(const_cast<std::wstring_view>(fileName));
 	gosASSERT(result == NO_ERROR);
 	struct TGAFileHeader theader;
 	tgaFile.read((uint8_t*)&theader, sizeof(TGAFileHeader));
@@ -671,12 +667,11 @@ EditorData::reassignheightsFromTGA(const std::wstring_view& fileName, int32_t mi
 }
 
 PVOID
-DecodeJPG(const std::wstring_view& FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
+DecodeJPG(std::wstring_view filename, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
 	uint32_t* Textureheight, bool TextureLoad, PVOIDpDestSurf);
 //-------------------------------------------------------------------------------------------------
-void
-CreateScaledcolourMap(
-	int32_t mapwidth, const std::wstring_view& localcolourMapName, uint8_t* tmpRAM, int32_t fileSize)
+void CreateScaledcolourMap(
+	int32_t mapwidth, std::wstring_view localcolourMapName, uint8_t* tmpRAM, int32_t fileSize)
 {
 	uint8_t* image = nullptr;
 	uint32_t jpgcolourMapwidth = 0;
@@ -717,8 +712,7 @@ CreateScaledcolourMap(
 
 //-------------------------------------------------------------------------------------------------
 // Does things the new colourmap WAY!!! (tm)
-bool
-EditorData::initTerrainFromTGA(int32_t mapSize, int32_t min, int32_t max, int32_t terrain)
+bool EditorData::initTerrainFromTGA(int32_t mapSize, int32_t min, int32_t max, int32_t terrain)
 {
 	EditorInterface::instance()->SetBusyMode(false /*no redraw*/);
 	clear(); // get rid of all the old stuff now
@@ -835,7 +829,7 @@ EditorData::initTerrainFromTGA(int32_t mapSize, int32_t min, int32_t max, int32_
 			}
 			land->terrainTextures2 = new TerraincolourMap; // Otherwise, this will stay nullptr and
 				// we know not to use them
-			land->terrainName = (const std::wstring_view&)gos_Malloc(strlen(name2) + 1);
+			land->terrainName = (std::wstring_view)gos_Malloc(strlen(name2) + 1);
 			strcpy(land->terrainName, name2);
 			FullPathFileName missionName;
 			missionName.init(missionPath, name2, ".pak");
@@ -877,8 +871,7 @@ EditorData::initTerrainFromTGA(int32_t mapSize, int32_t min, int32_t max, int32_
 float CliffTerrainAngle = 45.0f;
 
 //-------------------------------------------------------------------------------------------------
-bool
-EditorData::save(const std::wstring_view& fileName, bool quickSave)
+bool EditorData::save(std::wstring_view fileName, bool quickSave)
 {
 	EditorInterface::instance()->SetBusyMode();
 	setMapName(fileName);
@@ -1208,14 +1201,14 @@ EditorData::save(const std::wstring_view& fileName, bool quickSave)
 	// Used by multiplayer to insure the same version.
 	GUID id;
 	CoCreateGuid(&id);
-	file.writePacket(numPackets - 1, uint8_t*(&id), sizeof(GUID));
+	file.writePacket(numPackets - 1, uint8_t * (&id), sizeof(GUID));
 	file.close();
 	CString newFit;
 	newFit = fileName;
 	newFit.MakeLower();
 	newFit.Replace(".pak", ".fit");
 	FitIniFile fitFile;
-	int32_t result = fitFile.create((const std::wstring_view&)(const std::wstring_view&)newFit);
+	int32_t result = fitFile.create((std::wstring_view)(std::wstring_view)newFit);
 	if (result != NO_ERROR)
 	{
 		wchar_t buffer[512];
@@ -1290,7 +1283,7 @@ EditorData::save(const std::wstring_view& fileName, bool quickSave)
 				doneIds.insert(id);
 				if (id)
 				{
-					const std::wstring_view& objFilename = EditorObjectMgr::instance()->getFileName(id);
+					std::wstring_view objFilename = EditorObjectMgr::instance()->getFileName(id);
 					wchar_t buf[512] = {0};
 					if (objFilename[0])
 					{
@@ -1441,14 +1434,12 @@ EditorData::save(const std::wstring_view& fileName, bool quickSave)
 }
 
 //-------------------------------------------------------------------------------------------------
-bool
-EditorData::quickSave(const std::wstring_view& fileName)
+bool EditorData::quickSave(std::wstring_view fileName)
 {
 	return save(fileName, true /*quick save enabled*/);
 }
 
-bool
-EditorData::saveMissionFitFileStuff(FitIniFile& fitFile)
+bool EditorData::saveMissionFitFileStuff(FitIniFile& fitFile)
 {
 	bool bRetVal = true;
 	eye->save(&fitFile);
@@ -1578,8 +1569,7 @@ EditorData::saveMissionFitFileStuff(FitIniFile& fitFile)
 	return bRetVal;
 }
 
-void
-EditorData::setMapName(const std::wstring_view& name)
+void EditorData::setMapName(std::wstring_view name)
 {
 	if (name)
 	{
@@ -1591,8 +1581,7 @@ EditorData::setMapName(const std::wstring_view& name)
 	updateTitleBar();
 }
 
-void
-EditorData::updateTitleBar()
+void EditorData::updateTitleBar()
 {
 	/*
 	if (!EditorData::instance)
@@ -1631,8 +1620,7 @@ EditorData::updateTitleBar()
 	AfxGetMainWnd()->SetWindowText(tmp2);
 }
 
-void
-EditorData::MaxPlayers(int32_t maxPlayers)
+void EditorData::MaxPlayers(int32_t maxPlayers)
 {
 	if (2 > maxPlayers)
 	{
@@ -1647,8 +1635,7 @@ EditorData::MaxPlayers(int32_t maxPlayers)
 	m_maxPlayers = maxPlayers;
 }
 
-bool
-EditorData::saveObjectives(FitIniFile* file)
+bool EditorData::saveObjectives(FitIniFile* file)
 {
 	file->writeBlock("Objectives Version");
 	file->writeIdULong("Version", 3);
@@ -1663,8 +1650,7 @@ EditorData::saveObjectives(FitIniFile* file)
 	return true;
 }
 
-bool
-EditorData::saveheightMap(File* file)
+bool EditorData::saveheightMap(File* file)
 {
 	int32_t row, column;
 	float highest = land->getHighestVertex(row, column);
@@ -1718,8 +1704,7 @@ isCementType(uint32_t type)
 }
 
 //---------------------------------------------------------------------------
-void
-EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
+void EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 {
 	EditorInterface::instance()->SetBusyMode();
 	int32_t ramSize = ((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM) * ((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM);
@@ -2140,8 +2125,7 @@ EditorData::drawTacMap(uint8_t* pDest, size_t dataSize, int32_t tacMapSize)
 	EditorInterface::instance()->UnsetBusyMode();
 }
 
-void
-EditorData::makeTacMap(uint8_t*& pReturn, int32_t& dataSize, int32_t tacMapSize)
+void EditorData::makeTacMap(uint8_t*& pReturn, int32_t& dataSize, int32_t tacMapSize)
 {
 	// the bitmap is always 128 * 128, the size of the tac map can be anything,
 	// the edges will be filled in with transparency
@@ -2166,8 +2150,7 @@ EditorData::makeTacMap(uint8_t*& pReturn, int32_t& dataSize, int32_t tacMapSize)
 }
 
 //---------------------------------------------------------------------------
-void
-EditorData::loadTacMap(
+void EditorData::loadTacMap(
 	PacketFile* file, uint8_t*& pReturn, size_t dataSize, int32_t tacMapSize)
 {
 	// the bitmap is always 128 * 128, the size of the tac map can be anything,
@@ -2176,7 +2159,7 @@ EditorData::loadTacMap(
 	// Create a block of RAM for Bitmap.
 	// 24 Bits of color at Cell resolution.
 	int32_t outputSize = 128 * 128 * 4;
-	uint8_t* pOutput = (uint8_t*) new uint8_t[outputSize + sizeof(TGAFileHeader)];
+	uint8_t* pOutput = (uint8_t*)new uint8_t[outputSize + sizeof(TGAFileHeader)];
 	pReturn = pOutput;
 	uint8_t* pShrunken = pOutput + sizeof(TGAFileHeader);
 	dataSize = outputSize + sizeof(TGAFileHeader);
@@ -2192,8 +2175,7 @@ EditorData::loadTacMap(
 }
 
 //---------------------------------------------------------------------------
-bool
-EditorData::saveTacMap(PacketFile* file, int32_t whichPacket)
+bool EditorData::saveTacMap(PacketFile* file, int32_t whichPacket)
 {
 	uint8_t* data = nullptr;
 	int32_t size = 0;
@@ -2207,8 +2189,7 @@ EditorData::saveTacMap(PacketFile* file, int32_t whichPacket)
 	return true;
 }
 
-bool
-CTeam::operator==(const CTeam& rhs) const
+bool CTeam::operator==(const CTeam& rhs) const
 {
 	bool retval = false;
 	if ((m_alignment == rhs.m_alignment) && (m_objectives == rhs.m_objectives))
@@ -2226,8 +2207,7 @@ CTeams::CTeams()
 	}
 }
 
-void
-CTeams::Clear()
+void CTeams::Clear()
 {
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
 	{
@@ -2245,8 +2225,7 @@ CTeams::operator=(const CTeams& master)
 	return (*this);
 }
 
-bool
-CTeams::operator==(const CTeams& rhs) const
+bool CTeams::operator==(const CTeams& rhs) const
 {
 	bool retval = true;
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
@@ -2260,8 +2239,7 @@ CTeams::operator==(const CTeams& rhs) const
 	return retval;
 }
 
-bool
-CTeams::Read(FitIniFile* missionFile)
+bool CTeams::Read(FitIniFile* missionFile)
 {
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
 	{
@@ -2270,8 +2248,7 @@ CTeams::Read(FitIniFile* missionFile)
 	return true;
 }
 
-bool
-CTeams::Save(FitIniFile* missionFile)
+bool CTeams::Save(FitIniFile* missionFile)
 {
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
 	{
@@ -2288,8 +2265,7 @@ CTeams::TeamRef(int32_t i)
 	return m_teamArray[i];
 }
 
-void
-CTeams::handleObjectInvalidation(const EditorObject* pObj)
+void CTeams::handleObjectInvalidation(const EditorObject* pObj)
 {
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
 	{
@@ -2297,8 +2273,7 @@ CTeams::handleObjectInvalidation(const EditorObject* pObj)
 	}
 }
 
-bool
-CTeams::NoteThePositionsOfObjectsReferenced()
+bool CTeams::NoteThePositionsOfObjectsReferenced()
 {
 	bool retval = true;
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
@@ -2312,8 +2287,7 @@ CTeams::NoteThePositionsOfObjectsReferenced()
 	return retval;
 }
 
-bool
-CTeams::RestoreObjectPointerReferencesFromNotedPositions()
+bool CTeams::RestoreObjectPointerReferencesFromNotedPositions()
 {
 	bool retval = true;
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
@@ -2327,8 +2301,7 @@ CTeams::RestoreObjectPointerReferencesFromNotedPositions()
 	return retval;
 }
 
-bool
-CTeams::ThereAreObjectivesWithNoConditions()
+bool CTeams::ThereAreObjectivesWithNoConditions()
 {
 	bool retval = false;
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
@@ -2343,36 +2316,32 @@ CTeams::ThereAreObjectivesWithNoConditions()
 	return retval;
 }
 
-void
-CPlayer::DefaultTeam(int32_t team)
+void CPlayer::DefaultTeam(int32_t team)
 {
 	gosASSERT((GAME_MAX_PLAYERS > team) && (0 <= team));
 	m_defaultTeam = team % GAME_MAX_PLAYERS;
 }
 
-bool
-CPlayer::Read(FitIniFile* missionFile, int32_t playerNum)
+bool CPlayer::Read(FitIniFile* missionFile, int32_t playerNum)
 {
 	int32_t result = 0;
-	const std::wstring_view& tmpStr;
+	std::wstring_view tmpStr;
 	tmpStr.Format("Player%d", playerNum);
 	result = missionFile->seekBlock(tmpStr.Data());
 	result = sReadIdWholeNum(missionFile, "DefaultTeam", m_defaultTeam);
 	return result;
 }
 
-bool
-CPlayer::Save(FitIniFile* missionFile, int32_t playerNum)
+bool CPlayer::Save(FitIniFile* missionFile, int32_t playerNum)
 {
-	const std::wstring_view& tmpStr;
+	std::wstring_view tmpStr;
 	tmpStr.Format("Player%d", playerNum);
 	missionFile->writeBlock(tmpStr.Data());
 	missionFile->writeIdULong("DefaultTeam", DefaultTeam());
 	return true;
 }
 
-void
-CPlayers::Clear()
+void CPlayers::Clear()
 {
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
 	{
@@ -2382,8 +2351,7 @@ CPlayers::Clear()
 	m_playerArray[1].DefaultTeam(1);
 }
 
-bool
-CPlayers::Read(FitIniFile* missionFile)
+bool CPlayers::Read(FitIniFile* missionFile)
 {
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
 	{
@@ -2392,8 +2360,7 @@ CPlayers::Read(FitIniFile* missionFile)
 	return true;
 }
 
-bool
-CPlayers::Save(FitIniFile* missionFile)
+bool CPlayers::Save(FitIniFile* missionFile)
 {
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
 	{

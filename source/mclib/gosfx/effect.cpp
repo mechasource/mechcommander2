@@ -18,8 +18,8 @@
 
 //------------------------------------------------------------------------------
 //
-gosFX::Event::Event(const Event& event) :
-	Plug(DefaultData)
+gosFX::Event::Event(const Event& event)
+	: Plug(DefaultData)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -30,8 +30,8 @@ gosFX::Event::Event(const Event& event) :
 
 //------------------------------------------------------------------------------
 //
-gosFX::Event::Event(std::iostream stream, uint32_t gfx_version) :
-	Plug(DefaultData)
+gosFX::Event::Event(std::iostream stream, uint32_t gfx_version)
+	: Plug(DefaultData)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -55,8 +55,7 @@ gosFX::Event::Make(std::iostream stream, uint32_t gfx_version)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Event::Save(std::iostream stream)
+void gosFX::Event::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	*stream << m_time << m_flags << m_effectID << m_localToParent;
@@ -69,8 +68,8 @@ gosFX::Event::Save(std::iostream stream)
 //------------------------------------------------------------------------------
 //
 gosFX::Effect__Specification::Effect__Specification(
-	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version) :
-	m_events(nullptr)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
+	: m_events(nullptr)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -120,8 +119,8 @@ gosFX::Effect__Specification::Effect__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::Effect__Specification::Effect__Specification(Stuff::RegisteredClass::ClassID class_id) :
-	m_events(nullptr)
+gosFX::Effect__Specification::Effect__Specification(Stuff::RegisteredClass::ClassID class_id)
+	: m_events(nullptr)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -156,8 +155,7 @@ gosFX::Effect__Specification::Make(
 //------------------------------------------------------------------------------
 //
 
-void
-gosFX::Effect__Specification::BuildDefaults()
+void gosFX::Effect__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	m_lifeSpan.SetCurve(1.0f);
@@ -168,8 +166,7 @@ gosFX::Effect__Specification::BuildDefaults()
 //------------------------------------------------------------------------------
 //
 
-bool
-gosFX::Effect__Specification::IsDataValid(bool fix_data)
+bool gosFX::Effect__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float minv, maxv;
@@ -179,7 +176,7 @@ gosFX::Effect__Specification::IsDataValid(bool fix_data)
 		{
 			m_lifeSpan.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"lifespan\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -206,8 +203,7 @@ gosFX::Effect__Specification::Create(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect__Specification::Save(std::iostream stream)
+void gosFX::Effect__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	*stream << m_class << m_name;
@@ -229,8 +225,7 @@ gosFX::Effect__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect__Specification::Copy(Effect__Specification* spec)
+void gosFX::Effect__Specification::Copy(Effect__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -270,8 +265,7 @@ gosFX::Effect__Specification::Copy(Effect__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect__Specification::AdoptEvent(Event* event)
+void gosFX::Effect__Specification::AdoptEvent(Event* event)
 {
 	// Check_Object(this);
 	Check_Object(event);
@@ -306,8 +300,7 @@ gosFX::Effect::ClassData* gosFX::Effect::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect::InitializeClass()
+void gosFX::Effect::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -318,8 +311,7 @@ gosFX::Effect::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect::TerminateClass()
+void gosFX::Effect::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -328,8 +320,10 @@ gosFX::Effect::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-gosFX::Effect::Effect(ClassData* class_data, Specification* spec, uint32_t flags) :
-	Node(class_data), m_children(nullptr), m_event(&spec->m_events)
+gosFX::Effect::Effect(ClassData* class_data, Specification* spec, uint32_t flags)
+	: Node(class_data)
+	, m_children(nullptr)
+	, m_event(&spec->m_events)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
@@ -366,16 +360,14 @@ gosFX::Effect::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect::TestInstance(void) const
+void gosFX::Effect::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect::Start(ExecuteInfo* info)
+void gosFX::Effect::Start(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -436,8 +428,7 @@ gosFX::Effect::Start(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Effect::Execute(ExecuteInfo* info)
+bool gosFX::Effect::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -569,8 +560,7 @@ gosFX::Effect::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect::Stop()
+void gosFX::Effect::Stop()
 {
 	// Check_Object(this);
 	//
@@ -585,8 +575,7 @@ gosFX::Effect::Stop()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect::Kill()
+void gosFX::Effect::Kill()
 {
 	// Check_Object(this);
 	//
@@ -606,8 +595,7 @@ gosFX::Effect::Kill()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Effect::Draw(DrawInfo* info)
+void gosFX::Effect::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -635,8 +623,7 @@ gosFX::Effect::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Effect::HasFinished()
+bool gosFX::Effect::HasFinished()
 {
 	// Check_Object(this);
 	//
@@ -660,8 +647,7 @@ gosFX::Effect::HasFinished()
 //##########################
 //#############################################################################
 
-void
-gosFX::Effect__ClassData::TestInstance()
+void gosFX::Effect__ClassData::TestInstance()
 {
 	_ASSERT(IsDerivedFrom(gosFX::Effect::DefaultData));
 }

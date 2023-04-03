@@ -12,7 +12,6 @@ ForceGroupBar.h			: Interface for the ForceGroupBar component.
 
 #include "mclib.h"
 
-
 class ForceGroupIcon;
 class Mover;
 class MechWarrior;
@@ -46,9 +45,12 @@ public:
 
 	void init(FitIniFile& file, StaticInfo* pCoverIcon);
 	void swapResolutions(void);
-	int32_t getIconCount() { return iconCount; }
+	int32_t getIconCount()
+	{
+		return iconCount;
+	}
 
-	bool setPilotVideo(const std::wstring_view& pVideo, MechWarrior* pPilot);
+	bool setPilotVideo(std::wstring_view pVideo, MechWarrior* pPilot);
 	bool isPlayingVideo(void);
 
 	bool flashJumpers(int32_t numFlashes);

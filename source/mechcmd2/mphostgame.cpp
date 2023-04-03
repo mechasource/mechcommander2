@@ -31,7 +31,7 @@ MPHostGame::MPHostGame()
 	status = RUNNING;
 }
 
-MPHostGame::~MPHostGame() {}
+MPHostGame::~MPHostGame() { }
 
 int32_t
 MPHostGame::indexOfButtonWithID(int32_t id)
@@ -47,8 +47,7 @@ MPHostGame::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-MPHostGame::init()
+void MPHostGame::init()
 {
 	FullPathFileName path;
 	FitIniFile file;
@@ -85,7 +84,7 @@ MPHostGame::init()
 
 
 		wchar_t tmpStr[256];
-		file.readIdString( "FileName", tmpStr, 255 );
+		file.readIdString( "filename", tmpStr, 255 );
 		{
 			FullPathFileName tmpPath;
 			tmpPath.init( artPath, tmpStr, ".fit" );
@@ -94,7 +93,7 @@ MPHostGame::init()
 			if ( NO_ERROR != PNfile.open( tmpPath ) )
 			{
 				wchar_t error[256];
-				sprintf( error, "couldn't open file %s", (const std::wstring_view&)tmpPath );
+				sprintf( error, "couldn't open file %s", (std::wstring_view)tmpPath );
 				Assert( 0, 0, error );
 				return;
 			}
@@ -124,23 +123,20 @@ MPHostGame::init()
 		numPlayersDropList.setReadOnly( 0 );*/
 }
 
-void
-MPHostGame::begin()
+void MPHostGame::begin()
 {
 	status = RUNNING;
 	LogisticsDialog::begin();
 	bShowDlg = 0;
 }
 
-void
-MPHostGame::end()
+void MPHostGame::end()
 {
 	bShowDlg = 0;
 	LogisticsDialog::end();
 }
 
-void
-MPHostGame::render(int32_t xOffset, int32_t yOffset)
+void MPHostGame::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsDialog::render();
 	if ((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() && !exitAnim.isAnimating())
@@ -157,8 +153,7 @@ MPHostGame::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void
-MPHostGame::render()
+void MPHostGame::render()
 {
 	render(0, 0);
 }
@@ -171,12 +166,12 @@ MPHostGame::handleMessage(uint32_t message, uint32_t who)
 	enterAnim.end();
 	if (status == YES)
 	{
-		const std::wstring_view& tmp;
+		std::wstring_view tmp;
 		//		numPlayersDropList.EditBox().getEntry(tmp);
 		//		int32_t maxPlayers = atoi( tmp );
 		edits[0].getEntry(tmp);
 		MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
-		if (!MPlayer->hostSession((const std::wstring_view&)(const std::wstring_view&)tmp, &prefs.playerName[0][0], 8))
+		if (!MPlayer->hostSession((std::wstring_view)(std::wstring_view)tmp, &prefs.playerName[0][0], 8))
 		{
 			MPlayer->setMode(MULTIPLAYER_MODE_NONE);
 			// need to pop dlg here
@@ -190,14 +185,12 @@ MPHostGame::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-MPHostGame::isDone()
+bool MPHostGame::isDone()
 {
 	return bDone;
 }
 
-void
-MPHostGame::update()
+void MPHostGame::update()
 {
 	if (bShowDlg)
 	{
@@ -212,7 +205,7 @@ MPHostGame::update()
 	LogisticsDialog::update();
 	helpTextID = 0;
 	helpTextHeaderID = 0;
-	const std::wstring_view& tmp;
+	std::wstring_view tmp;
 	edits[0].getEntry(tmp);
 	int32_t len = tmp.Length();
 	if (len >= 1)
@@ -224,9 +217,9 @@ MPHostGame::update()
 }
 
 int32_t
-aStyle5TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
+aStyle5TextListItem::init(FitIniFile* file, std::wstring_view blockname)
 {
-	file->seekBlock(blockName);
+	file->seekBlock(blockname);
 	int32_t fontResID = 0;
 	file->readIdLong("Font", fontResID);
 	int32_t textID = 0;
@@ -252,8 +245,7 @@ aStyle5TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aStyle5TextListItem::render()
+void aStyle5TextListItem::render()
 {
 	float color;
 	if (aListItem::SELECTED == getState())

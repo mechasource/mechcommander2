@@ -39,8 +39,9 @@ enum class __mpconnectiontype_constants
 	CANCEL_BUTTON_ID = 1000002,
 };
 
-MPConnectionType::MPConnectionType() :
-	lanPanel(*this), tcpipPanel(*this)
+MPConnectionType::MPConnectionType()
+	: lanPanel(*this)
+	, tcpipPanel(*this)
 {
 	bDone = 0;
 	connectionType = 0;
@@ -73,8 +74,7 @@ MPConnectionType::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-MPConnectionType::init(FitIniFile* file)
+void MPConnectionType::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -156,8 +156,7 @@ MPConnectionType::init(FitIniFile* file)
 	hostDlg.init();
 }
 
-void
-MPConnectionType::begin()
+void MPConnectionType::begin()
 {
 	status = RUNNING;
 	beginFadeIn(1.0);
@@ -177,13 +176,11 @@ MPConnectionType::begin()
 	tcpipPanel.begin();
 }
 
-void
-MPConnectionType::end()
+void MPConnectionType::end()
 {
 }
 
-void
-MPConnectionType::render(int32_t xOffset, int32_t yOffset)
+void MPConnectionType::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
 	if ((0 == xOffset) && (0 == yOffset))
@@ -199,8 +196,7 @@ MPConnectionType::render(int32_t xOffset, int32_t yOffset)
 		hostDlg.render();
 }
 
-void
-MPConnectionType::render()
+void MPConnectionType::render()
 {
 	render(0, 0);
 }
@@ -322,14 +318,12 @@ MPConnectionType::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-MPConnectionType::isDone()
+bool MPConnectionType::isDone()
 {
 	return bDone;
 }
 
-void
-MPConnectionType::update()
+void MPConnectionType::update()
 {
 	if (bHosting)
 	{
@@ -370,8 +364,7 @@ MPConnectionType::update()
 	*/
 }
 
-void
-aZonePanel::init(FitIniFile* pFile, LogisticsScreen* pParent)
+void aZonePanel::init(FitIniFile* pFile, LogisticsScreen* pParent)
 {
 	FitIniFile& file = (*pFile);
 	button.init(file, "Button0");
@@ -390,8 +383,7 @@ aZonePanel::init(FitIniFile* pFile, LogisticsScreen* pParent)
 	bShowWarning = 0;
 }
 
-void
-aZonePanel::update()
+void aZonePanel::update()
 {
 	if (bShowWarning)
 	{
@@ -412,8 +404,7 @@ aZonePanel::update()
 		aObject::update();
 }
 
-void
-aZonePanel::render()
+void aZonePanel::render()
 {
 	aObject::render();
 	if (bShowWarning)
@@ -431,14 +422,12 @@ int32_t aZonePanel::handleMessage(uint32_t, uint32_t)
 	return 1;
 }
 
-void
-aLanPanel::update()
+void aLanPanel::update()
 {
 	aObject::update();
 }
 
-void
-aLanPanel::init(FitIniFile* pFile)
+void aLanPanel::init(FitIniFile* pFile)
 {
 	FitIniFile& file = (*pFile);
 	button0.init(file, "Button0");
@@ -481,8 +470,7 @@ aLanPanel::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void
-aTcpipPanel::begin()
+void aTcpipPanel::begin()
 {
 	comboBox.ListBox().removeAllItems(true);
 	for (size_t i = 0; i < 10; i++)
@@ -497,14 +485,12 @@ aTcpipPanel::begin()
 	bErrorDlg = 0;
 }
 
-void
-aTcpipPanel::destroy()
+void aTcpipPanel::destroy()
 {
 	comboBox.destroy();
 }
 
-void
-aTcpipPanel::init(FitIniFile* pFile)
+void aTcpipPanel::init(FitIniFile* pFile)
 {
 	FitIniFile& file = (*pFile);
 	bConnectingDlg = 0;
@@ -560,8 +546,7 @@ aTcpipPanel::init(FitIniFile* pFile)
 	// need to initialize old addresses
 }
 
-void
-aTcpipPanel::update()
+void aTcpipPanel::update()
 {
 	int32_t retVal = 0;
 	if (bConnectingDlg || bErrorDlg)
@@ -583,7 +568,7 @@ aTcpipPanel::update()
 						{
 							pParentScreen->handleMessage(1, TCPIP_PANEL_FIRST_BUTTON_ID);
 							MPlayer->endSessionScan();
-							const std::wstring_view& ipAddress;
+							std::wstring_view ipAddress;
 							comboBox.EditBox().getEntry(ipAddress);
 							prefs.setNewIP(ipAddress);
 							prefs.save();
@@ -677,7 +662,7 @@ aTcpipPanel::update()
 			bExpanded = 0;
 	}
 	// grey out button if inavlid...
-	const std::wstring_view& str;
+	std::wstring_view str;
 	comboBox.EditBox().getEntry(str);
 	bool bValid = 1;
 	if (str.Length())
@@ -745,8 +730,7 @@ aTcpipPanel::update()
 	}
 }
 
-void
-aTcpipPanel::render()
+void aTcpipPanel::render()
 {
 	aObject::render();
 	if (bConnectingDlg || bErrorDlg)
@@ -756,7 +740,7 @@ aTcpipPanel::render()
 }
 
 int32_t
-aTcpipPanel::getNum(const std::wstring_view& pStr, int32_t index1, int32_t index2)
+aTcpipPanel::getNum(std::wstring_view pStr, int32_t index1, int32_t index2)
 {
 	wchar_t tmp = pStr[index2];
 	pStr[index2] = 0;
@@ -776,12 +760,12 @@ aTcpipPanel::handleMessage(uint32_t message, uint32_t who)
 		wchar_t text[256];
 		wchar_t Display[256];
 		cLoadString(IDS_MP_CON_MODEM_CONNECTING, text, 255);
-		const std::wstring_view& str;
+		std::wstring_view str;
 		comboBox.EditBox().getEntry(str);
-		sprintf(Display, text, (const std::wstring_view&)str);
+		sprintf(Display, text, (std::wstring_view)str);
 		LogisticsOneButtonDialog::instance()->setText(Display);
 		LogisticsOneButtonDialog::instance()->begin();
-		if (MPlayer->beginSessionScan((const std::wstring_view&)(const std::wstring_view&)str))
+		if (MPlayer->beginSessionScan((std::wstring_view)(std::wstring_view)str))
 		{
 			LogisticsOneButtonDialog::instance()->setText(
 				IDS_MP_CONNECT_ERROR_NO_CONNECTION, IDS_DIALOG_OK, IDS_DIALOG_OK);

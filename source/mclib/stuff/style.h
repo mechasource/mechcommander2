@@ -50,22 +50,25 @@ enum
 	{                                                            \
 		AddStatistic(name, "%", gos_timedata, &t##FrameTime, 0); \
 	}                                                            \
-	MSSUPPRESS_WARNING(4127)                                       \
-	while (0);
+	MSSUPPRESS_WARNING(4127)                                     \
+	while (0)                                                    \
+		;
 #define Start_Timer(t)               \
 	do                               \
 	{                                \
 		t##FrameTime -= GetCycles(); \
 	}                                \
-	MSSUPPRESS_WARNING(4127)           \
-	while (0);
+	MSSUPPRESS_WARNING(4127)         \
+	while (0)                        \
+		;
 #define Stop_Timer(t)                \
 	do                               \
 	{                                \
 		t##FrameTime += GetCycles(); \
 	}                                \
-	MSSUPPRESS_WARNING(4127)           \
-	while (0);
+	MSSUPPRESS_WARNING(4127)         \
+	while (0)                        \
+		;
 #define Set_Statistic(s, v) (s = v)
 #else
 #define Initialize_Timer(t, name)
@@ -100,8 +103,14 @@ private:
 	} mark;
 
 protected:
-	Signature(void) { mark = Valid; }
-	~Signature(void) { mark = Destroyed; }
+	Signature(void)
+	{
+		mark = Valid;
+	}
+	~Signature(void)
+	{
+		mark = Destroyed;
+	}
 
 public:
 	friend void Is_Signature_Bad(const volatile Signature* p);
@@ -131,19 +140,19 @@ Is_Signature_Bad(const volatile void* p)
 //
 #if !defined(Spew)
 inline void
-Spew(const std::wstring_view& group, int32_t value)
+Spew(std::wstring_view group, int32_t value)
 {
 	SPEW((group, "%d+", value));
 }
 
 inline void
-Spew(const std::wstring_view& group, float value)
+Spew(std::wstring_view group, float value)
 {
 	SPEW((group, "%f+", value));
 }
 
 inline void
-Spew(const std::wstring_view& group, const std::wstring_view& value)
+Spew(std::wstring_view group, std::wstring_view value)
 {
 	SPEW((group, "%s+", value));
 }

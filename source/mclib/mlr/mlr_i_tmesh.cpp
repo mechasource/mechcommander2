@@ -6,7 +6,8 @@
 
 #include "mlr/mlr_i_tmesh.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -30,8 +31,7 @@ extern std::vector<float>* lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_TMesh::InitializeClass()
+void MLR_I_TMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -46,8 +46,7 @@ MLR_I_TMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_TMesh::TerminateClass()
+void MLR_I_TMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -60,8 +59,8 @@ MLR_I_TMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLRIndexedPrimitiveBase(class_data, stream, version)
+MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLRIndexedPrimitiveBase(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -74,8 +73,8 @@ MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data, std::iostream stream, uint32_t v
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data) :
-	MLRIndexedPrimitiveBase(class_data)
+MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data)
+	: MLRIndexedPrimitiveBase(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -105,8 +104,7 @@ MLR_I_TMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_TMesh::Save(std::iostream stream)
+void MLR_I_TMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -115,16 +113,14 @@ MLR_I_TMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_TMesh::TestInstance(void) const
+void MLR_I_TMesh::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MLR_I_TMesh::Copy(MLR_I_PMesh* pMesh)
+bool MLR_I_TMesh::Copy(MLR_I_PMesh* pMesh)
 {
 	// Check_Object(this);
 	Check_Object(pMesh);
@@ -151,8 +147,7 @@ MLR_I_TMesh::Copy(MLR_I_PMesh* pMesh)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_TMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
+void MLR_I_TMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 	if (parameter & 1)
@@ -163,8 +158,7 @@ MLR_I_TMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_TMesh::FindFacePlanes()
+void MLR_I_TMesh::FindFacePlanes()
 {
 	// Check_Object(this);
 	int32_t i, j, numPrimitives = GetNumPrimitives();
@@ -216,8 +210,7 @@ MLR_I_TMesh::FindBackFace(const Point3D& u)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_TMesh::ResetTestList()
+void MLR_I_TMesh::ResetTestList()
 {
 	int32_t i, numPrimitives = GetNumPrimitives();
 	uint8_t* iPtr = &testList[0];
@@ -362,8 +355,7 @@ void
 
 //---------------------------------------------------------------------------
 //
-void
-MLR_I_TMesh::Lighting(MLRLight* const* lights, int32_t nrLights)
+void MLR_I_TMesh::Lighting(MLRLight* const* lights, int32_t nrLights)
 {
 	int32_t i;
 	MLRLightMap* lightMap;
@@ -385,8 +377,7 @@ CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs, int32_t st
 
 //---------------------------------------------------------------------------
 //
-void
-MLR_I_TMesh::LightMapLighting(MLRLight* light)
+void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 {
 	int32_t i, j, k, len = numOfTriangles;
 	LinearMatrix4D matrix = LinearMatrix4D::Identity;
@@ -746,8 +737,7 @@ MLR_I_TMesh::LightMapLighting(MLRLight* light)
 
 //---------------------------------------------------------------------------
 //
-bool
-MLR_I_TMesh::CastRay(Line3D* line, Normal3D* normal)
+bool MLR_I_TMesh::CastRay(Line3D* line, Normal3D* normal)
 {
 	// Check_Object(this);
 	Check_Object(line);

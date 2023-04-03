@@ -15,7 +15,8 @@
 //#include "ablparse.h"
 //#include "ablexec.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -63,8 +64,7 @@ TokenCodeType followIndexesList[] = {TKN_OF, TKN_IDENTIFIER, TKN_LPAREN, TKN_PLU
 // MISC. routines
 //***************************************************************************
 
-void
-ifTokenGet(TokenCodeType tokenCode)
+void ifTokenGet(TokenCodeType tokenCode)
 {
 	if (curToken == tokenCode)
 		getToken();
@@ -72,8 +72,7 @@ ifTokenGet(TokenCodeType tokenCode)
 
 //***************************************************************************
 
-void
-ifTokenGetElseError(TokenCodeType tokenCode, SyntaxErrorType errorCode)
+void ifTokenGetElseError(TokenCodeType tokenCode, SyntaxErrorType errorCode)
 {
 	if (curToken == tokenCode)
 		getToken();
@@ -85,8 +84,7 @@ ifTokenGetElseError(TokenCodeType tokenCode, SyntaxErrorType errorCode)
 // DECLARATIONS routines
 //***************************************************************************
 
-void
-declarations(const std::unique_ptr<SymTableNode>& routineIdPtr, bool allowFunctions)
+void declarations(const std::unique_ptr<SymTableNode>& routineIdPtr, bool allowFunctions)
 {
 	if (curToken == TKN_CONST)
 	{
@@ -125,8 +123,7 @@ declarations(const std::unique_ptr<SymTableNode>& routineIdPtr, bool allowFuncti
 // CONST routines
 //***************************************************************************
 
-void
-constDefinitions(void)
+void constDefinitions(void)
 {
 	//-------------------------------------------------------
 	// Loop to process definitions separated by semicolons...
@@ -169,8 +166,7 @@ makeStringType(int32_t length)
 
 //***************************************************************************
 
-void
-doConst(const std::unique_ptr<SymTableNode>& constantIdPtr)
+void doConst(const std::unique_ptr<SymTableNode>& constantIdPtr)
 {
 	TokenCodeType sign = TKN_PLUS;
 	bool sawSign = false;
@@ -266,7 +262,7 @@ doConst(const std::unique_ptr<SymTableNode>& constantIdPtr)
 		{
 			int32_t length = strlen(curLiteral.value.string);
 			constantIdPtr->defn.info.constant.value.stringPtr =
-				(const std::wstring_view&)ABLSymbolMallocCallback(length + 1);
+				(std::wstring_view)ABLSymbolMallocCallback(length + 1);
 			if (!constantIdPtr->defn.info.constant.value.stringPtr)
 				ABL_Fatal(0,
 					" ABL: Unable to AblSymbolHeap->malloc array "
@@ -292,8 +288,7 @@ doConst(const std::unique_ptr<SymTableNode>& constantIdPtr)
 // PASCAL style array types (otherwise, arrays should be implemented in the
 // var routines...
 
-void
-typeDefinitions(void)
+void typeDefinitions(void)
 {
 	while (curToken == TKN_IDENTIFIER)
 	{
@@ -532,8 +527,7 @@ arraySize(const std::unique_ptr<Type>& ptype)
 // VAR routines
 //***************************************************************************
 
-void
-varDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr)
+void varDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	varOrFieldDeclarations(
 		routineIdPtr, STACK_FRAME_HEADER_SIZE + routineIdPtr->defn.info.routine.paramCount);
@@ -541,8 +535,7 @@ varDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr)
 
 //***************************************************************************
 
-void
-varOrFieldDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t offset)
+void varOrFieldDeclarations(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t offset)
 {
 	bool varFlag = (routineIdPtr != nullptr);
 	const std::unique_ptr<SymTableNode>& idPtr = nullptr;

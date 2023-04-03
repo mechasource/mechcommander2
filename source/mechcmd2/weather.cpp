@@ -29,8 +29,7 @@ Weather* weather = nullptr;
 
 //----------------------------------------------------------------------------------
 // Class Weather
-void
-Weather::destroy(void)
+void Weather::destroy(void)
 {
 	systemHeap->Free(rainDrops);
 	rainDrops = nullptr;
@@ -38,8 +37,7 @@ Weather::destroy(void)
 }
 
 //----------------------------------------------------------------------------------
-void
-Weather::save(FitIniFile* missionFile)
+void Weather::save(FitIniFile* missionFile)
 {
 	missionFile->writeBlock("Weather");
 	missionFile->writeIdULong("MaxRainDrops", totalRainDrops);
@@ -49,8 +47,7 @@ Weather::save(FitIniFile* missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void
-Weather::load(FitIniFile* missionFile)
+void Weather::load(FitIniFile* missionFile)
 {
 	int32_t result = missionFile->seekBlock("Weather");
 	if (result == NO_ERROR)
@@ -87,8 +84,7 @@ Weather::load(FitIniFile* missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void
-Weather::init(FitIniFilePtr missionFile)
+void Weather::init(FitIniFilePtr missionFile)
 {
 	int32_t result = missionFile->seekBlock("Weather");
 	if (result == NO_ERROR)
@@ -131,8 +127,7 @@ Weather::init(FitIniFilePtr missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void
-Weather::init(uint32_t maxDrops, float startingRain, float brChance, float ltChance)
+void Weather::init(uint32_t maxDrops, float startingRain, float brChance, float ltChance)
 {
 	totalRainDrops = maxDrops;
 	currentRainDrops = 0;
@@ -162,8 +157,7 @@ Weather::init(uint32_t maxDrops, float startingRain, float brChance, float ltCha
 }
 
 //----------------------------------------------------------------------------------
-void
-Weather::update(void)
+void Weather::update(void)
 {
 	if (!weatherActive)
 		return;
@@ -394,8 +388,7 @@ Weather::update(void)
 }
 
 //----------------------------------------------------------------------------------
-void
-Weather::render(void)
+void Weather::render(void)
 {
 	if (!weatherActive)
 		return;

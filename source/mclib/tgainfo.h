@@ -52,14 +52,10 @@ typedef struct TGAFileHeader
 } TGAFileHeader;
 #pragma pack()
 
-void
-tgaDecomp(uint8_t* dest, uint8_t* source, TGAFileHeader* tga_header);
-void
-loadTGATexture(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height);
-void
-loadTGAMask(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height);
+void tgaDecomp(uint8_t* dest, uint8_t* source, TGAFileHeader* tga_header);
+void loadTGATexture(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height);
+void loadTGAMask(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height);
 
-void
-flipTopToBottom(uint8_t* buffer, uint8_t depth, int32_t width, int32_t height);
+void flipTopToBottom(uint8_t* buffer, uint8_t depth, int32_t width, int32_t height);
 //---------------------------------------------------------------------------
 #endif

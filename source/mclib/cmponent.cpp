@@ -22,11 +22,11 @@
 #include "utilities.h"
 //******************************************************************************************
 
-const std::wstring_view& ComponentFormString[] = {"Simple", "Cockpit", "Sensors", "Actuator", "Engine", "HeatSink",
+std::wstring_view ComponentFormString[] = {"Simple", "Cockpit", "Sensors", "Actuator", "Engine", "HeatSink",
 	"Weapon", "EnergyWeapon", "BallisticWeapon", "MissileWeapon", "Ammo", "JumpJet", "Case",
 	"LifeSupport", "Gyroscope", "PowerAmplifier", "ECM", "Probe", "Jammer", "Bulk", nullptr};
 
-const std::wstring_view& WeaponRangeString[] = {"int16_t", "medium", "int32_t"};
+std::wstring_view WeaponRangeString[] = {"int16_t", "medium", "int32_t"};
 
 MasterComponentPtr MasterComponent::masterList = nullptr;
 int32_t MasterComponent::numComponents = 0;
@@ -50,28 +50,26 @@ MasterComponent::operator new(size_t mySize)
 
 //******************************************************************************************
 
-void
-MasterComponent::operator delete(PVOID us)
+void MasterComponent::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //******************************************************************************************
 
-void
-MasterComponent::destroy(void)
+void MasterComponent::destroy(void)
 {
 }
 
 //******************************************************************************************
 int32_t
-MasterComponent::initEXCEL(const std::wstring_view& dataLine, float baseSensorRange)
+MasterComponent::initEXCEL(std::wstring_view dataLine, float baseSensorRange)
 {
 	//----------------------------------------------------------
 	// Component data was read in, so parse it. First, parse the
 	// fields common to all components...
-	const std::wstring_view& next_token = nullptr;
-	const std::wstring_view& field = strtok_s(dataLine, ",", &next_token);
+	std::wstring_view next_token = nullptr;
+	std::wstring_view field = strtok_s(dataLine, ",", &next_token);
 	int32_t ammoAmount = 1;
 	health = 1;
 	masterID = atoi(field);
@@ -108,7 +106,7 @@ MasterComponent::initEXCEL(const std::wstring_view& dataLine, float baseSensorRa
 	field = strtok_s(nullptr, ",", &next_token);
 	uint8_t rangeType = 255;
 	_Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(
-		_Inout_updates_z_(_Size) const std::wstring_view& _Str, _In_ size_t _Size);
+		_Inout_updates_z_(_Size) std::wstring_view _Str, _In_ size_t _Size);
 	_strlwr(field);
 	if (strcmp(field, "0") != 0)
 	{
@@ -510,8 +508,7 @@ MasterComponent::saveEXCEL(std::unique_ptr<File> componentFile, uint8_t masterId
 
 //---------------------------------------------------------------------------
 
-bool
-MasterComponent::isOffensiveWeapon(void)
+bool MasterComponent::isOffensiveWeapon(void)
 {
 	//----------------------------------------------------------------------
 	// For now, we have just one defensive weapon--the anti-missile system.
@@ -523,8 +520,7 @@ MasterComponent::isOffensiveWeapon(void)
 
 //---------------------------------------------------------------------------
 
-bool
-MasterComponent::isDefensiveWeapon(void)
+bool MasterComponent::isDefensiveWeapon(void)
 {
 	//----------------------------------------------------------------------
 	// For now, we have just one defensive weapon--the anti-missile system.
@@ -537,7 +533,7 @@ MasterComponent::isDefensiveWeapon(void)
 //---------------------------------------------------------------------------
 
 int32_t
-MasterComponent::loadMasterList(const std::wstring_view& fileName, int32_t listSize, float baseSensorRange)
+MasterComponent::loadMasterList(std::wstring_view fileName, int32_t listSize, float baseSensorRange)
 {
 	if (masterList)
 	{
@@ -579,7 +575,7 @@ MasterComponent::loadMasterList(const std::wstring_view& fileName, int32_t listS
 
 //---------------------------------------------------------------------------
 int32_t
-MasterComponent::saveMasterList(const std::wstring_view& fileName, int32_t listSize, float baseSensorRange)
+MasterComponent::saveMasterList(std::wstring_view fileName, int32_t listSize, float baseSensorRange)
 {
 	//-----------------------------------------------------------------
 	// All components are in one data file. Save it in CSV format!

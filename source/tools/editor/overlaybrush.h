@@ -15,7 +15,6 @@ thing you use to create overlays
 
 class ActionPaintTile;
 
-
 class OverlayBrush : public Brush
 {
 public:
@@ -25,9 +24,9 @@ public:
 		offset = Offset;
 		pAction = nullptr;
 	}
-	virtual ~OverlayBrush() {}
+	virtual ~OverlayBrush() { }
 
-	virtual void render(int32_t ScreenMousex, int32_t ScreenMouseY) {} // need to figure this out
+	virtual void render(int32_t ScreenMousex, int32_t ScreenMouseY) { } // need to figure this out
 
 	virtual bool canPaint(Stuff::Vector3D&, int32_t screenX, int32_t screenY, int32_t& flags)
 	{

@@ -42,7 +42,7 @@ float MaxMinUV = 8.0f;
 
 uint32_t BaseVertexcolour = 0x00000000;
 
-static const std::wstring_view& lpszAppName = "MechCmdr2";
+static std::wstring_view lpszAppName = "MechCmdr2";
 
 UserHeapPtr systemHeap = nullptr;
 UserHeapPtr guiHeap = nullptr;
@@ -63,7 +63,7 @@ int32_t maxFastFiles = 0;
 
 HWND appWnd = nullptr;
 
-extern const std::wstring_view& MechAnimationNames[MaxGestures];
+extern std::wstring_view MechAnimationNames[MaxGestures];
 
 int32_t ObjectTextureSize = 128;
 bool reloadBounds = false;
@@ -78,13 +78,12 @@ wchar_t listName[1024];
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void
-ParseCommandLine(const std::wstring_view& command_line)
+void ParseCommandLine(std::wstring_view command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
 	int32_t index = 0;
-	const std::wstring_view& argv[30];
+	std::wstring_view argv[30];
 	wchar_t tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
@@ -189,7 +188,7 @@ ParseCommandLine(const std::wstring_view& command_line)
 
 //-----------------------------
 int32_t
-convertASE2TGL(const std::wstring_view& file)
+convertASE2TGL(std::wstring_view file)
 {
 	//---------------------------------------------------
 	// Get all of the .ASE files in the tgl directory.
@@ -221,7 +220,7 @@ convertASE2TGL(const std::wstring_view& file)
 				return result;
 			// ARM
 			IProviderAssetPtr iniAsset =
-				armProvider->OpenAsset((const std::wstring_view&)iniName, AssetType_Physical, ProviderType_Primary);
+				armProvider->OpenAsset((std::wstring_view)iniName, AssetType_Physical, ProviderType_Primary);
 			iniAsset->AddProperty("Type", "Object Definition");
 			iniAsset->AddProperty("Version", "1.0");
 			TG_TypeMultiShape* shape = nullptr;
@@ -229,7 +228,7 @@ convertASE2TGL(const std::wstring_view& file)
 			if (result == NO_ERROR)
 			{
 				wchar_t fileName[1024];
-				result = iniFile.readIdString("FileName", fileName, 1023);
+				result = iniFile.readIdString("filename", fileName, 1023);
 				if (result != NO_ERROR)
 				{
 					//---------------------------------------------
@@ -237,7 +236,7 @@ convertASE2TGL(const std::wstring_view& file)
 					// We will get animation from LAST LOD loaded
 					int32_t i = 0;
 					wchar_t fileCheck[1024];
-					sprintf(fileCheck, "FileName%d", i);
+					sprintf(fileCheck, "filename%d", i);
 					result = iniFile.readIdString(fileCheck, fileName, 1023);
 					while (result == NO_ERROR)
 					{
@@ -260,7 +259,7 @@ convertASE2TGL(const std::wstring_view& file)
 						armLink->AddProperty("LOD", lodID);
 						shape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 						i++;
-						sprintf(fileCheck, "FileName%d", i);
+						sprintf(fileCheck, "filename%d", i);
 						result = iniFile.readIdString(fileCheck, fileName, 1023);
 					}
 				}
@@ -312,7 +311,7 @@ convertASE2TGL(const std::wstring_view& file)
 						// Happens ALOT!
 						printf("Processing Animation %s\n", aseName);
 						IProviderRelationshipPtr armLink =
-							iniAsset->AddRelationship("Animation", (const std::wstring_view&)aseName);
+							iniAsset->AddRelationship("Animation", (std::wstring_view)aseName);
 						anim->LoadTGMultiShapeAnimationFromASE(aseName, shape, true);
 						delete anim;
 						anim = nullptr;
@@ -376,7 +375,7 @@ convertASE2TGL(const std::wstring_view& file)
 				if (iniFile.seekBlock("TGLDamage") == NO_ERROR)
 				{
 					wchar_t fileName[1024];
-					result = iniFile.readIdString("FileName", fileName, 1023);
+					result = iniFile.readIdString("filename", fileName, 1023);
 					if (result == NO_ERROR)
 					{
 						if (shape)
@@ -624,21 +623,18 @@ uint32_t Seed;
 //
 //
 //
-void
-UpdateRenderers()
+void UpdateRenderers()
 {
 }
 
-void
-DoGameLogic()
+void DoGameLogic()
 {
 }
 
 //
 // Setup the GameOS structure
 //
-void
-GetGameOSEnvironment(const std::wstring_view& commandline)
+void GetGameOSEnvironment(std::wstring_view commandline)
 {
 	commandline = commandline;
 	Environment.applicationName = "MechCmdr2";

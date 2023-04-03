@@ -45,12 +45,12 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 	if (state.GetTextureHandle())
 	{
 		MLRTexture* texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-		textureAnimation	= texture->GetAnimateTexture();
+		textureAnimation = texture->GetAnimateTexture();
 		if (textureAnimation)
 		{
 			Stuff::AffineMatrix4D& textureMatrix = texture->GetTextureMatrix();
-			deltaU								 = textureMatrix(3, 0);
-			deltaV								 = textureMatrix(3, 1);
+			deltaU = textureMatrix(3, 0);
+			deltaV = textureMatrix(3, 1);
 		}
 	}
 	size_t i, j, k, len = lengths.GetLength();
@@ -71,8 +71,8 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 	}
 #endif
 	uint32_t numvertices = GetNumVertices();
-	gos_vertices		 = vt->GetActualVertexPool(db);
-	numGOSVertices		 = 0;
+	gos_vertices = vt->GetActualVertexPool(db);
+	numGOSVertices = 0;
 	_ASSERT(index.GetLength() > 0);
 	_ASSERT(coords.GetLength() == visibleIndexedVertices.GetLength());
 	if (visibleIndexedVerticesKey == false)
@@ -158,12 +158,12 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 	if (state2.GetTextureHandle())
 	{
 		MLRTexture* texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-		textureAnimation	= texture->GetAnimateTexture();
+		textureAnimation = texture->GetAnimateTexture();
 		if (textureAnimation)
 		{
 			Stuff::AffineMatrix4D& textureMatrix = texture->GetTextureMatrix();
-			deltaU								 = textureMatrix(3, 0);
-			deltaV								 = textureMatrix(3, 1);
+			deltaU = textureMatrix(3, 0);
+			deltaV = textureMatrix(3, 1);
 		}
 	}
 	memcpy(gos_vertices + numGOSVertices, gos_vertices, numGOSVertices * sizeof(GOSVertex));
@@ -238,9 +238,9 @@ void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db
 		}
 	}
 #endif
-	gos_indices   = vt->GetActualIndexPool(db);
+	gos_indices = vt->GetActualIndexPool(db);
 	numGOSIndices = 0;
-	int32_t ngi   = 0;
+	int32_t ngi = 0;
 	for (i = 0, j = 0; i < len; j += stride, i++)
 	{
 		stride = lengths[i];
@@ -310,12 +310,12 @@ uint32_t CLASSNAME::TransformAndClip(
 	if (state.GetTextureHandle())
 	{
 		MLRTexture* texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-		textureAnimation	= texture->GetAnimateTexture();
+		textureAnimation = texture->GetAnimateTexture();
 		if (textureAnimation)
 		{
 			Stuff::AffineMatrix4D& textureMatrix = texture->GetTextureMatrix();
-			deltaU								 = textureMatrix(3, 0);
-			deltaV								 = textureMatrix(3, 1);
+			deltaU = textureMatrix(3, 0);
+			deltaV = textureMatrix(3, 1);
 		}
 	}
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
@@ -324,17 +324,17 @@ uint32_t CLASSNAME::TransformAndClip(
 	if (state2.GetTextureHandle())
 	{
 		MLRTexture* texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-		textureAnimation2   = texture->GetAnimateTexture();
+		textureAnimation2 = texture->GetAnimateTexture();
 		if (textureAnimation2)
 		{
 			Stuff::AffineMatrix4D& textureMatrix = texture->GetTextureMatrix();
-			deltaU2								 = textureMatrix(3, 0);
-			deltaV2								 = textureMatrix(3, 1);
+			deltaU2 = textureMatrix(3, 0);
+			deltaV2 = textureMatrix(3, 1);
 		}
 	}
 #endif
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	size_t tex2count	 = 0;
+	size_t tex2count = 0;
 	uint32_t numvertices = GetNumVertices();
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
@@ -351,7 +351,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif
 	uint32_t myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 	myNumberUsedClipVertex = 0;
-	myNumberUsedClipIndex  = 0;
+	myNumberUsedClipIndex = 0;
 	myNumberUsedClipLength = 0;
 	_ASSERT(index.GetLength() > 0);
 	if (visibleIndexedVerticesKey == false)
@@ -452,10 +452,10 @@ uint32_t CLASSNAME::TransformAndClip(
 					//----------------------------------------------------
 					//
 					size_t clipped_index = (myNumberUsedClipVertex + numberVerticesPerPolygon);
-					theTest				 = (*clipPerVertex)[k0];
+					theTest = (*clipPerVertex)[k0];
 					if (theTest == 0)
 					{
-						firstIsIn						  = true;
+						firstIsIn = true;
 						(*clipExtraCoords)[clipped_index] = (*transformedCoords)[k0];
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_LIGHTING
@@ -693,7 +693,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif
 				srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 #endif
-				srcPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
+				srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 				srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 				//
 				//----------------------------------------------------------
@@ -702,7 +702,7 @@ uint32_t CLASSNAME::TransformAndClip(
 				//
 				for (k = j, l = 0; k < end; k++, l++)
 				{
-					size_t indexK		 = index[k];
+					size_t indexK = index[k];
 					srcPolygon.coords[l] = (*transformedCoords)[indexK];
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_LIGHTING
@@ -712,7 +712,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif
 #endif
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-					srcPolygon.texCoords[2 * l]		= texCoords[indexK];
+					srcPolygon.texCoords[2 * l] = texCoords[indexK];
 					srcPolygon.texCoords[2 * l + 1] = texCoords[indexK + numvertices];
 #else
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
@@ -733,14 +733,14 @@ uint32_t CLASSNAME::TransformAndClip(
 				// Point to the destination buffer
 				//--------------------------------
 				//
-				dstBuffer		  = 0;
+				dstBuffer = 0;
 				dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
 				dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 #endif
-				dstPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
+				dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
 				dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
-				dstPolygon.length		 = 0;
+				dstPolygon.length = 0;
 				//
 				//-----------------------------------------------------------
 				// Spin through each plane that clipped the primitive and use
@@ -777,7 +777,7 @@ uint32_t CLASSNAME::TransformAndClip(
 #endif
 							for (k = 0; k < srcPolygon.length; k++)
 							{
-								k1		= (k + 1) < srcPolygon.length ? k + 1 : 0;
+								k1 = (k + 1) < srcPolygon.length ? k + 1 : 0;
 								theTest = srcPolygon.clipPerVertex[k];
 								//
 								//----------------------------------------------------
@@ -787,7 +787,7 @@ uint32_t CLASSNAME::TransformAndClip(
 								//
 								if (theTest.IsClipped(mask) == 0)
 								{
-									firstIsIn							 = true;
+									firstIsIn = true;
 									dstPolygon.coords[dstPolygon.length] = srcPolygon.coords[k];
 #if HUNT_CLIP_ERROR
 									DEBUG_STREAM << k << " goes " << setiosflags(ios::scientific)
@@ -846,8 +846,7 @@ uint32_t CLASSNAME::TransformAndClip(
 									firstIsIn = false;
 									if (srcPolygon.clipPerVertex[k1].IsClipped(mask) != 0)
 									{
-										_ASSERT(srcPolygon.clipPerVertex[k1].IsClipped(mask) ==
-											srcPolygon.clipPerVertex[k].IsClipped(mask));
+										_ASSERT(srcPolygon.clipPerVertex[k1].IsClipped(mask) == srcPolygon.clipPerVertex[k].IsClipped(mask));
 										continue;
 									}
 								}
@@ -1015,7 +1014,7 @@ uint32_t CLASSNAME::TransformAndClip(
 							srcPolygon.clipPerVertex =
 								clipBuffer[dstBuffer].clipPerVertex.GetData();
 							srcPolygon.length = dstPolygon.length;
-							dstBuffer		  = !dstBuffer;
+							dstBuffer = !dstBuffer;
 							dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
 							dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
@@ -1068,7 +1067,7 @@ uint32_t CLASSNAME::TransformAndClip(
 					(*clipExtracolours)[clipped_index] = srcPolygon.colors[k];
 #endif
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-					(*clipExtraTexCoords)[clipped_index]  = srcPolygon.texCoords[2 * k];
+					(*clipExtraTexCoords)[clipped_index] = srcPolygon.texCoords[2 * k];
 					(*clipExtraTexCoords2)[clipped_index] = srcPolygon.texCoords[2 * k + 1];
 #else
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
@@ -1101,11 +1100,11 @@ uint32_t CLASSNAME::TransformAndClip(
 		j += stride;
 	}
 	Check_Object(vt);
-	gos_vertices   = vt->GetActualVertexPool(db);
+	gos_vertices = vt->GetActualVertexPool(db);
 	numGOSVertices = 0;
-	gos_indices	= vt->GetActualIndexPool(db);
-	numGOSIndices  = 0;
-	k			   = visibleIndexedVertices.GetLength();
+	gos_indices = vt->GetActualIndexPool(db);
+	numGOSIndices = 0;
+	k = visibleIndexedVertices.GetLength();
 	for (j = 0, stride = 0; j < k; j++)
 	{
 		if (visibleIndexedVertices[j] == 0)
@@ -1119,8 +1118,7 @@ uint32_t CLASSNAME::TransformAndClip(
 			size_t fogEntry = state.GetFogMode();
 			if (fogEntry)
 			{
-				*((uint8_t*)&gos_vertices[numGOSVertices].frgb + 3) = GOSVertex::fogTable[fogEntry -
-					1][Stuff::Truncate_Float_To_Word((*transformedCoords)[j].w)];
+				*((uint8_t*)&gos_vertices[numGOSVertices].frgb + 3) = GOSVertex::fogTable[fogEntry - 1][Stuff::Truncate_Float_To_Word((*transformedCoords)[j].w)];
 			}
 			else
 			{
@@ -1145,8 +1143,8 @@ uint32_t CLASSNAME::TransformAndClip(
 			if (gShowClippedPolys)
 			{
 				gos_vertices[numGOSVertices].argb = 0xff0000ff;
-				gos_vertices[numGOSVertices].u	= 0.0f;
-				gos_vertices[numGOSVertices].v	= 0.0f;
+				gos_vertices[numGOSVertices].u = 0.0f;
+				gos_vertices[numGOSVertices].v = 0.0f;
 			}
 #endif
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
@@ -1255,7 +1253,7 @@ uint32_t CLASSNAME::TransformAndClip(
 				}
 				else
 				{
-					*((uint8_t*)&gos_vertices[numGOSVertices].frgb + 3)		= 0xff;
+					*((uint8_t*)&gos_vertices[numGOSVertices].frgb + 3) = 0xff;
 					*((uint8_t*)&gos_vertices[numGOSVertices + 1].frgb + 3) = 0xff;
 					*((uint8_t*)&gos_vertices[numGOSVertices + 2].frgb + 3) = 0xff;
 				}
@@ -1279,27 +1277,27 @@ uint32_t CLASSNAME::TransformAndClip(
 				{
 					if ((*clipExtraLength)[i] & 0x8000)
 					{
-						gos_vertices[numGOSVertices].argb	 = 0xffff0000;
-						gos_vertices[numGOSVertices].u		  = 0.0f;
-						gos_vertices[numGOSVertices].v		  = 0.0f;
+						gos_vertices[numGOSVertices].argb = 0xffff0000;
+						gos_vertices[numGOSVertices].u = 0.0f;
+						gos_vertices[numGOSVertices].v = 0.0f;
 						gos_vertices[numGOSVertices + 1].argb = 0xffff0000;
-						gos_vertices[numGOSVertices + 1].u	= 0.0f;
-						gos_vertices[numGOSVertices + 1].v	= 0.0f;
+						gos_vertices[numGOSVertices + 1].u = 0.0f;
+						gos_vertices[numGOSVertices + 1].v = 0.0f;
 						gos_vertices[numGOSVertices + 2].argb = 0xffff0000;
-						gos_vertices[numGOSVertices + 2].u	= 0.0f;
-						gos_vertices[numGOSVertices + 2].v	= 0.0f;
+						gos_vertices[numGOSVertices + 2].u = 0.0f;
+						gos_vertices[numGOSVertices + 2].v = 0.0f;
 					}
 					else
 					{
-						gos_vertices[numGOSVertices].argb	 = 0xffff9999;
-						gos_vertices[numGOSVertices].u		  = 0.0f;
-						gos_vertices[numGOSVertices].v		  = 0.0f;
+						gos_vertices[numGOSVertices].argb = 0xffff9999;
+						gos_vertices[numGOSVertices].u = 0.0f;
+						gos_vertices[numGOSVertices].v = 0.0f;
 						gos_vertices[numGOSVertices + 1].argb = 0xffff9999;
-						gos_vertices[numGOSVertices + 1].u	= 0.0f;
-						gos_vertices[numGOSVertices + 1].v	= 0.0f;
+						gos_vertices[numGOSVertices + 1].u = 0.0f;
+						gos_vertices[numGOSVertices + 1].v = 0.0f;
 						gos_vertices[numGOSVertices + 2].argb = 0xffff9999;
-						gos_vertices[numGOSVertices + 2].u	= 0.0f;
-						gos_vertices[numGOSVertices + 2].v	= 0.0f;
+						gos_vertices[numGOSVertices + 2].u = 0.0f;
+						gos_vertices[numGOSVertices + 2].v = 0.0f;
 					}
 				}
 #endif
@@ -1327,7 +1325,7 @@ uint32_t CLASSNAME::TransformAndClip(
 					_ASSERT(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 				}
 				_ASSERT(numGOSIndices % 3 == 0);
-				gos_indices[numGOSIndices]	 = numGOSVertices;
+				gos_indices[numGOSIndices] = numGOSVertices;
 				gos_indices[numGOSIndices + 1] = (uint16_t)(numGOSVertices + 1);
 				gos_indices[numGOSIndices + 2] = (uint16_t)(numGOSVertices + 2);
 				numGOSVertices += 3;
@@ -1336,7 +1334,8 @@ uint32_t CLASSNAME::TransformAndClip(
 			j += stride;
 		}
 #if HUNT_CLIP_ERROR
-		DEBUG_STREAM << "***" << endl << endl;
+		DEBUG_STREAM << "***" << endl
+					 << endl;
 #endif
 	}
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES

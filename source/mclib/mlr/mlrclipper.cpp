@@ -13,7 +13,8 @@
 #include "mlr/mlr_i_c_pmesh.h"
 #include "mlr/mlrclipper.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -30,8 +31,8 @@ DrawShapeInformation::DrawShapeInformation()
 	clippingFlags.SetClippingState(0);
 };
 
-DrawScalableShapeInformation::DrawScalableShapeInformation() :
-	DrawShapeInformation()
+DrawScalableShapeInformation::DrawScalableShapeInformation()
+	: DrawShapeInformation()
 {
 	scaling = nullptr;
 	paintMe = nullptr;
@@ -66,8 +67,7 @@ MLRClipper::ClassData* MLRClipper::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClipper::InitializeClass()
+void MLRClipper::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -78,8 +78,7 @@ MLRClipper::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClipper::TerminateClass()
+void MLRClipper::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -88,8 +87,9 @@ MLRClipper::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRClipper::MLRClipper(AndyDisplay* ad, MLRSorter* s) :
-	RegisteredClass(DefaultData), display(ad)
+MLRClipper::MLRClipper(AndyDisplay* ad, MLRSorter* s)
+	: RegisteredClass(DefaultData)
+	, display(ad)
 {
 	////_ASSERT(gos_GetCurrentHeap() == Heap);
 	frameRate = 0;
@@ -112,8 +112,7 @@ MLRClipper::~MLRClipper()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
+void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	const Stuff::Matrix4D& clip_matrix,
 	const Stuff::RGBAcolour& fog_color, // NOT USED ANYMORE
 	const Stuff::RGBAcolour* background_color, const MLRState& default_state, const float* z_value)
@@ -332,8 +331,7 @@ static Stuff::AffineMatrix4D scaledShapeToWorld;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClipper::DrawShape(DrawShapeInformation* dInfo)
+void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 {
 // Check_Object(this);
 //
@@ -467,8 +465,7 @@ MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
+void MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 {
 	// Check_Object(this);
 	//
@@ -554,8 +551,7 @@ MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClipper::DrawEffect(DrawEffectInformation* dInfo)
+void MLRClipper::DrawEffect(DrawEffectInformation* dInfo)
 {
 	//
 	// Statistic timing function
@@ -580,8 +576,7 @@ MLRClipper::DrawEffect(DrawEffectInformation* dInfo)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
+void MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 {
 	//
 	// Statistic timing function

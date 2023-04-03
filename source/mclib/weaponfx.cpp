@@ -17,8 +17,7 @@ WeaponEffects* weaponEffects = nullptr;
 wchar_t mc2_word_none[5] = "NONE";
 
 //---------------------------------------------------------------------------------
-void
-WeaponEffects::destroy(void)
+void WeaponEffects::destroy(void)
 {
 	systemHeap->Free(effects);
 	effects = nullptr;
@@ -26,8 +25,7 @@ WeaponEffects::destroy(void)
 }
 
 //---------------------------------------------------------------------------------
-void
-WeaponEffects::init(const std::wstring_view& effectCSVFileName)
+void WeaponEffects::init(std::wstring_view effectCSVFileName)
 {
 	FullPathFileName effectsName;
 	effectsName.init(objectPath, effectCSVFileName, ".csv");

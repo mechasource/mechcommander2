@@ -22,17 +22,20 @@ public:
 	SimpleCamera(void);
 	~SimpleCamera(void);
 
-	void setMech(const std::wstring_view& fileName, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00,
+	void setMech(std::wstring_view fileName, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00,
 		int32_t h2 = 0xffbcbcbc);
-	void setComponent(const std::wstring_view& fileName);
-	void setBuilding(const std::wstring_view& fileName);
-	void setVehicle(const std::wstring_view& vehicle, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00,
+	void setComponent(std::wstring_view fileName);
+	void setBuilding(std::wstring_view fileName);
+	void setVehicle(std::wstring_view vehicle, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00,
 		int32_t h2 = 0xffbcbcbc);
-	ObjectAppearance* getObjectAppearance(void) const { return pObject; }
+	ObjectAppearance* getObjectAppearance(void) const
+	{
+		return pObject;
+	}
 
 	void init(float left, float right, float top, float bottom);
 
-	void setObject(const std::wstring_view& fileName, int32_t type, int32_t base = 0xffff7e00,
+	void setObject(std::wstring_view fileName, int32_t type, int32_t base = 0xffff7e00,
 		int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc);
 
 	virtual void render(void);
@@ -43,7 +46,10 @@ public:
 	void setRotation(float rotation);
 	void zoomIn(float howMuch); // scale for things that can't
 
-	void setInMission(void) { bIsInMission = true; }
+	void setInMission(void)
+	{
+		bIsInMission = true;
+	}
 
 	void setcolours(
 		int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc);

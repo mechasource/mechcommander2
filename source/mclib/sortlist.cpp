@@ -44,8 +44,7 @@ SortList::init(int32_t _numItems)
 
 //---------------------------------------------------------------------------
 
-void
-SortList::clear(bool setToMin)
+void SortList::clear(bool setToMin)
 {
 	int32_t i;
 	for (i = 0; i < numItems; i++)
@@ -90,8 +89,7 @@ ascendingCompare(PCVOID arg1, PCVOID arg2)
 
 //---------------------------------------------------------------------------
 
-void
-SortList::sort(bool descendingOrder)
+void SortList::sort(bool descendingOrder)
 {
 	//------------------------------------------------------------------
 	// For now, just use ANSI C's built-in qsort (ugly, but functional).
@@ -103,8 +101,7 @@ SortList::sort(bool descendingOrder)
 
 //---------------------------------------------------------------------------
 
-void
-SortList::destroy(void)
+void SortList::destroy(void)
 {
 	systemHeap->Free(list);
 	list = nullptr;

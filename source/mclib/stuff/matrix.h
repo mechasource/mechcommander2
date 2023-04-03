@@ -18,8 +18,7 @@ class Matrix4D;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::Matrix4D& matrix);
+void Spew(std::wstring_view group, const Stuff::Matrix4D& matrix);
 #endif
 
 namespace Stuff
@@ -47,21 +46,42 @@ public:
 	//
 	// Constructors
 	//
-	Matrix4D(void) {}
+	Matrix4D(void) { }
 	Matrix4D& BuildIdentity(void);
-	explicit Matrix4D(int32_t) { BuildIdentity(); }
+	explicit Matrix4D(int32_t)
+	{
+		BuildIdentity();
+	}
 	Matrix4D(const Matrix4D& matrix)
 	{
 		// Check_Pointer(this);
 		Check_Object(&matrix);
 		memcpy(entries, matrix.entries, sizeof(entries));
 	}
-	explicit Matrix4D(const AffineMatrix4D& m) { *this = m; }
-	explicit Matrix4D(const Origin3D& p) { *this = p; }
-	explicit Matrix4D(const EulerAngles& angles) { *this = angles; }
-	explicit Matrix4D(const YawPitchRoll& angles) { *this = angles; }
-	explicit Matrix4D(const UnitQuaternion& q) { *this = q; }
-	explicit Matrix4D(const Point3D& p) { *this = p; }
+	explicit Matrix4D(const AffineMatrix4D& m)
+	{
+		*this = m;
+	}
+	explicit Matrix4D(const Origin3D& p)
+	{
+		*this = p;
+	}
+	explicit Matrix4D(const EulerAngles& angles)
+	{
+		*this = angles;
+	}
+	explicit Matrix4D(const YawPitchRoll& angles)
+	{
+		*this = angles;
+	}
+	explicit Matrix4D(const UnitQuaternion& q)
+	{
+		*this = q;
+	}
+	explicit Matrix4D(const Point3D& p)
+	{
+		*this = p;
+	}
 
 	//
 	// Assignment operators
@@ -89,8 +109,14 @@ public:
 	// Comparison operators
 	//
 	friend bool Close_Enough(const Matrix4D& m1, const Matrix4D& m2, float e = SMALL);
-	bool operator==(const Matrix4D& a) const { return Close_Enough(*this, a, SMALL); }
-	bool operator!=(const Matrix4D& a) const { return !Close_Enough(*this, a, SMALL); }
+	bool operator==(const Matrix4D& a) const
+	{
+		return Close_Enough(*this, a, SMALL);
+	}
+	bool operator!=(const Matrix4D& a) const
+	{
+		return !Close_Enough(*this, a, SMALL);
+	}
 
 	//
 	// Index operators
@@ -135,7 +161,7 @@ public:
 #if USE_INLINE_ASSEMBLER_CODE
 		float* f = entries;
 		_asm
-		{
+			{
 				mov         edx, [edx]Source1.entries
 				push        esi
 				mov         esi, [esi]Source2.entries
@@ -208,7 +234,7 @@ public:
 				fxch		st(2)
 				faddp       st(1), st //				A3,1
 
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 				fld         dword ptr [edx] //	s1[0][0]
 				fmul        dword ptr [esi + 010h] //	s2[0][1]	M0,1
@@ -228,7 +254,7 @@ public:
 				fxch		st(1)
 				fstp        dword ptr [eax + 0Ch] //	[3][0]		S3
 
-			// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+				// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 				fxch		st(2)
 				faddp       st(1), st //				A0,1
@@ -287,7 +313,7 @@ public:
 				fxch		st(2)
 				faddp       st(1), st //				A3,1
 
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 				fld         dword ptr [edx] //	s1[0][0]
 				fmul        dword ptr [esi + 020h] //	s2[0][2]	M0,1
@@ -307,7 +333,7 @@ public:
 				fxch		st(1)
 				fstp        dword ptr [eax + 01Ch] //	[3][1]		S3
 
-			// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+				// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 				fxch		st(2)
 				faddp       st(1), st //				A0,1
@@ -366,7 +392,7 @@ public:
 				fxch		st(2)
 				faddp       st(1), st //				A3,1
 
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 				fld         dword ptr [edx] //	s1[0][0]
 				fmul        dword ptr [esi + 030h] //	s2[0][3]	M0,1
@@ -386,7 +412,7 @@ public:
 				fxch		st(1)
 				fstp        dword ptr [eax + 02Ch] //	[3][2]		S3
 
-			// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+				// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 				fxch		st(2)
 				faddp       st(1), st //				A0,1
@@ -451,7 +477,7 @@ public:
 				fstp        dword ptr [eax + 03Ch] //	[3][3]		S3
 
 				pop         esi
-		}
+			}
 #else
 		(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) + Source1(0, 2) * Source2(2, 0);
 		(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) + Source1(1, 2) * Source2(2, 0);
@@ -489,10 +515,10 @@ public:
 	// Viewpoint Calculation
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const Matrix4D& matrix);
+	friend void ::Spew(std::wstring_view group, const Matrix4D& matrix);
 #endif
 	static bool TestClass(void);
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 	//
 	// Creating perspective Matrix4D

@@ -16,10 +16,10 @@
 IMPLEMENT_DYNAMIC(MainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(MainFrame, CFrameWnd)
-//{{AFX_MSG_MAP(MainFrame)
-ON_WM_CREATE()
-ON_WM_SETFOCUS()
-ON_WM_CLOSE()
+	//{{AFX_MSG_MAP(MainFrame)
+	ON_WM_CREATE()
+	ON_WM_SETFOCUS()
+	ON_WM_CLOSE()
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -33,9 +33,9 @@ static uint32_t indicators[] = {
 /////////////////////////////////////////////////////////////////////////////
 // MainFrame construction/destruction
 
-MainFrame::MainFrame() {}
+MainFrame::MainFrame() { }
 
-MainFrame::~MainFrame() {}
+MainFrame::~MainFrame() { }
 
 int32_t
 MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -84,8 +84,7 @@ MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-BOOL
-MainFrame::PreCreateWindow(CREATESTRUCT& cs)
+BOOL MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if (!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
@@ -104,14 +103,12 @@ MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 // MainFrame diagnostics
 
 #ifdef _DEBUG
-void
-MainFrame::AssertValid(void) const
+void MainFrame::AssertValid(void) const
 {
 	CFrameWnd::AssertValid();
 }
 
-void
-MainFrame::Dump(CDumpcontext& dc) const
+void MainFrame::Dump(CDumpcontext& dc) const
 {
 	CFrameWnd::Dump(dc);
 }
@@ -120,8 +117,7 @@ MainFrame::Dump(CDumpcontext& dc) const
 
 /////////////////////////////////////////////////////////////////////////////
 // MainFrame message handlers
-void
-MainFrame::OnSetFocus(CWnd* pOldWnd)
+void MainFrame::OnSetFocus(CWnd* pOldWnd)
 {
 	// forward focus to the view window
 	if (m_wndView.m_hWnd)
@@ -130,8 +126,7 @@ MainFrame::OnSetFocus(CWnd* pOldWnd)
 	}
 }
 
-BOOL
-MainFrame::OnCmdMsg(
+BOOL MainFrame::OnCmdMsg(
 	uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	// let the view have first crack at the command
@@ -156,8 +151,7 @@ MainFrame::WindowProc(uint32_t message, WPARAM wparam, LPARAM lparam)
 	return CFrameWnd::WindowProc(message, wparam, lparam);
 }
 
-void
-MainFrame::OnClose()
+void MainFrame::OnClose()
 {
 	int32_t res = IDNO;
 	if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized() && EditorData::instance)

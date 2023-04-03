@@ -157,8 +157,7 @@ ExtentBox::Constrain(Vector3D* point) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-ExtentBox::Contains(const Vector3D& point) const
+bool ExtentBox::Contains(const Vector3D& point) const
 {
 	// Check_Object(this);
 	Check_Object(&point);
@@ -167,8 +166,7 @@ ExtentBox::Contains(const Vector3D& point) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-ExtentBox::Contains(const ExtentBox& box) const
+bool ExtentBox::Contains(const ExtentBox& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -177,8 +175,7 @@ ExtentBox::Contains(const ExtentBox& box) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-ExtentBox::Intersects(const ExtentBox& box) const
+bool ExtentBox::Intersects(const ExtentBox& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -187,8 +184,7 @@ ExtentBox::Intersects(const ExtentBox& box) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-ExtentBox::GetCenterpoint(Point3D* point) const
+void ExtentBox::GetCenterpoint(Point3D* point) const
 {
 	// Check_Object(this);
 	Check_Pointer(point);
@@ -199,8 +195,7 @@ ExtentBox::GetCenterpoint(Point3D* point) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-ExtentBox::TestInstance(void) const
+void ExtentBox::TestInstance(void) const
 {
 	_ASSERT(minX <= maxX && minY <= maxY && minZ <= maxZ);
 }
@@ -208,8 +203,7 @@ ExtentBox::TestInstance(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const ExtentBox& box)
+void Spew(std::wstring_view group, const ExtentBox& box)
 {
 	Check_Object(&box);
 	SPEW((group, "[%f..%f,%f..%f,%f..%f]+", box.minX, box.maxX, box.minY, box.maxY, box.minZ,
@@ -221,14 +215,13 @@ Spew(const std::wstring_view& group, const ExtentBox& box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, ExtentBox* extent_box)
+void Stuff::Convert_From_Ascii(std::wstring_view str, ExtentBox* extent_box)
 {
 	Check_Pointer(str);
 	Check_Object(extent_box);
-	const std::wstring_view& parse_string(str);
+	std::wstring_view parse_string(str);
 	Check_Object(&parse_string);
-	const std::wstring_view& token = parse_string.GetNthToken(0);
+	std::wstring_view token = parse_string.GetNthToken(0);
 	extent_box->minX = AtoF(token);
 	token = parse_string.GetNthToken(1);
 	extent_box->minY = AtoF(token);
@@ -245,8 +238,7 @@ Stuff::Convert_From_Ascii(const std::wstring_view& str, ExtentBox* extent_box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, uint32_t* max_index,
+void Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, uint32_t* max_index,
 	uint32_t block_size, float threshold)
 {
 	Check_Object(values);
@@ -297,8 +289,7 @@ Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, uint3
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes)
+void Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes)
 {
 	Check_Object(planes);
 	Check_Object(&boxes);

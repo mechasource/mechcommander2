@@ -35,8 +35,7 @@ float Stuff::SMALL = 1e-4f;
 //	mark = Destroyed;
 //}
 
-void
-Stuff::Is_Signature_Bad(const volatile Signature* p)
+void Stuff::Is_Signature_Bad(const volatile Signature* p)
 {
 	if ((p) && reinterpret_cast<intptr_t>(p) != Stuff::SNAN_NEGATIVE_LONG)
 	{

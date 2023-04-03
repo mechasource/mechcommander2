@@ -36,8 +36,7 @@ int32_t numcolourRGBTables = 0;
 
 #define MAX_COLOR_ENTRIES 56
 //----------------------------------------------------------------------------------
-void
-initcolourTables(void)
+void initcolourTables(void)
 {
 	stdfs::path colorPath; // FullPathFileName colorPath;
 	GetMcDataPath(colorPath, data_paths::cameraPath);
@@ -74,8 +73,7 @@ initcolourTables(void)
 }
 
 //----------------------------------------------------------------------------------
-void
-destroycolourTables(void)
+void destroycolourTables(void)
 {
 	for (size_t i = 0; i < numcolourRGBTables; i++)
 	{

@@ -21,7 +21,6 @@
 
 using namespace directxtk;
 
-
 //======================================================================================
 // SoundEffect
 //======================================================================================
@@ -30,334 +29,332 @@ using namespace directxtk;
 class SoundEffect::Impl : public IVoiceNotify
 {
 public:
-    explicit Impl(_In_ AudioEngine* engine) :
-        mWaveFormat(nullptr),
-        mStartAudio(nullptr),
-        mAudioBytes(0),
-        mLoopStart(0),
-        mLoopLength(0),
-        mEngine(engine),
-        mOneShots(0)
-    #ifdef DIRECTX_ENABLE_SEEK_TABLES
-        , mSeekCount(0)
-        , mSeekTable(nullptr)
-    #endif
-    #ifdef DIRECTX_ENABLE_XMA2
-        , mXMAMemory(nullptr)
-    #endif
-    {
-        assert(mEngine != nullptr);
-        mEngine->RegisterNotify(this, false);
-    }
+	explicit Impl(_In_ AudioEngine* engine)
+		: mWaveFormat(nullptr)
+		, mStartAudio(nullptr)
+		, mAudioBytes(0)
+		, mLoopStart(0)
+		, mLoopLength(0)
+		, mEngine(engine)
+		, mOneShots(0)
+#ifdef DIRECTX_ENABLE_SEEK_TABLES
+		, mSeekCount(0)
+		, mSeekTable(nullptr)
+#endif
+#ifdef DIRECTX_ENABLE_XMA2
+		, mXMAMemory(nullptr)
+#endif
+	{
+		assert(mEngine != nullptr);
+		mEngine->RegisterNotify(this, false);
+	}
 
-    Impl(Impl&&) = default;
-    Impl& operator= (Impl&&) = default;
+	Impl(Impl&&) = default;
+	Impl& operator=(Impl&&) = default;
 
-    Impl(Impl const&) = delete;
-    Impl& operator= (Impl const&) = delete;
+	Impl(Impl const&) = delete;
+	Impl& operator=(Impl const&) = delete;
 
-    ~Impl() override
-    {
-        if (!mInstances.empty())
-        {
-            DebugTrace("WARNING: Destroying SoundEffect with %zu outstanding SoundEffectInstances\n", mInstances.size());
+	~Impl() override
+	{
+		if (!mInstances.empty())
+		{
+			DebugTrace("WARNING: Destroying SoundEffect with %zu outstanding SoundEffectInstances\n", mInstances.size());
 
-            for (auto it = mInstances.begin(); it != mInstances.end(); ++it)
-            {
-                assert(*it != nullptr);
-                (*it)->OnDestroyParent();
-            }
+			for (auto it = mInstances.begin(); it != mInstances.end(); ++it)
+			{
+				assert(*it != nullptr);
+				(*it)->OnDestroyParent();
+			}
 
-            mInstances.clear();
-        }
+			mInstances.clear();
+		}
 
-        if (mOneShots > 0)
-        {
-            DebugTrace("WARNING: Destroying SoundEffect with %u outstanding one shot effects\n", mOneShots);
-        }
+		if (mOneShots > 0)
+		{
+			DebugTrace("WARNING: Destroying SoundEffect with %u outstanding one shot effects\n", mOneShots);
+		}
 
-        if (mEngine)
-        {
-            mEngine->UnregisterNotify(this, true, false);
-            mEngine = nullptr;
-        }
+		if (mEngine)
+		{
+			mEngine->UnregisterNotify(this, true, false);
+			mEngine = nullptr;
+		}
 
-    #ifdef DIRECTX_ENABLE_XMA2
-        if (mXMAMemory)
-        {
-            ApuFree(mXMAMemory);
-            mXMAMemory = nullptr;
-        }
-    #endif
-    }
+#ifdef DIRECTX_ENABLE_XMA2
+		if (mXMAMemory)
+		{
+			ApuFree(mXMAMemory);
+			mXMAMemory = nullptr;
+		}
+#endif
+	}
 
-    HRESULT Initialize(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
-                       _In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes,
-                   #ifdef DIRECTX_ENABLE_SEEK_TABLES
-                       _In_reads_opt_(seekCount) const uint32_t* seekTable, size_t seekCount,
-                   #endif
-                       uint32_t loopStart, uint32_t loopLength) noexcept;
+	HRESULT Initialize(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
+		_In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes,
+#ifdef DIRECTX_ENABLE_SEEK_TABLES
+		_In_reads_opt_(seekCount) const uint32_t* seekTable, size_t seekCount,
+#endif
+		uint32_t loopStart, uint32_t loopLength) noexcept;
 
-    void Play(float volume, float pitch, float pan);
+	void Play(float volume, float pitch, float pan);
 
-    // IVoiceNotify
-    void __cdecl OnBufferEnd() override
-    {
-        InterlockedDecrement(&mOneShots);
-    }
+	// IVoiceNotify
+	void __cdecl OnBufferEnd() override
+	{
+		InterlockedDecrement(&mOneShots);
+	}
 
-    void __cdecl OnCriticalError() override
-    {
-        mOneShots = 0;
-    }
+	void __cdecl OnCriticalError() override
+	{
+		mOneShots = 0;
+	}
 
-    void __cdecl OnReset() override
-    {
-        // No action required
-    }
+	void __cdecl OnReset() override
+	{
+		// No action required
+	}
 
-    void __cdecl OnUpdate() override
-    {
-        // We do not register for update notification
-        assert(false);
-    }
+	void __cdecl OnUpdate() override
+	{
+		// We do not register for update notification
+		assert(false);
+	}
 
-    void __cdecl OnDestroyEngine() noexcept override
-    {
-        mEngine = nullptr;
-        mOneShots = 0;
-    }
+	void __cdecl OnDestroyEngine() noexcept override
+	{
+		mEngine = nullptr;
+		mOneShots = 0;
+	}
 
-    void __cdecl OnTrim() override
-    {
-        // No action required
-    }
+	void __cdecl OnTrim() override
+	{
+		// No action required
+	}
 
-    void __cdecl GatherStatistics(AudioStatistics& stats) const noexcept override
-    {
-        stats.playingOneShots += mOneShots;
-        stats.audioBytes += mAudioBytes;
+	void __cdecl GatherStatistics(AudioStatistics& stats) const noexcept override
+	{
+		stats.playingOneShots += mOneShots;
+		stats.audioBytes += mAudioBytes;
 
-    #ifdef DIRECTX_ENABLE_XMA2
-        if (mXMAMemory)
-            stats.xmaAudioBytes += mAudioBytes;
-    #endif
-    }
+#ifdef DIRECTX_ENABLE_XMA2
+		if (mXMAMemory)
+			stats.xmaAudioBytes += mAudioBytes;
+#endif
+	}
 
-    void __cdecl OnDestroyParent() noexcept override
-    {
-    }
+	void __cdecl OnDestroyParent() noexcept override
+	{
+	}
 
-    const WAVEFORMATEX*                 mWaveFormat;
-    const uint8_t*                      mStartAudio;
-    uint32_t                            mAudioBytes;
-    uint32_t                            mLoopStart;
-    uint32_t                            mLoopLength;
-    AudioEngine*                        mEngine;
-    std::list<IVoiceNotify*>            mInstances;
-    uint32_t                            mOneShots;
+	const WAVEFORMATEX* mWaveFormat;
+	const uint8_t* mStartAudio;
+	uint32_t mAudioBytes;
+	uint32_t mLoopStart;
+	uint32_t mLoopLength;
+	AudioEngine* mEngine;
+	std::list<IVoiceNotify*> mInstances;
+	uint32_t mOneShots;
 
 #ifdef DIRECTX_ENABLE_SEEK_TABLES
-    uint32_t                            mSeekCount;
-    const uint32_t*                     mSeekTable;
+	uint32_t mSeekCount;
+	const uint32_t* mSeekTable;
 #endif
 
 private:
-    std::unique_ptr<uint8_t[]>          mWavData;
+	std::unique_ptr<uint8_t[]> mWavData;
 
 #ifdef DIRECTX_ENABLE_XMA2
-    void*                               mXMAMemory;
+	void* mXMAMemory;
 #endif
 };
 
-
 _Use_decl_annotations_
-HRESULT SoundEffect::Impl::Initialize(AudioEngine* engine, std::unique_ptr<uint8_t[]>& wavData,
-                                      const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes,
-                                  #ifdef DIRECTX_ENABLE_SEEK_TABLES
-                                      const uint32_t* seekTable, size_t seekCount,
-                                  #endif
-                                      uint32_t loopStart, uint32_t loopLength) noexcept
+	HRESULT
+	SoundEffect::Impl::Initialize(AudioEngine* engine, std::unique_ptr<uint8_t[]>& wavData,
+		const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes,
+#ifdef DIRECTX_ENABLE_SEEK_TABLES
+		const uint32_t* seekTable, size_t seekCount,
+#endif
+		uint32_t loopStart, uint32_t loopLength) noexcept
 {
-    if (!engine || !IsValid(wfx) || !startAudio || !audioBytes || !wavData)
-        return E_INVALIDARG;
+	if (!engine || !IsValid(wfx) || !startAudio || !audioBytes || !wavData)
+		return E_INVALIDARG;
 
-    if (audioBytes > UINT32_MAX)
-        return E_INVALIDARG;
+	if (audioBytes > UINT32_MAX)
+		return E_INVALIDARG;
 
-    switch (GetFormatTag(wfx))
-    {
-        case WAVE_FORMAT_PCM:
-        case WAVE_FORMAT_IEEE_FLOAT:
-        case WAVE_FORMAT_ADPCM:
-            // Take ownership of the buffer
-            mWavData.reset(wavData.release());
+	switch (GetFormatTag(wfx))
+	{
+	case WAVE_FORMAT_PCM:
+	case WAVE_FORMAT_IEEE_FLOAT:
+	case WAVE_FORMAT_ADPCM:
+		// Take ownership of the buffer
+		mWavData.reset(wavData.release());
 
-            // WARNING: We assume the wfx and startAudio parameters are pointers into the wavData memory buffer
-            mWaveFormat = wfx;
-            mStartAudio = startAudio;
-            break;
+		// WARNING: We assume the wfx and startAudio parameters are pointers into the wavData memory buffer
+		mWaveFormat = wfx;
+		mStartAudio = startAudio;
+		break;
 
-        #ifdef DIRECTX_ENABLE_XWMA
+#ifdef DIRECTX_ENABLE_XWMA
 
-        case WAVE_FORMAT_WMAUDIO2:
-        case WAVE_FORMAT_WMAUDIO3:
-            if (!seekCount || !seekTable)
-            {
-                DebugTrace("ERROR: SoundEffect format xWMA requires seek table\n");
-                return E_FAIL;
-            }
+	case WAVE_FORMAT_WMAUDIO2:
+	case WAVE_FORMAT_WMAUDIO3:
+		if (!seekCount || !seekTable)
+		{
+			DebugTrace("ERROR: SoundEffect format xWMA requires seek table\n");
+			return E_FAIL;
+		}
 
-            if (seekCount > UINT32_MAX)
-                return E_INVALIDARG;
+		if (seekCount > UINT32_MAX)
+			return E_INVALIDARG;
 
-            // Take ownership of the buffer
-            mWavData.reset(wavData.release());
+		// Take ownership of the buffer
+		mWavData.reset(wavData.release());
 
-            // WARNING: We assume the wfx, startAudio, and mSeekTable parameters are pointers into the wavData memory buffer
-            mWaveFormat = wfx;
-            mStartAudio = startAudio;
-            mSeekCount = static_cast<uint32_t>(seekCount);
-            mSeekTable = seekTable;
-            break;
+		// WARNING: We assume the wfx, startAudio, and mSeekTable parameters are pointers into the wavData memory buffer
+		mWaveFormat = wfx;
+		mStartAudio = startAudio;
+		mSeekCount = static_cast<uint32_t>(seekCount);
+		mSeekTable = seekTable;
+		break;
 
-        #endif // xWMA
+#endif // xWMA
 
-        #ifdef DIRECTX_ENABLE_XMA2
+#ifdef DIRECTX_ENABLE_XMA2
 
-        case WAVE_FORMAT_XMA2:
-            if (!seekCount || !seekTable)
-            {
-                DebugTrace("ERROR: SoundEffect format XMA2 requires seek table\n");
-                return E_FAIL;
-            }
+	case WAVE_FORMAT_XMA2:
+		if (!seekCount || !seekTable)
+		{
+			DebugTrace("ERROR: SoundEffect format XMA2 requires seek table\n");
+			return E_FAIL;
+		}
 
-            if (seekCount > UINT32_MAX)
-                return E_INVALIDARG;
+		if (seekCount > UINT32_MAX)
+			return E_INVALIDARG;
 
-            {
-                HRESULT hr = ApuAlloc(&mXMAMemory, nullptr,
-                                      static_cast<uint32_t>(audioBytes), SHAPE_XMA_INPUT_BUFFER_ALIGNMENT);
-                if (FAILED(hr))
-                {
-                    DebugTrace("ERROR: ApuAlloc failed. Did you allocate a large enough heap with ApuCreateHeap for all your XMA wave data?\n");
-                    return hr;
-                }
-            }
+		{
+			HRESULT hr = ApuAlloc(&mXMAMemory, nullptr,
+				static_cast<uint32_t>(audioBytes), SHAPE_XMA_INPUT_BUFFER_ALIGNMENT);
+			if (FAILED(hr))
+			{
+				DebugTrace("ERROR: ApuAlloc failed. Did you allocate a large enough heap with ApuCreateHeap for all your XMA wave data?\n");
+				return hr;
+			}
+		}
 
-            memcpy(mXMAMemory, startAudio, audioBytes);
-            mStartAudio = reinterpret_cast<const uint8_t*>(mXMAMemory);
+		memcpy(mXMAMemory, startAudio, audioBytes);
+		mStartAudio = reinterpret_cast<const uint8_t*>(mXMAMemory);
 
-            mWavData.reset(new (std::nothrow) uint8_t[sizeof(XMA2WAVEFORMATEX) + (seekCount * sizeof(uint32_t))]);
-            if (!mWavData)
-                return E_OUTOFMEMORY;
+		mWavData.reset(new (std::nothrow) uint8_t[sizeof(XMA2WAVEFORMATEX) + (seekCount * sizeof(uint32_t))]);
+		if (!mWavData)
+			return E_OUTOFMEMORY;
 
-            memcpy(mWavData.get(), wfx, sizeof(XMA2WAVEFORMATEX));
-            mWaveFormat = reinterpret_cast<WAVEFORMATEX*>(mWavData.get());
+		memcpy(mWavData.get(), wfx, sizeof(XMA2WAVEFORMATEX));
+		mWaveFormat = reinterpret_cast<WAVEFORMATEX*>(mWavData.get());
 
-            // XMA seek table is Big-Endian
-            {
-                auto dest = reinterpret_cast<uint32_t*>(mWavData.get() + sizeof(XMA2WAVEFORMATEX));
-                for (size_t k = 0; k < seekCount; ++k)
-                {
-                    dest[k] = _byteswap_ulong(seekTable[k]);
-                }
-            }
+		// XMA seek table is Big-Endian
+		{
+			auto dest = reinterpret_cast<uint32_t*>(mWavData.get() + sizeof(XMA2WAVEFORMATEX));
+			for (size_t k = 0; k < seekCount; ++k)
+			{
+				dest[k] = _byteswap_ulong(seekTable[k]);
+			}
+		}
 
-            mSeekCount = static_cast<uint32_t>(seekCount);
-            mSeekTable = reinterpret_cast<const uint32_t*>(mWavData.get() + sizeof(XMA2WAVEFORMATEX));
+		mSeekCount = static_cast<uint32_t>(seekCount);
+		mSeekTable = reinterpret_cast<const uint32_t*>(mWavData.get() + sizeof(XMA2WAVEFORMATEX));
 
-            wavData.reset();
-            break;
+		wavData.reset();
+		break;
 
-        #endif // XMA2
+#endif // XMA2
 
-        default:
-        {
-            DebugTrace("ERROR: SoundEffect encountered an unsupported format tag (%u)\n", wfx->wFormatTag);
-            return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
-        }
-    }
+	default:
+	{
+		DebugTrace("ERROR: SoundEffect encountered an unsupported format tag (%u)\n", wfx->wFormatTag);
+		return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
+	}
+	}
 
-    mAudioBytes = static_cast<uint32_t>(audioBytes);
-    mLoopStart = loopStart;
-    mLoopLength = loopLength;
+	mAudioBytes = static_cast<uint32_t>(audioBytes);
+	mLoopStart = loopStart;
+	mLoopLength = loopLength;
 
-    return S_OK;
+	return S_OK;
 }
-
 
 void SoundEffect::Impl::Play(float volume, float pitch, float pan)
 {
-    assert(volume >= -XAUDIO2_MAX_VOLUME_LEVEL && volume <= XAUDIO2_MAX_VOLUME_LEVEL);
-    assert(pitch >= -1.f && pitch <= 1.f);
-    assert(pan >= -1.f && pan <= 1.f);
+	assert(volume >= -XAUDIO2_MAX_VOLUME_LEVEL && volume <= XAUDIO2_MAX_VOLUME_LEVEL);
+	assert(pitch >= -1.f && pitch <= 1.f);
+	assert(pan >= -1.f && pan <= 1.f);
 
-    IXAudio2SourceVoice* voice = nullptr;
-    mEngine->AllocateVoice(mWaveFormat, SoundEffectInstance_Default, true, &voice);
+	IXAudio2SourceVoice* voice = nullptr;
+	mEngine->AllocateVoice(mWaveFormat, SoundEffectInstance_Default, true, &voice);
 
-    if (!voice)
-        return;
+	if (!voice)
+		return;
 
-    if (volume != 1.f)
-    {
-        HRESULT hr = voice->SetVolume(volume);
-        ThrowIfFailed(hr);
-    }
+	if (volume != 1.f)
+	{
+		HRESULT hr = voice->SetVolume(volume);
+		ThrowIfFailed(hr);
+	}
 
-    if (pitch != 0.f)
-    {
-        float fr = XAudio2SemitonesToFrequencyRatio(pitch * 12.f);
+	if (pitch != 0.f)
+	{
+		float fr = XAudio2SemitonesToFrequencyRatio(pitch * 12.f);
 
-        HRESULT hr = voice->SetFrequencyRatio(fr);
-        ThrowIfFailed(hr);
-    }
+		HRESULT hr = voice->SetFrequencyRatio(fr);
+		ThrowIfFailed(hr);
+	}
 
-    if (pan != 0.f)
-    {
-        float matrix[16];
-        if (ComputePan(pan, mWaveFormat->nChannels, matrix))
-        {
-            HRESULT hr = voice->SetOutputMatrix(nullptr, mWaveFormat->nChannels, mEngine->GetOutputChannels(), matrix);
-            ThrowIfFailed(hr);
-        }
-    }
+	if (pan != 0.f)
+	{
+		float matrix[16];
+		if (ComputePan(pan, mWaveFormat->nChannels, matrix))
+		{
+			HRESULT hr = voice->SetOutputMatrix(nullptr, mWaveFormat->nChannels, mEngine->GetOutputChannels(), matrix);
+			ThrowIfFailed(hr);
+		}
+	}
 
-    HRESULT hr = voice->Start(0);
-    ThrowIfFailed(hr);
+	HRESULT hr = voice->Start(0);
+	ThrowIfFailed(hr);
 
-    XAUDIO2_BUFFER buffer = {};
-    buffer.AudioBytes = mAudioBytes;
-    buffer.pAudioData = mStartAudio;
-    buffer.Flags = XAUDIO2_END_OF_STREAM;
-    buffer.pContext = this;
+	XAUDIO2_BUFFER buffer = {};
+	buffer.AudioBytes = mAudioBytes;
+	buffer.pAudioData = mStartAudio;
+	buffer.Flags = XAUDIO2_END_OF_STREAM;
+	buffer.pContext = this;
 
-    #ifdef DIRECTX_ENABLE_XWMA
-    uint32_t tag = GetFormatTag(mWaveFormat);
-    if (tag == WAVE_FORMAT_WMAUDIO2 || tag == WAVE_FORMAT_WMAUDIO3)
-    {
-        XAUDIO2_BUFFER_WMA wmaBuffer = {};
-        wmaBuffer.PacketCount = mSeekCount;
-        wmaBuffer.pDecodedPacketCumulativeBytes = mSeekTable;
+#ifdef DIRECTX_ENABLE_XWMA
+	uint32_t tag = GetFormatTag(mWaveFormat);
+	if (tag == WAVE_FORMAT_WMAUDIO2 || tag == WAVE_FORMAT_WMAUDIO3)
+	{
+		XAUDIO2_BUFFER_WMA wmaBuffer = {};
+		wmaBuffer.PacketCount = mSeekCount;
+		wmaBuffer.pDecodedPacketCumulativeBytes = mSeekTable;
 
-        hr = voice->SubmitSourceBuffer(&buffer, &wmaBuffer);
-    }
-    else
-    #endif // xWMA
-    {
-        hr = voice->SubmitSourceBuffer(&buffer, nullptr);
-    }
-    if (FAILED(hr))
-    {
-        DebugTrace("ERROR: SoundEffect failed (%08X) when submitting buffer:\n", static_cast<uint32_t>(hr));
-        DebugTrace("\tFormat Tag %u, %u channels, %u-bit, %u Hz, %u bytes\n",
-            mWaveFormat->wFormatTag, mWaveFormat->nChannels, mWaveFormat->wBitsPerSample, mWaveFormat->nSamplesPerSec, mAudioBytes);
-        throw std::exception("SubmitSourceBuffer");
-    }
+		hr = voice->SubmitSourceBuffer(&buffer, &wmaBuffer);
+	}
+	else
+#endif // xWMA
+	{
+		hr = voice->SubmitSourceBuffer(&buffer, nullptr);
+	}
+	if (FAILED(hr))
+	{
+		DebugTrace("ERROR: SoundEffect failed (%08X) when submitting buffer:\n", static_cast<uint32_t>(hr));
+		DebugTrace("\tFormat Tag %u, %u channels, %u-bit, %u Hz, %u bytes\n",
+			mWaveFormat->wFormatTag, mWaveFormat->nChannels, mWaveFormat->wBitsPerSample, mWaveFormat->nSamplesPerSec, mAudioBytes);
+		throw std::exception("SubmitSourceBuffer");
+	}
 
-    InterlockedIncrement(&mOneShots);
+	InterlockedIncrement(&mOneShots);
 }
-
 
 //--------------------------------------------------------------------------------------
 // SoundEffect
@@ -365,258 +362,242 @@ void SoundEffect::Impl::Play(float volume, float pitch, float pan)
 
 // Public constructors.
 _Use_decl_annotations_
-SoundEffect::SoundEffect(AudioEngine* engine, const std::wstring_view& waveFileName)
-    : pimpl(std::make_unique<Impl>(engine))
+SoundEffect::SoundEffect(AudioEngine* engine, std::wstring_view waveFileName)
+	: pimpl(std::make_unique<Impl>(engine))
 {
-    WAVData wavInfo;
-    std::unique_ptr<uint8_t[]> wavData;
-    HRESULT hr = LoadWAVAudioFromFileEx(waveFileName, wavData, wavInfo);
-    if (FAILED(hr))
-    {
-        DebugTrace("ERROR: SoundEffect failed (%08X) to load from .wav file \"%ls\"\n",
-            static_cast<uint32_t>(hr), waveFileName);
-        throw std::exception("SoundEffect");
-    }
+	WAVData wavInfo;
+	std::unique_ptr<uint8_t[]> wavData;
+	HRESULT hr = LoadWAVAudioFromFileEx(waveFileName, wavData, wavInfo);
+	if (FAILED(hr))
+	{
+		DebugTrace("ERROR: SoundEffect failed (%08X) to load from .wav file \"%ls\"\n",
+			static_cast<uint32_t>(hr), waveFileName);
+		throw std::exception("SoundEffect");
+	}
 
 #ifdef DIRECTX_ENABLE_SEEK_TABLES
-    hr = pimpl->Initialize(engine, wavData, wavInfo.wfx, wavInfo.startAudio, wavInfo.audioBytes,
-                           wavInfo.seek, wavInfo.seekCount,
-                           wavInfo.loopStart, wavInfo.loopLength);
+	hr = pimpl->Initialize(engine, wavData, wavInfo.wfx, wavInfo.startAudio, wavInfo.audioBytes,
+		wavInfo.seek, wavInfo.seekCount,
+		wavInfo.loopStart, wavInfo.loopLength);
 #else
-    hr = pimpl->Initialize(engine, wavData, wavInfo.wfx, wavInfo.startAudio, wavInfo.audioBytes,
-                           wavInfo.loopStart, wavInfo.loopLength);
+	hr = pimpl->Initialize(engine, wavData, wavInfo.wfx, wavInfo.startAudio, wavInfo.audioBytes,
+		wavInfo.loopStart, wavInfo.loopLength);
 #endif
 
-    if (FAILED(hr))
-    {
-        DebugTrace("ERROR: SoundEffect failed (%08X) to intialize from .wav file \"%ls\"\n",
-            static_cast<uint32_t>(hr), waveFileName);
-        throw std::exception("SoundEffect");
-    }
+	if (FAILED(hr))
+	{
+		DebugTrace("ERROR: SoundEffect failed (%08X) to intialize from .wav file \"%ls\"\n",
+			static_cast<uint32_t>(hr), waveFileName);
+		throw std::exception("SoundEffect");
+	}
 }
-
 
 _Use_decl_annotations_
 SoundEffect::SoundEffect(AudioEngine* engine, std::unique_ptr<uint8_t[]>& wavData,
-                         const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes)
-    : pimpl(std::make_unique<Impl>(engine))
+	const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes)
+	: pimpl(std::make_unique<Impl>(engine))
 {
 #ifdef DIRECTX_ENABLE_SEEK_TABLES
-    HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, nullptr, 0, 0, 0);
+	HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, nullptr, 0, 0, 0);
 #else
-    HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, 0, 0);
+	HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, 0, 0);
 #endif
-    if (FAILED(hr))
-    {
-        DebugTrace("ERROR: SoundEffect failed (%08X) to intialize\n", static_cast<uint32_t>(hr));
-        throw std::exception("SoundEffect");
-    }
+	if (FAILED(hr))
+	{
+		DebugTrace("ERROR: SoundEffect failed (%08X) to intialize\n", static_cast<uint32_t>(hr));
+		throw std::exception("SoundEffect");
+	}
 }
-
 
 _Use_decl_annotations_
 SoundEffect::SoundEffect(AudioEngine* engine, std::unique_ptr<uint8_t[]>& wavData,
-                         const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes,
-                         uint32_t loopStart, uint32_t loopLength)
-    : pimpl(std::make_unique<Impl>(engine))
+	const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes,
+	uint32_t loopStart, uint32_t loopLength)
+	: pimpl(std::make_unique<Impl>(engine))
 {
 #ifdef DIRECTX_ENABLE_SEEK_TABLES
-    HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, nullptr, 0, loopStart, loopLength);
+	HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, nullptr, 0, loopStart, loopLength);
 #else
-    HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, loopStart, loopLength);
+	HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, loopStart, loopLength);
 #endif
-    if (FAILED(hr))
-    {
-        DebugTrace("ERROR: SoundEffect failed (%08X) to intialize\n", static_cast<uint32_t>(hr));
-        throw std::exception("SoundEffect");
-    }
+	if (FAILED(hr))
+	{
+		DebugTrace("ERROR: SoundEffect failed (%08X) to intialize\n", static_cast<uint32_t>(hr));
+		throw std::exception("SoundEffect");
+	}
 }
-
 
 #ifdef DIRECTX_ENABLE_SEEK_TABLES
 
 _Use_decl_annotations_
 SoundEffect::SoundEffect(AudioEngine* engine, std::unique_ptr<uint8_t[]>& wavData,
-                         const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes,
-                         const uint32_t* seekTable, size_t seekCount)
+	const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes,
+	const uint32_t* seekTable, size_t seekCount)
 {
-    HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, seekTable, seekCount, 0, 0);
-    if (FAILED(hr))
-    {
-        DebugTrace("ERROR: SoundEffect failed (%08X) to intialize\n", static_cast<uint32_t>(hr));
-        throw std::exception("SoundEffect");
-    }
+	HRESULT hr = pimpl->Initialize(engine, wavData, wfx, startAudio, audioBytes, seekTable, seekCount, 0, 0);
+	if (FAILED(hr))
+	{
+		DebugTrace("ERROR: SoundEffect failed (%08X) to intialize\n", static_cast<uint32_t>(hr));
+		throw std::exception("SoundEffect");
+	}
 }
 
 #endif
-
 
 // Move constructor.
 SoundEffect::SoundEffect(SoundEffect&& moveFrom) noexcept
-    : pimpl(std::move(moveFrom.pimpl))
+	: pimpl(std::move(moveFrom.pimpl))
 {
 }
-
 
 // Move assignment.
-SoundEffect& SoundEffect::operator= (SoundEffect&& moveFrom) noexcept
+SoundEffect& SoundEffect::operator=(SoundEffect&& moveFrom) noexcept
 {
-    pimpl = std::move(moveFrom.pimpl);
-    return *this;
+	pimpl = std::move(moveFrom.pimpl);
+	return *this;
 }
-
 
 // Public destructor.
 SoundEffect::~SoundEffect()
 {
 }
 
-
 // Public methods.
 void SoundEffect::Play()
 {
-    pimpl->Play(1.f, 0.f, 0.f);
+	pimpl->Play(1.f, 0.f, 0.f);
 }
-
 
 void SoundEffect::Play(float volume, float pitch, float pan)
 {
-    pimpl->Play(volume, pitch, pan);
+	pimpl->Play(volume, pitch, pan);
 }
-
 
 std::unique_ptr<SoundEffectInstance> SoundEffect::CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS flags)
 {
-    auto effect = new SoundEffectInstance(pimpl->mEngine, this, flags);
-    assert(effect != nullptr);
-    pimpl->mInstances.emplace_back(effect->GetVoiceNotify());
-    return std::unique_ptr<SoundEffectInstance>(effect);
+	auto effect = new SoundEffectInstance(pimpl->mEngine, this, flags);
+	assert(effect != nullptr);
+	pimpl->mInstances.emplace_back(effect->GetVoiceNotify());
+	return std::unique_ptr<SoundEffectInstance>(effect);
 }
-
 
 void SoundEffect::UnregisterInstance(_In_ IVoiceNotify* instance)
 {
-    auto it = std::find(pimpl->mInstances.begin(), pimpl->mInstances.end(), instance);
-    if (it == pimpl->mInstances.end())
-        return;
+	auto it = std::find(pimpl->mInstances.begin(), pimpl->mInstances.end(), instance);
+	if (it == pimpl->mInstances.end())
+		return;
 
-    pimpl->mInstances.erase(it);
+	pimpl->mInstances.erase(it);
 }
-
 
 // Public accessors.
 bool SoundEffect::IsInUse() const noexcept
 {
-    return (pimpl->mOneShots > 0) || !pimpl->mInstances.empty();
+	return (pimpl->mOneShots > 0) || !pimpl->mInstances.empty();
 }
-
 
 size_t SoundEffect::GetSampleSizeInBytes() const noexcept
 {
-    return pimpl->mAudioBytes;
+	return pimpl->mAudioBytes;
 }
-
 
 size_t SoundEffect::GetSampleDuration() const noexcept
 {
-    if (!pimpl->mWaveFormat || !pimpl->mWaveFormat->nChannels)
-        return 0;
+	if (!pimpl->mWaveFormat || !pimpl->mWaveFormat->nChannels)
+		return 0;
 
-    switch (GetFormatTag(pimpl->mWaveFormat))
-    {
-        case WAVE_FORMAT_ADPCM:
-        {
-            auto adpcmFmt = reinterpret_cast<const ADPCMWAVEFORMAT*>(pimpl->mWaveFormat);
+	switch (GetFormatTag(pimpl->mWaveFormat))
+	{
+	case WAVE_FORMAT_ADPCM:
+	{
+		auto adpcmFmt = reinterpret_cast<const ADPCMWAVEFORMAT*>(pimpl->mWaveFormat);
 
-            uint64_t duration = uint64_t(pimpl->mAudioBytes / adpcmFmt->wfx.nBlockAlign) * adpcmFmt->wSamplesPerBlock;
-            uint32_t partial = pimpl->mAudioBytes % adpcmFmt->wfx.nBlockAlign;
-            if (partial)
-            {
-                if (partial >= (7u * adpcmFmt->wfx.nChannels))
-                    duration += (uint64_t(partial) * 2 / uint64_t(adpcmFmt->wfx.nChannels - 12));
-            }
-            return static_cast<size_t>(duration);
-        }
+		uint64_t duration = uint64_t(pimpl->mAudioBytes / adpcmFmt->wfx.nBlockAlign) * adpcmFmt->wSamplesPerBlock;
+		uint32_t partial = pimpl->mAudioBytes % adpcmFmt->wfx.nBlockAlign;
+		if (partial)
+		{
+			if (partial >= (7u * adpcmFmt->wfx.nChannels))
+				duration += (uint64_t(partial) * 2 / uint64_t(adpcmFmt->wfx.nChannels - 12));
+		}
+		return static_cast<size_t>(duration);
+	}
 
-        #ifdef DIRECTX_ENABLE_XWMA
+#ifdef DIRECTX_ENABLE_XWMA
 
-        case WAVE_FORMAT_WMAUDIO2:
-        case WAVE_FORMAT_WMAUDIO3:
-            if (pimpl->mSeekTable && pimpl->mSeekCount > 0)
-            {
-                return pimpl->mSeekTable[pimpl->mSeekCount - 1] / uint32_t(2 * pimpl->mWaveFormat->nChannels);
-            }
-            break;
+	case WAVE_FORMAT_WMAUDIO2:
+	case WAVE_FORMAT_WMAUDIO3:
+		if (pimpl->mSeekTable && pimpl->mSeekCount > 0)
+		{
+			return pimpl->mSeekTable[pimpl->mSeekCount - 1] / uint32_t(2 * pimpl->mWaveFormat->nChannels);
+		}
+		break;
 
-        #endif
+#endif
 
-        #ifdef DIRECTX_ENABLE_XMA2
+#ifdef DIRECTX_ENABLE_XMA2
 
-        case WAVE_FORMAT_XMA2:
-            return reinterpret_cast<const XMA2WAVEFORMATEX*>(pimpl->mWaveFormat)->SamplesEncoded;
+	case WAVE_FORMAT_XMA2:
+		return reinterpret_cast<const XMA2WAVEFORMATEX*>(pimpl->mWaveFormat)->SamplesEncoded;
 
-        #endif
+#endif
 
-        default:
-            if (pimpl->mWaveFormat->wBitsPerSample > 0)
-            {
-                return static_cast<size_t>((uint64_t(pimpl->mAudioBytes) * 8)
-                                           / (uint64_t(pimpl->mWaveFormat->wBitsPerSample) * uint64_t(pimpl->mWaveFormat->nChannels)));
-            }
-    }
+	default:
+		if (pimpl->mWaveFormat->wBitsPerSample > 0)
+		{
+			return static_cast<size_t>((uint64_t(pimpl->mAudioBytes) * 8)
+				/ (uint64_t(pimpl->mWaveFormat->wBitsPerSample) * uint64_t(pimpl->mWaveFormat->nChannels)));
+		}
+	}
 
-    return 0;
+	return 0;
 }
-
 
 size_t SoundEffect::GetSampleDurationMS() const noexcept
 {
-    if (!pimpl->mWaveFormat || !pimpl->mWaveFormat->nSamplesPerSec)
-        return 0;
+	if (!pimpl->mWaveFormat || !pimpl->mWaveFormat->nSamplesPerSec)
+		return 0;
 
-    uint64_t samples = GetSampleDuration();
-    return static_cast<size_t>((samples * 1000) / pimpl->mWaveFormat->nSamplesPerSec);
+	uint64_t samples = GetSampleDuration();
+	return static_cast<size_t>((samples * 1000) / pimpl->mWaveFormat->nSamplesPerSec);
 }
-
 
 const WAVEFORMATEX* SoundEffect::GetFormat() const noexcept
 {
-    return pimpl->mWaveFormat;
+	return pimpl->mWaveFormat;
 }
-
 
 #ifdef DIRECTX_ENABLE_XWMA
 
 bool SoundEffect::FillSubmitBuffer(_Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const
 {
-    memset(&buffer, 0, sizeof(buffer));
-    memset(&wmaBuffer, 0, sizeof(wmaBuffer));
+	memset(&buffer, 0, sizeof(buffer));
+	memset(&wmaBuffer, 0, sizeof(wmaBuffer));
 
-    buffer.AudioBytes = pimpl->mAudioBytes;
-    buffer.pAudioData = pimpl->mStartAudio;
-    buffer.LoopBegin = pimpl->mLoopStart;
-    buffer.LoopLength = pimpl->mLoopLength;
+	buffer.AudioBytes = pimpl->mAudioBytes;
+	buffer.pAudioData = pimpl->mStartAudio;
+	buffer.LoopBegin = pimpl->mLoopStart;
+	buffer.LoopLength = pimpl->mLoopLength;
 
-    uint32_t tag = GetFormatTag(pimpl->mWaveFormat);
-    if (tag == WAVE_FORMAT_WMAUDIO2 || tag == WAVE_FORMAT_WMAUDIO3)
-    {
-        wmaBuffer.PacketCount = pimpl->mSeekCount;
-        wmaBuffer.pDecodedPacketCumulativeBytes = pimpl->mSeekTable;
-        return true;
-    }
+	uint32_t tag = GetFormatTag(pimpl->mWaveFormat);
+	if (tag == WAVE_FORMAT_WMAUDIO2 || tag == WAVE_FORMAT_WMAUDIO3)
+	{
+		wmaBuffer.PacketCount = pimpl->mSeekCount;
+		wmaBuffer.pDecodedPacketCumulativeBytes = pimpl->mSeekTable;
+		return true;
+	}
 
-    return false;
+	return false;
 }
 
 #else // !xWMA
 
 void SoundEffect::FillSubmitBuffer(_Out_ XAUDIO2_BUFFER& buffer) const
 {
-    memset(&buffer, 0, sizeof(buffer));
-    buffer.AudioBytes = pimpl->mAudioBytes;
-    buffer.pAudioData = pimpl->mStartAudio;
-    buffer.LoopBegin = pimpl->mLoopStart;
-    buffer.LoopLength = pimpl->mLoopLength;
+	memset(&buffer, 0, sizeof(buffer));
+	buffer.AudioBytes = pimpl->mAudioBytes;
+	buffer.pAudioData = pimpl->mStartAudio;
+	buffer.LoopBegin = pimpl->mLoopStart;
+	buffer.LoopLength = pimpl->mLoopLength;
 }
 
 #endif

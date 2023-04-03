@@ -20,7 +20,6 @@ and tree appearance keep their common elements here
 #include "objstatus.h"
 #endif
 
-
 // WEAPON TYPES
 #define MECH3D_WEAPONTYPE_NONE -1
 #define MECH3D_WEAPONTYPE_ANY 0
@@ -79,11 +78,17 @@ public:
 			setObjStatus(OBJECT_STATUS_NORMAL); // Change the shape!!
 	}
 
-	virtual void setHighlightcolour(int32_t argb) { highlightcolour = argb; }
+	virtual void setHighlightcolour(int32_t argb)
+	{
+		highlightcolour = argb;
+	}
 
-	virtual int32_t getObjectNameId() { return objectNameId; }
+	virtual int32_t getObjectNameId()
+	{
+		return objectNameId;
+	}
 
-	virtual ~ObjectAppearance() {}
+	virtual ~ObjectAppearance() { }
 
 protected:
 	int32_t highlightcolour;

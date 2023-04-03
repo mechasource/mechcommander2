@@ -12,8 +12,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::PertCloud__Specification::PertCloud__Specification(
-	std::iostream stream, uint32_t gfx_version) :
-	SpinningCloud__Specification(gosFX::PertCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: SpinningCloud__Specification(gosFX::PertCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	_ASSERT(m_class == gosFX::PertCloudClassID);
@@ -32,8 +32,8 @@ gosFX::PertCloud__Specification::PertCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides) :
-	SpinningCloud__Specification(gosFX::PertCloudClassID)
+gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides)
+	: SpinningCloud__Specification(gosFX::PertCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -59,8 +59,7 @@ gosFX::PertCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud__Specification::Save(std::iostream stream)
+void gosFX::PertCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -76,8 +75,7 @@ gosFX::PertCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud__Specification::BuildDefaults()
+void gosFX::PertCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
@@ -103,8 +101,7 @@ gosFX::PertCloud__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::PertCloud__Specification::IsDataValid(bool fix_data)
+bool gosFX::PertCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	return SpinningCloud__Specification::IsDataValid(fix_data);
@@ -137,8 +134,7 @@ gosFX::PertCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud__Specification::Copy(PertCloud__Specification* spec)
+void gosFX::PertCloud__Specification::Copy(PertCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -165,8 +161,7 @@ gosFX::PertCloud::ClassData* gosFX::PertCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud::InitializeClass()
+void gosFX::PertCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	DefaultData =
@@ -177,8 +172,7 @@ gosFX::PertCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud::TerminateClass()
+void gosFX::PertCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -187,8 +181,8 @@ gosFX::PertCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::PertCloud::PertCloud(Specification* spec, uint32_t flags) :
-	SpinningCloud(DefaultData, spec, flags)
+gosFX::PertCloud::PertCloud(Specification* spec, uint32_t flags)
+	: SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -229,8 +223,7 @@ gosFX::PertCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::PertCloud::AnimateParticle(
+bool gosFX::PertCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -269,8 +262,7 @@ gosFX::PertCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void gosFX::PertCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -319,8 +311,7 @@ gosFX::PertCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud::DestroyParticle(uint32_t index)
+void gosFX::PertCloud::DestroyParticle(uint32_t index)
 {
 	SpinningCloud::DestroyParticle(index);
 	m_cloudImplementation->TurnOff(index);
@@ -329,8 +320,7 @@ gosFX::PertCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud::Draw(DrawInfo* info)
+void gosFX::PertCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -571,8 +561,7 @@ gosFX::PertCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::PertCloud::TestInstance(void) const
+void gosFX::PertCloud::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <gameos_dir>../gameos</gameos_dir>
+    <mclib_dir>../mclib</mclib_dir>
+    <mechcmd2_dir>../mechcmd2</mechcmd2_dir>
+    <mechgui_dir>../mechcmd2/mechgui</mechgui_dir>
+    <mc2res_dir>../mc2res</mc2res_dir>
+    <mech_inc>../include</mech_inc>
+    <pch_dir>../pch</pch_dir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;$(IntDir);$(mech_inc);$(mclib_dir);$(gameos_dir)/include;$(pch_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>APP_NAME="$(TargetName)";PLATFORM=$(Platform);$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(mc2res_dir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="gameos_dir">
+      <Value>$(gameos_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="mclib_dir">
+      <Value>$(mclib_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="mechcmd2_dir">
+      <Value>$(mechcmd2_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="mechgui_dir">
+      <Value>$(mechgui_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="mc2res_dir">
+      <Value>$(mc2res_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="mech_inc">
+      <Value>$(mech_inc)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="pch_dir">
+      <Value>$(pch_dir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

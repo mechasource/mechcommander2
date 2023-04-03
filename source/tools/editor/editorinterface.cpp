@@ -194,8 +194,7 @@ static float g_newheight = 0.0;
 
 // EDITOR stuff
 
-void
-Editor::init(const std::wstring_view& loader)
+void Editor::init(std::wstring_view loader)
 {
 	volatile float crap = 0;
 	bool bOK = false;
@@ -286,7 +285,7 @@ Editor::init(const std::wstring_view& loader)
 						if (IDOK == fileDlg.DoModal())
 						{
 							EditorInterface::instance()->SetBusyMode();
-							const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
+							std::wstring_view pFile = fileDlg.m_ofn.lpstrFile;
 							bOK = EditorData::initTerrainFromPCV(pFile);
 							EditorInterface::instance()->UnsetBusyMode();
 						}
@@ -320,8 +319,7 @@ Editor::init(const std::wstring_view& loader)
 	PlaySound("SystemDefault", nullptr, SND_ASYNC);
 }
 
-void
-Editor::destroy(void)
+void Editor::destroy(void)
 {
 	if (EditorInterface::instance())
 	{
@@ -340,8 +338,7 @@ Editor::destroy(void)
 	eye = nullptr;
 }
 
-void
-Editor::resaveAll(void)
+void Editor::resaveAll(void)
 {
 	// Startup the editor.
 	if (!eye)
@@ -488,15 +485,13 @@ Editor::resaveAll(void)
 	CoUninitialize();
 }
 
-void
-Editor::render()
+void Editor::render()
 {
 	if (eye)
 		eye->render();
 }
 
-void
-Editor::update()
+void Editor::update()
 {
 	if (windowSizeChanged)
 	{
@@ -524,43 +519,43 @@ Editor::update()
 
 //--------------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(EditorInterface, CWnd)
-//{{AFX_MSG_MAP(EditorInterface)
-ON_WM_CREATE()
-ON_WM_LBUTTONDOWN()
-ON_WM_LBUTTONUP()
-ON_WM_MOUSEMOVE()
-ON_WM_SETCURSOR()
-ON_WM_KEYUP()
-ON_WM_RBUTTONDOWN()
-ON_WM_RBUTTONUP()
-ON_WM_MOUSEWHEEL()
-ON_WM_HSCROLL()
-ON_WM_VSCROLL()
-ON_WM_SYSKEYDOWN()
-ON_WM_LBUTTONDBLCLK()
-ON_WM_PAINT()
-ON_COMMAND(ID_VIEW_REFRESHTACMAP, OnViewRefreshtacmap)
-ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER3, OnUpdateMissionPlayerPlayer3)
-ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER4, OnUpdateMissionPlayerPlayer4)
-ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER5, OnUpdateMissionPlayerPlayer5)
-ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER6, OnUpdateMissionPlayerPlayer6)
-ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER7, OnUpdateMissionPlayerPlayer7)
-ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER8, OnUpdateMissionPlayerPlayer8)
-ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM3, OnUpdateMissionTeamTeam3)
-ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM4, OnUpdateMissionTeamTeam4)
-ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM5, OnUpdateMissionTeamTeam5)
-ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM6, OnUpdateMissionTeamTeam6)
-ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM7, OnUpdateMissionTeamTeam7)
-ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM8, OnUpdateMissionTeamTeam8)
-ON_WM_DESTROY()
-ON_COMMAND(ID_FOREST_TOOL, OnForestTool)
-ON_COMMAND(ID_OTHER_EDITFORESTS, OnOtherEditforests)
-ON_COMMAND(ID_VIEW_ORTHOGRAPHICCAMERA, OnViewOrthographiccamera)
-ON_COMMAND(ID_VIEW_SHOWPASSABILITYMAP, OnViewShowpassabilitymap)
-ON_WM_MBUTTONUP()
-//}}AFX_MSG_MAP
-ON_UPDATE_COMMAND_UI_RANGE(0, 0xffff, UpdateButton)
-ON_COMMAND_RANGE(0, 0xffff, OnCommand)
+	//{{AFX_MSG_MAP(EditorInterface)
+	ON_WM_CREATE()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
+	ON_WM_SETCURSOR()
+	ON_WM_KEYUP()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_RBUTTONUP()
+	ON_WM_MOUSEWHEEL()
+	ON_WM_HSCROLL()
+	ON_WM_VSCROLL()
+	ON_WM_SYSKEYDOWN()
+	ON_WM_LBUTTONDBLCLK()
+	ON_WM_PAINT()
+	ON_COMMAND(ID_VIEW_REFRESHTACMAP, OnViewRefreshtacmap)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER3, OnUpdateMissionPlayerPlayer3)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER4, OnUpdateMissionPlayerPlayer4)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER5, OnUpdateMissionPlayerPlayer5)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER6, OnUpdateMissionPlayerPlayer6)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER7, OnUpdateMissionPlayerPlayer7)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_PLAYER_PLAYER8, OnUpdateMissionPlayerPlayer8)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM3, OnUpdateMissionTeamTeam3)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM4, OnUpdateMissionTeamTeam4)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM5, OnUpdateMissionTeamTeam5)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM6, OnUpdateMissionTeamTeam6)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM7, OnUpdateMissionTeamTeam7)
+	ON_UPDATE_COMMAND_UI(ID_MISSION_TEAM_TEAM8, OnUpdateMissionTeamTeam8)
+	ON_WM_DESTROY()
+	ON_COMMAND(ID_FOREST_TOOL, OnForestTool)
+	ON_COMMAND(ID_OTHER_EDITFORESTS, OnOtherEditforests)
+	ON_COMMAND(ID_VIEW_ORTHOGRAPHICCAMERA, OnViewOrthographiccamera)
+	ON_COMMAND(ID_VIEW_SHOWPASSABILITYMAP, OnViewShowpassabilitymap)
+	ON_WM_MBUTTONUP()
+	//}}AFX_MSG_MAP
+	ON_UPDATE_COMMAND_UI_RANGE(0, 0xffff, UpdateButton)
+	ON_COMMAND_RANGE(0, 0xffff, OnCommand)
 END_MESSAGE_MAP()
 
 EditorInterface::EditorInterface()
@@ -616,8 +611,7 @@ EditorInterface::~EditorInterface()
 	s_instance = nullptr;
 }
 
-void
-EditorInterface::terminate()
+void EditorInterface::terminate()
 {
 	if (bThisIsInitialized)
 	{
@@ -640,12 +634,11 @@ EditorInterface::terminate()
 	}
 }
 
-void
-EditorInterface::init(const std::wstring_view& fileName)
+void EditorInterface::init(std::wstring_view fileName)
 {
 	SetBusyMode(false /*no redraw*/);
 	FitIniFile loader;
-	loader.open(const_cast<const std::wstring_view&>(fileName));
+	loader.open(const_cast<std::wstring_view>(fileName));
 	int32_t result = loader.seekBlock("CameraData");
 	gosASSERT(result == NO_ERROR);
 	result = loader.readIdFloat("ScrollIncrement", scrollInc);
@@ -681,8 +674,7 @@ EditorInterface::init(const std::wstring_view& fileName)
 	bThisIsInitialized = true;
 }
 
-void
-EditorInterface::addBuildingsToNewMenu()
+void EditorInterface::addBuildingsToNewMenu()
 {
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	wchar_t BuildingHeader[64];
@@ -693,7 +685,7 @@ EditorInterface::addBuildingsToNewMenu()
 	pMenu->CreatePopupMenu();
 	// now i need to add the buildings to the toolbars/menus
 	int32_t groupCount = pMgr->getBuildingGroupCount();
-	const std::wstring_view&* pNames = (const std::wstring_view&*)malloc(sizeof(const std::wstring_view&) * groupCount);
+	std::wstring_view* pNames = (std::wstring_view*)malloc(sizeof(std::wstring_view) * groupCount);
 	pMgr->getBuildingGroupNames(pNames, groupCount);
 	menus = (CMenu**)malloc(sizeof(CMenu*) * (groupCount + 2));
 	menus[0] = pMenu;
@@ -705,7 +697,7 @@ EditorInterface::addBuildingsToNewMenu()
 		menus[i + 1] = pChildMenu;
 		// now add sub items to the group
 		int32_t buildingCount = pMgr->getNumberBuildingsInGroup(i);
-		const std::wstring_view&* pBuildingNames = (const std::wstring_view&*)malloc(sizeof(const std::wstring_view&) * buildingCount);
+		std::wstring_view* pBuildingNames = (std::wstring_view*)malloc(sizeof(std::wstring_view) * buildingCount);
 		pMgr->getBuildingNamesInGroup(i, pBuildingNames, buildingCount);
 		for (size_t j = 0; j < buildingCount; ++j, ++id)
 		{
@@ -797,8 +789,7 @@ EditorInterface::addBuildingsToNewMenu()
 }
 
 //--------------------------------------------------------------------------------------
-void
-EditorInterface::handleNewMenuMessage(int32_t specificMessage)
+void EditorInterface::handleNewMenuMessage(int32_t specificMessage)
 {
 	if (!eye || !eye->active)
 		return;
@@ -1300,7 +1291,7 @@ EditorInterface::FileOpen()
 	if (IDOK == fileDlg.DoModal())
 	{
 		SetBusyMode();
-		const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
+		std::wstring_view pFile = fileDlg.m_ofn.lpstrFile;
 		EditorData::initTerrainFromPCV(pFile);
 		tacMap.UpdateMap();
 		syncScrollBars();
@@ -1312,8 +1303,7 @@ EditorInterface::FileOpen()
 
 //--------------------------------------------------------------------------------------
 
-void
-EditorInterface::handleLeftButtonDown(int32_t PosX, int32_t PosY)
+void EditorInterface::handleLeftButtonDown(int32_t PosX, int32_t PosY)
 {
 	if (!eye || !eye->active)
 		return;
@@ -1330,8 +1320,7 @@ EditorInterface::handleLeftButtonDown(int32_t PosX, int32_t PosY)
 	lastClickPos = vector;
 }
 
-void
-EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
+void EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 {
 	if (!eye || !eye->active)
 		return;
@@ -1419,8 +1408,7 @@ EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 		->SetWindowText(buffer);
 }
 
-void
-EditorInterface::handleLeftButtonUp(int32_t PosX, int32_t PosY)
+void EditorInterface::handleLeftButtonUp(int32_t PosX, int32_t PosY)
 {
 	if (!eye || !eye->active)
 		return;
@@ -1435,8 +1423,7 @@ EditorInterface::handleLeftButtonUp(int32_t PosX, int32_t PosY)
 
 //--------------------------------------------------------------------------------------
 // THE EDITOR CLASS, kind of like the mission in MCommander
-void
-EditorInterface::handleKeyDown(int32_t Key)
+void EditorInterface::handleKeyDown(int32_t Key)
 {
 	if (!eye || !eye->active)
 		return;
@@ -1710,8 +1697,7 @@ EditorInterface::handleKeyDown(int32_t Key)
 		->SetWindowText(buffer);
 }
 
-void
-EditorInterface::KillCurBrush()
+void EditorInterface::KillCurBrush()
 {
 	if (curBrush) // might want to do a check to make sure this guy isn't being
 		// used
@@ -1830,7 +1816,7 @@ EditorInterface::SaveAs()
 	if (IDOK == retVal)
 	{
 		SetBusyMode();
-		const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
+		std::wstring_view pFile = fileDlg.m_ofn.lpstrFile;
 		//-----------------------------------------------------
 		// New Stuff here.
 		// Must resave the following for the new map methods to insure goodness.
@@ -1893,7 +1879,7 @@ EditorInterface::SaveAs()
 int32_t
 EditorInterface::Save()
 {
-	const std::wstring_view& pFileName = EditorData::instance->getMapName();
+	std::wstring_view pFileName = EditorData::instance->getMapName();
 	if (pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)))
 	{
 		EditorData::instance->save(pFileName);
@@ -1906,7 +1892,7 @@ EditorInterface::Save()
 int32_t
 EditorInterface::QuickSave()
 {
-	const std::wstring_view& pFileName = EditorData::instance->getMapName();
+	std::wstring_view pFileName = EditorData::instance->getMapName();
 	if (pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)))
 		EditorData::instance->quickSave(pFileName);
 	else
@@ -1992,8 +1978,7 @@ EditorInterface::Erase()
 	return true;
 }
 
-void
-EditorInterface::update()
+void EditorInterface::update()
 {
 	if (!bThisIsInitialized)
 		return;
@@ -2006,8 +1991,7 @@ EditorInterface::update()
 	}
 }
 
-void
-EditorInterface::render()
+void EditorInterface::render()
 {
 	if (!bThisIsInitialized)
 		return;
@@ -2124,12 +2108,12 @@ EditorInterface::NewheightMap()
 		endFlag = true;
 		if (IDOK == fileDlg.DoModal())
 		{
-			const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
+			std::wstring_view pFile = fileDlg.m_ofn.lpstrFile;
 			if (pFile)
 			{
 				File tgaFile;
 				gosASSERT(strstr(pFile, ".tga") || strstr(pFile, ".TGA"));
-				int32_t result = tgaFile.open(const_cast<const std::wstring_view&>(pFile));
+				int32_t result = tgaFile.open(const_cast<std::wstring_view>(pFile));
 				gosASSERT(result == NO_ERROR);
 				struct TGAFileHeader theader;
 				tgaFile.read((uint8_t*)&theader, sizeof(TGAFileHeader));
@@ -2587,9 +2571,9 @@ EditorInterface::SaveheightMap()
 	fileDlg.m_ofn.lpstrInitialDir = terrainPath;
 	if (IDOK == fileDlg.DoModal())
 	{
-		const std::wstring_view& pFile = fileDlg.m_ofn.lpstrFile;
+		std::wstring_view pFile = fileDlg.m_ofn.lpstrFile;
 		File file;
-		if (NO_ERROR != file.create((const std::wstring_view&)pFile))
+		if (NO_ERROR != file.create((std::wstring_view)pFile))
 		{
 			EMessageBox(IDS_INVALID_FILE, IDS_CANT_SAVE, MB_OK);
 			return false;
@@ -2718,8 +2702,7 @@ EditorInterface::Player(int32_t player)
 
 static const float SQRT_2 = 1.4142135623730950488016887242097f;
 /* make the horizontal scroll bar reflect the current camera position */
-void
-EditorInterface::syncHScroll()
+void EditorInterface::syncHScroll()
 {
 	/* this calculation was based in the code for Camera::moveRight(float
 	 * amount) */
@@ -2769,8 +2752,7 @@ EditorInterface::syncHScroll()
 }
 
 /* make the vertical scroll bar reflect the current camera position */
-void
-EditorInterface::syncVScroll()
+void EditorInterface::syncVScroll()
 {
 	/* this calculation was based in the code for Camera::moveRight(float
 	 * amount) */
@@ -2819,8 +2801,7 @@ EditorInterface::syncVScroll()
 	tacMap.RedrawWindow();
 }
 
-void
-EditorInterface::SetBusyMode(bool bRedrawWindow)
+void EditorInterface::SetBusyMode(bool bRedrawWindow)
 {
 	if (bRedrawWindow)
 	{
@@ -2851,8 +2832,7 @@ EditorInterface::SetBusyMode(bool bRedrawWindow)
 	m_AppIsBusy += 1;
 }
 
-void
-EditorInterface::UnsetBusyMode()
+void EditorInterface::UnsetBusyMode()
 {
 	if (1 == m_AppIsBusy)
 	{
@@ -2946,7 +2926,7 @@ EditorInterface::SelectWaterTexture()
 
 //---------------------------------------------------------------------------
 inline bool
-colorMapIsOKFormat(const std::wstring_view& fileName)
+colorMapIsOKFormat(std::wstring_view fileName)
 {
 	uint32_t localcolourMapSizeCheck = land->realVerticesMapSide * 12.8;
 	File tgaFile;
@@ -2976,7 +2956,7 @@ EditorInterface::SetBaseTexture()
 		{
 			wchar_t name[1024];
 			_splitpath(path, nullptr, nullptr, name, nullptr);
-			const std::wstring_view& testLoc = strstr(name, ".burnin");
+			std::wstring_view testLoc = strstr(name, ".burnin");
 			if (testLoc)
 				testLoc[0] = 0; // Prune off the burnin name.
 			land->setcolourMapName(name);
@@ -3189,8 +3169,7 @@ EditorInterface::OnCommand(WPARAM wparam)
 	handleNewMenuMessage(wparam);
 }
 
-void
-EditorInterface::UpdateButton(CCmdUI* pButton)
+void EditorInterface::UpdateButton(CCmdUI* pButton)
 {
 	pButton->Enable(true);
 	if (pButton->m_nID == ID_DROPZONES_ADD || pButton->m_nID == ID_DROPZONES_VTOL)
@@ -3204,30 +3183,26 @@ EditorInterface::UpdateButton(CCmdUI* pButton)
 	}
 }
 
-void
-EditorInterface::OnLButtonDown(uint32_t nFlags, CPoint point)
+void EditorInterface::OnLButtonDown(uint32_t nFlags, CPoint point)
 {
 	SetCapture();
 	handleLeftButtonDown(point.x, point.y);
 	SPEW((0, "GotClick"));
 }
 
-void
-EditorInterface::OnLButtonUp(uint32_t nFlags, CPoint point)
+void EditorInterface::OnLButtonUp(uint32_t nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	handleLeftButtonUp(point.x, point.y);
 	ReleaseCapture();
 }
 
-void
-EditorInterface::OnMouseMove(uint32_t nFlags, CPoint point)
+void EditorInterface::OnMouseMove(uint32_t nFlags, CPoint point)
 {
 	handleMouseMove(point.x, point.y);
 }
 
-void
-EditorInterface::ChangeCursor(int32_t ID)
+void EditorInterface::ChangeCursor(int32_t ID)
 {
 	if (hCursor)
 		DestroyCursor(hCursor);
@@ -3239,8 +3214,7 @@ EditorInterface::ChangeCursor(int32_t ID)
 	curCursorID = ID;
 }
 
-BOOL
-EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t message)
+BOOL EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t message)
 {
 	if (0 < m_AppIsBusy)
 	{
@@ -3261,8 +3235,7 @@ EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t message)
 	return CWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
-BOOL
-EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
+BOOL EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
 {
 	cs.lpszClass =
 		AfxRegisterWndClass(CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW, // use any window styles
@@ -3270,8 +3243,7 @@ EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
 	return CWnd ::PreCreateWindow(cs);
 }
 
-void
-EditorInterface::OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
+void EditorInterface::OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
 {
 	if (nChar == KEY_SPACE)
 	{
@@ -3292,8 +3264,7 @@ EditorInterface::OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
 	CWnd ::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void
-EditorInterface::OnRButtonDown(uint32_t nFlags, CPoint point)
+void EditorInterface::OnRButtonDown(uint32_t nFlags, CPoint point)
 {
 	SetCapture();
 	lastX = point.x;
@@ -3301,8 +3272,7 @@ EditorInterface::OnRButtonDown(uint32_t nFlags, CPoint point)
 	rightDrag = true;
 	lastRightClickTime = timeGetTime();
 }
-void
-EditorInterface::OnRButtonUp(uint32_t nFlags, CPoint point)
+void EditorInterface::OnRButtonUp(uint32_t nFlags, CPoint point)
 {
 	rightDrag = false;
 	ReleaseCapture();
@@ -3339,8 +3309,7 @@ EditorInterface::OnRButtonUp(uint32_t nFlags, CPoint point)
 	}*/
 }
 
-BOOL
-EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
+BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 {
 	//--------------------------------------------------
 	// Zoom Camera based on Mouse Wheel input.
@@ -3399,8 +3368,7 @@ EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 	return CWnd ::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-void
-EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
+void EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
 {
 	if (pScrollBar != nullptr && pScrollBar->SendChildNotifyLastMsg())
 		return; // eat it
@@ -3477,8 +3445,7 @@ EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollB
 	syncScrollBars();
 }
 
-void
-EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
+void EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
 {
 	SCROLLINFO sInfo;
 	sInfo.cbSize = sizeof(SCROLLINFO);
@@ -3547,8 +3514,7 @@ EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollB
 	syncScrollBars();
 }
 
-void
-EditorInterface::OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
+void EditorInterface::OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
 {
 	handleKeyDown(nChar);
 	CWnd ::OnSysKeyDown(nChar, nRepCnt, nFlags);
@@ -3592,8 +3558,7 @@ EditorInterface::UnitSettings()
 	return true;
 }
 
-void
-EditorInterface::initTacMap()
+void EditorInterface::initTacMap()
 {
 	// Why don't we just load it from the frickin' file?
 	// We go through all the damned trouble to save it every time!
@@ -3605,7 +3570,7 @@ EditorInterface::initTacMap()
 	bool bFile = false;
 	if (EditorData::instance->getMapName())
 	{
-		mPath.init(missionPath, (const std::wstring_view&)EditorData::instance->getMapName(), ".pak");
+		mPath.init(missionPath, (std::wstring_view)EditorData::instance->getMapName(), ".pak");
 		bFile = true;
 	}
 	if (bFile && fileExists(mPath))
@@ -3625,8 +3590,7 @@ EditorInterface::initTacMap()
 	tacMap.RedrawWindow();
 }
 
-BOOL
-EditorInterface::PreTranslateMessage(MSG* pMsg)
+BOOL EditorInterface::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_hAccelTable)
 	{
@@ -3636,8 +3600,7 @@ EditorInterface::PreTranslateMessage(MSG* pMsg)
 	return CWnd ::PreTranslateMessage(pMsg);
 }
 
-void
-EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point)
+void EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point)
 {
 	Stuff::Vector3D pos;
 	Stuff::Vector2DOf<int32_t> screen;
@@ -3652,8 +3615,7 @@ EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point)
 	CWnd ::OnLButtonDblClk(nFlags, point);
 }
 
-void
-EditorInterface::OnPaint()
+void EditorInterface::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	static bool bFirstLoad = true;
@@ -3724,14 +3686,12 @@ EditorInterface::OnPaint()
 	// Do not call CWnd ::OnPaint() for painting messages
 }
 
-void
-EditorInterface::OnViewRefreshtacmap()
+void EditorInterface::OnViewRefreshtacmap()
 {
 	tacMap.UpdateMap();
 }
 
-bool
-EditorInterface::SafeRunGameOSLogic()
+bool EditorInterface::SafeRunGameOSLogic()
 {
 	if (bThisIsInitialized && (nullptr != land))
 	{
@@ -3746,8 +3706,7 @@ EditorInterface::SafeRunGameOSLogic()
 	return false;
 }
 
-void
-EditorInterface::rotateSelectedObjects(int32_t direction)
+void EditorInterface::rotateSelectedObjects(int32_t direction)
 {
 	ModifyBuildingAction* pAction = new ModifyBuildingAction;
 	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects;
@@ -3785,38 +3744,32 @@ UpdateMissionPlayerPlayer(int32_t player, CCmdUI* pCmdUI)
 	}
 }
 
-void
-EditorInterface::OnUpdateMissionPlayerPlayer3(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionPlayerPlayer3(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(3, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionPlayerPlayer4(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionPlayerPlayer4(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(4, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionPlayerPlayer5(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionPlayerPlayer5(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(5, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionPlayerPlayer6(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionPlayerPlayer6(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(6, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionPlayerPlayer7(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionPlayerPlayer7(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(7, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionPlayerPlayer8(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionPlayerPlayer8(CCmdUI* pCmdUI)
 {
 	UpdateMissionPlayerPlayer(8, pCmdUI);
 }
@@ -3834,44 +3787,37 @@ UpdateMissionTeamTeam(int32_t team, CCmdUI* pCmdUI)
 	}
 }
 
-void
-EditorInterface::OnUpdateMissionTeamTeam3(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionTeamTeam3(CCmdUI* pCmdUI)
 {
 	UpdateMissionTeamTeam(3, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionTeamTeam4(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionTeamTeam4(CCmdUI* pCmdUI)
 {
 	UpdateMissionTeamTeam(4, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionTeamTeam5(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionTeamTeam5(CCmdUI* pCmdUI)
 {
 	UpdateMissionTeamTeam(5, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionTeamTeam6(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionTeamTeam6(CCmdUI* pCmdUI)
 {
 	UpdateMissionTeamTeam(6, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionTeamTeam7(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionTeamTeam7(CCmdUI* pCmdUI)
 {
 	UpdateMissionTeamTeam(7, pCmdUI);
 }
 
-void
-EditorInterface::OnUpdateMissionTeamTeam8(CCmdUI* pCmdUI)
+void EditorInterface::OnUpdateMissionTeamTeam8(CCmdUI* pCmdUI)
 {
 	UpdateMissionTeamTeam(8, pCmdUI);
 }
 
-void
-EditorInterface::OnDestroy()
+void EditorInterface::OnDestroy()
 {
 	CWnd ::OnDestroy();
 	if (tacMap.m_hWnd)
@@ -3886,8 +3832,7 @@ EditorInterface::OnDestroy()
 
 //#pragma warning( default:4244 )
 
-void
-EditorInterface::OnForestTool()
+void EditorInterface::OnForestTool()
 {
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -3941,8 +3886,7 @@ EditorInterface::OnForestTool()
 	}
 }
 
-void
-EditorInterface::OnOtherEditforests()
+void EditorInterface::OnOtherEditforests()
 {
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -3952,8 +3896,7 @@ EditorInterface::OnOtherEditforests()
 	dlg.DoModal();
 }
 
-bool
-TeamsAction::undo()
+bool TeamsAction::undo()
 {
 	CTeams swap = EditorData::instance->TeamsRef();
 	EditorData::instance->TeamsRef() = PreviousTeams();
@@ -3968,8 +3911,7 @@ TeamsAction::PreviousTeams()
 	return m_previousTeams;
 }
 
-void
-TeamsAction::PreviousTeams(const CTeams& teams)
+void TeamsAction::PreviousTeams(const CTeams& teams)
 {
 	m_previousTeams = teams;
 	/*Some of the objective conditions have pointers to objects. These pointers
@@ -3981,8 +3923,7 @@ TeamsAction::PreviousTeams(const CTeams& teams)
 	m_previousTeams.NoteThePositionsOfObjectsReferenced();
 }
 
-void
-EditorInterface::OnViewOrthographiccamera()
+void EditorInterface::OnViewOrthographiccamera()
 {
 	if (GetParent()->GetMenu()->GetMenuState(ID_VIEW_ORTHOGRAPHICCAMERA, MF_BYCOMMAND) & MF_CHECKED)
 	{
@@ -4001,8 +3942,7 @@ EditorInterface::OnViewOrthographiccamera()
 	syncScrollBars();
 }
 
-void
-EditorInterface::OnViewShowpassabilitymap()
+void EditorInterface::OnViewShowpassabilitymap()
 {
 	if (GetParent()->GetMenu()->GetMenuState(ID_VIEW_SHOWPASSABILITYMAP, MF_BYCOMMAND) & MF_CHECKED)
 	{
@@ -4018,8 +3958,7 @@ EditorInterface::OnViewShowpassabilitymap()
 	}
 }
 
-void
-EditorInterface::OnMButtonUp(uint32_t nFlags, CPoint point)
+void EditorInterface::OnMButtonUp(uint32_t nFlags, CPoint point)
 {
 	if (ThisIsInitialized() && eye)
 	{

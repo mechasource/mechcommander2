@@ -11,8 +11,8 @@ FogDlg.cpp			: Implementation of the FogDlg component.
 /////////////////////////////////////////////////////////////////////////////
 // FogDlg dialog
 
-FogDlg::FogDlg(CWnd* pParent /*=nullptr*/) :
-	CDialog(FogDlg::IDD, pParent)
+FogDlg::FogDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(FogDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(FogDlg)
 	m_blue = 0;
@@ -23,8 +23,7 @@ FogDlg::FogDlg(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-FogDlg::DoDataExchange(CDataExchange* pDX)
+void FogDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(FogDlg)
@@ -37,19 +36,18 @@ FogDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(FogDlg, CDialog)
-//{{AFX_MSG_MAP(FogDlg)
-ON_EN_CHANGE(IDC_BLUE1, OnChangeBlue1)
-ON_EN_CHANGE(IDC_GREEN1, OnChangeBlue1)
-ON_EN_CHANGE(IDC_RED1, OnChangeBlue1)
-ON_WM_CTLCOLOR()
+	//{{AFX_MSG_MAP(FogDlg)
+	ON_EN_CHANGE(IDC_BLUE1, OnChangeBlue1)
+	ON_EN_CHANGE(IDC_GREEN1, OnChangeBlue1)
+	ON_EN_CHANGE(IDC_RED1, OnChangeBlue1)
+	ON_WM_CTLCOLOR()
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // FogDlg message handlers
 
-void
-FogDlg::OnChangeBlue1()
+void FogDlg::OnChangeBlue1()
 {
 	RedrawWindow();
 }

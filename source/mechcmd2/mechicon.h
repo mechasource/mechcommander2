@@ -33,7 +33,10 @@ public:
 	static void swapResolutions(bool bForce = 0);
 
 	void setPilot(MechWarrior* pWarrior);
-	void setTextureIndex(int32_t newIndex) { pilotTextureIndex = newIndex; }
+	void setTextureIndex(int32_t newIndex)
+	{
+		pilotTextureIndex = newIndex;
+	}
 	void render(float left, float top, float right, float bottom);
 
 private:
@@ -61,7 +64,10 @@ public:
 	void renderUnitIcon(float left, float top, float right, float bottom);
 	virtual void renderUnitIconBack(float left, float top, float right, float bottom);
 	void renderPilotIcon(float left, float top, float right, float bottom);
-	virtual bool init(Mover* pMover) { return false; }
+	virtual bool init(Mover* pMover)
+	{
+		return false;
+	}
 	void init(void);
 
 	bool inRegion(int32_t x, int32_t y);
@@ -69,23 +75,29 @@ public:
 	void click(bool shiftDn);
 	void rightClick(void);
 
-	virtual void setDrawBack(bool bSet){};
+	virtual void setDrawBack(bool bSet) {};
 
 	static int32_t __cdecl sort(PCVOID p1, PCVOID p2);
 
-	const std::wstring_view& getPilotName(void);
+	std::wstring_view getPilotName(void);
 
 	static void init(FitIniFile& file, int32_t which);
 	void swapResolutions(bool bForce);
 	static void resetResolution(bool bForce);
 
 	void setLocationIndex(int32_t i);
-	void beginDeathAnimation() { deathAnimationTime = .0001f; }
+	void beginDeathAnimation()
+	{
+		deathAnimationTime = .0001f;
+	}
 	bool deathAnimationOver()
 	{
 		return deathAnimationTime > animationInfos[NUM_DEATH_INFOS - 1].time;
 	}
-	bool isAnimatingDeath() { return deathAnimationTime ? 1 : 0; }
+	bool isAnimatingDeath()
+	{
+		return deathAnimationTime ? 1 : 0;
+	}
 
 protected:
 	static int32_t damagecolours[4][3];
@@ -151,15 +163,15 @@ protected:
 class MechIcon : public ForceGroupIcon
 {
 public:
-	MechIcon() {}
-	~MechIcon() {}
+	MechIcon() { }
+	~MechIcon() { }
 
 	virtual bool init(Mover* pMover);
 	virtual void update(void);
 
 	static TGAFileHeader* s_MechTextures;
 
-	void doDraw(const std::wstring_view& newDamage, const std::wstring_view& oldDamage, uint32_t handle, uint32_t where);
+	void doDraw(std::wstring_view newDamage, std::wstring_view oldDamage, uint32_t handle, uint32_t where);
 	virtual void setDrawBack(bool bSet);
 
 private:
@@ -172,10 +184,10 @@ private:
 class VehicleIcon : public ForceGroupIcon
 {
 public:
-	VehicleIcon() {}
-	~VehicleIcon() {}
+	VehicleIcon() { }
+	~VehicleIcon() { }
 
-	virtual void renderUnitIconBack(float left, float top, float right, float bottom) {}
+	virtual void renderUnitIconBack(float left, float top, float right, float bottom) { }
 	virtual void update(void);
 	virtual bool init(Mover* pMover);
 

@@ -89,7 +89,10 @@ public:
 	//
 	// Returns the number of objects in the hash table
 	//
-	int32_t Count() { return m_NumObjects; }
+	int32_t Count()
+	{
+		return m_NumObjects;
+	}
 
 	//
 	// Returns first object it finds associated with the specified key.

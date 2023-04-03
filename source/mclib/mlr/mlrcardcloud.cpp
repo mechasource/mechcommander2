@@ -13,8 +13,8 @@
 #include "mlr/mlr.h"
 #include "mlr/mlrcardcloud.h"
 
-namespace MidLevelRenderer {
-
+namespace MidLevelRenderer
+{
 
 extern uint32_t gShowClippedPolys;
 
@@ -33,8 +33,7 @@ MLRCardCloud::ClassData* MLRCardCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRCardCloud::InitializeClass(void)
+void MLRCardCloud::InitializeClass(void)
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -56,8 +55,7 @@ MLRCardCloud::InitializeClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRCardCloud::TerminateClass(void)
+void MLRCardCloud::TerminateClass(void)
 {
 	Unregister_Object(clipPerVertex);
 	delete clipPerVertex;
@@ -76,8 +74,8 @@ MLRCardCloud::TerminateClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRCardCloud::MLRCardCloud(uint32_t nr) :
-	MLREffect(nr, DefaultData)
+MLRCardCloud::MLRCardCloud(uint32_t nr)
+	: MLREffect(nr, DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfCards = nullptr;
@@ -94,8 +92,7 @@ MLRCardCloud::~MLRCardCloud(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRCardCloud::SetData(
+void MLRCardCloud::SetData(
 	const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data)
 {
 	// Check_Pointer(this);
@@ -108,8 +105,7 @@ MLRCardCloud::SetData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRCardCloud::SetData(const size_t* count, const Stuff::Point3D* point_data,
+void MLRCardCloud::SetData(const size_t* count, const Stuff::Point3D* point_data,
 	const Stuff::RGBAcolour* color_data, const Stuff::Vector2DScalar* uv_data)
 {
 	// Check_Pointer(this);
@@ -121,8 +117,7 @@ MLRCardCloud::SetData(const size_t* count, const Stuff::Point3D* point_data,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRCardCloud::Draw(
+void MLRCardCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -657,8 +652,7 @@ MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRCardCloud::TestInstance(void) const
+void MLRCardCloud::TestInstance(void) const
 {
 	if (usedNrOfCards)
 	{

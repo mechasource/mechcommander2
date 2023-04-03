@@ -156,8 +156,7 @@ int32_t numCollidables = 0;
 //* MISC routines
 //***************************************************************************
 
-bool
-blockInList(int32_t blockNum)
+bool blockInList(int32_t blockNum)
 {
 	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	for (size_t i = 0; i < totalBlocks; i++)
@@ -172,8 +171,7 @@ blockInList(int32_t blockNum)
 
 //---------------------------------------------------------------------------
 
-bool
-moverInList(int32_t blockNum)
+bool moverInList(int32_t blockNum)
 {
 	int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 	for (size_t i = 0; i < totalBlocks; i++)
@@ -203,16 +201,14 @@ GameObjectManager::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::operator delete(PVOID us)
+void GameObjectManager::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::init(void)
+void GameObjectManager::init(void)
 {
 	objTypeManager = nullptr;
 	numMechs = 0;
@@ -267,8 +263,7 @@ GameObjectManager::init(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::init(const std::wstring_view& objTypeDataFile, int32_t objTypeHeapSize, int32_t objHeapSize)
+void GameObjectManager::init(std::wstring_view objTypeDataFile, int32_t objTypeHeapSize, int32_t objHeapSize)
 {
 	if (objTypeManager)
 		delete objTypeManager;
@@ -282,8 +277,7 @@ GameObjectManager::init(const std::wstring_view& objTypeDataFile, int32_t objTyp
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t nElementals,
+void GameObjectManager::setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t nElementals,
 	int32_t nTerrainObjects, int32_t nBuildings, int32_t nTurrets, int32_t nWeapons,
 	int32_t nCarnage, int32_t nLights, int32_t nArtillery, int32_t nGates)
 {
@@ -481,7 +475,7 @@ GameObjectManager::setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t nEle
 		}
 	}
 	useMoverLineOfSightTable = true;
-	moverLineOfSightTable = (const std::wstring_view&)systemHeap->Malloc(maxMovers * maxMovers);
+	moverLineOfSightTable = (std::wstring_view)systemHeap->Malloc(maxMovers * maxMovers);
 	if (!moverLineOfSightTable)
 		Fatal(numGates,
 			" GameObjectManager.setNumObjects: cannot malloc "
@@ -576,8 +570,7 @@ GameObjectManager::newVehicle(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::setWatchID(GameObjectPtr obj)
+void GameObjectManager::setWatchID(GameObjectPtr obj)
 {
 	if (obj->watchID == 0)
 	{
@@ -588,8 +581,7 @@ GameObjectManager::setWatchID(GameObjectPtr obj)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::freeMover(std::unique_ptr<Mover> mover)
+void GameObjectManager::freeMover(std::unique_ptr<Mover> mover)
 {
 	bool foundIt = modifyMoverLists(mover, MOVERLIST_DELETE);
 	if (foundIt)
@@ -605,8 +597,7 @@ GameObjectManager::freeMover(std::unique_ptr<Mover> mover)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID)
+void GameObjectManager::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID)
 {
 	if (newTeamID > -1)
 	{
@@ -719,8 +710,7 @@ GameObjectManager::getCarnage(CarnageEnumType carnageType)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::releaseCarnage(CarnagePtr obj)
+void GameObjectManager::releaseCarnage(CarnagePtr obj)
 {
 	obj->setExists(false);
 	obj->setOwner(nullptr);
@@ -743,8 +733,7 @@ GameObjectManager::getLight(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::releaseLight(LightPtr obj)
+void GameObjectManager::releaseLight(LightPtr obj)
 {
 	obj->setExists(false);
 	//	obj->setOwner(nullptr);
@@ -774,8 +763,7 @@ GameObjectManager::getArtillery(void)
 
 #define OLD_FILE_SIZE 2200
 
-void
-GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHandle)
+void GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHandle)
 {
 	int32_t packet = terrainFile->getCurrentPacket();
 	int32_t size = terrainFile->getPacketSize();
@@ -786,7 +774,7 @@ GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHan
 		terrainFile->readPacket(packet, pBuffer);
 	gosASSERT(bytesread == size);
 	File* terrainObjectFile = new File;
-	terrainObjectFile->open((const std::wstring_view&)pBuffer, size);
+	terrainObjectFile->open((std::wstring_view)pBuffer, size);
 	totalObjCount = terrainObjectFile->readLong();
 	if (totalObjCount)
 	{
@@ -835,8 +823,7 @@ GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t firstHan
 	delete pBuffer;
 }
 
-void
-GameObjectManager::countObject(ObjDataLoader* data)
+void GameObjectManager::countObject(ObjDataLoader* data)
 {
 	ObjectTypePtr objType = objTypeManager->get(data->objTypeNum);
 	if (!objType)
@@ -909,8 +896,7 @@ GameObjectManager::getSpecificObjects(
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::loadTerrainObjects(
+void GameObjectManager::loadTerrainObjects(
 	PacketFile* terrainFile, volatile float& progress, float progressRange)
 {
 	int32_t curTerrainObjectIndex = 0;
@@ -1057,8 +1043,7 @@ GameObjectManager::loadTerrainObjects(
 extern GameObjectFootPrint* tempSpecialAreaFootPrints;
 extern int32_t tempNumSpecialAreas;
 
-void
-GameObjectManager::addObject(ObjDataLoader* objData, int32_t& curTerrainObjectIndex,
+void GameObjectManager::addObject(ObjDataLoader* objData, int32_t& curTerrainObjectIndex,
 	int32_t& curBuildingIndex, int32_t& curTurretIndex, int32_t& curGateIndex,
 	int32_t& curCollidableHandle, int32_t& curNonCollidableHandle)
 {
@@ -1255,8 +1240,7 @@ GameObjectManager::addObject(ObjDataLoader* objData, int32_t& curTerrainObjectIn
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::destroy(void)
+void GameObjectManager::destroy(void)
 {
 	//--------------------------------------------------------------
 	// Free 'em all up!!
@@ -1374,8 +1358,7 @@ GameObjectManager::destroy(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::render(bool terrain, bool movers, bool other)
+void GameObjectManager::render(bool terrain, bool movers, bool other)
 {
 	//-----------------------------------------------------
 	// Set render states as few times as possible.
@@ -1508,8 +1491,7 @@ GameObjectManager::render(bool terrain, bool movers, bool other)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::renderShadows(bool terrain, bool movers, bool other)
+void GameObjectManager::renderShadows(bool terrain, bool movers, bool other)
 {
 	//-----------------------------------------------------
 	// Set render states as few times as possible.
@@ -1631,8 +1613,7 @@ extern int64_t MCTimePerShapeTransform;
 uint32_t bldgCount = 0;
 #endif
 
-void
-GameObjectManager::update(bool terrain, bool movers, bool other)
+void GameObjectManager::update(bool terrain, bool movers, bool other)
 {
 	//----------------------------
 	// Now, update game objects...
@@ -1915,8 +1896,7 @@ GameObjectManager::buildMoverLists(void)
 
 //---------------------------------------------------------------------------
 
-bool
-GameObjectManager::modifyMoverLists(std::unique_ptr<Mover> mover, int32_t action)
+bool GameObjectManager::modifyMoverLists(std::unique_ptr<Mover> mover, int32_t action)
 {
 	switch (action)
 	{
@@ -2337,8 +2317,7 @@ GameObjectManager::findObjectByMouse(int32_t mouseX, int32_t mouseY)
 }
 
 //---------------------------------------------------------------------------
-bool
-GameObjectManager::moverInRect(int32_t index, Stuff::Vector3D& dStart, Stuff::Vector3D& dEnd)
+bool GameObjectManager::moverInRect(int32_t index, Stuff::Vector3D& dStart, Stuff::Vector3D& dEnd)
 {
 	//------------------------------------------------------------------------------
 	// This function checks the mover passed in to see if it
@@ -2392,8 +2371,7 @@ GameObjectManager::getObjectType(ObjectTypeNumber typeHandle)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::removeObjectType(ObjectTypeNumber typeHandle)
+void GameObjectManager::removeObjectType(ObjectTypeNumber typeHandle)
 {
 	objTypeManager->remove(typeHandle);
 }
@@ -2452,8 +2430,7 @@ GameObjectManager::calcPartId(
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::setPartId(GameObjectPtr obj, int32_t param1, int32_t param2, int32_t param3)
+void GameObjectManager::setPartId(GameObjectPtr obj, int32_t param1, int32_t param2, int32_t param3)
 {
 	//------------------------------------------------------------------------
 	// ALL game objects should have their partIds set through this function.
@@ -2533,16 +2510,14 @@ GameObjectManager::updateCollisions(void)
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2)
+void GameObjectManager::detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 {
 	collisionSystem->detectStaticCollision(obj1, obj2);
 }
 
 //---------------------------------------------------------------------------
 
-void
-GameObjectManager::updateCaptureList(void)
+void GameObjectManager::updateCaptureList(void)
 {
 	for (size_t i = 0; i < MAX_TEAMS; i++)
 		numCaptures[i] = 0;
@@ -2556,7 +2531,7 @@ GameObjectManager::updateCaptureList(void)
 		{
 			TacticalOrderPtr tacOrder;
 			tacOrder = pilot->getCurTacOrder();
-			if (tacOrder->code == TACTICAL_ORDER_CAPTURE)
+			if (tacOrder->code == TacticalOrderCode::capture)
 			{
 				captureList[mover->getTeamId()][numCaptures[mover->getTeamId()]++] =
 					tacOrder->targetWID;
@@ -2567,8 +2542,7 @@ GameObjectManager::updateCaptureList(void)
 
 //---------------------------------------------------------------------------
 
-bool
-GameObjectManager::isTeamCapturing(TeamPtr team, GameObjectWatchID targetWID)
+bool GameObjectManager::isTeamCapturing(TeamPtr team, GameObjectWatchID targetWID)
 {
 	if (team)
 	{
@@ -2728,8 +2702,7 @@ GameObjectManager::createArtillery(int32_t artilleryType, Stuff::Vector3D& posit
 	return (artillery);
 }
 
-void
-GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool other)
+void GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool other)
 {
 	if (terrain && renderObjects)
 	{
@@ -2886,8 +2859,7 @@ GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool other)
 }
 
 //-------------------------------------------------------------------
-void
-GameObjectManager::CopyTo(ObjectManagerData* data)
+void GameObjectManager::CopyTo(ObjectManagerData* data)
 {
 	data->maxObjects = getMaxObjects();
 	data->numElementals = numElementals;
@@ -2907,8 +2879,7 @@ GameObjectManager::CopyTo(ObjectManagerData* data)
 }
 
 //-------------------------------------------------------------------
-void
-GameObjectManager::CopyFrom(ObjectManagerData* data)
+void GameObjectManager::CopyFrom(ObjectManagerData* data)
 {
 	numElementals = data->numElementals;
 	numTerrainObjects = data->numTerrainObjects;
@@ -3069,7 +3040,7 @@ GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 			Fatal(numArtillery, " GameObjectManager.setNumObjects: cannot malloc artillery ");
 	}
 	useMoverLineOfSightTable = true;
-	moverLineOfSightTable = (const std::wstring_view&)systemHeap->Malloc(maxMovers * maxMovers);
+	moverLineOfSightTable = (std::wstring_view)systemHeap->Malloc(maxMovers * maxMovers);
 	if (!moverLineOfSightTable)
 		Fatal(numGates,
 			" GameObjectManager.setNumObjects: cannot malloc "

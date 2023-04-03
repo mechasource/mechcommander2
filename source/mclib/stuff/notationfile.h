@@ -37,10 +37,10 @@ public:
 
 	Macro(std::wstring* macro, std::wstring* replace);
 
-	static void AddValue(MacroTree* macro_tree, const std::wstring_view& name, const std::wstring_view& value);
+	static void AddValue(MacroTree* macro_tree, std::wstring_view name, std::wstring_view value);
 
 	static void ReplaceMacros(
-		MacroTree* macro_tree, const std::wstring_view& buffer, PSTR new_buf, size_t new_buf_size);
+		MacroTree* macro_tree, std::wstring_view buffer, PSTR new_buf, size_t new_buf_size);
 };
 
 //=======================================================================
@@ -97,7 +97,7 @@ public:
 		Raw
 	};
 
-	NotationFile(const std::wstring_view& file_name, Type type = Standard);
+	NotationFile(std::wstring_view file_name, Type type = Standard);
 	NotationFile(std::iostream& stream = nullptr, MacroTree* macro_tree = nullptr);
 
 	~NotationFile(void);
@@ -118,14 +118,14 @@ public:
 		return &m_fileDependencies;
 	}
 
-	const std::wstring_view&
+	std::wstring_view
 	GetFileName(void) const
 	{
 		// Check_Object(this);
 		return m_fileName;
 	}
 
-	void SaveAs(const std::wstring_view& file_name);
+	void SaveAs(std::wstring_view file_name);
 	void Save(void);
 
 	void IgnoreChanges()
@@ -169,14 +169,14 @@ public:
 		return m_pages.IsEmpty();
 	}
 
-	bool DoesPageExist(const std::wstring_view& pagename)
+	bool DoesPageExist(std::wstring_view pagename)
 	{
 		// Check_Object(this);
 		return FindPage(pagename) != nullptr;
 	}
-	Page* FindPage(const std::wstring_view& pagename);
+	Page* FindPage(std::wstring_view pagename);
 	Page* GetPage(uint32_t index);
-	Page* GetPage(const std::wstring_view& pagename);
+	Page* GetPage(std::wstring_view pagename);
 
 	typedef ChainIteratorOf<Page*> PageIterator;
 	PageIterator* MakePageIterator()
@@ -185,10 +185,10 @@ public:
 		return new PageIterator(&m_pages);
 	}
 
-	Page* AddPage(const std::wstring_view& pagename);
-	Page* SetPage(const std::wstring_view& pagename);
+	Page* AddPage(std::wstring_view pagename);
+	Page* SetPage(std::wstring_view pagename);
 
-	void DeletePage(const std::wstring_view& pagename);
+	void DeletePage(std::wstring_view pagename);
 	void DeleteAllPages(void);
 
 protected:

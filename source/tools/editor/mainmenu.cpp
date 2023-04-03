@@ -14,8 +14,8 @@
 #include "editorinterface.h"
 
 MainMenu* pMainMenu = nullptr;
-MainMenu::MainMenu(EditorInterface* pEditorInterface) :
-	Window(L"MainMenu", 0, 0, Environment.screenwidth, Environment.screenheight,
+MainMenu::MainMenu(EditorInterface* pEditorInterface)
+	: Window(L"MainMenu", 0, 0, Environment.screenwidth, Environment.screenheight,
 		pEditorInterface /*pgWinMan->Root()*/, 0, 0)
 {
 	pMenu = nullptr;
@@ -44,8 +44,7 @@ extern bool
 gos_RunMainLoop(void (*DoGameLogic)());
 extern uint32_t TerminateGame; // BUGBUG exported function handles this with return value
 
-void
-MainMenu::DoModal()
+void MainMenu::DoModal()
 {
 	while (!TerminateGame && !bEndModal)
 	{
@@ -54,8 +53,7 @@ MainMenu::DoModal()
 	}
 }
 
-void
-MainMenu::OnCommand(Window* wnd, int32_t nCommand)
+void MainMenu::OnCommand(Window* wnd, int32_t nCommand)
 {
 	if (MC_CLICKED == nCommand)
 	{

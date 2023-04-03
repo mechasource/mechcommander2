@@ -25,8 +25,7 @@ FloatHelp* FloatHelp::floatHelps = nullptr; // POinters to all of them.
 
 //-----------------------------------------------------------------------------------------
 // class FloatHelp
-void
-FloatHelp::init(int32_t maxHelps)
+void FloatHelp::init(int32_t maxHelps)
 {
 	floatHelps = (FloatHelp*)systemHeap->Malloc(sizeof(FloatHelp) * MAX_FLOAT_HELPS);
 	gosASSERT(floatHelps != nullptr);
@@ -45,8 +44,7 @@ FloatHelp::init(int32_t maxHelps)
 }
 
 //-----------------------------------------------------------------------------------------
-void
-FloatHelp::destroy(void)
+void FloatHelp::destroy(void)
 {
 	systemHeap->Free(floatHelps);
 	floatHelps = nullptr;
@@ -54,8 +52,7 @@ FloatHelp::destroy(void)
 }
 
 //-----------------------------------------------------------------------------------------
-void
-FloatHelp::resetAll(void)
+void FloatHelp::resetAll(void)
 {
 	currentFloatHelp = 0;
 	for (size_t i = 0; i < MAX_FLOAT_HELPS; i++)
@@ -63,16 +60,14 @@ FloatHelp::resetAll(void)
 }
 
 //-----------------------------------------------------------------------------------------
-void
-FloatHelp::renderAll(void)
+void FloatHelp::renderAll(void)
 {
 	for (size_t i = 0; i < MAX_FLOAT_HELPS; i++)
 		floatHelps[i].render();
 }
 
 //-----------------------------------------------------------------------------------------
-void
-FloatHelp::setFloatHelp(const std::wstring_view& txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
+void FloatHelp::setFloatHelp(std::wstring_view txt, Stuff::Vector4D screenPos, uint32_t fClr, uint32_t bClr,
 	float scl, bool proportional, bool bold, bool italic, bool wordWrap)
 {
 	if (currentFloatHelp < MAX_FLOAT_HELPS)
@@ -91,8 +86,7 @@ FloatHelp::setFloatHelp(const std::wstring_view& txt, Stuff::Vector4D screenPos,
 }
 
 //-----------------------------------------------------------------------------------------
-void
-FloatHelp::getTextStringLength(const std::wstring_view& txt, uint32_t fcolour, float scl, bool proportional,
+void FloatHelp::getTextStringLength(std::wstring_view txt, uint32_t fcolour, float scl, bool proportional,
 	bool bold, bool italic, bool wordWrap, uint32_t& width, uint32_t& height)
 {
 	// must use globalFloat Scale because of true type fonts

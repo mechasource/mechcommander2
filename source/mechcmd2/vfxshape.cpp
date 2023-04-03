@@ -33,8 +33,7 @@
 // class Shape member functions
 //
 //****************************************************************************
-void
-Shape::destroy(void)
+void Shape::destroy(void)
 {
 	//----------------------------------------------------------------
 	//-- First, tell our owner that we've gone away.
@@ -71,7 +70,7 @@ Shape::init(uint8_t* fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
 	// Truth begins here.
 	// This is simply the data holder for ALL shape types in the game EXCEPT
 	// mechs.
-	if ((*(int32_t*)fileBlock != *(int32_t*) "1.10"))
+	if ((*(int32_t*)fileBlock != *(int32_t*)"1.10"))
 	{
 		stupidHeader = fileBlock;
 		frameList = fileBlock + STUPID_OFFSET; // You can talk to GDoren about this one!!!

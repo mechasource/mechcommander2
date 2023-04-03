@@ -100,12 +100,18 @@ public:
 		areaEffectDmg = areaEffectRad = 0.0f;
 	}
 
-	WeaponBoltType(void) { init(void); }
+	WeaponBoltType(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 	int32_t init(FitIniFilePtr objFile);
 
-	~WeaponBoltType(void) { destroy(void); }
+	~WeaponBoltType(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 
@@ -195,10 +201,10 @@ protected:
 	// Member Functions
 	//-----------------
 public:
-	virtual void init(bool create) {}
+	virtual void init(bool create) { }
 
-	WeaponBolt(void) :
-		GameObject()
+	WeaponBolt(void)
+		: GameObject()
 	{
 		init(true);
 		hotSpotNumber = 0;
@@ -225,7 +231,10 @@ public:
 		goalheight = 0.0f;
 	}
 
-	~WeaponBolt(void) { destroy(void); }
+	~WeaponBolt(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 
@@ -234,7 +243,10 @@ public:
 
 	virtual void init(bool create, ObjectTypePtr _type);
 
-	virtual void init(int32_t fxId) { effectId = fxId; }
+	virtual void init(int32_t fxId)
+	{
+		effectId = fxId;
+	}
 
 	virtual void setExists(bool set)
 	{

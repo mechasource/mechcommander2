@@ -13,8 +13,7 @@
 int32_t helpTextID = 0;
 int32_t helpTextHeaderID = 0;
 
-void
-aObject::update()
+void aObject::update()
 {
 	int32_t x = userInput->getMouseX();
 	int32_t y = userInput->getMouseY();
@@ -75,17 +74,16 @@ aObject::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void
-aObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t neverFlush)
+void aObject::init(FitIniFile* file, std::wstring_view blockname, uint32_t neverFlush)
 {
 	memset(location, 0, sizeof(location));
 	wchar_t fileName[256];
 	textureHandle = 0;
 	filewidth = 256.;
-	if (NO_ERROR != file->seekBlock(blockName))
+	if (NO_ERROR != file->seekBlock(blockname))
 	{
 		wchar_t errBuffer[256];
-		sprintf(errBuffer, "couldn't find static block %s", blockName);
+		sprintf(errBuffer, "couldn't find static block %s", blockname);
 		Assert(0, 0, errBuffer);
 		return;
 	}
@@ -165,8 +163,7 @@ aObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t nev
 	}
 }
 
-void
-aObject::destroy()
+void aObject::destroy()
 {
 	removeAllChildren();
 	if (textureHandle)
@@ -182,16 +179,14 @@ aObject::destroy()
 	pParent = nullptr;
 }
 
-bool
-aObject::pointInside(int32_t mouseX, int32_t mouseY) const
+bool aObject::pointInside(int32_t mouseX, int32_t mouseY) const
 {
 	if ((location[0].x) <= mouseX && location[3].x >= mouseX && location[0].y <= mouseY && location[1].y >= mouseY)
 		return true;
 	return false;
 }
 
-bool
-aObject::rectIntersect(int32_t left, int32_t top, int32_t right, int32_t bottom) const
+bool aObject::rectIntersect(int32_t left, int32_t top, int32_t right, int32_t bottom) const
 {
 	if ((right > location[0].x) && (left < location[2].x) && (bottom > location[0].y) && (top < location[2].y))
 		return (TRUE);
@@ -199,8 +194,7 @@ aObject::rectIntersect(int32_t left, int32_t top, int32_t right, int32_t bottom)
 		return (FALSE);
 }
 
-bool
-aObject::rectIntersect(const RECT& testRect) const
+bool aObject::rectIntersect(const RECT& testRect) const
 {
 	if ((testRect.right > location[0].x) && (testRect.left < location[0].y) && (testRect.bottom > location[2].y) && (testRect.top < location[2].y))
 		return (TRUE);
@@ -226,8 +220,7 @@ aObject::findObject(int32_t xPos, int32_t yPos)
 	return nullptr;
 }
 
-void
-aObject::setParent(aObject* p)
+void aObject::setParent(aObject* p)
 {
 	pParent = p;
 }
@@ -238,8 +231,7 @@ aObject::numberOfChildren(void) const
 	return nNumberOfChildren;
 }
 
-void
-aObject::addChild(aObject* c)
+void aObject::addChild(aObject* c)
 {
 	Assert(nNumberOfChildren < MAX_CHILDREN, nNumberOfChildren + 1, "Too many children!");
 	Assert(c->getParent() == nullptr || c->getParent() == this, 0,
@@ -254,8 +246,7 @@ aObject::addChild(aObject* c)
 	c->move(x(), y());
 }
 
-void
-aObject::removeChild(aObject* c)
+void aObject::removeChild(aObject* c)
 {
 	if (!c) // If this is nullptr, shouldn't we still remove it from the list?
 		return;
@@ -290,20 +281,17 @@ aObject::child(int32_t w)
 	return pChildren[w];
 }
 
-float
-aObject::width(void) const
+float aObject::width(void) const
 {
 	return location[2].x - location[0].x;
 }
 
-float
-aObject::height(void) const
+float aObject::height(void) const
 {
 	return location[2].y - location[0].y;
 }
 
-float
-aObject::x(void) const
+float aObject::x(void) const
 {
 	if (pParent)
 		return location[0].x - pParent->globalX();
@@ -311,8 +299,7 @@ aObject::x(void) const
 		return location[0].x;
 }
 
-float
-aObject::y(void) const
+float aObject::y(void) const
 {
 	if (pParent)
 		return location[0].y - pParent->y();
@@ -344,24 +331,21 @@ aObject::globalBottom(void) const
 	return globalY() + (int32_t)height();
 }
 
-void
-aObject::moveTo(int32_t xPos, int32_t yPos)
+void aObject::moveTo(int32_t xPos, int32_t yPos)
 {
 	float offsetX = xPos - location[0].x;
 	float offsetY = yPos - location[0].y;
 	move(offsetX, offsetY);
 }
 
-void
-aObject::moveToNoRecurse(int32_t xPos, int32_t yPos)
+void aObject::moveToNoRecurse(int32_t xPos, int32_t yPos)
 {
 	float offsetX = xPos - location[0].x;
 	float offsetY = yPos - location[0].y;
 	moveNoRecurse(offsetX, offsetY);
 }
 
-void
-aObject::move(float offsetX, float offsetY)
+void aObject::move(float offsetX, float offsetY)
 {
 	int32_t i;
 	for (i = 0; i < 4; i++)
@@ -375,8 +359,7 @@ aObject::move(float offsetX, float offsetY)
 	}
 }
 
-void
-aObject::moveNoRecurse(float offsetX, float offsetY)
+void aObject::moveNoRecurse(float offsetX, float offsetY)
 {
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -384,8 +367,7 @@ aObject::moveNoRecurse(float offsetX, float offsetY)
 		location[i].y += offsetY;
 	}
 }
-void
-aObject::resize(int32_t w, int32_t h)
+void aObject::resize(int32_t w, int32_t h)
 {
 	location[2].x = location[0].x + w;
 	location[3].x = location[0].x + w;
@@ -393,8 +375,7 @@ aObject::resize(int32_t w, int32_t h)
 	location[2].y = location[0].y + h;
 }
 
-void
-aObject::render()
+void aObject::render()
 {
 	if (showWindow)
 	{
@@ -412,16 +393,14 @@ aObject::render()
 	}
 }
 
-void
-aObject::render(int32_t x, int32_t y)
+void aObject::render(int32_t x, int32_t y)
 {
 	move(x, y);
 	render();
 	move(-x, -y);
 }
 
-void
-aObject::setTexture(const std::wstring_view& fileName)
+void aObject::setTexture(std::wstring_view fileName)
 {
 	if (textureHandle)
 	{
@@ -442,8 +421,7 @@ aObject::setTexture(const std::wstring_view& fileName)
 		filewidth = 256; // guess
 }
 
-void
-aObject::setTexture(uint32_t newHandle)
+void aObject::setTexture(uint32_t newHandle)
 {
 	// Gotta check handle.  If its the same as the new one,
 	// We don't gotta delete the old one.  The texture manager already did!!
@@ -464,8 +442,7 @@ aObject::setTexture(uint32_t newHandle)
 	}
 }
 
-void
-aObject::setcolour(uint32_t newcolour, bool bRecurse)
+void aObject::setcolour(uint32_t newcolour, bool bRecurse)
 {
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -481,8 +458,7 @@ aObject::setcolour(uint32_t newcolour, bool bRecurse)
 	}
 }
 
-void
-aObject::setUVs(float u1, float v1, float u2, float v2)
+void aObject::setUVs(float u1, float v1, float u2, float v2)
 {
 	location[0].u = location[1].u = u1 / filewidth + (.1f / (float)filewidth);
 	location[2].u = location[3].u = u2 / filewidth + (.1f / (float)filewidth);
@@ -490,8 +466,7 @@ aObject::setUVs(float u1, float v1, float u2, float v2)
 	location[1].v = location[2].v = v2 / filewidth + (.1f / (float)filewidth);
 }
 
-void
-aObject::removeAllChildren(bool bDelete)
+void aObject::removeAllChildren(bool bDelete)
 {
 	for (size_t i = 0; i < nNumberOfChildren; i++)
 	{
@@ -503,8 +478,7 @@ aObject::removeAllChildren(bool bDelete)
 	nNumberOfChildren = 0;
 }
 
-void
-aObject::copyData(const aObject& src)
+void aObject::copyData(const aObject& src)
 {
 	if (&src != this)
 	{
@@ -538,8 +512,7 @@ aRect::aRect()
 	bOutline = 0;
 }
 
-void
-aRect::render()
+void aRect::render()
 {
 	int32_t color = getcolour();
 	if (isShowing())
@@ -549,8 +522,7 @@ aRect::render()
 				 : drawRect(getGlobalGUI_RECT(), color);
 }
 
-void
-aRect::render(int32_t x, int32_t y)
+void aRect::render(int32_t x, int32_t y)
 {
 	// RECT tmpRect = getGUI_RECT();
 	RECT tmpRect = getGlobalGUI_RECT();
@@ -562,13 +534,12 @@ aRect::render(int32_t x, int32_t y)
 	bOutline ? drawEmptyRect(tmpRect, color, color) : drawRect(tmpRect, color);
 }
 
-void
-aRect::init(FitIniFile* file, const std::wstring_view& blockName)
+void aRect::init(FitIniFile* file, std::wstring_view blockname)
 {
-	if (NO_ERROR != file->seekBlock(blockName))
+	if (NO_ERROR != file->seekBlock(blockname))
 	{
 		wchar_t errorStr[256];
-		sprintf(errorStr, "couldn't find block %s in file %s", blockName, file->getFilename());
+		sprintf(errorStr, "couldn't find block %s in file %s", blockname, file->getFilename());
 		Assert(0, 0, errorStr);
 	}
 	int32_t left;
@@ -582,7 +553,7 @@ aRect::init(FitIniFile* file, const std::wstring_view& blockName)
 	}
 	else
 	{
-		// aObject::init(file, blockName);
+		// aObject::init(file, blockname);
 		/*we're not using */
 		int32_t x, y, width, height;
 		file->readIdLong("XLocation", x);
@@ -599,8 +570,7 @@ aRect::init(FitIniFile* file, const std::wstring_view& blockName)
 	file->readIdLong("HelpDesc", helpid);
 }
 
-RECT
-aRect::getGUI_RECT()
+RECT aRect::getGUI_RECT()
 {
 	RECT rect;
 	rect.left = left();
@@ -619,8 +589,7 @@ aRect::getGUI_RECT()
 	return rect;
 }
 
-RECT
-aRect::getGlobalGUI_RECT()
+RECT aRect::getGlobalGUI_RECT()
 {
 	RECT rect;
 	rect.left = globalLeft();
@@ -637,10 +606,9 @@ aText::aText()
 	alignment = 0;
 }
 
-aText::~aText() {}
+aText::~aText() { }
 
-void
-aText::init(FitIniFile* file, const std::wstring_view& header)
+void aText::init(FitIniFile* file, std::wstring_view header)
 {
 	int32_t result = file->seekBlock(header);
 	if (result != NO_ERROR)
@@ -678,30 +646,26 @@ aText::init(FitIniFile* file, const std::wstring_view& header)
 	file->readIdLong("HelpDesc", helpid);
 }
 
-void
-aText::setText(const std::wstring_view& str)
+void aText::setText(std::wstring_view str)
 {
 	text = str;
 }
 
-void
-aText::render()
+void aText::render()
 {
 	if (showWindow)
 		font.render(text, location[0].x, location[0].y, location[2].x - location[0].x,
 			location[2].y - location[0].y, location[0].argb, 0, alignment);
 }
 
-void
-aText::render(int32_t x, int32_t y)
+void aText::render(int32_t x, int32_t y)
 {
 	move(x, y);
 	render();
 	move(-x, -y);
 }
 
-void
-aText::setText(int32_t resID)
+void aText::setText(int32_t resID)
 {
 	wchar_t tmp[1280];
 	cLoadString(resID, tmp, 1279);
@@ -728,8 +692,7 @@ aText::operator=(const aText& src)
 	return *this;
 }
 
-void
-aText::CopyData(const aText& src)
+void aText::CopyData(const aText& src)
 {
 	if (&src != this)
 	{
@@ -740,8 +703,7 @@ aText::CopyData(const aText& src)
 	}
 }
 
-bool
-aText::pointInside(int32_t xPos, int32_t yPos) const
+bool aText::pointInside(int32_t xPos, int32_t yPos) const
 {
 	if (!width() || !height())
 	{

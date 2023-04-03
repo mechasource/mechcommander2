@@ -19,9 +19,9 @@ class GOSImage : public Stuff::Plug
 	// Constructors/Destructors
 	//
 public:
-	GOSImage(const std::wstring_view& imageName);
+	GOSImage(std::wstring_view imageName);
 	GOSImage(uint32_t imageHandle);
-	GOSImage(const std::wstring_view&, gos_TextureHints);
+	GOSImage(std::wstring_view, gos_TextureHints);
 	~GOSImage(void);
 
 #if CONSIDERED_OBSOLETE
@@ -29,7 +29,7 @@ public:
 	int32_t Getwidth(void);
 	int32_t Getheight(void);
 
-	const std::wstring_view& GetName(void)
+	std::wstring_view GetName(void)
 	{
 		// Check_Object(this);
 		return imageName;
@@ -85,8 +85,14 @@ public:
 
 	void LockImage(void);
 	void UnlockImage(void);
-	uint8_t* GetImagePtr(void) { return (uint8_t*)ptr.pTexture; }
-	int32_t GetPitch(void) { return ptr.Pitch; }
+	uint8_t* GetImagePtr(void)
+	{
+		return (uint8_t*)ptr.pTexture;
+	}
+	int32_t GetPitch(void)
+	{
+		return ptr.Pitch;
+	}
 
 #endif
 
@@ -94,7 +100,7 @@ public:
 	// Testing
 	//
 public:
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 	std::wstring imageName;
 	int32_t flags;

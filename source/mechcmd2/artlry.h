@@ -64,11 +64,17 @@ public:
 		data = 0;
 	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
-	ArtilleryChunk(void) { init(void); }
+	ArtilleryChunk(void)
+	{
+		init(void);
+	}
 
-	~ArtilleryChunk(void) { destroy(void); }
+	~ArtilleryChunk(void)
+	{
+		destroy(void);
+	}
 
 	void build(int32_t commanderId, int32_t striketype, Stuff::Vector3D location, int32_t seconds);
 
@@ -121,13 +127,19 @@ public:
 public:
 	void init(void);
 
-	ArtilleryType(void) { init(void); }
+	ArtilleryType(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 
 	int32_t init(FitIniFilePtr objFile);
 
-	~ArtilleryType(void) { destroy(void); }
+	~ArtilleryType(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 
@@ -140,7 +152,8 @@ public:
 
 //***************************************************************************
 
-typedef union _ArtilleryInfo {
+typedef union _ArtilleryInfo
+{
 	struct
 	{
 		float timeToImpact; // Time until strike goes off.
@@ -198,10 +211,16 @@ public:
 
 	virtual void init(bool create, int32_t _artilleryType);
 
-	Artillery(void) :
-		GameObject() { init(true); }
+	Artillery(void)
+		: GameObject()
+	{
+		init(true);
+	}
 
-	~Artillery(void) { destroy(void); }
+	~Artillery(void)
+	{
+		destroy(void);
+	}
 
 	bool recalcBounds(CameraPtr myEye);
 
@@ -217,13 +236,25 @@ public:
 
 	void setJustCreated(void);
 
-	float getTimeToImpact(void) { return (info.strike.timeToImpact); }
+	float getTimeToImpact(void)
+	{
+		return (info.strike.timeToImpact);
+	}
 
-	float getTimeToLaunch(void) { return (info.strike.timeToLaunch); }
+	float getTimeToLaunch(void)
+	{
+		return (info.strike.timeToLaunch);
+	}
 
-	bool launched(void) { return (info.strike.timeToLaunch <= 0); }
+	bool launched(void)
+	{
+		return (info.strike.timeToLaunch <= 0);
+	}
 
-	bool impacted(void) { return (info.strike.timeToImpact <= 0); }
+	bool impacted(void)
+	{
+		return (info.strike.timeToImpact <= 0);
+	}
 
 	void drawSelectBox(uint8_t color);
 
@@ -247,14 +278,23 @@ public:
 
 	virtual void init(bool create, ObjectTypePtr _type);
 
-	virtual int32_t kill(void) { return (NO_ERROR); }
+	virtual int32_t kill(void)
+	{
+		return (NO_ERROR);
+	}
 
 	virtual void setCommanderId(int32_t _commanderId);
-	virtual int32_t getCommanderId(void) { return commanderId; }
+	virtual int32_t getCommanderId(void)
+	{
+		return commanderId;
+	}
 
 	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-	virtual int32_t getTeamId(void) { return (teamId); }
+	virtual int32_t getTeamId(void)
+	{
+		return (teamId);
+	}
 
 	virtual bool isFriendly(TeamPtr team);
 

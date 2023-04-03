@@ -28,7 +28,7 @@ MPDirectTcpip::MPDirectTcpip()
 	status = RUNNING;
 }
 
-MPDirectTcpip::~MPDirectTcpip() {}
+MPDirectTcpip::~MPDirectTcpip() { }
 
 int32_t
 MPDirectTcpip::indexOfButtonWithID(int32_t id)
@@ -45,8 +45,7 @@ MPDirectTcpip::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-MPDirectTcpip::init(FitIniFile* file)
+void MPDirectTcpip::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -77,7 +76,7 @@ MPDirectTcpip::init(FitIniFile* file)
 		for (i = 0; i < 15; i += 1)
 		{
 			pTmp2 = new aStyle7TextListItem;
-			const std::wstring_view& tmpStr;
+			std::wstring_view tmpStr;
 			tmpStr.Format("Text0");
 			pTmp2->init(&PNfile, tmpStr.Data());
 			ipAddressComboBox.AddItem(pTmp2);
@@ -86,19 +85,16 @@ MPDirectTcpip::init(FitIniFile* file)
 	}
 }
 
-void
-MPDirectTcpip::begin()
+void MPDirectTcpip::begin()
 {
 	status = RUNNING;
 }
 
-void
-MPDirectTcpip::end()
+void MPDirectTcpip::end()
 {
 }
 
-void
-MPDirectTcpip::render(int32_t xOffset, int32_t yOffset)
+void MPDirectTcpip::render(int32_t xOffset, int32_t yOffset)
 {
 	if ((0 == xOffset) && (0 == yOffset))
 	{
@@ -107,8 +103,7 @@ MPDirectTcpip::render(int32_t xOffset, int32_t yOffset)
 	LogisticsScreen::render(xOffset, yOffset);
 }
 
-void
-MPDirectTcpip::render()
+void MPDirectTcpip::render()
 {
 	render(0, 0);
 }
@@ -159,14 +154,12 @@ MPDirectTcpip::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-MPDirectTcpip::isDone()
+bool MPDirectTcpip::isDone()
 {
 	return bDone;
 }
 
-void
-MPDirectTcpip::update()
+void MPDirectTcpip::update()
 {
 	LogisticsScreen::update();
 	ipAddressComboBox.update();
@@ -188,9 +181,9 @@ MPDirectTcpip::update()
 }
 
 int32_t
-aStyle7TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
+aStyle7TextListItem::init(FitIniFile* file, std::wstring_view blockname)
 {
-	file->seekBlock(blockName);
+	file->seekBlock(blockname);
 	int32_t x = 0;
 	int32_t y = 0;
 	file->readIdLong("XLocation", x);
@@ -221,8 +214,7 @@ aStyle7TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aStyle7TextListItem::render()
+void aStyle7TextListItem::render()
 {
 	float color;
 	if (aListItem::SELECTED == getState())

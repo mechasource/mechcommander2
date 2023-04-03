@@ -27,8 +27,7 @@ OptionsScreenWrapper::~OptionsScreenWrapper()
 	}
 }
 
-void
-OptionsScreenWrapper::begin()
+void OptionsScreenWrapper::begin()
 {
 	isActive = true;
 	if (!pOptionsScreen)
@@ -49,18 +48,15 @@ OptionsScreenWrapper::begin()
 	}
 }
 
-void
-OptionsScreenWrapper::init()
+void OptionsScreenWrapper::init()
 {
 }
 
-void
-OptionsScreenWrapper::destroy()
+void OptionsScreenWrapper::destroy()
 {
 }
 
-void
-OptionsScreenWrapper::end()
+void OptionsScreenWrapper::end()
 {
 	delete pOptionsScreen;
 	pOptionsScreen = nullptr;
@@ -91,8 +87,7 @@ OptionsScreenWrapper::update()
 	}
 }
 
-void
-OptionsScreenWrapper::render()
+void OptionsScreenWrapper::render()
 {
 	if (pOptionsScreen && isActive)
 		pOptionsScreen->render();

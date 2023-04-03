@@ -55,8 +55,7 @@ extern bool MLRVertexLimitReached;
 // MISC
 //***************************************************************************
 
-void
-CallArtillery(int32_t commanderid, int32_t striketype, Stuff::Vector3D strikeloc,
+void CallArtillery(int32_t commanderid, int32_t striketype, Stuff::Vector3D strikeloc,
 	int32_t secondsToImpact, bool randomOff)
 {
 	//-------------------------------------------------------------------
@@ -111,8 +110,7 @@ CallArtillery(int32_t commanderid, int32_t striketype, Stuff::Vector3D strikeloc
 
 //---------------------------------------------------------------------------
 
-void
-IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeloc, GameObjectPtr strikeTarget,
+void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeloc, GameObjectPtr strikeTarget,
 	bool playerStrike, bool clanStrike, float timeToImpact)
 {
 	if ((strikeID != ARTILLERY_LARGE) && (strikeID != ARTILLERY_SMALL) && (strikeID != ARTILLERY_SENSOR))
@@ -188,16 +186,14 @@ ArtilleryChunk::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-ArtilleryChunk::operator delete(PVOID us)
+void ArtilleryChunk::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-ArtilleryChunk::build(
+void ArtilleryChunk::build(
 	int32_t _commanderId, int32_t _strikeType, Stuff::Vector3D location, int32_t _seconds)
 {
 	commanderId = _commanderId;
@@ -209,8 +205,7 @@ ArtilleryChunk::build(
 
 //---------------------------------------------------------------------------
 
-void
-ArtilleryChunk::pack(void)
+void ArtilleryChunk::pack(void)
 {
 	data = 0;
 	data |= (secondsToImpact + 1);
@@ -226,8 +221,7 @@ ArtilleryChunk::pack(void)
 
 //---------------------------------------------------------------------------
 
-void
-ArtilleryChunk::unpack(void)
+void ArtilleryChunk::unpack(void)
 {
 	uint32_t tempData = data;
 	commanderId = (tempData & ARTILLERYCHUNK_COMMANDERID_MASK);
@@ -243,8 +237,7 @@ ArtilleryChunk::unpack(void)
 
 //---------------------------------------------------------------------------
 
-bool
-ArtilleryChunk::equalTo(ArtilleryChunkPtr chunk)
+bool ArtilleryChunk::equalTo(ArtilleryChunkPtr chunk)
 {
 	if (commanderId != chunk->commanderId)
 		return (false);
@@ -275,8 +268,7 @@ ArtilleryType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void
-ArtilleryType::init(void)
+void ArtilleryType::init(void)
 {
 	ObjectType::init();
 	objectTypeClass = ARTILLERY_TYPE;
@@ -285,8 +277,7 @@ ArtilleryType::init(void)
 
 //---------------------------------------------------------------------------
 
-void
-ArtilleryType::destroy(void)
+void ArtilleryType::destroy(void)
 {
 	if (explosionOffsetX)
 	{
@@ -424,8 +415,7 @@ ArtilleryType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 }
 
 //---------------------------------------------------------------------------
-bool
-ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
@@ -507,8 +497,7 @@ ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 }
 
 //---------------------------------------------------------------------------
-bool
-ArtilleryType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool ArtilleryType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// Artillery goes away when it hits.  Nothing happens as
@@ -519,8 +508,7 @@ ArtilleryType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 //***************************************************************************
 // class Artillery
 //***************************************************************************
-void
-Artillery::init(bool create)
+void Artillery::init(bool create)
 {
 	artilleryType = ARTILLERY_SMALL;
 	initFlags();
@@ -539,8 +527,7 @@ Artillery::init(bool create)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::init(bool create, int32_t _artilleryType)
+void Artillery::init(bool create, int32_t _artilleryType)
 {
 	init(create);
 	artilleryType = _artilleryType;
@@ -553,8 +540,7 @@ Artillery::init(bool create, int32_t _artilleryType)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::handleStaticCollision(void)
+void Artillery::handleStaticCollision(void)
 {
 	if (getFlag(OBJECT_FLAG_TANGIBLE))
 	{
@@ -636,8 +622,7 @@ Artillery::handleStaticCollision(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::setJustCreated(void)
+void Artillery::setJustCreated(void)
 {
 	if (getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
@@ -981,8 +966,7 @@ Artillery::update(void)
 }
 
 //---------------------------------------------------------------------------
-bool
-Artillery::recalcBounds(CameraPtr myEye)
+bool Artillery::recalcBounds(CameraPtr myEye)
 {
 	if (myEye)
 	{
@@ -1057,8 +1041,7 @@ Artillery::getTeam(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::setCommanderId(int32_t _commanderId)
+void Artillery::setCommanderId(int32_t _commanderId)
 {
 	commanderId = _commanderId;
 }
@@ -1074,8 +1057,7 @@ Artillery::setTeamId(int32_t _teamId, bool setup)
 
 //---------------------------------------------------------------------------
 
-bool
-Artillery::isFriendly(TeamPtr team)
+bool Artillery::isFriendly(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_FRIENDLY);
@@ -1084,8 +1066,7 @@ Artillery::isFriendly(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool
-Artillery::isEnemy(TeamPtr team)
+bool Artillery::isEnemy(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_ENEMY);
@@ -1094,8 +1075,7 @@ Artillery::isEnemy(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool
-Artillery::isNeutral(TeamPtr team)
+bool Artillery::isNeutral(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_NEUTRAL);
@@ -1103,8 +1083,7 @@ Artillery::isNeutral(TeamPtr team)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::setSensorRange(float range)
+void Artillery::setSensorRange(float range)
 {
 	SensorSystemPtr sensor = SensorManager->getSensor(info.strike.sensorSystemIndex);
 	if (sensor)
@@ -1112,8 +1091,7 @@ Artillery::setSensorRange(float range)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::setSensorData(TeamPtr team, float sensorTime, float range)
+void Artillery::setSensorData(TeamPtr team, float sensorTime, float range)
 {
 	if (sensorTime != -1.0)
 		info.strike.timeToBlind = sensorTime;
@@ -1129,14 +1107,12 @@ Artillery::setSensorData(TeamPtr team, float sensorTime, float range)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::drawSelectBox(uint8_t color)
+void Artillery::drawSelectBox(uint8_t color)
 {
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::render(void)
+void Artillery::render(void)
 {
 	if (inView)
 	{
@@ -1257,8 +1233,7 @@ Artillery::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::destroy(void)
+void Artillery::destroy(void)
 {
 	// Must delete here too in case effect was NOT over when mission ended!
 	if (hitEffect)
@@ -1287,8 +1262,7 @@ Artillery::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::init(bool create, ObjectTypePtr _type)
+void Artillery::init(bool create, ObjectTypePtr _type)
 {
 	GameObject::init(create, _type);
 	initFlags();
@@ -1472,8 +1446,7 @@ Artillery::init(bool create, ObjectTypePtr _type)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::Save(PacketFilePtr file, int32_t packetNum)
+void Artillery::Save(PacketFilePtr file, int32_t packetNum)
 {
 	ArtilleryData data;
 	CopyTo(&data);
@@ -1482,8 +1455,7 @@ Artillery::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::CopyTo(ArtilleryData* data)
+void Artillery::CopyTo(ArtilleryData* data)
 {
 	data->artilleryType = artilleryType;
 	data->teamId = teamId;
@@ -1497,8 +1469,7 @@ Artillery::CopyTo(ArtilleryData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-Artillery::Load(ArtilleryData* data)
+void Artillery::Load(ArtilleryData* data)
 {
 	GameObject::Load(dynamic_cast<GameObjectData*>(data));
 	artilleryType = data->artilleryType;

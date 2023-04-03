@@ -88,11 +88,11 @@ protected:
 	uint32_t whoMadeMe;
 
 	//		BOOL	VMQuery (PVOID pvAddress, PVMQUERY pVMQ);
-	//		const std::wstring_view&   GetMemStorageText (uint32_t dwStorage);
-	//		const std::wstring_view&	GetProtectText (uint32_t dwProtect, const std::wstring_view& szBuf, BOOL
+	//		std::wstring_view   GetMemStorageText (uint32_t dwStorage);
+	//		std::wstring_view	GetProtectText (uint32_t dwProtect, std::wstring_view szBuf, BOOL
 	// fShowFlags);
-	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, const std::wstring_view& szLine, int32_t
-	// nMaxLen); 		void	ConstructBlkInfoLine (PVMQUERY pVMQ, const std::wstring_view&
+	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, std::wstring_view szLine, int32_t
+	// nMaxLen); 		void	ConstructBlkInfoLine (PVMQUERY pVMQ, std::wstring_view
 	// szLine, int32_t nMaxLen);
 
 public:
@@ -101,8 +101,14 @@ public:
 	// Member Functions
 	//-----------------
 public:
-	HeapManager(void) { init(void); }
-	virtual ~HeapManager(void) { destroy(void); }
+	HeapManager(void)
+	{
+		init(void);
+	}
+	virtual ~HeapManager(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void);
 	void init(void);
@@ -115,11 +121,20 @@ public:
 
 	void HeapManager::MemoryDump(void);
 
-	virtual uint8_t heapType(void) { return BASE_HEAP; }
+	virtual uint8_t heapType(void)
+	{
+		return BASE_HEAP;
+	}
 
-	uint32_t owner(void) { return whoMadeMe; }
+	uint32_t owner(void)
+	{
+		return whoMadeMe;
+	}
 
-	size_t tSize(void) { return committedSize; }
+	size_t tSize(void)
+	{
+		return committedSize;
+	}
 };
 
 //---------------------------------------------------------------------------
@@ -143,7 +158,7 @@ protected:
 	size_t heapSize;
 	bool mallocFatals;
 	int32_t heapState;
-	const std::wstring_view& heapName;
+	std::wstring_view heapName;
 	bool useGOSGuardPage;
 	HGOSHEAP gosHeap;
 
@@ -162,14 +177,17 @@ protected:
 
 public:
 	UserHeap(void);
-	int32_t init(uint32_t memSize, const std::wstring_view& heapId = nullptr, bool useGOS = false);
+	int32_t init(uint32_t memSize, std::wstring_view heapId = nullptr, bool useGOS = false);
 
 	~UserHeap(void);
 	void destroy(void);
 
 	uint32_t totalCoreLeft(void);
 	uint32_t coreLeft(void);
-	size_t size(void) { return heapSize; }
+	size_t size(void)
+	{
+		return heapSize;
+	}
 
 	PVOID Malloc(size_t memSize);
 	int32_t Free(PVOID memBlock);
@@ -180,13 +198,25 @@ public:
 
 	HRESULT getLastError(void);
 
-	bool heapReady(void) { return (heapSize != 0); }
+	bool heapReady(void)
+	{
+		return (heapSize != 0);
+	}
 
-	void setMallocFatals(bool fatalFlag) { mallocFatals = fatalFlag; }
+	void setMallocFatals(bool fatalFlag)
+	{
+		mallocFatals = fatalFlag;
+	}
 
-	virtual uint8_t heapType(void) { return USER_HEAP; }
+	virtual uint8_t heapType(void)
+	{
+		return USER_HEAP;
+	}
 
-	const std::wstring_view& getHeapName(void) { return heapName; }
+	std::wstring_view getHeapName(void)
+	{
+		return heapName;
+	}
 
 	bool pointerOnHeap(PVOID ptr);
 
@@ -204,9 +234,9 @@ public:
 	{
 	}
 
-	void stopHeapMallocLog(void) {}
+	void stopHeapMallocLog(void) { }
 
-	void dumpRecordLog(void) {}
+	void dumpRecordLog(void) { }
 #endif
 };
 
@@ -231,11 +261,20 @@ public:
 		heapInstrumented = false;
 	}
 
-	HeapList(void) { init(void); }
+	HeapList(void)
+	{
+		init(void);
+	}
 
-	void destroy(void) { init(void); }
+	void destroy(void)
+	{
+		init(void);
+	}
 
-	~HeapList(void) { destroy(void); }
+	~HeapList(void)
+	{
+		destroy(void);
+	}
 
 	void addHeap(HeapManagerPtr newHeap);
 	void removeHeap(HeapManagerPtr oldHeap);

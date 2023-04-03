@@ -65,8 +65,7 @@ BitFlag::init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
 }
 
 //------------------------------------------------------------------------
-void
-BitFlag::resetAll(uint32_t initialValue)
+void BitFlag::resetAll(uint32_t initialValue)
 {
 	//------------------------------------------
 	// Set memory to initial Flag value
@@ -86,8 +85,7 @@ BitFlag::resetAll(uint32_t initialValue)
 }
 
 //------------------------------------------------------------------------
-void
-BitFlag::destroy(void)
+void BitFlag::destroy(void)
 {
 	delete flagHeap;
 	flagHeap = nullptr;
@@ -96,8 +94,7 @@ BitFlag::destroy(void)
 
 //------------------------------------------------------------------------
 // This sets location to bits
-void
-BitFlag::setFlag(uint32_t r, uint32_t c)
+void BitFlag::setFlag(uint32_t r, uint32_t c)
 {
 	if ((r < 0) || (r >= rows) || (c < 0) || (c > columns))
 		return;
@@ -117,8 +114,7 @@ BitFlag::setFlag(uint32_t r, uint32_t c)
 }
 
 //------------------------------------------------------------------------
-void
-BitFlag::setGroup(uint32_t r, uint32_t c, uint32_t length)
+void BitFlag::setGroup(uint32_t r, uint32_t c, uint32_t length)
 {
 	if (length)
 	{
@@ -253,8 +249,7 @@ ByteFlag::init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
 }
 
 //------------------------------------------------------------------------
-void
-ByteFlag::initTGA(const std::wstring_view& tgaFileName)
+void ByteFlag::initTGA(std::wstring_view tgaFileName)
 {
 	MechFile tgaFile;
 #ifdef _DEBUG
@@ -314,24 +309,21 @@ ByteFlag::initTGA(const std::wstring_view& tgaFileName)
 }
 
 //------------------------------------------------------------------------
-void
-ByteFlag::setCircle(uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
+void ByteFlag::setCircle(uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
 {
 	if (radius)
 		AG_ellipse_fillOr(flagPane, x, y, radius, radius, value);
 }
 
 //------------------------------------------------------------------------
-void
-ByteFlag::clearCircle(uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
+void ByteFlag::clearCircle(uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
 {
 	if (radius)
 		AG_ellipse_fillXor(flagPane, x, y, radius, radius, value);
 }
 
 //------------------------------------------------------------------------
-void
-ByteFlag::resetAll(uint32_t initialValue)
+void ByteFlag::resetAll(uint32_t initialValue)
 {
 	//------------------------------------------
 	// Set memory to initial Flag value
@@ -347,8 +339,7 @@ ByteFlag::resetAll(uint32_t initialValue)
 }
 
 //------------------------------------------------------------------------
-void
-ByteFlag::destroy(void)
+void ByteFlag::destroy(void)
 {
 	delete flagHeap;
 	flagHeap = nullptr;
@@ -367,8 +358,7 @@ ByteFlag::memDump(void)
 
 //------------------------------------------------------------------------
 // This sets location to bits
-void
-ByteFlag::setFlag(uint32_t r, uint32_t c)
+void ByteFlag::setFlag(uint32_t r, uint32_t c)
 {
 	if ((r < 0) || (r >= rows) || (c < 0) || (c > columns))
 		return;
@@ -385,8 +375,7 @@ ByteFlag::setFlag(uint32_t r, uint32_t c)
 }
 
 //------------------------------------------------------------------------
-void
-ByteFlag::setGroup(uint32_t r, uint32_t c, uint32_t length)
+void ByteFlag::setGroup(uint32_t r, uint32_t c, uint32_t length)
 {
 	if (length)
 	{

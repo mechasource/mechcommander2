@@ -21,12 +21,9 @@ class EulerAngles;
 } // namespace Stuff
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::EulerAngles& angle);
-void
-Spew(const std::wstring_view& group, const Stuff::YawPitchRoll& angle);
-void
-Spew(const std::wstring_view& group, const Stuff::UnitQuaternion& angle);
+void Spew(std::wstring_view group, const Stuff::EulerAngles& angle);
+void Spew(std::wstring_view group, const Stuff::YawPitchRoll& angle);
+void Spew(std::wstring_view group, const Stuff::UnitQuaternion& angle);
 #endif
 
 namespace Stuff
@@ -52,7 +49,7 @@ public:
 	//
 	// Constructors
 	//
-	EulerAngles() {}
+	EulerAngles() { }
 	EulerAngles(const Radian& p, const Radian& y, const Radian& r)
 	{
 		pitch = p;
@@ -65,10 +62,22 @@ public:
 		yaw = a.yaw;
 		roll = a.roll;
 	}
-	explicit EulerAngles(const YawPitchRoll& angles) { *this = angles; }
-	explicit EulerAngles(const UnitQuaternion& quaternion) { *this = quaternion; }
-	explicit EulerAngles(const LinearMatrix4D& matrix) { *this = matrix; }
-	explicit EulerAngles(const Origin3D& origin) { *this = origin; }
+	explicit EulerAngles(const YawPitchRoll& angles)
+	{
+		*this = angles;
+	}
+	explicit EulerAngles(const UnitQuaternion& quaternion)
+	{
+		*this = quaternion;
+	}
+	explicit EulerAngles(const LinearMatrix4D& matrix)
+	{
+		*this = matrix;
+	}
+	explicit EulerAngles(const Origin3D& origin)
+	{
+		*this = origin;
+	}
 
 	//
 	// Assignment operators
@@ -91,16 +100,28 @@ public:
 	// "Close-enough" comparators
 	//
 	friend bool Small_Enough(const EulerAngles& a, float e = SMALL);
-	bool operator!(void) const { return Small_Enough(*this); }
+	bool operator!(void) const
+	{
+		return Small_Enough(*this);
+	}
 
 	friend bool Close_Enough(const EulerAngles& a1, const EulerAngles& a2, float e = SMALL);
-	bool operator==(const EulerAngles& a) const { return Close_Enough(*this, a, SMALL); }
-	bool operator!=(const EulerAngles& a) const { return !Close_Enough(*this, a, SMALL); }
+	bool operator==(const EulerAngles& a) const
+	{
+		return Close_Enough(*this, a, SMALL);
+	}
+	bool operator!=(const EulerAngles& a) const
+	{
+		return !Close_Enough(*this, a, SMALL);
+	}
 
 	//
 	// Axis index operators
 	//
-	static int32_t GetMemberCount(void) { return 3; }
+	static int32_t GetMemberCount(void)
+	{
+		return 3;
+	}
 
 	const Radian& operator[](size_t index) const
 	{
@@ -126,13 +147,13 @@ public:
 	EulerAngles& Normalize(void);
 
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const EulerAngles& angle);
+	friend void ::Spew(std::wstring_view group, const EulerAngles& angle);
 #endif
 
 	//
 	// Test functions
 	//
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 	static bool TestClass(void);
 };
 
@@ -150,7 +171,7 @@ public:
 	//
 	// Constructors
 	//
-	YawPitchRoll() {}
+	YawPitchRoll() { }
 	YawPitchRoll(const Radian& y, const Radian& p, const Radian& r)
 	{
 		pitch = p;
@@ -163,10 +184,22 @@ public:
 		yaw = angles.yaw;
 		roll = angles.roll;
 	}
-	explicit YawPitchRoll(const EulerAngles& angles) { *this = angles; }
-	explicit YawPitchRoll(const UnitQuaternion& quaternion) { *this = quaternion; }
-	explicit YawPitchRoll(const LinearMatrix4D& matrix) { *this = matrix; }
-	explicit YawPitchRoll(const Origin3D& origin) { *this = origin; }
+	explicit YawPitchRoll(const EulerAngles& angles)
+	{
+		*this = angles;
+	}
+	explicit YawPitchRoll(const UnitQuaternion& quaternion)
+	{
+		*this = quaternion;
+	}
+	explicit YawPitchRoll(const LinearMatrix4D& matrix)
+	{
+		*this = matrix;
+	}
+	explicit YawPitchRoll(const Origin3D& origin)
+	{
+		*this = origin;
+	}
 
 	//
 	// Assignment operators
@@ -185,7 +218,10 @@ public:
 	YawPitchRoll& operator=(const LinearMatrix4D& matrix);
 	YawPitchRoll& operator=(const Origin3D& p);
 
-	static int32_t GetMemberCount(void) { return 3; }
+	static int32_t GetMemberCount(void)
+	{
+		return 3;
+	}
 
 	const Radian& operator[](size_t index) const
 	{
@@ -204,11 +240,20 @@ public:
 	// "Close-enough" comparators
 	//
 	friend bool Small_Enough(const YawPitchRoll& a, float e = SMALL);
-	bool operator!(void) const { return Small_Enough(*this); }
+	bool operator!(void) const
+	{
+		return Small_Enough(*this);
+	}
 
 	friend bool Close_Enough(const YawPitchRoll& a1, const YawPitchRoll& a2, float e = SMALL);
-	bool operator==(const YawPitchRoll& a) const { return Close_Enough(*this, a); }
-	bool operator!=(const YawPitchRoll& a) const { return !Close_Enough(*this, a); }
+	bool operator==(const YawPitchRoll& a) const
+	{
+		return Close_Enough(*this, a);
+	}
+	bool operator!=(const YawPitchRoll& a) const
+	{
+		return !Close_Enough(*this, a);
+	}
 
 	//
 	// Template support
@@ -220,14 +265,14 @@ public:
 	//
 	YawPitchRoll& Normalize(void);
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const YawPitchRoll& angle);
+	friend void ::Spew(std::wstring_view group, const YawPitchRoll& angle);
 #endif
 	YawPitchRoll& AlignWithVector(const Vector3D& v);
 
 	//
 	// Test functions
 	//
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 //##########################################################################
@@ -250,7 +295,7 @@ public:
 	//
 	// Constructors
 	//
-	UnitQuaternion() {}
+	UnitQuaternion() { }
 	UnitQuaternion(float x, float y, float z, float w)
 	{
 		// Check_Pointer(this);
@@ -288,11 +333,20 @@ public:
 		Check_Object(&q);
 		return Close_Enough(q.w, 1.0f, e);
 	}
-	bool operator!(void) const { return Small_Enough(*this, SMALL); }
+	bool operator!(void) const
+	{
+		return Small_Enough(*this, SMALL);
+	}
 
 	friend bool Close_Enough(const UnitQuaternion& a1, const UnitQuaternion& a2, float e = SMALL);
-	bool operator==(const UnitQuaternion& a) const { return Close_Enough(*this, a, SMALL); }
-	bool operator!=(const UnitQuaternion& a) const { return !Close_Enough(*this, a, SMALL); }
+	bool operator==(const UnitQuaternion& a) const
+	{
+		return Close_Enough(*this, a, SMALL);
+	}
+	bool operator!=(const UnitQuaternion& a) const
+	{
+		return !Close_Enough(*this, a, SMALL);
+	}
 
 	//
 	// Axis index operators
@@ -420,7 +474,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const UnitQuaternion& quat);
+	friend void ::Spew(std::wstring_view group, const UnitQuaternion& quat);
 #endif
 	void TestInstance(void) const;
 	static bool TestClass(void);

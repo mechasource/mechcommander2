@@ -18,8 +18,7 @@ class ExtentBox;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::ExtentBox& box);
+void Spew(std::wstring_view group, const Stuff::ExtentBox& box);
 #endif
 
 namespace Stuff
@@ -37,7 +36,7 @@ class ExtentBox
 public:
 	float minX, maxX, minY, maxY, minZ, maxZ;
 
-	ExtentBox() {}
+	ExtentBox() { }
 	ExtentBox(const Vector3D& min, const Vector3D& max);
 	ExtentBox(const ExtentBox& box);
 	explicit ExtentBox(const OBB& obb);
@@ -67,21 +66,18 @@ public:
 	void TestInstance(void) const;
 	static bool TestClass(void);
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const ExtentBox& box);
+	friend void ::Spew(std::wstring_view group, const ExtentBox& box);
 #endif
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~ ExtentBox functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void
-Convert_From_Ascii(const std::wstring_view& str, ExtentBox* extent_box);
+void Convert_From_Ascii(std::wstring_view str, ExtentBox* extent_box);
 
-void
-Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, uint32_t* max_index,
+void Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, uint32_t* max_index,
 	uint32_t block_size, float threshold = SMALL);
 
-void
-Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes);
+void Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes);
 } // namespace Stuff
 
 namespace MemoryStreamIO

@@ -5,14 +5,14 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
- All code is logically copyrighted to Microsoft
+ All code is logically copyrighted by Microsoft
 *******************************************************************************/
 /*******************************************************************************
  windows.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Back, created
+ 2014-07-24 Jerker Bäck, created
 
 *******************************************************************************/
 
@@ -49,7 +49,8 @@
 // Global data exported from this module
 
 MECH_IMPEXP
-EXECUTION_STATE(__stdcall* _SetThreadExecutionState)(EXECUTION_STATE);
+EXECUTION_STATE(__stdcall* _SetThreadExecutionState)
+(EXECUTION_STATE);
 MECH_IMPEXP
 int32_t(__stdcall* _GetFileAttributesEx)(PSTR, GET_FILEEX_INFO_LEVELS, PVOID);
 MECH_IMPEXP
@@ -222,8 +223,8 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 		{
 			// message = gos_GetResourceString(gLanguageDLL, 1020u);
 			message = "Please select a color depth of 16 bit or 32 bit from "
-						 "the settings tab of the display properties dialog "
-						 "located in the control panel.";
+					  "the settings tab of the display properties dialog "
+					  "located in the control panel.";
 			MessageBoxA(0, message, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			ExitGameOS();

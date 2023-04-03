@@ -27,7 +27,7 @@
 #define USE_SEPARATE_WATER_MAPS FALSE
 
 #ifndef TEAM_H
-enum class 
+enum class
 {
 	RELATION_FRIENDLY,
 	RELATION_NEUTRAL,
@@ -44,7 +44,7 @@ enum class
 extern UserHeapPtr systemHeap;
 extern float metersPerWorldUnit;
 
-extern const std::wstring_view& ExceptionGameMsg;
+extern std::wstring_view ExceptionGameMsg;
 extern wchar_t ChunkDebugMsg[5120];
 
 int32_t GlobalMap::minRow = 0;
@@ -327,8 +327,7 @@ relativePositionToPoint(
 //***************************************************************************
 //#define DEBUG_GLOBALMAP_BUILD
 
-void
-MOVE_init(int32_t moveRange)
+void MOVE_init(int32_t moveRange)
 {
 	if (PathFindMap[SECTOR_PATHMAP])
 		Fatal(0, " MOVE_Init: Already called this! ");
@@ -351,8 +350,7 @@ bool EditorSave = false;
 int32_t tempNumSpecialAreas = 0;
 GameObjectFootPrint* tempSpecialAreaFootPrints = nullptr;
 
-void
-MOVE_buildData(int32_t height, int32_t width, MissionMapCellInfo* mapData,
+void MOVE_buildData(int32_t height, int32_t width, MissionMapCellInfo* mapData,
 	int32_t numSpecialAreas, GameObjectFootPrint* specialAreaFootPrints)
 {
 	EditorSave = true;
@@ -577,8 +575,7 @@ MOVE_readData(PacketFile* packetFile, int32_t whichPacket)
 
 //---------------------------------------------------------------------------
 
-void
-MOVE_cleanup(void)
+void MOVE_cleanup(void)
 {
 	if (GameMap)
 	{
@@ -626,16 +623,14 @@ MissionMap::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-MissionMap::operator delete(PVOID us)
+void MissionMap::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-MissionMap::init(int32_t h, int32_t w)
+void MissionMap::init(int32_t h, int32_t w)
 {
 	height = h;
 	width = w;
@@ -736,8 +731,7 @@ MissionMap::write(PacketFile* packetFile, int32_t whichPacket)
 
 //---------------------------------------------------------------------------
 
-bool
-MissionMap::getPassable(Stuff::Vector3D cellPosition)
+bool MissionMap::getPassable(Stuff::Vector3D cellPosition)
 {
 	int32_t row, col;
 	land->worldToCell(cellPosition, row, col);
@@ -825,8 +819,7 @@ MissionMap::init(
 
 //---------------------------------------------------------------------------
 
-void
-MissionMap::setPassable(int32_t row, int32_t col, const std::wstring_view& footPrint, bool passable)
+void MissionMap::setPassable(int32_t row, int32_t col, std::wstring_view footPrint, bool passable)
 {
 	/* FootPrint Data format:
 			r1, c1, l1, r2, c2, l2, r3, c3, l3, ...
@@ -836,7 +829,7 @@ MissionMap::setPassable(int32_t row, int32_t col, const std::wstring_view& footP
 	   the data is a block of chars, so all values must be -127 < x < 127. This
 	   should allow foot prints big enuff for all buildings we have.
 	*/
-	const std::wstring_view& data = footPrint;
+	std::wstring_view data = footPrint;
 	int32_t r = row + *data++;
 	int32_t c = col + *data++;
 	int32_t len = *data++;
@@ -856,8 +849,7 @@ MissionMap::setPassable(int32_t row, int32_t col, const std::wstring_view& footP
 
 //---------------------------------------------------------------------------
 
-void
-MissionMap::spreadState(int32_t cellRow, int32_t cellCol, int32_t radius)
+void MissionMap::spreadState(int32_t cellRow, int32_t cellCol, int32_t radius)
 {
 	//---------------------------------------------------------------------------
 	// This does a simple depth-first spread from the center. The way it's
@@ -898,8 +890,7 @@ MissionMap::placeObject(Stuff::Vector3D position, float radius)
 
 //---------------------------------------------------------------------------
 
-void
-MissionMap::placeTerrainObject(int32_t objectClass, int32_t objectTypeID, int32_t cellRow,
+void MissionMap::placeTerrainObject(int32_t objectClass, int32_t objectTypeID, int32_t cellRow,
 	int32_t cellCol, int64_t footPrint, bool blocksLineOfFire, int32_t mineType)
 {
 #if 0
@@ -1048,8 +1039,7 @@ MissionMap::getOverlayWeight(
 
 //---------------------------------------------------------------------------
 
-void
-MissionMap::print(const std::wstring_view& fileName)
+void MissionMap::print(std::wstring_view fileName)
 {
 	MechFile* debugFile = new MechFile;
 	debugFile->create(fileName);
@@ -1075,8 +1065,7 @@ MissionMap::print(const std::wstring_view& fileName)
 
 //---------------------------------------------------------------------------
 
-void
-MissionMap::destroy(void)
+void MissionMap::destroy(void)
 {
 	if (map)
 	{
@@ -1099,8 +1088,7 @@ MovePath::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-MovePath::operator delete(PVOID us)
+void MovePath::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
@@ -1130,24 +1118,21 @@ MovePath::init(int32_t numberOfSteps)
 
 //---------------------------------------------------------------------------
 
-void
-MovePath::clear(void)
+void MovePath::clear(void)
 {
 	init();
 }
 
 //---------------------------------------------------------------------------
 
-void
-MovePath::destroy(void)
+void MovePath::destroy(void)
 {
 	numSteps = 0;
 }
 
 //---------------------------------------------------------------------------
 
-float
-MovePath::getDistanceLeft(Stuff::Vector3D position, int32_t stepNumber)
+float MovePath::getDistanceLeft(Stuff::Vector3D position, int32_t stepNumber)
 {
 	if (stepNumber == -1)
 		stepNumber = curStep;
@@ -1159,8 +1144,7 @@ MovePath::getDistanceLeft(Stuff::Vector3D position, int32_t stepNumber)
 
 //---------------------------------------------------------------------------
 
-void
-MovePath::lock(int32_t level, int32_t start, int32_t range, bool setting)
+void MovePath::lock(int32_t level, int32_t start, int32_t range, bool setting)
 {
 #ifdef _DEBUG
 	if (level > 1)
@@ -1177,8 +1161,7 @@ MovePath::lock(int32_t level, int32_t start, int32_t range, bool setting)
 
 //---------------------------------------------------------------------------
 
-bool
-MovePath::isLocked(int32_t level, int32_t start, int32_t range, bool* reachedEnd)
+bool MovePath::isLocked(int32_t level, int32_t start, int32_t range, bool* reachedEnd)
 {
 #ifdef _DEBUG
 	if (level > 1)
@@ -1203,8 +1186,7 @@ MovePath::isLocked(int32_t level, int32_t start, int32_t range, bool* reachedEnd
 
 //---------------------------------------------------------------------------
 
-bool
-MovePath::isBlocked(int32_t start, int32_t range, bool* reachedEnd)
+bool MovePath::isBlocked(int32_t start, int32_t range, bool* reachedEnd)
 {
 	if (start == -1)
 		start = curStep;
@@ -1316,16 +1298,14 @@ GlobalMap::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::operator delete(PVOID us)
+void GlobalMap::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::init(int32_t w, int32_t h)
+void GlobalMap::init(int32_t w, int32_t h)
 {
 	width = w;
 	height = h;
@@ -1510,7 +1490,7 @@ GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 				sprintf(s, "     ownerWID is %d", areas[i].ownerWID);
 				log->write(s);
 			}
-			static const std::wstring_view& typeString[] = {
+			static std::wstring_view typeString[] = {
 				"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 			sprintf(s, "     %s", typeString[areas[i].type]);
 			log->write(s);
@@ -1697,8 +1677,7 @@ GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::calcSpecialAreas(MissionMapCellInfo* mapData)
+void GlobalMap::calcSpecialAreas(MissionMapCellInfo* mapData)
 {
 	bool areaLogged[64000];
 	memset(areaLogged, false, 64000);
@@ -1814,8 +1793,7 @@ GlobalMap::setTempArea(int32_t tileR, int32_t tileC, int32_t cost)
 
 //------------------------------------------------------------------------------------------
 
-bool
-GlobalMap::fillSpecialArea(int32_t row, int32_t col, int32_t area, int32_t specialID)
+bool GlobalMap::fillSpecialArea(int32_t row, int32_t col, int32_t area, int32_t specialID)
 {
 	//----------------------------------------------------------------------
 	// This is used to fill any dynamic or "special" areas. Currently, these
@@ -1835,8 +1813,7 @@ GlobalMap::fillSpecialArea(int32_t row, int32_t col, int32_t area, int32_t speci
 
 //------------------------------------------------------------------------------------------
 
-bool
-GlobalMap::fillArea(int32_t row, int32_t col, int32_t area, bool offMap)
+bool GlobalMap::fillArea(int32_t row, int32_t col, int32_t area, bool offMap)
 {
 	if ((row < minRow) || (row >= maxRow) || (col < minCol) || (col >= maxCol))
 		return (false);
@@ -1889,8 +1866,7 @@ GlobalMap::fillArea(int32_t row, int32_t col, int32_t area, bool offMap)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::calcSectorAreas(int32_t sectorR, int32_t sectorC)
+void GlobalMap::calcSectorAreas(int32_t sectorR, int32_t sectorC)
 {
 	minRow = sectorR * SECTOR_DIM;
 	maxRow = minRow + SECTOR_DIM;
@@ -1938,8 +1914,7 @@ GlobalMap::calcSectorAreas(int32_t sectorR, int32_t sectorC)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::calcAreas(void)
+void GlobalMap::calcAreas(void)
 {
 	//----------------------------------------------------------------------
 	// Large area maps use -1 and -2 to indicate blocked area. CalcArea will
@@ -1992,8 +1967,7 @@ GlobalMap::calcAreas(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::calcCellsCovered(void)
+void GlobalMap::calcCellsCovered(void)
 {
 	/*	for (int32_t r = 0; r < height; r++)
 			for (int32_t c = 0; c < width; c++) {
@@ -2005,8 +1979,7 @@ GlobalMap::calcCellsCovered(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::calcSpecialTypes(void)
+void GlobalMap::calcSpecialTypes(void)
 {
 	// systemHeap->walkHeap();
 	for (size_t i = 0; i < numSpecialAreas; i++)
@@ -2037,8 +2010,7 @@ GlobalMap::calcSpecialTypes(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::beginDoorProcessing(void)
+void GlobalMap::beginDoorProcessing(void)
 {
 	// systemHeap->walkHeap();
 	doorBuildList =
@@ -2058,8 +2030,7 @@ GlobalMap::beginDoorProcessing(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::addDoor(
+void GlobalMap::addDoor(
 	int32_t area1, int32_t area2, int32_t row, int32_t col, int32_t length, int32_t dir)
 {
 	/*
@@ -2113,8 +2084,7 @@ GlobalMap::addDoor(
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::endDoorProcessing(void)
+void GlobalMap::endDoorProcessing(void)
 {
 	//	systemHeap->walkHeap();
 	if (doorBuildList)
@@ -2149,8 +2119,7 @@ GlobalMap::numAreaDoors(int32_t area)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::getAreaDoors(int32_t area, DoorInfoPtr doorList)
+void GlobalMap::getAreaDoors(int32_t area, DoorInfoPtr doorList)
 {
 	int32_t doorCount = 0;
 	for (size_t doorIndex = 0; doorIndex < numDoors; doorIndex++)
@@ -2169,8 +2138,7 @@ GlobalMap::getAreaDoors(int32_t area, DoorInfoPtr doorList)
 
 int32_t maxNumDoors = 0;
 
-void
-GlobalMap::calcGlobalDoors(void)
+void GlobalMap::calcGlobalDoors(void)
 {
 	int16_t doorMap[SECTOR_DIM][SECTOR_DIM];
 	beginDoorProcessing();
@@ -2291,8 +2259,7 @@ GlobalMap::calcGlobalDoors(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::calcAreaDoors(void)
+void GlobalMap::calcAreaDoors(void)
 {
 	numDoorInfos = 0;
 	for (size_t area = 0; area < numAreas; area++)
@@ -2450,8 +2417,7 @@ GlobalMap::calcLinkCost(int32_t startDoor, int32_t thruArea, int32_t goalDoor)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::changeAreaLinkCost(int32_t area, int32_t cost)
+void GlobalMap::changeAreaLinkCost(int32_t area, int32_t cost)
 {
 	GlobalMapAreaPtr thruArea = &areas[area];
 	int32_t numDoors = thruArea->numDoors;
@@ -2466,8 +2432,7 @@ GlobalMap::changeAreaLinkCost(int32_t area, int32_t cost)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::calcDoorLinks(void)
+void GlobalMap::calcDoorLinks(void)
 {
 	numDoorLinks = 0;
 	int32_t maxDoors = 0;
@@ -2654,8 +2619,7 @@ GlobalMap::getPathCost(
 
 #if USE_PATH_COST_TABLE
 
-void
-GlobalMap::setPathFlag(int32_t startArea, int32_t goalArea, uint8_t flag, bool set)
+void GlobalMap::setPathFlag(int32_t startArea, int32_t goalArea, uint8_t flag, bool set)
 {
 	int32_t index = startArea * numAreas + goalArea;
 	pathCostTable[index] &= (flag ^ 0xFF);
@@ -2673,8 +2637,7 @@ GlobalMap::getPathFlag(int32_t startArea, int32_t goalArea, uint8_t flag)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::setPathCost(
+void GlobalMap::setPathCost(
 	int32_t startArea, int32_t goalArea, bool withSpecialAreas, uint8_t cost)
 {
 	if (cost > 0)
@@ -2699,8 +2662,7 @@ GlobalMap::setPathCost(
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::initPathCostTable(void)
+void GlobalMap::initPathCostTable(void)
 {
 	if (pathCostTable)
 	{
@@ -2729,8 +2691,7 @@ GlobalMap::initPathCostTable(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::resetPathCostTable(void)
+void GlobalMap::resetPathCostTable(void)
 {
 	if (!pathCostTable)
 		return;
@@ -2748,8 +2709,7 @@ GlobalMap::resetPathCostTable(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::calcPathCostTable(void)
+void GlobalMap::calcPathCostTable(void)
 {
 	if (pathCostTable)
 	{
@@ -2798,8 +2758,7 @@ GlobalMap::calcPathCostTable(void)
 #endif
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::clearPathExistsTable(void)
+void GlobalMap::clearPathExistsTable(void)
 {
 	int32_t tableSize = numAreas * (numAreas / 4 + 1);
 	memset(pathExistsTable, GLOBALPATH_EXISTS_UNKNOWN, tableSize);
@@ -2807,8 +2766,7 @@ GlobalMap::clearPathExistsTable(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::setPathExists(int32_t fromArea, int32_t toArea, uint8_t set)
+void GlobalMap::setPathExists(int32_t fromArea, int32_t toArea, uint8_t set)
 {
 	if (!pathExistsTable)
 		return;
@@ -2859,16 +2817,14 @@ GlobalMap::exitDirection(int32_t doorIndex, int32_t fromArea)
 
 //------------------------------------------------------------------------------------------
 
-void
-GlobalMap::getDoorTiles(int32_t area, int32_t door, GlobalMapDoorPtr areaDoor)
+void GlobalMap::getDoorTiles(int32_t area, int32_t door, GlobalMapDoorPtr areaDoor)
 {
 	*areaDoor = doors[areas[area].doors[door].doorIndex];
 }
 
 //------------------------------------------------------------------------------------------
 
-bool
-GlobalMap::getAdjacentAreaCell(
+bool GlobalMap::getAdjacentAreaCell(
 	int32_t area, int32_t adjacentArea, int32_t& cellRow, int32_t& cellCol)
 {
 	for (size_t i = 0; i < areas[area].numDoors; i++)
@@ -3005,7 +2961,7 @@ GlobalMap::build(MissionMapCellInfo* mapData)
 				sprintf(s, "     ownerWID is %d", areas[i].ownerWID);
 				log->write(s);
 			}
-			static const std::wstring_view& typeString[] = {
+			static std::wstring_view typeString[] = {
 				"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 			sprintf(s, "     %s", typeString[areas[i].type]);
 			log->write(s);
@@ -3025,8 +2981,7 @@ GlobalMap::build(MissionMapCellInfo* mapData)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::setStartDoor(int32_t startArea)
+void GlobalMap::setStartDoor(int32_t startArea)
 {
 	GlobalMapDoorPtr startDoor = &doors[numDoors + DOOR_OFFSET_START];
 	startDoor->row = 0;
@@ -3079,8 +3034,7 @@ GlobalMap::setStartDoor(int32_t startArea)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::resetStartDoor(int32_t startArea)
+void GlobalMap::resetStartDoor(int32_t startArea)
 {
 	GlobalMapDoorPtr startDoor = &doors[numDoors + DOOR_OFFSET_START];
 	for (size_t curLink = 0; curLink < startDoor->numLinks[0]; curLink++)
@@ -3092,8 +3046,7 @@ GlobalMap::resetStartDoor(int32_t startArea)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::setAreaTeamID(int32_t area, wchar_t teamID)
+void GlobalMap::setAreaTeamID(int32_t area, wchar_t teamID)
 {
 	//-----------------------------------------------------------------------
 	// NOTE: This assumes there won't be adjacent areas with team alignments.
@@ -3112,8 +3065,7 @@ GlobalMap::setAreaTeamID(int32_t area, wchar_t teamID)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::setAreaOwnerWID(int32_t area, int32_t objWID)
+void GlobalMap::setAreaOwnerWID(int32_t area, int32_t objWID)
 {
 	if (area < 0)
 		return;
@@ -3122,8 +3074,7 @@ GlobalMap::setAreaOwnerWID(int32_t area, int32_t objWID)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::setGoalDoor(int32_t goalArea)
+void GlobalMap::setGoalDoor(int32_t goalArea)
 {
 	if ((goalArea < 0) || (goalArea >= numAreas))
 	{
@@ -3184,8 +3135,7 @@ GlobalMap::setGoalDoor(int32_t goalArea)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::resetGoalDoor(int32_t goalArea)
+void GlobalMap::resetGoalDoor(int32_t goalArea)
 {
 	GlobalMapDoorPtr goalDoor = &doors[numDoors + DOOR_OFFSET_GOAL];
 	for (size_t curLink = 0; curLink < goalDoor->numLinks[0]; curLink++)
@@ -3654,8 +3604,7 @@ GlobalMap::calcPath(Stuff::Vector3D start, Stuff::Vector3D goal, GlobalPathStepP
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::openDoor(int32_t door)
+void GlobalMap::openDoor(int32_t door)
 {
 	doors[door].cost = 10;
 	doors[door].open = true;
@@ -3663,16 +3612,14 @@ GlobalMap::openDoor(int32_t door)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::closeDoor(int32_t door)
+void GlobalMap::closeDoor(int32_t door)
 {
 	doors[door].open = false;
 }
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::closeArea(int32_t area)
+void GlobalMap::closeArea(int32_t area)
 {
 	if (area < 0)
 		return;
@@ -3692,8 +3639,7 @@ GlobalMap::closeArea(int32_t area)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::openArea(int32_t area)
+void GlobalMap::openArea(int32_t area)
 {
 	if (area < 0)
 		return;
@@ -3718,8 +3664,7 @@ GlobalMap::openArea(int32_t area)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::print(const std::wstring_view& fileName)
+void GlobalMap::print(std::wstring_view fileName)
 {
 	if (areaMap)
 		return;
@@ -3753,8 +3698,7 @@ GlobalMap::print(const std::wstring_view& fileName)
 
 //---------------------------------------------------------------------------
 
-void
-GlobalMap::destroy(void)
+void GlobalMap::destroy(void)
 {
 #ifdef _DEBUG
 //	systemHeap->walkHeap(false,false,"GlobalMap BAD HEAP1\n");
@@ -3828,8 +3772,7 @@ GlobalMap::destroy(void)
 
 //----------------------------------------------------------------------------------
 
-bool
-GlobalMap::toggleLog(void)
+bool GlobalMap::toggleLog(void)
 {
 	int32_t i;
 	if (!log)
@@ -3876,7 +3819,7 @@ GlobalMap::toggleLog(void)
 					sprintf(s, "     ownerWID is %d", map->areas[i].ownerWID);
 					log->write(s);
 				}
-				static const std::wstring_view& typeString[] = {
+				static std::wstring_view typeString[] = {
 					"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 				sprintf(s, "     %s", typeString[map->areas[i].type]);
 				log->write(s);
@@ -3899,8 +3842,7 @@ GlobalMap::toggleLog(void)
 
 //----------------------------------------------------------------------------------
 
-void
-GlobalMap::writeLog(const std::wstring_view& s)
+void GlobalMap::writeLog(std::wstring_view s)
 {
 	if (log)
 		log->write(s);
@@ -3919,16 +3861,14 @@ MoveMap::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::operator delete(PVOID us)
+void MoveMap::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::init(int32_t maxW, int32_t maxH)
+void MoveMap::init(int32_t maxW, int32_t maxH)
 {
 	width = maxwidth = maxW;
 	height = maxheight = maxH;
@@ -3978,8 +3918,7 @@ MoveMap::init(int32_t maxW, int32_t maxH)
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::clear(void)
+void MoveMap::clear(void)
 {
 	int32_t numMapCells = maxwidth * height;
 	int32_t initHPrime = ZeroHPrime ? 0 : HPRIME_NOT_CALCED;
@@ -4001,16 +3940,14 @@ MoveMap::clear(void)
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::setTarget(Stuff::Vector3D targetPos)
+void MoveMap::setTarget(Stuff::Vector3D targetPos)
 {
 	target = targetPos;
 }
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::setStart(Stuff::Vector3D* startPos, int32_t startRow, int32_t startCol)
+void MoveMap::setStart(Stuff::Vector3D* startPos, int32_t startRow, int32_t startCol)
 {
 	if (startPos)
 		start = *startPos;
@@ -4036,8 +3973,7 @@ MoveMap::setStart(Stuff::Vector3D* startPos, int32_t startRow, int32_t startCol)
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::setGoal(Stuff::Vector3D goalPos, int32_t goalRow, int32_t goalCol)
+void MoveMap::setGoal(Stuff::Vector3D goalPos, int32_t goalRow, int32_t goalCol)
 {
 	goal = goalPos;
 	if (goalRow == -1)
@@ -4068,8 +4004,7 @@ adjustMoveMapCellCost(MoveMapNodePtr cell, int32_t costAdj)
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::setGoal(int32_t thruArea, int32_t goalDoor)
+void MoveMap::setGoal(int32_t thruArea, int32_t goalDoor)
 {
 	//------------------------------------------------------------------------------
 	// We need to set goalR, goalC for the calcHPrime routine (until we come up
@@ -6331,8 +6266,7 @@ MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::writeDebug(MechFile* debugFile)
+void MoveMap::writeDebug(MechFile* debugFile)
 {
 	wchar_t outString[512];
 	sprintf(outString, "Time = %.6f\n\n", calcTime);
@@ -6423,8 +6357,7 @@ MoveMap::writeDebug(MechFile* debugFile)
 
 //---------------------------------------------------------------------------
 
-void
-MoveMap::destroy(void)
+void MoveMap::destroy(void)
 {
 	if (map)
 	{

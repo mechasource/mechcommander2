@@ -104,8 +104,7 @@ extern pFTOL* ListOfFTOL;
 //
 // Routines dealing with floating point precision
 //
-void
-CheckPrecision(void);
+void CheckPrecision(void);
 
 //
 // Playback/Record mode?
@@ -166,7 +165,7 @@ extern PSTR __stdcall ErrorNumberToMessage(HRESULT hr);
 extern PSTR __stdcall Hex8Number(int32_t Number);
 extern void __stdcall GetProcessorDetails(LPSTACKFRAME sf, FixedLengthString& Buffer);
 extern void __stdcall GetMachineDetails(FixedLengthString& Buffer);
-extern PSTR __stdcall GetLineFromFile(PSTR tempLine, PSTR FileName, int32_t LineNumber);
+extern PSTR __stdcall GetLineFromFile(PSTR tempLine, PSTR filename, int32_t LineNumber);
 extern PVOID __stdcall GrabScreenImage(void);
 extern void __stdcall GetDirectXDetails(FixedLengthString& Buffer);
 extern void __stdcall GetGameDetails(FixedLengthString& Buffer, uint32_t ErrorFlags);

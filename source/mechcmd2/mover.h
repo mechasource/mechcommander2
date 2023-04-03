@@ -90,13 +90,13 @@ extern float metersPerWorldUnit;
 
 //------------------------------------------------------------------------------
 // Enums
-enum class 
+enum class
 {
 	WEAPONSORT_ATTACKCHANCE,
 	NUM_WEAPONSORT_TYPES
 } WeaponSortType;
 
-enum class 
+enum class
 {
 	SPEED_STATE_STATIONARY,
 	SPEED_STATE_MOVING,
@@ -146,11 +146,17 @@ public:
 		data = 0;
 	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
-	MoveChunk(void) { init(void); }
+	MoveChunk(void)
+	{
+		init(void);
+	}
 
-	~MoveChunk(void) { destroy(void); }
+	~MoveChunk(void)
+	{
+		destroy(void);
+	}
 
 	void build(std::unique_ptr<Mover> mover, MovePath* path1, MovePath* path2 = nullptr);
 
@@ -166,7 +172,7 @@ public:
 //---------------------------------------------------------------------------
 #define MAX_YAW 64
 
-enum class 
+enum class
 {
 	DYNAMICS_BASE,
 	DYNAMICS_MECH,
@@ -174,7 +180,8 @@ enum class
 	DYNAMICS_ELEMENTAL
 } DynamicsType;
 
-typedef union {
+typedef union
+{
 	struct
 	{
 		int32_t yawRate; // Degrees per sec
@@ -212,11 +219,17 @@ public:
 
 	virtual void init(void);
 
-	MoverDynamics(void) { init(void); }
+	MoverDynamics(void)
+	{
+		init(void);
+	}
 
-	virtual void destroy(void) {}
+	virtual void destroy(void) { }
 
-	~MoverDynamics(void) { destroy(void); }
+	~MoverDynamics(void)
+	{
+		destroy(void);
+	}
 
 	void init(DynamicsType newType);
 
@@ -224,16 +237,22 @@ public:
 
 	virtual void init(FitIniFilePtr dynamicsFile);
 
-	void setType(DynamicsType newType) { type = newType; }
+	void setType(DynamicsType newType)
+	{
+		type = newType;
+	}
 
-	DynamicsType getType(void) { return (type); }
+	DynamicsType getType(void)
+	{
+		return (type);
+	}
 
 	int32_t brake(void);
 };
 
 //---------------------------------------------------------------------------
 
-enum class 
+enum class
 {
 	CONTROL_BASE,
 	CONTROL_PLAYER,
@@ -241,7 +260,7 @@ enum class
 	CONTROL_NET
 } ControlType;
 
-enum class 
+enum class
 {
 	CONTROL_DATA_BASE,
 	CONTROL_DATA_MECH,
@@ -249,7 +268,8 @@ enum class
 	CONTROL_DATA_ELEMENTAL
 } ControlDataType;
 
-typedef union {
+typedef union
+{
 	struct
 	{
 		float rotate;
@@ -300,11 +320,17 @@ public:
 		dataType = CONTROL_DATA_BASE;
 	}
 
-	MoverControl(void) { init(void); }
+	MoverControl(void)
+	{
+		init(void);
+	}
 
-	virtual void destroy(void) {}
+	virtual void destroy(void) { }
 
-	~MoverControl(void) { destroy(void); }
+	~MoverControl(void)
+	{
+		destroy(void);
+	}
 
 	void init(ControlType newType, ControlDataType newDataType)
 	{
@@ -314,9 +340,15 @@ public:
 
 	virtual int32_t init(FitIniFilePtr controlFile);
 
-	void setType(ControlType newType) { type = newType; }
+	void setType(ControlType newType)
+	{
+		type = newType;
+	}
 
-	ControlType getType(void) { return (type); }
+	ControlType getType(void)
+	{
+		return (type);
+	}
 
 	void setDataType(ControlDataType newDataType)
 	{
@@ -324,7 +356,10 @@ public:
 		reset(void);
 	}
 
-	ControlDataType getDataType(void) { return (dataType); }
+	ControlDataType getDataType(void)
+	{
+		return (dataType);
+	}
 
 	void reset(void);
 
@@ -470,7 +505,7 @@ typedef ArmorLocation* ArmorLocationPtr;
 #define STATUSCHUNK_EJECTORDER_MASK 0x00000001
 #define STATUSCHUNK_JUMPORDER_MASK 0x00000001
 
-enum class 
+enum class
 {
 	STATUSCHUNK_TARGET_NONE,
 	STATUSCHUNK_TARGET_MOVER,
@@ -518,11 +553,17 @@ public:
 		data = 0;
 	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
-	StatusChunk(void) { init(void); }
+	StatusChunk(void)
+	{
+		init(void);
+	}
 
-	~StatusChunk(void) { destroy(void); }
+	~StatusChunk(void)
+	{
+		destroy(void);
+	}
 
 	virtual void build(std::unique_ptr<Mover> mover);
 
@@ -693,7 +734,7 @@ typedef struct _MoverData : public GameObjectData
 
 } MoverData;
 
-enum class 
+enum class
 {
 	MOVETYPE_GROUND,
 	MOVETYPE_AIR,
@@ -732,7 +773,7 @@ public:
 	wchar_t numBodyLocations; // should be set based upon mover type
 	int32_t fieldedCV;
 
-	int32_t attackRange; // attack range
+	FireRangeType attackRange; // attack range
 
 	bool salvaged;
 
@@ -922,15 +963,27 @@ public:
 
 	virtual void init(bool create);
 
-	Mover(void) { init(true); }
+	Mover(void)
+	{
+		init(true);
+	}
 
 	virtual void destroy(void);
 
-	virtual void init(bool create, ObjectTypePtr objType) { GameObject::init(create, objType); }
+	virtual void init(bool create, ObjectTypePtr objType)
+	{
+		GameObject::init(create, objType);
+	}
 
-	virtual int32_t init(FitIniFile* objProfile) { return (NO_ERROR); }
+	virtual int32_t init(FitIniFile* objProfile)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual int32_t init(uint32_t variantNum) { return (NO_ERROR); }
+	virtual int32_t init(uint32_t variantNum)
+	{
+		return (NO_ERROR);
+	}
 
 	virtual void release(void);
 
@@ -940,19 +993,25 @@ public:
 
 	virtual void updateDebugWindow(GameDebugWindow* debugWindow);
 
-	virtual const std::wstring_view& getName(void) { return (name); }
+	virtual std::wstring_view getName(void)
+	{
+		return (name);
+	}
 
-	virtual void setName(const std::wstring_view& s) { strncpy(name, s, MAXLEN_MOVER_NAME); }
+	virtual void setName(std::wstring_view s)
+	{
+		strncpy(name, s, MAXLEN_MOVER_NAME);
+	}
 
-	virtual void setControl(ControlType ctrlType) {}
+	virtual void setControl(ControlType ctrlType) { }
 
-	virtual void updateAIControl(void) {}
+	virtual void updateAIControl(void) { }
 
-	virtual void updateNetworkControl(void) {}
+	virtual void updateNetworkControl(void) { }
 
-	virtual void updatePlayerControl(void) {}
+	virtual void updatePlayerControl(void) { }
 
-	virtual void updateDynamics(void) {}
+	virtual void updateDynamics(void) { }
 
 	virtual void setPartId(int32_t newPartId);
 
@@ -960,27 +1019,54 @@ public:
 
 	virtual void setTeleportPosition(Stuff::Vector3D& newPos);
 
-	ContactInfoPtr getContactInfo(void) { return (contactInfo); }
+	ContactInfoPtr getContactInfo(void)
+	{
+		return (contactInfo);
+	}
 
 	virtual void tradeRefresh(void);
 
 	virtual void setMoveType(int32_t type);
 
-	virtual int32_t getMoveType(void) { return (moveType); }
+	virtual int32_t getMoveType(void)
+	{
+		return (moveType);
+	}
 
-	virtual void setMoveLevel(int32_t level) { moveLevel = level; }
+	virtual void setMoveLevel(int32_t level)
+	{
+		moveLevel = level;
+	}
 
-	virtual int32_t getMoveLevel(void) { return (moveLevel); }
+	virtual int32_t getMoveLevel(void)
+	{
+		return (moveLevel);
+	}
 
-	virtual bool getFollowRoads(void) { return (followRoads); }
+	virtual bool getFollowRoads(void)
+	{
+		return (followRoads);
+	}
 
-	virtual void setFollowRoads(bool setting) { followRoads = setting; }
+	virtual void setFollowRoads(bool setting)
+	{
+		followRoads = setting;
+	}
 
-	virtual Stuff::Vector3D getVelocity(void) { return (velocity); }
+	virtual Stuff::Vector3D getVelocity(void)
+	{
+		return (velocity);
+	}
 
-	virtual void setVelocity(Stuff::Vector3D& newVelocity) { velocity = newVelocity; }
+	virtual void setVelocity(Stuff::Vector3D& newVelocity)
+	{
+		velocity = newVelocity;
+	}
 
-	virtual float getSpeed(void) { return (velocity.GetLength()); }
+	virtual float getSpeed(void)
+	{
+		return (velocity.GetLength());
+	}
 
 	virtual bool hasWeaponNode(void);
 
@@ -992,7 +1078,10 @@ public:
 
 	virtual void setAwake(bool state);
 
-	virtual bool isMarine(void) { return (pathLocks == false); }
+	virtual bool isMarine(void)
+	{
+		return (pathLocks == false);
+	}
 
 	void drawWaypointPath(void);
 
@@ -1003,7 +1092,10 @@ public:
 	//			return(frame);
 	//		}
 
-	virtual int32_t getSpeedState(void) { return (SPEED_STATE_STATIONARY); }
+	virtual int32_t getSpeedState(void)
+	{
+		return (SPEED_STATE_STATIONARY);
+	}
 
 	virtual float getTerrainAngle(void);
 
@@ -1045,7 +1137,10 @@ public:
 	virtual int32_t handleTacticalOrder(
 		TacticalOrder tacOrder, int32_t priority = 1, bool queuePlayerOrder = false);
 
-	virtual AppearancePtr getAppearance(void) { return (appearance); }
+	virtual AppearancePtr getAppearance(void)
+	{
+		return (appearance);
+	}
 
 	//		virtual float getAppearRadius (void)
 	//		{
@@ -1062,17 +1157,29 @@ public:
 			pilotCheckModifier = 0;
 	}
 
-	virtual bool canFireWeapons(void) { return (true); }
+	virtual bool canFireWeapons(void)
+	{
+		return (true);
+	}
 
 	virtual void updateDamageTakenRate(void);
 
-	virtual int32_t checkShortRangeCollision(void) { return (NO_ACTION); }
+	virtual int32_t checkShortRangeCollision(void)
+	{
+		return (NO_ACTION);
+	}
 
-	virtual void setOverlayWeightClass(int32_t overlayClass) { overlayWeightClass = overlayClass; }
+	virtual void setOverlayWeightClass(int32_t overlayClass)
+	{
+		overlayWeightClass = overlayClass;
+	}
 
-	virtual int32_t getOverlayWeightClass(void) { return (overlayWeightClass); }
+	virtual int32_t getOverlayWeightClass(void)
+	{
+		return (overlayWeightClass);
+	}
 
-	virtual void getStopInfo(float& stopTime, float& stopDistance) {}
+	virtual void getStopInfo(float& stopTime, float& stopDistance) { }
 
 	virtual bool getAdjacentCellPathLocked(
 		int32_t level, int32_t cellRow, int32_t cellCol, int32_t dir);
@@ -1085,11 +1192,20 @@ public:
 
 	virtual bool getPathRangeBlocked(int32_t range, bool* reachedEnd = nullptr);
 
-	virtual bool crashAvoidanceSystem(void) { return (false); }
+	virtual bool crashAvoidanceSystem(void)
+	{
+		return (false);
+	}
 
-	void setLastHustleTime(float t) { lastHustleTime = t; }
+	void setLastHustleTime(float t)
+	{
+		lastHustleTime = t;
+	}
 
-	float getLastHustleTime(void) { return (lastHustleTime); }
+	float getLastHustleTime(void)
+	{
+		return (lastHustleTime);
+	}
 
 	virtual void updateHustleTime(void);
 
@@ -1099,7 +1215,7 @@ public:
 		// Does nothing, be default...
 	}
 
-	virtual void updateMovement(void) {}
+	virtual void updateMovement(void) { }
 
 	virtual int32_t bounceToAdjCell(void);
 
@@ -1115,11 +1231,17 @@ public:
 		squadId = newSquadId;
 	}
 
-	virtual wchar_t getSquadId(void) { return (squadId); }
+	virtual wchar_t getSquadId(void)
+	{
+		return (squadId);
+	}
 
 	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-	virtual int32_t getTeamId(void) { return (teamId); }
+	virtual int32_t getTeamId(void)
+	{
+		return (teamId);
+	}
 
 	virtual TeamPtr getTeam(void);
 
@@ -1131,27 +1253,42 @@ public:
 
 	virtual int32_t setGroupId(int32_t _groupId, bool setup);
 
-	virtual int32_t getGroupId(void) { return (groupId); }
+	virtual int32_t getGroupId(void)
+	{
+		return (groupId);
+	}
 
 	virtual MoverGroupPtr getGroup(void);
 
 	virtual void setPilotHandle(int32_t _pilotHandle);
 
-	virtual void loadPilot(const std::wstring_view& pilotFileName, const std::wstring_view& brainFileName, LogisticsPilot* lPilot);
+	virtual void loadPilot(std::wstring_view pilotFileName, std::wstring_view brainFileName, LogisticsPilot* lPilot);
 
 	virtual void setCommanderId(int32_t _commanderId);
 
-	virtual int32_t getCommanderId(void) { return (commanderId); }
+	virtual int32_t getCommanderId(void)
+	{
+		return (commanderId);
+	}
 
 	virtual CommanderPtr getCommander(void);
 
-	virtual std::unique_ptr<MechWarrior> getPilot(void) { return (pilot); }
+	virtual std::unique_ptr<MechWarrior> getPilot(void)
+	{
+		return (pilot);
+	}
 
 	std::unique_ptr<Mover> getPoint(void);
 
-	void setTeamRosterIndex(int32_t index) { teamRosterIndex = index; }
+	void setTeamRosterIndex(int32_t index)
+	{
+		teamRosterIndex = index;
+	}
 
-	int32_t getTeamRosterIndex(void) { return (teamRosterIndex); }
+	int32_t getTeamRosterIndex(void)
+	{
+		return (teamRosterIndex);
+	}
 
 	virtual int32_t getContacts(int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
@@ -1165,25 +1302,46 @@ public:
 	//			return(netPlayerId);
 	//		}
 
-	void setNetPlayerName(const std::wstring_view& name)
+	void setNetPlayerName(std::wstring_view name)
 	{
 		if (netPlayerName)
 			strncpy(netPlayerName, name, 255);
 	}
 
-	const std::wstring_view& getNetPlayerName(void) { return (netPlayerName); }
+	std::wstring_view getNetPlayerName(void)
+	{
+		return (netPlayerName);
+	}
 
-	void setLocalMoverId(int32_t id) { localMoverId = id; }
+	void setLocalMoverId(int32_t id)
+	{
+		localMoverId = id;
+	}
 
-	int32_t getLocalMoverId(void) { return (localMoverId); }
+	int32_t getLocalMoverId(void)
+	{
+		return (localMoverId);
+	}
 
-	virtual int32_t getCBills(void) { return (0); }
+	virtual int32_t getCBills(void)
+	{
+		return (0);
+	}
 
-	void setNetRosterIndex(int32_t index) { netRosterIndex = index; }
+	void setNetRosterIndex(int32_t index)
+	{
+		netRosterIndex = index;
+	}
 
-	int32_t getNetRosterIndex(void) { return (netRosterIndex); }
+	int32_t getNetRosterIndex(void)
+	{
+		return (netRosterIndex);
+	}
 
-	int32_t getNumWeaponFireChunks(int32_t which) { return (numWeaponFireChunks[which]); }
+	int32_t getNumWeaponFireChunks(int32_t which)
+	{
+		return (numWeaponFireChunks[which]);
+	}
 
 	int32_t clearWeaponFireChunks(int32_t which);
 
@@ -1195,7 +1353,10 @@ public:
 
 	virtual int32_t updateWeaponFireChunks(int32_t which);
 
-	int32_t getNumCriticalHitChunks(int32_t which) { return (numCriticalHitChunks[which]); }
+	int32_t getNumCriticalHitChunks(int32_t which)
+	{
+		return (numCriticalHitChunks[which]);
+	}
 
 	int32_t clearCriticalHitChunks(int32_t which);
 
@@ -1207,7 +1368,10 @@ public:
 
 	virtual int32_t updateCriticalHitChunks(int32_t which);
 
-	int32_t getNumRadioChunks(int32_t which) { return (numRadioChunks[which]); }
+	int32_t getNumRadioChunks(int32_t which)
+	{
+		return (numRadioChunks[which]);
+	}
 
 	int32_t clearRadioChunks(int32_t which);
 
@@ -1219,27 +1383,54 @@ public:
 
 	virtual int32_t updateRadioChunks(int32_t which);
 
-	virtual StatusChunkPtr getStatusChunk(void) { return (&statusChunk); }
+	virtual StatusChunkPtr getStatusChunk(void)
+	{
+		return (&statusChunk);
+	}
 
-	virtual int32_t buildStatusChunk(void) { return (NO_ERROR); }
+	virtual int32_t buildStatusChunk(void)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual int32_t handleStatusChunk(int32_t updateAge, uint32_t chunk) { return (NO_ERROR); }
+	virtual int32_t handleStatusChunk(int32_t updateAge, uint32_t chunk)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual MoveChunkPtr getMoveChunk(void) { return (&moveChunk); }
+	virtual MoveChunkPtr getMoveChunk(void)
+	{
+		return (&moveChunk);
+	}
 
-	virtual int32_t buildMoveChunk(void) { return (NO_ERROR); }
+	virtual int32_t buildMoveChunk(void)
+	{
+		return (NO_ERROR);
+	}
 
-	virtual int32_t handleMoveChunk(uint32_t chunk) { return (NO_ERROR); }
+	virtual int32_t handleMoveChunk(uint32_t chunk)
+	{
+		return (NO_ERROR);
+	}
 
 	void setMoveChunk(MovePathPtr path, MoveChunkPtr chunk);
 
 	void playMessage(RadioMessageType messageId, bool propogateIfMultiplayer = false);
 
-	virtual int32_t calcCV(bool calcMax = false) { return (0); }
+	virtual int32_t calcCV(bool calcMax = false)
+	{
+		return (0);
+	}
 
-	void setFieldedCV(int32_t CV) { fieldedCV = CV; }
+	void setFieldedCV(int32_t CV)
+	{
+		fieldedCV = CV;
+	}
 
-	uint32_t getFieldedCV(void) { return (fieldedCV); }
+	uint32_t getFieldedCV(void)
+	{
+		return (fieldedCV);
+	}
 
 	virtual void setThreatRating(int16_t rating);
 
@@ -1260,7 +1451,10 @@ public:
 		return (MasterComponent::masterList[inventory[itemIndex].masterID].getHealth());
 	}
 
-	virtual int32_t getBodyState(void) { return (-1); }
+	virtual int32_t getBodyState(void)
+	{
+		return (-1);
+	}
 
 	int32_t getSensorMax(void)
 	{
@@ -1280,11 +1474,20 @@ public:
 
 	float getVisualRange(void);
 
-	float getLastWeaponEffectivenessCalc(void) { return (lastWeaponEffectivenessCalc); }
+	float getLastWeaponEffectivenessCalc(void)
+	{
+		return (lastWeaponEffectivenessCalc);
+	}
 
-	float getLastOptimalRangeCalc(void) { return (lastOptimalRangeCalc); }
+	float getLastOptimalRangeCalc(void)
+	{
+		return (lastOptimalRangeCalc);
+	}
 
-	virtual float getTotalEffectiveness(void) { return (0.0); }
+	virtual float getTotalEffectiveness(void)
+	{
+		return (0.0);
+	}
 
 	// ContactWatchPtr addContactWatch (GameObjectPtr who, ContactRecPtr
 	// contact) { 	return(contactWatches.add(who, contact));
@@ -1373,7 +1576,10 @@ public:
 
 	virtual int32_t reduceAmmo(int32_t ammoMasterId, int32_t amount);
 
-	virtual int32_t getNumAmmoTypes(void) { return (numAmmoTypes); }
+	virtual int32_t getNumAmmoTypes(void)
+	{
+		return (numAmmoTypes);
+	}
 
 	bool hasNonAreaWeapon(void);
 
@@ -1417,9 +1623,15 @@ public:
 		return (&MasterComponent::masterList[inventory[itemIndex].masterID]);
 	}
 
-	virtual bool hitInventoryItem(int32_t itemIndex, bool setupOnly = FALSE) { return (false); }
+	virtual bool hitInventoryItem(int32_t itemIndex, bool setupOnly = FALSE)
+	{
+		return (false);
+	}
 
-	bool isInventoryDisabled(int32_t itemIndex) { return (inventory[itemIndex].disabled); }
+	bool isInventoryDisabled(int32_t itemIndex)
+	{
+		return (inventory[itemIndex].disabled);
+	}
 
 	virtual void disable(uint32_t cause);
 
@@ -1427,11 +1639,14 @@ public:
 
 	virtual void startUp(void);
 
-	virtual void destroyBodyLocation(int32_t location) {}
+	virtual void destroyBodyLocation(int32_t location) { }
 
-	virtual void calcCriticalHit(int32_t hitLocation) {}
+	virtual void calcCriticalHit(int32_t hitLocation) { }
 
-	virtual bool injureBodyLocation(int32_t bodyLocation, float damage) { return (false); }
+	virtual bool injureBodyLocation(int32_t bodyLocation, float damage)
+	{
+		return (false);
+	}
 
 	virtual void ammoExplosion(int32_t ammoIndex);
 
@@ -1457,19 +1672,37 @@ public:
 
 	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
-	virtual float relViewFacingTo(Stuff::Vector3D goal) { return (GameObject::relFacingTo(goal)); }
+	virtual float relViewFacingTo(Stuff::Vector3D goal)
+	{
+		return (GameObject::relFacingTo(goal));
+	}
 
 	bool canMoveHere(Stuff::Vector3D worldPos);
 
-	void setLastValidPosition(Stuff::Vector3D pt) { lastValidPosition = pt; }
+	void setLastValidPosition(Stuff::Vector3D pt)
+	{
+		lastValidPosition = pt;
+	}
 
-	Stuff::Vector3D getLastValidPosition(void) { return (lastValidPosition); }
+	Stuff::Vector3D getLastValidPosition(void)
+	{
+		return (lastValidPosition);
+	}
 
-	virtual bool canPowerUp(void) { return (true); }
+	virtual bool canPowerUp(void)
+	{
+		return (true);
+	}
 
-	virtual bool canMove(void) { return (true); }
+	virtual bool canMove(void)
+	{
+		return (true);
+	}
 
-	virtual bool canJump(void) { return (false); }
+	virtual bool canJump(void)
+	{
+		return (false);
+	}
 
 	virtual float getJumpRange(int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr)
 	{
@@ -1480,21 +1713,42 @@ public:
 		return (0.0);
 	}
 
-	virtual bool isJumping(Stuff::Vector3D* jumpGoal = nullptr) { return (false); }
+	virtual bool isJumping(Stuff::Vector3D* jumpGoal = nullptr)
+	{
+		return (false);
+	}
 
-	virtual bool isMineSweeper(void) { return (false); }
+	virtual bool isMineSweeper(void)
+	{
+		return (false);
+	}
 
-	virtual bool isMineLayer(void) { return (false); }
+	virtual bool isMineLayer(void)
+	{
+		return (false);
+	}
 
-	virtual bool isLayingMines(void) { return (false); }
+	virtual bool isLayingMines(void)
+	{
+		return (false);
+	}
 
 	virtual float getFireArc(void);
 
-	virtual float calcMaxSpeed(void) { return (0.0); }
+	virtual float calcMaxSpeed(void)
+	{
+		return (0.0);
+	}
 
-	virtual float calcSlowSpeed(void) { return (0.0); }
+	virtual float calcSlowSpeed(void)
+	{
+		return (0.0);
+	}
 
-	virtual float calcModerateSpeed(void) { return (0.0); }
+	virtual float calcModerateSpeed(void)
+	{
+		return (0.0);
+	}
 
 	virtual int32_t calcSpriteSpeed(float speed, uint32_t flags, int32_t& state, int32_t& throttle)
 	{
@@ -1510,24 +1764,39 @@ public:
 		return (pos);
 	}
 
-	virtual float getGestureStopDistance(void) { return 0.0; }
+	virtual float getGestureStopDistance(void)
+	{
+		return 0.0;
+	}
 
 	virtual bool handleEjection(void);
 
 	virtual bool isWithdrawing(void);
 
-	virtual bool underPlayerControl(void) { return (true); }
+	virtual bool underPlayerControl(void)
+	{
+		return (true);
+	}
 
-	~Mover(void) { destroy(void); }
+	~Mover(void)
+	{
+		destroy(void);
+	}
 
 	bool enemyRevealed(void);
 
-	virtual const std::wstring_view& getIfaceName(void) { return ("No Name"); }
+	virtual std::wstring_view getIfaceName(void)
+	{
+		return ("No Name");
+	}
 
 	void drawSensorTextHelp(
 		float screenX, float screenY, int32_t resID, uint32_t color, bool drawBOLD);
 
-	virtual SensorSystem* getSensorSystem() { return sensorSystem; }
+	virtual SensorSystem* getSensorSystem()
+	{
+		return sensorSystem;
+	}
 
 	static int32_t loadGameSystem(FitIniFilePtr mechFile, float visualRange);
 
@@ -1536,24 +1805,48 @@ public:
 	void removeFromUnitGroup(int32_t id);
 	void addToUnitGroup(int32_t id);
 	bool isInUnitGroup(int32_t id);
-	virtual bool isRefit() { return 0; }
-	virtual bool isRecover() { return 0; }
+	virtual bool isRefit()
+	{
+		return 0;
+	}
+	virtual bool isRecover()
+	{
+		return 0;
+	}
 
-	int32_t getIconPictureIndex() { return iconPictureIndex; }
+	int32_t getIconPictureIndex()
+	{
+		return iconPictureIndex;
+	}
 
 	bool isWeaponWorking(int32_t index);
 
-	virtual void startShutDown(void) {}
+	virtual void startShutDown(void) { }
 
-	virtual bool isMech(void) { return false; }
+	virtual bool isMech(void)
+	{
+		return false;
+	}
 
-	virtual bool isVehicle(void) { return false; }
+	virtual bool isVehicle(void)
+	{
+		return false;
+	}
 
-	virtual bool isGuardTower(void) { return false; }
+	virtual bool isGuardTower(void)
+	{
+		return false;
+	}
 
-	virtual bool isOnGUI(void) { return isOnGui; }
+	virtual bool isOnGUI(void)
+	{
+		return isOnGui;
+	}
 
-	virtual void setOnGUI(bool onGui) { isOnGui = onGui; }
+	virtual void setOnGUI(bool onGui)
+	{
+		isOnGui = onGui;
+	}
 
 	virtual void Save(PacketFilePtr file, int32_t packetNum);
 

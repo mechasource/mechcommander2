@@ -33,23 +33,62 @@ class LogisticsChassis
 public:
 	LogisticsChassis();
 	int32_t init(CSVFile* fileName, int32_t chassisID);
-	void setFitID(int32_t id) { fitID = id; }
-	int32_t getNameID(void) const { return chassisNameID; }
-	int32_t getEncyclopediaID(void) const { return encyclopediaID; }
-	const std::wstring_view& getFileName(void) const { return fileName; }
-	int32_t getHouseID(void) const { return houseID; }
-	float getMaxWeight(void) const { return maxWeight; }
-	const std::wstring_view& getMechClass(void) const { return mechClass; }
-	int32_t getArmor(void) const { return baseArmor; }
+	void setFitID(int32_t id)
+	{
+		fitID = id;
+	}
+	int32_t getNameID(void) const
+	{
+		return chassisNameID;
+	}
+	int32_t getEncyclopediaID(void) const
+	{
+		return encyclopediaID;
+	}
+	std::wstring_view getFileName(void) const
+	{
+		return fileName;
+	}
+	int32_t getHouseID(void) const
+	{
+		return houseID;
+	}
+	float getMaxWeight(void) const
+	{
+		return maxWeight;
+	}
+	std::wstring_view getMechClass(void) const
+	{
+		return mechClass;
+	}
+	int32_t getArmor(void) const
+	{
+		return baseArmor;
+	}
 	int32_t getArmorClass(void) const;
-	float getSpeed(void) const { return speed; }
+	float getSpeed(void) const
+	{
+		return speed;
+	}
 	int32_t getDisplaySpeed(void) const;
-	void setScale(float newScale) { scale = newScale; }
-	float getScale(void) const { return scale; }
-	int32_t getMaxArmor(void) const { return maxArmor; }
+	void setScale(float newScale)
+	{
+		scale = newScale;
+	}
+	float getScale(void) const
+	{
+		return scale;
+	}
+	int32_t getMaxArmor(void) const
+	{
+		return maxArmor;
+	}
 	int32_t getSensorID(void) const;
 	int32_t getECM(void) const;
-	bool jumpJetsAllowed(void) const { return canHaveJumpJets; }
+	bool jumpJetsAllowed(void) const
+	{
+		return canHaveJumpJets;
+	}
 
 protected:
 	int32_t refCount;
@@ -66,9 +105,9 @@ protected:
 
 	int32_t iconPictureIndex;
 	int32_t ID;
-	const std::wstring_view& fileName;
-	const std::wstring_view& mechClass;
-	const std::wstring_view& iconFileNames[3];
+	std::wstring_view fileName;
+	std::wstring_view mechClass;
+	std::wstring_view iconFileNames[3];
 
 	int32_t componentAreawidth;
 	int32_t componentAreaheight;
@@ -118,37 +157,88 @@ public:
 
 	int32_t compareWeight(LogisticsVariant*);
 
-	inline bool isAvailable(void) const { return (availableToUser && !bHidden); }
-	uint32_t getID(void) const { return ID; }
-	float getMaxWeight(void) const { return chassis->maxWeight; }
-	int32_t getChassisName(void) const { return chassis->chassisNameID; }
-	const std::wstring_view& getName(void) const { return variantName; }
-	int32_t getEncyclopediaID(void) const { return chassis->encyclopediaID; }
-	int32_t getHelpID(void) const { return chassis->helpid; }
-	int32_t getBaseCost(void) const { return chassis->baseCost; }
-	int32_t getComponentCount(void) const { return componentCount; }
+	inline bool isAvailable(void) const
+	{
+		return (availableToUser && !bHidden);
+	}
+	uint32_t getID(void) const
+	{
+		return ID;
+	}
+	float getMaxWeight(void) const
+	{
+		return chassis->maxWeight;
+	}
+	int32_t getChassisName(void) const
+	{
+		return chassis->chassisNameID;
+	}
+	std::wstring_view getName(void) const
+	{
+		return variantName;
+	}
+	int32_t getEncyclopediaID(void) const
+	{
+		return chassis->encyclopediaID;
+	}
+	int32_t getHelpID(void) const
+	{
+		return chassis->helpid;
+	}
+	int32_t getBaseCost(void) const
+	{
+		return chassis->baseCost;
+	}
+	int32_t getComponentCount(void) const
+	{
+		return componentCount;
+	}
 	int32_t canAddComponent(LogisticsComponent* pComponent, int32_t& x, int32_t& y) const;
 	int32_t getCost(void) const;
 	int32_t getWeight(void) const;
-	const std::wstring_view& getMechClass(void) const;
-	int32_t getChassisID(void) const { return chassis->ID; }
+	std::wstring_view getMechClass(void) const;
+	int32_t getChassisID(void) const
+	{
+		return chassis->ID;
+	}
 	int32_t getArmor(void) const;
-	int32_t getArmorClass() { return chassis->getArmorClass(void); }
+	int32_t getArmorClass()
+	{
+		return chassis->getArmorClass(void);
+	}
 	int32_t getJumpRange(void) const;
 	int32_t getMaxJumpRange(void) const;
 	int32_t getSpeed(void) const;
 	int32_t getDisplaySpeed(void) const;
 
-	int32_t getVariantID(void) const { return ID & 0x00ffffff; }
-	const std::wstring_view& getSmallIconFileName(void) const { return chassis->iconFileNames[0]; }
-	const std::wstring_view& getMediumIconFileName(void) const { return chassis->iconFileNames[1]; }
-	const std::wstring_view& getLargeIconFileName(void) const { return chassis->iconFileNames[2]; }
+	int32_t getVariantID(void) const
+	{
+		return ID & 0x00ffffff;
+	}
+	std::wstring_view getSmallIconFileName(void) const
+	{
+		return chassis->iconFileNames[0];
+	}
+	std::wstring_view getMediumIconFileName(void) const
+	{
+		return chassis->iconFileNames[1];
+	}
+	std::wstring_view getLargeIconFileName(void) const
+	{
+		return chassis->iconFileNames[2];
+	}
 	int32_t getComponentsWithLocation(
 		int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray);
 	int32_t removeComponent(int32_t xCoord, int32_t yCoord);
 	int32_t addComponent(LogisticsComponent*, int32_t& xCoord, int32_t& yCoord);
-	inline bool canDelete(void) const { return !isDesignerMech(void); }
-	inline bool isDesignerMech(void) const { return bDesignerMech; }
+	inline bool canDelete(void) const
+	{
+		return !isDesignerMech(void);
+	}
+	inline bool isDesignerMech(void) const
+	{
+		return bDesignerMech;
+	}
 	int32_t getComponents(int32_t& count, int32_t* array);
 	int32_t getComponents(int32_t& count, LogisticsComponent** array);
 
@@ -157,33 +247,63 @@ public:
 	LogisticsVariant& operator=(const LogisticsVariant&);
 
 	bool operator==(const LogisticsVariant& src);
-	const std::wstring_view& getFileName() { return chassis->fileName; }
+	std::wstring_view getFileName()
+	{
+		return chassis->fileName;
+	}
 
 	int32_t save(FitIniFile& file, int32_t counter);
 
-	const LogisticsChassis* getChassis(void) const { return chassis; }
+	const LogisticsChassis* getChassis(void) const
+	{
+		return chassis;
+	}
 	bool addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y);
-	void setName(const std::wstring_view& name); // will allocate for you
+	void setName(std::wstring_view name); // will allocate for you
 
 	void setAvailable(bool available);
 
-	int32_t getIconIndex(void) const { return chassis->iconPictureIndex; }
+	int32_t getIconIndex(void) const
+	{
+		return chassis->iconPictureIndex;
+	}
 
-	int32_t getComponentAreawidth(void) const { return chassis->componentAreawidth; }
-	int32_t getComponentAreaheight(void) const { return chassis->componentAreaheight; }
+	int32_t getComponentAreawidth(void) const
+	{
+		return chassis->componentAreawidth;
+	}
+	int32_t getComponentAreaheight(void) const
+	{
+		return chassis->componentAreaheight;
+	}
 
 	LogisticsComponent* getCompAtLocation(int32_t i, int32_t j, int32_t& realI, int32_t& realJ);
 	int32_t getComponentLocation(LogisticsComponent* pComp, int32_t& i, int32_t& j);
 
 	int32_t getOptimalRangeString(int32_t& color) const;
-	int32_t getHouseID() { return chassis->houseID; }
-	int32_t getMaxArmor(void) const { return chassis->maxArmor; }
-	int32_t getSensorID(void) const { return chassis->getSensorID(void); }
-	int32_t getECM(void) const { return chassis->getECM(void); }
+	int32_t getHouseID()
+	{
+		return chassis->houseID;
+	}
+	int32_t getMaxArmor(void) const
+	{
+		return chassis->maxArmor;
+	}
+	int32_t getSensorID(void) const
+	{
+		return chassis->getSensorID(void);
+	}
+	int32_t getECM(void) const
+	{
+		return chassis->getECM(void);
+	}
 
 	bool allComponentsAvailable(void) const;
 
-	int32_t getFileID(void) const { return fileID; }
+	int32_t getFileID(void) const
+	{
+		return fileID;
+	}
 
 protected:
 	const LogisticsChassis::ComponentInfo* getComponentAtLocation(int32_t x, int32_t y) const;
@@ -192,7 +312,7 @@ protected:
 	int32_t fileID; // in csv file
 
 	LogisticsChassis* chassis;
-	const std::wstring_view& variantName; // in file
+	std::wstring_view variantName; // in file
 
 	int32_t componentCount;
 	LogisticsChassis::ComponentInfo components[54]; // I count a max of 54

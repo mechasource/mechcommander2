@@ -43,8 +43,7 @@ Line3D::SetDirection(const Vector3D& vector)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float
-Line3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
+float Line3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 {
 	// Check_Object(this);
 	Check_Object(&sphere);
@@ -101,8 +100,7 @@ Line3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float
-Line3D::GetDistanceTo(const OBB& box)
+float Line3D::GetDistanceTo(const OBB& box)
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -184,8 +182,7 @@ Line3D::GetDistanceTo(const OBB& box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float
-Line3D::GetDistanceTo(const OBB& box, size_t* first_axis)
+float Line3D::GetDistanceTo(const OBB& box, size_t* first_axis)
 {
 	// Check_Object(this);
 	Check_Object(&box);

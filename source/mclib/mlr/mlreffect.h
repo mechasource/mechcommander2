@@ -52,7 +52,10 @@ public:
 	virtual void SetData(
 		const size_t* pcount, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data) = 0;
 
-	virtual uint32_t GetType(uint32_t) { return 0; }
+	virtual uint32_t GetType(uint32_t)
+	{
+		return 0;
+	}
 
 	//	add another effect
 	virtual void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*) = 0;

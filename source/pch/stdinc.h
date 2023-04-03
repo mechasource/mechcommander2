@@ -8,12 +8,12 @@
  Creative Commons Attribution-NonCommercial 4.0 International Public License
  See the the file license.txt and https://creativecommons.org
 
- 2014-07-24 Jerker Back, created
+ 2014-07-24 Jerker Bäck, created
 
 ================================================================================
  RcsID = $Id$ */
 
-//clang-format off
+// clang-format off
 // *INDENT-OFF*
 
 #pragma once
@@ -30,11 +30,16 @@
 #define _CRTDBG_MAP_ALLOC
 
 #if defined(_MSC_VER) && !defined(__clang__)
-#define MSDISABLE_WARNING(x)      __pragma(warning(disable:x))
-#define MSDISABLE_WARNING_PUSH(x) __pragma(warning(push));__pragma(warning(disable:x))
-#define MSDISABLE_WARNING_POP     __pragma(warning(pop))
-#define MSSUPPRESS_WARNING(x)     __pragma(warning(suppress:x))
-#define MSADD_LIBRARY(x)          __pragma(comment(lib,x))
+#define MSDISABLE_WARNING(x) __pragma(warning(disable \
+											  : x))
+#define MSDISABLE_WARNING_PUSH(x) \
+	__pragma(warning(push));      \
+	__pragma(warning(disable      \
+					 : x))
+#define MSDISABLE_WARNING_POP __pragma(warning(pop))
+#define MSSUPPRESS_WARNING(x) __pragma(warning(suppress \
+											   : x))
+#define MSADD_LIBRARY(x) __pragma(comment(lib, x))
 #else
 #define MSDISABLE_WARNING(x)
 #define MSDISABLE_WARNING_PUSH(x)
@@ -43,7 +48,7 @@
 #define MSADD_LIBRARY(x)
 #endif
 
-#define  _WIN32_WINNT   0x0601	// minimum Windows 7
+#define _WIN32_WINNT 0x0601 // minimum Windows 7
 #include <winsdkver.h>
 #include <sdkddkver.h>
 #ifndef WINAPI_FAMILY
@@ -220,7 +225,6 @@ MSDISABLE_WARNING_POP
 // processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 //#endif
 
-  
-#if CONSIDERED_DISABLED  
+#if CONSIDERED_DISABLED
 
 #endif

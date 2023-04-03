@@ -61,8 +61,7 @@ MPGameBrowser::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-MPGameBrowser::init(FitIniFile* file)
+void MPGameBrowser::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -106,8 +105,7 @@ MPGameBrowser::init(FitIniFile* file)
 	hostDlg.init();
 }
 
-void
-MPGameBrowser::begin()
+void MPGameBrowser::begin()
 {
 	status = RUNNING;
 	bHosting = 0;
@@ -122,16 +120,14 @@ MPGameBrowser::begin()
 	}
 }
 
-void
-MPGameBrowser::end()
+void MPGameBrowser::end()
 {
 	if (MPlayer)
 		MPlayer->endSessionScan();
 	bHosting = 0;
 }
 
-void
-MPGameBrowser::render(int32_t xOffset, int32_t yOffset)
+void MPGameBrowser::render(int32_t xOffset, int32_t yOffset)
 {
 	if ((0 == xOffset) && (0 == yOffset))
 	{
@@ -149,8 +145,7 @@ MPGameBrowser::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void
-MPGameBrowser::render()
+void MPGameBrowser::render()
 {
 	render(0, 0);
 }
@@ -267,14 +262,12 @@ MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-MPGameBrowser::isDone()
+bool MPGameBrowser::isDone()
 {
 	return status != RUNNING;
 }
 
-void
-MPGameBrowser::update()
+void MPGameBrowser::update()
 {
 	if (bHosting)
 	{
@@ -363,9 +356,9 @@ MPGameBrowser::update()
 }
 
 int32_t
-aStyle3TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
+aStyle3TextListItem::init(FitIniFile* file, std::wstring_view blockname)
 {
-	file->seekBlock(blockName);
+	file->seekBlock(blockname);
 	int32_t x = 0;
 	int32_t y = 0;
 	file->readIdLong("XLocation", x);
@@ -396,8 +389,7 @@ aStyle3TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aStyle3TextListItem::render()
+void aStyle3TextListItem::render()
 {
 	uint32_t color;
 	animGroup.update();
@@ -455,17 +447,19 @@ aGameListItem::operator=(const aGameListItem& src)
 	addChild(&pingIcon);
 	return *this;
 }
-aGameListItem::aGameListItem() :
-	latency(IDS_MP_LANBROW_PING_FONT) {}
-int32_t
-aGameListItem::init(FitIniFile* file, const std::wstring_view& blockName)
+aGameListItem::aGameListItem()
+	: latency(IDS_MP_LANBROW_PING_FONT)
 {
-	file->seekBlock(blockName);
+}
+int32_t
+aGameListItem::init(FitIniFile* file, std::wstring_view blockname)
+{
+	file->seekBlock(blockname);
 	int32_t width = 0;
 	int32_t height = 0;
 	file->readIdLong("width", width);
 	file->readIdLong("height", height);
-	const std::wstring_view& graphicBlockName;
+	std::wstring_view graphicBlockName;
 	graphicBlockName += "Static0";
 	allTechGraphic.init(file, graphicBlockName.Data());
 	if (allTechGraphic.height() + 5 > height)
@@ -476,7 +470,7 @@ aGameListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	{
 		width = allTechGraphic.globalRight() - globalX();
 	}
-	const std::wstring_view& textBlockName;
+	std::wstring_view textBlockName;
 	textBlockName = "Text0";
 	gameName.init(file, textBlockName.Data());
 	if (gameName.height() > height)
@@ -517,7 +511,7 @@ aGameListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	{
 		// width = latency.globalRight() - globalX();
 	}
-	const std::wstring_view& rectBlockName;
+	std::wstring_view rectBlockName;
 	rectBlockName = "Rect0";
 	allTechRect.init(file, rectBlockName.Data());
 	if (allTechRect.height() > height)
@@ -584,8 +578,7 @@ aGameListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aGameListItem::setSessionInfo(MC2Session* pSession)
+void aGameListItem::setSessionInfo(MC2Session* pSession)
 {
 	memcpy(&session, pSession, sizeof(MC2Session));
 	gameName.setText(pSession->name);
@@ -620,7 +613,7 @@ aGameListItem::setSessionInfo(MC2Session* pSession)
 	//>501ms	 - 	red
 }
 
-const std::wstring_view&
+std::wstring_view
 aGameListItem::getText(int32_t which)
 {
 	if (which == SORT_ORDER_NAME)
@@ -634,14 +627,13 @@ aGameListItem::getText(int32_t which)
 	return nullptr;
 }
 
-const std::wstring_view&
+std::wstring_view
 aGameListItem::getSessionName()
 {
 	return gameName.getText();
 }
 
-void
-aGameListItem::update()
+void aGameListItem::update()
 {
 	gameName.setState(getState());
 	numPlayers.setState(getState());

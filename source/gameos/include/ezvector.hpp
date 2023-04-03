@@ -7,7 +7,8 @@
 class EZVector
 {
 public:
-	union {
+	union
+	{
 		float m[3];
 		struct
 		{

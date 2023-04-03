@@ -127,8 +127,14 @@ protected:
 	friend class UserInput;
 
 public:
-	MouseCursorData(void) { init(); }
-	~MouseCursorData(void) { destroy(); }
+	MouseCursorData(void)
+	{
+		init();
+	}
+	~MouseCursorData(void)
+	{
+		destroy();
+	}
 
 	void destroy(void);
 
@@ -162,7 +168,7 @@ public:
 		return 0;
 	}
 
-	void initCursors(const std::wstring_view& cursorFile);
+	void initCursors(std::wstring_view cursorFile);
 };
 
 //---------------------------------------------------------------------------
@@ -241,9 +247,15 @@ public:
 	// Need to have the mouse draw here
 	static volatile bool drawMouse; // Should I draw the Mouse Cursor?
 
-	UserInput(void) { init(); }
+	UserInput(void)
+	{
+		init();
+	}
 
-	~UserInput(void) { destroy(); }
+	~UserInput(void)
+	{
+		destroy();
+	}
 
 	void init()
 	{
@@ -274,7 +286,7 @@ public:
 		cursors = nullptr;
 	}
 
-	void initMouseCursors(const std::wstring_view& mouseFile);
+	void initMouseCursors(std::wstring_view mouseFile);
 
 	void destroy(void)
 	{
@@ -303,26 +315,71 @@ public:
 		return (false);
 	}
 
-	bool leftShift(void) { return (getKeyDown(KEY_LSHIFT)); }
-	bool rightShift(void) { return (getKeyDown(KEY_RSHIFT)); }
-	bool shift(void) { return (leftShift() || rightShift()); }
-	bool leftAlt(void) { return (getKeyDown(KEY_LMENU)); }
-	bool rightAlt(void) { return (getKeyDown(KEY_RMENU)); }
-	bool alt(void) { return (leftAlt() || rightAlt()); }
-	bool leftCtrl(void) { return (getKeyDown(KEY_LCONTROL)); }
-	bool rightCtrl(void) { return (getKeyDown(KEY_RCONTROL)); }
-	bool ctrl(void) { return (leftCtrl() || rightCtrl()); }
+	bool leftShift(void)
+	{
+		return (getKeyDown(KEY_LSHIFT));
+	}
+	bool rightShift(void)
+	{
+		return (getKeyDown(KEY_RSHIFT));
+	}
+	bool shift(void)
+	{
+		return (leftShift() || rightShift());
+	}
+	bool leftAlt(void)
+	{
+		return (getKeyDown(KEY_LMENU));
+	}
+	bool rightAlt(void)
+	{
+		return (getKeyDown(KEY_RMENU));
+	}
+	bool alt(void)
+	{
+		return (leftAlt() || rightAlt());
+	}
+	bool leftCtrl(void)
+	{
+		return (getKeyDown(KEY_LCONTROL));
+	}
+	bool rightCtrl(void)
+	{
+		return (getKeyDown(KEY_RCONTROL));
+	}
+	bool ctrl(void)
+	{
+		return (leftCtrl() || rightCtrl());
+	}
 
 	//---------------------------------
 	// Mouse Functionality
-	void setMouseDoubleClickThreshold(float time) { mouseDblClickThreshold = time; }
+	void setMouseDoubleClickThreshold(float time)
+	{
+		mouseDblClickThreshold = time;
+	}
 
-	void setMouseDragThreshold(float distance) { mouseDragThreshold = distance; }
+	void setMouseDragThreshold(float distance)
+	{
+		mouseDragThreshold = distance;
+	}
 
-	int32_t getMouseX(void) { return float2long(mouseXPosition * viewMulX); }
-	int32_t getMouseY(void) { return float2long(mouseYPosition * viewMulY); }
-	float realMouseX(void) { return (mouseXPosition * viewMulX); }
-	float realMouseY(void) { return (mouseYPosition * viewMulY); }
+	int32_t getMouseX(void)
+	{
+		return float2long(mouseXPosition * viewMulX);
+	}
+	int32_t getMouseY(void)
+	{
+		return float2long(mouseYPosition * viewMulY);
+	}
+	float realMouseX(void)
+	{
+		return (mouseXPosition * viewMulX);
+	}
+	float realMouseY(void)
+	{
+		return (mouseYPosition * viewMulY);
+	}
 	void setMousePos(float x, float y)
 	{
 		float xRes = 0.0f;
@@ -335,50 +392,122 @@ public:
 		gos_SetMousePosition(xRes, yRes);
 	}
 
-	int32_t getMouseXDelta(void) { return mouseXDelta; }
-	int32_t getMouseYDelta(void) { return mouseYDelta; }
-	int32_t getMouseWheelDelta(void) { return mouseWheelDelta; }
-	uint32_t getMouseLeftButtonState(void) { return leftMouseButtonState; }
-	uint32_t getMouseRightButtonState(void) { return rightMouseButtonState; }
-	bool isLeftDrag(void) { return leftMouseDrag; }
-	bool isRightDrag(void) { return rightMouseDrag; }
-	bool wasLeftDrag(void) { return wasLeftMouseDrag; }
-	bool wasRightDrag(void) { return wasRightMouseDrag; }
-	float getMouseDragX(void) { return mouseDragX * viewMulX; }
-	float getMouseDragY(void) { return mouseDragY * viewMulY; }
-	bool isLeftClick(void) { return (leftClick); }
-	bool isRightClick(void) { return (rightClick); }
+	int32_t getMouseXDelta(void)
+	{
+		return mouseXDelta;
+	}
+	int32_t getMouseYDelta(void)
+	{
+		return mouseYDelta;
+	}
+	int32_t getMouseWheelDelta(void)
+	{
+		return mouseWheelDelta;
+	}
+	uint32_t getMouseLeftButtonState(void)
+	{
+		return leftMouseButtonState;
+	}
+	uint32_t getMouseRightButtonState(void)
+	{
+		return rightMouseButtonState;
+	}
+	bool isLeftDrag(void)
+	{
+		return leftMouseDrag;
+	}
+	bool isRightDrag(void)
+	{
+		return rightMouseDrag;
+	}
+	bool wasLeftDrag(void)
+	{
+		return wasLeftMouseDrag;
+	}
+	bool wasRightDrag(void)
+	{
+		return wasRightMouseDrag;
+	}
+	float getMouseDragX(void)
+	{
+		return mouseDragX * viewMulX;
+	}
+	float getMouseDragY(void)
+	{
+		return mouseDragY * viewMulY;
+	}
+	bool isLeftClick(void)
+	{
+		return (leftClick);
+	}
+	bool isRightClick(void)
+	{
+		return (rightClick);
+	}
 
 	// bool isLeftHeld() {
 	//	return isLeftClick && lastLeftMouseButtonState == MC2_MOUSE_DOWN;
 	// }
 
-	bool isLeftDoubleClick(void) { return leftDoubleClick; }
+	bool isLeftDoubleClick(void)
+	{
+		return leftDoubleClick;
+	}
 
-	bool isRightDoubleClick(void) { return rightDoubleClick; }
+	bool isRightDoubleClick(void)
+	{
+		return rightDoubleClick;
+	}
 
-	bool isMiddleClick(void) { return middleClick; }
+	bool isMiddleClick(void)
+	{
+		return middleClick;
+	}
 
-	bool isMiddleDoubleClick(void) { return middleDoubleClick; }
+	bool isMiddleDoubleClick(void)
+	{
+		return middleDoubleClick;
+	}
 
 	void setMouseCursor(int32_t state);
 
-	int32_t getMouseCursor(void) { return (mouseState); }
+	int32_t getMouseCursor(void)
+	{
+		return (mouseState);
+	}
 
-	void setMouseFrame(int32_t frameNum) { mouseFrame = frameNum; }
+	void setMouseFrame(int32_t frameNum)
+	{
+		mouseFrame = frameNum;
+	}
 
-	int32_t getMouseFrame(void) { return (mouseFrame); }
+	int32_t getMouseFrame(void)
+	{
+		return (mouseFrame);
+	}
 
 	void mouseOn(void); // Draw Mouse Cursor
 	void mouseOff(void); // Don't Draw Mouse Cursor
 
-	void pointerOn(void) { drawTerrainPointer = true; }
+	void pointerOn(void)
+	{
+		drawTerrainPointer = true;
+	}
 
-	void pointerOff(void) { drawTerrainPointer = false; }
+	void pointerOff(void)
+	{
+		drawTerrainPointer = false;
+	}
 
-	bool leftMouseReleased() { return leftMouseJustUp; }
+	bool leftMouseReleased()
+	{
+		return leftMouseJustUp;
+	}
 
-	bool rightMouseReleased() { return rightMouseJustUp; }
+	bool rightMouseReleased()
+	{
+		return rightMouseJustUp;
+	}
 
 	//------------------------------------------------------------------------------------
 	// Used to make mouse move off into distance in perspective to help depth
@@ -387,7 +516,10 @@ public:
 
 	//----------------------------------------------------------
 	// Attila Functionality.
-	void addAttila(uint32_t joyIndex) { attilaIndex = joyIndex; }
+	void addAttila(uint32_t joyIndex)
+	{
+		attilaIndex = joyIndex;
+	}
 
 	float getAttilaXAxis(void) // Left/Right Scroll
 	{
@@ -413,9 +545,15 @@ public:
 		return result;
 	}
 
-	float getMouseRightHeld() { return mouseRightHeldTime; }
+	float getMouseRightHeld()
+	{
+		return mouseRightHeldTime;
+	}
 
-	float getMouseLeftHeld() { return mouseLeftHeldTime; }
+	float getMouseLeftHeld()
+	{
+		return mouseLeftHeldTime;
+	}
 
 	//------------------------
 	// Poller

@@ -59,9 +59,18 @@ public:
 	~gos_DBCS(void);
 	void Render(void);
 	void Update(void);
-	DBCSSurface* GetSurface() { return m_surf; }
-	int32_t Getwidth() { return m_width; }
-	int32_t Getheight() { return m_height; }
+	DBCSSurface* GetSurface()
+	{
+		return m_surf;
+	}
+	int32_t Getwidth()
+	{
+		return m_width;
+	}
+	int32_t Getheight()
+	{
+		return m_height;
+	}
 	void PrepareTextures(void);
 	void Texture(DBCSSurface* surf);
 	void Translate(float x, float y, float z);
@@ -76,12 +85,18 @@ public:
 	void AddQuad(uint32_t X, uint32_t Y, uint32_t width, uint32_t height, uint32_t Texture,
 		uint32_t U, uint32_t V, uint32_t TextureSize);
 
-	void AddRef(void) { m_RefCount++; }
+	void AddRef(void)
+	{
+		m_RefCount++;
+	}
 	void Release(void)
 	{
 		m_RefCount--;
 		if (m_RefCount < 0)
 			m_RefCount = 0;
 	}
-	int32_t RefCount(void) { return m_RefCount; }
+	int32_t RefCount(void)
+	{
+		return m_RefCount;
+	}
 };

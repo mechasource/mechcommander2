@@ -27,8 +27,7 @@ LogisticsMechDisplay::LogisticsMechDisplay()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsMechDisplay::update()
+void LogisticsMechDisplay::update()
 {
 	componentListBox.update();
 	LogisticsScreen::update();
@@ -36,12 +35,11 @@ LogisticsMechDisplay::update()
 }
 
 //-------------------------------------------------------------------------------------------------
-LogisticsMechDisplay::~LogisticsMechDisplay() {}
+LogisticsMechDisplay::~LogisticsMechDisplay() { }
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsMechDisplay::render(int32_t xOffset, int32_t yOffset)
+void LogisticsMechDisplay::render(int32_t xOffset, int32_t yOffset)
 {
 	componentListBox.move(xOffset, yOffset);
 	componentListBox.render();
@@ -70,11 +68,11 @@ LogisticsMechDisplay::init()
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
 	mechCamera.init(rects[1].left(), rects[2].top(), rects[2].left(), rects[2].bottom());
-	wchar_t blockName[64];
+	wchar_t blockname[64];
 	for (size_t i = 0; i < 3; i++)
 	{
-		sprintf(blockName, "AttributeMeter%ld", i);
-		attributeMeters[i].init(&file, blockName);
+		sprintf(blockname, "AttributeMeter%ld", i);
+		attributeMeters[i].init(&file, blockname);
 	}
 	componentListBox.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	return 1;
@@ -82,8 +80,7 @@ LogisticsMechDisplay::init()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
+void LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 {
 	if (pMech != pCurMech)
 	{
@@ -95,7 +92,7 @@ LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 			wchar_t text[64];
 			wchar_t tmpStr[64];
 			cLoadString(IDS_MB_MECH_WEIGHT, tmpStr, 63);
-			sprintf(text, tmpStr, pCurMech->getMaxWeight(), (const std::wstring_view&)pCurMech->getMechClass());
+			sprintf(text, tmpStr, pCurMech->getMaxWeight(), (std::wstring_view)pCurMech->getMechClass());
 			textObjects[3].setText(text);
 			int32_t tmpcolour;
 			textObjects[2].setText(pCurMech->getVariant()->getOptimalRangeString(tmpcolour));
@@ -109,7 +106,7 @@ LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 			attributeMeters[0].setValue(pCurMech->getArmor() / MAX_ARMOR_RANGE);
 			attributeMeters[1].setValue(pCurMech->getSpeed() / MAX_SPEED_RANGE);
 			attributeMeters[2].setValue(pCurMech->getJumpRange() * 25 / MAX_JUMP_RANGE);
-			const std::wstring_view& fileName = pMech->getFileName();
+			std::wstring_view fileName = pMech->getFileName();
 			int32_t index = fileName.Find('.');
 			fileName = fileName.Left(index);
 			index = fileName.ReverseFind('\\');

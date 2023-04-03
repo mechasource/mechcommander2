@@ -84,7 +84,7 @@ float craterUVTable[136] = {
 //---------------------------------------------------------------------
 // class CraterManager
 int32_t
-CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, const std::wstring_view& craterFileName)
+CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, std::wstring_view craterFileName)
 {
 	init();
 	//-----------------------------------------------------
@@ -131,8 +131,7 @@ CraterManager::init(int32_t numCraters, uint32_t craterTypeSize, const std::wstr
 }
 
 //---------------------------------------------------------------------
-void
-CraterManager::destroy(void)
+void CraterManager::destroy(void)
 {
 	//---------------------------------------------
 	// Close file and whack it.
@@ -252,8 +251,7 @@ CraterManager::update(void)
 }
 
 //---------------------------------------------------------------------
-void
-CraterManager::render(void)
+void CraterManager::render(void)
 {
 	if (!useNonWeaponEffects)
 		return;

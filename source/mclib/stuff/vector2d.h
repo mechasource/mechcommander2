@@ -27,9 +27,12 @@ public:
 	T x;
 	T y;
 
-	Vector2DOf(void) {}
-	Vector2DOf(T x, T y) :
-		x(x), y(y) {}
+	Vector2DOf(void) { }
+	Vector2DOf(T x, T y)
+		: x(x)
+		, y(y)
+	{
+	}
 	Vector2DOf(const Vector2DOf<T>& v)
 	{
 		x = v.x;
@@ -37,11 +40,20 @@ public:
 	}
 
 	friend bool Small_Enough(const Vector2DOf<T>& v, float e);
-	bool operator!(void) const { return Small_Enough(*this, SMALL); }
+	bool operator!(void) const
+	{
+		return Small_Enough(*this, SMALL);
+	}
 
 	friend bool Close_Enough(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e);
-	bool operator==(const Vector2DOf<T>& v) const { return Close_Enough(*this, v, SMALL); }
-	bool operator!=(const Vector2DOf<T>& v) const { return !Close_Enough(*this, v, SMALL); }
+	bool operator==(const Vector2DOf<T>& v) const
+	{
+		return Close_Enough(*this, v, SMALL);
+	}
+	bool operator!=(const Vector2DOf<T>& v) const
+	{
+		return !Close_Enough(*this, v, SMALL);
+	}
 
 	const T& operator[](size_t index) const
 	{
@@ -81,7 +93,10 @@ public:
 		return *this;
 	}
 
-	Vector2DOf<T>& operator+=(const Vector2DOf<T>& v) { return Add(*this, v); }
+	Vector2DOf<T>& operator+=(const Vector2DOf<T>& v)
+	{
+		return Add(*this, v);
+	}
 	Vector2DOf<T>& Subtract(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2)
 	{
 		// Check_Object(this);
@@ -92,7 +107,10 @@ public:
 		return *this;
 	}
 
-	Vector2DOf<T>& operator-=(const Vector2DOf<T>& v) { return Subtract(*this, v); }
+	Vector2DOf<T>& operator-=(const Vector2DOf<T>& v)
+	{
+		return Subtract(*this, v);
+	}
 
 	T operator*(const Vector2DOf<T>& v) const
 	{
@@ -110,7 +128,10 @@ public:
 		return *this;
 	}
 
-	Vector2DOf<T>& operator*=(float v) { return Multiply(*this, v); }
+	Vector2DOf<T>& operator*=(float v)
+	{
+		return Multiply(*this, v);
+	}
 	Vector2DOf<T>& Multiply(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2)
 	{
 		// Check_Object(this);
@@ -121,7 +142,10 @@ public:
 		return *this;
 	}
 
-	Vector2DOf<T>& operator*=(const Vector2DOf<T>& v) { return Multiply(*this, v); }
+	Vector2DOf<T>& operator*=(const Vector2DOf<T>& v)
+	{
+		return Multiply(*this, v);
+	}
 	Vector2DOf<T>& Divide(const Vector2DOf<T>& v, T scale)
 	{
 		// Check_Object(this);
@@ -132,7 +156,10 @@ public:
 		return *this;
 	}
 
-	Vector2DOf<T>& operator/=(T v) { return Divide(*this, v); }
+	Vector2DOf<T>& operator/=(T v)
+	{
+		return Divide(*this, v);
+	}
 	Vector2DOf<T>& Divide(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2)
 	{
 		// Check_Object(this);
@@ -145,7 +172,10 @@ public:
 		return *this;
 	}
 
-	Vector2DOf<T>& operator/=(const Vector2DOf<T>& v) { return Divide(*this, v); }
+	Vector2DOf<T>& operator/=(const Vector2DOf<T>& v)
+	{
+		return Divide(*this, v);
+	}
 	T GetLengthSquared(void) const
 	{
 		// Check_Object(this);
@@ -184,7 +214,10 @@ public:
 		return *this;
 	}
 
-	void Zero(void) { x = y = 0; }
+	void Zero(void)
+	{
+		x = y = 0;
+	}
 
 	Vector2DOf<T>& Lerp(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float t)
 	{
@@ -197,7 +230,7 @@ public:
 	}
 
 #if !defined(Spew)
-	friend void Spew(const std::wstring_view& group, const Vector2DOf<T>& vector);
+	friend void Spew(std::wstring_view group, const Vector2DOf<T>& vector);
 #endif
 	void TestInstance(void) const
 	{
@@ -208,16 +241,14 @@ public:
 // Vector2DOf<T>::Identity(0.0f,0.0f);
 
 template <class T>
-bool
-Small_Enough(const Vector2DOf<T>& v, float e)
+bool Small_Enough(const Vector2DOf<T>& v, float e)
 {
 	Check_Object(&v);
 	return Small_Enough(static_cast<float>(v.x), e) && Small_Enough(static_cast<float>(v.y), e);
 }
 
 template <class T>
-bool
-Close_Enough(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e)
+bool Close_Enough(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e)
 {
 	Check_Object(&v1);
 	Check_Object(&v2);
@@ -229,8 +260,7 @@ typedef Vector2DOf<float> Vector2DScalar;
 
 #if !defined(Spew)
 template <class T>
-void
-Spew(const std::wstring_view& group, const Stuff::Vector2DOf<T>& vector)
+void Spew(std::wstring_view group, const Stuff::Vector2DOf<T>& vector)
 {
 	// Check_Object(this);
 	SPEW((group, "<+"));

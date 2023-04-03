@@ -42,8 +42,8 @@ uint8_t* shapeBuffer256 = nullptr;
 
 //---------------------------------------------------------------------------
 VFXElement::VFXElement(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
-	uint8_t* fTable, bool noScale, bool upScale) :
-	Element(-_y)
+	uint8_t* fTable, bool noScale, bool upScale)
+	: Element(-_y)
 {
 	shapeTable = _shape;
 	x = _x;
@@ -75,8 +75,8 @@ VFXElement::VFXElement(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, b
 
 //---------------------------------------------------------------------------
 VFXElement::VFXElement(uint8_t* _shape, float _x, float _y, int32_t frame, bool rev,
-	uint8_t* fTable, bool noScale, bool upScale) :
-	Element(-_y)
+	uint8_t* fTable, bool noScale, bool upScale)
+	: Element(-_y)
 {
 	shapeTable = _shape;
 	x = _x;
@@ -108,8 +108,7 @@ VFXElement::VFXElement(uint8_t* _shape, float _x, float _y, int32_t frame, bool 
 
 extern uint8_t* tempBuffer;
 //---------------------------------------------------------------------------
-void
-VFXElement::draw(void)
+void VFXElement::draw(void)
 {
 	if (!noScaleDraw)
 		scaleDraw(shapeTable, frameNum, x, y, reverse, fadeTable, scaleUp);
@@ -117,7 +116,7 @@ VFXElement::draw(void)
 	{
 		//----------------------------------------------------------------
 		// Check if shape is actually valid.
-		if ((*(int32_t*)shapeTable != *(int32_t*) "1.10"))
+		if ((*(int32_t*)shapeTable != *(int32_t*)"1.10"))
 			return;
 		if (!reverse)
 		{
@@ -277,8 +276,7 @@ int32_t mechRGBLookup2[56] = {
 int32_t mechCmdr1PaletteLookup[256];
 
 //---------------------------------------------------------------------------
-void
-VFXShapeElement::init(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+void VFXShapeElement::init(uint8_t* _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
 	uint32_t* fTable, float _z, float tZ)
 {
 	gosASSERT(_shape != nullptr);
@@ -354,8 +352,7 @@ VFXShapeElement::getTextureHandle(int32_t height)
 }
 
 //-------------------------------------------------------------------------------------------
-void
-VFXShapeElement::drawShape(void)
+void VFXShapeElement::drawShape(void)
 {
 	//-------------------------------------------------------------------------------------------
 	// -Create a buffer to hold the shapes.
@@ -521,8 +518,7 @@ VFXShapeElement::drawShape(void)
 }
 
 //---------------------------------------------------------------------------
-void
-VFXShapeElement::setTextureHandle(uint32_t handle, int32_t height)
+void VFXShapeElement::setTextureHandle(uint32_t handle, int32_t height)
 {
 	textureMemoryHandle = handle;
 	actualheight = height;
@@ -533,8 +529,7 @@ VFXShapeElement::setTextureHandle(uint32_t handle, int32_t height)
 }
 
 //---------------------------------------------------------------------------
-void
-VFXShapeElement::draw(void)
+void VFXShapeElement::draw(void)
 {
 	//-------------------------------------
 	// Clip and Draw Top Triangle First
@@ -610,8 +605,7 @@ VFXShapeElement::draw(void)
 
 //---------------------------------------------------------------------------
 // class TextureElement
-void
-TextureElement::init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy,
+void TextureElement::init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy,
 	float tW, float _z, float tZ)
 {
 	x = _x;
@@ -625,8 +619,7 @@ TextureElement::init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx
 }
 
 //---------------------------------------------------------------------------
-void
-TextureElement::draw(void)
+void TextureElement::draw(void)
 {
 	//-------------------------------------
 	// Nothing else to do with this bUt
@@ -732,8 +725,7 @@ TextureElement::draw(void)
 
 //---------------------------------------------------------------------------
 // class PolygonQuadElement
-void
-PolygonQuadElement::init(gos_VERTEX* v)
+void PolygonQuadElement::init(gos_VERTEX* v)
 {
 	vertices[0] = v[0];
 	vertices[1] = v[1];
@@ -745,8 +737,7 @@ PolygonQuadElement::init(gos_VERTEX* v)
 }
 
 //---------------------------------------------------------------------------
-void
-PolygonQuadElement::draw(void)
+void PolygonQuadElement::draw(void)
 {
 	//-------------------------------------
 	// nothing else to do with this bUt
@@ -833,8 +824,7 @@ PolygonQuadElement::draw(void)
 
 //---------------------------------------------------------------------------
 // class PolygonTriElement
-void
-PolygonTriElement::init(gos_VERTEX* v)
+void PolygonTriElement::init(gos_VERTEX* v)
 {
 	vertices[0] = v[0];
 	vertices[1] = v[1];
@@ -845,8 +835,7 @@ PolygonTriElement::init(gos_VERTEX* v)
 }
 
 //---------------------------------------------------------------------------
-void
-PolygonTriElement::draw(void)
+void PolygonTriElement::draw(void)
 {
 	//-------------------------------------
 	// nothing else to do with this bUt
@@ -905,8 +894,7 @@ PolygonTriElement::draw(void)
 
 //---------------------------------------------------------------------------
 // class TexturedPolygonQuadElement : public PolygonQuadElement
-void
-TexturedPolygonQuadElement::init(gos_VERTEX* v, uint32_t tHandle, bool writez, bool compz)
+void TexturedPolygonQuadElement::init(gos_VERTEX* v, uint32_t tHandle, bool writez, bool compz)
 {
 	PolygonQuadElement::init(v);
 	textureHandle = tHandle;
@@ -915,8 +903,7 @@ TexturedPolygonQuadElement::init(gos_VERTEX* v, uint32_t tHandle, bool writez, b
 }
 
 //---------------------------------------------------------------------------
-void
-TexturedPolygonQuadElement::draw(void)
+void TexturedPolygonQuadElement::draw(void)
 {
 	//-------------------------------------
 	// nothing else to do with this bUt
@@ -1008,16 +995,14 @@ TexturedPolygonQuadElement::draw(void)
 
 //---------------------------------------------------------------------------
 // class TexturedPolygonTriElement : public PolygonTriElement
-void
-TexturedPolygonTriElement::init(gos_VERTEX* v, uint32_t tHandle)
+void TexturedPolygonTriElement::init(gos_VERTEX* v, uint32_t tHandle)
 {
 	PolygonTriElement::init(v);
 	textureHandle = tHandle;
 }
 
 //---------------------------------------------------------------------------
-void
-TexturedPolygonTriElement::draw(void)
+void TexturedPolygonTriElement::draw(void)
 {
 	//-------------------------------------
 	// nothing else to do with this bUt

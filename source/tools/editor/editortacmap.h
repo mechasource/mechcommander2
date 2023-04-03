@@ -25,12 +25,24 @@ public:
 	TacMapTGA picture;
 	//}}AFX_DATA
 
-	void SetData(uint8_t* pData, size_t size) { picture.SetTGAFileData(pData, size); }
-	void UpdateMap() { picture.refreshBmp(void); }
+	void SetData(uint8_t* pData, size_t size)
+	{
+		picture.SetTGAFileData(pData, size);
+	}
+	void UpdateMap()
+	{
+		picture.refreshBmp(void);
+	}
 
 	void ReleaseFocus(void);
-	virtual void OnCancel() { ReleaseFocus(void); }
-	virtual void OnOk() { ReleaseFocus(void); }
+	virtual void OnCancel()
+	{
+		ReleaseFocus(void);
+	}
+	virtual void OnOk()
+	{
+		ReleaseFocus(void);
+	}
 
 	//{{AFX_VIRTUAL(EditorTacMap)
 protected:

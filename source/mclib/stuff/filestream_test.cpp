@@ -16,8 +16,7 @@
 //#############################################################################
 //
 
-bool
-FileStream::TestClass()
+bool FileStream::TestClass()
 {
 	wchar_t buffer[65535];
 	int32_t i;

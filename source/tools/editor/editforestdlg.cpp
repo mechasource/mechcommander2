@@ -17,16 +17,15 @@
 /////////////////////////////////////////////////////////////////////////////
 // EditForestDlg dialog
 
-EditForestDlg::EditForestDlg(CWnd* pParent /*=nullptr*/) :
-	CDialog(EditForestDlg::IDD, pParent)
+EditForestDlg::EditForestDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(EditForestDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(EditForestDlg)
 	m_Name = _T("");
 	//}}AFX_DATA_INIT
 }
 
-void
-EditForestDlg::DoDataExchange(CDataExchange* pDX)
+void EditForestDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(EditForestDlg)
@@ -36,11 +35,11 @@ EditForestDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(EditForestDlg, CDialog)
-//{{AFX_MSG_MAP(EditForestDlg)
-ON_BN_CLICKED(IDC_EDIT, OnEdit)
-ON_BN_CLICKED(IDC_DELETE, OnDelete)
-ON_BN_CLICKED(IDC_RENAME, OnRename)
-ON_LBN_SELCHANGE(IDC_LIST_FILES, OnSelchangeListFiles)
+	//{{AFX_MSG_MAP(EditForestDlg)
+	ON_BN_CLICKED(IDC_EDIT, OnEdit)
+	ON_BN_CLICKED(IDC_DELETE, OnDelete)
+	ON_BN_CLICKED(IDC_RENAME, OnRename)
+	ON_LBN_SELCHANGE(IDC_LIST_FILES, OnSelchangeListFiles)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -49,8 +48,7 @@ static wchar_t szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
 /////////////////////////////////////////////////////////////////////////////
 // EditForestDlg message handlers
 
-void
-EditForestDlg::OnOK()
+void EditForestDlg::OnOK()
 {
 	int32_t index = m_fileList.GetCurSel();
 	if (index != -1)
@@ -61,8 +59,7 @@ EditForestDlg::OnOK()
 	CDialog::OnOK();
 }
 
-void
-EditForestDlg::OnEdit()
+void EditForestDlg::OnEdit()
 {
 	int32_t index = m_fileList.GetCurSel();
 	if (index != -1)
@@ -87,8 +84,7 @@ EditForestDlg::OnEdit()
 	}
 }
 
-void
-EditForestDlg::OnDelete()
+void EditForestDlg::OnDelete()
 {
 	int32_t index = m_fileList.GetCurSel();
 	if (index != -1)
@@ -99,8 +95,7 @@ EditForestDlg::OnDelete()
 	}
 }
 
-void
-EditForestDlg::OnLoad()
+void EditForestDlg::OnLoad()
 {
 	CFileDialog dlg(TRUE, terrainPath, nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szFITFilter);
 	if (IDOK == dlg.DoModal())
@@ -116,8 +111,7 @@ EditForestDlg::OnLoad()
 	}
 }
 
-BOOL
-EditForestDlg::OnInitDialog()
+BOOL EditForestDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	for (size_t i = 0; i < m_fileList.GetCount(); i++)
@@ -136,7 +130,7 @@ EditForestDlg::OnInitDialog()
 		wchar_t final[256];
 		for (size_t i = 0; i < count; i++)
 		{
-			const std::wstring_view& pName = pForests[i]->getName();
+			std::wstring_view pName = pForests[i]->getName();
 			int32_t index = -1;
 			// make up name if necessary
 			if (!pName || !strlen(pName))
@@ -152,8 +146,7 @@ EditForestDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-EditForestDlg::OnSave()
+void EditForestDlg::OnSave()
 {
 	int32_t index = m_fileList.GetCurSel();
 	if (index != -1)
@@ -179,8 +172,7 @@ EditForestDlg::OnSave()
 	}
 }
 
-void
-EditForestDlg::OnRename()
+void EditForestDlg::OnRename()
 {
 	UpdateData();
 	int32_t index = m_fileList.GetCurSel();
@@ -197,8 +189,7 @@ EditForestDlg::OnRename()
 	}
 }
 
-void
-EditForestDlg::OnSelchangeListFiles()
+void EditForestDlg::OnSelchangeListFiles()
 {
 	int32_t index = m_fileList.GetCurSel();
 	if (index != -1)

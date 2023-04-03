@@ -6,7 +6,8 @@
 
 #include "mlr/mlrsorter.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -28,8 +29,7 @@ SortData::LoadSortAlphaFunc SortData::LoadSortAlpha[LastMode] = {&SortData::Load
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-SortData::DrawTriList()
+void SortData::DrawTriList()
 {
 	Start_Timer(GOS_Draw_Time);
 #ifdef LAB_ONLY
@@ -57,8 +57,7 @@ SortData::DrawTriList()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-SortData::DrawTriIndexedList()
+void SortData::DrawTriIndexedList()
 {
 	Start_Timer(GOS_Draw_Time);
 #ifdef LAB_ONLY
@@ -103,8 +102,7 @@ SortData::DrawTriIndexedList()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-SortData::DrawPointCloud()
+void SortData::DrawPointCloud()
 {
 	_ASSERT(texture2 == 0);
 	Start_Timer(GOS_Draw_Time);
@@ -150,8 +148,7 @@ SortData::DrawPointCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-SortData::DrawQuads()
+void SortData::DrawQuads()
 {
 	Start_Timer(GOS_Draw_Time);
 #ifdef LAB_ONLY
@@ -174,8 +171,7 @@ SortData::DrawQuads()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-SortData::DrawLineCloud()
+void SortData::DrawLineCloud()
 {
 	_ASSERT(texture2 == 0);
 	Start_Timer(GOS_Draw_Time);
@@ -298,8 +294,7 @@ ToBeDrawnPrimitive::ToBeDrawnPrimitive()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSorter::InitializeClass()
+void MLRSorter::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -310,8 +305,7 @@ MLRSorter::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSorter::TerminateClass()
+void MLRSorter::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -320,8 +314,8 @@ MLRSorter::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSorter::MLRSorter(ClassData* class_data, MLRTexturePool* tp) :
-	RegisteredClass(class_data)
+MLRSorter::MLRSorter(ClassData* class_data, MLRTexturePool* tp)
+	: RegisteredClass(class_data)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	texturePool = tp;
@@ -341,12 +335,11 @@ MLRSorter::MLRSorter(ClassData* class_data, MLRTexturePool* tp) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSorter::~MLRSorter() {}
+MLRSorter::~MLRSorter() { }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSorter::StartDraw(const MLRState& default_state)
+void MLRSorter::StartDraw(const MLRState& default_state)
 {
 	theCurrentState = default_state;
 	theCurrentState.SetRendererState(texturePool);
@@ -354,8 +347,7 @@ MLRSorter::StartDraw(const MLRState& default_state)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSorter::Reset()
+void MLRSorter::Reset()
 {
 	lastUsedRaw = 0;
 #ifdef CalDraw
@@ -369,8 +361,7 @@ MLRSorter::Reset()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSorter::DrawPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
+void MLRSorter::DrawPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 {
 	// Check_Object(this);
 	Check_Object(pt);
@@ -493,8 +484,7 @@ MLRSorter::SetRawData(MLRPrimitiveBase* pt, int32_t pass)
 #ifdef CalDraw
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSorter::IncreaseTBDPCounter()
+void MLRSorter::IncreaseTBDPCounter()
 {
 	// Check_Object(this);
 	int32_t priority = drawData[lastUsedDraw].primitive->GetReferenceState().GetPriority();
@@ -506,8 +496,7 @@ MLRSorter::IncreaseTBDPCounter()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
+bool MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 {
 	_ASSERT(original != newer);
 	int32_t changed = (original.renderState ^ newer.renderState);
@@ -636,8 +625,7 @@ MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSorter::TestInstance(void) const
+void MLRSorter::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

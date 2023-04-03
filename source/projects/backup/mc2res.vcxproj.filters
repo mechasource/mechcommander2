@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\mc2res">
+      <UniqueIdentifier>{95adb63c-750d-4680-a493-71ff3a9b5a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\mc2res">
+      <UniqueIdentifier>{26a562eb-6edd-4b88-8637-66b91c32ddbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\mc2res">
+      <UniqueIdentifier>{e821af21-fbab-4a85-ac35-062a1c6fa5e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\icons">
+      <UniqueIdentifier>{c8ce7fc4-63e9-456a-81d3-31a70e491fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\animations">
+      <UniqueIdentifier>{3e49b1c9-bc1e-4a4c-a2a8-9b5537922cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{65e50a4a-270f-45ab-989a-a5c7de7d3847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{f5f132ac-2157-4f6a-9d14-93371989bcc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{5ad9ce82-a48e-47a6-96e8-a1003fd7b2ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\DLL">
+      <UniqueIdentifier>{2fd0a040-ac49-47ff-a714-3b4be10ae7fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts">
+      <UniqueIdentifier>{ba223857-99b8-45c0-a5d0-7cc125f045fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\mc2res">
+      <UniqueIdentifier>{c3d985f9-deee-463a-aed0-858ed36eb20a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\mc2res\mc2version.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mc2res\resource.h">
+      <Filter>Resources\mc2res</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\mc2res\mechcommander2.ver">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\mc2res\bmech.ani">
+      <Filter>Resources\animations</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\mc2res\icon.ico">
+      <Filter>Resources\icons</Filter>
+    </Image>
+    <Image Include="..\mc2res\mechcommander2.ico">
+      <Filter>Resources\icons</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\mc2res\mc2res.rc">
+      <Filter>Resources\mc2res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

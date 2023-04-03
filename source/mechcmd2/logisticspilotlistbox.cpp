@@ -27,8 +27,7 @@ LogisticsPilotListBox::~LogisticsPilotListBox()
 	aListBox::destroy();
 }
 
-void
-LogisticsPilotListBox::update()
+void LogisticsPilotListBox::update()
 {
 	aListBox::update();
 	for (size_t i = 0; i < itemCount; i++)
@@ -74,7 +73,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem(LogisticsPilot* pNewPilot)
 	addChild(&outline);
 	addChild(&line);
 	addChild(&pilotOutline);
-	const std::wstring_view& name = pPilot->getName();
+	std::wstring_view name = pPilot->getName();
 	name.MakeUpper();
 	nameText.setText(name);
 	// ACE not continguous with other ranks.  Added too late!
@@ -112,8 +111,7 @@ LogisticsPilotListBoxItem::init(FitIniFile* file)
 	return 0;
 }
 
-void
-LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
+void LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 {
 	wchar_t animationText[64];
 	if (NO_ERROR == file.readIdString("Animation", animationText, 63))
@@ -131,8 +129,7 @@ LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 	s_templateItem->pChildAnimations[whichOne] = -1;
 }
 
-void
-LogisticsPilotListBoxItem::render()
+void LogisticsPilotListBoxItem::render()
 {
 	for (size_t i = 0; i < this->pNumberOfChildren; i++)
 	{
@@ -152,8 +149,7 @@ LogisticsPilotListBoxItem::render()
 	   location[0].x, location[0].y );*/
 }
 
-void
-LogisticsPilotListBoxItem::update()
+void LogisticsPilotListBoxItem::update()
 {
 	bool isInside = pointInside(userInput->getMouseX(), userInput->getMouseY());
 	for (size_t i = 0; i < 3; i++)
@@ -201,8 +197,7 @@ LogisticsPilotListBoxItem::update()
 	aObject::update();
 }
 
-void
-LogisticsPilotListBox::makeUVs(LogisticsPilot* pPilot, aObject& icon)
+void LogisticsPilotListBox::makeUVs(LogisticsPilot* pPilot, aObject& icon)
 {
 	icon = LogisticsPilotListBoxItem::s_templateItem->icon;
 	// need to set the UV's
@@ -265,8 +260,7 @@ LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 	return aListBox::AddItem(pNewItem);
 }
 
-void
-LogisticsPilotListBox::removePilot(LogisticsPilot* pPilot)
+void LogisticsPilotListBox::removePilot(LogisticsPilot* pPilot)
 {
 	for (size_t i = 0; i < itemCount; i++)
 	{

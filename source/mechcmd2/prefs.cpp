@@ -79,7 +79,7 @@ CPrefs::CPrefs()
 }
 
 int32_t
-CPrefs::load(const std::wstring_view& pFileName)
+CPrefs::load(std::wstring_view pFileName)
 {
 	int32_t result = 0;
 	FullPathFileName prefsPathname;
@@ -165,21 +165,21 @@ CPrefs::load(const std::wstring_view& pFileName)
 			result = prefsFile->readIdBoolean("useLeftRightMouseProfile", useLeftRightMouseProfile);
 			if (result != NO_ERROR)
 				useLeftRightMouseProfile = true;
-			wchar_t blockName[64];
+			wchar_t blockname[64];
 			for (size_t i = 0; i < 10; i++)
 			{
-				sprintf(blockName, "PlayerName%ld", i);
-				result = prefsFile->readIdString(blockName, &playerName[i][0], 255);
+				sprintf(blockname, "PlayerName%ld", i);
+				result = prefsFile->readIdString(blockname, &playerName[i][0], 255);
 				if (result != NO_ERROR && i == 0)
 				{
 					result = prefsFile->readIdString("PlayerName", &playerName[0][0], 255);
 					result = prefsFile->readIdString("UnitName", &unitName[0][0], 255);
 					break;
 				}
-				sprintf(blockName, "IPAddress%ld", i);
-				result = prefsFile->readIdString(blockName, &ipAddresses[i][0], 255);
-				sprintf(blockName, "UnitName%ld", i);
-				result = prefsFile->readIdString(blockName, &unitName[i][0], 255);
+				sprintf(blockname, "IPAddress%ld", i);
+				result = prefsFile->readIdString(blockname, &ipAddresses[i][0], 255);
+				sprintf(blockname, "UnitName%ld", i);
+				result = prefsFile->readIdString(blockname, &unitName[i][0], 255);
 			}
 			result = prefsFile->readIdLong("Basecolour", basecolour);
 			if (result != NO_ERROR)
@@ -247,7 +247,7 @@ CPrefs::save()
 	// MoveFileEx(originalPath, backupPath, MOVEFILE_COPY_ALLOWED |
 	// MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 	FitIniFilePtr prefsFile = new FitIniFile;
-	int32_t result = prefsFile->create((const std::wstring_view&)originalPath);
+	int32_t result = prefsFile->create((std::wstring_view)originalPath);
 	if (result != NO_ERROR)
 	{
 		gosASSERT(false);
@@ -276,15 +276,15 @@ CPrefs::save()
 			result = prefsFile->writeIdLong("Brightness", gammaLevel);
 			result =
 				prefsFile->writeIdBoolean("useLeftRightMouseProfile", useLeftRightMouseProfile);
-			wchar_t blockName[64];
+			wchar_t blockname[64];
 			for (size_t i = 0; i < 10; i++)
 			{
-				sprintf(blockName, "PlayerName%ld", i);
-				result = prefsFile->writeIdString(blockName, &playerName[i][0]);
-				sprintf(blockName, "UnitName%ld", i);
-				result = prefsFile->writeIdString(blockName, &unitName[i][0]);
-				sprintf(blockName, "IPAddress%ld", i);
-				result = prefsFile->writeIdString(blockName, &ipAddresses[i][0]);
+				sprintf(blockname, "PlayerName%ld", i);
+				result = prefsFile->writeIdString(blockname, &playerName[i][0]);
+				sprintf(blockname, "UnitName%ld", i);
+				result = prefsFile->writeIdString(blockname, &unitName[i][0]);
+				sprintf(blockname, "IPAddress%ld", i);
+				result = prefsFile->writeIdString(blockname, &ipAddresses[i][0]);
 			}
 			result = prefsFile->writeIdLong("Basecolour", basecolour);
 			result = prefsFile->writeIdLong("Highlightcolor", highlightcolour);
@@ -418,8 +418,7 @@ CPrefs::applyPrefs(bool applyRes)
 	return 0;
 }
 
-void
-CPrefs::setNewName(const std::wstring_view& pNewName)
+void CPrefs::setNewName(std::wstring_view pNewName)
 {
 	if (!pNewName)
 		return;
@@ -453,8 +452,7 @@ CPrefs::setNewName(const std::wstring_view& pNewName)
 	}
 }
 
-void
-CPrefs::setNewIP(const std::wstring_view& pNewIP)
+void CPrefs::setNewIP(std::wstring_view pNewIP)
 {
 	if (!pNewIP)
 		return;
@@ -483,8 +481,7 @@ CPrefs::setNewIP(const std::wstring_view& pNewIP)
 	}
 }
 
-void
-CPrefs::setNewUnit(const std::wstring_view& pNewUnit)
+void CPrefs::setNewUnit(std::wstring_view pNewUnit)
 {
 	if (!pNewUnit)
 		return;

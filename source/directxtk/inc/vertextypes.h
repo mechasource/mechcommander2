@@ -17,327 +17,327 @@
 
 #include <DirectXMath.h>
 
-
 namespace directxtk
 {
-    // Vertex struct holding position information.
-    struct VertexPosition
-    {
-        VertexPosition() = default;
+// Vertex struct holding position information.
+struct VertexPosition
+{
+	VertexPosition() = default;
 
-        VertexPosition(const VertexPosition&) = default;
-        VertexPosition& operator=(const VertexPosition&) = default;
+	VertexPosition(const VertexPosition&) = default;
+	VertexPosition& operator=(const VertexPosition&) = default;
 
-        VertexPosition(VertexPosition&&) = default;
-        VertexPosition& operator=(VertexPosition&&) = default;
-
-        VertexPosition(DirectX::XMFLOAT3 const& iposition) noexcept
-            : position(iposition)
-        { }
-
-        VertexPosition(DirectX::FXMVECTOR iposition) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-        }
-
-        DirectX::XMFLOAT3 position;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 1;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-
-
-    // Vertex struct holding position and color information.
-    struct VertexPositionColor
-    {
-        VertexPositionColor() = default;
-
-        VertexPositionColor(const VertexPositionColor&) = default;
-        VertexPositionColor& operator=(const VertexPositionColor&) = default;
-
-        VertexPositionColor(VertexPositionColor&&) = default;
-        VertexPositionColor& operator=(VertexPositionColor&&) = default;
-
-        VertexPositionColor(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT4 const& icolor) noexcept
-            : position(iposition),
-            color(icolor)
-        { }
-
-        VertexPositionColor(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR icolor) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-            XMStoreFloat4(&this->color, icolor);
-        }
-
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT4 color;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 2;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-
-
-    // Vertex struct holding position and texture mapping information.
-    struct VertexPositionTexture
-    {
-        VertexPositionTexture() = default;
-
-        VertexPositionTexture(const VertexPositionTexture&) = default;
-        VertexPositionTexture& operator=(const VertexPositionTexture&) = default;
-
-        VertexPositionTexture(VertexPositionTexture&&) = default;
-        VertexPositionTexture& operator=(VertexPositionTexture&&) = default;
-
-        VertexPositionTexture(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT2 const& itextureCoordinate) noexcept
-            : position(iposition),
-            textureCoordinate(itextureCoordinate)
-        { }
-
-        VertexPositionTexture(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR itextureCoordinate) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-            XMStoreFloat2(&this->textureCoordinate, itextureCoordinate);
-        }
-
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT2 textureCoordinate;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 2;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-
-
-    // Vertex struct holding position and dual texture mapping information.
-    struct VertexPositionDualTexture
-    {
-        VertexPositionDualTexture() = default;
-
-        VertexPositionDualTexture(const VertexPositionDualTexture&) = default;
-        VertexPositionDualTexture& operator=(const VertexPositionDualTexture&) = default;
-
-        VertexPositionDualTexture(VertexPositionDualTexture&&) = default;
-        VertexPositionDualTexture& operator=(VertexPositionDualTexture&&) = default;
-
-        VertexPositionDualTexture(
-            DirectX::XMFLOAT3 const& iposition,
-            DirectX::XMFLOAT2 const& itextureCoordinate0,
-            DirectX::XMFLOAT2 const& itextureCoordinate1) noexcept
-                : position(iposition),
-                  textureCoordinate0(itextureCoordinate0),
-                  textureCoordinate1(itextureCoordinate1)
-        { }
-
-        VertexPositionDualTexture(
-            DirectX::FXMVECTOR iposition,
-            DirectX::FXMVECTOR itextureCoordinate0,
-            DirectX::FXMVECTOR itextureCoordinate1) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-            XMStoreFloat2(&this->textureCoordinate0, itextureCoordinate0);
-            XMStoreFloat2(&this->textureCoordinate1, itextureCoordinate1);
-        }
-
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT2 textureCoordinate0;
-        DirectX::XMFLOAT2 textureCoordinate1;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 3;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-
-
-    // Vertex struct holding position and normal vector.
-    struct VertexPositionNormal
-    {
-        VertexPositionNormal() = default;
-
-        VertexPositionNormal(const VertexPositionNormal&) = default;
-        VertexPositionNormal& operator=(const VertexPositionNormal&) = default;
-
-        VertexPositionNormal(VertexPositionNormal&&) = default;
-        VertexPositionNormal& operator=(VertexPositionNormal&&) = default;
-
-        VertexPositionNormal(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT3 const& inormal) noexcept
-            : position(iposition),
-            normal(inormal)
-        { }
-
-        VertexPositionNormal(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR inormal) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-            XMStoreFloat3(&this->normal, inormal);
-        }
-
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT3 normal;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 2;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-
-
-    // Vertex struct holding position, color, and texture mapping information.
-    struct VertexPositionColorTexture
-    {
-        VertexPositionColorTexture() = default;
-
-        VertexPositionColorTexture(const VertexPositionColorTexture&) = default;
-        VertexPositionColorTexture& operator=(const VertexPositionColorTexture&) = default;
-
-        VertexPositionColorTexture(VertexPositionColorTexture&&) = default;
-        VertexPositionColorTexture& operator=(VertexPositionColorTexture&&) = default;
-
-        VertexPositionColorTexture(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT4 const& icolor, DirectX::XMFLOAT2 const& itextureCoordinate) noexcept
-            : position(iposition),
-            color(icolor),
-            textureCoordinate(itextureCoordinate)
-        { }
-
-        VertexPositionColorTexture(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR icolor, DirectX::FXMVECTOR itextureCoordinate) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-            XMStoreFloat4(&this->color, icolor);
-            XMStoreFloat2(&this->textureCoordinate, itextureCoordinate);
-        }
-
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT4 color;
-        DirectX::XMFLOAT2 textureCoordinate;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 3;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-
-
-    // Vertex struct holding position, normal vector, and color information.
-    struct VertexPositionNormalColor
-    {
-        VertexPositionNormalColor() = default;
-
-        VertexPositionNormalColor(const VertexPositionNormalColor&) = default;
-        VertexPositionNormalColor& operator=(const VertexPositionNormalColor&) = default;
-
-        VertexPositionNormalColor(VertexPositionNormalColor&&) = default;
-        VertexPositionNormalColor& operator=(VertexPositionNormalColor&&) = default;
-    
-        VertexPositionNormalColor(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT3 const& inormal, DirectX::XMFLOAT4 const& icolor) noexcept
-            : position(iposition),
-            normal(inormal),
-            color(icolor)
-        { }
-
-        VertexPositionNormalColor(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR inormal, DirectX::FXMVECTOR icolor) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-            XMStoreFloat3(&this->normal, inormal);
-            XMStoreFloat4(&this->color, icolor);
-        }
-
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT3 normal;
-        DirectX::XMFLOAT4 color;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 3;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-
-
-    // Vertex struct holding position, normal vector, and texture mapping information.
-    struct VertexPositionNormalTexture
-    {
-        VertexPositionNormalTexture() = default;
-
-        VertexPositionNormalTexture(const VertexPositionNormalTexture&) = default;
-        VertexPositionNormalTexture& operator=(const VertexPositionNormalTexture&) = default;
-
-        VertexPositionNormalTexture(VertexPositionNormalTexture&&) = default;
-        VertexPositionNormalTexture& operator=(VertexPositionNormalTexture&&) = default;
-
-        VertexPositionNormalTexture(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT3 const& inormal, DirectX::XMFLOAT2 const& itextureCoordinate) noexcept
-            : position(iposition),
-            normal(inormal),
-            textureCoordinate(itextureCoordinate)
-        { }
-
-        VertexPositionNormalTexture(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR inormal, DirectX::FXMVECTOR itextureCoordinate) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-            XMStoreFloat3(&this->normal, inormal);
-            XMStoreFloat2(&this->textureCoordinate, itextureCoordinate);
-        }
-
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT3 normal;
-        DirectX::XMFLOAT2 textureCoordinate;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 3;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-
-
-    // Vertex struct holding position, normal vector, color, and texture mapping information.
-    struct VertexPositionNormalColorTexture
-    {
-        VertexPositionNormalColorTexture() = default;
-
-        VertexPositionNormalColorTexture(const VertexPositionNormalColorTexture&) = default;
-        VertexPositionNormalColorTexture& operator=(const VertexPositionNormalColorTexture&) = default;
-
-        VertexPositionNormalColorTexture(VertexPositionNormalColorTexture&&) = default;
-        VertexPositionNormalColorTexture& operator=(VertexPositionNormalColorTexture&&) = default;
-
-        VertexPositionNormalColorTexture(
-            DirectX::XMFLOAT3 const& iposition,
-            DirectX::XMFLOAT3 const& inormal,
-            DirectX::XMFLOAT4 const& icolor,
-            DirectX::XMFLOAT2 const& itextureCoordinate) noexcept
-                : position(iposition),
-                  normal(inormal),
-                  color(icolor),
-                  textureCoordinate(itextureCoordinate)
-        { }
-
-        VertexPositionNormalColorTexture(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR inormal, DirectX::FXMVECTOR icolor, DirectX::CXMVECTOR itextureCoordinate) noexcept
-        {
-            XMStoreFloat3(&this->position, iposition);
-            XMStoreFloat3(&this->normal, inormal);
-            XMStoreFloat4(&this->color, icolor);
-            XMStoreFloat2(&this->textureCoordinate, itextureCoordinate);
-        }
-
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT3 normal;
-        DirectX::XMFLOAT4 color;
-        DirectX::XMFLOAT2 textureCoordinate;
-
-        static const D3D12_INPUT_LAYOUT_DESC InputLayout;
-
-    private:
-        static constexpr uint32_t InputElementCount = 4;
-        static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
-    };
-}
+	VertexPosition(VertexPosition&&) = default;
+	VertexPosition& operator=(VertexPosition&&) = default;
+
+	VertexPosition(DirectX::XMFLOAT3 const& iposition) noexcept
+		: position(iposition)
+	{
+	}
+
+	VertexPosition(DirectX::FXMVECTOR iposition) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+	}
+
+	DirectX::XMFLOAT3 position;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 1;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+
+// Vertex struct holding position and color information.
+struct VertexPositionColor
+{
+	VertexPositionColor() = default;
+
+	VertexPositionColor(const VertexPositionColor&) = default;
+	VertexPositionColor& operator=(const VertexPositionColor&) = default;
+
+	VertexPositionColor(VertexPositionColor&&) = default;
+	VertexPositionColor& operator=(VertexPositionColor&&) = default;
+
+	VertexPositionColor(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT4 const& icolor) noexcept
+		: position(iposition)
+		, color(icolor)
+	{
+	}
+
+	VertexPositionColor(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR icolor) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+		XMStoreFloat4(&this->color, icolor);
+	}
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT4 color;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 2;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+
+// Vertex struct holding position and texture mapping information.
+struct VertexPositionTexture
+{
+	VertexPositionTexture() = default;
+
+	VertexPositionTexture(const VertexPositionTexture&) = default;
+	VertexPositionTexture& operator=(const VertexPositionTexture&) = default;
+
+	VertexPositionTexture(VertexPositionTexture&&) = default;
+	VertexPositionTexture& operator=(VertexPositionTexture&&) = default;
+
+	VertexPositionTexture(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT2 const& itextureCoordinate) noexcept
+		: position(iposition)
+		, textureCoordinate(itextureCoordinate)
+	{
+	}
+
+	VertexPositionTexture(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR itextureCoordinate) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+		XMStoreFloat2(&this->textureCoordinate, itextureCoordinate);
+	}
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT2 textureCoordinate;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 2;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+
+// Vertex struct holding position and dual texture mapping information.
+struct VertexPositionDualTexture
+{
+	VertexPositionDualTexture() = default;
+
+	VertexPositionDualTexture(const VertexPositionDualTexture&) = default;
+	VertexPositionDualTexture& operator=(const VertexPositionDualTexture&) = default;
+
+	VertexPositionDualTexture(VertexPositionDualTexture&&) = default;
+	VertexPositionDualTexture& operator=(VertexPositionDualTexture&&) = default;
+
+	VertexPositionDualTexture(
+		DirectX::XMFLOAT3 const& iposition,
+		DirectX::XMFLOAT2 const& itextureCoordinate0,
+		DirectX::XMFLOAT2 const& itextureCoordinate1) noexcept
+		: position(iposition)
+		, textureCoordinate0(itextureCoordinate0)
+		, textureCoordinate1(itextureCoordinate1)
+	{
+	}
+
+	VertexPositionDualTexture(
+		DirectX::FXMVECTOR iposition,
+		DirectX::FXMVECTOR itextureCoordinate0,
+		DirectX::FXMVECTOR itextureCoordinate1) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+		XMStoreFloat2(&this->textureCoordinate0, itextureCoordinate0);
+		XMStoreFloat2(&this->textureCoordinate1, itextureCoordinate1);
+	}
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT2 textureCoordinate0;
+	DirectX::XMFLOAT2 textureCoordinate1;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 3;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+
+// Vertex struct holding position and normal vector.
+struct VertexPositionNormal
+{
+	VertexPositionNormal() = default;
+
+	VertexPositionNormal(const VertexPositionNormal&) = default;
+	VertexPositionNormal& operator=(const VertexPositionNormal&) = default;
+
+	VertexPositionNormal(VertexPositionNormal&&) = default;
+	VertexPositionNormal& operator=(VertexPositionNormal&&) = default;
+
+	VertexPositionNormal(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT3 const& inormal) noexcept
+		: position(iposition)
+		, normal(inormal)
+	{
+	}
+
+	VertexPositionNormal(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR inormal) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+		XMStoreFloat3(&this->normal, inormal);
+	}
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 normal;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 2;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+
+// Vertex struct holding position, color, and texture mapping information.
+struct VertexPositionColorTexture
+{
+	VertexPositionColorTexture() = default;
+
+	VertexPositionColorTexture(const VertexPositionColorTexture&) = default;
+	VertexPositionColorTexture& operator=(const VertexPositionColorTexture&) = default;
+
+	VertexPositionColorTexture(VertexPositionColorTexture&&) = default;
+	VertexPositionColorTexture& operator=(VertexPositionColorTexture&&) = default;
+
+	VertexPositionColorTexture(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT4 const& icolor, DirectX::XMFLOAT2 const& itextureCoordinate) noexcept
+		: position(iposition)
+		, color(icolor)
+		, textureCoordinate(itextureCoordinate)
+	{
+	}
+
+	VertexPositionColorTexture(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR icolor, DirectX::FXMVECTOR itextureCoordinate) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+		XMStoreFloat4(&this->color, icolor);
+		XMStoreFloat2(&this->textureCoordinate, itextureCoordinate);
+	}
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT4 color;
+	DirectX::XMFLOAT2 textureCoordinate;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 3;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+
+// Vertex struct holding position, normal vector, and color information.
+struct VertexPositionNormalColor
+{
+	VertexPositionNormalColor() = default;
+
+	VertexPositionNormalColor(const VertexPositionNormalColor&) = default;
+	VertexPositionNormalColor& operator=(const VertexPositionNormalColor&) = default;
+
+	VertexPositionNormalColor(VertexPositionNormalColor&&) = default;
+	VertexPositionNormalColor& operator=(VertexPositionNormalColor&&) = default;
+
+	VertexPositionNormalColor(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT3 const& inormal, DirectX::XMFLOAT4 const& icolor) noexcept
+		: position(iposition)
+		, normal(inormal)
+		, color(icolor)
+	{
+	}
+
+	VertexPositionNormalColor(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR inormal, DirectX::FXMVECTOR icolor) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+		XMStoreFloat3(&this->normal, inormal);
+		XMStoreFloat4(&this->color, icolor);
+	}
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 normal;
+	DirectX::XMFLOAT4 color;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 3;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+
+// Vertex struct holding position, normal vector, and texture mapping information.
+struct VertexPositionNormalTexture
+{
+	VertexPositionNormalTexture() = default;
+
+	VertexPositionNormalTexture(const VertexPositionNormalTexture&) = default;
+	VertexPositionNormalTexture& operator=(const VertexPositionNormalTexture&) = default;
+
+	VertexPositionNormalTexture(VertexPositionNormalTexture&&) = default;
+	VertexPositionNormalTexture& operator=(VertexPositionNormalTexture&&) = default;
+
+	VertexPositionNormalTexture(DirectX::XMFLOAT3 const& iposition, DirectX::XMFLOAT3 const& inormal, DirectX::XMFLOAT2 const& itextureCoordinate) noexcept
+		: position(iposition)
+		, normal(inormal)
+		, textureCoordinate(itextureCoordinate)
+	{
+	}
+
+	VertexPositionNormalTexture(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR inormal, DirectX::FXMVECTOR itextureCoordinate) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+		XMStoreFloat3(&this->normal, inormal);
+		XMStoreFloat2(&this->textureCoordinate, itextureCoordinate);
+	}
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 normal;
+	DirectX::XMFLOAT2 textureCoordinate;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 3;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+
+// Vertex struct holding position, normal vector, color, and texture mapping information.
+struct VertexPositionNormalColorTexture
+{
+	VertexPositionNormalColorTexture() = default;
+
+	VertexPositionNormalColorTexture(const VertexPositionNormalColorTexture&) = default;
+	VertexPositionNormalColorTexture& operator=(const VertexPositionNormalColorTexture&) = default;
+
+	VertexPositionNormalColorTexture(VertexPositionNormalColorTexture&&) = default;
+	VertexPositionNormalColorTexture& operator=(VertexPositionNormalColorTexture&&) = default;
+
+	VertexPositionNormalColorTexture(
+		DirectX::XMFLOAT3 const& iposition,
+		DirectX::XMFLOAT3 const& inormal,
+		DirectX::XMFLOAT4 const& icolor,
+		DirectX::XMFLOAT2 const& itextureCoordinate) noexcept
+		: position(iposition)
+		, normal(inormal)
+		, color(icolor)
+		, textureCoordinate(itextureCoordinate)
+	{
+	}
+
+	VertexPositionNormalColorTexture(DirectX::FXMVECTOR iposition, DirectX::FXMVECTOR inormal, DirectX::FXMVECTOR icolor, DirectX::CXMVECTOR itextureCoordinate) noexcept
+	{
+		XMStoreFloat3(&this->position, iposition);
+		XMStoreFloat3(&this->normal, inormal);
+		XMStoreFloat4(&this->color, icolor);
+		XMStoreFloat2(&this->textureCoordinate, itextureCoordinate);
+	}
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 normal;
+	DirectX::XMFLOAT4 color;
+	DirectX::XMFLOAT2 textureCoordinate;
+
+	static const D3D12_INPUT_LAYOUT_DESC InputLayout;
+
+private:
+	static constexpr uint32_t InputElementCount = 4;
+	static const D3D12_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+};
+} // namespace directxtk

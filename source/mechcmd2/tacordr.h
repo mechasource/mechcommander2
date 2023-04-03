@@ -28,128 +28,128 @@
 
 enum class MoveSpeedType : uint8_t
 {
-	MOVE_SPEED_BEST,
-	MOVE_SPEED_MAXIMUM,
-	MOVE_SPEED_SLOW,
-	MOVE_SPEED_MODERATE,
-	NUM_MOVE_SPEEDS
+	best,           // notused
+	maximum,        // notused
+	slow,           // notused
+	moderate,
+	count           // notused
 };
 
 enum class MovePatternType : uint8_t
 {
-	MOVE_PATTERN_DIRECT,
-	MOVE_PATTERN_ZIGZAG_NARROW,
-	MOVE_PATTERN_ZIGZAG_MEDIUM,
-	MOVE_PATTERN_ZIGZAG_WIDE,
-	MOVE_PATTERN_RANDOM_NARROW,
-	MOVE_PATTERN_RANDOM_MEDIUM,
-	MOVE_PATTERN_RANDOM_WIDE,
-	NUM_MOVE_PATTERNS
+	direct,         // notused
+	zigzagnarrow,   // notused
+	zigzagmedium,   // notused
+	zigzagwide,     // notused
+	randomnarrow,   // notused
+	randommedium,   // notused
+	randomwide,     // notused
+	count           // notused
 };
 
 enum class AttitudeType : uint8_t
 {
-	ATTITUDE_CAUTIOUS,
-	ATTITUDE_CONSERVATIVE,
-	ATTITUDE_NORMAL,
-	ATTITUDE_AGGRESSIVE,
-	ATTITUDE_BERSERKER,
-	ATTITUDE_SUICIDAL,
-	NUM_ATTITUDES
+	cautious,       // notused
+	conservative,   // notused
+	normal,         // notused
+	aggressive,     // notused
+	berserker,      // notused
+	suicidal,       // notused
+	count
 };
 
 //#define	FIRERANGE_OPTIMUM	-1
 
-enum class FireRangeType : uint8_t
+enum class FireRangeType : int8_t
 {
-	FIRERANGE_DEFAULT = -4,
-	FIRERANGE_RAMMING,
-	FIRERANGE_LONGEST,
-	FIRERANGE_OPTIMAL,
-	FIRERANGE_SHORT,
-	FIRERANGE_MEDIUM,
-	FIRERANGE_LONG,
-	FIRERANGE_CURRENT,
-	NUM_FIRERANGES
+	none = -5,
+	normal = -4,
+	ramming,
+	longest,
+	optimal,
+	shortest,
+	medium,
+	extended,
+	current,
+	count
 };
 
 enum class AttackType : uint8_t
 {
-	ATTACK_NONE,
-	ATTACK_TO_DESTROY,
-	ATTACK_TO_DISABLE,
-	ATTACK_CONSERVING_AMMO,
-	NUM_ATTACK_TYPES
+	none,
+	destroy,
+	disable,
+	conservingammo,
+	count
 };
 
 enum class AttackMethod : uint8_t
 {
-	ATTACKMETHOD_RANGED,
-	ATTACKMETHOD_DFA,
-	ATTACKMETHOD_RAMMING,
-	NUM_ATTACKMETHODS
+	ranged,
+	dfa,
+	ramming,
+	count
 };
 
 enum class FireOddsType : uint8_t
 {
-	FIREODDS_LUCKY,
-	FIREODDS_BAD,
-	FIREODDS_MEDIUM,
-	FIREODDS_GOOD,
-	FIREODDS_GREAT,
-	NUM_FIREODDS
+	lucky,      // notused
+	bad,        // notused
+	medium,     // notused
+	good,       // notused
+	great,      // notused
+	count
 };
 
 enum class TacticType : uint8_t
 {
-	TACTIC_NONE,
-	TACTIC_FLANK_LEFT,
-	TACTIC_FLANK_RIGHT,
-	TACTIC_FLANK_REAR,
-	TACTIC_STOP_AND_FIRE,
-	TACTIC_TURRET,
-	TACTIC_JOUST,
-	NUM_TACTICS
+	none,
+	flankleft,
+	flankright,
+	flankrear,
+	stopandfire,
+	turret,
+	joust,
+	count
 };
 
 enum class OrderOriginType : uint8_t
 {
-	ORDER_ORIGIN_PLAYER,
-	ORDER_ORIGIN_COMMANDER,
-	ORDER_ORIGIN_SELF
+	player,
+	commander,
+	self
 };
 
 enum class TacticalOrderCode : uint8_t
 {
-	TACTICAL_ORDER_NONE,
-	TACTICAL_ORDER_WAIT,
-	TACTICAL_ORDER_MOVETO_POINT,
-	TACTICAL_ORDER_MOVETO_OBJECT,
-	TACTICAL_ORDER_JUMPTO_POINT,
-	TACTICAL_ORDER_JUMPTO_OBJECT,
-	TACTICAL_ORDER_TRAVERSE_PATH,
-	TACTICAL_ORDER_PATROL_PATH,
-	TACTICAL_ORDER_ESCORT,
-	TACTICAL_ORDER_FOLLOW,
-	TACTICAL_ORDER_GUARD,
-	TACTICAL_ORDER_STOP,
-	TACTICAL_ORDER_POWERUP,
-	TACTICAL_ORDER_POWERDOWN,
-	TACTICAL_ORDER_WAYPOINTS_DONE,
-	TACTICAL_ORDER_EJECT,
-	TACTICAL_ORDER_ATTACK_OBJECT,
-	TACTICAL_ORDER_ATTACK_POINT,
-	TACTICAL_ORDER_HOLD_FIRE,
-	TACTICAL_ORDER_WITHDRAW,
-	TACTICAL_ORDER_SCRAMBLE,
-	TACTICAL_ORDER_CAPTURE,
-	TACTICAL_ORDER_REFIT,
-	TACTICAL_ORDER_GETFIXED,
-	TACTICAL_ORDER_LOAD_INTO_CARRIER,
-	TACTICAL_ORDER_DEPLOY_ELEMENTALS,
-	TACTICAL_ORDER_RECOVER,
-	NUM_TACTICAL_ORDERS // IF THIS CHANGES, ADD GUARD_POINT AS SEP. ORDER (see
-	// pack/unpack hack)
+	none,
+	wait,
+	movetopoint,
+	movetoobject,
+	jumptopoint,
+	jumptoobject,
+	traversepath,
+	patrolpath,
+	escort,
+	follow,
+	guard,
+	stop,
+	powerup,
+	powerdown,
+	waypointsdone,
+	eject,
+	attackobject,
+	attackpoint,
+	holdfire,
+	withdraw,
+	scramble,
+	capture,
+	refit,
+	getfixed,
+	loadintocarrier,
+	deployelementals,
+	recover,
+	count // IF THIS CHANGES, ADD GUARD_POINT AS SEP. ORDER (see pack/unpack hack)
 };
 
 //***************************************************************************
@@ -167,7 +167,7 @@ enum class TravelModeType : uint8_t
 	fast,
 	jump,
 	numberoftypes,
-	invalid = UCHAR_MAX	// not used
+	invalid = UCHAR_MAX // not used
 };
 
 enum class SpecialMoveMode : uint8_t
@@ -268,11 +268,23 @@ public:
 	void initWayPath(LocationNodePtr path);
 	void initAttackWayPath(LocationNodePtr path);
 	void destroy(void);
-	TacticalOrder(void) { init(void); }
-	~TacticalOrder(void) { destroy(void); }
-	void setId(int32_t newId) { id = newId; }
+	TacticalOrder(void)
+	{
+		init(void);
+	}
+	~TacticalOrder(void)
+	{
+		destroy(void);
+	}
+	void setId(int32_t newId)
+	{
+		id = newId;
+	}
 	void setId(std::unique_ptr<MechWarrior> pilot);
-	int32_t getId(void) { return (id); }
+	int32_t getId(void)
+	{
+		return (id);
+	}
 	int32_t execute(std::unique_ptr<MechWarrior> warrior, int32_t& message);
 	int32_t status(std::unique_ptr<MechWarrior> warrior);
 	Stuff::Vector3D getWayPoint(int32_t index);
@@ -290,11 +302,17 @@ public:
 	int32_t unpack(void);
 	void setGroupFlag(int32_t localMoverId, bool set);
 	int32_t getGroup(int32_t commanderid, std::unique_ptr<Mover>* moverList, std::unique_ptr<Mover>* point, int32_t sortType = 0);
-	void setStage(int32_t newStage) { stage = (wchar_t)newStage; }
+	void setStage(int32_t newStage)
+	{
+		stage = (wchar_t)newStage;
+	}
 	GameObjectPtr getTarget(void);
 	bool equals(TacticalOrder* tacOrder);
-	wchar_t getStatusCode(void) { return (statusCode); }
-	void debugString(std::unique_ptr<MechWarrior> pilot, const std::wstring_view& s);
+	wchar_t getStatusCode(void)
+	{
+		return (statusCode);
+	}
+	void debugString(std::unique_ptr<MechWarrior> pilot, std::wstring_view s);
 };
 
 //***************************************************************************

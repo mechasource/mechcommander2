@@ -5,14 +5,14 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
- All code is logically copyrighted to Microsoft
+ All code is logically copyrighted by Microsoft
 *******************************************************************************/
 /*******************************************************************************
  debugger.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Back, created
+ 2014-07-24 Jerker Bäck, created
 
 *******************************************************************************/
 
@@ -141,11 +141,11 @@ ShowLogFileControls(void);
 gos_GetMouseInfo(float*, float*, int*, int*, int*, uint32_t*);
 gos_SetViewport(uint32_t, uint32_t, uint32_t, uint32_t, float, float);
 SaveStatistics(void);
-IJLERR (*_ijlFree)
+IJLERR(*_ijlFree)
 (_JPEG_CORE_PROPERTIES*);
-IJLERR (*_ijlWrite)
+IJLERR(*_ijlWrite)
 (_JPEG_CORE_PROPERTIES*, IJLIOTYPE);
-IJLERR (*_ijlInit)
+IJLERR(*_ijlInit)
 (_JPEG_CORE_PROPERTIES*);
 InternalDoesFileExist(char const*);
 GrabScreenImage(void);

@@ -40,7 +40,7 @@ class Socket
 	//
 public:
 	virtual ~Socket(void);
-	void TestInstance(void) {}
+	void TestInstance(void) { }
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Socket methods
@@ -51,7 +51,10 @@ public:
 	// AddPlug - Add a plug to this socket, untyped access.
 	//-----------------------------------------------------------------------
 	//
-	void AddPlug(Plug* plug) { AddImplementation(plug); }
+	void AddPlug(Plug* plug)
+	{
+		AddImplementation(plug);
+	}
 
 	//
 	//-----------------------------------------------------------------------
@@ -80,8 +83,14 @@ public:
 	//		utilities and are not normally used by a client.
 	//-----------------------------------------------------------------------
 	//
-	Node* GetReleaseNode(void) { return socketsNode; }
-	void SetReleaseNode(Node* release_node) { socketsNode = release_node; }
+	Node* GetReleaseNode(void)
+	{
+		return socketsNode;
+	}
+	void SetReleaseNode(Node* release_node)
+	{
+		socketsNode = release_node;
+	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Protected methods
@@ -132,16 +141,25 @@ class SocketIterator : public Iterator
 	// Destructor and testing
 	//
 public:
-	~SocketIterator(void) {}
-	void TestInstance(void) const {}
+	~SocketIterator(void) { }
+	void TestInstance(void) const { }
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Iterator methods (see Iterator for full listing)
 	//
 public:
-	Plug* ReadAndNextPlug(void) { return static_cast<Plug*>(ReadAndNextImplementation()); }
-	Plug* ReadAndPreviousPlug(void) { return static_cast<Plug*>(ReadAndPreviousImplementation()); }
-	Plug* GetCurrentPlug(void) { return static_cast<Plug*>(GetCurrentImplementation()); }
+	Plug* ReadAndNextPlug(void)
+	{
+		return static_cast<Plug*>(ReadAndNextImplementation());
+	}
+	Plug* ReadAndPreviousPlug(void)
+	{
+		return static_cast<Plug*>(ReadAndPreviousImplementation());
+	}
+	Plug* GetCurrentPlug(void)
+	{
+		return static_cast<Plug*>(GetCurrentImplementation());
+	}
 	Plug* GetNthPlug(CollectionSize index)
 	{
 		return static_cast<Plug*>(GetNthImplementation(index));
@@ -152,7 +170,10 @@ public:
 	// InsertPlug - Inserts plug at current location, untyped access.
 	//-----------------------------------------------------------------------
 	//
-	void InsertPlug(Plug* plug) { InsertImplementation(plug); }
+	void InsertPlug(Plug* plug)
+	{
+		InsertImplementation(plug);
+	}
 
 	//
 	//-----------------------------------------------------------------------
@@ -174,7 +195,10 @@ public:
 	// Protected interface
 	//
 protected:
-	explicit SocketIterator(Socket* socket) { this->socket = socket; }
+	explicit SocketIterator(Socket* socket)
+	{
+		this->socket = socket;
+	}
 
 	virtual void InsertImplementation(Plug*);
 

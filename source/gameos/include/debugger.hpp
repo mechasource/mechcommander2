@@ -68,8 +68,10 @@ typedef struct _MenuItem
 	struct _MenuItem* pSubMenu; // Pointer to sub menu list, or nullptr
 	uint32_t(__stdcall* Callback)(PSTR Name, uint32_t MenuFunction);
 	void(__stdcall* Routine)(void); // Sub menu list pointer
-	BOOLEAN(__stdcall* Greyed)(void);
-	BOOLEAN(__stdcall* CheckMark)(void); // 0 When no check mark routine, 1 when sub menu
+	BOOLEAN(__stdcall* Greyed)
+	(void);
+	BOOLEAN(__stdcall* CheckMark)
+	(void); // 0 When no check mark routine, 1 when sub menu
 	PSTR FullName;
 	PSTR Name;
 } MenuItem;

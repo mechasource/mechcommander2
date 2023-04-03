@@ -17,8 +17,7 @@
 //#############################################################################
 //#############################################################################
 //
-float
-Radian::Normalize(float value)
+float Radian::Normalize(float value)
 {
 	float temp = static_cast<float>(fmod(value, Two_Pi));
 	if (temp > Pi)
@@ -115,8 +114,7 @@ SinCosPair::operator=(const Radian& radian)
 //#############################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Radian& angle)
+void Spew(std::wstring_view group, const Radian& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "%f rad+", angle.m_angle));
@@ -126,8 +124,7 @@ Spew(const std::wstring_view& group, const Radian& angle)
 //#############################################################################
 //#############################################################################
 //
-void
-Spew(const std::wstring_view& group, const Degree& angle)
+void Spew(std::wstring_view group, const Degree& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "%f deg+", angle.m_angle));
@@ -137,8 +134,7 @@ Spew(const std::wstring_view& group, const Degree& angle)
 //#############################################################################
 //#############################################################################
 //
-void
-Spew(const std::wstring_view& group, const SinCosPair& angle)
+void Spew(std::wstring_view group, const SinCosPair& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "{%f,%f}+", angle.cosine, angle.sine));

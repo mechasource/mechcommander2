@@ -30,8 +30,11 @@ class Note : public Plug
 	// Constructors
 	//
 protected:
-	Note(Page* page) :
-		Plug(DefaultData) { m_page = page; }
+	Note(Page* page)
+		: Plug(DefaultData)
+	{
+		m_page = page;
+	}
 
 	Page* m_page;
 
@@ -39,13 +42,13 @@ protected:
 	// Note functions
 	//
 public:
-	void SetName(const std::wstring_view& entryname)
+	void SetName(std::wstring_view entryname)
 	{
 		// Check_Object(this);
 		Check_Pointer(entryname);
 		m_name = entryname;
 	}
-	const std::wstring_view&
+	std::wstring_view
 	GetName(void) const
 	{
 		// Check_Object(this);
@@ -68,14 +71,14 @@ protected:
 	// string access
 	//
 public:
-	void GetEntry(const std::wstring_view&* contents)
+	void GetEntry(std::wstring_view* contents)
 	{
 		// Check_Object(this);
 		Check_Pointer(contents);
 		if (contents)
 			*contents = m_text;
 	}
-	void SetEntry(const std::wstring_view& contents)
+	void SetEntry(std::wstring_view contents)
 	{
 		// Check_Object(this);
 		m_text = contents;

@@ -45,7 +45,10 @@ public:
 		numItems = 0;
 	}
 
-	PriorityQueue(void) { init(void); }
+	PriorityQueue(void)
+	{
+		init(void);
+	}
 
 	int32_t init(int32_t maxItems, int32_t keyMinValue = -2000000);
 
@@ -57,17 +60,32 @@ public:
 
 	int32_t find(int32_t id);
 
-	void clear(void) { numItems = 0; }
+	void clear(void)
+	{
+		numItems = 0;
+	}
 
-	int32_t getNumItems(void) { return (numItems); }
+	int32_t getNumItems(void)
+	{
+		return (numItems);
+	}
 
-	bool isEmpty(void) { return (numItems == 0); }
+	bool isEmpty(void)
+	{
+		return (numItems == 0);
+	}
 
-	PQNode* getItem(int32_t itemIndex) { return (&pqList[itemIndex]); }
+	PQNode* getItem(int32_t itemIndex)
+	{
+		return (&pqList[itemIndex]);
+	}
 
 	void destroy(void);
 
-	~PriorityQueue(void) { destroy(void); }
+	~PriorityQueue(void)
+	{
+		destroy(void);
+	}
 };
 
 typedef PriorityQueue* PriorityQueuePtr;

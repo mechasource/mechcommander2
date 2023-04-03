@@ -24,7 +24,6 @@ class Action;
 class EditorObject;
 class ObjectAppearance;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 BuildingBrush:
@@ -47,7 +46,7 @@ public:
 	class BuildingAction : public Action
 	{
 	public:
-		virtual ~BuildingAction(void) {}
+		virtual ~BuildingAction(void) { }
 		virtual bool redo(void);
 		virtual bool undo(void);
 		virtual void addBuildingInfo(EditorObject& info);

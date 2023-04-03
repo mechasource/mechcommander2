@@ -20,10 +20,9 @@ LinkBrush::LinkBrush(bool Link)
 	parent = nullptr;
 }
 
-LinkBrush::~LinkBrush() {}
+LinkBrush::~LinkBrush() { }
 
-bool
-LinkBrush::beginPaint()
+bool LinkBrush::beginPaint()
 {
 	pAction = new LinkAction();
 	return true;
@@ -41,8 +40,7 @@ LinkBrush::endPaint()
 	return nullptr;
 }
 
-bool
-LinkBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool LinkBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	if (!bLink)
 		return unPaint(worldPos, screenX, screenY);
@@ -96,8 +94,7 @@ LinkBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	return false;
 }
 
-bool
-LinkBrush::canPaint(Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
+bool LinkBrush::canPaint(Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
 {
 	if (!bLink)
 		return canUnPaint(pos, x, y, flags);
@@ -116,8 +113,7 @@ LinkBrush::canPaint(Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
 	return false;
 }
 
-bool
-LinkBrush::canUnPaint(Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
+bool LinkBrush::canUnPaint(Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
 {
 	const EditorObject* pBuilding = EditorObjectMgr::instance()->getObjectAtPosition(pos);
 	if (!pBuilding)
@@ -145,10 +141,9 @@ LinkBrush::LinkAction::AddToListOnce(const LinkBrush::LinkInfo& Info)
 	return 1;
 }
 
-LinkBrush::LinkAction::LinkAction() {}
+LinkBrush::LinkAction::LinkAction() { }
 
-bool
-LinkBrush::LinkAction::undo()
+bool LinkBrush::LinkAction::undo()
 {
 	// go through each of the objects in the list
 	for (EList<LinkInfo, const LinkInfo&>::EIterator iter = changedLinks.End(); !iter.IsDone();
@@ -227,8 +222,7 @@ LinkBrush::LinkAction::undo()
 	return true;
 }
 
-bool
-LinkBrush::unPaint(Stuff::Vector3D& pos, int32_t XPos, int32_t yPos)
+bool LinkBrush::unPaint(Stuff::Vector3D& pos, int32_t XPos, int32_t yPos)
 {
 	const EditorObject* pBuilding = EditorObjectMgr::instance()->getObjectAtPosition(pos);
 	if (pBuilding)
@@ -256,20 +250,18 @@ LinkBrush::unPaint(Stuff::Vector3D& pos, int32_t XPos, int32_t yPos)
 	return false;
 }
 
-bool
-LinkBrush::LinkAction::redo()
+bool LinkBrush::LinkAction::redo()
 {
 	return undo();
 }
 
-LinkBrush::LinkInfo::LinkInfo(BuildingLink* pOriginal, LinkBrush::LinkInfo::TYPE Type) :
-	m_LinkCopy(*pOriginal)
+LinkBrush::LinkInfo::LinkInfo(BuildingLink* pOriginal, LinkBrush::LinkInfo::TYPE Type)
+	: m_LinkCopy(*pOriginal)
 {
 	type = Type;
 }
 
-void
-LinkBrush::render(int32_t screenX, int32_t screenY)
+void LinkBrush::render(int32_t screenX, int32_t screenY)
 {
 	if (parent)
 	{

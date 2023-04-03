@@ -48,8 +48,7 @@ Origin3D::operator=(const LinearMatrix4D& matrix)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Stuff::Close_Enough(const Origin3D& a1, const Origin3D& a2, float e)
+bool Stuff::Close_Enough(const Origin3D& a1, const Origin3D& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
@@ -99,8 +98,7 @@ Origin3D::Lerp(const Origin3D& start, const Origin3D& end, float t)
 //###########################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Origin3D& origin)
+void Spew(std::wstring_view group, const Origin3D& origin)
 {
 	SPEW((group, "{+"));
 	Spew(group, origin.linearPosition);
@@ -114,8 +112,7 @@ Spew(const std::wstring_view& group, const Origin3D& origin)
 //###########################################################################
 //###########################################################################
 //
-void
-Origin3D::TestInstance(void) const
+void Origin3D::TestInstance(void) const
 {
 	Check_Object(&angularPosition);
 }

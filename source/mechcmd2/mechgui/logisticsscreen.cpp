@@ -40,14 +40,12 @@ LogisticsScreen::~LogisticsScreen()
 	destroy();
 }
 
-void
-LogisticsScreen::destroy()
+void LogisticsScreen::destroy()
 {
 	clear();
 }
 
-void
-LogisticsScreen::clear()
+void LogisticsScreen::clear()
 {
 	if (statics)
 		delete[] statics;
@@ -77,27 +75,26 @@ LogisticsScreen::clear()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, const std::wstring_view& textName, const std::wstring_view& rectName,
-	const std::wstring_view& buttonName, const std::wstring_view& editName, const std::wstring_view& animObjectName, uint32_t neverFlush)
+void LogisticsScreen::init(FitIniFile& file, std::wstring_view staticName, std::wstring_view textName, std::wstring_view rectName,
+	std::wstring_view buttonName, std::wstring_view editName, std::wstring_view animObjectName, uint32_t neverFlush)
 {
 	clear();
-	wchar_t blockName[256];
+	wchar_t blockname[256];
 	// init statics
 	if (staticName)
 	{
-		sprintf(blockName, "%s%c", staticName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", staticName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			file.readIdLong("staticCount", staticCount);
 			if (staticCount)
 			{
 				statics = new aObject[staticCount];
-				wchar_t blockName[128];
+				wchar_t blockname[128];
 				for (size_t i = 0; i < staticCount; i++)
 				{
-					sprintf(blockName, "%s%ld", staticName, i);
-					statics[i].init(&file, blockName);
+					sprintf(blockname, "%s%ld", staticName, i);
+					statics[i].init(&file, blockname);
 				}
 			}
 		}
@@ -105,18 +102,18 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 	if (rectName)
 	{
 		// init rects
-		sprintf(blockName, "%s%c", rectName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", rectName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			file.readIdLong("rectCount", rectCount);
 			if (rectCount)
 			{
 				rects = new aRect[rectCount];
-				wchar_t blockName[128];
+				wchar_t blockname[128];
 				for (size_t i = 0; i < rectCount; i++)
 				{
-					sprintf(blockName, "%s%ld", rectName, i);
-					rects[i].init(&file, blockName);
+					sprintf(blockname, "%s%ld", rectName, i);
+					rects[i].init(&file, blockname);
 				}
 			}
 		}
@@ -124,18 +121,18 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 	// init buttons
 	if (buttonName)
 	{
-		sprintf(blockName, "%s%c", buttonName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", buttonName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			file.readIdLong("buttonCount", buttonCount);
 			if (buttonCount)
 			{
-				wchar_t blockName[128];
+				wchar_t blockname[128];
 				buttons = new aAnimButton[buttonCount];
 				for (size_t i = 0; i < buttonCount; i++)
 				{
-					sprintf(blockName, "%s%ld", buttonName, i);
-					buttons[i].init(file, blockName);
+					sprintf(blockname, "%s%ld", buttonName, i);
+					buttons[i].init(file, blockname);
 					addChild(&buttons[i]);
 				}
 			}
@@ -144,56 +141,56 @@ LogisticsScreen::init(FitIniFile& file, const std::wstring_view& staticName, con
 	// init texts
 	if (textName)
 	{
-		sprintf(blockName, "%s%c", textName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", textName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			if (NO_ERROR != file.readIdLong("TextEntryCount", textCount))
 				file.readIdLong("TextCount", textCount);
 			if (textCount)
 			{
 				textObjects = new aText[textCount];
-				wchar_t blockName[64];
+				wchar_t blockname[64];
 				for (size_t i = 0; i < textCount; i++)
 				{
-					sprintf(blockName, "%s%ld", textName, i);
-					textObjects[i].init(&file, blockName);
+					sprintf(blockname, "%s%ld", textName, i);
+					textObjects[i].init(&file, blockname);
 				}
 			}
 		}
 	}
 	if (editName)
 	{
-		sprintf(blockName, "%s%c", editName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", editName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			if (NO_ERROR != file.readIdLong("EditCount", editCount))
 				file.readIdLong("EditCount", editCount);
 			if (editCount)
 			{
 				edits = new aEdit[editCount];
-				wchar_t blockName[64];
+				wchar_t blockname[64];
 				for (size_t i = 0; i < editCount; i++)
 				{
-					sprintf(blockName, "%s%ld", editName, i);
-					edits[i].init(&file, blockName);
+					sprintf(blockname, "%s%ld", editName, i);
+					edits[i].init(&file, blockname);
 				}
 			}
 		}
 	}
 	if (animObjectName)
 	{
-		sprintf(blockName, "%s%c", animObjectName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", animObjectName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			file.readIdLong("Count", animObjectsCount);
 			if (animObjectsCount)
 			{
 				animObjects = new aAnimObject[animObjectsCount];
-				wchar_t blockName[64];
+				wchar_t blockname[64];
 				for (size_t i = 0; i < animObjectsCount; i++)
 				{
-					sprintf(blockName, "%s%ld", animObjectName, i);
-					animObjects[i].init(&file, blockName, neverFlush);
+					sprintf(blockname, "%s%ld", animObjectName, i);
+					animObjects[i].init(&file, blockname, neverFlush);
 				}
 			}
 		}
@@ -224,8 +221,7 @@ LogisticsScreen::getRect(int32_t who)
 }
 
 //-------------------------------------------------------------------------------------------------
-void
-LogisticsScreen::update()
+void LogisticsScreen::update()
 {
 	int32_t i;
 	for (i = 0; i < staticCount; i++)
@@ -245,7 +241,7 @@ LogisticsScreen::update()
 	{
 		if (::helpTextID)
 		{
-			const std::wstring_view& helpText;
+			std::wstring_view helpText;
 			wchar_t tmp[1024];
 			//	if ( helpTextHeaderID )
 			//	{
@@ -287,8 +283,7 @@ LogisticsScreen::update()
 }
 
 //-------------------------------------------------------------------------------------------------
-void
-LogisticsScreen::render()
+void LogisticsScreen::render()
 {
 	if (!isShowing())
 		return;
@@ -352,8 +347,7 @@ LogisticsScreen::getStatus()
 	return status;
 }
 
-void
-LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
+void LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	if (!isShowing())
 		return;
@@ -443,8 +437,7 @@ LogisticsScreen::operator=(const LogisticsScreen& src)
 	return *this;
 }
 
-void
-LogisticsScreen::copyData(const LogisticsScreen& src)
+void LogisticsScreen::copyData(const LogisticsScreen& src)
 {
 	if (&src != this)
 	{
@@ -502,8 +495,7 @@ LogisticsScreen::copyData(const LogisticsScreen& src)
 	}
 }
 
-void
-LogisticsScreen::moveTo(int32_t xPos, int32_t yPos)
+void LogisticsScreen::moveTo(int32_t xPos, int32_t yPos)
 {
 	int32_t xOffset = xPos - globalX();
 	int32_t yOffset = yPos - globalY();
@@ -511,8 +503,7 @@ LogisticsScreen::moveTo(int32_t xPos, int32_t yPos)
 	move(xOffset, yOffset);
 }
 
-void
-LogisticsScreen::move(int32_t xOffset, int32_t yOffset)
+void LogisticsScreen::move(int32_t xOffset, int32_t yOffset)
 {
 	int32_t i;
 	for (i = 0; i < rectCount; i++)
@@ -537,8 +528,7 @@ LogisticsScreen::move(int32_t xOffset, int32_t yOffset)
 		animObjects[i].move(xOffset, yOffset);
 }
 
-bool
-LogisticsScreen::inside(int32_t x, int32_t y)
+bool LogisticsScreen::inside(int32_t x, int32_t y)
 {
 	int32_t i;
 	for (i = 0; i < staticCount; i++)
@@ -569,8 +559,7 @@ LogisticsScreen::inside(int32_t x, int32_t y)
 	return false;
 }
 
-void
-LogisticsScreen::begin()
+void LogisticsScreen::begin()
 {
 	for (size_t i = 0; i < animObjectsCount; i++)
 		animObjects[i].begin();

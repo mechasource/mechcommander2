@@ -65,13 +65,19 @@ public:
 		gridSize = 0;
 	}
 
-	Clouds(void) { init(void); }
+	Clouds(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~Clouds(void) { destroy(void); }
+	~Clouds(void)
+	{
+		destroy(void);
+	}
 
-	void init(const std::wstring_view& textureName, int32_t gSize);
+	void init(std::wstring_view textureName, int32_t gSize);
 
 	void update(void);
 	void render(void);

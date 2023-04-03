@@ -40,7 +40,10 @@ public:
 		numItems = 0;
 	}
 
-	SortList(void) { init(void); }
+	SortList(void)
+	{
+		init(void);
+	}
 
 	int32_t init(uint32_t numItems);
 
@@ -56,19 +59,31 @@ public:
 			list[index].value = value;
 	}
 
-	uint32_t getId(uint32_t index) { return (list[index].id); }
+	uint32_t getId(uint32_t index)
+	{
+		return (list[index].id);
+	}
 
-	float getValue(uint32_t index) { return (list[index].value); }
+	float getValue(uint32_t index)
+	{
+		return (list[index].value);
+	}
 
 	void clear(bool setToMin = true);
 
-	uint32_t getNumItems(void) { return (numItems); }
+	uint32_t getNumItems(void)
+	{
+		return (numItems);
+	}
 
 	void sort(bool descendingOrder = true);
 
 	void destroy(void);
 
-	~SortList(void) { destroy(void); }
+	~SortList(void)
+	{
+		destroy(void);
+	}
 };
 
 typedef SortList* SortListPtr;

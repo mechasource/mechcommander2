@@ -8,7 +8,8 @@
 #include "mlr/mlrclipper.h"
 #include "mlr/mlrpointcloud.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //#########################    MLRPointCloud    ###############################
@@ -18,8 +19,7 @@ MLRPointCloud::ClassData* MLRPointCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPointCloud::InitializeClass()
+void MLRPointCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -30,8 +30,7 @@ MLRPointCloud::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPointCloud::TerminateClass()
+void MLRPointCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -40,8 +39,9 @@ MLRPointCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPointCloud::MLRPointCloud(uint32_t nr, uint32_t _type) :
-	MLREffect(nr, DefaultData), type(_type)
+MLRPointCloud::MLRPointCloud(uint32_t nr, uint32_t _type)
+	: MLREffect(nr, DefaultData)
+	, type(_type)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
@@ -58,8 +58,7 @@ MLRPointCloud::~MLRPointCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPointCloud::SetData(
+void MLRPointCloud::SetData(
 	const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data)
 {
 	// Check_Pointer(this);
@@ -71,8 +70,7 @@ MLRPointCloud::SetData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPointCloud::Draw(
+void MLRPointCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -208,8 +206,7 @@ MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPointCloud::TestInstance(void) const
+void MLRPointCloud::TestInstance(void) const
 {
 	if (usedNrOfVertices)
 	{

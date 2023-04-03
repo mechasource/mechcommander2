@@ -37,8 +37,7 @@ extern uint8_t* LZPacketBuffer;
 extern uint32_t LZPacketBufferSize;
 //---------------------------------------------------------------------------
 // class PacketFile
-void
-PacketFile::clear(void)
+void PacketFile::clear(void)
 {
 	currentPacket = -1;
 	packetSize = packetBase = numPackets = 0;
@@ -48,8 +47,7 @@ PacketFile::clear(void)
 }
 
 //---------------------------------------------------------------------------
-void
-PacketFile::atClose(void)
+void PacketFile::atClose(void)
 {
 	if (isOpen() && fileMode != READ) // update filesize
 	{
@@ -96,7 +94,7 @@ PacketFile::atClose(void)
 		if (seekTable)
 		{
 			seek(sizeof(int32_t) * 2); // File Version & File Length
-			write(uint8_t*(seekTable), (numPackets * sizeof(int32_t)));
+			write(uint8_t * (seekTable), (numPackets * sizeof(int32_t)));
 		}
 		//------------------------------------------------------
 		// Is we were using a checkSum, calc it and write it to
@@ -161,7 +159,7 @@ PacketFile::afterOpen(void)
 			seekTable = (int32_t*)systemHeap->Malloc(numPackets * sizeof(int32_t));
 			gosASSERT(seekTable != nullptr);
 			seek(sizeof(int32_t) * 2); // File Version & File Length
-			read(uint8_t*(seekTable), (numPackets * sizeof(int32_t)));
+			read(uint8_t * (seekTable), (numPackets * sizeof(int32_t)));
 		}
 	}
 	return (NO_ERROR);
@@ -183,7 +181,7 @@ PacketFile::~PacketFile(void)
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::open(const std::wstring_view& filename, FileMode _mode, int32_t numChild)
+PacketFile::open(std::wstring_view filename, FileMode _mode, int32_t numChild)
 {
 	int32_t openResult = MechFile::open(filename, _mode, numChild);
 	if (openResult != NO_ERROR)
@@ -207,7 +205,7 @@ PacketFile::open(std::unique_ptr<File> _parent, uint32_t fileSize, int32_t numCh
 
 //---------------------------------------------------------------------------
 int32_t
-PacketFile::create(const std::wstring_view& filename)
+PacketFile::create(std::wstring_view filename)
 {
 	int32_t openResult = MechFile::create(filename);
 	if (openResult != NO_ERROR)
@@ -219,7 +217,7 @@ PacketFile::create(const std::wstring_view& filename)
 }
 
 int32_t
-PacketFile::createWithCase(const std::wstring_view& filename)
+PacketFile::createWithCase(std::wstring_view filename)
 {
 	int32_t openResult = MechFile::createWithCase(filename);
 	if (openResult != NO_ERROR)
@@ -231,8 +229,7 @@ PacketFile::createWithCase(const std::wstring_view& filename)
 }
 
 //---------------------------------------------------------------------------
-void
-PacketFile::close(void)
+void PacketFile::close(void)
 {
 	atClose();
 	MechFile::close();
@@ -412,8 +409,7 @@ PacketFile::seekPacket(int32_t packet)
 }
 
 //---------------------------------------------------------------------------
-void
-PacketFile::operator++(void)
+void PacketFile::operator++(void)
 {
 	if (++currentPacket >= numPackets)
 	{
@@ -423,8 +419,7 @@ PacketFile::operator++(void)
 }
 
 //---------------------------------------------------------------------------
-void
-PacketFile::operator--(void)
+void PacketFile::operator--(void)
 {
 	if (currentPacket-- <= 0)
 	{
@@ -469,8 +464,7 @@ PacketFile::getStorageType(void)
 }
 
 //---------------------------------------------------------------------------
-void
-PacketFile::reserve(int32_t count, bool useCheckSum)
+void PacketFile::reserve(int32_t count, bool useCheckSum)
 {
 	//---------------------------------------------------
 	// If we already have packets, reserve does nothing.
@@ -499,7 +493,7 @@ PacketFile::reserve(int32_t count, bool useCheckSum)
 		if (seekTable != nullptr)
 		{
 			seek(sizeof(int32_t) * 2); // File Version & File Length
-			read(uint8_t*(seekTable), (numPackets * sizeof(int32_t)));
+			read(uint8_t * (seekTable), (numPackets * sizeof(int32_t)));
 		}
 	}
 }

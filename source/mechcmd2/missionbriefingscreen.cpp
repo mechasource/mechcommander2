@@ -47,8 +47,7 @@ MissionBriefingScreen::~MissionBriefingScreen()
 
 //-------------------------------------------------------------------------------------------------
 
-void
-MissionBriefingScreen::init(FitIniFile* file)
+void MissionBriefingScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	for (size_t i = 0; i < buttonCount; i++)
@@ -64,8 +63,7 @@ MissionBriefingScreen::init(FitIniFile* file)
 		statics[VIDEO_SCREEN].right(), statics[VIDEO_SCREEN].bottom());
 }
 
-void
-MissionBriefingScreen::render(int32_t xOffset, int32_t yOffset)
+void MissionBriefingScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	missionListBox.move(xOffset, yOffset);
 	missionListBox.render();
@@ -83,8 +81,7 @@ MissionBriefingScreen::render(int32_t xOffset, int32_t yOffset)
 		ChatWindow::instance()->render(xOffset, yOffset);
 }
 
-void
-MissionBriefingScreen::update()
+void MissionBriefingScreen::update()
 {
 	if (MPlayer || LogisticsData::instance->isSingleMission())
 	{
@@ -214,7 +211,7 @@ MissionBriefingScreen::update()
 }
 
 int32_t
-MissionBriefingScreen::getMissionTGA(const std::wstring_view& missionName)
+MissionBriefingScreen::getMissionTGA(std::wstring_view missionName)
 {
 	if (!missionName)
 		return 0;
@@ -256,8 +253,7 @@ MissionBriefingScreen::getMissionTGA(const std::wstring_view& missionName)
 	return 0;
 }
 
-void
-MissionBriefingScreen::begin()
+void MissionBriefingScreen::begin()
 {
 	missionListBox.removeAllItems(true);
 	runTime = 0;
@@ -265,7 +261,7 @@ MissionBriefingScreen::begin()
 	statics[VIDEO_SCREEN].setcolour(0);
 	memset(objectiveButtons, 0, sizeof(aObject*) * MAX_OBJECTIVES);
 	// need to set up all pertinent mission info
-	const std::wstring_view& missionName = LogisticsData::instance->getCurrentMission();
+	std::wstring_view missionName = LogisticsData::instance->getCurrentMission();
 	int32_t tmpMapTextureHandle = getMissionTGA(missionName);
 	statics[MAP_INDEX].setTexture(tmpMapTextureHandle);
 	statics[MAP_INDEX].setUVs(0, 127, 127, 0);
@@ -379,10 +375,10 @@ MissionBriefingScreen::begin()
 	int32_t i = 1;
 	while (true)
 	{
-		wchar_t blockName[32];
-		sprintf(blockName, "Part%ld", i);
+		wchar_t blockname[32];
+		sprintf(blockname, "Part%ld", i);
 		i++;
-		if (NO_ERROR != fitFile.seekBlock(blockName))
+		if (NO_ERROR != fitFile.seekBlock(blockname))
 			break;
 		bool bPlayer = 0;
 		fitFile.readIdBoolean("PlayerPart", bPlayer);
@@ -400,8 +396,7 @@ MissionBriefingScreen::begin()
 	status = RUNNING;
 }
 
-void
-MissionBriefingScreen::setupDropZone(float fX, float fY, float mapwidth, float mapheight)
+void MissionBriefingScreen::setupDropZone(float fX, float fY, float mapwidth, float mapheight)
 {
 	dropZoneButton = statics[BUTTON_TEXT];
 	float bmpX = statics[MAP_INDEX].width();
@@ -418,8 +413,7 @@ MissionBriefingScreen::setupDropZone(float fX, float fY, float mapwidth, float m
 	dropZoneButton.showGUIWindow(true);
 }
 
-void
-MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int32_t priority,
+void MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int32_t priority,
 	float mapwidth, float mapheight, bool display)
 {
 	float lineOffset = 0;
@@ -467,7 +461,7 @@ MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int
 	}
 }
 
-/*int32_t MissionBriefingScreen::addLBItem( FitIniFile& file, const std::wstring_view& itemName,
+/*int32_t MissionBriefingScreen::addLBItem( FitIniFile& file, std::wstring_view itemName,
 uint32_t color, int32_t ID)
 {
 	wchar_t buffer[1024];
@@ -476,7 +470,7 @@ uint32_t color, int32_t ID)
 }*/
 
 int32_t
-MissionBriefingScreen::addLBItem(const std::wstring_view& text, uint32_t color, int32_t ID)
+MissionBriefingScreen::addLBItem(std::wstring_view text, uint32_t color, int32_t ID)
 {
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->setID(ID);
@@ -501,8 +495,7 @@ MissionBriefingScreen::addItem(int32_t ID, uint32_t color, int32_t LBid)
 	return missionListBox.AddItem(pEntry);
 }
 
-void
-MissionBriefingScreen::end()
+void MissionBriefingScreen::end()
 {
 	//	statics[MAP_INDEX].setTexture( (int32_t)0 );
 	// 	statics[MAP_INDEX].setcolour( 0 );

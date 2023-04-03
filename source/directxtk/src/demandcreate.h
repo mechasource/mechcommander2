@@ -12,37 +12,35 @@
 
 #include "platformhelpers.h"
 
-
 namespace directxtk
 {
-    // Helper for lazily creating a D3D resource.
-    template<typename T, typename TCreateFunc>
-    inline T* DemandCreate(wil::com_ptr<T>& iptr, std::mutex& mutex, TCreateFunc createFunc)
-    {
-        T* result = iptr.get();
+// Helper for lazily creating a D3D resource.
+template <typename T, typename TCreateFunc>
+inline T* DemandCreate(wil::com_ptr<T>& iptr, std::mutex& mutex, TCreateFunc createFunc)
+{
+	T* result = iptr.get();
 
-        // Double-checked lock pattern.
-        MemoryBarrier();
+	// Double-checked lock pattern.
+	MemoryBarrier();
 
-        if (!result)
-        {
-            std::lock_guard<std::mutex> lock(mutex);
+	if (!result)
+	{
+		std::lock_guard<std::mutex> lock(mutex);
 
-            result = iptr.get();
-        
-            if (!result)
-            {
-                // Create the new object.
-                ThrowIfFailed(
-                    createFunc(&result)
-                );
+		result = iptr.get();
 
-                MemoryBarrier();
+		if (!result)
+		{
+			// Create the new object.
+			ThrowIfFailed(
+				createFunc(&result));
 
-                iptr.attach(result);
-            }
-        }
+			MemoryBarrier();
 
-        return result;
-    }
+			iptr.attach(result);
+		}
+	}
+
+	return result;
 }
+} // namespace directxtk

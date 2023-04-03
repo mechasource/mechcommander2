@@ -32,8 +32,8 @@
 extern bool hasGuardBand;
 //---------------------------------------------------------------------------
 LineElement::LineElement(
-	Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr, uint8_t* fTable, int32_t endClr) :
-	Element(0L)
+	Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr, uint8_t* fTable, int32_t endClr)
+	: Element(0L)
 {
 	startPos = pos1;
 	;
@@ -44,8 +44,7 @@ LineElement::LineElement(
 }
 
 //---------------------------------------------------------------------------
-void
-LineElement::draw(void)
+void LineElement::draw(void)
 {
 	if (endcolour == -1)
 	{

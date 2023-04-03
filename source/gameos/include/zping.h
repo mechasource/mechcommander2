@@ -61,7 +61,10 @@ private:
 
 protected:
 	ZonePing* FindNextItem(ZonePing* pPing, BOOLEAN* bWrapped);
-	inline uint32_t GetListIndex(uint32_t inet) { return (inet & 0x000000FF) % m_PingIntervalSec; }
+	inline uint32_t GetListIndex(uint32_t inet)
+	{
+		return (inet & 0x000000FF) % m_PingIntervalSec;
+	}
 
 	void ScanForMissed(void);
 

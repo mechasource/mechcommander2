@@ -29,8 +29,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // MissionSettingsDlg dialog
 
-MissionSettingsDlg::MissionSettingsDlg(CWnd* pParent /*=nullptr*/) :
-	CDialog(MissionSettingsDlg::IDD, pParent)
+MissionSettingsDlg::MissionSettingsDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(MissionSettingsDlg::IDD, pParent)
 {
 	m_MissionNameResourceStringID = 0;
 	m_BlurbResourceStringID = 0;
@@ -70,8 +70,7 @@ MissionSettingsDlg::MissionSettingsDlg(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-MissionSettingsDlg::DoDataExchange(CDataExchange* pDX)
+void MissionSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(MissionSettingsDlg)
@@ -118,11 +117,11 @@ MissionSettingsDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(MissionSettingsDlg, CDialog)
-//{{AFX_MSG_MAP(MissionSettingsDlg)
-ON_BN_CLICKED(IDC_BROWSE_BUTTON, OnBrowseButton)
-ON_BN_CLICKED(IDC_MISSION_NAME_EDIT_BUTTON, OnMissionNameEditButton)
-ON_BN_CLICKED(IDC_BLURB_EDIT_BUTTON, OnBlurbEditButton)
-ON_BN_CLICKED(IDC_BLURB2_EDIT_BUTTON, OnBlurb2EditButton)
+	//{{AFX_MSG_MAP(MissionSettingsDlg)
+	ON_BN_CLICKED(IDC_BROWSE_BUTTON, OnBrowseButton)
+	ON_BN_CLICKED(IDC_MISSION_NAME_EDIT_BUTTON, OnMissionNameEditButton)
+	ON_BN_CLICKED(IDC_BLURB_EDIT_BUTTON, OnBlurbEditButton)
+	ON_BN_CLICKED(IDC_BLURB2_EDIT_BUTTON, OnBlurb2EditButton)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -144,8 +143,7 @@ CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-void
-MissionSettingsDlg::UpdateMissionNameDisplay()
+void MissionSettingsDlg::UpdateMissionNameDisplay()
 {
 	UpdateData(TRUE);
 	if (m_MissionNameUseResourceString)
@@ -165,8 +163,7 @@ MissionSettingsDlg::UpdateMissionNameDisplay()
 	UpdateData(FALSE);
 }
 
-void
-MissionSettingsDlg::UpdateBlurbDisplay()
+void MissionSettingsDlg::UpdateBlurbDisplay()
 {
 	UpdateData(TRUE);
 	if (m_BlurbUseResourceString)
@@ -186,8 +183,7 @@ MissionSettingsDlg::UpdateBlurbDisplay()
 	UpdateData(FALSE);
 }
 
-void
-MissionSettingsDlg::UpdateBlurb2Display()
+void MissionSettingsDlg::UpdateBlurb2Display()
 {
 	UpdateData(TRUE);
 	if (m_Blurb2UseResourceString)
@@ -207,8 +203,7 @@ MissionSettingsDlg::UpdateBlurb2Display()
 	UpdateData(FALSE);
 }
 
-BOOL
-MissionSettingsDlg::OnInitDialog()
+BOOL MissionSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_MaxTeamsSpin.SetRange(2, GAME_MAX_PLAYERS);
@@ -221,8 +216,7 @@ MissionSettingsDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-MissionSettingsDlg::OnBrowseButton()
+void MissionSettingsDlg::OnBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -268,8 +262,7 @@ MissionSettingsDlg::OnBrowseButton()
 	UpdateData(FALSE);
 }
 
-void
-MissionSettingsDlg::OnMissionNameEditButton()
+void MissionSettingsDlg::OnMissionNameEditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_MissionNameUnlocalizedText;
@@ -285,8 +278,7 @@ MissionSettingsDlg::OnMissionNameEditButton()
 	}
 }
 
-void
-MissionSettingsDlg::OnBlurbEditButton()
+void MissionSettingsDlg::OnBlurbEditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_BlurbUnlocalizedText;
@@ -302,8 +294,7 @@ MissionSettingsDlg::OnBlurbEditButton()
 	}
 }
 
-void
-MissionSettingsDlg::OnBlurb2EditButton()
+void MissionSettingsDlg::OnBlurb2EditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_Blurb2UnlocalizedText;

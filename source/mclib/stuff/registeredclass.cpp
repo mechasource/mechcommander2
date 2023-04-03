@@ -25,8 +25,7 @@ RegisteredClass::ClassData* RegisteredClass::ClassDataArray[__stuff_classids::Cl
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-RegisteredClass::InitializeClass()
+void RegisteredClass::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	DefaultData = new ClassData(RegisteredClassClassID, "Stuff::RegisteredClass");
@@ -35,8 +34,7 @@ RegisteredClass::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-RegisteredClass::TerminateClass()
+void RegisteredClass::TerminateClass()
 {
 	// Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -45,15 +43,15 @@ RegisteredClass::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-RegisteredClass::RegisteredClass(ClassData* class_data) :
-	classData(class_data)
+RegisteredClass::RegisteredClass(ClassData* class_data)
+	: classData(class_data)
 {
 	// Check_Object(class_data);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const std::wstring_view&
+std::wstring_view
 RegisteredClass::GetClassString(void) const
 {
 	// Check_Object(this);
@@ -64,8 +62,7 @@ RegisteredClass::GetClassString(void) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-RegisteredClass::TestInstance(void) const
+void RegisteredClass::TestInstance(void) const
 { /*Check_Object(classData)*/
 	;
 }
@@ -77,7 +74,7 @@ RegisteredClass::TestInstance(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 RegisteredClass__ClassData::RegisteredClass__ClassData(
-	RegisteredClass::ClassID class_id, const std::wstring_view& name, RegisteredClass__ClassData* parent)
+	RegisteredClass::ClassID class_id, std::wstring_view name, RegisteredClass__ClassData* parent)
 {
 	//
 	//--------------------------------
@@ -151,8 +148,7 @@ RegisteredClass__ClassData::~RegisteredClass__ClassData()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-RegisteredClass__ClassData::IsDerivedFrom(RegisteredClass__ClassData* parent)
+bool RegisteredClass__ClassData::IsDerivedFrom(RegisteredClass__ClassData* parent)
 {
 	// Check_Object(this);
 	//
@@ -195,7 +191,7 @@ RegisteredClass__ClassData::IsDerivedFrom(RegisteredClass__ClassData* parent)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 RegisteredClass__ClassData*
-RegisteredClass__ClassData::FindClassData(const std::wstring_view& name)
+RegisteredClass__ClassData::FindClassData(std::wstring_view name)
 {
 	// Check_Object(this);
 	if (!_stricmp(className, name))
@@ -220,8 +216,7 @@ RegisteredClass__ClassData::FindClassData(const std::wstring_view& name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-RegisteredClass__ClassData::DeriveClass(RegisteredClass__ClassData* child)
+void RegisteredClass__ClassData::DeriveClass(RegisteredClass__ClassData* child)
 {
 	// Check_Object(this);
 	// Check_Object(child);
@@ -233,8 +228,7 @@ RegisteredClass__ClassData::DeriveClass(RegisteredClass__ClassData* child)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-RegisteredClass__ClassData::TestInstance()
+void RegisteredClass__ClassData::TestInstance()
 {
 	RegisteredClass__ClassData* p = this;
 	RegisteredClass__ClassData* class_data = parentClass;

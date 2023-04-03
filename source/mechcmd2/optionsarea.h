@@ -5,7 +5,6 @@ OptionsArea.h			: Interface for the OptionsArea component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef OPTIONSAREA_H
@@ -55,8 +54,14 @@ public:
 
 	void SetScrollMax(float newMax);
 	void SetScrollPos(float newPos);
-	float GetScrollMax(void) { return scrollMax; };
-	float GetScrollPos(void) { return scrollPos; };
+	float GetScrollMax(void)
+	{
+		return scrollMax;
+	};
+	float GetScrollPos(void)
+	{
+		return scrollPos;
+	};
 	int32_t SetSrollInc(int32_t newInc)
 	{
 		scrollInc = (float)newInc; // amount you move for one arrow click
@@ -133,8 +138,8 @@ public:
 	virtual int32_t handleMessage(uint32_t message, uint32_t fromWho);
 
 private:
-	static void makeKeyString(int32_t hotKey, const std::wstring_view& buffer);
-	static int32_t makeInputKeyString(int32_t& hotKey, const std::wstring_view& buffer);
+	static void makeKeyString(int32_t hotKey, std::wstring_view buffer);
+	static int32_t makeInputKeyString(int32_t& hotKey, std::wstring_view buffer);
 
 	aListBox hotKeyList;
 	bool bShowDlg;
@@ -166,17 +171,29 @@ public:
 	virtual void render(void);
 	virtual void update(void);
 
-	void setDescription(const std::wstring_view& pText);
-	void setKey(const std::wstring_view& pText);
+	void setDescription(std::wstring_view pText);
+	void setKey(std::wstring_view pText);
 
 	HotKeyListItem();
 	~HotKeyListItem(void);
 
-	void setHotKey(int32_t lNew) { hotKey = lNew; }
-	void setCommand(int32_t lCommand) { command = lCommand; }
+	void setHotKey(int32_t lNew)
+	{
+		hotKey = lNew;
+	}
+	void setCommand(int32_t lCommand)
+	{
+		command = lCommand;
+	}
 
-	int32_t getCommand(void) const { return command; }
-	int32_t getHotKey(void) const { return hotKey; }
+	int32_t getCommand(void) const
+	{
+		return command;
+	}
+	int32_t getHotKey(void) const
+	{
+		return hotKey;
+	}
 
 private:
 	aText description;

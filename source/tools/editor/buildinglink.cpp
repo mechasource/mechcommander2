@@ -45,8 +45,7 @@ BuildingLink::operator=(const BuildingLink& Src)
 	return *this;
 }
 
-void
-BuildingLink::CopyData(const BuildingLink& Src)
+void BuildingLink::CopyData(const BuildingLink& Src)
 {
 	parent = Src.parent;
 	children.Clear();
@@ -57,8 +56,7 @@ BuildingLink::CopyData(const BuildingLink& Src)
 	}
 }
 
-bool
-BuildingLink::AddChild(const EditorObject* pObject)
+bool BuildingLink::AddChild(const EditorObject* pObject)
 {
 	int32_t ID = pObject->getID();
 	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)
@@ -90,8 +88,7 @@ BuildingLink::GetParentPosition(void) const
 	return parent.pos;
 }
 
-bool
-BuildingLink::HasChild(const EditorObject* pObject) const
+bool BuildingLink::HasChild(const EditorObject* pObject) const
 {
 	int32_t ID = pObject->getID();
 	pObject->getPosition();
@@ -106,8 +103,7 @@ BuildingLink::HasChild(const EditorObject* pObject) const
 	return false;
 }
 
-bool
-BuildingLink::HasParent(const EditorObject* pObject) const
+bool BuildingLink::HasParent(const EditorObject* pObject) const
 {
 	int32_t ID = pObject->getID();
 	// ignore damage bit and rotation
@@ -116,8 +112,7 @@ BuildingLink::HasParent(const EditorObject* pObject) const
 	return false;
 }
 
-bool
-BuildingLink::TypeCanBeParent(const EditorObject* pObject)
+bool BuildingLink::TypeCanBeParent(const EditorObject* pObject)
 {
 	int32_t Type = pObject->getSpecialType();
 	switch (Type)
@@ -136,8 +131,7 @@ BuildingLink::TypeCanBeParent(const EditorObject* pObject)
 	};
 	return false;
 }
-bool
-BuildingLink::CanLink(const EditorObject* pParent, const EditorObject* pChild)
+bool BuildingLink::CanLink(const EditorObject* pParent, const EditorObject* pChild)
 {
 	int32_t ParentType = pParent->getSpecialType();
 	int32_t ChildType = pChild->getSpecialType();
@@ -174,8 +168,7 @@ BuildingLink::CanLink(const EditorObject* pParent, const EditorObject* pChild)
 	return false;
 }
 
-bool
-BuildingLink::RemoveObject(const EditorObject* pObject)
+bool BuildingLink::RemoveObject(const EditorObject* pObject)
 {
 	if (HasParent(pObject))
 	{
@@ -275,8 +268,7 @@ isInView(const Point3D& position)
 	return (inView);
 }
 
-void
-BuildingLink::render()
+void BuildingLink::render()
 {
 	Stuff::Vector4D parentScreen;
 	eye->projectZ(parent.pos, parentScreen);
@@ -330,8 +322,7 @@ BuildingLink::render()
 	}
 }
 
-void
-BuildingLink::SetParentAlignment(int32_t alignment)
+void BuildingLink::SetParentAlignment(int32_t alignment)
 {
 	EditorObject* pTmp =
 		EditorObjectMgr::instance()->getObjectAtLocation(parent.pos.x, parent.pos.y);
@@ -353,8 +344,7 @@ BuildingLink::SetParentAlignment(int32_t alignment)
 	}
 }
 
-void
-BuildingLink::Fixheights()
+void BuildingLink::Fixheights()
 {
 	parent.pos.z = land->getTerrainElevation(parent.pos);
 	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)
@@ -363,8 +353,7 @@ BuildingLink::Fixheights()
 	}
 }
 
-void
-BuildingLink::SetParentPosition(const Stuff::Vector3D& pos)
+void BuildingLink::SetParentPosition(const Stuff::Vector3D& pos)
 {
 	parent.pos = pos;
 }

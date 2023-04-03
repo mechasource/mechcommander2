@@ -25,8 +25,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CCampaignDialog dialog
 
-CCampaignDialog::CCampaignDialog(CWnd* pParent /*=nullptr*/) :
-	CDialog(CCampaignDialog::IDD, pParent)
+CCampaignDialog::CCampaignDialog(CWnd* pParent /*=nullptr*/)
+	: CDialog(CCampaignDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CCampaignDialog)
 	m_CBillsEdit = 0;
@@ -36,8 +36,7 @@ CCampaignDialog::CCampaignDialog(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-CCampaignDialog::DoDataExchange(CDataExchange* pDX)
+void CCampaignDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CCampaignDialog)
@@ -50,27 +49,26 @@ CCampaignDialog::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CCampaignDialog, CDialog)
-//{{AFX_MSG_MAP(CCampaignDialog)
-ON_BN_CLICKED(IDC_CA_FINAL_VIDEO_BROWSE_BUTTON, OnCaFinalVideoBrowseButton)
-ON_BN_CLICKED(ID_CA_EXIT, OnCaExit)
-ON_BN_CLICKED(IDC_CA_ADD_BUTTON, OnCaAddButton)
-ON_BN_CLICKED(ID_CA_SAVE_AS_BUTTON, OnCaSaveAsButton)
-ON_BN_CLICKED(ID_CA_LOAD_BUTTON, OnCaLoadButton)
-ON_BN_CLICKED(IDC_CA_EDIT_BUTTON, OnCaEditButton)
-ON_BN_CLICKED(IDC_CA_REMOVE_BUTTON, OnCaRemoveButton)
-ON_BN_CLICKED(IDC_CA_MOVE_UP_BUTTON, OnCaMoveUpButton)
-ON_BN_CLICKED(IDC_CA_MOVE_DOWN_BUTTON, OnCaMoveDownButton)
-ON_BN_CLICKED(IDC_CA_NAME_EDIT_BUTTON, OnCaNameEditButton)
-ON_BN_CLICKED(ID_CA_SAVE_BUTTON, OnCaSaveButton)
-ON_WM_CLOSE()
+	//{{AFX_MSG_MAP(CCampaignDialog)
+	ON_BN_CLICKED(IDC_CA_FINAL_VIDEO_BROWSE_BUTTON, OnCaFinalVideoBrowseButton)
+	ON_BN_CLICKED(ID_CA_EXIT, OnCaExit)
+	ON_BN_CLICKED(IDC_CA_ADD_BUTTON, OnCaAddButton)
+	ON_BN_CLICKED(ID_CA_SAVE_AS_BUTTON, OnCaSaveAsButton)
+	ON_BN_CLICKED(ID_CA_LOAD_BUTTON, OnCaLoadButton)
+	ON_BN_CLICKED(IDC_CA_EDIT_BUTTON, OnCaEditButton)
+	ON_BN_CLICKED(IDC_CA_REMOVE_BUTTON, OnCaRemoveButton)
+	ON_BN_CLICKED(IDC_CA_MOVE_UP_BUTTON, OnCaMoveUpButton)
+	ON_BN_CLICKED(IDC_CA_MOVE_DOWN_BUTTON, OnCaMoveDownButton)
+	ON_BN_CLICKED(IDC_CA_NAME_EDIT_BUTTON, OnCaNameEditButton)
+	ON_BN_CLICKED(ID_CA_SAVE_BUTTON, OnCaSaveButton)
+	ON_WM_CLOSE()
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CCampaignDialog message handlers
 
-void
-CCampaignDialog::OnCaFinalVideoBrowseButton()
+void CCampaignDialog::OnCaFinalVideoBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -91,8 +89,7 @@ CCampaignDialog::OnCaFinalVideoBrowseButton()
 	UpdateData(FALSE);
 }
 
-void
-CCampaignDialog::OnCaExit()
+void CCampaignDialog::OnCaExit()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL != res)
@@ -140,8 +137,7 @@ setGroupDataValues(CGroupData& groupData, const CGroupDialog& groupDialog)
 	groupData.m_TuneNumber = groupDialog.m_TuneNumber;
 }
 
-void
-CCampaignDialog::OnCaAddButton()
+void CCampaignDialog::OnCaAddButton()
 {
 	CGroupData groupData;
 	CGroupDialog groupDialog;
@@ -214,14 +210,12 @@ CCampaignDialog::SaveAs()
 	return retval;
 }
 
-void
-CCampaignDialog::OnCaSaveAsButton()
+void CCampaignDialog::OnCaSaveAsButton()
 {
 	SaveAs();
 }
 
-void
-CCampaignDialog::OnCaLoadButton()
+void CCampaignDialog::OnCaLoadButton()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL == res)
@@ -245,8 +239,7 @@ CCampaignDialog::OnCaLoadButton()
 	}
 }
 
-void
-CCampaignDialog::OnCaEditButton()
+void CCampaignDialog::OnCaEditButton()
 {
 	int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && ((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
@@ -264,8 +257,7 @@ CCampaignDialog::OnCaEditButton()
 	}
 }
 
-void
-CCampaignDialog::OnCaRemoveButton()
+void CCampaignDialog::OnCaRemoveButton()
 {
 	int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && ((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
@@ -294,8 +286,7 @@ CCampaignDialog::OnCaRemoveButton()
 	}
 }
 
-void
-CCampaignDialog::OnCaMoveUpButton()
+void CCampaignDialog::OnCaMoveUpButton()
 {
 	int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
 	if ((1 <= selectedItemIndex) && ((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
@@ -311,8 +302,7 @@ CCampaignDialog::OnCaMoveUpButton()
 	}
 }
 
-void
-CCampaignDialog::OnCaMoveDownButton()
+void CCampaignDialog::OnCaMoveDownButton()
 {
 	int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && ((int32_t)m_CampaignData.m_GroupList.Count() - 1 > selectedItemIndex))
@@ -350,8 +340,7 @@ CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-void
-CCampaignDialog::UpdateNameDisplay()
+void CCampaignDialog::UpdateNameDisplay()
 {
 	UpdateData(TRUE);
 	if (m_NameUseResourceString)
@@ -371,8 +360,7 @@ CCampaignDialog::UpdateNameDisplay()
 	UpdateData(FALSE);
 }
 
-void
-CCampaignDialog::OnCaNameEditButton()
+void CCampaignDialog::OnCaNameEditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_NameUnlocalizedText;
@@ -405,8 +393,7 @@ CCampaignDialog::Save()
 	return retVal;
 }
 
-void
-CCampaignDialog::OnCaSaveButton()
+void CCampaignDialog::OnCaSaveButton()
 {
 	Save();
 }
@@ -436,8 +423,7 @@ CCampaignDialog::PromptAndSaveIfNecessary()
 	return res;
 }
 
-BOOL
-CCampaignDialog::OnInitDialog()
+BOOL CCampaignDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	setCampaignDialogValues(*this, m_CampaignData);
@@ -446,8 +432,7 @@ CCampaignDialog::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-CCampaignDialog::OnClose()
+void CCampaignDialog::OnClose()
 {
 	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL != res)

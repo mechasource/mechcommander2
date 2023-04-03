@@ -17,8 +17,7 @@ extern uint32_t gameResourceHandle; // Default handle must be used for
 	// mc2res.dll due to shared game/editor code
 
 //----------------------------------------------------------------------
-void
-MapSizeDlg::Init()
+void MapSizeDlg::Init()
 {
 	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_MAPSIZE);
 	int32_t index = pListBox->AddString("60x60");
@@ -33,8 +32,7 @@ MapSizeDlg::Init()
 }
 
 //----------------------------------------------------------------------
-void
-MapSizeDlg::OnOK()
+void MapSizeDlg::OnOK()
 {
 	int32_t index = ((CListBox*)GetDlgItem(IDC_MAPSIZE))->GetCurSel();
 	mapSize = ((CListBox*)GetDlgItem(IDC_MAPSIZE))->GetItemData(index);

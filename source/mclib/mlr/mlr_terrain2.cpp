@@ -6,7 +6,8 @@
 
 #include "mlr/mlr_terrain2.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -29,8 +30,7 @@ extern std::vector<float>* lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::InitializeClass()
+void MLR_Terrain2::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -47,8 +47,7 @@ MLR_Terrain2::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::TerminateClass()
+void MLR_Terrain2::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -63,8 +62,8 @@ MLR_Terrain2::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLR_I_DeT_TMesh(class_data, stream, version)
+MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLR_I_DeT_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -119,7 +118,7 @@ MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t
 	Check_Object(MLRTexturePool::Instance);
 	MLRTexture* orgTexture = (*MLRTexturePool::Instance)[referenceState.GetTextureHandle()];
 	Check_Object(orgTexture);
-	const std::wstring_view& texName = orgTexture->GetTextureName();
+	std::wstring_view texName = orgTexture->GetTextureName();
 	wchar_t texRoot[1024], name[1024];
 	size_t len;
 	if ((len = strlen(texName)) > 0)
@@ -173,8 +172,8 @@ MLR_Terrain2::MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain2::MLR_Terrain2(ClassData* class_data) :
-	MLR_I_DeT_TMesh(class_data)
+MLR_Terrain2::MLR_Terrain2(ClassData* class_data)
+	: MLR_I_DeT_TMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -218,8 +217,7 @@ MLR_Terrain2::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::Save(std::iostream stream)
+void MLR_Terrain2::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -239,7 +237,7 @@ MLR_Terrain2::Save(std::iostream stream)
 	/*
 		Check_Object(MLRTexturePool::Instance);
 		MLRTexture *orgTexture =
-	(*MLRTexturePool::Instance)[referenceState.GetTextureHandle()]; const std::wstring_view&
+	(*MLRTexturePool::Instance)[referenceState.GetTextureHandle()]; std::wstring_view
 	texName = orgTexture->GetTextureName(); wchar_t texRoot[1024], name[1024];
 
 		size_t len;
@@ -283,16 +281,14 @@ MLR_Terrain2::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::TestInstance(void) const
+void MLR_Terrain2::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::SetCurrentDepth(uint8_t d)
+void MLR_Terrain2::SetCurrentDepth(uint8_t d)
 {
 	if (d == currentDepth)
 	{
@@ -315,8 +311,7 @@ MLR_Terrain2::SetCurrentDepth(uint8_t d)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
+void MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
 {
 	// Check_Object(this);
 	_ASSERT(lev >= 0 && lev < 8);
@@ -329,8 +324,7 @@ MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::CalculateUVs()
+void MLR_Terrain2::CalculateUVs()
 {
 	if (texCoords.GetLength() != coords.GetLength())
 	{
@@ -394,8 +388,7 @@ CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs, uint32_t s
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::LightMapLighting(MLRLight* light)
+void MLR_Terrain2::LightMapLighting(MLRLight* light)
 {
 	if (!gEnableLightMaps)
 	{

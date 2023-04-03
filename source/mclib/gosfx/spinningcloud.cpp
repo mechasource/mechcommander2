@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version) :
-	ParticleCloud__Specification(class_id, stream, gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
+	: ParticleCloud__Specification(class_id, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -44,8 +44,8 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 //------------------------------------------------------------------------------
 //
 gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id) :
-	ParticleCloud__Specification(class_id)
+	Stuff::RegisteredClass::ClassID class_id)
+	: ParticleCloud__Specification(class_id)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -57,8 +57,7 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::SpinningCloud__Specification::Save(std::iostream stream)
+void gosFX::SpinningCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -71,8 +70,7 @@ gosFX::SpinningCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::SpinningCloud__Specification::BuildDefaults()
+void gosFX::SpinningCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	ParticleCloud__Specification::BuildDefaults();
@@ -90,8 +88,7 @@ gosFX::SpinningCloud__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
+bool gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float min, max;
@@ -103,7 +100,7 @@ gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 			m_pScale.m_seeded = false;
 			m_pScale.m_seedCurve.SetCurve(1.0f);
 			// PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -112,8 +109,7 @@ gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::SpinningCloud__Specification::Copy(SpinningCloud__Specification* spec)
+void gosFX::SpinningCloud__Specification::Copy(SpinningCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -139,8 +135,7 @@ gosFX::SpinningCloud::ClassData* gosFX::SpinningCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::SpinningCloud::InitializeClass()
+void gosFX::SpinningCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -151,8 +146,7 @@ gosFX::SpinningCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::SpinningCloud::TerminateClass()
+void gosFX::SpinningCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -161,16 +155,15 @@ gosFX::SpinningCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::SpinningCloud::SpinningCloud(ClassData* class_data, Specification* spec, uint32_t flags) :
-	ParticleCloud(class_data, spec, flags)
+gosFX::SpinningCloud::SpinningCloud(ClassData* class_data, Specification* spec, uint32_t flags)
+	: ParticleCloud(class_data, spec, flags)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::SpinningCloud::Execute(ExecuteInfo* info)
+bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -283,8 +276,7 @@ gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::SpinningCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
+void gosFX::SpinningCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	//
 	//---------------------------
@@ -336,8 +328,7 @@ gosFX::SpinningCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translat
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::SpinningCloud::AnimateParticle(
+bool gosFX::SpinningCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -497,8 +488,7 @@ gosFX::SpinningCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::SpinningCloud::TestInstance(void) const
+void gosFX::SpinningCloud::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

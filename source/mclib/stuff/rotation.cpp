@@ -150,8 +150,7 @@ EulerAngles::operator=(const LinearMatrix4D& matrix)
 //#############################################################################
 //#############################################################################
 //
-bool
-Stuff::Small_Enough(const EulerAngles& angles, float e)
+bool Stuff::Small_Enough(const EulerAngles& angles, float e)
 {
 	Check_Object(&angles);
 	return Small_Enough(angles.pitch, e) && Small_Enough(angles.yaw, e) && Small_Enough(angles.roll, e);
@@ -161,8 +160,7 @@ Stuff::Small_Enough(const EulerAngles& angles, float e)
 //#############################################################################
 //#############################################################################
 //
-bool
-Stuff::Close_Enough(const EulerAngles& a1, const EulerAngles& a2, float e)
+bool Stuff::Close_Enough(const EulerAngles& a1, const EulerAngles& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
@@ -204,8 +202,7 @@ EulerAngles::Normalize()
 //#############################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const EulerAngles& angle)
+void Spew(std::wstring_view group, const EulerAngles& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "<+"));
@@ -315,8 +312,7 @@ YawPitchRoll::operator=(const LinearMatrix4D& matrix)
 //#############################################################################
 //#############################################################################
 //
-bool
-Stuff::Small_Enough(const YawPitchRoll& angles, float e)
+bool Stuff::Small_Enough(const YawPitchRoll& angles, float e)
 {
 	Check_Object(&angles);
 	return Small_Enough(angles.pitch, e) && Small_Enough(angles.yaw, e) && Small_Enough(angles.roll, e);
@@ -326,8 +322,7 @@ Stuff::Small_Enough(const YawPitchRoll& angles, float e)
 //#############################################################################
 //#############################################################################
 //
-bool
-Stuff::Close_Enough(const YawPitchRoll& a1, const YawPitchRoll& a2, float e)
+bool Stuff::Close_Enough(const YawPitchRoll& a1, const YawPitchRoll& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
@@ -369,8 +364,7 @@ YawPitchRoll::Normalize()
 //#############################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const YawPitchRoll& angle)
+void Spew(std::wstring_view group, const YawPitchRoll& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "<+"));
@@ -421,8 +415,7 @@ float tableIncrementStepOverOne;
 //#############################################################################
 //
 
-void
-UnitQuaternion::InitializeClass()
+void UnitQuaternion::InitializeClass()
 {
 	_ASSERT(!quaternionFastLerpTableBuilt);
 	_ASSERT(QuaternionLerpTableSize > 0);
@@ -460,8 +453,7 @@ UnitQuaternion::InitializeClass()
 //#############################################################################
 //
 
-void
-UnitQuaternion::TerminateClass()
+void UnitQuaternion::TerminateClass()
 {
 	quaternionFastLerpTableBuilt = false;
 }
@@ -607,8 +599,7 @@ UnitQuaternion::operator=(const Vector3D& v)
 //#############################################################################
 //#############################################################################
 //
-bool
-Stuff::Close_Enough(const UnitQuaternion& a1, const UnitQuaternion& a2, float e)
+bool Stuff::Close_Enough(const UnitQuaternion& a1, const UnitQuaternion& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
@@ -620,8 +611,7 @@ Stuff::Close_Enough(const UnitQuaternion& a1, const UnitQuaternion& a2, float e)
 //#############################################################################
 //#############################################################################
 //
-float
-UnitQuaternion::GetAngle()
+float UnitQuaternion::GetAngle()
 {
 	// Check_Object(this);
 	float sine_of_half = Sqrt(x * x + y * y + z * z);
@@ -639,8 +629,7 @@ UnitQuaternion::GetAngle()
 //#############################################################################
 //#############################################################################
 //
-void
-UnitQuaternion::GetAxis(UnitVector3D* axis)
+void UnitQuaternion::GetAxis(UnitVector3D* axis)
 {
 	// Check_Object(this);
 	Check_Pointer(axis);
@@ -1242,8 +1231,7 @@ UnitQuaternion::MakeClosest(const UnitQuaternion& qto)
 //#############################################################################
 //#############################################################################
 //
-float
-UnitQuaternion::Dot(const UnitQuaternion& p, const UnitQuaternion& q)
+float UnitQuaternion::Dot(const UnitQuaternion& p, const UnitQuaternion& q)
 {
 	return (q.x * p.x + q.y * p.y + q.z * p.z + q.w * p.w);
 }
@@ -1381,8 +1369,7 @@ UnitQuaternion::Orthog(const UnitQuaternion& p, const Point3D& axis)
 //#############################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const UnitQuaternion& quat)
+void Spew(std::wstring_view group, const UnitQuaternion& quat)
 {
 	Check_Object(&quat);
 	SPEW((group, "<%f, %f, %f, %f>+", quat.x, quat.y, quat.z, quat.w));
@@ -1393,8 +1380,7 @@ Spew(const std::wstring_view& group, const UnitQuaternion& quat)
 //#############################################################################
 //#############################################################################
 //
-void
-UnitQuaternion::TestInstance(void) const
+void UnitQuaternion::TestInstance(void) const
 {
 	float diff = x * x + y * y + z * z + w * w - 1.0f;
 	if (!Small_Enough(diff))

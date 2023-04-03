@@ -6,14 +6,13 @@
 //===========================================================================//
 #pragma once
 
-enum class PlatformType
+enum class PlatformType : uint8_t
 {
 	Platform_Game,
 	Platform_MFC,
 	Platform_DLL
-} PlatformType;
+};
 extern PlatformType Platform;
 
 extern void _stdcall RunFromOtherApp(HINSTANCE hinstance, HWND hwnd, PSTR commandline);
-extern int32_t _stdcall RunFromWinMain(
-	HINSTANCE hinstance, HINSTANCE hPrevInstance, PSTR commandline, int32_t nCmdShow);
+extern int32_t _stdcall RunFromWinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, PSTR commandline, int32_t nCmdShow);

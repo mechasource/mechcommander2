@@ -36,16 +36,14 @@ extern bool useUnlimitedAmmo;
 extern float loadProgress;
 extern bool aborted;
 
-void
-DEBUGWINS_print(const std::wstring_view& s, int32_t window = 0);
+void DEBUGWINS_print(std::wstring_view s, int32_t window = 0);
 
 //----------------------------------------------------------------------------------
 // class Logistics
 Logistics* logistics = nullptr;
 
 //----------------------------------------------------------------------------------
-void
-Logistics::destroy(void)
+void Logistics::destroy(void)
 {
 	delete missionBegin;
 	missionBegin = nullptr;
@@ -54,8 +52,7 @@ Logistics::destroy(void)
 }
 
 //----------------------------------------------------------------------------------
-void
-Logistics::start(int32_t startMode)
+void Logistics::start(int32_t startMode)
 {
 	bMissionLoaded = 0;
 	userInput->setMouseCursor(mState_LOGISTICS);
@@ -184,8 +181,7 @@ Logistics::start(int32_t startMode)
 }
 
 //----------------------------------------------------------------------------------
-void
-Logistics::stop(void)
+void Logistics::stop(void)
 {
 	switch (prevState)
 	{
@@ -282,7 +278,7 @@ Logistics::update(void)
 				}
 				else
 				{
-					const std::wstring_view& videoName = LogisticsData::instance->getCurrentBigVideo();
+					std::wstring_view videoName = LogisticsData::instance->getCurrentBigVideo();
 					if (videoName)
 					{
 						playFullScreenVideo(videoName);
@@ -317,7 +313,7 @@ Logistics::update(void)
 	{
 		if (missionBegin)
 		{
-			const std::wstring_view& pVid = missionBegin->update();
+			std::wstring_view pVid = missionBegin->update();
 			if (pVid && (0 != strcmp("", pVid)))
 			{
 				playFullScreenVideo(pVid);
@@ -344,8 +340,7 @@ Logistics::update(void)
 }
 
 //----------------------------------------------------------------------------------
-void
-Logistics::render(void)
+void Logistics::render(void)
 {
 	if (bMovie)
 	{
@@ -425,7 +420,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 			if (MPlayer->missionSettings.missionType == MISSION_TYPE_OTHER)
 			{
 				bool goodToLoad = mission->calcComplexDropZones(
-					(const std::wstring_view&)(const std::wstring_view&)LogisticsData::instance->getCurrentMission(), dropZoneList);
+					(std::wstring_view)(std::wstring_view)LogisticsData::instance->getCurrentMission(), dropZoneList);
 				if (!goodToLoad)
 					STOP(("Logisitics.beginMission: teams do not match up for "
 						  "complex mission"));
@@ -521,7 +516,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 			}
 		useUnlimitedAmmo = MPlayer->missionSettings.unlimitedAmmo;
 	}
-	mission->init((const std::wstring_view&)(const std::wstring_view&)LogisticsData::instance->getCurrentMission(), missionLoadType,
+	mission->init((std::wstring_view)(std::wstring_view)LogisticsData::instance->getCurrentMission(), missionLoadType,
 		dropZoneID, dropZoneList, commandersToLoad, numMoversPerCommander[numPlayers - 1]);
 	LogisticsData::instance->rpJustAdded = 0;
 	if (MPlayer)
@@ -543,7 +538,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 				mechData.objNumber = (*iter)->getFitID();
 				mechData.commanderid = MPlayer->commanderid;
 				mechData.basecolour = MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid]
-														 .basecolour[BASECOLOR_TEAM]];
+														  .basecolour[BASECOLOR_TEAM]];
 				mechData.highlightcolour1 =
 					MPlayer->colors[MPlayer->playerInfo[MPlayer->commanderid].stripecolour];
 				mechData.highlightcolour2 =
@@ -789,8 +784,7 @@ Logistics::DoBeginMission()
 	return 0;
 }
 
-void
-Logistics::initializeLogData()
+void Logistics::initializeLogData()
 {
 	LogisticsData::instance->removeMechsInForceGroup();
 	LogisticsData::instance->init();
@@ -816,8 +810,7 @@ Logistics::initializeLogData()
 	}
 }
 
-void
-Logistics::playFullScreenVideo(const std::wstring_view& fileName)
+void Logistics::playFullScreenVideo(std::wstring_view fileName)
 {
 	if (!fileName || !fileName[0])
 		return;
@@ -833,8 +826,7 @@ Logistics::playFullScreenVideo(const std::wstring_view& fileName)
 	soundSystem->stopDigitalMusic();
 }
 
-void
-Logistics::setResultsHostLeftDlg(const std::wstring_view& pName)
+void Logistics::setResultsHostLeftDlg(std::wstring_view pName)
 {
 	if (missionResults && logisticsState == log_RESULTS)
 	{

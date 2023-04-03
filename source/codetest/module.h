@@ -3,7 +3,7 @@
 
  codetest
 
- 2018-09-03 Jerker Back, created
+ 2018-09-03 Jerker Bäck, created
 
  $LastChangedBy$
 

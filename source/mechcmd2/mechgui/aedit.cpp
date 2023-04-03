@@ -107,8 +107,7 @@ aEdit::~aEdit()
 	setFocus(0);
 }
 
-void
-aEdit::update()
+void aEdit::update()
 {
 	cursorTime += frameLength;
 	if (cursorTime > .5)
@@ -122,8 +121,7 @@ aEdit::update()
 	handleKeyboard();
 }
 
-void
-aEdit::handleMouse()
+void aEdit::handleMouse()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
@@ -157,8 +155,7 @@ aEdit::handleMouse()
 		setFocus(false);
 }
 
-void
-aEdit::handleKeyboard()
+void aEdit::handleKeyboard()
 {
 	if (!bFocus)
 		return;
@@ -248,8 +245,7 @@ aEdit::handleKeyboard()
 	}
 }
 
-void
-aEdit::renderWithDropShadow()
+void aEdit::renderWithDropShadow()
 {
 	// do not do this for .ttf where we already are having performance issues
 	if (font.getSize() == 1)
@@ -266,13 +262,12 @@ aEdit::renderWithDropShadow()
 		render();
 }
 
-void
-aEdit::render()
+void aEdit::render()
 {
 	if (!isShowing())
 		return;
 	aObject::render();
-	const std::wstring_view& textToDraw = text;
+	std::wstring_view textToDraw = text;
 	textToDraw += ' '; // have to do this for loc, some fonts are getting
 	// clipped in millenium
 	// draw selection range
@@ -347,13 +342,11 @@ aEdit::render()
 	drawCursor();
 }
 
-void
-aEdit::getEntry(const std::wstring_view& str)
+void aEdit::getEntry(std::wstring_view str)
 {
 	str = text;
 }
-void
-aEdit::setEntry(const std::wstring_view& str, uint8_t byHighlight)
+void aEdit::setEntry(std::wstring_view str, uint8_t byHighlight)
 {
 	text = str;
 	if (byHighlight)
@@ -367,8 +360,7 @@ aEdit::setEntry(const std::wstring_view& str, uint8_t byHighlight)
 		flushCursorRight();
 	}
 }
-void
-aEdit::setFocus(bool bHasFocus)
+void aEdit::setFocus(bool bHasFocus)
 {
 	bool bFocusSave = bFocus;
 	bFocus = bHasFocus;
@@ -413,8 +405,7 @@ aEdit::setFocus(bool bHasFocus)
 	}
 }
 
-bool
-aEdit::clearSelection()
+bool aEdit::clearSelection()
 {
 	if (nInsertion1 != nInsertion2)
 	{
@@ -430,8 +421,7 @@ aEdit::clearSelection()
 	}
 	return false;
 }
-void
-aEdit::backSpace(int32_t nPosition)
+void aEdit::backSpace(int32_t nPosition)
 {
 	int32_t nCharCount = text.Length();
 	if (nPosition > nCharCount)
@@ -444,14 +434,13 @@ aEdit::backSpace(int32_t nPosition)
 	nCharCount = 1;
 	if (nPosition > 1)
 	{
-		uint8_t* pPrev = _mbsdec((const uint8_t*)(const std::wstring_view&)text, (const uint8_t*)(const std::wstring_view&)text + nPosition);
-		nCharCount = (const uint8_t*)(const std::wstring_view&)text + nPosition - pPrev;
+		uint8_t* pPrev = _mbsdec((const uint8_t*)(std::wstring_view)text, (const uint8_t*)(std::wstring_view)text + nPosition);
+		nCharCount = (const uint8_t*)(std::wstring_view)text + nPosition - pPrev;
 	}
 	text.Remove(nPosition - nCharCount, nPosition - 1);
 	nInsertion2 = nInsertion1 = nPosition - nCharCount;
 }
-void
-aEdit::drawCursor()
+void aEdit::drawCursor()
 {
 	if (nInsertion1 != nInsertion2 || !bFocus || !gos_GetMachineInformation(gos_Info_GetIMECaretStatus))
 		return;
@@ -470,13 +459,11 @@ aEdit::drawCursor()
 		gos_DrawLines(v, 2);
 	}
 }
-void
-aEdit::hideCursor()
+void aEdit::hideCursor()
 {
 	bCursorVisible = FALSE;
 }
-bool
-aEdit::handleFormattingKeys(int32_t keycode)
+bool aEdit::handleFormattingKeys(int32_t keycode)
 {
 	int32_t key = (keycode & 0xFF00) >> 8;
 	bool bExtendedKey = true;
@@ -527,8 +514,8 @@ aEdit::handleFormattingKeys(int32_t keycode)
 				if (nInsertion2 > 1)
 				{
 					uint8_t* pPrev =
-						_mbsdec((const uint8_t*)(const std::wstring_view&)text, (const uint8_t*)(const std::wstring_view&)text + nInsertion2);
-					decrementCount = (const uint8_t*)(const std::wstring_view&)text + nInsertion2 - pPrev;
+						_mbsdec((const uint8_t*)(std::wstring_view)text, (const uint8_t*)(std::wstring_view)text + nInsertion2);
+					decrementCount = (const uint8_t*)(std::wstring_view)text + nInsertion2 - pPrev;
 				}
 				nInsertion2 -= decrementCount;
 			}
@@ -543,8 +530,8 @@ aEdit::handleFormattingKeys(int32_t keycode)
 				if (nInsertion1 > 1)
 				{
 					uint8_t* pPrev =
-						_mbsdec((const uint8_t*)(const std::wstring_view&)text, (const uint8_t*)(const std::wstring_view&)text + nInsertion2);
-					decrementCount = (const uint8_t*)(const std::wstring_view&)text + nInsertion2 - pPrev;
+						_mbsdec((const uint8_t*)(std::wstring_view)text, (const uint8_t*)(std::wstring_view)text + nInsertion2);
+					decrementCount = (const uint8_t*)(std::wstring_view)text + nInsertion2 - pPrev;
 				}
 				nInsertion1 -= decrementCount;
 			}
@@ -620,8 +607,7 @@ aEdit::charXPos(int32_t nCharIndex)
 	}
 	return nXPos;
 }
-void
-aEdit::makeCursorVisible()
+void aEdit::makeCursorVisible()
 {
 	int32_t nXPos = charXPos(nInsertion2);
 	if (nXPos < nLeftOffset)
@@ -629,8 +615,7 @@ aEdit::makeCursorVisible()
 	if (nXPos > nLeftOffset + width() - (ENTRY_MARGIN * 2.f))
 		nLeftOffset = nXPos - (int32_t)(width() - (ENTRY_MARGIN * 2.f));
 }
-void
-aEdit::flushCursorRight()
+void aEdit::flushCursorRight()
 {
 	int32_t nXPos = charXPos(nInsertion2);
 	if (nXPos < width() - ENTRY_MARGIN * 2)
@@ -670,8 +655,7 @@ aEdit::findChar(int32_t nXPos)
 	return n;
 }
 
-void
-aEdit::init(FitIniFile* file, const std::wstring_view& header)
+void aEdit::init(FitIniFile* file, std::wstring_view header)
 {
 	int32_t result = file->seekBlock(header);
 	if (result != NO_ERROR)
@@ -711,8 +695,7 @@ aEdit::charLength(int32_t index)
 	return 1;
 }
 
-void
-aEdit::setFont(int32_t resID)
+void aEdit::setFont(int32_t resID)
 {
 	font.init(resID);
 }

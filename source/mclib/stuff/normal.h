@@ -23,14 +23,23 @@ public:
 	//
 	// Constructors
 	//
-	Normal3D(void) {}
-	Normal3D(float x, float y, float z) :
-		UnitVector3D(x, y, z) {}
-	Normal3D(const Normal3D& n) :
-		UnitVector3D(n) {}
-	Normal3D(const UnitVector3D& v) :
-		UnitVector3D(v) {}
-	explicit Normal3D(const Vector3D& v) { *this = v; }
+	Normal3D(void) { }
+	Normal3D(float x, float y, float z)
+		: UnitVector3D(x, y, z)
+	{
+	}
+	Normal3D(const Normal3D& n)
+		: UnitVector3D(n)
+	{
+	}
+	Normal3D(const UnitVector3D& v)
+		: UnitVector3D(v)
+	{
+	}
+	explicit Normal3D(const Vector3D& v)
+	{
+		*this = v;
+	}
 
 	static const Normal3D Forward;
 	static const Normal3D Backward;
@@ -66,7 +75,10 @@ public:
 		Vector3D::Negate(v);
 		return *this;
 	}
-	float operator*(const Vector3D& v) const { return Vector3D::operator*(v); }
+	float operator*(const Vector3D& v) const
+	{
+		return Vector3D::operator*(v);
+	}
 	Normal3D& Multiply(const Normal3D& n, const LinearMatrix4D& m)
 	{
 		UnitVector3D::Multiply(n, m);

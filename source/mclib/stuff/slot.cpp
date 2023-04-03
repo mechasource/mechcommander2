@@ -20,8 +20,7 @@ MemoryBlock* SlotLink::AllocatedMemory = nullptr;
 //#############################################################################
 //#############################################################################
 //
-void
-SlotLink::InitializeClass(size_t block_count, size_t block_delta)
+void SlotLink::InitializeClass(size_t block_count, size_t block_delta)
 {
 	_ASSERT(!AllocatedMemory);
 	AllocatedMemory = new MemoryBlock(
@@ -32,8 +31,7 @@ SlotLink::InitializeClass(size_t block_count, size_t block_delta)
 //#############################################################################
 //#############################################################################
 //
-void
-SlotLink::TerminateClass()
+void SlotLink::TerminateClass()
 {
 	delete AllocatedMemory;
 	AllocatedMemory = nullptr;
@@ -44,8 +42,10 @@ SlotLink::TerminateClass()
 // SlotLink
 //###########################################################################
 //
-SlotLink::SlotLink(Slot* slot, Plug* plug) :
-	Link(slot, plug) {}
+SlotLink::SlotLink(Slot* slot, Plug* plug)
+	: Link(slot, plug)
+{
+}
 
 //
 //###########################################################################
@@ -89,8 +89,8 @@ SlotLink::~SlotLink()
 // Slot
 //###########################################################################
 //
-Slot::Slot(Node* node) :
-	Socket(node)
+Slot::Slot(Node* node)
+	: Socket(node)
 {
 	slotLink = nullptr;
 }
@@ -116,8 +116,7 @@ Slot::~Slot()
 // TestInstance
 //###########################################################################
 //
-void
-Slot::TestInstance()
+void Slot::TestInstance()
 {
 	Socket::TestInstance();
 	if (slotLink != nullptr)
@@ -131,8 +130,7 @@ Slot::TestInstance()
 // Remove
 //###########################################################################
 //
-void
-Slot::Remove()
+void Slot::Remove()
 {
 	// Check_Object(this);
 	if (slotLink != nullptr)
@@ -148,8 +146,7 @@ Slot::Remove()
 // AddImplementation
 //###########################################################################
 //
-void
-Slot::AddImplementation(Plug* plug)
+void Slot::AddImplementation(Plug* plug)
 {
 	// Check_Object(this);
 	_ASSERT(slotLink == nullptr);
@@ -162,8 +159,7 @@ Slot::AddImplementation(Plug* plug)
 // GetCurrentPlug
 //###########################################################################
 //
-Plug*
-Slot::GetCurrentPlug()
+Plug* Slot::GetCurrentPlug()
 {
 	// Check_Object(this);
 	if (slotLink != nullptr)

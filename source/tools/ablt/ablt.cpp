@@ -9,10 +9,8 @@
 
 //#include "string.h"
 
-void
-initABL(void);
-void
-closeABL(void);
+void initABL(void);
+void closeABL(void);
 
 extern "C" int __cdecl main(
 	_In_ int argc, _In_reads_(argc) _Pre_z_ wchar_t* argv[], _In_z_ wchar_t** envp)
@@ -48,20 +46,20 @@ extern "C" int __cdecl main(
 		while (!bFile->eof())
 		{
 			bFile->readString(s);
-			if (s[strlen((const std::wstring_view&)s) - 1] == 10)
-				s[strlen((const std::wstring_view&)s) - 1] = nullptr;
+			if (s[strlen((std::wstring_view)s) - 1] == 10)
+				s[strlen((std::wstring_view)s) - 1] = nullptr;
 			numErrs = 0;
 			numLines = 0;
 			numFiles = 0;
 			if ((s[0] == 'l') && (s[1] == ' '))
 			{
 				handle =
-					(int32_t)ABLi_loadLibrary((const std::wstring_view&)&s[2], &numErrs, &numLines, &numFiles, false);
+					(int32_t)ABLi_loadLibrary((std::wstring_view)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 			}
 			else if ((s[0] == 'm') && (s[1] == ' '))
 			{
-				handle = ABLi_preProcess((const std::wstring_view&)&s[2], &numErrs, &numLines, &numFiles, false);
+				handle = ABLi_preProcess((std::wstring_view)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 			}
 		}

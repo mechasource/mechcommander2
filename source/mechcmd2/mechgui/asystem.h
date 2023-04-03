@@ -82,8 +82,8 @@ extern int32_t helpTextHeaderID;
 class aBaseObject
 {
 public:
-	virtual void render(void) {}
-	virtual void update(void) {}
+	virtual void render(void) { }
+	virtual void update(void) { }
 };
 
 // base class aObject definition
@@ -112,12 +112,12 @@ public:
 	void removeChild(aObject* c);
 	void setParent(aObject* p);
 
-	void setTexture(const std::wstring_view& fileName);
+	void setTexture(std::wstring_view fileName);
 	void setTexture(uint32_t newHandle);
 	void setUVs(float u1, float v1, float u2, float v2);
 	void setcolour(uint32_t color, bool bRecurse = 0); // color the vertices
 
-	void init(FitIniFile* file, const std::wstring_view& block, uint32_t neverFlush = 0); // for statics
+	void init(FitIniFile* file, std::wstring_view block, uint32_t neverFlush = 0); // for statics
 
 	aObject* getParent(void)
 	{
@@ -128,13 +128,22 @@ public:
 	int32_t numberOfChildren(void) const;
 	int32_t globalX(void) const;
 	int32_t globalY(void) const;
-	int32_t globalLeft(void) const { return globalX(void); }
-	int32_t globalTop(void) const { return globalY(void); }
+	int32_t globalLeft(void) const
+	{
+		return globalX(void);
+	}
+	int32_t globalTop(void) const
+	{
+		return globalY(void);
+	}
 	int32_t globalRight(void) const;
 	int32_t globalBottom(void) const;
 
 	virtual aObject* findObject(int32_t xPos, int32_t yPos);
-	virtual int32_t handleMessage(uint32_t, uint32_t) { return 0; }
+	virtual int32_t handleMessage(uint32_t, uint32_t)
+	{
+		return 0;
+	}
 	virtual bool pointInside(int32_t xPos, int32_t yPos) const;
 	bool rectIntersect(int32_t top, int32_t left, int32_t bottom, int32_t right) const;
 	bool rectIntersect(const RECT& testRect) const;
@@ -146,10 +155,19 @@ public:
 	virtual void render(int32_t x, int32_t y);
 	virtual void update(void);
 
-	COLORREF getcolour(void) { return location[0].argb; }
+	COLORREF getcolour(void)
+	{
+		return location[0].argb;
+	}
 
-	void showGUIWindow(bool show) { showWindow = show; }
-	bool isShowing(void) const { return showWindow; }
+	void showGUIWindow(bool show)
+	{
+		showWindow = show;
+	}
+	bool isShowing(void) const
+	{
+		return showWindow;
+	}
 
 	void FillBox(int16_t left, int16_t top, int16_t bottom, int16_t right, wchar_t color);
 	void SetBit(int32_t xpos, int32_t ypos, wchar_t value);
@@ -157,18 +175,45 @@ public:
 	virtual void move(float offsetX, float offsetY);
 	virtual void moveNoRecurse(float offsetX, float offsetY);
 
-	void setFilewidth(float newwidth) { filewidth = newwidth; }
-	int32_t getID(void) const { return ID; }
-	void setID(int32_t newID) { ID = newID; }
+	void setFilewidth(float newwidth)
+	{
+		filewidth = newwidth;
+	}
+	int32_t getID(void) const
+	{
+		return ID;
+	}
+	void setID(int32_t newID)
+	{
+		ID = newID;
+	}
 
-	void setHelpID(int32_t newID) { helpid = newID; }
-	int32_t getHelpID(void) const { return helpid; }
+	void setHelpID(int32_t newID)
+	{
+		helpid = newID;
+	}
+	int32_t getHelpID(void) const
+	{
+		return helpid;
+	}
 
-	float left(void) { return x(void); }
-	float top(void) { return y(void); }
-	float right(void) { return x() + width(void); }
+	float left(void)
+	{
+		return x(void);
+	}
+	float top(void)
+	{
+		return y(void);
+	}
+	float right(void)
+	{
+		return x() + width(void);
+	}
 
-	float bottom(void) { return y() + height(void); }
+	float bottom(void)
+	{
+		return y() + height(void);
+	}
 
 protected:
 	gos_VERTEX location[4];
@@ -197,12 +242,12 @@ class aRect : public aObject
 {
 public:
 	aRect(void);
-	virtual ~aRect(void) {}
+	virtual ~aRect(void) { }
 
 	virtual void render(void);
 	virtual void render(int32_t x, int32_t y);
 
-	void init(FitIniFile* file, const std::wstring_view& blockName);
+	void init(FitIniFile* file, std::wstring_view blockname);
 
 	RECT getGUI_RECT(void);
 	RECT getGlobalGUI_RECT(void);
@@ -221,7 +266,7 @@ public:
 
 	virtual void render(void);
 	virtual void render(int32_t x, int32_t y);
-	void init(FitIniFile* file, const std::wstring_view& header);
+	void init(FitIniFile* file, std::wstring_view header);
 
 	void setText(const std::string& text);
 	void setText(int32_t resID);

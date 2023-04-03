@@ -70,14 +70,23 @@ public:
 		objectClass = GATE;
 	}
 
-	GateType(void) { init(void); }
+	GateType(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 	int32_t init(FitIniFilePtr objFile);
 
-	~GateType(void) { destroy(void); }
+	~GateType(void)
+	{
+		destroy(void);
+	}
 
-	int32_t getDamageLvl(void) { return dmgLevel; }
+	int32_t getDamageLvl(void)
+	{
+		return dmgLevel;
+	}
 
 	virtual void destroy(void);
 
@@ -141,10 +150,10 @@ public:
 	// Member Functions
 	//-----------------
 public:
-	void init(bool create) {}
+	void init(bool create) { }
 
-	Gate(void) :
-		TerrainObject()
+	Gate(void)
+		: TerrainObject()
 	{
 		init(true);
 		reasonToOpen = TRUE;
@@ -160,7 +169,10 @@ public:
 		updatedTurn = -1;
 	}
 
-	~Gate(void) { destroy(void); }
+	~Gate(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 
@@ -173,7 +185,10 @@ public:
 
 	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-	virtual int32_t getTeamId(void) { return (teamId); }
+	virtual int32_t getTeamId(void)
+	{
+		return (teamId);
+	}
 
 	TeamPtr getTeam(void);
 
@@ -194,7 +209,10 @@ public:
 
 	void blowAnyOffendingObject(void);
 
-	virtual bool isBuilding(void) { return (TRUE); }
+	virtual bool isBuilding(void)
+	{
+		return (TRUE);
+	}
 
 	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
 	{
@@ -232,7 +250,10 @@ public:
 
 	virtual void setParentId(uint32_t pId);
 
-	virtual int32_t getDescription() { return ((GateType*)getObjectType())->buildingDescriptionID; }
+	virtual int32_t getDescription()
+	{
+		return ((GateType*)getObjectType())->buildingDescriptionID;
+	}
 
 	virtual void setDamage(float newDamage);
 

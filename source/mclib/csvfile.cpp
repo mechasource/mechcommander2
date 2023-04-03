@@ -42,8 +42,8 @@
 
 //---------------------------------------------------------------------------
 // class CSVIniFile
-CSVFile::CSVFile(void) :
-	MechFile()
+CSVFile::CSVFile(void)
+	: MechFile()
 {
 	totalRows = totalCols = 0L;
 }
@@ -82,7 +82,7 @@ CSVFile::countCols(void)
 	int32_t oldPosition = logicalPosition;
 	seek(0); // Start at the top.
 	wchar_t tmp[2048];
-	const std::wstring_view& currentChk = tmp;
+	std::wstring_view currentChk = tmp;
 	readLine((uint8_t*)tmp, 2047);
 	currentChk = strstr(tmp, ",");
 	while (currentChk && (*currentChk != '\n') && (*currentChk != '\r'))
@@ -102,7 +102,7 @@ CSVFile::countCols(void)
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::getNextWord(const std::wstring_view&& line, const std::wstring_view& buffer, uint32_t bufLen)
+CSVFile::getNextWord(std::wstring_view& line, std::wstring_view buffer, uint32_t bufLen)
 {
 	//--------------------------------------------------
 	// Check to see if we are at end of line
@@ -130,7 +130,7 @@ CSVFile::getNextWord(const std::wstring_view&& line, const std::wstring_view& bu
 		return (-1);
 	//-------------------------------------------
 	// Find length of word from current location
-	const std::wstring_view& startOfWord = line;
+	std::wstring_view startOfWord = line;
 	uint32_t wordLength = 0;
 	while ((*line != '\0') && ((*line != ',')))
 	{
@@ -166,8 +166,7 @@ CSVFile::afterOpen(void)
 }
 
 //---------------------------------------------------------------------------
-void
-CSVFile::atClose(void)
+void CSVFile::atClose(void)
 {
 	//------------------------------------------------------------
 	// Check if we are in create mode and if so, write the footer
@@ -179,8 +178,7 @@ CSVFile::atClose(void)
 }
 
 //---------------------------------------------------------------------------
-float
-CSVFile::textToFloat(const std::wstring_view& num)
+float CSVFile::textToFloat(std::wstring_view num)
 {
 	float result = atof(num);
 	return (result);
@@ -188,12 +186,12 @@ CSVFile::textToFloat(const std::wstring_view& num)
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::textToLong(const std::wstring_view& num)
+CSVFile::textToLong(std::wstring_view num)
 {
 	int32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = strstr(num, "0x");
+	std::wstring_view hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -239,12 +237,12 @@ CSVFile::textToLong(const std::wstring_view& num)
 
 //---------------------------------------------------------------------------
 int16_t
-CSVFile::textToShort(const std::wstring_view& num)
+CSVFile::textToShort(std::wstring_view num)
 {
 	int16_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = strstr(num, "0x");
+	std::wstring_view hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -290,12 +288,12 @@ CSVFile::textToShort(const std::wstring_view& num)
 
 //---------------------------------------------------------------------------
 wchar_t
-CSVFile::textToChar(const std::wstring_view& num)
+CSVFile::textToChar(std::wstring_view num)
 {
 	wchar_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = strstr(num, "0x");
+	std::wstring_view hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -341,12 +339,12 @@ CSVFile::textToChar(const std::wstring_view& num)
 
 //---------------------------------------------------------------------------
 uint32_t
-CSVFile::textToULong(const std::wstring_view& num)
+CSVFile::textToULong(std::wstring_view num)
 {
 	uint32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = strstr(num, "0x");
+	std::wstring_view hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -392,12 +390,12 @@ CSVFile::textToULong(const std::wstring_view& num)
 
 //---------------------------------------------------------------------------
 uint16_t
-CSVFile::textToUShort(const std::wstring_view& num)
+CSVFile::textToUShort(std::wstring_view num)
 {
 	uint16_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = strstr(num, "0x");
+	std::wstring_view hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -443,12 +441,12 @@ CSVFile::textToUShort(const std::wstring_view& num)
 
 //---------------------------------------------------------------------------
 uint8_t
-CSVFile::textToUCHAR(const std::wstring_view& num)
+CSVFile::textToUCHAR(std::wstring_view num)
 {
 	uint8_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = strstr(num, "0x");
+	std::wstring_view hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -493,8 +491,7 @@ CSVFile::textToUCHAR(const std::wstring_view& num)
 }
 
 //---------------------------------------------------------------------------
-bool
-CSVFile::booleanToLong(const std::wstring_view& num)
+bool CSVFile::booleanToLong(std::wstring_view num)
 {
 	wchar_t testChar = 0;
 	while (num[testChar] && isspace(num[testChar]))
@@ -508,7 +505,7 @@ CSVFile::booleanToLong(const std::wstring_view& num)
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::floatToText(const std::wstring_view& result, float num, uint32_t bufLen)
+CSVFile::floatToText(std::wstring_view result, float num, uint32_t bufLen)
 {
 	wchar_t temp[250];
 	sprintf(temp, "%f4", num);
@@ -522,7 +519,7 @@ CSVFile::floatToText(const std::wstring_view& result, float num, uint32_t bufLen
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::longToTextDec(const std::wstring_view& result, int32_t num, uint32_t bufLen)
+CSVFile::longToTextDec(std::wstring_view result, int32_t num, uint32_t bufLen)
 {
 	wchar_t temp[250];
 	sprintf(temp, "%d", num);
@@ -536,7 +533,7 @@ CSVFile::longToTextDec(const std::wstring_view& result, int32_t num, uint32_t bu
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::longToTextHex(const std::wstring_view& result, int32_t num, uint32_t bufLen)
+CSVFile::longToTextHex(std::wstring_view result, int32_t num, uint32_t bufLen)
 {
 	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
@@ -550,7 +547,7 @@ CSVFile::longToTextHex(const std::wstring_view& result, int32_t num, uint32_t bu
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::shortToTextDec(const std::wstring_view& result, int16_t num, uint32_t bufLen)
+CSVFile::shortToTextDec(std::wstring_view result, int16_t num, uint32_t bufLen)
 {
 	wchar_t temp[250];
 	sprintf(temp, "%d", num);
@@ -564,7 +561,7 @@ CSVFile::shortToTextDec(const std::wstring_view& result, int16_t num, uint32_t b
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::shortToTextHex(const std::wstring_view& result, int16_t num, uint32_t bufLen)
+CSVFile::shortToTextHex(std::wstring_view result, int16_t num, uint32_t bufLen)
 {
 	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
@@ -578,7 +575,7 @@ CSVFile::shortToTextHex(const std::wstring_view& result, int16_t num, uint32_t b
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::byteToTextDec(const std::wstring_view& result, byte num, uint32_t bufLen)
+CSVFile::byteToTextDec(std::wstring_view result, byte num, uint32_t bufLen)
 {
 	wchar_t temp[250];
 	sprintf(temp, "%d", num);
@@ -592,7 +589,7 @@ CSVFile::byteToTextDec(const std::wstring_view& result, byte num, uint32_t bufLe
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::byteToTextHex(const std::wstring_view& result, byte num, uint32_t bufLen)
+CSVFile::byteToTextHex(std::wstring_view result, byte num, uint32_t bufLen)
 {
 	wchar_t temp[250];
 	sprintf(temp, "0x%x", num);
@@ -606,7 +603,7 @@ CSVFile::byteToTextHex(const std::wstring_view& result, byte num, uint32_t bufLe
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::open(const std::wstring_view& filename, FileMode _mode, int32_t numChild)
+CSVFile::open(std::wstring_view filename, FileMode _mode, int32_t numChild)
 {
 	int32_t result = MechFile::open(filename, _mode, numChild);
 	if (result != NO_ERROR)
@@ -630,7 +627,7 @@ CSVFile::open(std::unique_ptr<File> _parent, uint32_t fileSize, int32_t numChild
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::create(const std::wstring_view& filename)
+CSVFile::create(std::wstring_view filename)
 {
 	filename;
 	// STOP(("CSV file write is not supported %s",filename));
@@ -638,8 +635,7 @@ CSVFile::create(const std::wstring_view& filename)
 }
 
 //---------------------------------------------------------------------------
-void
-CSVFile::close(void)
+void CSVFile::close(void)
 {
 	if (isOpen())
 	{
@@ -662,7 +658,7 @@ CSVFile::seekRowCol(uint32_t row, uint32_t col)
 		rowCount++;
 		readLine((uint8_t*)tmp, 2047);
 	} while (rowCount != row);
-	const std::wstring_view& currentChk = tmp;
+	std::wstring_view currentChk = tmp;
 	if (col)
 	{
 		uint32_t colCount = 1;
@@ -678,7 +674,7 @@ CSVFile::seekRowCol(uint32_t row, uint32_t col)
 	// We are now pointing at the row and col specified.
 	if (currentChk)
 	{
-		const std::wstring_view& data = dataBuffer;
+		std::wstring_view data = dataBuffer;
 		return getNextWord(currentChk, data, 2047);
 	}
 	else
@@ -805,7 +801,7 @@ CSVFile::readUCHAR(uint32_t row, uint32_t col, uint8_t& value)
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::copyString(const std::wstring_view& dest, const std::wstring_view& src, uint32_t bufLen)
+CSVFile::copyString(std::wstring_view dest, std::wstring_view src, uint32_t bufLen)
 {
 	uint32_t offset = 0;
 	//---------------------------------------
@@ -830,7 +826,7 @@ CSVFile::copyString(const std::wstring_view& dest, const std::wstring_view& src,
 
 //---------------------------------------------------------------------------
 int32_t
-CSVFile::readString(uint32_t row, uint32_t col, const std::wstring_view& result, uint32_t bufferSize)
+CSVFile::readString(uint32_t row, uint32_t col, std::wstring_view result, uint32_t bufferSize)
 {
 	int32_t res = seekRowCol(row, col);
 	if (res == NO_ERROR)

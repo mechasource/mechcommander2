@@ -79,14 +79,13 @@ Forest::operator=(const Forest& src)
 	return *this;
 }
 
-void
-Forest::init()
+void Forest::init()
 {
 	FitIniFile file;
 	if (NO_ERROR != file.open(fileName))
 	{
 		wchar_t errorString[256];
-		sprintf(errorString, "Couldn't open file %s", (const std::wstring_view&)fileName);
+		sprintf(errorString, "Couldn't open file %s", (std::wstring_view)fileName);
 		Assert(0, 0, errorString);
 		return;
 	}
@@ -94,8 +93,7 @@ Forest::init()
 	init(file);
 }
 
-void
-Forest::init(FitIniFile& file)
+void Forest::init(FitIniFile& file)
 {
 	wchar_t headerName[256];
 	for (size_t i = 0; i < FOREST_TYPES; i++)
@@ -116,18 +114,17 @@ Forest::init(FitIniFile& file)
 	file.readIdString("Name", tmp, 255);
 	name = tmp;
 	tmp[0] = 0;
-	file.readIdString("FileName", tmp, 255);
+	file.readIdString("filename", tmp, 255);
 	fileName = tmp;
 }
 
-void
-Forest::save()
+void Forest::save()
 {
 	FitIniFile file;
-	if (NO_ERROR != file.create((const std::wstring_view&)(const std::wstring_view&)fileName))
+	if (NO_ERROR != file.create((std::wstring_view)(std::wstring_view)fileName))
 	{
 		wchar_t errorString[256];
-		sprintf(errorString, "Couldn't create file %s", (const std::wstring_view&)fileName);
+		sprintf(errorString, "Couldn't create file %s", (std::wstring_view)fileName);
 		Assert(0, 0, errorString);
 		return;
 	}
@@ -135,8 +132,7 @@ Forest::save()
 	save(file);
 }
 
-void
-Forest::save(FitIniFile& file)
+void Forest::save(FitIniFile& file)
 {
 	wchar_t headerName[256];
 	for (size_t i = 0; i < FOREST_TYPES; i++)
@@ -153,7 +149,7 @@ Forest::save(FitIniFile& file)
 	file.writeIdBoolean("Random", bRandom);
 	file.writeIdFloat("Radius", radius);
 	file.writeIdString("Name", name);
-	file.writeIdString("FileName", fileName);
+	file.writeIdString("filename", fileName);
 }
 
 // end of file ( forest.cpp )

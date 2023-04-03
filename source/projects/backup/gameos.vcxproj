@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B4EA2124-2ABF-442E-9B3E-0E503A4DAF8B}</ProjectGuid>
+    <RootNamespace>MechCommander</RootNamespace>
+    
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    
+    
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    
+    
+    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    
+    
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    
+    
+    
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <TargetEnvironment>Win32</TargetEnvironment>
+      
+      
+      
+      
+      
+      
+      
+    </Midl>
+    <ClCompile>
+      
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      
+      <EnablePREfast>true</EnablePREfast>
+      
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      
+      
+      
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <TargetEnvironment>X64</TargetEnvironment>
+      
+      
+      
+      
+      
+      
+    </Midl>
+    <ClCompile>
+      
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      
+      <EnablePREfast>true</EnablePREfast>
+      
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      
+      
+      
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <TargetEnvironment>Win32</TargetEnvironment>
+      
+      
+      
+      
+      
+      
+      
+    </Midl>
+    <ClCompile>
+      
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      
+      
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      
+      
+      
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      
+      <TargetEnvironment>X64</TargetEnvironment>
+      
+      
+      
+      
+      
+      
+    </Midl>
+    <ClCompile>
+      
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdinc.h</PrecompiledHeaderFile>
+      
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      
+      
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      
+      
+      
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\gameos\lib\x86\gameos\3dprimitives.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\3drasterizer.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\3d_tl.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\acm.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\clipping.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\controlmanager.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\cpu.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\debugger.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\direct3d.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\directdraw.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\directinput.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\directx.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\libraries.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\memorymanager.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\windows.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\windowsdebugging.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\winmain.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\winproc.c" />
+    <ClCompile Include="..\gameos\src\3dprimitives.cpp" />
+    <ClCompile Include="..\gameos\src\3drasterizer.cpp" />
+    <ClCompile Include="..\gameos\src\3d_tl.cpp" />
+    <ClCompile Include="..\gameos\src\acm.cpp" />
+    <ClCompile Include="..\gameos\src\clipping.cpp" />
+    <ClCompile Include="..\gameos\src\controlmanager.cpp" />
+    <ClCompile Include="..\gameos\src\cpu.cpp" />
+    <ClCompile Include="..\gameos\src\debugger.cpp" />
+    <ClCompile Include="..\gameos\src\debuggraphs.cpp" />
+    <ClCompile Include="..\gameos\src\debuggui.cpp" />
+    <ClCompile Include="..\gameos\src\debugmenus.cpp" />
+    <ClCompile Include="..\gameos\src\direct3d.cpp" />
+    <ClCompile Include="..\gameos\src\directdraw.cpp" />
+    <ClCompile Include="..\gameos\src\directinput.cpp" />
+    <ClCompile Include="..\gameos\src\directplay.cpp" />
+    <ClCompile Include="..\gameos\src\directshow.cpp" />
+    <ClCompile Include="..\gameos\src\directsound.cpp" />
+    <ClCompile Include="..\gameos\src\directx.cpp" />
+    <ClCompile Include="..\gameos\src\directxdebugging.cpp" />
+    <ClCompile Include="..\gameos\src\directxerrors.cpp" />
+    <ClCompile Include="..\gameos\src\dirtyrectangle.cpp" />
+    <ClCompile Include="..\gameos\src\dxrasterizer.cpp" />
+    <ClCompile Include="..\gameos\src\errordialogs.cpp" />
+    <ClCompile Include="..\gameos\src\errorhandler.cpp" />
+    <ClCompile Include="..\gameos\src\eventid.cpp" />
+    <ClCompile Include="..\gameos\src\exceptions.cpp" />
+    <ClCompile Include="..\gameos\src\exitgameos.cpp" />
+    <ClCompile Include="..\gameos\src\ezvector.cpp" />
+    <ClCompile Include="..\gameos\src\fileio.cpp" />
+    <ClCompile Include="..\gameos\src\font3d.cpp" />
+    <ClCompile Include="..\gameos\src\font3d_dbcs.cpp" />
+    <ClCompile Include="..\gameos\src\font3d_dbcs_storage.cpp" />
+    <ClCompile Include="..\gameos\src\font3d_dbcs_surface.cpp" />
+    <ClCompile Include="..\gameos\src\font3d_load.cpp" />
+    <ClCompile Include="..\gameos\src\forcefeedback.cpp" />
+    <ClCompile Include="..\gameos\src\games_gun.cpp" />
+    <ClCompile Include="..\gameos\src\games_lan.cpp" />
+    <ClCompile Include="..\gameos\src\globals.cpp" />
+    <ClCompile Include="..\gameos\src\goslog.cpp" />
+    <ClCompile Include="..\gameos\src\guids.cpp" />
+    <ClCompile Include="..\gameos\src\gungamelist.cpp" />
+    <ClCompile Include="..\gameos\src\gvserver.cpp" />
+    <ClCompile Include="..\gameos\src\imagehlp.cpp" />
+    <ClCompile Include="..\gameos\src\infblock.cpp" />
+    <ClCompile Include="..\gameos\src\infcodes.cpp" />
+    <ClCompile Include="..\gameos\src\infutil.cpp" />
+    <ClCompile Include="..\gameos\src\keyboard.cpp" />
+    <ClCompile Include="..\gameos\src\libraries.cpp" />
+    <ClCompile Include="..\gameos\src\loader_bmp.cpp" />
+    <ClCompile Include="..\gameos\src\loader_jpg.cpp" />
+    <ClCompile Include="..\gameos\src\loader_png.cpp" />
+    <ClCompile Include="..\gameos\src\loader_tga.cpp" />
+    <ClCompile Include="..\gameos\src\localizationmanager.cpp" />
+    <ClCompile Include="..\gameos\src\logfile.cpp" />
+    <ClCompile Include="..\gameos\src\machinedetails.cpp" />
+    <ClCompile Include="..\gameos\src\mail.cpp" />
+    <ClCompile Include="..\gameos\src\memorymanager.cpp" />
+    <ClCompile Include="..\gameos\src\mouse.cpp" />
+    <ClCompile Include="..\gameos\src\music.cpp" />
+    <ClCompile Include="..\gameos\src\net_globals.cpp" />
+    <ClCompile Include="..\gameos\src\net_main.cpp" />
+    <ClCompile Include="..\gameos\src\net_packet.cpp" />
+    <ClCompile Include="..\gameos\src\net_protocol.cpp" />
+    <ClCompile Include="..\gameos\src\net_routines.cpp" />
+    <ClCompile Include="..\gameos\src\net_threads.cpp" />
+    <ClCompile Include="..\gameos\src\nglog_mark.cpp" />
+    <ClCompile Include="..\gameos\src\perf.cpp" />
+    <ClCompile Include="..\gameos\src\profiler.cpp" />
+    <ClCompile Include="..\gameos\src\raid.cpp" />
+    <ClCompile Include="..\gameos\src\registry.cpp" />
+    <ClCompile Include="..\gameos\src\renderime.cpp" />
+    <ClCompile Include="..\gameos\src\renderstates.cpp" />
+    <ClCompile Include="..\gameos\src\rendertotexture.cpp" />
+    <ClCompile Include="..\gameos\src\sound_api.cpp" />
+    <ClCompile Include="..\gameos\src\sound_ds3dchannel.cpp" />
+    <ClCompile Include="..\gameos\src\sound_ds3dmixer.cpp" />
+    <ClCompile Include="..\gameos\src\sound_renderer.cpp" />
+    <ClCompile Include="..\gameos\src\sound_resource.cpp" />
+    <ClCompile Include="..\gameos\src\spew.cpp" />
+    <ClCompile Include="..\gameos\src\startup\dllplatform.cpp" />
+    <ClCompile Include="..\gameos\src\startup\gameplatform.cpp" />
+    <ClCompile Include="..\gameos\src\startup\mfcplatform.cpp" />
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\gameos\src\texture_api.cpp" />
+    <ClCompile Include="..\gameos\src\texture_convert.cpp" />
+    <ClCompile Include="..\gameos\src\texture_create.cpp" />
+    <ClCompile Include="..\gameos\src\texture_format.cpp" />
+    <ClCompile Include="..\gameos\src\texture_manager.cpp" />
+    <ClCompile Include="..\gameos\src\texture_mipmap.cpp" />
+    <ClCompile Include="..\gameos\src\texture_original.cpp" />
+    <ClCompile Include="..\gameos\src\texture_sysmem.cpp" />
+    <ClCompile Include="..\gameos\src\texture_update.cpp" />
+    <ClCompile Include="..\gameos\src\texture_vidmem.cpp" />
+    <ClCompile Include="..\gameos\src\threads.cpp" />
+    <ClCompile Include="..\gameos\src\thunkdlls.cpp" />
+    <ClCompile Include="..\gameos\src\time.cpp" />
+    <ClCompile Include="..\gameos\src\userinterface.cpp" />
+    <ClCompile Include="..\gameos\src\vertexbuffer.cpp" />
+    <ClCompile Include="..\gameos\src\videocard.cpp" />
+    <ClCompile Include="..\gameos\src\videoplayback.cpp" />
+    <ClCompile Include="..\gameos\src\windows.cpp" />
+    <ClCompile Include="..\gameos\src\windowsdebugging.cpp" />
+    <ClCompile Include="..\gameos\src\winmain.cpp" />
+    <ClCompile Include="..\gameos\src\winproc.cpp" />
+    <ClCompile Include="..\gameos\src\zping.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\gameos\include\3drasterizer.hpp" />
+    <ClInclude Include="..\gameos\include\acm.hpp" />
+    <ClInclude Include="..\gameos\include\controlmanager.hpp" />
+    <ClInclude Include="..\gameos\include\datestamp.hpp" />
+    <ClInclude Include="..\gameos\include\debugger.hpp" />
+    <ClInclude Include="..\gameos\include\debuggui.hpp" />
+    <ClInclude Include="..\gameos\include\debuginterface.hpp" />
+    <ClInclude Include="..\gameos\include\directx.hpp" />
+    <ClInclude Include="..\gameos\include\directxdebugging.hpp" />
+    <ClInclude Include="..\gameos\include\dllplatform.hpp" />
+    <ClInclude Include="..\gameos\include\dxrasterizer.hpp" />
+    <ClInclude Include="..\gameos\include\errorhandler.hpp" />
+    <ClInclude Include="..\gameos\include\eventid.hpp" />
+    <ClInclude Include="..\gameos\include\ezvector.hpp" />
+    <ClInclude Include="..\gameos\include\fileio.hpp" />
+    <ClInclude Include="..\gameos\include\filestream.hpp" />
+    <ClInclude Include="..\gameos\include\filetransfer.hpp" />
+    <ClInclude Include="..\gameos\include\flinkedlist.hpp" />
+    <ClInclude Include="..\gameos\include\font3d.hpp" />
+    <ClInclude Include="..\gameos\include\font3d_dbcs_storage.hpp" />
+    <ClInclude Include="..\gameos\include\font3d_dbcs_surface.hpp" />
+    <ClInclude Include="..\gameos\include\forcefeedback.hpp" />
+    <ClInclude Include="..\gameos\include\gameos.hpp" />
+    <ClInclude Include="..\gameos\include\globals.hpp" />
+    <ClInclude Include="..\gameos\include\gungamelist.h" />
+    <ClInclude Include="..\gameos\include\hash.h" />
+    <ClInclude Include="..\gameos\include\language.h" />
+    <ClInclude Include="..\gameos\include\linkedlist.hpp" />
+    <ClInclude Include="..\gameos\include\localizationmanager.hpp" />
+    <ClInclude Include="..\gameos\include\memorymanager.hpp" />
+    <ClInclude Include="..\gameos\include\mfcplatform.hpp" />
+    <ClInclude Include="..\gameos\include\music.hpp" />
+    <ClInclude Include="..\gameos\include\net.hpp" />
+    <ClInclude Include="..\gameos\include\netgroup.hpp" />
+    <ClInclude Include="..\gameos\include\netplayer.hpp" />
+    <ClInclude Include="..\gameos\include\network.hpp" />
+    <ClInclude Include="..\gameos\include\networking.hpp" />
+    <ClInclude Include="..\gameos\include\networkingglobals.hpp" />
+    <ClInclude Include="..\gameos\include\networklobby.hpp" />
+    <ClInclude Include="..\gameos\include\networkmessages.hpp" />
+    <ClInclude Include="..\gameos\include\net_header.hpp" />
+    <ClInclude Include="..\gameos\include\pch.hpp" />
+    <ClInclude Include="..\gameos\include\perf.h" />
+    <ClInclude Include="..\gameos\include\platform.hpp" />
+    <ClInclude Include="..\gameos\include\profiler.hpp" />
+    <ClInclude Include="..\gameos\include\registry.hpp" />
+    <ClInclude Include="..\gameos\include\session.hpp" />
+    <ClInclude Include="..\gameos\include\sessionmanager.hpp" />
+    <ClInclude Include="..\gameos\include\sound_channel.hpp" />
+    <ClInclude Include="..\gameos\include\sound_ds3dchannel.hpp" />
+    <ClInclude Include="..\gameos\include\sound_ds3dmixer.hpp" />
+    <ClInclude Include="..\gameos\include\sound_mixer.hpp" />
+    <ClInclude Include="..\gameos\include\sound_renderer.hpp" />
+    <ClInclude Include="..\gameos\include\sound_resource.hpp" />
+    <ClInclude Include="..\gameos\include\string.hpp" />
+    <ClInclude Include="..\gameos\include\texture_manager.hpp" />
+    <ClInclude Include="..\gameos\include\time.hpp" />
+    <ClInclude Include="..\gameos\include\toolos.hpp" />
+    <ClInclude Include="..\gameos\include\videoplayback.hpp" />
+    <ClInclude Include="..\gameos\include\windows.hpp" />
+    <ClInclude Include="..\gameos\include\winproc.hpp" />
+    <ClInclude Include="..\gameos\include\zping.h" />
+    <ClInclude Include="..\gameos\lib\x86\gameos\idaref.h" />
+    <ClInclude Include="..\pch\stdinc.h" />
+    <ClInclude Include="..\include\dplay.h" />
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

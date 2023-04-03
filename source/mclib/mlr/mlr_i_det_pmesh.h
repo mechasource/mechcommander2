@@ -26,7 +26,7 @@ struct DetailTextureInfo
 		dEnd = 64.0f;
 		alphaMode = MLRState::AlphaInvAlphaMode;
 	}
-	const std::wstring_view& name;
+	std::wstring_view name;
 	float xOff, zOff;
 	float xFac, zFac;
 	float dStart, dEnd;

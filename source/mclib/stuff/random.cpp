@@ -21,8 +21,7 @@ Random* Random::Instance = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Random::InitializeClass()
+void Random::InitializeClass()
 {
 	_ASSERT(!Random::Instance);
 	_ASSERT(Index == -1);
@@ -32,8 +31,7 @@ Random::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Random::TerminateClass()
+void Random::TerminateClass()
 {
 	Unregister_Pointer(Random::Instance);
 	delete Random::Instance;
@@ -45,8 +43,7 @@ Random::TerminateClass()
 //###########################################################################
 //###########################################################################
 //
-void
-Random::Init()
+void Random::Init()
 {
 	//
 	//------------------------------
@@ -113,8 +110,7 @@ Random::GetRandomInt()
 //###########################################################################
 //###########################################################################
 //
-float
-Random::GetFraction()
+float Random::GetFraction()
 {
 	float result;
 	result = static_cast<float>(GetRandomInt());

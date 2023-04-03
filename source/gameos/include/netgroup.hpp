@@ -25,7 +25,10 @@ class ListFriendlyDPID : public ListItem
 public:
 	DPID ID;
 
-	ListFriendlyDPID(DPID id) { ID = id; }
+	ListFriendlyDPID(DPID id)
+	{
+		ID = id;
+	}
 
 	ListFriendlyDPID& operator=(DPID id)
 	{
@@ -54,7 +57,10 @@ public:
 
 	virtual ~FIDPGroup(void);
 
-	inline FLinkedList<ListFriendlyDPID>* GetPlayerList() { return &playerIDList; }
+	inline FLinkedList<ListFriendlyDPID>* GetPlayerList()
+	{
+		return &playerIDList;
+	}
 
 	BOOL AddPlayer(DPID& id);
 
@@ -84,15 +90,27 @@ public:
 		}
 	}
 
-	PSTR GetShortName() { return shortName; }
+	PSTR GetShortName()
+	{
+		return shortName;
+	}
 
-	PSTR GetLongName() { return longName; }
+	PSTR GetLongName()
+	{
+		return longName;
+	}
 
 	void SetGroupData(LPVOID data, uint32_t size);
 
-	inline LPVOID GetGroupData() { return groupData; }
+	inline LPVOID GetGroupData()
+	{
+		return groupData;
+	}
 
-	inline DPID ID() { return groupID; }
+	inline DPID ID()
+	{
+		return groupID;
+	}
 };
 
 #endif // !defined(FIDPGROUP_H)

@@ -14,16 +14,15 @@
 /////////////////////////////////////////////////////////////////////////////
 // EditorTacMap dialog
 
-EditorTacMap::EditorTacMap(CWnd* pParent /*=nullptr*/) :
-	CDialog(EditorTacMap::IDD, pParent)
+EditorTacMap::EditorTacMap(CWnd* pParent /*=nullptr*/)
+	: CDialog(EditorTacMap::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(EditorTacMap)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
-void
-EditorTacMap::DoDataExchange(CDataExchange* pDX)
+void EditorTacMap::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(EditorTacMap)
@@ -32,17 +31,16 @@ EditorTacMap::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(EditorTacMap, CDialog)
-//{{AFX_MSG_MAP(EditorTacMap)
-ON_BN_CLICKED(IDC_TGA, OnTga)
-ON_WM_ERASEBKGND()
+	//{{AFX_MSG_MAP(EditorTacMap)
+	ON_BN_CLICKED(IDC_TGA, OnTga)
+	ON_WM_ERASEBKGND()
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // EditorTacMap message handlers
 
-BOOL
-EditorTacMap::OnInitDialog()
+BOOL EditorTacMap::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	int32_t borderSize = GetSystemMetrics(SM_CYSMCAPTION);
@@ -56,8 +54,7 @@ EditorTacMap::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-EditorTacMap::OnTga()
+void EditorTacMap::OnTga()
 {
 	POINT pt;
 	GetCursorPos(&pt);
@@ -77,14 +74,12 @@ EditorTacMap::OnTga()
 	EditorInterface::instance()->SetFocus();
 }
 
-BOOL
-EditorTacMap::OnEraseBkgnd(CDC* pDC)
+BOOL EditorTacMap::OnEraseBkgnd(CDC* pDC)
 {
 	return 1;
 }
 
-void
-EditorTacMap::ReleaseFocus()
+void EditorTacMap::ReleaseFocus()
 {
 	if (EditorInterface::instance() && EditorInterface::instance()->m_hWnd)
 	{

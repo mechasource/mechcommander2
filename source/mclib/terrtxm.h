@@ -131,12 +131,12 @@ protected:
 	int32_t initTexture(int32_t typeNum);
 	void initMask(int32_t typeNum);
 	int32_t initDetail(int32_t typeNum, int32_t detailNum);
-	int32_t initOverlay(int32_t overlayNum, int32_t txmNum, const std::wstring_view& txmName);
+	int32_t initOverlay(int32_t overlayNum, int32_t txmNum, std::wstring_view txmName);
 
-	int32_t loadTextureMemory(const std::wstring_view& textureName, int32_t mipSize);
-	int32_t loadOverlayMemory(const std::wstring_view& overlayName);
+	int32_t loadTextureMemory(std::wstring_view textureName, int32_t mipSize);
+	int32_t loadOverlayMemory(std::wstring_view overlayName);
 	int32_t textureFromMemory(uint8_t* ourRam, int32_t mipSize);
-	int32_t loadDetailMemory(const std::wstring_view& detailName, int32_t mipSize);
+	int32_t loadDetailMemory(std::wstring_view detailName, int32_t mipSize);
 	int32_t textureFromMemoryAlpha(uint8_t* ourRam, int32_t mipSize);
 
 	int32_t createTransition(uint32_t typeInfo, uint32_t overlayInfo = 0);
@@ -180,13 +180,19 @@ public:
 		listTransitionFile = nullptr;
 	}
 
-	TerrainTextures(void) { init(void); }
+	TerrainTextures(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~TerrainTextures(void) { destroy(void); }
+	~TerrainTextures(void)
+	{
+		destroy(void);
+	}
 
-	int32_t init(const std::wstring_view& fileName, const std::wstring_view& baseName);
+	int32_t init(std::wstring_view fileName, std::wstring_view baseName);
 
 	int32_t setTexture(uint32_t typeInfo, uint32_t overlayInfo);
 
@@ -199,9 +205,15 @@ public:
 		return 64.0f;
 	}
 
-	int32_t getNumTypes(void) const { return numTypes; }
+	int32_t getNumTypes(void) const
+	{
+		return numTypes;
+	}
 
-	int32_t getTextureNameID(int32_t id) const { return types[id].nameId; }
+	int32_t getTextureNameID(int32_t id) const
+	{
+		return types[id].nameId;
+	}
 
 	float getDetailFrameRate(int32_t typeInfo)
 	{
@@ -274,7 +286,10 @@ public:
 			globalMipLevel = mipLevel;
 	}
 
-	int32_t getFirstOverlay(void) { return firstOverlay; }
+	int32_t getFirstOverlay(void)
+	{
+		return firstOverlay;
+	}
 
 	bool isCement(uint32_t typeInfo)
 	{

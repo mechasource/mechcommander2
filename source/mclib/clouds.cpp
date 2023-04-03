@@ -56,8 +56,7 @@ extern bool hasGuardBand;
 
 //---------------------------------------------------------------------------
 // Class Clouds
-void
-Clouds::init(const std::wstring_view& textureName, int32_t gSize)
+void Clouds::init(std::wstring_view textureName, int32_t gSize)
 {
 	FullPathFileName cloudName;
 	cloudName.init(texturePath, textureName, ".tga");
@@ -75,8 +74,7 @@ Clouds::init(const std::wstring_view& textureName, int32_t gSize)
 }
 
 //---------------------------------------------------------------------------
-void
-Clouds::update(void)
+void Clouds::update(void)
 {
 	renderClouds = false;
 	scrollU += frameLength * SCROLL_U_FACTOR;
@@ -231,8 +229,7 @@ Clouds::update(void)
 
 #define CLOUD_Z_VALUE 0.9900f
 //---------------------------------------------------------------------------
-void
-Clouds::render(void)
+void Clouds::render(void)
 {
 	if (!renderClouds)
 		return;
@@ -318,8 +315,7 @@ Clouds::render(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Clouds::destroy(void)
+void Clouds::destroy(void)
 {
 	systemHeap->Free(cloudVertices);
 	cloudVertices = nullptr;

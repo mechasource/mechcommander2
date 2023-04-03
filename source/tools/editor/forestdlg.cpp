@@ -17,8 +17,9 @@
 
 static wchar_t szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
 
-ForestDlg::ForestDlg(CWnd* pParent /*=nullptr*/) :
-	CDialog(ForestDlg::IDD, pParent), forest(-1)
+ForestDlg::ForestDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(ForestDlg::IDD, pParent)
+	, forest(-1)
 {
 	//{{AFX_DATA_INIT(ForestDlg)
 	m_maxDensity = 10.0f;
@@ -47,8 +48,7 @@ ForestDlg::ForestDlg(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-ForestDlg::DoDataExchange(CDataExchange* pDX)
+void ForestDlg::DoDataExchange(CDataExchange* pDX)
 {
 	float min = -land->mapTopLeft3d.y;
 	float max = land->mapTopLeft3d.y;
@@ -102,19 +102,18 @@ ForestDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(ForestDlg, CDialog)
-//{{AFX_MSG_MAP(ForestDlg)
-ON_BN_CLICKED(IDSAVE, OnSave)
-ON_BN_CLICKED(IDLOAD, OnLoad)
-//}}AFX_MSG_MAP
-ON_CONTROL_RANGE(EN_CHANGE, IDC_FOREST_EDIT1, IDC_FOREST_EDIT15, OnEditChanged)
-ON_NOTIFY_RANGE(NM_RELEASEDCAPTURE, IDC_SLIDER1, IDC_SLIDER15, OnSliderChanged)
+	//{{AFX_MSG_MAP(ForestDlg)
+	ON_BN_CLICKED(IDSAVE, OnSave)
+	ON_BN_CLICKED(IDLOAD, OnLoad)
+	//}}AFX_MSG_MAP
+	ON_CONTROL_RANGE(EN_CHANGE, IDC_FOREST_EDIT1, IDC_FOREST_EDIT15, OnEditChanged)
+	ON_NOTIFY_RANGE(NM_RELEASEDCAPTURE, IDC_SLIDER1, IDC_SLIDER15, OnSliderChanged)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // ForestDlg message handlers
 
-void
-ForestDlg::OnSave()
+void ForestDlg::OnSave()
 {
 	BOOL bRes = UpdateData(TRUE);
 	if (!bRes)
@@ -151,8 +150,7 @@ ForestDlg::OnSave()
 	}
 }
 
-void
-ForestDlg::OnOK()
+void ForestDlg::OnOK()
 {
 	BOOL bRes = UpdateData(TRUE);
 	if (!bRes)
@@ -182,15 +180,13 @@ ForestDlg::OnOK()
 	CDialog::OnOK();
 }
 
-void
-ForestDlg::OnCancel()
+void ForestDlg::OnCancel()
 {
 	// TODO: Add extra cleanup here
 	CDialog::OnCancel();
 }
 
-void
-ForestDlg::OnEditChanged(uint32_t nID)
+void ForestDlg::OnEditChanged(uint32_t nID)
 {
 	CWnd* pWnd = GetDlgItem(nID);
 	CEdit* pEdit = (CEdit*)(pWnd);
@@ -208,8 +204,7 @@ ForestDlg::OnEditChanged(uint32_t nID)
 	}
 }
 
-void
-ForestDlg::OnSliderChanged(uint32_t id, NMHDR* pNotifyStruct, LRESULT* result)
+void ForestDlg::OnSliderChanged(uint32_t id, NMHDR* pNotifyStruct, LRESULT* result)
 {
 	CWnd* pWnd = GetDlgItem(id);
 	CSliderCtrl* pSlider = (CSliderCtrl*)(pWnd);
@@ -226,8 +221,7 @@ ForestDlg::OnSliderChanged(uint32_t id, NMHDR* pNotifyStruct, LRESULT* result)
 	}
 }
 
-BOOL
-ForestDlg::OnInitDialog()
+BOOL ForestDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_minDensity = forest.minDensity;
@@ -279,8 +273,7 @@ ForestDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-ForestDlg::OnLoad()
+void ForestDlg::OnLoad()
 {
 	CFileDialog dlg(TRUE, "fit", nullptr, OFN_NOCHANGEDIR | OFN_FILEMUSTEXIST, szFITFilter, this);
 	dlg.m_ofn.lpstrInitialDir = terrainPath;

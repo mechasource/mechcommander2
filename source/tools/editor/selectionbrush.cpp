@@ -45,8 +45,7 @@ SelectionBrush::~SelectionBrush()
 	if (land)
 		land->unselectAll();
 }
-bool
-SelectionBrush::beginPaint()
+bool SelectionBrush::beginPaint()
 {
 	lastPos.x = lastPos.y = 0.0;
 	firstWorldPos.x = lastWorldPos.x = 0.f;
@@ -113,8 +112,7 @@ SelectionBrush::endPaint()
 	return pRetAction;
 }
 
-float
-SelectionBrush::calcNewheight(int32_t vertexRow, int32_t vertexCol, float deltaScreen)
+float SelectionBrush::calcNewheight(int32_t vertexRow, int32_t vertexCol, float deltaScreen)
 {
 	Stuff::Vector3D world;
 	Stuff::Vector3D newWorld;
@@ -130,8 +128,7 @@ SelectionBrush::calcNewheight(int32_t vertexRow, int32_t vertexCol, float deltaS
 	return (ratio * deltaScreen);
 }
 
-bool
-SelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool SelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	Stuff::Vector4D endPos;
 	endPos.x = (float)screenX;
@@ -251,8 +248,7 @@ SelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screen
 	return true;
 }
 
-void
-SelectionBrush::render(int32_t screenX, int32_t screenY)
+void SelectionBrush::render(int32_t screenX, int32_t screenY)
 {
 	if (bPainting && !bDrag && !pDragBuilding)
 	{
@@ -323,8 +319,7 @@ SelectionBrush::render(int32_t screenX, int32_t screenY)
 	}
 }
 
-bool
-SelectionBrush::paintSmooth(
+bool SelectionBrush::paintSmooth(
 	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t radius)
 {
 	int32_t minI = INT_MAX;
@@ -359,8 +354,7 @@ SelectionBrush::paintSmooth(
 	return false;
 }
 
-bool
-SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY,
+bool SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY,
 	float radY, float radX, int32_t j, int32_t i)
 {
 	Stuff::Vector4D endPos;

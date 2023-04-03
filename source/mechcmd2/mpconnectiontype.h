@@ -44,7 +44,10 @@ private:
 class aLanPanel : public aObject
 {
 public:
-	aLanPanel(LogisticsScreen& refParentScreenParam) { pParentScreen = &refParentScreenParam; }
+	aLanPanel(LogisticsScreen& refParentScreenParam)
+	{
+		pParentScreen = &refParentScreenParam;
+	}
 	void init(FitIniFile* pFile);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 	virtual void update(void);
@@ -72,7 +75,7 @@ public:
 	virtual void begin(void);
 
 private:
-	int32_t getNum(const std::wstring_view& pStr, int32_t index1, int32_t index2);
+	int32_t getNum(std::wstring_view pStr, int32_t index1, int32_t index2);
 	LogisticsScreen* pParentScreen;
 	aAnimButton button0;
 	aAnimButton button1;
@@ -129,7 +132,10 @@ public:
 	// MPPlaceHolderScreen(void);
 	// virtual ~MPPlaceHolderScreen(void);
 
-	virtual void begin() { status = RUNNING; }
+	virtual void begin()
+	{
+		status = RUNNING;
+	}
 	// virtual void		end(void);
 	virtual void render(int32_t xOffset, int32_t yOffset)
 	{
@@ -162,7 +168,10 @@ public:
 		lastXOffset = xOffset;
 		lastYOffset = yOffset;
 	}
-	virtual void render() { render(0, 0); }
+	virtual void render()
+	{
+		render(0, 0);
+	}
 	// virtual void update(void);
 
 private:

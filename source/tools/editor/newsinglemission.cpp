@@ -18,16 +18,15 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // NewSingleMission dialog
 
-NewSingleMission::NewSingleMission(CWnd* pParent /*=nullptr*/) :
-	CDialog(NewSingleMission::IDD, pParent)
+NewSingleMission::NewSingleMission(CWnd* pParent /*=nullptr*/)
+	: CDialog(NewSingleMission::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(NewSingleMission)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
-void
-NewSingleMission::DoDataExchange(CDataExchange* pDX)
+void NewSingleMission::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(NewSingleMission)
@@ -36,29 +35,26 @@ NewSingleMission::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(NewSingleMission, CDialog)
-//{{AFX_MSG_MAP(NewSingleMission)
-ON_BN_CLICKED(ID_LOAD_MISSION, OnLoadMission)
-ON_BN_CLICKED(ID_NEWMISSION, OnNewmission)
+	//{{AFX_MSG_MAP(NewSingleMission)
+	ON_BN_CLICKED(ID_LOAD_MISSION, OnLoadMission)
+	ON_BN_CLICKED(ID_NEWMISSION, OnNewmission)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // NewSingleMission message handlers
 
-void
-NewSingleMission::OnLoadMission()
+void NewSingleMission::OnLoadMission()
 {
 	EndDialog(ID_LOAD_MISSION);
 }
 
-void
-NewSingleMission::OnNewmission()
+void NewSingleMission::OnNewmission()
 {
 	EndDialog(ID_NEWMISSION);
 }
 
-void
-NewSingleMission::OnCancel()
+void NewSingleMission::OnCancel()
 {
 	// TODO: Add extra cleanup here
 	CDialog::OnCancel();

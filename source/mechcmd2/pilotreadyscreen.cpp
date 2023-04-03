@@ -46,8 +46,7 @@ PilotReadyScreen::~PilotReadyScreen()
 	LogisticsScreen::clear();
 }
 
-void
-PilotReadyScreen::init(FitIniFile* file)
+void PilotReadyScreen::init(FitIniFile* file)
 {
 	mechDisplay.init();
 	// init button, texts, statics, rects
@@ -100,16 +99,16 @@ PilotReadyScreen::init(FitIniFile* file)
 		Assert(0, 0, "couldn't open MCL_PR_AvailablePilotEntry.fit");
 	}
 	LogisticsPilotListBoxItem::init(&tmpFile);
-	wchar_t blockName[32];
+	wchar_t blockname[32];
 	for (i = 0; i < 4; i++)
 	{
-		sprintf(blockName, "PilotSpecialtySkillIcon%ld", i);
-		specialtySkillIcons[i].init(file, blockName);
+		sprintf(blockname, "PilotSpecialtySkillIcon%ld", i);
+		specialtySkillIcons[i].init(file, blockname);
 	}
 	for (i = 0; i < 4; i++)
 	{
-		sprintf(blockName, "PilotSpecialtySkill%ld", i);
-		file->seekBlock(blockName);
+		sprintf(blockname, "PilotSpecialtySkill%ld", i);
+		file->seekBlock(blockname);
 		file->readIdLong("left", skillLocations[i].left);
 		file->readIdLong("top", skillLocations[i].top);
 		file->readIdLong("bottom", skillLocations[i].bottom);
@@ -117,18 +116,18 @@ PilotReadyScreen::init(FitIniFile* file)
 	}
 	for (i = 0; i < 5; i++)
 	{
-		sprintf(blockName, "PilotReadyRankIcon%ld", i);
-		rankIcons[i].init(file, blockName);
+		sprintf(blockname, "PilotReadyRankIcon%ld", i);
+		rankIcons[i].init(file, blockname);
 	}
 	for (i = 0; i < 16; i++)
 	{
-		sprintf(blockName, "PilotMedal%ld", i);
-		medalIcons[i].init(file, blockName);
+		sprintf(blockname, "PilotMedal%ld", i);
+		medalIcons[i].init(file, blockname);
 	}
 	for (i = 0; i < 16; i++)
 	{
-		sprintf(blockName, "PilotMedalPlacement%ld", i);
-		file->seekBlock(blockName);
+		sprintf(blockname, "PilotMedalPlacement%ld", i);
+		file->seekBlock(blockname);
 		file->readIdLong("left", medalLocations[i].left);
 		file->readIdLong("right", medalLocations[i].right);
 		file->readIdLong("top", medalLocations[i].top);
@@ -136,8 +135,7 @@ PilotReadyScreen::init(FitIniFile* file)
 	}
 }
 
-void
-PilotReadyScreen::begin()
+void PilotReadyScreen::begin()
 {
 	getButton(MB_MSG_PREV)->disable(false);
 	getButton(MB_MSG_MAINMENU)->disable(false);
@@ -219,14 +217,12 @@ PilotReadyScreen::begin()
 	}
 }
 
-void
-PilotReadyScreen::end()
+void PilotReadyScreen::end()
 {
 	mechDisplay.setMech(nullptr);
 }
 
-void
-PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
+void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	pilotListBox.move(xOffset, yOffset);
 	pilotListBox.render();
@@ -277,8 +273,7 @@ PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 		dragIcon.render();
 }
 
-void
-PilotReadyScreen::update()
+void PilotReadyScreen::update()
 {
 	if (MPlayer)
 	{
@@ -420,7 +415,7 @@ PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
 			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderid);
 			if (pInfo)
 			{
-				const std::wstring_view& name = pInfo->name;
+				std::wstring_view name = pInfo->name;
 				MPlayer->sendPlayerActionChat(nullptr, name, IDS_MP_PLAYER_READY);
 			}
 			pilotListBox.SelectItem(-1);
@@ -445,8 +440,7 @@ PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void
-PilotReadyScreen::addSelectedPilot()
+void PilotReadyScreen::addSelectedPilot()
 {
 	aListItem* pItem = nullptr;
 	bool bFound = 0;
@@ -502,8 +496,7 @@ PilotReadyScreen::addSelectedPilot()
 	}
 }
 
-void
-PilotReadyScreen::removeSelectedPilot()
+void PilotReadyScreen::removeSelectedPilot()
 {
 	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
@@ -555,8 +548,7 @@ PilotReadyScreen::removeSelectedPilot()
 	}
 }
 
-void
-PilotReadyScreen::beginDrag(LogisticsPilot* pPilot)
+void PilotReadyScreen::beginDrag(LogisticsPilot* pPilot)
 {
 	if (!pDragPilot)
 		pDragPilot = pPilot;
@@ -565,8 +557,7 @@ PilotReadyScreen::beginDrag(LogisticsPilot* pPilot)
 	launchFadeTime = 0.f;
 }
 
-void
-PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
+void PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
 {
 	if (pIcon)
 	{
@@ -583,8 +574,7 @@ PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
 	pDragPilot = 0;
 }
 
-void
-PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
+void PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
 {
 	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
@@ -598,8 +588,7 @@ PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
 	pilotListBox.AddItem(pItem);
 }
 
-void
-PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
+void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 {
 	mechSelected = 0;
 	if (pPilot != pCurPilot)
@@ -616,7 +605,7 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		strcat(fileName, "MCL_PR_");
 		strcat(fileName, pPilot->getName());
 		strcat(fileName, ".tga");
-		const std::wstring_view& str = fileName;
+		std::wstring_view str = fileName;
 		str.MakeLower();
 		statics[67].setTexture(str);
 		statics[67].setcolour(0xffffffff);
@@ -640,11 +629,11 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		attributeMeters[1].setValue(pCurPilot->getPiloting() / 80.f);
 		sprintf(number, "%ld", pCurPilot->getMechKills());
 		textObjects[7].setText(number);
-		const std::wstring_view& name = pCurPilot->getName();
+		std::wstring_view name = pCurPilot->getName();
 		name.MakeUpper();
 		textObjects[8].setText(name);
 		int32_t count = 32;
-		const std::wstring_view& specialtySkills[32];
+		std::wstring_view specialtySkills[32];
 		int32_t skillIDs[32];
 		pCurPilot->getSpecialtySkills(specialtySkills, count);
 		count = 32;
@@ -703,8 +692,7 @@ PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 	}
 }
 
-void
-PilotReadyScreen::setMech(LogisticsMech* pMech)
+void PilotReadyScreen::setMech(LogisticsMech* pMech)
 {
 	mechSelected = true;
 	mechDisplay.setMech(pMech, 0);

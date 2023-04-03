@@ -9,21 +9,14 @@
 #include "mathfunc.h"
 
 #if CONSIDERED_UNUSED
-Vector2 <-> XMFLOAT2, XMVECTOR
-Vector3 <-> XMFLOAT3, XMVECTOR
-Vector4 <-> XMFLOAT4, XMVECTOR
-Quaternion <-> XMFLOAT4, XMVECTOR
-colour <-> XMFLOAT4, XMVECTOR
-Plane <-> XMFLOAT4, XMVECTOR
-Matrix <-> XMFLOAT4X4, XMMATRIX
+Vector2 <->XMFLOAT2, XMVECTOR Vector3 <->XMFLOAT3, XMVECTOR Vector4 <->XMFLOAT4, XMVECTOR Quaternion <->XMFLOAT4, XMVECTOR colour <->XMFLOAT4, XMVECTOR Plane <->XMFLOAT4, XMVECTOR Matrix <->XMFLOAT4X4, XMMATRIX
 #endif
 
-Stuff::Vector3D UnitI(-1.0f, 0.0f, 0.0f);
+																																																			  Stuff::Vector3D UnitI(-1.0f, 0.0f, 0.0f);
 Stuff::Vector3D UnitJ(0.0f, -1.0f, 0.0f);
 Stuff::Vector3D UnitK(0.0f, 0.0f, 1.0f);
 
-void
-Rotate(Stuff::Vector2DOf<float>& vec, float angle)
+void Rotate(Stuff::Vector2DOf<float>& vec, float angle)
 {
 	float tx = vec.x;
 	float sine = sin(angle * DEGREES_TO_RADS);
@@ -34,8 +27,7 @@ Rotate(Stuff::Vector2DOf<float>& vec, float angle)
 	vec.y -= (tx * sine);
 }
 
-void
-Rotate(Stuff::Vector3D& vec, float angle)
+void Rotate(Stuff::Vector3D& vec, float angle)
 {
 	float tx = vec.x;
 	float sine = sin(angle * DEGREES_TO_RADS);
@@ -46,8 +38,7 @@ Rotate(Stuff::Vector3D& vec, float angle)
 	vec.y -= (tx * sine);
 }
 
-void
-RotateLight(Stuff::Vector3D& vec, float angle)
+void RotateLight(Stuff::Vector3D& vec, float angle)
 {
 	float tx = vec.x;
 	float sine = sin(angle);
@@ -58,8 +49,7 @@ RotateLight(Stuff::Vector3D& vec, float angle)
 	vec.z -= (tx * sine);
 }
 
-void
-OppRotate(Stuff::Vector3D& vec, float angle)
+void OppRotate(Stuff::Vector3D& vec, float angle)
 {
 	float tx = vec.x;
 	float sine = sin(angle * DEGREES_TO_RADS);
@@ -70,8 +60,7 @@ OppRotate(Stuff::Vector3D& vec, float angle)
 	vec.y += (tx * sine);
 }
 
-float
-distance_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
+float distance_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 {
 	Stuff::Vector3D result;
 	result.x = v2.x - v1.x;
@@ -81,8 +70,7 @@ distance_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 	return (dist);
 }
 
-float
-my_acos(float val)
+float my_acos(float val)
 {
 	//-------------------------------------------------------
 	// Due to floating point round-off error, we may have
@@ -98,8 +86,7 @@ my_acos(float val)
 	return (acos(val));
 }
 
-float
-angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2)
+float angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2)
 {
 	float mag_product = v1.GetLength() * v2.GetLength();
 	if (mag_product == 0.0)
@@ -111,8 +98,7 @@ angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2)
 	}
 }
 
-float
-angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
+float angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 {
 	float mag_product = v1.GetLength() * v2.GetLength();
 	if (mag_product == 0.0)
@@ -125,8 +111,7 @@ angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 }
 
 //---------------------------------------------------------------------------
-float
-world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
+float world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 {
 	Stuff::Vector3D facingVec(0.0f, 1.0f, 0.0f);
 	Stuff::Vector3D goalVec;

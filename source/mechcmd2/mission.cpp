@@ -113,7 +113,7 @@
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
-//#define NUM_FIRERANGES		3
+//#define FireRangeType::count		3
 
 //----------------------------------------------------------------------------------
 // Static globals
@@ -196,17 +196,12 @@ float CheatHitDamage = 0.0f;
 
 bool neverEndingStory = false;
 
-void
-GetBlockedDoorCells(int32_t moveLevel, int32_t door, const std::wstring_view& openCells);
-void
-PlaceStationaryMovers(MoveMap* map);
-void
-PlaceMovers();
+void GetBlockedDoorCells(int32_t moveLevel, int32_t door, std::wstring_view openCells);
+void PlaceStationaryMovers(MoveMap* map);
+void PlaceMovers();
 //---------------------------------------------------------------------------
-void
-initABL();
-void
-closeABL();
+void initABL();
+void closeABL();
 
 #define MAX_DISABLE_AT_START 100
 extern int32_t NumDisableAtStart;
@@ -720,8 +715,7 @@ Mission::render(void)
 	return scenarioResult;
 }
 //----------------------------------------------------------------------------------
-float
-applyDifficultySkill(float chance, bool isPlayer)
+float applyDifficultySkill(float chance, bool isPlayer)
 {
 	if (isPlayer)
 	{
@@ -759,8 +753,7 @@ applyDifficultySkill(float chance, bool isPlayer)
 	}
 }
 //----------------------------------------------------------------------------------
-float
-applyDifficultyWeapon(float dmg, bool isPlayer)
+float applyDifficultyWeapon(float dmg, bool isPlayer)
 {
 	if (isPlayer)
 	{
@@ -806,8 +799,7 @@ applyDifficultyWeapon(float dmg, bool isPlayer)
 	return dmg;
 }
 //----------------------------------------------------------------------------------
-void
-InitDifficultySettings(FitIniFile* gameSystemFile)
+void InitDifficultySettings(FitIniFile* gameSystemFile)
 {
 	int32_t result = gameSystemFile->seekBlock("DifficultySettings");
 	gosASSERT(result == NO_ERROR);
@@ -854,8 +846,7 @@ bool force32Mb = FALSE; // Do we have 32Mb of memory only?
 float InfluenceRadius = -1.0; // Capture Radius
 float InfluenceTime = 0.0; // Time inside to Capture
 //----------------------------------------------------------------------------------
-void
-Mission::createPartObject(int32_t partIndex, std::unique_ptr<Mover> mover)
+void Mission::createPartObject(int32_t partIndex, std::unique_ptr<Mover> mover)
 {
 	//-----------------------------------
 	// All parts are movers in this game!
@@ -1315,8 +1306,7 @@ Mission::addMover(MoverInitData* moveSpec, LogisticsMech* mechData)
 	return moverHandle;
 }
 //---------------------------------------------------------------------------
-void
-DEBUGWINS_removeGameObject(GameObjectPtr obj);
+void DEBUGWINS_removeGameObject(GameObjectPtr obj);
 int32_t
 Mission::removeMover(std::unique_ptr<Mover> mover)
 {
@@ -1331,9 +1321,8 @@ Mission::removeMover(std::unique_ptr<Mover> mover)
 	return (0);
 }
 //---------------------------------------------------------------------------
-void
-Mission::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID,
-	const std::wstring_view& pilotFileName, const std::wstring_view& brainFileName)
+void Mission::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID,
+	std::wstring_view pilotFileName, std::wstring_view brainFileName)
 {
 	missionInterface->removeMover(mover);
 	if (MPlayer)
@@ -1363,8 +1352,7 @@ Mission::tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t new
 	}
 }
 //----------------------------------------------------------------------------
-bool
-Mission::calcComplexDropZones(const std::wstring_view& missionName, wchar_t dropZoneCID[MAX_MC_PLAYERS])
+bool Mission::calcComplexDropZones(std::wstring_view missionName, wchar_t dropZoneCID[MAX_MC_PLAYERS])
 {
 	for (size_t p = 0; p < MAX_MC_PLAYERS; p++)
 		dropZoneCID[p] = -1;
@@ -1460,8 +1448,7 @@ Mission::calcComplexDropZones(const std::wstring_view& missionName, wchar_t drop
 	return (true);
 }
 //----------------------------------------------------------------------------
-bool
-IsGateDisabled(int32_t objectWID)
+bool IsGateDisabled(int32_t objectWID)
 {
 	//--------------------------------------------------------------
 	// Actually looks at the object and its parent, if it has one...
@@ -1479,8 +1466,7 @@ IsGateDisabled(int32_t objectWID)
 	return (false);
 }
 //----------------------------------------------------------------------------
-bool
-IsGateOpen(int32_t objectWID)
+bool IsGateOpen(int32_t objectWID)
 {
 	//--------------------------------------------------------------
 	// Actually looks at the object and its parent, if it has one...
@@ -1494,8 +1480,7 @@ IsGateOpen(int32_t objectWID)
 	return (false);
 }
 //----------------------------------------------------------------------------
-void
-Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dropZoneID,
+void Mission::init(std::wstring_view missionName, int32_t loadType, int32_t dropZoneID,
 	Stuff::Vector3D* dropZoneList, wchar_t commandersToLoad[8][3], int32_t numMoversPerCommander)
 {
 	neverEndingStory = false;
@@ -1597,7 +1582,7 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 	result = gameSystemFile->readIdULong("MaxTreeLOSBlock", MaxTreeLOSCellBlock);
 	if (result != NO_ERROR)
 		MaxTreeLOSCellBlock = 5;
-	result = gameSystemFile->readIdFloatArray("WeaponRange", WeaponRange, NUM_FIRERANGES);
+	result = gameSystemFile->readIdFloatArray("WeaponRange", WeaponRange, FireRangeType::count);
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->readIdFloat("DefaultAttackRange", DefaultAttackRange);
 	if (result != NO_ERROR)
@@ -2696,12 +2681,10 @@ Mission::init(const std::wstring_view& missionName, int32_t loadType, int32_t dr
 //----------------------------------------------------------------------------------
 // Sets mission active.  Assumes that whatever we needed to do to the mission
 // data set for logistis has been done and player is ready to play!
-void
-DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj);
+void DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj);
 extern int32_t GameObjectWindowList[3];
 extern int32_t NumGameObjectsToDisplay;
-void
-Mission::start(void)
+void Mission::start(void)
 {
 	active = true;
 	for (size_t i = 0; i < NumGameObjectsToDisplay; i++)
@@ -2709,8 +2692,7 @@ Mission::start(void)
 			-1, ObjectManager->getByWatchID(parts[GameObjectWindowList[i]].objectWID));
 }
 //----------------------------------------------------------------------------------
-void
-Mission::initTGLForMission()
+void Mission::initTGLForMission()
 {
 	//---------------------------------------------------------
 	// End the Tiny Geometry Layer Heap for Logistics
@@ -2779,8 +2761,7 @@ Mission::initTGLForMission()
 	useShadows = prefs.useShadows;
 }
 //----------------------------------------------------------------------------------
-void
-Mission::destroy(bool initLogistics)
+void Mission::destroy(bool initLogistics)
 {
 	//---------------------------------------------------------------
 	// Shutdown the Mission Interface
@@ -3004,8 +2985,7 @@ Mission::destroy(bool initLogistics)
 	// systemHeap->dumpRecordLog();
 }
 //----------------------------------------------------------------------------------
-void
-Mission::handleMultiplayMessage(int32_t code, int32_t param1)
+void Mission::handleMultiplayMessage(int32_t code, int32_t param1)
 {
 	if (missionBrainCallback)
 	{
@@ -3017,8 +2997,7 @@ Mission::handleMultiplayMessage(int32_t code, int32_t param1)
 	}
 }
 //----------------------------------------------------------------------------------
-void
-Mission::startObjectiveTimers(void)
+void Mission::startObjectiveTimers(void)
 {
 	for (size_t i = 0; i < (int32_t)numObjectives; i++)
 	{
@@ -3042,8 +3021,7 @@ Mission::setObjectiveTimer(int32_t objectiveNum, float timeLeft)
 	return (NO_ERROR);
 }
 //----------------------------------------------------------------------------------
-float
-Mission::checkObjectiveTimer(int32_t objectiveNum)
+float Mission::checkObjectiveTimer(int32_t objectiveNum)
 {
 	gosASSERT((objectiveNum >= 0) || objectiveNum < (int32_t)numObjectives);
 	int32_t timerNumber = OBJECTIVE_1_TIMER + objectiveNum;
@@ -3063,8 +3041,7 @@ Mission::setObjectiveStatus(int32_t objectiveNum, ObjectiveStatus status)
 	return (NO_ERROR);
 }
 //----------------------------------------------------------------------------------
-bool
-Mission::checkObjectiveSuccess(void)
+bool Mission::checkObjectiveSuccess(void)
 {
 	// NOW uses NEW(tm) objectives.
 	int32_t count = 0;
@@ -3081,8 +3058,7 @@ Mission::checkObjectiveSuccess(void)
 	return result;
 }
 //----------------------------------------------------------------------------------
-bool
-Mission::checkObjectiveFailed(void)
+bool Mission::checkObjectiveFailed(void)
 {
 	// NOW uses NEW(tm) objectives.
 	int32_t count = 0;
@@ -3137,8 +3113,7 @@ Mission::checkObjectiveType(int32_t objectiveNum)
 	return (result);
 }
 //----------------------------------------------------------------------------------
-void
-Mission::setObjectivePos(int32_t objectiveNum, float realX, float realY, float realZ)
+void Mission::setObjectivePos(int32_t objectiveNum, float realX, float realY, float realZ)
 {
 	gosASSERT((objectiveNum >= 0) || objectiveNum < (int32_t)numObjectives);
 	if (objectives)

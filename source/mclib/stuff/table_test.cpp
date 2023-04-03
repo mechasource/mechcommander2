@@ -33,18 +33,22 @@ public:
 	bool RunTest();
 };
 
-TableTestPlug::TableTestPlug(int32_t value) :
-	Plug(DefaultData)
+TableTestPlug::TableTestPlug(int32_t value)
+	: Plug(DefaultData)
 {
 	this->value = value;
 }
 
-TableTestPlug::~TableTestPlug() {}
+TableTestPlug::~TableTestPlug() { }
 
-TableTestNode::TableTestNode() :
-	Node(DefaultData), table1(this, true), table2(this, true) {}
+TableTestNode::TableTestNode()
+	: Node(DefaultData)
+	, table1(this, true)
+	, table2(this, true)
+{
+}
 
-TableTestNode::~TableTestNode() {}
+TableTestNode::~TableTestNode() { }
 
 //
 //###########################################################################
@@ -52,8 +56,7 @@ TableTestNode::~TableTestNode() {}
 //###########################################################################
 //
 
-bool
-Table::ProfileClass()
+bool Table::ProfileClass()
 {
 	TableTestNode testNode;
 #if defined(_ARMOR)
@@ -71,8 +74,7 @@ Table::ProfileClass()
 //###########################################################################
 //
 
-bool
-Table::TestClass()
+bool Table::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Table test..."));
 	TableTestNode testNode;
@@ -80,8 +82,7 @@ Table::TestClass()
 	return true;
 }
 
-bool
-TableTestNode::RunProfile()
+bool TableTestNode::RunProfile()
 {
 	TableTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];
@@ -188,8 +189,7 @@ TableTestNode::RunProfile()
 	return true;
 }
 
-bool
-TableTestNode::RunTest()
+bool TableTestNode::RunTest()
 {
 	TableTestPlug *testPlug1, *testPlug2;
 	int32_t values[TEST_COUNT];

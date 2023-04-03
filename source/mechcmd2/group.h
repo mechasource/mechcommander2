@@ -42,9 +42,15 @@ typedef struct _GoalMapNode
 	// node to GOAL  int32_t				fPrime;
 	// // = g + hPrime
 
-	void setFlag(uint8_t flag) { flags |= flag; }
+	void setFlag(uint8_t flag)
+	{
+		flags |= flag;
+	}
 
-	void clearFlag(uint8_t flag) { flags &= (flag ^ 0xFFFFFFFF); }
+	void clearFlag(uint8_t flag)
+	{
+		flags &= (flag ^ 0xFFFFFFFF);
+	}
 } GoalMapNode;
 
 typedef struct _MoverGroupData
@@ -85,23 +91,41 @@ public:
 
 	void init(MoverGroupData& data);
 
-	MoverGroup(void) { init(void); }
+	MoverGroup(void)
+	{
+		init(void);
+	}
 
 	virtual void destroy(void);
 
-	~MoverGroup(void) { destroy(void); }
+	~MoverGroup(void)
+	{
+		destroy(void);
+	}
 
-	virtual int32_t getId(void) { return (id); }
+	virtual int32_t getId(void)
+	{
+		return (id);
+	}
 
-	virtual void setId(int32_t _id) { id = _id; }
+	virtual void setId(int32_t _id)
+	{
+		id = _id;
+	}
 
 	// int32_t calcRosterSize (BOOL checkUnits = TRUE);
 
 	// void addToRoster (TeamPtr team, int32_t* rosterIndex);
 
-	int32_t getNumMovers(void) { return (numMovers); }
+	int32_t getNumMovers(void)
+	{
+		return (numMovers);
+	}
 
-	void setNumMovers(int32_t num) { numMovers = num; }
+	void setNumMovers(int32_t num)
+	{
+		numMovers = num;
+	}
 
 	virtual bool add(std::unique_ptr<Mover> mover);
 
@@ -115,9 +139,15 @@ public:
 
 	virtual std::unique_ptr<Mover> getPoint(void);
 
-	virtual void setDisbandOnNoPoint(bool setting) { disbandOnNoPoint = setting; }
+	virtual void setDisbandOnNoPoint(bool setting)
+	{
+		disbandOnNoPoint = setting;
+	}
 
-	virtual bool getDisbandOnNoPoint(void) { return (disbandOnNoPoint); }
+	virtual bool getDisbandOnNoPoint(void)
+	{
+		return (disbandOnNoPoint);
+	}
 
 	std::unique_ptr<Mover> getMover(int32_t i);
 

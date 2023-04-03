@@ -14,8 +14,7 @@ void __stdcall UpdateDebugMouse(void);
 void __stdcall UpdateDebugWindow(void);
 void __stdcall InitTextDisplay(void);
 void __stdcall DrawText(uint32_t colour, PSTR string);
-void __stdcall DrawTextA(uint32_t colour, PSTR string)
-void __stdcall DrawSquare(int32_t topx, int32_t topy, int32_t width, int32_t height, uint32_t colour);
+void __stdcall DrawTextA(uint32_t colour, PSTR string) void __stdcall DrawSquare(int32_t topx, int32_t topy, int32_t width, int32_t height, uint32_t colour);
 void __stdcall DrawChr(char Chr);
 
 //

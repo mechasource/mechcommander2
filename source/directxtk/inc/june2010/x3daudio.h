@@ -53,83 +53,80 @@
 
 #pragma once
 //--------------<D-E-F-I-N-I-T-I-O-N-S>-------------------------------------//
-#include <windef.h>    // general windows types
+#include <windef.h> // general windows types
 #if defined(_XBOX)
-    #include <vectorintrinsics.h>
+#include <vectorintrinsics.h>
 #endif
 #include <d3d9types.h> // for D3DVECTOR
 
 // speaker geometry configuration flags, specifies assignment of channels to speaker positions, defined as per WAVEFORMATEXTENSIBLE.dwChannelMask
 #if !defined(_SPEAKER_POSITIONS_)
-    #define _SPEAKER_POSITIONS_
-    #define SPEAKER_FRONT_LEFT            0x00000001
-    #define SPEAKER_FRONT_RIGHT           0x00000002
-    #define SPEAKER_FRONT_CENTER          0x00000004
-    #define SPEAKER_LOW_FREQUENCY         0x00000008
-    #define SPEAKER_BACK_LEFT             0x00000010
-    #define SPEAKER_BACK_RIGHT            0x00000020
-    #define SPEAKER_FRONT_LEFT_OF_CENTER  0x00000040
-    #define SPEAKER_FRONT_RIGHT_OF_CENTER 0x00000080
-    #define SPEAKER_BACK_CENTER           0x00000100
-    #define SPEAKER_SIDE_LEFT             0x00000200
-    #define SPEAKER_SIDE_RIGHT            0x00000400
-    #define SPEAKER_TOP_CENTER            0x00000800
-    #define SPEAKER_TOP_FRONT_LEFT        0x00001000
-    #define SPEAKER_TOP_FRONT_CENTER      0x00002000
-    #define SPEAKER_TOP_FRONT_RIGHT       0x00004000
-    #define SPEAKER_TOP_BACK_LEFT         0x00008000
-    #define SPEAKER_TOP_BACK_CENTER       0x00010000
-    #define SPEAKER_TOP_BACK_RIGHT        0x00020000
-    #define SPEAKER_RESERVED              0x7FFC0000 // bit mask locations reserved for future use
-    #define SPEAKER_ALL                   0x80000000 // used to specify that any possible permutation of speaker configurations
+#define _SPEAKER_POSITIONS_
+#define SPEAKER_FRONT_LEFT 0x00000001
+#define SPEAKER_FRONT_RIGHT 0x00000002
+#define SPEAKER_FRONT_CENTER 0x00000004
+#define SPEAKER_LOW_FREQUENCY 0x00000008
+#define SPEAKER_BACK_LEFT 0x00000010
+#define SPEAKER_BACK_RIGHT 0x00000020
+#define SPEAKER_FRONT_LEFT_OF_CENTER 0x00000040
+#define SPEAKER_FRONT_RIGHT_OF_CENTER 0x00000080
+#define SPEAKER_BACK_CENTER 0x00000100
+#define SPEAKER_SIDE_LEFT 0x00000200
+#define SPEAKER_SIDE_RIGHT 0x00000400
+#define SPEAKER_TOP_CENTER 0x00000800
+#define SPEAKER_TOP_FRONT_LEFT 0x00001000
+#define SPEAKER_TOP_FRONT_CENTER 0x00002000
+#define SPEAKER_TOP_FRONT_RIGHT 0x00004000
+#define SPEAKER_TOP_BACK_LEFT 0x00008000
+#define SPEAKER_TOP_BACK_CENTER 0x00010000
+#define SPEAKER_TOP_BACK_RIGHT 0x00020000
+#define SPEAKER_RESERVED 0x7FFC0000 // bit mask locations reserved for future use
+#define SPEAKER_ALL 0x80000000 // used to specify that any possible permutation of speaker configurations
 #endif
 
 // standard speaker geometry configurations, used with X3DAudioInitialize
 #if !defined(SPEAKER_MONO)
-    #define SPEAKER_MONO             SPEAKER_FRONT_CENTER
-    #define SPEAKER_STEREO           (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT)
-    #define SPEAKER_2POINT1          (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_LOW_FREQUENCY)
-    #define SPEAKER_SURROUND         (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_BACK_CENTER)
-    #define SPEAKER_QUAD             (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT)
-    #define SPEAKER_4POINT1          (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT)
-    #define SPEAKER_5POINT1          (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT)
-    #define SPEAKER_7POINT1          (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT | SPEAKER_FRONT_LEFT_OF_CENTER | SPEAKER_FRONT_RIGHT_OF_CENTER)
-    #define SPEAKER_5POINT1_SURROUND (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_SIDE_LEFT  | SPEAKER_SIDE_RIGHT)
-    #define SPEAKER_7POINT1_SURROUND (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT | SPEAKER_SIDE_LEFT  | SPEAKER_SIDE_RIGHT)
+#define SPEAKER_MONO SPEAKER_FRONT_CENTER
+#define SPEAKER_STEREO (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT)
+#define SPEAKER_2POINT1 (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_LOW_FREQUENCY)
+#define SPEAKER_SURROUND (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_BACK_CENTER)
+#define SPEAKER_QUAD (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT)
+#define SPEAKER_4POINT1 (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT)
+#define SPEAKER_5POINT1 (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT)
+#define SPEAKER_7POINT1 (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT | SPEAKER_FRONT_LEFT_OF_CENTER | SPEAKER_FRONT_RIGHT_OF_CENTER)
+#define SPEAKER_5POINT1_SURROUND (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_SIDE_LEFT | SPEAKER_SIDE_RIGHT)
+#define SPEAKER_7POINT1_SURROUND (SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT | SPEAKER_SIDE_LEFT | SPEAKER_SIDE_RIGHT)
 #endif
 
 // Xbox360 speaker geometry configuration, used with X3DAudioInitialize
 #if defined(_XBOX)
-    #define SPEAKER_XBOX SPEAKER_5POINT1
+#define SPEAKER_XBOX SPEAKER_5POINT1
 #endif
-
 
 // size of instance handle in bytes
 #define X3DAUDIO_HANDLE_BYTESIZE 20
 
 // float math constants
-#define X3DAUDIO_PI  3.141592654f
+#define X3DAUDIO_PI 3.141592654f
 #define X3DAUDIO_2PI 6.283185307f
 
 // speed of sound in meters per second for dry air at approximately 20C, used with X3DAudioInitialize
 #define X3DAUDIO_SPEED_OF_SOUND 343.5f
 
 // calculation control flags, used with X3DAudioCalculate
-#define X3DAUDIO_CALCULATE_MATRIX          0x00000001 // enable matrix coefficient table calculation
-#define X3DAUDIO_CALCULATE_DELAY           0x00000002 // enable delay time array calculation (stereo final mix only)
-#define X3DAUDIO_CALCULATE_LPF_DIRECT      0x00000004 // enable LPF direct-path coefficient calculation
-#define X3DAUDIO_CALCULATE_LPF_REVERB      0x00000008 // enable LPF reverb-path coefficient calculation
-#define X3DAUDIO_CALCULATE_REVERB          0x00000010 // enable reverb send level calculation
-#define X3DAUDIO_CALCULATE_DOPPLER         0x00000020 // enable doppler shift factor calculation
-#define X3DAUDIO_CALCULATE_EMITTER_ANGLE   0x00000040 // enable emitter-to-listener interior angle calculation
+#define X3DAUDIO_CALCULATE_MATRIX 0x00000001 // enable matrix coefficient table calculation
+#define X3DAUDIO_CALCULATE_DELAY 0x00000002 // enable delay time array calculation (stereo final mix only)
+#define X3DAUDIO_CALCULATE_LPF_DIRECT 0x00000004 // enable LPF direct-path coefficient calculation
+#define X3DAUDIO_CALCULATE_LPF_REVERB 0x00000008 // enable LPF reverb-path coefficient calculation
+#define X3DAUDIO_CALCULATE_REVERB 0x00000010 // enable reverb send level calculation
+#define X3DAUDIO_CALCULATE_DOPPLER 0x00000020 // enable doppler shift factor calculation
+#define X3DAUDIO_CALCULATE_EMITTER_ANGLE 0x00000040 // enable emitter-to-listener interior angle calculation
 
-#define X3DAUDIO_CALCULATE_ZEROCENTER      0x00010000 // do not position to front center speaker, signal positioned to remaining speakers instead, front center destination channel will be zero in returned matrix coefficient table, valid only for matrix calculations with final mix formats that have a front center channel
+#define X3DAUDIO_CALCULATE_ZEROCENTER 0x00010000 // do not position to front center speaker, signal positioned to remaining speakers instead, front center destination channel will be zero in returned matrix coefficient table, valid only for matrix calculations with final mix formats that have a front center channel
 #define X3DAUDIO_CALCULATE_REDIRECT_TO_LFE 0x00020000 // apply equal mix of all source channels to LFE destination channel, valid only for matrix calculations with sources that have no LFE channel and final mix formats that have an LFE channel
-
 
 //--------------<D-A-T-A---T-Y-P-E-S>---------------------------------------//
 #pragma pack(push, 1) // set packing alignment to ensure consistency across arbitrary build environments
-
 
 // primitive types
 typedef float FLOAT32; // 32-bit IEEE float
@@ -138,13 +135,12 @@ typedef D3DVECTOR X3DAUDIO_VECTOR; // float 3D vector
 // instance handle of precalculated constants
 typedef uint8_t X3DAUDIO_HANDLE[X3DAUDIO_HANDLE_BYTESIZE];
 
-
 // Distance curve point:
 // Defines a DSP setting at a given normalized distance.
 typedef struct X3DAUDIO_DISTANCE_CURVE_POINT
 {
-    FLOAT32 Distance;   // normalized distance, must be within [0.0f, 1.0f]
-    FLOAT32 DSPSetting; // DSP setting
+	FLOAT32 Distance; // normalized distance, must be within [0.0f, 1.0f]
+	FLOAT32 DSPSetting; // DSP setting
 } X3DAUDIO_DISTANCE_CURVE_POINT, *LPX3DAUDIO_DISTANCE_CURVE_POINT;
 
 // Distance curve:
@@ -162,11 +158,11 @@ typedef struct X3DAUDIO_DISTANCE_CURVE_POINT
 // For all points in the distance curve where 1 <= k < PointCount.
 typedef struct X3DAUDIO_DISTANCE_CURVE
 {
-    X3DAUDIO_DISTANCE_CURVE_POINT* pPoints;    // distance curve point array, must have at least PointCount elements with no duplicates and be sorted in ascending order with respect to Distance
-    uint32_t                         PointCount; // number of distance curve points, must be >= 2 as all distance curves must have at least two endpoints, defining DSP settings at 0.0f and 1.0f normalized distance
+	X3DAUDIO_DISTANCE_CURVE_POINT* pPoints; // distance curve point array, must have at least PointCount elements with no duplicates and be sorted in ascending order with respect to Distance
+	uint32_t PointCount; // number of distance curve points, must be >= 2 as all distance curves must have at least two endpoints, defining DSP settings at 0.0f and 1.0f normalized distance
 } X3DAUDIO_DISTANCE_CURVE, *LPX3DAUDIO_DISTANCE_CURVE;
-static const X3DAUDIO_DISTANCE_CURVE_POINT X3DAudioDefault_LinearCurvePoints[2] = { 0.0f, 1.0f, 1.0f, 0.0f };
-static const X3DAUDIO_DISTANCE_CURVE       X3DAudioDefault_LinearCurve          = { (X3DAUDIO_DISTANCE_CURVE_POINT*)&X3DAudioDefault_LinearCurvePoints[0], 2 };
+static const X3DAUDIO_DISTANCE_CURVE_POINT X3DAudioDefault_LinearCurvePoints[2] = {0.0f, 1.0f, 1.0f, 0.0f};
+static const X3DAUDIO_DISTANCE_CURVE X3DAudioDefault_LinearCurve = {(X3DAUDIO_DISTANCE_CURVE_POINT*)&X3DAudioDefault_LinearCurvePoints[0], 2};
 
 // Cone:
 // Specifies directionality for a listener or single-channel emitter by
@@ -180,18 +176,17 @@ static const X3DAUDIO_DISTANCE_CURVE       X3DAudioDefault_LinearCurve          
 // omnidirectionality using only the outer or inner values respectively.
 typedef struct X3DAUDIO_CONE
 {
-    FLOAT32 InnerAngle; // inner cone angle in radians, must be within [0.0f, X3DAUDIO_2PI]
-    FLOAT32 OuterAngle; // outer cone angle in radians, must be within [InnerAngle, X3DAUDIO_2PI]
+	FLOAT32 InnerAngle; // inner cone angle in radians, must be within [0.0f, X3DAUDIO_2PI]
+	FLOAT32 OuterAngle; // outer cone angle in radians, must be within [InnerAngle, X3DAUDIO_2PI]
 
-    FLOAT32 InnerVolume; // volume level scaler on/within inner cone, used only for matrix calculations, must be within [0.0f, 2.0f] when used
-    FLOAT32 OuterVolume; // volume level scaler on/beyond outer cone, used only for matrix calculations, must be within [0.0f, 2.0f] when used
-    FLOAT32 InnerLPF;    // LPF (both direct and reverb paths) coefficient subtrahend on/within inner cone, used only for LPF (both direct and reverb paths) calculations, must be within [0.0f, 1.0f] when used
-    FLOAT32 OuterLPF;    // LPF (both direct and reverb paths) coefficient subtrahend on/beyond outer cone, used only for LPF (both direct and reverb paths) calculations, must be within [0.0f, 1.0f] when used
-    FLOAT32 InnerReverb; // reverb send level scaler on/within inner cone, used only for reverb calculations, must be within [0.0f, 2.0f] when used
-    FLOAT32 OuterReverb; // reverb send level scaler on/beyond outer cone, used only for reverb calculations, must be within [0.0f, 2.0f] when used
+	FLOAT32 InnerVolume; // volume level scaler on/within inner cone, used only for matrix calculations, must be within [0.0f, 2.0f] when used
+	FLOAT32 OuterVolume; // volume level scaler on/beyond outer cone, used only for matrix calculations, must be within [0.0f, 2.0f] when used
+	FLOAT32 InnerLPF; // LPF (both direct and reverb paths) coefficient subtrahend on/within inner cone, used only for LPF (both direct and reverb paths) calculations, must be within [0.0f, 1.0f] when used
+	FLOAT32 OuterLPF; // LPF (both direct and reverb paths) coefficient subtrahend on/beyond outer cone, used only for LPF (both direct and reverb paths) calculations, must be within [0.0f, 1.0f] when used
+	FLOAT32 InnerReverb; // reverb send level scaler on/within inner cone, used only for reverb calculations, must be within [0.0f, 2.0f] when used
+	FLOAT32 OuterReverb; // reverb send level scaler on/beyond outer cone, used only for reverb calculations, must be within [0.0f, 2.0f] when used
 } X3DAUDIO_CONE, *LPX3DAUDIO_CONE;
-static const X3DAUDIO_CONE X3DAudioDefault_DirectionalCone = { X3DAUDIO_PI/2, X3DAUDIO_PI, 1.0f, 0.708f, 0.0f, 0.25f, 0.708f, 1.0f };
-
+static const X3DAUDIO_CONE X3DAudioDefault_DirectionalCone = {X3DAUDIO_PI / 2, X3DAUDIO_PI, 1.0f, 0.708f, 0.0f, 0.25f, 0.708f, 1.0f};
 
 // Listener:
 // Defines a point of 3D audio reception.
@@ -199,13 +194,13 @@ static const X3DAUDIO_CONE X3DAudioDefault_DirectionalCone = { X3DAUDIO_PI/2, X3
 // The cone is directed by the listener's front orientation.
 typedef struct X3DAUDIO_LISTENER
 {
-    X3DAUDIO_VECTOR OrientFront; // orientation of front direction, used only for matrix and delay calculations or listeners with cones for matrix, LPF (both direct and reverb paths), and reverb calculations, must be normalized when used
-    X3DAUDIO_VECTOR OrientTop;   // orientation of top direction, used only for matrix and delay calculations, must be orthonormal with OrientFront when used
+	X3DAUDIO_VECTOR OrientFront; // orientation of front direction, used only for matrix and delay calculations or listeners with cones for matrix, LPF (both direct and reverb paths), and reverb calculations, must be normalized when used
+	X3DAUDIO_VECTOR OrientTop; // orientation of top direction, used only for matrix and delay calculations, must be orthonormal with OrientFront when used
 
-    X3DAUDIO_VECTOR Position; // position in user-defined world units, does not affect Velocity
-    X3DAUDIO_VECTOR Velocity; // velocity vector in user-defined world units/second, used only for doppler calculations, does not affect Position
+	X3DAUDIO_VECTOR Position; // position in user-defined world units, does not affect Velocity
+	X3DAUDIO_VECTOR Velocity; // velocity vector in user-defined world units/second, used only for doppler calculations, does not affect Position
 
-    X3DAUDIO_CONE* pCone; // sound cone, used only for matrix, LPF (both direct and reverb paths), and reverb calculations, NULL specifies omnidirectionality
+	X3DAUDIO_CONE* pCone; // sound cone, used only for matrix, LPF (both direct and reverb paths), and reverb calculations, NULL specifies omnidirectionality
 } X3DAUDIO_LISTENER, *LPX3DAUDIO_LISTENER;
 
 // Emitter:
@@ -240,30 +235,29 @@ typedef struct X3DAUDIO_LISTENER
 // For instance, volume and LFE calculations do not affect one another.
 typedef struct X3DAUDIO_EMITTER
 {
-    X3DAUDIO_CONE* pCone; // sound cone, used only with single-channel emitters for matrix, LPF (both direct and reverb paths), and reverb calculations, NULL specifies omnidirectionality
-    X3DAUDIO_VECTOR OrientFront; // orientation of front direction, used only for emitter angle calculations or with multi-channel emitters for matrix calculations or single-channel emitters with cones for matrix, LPF (both direct and reverb paths), and reverb calculations, must be normalized when used
-    X3DAUDIO_VECTOR OrientTop;   // orientation of top direction, used only with multi-channel emitters for matrix calculations, must be orthonormal with OrientFront when used
+	X3DAUDIO_CONE* pCone; // sound cone, used only with single-channel emitters for matrix, LPF (both direct and reverb paths), and reverb calculations, NULL specifies omnidirectionality
+	X3DAUDIO_VECTOR OrientFront; // orientation of front direction, used only for emitter angle calculations or with multi-channel emitters for matrix calculations or single-channel emitters with cones for matrix, LPF (both direct and reverb paths), and reverb calculations, must be normalized when used
+	X3DAUDIO_VECTOR OrientTop; // orientation of top direction, used only with multi-channel emitters for matrix calculations, must be orthonormal with OrientFront when used
 
-    X3DAUDIO_VECTOR Position; // position in user-defined world units, does not affect Velocity
-    X3DAUDIO_VECTOR Velocity; // velocity vector in user-defined world units/second, used only for doppler calculations, does not affect Position
+	X3DAUDIO_VECTOR Position; // position in user-defined world units, does not affect Velocity
+	X3DAUDIO_VECTOR Velocity; // velocity vector in user-defined world units/second, used only for doppler calculations, does not affect Position
 
-    FLOAT32 InnerRadius;      // inner radius, must be within [0.0f, FLT_MAX]
-    FLOAT32 InnerRadiusAngle; // inner radius angle, must be within [0.0f, X3DAUDIO_PI/4.0)
+	FLOAT32 InnerRadius; // inner radius, must be within [0.0f, FLT_MAX]
+	FLOAT32 InnerRadiusAngle; // inner radius angle, must be within [0.0f, X3DAUDIO_PI/4.0)
 
-    uint32_t ChannelCount;       // number of sound channels, must be > 0
-    FLOAT32 ChannelRadius;     // channel radius, used only with multi-channel emitters for matrix calculations, must be >= 0.0f when used
-    FLOAT32* pChannelAzimuths; // channel azimuth array, used only with multi-channel emitters for matrix calculations, contains positions of each channel expressed in radians along the channel radius with respect to the front orientation vector in the plane orthogonal to the top orientation vector, or X3DAUDIO_2PI to specify an LFE channel, must have at least ChannelCount elements, all within [0.0f, X3DAUDIO_2PI] when used
+	uint32_t ChannelCount; // number of sound channels, must be > 0
+	FLOAT32 ChannelRadius; // channel radius, used only with multi-channel emitters for matrix calculations, must be >= 0.0f when used
+	FLOAT32* pChannelAzimuths; // channel azimuth array, used only with multi-channel emitters for matrix calculations, contains positions of each channel expressed in radians along the channel radius with respect to the front orientation vector in the plane orthogonal to the top orientation vector, or X3DAUDIO_2PI to specify an LFE channel, must have at least ChannelCount elements, all within [0.0f, X3DAUDIO_2PI] when used
 
-    X3DAUDIO_DISTANCE_CURVE* pVolumeCurve;    // volume level distance curve, used only for matrix calculations, NULL specifies a default curve that conforms to the inverse square law, calculated in user-defined world units with distances <= CurveDistanceScaler clamped to no attenuation
-    X3DAUDIO_DISTANCE_CURVE* pLFECurve;       // LFE level distance curve, used only for matrix calculations, NULL specifies a default curve that conforms to the inverse square law, calculated in user-defined world units with distances <= CurveDistanceScaler clamped to no attenuation
-    X3DAUDIO_DISTANCE_CURVE* pLPFDirectCurve; // LPF direct-path coefficient distance curve, used only for LPF direct-path calculations, NULL specifies the default curve: [0.0f,1.0f], [1.0f,0.75f]
-    X3DAUDIO_DISTANCE_CURVE* pLPFReverbCurve; // LPF reverb-path coefficient distance curve, used only for LPF reverb-path calculations, NULL specifies the default curve: [0.0f,0.75f], [1.0f,0.75f]
-    X3DAUDIO_DISTANCE_CURVE* pReverbCurve;    // reverb send level distance curve, used only for reverb calculations, NULL specifies the default curve: [0.0f,1.0f], [1.0f,0.0f]
+	X3DAUDIO_DISTANCE_CURVE* pVolumeCurve; // volume level distance curve, used only for matrix calculations, NULL specifies a default curve that conforms to the inverse square law, calculated in user-defined world units with distances <= CurveDistanceScaler clamped to no attenuation
+	X3DAUDIO_DISTANCE_CURVE* pLFECurve; // LFE level distance curve, used only for matrix calculations, NULL specifies a default curve that conforms to the inverse square law, calculated in user-defined world units with distances <= CurveDistanceScaler clamped to no attenuation
+	X3DAUDIO_DISTANCE_CURVE* pLPFDirectCurve; // LPF direct-path coefficient distance curve, used only for LPF direct-path calculations, NULL specifies the default curve: [0.0f,1.0f], [1.0f,0.75f]
+	X3DAUDIO_DISTANCE_CURVE* pLPFReverbCurve; // LPF reverb-path coefficient distance curve, used only for LPF reverb-path calculations, NULL specifies the default curve: [0.0f,0.75f], [1.0f,0.75f]
+	X3DAUDIO_DISTANCE_CURVE* pReverbCurve; // reverb send level distance curve, used only for reverb calculations, NULL specifies the default curve: [0.0f,1.0f], [1.0f,0.0f]
 
-    FLOAT32 CurveDistanceScaler; // curve distance scaler, used to scale normalized distance curves to user-defined world units and/or exaggerate their effect, used only for matrix, LPF (both direct and reverb paths), and reverb calculations, must be within [FLT_MIN, FLT_MAX] when used
-    FLOAT32 DopplerScaler;       // doppler shift scaler, used to exaggerate doppler shift effect, used only for doppler calculations, must be within [0.0f, FLT_MAX] when used
+	FLOAT32 CurveDistanceScaler; // curve distance scaler, used to scale normalized distance curves to user-defined world units and/or exaggerate their effect, used only for matrix, LPF (both direct and reverb paths), and reverb calculations, must be within [FLT_MIN, FLT_MAX] when used
+	FLOAT32 DopplerScaler; // doppler shift scaler, used to exaggerate doppler shift effect, used only for doppler calculations, must be within [0.0f, FLT_MAX] when used
 } X3DAUDIO_EMITTER, *LPX3DAUDIO_EMITTER;
-
 
 // DSP settings:
 // Receives results from a call to X3DAudioCalculate to be sent
@@ -273,44 +267,43 @@ typedef struct X3DAUDIO_EMITTER
 // delay time array, and initializing the channel counts when used.
 typedef struct X3DAUDIO_DSP_SETTINGS
 {
-    FLOAT32* pMatrixCoefficients; // [inout] matrix coefficient table, receives an array representing the volume level used to send from source channel S to destination channel D, stored as pMatrixCoefficients[SrcChannelCount * D + S], must have at least SrcChannelCount*DstChannelCount elements
-    FLOAT32* pDelayTimes;         // [inout] delay time array, receives delays for each destination channel in milliseconds, must have at least DstChannelCount elements (stereo final mix only)
-    uint32_t SrcChannelCount;       // [in] number of source channels, must equal number of channels in respective emitter
-    uint32_t DstChannelCount;       // [in] number of destination channels, must equal number of channels of the final mix
+	FLOAT32* pMatrixCoefficients; // [inout] matrix coefficient table, receives an array representing the volume level used to send from source channel S to destination channel D, stored as pMatrixCoefficients[SrcChannelCount * D + S], must have at least SrcChannelCount*DstChannelCount elements
+	FLOAT32* pDelayTimes; // [inout] delay time array, receives delays for each destination channel in milliseconds, must have at least DstChannelCount elements (stereo final mix only)
+	uint32_t SrcChannelCount; // [in] number of source channels, must equal number of channels in respective emitter
+	uint32_t DstChannelCount; // [in] number of destination channels, must equal number of channels of the final mix
 
-    FLOAT32 LPFDirectCoefficient; // [out] LPF direct-path coefficient
-    FLOAT32 LPFReverbCoefficient; // [out] LPF reverb-path coefficient
-    FLOAT32 ReverbLevel; // [out] reverb send level
-    FLOAT32 DopplerFactor; // [out] doppler shift factor, scales resampler ratio for doppler shift effect, where the effective frequency = DopplerFactor * original frequency
-    FLOAT32 EmitterToListenerAngle; // [out] emitter-to-listener interior angle, expressed in radians with respect to the emitter's front orientation
+	FLOAT32 LPFDirectCoefficient; // [out] LPF direct-path coefficient
+	FLOAT32 LPFReverbCoefficient; // [out] LPF reverb-path coefficient
+	FLOAT32 ReverbLevel; // [out] reverb send level
+	FLOAT32 DopplerFactor; // [out] doppler shift factor, scales resampler ratio for doppler shift effect, where the effective frequency = DopplerFactor * original frequency
+	FLOAT32 EmitterToListenerAngle; // [out] emitter-to-listener interior angle, expressed in radians with respect to the emitter's front orientation
 
-    FLOAT32 EmitterToListenerDistance; // [out] distance in user-defined world units from the emitter base to listener position, always calculated
-    FLOAT32 EmitterVelocityComponent; // [out] component of emitter velocity vector projected onto emitter->listener vector in user-defined world units/second, calculated only for doppler
-    FLOAT32 ListenerVelocityComponent; // [out] component of listener velocity vector projected onto emitter->listener vector in user-defined world units/second, calculated only for doppler
+	FLOAT32 EmitterToListenerDistance; // [out] distance in user-defined world units from the emitter base to listener position, always calculated
+	FLOAT32 EmitterVelocityComponent; // [out] component of emitter velocity vector projected onto emitter->listener vector in user-defined world units/second, calculated only for doppler
+	FLOAT32 ListenerVelocityComponent; // [out] component of listener velocity vector projected onto emitter->listener vector in user-defined world units/second, calculated only for doppler
 } X3DAUDIO_DSP_SETTINGS, *LPX3DAUDIO_DSP_SETTINGS;
-
 
 //--------------<M-A-C-R-O-S>-----------------------------------------------//
 // function storage-class attribute and calltype
 #if defined(_XBOX) || defined(X3DAUDIOSTATIC)
-    #define X3DAUDIO_API_(type) EXTERN_C type STDAPIVCALLTYPE
+#define X3DAUDIO_API_(type) EXTERN_C type STDAPIVCALLTYPE
 #else
-    #if defined(X3DEXPORT)
-        #define X3DAUDIO_API_(type) EXTERN_C __declspec(dllexport) type STDAPIVCALLTYPE
-    #else
-        #define X3DAUDIO_API_(type) EXTERN_C __declspec(dllimport) type STDAPIVCALLTYPE
-    #endif
+#if defined(X3DEXPORT)
+#define X3DAUDIO_API_(type) EXTERN_C __declspec(dllexport) type STDAPIVCALLTYPE
+#else
+#define X3DAUDIO_API_(type) EXTERN_C __declspec(dllimport) type STDAPIVCALLTYPE
+#endif
 #endif
 #define X3DAUDIO_IMP_(type) type STDMETHODVCALLTYPE
 
-
 //--------------<F-U-N-C-T-I-O-N-S>-----------------------------------------//
 // initializes instance handle
-X3DAUDIO_API_(void) X3DAudioInitialize (uint32_t SpeakerChannelMask, FLOAT32 SpeedOfSound, __out X3DAUDIO_HANDLE Instance);
+X3DAUDIO_API_(void)
+X3DAudioInitialize(uint32_t SpeakerChannelMask, FLOAT32 SpeedOfSound, __out X3DAUDIO_HANDLE Instance);
 
 // calculates DSP settings with respect to 3D parameters
-X3DAUDIO_API_(void) X3DAudioCalculate (__in const X3DAUDIO_HANDLE Instance, __in const X3DAUDIO_LISTENER* pListener, __in const X3DAUDIO_EMITTER* pEmitter, uint32_t flags, __inout X3DAUDIO_DSP_SETTINGS* pDSPSettings);
-
+X3DAUDIO_API_(void)
+X3DAudioCalculate(__in const X3DAUDIO_HANDLE Instance, __in const X3DAUDIO_LISTENER* pListener, __in const X3DAUDIO_EMITTER* pEmitter, uint32_t flags, __inout X3DAUDIO_DSP_SETTINGS* pDSPSettings);
 
 #pragma pack(pop) // revert packing alignment
 //---------------------------------<-EOF->----------------------------------//

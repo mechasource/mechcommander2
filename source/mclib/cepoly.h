@@ -50,7 +50,10 @@ struct PolyElementData
 		drawTranslucent = false;
 	}
 
-	PolyElementData(void) { init(void); }
+	PolyElementData(void)
+	{
+		init(void);
+	}
 };
 
 typedef PolyElementData* PolyElementDataPtr;
@@ -61,7 +64,10 @@ class PolygonElement : public Element
 public:
 	PolyElementData polyData;
 
-	PolygonElement(void) { polyData.init(void); }
+	PolygonElement(void)
+	{
+		polyData.init(void);
+	}
 
 	PolygonElement(PolyElementDataPtr pData, int32_t depth);
 

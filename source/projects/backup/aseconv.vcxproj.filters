@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\aseconv">
+      <UniqueIdentifier>{c4c3bfea-262c-4ecf-8ac5-85b71431a2dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\aseconv">
+      <UniqueIdentifier>{21657965-ff09-4254-b09e-0a8a2aaf424a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\aseconv">
+      <UniqueIdentifier>{d8fc6036-d74a-40fe-a382-21e1f236e537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{f7524da9-3c5c-4042-8d87-4b0308829edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{b45f2ee8-5dd6-4819-be06-4164a3075755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{96b0ac85-de14-49ed-a03c-e8e7c7b7f027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\DLL">
+      <UniqueIdentifier>{5500f4b4-17f5-43c7-bdf1-81b3f3c5ac21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{3d109b93-21e3-4f7e-bcfe-cc83059e889a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\tools\aseconv\ase2tgl.cpp">
+      <Filter>Sources\aseconv</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\tools\aseconv\aseconv.rc">
+      <Filter>Resources\aseconv</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\tools\aseconv\resource.h">
+      <Filter>Resources\aseconv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tools\aseconv\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -112,8 +112,7 @@ AverageOf<T>::AverageOf(size_t the_size, T initial)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 template <class T>
-void
-AverageOf<T>::SetSize(size_t the_size, T initial)
+void AverageOf<T>::SetSize(size_t the_size, T initial)
 {
 	if (array != nullptr)
 	{
@@ -142,8 +141,7 @@ AverageOf<T>::~AverageOf()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 template <class T>
-void
-AverageOf<T>::Add(T value)
+void AverageOf<T>::Add(T value)
 {
 	// Check_Object(this);
 	Check_Pointer(array);
@@ -159,8 +157,7 @@ AverageOf<T>::Add(T value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 template <class T>
-T
-AverageOf<T>::CalculateAverage()
+T AverageOf<T>::CalculateAverage()
 {
 	// Check_Object(this);
 	size_t i;
@@ -177,8 +174,7 @@ AverageOf<T>::CalculateAverage()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 template <class T>
-T
-AverageOf<T>::CalculateOlympicAverage()
+T AverageOf<T>::CalculateOlympicAverage()
 {
 	// Check_Object(this);
 	size_t i;
@@ -202,8 +198,7 @@ AverageOf<T>::CalculateOlympicAverage()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 template <class T>
-float
-AverageOf<T>::CalculateTrend()
+float AverageOf<T>::CalculateTrend()
 {
 	// Check_Object(this);
 	size_t i;
@@ -230,8 +225,7 @@ AverageOf<T>::CalculateTrend()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 template <class T>
-T
-AverageOf<T>::CalculateLowerBound()
+T AverageOf<T>::CalculateLowerBound()
 {
 	// Check_Object(this);
 	size_t i;
@@ -249,8 +243,7 @@ AverageOf<T>::CalculateLowerBound()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 template <class T>
-T
-AverageOf<T>::CalculateUpperBound()
+T AverageOf<T>::CalculateUpperBound()
 {
 	// Check_Object(this);
 	size_t i;
@@ -287,9 +280,9 @@ public:
 		size = (size_t)(T)0;
 		total = (T)0;
 	}
-	~StaticAverageOf() {}
+	~StaticAverageOf() { }
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 	//
 	//-----------------------------------------------------------------------

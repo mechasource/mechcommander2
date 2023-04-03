@@ -37,7 +37,10 @@ typedef struct _MineResult
 {
 	uint32_t mineData;
 
-	void init(void) { mineData = 0; }
+	void init(void)
+	{
+		mineData = 0;
+	}
 
 	void setMine(uint32_t pos, uint8_t data)
 	{
@@ -101,11 +104,17 @@ public:
 		isCement = false;
 	}
 
-	TerrainQuad(void) { init(void); }
+	TerrainQuad(void)
+	{
+		init(void);
+	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
-	~TerrainQuad(void) { destroy(void); }
+	~TerrainQuad(void)
+	{
+		destroy(void);
+	}
 
 	int32_t init(VertexPtr v0, VertexPtr v1, VertexPtr v2, VertexPtr v3);
 

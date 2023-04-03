@@ -27,7 +27,7 @@ public:
 	static CHUNKSIZE;
 	// static char HomeDirectory[512];
 
-	enum class 
+	enum class
 	{
 		FTReceive = 0,
 		FTSend
@@ -66,9 +66,15 @@ public:
 	// Returns 1 if the file is completely received.
 	int32_t AddBytes(PVOIDbytes, int32_t size);
 
-	void SetID(int32_t id) { fileID = id; }
+	void SetID(int32_t id)
+	{
+		fileID = id;
+	}
 
-	void SetCallback(LPFILESENT_CALLBACK callback) { callbackFunction = callback; }
+	void SetCallback(LPFILESENT_CALLBACK callback)
+	{
+		callbackFunction = callback;
+	}
 
 	// AllocateBeginTransferMessage creates a new message with information
 	// that tells the receiver that a message is on its way.

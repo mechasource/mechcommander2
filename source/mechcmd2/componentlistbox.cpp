@@ -41,7 +41,7 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 		heatText.setText(numericText);
 		int32_t sizeX = pComponent->getComponentwidth();
 		int32_t sizeY = pComponent->getComponentheight();
-		const std::wstring_view& pFile = pComponent->getIconFileName();
+		std::wstring_view pFile = pComponent->getIconFileName();
 		FullPathFileName path;
 		path.init(artPath, pFile, "tga");
 		icon.setTexture(path);
@@ -82,7 +82,7 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 	}
 }
 
-ComponentListItem::~ComponentListItem() {}
+ComponentListItem::~ComponentListItem() { }
 
 int32_t
 ComponentListItem::init(FitIniFile& file)
@@ -115,8 +115,7 @@ ComponentListItem::init(FitIniFile& file)
 	return 0;
 }
 
-void
-ComponentListItem::assignAnimation(
+void ComponentListItem::assignAnimation(
 	FitIniFile& file, int32_t whichChild, wchar_t animNames[COMP_ANIMATION_COUNT][32], aObject* object)
 {
 	s_templateItem->pChildAnims[whichChild] = 0;
@@ -133,8 +132,7 @@ ComponentListItem::assignAnimation(
 	s_templateItem->addChild(object);
 }
 
-void
-ComponentListItem::render()
+void ComponentListItem::render()
 {
 	aListItem::render();
 	// draw rects, these aren't children
@@ -161,8 +159,7 @@ ComponentListItem::render()
 		icon.setcolour(0xffffffff);
 }
 
-void
-ComponentListItem::update()
+void ComponentListItem::update()
 {
 	int32_t bCanAdd = MechLabScreen::instance()->canAddComponent(pComponent);
 	for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
@@ -265,28 +262,24 @@ ComponentListItem::update()
 	aObject::update();
 }
 
-void
-ComponentListItem::doAdd()
+void ComponentListItem::doAdd()
 {
 	int32_t x = -1;
 	int32_t y = -1;
 	MechLabScreen::instance()->addComponent(pComponent, x, y);
 }
 
-void
-ComponentListItem::setComponent()
+void ComponentListItem::setComponent()
 {
 	MechLabScreen::instance()->setComponent(pComponent, 1);
 }
 
-void
-ComponentListItem::startDrag()
+void ComponentListItem::startDrag()
 {
 	MechLabScreen::instance()->beginDrag(pComponent);
 }
 
-void
-ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_t orThis)
+void ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_t orThis)
 {
 	if (newType == type && itemCount)
 		return;
@@ -334,8 +327,7 @@ ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_t orT
 	selectFirstAvailableComponent();
 }
 
-void
-ComponentIconListBox::update()
+void ComponentIconListBox::update()
 {
 	aListBox::update();
 	if (itemSelected != -1)
@@ -391,8 +383,7 @@ ComponentIconListBox::getComponent()
 	return nullptr;
 }
 
-void
-ComponentIconListBox::addSortedItem(ComponentListItem* pItem)
+void ComponentIconListBox::addSortedItem(ComponentListItem* pItem)
 {
 	int32_t size =
 		pItem->getComponent()->getComponentheight() * pItem->getComponent()->getComponentwidth();

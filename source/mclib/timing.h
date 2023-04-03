@@ -37,9 +37,15 @@ protected:
 	bool updateWhilePaused;
 
 public:
-	Timer(void) { init(void); }
+	Timer(void)
+	{
+		init(void);
+	}
 
-	~Timer(void) { destroy(void); }
+	~Timer(void)
+	{
+		destroy(void);
+	}
 
 	void init(void)
 	{
@@ -49,7 +55,7 @@ public:
 		updateWhilePaused = FALSE;
 	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
 	void update(void)
 	{
@@ -63,7 +69,10 @@ public:
 		}
 	}
 
-	bool isExpired(void) { return expired; }
+	bool isExpired(void)
+	{
+		return expired;
+	}
 
 	void setTimer(float newTime)
 	{
@@ -72,9 +81,15 @@ public:
 		expired = (newTime > 0.0);
 	}
 
-	void setUpdateWhilePaused(bool val) { updateWhilePaused = val; }
+	void setUpdateWhilePaused(bool val)
+	{
+		updateWhilePaused = val;
+	}
 
-	float getCurrentTime(void) { return currentTime; }
+	float getCurrentTime(void)
+	{
+		return currentTime;
+	}
 };
 
 typedef Timer* TimerPtr;
@@ -85,9 +100,15 @@ protected:
 	Timer timers[MAX_TIMERS];
 
 public:
-	TimerManager(void) { init(void); }
+	TimerManager(void)
+	{
+		init(void);
+	}
 
-	~TimerManager(void) { destroy(void); }
+	~TimerManager(void)
+	{
+		destroy(void);
+	}
 
 	void init(void)
 	{
@@ -125,7 +146,7 @@ typedef TimerManager* TimerManagerPtr;
 //----------------------------------------------------------------------------------
 extern TimerManagerPtr timerManager;
 
-extern const std::wstring_view& monthName[];
+extern std::wstring_view monthName[];
 //----------------------------------------------------------------------------------
 // Find out actual system time
 typedef struct _MC_SYSTEMTIME
@@ -149,8 +170,7 @@ MCTiming_GetTimeZoneInforation(PVOID timeData);
 uint32_t
 MCTiming_GetTimeZoneInformationSize(void);
 
-void
-MCTiming_GetUTCSystemTimeFromInformation(
+void MCTiming_GetUTCSystemTimeFromInformation(
 	uint32_t daylightInfo, PVOID timeData, MC_SYSTEMTIME* systemTime);
 //----------------------------------------------------------------------------------
 #endif

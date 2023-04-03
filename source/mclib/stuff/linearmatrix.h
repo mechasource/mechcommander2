@@ -26,16 +26,43 @@ public:
 	//
 	// Constructors
 	//
-	LinearMatrix4D() {}
-	explicit LinearMatrix4D(int32_t) { BuildIdentity(); }
-	LinearMatrix4D(const LinearMatrix4D& m) { *this = m; }
-	explicit LinearMatrix4D(const Origin3D& p) { *this = p; }
-	explicit LinearMatrix4D(const AffineMatrix4D& m) { *this = m; }
-	explicit LinearMatrix4D(const Matrix4D& m) { *this = m; }
-	explicit LinearMatrix4D(const EulerAngles& angles) { *this = angles; }
-	explicit LinearMatrix4D(const YawPitchRoll& angles) { *this = angles; }
-	explicit LinearMatrix4D(const UnitQuaternion& q) { *this = q; }
-	explicit LinearMatrix4D(const Point3D& p) { *this = p; }
+	LinearMatrix4D() { }
+	explicit LinearMatrix4D(int32_t)
+	{
+		BuildIdentity();
+	}
+	LinearMatrix4D(const LinearMatrix4D& m)
+	{
+		*this = m;
+	}
+	explicit LinearMatrix4D(const Origin3D& p)
+	{
+		*this = p;
+	}
+	explicit LinearMatrix4D(const AffineMatrix4D& m)
+	{
+		*this = m;
+	}
+	explicit LinearMatrix4D(const Matrix4D& m)
+	{
+		*this = m;
+	}
+	explicit LinearMatrix4D(const EulerAngles& angles)
+	{
+		*this = angles;
+	}
+	explicit LinearMatrix4D(const YawPitchRoll& angles)
+	{
+		*this = angles;
+	}
+	explicit LinearMatrix4D(const UnitQuaternion& q)
+	{
+		*this = q;
+	}
+	explicit LinearMatrix4D(const Point3D& p)
+	{
+		*this = p;
+	}
 
 	//
 	// Assignment Operators

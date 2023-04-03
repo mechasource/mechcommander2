@@ -19,8 +19,7 @@ class Vector4D;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::Vector4D& vector);
+void Spew(std::wstring_view group, const Stuff::Vector4D& vector);
 #endif
 
 namespace Stuff
@@ -46,7 +45,7 @@ public:
 	//
 	// Constructors
 	//
-	Vector4D() {}
+	Vector4D() { }
 	Vector4D(float X, float Y, float Z, float W)
 	{
 		x = X;
@@ -61,8 +60,14 @@ public:
 		z = v.z;
 		w = v.w;
 	}
-	explicit Vector4D(const Vector3D& v) { *this = v; }
-	explicit Vector4D(const Point3D& p) { *this = p; }
+	explicit Vector4D(const Vector3D& v)
+	{
+		*this = v;
+	}
+	explicit Vector4D(const Point3D& p)
+	{
+		*this = p;
+	}
 
 	//
 	// Assignment operators
@@ -115,14 +120,23 @@ public:
 	}
 
 	friend bool Small_Enough(const Vector4D& v, float e = SMALL);
-	bool operator!(void) const { return Small_Enough(*this); }
+	bool operator!(void) const
+	{
+		return Small_Enough(*this);
+	}
 
 	//
 	// "Close-enough" comparison operators
 	//
 	friend bool Close_Enough(const Vector4D& v1, const Vector4D& v2, float e = SMALL);
-	bool operator==(const Vector4D& v) const { return Close_Enough(*this, v); }
-	bool operator!=(const Vector4D& v) const { return !Close_Enough(*this, v); }
+	bool operator==(const Vector4D& v) const
+	{
+		return Close_Enough(*this, v);
+	}
+	bool operator!=(const Vector4D& v) const
+	{
+		return !Close_Enough(*this, v);
+	}
 
 	//
 	// The following operators all assume that this points to the destination
@@ -150,7 +164,10 @@ public:
 		w = v1.w + v2.w;
 		return *this;
 	}
-	Vector4D& operator+=(const Vector4D& v) { return Add(*this, v); }
+	Vector4D& operator+=(const Vector4D& v)
+	{
+		return Add(*this, v);
+	}
 
 	Vector4D& Subtract(const Vector4D& v1, const Vector4D& v2)
 	{
@@ -163,7 +180,10 @@ public:
 		w = v1.w - v2.w;
 		return *this;
 	}
-	Vector4D& operator-=(const Vector4D& v) { return Subtract(*this, v); }
+	Vector4D& operator-=(const Vector4D& v)
+	{
+		return Subtract(*this, v);
+	}
 
 	float operator*(const Vector4D& v) const
 	{
@@ -181,7 +201,10 @@ public:
 		w = v.w * scale;
 		return *this;
 	}
-	Vector4D& operator*=(float v) { return Multiply(*this, v); }
+	Vector4D& operator*=(float v)
+	{
+		return Multiply(*this, v);
+	}
 
 	Vector4D& Multiply(const Vector4D& v1, const Vector4D& v2)
 	{
@@ -194,7 +217,10 @@ public:
 		w = v1.w * v2.w;
 		return *this;
 	}
-	Vector4D& operator*=(const Vector4D& v) { return Multiply(*this, v); }
+	Vector4D& operator*=(const Vector4D& v)
+	{
+		return Multiply(*this, v);
+	}
 
 	Vector4D& Divide(const Vector4D& v, float scale)
 	{
@@ -208,7 +234,10 @@ public:
 		w = v.w * scale;
 		return *this;
 	}
-	Vector4D& operator/=(float v) { return Divide(*this, v); }
+	Vector4D& operator/=(float v)
+	{
+		return Divide(*this, v);
+	}
 
 	Vector4D& Divide(const Vector4D& v1, const Vector4D& v2)
 	{
@@ -225,7 +254,10 @@ public:
 		w = v1.w / v2.w;
 		return *this;
 	}
-	Vector4D& operator/=(const Vector4D& v) { return Divide(*this, v); }
+	Vector4D& operator/=(const Vector4D& v)
+	{
+		return Divide(*this, v);
+	}
 
 	//
 	//  Transforms
@@ -251,7 +283,7 @@ public:
 #if USE_INLINE_ASSEMBLER_CODE
 		float* f = &x;
 		_asm
-		{
+			{
 				mov         edx, m
 
 				mov         eax, v
@@ -339,14 +371,14 @@ public:
 
 				faddp       st(1), st
 
-				//	get rid of x, y, z
+					//	get rid of x, y, z
 				fstp		st(1)
 				fstp		st(1)
 				fstp		st(1)
 
 				fstp        dword ptr [eax] //	x
 
-		}
+			}
 #else
 		x = v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0) + m(3, 0);
 		y = v.x * m(0, 1) + v.y * m(1, 1) + v.z * m(2, 1) + m(3, 1);
@@ -506,10 +538,19 @@ public:
 	//
 	// Support functions
 	//
-	float GetLengthSquared(void) const { return operator*(*this); }
-	float GetLength(void) const { return Sqrt(GetLengthSquared()); }
+	float GetLengthSquared(void) const
+	{
+		return operator*(*this);
+	}
+	float GetLength(void) const
+	{
+		return Sqrt(GetLengthSquared());
+	}
 
-	float GetApproximateLength(void) const { return SqrtApproximate(GetLengthSquared()); }
+	float GetApproximateLength(void) const
+	{
+		return SqrtApproximate(GetLengthSquared());
+	}
 
 	Vector4D& Combine(const Vector4D& v1, float t1, const Vector4D& v2, float t2)
 	{
@@ -536,7 +577,7 @@ public:
 	}
 
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const Vector4D& vector);
+	friend void ::Spew(std::wstring_view group, const Vector4D& vector);
 #endif
 	void TestInstance(void) const
 	{

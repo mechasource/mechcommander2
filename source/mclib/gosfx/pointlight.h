@@ -26,7 +26,7 @@ class LightManager
 public:
 	static LightManager* Instance;
 
-	virtual Light* MakePointLight(const std::wstring_view& light_map = nullptr);
+	virtual Light* MakePointLight(std::wstring_view light_map = nullptr);
 	struct Info
 	{
 		Stuff::RGBcolour m_color;
@@ -39,7 +39,7 @@ public:
 	virtual void ChangeLight(Light* light, Info* info);
 	virtual void DeleteLight(Light* light);
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 //############################################################################
@@ -76,7 +76,7 @@ public:
 	SplineCurve m_outerRadius;
 
 	bool m_twoSided;
-	const std::wstring_view& m_lightMap; // const std::wstring_view&	m_lightMap;
+	std::wstring_view m_lightMap; // std::wstring_view	m_lightMap;
 };
 
 //############################################################################

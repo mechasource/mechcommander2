@@ -273,8 +273,7 @@ AffineMatrix4D::BuildRotation(const Vector3D& v)
 //###########################################################################
 //###########################################################################
 //
-bool
-Stuff::Close_Enough(const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e)
+bool Stuff::Close_Enough(const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e)
 {
 	Check_Object(&m2);
 	Check_Object(&m1);
@@ -698,8 +697,7 @@ AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Point3D& p)
 //###########################################################################
 //###########################################################################
 //
-float
-AffineMatrix4D::Determinant(void) const
+float AffineMatrix4D::Determinant(void) const
 {
 	// Check_Object(this);
 	return (*this)(0, 0) * ((*this)(1, 1) * (*this)(2, 2) - (*this)(1, 2) * (*this)(2, 1)) + (*this)(0, 1) * ((*this)(1, 2) * (*this)(2, 0) - (*this)(1, 0) * (*this)(2, 2)) + (*this)(0, 2) * ((*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0));
@@ -847,8 +845,7 @@ AffineMatrix4D::Solve()
 //############################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const AffineMatrix4D& matrix)
+void Spew(std::wstring_view group, const AffineMatrix4D& matrix)
 {
 	Check_Object(&matrix);
 	SPEW((group, "\n\t| %9f, %9f, %9f, 0 |", matrix(0, 0), matrix(0, 1), matrix(0, 2)));

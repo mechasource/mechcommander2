@@ -20,7 +20,6 @@ class ForceGroupIcon;
 #define SCROLLUP 1
 #define SCROLLDOWN 2
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 InfoWindow:
@@ -44,12 +43,9 @@ private:
 	void drawDivider(float yVal);
 	void drawSkillBar(int32_t skill, float yVal, float height);
 	void setScrollPos(int32_t where);
-	void drawName(const std::wstring_view& name);
-
+	void drawName(std::wstring_view name);
 
 private:
-
-
 	float scrollPos;
 	float scrollLength;
 	float infoLength;

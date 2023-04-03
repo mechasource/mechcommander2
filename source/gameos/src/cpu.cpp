@@ -5,14 +5,14 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
- All code is logically copyrighted to Microsoft
+ All code is logically copyrighted by Microsoft
 *******************************************************************************/
 /*******************************************************************************
  cpu.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Back, created
+ 2014-07-24 Jerker Bäck, created
 
 *******************************************************************************/
 
@@ -39,13 +39,13 @@
 
 #if CONSIDERED_OBSOLETE || CONSIDERED_UNUSED
 
-void __stdcall InitProcessorSpeed(void) {}
+void __stdcall InitProcessorSpeed(void) { }
 
 PSTR __stdcall GetProcessor(void)
 {
 	return nullptr;
 }
 
-void __stdcall GetProcessorInfo(void) {}
+void __stdcall GetProcessorInfo(void) { }
 
 #endif

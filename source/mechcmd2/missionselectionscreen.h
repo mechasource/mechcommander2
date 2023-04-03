@@ -40,7 +40,7 @@ private:
 	// HGOSVIDEO			video;
 	// uint32_t		videoTexture;
 
-	const std::wstring_view& missionNames[MAX_MISSIONS_IN_GROUP];
+	std::wstring_view missionNames[MAX_MISSIONS_IN_GROUP];
 	int32_t missionCount;
 
 	void setMission(int32_t whichOne);

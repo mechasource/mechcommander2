@@ -42,9 +42,15 @@ protected:
 	MissionBegin* missionBegin;
 
 public:
-	Logistics(void) { init(void); }
+	Logistics(void)
+	{
+		init(void);
+	}
 
-	~Logistics(void) { destroy(void); }
+	~Logistics(void)
+	{
+		destroy(void);
+	}
 
 	void init(void)
 	{
@@ -57,7 +63,7 @@ public:
 
 	void destroy(void);
 
-	void initSplashScreen(const std::wstring_view& screenFile, const std::wstring_view& artFile);
+	void initSplashScreen(std::wstring_view screenFile, std::wstring_view artFile);
 	void destroySplashScreen(void);
 
 	void start(int32_t logState); // Actually Starts execution of logistics in
@@ -68,7 +74,7 @@ public:
 
 	void render(void);
 
-	void setResultsHostLeftDlg(const std::wstring_view& pName);
+	void setResultsHostLeftDlg(std::wstring_view pName);
 
 	void setLogisticsState(int32_t state)
 	{
@@ -76,12 +82,15 @@ public:
 		logisticsState = state;
 	}
 
-	MissionBegin* getMissionBegin(void) { return missionBegin; }
+	MissionBegin* getMissionBegin(void)
+	{
+		return missionBegin;
+	}
 
 	static int32_t _stdcall beginMission(PVOID, int32_t, PVOID[]);
 
 	int32_t DoBeginMission(void);
-	void playFullScreenVideo(const std::wstring_view& fileName);
+	void playFullScreenVideo(std::wstring_view fileName);
 
 	MC2MoviePtr bMovie;
 

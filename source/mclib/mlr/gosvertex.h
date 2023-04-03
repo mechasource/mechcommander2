@@ -150,8 +150,7 @@ const float One_Over_256 = 1.0f / 256.0f;
 
 //#pragma warning (disable : 4725)
 
-void
-GOSVertex::GOSTransformNoClip(const Stuff::Point3D& _v, const Stuff::Matrix4D& m, float* uv
+void GOSVertex::GOSTransformNoClip(const Stuff::Point3D& _v, const Stuff::Matrix4D& m, float* uv
 #if FOG_HACK
 	,
 	uint32_t foggy
@@ -165,7 +164,7 @@ GOSVertex::GOSTransformNoClip(const Stuff::Point3D& _v, const Stuff::Matrix4D& m
 #if USE_INLINE_ASSEMBLER_CODE
 	float* f = &x;
 	_asm
-	{
+		{
 			mov         edx, m
 			mov         eax, _v
 
@@ -252,18 +251,18 @@ GOSVertex::GOSTransformNoClip(const Stuff::Point3D& _v, const Stuff::Matrix4D& m
 
 			faddp       st(1), st
 
-			//      fld1
+				//      fld1
 
-			//      fdivrp      st(1),st
+				//      fdivrp      st(1),st
 
-			//  get rid of x, y, z
+				//  get rid of x, y, z
 			fstp        st(1)
 			fstp        st(1)
 			fstp        st(1)
 
 			fstp        dword ptr [eax] //  x
 
-	}
+		}
 #else
 	x = _v.x * m(0, 0) + _v.y * m(1, 0) + _v.z * m(2, 0) + m(3, 0);
 	y = _v.x * m(0, 1) + _v.y * m(1, 1) + _v.z * m(2, 1) + m(3, 1);

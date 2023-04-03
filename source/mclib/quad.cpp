@@ -82,8 +82,7 @@ extern float leastWY;
 extern float mostWY;
 
 //---------------------------------------------------------------------------
-void
-TerrainQuad::setupTextures(void)
+void TerrainQuad::setupTextures(void)
 {
 	if (mineTextureHandle == 0xffffffff)
 	{
@@ -1277,8 +1276,7 @@ TerrainQuad::setupTextures(void)
 
 #define TERRAIN_DEPTH_FUDGE 0.001f
 //---------------------------------------------------------------------------
-void
-TerrainQuad::draw(void)
+void TerrainQuad::draw(void)
 {
 	if (terrainHandle != 0xffffffff)
 	{
@@ -1731,8 +1729,7 @@ extern float cloudScrollX;
 extern float cloudScrollY;
 
 //---------------------------------------------------------------------------
-void
-TerrainQuad::drawWater(void)
+void TerrainQuad::drawWater(void)
 {
 	float cloudOffsetX = cos(360.0f * DEGREES_TO_RADS * 32.0f * cloudScrollX) * 0.1f;
 	float cloudOffsetY = sin(360.0f * DEGREES_TO_RADS * 32.0f * cloudScrollY) * 0.1f;
@@ -2260,8 +2257,7 @@ TerrainQuad::drawWater(void)
 //---------------------------------------------------------------------------
 int32_t DrawDebugCells = 0;
 
-void
-TerrainQuad::drawLine(void)
+void TerrainQuad::drawLine(void)
 {
 	int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
 	int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
@@ -2571,8 +2567,7 @@ TerrainQuad::drawLine(void)
 }
 
 //-----------------------------------------------------------------------------------------------
-void
-TerrainQuad::drawLOSLine(void)
+void TerrainQuad::drawLOSLine(void)
 {
 	int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
 	int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
@@ -2687,8 +2682,7 @@ TerrainQuad::drawLOSLine(void)
 }
 
 //---------------------------------------------------------------------------
-void
-TerrainQuad::drawDebugCellLine(void)
+void TerrainQuad::drawDebugCellLine(void)
 {
 	int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
 	int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
@@ -2911,8 +2905,7 @@ TerrainQuad::drawDebugCellLine(void)
 }
 
 //---------------------------------------------------------------------------
-void
-TerrainQuad::drawMine(void)
+void TerrainQuad::drawMine(void)
 {
 	int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
 	int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;

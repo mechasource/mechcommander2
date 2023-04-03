@@ -38,7 +38,7 @@ private:
 	}
 	static Random* Instance;
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 public:
 	//

@@ -112,8 +112,7 @@ bool EventsToMissionResultsScreen = false;
 
 #ifdef USE_LOGISTICS
 extern bool whackTimer;
-void
-CancelBool(int32_t value);
+void CancelBool(int32_t value);
 #endif
 
 #ifndef MPPREFS_H
@@ -123,7 +122,7 @@ CancelBool(int32_t value);
 #ifdef USE_STRING_RESOURCES
 extern HINSTANCE thisInstance;
 int32_t
-cLoadString(HINSTANCE hinstance, uint32_t uID, const std::wstring_view& lpBuffer, int32_t nBufferMax);
+cLoadString(HINSTANCE hinstance, uint32_t uID, std::wstring_view lpBuffer, int32_t nBufferMax);
 #endif
 
 #include "gamesound.h"
@@ -171,7 +170,7 @@ extern UserHeapPtr systemHeap;
 // extern DebugFileStream Debug;
 #endif
 
-extern const std::wstring_view& startupPakFile;
+extern std::wstring_view startupPakFile;
 
 // ConnectUsingDialog is a function defined in dpdialog.cpp.
 // It allows the user to choose the type of connection.
@@ -195,30 +194,26 @@ MultiPlayer* MPlayer = nullptr;
 /// extern Scenario* scenario;
 /// extern Logistics* globalLogPtr;
 
-void
-DEBUGWINS_print(const std::wstring_view& s, int32_t window = 0);
+void DEBUGWINS_print(std::wstring_view s, int32_t window = 0);
 
 //***************************************************************************
 // MISC functions
 //***************************************************************************
 
-bool
-StartupNetworking(void)
+bool StartupNetworking(void)
 {
 	return false;
 }
 
 //-----------------------------------------------------------------------------
 
-void
-ResetNetworking(void)
+void ResetNetworking(void)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-ShutdownNetworking(void)
+void ShutdownNetworking(void)
 {
 }
 
@@ -235,95 +230,82 @@ WorldChunk::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-WorldChunk::operator delete(PVOID us)
+void WorldChunk::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-WorldChunk::buildMine(int32_t worldCellR, int32_t worldCellC, int32_t teamId,
+void WorldChunk::buildMine(int32_t worldCellR, int32_t worldCellC, int32_t teamId,
 	int32_t mineState, int32_t explosionType)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-WorldChunk::buildTerrainFire(GameObjectPtr object, int32_t seconds)
+void WorldChunk::buildTerrainFire(GameObjectPtr object, int32_t seconds)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-WorldChunk::buildArtillery(
+void WorldChunk::buildArtillery(
 	int32_t commanderId, int32_t artilleryType, Stuff::Vector3D location, int32_t seconds)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-WorldChunk::buildMissionScriptMessage(int32_t messageCode, int32_t messageParam)
+void WorldChunk::buildMissionScriptMessage(int32_t messageCode, int32_t messageParam)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-WorldChunk::buildPilotKillStat(int32_t moverIndex, int32_t vehicleClass)
+void WorldChunk::buildPilotKillStat(int32_t moverIndex, int32_t vehicleClass)
 {
 }
 
 //--------------------------------------------------------------------------
 
-void
-WorldChunk::buildScore(int32_t commanderid, int32_t score)
+void WorldChunk::buildScore(int32_t commanderid, int32_t score)
 {
 }
 
 //--------------------------------------------------------------------------
 
-void
-WorldChunk::buildKillLoss(int32_t killerCID, int32_t loserCID)
+void WorldChunk::buildKillLoss(int32_t killerCID, int32_t loserCID)
 {
 }
 
 //--------------------------------------------------------------------------
 
-void
-WorldChunk::buildCaptureBuilding(BuildingPtr building, int32_t newCommanderID)
+void WorldChunk::buildCaptureBuilding(BuildingPtr building, int32_t newCommanderID)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-WorldChunk::buildEndMission(void)
+void WorldChunk::buildEndMission(void)
 {
 }
 
 //--------------------------------------------------------------------------
 
-void
-WorldChunk::pack(void)
+void WorldChunk::pack(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-WorldChunk::unpack(void)
+void WorldChunk::unpack(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-bool
-WorldChunk::equalTo(WorldChunkPtr chunk)
+bool WorldChunk::equalTo(WorldChunkPtr chunk)
 {
 	return false;
 }
@@ -345,16 +327,14 @@ MultiPlayer::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::operator delete(PVOID us)
+void MultiPlayer::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::init(void)
+void MultiPlayer::init(void)
 {
 }
 
@@ -368,8 +348,7 @@ MultiPlayer::setup(void)
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::initUpdateFrequencies()
+void MultiPlayer::initUpdateFrequencies()
 {
 }
 
@@ -384,7 +363,7 @@ MultiPlayer::update(void)
 //---------------------------------------------------------------------------
 
 int32_t
-MultiPlayer::beginSessionScan(const std::wstring_view& ipAddress, bool persistent)
+MultiPlayer::beginSessionScan(std::wstring_view ipAddress, bool persistent)
 {
 	return (MPLAYER_NO_ERR);
 }
@@ -407,50 +386,44 @@ MultiPlayer::getSessions(int32_t& sessionCount)
 
 //---------------------------------------------------------------------------
 
-bool
-MultiPlayer::hostSession(const std::wstring_view& sessionName, const std::wstring_view& playerName, int32_t mxPlayers)
+bool MultiPlayer::hostSession(std::wstring_view sessionName, std::wstring_view playerName, int32_t mxPlayers)
 {
 	return (true);
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::updateSessionData(MC2SessionData* sessionData)
+void MultiPlayer::updateSessionData(MC2SessionData* sessionData)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::setLocked(bool set)
+void MultiPlayer::setLocked(bool set)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::setInProgress(bool set)
+void MultiPlayer::setInProgress(bool set)
 {
 }
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::setCancelled(bool set)
+void MultiPlayer::setCancelled(bool set)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::addTeamScore(int32_t teamID, int32_t score)
+void MultiPlayer::addTeamScore(int32_t teamID, int32_t score)
 {
 }
 
 //---------------------------------------------------------------------------
 
 int32_t
-MultiPlayer::joinSession(MC2Session* session, const std::wstring_view& playerName)
+MultiPlayer::joinSession(MC2Session* session, std::wstring_view playerName)
 {
 	return (MPLAYER_ERR_SESSION_NOT_FOUND);
 }
@@ -465,8 +438,7 @@ MultiPlayer::closeSession(void)
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::leaveSession(void)
+void MultiPlayer::leaveSession(void)
 {
 }
 
@@ -480,40 +452,35 @@ MultiPlayer::bootPlayer(NETPLAYER bootedPlayer)
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::waitTillStartLoading(void)
+bool MultiPlayer::waitTillStartLoading(void)
 {
 	return (false);
 }
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::waitTillMechDataReceived(void)
+bool MultiPlayer::waitTillMechDataReceived(void)
 {
 	return (false);
 }
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::waitTillMissionLoaded(void)
+bool MultiPlayer::waitTillMissionLoaded(void)
 {
 	return (false);
 }
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::waitTillMissionSetup(void)
+bool MultiPlayer::waitTillMissionSetup(void)
 {
 	return (false);
 }
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::waitForSessionEntry(void)
+bool MultiPlayer::waitForSessionEntry(void)
 {
 	sessionEntry = -1;
 	return (sessionEntry == 1);
@@ -521,31 +488,27 @@ MultiPlayer::waitForSessionEntry(void)
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::playersReadyToLoad(void)
+bool MultiPlayer::playersReadyToLoad(void)
 {
 	return (true);
 }
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::launchBrowser(const std::wstring_view& link)
+bool MultiPlayer::launchBrowser(std::wstring_view link)
 {
 	return (false);
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::initParametersScreen(void)
+void MultiPlayer::initParametersScreen(void)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::setDefaultPlayerInfo(void)
+void MultiPlayer::setDefaultPlayerInfo(void)
 {
 }
 
@@ -569,22 +532,19 @@ MultiPlayer::setNextFreecolour(int32_t commanderid)
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::setPlayerBasecolour(int32_t commanderid, int32_t colorIndex)
+void MultiPlayer::setPlayerBasecolour(int32_t commanderid, int32_t colorIndex)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::setPlayerTeam(int32_t commanderid, int32_t teamID)
+void MultiPlayer::setPlayerTeam(int32_t commanderid, int32_t teamID)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::setcolour(int32_t colorIndex, int32_t commanderid)
+void MultiPlayer::setcolour(int32_t colorIndex, int32_t commanderid)
 {
 }
 
@@ -600,23 +560,20 @@ MultiPlayer::getPlayers(int32_t& playerCount)
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::logMessage(NETMESSAGE* message, bool sent)
+void MultiPlayer::logMessage(NETMESSAGE* message, bool sent)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::sendMessage(
+void MultiPlayer::sendMessage(
 	NETPLAYER player, PVOID data, size_t dataSize, bool guaranteed, bool toSelf)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::hostGame(const std::wstring_view& sessionName, const std::wstring_view& playerName, int32_t nPlayers)
+bool MultiPlayer::hostGame(std::wstring_view sessionName, std::wstring_view playerName, int32_t nPlayers)
 {
 	return (true);
 }
@@ -624,29 +581,26 @@ MultiPlayer::hostGame(const std::wstring_view& sessionName, const std::wstring_v
 //---------------------------------------------------------------------------
 
 int32_t
-MultiPlayer::joinGame(const std::wstring_view& ipAddress, const std::wstring_view& sessionName, const std::wstring_view& playerName)
+MultiPlayer::joinGame(std::wstring_view ipAddress, std::wstring_view sessionName, std::wstring_view playerName)
 {
 	return (MPLAYER_NO_ERR);
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::addToLocalMovers(std::unique_ptr<Mover> mover)
+void MultiPlayer::addToLocalMovers(std::unique_ptr<Mover> mover)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::removeFromLocalMovers(std::unique_ptr<Mover> mover)
+void MultiPlayer::removeFromLocalMovers(std::unique_ptr<Mover> mover)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::addToMoverRoster(std::unique_ptr<Mover> mover)
+void MultiPlayer::addToMoverRoster(std::unique_ptr<Mover> mover)
 {
 	for (size_t i = 0; i < MAX_MULTIPLAYER_MOVERS; i++)
 		if (!moverRoster[i])
@@ -660,36 +614,31 @@ MultiPlayer::addToMoverRoster(std::unique_ptr<Mover> mover)
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::removeFromMoverRoster(std::unique_ptr<Mover> mover)
+void MultiPlayer::removeFromMoverRoster(std::unique_ptr<Mover> mover)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::addToPlayerMoverRoster(int32_t playerCommanderID, std::unique_ptr<Mover> mover)
+void MultiPlayer::addToPlayerMoverRoster(int32_t playerCommanderID, std::unique_ptr<Mover> mover)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::removeFromPlayerMoverRoster(std::unique_ptr<Mover> mover)
+void MultiPlayer::removeFromPlayerMoverRoster(std::unique_ptr<Mover> mover)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::addToTurretRoster(TurretPtr turret)
+void MultiPlayer::addToTurretRoster(TurretPtr turret)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::initSpecialBuildings(wchar_t commandersToLoad[8][3])
+void MultiPlayer::initSpecialBuildings(wchar_t commandersToLoad[8][3])
 {
 }
 
@@ -807,8 +756,7 @@ MultiPlayer::addWeaponHitChunk(
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::grabWeaponHitChunks(uint32_t* packedChunkBuffer, int32_t numChunks)
+void MultiPlayer::grabWeaponHitChunks(uint32_t* packedChunkBuffer, int32_t numChunks)
 {
 }
 
@@ -816,90 +764,77 @@ MultiPlayer::grabWeaponHitChunks(uint32_t* packedChunkBuffer, int32_t numChunks)
 // MESSAGE SENDERS
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendPlayerInfo(NETPLAYER receiver)
+void MultiPlayer::sendPlayerInfo(NETPLAYER receiver)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendPlayerCID(NETPLAYER receiver, uint8_t subType, wchar_t CID)
+void MultiPlayer::sendPlayerCID(NETPLAYER receiver, uint8_t subType, wchar_t CID)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendPlayerUpdate(NETPLAYER receiver, int32_t stage, int32_t newCommanderID)
+void MultiPlayer::sendPlayerUpdate(NETPLAYER receiver, int32_t stage, int32_t newCommanderID)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendMissionSettingsUpdate(NETPLAYER receiver)
+void MultiPlayer::sendMissionSettingsUpdate(NETPLAYER receiver)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendChat(NETPLAYER receiver, wchar_t team, const std::wstring_view& chatMessage)
+void MultiPlayer::sendChat(NETPLAYER receiver, wchar_t team, std::wstring_view chatMessage)
 {
 }
 
-void
-MultiPlayer::sendPlayerActionChat(NETPLAYER receiver, const std::wstring_view& playerName, uint32_t resID)
-{
-}
-
-//---------------------------------------------------------------------------
-
-void
-MultiPlayer::sendPlayerCheckIn(void)
+void MultiPlayer::sendPlayerActionChat(NETPLAYER receiver, std::wstring_view playerName, uint32_t resID)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendPlayerSetup(void)
+void MultiPlayer::sendPlayerCheckIn(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendPlayerInsignia(const std::wstring_view& insigniaFileName, uint8_t* insigniaData, size_t dataSize)
+void MultiPlayer::sendPlayerSetup(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendMissionSetup(NETPLAYER receiver, int32_t subType, CompressedMech* mechData)
+void MultiPlayer::sendPlayerInsignia(std::wstring_view insigniaFileName, uint8_t* insigniaData, size_t dataSize)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::setServer(NETPLAYER player, wchar_t playerIPAddress[16])
+void MultiPlayer::sendMissionSetup(NETPLAYER receiver, int32_t subType, CompressedMech* mechData)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendStartMission(void)
+void MultiPlayer::setServer(NETPLAYER player, wchar_t playerIPAddress[16])
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendEndMission(int32_t result)
+void MultiPlayer::sendStartMission(void)
+{
+}
+
+//---------------------------------------------------------------------------
+
+void MultiPlayer::sendEndMission(int32_t result)
 {
 }
 
@@ -908,102 +843,88 @@ extern std::unique_ptr<Mover>
 BringInReinforcement(
 	int32_t vehicleID, int32_t rosterIndex, int32_t commanderid, Stuff::Vector3D pos, bool exists);
 
-void
-MultiPlayer::sendReinforcement(int32_t vehicleID, int32_t rosterIndex, wchar_t pilotName[16],
+void MultiPlayer::sendReinforcement(int32_t vehicleID, int32_t rosterIndex, wchar_t pilotName[16],
 	int32_t commanderid, Stuff::Vector3D pos, uint8_t stage)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::sendNewServer(void)
+void MultiPlayer::sendNewServer(void)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::sendLeaveSession(wchar_t subType, wchar_t commanderid)
+void MultiPlayer::sendLeaveSession(wchar_t subType, wchar_t commanderid)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::sendPlayerOrder(TacticalOrderPtr tacOrder, bool needsSelection, int32_t numMovers,
+void MultiPlayer::sendPlayerOrder(TacticalOrderPtr tacOrder, bool needsSelection, int32_t numMovers,
 	std::unique_ptr<Mover>* moverList, int32_t numGroups, MoverGroupPtr* groupList, bool queuedOrder)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendHoldPosition(void)
+void MultiPlayer::sendHoldPosition(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendPlayerMoverGroup(
+void MultiPlayer::sendPlayerMoverGroup(
 	int32_t groupId, int32_t numMovers, std::unique_ptr<Mover>* moverList, int32_t point)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendPlayerArtillery(int32_t striketype, Stuff::Vector3D location, int32_t seconds)
+void MultiPlayer::sendPlayerArtillery(int32_t striketype, Stuff::Vector3D location, int32_t seconds)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendMoverUpdate(void)
+void MultiPlayer::sendMoverUpdate(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendTurretUpdate(void)
+void MultiPlayer::sendTurretUpdate(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendMoverWeaponFireUpdate(void)
+void MultiPlayer::sendMoverWeaponFireUpdate(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendTurretWeaponFireUpdate(void)
+void MultiPlayer::sendTurretWeaponFireUpdate(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendMoverCriticalUpdate(void)
+void MultiPlayer::sendMoverCriticalUpdate(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendWeaponHitUpdate(void)
+void MultiPlayer::sendWeaponHitUpdate(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::sendWorldUpdate(void)
+void MultiPlayer::sendWorldUpdate(void)
 {
 }
 
@@ -1011,162 +932,139 @@ MultiPlayer::sendWorldUpdate(void)
 // MESSAGE HANDLERS
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleChat(NETPLAYER sender, MCMSG_Chat* msg)
+void MultiPlayer::handleChat(NETPLAYER sender, MCMSG_Chat* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleMissionSettingsUpdate(NETPLAYER sender, MCMSG_MissionSettingsUpdate* msg)
+void MultiPlayer::handleMissionSettingsUpdate(NETPLAYER sender, MCMSG_MissionSettingsUpdate* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerCID(NETPLAYER sender, MCMSG_PlayerCID* msg)
+void MultiPlayer::handlePlayerCID(NETPLAYER sender, MCMSG_PlayerCID* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerUpdate(NETPLAYER sender, MCMSG_PlayerUpdate* msg)
+void MultiPlayer::handlePlayerUpdate(NETPLAYER sender, MCMSG_PlayerUpdate* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleMissionSetup(NETPLAYER sender, MCMSG_MissionSetup* msg)
+void MultiPlayer::handleMissionSetup(NETPLAYER sender, MCMSG_MissionSetup* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerInfo(NETPLAYER sender, MCMSG_PlayerInfo* msg)
+void MultiPlayer::handlePlayerInfo(NETPLAYER sender, MCMSG_PlayerInfo* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerCheckIn(NETPLAYER sender, MCMSG_PlayerCheckIn* msg)
+void MultiPlayer::handlePlayerCheckIn(NETPLAYER sender, MCMSG_PlayerCheckIn* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerSetup(NETPLAYER sender, MCMSG_PlayerSetup* msg)
+void MultiPlayer::handlePlayerSetup(NETPLAYER sender, MCMSG_PlayerSetup* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerInsignia(NETPLAYER sender, MCMSG_PlayerInsignia* msg)
+void MultiPlayer::handlePlayerInsignia(NETPLAYER sender, MCMSG_PlayerInsignia* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleStartMission(NETPLAYER sender)
+void MultiPlayer::handleStartMission(NETPLAYER sender)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleEndMission(NETPLAYER sender, MCMSG_EndMission* msg)
+void MultiPlayer::handleEndMission(NETPLAYER sender, MCMSG_EndMission* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleReinforcement(NETPLAYER sender, MCMSG_Reinforcement* msg)
+void MultiPlayer::handleReinforcement(NETPLAYER sender, MCMSG_Reinforcement* msg)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::handleNewServer(NETPLAYER sender, MCMSG_NewServer* msg)
+void MultiPlayer::handleNewServer(NETPLAYER sender, MCMSG_NewServer* msg)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::handleLeaveSession(NETPLAYER sender, MCMSG_LeaveSession* msg)
+void MultiPlayer::handleLeaveSession(NETPLAYER sender, MCMSG_LeaveSession* msg)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::handleHoldPosition(NETPLAYER sender, MCMSG_HoldPosition* msg)
+void MultiPlayer::handleHoldPosition(NETPLAYER sender, MCMSG_HoldPosition* msg)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerOrder(NETPLAYER sender, MCMSG_PlayerOrder* msg)
+void MultiPlayer::handlePlayerOrder(NETPLAYER sender, MCMSG_PlayerOrder* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerMoverGroup(NETPLAYER sender, MCMSG_PlayerMoverGroup* msg)
+void MultiPlayer::handlePlayerMoverGroup(NETPLAYER sender, MCMSG_PlayerMoverGroup* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerArtillery(NETPLAYER sender, MCMSG_PlayerArtillery* msg)
+void MultiPlayer::handlePlayerArtillery(NETPLAYER sender, MCMSG_PlayerArtillery* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleMoverUpdate(NETPLAYER sender, MCMSG_MoverUpdate* msg)
+void MultiPlayer::handleMoverUpdate(NETPLAYER sender, MCMSG_MoverUpdate* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleTurretUpdate(NETPLAYER sender, MCMSG_TurretUpdate* msg)
+void MultiPlayer::handleTurretUpdate(NETPLAYER sender, MCMSG_TurretUpdate* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleMoverWeaponFireUpdate(NETPLAYER sender, MCMSG_MoverWeaponFireUpdate* msg)
+void MultiPlayer::handleMoverWeaponFireUpdate(NETPLAYER sender, MCMSG_MoverWeaponFireUpdate* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleTurretWeaponFireUpdate(NETPLAYER sender, MCMSG_TurretWeaponFireUpdate* msg)
+void MultiPlayer::handleTurretWeaponFireUpdate(NETPLAYER sender, MCMSG_TurretWeaponFireUpdate* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleMoverCriticalUpdate(NETPLAYER sender, MCMSG_MoverCriticalUpdate* msg)
+void MultiPlayer::handleMoverCriticalUpdate(NETPLAYER sender, MCMSG_MoverCriticalUpdate* msg)
 {
 }
 
@@ -1174,52 +1072,45 @@ MultiPlayer::handleMoverCriticalUpdate(NETPLAYER sender, MCMSG_MoverCriticalUpda
 
 extern bool FromMP;
 
-void
-MultiPlayer::handleWeaponHitUpdate(NETPLAYER sender, MCMSG_WeaponHitUpdate* msg)
+void MultiPlayer::handleWeaponHitUpdate(NETPLAYER sender, MCMSG_WeaponHitUpdate* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleWorldUpdate(NETPLAYER sender, MCMSG_WorldUpdate* msg)
+void MultiPlayer::handleWorldUpdate(NETPLAYER sender, MCMSG_WorldUpdate* msg)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handlePlayerLeftSession(NETPLAYER leftPlayer)
+void MultiPlayer::handlePlayerLeftSession(NETPLAYER leftPlayer)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::handleTerminateSession(void)
+void MultiPlayer::handleTerminateSession(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-bool
-MultiPlayer::isServerMissing(void)
+bool MultiPlayer::isServerMissing(void)
 {
 	return (false);
 }
 
 //---------------------------------------------------------------------------
 
-bool
-MultiPlayer::processGameMessage(NETMESSAGE* msg)
+bool MultiPlayer::processGameMessage(NETMESSAGE* msg)
 {
 	return (true);
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::processMessages(void)
+void MultiPlayer::processMessages(void)
 {
 }
 
@@ -1227,8 +1118,7 @@ MultiPlayer::processMessages(void)
 // Misc. routines
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::buildMoverRosterRLE(void)
+void MultiPlayer::buildMoverRosterRLE(void)
 {
 }
 
@@ -1242,8 +1132,7 @@ MultiPlayer::updateClients(bool forceIt)
 
 //---------------------------------------------------------------------------
 
-bool
-MultiPlayer::calcMissionStatus(void)
+bool MultiPlayer::calcMissionStatus(void)
 {
 	return (true);
 }
@@ -1257,76 +1146,67 @@ int32_t __cdecl sortPlayerRanks(PCVOID player1, PCVOID player2)
 
 //-----------------------------------------------------------------------------
 
-void
-MultiPlayer::calcPlayerRanks(void)
+void MultiPlayer::calcPlayerRanks(void)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-bool
-MultiPlayer::allPlayersCheckedIn(void)
+bool MultiPlayer::allPlayersCheckedIn(void)
 {
 	return (true);
 }
 
 //---------------------------------------------------------------------------
 
-bool
-MultiPlayer::allPlayersReady(void)
+bool MultiPlayer::allPlayersReady(void)
 {
 	return (true);
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::switchServers(void)
+void MultiPlayer::switchServers(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::calcDropZones(wchar_t dropZonesCID[MAX_MC_PLAYERS], wchar_t hqs[MAX_TEAMS])
+void MultiPlayer::calcDropZones(wchar_t dropZonesCID[MAX_MC_PLAYERS], wchar_t hqs[MAX_TEAMS])
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::initStartupParameters(bool fresh)
+void MultiPlayer::initStartupParameters(bool fresh)
 {
 }
 
 //---------------------------------------------------------------------------
-extern const std::wstring_view&
+extern std::wstring_view
 GetTime();
 
-extern const std::wstring_view& SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
+extern std::wstring_view SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
 int32_t
-MultiPlayer::saveTranscript(const std::wstring_view& fileName, bool debugging)
+MultiPlayer::saveTranscript(std::wstring_view fileName, bool debugging)
 {
 	return (MPLAYER_NO_ERR);
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::destroy(void)
+void MultiPlayer::destroy(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-MultiPlayer::getChatMessages(const std::wstring_view&* buffer, int32_t* playerIDs, int32_t& count)
+void MultiPlayer::getChatMessages(std::wstring_view* buffer, int32_t* playerIDs, int32_t& count)
 {
 }
 
-void
-MultiPlayer::redistributeRP()
+void MultiPlayer::redistributeRP()
 {
 }
 

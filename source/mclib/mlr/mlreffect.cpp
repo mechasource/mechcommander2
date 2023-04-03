@@ -7,14 +7,14 @@
 #include "mlr/mlr.h"
 #include "mlr/mlreffect.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //############################   MLREffect    #################################
 //#############################################################################
 
-void
-EffectClipPolygon::Init(void)
+void EffectClipPolygon::Init(void)
 {
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
@@ -23,8 +23,7 @@ EffectClipPolygon::Init(void)
 	clipPerVertex.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 }
 
-void
-EffectClipPolygon::Destroy(void)
+void EffectClipPolygon::Destroy(void)
 {
 	coords.SetLength(0);
 	colors.SetLength(0);
@@ -42,8 +41,7 @@ std::vector<Stuff::Vector4D>* MLREffect::transformedCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLREffect::InitializeClass(void)
+void MLREffect::InitializeClass(void)
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -60,8 +58,7 @@ MLREffect::InitializeClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLREffect::TerminateClass(void)
+void MLREffect::TerminateClass(void)
 {
 	clipBuffer[1].Destroy();
 	clipBuffer[0].Destroy();
@@ -76,8 +73,8 @@ MLREffect::TerminateClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLREffect::MLREffect(uint32_t nr, ClassData* class_data) :
-	RegisteredClass(class_data)
+MLREffect::MLREffect(uint32_t nr, ClassData* class_data)
+	: RegisteredClass(class_data)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	visible = 0;
@@ -96,12 +93,11 @@ MLREffect::MLREffect(uint32_t nr, ClassData* class_data) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLREffect::~MLREffect(void) {}
+MLREffect::~MLREffect(void) { }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLREffect::Transform(size_t nrOfUsedEffects, size_t nrOfVertices)
+void MLREffect::Transform(size_t nrOfUsedEffects, size_t nrOfVertices)
 {
 	// Check_Object(this);
 	Start_Timer(Transform_Time);
@@ -122,8 +118,7 @@ MLREffect::Transform(size_t nrOfUsedEffects, size_t nrOfVertices)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLREffect::TurnAllOn(void)
+void MLREffect::TurnAllOn(void)
 {
 	// Check_Object(this);
 	size_t i;
@@ -135,8 +130,7 @@ MLREffect::TurnAllOn(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLREffect::TurnAllOff(void)
+void MLREffect::TurnAllOff(void)
 {
 	// Check_Object(this);
 	size_t i;
@@ -148,8 +142,7 @@ MLREffect::TurnAllOff(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLREffect::TurnAllVisible(void)
+void MLREffect::TurnAllVisible(void)
 {
 	// Check_Object(this);
 	size_t i;
@@ -161,8 +154,7 @@ MLREffect::TurnAllVisible(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLREffect::TurnAllInVisible(void)
+void MLREffect::TurnAllInVisible(void)
 {
 	// Check_Object(this);
 	size_t i;

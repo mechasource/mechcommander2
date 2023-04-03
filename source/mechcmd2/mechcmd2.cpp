@@ -84,8 +84,7 @@ bool initLRMoveLog = false;
 
 bool KillAmbientLight = false;
 
-void
-InitDW();
+void InitDW();
 
 extern uint32_t NumDevices;
 
@@ -124,8 +123,7 @@ enum
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
 	// -- MECHCMDR2
 extern float frameRate;
-void
-EnterWindowMode();
+void EnterWindowMode();
 
 extern int32_t MaxMoveGoalChecks;
 extern bool useSound;
@@ -142,7 +140,7 @@ extern wchar_t FileMissingString[];
 extern wchar_t CDMissingString[];
 extern wchar_t MissingTitleString[];
 
-const std::wstring_view& ExceptionGameMsg = nullptr;
+std::wstring_view ExceptionGameMsg = nullptr;
 
 wchar_t buildNumber[80];
 
@@ -185,8 +183,7 @@ Stuff::Vector3D pos[36] = {
 	Stuff::Vector3D(-2600.0f, 2700.0f, -1.0f), Stuff::Vector3D(-2600.0f, 2800.0f, -1.0f),
 	Stuff::Vector3D(-2600.0f, 2900.0f, -1.0f), Stuff::Vector3D(-2600.0f, 3000.0f, -1.0f),
 	Stuff::Vector3D(-2500.0f, 2700.0f, -1.0f), Stuff::Vector3D(-2500.0f, 2800.0f, -1.0f),
-	Stuff::Vector3D(-2500.0f, 2900.0f, -1.0f)
-};
+	Stuff::Vector3D(-2500.0f, 2900.0f, -1.0f)};
 
 #ifdef LAB_ONLY
 int32_t currentLineElement = 0;
@@ -230,7 +227,7 @@ extern float last30Frames[];
 
 extern bool WindowsNT;
 
-extern const std::wstring_view&* g_textureCache_FilenameOfLastLoadedTexture;
+extern std::wstring_view* g_textureCache_FilenameOfLastLoadedTexture;
 
 bool checkedBomb = false;
 
@@ -248,13 +245,11 @@ bool DebugWindowOpen[NUM_DEBUG_WINDOWS] = {false, false, false, false};
 bool DebugStatusBarOpen = false;
 bool DebugScoreBoardOpen = false;
 bool DebugHelpOpen = false;
-void
-DEBUGWINS_print(const std::wstring_view& s, int32_t window = 0);
+void DEBUGWINS_print(std::wstring_view s, int32_t window = 0);
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_init(void)
+void DEBUGWINS_init(void)
 {
 
 	sprintf(DebugStatusBarString, "DEBUG Status Bar: GLENNBA");
@@ -294,8 +289,7 @@ DEBUGWINS_init(void)
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_destroy(void)
+void DEBUGWINS_destroy(void)
 {
 
 	for (size_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
@@ -307,8 +301,7 @@ DEBUGWINS_destroy(void)
 		}
 }
 
-void
-initDialogs()
+void initDialogs()
 {
 	FullPathFileName path;
 	path.init(artPath, "mcl_dialog", ".fit");
@@ -317,7 +310,7 @@ initDialogs()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t error[256];
-		sprintf(error, "couldn't open file % s", (const std::wstring_view&)path);
+		sprintf(error, "couldn't open file % s", (std::wstring_view)path);
 		Assert(0, 0, error);
 		return;
 	}
@@ -330,7 +323,7 @@ initDialogs()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t error[256];
-		sprintf(error, "couldn't open file %s", (const std::wstring_view&)path);
+		sprintf(error, "couldn't open file %s", (std::wstring_view)path);
 		Assert(0, 0, error);
 		return;
 	}
@@ -342,7 +335,7 @@ initDialogs()
 	if (NO_ERROR != file.open(path))
 	{
 		wchar_t error[256];
-		sprintf(error, "couldn't open file % s", (const std::wstring_view&)path);
+		sprintf(error, "couldn't open file % s", (std::wstring_view)path);
 		Assert(0, 0, error);
 		return;
 	}
@@ -350,8 +343,7 @@ initDialogs()
 	LogisticsOneButtonDialog::init(file);
 }
 
-void
-endDialogs()
+void endDialogs()
 {
 	if (LogisticsOKDialog::s_instance)
 	{
@@ -380,8 +372,7 @@ endDialogs()
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_toggle(bool* windowsOpen)
+void DEBUGWINS_toggle(bool* windowsOpen)
 {
 
 	for (size_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
@@ -394,8 +385,7 @@ DEBUGWINS_toggle(bool* windowsOpen)
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_display(bool* windowsOpen)
+void DEBUGWINS_display(bool* windowsOpen)
 {
 
 	for (size_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
@@ -418,16 +408,14 @@ DEBUGWINS_display(bool* windowsOpen)
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_print(const std::wstring_view& s, int32_t window)
+void DEBUGWINS_print(std::wstring_view s, int32_t window)
 {
 	DebugWindow[window]->print(s);
 }
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj)
+void DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj)
 {
 
 	if (debugObj == -1)
@@ -441,8 +429,7 @@ DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj)
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_viewGameObject(int32_t debugObj)
+void DEBUGWINS_viewGameObject(int32_t debugObj)
 {
 
 	if (DebugGameObject[debugObj])
@@ -454,8 +441,7 @@ DEBUGWINS_viewGameObject(int32_t debugObj)
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_removeGameObject(GameObjectPtr obj)
+void DEBUGWINS_removeGameObject(GameObjectPtr obj)
 {
 
 	for (size_t i = 0; i < 3; i++)
@@ -468,8 +454,7 @@ DEBUGWINS_removeGameObject(GameObjectPtr obj)
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_update(void)
+void DEBUGWINS_update(void)
 {
 
 	for (size_t i = 0; i < 3; i++)
@@ -479,8 +464,7 @@ DEBUGWINS_update(void)
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_renderSpecialWindows(void)
+void DEBUGWINS_renderSpecialWindows(void)
 {
 
 	gos_TextSetAttributes(DebugWindow[0]->font, 0xffffffff, 1.0, true, true, false, false);
@@ -627,8 +611,7 @@ DEBUGWINS_renderSpecialWindows(void)
 
 //---------------------------------------------------------------------------
 
-void
-DEBUGWINS_render(void)
+void DEBUGWINS_render(void)
 {
 
 	for (size_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
@@ -638,13 +621,13 @@ DEBUGWINS_render(void)
 
 //***************************************************************************
 
-const std::wstring_view&
+std::wstring_view
 GetGameInformation()
 {
 	return (ExceptionGameMsg);
 }
 
-// int32_t cLoadString (HINSTANCE hinstance,  uint32_t uID, const std::wstring_view& lpBuffer,
+// int32_t cLoadString (HINSTANCE hinstance,  uint32_t uID, std::wstring_view lpBuffer,
 // int32_t nBufferMax );
 
 #define SnifferTime(x, y)
@@ -652,8 +635,7 @@ uint32_t startTime;
 uint32_t endTime;
 
 //---------------------------------------------------------------------------
-void
-UpdateRenderers()
+void UpdateRenderers()
 {
 	if (!SnifferMode)
 	{
@@ -790,10 +772,9 @@ UpdateRenderers()
 //---------------------------------------------------------------------------
 #define GAME_REG_KEY "Software\\Microsoft\\Microsoft Games\\MechCommander2\\1.0"
 typedef uint32_t(__stdcall* EBUPROC)(
-	const std::wstring_view& lpRegKeyLocation, const std::wstring_view& lpEULAFileName, const std::wstring_view& lpWarrantyFileName, BOOL fCheckForFirstRun);
+	std::wstring_view lpRegKeyLocation, std::wstring_view lpEULAFileName, std::wstring_view lpWarrantyFileName, BOOL fCheckForFirstRun);
 
-bool
-FirstRunEula(void)
+bool FirstRunEula(void)
 {
 	return (true);
 }
@@ -802,8 +783,7 @@ std::iostream effectStream = nullptr;
 extern MidLevelRenderer::MLRClipper* theClipper;
 
 bool gameStarted = false;
-void
-InitializeGameEngine()
+void InitializeGameEngine()
 {
 	__asm push esi;
 
@@ -1414,7 +1394,7 @@ InitializeGameEngine()
 
 		wchar_t temp[256];
 		cLoadString(IDS_FLOAT_HELP_FONT, temp, 255);
-		const std::wstring_view& pStr = strstr(temp, ",");
+		std::wstring_view pStr = strstr(temp, ",");
 		if (pStr)
 		{
 			gosFontScale = -atoi(pStr + 1);
@@ -1676,8 +1656,7 @@ InitializeGameEngine()
 
 //---------------------------------------------------------------------------
 
-void
-TerminateGameEngine()
+void TerminateGameEngine()
 {
 	if (!gameStarted)
 		return;
@@ -1856,8 +1835,7 @@ int32_t enoughCount = 0;
 // No multi-thread now!
 //
 bool DoneSniffing = false;
-void
-DoGameLogic()
+void DoGameLogic()
 {
 	if (!SnifferMode)
 	{
@@ -2180,12 +2158,12 @@ DoGameLogic()
 
 //---------------------------------------------------------------------------
 int32_t
-textToLong(const std::wstring_view& num)
+textToLong(std::wstring_view num)
 {
 	int32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = strstr(num, "0x");
+	std::wstring_view hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -2231,13 +2209,12 @@ textToLong(const std::wstring_view& num)
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void
-ParseCommandLine(const std::wstring_view& command_line)
+void ParseCommandLine(std::wstring_view command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
 	int32_t index = 0;
-	const std::wstring_view& argv[30];
+	std::wstring_view argv[30];
 	wchar_t tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
@@ -2469,8 +2446,7 @@ bool notFirstTime = false;
 //
 // Setup the GameOS structure -- This tells GameOS what I am using
 //
-void
-GetGameOSEnvironment(const std::wstring_view& commandline)
+void GetGameOSEnvironment(std::wstring_view commandline)
 {
 	ParseCommandLine(commandline);
 	Environment.applicationName = "MechCommander2\\1.0"; // MP012001";

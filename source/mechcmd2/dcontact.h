@@ -28,7 +28,7 @@ enum class _ContactStatus
 	NUM_CONTACT_STATUSES
 } ContactStatus;
 
-enum class 
+enum class
 {
 	CONTACT_CRITERIA_NONE = 0,
 	CONTACT_CRITERIA_ENEMY = 1,
@@ -42,7 +42,7 @@ enum class
 	NUM_CONTACT_CRITERIA = 9
 } ContactCriteria;
 
-enum class 
+enum class
 {
 	CONTACT_SORT_NONE,
 	CONTACT_SORT_CV,

@@ -36,8 +36,8 @@ MainMenu:
 class SplashIntro : public LogisticsScreen
 {
 public:
-	SplashIntro() {}
-	virtual ~SplashIntro() {}
+	SplashIntro() { }
+	virtual ~SplashIntro() { }
 
 	void init(void);
 };
@@ -55,7 +55,7 @@ public:
 	virtual void update(void);
 	virtual void render(void);
 
-	void setHostLeftDlg(const std::wstring_view& playerName);
+	void setHostLeftDlg(std::wstring_view playerName);
 
 	void setDrawBackground(bool bDrawBackground);
 	void skipIntro(void);

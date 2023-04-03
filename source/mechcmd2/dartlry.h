@@ -32,7 +32,7 @@ typedef CameraDrone* CameraDronePtr;
 
 //---------------------------------------------------------------------------
 
-enum class 
+enum class
 {
 	ARTILLERY_SMALL,
 	ARTILLERY_LARGE,

@@ -21,8 +21,7 @@ typedef struct _RGB
 } RGB;
 
 //---------------------------------------------------------------------------
-void
-tgaDecomp(uint8_t* dest, uint8_t* source, TGAFileHeader* tga_header)
+void tgaDecomp(uint8_t* dest, uint8_t* source, TGAFileHeader* tga_header)
 {
 	//---------------------------------------------------------------------
 	// Display Image based on Format 10 (0x0a).  RLE true color.
@@ -138,8 +137,7 @@ tgaDecomp(uint8_t* dest, uint8_t* source, TGAFileHeader* tga_header)
 }
 
 //---------------------------------------------------------------------------
-void
-flipTopToBottom(uint8_t* buffer, uint8_t depth, int32_t width, int32_t height)
+void flipTopToBottom(uint8_t* buffer, uint8_t depth, int32_t width, int32_t height)
 {
 	//-----------------------------------------------------------
 	// ScanLine by Scanline
@@ -160,8 +158,7 @@ flipTopToBottom(uint8_t* buffer, uint8_t depth, int32_t width, int32_t height)
 }
 
 //---------------------------------------------------------------------------
-void
-tgaCopy(uint8_t* dest, uint8_t* src, int32_t size)
+void tgaCopy(uint8_t* dest, uint8_t* src, int32_t size)
 {
 	int32_t numCopied = 0;
 	while (numCopied != size)
@@ -184,8 +181,8 @@ tgaCopy(uint8_t* dest, uint8_t* src, int32_t size)
 //---------------------------------------------------------------------------
 static const int32_t g_textureCache_BufferSize = 16384 /*64*64*sizeof(uint32_t)*/;
 static uint8_t g_textureCache_Buffer[g_textureCache_BufferSize];
-const std::wstring_view&* g_textureCache_FilenameOfLastLoadedTexture =
-	nullptr; /*This is an (const std::wstring_view& *) instead of an const std::wstring_view& because apparently
+std::wstring_view* g_textureCache_FilenameOfLastLoadedTexture =
+	nullptr; /*This is an (std::wstring_view *) instead of an std::wstring_view because apparently
 				gos memory management has a problem with global static
 				allocation of EStrings.*/
 static int32_t g_textureCache_widthOfLastLoadedTexture = 0; /*just to be sure*/
@@ -193,11 +190,10 @@ static int32_t g_textureCache_heightOfLastLoadedTexture = 0; /*just to be sure*/
 static int32_t g_textureCache_NumberOfConsecutiveLoads = 0;
 static bool g_textureCache_LastTextureIsCached = false;
 
-void
-loadTGATexture(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height)
+void loadTGATexture(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height)
 {
 	if (!g_textureCache_FilenameOfLastLoadedTexture)
-		g_textureCache_FilenameOfLastLoadedTexture = new const std::wstring_view&;
+		g_textureCache_FilenameOfLastLoadedTexture = new std::wstring_view;
 	if (width * height * sizeof(uint32_t) <= g_textureCache_BufferSize)
 	{
 		if ((g_textureCache_FilenameOfLastLoadedTexture->Data()) && (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data())) && ((const int32_t)width == g_textureCache_widthOfLastLoadedTexture) && ((const int32_t)height == g_textureCache_heightOfLastLoadedTexture))
@@ -315,8 +311,7 @@ loadTGATexture(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, in
 	}
 }
 
-void
-loadTGAMask(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height)
+void loadTGAMask(std::unique_ptr<File> tgaFile, uint8_t* ourRAM, int32_t width, int32_t height)
 {
 	uint8_t* tgaBuffer = (uint8_t*)malloc(tgaFile->fileSize());
 	tgaFile->read(tgaBuffer, tgaFile->fileSize());

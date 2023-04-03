@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{e76656b6-5ba9-4fc7-9df8-44246c6e44ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{17054647-a2c9-47c9-b8ed-c38edbba3a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{4d2fc811-e172-4b23-9cdd-ee5caeef5e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\DLL">
+      <UniqueIdentifier>{28a402ea-2280-4f0e-bbef-bf7329a7f643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{a47bb544-d2d0-4e4c-8a8f-e34deec49175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechgui">
+      <UniqueIdentifier>{a7af0fcb-d336-4f0e-8024-57d965974de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\mechgui">
+      <UniqueIdentifier>{15499b5e-c3b3-4314-b77a-36d5837c1577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechgui">
+      <UniqueIdentifier>{8fe957b2-e838-4bc3-a9cb-45a8e6e64816}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\mechcmd2\mechgui\aanim.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechgui\aanimobject.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechgui\abutton.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechgui\aedit.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechgui\afont.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechgui\alistbox.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechgui\ascroll.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechgui\asystem.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechgui\logisticsscreen.cpp">
+      <Filter>Sources\mechgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\mechcmd2\mechgui\aanim.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechgui\aanimobject.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechgui\abutton.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechgui\aedit.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechgui\afont.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechgui\alistbox.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechgui\ascroll.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechgui\asystem.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechgui\logisticsscreen.h">
+      <Filter>Headers\mechgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

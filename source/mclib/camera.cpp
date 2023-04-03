@@ -435,8 +435,7 @@ Camera::init(FitIniFilePtr cameraFile)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::destroy(void)
+void Camera::destroy(void)
 {
 	if (worldLights)
 	{
@@ -460,8 +459,7 @@ Camera::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::getClosestVertex(Stuff::Vector2DOf<int32_t>& screenPos, int32_t& row, int32_t& col)
+void Camera::getClosestVertex(Stuff::Vector2DOf<int32_t>& screenPos, int32_t& row, int32_t& col)
 {
 	//--------------------------------------------------------
 	// New method.  Use the terrain window to figure out
@@ -813,8 +811,7 @@ Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Vector3D& p
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::updateGoalVelocity(void)
+void Camera::updateGoalVelocity(void)
 {
 	if (goalVelTime > 0.0)
 	{
@@ -836,8 +833,7 @@ Camera::updateGoalVelocity(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::updateGoalFOV(void)
+void Camera::updateGoalFOV(void)
 {
 	if (goalFOVTime > 0.0)
 	{
@@ -861,8 +857,7 @@ Camera::updateGoalFOV(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::updateGoalRotation(void)
+void Camera::updateGoalRotation(void)
 {
 	if (goalRotTime > 0.0)
 	{
@@ -893,8 +888,7 @@ Camera::updateGoalRotation(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::updateGoalPosition(Stuff::Vector3D& pos)
+void Camera::updateGoalPosition(Stuff::Vector3D& pos)
 {
 	if (goalPosTime > 0.0)
 	{
@@ -1008,8 +1002,7 @@ hsi2rgb(float hue, float saturation, float intensity, float& r, float& g, float&
 }
 
 /* interpolation with dy/dx == 0 at x = 0 and x = 1 */
-float
-smoothConnectingInterpolation(float y0, float y1, float x)
+float smoothConnectingInterpolation(float y0, float y1, float x)
 {
 	float a = 0.5 * (y0 - y1);
 	float b = 0.5 * (y0 + y1);
@@ -1017,8 +1010,7 @@ smoothConnectingInterpolation(float y0, float y1, float x)
 	return retval;
 }
 
-void
-Camera::updateDaylight(bool bInitialize)
+void Camera::updateDaylight(bool bInitialize)
 {
 	float day2NightTransitionTime = this->day2NightTransitionTime;
 	if (bInitialize)
@@ -1372,8 +1364,7 @@ Camera::updateDaylight(bool bInitialize)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::updateLetterboxAndFade(void)
+void Camera::updateLetterboxAndFade(void)
 {
 	// OK, if we are inMovieMode and we haven't finished letterboxing, finish
 	// it!
@@ -1606,8 +1597,7 @@ float currentScaleFactor = 0.0;
 bool lastZoom = false;
 
 //---------------------------------------------------------------------------
-void
-Camera::render(void)
+void Camera::render(void)
 {
 	//------------------------------------------------------
 	// At present, these actually draw.  Later they will
@@ -1678,8 +1668,7 @@ float point1 = 0.000001f;
 // a REAL W and Z are passed in.  Will see if there's was a to better
 // interpolate those. More then accurate enough for the TacMap at present.
 // Really improves frameRate ALOT! -fs
-void
-Camera::inverseProjectZ(Stuff::Vector4D& screen, Stuff::Vector3D& point)
+void Camera::inverseProjectZ(Stuff::Vector4D& screen, Stuff::Vector3D& point)
 {
 	if (!usePerspective)
 	{
@@ -1716,8 +1705,7 @@ Camera::inverseProjectZ(Stuff::Vector4D& screen, Stuff::Vector3D& point)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::projectCamera(Stuff::Vector3D& point)
+void Camera::projectCamera(Stuff::Vector3D& point)
 {
 	//--------------------------------------------------------------------
 	// This is already in -x,z,y reference frame.
@@ -1725,8 +1713,7 @@ Camera::projectCamera(Stuff::Vector3D& point)
 }
 
 //------------------------------------------------------------------------------
-void
-Camera::setOrthogonal(void)
+void Camera::setOrthogonal(void)
 {
 	if (!usePerspective)
 	{
@@ -1824,8 +1811,7 @@ Stuff::Vector3D actualPosition;
 #define ANGLE_UP_INC 0.25f
 
 //-----------------------------------------------------------------------------------------------
-bool
-CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition)
+bool CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition)
 {
 	int32_t posCellR, posCellC;
 	int32_t tarCellR, tarCellC;
@@ -1905,8 +1891,7 @@ CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition)
 }
 
 //------------------------------------------------------------
-void
-Camera::setCameraOrigin(void)
+void Camera::setCameraOrigin(void)
 {
 	if (!usePerspective)
 	{
@@ -1989,8 +1974,7 @@ Camera::setCameraOrigin(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::calculateProjectionConstants(void)
+void Camera::calculateProjectionConstants(void)
 {
 	cameraDirection.yaw = cameraRotation * DEGREES_TO_RADS;
 	cameraDirection.pitch = projectionAngle * DEGREES_TO_RADS;
@@ -2015,8 +1999,7 @@ Camera::calculateProjectionConstants(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::calculateTopViewConstants(void)
+void Camera::calculateTopViewConstants(void)
 {
 	//-----------------------------------------------------------
 	// Make camera look down on terrain.
@@ -2029,8 +2012,7 @@ Camera::calculateTopViewConstants(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::deactivate(void)
+void Camera::deactivate(void)
 {
 	//--------------------------------------------------------
 	// Anything a camera needs to do on shutdown goes in here.
@@ -2038,8 +2020,7 @@ Camera::deactivate(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::setPosition(Stuff::Vector3D newPosition, bool swoopy)
+void Camera::setPosition(Stuff::Vector3D newPosition, bool swoopy)
 {
 	position = newPosition;
 	if (land)
@@ -2237,8 +2218,7 @@ Camera::setPosition(Stuff::Vector3D newPosition, bool swoopy)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::setCameraView(int32_t viewNum)
+void Camera::setCameraView(int32_t viewNum)
 {
 	if ((viewNum >= 0) && (viewNum < MAX_VIEWS))
 	{
@@ -2248,8 +2228,7 @@ Camera::setCameraView(int32_t viewNum)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::zoomValue(float value)
+void Camera::zoomValue(float value)
 {
 	if (!usePerspective)
 	{
@@ -2272,8 +2251,7 @@ Camera::zoomValue(float value)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::ZoomIn(float amount)
+void Camera::ZoomIn(float amount)
 {
 	if (!usePerspective)
 	{
@@ -2296,8 +2274,7 @@ Camera::ZoomIn(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::ZoomOut(float amount)
+void Camera::ZoomOut(float amount)
 {
 	if (!usePerspective)
 	{
@@ -2320,8 +2297,7 @@ Camera::ZoomOut(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::ZoomNormal(void)
+void Camera::ZoomNormal(void)
 {
 	if (!usePerspective)
 	{
@@ -2342,8 +2318,7 @@ Camera::ZoomNormal(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::ZoomMin(void)
+void Camera::ZoomMin(void)
 {
 	if (!usePerspective)
 	{
@@ -2364,8 +2339,7 @@ Camera::ZoomMin(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::ZoomDefault(void)
+void Camera::ZoomDefault(void)
 {
 	if (!usePerspective)
 	{
@@ -2386,8 +2360,7 @@ Camera::ZoomDefault(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::ZoomTight(void)
+void Camera::ZoomTight(void)
 {
 	if (!usePerspective)
 	{
@@ -2408,8 +2381,7 @@ Camera::ZoomTight(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::ZoomMax(void)
+void Camera::ZoomMax(void)
 {
 	if (!usePerspective)
 	{
@@ -2430,8 +2402,7 @@ Camera::ZoomMax(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::tiltValue(float value)
+void Camera::tiltValue(float value)
 {
 	projectionAngle = value;
 	if (usePerspective)
@@ -2448,8 +2419,7 @@ Camera::tiltValue(float value)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::tiltUp(float amount)
+void Camera::tiltUp(float amount)
 {
 	projectionAngle -= amount;
 	if (usePerspective)
@@ -2466,8 +2436,7 @@ Camera::tiltUp(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::tiltDown(float amount)
+void Camera::tiltDown(float amount)
 {
 	projectionAngle += amount;
 	if (projectionAngle > MAX_PERSPECTIVE)
@@ -2476,16 +2445,14 @@ Camera::tiltDown(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::tiltNormal(void)
+void Camera::tiltNormal(void)
 {
 	projectionAngle = NORM_PERSPECTIVE;
 	calculateProjectionConstants();
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::rotateNormal(void)
+void Camera::rotateNormal(void)
 {
 	float newCamAngle = -170.0f;
 	float newCamWorld = -170.0f;
@@ -2494,8 +2461,7 @@ Camera::rotateNormal(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::movePosLeft(float amount, Stuff::Vector3D& pos)
+void Camera::movePosLeft(float amount, Stuff::Vector3D& pos)
 {
 	Stuff::Vector3D direction;
 	direction.x = -0.7071f;
@@ -2508,8 +2474,7 @@ Camera::movePosLeft(float amount, Stuff::Vector3D& pos)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::movePosRight(float amount, Stuff::Vector3D& pos)
+void Camera::movePosRight(float amount, Stuff::Vector3D& pos)
 {
 	Stuff::Vector3D direction;
 	direction.x = 0.7071f;
@@ -2522,8 +2487,7 @@ Camera::movePosRight(float amount, Stuff::Vector3D& pos)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::movePosUp(float amount, Stuff::Vector3D& pos)
+void Camera::movePosUp(float amount, Stuff::Vector3D& pos)
 {
 	Stuff::Vector3D direction;
 	direction.x = -0.7071f;
@@ -2536,8 +2500,7 @@ Camera::movePosUp(float amount, Stuff::Vector3D& pos)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::movePosDown(float amount, Stuff::Vector3D& pos)
+void Camera::movePosDown(float amount, Stuff::Vector3D& pos)
 {
 	Stuff::Vector3D direction;
 	direction.x = 0.7071f;
@@ -2550,8 +2513,7 @@ Camera::movePosDown(float amount, Stuff::Vector3D& pos)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::moveLeft(float amount)
+void Camera::moveLeft(float amount)
 {
 	Stuff::Vector3D direction;
 	if (!usePerspective)
@@ -2575,8 +2537,7 @@ Camera::moveLeft(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::moveRight(float amount)
+void Camera::moveRight(float amount)
 {
 	Stuff::Vector3D direction;
 	if (!usePerspective)
@@ -2600,8 +2561,7 @@ Camera::moveRight(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::moveUp(float amount)
+void Camera::moveUp(float amount)
 {
 	Stuff::Vector3D direction;
 	if (!usePerspective)
@@ -2625,8 +2585,7 @@ Camera::moveUp(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::moveDown(float amount)
+void Camera::moveDown(float amount)
 {
 	Stuff::Vector3D direction;
 	if (!usePerspective)
@@ -2650,8 +2609,7 @@ Camera::moveDown(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::rotateLightLeft(float amount)
+void Camera::rotateLightLeft(float amount)
 {
 	lightYaw += amount;
 	if (lightYaw > 360.0)
@@ -2665,8 +2623,7 @@ Camera::rotateLightLeft(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::rotateLightRight(float amount)
+void Camera::rotateLightRight(float amount)
 {
 	lightYaw -= amount;
 	if (lightYaw < -360.0)
@@ -2680,8 +2637,7 @@ Camera::rotateLightRight(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::rotateLightUp(float amount)
+void Camera::rotateLightUp(float amount)
 {
 	lightPitch += amount;
 	if (lightPitch > 90.0)
@@ -2695,8 +2651,7 @@ Camera::rotateLightUp(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::rotateLightDown(float amount)
+void Camera::rotateLightDown(float amount)
 {
 	lightPitch -= amount;
 	if (lightPitch < 5.0f)
@@ -2710,8 +2665,7 @@ Camera::rotateLightDown(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::rotateLeft(float amount)
+void Camera::rotateLeft(float amount)
 {
 	float newCamAngle = cameraRotation + amount;
 	float newCamWorld = worldCameraRotation + amount;
@@ -2720,8 +2674,7 @@ Camera::rotateLeft(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::rotateRight(float amount)
+void Camera::rotateRight(float amount)
 {
 	float newCamAngle = cameraRotation - amount;
 	float newCamWorld = worldCameraRotation - amount;
@@ -2730,8 +2683,7 @@ Camera::rotateRight(float amount)
 }
 
 //---------------------------------------------------------------------------
-void
-Camera::setCameraRotation(float angle, float worldAngle)
+void Camera::setCameraRotation(float angle, float worldAngle)
 {
 	worldCameraRotation = worldAngle;
 	if (worldCameraRotation > 180)
@@ -2749,8 +2701,7 @@ Camera::setCameraRotation(float angle, float worldAngle)
 }
 
 //---------------------------------------------------------------------------
-float
-Camera::getCameraRotation(void)
+float Camera::getCameraRotation(void)
 {
 	return worldCameraRotation;
 }
@@ -2804,8 +2755,7 @@ Camera::getLightBlue(float intensity)
 	return ambientBlue;
 }
 
-bool
-Camera::save(FitIniFile* file)
+bool Camera::save(FitIniFile* file)
 {
 	file->writeBlock("Cameras");
 	file->writeIdFloat("ProjectionAngle", projectionAngle);
@@ -2876,40 +2826,34 @@ Camera::save(FitIniFile* file)
 	return true;
 }
 
-float
-Camera::getFarClipDistance()
+float Camera::getFarClipDistance()
 {
 	return MaxClipDistance;
 }
 
-void
-Camera::setFarClipDistance(float farClipDistance)
+void Camera::setFarClipDistance(float farClipDistance)
 {
 	MaxClipDistance = farClipDistance;
 	DistanceFactor = 1.0f / (MaxClipDistance - MinHazeDistance);
 }
 
-float
-Camera::getNearClipDistance()
+float Camera::getNearClipDistance()
 {
 	return NearPlaneDistance;
 }
 
-void
-Camera::setNearClipDistance(float nearClipDistance)
+void Camera::setNearClipDistance(float nearClipDistance)
 {
 	NearPlaneDistance = nearClipDistance;
 }
 
-float
-Camera::getMaximumCameraAltitude()
+float Camera::getMaximumCameraAltitude()
 {
 	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
 	float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
 	return testMax;
 }
-void
-Camera::setMaximumCameraAltitude(float maxAltitude)
+void Camera::setMaximumCameraAltitude(float maxAltitude)
 {
 	AltitudeMaximumLo = maxAltitude;
 }

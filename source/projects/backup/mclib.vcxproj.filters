@@ -1,0 +1,660 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\mclib">
+      <UniqueIdentifier>{875b7e86-bca0-4c74-a99b-521366112b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\lib">
+      <UniqueIdentifier>{79d097a7-b7c8-4c6c-95de-8f14027f1caa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\abl">
+      <UniqueIdentifier>{1eaa0649-a32e-431b-ab14-bb0cf2c05551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\appear">
+      <UniqueIdentifier>{32efb2bd-280b-49e8-9d5f-fa4d1f661366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\camera">
+      <UniqueIdentifier>{249f8ae4-39b6-46ba-862d-553bf1754bde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\element">
+      <UniqueIdentifier>{ebcc6c58-a53c-4840-8b31-8fc4d328d108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\file">
+      <UniqueIdentifier>{f45f1f04-35ef-454d-ad53-d1d6595db6e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\move">
+      <UniqueIdentifier>{a4cfcab1-b5bb-480d-a1d6-889bcbcd0df9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\sound">
+      <UniqueIdentifier>{20deafca-2f86-4879-aad8-2cefb14a437c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\vfx">
+      <UniqueIdentifier>{5fbea6b0-7781-402e-83a7-23810991cee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\utilities">
+      <UniqueIdentifier>{d4162b1d-e926-496d-8c37-c54874eafcd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\terrain">
+      <UniqueIdentifier>{3f1ce15f-6ce7-4fa6-81d1-7997380273cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mclib\misc">
+      <UniqueIdentifier>{9d959835-693d-41bf-bf48-3b7069889ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\extra">
+      <UniqueIdentifier>{016ad08d-d5fb-4a1e-af00-42e81c74674c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\mclib">
+      <UniqueIdentifier>{4ec089a8-1bb8-46c3-8f87-cb71ee706920}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\move">
+      <UniqueIdentifier>{b580d91e-4ec6-4a96-ab28-5dc0300911e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\sound">
+      <UniqueIdentifier>{968a3a46-b948-4cd7-87bc-f0609d6aa6b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\lib">
+      <UniqueIdentifier>{23b14342-7507-4f2d-a7a7-1e81be5827bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\abl">
+      <UniqueIdentifier>{1237f1e8-e73f-4ffd-9e98-6e649bfea3b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\appear">
+      <UniqueIdentifier>{75a30625-0df9-4264-9a97-00b21472e810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\camera">
+      <UniqueIdentifier>{4e2c0a44-ac2f-4732-bd71-9c4331998717}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\element">
+      <UniqueIdentifier>{cab60be2-684e-4731-bc61-ba0d54a3e0d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\file">
+      <UniqueIdentifier>{7f278017-ff40-4dab-87ae-c0404c70cf7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\gui">
+      <UniqueIdentifier>{72bd9086-6f30-49f7-b770-d24f0c86960d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\terrain">
+      <UniqueIdentifier>{8464128f-0319-43a5-aa62-bae568b2df8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mclib\utilities">
+      <UniqueIdentifier>{d74667d1-441b-4697-a6cb-917e30278f57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\mclib">
+      <UniqueIdentifier>{f930d74f-3ced-4a7f-8c1e-516ef83528da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{d370cc5c-9aec-427c-a8b4-c200bb1095b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{06865e55-f543-4f4c-9e6c-47a9e5146d96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{f7c6863a-fb05-434f-b912-e6e99f5208aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\DLL">
+      <UniqueIdentifier>{2c1752ce-4ce7-4e45-a4e9-611394be7be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{d10caced-d43a-4bd3-b2f5-637e67266b2f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\mclib\alphapalette.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\bitflag.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\cident.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\cmponent.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\color.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\debugging.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\err.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\floathelp.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\heap.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\lzcomp.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\lzdecomp.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\mathfunc.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\mouse.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\msl.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\paths.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\pqueue.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\routines.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\scale.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\sortlist.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\tgainfo.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\tgl.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\tglpp.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\timing.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\txmmgr.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\userinput.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\vport.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\weaponfx.cpp">
+      <Filter>Sources\mclib\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\abldbug.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\abldecl.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablenv.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablerr.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablexec.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablexpr.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablrtn.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablscan.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablstd.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablstmt.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablsymt.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablxexpr.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablxstd.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ablxstmt.cpp">
+      <Filter>Sources\mclib\abl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\appear.cpp">
+      <Filter>Sources\mclib\appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\apprtype.cpp">
+      <Filter>Sources\mclib\appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\bdactor.cpp">
+      <Filter>Sources\mclib\appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\genactor.cpp">
+      <Filter>Sources\mclib\appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gvactor.cpp">
+      <Filter>Sources\mclib\appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\mech3d.cpp">
+      <Filter>Sources\mclib\appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\camera.cpp">
+      <Filter>Sources\mclib\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\celement.cpp">
+      <Filter>Sources\mclib\element</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\celine.cpp">
+      <Filter>Sources\mclib\element</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\cellip.cpp">
+      <Filter>Sources\mclib\element</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\cepane.cpp">
+      <Filter>Sources\mclib\element</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\cevfx.cpp">
+      <Filter>Sources\mclib\element</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\csvfile.cpp">
+      <Filter>Sources\mclib\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\fastfile.cpp">
+      <Filter>Sources\mclib\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\ffile.cpp">
+      <Filter>Sources\mclib\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\file.cpp">
+      <Filter>Sources\mclib\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gamelog.cpp">
+      <Filter>Sources\mclib\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\inifile.cpp">
+      <Filter>Sources\mclib\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\packet.cpp">
+      <Filter>Sources\mclib\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\move.cpp">
+      <Filter>Sources\mclib\move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\soundsys.cpp">
+      <Filter>Sources\mclib\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\vfx_ellipse.cpp">
+      <Filter>Sources\mclib\vfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\vfx_map_polygon.cpp">
+      <Filter>Sources\mclib\vfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\vfx_transform.cpp">
+      <Filter>Sources\mclib\vfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\vfx_translatedraw.cpp">
+      <Filter>Sources\mclib\vfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\vfxtile.cpp">
+      <Filter>Sources\mclib\vfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\clouds.cpp">
+      <Filter>Sources\mclib\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\crater.cpp">
+      <Filter>Sources\mclib\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\mapdata.cpp">
+      <Filter>Sources\mclib\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\quad.cpp">
+      <Filter>Sources\mclib\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\terrain.cpp">
+      <Filter>Sources\mclib\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\terrtxm.cpp">
+      <Filter>Sources\mclib\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\terrtxm2.cpp">
+      <Filter>Sources\mclib\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\txmconv.cpp">
+      <Filter>Sources\mclib\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\tacmap.cpp">
+      <Filter>Sources\mclib\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\utilities.cpp">
+      <Filter>Sources\mclib\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\llist.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\mclib\llist.h">
+      <Filter>Sources\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mclib.h">
+      <Filter>Headers\mclib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\msodw.h">
+      <Filter>Headers\mclib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\objectappearance.h">
+      <Filter>Headers\mclib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\tacmap.h">
+      <Filter>Headers\mclib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\utilities.h">
+      <Filter>Headers\mclib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dmovemgr.h">
+      <Filter>Headers\mclib\move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dobjblck.h">
+      <Filter>Headers\mclib\move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dobjclass.h">
+      <Filter>Headers\mclib\move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\move.h">
+      <Filter>Headers\mclib\move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\sounds.h">
+      <Filter>Headers\mclib\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\soundsys.h">
+      <Filter>Headers\mclib\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\bitflag.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\cident.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\clip.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\cmponent.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\color.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dbitflag.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\debugging.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dheap.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dident.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dstd.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\err.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\floathelp.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\heap.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\lz.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mathfunc.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\msl.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\objstatus.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\paths.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\pqueue.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\scale.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\sortlist.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\tgainfo.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\tgl.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\timing.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\txmmgr.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\userinput.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\vfx.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\vport.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\weaponfx.h">
+      <Filter>Headers\mclib\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\abl.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\abldbug.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablenv.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablerr.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablexec.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablgen.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablparse.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablscan.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ablsymt.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dabldbug.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dablenv.h">
+      <Filter>Headers\mclib\abl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\appear.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\apprtype.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\bdactor.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dappear.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\daprtype.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\genactor.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gvactor.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mech3d.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mstates.h">
+      <Filter>Headers\mclib\appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\camera.h">
+      <Filter>Headers\mclib\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dcamera.h">
+      <Filter>Headers\mclib\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\celement.h">
+      <Filter>Headers\mclib\element</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\celine.h">
+      <Filter>Headers\mclib\element</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\cellip.h">
+      <Filter>Headers\mclib\element</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\cepane.h">
+      <Filter>Headers\mclib\element</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\cepoly.h">
+      <Filter>Headers\mclib\element</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\cevfx.h">
+      <Filter>Headers\mclib\element</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\csvfile.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dcsvfile.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dffile.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dfile.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dgamelog.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dinifile.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dpacket.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\fastfile.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ffent.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\ffile.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\file.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gamelog.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\inifile.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\packet.h">
+      <Filter>Headers\mclib\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dbasegui.h">
+      <Filter>Headers\mclib\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\clouds.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\crater.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dmapdata.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dquad.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dterrain.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dterrtxm.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\dvertex.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mapdata.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\quad.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\resizeimage.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\terrain.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\terrtxm.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\terrtxm2.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\txmconv.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\vertex.h">
+      <Filter>Headers\mclib\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

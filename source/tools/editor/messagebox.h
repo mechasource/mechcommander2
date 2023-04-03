@@ -13,7 +13,6 @@ MessageBox.h			: quick helper function to call up a message box
 //#include "utilities.h"
 //#include "editorinterface.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 MessageBox:

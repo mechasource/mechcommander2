@@ -6,7 +6,8 @@
 
 #include "mlr/mlrlookuplight.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //#########################    MLRLookUpLight ################################
@@ -16,8 +17,7 @@ MLRLookUpLight::ClassData* MLRLookUpLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLookUpLight::InitializeClass()
+void MLRLookUpLight::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -28,8 +28,7 @@ MLRLookUpLight::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLookUpLight::TerminateClass()
+void MLRLookUpLight::TerminateClass()
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
@@ -38,8 +37,8 @@ MLRLookUpLight::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLookUpLight::MLRLookUpLight() :
-	MLRInfiniteLight(DefaultData)
+MLRLookUpLight::MLRLookUpLight()
+	: MLRInfiniteLight(DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	mapOrigin.x = 0.0f;
@@ -55,8 +54,8 @@ MLRLookUpLight::MLRLookUpLight() :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLookUpLight::MLRLookUpLight(std::iostream stream, uint32_t version) :
-	MLRInfiniteLight(DefaultData, stream, version)
+MLRLookUpLight::MLRLookUpLight(std::iostream stream, uint32_t version)
+	: MLRInfiniteLight(DefaultData, stream, version)
 {
 	Check_Object(stream);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -78,13 +77,13 @@ MLRLookUpLight::MLRLookUpLight(std::iostream stream, uint32_t version) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLookUpLight::MLRLookUpLight(Stuff::Page* page) :
-	MLRInfiniteLight(DefaultData, page)
+MLRLookUpLight::MLRLookUpLight(Stuff::Page* page)
+	: MLRInfiniteLight(DefaultData, page)
 {
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	maps = nullptr;
-	const std::wstring_view& data;
+	std::wstring_view data;
 	mapOrigin.x = 0.0f;
 	mapOrigin.y = 0.0f;
 	mapOrigin.z = 0.0f;
@@ -132,8 +131,7 @@ MLRLookUpLight::~MLRLookUpLight()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLookUpLight::Save(std::iostream stream)
+void MLRLookUpLight::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -150,8 +148,7 @@ MLRLookUpLight::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLookUpLight::Write(Stuff::Page* page)
+void MLRLookUpLight::Write(Stuff::Page* page)
 {
 	// Check_Object(this);
 	Check_Object(page);
@@ -171,8 +168,7 @@ MLRLookUpLight::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, const std::wstring_view& name)
+void MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, std::wstring_view name)
 {
 	// Check_Object(this);
 	if (maps != nullptr)
@@ -195,8 +191,7 @@ MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, const std::wstring_view&
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MLRLookUpLight::LoadMap()
+bool MLRLookUpLight::LoadMap()
 {
 	// Check_Object(this);
 	std::fstream element_stream(mapName);
@@ -235,8 +230,7 @@ MLRLookUpLight::LoadMap()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLookUpLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
+void MLRLookUpLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 {
 	// Check_Object(this);
 	lightToShape.Multiply(lightToWorld, worldToShape);
@@ -245,16 +239,14 @@ MLRLookUpLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLookUpLight::TestInstance()
+void MLRLookUpLight::TestInstance()
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLookUpLight::LightVertex(const MLRVertexData& vertexData)
+void MLRLookUpLight::LightVertex(const MLRVertexData& vertexData)
 {
 	UnitVector3D light_z;
 	GetInShapeDirection(light_z);

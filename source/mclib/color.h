@@ -16,11 +16,9 @@
 #endif
 
 //----------------------------------------------------------------------------------
-void
-initcolourTables(void);
+void initcolourTables(void);
 
-void
-destroycolourTables(void);
+void destroycolourTables(void);
 
 uint32_t*
 getcolourTable(int32_t tableNum);

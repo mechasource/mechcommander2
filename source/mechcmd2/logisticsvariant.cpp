@@ -243,8 +243,7 @@ LogisticsVariant::operator=(const LogisticsVariant& src)
 	return *this;
 }
 
-bool
-LogisticsVariant::operator==(const LogisticsVariant& src)
+bool LogisticsVariant::operator==(const LogisticsVariant& src)
 {
 	if (chassis->chassisNameID != src.chassis->chassisNameID)
 		return 0;
@@ -323,8 +322,7 @@ LogisticsVariant::init(CSVFile* file, LogisticsChassis* pChassis, int32_t Varian
 	return 0;
 }
 
-bool
-LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y)
+bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y)
 {
 	LogisticsComponent* pComponent = LogisticsData::instance->getComponent(idFromFitFile);
 	if (!pComponent)
@@ -430,7 +428,7 @@ LogisticsVariant::getWeight(void) const
 	return baseWeight;
 }
 
-const std::wstring_view&
+std::wstring_view
 LogisticsVariant::getMechClass(void) const
 {
 	return chassis->mechClass;
@@ -621,8 +619,7 @@ LogisticsVariant::getComponentAtLocation(
 	return nullptr;
 }
 
-bool
-LogisticsVariant::hasJumpJets(void) const
+bool LogisticsVariant::hasJumpJets(void) const
 {
 	for (size_t i = 0; i < componentCount; i++)
 	{
@@ -631,8 +628,7 @@ LogisticsVariant::hasJumpJets(void) const
 	}
 	return false;
 }
-bool
-LogisticsVariant::hasECM(void) const
+bool LogisticsVariant::hasECM(void) const
 {
 	for (size_t i = 0; i < componentCount; i++)
 	{
@@ -641,8 +637,7 @@ LogisticsVariant::hasECM(void) const
 	}
 	return false;
 }
-bool
-LogisticsVariant::hasSensor(void) const
+bool LogisticsVariant::hasSensor(void) const
 {
 	for (size_t i = 0; i < componentCount; i++)
 	{
@@ -750,8 +745,7 @@ LogisticsVariant::save(FitIniFile& file, int32_t counter)
 	return 0;
 }
 
-void
-LogisticsVariant::setName(const std::wstring_view& pName)
+void LogisticsVariant::setName(std::wstring_view pName)
 {
 	variantName = pName;
 }
@@ -841,8 +835,7 @@ LogisticsVariant::getOptimalRangeString(int32_t& color) const
 	return IDS_HOTKEY1;
 }
 
-bool
-LogisticsVariant::allComponentsAvailable(void) const
+bool LogisticsVariant::allComponentsAvailable(void) const
 {
 	// 06/05/01 hack, we wan't to hide this atlas for the whole game.
 	if (_stricmp("Renard's Atlas", variantName) == 0)
@@ -855,8 +848,7 @@ LogisticsVariant::allComponentsAvailable(void) const
 	return true;
 }
 
-void
-LogisticsVariant::setAvailable(bool available)
+void LogisticsVariant::setAvailable(bool available)
 {
 	// 06/05/01 hack, we wan't to hide this atlas for the whole game.
 	if (_stricmp("Renard's Atlas", variantName) == 0)
@@ -865,8 +857,7 @@ LogisticsVariant::setAvailable(bool available)
 		availableToUser = available;
 }
 
-void
-LogisticsVehicle::init(FitIniFile& file)
+void LogisticsVehicle::init(FitIniFile& file)
 {
 	componentCount = 0;
 	file.seekBlock("ObjectType");
@@ -889,7 +880,7 @@ LogisticsVehicle::init(FitIniFile& file)
 	}
 	file.seekBlock("VehicleDynamics");
 	file.readIdFloat("MaxVelocity", speed);
-	const std::wstring_view& parts[5] = {"Front", "Left", "Right", "Rear", "Turret"};
+	std::wstring_view parts[5] = {"Front", "Left", "Right", "Rear", "Turret"};
 	baseArmor = 0;
 	uint8_t pts;
 	int32_t i;
@@ -903,11 +894,11 @@ LogisticsVehicle::init(FitIniFile& file)
 	}
 	file.seekBlock("InventoryInfo");
 	file.readIdUChar("NumWeapons", pts);
-	wchar_t blockName[256];
+	wchar_t blockname[256];
 	for (i = 4; i < 4 + pts; i++)
 	{
-		sprintf(blockName, "Item:%ld", i);
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "Item:%ld", i);
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			uint8_t fitID;
 			file.readIdUChar("MasterID", fitID);

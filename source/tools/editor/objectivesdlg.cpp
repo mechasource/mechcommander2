@@ -23,8 +23,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // ObjectivesDlg dialog
 
-ObjectivesDlg::ObjectivesDlg(CWnd* pParent /*=nullptr*/) :
-	CDialog(ObjectivesDlg::IDD, pParent)
+ObjectivesDlg::ObjectivesDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(ObjectivesDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(ObjectivesDlg)
 	m_TeamEdit = 0;
@@ -32,8 +32,7 @@ ObjectivesDlg::ObjectivesDlg(CWnd* pParent /*=nullptr*/) :
 	nSelectionIndex = -1;
 }
 
-void
-ObjectivesDlg::DoDataExchange(CDataExchange* pDX)
+void ObjectivesDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(ObjectivesDlg)
@@ -45,13 +44,13 @@ ObjectivesDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(ObjectivesDlg, CDialog)
-//{{AFX_MSG_MAP(ObjectivesDlg)
-ON_BN_CLICKED(IDC_OBJECTIVES_ADD_BUTTON, OnObjectivesAddButton)
-ON_BN_CLICKED(IDC_OBJECTIVES_REMOVE_BUTTON, OnObjectivesRemoveButton)
-ON_BN_CLICKED(IDC_OBJECTIVES_EDIT_BUTTON, OnObjectivesEditButton)
-ON_BN_CLICKED(IDC_OBJECTIVES_COPY_BUTTON, OnObjectivesCopyButton)
-ON_BN_CLICKED(IDC_OBJECTIVES_MOVE_UP_BUTTON, OnObjectivesMoveUpButton)
-ON_BN_CLICKED(IDC_OBJECTIVES_MOVE_DOWN_BUTTON, OnObjectivesMoveDownButton)
+	//{{AFX_MSG_MAP(ObjectivesDlg)
+	ON_BN_CLICKED(IDC_OBJECTIVES_ADD_BUTTON, OnObjectivesAddButton)
+	ON_BN_CLICKED(IDC_OBJECTIVES_REMOVE_BUTTON, OnObjectivesRemoveButton)
+	ON_BN_CLICKED(IDC_OBJECTIVES_EDIT_BUTTON, OnObjectivesEditButton)
+	ON_BN_CLICKED(IDC_OBJECTIVES_COPY_BUTTON, OnObjectivesCopyButton)
+	ON_BN_CLICKED(IDC_OBJECTIVES_MOVE_UP_BUTTON, OnObjectivesMoveUpButton)
+	ON_BN_CLICKED(IDC_OBJECTIVES_MOVE_DOWN_BUTTON, OnObjectivesMoveDownButton)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -65,7 +64,7 @@ syncObjectivesListWithListBox(const CObjectives* pObjectives, CListBox* pList)
 	CObjectives::EConstIterator it = pObjectives->Begin();
 	while (!it.IsDone())
 	{
-		const std::wstring_view& tmpEStr;
+		std::wstring_view tmpEStr;
 		tmpEStr = _TEXT("[");
 		if (1 == (*it)->Priority())
 		{
@@ -114,8 +113,7 @@ syncObjectivesListWithListBox(const CObjectives* pObjectives, CListBox* pList)
 	}
 }
 
-BOOL
-ObjectivesDlg::OnInitDialog()
+BOOL ObjectivesDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_TeamEdit = m_ModifiedObjectives.Alignment() + 1;
@@ -152,8 +150,7 @@ ObjectivesDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-ObjectivesDlg::OnObjectivesAddButton()
+void ObjectivesDlg::OnObjectivesAddButton()
 {
 	CObjective* pNewObjective = new CObjective(m_ModifiedObjectives.Alignment());
 	_ASSERT(pNewObjective);
@@ -193,8 +190,7 @@ ObjectivesDlg::OnObjectivesAddButton()
 	}
 }
 
-void
-ObjectivesDlg::OnObjectivesRemoveButton()
+void ObjectivesDlg::OnObjectivesRemoveButton()
 {
 	nSelectionIndex = m_List.GetCurSel();
 	if ((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex))
@@ -215,8 +211,7 @@ ObjectivesDlg::OnObjectivesRemoveButton()
 	nSelectionIndex = m_List.GetCurSel();
 }
 
-void
-ObjectivesDlg::OnObjectivesEditButton()
+void ObjectivesDlg::OnObjectivesEditButton()
 {
 	CObjective* pSelectedObjective = 0;
 	if (!EditorInterface::instance()->ObjectSelectOnlyMode())
@@ -266,8 +261,7 @@ ObjectivesDlg::OnObjectivesEditButton()
 	}
 }
 
-void
-ObjectivesDlg::OnObjectivesCopyButton()
+void ObjectivesDlg::OnObjectivesCopyButton()
 {
 	nSelectionIndex = m_List.GetCurSel();
 	if ((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex))
@@ -285,8 +279,7 @@ ObjectivesDlg::OnObjectivesCopyButton()
 	}
 }
 
-void
-ObjectivesDlg::OnObjectivesMoveUpButton()
+void ObjectivesDlg::OnObjectivesMoveUpButton()
 {
 	nSelectionIndex = m_List.GetCurSel();
 	if ((1 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex))
@@ -302,8 +295,7 @@ ObjectivesDlg::OnObjectivesMoveUpButton()
 	}
 }
 
-void
-ObjectivesDlg::OnObjectivesMoveDownButton()
+void ObjectivesDlg::OnObjectivesMoveDownButton()
 {
 	nSelectionIndex = m_List.GetCurSel();
 	if ((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() - 1 > nSelectionIndex))

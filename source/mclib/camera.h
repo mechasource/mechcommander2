@@ -336,15 +336,24 @@ public:
 		nightFactor = 0.0f;
 	}
 
-	Camera(void) { init(void); }
+	Camera(void)
+	{
+		init(void);
+	}
 
 	int32_t init(FitIniFile* cameraFile);
 
 	void destroy(void);
 
-	~Camera(void) { destroy(void); }
+	~Camera(void)
+	{
+		destroy(void);
+	}
 
-	float getProjectionAngle(void) { return (projectionAngle); }
+	float getProjectionAngle(void)
+	{
+		return (projectionAngle);
+	}
 
 	void setCameraRotation(float angle, float angleWorld);
 	float getCameraRotation(void);
@@ -407,11 +416,20 @@ public:
 
 	void prepareBackground(void);
 
-	CameraClass getClass(void) { return cameraClass; }
+	CameraClass getClass(void)
+	{
+		return cameraClass;
+	}
 
-	void setClass(CameraClass newClass) { cameraClass = newClass; }
+	void setClass(CameraClass newClass)
+	{
+		cameraClass = newClass;
+	}
 
-	Stuff::Vector3D getPosition(void) { return position; }
+	Stuff::Vector3D getPosition(void)
+	{
+		return position;
+	}
 
 	void updateDaylight(bool bInitialize = false);
 
@@ -419,7 +437,7 @@ public:
 	virtual void render(void);
 
 	virtual int32_t activate(void);
-	virtual void reset(void) {}
+	virtual void reset(void) { }
 
 	void deactivate(void);
 
@@ -450,9 +468,15 @@ public:
 		return nullptr;
 	}
 
-	TG_LightPtr* getWorldLights(void) { return activeLights; }
+	TG_LightPtr* getWorldLights(void)
+	{
+		return activeLights;
+	}
 
-	int32_t getNumLights(void) { return numActiveLights; }
+	int32_t getNumLights(void)
+	{
+		return numActiveLights;
+	}
 
 	TG_LightPtr getTerrainLight(int32_t index)
 	{
@@ -461,9 +485,15 @@ public:
 		return nullptr;
 	}
 
-	TG_LightPtr* getTerrainLights(void) { return terrainLights; }
+	TG_LightPtr* getTerrainLights(void)
+	{
+		return terrainLights;
+	}
 
-	int32_t getNumTerrainLights(void) { return numTerrainLights; }
+	int32_t getNumTerrainLights(void)
+	{
+		return numTerrainLights;
+	}
 
 	int32_t addWorldLight(TG_LightPtr light)
 	{
@@ -499,21 +529,45 @@ public:
 		}
 	}
 
-	Stuff::Vector3D getScreenRes(void) { return screenResolution; }
+	Stuff::Vector3D getScreenRes(void)
+	{
+		return screenResolution;
+	}
 
-	bool getIsNight(void) { return isNight; }
+	bool getIsNight(void)
+	{
+		return isNight;
+	}
 
-	float getNightFactor(void) { return nightFactor; }
+	float getNightFactor(void)
+	{
+		return nightFactor;
+	}
 
-	int32_t getScreenResX(void) { return float2long(screenResolution.x); }
+	int32_t getScreenResX(void)
+	{
+		return float2long(screenResolution.x);
+	}
 
-	int32_t getScreenResY(void) { return float2long(screenResolution.y); }
+	int32_t getScreenResY(void)
+	{
+		return float2long(screenResolution.y);
+	}
 
-	float fgetScreenResX(void) { return screenResolution.x; }
+	float fgetScreenResX(void)
+	{
+		return screenResolution.x;
+	}
 
-	float fgetScreenResY(void) { return screenResolution.y; }
+	float fgetScreenResY(void)
+	{
+		return screenResolution.y;
+	}
 
-	float getScaleFactor(void) { return newScaleFactor; }
+	float getScaleFactor(void)
+	{
+		return newScaleFactor;
+	}
 
 	int32_t getScaleLOD(void)
 	{
@@ -528,9 +582,15 @@ public:
 	//-----------------------------------------
 	// Returns Vector in Direction of Camera.
 	// For BackFacing Object Checks
-	Stuff::Vector3D getLookVector(void) { return lookVector; }
+	Stuff::Vector3D getLookVector(void)
+	{
+		return lookVector;
+	}
 
-	Stuff::Vector3D getCameraOrigin(void) { return physicalPos; }
+	Stuff::Vector3D getCameraOrigin(void)
+	{
+		return physicalPos;
+	}
 
 	float getTiltFactor(void)
 	{
@@ -553,11 +613,20 @@ public:
 		rotateNormal(void);
 	}
 
-	void allDefault(void) { ZoomDefault(void); }
+	void allDefault(void)
+	{
+		ZoomDefault(void);
+	}
 
-	void allMaxIn(void) { ZoomMax(void); }
+	void allMaxIn(void)
+	{
+		ZoomMax(void);
+	}
 
-	virtual void allTight(void) { ZoomTight(void); }
+	virtual void allTight(void)
+	{
+		ZoomTight(void);
+	}
 
 	void zoomValue(float value);
 	void ZoomIn(float amount);
@@ -646,9 +715,15 @@ public:
 		forceMovieEnd = true;
 	}
 
-	void setFieldOfView(float fov) { camera_fov = fov; }
+	void setFieldOfView(float fov)
+	{
+		camera_fov = fov;
+	}
 
-	float getFieldOfView(void) { return camera_fov; }
+	float getFieldOfView(void)
+	{
+		return camera_fov;
+	}
 
 	void setFieldOfViewGoal(float fov, float time)
 	{
@@ -656,17 +731,35 @@ public:
 		goalFOVTime = time;
 	}
 
-	float getFieldOfViewGoal(void) { return goalFOV; }
+	float getFieldOfViewGoal(void)
+	{
+		return goalFOV;
+	}
 
-	void setGoalPosition(Stuff::Vector3D goalPos) { goalPosition = goalPos; }
+	void setGoalPosition(Stuff::Vector3D goalPos)
+	{
+		goalPosition = goalPos;
+	}
 
-	void setLookPosition(Stuff::Vector3D goalPos) { lookPosition = goalPos; }
+	void setLookPosition(Stuff::Vector3D goalPos)
+	{
+		lookPosition = goalPos;
+	}
 
-	Stuff::Vector3D getGoalPosition(void) { return goalPosition; }
+	Stuff::Vector3D getGoalPosition(void)
+	{
+		return goalPosition;
+	}
 
-	Stuff::Vector3D getLookPosition(void) { return lookPosition; }
+	Stuff::Vector3D getLookPosition(void)
+	{
+		return lookPosition;
+	}
 
-	void setGoalPosTime(float time) { goalPosTime = time; }
+	void setGoalPosTime(float time)
+	{
+		goalPosTime = time;
+	}
 
 	Stuff::Vector3D getRotation(void)
 	{
@@ -689,21 +782,45 @@ public:
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
 
-	void setGoalRotation(Stuff::Vector3D goalRot) { goalRotation = goalRot; }
+	void setGoalRotation(Stuff::Vector3D goalRot)
+	{
+		goalRotation = goalRot;
+	}
 
-	Stuff::Vector3D getGoalRotation(void) { return goalRotation; }
+	Stuff::Vector3D getGoalRotation(void)
+	{
+		return goalRotation;
+	}
 
-	void setGoalRotTime(float time) { goalRotTime = time; }
+	void setGoalRotTime(float time)
+	{
+		goalRotTime = time;
+	}
 
-	Stuff::Vector3D getVelocity(void) { return velocity; }
+	Stuff::Vector3D getVelocity(void)
+	{
+		return velocity;
+	}
 
-	void setVelocity(Stuff::Vector3D vel) { velocity = vel; }
+	void setVelocity(Stuff::Vector3D vel)
+	{
+		velocity = vel;
+	}
 
-	Stuff::Vector3D getGoalVelocity(void) { return goalVelocity; }
+	Stuff::Vector3D getGoalVelocity(void)
+	{
+		return goalVelocity;
+	}
 
-	void setGoalVelocity(Stuff::Vector3D goalVel) { goalVelocity = goalVel; }
+	void setGoalVelocity(Stuff::Vector3D goalVel)
+	{
+		goalVelocity = goalVel;
+	}
 
-	void setGoalVelTime(float time) { goalVelTime = time; }
+	void setGoalVelTime(float time)
+	{
+		goalVelTime = time;
+	}
 
 	void updateGoalVelocity(void);
 	void updateGoalPosition(Stuff::Vector3D& pos);
@@ -712,9 +829,15 @@ public:
 
 	void updateLetterboxAndFade(void);
 
-	void setCameraTargetId(int32_t targId) { lookTargetObject = targId; }
+	void setCameraTargetId(int32_t targId)
+	{
+		lookTargetObject = targId;
+	}
 
-	int32_t getCameraTargetId(void) { return lookTargetObject; }
+	int32_t getCameraTargetId(void)
+	{
+		return lookTargetObject;
+	}
 
 	void setInverseProject(float sZ, float sW, float zPP, float wPP)
 	{

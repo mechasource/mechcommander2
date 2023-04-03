@@ -36,7 +36,7 @@ protected:
 	MLRTexture(std::iostream stream);
 
 public:
-	MLRTexture(MLRTexturePool* pool, const std::wstring_view& name, int32_t instance, int32_t handle, int32_t hint = 0);
+	MLRTexture(MLRTexturePool* pool, std::wstring_view name, int32_t instance, int32_t handle, int32_t hint = 0);
 	MLRTexture(MLRTexturePool* pool, GOSImage* image, int32_t handle, int32_t hint = 0);
 	MLRTexture(const MLRTexture&);
 	~MLRTexture(void);
@@ -55,7 +55,7 @@ public:
 		return image;
 	}
 
-	const std::wstring_view& GetTextureName(void)
+	std::wstring_view GetTextureName(void)
 	{
 		// Check_Object(this);
 		return textureName;

@@ -51,7 +51,8 @@
 
 #include "mlr/mlr.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 #ifdef _GAMEOS_HPP_
 extern uint32_t gShowClippedPolys;
@@ -162,8 +163,7 @@ bool MidLevelRenderer::PerspectiveMode = true;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
+void MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
 	uint32_t Max_Number_Primitives_Per_Frame, uint32_t Max_Number_ScreenQuads_Per_Frame,
 	uint32_t Max_Size_Of_LightMap_MemoryStream, bool Convert_To_Triangle_Meshes)
 {
@@ -298,8 +298,7 @@ MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MidLevelRenderer::TerminateClasses(void)
+void MidLevelRenderer::TerminateClasses(void)
 {
 	if (!MLRLookUpLight::DefaultData) // make sure there is something to
 		// termiante
@@ -383,8 +382,7 @@ MidLevelRenderer::ReadMLRVersion(std::iostream erf_stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MidLevelRenderer::WriteMLRVersion(std::iostream erf_stream)
+void MidLevelRenderer::WriteMLRVersion(std::iostream erf_stream)
 {
 	Check_Object(erf_stream);
 	*erf_stream << 'MLR#' << static_cast<uint32_t>(Current_MLR_Version);

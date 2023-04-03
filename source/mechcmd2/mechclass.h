@@ -7,7 +7,7 @@
 #ifndef MECHCLASS_H
 #define MECHCLASS_H
 
-enum class 
+enum class
 {
 	MECH_CLASS_NONE,
 	MECH_CLASS_LIGHT,
@@ -17,7 +17,7 @@ enum class
 	NUM_MECH_CLASSES
 } MechClass;
 
-enum class 
+enum class
 {
 	VEHICLE_CLASS_NONE,
 	VEHICLE_CLASS_LIGHTMECH,
@@ -29,7 +29,7 @@ enum class
 	NUM_VEHICLE_CLASSES
 } VehicleClass;
 
-enum class 
+enum class
 {
 	PHYSICAL_ATTACK_RAM,
 	PHYSICAL_ATTACK_DFA,

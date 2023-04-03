@@ -89,8 +89,7 @@ extern bool MLRVertexLimitReached;
 #define MAX_WEAPON_NODES 4
 //-----------------------------------------------------------------------------
 // class BldgAppearanceType
-void
-BldgAppearanceType::init(const std::wstring_view& fileName)
+void BldgAppearanceType::init(std::wstring_view fileName)
 {
 	AppearanceType::init(fileName);
 	//----------------------------------------------
@@ -141,7 +140,7 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 			terrainLightOuterRadius = 250.0f;
 	}
 	wchar_t aseFileName[512];
-	result = iniFile.readIdString("FileName", aseFileName, 511);
+	result = iniFile.readIdString("filename", aseFileName, 511);
 	auto i;
 	if (result != NO_ERROR)
 	{
@@ -150,7 +149,7 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 		{
 			wchar_t baseName[256];
 			wchar_t baseLODDist[256];
-			sprintf_s(baseName, _countof(baseName), "FileName%d", i);
+			sprintf_s(baseName, _countof(baseName), "filename%d", i);
 			sprintf_s(baseLODDist, _countof(baseLODDist), "Distance%d", i);
 			result = iniFile.readIdString(baseName, aseFileName, 511);
 			if (result == NO_ERROR)
@@ -197,9 +196,9 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.seekBlock("TGLDamage");
 	if (result == NO_ERROR)
 	{
-		result = iniFile.readIdString("FileName", aseFileName, 511);
+		result = iniFile.readIdString("filename", aseFileName, 511);
 		if (result != NO_ERROR)
-			Fatal(result, "Could not find ASE FileName in building appearance INI file");
+			Fatal(result, "Could not find ASE filename in building appearance INI file");
 		FullPathFileName dmgName;
 		dmgName.init(tglPath, aseFileName, ".ase");
 		bldgDmgShape = new TG_TypeMultiShape;
@@ -236,7 +235,7 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.seekBlock("TGLDestructEffect");
 	if (result == NO_ERROR)
 	{
-		result = iniFile.readIdString("FileName", destructEffect, 59);
+		result = iniFile.readIdString("filename", destructEffect, 59);
 		if (result != NO_ERROR)
 			STOP(("Could not Find DestructEffectName in building appearance "
 				  "INI file"));
@@ -328,7 +327,7 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 				strcpy(weaponName, "NONE");
 			}
 			nodeData[i].nodeId =
-				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName) + 1);
+				(std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName) + 1);
 			gosASSERT(nodeData[i].nodeId != nullptr);
 			strcpy(nodeData[i].nodeId, weaponName);
 			nodeData[i].weaponType = 0;
@@ -343,8 +342,7 @@ BldgAppearanceType::init(const std::wstring_view& fileName)
 }
 
 //----------------------------------------------------------------------------
-void
-BldgAppearanceType::destroy(void)
+void BldgAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	int32_t i;
@@ -382,8 +380,7 @@ BldgAppearanceType::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
+void BldgAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -396,8 +393,7 @@ BldgAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 
 //-----------------------------------------------------------------------------
 // class BldgAppearance
-void
-BldgAppearance::setWeaponNodeUsed(int32_t weaponNode)
+void BldgAppearance::setWeaponNodeUsed(int32_t weaponNode)
 {
 	weaponNode -= appearType->numWeaponNodes;
 	if ((weaponNode >= 0) && (weaponNode < appearType->numWeaponNodes))
@@ -475,8 +471,7 @@ BldgAppearance::getWeaponNode(int32_t weaponType)
 }
 
 //-----------------------------------------------------------------------------
-float
-BldgAppearance::getWeaponNodeRecycle(int32_t node)
+float BldgAppearance::getWeaponNodeRecycle(int32_t node)
 {
 	if ((node >= 0) && (node < appearType->numWeaponNodes))
 		return nodeRecycle[node];
@@ -484,8 +479,7 @@ BldgAppearance::getWeaponNodeRecycle(int32_t node)
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (BldgAppearanceType*)tree;
@@ -670,8 +664,7 @@ BldgAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::setObjStatus(int32_t oStatus)
+void BldgAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -819,7 +812,7 @@ BldgAppearance::setObjStatus(int32_t oStatus)
 
 //-----------------------------------------------------------------------------
 Stuff::Vector3D
-BldgAppearance::getNodeNamePosition(const std::wstring_view& nodeName)
+BldgAppearance::getNodeNamePosition(std::wstring_view nodeName)
 {
 	Stuff::Vector3D result = position;
 	//-------------------------------------------
@@ -858,15 +851,13 @@ BldgAppearance::getNodeIdPosition(int32_t nodeId)
 }
 
 //-----------------------------------------------------------------------------
-bool
-BldgAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
+bool BldgAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
 {
 	return bldgShape->PerPolySelect(mouseX, mouseY);
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::setGesture(uint32_t gestureId)
+void BldgAppearance::setGesture(uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -907,8 +898,7 @@ BldgAppearance::setGesture(uint32_t gestureId)
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::setMoverParameters(
+void BldgAppearance::setMoverParameters(
 	float turretRot, float lArmRot, float rArmRot, bool isAirborne)
 {
 	turretYaw = turretRot;
@@ -916,8 +906,7 @@ BldgAppearance::setMoverParameters(
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::setObjectParameters(
+void BldgAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	rotation = Rot;
@@ -929,8 +918,7 @@ BldgAppearance::setObjectParameters(
 }
 
 //-----------------------------------------------------------------------------
-bool
-BldgAppearance::isMouseOver(float px, float py)
+bool BldgAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
@@ -947,8 +935,7 @@ BldgAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool
-BldgAppearance::recalcBounds(void)
+bool BldgAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
 	inView = false;
@@ -1278,8 +1265,7 @@ BldgAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-bool
-BldgAppearance::playdestruction(void)
+bool BldgAppearance::playdestruction(void)
 {
 	// Check if there is a Destruct FX
 	if (appearType->destructEffect[0])
@@ -1943,8 +1929,7 @@ BldgAppearance::update(bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::startActivity(int32_t effectId, bool loop)
+void BldgAppearance::startActivity(int32_t effectId, bool loop)
 {
 	// Check if we are already playing one.  If not, be active!
 	// First, check if its even loaded.
@@ -2044,8 +2029,7 @@ BldgAppearance::startActivity(int32_t effectId, bool loop)
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::stopActivity(void)
+void BldgAppearance::stopActivity(void)
 {
 	if (isActivitying) // Stop the effect if we are running it!!
 	{
@@ -2057,8 +2041,7 @@ BldgAppearance::stopActivity(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
+void BldgAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;
@@ -2068,8 +2051,7 @@ BldgAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 }
 
 //-----------------------------------------------------------------------------
-void
-BldgAppearance::destroy(void)
+void BldgAppearance::destroy(void)
 {
 	if (bldgShape)
 	{
@@ -2167,8 +2149,7 @@ BldgAppearance::calcCellsCovered(Stuff::Vector3D& pos, int16_t* cellList)
 
 //-----------------------------------------------------------------------------
 
-void
-BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
+void BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 {
 	if (appearType->spinMe) // We are a marker
 		return; // Do not mark impassable
@@ -2543,8 +2524,7 @@ BldgAppearance::markMoveMap(
 
 //-----------------------------------------------------------------------------
 
-void
-BldgAppearance::markLOS(bool clearIt)
+void BldgAppearance::markLOS(bool clearIt)
 {
 	// MUST force building to HIGHEST LOD!!!  IMpassability data is only valid
 	// at this LOD!!
@@ -2607,8 +2587,7 @@ BldgAppearance::markLOS(bool clearIt)
 
 //-----------------------------------------------------------------------------
 
-void
-BldgAppearance::calcAdjCell(int32_t& row, int32_t& col)
+void BldgAppearance::calcAdjCell(int32_t& row, int32_t& col)
 {
 	// MUST force building to HIGHEST LOD!!!  IMpassability data is only valid
 	// at this LOD!!
@@ -2646,8 +2625,7 @@ BldgAppearance::calcAdjCell(int32_t& row, int32_t& col)
 
 //-----------------------------------------------------------------------------
 // class TreeAppearanceType
-void
-TreeAppearanceType::init(const std::wstring_view& fileName)
+void TreeAppearanceType::init(std::wstring_view fileName)
 {
 	AppearanceType::init(fileName);
 	FullPathFileName iniName;
@@ -2663,7 +2641,7 @@ TreeAppearanceType::init(const std::wstring_view& fileName)
 	if (result != NO_ERROR)
 		isForestClump = false;
 	wchar_t aseFileName[512];
-	result = iniFile.readIdString("FileName", aseFileName, 511);
+	result = iniFile.readIdString("filename", aseFileName, 511);
 	if (result != NO_ERROR)
 	{
 		// Check for LOD filenames instead
@@ -2671,7 +2649,7 @@ TreeAppearanceType::init(const std::wstring_view& fileName)
 		{
 			wchar_t baseName[256];
 			wchar_t baseLODDist[256];
-			sprintf(baseName, "FileName%d", i);
+			sprintf(baseName, "filename%d", i);
 			sprintf(baseLODDist, "Distance%d", i);
 			result = iniFile.readIdString(baseName, aseFileName, 511);
 			if (result == NO_ERROR)
@@ -2729,9 +2707,9 @@ TreeAppearanceType::init(const std::wstring_view& fileName)
 	result = iniFile.seekBlock("TGLDamage");
 	if (result == NO_ERROR)
 	{
-		result = iniFile.readIdString("FileName", aseFileName, 511);
+		result = iniFile.readIdString("filename", aseFileName, 511);
 		if (result != NO_ERROR)
-			Fatal(result, "Could not find ASE FileName in building appearance INI file");
+			Fatal(result, "Could not find ASE filename in building appearance INI file");
 		FullPathFileName dmgName;
 		dmgName.init(tglPath, aseFileName, ".ase");
 		treeDmgShape = new TG_TypeMultiShape;
@@ -2769,8 +2747,7 @@ TreeAppearanceType::init(const std::wstring_view& fileName)
 }
 
 //----------------------------------------------------------------------------
-void
-TreeAppearanceType::destroy(void)
+void TreeAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	for (size_t i = 0; i < MAX_LODS; i++)
@@ -2802,8 +2779,7 @@ TreeAppearanceType::destroy(void)
 
 //-----------------------------------------------------------------------------
 // class TreeAppearance
-void
-TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	appearType = (TreeAppearanceType*)tree;
@@ -2953,8 +2929,7 @@ TreeAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void
-TreeAppearance::setObjStatus(int32_t oStatus)
+void TreeAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -3091,8 +3066,7 @@ TreeAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void
-TreeAppearance::setObjectParameters(
+void TreeAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	rotation = Rot;
@@ -3104,16 +3078,14 @@ TreeAppearance::setObjectParameters(
 }
 
 //-----------------------------------------------------------------------------
-void
-TreeAppearance::setMoverParameters(
+void TreeAppearance::setMoverParameters(
 	float pitchAngle, float lArmRot, float rArmRot, bool isAirborne)
 {
 	pitch = pitchAngle;
 }
 
 //-----------------------------------------------------------------------------
-bool
-TreeAppearance::isMouseOver(float px, float py)
+bool TreeAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
@@ -3130,8 +3102,7 @@ TreeAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool
-TreeAppearance::recalcBounds(void)
+bool TreeAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
 	inView = false;
@@ -3649,8 +3620,7 @@ TreeAppearance::update(bool animate)
 
 //-----------------------------------------------------------------------------
 
-void
-TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
+void TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 {
 	// MUST force tree to HIGHEST LOD!!!  Impassability data is only valid at
 	// this LOD!!
@@ -3698,8 +3668,7 @@ TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t c
 }
 
 //-----------------------------------------------------------------------------
-void
-TreeAppearance::markLOS(bool clearIt)
+void TreeAppearance::markLOS(bool clearIt)
 {
 	// MUST force building to HIGHEST LOD!!!  IMpassability data is only valid
 	// at this LOD!!
@@ -3757,8 +3726,7 @@ TreeAppearance::markLOS(bool clearIt)
 
 //-----------------------------------------------------------------------------
 
-void
-TreeAppearance::destroy(void)
+void TreeAppearance::destroy(void)
 {
 	if (treeShape)
 	{

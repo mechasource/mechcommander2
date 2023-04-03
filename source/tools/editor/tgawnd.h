@@ -25,7 +25,10 @@ public:
 	void SetTGAFileName(const CString& str);
 	void SetTGAFileData(uint8_t* data, int32_t size);
 
-	const std::wstring_view& GetImageData() { return m_pImage; }
+	std::wstring_view GetImageData()
+	{
+		return m_pImage;
+	}
 
 	//{{AFX_VIRTUAL(TGAWnd)
 	//}}AFX_VIRTUAL
@@ -42,7 +45,7 @@ protected:
 
 	CString m_FileName;
 	bool m_bTGAChanged;
-	const std::wstring_view& m_pImage;
+	std::wstring_view m_pImage;
 	BITMAPINFO* m_pBmi;
 	HBITMAP m_hBitmap;
 	PVOID m_pBits;

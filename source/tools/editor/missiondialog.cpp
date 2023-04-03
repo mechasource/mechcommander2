@@ -21,8 +21,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CMissionDialog dialog
 
-CMissionDialog::CMissionDialog(CWnd* pParent /*=nullptr*/) :
-	CDialog(CMissionDialog::IDD, pParent)
+CMissionDialog::CMissionDialog(CWnd* pParent /*=nullptr*/)
+	: CDialog(CMissionDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CMissionDialog)
 	m_MissionFileEdit = _T("");
@@ -36,8 +36,7 @@ CMissionDialog::CMissionDialog(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-CMissionDialog::DoDataExchange(CDataExchange* pDX)
+void CMissionDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CMissionDialog)
@@ -53,17 +52,16 @@ CMissionDialog::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CMissionDialog, CDialog)
-//{{AFX_MSG_MAP(CMissionDialog)
-ON_BN_CLICKED(IDC_MI_MISSION_FILE_BROWSE_BUTTON, OnMiMissionFileBrowseButton)
-ON_BN_CLICKED(IDC_MI_PURCHASE_FILE_BROWSE_BUTTON, OnMiPurchaseFileBrowseButton)
+	//{{AFX_MSG_MAP(CMissionDialog)
+	ON_BN_CLICKED(IDC_MI_MISSION_FILE_BROWSE_BUTTON, OnMiMissionFileBrowseButton)
+	ON_BN_CLICKED(IDC_MI_PURCHASE_FILE_BROWSE_BUTTON, OnMiPurchaseFileBrowseButton)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CMissionDialog message handlers
 
-void
-CMissionDialog::OnMiMissionFileBrowseButton()
+void CMissionDialog::OnMiMissionFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -85,8 +83,7 @@ CMissionDialog::OnMiMissionFileBrowseButton()
 	UpdateData(FALSE);
 }
 
-void
-CMissionDialog::OnMiPurchaseFileBrowseButton()
+void CMissionDialog::OnMiPurchaseFileBrowseButton()
 {
 	UpdateData(TRUE);
 	while (true)
@@ -100,7 +97,7 @@ CMissionDialog::OnMiPurchaseFileBrowseButton()
 			CString purchasePath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			int32_t result = 0;
-			result = file.open((const std::wstring_view&)(const std::wstring_view&)purchasePath);
+			result = file.open((std::wstring_view)(std::wstring_view)purchasePath);
 			if (NO_ERROR != result)
 			{
 				AfxMessageBox(IDS_COULDNT_OPEN_PURCHASE_FILE);

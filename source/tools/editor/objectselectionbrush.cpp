@@ -102,8 +102,7 @@ ObjectSelectionBrush::~ObjectSelectionBrush()
 		land->unselectAll();
 }
 
-bool
-ObjectSelectionBrush::beginPaint()
+bool ObjectSelectionBrush::beginPaint()
 {
 	lastPos.x = lastPos.y = 0.0;
 	bPainting = true;
@@ -134,8 +133,7 @@ ObjectSelectionBrush::endPaint()
 	return pRetAction;
 }
 
-bool
-ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	Stuff::Vector4D endPos;
 	endPos.x = screenX;
@@ -197,8 +195,7 @@ ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t 
 	return true;
 }
 
-void
-ObjectSelectionBrush::render(int32_t screenX, int32_t screenY)
+void ObjectSelectionBrush::render(int32_t screenX, int32_t screenY)
 {
 	if (bPainting)
 	{

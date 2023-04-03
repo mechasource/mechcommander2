@@ -5,7 +5,6 @@ MPLoadMap.h			: Interface for the MPLoadMap component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 #pragma once
 
 #ifndef MPLOADMAP_H
@@ -37,9 +36,12 @@ public:
 
 	void beginSingleMission(void);
 
-	const std::wstring_view& getMapFileName() { return selMapName; }
+	std::wstring_view getMapFileName()
+	{
+		return selMapName;
+	}
 
-	static void getMapNameFromFile(const std::wstring_view& pFileName, const std::wstring_view& pBuffer, int32_t bufferLength);
+	static void getMapNameFromFile(std::wstring_view pFileName, std::wstring_view pBuffer, int32_t bufferLength);
 
 private:
 	int32_t indexOfButtonWithID(int32_t id);
@@ -49,13 +51,13 @@ private:
 	aListBox mapList;
 	aLocalizedListItem templateItem;
 
-	const std::wstring_view& selMapName;
+	std::wstring_view selMapName;
 
 	bool bIsSingle;
 
 	void updateMapInfo(void);
-	void seedFromFile(const std::wstring_view& pFileName);
-	void addFile(const std::wstring_view& pFileName, bool bSeedSingle);
+	void seedFromFile(std::wstring_view pFileName);
+	void addFile(std::wstring_view pFileName, bool bSeedSingle);
 };
 
 #endif // end of file ( MPLoadMap.h )

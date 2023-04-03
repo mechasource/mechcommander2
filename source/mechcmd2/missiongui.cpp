@@ -100,7 +100,7 @@
 
 #include "gvehicl.h" // remove
 
-static const std::wstring_view& terrainStr[NUM_TERRAIN_TYPES] = {
+static std::wstring_view terrainStr[NUM_TERRAIN_TYPES] = {
 	"Blue Water", // MC_BLUEWATER_TYPE
 	"Green Water", // MC_GREEN_WATER_TYPE
 	"Mud", // MC_MUD_TYPE
@@ -132,7 +132,7 @@ extern bool MLRVertexLimitReached;
 extern float frameLength;
 
 extern void
-DEBUGWINS_print(const std::wstring_view& s, int32_t window = 0);
+DEBUGWINS_print(std::wstring_view s, int32_t window = 0);
 extern void
 DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj);
 extern void
@@ -323,8 +323,7 @@ extern int32_t turn; // What frame of the scenario is it?
 
 extern wchar_t DebugStatusBarString[256];
 
-void
-MissionInterfaceManager::init(void)
+void MissionInterfaceManager::init(void)
 {
 	realRotation = 0.0;
 	dragStart.Zero();
@@ -366,8 +365,7 @@ MissionInterfaceManager::init(void)
 
 #define TACMAP_ID 0
 #define FLASH_JUMPERS 31798
-bool
-MissionInterfaceManager::startAnimation(
+bool MissionInterfaceManager::startAnimation(
 	int32_t buttonId, bool isButton, bool isPressed, float timeToScroll, int32_t numFlashes)
 {
 	if (animationRunning)
@@ -415,15 +413,13 @@ MissionInterfaceManager::startAnimation(
 }
 
 static wchar_t tutorialPlayerName[1024];
-void
-MissionInterfaceManager::setTutorialText(const std::wstring_view& text)
+void MissionInterfaceManager::setTutorialText(std::wstring_view text)
 {
 	cLoadString(IDS_TUTORIAL, tutorialPlayerName, 1023);
 	controlGui.setChatText(tutorialPlayerName, text, 0x00ffffff, 0);
 }
 
-void
-MissionInterfaceManager::update(void)
+void MissionInterfaceManager::update(void)
 {
 	if (Environment.screenwidth != resolution)
 	{
@@ -843,8 +839,7 @@ MissionInterfaceManager::update(void)
 	updateRollovers();
 }
 
-void
-MissionInterfaceManager::updateVTol()
+void MissionInterfaceManager::updateVTol()
 {
 	// We're probably going to use this alot!
 	int32_t commanderid = Commander::home->getId();
@@ -909,7 +904,7 @@ MissionInterfaceManager::updateVTol()
 						if (mover)
 						{
 							TacticalOrder tacOrder;
-							tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERUP, true);
+							tacOrder.init(OrderOriginType::player, TacticalOrderCode::powerup, true);
 							tacOrder.pack(nullptr, nullptr);
 							if (!MPlayer->isServer())
 								MPlayer->sendPlayerOrder(&tacOrder, false, 1, &mover);
@@ -920,7 +915,7 @@ MissionInterfaceManager::updateVTol()
 					}
 					else if (reinforcement)
 					{
-						reinforcement->getPilot()->orderPowerUp(true, ORDER_ORIGIN_SELF);
+						reinforcement->getPilot()->orderPowerUp(true, OrderOriginType::self);
 						reinforcement = nullptr;
 					}
 					if (!MPlayer || vtolNum == MPlayer->commanderid)
@@ -999,18 +994,18 @@ MissionInterfaceManager::updateVTol()
 								((std::unique_ptr<Mover>)mechToRecover[vtolNum])->timeLeft = 1.0f;
 								((std::unique_ptr<Mover>)mechToRecover[vtolNum])->exploding = false;
 							}
-							const std::wstring_view& newPilotName = nullptr;
+							std::wstring_view newPilotName = nullptr;
 							if (MPlayer)
 								newPilotName = MPlayer->reinforcementPilot[vtolNum];
 							else
-								newPilotName = (const std::wstring_view&)LogisticsData::instance->getBestPilot(
+								newPilotName = (std::wstring_view)LogisticsData::instance->getBestPilot(
 									mechToRecover[vtolNum]->tonnage);
 							mission->tradeMover(mechToRecover[vtolNum],
 								Commander::commanders[vtolNum]->getTeam()->getId(), vtolNum,
 								newPilotName, "pbrain");
 							mechRecovered[vtolNum] = true;
 							mechToRecover[vtolNum]->getPilot()->orderPowerUp(
-								true, ORDER_ORIGIN_SELF);
+								true, OrderOriginType::self);
 							if (MPlayer)
 								MPlayer->reinforcements[vtolNum][1] = -1;
 						}
@@ -1116,8 +1111,7 @@ MissionInterfaceManager::updateVTol()
 	}
 }
 
-void
-MissionInterfaceManager::updateTarget(bool bGui)
+void MissionInterfaceManager::updateTarget(bool bGui)
 {
 	// unset anything that isn't targeted
 	for (size_t i = 0; i < MAX_ICONS; i++)
@@ -1170,8 +1164,7 @@ MissionInterfaceManager::updateTarget(bool bGui)
 	}
 }
 
-void
-MissionInterfaceManager::drawWayPointPaths()
+void MissionInterfaceManager::drawWayPointPaths()
 {
 	Team* pTeam = Team::home;
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
@@ -1184,8 +1177,7 @@ MissionInterfaceManager::drawWayPointPaths()
 	}
 }
 
-void
-MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
+void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
 	bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount)
 {
 	printDebugInfo();
@@ -1359,8 +1351,7 @@ MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, b
 		}
 	}
 }
-void
-MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
+void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
 	bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount)
 {
 	printDebugInfo();
@@ -1555,8 +1546,7 @@ MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, b
 	}
 }
 
-void
-MissionInterfaceManager::updateWaypoints(void)
+void MissionInterfaceManager::updateWaypoints(void)
 {
 	// Update the waypoint markers so that they are visible and must happen
 	// AFTER camera update!! Or they wiggle something fierce.
@@ -1603,7 +1593,7 @@ MissionInterfaceManager::update(bool leftClickedClick, bool rightClickedClick,
 				if (MPlayer && !MPlayer->isServer())
 				{
 					TacticalOrder tacOrder;
-					tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_WAYPOINTS_DONE);
+					tacOrder.init(OrderOriginType::player, TacticalOrderCode::waypointsdone);
 					tacOrder.pack(nullptr, nullptr);
 					MPlayer->sendPlayerOrder(&tacOrder, false, 1, &pMover);
 				}
@@ -1676,8 +1666,7 @@ MissionInterfaceManager::update(bool leftClickedClick, bool rightClickedClick,
 	return bRetVal;
 }
 
-void
-MissionInterfaceManager::doAttack()
+void MissionInterfaceManager::doAttack()
 {
 	if (userInput->getKeyDown(WAYPOINT_KEY) || !target)
 	{
@@ -1686,19 +1675,19 @@ MissionInterfaceManager::doAttack()
 	}
 	TacticalOrder tacOrder;
 	bool bCapture = target->isCaptureable(Team::home->getId());
-	bool bFireFromCurrentPos = controlGui.getCurrentRange() == FIRERANGE_CURRENT ? 1 : 0;
+	bool bFireFromCurrentPos = controlGui.getCurrentRange() == FireRangeType::current ? 1 : 0;
 	if (controlGui.getFireFromCurrentPos())
 		bFireFromCurrentPos = true;
 	if (!bCapture)
 	{
 		if (!Team::home->isFriendly(target->getTeam()))
 		{
-			tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_OBJECT);
+			tacOrder.init(OrderOriginType::player, TacticalOrderCode::attackobject);
 			tacOrder.targetWID = target->getWatchID();
 			tacOrder.attackParams.type =
-				bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
-			tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
-			tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
+				bEnergyWeapons ? AttackType::conservingammo : AttackType::destroy;
+			tacOrder.attackParams.method = AttackMethod::ranged;
+			tacOrder.attackParams.range = FireRangeType::optimal;
 			tacOrder.attackParams.pursue = !bFireFromCurrentPos;
 			tacOrder.moveparams.wayPath.mode[0] =
 				controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
@@ -1737,10 +1726,10 @@ MissionInterfaceManager::doAttack()
 				}
 			}
 		}
-		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_CAPTURE);
+		tacOrder.init(OrderOriginType::player, TacticalOrderCode::capture);
 		tacOrder.targetWID = target->getWatchID();
-		tacOrder.attackParams.type = ATTACK_NONE;
-		tacOrder.attackParams.method = ATTACKMETHOD_RAMMING;
+		tacOrder.attackParams.type = AttackType::none;
+		tacOrder.attackParams.method = AttackMethod::ramming;
 		tacOrder.attackParams.pursue = true;
 		tacOrder.moveparams.wayPath.mode[0] =
 			controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
@@ -1753,7 +1742,7 @@ MissionInterfaceManager::doAttack()
 		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			tacOrder.attackParams.range = (FireRangeType)pMover->attackRange;
-			if (pMover->attackRange == FIRERANGE_CURRENT)
+			if (pMover->attackRange == FireRangeType::current)
 				tacOrder.attackParams.pursue = false;
 			else if (controlGui.getFireFromCurrentPos())
 				tacOrder.attackParams.pursue = false;
@@ -1775,7 +1764,7 @@ MissionInterfaceManager::doAttack()
 int32_t
 MissionInterfaceManager::attackShort()
 {
-	controlGui.setRange(FIRERANGE_SHORT);
+	controlGui.setRange(FireRangeType::shortest);
 	if (commandClicked && target)
 	{
 		doAttack();
@@ -1787,7 +1776,7 @@ MissionInterfaceManager::attackShort()
 int32_t
 MissionInterfaceManager::attackMedium()
 {
-	controlGui.setRange(FIRERANGE_MEDIUM);
+	controlGui.setRange(FireRangeType::medium);
 	if (commandClicked && target)
 	{
 		doAttack();
@@ -1799,7 +1788,7 @@ MissionInterfaceManager::attackMedium()
 int32_t
 MissionInterfaceManager::attackLong()
 {
-	controlGui.setRange(FIRERANGE_LONG);
+	controlGui.setRange(FireRangeType::extended);
 	if (commandClicked && target)
 	{
 		doAttack();
@@ -1816,7 +1805,7 @@ MissionInterfaceManager::alphaStrike()
 int32_t
 MissionInterfaceManager::defaultAttack()
 {
-	controlGui.setRange(FIRERANGE_OPTIMAL);
+	controlGui.setRange(FireRangeType::optimal);
 	return 0;
 }
 
@@ -1840,8 +1829,7 @@ MissionInterfaceManager::stopJump()
 		controlGui.toggleJump();
 	return 1;
 }
-void
-MissionInterfaceManager::doJump()
+void MissionInterfaceManager::doJump()
 {
 	bool passable = 0;
 	if (!target)
@@ -1856,7 +1844,7 @@ MissionInterfaceManager::doJump()
 		if (canJump)
 		{
 			TacticalOrder tacOrder;
-			tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_JUMPTO_POINT, false);
+			tacOrder.init(OrderOriginType::player, TacticalOrderCode::jumptopoint, false);
 			tacOrder.moveparams.wait = false;
 			tacOrder.moveparams.wayPath.mode[0] = TravelModeType::jump;
 			tacOrder.setWayPoint(0, wPos);
@@ -1894,13 +1882,12 @@ MissionInterfaceManager::stopFireFromCurrentPos()
 	return 1;
 }
 
-void
-MissionInterfaceManager::doGuard(GameObject* who)
+void MissionInterfaceManager::doGuard(GameObject* who)
 {
 	if (who)
 	{
 		TacticalOrder tacOrder;
-		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_GUARD);
+		tacOrder.init(OrderOriginType::player, TacticalOrderCode::guard);
 		tacOrder.targetWID = who->getWatchID();
 		tacOrder.pack(nullptr, nullptr);
 		handleOrders(tacOrder);
@@ -1913,7 +1900,7 @@ MissionInterfaceManager::doGuard(GameObject* who)
 		path.run = true;
 		path.next = nullptr;
 		TacticalOrder tacOrder;
-		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_GUARD);
+		tacOrder.init(OrderOriginType::player, TacticalOrderCode::guard);
 		tacOrder.initWayPath(&path);
 		tacOrder.moveparams.wayPath.mode[0] =
 			controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
@@ -2005,11 +1992,11 @@ MissionInterfaceManager::aimLeg()
 			else
 			{
 				TacticalOrder tacOrder;
-				tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_OBJECT);
+				tacOrder.init(OrderOriginType::player, TacticalOrderCode::attackobject);
 				tacOrder.targetWID = target->getWatchID();
-				tacOrder.attackParams.type = ATTACK_TO_DESTROY;
-				tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
-				tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
+				tacOrder.attackParams.type = AttackType::destroy;
+				tacOrder.attackParams.method = AttackMethod::ranged;
+				tacOrder.attackParams.range = FireRangeType::optimal;
 				tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
 				tacOrder.moveparams.wayPath.mode[0] =
 					controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
@@ -2042,12 +2029,12 @@ MissionInterfaceManager::aimArm()
 		if (anySelectedWithoutAreaEffect() && commandClicked)
 		{
 			TacticalOrder tacOrder;
-			tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_OBJECT);
+			tacOrder.init(OrderOriginType::player, TacticalOrderCode::attackobject);
 			tacOrder.targetWID = target->getWatchID();
-			tacOrder.attackParams.type = ATTACK_TO_DESTROY;
-			tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
+			tacOrder.attackParams.type = AttackType::destroy;
+			tacOrder.attackParams.method = AttackMethod::ranged;
 			tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
-			tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
+			tacOrder.attackParams.range = FireRangeType::optimal;
 			tacOrder.moveparams.wayPath.mode[0] =
 				controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 			bool bRight = pMech->body[MECH_BODY_LOCATION_LARM].damageState == IS_DAMAGE_DESTROYED;
@@ -2091,12 +2078,12 @@ MissionInterfaceManager::aimHead()
 			if (anySelectedWithoutAreaEffect() && commandClicked)
 			{
 				TacticalOrder tacOrder;
-				tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_OBJECT);
+				tacOrder.init(OrderOriginType::player, TacticalOrderCode::attackobject);
 				tacOrder.targetWID = target->getWatchID();
-				tacOrder.attackParams.type = ATTACK_TO_DESTROY;
-				tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
+				tacOrder.attackParams.type = AttackType::destroy;
+				tacOrder.attackParams.method = AttackMethod::ranged;
 				tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
-				tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
+				tacOrder.attackParams.range = FireRangeType::optimal;
 				tacOrder.moveparams.wayPath.mode[0] =
 					controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
 				tacOrder.attackParams.aimLocation = MECH_BODY_LOCATION_HEAD;
@@ -2144,7 +2131,7 @@ int32_t
 MissionInterfaceManager::powerUp()
 {
 	TacticalOrder tacOrder;
-	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERUP, true);
+	tacOrder.init(OrderOriginType::player, TacticalOrderCode::powerup, true);
 	tacOrder.pack(nullptr, nullptr);
 	handleOrders(tacOrder);
 	return 1;
@@ -2153,7 +2140,7 @@ int32_t
 MissionInterfaceManager::powerDown()
 {
 	TacticalOrder tacOrder;
-	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERDOWN, true);
+	tacOrder.init(OrderOriginType::player, TacticalOrderCode::powerdown, true);
 	tacOrder.pack(nullptr, nullptr);
 	handleOrders(tacOrder);
 	return 1;
@@ -2308,8 +2295,7 @@ MissionInterfaceManager::cameraFour()
 	return 1;
 }
 
-bool
-MissionInterfaceManager::anySelectedWithoutAreaEffect(void)
+bool MissionInterfaceManager::anySelectedWithoutAreaEffect(void)
 {
 	// Scan the list of selected movers and see if any have at least one
 	// non-area effect weapon
@@ -2334,7 +2320,7 @@ MissionInterfaceManager::handleOrders(TacticalOrder& order)
 	bool isMoveOrder = false;
 	Stuff::Vector3D moveGoals[MAX_MOVERS];
 	int32_t numMovers = 0;
-	if (order.code == TACTICAL_ORDER_JUMPTO_POINT)
+	if (order.code == TacticalOrderCode::jumptopoint)
 	{
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
@@ -2345,7 +2331,7 @@ MissionInterfaceManager::handleOrders(TacticalOrder& order)
 		MoverGroup::calcJumpGoals(order.getWayPoint(0), numMovers, moveGoals, nullptr);
 		isMoveOrder = true;
 	}
-	else if (order.code == TACTICAL_ORDER_MOVETO_POINT)
+	else if (order.code == TacticalOrderCode::movetopoint)
 	{
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
@@ -2655,8 +2641,7 @@ MissionInterfaceManager::changeLighting()
 	return 1;
 }
 
-void
-MissionInterfaceManager::init(FitIniFilePtr loader)
+void MissionInterfaceManager::init(FitIniFilePtr loader)
 {
 	int32_t result = loader->seekBlock("CameraData");
 	gosASSERT(result == NO_ERROR);
@@ -2691,8 +2676,7 @@ MissionInterfaceManager::init(FitIniFilePtr loader)
 }
 
 //--------------------------------------------------------------------------------------
-void
-MissionInterfaceManager::destroy(void)
+void MissionInterfaceManager::destroy(void)
 {
 	hotKeyFont.destroy();
 	hotKeyHeaderFont.destroy();
@@ -2709,8 +2693,7 @@ bool rotateLightDn = false;
 
 //--------------------------------------------------------------------------------------
 
-void
-HandlePlayerOrder(std::unique_ptr<Mover> mover, TacticalOrderPtr tacOrder)
+void HandlePlayerOrder(std::unique_ptr<Mover> mover, TacticalOrderPtr tacOrder)
 {
 	//---------------------------------------------------------------------
 	// Helper function--perhaps this should just be a part of the mover and
@@ -2722,8 +2705,7 @@ HandlePlayerOrder(std::unique_ptr<Mover> mover, TacticalOrderPtr tacOrder)
 }
 
 //--------------------------------------------------------------------------------------
-void
-MissionInterfaceManager::drawVTOL(void)
+void MissionInterfaceManager::drawVTOL(void)
 {
 	for (size_t vtolNum = 0; vtolNum < MAX_TEAMS; vtolNum++)
 	{
@@ -2772,8 +2754,7 @@ MissionInterfaceManager::drawVTOL(void)
 }
 
 //--------------------------------------------------------------------------------------
-void
-MissionInterfaceManager::render(void)
+void MissionInterfaceManager::render(void)
 {
 	if (drawGUIOn)
 	{
@@ -2925,8 +2906,7 @@ MissionInterfaceManager::render(void)
 	}*/
 }
 
-void
-MissionInterfaceManager::initTacMap(PacketFile* file, int32_t packet)
+void MissionInterfaceManager::initTacMap(PacketFile* file, int32_t packet)
 {
 	file->seekPacket(packet);
 	int32_t size = file->getPacketSize();
@@ -2948,8 +2928,7 @@ MissionInterfaceManager::initTacMap(PacketFile* file, int32_t packet)
 	target = nullptr;
 }
 
-void
-MissionInterfaceManager::printDebugInfo()
+void MissionInterfaceManager::printDebugInfo()
 {
 	if (userInput->isLeftClick() || userInput->isRightClick())
 	{
@@ -2971,8 +2950,7 @@ MissionInterfaceManager::printDebugInfo()
 	}
 }
 
-void
-MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
+void MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
 {
 	/*if ( controlGui.getGuardTower()  )
 	{
@@ -2999,7 +2977,7 @@ MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
 		return;
 	}
 	else
-		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_MOVETO_POINT, false);
+		tacOrder.init(OrderOriginType::player, TacticalOrderCode::movetopoint, false);
 	tacOrder.initWayPath(&path);
 	tacOrder.moveparams.wait = false;
 	tacOrder.moveparams.wayPath.mode[0] =
@@ -3012,8 +2990,7 @@ MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
 	controlGui.setDefaultSpeed();
 }
 
-bool
-MissionInterfaceManager::makePatrolPath()
+bool MissionInterfaceManager::makePatrolPath()
 {
 	Team* pTeam = Team::home;
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
@@ -3058,14 +3035,14 @@ MissionInterfaceManager::forceShot()
 	if (commandClicked)
 	{
 		TacticalOrder tacOrder;
-		tacOrder.init(ORDER_ORIGIN_PLAYER,
-			target ? TACTICAL_ORDER_ATTACK_OBJECT : TACTICAL_ORDER_ATTACK_POINT);
+		tacOrder.init(OrderOriginType::player,
+			target ? TacticalOrderCode::attackobject : TacticalOrderCode::attackpoint);
 		tacOrder.targetWID = target ? target->getWatchID() : 0;
 		if (!target)
 			tacOrder.attackParams.targetpoint = wPos;
-		tacOrder.attackParams.type = bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
-		tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
-		tacOrder.attackParams.range = (FireRangeType)FIRERANGE_OPTIMAL;
+		tacOrder.attackParams.type = bEnergyWeapons ? AttackType::conservingammo : AttackType::destroy;
+		tacOrder.attackParams.method = AttackMethod::ranged;
+		tacOrder.attackParams.range = (FireRangeType)FireRangeType::optimal;
 		tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
 		tacOrder.moveparams.wayPath.mode[0] =
 			controlGui.getWalk() ? TravelModeType::slow : TravelModeType::fast;
@@ -3078,8 +3055,7 @@ MissionInterfaceManager::forceShot()
 	return 0;
 }
 
-void
-MissionInterfaceManager::selectForceGroup(int32_t forceGroup, bool deselect)
+void MissionInterfaceManager::selectForceGroup(int32_t forceGroup, bool deselect)
 {
 	Team* pTeam = Team::home;
 	bool bAllSelected = deselect ? false : true;
@@ -3112,8 +3088,7 @@ MissionInterfaceManager::selectForceGroup(int32_t forceGroup, bool deselect)
 			pMover->setSelected(!bAllSelected);
 	}
 }
-void
-MissionInterfaceManager::makeForceGroup(int32_t forceGroup)
+void MissionInterfaceManager::makeForceGroup(int32_t forceGroup)
 {
 	Team* pTeam = Team::home;
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
@@ -3136,8 +3111,7 @@ MissionInterfaceManager::makeForceGroup(int32_t forceGroup)
 	}
 }
 
-bool
-MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable, bool ctrl,
+bool MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable, bool ctrl,
 	bool bGui, int32_t moverCount, int32_t nonMoverCount)
 {
 	bool bRetVal = 0;
@@ -3283,8 +3257,7 @@ MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable, bool 
 	return bRetVal;
 }
 
-bool
-MissionInterfaceManager::canJump()
+bool MissionInterfaceManager::canJump()
 {
 	bool canJump = true;
 	int32_t i = 0;
@@ -3305,8 +3278,7 @@ MissionInterfaceManager::canJump()
 	return canJump;
 }
 
-bool
-MissionInterfaceManager::canJumpToWPos()
+bool MissionInterfaceManager::canJumpToWPos()
 {
 	bool passable = 0;
 	if (Terrain::IsGameSelectTerrainPosition(wPos))
@@ -3352,8 +3324,7 @@ MissionInterfaceManager::canJumpToWPos()
 	return 0;
 }
 
-void
-MissionInterfaceManager::doDrag(bool bGui)
+void MissionInterfaceManager::doDrag(bool bGui)
 {
 	//---------------------------------------------------------------------------
 	// Check if we wanted to select all visible.  If so, do it!
@@ -3426,8 +3397,7 @@ MissionInterfaceManager::doDrag(bool bGui)
 	}
 }
 
-bool
-MissionInterfaceManager::canAddVehicle(const Stuff::Vector3D& pos)
+bool MissionInterfaceManager::canAddVehicle(const Stuff::Vector3D& pos)
 {
 	// We're probably going to use this alot!
 	int32_t commanderid = Commander::home->getId();
@@ -3448,8 +3418,7 @@ MissionInterfaceManager::canAddVehicle(const Stuff::Vector3D& pos)
 	return false;
 }
 
-bool
-MissionInterfaceManager::canRecover(const Stuff::Vector3D& pos)
+bool MissionInterfaceManager::canRecover(const Stuff::Vector3D& pos)
 {
 	// We're probably going to use this alot!
 	int32_t commanderid = Commander::home->getId();
@@ -3655,7 +3624,7 @@ MissionInterfaceManager::makeTargetCursor(
 			}
 		}
 		else if (targetTeam && !controlGui.getGuard() && Team::home->isFriendly(targetTeam) && gos_GetKeyStatus((gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) != KEY_HELD // not forcing fire
-			&& controlGui.getCurrentRange() == FIRERANGE_OPTIMAL) // range attacks now are force fire
+			&& controlGui.getCurrentRange() == FireRangeType::optimal) // range attacks now are force fire
 		{
 			return makeNoTargetCursor(false, lineOfSight, 0, 0, moverCount, nonMoverCount);
 		}
@@ -3678,7 +3647,7 @@ MissionInterfaceManager::makeTargetCursor(
 		if (target)
 			target->setTargeted(true);
 	}
-	else if (gos_GetKeyStatus((gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) == KEY_HELD || (controlGui.getCurrentRange() != FIRERANGE_OPTIMAL && controlGui.getCurrentRange() != FIRERANGE_CURRENT))
+	else if (gos_GetKeyStatus((gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) == KEY_HELD || (controlGui.getCurrentRange() != FireRangeType::optimal && controlGui.getCurrentRange() != FireRangeType::current))
 	{
 		currentCursor = makeRangeCursor(lineOfSight);
 	}
@@ -3694,19 +3663,19 @@ MissionInterfaceManager::makeRangeCursor(bool lineOfSight)
 		return lineOfSight ? mState_ENERGY_WEAPONS_LOS : mState_ENERGY_WEAPONS;
 	switch (currentRange)
 	{
-	case FIRERANGE_SHORT:
+	case FireRangeType::shortest:
 		currentCursor = lineOfSight ? mState_SHRTRNG_LOS : mState_SHRTRNG_ATTACK;
 		break;
-	case FIRERANGE_MEDIUM:
+	case FireRangeType::medium:
 		currentCursor = lineOfSight ? mState_MEDRNG_LOS : mState_MEDRNG_ATTACK;
 		break;
-	case FIRERANGE_LONG:
+	case FireRangeType::extended:
 		currentCursor = lineOfSight ? mState_LONGRNG_LOS : mState_LONGRNG_ATTACK;
 		break;
-	case FIRERANGE_OPTIMAL:
+	case FireRangeType::optimal:
 		currentCursor = lineOfSight ? mState_ATTACK_LOS : mState_GENERIC_ATTACK;
 		break;
-	case FIRERANGE_CURRENT:
+	case FireRangeType::current:
 		currentCursor = lineOfSight ? mState_CURPOS_ATTACK_LOS : mState_CURPOS_ATTACK;
 		break;
 	}
@@ -3857,8 +3826,7 @@ MissionInterfaceManager::makeNoTargetCursor(bool passable, bool lineOfSight, boo
 	return cursorType;
 }
 
-void
-MissionInterfaceManager::addAirstrike()
+void MissionInterfaceManager::addAirstrike()
 {
 	if (controlGui.isButtonPressed(ControlGui::LARGE_AIRSTRIKE))
 		bigAirStrike();
@@ -3879,8 +3847,8 @@ BringInReinforcement(
 {
 	MoverInitData data;
 	memset(&data, 0, sizeof(data));
-	const std::wstring_view& vehicleFile =
-		(const std::wstring_view&)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(vehicleID);
+	std::wstring_view vehicleFile =
+		(std::wstring_view)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(vehicleID);
 	if (!vehicleFile)
 	{
 		wchar_t s[1024];
@@ -3934,11 +3902,10 @@ BringInReinforcement(
 
 //-----------------------------------------------------------------------------
 
-void
-MissionInterfaceManager::addVehicle(const Stuff::Vector3D& pos)
+void MissionInterfaceManager::addVehicle(const Stuff::Vector3D& pos)
 {
 	//	LogisticsPilot* pPilot =
-	// LogisticsData::instance->getFirstAvailablePilot(); 	const std::wstring_view& pChar =
+	// LogisticsData::instance->getFirstAvailablePilot(); 	std::wstring_view pChar =
 	// pPilot->getFileName(); 	if ( !pChar ) 		return;
 	// Check if vehicleFile is nullptr.  If it is, simply get it.
 	// Can happen if we get here BEFORE beginVtol?
@@ -3956,8 +3923,7 @@ MissionInterfaceManager::addVehicle(const Stuff::Vector3D& pos)
 		vehicleID[Commander::home->getId()], 255, Commander::home->getId(), pos, true);
 }
 
-void
-MissionInterfaceManager::beginVtol(
+void MissionInterfaceManager::beginVtol(
 	int32_t supportID, int32_t commanderid, Stuff::Vector3D* reinforcePos, std::unique_ptr<Mover> salvageTarget)
 {
 	Stuff::Vector3D vtolPos = wPos;
@@ -4034,8 +4000,8 @@ MissionInterfaceManager::beginVtol(
 					vPos[commanderid] = vtolPos;
 					if (!salvageTarget)
 						STOP(("MissionGUI.beginvtol: null target PASSED IN."));
-					const std::wstring_view& newPilotName =
-						(const std::wstring_view&)LogisticsData::instance->getBestPilot(salvageTarget->tonnage);
+					std::wstring_view newPilotName =
+						(std::wstring_view)LogisticsData::instance->getBestPilot(salvageTarget->tonnage);
 					if (vehicleID[commanderid] != 147)
 						STOP(("missiongui.beginvtol: bad vehicleID"));
 					MPlayer->sendReinforcement(vehicleID[commanderid],
@@ -4165,8 +4131,7 @@ MissionInterfaceManager::beginVtol(
 		controlGui.disableAllVehicleButtons();
 }
 
-bool
-MissionInterfaceManager::canSalvage(GameObject* pMover)
+bool MissionInterfaceManager::canSalvage(GameObject* pMover)
 {
 	bool lineOfSight = Team::home->teamLineOfSight(pMover->getPosition(), 0.0f);
 	return (controlGui.forceGroupBar.getIconCount() < MAX_ICONS && target->isDisabled() && lineOfSight && target->getObjectClass() == BATTLEMECH)
@@ -4174,24 +4139,22 @@ MissionInterfaceManager::canSalvage(GameObject* pMover)
 		: 0;
 }
 
-void
-MissionInterfaceManager::doSalvage()
+void MissionInterfaceManager::doSalvage()
 {
 	if (canSalvage(target))
 	{
 		TacticalOrder tacOrder;
-		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_RECOVER);
+		tacOrder.init(OrderOriginType::player, TacticalOrderCode::recover);
 		tacOrder.targetWID = target->getWatchID();
-		tacOrder.attackParams.type = ATTACK_NONE;
-		tacOrder.attackParams.method = ATTACKMETHOD_RAMMING;
+		tacOrder.attackParams.type = AttackType::none;
+		tacOrder.attackParams.method = AttackMethod::ramming;
 		tacOrder.attackParams.pursue = true;
 		tacOrder.moveparams.wayPath.mode[0] = TravelModeType::fast;
 		handleOrders(tacOrder);
 	}
 }
 
-bool
-MissionInterfaceManager::canRepair(GameObject* pMover)
+bool MissionInterfaceManager::canRepair(GameObject* pMover)
 {
 	if (!pMover)
 		return 0;
@@ -4219,11 +4182,10 @@ MissionInterfaceManager::canRepair(GameObject* pMover)
 		return true;
 	return 0;
 }
-void
-MissionInterfaceManager::doRepair(GameObject* who)
+void MissionInterfaceManager::doRepair(GameObject* who)
 {
 	TacticalOrder tacOrder;
-	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_REFIT, false);
+	tacOrder.init(OrderOriginType::player, TacticalOrderCode::refit, false);
 	tacOrder.targetWID = who->getWatchID();
 	tacOrder.selectionindex = -1;
 	tacOrder.moveparams.wayPath.mode[0] =
@@ -4236,8 +4198,7 @@ MissionInterfaceManager::doRepair(GameObject* who)
 	controlGui.setDefaultSpeed();
 }
 
-bool
-MissionInterfaceManager::canRepairBay(GameObject* bay)
+bool MissionInterfaceManager::canRepairBay(GameObject* bay)
 {
 	if (bay && bay->getRefitPoints() > 0.0f)
 	{
@@ -4253,11 +4214,10 @@ MissionInterfaceManager::canRepairBay(GameObject* bay)
 	}
 	return false;
 }
-void
-MissionInterfaceManager::doRepairBay(GameObject* who)
+void MissionInterfaceManager::doRepairBay(GameObject* who)
 {
 	TacticalOrder tacOrder;
-	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_GETFIXED, false);
+	tacOrder.init(OrderOriginType::player, TacticalOrderCode::getfixed, false);
 	tacOrder.targetWID = who->getWatchID();
 	tacOrder.selectionindex = -1;
 	tacOrder.moveparams.wayPath.mode[0] =
@@ -4341,20 +4301,17 @@ MissionInterfaceManager::togglePauseWithoutMenu()
 	}
 }
 
-bool
-MissionInterfaceManager::isPaused()
+bool MissionInterfaceManager::isPaused()
 {
 	return bPaused;
 }
 
-bool
-MissionInterfaceManager::isPausedWithoutMenu()
+bool MissionInterfaceManager::isPausedWithoutMenu()
 {
 	return bPausedWithoutMenu;
 }
 
-void
-MissionInterfaceManager::swapResolutions()
+void MissionInterfaceManager::swapResolutions()
 {
 	controlGui.swapResolutions(Environment.screenwidth);
 	resolution = Environment.screenwidth;
@@ -4430,7 +4387,7 @@ MissionInterfaceManager::gotoNextNavMarker()
 			path.run = true;
 			path.next = nullptr;
 			TacticalOrder tacOrder;
-			tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_MOVETO_POINT, false);
+			tacOrder.init(OrderOriginType::player, TacticalOrderCode::movetopoint, false);
 			tacOrder.initWayPath(&path);
 			tacOrder.moveparams.wait = false;
 			tacOrder.moveparams.wayPath.mode[0] =
@@ -4837,8 +4794,7 @@ MissionInterfaceManager::showVictim()
 	return (1);
 }
 
-void
-damageObject(GameObjectPtr victim, float damage)
+void damageObject(GameObjectPtr victim, float damage)
 {
 	WeaponShotInfo shot;
 	switch (victim->getObjectClass())
@@ -5018,8 +4974,7 @@ MissionInterfaceManager::toggleCompass()
 	return 0;
 }
 
-bool
-MissionInterfaceManager::selectionIsHelicopters()
+bool MissionInterfaceManager::selectionIsHelicopters()
 {
 	Team* pTeam = Team::home;
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
@@ -5131,33 +5086,28 @@ MissionInterfaceManager::setWayPointKey(gosEnum_KeyIndex key)
 	return 0;
 }
 
-void
-MissionInterfaceManager::setAOEStyle()
+void MissionInterfaceManager::setAOEStyle()
 {
 	useLeftRightMouseProfile = true;
 }
-void
-MissionInterfaceManager::setMCStyle()
+void MissionInterfaceManager::setMCStyle()
 {
 	useLeftRightMouseProfile = false;
 }
 
-bool
-MissionInterfaceManager::isAOEStyle()
+bool MissionInterfaceManager::isAOEStyle()
 {
 	return useLeftRightMouseProfile == true;
 }
-bool
-MissionInterfaceManager::isMCStyle()
+bool MissionInterfaceManager::isMCStyle()
 {
 	return useLeftRightMouseProfile == false;
 }
 
-void
-MissionInterfaceManager::doEject(GameObject* who)
+void MissionInterfaceManager::doEject(GameObject* who)
 {
 	TacticalOrder tacOrder;
-	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_EJECT, true);
+	tacOrder.init(OrderOriginType::player, TacticalOrderCode::eject, true);
 	tacOrder.pack(nullptr, nullptr);
 	std::unique_ptr<Mover> pMover = (std::unique_ptr<Mover>)who;
 	if (MPlayer && !MPlayer->isServer())
@@ -5166,8 +5116,7 @@ MissionInterfaceManager::doEject(GameObject* who)
 		pMover->handleTacticalOrder(tacOrder);
 }
 
-bool
-MissionInterfaceManager::hotKeyIsPressed(int32_t whichCommand)
+bool MissionInterfaceManager::hotKeyIsPressed(int32_t whichCommand)
 {
 	int32_t key = commands[whichCommand].key;
 	bool bShift = 0;
@@ -5193,8 +5142,7 @@ MissionInterfaceManager::hotKeyIsPressed(int32_t whichCommand)
 	return false;
 }
 
-void
-testKeyStuff()
+void testKeyStuff()
 {
 	bool bShift, bCtrl, bAlt;
 	gosEnum_KeyIndex key = KEY_F9;
@@ -5222,23 +5170,20 @@ MissionInterfaceManager::toggleHotKeys()
 	return 1;
 }
 
-void
-MissionInterfaceManager::drawHotKeys()
+void MissionInterfaceManager::drawHotKeys()
 {
 	keyboardRef->render();
 	return;
 }
 
-void
-MissionInterfaceManager::drawHotKey(const std::wstring_view& keyString, const std::wstring_view& descString, int32_t x, int32_t y)
+void MissionInterfaceManager::drawHotKey(std::wstring_view keyString, std::wstring_view descString, int32_t x, int32_t y)
 {
 	hotKeyFont.render(keyString, 0, y, x, Environment.screenheight, 0xffffffff, 0, 1);
 	hotKeyFont.render(descString, x + (10 * Environment.screenwidth / 640.f), y,
 		Environment.screenwidth, Environment.screenheight, 0xffffffff, 0, 0);
 }
 
-void
-MissionInterfaceManager::doGuardTower()
+void MissionInterfaceManager::doGuardTower()
 {
 	for (size_t i = 0; i < Team::home->getRosterSize(); i++)
 	{
@@ -5249,14 +5194,14 @@ MissionInterfaceManager::doGuardTower()
 		}
 	}
 	TacticalOrder tacOrder;
-	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_POINT);
-	// tacOrder.init(ORDER_ORIGIN_PLAYER,  target ? TACTICAL_ORDER_ATTACK_OBJECT
-	// : TACTICAL_ORDER_ATTACK_POINT);  tacOrder.targetWID = target ?
+	tacOrder.init(OrderOriginType::player, TacticalOrderCode::attackpoint);
+	// tacOrder.init(OrderOriginType::player,  target ? TacticalOrderCode::attackobject
+	// : TacticalOrderCode::attackpoint);  tacOrder.targetWID = target ?
 	// target->getWatchID() : 0;  if ( !target )
 	tacOrder.attackParams.targetpoint = wPos;
-	tacOrder.attackParams.type = bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
-	tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
-	tacOrder.attackParams.range = FIRERANGE_CURRENT;
+	tacOrder.attackParams.type = bEnergyWeapons ? AttackType::conservingammo : AttackType::destroy;
+	tacOrder.attackParams.method = AttackMethod::ranged;
+	tacOrder.attackParams.range = FireRangeType::current;
 	tacOrder.attackParams.pursue = false;
 	tacOrder.moveparams.faceObject = true;
 	tacOrder.moveparams.fromArea = -1;
@@ -5416,8 +5361,7 @@ MissionInterfaceManager::calcRotation()
 }
 
 //--------------------------------------------------------------------------------------
-void
-MissionInterfaceManager::Save(FitIniFilePtr file)
+void MissionInterfaceManager::Save(FitIniFilePtr file)
 {
 	// If VTOL or Karnov are active AND HAVEN'T FINISHED THEIR OPERATION, save
 	// them, what vehicle they are going to drop or what mech they were fixing.
@@ -5440,8 +5384,7 @@ MissionInterfaceManager::Save(FitIniFilePtr file)
 }
 
 //--------------------------------------------------------------------------------------
-void
-MissionInterfaceManager::Load(FitIniFilePtr file)
+void MissionInterfaceManager::Load(FitIniFilePtr file)
 {
 	// Is there any VTOL data here?  OK if not!
 	int32_t vtolNum = Commander::home->getId();
@@ -5614,8 +5557,7 @@ MissionInterfaceManager::Load(FitIniFilePtr file)
 	}
 }
 
-void
-MissionInterfaceManager::updateRollovers()
+void MissionInterfaceManager::updateRollovers()
 {
 	/*	For all (both LOS and non-LOS) the run cursors, use strings 45149/45150
 		For all the jump cursors, use strings 45151/45152

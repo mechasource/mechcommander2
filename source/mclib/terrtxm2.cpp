@@ -57,7 +57,7 @@
 bool forceShadowBurnIn = false;
 
 PVOID
-DecodeJPG(const std::wstring_view& FileName, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
+DecodeJPG(std::wstring_view filename, uint8_t* Data, uint32_t DataSize, uint32_t* Texturewidth,
 	uint32_t* Textureheight, bool TextureLoad, PVOIDpDestSurf);
 
 uint32_t TerraincolourMap::terrainTypeIDs[TOTAL_COLORMAP_TYPES] = {
@@ -66,8 +66,7 @@ uint32_t TerraincolourMap::terrainTypeIDs[TOTAL_COLORMAP_TYPES] = {
 #define MBOK 1
 //---------------------------------------------------------------------------
 // Class TerraincolourMap
-void
-TerraincolourMap::init(void)
+void TerraincolourMap::init(void)
 {
 	colourMap = nullptr;
 	colorMapHeap = nullptr;
@@ -95,8 +94,7 @@ TerraincolourMap::init(void)
 	roughDistance = -1.0f;
 }
 
-void
-TerraincolourMap::destroy(void)
+void TerraincolourMap::destroy(void)
 {
 	if (textures)
 	{
@@ -132,8 +130,7 @@ TerraincolourMap::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-TerraincolourMap::getcolourMapData(uint8_t* ourRAM, int32_t index, int32_t width)
+void TerraincolourMap::getcolourMapData(uint8_t* ourRAM, int32_t index, int32_t width)
 {
 	int32_t numWide = width / COLOR_MAP_TEXTURE_SIZE;
 	int32_t startCol = ((index % numWide) * COLOR_MAP_TEXTURE_SIZE);
@@ -185,8 +182,7 @@ fractalPass(float* heightMap, int32_t edgeSize, int32_t THRESHOLD, int32_t NOISE
 }
 
 //---------------------------------------------------------------------------
-void
-rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize)
+void rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize)
 {
 	Image source, dest;
 	source.xSize = source.ySize = srcSize;
@@ -198,8 +194,7 @@ rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize)
 }
 
 //---------------------------------------------------------------------------
-void
-TerraincolourMap::refractalizeBaseMesh(const std::wstring_view& fileName, int32_t Threshold, int32_t Noise)
+void TerraincolourMap::refractalizeBaseMesh(std::wstring_view fileName, int32_t Threshold, int32_t Noise)
 {
 	// Find max and min vertex elevations for scaling below.
 	float maxVertex = land->getTerrainElevation(0, 0);
@@ -342,8 +337,7 @@ TerraincolourMap::refractalizeBaseMesh(const std::wstring_view& fileName, int32_
 float ContrastEnhance = 1.5f;
 float ShadowEnhance = 2.0f;
 //---------------------------------------------------------------------------
-void
-TerraincolourMap::burnInShadows(bool doBumpPass, const std::wstring_view& fileName)
+void TerraincolourMap::burnInShadows(bool doBumpPass, std::wstring_view fileName)
 {
 	//-----------------------------------------------------------------
 	// for each pixel in the colormap, figure out where light is and
@@ -802,8 +796,7 @@ TerraincolourMap::burnInShadows(bool doBumpPass, const std::wstring_view& fileNa
 }
 
 //---------------------------------------------------------------------------
-void
-saveTGAFile(uint8_t* colourMap, const std::wstring_view& fileName, int32_t pixelwidth)
+void saveTGAFile(uint8_t* colourMap, std::wstring_view fileName, int32_t pixelwidth)
 {
 	TGAFileHeader colorMapInfo;
 	colorMapInfo.image_id_len = 0;
@@ -832,7 +825,7 @@ saveTGAFile(uint8_t* colourMap, const std::wstring_view& fileName, int32_t pixel
 
 //---------------------------------------------------------------------------
 inline bool
-textureIsOKFormat(const std::wstring_view& fileName)
+textureIsOKFormat(std::wstring_view fileName)
 {
 	MechFile tgaFile;
 	int32_t result = tgaFile.open(fileName);
@@ -848,8 +841,7 @@ textureIsOKFormat(const std::wstring_view& fileName)
 }
 
 //---------------------------------------------------------------------------
-void
-TerraincolourMap::resetDetailTexture(const std::wstring_view& fileName)
+void TerraincolourMap::resetDetailTexture(std::wstring_view fileName)
 {
 	if (!textureIsOKFormat(fileName))
 	{
@@ -880,8 +872,7 @@ TerraincolourMap::resetDetailTexture(const std::wstring_view& fileName)
 }
 
 //---------------------------------------------------------------------------
-void
-TerraincolourMap::resetWaterTexture(const std::wstring_view& fileName)
+void TerraincolourMap::resetWaterTexture(std::wstring_view fileName)
 {
 	if (!textureIsOKFormat(fileName))
 	{
@@ -911,8 +902,7 @@ TerraincolourMap::resetWaterTexture(const std::wstring_view& fileName)
 }
 
 //---------------------------------------------------------------------------
-void
-TerraincolourMap::resetWaterDetailTextures(const std::wstring_view& fileName)
+void TerraincolourMap::resetWaterDetailTextures(std::wstring_view fileName)
 {
 	// Then, load up the water detail texture(s).
 	// Water detail texture is named the same as the colormap with .water0000 in
@@ -930,7 +920,7 @@ TerraincolourMap::resetWaterDetailTextures(const std::wstring_view& fileName)
 			strcpy(waterFile, fileName);
 			wchar_t dName[1024];
 			sprintf(dName, "%04d.tga", i);
-			const std::wstring_view& subStringToBeReplaced = &(waterFile[strlen(waterFile) - strlen("0000.tga")]);
+			std::wstring_view subStringToBeReplaced = &(waterFile[strlen(waterFile) - strlen("0000.tga")]);
 			strcpy(subStringToBeReplaced, dName);
 		}
 		bool textureIsOK = true;
@@ -965,8 +955,7 @@ TerraincolourMap::resetWaterDetailTextures(const std::wstring_view& fileName)
 }
 
 //---------------------------------------------------------------------------
-void
-TerraincolourMap::recalcLight(const std::wstring_view& fileName)
+void TerraincolourMap::recalcLight(std::wstring_view fileName)
 {
 	colorMapRAMHeap = new UserHeap;
 	colorMapRAMHeap->init(COLOR_MAP_HEAP_SIZE, "colourMap");
@@ -1086,8 +1075,7 @@ TerraincolourMap::recalcLight(const std::wstring_view& fileName)
 }
 
 //---------------------------------------------------------------------------
-void
-TerraincolourMap::resetBaseTexture(const std::wstring_view& fileName)
+void TerraincolourMap::resetBaseTexture(std::wstring_view fileName)
 {
 	// First, free up the existing colormap.
 	uint32_t i;
@@ -1223,14 +1211,13 @@ TerraincolourMap::resetBaseTexture(const std::wstring_view& fileName)
 
 //---------------------------------------------------------------------------
 // Used by editor for TacMap
-void
-TerraincolourMap::getScaledcolourMap(uint8_t* bfr, int32_t dwidth)
+void TerraincolourMap::getScaledcolourMap(uint8_t* bfr, int32_t dwidth)
 {
 	bool wascolourMapAround = true;
 	if (!colourMap)
 	{
 		wascolourMapAround = false;
-		const std::wstring_view& fileName = Terrain::colorMapName;
+		std::wstring_view fileName = Terrain::colorMapName;
 		if (!fileName)
 			fileName = Terrain::terrainName;
 		colorMapRAMHeap = new UserHeap;
@@ -1340,11 +1327,11 @@ TerraincolourMap::getScaledcolourMap(uint8_t* bfr, int32_t dwidth)
 }
 
 static int32_t
-sReadIdFloat(FitIniFile* missionFile, const std::wstring_view& varName, float& value)
+sReadIdFloat(FitIniFile* missionFile, std::wstring_view varName, float& value)
 {
 	int32_t result = 0;
 	float tmpFloat;
-	result = missionFile->readIdFloat((const std::wstring_view&)varName, tmpFloat);
+	result = missionFile->readIdFloat((std::wstring_view)varName, tmpFloat);
 	if (NO_ERROR != result)
 	{
 		// _ASSERT(false);
@@ -1358,7 +1345,7 @@ sReadIdFloat(FitIniFile* missionFile, const std::wstring_view& varName, float& v
 
 //---------------------------------------------------------------------------
 int32_t
-TerraincolourMap::init(const std::wstring_view& fileName)
+TerraincolourMap::init(std::wstring_view fileName)
 {
 	bool usedJPG = false;
 	if (!colorMapStarted)
@@ -1423,7 +1410,7 @@ TerraincolourMap::init(const std::wstring_view& fileName)
 		}
 		sprintf(dName, "%s%04d", waterDetailBaseName, 0);
 		waterFile.init(texturePath, dName, ".tga");
-		resetWaterDetailTextures((const std::wstring_view&)waterFile);
+		resetWaterDetailTextures((std::wstring_view)waterFile);
 		{
 			detailTextureTilingFactor = 30.0f;
 			waterTextureTilingFactor = 48.0f;
@@ -1433,7 +1420,7 @@ TerraincolourMap::init(const std::wstring_view& fileName)
 			FitIniFile missionFitIni;
 			if (fileExists(missionFitFilePath))
 			{
-				missionFitIni.open((const std::wstring_view&)(const std::wstring_view&)missionFitFilePath);
+				missionFitIni.open((std::wstring_view)(std::wstring_view)missionFitFilePath);
 				int32_t result = missionFitIni.seekBlock("Terrain");
 				gosASSERT(result == NO_ERROR);
 				result = sReadIdFloat(
@@ -1726,7 +1713,7 @@ TerraincolourMap::getTextureHandle(VertexPtr vMin, VertexPtr vMax, TerrainUVData
 }
 
 int32_t
-TerraincolourMap::saveDetailTexture(const std::wstring_view& fileName)
+TerraincolourMap::saveDetailTexture(std::wstring_view fileName)
 {
 	wchar_t dName[1024];
 	sprintf(dName, "%s.detail", fileName);
@@ -1736,7 +1723,7 @@ TerraincolourMap::saveDetailTexture(const std::wstring_view& fileName)
 }
 
 int32_t
-TerraincolourMap::saveWaterTexture(const std::wstring_view& fileName)
+TerraincolourMap::saveWaterTexture(std::wstring_view fileName)
 {
 	wchar_t dName[1024];
 	sprintf(dName, "%s.water", fileName);
@@ -1746,7 +1733,7 @@ TerraincolourMap::saveWaterTexture(const std::wstring_view& fileName)
 }
 
 int32_t
-TerraincolourMap::saveWaterDetail(const std::wstring_view& fileName)
+TerraincolourMap::saveWaterDetail(std::wstring_view fileName)
 {
 	int32_t result = NO_ERROR;
 	int32_t i;

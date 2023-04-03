@@ -135,8 +135,14 @@ public:
 	static TG_TypeMultiShapePtr SensorSquareShape;
 
 	static bool animationLoadingEnabled;
-	static void disableAnimationLoading(void) { animationLoadingEnabled = false; }
-	static void enableAnimationLoading(void) { animationLoadingEnabled = true; }
+	static void disableAnimationLoading(void)
+	{
+		animationLoadingEnabled = false;
+	}
+	static void enableAnimationLoading(void)
+	{
+		animationLoadingEnabled = true;
+	}
 
 public:
 	void init(void)
@@ -157,13 +163,19 @@ public:
 		mechShadowShape = nullptr;
 	}
 
-	Mech3DAppearanceType(void) { init(void); }
+	Mech3DAppearanceType(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~Mech3DAppearanceType(void) { destroy(void); }
+	~Mech3DAppearanceType(void)
+	{
+		destroy(void);
+	}
 
-	virtual void init(const std::wstring_view& fileName);
+	virtual void init(std::wstring_view fileName);
 
 	int32_t getTotalNodes(void)
 	{
@@ -200,9 +212,15 @@ public:
 		return 0.0f;
 	}
 
-	int32_t getJumpLandFrame(void) { return (gestures[GestureJump].frameStart & 0x0000ffff); }
+	int32_t getJumpLandFrame(void)
+	{
+		return (gestures[GestureJump].frameStart & 0x0000ffff);
+	}
 
-	int32_t getJumpTakeoffFrame(void) { return (gestures[GestureJump].frameStart >> 16); }
+	int32_t getJumpTakeoffFrame(void)
+	{
+		return (gestures[GestureJump].frameStart >> 16);
+	}
 };
 
 typedef Mech3DAppearanceType* Mech3DAppearanceTypePtr;
@@ -421,9 +439,15 @@ public:
 	static uint32_t numPaintSchemata;
 
 public:
-	Mech3DAppearance(void) { init(void); }
+	Mech3DAppearance(void)
+	{
+		init(void);
+	}
 
-	~Mech3DAppearance(void) { destroy(void); }
+	~Mech3DAppearance(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 
@@ -431,7 +455,10 @@ public:
 
 	virtual void initFX(void);
 
-	virtual AppearanceTypePtr getAppearanceType(void) { return mechType; }
+	virtual AppearanceTypePtr getAppearanceType(void)
+	{
+		return mechType;
+	}
 
 	virtual int32_t update(bool animate = true);
 	virtual int32_t render(int32_t depthFixup = 0);
@@ -449,27 +476,48 @@ public:
 
 	virtual void resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue);
 
-	virtual bool isInJump(void) { return inJump; }
+	virtual bool isInJump(void)
+	{
+		return inJump;
+	}
 
 	void flashBuilding(float dur, float fDuration, uint32_t color);
 
-	virtual bool isJumpSetup(void) { return jumpSetup; }
+	virtual bool isJumpSetup(void)
+	{
+		return jumpSetup;
+	}
 
-	virtual bool isJumpAirborne(void) { return jumpAirborne; }
+	virtual bool isJumpAirborne(void)
+	{
+		return jumpAirborne;
+	}
 
 	virtual bool setJumpParameters(Stuff::Vector3D& end);
 
-	virtual bool haveFallen(void) { return fallen; }
+	virtual bool haveFallen(void)
+	{
+		return fallen;
+	}
 
 	virtual bool isMouseOver(float px, float py);
 
 	virtual bool recalcBounds(void);
 
-	virtual void setBrake(bool brake) { forceStop = brake; }
+	virtual void setBrake(bool brake)
+	{
+		forceStop = brake;
+	}
 
-	bool checkStop(void) { return forceStop; }
+	bool checkStop(void)
+	{
+		return forceStop;
+	}
 
-	virtual int32_t getCurrentGestureId(void) { return currentGestureId; }
+	virtual int32_t getCurrentGestureId(void)
+	{
+		return currentGestureId;
+	}
 
 	virtual void setGesture(size_t gestureId)
 	{
@@ -528,7 +576,10 @@ public:
 		return -1;
 	}
 
-	virtual int32_t getFrameNumber(int32_t partNum) { return frameNum; }
+	virtual int32_t getFrameNumber(int32_t partNum)
+	{
+		return frameNum;
+	}
 
 	virtual float getNumFramesInGesture(size_t gestureId)
 	{
@@ -556,7 +607,10 @@ public:
 		}
 	}
 
-	virtual Stuff::Vector3D getVelocity(void) { return jumpVelocity; }
+	virtual Stuff::Vector3D getVelocity(void)
+	{
+		return jumpVelocity;
+	}
 
 	virtual float getVelocityMagnitude(void)
 	{
@@ -585,13 +639,22 @@ public:
 
 	void clearJustDoIt(void);
 
-	virtual void setObjectNameId(int32_t objId) { objectNameId = objId; }
+	virtual void setObjectNameId(int32_t objId)
+	{
+		objectNameId = objId;
+	}
 
 	static void LoadPaintSchemata(void);
 
-	virtual size_t getAppearanceClass(void) { return MECH_APPR_TYPE; }
+	virtual size_t getAppearanceClass(void)
+	{
+		return MECH_APPR_TYPE;
+	}
 
-	virtual void setDebugMoveMode(void) { inDebugMoveMode = true; }
+	virtual void setDebugMoveMode(void)
+	{
+		inDebugMoveMode = true;
+	}
 
 	//--------------------------------------------
 	// Once site Objects are in place, go get 'em
@@ -601,7 +664,7 @@ public:
 
 	virtual Stuff::Vector3D getNodePosition(int32_t nodeId);
 
-	virtual Stuff::Vector3D getNodeNamePosition(const std::wstring_view& nodeName);
+	virtual Stuff::Vector3D getNodeNamePosition(std::wstring_view nodeName);
 
 	virtual int32_t getWeaponNode(int32_t weapontype);
 
@@ -613,13 +676,25 @@ public:
 
 	virtual void setWeaponNodeRecycle(int32_t nodeId, float time);
 
-	virtual void setSingleStepMode(void) { singleStepMode ^= true; }
+	virtual void setSingleStepMode(void)
+	{
+		singleStepMode ^= true;
+	}
 
-	virtual void setPrevFrame(void) { prevStep = true; }
+	virtual void setPrevFrame(void)
+	{
+		prevStep = true;
+	}
 
-	virtual void setNextFrame(void) { nextStep = true; }
+	virtual void setNextFrame(void)
+	{
+		nextStep = true;
+	}
 
-	virtual void setSensorLevel(int32_t lvl) { sensorLevel = lvl; }
+	virtual void setSensorLevel(int32_t lvl)
+	{
+		sensorLevel = lvl;
+	}
 
 	//------------------------------------------------------------------------------------------
 	// Puts mech into hit mode IF and ONLY IF the mech is standing, walking,
@@ -656,7 +731,10 @@ public:
 		sensorTriangleShape->SetAlphaValue(0xff - aVal);
 	}
 
-	virtual void setMechName(const std::wstring_view& pName) { strcpy(mechName, pName); }
+	virtual void setMechName(std::wstring_view pName)
+	{
+		strcpy(mechName, pName);
+	}
 
 	virtual void startSmoking(int32_t smokeLvl);
 	virtual void startWaterWake(void);
@@ -669,9 +747,15 @@ public:
 	bool leftArmRecalc(void);
 	bool rightArmRecalc(void);
 
-	virtual bool getRightArmOff(void) { return rightArmOff; }
+	virtual bool getRightArmOff(void)
+	{
+		return rightArmOff;
+	}
 
-	virtual bool getLeftArmOff(void) { return leftArmOff; }
+	virtual bool getLeftArmOff(void)
+	{
+		return leftArmOff;
+	}
 
 	virtual Stuff::Vector3D getHitNodeLeft(void);
 	virtual Stuff::Vector3D getHitNodeRight(void);

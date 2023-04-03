@@ -19,13 +19,13 @@
 extern bool useSound;
 
 PacketFilePtr Radio::noiseFile = nullptr;
-RadioPtr Radio::radioList[MAX_RADIOS]; // Warriors no longer delete their
+RadioPtr Radio::radioList[radioconst::maxradios]; // Warriors no longer delete their
 	// radios.
 bool Radio::radioListGo = false;
 bool Radio::messageInfoLoaded = false;
 int32_t Radio::currentRadio = 0;
 UserHeapPtr Radio::radioHeap = nullptr;
-PacketFilePtr Radio::messagesFile[MAX_RADIOS];
+PacketFilePtr Radio::messagesFile[radioconst::maxradios];
 
 RadioMessageInfo messageInfo[RADIO_MESSAGE_COUNT];
 
@@ -38,7 +38,7 @@ Radio::operator new(size_t mySize)
 	if (!radioListGo)
 	{
 		radioListGo = true;
-		for (size_t i = 0; i < MAX_RADIOS; i++)
+		for (size_t i = 0; i < radioconst::maxradios; i++)
 		{
 			radioList[i] = nullptr;
 			messagesFile[i] = nullptr;
@@ -53,15 +53,14 @@ Radio::operator new(size_t mySize)
 }
 
 //-------------------------------------------------------------------------------
-void
-Radio::operator delete(PVOID us)
+void Radio::operator delete(PVOID us)
 {
 	radioHeap->Free(us);
 }
 
 //-------------------------------------------------------------------------------
 int32_t
-Radio::init(const std::wstring_view& fileName, uint32_t heapSize, const std::wstring_view& movie)
+Radio::init(std::wstring_view fileName, uint32_t heapSize, std::wstring_view movie)
 {
 	FullPathFileName pilotAudioPath;
 	pilotAudioPath.init(CDsoundPath, fileName, ".pak");
@@ -136,7 +135,7 @@ Radio::playMessage(RadioMessageType msgType)
 		return (NO_PLAY);
 	}
 	memset(msgData, 0, sizeof(RadioData));
-	msgData->noiseId = SHORT_STATIC;
+	msgData->noiseId = RadioNoise::SHORT_STATIC;
 	msgData->msgType = msgType;
 	msgData->msgId = messageInfo[msgType].messageMapping + i;
 	msgData->movieCode = messageInfo[msgType].movieCode;
@@ -225,7 +224,7 @@ Radio::playMessage(RadioMessageType msgType)
 	{
 		if (msgData)
 		{
-			for (size_t j = 0; j < MAX_FRAGMENTS; j++)
+			for (size_t j = 0; j < radioconst::maxfragments; j++)
 			{
 				radioHeap->Free(msgData->data[j]);
 				msgData->data[j] = nullptr;
@@ -250,7 +249,7 @@ Radio::loadMessageInfo(void)
 	std::unique_ptr<File> messageInfoFile;
 	int32_t result;
 	wchar_t dataLine[512];
-	const std::wstring_view& field;
+	std::wstring_view field;
 	messageInfoPath.init(soundPath, "radio", ".csv");
 	messageInfoFile = new File;
 	if (!messageInfoFile)

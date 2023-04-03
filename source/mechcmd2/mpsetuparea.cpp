@@ -35,7 +35,7 @@ MPSetupXScreen::MPSetupXScreen()
 	status = RUNNING;
 }
 
-MPSetupXScreen::~MPSetupXScreen() {}
+MPSetupXScreen::~MPSetupXScreen() { }
 
 int32_t
 MPSetupXScreen::indexOfButtonWithID(int32_t id)
@@ -51,8 +51,7 @@ MPSetupXScreen::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-MPSetupXScreen::init(FitIniFile* file)
+void MPSetupXScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -121,7 +120,7 @@ MPSetupXScreen::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aInsigniaListItem;
-			const std::wstring_view& tmpStr;
+			std::wstring_view tmpStr;
 			tmpStr.Format("ListItem%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			insigniaDropList.AddItem(pTmp2);
@@ -133,65 +132,64 @@ MPSetupXScreen::init(FitIniFile* file)
 	/* these string are to be moved to the string table */
 	if (1 <= textCount)
 	{
-		const std::wstring_view& str = "MULTIPLAYER SETUP";
+		std::wstring_view str = "MULTIPLAYER SETUP";
 		textObjects[0].setText(str);
 	}
 	if (2 <= textCount)
 	{
-		const std::wstring_view& str = "PLAYER NAME";
+		std::wstring_view str = "PLAYER NAME";
 		textObjects[1].setText(str);
 	}
 	if (3 <= textCount)
 	{
-		const std::wstring_view& str = "UNIT NAME";
+		std::wstring_view str = "UNIT NAME";
 		textObjects[2].setText(str);
 	}
 	if (4 <= textCount)
 	{
-		const std::wstring_view& str = "UNIT INSIGNIA";
+		std::wstring_view str = "UNIT INSIGNIA";
 		textObjects[3].setText(str);
 	}
 	if (5 <= textCount)
 	{
-		const std::wstring_view& str = "PLAYER COLORS";
+		std::wstring_view str = "PLAYER COLORS";
 		textObjects[4].setText(str);
 	}
 	if (6 <= textCount)
 	{
-		const std::wstring_view& str = "HELP TEXT";
+		std::wstring_view str = "HELP TEXT";
 		textObjects[5].setText(str);
 	}
 	if (7 <= textCount)
 	{
-		const std::wstring_view& str = "CONNECTION TYPE";
+		std::wstring_view str = "CONNECTION TYPE";
 		textObjects[6].setText(str);
 	}
 	if (8 <= textCount)
 	{
-		const std::wstring_view& str = "connection type info";
+		std::wstring_view str = "connection type info";
 		textObjects[7].setText(str);
 	}
 	if (9 <= textCount)
 	{
-		const std::wstring_view& str = "PLAYER NAME...";
+		std::wstring_view str = "PLAYER NAME...";
 		textObjects[8].setText(str);
 	}
 	if (10 <= textCount)
 	{
-		const std::wstring_view& str = "UNIT NAME...";
+		std::wstring_view str = "UNIT NAME...";
 		textObjects[9].setText(str);
 	}
 	if (11 <= textCount)
 	{
-		const std::wstring_view& str = "INSIGNIA NAME...";
+		std::wstring_view str = "INSIGNIA NAME...";
 		textObjects[10].setText(str);
 	}
 	unitNameComboBox.setFocus(false);
 	playerNameComboBox.setFocus(false);
 }
 
-void
-MPSetupXScreen::begin()
+void MPSetupXScreen::begin()
 {
 	status = RUNNING;
 	connectionType = 0;
@@ -220,14 +218,12 @@ MPSetupXScreen::begin()
 	// stripecolour, 0xfff0f0f0);
 }
 
-void
-MPSetupXScreen::end()
+void MPSetupXScreen::end()
 {
 	mechCamera.setMech(nullptr);
 }
 
-void
-MPSetupXScreen::render(int32_t xOffset, int32_t yOffset)
+void MPSetupXScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
 	if ((0 == xOffset) && (0 == yOffset))
@@ -246,8 +242,7 @@ MPSetupXScreen::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void
-MPSetupXScreen::render()
+void MPSetupXScreen::render()
 {
 	render(0, 0);
 }
@@ -344,14 +339,12 @@ MPSetupXScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-MPSetupXScreen::isDone()
+bool MPSetupXScreen::isDone()
 {
 	return bDone;
 }
 
-void
-MPSetupXScreen::update()
+void MPSetupXScreen::update()
 {
 	LogisticsScreen::update();
 	helpTextID = 0;
@@ -397,8 +390,7 @@ MPSetupXScreen::update()
 	}
 }
 
-void
-MPSetupXScreen::updateMPSetup()
+void MPSetupXScreen::updateMPSetup()
 {
 }
 
@@ -432,24 +424,23 @@ acolourPicker::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void
-acolourPicker::init(FitIniFile* file, const std::wstring_view& blockName)
+void acolourPicker::init(FitIniFile* file, std::wstring_view blockname)
 {
-	file->seekBlock(blockName);
+	file->seekBlock(blockname);
 	int32_t x, y, width, height;
 	file->readIdLong("XLocation", x);
 	file->readIdLong("YLocation", y);
 	file->readIdLong("width", width);
 	file->readIdLong("height", height);
 	init(x, y, width, height);
-	const std::wstring_view& blockname;
+	std::wstring_view blockname;
 	blockname = "colourPickerMainRect";
 	mainRect.init(file, blockname.Data());
 	file->seekBlock("colourPickerTab0");
 	blockname = "Tab0Text";
 	tab0text.init(file, blockname.Data());
 	{
-		const std::wstring_view& str = "BASE COLOR";
+		std::wstring_view str = "BASE COLOR";
 		tab0text.setText(str);
 	}
 	activeTab = 0;
@@ -465,7 +456,7 @@ acolourPicker::init(FitIniFile* file, const std::wstring_view& blockName)
 	blockname = "Tab1Text";
 	tab1text.init(file, blockname.Data());
 	{
-		const std::wstring_view& str = "STRIPE COLOR";
+		std::wstring_view str = "STRIPE COLOR";
 		tab1text.setText(str);
 	}
 	blockname = "Tab1colourOutlineRect";
@@ -493,8 +484,7 @@ acolourPicker::init(FitIniFile* file, const std::wstring_view& blockName)
 	colorPlaneCursorStatic.init(file, blockname.Data());
 }
 
-void
-acolourPicker::destroy()
+void acolourPicker::destroy()
 {
 	aObject::destroy();
 }
@@ -590,8 +580,7 @@ hsi2rgb(float hue, float saturation, float intensity, float& r, float& g, float&
 	}
 }
 
-void
-acolourPicker::update()
+void acolourPicker::update()
 {
 	aObject::update();
 	if (userInput->isLeftClick() || userInput->isLeftDrag())
@@ -701,36 +690,32 @@ acolourPicker::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void
-acolourPicker::render()
+void acolourPicker::render()
 {
 	aObject::render();
 }
 
-void
-acolourPicker::move(float offsetX, float offsetY)
+void acolourPicker::move(float offsetX, float offsetY)
 {
 	aObject::move(offsetX, offsetY);
 }
 
-void
-acolourPicker::setcolour0(int32_t color)
+void acolourPicker::setcolour0(int32_t color)
 {
 	color0 = color;
 	tab0colourRect.setcolour(color);
 }
 
-void
-acolourPicker::setcolour1(int32_t color)
+void acolourPicker::setcolour1(int32_t color)
 {
 	color1 = color;
 	tab1colourRect.setcolour(color);
 }
 
 int32_t
-aStyle1TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
+aStyle1TextListItem::init(FitIniFile* file, std::wstring_view blockname)
 {
-	file->seekBlock(blockName);
+	file->seekBlock(blockname);
 	int32_t fontResID = 0;
 	file->readIdLong("Font", fontResID);
 	int32_t textID = 0;
@@ -756,8 +741,7 @@ aStyle1TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aStyle1TextListItem::render()
+void aStyle1TextListItem::render()
 {
 	float color;
 	if (aListItem::SELECTED == getState())
@@ -777,13 +761,13 @@ aStyle1TextListItem::render()
 }
 
 int32_t
-aInsigniaListItem::init(FitIniFile* file, const std::wstring_view& blockName)
+aInsigniaListItem::init(FitIniFile* file, std::wstring_view blockname)
 {
-	file->seekBlock(blockName);
+	file->seekBlock(blockname);
 	int32_t width, height;
 	file->readIdLong("width", width);
 	file->readIdLong("height", height);
-	const std::wstring_view& graphicBlockName = blockName;
+	std::wstring_view graphicBlockName = blockname;
 	graphicBlockName += "Static";
 	graphic.init(file, graphicBlockName.Data());
 	if (graphic.height() > height)
@@ -794,7 +778,7 @@ aInsigniaListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	{
 		width = graphic.width();
 	}
-	const std::wstring_view& textBlockName = blockName;
+	std::wstring_view textBlockName = blockname;
 	textBlockName += "Text";
 	text.init(file, textBlockName.Data());
 	if (text.height() > height)
@@ -812,8 +796,7 @@ aInsigniaListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aInsigniaListItem::update()
+void aInsigniaListItem::update()
 {
 	text.setState(getState());
 	aListItem::update();

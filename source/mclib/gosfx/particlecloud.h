@@ -71,7 +71,7 @@ public:
 	Stuff::Vector3D m_localLinearVelocity, m_worldLinearVelocity;
 	float m_seed, m_age, m_ageRate;
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 //############################################################################

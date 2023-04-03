@@ -14,7 +14,6 @@ library.
 //#include "mechgui/asystem.h"
 //#include "mechgui/aanim.h"
 
-
 namespace mechgui
 {
 
@@ -25,20 +24,29 @@ aAnimObject:
 class aAnimObject : public aObject
 {
 public:
-	aAnimObject(void) {}
-	virtual ~aAnimObject(void) {}
+	aAnimObject(void) { }
+	virtual ~aAnimObject(void) { }
 	aAnimObject& operator=(const aAnimObject& AnimObject);
 
-	int32_t init(FitIniFile* file, const std::wstring_view& blockName, uint32_t neverFlush = 0);
+	int32_t init(FitIniFile* file, std::wstring_view blockname, uint32_t neverFlush = 0);
 
 	virtual void update(void);
 	virtual void render(void);
 
-	void begin() { animInfo.begin(void); }
+	void begin()
+	{
+		animInfo.begin(void);
+	}
 	void end(void);
-	void reverseBegin() { animInfo.reverseBegin(void); }
+	void reverseBegin()
+	{
+		animInfo.reverseBegin(void);
+	}
 
-	bool isDone() { return animInfo.isDone(void); }
+	bool isDone()
+	{
+		return animInfo.isDone(void);
+	}
 
 	aAnimation animInfo;
 

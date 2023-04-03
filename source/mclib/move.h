@@ -41,7 +41,7 @@
 #define SIMPLE_PATHMAP 0
 #define SECTOR_PATHMAP 1
 
-enum class 
+enum class
 {
 	DOOR_OFFSET_START,
 	DOOR_OFFSET_GOAL,
@@ -87,7 +87,7 @@ enum class
 //#define	SCENARIOMAP_LAST_BASETYPE_INDEX		63
 
 // TileType and OverlayType now in terrain.h!
-enum class 
+enum class
 {
 	OVERLAY_WEIGHT_VEHICLE,
 	OVERLAY_WEIGHT_MECH,
@@ -279,7 +279,10 @@ typedef struct _MapCell
 {
 	uint32_t data;
 
-	uint32_t getTerrain(void) { return ((data & MAPCELL_TERRAIN_MASK) >> MAPCELL_TERRAIN_SHIFT); }
+	uint32_t getTerrain(void)
+	{
+		return ((data & MAPCELL_TERRAIN_MASK) >> MAPCELL_TERRAIN_SHIFT);
+	}
 
 	void setTerrain(uint32_t terrain)
 	{
@@ -287,7 +290,10 @@ typedef struct _MapCell
 		data |= (terrain << MAPCELL_TERRAIN_SHIFT);
 	}
 
-	uint32_t getOverlay(void) { return ((data & MAPCELL_OVERLAY_MASK) >> MAPCELL_OVERLAY_SHIFT); }
+	uint32_t getOverlay(void)
+	{
+		return ((data & MAPCELL_OVERLAY_MASK) >> MAPCELL_OVERLAY_SHIFT);
+	}
 
 	void setOverlay(uint32_t overlay)
 	{
@@ -295,7 +301,10 @@ typedef struct _MapCell
 		data |= (overlay << MAPCELL_OVERLAY_SHIFT);
 	}
 
-	bool getMover(void) { return ((data & MAPCELL_MOVER_MASK) ? true : false); }
+	bool getMover(void)
+	{
+		return ((data & MAPCELL_MOVER_MASK) ? true : false);
+	}
 
 	void setMover(bool moverHere)
 	{
@@ -304,7 +313,10 @@ typedef struct _MapCell
 			data |= MAPCELL_MOVER_MASK;
 	}
 
-	uint32_t getGate(void) { return ((data & MAPCELL_GATE_MASK) >> MAPCELL_GATE_SHIFT); }
+	uint32_t getGate(void)
+	{
+		return ((data & MAPCELL_GATE_MASK) >> MAPCELL_GATE_SHIFT);
+	}
 
 	void setGate(uint32_t gate)
 	{
@@ -312,7 +324,10 @@ typedef struct _MapCell
 		data |= (gate << MAPCELL_GATE_SHIFT);
 	}
 
-	bool getPassable(void) { return ((data & MAPCELL_PASSABLE_MASK) ? true : false); }
+	bool getPassable(void)
+	{
+		return ((data & MAPCELL_PASSABLE_MASK) ? true : false);
+	}
 
 	void setPassable(bool passable)
 	{
@@ -334,7 +349,10 @@ typedef struct _MapCell
 			data |= bit;
 	}
 
-	uint32_t getMine(void) { return ((data & MAPCELL_MINE_MASK) >> MAPCELL_MINE_SHIFT); }
+	uint32_t getMine(void)
+	{
+		return ((data & MAPCELL_MINE_MASK) >> MAPCELL_MINE_SHIFT);
+	}
 
 	void setMine(uint32_t mine)
 	{
@@ -342,7 +360,10 @@ typedef struct _MapCell
 		data |= (mine << MAPCELL_MINE_SHIFT);
 	}
 
-	bool getPreserved(void) { return ((data & MAPCELL_PRESERVED_MASK) ? true : false); }
+	bool getPreserved(void)
+	{
+		return ((data & MAPCELL_PRESERVED_MASK) ? true : false);
+	}
 
 	void setPreserved(bool preserved)
 	{
@@ -357,7 +378,10 @@ typedef struct _MapCell
 		data |= (localElevation << MAPCELL_HEIGHT_SHIFT);
 	}
 
-	uint32_t getLocalheight(void) { return ((data & MAPCELL_HEIGHT_MASK) >> MAPCELL_HEIGHT_SHIFT); }
+	uint32_t getLocalheight(void)
+	{
+		return ((data & MAPCELL_HEIGHT_MASK) >> MAPCELL_HEIGHT_SHIFT);
+	}
 
 	void setDebug(uint32_t value)
 	{
@@ -365,9 +389,15 @@ typedef struct _MapCell
 		data |= (value << MAPCELL_DEBUG_SHIFT);
 	}
 
-	uint32_t getDebug(void) { return ((data & MAPCELL_DEBUG_MASK) >> MAPCELL_DEBUG_SHIFT); }
+	uint32_t getDebug(void)
+	{
+		return ((data & MAPCELL_DEBUG_MASK) >> MAPCELL_DEBUG_SHIFT);
+	}
 
-	bool getWall(void) { return ((data & MAPCELL_WALL_MASK) ? true : false); }
+	bool getWall(void)
+	{
+		return ((data & MAPCELL_WALL_MASK) ? true : false);
+	}
 
 	void setWall(bool wallHere)
 	{
@@ -376,7 +406,10 @@ typedef struct _MapCell
 			data |= MAPCELL_WALL_MASK;
 	}
 
-	bool getRoad(void) { return ((data & MAPCELL_ROAD_MASK) ? true : false); }
+	bool getRoad(void)
+	{
+		return ((data & MAPCELL_ROAD_MASK) ? true : false);
+	}
 
 	void setRoad(bool roadHere)
 	{
@@ -385,7 +418,10 @@ typedef struct _MapCell
 			data |= MAPCELL_ROAD_MASK;
 	}
 
-	bool getShallowWater(void) { return ((data & MAPCELL_SHALLOW_MASK) ? true : false); }
+	bool getShallowWater(void)
+	{
+		return ((data & MAPCELL_SHALLOW_MASK) ? true : false);
+	}
 
 	void setShallowWater(bool shallowWaterHere)
 	{
@@ -394,7 +430,10 @@ typedef struct _MapCell
 			data |= MAPCELL_SHALLOW_MASK;
 	}
 
-	bool getDeepWater(void) { return ((data & MAPCELL_DEEP_MASK) ? true : false); }
+	bool getDeepWater(void)
+	{
+		return ((data & MAPCELL_DEEP_MASK) ? true : false);
+	}
 
 	void setDeepWater(bool deepWaterHere)
 	{
@@ -403,7 +442,10 @@ typedef struct _MapCell
 			data |= MAPCELL_DEEP_MASK;
 	}
 
-	bool getBuildGate(void) { return ((data & MAPCELL_BUILD_GATE_MASK) ? true : false); }
+	bool getBuildGate(void)
+	{
+		return ((data & MAPCELL_BUILD_GATE_MASK) ? true : false);
+	}
 
 	void setBuildGate(bool set)
 	{
@@ -412,7 +454,10 @@ typedef struct _MapCell
 			data |= MAPCELL_BUILD_GATE_MASK;
 	}
 
-	bool getBuildWall(void) { return ((data & MAPCELL_BUILD_WALL_MASK) ? true : false); }
+	bool getBuildWall(void)
+	{
+		return ((data & MAPCELL_BUILD_WALL_MASK) ? true : false);
+	}
 
 	void setBuildWall(bool set)
 	{
@@ -433,7 +478,10 @@ typedef struct _MapCell
 			data |= MAPCELL_BUILD_LAND_BRIDGE_MASK;
 	}
 
-	bool getForest(void) { return ((data & MAPCELL_FOREST_MASK) ? true : false); }
+	bool getForest(void)
+	{
+		return ((data & MAPCELL_FOREST_MASK) ? true : false);
+	}
 
 	void setForest(bool set)
 	{
@@ -442,7 +490,10 @@ typedef struct _MapCell
 			data |= MAPCELL_FOREST_MASK;
 	}
 
-	bool getOffMap(void) { return ((data & MAPCELL_OFFMAP_MASK) ? true : false); }
+	bool getOffMap(void)
+	{
+		return ((data & MAPCELL_OFFMAP_MASK) ? true : false);
+	}
 
 	void setOffMap(bool set)
 	{
@@ -451,9 +502,15 @@ typedef struct _MapCell
 			data |= MAPCELL_OFFMAP_MASK;
 	}
 
-	bool getBuildSpecial(void) { return ((data & MAPCELL_BUILD_SPECIAL_MASK) ? true : false); }
+	bool getBuildSpecial(void)
+	{
+		return ((data & MAPCELL_BUILD_SPECIAL_MASK) ? true : false);
+	}
 
-	bool getBuildNotSet(void) { return ((data & MAPCELL_BUILD_NOT_SET_MASK) ? true : false); }
+	bool getBuildNotSet(void)
+	{
+		return ((data & MAPCELL_BUILD_NOT_SET_MASK) ? true : false);
+	}
 
 	void setBuildNotSet(bool set)
 	{
@@ -515,18 +572,24 @@ public:
 		numDebugCells = 0;
 	}
 
-	MissionMap(void) { init(void); }
+	MissionMap(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~MissionMap(void) { destroy(void); }
+	~MissionMap(void)
+	{
+		destroy(void);
+	}
 
 	void init(int32_t h, int32_t w);
 
 	int32_t init(
 		int32_t curheight, int32_t curwidth, int32_t curPlanet, MissionMapCellInfo* mapData);
 
-	void setPassable(int32_t row, int32_t col, const std::wstring_view& footPrint, bool passable);
+	void setPassable(int32_t row, int32_t col, std::wstring_view footPrint, bool passable);
 
 	int32_t init(PacketFile* packetFile, int32_t whichPacket = 0);
 
@@ -534,32 +597,50 @@ public:
 
 	int32_t write(PacketFile* packetFile, int32_t whichPacket = 0);
 
-	uint32_t getTerrain(int32_t row, int32_t col) { return (map[row * width + col].getTerrain()); }
+	uint32_t getTerrain(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getTerrain());
+	}
 
 	void setTerrain(int32_t row, int32_t col, uint32_t terrain)
 	{
 		map[row * width + col].setTerrain(terrain);
 	}
 
-	uint32_t getOverlay(int32_t row, int32_t col) { return (map[row * width + col].getOverlay()); }
+	uint32_t getOverlay(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getOverlay());
+	}
 
 	void setOverlay(int32_t row, int32_t col, uint32_t overlay)
 	{
 		map[row * width + col].setOverlay(overlay);
 	}
 
-	bool getMover(int32_t row, int32_t col) { return (map[row * width + col].getMover()); }
+	bool getMover(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getMover());
+	}
 
 	void setMover(int32_t row, int32_t col, bool moverHere)
 	{
 		map[row * width + col].setMover(moverHere);
 	}
 
-	uint32_t getGate(int32_t row, int32_t col) { return (map[row * width + col].getGate()); }
+	uint32_t getGate(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getGate());
+	}
 
-	void setGate(int32_t row, int32_t col, uint32_t gate) { map[row * width + col].setGate(gate); }
+	void setGate(int32_t row, int32_t col, uint32_t gate)
+	{
+		map[row * width + col].setGate(gate);
+	}
 
-	bool getPassable(int32_t row, int32_t col) { return (map[row * width + col].getPassable()); }
+	bool getPassable(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getPassable());
+	}
 
 	void setPassable(int32_t row, int32_t col, bool passable)
 	{
@@ -578,11 +659,20 @@ public:
 		map[row * width + col].setPathlock(level, pathlock);
 	}
 
-	uint32_t getMine(int32_t row, int32_t col) { return (map[row * width + col].getMine()); }
+	uint32_t getMine(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getMine());
+	}
 
-	void setMine(int32_t row, int32_t col, uint32_t mine) { map[row * width + col].setMine(mine); }
+	void setMine(int32_t row, int32_t col, uint32_t mine)
+	{
+		map[row * width + col].setMine(mine);
+	}
 
-	bool getPreserved(int32_t row, int32_t col) { return (map[row * width + col].getPreserved()); }
+	bool getPreserved(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getPreserved());
+	}
 
 	void setPreserved(int32_t row, int32_t col, bool preserved)
 	{
@@ -669,16 +759,25 @@ public:
 		}
 	}
 
-	uint32_t getCellDebug(int32_t row, int32_t col) { return (map[row * width + col].getDebug()); }
+	uint32_t getCellDebug(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getDebug());
+	}
 
-	bool getWall(int32_t row, int32_t col) { return (map[row * width + col].getWall()); }
+	bool getWall(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getWall());
+	}
 
 	void setWall(int32_t row, int32_t col, bool wallHere)
 	{
 		map[row * width + col].setWall(wallHere);
 	}
 
-	bool getRoad(int32_t row, int32_t col) { return (map[row * width + col].getRoad()); }
+	bool getRoad(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getRoad());
+	}
 
 	void setRoad(int32_t row, int32_t col, bool roadHere)
 	{
@@ -695,21 +794,30 @@ public:
 		map[row * width + col].setShallowWater(shallowWaterHere);
 	}
 
-	bool getDeepWater(int32_t row, int32_t col) { return (map[row * width + col].getDeepWater()); }
+	bool getDeepWater(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getDeepWater());
+	}
 
 	void setDeepWater(int32_t row, int32_t col, bool deepWaterHere)
 	{
 		map[row * width + col].setDeepWater(deepWaterHere);
 	}
 
-	bool getBuildGate(int32_t row, int32_t col) { return (map[row * width + col].getBuildGate()); }
+	bool getBuildGate(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getBuildGate());
+	}
 
 	void setBuildGate(int32_t row, int32_t col, bool set)
 	{
 		map[row * width + col].setBuildGate(set);
 	}
 
-	bool getBuildWall(int32_t row, int32_t col) { return (map[row * width + col].getBuildWall()); }
+	bool getBuildWall(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getBuildWall());
+	}
 
 	void setBuildWall(int32_t row, int32_t col, bool set)
 	{
@@ -726,13 +834,25 @@ public:
 		map[row * width + col].setBuildLandBridge(set);
 	}
 
-	bool getForest(int32_t row, int32_t col) { return (map[row * width + col].getForest()); }
+	bool getForest(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getForest());
+	}
 
-	void setForest(int32_t row, int32_t col, bool set) { map[row * width + col].setForest(set); }
+	void setForest(int32_t row, int32_t col, bool set)
+	{
+		map[row * width + col].setForest(set);
+	}
 
-	bool getOffMap(int32_t row, int32_t col) { return (map[row * width + col].getOffMap()); }
+	bool getOffMap(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].getOffMap());
+	}
 
-	void setOffMap(int32_t row, int32_t col, bool set) { map[row * width + col].setOffMap(set); }
+	void setOffMap(int32_t row, int32_t col, bool set)
+	{
+		map[row * width + col].setOffMap(set);
+	}
 
 	bool getBuildSpecial(int32_t row, int32_t col)
 	{
@@ -749,9 +869,15 @@ public:
 		map[row * width + col].setBuildNotSet(set);
 	}
 
-	int32_t getheight(void) { return (height); }
+	int32_t getheight(void)
+	{
+		return (height);
+	}
 
-	int32_t getwidth(void) { return (width); }
+	int32_t getwidth(void)
+	{
+		return (width);
+	}
 
 	bool inBounds(int32_t row, int32_t col)
 	{
@@ -790,7 +916,7 @@ public:
 	void placeTerrainObject(int32_t row, int32_t col, int32_t objectClass, int32_t objectTypeID,
 		int64_t footPrint, bool blocksLineOfFire, int32_t mineType);
 
-	void print(const std::wstring_view& fileName);
+	void print(std::wstring_view fileName);
 };
 
 typedef MissionMap* MissionMapPtr;
@@ -852,14 +978,20 @@ public:
 		stepList[stepNumber].direction = direction;
 	}
 
-	int32_t getDirection(int32_t stepNumber) { return (stepList[stepNumber].direction); }
+	int32_t getDirection(int32_t stepNumber)
+	{
+		return (stepList[stepNumber].direction);
+	}
 
 	void setDistanceToGoal(int32_t stepNumber, float distance)
 	{
 		stepList[stepNumber].distanceToGoal = distance;
 	}
 
-	float getDistanceToGoal(int32_t stepNumber) { return (stepList[stepNumber].distanceToGoal); }
+	float getDistanceToGoal(int32_t stepNumber)
+	{
+		return (stepList[stepNumber].distanceToGoal);
+	}
 
 	void setDestination(int32_t stepNumber, Stuff::Vector3D v)
 	{
@@ -895,17 +1027,29 @@ public:
 
 	int32_t crossesClosedGate(int32_t start, int32_t range);
 
-	MovePath(void) { init(void); }
+	MovePath(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~MovePath(void) { destroy(void); }
+	~MovePath(void)
+	{
+		destroy(void);
+	}
 
-	void setCurStep(int32_t _curStep) { curStep = _curStep; }
+	void setCurStep(int32_t _curStep)
+	{
+		curStep = _curStep;
+	}
 
 	int32_t getNumSteps(void);
 
-	int32_t getCost(void) { return (cost); }
+	int32_t getCost(void)
+	{
+		return (cost);
+	}
 };
 
 //******************************************************************************************
@@ -1145,11 +1289,17 @@ public:
 		isGateOpenCallback = nullptr;
 	}
 
-	GlobalMap(void) { init(void); }
+	GlobalMap(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~GlobalMap(void) { destroy(void); }
+	~GlobalMap(void)
+	{
+		destroy(void);
+	}
 
 	void init(int32_t h, int32_t w);
 
@@ -1302,18 +1452,24 @@ public:
 			closeArea(offMapAreas[i]);
 	}
 
-	bool getDoorOpen(int32_t door) { return (doors[door].open); }
+	bool getDoorOpen(int32_t door)
+	{
+		return (doors[door].open);
+	}
 
-	bool isClosedArea(int32_t area) { return (!areas[area].open); }
+	bool isClosedArea(int32_t area)
+	{
+		return (!areas[area].open);
+	}
 
 	bool getAdjacentAreaCell(
 		int32_t area, int32_t adjacentArea, int32_t& cellRow, int32_t& cellCol);
 
-	void print(const std::wstring_view& fileName);
+	void print(std::wstring_view fileName);
 
 	static bool toggleLog(void);
 
-	static void writeLog(const std::wstring_view& s);
+	static void writeLog(std::wstring_view s);
 };
 
 typedef GlobalMap* GlobalMapPtr;
@@ -1332,9 +1488,15 @@ typedef struct _MoveMapNode
 	int32_t hPrime; // estimated cost from this node to GOAL
 	int32_t fPrime; // = g + hPrime
 
-	void setFlag(uint32_t flag) { flags |= flag; }
+	void setFlag(uint32_t flag)
+	{
+		flags |= flag;
+	}
 
-	void clearFlag(uint32_t flag) { flags &= (flag ^ 0xFFFFFFFF); }
+	void clearFlag(uint32_t flag)
+	{
+		flags &= (flag ^ 0xFFFFFFFF);
+	}
 } MoveMapNode;
 
 typedef MoveMapNode* MoveMapNodePtr;
@@ -1383,7 +1545,7 @@ public:
 	bool travelOffMap;
 	bool cannotEnterOffMap;
 
-	void (*blockedDoorCallback)(int32_t moveLevel, int32_t door, const std::wstring_view& openCells);
+	void (*blockedDoorCallback)(int32_t moveLevel, int32_t door, std::wstring_view openCells);
 	void (*placeStationaryMoversCallback)(MoveMapPtr map);
 
 	static float distanceFloat[DISTANCE_TABLE_DIM][DISTANCE_TABLE_DIM];
@@ -1440,11 +1602,17 @@ public:
 		placeStationaryMoversCallback = nullptr;
 	}
 
-	MoveMap(void) { init(void); }
+	MoveMap(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~MoveMap(void) { destroy(void); }
+	~MoveMap(void)
+	{
+		destroy(void);
+	}
 
 	void init(int32_t h, int32_t w);
 
@@ -1463,7 +1631,10 @@ public:
 
 	void placeMovers(bool stationaryOnly);
 
-	void setOverlayWeightTable(int32_t* table) { overlayWeightTable = table; }
+	void setOverlayWeightTable(int32_t* table)
+	{
+		overlayWeightTable = table;
+	}
 
 	void setStart(Stuff::Vector3D* startPos, int32_t startCellRow, int32_t startCellCol);
 
@@ -1477,7 +1648,10 @@ public:
 
 	void setTarget(Stuff::Vector3D targetPos);
 
-	wchar_t getCost(int32_t row, int32_t col) { return (map[row * width + col].cost); }
+	wchar_t getCost(int32_t row, int32_t col)
+	{
+		return (map[row * width + col].cost);
+	}
 
 	void setCost(int32_t row, int32_t col, int32_t newCost);
 
@@ -1496,7 +1670,10 @@ public:
 		startC = col;
 	}
 
-	void setClearCost(int32_t cost) { clearCost = cost; }
+	void setClearCost(int32_t cost)
+	{
+		clearCost = cost;
+	}
 
 	void setJumpCost(int32_t cost, int32_t offsets = 8)
 	{
@@ -1547,28 +1724,23 @@ MoveMap::setCost(int32_t row, int32_t col, int32_t newCost)
 
 //---------------------------------------------------------------------------
 
-void
-SaveMapCells(const std::wstring_view& fileName, int32_t height, int32_t width, MissionMapCellInfo* mapData);
+void SaveMapCells(std::wstring_view fileName, int32_t height, int32_t width, MissionMapCellInfo* mapData);
 
 MissionMapCellInfo*
-LoadMapCells(const std::wstring_view& fileName, int32_t& height, int32_t& width);
+LoadMapCells(std::wstring_view fileName, int32_t& height, int32_t& width);
 
-void
-DeleteMapCells(MissionMapCellInfo* mapData);
+void DeleteMapCells(MissionMapCellInfo* mapData);
 
-void
-MOVE_init(int32_t moveRange);
-void
-MOVE_buildData(int32_t height, int32_t width, MissionMapCellInfo* mapData,
+void MOVE_init(int32_t moveRange);
+void MOVE_buildData(int32_t height, int32_t width, MissionMapCellInfo* mapData,
 	int32_t numSpecialAreas, GameObjectFootPrint* specialAreaFootPrints);
 int32_t
 MOVE_saveData(PacketFile* packetFile, int32_t whichPacket = 0);
 int32_t
 MOVE_readData(PacketFile* packetFile, int32_t whichPacket);
-void
-MOVE_cleanup(void);
+void MOVE_cleanup(void);
 
-// int32_t BuildAndSaveMoveData (const std::wstring_view& fileName, int32_t height, int32_t width,
+// int32_t BuildAndSaveMoveData (std::wstring_view fileName, int32_t height, int32_t width,
 // MissionMapCellInfo* mapData);
 
 //***************************************************************************

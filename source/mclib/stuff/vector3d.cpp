@@ -32,8 +32,7 @@ const Vector3D Vector3D::Down(DOWN_X, DOWN_Y, DOWN_Z);
 //###########################################################################
 //###########################################################################
 //
-bool
-Stuff::Close_Enough(const Vector3D& V1, const Vector3D& V2, float e)
+bool Stuff::Close_Enough(const Vector3D& V1, const Vector3D& V2, float e)
 {
 	Check_Object(&V1);
 	Check_Object(&V2);
@@ -123,8 +122,7 @@ Vector3D::MultiplyByInverse(const Vector3D& v, const LinearMatrix4D& m)
 //###########################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Vector3D& vector)
+void Spew(std::wstring_view group, const Vector3D& vector)
 {
 	Check_Object(&vector);
 	SPEW((group, "<%4f,%4f,%4f>+", vector.x, vector.y, vector.z));
@@ -137,8 +135,7 @@ Spew(const std::wstring_view& group, const Vector3D& vector)
 //###########################################################################
 //###########################################################################
 //
-void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, Vector3D* vector_3D)
+void Stuff::Convert_From_Ascii(std::wstring_view str, Vector3D* vector_3D)
 {
 	Check_Pointer(str);
 	Check_Object(vector_3D);

@@ -3,30 +3,14 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "mechgui/aanim.h"
+#include "aanim.h"
 //#include "mclib.h"
 //#include "estring.h"
 
 extern float frameRate;
 
-aAnimation::aAnimation(void)
-{
-	currentTime = -1.f;
-	infoCount = 0;
-	infos = nullptr;
-	bLoops = 0;
-	refX = 0;
-	refY = 0;
-	direction = 1.0;
-}
 
-aAnimation::~aAnimation(void)
-{
-	destroy();
-}
-
-aAnimation&
-aAnimation::operator=(const aAnimation& src)
+aAnimation& aAnimation::operator=(const aAnimation& src)
 {
 	copyData(src);
 	return *this;
@@ -37,8 +21,7 @@ aAnimation::aAnimation(const aAnimation& src)
 	copyData(src);
 }
 
-void
-aAnimation::copyData(const aAnimation& src)
+void aAnimation::copyData(const aAnimation& src)
 {
 	if (&src != this)
 	{
@@ -66,13 +49,13 @@ aAnimation::copyData(const aAnimation& src)
 }
 
 int32_t
-aAnimation::init(FitIniFile* file, const std::wstring_view& headerName)
+aAnimation::init(FitIniFile* file, std::wstring_view headerName)
 {
-	const std::wstring_view& strToCheck = headerName;
+	std::wstring_view strToCheck = headerName;
 	strToCheck += "AnimationTimeStamps";
 	if (NO_ERROR != file->readIdLong(strToCheck, infoCount))
 	{
-		const std::wstring_view& strToCheck = headerName;
+		std::wstring_view strToCheck = headerName;
 		strToCheck += "NumTimeStamps";
 		file->readIdLong(strToCheck, infoCount);
 	}
@@ -127,8 +110,7 @@ aAnimation::init(FitIniFile* file, const std::wstring_view& headerName)
 	return 0;
 }
 
-void
-aAnimation::destroy()
+void aAnimation::destroy()
 {
 	if (infos)
 		delete[] infos;
@@ -137,15 +119,13 @@ aAnimation::destroy()
 	currentTime = -1.f;
 }
 
-void
-aAnimation::begin()
+void aAnimation::begin()
 {
 	currentTime = 0;
 	direction = 1.0;
 }
 
-void
-aAnimation::reverseBegin()
+void aAnimation::reverseBegin()
 {
 	if (infos && infoCount)
 		currentTime = infos[infoCount - 1].time;
@@ -154,14 +134,12 @@ aAnimation::reverseBegin()
 	direction = -1.0;
 }
 
-void
-aAnimation::end()
+void aAnimation::end()
 {
 	currentTime = -1.f;
 }
 
-void
-aAnimation::update()
+void aAnimation::update()
 {
 	if (currentTime != -1.f)
 		currentTime += direction * frameLength;
@@ -177,8 +155,7 @@ aAnimation::update()
 	}
 }
 
-float
-aAnimation::getXDelta(void) const
+float aAnimation::getXDelta(void) const
 {
 	float t0, t1, p0, p1;
 	t1 = p1 = t0 = p0 = 0.f;
@@ -209,8 +186,7 @@ aAnimation::getXDelta(void) const
 	return delta;
 }
 
-float
-aAnimation::getYDelta(void) const
+float aAnimation::getYDelta(void) const
 {
 	float t0, t1, p0, p1;
 	t1 = p1 = t0 = p0 = 0.f;
@@ -241,8 +217,7 @@ aAnimation::getYDelta(void) const
 	return delta;
 }
 
-float
-aAnimation::getScaleX(void) const
+float aAnimation::getScaleX(void) const
 {
 	float t0, t1, p0, p1;
 	t1 = p1 = t0 = p0 = 0.f;
@@ -272,8 +247,7 @@ aAnimation::getScaleX(void) const
 	return curScale;
 }
 
-float
-aAnimation::getScaleY(void) const
+float aAnimation::getScaleY(void) const
 {
 	float t0, t1, p0, p1;
 	t1 = p1 = t0 = p0 = 0.f;
@@ -350,15 +324,13 @@ aAnimation::getcolour(float time) const
 	return color;
 }
 
-void
-aAnimation::setReferencePoints(float X, float Y)
+void aAnimation::setReferencePoints(float X, float Y)
 {
 	refX = X;
 	refY = Y;
 }
 
-bool
-aAnimation::isDone(void) const
+bool aAnimation::isDone(void) const
 {
 	if (bLoops)
 		return 0;
@@ -372,20 +344,19 @@ aAnimation::isDone(void) const
 }
 
 int32_t
-aAnimation::initWithBlockName(FitIniFile* file, const std::wstring_view& blockName)
+aAnimation::initWithBlockName(FitIniFile* file, std::wstring_view blockname)
 {
-	if (NO_ERROR != file->seekBlock(blockName))
+	if (NO_ERROR != file->seekBlock(blockname))
 	{
 		wchar_t errorStr[255];
-		sprintf(errorStr, "couldn't find block %s in file %s", blockName, file->getFilename());
+		sprintf(errorStr, "couldn't find block %s in file %s", blockname, file->getFilename());
 		Assert(0, 0, errorStr);
 		return -1;
 	}
 	return init(file, "");
 }
 
-float
-aAnimation::getMaxTime()
+float aAnimation::getMaxTime()
 {
 	if (infos && infoCount)
 	{
@@ -395,12 +366,12 @@ aAnimation::getMaxTime()
 }
 
 int32_t
-aAnimGroup::init(FitIniFile* file, const std::wstring_view& blockName)
+aAnimGroup::init(FitIniFile* file, std::wstring_view blockname)
 {
-	if (NO_ERROR != file->seekBlock(blockName))
+	if (NO_ERROR != file->seekBlock(blockname))
 	{
 		wchar_t errorStr[255];
-		sprintf(errorStr, "couldn't find block %s in file %s", blockName, file->getFilename());
+		sprintf(errorStr, "couldn't find block %s in file %s", blockname, file->getFilename());
 		Assert(0, 0, errorStr);
 		return -1;
 	}
@@ -412,8 +383,7 @@ aAnimGroup::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aAnimGroup::update()
+void aAnimGroup::update()
 {
 	animations[NORMAL].update();
 	animations[getState()].update();
@@ -425,8 +395,7 @@ aAnimGroup::getCurrentcolour(aAnimGroup::STATE state) const
 	return animations[state].getcolour();
 }
 
-void
-aAnimGroup::setState(aAnimGroup::STATE newState)
+void aAnimGroup::setState(aAnimGroup::STATE newState)
 {
 	if (newState != curState)
 	{

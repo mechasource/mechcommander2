@@ -10,8 +10,7 @@ static int32_t paneY0, paneY1, paneX0, paneX1, Destwidth, DestBuffer, x_top, y_t
 	TwoBsquared, Asquared, TwoAsquared, var_dx, var_dy, x_vector, line_left, line_right;
 static int32_t DrawRoutine;
 
-void
-AG_ellipse_draw(
+void AG_ellipse_draw(
 	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
 	if (width == 0 || height == 0)
@@ -325,8 +324,7 @@ AG_ellipse_draw(
 	}
 }
 
-void
-AG_ellipse_fill(
+void AG_ellipse_fill(
 	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
 	if (width == 0 || height == 0)
@@ -639,16 +637,14 @@ AG_ellipse_fill(
 PANE* xorgPane = 0;
 uint8_t gcolour = 0;
 
-void
-orLineCallback(int32_t x, int32_t y)
+void orLineCallback(int32_t x, int32_t y)
 {
 	int32_t result = VFX_pixel_read(xorgPane, x, y);
 	result |= gcolour;
 	VFX_pixel_write(xorgPane, x, y, result);
 }
 
-void
-AG_ellipse_fillOr(
+void AG_ellipse_fillOr(
 	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
 	if (width == 0 || height == 0)
@@ -865,16 +861,14 @@ AG_ellipse_fillOr(
 	}
 }
 
-void
-andLineCallback(int32_t x, int32_t y)
+void andLineCallback(int32_t x, int32_t y)
 {
 	int32_t result = VFX_pixel_read(xorgPane, x, y);
 	result &= gcolour;
 	VFX_pixel_write(xorgPane, x, y, result);
 }
 
-void
-AG_ellipse_fillXor(
+void AG_ellipse_fillXor(
 	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
 	int32_t xorResult = color ^ 0xff;

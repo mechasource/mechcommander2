@@ -5,14 +5,14 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
- All code is logically copyrighted to Microsoft
+ All code is logically copyrighted by Microsoft
 *******************************************************************************/
 /*******************************************************************************
  3dprimitives.cpp  - D3D DrawPrimitive implementations
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Back, created
+ 2014-07-24 Jerker Bäck, created
 
 *******************************************************************************/
 
@@ -85,7 +85,6 @@ MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX_3UV pVertexArra
 MECH_IMPEXP HRESULT __stdcall gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	gos_VERTEX vVertices;
-	size_t i;
 	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices);
 	if (DirtyStates)
 		FlushRenderStates();
@@ -96,7 +95,7 @@ MECH_IMPEXP HRESULT __stdcall gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumV
 		PointsRendered += NumVertices;
 		if (ZoomMode)
 		{
-			for (i = 0; i < NumVertices; ++i)
+			for (auto i = 0u; i < NumVertices; ++i)
 			{
 				memcpy(&vVertices, &Vertices[i], sizeof(vVertices));
 				vVertices.x = (float)(vVertices.x - (((double)DBMouseX - vVertices.x) * ZoomMode));

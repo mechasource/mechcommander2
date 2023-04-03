@@ -69,8 +69,7 @@ Sphere::Union(const Sphere& sphere1, const Sphere& sphere2)
 //###########################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Sphere& sphere)
+void Spew(std::wstring_view group, const Sphere& sphere)
 {
 	Check_Object(&sphere);
 	SPEW((group, "\n\tSphere Centerpoint: +"));

@@ -61,7 +61,7 @@
 		if (!(x) && ErrorHandler(gos_ErrorVerify + gos_ErrorNoRegisters, #x)) \
 			ENTER_DEBUGGER                                                    \
 	}                                                                         \
-	MSSUPPRESS_WARNING(4127)                                                    \
+	MSSUPPRESS_WARNING(4127)                                                  \
 	while (0)
 #else
 #define gosASSERT(x) ((void)0)
@@ -76,7 +76,7 @@
 		if (!(x) && ErrorHandler(gos_ErrorMessage + gos_ErrorNoRegisters, message)) \
 			ENTER_DEBUGGER                                                          \
 	}                                                                               \
-	MSSUPPRESS_WARNING(4127)                                                          \
+	MSSUPPRESS_WARNING(4127)                                                        \
 	while (0)
 #else
 #define gosREPORT(x, message) ((void)0)
@@ -91,7 +91,7 @@
 		if (InternalFunctionStop x) \
 			ENTER_DEBUGGER          \
 	}                               \
-	MSSUPPRESS_WARNING(4127)          \
+	MSSUPPRESS_WARNING(4127)        \
 	while (0)
 
 //
@@ -103,7 +103,7 @@
 		if (InternalFunctionPause x) \
 			ENTER_DEBUGGER           \
 	}                                \
-	MSSUPPRESS_WARNING(4127)           \
+	MSSUPPRESS_WARNING(4127)         \
 	while (0)
 
 //
@@ -140,7 +140,7 @@ typedef struct gos_Heap* HGOSHEAP;
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
-typedef struct gosEnvironment	// size: 0x0130
+typedef struct gosEnvironment // size: 0x0130
 {
 	//
 	// Application title and version number
@@ -148,9 +148,7 @@ typedef struct gosEnvironment	// size: 0x0130
 	PSTR applicationName; // "TestApp" or "Pong"
 	PSTR version; // Default is "00.00.00.0000"
 	PSTR registryVersion; // If present, will be used to create a sub folder in the registry (ie: v1.1, v1.2)
-	PSTR directoryPath; // If program path end in this directory, move up levels
-		// (ie: "\\Code\\AssassinEditor" or "\\Tools\\PixelWhIP"). "!" will force GameOS
-		// NOT to  change directory at all (Including DEBUG/RELEASE/PROFILE....)
+	PSTR directoryPath; // If program path end in this directory, move up levels (ie: "\\Code\\AssassinEditor" or "\\Tools\\PixelWhIP"). "!" will force GameOS  NOT to  change directory at all (Including DEBUG/RELEASE/PROFILE....)
 	PSTR defaultPlayerName; // used in lobby launch
 	BOOLEAN allowMultipleApps; // Allows the game to be run more than once on a single system (network testing)
 	// BOOLEAN _unused1[sizeof(void*) - 1];
@@ -191,10 +189,8 @@ typedef struct gosEnvironment	// size: 0x0130
 	uint32_t memoryTraceLevel; // How many levels of stack to walk when tracing memory allocations
 
 	// Game related functions
-	float MaxTimeDelta; // Maximum time delta in seconds allowed between calls to
-		// gos_GetElapsedTime(void); (Typical value = 1.0f)
-	float MinimumTimeDelta; // If the time delta is greater than MaxTimeDelta, return this time to
-		// the application. (Typical value = 1.0f/30.0f)
+	float MaxTimeDelta; // Maximum time delta in seconds allowed between calls to gos_GetElapsedTime(void); (Typical value = 1.0f)
+	float MinimumTimeDelta; // If the time delta is greater than MaxTimeDelta, return this time to the application. (Typical value = 1.0f/30.0f)
 
 	// Sound-related application information
 	BOOLEAN soundDisable; // false = disable all sound, true = enable all sound
@@ -202,38 +198,28 @@ typedef struct gosEnvironment	// size: 0x0130
 	BOOLEAN _unused4[2];
 	int32_t soundDevice; // 0 = primary/default, # = device enum
 	int32_t soundChannels; // Default number of sound channels, for example 8
-	int32_t soundForceCache; // 0 = never force a stream resource into cached
-		// resource else # bytes under which to force
-		// resource to cached if streamed
-	BOOLEAN soundMixInHardware; // 0=no mixing sound in hardware (default),
-		// 1=mix sound in hardware, if available.
-		//
-		// Network settings
-		//
+	int32_t soundForceCache; // 0 = never force a stream resource into cached resource else # bytes under which to force resource to cached if streamed
+	BOOLEAN soundMixInHardware; // 0=no mixing sound in hardware (default),  1=mix sound in hardware, if available.
+	
+	//
+	// Network settings
+	//
 	BOOLEAN NetworkGame; // Is this game going to be network aware?
-	BOOLEAN DirectPlayProtocol; // If this instance is the server, should we use
-		// the DirectPlay protocol?
+	BOOLEAN DirectPlayProtocol; // If this instance is the server, should we use the DirectPlay protocol?
 	BOOLEAN _unused5;
 
-	union {
+	union
+	{
 		BOOLEAN NetworkGUID[16]; // This is the DirectPlay GUID that must be unique for the game
 		GUID GameGUID; // Note that this union allows access as GUID but byte order will changing depending on initialization
 	}; // All initialization of this code should use GameGUID from now on
 
 	uint32_t NetworkMaxPlayers; // The maximum number of players allowed in this game.
-	BOOLEAN NetGameInfo[16]; // Information about the current network game (this can be enumerated
-		// from other network games before you join them)
-	PSTR(__stdcall* DecodeGameInfo)
-	(PVOID Data); // GameOS will call this routine if present to decode the 16 bytes of network game information.
+	BOOLEAN NetGameInfo[16]; // Information about the current network game (this can be enumerated from other network games before you join them)
+	PSTR (__stdcall* DecodeGameInfo)(PVOID Data); // GameOS will call this routine if present to decode the 16 bytes of network game information.
 	PSTR ZoneMatchServerIP; // Typical value is ZoneMatch.zone.com
-	int32_t ZoneAdvertisePort; // Port games will be advertised on.  This is the port ZoneMatch
-		// connects to to receive updates to a game's state.  Don't confuse
-		// this with the game's port, which would be the port that actual
-		// clients who want to play the game would connect to.  Typical value
-		// is/ APP_QUERY_PORT (27999)
-
-	BOOLEAN NetServerMigration; // When true, the server player can quit and the game will continue
-		// (another machine will become the server)
+	int32_t ZoneAdvertisePort; // Port games will be advertised on. This is the port ZoneMatch connects to to receive updates to a game's state.  Don't confuse this with the game's port, which would be the port that actual clients who want to play the game would connect to.  Typical value is/ APP_QUERY_PORT (27999)
+	BOOLEAN NetServerMigration; // When true, the server player can quit and the game will continue (another machine will become the server)
 
 	// Controller settings
 	BOOLEAN ButtonsAsKeys; // when true, gos_GetKey will return events for controller button presses
@@ -243,15 +229,10 @@ typedef struct gosEnvironment	// size: 0x0130
 	//
 	// Raid Database settings
 	//
-	PSTR RaidFilePath; //	The path where the exception files for your project should be stored.
-		// They will be referred to by hyperlink in the bug description.
-	PSTR RaidCustomFields; //  A string containing key-value pairs of Raid Database column name and
-		//  the value for that record. the column must be of type var-char with a
-		//  width of 32 (standard raid list)
-	PSTR RaidDataSource; //  The raid data source name (can be retrieved from your odbc control
-		//  panel or the registry once an rdq has been opened on your machine.
-	PSTR RaidDescTemplate; //	A string sets the default text that appears in the description of
-		// the bug eg.
+	PSTR RaidFilePath; //	The path where the exception files for your project should be stored. They will be referred to by hyperlink in the bug description.
+	PSTR RaidCustomFields; //  A string containing key-value pairs of Raid Database column name and the value for that record. the column must be of type var-char with a width of 32 (standard raid list)
+	PSTR RaidDataSource; //  The raid data source name (can be retrieved from your odbc control panel or the registry once an rdq has been opened on your machine.
+	PSTR RaidDescTemplate; //	A string sets the default text that appears in the description of the bug eg.
 
 	// Description: \n
 	// REPRO STEPS: \n etc.
@@ -286,42 +267,40 @@ typedef struct gosEnvironment	// size: 0x0130
 	// Now functions GameOS can call in the application
 
 	// Returns custom data used in special places by GameOS
-	PVOID(__cdecl* GetSpecialGameData)
-	(int32_t data_type, ...);
+	PVOID (__cdecl* GetSpecialGameData)(int32_t data_type, ...);
 	//
 	// Returns a string containing game data
 	//  This is called during error routines, so NO errors must be able to occur
 	//  in this routine. Do not assume DirectX or your memory heap etc.. are
 	//  valid.
 	//
-	PSTR(__stdcall* GetGameInformation)
-	(void);
+	PSTR (__stdcall* GetGameInformation)(void);
 	//
 	// Called ONCE only, after GameOS has been setup, just before main loop
 	// starts
 	//  All memory should be allocated and all structures should be cleared
 	//
-	void(__stdcall* InitializeGameEngine)(void);
+	void (__stdcall* InitializeGameEngine)(void);
 	//
 	// Called each main loop, game should move 'one tick' if DoTimedGameLogic is
 	// not set
 	//  Do not update the display, just do the game logic.
 	//
-	void(__stdcall* DoGameLogic)(void);
+	void (__stdcall* DoGameLogic)(void);
 	//
 	// Called each main loop, game should update it's sound and video renderers.
 	//  This is the only time draw or sound functions within the game are valid.
 	//  These are not allowed during DoGameLogic so renders may be skipped
 	//  during heavy loads or during 'fast playback' of a logfile.
 	//
-	void(__stdcall* UpdateRenderers)(void);
+	void (__stdcall* UpdateRenderers)(void);
 	//
 	// GameOS will call this once it comes out of the main loop, before it shuts
 	// down
 	//  No display updating should be attempted. This should be used to free all
 	//  memory.
 	//
-	void(__stdcall* TerminateGameEngine)(void);
+	void (__stdcall* TerminateGameEngine)(void);
 	//
 	//
 	//
@@ -337,11 +316,11 @@ typedef struct gosEnvironment	// size: 0x0130
 	// that function. GameOS will check for gos_GetFIle being called again
 	// during this function and allow it to read from the disk normally.
 	//
-	void(__stdcall* HookGetFile)(PSTR FileName, BOOLEAN** MemoryImage, uint32_t* Size);
+	void (__stdcall* HookGetFile)(PSTR filename, BOOLEAN** MemoryImage, uint32_t* Size);
 
 	// Other file API calls available to hook
 
-	BOOLEAN(__stdcall* HookDoesFileExist)(PSTR FileName);
+	BOOLEAN (__stdcall* HookDoesFileExist)(PSTR filename);
 
 } gosEnvironment;
 
@@ -386,6 +365,7 @@ void __stdcall gos_AbortTermination(void);
 //
 BOOLEAN __stdcall gos_RunMainLoop(void(__stdcall* DoGameLogic)(void) = 0);
 
+#if CONSIDERED_UNUSED
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // ******************************	VIDEO  API	  *****************************
@@ -395,33 +375,35 @@ BOOLEAN __stdcall gos_RunMainLoop(void(__stdcall* DoGameLogic)(void) = 0);
 
 //////////////////////////////////////////////////////////////////////////////////
 // An enumeration of the various commands to the Video playback API.
-enum gosVideo_Command : uint32_t
+// not used
+enum class gosVideo_Command : uint32_t
 {
-	gosVideo_SeekTime = 1, // Seek to a frame or timestamp in hVideo
-	gosVideo_SetCoords = 2, // Set the destination coordinates of <hVideo> via <dwOriginX/Y>
-	gosVideo_SetScale = 4, // Change the scale of <hVideo> on the fly via <fScaleOfX/Y>
-	gosVideo_Volume = 8, // Set the volume of the multiVideo
-	gosVideo_Panning = 16 // Set the pan of the multiVideo
+	seektime = 1, // Seek to a frame or timestamp in hVideo
+	setcoords = 2, // Set the destination coordinates of <hVideo> via <dwOriginX/Y>
+	setscale = 4, // Change the scale of <hVideo> on the fly via <fScaleOfX/Y>
+	volume = 8, // Set the volume of the multiVideo
+	panning = 16 // Set the pan of the multiVideo
 };
 
 //////////////////////////////////////////////////////////////////////////////////
 // An enumeration of the various states the video playback can be in.
-enum gosVideo_PlayMode : uint32_t
+// not used
+enum class gosVideo_PlayMode : uint32_t
 {
-	gosVideo_PlayOnceHide, // The Video is currently playing (will hide when done)
-	gosVideo_PlayOnceHold, // The Video is currently playing (will hold when done)
-	gosVideo_Loop, // The Video is currently in continuous play mode
-	gosVideo_Stop, // The Video is stopped
-	gosVideo_Pause, // The Video has been paused
-	gosVideo_Continue // SET ONLY: continue a paused Video
+	playoncehide, // The Video is currently playing (will hide when done)
+	playoncehold, // The Video is currently playing (will hold when done)
+	loop, // The Video is currently in continuous play mode
+	stop, // The Video is stopped
+	pause, // The Video has been paused
+	resume // SET ONLY: continue a paused Video
 };
 
 //////////////////////////////////////////////////////////////////////////////////
 // This structure is used to send and receive information about a particular
 // video resource. Each command (above) requires specific info to be initialized
 // in the structure below in order to properly carry out that command. For this
-// data, consult the comments listed under the appropriate command (listed
-// above).
+// data, consult the comments listed under the appropriate command (listed above).
+// not used
 typedef struct _gosVideo_Info
 {
 	PSTR lpstrPath; // string specified path to data
@@ -429,16 +411,16 @@ typedef struct _gosVideo_Info
 	gosVideo_PlayMode ePlayStatus; // the play mode (see above)
 	uint32_t dwOriginX; // x coord on dest. surf for video
 	uint32_t dwOriginY; // y coord on dest. surf for video
-	float fScaleOfX; // ratio of displayed to orgininal width
-	float fScaleOfY; // ratio of displayed to orgininal height
+	float fScaleOfX; // ratio of displayed to original width
+	float fScaleOfY; // ratio of displayed to original height
 	float fDurationSec; // read-only duration of video (hundredth of a second)
 	float fSoFarSec; // current play position (hundredth of a second)
 	BOOLEAN* pdata; // RGB data
 	uint32_t dwSurfacewidth; // read-only width of video surface
-	uint32_t dwSurfaceheight; // read-only height of vidoe surface
+	uint32_t dwSurfaceheight; // read-only height of video surface
 	uint32_t dwPitch; // read-only pitch of video surface
 	uint32_t width; // read-only width of video
-	uint32_t height; // read-only height of vidoe
+	uint32_t height; // read-only height of video
 } gosVideo_ResourceInfo;
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -452,6 +434,7 @@ void __stdcall gosVideo_GetResourceInfo(HGOSVIDEO handle, gosVideo_ResourceInfo*
 
 void __stdcall gosVideo_SetPlayMode(HGOSVIDEO handle, gosVideo_PlayMode gvpm);
 void __stdcall gosVideo_Command(HGOSVIDEO handle, gosVideo_Command vc, float x, float y = 0.0f);
+#endif // CONSIDERED_UNUSED
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -465,43 +448,36 @@ void __stdcall gosVideo_Command(HGOSVIDEO handle, gosVideo_Command vc, float x, 
 // as overall volume and panning is handled on channel -1. Use the define below
 // for legibility.
 //
-#define gosAudio_Mixer -1
+//#define gosAudio_Mixer -1
 
+// clang-format off
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // These properties can be assigned to any channel via the
 // gosAudio_AllocateChannelSliders function-- only allocate the sliders you
 // intend to use on each channel-- this improves both hardware and software
 // performance.
-//
-enum gosAudio_Properties : uint32_t
+enum class gosAudio_Properties : uint32_t
 {
-	gosAudio_Common = 1, //
-	gosAudio_Volume =
-		2, // Volume can be adjusted independently of mixer (0.0 = silence, 1.0 = full volume)
-	gosAudio_Panning =
-		4, // Panning can be adjusted independently of mixer (-1.0 = left, 0 = center, +1 = right)
-	gosAudio_Frequency = 8, // Frequency can be adjust independently of mixer (< 1.0 = lower
-	// freq, 1.0 = normal, 2 = 2x, etc.)
-	gosAudio_SeekTime = 16, // RESERVED
-	gosAudio_Position = 32, // * The 3D position can be set
-	gosAudio_Velocity = 64, // * The 3D velocity can be set
-	gosAudio_FrontOrientation = 128, // Mixer only: set the front and top orientation of "ears." The
-	// front vector points in the direction
-	gosAudio_TopOrientation =
-		256, // of the listener's nose, and the top vector points out the top of the listener's
-	// head. By default, the front vector is (0,0,1.0) and the top vector is (0,1.0,0).
-	gosAudio_MinMaxDistance =
-		512, // * Under minimum distance, volume is max; Over maximum distance, volume is zero
-	gosAudio_Doppler = 1024, // Mixer only: 1.0f is real world, 2.0f is twice real world
-	gosAudio_Rolloff = 2048, // Mixer only: 1.0f is real world, 2.0f is twice real world
-	gosAudio_Distance = 4096, // Mixer only: position/velocity adjustment: 1.0f = same, 2.0f =
-	// double position/velocity
-	gosAudio_Reverb = 8192, // .0f to 2.0f ( < 1.0 = muffled, > 1.0 = exagerated)
-	gosAudio_Decay = 16384, // .1f to 20.0f (in seconds)
-	gosAudio_ConeAngles = 32768, // expressed as degrees. 1st parameters is inner (full volume),
-	// second is outer (fully attenuated)
-	gosAudio_ConeOrientation = 65536 // direction in which the cone points.
+	none                = 0,
+	common				= 1 << 0, // 0x00000001
+	volume				= 1 << 1, // Volume can be adjusted independently of mixer (0.0 = silence, 1.0 = full volume)
+	panning				= 1 << 2, // Panning can be adjusted independently of mixer (-1.0 = left, 0 = center, +1 = right)
+	frequency			= 1 << 3, // Frequency can be adjust independently of mixer (< 1.0 = lower freq, 1.0 = normal, 2 = 2x, etc.)
+	seektime			= 1 << 4, // RESERVED
+	position			= 1 << 5, // * The 3D position can be set
+	velocity			= 1 << 6, // * The 3D velocity can be set
+	frontorientation	= 1 << 7, // Mixer only: set the front and top orientation of "ears." The front vector points in the direction
+	toporientation		= 1 << 8, // of the listener's nose, and the top vector points out the top of the listener's head. By default, the front vector is (0,0,1.0) and the top vector is (0,1.0,0).
+	minmaxdistance		= 1 << 9, // * Under minimum distance, volume is max; Over maximum distance, volume is zero
+	doppler				= 1 << 10, // Mixer only: 1.0f is real world, 2.0f is twice real world
+	rolloff				= 1 << 11, // Mixer only: 1.0f is real world, 2.0f is twice real world
+	distance			= 1 << 12, // Mixer only: position/velocity adjustment: 1.0f = same, 2.0f = double position/velocity
+	reverb				= 1 << 13, // .0f to 2.0f ( < 1.0 = muffled, > 1.0 = exaggerated)
+	decay				= 1 << 14, // .1f to 20.0f (in seconds)
+	coneangles			= 1 << 15, // expressed as degrees. 1st parameters is inner (full volume), second is outer (fully attenuated)
+	coneorientation		= 1 << 16, // direction in which the cone points.
 };
+// clang-format on
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This enum is used to set or return the client's speaker configuration. Note
@@ -788,7 +764,7 @@ typedef struct _gosIME_Appearance
 //
 // Opens a DLL and returns a handle
 //
-uint32_t __stdcall gos_OpenResourceDLL(PSTR FileName);
+uint32_t __stdcall gos_OpenResourceDLL(PSTR filename);
 
 //
 // Use to close a resource DLL
@@ -1035,13 +1011,13 @@ void __stdcall gos_TextDrawV(PSTR message, PSTR arglist);
 // The whole file in read into memory, MemoryImage will point to the start of
 // the file, Size will be the size of the file.
 //
-void __stdcall gos_GetFile(PSTR FileName, BOOLEAN** MemoryImage, size_t* pSize);
+void __stdcall gos_GetFile(PSTR filename, BOOLEAN** MemoryImage, size_t* pSize);
 
 //
 // Opens a memory mapped file - returns a handle that must be passed to the
 // Close function below.
 //
-HANDLE __stdcall gos_OpenMemoryMappedFile(PSTR FileName, BOOLEAN** MemoryImage, size_t* pSize);
+HANDLE __stdcall gos_OpenMemoryMappedFile(PSTR filename, BOOLEAN** MemoryImage, size_t* pSize);
 
 //
 // Closes a memory mapped file
@@ -1054,7 +1030,7 @@ void __stdcall gos_CloseMemoryMappedFile(HANDLE handle);
 //    When you are finished with the file, the Close function below must be
 //    called.
 //
-uint32_t __stdcall gos_ReadFileInBackground(PSTR FileName, BOOLEAN** MemoryImage, uint32_t* Size,
+uint32_t __stdcall gos_ReadFileInBackground(PSTR filename, BOOLEAN** MemoryImage, uint32_t* Size,
 	uint32_t Offset = 0, uint32_t MaxSize = 0xffffffff);
 
 //
@@ -1449,11 +1425,13 @@ typedef struct _gosJoystick_ForceEffect
 	float fScale;
 	gosJoystick_ForceEnvelope* lpEnvelope;
 
-	union {
+	union
+	{
 		int32_t lPhase;
 		float fStart;
 	};
-	union {
+	union
+	{
 		float fOffset;
 		float fEnd;
 	};
@@ -1783,11 +1761,11 @@ enum gosNetFlags : uint32_t
 //
 const BOOLEAN gosNet_PlayerAdded =
 	240; // FromID will contain the new PlayerID of the player.
-	// gos_NetInformation(gos_NumberOfPlayers) will be greater than last game logic.
+// gos_NetInformation(gos_NumberOfPlayers) will be greater than last game logic.
 const BOOLEAN gosNet_PlayerDeleted =
 	241; // FromID will contain the old PlayerID of the player.
-	// gos_NetInformation will work with this ID only for the remainder of
-	// the current GameLogic. (Packets sent to the player will be ignored)
+// gos_NetInformation will work with this ID only for the remainder of
+// the current GameLogic. (Packets sent to the player will be ignored)
 const BOOLEAN gosNet_GameEnded = 242; // The server has ended the network game. This
 	// is the last packet the game will see.
 const BOOLEAN gosNet_Ping = 243; // Used to send a ping packet. You will eventually
@@ -2046,7 +2024,8 @@ enum gos_RenderState : uint32_t
 //
 typedef struct _gos_VERTEX
 {
-	float x, y; // Screen coords	- must be 0.0 to Environment.screenwidth/height (no clipping occurs unless gos_State_Clipping is true)
+	float x; // Screen coords	- must be 0.0 to Environment.screenwidth/height (no clipping occurs unless gos_State_Clipping is true)
+	float y;
 	float z; // 0.0 to 0.99999	- Used for visibility check in zbuffer (1.0 is not valid)
 	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
 	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid, 0=transparent)
@@ -2061,15 +2040,11 @@ typedef gos_VERTEX* pgos_VERTEX;
 //
 typedef struct _gos_VERTEX_2UV
 {
-	float x,
-		y; // Screen coords	- must be 0.0 to Environment.screenwidth/height (no
-		// clipping occurs unless gos_State_Clipping is true)
-	float z; // 0.0 to 0.99999	- Used for visiblity check in zbuffer (1.0 is
-		// not valid)
-	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
-		// perspective correct textures, fog and clipping
-	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid,
-		// 0=transparent)
+	float x; // Screen coords	- must be 0.0 to Environment.screenwidth/height (no clipping occurs unless gos_State_Clipping is true)
+	float y;
+	float z; // 0.0 to 0.99999	- Used for visibility check in zbuffer (1.0 is not valid)
+	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
+	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid, 0=transparent)
 	uint32_t frgb; // Specular color and fog
 	float u1, v1; // Texture coordinates
 	float u2, v2; // Texture coordinates
@@ -2083,15 +2058,11 @@ typedef gos_VERTEX_2UV* pgos_VERTEX_2UV;
 //
 typedef struct _gos_VERTEX_3UV
 {
-	float x,
-		y; // Screen coords	- must be 0.0 to Environment.screenwidth/height (no
-		// clipping occurs unless gos_State_Clipping is true)
-	float z; // 0.0 to 0.99999	- Used for visiblity check in zbuffer (1.0 is
-		// not valid)
-	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
-		// perspective correct textures, fog and clipping
-	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid,
-		// 0=transparent)
+	float x; // Screen coords	- must be 0.0 to Environment.screenwidth/height (no clipping occurs unless gos_State_Clipping is true)
+	float y;
+	float z; // 0.0 to 0.99999	- Used for visiblity check in zbuffer (1.0 is not valid)
+	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
+	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid, 0=transparent)
 	uint32_t frgb; // Specular color and fog
 	float u1, v1; // Texture coordinates
 	float u2, v2; // Texture coordinates
@@ -2319,7 +2290,8 @@ typedef struct
 #if CONSIDERED_OBSOLETE
 typedef struct gosMATRIX
 {
-	union {
+	union
+	{
 		struct
 		{
 			float _11, _12, _13, _14;
@@ -2679,7 +2651,7 @@ typedef void(__stdcall* gos_RebuildFunction)(uint32_t, PVOID);
 // default.
 //
 
-uint32_t __stdcall gos_NewTextureFromFile(gos_TextureFormat Format, PSTR FileName,
+uint32_t __stdcall gos_NewTextureFromFile(gos_TextureFormat Format, PSTR filename,
 	uint32_t Hints = 0, gos_RebuildFunction pFunc = 0, PVOID pInstance = 0);
 
 //
@@ -2700,7 +2672,7 @@ uint32_t __stdcall gos_NewTextureFromFile(gos_TextureFormat Format, PSTR FileNam
 // Hints should be set to any combination of gos_TextureHints or 0 is a good
 // default.
 //
-uint32_t __stdcall gos_NewTextureFromMemory(gos_TextureFormat Format, PSTR FileName,
+uint32_t __stdcall gos_NewTextureFromMemory(gos_TextureFormat Format, PSTR filename,
 	BOOLEAN* pBitmap, uint32_t Size, uint32_t Hints = 0, gos_RebuildFunction pFunc = 0,
 	PVOID pInstance = 0);
 
@@ -3201,20 +3173,20 @@ uint32_t __stdcall gos_GetMachineInformation(
 //
 enum GosErrorFlags
 {
-	gos_ErrorNoContinue 		= 1, // No CONTINUE is allowed from errors
-	gos_ErrorNoRegisters 		= 2, // Register are not valid (takes address from where called)
-	gos_ErrorAssert 		= 4, // Set to signify _ASSERT ( assumes gos_ErrorNoRegisters )
-	gos_ErrorVerify 		= 8, // Set to signify verify ( assumes gos_ErrorNoRegisters )
-	gos_ErrorException 		= 16, // Set to signify exception handler
-	gos_ErrorDump 		= 32, // ErrorTitle must be valid
-	gos_ErrorPop 		= 64, // Pop one more level of stack
-	gos_ErrorPop2 		= 128, // Pop two more levels of stack
-	gos_ErrorStop 		= 256, // Stop - display message
-	gos_ErrorMessage 		= 512, // Display message without a STOP: or Verify:
-	gos_ErrorFileLine 		= 1024, // Global variables gosErrorFile and gosErrorLine contain line to display (Pass a COMPLETE path\file name)
-	gos_ErrorRetry 		= 2048, // Retry instead of continue button
-	gos_ErrorGameInfoFirst 		= 4096, // Show the information from GetGameInformation routine immediately after File/Line information
-	gos_ErrorAppendRoutine 		= 8192 // append ' in Routine()+xxx' to the error  (or address if no symbols)
+	gos_ErrorNoContinue = 1, // No CONTINUE is allowed from errors
+	gos_ErrorNoRegisters = 2, // Register are not valid (takes address from where called)
+	gos_ErrorAssert = 4, // Set to signify _ASSERT ( assumes gos_ErrorNoRegisters )
+	gos_ErrorVerify = 8, // Set to signify verify ( assumes gos_ErrorNoRegisters )
+	gos_ErrorException = 16, // Set to signify exception handler
+	gos_ErrorDump = 32, // ErrorTitle must be valid
+	gos_ErrorPop = 64, // Pop one more level of stack
+	gos_ErrorPop2 = 128, // Pop two more levels of stack
+	gos_ErrorStop = 256, // Stop - display message
+	gos_ErrorMessage = 512, // Display message without a STOP: or Verify:
+	gos_ErrorFileLine = 1024, // Global variables gosErrorFile and gosErrorLine contain line to display (Pass a COMPLETE path\file name)
+	gos_ErrorRetry = 2048, // Retry instead of continue button
+	gos_ErrorGameInfoFirst = 4096, // Show the information from GetGameInformation routine immediately after File/Line information
+	gos_ErrorAppendRoutine = 8192 // append ' in Routine()+xxx' to the error  (or address if no symbols)
 };
 
 #define Stat_Format (0x40000000) // Used for formatting in statistics
@@ -3315,7 +3287,10 @@ public:
 		log,
 	};
 	GosLogRef(EventType type, PSTR name, PSTR filename, int32_t lineno);
-	operator uint32_t() { return m_id; }
+	operator uint32_t()
+	{
+		return m_id;
+	}
 	BOOLEAN ShouldLog()
 	{
 		m_Count++; // change to return (m_pFunc != nullptr);
@@ -3354,9 +3329,18 @@ public:
 	static void LogStop(void);
 	static void PushStop(void);
 	static void PopStop(void);
-	static PSTR LogAddr(int32_t part) { return part ? m_pLogStart2 : m_pLogStart1; }
-	static uint32_t LogBytes(int32_t part) { return part ? m_nLogSize2 : m_nLogSize1; }
-	static BOOLEAN Logging() { return LoggingInProgress; }
+	static PSTR LogAddr(int32_t part)
+	{
+		return part ? m_pLogStart2 : m_pLogStart1;
+	}
+	static uint32_t LogBytes(int32_t part)
+	{
+		return part ? m_nLogSize2 : m_nLogSize1;
+	}
+	static BOOLEAN Logging()
+	{
+		return LoggingInProgress;
+	}
 	static void Cleanup(void);
 };
 

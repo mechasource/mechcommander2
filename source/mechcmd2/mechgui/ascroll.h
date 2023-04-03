@@ -37,8 +37,14 @@ public:
 
 	void SetScrollMax(float newMax);
 	void SetScrollPos(float newPos);
-	float GetScrollMax(void) { return scrollMax; };
-	float GetScrollPos(void) { return scrollPos; };
+	float GetScrollMax(void)
+	{
+		return scrollMax;
+	};
+	float GetScrollPos(void)
+	{
+		return scrollPos;
+	};
 	int32_t SetSrollInc(int32_t newInc)
 	{
 		scrollInc = newInc; // amount you move for one arrow click

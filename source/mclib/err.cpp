@@ -18,8 +18,7 @@
 // Error Handling routines
 //***************************************************************************
 
-void
-Fatal(int32_t errCode, const std::wstring_view& errMessage)
+void Fatal(int32_t errCode, std::wstring_view errMessage)
 {
 	wchar_t msg[512];
 	sprintf(msg, " [FATAL %d] %s ", errCode, errMessage);
@@ -28,8 +27,7 @@ Fatal(int32_t errCode, const std::wstring_view& errMessage)
 
 //---------------------------------------------------------------------------
 
-void
-Assert(bool test, int32_t errCode, const std::wstring_view& errMessage)
+void Assert(bool test, int32_t errCode, std::wstring_view errMessage)
 {
 	if (!test)
 	{

@@ -6,7 +6,8 @@
 
 #include "mlr/mlrstate.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //###############################    MLRState ##################################
@@ -78,8 +79,7 @@ MLRState::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRState::Save(std::ostream& stream)
+void MLRState::Save(std::ostream& stream)
 {
 	// Check_Object(this);
 	// Check_Object(stream);
@@ -97,7 +97,7 @@ MLRState::Save(std::ostream& stream)
 	{
 		MLRTexture* texture = (*MLRTexturePool::Instance)[this];
 		Check_Object(texture);
-		const std::wstring_view& name = texture->GetTextureName();
+		std::wstring_view name = texture->GetTextureName();
 		int32_t hint = texture->GetHint();
 		hint <<= 4;
 		hint |= texture->GetTextureInstance();
@@ -107,8 +107,7 @@ MLRState::Save(std::ostream& stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRState::Load(std::istream& stream, uint32_t version)
+void MLRState::Load(std::istream& stream, uint32_t version)
 {
 	// Check_Object(this);
 	// Check_Object(stream);
@@ -155,7 +154,7 @@ MLRState::Load(std::istream& stream, uint32_t version)
 	}
 	if (renderState & TextureMask)
 	{
-		const std::wstring_view& name;
+		std::wstring_view name;
 		int32_t instance;
 		stream >> name;
 		stream >> instance;
@@ -271,8 +270,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRState::SetRendererState(MLRTexturePool* texturePool)
+void MLRState::SetRendererState(MLRTexturePool* texturePool)
 {
 	// Check_Object(this);
 	Check_Object(texturePool);

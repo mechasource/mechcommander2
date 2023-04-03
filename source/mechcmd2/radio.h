@@ -19,19 +19,23 @@
 //#include "dgameobj.h"
 
 //------------------------------------------------------------------------------------------
-#define MAX_FRAGMENTS 16
-#define MAX_RADIOS 256
+
+enum class radioconst : uint16_t
+{
+	maxfragments		= 16,
+	maxradios			= 256
+};
 
 struct RadioData
 {
-	uint32_t msgId;
+	RadioMessageType msgId;
 	uint32_t msgType;
-	uint32_t noiseId;
+	RadioNoise noiseId;
 	int32_t numFragments;
-	uint8_t* data[MAX_FRAGMENTS];
-	int32_t dataSize[MAX_FRAGMENTS];
-	uint8_t* noise[MAX_FRAGMENTS];
-	int32_t noiseSize[MAX_FRAGMENTS];
+	uint8_t* data[radioconst::maxfragments];
+	int32_t dataSize[radioconst::maxfragments];
+	uint8_t* noise[radioconst::maxfragments];
+	int32_t noiseSize[radioconst::maxfragments];
 	UserHeapPtr msgHeap;
 	uint32_t turnQueued;
 	byte priority;
@@ -65,12 +69,9 @@ protected:
 
 public:
 	static PacketFilePtr noiseFile;
-	static RadioPtr radioList[MAX_RADIOS]; // Warriors no longer delete their
-		// radios.  We do when the
-	// SoundSystem Shutdown occurs.
+	static RadioPtr radioList[radioconst::maxradios]; // Warriors no longer delete their radios.  We do when the SoundSystem Shutdown occurs.
 
-	static PacketFilePtr messagesFile[MAX_RADIOS]; // Do these when the shutdown
-		// occurs too to avoid leaks
+	static PacketFilePtr messagesFile[radioconst::maxradios]; // Do these when the shutdown occurs too to avoid leaks
 
 	static bool messageInfoLoaded;
 	static bool radioListGo;
@@ -80,8 +81,8 @@ public:
 	// Member Functions
 	//-----------------
 public:
-	PVOID operator new(size_t mySize);
-	void operator delete(PVOID us);
+	//PVOID operator new(size_t mySize);
+	//void operator delete(PVOID us);
 
 	void init(void)
 	{
@@ -90,27 +91,45 @@ public:
 		radioID = -1;
 	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
-	Radio(void) { init(void); }
+	Radio(void)
+	{
+		init(void);
+	}
 
-	~Radio(void) { destroy(void); }
+	~Radio(void)
+	{
+		destroy(void);
+	}
 
-	int32_t init(const std::wstring_view& fileName, uint32_t heapSize, const std::wstring_view& movie);
+	int32_t init(std::wstring_view fileName, uint32_t heapSize, std::wstring_view movie);
 
-	void setOwner(std::unique_ptr<MechWarrior> _owner) { owner = _owner; }
+	void setOwner(std::unique_ptr<MechWarrior> _owner)
+	{
+		owner = _owner;
+	}
 
 	int32_t playMessage(RadioMessageType msgId);
 
 	void cancelMessage(RadioMessageType msgId);
 
-	void turnOn(void) { enabled = TRUE; }
+	void turnOn(void)
+	{
+		enabled = TRUE;
+	}
 
-	void turnOff(void) { enabled = FALSE; }
+	void turnOff(void)
+	{
+		enabled = FALSE;
+	}
 
 	int32_t loadMessageInfo(void);
 
-	void resetAmmoMessage(void) { ammoOutPlayed = false; }
+	void resetAmmoMessage(void)
+	{
+		ammoOutPlayed = false;
+	}
 };
 
 //------------------------------------------------------------------------------------------

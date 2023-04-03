@@ -5,14 +5,14 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
- All code is logically copyrighted to Microsoft
+ All code is logically copyrighted by Microsoft
 *******************************************************************************/
 /*******************************************************************************
  directx.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Back, created
+ 2014-07-24 Jerker Bäck, created
 
 *******************************************************************************/
 
@@ -27,10 +27,10 @@
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
-HRESULT __stdcall wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN punkouter, uint32_t clscontext, REFIID riid, PVOID *ppv);
-HRESULT __stdcall wQueryInterface(IUnknown *iun, REFIID riid, PVOID *obp);
-uint32_t __stdcall wRelease(IUnknown *iun);
-uint32_t __stdcall wAddRef(IUnknown *iun);
+HRESULT __stdcall wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN punkouter, uint32_t clscontext, REFIID riid, PVOID* ppv);
+HRESULT __stdcall wQueryInterface(IUnknown* iun, REFIID riid, PVOID* obp);
+uint32_t __stdcall wRelease(IUnknown* iun);
+uint32_t __stdcall wAddRef(IUnknown* iun);
 
 /// <summary>
 /// <c>wCoCreateInstance</c>
@@ -39,7 +39,7 @@ uint32_t __stdcall wAddRef(IUnknown *iun);
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-HRESULT STDMETHODCALLTYPE 
+HRESULT STDMETHODCALLTYPE
 wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN punkouter, uint32_t clscontext, REFIID riid, PVOID* ppv)
 {
 	PSTR iface;
@@ -54,7 +54,7 @@ wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN punkouter, uint32_t clscontext, REF
 	{
 		iface = GetReturnInterface(riid);
 		message = ErrorNumberToMessage(hr);
-		if ( InternalFunctionPause("FAILED (0x%x - %s) - CoCreateInstance(%s)\nTry ", hr, message, iface) )
+		if (InternalFunctionPause("FAILED (0x%x - %s) - CoCreateInstance(%s)\nTry ", hr, message, iface))
 			__debugbreak();
 	}
 	return hr;
@@ -67,7 +67,7 @@ wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN punkouter, uint32_t clscontext, REF
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-HRESULT STDMETHODCALLTYPE 
+HRESULT STDMETHODCALLTYPE
 wQueryInterface(IUnknown* punk, REFIID riid, PVOID* ppv)
 {
 	PSTR iface;
@@ -82,7 +82,7 @@ wQueryInterface(IUnknown* punk, REFIID riid, PVOID* ppv)
 	{
 		iface = GetReturnInterface(riid);
 		message = ErrorNumberToMessage((HRESULT)punk);
-		if ( InternalFunctionPause("FAILED (0x%x - %s) - QueryInterface(%s from 0x%x)", punk, message, iface) )
+		if (InternalFunctionPause("FAILED (0x%x - %s) - QueryInterface(%s from 0x%x)", punk, message, iface))
 			__debugbreak();
 	}
 	return (HRESULT)hr;
@@ -95,7 +95,7 @@ wQueryInterface(IUnknown* punk, REFIID riid, PVOID* ppv)
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-ULONG __stdcall wRelease(IUnknown *punk)
+ULONG __stdcall wRelease(IUnknown* punk)
 {
 	ULONG ur;
 
@@ -112,7 +112,7 @@ ULONG __stdcall wRelease(IUnknown *punk)
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-ULONG __stdcall wAddRef(IUnknown *punk)
+ULONG __stdcall wAddRef(IUnknown* punk)
 {
 	ULONG ur;
 

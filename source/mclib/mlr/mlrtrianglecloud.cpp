@@ -9,7 +9,8 @@
 #include "mlr/mlrclipper.h"
 #include "mlr/mlrtrianglecloud.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -28,8 +29,7 @@ MLRTriangleCloud::ClassData* MLRTriangleCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTriangleCloud::InitializeClass()
+void MLRTriangleCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -48,8 +48,7 @@ MLRTriangleCloud::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTriangleCloud::TerminateClass()
+void MLRTriangleCloud::TerminateClass()
 {
 	Unregister_Pointer(clipPerVertex);
 	delete clipPerVertex;
@@ -66,8 +65,8 @@ MLRTriangleCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTriangleCloud::MLRTriangleCloud(uint32_t nr) :
-	MLREffect(nr, DefaultData)
+MLRTriangleCloud::MLRTriangleCloud(uint32_t nr)
+	: MLREffect(nr, DefaultData)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfTriangles = nullptr;
@@ -84,8 +83,7 @@ MLRTriangleCloud::~MLRTriangleCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTriangleCloud::SetData(
+void MLRTriangleCloud::SetData(
 	const size_t* count, const Stuff::Point3D* point_data, const Stuff::RGBAcolour* color_data)
 {
 	// Check_Pointer(this);
@@ -97,8 +95,7 @@ MLRTriangleCloud::SetData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTriangleCloud::Draw(
+void MLRTriangleCloud::Draw(
 	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
@@ -627,8 +624,7 @@ MLRTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTriangleCloud::TestInstance(void) const
+void MLRTriangleCloud::TestInstance(void) const
 {
 	if (usedNrOfTriangles)
 	{

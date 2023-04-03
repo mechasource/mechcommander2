@@ -49,16 +49,14 @@ std::unique_ptr<MechWarrior> CurWarrior = nullptr;
 GameObjectPtr CurContact = nullptr;
 int32_t CurAlarm;
 std::unique_ptr<Mover> moverList[256];
-bool TacOrderOrigin = ORDER_ORIGIN_COMMANDER;
+bool TacOrderOrigin = OrderOriginType::commander;
 int32_t CurMultiplayCode = 0;
 int32_t CurMultiplayParam = 0;
 extern float MaxVisualRadius;
-extern float WeaponRange[NUM_FIRERANGES];
+extern float WeaponRange[FireRangeType::count];
 
-void
-DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj);
-void
-DEBUGWINS_print(const std::wstring_view& s, int32_t window);
+void DEBUGWINS_setGameObject(int32_t debugObj, GameObjectPtr obj);
+void DEBUGWINS_print(std::wstring_view s, int32_t window);
 
 UserHeapPtr AblStackHeap = nullptr;
 UserHeapPtr AblCodeHeap = nullptr;
@@ -93,7 +91,7 @@ getMoversWithinRadius(std::unique_ptr<Mover>* moverList, Stuff::Vector3D center,
 				if (mover->numFunctionalWeapons > 0)
 					if (mover->distanceFrom(center) < radius)
 					{
-						if (ignoreOrder || (mover->getPilot()->getCurTacOrder()->code == TACTICAL_ORDER_NONE))
+						if (ignoreOrder || (mover->getPilot()->getCurTacOrder()->code == TacticalOrderCode::none))
 						{
 							Team::sortList->setId(numValidMovers, mover->getHandle());
 							Team::sortList->setValue(numValidMovers, mover->getThreatRating());
@@ -112,7 +110,7 @@ getMoversWithinRadius(std::unique_ptr<Mover>* moverList, Stuff::Vector3D center,
 				{
 					if (mover->getPilot()->getWillHelp())
 					{
-						if (ignoreOrder || (mover->getPilot()->getCurTacOrder()->code == TACTICAL_ORDER_NONE))
+						if (ignoreOrder || (mover->getPilot()->getCurTacOrder()->code == TacticalOrderCode::none))
 						{
 							Team::sortList->setId(numValidMovers, mover->getHandle());
 							Team::sortList->setValue(numValidMovers, mover->getThreatRating());
@@ -133,8 +131,7 @@ getMoversWithinRadius(std::unique_ptr<Mover>* moverList, Stuff::Vector3D center,
 
 //-----------------------------------------------------------------------------
 
-void
-calcAttackPlan(
+void calcAttackPlan(
 	int32_t numAttackers, GameObjectPtr* attackers, int32_t numDefenders, GameObjectPtr* defenders)
 {
 
@@ -342,8 +339,7 @@ getMovers(int32_t partId, std::unique_ptr<Mover>* list, bool existsOnly)
 
 //*****************************************************************************
 
-void
-execGetId(void)
+void execGetId(void)
 {
 	//-----------------------------------------------------
 	//
@@ -364,8 +360,7 @@ execGetId(void)
 
 //***************************************************************************
 
-void
-execGetTime(void)
+void execGetTime(void)
 {
 	//-----------------------------------------------------
 	//
@@ -383,8 +378,7 @@ execGetTime(void)
 
 //***************************************************************************
 
-void
-execGetTimeLeft(void)
+void execGetTimeLeft(void)
 {
 	//-----------------------------------------------------
 	//
@@ -408,8 +402,7 @@ execGetTimeLeft(void)
 
 //*****************************************************************************
 
-void
-execSelectObject(void)
+void execSelectObject(void)
 {
 	//-----------------------------------------------------
 	//
@@ -442,8 +435,7 @@ execSelectObject(void)
 
 //***************************************************************************
 
-void
-execSelectWarrior(void)
+void execSelectWarrior(void)
 {
 	//----------------------------------------------------------------------
 	//
@@ -471,8 +463,7 @@ execSelectWarrior(void)
 
 //*****************************************************************************
 
-void
-execGetWarriorStatus(void)
+void execGetWarriorStatus(void)
 {
 	//-----------------------------------------------------
 	//
@@ -495,8 +486,7 @@ execGetWarriorStatus(void)
 
 //*****************************************************************************
 
-void
-execGetContacts(void)
+void execGetContacts(void)
 {
 	//-----------------------------------------------------
 	//
@@ -528,8 +518,7 @@ execGetContacts(void)
 
 //*****************************************************************************
 
-void
-execGetEnemyCount(void)
+void execGetEnemyCount(void)
 {
 	//-----------------------------------------------------
 	//
@@ -579,8 +568,7 @@ execGetEnemyCount(void)
 
 //*****************************************************************************
 
-void
-execSelectContact(void)
+void execSelectContact(void)
 {
 	//-----------------------------------------------------
 	//
@@ -617,8 +605,7 @@ execSelectContact(void)
 
 //*****************************************************************************
 
-void
-execIsContact(void)
+void execIsContact(void)
 {
 	int32_t objectId = ABLi_popInteger();
 	int32_t criteria = ABLi_popInteger();
@@ -641,8 +628,7 @@ execIsContact(void)
 
 //*****************************************************************************
 
-void
-execGetContactId(void)
+void execGetContactId(void)
 {
 	//-----------------------------------------------------
 	//
@@ -663,8 +649,7 @@ execGetContactId(void)
 
 //*****************************************************************************
 
-void
-execGetContactStatus(void)
+void execGetContactStatus(void)
 {
 	//-----------------------------------------------------
 	//
@@ -687,8 +672,7 @@ execGetContactStatus(void)
 
 //*****************************************************************************
 
-void
-execGetContactRelativePosition(void)
+void execGetContactRelativePosition(void)
 {
 	//-----------------------------------------------------
 	//
@@ -719,8 +703,7 @@ execGetContactRelativePosition(void)
 
 //***************************************************************************
 
-void
-execSetTarget(void)
+void execSetTarget(void)
 {
 	int32_t attackerId = ABLi_popInteger();
 	int32_t targetId = ABLi_popInteger();
@@ -758,8 +741,7 @@ execSetTarget(void)
 
 //*****************************************************************************
 
-void
-execGetTarget(void)
+void execGetTarget(void)
 {
 	int32_t objectId = ABLi_popInteger();
 	int32_t partID = 0;
@@ -786,8 +768,7 @@ execGetTarget(void)
 
 //*****************************************************************************
 
-void
-execGetWeaponsReady(void)
+void execGetWeaponsReady(void)
 {
 	int32_t* weaponList = ABLi_popIntegerPtr();
 	int32_t listSize = ABLi_popInteger();
@@ -799,8 +780,7 @@ execGetWeaponsReady(void)
 
 //*****************************************************************************
 
-void
-execGetWeaponsLocked(void)
+void execGetWeaponsLocked(void)
 {
 	int32_t* weaponList = ABLi_popIntegerPtr();
 	int32_t listSize = ABLi_popInteger();
@@ -812,8 +792,7 @@ execGetWeaponsLocked(void)
 
 //*****************************************************************************
 
-void
-execGetWeaponsInRange(void)
+void execGetWeaponsInRange(void)
 {
 	int32_t* weaponList = ABLi_popIntegerPtr();
 	int32_t listSize = ABLi_popInteger();
@@ -828,8 +807,7 @@ execGetWeaponsInRange(void)
 
 //*****************************************************************************
 
-void
-execGetWeaponShots(void)
+void execGetWeaponShots(void)
 {
 	int32_t weaponIndex = ABLi_popInteger();
 	int32_t numShots = 0;
@@ -840,8 +818,7 @@ execGetWeaponShots(void)
 
 //*****************************************************************************
 
-void
-execGetWeaponRanges(void)
+void execGetWeaponRanges(void)
 {
 	//-----------------------------------------------------
 	//
@@ -872,8 +849,7 @@ execGetWeaponRanges(void)
 
 //*****************************************************************************
 
-void
-execGetObjectPosition(void)
+void execGetObjectPosition(void)
 {
 	int32_t objectId = ABLi_popInteger();
 	float* coordList = ABLi_popRealPtr();
@@ -892,8 +868,7 @@ execGetObjectPosition(void)
 
 //*****************************************************************************
 
-void
-execGetIntegerMemory(void)
+void execGetIntegerMemory(void)
 {
 	//-----------------------------------------------------
 	//
@@ -912,8 +887,7 @@ execGetIntegerMemory(void)
 
 //*****************************************************************************
 
-void
-execGetRealMemory(void)
+void execGetRealMemory(void)
 {
 	//-----------------------------------------------------
 	//
@@ -932,8 +906,7 @@ execGetRealMemory(void)
 
 //*****************************************************************************
 
-void
-execGetAlarmTriggers(void)
+void execGetAlarmTriggers(void)
 {
 	//-----------------------------------------------------
 	//
@@ -954,8 +927,7 @@ execGetAlarmTriggers(void)
 
 //*****************************************************************************
 
-void
-execGetChallenger(void)
+void execGetChallenger(void)
 {
 	//-----------------------------------------------------
 	//
@@ -994,8 +966,7 @@ execGetChallenger(void)
 
 //*****************************************************************************
 
-void
-execGetTimeWithoutOrders(void)
+void execGetTimeWithoutOrders(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1019,8 +990,7 @@ execGetTimeWithoutOrders(void)
 
 //*****************************************************************************
 
-void
-execGetFireRanges(void)
+void execGetFireRanges(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1035,16 +1005,15 @@ execGetFireRanges(void)
 	//
 	//-----------------------------------------------------
 	float* ranges = ABLi_popRealPtr();
-	ranges[0] = WeaponRange[FIRERANGE_SHORT];
-	ranges[1] = WeaponRange[FIRERANGE_MEDIUM];
-	ranges[2] = WeaponRange[FIRERANGE_LONG];
+	ranges[0] = WeaponRange[FireRangeType::shortest];
+	ranges[1] = WeaponRange[FireRangeType::medium];
+	ranges[2] = WeaponRange[FireRangeType::extended];
 	ranges[3] = 250.0; // No one should use this in MC2!
 }
 
 //*****************************************************************************
 
-void
-execGetAttackers(void)
+void execGetAttackers(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1070,8 +1039,7 @@ execGetAttackers(void)
 
 //*****************************************************************************
 
-void
-execGetAttackerInfo(void)
+void execGetAttackerInfo(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1109,8 +1077,7 @@ execGetAttackerInfo(void)
 
 //*****************************************************************************
 
-void
-execSetChallenger(void)
+void execSetChallenger(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1149,8 +1116,7 @@ execSetChallenger(void)
 
 //*****************************************************************************
 
-void
-execSetIntegerMemory(void)
+void execSetIntegerMemory(void)
 {
 	int32_t memIndex = ABLi_popInteger();
 	int32_t memValue = ABLi_popInteger();
@@ -1159,8 +1125,7 @@ execSetIntegerMemory(void)
 
 //***************************************************************************
 
-void
-execSetRealMemory(void)
+void execSetRealMemory(void)
 {
 	int32_t memIndex = ABLi_popInteger();
 	float memValue = ABLi_popReal();
@@ -1169,8 +1134,7 @@ execSetRealMemory(void)
 
 //*****************************************************************************
 
-void
-execHasMoveGoal(void)
+void execHasMoveGoal(void)
 {
 	bool result = false;
 	if (CurWarrior)
@@ -1180,8 +1144,7 @@ execHasMoveGoal(void)
 
 //*****************************************************************************
 
-void
-execHasMovePath(void)
+void execHasMovePath(void)
 {
 	bool result = false;
 	if (CurWarrior)
@@ -1191,8 +1154,7 @@ execHasMovePath(void)
 
 //*****************************************************************************
 
-void
-execSortWeapons(void)
+void execSortWeapons(void)
 {
 	int32_t* weaponList = ABLi_popIntegerPtr();
 	int32_t listSize = ABLi_popInteger();
@@ -1204,8 +1166,7 @@ execSortWeapons(void)
 
 //*****************************************************************************
 
-void
-execGetVisualRange(void)
+void execGetVisualRange(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1240,8 +1201,7 @@ execGetVisualRange(void)
 
 //*****************************************************************************
 
-void
-execGetUnitMates(void)
+void execGetUnitMates(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1288,8 +1248,7 @@ execGetUnitMates(void)
 
 //*****************************************************************************
 
-void
-execGetTacOrder(void)
+void execGetTacOrder(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1333,8 +1292,7 @@ execGetTacOrder(void)
 
 //*****************************************************************************
 
-void
-execGetLastTacOrder(void)
+void execGetLastTacOrder(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1378,8 +1336,7 @@ execGetLastTacOrder(void)
 
 //*****************************************************************************
 
-void
-execGetObjects(void)
+void execGetObjects(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1556,8 +1513,7 @@ execGetObjects(void)
 
 //*****************************************************************************
 
-void
-execOrderWait(void)
+void execOrderWait(void)
 {
 	float seconds = ABLi_popReal();
 	bool clearLastTarget = ABLi_peekBoolean();
@@ -1568,14 +1524,13 @@ execOrderWait(void)
 	}
 	int32_t result = TACORDER_FAILURE;
 	result =
-		CurWarrior->orderWait(false, ORDER_ORIGIN_COMMANDER, double2long(seconds), clearLastTarget);
+		CurWarrior->orderWait(false, OrderOriginType::commander, double2long(seconds), clearLastTarget);
 	ABLi_pokeInteger(result);
 }
 
 //*****************************************************************************
 
-void
-execOrderMoveTo(void)
+void execOrderMoveTo(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1608,14 +1563,13 @@ execOrderMoveTo(void)
 	if (run)
 		params |= TACORDER_PARAM_RUN;
 	result =
-		CurWarrior->orderMoveToPoint(false, true, ORDER_ORIGIN_COMMANDER, location, -1, params);
+		CurWarrior->orderMoveToPoint(false, true, OrderOriginType::commander, location, -1, params);
 	ABLi_pushInteger(result);
 }
 
 //*****************************************************************************
 
-void
-execOrderMoveToObject(void)
+void execOrderMoveToObject(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1652,15 +1606,14 @@ execOrderMoveToObject(void)
 		object = getObject(objectId);
 		if (object)
 			result = CurWarrior->orderMoveToObject(
-				false, true, ORDER_ORIGIN_COMMANDER, object, -1, -1, run);
+				false, true, OrderOriginType::commander, object, -1, -1, run);
 	}
 	ABLi_pushInteger(result);
 }
 
 //*****************************************************************************
 
-void
-execOrderMoveToContact(void)
+void execOrderMoveToContact(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1688,15 +1641,14 @@ execOrderMoveToContact(void)
 		//------------------------------------------------------------
 		// Now, set up the tactical order, and pass it to the pilot...
 		result = CurWarrior->orderMoveToObject(
-			false, true, ORDER_ORIGIN_COMMANDER, CurContact, -1, -1, run);
+			false, true, OrderOriginType::commander, CurContact, -1, -1, run);
 	}
 	ABLi_pushInteger(result);
 }
 
 //*****************************************************************************
 
-void
-execOrderPowerDown(void)
+void execOrderPowerDown(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1720,8 +1672,7 @@ execOrderPowerDown(void)
 
 //*****************************************************************************
 
-void
-execOrderPowerUp(void)
+void execOrderPowerUp(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1745,8 +1696,7 @@ execOrderPowerUp(void)
 
 //*****************************************************************************
 
-void
-execOrderAttackObject(void)
+void execOrderAttackObject(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1790,7 +1740,7 @@ execOrderAttackObject(void)
 		{
 			if (objectId > 0)
 				object = ObjectManager->findByPartId(objectId);
-			result = CurWarrior->orderAttackObject(false, ORDER_ORIGIN_COMMANDER, object,
+			result = CurWarrior->orderAttackObject(false, OrderOriginType::commander, object,
 				attackType, attackMethod, attackRange, -1, -1, params);
 		}
 	}
@@ -1799,8 +1749,7 @@ execOrderAttackObject(void)
 
 //*****************************************************************************
 
-void
-execOrderAttackContact(void)
+void execOrderAttackContact(void)
 {
 	//-----------------------------------------------------
 	//
@@ -1832,7 +1781,7 @@ execOrderAttackContact(void)
 			params |= TACORDER_PARAM_PURSUE;
 		result = -2;
 		if (CurContact)
-			result = CurWarrior->orderAttackObject(false, ORDER_ORIGIN_COMMANDER, CurContact,
+			result = CurWarrior->orderAttackObject(false, OrderOriginType::commander, CurContact,
 				attackType, attackMethod, attackRange, -1, -1, params);
 	}
 	ABLi_pushInteger(result);
@@ -1840,8 +1789,7 @@ execOrderAttackContact(void)
 
 //*****************************************************************************
 
-void
-execOrderWithdraw(void)
+void execOrderWithdraw(void)
 {
 	// Makes the object(s) passed in withdraw
 	//
@@ -1855,7 +1803,7 @@ execOrderWithdraw(void)
 		location.Zero();
 		ABLi_pushInteger(0);
 		if (CurWarrior)
-			CurWarrior->orderWithdraw(false, ORDER_ORIGIN_COMMANDER, location);
+			CurWarrior->orderWithdraw(false, OrderOriginType::commander, location);
 		else
 			ABLi_pokeInteger(-2);
 	}
@@ -1863,8 +1811,7 @@ execOrderWithdraw(void)
 
 //*****************************************************************************
 
-void
-execObjectInWithdrawal(void)
+void execObjectInWithdrawal(void)
 {
 	// Checks the object(s) passed in to see if they are withdrawing
 	//
@@ -1900,8 +1847,7 @@ execObjectInWithdrawal(void)
 
 //*****************************************************************************
 
-void
-execDamageObject(void)
+void execDamageObject(void)
 {
 	//----------------------------------------------------------------------
 	//
@@ -1991,8 +1937,7 @@ execDamageObject(void)
 
 //*****************************************************************************
 
-void
-execSetAttackRadius(void)
+void execSetAttackRadius(void)
 {
 	//-----------------------------------------------------
 	//
@@ -2013,8 +1958,7 @@ execSetAttackRadius(void)
 
 //*****************************************************************************
 
-void
-execObjectChangeSides(void)
+void execObjectChangeSides(void)
 {
 	// Object Change Side Function.
 	//
@@ -2041,8 +1985,7 @@ execObjectChangeSides(void)
 
 //*****************************************************************************
 
-void
-execDistanceToObject(void)
+void execDistanceToObject(void)
 {
 	// Distance to Object From Object Function.
 	//
@@ -2097,8 +2040,7 @@ execDistanceToObject(void)
 
 //***************************************************************************
 
-void
-execDistanceToPosition(void)
+void execDistanceToPosition(void)
 {
 	// Distance to Object From Position Function.
 	//
@@ -2156,8 +2098,7 @@ execDistanceToPosition(void)
 
 //*****************************************************************************
 
-void
-execObjectSuicide(void)
+void execObjectSuicide(void)
 {
 	// Cause object to destroy itself Function.
 	//
@@ -2186,8 +2127,7 @@ execObjectSuicide(void)
 
 //***************************************************************************
 
-void
-execObjectCreate(void)
+void execObjectCreate(void)
 {
 	// Cause object to create itself Function.
 	//
@@ -2210,8 +2150,7 @@ execObjectCreate(void)
 
 //***************************************************************************
 
-void
-execObjectExists(void)
+void execObjectExists(void)
 {
 	// test if object exists Function.
 	//
@@ -2241,8 +2180,7 @@ execObjectExists(void)
 
 //***************************************************************************
 
-void
-execObjectStatus(void)
+void execObjectStatus(void)
 {
 	// returns object's status.
 	//
@@ -2288,8 +2226,7 @@ execObjectStatus(void)
 
 //*****************************************************************************
 
-void
-execObjectStatusCount(void)
+void execObjectStatusCount(void)
 {
 	// return object status count for an object, unit or team.
 	//
@@ -2331,8 +2268,7 @@ execObjectStatusCount(void)
 
 //*****************************************************************************
 
-void
-execObjectVisible(void)
+void execObjectVisible(void)
 {
 	// test if object2 is visible from object1
 	//
@@ -2372,8 +2308,7 @@ execObjectVisible(void)
 
 //*****************************************************************************
 
-void
-execObjectTeam(void)
+void execObjectTeam(void)
 {
 	// return what side object plays for Function.
 	//
@@ -2390,8 +2325,7 @@ execObjectTeam(void)
 
 //*****************************************************************************
 
-void
-execObjectCommander(void)
+void execObjectCommander(void)
 {
 	int32_t objectId = ABLi_peekInteger();
 	ABLi_pokeInteger(-1);
@@ -2410,8 +2344,7 @@ execObjectCommander(void)
 
 //*****************************************************************************
 
-void
-execObjectClass(void)
+void execObjectClass(void)
 {
 	// return what object class the obj is.
 	//
@@ -2428,8 +2361,7 @@ execObjectClass(void)
 
 //*****************************************************************************
 
-void
-execSetTimer(void)
+void execSetTimer(void)
 {
 	// Creates a timer which counts down from time passed in
 	//
@@ -2451,8 +2383,7 @@ execSetTimer(void)
 
 //*****************************************************************************
 
-void
-execCheckTimer(void)
+void execCheckTimer(void)
 {
 	// Checks a timer created and return time left
 	//
@@ -2474,8 +2405,7 @@ execCheckTimer(void)
 
 //*****************************************************************************
 
-void
-execEndTimer(void)
+void execEndTimer(void)
 {
 	// sets time to zero and destroys timer.
 	//
@@ -2495,8 +2425,7 @@ execEndTimer(void)
 
 //*****************************************************************************
 
-void
-execSetObjectiveTimer(void)
+void execSetObjectiveTimer(void)
 {
 	// Sets timer of objective passed in.
 	//
@@ -2510,8 +2439,7 @@ execSetObjectiveTimer(void)
 
 //*****************************************************************************
 
-void
-execCheckObjectiveTimer(void)
+void execCheckObjectiveTimer(void)
 {
 	// Checks an objective timer passed in and returns time left
 	//
@@ -2524,8 +2452,7 @@ execCheckObjectiveTimer(void)
 
 //*****************************************************************************
 
-void
-execSetObjectiveStatus(void)
+void execSetObjectiveStatus(void)
 {
 	// Sets status of objective passed in.
 	//
@@ -2539,8 +2466,7 @@ execSetObjectiveStatus(void)
 
 //*****************************************************************************
 
-void
-execCheckObjectiveStatus(void)
+void execCheckObjectiveStatus(void)
 {
 	// Checks an objective status passed in and returns it
 	//
@@ -2553,8 +2479,7 @@ execCheckObjectiveStatus(void)
 
 //*****************************************************************************
 
-void
-execSetObjectiveType(void)
+void execSetObjectiveType(void)
 {
 	// Sets type of objective passed in.
 	//
@@ -2568,8 +2493,7 @@ execSetObjectiveType(void)
 
 //*****************************************************************************
 
-void
-execCheckObjectiveType(void)
+void execCheckObjectiveType(void)
 {
 	// Checks an objective type passed in and returns it
 	//
@@ -2582,8 +2506,7 @@ execCheckObjectiveType(void)
 
 //*****************************************************************************
 
-void
-execPlayDigitalMusic(void)
+void execPlayDigitalMusic(void)
 {
 	// Starts playback of Digital music
 	//
@@ -2598,8 +2521,7 @@ execPlayDigitalMusic(void)
 
 //***************************************************************************
 
-void
-execStopMusic(void)
+void execStopMusic(void)
 {
 	// Stops playback of Digitalmusic
 	//
@@ -2614,8 +2536,7 @@ execStopMusic(void)
 
 //*****************************************************************************
 
-void
-execPlaySoundEffect(void)
+void execPlaySoundEffect(void)
 {
 	// Starts playback of Digital sound effect
 	//
@@ -2630,8 +2551,7 @@ execPlaySoundEffect(void)
 
 //*****************************************************************************
 
-void
-execPlayVideo(void)
+void execPlayVideo(void)
 {
 	// Starts playback of video sequence
 	//
@@ -2646,8 +2566,7 @@ execPlayVideo(void)
 
 //*****************************************************************************
 
-void
-execSetRadio(void)
+void execSetRadio(void)
 {
 	//-----------------------------------------------------
 	//
@@ -2676,8 +2595,7 @@ execSetRadio(void)
 
 //*****************************************************************************
 
-void
-execPlaySpeech(void)
+void execPlaySpeech(void)
 {
 	// Starts playback of Digital speech
 	//
@@ -2694,8 +2612,7 @@ execPlaySpeech(void)
 
 //*****************************************************************************
 
-void
-execPlayBetty(void)
+void execPlayBetty(void)
 {
 	// Starts playback of betty message
 	//
@@ -2711,8 +2628,7 @@ execPlayBetty(void)
 
 //*****************************************************************************
 
-void
-execSetObjectActive(void)
+void execSetObjectActive(void)
 {
 	// Turns on/off the AI for the object(s) passed in
 	//
@@ -2760,8 +2676,7 @@ execSetObjectActive(void)
 
 //*****************************************************************************
 
-void
-execObjectTypeID(void)
+void execObjectTypeID(void)
 {
 	// Returns the objectTypeId for the ObjectNum passed in
 	//
@@ -2780,8 +2695,7 @@ execObjectTypeID(void)
 
 //*****************************************************************************
 
-void
-execGetTerrainObjectPartID(void)
+void execGetTerrainObjectPartID(void)
 {
 	// Returns the object PartID for a terrain Object
 	//
@@ -2796,8 +2710,7 @@ execGetTerrainObjectPartID(void)
 
 //*****************************************************************************
 
-void
-execGetWeaponAmmo(void)
+void execGetWeaponAmmo(void)
 {
 	// Returns number of rounds left based on objectId and weaponId
 	//
@@ -2817,8 +2730,7 @@ execGetWeaponAmmo(void)
 
 //*****************************************************************************
 
-void
-execInArea(void)
+void execInArea(void)
 {
 	// returns TRUE if object/unit/team inside area.
 	//
@@ -2904,8 +2816,7 @@ execInArea(void)
 
 //*****************************************************************************
 
-void
-execObjectRemove(void)
+void execObjectRemove(void)
 {
 	//---------------------------------------------------------------------
 	//
@@ -2943,8 +2854,7 @@ execObjectRemove(void)
 
 //*****************************************************************************
 
-void
-execCreateInfantry(void)
+void execCreateInfantry(void)
 {
 	int32_t teamID = ABLi_popInteger();
 	int32_t commanderid = ABLi_popInteger();
@@ -2978,8 +2888,7 @@ execCreateInfantry(void)
 
 //*****************************************************************************
 
-void
-execGetSensorsWorking(void)
+void execGetSensorsWorking(void)
 {
 	// Returns whether or not sensors are operative for object passed in
 	//
@@ -2996,8 +2905,7 @@ execGetSensorsWorking(void)
 
 //*****************************************************************************
 
-void
-execGetCurrentBRValue(void)
+void execGetCurrentBRValue(void)
 {
 	// Returns the current BR value for the object passed in.
 	//
@@ -3016,8 +2924,7 @@ execGetCurrentBRValue(void)
 
 //*****************************************************************************
 
-void
-execSetCurrentBRValue(void)
+void execSetCurrentBRValue(void)
 {
 	// Sets the current BR value for the object passed in.
 	//
@@ -3035,8 +2942,7 @@ execSetCurrentBRValue(void)
 
 //*****************************************************************************
 
-void
-execGetArmorPts(void)
+void execGetArmorPts(void)
 {
 	// Returns the current number of armor points remaining on the object passed
 	// in
@@ -3061,8 +2967,7 @@ execGetArmorPts(void)
 
 //*****************************************************************************
 
-void
-execGetMaxArmor(void)
+void execGetMaxArmor(void)
 {
 	// Returns the max number of armor points on the object passed in
 	//
@@ -3086,8 +2991,7 @@ execGetMaxArmor(void)
 
 //*****************************************************************************
 
-void
-execGetPilotID(void)
+void execGetPilotID(void)
 {
 	// Returns the pilot ID of the driver of the object passed in.
 	//
@@ -3109,8 +3013,7 @@ execGetPilotID(void)
 
 //*****************************************************************************
 
-void
-execGetPilotWounds(void)
+void execGetPilotWounds(void)
 {
 	// Returns number of wounds pilot of vehicle has sustained.
 	//
@@ -3132,8 +3035,7 @@ execGetPilotWounds(void)
 
 //*****************************************************************************
 
-void
-execSetPilotWounds(void)
+void execSetPilotWounds(void)
 {
 	// Returns number of wounds pilot of vehicle has sustained.
 	//
@@ -3157,8 +3059,7 @@ execSetPilotWounds(void)
 
 //*****************************************************************************
 
-void
-execGetObjectActive(void)
+void execGetObjectActive(void)
 {
 	// Checks to see if the object(s) passed in are active
 	//
@@ -3191,8 +3092,7 @@ execGetObjectActive(void)
 
 //***************************************************************************
 
-void
-execGetObjectDamage(void)
+void execGetObjectDamage(void)
 {
 	// Returns the damage level of the object passed in
 	//
@@ -3218,8 +3118,7 @@ execGetObjectDamage(void)
 
 //***************************************************************************
 
-void
-execGetObjectDmgPts(void)
+void execGetObjectDmgPts(void)
 {
 	// Returns the damage points of the object passed in
 	//
@@ -3240,8 +3139,7 @@ execGetObjectDmgPts(void)
 
 //***************************************************************************
 
-void
-execGetObjectMaxDmg(void)
+void execGetObjectMaxDmg(void)
 {
 	// Returns the damage level of the object passed in
 	//
@@ -3262,8 +3160,7 @@ execGetObjectMaxDmg(void)
 
 //***************************************************************************
 
-void
-execSetObjectDamage(void)
+void execSetObjectDamage(void)
 {
 	// Sets the damage level of the object passed in
 	// Note that the damage can only be given, not taken away!
@@ -3302,8 +3199,7 @@ execSetObjectDamage(void)
 
 //*****************************************************************************
 
-void
-execGetGlobalValue(void)
+void execGetGlobalValue(void)
 {
 	// Gets the value stored in global variable specified by passed in number.
 	//
@@ -3320,8 +3216,7 @@ execGetGlobalValue(void)
 
 //***************************************************************************
 
-void
-execSetGlobalValue(void)
+void execSetGlobalValue(void)
 {
 	// Sets the value stored in global variable specified by passed in number.
 	//
@@ -3338,8 +3233,7 @@ execSetGlobalValue(void)
 
 //***************************************************************************
 
-void
-execSetObjectivePos(void)
+void execSetObjectivePos(void)
 {
 	// Sets the position for objective passed in.
 	//
@@ -3355,8 +3249,7 @@ execSetObjectivePos(void)
 
 //*****************************************************************************
 
-void
-execSetSensorRange(void)
+void execSetSensorRange(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3380,8 +3273,7 @@ execSetSensorRange(void)
 
 //***************************************************************************
 
-void
-execSetTonnage(void)
+void execSetTonnage(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3405,8 +3297,7 @@ execSetTonnage(void)
 
 //*****************************************************************************
 
-void
-execSetExplosionDamage(void)
+void execSetExplosionDamage(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3430,8 +3321,7 @@ execSetExplosionDamage(void)
 
 //*****************************************************************************
 
-void
-execSetExplosionRadius(void)
+void execSetExplosionRadius(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3455,8 +3345,7 @@ execSetExplosionRadius(void)
 
 //*****************************************************************************
 
-void
-execSetSalvage(void)
+void execSetSalvage(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3503,8 +3392,7 @@ execSetSalvage(void)
 
 //*****************************************************************************
 
-void
-execSetSalvageStatus(void)
+void execSetSalvageStatus(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3537,8 +3425,7 @@ execSetSalvageStatus(void)
 
 //*****************************************************************************
 
-void
-execSetAnimation(void)
+void execSetAnimation(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3572,8 +3459,7 @@ execSetAnimation(void)
 
 //*****************************************************************************
 
-void
-execSetRevealed(void)
+void execSetRevealed(void)
 {
 	// Reveals terrain around point a distance out.
 	//
@@ -3600,8 +3486,7 @@ execSetRevealed(void)
 
 //*****************************************************************************
 
-void
-execGetSalvage(void)
+void execGetSalvage(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3649,8 +3534,7 @@ execGetSalvage(void)
 
 //*****************************************************************************
 
-void
-execOrderRefit(void)
+void execOrderRefit(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3674,15 +3558,14 @@ execOrderRefit(void)
 		{
 			GameObjectPtr refitee = getObject(refiteeId);
 			if (refitee && refitee->getObjectClass() == BATTLEMECH)
-				pilot->orderRefit(ORDER_ORIGIN_COMMANDER, refitee, params);
+				pilot->orderRefit(OrderOriginType::commander, refitee, params);
 		}
 	}
 }
 
 //*****************************************************************************
 
-void
-execSetCaptured(void)
+void execSetCaptured(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3701,8 +3584,7 @@ execSetCaptured(void)
 
 //*****************************************************************************
 
-void
-execOrderCapture(void)
+void execOrderCapture(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3723,13 +3605,12 @@ execOrderCapture(void)
 	if (CurObject && CurObject->isMover())
 		target = getObject(targetId);
 	if (target)
-		CurObject->getPilot()->orderCapture(ORDER_ORIGIN_COMMANDER, target, params);
+		CurObject->getPilot()->orderCapture(OrderOriginType::commander, target, params);
 }
 
 //*****************************************************************************
 
-void
-execSetCapturable(void)
+void execSetCapturable(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3757,8 +3638,7 @@ execSetCapturable(void)
 
 //*****************************************************************************
 
-void
-execIsCaptured(void)
+void execIsCaptured(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3794,8 +3674,7 @@ execIsCaptured(void)
 
 //*****************************************************************************
 
-void
-execIsCapturable(void)
+void execIsCapturable(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3828,8 +3707,7 @@ execIsCapturable(void)
 
 //*****************************************************************************
 
-void
-execWasEverCapturable(void)
+void execWasEverCapturable(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3853,8 +3731,7 @@ execWasEverCapturable(void)
 
 //*****************************************************************************
 
-void
-execSetBuildingName(void)
+void execSetBuildingName(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3883,8 +3760,7 @@ execSetBuildingName(void)
 
 //*****************************************************************************
 
-void
-execCallStrike(void)
+void execCallStrike(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3936,8 +3812,7 @@ execCallStrike(void)
 
 //*****************************************************************************
 
-void
-execCallStrikeEx(void)
+void execCallStrikeEx(void)
 {
 	//-----------------------------------------------------
 	//
@@ -3995,8 +3870,7 @@ execCallStrikeEx(void)
 
 //*****************************************************************************
 
-void
-execOrderLoadElementals(void)
+void execOrderLoadElementals(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4015,14 +3889,13 @@ execOrderLoadElementals(void)
 	if (CurObject && CurObject->getObjectClass() == ELEMENTAL)
 		carrier = getObject(carrierID);
 	if (carrier && carrier->getObjectClass() == GROUNDVEHICLE && ((GroundVehiclePtr)carrier)->elementalCarrier)
-		CurObject->getPilot()->orderLoadIntoCarrier(ORDER_ORIGIN_COMMANDER, carrier);
+		CurObject->getPilot()->orderLoadIntoCarrier(OrderOriginType::commander, carrier);
 #endif
 }
 
 //*****************************************************************************
 
-void
-execOrderDeployElementals(void)
+void execOrderDeployElementals(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4040,14 +3913,13 @@ execOrderDeployElementals(void)
 	ABLi_popInteger();
 #ifdef USE_ELEMENTALS
 	if (CurObject && CurObject->getObjectClass() == GROUNDVEHICLE && ((GroundVehiclePtr)CurObject)->elementalCarrier)
-		CurObject->getPilot()->orderDeployElementals(ORDER_ORIGIN_COMMANDER, params);
+		CurObject->getPilot()->orderDeployElementals(OrderOriginType::commander, params);
 #endif
 }
 
 //***************************************************************************
 
-void
-execAddPrisoner(void)
+void execAddPrisoner(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4104,8 +3976,7 @@ execAddPrisoner(void)
 
 //*****************************************************************************
 
-void
-execLockGateOpen(void)
+void execLockGateOpen(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4127,8 +3998,7 @@ execLockGateOpen(void)
 
 //***************************************************************************
 
-void
-execLockGateClosed(void)
+void execLockGateClosed(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4150,8 +4020,7 @@ execLockGateClosed(void)
 
 //*****************************************************************************
 
-void
-execReleaseGateLock(void)
+void execReleaseGateLock(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4183,8 +4052,7 @@ execReleaseGateLock(void)
 // RETURN: BOOL Open
 //
 //-----------------------------------------------------
-void
-execIsGateOpen(void)
+void execIsGateOpen(void)
 {
 	// int32_t objectId = ABLi_peekInteger();
 	ABLi_pokeBoolean(false);
@@ -4217,8 +4085,7 @@ execIsGateOpen(void)
 // RETURN: NONE
 //
 //-----------------------------------------------------
-void
-execGetRelativePositionToPoint(void)
+void execGetRelativePositionToPoint(void)
 {
 	float* pos = ABLi_popRealPtr();
 	float angle = ABLi_popReal();
@@ -4257,8 +4124,7 @@ execGetRelativePositionToPoint(void)
 //
 //----------------------------------------------------------------------
 
-void
-execGetRelativePositionToObject(void)
+void execGetRelativePositionToObject(void)
 {
 	int32_t objectId = ABLi_popInteger();
 	float angle = ABLi_popReal();
@@ -4276,8 +4142,7 @@ execGetRelativePositionToObject(void)
 	}
 }
 //*****************************************************************************
-void
-execGetUnitStatus(void)
+void execGetUnitStatus(void)
 {
 	// Returns the current state of the health bar in percent format from 0
 	// to 100
@@ -4294,8 +4159,7 @@ execGetUnitStatus(void)
 		ABLi_pokeReal(obj->getStatusRating() * 100.0);
 }
 //*****************************************************************************
-void
-execRepair(void)
+void execRepair(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4371,8 +4235,7 @@ execRepair(void)
 	}
 }
 //*****************************************************************************
-void
-execGetFixed(void)
+void execGetFixed(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4447,7 +4310,7 @@ execGetFixed(void)
 								if (mech->needsRefit())
 								{
 									if (mech->getPilot()->orderGetFixed(
-											ORDER_ORIGIN_COMMANDER, bay, params)
+											OrderOriginType::commander, bay, params)
 										== NO_ERROR)
 										result = 0;
 									else
@@ -4470,7 +4333,7 @@ execGetFixed(void)
 								if (vehicle->needsRefit())
 								{
 									if (vehicle->getPilot()->orderGetFixed(
-											ORDER_ORIGIN_COMMANDER, bay, params)
+											OrderOriginType::commander, bay, params)
 										== NO_ERROR)
 										result = 0;
 									else
@@ -4486,8 +4349,7 @@ execGetFixed(void)
 	ABLi_pushInteger(result);
 }
 //***************************************************************************
-void
-execGetRepairState(void)
+void execGetRepairState(void)
 {
 	// Returns the percentage of repairable armor and IS points of the
 	// objectId passed in
@@ -4537,8 +4399,7 @@ execGetRepairState(void)
 	ABLi_pokeInteger(cur / max);
 }
 //*****************************************************************************
-void
-execIsTeamTargeting(void)
+void execIsTeamTargeting(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4576,8 +4437,7 @@ execIsTeamTargeting(void)
 	ABLi_pushBoolean(targeting);
 }
 //*****************************************************************************
-void
-execIsTeamCapturing(void)
+void execIsTeamCapturing(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4616,8 +4476,7 @@ execIsTeamCapturing(void)
 	ABLi_pushBoolean(targeting);
 }
 //*****************************************************************************
-void
-execSendMessage(void)
+void execSendMessage(void)
 {
 	CurMultiplayCode = ABLi_popInteger();
 	CurMultiplayParam = ABLi_popInteger();
@@ -4640,16 +4499,14 @@ execSendMessage(void)
 	}
 }
 //*****************************************************************************
-void
-execGetMessage(void)
+void execGetMessage(void)
 {
 	int32_t* messageParam = ABLi_peekIntegerPtr();
 	*messageParam = CurMultiplayParam;
 	ABLi_pokeInteger(CurMultiplayCode);
 }
 //*****************************************************************************
-void
-execGetHomeTeam(void)
+void execGetHomeTeam(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4665,8 +4522,7 @@ execGetHomeTeam(void)
 	ABLi_pushInteger(Team::home->getId() + MIN_TEAM_PART_ID);
 }
 //*****************************************************************************
-void
-execGetStrikes(void)
+void execGetStrikes(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4703,8 +4559,7 @@ execGetStrikes(void)
 			}
 }
 //*****************************************************************************
-void
-execSetStrikes(void)
+void execSetStrikes(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4743,8 +4598,7 @@ execSetStrikes(void)
 			}
 }
 //*****************************************************************************
-void
-execAddStrikes(void)
+void execAddStrikes(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4792,8 +4646,7 @@ execAddStrikes(void)
 			}
 }
 //***************************************************************************
-void
-execIsServer(void)
+void execIsServer(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4812,8 +4665,7 @@ execIsServer(void)
 		pushInteger(0);
 }
 //*****************************************************************************
-void
-execCalcPartID(void)
+void execCalcPartID(void)
 {
 	int32_t objectClass = ABLi_popInteger();
 	int32_t param1 = ABLi_popInteger();
@@ -4823,12 +4675,11 @@ execCalcPartID(void)
 	ABLi_pushInteger(partId);
 }
 //*****************************************************************************
-void
-execSetDebugString(void)
+void execSetDebugString(void)
 {
 	int32_t objectId = ABLi_popInteger();
 	int32_t stringNum = ABLi_popInteger();
-	const std::wstring_view& debugString = ABLi_popCharPtr();
+	std::wstring_view debugString = ABLi_popCharPtr();
 	GameObjectPtr obj = getObject(objectId);
 	if (obj)
 	{
@@ -4843,8 +4694,7 @@ execSetDebugString(void)
 #endif
 }
 //*****************************************************************************
-void
-execBreak(void)
+void execBreak(void)
 {
 	if (ABLi_getCurrentState())
 	{
@@ -4852,8 +4702,7 @@ execBreak(void)
 	}
 }
 //*****************************************************************************
-void
-execPathExists(void)
+void execPathExists(void)
 {
 	//-----------------------------------------------------
 	//
@@ -4890,8 +4739,7 @@ execPathExists(void)
 	ABLi_pushInteger(areaPathCost);
 }
 //*****************************************************************************
-void
-execConvertCoords(void)
+void execConvertCoords(void)
 {
 	int32_t convertType = ABLi_popInteger();
 	float* worldPos = ABLi_popRealPtr();
@@ -4917,8 +4765,7 @@ execConvertCoords(void)
 	}
 }
 //*****************************************************************************
-void
-execNewMoveTo(void)
+void execNewMoveTo(void)
 {
 	float* location = ABLi_popRealPtr();
 	uint32_t params = (uint32_t)ABLi_popInteger();
@@ -4937,8 +4784,7 @@ execNewMoveTo(void)
 	ABLi_pushInteger(result);
 }
 //*****************************************************************************
-void
-execNewMoveToObject(void)
+void execNewMoveToObject(void)
 {
 	int32_t objectID = ABLi_popInteger();
 	uint32_t params = (uint32_t)ABLi_popInteger();
@@ -4949,8 +4795,7 @@ execNewMoveToObject(void)
 	ABLi_pushInteger(result);
 }
 //*****************************************************************************
-void
-execNewPower(void)
+void execNewPower(void)
 {
 	bool up = ABLi_popBoolean();
 	int32_t result = 0;
@@ -4959,8 +4804,7 @@ execNewPower(void)
 	ABLi_pushInteger(result);
 }
 //*****************************************************************************
-void
-execNewAttack(void)
+void execNewAttack(void)
 {
 	int32_t objectID = ABLi_popInteger();
 	uint32_t params = (uint32_t)ABLi_popInteger();
@@ -4971,8 +4815,7 @@ execNewAttack(void)
 	ABLi_pushInteger(result);
 }
 //*****************************************************************************
-void
-execNewCapture(void)
+void execNewCapture(void)
 {
 	// int32_t objectID =
 	ABLi_popInteger();
@@ -4985,8 +4828,7 @@ execNewCapture(void)
 	ABLi_pushInteger(result);
 }
 //*****************************************************************************
-void
-execNewScan(void)
+void execNewScan(void)
 {
 	int32_t objectID = ABLi_popInteger();
 	uint32_t params = (uint32_t)ABLi_popInteger();
@@ -4997,8 +4839,7 @@ execNewScan(void)
 	ABLi_pushInteger(targetID);
 }
 //*****************************************************************************
-void
-execNewControl(void)
+void execNewControl(void)
 {
 	int32_t objectID = ABLi_popInteger();
 	uint32_t params = (uint32_t)ABLi_popInteger();
@@ -5009,8 +4850,7 @@ execNewControl(void)
 	ABLi_pushInteger(targetID);
 }
 //*****************************************************************************
-void
-execCoreEject(void)
+void execCoreEject(void)
 {
 	int32_t result = 0;
 	if (CurWarrior)
@@ -5018,8 +4858,7 @@ execCoreEject(void)
 	ABLi_pushInteger(result);
 }
 //*****************************************************************************
-void
-execSetPilotState(void)
+void execSetPilotState(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5053,8 +4892,7 @@ execSetPilotState(void)
 	}
 }
 //*****************************************************************************
-void
-execGetPilotState(void)
+void execGetPilotState(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5068,8 +4906,7 @@ execGetPilotState(void)
 	ABLi_pushInteger(CurWarrior->getBrainState());
 }
 //*****************************************************************************
-void
-execGetNextPilotEvent(void)
+void execGetNextPilotEvent(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5087,8 +4924,7 @@ execGetNextPilotEvent(void)
 	ABLi_pushInteger(eventID);
 }
 //*****************************************************************************
-void
-execSetTargetPriority(void)
+void execSetTargetPriority(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5117,8 +4953,7 @@ execSetTargetPriority(void)
 	ABLi_pushInteger(err);
 }
 //*****************************************************************************
-void
-execSetDebugWindow(void)
+void execSetDebugWindow(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5141,8 +4976,7 @@ execSetDebugWindow(void)
 	ABLi_pushInteger(objectID);
 }
 //*****************************************************************************
-void
-execGetCameraPosition(void)
+void execGetCameraPosition(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5164,8 +4998,7 @@ execGetCameraPosition(void)
 	camPos[2] = result.z;
 }
 //*****************************************************************************
-void
-execSetCameraPosition(void)
+void execSetCameraPosition(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5187,8 +5020,7 @@ execSetCameraPosition(void)
 		eye->setPosition(result);
 }
 //*****************************************************************************
-void
-execSetCameraGoalPosition(void)
+void execSetCameraGoalPosition(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5215,8 +5047,7 @@ execSetCameraGoalPosition(void)
 	}
 }
 //*****************************************************************************
-void
-execGetCameraGoalPosition(void)
+void execGetCameraGoalPosition(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5238,8 +5069,7 @@ execGetCameraGoalPosition(void)
 	camPos[2] = result.z;
 }
 //*****************************************************************************
-void
-execGetCameraRotation(void)
+void execGetCameraRotation(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5261,8 +5091,7 @@ execGetCameraRotation(void)
 	camRot[2] = result.z;
 }
 //*****************************************************************************
-void
-execSetCameraRotation(void)
+void execSetCameraRotation(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5284,8 +5113,7 @@ execSetCameraRotation(void)
 		eye->setRotation(result);
 }
 //*****************************************************************************
-void
-execSetCameraGoalRotation(void)
+void execSetCameraGoalRotation(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5312,8 +5140,7 @@ execSetCameraGoalRotation(void)
 	}
 }
 //*****************************************************************************
-void
-execGetCameraGoalRotation(void)
+void execGetCameraGoalRotation(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5335,8 +5162,7 @@ execGetCameraGoalRotation(void)
 	camRot[2] = result.z;
 }
 //*****************************************************************************
-void
-execGetCameraZoom(void)
+void execGetCameraZoom(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5355,8 +5181,7 @@ execGetCameraZoom(void)
 	ABLi_pushReal(result);
 }
 //*****************************************************************************
-void
-execSetCameraZoom(void)
+void execSetCameraZoom(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5374,8 +5199,7 @@ execSetCameraZoom(void)
 		eye->setFieldOfView(camFOV);
 }
 //*****************************************************************************
-void
-execGetCameraGoalZoom(void)
+void execGetCameraGoalZoom(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5394,8 +5218,7 @@ execGetCameraGoalZoom(void)
 	ABLi_pushReal(result);
 }
 //*****************************************************************************
-void
-execSetCameraGoalZoom(void)
+void execSetCameraGoalZoom(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5414,8 +5237,7 @@ execSetCameraGoalZoom(void)
 		eye->setFieldOfViewGoal(camFOV, time);
 }
 //*****************************************************************************
-void
-execSetCameraVelocity(void)
+void execSetCameraVelocity(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5437,8 +5259,7 @@ execSetCameraVelocity(void)
 		eye->setVelocity(result);
 }
 //*****************************************************************************
-void
-execGetCameraVelocity(void)
+void execGetCameraVelocity(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5460,8 +5281,7 @@ execGetCameraVelocity(void)
 	camVel[2] = result.z;
 }
 //*****************************************************************************
-void
-execSetCameraGoalVelocity(void)
+void execSetCameraGoalVelocity(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5488,8 +5308,7 @@ execSetCameraGoalVelocity(void)
 	}
 }
 //*****************************************************************************
-void
-execGetCameraGoalVelocity(void)
+void execGetCameraGoalVelocity(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5512,8 +5331,7 @@ execGetCameraGoalVelocity(void)
 	camVel[2] = result.z;
 }
 //*****************************************************************************
-void
-execSetCameraLookObject(void)
+void execSetCameraLookObject(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5531,8 +5349,7 @@ execSetCameraLookObject(void)
 		eye->setCameraTargetId(objectId);
 }
 //*****************************************************************************
-void
-execGetCameraLookObject(void)
+void execGetCameraLookObject(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5551,8 +5368,7 @@ execGetCameraLookObject(void)
 	ABLi_pushInteger(result);
 }
 //*****************************************************************************
-void
-execGetCameraFrameLength(void)
+void execGetCameraFrameLength(void)
 {
 	//-----------------------------------------------------
 	//
@@ -5568,8 +5384,7 @@ execGetCameraFrameLength(void)
 	ABLi_pushReal(frameLength);
 }
 //*****************************************************************************
-void
-execRequestHelp(void)
+void execRequestHelp(void)
 {
 	//--------------------------------------------------
 	// Defender is the CurPilot (calling this function).
@@ -5602,8 +5417,7 @@ execRequestHelp(void)
 	ABLi_pushReal(0.0);
 }
 //*****************************************************************************
-void
-execRequestTarget(void)
+void execRequestTarget(void)
 {
 	float* center = ABLi_popRealPtr();
 	float radius = ABLi_popReal();
@@ -5628,8 +5442,7 @@ execRequestTarget(void)
 }
 //*****************************************************************************
 #define MAX_SHELTERS 10
-void
-execRequestShelter(void)
+void execRequestShelter(void)
 {
 	float range = ABLi_popIntegerReal();
 	int32_t numValidBuildings = 0;
@@ -5654,8 +5467,7 @@ execRequestShelter(void)
 		ABLi_pushInteger(0);
 }
 //*****************************************************************************
-void
-execMCPrint(void)
+void execMCPrint(void)
 {
 	ABLStackItem value;
 	ABLi_popAnything(&value);
@@ -5679,7 +5491,7 @@ execMCPrint(void)
 		DEBUGWINS_print(s, 0);
 		break;
 	case ABL_STACKITEM_CHAR_PTR:
-		sprintf(s, "const std::wstring_view&=%s", (const std::wstring_view&)value.data.characterPtr);
+		sprintf(s, "std::wstring_view=%s", (std::wstring_view)value.data.characterPtr);
 		DEBUGWINS_print(s, 0);
 		break;
 	case ABL_STACKITEM_INTEGER_PTR:
@@ -5700,14 +5512,12 @@ execMCPrint(void)
 	}
 }
 //*****************************************************************************
-void
-execGetMissionStatus(void)
+void execGetMissionStatus(void)
 {
 	ABLi_pushInteger(mission->getStatus());
 }
 //*****************************************************************************
-void
-execAddTriggerArea(void)
+void execAddTriggerArea(void)
 {
 	int32_t ULrow = ABLi_popInteger();
 	int32_t ULcol = ABLi_popInteger();
@@ -5721,29 +5531,25 @@ execAddTriggerArea(void)
 	ABLi_pushInteger(handle);
 }
 //*****************************************************************************
-void
-execIsTriggerAreaHit(void)
+void execIsTriggerAreaHit(void)
 {
 	int32_t handle = ABLi_popInteger();
 	ABLi_pushBoolean(Mover::triggerAreaMgr->isHit(handle));
 }
 //*****************************************************************************
-void
-execResetTriggerArea(void)
+void execResetTriggerArea(void)
 {
 	int32_t handle = ABLi_popInteger();
 	Mover::triggerAreaMgr->reset(handle);
 }
 //*****************************************************************************
-void
-execRemoveTriggerArea(void)
+void execRemoveTriggerArea(void)
 {
 	int32_t handle = ABLi_popInteger();
 	Mover::triggerAreaMgr->remove(handle);
 }
 //*****************************************************************************
-void
-execGetWeapons(void)
+void execGetWeapons(void)
 {
 	int32_t* weaponList = ABLi_popIntegerPtr();
 	int32_t infoType = ABLi_popInteger();
@@ -5777,8 +5583,7 @@ execGetWeapons(void)
 	ABLi_pushInteger(numWpns);
 }
 //*****************************************************************************
-void
-execGetWeaponsStatus(void)
+void execGetWeaponsStatus(void)
 {
 	int32_t* weaponList = ABLi_popIntegerPtr();
 	int32_t status = 0;
@@ -5790,8 +5595,7 @@ execGetWeaponsStatus(void)
 	ABLi_pushInteger(status);
 }
 //*****************************************************************************
-void
-execSetMoveArea(void)
+void execSetMoveArea(void)
 {
 	float* center = ABLi_popRealPtr();
 	float radius = ABLi_popReal();
@@ -5806,24 +5610,21 @@ execSetMoveArea(void)
 	}
 }
 //*****************************************************************************
-void
-execClearTacOrder(void)
+void execClearTacOrder(void)
 {
 	if (CurObject)
 		CurObject->getPilot()->clearCurTacOrder();
 }
 //*****************************************************************************
-void
-execPlayWave(void)
+void execPlayWave(void)
 {
-	const std::wstring_view& fileName = ABLi_popCharPtr();
+	std::wstring_view fileName = ABLi_popCharPtr();
 	int32_t type = ABLi_popInteger();
 	soundSystem->playSupportSample(-1, fileName);
 	ABLi_pushInteger(0);
 }
 //*****************************************************************************
-void
-execSetWillHelp(void)
+void execSetWillHelp(void)
 {
 	bool willHelp = ABLi_popBoolean();
 	bool wasHelping = CurWarrior->getWillHelp();
@@ -5831,8 +5632,7 @@ execSetWillHelp(void)
 	ABLi_pushInteger(wasHelping);
 }
 //*****************************************************************************
-void
-execGetLastScan(void)
+void execGetLastScan(void)
 {
 	GameObjectPtr lastScanTarget = ObjectManager->getByWatchID(CurWarrior->getCoreScanTargetWID());
 	int32_t lastScanTargetID = 0;
@@ -5841,8 +5641,7 @@ execGetLastScan(void)
 	ABLi_pushInteger(lastScanTargetID);
 }
 //*****************************************************************************
-void
-execGetMapInfo(void)
+void execGetMapInfo(void)
 {
 	int32_t* mapInfo = ABLi_popIntegerPtr();
 	mapInfo[0] = GameMap->getheight();
@@ -5879,30 +5678,26 @@ ablSymbolMallocCallback(uint32_t memSize)
 	return (AblSymbolHeap->Malloc(memSize));
 }
 //-----------------------------------------------------------------------------
-void
-ablSystemFreeCallback(PVOID memBlock)
+void ablSystemFreeCallback(PVOID memBlock)
 {
 	systemHeap->Free(memBlock);
 }
 //-----------------------------------------------------------------------------
-void
-ablStackFreeCallback(PVOID memBlock)
+void ablStackFreeCallback(PVOID memBlock)
 {
 	if (!AblStackHeap)
 		Fatal(0, " ablStackFreeCallback: nullptr heap ");
 	AblStackHeap->Free(memBlock);
 }
 //-----------------------------------------------------------------------------
-void
-ablCodeFreeCallback(PVOID memBlock)
+void ablCodeFreeCallback(PVOID memBlock)
 {
 	if (!AblCodeHeap)
 		Fatal(0, " ablCodeFreeCallback: nullptr heap ");
 	AblCodeHeap->Free(memBlock);
 }
 //-----------------------------------------------------------------------------
-void
-ablSymbolFreeCallback(PVOID memBlock)
+void ablSymbolFreeCallback(PVOID memBlock)
 {
 	if (!AblSymbolHeap)
 		Fatal(0, " ablSymbolFreeCallback: nullptr heap ");
@@ -5910,7 +5705,7 @@ ablSymbolFreeCallback(PVOID memBlock)
 }
 //*****************************************************************************
 int32_t
-ablFileCreateCB(PVOID* file, const std::wstring_view& filename)
+ablFileCreateCB(PVOID* file, std::wstring_view filename)
 {
 	*file = new File;
 	if (*file == nullptr)
@@ -5925,7 +5720,7 @@ ablFileCreateCB(PVOID* file, const std::wstring_view& filename)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileOpenCB(PVOID* file, const std::wstring_view& filename)
+ablFileOpenCB(PVOID* file, std::wstring_view filename)
 {
 	*file = new File;
 	if (*file == nullptr)
@@ -5945,8 +5740,7 @@ ablFileCloseCB(PVOID file)
 	return (0);
 }
 //-----------------------------------------------------------------------------
-bool
-ablFileEofCB(PVOID file)
+bool ablFileEofCB(PVOID file)
 {
 	return (((std::unique_ptr<File>)file)->eof());
 }
@@ -5994,13 +5788,12 @@ ablFileWriteLongCB(PVOID file, int32_t value)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileWriteStringCB(PVOID file, const std::wstring_view& buffer)
+ablFileWriteStringCB(PVOID file, std::wstring_view buffer)
 {
 	return (((std::unique_ptr<File>)file)->writeString(buffer));
 }
 //*****************************************************************************
-void
-ablDebuggerPrintCallback(const std::wstring_view& s)
+void ablDebuggerPrintCallback(std::wstring_view s)
 {
 	// ABLDebuggerOut->print(s);
 	wchar_t msg[1024];
@@ -6008,27 +5801,23 @@ ablDebuggerPrintCallback(const std::wstring_view& s)
 	SPEW((0, msg));
 }
 //*****************************************************************************
-void
-ablDebugPrintCallback(const std::wstring_view& s)
+void ablDebugPrintCallback(std::wstring_view s)
 {
 	DEBUGWINS_print(s, 0);
 }
 //*****************************************************************************
-void
-ablSeedRandom(uint32_t seed)
+void ablSeedRandom(uint32_t seed)
 {
 	gos_srand(seed);
 }
 //*****************************************************************************
-void
-ablFatalCallback(int32_t code, const std::wstring_view& s)
+void ablFatalCallback(int32_t code, std::wstring_view s)
 {
 	STOP((s));
 }
 //*****************************************************************************
 extern GameObjectPtr LastCoreAttackTarget;
-void
-ablEndlessStateCallback(UserFile* log)
+void ablEndlessStateCallback(UserFile* log)
 {
 	wchar_t s[256];
 	sprintf(s, "Mover = %s (%d)", CurWarrior->getVehicle()->getName(),
@@ -6068,8 +5857,7 @@ ablEndlessStateCallback(UserFile* log)
 	log->write(s);
 }
 //*****************************************************************************
-void
-initABL(void)
+void initABL(void)
 {
 	AblSymbolHeap = new UserHeap;
 	int32_t heapErr = AblSymbolHeap->init(767999);
@@ -6311,8 +6099,7 @@ initABL(void)
 	// ABLi_registerInteger("godzillalist", &GodzillaList, 5);
 }
 //*****************************************************************************
-void
-closeABL(void)
+void closeABL(void)
 {
 	ABLi_close();
 	if (AblSymbolHeap)
@@ -6336,57 +6123,53 @@ closeABL(void)
 PVOID
 ablSystemMallocCallback(uint32_t memSize)
 {
-	const std::wstring_view& mem = new wchar_t[memSize];
+	std::wstring_view mem = new wchar_t[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablStackMallocCallback(uint32_t memSize)
 {
-	const std::wstring_view& mem = new wchar_t[memSize];
+	std::wstring_view mem = new wchar_t[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablCodeMallocCallback(uint32_t memSize)
 {
-	const std::wstring_view& mem = new wchar_t[memSize];
+	std::wstring_view mem = new wchar_t[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
 PVOID
 ablSymbolMallocCallback(uint32_t memSize)
 {
-	const std::wstring_view& mem = new wchar_t[memSize];
+	std::wstring_view mem = new wchar_t[memSize];
 	return (mem);
 }
 //-----------------------------------------------------------------------------
-void
-ablSystemFreeCallback(PVOID memBlock)
+void ablSystemFreeCallback(PVOID memBlock)
 {
 	delete memBlock;
 }
 //-----------------------------------------------------------------------------
-void
-ablStackFreeCallback(PVOID memBlock)
+void ablStackFreeCallback(PVOID memBlock)
 {
 	delete memBlock;
 }
 //-----------------------------------------------------------------------------
-void
-ablCodeFreeCallback(PVOID memBlock)
+void ablCodeFreeCallback(PVOID memBlock)
 {
 	delete memBlock;
 }
 //-----------------------------------------------------------------------------
-void
-ablSymbolFreeCallback(PVOID memBlock)
+void ablSymbolFreeCallback(PVOID memBlock)
 {
 	delete memBlock;
 }
 //*****************************************************************************
 int32_t
-ablFileCreateCB(PVOID* /* file */, const std::wstring_view& /* filename */)
+ablFileCreateCB(PVOID* /* file */, std::wstring_view /* filename */)
 {
 	/* *file = fopen(fNamenew File;
 	if (*file == nullptr)
@@ -6401,7 +6184,7 @@ ablFileCreateCB(PVOID* /* file */, const std::wstring_view& /* filename */)
 }
 //-----------------------------------------------------------------------------
 int32_t
-ablFileOpenCB(PVOID* file, const std::wstring_view& filename)
+ablFileOpenCB(PVOID* file, std::wstring_view filename)
 {
 	// Filenames MUST be all lowercase or Hash won't find 'em!
 	for (size_t i = 0; i < strlen(filename); i++)
@@ -6425,8 +6208,7 @@ ablFileCloseCB(PVOID* file)
 	return (0);
 }
 //-----------------------------------------------------------------------------
-bool
-ablFileEofCB(PVOID file)
+bool ablFileEofCB(PVOID file)
 {
 	int32_t res = feof((FILE*)file);
 	return (res != 0);
@@ -6450,9 +6232,9 @@ int32_t
 ablFileReadStringCB(PVOID file, uint8_t* buffer)
 {
 	buffer[0] = nullptr;
-	const std::wstring_view& s = fgets((const std::wstring_view&)buffer, 9999, (FILE*)file);
+	std::wstring_view s = fgets((std::wstring_view)buffer, 9999, (FILE*)file);
 	if (!s)
-		return (strlen((const std::wstring_view&)buffer));
+		return (strlen((std::wstring_view)buffer));
 	return (strlen(s));
 }
 //-----------------------------------------------------------------------------
@@ -6460,9 +6242,9 @@ int32_t
 ablFileReadLineExCB(PVOID file, uint8_t* buffer, int32_t maxLength)
 {
 	buffer[0] = nullptr;
-	const std::wstring_view& s = fgets((const std::wstring_view&)buffer, maxLength, (FILE*)file);
+	std::wstring_view s = fgets((std::wstring_view)buffer, maxLength, (FILE*)file);
 	if (!s)
-		return (strlen((const std::wstring_view&)buffer));
+		return (strlen((std::wstring_view)buffer));
 	return (strlen(s));
 }
 //-----------------------------------------------------------------------------
@@ -6484,13 +6266,13 @@ int32_t ablFileWriteLongCB(PVOID /* file */, int32_t /* value */)
 	return (0);
 }
 //-----------------------------------------------------------------------------
-int32_t ablFileWriteStringCB(PVOID /* file */, const std::wstring_view& /* buffer */)
+int32_t ablFileWriteStringCB(PVOID /* file */, std::wstring_view /* buffer */)
 {
 	// return(((std::unique_ptr<File>)file)->writeString(buffer));
 	return (0);
 }
 //*****************************************************************************
-void ablDebuggerPrintCallback(const std::wstring_view& /* s */)
+void ablDebuggerPrintCallback(std::wstring_view /* s */)
 {
 	// ABLDebuggerOut->print(s);
 	// wchar_t msg[1024];
@@ -6498,7 +6280,7 @@ void ablDebuggerPrintCallback(const std::wstring_view& /* s */)
 	// SPEW((0,msg));
 }
 //*****************************************************************************
-void ablDebugPrintCallback(const std::wstring_view& /* s */)
+void ablDebugPrintCallback(std::wstring_view /* s */)
 {
 	// DEBUGWINS_print(s, 0);
 }
@@ -6508,8 +6290,7 @@ void ablSeedRandom(uint32_t /* seed */)
 	// gos_srand(seed);
 }
 //*****************************************************************************
-void
-ablFatalCallback(int32_t code, const std::wstring_view& s)
+void ablFatalCallback(int32_t code, std::wstring_view s)
 {
 	printf("\n");
 	printf(" FATAL: (%d) %s", code, s);
@@ -6517,8 +6298,7 @@ ablFatalCallback(int32_t code, const std::wstring_view& s)
 	exit(code);
 }
 //*****************************************************************************
-void
-initABL(void)
+void initABL(void)
 {
 	ABLi_init(20479, // AblRunTimeStackSize,
 		51199, // AblMaxCodeBlockSize,
@@ -6739,8 +6519,7 @@ initABL(void)
 	ABLi_addFunction("getmapinfo", false, "I", nullptr, nullptr);
 }
 //*****************************************************************************
-void
-closeABL(void)
+void closeABL(void)
 {
 	ABLi_close();
 }

@@ -208,13 +208,25 @@ public:
 		active = false;
 	}
 
-	void SetaRGB(uint32_t newaRGB) { OEMaRGB = aRGB = newaRGB; }
+	void SetaRGB(uint32_t newaRGB)
+	{
+		OEMaRGB = aRGB = newaRGB;
+	}
 
-	uint32_t GetaRGB(void) { return aRGB; }
+	uint32_t GetaRGB(void)
+	{
+		return aRGB;
+	}
 
-	void SetLightToWorld(Stuff::LinearMatrix4D* l2w) { lightToWorld = *l2w; }
+	void SetLightToWorld(Stuff::LinearMatrix4D* l2w)
+	{
+		lightToWorld = *l2w;
+	}
 
-	void SetPosition(Stuff::Vector3D* pos) { position = *pos; }
+	void SetPosition(Stuff::Vector3D* pos)
+	{
+		position = *pos;
+	}
 
 	void SetFalloffDistances(float inner, float outer)
 	{
@@ -359,13 +371,25 @@ public:
 
 	virtual void destroy(void);
 
-	const std::wstring_view& getNodeId(void) { return nodeId; }
+	std::wstring_view getNodeId(void)
+	{
+		return nodeId;
+	}
 
-	const std::wstring_view& getParentId(void) { return parentId; }
+	std::wstring_view getParentId(void)
+	{
+		return parentId;
+	}
 
-	Stuff::Point3D GetNodeCenter(void) { return nodeCenter; }
+	Stuff::Point3D GetNodeCenter(void)
+	{
+		return nodeCenter;
+	}
 
-	Stuff::Point3D GetRelativeNodeCenter(void) { return relativeNodeCenter; }
+	Stuff::Point3D GetRelativeNodeCenter(void)
+	{
+		return relativeNodeCenter;
+	}
 
 	void MoveNodeCenterRelative(Stuff::Point3D parent)
 	{
@@ -373,11 +397,17 @@ public:
 		relativeNodeCenter -= parent;
 	}
 
-	virtual void movePosRelativeCenterNode(void) {}
+	virtual void movePosRelativeCenterNode(void) { }
 
-	virtual int32_t GetNumTypeVertices(void) { return 0; }
+	virtual int32_t GetNumTypeVertices(void)
+	{
+		return 0;
+	}
 
-	virtual int32_t GetNodeType(void) { return TYPE_NODE; }
+	virtual int32_t GetNodeType(void)
+	{
+		return TYPE_NODE;
+	}
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -387,7 +417,10 @@ public:
 	//
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t ParseASEFile(uint8_t* /*aseBuffer*/, const std::wstring_view& /*filename*/) { return 0; }
+	virtual int32_t ParseASEFile(uint8_t* /*aseBuffer*/, std::wstring_view /*filename*/)
+	{
+		return 0;
+	}
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -397,7 +430,7 @@ public:
 	//
 	// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& filename);
+	virtual int32_t MakeFromHelper(uint8_t* aseBuffer, std::wstring_view filename);
 
 	// Function returns 0 if OK.  -1 if file not found or file not ASE Format.
 	// This function loads the ASE file into the TG_Triangle and TG_Vertex
@@ -405,7 +438,10 @@ public:
 	//
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t LoadTGShapeFromASE(const std::wstring_view& /*fileName*/) { return 0; }
+	virtual int32_t LoadTGShapeFromASE(std::wstring_view /*fileName*/)
+	{
+		return 0;
+	}
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the texturehandle passed in and
@@ -418,20 +454,23 @@ public:
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the texturehandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
-	virtual int32_t SetTextureAlpha(uint32_t /*textureNum*/, bool /*alphaFlag*/) { return 0; }
+	virtual int32_t SetTextureAlpha(uint32_t /*textureNum*/, bool /*alphaFlag*/)
+	{
+		return 0;
+	}
 
 	// Need this so that Multi-Shapes can let each shape know texture info.
-	virtual void CreateListOfTextures(TG_TexturePtr /*list*/, uint32_t /*numTxms*/) {}
+	virtual void CreateListOfTextures(TG_TexturePtr /*list*/, uint32_t /*numTxms*/) { }
 
 	//--------------------------------------------------------------
 	// Creates an instance of this shape for the game to muck with.
 	virtual TG_Shape* CreateFrom(void);
 
-	virtual void SetAlphaTest(bool /*flag*/) {}
+	virtual void SetAlphaTest(bool /*flag*/) { }
 
-	virtual void SetFilter(bool /*flag*/) {}
+	virtual void SetFilter(bool /*flag*/) { }
 
-	virtual void SetLightRGBs(uint32_t /*hPink*/, uint32_t /*hGreen*/, uint32_t /*hYellow*/) {}
+	virtual void SetLightRGBs(uint32_t /*hPink*/, uint32_t /*hGreen*/, uint32_t /*hYellow*/) { }
 
 	virtual void LoadBinaryCopy(MechFile& binFile);
 	virtual void SaveBinaryCopy(MechFile& binFile);
@@ -496,13 +535,22 @@ public:
 		hotGreenRGB = 0x000081b6;
 	}
 
-	TG_TypeShape(void) { init(void); }
+	TG_TypeShape(void)
+	{
+		init(void);
+	}
 
 	virtual void destroy(void);
 
-	~TG_TypeShape(void) { destroy(void); }
+	~TG_TypeShape(void)
+	{
+		destroy(void);
+	}
 
-	virtual int32_t GetNumTypeVertices(void) { return numTypeVertices; }
+	virtual int32_t GetNumTypeVertices(void)
+	{
+		return numTypeVertices;
+	}
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -513,7 +561,7 @@ public:
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
 	virtual int32_t ParseASEFile(
-		uint8_t* aseBuffer, const std::wstring_view& filename); // filename for error reporting ONLY
+		uint8_t* aseBuffer, std::wstring_view filename); // filename for error reporting ONLY
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -523,7 +571,7 @@ public:
 	//
 	// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& filename);
+	virtual int32_t MakeFromHelper(uint8_t* aseBuffer, std::wstring_view filename);
 
 	// Function returns 0 if OK.  -1 if file not found or file not ASE Format.
 	// This function loads the ASE file into the TG_Triangle and TG_Vertex
@@ -531,7 +579,7 @@ public:
 	//
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t LoadTGShapeFromASE(const std::wstring_view& fileName);
+	virtual int32_t LoadTGShapeFromASE(std::wstring_view fileName);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the texturehandle passed in and
@@ -552,9 +600,15 @@ public:
 	// Creates an instance of this shape for the game to muck with.
 	virtual TG_Shape* CreateFrom(void);
 
-	virtual void SetAlphaTest(bool flag) { alphaTestOn = flag; }
+	virtual void SetAlphaTest(bool flag)
+	{
+		alphaTestOn = flag;
+	}
 
-	virtual void SetFilter(bool flag) { filterOn = flag; }
+	virtual void SetFilter(bool flag)
+	{
+		filterOn = flag;
+	}
 
 	virtual void SetLightRGBs(uint32_t hPink, uint32_t hGreen, uint32_t hYellow)
 	{
@@ -563,7 +617,10 @@ public:
 		hotYellowRGB = hYellow;
 	}
 
-	virtual int32_t GetNodeType(void) { return SHAPE_NODE; }
+	virtual int32_t GetNodeType(void)
+	{
+		return SHAPE_NODE;
+	}
 
 	virtual void LoadBinaryCopy(MechFile& binFile);
 	virtual void SaveBinaryCopy(MechFile& binFile);
@@ -682,11 +739,17 @@ public:
 			shadowsVisible[i] = false;
 	}
 
-	TG_Shape(void) { init(void); }
+	TG_Shape(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~TG_Shape(void) { destroy(void); }
+	~TG_Shape(void)
+	{
+		destroy(void);
+	}
 
 	// This function sets up the camera Matrices for this TG_Shape to transform
 	// itself with.  These matrices are static and only need to be set once per
@@ -731,19 +794,37 @@ public:
 	// using  gos_DrawTriangle.  Does clipping, too!
 	int32_t RenderShadows(int32_t startFace);
 
-	void SetARGBHighLight(uint32_t argb) { aRGBHighlight = argb; }
+	void SetARGBHighLight(uint32_t argb)
+	{
+		aRGBHighlight = argb;
+	}
 
-	void SetLightsOut(bool lightFlag) { lightsOut = lightFlag; }
+	void SetLightsOut(bool lightFlag)
+	{
+		lightsOut = lightFlag;
+	}
 
-	const std::wstring_view& getNodeName(void) { return myType->getNodeId(void); }
+	std::wstring_view getNodeName(void)
+	{
+		return myType->getNodeId(void);
+	}
 
-	Stuff::Point3D GetRelativeNodeCenter(void) { return myType->GetRelativeNodeCenter(void); }
+	Stuff::Point3D GetRelativeNodeCenter(void)
+	{
+		return myType->GetRelativeNodeCenter(void);
+	}
 
 	bool PerPolySelect(float mouseX, float mouseY);
 
-	void SetRecalcShadows(bool flag) { recalcShadows = flag; }
+	void SetRecalcShadows(bool flag)
+	{
+		recalcShadows = flag;
+	}
 
-	virtual void ScaleShape(float scaleFactor) { shapeScalar = scaleFactor; }
+	virtual void ScaleShape(float scaleFactor)
+	{
+		shapeScalar = scaleFactor;
+	}
 };
 
 typedef TG_Shape* TG_ShapePtr;
@@ -766,7 +847,10 @@ public:
 		totalvertices = numvertices = 0;
 	}
 
-	~TG_VertexPool(void) { destroy(void); }
+	~TG_VertexPool(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void)
 	{
@@ -819,7 +903,10 @@ public:
 		totalvertices = numvertices = 0;
 	}
 
-	~TG_GOSVertexPool(void) { destroy(void); }
+	~TG_GOSVertexPool(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void)
 	{
@@ -872,7 +959,10 @@ public:
 		totalTriangles = numTriangles = 0;
 	}
 
-	~TG_TrianglePool(void) { destroy(void); }
+	~TG_TrianglePool(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void)
 	{
@@ -925,7 +1015,10 @@ public:
 		totalvertices = numvertices = 0;
 	}
 
-	~TG_ShadowPool(void) { destroy(void); }
+	~TG_ShadowPool(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void)
 	{
@@ -979,7 +1072,10 @@ public:
 		totalTriangles = numTriangles = 0;
 	}
 
-	~TG_DWORDPool(void) { destroy(void); }
+	~TG_DWORDPool(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void)
 	{

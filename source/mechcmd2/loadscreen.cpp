@@ -47,10 +47,8 @@ extern CPrefs prefs;
 uint16_t
 GetNumberOfBits(uint32_t dwMask);
 
-void
-MouseTimerInit();
-void
-MouseTimerKill();
+void MouseTimerInit();
+void MouseTimerKill();
 
 LoadScreenWrapper::LoadScreenWrapper()
 {
@@ -76,18 +74,16 @@ LoadScreenWrapper::~LoadScreenWrapper()
 	enterScreen = exitScreen = nullptr;
 }
 
-void
-LoadScreenWrapper::init(FitIniFile& file)
+void LoadScreenWrapper::init(FitIniFile& file)
 {
 	enterScreen->init(file);
 	//	changeRes();
 	bFirstTime = 0;
 }
 
-void
-LoadScreenWrapper::changeRes()
+void LoadScreenWrapper::changeRes()
 {
-	const std::wstring_view& Appendix = nullptr;
+	std::wstring_view Appendix = nullptr;
 	switch (prefs.resolution)
 	{
 	case 0:
@@ -131,8 +127,7 @@ LoadScreenWrapper::changeRes()
 	LoadScreen::changeRes(outFile);
 }
 
-void
-LoadScreen::changeRes(FitIniFile& outFile)
+void LoadScreen::changeRes(FitIniFile& outFile)
 {
 	if (progressBackground)
 		delete[] progressBackground;
@@ -148,7 +143,7 @@ LoadScreen::changeRes(FitIniFile& outFile)
 		gosASSERT(result == NO_ERROR);
 		outFile.readIdLong("XLocation", xProgressLoc);
 		outFile.readIdLong("YLocation", yProgressLoc);
-		outFile.readIdString("FileName", progressPath, 255);
+		outFile.readIdString("filename", progressPath, 255);
 		outFile.readIdString("BackgroundFileName", progressBackgroundPath, 255);
 		File tgaFile;
 		FullPathFileName path;
@@ -180,7 +175,7 @@ LoadScreen::changeRes(FitIniFile& outFile)
 		tgaFile.close();
 		result = outFile.seekBlock("WaitImage");
 		gosASSERT(result == NO_ERROR);
-		outFile.readIdString("FileName", progressPath, 255);
+		outFile.readIdString("filename", progressPath, 255);
 		outFile.readIdLong("XLocation", xWaitLoc);
 		outFile.readIdLong("YLocation", yWaitLoc);
 		path.init(artPath, progressPath, ".tga");
@@ -200,16 +195,14 @@ LoadScreen::changeRes(FitIniFile& outFile)
 	}
 }
 
-void
-LoadScreenWrapper::begin()
+void LoadScreenWrapper::begin()
 {
 	waitForResChange = 0;
 	bFirstTime = true;
 	enterScreen->begin();
 }
 
-void
-LoadScreenWrapper::update()
+void LoadScreenWrapper::update()
 {
 	if (loadProgress > 99)
 		soundSystem->playDigitalSample(LOAD_DOORS_OPENING);
@@ -242,8 +235,7 @@ LoadScreenWrapper::update()
 	}
 }
 
-void
-LoadScreenWrapper::render(int32_t xOffset, int32_t yOffset)
+void LoadScreenWrapper::render(int32_t xOffset, int32_t yOffset)
 {
 	if (Environment.screenwidth == 800)
 	{
@@ -281,8 +273,7 @@ LoadScreen::~LoadScreen()
 	waitingForPlayersMemory = progressBackground = progressTextureMemory = mergedTexture = nullptr;
 }
 
-void
-LoadScreen::begin()
+void LoadScreen::begin()
 {
 	for (size_t i = 0; i < animObjectsCount; i++)
 	{
@@ -299,8 +290,7 @@ LoadScreen::begin()
 	// This will be keep ghost images from occuring.
 	userInput->mouseOff();
 }
-void
-LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
+void LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 {
 	LogisticsScreen::init(
 		file, "Static", "Text", "Rect", "Button", "Edit", "AnimObject", neverFlush);
@@ -327,20 +317,20 @@ LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 	text.init(&file, "AnimObject18");
 	if (animObjectsCount)
 	{
-		wchar_t blockName[256];
+		wchar_t blockname[256];
 		animIndices = new int32_t[animObjectsCount];
 		for (size_t i = 0; i < animObjectsCount; i++)
 		{
-			sprintf(blockName, "AnimObject%ld", i);
-			file.seekBlock(blockName);
-			file.readIdString("AnimationOut", blockName, 255);
-			if (strstr(blockName, "2"))
+			sprintf(blockname, "AnimObject%ld", i);
+			file.seekBlock(blockname);
+			file.readIdString("AnimationOut", blockname, 255);
+			if (strstr(blockname, "2"))
 				animIndices[i] = 4;
-			else if (strstr(blockName, "Top"))
+			else if (strstr(blockname, "Top"))
 				animIndices[i] = 0;
-			else if (strstr(blockName, "Bottom"))
+			else if (strstr(blockname, "Bottom"))
 				animIndices[i] = 1;
-			else if (strstr(blockName, "Left"))
+			else if (strstr(blockname, "Left"))
 				animIndices[i] = 2;
 			else
 				animIndices[i] = 3;
@@ -348,8 +338,7 @@ LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 	}
 }
 
-void
-LoadScreen::update()
+void LoadScreen::update()
 {
 	status = RUNNING;
 	LogisticsScreen::update();
@@ -408,8 +397,7 @@ LoadScreen::update()
 	}
 }
 
-void
-LoadScreen::render(int32_t x, int32_t y)
+void LoadScreen::render(int32_t x, int32_t y)
 {
 	// ignoring animation information...
 	LogisticsScreen::render();
@@ -420,8 +408,7 @@ LoadScreen::render(int32_t x, int32_t y)
 	text.move(-x - curX, -y - curY);
 }
 
-void
-ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
+void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 {
 	if (!LoadScreen::progressBackground)
 		return;
@@ -548,8 +535,7 @@ ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 	}
 }
 
-void
-LoadScreen::setupOutAnims()
+void LoadScreen::setupOutAnims()
 {
 	for (size_t i = 0; i < animObjectsCount; i++)
 	{

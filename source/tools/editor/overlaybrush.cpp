@@ -547,8 +547,7 @@ connectivityMaskBasedOnAdjacentTiles(int32_t tileR, int32_t tileC)
 	return iConnectivityMask;
 }
 
-bool
-OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	int32_t tileC;
 	int32_t tileR;
@@ -641,8 +640,7 @@ OverlayBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	return true;
 }
 
-bool
-OverlayBrush::beginPaint()
+bool OverlayBrush::beginPaint()
 {
 	if (pAction)
 	{

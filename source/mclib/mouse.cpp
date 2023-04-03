@@ -88,8 +88,7 @@ extern uint32_t MouseInWindow;
 //
 // Init the Mouse timer
 //
-void
-MouseTimerInit()
+void MouseTimerInit()
 {
 	// Create mouseBuffer to hold screen contents under the mouse cursor.
 	// This buffer MUST be at bit depth of screen!!
@@ -121,8 +120,7 @@ MouseTimerInit()
 //
 // Clean up the mouse timer
 //
-void
-MouseTimerKill()
+void MouseTimerKill()
 {
 	if (HTimer)
 	{

@@ -13,13 +13,13 @@ class CPrefs
 {
 public:
 	CPrefs(void);
-	int32_t load(const std::wstring_view& pFileName = "options");
+	int32_t load(std::wstring_view pFileName = "options");
 	int32_t save(void);
 	int32_t applyPrefs(bool bApplyResolution = 1);
 
-	void setNewName(const std::wstring_view& pNewName);
-	void setNewUnit(const std::wstring_view& pNewUnit);
-	void setNewIP(const std::wstring_view& pNewIP);
+	void setNewName(std::wstring_view pNewName);
+	void setNewUnit(std::wstring_view pNewUnit);
+	void setNewIP(std::wstring_view pNewIP);
 
 public:
 	int32_t DigitalMasterVolume;

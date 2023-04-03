@@ -36,10 +36,10 @@ typedef struct _VertexBuffer
 	gosVERTEXTYPE vertextype; // Type of vertex the buffer contains
 	struct _VertexBuffer* pNext;
 	LPDIRECT3DVERTEXBUFFER7 vBuffer; // D3D handle
-//#if defined(LAB_ONLY)	// valid in debug objects
+	//#if defined(LAB_ONLY)	// valid in debug objects
 	LPDIRECT3DVERTEXBUFFER7 DebugvBuffer; // D3D handle to a system memory vertex buffer for debugging D3DTLVERTEX data
 	LPDIRECT3DVERTEXBUFFER7 CopyvBuffer; // D3D handle to a system memory vertex buffer for debugging (Readable copy of D3DVERTEX data)
-//#endif
+	//#endif
 	uint32_t numbervertices; // Number of vertices when created
 	BOOLEAN Locked; // True when locked
 	BOOLEAN WantOptimize; // True to optimize after the next unlock

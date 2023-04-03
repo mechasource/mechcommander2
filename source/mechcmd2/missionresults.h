@@ -10,7 +10,6 @@ MissionResults.h			: Interface for the MissionResults component.
 //===========================================================================//
 \*************************************************************************************************/
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 MissionResults:
@@ -38,9 +37,12 @@ public:
 
 	void begin(void);
 	void end(void);
-	bool isDone() { return bDone; }
+	bool isDone()
+	{
+		return bDone;
+	}
 
-	void setHostLeftDlg(const std::wstring_view& pName);
+	void setHostLeftDlg(std::wstring_view pName);
 
 	// Tutorial - Used to play Voice Over, first time in!!
 	// THIS must be added to savegame!!

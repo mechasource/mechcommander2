@@ -91,8 +91,7 @@ ObjectType::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-ObjectType::operator delete(PVOID us)
+void ObjectType::operator delete(PVOID us)
 {
 	if (!((ObjectTypePtr)us)->inUse())
 	{
@@ -113,8 +112,7 @@ ObjectType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void
-ObjectType::destroy(void)
+void ObjectType::destroy(void)
 {
 	// Nothing at the moment!
 	ObjectTypeManager::objectTypeCache->Free(appearName);
@@ -145,7 +143,7 @@ ObjectType::init(FitIniFilePtr objFile)
 	result = objFile->readIdString("AppearanceName", apprName, 511);
 	if (result == NO_ERROR)
 	{
-		appearName = (const std::wstring_view&)ObjectTypeManager::objectTypeCache->Malloc(strlen(apprName) + 1);
+		appearName = (std::wstring_view)ObjectTypeManager::objectTypeCache->Malloc(strlen(apprName) + 1);
 		strcpy(appearName, apprName);
 	}
 	result = objFile->readIdLong("ExplosionObject", explosionObject);
@@ -167,8 +165,7 @@ ObjectType::init(FitIniFilePtr objFile)
 
 //---------------------------------------------------------------------------
 
-void
-ObjectType::createExplosion(Stuff::Vector3D& position, float dmg, float rad)
+void ObjectType::createExplosion(Stuff::Vector3D& position, float dmg, float rad)
 {
 	int32_t effectId = weaponEffects->GetEffectObjNum(explosionObject);
 	if (explosionObject >= 0)
@@ -181,8 +178,7 @@ ObjectType::createExplosion(Stuff::Vector3D& position, float dmg, float rad)
 
 //---------------------------------------------------------------------------
 
-bool
-ObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool ObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------
 	// The default reaction of any object in the world
@@ -193,8 +189,7 @@ ObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool
-ObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool ObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------
 	// The default reaction of any object in the world
@@ -214,7 +209,7 @@ ObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 //***************************************************************************
 
 int32_t
-ObjectTypeManager::init(const std::wstring_view& objectFileName, int32_t objectTypeCacheSize,
+ObjectTypeManager::init(std::wstring_view objectFileName, int32_t objectTypeCacheSize,
 	int32_t objectCacheSize, int32_t maxObjectTypes)
 {
 	FullPathFileName objectName;
@@ -259,8 +254,7 @@ ObjectTypeManager::init(const std::wstring_view& objectFileName, int32_t objectT
 
 //---------------------------------------------------------------------------
 
-void
-ObjectTypeManager::destroy(void)
+void ObjectTypeManager::destroy(void)
 {
 	if (table)
 	{
@@ -468,8 +462,7 @@ ObjectTypeManager::load(ObjectTypeNumber objTypeNum, bool noCacheOut, bool force
 
 //---------------------------------------------------------------------------
 
-void
-ObjectTypeManager::remove(int32_t objTypeNum)
+void ObjectTypeManager::remove(int32_t objTypeNum)
 {
 	if ((objTypeNum <= 0) || (objTypeNum >= numObjectTypes))
 		Fatal(objTypeNum, " ObjectTypeManager.remove: bad objTypeNum ");
@@ -486,8 +479,7 @@ ObjectTypeManager::remove(int32_t objTypeNum)
 
 //---------------------------------------------------------------------------
 
-void
-ObjectTypeManager::remove(ObjectTypePtr objTypePtr)
+void ObjectTypeManager::remove(ObjectTypePtr objTypePtr)
 {
 	remove(objTypePtr->whatAmI());
 }

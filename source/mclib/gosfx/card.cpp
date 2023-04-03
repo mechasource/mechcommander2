@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 //
-gosFX::Card__Specification::Card__Specification(std::iostream stream, uint32_t gfx_version) :
-	Singleton__Specification(gosFX::CardClassID, stream, gfx_version)
+gosFX::Card__Specification::Card__Specification(std::iostream stream, uint32_t gfx_version)
+	: Singleton__Specification(gosFX::CardClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	_ASSERT(m_class == CardClassID);
@@ -62,8 +62,8 @@ gosFX::Card__Specification::Card__Specification(std::iostream stream, uint32_t g
 
 //------------------------------------------------------------------------------
 //
-gosFX::Card__Specification::Card__Specification() :
-	Singleton__Specification(gosFX::CardClassID)
+gosFX::Card__Specification::Card__Specification()
+	: Singleton__Specification(gosFX::CardClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -90,8 +90,7 @@ gosFX::Card__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card__Specification::Save(std::iostream stream)
+void gosFX::Card__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -108,8 +107,7 @@ gosFX::Card__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card__Specification::BuildDefaults()
+void gosFX::Card__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Singleton__Specification::BuildDefaults();
@@ -134,8 +132,7 @@ gosFX::Card__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Card__Specification::IsDataValid(bool fix_data)
+bool gosFX::Card__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	float max_offset, min_offset;
@@ -159,7 +156,7 @@ gosFX::Card__Specification::IsDataValid(bool fix_data)
 		{
 			m_VOffset.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -184,7 +181,7 @@ gosFX::Card__Specification::IsDataValid(bool fix_data)
 		{
 			m_UOffset.SetCurve(0.0f);
 			// PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of
-			// Range and has been Reset", (const std::wstring_view&)m_name));
+			// Range and has been Reset", (std::wstring_view)m_name));
 		}
 		else
 			return false;
@@ -194,8 +191,7 @@ gosFX::Card__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card__Specification::Copy(Card__Specification* spec)
+void gosFX::Card__Specification::Copy(Card__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -217,8 +213,7 @@ gosFX::Card__Specification::Copy(Card__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card__Specification::Setwidth()
+void gosFX::Card__Specification::Setwidth()
 {
 	m_width = static_cast<uint8_t>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
@@ -231,8 +226,7 @@ gosFX::Card::ClassData* gosFX::Card::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card::InitializeClass()
+void gosFX::Card::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -243,8 +237,7 @@ gosFX::Card::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card::TerminateClass()
+void gosFX::Card::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -253,8 +246,9 @@ gosFX::Card::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Card::Card(Specification* spec, uint32_t flags) :
-	Singleton(DefaultData, spec, flags), m_cardCount(1)
+gosFX::Card::Card(Specification* spec, uint32_t flags)
+	: Singleton(DefaultData, spec, flags)
+	, m_cardCount(1)
 {
 	Check_Object(spec);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -291,8 +285,7 @@ gosFX::Card::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card::Start(ExecuteInfo* info)
+void gosFX::Card::Start(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -307,8 +300,7 @@ gosFX::Card::Start(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::Card::Execute(ExecuteInfo* info)
+bool gosFX::Card::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -397,8 +389,7 @@ gosFX::Card::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card::Kill()
+void gosFX::Card::Kill()
 {
 	// Check_Object(this);
 	m_cardCloud->TurnOff(0);
@@ -407,8 +398,7 @@ gosFX::Card::Kill()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card::Draw(DrawInfo* info)
+void gosFX::Card::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -467,8 +457,7 @@ gosFX::Card::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Card::TestInstance(void) const
+void gosFX::Card::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

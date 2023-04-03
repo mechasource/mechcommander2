@@ -56,7 +56,7 @@ public:
 		return mapOrigin;
 	}
 
-	void SetMapSizeAndName(int32_t x, int32_t z, const std::wstring_view& name);
+	void SetMapSizeAndName(int32_t x, int32_t z, std::wstring_view name);
 
 	int32_t GetMapZoneCountX(void)
 	{
@@ -69,7 +69,7 @@ public:
 		return mapZoneCountZ;
 	}
 
-	const std::wstring_view&
+	std::wstring_view
 	GetMapName(void)
 	{
 		// Check_Object(this);

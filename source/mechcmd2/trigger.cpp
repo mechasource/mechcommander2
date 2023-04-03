@@ -19,16 +19,14 @@ TriggerAreaManager::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-TriggerAreaManager::operator delete(PVOID us)
+void TriggerAreaManager::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-TriggerAreaManager::destroy(void)
+void TriggerAreaManager::destroy(void)
 {
 }
 
@@ -69,8 +67,7 @@ TriggerAreaManager::add(
 
 //---------------------------------------------------------------------------
 
-void
-TriggerAreaManager::remove(int32_t areaHandle)
+void TriggerAreaManager::remove(int32_t areaHandle)
 {
 	if (triggerAreas[areaHandle].param == TRIGGER_AREA_NONE)
 		return;
@@ -89,16 +86,14 @@ TriggerAreaManager::remove(int32_t areaHandle)
 
 //---------------------------------------------------------------------------
 
-void
-TriggerAreaManager::reset(int32_t areaHandle)
+void TriggerAreaManager::reset(int32_t areaHandle)
 {
 	triggerAreas[areaHandle].hit = false;
 }
 
 //---------------------------------------------------------------------------
 
-bool
-TriggerAreaManager::isHit(int32_t areaHandle)
+bool TriggerAreaManager::isHit(int32_t areaHandle)
 {
 	if (triggerAreas[areaHandle].type == TRIGGER_AREA_NONE)
 		return (false);
@@ -106,11 +101,9 @@ TriggerAreaManager::isHit(int32_t areaHandle)
 }
 
 //---------------------------------------------------------------------------
-void
-DEBUGWINS_print(const std::wstring_view& s, int32_t window);
+void DEBUGWINS_print(std::wstring_view s, int32_t window);
 
-void
-TriggerAreaManager::setHit(std::unique_ptr<Mover> mover)
+void TriggerAreaManager::setHit(std::unique_ptr<Mover> mover)
 {
 #if 1
 	for (size_t i = 0; i < MAX_TRIGGER_AREAS; i++)

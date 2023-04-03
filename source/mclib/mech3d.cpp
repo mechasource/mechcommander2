@@ -138,7 +138,7 @@ wchar_t MechStateByGesture[MAX_MECH_ANIMATIONS] = {
 #define JUMP_PITCH (90.0f)
 
 extern bool reloadBounds;
-const std::wstring_view& MechAnimationNames[MaxGestures + 2] = {
+std::wstring_view MechAnimationNames[MaxGestures + 2] = {
 	"StandToPark", // GesturePark							 0 -- Park
 	"ParkToStand", // GestureParkToStand					 1 --
 	// ParkToStand
@@ -189,8 +189,7 @@ bool Mech3DAppearanceType::animationLoadingEnabled = true;
 
 //-------------------------------------------------------------------------------
 // class Mech3DAppearanceType
-void
-Mech3DAppearanceType::init(const std::wstring_view& fileName)
+void Mech3DAppearanceType::init(std::wstring_view fileName)
 {
 	AppearanceType::init(fileName);
 	//---------------------------------------------------
@@ -232,7 +231,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 	if (result != NO_ERROR)
 		STOP(("Mech %s has no TGL Data", fileName));
 	wchar_t aseFileName[512];
-	result = mechFile.readIdString("FileName", aseFileName, 511);
+	result = mechFile.readIdString("filename", aseFileName, 511);
 	int32_t i;
 	if (result != NO_ERROR)
 	{
@@ -242,7 +241,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 		{
 			wchar_t baseName[256];
 			wchar_t baseLODDist[256];
-			sprintf(baseName, "FileName%d", i);
+			sprintf(baseName, "filename%d", i);
 			sprintf(baseLODDist, "Distance%d", i);
 			result = mechFile.readIdString(baseName, aseFileName, 511);
 			if (result == NO_ERROR)
@@ -429,7 +428,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 			result = mechFile.readIdString("SmokeNodeName", smokeName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i].nodeId =
-				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(smokeName) + 1);
+				(std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(smokeName) + 1);
 			gosASSERT(nodeData[i].nodeId != nullptr);
 			strcpy(nodeData[i].nodeId, smokeName);
 			nodeData[i].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -447,7 +446,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 			result = mechFile.readIdLong("WeaponType", weaponType);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i + numSmokeNodes].nodeId =
-				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName) + 1);
+				(std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName) + 1);
 			gosASSERT(nodeData[i + numSmokeNodes].nodeId != nullptr);
 			strcpy(nodeData[i + numSmokeNodes].nodeId, weaponName);
 			nodeData[i + numSmokeNodes].weaponType = weaponType;
@@ -462,7 +461,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 			result = mechFile.readIdString("JumpNodeName", jumpName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i + numSmokeNodes + numWeaponNodes].nodeId =
-				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(jumpName) + 1);
+				(std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(jumpName) + 1);
 			gosASSERT(nodeData[i + numSmokeNodes + numWeaponNodes].nodeId != nullptr);
 			strcpy(nodeData[i + numSmokeNodes + numWeaponNodes].nodeId, jumpName);
 			nodeData[i + numSmokeNodes + numWeaponNodes].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -477,7 +476,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 			result = mechFile.readIdString("FootNodeName", footName, 511);
 			gosASSERT(result == NO_ERROR);
 			nodeData[i + numSmokeNodes + numWeaponNodes + numJumpNodes].nodeId =
-				(const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(footName) + 1);
+				(std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(footName) + 1);
 			gosASSERT(
 				nodeData[i + numSmokeNodes + numWeaponNodes + numJumpNodes].nodeId != nullptr);
 			strcpy(nodeData[i + numSmokeNodes + numWeaponNodes + numJumpNodes].nodeId, footName);
@@ -515,8 +514,7 @@ Mech3DAppearanceType::init(const std::wstring_view& fileName)
 }
 
 //----------------------------------------------------------------------------
-void
-Mech3DAppearanceType::destroy(void)
+void Mech3DAppearanceType::destroy(void)
 {
 	AppearanceType::destroy();
 	int32_t i = 0;
@@ -569,8 +567,7 @@ Mech3DAppearanceType::destroy(void)
 }
 
 //----------------------------------------------------------------------------
-void
-Mech3DAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
+void Mech3DAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -589,8 +586,7 @@ float mechDebugAngle[MAX_MECHS];
 float torsoDebugAngle[MAX_MECHS];
 //-----------------------------------------------------------------------------
 // class Mech3DAppearance
-void
-Mech3DAppearance::resetWeaponNodes(void)
+void Mech3DAppearance::resetWeaponNodes(void)
 {
 	// THis should never be called after the game inits!!
 	for (size_t i = 0; i < mechType->numWeaponNodes; i++)
@@ -601,8 +597,7 @@ Mech3DAppearance::resetWeaponNodes(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::setWeaponNodeUsed(int32_t weaponNode)
+void Mech3DAppearance::setWeaponNodeUsed(int32_t weaponNode)
 {
 	// THis should never be called after the game inits!!
 	weaponNode -= mechType->numSmokeNodes;
@@ -614,8 +609,7 @@ Mech3DAppearance::setWeaponNodeUsed(int32_t weaponNode)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::setWeaponNodeRecycle(int32_t nodeId, float time)
+void Mech3DAppearance::setWeaponNodeRecycle(int32_t nodeId, float time)
 {
 	nodeId -= mechType->numSmokeNodes;
 	if ((nodeId >= 0) && (nodeId < mechType->numWeaponNodes))
@@ -656,7 +650,7 @@ Mech3DAppearance::getWeaponNodePosition(int32_t nodeId)
 
 //-----------------------------------------------------------------------------
 Stuff::Vector3D
-Mech3DAppearance::getNodeNamePosition(const std::wstring_view& nodeName)
+Mech3DAppearance::getNodeNamePosition(std::wstring_view nodeName)
 {
 	Stuff::Vector3D result = position;
 	if (!inView)
@@ -849,8 +843,7 @@ Mech3DAppearance::getWeaponNode(int32_t weaponType)
 }
 
 //-----------------------------------------------------------------------------
-float
-Mech3DAppearance::getWeaponNodeRecycle(int32_t node)
+float Mech3DAppearance::getWeaponNodeRecycle(int32_t node)
 {
 	node -= mechType->numSmokeNodes;
 	if ((node >= 0) && (node < mechType->numWeaponNodes))
@@ -859,8 +852,7 @@ Mech3DAppearance::getWeaponNodeRecycle(int32_t node)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
+void Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 {
 	Appearance::init(tree, obj);
 	mechType = (Mech3DAppearanceType*)tree;
@@ -1181,8 +1173,7 @@ Mech3DAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 	}
 }
 
-void
-Mech3DAppearance::initFX(void)
+void Mech3DAppearance::initFX(void)
 {
 	//-----------------------------------------------
 	// Create FX here so they are always ready to go!
@@ -1266,8 +1257,7 @@ Mech3DAppearance::initFX(void)
 // reversing, running or limping.
 // NO OTHER GESTURE IS
 // VALID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-void
-Mech3DAppearance::hitFront(void)
+void Mech3DAppearance::hitFront(void)
 {
 	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) || (currentGestureId == GestureReverse) || (currentGestureId == GestureRun) || (currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
 	{
@@ -1281,8 +1271,7 @@ Mech3DAppearance::hitFront(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::hitBack(void)
+void Mech3DAppearance::hitBack(void)
 {
 	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) || (currentGestureId == GestureReverse) || (currentGestureId == GestureRun) || (currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
 	{
@@ -1296,8 +1285,7 @@ Mech3DAppearance::hitBack(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::hitLeft(void)
+void Mech3DAppearance::hitLeft(void)
 {
 	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) || (currentGestureId == GestureReverse) || (currentGestureId == GestureRun) || (currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
 	{
@@ -1311,8 +1299,7 @@ Mech3DAppearance::hitLeft(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::hitRight(void)
+void Mech3DAppearance::hitRight(void)
 {
 	if ((currentGestureId == GestureStand) || (currentGestureId == GestureWalk) || (currentGestureId == GestureReverse) || (currentGestureId == GestureRun) || (currentGestureId == GestureLimpLeft) || (currentGestureId == GestureLimpRight))
 	{
@@ -1326,15 +1313,13 @@ Mech3DAppearance::hitRight(void)
 }
 
 //-----------------------------------------------------------------------------
-bool
-Mech3DAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
+bool Mech3DAppearance::PerPolySelect(int32_t mouseX, int32_t mouseY)
 {
 	return mechShape->PerPolySelect(mouseX, mouseY);
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::LoadPaintSchemata(void)
+void Mech3DAppearance::LoadPaintSchemata(void)
 {
 	FullPathFileName paintName;
 	paintName.init(tglPath, "paintSchemata", ".fit");
@@ -1366,8 +1351,7 @@ Mech3DAppearance::LoadPaintSchemata(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::setPaintScheme(void)
+void Mech3DAppearance::setPaintScheme(void)
 {
 	//----------------------------------------------------------------------------
 	// Simple really.  Get the texture memory, apply the paint scheme, let it
@@ -1463,8 +1447,7 @@ bgrTorgb(uint32_t frontRGB)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
+void Mech3DAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
 {
 #ifdef BGR
 	// These come into here bgr instead of RGB.  CONVERT!
@@ -1480,8 +1463,7 @@ Mech3DAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBl
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
+void Mech3DAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
 {
 #ifdef BGR
 	red = bgrTorgb(psRed);
@@ -1495,8 +1477,7 @@ Mech3DAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
+void Mech3DAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 {
 	//---------------------------------------------------------------------------------
 	// Simple really.  Toss the current texture, reload the RGB and reapply the
@@ -1575,8 +1556,7 @@ Mech3DAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::setObjectParameters(
+void Mech3DAppearance::setObjectParameters(
 	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	movedThisFrame = false;
@@ -1600,8 +1580,7 @@ Mech3DAppearance::setObjectParameters(
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::setMoverParameters(
+void Mech3DAppearance::setMoverParameters(
 	float turretRot, float lArmRot, float rArmRot, bool isAirborne)
 {
 	isHelicopter = isAirborne;
@@ -1621,14 +1600,12 @@ Mech3DAppearance::setMoverParameters(
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::updateFootprints(void)
+void Mech3DAppearance::updateFootprints(void)
 {
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::debugUpdate(int32_t whichOne)
+void Mech3DAppearance::debugUpdate(int32_t whichOne)
 {
 	if (!inDebugMoveMode)
 		return;
@@ -1730,8 +1707,7 @@ Mech3DAppearance::debugUpdate(int32_t whichOne)
 }
 
 //-----------------------------------------------------------------------------
-bool
-Mech3DAppearance::isMouseOver(float px, float py)
+bool Mech3DAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
@@ -1748,8 +1724,7 @@ Mech3DAppearance::isMouseOver(float px, float py)
 }
 
 //-----------------------------------------------------------------------------
-bool
-Mech3DAppearance::recalcBounds(void)
+bool Mech3DAppearance::recalcBounds(void)
 {
 	Stuff::Vector4D tempPos;
 	bool wasInView = inView;
@@ -2433,8 +2408,7 @@ int64_t x;
 #endif
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::setObjStatus(int32_t oStatus)
+void Mech3DAppearance::setObjStatus(int32_t oStatus)
 {
 	if ((status != oStatus) && (!InEditor))
 	{
@@ -2529,8 +2503,7 @@ Mech3DAppearance::setObjStatus(int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::updateGeometry(void)
+void Mech3DAppearance::updateGeometry(void)
 {
 #ifdef LAB_ONLY
 	x = GetCycles();
@@ -3078,8 +3051,7 @@ std::unique_ptr<File> logFile = nullptr;
 #endif
 
 //-----------------------------------------------------------------------------
-bool
-Mech3DAppearance::setJumpParameters(Stuff::Vector3D& end)
+bool Mech3DAppearance::setJumpParameters(Stuff::Vector3D& end)
 {
 	if (!inJump)
 	{
@@ -3091,8 +3063,7 @@ Mech3DAppearance::setJumpParameters(Stuff::Vector3D& end)
 }
 
 //-----------------------------------------------------------------------------
-bool
-Mech3DAppearance::leftArmRecalc(void)
+bool Mech3DAppearance::leftArmRecalc(void)
 {
 	if (!leftArm)
 		return false;
@@ -3144,8 +3115,7 @@ Mech3DAppearance::leftArmRecalc(void)
 }
 
 //-----------------------------------------------------------------------------
-bool
-Mech3DAppearance::rightArmRecalc(void)
+bool Mech3DAppearance::rightArmRecalc(void)
 {
 	if (!rightArm)
 		return false;
@@ -3691,8 +3661,7 @@ Mech3DAppearance::update(bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::blowLeftArm(void)
+void Mech3DAppearance::blowLeftArm(void)
 {
 	if (leftArmOff)
 		return;
@@ -3794,8 +3763,7 @@ Mech3DAppearance::blowLeftArm(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::blowRightArm(void)
+void Mech3DAppearance::blowRightArm(void)
 {
 	if (rightArmOff)
 		return;
@@ -3897,8 +3865,7 @@ Mech3DAppearance::blowRightArm(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::startSmoking(int32_t smokeLvl)
+void Mech3DAppearance::startSmoking(int32_t smokeLvl)
 {
 	// Check if we are already playing one.  If not, smoke away
 	// First, check if its even loaded.
@@ -3974,8 +3941,7 @@ Mech3DAppearance::startSmoking(int32_t smokeLvl)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::startWaterWake(void)
+void Mech3DAppearance::startWaterWake(void)
 {
 	// Check if we are already playing one.  If not, wake city.
 	// Check if we are a helicopter OR we are jumping.  No WAKE if either is
@@ -4030,8 +3996,7 @@ Mech3DAppearance::startWaterWake(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::stopWaterWake(void)
+void Mech3DAppearance::stopWaterWake(void)
 {
 	if (waterWake && isWaking) // Stop the effect if we are running it!!
 		waterWake->Kill();
@@ -4039,8 +4004,7 @@ Mech3DAppearance::stopWaterWake(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::playEjection(void)
+void Mech3DAppearance::playEjection(void)
 {
 	if (InEditor)
 		return;
@@ -4090,8 +4054,7 @@ Mech3DAppearance::playEjection(void)
 }
 
 //-----------------------------------------------------------------------------
-void
-Mech3DAppearance::destroy(void)
+void Mech3DAppearance::destroy(void)
 {
 	AppearanceTypeList::appearanceHeap->Free(paintSchemata);
 	paintSchemata = nullptr;
@@ -4176,8 +4139,7 @@ Mech3DAppearance::destroy(void)
 }
 
 //*****************************************************************************
-void
-Mech3DAppearance::copyTo(MechAppearanceData* data)
+void Mech3DAppearance::copyTo(MechAppearanceData* data)
 {
 	data->frameNum = frameNum;
 	data->mechFrameRate = mechFrameRate;
@@ -4217,8 +4179,7 @@ Mech3DAppearance::copyTo(MechAppearanceData* data)
 }
 
 //*****************************************************************************
-void
-Mech3DAppearance::copyFrom(MechAppearanceData* data)
+void Mech3DAppearance::copyFrom(MechAppearanceData* data)
 {
 	frameNum = data->frameNum;
 	mechFrameRate = data->mechFrameRate;
@@ -4286,8 +4247,7 @@ Mech3DAppearance::copyFrom(MechAppearanceData* data)
 	jumpVelocity = data->jumpVelocity;
 }
 
-void
-Mech3DAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
+void Mech3DAppearance::flashBuilding(float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;

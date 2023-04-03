@@ -25,7 +25,7 @@ public:
 		s_lastType = Type;
 		pAction = nullptr;
 	}
-	virtual ~TerrainBrush() {}
+	virtual ~TerrainBrush() { }
 
 	bool beginPaint()
 	{

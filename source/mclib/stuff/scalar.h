@@ -94,8 +94,7 @@ Truncate_Float_To_Byte(float val)
 
 uint32_t
 Scaled_Float_To_Bits(float val, float min, float max, uint32_t number_of_bits);
-float
-Scaled_Float_From_Bits(uint32_t val, float min, float max, uint32_t number_of_bits);
+float Scaled_Float_From_Bits(uint32_t val, float min, float max, uint32_t number_of_bits);
 uint32_t
 Scaled_Int_To_Bits(int32_t val, int32_t min, int32_t max, uint32_t number_of_bits);
 int32_t
@@ -130,7 +129,7 @@ OneOverApproximate(float f)
 	_ASSERT(f != 0.0f);
 #if USE_INLINE_ASSEMBLER_CODE
 	float temp;
-	int32_t _i = 2 * FP_ONE_BITS - *(int32_t*) & (f);
+	int32_t _i = 2 * FP_ONE_BITS - *(int32_t*)&(f);
 	temp = *(float*)&_i;
 	temp = temp * (2.0f - (f)*temp);
 	return temp;
@@ -139,8 +138,7 @@ OneOverApproximate(float f)
 #endif
 }
 
-void
-Find_Roots(float a, // a*x*x + b*x + c = 0
+void Find_Roots(float a, // a*x*x + b*x + c = 0
 	float b, float c, float* center, float* range);
 
 inline float
@@ -203,7 +201,7 @@ Tan(float v)
 }
 
 inline float
-AtoF(const std::wstring_view& v)
+AtoF(std::wstring_view v)
 {
 	return static_cast<float>(atof(v));
 }

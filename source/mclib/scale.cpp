@@ -66,7 +66,7 @@ scaleDraw(uint8_t* shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool r
 		scaleUp = 0;
 	//----------------------------------------------------------------
 	// Check if shape is actually valid.
-	if ((*(int32_t*)shapeTable != *(int32_t*) "1.10"))
+	if ((*(int32_t*)shapeTable != *(int32_t*)"1.10"))
 		return (TRUE);
 	int32_t result = VFX_shape_count(shapeTable);
 	if (result <= (int32_t)frameNum)

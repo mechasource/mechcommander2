@@ -18,8 +18,7 @@ class Vector3D;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::Vector3D& vector);
+void Spew(std::wstring_view group, const Stuff::Vector3D& vector);
 #endif
 
 namespace Stuff
@@ -127,12 +126,26 @@ public:
 		y = 0.f;
 		z = 0.f;
 	}
-	Vector3D(float x, float y, float z) :
-		x(x), y(y), z(z) {}
-	Vector3D(const Vector3D& v) :
-		x(v.x), y(v.y), z(v.z) {}
-	explicit Vector3D(const UnitQuaternion& q) { *this = q; }
-	explicit Vector3D(const YawPitchRange& p) { *this = p; }
+	Vector3D(float x, float y, float z)
+		: x(x)
+		, y(y)
+		, z(z)
+	{
+	}
+	Vector3D(const Vector3D& v)
+		: x(v.x)
+		, y(v.y)
+		, z(v.z)
+	{
+	}
+	explicit Vector3D(const UnitQuaternion& q)
+	{
+		*this = q;
+	}
+	explicit Vector3D(const YawPitchRange& p)
+	{
+		*this = p;
+	}
 
 	//
 	// Assignment operators
@@ -157,19 +170,31 @@ public:
 		Check_Object(&v);
 		return v.GetLengthSquared() <= e;
 	}
-	bool operator!(void) const { return Small_Enough(*this, SMALL); }
+	bool operator!(void) const
+	{
+		return Small_Enough(*this, SMALL);
+	}
 
 	friend bool Close_Enough(const Vector3D& v1, const Vector3D& v2, float e = SMALL);
-	bool operator==(const Vector3D& v) const { return Close_Enough(*this, v, SMALL); }
-	bool operator!=(const Vector3D& v) const { return !Close_Enough(*this, v, SMALL); }
+	bool operator==(const Vector3D& v) const
+	{
+		return Close_Enough(*this, v, SMALL);
+	}
+	bool operator!=(const Vector3D& v) const
+	{
+		return !Close_Enough(*this, v, SMALL);
+	}
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 	//
 	// Indexing operations
 	//
 
-	static int32_t GetMemberCount(void) { return 3; }
+	static int32_t GetMemberCount(void)
+	{
+		return 3;
+	}
 
 	const float& operator[](size_t index) const
 	{
@@ -249,7 +274,10 @@ public:
 		z = v1.z + v2.z * scale;
 		return *this;
 	}
-	Vector3D& operator+=(const Vector3D& v) { return Add(*this, v); }
+	Vector3D& operator+=(const Vector3D& v)
+	{
+		return Add(*this, v);
+	}
 	Vector3D& Subtract(const Vector3D& v1, const Vector3D& v2)
 	{
 		// Check_Pointer(this);
@@ -260,7 +288,10 @@ public:
 		z = v1.z - v2.z;
 		return *this;
 	}
-	Vector3D& operator-=(const Vector3D& v) { return Subtract(*this, v); }
+	Vector3D& operator-=(const Vector3D& v)
+	{
+		return Subtract(*this, v);
+	}
 
 	float operator*(const Vector3D& v) const
 	{
@@ -322,7 +353,10 @@ public:
 		z = v.z * scale;
 		return *this;
 	}
-	Vector3D& operator*=(float v) { return Multiply(*this, v); }
+	Vector3D& operator*=(float v)
+	{
+		return Multiply(*this, v);
+	}
 	Vector3D& Multiply(const Vector3D& v1, const Vector3D& v2)
 	{
 		// Check_Pointer(this);
@@ -333,7 +367,10 @@ public:
 		z = v1.z * v2.z;
 		return *this;
 	}
-	Vector3D& operator*=(const Vector3D& v) { return Multiply(*this, v); }
+	Vector3D& operator*=(const Vector3D& v)
+	{
+		return Multiply(*this, v);
+	}
 
 	Vector3D& Divide(const Vector3D& v, float scale)
 	{
@@ -346,7 +383,10 @@ public:
 		z = v.z * scale;
 		return *this;
 	}
-	Vector3D& operator/=(float v) { return Divide(*this, v); }
+	Vector3D& operator/=(float v)
+	{
+		return Divide(*this, v);
+	}
 
 	Vector3D& Divide(const Vector3D& v1, const Vector3D& v2)
 	{
@@ -361,7 +401,10 @@ public:
 		z = v1.z / v2.z;
 		return *this;
 	}
-	Vector3D& operator/=(const Vector3D& v) { return Divide(*this, v); }
+	Vector3D& operator/=(const Vector3D& v)
+	{
+		return Divide(*this, v);
+	}
 
 	//
 	// Transform operators
@@ -382,9 +425,15 @@ public:
 		// Check_Object(this);
 		return x * x + y * y + z * z;
 	}
-	float GetLength(void) const { return Sqrt(GetLengthSquared()); }
+	float GetLength(void) const
+	{
+		return Sqrt(GetLengthSquared());
+	}
 
-	float GetApproximateLength(void) const { return SqrtApproximate(GetLengthSquared()); }
+	float GetApproximateLength(void) const
+	{
+		return SqrtApproximate(GetLengthSquared());
+	}
 
 	Vector3D& Normalize(const Vector3D& v)
 	{
@@ -410,7 +459,10 @@ public:
 		return *this;
 	}
 
-	void Zero(void) { x = y = z = 0.0; }
+	void Zero(void)
+	{
+		x = y = z = 0.0;
+	}
 
 	//
 	// Template support
@@ -430,15 +482,14 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const Vector3D& vector);
+	friend void ::Spew(std::wstring_view group, const Vector3D& vector);
 #endif
 	static bool TestClass(void);
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector3D functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void
-Convert_From_Ascii(const std::wstring_view& str, Vector3D* vector_3D);
+void Convert_From_Ascii(std::wstring_view str, Vector3D* vector_3D);
 } // namespace Stuff
 
 namespace MemoryStreamIO

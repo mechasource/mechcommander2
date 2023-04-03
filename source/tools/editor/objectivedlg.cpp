@@ -25,8 +25,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // ObjectiveDlg dialog
 
-ObjectiveDlg::ObjectiveDlg(CWnd* pParent /*=nullptr*/) :
-	CDialog(ObjectiveDlg::IDD, pParent)
+ObjectiveDlg::ObjectiveDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(ObjectiveDlg::IDD, pParent)
 {
 	m_TitleResourceStringID = 0;
 	m_DescriptionResourceStringID = 0;
@@ -54,8 +54,7 @@ ObjectiveDlg::ObjectiveDlg(CWnd* pParent /*=nullptr*/) :
 	nFailureActionSpeciesSelectionIndex = -1;
 }
 
-void
-ObjectiveDlg::DoDataExchange(CDataExchange* pDX)
+void ObjectiveDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(ObjectiveDlg)
@@ -94,31 +93,31 @@ ObjectiveDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(ObjectiveDlg, CDialog)
-//{{AFX_MSG_MAP(ObjectiveDlg)
-ON_BN_CLICKED(IDC_OBJECTIVE_ADD_CONDITION_BUTTON, OnObjectiveAddConditionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_CONDITION_BUTTON, OnObjectiveRemoveConditionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_ADD_ACTION_BUTTON, OnObjectiveAddActionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_ACTION_BUTTON, OnObjectiveRemoveActionButton)
-ON_CBN_SELCHANGE(IDC_OBJECTIVEGROUP, OnSelchangeGroup)
-ON_BN_CLICKED(IDC_BASEEDIT2, OnBaseedit2)
-ON_BN_CLICKED(IDC_HIGHILIGHT2EDIT2, OnHighilight2edit2)
-ON_BN_CLICKED(IDC_HIGHLIGHT1EDIT, OnHighlight1edit)
-ON_EN_CHANGE(IDC_HIGHLIGHT1, OnChangeHighlight1)
-ON_EN_CHANGE(IDC_HIGHLIGHT2, OnChangeHighlight2)
-ON_EN_CHANGE(IDC_BASE2, OnChangeBase2)
-ON_WM_CTLCOLOR()
-ON_BN_CLICKED(IDC_OBJECTIVE_TITLE_EDIT_BUTTON, OnObjectiveTitleEditButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_DESCRIPTION_EDIT_BUTTON, OnObjectiveDescriptionEditButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_ADD_FAILURE_CONDITION_BUTTON, OnObjectiveAddFailureConditionButton)
-ON_BN_CLICKED(
-	IDC_OBJECTIVE_REMOVE_FAILURE_CONDITION_BUTTON, OnObjectiveRemoveFailureConditionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_ADD_FAILURE_ACTION_BUTTON, OnObjectiveAddFailureActionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_FAILURE_ACTION_BUTTON, OnObjectiveRemoveFailureActionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_CONDITION_BUTTON, OnObjectiveViewConditionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_ACTION_BUTTON, OnObjectiveViewActionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_FAILURE_CONDITION_BUTTON, OnObjectiveViewFailureConditionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_FAILURE_ACTION_BUTTON, OnObjectiveViewFailureActionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_CLEAR_LOGISTICS_MODEL_BUTTON, OnObjectiveClearLogisticsModelButton)
+	//{{AFX_MSG_MAP(ObjectiveDlg)
+	ON_BN_CLICKED(IDC_OBJECTIVE_ADD_CONDITION_BUTTON, OnObjectiveAddConditionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_CONDITION_BUTTON, OnObjectiveRemoveConditionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_ADD_ACTION_BUTTON, OnObjectiveAddActionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_ACTION_BUTTON, OnObjectiveRemoveActionButton)
+	ON_CBN_SELCHANGE(IDC_OBJECTIVEGROUP, OnSelchangeGroup)
+	ON_BN_CLICKED(IDC_BASEEDIT2, OnBaseedit2)
+	ON_BN_CLICKED(IDC_HIGHILIGHT2EDIT2, OnHighilight2edit2)
+	ON_BN_CLICKED(IDC_HIGHLIGHT1EDIT, OnHighlight1edit)
+	ON_EN_CHANGE(IDC_HIGHLIGHT1, OnChangeHighlight1)
+	ON_EN_CHANGE(IDC_HIGHLIGHT2, OnChangeHighlight2)
+	ON_EN_CHANGE(IDC_BASE2, OnChangeBase2)
+	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_OBJECTIVE_TITLE_EDIT_BUTTON, OnObjectiveTitleEditButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_DESCRIPTION_EDIT_BUTTON, OnObjectiveDescriptionEditButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_ADD_FAILURE_CONDITION_BUTTON, OnObjectiveAddFailureConditionButton)
+	ON_BN_CLICKED(
+		IDC_OBJECTIVE_REMOVE_FAILURE_CONDITION_BUTTON, OnObjectiveRemoveFailureConditionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_ADD_FAILURE_ACTION_BUTTON, OnObjectiveAddFailureActionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_FAILURE_ACTION_BUTTON, OnObjectiveRemoveFailureActionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_CONDITION_BUTTON, OnObjectiveViewConditionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_ACTION_BUTTON, OnObjectiveViewActionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_FAILURE_CONDITION_BUTTON, OnObjectiveViewFailureConditionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_FAILURE_ACTION_BUTTON, OnObjectiveViewFailureActionButton)
+	ON_BN_CLICKED(IDC_OBJECTIVE_CLEAR_LOGISTICS_MODEL_BUTTON, OnObjectiveClearLogisticsModelButton)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -130,7 +129,7 @@ syncConditionsListWithListBox(
 	const CObjective::condition_list_type* pConditionList, CListBox* pList)
 {
 	pList->ResetContent();
-	const std::wstring_view& tmpStr;
+	std::wstring_view tmpStr;
 	CObjective::condition_list_type::EConstIterator it = pConditionList->Begin();
 	while (!it.IsDone())
 	{
@@ -145,7 +144,7 @@ syncActionsListWithListBox(
 	const CObjective::action_list_type* pActionList, CListBox* pList)
 {
 	pList->ResetContent();
-	const std::wstring_view& tmpStr;
+	std::wstring_view tmpStr;
 	CObjective::action_list_type::EConstIterator it = pActionList->Begin();
 	while (!it.IsDone())
 	{
@@ -170,8 +169,7 @@ CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-void
-ObjectiveDlg::UpdateTitleDisplay()
+void ObjectiveDlg::UpdateTitleDisplay()
 {
 	UpdateData(TRUE);
 	if (m_TitleUseResourceString)
@@ -191,8 +189,7 @@ ObjectiveDlg::UpdateTitleDisplay()
 	UpdateData(FALSE);
 }
 
-void
-ObjectiveDlg::UpdateDescriptionDisplay()
+void ObjectiveDlg::UpdateDescriptionDisplay()
 {
 	UpdateData(TRUE);
 	if (m_DescriptionUseResourceString)
@@ -212,8 +209,7 @@ ObjectiveDlg::UpdateDescriptionDisplay()
 	UpdateData(FALSE);
 }
 
-void
-ObjectiveDlg::LoadDialogValues()
+void ObjectiveDlg::LoadDialogValues()
 {
 	(&m_ComboBox)->SetCurSel(nConditionSpeciesSelectionIndex);
 	(&m_ActionComboBox)->SetCurSel(nActionSpeciesSelectionIndex);
@@ -315,8 +311,7 @@ ObjectiveDlg::LoadDialogValues()
 	UpdateData(FALSE);
 }
 
-void
-ObjectiveDlg::SaveDialogValues()
+void ObjectiveDlg::SaveDialogValues()
 {
 	UpdateData(TRUE);
 	m_ModifiedObjective.Title(m_TitleUnlocalizedText.GetBuffer(0));
@@ -438,13 +433,12 @@ ObjectiveDlg::SaveDialogValues()
 		m_ModifiedObjective.ModelID(-1);
 }
 
-BOOL
-ObjectiveDlg::OnInitDialog()
+BOOL ObjectiveDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	int32_t groupCount = pMgr->getBuildingGroupCount();
-	const std::wstring_view&* pGroups = new const std::wstring_view&[groupCount];
+	std::wstring_view* pGroups = new std::wstring_view[groupCount];
 	pMgr->getBuildingGroupNames(pGroups, groupCount);
 	for (size_t i = 0; i < groupCount; ++i)
 	{
@@ -476,7 +470,7 @@ ObjectiveDlg::OnInitDialog()
 			comboBoxItems.Append(MOVE_ALL_SURVIVING_MECHS_TO_AREA);
 			comboBoxItems.Append(BOOLEAN_FLAG_IS_SET);
 			comboBoxItems.Append(ELAPSED_MISSION_TIME);
-			const std::wstring_view& tmpEStr;
+			std::wstring_view tmpEStr;
 			CConditionSpeciesList::EConstIterator it = comboBoxItems.Begin();
 			while (!it.IsDone())
 			{
@@ -494,7 +488,7 @@ ObjectiveDlg::OnInitDialog()
 			actionComboBoxItems.Append(DISPLAY_RESOURCE_TEXT_MESSAGE);
 			actionComboBoxItems.Append(SET_BOOLEAN_FLAG);
 			actionComboBoxItems.Append(MAKE_NEW_TECHNOLOGY_AVAILABLE);
-			const std::wstring_view& tmpEStr;
+			std::wstring_view tmpEStr;
 			CActionSpeciesList::EConstIterator it = actionComboBoxItems.Begin();
 			while (!it.IsDone())
 			{
@@ -527,7 +521,7 @@ ObjectiveDlg::OnInitDialog()
 			failureConditionComboBoxItems.Append(MOVE_ALL_SURVIVING_MECHS_TO_AREA);
 			failureConditionComboBoxItems.Append(BOOLEAN_FLAG_IS_SET);
 			failureConditionComboBoxItems.Append(ELAPSED_MISSION_TIME);
-			const std::wstring_view& tmpEStr;
+			std::wstring_view tmpEStr;
 			CConditionSpeciesList::EConstIterator it = failureConditionComboBoxItems.Begin();
 			while (!it.IsDone())
 			{
@@ -545,7 +539,7 @@ ObjectiveDlg::OnInitDialog()
 			failureActionComboBoxItems.Append(DISPLAY_RESOURCE_TEXT_MESSAGE);
 			failureActionComboBoxItems.Append(SET_BOOLEAN_FLAG);
 			failureActionComboBoxItems.Append(MAKE_NEW_TECHNOLOGY_AVAILABLE);
-			const std::wstring_view& tmpEStr;
+			std::wstring_view tmpEStr;
 			CActionSpeciesList::EConstIterator it = failureActionComboBoxItems.Begin();
 			while (!it.IsDone())
 			{
@@ -584,8 +578,7 @@ ObjectiveDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-ObjectiveDlg::OnObjectiveAddConditionButton()
+void ObjectiveDlg::OnObjectiveAddConditionButton()
 {
 	{
 		uint32_t comboboxSelection = (&m_ComboBox)->GetCurSel();
@@ -643,8 +636,7 @@ ObjectiveDlg::OnObjectiveAddConditionButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveRemoveConditionButton()
+void ObjectiveDlg::OnObjectiveRemoveConditionButton()
 {
 	int32_t nSelectionIndex = (&m_List)->GetCurSel();
 	if ((0 <= nSelectionIndex) && (m_ModifiedObjective.Count() > nSelectionIndex))
@@ -664,8 +656,7 @@ ObjectiveDlg::OnObjectiveRemoveConditionButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveAddActionButton()
+void ObjectiveDlg::OnObjectiveAddActionButton()
 {
 	{
 		uint32_t actionComboboxSelection = (&m_ActionComboBox)->GetCurSel();
@@ -720,8 +711,7 @@ ObjectiveDlg::OnObjectiveAddActionButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveRemoveActionButton()
+void ObjectiveDlg::OnObjectiveRemoveActionButton()
 {
 	int32_t nSelectionIndex = (&m_ActionList)->GetCurSel();
 	if ((0 <= nSelectionIndex) && (m_ModifiedObjective.m_actionList.Count() > nSelectionIndex))
@@ -741,20 +731,18 @@ ObjectiveDlg::OnObjectiveRemoveActionButton()
 	}
 }
 
-void
-ObjectiveDlg::OnOK()
+void ObjectiveDlg::OnOK()
 {
 	SaveDialogValues();
 	CDialog::OnOK();
 }
 
-void
-ObjectiveDlg::OnSelchangeGroup()
+void ObjectiveDlg::OnSelchangeGroup()
 {
 	m_Mech.ResetContent();
 	int32_t group = m_modelGroup.GetCurSel();
 	group = m_modelGroup.GetItemData(group);
-	const std::wstring_view& MechNames[256];
+	std::wstring_view MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
 	for (size_t i = 0; i < count; ++i)
@@ -764,29 +752,25 @@ ObjectiveDlg::OnSelchangeGroup()
 	m_Mech.SetCurSel(0);
 }
 
-void
-ObjectiveDlg::OnBaseedit2()
+void ObjectiveDlg::OnBaseedit2()
 {
 	CWnd* pWnd = GetDlgItem(IDC_BASE2);
 	DocolourBox(pWnd);
 }
 
-void
-ObjectiveDlg::OnHighilight2edit2()
+void ObjectiveDlg::OnHighilight2edit2()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT2);
 	DocolourBox(pWnd);
 }
 
-void
-ObjectiveDlg::OnHighlight1edit()
+void ObjectiveDlg::OnHighlight1edit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT1);
 	DocolourBox(pWnd);
 }
 
-void
-ObjectiveDlg::DoEditcolourChange(int32_t ID)
+void ObjectiveDlg::DoEditcolourChange(int32_t ID)
 {
 	CString text;
 	GetDlgItem(ID)->GetWindowText(text);
@@ -807,26 +791,22 @@ ObjectiveDlg::DoEditcolourChange(int32_t ID)
 	GetDlgItem(ID)->RedrawWindow();
 }
 
-void
-ObjectiveDlg::OnChangeHighlight1()
+void ObjectiveDlg::OnChangeHighlight1()
 {
 	DoEditcolourChange(IDC_HIGHLIGHT1);
 }
 
-void
-ObjectiveDlg::OnChangeHighlight2()
+void ObjectiveDlg::OnChangeHighlight2()
 {
 	DoEditcolourChange(IDC_HIGHLIGHT2);
 }
 
-void
-ObjectiveDlg::OnChangeBase2()
+void ObjectiveDlg::OnChangeBase2()
 {
 	DoEditcolourChange(IDC_BASE2);
 }
 
-void
-ObjectiveDlg::DocolourBox(CWnd* pWnd)
+void ObjectiveDlg::DocolourBox(CWnd* pWnd)
 {
 	if (pWnd)
 	{
@@ -904,8 +884,7 @@ ObjectiveDlg::OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour)
 	return hbr;
 }
 
-void
-ObjectiveDlg::OnObjectiveTitleEditButton()
+void ObjectiveDlg::OnObjectiveTitleEditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_TitleUnlocalizedText;
@@ -921,8 +900,7 @@ ObjectiveDlg::OnObjectiveTitleEditButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveDescriptionEditButton()
+void ObjectiveDlg::OnObjectiveDescriptionEditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_DescriptionUnlocalizedText;
@@ -938,8 +916,7 @@ ObjectiveDlg::OnObjectiveDescriptionEditButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveAddFailureConditionButton()
+void ObjectiveDlg::OnObjectiveAddFailureConditionButton()
 {
 	{
 		uint32_t comboboxSelection = (&m_FailureConditionComboBox)->GetCurSel();
@@ -999,8 +976,7 @@ ObjectiveDlg::OnObjectiveAddFailureConditionButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveRemoveFailureConditionButton()
+void ObjectiveDlg::OnObjectiveRemoveFailureConditionButton()
 {
 	int32_t nSelectionIndex = (&m_FailureConditionList)->GetCurSel();
 	if ((0 <= nSelectionIndex) && (m_ModifiedObjective.m_failureConditionList.Count() > nSelectionIndex))
@@ -1021,8 +997,7 @@ ObjectiveDlg::OnObjectiveRemoveFailureConditionButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveAddFailureActionButton()
+void ObjectiveDlg::OnObjectiveAddFailureActionButton()
 {
 	{
 		uint32_t actionComboboxSelection = (&m_FailureActionComboBox)->GetCurSel();
@@ -1079,8 +1054,7 @@ ObjectiveDlg::OnObjectiveAddFailureActionButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveRemoveFailureActionButton()
+void ObjectiveDlg::OnObjectiveRemoveFailureActionButton()
 {
 	int32_t nSelectionIndex = (&m_FailureActionList)->GetCurSel();
 	if ((0 <= nSelectionIndex) && (m_ModifiedObjective.m_failureActionList.Count() > nSelectionIndex))
@@ -1101,66 +1075,61 @@ ObjectiveDlg::OnObjectiveRemoveFailureActionButton()
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveViewConditionButton()
+void ObjectiveDlg::OnObjectiveViewConditionButton()
 {
 	int32_t nSelectionIndex = m_List.GetCurSel();
 	if ((LB_ERR != nSelectionIndex) && (0 <= nSelectionIndex) && (m_ModifiedObjective.Count() > nSelectionIndex))
 	{
 		CObjective::condition_list_type::EConstIterator it = m_ModifiedObjective.Begin();
-		const std::wstring_view& tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
+		std::wstring_view tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveViewActionButton()
+void ObjectiveDlg::OnObjectiveViewActionButton()
 {
 	int32_t nSelectionIndex = m_ActionList.GetCurSel();
 	if ((LB_ERR != nSelectionIndex) && (0 <= nSelectionIndex) && (m_ModifiedObjective.m_actionList.Count() > nSelectionIndex))
 	{
 		CObjective::action_list_type::EConstIterator it = m_ModifiedObjective.m_actionList.Begin();
-		const std::wstring_view& tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
+		std::wstring_view tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveViewFailureConditionButton()
+void ObjectiveDlg::OnObjectiveViewFailureConditionButton()
 {
 	int32_t nSelectionIndex = m_FailureConditionList.GetCurSel();
 	if ((LB_ERR != nSelectionIndex) && (0 <= nSelectionIndex) && (m_ModifiedObjective.m_failureConditionList.Count() > nSelectionIndex))
 	{
 		CObjective::condition_list_type::EConstIterator it =
 			m_ModifiedObjective.m_failureConditionList.Begin();
-		const std::wstring_view& tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
+		std::wstring_view tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveViewFailureActionButton()
+void ObjectiveDlg::OnObjectiveViewFailureActionButton()
 {
 	int32_t nSelectionIndex = m_FailureActionList.GetCurSel();
 	if ((LB_ERR != nSelectionIndex) && (0 <= nSelectionIndex) && (m_ModifiedObjective.m_failureActionList.Count() > nSelectionIndex))
 	{
 		CObjective::action_list_type::EConstIterator it =
 			m_ModifiedObjective.m_failureActionList.Begin();
-		const std::wstring_view& tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
+		std::wstring_view tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
 	}
 }
 
-void
-ObjectiveDlg::OnObjectiveClearLogisticsModelButton()
+void ObjectiveDlg::OnObjectiveClearLogisticsModelButton()
 {
 	m_Mech.ResetContent();
 	m_modelGroup.SetCurSel(-1);

@@ -20,30 +20,26 @@
 extern uint32_t helpTextID;
 extern uint32_t helpTextHeaderID;
 
-bool
-AttributeMeter::pointInside(int32_t mouseX, int32_t mouseY) const
+bool AttributeMeter::pointInside(int32_t mouseX, int32_t mouseY) const
 {
 	if ((m_outsiderect.left) <= mouseX && m_outsiderect.right >= mouseX && m_outsiderect.top <= mouseY && m_outsiderect.bottom >= mouseY)
 		return true;
 	return false;
 }
 
-void
-AttributeMeter::update()
+void AttributeMeter::update()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
 	if (pointInside(mouseX, mouseY))
 		::helpTextID = m_helpid;
 }
-void
-AttributeMeter::render()
+void AttributeMeter::render()
 {
 	render(0, 0);
 }
 
-void
-AttributeMeter::render(int32_t xOffset, int32_t yOffset)
+void AttributeMeter::render(int32_t xOffset, int32_t yOffset)
 {
 	uint32_t i;
 	if (!m_doshow)
@@ -90,8 +86,7 @@ AttributeMeter::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void
-AttributeMeter::init(FitIniFile* file, const std::wstring_view& headerName)
+void AttributeMeter::init(FitIniFile* file, std::wstring_view headerName)
 {
 	if (NO_ERROR != file->seekBlock(headerName))
 	{

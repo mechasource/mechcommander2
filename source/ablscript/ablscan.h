@@ -15,7 +15,8 @@
 //#include "ablgen.h"
 //#include "ablerr.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -126,7 +127,7 @@ enum class CharCodeType : uint8_t
 
 typedef struct ReservedWord
 {
-	const std::wstring_view& string;
+	std::wstring_view string;
 	TokenCodeType tokenCode;
 } ReservedWord;
 
@@ -172,8 +173,8 @@ public:
 	std::wstring_view fileName;
 	PVOID file;
 
-	static int32_t(__stdcall* createCB)(PVOID* file, const std::wstring_view& filename);
-	static int32_t(__stdcall* openCB)(PVOID* file, const std::wstring_view& filename);
+	static int32_t(__stdcall* createCB)(PVOID* file, std::wstring_view filename);
+	static int32_t(__stdcall* openCB)(PVOID* file, std::wstring_view filename);
 	static int32_t(__stdcall* closeCB)(PVOID* file);
 	static bool(__stdcall* eofCB)(PVOID file);
 	static int32_t(__stdcall* readCB)(PVOID file, uint8_t* buffer, int32_t length);
@@ -183,7 +184,7 @@ public:
 	static int32_t(__stdcall* writeCB)(PVOID file, uint8_t* buffer, int32_t length);
 	static int32_t(__stdcall* writeByteCB)(PVOID file, uint8_t byte);
 	static int32_t(__stdcall* writeLongCB)(PVOID file, int32_t value);
-	static int32_t(__stdcall* writeStringCB)(PVOID file, const std::wstring_view& buffer);
+	static int32_t(__stdcall* writeStringCB)(PVOID file, std::wstring_view buffer);
 
 public:
 	PVOID operator new(size_t ourSize);
@@ -191,18 +192,30 @@ public:
 
 	void init(void);
 
-	ABLFile(void) { init(void); }
+	ABLFile(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~ABLFile(void) { destroy(void); }
+	~ABLFile(void)
+	{
+		destroy(void);
+	}
 
-	int32_t set(PVOID fPtr) { file = fPtr; }
+	int32_t set(PVOID fPtr)
+	{
+		file = fPtr;
+	}
 
-	PVOID get(void) { return (file); }
+	PVOID get(void)
+	{
+		return (file);
+	}
 
-	int32_t create(const std::wstring_view& fileName);
-	int32_t open(const std::wstring_view& fileName);
+	int32_t create(std::wstring_view fileName);
+	int32_t open(std::wstring_view fileName);
 	int32_t close(void);
 	bool eof(void);
 	int32_t read(uint8_t* buffer, int32_t length);
@@ -212,7 +225,7 @@ public:
 	int32_t write(uint8_t* buffer, int32_t length);
 	int32_t writeByte(uint8_t val);
 	int32_t writeLong(int32_t val);
-	int32_t writeString(const std::wstring_view& buffer);
+	int32_t writeString(std::wstring_view buffer);
 };
 
 //***************************************************************************
@@ -222,7 +235,7 @@ public:
 
 inline CharCodeType __stdcall calcCharCode(int32_t ch);
 int32_t __stdcall isReservedWord(void);
-void __stdcall initScanner(const std::wstring_view& fileName);
+void __stdcall initScanner(std::wstring_view fileName);
 void __stdcall quitScanner(void);
 void __stdcall skipComment(void);
 void __stdcall skipBlanks(void);
@@ -239,8 +252,8 @@ bool __stdcall tokenIn(TokenCodeType* tokenList);
 void __stdcall synchronize(
 	TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3);
 bool __stdcall getSourceLine(void);
-void __stdcall printLine(const std::wstring_view& line);
-void __stdcall initPageHeader(const std::wstring_view& fileName);
+void __stdcall printLine(std::wstring_view line);
+void __stdcall initPageHeader(std::wstring_view fileName);
 void __stdcall printPageHeader(void);
 
 //----------
@@ -255,11 +268,11 @@ extern void(__stdcall* ABLSystemFreeCallback)(PVOID memBlock);
 extern void(__stdcall* ABLStackFreeCallback)(PVOID memBlock);
 extern void(__stdcall* ABLCodeFreeCallback)(PVOID memBlock);
 extern void(__stdcall* ABLSymbolFreeCallback)(PVOID memBlock);
-extern void(__stdcall* ABLDebugPrintCallback)(const std::wstring_view& s);
+extern void(__stdcall* ABLDebugPrintCallback)(std::wstring_view s);
 extern int32_t(__stdcall* ABLRandomCallback)(int32_t range);
 extern void(__stdcall* ABLSeedRandomCallback)(size_t range);
 extern size_t(__stdcall* ABLGetTimeCallback)(void);
-extern void(__stdcall* ABLFatalCallback)(int32_t code, const std::wstring_view& s);
+extern void(__stdcall* ABLFatalCallback)(int32_t code, std::wstring_view s);
 
 //***************************************************************************
 

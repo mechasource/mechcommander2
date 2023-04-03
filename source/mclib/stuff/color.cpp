@@ -24,8 +24,7 @@ const RGBcolour RGBcolour::Unassigned(-1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
-bool
-Stuff::Close_Enough(const RGBcolour& c1, const RGBcolour& c2,
+bool Stuff::Close_Enough(const RGBcolour& c1, const RGBcolour& c2,
 	float e // = SMALL
 )
 {
@@ -119,13 +118,12 @@ RGBcolour::operator=(const HSVcolour& color)
 //###########################################################################
 //###########################################################################
 //
-void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, RGBcolour* color)
+void Stuff::Convert_From_Ascii(std::wstring_view str, RGBcolour* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
-	const std::wstring_view& parse_string(str);
-	const std::wstring_view& token = parse_string.GetNthToken(0);
+	std::wstring_view parse_string(str);
+	std::wstring_view token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->red = AtoF(token);
 	token = parse_string.GetNthToken(1);
@@ -143,8 +141,7 @@ const RGBAcolour RGBAcolour::Unassigned(-1.0f, -1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
-bool
-Stuff::Close_Enough(const RGBAcolour& c1, const RGBAcolour& c2,
+bool Stuff::Close_Enough(const RGBAcolour& c1, const RGBAcolour& c2,
 	float e // = SMALL
 )
 {
@@ -157,13 +154,12 @@ Stuff::Close_Enough(const RGBAcolour& c1, const RGBAcolour& c2,
 //###########################################################################
 //###########################################################################
 //
-void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, RGBAcolour* color)
+void Stuff::Convert_From_Ascii(std::wstring_view str, RGBAcolour* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
-	const std::wstring_view& parse_string(str);
-	const std::wstring_view& token = parse_string.GetNthToken(0);
+	std::wstring_view parse_string(str);
+	std::wstring_view token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->red = AtoF(token);
 	token = parse_string.GetNthToken(1);
@@ -186,8 +182,7 @@ const HSVcolour HSVcolour::Unassigned(-1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
-bool
-Stuff::Close_Enough(const HSVcolour& c1, const HSVcolour& c2,
+bool Stuff::Close_Enough(const HSVcolour& c1, const HSVcolour& c2,
 	float e // = SMALL
 )
 {
@@ -267,13 +262,12 @@ HSVcolour::operator=(const RGBcolour& color)
 //###########################################################################
 //###########################################################################
 //
-void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, HSVcolour* color)
+void Stuff::Convert_From_Ascii(std::wstring_view str, HSVcolour* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
-	const std::wstring_view& parse_string(str);
-	const std::wstring_view& token = parse_string.GetNthToken(0);
+	std::wstring_view parse_string(str);
+	std::wstring_view token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->hue = AtoF(token);
 	token = parse_string.GetNthToken(1);
@@ -291,8 +285,7 @@ const HSVAcolour HSVAcolour::Unassigned(-1.0f, -1.0f, -1.0f, -1.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // (friend)
-bool
-Stuff::Close_Enough(const HSVAcolour& c1, const HSVAcolour& c2,
+bool Stuff::Close_Enough(const HSVAcolour& c1, const HSVAcolour& c2,
 	float e // = SMALL
 )
 {
@@ -305,13 +298,12 @@ Stuff::Close_Enough(const HSVAcolour& c1, const HSVAcolour& c2,
 //###########################################################################
 //###########################################################################
 //
-void
-Stuff::Convert_From_Ascii(const std::wstring_view& str, HSVAcolour* color)
+void Stuff::Convert_From_Ascii(std::wstring_view str, HSVAcolour* color)
 {
 	Check_Pointer(str);
 	Check_Object(color);
-	const std::wstring_view& parse_string(str);
-	const std::wstring_view& token = parse_string.GetNthToken(0);
+	std::wstring_view parse_string(str);
+	std::wstring_view token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->hue = AtoF(token);
 	token = parse_string.GetNthToken(1);

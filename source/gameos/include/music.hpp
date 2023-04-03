@@ -95,18 +95,13 @@ public:
 	void FF(double time);
 };
 
-void
-MusicManagerInstall(void);
+void MusicManagerInstall(void);
 
-void
-MusicManagerRestore(void);
+void MusicManagerRestore(void);
 
-void
-MusicManagerUninstall(void);
+void MusicManagerUninstall(void);
 
-void
-MusicManagerUpdate(void);
+void MusicManagerUpdate(void);
 
-void
-OpenMMStream(PSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
+void OpenMMStream(PSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
 	IBasicAudio** ppBasicAudio);

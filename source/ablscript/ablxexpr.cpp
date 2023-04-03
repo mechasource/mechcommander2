@@ -16,7 +16,8 @@
 #include "ablexec.h"
 #include "abldbug.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -24,7 +25,7 @@ namespace mclib::abl {
 // EXTERNALS
 
 extern int32_t level;
-extern const std::wstring_view& codeSegmentPtr;
+extern std::wstring_view codeSegmentPtr;
 extern TokenCodeType codeToken;
 
 extern StackItem* stack;
@@ -139,7 +140,7 @@ execVariable(const std::unique_ptr<SymTableNode>& idPtr, UseType use)
 			StaticDataPtr = CurModule->getStaticData();
 		break;
 	case VAR_TYPE_REGISTERED:
-		tempStackItem.address = (const std::wstring_view&)idPtr->defn.info.data.registeredData;
+		tempStackItem.address = (std::wstring_view)idPtr->defn.info.data.registeredData;
 		dataPtr = &tempStackItem;
 		break;
 	}
@@ -186,7 +187,7 @@ execVariable(const std::unique_ptr<SymTableNode>& idPtr, UseType use)
 			tos->integer = *((int32_t*)tos->address);
 		}
 		else if (ptype == CharTypePtr)
-			tos->byte = *((const std::wstring_view&)tos->address);
+			tos->byte = *((std::wstring_view)tos->address);
 		else
 			tos->real = *((float*)tos->address);
 	}

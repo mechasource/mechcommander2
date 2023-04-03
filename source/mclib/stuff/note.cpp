@@ -21,8 +21,7 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::WriteNotation(std::iostream& stream)
+void Note::WriteNotation(std::iostream& stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -35,12 +34,11 @@ Note::WriteNotation(std::iostream& stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(int32_t* value)
+void Note::GetEntry(int32_t* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = atoi(contents);
@@ -48,8 +46,7 @@ Note::GetEntry(int32_t* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(int32_t value)
+void Note::SetEntry(int32_t value)
 {
 	// Check_Object(this);
 	wchar_t contents[12];
@@ -60,12 +57,11 @@ Note::SetEntry(int32_t value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(float* value)
+void Note::GetEntry(float* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = AtoF(contents);
@@ -73,8 +69,7 @@ Note::GetEntry(float* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(float value)
+void Note::SetEntry(float value)
 {
 	// Check_Object(this);
 	wchar_t contents[32];
@@ -85,12 +80,11 @@ Note::SetEntry(float value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(bool* value)
+void Note::GetEntry(bool* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = (!_stricmp(contents, "true") || !_stricmp(contents, "yes") || atoi(contents) != 0);
@@ -98,8 +92,7 @@ Note::GetEntry(bool* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(bool value)
+void Note::SetEntry(bool value)
 {
 	// Check_Object(this);
 	SetEntry((value) ? "true" : "false");
@@ -107,12 +100,11 @@ Note::SetEntry(bool value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(Vector3D* value)
+void Note::GetEntry(Vector3D* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count = sscanf_s(contents, "%f %f %f", &value->x, &value->y, &value->z);
@@ -129,8 +121,7 @@ Note::GetEntry(Vector3D* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(const Vector3D& value)
+void Note::SetEntry(const Vector3D& value)
 {
 	// Check_Object(this);
 	static wchar_t contents[64];
@@ -142,12 +133,11 @@ Note::SetEntry(const Vector3D& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(YawPitchRoll* value)
+void Note::GetEntry(YawPitchRoll* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	// AFAIU we need pointers to float to avoid warning C6272
@@ -171,8 +161,7 @@ Note::GetEntry(YawPitchRoll* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(const YawPitchRoll& value)
+void Note::SetEntry(const YawPitchRoll& value)
 {
 	// Check_Object(this);
 	static wchar_t contents[32];
@@ -184,12 +173,11 @@ Note::SetEntry(const YawPitchRoll& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(UnitQuaternion* value)
+void Note::GetEntry(UnitQuaternion* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	// AFAIU we need pointers to float to avoid warning C6272
@@ -215,8 +203,7 @@ Note::GetEntry(UnitQuaternion* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(const UnitQuaternion& value)
+void Note::SetEntry(const UnitQuaternion& value)
 {
 	// Check_Object(this);
 	static wchar_t contents[32] = {0};
@@ -229,12 +216,11 @@ Note::SetEntry(const UnitQuaternion& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(Motion3D* value)
+void Note::GetEntry(Motion3D* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count = sscanf_s(contents, "%f %f %f %f %f %f", &value->linearMotion.x,
@@ -253,8 +239,7 @@ Note::GetEntry(Motion3D* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(const Motion3D& value)
+void Note::SetEntry(const Motion3D& value)
 {
 	// Check_Object(this);
 	static wchar_t contents[64];
@@ -267,12 +252,11 @@ Note::SetEntry(const Motion3D& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(RGBcolour* value)
+void Note::GetEntry(RGBcolour* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count = sscanf_s(contents, "%f %f %f", &value->red, &value->green, &value->blue);
@@ -289,8 +273,7 @@ Note::GetEntry(RGBcolour* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(const RGBcolour& value)
+void Note::SetEntry(const RGBcolour& value)
 {
 	// Check_Object(this);
 	static wchar_t contents[32];
@@ -301,12 +284,11 @@ Note::SetEntry(const RGBcolour& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(RGBAcolour* value)
+void Note::GetEntry(RGBAcolour* value)
 {
 	// Check_Object(this);
 	Check_Pointer(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count =
@@ -326,8 +308,7 @@ Note::GetEntry(RGBAcolour* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(const RGBAcolour& value)
+void Note::SetEntry(const RGBAcolour& value)
 {
 	// Check_Object(this);
 	static wchar_t contents[48];
@@ -339,12 +320,11 @@ Note::SetEntry(const RGBAcolour& value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::GetEntry(NotationFile* value)
+void Note::GetEntry(NotationFile* value)
 {
 	// Check_Object(this);
 	Check_Object(value);
-	const std::wstring_view& contents = nullptr;
+	std::wstring_view contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	//
@@ -366,7 +346,7 @@ Note::GetEntry(NotationFile* value)
 	//
 	else
 	{
-		std::iostream stream(const_cast<const std::wstring_view&>(contents + 3), strlen(contents) - 3);
+		std::iostream stream(const_cast<std::wstring_view>(contents + 3), strlen(contents) - 3);
 		NotationFile* parent_file = m_page->GetNotationFile();
 		Check_Object(parent_file);
 		value->m_fileDependencies.AddDependencies(parent_file->GetFileDependencies());
@@ -377,7 +357,7 @@ Note::GetEntry(NotationFile* value)
 		//
 		if (parent_file->GetFileName())
 		{
-			const std::wstring_view& name(parent_file->GetFileName());
+			std::wstring_view name(parent_file->GetFileName());
 			name += '[';
 			name += GetName();
 			name += ']';
@@ -394,8 +374,7 @@ Note::GetEntry(NotationFile* value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::SetEntry(NotationFile* value)
+void Note::SetEntry(NotationFile* value)
 {
 	// Check_Object(this);
 	Check_Object(value);
@@ -404,7 +383,7 @@ Note::SetEntry(NotationFile* value)
 	// If this isn't a nested file, write out the filename
 	//----------------------------------------------------
 	//
-	const std::wstring_view& name = value->GetFileName();
+	std::wstring_view name = value->GetFileName();
 	if (name && name[strlen(name) - 1] != ']')
 		SetEntry(name);
 	//
@@ -420,14 +399,13 @@ Note::SetEntry(NotationFile* value)
 		value->Write(&file_buffer);
 		file_buffer << "}" << '\0';
 		file_buffer.Rewind();
-		SetEntry(static_cast<const std::wstring_view&>(file_buffer.GetPointer()));
+		SetEntry(static_cast<std::wstring_view>(file_buffer.GetPointer()));
 		value->IgnoreChanges();
 	}
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Note::TestInstance(void) const
+void Note::TestInstance(void) const
 {
 }

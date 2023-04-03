@@ -59,8 +59,7 @@ PauseWindow::~PauseWindow()
 		delete[] statics;
 }
 
-void
-PauseWindow::update()
+void PauseWindow::update()
 {
 	if (bPromptToQuit || bPromptToAbort)
 	{
@@ -198,7 +197,7 @@ PauseWindow::update()
 		}
 	}
 	wasDragging = userInput->wasLeftDrag();
-	const std::wstring_view& campaignName = LogisticsData::instance->getCampaignName().Data();
+	std::wstring_view campaignName = LogisticsData::instance->getCampaignName().Data();
 	wchar_t campName[1024];
 	_splitpath(campaignName, nullptr, nullptr, campName, nullptr);
 	if (MPlayer || LogisticsData::instance->isSingleMission() || (_stricmp("tutorial", campName) == 0))
@@ -212,8 +211,7 @@ PauseWindow::update()
 	}
 }
 
-void
-PauseWindow::render()
+void PauseWindow::render()
 {
 	if (!currentTime)
 		return;
@@ -238,8 +236,7 @@ PauseWindow::render()
 	}
 }
 
-void
-PauseWindow::init(FitIniFile& file)
+void PauseWindow::init(FitIniFile& file)
 {
 	file.seekBlock("PauseWindow");
 	file.readIdLong("ButtonCount", buttonCount);
@@ -299,8 +296,7 @@ PauseWindow::init(FitIniFile& file)
 	}
 }
 
-void
-PauseWindow::handleClick(int32_t id)
+void PauseWindow::handleClick(int32_t id)
 {
 	int32_t sound = LOG_SELECT;
 	switch (id)
@@ -369,14 +365,12 @@ PauseWindow::handleClick(int32_t id)
 	soundSystem->playDigitalSample(sound);
 }
 
-bool
-PauseWindow::inRect(int32_t mouseX, int32_t mouseY)
+bool PauseWindow::inRect(int32_t mouseX, int32_t mouseY)
 {
 	return (mouseX >= backgrounds[0].left && mouseX <= backgrounds[0].right && mouseY >= backgrounds[0].top && mouseY <= backgrounds[0].bottom);
 }
 
-void
-PauseWindow::end()
+void PauseWindow::end()
 {
 	currentTime = 5.f;
 	if (buttons[OBJECTIVES].state & ControlButton::PRESSED && !objectivesAlreadyOn)
@@ -386,8 +380,7 @@ PauseWindow::end()
 	}
 }
 
-void
-PauseWindow::begin(bool objectivesOn)
+void PauseWindow::begin(bool objectivesOn)
 {
 	currentTime = 0.f;
 	objectivesAlreadyOn = objectivesOn;

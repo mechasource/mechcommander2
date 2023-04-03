@@ -52,7 +52,10 @@ struct PostcompVertex
 	uint8_t shadow;
 	uint8_t highlighted; // Used to highlight WHOLE FACES!!!
 
-	float getElevation(void) { return elevation; }
+	float getElevation(void)
+	{
+		return elevation;
+	}
 
 	PostcompVertex& operator=(const PostcompVertex& src);
 	PostcompVertex(const PostcompVertex&);
@@ -115,11 +118,17 @@ public:
 		calcThisFrame = false;
 	}
 
-	Vertex(void) { init(void); }
+	Vertex(void)
+	{
+		init(void);
+	}
 
-	void destroy(void) {}
+	void destroy(void) { }
 
-	~Vertex(void) { destroy(void); }
+	~Vertex(void)
+	{
+		destroy(void);
+	}
 
 	int32_t init(PostcompVertexPtr preVertex)
 	{
@@ -128,9 +137,15 @@ public:
 		return (NO_ERROR);
 	}
 
-	int32_t getBlockNumber(void) { return (blockVertex >> 16); }
+	int32_t getBlockNumber(void)
+	{
+		return (blockVertex >> 16);
+	}
 
-	int32_t getVertexNumber(void) { return (blockVertex & 0x0000ffff); }
+	int32_t getVertexNumber(void)
+	{
+		return (blockVertex & 0x0000ffff);
+	}
 };
 
 //---------------------------------------------------------------------------

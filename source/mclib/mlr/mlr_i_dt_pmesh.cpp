@@ -13,7 +13,8 @@
 #include "mlr/mlrcliptrick.h"
 #include "mlr/mlr_i_dt_pmesh.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -32,8 +33,7 @@ MLR_I_DT_PMesh::ClassData* MLR_I_DT_PMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DT_PMesh::InitializeClass()
+void MLR_I_DT_PMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -54,8 +54,7 @@ MLR_I_DT_PMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DT_PMesh::TerminateClass()
+void MLR_I_DT_PMesh::TerminateClass()
 {
 	Unregister_Object(clipExtraTexCoords2);
 	delete clipExtraTexCoords2;
@@ -72,8 +71,8 @@ MLR_I_DT_PMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DT_PMesh::MLR_I_DT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLR_I_PMesh(class_data, stream, version)
+MLR_I_DT_PMesh::MLR_I_DT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLR_I_PMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -92,8 +91,8 @@ MLR_I_DT_PMesh::MLR_I_DT_PMesh(ClassData* class_data, std::iostream stream, uint
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DT_PMesh::MLR_I_DT_PMesh(ClassData* class_data) :
-	MLR_I_PMesh(class_data)
+MLR_I_DT_PMesh::MLR_I_DT_PMesh(ClassData* class_data)
+	: MLR_I_PMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -123,8 +122,7 @@ MLR_I_DT_PMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DT_PMesh::Save(std::iostream stream)
+void MLR_I_DT_PMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -134,16 +132,14 @@ MLR_I_DT_PMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DT_PMesh::TestInstance(void) const
+void MLR_I_DT_PMesh::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_DT_PMesh::SetTexCoordData(
+void MLR_I_DT_PMesh::SetTexCoordData(
 	const Stuff::Vector2DScalar* data, size_t dataSize, size_t pass)
 {
 	// Check_Object(this);

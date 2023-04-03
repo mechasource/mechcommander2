@@ -15,8 +15,7 @@ static int64_t xmask = -1;
 // Draws a status bar
 //
 //
-void
-AG_StatusBar(
+void AG_StatusBar(
 	PANE* pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t colour, int32_t width)
 {
 	static int32_t topy, BottomY;
@@ -156,8 +155,7 @@ AG_StatusBar(
 // Writes a single pixel
 //
 //
-void
-AG_pixel_write(PANE* pane, int32_t x, int32_t y, uint32_t color)
+void AG_pixel_write(PANE* pane, int32_t x, int32_t y, uint32_t color)
 {
 	int32_t X = x + pane->x0;
 	int32_t Y = y + pane->y0;

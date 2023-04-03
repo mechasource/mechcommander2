@@ -64,7 +64,7 @@ public:
 
 	int32_t init(void);
 
-	void setHostLeftDlg(const std::wstring_view& hostName);
+	void setHostLeftDlg(std::wstring_view hostName);
 
 private:
 	MPStats(const MPStats& src);

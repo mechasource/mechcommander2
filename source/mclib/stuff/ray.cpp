@@ -48,8 +48,7 @@ Ray3D::SetDirection(const Vector3D& vector)
 //#############################################################################
 //#############################################################################
 //
-float
-Ray3D::GetDistanceTo(const Plane& plane, float* product) const
+float Ray3D::GetDistanceTo(const Plane& plane, float* product) const
 {
 	// Check_Object(this);
 	Check_Object(&plane);
@@ -67,8 +66,7 @@ Ray3D::GetDistanceTo(const Plane& plane, float* product) const
 //#############################################################################
 //#############################################################################
 //
-float
-Ray3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
+float Ray3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 {
 	float b, c;
 	Vector3D temp;
@@ -110,8 +108,7 @@ Ray3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 //#############################################################################
 //#############################################################################
 //
-float
-Stuff::Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1,
+float Stuff::Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1,
 	Point3D* result1, const Point3D& origin2, const Vector3D& velocity2, Point3D* result2,
 	float* time, bool* constant)
 {

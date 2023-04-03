@@ -15,8 +15,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // UnitSettingsDlg dialog
 
-UnitSettingsDlg::UnitSettingsDlg(EList<Unit*, Unit*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr) :
-	CDialog(UnitSettingsDlg::IDD), units(newList)
+UnitSettingsDlg::UnitSettingsDlg(EList<Unit*, Unit*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr)
+	: CDialog(UnitSettingsDlg::IDD)
+	, units(newList)
 {
 	//{{AFX_DATA_INIT(UnitSettingsDlg)
 	m_Alignment = -1;
@@ -27,8 +28,7 @@ UnitSettingsDlg::UnitSettingsDlg(EList<Unit*, Unit*>& newList /*=nullptr*/, Acti
 	pAction = nullptr;
 }
 
-void
-UnitSettingsDlg::DoDataExchange(CDataExchange* pDX)
+void UnitSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(UnitSettingsDlg)
@@ -43,31 +43,30 @@ UnitSettingsDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(UnitSettingsDlg, CDialog)
-//{{AFX_MSG_MAP(UnitSettingsDlg)
-ON_CBN_SELCHANGE(IDC_GROUP, OnSelchangeGroup)
-ON_BN_CLICKED(IDC_HIGHILIGHT2EDIT, OnHighilight2edit)
-ON_EN_CHANGE(IDC_HIGHLIGHT1, OnChangeHighlight1)
-ON_BN_CLICKED(IDC_HIGHLIGHT1EDIT, OnHighlight1edit)
-ON_EN_CHANGE(IDC_HIGHLIGHT2, OnChangeHighlight2)
-ON_EN_CHANGE(IDC_BASE, OnChangeBase)
-ON_BN_CLICKED(IDC_BASEEDIT, OnBaseedit)
-ON_WM_CTLCOLOR()
-ON_CBN_SELCHANGE(IDC_MECH, OnSelchangeMech)
-//}}AFX_MSG_MAP
-ON_CONTROL_RANGE(BN_CLICKED, IDC_ALIGN1, IDC_ALIGN1 + 8, OnAlign1)
+	//{{AFX_MSG_MAP(UnitSettingsDlg)
+	ON_CBN_SELCHANGE(IDC_GROUP, OnSelchangeGroup)
+	ON_BN_CLICKED(IDC_HIGHILIGHT2EDIT, OnHighilight2edit)
+	ON_EN_CHANGE(IDC_HIGHLIGHT1, OnChangeHighlight1)
+	ON_BN_CLICKED(IDC_HIGHLIGHT1EDIT, OnHighlight1edit)
+	ON_EN_CHANGE(IDC_HIGHLIGHT2, OnChangeHighlight2)
+	ON_EN_CHANGE(IDC_BASE, OnChangeBase)
+	ON_BN_CLICKED(IDC_BASEEDIT, OnBaseedit)
+	ON_WM_CTLCOLOR()
+	ON_CBN_SELCHANGE(IDC_MECH, OnSelchangeMech)
+	//}}AFX_MSG_MAP
+	ON_CONTROL_RANGE(BN_CLICKED, IDC_ALIGN1, IDC_ALIGN1 + 8, OnAlign1)
 
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // UnitSettingsDlg message handlers
 
-void
-UnitSettingsDlg::OnSelchangeGroup()
+void UnitSettingsDlg::OnSelchangeGroup()
 {
 	m_Mech.ResetContent();
 	int32_t group = m_Group.GetCurSel();
 	group = m_Group.GetItemData(group);
-	const std::wstring_view& MechNames[256];
+	std::wstring_view MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
 	for (size_t i = 0; i < count; ++i)
@@ -77,15 +76,13 @@ UnitSettingsDlg::OnSelchangeGroup()
 	m_Mech.SetCurSel(0);
 }
 
-void
-UnitSettingsDlg::OnHighilight2edit()
+void UnitSettingsDlg::OnHighilight2edit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT2);
 	DocolourBox(pWnd);
 }
 
-void
-UnitSettingsDlg::OnChangeHighlight1()
+void UnitSettingsDlg::OnChangeHighlight1()
 {
 	// TODO: If this is a RICHEDIT control, the control will not
 	// send this notification unless you override the CDialog::OnInitDialog()
@@ -110,15 +107,13 @@ UnitSettingsDlg::OnChangeHighlight1()
 	GetDlgItem(IDC_HIGHLIGHT1)->RedrawWindow();
 }
 
-void
-UnitSettingsDlg::OnHighlight1edit()
+void UnitSettingsDlg::OnHighlight1edit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_HIGHLIGHT1);
 	DocolourBox(pWnd);
 }
 
-void
-UnitSettingsDlg::OnChangeHighlight2()
+void UnitSettingsDlg::OnChangeHighlight2()
 {
 	CString text;
 	GetDlgItem(IDC_HIGHLIGHT2)->GetWindowText(text);
@@ -139,8 +134,7 @@ UnitSettingsDlg::OnChangeHighlight2()
 	GetDlgItem(IDC_HIGHLIGHT2)->RedrawWindow();
 }
 
-void
-UnitSettingsDlg::OnChangeBase()
+void UnitSettingsDlg::OnChangeBase()
 {
 	CString text;
 	GetDlgItem(IDC_BASE)->GetWindowText(text);
@@ -161,15 +155,13 @@ UnitSettingsDlg::OnChangeBase()
 	GetDlgItem(IDC_BASE)->RedrawWindow();
 }
 
-void
-UnitSettingsDlg::OnBaseedit()
+void UnitSettingsDlg::OnBaseedit()
 {
 	CWnd* pWnd = GetDlgItem(IDC_BASE);
 	DocolourBox(pWnd);
 }
 
-void
-UnitSettingsDlg::DocolourBox(CWnd* pWnd)
+void UnitSettingsDlg::DocolourBox(CWnd* pWnd)
 {
 	if (pWnd)
 	{
@@ -189,8 +181,7 @@ UnitSettingsDlg::DocolourBox(CWnd* pWnd)
 	}
 }
 
-void
-UnitSettingsDlg::applyChanges()
+void UnitSettingsDlg::applyChanges()
 {
 	// get the type info from the dlg box
 	int32_t index = m_Group.GetCurSel();
@@ -312,8 +303,7 @@ UnitSettingsDlg::applyChanges()
 	}
 }
 
-void
-UnitSettingsDlg::OnOK()
+void UnitSettingsDlg::OnOK()
 {
 	if (nullptr != pUndoMgr)
 	{
@@ -328,8 +318,7 @@ UnitSettingsDlg::OnOK()
 	CDialog::OnOK();
 }
 
-BOOL
-UnitSettingsDlg::OnInitDialog()
+BOOL UnitSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	pAction = new ModifyBuildingAction;
@@ -352,8 +341,7 @@ UnitSettingsDlg::OnInitDialog()
 		// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void
-UnitSettingsDlg::updatePossibiltyControls()
+void UnitSettingsDlg::updatePossibiltyControls()
 {
 	updateMemberVariables();
 }
@@ -417,18 +405,17 @@ UnitSettingsDlg::OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour)
 	return hbr;
 }
 
-void
-UnitSettingsDlg::OnSelchangeMech()
+void UnitSettingsDlg::OnSelchangeMech()
 {
 	m_Variant.ResetContent();
 	int32_t group = m_Group.GetCurSel();
 	group = m_Group.GetItemData(group);
 	int32_t indexInGroup = m_Mech.GetCurSel();
 	int32_t varCount = EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
-	const std::wstring_view&* VariantNames = 0;
+	std::wstring_view* VariantNames = 0;
 	if (0 < varCount)
 	{
-		VariantNames = new const std::wstring_view&[varCount];
+		VariantNames = new std::wstring_view[varCount];
 		EditorObjectMgr::instance()->getVariantNames(group, indexInGroup, VariantNames, varCount);
 		for (size_t v = 0; v < varCount; ++v)
 		{
@@ -464,8 +451,7 @@ UnitSettingsDlg::getPossibilityIndex()
 	return -1;
 }
 
-void
-UnitSettingsDlg::updateMemberVariables()
+void UnitSettingsDlg::updateMemberVariables()
 {
 	// now need to check all of the colors
 	uint32_t tmpBase, tmpHighlight1, tmpHighlight2;
@@ -537,7 +523,7 @@ UnitSettingsDlg::updateMemberVariables()
 		GetDlgItem(IDC_HIGHLIGHT2)->SetWindowText(pH2);
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	int32_t groupCount = pMgr->getUnitGroupCount();
-	const std::wstring_view&* pGroups = new const std::wstring_view&[groupCount];
+	std::wstring_view* pGroups = new std::wstring_view[groupCount];
 	int32_t* groupIDs = new int32_t[groupCount];
 	m_Group.ResetContent();
 	pMgr->getUnitGroupNames(pGroups, groupIDs, groupCount);
@@ -560,11 +546,11 @@ UnitSettingsDlg::updateMemberVariables()
 	}
 	if (group != -1) // we found a valid group
 	{
-		const std::wstring_view& pGroupName = pMgr->getGroupName(group);
+		std::wstring_view pGroupName = pMgr->getGroupName(group);
 		int32_t index = m_Group.FindString(-1, pGroupName);
 		m_Group.SetCurSel(index);
 		// OK, now fill in the index....
-		const std::wstring_view& MechNames[256];
+		std::wstring_view MechNames[256];
 		int32_t count = 256;
 		m_Mech.ResetContent();
 		pMgr->getBuildingNamesInGroup(group, MechNames, count);
@@ -584,7 +570,7 @@ UnitSettingsDlg::updateMemberVariables()
 		}
 		if (indexInGroup != -1)
 		{
-			const std::wstring_view& pName = units.GetHead()->getDisplayName();
+			std::wstring_view pName = units.GetHead()->getDisplayName();
 			index = m_Mech.FindString(-1, pName);
 			if (index != -1)
 			{
@@ -593,10 +579,10 @@ UnitSettingsDlg::updateMemberVariables()
 				m_Variant.ResetContent();
 				int32_t varCount =
 					EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
-				const std::wstring_view&* VariantNames = 0;
+				std::wstring_view* VariantNames = 0;
 				if (0 < varCount)
 				{
-					VariantNames = new const std::wstring_view&[varCount];
+					VariantNames = new std::wstring_view[varCount];
 					EditorObjectMgr::instance()->getVariantNames(
 						group, indexInGroup, VariantNames, varCount);
 					for (size_t v = 0; v < varCount; ++v)
@@ -640,11 +626,11 @@ UnitSettingsDlg::updateMemberVariables()
 		}
 	}
 	Pilot* pPilot = pUnit->getPilot();
-	const std::wstring_view& defaultPilot = pPilot->info->fileName;
+	std::wstring_view defaultPilot = pPilot->info->fileName;
 	for (iter = units.Begin(); !iter.IsDone(); iter++)
 	{
 		pPilot = (*iter)->getPilot();
-		const std::wstring_view& tmpName = pPilot->info->fileName;
+		std::wstring_view tmpName = pPilot->info->fileName;
 		if (_stricmp(tmpName, defaultPilot) != 0)
 		{
 			defaultPilot = 0;
@@ -656,7 +642,7 @@ UnitSettingsDlg::updateMemberVariables()
 		int32_t index;
 		for (index = 0; index < m_Pilot.GetCount(); index++)
 		{
-			const std::wstring_view& fileName = (const std::wstring_view&)m_Pilot.GetItemDataPtr(index);
+			std::wstring_view fileName = (std::wstring_view)m_Pilot.GetItemDataPtr(index);
 			if (0 == strcmp(fileName, defaultPilot))
 			{
 				break;
@@ -670,8 +656,7 @@ UnitSettingsDlg::updateMemberVariables()
 	}
 }
 
-void
-UnitSettingsDlg::OnCancel()
+void UnitSettingsDlg::OnCancel()
 {
 	pAction->undo();
 	delete pAction;
@@ -679,8 +664,7 @@ UnitSettingsDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
-void
-UnitSettingsDlg::OnAlign1(uint32_t whichID)
+void UnitSettingsDlg::OnAlign1(uint32_t whichID)
 {
 	UpdateData();
 	Pilot::PilotInfo* pInfo = Pilot::s_BadPilots;
@@ -702,11 +686,11 @@ UnitSettingsDlg::OnAlign1(uint32_t whichID)
 	}
 	Unit* pUnit = (*(units.Begin()));
 	Pilot* pPilot = pUnit->getPilot();
-	const std::wstring_view& defaultPilot = pPilot->getName();
+	std::wstring_view defaultPilot = pPilot->getName();
 	for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 	{
 		pPilot = (*iter)->getPilot();
-		const std::wstring_view& tmpName = pPilot->getName();
+		std::wstring_view tmpName = pPilot->getName();
 		if (_stricmp(tmpName, defaultPilot) != 0)
 		{
 			defaultPilot = 0;

@@ -21,7 +21,7 @@ enum class GOSERRORCODE
 	GOS_DIALING
 };
 
-enum class 
+enum class
 {
 	NP_TCP = 1,
 	NP_IPX,
@@ -29,7 +29,7 @@ enum class
 	NP_MODEM,
 } ConnectionType;
 
-enum class 
+enum class
 {
 	FIDP_MSG_STARTGAME = 224,
 	FIDP_MSG_VERIFY,

@@ -52,8 +52,7 @@ extern uint32_t MaxTreeLOSCellBlock;
 // TEAM class
 //***************************************************************************
 
-void
-Team::init(void)
+void Team::init(void)
 {
 	id = 0;
 	rosterSize = 0;
@@ -128,8 +127,7 @@ Team::loadObjectives(FitIniFile* pMissionFile)
 
 //---------------------------------------------------------------------------
 
-void
-Team::buildRoster(void)
+void Team::buildRoster(void)
 {
 	//---------------------------------------------------------------------
 	// This function builds a roster for the team from the movers currently
@@ -160,8 +158,7 @@ Team::getMover(int32_t index)
 
 //----------------------------------------------------------------------------
 
-void
-Team::addToRoster(std::unique_ptr<Mover> mover)
+void Team::addToRoster(std::unique_ptr<Mover> mover)
 {
 	if (mover)
 		roster[rosterSize++] = mover->getWatchID();
@@ -169,8 +166,7 @@ Team::addToRoster(std::unique_ptr<Mover> mover)
 
 //---------------------------------------------------------------------------
 
-void
-Team::removeFromRoster(std::unique_ptr<Mover> mover)
+void Team::removeFromRoster(std::unique_ptr<Mover> mover)
 {
 	for (size_t i = 0; i < rosterSize; i++)
 		if (roster[i] == mover->getWatchID())
@@ -182,8 +178,7 @@ Team::removeFromRoster(std::unique_ptr<Mover> mover)
 
 //---------------------------------------------------------------------------
 
-bool
-Team::isContact(GameObjectPtr looker, std::unique_ptr<Mover> mover, int32_t contactCriteria)
+bool Team::isContact(GameObjectPtr looker, std::unique_ptr<Mover> mover, int32_t contactCriteria)
 {
 	return (SensorManager->getTeamSensor(id)->meetsCriteria(looker, mover, contactCriteria));
 }
@@ -200,8 +195,7 @@ Team::getContacts(
 
 //---------------------------------------------------------------------------
 
-bool
-Team::hasSensorContact(int32_t teamID)
+bool Team::hasSensorContact(int32_t teamID)
 {
 	return (SensorManager->getTeamSensor(id)->hasSensorContact(teamID));
 }
@@ -237,8 +231,7 @@ Team::getRoster(GameObjectPtr* objList, bool existsOnly)
 
 //---------------------------------------------------------------------------
 
-void
-Team::disableTargets(void)
+void Team::disableTargets(void)
 {
 	for (size_t i = 0; i < rosterSize; i++)
 	{
@@ -256,8 +249,7 @@ Team::disableTargets(void)
 
 //---------------------------------------------------------------------------
 
-void
-Team::eject(void)
+void Team::eject(void)
 {
 	for (size_t i = 0; i < rosterSize; i++)
 	{
@@ -265,7 +257,7 @@ Team::eject(void)
 		if (mover)
 		{
 			if (mover->getObjectClass() == BATTLEMECH)
-				mover->getPilot()->orderEject(false, true, ORDER_ORIGIN_COMMANDER);
+				mover->getPilot()->orderEject(false, true, OrderOriginType::commander);
 			else
 			{
 				WeaponShotInfo shot;
@@ -278,8 +270,7 @@ Team::eject(void)
 
 //---------------------------------------------------------------------------
 
-void
-Team::destroyTargets(void)
+void Team::destroyTargets(void)
 {
 	for (size_t i = 0; i < rosterSize; i++)
 	{
@@ -317,8 +308,7 @@ Team::destroyTargets(void)
 
 //---------------------------------------------------------------------------
 
-bool
-Team::isTargeting(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
+bool Team::isTargeting(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 {
 	if (exceptWID)
 		for (size_t i = 0; i < rosterSize; i++)
@@ -353,8 +343,7 @@ Team::isTargeting(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 
 //---------------------------------------------------------------------------
 
-bool
-Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
+bool Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 {
 	if (exceptWID)
 		for (size_t i = 0; i < rosterSize; i++)
@@ -364,7 +353,7 @@ Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 			std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->getByWatchID(roster[i]));
 			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			std::unique_ptr<MechWarrior> pilot = mover->getPilot();
-			if (pilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE))
+			if (pilot && (pilot->getCurTacOrder()->code == TacticalOrderCode::capture))
 			{
 				GameObjectPtr target = pilot->getCurTacOrder()->getTarget();
 				if (target && (target->getWatchID() == targetWID))
@@ -377,7 +366,7 @@ Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 			std::unique_ptr<Mover> mover = dynamic_cast<std::unique_ptr<Mover>>(ObjectManager->getByWatchID(roster[i]));
 			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			std::unique_ptr<MechWarrior> pilot = mover->getPilot();
-			if (pilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE))
+			if (pilot && (pilot->getCurTacOrder()->code == TacticalOrderCode::capture))
 			{
 				GameObjectPtr target = pilot->getCurTacOrder()->getTarget();
 				if (target && (target->getWatchID() == targetWID))
@@ -389,8 +378,7 @@ Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 
 //---------------------------------------------------------------------------
 
-void
-Team::markRadiusSeen(Stuff::Vector3D& location, float radius)
+void Team::markRadiusSeen(Stuff::Vector3D& location, float radius)
 {
 	//---------------------------------------------------------------
 	// Once we get visibits in for all 8 teams, we should change this
@@ -400,8 +388,7 @@ Team::markRadiusSeen(Stuff::Vector3D& location, float radius)
 
 //---------------------------------------------------------------------------
 
-void
-Team::markRadiusSeenToTeams(Stuff::Vector3D& location, float radius, bool shrinkForNight)
+void Team::markRadiusSeenToTeams(Stuff::Vector3D& location, float radius, bool shrinkForNight)
 {
 	if (radius < 0.0)
 		radius = fireVisualRange;
@@ -429,8 +416,7 @@ Team::markRadiusSeenToTeams(Stuff::Vector3D& location, float radius, bool shrink
 
 //---------------------------------------------------------------------------
 
-void
-Team::markSeen(Stuff::Vector3D& location, float specialUnitExpand)
+void Team::markSeen(Stuff::Vector3D& location, float specialUnitExpand)
 {
 	//---------------------------------------------------------------
 	// Once we get visibits in for all 8 teams, we should change this
@@ -688,8 +674,7 @@ Team::calcEscapeVector(std::unique_ptr<Mover> mover, float threatRange)
 
 //---------------------------------------------------------------------------
 
-void
-Team::statusCount(int32_t* statusTally)
+void Team::statusCount(int32_t* statusTally)
 {
 	//----------------------------------------------------------
 	// statusTally counts the number of objects in the team with
@@ -717,8 +702,7 @@ Team::statusCount(int32_t* statusTally)
 
 //---------------------------------------------------------------------------
 
-void
-Team::destroy(void)
+void Team::destroy(void)
 {
 	objectives.Clear();
 #if 0
@@ -748,8 +732,7 @@ Team::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-bool
-Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
+bool Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 {
 	//-----------------------------------------------------------
 	// For each member of the team, check LOS to point provided.
@@ -847,8 +830,7 @@ int64_t MCTimeLOSCalc = 0;
 #ifdef USE_OLD_LOS
 
 //---------------------------------------------------------------------------
-bool
-Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, int32_t tCellRow,
+bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, int32_t tCellRow,
 	int32_t tCellCol, int32_t teamId, float extRad, bool checkVisibleBits)
 {
 #ifdef LAB_ONLY
@@ -1015,8 +997,7 @@ Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, int32_t 
 #define ACCURACY_ADJUST 1.5f
 const float HALF_CELL_DIST = (128.0f / 6.0f);
 //---------------------------------------------------------------------------
-bool
-Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float endLocal,
+bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float endLocal,
 	int32_t tCellRow, int32_t tCellCol, int32_t teamId, float extRad, float startExtRad,
 	bool checkVisibleBits)
 {
@@ -1192,8 +1173,7 @@ Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float en
 #endif
 
 //---------------------------------------------------------------------------
-bool
-Team::lineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition, int32_t teamId,
+bool Team::lineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition, int32_t teamId,
 	float extRad, float startExtRad, bool checkVisibleBits)
 {
 	int32_t posCellR, posCellC;
@@ -1210,16 +1190,14 @@ Team::lineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetposition, int3
 
 //***************************************************************************
 
-void
-disableHomeTeamTargets(void)
+void disableHomeTeamTargets(void)
 {
 	Team::home->disableTargets();
 }
 
 //---------------------------------------------------------------------------
 
-void
-killHomeTeamTargets(void)
+void killHomeTeamTargets(void)
 {
 	Team::home->destroyTargets();
 }

@@ -14,7 +14,6 @@ KeyboardRef.h			: Interface for the KeyboardRef component.
 #include "mechgui/alistbox.h"
 #include "missiongui.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 KeyboardRef:

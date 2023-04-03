@@ -44,8 +44,7 @@ uint32_t compressedTextureSize = 0;
 
 //------------------------------------------------------
 // Frees up gos_VERTEX manager memory
-void
-MC_TextureManager::freeVertices(void)
+void MC_TextureManager::freeVertices(void)
 {
 	if (gvManager)
 	{
@@ -58,8 +57,7 @@ MC_TextureManager::freeVertices(void)
 //------------------------------------------------------
 // Creates gos_VERTEX Manager and allocates RAM.  Will not allocate if already
 // done!
-void
-MC_TextureManager::startVertices(int32_t maxVertices)
+void MC_TextureManager::startVertices(int32_t maxVertices)
 {
 	if (gvManager == nullptr)
 	{
@@ -71,8 +69,7 @@ MC_TextureManager::startVertices(int32_t maxVertices)
 
 //----------------------------------------------------------------------
 // Class MC_TextureManager
-void
-MC_TextureManager::start(void)
+void MC_TextureManager::start(void)
 {
 	init();
 	//------------------------------------------
@@ -125,8 +122,7 @@ MC_TextureManager::start(void)
 extern std::iostream effectStream;
 extern MidLevelRenderer::MLRClipper* theClipper;
 //----------------------------------------------------------------------
-void
-MC_TextureManager::destroy(void)
+void MC_TextureManager::destroy(void)
 {
 	if (masterTextureNodes)
 	{
@@ -193,8 +189,7 @@ MC_TextureManager::~MC_TextureManager(void)
 }
 
 //----------------------------------------------------------------------
-void
-MC_TextureManager::flush(bool justTextures)
+void MC_TextureManager::flush(bool justTextures)
 {
 	if (masterTextureNodes)
 	{
@@ -272,8 +267,7 @@ MC_TextureManager::flush(bool justTextures)
 }
 
 //----------------------------------------------------------------------
-void
-MC_TextureManager::removeTextureNode(uint32_t textureNode)
+void MC_TextureManager::removeTextureNode(uint32_t textureNode)
 {
 	if (textureNode != 0xffffffff)
 	{
@@ -293,8 +287,7 @@ MC_TextureManager::removeTextureNode(uint32_t textureNode)
 }
 
 //----------------------------------------------------------------------
-void
-MC_TextureManager::removeTexture(uint32_t gosHandle)
+void MC_TextureManager::removeTexture(uint32_t gosHandle)
 {
 	int32_t i;
 	//-----------------------------------------------------------
@@ -324,8 +317,7 @@ MC_TextureManager::removeTexture(uint32_t gosHandle)
 
 #define cache_Threshold 150
 //----------------------------------------------------------------------
-bool
-MC_TextureManager::flushCache(void)
+bool MC_TextureManager::flushCache(void)
 {
 	bool cacheNotFull = false;
 	totalCacheMisses++;
@@ -402,8 +394,7 @@ MC_TextureManager::flushCache(void)
 //----------------------------------------------------------------------
 // Draws all textures with isTerrain set that are solid first,
 // then draws all alpha with isTerrain set.
-void
-MC_TextureManager::renderLists(void)
+void MC_TextureManager::renderLists(void)
 {
 	if (Environment.Renderer == 3)
 	{
@@ -1034,7 +1025,7 @@ MC_TextureManager::textureFromMemory(
 
 //----------------------------------------------------------------------
 uint32_t
-MC_TextureManager::textureInstanceExists(const std::wstring_view& textureFullPathName, gos_TextureFormat key,
+MC_TextureManager::textureInstanceExists(std::wstring_view textureFullPathName, gos_TextureFormat key,
 	uint32_t hints, uint32_t uniqueInstance, uint32_t nFlush)
 {
 	int32_t i = 0;
@@ -1067,7 +1058,7 @@ MC_TextureManager::textureInstanceExists(const std::wstring_view& textureFullPat
 
 //----------------------------------------------------------------------
 uint32_t
-MC_TextureManager::loadTexture(const std::wstring_view& textureFullPathName, gos_TextureFormat key,
+MC_TextureManager::loadTexture(std::wstring_view textureFullPathName, gos_TextureFormat key,
 	uint32_t hints, uint32_t uniqueInstance, uint32_t nFlush)
 {
 	int32_t i = 0;
@@ -1115,7 +1106,7 @@ MC_TextureManager::loadTexture(const std::wstring_view& textureFullPathName, gos
 	// DO NOT create GOS handle until we need it.
 	masterTextureNodes[i].m_texturehandle = CACHED_OUT_HANDLE;
 	masterTextureNodes[i].m_nodename =
-		(const std::wstring_view&)textureStringHeap->Malloc(strlen(textureFullPathName) + 1);
+		(std::wstring_view)textureStringHeap->Malloc(strlen(textureFullPathName) + 1);
 	gosASSERT(masterTextureNodes[i].m_nodename != nullptr);
 	strcpy(masterTextureNodes[i].m_nodename, textureFullPathName);
 	masterTextureNodes[i].m_numusers = 1;
@@ -1172,7 +1163,7 @@ MC_TextureManager::loadTexture(const std::wstring_view& textureFullPathName, gos
 
 //----------------------------------------------------------------------
 int32_t
-MC_TextureManager::saveTexture(uint32_t textureindex, const std::wstring_view& textureFullPathName)
+MC_TextureManager::saveTexture(uint32_t textureindex, std::wstring_view textureFullPathName)
 {
 	if ((MC_MAXTEXTURES <= textureindex) || (nullptr == masterTextureNodes[textureindex].m_texturedata))
 	{
@@ -1298,8 +1289,7 @@ MC_TextureNode::get_gosTextureHandle(void) // If texture is not in
 }
 
 //----------------------------------------------------------------------
-void
-MC_TextureNode::destroy(void)
+void MC_TextureNode::destroy(void)
 {
 	if ((m_texturehandle != CACHED_OUT_HANDLE) && (m_texturehandle != 0xffffffff) && (m_texturehandle != 0x0))
 	{

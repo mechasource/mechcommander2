@@ -185,7 +185,7 @@ float vehicleTurnRate[110] = {
 
 extern int32_t TargetMoveModifierTable[5][2];
 
-extern float WeaponRange[NUM_FIRERANGES];
+extern float WeaponRange[FireRangeType::count];
 extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 
 #define MAX_GVACTOR_STATES 3
@@ -265,8 +265,7 @@ extern float DistanceToWaypoint;
 // GROUNDVEHICLE TYPE class
 //**********************************************************************************
 
-void
-GroundVehicleType::init(void)
+void GroundVehicleType::init(void)
 {
 	objectTypeClass = VEHICLE_TYPE;
 	objectClass = GROUNDVEHICLE;
@@ -289,8 +288,7 @@ GroundVehicleType::init(void)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicleType::destroy(void)
+void GroundVehicleType::destroy(void)
 {
 	ObjectType::destroy();
 }
@@ -300,7 +298,7 @@ GroundVehicleType::destroy(void)
 int32_t
 GroundVehicleType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 {
-	const std::wstring_view& bodyLocationString[NUM_GROUNDVEHICLE_LOCATIONS] = {
+	std::wstring_view bodyLocationString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front", "Left", "Right", "Rear", "Turret"};
 	int32_t result = 0;
 	FitIniFile vehicleFile;
@@ -382,8 +380,7 @@ GroundVehicleType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 
 //-----------------------------------------------------------------------------------
 
-bool
-GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------
 	// The default reaction of any object in the world
@@ -503,8 +500,7 @@ GroundVehicleType::handleCollision(GameObjectPtr collidee, GameObjectPtr collide
 }
 
 //-----------------------------------------------------------------------------------
-bool
-GroundVehicleType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool GroundVehicleType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// For now, a BattleMech will play a default explosion
@@ -628,7 +624,7 @@ GroundVehicleType::loadHotSpots(FitIniFilePtr vehicleFile)
 			if(result != NO_ERROR)
 				return(result);
 		}
-		drawFootprint = (const std::wstring_view&)ObjectTypeManager::objectTypeCache->malloc(NUM_MECH_GESTURES);
+		drawFootprint = (std::wstring_view)ObjectTypeManager::objectTypeCache->malloc(NUM_MECH_GESTURES);
 		result = vehicleFile->readIdCharArray("DrawFootprint", drawFootprint, NUM_MECH_GESTURES);
 		if(result != NO_ERROR)
 			return(result);
@@ -728,8 +724,7 @@ GroundVehicle::loadGameSystem(FitIniFilePtr sysFile)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::handleStaticCollision(void)
+void GroundVehicle::handleStaticCollision(void)
 {
 	if (getTangible() && pathLocks)
 	{
@@ -767,8 +762,7 @@ GroundVehicle::handleStaticCollision(void)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::init(bool create)
+void GroundVehicle::init(bool create)
 {
 	longName[0] = 0;
 	// Mover::init();
@@ -810,8 +804,7 @@ GroundVehicle::init(bool create)
 
 //------------------------------------------------------------------------------------------
 
-void
-GroundVehicle::init(bool create, ObjectTypePtr objType)
+void GroundVehicle::init(bool create, ObjectTypePtr objType)
 {
 	//-------------------------------------------------------------
 	// Call down the chain to init everybody else.
@@ -860,7 +853,7 @@ GroundVehicle::init(bool create, ObjectTypePtr objType)
 	accel = dynamics.max.groundVehicle.accel;
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
-	const std::wstring_view& appearanceName = objType->getAppearanceTypeName();
+	std::wstring_view appearanceName = objType->getAppearanceTypeName();
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.
@@ -895,8 +888,7 @@ GroundVehicle::init(bool create, ObjectTypePtr objType)
 
 //----------------------------------------------------------------------------------
 
-void
-GroundVehicle::setControl(ControlType ctrlType)
+void GroundVehicle::setControl(ControlType ctrlType)
 {
 	control.init(ctrlType, CONTROL_DATA_GROUNDVEHICLE);
 }
@@ -905,7 +897,7 @@ GroundVehicle::setControl(ControlType ctrlType)
 int32_t
 GroundVehicle::init(FitIniFile* vehicleFile)
 {
-	const std::wstring_view& BodyLocationBlockString[NUM_GROUNDVEHICLE_LOCATIONS] = {
+	std::wstring_view BodyLocationBlockString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front", "Left", "Right", "Rear", "Turret"};
 	//--------------------------
 	// Read in the vehicle data.
@@ -1206,16 +1198,14 @@ GroundVehicle::calcCV(bool calcMax)
 
 //-------------------------------------------------------------------------------------------
 
-void
-GroundVehicle::pilotingCheck(void)
+void GroundVehicle::pilotingCheck(void)
 {
 	return;
 }
 
 //-------------------------------------------------------------------------------------------
 
-void
-GroundVehicle::destroy(void)
+void GroundVehicle::destroy(void)
 {
 	if (appearance)
 	{
@@ -1226,8 +1216,7 @@ GroundVehicle::destroy(void)
 
 //------------------------------------------------------------------------------------------
 
-void
-GroundVehicle::mineCheck(void)
+void GroundVehicle::mineCheck(void)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return;
@@ -1309,8 +1298,7 @@ GroundVehicle::mineCheck(void)
 
 //---------------------------------------------------------------------------
 
-bool
-GroundVehicle::pivotTo(void)
+bool GroundVehicle::pivotTo(void)
 {
 	// If we have no maxVelocity, we are an artillery piece.  DO NOT PIVOT!!
 	if (dynamics.max.groundVehicle.speed == 0.0f)
@@ -1336,7 +1324,7 @@ GroundVehicle::pivotTo(void)
 		// * frameLength;
 		hasTarget = true;
 	}
-	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
+	else if (pilot->getCurTacOrder()->code == TacticalOrderCode::attackpoint)
 	{
 		targetposition = pilot->getAttackTargetPoint();
 		relFacingToTarget = relFacingTo(targetposition);
@@ -1533,8 +1521,7 @@ GroundVehicle::pivotTo(void)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::calcThrottleLimits(int32_t& minThrottle, int32_t& maxThrottle)
+void GroundVehicle::calcThrottleLimits(int32_t& minThrottle, int32_t& maxThrottle)
 {
 	// NOT WORKING RIGHT...
 	float incline = 90.0; // getVelocityTilt();
@@ -1562,8 +1549,7 @@ GroundVehicle::getSpeedState(void)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::updateMoveStateGoal(void)
+void GroundVehicle::updateMoveStateGoal(void)
 {
 	Stuff::Vector3D targetposition;
 	targetposition.Zero();
@@ -1574,7 +1560,7 @@ GroundVehicle::updateMoveStateGoal(void)
 		targetposition = target->getPosition();
 		hasTarget = true;
 	}
-	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
+	else if (pilot->getCurTacOrder()->code == TacticalOrderCode::attackpoint)
 	{
 		targetposition = pilot->getAttackTargetPoint();
 		hasTarget = true;
@@ -1653,8 +1639,7 @@ GroundVehicle::updateMoveStateGoal(void)
 
 //---------------------------------------------------------------------------
 
-bool
-GroundVehicle::updateMovePath(float& newRotate, wchar_t& newThrottleSetting,
+bool GroundVehicle::updateMovePath(float& newRotate, wchar_t& newThrottleSetting,
 	int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	DistanceToWaypoint = 9999.0;
@@ -1943,8 +1928,7 @@ GroundVehicle::updateMovePath(float& newRotate, wchar_t& newThrottleSetting,
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::setNextMovePath(wchar_t& newThrottleSetting)
+void GroundVehicle::setNextMovePath(wchar_t& newThrottleSetting)
 {
 	//----------------------------------------
 	// If this is only an intermediate path,
@@ -1969,8 +1953,7 @@ GroundVehicle::setNextMovePath(wchar_t& newThrottleSetting)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::setControlSettings(
+void GroundVehicle::setControlSettings(
 	float& newRotate, wchar_t& newThrottleSetting, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	//-----------------------------------------------------------------------------
@@ -2001,8 +1984,7 @@ GroundVehicle::setControlSettings(
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::updateTurret(float newRotatePerSec)
+void GroundVehicle::updateTurret(float newRotatePerSec)
 {
 	//----------------------------------------------------
 	// Now, rotate the turret toward our current target...
@@ -2010,7 +1992,7 @@ GroundVehicle::updateTurret(float newRotatePerSec)
 	GameObjectPtr target = pilot->getCurrentTarget();
 	if (target)
 		turretRelFacing = relFacingTo(target->getPosition()) + turretRotation + newRotatePerSec;
-	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
+	else if (pilot->getCurTacOrder()->code == TacticalOrderCode::attackpoint)
 		turretRelFacing =
 			relFacingTo(pilot->getAttackTargetPoint()) + turretRotation + newRotatePerSec;
 	else
@@ -2035,8 +2017,7 @@ GroundVehicle::updateTurret(float newRotatePerSec)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::updateMovement(void)
+void GroundVehicle::updateMovement(void)
 {
 	NewRotation = 0.0;
 	if (disableThisFrame)
@@ -2099,8 +2080,7 @@ GroundVehicle::updateMovement(void)
 // NETWORK MOVEMENT UPDATE ROUTINES
 //---------------------------------------------------------------------------
 
-bool
-GroundVehicle::netUpdateMovePath(float& newRotate, wchar_t& newThrottleSetting,
+bool GroundVehicle::netUpdateMovePath(float& newRotate, wchar_t& newThrottleSetting,
 	int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	DistanceToWaypoint = 9999.0;
@@ -2319,8 +2299,7 @@ GroundVehicle::netUpdateMovePath(float& newRotate, wchar_t& newThrottleSetting,
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::netUpdateMovement(void)
+void GroundVehicle::netUpdateMovement(void)
 {
 	MovePathPtr path = pilot->getMovePath();
 	bool atEndOfPath = (path->curStep == (path->numSteps - 1));
@@ -2424,8 +2403,7 @@ extern int32_t srObjtUpd;
 // extern L_INTEGER endCk;
 
 //----------------------------------------------------------------------------------
-void
-GroundVehicle::disable(uint32_t cause)
+void GroundVehicle::disable(uint32_t cause)
 {
 	Mover::disable(cause);
 	timeLeft = 0.0;
@@ -2441,8 +2419,7 @@ GroundVehicle::disable(uint32_t cause)
 
 //----------------------------------------------------------------------------------
 
-float
-GroundVehicle::getStatusRating(void)
+float GroundVehicle::getStatusRating(void)
 {
 	//-------------------------------
 	// calculate Weapon effectiveness
@@ -2468,8 +2445,7 @@ GroundVehicle::getStatusRating(void)
 
 //----------------------------------------------------------------------------------
 
-bool
-GroundVehicle::crashAvoidanceSystem(void)
+bool GroundVehicle::crashAvoidanceSystem(void)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
@@ -2564,8 +2540,7 @@ GroundVehicle::crashAvoidanceSystem(void)
 // Infantry Guy
 #define VEHICLEPILOT_ID 638
 //----------------------------------------------------------------------------------
-void
-GroundVehicle::createVehiclePilot(void)
+void GroundVehicle::createVehiclePilot(void)
 {
 	// We are ALREADY a vehicle pilot, stop breeding.
 	if (isVehiclePilot)
@@ -2639,7 +2614,7 @@ GroundVehicle::createVehiclePilot(void)
 	pilot->clearMoveOrders();
 	Stuff::Vector3D location;
 	location.Zero();
-	pilot->orderMoveToPoint(false, true, ORDER_ORIGIN_PLAYER, location, -1, TACORDER_PARAM_RUN);
+	pilot->orderMoveToPoint(false, true, OrderOriginType::player, location, -1, TACORDER_PARAM_RUN);
 	vehiclePilot->getAppearance()->resetPaintScheme(0x00ffffff, 0x00ffffff, 0x00ff8000);
 	vehiclePilot->setTangible(true);
 	ObjectManager->rebuildCollidableList = true;
@@ -2647,8 +2622,7 @@ GroundVehicle::createVehiclePilot(void)
 
 //----------------------------------------------------------------------------------
 
-void
-GroundVehicle::updateAIControl(void)
+void GroundVehicle::updateAIControl(void)
 {
 	control.reset();
 	if (getAwake())
@@ -2669,8 +2643,7 @@ GroundVehicle::updateAIControl(void)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::updateNetworkControl(void)
+void GroundVehicle::updateNetworkControl(void)
 {
 	control.reset();
 	if (getAwake())
@@ -2696,8 +2669,7 @@ GroundVehicle::updateNetworkControl(void)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::updatePlayerControl(void)
+void GroundVehicle::updatePlayerControl(void)
 {
 	control.reset();
 #if 0
@@ -2768,8 +2740,7 @@ GroundVehicle::updatePlayerControl(void)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::updateDynamics(void)
+void GroundVehicle::updateDynamics(void)
 {
 	if (!appearance)
 		Fatal(0, " Groundvehicle.updateDynamics: no appearance ");
@@ -3080,7 +3051,7 @@ GroundVehicle::update(void)
 				appearance->update();
 				windowsVisible = turn;
 			}
-			if (attackRange == FIRERANGE_CURRENT && !isDisabled())
+			if (attackRange == FireRangeType::current && !isDisabled())
 			{
 				mcTextureManager->addTriangle(holdFireIconHandle, MC2_DRAWALPHA);
 				mcTextureManager->addTriangle(holdFireIconHandle, MC2_DRAWALPHA);
@@ -3129,7 +3100,7 @@ GroundVehicle::update(void)
 					appearance->update();
 					windowsVisible = turn;
 				}
-				if (attackRange == FIRERANGE_CURRENT && !isDisabled())
+				if (attackRange == FireRangeType::current && !isDisabled())
 				{
 					mcTextureManager->addTriangle(holdFireIconHandle, MC2_DRAWALPHA);
 					mcTextureManager->addTriangle(holdFireIconHandle, MC2_DRAWALPHA);
@@ -3279,11 +3250,11 @@ GroundVehicle::update(void)
 		setExists(false);
 	// We are a Vehicle Pilot. Check If I have nothing to do.  If not, move 'em
 	// out!
-	if (isVehiclePilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_NONE))
+	if (isVehiclePilot && (pilot->getCurTacOrder()->code == TacticalOrderCode::none))
 	{
 		Stuff::Vector3D location;
 		location.Zero();
-		pilot->orderMoveToPoint(false, true, ORDER_ORIGIN_PLAYER, location, -1, TACORDER_PARAM_RUN);
+		pilot->orderMoveToPoint(false, true, OrderOriginType::player, location, -1, TACORDER_PARAM_RUN);
 	}
 #ifdef MC_PROFILE
 	QueryPerformanceCounter(endCk);
@@ -3572,7 +3543,7 @@ GroundVehicle::update(void)
 				appearance->setVisibility(true, true);
 				appearance->update();
 				windowsVisible = turn;
-				if (attackRange == FIRERANGE_CURRENT && !isDisabled())
+				if (attackRange == FireRangeType::current && !isDisabled())
 				{
 					mcTextureManager->addTriangle(holdFireIconHandle, MC2_DRAWALPHA);
 					mcTextureManager->addTriangle(holdFireIconHandle, MC2_DRAWALPHA);
@@ -3602,8 +3573,7 @@ GroundVehicle::update(void)
 }
 
 //---------------------------------------------------------------------------------
-void
-GroundVehicle::renderShadows(void)
+void GroundVehicle::renderShadows(void)
 {
 	if (Terrain::IsGameSelectTerrainPosition(position))
 	{
@@ -3630,8 +3600,7 @@ GroundVehicle::renderShadows(void)
 
 //----------------------------------------------------------------------------------
 
-void
-GroundVehicle::render(void)
+void GroundVehicle::render(void)
 {
 	if (Terrain::IsGameSelectTerrainPosition(position))
 	{
@@ -3720,7 +3689,7 @@ GroundVehicle::render(void)
 			appearance->setBarStatus(barStatus);
 			appearance->setObjectNameId(descID);
 			appearance->render();
-			if (attackRange == FIRERANGE_CURRENT && !isDisabled())
+			if (attackRange == FireRangeType::current && !isDisabled())
 				appearance->drawIcon(holdFireIconHandle, 5, 5, color);
 		}
 	}
@@ -3752,8 +3721,7 @@ GroundVehicle::render(void)
 
 //----------------------------------------------------------------------------------
 
-float
-GroundVehicle::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
+float GroundVehicle::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 {
 	float relFacing = Mover::relFacingTo(goal);
 	switch (bodyLocation)
@@ -3773,8 +3741,7 @@ GroundVehicle::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 // COMBAT routines
 //---------------------------------------------------------------------------
 
-float
-GroundVehicle::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
+float GroundVehicle::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
 	int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetpoint)
 {
 	if ((weaponIndex < numOther) || (weaponIndex >= numOther + numWeapons))
@@ -3824,8 +3791,7 @@ GroundVehicle::calcHitLocation(
 
 //---------------------------------------------------------------------------
 
-bool
-GroundVehicle::hitInventoryItem(int32_t itemIndex, bool setupOnly)
+bool GroundVehicle::hitInventoryItem(int32_t itemIndex, bool setupOnly)
 {
 	//----------------------------------------------------------------------
 	// This should never be called for a ground vehicle, as a CRITICAL SPACE
@@ -3836,16 +3802,14 @@ GroundVehicle::hitInventoryItem(int32_t itemIndex, bool setupOnly)
 
 //---------------------------------------------------------------------------
 
-void
-GroundVehicle::destroyBodyLocation(int32_t location)
+void GroundVehicle::destroyBodyLocation(int32_t location)
 {
 	armor[location].curArmor = 0;
 }
 
 //------------------------------------------------------------------------------------------
 
-bool
-GroundVehicle::injureBodyLocation(int32_t bodyLocation, float damage)
+bool GroundVehicle::injureBodyLocation(int32_t bodyLocation, float damage)
 {
 	BodyLocationPtr location = &body[bodyLocation];
 	if (damage >= location->curInternalStructure)
@@ -4040,8 +4004,7 @@ GroundVehicle::handleMoveChunk(uint32_t chunk)
 
 //---------------------------------------------------------------------------
 
-float
-GroundVehicle::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetposition)
+float GroundVehicle::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetposition)
 {
 	return (relFacingTo(targetposition, GROUNDVEHICLE_LOCATION_TURRET));
 }
@@ -5080,8 +5043,7 @@ void GroundVehicle::calcSpriteSpeed(float speed, int32_t& state, int32_t& thrott
 
 //---------------------------------------------------------------------------
 
-float
-GroundVehicle::getTotalEffectiveness(void)
+float GroundVehicle::getTotalEffectiveness(void)
 {
 	float weaponEffect, maxFront, curFront, armorFront, maxLeft, curLeft, armorLeft, maxRight,
 		curRight, armorRight;
@@ -5140,8 +5102,7 @@ GroundVehicle::getTotalEffectiveness(void)
 }
 
 //***************************************************************************
-void
-GroundVehicle::Save(PacketFilePtr file, int32_t packetNum)
+void GroundVehicle::Save(PacketFilePtr file, int32_t packetNum)
 {
 	GroundVehicleData data;
 	CopyTo(&data);
@@ -5150,8 +5111,7 @@ GroundVehicle::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void
-GroundVehicle::CopyTo(GroundVehicleData* data)
+void GroundVehicle::CopyTo(GroundVehicleData* data)
 {
 	data->accel = accel;
 	data->velocityMag = velocityMag;
@@ -5191,8 +5151,7 @@ GroundVehicle::CopyTo(GroundVehicleData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-GroundVehicle::Load(GroundVehicleData* data)
+void GroundVehicle::Load(GroundVehicleData* data)
 {
 	Mover::Load(dynamic_cast<MoverData*>(data));
 	accel = data->accel;
@@ -5235,8 +5194,7 @@ GroundVehicle::Load(GroundVehicleData* data)
 	}
 }
 
-bool
-GroundVehicle::burnRefitPoints(float pointsToBurn)
+bool GroundVehicle::burnRefitPoints(float pointsToBurn)
 {
 	if (canRefit)
 	{

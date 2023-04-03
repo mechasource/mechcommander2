@@ -37,7 +37,10 @@ class MechBayScreen : public LogisticsScreen
 {
 
 public:
-	static MechBayScreen* instance() { return s_instance; }
+	static MechBayScreen* instance()
+	{
+		return s_instance;
+	}
 	MechBayScreen(void);
 	virtual ~MechBayScreen(void);
 

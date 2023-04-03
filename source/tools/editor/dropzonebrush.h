@@ -12,7 +12,6 @@ DropZoneBrush.h			: Interface for the DropZoneBrush component.
 
 //#include "buildingbrush.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 DropZoneBrush:

@@ -31,18 +31,12 @@ struct gos_CaretInfo
 
 void __stdcall TextDrawDBCS(PSTR message);
 
-void
-InitLocalization(void);
-void
-DestroyLocalization(void);
+void InitLocalization(void);
+void DestroyLocalization(void);
 
-void
-LocalizationSetPurgeFlags(void);
-void
-LocalizationPurge(void);
-void
-LocalizationShutdown(void);
-void
-RenderIME(void);
+void LocalizationSetPurgeFlags(void);
+void LocalizationPurge(void);
+void LocalizationShutdown(void);
+void RenderIME(void);
 
 extern uint32_t gEnableLoc;

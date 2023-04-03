@@ -22,7 +22,6 @@ component.
 
 class LogisticsMech;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 MechPurchaseScreen:
@@ -30,7 +29,10 @@ MechPurchaseScreen:
 class MechPurchaseScreen : public LogisticsScreen
 {
 public:
-	static MechPurchaseScreen* instance() { return s_instance; }
+	static MechPurchaseScreen* instance()
+	{
+		return s_instance;
+	}
 
 	MechPurchaseScreen(void);
 	virtual ~MechPurchaseScreen(void);

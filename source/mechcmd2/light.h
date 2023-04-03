@@ -36,14 +36,23 @@ public:
 	float altitudeOffset;
 
 public:
-	void init(void) { ObjectType::init(void); }
+	void init(void)
+	{
+		ObjectType::init(void);
+	}
 
-	LightType(void) { init(void); }
+	LightType(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t init(std::unique_ptr<File> objFile, uint32_t fileSize);
 	int32_t init(FitIniFilePtr objFile);
 
-	~LightType(void) { destroy(void); }
+	~LightType(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 	virtual GameObjectPtr createInstance(void);
@@ -59,16 +68,25 @@ class Light : public GameObject
 public:
 	virtual void init(bool create);
 
-	Light(void) :
-		GameObject() { init(true); }
+	Light(void)
+		: GameObject()
+	{
+		init(true);
+	}
 
-	~Light(void) { destroy(void); }
+	~Light(void)
+	{
+		destroy(void);
+	}
 
 	virtual void destroy(void);
 	virtual int32_t update(void);
 	virtual void render(void);
 	virtual void init(bool create, ObjectTypePtr _type);
-	virtual int32_t kill(void) { return (NO_ERROR); }
+	virtual int32_t kill(void)
+	{
+		return (NO_ERROR);
+	}
 };
 
 //***************************************************************************

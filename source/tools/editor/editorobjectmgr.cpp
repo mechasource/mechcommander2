@@ -138,8 +138,7 @@ EditorObjectMgr::~EditorObjectMgr()
 	s_instance = 0;
 }
 
-void
-EditorObjectMgr::clear()
+void EditorObjectMgr::clear()
 {
 	for (BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++)
 	{
@@ -176,20 +175,19 @@ EditorObjectMgr::clear()
 	forests.Clear();
 }
 
-void
-EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstring_view& objectFileName)
+void EditorObjectMgr::init(std::wstring_view bldgListFileName, std::wstring_view objectFileName)
 {
 	File lstFile;
-	lstFile.open(const_cast<const std::wstring_view&>(bldgListFileName));
+	lstFile.open(const_cast<std::wstring_view>(bldgListFileName));
 	uint8_t buffer[512];
 	lstFile.readLine(buffer, 512);
 	PacketFile objectFile;
-	int32_t result = objectFile.open(const_cast<const std::wstring_view&>(objectFileName));
+	int32_t result = objectFile.open(const_cast<std::wstring_view>(objectFileName));
 	gosASSERT(result == NO_ERROR);
 	while (lstFile.getLogicalPosition() < lstFile.getLength())
 	{
 		lstFile.readLine(buffer, 512);
-		if (!strlen((const std::wstring_view&)buffer))
+		if (!strlen((std::wstring_view)buffer))
 			break;
 		Building bldg;
 		bldg.appearanceType = nullptr;
@@ -317,12 +315,12 @@ EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstr
 		wchar_t varName[256];
 		if (NO_ERROR == csvFile.open(csvFileName))
 		{
-			bldg.varNames = (const std::wstring_view&*)malloc(sizeof(const std::wstring_view&) * 16);
+			bldg.varNames = (std::wstring_view*)malloc(sizeof(std::wstring_view) * 16);
 			for (size_t i = 0; i < 16; ++i)
 			{
 				if (NO_ERROR == csvFile.readString(23 + 97 * i, 2, varName, 256) && strlen(varName))
 				{
-					bldg.varNames[i] = (const std::wstring_view&)malloc(sizeof(wchar_t) * (strlen(varName) + 1));
+					bldg.varNames[i] = (std::wstring_view)malloc(sizeof(wchar_t) * (strlen(varName) + 1));
 					strcpy(bldg.varNames[i], varName);
 				}
 				else
@@ -358,7 +356,7 @@ EditorObjectMgr::init(const std::wstring_view& bldgListFileName, const std::wstr
 }
 
 int32_t
-EditorObjectMgr::ExtractNextString(uint8_t*& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength)
+EditorObjectMgr::ExtractNextString(uint8_t*& pFileLine, std::wstring_view pBuffer, int32_t bufferLength)
 {
 	for (size_t i = 0; i < 512; ++i)
 	{
@@ -381,12 +379,12 @@ EditorObjectMgr::ExtractNextString(uint8_t*& pFileLine, const std::wstring_view&
 
 //---------------------------------------------------------------------------
 int32_t
-textToLong(const std::wstring_view& num)
+textToLong(std::wstring_view num)
 {
 	int32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = (const std::wstring_view&)strstr(num, "0x");
+	std::wstring_view hexOffset = (std::wstring_view)strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -442,8 +440,7 @@ EditorObjectMgr::ExtractNextInt(uint8_t*& pFileLine)
 	return -1;
 }
 
-float
-EditorObjectMgr::ExtractNextFloat(uint8_t*& pFileLine)
+float EditorObjectMgr::ExtractNextFloat(uint8_t*& pFileLine)
 {
 	wchar_t buffer[1024];
 	int32_t count = ExtractNextString(pFileLine, buffer, 1024);
@@ -455,8 +452,7 @@ EditorObjectMgr::ExtractNextFloat(uint8_t*& pFileLine)
 }
 
 //-------------------------------------------------------------------------------------------------
-bool
-EditorObjectMgr::canAddBuilding(
+bool EditorObjectMgr::canAddBuilding(
 	const Stuff::Vector3D& position, float rotation, uint32_t group, uint32_t indexWithinGroup)
 {
 	int32_t realCellI, realCellJ;
@@ -471,8 +467,7 @@ EditorObjectMgr::canAddBuilding(
 	return land->IsEditorSelectTerrainPosition(position);
 }
 
-bool
-EditorObjectMgr::canAddDropZone(const Stuff::Vector3D& position, int32_t alignment, bool bVTol)
+bool EditorObjectMgr::canAddDropZone(const Stuff::Vector3D& position, int32_t alignment, bool bVTol)
 {
 	int32_t alignmentCount = 0;
 	for (DROP_LIST::EIterator iter = dropZones.Begin(); !iter.IsDone(); iter++)
@@ -494,8 +489,7 @@ EditorObjectMgr::canAddDropZone(const Stuff::Vector3D& position, int32_t alignme
 }
 
 //-------------------------------------------------------------------------------------------------
-bool
-EditorObjectMgr::addBuilding(EditorObject* pObj)
+bool EditorObjectMgr::addBuilding(EditorObject* pObj)
 {
 	return addBuilding(pObj->appearance()->position, getGroup(pObj->id), getIndexInGroup(pObj->id),
 			   pObj->appearance()->teamId, pObj->appearance()->rotation)
@@ -681,8 +675,7 @@ EditorObjectMgr::addBuilding(const Stuff::Vector3D& position, uint32_t group,
 	return info;
 }
 
-bool
-EditorObjectMgr::deleteBuilding(const EditorObject* pInfo)
+bool EditorObjectMgr::deleteBuilding(const EditorObject* pInfo)
 {
 	BuildingLink* pLink = getLinkWithParent(pInfo);
 	if (pLink)
@@ -750,8 +743,7 @@ EditorObjectMgr::getNumberBuildingsInGroup(int32_t group) const
 	return groups[group].buildings.Count();
 }
 
-void
-EditorObjectMgr::getBuildingGroupNames(const std::wstring_view&* names, int32_t& NumberOfNames) const
+void EditorObjectMgr::getBuildingGroupNames(std::wstring_view* names, int32_t& NumberOfNames) const
 {
 	if (NumberOfNames < groups.Count())
 		NumberOfNames = groups.Count();
@@ -764,9 +756,8 @@ EditorObjectMgr::getBuildingGroupNames(const std::wstring_view&* names, int32_t&
 	}
 }
 
-void
-EditorObjectMgr::getBuildingNamesInGroup(
-	int32_t group, const std::wstring_view&* names, int32_t& NumberOfNames) const
+void EditorObjectMgr::getBuildingNamesInGroup(
+	int32_t group, std::wstring_view* names, int32_t& NumberOfNames) const
 {
 	group* pGroup = &groups[group];
 	if (NumberOfNames < groups.Count())
@@ -782,8 +773,7 @@ EditorObjectMgr::getBuildingNamesInGroup(
 	NumberOfNames = i;
 }
 
-void
-EditorObjectMgr::update()
+void EditorObjectMgr::update()
 {
 	static int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 	if (renderObjects)
@@ -847,8 +837,7 @@ EditorObjectMgr::update()
 	}
 }
 
-void
-EditorObjectMgr::render()
+void EditorObjectMgr::render()
 {
 	//--------------------------------
 	// Set States for Software Renderer
@@ -935,8 +924,7 @@ EditorObjectMgr::render()
 	}
 }
 
-void
-EditorObjectMgr::renderShadows()
+void EditorObjectMgr::renderShadows()
 {
 	//-----------------------------------------------------
 	// Set render states as few times as possible.
@@ -1002,8 +990,7 @@ EditorObjectMgr::renderShadows()
 	}
 }
 
-bool
-EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
+bool EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 {
 	File file;
 	if (!buildings.Count())
@@ -1013,7 +1000,7 @@ EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 	}
 	int32_t bufferSize =
 		buildings.Count() * (4 * sizeof(float) + 6 * sizeof(int32_t)) + 2 * sizeof(int32_t);
-	const std::wstring_view& pBuffer = (const std::wstring_view&)malloc(bufferSize);
+	std::wstring_view pBuffer = (std::wstring_view)malloc(bufferSize);
 	int32_t* pTacMapPoints = (int32_t*)malloc(sizeof(int32_t) * (buildings.Count() * 2 + 1));
 	int32_t* pPoints = pTacMapPoints + 1;
 	int32_t pointCounter = 0;
@@ -1103,12 +1090,11 @@ EditorObjectMgr::save(PacketFile& PakFile, int32_t whichPacket)
 	return true;
 }
 
-bool
-EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
+bool EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 {
 	PakFile.seekPacket(whichPacket);
 	int32_t size = PakFile.getPacketSize();
-	const std::wstring_view& pBuffer = (const std::wstring_view&)malloc(size);
+	std::wstring_view pBuffer = (std::wstring_view)malloc(size);
 	PakFile.readPacket(whichPacket, (uint8_t*)pBuffer);
 	File file;
 	file.open(pBuffer, size);
@@ -1203,8 +1189,7 @@ EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 }
 
 // this will NOT RETURN MECHS AND VEHICLES
-bool
-EditorObjectMgr::getBuildingFromID(
+bool EditorObjectMgr::getBuildingFromID(
 	int32_t fitID, uint32_t& group, uint32_t& index, bool canBeMech)
 {
 	group = 0;
@@ -1232,13 +1217,11 @@ EditorObjectMgr::getFitID(int32_t id) const
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].fitID;
 }
 
-bool
-EditorObjectMgr::getBlocksLineOfFire(int32_t id) const
+bool EditorObjectMgr::getBlocksLineOfFire(int32_t id) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].blocksLineOfFire;
 }
-bool
-EditorObjectMgr::getIsHoverCraft(int32_t id) const
+bool EditorObjectMgr::getIsHoverCraft(int32_t id) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].isHoverCraft;
 }
@@ -1248,8 +1231,7 @@ EditorObjectMgr::getImpassability(int32_t id)
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].impassability;
 }
 
-void
-EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2)
+void EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2)
 {
 	int32_t xMin, xMax;
 	int32_t yMin, yMax;
@@ -1304,8 +1286,7 @@ EditorObjectMgr::select(const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2
 	}
 }
 
-void
-EditorObjectMgr::select(EditorObject& object, bool bSelect)
+void EditorObjectMgr::select(EditorObject& object, bool bSelect)
 {
 	// we'll just assume it's valid
 	object.appearance()->selected =
@@ -1320,8 +1301,7 @@ EditorObjectMgr::select(EditorObject& object, bool bSelect)
 	}
 }
 
-void
-EditorObjectMgr::unselectAll()
+void EditorObjectMgr::unselectAll()
 {
 	// mh: at somepoint we can change the code so that it iterates over the
 	// selectedObjects list instead of the lists of all the buildings and units
@@ -1338,8 +1318,7 @@ EditorObjectMgr::unselectAll()
 	selectedObjects.Clear();
 }
 
-bool
-EditorObjectMgr::hasSelection()
+bool EditorObjectMgr::hasSelection()
 {
 #if 1
 	syncSelectedObjectPointerList();
@@ -1391,8 +1370,7 @@ EditorObjectMgr::getSelectedObjectList()
 	return selectedObjects;
 }
 
-void
-EditorObjectMgr::syncSelectedObjectPointerList()
+void EditorObjectMgr::syncSelectedObjectPointerList()
 {
 	if (!selectedObjectsNeedsToBeSynched)
 	{
@@ -1417,8 +1395,7 @@ EditorObjectMgr::syncSelectedObjectPointerList()
 	selectedObjectsNeedsToBeSynched = false;
 }
 
-void
-EditorObjectMgr::deleteSelectedObjects()
+void EditorObjectMgr::deleteSelectedObjects()
 {
 	for (BUILDING_LIST::EIterator iter = buildings.End(); !iter.IsDone();)
 	{
@@ -1456,8 +1433,7 @@ EditorObjectMgr::deleteSelectedObjects()
 	selectedObjects.Clear();
 }
 
-void
-EditorObjectMgr::adjustObjectsToNewTerrainheights()
+void EditorObjectMgr::adjustObjectsToNewTerrainheights()
 {
 	for (BUILDING_LIST::EIterator iter = buildings.End(); !iter.IsDone(); iter++)
 	{
@@ -1514,8 +1490,7 @@ EditorObjectMgr::getAppearance(uint32_t group, uint32_t indexWithinGroup)
 	return getAppearance(pBuilding);
 }
 
-bool
-EditorObjectMgr::loadMechs(FitIniFile& file)
+bool EditorObjectMgr::loadMechs(FitIniFile& file)
 {
 	// disable animation loading to decrease loading time
 	Mech3DAppearanceType::disableAnimationLoading();
@@ -1563,8 +1538,7 @@ EditorObjectMgr::loadMechs(FitIniFile& file)
 	return true;
 }
 
-bool
-EditorObjectMgr::saveMechs(FitIniFile& file)
+bool EditorObjectMgr::saveMechs(FitIniFile& file)
 {
 	file.writeBlock("Warriors");
 	UNIT_LIST unitsByPlayer[8 /*max players*/];
@@ -1712,7 +1686,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 		wchar_t armName[512] = {0};
 		strcpy(armName, file.getFilename());
 		_strlwr(armName);
-		const std::wstring_view& fitExt = strstr(armName, ".fit");
+		std::wstring_view fitExt = strstr(armName, ".fit");
 		*fitExt = '_';
 		sprintf(fitExt + 1, "warrior%02d", counter);
 		mapAsset->AddRelationship("warrior", armName);
@@ -1781,7 +1755,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 						mates[mateIndex] = 0;
 					}
 				}
-				const std::wstring_view& commanderBlock;
+				std::wstring_view commanderBlock;
 				commanderBlock.Format("Commander%ldGroup:%ld", playerNum, lanceGroup);
 				file.writeBlock(commanderBlock.Data());
 				file.writeIdLongArray("Mates", &(mates[0]), 12);
@@ -1791,8 +1765,7 @@ EditorObjectMgr::saveMechs(FitIniFile& file)
 	return true;
 }
 
-bool
-EditorObjectMgr::saveForests(FitIniFile& file)
+bool EditorObjectMgr::saveForests(FitIniFile& file)
 {
 	int32_t counter = 0;
 	wchar_t header[256];
@@ -1805,8 +1778,7 @@ EditorObjectMgr::saveForests(FitIniFile& file)
 	return true;
 }
 
-bool
-EditorObjectMgr::loadForests(FitIniFile& file)
+bool EditorObjectMgr::loadForests(FitIniFile& file)
 {
 	int32_t counter = 0;
 	wchar_t header[256];
@@ -1816,7 +1788,7 @@ EditorObjectMgr::loadForests(FitIniFile& file)
 		sprintf(header, "Forest%ld", counter);
 		if (NO_ERROR != file.seekBlock(header))
 			break;
-		file.readIdString("FileName", header, 255);
+		file.readIdString("filename", header, 255);
 		file.readIdLong("ID", tmp);
 		Forest* pForest = new Forest(tmp);
 		pForest->setFileName(header);
@@ -1859,8 +1831,7 @@ EditorObjectMgr::createForest(const Forest& forest)
 	return ID;
 }
 
-void
-EditorObjectMgr::editForest(int32_t& oldID, const Forest& forest)
+void EditorObjectMgr::editForest(int32_t& oldID, const Forest& forest)
 {
 	land->unselectAll();
 	for (BUILDING_LIST::EIterator bIter = buildings.End(); !bIter.IsDone();)
@@ -1893,8 +1864,7 @@ EditorObjectMgr::editForest(int32_t& oldID, const Forest& forest)
 	land->unselectAll();
 }
 
-void
-EditorObjectMgr::removeForest(const Forest& forest)
+void EditorObjectMgr::removeForest(const Forest& forest)
 {
 	unselectAll();
 	for (BUILDING_LIST::EIterator bIter = buildings.End(); !bIter.IsDone();)
@@ -1923,8 +1893,7 @@ EditorObjectMgr::removeForest(const Forest& forest)
 	}
 }
 
-void
-EditorObjectMgr::selectForest(int32_t ID)
+void EditorObjectMgr::selectForest(int32_t ID)
 {
 	unselectAll();
 	for (BUILDING_LIST::EIterator bIter = buildings.Begin(); !bIter.IsDone(); bIter++)
@@ -1936,8 +1905,7 @@ EditorObjectMgr::selectForest(int32_t ID)
 	}
 }
 
-void
-EditorObjectMgr::doForest(const Forest& forest)
+void EditorObjectMgr::doForest(const Forest& forest)
 {
 	float centerX = forest.centerX;
 	float centerY = forest.centerY;
@@ -2075,8 +2043,7 @@ EditorObjectMgr::getForests(Forest** pForests, int32_t& count)
 	return count;
 }
 
-void
-EditorObjectMgr::getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, int32_t& index)
+void EditorObjectMgr::getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, int32_t& index)
 {
 	group = TREE_GROUP;
 	index = 0;
@@ -2109,8 +2076,7 @@ EditorObjectMgr::getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, int32
 	}
 }
 
-bool
-EditorObjectMgr::saveDropZones(FitIniFile& file)
+bool EditorObjectMgr::saveDropZones(FitIniFile& file)
 {
 	int32_t counter = 0;
 	wchar_t Header[256];
@@ -2154,8 +2120,7 @@ EditorObjectMgr::saveDropZones(FitIniFile& file)
 	return true;
 }
 
-bool
-EditorObjectMgr::loadDropZones(FitIniFile& file)
+bool EditorObjectMgr::loadDropZones(FitIniFile& file)
 {
 	int32_t counter = 0;
 	wchar_t Header[256];
@@ -2188,10 +2153,9 @@ EditorObjectMgr::getType(uint32_t group, uint32_t indexWithinGroup)
 	return pBuilding->type;
 }
 
-EditorObjectMgr::Building::~Building() {}
+EditorObjectMgr::Building::~Building() { }
 
-bool
-EditorObjectMgr::moveBuilding(EditorObject* pInfo, int32_t cellJ, int32_t cellI)
+bool EditorObjectMgr::moveBuilding(EditorObject* pInfo, int32_t cellJ, int32_t cellI)
 {
 	if (getObjectAtCell(cellJ, cellI) && (getObjectAtCell(cellJ, cellI) != pInfo))
 	{
@@ -2296,8 +2260,7 @@ EditorObjectMgr::getLinkWithChild(const EditorObject* pObj)
 	return nullptr;
 }
 
-void
-EditorObjectMgr::addLink(BuildingLink* pLink)
+void EditorObjectMgr::addLink(BuildingLink* pLink)
 {
 	for (LINK_LIST::EIterator iter = links.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2307,8 +2270,7 @@ EditorObjectMgr::addLink(BuildingLink* pLink)
 	links.Append(pLink);
 }
 
-void
-EditorObjectMgr::deleteLink(BuildingLink* pLink)
+void EditorObjectMgr::deleteLink(BuildingLink* pLink)
 {
 	for (LINK_LIST::EIterator iter = links.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2321,20 +2283,19 @@ EditorObjectMgr::deleteLink(BuildingLink* pLink)
 	}
 }
 
-const std::wstring_view&
+std::wstring_view
 EditorObjectMgr::getObjectName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].name;
 }
 
-const std::wstring_view&
+std::wstring_view
 EditorObjectMgr::getGroupName(int32_t ID) const
 {
 	return groups[ID].name;
 }
 
-void
-EditorObjectMgr::getUnitGroupNames(const std::wstring_view&* names, int32_t* ids, int32_t& numberOfEm) const
+void EditorObjectMgr::getUnitGroupNames(std::wstring_view* names, int32_t* ids, int32_t& numberOfEm) const
 {
 	int32_t counter = 0;
 	int32_t index = 0;
@@ -2367,8 +2328,7 @@ EditorObjectMgr::getUnitGroupCount(void) const
 	return counter;
 }
 
-void
-EditorObjectMgr::getSelectedUnits(UNIT_LIST& selUnits)
+void EditorObjectMgr::getSelectedUnits(UNIT_LIST& selUnits)
 {
 	for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2391,9 +2351,8 @@ EditorObjectMgr::getNumberOfVariants(int32_t group, int32_t indexInGroup) const
 	return i + 1;
 }
 
-void
-EditorObjectMgr::getVariantNames(
-	int32_t group, int32_t indexInGroup, const std::wstring_view&* names, int32_t& numberOfNames) const
+void EditorObjectMgr::getVariantNames(
+	int32_t group, int32_t indexInGroup, std::wstring_view* names, int32_t& numberOfNames) const
 {
 	Building bldg = groups[group].buildings[indexInGroup];
 	for (size_t i = 0; i < 16 && i < numberOfNames; ++i)
@@ -2405,8 +2364,7 @@ EditorObjectMgr::getVariantNames(
 	numberOfNames = i;
 }
 
-void
-EditorObjectMgr::registerSquadNum(uint32_t squadNum)
+void EditorObjectMgr::registerSquadNum(uint32_t squadNum)
 {
 	if (squadNum >= nextAvailableSquadNum)
 	{

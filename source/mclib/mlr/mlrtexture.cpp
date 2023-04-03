@@ -6,7 +6,8 @@
 
 #include "mlr/mlrtexture.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //############################    MLRTexture    ###############################
@@ -25,7 +26,7 @@ MLRTexture::MLRTexture(std::iostream stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture::MLRTexture(
-	MLRTexturePool* tp, const std::wstring_view& texName, int32_t _instance, int32_t handle, int32_t _hint)
+	MLRTexturePool* tp, std::wstring_view texName, int32_t _instance, int32_t handle, int32_t _hint)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	thePool = tp;
@@ -57,8 +58,7 @@ MLRTexture::MLRTexture(MLRTexturePool* tp, GOSImage* _image, int32_t handle, int
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexture::TestInstance(void) const
+void MLRTexture::TestInstance(void) const
 {
 	_ASSERT((*thePool)[textureHandle]);
 	Check_Object(image);
@@ -99,8 +99,7 @@ MLRTexture::Make(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexture::Save(std::iostream stream)
+void MLRTexture::Save(std::iostream stream)
 {
 }
 

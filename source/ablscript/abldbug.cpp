@@ -15,7 +15,8 @@
 //#include "ablexec.h"
 #include "abldbug.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -27,10 +28,10 @@ extern int32_t execLineNumber;
 // extern int32_t				execStatementCount;
 extern TokenCodeType codeToken;
 
-extern const std::wstring_view& codeBuffer;
-extern const std::wstring_view& codeBufferPtr;
-extern const std::wstring_view& codeSegmentPtr;
-extern const std::wstring_view& statementStartPtr;
+extern std::wstring_view codeBuffer;
+extern std::wstring_view codeBufferPtr;
+extern std::wstring_view codeSegmentPtr;
+extern std::wstring_view statementStartPtr;
 
 extern const std::unique_ptr<StackItem>& tos;
 // extern const std::unique_ptr<StackItem>&		stackFrameBasePtr;
@@ -45,8 +46,8 @@ extern Literal curLiteral;
 extern int32_t bufferOffset;
 extern wchar_t sourceBuffer[MAXLEN_SOURCELINE];
 // extern int32_t				bufferOffset;
-extern const std::wstring_view& bufferp;
-// extern const std::wstring_view&			tokenp;
+extern std::wstring_view bufferp;
+// extern std::wstring_view			tokenp;
 extern wchar_t wordString[MAXLEN_TOKENSTRING];
 
 extern const std::unique_ptr<Type>& IntegerTypePtr;
@@ -62,7 +63,7 @@ extern int32_t NumModulesRegistered;
 extern int32_t NumModuleInstances;
 extern int32_t MaxWatchesPerModule;
 extern int32_t MaxBreakPointsPerModule;
-extern const std::wstring_view& TokenStrings[NUM_TOKENS];
+extern std::wstring_view TokenStrings[NUM_TOKENS];
 
 // extern StackItem*		stack;
 // extern const std::unique_ptr<StackItem>&		stackFrameBasePtr;
@@ -71,8 +72,7 @@ extern const std::unique_ptr<StackItem>& StaticDataPtr;
 
 // extern int32_t				MaxLoopIterations;
 
-void
-CheckMouse();
+void CheckMouse();
 
 //---------------------------------------------------------------------------
 
@@ -104,8 +104,7 @@ WatchManager::operator new(size_t mySize)
 
 //---------------------------------------------------------------------------
 
-void
-WatchManager::operator delete(PVOID us)
+void WatchManager::operator delete(PVOID us)
 {
 	ABLStackFreeCallback(us);
 }
@@ -125,8 +124,7 @@ WatchManager::init(int32_t max)
 
 //---------------------------------------------------------------------------
 
-void
-WatchManager::destroy(void)
+void WatchManager::destroy(void)
 {
 	if (watches)
 	{
@@ -155,7 +153,7 @@ WatchManager::add(const std::unique_ptr<SymTableNode>& idPtr)
 			return ((WatchPtr)idPtr->info);
 		else if (numWatches < maxWatches)
 		{
-			idPtr->info = (const std::wstring_view&)&watches[numWatches];
+			idPtr->info = (std::wstring_view)&watches[numWatches];
 			watches[numWatches].idPtr = idPtr;
 			watches[numWatches].store = false;
 			watches[numWatches].breakOnStore = false;
@@ -196,7 +194,7 @@ WatchManager::remove(const std::unique_ptr<SymTableNode>& idPtr)
 		watches[i].breakOnStore = watches[i + 1].breakOnStore;
 		watches[i].fetch = watches[i + 1].fetch;
 		watches[i].breakOnFetch = watches[i + 1].breakOnFetch;
-		watches[i].idPtr->info = (const std::wstring_view&)&watches[i];
+		watches[i].idPtr->info = (std::wstring_view)&watches[i];
 	}
 	return (ABL_NO_ERR);
 }
@@ -288,8 +286,7 @@ WatchManager::setFetch(const std::unique_ptr<SymTableNode>& idPtr, bool state, b
 
 //---------------------------------------------------------------------------
 
-bool
-WatchManager::getStore(const std::unique_ptr<SymTableNode>& idPtr)
+bool WatchManager::getStore(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	if (!idPtr->info)
 		return (false);
@@ -298,8 +295,7 @@ WatchManager::getStore(const std::unique_ptr<SymTableNode>& idPtr)
 
 //---------------------------------------------------------------------------
 
-bool
-WatchManager::getFetch(const std::unique_ptr<SymTableNode>& idPtr)
+bool WatchManager::getFetch(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	if (!idPtr->info)
 		return (false);
@@ -308,8 +304,7 @@ WatchManager::getFetch(const std::unique_ptr<SymTableNode>& idPtr)
 
 //---------------------------------------------------------------------------
 
-void
-WatchManager::print(void)
+void WatchManager::print(void)
 {
 	for (size_t i = 0; i < numWatches; i++)
 	{
@@ -331,8 +326,7 @@ BreakPointManager::operator new(size_t mySize)
 
 //---------------------------------------------------------------------------
 
-void
-BreakPointManager::operator delete(PVOID us)
+void BreakPointManager::operator delete(PVOID us)
 {
 	ABLStackFreeCallback(us);
 }
@@ -352,8 +346,7 @@ BreakPointManager::init(int32_t max)
 
 //---------------------------------------------------------------------------
 
-void
-BreakPointManager::destroy(void)
+void BreakPointManager::destroy(void)
 {
 	if (breakPoints)
 	{
@@ -426,8 +419,7 @@ BreakPointManager::removeAll(void)
 
 //---------------------------------------------------------------------------
 
-bool
-BreakPointManager::isBreakPoint(int32_t lineNumber)
+bool BreakPointManager::isBreakPoint(int32_t lineNumber)
 {
 	if (numBreakPoints > 0)
 	{
@@ -440,8 +432,7 @@ BreakPointManager::isBreakPoint(int32_t lineNumber)
 
 //---------------------------------------------------------------------------
 
-void
-BreakPointManager::print(void)
+void BreakPointManager::print(void)
 {
 	//--------------------------------------------------------------
 	// If no line number, do default action--list all breakpoints...
@@ -464,8 +455,7 @@ Debugger::operator new(size_t mySize)
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::operator delete(PVOID us)
+void Debugger::operator delete(PVOID us)
 {
 	ABLStackFreeCallback(us);
 }
@@ -473,7 +463,7 @@ Debugger::operator delete(PVOID us)
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::init(void (*callback)(const std::wstring_view& s), const std::unique_ptr<ABLModule>& _module)
+Debugger::init(void (*callback)(std::wstring_view s), const std::unique_ptr<ABLModule>& _module)
 {
 	printCallback = callback;
 	module = _module;
@@ -487,15 +477,14 @@ Debugger::init(void (*callback)(const std::wstring_view& s), const std::unique_p
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::destroy(void)
+void Debugger::destroy(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::print(const std::wstring_view& s)
+Debugger::print(std::wstring_view s)
 {
 	if (printCallback)
 		(*printCallback)(s);
@@ -504,8 +493,7 @@ Debugger::print(const std::wstring_view& s)
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::setModule(const std::unique_ptr<ABLModule>& _module)
+void Debugger::setModule(const std::unique_ptr<ABLModule>& _module)
 {
 	module = _module;
 	breakPointManager = module->getBreakPointManager();
@@ -593,14 +581,13 @@ Debugger::removeBreakPoint(void)
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::sprintStatement(const std::wstring_view& dest)
+void Debugger::sprintStatement(std::wstring_view dest)
 {
 	//---------------------------------------------------------------------
 	// First, rebuild the the current statement from the module code. Then,
 	// spit it out as we do so...
 	bool done = false;
-	const std::wstring_view& cp = statementStartPtr;
+	std::wstring_view cp = statementStartPtr;
 	do
 	{
 		TokenCodeType token = (TokenCodeType)*cp;
@@ -656,8 +643,7 @@ Debugger::sprintStatement(const std::wstring_view& dest)
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::sprintLineNumber(const std::wstring_view& dest)
+void Debugger::sprintLineNumber(std::wstring_view dest)
 {
 	//--------------------------
 	// PRINT LINE NUMBER HERE...
@@ -666,8 +652,7 @@ Debugger::sprintLineNumber(const std::wstring_view& dest)
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::sprintDataValue(const std::wstring_view& dest, const std::unique_ptr<StackItem>& data, const std::unique_ptr<Type>& dataType)
+void Debugger::sprintDataValue(std::wstring_view dest, const std::unique_ptr<StackItem>& data, const std::unique_ptr<Type>& dataType)
 {
 	if ((dataType->form == FRM_ENUM) && (dataType != BooleanTypePtr))
 		dataType = IntegerTypePtr;
@@ -697,7 +682,7 @@ Debugger::sprintDataValue(const std::wstring_view& dest, const std::unique_ptr<S
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::sprintSimpleValue(const std::wstring_view& dest, const std::unique_ptr<SymTableNode>& symbol)
+Debugger::sprintSimpleValue(std::wstring_view dest, const std::unique_ptr<SymTableNode>& symbol)
 {
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
@@ -748,7 +733,7 @@ Debugger::sprintSimpleValue(const std::wstring_view& dest, const std::unique_ptr
 			if ((ptype == IntegerTypePtr) || (ptype->form == FRM_ENUM))
 				sprintf(dest, "%d", *((int32_t*)dataPtr));
 			else if (ptype == CharTypePtr)
-				sprintf(dest, "\"%c\"", *((const std::wstring_view&)dataPtr));
+				sprintf(dest, "\"%c\"", *((std::wstring_view)dataPtr));
 			else
 				sprintf(dest, "%.4f", *((float*)dataPtr));
 		}
@@ -761,7 +746,7 @@ Debugger::sprintSimpleValue(const std::wstring_view& dest, const std::unique_ptr
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::sprintArrayValue(const std::wstring_view& dest, const std::unique_ptr<SymTableNode>& symbol, const std::wstring_view& subscriptString)
+Debugger::sprintArrayValue(std::wstring_view dest, const std::unique_ptr<SymTableNode>& symbol, std::wstring_view subscriptString)
 {
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
@@ -798,11 +783,11 @@ Debugger::sprintArrayValue(const std::wstring_view& dest, const std::unique_ptr<
 		Address elementAddress = (Address)dataPtr->address;
 		if (subscriptString)
 		{
-			const std::wstring_view& cp = subscriptString;
+			std::wstring_view cp = subscriptString;
 			//-----------------------------
 			// Get past the open bracket...
 			cp++;
-			const std::wstring_view& token = strtok(&subscriptString[1], ",]");
+			std::wstring_view token = strtok(&subscriptString[1], ",]");
 			while (token)
 			{
 				//----------------
@@ -822,12 +807,12 @@ Debugger::sprintArrayValue(const std::wstring_view& dest, const std::unique_ptr<
 			if ((ptype == IntegerTypePtr) || (ptype->form == FRM_ENUM))
 				sprintf(dest, "%d", *((int32_t*)elementAddress));
 			else if (ptype == CharTypePtr)
-				sprintf(dest, "\"%c\"", *((const std::wstring_view&)elementAddress));
+				sprintf(dest, "\"%c\"", *((std::wstring_view)elementAddress));
 			else
 				sprintf(dest, "%.4f", *((float*)elementAddress));
 		}
 		else if (ptype->info.array.elementTypePtr == CharTypePtr)
-			sprintf(dest, "\"%s\"", (const std::wstring_view&)elementAddress);
+			sprintf(dest, "\"%s\"", (std::wstring_view)elementAddress);
 		else
 			sprintf(dest, "Could you be more specific?");
 	}
@@ -837,9 +822,9 @@ Debugger::sprintArrayValue(const std::wstring_view& dest, const std::unique_ptr<
 //---------------------------------------------------------------------------
 
 int32_t
-Debugger::sprintValue(const std::wstring_view& dest, const std::wstring_view& exprString)
+Debugger::sprintValue(std::wstring_view dest, std::wstring_view exprString)
 {
-	const std::wstring_view& subscript = strchr(exprString, '[');
+	std::wstring_view subscript = strchr(exprString, '[');
 	if (!subscript)
 	{
 		//------------------------------------------
@@ -1001,8 +986,7 @@ Debugger::traceDataFetch(const std::unique_ptr<SymTableNode>& id, const std::uni
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::showValue(void)
+void Debugger::showValue(void)
 {
 	getToken();
 	if (curToken == TKN_SEMICOLON)
@@ -1019,7 +1003,7 @@ Debugger::showValue(void)
 		const std::unique_ptr<Type>& ptype = expression();
 		if (errorCount > 0)
 			return;
-		const std::wstring_view& savedCodeSegmentPtr = codeSegmentPtr;
+		std::wstring_view savedCodeSegmentPtr = codeSegmentPtr;
 		TokenCodeType savedCodeToken = codeToken;
 		execExpression();
 		if (ptype->form == FRM_ARRAY)
@@ -1041,8 +1025,7 @@ Debugger::showValue(void)
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::assignVariable(void)
+void Debugger::assignVariable(void)
 {
 	getToken();
 #if 0
@@ -1059,7 +1042,7 @@ Debugger::assignVariable(void)
 			return;
 		//-------------------
 		// Now, execute it...
-		const std::wstring_view& savedCodeSegmentPtr = codeSegmentPtr;
+		std::wstring_view savedCodeSegmentPtr = codeSegmentPtr;
 		int32_t savedCodeToken = codeToken;
 		codeSegmentPtr = codeBuffer + 1;
 		getCodeToken();
@@ -1075,8 +1058,7 @@ Debugger::assignVariable(void)
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::displayModuleInstanceRegistry(void)
+void Debugger::displayModuleInstanceRegistry(void)
 {
 	wchar_t buffer1[200], buffer2[40];
 	for (size_t i = 0; i < ((NumModuleInstances + 1) / 2); i++)
@@ -1095,9 +1077,8 @@ Debugger::displayModuleInstanceRegistry(void)
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::processCommand(
-	int32_t commandId, const std::wstring_view& strParam1, int32_t numParam1, const std::unique_ptr<ABLModule>& moduleParam1)
+void Debugger::processCommand(
+	int32_t commandId, std::wstring_view strParam1, int32_t numParam1, const std::unique_ptr<ABLModule>& moduleParam1)
 {
 	switch (commandId)
 	{
@@ -1271,8 +1252,7 @@ Debugger::processCommand(
 
 //---------------------------------------------------------------------------
 
-void
-Debugger::debugMode(void)
+void Debugger::debugMode(void)
 {
 	//--------------------------------------------------------------------
 	// Some assumptions: this will never be called during a smacker movie.
@@ -1360,4 +1340,3 @@ ABLi_getDebugger(void)
 //***************************************************************************
 
 } // namespace mclib::abl
-

@@ -10,7 +10,7 @@
 class ListItem
 {
 public:
-	virtual ~ListItem() {}
+	virtual ~ListItem() { }
 };
 
 template <class T>
@@ -33,9 +33,15 @@ public:
 		linkData = ptr;
 		Next = nullptr;
 	}
-	virtual ~FLink() { Next = nullptr; }
+	virtual ~FLink()
+	{
+		Next = nullptr;
+	}
 
-	FLink<T>* GetNext() { return (FLink<T>*)Next; }
+	FLink<T>* GetNext()
+	{
+		return (FLink<T>*)Next;
+	}
 };
 
 template <class T>
@@ -205,8 +211,14 @@ public:
 		return m_Tail->linkData;
 	}
 
-	int32_t Size() { return m_Size; }
-	T* Read() { return m_Iterator->linkData; }
+	int32_t Size()
+	{
+		return m_Size;
+	}
+	T* Read()
+	{
+		return m_Iterator->linkData;
+	}
 	T* PeekNext()
 	{
 		if (m_Iterator->Next == nullptr)
@@ -250,7 +262,10 @@ public:
 			return tmp->linkData;
 		}
 	}
-	void RemoveCurrentItem() { Remove(m_Iterator->linkData); }
+	void RemoveCurrentItem()
+	{
+		Remove(m_Iterator->linkData);
+	}
 
 	inline void Clear(BOOLEAN delete_data = false)
 	{
@@ -296,7 +311,10 @@ public:
 			return current->linkData;
 	}
 
-	void Rewind() { current = myList->m_Head; }
+	void Rewind()
+	{
+		current = myList->m_Head;
+	}
 
 	T* Read()
 	{

@@ -71,7 +71,7 @@ public:
 	static void makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data);
 
 	static void initButtons(FitIniFile& file, int32_t buttonCount, ControlButton* buttons,
-		ButtonData* buttonData, const std::wstring_view& str, aFont* font = 0);
+		ButtonData* buttonData, std::wstring_view str, aFont* font = 0);
 
 	enum States
 	{
@@ -97,8 +97,14 @@ public:
 	bool inRegion(int32_t mouseX, int32_t mouseY, bool bPaused);
 	void render(bool bPaused);
 	void update(bool bPaused, bool bLOS);
-	void initTacMapBuildings(uint8_t* data, int32_t size) { tacMap.initBuildings(data, size); }
-	void initTacMap(uint8_t* data, int32_t size) { tacMap.init(data, size); }
+	void initTacMapBuildings(uint8_t* data, int32_t size)
+	{
+		tacMap.initBuildings(data, size);
+	}
+	void initTacMap(uint8_t* data, int32_t size)
+	{
+		tacMap.init(data, size);
+	}
 	void initMechs(void);
 	void unPressAllVehicleButtons(void);
 	void disableAllVehicleButtons(void);
@@ -112,13 +118,16 @@ public:
 	bool resultsDone(void);
 
 	void startObjectives(bool bStart);
-	bool objectivesStarted() { return renderObjectives; }
+	bool objectivesStarted()
+	{
+		return renderObjectives;
+	}
 
 	void setInfoWndMover(Mover* pMover);
 	void setVehicleCommand(bool);
 	bool getVehicleCommand();
 
-	void playMovie(const std::wstring_view& fileName);
+	void playMovie(std::wstring_view fileName);
 	bool isMoviePlaying(void);
 
 	bool playPilotVideo(MechWarrior* pPilot, wchar_t movieCode);
@@ -127,15 +136,18 @@ public:
 
 	bool isOverTacMap(void);
 
-	bool isChatting() { return bChatting; }
+	bool isChatting()
+	{
+		return bChatting;
+	}
 
 	// TUTORIAL
 	bool animateTacMap(int32_t buttonId, float timeToScroll, int32_t numFlashes);
 	bool pushButton(int32_t buttonId);
 	bool flashRPTotal(int32_t numFlashes);
 
-	const std::wstring_view& getVehicleName(int32_t& ID);
-	const std::wstring_view& getVehicleNameFromID(int32_t ID);
+	std::wstring_view getVehicleName(int32_t& ID);
+	std::wstring_view getVehicleNameFromID(int32_t ID);
 	void swapResolutions(int32_t newResolution);
 
 	GameTacMap tacMap;
@@ -201,26 +213,53 @@ public:
 	void setDefaultSpeed(void);
 	void toggleHoldPosition(void);
 
-	void setRange(int32_t Range);
+	void setRange(FireRangeType Range);
 	void doStop(void);
 	void toggleFireFromCurrentPos(void);
-	bool getFireFromCurrentPos() { return fireFromCurrentPos; }
-	void setFireFromCurrentPos(bool bset) { fireFromCurrentPos = bset; }
-	bool isAddingVehicle() { return addingVehicle; }
-	bool isAddingAirstrike() { return addingArtillery; }
-	bool isAddingSalvage() { return addingSalvage; }
-	bool isButtonPressed(int32_t ID) { return getButton(ID)->state & ControlButton::PRESSED; }
+	bool getFireFromCurrentPos()
+	{
+		return fireFromCurrentPos;
+	}
+	void setFireFromCurrentPos(bool bset)
+	{
+		fireFromCurrentPos = bset;
+	}
+	bool isAddingVehicle()
+	{
+		return addingVehicle;
+	}
+	bool isAddingAirstrike()
+	{
+		return addingArtillery;
+	}
+	bool isAddingSalvage()
+	{
+		return addingSalvage;
+	}
+	bool isButtonPressed(int32_t ID)
+	{
+		return getButton(ID)->state & ControlButton::PRESSED;
+	}
 	bool getMines(void);
 	bool getSalvage(void);
 	bool getRepair(void);
 	bool getGuardTower(void);
 	void switchTabs(int32_t direction);
 	void renderObjective(CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal);
-	void renderMissionStatus(bool bRender) { renderStatusInfo = bRender; }
+	void renderMissionStatus(bool bRender)
+	{
+		renderStatusInfo = bRender;
+	}
 
-	int32_t getCurrentRange(void);
-	void pressInfoButton() { handleClick(INFO_COMMAND); }
-	bool infoButtonPressed() { return getButton(INFO_COMMAND)->state & ControlButton::PRESSED; }
+	FireRangeType getCurrentRange(void);
+	void pressInfoButton()
+	{
+		handleClick(INFO_COMMAND);
+	}
+	bool infoButtonPressed()
+	{
+		return getButton(INFO_COMMAND)->state & ControlButton::PRESSED;
+	}
 
 	void showServerMissing(void);
 
@@ -234,7 +273,10 @@ public:
 			}
 		}
 	}
-	void pressLargeAirstrikeButton() { handleVehicleClick(LARGE_AIRSTRIKE); }
+	void pressLargeAirstrikeButton()
+	{
+		handleVehicleClick(LARGE_AIRSTRIKE);
+	}
 	void pressSensorStrikeButton()
 	{
 		for (size_t i = 0; i < LAST_VEHICLE; i++)
@@ -248,7 +290,7 @@ public:
 
 	void setRolloverHelpText(uint32_t textID);
 
-	void setChatText(const std::wstring_view& playerName, const std::wstring_view& message, uint32_t backgroundcolour, uint32_t textcolour);
+	void setChatText(std::wstring_view playerName, std::wstring_view message, uint32_t backgroundcolour, uint32_t textcolour);
 	void toggleChat(bool setTeamOnly);
 	void eatChatKey(void);
 	void cancelInfo(void);
@@ -287,9 +329,9 @@ private:
 	ControlButton* vehicleButtons;
 	static ButtonData* buttonData;
 	static ButtonData* vehicleData;
-	static const std::wstring_view& vehicleNames[5];
+	static std::wstring_view vehicleNames[5];
 	static int32_t vehicleIDs[5];
-	static const std::wstring_view& vehiclePilots[5];
+	static std::wstring_view vehiclePilots[5];
 
 	static int32_t vehicleCosts[LAST_VEHICLE];
 

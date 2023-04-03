@@ -13,7 +13,6 @@ map
 #ifndef SINGLEVALDLG_H
 #define SINGLEVALDLG_H
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 heightDlg:
@@ -27,9 +26,15 @@ public:
 	virtual void OnOK(void);
 	//		virtual	void OnCommand(Window *wnd,int32_t nCommand);
 
-	int32_t GetVal() { return val; }
+	int32_t GetVal()
+	{
+		return val;
+	}
 
-	void SetVal(int32_t newVal) { val = newVal; }
+	void SetVal(int32_t newVal)
+	{
+		val = newVal;
+	}
 	void Update(void);
 
 	virtual BOOL OnInitDialog()

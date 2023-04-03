@@ -43,7 +43,10 @@ public:
 			drawCompass = true;
 	}
 
-	~GameCamera(void) { destroy(void); }
+	~GameCamera(void)
+	{
+		destroy(void);
+	}
 
 	void destroy(void);
 
@@ -85,7 +88,10 @@ public:
 		}
 	}
 
-	GameObject* getTarget() { return targetObject; }
+	GameObject* getTarget()
+	{
+		return targetObject;
+	}
 
 	virtual void allTight(void)
 	{

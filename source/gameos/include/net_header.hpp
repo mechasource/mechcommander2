@@ -300,14 +300,11 @@ int32_t
 InitLanGames(void);
 int32_t
 InitGUNGames(void);
-void
-GUNDestroyNetworking(void);
-void
-CheckForInternet(void);
+void GUNDestroyNetworking(void);
+void CheckForInternet(void);
 
 // InternalJoinGame(void) needs this for joining GUN Games.
-void
-PushGameList(void);
+void PushGameList(void);
 BOOLEAN
 GUNPrepareDPlay(PSTR GameName);
 
@@ -357,9 +354,18 @@ public:
 	static OutboundWindow* Find(DPID dpid);
 	BOOLEAN __stdcall Add(void);
 	BOOLEAN __stdcall Remove(void);
-	PVOID operator new(size_t size) { return gos_Malloc(size, Heap_Network); }
-	void operator delete(PVOID ptr) { gos_Free(ptr); }
-	void operator delete[](PVOID ptr) { gos_Free(ptr); }
+	PVOID operator new(size_t size)
+	{
+		return gos_Malloc(size, Heap_Network);
+	}
+	void operator delete(PVOID ptr)
+	{
+		gos_Free(ptr);
+	}
+	void operator delete[](PVOID ptr)
+	{
+		gos_Free(ptr);
+	}
 
 public:
 	double m_TimeLastPacketSent;

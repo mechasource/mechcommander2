@@ -19,8 +19,8 @@ component.
 //#include "editorobjectmgr.h"
 
 //-------------------------------------------------------------------------------------------------
-ChooseBuildingDlg::ChooseBuildingDlg(building_ptr_type& buildingPtr) :
-	CDialog(IDD_CHOOSE_BUILDING)
+ChooseBuildingDlg::ChooseBuildingDlg(building_ptr_type& buildingPtr)
+	: CDialog(IDD_CHOOSE_BUILDING)
 {
 	m_pBuildingPtr = &buildingPtr;
 	m_pModifiedBuildingPtr = 0;
@@ -30,8 +30,7 @@ ChooseBuildingDlg::ChooseBuildingDlg(building_ptr_type& buildingPtr) :
 	m_pOKButton = 0;
 }
 
-BOOL
-ChooseBuildingDlg::OnInitDialog()
+BOOL ChooseBuildingDlg::OnInitDialog()
 {
 	m_pComboBox = (CComboBox*)GetDlgItem(IDC_CHOOSE_BUILDING_COMBO);
 	_ASSERT(m_pComboBox);
@@ -67,9 +66,9 @@ ChooseBuildingDlg::OnInitDialog()
 	EditorObjectMgr::BUILDING_LIST::EConstIterator it = m_buildingList.Begin();
 	while (!it.IsDone())
 	{
-		const std::wstring_view& tmpEStr;
+		std::wstring_view tmpEStr;
 		Stuff::Vector3D pos = (*it)->getPosition();
-		const std::wstring_view& szDisplayName = (*it)->getDisplayName(); // nb: localization
+		std::wstring_view szDisplayName = (*it)->getDisplayName(); // nb: localization
 		_ASSERT(szDisplayName);
 		tmpEStr.Format("(pos: %.3f, %.3f) %s", pos.x, pos.y, szDisplayName);
 		m_pComboBox->AddString(tmpEStr.Data());
@@ -92,8 +91,7 @@ ChooseBuildingDlg::OnInitDialog()
 	return 1;
 }
 
-BOOL
-ChooseBuildingDlg::OnCommand(WPARAM wparam,
+BOOL ChooseBuildingDlg::OnCommand(WPARAM wparam,
 	LPARAM lparam) // called by child controls to inform of an event
 {
 	_ASSERT(m_pCancelButton);
@@ -123,8 +121,7 @@ ChooseBuildingDlg::OnCommand(WPARAM wparam,
 	return inherited::OnCommand(wparam, lparam);
 }
 
-void
-ChooseBuildingDlg::OnUsePointer()
+void ChooseBuildingDlg::OnUsePointer()
 {
 	if (!EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -171,16 +168,14 @@ ChooseBuildingDlg::OnUsePointer()
 	}
 }
 
-void
-ChooseBuildingDlg::OnCancel()
+void ChooseBuildingDlg::OnCancel()
 {
 	// _ASSERT(false); // haven't decided what to do on cancel yet
 	delete m_pModifiedBuildingPtr;
 	EndDialog(IDCANCEL);
 }
 
-void
-ChooseBuildingDlg::OnOK()
+void ChooseBuildingDlg::OnOK()
 {
 	int32_t nSelectionIndex = m_pComboBox->GetCurSel();
 	_ASSERT(0 <= nSelectionIndex);
@@ -193,6 +188,6 @@ ChooseBuildingDlg::OnOK()
 
 //-------------------------------------------------------------------------------------------------
 
-ChooseBuildingDlg::~ChooseBuildingDlg() {}
+ChooseBuildingDlg::~ChooseBuildingDlg() { }
 
 // end of file ( ChooseBuildingDlg.cpp )

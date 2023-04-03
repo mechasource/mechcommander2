@@ -13,7 +13,6 @@ FlattenBrush.h			: Interface for the FlattenBrush component.
 //#include "brush.h"
 //#include "action.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 FlattenBrush:
@@ -33,7 +32,10 @@ public:
 	{
 		return true;
 	}
-	virtual bool canPaintSelection() { return true; }
+	virtual bool canPaintSelection()
+	{
+		return true;
+	}
 	virtual Action* applyToSelection(void);
 
 	Action* applyheightToSelection(float height);

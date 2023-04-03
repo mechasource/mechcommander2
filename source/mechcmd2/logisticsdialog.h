@@ -14,7 +14,6 @@ LogisticsDialog.h			: Interface for the LogisticsDialog component.
 //#include "mechgui/aanim.h"
 //#include "mechgui/alistbox.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 LogisticsDialog:
@@ -28,7 +27,10 @@ public:
 	void begin(void);
 	void end(void);
 
-	bool isDone() { return bDone; }
+	bool isDone()
+	{
+		return bDone;
+	}
 
 	void setFont(int32_t newFontResID);
 
@@ -44,7 +46,10 @@ protected:
 class LogisticsOKDialog : public LogisticsDialog
 {
 public:
-	static LogisticsOKDialog* instance() { return s_instance; }
+	static LogisticsOKDialog* instance()
+	{
+		return s_instance;
+	}
 
 	LogisticsOKDialog(void);
 
@@ -53,7 +58,7 @@ public:
 	static int32_t init(FitIniFile& file);
 
 	void setText(int32_t textID, int32_t CancelButton, int32_t OKButton);
-	void setText(const std::wstring_view& mainText);
+	void setText(std::wstring_view mainText);
 
 private:
 	LogisticsOKDialog(const LogisticsOKDialog& src);
@@ -68,7 +73,10 @@ private:
 class LogisticsOneButtonDialog : public LogisticsDialog
 {
 public:
-	static LogisticsOneButtonDialog* instance() { return s_instance; }
+	static LogisticsOneButtonDialog* instance()
+	{
+		return s_instance;
+	}
 
 	LogisticsOneButtonDialog(void);
 
@@ -77,7 +85,7 @@ public:
 	static int32_t init(FitIniFile& file);
 
 	void setText(int32_t textID, int32_t CancelButton, int32_t OKButton);
-	void setText(const std::wstring_view& mainText);
+	void setText(std::wstring_view mainText);
 
 protected:
 	LogisticsOneButtonDialog(const LogisticsOneButtonDialog& src);
@@ -92,14 +100,17 @@ protected:
 class LogisticsLegalDialog : public LogisticsOneButtonDialog
 {
 public:
-	static LogisticsLegalDialog* instance() { return s_instance; }
+	static LogisticsLegalDialog* instance()
+	{
+		return s_instance;
+	}
 	static int32_t init(FitIniFile& file);
 
-	LogisticsLegalDialog() {}
+	LogisticsLegalDialog() { }
 
 private:
 	LogisticsLegalDialog(const LogisticsLegalDialog& src);
-	virtual ~LogisticsLegalDialog() {}
+	virtual ~LogisticsLegalDialog() { }
 	LogisticsLegalDialog& operator=(const LogisticsLegalDialog& ogisticsDialog);
 
 	static LogisticsLegalDialog* s_instance;
@@ -110,7 +121,10 @@ private:
 class LogisticsSaveDialog : public LogisticsDialog
 {
 public:
-	static LogisticsSaveDialog* instance() { return s_instance; }
+	static LogisticsSaveDialog* instance()
+	{
+		return s_instance;
+	}
 
 	LogisticsSaveDialog(void);
 
@@ -125,7 +139,10 @@ public:
 	static int32_t init(FitIniFile& file);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	const std::wstring_view& getFileName() { return selectedName; }
+	std::wstring_view getFileName()
+	{
+		return selectedName;
+	}
 
 private:
 	LogisticsSaveDialog(const LogisticsSaveDialog& src);
@@ -136,13 +153,13 @@ private:
 
 	aListBox gameListBox;
 
-	const std::wstring_view& selectedName;
+	std::wstring_view selectedName;
 
-	void initDialog(const std::wstring_view& path, bool bCampaign);
+	void initDialog(std::wstring_view path, bool bCampaign);
 	void updateCampaignMissionInfo(void);
-	void setMission(const std::wstring_view& path);
-	void readCampaignNameFromFile(const std::wstring_view& fileName, const std::wstring_view& resultName, int32_t len);
-	bool isCorrectVersionSaveGame(const std::wstring_view& fileName);
+	void setMission(std::wstring_view path);
+	void readCampaignNameFromFile(std::wstring_view fileName, std::wstring_view resultName, int32_t len);
+	bool isCorrectVersionSaveGame(std::wstring_view fileName);
 
 	bool bPromptOverwrite;
 	bool bDeletePrompt;
@@ -160,7 +177,10 @@ class LogisticsVariantDialog : public LogisticsDialog
 public:
 	LogisticsVariantDialog(void);
 	~LogisticsVariantDialog(void);
-	static LogisticsVariantDialog* instance() { return s_instance; }
+	static LogisticsVariantDialog* instance()
+	{
+		return s_instance;
+	}
 
 	virtual void begin(void);
 	void beginTranscript(void);
@@ -171,12 +191,15 @@ public:
 	int32_t init(FitIniFile& file);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	const std::wstring_view& getFileName() { return selectedName; }
+	std::wstring_view getFileName()
+	{
+		return selectedName;
+	}
 
 protected:
 	static LogisticsVariantDialog* s_instance;
 	aListBox gameListBox;
-	const std::wstring_view& selectedName;
+	std::wstring_view selectedName;
 
 	bool bPromptOverwrite;
 	bool bDeletePrompt;
@@ -204,7 +227,7 @@ public:
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
 private:
-	const std::wstring_view& selectedName;
+	std::wstring_view selectedName;
 	bool bNameUsedPrompt;
 };
 
@@ -215,7 +238,7 @@ public:
 	~LogisticsMapInfoDialog(void);
 	virtual void end(void);
 
-	void setMap(const std::wstring_view& pFileName);
+	void setMap(std::wstring_view pFileName);
 
 	int32_t init();
 	virtual int32_t handleMessage(uint32_t, uint32_t);

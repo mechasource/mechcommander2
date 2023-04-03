@@ -33,7 +33,7 @@
 // extern BOOL useOldProject;
 // extern BOOL drawExtents;
 
-extern float WeaponRange[NUM_FIRERANGES];
+extern float WeaponRange[FireRangeType::count];
 extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 extern float WeaponFireModifiers[NUM_WEAPONFIRE_MODIFIERS];
 extern float MaxVisualRadius;
@@ -48,7 +48,7 @@ extern GameLog* CombatLog;
 extern void DebugWeaponFireChunk(WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker);
 extern void LogWeaponFireChunk(WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameObjectPtr target);
 
-// int32_t cLoadString (HINSTANCE hinstance, uint32_t uID, const std::wstring_view& lpBuffer,
+// int32_t cLoadString (HINSTANCE hinstance, uint32_t uID, std::wstring_view lpBuffer,
 // int32_t nBufferMax );
 
 bool Turret::turretsEnabled[MAX_TEAMS] = {true, true, true, true, true, true, true, true};
@@ -77,8 +77,7 @@ TurretType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void
-TurretType::destroy(void)
+void TurretType::destroy(void)
 {
 	ObjectType::destroy();
 }
@@ -173,8 +172,7 @@ TurretType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool
-TurretType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool TurretType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (true);
@@ -251,8 +249,7 @@ TurretType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool
-TurretType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool TurretType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	return (false);
 }
@@ -261,8 +258,7 @@ TurretType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 // class Turret
 //---------------------------------------------------------------------------
 
-void
-Turret::init(bool create)
+void Turret::init(bool create)
 {
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
 	setFlag(OBJECT_FLAG_CAN_FIRE, true);
@@ -325,8 +321,7 @@ Turret::getTeam(void)
 
 //---------------------------------------------------------------------------
 
-bool
-Turret::isFriendly(TeamPtr team)
+bool Turret::isFriendly(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_FRIENDLY);
@@ -335,8 +330,7 @@ Turret::isFriendly(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool
-Turret::isEnemy(TeamPtr team)
+bool Turret::isEnemy(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_ENEMY);
@@ -345,8 +339,7 @@ Turret::isEnemy(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool
-Turret::isNeutral(TeamPtr team)
+bool Turret::isNeutral(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_NEUTRAL);
@@ -354,8 +347,7 @@ Turret::isNeutral(TeamPtr team)
 }
 
 //---------------------------------------------------------------------------
-void
-Turret::setDamage(float newDamage)
+void Turret::setDamage(float newDamage)
 {
 	damage = newDamage;
 	TurretTypePtr type = (TurretTypePtr)getObjectType();
@@ -795,8 +787,7 @@ Turret::update(void)
 
 //---------------------------------------------------------------------------
 
-float
-Turret::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
+float Turret::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 {
 	Stuff::Vector3D facingVec;
 	facingVec.x = 0.0f;
@@ -816,8 +807,7 @@ Turret::relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation)
 
 //---------------------------------------------------------------------------
 
-bool
-Turret::isWeaponReady(int32_t weaponId)
+bool Turret::isWeaponReady(int32_t weaponId)
 {
 	if (((TurretTypePtr)getObjectType())->weaponMasterId[weaponId] == -1)
 		return false;
@@ -828,8 +818,7 @@ Turret::isWeaponReady(int32_t weaponId)
 
 //---------------------------------------------------------------------------
 
-bool
-Turret::isWeaponMissile(int32_t weaponId)
+bool Turret::isWeaponMissile(int32_t weaponId)
 {
 	if (((TurretTypePtr)getObjectType())->weaponMasterId[weaponId] == -1)
 		return false;
@@ -840,8 +829,7 @@ Turret::isWeaponMissile(int32_t weaponId)
 
 //---------------------------------------------------------------------------
 
-bool
-Turret::isWeaponStreak(int32_t weaponId)
+bool Turret::isWeaponStreak(int32_t weaponId)
 {
 	if (((TurretTypePtr)getObjectType())->weaponMasterId[weaponId] == -1)
 		return false;
@@ -851,8 +839,7 @@ Turret::isWeaponStreak(int32_t weaponId)
 
 //---------------------------------------------------------------------------
 
-float
-Turret::calcAttackChance(GameObjectPtr target, int32_t* range, int32_t weaponId)
+float Turret::calcAttackChance(GameObjectPtr target, int32_t* range, int32_t weaponId)
 {
 	if (((TurretTypePtr)getObjectType())->weaponMasterId[weaponId] == -1)
 		return 0.0f;
@@ -881,12 +868,12 @@ Turret::calcAttackChance(GameObjectPtr target, int32_t* range, int32_t weaponId)
 	float distanceToTarget = distanceFrom(targetposition);
 	if (range)
 	{
-		if (distanceToTarget <= WeaponRange[FIRERANGE_SHORT])
-			*range = FIRERANGE_SHORT;
-		else if (distanceToTarget <= WeaponRange[FIRERANGE_MEDIUM])
-			*range = FIRERANGE_MEDIUM;
+		if (distanceToTarget <= WeaponRange[FireRangeType::shortest])
+			*range = FireRangeType::shortest;
+		else if (distanceToTarget <= WeaponRange[FireRangeType::medium])
+			*range = FireRangeType::medium;
 		else
-			*range = FIRERANGE_LONG;
+			*range = FireRangeType::extended;
 	}
 	//----------------------
 	// Range (Per Weapon)...
@@ -929,16 +916,14 @@ Turret::calcAttackChance(GameObjectPtr target, int32_t* range, int32_t weaponId)
 
 //------------------------------------------------------------------------------------------
 
-void
-Turret::recordWeaponFireTime(int32_t weaponId)
+void Turret::recordWeaponFireTime(int32_t weaponId)
 {
 	lastFireTime[weaponId] = scenarioTime;
 }
 
 //------------------------------------------------------------------------------------------
 
-void
-Turret::startWeaponRecycle(int32_t weaponId)
+void Turret::startWeaponRecycle(int32_t weaponId)
 {
 	readyTime[weaponId] = scenarioTime + MasterComponent::masterList[((TurretTypePtr)getObjectType())->weaponMasterId[weaponId]].getWeaponRecycleTime();
 }
@@ -1091,20 +1076,19 @@ Turret::getLOSPosition(void)
 
 //---------------------------------------------------------------------------
 
-void
-Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpoint,
+void Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpoint,
 	int32_t chance, int32_t roll, WeaponShotInfo* shotInfo)
 {
 	if (!CombatLog)
 		return;
-	static const std::wstring_view& locationStrings[] = {"head", "center torso", "left torso", "right torso",
+	static std::wstring_view locationStrings[] = {"head", "center torso", "left torso", "right torso",
 		"left arm", "right arm", "left leg", "right leg", "rear center torso", "rear left torso",
 		"rear right torso"};
 	if (roll < chance)
 	{
 		if (target)
 		{
-			const std::wstring_view& targetName = target->getName();
+			std::wstring_view targetName = target->getName();
 			wchar_t s[1024];
 			sprintf(s, "[%.2f] turret.fireWeapon HIT: (%05d)%s @ (%05d)%s", scenarioTime,
 				getPartId(), getName(), target->getPartId(), targetName ? targetName : "unknown");
@@ -1129,7 +1113,7 @@ Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpo
 	{
 		if (target)
 		{
-			const std::wstring_view& targetName = target->getName();
+			std::wstring_view targetName = target->getName();
 			wchar_t s[1024];
 			sprintf(s, "[%.2f] turret.fireWeapon MISS: (%05d)%s @ (%05d)%s", scenarioTime,
 				getPartId(), getName(), target->getPartId(), targetName ? targetName : "unknown");
@@ -1154,12 +1138,11 @@ Turret::printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetpo
 
 //----------------------------------------------------------------------------
 
-void
-Turret::printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo)
+void Turret::printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo)
 {
 	if (!CombatLog)
 		return;
-	static const std::wstring_view& locationStrings[] = {"head", "center torso", "left torso", "right torso",
+	static std::wstring_view locationStrings[] = {"head", "center torso", "left torso", "right torso",
 		"left arm", "right arm", "left leg", "right leg", "rear center torso", "rear left torso",
 		"rear right torso"};
 	wchar_t s[1024];
@@ -1190,8 +1173,7 @@ Turret::printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo)
 
 //----------------------------------------------------------------------------
 
-void
-Turret::fireWeapon(GameObjectPtr target, int32_t weaponId)
+void Turret::fireWeapon(GameObjectPtr target, int32_t weaponId)
 {
 	if (!target)
 		return;
@@ -1298,7 +1280,7 @@ Turret::fireWeapon(GameObjectPtr target, int32_t weaponId)
 				{
 					if (aimLocation == -1)
 						hitLocation = target->calcHitLocation(
-							this, weaponMasterId, ATTACKSOURCE_WEAPONFIRE, ATTACK_TO_DESTROY);
+							this, weaponMasterId, ATTACKSOURCE_WEAPONFIRE, AttackType::destroy);
 					if (target->getObjectClass() == BATTLEMECH)
 						targetHotSpot = ((BattleMechPtr)target)->body[hitLocation].hotSpotNumber;
 				}
@@ -1354,7 +1336,7 @@ Turret::fireWeapon(GameObjectPtr target, int32_t weaponId)
 			{
 				if (aimLocation == -1)
 					hitLocation = target->calcHitLocation(
-						this, weaponMasterId, ATTACKSOURCE_WEAPONFIRE, ATTACK_TO_DESTROY);
+						this, weaponMasterId, ATTACKSOURCE_WEAPONFIRE, AttackType::destroy);
 			}
 			else
 				hitLocation = -1;
@@ -1781,14 +1763,12 @@ Turret::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 
 //---------------------------------------------------------------------------
 
-void
-Turret::lightOnFire(float timeToBurn)
+void Turret::lightOnFire(float timeToBurn)
 {
 }
 
 //---------------------------------------------------------------------------
-void
-Turret::renderShadows(void)
+void Turret::renderShadows(void)
 {
 	if (appearance->hasAnimationData(0))
 		return; // No shadows on Popup Turrets. Period.
@@ -1802,8 +1782,7 @@ Turret::renderShadows(void)
 
 //---------------------------------------------------------------------------
 
-void
-Turret::render(void)
+void Turret::render(void)
 {
 	if (appearance->canBeSeen())
 	{
@@ -1848,8 +1827,7 @@ Turret::render(void)
 
 //---------------------------------------------------------------------------
 
-void
-Turret::destroy(void)
+void Turret::destroy(void)
 {
 	if (appearance)
 	{
@@ -1860,8 +1838,7 @@ Turret::destroy(void)
 
 //---------------------------------------------------------------------------
 
-void
-Turret::init(bool create, ObjectTypePtr _type)
+void Turret::init(bool create, ObjectTypePtr _type)
 {
 	//-------------------------------------------
 	// Initialize the Building Appearance here.
@@ -1870,7 +1847,7 @@ Turret::init(bool create, ObjectTypePtr _type)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	const std::wstring_view& appearName = _type->getAppearanceTypeName();
+	std::wstring_view appearName = _type->getAppearanceTypeName();
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.
@@ -1984,8 +1961,7 @@ Turret::calcFireRanges(void)
 
 //---------------------------------------------------------------------------
 
-bool
-Turret::isLinked(void)
+bool Turret::isLinked(void)
 {
 	return (parent != 0);
 }
@@ -1998,16 +1974,14 @@ Turret::getParent(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Turret::setParentId(uint32_t pId)
+void Turret::setParentId(uint32_t pId)
 {
 	parentId = pId;
 }
 
 //---------------------------------------------------------------------------
 
-void
-Turret::updateDebugWindow(GameDebugWindow* debugWindow)
+void Turret::updateDebugWindow(GameDebugWindow* debugWindow)
 {
 	debugWindow->clear();
 	wchar_t s[128];
@@ -2032,8 +2006,7 @@ Turret::updateDebugWindow(GameDebugWindow* debugWindow)
 }
 
 //***************************************************************************
-void
-Turret::Save(PacketFilePtr file, int32_t packetNum)
+void Turret::Save(PacketFilePtr file, int32_t packetNum)
 {
 	TurretData data;
 	CopyTo(&data);
@@ -2042,8 +2015,7 @@ Turret::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void
-Turret::CopyTo(TurretData* data)
+void Turret::CopyTo(TurretData* data)
 {
 	data->teamId = teamId;
 	data->turretRotation = turretRotation;
@@ -2064,8 +2036,7 @@ Turret::CopyTo(TurretData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-Turret::Load(TurretData* data)
+void Turret::Load(TurretData* data)
 {
 	TerrainObject::Load(dynamic_cast<TerrainObjectData*>(data));
 	teamId = data->teamId;

@@ -6,7 +6,8 @@
 
 #include "mlr/gosvertex2uv.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //##########################    GOSVertex2UV   ################################

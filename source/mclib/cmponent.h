@@ -48,7 +48,7 @@
 
 #define WEAPON_AMMO_OFFSET 65 // Master Component Index Offset from weapon
 
-enum class 
+enum class
 {
 	COMPONENT_FORM_SIMPLE = 0,
 	COMPONENT_FORM_COCKPIT,
@@ -73,7 +73,7 @@ enum class
 	NUM_COMPONENT_FORMS
 } ComponentFormType;
 
-enum class 
+enum class
 {
 	WEAPON_AMMO_NONE, // unlimited ammo (energy weapons)
 	WEAPON_AMMO_SRM,
@@ -83,7 +83,7 @@ enum class
 	NUM_WEAPON_AMMO_TYPES
 } WeaponAmmoType;
 
-enum class 
+enum class
 {
 	WEAPON_STATE_READY,
 	WEAPON_STATE_RECYCLING,
@@ -91,7 +91,7 @@ enum class
 	WEAPON_STATE_DESTROYED
 } WeaponStateType;
 
-enum class 
+enum class
 {
 	WEAPON_RANGE_SHORT,
 	WEAPON_RANGE_MEDIUM,
@@ -108,7 +108,8 @@ enum class
 #define WEAPON_FLAG_LBX 4
 #define WEAPON_FLAG_ARTILLERY 8
 
-typedef union {
+typedef union
+{
 	struct
 	{
 		float range; // in meters
@@ -200,7 +201,10 @@ public:
 
 	void destroy(void);
 
-	~MasterComponent(void) { destroy(void); }
+	~MasterComponent(void)
+	{
+		destroy(void);
+	}
 
 	void init(void)
 	{
@@ -209,27 +213,51 @@ public:
 		abbreviation[0] = nullptr;
 	}
 
-	MasterComponent(void) { init(void); }
+	MasterComponent(void)
+	{
+		init(void);
+	}
 
 	int32_t init(FitIniFile* componentFile);
 
-	int32_t initEXCEL(const std::wstring_view& dataLine, float baseSensorRange);
+	int32_t initEXCEL(std::wstring_view dataLine, float baseSensorRange);
 
 	int32_t saveEXCEL(std::unique_ptr<File> file, uint8_t masterId, float baseSensorRange);
 
-	const std::wstring_view& getName(void) { return (&name[0]); }
+	std::wstring_view getName(void)
+	{
+		return (&name[0]);
+	}
 
-	int32_t getMasterID(void) { return (masterID); }
+	int32_t getMasterID(void)
+	{
+		return (masterID);
+	}
 
-	int32_t getResourcePoints(void) { return (resourcePoints); }
+	int32_t getResourcePoints(void)
+	{
+		return (resourcePoints);
+	}
 
-	ComponentFormType getForm(void) { return (form); }
+	ComponentFormType getForm(void)
+	{
+		return (form);
+	}
 
-	int32_t getSize(void) { return (size); }
+	int32_t getSize(void)
+	{
+		return (size);
+	}
 
-	void setSize(int32_t sz) { size = sz; }
+	void setSize(int32_t sz)
+	{
+		size = sz;
+	}
 
-	int32_t getHealth(void) { return (health); }
+	int32_t getHealth(void)
+	{
+		return (health);
+	}
 
 	wchar_t getCriticalSpacesReq(int32_t location)
 	{
@@ -245,137 +273,329 @@ public:
 		criticalSpacesReq[location] = value;
 	}
 
-	wchar_t getDisableLevel(void) { return (disableLevel); }
+	wchar_t getDisableLevel(void)
+	{
+		return (disableLevel);
+	}
 
-	float getCV(void) { return (CV); }
+	float getCV(void)
+	{
+		return (CV);
+	}
 
-	void setCV(float cv) { CV = cv; }
+	void setCV(float cv)
+	{
+		CV = cv;
+	}
 
-	float getTonnage(void) { return (tonnage); }
+	float getTonnage(void)
+	{
+		return (tonnage);
+	}
 
-	void setTonnage(float tons) { tonnage = tons; }
+	void setTonnage(float tons)
+	{
+		tonnage = tons;
+	}
 
-	float getHeatDissipation(void) { return (stats.heatsink.dissipation); }
+	float getHeatDissipation(void)
+	{
+		return (stats.heatsink.dissipation);
+	}
 
-	void setHeatDissipation(float heatD) { stats.heatsink.dissipation = heatD; }
+	void setHeatDissipation(float heatD)
+	{
+		stats.heatsink.dissipation = heatD;
+	}
 
-	float getWeaponHeat(void) { return (stats.weapon.heat); }
+	float getWeaponHeat(void)
+	{
+		return (stats.weapon.heat);
+	}
 
-	void setWeaponHeat(float weaponHeat) { stats.weapon.heat = weaponHeat; }
+	void setWeaponHeat(float weaponHeat)
+	{
+		stats.weapon.heat = weaponHeat;
+	}
 
-	float getWeaponDamage(void) { return (stats.weapon.damage); }
+	float getWeaponDamage(void)
+	{
+		return (stats.weapon.damage);
+	}
 
-	void setWeaponDamage(float weapDmg) { stats.weapon.damage = weapDmg; }
+	void setWeaponDamage(float weapDmg)
+	{
+		stats.weapon.damage = weapDmg;
+	}
 
-	float getWeaponRecycleTime(void) { return (stats.weapon.recycleTime); }
+	float getWeaponRecycleTime(void)
+	{
+		return (stats.weapon.recycleTime);
+	}
 
-	void setWeaponRecycleTime(float recycleTime) { stats.weapon.recycleTime = recycleTime; }
+	void setWeaponRecycleTime(float recycleTime)
+	{
+		stats.weapon.recycleTime = recycleTime;
+	}
 
-	int32_t getWeaponAmmoAmount(void) { return (stats.weapon.ammoAmount); }
+	int32_t getWeaponAmmoAmount(void)
+	{
+		return (stats.weapon.ammoAmount);
+	}
 
-	void setWeaponAmmoAmount(int32_t weaponAmmo) { stats.weapon.ammoAmount = weaponAmmo; }
+	void setWeaponAmmoAmount(int32_t weaponAmmo)
+	{
+		stats.weapon.ammoAmount = weaponAmmo;
+	}
 
-	uint32_t getWeaponAmmoType(void) { return (stats.weapon.ammoType); }
+	uint32_t getWeaponAmmoType(void)
+	{
+		return (stats.weapon.ammoType);
+	}
 
-	void setWeaponAmmoType(int32_t ammoType) { stats.weapon.ammoType = ammoType; }
+	void setWeaponAmmoType(int32_t ammoType)
+	{
+		stats.weapon.ammoType = ammoType;
+	}
 
-	uint32_t getWeaponAmmoMasterId(void) { return (stats.weapon.ammoMasterId); }
+	uint32_t getWeaponAmmoMasterId(void)
+	{
+		return (stats.weapon.ammoMasterId);
+	}
 
-	void setWeaponAmmoMasterId(int32_t ammoId) { stats.weapon.ammoMasterId = ammoId; }
+	void setWeaponAmmoMasterId(int32_t ammoId)
+	{
+		stats.weapon.ammoMasterId = ammoId;
+	}
 
-	int32_t getWeaponRange(void) { return (stats.weapon.range); }
+	int32_t getWeaponRange(void)
+	{
+		return (stats.weapon.range);
+	}
 
-	void setWeaponRange(int32_t weaponRange) { stats.weapon.range = weaponRange; }
+	void setWeaponRange(int32_t weaponRange)
+	{
+		stats.weapon.range = weaponRange;
+	}
 
-	void clearWeaponFlags(void) { stats.weapon.flags = 0; }
+	void clearWeaponFlags(void)
+	{
+		stats.weapon.flags = 0;
+	}
 
-	bool getWeaponInferno(void) { return ((stats.weapon.flags & WEAPON_FLAG_INFERNO) != 0); }
+	bool getWeaponInferno(void)
+	{
+		return ((stats.weapon.flags & WEAPON_FLAG_INFERNO) != 0);
+	}
 
-	void setWeaponInferno(void) { stats.weapon.flags |= WEAPON_FLAG_INFERNO; }
+	void setWeaponInferno(void)
+	{
+		stats.weapon.flags |= WEAPON_FLAG_INFERNO;
+	}
 
-	bool getWeaponStreak(void) { return ((stats.weapon.flags & WEAPON_FLAG_STREAK) != 0); }
+	bool getWeaponStreak(void)
+	{
+		return ((stats.weapon.flags & WEAPON_FLAG_STREAK) != 0);
+	}
 
-	void setWeaponStreak(void) { stats.weapon.flags |= WEAPON_FLAG_STREAK; }
+	void setWeaponStreak(void)
+	{
+		stats.weapon.flags |= WEAPON_FLAG_STREAK;
+	}
 
-	bool getWeaponLBX(void) { return ((stats.weapon.flags & WEAPON_FLAG_LBX) != 0); }
+	bool getWeaponLBX(void)
+	{
+		return ((stats.weapon.flags & WEAPON_FLAG_LBX) != 0);
+	}
 
-	void setWeaponLBX(void) { stats.weapon.flags |= WEAPON_FLAG_LBX; }
+	void setWeaponLBX(void)
+	{
+		stats.weapon.flags |= WEAPON_FLAG_LBX;
+	}
 
-	bool getWeaponArtillery(void) { return ((stats.weapon.flags & WEAPON_FLAG_ARTILLERY) != 0); }
+	bool getWeaponArtillery(void)
+	{
+		return ((stats.weapon.flags & WEAPON_FLAG_ARTILLERY) != 0);
+	}
 
-	void setWeaponArtillery(void) { stats.weapon.flags |= WEAPON_FLAG_ARTILLERY; }
+	void setWeaponArtillery(void)
+	{
+		stats.weapon.flags |= WEAPON_FLAG_ARTILLERY;
+	}
 
-	bool getCanClanUse(void) { return ((uses & COMPONENT_USE_CLAN) != 0); }
+	bool getCanClanUse(void)
+	{
+		return ((uses & COMPONENT_USE_CLAN) != 0);
+	}
 
-	bool getCanISUse(void) { return ((uses & COMPONENT_USE_INNERSPHERE) != 0); }
+	bool getCanISUse(void)
+	{
+		return ((uses & COMPONENT_USE_INNERSPHERE) != 0);
+	}
 
-	bool getCanMechUse(void) { return ((uses & COMPONENT_USE_MECH) != 0); }
+	bool getCanMechUse(void)
+	{
+		return ((uses & COMPONENT_USE_MECH) != 0);
+	}
 
-	bool getCanVehicleUse(void) { return ((uses & COMPONENT_USE_VEHICLE) != 0); }
+	bool getCanVehicleUse(void)
+	{
+		return ((uses & COMPONENT_USE_VEHICLE) != 0);
+	}
 
-	void clearUseFlags(void) { uses = 0; }
+	void clearUseFlags(void)
+	{
+		uses = 0;
+	}
 
-	void setCanClanUse(void) { uses |= COMPONENT_USE_CLAN; }
+	void setCanClanUse(void)
+	{
+		uses |= COMPONENT_USE_CLAN;
+	}
 
-	void setCanISUse(void) { uses |= COMPONENT_USE_INNERSPHERE; }
+	void setCanISUse(void)
+	{
+		uses |= COMPONENT_USE_INNERSPHERE;
+	}
 
-	void setCanVehicleUse(void) { uses |= COMPONENT_USE_VEHICLE; }
+	void setCanVehicleUse(void)
+	{
+		uses |= COMPONENT_USE_VEHICLE;
+	}
 
-	void setCanMechUse(void) { uses |= COMPONENT_USE_MECH; }
+	void setCanMechUse(void)
+	{
+		uses |= COMPONENT_USE_MECH;
+	}
 
-	bool getClanTechBase(void) { return ((techBase & TECH_BASE_CLAN) != 0); }
+	bool getClanTechBase(void)
+	{
+		return ((techBase & TECH_BASE_CLAN) != 0);
+	}
 
-	bool getISTechBase(void) { return ((techBase & TECH_BASE_INNERSPHERE) != 0); }
+	bool getISTechBase(void)
+	{
+		return ((techBase & TECH_BASE_INNERSPHERE) != 0);
+	}
 
-	void setClanTechBase(void) { techBase = TECH_BASE_CLAN; }
+	void setClanTechBase(void)
+	{
+		techBase = TECH_BASE_CLAN;
+	}
 
-	void setISTechBase(void) { techBase = TECH_BASE_INNERSPHERE; }
+	void setISTechBase(void)
+	{
+		techBase = TECH_BASE_INNERSPHERE;
+	}
 
-	void setBothTechBase(void) { techBase = TECH_BASE_INNERSPHERE + TECH_BASE_CLAN; }
+	void setBothTechBase(void)
+	{
+		techBase = TECH_BASE_INNERSPHERE + TECH_BASE_CLAN;
+	}
 
 	//		int32_t getWeaponType (void) {
 	//			return(stats.weapon.type);
 	//		}
 
-	int32_t getWeaponSpecialEffect(void) { return (stats.weapon.specialEffect); }
+	int32_t getWeaponSpecialEffect(void)
+	{
+		return (stats.weapon.specialEffect);
+	}
 
-	int32_t getAmmoPerTon(void) { return (stats.ammo.ammoPerTon); }
+	int32_t getAmmoPerTon(void)
+	{
+		return (stats.ammo.ammoPerTon);
+	}
 
-	void setAmmoPerTon(int32_t ammoPerTon) { stats.ammo.ammoPerTon = ammoPerTon; }
+	void setAmmoPerTon(int32_t ammoPerTon)
+	{
+		stats.ammo.ammoPerTon = ammoPerTon;
+	}
 
-	float getJumpJetRangeMod(void) { return (stats.jumpjet.rangeMod); }
+	float getJumpJetRangeMod(void)
+	{
+		return (stats.jumpjet.rangeMod);
+	}
 
-	void setJumpJetRangeMod(float rangeMod) { stats.jumpjet.rangeMod = rangeMod; }
+	void setJumpJetRangeMod(float rangeMod)
+	{
+		stats.jumpjet.rangeMod = rangeMod;
+	}
 
-	float getAmmoExplosiveDamage(void) { return (stats.ammo.explosiveDamage); }
+	float getAmmoExplosiveDamage(void)
+	{
+		return (stats.ammo.explosiveDamage);
+	}
 
-	void setAmmoExplosiveDamage(float ammoDamage) { stats.ammo.explosiveDamage = ammoDamage; }
+	void setAmmoExplosiveDamage(float ammoDamage)
+	{
+		stats.ammo.explosiveDamage = ammoDamage;
+	}
 
-	float getSensorRange(void) { return (stats.sensor.range); }
+	float getSensorRange(void)
+	{
+		return (stats.sensor.range);
+	}
 
-	uint8_t getTechBase(void) { return (techBase); }
+	uint8_t getTechBase(void)
+	{
+		return (techBase);
+	}
 
-	void setResourcePoints(int32_t points) { resourcePoints = points; }
+	void setResourcePoints(int32_t points)
+	{
+		resourcePoints = points;
+	}
 
-	void setSensorRange(float range) { stats.sensor.range = (int16_t)range; }
+	void setSensorRange(float range)
+	{
+		stats.sensor.range = (int16_t)range;
+	}
 
-	float getEcmRange(void) { return (stats.ecm.range); }
+	float getEcmRange(void)
+	{
+		return (stats.ecm.range);
+	}
 
-	void setEcmRange(float range) { stats.ecm.range = range; }
+	void setEcmRange(float range)
+	{
+		stats.ecm.range = range;
+	}
 
-	float getEcmEffect(void) { return (stats.ecm.effect); }
+	float getEcmEffect(void)
+	{
+		return (stats.ecm.effect);
+	}
 
-	void setEcmEffect(float effect) { stats.ecm.effect = effect; }
+	void setEcmEffect(float effect)
+	{
+		stats.ecm.effect = effect;
+	}
 
-	float getJammerEffect(void) { return (stats.jammer.effect); }
+	float getJammerEffect(void)
+	{
+		return (stats.jammer.effect);
+	}
 
-	void setJammerEffect(float effect) { stats.jammer.effect = effect; }
+	void setJammerEffect(float effect)
+	{
+		stats.jammer.effect = effect;
+	}
 
-	float getProbeEffect(void) { return (stats.probe.effect); }
+	float getProbeEffect(void)
+	{
+		return (stats.probe.effect);
+	}
 
-	void setProbeEffect(float effect) { stats.probe.effect = effect; }
+	void setProbeEffect(float effect)
+	{
+		stats.probe.effect = effect;
+	}
 
-	const std::wstring_view& getAbbreviation(void) { return (&abbreviation[0]); }
+	std::wstring_view getAbbreviation(void)
+	{
+		return (&abbreviation[0]);
+	}
 
 	bool isOffensiveWeapon(void);
 
@@ -383,8 +603,8 @@ public:
 
 	void multiplyWeaponRanges(float factor);
 
-	static int32_t loadMasterList(const std::wstring_view& fileName, int32_t numComponents, float baseSensorRange);
-	static int32_t saveMasterList(const std::wstring_view& fileName, int32_t numComponents, float baseSensorRange);
+	static int32_t loadMasterList(std::wstring_view fileName, int32_t numComponents, float baseSensorRange);
+	static int32_t saveMasterList(std::wstring_view fileName, int32_t numComponents, float baseSensorRange);
 
 	static int32_t freeMasterList(void);
 

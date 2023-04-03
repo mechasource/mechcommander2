@@ -71,14 +71,13 @@ struct MC_VertexArrayNode
 	friend MC_TextureManager;
 
 	uint32_t textureindex = 0;
-	uint32_t flags = 0;						// Marks texture render state and terrain or not, etc.
-	int32_t numvertices = 0;				// Number of vertices this texture will be used to draw this frame.
-	gos_VERTEX* currentvertex = nullptr;	// CurrentVertex data being added.
-	gos_VERTEX* vertices = nullptr;			// Pointer into the vertex Pool for this texture to draw.
+	uint32_t flags = 0; // Marks texture render state and terrain or not, etc.
+	int32_t numvertices = 0; // Number of vertices this texture will be used to draw this frame.
+	gos_VERTEX* currentvertex = nullptr; // CurrentVertex data being added.
+	gos_VERTEX* vertices = nullptr; // Pointer into the vertex Pool for this texture to draw.
 
 	//void init(void) {}
 	//void destroy(void); // Frees all blocks, free GOS_TextureHandle, blank all data.
-
 };
 
 //----------------------------------------------------------------------
@@ -89,8 +88,7 @@ struct MC_TextureNode
 protected:
 	uint32_t m_texturehandle // handle returned by GOS
 
-public:
-	wchar_t* m_nodename = nullptr; // Used for Unique nodes so I can just return the handle!
+		public : wchar_t* m_nodename = nullptr; // Used for Unique nodes so I can just return the handle!
 	uint32_t m_uniqueinstance = 0; // Texture is modifiable.  DO NOT CACHE OUT!!!!!!
 	uint32_t m_neverflush; // Textures used by Userinput, etc.  DO NOT CACHE OUT!!!!!!
 	uint32_t m_numusers = 0; // Pushed up for each user using. Users can "free" a texture which will decrement the number and actually free it if number is 0
@@ -142,7 +140,6 @@ public:
 
 	uint32_t get_gosTextureHandle(void); // If texture is not in VidRAM, cache a
 		// texture out and cache this one in.
-
 };
 
 //---------------------------------------------------------------------------
@@ -164,8 +161,11 @@ public:
 		currentvertex = 0;
 	}
 
-	gos_VERTEXManager(void) :
-		HeapManager() { init(void); }
+	gos_VERTEXManager(void)
+		: HeapManager()
+	{
+		init(void);
+	}
 
 	void destroy(void)
 	{
@@ -174,7 +174,10 @@ public:
 		totalvertices = 0;
 	}
 
-	~gos_VERTEXManager(void) { destroy(void); }
+	~gos_VERTEXManager(void)
+	{
+		destroy(void);
+	}
 
 	void init(int32_t maxVertices)
 	{
@@ -194,7 +197,10 @@ public:
 		return start;
 	}
 
-	void reset(void) { currentvertex = 0; }
+	void reset(void)
+	{
+		currentvertex = 0;
+	}
 };
 
 //----------------------------------------------------------------------
@@ -273,7 +279,7 @@ public:
 	// by the fact that that an existing texture instance can been modified in
 	// memory after it's loaded, and thus be different the from an instance that
 	// would be loaded from disk.
-	uint32_t textureInstanceExists(const std::wstring_view& textureFullPathName, gos_TextureFormat key, uint32_t hints,
+	uint32_t textureInstanceExists(std::wstring_view textureFullPathName, gos_TextureFormat key, uint32_t hints,
 		uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
 
 	//-----------------------------------------------------------------------------
@@ -283,10 +289,10 @@ public:
 	// matches that of an already existing instance of the texture, the handle
 	// of the existing instance will be returned. Used for Mech colouration
 	// possibly, damage states, etc.
-	uint32_t loadTexture(const std::wstring_view& textureFullPathName, gos_TextureFormat key, uint32_t hints,
+	uint32_t loadTexture(std::wstring_view textureFullPathName, gos_TextureFormat key, uint32_t hints,
 		uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
 
-	int32_t saveTexture(uint32_t textureindex, const std::wstring_view& textureFullPathName);
+	int32_t saveTexture(uint32_t textureindex, std::wstring_view textureFullPathName);
 
 	//-----------------------------------------------------------------------------
 	// Returns the TextureNode Id based on what you asked for.

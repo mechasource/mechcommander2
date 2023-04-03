@@ -19,7 +19,7 @@
 
 #define MAX_TRIGGER_AREAS 16
 
-enum class 
+enum class
 {
 	TRIGGER_AREA_NONE,
 	TRIGGER_AREA_MOVER,
@@ -58,11 +58,17 @@ public:
 				map[r][c] = 0;
 	}
 
-	TriggerAreaManager(void) { init(void); }
+	TriggerAreaManager(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~TriggerAreaManager(void) { destroy(void); }
+	~TriggerAreaManager(void)
+	{
+		destroy(void);
+	}
 
 	int32_t add(
 		int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param);

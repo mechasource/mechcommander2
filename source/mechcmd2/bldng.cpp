@@ -121,8 +121,7 @@ uint32_t WallType[18] = {
 // class BuildingType
 //---------------------------------------------------------------------------
 
-void
-BuildingType::init(void)
+void BuildingType::init(void)
 {
 	objectTypeClass = BUILDING_TYPE; // any reason to record TREEBUILDING_TYPE?
 	objectClass = BUILDING;
@@ -154,8 +153,7 @@ BuildingType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void
-BuildingType::destroy(void)
+void BuildingType::destroy(void)
 {
 	ObjectType::destroy();
 }
@@ -286,8 +284,7 @@ BuildingType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool
-BuildingType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool BuildingType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (true);
@@ -324,8 +321,7 @@ BuildingType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool
-BuildingType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool BuildingType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	return (false);
 }
@@ -334,8 +330,7 @@ BuildingType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 // class Building
 //---------------------------------------------------------------------------
 
-bool
-Building::isVisible(void)
+bool Building::isVisible(void)
 {
 	//----------------------------------------------------------------------
 	// This function is the meat and potatoes of the object cull system.
@@ -358,15 +353,13 @@ Building::isVisible(void)
 
 //---------------------------------------------------------------------------
 
-void
-Building::openFootPrint(void)
+void Building::openFootPrint(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-Building::closeFootPrint(void)
+void Building::closeFootPrint(void)
 {
 }
 
@@ -931,8 +924,7 @@ Building::getTeam(void)
 
 //---------------------------------------------------------------------------
 
-bool
-Building::isFriendly(TeamPtr team)
+bool Building::isFriendly(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_FRIENDLY);
@@ -941,8 +933,7 @@ Building::isFriendly(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool
-Building::isEnemy(TeamPtr team)
+bool Building::isEnemy(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_ENEMY);
@@ -951,8 +942,7 @@ Building::isEnemy(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-bool
-Building::isNeutral(TeamPtr team)
+bool Building::isNeutral(TeamPtr team)
 {
 	if (teamId > -1)
 		return (Team::relations[teamId][team->getId()] == RELATION_NEUTRAL);
@@ -961,16 +951,14 @@ Building::isNeutral(TeamPtr team)
 
 //---------------------------------------------------------------------------
 
-void
-Building::lightOnFire(float timeToBurn)
+void Building::lightOnFire(float timeToBurn)
 {
 	// Nothing lights on fire now. Part of the effect.
 }
 
 //---------------------------------------------------------------------------
 
-bool
-Building::isCaptureable(int32_t capturingTeamID)
+bool Building::isCaptureable(int32_t capturingTeamID)
 {
 	//	if (MPlayer)
 	//		return(getFlag(OBJECT_FLAG_CAPTURABLE) && !isDestroyed());
@@ -980,16 +968,14 @@ Building::isCaptureable(int32_t capturingTeamID)
 
 //---------------------------------------------------------------------------
 
-void
-Building::setCommanderId(int32_t _commanderId)
+void Building::setCommanderId(int32_t _commanderId)
 {
 	commanderId = _commanderId;
 }
 
 //---------------------------------------------------------------------------
 
-void
-Building::render(void)
+void Building::render(void)
 {
 	if (!getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
@@ -1043,7 +1029,7 @@ Building::render(void)
 }
 
 //---------------------------------------------------------------------------
-const std::wstring_view&
+std::wstring_view
 Building::getName(void)
 {
 	if (((BuildingTypePtr)getObjectType())->buildingTypeName != -1)
@@ -1055,8 +1041,7 @@ Building::getName(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Building::destroy(void)
+void Building::destroy(void)
 {
 	//-----------------------------------------------------
 	// This will free any memory the Building is using.
@@ -1069,8 +1054,7 @@ Building::destroy(void)
 
 //---------------------------------------------------------------------------
 
-void
-Building::setDamage(float newDamage)
+void Building::setDamage(float newDamage)
 {
 	damage = newDamage;
 	if (damage >= getDamageLevel())
@@ -1082,8 +1066,7 @@ Building::setDamage(float newDamage)
 
 //---------------------------------------------------------------------------
 
-void
-Building::setSensorRange(float range)
+void Building::setSensorRange(float range)
 {
 	if (sensorSystem)
 		sensorSystem->setRange(range);
@@ -1091,8 +1074,7 @@ Building::setSensorRange(float range)
 
 //---------------------------------------------------------------------------
 
-void
-Building::setSensorData(TeamPtr team, float range, bool setTeam)
+void Building::setSensorData(TeamPtr team, float range, bool setTeam)
 {
 	if (range > -1.0)
 	{
@@ -1116,8 +1098,7 @@ Building::setSensorData(TeamPtr team, float range, bool setTeam)
 extern int32_t languageOffset;
 //---------------------------------------------------------------------------
 
-void
-Building::init(bool create, ObjectTypePtr objType)
+void Building::init(bool create, ObjectTypePtr objType)
 {
 	//-------------------------------------------
 	// Initialize the Building Appearance here.
@@ -1128,7 +1109,7 @@ Building::init(bool create, ObjectTypePtr objType)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	const std::wstring_view& appearName = objType->getAppearanceTypeName();
+	std::wstring_view appearName = objType->getAppearanceTypeName();
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.
@@ -1194,8 +1175,7 @@ Building::init(bool create, ObjectTypePtr objType)
 
 //---------------------------------------------------------------------------
 
-void
-Building::createBuildingMarines(void)
+void Building::createBuildingMarines(void)
 {
 #ifdef USE_ELEMENTALS
 	int32_t totalMarines = ((BuildingTypePtr)type)->numMarines;
@@ -1306,7 +1286,7 @@ Building::createBuildingMarines(void)
 					vector_3d location;
 					location.zero();
 					pilot->orderMoveToPoint(
-						FALSE, TRUE, ORDER_ORIGIN_PLAYER, location, -1, TACORDER_PARAM_RUN);
+						FALSE, TRUE, OrderOriginType::player, location, -1, TACORDER_PARAM_RUN);
 					numCreated++;
 					if (numCreated == totalMarines)
 						return;
@@ -1472,8 +1452,7 @@ Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 
 //---------------------------------------------------------------------------
 
-float
-Building::getDamageLevel(void)
+float Building::getDamageLevel(void)
 {
 	BuildingTypePtr type = (BuildingTypePtr)getObjectType();
 	if (type)
@@ -1482,8 +1461,7 @@ Building::getDamageLevel(void)
 }
 
 //---------------------------------------------------------------------------
-bool
-Building::isLinked(void)
+bool Building::isLinked(void)
 {
 	return (parent != nullptr);
 }
@@ -1496,15 +1474,13 @@ Building::getParent(void)
 }
 
 //---------------------------------------------------------------------------
-void
-Building::setParentId(uint32_t pId)
+void Building::setParentId(uint32_t pId)
 {
 	parentId = pId;
 }
 
 //***************************************************************************
-void
-Building::Save(PacketFilePtr file, int32_t packetNum)
+void Building::Save(PacketFilePtr file, int32_t packetNum)
 {
 	BuildingData data;
 	CopyTo(&data);
@@ -1513,8 +1489,7 @@ Building::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void
-Building::CopyTo(BuildingData* data)
+void Building::CopyTo(BuildingData* data)
 {
 	data->teamId = teamId;
 	;
@@ -1532,8 +1507,7 @@ Building::CopyTo(BuildingData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-Building::Load(BuildingData* data)
+void Building::Load(BuildingData* data)
 {
 	TerrainObject::Load(dynamic_cast<TerrainObjectData*>(data));
 	teamId = data->teamId;
@@ -1549,8 +1523,7 @@ Building::Load(BuildingData* data)
 	updatedTurn = 0;
 }
 
-bool
-Building::burnRefitPoints(float pointsToBurn)
+bool Building::burnRefitPoints(float pointsToBurn)
 {
 	setDamage(pointsToBurn + getDamage());
 	if (getDamage() >= getDamageLevel())

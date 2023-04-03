@@ -14,8 +14,7 @@
 //#############################################################################
 //#############################################################################
 //
-bool
-EulerAngles::TestClass()
+bool EulerAngles::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting EulerAngle test..."));
 	const EulerAngles a(Identity);
@@ -49,8 +48,7 @@ EulerAngles::TestClass()
 #include "stuff/random.h"
 
 class fstream;
-bool
-UnitQuaternion::TestClass()
+bool UnitQuaternion::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting UnitQuaternion Test..."));
 #if 0

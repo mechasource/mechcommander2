@@ -89,7 +89,7 @@ extern float metersPerWorldUnit;
 #define MECH_GESTURE_JUMP 20 // Jump
 #define MECH_GESTURE_ROLLOVER 21 // Rollover from FallBack to FallForward
 #define MECH_GESTURE_GETUP 22 // Get up from FallForward
-#define MECH_GESTURE_FALLEN_F                   \
+#define MECH_GESTURE_FALLEN_F \
 	23 // Fallen Forward (Single Frame, mech on \
 		// ground)
 #define MECH_GESTURE_FALLEN_B 24 // Fallen Backward (Single Frame, mech on ground)
@@ -117,7 +117,7 @@ extern float metersPerWorldUnit;
 // Enums
 //------------------------------------------------------------------------------------------
 
-enum class 
+enum class
 {
 	MECH_BODY_LOCATION_ANY = -1,
 	MECH_BODY_LOCATION_HEAD,
@@ -131,7 +131,7 @@ enum class
 	NUM_MECH_BODY_LOCATIONS
 } MechBodyLocationType;
 
-enum class 
+enum class
 {
 	MECH_ARMOR_LOCATION_ANY = -1,
 	MECH_ARMOR_LOCATION_HEAD,
@@ -148,7 +148,7 @@ enum class
 	NUM_MECH_ARMOR_LOCATIONS
 } MechArmorLocationType;
 
-enum class 
+enum class
 {
 	LEG_STATUS_NORMAL,
 	LEG_STATUS_HURTING,
@@ -158,21 +158,21 @@ enum class
 	NUM_LEG_STATUSES
 } LegStatusType;
 
-enum class 
+enum class
 {
 	TORSO_STATUS_NORMAL,
 	TORSO_STATUS_IMPAIRED,
 	NUM_TORSO_STATUSES
 } TorsoStatusType;
 
-enum class 
+enum class
 {
 	MECH_PILOT_CHECK_CONDITION_NO_LEG,
 	MECH_PILOT_CHECK_CONDITION_NO_HIP,
 	NUM_MECH_PILOT_CHECK_CONDITIONS
 } MechPilotCheckCondition;
 
-enum class 
+enum class
 {
 	MECH_STATUSCHUNK_BODYSTATE_NORMAL,
 	MECH_STATUSCHUNK_BODYSTATE_STANDING,
@@ -196,7 +196,7 @@ public:
 	bool isEndoSteel; // has endosteel frame?
 	uint8_t maxInternalStructure[NUM_BODY_LOCATIONS];
 
-	const std::wstring_view& anim;
+	std::wstring_view anim;
 	uint8_t moveAnimSpeed[3];
 
 	// uint32_t		controlType;								// Who controls us, Player,
@@ -244,7 +244,10 @@ public:
 
 	virtual void destroy(void);
 
-	~BattleMechType(void) { destroy(void); }
+	~BattleMechType(void)
+	{
+		destroy(void);
+	}
 
 	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
@@ -402,7 +405,10 @@ public:
 
 	virtual void init(bool create);
 
-	BattleMech(void) { init(true); }
+	BattleMech(void)
+	{
+		init(true);
+	}
 
 	virtual void init(bool create, ObjectTypePtr _type);
 
@@ -479,7 +485,10 @@ public:
 
 	void updateTorso(float newRotate);
 
-	virtual int32_t getCBills(void) { return (cBills); }
+	virtual int32_t getCBills(void)
+	{
+		return (cBills);
+	}
 
 	virtual void updateMovement(void);
 
@@ -573,16 +582,25 @@ public:
 
 	int32_t transferHitLocation(int32_t hitLocation);
 
-	bool inTransitionGestureState(void) { return (appearance->getInTransition()); }
+	bool inTransitionGestureState(void)
+	{
+		return (appearance->getInTransition());
+	}
 
-	int32_t setGestureStateGoal(int32_t state) { return (appearance->setGestureGoal(state)); }
+	int32_t setGestureStateGoal(int32_t state)
+	{
+		return (appearance->setGestureGoal(state));
+	}
 
 	int32_t getGestureFramesLeft(void)
 	{
 		return (appearance->getNumFramesInGesture(appearance->getCurrentGestureGoal()) - appearance->getFrameNumber());
 	}
 
-	bool isStanding(void) { return (appearance->getOldGestureGoal() == MECH_STATE_STANDING); }
+	bool isStanding(void)
+	{
+		return (appearance->getOldGestureGoal() == MECH_STATE_STANDING);
+	}
 
 	bool isWalking(int32_t* throttle = nullptr)
 	{
@@ -591,11 +609,17 @@ public:
 		return (appearance->getOldGestureGoal() == MECH_STATE_WALKING);
 	}
 
-	bool isRunning(void) { return (appearance->getOldGestureGoal() == MECH_STATE_RUNNING); }
+	bool isRunning(void)
+	{
+		return (appearance->getOldGestureGoal() == MECH_STATE_RUNNING);
+	}
 
 	virtual bool isJumping(Stuff::Vector3D* jumpGoal = nullptr);
 
-	bool isReversing(void) { return (appearance->getOldGestureGoal() == MECH_STATE_REVERSE); }
+	bool isReversing(void)
+	{
+		return (appearance->getOldGestureGoal() == MECH_STATE_REVERSE);
+	}
 
 	bool isFallen(void)
 	{
@@ -607,9 +631,15 @@ public:
 		return (body[MECH_BODY_LOCATION_CTORSO].damageState == IS_DAMAGE_NONE);
 	}
 
-	bool canRun(void) { return (legStatus == LEG_STATUS_NORMAL); }
+	bool canRun(void)
+	{
+		return (legStatus == LEG_STATUS_NORMAL);
+	}
 
-	bool canWalk(void) { return (legStatus < LEG_STATUS_IMPAIRED_LEFT); }
+	bool canWalk(void)
+	{
+		return (legStatus < LEG_STATUS_IMPAIRED_LEFT);
+	}
 
 	bool canLimp(void)
 	{
@@ -617,11 +647,17 @@ public:
 			(legStatus == LEG_STATUS_IMPAIRED_LEFT) || (legStatus == LEG_STATUS_IMPAIRED_RIGHT));
 	}
 
-	bool canMove(void) { return (legStatus != LEG_STATUS_DESTROYED); }
+	bool canMove(void)
+	{
+		return (legStatus != LEG_STATUS_DESTROYED);
+	}
 
 	virtual int32_t getSpeedState(void);
 
-	virtual bool canJump(void) { return (numJumpJets > 0); }
+	virtual bool canJump(void)
+	{
+		return (numJumpJets > 0);
+	}
 
 	virtual float getJumpRange(int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr);
 
@@ -637,9 +673,15 @@ public:
 
 	int32_t calcSpriteSpeed(float speed, uint32_t flags, int32_t& state, int32_t& throttle);
 
-	void forceTorsoAlign(void) { torsoRotation = rightArmRotation = leftArmRotation = 0.0; }
+	void forceTorsoAlign(void)
+	{
+		torsoRotation = rightArmRotation = leftArmRotation = 0.0;
+	}
 
-	~BattleMech(void) { destroy(void); }
+	~BattleMech(void)
+	{
+		destroy(void);
+	}
 
 	virtual bool isCaptureable(int32_t capturingTeamID);
 
@@ -651,19 +693,34 @@ public:
 
 	void damageLoadedComponents(void);
 
-	virtual const std::wstring_view& getIfaceName(void) { return (longName); }
+	virtual std::wstring_view getIfaceName(void)
+	{
+		return (longName);
+	}
 
 	static int32_t loadGameSystem(FitIniFilePtr mechFile);
 
-	virtual bool isMech(void) { return true; }
+	virtual bool isMech(void)
+	{
+		return true;
+	}
 
-	virtual bool isVehicle(void) { return false; }
+	virtual bool isVehicle(void)
+	{
+		return false;
+	}
 
-	virtual bool isGuardTower(void) { return false; }
+	virtual bool isGuardTower(void)
+	{
+		return false;
+	}
 
 	void resetComponents(int32_t totalComponents, int32_t* componentList);
 
-	virtual float getLOSFactor(void) { return (((BattleMechType*)getObjectType())->LOSFactor); }
+	virtual float getLOSFactor(void)
+	{
+		return (((BattleMechType*)getObjectType())->LOSFactor);
+	}
 
 	virtual void startShutDown(void);
 

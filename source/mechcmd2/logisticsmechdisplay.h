@@ -18,7 +18,6 @@ component.
 
 class LogisticsMech;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 LogisticsMechDisplay:

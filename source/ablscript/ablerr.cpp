@@ -13,13 +13,14 @@
 //#include "ablerr.h"
 //#include "abl.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
 //----------
 // EXTERNALS
-extern const std::wstring_view& tokenp;
+extern std::wstring_view tokenp;
 extern int32_t execLineNumber;
 extern int32_t lineNumber;
 extern int32_t FileNumber;
@@ -32,7 +33,7 @@ extern wchar_t wordString[];
 //----------------------
 // SYNTAX ERROR messages
 
-const std::wstring_view& syntaxErrorMessages[] = {"No syntax error", // 0
+std::wstring_view syntaxErrorMessages[] = {"No syntax error", // 0
 	"Syntax error", "Too many errors", "Cannot open source file", "Unexpected end-of-file",
 	"Invalid number", "Invalid fraction", "Invalid exponent", "Too many digits",
 	"Real out of range",
@@ -63,7 +64,7 @@ const std::wstring_view& syntaxErrorMessages[] = {"No syntax error", // 0
 //-----------------------
 // RUNTIME ERROR messages
 
-const std::wstring_view& runtimeErrorMessages[] = {"Runtime stack overflow", "Infinite Loop", "Nested function call",
+std::wstring_view runtimeErrorMessages[] = {"Runtime stack overflow", "Infinite Loop", "Nested function call",
 	"Unimplemented feature", "value out of range", "Division by zero", "Invalid function argument",
 	"Invalid case value", "Abort", "No Previous State"};
 
@@ -78,16 +79,14 @@ extern const std::unique_ptr<Debugger>& debugger;
 
 //***************************************************************************
 
-void
-ABL_Fatal(int32_t errCode, const std::wstring_view& s)
+void ABL_Fatal(int32_t errCode, std::wstring_view s)
 {
 	ABLFatalCallback(errCode, s);
 }
 
 //---------------------------------------------------------------------------
 
-void
-ABL_Assert(bool test, int32_t errCode, const std::wstring_view& s)
+void ABL_Assert(bool test, int32_t errCode, std::wstring_view s)
 {
 	test;
 	errCode;
@@ -100,8 +99,7 @@ ABL_Assert(bool test, int32_t errCode, const std::wstring_view& s)
 
 //***************************************************************************
 
-void
-syntaxError(int32_t errCode)
+void syntaxError(int32_t errCode)
 {
 	wchar_t errMessage[MAXLEN_ERROR_MESSAGE];
 	sprintf(errMessage, "SYNTAX ERROR %s [line %d] - (type %d) %s \"%s\"\n",
@@ -118,8 +116,7 @@ syntaxError(int32_t errCode)
 
 //---------------------------------------------------------------------------
 
-void
-runtimeError(int32_t errCode)
+void runtimeError(int32_t errCode)
 {
 	wchar_t message[512];
 	if (debugger)

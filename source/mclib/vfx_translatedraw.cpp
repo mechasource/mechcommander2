@@ -45,8 +45,7 @@ static uint32_t lines, Destwidth, paneX0, paneX1, paneY0, paneY1;
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void
-AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
+void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -872,8 +871,7 @@ AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, 
 ;
 ;----------------------------------------------------------------------------
 */
-void
-AG_shape_lookaside(uint8_t* table)
+void AG_shape_lookaside(uint8_t* table)
 {
 	_asm
 	{
@@ -911,8 +909,7 @@ AG_shape_lookaside(uint8_t* table)
 ;
 ;----------------------------------------------------------------------------
 */
-void
-AG_shape_translate_draw(
+void AG_shape_translate_draw(
 	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm
@@ -1809,7 +1806,7 @@ AG_shape_translate_draw(
 	wchar_t msg[1024];
 	//-------------------------------------
 	// Save off the shape data table start
-	const std::wstring_view& shapeTable = (const std::wstring_view&)shape_table;
+	std::wstring_view shapeTable = (std::wstring_view)shape_table;
 	wchar_t version[5];
 	for (size_t i = 0; i < 4; i++)
 	{

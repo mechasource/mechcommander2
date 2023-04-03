@@ -6,7 +6,8 @@
 
 #include "mlr/mlr_terrain.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -24,8 +25,7 @@ std::vector<Stuff::Vector2DScalar>* MLR_Terrain::clipTexCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain::InitializeClass()
+void MLR_Terrain::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -42,8 +42,7 @@ MLR_Terrain::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain::TerminateClass()
+void MLR_Terrain::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -58,8 +57,8 @@ MLR_Terrain::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain::MLR_Terrain(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLR_I_DeT_TMesh(class_data, stream, version)
+MLR_Terrain::MLR_Terrain(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLR_I_DeT_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
@@ -69,8 +68,8 @@ MLR_Terrain::MLR_Terrain(ClassData* class_data, std::iostream stream, uint32_t v
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain::MLR_Terrain(ClassData* class_data) :
-	MLR_I_DeT_TMesh(class_data)
+MLR_Terrain::MLR_Terrain(ClassData* class_data)
+	: MLR_I_DeT_TMesh(class_data)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -100,8 +99,7 @@ MLR_Terrain::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain::Save(std::iostream stream)
+void MLR_Terrain::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -110,16 +108,14 @@ MLR_Terrain::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain::TestInstance(void) const
+void MLR_Terrain::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain::SetUVData(float bpf, float xmin, float xmax, float zmin, float zmax)
+void MLR_Terrain::SetUVData(float bpf, float xmin, float xmax, float zmin, float zmax)
 {
 	borderPixelFun = bpf;
 	minX = xmin;

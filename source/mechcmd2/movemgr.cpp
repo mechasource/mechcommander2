@@ -19,8 +19,6 @@
 #include "warrior.h"
 #endif
 
-
-
 ////#include "gameos.hpp"
 
 int32_t MovePathManager::m_numpaths = 0;
@@ -41,8 +39,7 @@ MovePathManager::operator new(size_t mySize)
 
 //---------------------------------------------------------------------------
 
-void
-MovePathManager::operator delete(PVOID us)
+void MovePathManager::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
@@ -81,8 +78,7 @@ MovePathManager::init(void)
 
 //---------------------------------------------------------------------------
 
-void
-MovePathManager::remove(std::unique_ptr<PathQueueRec> rec)
+void MovePathManager::remove(std::unique_ptr<PathQueueRec> rec)
 {
 	//------------------------------------
 	// Remove it from the pending queue...
@@ -122,8 +118,7 @@ MovePathManager::remove(std::unique_ptr<MechWarrior> pilot)
 
 #define DEBUG_MOVEPATH_QUEUE 0
 
-void
-MovePathManager::request(
+void MovePathManager::request(
 	std::unique_ptr<MechWarrior> pilot,
 	int32_t selectionindex,
 	uint32_t moveparams,
@@ -170,8 +165,7 @@ MovePathManager::request(
 
 //---------------------------------------------------------------------------
 
-void
-MovePathManager::calcPath(void)
+void MovePathManager::calcPath(void)
 {
 	if (queueFront)
 	{
@@ -190,8 +184,7 @@ MovePathManager::calcPath(void)
 
 #if CONSIDERED_OBSOLETE
 //----------------------------------------------------------------------------------
-void
-DEBUGWINS_print(const std::wstring_view& s, int32_t window);
+void DEBUGWINS_print(std::wstring_view s, int32_t window);
 #ifdef LAB_ONLY
 extern int64_t MCTimePath1Update;
 extern int64_t MCTimePath2Update;
@@ -205,8 +198,7 @@ extern int64_t MCTimeCalcGoal4Update;
 extern int64_t MCTimeCalcGoal5Update;
 extern int64_t MCTimeCalcGoal6Update;
 #endif
-void
-MovePathManager::update(void)
+void MovePathManager::update(void)
 {
 #ifdef LAB_ONLY
 	MCTimePath1Update = 0;

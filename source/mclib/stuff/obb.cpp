@@ -15,16 +15,14 @@ OBB OBB::Identity(LinearMatrix4D::Identity, Vector3D::Identity, 0.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-OBB::TestInstance(void) const
+void OBB::TestInstance(void) const
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const OBB& box)
+void Spew(std::wstring_view group, const OBB& box)
 {
 	Check_Object(&box);
 	SPEW((group, ""));
@@ -38,8 +36,7 @@ Spew(const std::wstring_view& group, const OBB& box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-OBB&
-OBB::Multiply(const OBB& obb, const LinearMatrix4D& matrix)
+OBB& OBB::Multiply(const OBB& obb, const LinearMatrix4D& matrix)
 {
 	// Check_Pointer(this);
 	Check_Object(&obb);
@@ -393,8 +390,7 @@ OBB::FindSeparatingAxis(const OBB& box) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-OBB::Union(const OBB& first, const OBB& second)
+void OBB::Union(const OBB& first, const OBB& second)
 {
 	// Check_Pointer(this);
 	Check_Object(&first);

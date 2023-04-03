@@ -12,7 +12,8 @@
 #include "mlr/mlrshape.h"
 #include "mlr/mlr_i_l_dt_pmesh.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -28,8 +29,7 @@ MLR_I_L_DT_PMesh::ClassData* MLR_I_L_DT_PMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DT_PMesh::InitializeClass()
+void MLR_I_L_DT_PMesh::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -44,8 +44,7 @@ MLR_I_L_DT_PMesh::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DT_PMesh::TerminateClass()
+void MLR_I_L_DT_PMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -58,8 +57,8 @@ MLR_I_L_DT_PMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_L_DT_PMesh::MLR_I_L_DT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLR_I_C_DT_PMesh(DefaultData, stream, version)
+MLR_I_L_DT_PMesh::MLR_I_L_DT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLR_I_C_DT_PMesh(DefaultData, stream, version)
 {
 	// Check_Pointer(this);
 	(void)class_data;
@@ -85,8 +84,9 @@ MLR_I_L_DT_PMesh::MLR_I_L_DT_PMesh(ClassData* class_data, std::iostream stream, 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_L_DT_PMesh::MLR_I_L_DT_PMesh(ClassData* class_data) :
-	MLR_I_C_DT_PMesh(class_data), normals(0)
+MLR_I_L_DT_PMesh::MLR_I_L_DT_PMesh(ClassData* class_data)
+	: MLR_I_C_DT_PMesh(class_data)
+	, normals(0)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -116,8 +116,7 @@ MLR_I_L_DT_PMesh::Make(std::iostream stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DT_PMesh::Save(std::iostream stream)
+void MLR_I_L_DT_PMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -127,16 +126,14 @@ MLR_I_L_DT_PMesh::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DT_PMesh::TestInstance(void) const
+void MLR_I_L_DT_PMesh::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
+void MLR_I_L_DT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
@@ -148,8 +145,7 @@ MLR_I_L_DT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DT_PMesh::GetNormalData(Stuff::Vector3D** data, size_t* dataSize)
+void MLR_I_L_DT_PMesh::GetNormalData(Stuff::Vector3D** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = normals.GetData();
@@ -158,8 +154,7 @@ MLR_I_L_DT_PMesh::GetNormalData(Stuff::Vector3D** data, size_t* dataSize)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DT_PMesh::SetcolourData(
+void MLR_I_L_DT_PMesh::SetcolourData(
 #if COLOR_AS_DWORD
 	const uint32_t* data,
 #else
@@ -177,8 +172,7 @@ MLR_I_L_DT_PMesh::SetcolourData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DT_PMesh::PaintMe(
+void MLR_I_L_DT_PMesh::PaintMe(
 #if COLOR_AS_DWORD
 	const uint32_t* paintMe
 #else

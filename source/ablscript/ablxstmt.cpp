@@ -16,7 +16,8 @@
 #include "ablexec.h"
 #include "abldbug.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -27,8 +28,8 @@ extern int32_t level;
 extern int32_t CallStackLevel;
 extern int32_t execLineNumber;
 extern int32_t execStatementCount;
-extern const std::wstring_view& codeSegmentPtr;
-extern const std::wstring_view& statementStartPtr;
+extern std::wstring_view codeSegmentPtr;
+extern std::wstring_view statementStartPtr;
 extern TokenCodeType codeToken;
 extern int32_t NumExecutions;
 
@@ -66,19 +67,15 @@ extern bool NewStateSet;
 
 int32_t dummyCount = 0;
 
-void
-execOrderReturn(int32_t returnVal);
-void
-ABL_AddToProfileLog(const std::wstring_view& profileString);
-void
-transState(const std::unique_ptr<SymTableNode>& newState);
+void execOrderReturn(int32_t returnVal);
+void ABL_AddToProfileLog(std::wstring_view profileString);
+void transState(const std::unique_ptr<SymTableNode>& newState);
 
 //***************************************************************************
 //
 //***************************************************************************
 
-void
-execStatement(void)
+void execStatement(void)
 {
 	if (codeToken == TKN_STATEMENT_MARKER)
 	{
@@ -194,8 +191,7 @@ execStatement(void)
 
 //***************************************************************************
 
-void
-execAssignmentStatement(const std::unique_ptr<SymTableNode>& idPtr)
+void execAssignmentStatement(const std::unique_ptr<SymTableNode>& idPtr)
 {
 	const std::unique_ptr<StackItem>& targetPtr;
 	const std::unique_ptr<Type>& targetTypePtr;
@@ -228,8 +224,8 @@ execAssignmentStatement(const std::unique_ptr<SymTableNode>& idPtr)
 	{
 		//-------------------------
 		// Copy the array/record...
-		const std::wstring_view& dest = (const std::wstring_view&)targetPtr;
-		const std::wstring_view& src = tos->address;
+		std::wstring_view dest = (std::wstring_view)targetPtr;
+		std::wstring_view src = tos->address;
 		int32_t size = targetTypePtr->size;
 		memcpy(dest, src, size);
 	}
@@ -370,8 +366,7 @@ execDeclaredRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, bool 
 
 //***************************************************************************
 
-void
-setOpenArray(const std::unique_ptr<Type>& arrayTypePtr, int32_t size)
+void setOpenArray(const std::unique_ptr<Type>& arrayTypePtr, int32_t size)
 {
 	int32_t numElements = size / arrayTypePtr->size;
 	arrayTypePtr->size = size;
@@ -382,8 +377,7 @@ setOpenArray(const std::unique_ptr<Type>& arrayTypePtr, int32_t size)
 
 //***************************************************************************
 
-void
-execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr)
+void execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr)
 {
 	//--------------------------
 	// Execute the parameters...
@@ -411,8 +405,8 @@ execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr)
 				// The following is a little inefficient, but is kept this way
 				// to keep it clear. Once it's verified to work, optimize...
 				int32_t size = formalTypePtr->size;
-				const std::wstring_view& src = tos->address;
-				const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
+				std::wstring_view src = tos->address;
+				std::wstring_view dest = (std::wstring_view)ABLStackMallocCallback((size_t)size);
 				if (!dest)
 				{
 					wchar_t err[255];
@@ -422,7 +416,7 @@ execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr)
 						CurModule->getName());
 					ABL_Fatal(0, err);
 				}
-				const std::wstring_view& savePtr = dest;
+				std::wstring_view savePtr = dest;
 				memcpy(dest, src, size);
 				tos->address = savePtr;
 			}
@@ -439,11 +433,10 @@ execActualParams(const std::unique_ptr<SymTableNode>& routineIdPtr)
 
 //***************************************************************************
 
-void
-execSwitchStatement(void)
+void execSwitchStatement(void)
 {
 	getCodeToken();
-	const std::wstring_view& branchTableLocation = getCodeAddressMarker();
+	std::wstring_view branchTableLocation = getCodeAddressMarker();
 	getCodeToken();
 	const std::unique_ptr<Type>& switchExpressionTypePtr = execExpression();
 	int32_t switchExpressionValue;
@@ -458,7 +451,7 @@ execSwitchStatement(void)
 	getCodeToken();
 	int32_t caseLabelCount = getCodeInteger();
 	bool done = false;
-	const std::wstring_view& caseBranchLocation = nullptr;
+	std::wstring_view caseBranchLocation = nullptr;
 	while (!done && caseLabelCount--)
 	{
 		int32_t caseLabelValue = getCodeInteger();
@@ -499,13 +492,12 @@ execSwitchStatement(void)
 
 //***************************************************************************
 
-void
-execForStatement(void)
+void execForStatement(void)
 {
 	getCodeToken();
 	//---------------------------------------
 	// Grab address of the end of the loop...
-	const std::wstring_view& loopEndLocation = getCodeAddressMarker();
+	std::wstring_view loopEndLocation = getCodeAddressMarker();
 	//--------------------------------------------------------
 	// Get the address of the control variable's stack item...
 	getCodeToken();
@@ -546,7 +538,7 @@ execForStatement(void)
 	pop();
 	//----------------------------
 	// Address of start of loop...
-	const std::wstring_view& loopStartLocation = codeSegmentPtr;
+	std::wstring_view loopStartLocation = codeSegmentPtr;
 	int32_t controlValue = initialValue;
 	//-----------------------------
 	// Now, execute the FOR loop...
@@ -601,8 +593,7 @@ execForStatement(void)
 
 //***************************************************************************
 
-void
-execTransStatement(void)
+void execTransStatement(void)
 {
 	getCodeToken();
 	getCodeToken();
@@ -613,8 +604,7 @@ execTransStatement(void)
 
 //***************************************************************************
 
-void
-execTransBackStatement(void)
+void execTransBackStatement(void)
 {
 	const std::unique_ptr<SymTableNode>& prevState = CurModule->getPrevState();
 	if (!prevState)
@@ -625,11 +615,10 @@ execTransBackStatement(void)
 
 //***************************************************************************
 
-void
-execIfStatement(void)
+void execIfStatement(void)
 {
 	getCodeToken();
-	const std::wstring_view& falseLocation = getCodeAddressMarker();
+	std::wstring_view falseLocation = getCodeAddressMarker();
 	//-------------------------------
 	// Eval the boolean expression. Note that, unlike C/C++, the expression
 	// must be true(1) or false(0). In C/C++, an expression is true if it's
@@ -683,10 +672,9 @@ execIfStatement(void)
 
 //***************************************************************************
 
-void
-execRepeatStatement(void)
+void execRepeatStatement(void)
 {
-	const std::wstring_view& loopStartLocation = codeSegmentPtr;
+	std::wstring_view loopStartLocation = codeSegmentPtr;
 	int32_t iterations = 0;
 	do
 	{
@@ -717,12 +705,11 @@ execRepeatStatement(void)
 
 //***************************************************************************
 
-void
-execWhileStatement(void)
+void execWhileStatement(void)
 {
 	getCodeToken();
-	const std::wstring_view& loopEndLocation = getCodeAddressMarker();
-	const std::wstring_view& testLocation = codeSegmentPtr;
+	std::wstring_view loopEndLocation = getCodeAddressMarker();
+	std::wstring_view testLocation = codeSegmentPtr;
 	bool loopDone = false;
 	int32_t iterations = 0;
 	do

@@ -107,8 +107,7 @@ void __stdcall gos_Disconnect(void);
 //
 BOOLEAN __stdcall gos_NetSetAdvertItem(uint32_t player, PSTR Name, PSTR value);
 
-void
-NGStatsSetPlayerId(PSTR name, PSTR passwd);
+void NGStatsSetPlayerId(PSTR name, PSTR passwd);
 
 extern GUID NGStatsPlayerId;
 
@@ -195,8 +194,11 @@ public:
 		GNS_DOWNLOADING_SERVERS = 0x0004
 	};
 
-	ServerBrowser() :
-		m_bDelete(false) { ; }
+	ServerBrowser()
+		: m_bDelete(false)
+	{
+		;
+	}
 
 protected:
 	//
@@ -235,7 +237,10 @@ public:
 	// differentiate one server browser from
 	// another
 	//
-	PSTR __stdcall GetBrowserHandle(void) { return m_szHandle; }
+	PSTR __stdcall GetBrowserHandle(void)
+	{
+		return m_szHandle;
+	}
 
 protected:
 	BOOLEAN m_bDelete;
@@ -283,8 +288,11 @@ public:
 
 	static BOOLEAN __stdcall GetAdvertiseOK(void);
 
-	ServerAdvertiser() :
-		m_bDelete(false) { ; }
+	ServerAdvertiser()
+		: m_bDelete(false)
+	{
+		;
+	}
 
 protected:
 	// general use

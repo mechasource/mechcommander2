@@ -3,7 +3,7 @@
 
  DirectX samples source code
 
- 2018-10-09 Jerker Back, created
+ 2018-10-09 Jerker Bäck, created
 
 *******************************************************************************/
 
@@ -31,11 +31,16 @@
 #endif
 
 #ifdef _MSC_VER
-#define MSDISABLE_WARNING(x)      __pragma(warning(disable:x))
-#define MSDISABLE_WARNING_PUSH(x) __pragma(warning(push));__pragma(warning(disable:x))
-#define MSDISABLE_WARNING_POP     __pragma(warning(pop))
-#define MSSUPPRESS_WARNING(x)     __pragma(warning(suppress:x))
-#define MSADD_LIBRARY(x)          __pragma(comment(lib,x))
+#define MSDISABLE_WARNING(x) __pragma(warning(disable \
+											  : x))
+#define MSDISABLE_WARNING_PUSH(x) \
+	__pragma(warning(push));      \
+	__pragma(warning(disable      \
+					 : x))
+#define MSDISABLE_WARNING_POP __pragma(warning(pop))
+#define MSSUPPRESS_WARNING(x) __pragma(warning(suppress \
+											   : x))
+#define MSADD_LIBRARY(x) __pragma(comment(lib, x))
 #else
 #define MSDISABLE_WARNING_PUSH
 #define MSDISABLE_WARNING_POP
@@ -115,9 +120,6 @@ MSDISABLE_WARNING_PUSH(4365 4820 4946 5039 6387)
 #include <directxcollision.h>
 #include <wincodec.h>
 
-
-
-
 #include <windows.h>
 #include <winbase.h>
 #include <strsafe.h>
@@ -154,9 +156,9 @@ MSDISABLE_WARNING_PUSH(4365 4820 4946 5039 6387)
 #include <dwrite.h>
 MSDISABLE_WARNING_POP
 
-#pragma warning(disable : 4514)	// unreferenced inline function has been removed
-#pragma warning(disable : 4626)	// assignment operator was implicitly defined as deleted
-#pragma warning(disable : 4820) // bytes padding added 
+#pragma warning(disable : 4514) // unreferenced inline function has been removed
+#pragma warning(disable : 4626) // assignment operator was implicitly defined as deleted
+#pragma warning(disable : 4820) // bytes padding added
 #pragma warning(disable : 5027) // move assignment operator was implicitly defined as deleted
 
 #ifdef _DEBUG
@@ -678,12 +680,10 @@ MSDISABLE_WARNING_POP
 #include <wrl.h>
 #include <wrl/client.h>
 
-
 #include <Windows.Devices.Input.h>
 #include <Windows.Foundation.Collections.h>
 #include <Windows.Media.Devices.h>
 #include <Windows.Xbox.Input.h>
-
 
 #include <mmreg.h>
 #include <objbase.h>
@@ -706,4 +706,3 @@ MSDISABLE_WARNING_POP
 #include <xma2defs.h>
 
 #endif
-

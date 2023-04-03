@@ -81,8 +81,7 @@ enum
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
 	// -- MECHCMDR2
 extern float frameRate;
-void
-EnterWindowMode();
+void EnterWindowMode();
 
 extern bool useSound;
 extern bool useMusic;
@@ -91,7 +90,7 @@ bool inViewMode = false;
 uint32_t viewObject = 0x0;
 wchar_t missionName[1024];
 
-const std::wstring_view& ExceptionGameMsg = nullptr;
+std::wstring_view ExceptionGameMsg = nullptr;
 
 wchar_t buildNumber[80];
 
@@ -109,19 +108,18 @@ bool useRealLOS = true;
 
 //***************************************************************************
 
-const std::wstring_view&
+std::wstring_view
 GetGameInformation()
 {
 	return (ExceptionGameMsg);
 }
 
-// int32_t cLoadString (HINSTANCE hinstance,  uint32_t uID, const std::wstring_view& lpBuffer,
+// int32_t cLoadString (HINSTANCE hinstance,  uint32_t uID, std::wstring_view lpBuffer,
 // int32_t nBufferMax );
 
 //---------------------------------------------------------------------------
 
-void
-UpdateRenderers()
+void UpdateRenderers()
 {
 	hasGuardBand = gos_GetMachineInformation(gos_Info_HasGuardBandClipping) != 0;
 	//---------------------------------------------------------------------------------
@@ -153,8 +151,7 @@ UpdateRenderers()
 }
 
 //---------------------------------------------------------------------------
-void
-InitializeGameEngine()
+void InitializeGameEngine()
 {
 	//---------------------------------------------------------------------
 	float doubleClickThreshold = 0.2f;
@@ -426,8 +423,7 @@ InitializeGameEngine()
 
 //---------------------------------------------------------------------------
 
-void
-TerminateGameEngine()
+void TerminateGameEngine()
 {
 	gosScript_ShutdownProcessor();
 	//---------------------------------------------------------
@@ -496,8 +492,7 @@ TerminateGameEngine()
 // No multi-thread now!
 //
 
-void
-DoGameLogic()
+void DoGameLogic()
 {
 	//-------------------------------------
 	// Get me the current frameRate.
@@ -539,12 +534,12 @@ DoGameLogic()
 
 //---------------------------------------------------------------------------
 int32_t
-textToLong(const std::wstring_view& num)
+textToLong(std::wstring_view num)
 {
 	int32_t result = 0;
 	//------------------------------------
 	// Check if Hex Number
-	const std::wstring_view& hexOffset = strstr(num, "0x");
+	std::wstring_view hexOffset = strstr(num, "0x");
 	if (hexOffset == nullptr)
 	{
 		result = atol(num);
@@ -590,13 +585,12 @@ textToLong(const std::wstring_view& num)
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void
-ParseCommandLine(const std::wstring_view& command_line)
+void ParseCommandLine(std::wstring_view command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
 	int32_t index = 0;
-	const std::wstring_view& argv[30];
+	std::wstring_view argv[30];
 	wchar_t tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
@@ -626,8 +620,7 @@ bool notFirstTime = false;
 //
 // Setup the GameOS structure -- This tells GameOS what I am using
 //
-void
-GetGameOSEnvironment(const std::wstring_view& commandline)
+void GetGameOSEnvironment(std::wstring_view commandline)
 {
 	ParseCommandLine(commandline);
 	Environment.applicationName = "MC2GOSScriptShell";

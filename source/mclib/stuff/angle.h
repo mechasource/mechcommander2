@@ -20,12 +20,9 @@ class SinCosPair;
 } // namespace Stuff
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::Radian& angle);
-void
-Spew(const std::wstring_view& group, const Stuff::Degree& angle);
-void
-Spew(const std::wstring_view& group, const Stuff::SinCosPair& angle);
+void Spew(std::wstring_view group, const Stuff::Radian& angle);
+void Spew(std::wstring_view group, const Stuff::Degree& angle);
+void Spew(std::wstring_view group, const Stuff::SinCosPair& angle);
 #endif
 
 namespace Stuff
@@ -44,11 +41,23 @@ public:
 	//
 	// Constructors
 	//
-	Radian(void) {}
-	Radian(float a) { m_angle = a; }
-	Radian(const Radian& a) { m_angle = a.m_angle; }
-	explicit Radian(const Degree& degree) { *this = degree; }
-	explicit Radian(const SinCosPair& pair) { *this = pair; }
+	Radian(void) { }
+	Radian(float a)
+	{
+		m_angle = a;
+	}
+	Radian(const Radian& a)
+	{
+		m_angle = a.m_angle;
+	}
+	explicit Radian(const Degree& degree)
+	{
+		*this = degree;
+	}
+	explicit Radian(const SinCosPair& pair)
+	{
+		*this = pair;
+	}
 
 	//
 	// Assignment operators
@@ -194,7 +203,7 @@ public:
 	Radian& Normalize(void);
 
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const Radian& angle);
+	friend void ::Spew(std::wstring_view group, const Radian& angle);
 #endif
 	void TestInstance(void) const
 	{
@@ -212,10 +221,19 @@ public:
 	//
 	// constructors
 	//
-	Degree() {}
-	Degree(float a) { m_angle = a; }
-	Degree(const Degree& a) { m_angle = a.m_angle; }
-	explicit Degree(const Radian& radian) { *this = radian; }
+	Degree() { }
+	Degree(float a)
+	{
+		m_angle = a;
+	}
+	Degree(const Degree& a)
+	{
+		m_angle = a.m_angle;
+	}
+	explicit Degree(const Radian& radian)
+	{
+		*this = radian;
+	}
 
 	//
 	// Assignment operators
@@ -245,7 +263,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const Degree& angle);
+	friend void ::Spew(std::wstring_view group, const Degree& angle);
 #endif
 	void TestInstance(void) const
 	{
@@ -272,7 +290,7 @@ public:
 	//
 	// Constructors
 	//
-	SinCosPair() {}
+	SinCosPair() { }
 	SinCosPair(float sin, float cos)
 	{
 		// Check_Pointer(this);
@@ -287,7 +305,10 @@ public:
 		sine = pair.sine;
 		cosine = pair.cosine;
 	}
-	explicit SinCosPair(const Radian& radian) { *this = radian; }
+	explicit SinCosPair(const Radian& radian)
+	{
+		*this = radian;
+	}
 
 	//
 	// Assignment operators
@@ -308,7 +329,7 @@ public:
 #if USE_INLINE_ASSEMBLER_CODE
 		float* f = &sine;
 		_asm
-		{
+			{
 				push	ebx
 				push	edx
 
@@ -322,7 +343,7 @@ public:
 
 				pop		edx
 				pop		ebx
-		}
+			}
 #else
 		cosine = cos(radian);
 		sine = sin(radian);
@@ -335,7 +356,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const SinCosPair& angle);
+	friend void ::Spew(std::wstring_view group, const SinCosPair& angle);
 #endif
 	void TestInstance(void) const
 	{

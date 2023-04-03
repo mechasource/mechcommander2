@@ -26,8 +26,7 @@ static int64_t fillnum = -1;
 //
 // Instead of using memset(x,0,x) - use this function
 //
-void
-memclear(PVOID Dest, size_t Len){_asm {
+void memclear(PVOID Dest, size_t Len) {_asm {
 
 	mov edi, Dest mov ecx, Len cmp Processor,
 	CPU_MMX jnz mem1
@@ -54,8 +53,7 @@ uint32_t align edi when possible sub ecx, edi xor eax, eax sub ecx, ebx and ecx,
 //
 // Instead of using memset(x,0xff,x) - use this function
 //
-void
-memfill(PVOID Dest, size_t Len){_asm {
+void memfill(PVOID Dest, size_t Len) {_asm {
 
 	mov edi, Dest mov ecx, Len cmp Processor,
 	CPU_MMX jnz memf1
@@ -86,8 +84,7 @@ RandomNumber(int32_t range)
 }
 
 //---------------------------------------------------------------------------
-bool
-RollDice(int32_t percent)
+bool RollDice(int32_t percent)
 {
 	return (((rand() * 100) >> 15) < percent); // Optimized the % out
 }

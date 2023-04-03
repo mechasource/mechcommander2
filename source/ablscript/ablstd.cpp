@@ -14,7 +14,8 @@
 //#include "ablsymt.h"
 //#include "ablparse.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -38,8 +39,7 @@ bool EnterStateSymbol = false;
 // STANDARD ROUTINE PARSING FUNCTIONS
 //***************************************************************************
 
-void
-stdReturn(void)
+void stdReturn(void)
 {
 	// RETURN function
 	//
@@ -60,8 +60,7 @@ stdReturn(void)
 
 //***************************************************************************
 
-void
-stdPrint(void)
+void stdPrint(void)
 {
 	// PRINT function:
 	//

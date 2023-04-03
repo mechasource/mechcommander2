@@ -64,9 +64,15 @@ protected:
 	// Member Functions
 	//----------------
 public:
-	WeaponEffects(void) { init(void); }
+	WeaponEffects(void)
+	{
+		init(void);
+	}
 
-	~WeaponEffects(void) { destroy(void); }
+	~WeaponEffects(void)
+	{
+		destroy(void);
+	}
 
 	void init(void)
 	{
@@ -76,9 +82,9 @@ public:
 
 	void destroy(void);
 
-	void init(const std::wstring_view& effectCSVFileName);
+	void init(std::wstring_view effectCSVFileName);
 
-	const std::wstring_view& GetEffectName(int32_t effectId)
+	std::wstring_view GetEffectName(int32_t effectId)
 	{
 		if ((effectId >= 0) && (effectId < numEffects))
 		{
@@ -87,7 +93,7 @@ public:
 		return mc2_word_none;
 	}
 
-	const std::wstring_view& GetEffectMuzzleFlashName(int32_t effectId)
+	std::wstring_view GetEffectMuzzleFlashName(int32_t effectId)
 	{
 		if ((effectId >= 0) && (effectId < numEffects))
 		{
@@ -96,7 +102,7 @@ public:
 		return mc2_word_none;
 	}
 
-	const std::wstring_view& GetEffectHitName(int32_t effectId)
+	std::wstring_view GetEffectHitName(int32_t effectId)
 	{
 		if ((effectId >= 0) && (effectId < numEffects))
 		{
@@ -105,7 +111,7 @@ public:
 		return mc2_word_none;
 	}
 
-	const std::wstring_view& GetEffectMissName(int32_t effectId)
+	std::wstring_view GetEffectMissName(int32_t effectId)
 	{
 		if ((effectId >= 0) && (effectId < numEffects))
 		{

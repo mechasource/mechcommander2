@@ -54,14 +54,12 @@ aScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void
-aScrollBar::destroy()
+void aScrollBar::destroy()
 {
 	aObject::destroy();
 }
 
-void
-aScrollBar::render()
+void aScrollBar::render()
 {
 	topButton.moveTo(globalX() + 2, topButton.globalY());
 	bottomButton.moveTo(globalX() + 2, bottomButton.globalY());
@@ -71,16 +69,14 @@ aScrollBar::render()
 	drawEmptyRect(area, color, color);
 }
 
-void
-aScrollBar::SetScrollMax(float newMax)
+void aScrollBar::SetScrollMax(float newMax)
 {
 	scrollMax = newMax;
 	scrollTab.showGUIWindow(newMax != 0);
 	ResizeAreas();
 }
 
-void
-aScrollBar::SetScrollPos(float newPos)
+void aScrollBar::SetScrollPos(float newPos)
 {
 	if (newPos < 0)
 		newPos = 0;
@@ -90,8 +86,7 @@ aScrollBar::SetScrollPos(float newPos)
 	ResizeAreas();
 }
 
-void
-aScrollBar::SetScroll(int32_t newScrollPos)
+void aScrollBar::SetScroll(int32_t newScrollPos)
 {
 	if (newScrollPos < 0)
 		newScrollPos = 0;
@@ -101,8 +96,7 @@ aScrollBar::SetScroll(int32_t newScrollPos)
 		getParent()->handleMessage(aMSG_SCROLLTO, newScrollPos);
 	SetScrollPos(newScrollPos);
 }
-void
-aScrollBar::update()
+void aScrollBar::update()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
@@ -187,8 +181,7 @@ aScrollBar::handleMessage(uint32_t message, uint32_t who)
 	return getParent()->handleMessage(who, who);
 }
 
-void
-aScrollBar::ResizeAreas(void)
+void aScrollBar::ResizeAreas(void)
 {
 	float range, position;
 	if (scrollMax == 0)
@@ -206,8 +199,7 @@ aScrollBar::ResizeAreas(void)
 	scrollTab.moveTo(globalX() + 2, topButton.globalY() + topButton.height() + position + 1);
 }
 
-void
-aScrollBar::Enable(bool enable)
+void aScrollBar::Enable(bool enable)
 {
 	scrollTab.disable(!enable);
 	topButton.disable(!enable);
@@ -249,8 +241,7 @@ mcScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return 0;
 }
 
-void
-mcScrollBar::resize(int32_t w, int32_t h)
+void mcScrollBar::resize(int32_t w, int32_t h)
 {
 	aScrollBar::resize(w, h);
 	bottomButton.moveTo(bottomButton.globalX(), globalY() + h - bottomButton.height() - 2);
@@ -258,8 +249,7 @@ mcScrollBar::resize(int32_t w, int32_t h)
 	ResizeAreas();
 }
 
-void
-mcScrollBar::setGreen()
+void mcScrollBar::setGreen()
 {
 	topButton.setAnimationInfo(&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
 	bottomButton.setAnimationInfo(&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
@@ -270,8 +260,7 @@ mcScrollBar::setGreen()
 	color = (0xff6E7C00);
 }
 
-void
-mcScrollBar::setOrange()
+void mcScrollBar::setOrange()
 {
 	topButton.setAnimationInfo(&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
 	bottomButton.setAnimationInfo(&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
@@ -282,8 +271,7 @@ mcScrollBar::setOrange()
 	color = (0xff43311C);
 }
 
-void
-mcScrollButton::render()
+void mcScrollButton::render()
 {
 	if (isShowing() && state != DISABLED)
 	{

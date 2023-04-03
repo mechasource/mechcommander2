@@ -48,8 +48,11 @@ public:
 private:
 	struct Info
 	{
-		Info(void) :
-			m_ID(0), ppos(0) {}
+		Info(void)
+			: m_ID(0)
+			, ppos(0)
+		{
+		}
 		~Info(void);
 		int32_t m_ID;
 		Stuff::Vector3D* ppos;

@@ -85,11 +85,17 @@ public:
 		destructEffect[0] = 0;
 	}
 
-	GVAppearanceType(void) { init(void); }
+	GVAppearanceType(void)
+	{
+		init(void);
+	}
 
-	~GVAppearanceType(void) { destroy(void); }
+	~GVAppearanceType(void)
+	{
+		destroy(void);
+	}
 
-	virtual void init(const std::wstring_view& fileName);
+	virtual void init(std::wstring_view fileName);
 
 	virtual void destroy(void);
 
@@ -130,7 +136,10 @@ public:
 		return false;
 	}
 
-	int32_t getTotalNodes(void) { return numSmokeNodes + numWeaponNodes + numFootNodes; }
+	int32_t getTotalNodes(void)
+	{
+		return numSmokeNodes + numWeaponNodes + numFootNodes;
+	}
 };
 
 //***********************************************************************
@@ -209,9 +218,15 @@ public:
 public:
 	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
-	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
+	virtual AppearanceTypePtr getAppearanceType(void)
+	{
+		return appearType;
+	}
 
-	GVAppearance(void) { init(void); }
+	GVAppearance(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t update(bool animate = true);
 	void updateGeometry(void);
@@ -222,9 +237,15 @@ public:
 
 	virtual void destroy(void);
 
-	virtual size_t getAppearanceClass(void) { return VEHICLE_APPR_TYPE; }
+	virtual size_t getAppearanceClass(void)
+	{
+		return VEHICLE_APPR_TYPE;
+	}
 
-	~GVAppearance(void) { destroy(void); }
+	~GVAppearance(void)
+	{
+		destroy(void);
+	}
 
 	virtual void setPaintScheme(void);
 
@@ -238,9 +259,15 @@ public:
 
 	virtual void flashBuilding(float duration, float flashDuration, uint32_t color);
 
-	void setFadeTable(uint8_t* fTable) { fadeTable = fTable; }
+	void setFadeTable(uint8_t* fTable)
+	{
+		fadeTable = fTable;
+	}
 
-	virtual void setObjectNameId(int32_t objId) { objectNameId = objId; }
+	virtual void setObjectNameId(int32_t objId)
+	{
+		objectNameId = objId;
+	}
 
 	virtual bool isMouseOver(float px, float py);
 
@@ -252,17 +279,26 @@ public:
 
 	void debugUpdate(void);
 
-	virtual void setSensorLevel(int32_t lvl) { sensorLevel = lvl; }
+	virtual void setSensorLevel(int32_t lvl)
+	{
+		sensorLevel = lvl;
+	}
 
 	virtual void setObjStatus(int32_t oStatus);
 
 	virtual bool playdestruction(void);
 
-	virtual bool getInTransition(void) { return (canTransition == false); }
+	virtual bool getInTransition(void)
+	{
+		return (canTransition == false);
+	}
 
 	virtual void setGesture(size_t gestureId);
 
-	virtual int32_t getCurrentGestureId(void) { return gvAnimationState; }
+	virtual int32_t getCurrentGestureId(void)
+	{
+		return gvAnimationState;
+	}
 
 	//--------------------------------------------
 	// Once site Objects are in place, go get 'em
@@ -280,7 +316,7 @@ public:
 
 	virtual int32_t getLowestWeaponNode(void);
 
-	virtual Stuff::Vector3D getNodeNamePosition(const std::wstring_view& nodeName);
+	virtual Stuff::Vector3D getNodeNamePosition(std::wstring_view nodeName);
 
 	virtual bool PerPolySelect(int32_t mouseX, int32_t mouseY);
 
@@ -298,7 +334,10 @@ public:
 		sensorTriangleShape->SetAlphaValue(0xff - aVal);
 	}
 
-	virtual void scale(float scaleFactor) { gvShape->ScaleShape(scaleFactor); }
+	virtual void scale(float scaleFactor)
+	{
+		gvShape->ScaleShape(scaleFactor);
+	}
 
 	virtual void startWaterWake(void);
 	virtual void stopWaterWake(void);

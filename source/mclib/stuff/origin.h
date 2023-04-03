@@ -19,8 +19,7 @@ class Origin3D;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::Origin3D& origin);
+void Spew(std::wstring_view group, const Stuff::Origin3D& origin);
 #endif
 
 namespace Stuff
@@ -41,7 +40,7 @@ public:
 	//
 	// Constructors
 	//
-	Origin3D() {}
+	Origin3D() { }
 	Origin3D(const Point3D& t, const EulerAngles& q)
 	{
 		Check_Object(&t);
@@ -56,8 +55,14 @@ public:
 		linearPosition = t;
 		angularPosition = q;
 	}
-	Origin3D(const Origin3D& origin) { *this = origin; }
-	explicit Origin3D(const LinearMatrix4D& matrix) { *this = matrix; }
+	Origin3D(const Origin3D& origin)
+	{
+		*this = origin;
+	}
+	explicit Origin3D(const LinearMatrix4D& matrix)
+	{
+		*this = matrix;
+	}
 
 	//
 	// Assignment operators
@@ -97,8 +102,14 @@ public:
 	// Equality operator
 	//
 	friend bool Close_Enough(const Origin3D& a1, const Origin3D& a2, float e = SMALL);
-	bool operator==(const Origin3D& a) const { return Close_Enough(*this, a, SMALL); }
-	bool operator!=(const Origin3D& a) const { return !Close_Enough(*this, a, SMALL); }
+	bool operator==(const Origin3D& a) const
+	{
+		return Close_Enough(*this, a, SMALL);
+	}
+	bool operator!=(const Origin3D& a) const
+	{
+		return !Close_Enough(*this, a, SMALL);
+	}
 
 	//
 	// Origin3D motion
@@ -117,7 +128,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const Origin3D& origin);
+	friend void ::Spew(std::wstring_view group, const Origin3D& origin);
 #endif
 	void TestInstance(void) const;
 	static bool TestClass(void);

@@ -46,7 +46,10 @@ public:
 	static EffectLibrary* Instance;
 
 protected:
-	EffectLibrary(EffectLibrary& /*source*/) { STOP(("Shouldn't be called")); }
+	EffectLibrary(EffectLibrary& /*source*/)
+	{
+		STOP(("Shouldn't be called"));
+	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Effect management
@@ -54,13 +57,13 @@ protected:
 public:
 	std::vector<Effect::Specification*> m_effects;
 
-	Effect::Specification* Find(const std::wstring_view& name);
+	Effect::Specification* Find(std::wstring_view name);
 	Effect* MakeEffect(uint32_t index, uint32_t flags);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
 public:
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 } // namespace gosFX

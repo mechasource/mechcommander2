@@ -12,16 +12,14 @@ gosFX::EffectLibrary* gosFX::EffectLibrary::Instance = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectLibrary::InitializeClass()
+void gosFX::EffectLibrary::InitializeClass()
 {
 	_ASSERT(!Instance);
 }
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectLibrary::TerminateClass()
+void gosFX::EffectLibrary::TerminateClass()
 {
 	if (Instance)
 	{
@@ -54,8 +52,7 @@ gosFX::EffectLibrary::~EffectLibrary()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectLibrary::Load(std::iostream stream)
+void gosFX::EffectLibrary::Load(std::iostream stream)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	_ASSERT(!m_effects.GetLength());
@@ -73,8 +70,7 @@ gosFX::EffectLibrary::Load(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectLibrary::Save(std::iostream stream)
+void gosFX::EffectLibrary::Save(std::iostream stream)
 {
 	WriteGFXVersion(stream);
 	*stream << m_effects.GetLength();
@@ -88,7 +84,7 @@ gosFX::EffectLibrary::Save(std::iostream stream)
 //------------------------------------------------------------------------------
 //
 gosFX::Effect::Specification*
-gosFX::EffectLibrary::Find(const std::wstring_view& name)
+gosFX::EffectLibrary::Find(std::wstring_view name)
 {
 	for (auto i = 0; i < m_effects.GetLength(); ++i)
 	{

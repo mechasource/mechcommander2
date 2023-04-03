@@ -107,11 +107,10 @@ OptionsXScreen::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-OptionsXScreen::init(FitIniFile* file)
+void OptionsXScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button", "Edit");
-	const std::wstring_view& fileNames[4] = {
+	std::wstring_view fileNames[4] = {
 		"mcl_optionsgraphics", "mcl_optionsaudio", "mcl_optionsgameplay", "mcl_optionshotkeys"};
 	OptionsGraphics* pGraphics = new OptionsGraphics;
 	tabAreas[0] = pGraphics;
@@ -185,8 +184,7 @@ OptionsXScreen::init(FitIniFile* file)
 	bShowWarning = 0;
 }
 
-void
-OptionsXScreen::render()
+void OptionsXScreen::render()
 {
 	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, 0xff000000);
@@ -260,14 +258,12 @@ OptionsXScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-OptionsXScreen::isDone()
+bool OptionsXScreen::isDone()
 {
 	return bDone;
 }
 
-void
-OptionsXScreen::update()
+void OptionsXScreen::update()
 {
 	if (bShowWarning)
 	{
@@ -283,8 +279,7 @@ OptionsXScreen::update()
 	}
 }
 
-void
-OptionsXScreen::updateOptions()
+void OptionsXScreen::updateOptions()
 {
 }
 
@@ -301,8 +296,7 @@ ResModes resModes[10] = {640, 480, 16, 640, 480, 32, 800, 600, 16, 800, 600, 32,
 
 bool availableMode[10] = {true, true, true, true, true, true, true, true, true, true};
 
-void
-OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
+void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 {
 	FullPathFileName path;
 	path.init(artPath, "mcl_options_combobox0", ".fit");
@@ -366,7 +360,7 @@ OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 		*/
 		if (gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, i) >= minTextureRam)
 		{
-			const std::wstring_view& deviceName = (const std::wstring_view&)gos_GetMachineInformation(gos_Info_GetDeviceName, i);
+			std::wstring_view deviceName = (std::wstring_view)gos_GetMachineInformation(gos_Info_GetDeviceName, i);
 			// Save name to other string here.
 			cardList.AddItem(deviceName, 0xffffffff);
 			if (Environment.FullScreenDevice == i)
@@ -402,16 +396,14 @@ OptionsGraphics::handleMessage(uint32_t message, uint32_t fromWho)
 	return 1;
 }
 
-void
-OptionsGraphics::render()
+void OptionsGraphics::render()
 {
 	LogisticsScreen::render();
 	resolutionList.render();
 	cardList.render();
 }
 
-void
-OptionsGraphics::update()
+void OptionsGraphics::update()
 {
 	if (resolutionList.IsExpanded())
 	{
@@ -444,14 +436,12 @@ OptionsGraphics::update()
 	}
 }
 
-void
-OptionsGraphics::begin()
+void OptionsGraphics::begin()
 {
 	helpTextArrayID = 1;
 	reset(prefs);
 }
-void
-OptionsGraphics::end()
+void OptionsGraphics::end()
 {
 	prefs.useWaterInterestTexture = getButton(MSG_TERRAIN_DETAIL)->isPressed();
 	prefs.pilotVideos = getButton(MSG_PILOT_VIDS)->isPressed();
@@ -506,8 +496,7 @@ OptionsGraphics::end()
 	if ((index != -1) && (prefs.renderer != 3))
 		prefs.renderer = index;
 }
-void
-OptionsGraphics::reset(const CPrefs& newPrefs)
+void OptionsGraphics::reset(const CPrefs& newPrefs)
 {
 	getButton(MSG_TERRAIN_DETAIL)->press(newPrefs.useWaterInterestTexture);
 	getButton(MSG_PILOT_VIDS)->press(newPrefs.pilotVideos);
@@ -528,11 +517,9 @@ OptionsGraphics::reset(const CPrefs& newPrefs)
 	}
 }
 
-
 //////////////////////////////////////////////
 
-void
-OptionsAudio::init(int32_t xOffset, int32_t yOffset)
+void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 {
 	getButton(MSG_RESET)->setMessageOnRelease();
 	for (size_t i = 0; i < buttonCount; i++)
@@ -567,8 +554,7 @@ OptionsAudio::handleMessage(uint32_t message, uint32_t fromWho)
 	return 1;
 }
 
-void
-OptionsAudio::render()
+void OptionsAudio::render()
 {
 	LogisticsScreen::render();
 	for (size_t i = 0; i < 5; i++)
@@ -577,8 +563,7 @@ OptionsAudio::render()
 	}
 }
 
-void
-OptionsAudio::update()
+void OptionsAudio::update()
 {
 	LogisticsScreen::update();
 	for (size_t i = 0; i < 5; i++)
@@ -601,14 +586,12 @@ OptionsAudio::update()
 	}
 }
 
-void
-OptionsAudio::begin()
+void OptionsAudio::begin()
 {
 	helpTextArrayID = 15;
 	reset(prefs);
 }
-void
-OptionsAudio::end()
+void OptionsAudio::end()
 {
 	prefs.DigitalMasterVolume = scrollBars[0].GetScrollPos();
 	prefs.MusicVolume = scrollBars[1].GetScrollPos();
@@ -616,8 +599,7 @@ OptionsAudio::end()
 	prefs.RadioVolume = scrollBars[3].GetScrollPos();
 	prefs.BettyVolume = scrollBars[4].GetScrollPos();
 }
-void
-OptionsAudio::reset(const CPrefs& newPrefs)
+void OptionsAudio::reset(const CPrefs& newPrefs)
 {
 	scrollBars[0].SetScrollPos(newPrefs.DigitalMasterVolume);
 	scrollBars[1].SetScrollPos(newPrefs.MusicVolume);
@@ -627,8 +609,7 @@ OptionsAudio::reset(const CPrefs& newPrefs)
 }
 
 //////////////////////////////////////////////
-void
-OptionsGamePlay::resetCamera()
+void OptionsGamePlay::resetCamera()
 {
 	// Do NOT setup a camera in mission.
 	// A.  We don't need it cause the option is greyed out.
@@ -644,8 +625,7 @@ OptionsGamePlay::resetCamera()
 	}
 }
 
-void
-OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
+void OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
 {
 	camera.init(rects[1].globalX() + xOffset, rects[1].globalY() + yOffset,
 		rects[1].globalRight() + xOffset, rects[1].globalBottom() + yOffset);
@@ -688,8 +668,7 @@ OptionsGamePlay::handleMessage(uint32_t message, uint32_t fromWho)
 	return 1;
 }
 
-void
-OptionsGamePlay::render()
+void OptionsGamePlay::render()
 {
 	LogisticsScreen::render();
 	int32_t colorToMatch =
@@ -709,8 +688,7 @@ OptionsGamePlay::render()
 	camera.render();
 }
 
-void
-OptionsGamePlay::update()
+void OptionsGamePlay::update()
 {
 	camera.update();
 	LogisticsScreen::update();
@@ -733,8 +711,7 @@ OptionsGamePlay::update()
 			"Bushwacker", rects[36].getcolour(), rects[37].getcolour(), rects[37].getcolour());
 }
 
-void
-OptionsGamePlay::begin()
+void OptionsGamePlay::begin()
 {
 	helpTextArrayID = 2;
 	reset(prefs);
@@ -752,8 +729,7 @@ OptionsGamePlay::begin()
 	}
 }
 
-void
-OptionsGamePlay::end()
+void OptionsGamePlay::end()
 {
 	for (size_t i = MSG_GREEN; i < MSG_ELITE + 1; i++)
 	{
@@ -778,8 +754,7 @@ OptionsGamePlay::end()
 		camera.setMech(nullptr);
 	}
 }
-void
-OptionsGamePlay::reset(const CPrefs& newPrefs)
+void OptionsGamePlay::reset(const CPrefs& newPrefs)
 {
 	for (size_t i = MSG_GREEN; i < MSG_ELITE + 1; i++)
 	{
@@ -793,11 +768,9 @@ OptionsGamePlay::reset(const CPrefs& newPrefs)
 	//	getButton( MSG_TUTORIALS )->press( newPrefs.tutorials );
 }
 
-
 //////////////////////////////////////////////
 
-void
-OptionsHotKeys::init(int32_t xOffset, int32_t yOffset)
+void OptionsHotKeys::init(int32_t xOffset, int32_t yOffset)
 {
 	hotKeyList.init(rects[0].x(), rects[0].y(), rects[0].width(), rects[0].height());
 	helpTextArrayID = 2;
@@ -821,8 +794,7 @@ OptionsHotKeys::handleMessage(uint32_t message, uint32_t fromWho)
 	return 1;
 }
 
-void
-OptionsHotKeys::render()
+void OptionsHotKeys::render()
 {
 	hotKeyList.render();
 	LogisticsScreen::render();
@@ -832,8 +804,7 @@ OptionsHotKeys::render()
 	}
 }
 
-void
-OptionsHotKeys::update()
+void OptionsHotKeys::update()
 {
 	if (bShowDlg)
 	{
@@ -931,8 +902,7 @@ OptionsHotKeys::update()
 	}
 }
 
-void
-OptionsHotKeys::makeKeyString(int32_t newKey, const std::wstring_view& keysString)
+void OptionsHotKeys::makeKeyString(int32_t newKey, std::wstring_view keysString)
 {
 	wchar_t shift[32];
 	wchar_t control[32];
@@ -941,7 +911,7 @@ OptionsHotKeys::makeKeyString(int32_t newKey, const std::wstring_view& keysStrin
 	cLoadString(IDS_CONTROL, control, 31);
 	cLoadString(IDS_ALT, alt, 31);
 	int32_t key = newKey;
-	const std::wstring_view& pKey = gos_DescribeKey((key & 0x000fffff) << 8);
+	std::wstring_view pKey = gos_DescribeKey((key & 0x000fffff) << 8);
 	if (((key & SHIFT)))
 	{
 		strcat(keysString, shift);
@@ -961,9 +931,9 @@ OptionsHotKeys::makeKeyString(int32_t newKey, const std::wstring_view& keysStrin
 }
 
 int32_t
-OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, const std::wstring_view& hotKeyString)
+OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, std::wstring_view hotKeyString)
 {
-	const std::wstring_view& pText = gos_DescribeKey(tmpKey & 0x0001ff00);
+	std::wstring_view pText = gos_DescribeKey(tmpKey & 0x0001ff00);
 	int32_t tmp = (tmpKey >> 8) & 0x01ff;
 	if (tmp == KEY_LSHIFT || tmp == KEY_LMENU || tmp == KEY_LCONTROL)
 		return -1;
@@ -1000,14 +970,12 @@ OptionsHotKeys::makeInputKeyString(int32_t& tmpKey, const std::wstring_view& hot
 	return 0;
 }
 
-void
-OptionsHotKeys::begin()
+void OptionsHotKeys::begin()
 {
 	helpTextArrayID = 2;
 	reset(0);
 }
-void
-OptionsHotKeys::end()
+void OptionsHotKeys::end()
 {
 	for (size_t i = 0; i < hotKeyList.GetItemCount(); i++)
 	{
@@ -1024,8 +992,7 @@ OptionsHotKeys::end()
 	hotKeyList.removeAllItems(true);
 	//	MissionInterfaceManager::setHotKey(
 }
-void
-OptionsHotKeys::reset(bool useOld)
+void OptionsHotKeys::reset(bool useOld)
 {
 	hotKeyList.removeAllItems(true);
 	wchar_t shift[32];
@@ -1055,7 +1022,6 @@ OptionsHotKeys::reset(bool useOld)
 		}
 	}
 }
-
 
 ScrollX::ScrollX()
 {
@@ -1089,16 +1055,14 @@ ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 	return (NO_ERROR);
 }
 
-void
-ScrollX::SetScrollMax(float newMax)
+void ScrollX::SetScrollMax(float newMax)
 {
 	scrollMax = newMax;
 	buttons[2]->showGUIWindow(newMax != 0);
 	ResizeAreas();
 }
 
-void
-ScrollX::SetScrollPos(float newPos)
+void ScrollX::SetScrollPos(float newPos)
 {
 	if (newPos < 0)
 		newPos = 0;
@@ -1108,8 +1072,7 @@ ScrollX::SetScrollPos(float newPos)
 	ResizeAreas();
 }
 
-void
-ScrollX::SetScroll(int32_t newScrollPos)
+void ScrollX::SetScroll(int32_t newScrollPos)
 {
 	if (newScrollPos < 0)
 		newScrollPos = 0;
@@ -1119,8 +1082,7 @@ ScrollX::SetScroll(int32_t newScrollPos)
 		getParent()->handleMessage(aMSG_SCROLLTO, newScrollPos);
 	SetScrollPos(newScrollPos);
 }
-void
-ScrollX::update()
+void ScrollX::update()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
@@ -1206,8 +1168,7 @@ ScrollX::handleMessage(uint32_t message, uint32_t who)
 	return getParent()->handleMessage(who, who);
 }
 
-void
-ScrollX::ResizeAreas(void)
+void ScrollX::ResizeAreas(void)
 {
 	float range, position;
 	if (scrollMax == 0)
@@ -1218,16 +1179,14 @@ ScrollX::ResizeAreas(void)
 	buttons[2]->moveTo(globalX() + position + buttons[0]->width() + 2, globalY() + 1);
 }
 
-void
-ScrollX::Enable(bool enable)
+void ScrollX::Enable(bool enable)
 {
 	buttons[2]->disable(!enable);
 	buttons[0]->disable(!enable);
 	buttons[1]->disable(!enable);
 }
 
-void
-HotKeyListItem::init()
+void HotKeyListItem::init()
 {
 	if (s_item)
 		return;
@@ -1250,8 +1209,7 @@ HotKeyListItem::init()
 	s_item->rects[0].init(&file, "Rect0");
 	s_item->rects[1].init(&file, "Rect1");
 }
-void
-HotKeyListItem::render()
+void HotKeyListItem::render()
 {
 	aAnimGroup::STATE curState = (aAnimGroup::STATE)getState();
 	for (size_t i = 0; i < 3; i++)
@@ -1265,18 +1223,15 @@ HotKeyListItem::render()
 	aObject::render();
 }
 
-void
-HotKeyListItem::update()
+void HotKeyListItem::update()
 {
 }
 
-void
-HotKeyListItem::setDescription(const std::wstring_view& pText)
+void HotKeyListItem::setDescription(std::wstring_view pText)
 {
 	description.setText(pText);
 }
-void
-HotKeyListItem::setKey(const std::wstring_view& pText)
+void HotKeyListItem::setKey(std::wstring_view pText)
 {
 	text.setText(pText);
 }

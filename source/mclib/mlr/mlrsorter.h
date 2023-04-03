@@ -29,9 +29,13 @@ struct SortAlpha;
 class SortData
 {
 public:
-	SortData(void) :
-		vertices(nullptr), indices(nullptr), numvertices(0), numIndices(0), type(TriList),
-		texture2(0)
+	SortData(void)
+		: vertices(nullptr)
+		, indices(nullptr)
+		, numvertices(0)
+		, numIndices(0)
+		, type(TriList)
+		, texture2(0)
 	{
 	}
 
@@ -195,7 +199,7 @@ protected:
 	std::vector<ToBeDrawnPrimitive> drawData; // Max_Number_Primitives_Per_Frame
 	std::vector<ToBeDrawnPrimitive*>
 		priorityBucketsNotDrawn[MLRState::PriorityCount]; //, Max_Number_Primitives_Per_Frame +
-		// Max_Number_ScreenQuads_Per_Frame
+	// Max_Number_ScreenQuads_Per_Frame
 #endif
 	float farClipReciprocal;
 };

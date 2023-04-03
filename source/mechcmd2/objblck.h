@@ -124,15 +124,24 @@ public:
 		objectDataFile = nullptr;
 	}
 
-	ObjectBlockManager(void) { init(void); }
+	ObjectBlockManager(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	int32_t init(const std::wstring_view& packetFileName);
+	int32_t init(std::wstring_view packetFileName);
 
-	~ObjectBlockManager(void) { destroy(void); }
+	~ObjectBlockManager(void)
+	{
+		destroy(void);
+	}
 
-	PacketFilePtr getObjectDataFile(void) { return (objectDataFile); }
+	PacketFilePtr getObjectDataFile(void)
+	{
+		return (objectDataFile);
+	}
 
 	int32_t update(BOOL createAll = FALSE);
 
@@ -140,7 +149,10 @@ public:
 
 	void destroyAllObjects(void);
 
-	ObjectQueueNodePtr getObjectList(int32_t idNum) { return objectQueues[idNum]; }
+	ObjectQueueNodePtr getObjectList(int32_t idNum)
+	{
+		return objectQueues[idNum];
+	}
 
 #ifdef TERRAINEDIT
 	int32_t addObject(ObjectTypeNumber objNum, vector_2d& pOffset, vector_2d& numbers,

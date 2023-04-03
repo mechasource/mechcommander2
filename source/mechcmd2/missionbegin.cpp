@@ -38,10 +38,8 @@ class MechLabScreen;
 
 extern int32_t renderer;
 
-void
-initABL();
-void
-closeABL();
+void initABL();
+void closeABL();
 
 // Tutorial
 // Please save these two flags with the saveGames!!
@@ -93,8 +91,7 @@ MissionBegin::~MissionBegin()
 	}
 }
 
-bool
-MissionBegin::startAnimation(int32_t bId, bool isButton, float scrollTime, int32_t nFlashes)
+bool MissionBegin::startAnimation(int32_t bId, bool isButton, float scrollTime, int32_t nFlashes)
 {
 	if (animationRunning)
 		return false;
@@ -110,8 +107,7 @@ MissionBegin::startAnimation(int32_t bId, bool isButton, float scrollTime, int32
 	return true;
 }
 
-void
-MissionBegin::begin()
+void MissionBegin::begin()
 {
 	bReadyToLoad = 0;
 	initABL();
@@ -126,7 +122,7 @@ MissionBegin::begin()
 	// Load up the Logistics Brain for Tutorials.
 	// OK if brain file is NOT there!!
 	FullPathFileName brainFileName;
-	const std::wstring_view& brainfile = LogisticsData::instance->getCurrentABLScript();
+	std::wstring_view brainfile = LogisticsData::instance->getCurrentABLScript();
 	if (brainfile)
 		brainFileName.init(missionPath, brainfile, ".abl");
 	if (brainfile && fileExists(brainFileName))
@@ -358,14 +354,12 @@ MissionBegin::begin()
 	pMissionSelectionScreen->begin();
 }
 
-void
-MissionBegin::init()
+void MissionBegin::init()
 {
 	begin();
 }
 
-void
-MissionBegin::end()
+void MissionBegin::end()
 {
 	logisticsBrain = nullptr;
 	closeABL();
@@ -400,7 +394,7 @@ MissionBegin::getCurrentScreenId()
 	return (screenId);
 }
 
-const std::wstring_view&
+std::wstring_view
 MissionBegin::update()
 {
 	if (bSplash)
@@ -758,8 +752,7 @@ MissionBegin::update()
 	return nullptr;
 }
 
-void
-MissionBegin::render()
+void MissionBegin::render()
 {
 	int32_t xOffset = 0;
 	int32_t yOffset = 0;
@@ -845,8 +838,7 @@ MissionBegin::render()
 	animJustBegun = false;
 }
 
-void
-MissionBegin::beginSplash(const std::wstring_view& playerName)
+void MissionBegin::beginSplash(std::wstring_view playerName)
 {
 	// check for old screen and end that
 	if (curScreenX > -1 && curScreenY > -1)
@@ -872,8 +864,7 @@ MissionBegin::beginSplash(const std::wstring_view& playerName)
 	}
 }
 
-void
-MissionBegin::beginMPlayer()
+void MissionBegin::beginMPlayer()
 {
 	// already set up
 	if (multiplayerScreens[0][1])
@@ -982,8 +973,7 @@ MissionBegin::beginMPlayer()
 	}
 }
 
-void
-MissionBegin::setUpMultiplayerLogisticsScreens()
+void MissionBegin::setUpMultiplayerLogisticsScreens()
 {
 	for (size_t i = 0; i < 5 /*dim screen X*/; i += 1)
 	{
@@ -997,8 +987,7 @@ MissionBegin::setUpMultiplayerLogisticsScreens()
 	curScreenY = 1;
 }
 
-void
-MissionBegin::setToMissionBriefing()
+void MissionBegin::setToMissionBriefing()
 {
 	bReadyToLoad = 0;
 	if (screens[curScreenX][curScreenY])
@@ -1011,8 +1000,7 @@ MissionBegin::setToMissionBriefing()
 	}
 }
 
-void
-MissionBegin::restartMPlayer(const std::wstring_view& playerName)
+void MissionBegin::restartMPlayer(std::wstring_view playerName)
 {
 	bReadyToLoad = 0;
 	bDone = 0;
@@ -1038,8 +1026,7 @@ MissionBegin::restartMPlayer(const std::wstring_view& playerName)
 	}
 }
 
-void
-MissionBegin::beginZone()
+void MissionBegin::beginZone()
 {
 	beginMPlayer();
 	restartMPlayer(nullptr);
@@ -1049,8 +1036,7 @@ MissionBegin::beginZone()
 	mainMenu->skipIntro();
 	ChatWindow::init();
 }
-void
-MissionBegin::beginAtConnectionScreen()
+void MissionBegin::beginAtConnectionScreen()
 {
 	beginMPlayer();
 	int32_t i;

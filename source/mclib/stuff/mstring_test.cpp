@@ -9,8 +9,7 @@
 #define TEST_STRING_2 "Test StringTest string"
 #define TEST_STRING_3 "Test StringZ"
 
-bool
-Stuff::MString::TestClass()
+bool Stuff::MString::TestClass()
 {
 #if 1
 	Stuff::MString string_a;

@@ -3,7 +3,7 @@
 
  codetest
 
- 2018-09-03 Jerker Back, created
+ 2018-09-03 Jerker Bäck, created
 
  $LastChangedBy$
 
@@ -47,9 +47,8 @@ std::wstring_view __stdcall LoadResourceString(
 /// <param name="resid">resource ID</param>
 /// <param name="langid">resource language</param>
 /// <returns>const reference to resource</returns>
-std::wstring_view __stdcall 
-LoadResourceString(_In_opt_ HMODULE insthandle,_Out_ HRESULT& hr,
-	_In_ uint32_t resid,_In_ uint16_t langid)
+std::wstring_view __stdcall LoadResourceString(_In_opt_ HMODULE insthandle, _Out_ HRESULT& hr,
+	_In_ uint32_t resid, _In_ uint16_t langid)
 {
 	HRSRC reshandle = nullptr;
 	HGLOBAL memhandle = nullptr;
@@ -128,7 +127,7 @@ HRESULT testresource()
 #endif
 
 #if 0
-int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& pBuffer,_In_ uint32_t uID,_In_ uint16_t wLanguage = USHRT_MAX)
+int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ std::wstring_view& pBuffer,_In_ uint32_t uID,_In_ uint16_t wLanguage = USHRT_MAX)
 {
 	HRSRC		hResource;
 	HGLOBAL		hGlobal;
@@ -142,7 +141,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 	//_In_ int cchBufferMax
 
 	//HANDLE	hStringSeg;
-	const std::wstring_view&		pszResource;
+	std::wstring_view		pszResource;
 	size_t		ncount;
 	
 	(void)hModule;(void)uID;(void)wLanguage;(void)pBuffer;
@@ -165,7 +164,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 	 */
 
 
-	const std::wstring_view& pszID = MAKEINTRESOURCEW(((uID >> 4) + 1) & USHRT_MAX);
+	std::wstring_view pszID = MAKEINTRESOURCEW(((uID >> 4) + 1) & USHRT_MAX);
 	if (wLanguage == USHRT_MAX)	// invalid
 		wLanguage = MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US);	// 1033, 0x409
 
@@ -196,7 +195,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 	* Move past the other strings in this segment.
 	* (16 strings in a segment -> & 0x0F)
 	*/
-	pszResource = static_cast<const std::wstring_view&>(pStringResource);
+	pszResource = static_cast<std::wstring_view>(pStringResource);
 	iIndex = uID & 0x000f;
 	while (true)
 	{
@@ -206,7 +205,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 		pszResource += ncount;                    // Step to start if next string
 	}
 
-	const std::wstring_view& winbasestring(pszResource, ncount);
+	std::wstring_view winbasestring(pszResource, ncount);
 
 #if 0
 	struct ATLSTRINGRESOURCEIMAGE
@@ -238,7 +237,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 		iIndex--;
 	}
 
-	const std::wstring_view& atlcorestring(pImage->charray, pImage->count);
+	std::wstring_view atlcorestring(pImage->charray, pImage->count);
 
 #if 0
 	if( pImage >= pImageEnd )
@@ -282,7 +281,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 #endif
 
 #if 0
-	if (hResInfo = FINDRESOURCEEXW(hModule, (const std::wstring_view&)ULongToPtr(((long32_t)(((USHORT)wID >> 4) + 1))), RT_STRING, wLangId))
+	if (hResInfo = FINDRESOURCEEXW(hModule, (std::wstring_view)ULongToPtr(((long32_t)(((USHORT)wID >> 4) + 1))), RT_STRING, wLangId))
 	{
 		/*
 		 * Load that segment.
@@ -292,7 +291,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 		/*
 		 * Lock the resource.
 		 */
-		if (lpsz = (const std::wstring_view&)LOCKRESOURCE(hStringSeg, hModule))
+		if (lpsz = (std::wstring_view)LOCKRESOURCE(hStringSeg, hModule))
 		{
 			/*
 			 * Move past the other strings in this segment.
@@ -311,7 +310,7 @@ int LoadStringOrError(_In_opt_ HMODULE hModule,_Out_ const std::wstring_view&& p
 			 */
 			if (cchBufferMax == 0)
 			{
-				*(const std::wstring_view&*)lpBuffer = lpsz;
+				*(std::wstring_view*)lpBuffer = lpsz;
 			}
 			else
 			{

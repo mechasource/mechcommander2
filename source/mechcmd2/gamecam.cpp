@@ -54,8 +54,7 @@ extern bool drawOldWay;
 extern bool useNonWeaponEffects;
 GenericAppearance* theSky = nullptr;
 //---------------------------------------------------------------------------
-void
-GameCamera::destroy(void)
+void GameCamera::destroy(void)
 {
 	if (theSky)
 	{
@@ -71,8 +70,7 @@ GameCamera::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-GameCamera::render(void)
+void GameCamera::render(void)
 {
 	//------------------------------------------------------
 	// At present, these actually draw.  Later they will

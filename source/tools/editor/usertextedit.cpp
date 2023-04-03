@@ -23,8 +23,8 @@ static wchar_t THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CUserTextEdit dialog
 
-CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/) :
-	CDialog(CUserTextEdit::IDD, pParent)
+CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/)
+	: CDialog(CUserTextEdit::IDD, pParent)
 {
 	m_UseResourceString = false;
 	m_ResourceStringID = 0;
@@ -34,8 +34,7 @@ CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/) :
 	//}}AFX_DATA_INIT
 }
 
-void
-CUserTextEdit::DoDataExchange(CDataExchange* pDX)
+void CUserTextEdit::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CUserTextEdit)
@@ -45,10 +44,10 @@ CUserTextEdit::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CUserTextEdit, CDialog)
-//{{AFX_MSG_MAP(CUserTextEdit)
-ON_BN_CLICKED(IDC_USER_TEXT_EDIT_ENTER_TEXT_BUTTON, OnUserTextEditEnterTextButton)
-ON_BN_CLICKED(
-	IDC_USER_TEXT_EDIT_SELECT_RESOURCE_STRING_BUTTON, OnUserTextEditSelectResourceStringButton)
+	//{{AFX_MSG_MAP(CUserTextEdit)
+	ON_BN_CLICKED(IDC_USER_TEXT_EDIT_ENTER_TEXT_BUTTON, OnUserTextEditEnterTextButton)
+	ON_BN_CLICKED(
+		IDC_USER_TEXT_EDIT_SELECT_RESOURCE_STRING_BUTTON, OnUserTextEditSelectResourceStringButton)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -70,8 +69,7 @@ CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-void
-CUserTextEdit::UpdateTextDisplay()
+void CUserTextEdit::UpdateTextDisplay()
 {
 	UpdateData(TRUE);
 	if (m_UseResourceString)
@@ -91,8 +89,7 @@ CUserTextEdit::UpdateTextDisplay()
 	UpdateData(FALSE);
 }
 
-void
-CUserTextEdit::OnUserTextEditEnterTextButton()
+void CUserTextEdit::OnUserTextEditEnterTextButton()
 {
 	TextMessageDlg textMessageDlg;
 	textMessageDlg.m_TextMessage = m_UnlocalizedText;
@@ -111,8 +108,7 @@ CUserTextEdit::OnUserTextEditEnterTextButton()
 	}
 }
 
-void
-CUserTextEdit::OnUserTextEditSelectResourceStringButton()
+void CUserTextEdit::OnUserTextEditSelectResourceStringButton()
 {
 	ResourceStringSelectionDlg resourceStringSelectionDlg;
 	resourceStringSelectionDlg.m_SelectedResourceStringID = m_ResourceStringID;
@@ -125,8 +121,7 @@ CUserTextEdit::OnUserTextEditSelectResourceStringButton()
 	}
 }
 
-BOOL
-CUserTextEdit::OnInitDialog()
+BOOL CUserTextEdit::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	UpdateTextDisplay();

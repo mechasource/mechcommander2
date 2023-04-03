@@ -90,8 +90,7 @@ TerrainObjectType::createInstance(void)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObjectType::init(void)
+void TerrainObjectType::init(void)
 {
 	objectTypeClass = TERRAINOBJECT_TYPE;
 	objectClass = TERRAINOBJECT;
@@ -110,16 +109,14 @@ TerrainObjectType::init(void)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObjectType::destroy(void)
+void TerrainObjectType::destroy(void)
 {
 	ObjectType::destroy();
 }
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObjectType::initMiscTerrObj(int32_t objTypeNum)
+void TerrainObjectType::initMiscTerrObj(int32_t objTypeNum)
 {
 	//---------------------------------------------------------------------
 	// This function is here to maintain compatibility with MC1. The values
@@ -228,8 +225,7 @@ TerrainObjectType::init(std::unique_ptr<File> objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool
-TerrainObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+bool TerrainObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (true);
@@ -316,8 +312,7 @@ TerrainObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collide
 
 //---------------------------------------------------------------------------
 
-bool
-TerrainObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool TerrainObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	TerrainObjectPtr me = (TerrainObjectPtr)collidee;
 	if (me->getObjectType()->getSubType() == TERROBJ_FOREST)
@@ -330,15 +325,13 @@ TerrainObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr colli
 //***************************************************************************
 // class TerrainObject
 //***************************************************************************
-void
-TerrainObject::rotate(float yaw, float pitch)
+void TerrainObject::rotate(float yaw, float pitch)
 {
 	rotation = yaw;
 	pitchAngle = pitch;
 }
 
-void
-TerrainObject::updateDebugWindow(GameDebugWindow* debugWindow)
+void TerrainObject::updateDebugWindow(GameDebugWindow* debugWindow)
 {
 	debugWindow->clear();
 	wchar_t s[128];
@@ -387,8 +380,7 @@ TerrainObject::updateDebugWindow(GameDebugWindow* debugWindow)
 
 //---------------------------------------------------------------------------
 
-bool
-TerrainObject::isVisible(void)
+bool TerrainObject::isVisible(void)
 {
 	//----------------------------------------------------------------------
 	// This function is the meat and potatoes of the object cull system.
@@ -411,11 +403,11 @@ TerrainObject::isVisible(void)
 
 //---------------------------------------------------------------------------
 
-const std::wstring_view&
+std::wstring_view
 TerrainObject::getName(void)
 {
 	/*
-	static const std::wstring_view& terrainObjectNames[NUM_TERROBJ_SUBTYPES] = {
+	static std::wstring_view terrainObjectNames[NUM_TERROBJ_SUBTYPES] = {
 		"Nothing",
 		"Tree",
 		"Bridge",
@@ -438,8 +430,7 @@ TerrainObject::getName(void)
 
 //---------------------------------------------------------------------------
 
-float
-TerrainObject::getStatusRating(void)
+float TerrainObject::getStatusRating(void)
 {
 	float curDamage = getDamage();
 	float maxHealth = getDamageLevel();
@@ -547,8 +538,7 @@ TerrainObject::update(void)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::render(void)
+void TerrainObject::render(void)
 {
 	if (!getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
@@ -604,8 +594,7 @@ TerrainObject::render(void)
 }
 
 //---------------------------------------------------------------------------
-void
-TerrainObject::renderShadows(void)
+void TerrainObject::renderShadows(void)
 {
 	if (getFlag(OBJECT_FLAG_FALLING) || getFlag(OBJECT_FLAG_FALLEN))
 		return; // No shadows on fallen trees.
@@ -618,8 +607,7 @@ TerrainObject::renderShadows(void)
 }
 
 //---------------------------------------------------------------------------
-void
-TerrainObject::destroy(void)
+void TerrainObject::destroy(void)
 {
 	if (cellsCovered)
 	{
@@ -648,8 +636,7 @@ TerrainObject::destroy(void)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::setDamage(int32_t newDamage)
+void TerrainObject::setDamage(int32_t newDamage)
 {
 	damage = (float)newDamage;
 	TerrainObjectTypePtr type = (TerrainObjectTypePtr)getObjectType();
@@ -671,8 +658,7 @@ TerrainObject::setDamage(int32_t newDamage)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::init(bool create, ObjectTypePtr objType)
+void TerrainObject::init(bool create, ObjectTypePtr objType)
 {
 	GameObject::init(true, objType);
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
@@ -681,7 +667,7 @@ TerrainObject::init(bool create, ObjectTypePtr objType)
 		//-------------------------------------------------------------
 		// The appearance is initialized here using data from the type
 		// Need an MLR appearance class
-		const std::wstring_view& appearanceName = objType->getAppearanceTypeName();
+		std::wstring_view appearanceName = objType->getAppearanceTypeName();
 		//--------------------------------------------------------------
 		// New code!!!
 		// We need to append the sprite type to the appearance num now.
@@ -708,7 +694,7 @@ TerrainObject::init(bool create, ObjectTypePtr objType)
 		//-------------------------------------------------------------
 		// The appearance is initialized here using data from the type
 		// Need an MLR appearance class
-		const std::wstring_view& appearanceName = objType->getAppearanceTypeName();
+		std::wstring_view appearanceName = objType->getAppearanceTypeName();
 		//--------------------------------------------------------------
 		// New code!!!
 		// We need to append the sprite type to the appearance num now.
@@ -764,15 +750,13 @@ TerrainObject::init(bool create, ObjectTypePtr objType)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::killFire(void)
+void TerrainObject::killFire(void)
 {
 }
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::lightOnFire(float timeToBurn)
+void TerrainObject::lightOnFire(float timeToBurn)
 {
 }
 
@@ -891,8 +875,7 @@ TerrainObject::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChun
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::setTerrainPosition(
+void TerrainObject::setTerrainPosition(
 	const Stuff::Vector3D& position, const Stuff::Vector2DOf<int32_t>& numbers)
 {
 	setPosition(position);
@@ -900,8 +883,7 @@ TerrainObject::setTerrainPosition(
 	blockNumber = numbers.y;
 }
 
-void
-TerrainObject::setRotation(float rot)
+void TerrainObject::setRotation(float rot)
 {
 	rotation = rot;
 	((ObjectAppearance*)appearance)->rotation = rot;
@@ -909,8 +891,7 @@ TerrainObject::setRotation(float rot)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::calcCellFootprint(Stuff::Vector3D& pos)
+void TerrainObject::calcCellFootprint(Stuff::Vector3D& pos)
 {
 	int16_t cellList[MAX_CELL_COORDS];
 	cellList[0] = MAX_CELL_COORDS;
@@ -975,8 +956,7 @@ TerrainObject::getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, int32
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2])
+void TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2])
 {
 	numCellsCovered = numCells;
 	if (numCellsCovered)
@@ -1050,8 +1030,7 @@ TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELL
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::markMoveMap(bool passable)
+void TerrainObject::markMoveMap(bool passable)
 {
 	int16_t* curCoord = cellsCovered;
 	for (size_t i = 0; i < numCellsCovered; i++)
@@ -1066,8 +1045,7 @@ TerrainObject::markMoveMap(bool passable)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::openSubAreas(void)
+void TerrainObject::openSubAreas(void)
 {
 	markMoveMap(true);
 	for (size_t i = 0; i < numSubAreas0; i++)
@@ -1078,8 +1056,7 @@ TerrainObject::openSubAreas(void)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::closeSubAreas(void)
+void TerrainObject::closeSubAreas(void)
 {
 	markMoveMap(false);
 	for (size_t i = 0; i < numSubAreas0; i++)
@@ -1090,8 +1067,7 @@ TerrainObject::closeSubAreas(void)
 
 //---------------------------------------------------------------------------
 
-void
-TerrainObject::setSubAreasTeamId(int32_t id)
+void TerrainObject::setSubAreasTeamId(int32_t id)
 {
 	for (size_t i = 0; i < numSubAreas0; i++)
 		GlobalMoveMap[0]->setAreaTeamID(subAreas0[i], id);
@@ -1101,8 +1077,7 @@ TerrainObject::setSubAreasTeamId(int32_t id)
 
 //---------------------------------------------------------------------------
 
-bool
-TerrainObject::calcAdjacentAreaCell(
+bool TerrainObject::calcAdjacentAreaCell(
 	int32_t moveLevel, int32_t areaID, int32_t& adjRow, int32_t& adjCol)
 {
 	if (areaID == -1)
@@ -1183,8 +1158,7 @@ TerrainObject::calcAdjacentAreaCell(
 }
 
 //***************************************************************************
-void
-TerrainObject::Save(PacketFilePtr file, int32_t packetNum)
+void TerrainObject::Save(PacketFilePtr file, int32_t packetNum)
 {
 	TerrainObjectData data;
 	CopyTo(&data);
@@ -1193,8 +1167,7 @@ TerrainObject::Save(PacketFilePtr file, int32_t packetNum)
 }
 
 //***************************************************************************
-void
-TerrainObject::CopyTo(TerrainObjectData* data)
+void TerrainObject::CopyTo(TerrainObjectData* data)
 {
 	data->damage = damage;
 	data->vertexNumber = vertexNumber;
@@ -1223,8 +1196,7 @@ TerrainObject::CopyTo(TerrainObjectData* data)
 }
 
 //---------------------------------------------------------------------------
-void
-TerrainObject::Load(TerrainObjectData* data)
+void TerrainObject::Load(TerrainObjectData* data)
 {
 	GameObject::Load(dynamic_cast<GameObjectData*>(data));
 	damage = data->damage;

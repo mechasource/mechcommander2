@@ -16,8 +16,7 @@ class Sphere;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::Sphere& sphere);
+void Spew(std::wstring_view group, const Stuff::Sphere& sphere);
 #endif
 
 namespace Stuff
@@ -34,14 +33,26 @@ public:
 	Point3D center;
 	float radius;
 
-	Sphere() {}
-	Sphere(const Point3D& A_Point, float Radius) :
-		center(A_Point), radius(Radius) {}
-	Sphere(float X, float Y, float Z, float Radius) :
-		center(X, Y, Z), radius(Radius) {}
-	Sphere(const Sphere& sphere) :
-		center(sphere.center), radius(sphere.radius) {}
-	explicit Sphere(const OBB& obb) { *this = obb; }
+	Sphere() { }
+	Sphere(const Point3D& A_Point, float Radius)
+		: center(A_Point)
+		, radius(Radius)
+	{
+	}
+	Sphere(float X, float Y, float Z, float Radius)
+		: center(X, Y, Z)
+		, radius(Radius)
+	{
+	}
+	Sphere(const Sphere& sphere)
+		: center(sphere.center)
+		, radius(sphere.radius)
+	{
+	}
+	explicit Sphere(const OBB& obb)
+	{
+		*this = obb;
+	}
 
 	Sphere& operator=(const Sphere& sphere)
 	{
@@ -78,7 +89,7 @@ public:
 	bool Intersects(const Plane& plane) const;
 
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const Sphere& sphere);
+	friend void ::Spew(std::wstring_view group, const Sphere& sphere);
 #endif
 	void TestInstance(void) const
 	{

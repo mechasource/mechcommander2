@@ -77,7 +77,7 @@ int32_t __cdecl sortStats(PCVOID pPlayer1, PCVOID pPlayer2);
 
 int32_t ControlGui::vehicleCosts[LAST_VEHICLE] = {7000, 8000, 2000, 6000, 2000, 4000, 10000, 0};
 
-const std::wstring_view& ControlGui::vehicleNames[5] = {
+std::wstring_view ControlGui::vehicleNames[5] = {
 	"repairTruck", "scout", "minelayer", "pv20600",
 	"guardTower" // needs to be recovery
 
@@ -85,7 +85,7 @@ const std::wstring_view& ControlGui::vehicleNames[5] = {
 
 int32_t ControlGui::vehicleIDs[5] = {182, 393, 120, 147, 415};
 
-const std::wstring_view& ControlGui::vehiclePilots[5] = {
+std::wstring_view ControlGui::vehiclePilots[5] = {
 	"PMWRepair", "PMWScout", "PMWMinelayer", "PMWRecover", "PMWGuardTower"};
 
 uint32_t ControlGui::WALK = 0;
@@ -197,8 +197,7 @@ ControlGui::~ControlGui()
 	}
 }
 
-bool
-ControlGui::pushButton(int32_t buttonId)
+bool ControlGui::pushButton(int32_t buttonId)
 {
 	buttonToPress = buttonId;
 	// I KNOW its hard-coded, OK?
@@ -217,22 +216,19 @@ ControlGui::pushButton(int32_t buttonId)
 	return true;
 }
 
-bool
-ControlGui::flashRPTotal(int32_t numFlashes)
+bool ControlGui::flashRPTotal(int32_t numFlashes)
 {
 	rpNumFlashes = numFlashes;
 	rpFlashTime = 0.0f;
 	return true;
 }
 
-bool
-ControlGui::animateTacMap(int32_t buttonId, float timeToScroll, int32_t numFlashes)
+bool ControlGui::animateTacMap(int32_t buttonId, float timeToScroll, int32_t numFlashes)
 {
 	return tacMap.animate(abs(buttonId), numFlashes);
 }
 
-void
-ControlGui::render(bool bPaused)
+void ControlGui::render(bool bPaused)
 {
 	if (drawGUIOn)
 	{
@@ -360,8 +356,7 @@ ControlGui::render(bool bPaused)
 	}
 }
 
-void
-ControlGui::startObjectives(bool bStart)
+void ControlGui::startObjectives(bool bStart)
 {
 	if (!renderObjectives)
 		objectiveTime = 0.f;
@@ -396,8 +391,7 @@ ControlGui::startObjectives(bool bStart)
 	}
 };
 
-void
-ControlGui::renderResults()
+void ControlGui::renderResults()
 {
 	if (renderStatusInfo)
 	{
@@ -472,8 +466,7 @@ ControlGui::renderResults()
 }
 
 bool playedObjectiveClick[100];
-void
-ControlGui::RenderObjectives()
+void ControlGui::RenderObjectives()
 {
 	// make sure we need to do it.
 	if (renderObjectives || renderStatusInfo)
@@ -604,8 +597,7 @@ ControlGui::RenderObjectives()
 	}
 }
 
-void
-ControlGui::renderPlayerStatus(float xDelta)
+void ControlGui::renderPlayerStatus(float xDelta)
 {
 	bool scoreShown[MAX_MC_PLAYERS]; // keep track of whose shown the score
 	memset(scoreShown, 0, sizeof(bool) * MAX_MC_PLAYERS);
@@ -664,8 +656,7 @@ ControlGui::renderPlayerStatus(float xDelta)
 		}*/
 }
 
-void
-ControlGui::renderObjective(
+void ControlGui::renderObjective(
 	CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal)
 {
 	// draw description
@@ -676,8 +667,7 @@ ControlGui::renderObjective(
 	if (pObjective->ActivateOnFlag() && (20.0 /*seconds*/ /*arbitrary*/ > (mission->actualTime - pObjective->ActivationTime())))
 	{
 		/* flash the objective text */
-		int32_t tempI = (int32_t)(
-			2.0 /*Hz*/ /*flash frequency*/ * (mission->actualTime - pObjective->ActivationTime()));
+		int32_t tempI = (int32_t)(2.0 /*Hz*/ /*flash frequency*/ * (mission->actualTime - pObjective->ActivationTime()));
 		int32_t parity = (tempI % 2);
 		if (0 == parity)
 		{
@@ -719,7 +709,7 @@ ControlGui::renderObjective(
 		{
 			numberOfDots = 3;
 		}
-		const std::wstring_view& dots = (const std::wstring_view&)_alloca(sizeof(wchar_t) * (numberOfDots + 1));
+		std::wstring_view dots = (std::wstring_view)_alloca(sizeof(wchar_t) * (numberOfDots + 1));
 		for (size_t i = 0; i < numberOfDots - 2; i++)
 			dots[i] = '.';
 		dots[i] = 0;
@@ -760,8 +750,7 @@ ControlGui::renderObjective(
 	}
 }
 
-void
-ControlGui::update(bool bPaused, bool bLOS)
+void ControlGui::update(bool bPaused, bool bLOS)
 {
 	mouseInVehicleStopButton = 0;
 	bool bMouseInButton = 0;
@@ -850,19 +839,19 @@ ControlGui::update(bool bPaused, bool bLOS)
 					getButton(STOP_COMMAND)->disable(false);
 				switch (pMover->attackRange)
 				{
-				case FIRERANGE_SHORT:
+				case FireRangeType::shortest:
 					getButton(SHORT_RANGE)->press(true);
 					break;
-				case FIRERANGE_LONG:
+				case FireRangeType::extended:
 					getButton(LONG_RANGE)->press(true);
 					break;
-				case FIRERANGE_MEDIUM:
+				case FireRangeType::medium:
 					getButton(MED_RANGE)->press(true);
 					break;
-				case FIRERANGE_OPTIMAL:
+				case FireRangeType::optimal:
 					getButton(DEFAULT_RANGE)->press(true);
 					break;
-				case FIRERANGE_CURRENT:
+				case FireRangeType::current:
 					holdPositionCount++;
 					break;
 				}
@@ -1018,8 +1007,7 @@ ControlGui::update(bool bPaused, bool bLOS)
 	getButton(LONG_RANGE)->hide(true);
 }
 
-bool
-ControlGui::isOverTacMap()
+bool ControlGui::isOverTacMap()
 {
 	bool bMouseInsideTacArea = 0;
 	if (rectInfos[0].rect.left <= userInput->getMouseX() && rectInfos[0].rect.right >= userInput->getMouseX() && rectInfos[0].rect.top <= userInput->getMouseY() && rectInfos[0].rect.bottom >= userInput->getMouseY())
@@ -1031,8 +1019,7 @@ ControlGui::isOverTacMap()
 	return false;
 }
 
-bool
-ControlGui::inRegion(int32_t mouseX, int32_t mouseY, bool bPaused)
+bool ControlGui::inRegion(int32_t mouseX, int32_t mouseY, bool bPaused)
 {
 	for (size_t i = 0; i < LAST_COMMAND; i++)
 	{
@@ -1054,8 +1041,7 @@ ControlGui::inRegion(int32_t mouseX, int32_t mouseY, bool bPaused)
 	return false;
 }
 
-void
-ControlGui::addMover(std::unique_ptr<Mover> mover)
+void ControlGui::addMover(std::unique_ptr<Mover> mover)
 {
 	if (mover->getCommanderId() == Commander::home->getId())
 	{
@@ -1068,15 +1054,13 @@ ControlGui::addMover(std::unique_ptr<Mover> mover)
 	}
 }
 
-void
-ControlGui::removeMover(std::unique_ptr<Mover> mover)
+void ControlGui::removeMover(std::unique_ptr<Mover> mover)
 {
 	if (mover->getCommanderId() == Commander::home->getId())
 		forceGroupBar.removeMover(mover);
 }
 
-void
-ControlGui::initMechs()
+void ControlGui::initMechs()
 {
 	forceGroupBar.removeAll();
 	Team* pTeam = Team::home;
@@ -1104,13 +1088,11 @@ ControlGui::initMechs()
 	}
 }
 
-bool
-ControlGui::getRun()
+bool ControlGui::getRun()
 {
 	return curOrder == RUN;
 }
-void
-ControlGui::toggleJump()
+void ControlGui::toggleJump()
 {
 	curOrder ^= JUMP;
 	curOrder &= JUMP;
@@ -1118,13 +1100,11 @@ ControlGui::toggleJump()
 	getButton(RUN_COMMAND)->press(curOrder & RUN ? true : false);
 	getButton(GUARD_COMMAND)->press(curOrder & GUARD ? true : false);
 }
-bool
-ControlGui::getJump()
+bool ControlGui::getJump()
 {
 	return curOrder == JUMP;
 }
-void
-ControlGui::toggleDefaultSpeed()
+void ControlGui::toggleDefaultSpeed()
 {
 	curOrder ^= RUN;
 	curOrder &= (RUN | GUARD);
@@ -1133,8 +1113,7 @@ ControlGui::toggleDefaultSpeed()
 	getButton(JUMP_COMMAND)->press(curOrder & JUMP ? true : false);
 }
 
-void
-ControlGui::setDefaultSpeed()
+void ControlGui::setDefaultSpeed()
 {
 	curOrder = 0;
 	getButton(JUMP_COMMAND)->press(0);
@@ -1144,18 +1123,15 @@ ControlGui::setDefaultSpeed()
 	getButton(SALVAGE)->press(0);
 	getButton(INFO_COMMAND)->press(0);
 }
-bool
-ControlGui::isDefaultSpeed()
+bool ControlGui::isDefaultSpeed()
 {
 	return getWalk();
 }
-bool
-ControlGui::getWalk()
+bool ControlGui::getWalk()
 {
 	return curOrder == WALK;
 }
-void
-ControlGui::toggleGuard()
+void ControlGui::toggleGuard()
 {
 	curOrder ^= GUARD;
 	curOrder &= (GUARD | RUN); // can run and guard
@@ -1163,14 +1139,12 @@ ControlGui::toggleGuard()
 	getButton(JUMP_COMMAND)->press(curOrder & JUMP ? true : false);
 	getButton(RUN_COMMAND)->press(curOrder & RUN ? true : false);
 }
-bool
-ControlGui::getGuard()
+bool ControlGui::getGuard()
 {
 	return curOrder == GUARD;
 }
 
-void
-ControlGui::setRange(int32_t Range)
+void ControlGui::setRange(FireRangeType Range)
 {
 	// apply to all selected mechs
 	Team* pTeam = Team::home;
@@ -1186,19 +1160,18 @@ ControlGui::setRange(int32_t Range)
 	}
 }
 
-int32_t
-ControlGui::getCurrentRange()
+FireRangeType ControlGui::getCurrentRange(void)
 {
-	int32_t range = -1;
+	FireRangeType range = FireRangeType::none;
 	Team* pTeam = Team::home;
-	for (size_t i = 0; i < pTeam->getRosterSize(); ++i)
+	for (auto i = 0; i < pTeam->getRosterSize(); ++i)
 	{
 		Mover* pMover = pTeam->getMover(i);
 		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
-			if (range != -1 && range != pMover->attackRange)
+			if (range != FireRangeType::none && range != pMover->attackRange)
 			{
-				return FIRERANGE_OPTIMAL;
+				return FireRangeType::optimal;
 			}
 			else
 				range = pMover->attackRange;
@@ -1207,8 +1180,7 @@ ControlGui::getCurrentRange()
 	return range;
 }
 
-void
-ControlButton::render()
+void ControlButton::render()
 {
 	if (state != HIDDEN)
 	{
@@ -1231,8 +1203,7 @@ ControlButton::render()
 	}
 }
 
-void
-ControlButton::press(bool bPress)
+void ControlButton::press(bool bPress)
 {
 	if (!isEnabled())
 		return;
@@ -1240,22 +1211,19 @@ ControlButton::press(bool bPress)
 	ControlButton::makeUVs(location, state, *data);
 }
 
-void
-ControlButton::makeAmbiguous(bool bAmbiguous)
+void ControlButton::makeAmbiguous(bool bAmbiguous)
 {
 	state = bAmbiguous ? AMBIGUOUS : ENABLED;
 	ControlButton::makeUVs(location, state, *data);
 }
 
-void
-ControlButton::disable(bool bDisable)
+void ControlButton::disable(bool bDisable)
 {
 	state = (bDisable ? DISABLED : (state == PRESSED ? PRESSED : ENABLED));
 	ControlButton::makeUVs(location, state, *data);
 }
 
-void
-ControlButton::hide(bool bHide)
+void ControlButton::hide(bool bHide)
 {
 	if (!bHide && state != HIDDEN)
 		return;
@@ -1264,14 +1232,12 @@ ControlButton::hide(bool bHide)
 		ControlButton::makeUVs(location, state, *data);
 }
 
-bool
-ControlButton::isEnabled()
+bool ControlButton::isEnabled()
 {
 	return state == ENABLED || state == PRESSED || state == AMBIGUOUS;
 }
 
-void
-ControlButton::move(float deltaX, float deltaY)
+void ControlButton::move(float deltaX, float deltaY)
 {
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -1296,8 +1262,7 @@ ControlGui::getButton(int32_t ID)
 	return nullptr;
 }
 
-void
-ControlGui::handleClick(int32_t ID)
+void ControlGui::handleClick(int32_t ID)
 {
 	if (getButton(ID)->state & ControlButton::HIDDEN)
 		return;
@@ -1315,17 +1280,17 @@ ControlGui::handleClick(int32_t ID)
 		mission->missionInterface->togglePause();
 		break;
 	case SHORT_RANGE:
-		setRange(FIRERANGE_SHORT);
+		setRange(FireRangeType::shortest);
 		idToUnPress = ID;
 		getButton(ID)->press(true);
 		break;
 	case MED_RANGE:
-		setRange(FIRERANGE_MEDIUM);
+		setRange(FireRangeType::medium);
 		idToUnPress = ID;
 		getButton(ID)->press(true);
 		break;
 	case LONG_RANGE:
-		setRange(FIRERANGE_LONG);
+		setRange(FireRangeType::extended);
 		idToUnPress = ID;
 		getButton(ID)->press(true);
 		break;
@@ -1333,7 +1298,7 @@ ControlGui::handleClick(int32_t ID)
 		toggleHoldPosition();
 		break;
 	case DEFAULT_RANGE:
-		setRange(FIRERANGE_OPTIMAL);
+		setRange(FireRangeType::optimal);
 		idToUnPress = ID;
 		getButton(ID)->press(true);
 		break;
@@ -1395,7 +1360,7 @@ ControlGui::handleClick(int32_t ID)
 					// We send a TAC_ORDER_WAIT which will clear the suppression
 					// fire message.
 					TacticalOrder tacOrder;
-					tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_WAIT);
+					tacOrder.init(OrderOriginType::player, TacticalOrderCode::wait);
 					MPlayer->sendPlayerOrder(&tacOrder, false, 1, &pMover);
 				}
 			}
@@ -1416,11 +1381,10 @@ ControlGui::handleClick(int32_t ID)
 	soundSystem->playDigitalSample(sound);
 }
 
-void
-ControlGui::doStop()
+void ControlGui::doStop()
 {
 	TacticalOrder tacOrder;
-	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_STOP);
+	tacOrder.init(OrderOriginType::player, TacticalOrderCode::stop);
 	soundSystem->playDigitalSample(BUTTON5);
 	Team* pTeam = Team::home;
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
@@ -1451,14 +1415,12 @@ ControlGui::doStop()
 	setDefaultSpeed();
 }
 
-void
-ControlGui::toggleFireFromCurrentPos()
+void ControlGui::toggleFireFromCurrentPos()
 {
 	fireFromCurrentPos = !fireFromCurrentPos;
 }
 
-void
-ControlButton::makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data)
+void ControlButton::makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data)
 {
 	float left = data.stateCoords[State][0];
 	float top = data.stateCoords[State][1];
@@ -1507,8 +1469,7 @@ ControlButton::makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data)
 	}
 }
 
-void
-ControlGui::updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS)
+void ControlGui::updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS)
 {
 	for (size_t i = LAST_VEHICLE - 1; i > -1; i--)
 	{
@@ -1611,8 +1572,7 @@ ControlGui::updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS)
 		}
 	}
 }
-void
-ControlGui::renderVehicleTab()
+void ControlGui::renderVehicleTab()
 {
 	int32_t cost = -1;
 	wchar_t buffer[256];
@@ -1670,8 +1630,7 @@ ControlGui::renderVehicleTab()
 	}
 }
 
-void
-ControlGui::handleVehicleClick(int32_t ID)
+void ControlGui::handleVehicleClick(int32_t ID)
 {
 	if (getButton(ID)->state & ControlButton::HIDDEN)
 		return;
@@ -1761,8 +1720,7 @@ ControlGui::handleVehicleClick(int32_t ID)
 	}
 }
 
-void
-ControlGui::unPressAllVehicleButtons()
+void ControlGui::unPressAllVehicleButtons()
 {
 	for (size_t i = LARGE_AIRSTRIKE; i < MAX_VEHICLE; i++)
 	{
@@ -1773,8 +1731,7 @@ ControlGui::unPressAllVehicleButtons()
 	addingSalvage = 0;
 }
 
-void
-ControlGui::disableAllVehicleButtons()
+void ControlGui::disableAllVehicleButtons()
 {
 	for (size_t i = LARGE_AIRSTRIKE; i < MAX_VEHICLE - 1; i++)
 	{
@@ -1784,7 +1741,7 @@ ControlGui::disableAllVehicleButtons()
 	//	addingVehicle = 0;
 }
 
-const std::wstring_view&
+std::wstring_view
 ControlGui::getVehicleName(int32_t& ID)
 {
 	for (size_t i = GUARD_TOWER; i <= RECOVERY_TEAM; i++)
@@ -1806,7 +1763,7 @@ ControlGui::getVehicleName(int32_t& ID)
 	return 0;
 }
 
-const std::wstring_view&
+std::wstring_view
 ControlGui::getVehicleNameFromID(int32_t ID)
 {
 	for (size_t i = 0; i < 5; i++)
@@ -1815,39 +1772,34 @@ ControlGui::getVehicleNameFromID(int32_t ID)
 	return (nullptr);
 }
 
-bool
-ControlGui::getMines()
+bool ControlGui::getMines()
 {
 	if (getButton(LAYMINES)->state & ControlButton::PRESSED)
 		return 1;
 	return 0;
 }
 
-bool
-ControlGui::getSalvage()
+bool ControlGui::getSalvage()
 {
 	if (getButton(SALVAGE)->state & ControlButton::PRESSED)
 		return 1;
 	return 0;
 }
-bool
-ControlGui::getRepair()
+bool ControlGui::getRepair()
 {
 	if (getButton(REPAIR)->state & ControlButton::PRESSED)
 		return 1;
 	return 0;
 }
 
-bool
-ControlGui::getGuardTower()
+bool ControlGui::getGuardTower()
 {
 	if (getButton(GUARDTOWER)->state & ControlButton::PRESSED)
 		return 1;
 	return 0;
 }
 
-void
-ControlGui::renderHelpText()
+void ControlGui::renderHelpText()
 {
 	if (helpTextID)
 	{
@@ -1871,8 +1823,7 @@ ControlGui::renderHelpText()
 	}
 }
 
-void
-ControlGui::renderInfoTab()
+void ControlGui::renderInfoTab()
 {
 	if (getButton(INFO_TAB)->state & ControlButton::PRESSED)
 	{
@@ -1880,16 +1831,14 @@ ControlGui::renderInfoTab()
 	}
 }
 
-bool
-ControlGui::isSelectingInfoObject()
+bool ControlGui::isSelectingInfoObject()
 {
 	if (getButton(INFO_COMMAND)->state & ControlButton::PRESSED)
 		return true;
 	return false;
 }
 
-void
-ControlGui::setInfoWndMover(Mover* pMover)
+void ControlGui::setInfoWndMover(Mover* pMover)
 {
 	infoWnd->setUnit(pMover);
 	if (isSelectingInfoObject())
@@ -1904,8 +1853,7 @@ ControlGui::setInfoWndMover(Mover* pMover)
 	}
 }
 
-void
-ControlGui::setVehicleCommand(bool bSet)
+void ControlGui::setVehicleCommand(bool bSet)
 {
 	if ((getButton(REPAIR)->isEnabled()))
 		getButton(REPAIR)->press(bSet);
@@ -1934,7 +1882,7 @@ ControlGui::setVehicleCommand(bool bSet)
 						// Otherwise, this is handled when we doGuardTower if
 						// pressed.
 						TacticalOrder tacOrder;
-						tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_WAIT);
+						tacOrder.init(OrderOriginType::player, TacticalOrderCode::wait);
 						MPlayer->sendPlayerOrder(&tacOrder, false, 1, &pMover);
 					}
 				}
@@ -1942,17 +1890,15 @@ ControlGui::setVehicleCommand(bool bSet)
 		}
 	}
 }
-bool
-ControlGui::getVehicleCommand()
+bool ControlGui::getVehicleCommand()
 {
 	if ((getButton(REPAIR)->state & ControlButton::PRESSED) || (getButton(SALVAGE)->state & ControlButton::PRESSED) || (getButton(LAYMINES)->state & ControlButton::PRESSED) || (getButton(GUARDTOWER)->state & ControlButton::PRESSED))
 		return true;
 	return false;
 }
 
-void
-ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlButton* Buttons,
-	ButtonData* Data, const std::wstring_view& str, aFont* font)
+void ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlButton* Buttons,
+	ButtonData* Data, std::wstring_view str, aFont* font)
 {
 	wchar_t path[256];
 	for (size_t i = 0; i < buttonCount; ++i)
@@ -1968,7 +1914,7 @@ ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlB
 			continue;
 		}
 		buttonFile.readIdLong("ID", Buttons[i].ID);
-		buttonFile.readIdString("FileName", Data[i].fileName, 32);
+		buttonFile.readIdString("filename", Data[i].fileName, 32);
 		buttonFile.readIdLong("HelpCaption", Data[i].helpTextHeader);
 		buttonFile.readIdLong("HelpDesc", Data[i].helpTextID);
 		buttonFile.readIdLong("TextID", Data[i].textID);
@@ -2047,8 +1993,7 @@ ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlB
 	}
 }
 
-void
-ControlGui::initStatics(FitIniFile& file)
+void ControlGui::initStatics(FitIniFile& file)
 {
 	if (infoWnd)
 		infoWnd->setUnit(0);
@@ -2115,11 +2060,11 @@ ControlGui::initStatics(FitIniFile& file)
 	file.readIdLong("HeaderLeft", OBJECTIVEHEADERLEFT);
 	file.readIdLong("HeaderTop", OBJECTIVESTOP);
 	objectiveInfos = new StaticInfo[objectiveInfoCount + 3];
-	wchar_t blockName[64];
+	wchar_t blockname[64];
 	for (i = 0; i < objectiveInfoCount; i++)
 	{
-		sprintf(blockName, "ObjStatic%ld", i);
-		objectiveInfos[i].init(file, blockName);
+		sprintf(blockname, "ObjStatic%ld", i);
+		objectiveInfos[i].init(file, blockname);
 	}
 	objectiveInfos[i++].init(file, "PrimaryObjBox");
 	file.readIdLong("objBoxSkip", OBJECTIVEBOXSKIP);
@@ -2150,8 +2095,8 @@ ControlGui::initStatics(FitIniFile& file)
 		videoInfos = new StaticInfo[videoInfoCount];
 		for (i = 0; i < videoInfoCount; i++)
 		{
-			sprintf(blockName, "VideoStatic%ld", i);
-			videoInfos[i].init(file, blockName);
+			sprintf(blockname, "VideoStatic%ld", i);
+			videoInfos[i].init(file, blockname);
 		}
 	}
 	file.seekBlock("MissionTimer");
@@ -2168,8 +2113,8 @@ ControlGui::initStatics(FitIniFile& file)
 		timerInfos = new StaticInfo[timerInfoCount];
 		for (i = 0; i < timerInfoCount; i++)
 		{
-			sprintf(blockName, "TimerStatic%ld", i);
-			timerInfos[i].init(file, blockName, hiResOffsetX, hiResOffsetY);
+			sprintf(blockname, "TimerStatic%ld", i);
+			timerInfos[i].init(file, blockname, hiResOffsetX, hiResOffsetY);
 		}
 	}
 	file.seekBlock("MissionResults");
@@ -2179,8 +2124,8 @@ ControlGui::initStatics(FitIniFile& file)
 		missionStatusInfos = new StaticInfo[missionStatusInfoCount];
 		for (i = 0; i < missionStatusInfoCount; i++)
 		{
-			sprintf(blockName, "ResultsStatic%ld", i);
-			missionStatusInfos[i].init(file, blockName);
+			sprintf(blockname, "ResultsStatic%ld", i);
+			missionStatusInfos[i].init(file, blockname);
 		}
 	}
 	file.seekBlock("ResultsTextBox");
@@ -2217,8 +2162,7 @@ ControlGui::initStatics(FitIniFile& file)
 	personalEdit.setcolour(0); // make tranparent
 }
 
-void
-ControlGui::initRects(FitIniFile& file)
+void ControlGui::initRects(FitIniFile& file)
 {
 	if (rectInfos)
 		delete rectInfos;
@@ -2253,8 +2197,7 @@ ControlGui::initRects(FitIniFile& file)
 	}
 }
 
-void
-ControlGui::swapResolutions(int32_t resolution)
+void ControlGui::swapResolutions(int32_t resolution)
 {
 	FitIniFile buttonFile;
 	wchar_t path[256];
@@ -2361,21 +2304,18 @@ ControlGui::swapResolutions(int32_t resolution)
 	pauseWnd->init(buttonFile);
 }
 
-void
-ControlGui::beginPause()
+void ControlGui::beginPause()
 {
 	getButton(SAVE_COMMAND)->press(1);
 	pauseWnd->begin(renderObjectives);
 }
-void
-ControlGui::endPause()
+void ControlGui::endPause()
 {
 	getButton(SAVE_COMMAND)->press(0);
 	pauseWnd->end();
 }
 
-void
-ControlGui::switchTabs(int32_t direction)
+void ControlGui::switchTabs(int32_t direction)
 {
 	int32_t ID = TACMAP_TAB;
 	for (size_t i = TACMAP_TAB; i < TACMAP_TAB + 3; i++)
@@ -2410,8 +2350,7 @@ ControlGui::switchTabs(int32_t direction)
 	getButton(ID)->press(true);
 }
 
-void
-ControlGui::playMovie(const std::wstring_view& fileName)
+void ControlGui::playMovie(std::wstring_view fileName)
 {
 	if (moviePlaying)
 		return;
@@ -2428,7 +2367,7 @@ ControlGui::playMovie(const std::wstring_view& fileName)
 	FullPathFileName movieName;
 	movieName.init(moviePath, realName, ".bik");
 	bMovie = new MC2Movie;
-	bMovie->init((const std::wstring_view&)movieName, vRect, true);
+	bMovie->init((std::wstring_view)movieName, vRect, true);
 	// Maybe not enough frames to run.  Do not flash the border!
 	// Do ONE update to make sure the damned sound starts at least!!
 	bMovie->update();
@@ -2445,8 +2384,7 @@ ControlGui::playMovie(const std::wstring_view& fileName)
 	}
 }
 
-void
-ControlButton::toggle()
+void ControlButton::toggle()
 {
 	if (state & DISABLED)
 		return;
@@ -2458,8 +2396,7 @@ ControlButton::toggle()
 		press(1);
 }
 
-bool
-ControlGui::resultsDone()
+bool ControlGui::resultsDone()
 {
 	if ((renderStatusInfo && objectiveTime > Team::home->objectives.Count() + 4))
 	{
@@ -2470,15 +2407,13 @@ ControlGui::resultsDone()
 	return false;
 }
 
-void
-ControlButton::setcolour(uint32_t newcolour)
+void ControlButton::setcolour(uint32_t newcolour)
 {
 	for (size_t i = 0; i < 4; i++)
 		location[i].argb = newcolour;
 }
 
-void
-ControlGui::setRolloverHelpText(uint32_t textID)
+void ControlGui::setRolloverHelpText(uint32_t textID)
 {
 	if (helpTextID && textID != 0)
 		return;
@@ -2488,16 +2423,15 @@ ControlGui::setRolloverHelpText(uint32_t textID)
 	helpTextID = textID;
 }
 
-void
-ControlGui::toggleHoldPosition()
+void ControlGui::toggleHoldPosition()
 {
 	if (getButton(CUR_RANGE)->state == ControlButton::ENABLED)
 	{
-		setRange(FIRERANGE_CURRENT);
+		setRange(FireRangeType::current);
 	}
 	else
 	{
-		setRange(FIRERANGE_OPTIMAL);
+		setRange(FireRangeType::optimal);
 	}
 	soundSystem->playDigitalSample(LOG_SELECT);
 	if (MPlayer && !MPlayer->isServer())
@@ -2509,11 +2443,11 @@ ControlGui::toggleHoldPosition()
 			Mover* pMover = Team::home->getMover(i);
 			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 			{
-				if (pMover->getPilot()->getCurTacOrder()->code != TACTICAL_ORDER_NONE)
+				if (pMover->getPilot()->getCurTacOrder()->code != TacticalOrderCode::none)
 				{
 					pMover->getPilot()->getCurTacOrder()->attackParams.range =
 						(FireRangeType)pMover->attackRange;
-					if (pMover->attackRange == FIRERANGE_CURRENT)
+					if (pMover->attackRange == FireRangeType::current)
 						pMover->getPilot()->getCurTacOrder()->attackParams.pursue = false;
 					else if (getFireFromCurrentPos())
 						pMover->getPilot()->getCurTacOrder()->attackParams.pursue = false;
@@ -2542,18 +2476,17 @@ ControlGui::updateChat()
 	return 0;
 }
 
-void
-ControlGui::toggleChat(bool isTeamOnly)
+void ControlGui::toggleChat(bool isTeamOnly)
 {
 	bChatting ^= 1;
 	if (!bChatting && MPlayer) // over -- broadcast messages
 	{
-		const std::wstring_view& tmp;
+		std::wstring_view tmp;
 		personalEdit.getEntry(tmp);
 		if (tmp.Length())
 		{
 			wchar_t team = chatIsTeamOnly ? MPlayer->getPlayerInfo(MPlayer->commanderid)->team : -1;
-			MPlayer->sendChat(0, team, (const std::wstring_view&)(const std::wstring_view&)tmp);
+			MPlayer->sendChat(0, team, (std::wstring_view)(std::wstring_view)tmp);
 		}
 		personalEdit.setFocus(0);
 	}
@@ -2566,8 +2499,7 @@ ControlGui::toggleChat(bool isTeamOnly)
 	chatIsTeamOnly = isTeamOnly;
 }
 
-void
-ControlGui::eatChatKey()
+void ControlGui::eatChatKey()
 {
 	if (bChatting)
 		personalEdit.setFocus(true);
@@ -2575,8 +2507,7 @@ ControlGui::eatChatKey()
 		personalEdit.setFocus(false);
 }
 
-void
-ControlGui::setChatText(const std::wstring_view& playerName, const std::wstring_view& message, uint32_t color, uint32_t chatcolour)
+void ControlGui::setChatText(std::wstring_view playerName, std::wstring_view message, uint32_t color, uint32_t chatcolour)
 {
 	for (size_t i = 0; i < MAX_CHAT_COUNT - 1; i++)
 	{
@@ -2601,8 +2532,7 @@ ControlGui::setChatText(const std::wstring_view& playerName, const std::wstring_
 	}
 }
 
-void
-ControlGui::renderChatText()
+void ControlGui::renderChatText()
 {
 	int32_t curLine = 0;
 	if (bChatting && MPlayer)
@@ -2688,8 +2618,7 @@ ControlGui::renderChatText()
 	chatEdit.resize(chatEdit.width(), height);
 }
 
-bool
-ControlGui::isMoviePlaying()
+bool ControlGui::isMoviePlaying()
 {
 	if (moviePlaying)
 		return true;
@@ -2698,8 +2627,7 @@ ControlGui::isMoviePlaying()
 	return false;
 }
 
-bool
-ControlGui::playPilotVideo(MechWarrior* pPilot, wchar_t movieCode)
+bool ControlGui::playPilotVideo(MechWarrior* pPilot, wchar_t movieCode)
 {
 	// stupid name format = "Worm 1 filter.avi"
 	// CHANGED to "worm1"  for CD 8.3 reasons.
@@ -2717,14 +2645,12 @@ ControlGui::playPilotVideo(MechWarrior* pPilot, wchar_t movieCode)
 	return forceGroupBar.setPilotVideo(fileName, pPilot);
 }
 
-void
-ControlGui::endPilotVideo()
+void ControlGui::endPilotVideo()
 {
 	forceGroupBar.setPilotVideo(nullptr, nullptr);
 }
 
-void
-ControlGui::cancelInfo()
+void ControlGui::cancelInfo()
 {
 	gosEnum_KeyIndex key;
 	bool bC, bA, bS;
@@ -2733,8 +2659,7 @@ ControlGui::cancelInfo()
 		getButton(INFO_COMMAND)->press(0);
 }
 
-void
-ControlGui::showServerMissing()
+void ControlGui::showServerMissing()
 {
 	if (!MPlayer)
 		return;

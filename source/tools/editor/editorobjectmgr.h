@@ -28,7 +28,10 @@ private:
 	struct Building;
 
 public:
-	static EditorObjectMgr* instance() { return s_instance; }
+	static EditorObjectMgr* instance()
+	{
+		return s_instance;
+	}
 
 	enum BuildingType
 	{
@@ -88,7 +91,7 @@ public:
 
 	void renderShadows(void);
 
-	void init(const std::wstring_view& bldgListFileName, const std::wstring_view& objectFileName);
+	void init(std::wstring_view bldgListFileName, std::wstring_view objectFileName);
 
 	EditorObject* addBuilding(const Stuff::Vector3D& position, uint32_t group,
 		uint32_t indexWithinGroup, int32_t alignment, float rotation = 0.0, float height = 1.0,
@@ -129,17 +132,17 @@ public:
 
 	int32_t getBuildingGroupCount(void) const; // mechs count too!
 	int32_t getNumberBuildingsInGroup(int32_t group) const;
-	void getBuildingGroupNames(const std::wstring_view&* names, int32_t& numberOfNames) const;
-	void getNamesOfObjectsInGroup(const std::wstring_view& groupName, const std::wstring_view&* names, int32_t& numberOfNames) const;
-	void getBuildingNamesInGroup(int32_t group, const std::wstring_view&* names, int32_t& numberOfNames) const;
+	void getBuildingGroupNames(std::wstring_view* names, int32_t& numberOfNames) const;
+	void getNamesOfObjectsInGroup(std::wstring_view groupName, std::wstring_view* names, int32_t& numberOfNames) const;
+	void getBuildingNamesInGroup(int32_t group, std::wstring_view* names, int32_t& numberOfNames) const;
 	int32_t getNumberOfVariants(int32_t group, int32_t indexInGroup) const;
 	void getVariantNames(
-		int32_t group, int32_t indexInGroup, const std::wstring_view&* names, int32_t& numberOfNames) const;
-	const std::wstring_view& getGroupName(int32_t group) const;
-	const std::wstring_view& getObjectName(int32_t ID) const;
+		int32_t group, int32_t indexInGroup, std::wstring_view* names, int32_t& numberOfNames) const;
+	std::wstring_view getGroupName(int32_t group) const;
+	std::wstring_view getObjectName(int32_t ID) const;
 
 	int32_t getUnitGroupCount(void) const;
-	void getUnitGroupNames(const std::wstring_view&* names, int32_t* IDs, int32_t& numberOfNames) const;
+	void getUnitGroupNames(std::wstring_view* names, int32_t* IDs, int32_t& numberOfNames) const;
 
 	bool save(PacketFile& file, int32_t whichPacket);
 	bool load(PacketFile& file, int32_t whichPacket);
@@ -206,21 +209,33 @@ public:
 	inline float getScale(int32_t ID);
 	inline bool isAlignable(int32_t ID);
 	inline int32_t getObjectTypeNum(int32_t ID);
-	inline const std::wstring_view& getFileName(int32_t ID) const;
-	inline const std::wstring_view& getTGAFileName(int32_t ID) const;
+	inline std::wstring_view getFileName(int32_t ID) const;
+	inline std::wstring_view getTGAFileName(int32_t ID) const;
 	inline uint32_t getTacMapcolour(int32_t ID) const;
 
 	typedef EList<EditorObject*, EditorObject*> BUILDING_LIST; // buildings on the map
 	typedef EList<Unit*, Unit*> UNIT_LIST;
 
 	void getSelectedUnits(UNIT_LIST&);
-	UNIT_LIST getUnits() { return units; }
-	BUILDING_LIST getBuildings() { return buildings; }
+	UNIT_LIST getUnits()
+	{
+		return units;
+	}
+	BUILDING_LIST getBuildings()
+	{
+		return buildings;
+	}
 
-	uint32_t getNextAvailableSquadNum() { return nextAvailableSquadNum; }
+	uint32_t getNextAvailableSquadNum()
+	{
+		return nextAvailableSquadNum;
+	}
 	void registerSquadNum(uint32_t squadNum);
-	void unregisterSquadNum(uint32_t squadNum) {}
-	void resetAvailableSquadNums() { nextAvailableSquadNum = 1; }
+	void unregisterSquadNum(uint32_t squadNum) { }
+	void resetAvailableSquadNums()
+	{
+		nextAvailableSquadNum = 1;
+	}
 
 	int32_t getNextAvailableForestID(void);
 	int32_t createForest(const Forest& settings);
@@ -234,7 +249,7 @@ private:
 	struct Building
 	{
 		wchar_t name[64];
-		const std::wstring_view&* varNames;
+		std::wstring_view* varNames;
 		int32_t nameID;
 		wchar_t fileName[64];
 		AppearanceType* appearanceType;
@@ -283,7 +298,7 @@ private:
 		// marked as selected
 
 	// HELPERS
-	int32_t ExtractNextString(uint8_t*& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength);
+	int32_t ExtractNextString(uint8_t*& pFileLine, std::wstring_view pBuffer, int32_t bufferLength);
 	int32_t ExtractNextInt(uint8_t*& pFileLine);
 	float ExtractNextFloat(uint8_t*& pFileLine);
 
@@ -332,13 +347,13 @@ EditorObjectMgr::getObjectTypeNum(int32_t ID)
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].objectTypeNum;
 }
 
-inline const std::wstring_view&
+inline std::wstring_view
 EditorObjectMgr::getFileName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].fileName;
 }
 
-inline const std::wstring_view&
+inline std::wstring_view
 EditorObjectMgr::getTGAFileName(int32_t ID) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].tgaName;

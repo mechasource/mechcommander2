@@ -10,8 +10,7 @@ extern bool InEditor;
 //------------------------------------------------------------------------------------------------------------
 // This function checks each visible triangle against the mouse position and
 // returns if we are over ANY poly!
-bool
-TG_Shape::PerPolySelect(float mouseX, float mouseY)
+bool TG_Shape::PerPolySelect(float mouseX, float mouseY)
 {
 	if (!InEditor)
 	{

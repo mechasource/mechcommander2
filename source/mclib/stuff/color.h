@@ -22,14 +22,10 @@ class HSVAcolour;
 } // namespace Stuff
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::RGBcolour& color);
-void
-Spew(const std::wstring_view& group, const Stuff::RGBAcolour& color);
-void
-Spew(const std::wstring_view& group, const Stuff::HSVcolour& color);
-void
-Spew(const std::wstring_view& group, const Stuff::HSVAcolour& color);
+void Spew(std::wstring_view group, const Stuff::RGBcolour& color);
+void Spew(std::wstring_view group, const Stuff::RGBAcolour& color);
+void Spew(std::wstring_view group, const Stuff::HSVcolour& color);
+void Spew(std::wstring_view group, const Stuff::HSVAcolour& color);
 #endif
 
 namespace Stuff
@@ -44,7 +40,10 @@ class RGBcolour
 	//	friend class RGBAcolour;
 
 public:
-	RGBcolour(void) { red = green = blue = -1.0f; }
+	RGBcolour(void)
+	{
+		red = green = blue = -1.0f;
+	}
 
 	RGBcolour(float r, float g, float b)
 	{
@@ -75,7 +74,7 @@ public:
 	}
 	RGBcolour& operator=(const HSVcolour& color);
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 	float Infrared(void) const
 	{
@@ -109,7 +108,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const RGBcolour& color);
+	friend void ::Spew(std::wstring_view group, const RGBcolour& color);
 #endif
 
 protected:
@@ -119,8 +118,7 @@ protected:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void
-Convert_From_Ascii(const std::wstring_view& str, RGBcolour* color);
+void Convert_From_Ascii(std::wstring_view str, RGBcolour* color);
 
 //##########################################################################
 //############## RGBAcolour ###########################################
@@ -129,14 +127,26 @@ Convert_From_Ascii(const std::wstring_view& str, RGBcolour* color);
 class RGBAcolour : public RGBcolour
 {
 public:
-	RGBAcolour(void) :
-		RGBcolour() { alpha = -1.0f; }
-	RGBAcolour(float r, float g, float b, float a) :
-		RGBcolour(r, g, b) { alpha = a; }
+	RGBAcolour(void)
+		: RGBcolour()
+	{
+		alpha = -1.0f;
+	}
+	RGBAcolour(float r, float g, float b, float a)
+		: RGBcolour(r, g, b)
+	{
+		alpha = a;
+	}
 
 	friend bool Close_Enough(const RGBAcolour& c1, const RGBAcolour& c2, float e = SMALL);
-	bool operator==(const RGBAcolour& color) const { return Close_Enough(*this, color, SMALL); }
-	bool operator!=(const RGBAcolour& color) const { return !Close_Enough(*this, color, SMALL); }
+	bool operator==(const RGBAcolour& color) const
+	{
+		return Close_Enough(*this, color, SMALL);
+	}
+	bool operator!=(const RGBAcolour& color) const
+	{
+		return !Close_Enough(*this, color, SMALL);
+	}
 
 	RGBAcolour& operator=(const RGBAcolour& color)
 	{
@@ -183,7 +193,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const RGBAcolour& color);
+	friend void ::Spew(std::wstring_view group, const RGBAcolour& color);
 #endif
 
 protected:
@@ -193,8 +203,7 @@ protected:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBAcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void
-Convert_From_Ascii(const std::wstring_view& str, RGBAcolour* color);
+void Convert_From_Ascii(std::wstring_view str, RGBAcolour* color);
 
 //##########################################################################
 //############## HSVcolour ############################################
@@ -205,7 +214,10 @@ class HSVcolour
 	friend class HSVAcolour;
 
 public:
-	HSVcolour(void) { hue = saturation = value = -1.0f; }
+	HSVcolour(void)
+	{
+		hue = saturation = value = -1.0f;
+	}
 
 	HSVcolour(float h, float s, float v)
 	{
@@ -237,7 +249,7 @@ public:
 		return *this;
 	}
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 
 	HSVcolour& Combine(const HSVcolour& c1, float t1, const HSVcolour& c2, float t2)
 	{
@@ -265,7 +277,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const HSVcolour& color);
+	friend void ::Spew(std::wstring_view group, const HSVcolour& color);
 #endif
 
 protected:
@@ -275,8 +287,7 @@ protected:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void
-Convert_From_Ascii(const std::wstring_view& str, HSVcolour* color);
+void Convert_From_Ascii(std::wstring_view str, HSVcolour* color);
 
 //##########################################################################
 //############## HSVAcolour ###########################################
@@ -289,14 +300,26 @@ public:
 
 	float alpha;
 
-	HSVAcolour(void) :
-		HSVcolour() { alpha = -1.0f; }
-	HSVAcolour(float h, float s, float v, float a) :
-		HSVcolour(h, s, v) { alpha = a; }
+	HSVAcolour(void)
+		: HSVcolour()
+	{
+		alpha = -1.0f;
+	}
+	HSVAcolour(float h, float s, float v, float a)
+		: HSVcolour(h, s, v)
+	{
+		alpha = a;
+	}
 
 	friend bool Close_Enough(const HSVAcolour& c1, const HSVAcolour& c2, float e = SMALL);
-	bool operator==(const HSVAcolour& color) const { return Close_Enough(*this, color, SMALL); }
-	bool operator!=(const HSVAcolour& color) const { return !Close_Enough(*this, color, SMALL); }
+	bool operator==(const HSVAcolour& color) const
+	{
+		return Close_Enough(*this, color, SMALL);
+	}
+	bool operator!=(const HSVAcolour& color) const
+	{
+		return !Close_Enough(*this, color, SMALL);
+	}
 
 	HSVAcolour& operator=(const RGBAcolour& color)
 	{
@@ -345,14 +368,13 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const HSVAcolour& color);
+	friend void ::Spew(std::wstring_view group, const HSVAcolour& color);
 #endif
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVAcolour functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void
-Convert_From_Ascii(const std::wstring_view& str, HSVAcolour* color);
+void Convert_From_Ascii(std::wstring_view str, HSVAcolour* color);
 
 inline RGBAcolour&
 RGBAcolour::operator=(const HSVAcolour& color)

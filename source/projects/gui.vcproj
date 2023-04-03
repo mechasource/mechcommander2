@@ -403,10 +403,6 @@
 					RelativePath="..\include\mechresources.h"
 					>
 				</File>
-				<File
-					RelativePath="..\include\mechtypes.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

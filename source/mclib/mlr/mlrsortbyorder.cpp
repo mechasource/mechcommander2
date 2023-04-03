@@ -6,7 +6,8 @@
 
 #include "mlr/mlrsortbyorder.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //############################    MLRSortByOrder
@@ -18,8 +19,7 @@ MLRSortByOrder::ClassData* MLRSortByOrder::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::InitializeClass()
+void MLRSortByOrder::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -30,8 +30,7 @@ MLRSortByOrder::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::TerminateClass()
+void MLRSortByOrder::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -40,8 +39,8 @@ MLRSortByOrder::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSortByOrder::MLRSortByOrder(MLRTexturePool* tp) :
-	MLRSorter(DefaultData, tp)
+MLRSortByOrder::MLRSortByOrder(MLRTexturePool* tp)
+	: MLRSorter(DefaultData, tp)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	int32_t i;
@@ -76,8 +75,7 @@ MLRSortByOrder::~MLRSortByOrder()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::Reset()
+void MLRSortByOrder::Reset()
 {
 	// Check_Object(this);
 	int32_t i;
@@ -90,8 +88,7 @@ MLRSortByOrder::Reset()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
+void MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 {
 	// Check_Object(this);
 	Check_Object(pt);
@@ -112,8 +109,7 @@ MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
+void MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
 {
 	// Check_Object(this);
 	Check_Object(ef);
@@ -148,8 +144,7 @@ MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::AddScreenQuads(GOSVertex* vertices, const DrawScreenQuadsInformation* dInfo)
+void MLRSortByOrder::AddScreenQuads(GOSVertex* vertices, const DrawScreenQuadsInformation* dInfo)
 {
 	_ASSERT(dInfo->currentNrOfQuads != 0 && (dInfo->currentNrOfQuads & 3) == 0);
 	SortData* sd = SetRawData(vertices, dInfo->currentNrOfQuads, dInfo->state, SortData::Quads);
@@ -162,8 +157,7 @@ MLRSortByOrder::AddScreenQuads(GOSVertex* vertices, const DrawScreenQuadsInforma
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::AddSortRawData(SortData* sd)
+void MLRSortByOrder::AddSortRawData(SortData* sd)
 {
 	// Check_Object(this);
 	if (sd == nullptr)
@@ -176,8 +170,7 @@ MLRSortByOrder::AddSortRawData(SortData* sd)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::RenderNow()
+void MLRSortByOrder::RenderNow()
 {
 	// Check_Object(this);
 	//
@@ -488,8 +481,7 @@ MLRSortByOrder::RenderNow()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::TestInstance(void) const
+void MLRSortByOrder::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

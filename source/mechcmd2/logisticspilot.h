@@ -49,22 +49,58 @@ enum Medals
 class LogisticsPilot
 {
 public:
-	int32_t init(const std::wstring_view& fileName);
+	int32_t init(std::wstring_view fileName);
 	LogisticsPilot(void);
 	~LogisticsPilot(void);
 
-	const std::wstring_view& getName(void) const { return name; }
-	const std::wstring_view& getAudio(void) const { return audio; }
-	const std::wstring_view& getVideo(void) const { return video; }
-	int32_t getRank(void) const { return rank; }
-	const std::wstring_view& getIconFile(void) const { return iconFile; }
-	float getGunnery(void) const { return gunnery; }
-	float getPiloting(void) const { return piloting; }
-	int32_t getMechKills(void) const { return mechKills; }
-	int32_t getVehicleKills(void) const { return vehicleKills; }
-	int32_t getInfantryKills(void) const { return infantryKills; }
-	int32_t getID(void) const { return id; }
-	int32_t getFlavorTextID(void) const { return flavorTextID; }
+	std::wstring_view getName(void) const
+	{
+		return name;
+	}
+	std::wstring_view getAudio(void) const
+	{
+		return audio;
+	}
+	std::wstring_view getVideo(void) const
+	{
+		return video;
+	}
+	int32_t getRank(void) const
+	{
+		return rank;
+	}
+	std::wstring_view getIconFile(void) const
+	{
+		return iconFile;
+	}
+	float getGunnery(void) const
+	{
+		return gunnery;
+	}
+	float getPiloting(void) const
+	{
+		return piloting;
+	}
+	int32_t getMechKills(void) const
+	{
+		return mechKills;
+	}
+	int32_t getVehicleKills(void) const
+	{
+		return vehicleKills;
+	}
+	int32_t getInfantryKills(void) const
+	{
+		return infantryKills;
+	}
+	int32_t getID(void) const
+	{
+		return id;
+	}
+	int32_t getFlavorTextID(void) const
+	{
+		return flavorTextID;
+	}
 	int32_t getNumberMissions(void) const;
 	bool getMissionPlayed(int32_t missionNum)
 	{
@@ -73,10 +109,22 @@ public:
 		return false;
 	}
 
-	bool isUsed(void) const { return bIsUsed; }
-	void setUsed(bool bUsed) { bIsUsed = bUsed; }
-	int32_t getNewGunnery(void) const { return newGunnery; }
-	int32_t getNewPiloting(void) const { return newPiloting; }
+	bool isUsed(void) const
+	{
+		return bIsUsed;
+	}
+	void setUsed(bool bUsed)
+	{
+		bIsUsed = bUsed;
+	}
+	int32_t getNewGunnery(void) const
+	{
+		return newGunnery;
+	}
+	int32_t getNewPiloting(void) const
+	{
+		return newPiloting;
+	}
 
 	void setDead(void);
 	bool isAvailable()
@@ -84,17 +132,35 @@ public:
 		return (bAvailable && !bDead); // depends on purchasing file .... maybe
 			// should put dead checks and stuff
 	}
-	void setAvailable(bool available) { bAvailable = available; }
-	bool isDead(void) const { return bDead; }
-	bool justDied(void) const { return bJustDied; }
-	void setJustDied(bool bdied) { bJustDied = bdied; }
-	int32_t getPhotoIndex(void) const { return photoIndex; }
+	void setAvailable(bool available)
+	{
+		bAvailable = available;
+	}
+	bool isDead(void) const
+	{
+		return bDead;
+	}
+	bool justDied(void) const
+	{
+		return bJustDied;
+	}
+	void setJustDied(bool bdied)
+	{
+		bJustDied = bdied;
+	}
+	int32_t getPhotoIndex(void) const
+	{
+		return photoIndex;
+	}
 
 	bool promotePilot(void);
 	int32_t turnAverageIntoRank(float avg);
 
-	static const std::wstring_view& getSkillText(int32_t skillID);
-	const std::wstring_view& getFileName() { return fileName; }
+	static std::wstring_view getSkillText(int32_t skillID);
+	std::wstring_view getFileName()
+	{
+		return fileName;
+	}
 
 	int32_t save(FitIniFile& file, int32_t count);
 	int32_t load(FitIniFile& file);
@@ -102,13 +168,22 @@ public:
 	int32_t update(MechWarrior* pWarrior);
 
 	int32_t getSpecialtySkillCount(void) const;
-	int32_t getSpecialtySkills(const std::wstring_view&* array, int32_t& count);
+	int32_t getSpecialtySkills(std::wstring_view* array, int32_t& count);
 	int32_t getSpecialtySkills(int32_t* array, int32_t& count);
-	bool* getSpecialtySkills() { return specialtySkills; }
+	bool* getSpecialtySkills()
+	{
+		return specialtySkills;
+	}
 	void setSpecialtySkill(int32_t skill, bool set);
 
-	const bool* getNewMedalArray(void) const { return medalsLastMission; }
-	const bool* getMedalArray(void) const { return medals; }
+	const bool* getNewMedalArray(void) const
+	{
+		return medalsLastMission;
+	}
+	const bool* getMedalArray(void) const
+	{
+		return medals;
+	}
 
 	void clearIcons(void);
 
@@ -116,11 +191,11 @@ public:
 	EList<ForceGroupIcon*, ForceGroupIcon*> killedIcons;
 
 private:
-	const std::wstring_view& name;
-	const std::wstring_view& audio;
-	const std::wstring_view& video;
+	std::wstring_view name;
+	std::wstring_view audio;
+	std::wstring_view video;
 	int32_t rank;
-	const std::wstring_view& iconFile; // or file name?
+	std::wstring_view iconFile; // or file name?
 	float gunnery;
 	float piloting;
 	int32_t mechKills;
@@ -139,7 +214,7 @@ private:
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
 
 	static wchar_t skillTexts[][255];
-	const std::wstring_view& fileName;
+	std::wstring_view fileName;
 
 	bool medals[MAX_MEDAL];
 	bool medalsLastMission[MAX_MEDAL];

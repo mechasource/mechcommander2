@@ -16,8 +16,7 @@ class OBB;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::OBB& box);
+void Spew(std::wstring_view group, const Stuff::OBB& box);
 #endif
 
 namespace Stuff
@@ -37,25 +36,30 @@ public:
 	float sphereRadius;
 
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const OBB& box);
+	friend void ::Spew(std::wstring_view group, const OBB& box);
 #endif
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Construction
 	//
 public:
-	OBB() {}
-	OBB(const OBB& obb) :
-		localToParent(obb.localToParent), axisExtents(obb.axisExtents),
-		sphereRadius(obb.sphereRadius)
+	OBB() { }
+	OBB(const OBB& obb)
+		: localToParent(obb.localToParent)
+		, axisExtents(obb.axisExtents)
+		, sphereRadius(obb.sphereRadius)
 	{
 	}
-	OBB(const LinearMatrix4D& origin, const Vector3D& extents) :
-		localToParent(origin), axisExtents(extents), sphereRadius(extents.GetLength())
+	OBB(const LinearMatrix4D& origin, const Vector3D& extents)
+		: localToParent(origin)
+		, axisExtents(extents)
+		, sphereRadius(extents.GetLength())
 	{
 	}
-	OBB(const LinearMatrix4D& origin, const Vector3D& extents, float radius) :
-		localToParent(origin), axisExtents(extents), sphereRadius(radius)
+	OBB(const LinearMatrix4D& origin, const Vector3D& extents, float radius)
+		: localToParent(origin)
+		, axisExtents(extents)
+		, sphereRadius(radius)
 	{
 	}
 
@@ -95,7 +99,7 @@ public:
 #if USE_INLINE_ASSEMBLER_CODE
 		float* f = localToParent.entries;
 		_asm
-		{
+			{
 				mov         edx, matrix
 				push        esi
 				mov         esi, [esi]obb.localToParent
@@ -162,7 +166,7 @@ public:
 				faddp       st(1), st
 
 				fstp        dword ptr [eax + 02ch] //	localToParent(3,2)
-		}
+			}
 #else
 		localToParent(3, 0) = obb.localToParent(3, 0) * matrix(0, 0) + obb.localToParent(3, 1) * matrix(1, 0) + obb.localToParent(3, 2) * matrix(2, 0) + matrix(3, 0);
 		localToParent(3, 1) = obb.localToParent(3, 0) * matrix(0, 1) + obb.localToParent(3, 1) * matrix(1, 1) + obb.localToParent(3, 2) * matrix(2, 1) + matrix(3, 1);

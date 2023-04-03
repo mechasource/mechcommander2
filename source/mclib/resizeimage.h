@@ -25,8 +25,7 @@
 #define WHITE_PIXEL 255.0f
 #define RESIZE_PI 3.1415926
 
-float
-CLAMP(float x, float min, float max)
+float CLAMP(float x, float min, float max)
 {
 	if (x < min)
 		return min;
@@ -42,8 +41,7 @@ typedef struct
 	float* data;
 } Image;
 
-float
-getPixel(Image* image, int32_t x, int32_t y)
+float getPixel(Image* image, int32_t x, int32_t y)
 {
 	if ((x < 0) || (x >= image->xSize) || (y < 0) || (y > image->ySize))
 		return 0.0f;
@@ -51,16 +49,14 @@ getPixel(Image* image, int32_t x, int32_t y)
 	return p[x];
 }
 
-void
-getRow(float* row, Image* image, int32_t y)
+void getRow(float* row, Image* image, int32_t y)
 {
 	if ((y < 0) || (y >= image->ySize))
 		return;
 	memcpy(row, image->data + (y * image->xSize), image->ySize * sizeof(float));
 }
 
-void
-getCol(float* col, Image* image, int32_t x)
+void getCol(float* col, Image* image, int32_t x)
 {
 	if ((x < 0) || (x >= image->xSize))
 		return;
@@ -71,8 +67,7 @@ getCol(float* col, Image* image, int32_t x)
 	}
 }
 
-float
-putPixel(Image* image, int32_t x, int32_t y, float data)
+float putPixel(Image* image, int32_t x, int32_t y, float data)
 {
 	if ((x < 0) || (x >= image->xSize) || (y < 0) || (y >= image->ySize))
 		return 0.0f;
@@ -221,15 +216,13 @@ newImage(int32_t xSize, int32_t ySize)
 	return image;
 }
 
-void
-freeImage(Image* image)
+void freeImage(Image* image)
 {
 	free(image->data);
 	free(image);
 }
 
-void
-zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
+void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 {
 	Image* tmp;
 	double xscale, yscale;
@@ -428,8 +421,7 @@ zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 	freeImage(tmp);
 }
 
-void
-rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize);
+void rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize);
 
 //----------------------------------------------------------------------------
 #endif

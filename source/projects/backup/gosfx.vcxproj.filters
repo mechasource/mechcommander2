@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\gosfx">
+      <UniqueIdentifier>{b587408e-6fa6-4024-88c6-932d366b5684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\gosfx\Effects">
+      <UniqueIdentifier>{63b3ba44-476a-4d83-8af7-9830a605b71f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\gosfx\Cloud Effects">
+      <UniqueIdentifier>{9dc7950c-6b6c-494e-aea1-084e24c9f81b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\gosfx\Singletons">
+      <UniqueIdentifier>{78692f07-5038-4ec5-8f1c-8ac13cd47301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\gosfx\Geometry Extrusion">
+      <UniqueIdentifier>{4bbcdcb2-8d42-437f-80ba-16b7fa669f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\gosfx\Lights">
+      <UniqueIdentifier>{ec5f476b-34c3-4d70-8369-bc3766f5c917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\gosfx">
+      <UniqueIdentifier>{f51da0b8-3527-48af-87d5-71a0342a2946}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\gosfx\Effects">
+      <UniqueIdentifier>{6274c162-f7a9-4266-8f19-3b2be86b26da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\gosfx\Cloud Effects">
+      <UniqueIdentifier>{7485ef2f-e768-47de-9881-c4363b8f96c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\gosfx\Singletons">
+      <UniqueIdentifier>{4cd9ff02-0c9e-4c9a-8043-d6d962490a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\gosfx\Geometry Extrusion">
+      <UniqueIdentifier>{71a217b6-f731-4be0-953f-7a81bb199baa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\gosfx\Lights">
+      <UniqueIdentifier>{f24f4e5d-3df4-43a0-bd21-30547158515f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\gosfx">
+      <UniqueIdentifier>{6ca016b0-e7e7-43a1-b454-5604a2e81ea6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{66623f72-bce2-4d56-9e92-82f2affaea27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{c8671d91-ef2a-45c7-a232-dbe5d625deff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{577258d8-75a0-46d4-b259-ce50a60f32d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\DLL">
+      <UniqueIdentifier>{47094ed7-ab25-4ed0-bc20-f1e26c447e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{aa3ccc07-7d13-4b29-a248-1c235666b66c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\mclib\gosfx\gosfx.cpp">
+      <Filter>Sources\gosfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\effect.cpp">
+      <Filter>Sources\gosfx\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\effectlibrary.cpp">
+      <Filter>Sources\gosfx\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\fcurve.cpp">
+      <Filter>Sources\gosfx\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\cardcloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\debriscloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\effectcloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\particlecloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\pertcloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\pointcloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\shapecloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\shardcloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\spinningcloud.cpp">
+      <Filter>Sources\gosfx\Cloud Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\card.cpp">
+      <Filter>Sources\gosfx\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\shape.cpp">
+      <Filter>Sources\gosfx\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\singleton.cpp">
+      <Filter>Sources\gosfx\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\tube.cpp">
+      <Filter>Sources\gosfx\Geometry Extrusion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\pointlight.cpp">
+      <Filter>Sources\gosfx\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\gosfx\gosfxheaders.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch\stdinc.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\mclib\gosfx\gosfx.hpp">
+      <Filter>Headers\gosfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\effect.hpp">
+      <Filter>Headers\gosfx\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\effectlibrary.hpp">
+      <Filter>Headers\gosfx\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\fcurve.hpp">
+      <Filter>Headers\gosfx\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\cardcloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\debriscloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\effectcloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\particlecloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\pertcloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\pointcloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\shapecloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\shardcloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\spinningcloud.hpp">
+      <Filter>Headers\gosfx\Cloud Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\card.hpp">
+      <Filter>Headers\gosfx\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\shape.hpp">
+      <Filter>Headers\gosfx\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\singleton.hpp">
+      <Filter>Headers\gosfx\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\tube.hpp">
+      <Filter>Headers\gosfx\Geometry Extrusion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\pointlight.hpp">
+      <Filter>Headers\gosfx\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\gosfx\gosfxheaders.hpp">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\stdinc.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

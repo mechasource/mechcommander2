@@ -12,14 +12,13 @@ TgaMapTGA.cpp			: Implementation of the TgaMapTGA component.
 #include "editordata.h"
 
 BEGIN_MESSAGE_MAP(TacMapTGA, TGAWnd)
-//{{AFX_MSG_MAP(TGAWnd)
-ON_WM_PAINT()
+	//{{AFX_MSG_MAP(TGAWnd)
+	ON_WM_PAINT()
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 // THIS NEEDS TO BE MOVED TO A DERIVED CLASS!
-void
-TacMapTGA::OnPaint()
+void TacMapTGA::OnPaint()
 {
 	TGAWnd::OnPaint();
 	CDC* pDC = GetDC();
@@ -66,8 +65,7 @@ TacMapTGA::OnPaint()
 	ReleaseDC(pDC);
 }
 
-void
-TacMapTGA::refreshBmp()
+void TacMapTGA::refreshBmp()
 {
 	EditorData::instance->drawTacMap((uint8_t*)m_pBits, 128 * 128 * 4, 128);
 	RedrawWindow();

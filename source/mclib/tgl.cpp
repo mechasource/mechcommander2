@@ -71,8 +71,7 @@ bool silentMode = false; // Used for automated builds to keep errors from poppin
 
 //-------------------------------------------------------------------------------
 // Parse Functions
-void
-GetNumberData(const std::wstring_view& rawData, const std::wstring_view& result)
+void GetNumberData(std::wstring_view rawData, std::wstring_view result)
 {
 	int32_t startIndex = 0;
 	int32_t endIndex = 0;
@@ -90,8 +89,7 @@ GetNumberData(const std::wstring_view& rawData, const std::wstring_view& result)
 }
 
 //-------------------------------------------------------------------------------
-void
-GetWordData(const std::wstring_view& rawData, const std::wstring_view& result)
+void GetWordData(std::wstring_view rawData, std::wstring_view result)
 {
 	int32_t startIndex = 0;
 	int32_t endIndex = 0;
@@ -109,8 +107,7 @@ GetWordData(const std::wstring_view& rawData, const std::wstring_view& result)
 }
 
 //-------------------------------------------------------------------------------
-void
-GetNameData(const std::wstring_view& rawData, const std::wstring_view& result)
+void GetNameData(std::wstring_view rawData, std::wstring_view result)
 {
 	int32_t startIndex = 0;
 	int32_t endIndex = 0;
@@ -139,16 +136,14 @@ PVOIDTG_TypeNode::operator new(size_t mySize)
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_TypeNode::operator delete(PVOID us)
+void TG_TypeNode::operator delete(PVOID us)
 {
 	TG_Shape::tglHeap->Free(us);
 }
 
 //-------------------------------------------------------------------------------
 // Frees memory and resets locals to defaults.
-void
-TG_TypeNode::destroy(void)
+void TG_TypeNode::destroy(void)
 {
 	init();
 }
@@ -203,11 +198,11 @@ TG_TypeNode::CreateFrom(void)
 // at present.
 //
 int32_t
-TG_TypeNode::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileName)
+TG_TypeNode::MakeFromHelper(uint8_t* aseBuffer, std::wstring_view fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
-	const std::wstring_view& nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_NAME);
+	std::wstring_view nodeName = strstr((std::wstring_view)aseBuffer, ASE_NODE_NAME);
 	gosASSERT(nodeName != nullptr);
 	wchar_t nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME) + 1;
@@ -222,7 +217,7 @@ TG_TypeNode::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileNam
 	}
 #endif
 	strncpy(nodeId, nodeString, 24);
-	const std::wstring_view& parentName = strstr((const std::wstring_view&)nodeName, ASE_NODE_PARENT);
+	std::wstring_view parentName = strstr((std::wstring_view)nodeName, ASE_NODE_PARENT);
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
 	// We will get the next GeomObject's parent if we don't check length!
@@ -238,7 +233,7 @@ TG_TypeNode::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileNam
 	}
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
-	nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_POS);
+	nodeName = strstr((std::wstring_view)aseBuffer, ASE_NODE_POS);
 	gosASSERT(nodeName != nullptr);
 	nodeName += strlen(ASE_NODE_POS) + 1;
 	wchar_t numData[512];
@@ -254,8 +249,7 @@ TG_TypeNode::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileNam
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_TypeNode::LoadBinaryCopy(MechFile& binFile)
+void TG_TypeNode::LoadBinaryCopy(MechFile& binFile)
 {
 	// Other Data
 	nodeCenter.x = binFile.readFloat();
@@ -269,8 +263,7 @@ TG_TypeNode::LoadBinaryCopy(MechFile& binFile)
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_TypeNode::SaveBinaryCopy(MechFile& binFile)
+void TG_TypeNode::SaveBinaryCopy(MechFile& binFile)
 {
 	// What kind of thing is this
 	binFile.writeLong(TYPE_NODE);
@@ -387,8 +380,7 @@ TG_TypeShape::CreateFrom(void)
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_TypeShape::LoadBinaryCopy(MechFile& binFile)
+void TG_TypeShape::LoadBinaryCopy(MechFile& binFile)
 {
 	// listOfTypeVertices
 	numTypeVertices = binFile.readLong();
@@ -443,8 +435,7 @@ TG_TypeShape::LoadBinaryCopy(MechFile& binFile)
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_TypeShape::SaveBinaryCopy(MechFile& binFile)
+void TG_TypeShape::SaveBinaryCopy(MechFile& binFile)
 {
 	// What kind of thing is this
 	binFile.writeLong(SHAPE_NODE);
@@ -479,8 +470,7 @@ TG_TypeShape::SaveBinaryCopy(MechFile& binFile)
 
 //-------------------------------------------------------------------------------
 // Frees memory and resets locals to defaults.
-void
-TG_TypeShape::destroy(void)
+void TG_TypeShape::destroy(void)
 {
 	if (listOfTypeVertices)
 		TG_Shape::tglHeap->Free(listOfTypeVertices);
@@ -496,8 +486,7 @@ TG_TypeShape::destroy(void)
 
 //-------------------------------------------------------------------------------
 // Frees memory and resets locals to defaults.
-void
-TG_Shape::destroy(void)
+void TG_Shape::destroy(void)
 {
 	// THIS IS CORRECT!!!!
 	// They come from a common pool now, Deleteing them would be BAD!!
@@ -523,11 +512,11 @@ TG_Shape::destroy(void)
 // NOTE: Only takes the first HELPOBJECT from the ASE file.  Multi-object
 // Files will require user intervention to parse!!
 int32_t
-TG_TypeShape::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileName)
+TG_TypeShape::MakeFromHelper(uint8_t* aseBuffer, std::wstring_view fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
-	const std::wstring_view& nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_NAME);
+	std::wstring_view nodeName = strstr((std::wstring_view)aseBuffer, ASE_NODE_NAME);
 	gosASSERT(nodeName != nullptr);
 	wchar_t nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME) + 1;
@@ -542,7 +531,7 @@ TG_TypeShape::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileNa
 	}
 #endif
 	strncpy(nodeId, nodeString, 24);
-	const std::wstring_view& parentName = strstr((const std::wstring_view&)nodeName, ASE_NODE_PARENT);
+	std::wstring_view parentName = strstr((std::wstring_view)nodeName, ASE_NODE_PARENT);
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
 	// We will get the next GeomObject's parent if we don't check length!
@@ -558,7 +547,7 @@ TG_TypeShape::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileNa
 	}
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
-	nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_POS);
+	nodeName = strstr((std::wstring_view)aseBuffer, ASE_NODE_POS);
 	gosASSERT(nodeName != nullptr);
 	nodeName += strlen(ASE_NODE_POS) + 1;
 	wchar_t numData[512];
@@ -589,11 +578,11 @@ TG_TypeShape::MakeFromHelper(uint8_t* aseBuffer, const std::wstring_view& fileNa
 // NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 // Files will require user intervention to parse!!
 int32_t
-TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName)
+TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, std::wstring_view fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
-	const std::wstring_view& nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_NAME);
+	std::wstring_view nodeName = strstr((std::wstring_view)aseBuffer, ASE_NODE_NAME);
 	gosASSERT(nodeName != nullptr);
 	wchar_t nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME) + 1;
@@ -608,7 +597,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 	}
 #endif
 	strncpy(nodeId, nodeString, 24);
-	const std::wstring_view& parentName = strstr((const std::wstring_view&)nodeName, ASE_NODE_PARENT);
+	std::wstring_view parentName = strstr((std::wstring_view)nodeName, ASE_NODE_PARENT);
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
 	// We will get the next GeomObject's parent if we don't check length!
@@ -624,7 +613,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 	}
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
-	nodeName = strstr((const std::wstring_view&)aseBuffer, ASE_NODE_POS);
+	nodeName = strstr((std::wstring_view)aseBuffer, ASE_NODE_POS);
 	gosASSERT(nodeName != nullptr);
 	nodeName += strlen(ASE_NODE_POS) + 1;
 	wchar_t numData[512];
@@ -638,7 +627,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 	nodeCenter.y = (float)atof(numData);
 	//----------------------------------------
 	// Find the Number of Vertices
-	const std::wstring_view& vertexCount = strstr((const std::wstring_view&)aseBuffer, ASE_NUM_VERTEX);
+	std::wstring_view vertexCount = strstr((std::wstring_view)aseBuffer, ASE_NUM_VERTEX);
 	gosASSERT(vertexCount != nullptr);
 	vertexCount += strlen(ASE_NUM_FACE) + 1;
 	numTypeVertices = atol(vertexCount);
@@ -653,7 +642,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 	}
 	//---------------------------------------
 	// Find the Number of faces
-	const std::wstring_view& faceCount = strstr((const std::wstring_view&)aseBuffer, ASE_NUM_FACE);
+	std::wstring_view faceCount = strstr((std::wstring_view)aseBuffer, ASE_NUM_FACE);
 	gosASSERT(faceCount != nullptr);
 	faceCount += strlen(ASE_NUM_FACE) + 1;
 	numTypeTriangles = atol(faceCount);
@@ -678,7 +667,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 		// First the Vertex Position
 		wchar_t vertexID[256];
 		sprintf(vertexID, "%s% 5d", ASE_MESH_VERTEX_ID, i);
-		const std::wstring_view& vertexData = strstr((const std::wstring_view&)aseBuffer, vertexID);
+		std::wstring_view vertexData = strstr((std::wstring_view)aseBuffer, vertexID);
 		gosASSERT(vertexData != nullptr);
 		vertexData += strlen(vertexID) + 1;
 		GetNumberData(vertexData, numberData);
@@ -717,7 +706,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 		// First the Vertices for the face
 		wchar_t faceId[256];
 		sprintf(faceId, "%s% 5d:", ASE_MESH_FACE_ID, i);
-		const std::wstring_view& faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+		std::wstring_view faceData = strstr((std::wstring_view)aseBuffer, faceId);
 		gosASSERT(faceData != nullptr);
 		faceData = strstr(faceData, "A:");
 		gosASSERT(faceData != nullptr);
@@ -754,7 +743,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 		//
 		// Load up the TFaces
 		sprintf(faceId, "%s", ASE_NUM_TVFACES);
-		faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+		faceData = strstr((std::wstring_view)aseBuffer, faceId);
 		if (faceData)
 		{
 			faceData += strlen(faceId);
@@ -774,7 +763,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 			tVFaces.z = (float)atol(numberData);
 			// Load up the TVERT0
 			sprintf(faceId, "%s", ASE_NUM_TVERTEX);
-			faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+			faceData = strstr((std::wstring_view)aseBuffer, faceId);
 			gosASSERT(faceData != nullptr);
 			sprintf(faceId, "%s %d", ASE_MESH_TVERT_ID, (int32_t)tVFaces.x);
 			faceData = strstr(faceData, faceId);
@@ -805,7 +794,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 			}
 			// Load up the TVERT1
 			sprintf(faceId, "%s", ASE_NUM_TVERTEX);
-			faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+			faceData = strstr((std::wstring_view)aseBuffer, faceId);
 			gosASSERT(faceData != nullptr);
 			sprintf(faceId, "%s %d", ASE_MESH_TVERT_ID, (int32_t)tVFaces.y);
 			faceData = strstr(faceData, faceId);
@@ -836,7 +825,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 			}
 			// Load up the TVERT2
 			sprintf(faceId, "%s", ASE_NUM_TVERTEX);
-			faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+			faceData = strstr((std::wstring_view)aseBuffer, faceId);
 			gosASSERT(faceData != nullptr);
 			sprintf(faceId, "%s %d", ASE_MESH_TVERT_ID, (int32_t)tVFaces.z);
 			faceData = strstr(faceData, faceId);
@@ -877,7 +866,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 		// colour Data for the face.
 		// Load up the CFaces
 		sprintf(faceId, "%s", ASE_NUM_CVFACES);
-		faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+		faceData = strstr((std::wstring_view)aseBuffer, faceId);
 		if (faceData)
 		{
 			gosASSERT(faceData != nullptr);
@@ -898,7 +887,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 			cVFaces.z = (float)atol(numberData);
 			// Load up the VERTCOL0
 			sprintf(faceId, "%s", ASE_NUM_CVERTEX);
-			faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+			faceData = strstr((std::wstring_view)aseBuffer, faceId);
 			gosASSERT(faceData != nullptr);
 			sprintf(faceId, "%s %d", ASE_MESH_VERTCOL_ID, (int32_t)cVFaces.x);
 			faceData = strstr(faceData, faceId);
@@ -919,7 +908,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 				(0xff << 24) + (redC << 16) + (greenC << 8) + blueC;
 			// Load up the VERTCOL1
 			sprintf(faceId, "%s", ASE_NUM_CVERTEX);
-			faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+			faceData = strstr((std::wstring_view)aseBuffer, faceId);
 			gosASSERT(faceData != nullptr);
 			sprintf(faceId, "%s %d", ASE_MESH_VERTCOL_ID, (int32_t)cVFaces.y);
 			faceData = strstr(faceData, faceId);
@@ -940,7 +929,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 				(0xff << 24) + (redC << 16) + (greenC << 8) + blueC;
 			// Load up the VERTCOL2
 			sprintf(faceId, "%s", ASE_NUM_CVERTEX);
-			faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+			faceData = strstr((std::wstring_view)aseBuffer, faceId);
 			gosASSERT(faceData != nullptr);
 			sprintf(faceId, "%s %d", ASE_MESH_VERTCOL_ID, (int32_t)cVFaces.z);
 			faceData = strstr(faceData, faceId);
@@ -970,7 +959,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 		//------------------------------------------------------------
 		// Dig out the face Normal.
 		sprintf(faceId, "%s %d", ASE_FACE_NORMAL_ID, i);
-		faceData = strstr((const std::wstring_view&)aseBuffer, faceId);
+		faceData = strstr((std::wstring_view)aseBuffer, faceId);
 		gosASSERT(faceData != nullptr);
 		faceData += strlen(faceId);
 		GetNumberData(faceData, numberData);
@@ -984,7 +973,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 		//------------------------------------------------------------
 		wchar_t vertexID[256];
 		sprintf(vertexID, "%s", ASE_VERTEX_NORMAL_ID);
-		const std::wstring_view& vertexData = strstr((const std::wstring_view&)faceData, vertexID);
+		std::wstring_view vertexData = strstr((std::wstring_view)faceData, vertexID);
 		GetNumberData(vertexData, numberData);
 		int32_t vertexNum = atol(numberData);
 		vertexNormalCount[vertexNum]++;
@@ -997,7 +986,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 		listOfTypeVertices[vertexNum].normal.z += (float)atof(numberData);
 		GetNumberData(vertexData, numberData);
 		listOfTypeVertices[vertexNum].normal.y += (float)atof(numberData);
-		vertexData = strstr((const std::wstring_view&)vertexData, vertexID);
+		vertexData = strstr((std::wstring_view)vertexData, vertexID);
 		GetNumberData(vertexData, numberData);
 		vertexNum = atol(numberData);
 		vertexNormalCount[vertexNum]++;
@@ -1010,7 +999,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 		listOfTypeVertices[vertexNum].normal.z += (float)atof(numberData);
 		GetNumberData(vertexData, numberData);
 		listOfTypeVertices[vertexNum].normal.y += (float)atof(numberData);
-		vertexData = strstr((const std::wstring_view&)vertexData, vertexID);
+		vertexData = strstr((std::wstring_view)vertexData, vertexID);
 		GetNumberData(vertexData, numberData);
 		vertexNum = atol(numberData);
 		vertexNormalCount[vertexNum]++;
@@ -1056,7 +1045,7 @@ TG_TypeShape::ParseASEFile(uint8_t* aseBuffer, const std::wstring_view& fileName
 // NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 // Files will require user intervention to parse!!
 int32_t
-TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
+TG_TypeShape::LoadTGShapeFromASE(std::wstring_view fileName)
 {
 	//-----------------------------------------------------
 	// Fully loads and parses an ASE File.  These files are
@@ -1081,14 +1070,14 @@ TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
 	gos_CloseFile(aseFile);
 	//----------------------------------------
 	// Check for valid ASE Header data.
-	gosASSERT(strnicmp(ASE_HEADER, (const std::wstring_view&)aseContents, strlen(ASE_HEADER)) == 0);
+	gosASSERT(strnicmp(ASE_HEADER, (std::wstring_view)aseContents, strlen(ASE_HEADER)) == 0);
 	//---------------------------------------
 	// Find the number of Textures
 	wchar_t textureId[256];
-	const std::wstring_view& textureData;
+	std::wstring_view textureData;
 	wchar_t numberData[256];
 	sprintf(textureId, ASE_MATERIAL_COUNT);
-	textureData = strstr((const std::wstring_view&)aseContents, textureId);
+	textureData = strstr((std::wstring_view)aseContents, textureId);
 	if (!textureData)
 		return (-1);
 	textureData += strlen(ASE_MATERIAL_COUNT) + 1;
@@ -1099,7 +1088,7 @@ TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
 	for (size_t nmt = 0; nmt < numMaterials; nmt++)
 	{
 		sprintf(textureId, ASE_MATERIAL_CLASS);
-		textureData = strstr((const std::wstring_view&)aseBuffer, textureId);
+		textureData = strstr((std::wstring_view)aseBuffer, textureId);
 		if (!textureData)
 			return (-1);
 		textureData += strlen(ASE_MATERIAL_CLASS) + 1;
@@ -1145,8 +1134,7 @@ TG_TypeShape::LoadTGShapeFromASE(const std::wstring_view& fileName)
 
 //-------------------------------------------------------------------------------
 // Need this so that Multi-Shapes can let each shape know texture info.
-void
-TG_TypeShape::CreateListOfTextures(TG_TexturePtr list, uint32_t numTxms)
+void TG_TypeShape::CreateListOfTextures(TG_TexturePtr list, uint32_t numTxms)
 {
 	numTextures = numTxms;
 	if (numTextures)
@@ -1206,8 +1194,7 @@ PVOIDTG_Shape::operator new(size_t mySize)
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_Shape::operator delete(PVOID us)
+void TG_Shape::operator delete(PVOID us)
 {
 	TG_Shape::tglHeap->Free(us);
 }
@@ -1216,8 +1203,7 @@ TG_Shape::operator delete(PVOID us)
 // This function sets up the camera Matrices for this TG_Shape to transform
 // itself with.  These matrices are static and only need to be set once per
 // render pass if the camera does not change for that pass.
-void
-TG_Shape::SetCameraMatrices(Stuff::LinearMatrix4D* camOrigin, Stuff::Matrix4D* camToClip)
+void TG_Shape::SetCameraMatrices(Stuff::LinearMatrix4D* camOrigin, Stuff::Matrix4D* camToClip)
 {
 	cameraOrigin = camOrigin;
 	cameraToClip = camToClip;
@@ -1226,8 +1212,7 @@ TG_Shape::SetCameraMatrices(Stuff::LinearMatrix4D* camOrigin, Stuff::Matrix4D* c
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_Shape::SetFog(uint32_t fRGB, float fStart, float fFull)
+void TG_Shape::SetFog(uint32_t fRGB, float fStart, float fFull)
 {
 	fogcolour = fRGB;
 	fogStart = fStart;
@@ -1240,8 +1225,7 @@ TG_Shape::SetFog(uint32_t fRGB, float fStart, float fFull)
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_Shape::SetViewport(float mulX, float mulY, float addX, float addY)
+void TG_Shape::SetViewport(float mulX, float mulY, float addX, float addY)
 {
 	viewMulX = mulX;
 	viewMulY = mulY;
@@ -1272,15 +1256,13 @@ TG_Shape::SetLightList(TG_LightPtr* lightList, uint32_t nLights)
 
 //-------------------------------------------------------------------------------
 // This function sets the fog values for the shape.  Straight fog right now.
-void
-TG_Shape::SetFogRGB(uint32_t fRGB)
+void TG_Shape::SetFogRGB(uint32_t fRGB)
 {
 	fogRGB = fRGB;
 }
 
 //-------------------------------------------------------------------------------
-void
-TG_TypeShape::movePosRelativeCenterNode(void)
+void TG_TypeShape::movePosRelativeCenterNode(void)
 {
 	for (size_t i = 0; i < numTypeVertices; i++)
 	{
@@ -2049,8 +2031,7 @@ TG_Shape::MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* back
 //-------------------------------------------------------------------------------
 // This function takes the current listOfVisibleFaces and draws them using
 // gos_DrawTriangle.
-void
-TG_Shape::Render(float forceZ, bool isHudElement, uint8_t alphaValue, bool isClamped)
+void TG_Shape::Render(float forceZ, bool isHudElement, uint8_t alphaValue, bool isClamped)
 {
 	if (!renderTGLShapes)
 		return;
@@ -2188,8 +2169,7 @@ extern bool InEditor;
 //------------------------------------------------------------------------------------------------------------
 // This function checks each visible triangle against the mouse position and
 // returns if we are over ANY poly!
-bool
-TG_Shape::PerPolySelect(float mouseX, float mouseY)
+bool TG_Shape::PerPolySelect(float mouseX, float mouseY)
 {
 	if (!InEditor)
 	{
@@ -2263,8 +2243,7 @@ TG_Shape::PerPolySelect(float mouseX, float mouseY)
 // This function creates the list of shadows and transforms them in preparation
 // to drawing.
 //
-void
-TG_Shape::MultiTransformShadows(
+void TG_Shape::MultiTransformShadows(
 	Stuff::Point3D* pos, Stuff::LinearMatrix4D* s2w, float rotation)
 {
 	if (!numvertices) // WE are the root Shape which may have no shape or a

@@ -92,8 +92,7 @@ extern int64_t x;
 extern float OneOverProcessorSpeed;
 #endif
 
-void
-Mission::initBareMinimum()
+void Mission::initBareMinimum()
 {
 	int32_t result = 0;
 	result;
@@ -126,8 +125,7 @@ Mission::initBareMinimum()
 	}
 }
 
-void
-Mission::initializeStatistics()
+void Mission::initializeStatistics()
 {
 #ifdef LAB_ONLY
 	// Add Mission Load statistics to GameOS Debugger screen!
@@ -201,8 +199,7 @@ Mission::initializeStatistics()
 #endif
 }
 
-void
-Mission::initTGLForLogistics()
+void Mission::initTGLForLogistics()
 {
 	//---------------------------------------------------------
 	uint32_t tglHeapSize = 4 * 1024 * 1024;

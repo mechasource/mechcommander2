@@ -15,8 +15,7 @@ class YawPitchRange;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::YawPitchRange& polar);
+void Spew(std::wstring_view group, const Stuff::YawPitchRange& polar);
 #endif
 
 namespace Stuff
@@ -33,7 +32,7 @@ public:
 	//
 	// Constructors
 	//
-	YawPitchRange() {}
+	YawPitchRange() { }
 	YawPitchRange(const Radian& y, const Radian& p, const float r)
 	{
 		// Check_Pointer(this);
@@ -48,7 +47,10 @@ public:
 		yaw = polar.yaw;
 		range = polar.range;
 	}
-	explicit YawPitchRange(const Vector3D& vector) { *this = vector; }
+	explicit YawPitchRange(const Vector3D& vector)
+	{
+		*this = vector;
+	}
 
 	//
 	// Assignment operators
@@ -68,23 +70,32 @@ public:
 	// "Close-enough" comparators
 	//
 	friend bool Small_Enough(const YawPitchRange& a, float e = SMALL);
-	bool operator!(void) const { return Small_Enough(*this); }
+	bool operator!(void) const
+	{
+		return Small_Enough(*this);
+	}
 
 	friend bool Close_Enough(const YawPitchRange& a1, const YawPitchRange& a2, float e = SMALL);
-	bool operator==(const YawPitchRange& a) const { return Close_Enough(*this, a, SMALL); }
-	bool operator!=(const YawPitchRange& a) const { return !Close_Enough(*this, a, SMALL); }
+	bool operator==(const YawPitchRange& a) const
+	{
+		return Close_Enough(*this, a, SMALL);
+	}
+	bool operator!=(const YawPitchRange& a) const
+	{
+		return !Close_Enough(*this, a, SMALL);
+	}
 
 	//
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const YawPitchRange& polar);
+	friend void ::Spew(std::wstring_view group, const YawPitchRange& polar);
 #endif
 
 	//
 	// Test functions
 	//
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 	static bool TestClass(void);
 };
 } // namespace Stuff

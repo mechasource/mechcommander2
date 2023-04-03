@@ -12,7 +12,8 @@
 #ifndef ABLERR_H
 #define ABLERR_H
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -111,14 +112,10 @@ enum class RuntimeErrorType : uint32_t
 
 //***************************************************************************
 
-void
-syntaxError(int32_t errCode);
-void
-runtimeError(int32_t errCode);
-void
-ABL_Fatal(int32_t errCode, const std::wstring_view& s);
-void
-ABL_Assert(bool test, int32_t errCode, const std::wstring_view& s);
+void syntaxError(int32_t errCode);
+void runtimeError(int32_t errCode);
+void ABL_Fatal(int32_t errCode, std::wstring_view s);
+void ABL_Assert(bool test, int32_t errCode, std::wstring_view s);
 
 //***************************************************************************
 

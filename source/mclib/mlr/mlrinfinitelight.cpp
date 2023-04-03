@@ -6,7 +6,8 @@
 
 #include "mlr/mlrinfinitelight.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //###############################    MLRInfiniteLight
@@ -17,8 +18,7 @@ MLRInfiniteLight::ClassData* MLRInfiniteLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLight::InitializeClass()
+void MLRInfiniteLight::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -29,8 +29,7 @@ MLRInfiniteLight::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLight::TerminateClass()
+void MLRInfiniteLight::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -39,8 +38,8 @@ MLRInfiniteLight::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data) :
-	MLRLight(class_data)
+MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data)
+	: MLRLight(class_data)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
@@ -48,8 +47,8 @@ MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data, std::iostream stream, uint32_t version) :
-	MLRLight(class_data, stream, version)
+MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data, std::iostream stream, uint32_t version)
+	: MLRLight(class_data, stream, version)
 {
 	Check_Object(stream);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -58,8 +57,8 @@ MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data, std::iostream stream, 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data, Stuff::Page* page) :
-	MLRLight(class_data, page)
+MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data, Stuff::Page* page)
+	: MLRLight(class_data, page)
 {
 	Check_Object(page);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -68,20 +67,18 @@ MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data, Stuff::Page* page) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLight::~MLRInfiniteLight() {}
+MLRInfiniteLight::~MLRInfiniteLight() { }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLight::TestInstance()
+void MLRInfiniteLight::TestInstance()
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLight::LightVertex(const MLRVertexData& vertexData)
+void MLRInfiniteLight::LightVertex(const MLRVertexData& vertexData)
 {
 	UnitVector3D light_z;
 	GetInShapeDirection(light_z);

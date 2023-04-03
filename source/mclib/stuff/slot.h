@@ -45,8 +45,14 @@ private:
 private:
 	// static MemoryBlock* AllocatedMemory;
 
-	PVOID operator new(size_t) { return AllocatedMemory->New(); }
-	void operator delete(PVOID where) { AllocatedMemory->Delete(where); }
+	PVOID operator new(size_t)
+	{
+		return AllocatedMemory->New();
+	}
+	void operator delete(PVOID where)
+	{
+		AllocatedMemory->Delete(where);
+	}
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ Slot ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,16 +128,22 @@ public:
 	// Socket methods (see Socket for full listing)
 	//--------------------------------------------------------------------
 	//
-	void Add(T plug) { AddImplementation(Cast_Object(Plug*, plug)); }
+	void Add(T plug)
+	{
+		AddImplementation(Cast_Object(Plug*, plug));
+	}
 
-	T GetCurrent() { return (T)GetCurrentPlug(void); }
+	T GetCurrent()
+	{
+		return (T)GetCurrentPlug(void);
+	}
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class T>
-SlotOf<T>::SlotOf(Node* node) :
-	Slot(node)
+SlotOf<T>::SlotOf(Node* node)
+	: Slot(node)
 {
 }
 

@@ -26,7 +26,7 @@ typedef struct _gos_VERTEX_2UV
 {
 	float x,
 		y; // Screen coords	- must be 0.0 to Environment.screenwidth/height (no
-		// clipping occurs unless gos_State_Clipping is true)
+	// clipping occurs unless gos_State_Clipping is true)
 	float z; // 0.0 to 0.99999	- Used for visiblity check in zbuffer (1.0 is
 		// not valid)
 	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
@@ -125,8 +125,7 @@ protected:
 
 //#pragma warning (disable : 4725)
 
-void
-GOSVertex2UV::GOSTransformNoClip(
+void GOSVertex2UV::GOSTransformNoClip(
 	const Stuff::Point3D& _v, const Stuff::Matrix4D& m, float* uv1, float* uv2
 #if FOG_HACK
 	,
@@ -140,7 +139,7 @@ GOSVertex2UV::GOSTransformNoClip(
 #if USE_INLINE_ASSEMBLER_CODE
 	float* f = &x;
 	_asm
-	{
+		{
 			mov         edx, m
 
 			mov         eax, _v
@@ -228,18 +227,18 @@ GOSVertex2UV::GOSTransformNoClip(
 
 			faddp       st(1), st
 
-			//      fld1
+				//      fld1
 
-			//      fdivrp      st(1),st
+				//      fdivrp      st(1),st
 
-			//  get rid of x, y, z
+				//  get rid of x, y, z
 			fstp        st(1)
 			fstp        st(1)
 			fstp        st(1)
 
 			fstp        dword ptr [eax] //  x
 
-	}
+		}
 #else
 	x = _v.x * m(0, 0) + _v.y * m(1, 0) + _v.z * m(2, 0) + m(3, 0);
 	y = _v.x * m(0, 1) + _v.y * m(1, 1) + _v.z * m(2, 1) + m(3, 1);

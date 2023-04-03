@@ -28,10 +28,8 @@ StaticInfo* ForceGroupBar::s_coverIcon = nullptr;
 
 extern bool useLeftRightMouseProfile;
 extern wchar_t CDInstallPath[];
-void
-EnterWindowMode();
-void
-EnterFullScreenMode();
+void EnterWindowMode();
+void EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
 #define BOTTOM_OFFSET 5 * Environment.screenheight / 640.f
@@ -63,16 +61,14 @@ ForceGroupBar::~ForceGroupBar()
 	ForceGroupIcon::gosFontHandle = nullptr;
 }
 
-bool
-ForceGroupBar::flashJumpers(int32_t numFlashes)
+bool ForceGroupBar::flashJumpers(int32_t numFlashes)
 {
 	forceNumFlashes = numFlashes;
 	forceFlashTime = 0.0f;
 	return true;
 }
 
-bool
-ForceGroupBar::addMech(Mover* pMover)
+bool ForceGroupBar::addMech(Mover* pMover)
 {
 	if (iconCount >= MAX_ICONS)
 	{
@@ -85,8 +81,7 @@ ForceGroupBar::addMech(Mover* pMover)
 	return bRetVal;
 }
 
-bool
-ForceGroupBar::addVehicle(Mover* pMover)
+bool ForceGroupBar::addVehicle(Mover* pMover)
 {
 	if (iconCount >= MAX_ICONS)
 	{
@@ -99,8 +94,7 @@ ForceGroupBar::addVehicle(Mover* pMover)
 	return bRetVal;
 }
 
-void
-ForceGroupBar::removeMover(Mover* mover)
+void ForceGroupBar::removeMover(Mover* mover)
 {
 	for (size_t i = 0; i < iconCount; i++)
 		if (icons[i]->unit == mover)
@@ -113,8 +107,7 @@ ForceGroupBar::removeMover(Mover* mover)
 		}
 }
 
-void
-ForceGroupBar::update()
+void ForceGroupBar::update()
 {
 	bool bSelect = userInput->isLeftClick();
 	bool bCommand = useLeftRightMouseProfile ? userInput->isRightClick() : userInput->isLeftClick();
@@ -261,8 +254,7 @@ ForceGroupBar::update()
 	}
 }
 
-bool
-ForceGroupBar::inRegion(int32_t x, int32_t y)
+bool ForceGroupBar::inRegion(int32_t x, int32_t y)
 {
 	for (size_t i = 0; i < iconCount; ++i)
 	{
@@ -272,8 +264,7 @@ ForceGroupBar::inRegion(int32_t x, int32_t y)
 	return false;
 }
 
-void
-ForceGroupBar::render()
+void ForceGroupBar::render()
 {
 	s_coverIcon->setcolour(0);
 	int32_t maxUnits = 16;
@@ -326,8 +317,7 @@ ForceGroupBar::render()
 	}
 }
 
-void
-ForceGroupBar::removeAll()
+void ForceGroupBar::removeAll()
 {
 	for (size_t i = 0; i < iconCount; i++)
 	{
@@ -338,8 +328,7 @@ ForceGroupBar::removeAll()
 	iconCount = 0;
 }
 
-void
-ForceGroupBar::init(FitIniFile& file, StaticInfo* pCoverIcon)
+void ForceGroupBar::init(FitIniFile& file, StaticInfo* pCoverIcon)
 {
 	if (NO_ERROR != file.seekBlock("Fonts"))
 		Assert(0, 0, "couldn't find the font block");
@@ -354,16 +343,14 @@ ForceGroupBar::init(FitIniFile& file, StaticInfo* pCoverIcon)
 	s_coverIcon = pCoverIcon;
 }
 
-void
-ForceGroupBar::swapResolutions()
+void ForceGroupBar::swapResolutions()
 {
 	ForceGroupIcon::resetResolution(0);
 	for (size_t i = 0; i < iconCount; i++)
 		icons[i]->swapResolutions(0);
 }
 
-bool
-ForceGroupBar::setPilotVideo(const std::wstring_view& pVideo, MechWarrior* pPilot)
+bool ForceGroupBar::setPilotVideo(std::wstring_view pVideo, MechWarrior* pPilot)
 {
 	if (!pVideo)
 	{
@@ -470,8 +457,7 @@ ForceGroupBar::setPilotVideo(const std::wstring_view& pVideo, MechWarrior* pPilo
 	return 1;
 }
 
-bool
-ForceGroupBar::isPlayingVideo()
+bool ForceGroupBar::isPlayingVideo()
 {
 	if (ForceGroupIcon::bMovie)
 		return true;

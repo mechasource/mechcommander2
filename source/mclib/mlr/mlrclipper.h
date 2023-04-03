@@ -44,7 +44,7 @@ public:
 	MLRLight* const* activeLights;
 	uint32_t nrOfActiveLights;
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 class DrawScalableShapeInformation : public DrawShapeInformation
@@ -54,7 +54,7 @@ public:
 	const Stuff::Vector3D* scaling;
 	const Stuff::RGBAcolour* paintMe;
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 class MLREffect;
@@ -98,7 +98,7 @@ public:
 	size_t currentNrOfQuads;
 	MLRState state;
 
-	void TestInstance(void) const {}
+	void TestInstance(void) const { }
 };
 
 //##########################################################################

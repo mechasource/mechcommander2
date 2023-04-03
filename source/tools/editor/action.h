@@ -23,26 +23,32 @@ class Action
 {
 
 public:
-	virtual ~Action(void) {}
+	virtual ~Action(void) { }
 	virtual bool redo(void) = 0;
 	virtual bool undo(void) = 0;
 	Action& operator=(const Action& src);
-	const std::wstring_view& getDescription(void) { return m_strDescription.c_str(void); }
+	std::wstring_view getDescription(void)
+	{
+		return m_strDescription.c_str(void);
+	}
 
 protected:
-	const std::wstring_view& m_strDescription;
+	std::wstring_view m_strDescription;
 
 	// suppressed
-	Action(const std::wstring_view& pStr) { m_strDescription.assign(pStr); }
+	Action(std::wstring_view pStr)
+	{
+		m_strDescription.assign(pStr);
+	}
 
 	// if you call this, make sure you set the description
-	Action(void) {}
+	Action(void) { }
 };
 
 typedef struct VertexInfo
 {
 	VertexInfo(uint32_t row, uint32_t column);
-	~VertexInfo(void) {}
+	~VertexInfo(void) { }
 
 	uint32_t row;
 	uint32_t column;
@@ -62,7 +68,7 @@ private:
 class ActionPaintTile : public Action
 {
 public:
-	ActionPaintTile(void) {}
+	ActionPaintTile(void) { }
 
 	// virtual overrides
 	virtual bool redo(void);
@@ -70,8 +76,10 @@ public:
 
 	bool doRedo(void); // so we don't go through virtual functions
 
-	ActionPaintTile(const std::wstring_view& pStr) :
-		Action(pStr) {}
+	ActionPaintTile(std::wstring_view pStr)
+		: Action(pStr)
+	{
+	}
 
 	void addChangedVertexInfo(uint32_t row, uint32_t column);
 	void addVertexInfo(VertexInfo&);
@@ -90,7 +98,10 @@ public:
 	virtual bool undo(void);
 	bool doRedo(void); // so we don't go through virtual functions
 	virtual void addBuildingInfo(EditorObject& info);
-	virtual bool isNotNull(void) { return (!buildingCopyPtrs.empty()); }
+	virtual bool isNotNull(void)
+	{
+		return (!buildingCopyPtrs.empty());
+	}
 	virtual void updateNotedObjectPositions(void);
 
 private:
@@ -121,8 +132,8 @@ public:
 	bool HaveUndo(void) const;
 	bool HaveRedo(void) const;
 
-	const std::wstring_view& GetUndoString(void);
-	const std::wstring_view& GetRedoString(void);
+	std::wstring_view GetUndoString(void);
+	std::wstring_view GetRedoString(void);
 
 	void NoteThatASaveHasJustOccurred(void);
 	bool ThereHasBeenANetChangeFromWhenLastSaved(void);

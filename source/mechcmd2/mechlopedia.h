@@ -31,7 +31,6 @@ mechlopedia.h			: Interface for the mechlopedia component.
 class LogisticsChassis;
 class LogisticsVehicle;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 mechlopedia:
@@ -57,13 +56,16 @@ private:
 	class SubScreen : public LogisticsScreen
 	{
 	public:
-		void setListBox(aListBox* pLB) { groupListBox = pLB; }
+		void setListBox(aListBox* pLB)
+		{
+			groupListBox = pLB;
+		}
 		int32_t init(FitIniFile& file);
 		virtual void update(void);
-		virtual void select(aTextListItem* pEntry) {}
+		virtual void select(aTextListItem* pEntry) { }
 		virtual void end(void);
 
-		virtual void setVehicle(bool bVehicle) {}
+		virtual void setVehicle(bool bVehicle) { }
 
 	protected:
 		aListBox* groupListBox;
@@ -83,7 +85,10 @@ private:
 		virtual void select(aTextListItem* pEntry);
 		void setMech(LogisticsVariant* pChassis, bool bShowJump);
 		// set this before you call begin
-		virtual void setVehicle(bool bVehicle) { bIsVehicle = bVehicle; }
+		virtual void setVehicle(bool bVehicle)
+		{
+			bIsVehicle = bVehicle;
+		}
 		void setVehicle(LogisticsVehicle* pVehicle);
 
 	private:
@@ -118,7 +123,10 @@ private:
 
 		virtual void select(aTextListItem* pEntry);
 
-		void setIsHistory(bool bTrue) { bIsHistory = bTrue; }
+		void setIsHistory(bool bTrue)
+		{
+			bIsHistory = bTrue;
+		}
 
 	private:
 		bool bIsHistory;

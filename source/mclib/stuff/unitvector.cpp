@@ -47,8 +47,7 @@ UnitVector3D::Lerp(const UnitVector3D& v1, const UnitVector3D& v2, float t)
 //#############################################################################
 //#############################################################################
 //
-void
-UnitVector3D::TestInstance(void) const
+void UnitVector3D::TestInstance(void) const
 {
 #ifdef _ARMOR
 	float length = Vector3D::GetLengthSquared();

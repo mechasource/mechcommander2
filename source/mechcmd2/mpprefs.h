@@ -17,7 +17,6 @@ MPPrefs.h			: Interface for the MPPrefs component.
 class FitIniFile;
 struct _MC2Player;
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 MPPrefs:
@@ -28,7 +27,10 @@ public:
 	MPPrefs(void);
 	virtual ~MPPrefs(void);
 
-	static MPPrefs* instance() { return s_instance; }
+	static MPPrefs* instance()
+	{
+		return s_instance;
+	}
 	int32_t init(FitIniFile& file);
 	virtual void update(void);
 	virtual void render(int32_t OffsetX, int32_t OffsetY);
@@ -64,13 +66,16 @@ private:
 class aBmpListItem : public aListItem
 {
 public:
-	int32_t setBmp(const std::wstring_view& pFileName);
-	const std::wstring_view& getBmp() { return fileName; }
+	int32_t setBmp(std::wstring_view pFileName);
+	std::wstring_view getBmp()
+	{
+		return fileName;
+	}
 
 private:
 	aObject bmp;
 
-	const std::wstring_view& fileName;
+	std::wstring_view fileName;
 };
 
 #endif // end of file ( MPPrefs.h )

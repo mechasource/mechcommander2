@@ -18,7 +18,8 @@
 //#include "abl.h"
 //#include "abldbug.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -38,11 +39,11 @@ extern int32_t MaxBreakPointsPerModule;
 extern int32_t MaxCodeBufferSize;
 extern const std::unique_ptr<ABLModule>& CurModule;
 extern const std::unique_ptr<ABLModule>& CurLibrary;
-extern const std::wstring_view& codeBuffer;
-extern const std::wstring_view& codeBufferPtr;
-extern const std::wstring_view& codeSegmentPtr;
-extern const std::wstring_view& codeSegmentLimit;
-extern const std::wstring_view& statementStartPtr;
+extern std::wstring_view codeBuffer;
+extern std::wstring_view codeBufferPtr;
+extern std::wstring_view codeSegmentPtr;
+extern std::wstring_view codeSegmentLimit;
+extern std::wstring_view statementStartPtr;
 extern StackItem* stack;
 extern const std::unique_ptr<StackItem>& tos;
 extern const std::unique_ptr<StackItem>& stackFrameBasePtr;
@@ -79,8 +80,8 @@ extern int32_t NumSourceFiles;
 extern int32_t NumLibrariesUsed;
 extern const std::unique_ptr<ABLModule>& LibrariesUsed[MAX_LIBRARIES_USED];
 extern int32_t bufferOffset;
-extern const std::wstring_view& bufferp;
-extern const std::wstring_view& tokenp;
+extern std::wstring_view bufferp;
+extern std::wstring_view tokenp;
 extern int32_t digitCount;
 extern bool countError;
 extern int32_t pageNumber;
@@ -127,8 +128,8 @@ extern CharCodeType charTable[256];
 
 extern wchar_t sourceBuffer[MAXLEN_SOURCELINE];
 extern int32_t bufferOffset;
-extern const std::wstring_view& bufferp;
-extern const std::wstring_view& tokenp;
+extern std::wstring_view bufferp;
+extern std::wstring_view tokenp;
 
 extern int32_t digitCount;
 extern bool countError;
@@ -173,23 +174,23 @@ transState(const std::unique_ptr<SymTableNode>& newState);
 int32_t numLibrariesLoaded = 0;
 int32_t NumExecutions = 0;
 
-PVOID (*ABLSystemMallocCallback)
+PVOID(*ABLSystemMallocCallback)
 (uint32_t memSize) = nullptr;
-PVOID (*ABLStackMallocCallback)
+PVOID(*ABLStackMallocCallback)
 (uint32_t memSize) = nullptr;
-PVOID (*ABLCodeMallocCallback)
+PVOID(*ABLCodeMallocCallback)
 (uint32_t memSize) = nullptr;
-PVOID (*ABLSymbolMallocCallback)
+PVOID(*ABLSymbolMallocCallback)
 (uint32_t memSize) = nullptr;
 void (*ABLSystemFreeCallback)(PVOID memBlock) = nullptr;
 void (*ABLStackFreeCallback)(PVOID memBlock) = nullptr;
 void (*ABLCodeFreeCallback)(PVOID memBlock) = nullptr;
 void (*ABLSymbolFreeCallback)(PVOID memBlock) = nullptr;
-void (*ABLDebugPrintCallback)(const std::wstring_view& s) = nullptr;
+void (*ABLDebugPrintCallback)(std::wstring_view s) = nullptr;
 int32_t (*ABLRandomCallback)(int32_t range) = nullptr;
 void (*ABLSeedRandomCallback)(uint32_t range) = nullptr;
 uint32_t (*ABLGetTimeCallback)(void) = nullptr;
-void (*ABLFatalCallback)(int32_t code, const std::wstring_view& s) = nullptr;
+void (*ABLFatalCallback)(int32_t code, std::wstring_view s) = nullptr;
 void (*ABLEndlessStateCallback)(UserFile* log) = nullptr;
 
 //***************************************************************************
@@ -210,12 +211,9 @@ TokenCodeType followRoutineDeclsList[] = {TKN_SEMICOLON, TKN_CODE, TKN_EOF, TKN_
 
 TokenCodeType followDeclsList[] = {TKN_SEMICOLON, TKN_EOF, TKN_NONE};
 
-void
-ABL_CloseProfileLog();
-void
-ABL_OpenProfileLog();
-void
-ABL_AddToProfileLog(const std::wstring_view& profileString);
+void ABL_CloseProfileLog();
+void ABL_OpenProfileLog();
+void ABL_AddToProfileLog(std::wstring_view profileString);
 
 //***************************************************************************
 // ABL library interface routines
@@ -228,11 +226,11 @@ int32_t DefaultRandom(int32_t /* range */)
 
 //---------------------------------------------------------------------------
 
-void DefaultSeedRandom(uint32_t /* seed */) {}
+void DefaultSeedRandom(uint32_t /* seed */) { }
 
 //---------------------------------------------------------------------------
 
-void DefaultDebugPrintCallback(const std::wstring_view& /* s */) {}
+void DefaultDebugPrintCallback(std::wstring_view /* s */) { }
 
 //---------------------------------------------------------------------------
 
@@ -244,8 +242,7 @@ DefaultGetTimeCallback(void)
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_setRandomCallbacks(
+void ABLi_setRandomCallbacks(
 	void (*seedRandomCallback)(uint32_t seed), int32_t (*randomCallback)(int32_t range))
 {
 	ABLSeedRandomCallback = seedRandomCallback;
@@ -254,8 +251,7 @@ ABLi_setRandomCallbacks(
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_setDebugPrintCallback(void (*debugPrintCallback)(const std::wstring_view& s))
+void ABLi_setDebugPrintCallback(void (*debugPrintCallback)(std::wstring_view s))
 {
 	ABLDebugPrintCallback = debugPrintCallback;
 }
@@ -269,22 +265,20 @@ void ABLi_setGetTimeCallback(uint32_t (*getTimeCallback)(void))
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_setEndlessStateCallback(void (*endlessStateCallback)(UserFile* log))
+void ABLi_setEndlessStateCallback(void (*endlessStateCallback)(UserFile* log))
 {
 	ABLEndlessStateCallback = endlessStateCallback;
 }
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxRegisteredModules,
+void ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxRegisteredModules,
 	uint32_t maxStaticVariables, PVOID (*systemMallocCallback)(uint32_t memSize),
 	PVOID (*stackMallocCallback)(uint32_t memSize), PVOID (*codeMallocCallback)(uint32_t memSize),
 	PVOID (*symbolMallocCallback)(uint32_t memSize), void (*systemFreeCallback)(PVOID memBlock),
 	void (*stackFreeCallback)(PVOID memBlock), void (*codeFreeCallback)(PVOID memBlock),
-	void (*symbolFreeCallback)(PVOID memBlock), int32_t (*fileCreateCB)(PVOID* file, const std::wstring_view& filename),
-	int32_t (*fileOpenCB)(PVOID* file, const std::wstring_view& filename), int32_t (*fileCloseCB)(PVOID* file),
+	void (*symbolFreeCallback)(PVOID memBlock), int32_t (*fileCreateCB)(PVOID* file, std::wstring_view filename),
+	int32_t (*fileOpenCB)(PVOID* file, std::wstring_view filename), int32_t (*fileCloseCB)(PVOID* file),
 	bool (*fileEofCB)(PVOID file),
 	int32_t (*fileReadCB)(PVOID file, uint8_t* buffer, int32_t length),
 	int32_t (*fileReadLongCB)(PVOID file), int32_t (*fileReadStringCB)(PVOID file, uint8_t* buffer),
@@ -292,8 +286,8 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 	int32_t (*fileWriteCB)(PVOID file, uint8_t* buffer, int32_t length),
 	int32_t (*fileWriteByteCB)(PVOID file, uint8_t byte),
 	int32_t (*fileWriteLongCB)(PVOID file, int32_t value),
-	int32_t (*fileWriteStringCB)(PVOID file, const std::wstring_view& buffer), void (*debuggerPrintCallback)(const std::wstring_view& s),
-	void (*fatalCallback)(int32_t code, const std::wstring_view& s), bool debugInfo, bool debug, bool profile)
+	int32_t (*fileWriteStringCB)(PVOID file, std::wstring_view buffer), void (*debuggerPrintCallback)(std::wstring_view s),
+	void (*fatalCallback)(int32_t code, std::wstring_view s), bool debugInfo, bool debug, bool profile)
 {
 // HACK, for testing...
 #ifdef _DEBUG
@@ -416,7 +410,7 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 	//--------------------------------------------------------------------
 	// Allocate the code buffer used during pre-processing/interpreting...
 	MaxCodeBufferSize = maxCodeBufferSize;
-	codeBuffer = (const std::wstring_view&)ABLCodeMallocCallback(maxCodeBufferSize);
+	codeBuffer = (std::wstring_view)ABLCodeMallocCallback(maxCodeBufferSize);
 	if (!codeBuffer)
 		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc preprocess code buffer ");
 	//----------------------------------------------------------------------
@@ -493,7 +487,7 @@ ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxReg
 //***************************************************************************
 
 int32_t
-ABLi_preProcess(const std::wstring_view& sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
+ABLi_preProcess(std::wstring_view sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
 	int32_t* numFilesProcessed, bool printLines)
 {
 	//--------------------------------------------------------------------------------
@@ -614,20 +608,20 @@ ABLi_preProcess(const std::wstring_view& sourceFileName, int32_t* numErrors, int
 	//--------------------------------------------------
 	// Register the new module in the ABL environment...
 	ModuleRegistry[NumModulesRegistered].fileName =
-		(const std::wstring_view&)ABLStackMallocCallback(strlen(sourceFileName) + 1);
+		(std::wstring_view)ABLStackMallocCallback(strlen(sourceFileName) + 1);
 	if (!ModuleRegistry[NumModulesRegistered].fileName)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc module filename ");
 	strcpy(ModuleRegistry[NumModulesRegistered].fileName, strlwr(sourceFileName));
 	ModuleRegistry[NumModulesRegistered].moduleIdPtr = moduleIdPtr;
 	ModuleRegistry[NumModulesRegistered].numSourceFiles = NumSourceFiles;
 	ModuleRegistry[NumModulesRegistered].sourceFiles =
-		(const std::wstring_view&*)ABLStackMallocCallback(NumSourceFiles * sizeof(const std::wstring_view&));
+		(std::wstring_view*)ABLStackMallocCallback(NumSourceFiles * sizeof(std::wstring_view));
 	if (!ModuleRegistry[NumModulesRegistered].sourceFiles)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc sourceFiles ");
 	for (i = 0; i < NumSourceFiles; i++)
 	{
 		ModuleRegistry[NumModulesRegistered].sourceFiles[i] =
-			(const std::wstring_view&)ABLStackMallocCallback(strlen(SourceFiles[i]) + 1);
+			(std::wstring_view)ABLStackMallocCallback(strlen(SourceFiles[i]) + 1);
 		strcpy(ModuleRegistry[NumModulesRegistered].sourceFiles[i], SourceFiles[i]);
 	}
 	if (NumLibrariesUsed > 0)
@@ -771,13 +765,13 @@ ABLi_execute(const std::unique_ptr<SymTableNode>& moduleIdPtr, const std::unique
 					// way to keep it clear. Once it's verified to work,
 					// optimize...
 					int32_t size = formalTypePtr->size;
-					const std::wstring_view& dest = (const std::wstring_view&)ABLStackMallocCallback((size_t)size);
+					std::wstring_view dest = (std::wstring_view)ABLStackMallocCallback((size_t)size);
 					if (!dest)
 						ABL_Fatal(0,
 							" ABL: Unable to AblStackHeap->malloc "
 							"module formal array param ");
-					const std::wstring_view& src = tos->address;
-					const std::wstring_view& savePtr = dest;
+					std::wstring_view src = tos->address;
+					std::wstring_view savePtr = dest;
 					memcpy(dest, src, size);
 					tos->address = savePtr;
 				}
@@ -816,8 +810,7 @@ int32_t ABLi_deleteModule(const std::unique_ptr<SymTableNode>& /* moduleIdPtr */
 
 //***************************************************************************
 
-void
-ABLi_close(void)
+void ABLi_close(void)
 {
 	if (!codeBuffer)
 		return;
@@ -856,7 +849,7 @@ ABLi_close(void)
 //***************************************************************************
 
 const std::unique_ptr<ABLModule>&
-ABLi_loadLibrary(const std::wstring_view& sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
+ABLi_loadLibrary(std::wstring_view sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
 	int32_t* numFilesProcessed, bool printLines, bool createInstance)
 {
 	//--------------------------------------------------------------------
@@ -914,8 +907,7 @@ ABLi_createParamList(int32_t numParameters)
 
 //***************************************************************************
 
-void
-ABLi_setIntegerParam(const std::unique_ptr<ABLParam>& paramList, int32_t index, int32_t value)
+void ABLi_setIntegerParam(const std::unique_ptr<ABLParam>& paramList, int32_t index, int32_t value)
 {
 	if (paramList)
 	{
@@ -926,8 +918,7 @@ ABLi_setIntegerParam(const std::unique_ptr<ABLParam>& paramList, int32_t index, 
 
 //***************************************************************************
 
-void
-ABLi_setRealParam(const std::unique_ptr<ABLParam>& paramList, int32_t index, float value)
+void ABLi_setRealParam(const std::unique_ptr<ABLParam>& paramList, int32_t index, float value)
 {
 	if (paramList)
 	{
@@ -938,8 +929,7 @@ ABLi_setRealParam(const std::unique_ptr<ABLParam>& paramList, int32_t index, flo
 
 //***************************************************************************
 
-void
-ABLi_deleteParamList(const std::unique_ptr<ABLParam>& paramList)
+void ABLi_deleteParamList(const std::unique_ptr<ABLParam>& paramList)
 {
 	if (paramList)
 		ABLStackFreeCallback(paramList);
@@ -957,17 +947,15 @@ ABLi_getModule(int32_t id)
 
 //***************************************************************************
 
-bool
-ABLi_enabled(void)
+bool ABLi_enabled(void)
 {
 	return (ABLenabled);
 }
 
 //***************************************************************************
 
-void
-ABLi_addFunction(
-	const std::wstring_view& name, bool isOrder, const std::wstring_view& paramList, const std::wstring_view& returnType, void (*codeCallback)(void))
+void ABLi_addFunction(
+	std::wstring_view name, bool isOrder, std::wstring_view paramList, std::wstring_view returnType, void (*codeCallback)(void))
 {
 	enterStandardRoutine(name, -1, isOrder, paramList, returnType, codeCallback);
 }
@@ -975,7 +963,7 @@ ABLi_addFunction(
 //***************************************************************************
 
 int32_t
-ABLi_registerInteger(const std::wstring_view& name, int32_t* address, int32_t numElements)
+ABLi_registerInteger(std::wstring_view name, int32_t* address, int32_t numElements)
 {
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
 		ABL_Fatal(0, " ABLi_registerInteger: variable name too int32_t ");
@@ -998,7 +986,7 @@ ABLi_registerInteger(const std::wstring_view& name, int32_t* address, int32_t nu
 //***************************************************************************
 
 int32_t
-ABLi_registerReal(const std::wstring_view& name, float* address, int32_t /* numElements */)
+ABLi_registerReal(std::wstring_view name, float* address, int32_t /* numElements */)
 {
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
 		ABL_Fatal(0, " ABLi_registerInteger: variable name too int32_t ");
@@ -1017,16 +1005,14 @@ ABLi_registerReal(const std::wstring_view& name, float* address, int32_t /* numE
 
 //***************************************************************************
 
-bool
-ABLi_getSkipOrder(void)
+bool ABLi_getSkipOrder(void)
 {
 	return (SkipOrder);
 }
 
 //***************************************************************************
 
-void
-ABLi_resetOrders(void)
+void ABLi_resetOrders(void)
 {
 	CurModule->resetOrderCallFlags();
 }
@@ -1043,8 +1029,7 @@ ABLi_getCurrentState(void)
 
 //***************************************************************************
 
-void
-ABLi_transState(int32_t newStateHandle)
+void ABLi_transState(int32_t newStateHandle)
 {
 	if (CurFSM && (newStateHandle > 0) && (newStateHandle < ModuleRegistry[CurFSM->getHandle()].numStateHandles))
 		transState(ModuleRegistry[CurFSM->getHandle()].stateHandles[newStateHandle].state);
@@ -1146,8 +1131,7 @@ moduleHeader(void)
 // ROUTINE/FUNCTION routines
 //***************************************************************************
 
-void
-routine(void)
+void routine(void)
 {
 	const std::unique_ptr<SymTableNode>& routineIdPtr = nullptr;
 	//------------------------------------------------------------------------
@@ -1228,7 +1212,7 @@ routine(void)
 //***************************************************************************
 
 const std::unique_ptr<SymTableNode>&
-forwardState(const std::wstring_view& stateName)
+forwardState(std::wstring_view stateName)
 {
 	const std::unique_ptr<SymTableNode>& stateSymbol = searchSymTableForState(stateName, SymTableDisplay[1]);
 	if (stateSymbol)
@@ -1483,8 +1467,7 @@ declaredRoutineCall(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t p
 
 //***************************************************************************
 
-void
-actualParamList(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t paramCheckFlag)
+void actualParamList(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t paramCheckFlag)
 {
 	const std::unique_ptr<SymTableNode>& formalParamIdPtr = nullptr;
 	DefinitionType formalParamDefn = (DefinitionType)0;
@@ -1560,8 +1543,7 @@ actualParamList(const std::unique_ptr<SymTableNode>& routineIdPtr, int32_t param
 
 extern wchar_t SetStateDebugStr[256];
 
-void
-transState(const std::unique_ptr<SymTableNode>& newState)
+void transState(const std::unique_ptr<SymTableNode>& newState)
 {
 	if (CurFSM)
 	{

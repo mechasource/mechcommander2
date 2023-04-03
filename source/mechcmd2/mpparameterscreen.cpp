@@ -67,7 +67,7 @@ GUID NO_VERSION_GUID = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 };
 
-const std::wstring_view& pPurchaseFiles[5] = {
+std::wstring_view pPurchaseFiles[5] = {
 	"purchase_Steiner", "purchase_Davion", "purchase_Liao", "purchase_Clan", "purchase_All"};
 
 MPParameterScreen::MPParameterScreen()
@@ -113,8 +113,7 @@ MPParameterScreen::indexOfButtonWithID(int32_t id)
 	return -1;
 }
 
-void
-MPParameterScreen::init(FitIniFile* file)
+void MPParameterScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if (buttonCount)
@@ -167,8 +166,7 @@ MPParameterScreen::init(FitIniFile* file)
 	edits[3].limitEntry(6);
 }
 
-void
-MPParameterScreen::begin()
+void MPParameterScreen::begin()
 {
 	fadeOutTime = 0.f;
 	fadeTime = 0.f;
@@ -196,8 +194,7 @@ MPParameterScreen::begin()
 	bWaitingToStart = 0;
 }
 
-void
-MPParameterScreen::end()
+void MPParameterScreen::end()
 {
 	if (status == PREVIOUS)
 		MPlayer->closeSession();
@@ -213,8 +210,7 @@ MPParameterScreen::end()
 	bHostLeftDlg = 0;
 }
 
-void
-MPParameterScreen::render(int32_t xOffset, int32_t yOffset)
+void MPParameterScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	if (VERSION_STATUS_UNKNOWN == MPlayer->getVersionStatus())
 	{
@@ -265,8 +261,7 @@ MPParameterScreen::render(int32_t xOffset, int32_t yOffset)
 	}
 }
 
-void
-MPParameterScreen::render()
+void MPParameterScreen::render()
 {
 	render(0, 0);
 }
@@ -503,19 +498,17 @@ MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void
-MPParameterScreen::initializeMap(const std::wstring_view& fileName)
+void MPParameterScreen::initializeMap(std::wstring_view fileName)
 {
 	s_instance->setMission(fileName, true);
 }
 
-void
-MPParameterScreen::setMission(const std::wstring_view& fileName, bool resetData)
+void MPParameterScreen::setMission(std::wstring_view fileName, bool resetData)
 {
 	FullPathFileName path;
 	path.init(missionPath, fileName, ".fit");
 	FitIniFile missionFile;
-	if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
+	if (NO_ERROR != missionFile.open((std::wstring_view)(std::wstring_view)path))
 	{
 		wchar_t errorStr[256];
 		sprintf(errorStr, "couldn't open file %s", fileName);
@@ -622,8 +615,7 @@ int32_t __cdecl sortPlayers(PCVOID p1, PCVOID p2)
 	return 1;
 }
 
-void
-MPParameterScreen::update()
+void MPParameterScreen::update()
 {
 	if (MPlayer->commanderid < 0) // don't do anything until we've been initalized
 		return;
@@ -760,7 +752,7 @@ MPParameterScreen::update()
 				uint8_t* pData = new uint8_t[size];
 
 				file.read( pData, size );
-				MPlayer->sendPlayerInsignia( (const std::wstring_view&)pPlayer->insigniaFile, pData,
+				MPlayer->sendPlayerInsignia( (std::wstring_view)pPlayer->insigniaFile, pData,
 	   size ); MPlayer->insigniaList[MPlayer->commanderid] = 1;
 			}
 		}*/
@@ -830,7 +822,7 @@ MPParameterScreen::update()
 			if (mpLoadMap.getStatus() == YES)
 			{
 				// need to pull in this map information....
-				const std::wstring_view& pName = mpLoadMap.getMapFileName();
+				std::wstring_view pName = mpLoadMap.getMapFileName();
 				LogisticsData::instance->setCurrentMission(pName);
 				// now I need to update the other people....
 				setMission(pName);
@@ -995,7 +987,7 @@ MPParameterScreen::update()
 			bEditHasFocus = true;
 			if (!edits[oldEditFocus].hasFocus())
 			{
-				const std::wstring_view& text;
+				std::wstring_view text;
 				edits[oldEditFocus].getEntry(text);
 				int32_t val = atoi(text);
 				switch (oldEditFocus)
@@ -1179,15 +1171,14 @@ MPParameterScreen::update()
 	*/
 }
 
-GUID
-MPParameterScreen::getGUIDFromFile(const std::wstring_view& pNewMapName)
+GUID MPParameterScreen::getGUIDFromFile(std::wstring_view pNewMapName)
 {
 	GUID retVal;
 	memset(&retVal, 0xff, sizeof(GUID));
 	FullPathFileName path;
 	path.init(missionPath, pNewMapName, ".pak");
 	PacketFile pakFile;
-	if (NO_ERROR != pakFile.open((const std::wstring_view&)(const std::wstring_view&)path))
+	if (NO_ERROR != pakFile.open((std::wstring_view)(std::wstring_view)path))
 	{
 		return retVal;
 	}
@@ -1205,13 +1196,12 @@ MPParameterScreen::getGUIDFromFile(const std::wstring_view& pNewMapName)
 	}
 }
 
-void
-MPParameterScreen::setMissionClientOnly(const std::wstring_view& pNewMapName)
+void MPParameterScreen::setMissionClientOnly(std::wstring_view pNewMapName)
 {
 	FullPathFileName path;
 	path.init(missionPath, pNewMapName, ".fit");
 	FitIniFile missionFile;
-	if (NO_ERROR != missionFile.open((const std::wstring_view&)(const std::wstring_view&)path))
+	if (NO_ERROR != missionFile.open((std::wstring_view)(std::wstring_view)path))
 	{
 		wchar_t tmp[256];
 		wchar_t final[1024];
@@ -1238,8 +1228,7 @@ MPParameterScreen::setMissionClientOnly(const std::wstring_view& pNewMapName)
 	mapName = MPlayer->missionSettings.map;
 }
 
-void
-MPParameterScreen::checkVersionClientOnly(const std::wstring_view& pNewMapName)
+void MPParameterScreen::checkVersionClientOnly(std::wstring_view pNewMapName)
 {
 	GUID version = getGUIDFromFile(pNewMapName);
 	if (MPlayer->missionSettings.mapGuid != NO_VERSION_GUID && version != MPlayer->missionSettings.mapGuid && version != NO_VERSION_GUID) // if 0 it simply wasn't in the file at all,
@@ -1269,8 +1258,7 @@ MPParameterScreen::checkVersionClientOnly(const std::wstring_view& pNewMapName)
 	}
 }
 
-void
-MPParameterScreen::resetCheckBoxes()
+void MPParameterScreen::resetCheckBoxes()
 {
 	if (MPlayer->isHost())
 	{
@@ -1285,8 +1273,7 @@ MPParameterScreen::resetCheckBoxes()
 	}
 }
 
-void
-MPParameterScreen::setHostLeftDlg(const std::wstring_view& playerName)
+void MPParameterScreen::setHostLeftDlg(std::wstring_view playerName)
 {
 	wchar_t leaveStr[256];
 	wchar_t formatStr[256];
@@ -1378,8 +1365,7 @@ aPlayerParams::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void
-aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
+void aPlayerParams::init(FitIniFile* pFile, std::wstring_view blockNameParam)
 {
 	FitIniFile& file = (*pFile);
 	pFile->seekBlock(blockNameParam);
@@ -1403,25 +1389,25 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 	CBillsSpinnerDownButton.setDisabledFX(LOG_WRONGBUTTON);
 	CBillsSpinnerUpButton.setDisabledFX(LOG_WRONGBUTTON);
 	ReadyButton.setDisabledFX(LOG_WRONGBUTTON);
-	const std::wstring_view& staticName = "PlayerParamsStatic";
-	const std::wstring_view& textName = "PlayerParamsText";
-	const std::wstring_view& rectName = "PlayerParamsRect";
-	wchar_t blockName[256];
+	std::wstring_view staticName = "PlayerParamsStatic";
+	std::wstring_view textName = "PlayerParamsText";
+	std::wstring_view rectName = "PlayerParamsRect";
+	wchar_t blockname[256];
 	// init statics
 	if (staticName)
 	{
-		sprintf(blockName, "%s%c", staticName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", staticName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			file.readIdLong("staticCount", staticCount);
 			if (staticCount)
 			{
 				statics = new aObject[staticCount];
-				wchar_t blockName[128];
+				wchar_t blockname[128];
 				for (size_t i = 0; i < staticCount; i++)
 				{
-					sprintf(blockName, "%s%ld", staticName, i);
-					statics[i].init(&file, blockName);
+					sprintf(blockname, "%s%ld", staticName, i);
+					statics[i].init(&file, blockname);
 					addChild(&(statics[i]));
 				}
 			}
@@ -1430,18 +1416,18 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 	if (rectName)
 	{
 		// init rects
-		sprintf(blockName, "%s%c", rectName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", rectName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			file.readIdLong("rectCount", rectCount);
 			if (rectCount)
 			{
 				rects = new aRect[rectCount];
-				wchar_t blockName[128];
+				wchar_t blockname[128];
 				for (size_t i = 0; i < rectCount; i++)
 				{
-					sprintf(blockName, "%s%ld", rectName, i);
-					rects[i].init(&file, blockName);
+					sprintf(blockname, "%s%ld", rectName, i);
+					rects[i].init(&file, blockname);
 					addChild(&(rects[i]));
 				}
 			}
@@ -1450,19 +1436,19 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 	// init texts
 	if (textName)
 	{
-		sprintf(blockName, "%s%c", textName, 's');
-		if (NO_ERROR == file.seekBlock(blockName))
+		sprintf(blockname, "%s%c", textName, 's');
+		if (NO_ERROR == file.seekBlock(blockname))
 		{
 			if (NO_ERROR != file.readIdLong("TextEntryCount", textCount))
 				file.readIdLong("TextCount", textCount);
 			if (textCount)
 			{
 				textObjects = new aText[textCount];
-				wchar_t blockName[64];
+				wchar_t blockname[64];
 				for (size_t i = 0; i < textCount; i++)
 				{
-					sprintf(blockName, "%s%ld", textName, i);
-					textObjects[i].init(&file, blockName);
+					sprintf(blockname, "%s%ld", textName, i);
+					textObjects[i].init(&file, blockname);
 					addChild(&(textObjects[i]));
 				}
 			}
@@ -1549,8 +1535,7 @@ aPlayerParams::init(FitIniFile* pFile, const std::wstring_view& blockNameParam)
 	}
 }
 
-bool
-aPlayerParams::hasFocus()
+bool aPlayerParams::hasFocus()
 {
 	if (edit.hasFocus())
 		return true;
@@ -1561,8 +1546,7 @@ aPlayerParams::hasFocus()
 	return false;
 }
 
-void
-aPlayerParams::destroy()
+void aPlayerParams::destroy()
 {
 	removeAllChildren();
 	if (statics)
@@ -1577,8 +1561,7 @@ aPlayerParams::destroy()
 	aObject::destroy();
 }
 
-void
-aPlayerParams::update()
+void aPlayerParams::update()
 {
 	if (!MPlayer->isHost())
 	{
@@ -1688,7 +1671,7 @@ aPlayerParams::update()
 	// need to check for changes
 	int32_t oldSel = teamNumberDropList.GetSelectedItem();
 	int32_t oldFaction = factionDropList.GetSelectedItem();
-	const std::wstring_view& pText = textObjects[1].text;
+	std::wstring_view pText = textObjects[1].text;
 	int32_t oldCBills = 0;
 	if (pText)
 	{
@@ -1717,7 +1700,7 @@ aPlayerParams::update()
 	int32_t newSel = teamNumberDropList.GetSelectedItem();
 	int32_t newFaction = factionDropList.GetSelectedItem();
 	bool bNewReady = ReadyButton.isPressed();
-	const std::wstring_view& cBillsText;
+	std::wstring_view cBillsText;
 	edit.getEntry(cBillsText);
 	int32_t newCBills = 0;
 	if (cBillsText.Length())
@@ -1764,14 +1747,12 @@ aPlayerParams::update()
 		bHasFocus = false;
 }
 
-void
-aPlayerParams::disableReadyButton()
+void aPlayerParams::disableReadyButton()
 {
 	ReadyButton.disable(true);
 }
 
-void
-aPlayerParams::setData(const _MC2Player* data)
+void aPlayerParams::setData(const _MC2Player* data)
 {
 	bool bDisable = (data->cBills <= 0);
 	CBillsSpinnerDownButton.disable(bDisable);
@@ -1810,7 +1791,7 @@ aPlayerParams::setData(const _MC2Player* data)
 	// set up the insignia...
 	// I really need to store this... really don't want to allocate a texture
 	// every time
-	const std::wstring_view& pFileName = data->insigniaFile;
+	std::wstring_view pFileName = data->insigniaFile;
 	if (pFileName != insigniaName)
 	{
 		FullPathFileName path;
@@ -1889,22 +1870,20 @@ aPlayerParams::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void
-aPlayerParams::render()
+void aPlayerParams::render()
 {
 	aObject::render();
 }
 
-void
-aPlayerParams::move(float offsetX, float offsetY)
+void aPlayerParams::move(float offsetX, float offsetY)
 {
 	aObject::move(offsetX, offsetY);
 }
 
 int32_t
-aStyle2TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
+aStyle2TextListItem::init(FitIniFile* file, std::wstring_view blockname)
 {
-	file->seekBlock(blockName);
+	file->seekBlock(blockname);
 	int32_t fontResID = 0;
 	file->readIdLong("Font", fontResID);
 	int32_t textID = 0;
@@ -1930,8 +1909,7 @@ aStyle2TextListItem::init(FitIniFile* file, const std::wstring_view& blockName)
 	return 0;
 }
 
-void
-aStyle2TextListItem::render()
+void aStyle2TextListItem::render()
 {
 	int32_t color = normalcolour;
 	if (hasAnimation)
@@ -1964,8 +1942,7 @@ CFocusManager::CFocusManager()
 	clear();
 }
 
-void
-CFocusManager::clear()
+void CFocusManager::clear()
 {
 	speciesOfTheControlWhichHasTheFocus = CS_NONE;
 	pDropListThatHasTheFocus = nullptr;
@@ -1979,14 +1956,12 @@ CFocusManager::registerDropList(aDropList& DropList)
 	return ((PVOID)&DropList);
 }
 
-void
-CFocusManager::unregisterDropList(aDropList& DropList)
+void CFocusManager::unregisterDropList(aDropList& DropList)
 {
 	listOfDropListPointers.Delete(listOfDropListPointers.Find(&DropList));
 }
 
-void
-CFocusManager::update()
+void CFocusManager::update()
 {
 	if (userInput->isLeftClick())
 	{
@@ -2038,8 +2013,7 @@ CFocusManager::update()
 	}
 }
 
-bool
-CFocusManager::somebodyHasTheFocus()
+bool CFocusManager::somebodyHasTheFocus()
 {
 	if (CS_NONE == speciesOfTheControlWhichHasTheFocus)
 	{

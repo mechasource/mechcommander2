@@ -111,7 +111,7 @@ typedef uint32_t ObjectiveStatus;
 
 #define MAX_OBJECTIVES 50
 
-enum class 
+enum class
 {
 	MISSION_LOAD_SP_QUICKSTART,
 	MISSION_LOAD_SP_LOGISTICS,
@@ -222,11 +222,14 @@ public:
 		missionBrainParams = nullptr;
 	}
 
-	Mission(void) { init(void); }
+	Mission(void)
+	{
+		init(void);
+	}
 
-	bool calcComplexDropZones(const std::wstring_view& missionName, wchar_t dropZoneList[MAX_MC_PLAYERS]);
+	bool calcComplexDropZones(std::wstring_view missionName, wchar_t dropZoneList[MAX_MC_PLAYERS]);
 
-	void init(const std::wstring_view& missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList,
+	void init(std::wstring_view missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList,
 		wchar_t commandersToLoad[8][3], int32_t numMoversPerCommander);
 
 	static void initBareMinimum(void);
@@ -236,22 +239,37 @@ public:
 
 	void start(void);
 
-	Stuff::Vector3D getDropZone(void) const { return dropZone; }
+	Stuff::Vector3D getDropZone(void) const
+	{
+		return dropZone;
+	}
 
 	int32_t update(void);
 	int32_t render(void);
 
 	void destroy(bool initLogistics = true);
 
-	~Mission(void) { destroy(false); }
+	~Mission(void)
+	{
+		destroy(false);
+	}
 
 	int32_t getStatus(void);
 
-	int32_t getNumParts(void) { return (numParts); }
+	int32_t getNumParts(void)
+	{
+		return (numParts);
+	}
 
-	PartPtr getPart(int32_t partNumber) { return (&parts[partNumber]); }
+	PartPtr getPart(int32_t partNumber)
+	{
+		return (&parts[partNumber]);
+	}
 
-	int32_t getPartTeamId(int32_t partNumber) { return (parts[partNumber].teamId); }
+	int32_t getPartTeamId(int32_t partNumber)
+	{
+		return (parts[partNumber].teamId);
+	}
 
 	GameObjectPtr getPartObject(int32_t partNumber)
 	{
@@ -268,14 +286,17 @@ public:
 
 	int32_t removeMover(std::unique_ptr<Mover> mover);
 
-	void tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID, const std::wstring_view& pilotFileName,
-		const std::wstring_view& brainFileName);
+	void tradeMover(std::unique_ptr<Mover> mover, int32_t newTeamID, int32_t newCommanderID, std::wstring_view pilotFileName,
+		std::wstring_view brainFileName);
 
 	void createPartObject(int32_t objectId, std::unique_ptr<Mover> mover);
 
 	void createMissionObject(int32_t partId); // Moves object from holding area to real world.
 
-	const std::unique_ptr<ABLModule>& getBrain(void) { return (missionBrain); }
+	const std::unique_ptr<ABLModule>& getBrain(void)
+	{
+		return (missionBrain);
+	}
 
 	void handleMultiplayMessage(int32_t code, int32_t param1);
 
@@ -301,22 +322,40 @@ public:
 	bool checkObjectiveFailed(void);
 	//-----------------------------------------------------
 
-	int32_t GetOperationID(void) { return operationId; }
+	int32_t GetOperationID(void)
+	{
+		return operationId;
+	}
 
-	int32_t GetMissionID(void) { return missionId; }
+	int32_t GetMissionID(void)
+	{
+		return missionId;
+	}
 
-	const std::wstring_view& getMissionName(void) { return missionScriptName; }
+	std::wstring_view getMissionName(void)
+	{
+		return missionScriptName;
+	}
 
-	int32_t getMissionTuneId(void) { return missionTuneNum; }
+	int32_t getMissionTuneId(void)
+	{
+		return missionTuneNum;
+	}
 
-	const std::wstring_view& getMissionFileName() { return missionFileName; }
+	std::wstring_view getMissionFileName()
+	{
+		return missionFileName;
+	}
 
 	static void initializeStatistics(void);
 
-	void load(const std::wstring_view& filename);
-	void save(const std::wstring_view& filename);
+	void load(std::wstring_view filename);
+	void save(std::wstring_view filename);
 
-	bool isActive(void) { return active; }
+	bool isActive(void)
+	{
+		return active;
+	}
 };
 
 //----------------------------------------------------------------------------------

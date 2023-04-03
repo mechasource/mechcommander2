@@ -12,8 +12,7 @@
 //#############################################################################
 //#############################################################################
 //
-bool
-Radian::TestClass()
+bool Radian::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Radian Test..."));
 	const Radian a(1.25f);
@@ -103,8 +102,7 @@ Radian::TestClass()
 //#############################################################################
 //#############################################################################
 //
-bool
-Degree::TestClass()
+bool Degree::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Degree test..."));
 	const Degree a(Degrees_Per_Radian);
@@ -134,8 +132,7 @@ Degree::TestClass()
 //#############################################################################
 //#############################################################################
 //
-bool
-SinCosPair::TestClass()
+bool SinCosPair::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting SinCos test..."));
 	Radian s, r(Pi_Over_2);

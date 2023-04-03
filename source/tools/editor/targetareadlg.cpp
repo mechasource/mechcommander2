@@ -14,8 +14,8 @@ TargetAreaDlg.cpp			: Implementation of the TargetAreaDlg component.
 //#include "editorinterface.h"
 
 //-------------------------------------------------------------------------------------------------
-TargetAreaDlg::TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius) :
-	CDialog(IDD_TARGET_AREA)
+TargetAreaDlg::TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius)
+	: CDialog(IDD_TARGET_AREA)
 {
 	m_pTargetCenterX = &targetCenterX;
 	m_pTargetCenterY = &targetCenterY;
@@ -27,8 +27,7 @@ TargetAreaDlg::TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& 
 	m_pOKButton = 0;
 }
 
-BOOL
-TargetAreaDlg::OnInitDialog()
+BOOL TargetAreaDlg::OnInitDialog()
 {
 	m_pTargetCenterXEditBox = (CEdit*)GetDlgItem(IDC_TARGET_AREA_CENTER_X_EDIT);
 	_ASSERT(m_pTargetCenterXEditBox);
@@ -40,7 +39,7 @@ TargetAreaDlg::OnInitDialog()
 	_ASSERT(m_pCancelButton);
 	m_pOKButton = (CButton*)GetDlgItem(IDOK);
 	_ASSERT(m_pOKButton);
-	const std::wstring_view& tmpStr;
+	std::wstring_view tmpStr;
 	tmpStr.Format("%.3f", (*m_pTargetCenterX));
 	m_pTargetCenterXEditBox->SetWindowText(tmpStr.Data());
 	tmpStr.Format("%.3f", (*m_pTargetCenterY));
@@ -50,8 +49,7 @@ TargetAreaDlg::OnInitDialog()
 	return 1;
 }
 
-BOOL
-TargetAreaDlg::OnCommand(WPARAM wparam,
+BOOL TargetAreaDlg::OnCommand(WPARAM wparam,
 	LPARAM lparam) // called by child controls to inform of an event
 {
 	_ASSERT(m_pCancelButton);
@@ -59,14 +57,12 @@ TargetAreaDlg::OnCommand(WPARAM wparam,
 	return inherited::OnCommand(wparam, lparam);
 }
 
-void
-TargetAreaDlg::OnCancel()
+void TargetAreaDlg::OnCancel()
 {
 	EndDialog(IDCANCEL);
 }
 
-void
-TargetAreaDlg::OnOK()
+void TargetAreaDlg::OnOK()
 {
 	CString tmpCStr;
 	int32_t result;
@@ -94,6 +90,6 @@ TargetAreaDlg::OnOK()
 
 //-------------------------------------------------------------------------------------------------
 
-TargetAreaDlg::~TargetAreaDlg() {}
+TargetAreaDlg::~TargetAreaDlg() { }
 
 // end of file ( TargetAreaDlg.cpp )

@@ -39,7 +39,7 @@ struct PathQueueRec
 class MovePathManager
 {
 public:
-	MovePathManager(void) noexcept {}
+	MovePathManager(void) noexcept { }
 	~MovePathManager(void) noexcept = default;
 
 	//PVOID operator new(size_t ourSize);
@@ -52,7 +52,7 @@ public:
 	void update(void);
 
 protected:
-	std::vector<PathQueueRec> m_pool;	// PathQueueRec pool[MAX_MOVERS];
+	std::vector<PathQueueRec> m_pool; // PathQueueRec pool[MAX_MOVERS];
 	//std::unique_ptr<PathQueueRec> queueFront;
 	//std::unique_ptr<PathQueueRec> queueEnd;
 	//std::unique_ptr<PathQueueRec> freeList;

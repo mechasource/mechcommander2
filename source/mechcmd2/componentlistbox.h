@@ -20,7 +20,6 @@ class LogisticsVehicle;
 
 #define COMP_ANIMATION_COUNT 5
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 ComponentListBox:
@@ -34,7 +33,10 @@ public:
 
 	static int32_t init(FitIniFile& file);
 
-	LogisticsComponent* getComponent() { return pComponent; }
+	LogisticsComponent* getComponent()
+	{
+		return pComponent;
+	}
 
 	virtual void render(void);
 

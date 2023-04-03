@@ -20,11 +20,23 @@ public:
 	// Construction
 	FractalDlg(CWnd* pParent = nullptr); // standard constructor
 
-	uint8_t GetNoise() { return m_noise; }
-	uint8_t GetThreshold() { return m_threshold; }
+	uint8_t GetNoise()
+	{
+		return m_noise;
+	}
+	uint8_t GetThreshold()
+	{
+		return m_threshold;
+	}
 
-	void SetThreshold(uint8_t newThreshold) { m_threshold = newThreshold; }
-	void SetNoise(uint8_t newNoise) { m_noise = newNoise; }
+	void SetThreshold(uint8_t newThreshold)
+	{
+		m_threshold = newThreshold;
+	}
+	void SetNoise(uint8_t newNoise)
+	{
+		m_noise = newNoise;
+	}
 
 	enum
 	{

@@ -23,7 +23,10 @@ class PilotReadyScreen : public LogisticsScreen
 {
 
 public:
-	static PilotReadyScreen* instance() { return s_instance; }
+	static PilotReadyScreen* instance()
+	{
+		return s_instance;
+	}
 	PilotReadyScreen(void);
 	virtual ~PilotReadyScreen(void);
 

@@ -38,7 +38,7 @@ struct TraceSample
 		QueueingEvent,
 		DispatchingEvent
 	};
-	void TestInstance() {}
+	void TestInstance() { }
 };
 
 template <class T>
@@ -69,11 +69,11 @@ public:
 protected:
 	static uint8_t NextTraceID;
 
-	const std::wstring_view& traceName;
+	std::wstring_view traceName;
 	int64_t lastActivity;
 	uint8_t traceNumber, traceType;
 
-	Trace(const std::wstring_view& name, Type type);
+	Trace(std::wstring_view name, Type type);
 
 	std::iostream& GetTraceLog(void);
 	void IncrementSampleCount(void);
@@ -112,7 +112,7 @@ protected:
 #endif
 
 public:
-	BitTrace(const std::wstring_view& name);
+	BitTrace(std::wstring_view name);
 
 	void Set(void);
 	void Clear(void);
@@ -158,7 +158,7 @@ protected:
 #endif
 
 public:
-	TraceOf(const std::wstring_view& name, const T& initial_value, Type trace_type, TraceSample::Type sample_type);
+	TraceOf(std::wstring_view name, const T& initial_value, Type trace_type, TraceSample::Type sample_type);
 
 	void TakeSnapshot(const T& value);
 };
@@ -167,8 +167,8 @@ public:
 //
 template <class T>
 TraceOf<T>::TraceOf(
-	const std::wstring_view& name, const T& initial_value, Type trace_type, TraceSample::Type sample_type) :
-	Trace(name, trace_type)
+	std::wstring_view name, const T& initial_value, Type trace_type, TraceSample::Type sample_type)
+	: Trace(name, trace_type)
 {
 	currentValue = initial_value;
 	sampleType = sample_type;
@@ -178,8 +178,7 @@ TraceOf<T>::TraceOf(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 template <class T>
-void
-TraceOf<T>::DumpTraceStatus()
+void TraceOf<T>::DumpTraceStatus()
 {
 	// Check_Object(this);
 	Spew(GROUP_STUFF_TRACE, currentValue);
@@ -188,8 +187,7 @@ TraceOf<T>::DumpTraceStatus()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 template <class T>
-void
-TraceOf<T>::ResetTrace()
+void TraceOf<T>::ResetTrace()
 {
 #if defined(USE_TIME_ANALYSIS)
 	weightedSum = 0.0;
@@ -201,8 +199,7 @@ TraceOf<T>::ResetTrace()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 template <class T>
-void
-TraceOf<T>::StartTiming()
+void TraceOf<T>::StartTiming()
 {
 	// Check_Object(this);
 	weightedSum = 0.0;
@@ -211,8 +208,7 @@ TraceOf<T>::StartTiming()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 template <class T>
-float
-TraceOf<T>::CalculateUsage(int64_t when, int64_t sample_time)
+float TraceOf<T>::CalculateUsage(int64_t when, int64_t sample_time)
 {
 	int64_t last_part = when - lastActivity;
 	weightedSum += last_part * currentValue;
@@ -224,8 +220,7 @@ TraceOf<T>::CalculateUsage(int64_t when, int64_t sample_time)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 template <class T>
-void
-TraceOf<T>::PrintUsage(float usage)
+void TraceOf<T>::PrintUsage(float usage)
 {
 	// Check_Object(this);
 	Spew(GROUP_STUFF_TRACE, usage);
@@ -236,8 +231,7 @@ TraceOf<T>::PrintUsage(float usage)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 template <class T>
-void
-TraceOf<T>::TakeSnapshot(const T& value)
+void TraceOf<T>::TakeSnapshot(const T& value)
 {
 	// Check_Object(this);
 #if defined(USE_TIME_ANALYSIS) || defined(USE_TRACE_LOG)
@@ -312,7 +306,7 @@ public:
 		// Check_Object(this);
 		return activeBits;
 	}
-	const std::wstring_view&
+	std::wstring_view
 	GetNameOfTrace(int32_t bit_no);
 
 #if defined(USE_TIME_ANALYSIS)
@@ -322,7 +316,7 @@ public:
 
 #if defined(USE_TRACE_LOG)
 	void CreateTraceLog(size_t max_trace_samples, bool start_sampling);
-	void SaveTraceLog(const std::wstring_view& filename);
+	void SaveTraceLog(std::wstring_view filename);
 	void MarkTraceLog(void);
 	void SuspendTraceLogging(void);
 	void ResumeTraceLogging(void);

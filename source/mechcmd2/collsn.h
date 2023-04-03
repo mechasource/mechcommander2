@@ -62,7 +62,10 @@ public:
 
 	void destroy(void);
 
-	~GlobalCollisionAlert(void) { destroy(void); }
+	~GlobalCollisionAlert(void)
+	{
+		destroy(void);
+	}
 
 	int32_t addRecord(GameObjectPtr obj1, GameObjectPtr obj2, float distance, float time);
 
@@ -124,13 +127,19 @@ public:
 		gridIsGo = FALSE;
 	}
 
-	CollisionGrid(void) { init(void); }
+	CollisionGrid(void)
+	{
+		init(void);
+	}
 
 	int32_t init(Stuff::Vector3D& newOrigin);
 
 	void destroy(void);
 
-	~CollisionGrid(void) { destroy(void); }
+	~CollisionGrid(void)
+	{
+		destroy(void);
+	}
 
 	int32_t add(uint32_t gridIndex, GameObjectPtr object);
 	int32_t add(GameObjectPtr object);
@@ -180,15 +189,24 @@ public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
-	void init(void) { collisionGrid = nullptr; }
+	void init(void)
+	{
+		collisionGrid = nullptr;
+	}
 
-	CollisionSystem(void) { init(void); }
+	CollisionSystem(void)
+	{
+		init(void);
+	}
 
 	int32_t init(FitIniFile* scenarioFile);
 
 	void destroy(void);
 
-	~CollisionSystem(void) { destroy(void); }
+	~CollisionSystem(void)
+	{
+		destroy(void);
+	}
 
 	void checkObjects(void);
 

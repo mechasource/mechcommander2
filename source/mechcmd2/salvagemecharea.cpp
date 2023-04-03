@@ -103,8 +103,7 @@ int32_t __cdecl sortMechs(PCVOID pW1, PCVOID pW2)
 	return 0;
 }
 
-void
-SalvageMechScreen::init(FitIniFile* file)
+void SalvageMechScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(
 		*file, "SalvageAreaStatic", "SalvageAreaText", "SalvageAreaRect", "SalvageAreaButton");
@@ -148,8 +147,7 @@ SalvageMechScreen::init(FitIniFile* file)
 	beginFadeIn(1.0);
 }
 
-void
-SalvageMechScreen::render()
+void SalvageMechScreen::render()
 {
 	int32_t xOffset = 0;
 	int32_t yOffset = 0;
@@ -198,13 +196,11 @@ SalvageMechScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-bool
-SalvageMechScreen::isDone()
+bool SalvageMechScreen::isDone()
 {
 	return bDone && (exitAnim.isDone() || (fadeTime > fadeOutTime));
 }
-void
-SalvageMechScreen::update()
+void SalvageMechScreen::update()
 {
 	int32_t amount = LogisticsData::instance->getCBills();
 	int32_t color = 0xff005392;
@@ -250,8 +246,7 @@ SalvageMechScreen::update()
 		fadeTime = 0.f;
 }
 
-void
-SalvageMechScreen::updateSalvage()
+void SalvageMechScreen::updateSalvage()
 {
 	for (size_t i = 0; i < salvageListBox.GetItemCount(); i++)
 	{
@@ -271,8 +266,7 @@ SalvageListItem::~SalvageListItem()
 	removeAllChildren(true);
 }
 
-void
-SalvageListItem::init(FitIniFile* file)
+void SalvageListItem::init(FitIniFile* file)
 {
 	if (templateCheckButton)
 		return; // already initialized
@@ -373,8 +367,7 @@ SalvageListItem::SalvageListItem(BattleMech* pMech)
 	normalAnim.begin();
 }
 
-void
-SalvageListItem::update()
+void SalvageListItem::update()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
@@ -441,8 +434,7 @@ SalvageListItem::update()
 	aObject::update();
 }
 
-void
-SalvageListItem::render()
+void SalvageListItem::render()
 {
 	aObject::render();
 	icon->renderUnitIcon(iconRect.left + location[0].x + 3, iconRect.top + location[0].y + 5,
@@ -464,8 +456,7 @@ SalvageListItem::render()
 	drawEmptyRect(tmp, color, color);
 }
 
-bool
-SalvageListItem::isChecked()
+bool SalvageListItem::isChecked()
 {
 	return checkButton->isPressed();
 }
@@ -505,8 +496,7 @@ SalvageMechArea::~SalvageMechArea()
 	instance = nullptr;
 }
 
-void
-SalvageMechArea::init(FitIniFile* file)
+void SalvageMechArea::init(FitIniFile* file)
 {
 	file->seekBlock("SalvageAreaRect8");
 	int32_t left, right, top, bottom;
@@ -524,29 +514,27 @@ SalvageMechArea::init(FitIniFile* file)
 	file->readIdLong("bottom", bottom);
 	mechCamera.init(left, top, right, bottom);
 	LogisticsScreen::init(*file, 0, "SalvageAreaMechText", 0, 0);
-	wchar_t blockName[64];
+	wchar_t blockname[64];
 	for (size_t i = 0; i < 3; i++)
 	{
-		sprintf(blockName, "AttributeMeter%ld", i);
-		attributeMeters[i].init(file, blockName);
+		sprintf(blockname, "AttributeMeter%ld", i);
+		attributeMeters[i].init(file, blockname);
 	}
 }
 
-void
-SalvageMechArea::update()
+void SalvageMechArea::update()
 {
 	loadoutListBox.update();
 	mechCamera.update();
 }
-void
-SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue)
+void SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue)
 {
 	if (pMech == unit)
 		return;
 	loadoutListBox.setMech(pMech);
 	if (pMech)
 	{
-		const std::wstring_view& fileName = pMech->getFileName();
+		std::wstring_view fileName = pMech->getFileName();
 		int32_t index = fileName.Find('.');
 		fileName = fileName.Left(index);
 		index = fileName.ReverseFind('\\');
@@ -583,8 +571,7 @@ SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, in
 	unit = pMech;
 }
 
-void
-SalvageMechArea::render(int32_t xOffset, int32_t yOffset)
+void SalvageMechArea::render(int32_t xOffset, int32_t yOffset)
 {
 	loadoutListBox.move(xOffset, yOffset);
 	loadoutListBox.render();

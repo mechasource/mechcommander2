@@ -63,7 +63,7 @@ public:
 
 	// Movie name assumes path is correct.
 	// Sets up the MC2 to be played.
-	void init(const std::wstring_view& MC2Name, RECT mRect, bool useWaveFile);
+	void init(std::wstring_view MC2Name, RECT mRect, bool useWaveFile);
 
 	// Handles tickling MC2 to make sure we keep playing back
 	// Returns true when MC2 is DONE playing!!
@@ -73,7 +73,10 @@ public:
 	void render(void);
 
 	// Immediately stops playback of MC2.
-	void stop(void) { forceStop = true; }
+	void stop(void)
+	{
+		forceStop = true;
+	}
 
 	// Pause video playback.
 	void pause(bool pauseState)
@@ -96,9 +99,15 @@ public:
 	// If just move, its awfully fast.
 	void setRect(RECT vRect);
 
-	bool isPlaying(void) { return stillPlaying; }
+	bool isPlaying(void)
+	{
+		return stillPlaying;
+	}
 
-	const std::wstring_view& getMovieName(void) { return m_MC2Name; }
+	std::wstring_view getMovieName(void)
+	{
+		return m_MC2Name;
+	}
 
 protected:
 	uint32_t* MC2Surface; // Extra surface used if MC2 Movie is larger then 256x256

@@ -35,29 +35,30 @@ public:
 	bool RunTest();
 };
 
-ChainTestPlug::ChainTestPlug(int32_t value) :
-	Plug(DefaultData)
+ChainTestPlug::ChainTestPlug(int32_t value)
+	: Plug(DefaultData)
 {
 	this->value = value;
 }
 
-ChainTestPlug::~ChainTestPlug() {}
+ChainTestPlug::~ChainTestPlug() { }
 
-ChainTestNode::ChainTestNode() :
-	Node(DefaultData), chain1(nullptr), chain2(this)
+ChainTestNode::ChainTestNode()
+	: Node(DefaultData)
+	, chain1(nullptr)
+	, chain2(this)
 {
 	receivedCommand = 0;
 }
 
-ChainTestNode::~ChainTestNode() {}
+ChainTestNode::~ChainTestNode() { }
 
 //
 //###########################################################################
 // ProfileClass
 //###########################################################################
 //
-bool
-Chain::ProfileClass()
+bool Chain::ProfileClass()
 {
 	ChainTestNode testNode;
 #if defined(_ARMOR)
@@ -74,8 +75,7 @@ Chain::ProfileClass()
 // TestClass
 //###########################################################################
 //
-bool
-Chain::TestClass()
+bool Chain::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Chain test..."));
 	ChainTestNode testNode;
@@ -88,8 +88,7 @@ Chain::TestClass()
 // RunProfile
 //###########################################################################
 //
-bool
-ChainTestNode::RunProfile()
+bool ChainTestNode::RunProfile()
 {
 	ChainTestPlug* testPlug1;
 	CollectionSize i;
@@ -169,8 +168,7 @@ ChainTestNode::RunProfile()
 // RunTest
 //###########################################################################
 //
-bool
-ChainTestNode::RunTest()
+bool ChainTestNode::RunTest()
 {
 	ChainTestPlug *testPlug1, *testPlug2;
 	CollectionSize i;

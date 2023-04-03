@@ -195,7 +195,7 @@ public:
 	int32_t numPowerGenerators;
 	int32_t numSpecialBuildings;
 
-	const std::wstring_view& moverLineOfSightTable;
+	std::wstring_view moverLineOfSightTable;
 	bool useMoverLineOfSightTable;
 
 	GameObjectPtr* objList;
@@ -251,13 +251,19 @@ public:
 
 	void init(void);
 
-	GameObjectManager(void) { init(void); }
+	GameObjectManager(void)
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~GameObjectManager(void) { destroy(void); }
+	~GameObjectManager(void)
+	{
+		destroy(void);
+	}
 
-	void init(const std::wstring_view& objTypeDataFile, int32_t objTypeCacheSize, int32_t objCacheSize);
+	void init(std::wstring_view objTypeDataFile, int32_t objTypeCacheSize, int32_t objCacheSize);
 
 	void setNumObjects(int32_t nMechs, int32_t nVehicles, int32_t nElementals,
 		int32_t nTerrainObjects, int32_t nBuildings, int32_t nTurrets, int32_t nWeapons,
@@ -317,17 +323,35 @@ public:
 
 	ArtilleryPtr getArtillery(void);
 
-	int32_t getNumArtillery(void) { return (numArtillery); }
+	int32_t getNumArtillery(void)
+	{
+		return (numArtillery);
+	}
 
-	ArtilleryPtr getArtillery(int32_t artilleryIndex) { return (artillery[artilleryIndex]); }
+	ArtilleryPtr getArtillery(int32_t artilleryIndex)
+	{
+		return (artillery[artilleryIndex]);
+	}
 
-	int32_t getNumGateControls(void) { return (numGateControls); }
+	int32_t getNumGateControls(void)
+	{
+		return (numGateControls);
+	}
 
-	int32_t getNumTurretControls(void) { return (numTurretControls); }
+	int32_t getNumTurretControls(void)
+	{
+		return (numTurretControls);
+	}
 
-	BuildingPtr getGateControl(int32_t index) { return (gateControls[index]); }
+	BuildingPtr getGateControl(int32_t index)
+	{
+		return (gateControls[index]);
+	}
 
-	BuildingPtr getTurretControl(int32_t index) { return (turretControls[index]); }
+	BuildingPtr getTurretControl(int32_t index)
+	{
+		return (turretControls[index]);
+	}
 
 	void countTerrainObjects(PacketFile* pFile, int32_t firstHandle);
 
@@ -356,25 +380,55 @@ public:
 		return (Terrain::objBlockInfo[blockNumber].firstHandle);
 	}
 
-	int32_t getNumMechs(void) { return (numMechs); }
+	int32_t getNumMechs(void)
+	{
+		return (numMechs);
+	}
 
-	int32_t getNumVehicles(void) { return (numVehicles); }
+	int32_t getNumVehicles(void)
+	{
+		return (numVehicles);
+	}
 
-	int32_t getNumMovers(void) { return (numMovers); }
+	int32_t getNumMovers(void)
+	{
+		return (numMovers);
+	}
 
-	int32_t getMaxMovers(void) { return (maxMovers); }
+	int32_t getMaxMovers(void)
+	{
+		return (maxMovers);
+	}
 
-	int32_t getNumGoodMovers(void) { return (numGoodMovers); }
+	int32_t getNumGoodMovers(void)
+	{
+		return (numGoodMovers);
+	}
 
-	int32_t getNumBadMovers(void) { return (numBadMovers); }
+	int32_t getNumBadMovers(void)
+	{
+		return (numBadMovers);
+	}
 
-	int32_t getNumTerrainObjects(void) { return (numTerrainObjects); }
+	int32_t getNumTerrainObjects(void)
+	{
+		return (numTerrainObjects);
+	}
 
-	int32_t getNumBuildings(void) { return (numBuildings); }
+	int32_t getNumBuildings(void)
+	{
+		return (numBuildings);
+	}
 
-	int32_t getNumTurrets(void) { return (numTurrets); }
+	int32_t getNumTurrets(void)
+	{
+		return (numTurrets);
+	}
 
-	int32_t getNumGates(void) { return (numGates); }
+	int32_t getNumGates(void)
+	{
+		return (numGates);
+	}
 
 	void render(bool terrain, bool movers, bool other);
 
@@ -396,11 +450,20 @@ public:
 
 	bool modifyMoverLists(std::unique_ptr<Mover> mover, int32_t action);
 
-	std::unique_ptr<Mover> getMover(int32_t index) { return (moverList[index]); }
+	std::unique_ptr<Mover> getMover(int32_t index)
+	{
+		return (moverList[index]);
+	}
 
-	std::unique_ptr<Mover> getGoodMover(int32_t index) { return (goodMoverList[index]); }
+	std::unique_ptr<Mover> getGoodMover(int32_t index)
+	{
+		return (goodMoverList[index]);
+	}
 
-	std::unique_ptr<Mover> getBadMover(int32_t index) { return (badMoverList[index]); }
+	std::unique_ptr<Mover> getBadMover(int32_t index)
+	{
+		return (badMoverList[index]);
+	}
 
 	GameObjectPtr findObject(Stuff::Vector3D position);
 

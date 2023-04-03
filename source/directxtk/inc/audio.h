@@ -18,7 +18,7 @@
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
 #include <xma2defs.h>
-#pragma comment(lib,"acphal.lib")
+#pragma comment(lib, "acphal.lib")
 #endif
 
 #ifndef XAUDIO2_HELPER_FUNCTIONS
@@ -42,11 +42,10 @@
 #include <xapofx.h>
 
 #ifndef USING_XAUDIO2_REDIST
-#pragma comment(lib,"m_pxaudio2.lib")
+#pragma comment(lib, "m_pxaudio2.lib")
 #endif
 
 #include <DirectXMath.h>
-
 
 #include <cstdint>
 #include <functional>
@@ -54,697 +53,693 @@
 #include <string>
 #include <vector>
 
-
 namespace directxtk
 {
-    class SoundEffectInstance;
-    class SoundStreamInstance;
+class SoundEffectInstance;
+class SoundStreamInstance;
 
-    //----------------------------------------------------------------------------------
-    struct AudioStatistics
-    {
-        size_t  playingOneShots;        // Number of one-shot sounds currently playing
-        size_t  playingInstances;       // Number of sound effect instances currently playing
-        size_t  allocatedInstances;     // Number of SoundEffectInstance allocated
-        size_t  allocatedVoices;        // Number of XAudio2 voices allocated (standard, 3D, one-shots, and idle one-shots) 
-        size_t  allocatedVoices3d;      // Number of XAudio2 voices allocated for 3D
-        size_t  allocatedVoicesOneShot; // Number of XAudio2 voices allocated for one-shot sounds
-        size_t  allocatedVoicesIdle;    // Number of XAudio2 voices allocated for one-shot sounds but not currently in use
-        size_t  audioBytes;             // Total wave data (in bytes) in SoundEffects and in-memory WaveBanks
+//----------------------------------------------------------------------------------
+struct AudioStatistics
+{
+	size_t playingOneShots; // Number of one-shot sounds currently playing
+	size_t playingInstances; // Number of sound effect instances currently playing
+	size_t allocatedInstances; // Number of SoundEffectInstance allocated
+	size_t allocatedVoices; // Number of XAudio2 voices allocated (standard, 3D, one-shots, and idle one-shots)
+	size_t allocatedVoices3d; // Number of XAudio2 voices allocated for 3D
+	size_t allocatedVoicesOneShot; // Number of XAudio2 voices allocated for one-shot sounds
+	size_t allocatedVoicesIdle; // Number of XAudio2 voices allocated for one-shot sounds but not currently in use
+	size_t audioBytes; // Total wave data (in bytes) in SoundEffects and in-memory WaveBanks
 #if defined(_XBOX_ONE) && defined(_TITLE)
-        size_t  xmaAudioBytes;          // Total wave data (in bytes) in SoundEffects and in-memory WaveBanks allocated with ApuAlloc
+	size_t xmaAudioBytes; // Total wave data (in bytes) in SoundEffects and in-memory WaveBanks allocated with ApuAlloc
 #endif
-        size_t  streamingBytes;         // Total size of streaming buffers (in bytes) in streaming WaveBanks
-    };
+	size_t streamingBytes; // Total size of streaming buffers (in bytes) in streaming WaveBanks
+};
 
+//----------------------------------------------------------------------------------
+class IVoiceNotify
+{
+public:
+	virtual ~IVoiceNotify() = default;
 
-    //----------------------------------------------------------------------------------
-    class IVoiceNotify
-    {
-    public:
-        virtual ~IVoiceNotify() = default;
+	IVoiceNotify(const IVoiceNotify&) = delete;
+	IVoiceNotify& operator=(const IVoiceNotify&) = delete;
 
-        IVoiceNotify(const IVoiceNotify&) = delete;
-        IVoiceNotify& operator=(const IVoiceNotify&) = delete;
+	IVoiceNotify(IVoiceNotify&&) = default;
+	IVoiceNotify& operator=(IVoiceNotify&&) = default;
 
-        IVoiceNotify(IVoiceNotify&&) = default;
-        IVoiceNotify& operator=(IVoiceNotify&&) = default;
+	virtual void __cdecl OnBufferEnd() = 0;
+	// Notfication that a voice buffer has finished
+	// Note this is called from XAudio2's worker thread, so it should perform very minimal and thread-safe operations
 
-        virtual void __cdecl OnBufferEnd() = 0;
-            // Notfication that a voice buffer has finished
-            // Note this is called from XAudio2's worker thread, so it should perform very minimal and thread-safe operations
+	virtual void __cdecl OnCriticalError() = 0;
+	// Notification that the audio engine encountered a critical error
 
-        virtual void __cdecl OnCriticalError() = 0;
-            // Notification that the audio engine encountered a critical error
+	virtual void __cdecl OnReset() = 0;
+	// Notification of an audio engine reset
 
-        virtual void __cdecl OnReset() = 0;
-            // Notification of an audio engine reset
+	virtual void __cdecl OnUpdate() = 0;
+	// Notification of an audio engine per-frame update (opt-in)
 
-        virtual void __cdecl OnUpdate() = 0;
-            // Notification of an audio engine per-frame update (opt-in)
+	virtual void __cdecl OnDestroyEngine() noexcept = 0;
+	// Notification that the audio engine is being destroyed
 
-        virtual void __cdecl OnDestroyEngine() noexcept = 0;
-            // Notification that the audio engine is being destroyed
+	virtual void __cdecl OnTrim() = 0;
+	// Notification of a request to trim the voice pool
 
-        virtual void __cdecl OnTrim() = 0;
-            // Notification of a request to trim the voice pool
+	virtual void __cdecl GatherStatistics(AudioStatistics& stats) const = 0;
+	// Contribute to statistics request
 
-        virtual void __cdecl GatherStatistics(AudioStatistics& stats) const = 0;
-            // Contribute to statistics request
+	virtual void __cdecl OnDestroyParent() noexcept = 0;
+	// Optional notification used by some objects
 
-        virtual void __cdecl OnDestroyParent() noexcept = 0;
-            // Optional notification used by some objects
+protected:
+	IVoiceNotify() = default;
+};
 
-    protected:
-        IVoiceNotify() = default;
-    };
+//----------------------------------------------------------------------------------
+enum AUDIO_ENGINE_FLAGS : uint32_t
+{
+	AudioEngine_Default = 0x0,
 
-    //----------------------------------------------------------------------------------
-    enum AUDIO_ENGINE_FLAGS : uint32_t
-    {
-        AudioEngine_Default             = 0x0,
+	AudioEngine_EnvironmentalReverb = 0x1,
+	AudioEngine_ReverbUseFilters = 0x2,
+	AudioEngine_UseMasteringLimiter = 0x4,
 
-        AudioEngine_EnvironmentalReverb = 0x1,
-        AudioEngine_ReverbUseFilters    = 0x2,
-        AudioEngine_UseMasteringLimiter = 0x4,
+	AudioEngine_Debug = 0x10000,
+	AudioEngine_ThrowOnNoAudioHW = 0x20000,
+	AudioEngine_DisableVoiceReuse = 0x40000,
+};
 
-        AudioEngine_Debug               = 0x10000,
-        AudioEngine_ThrowOnNoAudioHW    = 0x20000,
-        AudioEngine_DisableVoiceReuse   = 0x40000,
-    };
+enum SOUND_EFFECT_INSTANCE_FLAGS : uint32_t
+{
+	SoundEffectInstance_Default = 0x0,
 
-    enum SOUND_EFFECT_INSTANCE_FLAGS : uint32_t
-    {
-        SoundEffectInstance_Default             = 0x0,
+	SoundEffectInstance_Use3D = 0x1,
+	SoundEffectInstance_ReverbUseFilters = 0x2,
+	SoundEffectInstance_NoSetPitch = 0x4,
 
-        SoundEffectInstance_Use3D               = 0x1,
-        SoundEffectInstance_ReverbUseFilters    = 0x2,
-        SoundEffectInstance_NoSetPitch          = 0x4,
+	SoundEffectInstance_UseRedirectLFE = 0x10000,
+};
 
-        SoundEffectInstance_UseRedirectLFE      = 0x10000,
-    };
+enum AUDIO_ENGINE_REVERB : uint32_t
+{
+	Reverb_Off,
+	Reverb_Default,
+	Reverb_Generic,
+	Reverb_Forest,
+	Reverb_PaddedCell,
+	Reverb_Room,
+	Reverb_Bathroom,
+	Reverb_LivingRoom,
+	Reverb_StoneRoom,
+	Reverb_Auditorium,
+	Reverb_ConcertHall,
+	Reverb_Cave,
+	Reverb_Arena,
+	Reverb_Hangar,
+	Reverb_CarpetedHallway,
+	Reverb_Hallway,
+	Reverb_StoneCorridor,
+	Reverb_Alley,
+	Reverb_City,
+	Reverb_Mountains,
+	Reverb_Quarry,
+	Reverb_Plain,
+	Reverb_ParkingLot,
+	Reverb_SewerPipe,
+	Reverb_Underwater,
+	Reverb_SmallRoom,
+	Reverb_MediumRoom,
+	Reverb_LargeRoom,
+	Reverb_MediumHall,
+	Reverb_LargeHall,
+	Reverb_Plate,
+	Reverb_MAX
+};
 
-    enum AUDIO_ENGINE_REVERB : uint32_t
-    {
-        Reverb_Off,
-        Reverb_Default,
-        Reverb_Generic,
-        Reverb_Forest,
-        Reverb_PaddedCell,
-        Reverb_Room,
-        Reverb_Bathroom,
-        Reverb_LivingRoom,
-        Reverb_StoneRoom,
-        Reverb_Auditorium,
-        Reverb_ConcertHall,
-        Reverb_Cave,
-        Reverb_Arena,
-        Reverb_Hangar,
-        Reverb_CarpetedHallway,
-        Reverb_Hallway,
-        Reverb_StoneCorridor,
-        Reverb_Alley,
-        Reverb_City,
-        Reverb_Mountains,
-        Reverb_Quarry,
-        Reverb_Plain,
-        Reverb_ParkingLot,
-        Reverb_SewerPipe,
-        Reverb_Underwater,
-        Reverb_SmallRoom,
-        Reverb_MediumRoom,
-        Reverb_LargeRoom,
-        Reverb_MediumHall,
-        Reverb_LargeHall,
-        Reverb_Plate,
-        Reverb_MAX
-    };
+enum SoundState
+{
+	STOPPED = 0,
+	PLAYING,
+	PAUSED
+};
 
-    enum SoundState
-    {
-        STOPPED = 0,
-        PLAYING,
-        PAUSED
-    };
+//----------------------------------------------------------------------------------
+class AudioEngine
+{
+public:
+	explicit AudioEngine(
+		AUDIO_ENGINE_FLAGS flags = AudioEngine_Default,
+		_In_opt_ const WAVEFORMATEX* wfx = nullptr,
+		_In_opt_ std::wstring_view devicename = std::wstring_view(),
+		AUDIO_STREAM_CATEGORY category = AudioCategory_GameEffects) noexcept(false);
 
+	AudioEngine(AudioEngine&& moveFrom) noexcept;
+	AudioEngine& operator=(AudioEngine&& moveFrom) noexcept;
 
-    //----------------------------------------------------------------------------------
-    class AudioEngine
-    {
-    public:
-        explicit AudioEngine(
-            AUDIO_ENGINE_FLAGS flags = AudioEngine_Default,
-            _In_opt_ const WAVEFORMATEX* wfx = nullptr,
-            _In_opt_ const std::wstring_view& devicename = std::wstring_view(),
-            AUDIO_STREAM_CATEGORY category = AudioCategory_GameEffects) noexcept(false);
+	AudioEngine(AudioEngine const&) = delete;
+	AudioEngine& operator=(AudioEngine const&) = delete;
 
-        AudioEngine(AudioEngine&& moveFrom) noexcept;
-        AudioEngine& operator= (AudioEngine&& moveFrom) noexcept;
+	virtual ~AudioEngine();
 
-        AudioEngine(AudioEngine const&) = delete;
-        AudioEngine& operator= (AudioEngine const&) = delete;
+	bool __cdecl Update();
+	// Performs per-frame processing for the audio engine, returns false if in 'silent mode'
 
-        virtual ~AudioEngine();
+	bool __cdecl reset(_In_opt_ const WAVEFORMATEX* wfx = nullptr, _In_opt_ std::wstring_view devicename = std::wstring_view());
+	// Reset audio engine from critical error/silent mode using a new device; can also 'migrate' the graph
+	// Returns true if succesfully reset, false if in 'silent mode' due to no default device
+	// Note: One shots are lost, all SoundEffectInstances are in the STOPPED state after successful reset
 
-        bool __cdecl Update();
-            // Performs per-frame processing for the audio engine, returns false if in 'silent mode'
+	void __cdecl Suspend() noexcept;
+	void __cdecl Resume();
+	// Suspend/resumes audio processing (i.e. global pause/resume)
 
-        bool __cdecl reset(_In_opt_ const WAVEFORMATEX* wfx = nullptr,_In_opt_ const std::wstring_view& devicename = std::wstring_view());
-            // Reset audio engine from critical error/silent mode using a new device; can also 'migrate' the graph
-            // Returns true if succesfully reset, false if in 'silent mode' due to no default device
-            // Note: One shots are lost, all SoundEffectInstances are in the STOPPED state after successful reset
+	float __cdecl GetMasterVolume() const noexcept;
+	void __cdecl SetMasterVolume(float volume);
+	// Master volume property for all sounds
 
-        void __cdecl Suspend() noexcept;
-        void __cdecl Resume();
-            // Suspend/resumes audio processing (i.e. global pause/resume)
+	void __cdecl SetReverb(AUDIO_ENGINE_REVERB reverb);
+	void __cdecl SetReverb(_In_opt_ const XAUDIO2FX_REVERB_PARAMETERS* native);
+	// Sets environmental reverb for 3D positional audio (if active)
 
-        float __cdecl GetMasterVolume() const noexcept;
-        void __cdecl SetMasterVolume(float volume);
-            // Master volume property for all sounds
+	void __cdecl SetMasteringLimit(int32_t release, int32_t loudness);
+	// Sets the mastering volume limiter properties (if active)
 
-        void __cdecl SetReverb(AUDIO_ENGINE_REVERB reverb);
-        void __cdecl SetReverb(_In_opt_ const XAUDIO2FX_REVERB_PARAMETERS* native);
-            // Sets environmental reverb for 3D positional audio (if active)
+	AudioStatistics __cdecl GetStatistics() const;
+	// Gathers audio engine statistics
 
-        void __cdecl SetMasteringLimit(int32_t release, int32_t loudness);
-            // Sets the mastering volume limiter properties (if active)
+	WAVEFORMATEXTENSIBLE __cdecl GetOutputFormat() const noexcept;
+	// Returns the format consumed by the mastering voice (which is the same as the device output if defaults are used)
 
-        AudioStatistics __cdecl GetStatistics() const;
-            // Gathers audio engine statistics
+	uint32_t __cdecl GetChannelMask() const noexcept;
+	// Returns the output channel mask
 
-        WAVEFORMATEXTENSIBLE __cdecl GetOutputFormat() const noexcept;
-            // Returns the format consumed by the mastering voice (which is the same as the device output if defaults are used)
+	uint32_t __cdecl GetOutputChannels() const noexcept;
+	// Returns the number of output channels
 
-        uint32_t __cdecl GetChannelMask() const noexcept;
-            // Returns the output channel mask
+	bool __cdecl IsAudioDevicePresent() const noexcept;
+	// Returns true if the audio graph is operating normally, false if in 'silent mode'
 
-        uint32_t __cdecl GetOutputChannels() const noexcept;
-            // Returns the number of output channels
+	bool __cdecl IsCriticalError() const noexcept;
+	// Returns true if the audio graph is halted due to a critical error (which also places the engine into 'silent mode')
 
-        bool __cdecl IsAudioDevicePresent() const noexcept;
-            // Returns true if the audio graph is operating normally, false if in 'silent mode'
+	// Voice pool management.
+	void __cdecl SetDefaultSampleRate(int32_t sampleRate);
+	// Sample rate for voices in the reuse pool (defaults to 44100)
 
-        bool __cdecl IsCriticalError() const noexcept;
-            // Returns true if the audio graph is halted due to a critical error (which also places the engine into 'silent mode')
+	void __cdecl SetMaxVoicePool(size_t maxOneShots, size_t maxInstances);
+	// Maximum number of voices to allocate for one-shots and instances
+	// Note: one-shots over this limit are ignored; too many instance voices throws an exception
 
-        // Voice pool management.
-        void __cdecl SetDefaultSampleRate(int32_t sampleRate);
-            // Sample rate for voices in the reuse pool (defaults to 44100)
+	void __cdecl TrimVoicePool();
+	// Releases any currently unused voices
 
-        void __cdecl SetMaxVoicePool(size_t maxOneShots, size_t maxInstances);
-            // Maximum number of voices to allocate for one-shots and instances
-            // Note: one-shots over this limit are ignored; too many instance voices throws an exception
+	// Internal-use functions
+	void __cdecl AllocateVoice(_In_ const WAVEFORMATEX* wfx,
+		SOUND_EFFECT_INSTANCE_FLAGS flags, bool oneshot, _Outptr_result_maybenull_ IXAudio2SourceVoice** voice);
 
-        void __cdecl TrimVoicePool();
-            // Releases any currently unused voices
+	void __cdecl DestroyVoice(_In_ IXAudio2SourceVoice* voice) noexcept;
+	// Should only be called for instance voices, not one-shots
 
-        // Internal-use functions
-        void __cdecl AllocateVoice(_In_ const WAVEFORMATEX* wfx,
-            SOUND_EFFECT_INSTANCE_FLAGS flags, bool oneshot, _Outptr_result_maybenull_ IXAudio2SourceVoice** voice);
+	void __cdecl RegisterNotify(_In_ IVoiceNotify* notify, bool usesUpdate);
+	void __cdecl UnregisterNotify(_In_ IVoiceNotify* notify, bool usesOneShots, bool usesUpdate);
 
-        void __cdecl DestroyVoice(_In_ IXAudio2SourceVoice* voice) noexcept;
-            // Should only be called for instance voices, not one-shots
+	// XAudio2 interface access
+	IXAudio2* __cdecl GetInterface() const noexcept;
+	IXAudio2MasteringVoice* __cdecl GetMasterVoice() const noexcept;
+	IXAudio2SubmixVoice* __cdecl GetReverbVoice() const noexcept;
+	X3DAUDIO_HANDLE& __cdecl Get3DHandle() const noexcept;
 
-        void __cdecl RegisterNotify(_In_ IVoiceNotify* notify, bool usesUpdate);
-        void __cdecl UnregisterNotify(_In_ IVoiceNotify* notify, bool usesOneShots, bool usesUpdate);
+	// Static functions
+	struct RendererDetail
+	{
+		std::wstring devicename;
+		std::wstring description;
+	};
 
-        // XAudio2 interface access
-        IXAudio2* __cdecl GetInterface() const noexcept;
-        IXAudio2MasteringVoice* __cdecl GetMasterVoice() const noexcept;
-        IXAudio2SubmixVoice* __cdecl GetReverbVoice() const noexcept;
-        X3DAUDIO_HANDLE& __cdecl Get3DHandle() const noexcept;
+	static std::vector<RendererDetail> __cdecl GetRendererDetails();
+	// Returns a list of valid audio endpoint devices
 
-        // Static functions
-        struct RendererDetail
-        {
-            std::wstring devicename;
-            std::wstring description;
-        };
+private:
+	// Private implementation.
+	class Impl;
+	std::unique_ptr<Impl> pimpl;
+};
 
-        static std::vector<RendererDetail> __cdecl GetRendererDetails();
-            // Returns a list of valid audio endpoint devices
+//----------------------------------------------------------------------------------
+class WaveBank
+{
+public:
+	WaveBank(_In_ AudioEngine* engine, _In_ std::wstring_view wbfilename);
 
-    private:
-        // Private implementation.
-        class Impl;
-        std::unique_ptr<Impl> pimpl;
-    };
+	WaveBank(WaveBank&& moveFrom) noexcept;
+	WaveBank& operator=(WaveBank&& moveFrom) noexcept;
 
+	WaveBank(WaveBank const&) = delete;
+	WaveBank& operator=(WaveBank const&) = delete;
 
-    //----------------------------------------------------------------------------------
-    class WaveBank
-    {
-    public:
-        WaveBank(_In_ AudioEngine* engine, _In_ const std::wstring_view& wbfilename);
+	virtual ~WaveBank();
 
-        WaveBank(WaveBank&& moveFrom) noexcept;
-        WaveBank& operator= (WaveBank&& moveFrom) noexcept;
+	void __cdecl Play(uint32_t index);
+	void __cdecl Play(uint32_t index, float volume, float pitch, float pan);
 
-        WaveBank(WaveBank const&) = delete;
-        WaveBank& operator= (WaveBank const&) = delete;
+	void __cdecl Play(_In_z_ const std::string_view& name);
+	void __cdecl Play(_In_z_ const std::string_view& name, float volume, float pitch, float pan);
 
-        virtual ~WaveBank();
+	std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(uint32_t index,
+		SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
+	std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(_In_z_ const std::string_view& name,
+		SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
 
-        void __cdecl Play(uint32_t index);
-        void __cdecl Play(uint32_t index, float volume, float pitch, float pan);
+	std::unique_ptr<SoundStreamInstance> __cdecl CreateStreamInstance(uint32_t index,
+		SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
+	std::unique_ptr<SoundStreamInstance> __cdecl CreateStreamInstance(_In_z_ const std::string_view& name,
+		SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
 
-        void __cdecl Play(_In_z_ const std::string_view& name);
-        void __cdecl Play(_In_z_ const std::string_view& name, float volume, float pitch, float pan);
+	bool __cdecl IsPrepared() const noexcept;
+	bool __cdecl IsInUse() const noexcept;
+	bool __cdecl IsStreamingBank() const noexcept;
 
-        std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(uint32_t index,
-            SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
-        std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(_In_z_ const std::string_view& name,
-            SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
+	size_t __cdecl GetSampleSizeInBytes(uint32_t index) const noexcept;
+	// Returns size of wave audio data
 
-        std::unique_ptr<SoundStreamInstance> __cdecl CreateStreamInstance(uint32_t index,
-            SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
-        std::unique_ptr<SoundStreamInstance> __cdecl CreateStreamInstance(_In_z_ const std::string_view& name,
-            SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
+	size_t __cdecl GetSampleDuration(uint32_t index) const noexcept;
+	// Returns the duration in samples
 
-        bool __cdecl IsPrepared() const noexcept;
-        bool __cdecl IsInUse() const noexcept;
-        bool __cdecl IsStreamingBank() const noexcept;
+	size_t __cdecl GetSampleDurationMS(uint32_t index) const noexcept;
+	// Returns the duration in milliseconds
 
-        size_t __cdecl GetSampleSizeInBytes(uint32_t index) const noexcept;
-        // Returns size of wave audio data
+	const WAVEFORMATEX* __cdecl GetFormat(uint32_t index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* wfx, size_t maxsize) const noexcept;
 
-        size_t __cdecl GetSampleDuration(uint32_t index) const noexcept;
-        // Returns the duration in samples
-
-        size_t __cdecl GetSampleDurationMS(uint32_t index) const noexcept;
-        // Returns the duration in milliseconds
-
-        const WAVEFORMATEX* __cdecl GetFormat(uint32_t index, _Out_writes_bytes_(maxsize) WAVEFORMATEX* wfx, size_t maxsize) const noexcept;
-
-        int32_t __cdecl Find(_In_z_ const std::string_view& name) const;
+	int32_t __cdecl Find(_In_z_ const std::string_view& name) const;
 
 #ifdef USING_XAUDIO2_9
-        bool __cdecl FillSubmitBuffer(uint32_t index, _Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
+	bool __cdecl FillSubmitBuffer(uint32_t index, _Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
 #else
-        void __cdecl FillSubmitBuffer(uint32_t index, _Out_ XAUDIO2_BUFFER& buffer) const;
+	void __cdecl FillSubmitBuffer(uint32_t index, _Out_ XAUDIO2_BUFFER& buffer) const;
 #endif
 
-        void __cdecl UnregisterInstance(_In_ IVoiceNotify* instance);
+	void __cdecl UnregisterInstance(_In_ IVoiceNotify* instance);
 
-        HANDLE __cdecl GetAsyncHandle() const noexcept;
+	HANDLE __cdecl GetAsyncHandle() const noexcept;
 
-        bool __cdecl GetPrivateData(uint32_t index, _Out_writes_bytes_(datasize) void* data, size_t datasize);
+	bool __cdecl GetPrivateData(uint32_t index, _Out_writes_bytes_(datasize) void* data, size_t datasize);
 
-    private:
-        // Private implementation.
-        class Impl;
+private:
+	// Private implementation.
+	class Impl;
 
-        std::unique_ptr<Impl> pimpl;
-    };
+	std::unique_ptr<Impl> pimpl;
+};
 
+//----------------------------------------------------------------------------------
+class SoundEffect
+{
+public:
+	SoundEffect(_In_ AudioEngine* engine, _In_ std::wstring_view waveFileName);
 
-    //----------------------------------------------------------------------------------
-    class SoundEffect
-    {
-    public:
-        SoundEffect(_In_ AudioEngine* engine, _In_ const std::wstring_view& waveFileName);
+	SoundEffect(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
+		_In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes);
 
-        SoundEffect(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
-            _In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes);
-
-        SoundEffect(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
-            _In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes,
-            uint32_t loopStart, uint32_t loopLength);
+	SoundEffect(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
+		_In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes,
+		uint32_t loopStart, uint32_t loopLength);
 
 #ifdef USING_XAUDIO2_9
 
-        SoundEffect(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
-            _In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes,
-            _In_reads_(seekCount) const uint32_t* seekTable, size_t seekCount);
+	SoundEffect(_In_ AudioEngine* engine, _Inout_ std::unique_ptr<uint8_t[]>& wavData,
+		_In_ const WAVEFORMATEX* wfx, _In_reads_bytes_(audioBytes) const uint8_t* startAudio, size_t audioBytes,
+		_In_reads_(seekCount) const uint32_t* seekTable, size_t seekCount);
 
 #endif
 
-        SoundEffect(SoundEffect&& moveFrom) noexcept;
-        SoundEffect& operator= (SoundEffect&& moveFrom) noexcept;
+	SoundEffect(SoundEffect&& moveFrom) noexcept;
+	SoundEffect& operator=(SoundEffect&& moveFrom) noexcept;
 
-        SoundEffect(SoundEffect const&) = delete;
-        SoundEffect& operator= (SoundEffect const&) = delete;
+	SoundEffect(SoundEffect const&) = delete;
+	SoundEffect& operator=(SoundEffect const&) = delete;
 
-        virtual ~SoundEffect();
+	virtual ~SoundEffect();
 
-        void __cdecl Play();
-        void __cdecl Play(float volume, float pitch, float pan);
+	void __cdecl Play();
+	void __cdecl Play(float volume, float pitch, float pan);
 
-        std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
+	std::unique_ptr<SoundEffectInstance> __cdecl CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
 
-        bool __cdecl IsInUse() const noexcept;
+	bool __cdecl IsInUse() const noexcept;
 
-        size_t __cdecl GetSampleSizeInBytes() const noexcept;
-        // Returns size of wave audio data
+	size_t __cdecl GetSampleSizeInBytes() const noexcept;
+	// Returns size of wave audio data
 
-        size_t __cdecl GetSampleDuration() const noexcept;
-        // Returns the duration in samples
+	size_t __cdecl GetSampleDuration() const noexcept;
+	// Returns the duration in samples
 
-        size_t __cdecl GetSampleDurationMS() const noexcept;
-        // Returns the duration in milliseconds
+	size_t __cdecl GetSampleDurationMS() const noexcept;
+	// Returns the duration in milliseconds
 
-        const WAVEFORMATEX* __cdecl GetFormat() const noexcept;
+	const WAVEFORMATEX* __cdecl GetFormat() const noexcept;
 
 #ifdef USING_XAUDIO2_9
-        bool __cdecl FillSubmitBuffer(_Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
+	bool __cdecl FillSubmitBuffer(_Out_ XAUDIO2_BUFFER& buffer, _Out_ XAUDIO2_BUFFER_WMA& wmaBuffer) const;
 #else
-        void __cdecl FillSubmitBuffer(_Out_ XAUDIO2_BUFFER& buffer) const;
+	void __cdecl FillSubmitBuffer(_Out_ XAUDIO2_BUFFER& buffer) const;
 #endif
 
-        void __cdecl UnregisterInstance(_In_ IVoiceNotify* instance);
-
-    private:
-        // Private implementation.
-        class Impl;
-
-        std::unique_ptr<Impl> pimpl;
-    };
-
-
-    //----------------------------------------------------------------------------------
-    struct AudioListener : public X3DAUDIO_LISTENER
-    {
-        AudioListener() noexcept
-        {
-            memset(this, 0, sizeof(X3DAUDIO_LISTENER));
-
-            OrientFront.z = -1.f;
-
-            OrientTop.y = 1.f;
-        }
-
-        void XM_CALLCONV SetPosition(DirectX::FXMVECTOR v) noexcept
-        {
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), v);
-        }
-        void __cdecl SetPosition(const DirectX::XMFLOAT3& pos) noexcept
-        {
-            Position.x = pos.x;
-            Position.y = pos.y;
-            Position.z = pos.z;
-        }
-
-        void XM_CALLCONV SetVelocity(DirectX::FXMVECTOR v) noexcept
-        {
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
-        }
-        void __cdecl SetVelocity(const DirectX::XMFLOAT3& vel) noexcept
-        {
-            Velocity.x = vel.x;
-            Velocity.y = vel.y;
-            Velocity.z = vel.z;
-        }
-
-        void XM_CALLCONV SetOrientation(DirectX::FXMVECTOR forward, DirectX::FXMVECTOR up) noexcept
-        {
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
-        }
-        void __cdecl SetOrientation(const DirectX::XMFLOAT3& forward, const DirectX::XMFLOAT3& up) noexcept
-        {
-            OrientFront.x = forward.x;  OrientTop.x = up.x;
-            OrientFront.y = forward.y;  OrientTop.y = up.y;
-            OrientFront.z = forward.z;  OrientTop.z = up.z;
-        }
-
-        void XM_CALLCONV SetOrientationFromQuaternion(DirectX::FXMVECTOR quat) noexcept
-        {
-            DirectX::XMVECTOR forward = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR2, quat);
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
-
-            DirectX::XMVECTOR up = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR1, quat);
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
-        }
-
-        void XM_CALLCONV Update(DirectX::FXMVECTOR newPos, DirectX::XMVECTOR upDir, float dt) noexcept
-            // Updates velocity and orientation by tracking changes in position over time...
-        {
-            if (dt > 0.f)
-            {
-                DirectX::XMVECTOR lastPos = XMLoadFloat3(reinterpret_cast<const DirectX::XMFLOAT3*>(&Position));
-
-                DirectX::XMVECTOR vDelta = DirectX::XMVectorSubtract(newPos, lastPos);
-                DirectX::XMVECTOR vt = DirectX::XMVectorReplicate(dt);
-                DirectX::XMVECTOR v = DirectX::XMVectorDivide(vDelta, vt);
-                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
-
-                vDelta = DirectX::XMVector3Normalize(vDelta);
-                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), vDelta);
-
-                v = DirectX::XMVector3Cross(upDir, vDelta);
-                v = DirectX::XMVector3Normalize(v);
-
-                v = DirectX::XMVector3Cross(vDelta, v);
-                v = DirectX::XMVector3Normalize(v);
-                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), v);
-
-                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), newPos);
-            }
-        }
-    };
-
-
-    //----------------------------------------------------------------------------------
-    struct AudioEmitter : public X3DAUDIO_EMITTER
-    {
-        float       EmitterAzimuths[XAUDIO2_MAX_AUDIO_CHANNELS];
-
-        AudioEmitter() noexcept :
-            EmitterAzimuths{}
-        {
-            memset(this, 0, sizeof(X3DAUDIO_EMITTER));
-
-            OrientFront.z = -1.f;
-
-            OrientTop.y =
-                ChannelRadius =
-                CurveDistanceScaler =
-                DopplerScaler = 1.f;
-
-            ChannelCount = 1;
-            pChannelAzimuths = EmitterAzimuths;
-
-            InnerRadiusAngle = X3DAUDIO_PI / 4.0f;
-        }
-
-        void XM_CALLCONV SetPosition(DirectX::FXMVECTOR v) noexcept
-        {
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), v);
-        }
-        void __cdecl SetPosition(const DirectX::XMFLOAT3& pos) noexcept
-        {
-            Position.x = pos.x;
-            Position.y = pos.y;
-            Position.z = pos.z;
-        }
-
-        void XM_CALLCONV SetVelocity(DirectX::FXMVECTOR v) noexcept
-        {
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
-        }
-        void __cdecl SetVelocity(const DirectX::XMFLOAT3& vel) noexcept
-        {
-            Velocity.x = vel.x;
-            Velocity.y = vel.y;
-            Velocity.z = vel.z;
-        }
-
-        void XM_CALLCONV SetOrientation(DirectX::FXMVECTOR forward, DirectX::FXMVECTOR up) noexcept
-        {
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
-        }
-        void __cdecl SetOrientation(const DirectX::XMFLOAT3& forward, const DirectX::XMFLOAT3& up) noexcept
-        {
-            OrientFront.x = forward.x;  OrientTop.x = up.x;
-            OrientFront.y = forward.y;  OrientTop.y = up.y;
-            OrientFront.z = forward.z;  OrientTop.z = up.z;
-        }
-
-        void XM_CALLCONV SetOrientationFromQuaternion(DirectX::FXMVECTOR quat) noexcept
-        {
-            DirectX::XMVECTOR forward = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR2, quat);
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
-
-            DirectX::XMVECTOR up = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR1, quat);
-            XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
-        }
-
-        void XM_CALLCONV Update(DirectX::FXMVECTOR newPos, DirectX::XMVECTOR upDir, float dt) noexcept
-            // Updates velocity and orientation by tracking changes in position over time...
-        {
-            if (dt > 0.f)
-            {
-                DirectX::XMVECTOR lastPos = XMLoadFloat3(reinterpret_cast<const DirectX::XMFLOAT3*>(&Position));
-
-                DirectX::XMVECTOR vDelta = DirectX::XMVectorSubtract(newPos, lastPos);
-                DirectX::XMVECTOR vt = DirectX::XMVectorReplicate(dt);
-                DirectX::XMVECTOR v = DirectX::XMVectorDivide(vDelta, vt);
-                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
+	void __cdecl UnregisterInstance(_In_ IVoiceNotify* instance);
+
+private:
+	// Private implementation.
+	class Impl;
+
+	std::unique_ptr<Impl> pimpl;
+};
+
+//----------------------------------------------------------------------------------
+struct AudioListener : public X3DAUDIO_LISTENER
+{
+	AudioListener() noexcept
+	{
+		memset(this, 0, sizeof(X3DAUDIO_LISTENER));
+
+		OrientFront.z = -1.f;
+
+		OrientTop.y = 1.f;
+	}
+
+	void XM_CALLCONV SetPosition(DirectX::FXMVECTOR v) noexcept
+	{
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), v);
+	}
+	void __cdecl SetPosition(const DirectX::XMFLOAT3& pos) noexcept
+	{
+		Position.x = pos.x;
+		Position.y = pos.y;
+		Position.z = pos.z;
+	}
+
+	void XM_CALLCONV SetVelocity(DirectX::FXMVECTOR v) noexcept
+	{
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
+	}
+	void __cdecl SetVelocity(const DirectX::XMFLOAT3& vel) noexcept
+	{
+		Velocity.x = vel.x;
+		Velocity.y = vel.y;
+		Velocity.z = vel.z;
+	}
+
+	void XM_CALLCONV SetOrientation(DirectX::FXMVECTOR forward, DirectX::FXMVECTOR up) noexcept
+	{
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
+	}
+	void __cdecl SetOrientation(const DirectX::XMFLOAT3& forward, const DirectX::XMFLOAT3& up) noexcept
+	{
+		OrientFront.x = forward.x;
+		OrientTop.x = up.x;
+		OrientFront.y = forward.y;
+		OrientTop.y = up.y;
+		OrientFront.z = forward.z;
+		OrientTop.z = up.z;
+	}
+
+	void XM_CALLCONV SetOrientationFromQuaternion(DirectX::FXMVECTOR quat) noexcept
+	{
+		DirectX::XMVECTOR forward = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR2, quat);
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
+
+		DirectX::XMVECTOR up = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR1, quat);
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
+	}
+
+	void XM_CALLCONV Update(DirectX::FXMVECTOR newPos, DirectX::XMVECTOR upDir, float dt) noexcept
+	// Updates velocity and orientation by tracking changes in position over time...
+	{
+		if (dt > 0.f)
+		{
+			DirectX::XMVECTOR lastPos = XMLoadFloat3(reinterpret_cast<const DirectX::XMFLOAT3*>(&Position));
+
+			DirectX::XMVECTOR vDelta = DirectX::XMVectorSubtract(newPos, lastPos);
+			DirectX::XMVECTOR vt = DirectX::XMVectorReplicate(dt);
+			DirectX::XMVECTOR v = DirectX::XMVectorDivide(vDelta, vt);
+			XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
+
+			vDelta = DirectX::XMVector3Normalize(vDelta);
+			XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), vDelta);
+
+			v = DirectX::XMVector3Cross(upDir, vDelta);
+			v = DirectX::XMVector3Normalize(v);
+
+			v = DirectX::XMVector3Cross(vDelta, v);
+			v = DirectX::XMVector3Normalize(v);
+			XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), v);
+
+			XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), newPos);
+		}
+	}
+};
+
+//----------------------------------------------------------------------------------
+struct AudioEmitter : public X3DAUDIO_EMITTER
+{
+	float EmitterAzimuths[XAUDIO2_MAX_AUDIO_CHANNELS];
+
+	AudioEmitter() noexcept
+		: EmitterAzimuths {}
+	{
+		memset(this, 0, sizeof(X3DAUDIO_EMITTER));
+
+		OrientFront.z = -1.f;
+
+		OrientTop.y =
+			ChannelRadius =
+				CurveDistanceScaler =
+					DopplerScaler = 1.f;
+
+		ChannelCount = 1;
+		pChannelAzimuths = EmitterAzimuths;
+
+		InnerRadiusAngle = X3DAUDIO_PI / 4.0f;
+	}
+
+	void XM_CALLCONV SetPosition(DirectX::FXMVECTOR v) noexcept
+	{
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), v);
+	}
+	void __cdecl SetPosition(const DirectX::XMFLOAT3& pos) noexcept
+	{
+		Position.x = pos.x;
+		Position.y = pos.y;
+		Position.z = pos.z;
+	}
+
+	void XM_CALLCONV SetVelocity(DirectX::FXMVECTOR v) noexcept
+	{
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
+	}
+	void __cdecl SetVelocity(const DirectX::XMFLOAT3& vel) noexcept
+	{
+		Velocity.x = vel.x;
+		Velocity.y = vel.y;
+		Velocity.z = vel.z;
+	}
+
+	void XM_CALLCONV SetOrientation(DirectX::FXMVECTOR forward, DirectX::FXMVECTOR up) noexcept
+	{
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
+	}
+	void __cdecl SetOrientation(const DirectX::XMFLOAT3& forward, const DirectX::XMFLOAT3& up) noexcept
+	{
+		OrientFront.x = forward.x;
+		OrientTop.x = up.x;
+		OrientFront.y = forward.y;
+		OrientTop.y = up.y;
+		OrientFront.z = forward.z;
+		OrientTop.z = up.z;
+	}
+
+	void XM_CALLCONV SetOrientationFromQuaternion(DirectX::FXMVECTOR quat) noexcept
+	{
+		DirectX::XMVECTOR forward = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR2, quat);
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), forward);
+
+		DirectX::XMVECTOR up = DirectX::XMVector3Rotate(DirectX::g_XMIdentityR1, quat);
+		XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), up);
+	}
+
+	void XM_CALLCONV Update(DirectX::FXMVECTOR newPos, DirectX::XMVECTOR upDir, float dt) noexcept
+	// Updates velocity and orientation by tracking changes in position over time...
+	{
+		if (dt > 0.f)
+		{
+			DirectX::XMVECTOR lastPos = XMLoadFloat3(reinterpret_cast<const DirectX::XMFLOAT3*>(&Position));
+
+			DirectX::XMVECTOR vDelta = DirectX::XMVectorSubtract(newPos, lastPos);
+			DirectX::XMVECTOR vt = DirectX::XMVectorReplicate(dt);
+			DirectX::XMVECTOR v = DirectX::XMVectorDivide(vDelta, vt);
+			XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Velocity), v);
+
+			vDelta = DirectX::XMVector3Normalize(vDelta);
+			XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), vDelta);
+
+			v = DirectX::XMVector3Cross(upDir, vDelta);
+			v = DirectX::XMVector3Normalize(v);
+
+			v = DirectX::XMVector3Cross(vDelta, v);
+			v = DirectX::XMVector3Normalize(v);
+			XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), v);
+
+			XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), newPos);
+		}
+	}
+};
+
+//----------------------------------------------------------------------------------
+class SoundEffectInstance
+{
+public:
+	SoundEffectInstance(SoundEffectInstance&& moveFrom) noexcept;
+	SoundEffectInstance& operator=(SoundEffectInstance&& moveFrom) noexcept;
+
+	SoundEffectInstance(SoundEffectInstance const&) = delete;
+	SoundEffectInstance& operator=(SoundEffectInstance const&) = delete;
+
+	virtual ~SoundEffectInstance();
+
+	void __cdecl Play(bool loop = false);
+	void __cdecl Stop(bool immediate = true) noexcept;
+	void __cdecl Pause() noexcept;
+	void __cdecl Resume();
+
+	void __cdecl SetVolume(float volume);
+	void __cdecl SetPitch(float pitch);
+	void __cdecl SetPan(float pan);
+
+	void __cdecl Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords = true);
+
+	bool __cdecl IsLooped() const noexcept;
+
+	SoundState __cdecl GetState() noexcept;
+
+	IVoiceNotify* __cdecl GetVoiceNotify() const noexcept;
+
+private:
+	// Private implementation.
+	class Impl;
+
+	std::unique_ptr<Impl> pimpl;
 
-                vDelta = DirectX::XMVector3Normalize(vDelta);
-                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientFront), vDelta);
-
-                v = DirectX::XMVector3Cross(upDir, vDelta);
-                v = DirectX::XMVector3Normalize(v);
-
-                v = DirectX::XMVector3Cross(vDelta, v);
-                v = DirectX::XMVector3Normalize(v);
-                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&OrientTop), v);
-
-                XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&Position), newPos);
-            }
-        }
-    };
-
-
-    //----------------------------------------------------------------------------------
-    class SoundEffectInstance
-    {
-    public:
-        SoundEffectInstance(SoundEffectInstance&& moveFrom) noexcept;
-        SoundEffectInstance& operator= (SoundEffectInstance&& moveFrom) noexcept;
-
-        SoundEffectInstance(SoundEffectInstance const&) = delete;
-        SoundEffectInstance& operator= (SoundEffectInstance const&) = delete;
-
-        virtual ~SoundEffectInstance();
-
-        void __cdecl Play(bool loop = false);
-        void __cdecl Stop(bool immediate = true) noexcept;
-        void __cdecl Pause() noexcept;
-        void __cdecl Resume();
-
-        void __cdecl SetVolume(float volume);
-        void __cdecl SetPitch(float pitch);
-        void __cdecl SetPan(float pan);
-
-        void __cdecl Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords = true);
-
-        bool __cdecl IsLooped() const noexcept;
-
-        SoundState __cdecl GetState() noexcept;
-
-        IVoiceNotify* __cdecl GetVoiceNotify() const noexcept;
-
-    private:
-        // Private implementation.
-        class Impl;
-
-        std::unique_ptr<Impl> pimpl;
-
-        // Private constructors
-        SoundEffectInstance(_In_ AudioEngine* engine, _In_ SoundEffect* effect, SOUND_EFFECT_INSTANCE_FLAGS flags);
-        SoundEffectInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags);
-
-        friend std::unique_ptr<SoundEffectInstance> __cdecl SoundEffect::CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS);
-        friend std::unique_ptr<SoundEffectInstance> __cdecl WaveBank::CreateInstance(uint32_t, SOUND_EFFECT_INSTANCE_FLAGS);
-    };
-
-
-    //----------------------------------------------------------------------------------
-    class SoundStreamInstance
-    {
-    public:
-        SoundStreamInstance(SoundStreamInstance&& moveFrom) noexcept;
-        SoundStreamInstance& operator= (SoundStreamInstance&& moveFrom) noexcept;
-
-        SoundStreamInstance(SoundStreamInstance const&) = delete;
-        SoundStreamInstance& operator= (SoundStreamInstance const&) = delete;
-
-        virtual ~SoundStreamInstance();
-
-        void __cdecl Play(bool loop = false);
-        void __cdecl Stop(bool immediate = true) noexcept;
-        void __cdecl Pause() noexcept;
-        void __cdecl Resume();
-
-        void __cdecl SetVolume(float volume);
-        void __cdecl SetPitch(float pitch);
-        void __cdecl SetPan(float pan);
-
-        void __cdecl Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords = true);
-
-        bool __cdecl IsLooped() const noexcept;
-
-        SoundState __cdecl GetState() noexcept;
-
-        IVoiceNotify* __cdecl GetVoiceNotify() const noexcept;
-
-    private:
-        // Private implementation.
-        class Impl;
-
-        std::unique_ptr<Impl> pimpl;
-
-        // Private constructors
-        SoundStreamInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags);
-
-        friend std::unique_ptr<SoundStreamInstance> __cdecl WaveBank::CreateStreamInstance(uint32_t, SOUND_EFFECT_INSTANCE_FLAGS);
-    };
-
-
-    //----------------------------------------------------------------------------------
-    class DynamicSoundEffectInstance
-    {
-    public:
-        DynamicSoundEffectInstance(_In_ AudioEngine* engine,
-            _In_opt_ std::function<void __cdecl(DynamicSoundEffectInstance*)> bufferNeeded,
-            int32_t sampleRate, int32_t channels, int32_t sampleBits = 16,
-            SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
-        DynamicSoundEffectInstance(DynamicSoundEffectInstance&& moveFrom) noexcept;
-        DynamicSoundEffectInstance& operator= (DynamicSoundEffectInstance&& moveFrom) noexcept;
-
-        DynamicSoundEffectInstance(DynamicSoundEffectInstance const&) = delete;
-        DynamicSoundEffectInstance& operator= (DynamicSoundEffectInstance const&) = delete;
-
-        virtual ~DynamicSoundEffectInstance();
-
-        void __cdecl Play();
-        void __cdecl Stop(bool immediate = true) noexcept;
-        void __cdecl Pause() noexcept;
-        void __cdecl Resume();
-
-        void __cdecl SetVolume(float volume);
-        void __cdecl SetPitch(float pitch);
-        void __cdecl SetPan(float pan);
-
-        void __cdecl Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords = true);
-
-        void __cdecl SubmitBuffer(_In_reads_bytes_(audioBytes) const uint8_t* pAudioData, size_t audioBytes);
-        void __cdecl SubmitBuffer(_In_reads_bytes_(audioBytes) const uint8_t* pAudioData, uint32_t offset, size_t audioBytes);
-
-        SoundState __cdecl GetState() noexcept;
-
-        size_t __cdecl GetSampleDuration(size_t bytes) const noexcept;
-        // Returns duration in samples of a buffer of a given size
-
-        size_t __cdecl GetSampleDurationMS(size_t bytes) const noexcept;
-        // Returns duration in milliseconds of a buffer of a given size
-
-        size_t __cdecl GetSampleSizeInBytes(uint64_t duration) const noexcept;
-        // Returns size of a buffer for a duration given in milliseconds
-
-        int32_t __cdecl GetPendingBufferCount() const noexcept;
-
-        const WAVEFORMATEX* __cdecl GetFormat() const noexcept;
-
-    private:
-        // Private implementation.
-        class Impl;
-
-        std::unique_ptr<Impl> pimpl;
-    };
+	// Private constructors
+	SoundEffectInstance(_In_ AudioEngine* engine, _In_ SoundEffect* effect, SOUND_EFFECT_INSTANCE_FLAGS flags);
+	SoundEffectInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags);
+
+	friend std::unique_ptr<SoundEffectInstance> __cdecl SoundEffect::CreateInstance(SOUND_EFFECT_INSTANCE_FLAGS);
+	friend std::unique_ptr<SoundEffectInstance> __cdecl WaveBank::CreateInstance(uint32_t, SOUND_EFFECT_INSTANCE_FLAGS);
+};
+
+//----------------------------------------------------------------------------------
+class SoundStreamInstance
+{
+public:
+	SoundStreamInstance(SoundStreamInstance&& moveFrom) noexcept;
+	SoundStreamInstance& operator=(SoundStreamInstance&& moveFrom) noexcept;
+
+	SoundStreamInstance(SoundStreamInstance const&) = delete;
+	SoundStreamInstance& operator=(SoundStreamInstance const&) = delete;
+
+	virtual ~SoundStreamInstance();
+
+	void __cdecl Play(bool loop = false);
+	void __cdecl Stop(bool immediate = true) noexcept;
+	void __cdecl Pause() noexcept;
+	void __cdecl Resume();
+
+	void __cdecl SetVolume(float volume);
+	void __cdecl SetPitch(float pitch);
+	void __cdecl SetPan(float pan);
+
+	void __cdecl Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords = true);
+
+	bool __cdecl IsLooped() const noexcept;
+
+	SoundState __cdecl GetState() noexcept;
+
+	IVoiceNotify* __cdecl GetVoiceNotify() const noexcept;
+
+private:
+	// Private implementation.
+	class Impl;
+
+	std::unique_ptr<Impl> pimpl;
+
+	// Private constructors
+	SoundStreamInstance(_In_ AudioEngine* engine, _In_ WaveBank* effect, uint32_t index, SOUND_EFFECT_INSTANCE_FLAGS flags);
+
+	friend std::unique_ptr<SoundStreamInstance> __cdecl WaveBank::CreateStreamInstance(uint32_t, SOUND_EFFECT_INSTANCE_FLAGS);
+};
+
+//----------------------------------------------------------------------------------
+class DynamicSoundEffectInstance
+{
+public:
+	DynamicSoundEffectInstance(_In_ AudioEngine* engine,
+		_In_opt_ std::function<void __cdecl(DynamicSoundEffectInstance*)> bufferNeeded,
+		int32_t sampleRate, int32_t channels, int32_t sampleBits = 16,
+		SOUND_EFFECT_INSTANCE_FLAGS flags = SoundEffectInstance_Default);
+	DynamicSoundEffectInstance(DynamicSoundEffectInstance&& moveFrom) noexcept;
+	DynamicSoundEffectInstance& operator=(DynamicSoundEffectInstance&& moveFrom) noexcept;
+
+	DynamicSoundEffectInstance(DynamicSoundEffectInstance const&) = delete;
+	DynamicSoundEffectInstance& operator=(DynamicSoundEffectInstance const&) = delete;
+
+	virtual ~DynamicSoundEffectInstance();
+
+	void __cdecl Play();
+	void __cdecl Stop(bool immediate = true) noexcept;
+	void __cdecl Pause() noexcept;
+	void __cdecl Resume();
+
+	void __cdecl SetVolume(float volume);
+	void __cdecl SetPitch(float pitch);
+	void __cdecl SetPan(float pan);
+
+	void __cdecl Apply3D(const AudioListener& listener, const AudioEmitter& emitter, bool rhcoords = true);
+
+	void __cdecl SubmitBuffer(_In_reads_bytes_(audioBytes) const uint8_t* pAudioData, size_t audioBytes);
+	void __cdecl SubmitBuffer(_In_reads_bytes_(audioBytes) const uint8_t* pAudioData, uint32_t offset, size_t audioBytes);
+
+	SoundState __cdecl GetState() noexcept;
+
+	size_t __cdecl GetSampleDuration(size_t bytes) const noexcept;
+	// Returns duration in samples of a buffer of a given size
+
+	size_t __cdecl GetSampleDurationMS(size_t bytes) const noexcept;
+	// Returns duration in milliseconds of a buffer of a given size
+
+	size_t __cdecl GetSampleSizeInBytes(uint64_t duration) const noexcept;
+	// Returns size of a buffer for a duration given in milliseconds
+
+	int32_t __cdecl GetPendingBufferCount() const noexcept;
+
+	const WAVEFORMATEX* __cdecl GetFormat() const noexcept;
+
+private:
+	// Private implementation.
+	class Impl;
+
+	std::unique_ptr<Impl> pimpl;
+};
 
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-dynamic-exception-spec"
 #endif
 
-    DEFINE_ENUM_FLAG_OPERATORS(AUDIO_ENGINE_FLAGS);
-    DEFINE_ENUM_FLAG_OPERATORS(SOUND_EFFECT_INSTANCE_FLAGS);
+DEFINE_ENUM_FLAG_OPERATORS(AUDIO_ENGINE_FLAGS);
+DEFINE_ENUM_FLAG_OPERATORS(SOUND_EFFECT_INSTANCE_FLAGS);
 
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
-}
+} // namespace directxtk

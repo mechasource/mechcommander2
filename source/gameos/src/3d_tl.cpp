@@ -5,14 +5,14 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
- All code is logically copyrighted to Microsoft
+ All code is logically copyrighted by Microsoft
 *******************************************************************************/
 /*******************************************************************************
  3d_tl.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Back, created
+ 2014-07-24 Jerker Bäck, created
 
 *******************************************************************************/
 
@@ -45,7 +45,7 @@
 /// <summary>
 /// <c>gos_SetTransform</c> sets the WORLD/VIEW or PROJECTION matrix
 /// </summary>
-/// <remarks>
+/// <remarks> not referenced in Mechcommander 2
 /// </remarks>
 /// <param name="TransformType"></param>
 /// <param name="pMatrixData"></param>
@@ -85,7 +85,7 @@ void __stdcall gos_MultiplyTransform(D3DTRANSFORMSTATETYPE TransformType, LPD3DM
 /// <c>gos_SetLight</c> sets the parameters of a light (LightNumber can be any
 /// number)
 /// </summary>
-/// <remarks>
+/// <remarks> not referenced in Mechcommander 2
 /// </remarks>
 /// <param name="LightNumber"></param>
 /// <param name="pLightData"></param>
@@ -104,7 +104,7 @@ void __stdcall gos_SetLight(uint32_t LightNumber, LPD3DLIGHT7 pLightData)
 /// <summary>
 /// <c>gos_LightEnable</c> enables or disables a light
 /// </summary>
-/// <remarks>
+/// <remarks> not referenced in Mechcommander 2
 /// </remarks>
 /// <param name="LightNumber"></param>
 /// <param name="Enable"></param>
@@ -122,7 +122,7 @@ void __stdcall gos_LightEnable(uint32_t LightNumber, BOOLEAN Enable)
 /// <summary>
 /// <c>gos_SetMaterial</c>
 /// </summary>
-/// <remarks>
+/// <remarks> not referenced in Mechcommander 2
 /// </remarks>
 /// <param name="pMaterialData"></param>
 /// <returns></returns>

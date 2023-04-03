@@ -8,7 +8,7 @@
 #ifndef OBJSTATUS_H
 #define OBJSTATUS_H
 
-enum class 
+enum class
 {
 	OBJECT_STATUS_NORMAL,
 	OBJECT_STATUS_DISABLED,

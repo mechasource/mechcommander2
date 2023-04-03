@@ -77,7 +77,7 @@ size_t __stdcall LZCompress(uint8_t* dest, uint8_t* src, size_t srcLen)
 	{
 		/* allocating LZCHashBuf off a gos heap causes problems for applications
 		that need to reset gos or its heaps*/
-		LZCHashBuf = (uint8_t*) & (tag_LZCHashBuf[0]);
+		LZCHashBuf = (uint8_t*)&(tag_LZCHashBuf[0]);
 	}
 	// Initialize:
 	uint32_t clearSize = sizeof(Hash) * 256;
@@ -166,7 +166,7 @@ Set_AX_Prefix:
 		{
 		mov		[PrefixCode], eax // into prefix code
 
-								 // call	ReadChar              		//more...
+								  // call	ReadChar              		//more...
 		mov		esi, [InBufferPos] // get address
 		cmp		esi, [InBufferUpperLimit] // Check to see if we are done
 		cmc // compliment carry

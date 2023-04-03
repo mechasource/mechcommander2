@@ -38,8 +38,7 @@ class AffineMatrix4D;
 }
 
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Stuff::AffineMatrix4D& matrix);
+void Spew(std::wstring_view group, const Stuff::AffineMatrix4D& matrix);
 #endif
 
 namespace Stuff
@@ -64,16 +63,40 @@ public:
 	//
 	// Constructors
 	//
-	AffineMatrix4D(void) {}
+	AffineMatrix4D(void) { }
 	AffineMatrix4D& BuildIdentity(void);
-	explicit AffineMatrix4D(int32_t) { BuildIdentity(); }
-	AffineMatrix4D(const AffineMatrix4D& m) { *this = m; }
-	explicit AffineMatrix4D(const Origin3D& p) { *this = p; }
-	explicit AffineMatrix4D(const Matrix4D& m) { *this = m; }
-	explicit AffineMatrix4D(const EulerAngles& angles) { *this = angles; }
-	explicit AffineMatrix4D(const YawPitchRoll& angles) { *this = angles; }
-	explicit AffineMatrix4D(const UnitQuaternion& q) { *this = q; }
-	explicit AffineMatrix4D(const Point3D& p) { *this = p; }
+	explicit AffineMatrix4D(int32_t)
+	{
+		BuildIdentity();
+	}
+	AffineMatrix4D(const AffineMatrix4D& m)
+	{
+		*this = m;
+	}
+	explicit AffineMatrix4D(const Origin3D& p)
+	{
+		*this = p;
+	}
+	explicit AffineMatrix4D(const Matrix4D& m)
+	{
+		*this = m;
+	}
+	explicit AffineMatrix4D(const EulerAngles& angles)
+	{
+		*this = angles;
+	}
+	explicit AffineMatrix4D(const YawPitchRoll& angles)
+	{
+		*this = angles;
+	}
+	explicit AffineMatrix4D(const UnitQuaternion& q)
+	{
+		*this = q;
+	}
+	explicit AffineMatrix4D(const Point3D& p)
+	{
+		*this = p;
+	}
 
 	//
 	// Assignment Operators
@@ -110,8 +133,14 @@ public:
 	// Comparison operators
 	//
 	friend bool Close_Enough(const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e = SMALL);
-	bool operator==(const AffineMatrix4D& a) const { return Close_Enough(*this, a, SMALL); }
-	bool operator!=(const AffineMatrix4D& a) const { return !Close_Enough(*this, a, SMALL); }
+	bool operator==(const AffineMatrix4D& a) const
+	{
+		return Close_Enough(*this, a, SMALL);
+	}
+	bool operator!=(const AffineMatrix4D& a) const
+	{
+		return !Close_Enough(*this, a, SMALL);
+	}
 
 	//
 	// Index operators
@@ -287,7 +316,7 @@ public:
 #if USE_INLINE_ASSEMBLER_CODE
 		float* f = entries;
 		_asm
-		{
+			{
 				mov         edx, [edx]Source1.entries
 				push        esi
 				mov         esi, [esi]Source2.entries
@@ -360,7 +389,7 @@ public:
 				fxch        st(2)
 				faddp       st(1), st //              A3,1
 
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 				fld         dword ptr [edx] //  s1[0][0]
 				fmul        dword ptr [esi + 010h] //  s2[0][1]    M0,1
@@ -380,7 +409,7 @@ public:
 				fxch        st(1)
 				fstp        dword ptr [eax + 0Ch] //  [3][0]      S3
 
-			// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+				// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 				fxch        st(2)
 				faddp       st(1), st //              A0,1
@@ -439,7 +468,7 @@ public:
 				fxch        st(2)
 				faddp       st(1), st //              A3,1
 
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 				fld         dword ptr [edx] //  s1[0][0]
 				fmul        dword ptr [esi + 020h] //  s2[0][2]    M0,1
@@ -459,7 +488,7 @@ public:
 				fxch        st(1)
 				fstp        dword ptr [eax + 01Ch] //  [3][1]      S3
 
-			// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+				// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 				fxch        st(2)
 				faddp       st(1), st //              A0,1
@@ -524,7 +553,7 @@ public:
 				fstp        dword ptr [eax + 02Ch] //  [3][2]      S3
 
 				pop         esi
-		}
+			}
 #else
 		(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) + Source1(0, 2) * Source2(2, 0);
 		(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) + Source1(1, 2) * Source2(2, 0);
@@ -590,7 +619,7 @@ public:
 	// Support functions
 	//
 #if !defined(Spew)
-	friend void ::Spew(const std::wstring_view& group, const AffineMatrix4D& matrix);
+	friend void ::Spew(std::wstring_view group, const AffineMatrix4D& matrix);
 #endif
 
 	void TestInstance(void) const

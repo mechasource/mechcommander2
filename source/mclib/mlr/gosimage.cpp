@@ -6,7 +6,8 @@
 
 #include "mlr/gosimage.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 //############################    GOSImage    ###############################
@@ -14,8 +15,8 @@ namespace MidLevelRenderer {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(const std::wstring_view& iName) :
-	Plug(DefaultData)
+GOSImage::GOSImage(std::wstring_view iName)
+	: Plug(DefaultData)
 {
 	imageName = iName;
 	flags = 0;
@@ -26,8 +27,8 @@ GOSImage::GOSImage(const std::wstring_view& iName) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(uint32_t iHandle) :
-	Plug(DefaultData)
+GOSImage::GOSImage(uint32_t iHandle)
+	: Plug(DefaultData)
 {
 	wchar_t str[20];
 	sprintf(str, "image%03d", iHandle);
@@ -40,8 +41,8 @@ GOSImage::GOSImage(uint32_t iHandle) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(const std::wstring_view& name, gos_TextureHints hints) :
-	Plug(DefaultData)
+GOSImage::GOSImage(std::wstring_view name, gos_TextureHints hints)
+	: Plug(DefaultData)
 {
 	imageName = name;
 	flags = Loaded;
@@ -91,8 +92,7 @@ GOSImage::Getheight()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-GOSImage::LockImage()
+void GOSImage::LockImage()
 {
 	if (!(flags & Locked))
 	{
@@ -105,8 +105,7 @@ GOSImage::LockImage()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-GOSImage::UnlockImage()
+void GOSImage::UnlockImage()
 {
 	if (flags & Locked)
 	{

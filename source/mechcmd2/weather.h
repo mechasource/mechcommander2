@@ -94,7 +94,10 @@ protected:
 	float oldFog; // Original FOGFull height value.
 
 public:
-	Weather(void) { init(void); }
+	Weather(void)
+	{
+		init(void);
+	}
 
 	void init(void)
 	{
@@ -114,7 +117,10 @@ public:
 
 	void destroy(void);
 
-	~Weather(void) { destroy(void); }
+	~Weather(void)
+	{
+		destroy(void);
+	}
 
 	void init(uint32_t maxDrops, float startingRain, float baseRainChance,
 		float baseLighteningChance = BASE_LIGHTENING_CHANCE);

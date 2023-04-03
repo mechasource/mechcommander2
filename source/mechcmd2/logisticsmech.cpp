@@ -11,8 +11,8 @@ LogisticsMech.cpp			: Implementation of the LogisticsMech component.
 #include "LogisticsData.h"
 #include "IniFile.h"
 
-LogisticsMech::LogisticsMech(LogisticsVariant* pVar, int32_t Count) :
-	pVariant(pVar)
+LogisticsMech::LogisticsMech(LogisticsVariant* pVar, int32_t Count)
+	: pVariant(pVar)
 {
 	ID = (Count << 24 | pVar->getID());
 	pilot = 0;
@@ -26,8 +26,7 @@ LogisticsMech::~LogisticsMech()
 	pilot = nullptr;
 }
 
-void
-LogisticsMech::setPilot(LogisticsPilot* pPilot)
+void LogisticsMech::setPilot(LogisticsPilot* pPilot)
 {
 	if (pilot)
 		pilot->setUsed(0);
@@ -36,8 +35,7 @@ LogisticsMech::setPilot(LogisticsPilot* pPilot)
 		pilot->setUsed(1);
 }
 
-void
-LogisticsMech::setVariant(LogisticsVariant* pVar)
+void LogisticsMech::setVariant(LogisticsVariant* pVar)
 {
 	pVariant = pVar;
 	ID = (LogisticsData::instance->createInstanceID(pVar) << 24 | pVar->getID());
@@ -57,16 +55,14 @@ LogisticsMech::save(FitIniFile& file, int32_t counter)
 	return 0;
 }
 
-void
-LogisticsMech::setcolours(uint32_t base, uint32_t high1, uint32_t high2)
+void LogisticsMech::setcolours(uint32_t base, uint32_t high1, uint32_t high2)
 {
 	basecolour = base;
 	highlightcolour1 = high1;
 	highlightcolour2 = high2;
 }
 
-void
-LogisticsMech::getcolours(uint32_t& base, uint32_t& high1, uint32_t& high2) const
+void LogisticsMech::getcolours(uint32_t& base, uint32_t& high1, uint32_t& high2) const
 {
 	base = basecolour;
 	high1 = highlightcolour1;

@@ -49,13 +49,10 @@ volatile bool UserInput::drawMouse = false;
 extern volatile bool mc2IsInDisplayBackBuffer;
 extern volatile bool mc2IsInMouseTimer;
 
-void
-MouseTimerInit();
-void
-MouseTimerKill();
+void MouseTimerInit();
+void MouseTimerKill();
 //---------------------------------------------------------------------------
-void
-MouseCursorData::initCursors(const std::wstring_view& cursorFileName)
+void MouseCursorData::initCursors(std::wstring_view cursorFileName)
 {
 	// New
 	// add an "a" to the end of the cursorFileName IF we are running in 800x600
@@ -79,11 +76,11 @@ MouseCursorData::initCursors(const std::wstring_view& cursorFileName)
 	// Each cursor is defined as a number of frames
 	// and a TGA File Name which we use to create
 	// the texture handle.
-	wchar_t blockName[32];
+	wchar_t blockname[32];
 	for (size_t i = 0; i < numCursors; i++)
 	{
-		sprintf(blockName, "Cursor%ld", i);
-		cursorInfos[i].init(cursorFile, blockName, 0, 0, 0x1);
+		sprintf(blockname, "Cursor%ld", i);
+		cursorInfos[i].init(cursorFile, blockname, 0, 0, 0x1);
 		cursorFile.readIdChar("HotSpotX", mouseHS[i][0]);
 		cursorFile.readIdChar("HotSpotY", mouseHS[i][1]);
 		cursorFile.readIdULong("NumFrames", numFrames[i]);
@@ -93,8 +90,7 @@ MouseCursorData::initCursors(const std::wstring_view& cursorFileName)
 }
 
 //---------------------------------------------------------------------------
-void
-MouseCursorData::destroy(void)
+void MouseCursorData::destroy(void)
 {
 	if (mc2UseAsyncMouse && mc2MouseThreadStarted)
 		MouseTimerKill();
@@ -111,20 +107,17 @@ MouseCursorData::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-UserInput::mouseOn(void) // Draw Mouse Cursor
+void UserInput::mouseOn(void) // Draw Mouse Cursor
 {
 	drawMouse = true;
 }
 
-void
-UserInput::mouseOff(void) // Don't Draw Mouse Cursor
+void UserInput::mouseOff(void) // Don't Draw Mouse Cursor
 {
 	drawMouse = false;
 }
 
-void
-UserInput::setMouseCursor(int32_t state)
+void UserInput::setMouseCursor(int32_t state)
 {
 	if ((state < 0) || (state >= mState_NUMMOUSESTATES))
 		return;
@@ -135,8 +128,7 @@ UserInput::setMouseCursor(int32_t state)
 }
 
 //---------------------------------------------------------------------------
-void
-UserInput::update(void)
+void UserInput::update(void)
 {
 	if (mc2UseAsyncMouse && !mc2MouseThreadStarted)
 		MouseTimerInit();
@@ -370,8 +362,7 @@ UserInput::update(void)
 }
 
 //---------------------------------------------------------------------------
-void
-UserInput::initMouseCursors(const std::wstring_view& mouseFile)
+void UserInput::initMouseCursors(std::wstring_view mouseFile)
 {
 	if (cursors)
 	{
@@ -433,16 +424,14 @@ float largeTextureBRUVY[64] = {0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 
 	0.875, 0.875, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00};
 
 //---------------------------------------------------------------------------
-void
-UserInput::setMouseScale(float scaleFactor)
+void UserInput::setMouseScale(float scaleFactor)
 {
 	if (scaleFactor > 0.0f)
 		mouseScale = scaleFactor;
 }
 
 //---------------------------------------------------------------------------
-void
-UserInput::render(void) // Last thing rendered.  Draws Mouse.
+void UserInput::render(void) // Last thing rendered.  Draws Mouse.
 {
 	if (!mc2UseAsyncMouse)
 	{

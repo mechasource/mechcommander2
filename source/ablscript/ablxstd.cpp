@@ -11,7 +11,8 @@
 
 #include "abl.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -27,7 +28,7 @@ inline int32_t double2long(double _in)
 extern int32_t level;
 extern int32_t execLineNumber;
 extern int32_t FileNumber;
-extern const std::wstring_view& codeSegmentPtr;
+extern std::wstring_view codeSegmentPtr;
 extern TokenCodeType codeToken;
 extern StackItem* stack;
 extern const std::unique_ptr<StackItem>& tos;
@@ -84,8 +85,7 @@ ABLi_popInteger(void)
 
 //---------------------------------------------------------------------------
 
-float
-ABLi_popReal(void)
+float ABLi_popReal(void)
 {
 	getCodeToken();
 	execExpression();
@@ -96,8 +96,7 @@ ABLi_popReal(void)
 
 //---------------------------------------------------------------------------
 
-float
-ABLi_popIntegerReal(void)
+float ABLi_popIntegerReal(void)
 {
 	getCodeToken();
 	const std::unique_ptr<Type>& paramTypePtr = execExpression();
@@ -112,8 +111,7 @@ ABLi_popIntegerReal(void)
 
 //---------------------------------------------------------------------------
 
-bool
-ABLi_popBoolean(void)
+bool ABLi_popBoolean(void)
 {
 	getCodeToken();
 	execExpression();
@@ -124,14 +122,14 @@ ABLi_popBoolean(void)
 
 //---------------------------------------------------------------------------
 
-const std::wstring_view&
+std::wstring_view
 ABLi_popCharPtr(void)
 {
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	const std::wstring_view& charPtr = (const std::wstring_view&)tos->address;
+	std::wstring_view charPtr = (std::wstring_view)tos->address;
 	pop();
 	return (charPtr);
 }
@@ -164,14 +162,14 @@ ABLi_popRealPtr(void)
 
 //---------------------------------------------------------------------------
 
-const std::wstring_view&
+std::wstring_view
 ABLi_popBooleanPtr(void)
 {
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	const std::wstring_view& charPtr = (const std::wstring_view&)tos->address;
+	std::wstring_view charPtr = (std::wstring_view)tos->address;
 	pop();
 	return (charPtr);
 }
@@ -209,7 +207,7 @@ ABLi_popAnything(ABLStackItem* value)
 		if (paramTypePtr->info.array.elementTypePtr == CharTypePtr)
 		{
 			value->type = type = ABL_STACKITEM_CHAR_PTR;
-			value->data.characterPtr = (const std::wstring_view&)tos->address;
+			value->data.characterPtr = (std::wstring_view)tos->address;
 		}
 		else if (paramTypePtr->info.array.elementTypePtr == IntegerTypePtr)
 		{
@@ -233,8 +231,7 @@ ABLi_popAnything(ABLStackItem* value)
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_pushBoolean(bool value)
+void ABLi_pushBoolean(bool value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -244,8 +241,7 @@ ABLi_pushBoolean(bool value)
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_pushInteger(int32_t value)
+void ABLi_pushInteger(int32_t value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -255,8 +251,7 @@ ABLi_pushInteger(int32_t value)
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_pushReal(float value)
+void ABLi_pushReal(float value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -266,8 +261,7 @@ ABLi_pushReal(float value)
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_pushChar(wchar_t value)
+void ABLi_pushChar(wchar_t value)
 {
 	const std::unique_ptr<StackItem>& valuePtr = ++tos;
 	if (valuePtr >= &stack[MAXSIZE_STACK])
@@ -287,8 +281,7 @@ ABLi_peekInteger(void)
 
 //---------------------------------------------------------------------------
 
-float
-ABLi_peekReal(void)
+float ABLi_peekReal(void)
 {
 	getCodeToken();
 	execExpression();
@@ -297,8 +290,7 @@ ABLi_peekReal(void)
 
 //---------------------------------------------------------------------------
 
-bool
-ABLi_peekBoolean(void)
+bool ABLi_peekBoolean(void)
 {
 	getCodeToken();
 	execExpression();
@@ -307,12 +299,12 @@ ABLi_peekBoolean(void)
 
 //---------------------------------------------------------------------------
 
-const std::wstring_view&
+std::wstring_view
 ABLi_peekCharPtr(void)
 {
 	getCodeToken();
 	execExpression();
-	return ((const std::wstring_view&)tos->address);
+	return ((std::wstring_view)tos->address);
 }
 
 //---------------------------------------------------------------------------
@@ -339,40 +331,35 @@ ABLi_peekRealPtr(void)
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_pokeChar(int32_t val)
+void ABLi_pokeChar(int32_t val)
 {
 	tos->integer = val;
 }
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_pokeInteger(int32_t val)
+void ABLi_pokeInteger(int32_t val)
 {
 	tos->integer = val;
 }
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_pokeReal(float val)
+void ABLi_pokeReal(float val)
 {
 	tos->real = val;
 }
 
 //---------------------------------------------------------------------------
 
-void
-ABLi_pokeBoolean(bool val)
+void ABLi_pokeBoolean(bool val)
 {
 	tos->integer = val ? 1 : 0;
 }
 
 //***************************************************************************
 
-void
-execOrderReturn(int32_t returnVal)
+void execOrderReturn(int32_t returnVal)
 {
 	//-----------------------------
 	// Assignment to function id...
@@ -393,7 +380,7 @@ execOrderReturn(int32_t returnVal)
 		{
 			//----------------------------------------------------------
 			// Use the "eject" code only if called for a failed Order...
-			codeSegmentPtr = (const std::wstring_view&)ExitStateCodeSegment;
+			codeSegmentPtr = (std::wstring_view)ExitStateCodeSegment;
 			getCodeToken();
 		}
 	}
@@ -417,7 +404,7 @@ execOrderReturn(int32_t returnVal)
 		{
 			//----------------------------------------------------------
 			// Use the "eject" code only if called for a failed Order...
-			codeSegmentPtr = (const std::wstring_view&)ExitOrderCodeSegment;
+			codeSegmentPtr = (std::wstring_view)ExitOrderCodeSegment;
 			getCodeToken();
 		}
 	}
@@ -425,8 +412,7 @@ execOrderReturn(int32_t returnVal)
 
 //***************************************************************************
 
-void
-execStdReturn(void)
+void execStdReturn(void)
 {
 	memset(&returnValue, 0, sizeof(StackItem));
 	if (CurRoutineIdPtr->ptype)
@@ -457,8 +443,8 @@ execStdReturn(void)
 		{
 			//-------------------------
 			// Copy the array/record...
-			const std::wstring_view& dest = (const std::wstring_view&)targetPtr;
-			const std::wstring_view& src = tos->address;
+			std::wstring_view dest = (std::wstring_view)targetPtr;
+			std::wstring_view src = tos->address;
 			int32_t size = targetTypePtr->size;
 			memcpy(dest, src, size);
 		}
@@ -488,19 +474,18 @@ execStdReturn(void)
 	// Grab the semi-colon...
 	getCodeToken();
 	if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
-		codeSegmentPtr = (const std::wstring_view&)ExitOrderCodeSegment;
+		codeSegmentPtr = (std::wstring_view)ExitOrderCodeSegment;
 	else if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
-		codeSegmentPtr = (const std::wstring_view&)ExitStateCodeSegment;
+		codeSegmentPtr = (std::wstring_view)ExitStateCodeSegment;
 	else
-		codeSegmentPtr = (const std::wstring_view&)ExitRoutineCodeSegment;
+		codeSegmentPtr = (std::wstring_view)ExitRoutineCodeSegment;
 	ExitWithReturn = true;
 	getCodeToken();
 }
 
 //***************************************************************************
 
-void
-execStdPrint(void)
+void execStdPrint(void)
 {
 	//---------------------------
 	// Grab the opening LPAREN...
@@ -510,7 +495,7 @@ execStdPrint(void)
 	getCodeToken();
 	const std::unique_ptr<Type>& paramTypePtr = execExpression();
 	wchar_t buffer[20];
-	const std::wstring_view& s = buffer;
+	std::wstring_view s = buffer;
 	if (paramTypePtr == IntegerTypePtr)
 		sprintf(buffer, "%d", tos->integer);
 	else if (paramTypePtr == BooleanTypePtr)
@@ -520,7 +505,7 @@ execStdPrint(void)
 	else if (paramTypePtr == RealTypePtr)
 		sprintf(buffer, "%.4f", tos->real);
 	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
-		s = (const std::wstring_view&)tos->address;
+		s = (std::wstring_view)tos->address;
 	pop();
 	if (debugger)
 	{
@@ -568,7 +553,7 @@ execStdConcat(void)
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	const std::wstring_view& dest = (const std::wstring_view&)tos->address;
+	std::wstring_view dest = (std::wstring_view)tos->address;
 	pop();
 	//----------------------
 	// Get item to append...
@@ -596,7 +581,7 @@ execStdConcat(void)
 		strcat(dest, buffer);
 	}
 	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
-		strcat(dest, (const std::wstring_view&)tos->address);
+		strcat(dest, (std::wstring_view)tos->address);
 	tos->integer = 0;
 	getCodeToken();
 	return (IntegerTypePtr);
@@ -604,8 +589,7 @@ execStdConcat(void)
 
 //***************************************************************************
 
-void
-execStdAbs(void)
+void execStdAbs(void)
 {
 	float val = ABLi_popIntegerReal();
 	if (val < 0.0)
@@ -615,8 +599,7 @@ execStdAbs(void)
 
 //*****************************************************************************
 
-void
-execStdRound(void)
+void execStdRound(void)
 {
 	float val = ABLi_popReal();
 	if (val > 0.0)
@@ -627,8 +610,7 @@ execStdRound(void)
 
 //***************************************************************************
 
-void
-execStdSqrt(void)
+void execStdSqrt(void)
 {
 	float val = ABLi_popIntegerReal();
 	if (val < 0.0)
@@ -639,8 +621,7 @@ execStdSqrt(void)
 
 //***************************************************************************
 
-void
-execStdTrunc(void)
+void execStdTrunc(void)
 {
 	float val = ABLi_popReal();
 	ABLi_pushInteger((int32_t)val);
@@ -648,10 +629,9 @@ execStdTrunc(void)
 
 //***************************************************************************
 
-void
-execStdFileOpen(void)
+void execStdFileOpen(void)
 {
-	const std::wstring_view& fileName = ABLi_popCharPtr();
+	std::wstring_view fileName = ABLi_popCharPtr();
 	int32_t fileHandle = -1;
 	UserFile* userFile = UserFile::getNewFile();
 	if (userFile)
@@ -665,11 +645,10 @@ execStdFileOpen(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdFileWrite(void)
+void execStdFileWrite(void)
 {
 	int32_t fileHandle = ABLi_popInteger();
-	const std::wstring_view& string = ABLi_popCharPtr();
+	std::wstring_view string = ABLi_popCharPtr();
 	UserFile* userFile = UserFile::files[fileHandle];
 	if (userFile->inUse)
 		userFile->write(string);
@@ -677,8 +656,7 @@ execStdFileWrite(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdFileClose(void)
+void execStdFileClose(void)
 {
 	int32_t fileHandle = ABLi_popInteger();
 	UserFile* userFile = UserFile::files[fileHandle];
@@ -688,13 +666,12 @@ execStdFileClose(void)
 
 //***************************************************************************
 
-void
-execStdGetModule(void)
+void execStdGetModule(void)
 {
 	//----------------------------------------------------------
 	// Return the handle of the current module being executed...
-	const std::wstring_view& curBuffer = ABLi_popCharPtr();
-	const std::wstring_view& fsmBuffer = ABLi_popCharPtr();
+	std::wstring_view curBuffer = ABLi_popCharPtr();
+	std::wstring_view fsmBuffer = ABLi_popCharPtr();
 	strcpy(curBuffer, CurModule->getFileName());
 	strcpy(fsmBuffer, CurFSM ? CurFSM->getFileName() : "none");
 	ABLi_pushInteger(CurModuleHandle);
@@ -702,8 +679,7 @@ execStdGetModule(void)
 
 //***************************************************************************
 
-void
-execStdSetMaxLoops(void)
+void execStdSetMaxLoops(void)
 {
 	//----------------------------------------------------------------------
 	//
@@ -722,8 +698,7 @@ execStdSetMaxLoops(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdFatal(void)
+void execStdFatal(void)
 {
 	//----------------------------------------------------------------------
 	//
@@ -741,7 +716,7 @@ execStdFatal(void)
 	//
 	//----------------------------------------------------------------------
 	int32_t code = ABLi_popInteger();
-	const std::wstring_view& s = ABLi_popCharPtr();
+	std::wstring_view s = ABLi_popCharPtr();
 	wchar_t message[512];
 	if (debugger)
 	{
@@ -764,8 +739,7 @@ execStdFatal(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdAssert(void)
+void execStdAssert(void)
 {
 	//----------------------------------------------------------------------
 	//
@@ -788,7 +762,7 @@ execStdAssert(void)
 	//----------------------------------------------------------------------
 	int32_t expression = ABLi_popInteger();
 	int32_t code = ABLi_popInteger();
-	const std::wstring_view& s = ABLi_popCharPtr();
+	std::wstring_view s = ABLi_popCharPtr();
 	if (!expression)
 	{
 		wchar_t message[512];
@@ -814,8 +788,7 @@ execStdAssert(void)
 
 //-----------------------------------------------------------------------------
 
-void
-execStdRandom(void)
+void execStdRandom(void)
 {
 	int32_t n = ABLi_peekInteger();
 	//---------------------------------------------------------------------
@@ -828,8 +801,7 @@ execStdRandom(void)
 
 //-----------------------------------------------------------------------------
 
-void
-execStdSeedRandom(void)
+void execStdSeedRandom(void)
 {
 	int32_t seed = ABLi_popInteger();
 	if (seed == -1)
@@ -840,8 +812,7 @@ execStdSeedRandom(void)
 
 //-----------------------------------------------------------------------------
 
-void
-execStdResetOrders(void)
+void execStdResetOrders(void)
 {
 	int32_t scope = ABLi_popInteger();
 	if (scope == 0)
@@ -861,18 +832,16 @@ execStdResetOrders(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdGetStateHandle(void)
+void execStdGetStateHandle(void)
 {
-	const std::wstring_view& name = ABLi_popCharPtr();
+	std::wstring_view name = ABLi_popCharPtr();
 	int32_t stateHandle = CurFSM->findStateHandle(_strlwr(name));
 	ABLi_pushInteger(stateHandle);
 }
 
 //---------------------------------------------------------------------------
 
-void
-execStdGetCurrentStateHandle(void)
+void execStdGetCurrentStateHandle(void)
 {
 	int32_t stateHandle = CurFSM->getStateHandle();
 	ABLi_pushInteger(stateHandle);
@@ -884,8 +853,7 @@ extern const std::unique_ptr<ModuleEntry>& ModuleRegistry;
 
 extern wchar_t SetStateDebugStr[256];
 
-void
-execStdSetState(void)
+void execStdSetState(void)
 {
 	uint32_t stateHandle = ABLi_popInteger();
 	if (stateHandle > 0)
@@ -902,10 +870,9 @@ execStdSetState(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdGetFunctionHandle(void)
+void execStdGetFunctionHandle(void)
 {
-	const std::wstring_view& name = ABLi_popCharPtr();
+	std::wstring_view name = ABLi_popCharPtr();
 	const std::unique_ptr<SymTableNode>& function = CurModule->findFunction(name, false);
 	if (function)
 		ABLi_pushInteger((uint32_t)function);
@@ -915,8 +882,7 @@ execStdGetFunctionHandle(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdSetFlag(void)
+void execStdSetFlag(void)
 {
 	uint32_t bits = (uint32_t)ABLi_popInteger();
 	uint32_t flag = (uint32_t)ABLi_popInteger();
@@ -929,8 +895,7 @@ execStdSetFlag(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdGetFlag(void)
+void execStdGetFlag(void)
 {
 	uint32_t bits = (uint32_t)ABLi_popInteger();
 	uint32_t flag = (uint32_t)ABLi_popInteger();
@@ -940,8 +905,7 @@ execStdGetFlag(void)
 
 //---------------------------------------------------------------------------
 
-void
-execStdCallFunction(void)
+void execStdCallFunction(void)
 {
 	uint32_t address = ABLi_popInteger();
 	if (address)
@@ -952,8 +916,7 @@ execStdCallFunction(void)
 
 //***************************************************************************
 
-void
-initStandardRoutines(void)
+void initStandardRoutines(void)
 {
 	//-------------------------------------------------------------
 	// Fatal and Assert will have hardcoded keys so we can look for

@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30204.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{84922EB1-5A83-4BD3-8A24-8570551BCA10}"
 EndProject
@@ -10,7 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{DE2F4131-38FF-4205-94C8-6032A0BC76C2}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		patches\initial_commit.diff = patches\initial_commit.diff
+		initial_preparations.txt = initial_preparations.txt
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{EA15631D-AE83-4639-9BFA-60FA94797F68}"

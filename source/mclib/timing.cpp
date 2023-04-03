@@ -22,7 +22,7 @@ float scenarioTime = 0.0;
 uint32_t LastTimeGetTime = 0;
 bool dynamicFrameTiming = TRUE;
 
-const std::wstring_view& monthName[12] = {
+std::wstring_view monthName[12] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 //----------------------------------------------------------------------------------
@@ -56,8 +56,7 @@ void MC_SYSTEMTIME::copyFromSystemTime(PVOIDsystemTime)
 }
 
 //----------------------------------------------------------------------------------
-void
-MCTiming_GetUTCSystemTimeFromInformation(
+void MCTiming_GetUTCSystemTimeFromInformation(
 	uint32_t daylightInfo, PVOIDtimeData, MC_SYSTEMTIME* systemTime)
 {
 	TIME_ZONE_INFORMATION* tzInfo = (TIME_ZONE_INFORMATION*)timeData;

@@ -24,8 +24,8 @@ uint8_t Stuff::Trace::NextTraceID = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Stuff::Trace::Trace(const std::wstring_view& name, Type type) :
-	Plug(DefaultData)
+Stuff::Trace::Trace(std::wstring_view name, Type type)
+	: Plug(DefaultData)
 {
 	traceNumber = NextTraceID++;
 	traceType = (uint8_t)type;
@@ -38,8 +38,7 @@ Stuff::Trace::Trace(const std::wstring_view& name, Type type) :
 #if defined(USE_TIME_ANALYSIS)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::Trace::PrintUsage(float usage)
+void Stuff::Trace::PrintUsage(float usage)
 {
 	// Check_Object(this);
 	SPEW((GROUP_STUFF_TRACE, "%f+", usage));
@@ -55,8 +54,8 @@ int32_t Stuff::BitTrace::NextBit = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Stuff::BitTrace::BitTrace(const std::wstring_view& name) :
-	Trace(name, BitType)
+Stuff::BitTrace::BitTrace(std::wstring_view name)
+	: Trace(name, BitType)
 {
 	activeLine = NextActiveLine++;
 	bitFlag = (NextBit < 32) ? uint32_t(1 << NextBit++) : uint32_t(0);
@@ -72,8 +71,7 @@ Stuff::BitTrace::BitTrace(const std::wstring_view& name) :
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::BitTrace::DumpTraceStatus()
+void Stuff::BitTrace::DumpTraceStatus()
 {
 	// Check_Object(this);
 	SPEW((GROUP_STUFF_TRACE, "%d = %d+", static_cast<int32_t>(activeLine), traceUp));
@@ -81,8 +79,7 @@ Stuff::BitTrace::DumpTraceStatus()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::BitTrace::ResetTrace()
+void Stuff::BitTrace::ResetTrace()
 {
 #if defined(USE_TIME_ANALYSIS)
 	traceUp = 0;
@@ -99,8 +96,7 @@ Stuff::BitTrace::ResetTrace()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::BitTrace::StartTiming()
+void Stuff::BitTrace::StartTiming()
 {
 	// Check_Object(this);
 	totalUpTime = 0;
@@ -108,8 +104,7 @@ Stuff::BitTrace::StartTiming()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float
-Stuff::BitTrace::CalculateUsage(int64_t when, int64_t sample_time)
+float Stuff::BitTrace::CalculateUsage(int64_t when, int64_t sample_time)
 {
 	if (traceUp > 0)
 	{
@@ -122,8 +117,7 @@ Stuff::BitTrace::CalculateUsage(int64_t when, int64_t sample_time)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::BitTrace::PrintUsage(float usage)
+void Stuff::BitTrace::PrintUsage(float usage)
 {
 	// Check_Object(this);
 	SPEW((GROUP_STUFF_TRACE, "%4f%% CPU+", (usage * 100.0f)));
@@ -136,8 +130,7 @@ Stuff::BitTrace::PrintUsage(float usage)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::BitTrace::Set(void)
+void Stuff::BitTrace::Set(void)
 {
 	// Check_Object(this);
 	if (!traceUp++)
@@ -172,8 +165,7 @@ Stuff::BitTrace::Set(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::BitTrace::Clear(void)
+void Stuff::BitTrace::Clear(void)
 {
 	// Check_Object(this);
 	if (--traceUp == 0)
@@ -217,8 +209,7 @@ Stuff::BitTrace::Clear(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::BitTrace::TestInstance(void)
+void Stuff::BitTrace::TestInstance(void)
 {
 	_ASSERT(traceUp >= 0);
 }
@@ -229,16 +220,14 @@ Stuff::BitTrace::TestInstance(void)
 
 Stuff::TraceManager* Stuff::TraceManager::Instance = nullptr;
 
-void
-Stuff::TraceManager::InitializeClass(void)
+void Stuff::TraceManager::InitializeClass(void)
 {
 	_ASSERT(!Stuff::TraceManager::Instance);
 	Stuff::TraceManager::Instance = new Stuff::TraceManager;
 	Register_Object(Stuff::TraceManager::Instance);
 }
 
-void
-Stuff::TraceManager::TerminateClass()
+void Stuff::TraceManager::TerminateClass()
 {
 	Unregister_Object(Stuff::TraceManager::Instance);
 	delete Stuff::TraceManager::Instance;
@@ -247,8 +236,8 @@ Stuff::TraceManager::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Stuff::TraceManager::TraceManager(void) :
-	traceChain(nullptr)
+Stuff::TraceManager::TraceManager(void)
+	: traceChain(nullptr)
 {
 	sampleStart = 0;
 	actualSampleCount = 0;
@@ -279,8 +268,7 @@ Stuff::TraceManager::~TraceManager()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::Add(Trace* trace)
+void Stuff::TraceManager::Add(Trace* trace)
 {
 	// Check_Object(this);
 	traceCount = (uint8_t)(traceCount + 1);
@@ -289,8 +277,7 @@ Stuff::TraceManager::Add(Trace* trace)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::DumpTracesStatus()
+void Stuff::TraceManager::DumpTracesStatus()
 {
 	ChainIteratorOf<Trace*> traces(&traceChain);
 	Trace* trace;
@@ -306,8 +293,7 @@ Stuff::TraceManager::DumpTracesStatus()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::ResetTraces()
+void Stuff::TraceManager::ResetTraces()
 {
 	ChainIteratorOf<Trace*> traces(&traceChain);
 	Trace* trace;
@@ -328,7 +314,7 @@ Stuff::TraceManager::ResetTraces()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const std::wstring_view&
+std::wstring_view
 Stuff::TraceManager::GetNameOfTrace(int32_t bit_no)
 {
 	//
@@ -356,8 +342,7 @@ Stuff::TraceManager::GetNameOfTrace(int32_t bit_no)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::StartTimingAnalysis()
+void Stuff::TraceManager::StartTimingAnalysis()
 {
 	sampleStart = gos_GetHiResTime();
 	ChainIteratorOf<Trace*> traces(&traceChain);
@@ -419,8 +404,7 @@ Stuff::TraceManager::SnapshotTimingAnalysis(bool print)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::CreateTraceLog(size_t max_trace_count, bool start_logging)
+void Stuff::TraceManager::CreateTraceLog(size_t max_trace_count, bool start_logging)
 {
 	// Check_Object(this);
 	_ASSERT(!allocatedTraceLog);
@@ -436,8 +420,7 @@ Stuff::TraceManager::CreateTraceLog(size_t max_trace_count, bool start_logging)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::SaveTraceLog(const std::wstring_view& filename)
+void Stuff::TraceManager::SaveTraceLog(std::wstring_view filename)
 {
 	// Check_Object(this);
 	if (allocatedTraceLog)
@@ -513,8 +496,7 @@ Stuff::TraceManager::SaveTraceLog(const std::wstring_view& filename)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::MarkTraceLog()
+void Stuff::TraceManager::MarkTraceLog()
 {
 	// Check_Object(this);
 	if (activeTraceLog)
@@ -532,8 +514,7 @@ Stuff::TraceManager::MarkTraceLog()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::SuspendTraceLogging()
+void Stuff::TraceManager::SuspendTraceLogging()
 {
 	// Check_Object(this);
 	if (activeTraceLog)
@@ -552,8 +533,7 @@ Stuff::TraceManager::SuspendTraceLogging()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::TraceManager::ResumeTraceLogging()
+void Stuff::TraceManager::ResumeTraceLogging()
 {
 	// Check_Object(this);
 	if (allocatedTraceLog && !activeTraceLog)
@@ -590,7 +570,7 @@ void Stuff::TraceManager::SetLineImplementation(uint8_t)
 {
 }
 
-void Stuff::TraceManager::ClearLineImplementation(uint8_t) {}
+void Stuff::TraceManager::ClearLineImplementation(uint8_t) { }
 
 bool Stuff::TraceManager::IsLineValidImplementation(uint8_t)
 {

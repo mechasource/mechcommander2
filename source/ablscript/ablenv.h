@@ -19,7 +19,8 @@
 //#include "dabldbug.h"
 //#include "ablscan.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -41,8 +42,14 @@ class UserFile
 {
 
 public:
-	UserFile(void) { init(void); }
-	~UserFile(void) { destroy(void); }
+	UserFile(void)
+	{
+		init(void);
+	}
+	~UserFile(void)
+	{
+		destroy(void);
+	}
 
 	//PVOID operator new(size_t mySize);
 	//void operator delete(PVOID us);
@@ -62,8 +69,8 @@ public:
 	void destroy(void);
 	void dump(void);
 	void close(void);
-	int32_t open(const std::wstring_view& fileName);
-	void write(const std::wstring_view& s);
+	int32_t open(std::wstring_view fileName);
+	void write(std::wstring_view s);
 	static void setup(void);
 	static void cleanup(void);
 	static const std::unique_ptr<UserFile>& getNewFile(void);
@@ -113,10 +120,10 @@ struct ModuleInfo
 
 struct ModuleEntry
 {
-	const std::wstring_view& fileName;
+	std::wstring_view fileName;
 	const std::unique_ptr<SymTableNode>& moduleIdPtr;
 	int32_t numSourceFiles;
-	const std::wstring_view&* sourceFiles;
+	std::wstring_view* sourceFiles;
 	int32_t numLibrariesUsed;
 	const std::unique_ptr<ABLModule>&* librariesUsed;
 	int32_t numStaticVars;
@@ -134,8 +141,14 @@ class ABLModule
 {
 
 public:
-	ABLModule(void) { init(void); }
-	~ABLModule(void) { destroy(void); }
+	ABLModule(void)
+	{
+		init(void);
+	}
+	~ABLModule(void)
+	{
+		destroy(void);
+	}
 
 	//PVOID operator new(size_t mySize);
 	//void operator delete(PVOID us);
@@ -161,21 +174,54 @@ public:
 	int32_t init(int32_t moduleHandle);
 	void write(ABLFile* moduleFile);
 	void read(ABLFile* moduleFile);
-	int32_t getId(void) { return (id); }
+	int32_t getId(void)
+	{
+		return (id);
+	}
 	int32_t getRealId(void);
-	int32_t getHandle(void) { return (handle); }
-	const std::unique_ptr<StackItem>& getStaticData(void) { return (staticData); }
-	void setInitCalled(bool called) { initCalled = called; }
-	bool getInitCalled(void) { return (initCalled); }
-	const std::wstring_view& getFileName(void);
-	const std::wstring_view& getName(void) { return (name); }
-	void setName(const std::wstring_view& _name);
-	size_t* getOrderCallFlags(void) { return (orderCallFlags); }
-	void setPrevState(const std::unique_ptr<SymTableNode>& stateSym) { prevState = stateSym; }
-	const std::unique_ptr<SymTableNode>& getPrevState(void) { return (prevState); }
+	int32_t getHandle(void)
+	{
+		return (handle);
+	}
+	const std::unique_ptr<StackItem>& getStaticData(void)
+	{
+		return (staticData);
+	}
+	void setInitCalled(bool called)
+	{
+		initCalled = called;
+	}
+	bool getInitCalled(void)
+	{
+		return (initCalled);
+	}
+	std::wstring_view getFileName(void);
+	std::wstring_view getName(void)
+	{
+		return (name);
+	}
+	void setName(std::wstring_view _name);
+	size_t* getOrderCallFlags(void)
+	{
+		return (orderCallFlags);
+	}
+	void setPrevState(const std::unique_ptr<SymTableNode>& stateSym)
+	{
+		prevState = stateSym;
+	}
+	const std::unique_ptr<SymTableNode>& getPrevState(void)
+	{
+		return (prevState);
+	}
 	int32_t getPrevStateHandle(void);
-	void setState(const std::unique_ptr<SymTableNode>& stateSym) { state = stateSym; }
-	const std::unique_ptr<SymTableNode>& getState(void) { return (state); }
+	void setState(const std::unique_ptr<SymTableNode>& stateSym)
+	{
+		state = stateSym;
+	}
+	const std::unique_ptr<SymTableNode>& getState(void)
+	{
+		return (state);
+	}
 	int32_t getStateHandle(void);
 	bool isLibrary(void);
 	void resetOrderCallFlags(void);
@@ -186,8 +232,14 @@ public:
 		return ((orderCallFlags[dword] & (1 << bit)) != 0);
 	}
 
-	const std::unique_ptr<WatchManager>& getWatchManager(void) { return (watchManager); }
-	const std::unique_ptr<BreakPointManager>& getBreakPointManager(void) { return (breakPointManager); }
+	const std::unique_ptr<WatchManager>& getWatchManager(void)
+	{
+		return (watchManager);
+	}
+	const std::unique_ptr<BreakPointManager>& getBreakPointManager(void)
+	{
+		return (breakPointManager);
+	}
 	void setTrace(bool _trace)
 	{
 		trace = _trace;
@@ -195,30 +247,44 @@ public:
 		traceExit = _trace;
 	}
 
-	bool getTrace(void) { return (trace); }
-	void setStep(bool _step) { step = _step; }
-	bool getStep(void) { return (step); }
+	bool getTrace(void)
+	{
+		return (trace);
+	}
+	void setStep(bool _step)
+	{
+		step = _step;
+	}
+	bool getStep(void)
+	{
+		return (step);
+	}
 	int32_t execute(const std::unique_ptr<ABLParam>& paramList = nullptr);
 	int32_t execute(const std::unique_ptr<ABLParam>& moduleParamList, const std::unique_ptr<SymTableNode>& functionIdPtr);
-	const std::unique_ptr<SymTableNode>& findSymbol(const std::wstring_view& symbolName, const std::unique_ptr<SymTableNode>& curFunction = nullptr, bool searchLibraries = false);
-	const std::unique_ptr<SymTableNode>& findFunction(const std::wstring_view& functionName, bool searchLibraries = false);
-	const std::unique_ptr<SymTableNode>& findState(const std::wstring_view& stateName);
-	int32_t findStateHandle(const std::wstring_view& stateName);
-	const std::wstring_view& getSourceFile(int32_t fileNumber);
-	const std::wstring_view& getSourceDirectory(int32_t fileNumber, const std::wstring_view& directory);
+	const std::unique_ptr<SymTableNode>& findSymbol(std::wstring_view symbolName, const std::unique_ptr<SymTableNode>& curFunction = nullptr, bool searchLibraries = false);
+	const std::unique_ptr<SymTableNode>& findFunction(std::wstring_view functionName, bool searchLibraries = false);
+	const std::unique_ptr<SymTableNode>& findState(std::wstring_view stateName);
+	int32_t findStateHandle(std::wstring_view stateName);
+	std::wstring_view getSourceFile(int32_t fileNumber);
+	std::wstring_view getSourceDirectory(int32_t fileNumber, std::wstring_view directory);
 	void getInfo(ModuleInfo* moduleInfo);
-	float getReal(void) { return (returnVal.real); }
-	int32_t getInteger(void) { return (returnVal.integer); }
-	int32_t setStaticInteger(const std::wstring_view& name, int32_t value);
-	int32_t getStaticInteger(const std::wstring_view& name);
-	int32_t setStaticReal(const std::wstring_view& name, float value);
-	float getStaticReal(const std::wstring_view& name);
-	int32_t setStaticIntegerArray(const std::wstring_view& name, int32_t size, int32_t* values);
-	int32_t getStaticIntegerArray(const std::wstring_view& name, int32_t size, int32_t* values);
-	int32_t setStaticRealArray(const std::wstring_view& name, int32_t size, float* values);
-	int32_t getStaticRealArray(const std::wstring_view& name, int32_t size, float* values);
+	float getReal(void)
+	{
+		return (returnVal.real);
+	}
+	int32_t getInteger(void)
+	{
+		return (returnVal.integer);
+	}
+	int32_t setStaticInteger(std::wstring_view name, int32_t value);
+	int32_t getStaticInteger(std::wstring_view name);
+	int32_t setStaticReal(std::wstring_view name, float value);
+	float getStaticReal(std::wstring_view name);
+	int32_t setStaticIntegerArray(std::wstring_view name, int32_t size, int32_t* values);
+	int32_t getStaticIntegerArray(std::wstring_view name, int32_t size, int32_t* values);
+	int32_t setStaticRealArray(std::wstring_view name, int32_t size, float* values);
+	int32_t getStaticRealArray(std::wstring_view name, int32_t size, float* values);
 	void destroy(void);
-
 
 private:
 	int32_t id;

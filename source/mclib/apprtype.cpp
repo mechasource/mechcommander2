@@ -41,8 +41,7 @@ AppearanceType::operator new(size_t memSize)
 }
 
 //---------------------------------------------------------------------------
-void
-AppearanceType::operator delete(PVOID treePtr)
+void AppearanceType::operator delete(PVOID treePtr)
 {
 	int32_t result;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
@@ -53,10 +52,9 @@ AppearanceType::operator delete(PVOID treePtr)
 #endif
 
 //---------------------------------------------------------------------------
-void
-AppearanceType::init(const std::wstring_view& fileName)
+void AppearanceType::init(std::wstring_view fileName)
 {
-	name = (const std::wstring_view&)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
+	name = (std::wstring_view)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
 	strcpy(name, fileName);
 	// Dig out the Type Bounds here for selections
 	FullPathFileName iniName;
@@ -105,8 +103,7 @@ AppearanceType::init(const std::wstring_view& fileName)
 }
 
 //---------------------------------------------------------------------------
-void
-AppearanceType::reinit(void)
+void AppearanceType::reinit(void)
 {
 	// Dig out the Type Bounds here for selections
 	FullPathFileName iniName;
@@ -156,8 +153,7 @@ AppearanceType::reinit(void)
 
 //---------------------------------------------------------------------------
 #if CONSIDERED_OBSOLETE
-void
-AppearanceType::destroy(void)
+void AppearanceType::destroy(void)
 {
 	AppearanceTypeList::appearanceHeap->Free(name);
 	name = nullptr;
@@ -165,8 +161,7 @@ AppearanceType::destroy(void)
 
 //---------------------------------------------------------------------------
 // class AppearanceTypeList
-void
-AppearanceTypeList::init(uint32_t heapSize)
+void AppearanceTypeList::init(uint32_t heapSize)
 {
 	appearanceHeap = new UserHeap;
 	gosASSERT(appearanceHeap != nullptr);
@@ -178,7 +173,7 @@ AppearanceTypeList::init(uint32_t heapSize)
 
 //---------------------------------------------------------------------------
 AppearanceTypePtr
-AppearanceTypeList::getAppearance(uint32_t apprNum, const std::wstring_view& appearFile)
+AppearanceTypeList::getAppearance(uint32_t apprNum, std::wstring_view appearFile)
 {
 	//----------------------------------------------------------------
 	// The type of appearance is stored in the upper 8 bits of the
@@ -381,8 +376,7 @@ AppearanceTypeList::removeAppearance(AppearanceTypePtr which)
 }
 
 //---------------------------------------------------------------------------
-void
-AppearanceTypeList::destroy(void)
+void AppearanceTypeList::destroy(void)
 {
 	//---------------------------------------------------------------------
 	// Run through the list and force a destroy call for each list element.

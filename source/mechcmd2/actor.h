@@ -76,9 +76,15 @@ public:
 		lastUser = nullptr;
 	}
 
-	VFXAppearanceType(void) { init(void); }
+	VFXAppearanceType(void)
+	{
+		init(void);
+	}
 
-	~VFXAppearanceType(void) { destroy(void); }
+	~VFXAppearanceType(void)
+	{
+		destroy(void);
+	}
 
 	void init(std::unique_ptr<File> appearFile, uint32_t fileSize);
 
@@ -143,16 +149,25 @@ public:
 public:
 	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
-	VFXAppearance(void) { init(void); }
+	VFXAppearance(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t update(void);
 	virtual int32_t render(int32_t depthFixup = 0);
 
 	virtual void destroy(void);
 
-	~VFXAppearance(void) { destroy(void); }
+	~VFXAppearance(void)
+	{
+		destroy(void);
+	}
 
-	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
+	virtual AppearanceTypePtr getAppearanceType(void)
+	{
+		return appearType;
+	}
 
 	virtual bool recalcBounds(void);
 
@@ -176,7 +191,10 @@ public:
 
 	virtual void setDamageLvl(uint32_t damage);
 
-	void setFadeTable(uint8_t* fTable) { fadeTable = fTable; }
+	void setFadeTable(uint8_t* fTable)
+	{
+		fadeTable = fTable;
+	}
 
 	void setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t selected);
 

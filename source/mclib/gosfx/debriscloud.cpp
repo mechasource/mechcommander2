@@ -16,8 +16,8 @@
 //------------------------------------------------------------------------------
 //
 gosFX::DebrisCloud__Specification::DebrisCloud__Specification(
-	std::iostream stream, uint32_t gfx_version) :
-	Effect__Specification(gosFX::DebrisCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: Effect__Specification(gosFX::DebrisCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	_ASSERT(m_class == DebrisCloudClassID);
@@ -44,8 +44,8 @@ gosFX::DebrisCloud__Specification::DebrisCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::DebrisCloud__Specification::DebrisCloud__Specification() :
-	Effect__Specification(gosFX::DebrisCloudClassID)
+gosFX::DebrisCloud__Specification::DebrisCloud__Specification()
+	: Effect__Specification(gosFX::DebrisCloudClassID)
 {
 	// Check_Pointer(this);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -89,8 +89,7 @@ gosFX::DebrisCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud__Specification::Save(std::iostream stream)
+void gosFX::DebrisCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -127,8 +126,7 @@ gosFX::DebrisCloud__Specification::Save(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud__Specification::Copy(DebrisCloud__Specification* spec)
+void gosFX::DebrisCloud__Specification::Copy(DebrisCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -172,8 +170,7 @@ gosFX::DebrisCloud__Specification::Copy(DebrisCloud__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud__Specification::LoadGeometry(std::iostream stream)
+void gosFX::DebrisCloud__Specification::LoadGeometry(std::iostream stream)
 {
 	int32_t i, mlrVersion, nrOfParticles;
 	mlrVersion = MidLevelRenderer::ReadMLRVersion(stream);
@@ -213,8 +210,7 @@ gosFX::DebrisCloud__Specification::LoadGeometry(std::iostream stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud__Specification::BuildDefaults()
+void gosFX::DebrisCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
@@ -247,8 +243,7 @@ gosFX::DebrisCloud__Specification::BuildDefaults()
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::DebrisCloud__Specification::IsDataValid(bool fix_data)
+bool gosFX::DebrisCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
 	return Effect__Specification::IsDataValid(fix_data);
@@ -298,8 +293,7 @@ gosFX::DebrisCloud::ClassData* gosFX::DebrisCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::InitializeClass()
+void gosFX::DebrisCloud::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
@@ -310,8 +304,7 @@ gosFX::DebrisCloud::InitializeClass()
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::TerminateClass()
+void gosFX::DebrisCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -320,8 +313,8 @@ gosFX::DebrisCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::DebrisCloud::DebrisCloud(Specification* spec, uint32_t flags) :
-	Effect(DefaultData, spec, flags)
+gosFX::DebrisCloud::DebrisCloud(Specification* spec, uint32_t flags)
+	: Effect(DefaultData, spec, flags)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	debrisPieces.SetLength(spec->debrisPieces.GetLength());
@@ -343,8 +336,7 @@ gosFX::DebrisCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::Start(struct gosFX::Effect::ExecuteInfo* info)
+void gosFX::DebrisCloud::Start(struct gosFX::Effect::ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -387,8 +379,7 @@ gosFX::DebrisCloud::Start(struct gosFX::Effect::ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
+bool gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -533,8 +524,7 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::DebrisCloud::HasFinished(void)
+bool gosFX::DebrisCloud::HasFinished(void)
 {
 	// Check_Object(this);
 	return Effect::HasFinished();
@@ -542,8 +532,7 @@ gosFX::DebrisCloud::HasFinished(void)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::Kill(void)
+void gosFX::DebrisCloud::Kill(void)
 {
 	// Check_Object(this);
 	//
@@ -565,8 +554,7 @@ gosFX::DebrisCloud::Kill(void)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::DebrisCloud::AnimateParticle(
+bool gosFX::DebrisCloud::AnimateParticle(
 	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
@@ -667,8 +655,7 @@ gosFX::DebrisCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::DestroyParticle(uint32_t index)
+void gosFX::DebrisCloud::DestroyParticle(uint32_t index)
 {
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
@@ -677,8 +664,7 @@ gosFX::DebrisCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::Draw(DrawInfo* info)
+void gosFX::DebrisCloud::Draw(DrawInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -738,8 +724,7 @@ gosFX::DebrisCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::TestInstance(void) const
+void gosFX::DebrisCloud::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }

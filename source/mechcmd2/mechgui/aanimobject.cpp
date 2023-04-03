@@ -24,9 +24,9 @@ aAnimObject::operator=(const aAnimObject& src)
 }
 
 int32_t
-aAnimObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t neverFlush)
+aAnimObject::init(FitIniFile* file, std::wstring_view blockname, uint32_t neverFlush)
 {
-	aObject::init(file, blockName, neverFlush);
+	aObject::init(file, blockname, neverFlush);
 	int32_t color = 0xffffffff;
 	if (NO_ERROR == file->readIdLong("colour", color))
 	{
@@ -42,13 +42,11 @@ aAnimObject::init(FitIniFile* file, const std::wstring_view& blockName, uint32_t
 	return 0;
 }
 
-void
-aAnimObject::update()
+void aAnimObject::update()
 {
 	animInfo.update();
 }
-void
-aAnimObject::render()
+void aAnimObject::render()
 {
 	if (!isShowing())
 		return;
@@ -83,8 +81,7 @@ aAnimObject::render()
 	move(-xNewOffset, -yNewOffset);
 }
 
-void
-aAnimObject::end()
+void aAnimObject::end()
 {
 	animInfo.end();
 }

@@ -46,24 +46,54 @@ public:
 
 	void renderWithDropShadow(void);
 
-	void getEntry(const std::wstring_view& str);
-	void setEntry(const std::wstring_view& str, uint8_t byHighlight = 0);
-	void limitEntry(int32_t nNewLimit) { nLimit = nNewLimit; }
+	void getEntry(std::wstring_view str);
+	void setEntry(std::wstring_view str, uint8_t byHighlight = 0);
+	void limitEntry(int32_t nNewLimit)
+	{
+		nLimit = nNewLimit;
+	}
 	void setFocus(bool bHasFocus);
 	void setFont(int32_t fontID);
-	void setTextcolour(int32_t color) { textcolour = color; }
-	void setSelectedcolour(int32_t color) { selectedcolour = color; }
-	bool hasFocus(void) const { return bFocus; }
+	void setTextcolour(int32_t color)
+	{
+		textcolour = color;
+	}
+	void setSelectedcolour(int32_t color)
+	{
+		selectedcolour = color;
+	}
+	bool hasFocus(void) const
+	{
+		return bFocus;
+	}
 
-	void init(FitIniFile* file, const std::wstring_view& header);
-	int32_t getHighlightcolour(void) const { return highlightcolour; }
-	int32_t getcolour(void) const { return textcolour; }
-	int32_t getCursorcolour(void) const { return cursorcolour; }
-	int32_t getSelectedcolour(void) const { return selectedcolour; }
+	void init(FitIniFile* file, std::wstring_view header);
+	int32_t getHighlightcolour(void) const
+	{
+		return highlightcolour;
+	}
+	int32_t getcolour(void) const
+	{
+		return textcolour;
+	}
+	int32_t getCursorcolour(void) const
+	{
+		return cursorcolour;
+	}
+	int32_t getSelectedcolour(void) const
+	{
+		return selectedcolour;
+	}
 
-	void allowWierdChars(bool bAllow) { bWierdChars = bAllow; }
+	void allowWierdChars(bool bAllow)
+	{
+		bWierdChars = bAllow;
+	}
 
-	aFont* getFontObject() { return &font; }
+	aFont* getFontObject()
+	{
+		return &font;
+	}
 
 	void setReadOnly(bool bReadOnly)
 	{
@@ -89,12 +119,21 @@ public:
 			dwStyleFlags ^= ES_EDITNUM;
 	}
 
-	int32_t getFont() { return font.getFontID(void); }
+	int32_t getFont()
+	{
+		return font.getFontID(void);
+	}
 
 	void initBufferSize(uint32_t newSize);
-	void setBufferSize(int32_t newSize) { text.SetBufferSize(newSize); }
+	void setBufferSize(int32_t newSize)
+	{
+		text.SetBufferSize(newSize);
+	}
 
-	void allowIME(bool bAllow) { bAllowIME = bAllow; }
+	void allowIME(bool bAllow)
+	{
+		bAllowIME = bAllow;
+	}
 
 private:
 	aEdit(const aEdit&);
@@ -128,7 +167,7 @@ private:
 	int32_t nLeftOffset;
 	float cursorTime;
 	bool bMouseDown;
-	const std::wstring_view& text;
+	std::wstring_view text;
 	aFont font;
 	bool bFocus;
 	uint32_t dwStyleFlags;

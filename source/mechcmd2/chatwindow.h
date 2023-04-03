@@ -12,7 +12,6 @@
 //#include "mechgui/logisticsscreen.h"
 // #include "mechgui/alistbox.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 ChatWindow:
@@ -24,9 +23,12 @@ public:
 	ChatMessageItem(void);
 	void setPlayercolour(int32_t color);
 	void setTextcolour(int32_t color);
-	void setPlayerName(const std::wstring_view& name);
-	int32_t setText(const std::wstring_view& text); // returns number of lines
-	int32_t getLineCount() { return lineCount; }
+	void setPlayerName(std::wstring_view name);
+	int32_t setText(std::wstring_view text); // returns number of lines
+	int32_t getLineCount()
+	{
+		return lineCount;
+	}
 
 private:
 	aText name;
@@ -59,7 +61,10 @@ public:
 
 	static void init(void);
 	static void destroy(void);
-	static ChatWindow* instance() { return s_instance; }
+	static ChatWindow* instance()
+	{
+		return s_instance;
+	}
 
 	int32_t initInstance(void);
 
@@ -82,7 +87,7 @@ private:
 	int32_t curItem;
 	int32_t maxItems;
 
-	static void refillListBox(aListBox& listBox, const std::wstring_view&* chatTexts, int32_t* playerIDs,
+	static void refillListBox(aListBox& listBox, std::wstring_view* chatTexts, int32_t* playerIDs,
 		ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount);
 };
 

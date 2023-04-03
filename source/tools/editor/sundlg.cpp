@@ -14,18 +14,18 @@ settings
 #include "EditorInterface.h"
 
 BEGIN_MESSAGE_MAP(SunDlg, CDialog)
-//{{AFX_MSG_MAP(SunDlg)
-ON_WM_CTLCOLOR()
-ON_BN_CLICKED(IDC_AMBIENT_BUTTON, OnAmbientButton)
-ON_BN_CLICKED(IDC_LIGHT_BUTTON, OnLightButton)
-ON_BN_CLICKED(IDC_RECALCULATE_TERRAIN_SHADOWS_BUTTON, OnRecalculateTerrainShadowsButton)
-ON_BN_CLICKED(IDC_REFRACTALIZE_TERRAIN_BUTTON, OnRefractalizeTerrainButton)
-//}}AFX_MSG_MAP
-ON_CONTROL_RANGE(EN_CHANGE, IDC_LIGHTCOLOR, IDC_AMBIENT2, OnChangeLightcolor)
+	//{{AFX_MSG_MAP(SunDlg)
+	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_AMBIENT_BUTTON, OnAmbientButton)
+	ON_BN_CLICKED(IDC_LIGHT_BUTTON, OnLightButton)
+	ON_BN_CLICKED(IDC_RECALCULATE_TERRAIN_SHADOWS_BUTTON, OnRecalculateTerrainShadowsButton)
+	ON_BN_CLICKED(IDC_REFRACTALIZE_TERRAIN_BUTTON, OnRefractalizeTerrainButton)
+	//}}AFX_MSG_MAP
+	ON_CONTROL_RANGE(EN_CHANGE, IDC_LIGHTCOLOR, IDC_AMBIENT2, OnChangeLightcolor)
 END_MESSAGE_MAP()
 
-SunDlg::SunDlg() :
-	CDialog(IDD_LIGHT)
+SunDlg::SunDlg()
+	: CDialog(IDD_LIGHT)
 {
 	//{{AFX_DATA_INIT(SunDlg)
 	m_Yaw = 0.0f;
@@ -33,8 +33,7 @@ SunDlg::SunDlg() :
 	//}}AFX_DATA_INIT
 }
 
-void
-SunDlg::DoDataExchange(CDataExchange* pDX)
+void SunDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(SunDlg)
@@ -45,8 +44,7 @@ SunDlg::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-void
-SunDlg::Init()
+void SunDlg::Init()
 {
 	uint32_t color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8) | (eye->dayAmbientRed << 16);
 	displayInHex(color, m_AmbientEdit);
@@ -57,8 +55,7 @@ SunDlg::Init()
 	UpdateData(0);
 }
 
-void
-SunDlg::displayInHex(int32_t number, CEdit& edit)
+void SunDlg::displayInHex(int32_t number, CEdit& edit)
 {
 	// turn this into hex
 	CString text;
@@ -78,8 +75,7 @@ SunDlg::getHexValue(CEdit& edit)
 	return value;
 }
 
-void
-SunDlg::applyChanges()
+void SunDlg::applyChanges()
 {
 	UpdateData();
 	int32_t color = getHexValue(m_Lightcolour);
@@ -105,8 +101,7 @@ SunDlg::applyChanges()
 	eye->update();
 }
 
-void
-SunDlg::OnOK()
+void SunDlg::OnOK()
 {
 	applyChanges();
 	CDialog::OnOK();
@@ -134,8 +129,7 @@ SunDlg::OnCtlcolour(CDC* pDC, CWnd* pWnd, uint32_t nCtlcolour)
 	return hbr;
 }
 
-BOOL
-SunDlg::OnInitDialog()
+BOOL SunDlg::OnInitDialog()
 {
 	CDialog ::OnInitDialog();
 	Init();
@@ -145,14 +139,12 @@ SunDlg::OnInitDialog()
 
 // end of file ( sunDlg.cpp )
 
-void
-SunDlg::OnAmbientButton()
+void SunDlg::OnAmbientButton()
 {
 	DocolourDlg(m_AmbientEdit);
 }
 
-void
-SunDlg::DocolourDlg(CEdit& edit)
+void SunDlg::DocolourDlg(CEdit& edit)
 {
 	CString tmpStr;
 	int32_t base = getHexValue(edit);
@@ -166,14 +158,12 @@ SunDlg::DocolourDlg(CEdit& edit)
 	}
 }
 
-void
-SunDlg::OnLightButton()
+void SunDlg::OnLightButton()
 {
 	DocolourDlg(m_Lightcolour);
 }
 
-void
-SunDlg::OnChangeLightcolor(uint32_t ID)
+void SunDlg::OnChangeLightcolor(uint32_t ID)
 {
 	CString text;
 	GetDlgItem(ID)->GetWindowText(text);
@@ -194,8 +184,7 @@ SunDlg::OnChangeLightcolor(uint32_t ID)
 	GetDlgItem(ID)->RedrawWindow();
 }
 
-void
-SunDlg::OnRecalculateTerrainShadowsButton()
+void SunDlg::OnRecalculateTerrainShadowsButton()
 {
 	EditorInterface::instance()->SetBusyMode();
 	applyChanges();
@@ -206,8 +195,7 @@ SunDlg::OnRecalculateTerrainShadowsButton()
 	EditorInterface::instance()->UnsetBusyMode();
 }
 
-void
-SunDlg::OnRefractalizeTerrainButton()
+void SunDlg::OnRefractalizeTerrainButton()
 {
 	applyChanges();
 	EditorInterface::instance()->RefractalizeTerrain(1);

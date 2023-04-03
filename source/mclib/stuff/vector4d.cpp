@@ -24,8 +24,7 @@ const Vector4D Vector4D::Identity(0.0f, 0.0f, 0.0f, 0.0f);
 //###########################################################################
 //###########################################################################
 //
-bool
-Stuff::Small_Enough(const Vector4D& V, float e)
+bool Stuff::Small_Enough(const Vector4D& V, float e)
 {
 	Check_Object(&V);
 	return V.x * V.x + V.y * V.y + V.z * V.z + V.w * V.w <= e;
@@ -35,8 +34,7 @@ Stuff::Small_Enough(const Vector4D& V, float e)
 //###########################################################################
 //###########################################################################
 //
-bool
-Stuff::Close_Enough(const Vector4D& V1, const Vector4D& V2, float e)
+bool Stuff::Close_Enough(const Vector4D& V1, const Vector4D& V2, float e)
 {
 	Check_Object(&V1);
 	Check_Object(&V2);
@@ -124,8 +122,7 @@ Vector4D::Multiply(
 //###########################################################################
 //
 #if !defined(Spew)
-void
-Spew(const std::wstring_view& group, const Vector4D& vector)
+void Spew(std::wstring_view group, const Vector4D& vector)
 {
 	Check_Object(&vector);
 	SPEW((group, "<%4f,%4f,%4f,%4f>", vector.x, vector.y, vector.z, vector.w));
@@ -141,7 +138,7 @@ Vector4D::MultiplySetClip(const Point3D& v, const Matrix4D& m, uint32_t* clipper
 #if USE_INLINE_ASSEMBLER_CODE
 	float* f = &x;
 	_asm
-	{
+		{
 		mov         edi, v
 
 		fld			dword ptr [edi] //	v.x
@@ -230,14 +227,14 @@ Vector4D::MultiplySetClip(const Point3D& v, const Matrix4D& m, uint32_t* clipper
 
 		faddp       st(1), st
 
-			//	get rid of x, y, z
+				//	get rid of x, y, z
 		fstp		st(1)
 		fstp		st(1)
 		fstp		st(1)
 
 		fstp        dword ptr [edi] //	x
 
-	}
+		}
 #else
 	x = v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0) + m(3, 0);
 	y = v.x * m(0, 1) + v.y * m(1, 1) + v.z * m(2, 1) + m(3, 1);

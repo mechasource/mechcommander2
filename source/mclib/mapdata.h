@@ -97,14 +97,20 @@ public:
 		WaterTXMData = 0xffffffff;
 	}
 
-	MapData(void) :
-		HeapManager() { init(void); }
+	MapData(void)
+		: HeapManager()
+	{
+		init(void);
+	}
 
 	void destroy(void);
 
-	~MapData(void) { destroy(void); }
+	~MapData(void)
+	{
+		destroy(void);
+	}
 
-	int32_t init(const std::wstring_view& fileName, int32_t numBlocks, int32_t blockSize);
+	int32_t init(std::wstring_view fileName, int32_t numBlocks, int32_t blockSize);
 
 	void newInit(PacketFile* file, uint32_t numvertices);
 	void newInit(uint32_t numvertices);
@@ -113,7 +119,10 @@ public:
 	void makeLists(
 		VertexPtr vertexList, int32_t& numVerts, TerrainQuadPtr quadList, int32_t& numTiles);
 
-	Stuff::Vector2DOf<float> getTopLeftVertex(void) { return topLeftVertex; }
+	Stuff::Vector2DOf<float> getTopLeftVertex(void)
+	{
+		return topLeftVertex;
+	}
 
 	void calcLight(void);
 	void clearShadows(void);
@@ -140,7 +149,10 @@ public:
 	void setVertexheight(int32_t vertexIndex, float value);
 	float getVertexheight(int32_t vertexIndex);
 
-	PostcompVertexPtr getData(void) { return blocks; }
+	PostcompVertexPtr getData(void)
+	{
+		return blocks;
+	}
 
 	uint32_t getTexture(int32_t tileR, int32_t tileC);
 
@@ -149,7 +161,10 @@ public:
 	void calcWater(float waterDepth, float waterShallowDepth, float waterAlphaDepth);
 	void recalcWater(void); // Uses above values already passed in to just recalc the water
 
-	float waterElevation() { return waterDepth; }
+	float waterElevation()
+	{
+		return waterDepth;
+	}
 
 	void markSeen(Stuff::Vector2DOf<float>& topLeftPosition, VertexPtr vertexList,
 		Stuff::Vector3D& looker, Stuff::Vector3D& lookVector, float cone, float dist, byte who);
@@ -158,7 +173,10 @@ public:
 	void unhighlightAll(void);
 	void highlightAllTransitionsOver2(void);
 	void selectVertex(uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle);
-	bool selection() { return hasSelection ? true : false; }
+	bool selection()
+	{
+		return hasSelection ? true : false;
+	}
 	bool isVertexSelected(uint32_t tileRow, uint32_t tileCol);
 
 	void calcTransitions(void);

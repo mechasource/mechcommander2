@@ -18,8 +18,7 @@ const LinearMatrix4D LinearMatrix4D::Identity(true);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-LinearMatrix4D::AlignLocalAxisToWorldVector(
+void LinearMatrix4D::AlignLocalAxisToWorldVector(
 	const Vector3D& world_target, size_t pointing_axis, size_t rotating_axis, size_t minor_axis)
 {
 	// Check_Object(this);
@@ -205,8 +204,7 @@ LinearMatrix4D::Normalize()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-LinearMatrix4D::TestInstance(void) const
+void LinearMatrix4D::TestInstance(void) const
 {
 	UnitVector3D v1;
 	v1.x = (*this)(0, 0);

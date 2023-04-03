@@ -6,7 +6,8 @@
 
 #include "mlr/mlrprimitivebase.h"
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 //#############################################################################
 
@@ -16,8 +17,7 @@ size_t clipTrick[6][2] = {{1, 1}, {1, 0}, {0, 1}, {0, 0}, {2, 0}, {2, 1}};
 //#########################    ClipPolygon2    ############################
 //#############################################################################
 
-void
-ClipPolygon2::Init(int32_t passes)
+void ClipPolygon2::Init(int32_t passes)
 {
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
@@ -26,8 +26,7 @@ ClipPolygon2::Init(int32_t passes)
 	clipPerVertex.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 }
 
-void
-ClipPolygon2::Destroy()
+void ClipPolygon2::Destroy()
 {
 	coords.SetLength(0);
 	colors.SetLength(0);
@@ -61,8 +60,7 @@ ClipPolygon2* MLRPrimitiveBase::clipBuffer;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::InitializeClass()
+void MLRPrimitiveBase::InitializeClass()
 {
 	_ASSERT(!DefaultData);
 	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
@@ -96,8 +94,7 @@ MLRPrimitiveBase::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::TerminateClass()
+void MLRPrimitiveBase::TerminateClass()
 {
 	clipBuffer[1].Destroy();
 	clipBuffer[0].Destroy();
@@ -122,8 +119,8 @@ MLRPrimitiveBase::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data, std::iostream stream, uint32_t version) :
-	RegisteredClass(class_data)
+MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data, std::iostream stream, uint32_t version)
+	: RegisteredClass(class_data)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -152,8 +149,7 @@ MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data, std::iostream stream, 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::Save(std::iostream stream)
+void MLRPrimitiveBase::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -167,8 +163,11 @@ MLRPrimitiveBase::Save(std::iostream stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data) :
-	RegisteredClass(class_data), lengths(0), texCoords(0), coords(0)
+MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data)
+	: RegisteredClass(class_data)
+	, lengths(0)
+	, texCoords(0)
+	, coords(0)
 {
 	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	referenceState = 0;
@@ -186,23 +185,20 @@ MLRPrimitiveBase::~MLRPrimitiveBase()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::TestInstance(void) const
+void MLRPrimitiveBase::TestInstance(void) const
 {
 	_ASSERT(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::InitializeDraw()
+void MLRPrimitiveBase::InitializeDraw()
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
+void MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
 {
 	gos_vertices = nullptr;
 	numGOSVertices = -1;
@@ -211,8 +207,7 @@ MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::SetSubprimitiveLengths(uint8_t* data, int32_t l)
+void MLRPrimitiveBase::SetSubprimitiveLengths(uint8_t* data, int32_t l)
 {
 	// Check_Object(this);
 	lengths.AssignData(data, l);
@@ -220,8 +215,7 @@ MLRPrimitiveBase::SetSubprimitiveLengths(uint8_t* data, int32_t l)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::GetSubprimitiveLengths(uint8_t** data, int32_t* len)
+void MLRPrimitiveBase::GetSubprimitiveLengths(uint8_t** data, int32_t* len)
 {
 	// Check_Object(this);
 	*data = lengths.GetData();
@@ -239,8 +233,7 @@ MLRPrimitiveBase::GetSubprimitiveLength(int32_t i) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
+void MLRPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
@@ -253,8 +246,7 @@ MLRPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::GetCoordData(Point3D** data, size_t* dataSize)
+void MLRPrimitiveBase::GetCoordData(Point3D** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = coords.GetData();
@@ -263,8 +255,7 @@ MLRPrimitiveBase::GetCoordData(Point3D** data, size_t* dataSize)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::SetTexCoordData(const Stuff::Vector2DScalar* data, size_t dataSize)
+void MLRPrimitiveBase::SetTexCoordData(const Stuff::Vector2DScalar* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
@@ -274,8 +265,7 @@ MLRPrimitiveBase::SetTexCoordData(const Stuff::Vector2DScalar* data, size_t data
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::GetTexCoordData(Stuff::Vector2DScalar** data, size_t* dataSize)
+void MLRPrimitiveBase::GetTexCoordData(Stuff::Vector2DScalar** data, size_t* dataSize)
 {
 	// Check_Object(this);
 	*data = texCoords.GetData();
@@ -284,8 +274,7 @@ MLRPrimitiveBase::GetTexCoordData(Stuff::Vector2DScalar** data, size_t* dataSize
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::Transform(Matrix4D* mat)
+void MLRPrimitiveBase::Transform(Matrix4D* mat)
 {
 	// Check_Object(this);
 	int32_t i, len = coords.GetLength();
@@ -300,8 +289,7 @@ MLRPrimitiveBase::Transform(Matrix4D* mat)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRPrimitiveBase::GetExtend(Stuff::ExtentBox* box)
+void MLRPrimitiveBase::GetExtend(Stuff::ExtentBox* box)
 {
 	// Check_Object(this);
 	Check_Object(box);
@@ -343,8 +331,7 @@ MLRPrimitiveBase::GetExtend(Stuff::ExtentBox* box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MLRPrimitiveBase::CastRay(Line3D* line, Normal3D* normal)
+bool MLRPrimitiveBase::CastRay(Line3D* line, Normal3D* normal)
 {
 	// Check_Object(this);
 	Check_Object(line);
@@ -430,7 +417,7 @@ MidLevelRenderer::CreateIndexedIcosahedron(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const std::wstring_view&
+std::wstring_view
 MidLevelRenderer::IcoInfo::GetTypeName()
 {
 	switch (type)
@@ -503,8 +490,7 @@ MidLevelRenderer::IcoInfo::GetTypeName()
 //#####################    MLRPrimitiveBase__ClassData    #####################
 //#############################################################################
 
-void
-MLRPrimitiveBase__ClassData::TestInstance()
+void MLRPrimitiveBase__ClassData::TestInstance()
 {
 	_ASSERT(IsDerivedFrom(MLRPrimitiveBase::DefaultData));
 }

@@ -35,8 +35,7 @@ aButton::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void
-aButton::destroy()
+void aButton::destroy()
 {
 	aObject::destroy();
 }
@@ -48,13 +47,12 @@ aButton::operator=(const aButton& src)
 	aObject::operator=(src);
 	return *this;
 }
-aButton::aButton(const aButton& src) :
-	aObject(src)
+aButton::aButton(const aButton& src)
+	: aObject(src)
 {
 	copyData(src);
 }
-void
-aButton::copyData(const aButton& src)
+void aButton::copyData(const aButton& src)
 {
 	if (&src != this)
 	{
@@ -63,8 +61,7 @@ aButton::copyData(const aButton& src)
 	}
 }
 
-void
-aButton::update()
+void aButton::update()
 {
 	if (!isShowing())
 		return;
@@ -109,8 +106,7 @@ aButton::update()
 	aObject::update();
 }
 
-bool
-aButton::pointInside(int32_t xPos, int32_t yPos) const
+bool aButton::pointInside(int32_t xPos, int32_t yPos) const
 {
 	if (aObject::pointInside(xPos, yPos))
 		return true;
@@ -122,8 +118,7 @@ aButton::pointInside(int32_t xPos, int32_t yPos) const
 }
 
 /////////////////////////////////////////////////
-void
-aButton::render()
+void aButton::render()
 {
 	if (state != HIDDEN)
 	{
@@ -173,8 +168,7 @@ aButton::render()
 		}
 	}
 }
-void
-aButton::press(bool bPress)
+void aButton::press(bool bPress)
 {
 	if (!isEnabled())
 		return;
@@ -184,15 +178,13 @@ aButton::press(bool bPress)
 	makeUVs(location, state, data);
 }
 
-void
-aButton::makeAmbiguous(bool bAmbiguous)
+void aButton::makeAmbiguous(bool bAmbiguous)
 {
 	state = bAmbiguous ? AMBIGUOUS : ENABLED;
 	makeUVs(location, state, data);
 }
 
-void
-aButton::disable(bool bDisable)
+void aButton::disable(bool bDisable)
 {
 	if (!bDisable)
 	{
@@ -204,16 +196,14 @@ aButton::disable(bool bDisable)
 	makeUVs(location, state, data);
 }
 
-void
-aButton::hide(bool bHide)
+void aButton::hide(bool bHide)
 {
 	state = bHide ? HIDDEN : ENABLED;
 	if (state != HIDDEN)
 		aButton::makeUVs(location, state, data);
 }
 
-bool
-aButton::isEnabled()
+bool aButton::isEnabled()
 {
 	return state == ENABLED || state == PRESSED || state == AMBIGUOUS || state == HIGHLIGHT;
 }
@@ -224,14 +214,12 @@ aButton::getID()
 	return data.ID;
 }
 
-void
-aButton::setID(int32_t newID)
+void aButton::setID(int32_t newID)
 {
 	data.ID = newID;
 }
 
-void
-aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data)
+void aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data)
 {
 	float left = data.stateCoords[State][0];
 	float top = data.stateCoords[State][1];
@@ -280,8 +268,7 @@ aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data
 	}
 }
 
-void
-aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D font)
+void aButton::init(FitIniFile& buttonFile, std::wstring_view str, HGOSFONT3D font)
 {
 	textureHandle = 0;
 	int32_t result = buttonFile.seekBlock(str);
@@ -293,7 +280,7 @@ aButton::init(FitIniFile& buttonFile, const std::wstring_view& str, HGOSFONT3D f
 		return;
 	}
 	buttonFile.readIdLong("ID", data.ID);
-	buttonFile.readIdString("FileName", data.fileName, 32);
+	buttonFile.readIdString("filename", data.fileName, 32);
 	buttonFile.readIdLong("HelpCaption", helpHeader);
 	buttonFile.readIdLong("HelpDesc", helpid);
 	buttonFile.readIdLong("TextID", data.textID);
@@ -428,14 +415,13 @@ aAnimButton::operator=(const aAnimButton& src)
 	aButton::operator=(src);
 	return *this;
 }
-aAnimButton::aAnimButton(const aAnimButton& src) :
-	aButton(src)
+aAnimButton::aAnimButton(const aAnimButton& src)
+	: aButton(src)
 {
 	copyData(src);
 }
 
-void
-aAnimButton::copyData(const aAnimButton& src)
+void aAnimButton::copyData(const aAnimButton& src)
 {
 	if (&src != this)
 	{
@@ -449,8 +435,7 @@ aAnimButton::copyData(const aAnimButton& src)
 		bAnimateChildren = src.bAnimateChildren;
 	}
 }
-void
-aAnimButton::destroy()
+void aAnimButton::destroy()
 {
 	normalData.destroy();
 	highlightData.destroy();
@@ -459,8 +444,7 @@ aAnimButton::destroy()
 	aButton::destroy();
 }
 
-void
-aAnimButton::init(FitIniFile& file, const std::wstring_view& headerName, HGOSFONT3D font)
+void aAnimButton::init(FitIniFile& file, std::wstring_view headerName, HGOSFONT3D font)
 {
 	if (NO_ERROR != file.seekBlock(headerName))
 	{
@@ -488,8 +472,7 @@ aAnimButton::init(FitIniFile& file, const std::wstring_view& headerName, HGOSFON
 	}
 }
 
-void
-aAnimButton::update()
+void aAnimButton::update()
 {
 	if (!isShowing())
 		return;
@@ -599,8 +582,7 @@ aAnimButton::update()
 	pressedData.update();
 	normalData.update();
 }
-void
-aAnimButton::render()
+void aAnimButton::render()
 {
 	if (!isShowing())
 		return;
@@ -622,8 +604,7 @@ aAnimButton::render()
 	}
 }
 
-void
-aAnimButton::update(const aAnimation& animData)
+void aAnimButton::update(const aAnimation& animData)
 {
 	if (!isShowing())
 		return;
@@ -664,8 +645,7 @@ aAnimButton::update(const aAnimation& animData)
 		aButton::render();
 }
 
-void
-aButton::move(float offsetX, float offsetY)
+void aButton::move(float offsetX, float offsetY)
 {
 	aObject::move(offsetX, offsetY);
 	data.textRect.left += offsetX;
@@ -674,8 +654,7 @@ aButton::move(float offsetX, float offsetY)
 	data.textRect.bottom += offsetY;
 }
 
-void
-aAnimButton::setAnimationInfo(
+void aAnimButton::setAnimationInfo(
 	aAnimation* normal, aAnimation* highlight, aAnimation* pressed, aAnimation* disabled)
 {
 	if (normal)

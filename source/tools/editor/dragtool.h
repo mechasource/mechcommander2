@@ -27,7 +27,10 @@ public:
 	{
 		return true;
 	}
-	virtual bool canPaintSelection() { return false; }
+	virtual bool canPaintSelection()
+	{
+		return false;
+	}
 
 private:
 	int32_t lastX;

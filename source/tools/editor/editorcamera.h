@@ -14,7 +14,6 @@ EditorCamera.h			: Interface for the EditorCamera component.
 //#include "editorobjectmgr.h"
 //#include "objstatus.h"
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 EditorCamera:  draws the terrain and objects and stuff
@@ -40,7 +39,10 @@ public:
 	int32_t cameraLineChanged;
 	int32_t oldSkyNumber;
 
-	EditorCamera(void) { init(void); }
+	EditorCamera(void)
+	{
+		init(void);
+	}
 
 	virtual void init(void)
 	{

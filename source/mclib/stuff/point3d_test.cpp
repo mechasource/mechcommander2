@@ -12,8 +12,7 @@
 //###########################################################################
 //###########################################################################
 //
-bool
-Point3D::TestClass()
+bool Point3D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Point3D test...\n"));
 	const Point3D a(Identity);

@@ -36,16 +36,14 @@ GameDebugWindow::operator new(size_t ourSize)
 
 //---------------------------------------------------------------------------
 
-void
-GameDebugWindow::operator delete(PVOID us)
+void GameDebugWindow::operator delete(PVOID us)
 {
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void
-GameDebugWindow::setFont(const std::wstring_view& fontFile)
+void GameDebugWindow::setFont(std::wstring_view fontFile)
 {
 	if (font)
 	{
@@ -64,8 +62,7 @@ GameDebugWindow::setFont(const std::wstring_view& fontFile)
 
 //---------------------------------------------------------------------------
 
-void
-GameDebugWindow::print(const std::wstring_view& s)
+void GameDebugWindow::print(std::wstring_view s)
 {
 	if (numLines < MAX_DEBUG_WINDOW_LINES)
 		strcpy(textBuffer[numLines++], s);
@@ -80,8 +77,7 @@ GameDebugWindow::print(const std::wstring_view& s)
 
 //---------------------------------------------------------------------------
 
-void
-GameDebugWindow::render(void)
+void GameDebugWindow::render(void)
 {
 	if (!display)
 		return;

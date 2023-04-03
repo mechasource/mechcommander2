@@ -99,8 +99,7 @@ InfoWindow::InfoWindow()
 	s_instance = this;
 }
 
-void
-InfoWindow::init(FitIniFile& file)
+void InfoWindow::init(FitIniFile& file)
 {
 	if (NO_ERROR != file.seekBlock("Fonts"))
 		Assert(0, 0, "couldn't find the font block");
@@ -242,8 +241,7 @@ InfoWindow::~InfoWindow()
 	delete[] skillInfos;
 }
 
-void
-InfoWindow::setUnit(Mover* pNewMover)
+void InfoWindow::setUnit(Mover* pNewMover)
 {
 	if (pNewMover && (pNewMover->getTeamId() != Team::home->getId() && (CONTACT_VISUAL != pNewMover->getContactStatus(Team::home->getId(), true)) && !pNewMover->isDisabled()))
 	{
@@ -283,8 +281,7 @@ InfoWindow::setUnit(Mover* pNewMover)
 	}
 }
 
-void
-InfoWindow::drawName(const std::wstring_view& name)
+void InfoWindow::drawName(std::wstring_view name)
 {
 	RECT rect = {NAMELEFT, NAMETOP, NAMERIGHT, SCROLLTOP};
 	drawRect(rect, 0xff000000);
@@ -293,8 +290,7 @@ InfoWindow::drawName(const std::wstring_view& name)
 		name, NAMELEFT, NAMETOP, NAMERIGHT - NAMELEFT, NAMEBOTTOM - NAMETOP, 0xff5c96c2, 0, 3);
 }
 
-void
-InfoWindow::render()
+void InfoWindow::render()
 {
 	drawScrollingStuff();
 	RECT tmpRect = {SCROLLBOXLEFT, SCROLLBOXBOTTOM, SCROLLBOXRIGHT, INFOTOP + INFOHEIGHT};
@@ -386,8 +382,7 @@ InfoWindow::render()
 	drawEmptyRect(rect, SCROLLCOLOR, SCROLLCOLOR);
 }
 
-void
-InfoWindow::update()
+void InfoWindow::update()
 {
 	if (pUnit && (pUnit->getTeamId() != Team::home->getId() && (CONTACT_VISUAL != (pUnit->getContactStatus(Team::home->getId(), true)) && !pUnit->isDisabled())))
 	{
@@ -462,8 +457,7 @@ InfoWindow::update()
 		lastYClick = -1;
 }
 
-void
-InfoWindow::drawScrollingStuff()
+void InfoWindow::drawScrollingStuff()
 {
 	if (!pUnit)
 		return;
@@ -491,7 +485,7 @@ InfoWindow::drawScrollingStuff()
 	wchar_t ranges[60];
 	int32_t names[60];
 	memset(disabledCount, 0, sizeof(wchar_t) * 60 * 2);
-	memset(names, 0, sizeof(const std::wstring_view&) * 60);
+	memset(names, 0, sizeof(std::wstring_view) * 60);
 	memset(ranges, 0, sizeof(wchar_t) * 60);
 	memset(ammo, 0, sizeof(int32_t) * 60);
 	bool bDraw[4];
@@ -542,7 +536,7 @@ InfoWindow::drawScrollingStuff()
 	//	int32_t stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG,
 	// IDS_COMPONENT}; 	int32_t headercolours[4] = { 0xFFC8E100, 0xff0091FF,
 	// 0xFFFF0000, 0xffFF8A00 };
-	const std::wstring_view& capHeader;
+	std::wstring_view capHeader;
 	for (size_t j = 0; j < 3; j++)
 	{
 		if (!bDraw[j]) // make sure we have one
@@ -594,7 +588,7 @@ InfoWindow::drawScrollingStuff()
 			drawDivider(curY);
 		curY += SECTIONSKIP;
 	}
-	memset(names, 0, sizeof(const std::wstring_view&) * 60);
+	memset(names, 0, sizeof(std::wstring_view) * 60);
 	int32_t count[4];
 	count[0] = pUnit->ecm;
 	count[1] = pUnit->probe;
@@ -723,8 +717,7 @@ InfoWindow::drawScrollingStuff()
 		infoLength = curY - SCROLLTOP - (SCROLLBOTTOM - SCROLLTOP);
 }
 
-void
-InfoWindow::handleClick(int32_t ID)
+void InfoWindow::handleClick(int32_t ID)
 {
 	switch (ID)
 	{
@@ -737,8 +730,7 @@ InfoWindow::handleClick(int32_t ID)
 	}
 }
 
-void
-InfoWindow::drawDivider(float yVal)
+void InfoWindow::drawDivider(float yVal)
 {
 	gos_VERTEX v[2];
 	//	gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
@@ -756,8 +748,7 @@ InfoWindow::drawDivider(float yVal)
 	gos_DrawLines(v, 2);
 }
 
-void
-InfoWindow::drawSkillBar(int32_t skill, float yVal, float height)
+void InfoWindow::drawSkillBar(int32_t skill, float yVal, float height)
 {
 	float left = InfoWindow::SKILLLEFT;
 	float right = InfoWindow::SKILLRIGHT;
@@ -793,8 +784,7 @@ InfoWindow::drawSkillBar(int32_t skill, float yVal, float height)
 		buffer, SKILLRIGHT + 2, yVal, SCROLLLEFT - SKILLRIGHT - 2, SKILLHEIGHT, 0xff005392, 0, 0);
 }
 
-void
-InfoWindow::setScrollPos(int32_t where)
+void InfoWindow::setScrollPos(int32_t where)
 {
 	if (where < 0)
 		scrollPos = 0;

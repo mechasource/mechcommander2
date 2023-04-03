@@ -130,8 +130,7 @@ extern uint32_t tindices[20][3];
 
 extern uint32_t triDrawn;
 
-void
-subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1, Stuff::Point3D& v2, Stuff::Point3D& v3,
+void subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1, Stuff::Point3D& v2, Stuff::Point3D& v3,
 	uint32_t depth, uint32_t tri2draw, float rad = 1.0f);
 
 MLR_I_PMesh*

@@ -5,14 +5,14 @@
  Mechcommander2. The code is a work of progress and there is no guarantee it is
  complete, accurate or useful in any way. The purpose is instead to make it
  possible to safely remove any dependencies of gameos.lib from Mechcommander2.
- All code is logically copyrighted to Microsoft
+ All code is logically copyrighted by Microsoft
 *******************************************************************************/
 /*******************************************************************************
  libraries.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 Jerker Back, created
+ 2014-07-24 Jerker Bäck, created
 
 *******************************************************************************/
 
@@ -266,7 +266,7 @@ void __stdcall InitLibraries(void)
 		{
 			// pszFormat = gos_GetResourceString(gLanguageDLL, 10051u);
 			format = "Cannot find dsetup.dll in %s\\assets\\binaries or %s, "
-						"this file is required";
+					 "this file is required";
 			sprintf_s(szDsetupMessage, _countof(szDsetupMessage), format, AssetsDirectory1,
 				AssetsDirectory2);
 			MessageBoxA(nullptr, szDsetupMessage, ApplicationName, MB_ICONEXCLAMATION);
@@ -378,8 +378,8 @@ void __stdcall InitLibraries(void)
 						// pszFormat = gos_GetResourceString(gLanguageDLL,
 						// 10033u);
 						format = "Cannot find blade.dll in "
-									"%s\\assets\\binaries or %s, this file is "
-									"required";
+								 "%s\\assets\\binaries or %s, this file is "
+								 "required";
 						sprintf_s(szAssetsPathMessage, _countof(szAssetsPathMessage), format,
 							AssetsDirectory1, AssetsDirectory2);
 						MessageBoxA(

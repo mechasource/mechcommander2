@@ -260,7 +260,10 @@ public:
 			delete this;
 		}
 	}
-	size_t GetReferenceCount(void) { return referenceCount; }
+	size_t GetReferenceCount(void)
+	{
+		return referenceCount;
+	}
 
 protected:
 	size_t referenceCount;
@@ -332,7 +335,7 @@ struct IcoInfo
 	float radius;
 	float all;
 	bool onOff;
-	const std::wstring_view& GetTypeName(void);
+	std::wstring_view GetTypeName(void);
 };
 
 MLRShape*
@@ -347,11 +350,11 @@ class MLRPrimitiveBase__ClassData // : public Stuff::RegisteredClass::ClassData
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
 public:
-	MLRPrimitiveBase__ClassData(Stuff::RegisteredClass::ClassID class_id, const std::wstring_view& class_name,
+	MLRPrimitiveBase__ClassData(Stuff::RegisteredClass::ClassID class_id, std::wstring_view class_name,
 		Stuff::RegisteredClass::ClassData* parent_class,
-		MLRPrimitiveBase::Factory primitive_factory) :
-		RegisteredClass__ClassData(class_id, class_name, parent_class),
-		primitiveFactory(primitive_factory)
+		MLRPrimitiveBase::Factory primitive_factory)
+		: RegisteredClass__ClassData(class_id, class_name, parent_class)
+		, primitiveFactory(primitive_factory)
 	{
 	}
 

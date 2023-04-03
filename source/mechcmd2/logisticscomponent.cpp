@@ -15,7 +15,7 @@ component.
 #include "resource.h"
 #include "utilities.h"
 
-extern const std::wstring_view& ComponentFormString[];
+extern std::wstring_view ComponentFormString[];
 
 int32_t LogisticsComponent::XICON_FACTOR = 48;
 int32_t LogisticsComponent::YICON_FACTOR = 32;
@@ -24,7 +24,7 @@ float LogisticsComponent::MAX_DAMAGE = 15.f;
 float LogisticsComponent::MAX_RECYCLE = 10.75f;
 float LogisticsComponent::MAX_RANGE = 3.f;
 
-/*const std::wstring_view& LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] =
+/*std::wstring_view LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] =
 {
 	"Simple",
 	"Cockpit",
@@ -74,10 +74,10 @@ LogisticsComponent::~LogisticsComponent()
 }
 
 int32_t
-LogisticsComponent::init(const std::wstring_view& dataLine)
+LogisticsComponent::init(std::wstring_view dataLine)
 {
-	const std::wstring_view& line = dataLine;
-	const std::wstring_view& pLine = line;
+	std::wstring_view line = dataLine;
+	std::wstring_view pLine = line;
 	wchar_t pBuffer[1025];
 	ID = (extractInt(pLine));
 	// the type
@@ -158,7 +158,7 @@ LogisticsComponent::init(const std::wstring_view& dataLine)
 }
 
 int32_t
-LogisticsComponent::extractString(const std::wstring_view&& pFileLine, const std::wstring_view& pBuffer, int32_t bufferLength)
+LogisticsComponent::extractString(std::wstring_view& pFileLine, std::wstring_view pBuffer, int32_t bufferLength)
 {
 	*pBuffer = 0;
 	int32_t i;
@@ -182,7 +182,7 @@ LogisticsComponent::extractString(const std::wstring_view&& pFileLine, const std
 }
 
 int32_t
-LogisticsComponent::extractInt(const std::wstring_view&& pFileLine)
+LogisticsComponent::extractInt(std::wstring_view& pFileLine)
 {
 	wchar_t buffer[1024];
 	int32_t count = extractString(pFileLine, buffer, 1024);
@@ -193,8 +193,7 @@ LogisticsComponent::extractInt(const std::wstring_view&& pFileLine)
 	return -1;
 }
 
-float
-LogisticsComponent::extractFloat(const std::wstring_view&& pFileLine)
+float LogisticsComponent::extractFloat(std::wstring_view& pFileLine)
 {
 	wchar_t buffer[1024];
 	int32_t count = extractString(pFileLine, buffer, 1024);
@@ -205,8 +204,7 @@ LogisticsComponent::extractFloat(const std::wstring_view&& pFileLine)
 	return -1;
 }
 
-bool
-LogisticsComponent::compare(LogisticsComponent* second, int32_t type)
+bool LogisticsComponent::compare(LogisticsComponent* second, int32_t type)
 {
 	switch (type)
 	{
@@ -229,8 +227,7 @@ LogisticsComponent::compare(LogisticsComponent* second, int32_t type)
 	return 0;
 }
 
-bool
-LogisticsComponent::isWeapon()
+bool LogisticsComponent::isWeapon()
 {
 	return Type == COMPONENT_FORM_WEAPON || Type == COMPONENT_FORM_WEAPON_ENERGY || Type == COMPONENT_FORM_WEAPON_BALLISTIC || Type == COMPONENT_FORM_WEAPON_MISSILE;
 }

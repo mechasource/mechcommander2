@@ -29,8 +29,8 @@ public:
 	// Constructors/Destructors
 	//
 public:
-	MLRIndexedTriangleCloud(uint32_t nr) :
-		MLRTriangleCloud(nr)
+	MLRIndexedTriangleCloud(uint32_t nr)
+		: MLRTriangleCloud(nr)
 	{
 		// _ASSERT(gos_GetCurrentHeap() == Heap);
 		usedNrOfPoints = nullptr;
@@ -44,8 +44,8 @@ public:
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
-	MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(uint32_t nr) :
-		MLRTriangleCloud(nr)
+	MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(uint32_t nr)
+		: MLRTriangleCloud(nr)
 	{
 		// _ASSERT(gos_GetCurrentHeap() == Heap);
 		usedNrOfPoints = nullptr;

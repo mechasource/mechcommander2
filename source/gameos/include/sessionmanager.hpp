@@ -413,11 +413,20 @@ public:
 	FLinkedList<FIDPSession>* GetSessions(BOOLEAN refresh = true);
 	FLinkedList<FIDPPlayer>* GetPlayers(FIDPSession* session = nullptr);
 
-	inline FIDPSession* GetCurrentSession(void) { return currentSession; }
+	inline FIDPSession* GetCurrentSession(void)
+	{
+		return currentSession;
+	}
 
-	inline FIDPPlayer* GetLocalPlayer(void) { return thisPlayer; }
+	inline FIDPPlayer* GetLocalPlayer(void)
+	{
+		return thisPlayer;
+	}
 
-	DPID GetServerID(void) { return serverID; }
+	DPID GetServerID(void)
+	{
+		return serverID;
+	}
 
 	// FindSession returns the session with the corresponding id or nullptr
 	// if no match is found.
@@ -431,7 +440,10 @@ public:
 
 	FIDPPlayer* GetPlayer(uint32_t id);
 
-	inline BOOL IsLocalHost(void) { return bSessionHost; }
+	inline BOOL IsLocalHost(void)
+	{
+		return bSessionHost;
+	}
 
 	// ProcessMessages should be called to get all new messages and
 	// send guaranteed and file messages.

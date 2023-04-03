@@ -18,8 +18,9 @@ KeyboardRef.cpp			: Implementation of the KeyboardRef component.
 #define ALT 0x00100000
 #define WAYPT 0x20000000
 
-KeyboardRef::KeyboardRef() :
-	listItemTemplate(IDS_KEYBOARD_REF_FONT), listItemTemplate2(IDS_KEYBOARD_REF_FONT)
+KeyboardRef::KeyboardRef()
+	: listItemTemplate(IDS_KEYBOARD_REF_FONT)
+	, listItemTemplate2(IDS_KEYBOARD_REF_FONT)
 {
 }
 
@@ -71,15 +72,13 @@ KeyboardRef::init()
 	return true;
 }
 
-void
-KeyboardRef::update()
+void KeyboardRef::update()
 {
 	listBox.update();
 	LogisticsScreen::update();
 }
 
-void
-KeyboardRef::render()
+void KeyboardRef::render()
 {
 	RECT rect = {0, 0, Environment.screenwidth, Environment.screenheight};
 	drawRect(rect, 0xff000000);
@@ -87,8 +86,7 @@ KeyboardRef::render()
 	LogisticsScreen::render();
 }
 
-void
-KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
+void KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 {
 	listBox.removeAllItems(true);
 	wchar_t shift[32];
@@ -115,7 +113,7 @@ KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 		{
 			cLoadString(commands[i].hotKeyDescriptionText, descText, 127);
 			int32_t key = commands[i].key;
-			const std::wstring_view& pKey = gos_DescribeKey((key & 0x000fffff) << 8);
+			std::wstring_view pKey = gos_DescribeKey((key & 0x000fffff) << 8);
 			strcpy(keysString, pKey);
 			if (((key & SHIFT)))
 			{

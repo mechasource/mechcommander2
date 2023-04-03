@@ -16,7 +16,8 @@
 //#include "ablexec.h"
 //#include "ablenv.h"
 
-namespace mclib::abl {
+namespace mclib::abl
+{
 
 //***************************************************************************
 
@@ -28,7 +29,7 @@ extern Literal curLiteral;
 extern const std::unique_ptr<SymTableNode>& SymTableDisplay[];
 extern int32_t level;
 
-extern const std::unique_ptr<Type>& IntegerTypePtr, CharTypePtr, RealTypePtr, BooleanTypePtr;
+extern const std::unique_ptr<Type>&IntegerTypePtr, CharTypePtr, RealTypePtr, BooleanTypePtr;
 extern Type DummyType;
 
 extern TokenCodeType statementEndList[];
@@ -36,7 +37,7 @@ extern TokenCodeType statementEndList[];
 extern bool EnterStateSymbol;
 extern const std::unique_ptr<ABLModule>& CurFSM;
 const std::unique_ptr<SymTableNode>&
-forwardState(const std::wstring_view& stateName);
+forwardState(std::wstring_view stateName);
 extern const std::unique_ptr<SymTableNode>& CurModuleIdPtr;
 
 //***************************************************************************
@@ -83,8 +84,7 @@ booleanOperands(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>&
 
 //***************************************************************************
 
-void
-checkRelationalOpTypes(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2)
+void checkRelationalOpTypes(const std::unique_ptr<Type>& type1, const std::unique_ptr<Type>& type2)
 {
 	if (type1 && type2)
 	{
@@ -261,7 +261,7 @@ factor(void)
 		else
 		{
 			thisNode->ptype = thisType = makeStringType(length);
-			thisNode->info = (const std::wstring_view&)ABLSymbolMallocCallback(length + 1);
+			thisNode->info = (std::wstring_view)ABLSymbolMallocCallback(length + 1);
 			if (!thisNode->info)
 				ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc string literal ");
 			strcpy(thisNode->info, curLiteral.value.string);

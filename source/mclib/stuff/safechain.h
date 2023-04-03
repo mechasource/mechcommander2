@@ -48,8 +48,14 @@ private:
 private:
 	// static MemoryBlock* AllocatedMemory;
 
-	PVOID operator new(size_t) { return AllocatedMemory->New(); }
-	void operator delete(PVOID where) { AllocatedMemory->Delete(where); }
+	PVOID operator new(size_t)
+	{
+		return AllocatedMemory->New();
+	}
+	void operator delete(PVOID where)
+	{
+		AllocatedMemory->Delete(where);
+	}
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -129,15 +135,21 @@ public:
 	// Socket methods (see Socket for full listing)
 	//--------------------------------------------------------------------
 	//
-	void Add(T plug) { AddImplementation(Cast_Pointer(Plug*, plug)); }
-	void Remove(T plug) { RemovePlug(Cast_Pointer(Plug*, plug)); }
+	void Add(T plug)
+	{
+		AddImplementation(Cast_Pointer(Plug*, plug));
+	}
+	void Remove(T plug)
+	{
+		RemovePlug(Cast_Pointer(Plug*, plug));
+	}
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class T>
-SafeChainOf<T>::SafeChainOf(Node* node) :
-	SafeChain(node)
+SafeChainOf<T>::SafeChainOf(Node* node)
+	: SafeChain(node)
 {
 }
 
@@ -249,24 +261,39 @@ public:
 	// Iterator methods (see Iterator for full listing)
 	//--------------------------------------------------------------------
 	//
-	T ReadAndNext() { return (T)ReadAndNextImplementation(void); }
-	T ReadAndPrevious() { return (T)ReadAndPreviousImplementation(void); }
-	T GetCurrent() { return (T)GetCurrentImplementation(void); }
-	T GetNth(CollectionSize index) { return (T)GetNthImplementation(index); }
-	void Insert(T plug) { InsertImplementation(Cast_Object(Plug*, plug)); }
+	T ReadAndNext()
+	{
+		return (T)ReadAndNextImplementation(void);
+	}
+	T ReadAndPrevious()
+	{
+		return (T)ReadAndPreviousImplementation(void);
+	}
+	T GetCurrent()
+	{
+		return (T)GetCurrentImplementation(void);
+	}
+	T GetNth(CollectionSize index)
+	{
+		return (T)GetNthImplementation(index);
+	}
+	void Insert(T plug)
+	{
+		InsertImplementation(Cast_Object(Plug*, plug));
+	}
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~ SafeChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class T>
-SafeChainIteratorOf<T>::SafeChainIteratorOf(SafeChainOf<T>* chain, bool move_next_on_remove) :
-	SafeChainIterator(chain, move_next_on_remove)
+SafeChainIteratorOf<T>::SafeChainIteratorOf(SafeChainOf<T>* chain, bool move_next_on_remove)
+	: SafeChainIterator(chain, move_next_on_remove)
 {
 }
 
 template <class T>
-SafeChainIteratorOf<T>::SafeChainIteratorOf(const SafeChainIteratorOf<T>& iterator) :
-	SafeChainIterator(iterator)
+SafeChainIteratorOf<T>::SafeChainIteratorOf(const SafeChainIteratorOf<T>& iterator)
+	: SafeChainIterator(iterator)
 {
 }
 

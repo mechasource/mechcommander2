@@ -66,7 +66,7 @@ protected:
 
 	std::vector<SortData*>
 		priorityBuckets[MLRState::PriorityCount]; //, Max_Number_Primitives_Per_Frame +
-		// Max_Number_ScreenQuads_Per_Frame
+	// Max_Number_ScreenQuads_Per_Frame
 	std::vector<SortAlpha*> alphaSort; //, Max_Number_Primitives_Per_Frame +
 		// Max_Number_ScreenQuads_Per_Frame
 };

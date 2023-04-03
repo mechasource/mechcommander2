@@ -68,9 +68,15 @@ public:
 		dotRGB = 0x00ffffff;
 	}
 
-	GenericAppearanceType(void) { init(void); }
+	GenericAppearanceType(void)
+	{
+		init(void);
+	}
 
-	~GenericAppearanceType(void) { destroy(void); }
+	~GenericAppearanceType(void)
+	{
+		destroy(void);
+	}
 
 	void setAnimation(TG_MultiShapePtr shape, uint32_t animationNum);
 
@@ -109,7 +115,7 @@ public:
 		return false;
 	}
 
-	virtual void init(const std::wstring_view& fileName);
+	virtual void init(std::wstring_view fileName);
 
 	virtual void destroy(void);
 };
@@ -145,11 +151,17 @@ public:
 public:
 	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
-	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
+	virtual AppearanceTypePtr getAppearanceType(void)
+	{
+		return appearType;
+	}
 
-	void changeSkyToSkyNum(const std::wstring_view& txmName, const std::wstring_view& newName);
+	void changeSkyToSkyNum(std::wstring_view txmName, std::wstring_view newName);
 
-	GenericAppearance(void) { init(void); }
+	GenericAppearance(void)
+	{
+		init(void);
+	}
 
 	virtual int32_t update(bool animate = true);
 	virtual int32_t render(int32_t depthFixup = 0);
@@ -158,19 +170,34 @@ public:
 
 	virtual void destroy(void);
 
-	~GenericAppearance(void) { destroy(void); }
+	~GenericAppearance(void)
+	{
+		destroy(void);
+	}
 
 	virtual bool recalcBounds(void);
 
-	virtual bool getInTransition(void) { return (canTransition == false); }
+	virtual bool getInTransition(void)
+	{
+		return (canTransition == false);
+	}
 
 	virtual void setGesture(size_t gestureId);
 
-	virtual int32_t getCurrentGestureId(void) { return genAnimationState; }
+	virtual int32_t getCurrentGestureId(void)
+	{
+		return genAnimationState;
+	}
 
-	virtual size_t getAppearanceClass(void) { return GENERIC_APPR_TYPE; }
+	virtual size_t getAppearanceClass(void)
+	{
+		return GENERIC_APPR_TYPE;
+	}
 
-	virtual void setObjectNameId(int32_t objId) { objectNameId = objId; }
+	virtual void setObjectNameId(int32_t objId)
+	{
+		objectNameId = objId;
+	}
 
 	virtual bool isMouseOver(float px, float py);
 
@@ -186,9 +213,15 @@ public:
 
 	virtual void markMoveMap(bool passable);
 
-	virtual void setIsHudElement(void) { genShape->SetIsHudElement(void); }
+	virtual void setIsHudElement(void)
+	{
+		genShape->SetIsHudElement(void);
+	}
 
-	virtual void scale(float scaleFactor) { genShape->ScaleShape(scaleFactor); }
+	virtual void scale(float scaleFactor)
+	{
+		genShape->ScaleShape(scaleFactor);
+	}
 
 	virtual Stuff::Point3D getRootNodeCenter(void)
 	{

@@ -71,8 +71,7 @@ SimpleCamera::~SimpleCamera()
 	}
 }
 
-void
-SimpleCamera::init(float left, float top, float right, float bottom)
+void SimpleCamera::init(float left, float top, float right, float bottom)
 {
 	bounds[0] = left;
 	bounds[1] = top;
@@ -81,14 +80,12 @@ SimpleCamera::init(float left, float top, float right, float bottom)
 }
 
 ////////////////////////////////////////////////
-void
-SimpleCamera::render()
+void SimpleCamera::render()
 {
 	render(0, 0);
 }
 
-void
-SimpleCamera::render(int32_t xOffset, int32_t yOffset)
+void SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 {
 	if (xOffset != 0 && yOffset != 0) // don't know how to do this
 		return;
@@ -234,9 +231,8 @@ SimpleCamera::update()
 	return 0;
 }
 
-void
-SimpleCamera::setMech(
-	const std::wstring_view& fileName, int32_t basecolour, int32_t highlight1, int32_t highlight2)
+void SimpleCamera::setMech(
+	std::wstring_view fileName, int32_t basecolour, int32_t highlight1, int32_t highlight2)
 {
 	shapeScale = 0.0f;
 	bIsComponent = 0;
@@ -267,10 +263,10 @@ SimpleCamera::setMech(
 	Mech3DAppearanceType* appearanceType = nullptr;
 	if (fileExists(path))
 		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance(
-			MECH_TYPE << 24, (const std::wstring_view&)testName);
+			MECH_TYPE << 24, (std::wstring_view)testName);
 	else
 		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance(
-			MECH_TYPE << 24, (const std::wstring_view&)NoPathFileName);
+			MECH_TYPE << 24, (std::wstring_view)NoPathFileName);
 	pObject = new Mech3DAppearance;
 	pObject->init(appearanceType);
 	pObject->setGestureGoal(2);
@@ -281,8 +277,7 @@ SimpleCamera::setMech(
 	ZoomTight();
 }
 
-void
-SimpleCamera::setVehicle(const std::wstring_view& fileName, int32_t base, int32_t highlight, int32_t h2)
+void SimpleCamera::setVehicle(std::wstring_view fileName, int32_t base, int32_t highlight, int32_t h2)
 {
 	shapeScale = 0.0f;
 	bIsComponent = 0;
@@ -309,10 +304,10 @@ SimpleCamera::setVehicle(const std::wstring_view& fileName, int32_t base, int32_
 	GVAppearanceType* appearanceType = nullptr;
 	if (fileExists(path))
 		appearanceType =
-			(GVAppearanceType*)appearanceTypeList->getAppearance(GV_TYPE << 24, (const std::wstring_view&)testName);
+			(GVAppearanceType*)appearanceTypeList->getAppearance(GV_TYPE << 24, (std::wstring_view)testName);
 	else
 		appearanceType = (GVAppearanceType*)appearanceTypeList->getAppearance(
-			GV_TYPE << 24, (const std::wstring_view&)NoPathFileName);
+			GV_TYPE << 24, (std::wstring_view)NoPathFileName);
 	pObject = new GVAppearance;
 	pObject->init(appearanceType);
 	pObject->setGestureGoal(2);
@@ -323,8 +318,7 @@ SimpleCamera::setVehicle(const std::wstring_view& fileName, int32_t base, int32_
 	ZoomTight();
 }
 
-void
-SimpleCamera::setComponent(const std::wstring_view& fileName)
+void SimpleCamera::setComponent(std::wstring_view fileName)
 {
 	shapeScale = 0.0f;
 	bIsComponent = 1;
@@ -347,11 +341,11 @@ SimpleCamera::setComponent(const std::wstring_view& fileName)
 	if (fileExists(path))
 	{
 		appearanceType =
-			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (const std::wstring_view&)testName);
+			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (std::wstring_view)testName);
 	}
 	else
 		appearanceType =
-			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (const std::wstring_view&)fileName);
+			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (std::wstring_view)fileName);
 	// MUST ALWAYS CALL GET, EVEN IF WE HAVE AN APPEARANCE TYPE OR REFERENCE
 	// COUNT DOES NOT INCREASE!
 	pObject = new BldgAppearance;
@@ -363,14 +357,12 @@ SimpleCamera::setComponent(const std::wstring_view& fileName)
 	setPosition(position);
 	ZoomTight();
 }
-void
-SimpleCamera::setScale(float newAltitude)
+void SimpleCamera::setScale(float newAltitude)
 {
 	shapeScale = newAltitude;
 }
 
-void
-SimpleCamera::setBuilding(const std::wstring_view& pBuilding)
+void SimpleCamera::setBuilding(std::wstring_view pBuilding)
 {
 	shapeScale = 0.0f;
 	setComponent(pBuilding);
@@ -378,9 +370,8 @@ SimpleCamera::setBuilding(const std::wstring_view& pBuilding)
 	bIsComponent = 0;
 }
 
-void
-SimpleCamera::setObject(
-	const std::wstring_view& pFileName, int32_t type, int32_t base, int32_t highlight, int32_t h2)
+void SimpleCamera::setObject(
+	std::wstring_view pFileName, int32_t type, int32_t base, int32_t highlight, int32_t h2)
 {
 	if (!pFileName || !strlen(pFileName))
 	{
@@ -409,14 +400,12 @@ SimpleCamera::setObject(
 	}
 }
 
-void
-SimpleCamera::setcolours(int32_t base, int32_t highlight, int32_t h2)
+void SimpleCamera::setcolours(int32_t base, int32_t highlight, int32_t h2)
 {
 	pObject->resetPaintScheme(base, highlight, h2);
 }
 
-void
-SimpleCamera::zoomIn(float howMuch)
+void SimpleCamera::zoomIn(float howMuch)
 {
 	AltitudeTight = 650.f / howMuch;
 } // scale for things that can't

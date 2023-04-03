@@ -22,8 +22,7 @@ isCementType(uint32_t type)
 	return isCement;
 }
 
-bool
-Eraser::beginPaint()
+bool Eraser::beginPaint()
 {
 	gosASSERT(!pCurAction);
 	pCurAction = new EraserAction;
@@ -49,8 +48,7 @@ Eraser::endPaint()
 }
 
 #define DEFAULT_TERRAIN 2
-bool
-Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	EditorObject* pInfo = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
 	if (pInfo)
@@ -112,8 +110,7 @@ Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	}
 	return false;
 }
-bool
-Eraser::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool Eraser::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	if (EditorObjectMgr::instance()->getObjectAtPosition(worldPos))
 		return true;
@@ -225,8 +222,7 @@ Eraser::applyToSelection()
 	return pRetAction;
 }
 
-bool
-Eraser::EraserAction::undo()
+bool Eraser::EraserAction::undo()
 {
 	bool bRetVal = bldgAction.redo();
 	bRetVal = linkAction.undo() && bRetVal;
@@ -240,8 +236,7 @@ Eraser::EraserAction::undo()
 	return bRetVal;
 }
 
-bool
-Eraser::EraserAction::redo()
+bool Eraser::EraserAction::redo()
 {
 	bool bRetVal = true;
 	/*teamAction.redo() must occur before bldgAction.undo() (before the

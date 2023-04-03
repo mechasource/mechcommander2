@@ -17,7 +17,8 @@
 // #include <string.h>
 // //#include "gameos.hpp"
 
-union {
+union
+{
 	uint32_t numval;
 	wchar_t buffer[4];
 } readtype32;
@@ -46,8 +47,7 @@ FastFile::operator new(size_t mySize)
 }
 
 //---------------------------------------------------------------------------
-void
-FastFile::operator delete(PVOID us)
+void FastFile::operator delete(PVOID us)
 {
 	::free(us);
 }
@@ -78,7 +78,7 @@ FastFile::operator delete(PVOID us)
 
 //---------------------------------------------------------------------------
 HRESULT
-FastFile::open(const std::wstring_view& fileName)
+FastFile::open(std::wstring_view fileName)
 {
 	//---------------------------------------------
 	//-- Read in ALL of the file names and offsets
@@ -143,7 +143,7 @@ FastFile::open(const std::wstring_view& fileName)
 
 //---------------------------------------------------------------------------
 HRESULT
-FastFile::openFast(uint32_t hash, const std::wstring_view& fileName, ffindex& index)
+FastFile::openFast(uint32_t hash, std::wstring_view fileName, ffindex& index)
 {
 	//------------------------------------------------------------------
 	//-- In order to use this, the file name must be part of the index.

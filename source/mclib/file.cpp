@@ -45,10 +45,8 @@
 #if CONSIDERED_OBSOLETE
 File* fileTrafficLog = nullptr;
 wchar_t CDInstallPath[1024];
-void
-EnterWindowMode();
-void
-EnterFullScreenMode();
+void EnterWindowMode();
+void EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
 extern wchar_t FileMissingString[];
@@ -58,8 +56,7 @@ extern wchar_t MissingTitleString[];
 
 #if CONSIDERED_OBSOLETE
 //---------------------------------------------------------------------------
-void
-createTrafficLog(void)
+void createTrafficLog(void)
 {
 	if (fileTrafficLog && fileTrafficLog->isOpen())
 		return;
@@ -71,7 +68,7 @@ createTrafficLog(void)
 #if CONSIDERED_OBSOLETE
 //---------------------------------------------------------------------------
 // Global Functions
-int32_t __stdcall fileExists(const std::wstring_view& filename)
+int32_t __stdcall fileExists(std::wstring_view filename)
 {
 	struct _stat st;
 	if (_stat(filename, &st) != -1)
@@ -89,7 +86,7 @@ int32_t __stdcall fileExists(const std::wstring_view& filename)
 
 #if CONSIDERED_OBSOLETE
 //---------------------------------------------------------------------------
-int32_t __stdcall fileExistsOnCD(const std::wstring_view& filename)
+int32_t __stdcall fileExistsOnCD(std::wstring_view filename)
 {
 	// Just add the CD path here and see if its there.
 	wchar_t bigPath[2048];
@@ -106,7 +103,7 @@ int32_t __stdcall fileExistsOnCD(const std::wstring_view& filename)
 
 #if CONSIDERED_DISABLED
 //---------------------------------------------------------------------------
-bool __stdcall file1OlderThan2(const std::wstring_view& file1, const std::wstring_view& file2)
+bool __stdcall file1OlderThan2(std::wstring_view file1, std::wstring_view file2)
 {
 	if ((fileExists(file1) == 1) && (fileExists(file2) == 1))
 	{
@@ -131,8 +128,7 @@ MechFile::operator new(size_t mySize)
 }
 
 //---------------------------------------------------------------------------
-void
-MechFile::operator delete(PVOID us)
+void MechFile::operator delete(PVOID us)
 {
 	::free(us);
 }
@@ -198,7 +194,7 @@ MechFile::open(stdfs::path& path)
 	gosASSERT(!isOpen());
 	//-------------------------------------------------------------
 	int32_t fNameLength = strlen(filename);
-	m_fileName = (const std::wstring_view&)systemHeap->Malloc(fNameLength + 1);
+	m_fileName = (std::wstring_view)systemHeap->Malloc(fNameLength + 1);
 	gosASSERT(m_fileName != nullptr);
 	strncpy(m_fileName, filename, fNameLength + 1);
 	fileMode = _mode;
@@ -464,7 +460,7 @@ MechFile::open(std::unique_ptr<File> _parent, uint32_t fileSize, int32_t numChil
 }
 
 int32_t
-MechFile::open(const std::wstring_view& buffer, int32_t bufferLength)
+MechFile::open(std::wstring_view buffer, int32_t bufferLength)
 {
 	if (buffer && bufferLength > 0)
 	{
@@ -483,18 +479,18 @@ MechFile::open(const std::wstring_view& buffer, int32_t bufferLength)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::create(const std::wstring_view& filename)
+MechFile::create(std::wstring_view filename)
 {
 	return (open(filename, CREATE));
 }
 
 int32_t
-MechFile::createWithCase(const std::wstring_view& filename)
+MechFile::createWithCase(std::wstring_view filename)
 {
 	gosASSERT(!isOpen());
 	//-------------------------------------------------------------
 	int32_t fNameLength = strlen(filename);
-	m_fileName = (const std::wstring_view&)systemHeap->Malloc(fNameLength + 1);
+	m_fileName = (std::wstring_view)systemHeap->Malloc(fNameLength + 1);
 	gosASSERT(m_fileName != nullptr);
 	strncpy(m_fileName, filename, fNameLength + 1);
 	fileMode = CREATE;
@@ -526,8 +522,7 @@ MechFile::addChild(std::unique_ptr<File> child)
 }
 
 //---------------------------------------------------------------------------
-void
-MechFile::removeChild(std::unique_ptr<File> child)
+void MechFile::removeChild(std::unique_ptr<File> child)
 {
 	if (maxChildren)
 	{
@@ -607,8 +602,7 @@ void MechFile::close(void)
 #endif
 
 //---------------------------------------------------------------------------
-void
-MechFile::deleteFile(void)
+void MechFile::deleteFile(void)
 {
 	//--------------------------------------------------------------
 	// Must be the ultimate parent to delete this file.  Close will
@@ -728,8 +722,8 @@ MechFile::read(uint32_t pos, uint8_t* buffer, int32_t length)
 	int32_t result = 0;
 	if (inRAM && fileImage)
 	{
-		const std::wstring_view& readAddress = ((const std::wstring_view&)fileImage) + pos;
-		memcpy((const std::wstring_view&)buffer, readAddress, length);
+		std::wstring_view readAddress = ((std::wstring_view)fileImage) + pos;
+		memcpy((std::wstring_view)buffer, readAddress, length);
 		return (length);
 	}
 	else if (fastFile)
@@ -764,13 +758,13 @@ MechFile::readByte(void)
 	int32_t result = 0;
 	if (inRAM && fileImage)
 	{
-		const std::wstring_view& readAddress = (const std::wstring_view&)fileImage + logicalPosition;
-		memcpy((const std::wstring_view&)&value, readAddress, sizeof(value));
+		std::wstring_view readAddress = (std::wstring_view)fileImage + logicalPosition;
+		memcpy((std::wstring_view)&value, readAddress, sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else if (fastFile)
 	{
-		result = fastFile->readFast(fastFileHandle, (const std::wstring_view&)&value, sizeof(value));
+		result = fastFile->readFast(fastFileHandle, (std::wstring_view)&value, sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else
@@ -798,13 +792,13 @@ MechFile::readWord(void)
 	int32_t result = 0;
 	if (inRAM && fileImage)
 	{
-		const std::wstring_view& readAddress = (const std::wstring_view&)fileImage + logicalPosition;
-		memcpy((const std::wstring_view&)(&value), readAddress, sizeof(value));
+		std::wstring_view readAddress = (std::wstring_view)fileImage + logicalPosition;
+		memcpy((std::wstring_view)(&value), readAddress, sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else if (fastFile)
 	{
-		result = fastFile->readFast(fastFileHandle, (const std::wstring_view&)&value, sizeof(value));
+		result = fastFile->readFast(fastFileHandle, (std::wstring_view)&value, sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else
@@ -839,13 +833,13 @@ MechFile::readLong(void)
 	uint32_t result = 0;
 	if (inRAM && fileImage)
 	{
-		const std::wstring_view& readAddress = (const std::wstring_view&)fileImage + logicalPosition;
-		memcpy((const std::wstring_view&)(&value), readAddress, sizeof(value));
+		std::wstring_view readAddress = (std::wstring_view)fileImage + logicalPosition;
+		memcpy((std::wstring_view)(&value), readAddress, sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else if (fastFile)
 	{
-		result = fastFile->readFast(fastFileHandle, (const std::wstring_view&)&value, sizeof(value));
+		result = fastFile->readFast(fastFileHandle, (std::wstring_view)&value, sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else
@@ -865,8 +859,7 @@ MechFile::readLong(void)
 	return value;
 }
 
-bool
-isNAN(float* pFloat)
+bool isNAN(float* pFloat)
 {
 	/* We're assuming ansi/ieee 754 floating point representation. See
 	 * http://www.research.microsoft.com/~hollasch/cgindex/coding/ieeefloat.html.
@@ -889,20 +882,19 @@ isNAN(float* pFloat)
 	return false;
 }
 
-float
-MechFile::readFloat(void)
+float MechFile::readFloat(void)
 {
 	float value = 0;
 	uint32_t result = 0;
 	if (inRAM && fileImage)
 	{
-		const std::wstring_view& readAddress = (const std::wstring_view&)fileImage + logicalPosition;
-		memcpy((const std::wstring_view&)(&value), readAddress, sizeof(value));
+		std::wstring_view readAddress = (std::wstring_view)fileImage + logicalPosition;
+		memcpy((std::wstring_view)(&value), readAddress, sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else if (fastFile)
 	{
-		result = fastFile->readFast(fastFileHandle, (const std::wstring_view&)&value, sizeof(value));
+		result = fastFile->readFast(fastFileHandle, (std::wstring_view)&value, sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else
@@ -958,8 +950,8 @@ MechFile::read(uint8_t* buffer, int32_t length)
 	int32_t result = 0;
 	if (inRAM && fileImage)
 	{
-		const std::wstring_view& readAddress = (const std::wstring_view&)fileImage + logicalPosition;
-		memcpy((const std::wstring_view&)buffer, readAddress, length);
+		std::wstring_view readAddress = (std::wstring_view)fileImage + logicalPosition;
+		memcpy((std::wstring_view)buffer, readAddress, length);
 		logicalPosition += length;
 		return (length);
 	}
@@ -1331,14 +1323,14 @@ MechFile::writeFloat(float value)
 //---------------------------------------------------------------------------
 
 int32_t
-MechFile::writeString(const std::wstring_view& buffer)
+MechFile::writeString(std::wstring_view buffer)
 {
 	int32_t result = -1;
 	if (m_parent == nullptr)
 	{
 		if (isOpen())
 		{
-			const std::wstring_view& ch = buffer;
+			std::wstring_view ch = buffer;
 			for (; *ch; ++ch)
 				writeByte((byte)*ch);
 			return ch - buffer;
@@ -1357,14 +1349,14 @@ MechFile::writeString(const std::wstring_view& buffer)
 
 //---------------------------------------------------------------------------
 int32_t
-MechFile::writeLine(const std::wstring_view& buffer)
+MechFile::writeLine(std::wstring_view buffer)
 {
 	int32_t result = -1;
 	if (m_parent == nullptr)
 	{
 		if (isOpen())
 		{
-			const std::wstring_view& ch = buffer;
+			std::wstring_view ch = buffer;
 			for (; *ch; ++ch)
 				writeByte((byte)*ch);
 			writeByte('\r');
@@ -1423,14 +1415,13 @@ MechFile::write(uint8_t* buffer, int32_t bytes)
 }
 
 //---------------------------------------------------------------------------
-bool
-MechFile::isOpen(void)
+bool MechFile::isOpen(void)
 {
 	return ((handle != nullptr && handle != -1) || (fileImage != nullptr));
 }
 
 //---------------------------------------------------------------------------
-const std::wstring_view&
+std::wstring_view
 MechFile::getFilename(void)
 {
 	return (m_fileName);
@@ -1501,15 +1492,13 @@ MechFile::getNumLines(void)
 }
 
 //---------------------------------------------------------------------------
-void
-MechFile::seekEnd(void)
+void MechFile::seekEnd(void)
 {
 	seek(0, SEEK_END);
 }
 
 //---------------------------------------------------------------------------
-void
-MechFile::skip(int32_t bytesToSkip)
+void MechFile::skip(int32_t bytesToSkip)
 {
 	if (bytesToSkip)
 	{

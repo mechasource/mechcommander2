@@ -43,8 +43,7 @@ int32_t SoundSystem::largestSensorContact = -1;
 //---------------------------------------------------------------------------
 // class SoundSystem
 //---------------------------------------------------------------------------
-void
-SoundSystem::destroy(void)
+void SoundSystem::destroy(void)
 {
 	if (soundHeap)
 	{
@@ -56,7 +55,7 @@ SoundSystem::destroy(void)
 
 //---------------------------------------------------------------------------
 int32_t
-SoundSystem::init(const std::wstring_view& soundFileName)
+SoundSystem::init(std::wstring_view soundFileName)
 {
 	if (useSound)
 	{
@@ -142,7 +141,7 @@ SoundSystem::init(const std::wstring_view& soundFileName)
 		gosASSERT(result == NO_ERROR);
 		result = soundFile.readIdULong("StreamChannels", digitalStreamChannels);
 		gosASSERT(result == NO_ERROR);
-		digitalMusicIds = (const std::wstring_view&*)soundHeap->Malloc(sizeof(const std::wstring_view&) * numDMS);
+		digitalMusicIds = (std::wstring_view*)soundHeap->Malloc(sizeof(std::wstring_view) * numDMS);
 		gosASSERT(digitalMusicIds != nullptr);
 		digitalMusicLoopFlags = (bool*)soundHeap->Malloc(sizeof(bool) * numDMS);
 		gosASSERT(digitalMusicLoopFlags != nullptr);
@@ -155,7 +154,7 @@ SoundSystem::init(const std::wstring_view& soundFileName)
 			sprintf(digitalMSBId, "DMSLoop%d", i);
 			wchar_t digitalMSVId[25];
 			sprintf(digitalMSVId, "DMSVolume%d", i);
-			digitalMusicIds[i] = (const std::wstring_view&)soundHeap->Malloc(30);
+			digitalMusicIds[i] = (std::wstring_view)soundHeap->Malloc(30);
 			result = soundFile.readIdString(digitalMSId, digitalMusicIds[i], 29);
 			gosASSERT(result == NO_ERROR);
 			result = soundFile.readIdBoolean(digitalMSBId, digitalMusicLoopFlags[i]);
@@ -167,7 +166,7 @@ SoundSystem::init(const std::wstring_view& soundFileName)
 		soundFile.close();
 		for (i = 0; i < MAX_DIGITAL_SAMPLES + 4; i++)
 		{
-			gosAudio_AllocateChannelSliders(i, gosAudio_Volume | gosAudio_Panning);
+			gosAudio_AllocateChannelSliders(i, gosAudio_Properties::volume | gosAudio_Properties::panning);
 		}
 	}
 	digitalMasterVolume = float(DigitalMasterVolume) / 256.0f;
@@ -187,8 +186,7 @@ SoundSystem::init(const std::wstring_view& soundFileName)
 //   fields in the memory.
 //
 //////////////////////////////////////////////////////////////////
-bool
-wave_ParseWaveMemory(uint8_t* lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
+bool wave_ParseWaveMemory(uint8_t* lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader,
 	uint8_t** lplpWaveSamples, uint32_t* lpcbWaveSize)
 {
 	uint32_t* pdw;
@@ -271,8 +269,7 @@ wave_ParseWaveMemory(uint8_t* lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::preloadSoundBite(int32_t soundId)
+void SoundSystem::preloadSoundBite(int32_t soundId)
 {
 	int32_t result = soundDataFile->seekPacket(soundId);
 	if (result != NO_ERROR)
@@ -323,8 +320,7 @@ SoundSystem::preloadSoundBite(int32_t soundId)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::update(void)
+void SoundSystem::update(void)
 {
 	if (useSound && (isRaining != oldRaining))
 	{
@@ -332,10 +328,10 @@ SoundSystem::update(void)
 		if (isRaining && (isRaining < numSoundBites))
 		{
 			int32_t ourChannel = FIRE_CHANNEL;
-			gosAudio_SetChannelSlider(ourChannel, gosAudio_Panning, 0.0);
+			gosAudio_SetChannelSlider(ourChannel, gosAudio_Properties::panning, 0.0);
 			float vol = sounds[isRaining].volume;
 			gosAudio_SetChannelSlider(
-				ourChannel, gosAudio_Volume, (digitalMasterVolume * vol * SFXVolume));
+				ourChannel, gosAudio_Properties::volume, (digitalMasterVolume * vol * SFXVolume));
 			channelSampleId[ourChannel] = isRaining;
 			channelInUse[ourChannel] = TRUE;
 			if (sounds[isRaining].biteData)
@@ -440,7 +436,7 @@ SoundSystem::update(void)
 						volLevel = 0.0;
 					if (volLevel > 1.0)
 						volLevel = 1.0;
-					gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Volume,
+					gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::volume,
 						digitalMasterVolume * volLevel * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 			}
@@ -452,7 +448,7 @@ SoundSystem::update(void)
 				if (stream1Time <= 0.0)
 				{
 					stream1Time = 0.0;
-					gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Volume,
+					gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::volume,
 						digitalMasterVolume * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 				else
@@ -462,7 +458,7 @@ SoundSystem::update(void)
 						volLevel = 0.0;
 					if (volLevel > 1.0)
 						volLevel = 1.0;
-					gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Volume,
+					gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::volume,
 						digitalMasterVolume * volLevel * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 			}
@@ -489,7 +485,7 @@ SoundSystem::update(void)
 						volLevel = 0.0;
 					if (volLevel > 1.0)
 						volLevel = 1.0;
-					gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Volume,
+					gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Properties::volume,
 						digitalMasterVolume * volLevel * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 			}
@@ -501,7 +497,7 @@ SoundSystem::update(void)
 				if (stream2Time <= 0.0)
 				{
 					stream2Time = 0.0;
-					gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Volume,
+					gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Properties::volume,
 						digitalMasterVolume * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 				else
@@ -511,7 +507,7 @@ SoundSystem::update(void)
 						volLevel = 0.0;
 					if (volLevel > 1.0)
 						volLevel = 1.0;
-					gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Volume,
+					gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Properties::volume,
 						digitalMasterVolume * volLevel * musicVolume * digitalMusicVolume[currentMusicId]);
 				}
 			}
@@ -547,11 +543,11 @@ SoundSystem::update(void)
 				if (fadeDown[i])
 				{
 					float vol;
-					gosAudio_GetChannelSlider(i, gosAudio_Volume, &vol);
+					gosAudio_GetChannelSlider(i, gosAudio_Properties::volume, &vol);
 					if (vol <= 0.1f)
 						vol = 0.1f;
-					gosAudio_SetChannelSlider(i, gosAudio_Volume, vol - 0.1f);
-					gosAudio_GetChannelSlider(i, gosAudio_Volume, &vol);
+					gosAudio_SetChannelSlider(i, gosAudio_Properties::volume, vol - 0.1f);
+					gosAudio_GetChannelSlider(i, gosAudio_Properties::volume, &vol);
 					if (vol == 0.0f)
 					{
 						fadeDown[i] = FALSE;
@@ -603,10 +599,10 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream1Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream1Handle, gosAudio_StreamedFile, (const std::wstring_view&)digitalStream);
+							&stream1Handle, gosAudio_StreamedFile, (std::wstring_view)digitalStream);
 						stream1Time = streamFadeDownTime;
-						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Volume, 0.0f);
-						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Panning, 0.0f);
+						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::volume, 0.0f);
+						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::panning, 0.0f);
 						gosAudio_AssignResourceToChannel(STREAM1CHANNEL, stream1Handle);
 						currentMusicId = musicId;
 						stream1Id = musicId;
@@ -619,7 +615,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream2Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream2Handle, gosAudio_StreamedFile, (const std::wstring_view&)digitalStream);
+							&stream2Handle, gosAudio_StreamedFile, (std::wstring_view)digitalStream);
 						// Need to check if stream1 ever got all the way faded
 						// up!
 						if (stream1Time > 0.0f)
@@ -627,8 +623,8 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 						else
 							stream1Time = -streamFadeDownTime;
 						stream2Time = streamFadeDownTime;
-						gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Volume, 0.0f);
-						gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Panning, 0.0f);
+						gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Properties::volume, 0.0f);
+						gosAudio_SetChannelSlider(STREAM2CHANNEL, gosAudio_Properties::panning, 0.0f);
 						gosAudio_AssignResourceToChannel(STREAM2CHANNEL, stream2Handle);
 						currentMusicId = musicId;
 						stream2Id = musicId;
@@ -641,7 +637,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream1Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream1Handle, gosAudio_StreamedFile, (const std::wstring_view&)digitalStream);
+							&stream1Handle, gosAudio_StreamedFile, (std::wstring_view)digitalStream);
 						stream1Time = streamFadeDownTime;
 						// Need to check if stream2 ever got all the way faded
 						// up!
@@ -649,8 +645,8 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream2Time = -stream2Time;
 						else
 							stream2Time = -streamFadeDownTime;
-						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Volume, 0.0f);
-						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Panning, 0.0f);
+						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::volume, 0.0f);
+						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::panning, 0.0f);
 						gosAudio_AssignResourceToChannel(STREAM1CHANNEL, stream1Handle);
 						currentMusicId = musicId;
 						stream1Id = musicId;
@@ -668,7 +664,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 
 //---------------------------------------------------------------------------
 int32_t
-SoundSystem::playDigitalStream(const std::wstring_view& streamName)
+SoundSystem::playDigitalStream(std::wstring_view streamName)
 {
 	//-------------------------------------------------------------------
 	// Make sure we have a real music filename.
@@ -694,12 +690,12 @@ SoundSystem::playDigitalStream(const std::wstring_view& streamName)
 					stream3Handle = 0;
 				}
 				gosAudio_CreateResource(
-					&stream3Handle, gosAudio_StreamedFile, (const std::wstring_view&)digitalStream);
+					&stream3Handle, gosAudio_StreamedFile, (std::wstring_view)digitalStream);
 				stream3Active = false;
 				gosAudio_AssignResourceToChannel(STREAM3CHANNEL, stream3Handle);
 				gosAudio_SetChannelSlider(
-					STREAM3CHANNEL, gosAudio_Volume, digitalMasterVolume * bettyVolume);
-				gosAudio_SetChannelSlider(STREAM3CHANNEL, gosAudio_Panning, 0.0f);
+					STREAM3CHANNEL, gosAudio_Properties::volume, digitalMasterVolume * bettyVolume);
+				gosAudio_SetChannelSlider(STREAM3CHANNEL, gosAudio_Properties::panning, 0.0f);
 			}
 			else
 			{
@@ -719,12 +715,12 @@ SoundSystem::playBettySample(uint32_t bettySampleId)
 		if (bettySampleId >= numBettySamples)
 			return (-1);
 		int32_t ourChannel = BETTY_CHANNEL;
-		gosAudio_SetChannelSlider(ourChannel, gosAudio_Panning, 0.0f);
+		gosAudio_SetChannelSlider(ourChannel, gosAudio_Properties::panning, 0.0f);
 		float vol = 1.0;
 		gosAudio_SetChannelSlider(
-			ourChannel, gosAudio_Volume, digitalMasterVolume * vol * bettyVolume);
+			ourChannel, gosAudio_Properties::volume, digitalMasterVolume * vol * bettyVolume);
 		gosAudio_SetChannelSlider(
-			RADIO_CHANNEL, gosAudio_Volume, digitalMasterVolume * vol * radioVolume * 0.5f);
+			RADIO_CHANNEL, gosAudio_Properties::volume, digitalMasterVolume * vol * radioVolume * 0.5f);
 		lastBettyId = bettySampleId;
 		channelInUse[ourChannel] = TRUE;
 		int32_t result = bettyDataFile->seekPacket(bettySampleId);
@@ -761,7 +757,7 @@ SoundSystem::playBettySample(uint32_t bettySampleId)
 
 //---------------------------------------------------------------------------
 int32_t
-SoundSystem::playSupportSample(uint32_t supportSampleId, const std::wstring_view& fileName)
+SoundSystem::playSupportSample(uint32_t supportSampleId, std::wstring_view fileName)
 {
 	if (useSound && (supportSoundBite == nullptr)) // Playing Support takes precedence
 	{
@@ -778,10 +774,10 @@ SoundSystem::playSupportSample(uint32_t supportSampleId, const std::wstring_view
 		}
 		else
 		{
-			gosAudio_SetChannelSlider(ourChannel, gosAudio_Panning, 0.0f);
+			gosAudio_SetChannelSlider(ourChannel, gosAudio_Properties::panning, 0.0f);
 			float vol = 1.0;
 			gosAudio_SetChannelSlider(
-				ourChannel, gosAudio_Volume, digitalMasterVolume * vol * bettyVolume);
+				ourChannel, gosAudio_Properties::volume, digitalMasterVolume * vol * bettyVolume);
 			lastSupportId = supportSampleId;
 			channelInUse[ourChannel] = TRUE;
 			int32_t result = supportDataFile->seekPacket(supportSampleId);
@@ -825,8 +821,7 @@ SoundSystem::playSupportSample(uint32_t supportSampleId, const std::wstring_view
 }
 
 //---------------------------------------------------------------------------
-bool
-SoundSystem::isPlayingSample(int32_t sampleId)
+bool SoundSystem::isPlayingSample(int32_t sampleId)
 {
 	for (size_t i = 0; i < MAX_DIGITAL_SAMPLES; i++)
 	{
@@ -837,8 +832,7 @@ SoundSystem::isPlayingSample(int32_t sampleId)
 }
 
 //---------------------------------------------------------------------------
-bool
-SoundSystem::isChannelPlaying(int32_t channelId)
+bool SoundSystem::isChannelPlaying(int32_t channelId)
 {
 	if ((channelId < 0) || (channelId > MAX_DIGITAL_SAMPLES))
 		return (FALSE);
@@ -849,8 +843,7 @@ SoundSystem::isChannelPlaying(int32_t channelId)
 }
 
 //---------------------------------------------------------------------------
-bool
-SoundSystem::isPlayingVoiceOver(void)
+bool SoundSystem::isPlayingVoiceOver(void)
 {
 	if (stream3Handle)
 		return true;
@@ -858,8 +851,7 @@ SoundSystem::isPlayingVoiceOver(void)
 }
 
 //---------------------------------------------------------------------------
-bool
-SoundSystem::isDigitalMusicPlaying(void)
+bool SoundSystem::isDigitalMusicPlaying(void)
 {
 	if (stream2Handle || stream1Handle)
 		return true;
@@ -913,9 +905,9 @@ SoundSystem::playDigitalSample(uint32_t sampleId, Stuff::Vector3D pos, bool allo
 				vol = 1.0f;
 			else if (vol <= 0.0f) // No VOlume.  DON't PLAY!
 				return -1;
-			gosAudio_SetChannelSlider(ourChannel, gosAudio_Panning, panVolume);
+			gosAudio_SetChannelSlider(ourChannel, gosAudio_Properties::panning, panVolume);
 			gosAudio_SetChannelSlider(
-				ourChannel, gosAudio_Volume, (digitalMasterVolume * vol * SFXVolume));
+				ourChannel, gosAudio_Properties::volume, (digitalMasterVolume * vol * SFXVolume));
 			channelSampleId[ourChannel] = sampleId;
 			channelInUse[ourChannel] = TRUE;
 			if (sounds[sampleId].biteData && sounds[sampleId].resourceHandle)
@@ -930,8 +922,7 @@ SoundSystem::playDigitalSample(uint32_t sampleId, Stuff::Vector3D pos, bool allo
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::stopDigitalSample(uint32_t sampleHandleNumber)
+void SoundSystem::stopDigitalSample(uint32_t sampleHandleNumber)
 {
 	if (useSound)
 	{
@@ -944,8 +935,7 @@ SoundSystem::stopDigitalSample(uint32_t sampleHandleNumber)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::stopDigitalMusic(void)
+void SoundSystem::stopDigitalMusic(void)
 {
 	if (useSound && useMusic)
 	{
@@ -970,8 +960,7 @@ SoundSystem::stopDigitalMusic(void)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::stopSupportSample(void)
+void SoundSystem::stopSupportSample(void)
 {
 	if (stream3Handle)
 	{
@@ -982,8 +971,7 @@ SoundSystem::stopSupportSample(void)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::stopBettySample(void)
+void SoundSystem::stopBettySample(void)
 {
 	if (bettyHandle)
 	{
@@ -996,8 +984,7 @@ SoundSystem::stopBettySample(void)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::setDigitalMasterVolume(byte volume)
+void SoundSystem::setDigitalMasterVolume(byte volume)
 {
 	if (useSound)
 	{
@@ -1018,8 +1005,7 @@ SoundSystem::getDigitalMasterVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::setSFXVolume(uint8_t volume)
+void SoundSystem::setSFXVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1040,8 +1026,7 @@ SoundSystem::getSFXVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::setRadioVolume(uint8_t volume)
+void SoundSystem::setRadioVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1062,8 +1047,7 @@ SoundSystem::getRadioVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::setMusicVolume(uint8_t volume)
+void SoundSystem::setMusicVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1074,12 +1058,12 @@ SoundSystem::setMusicVolume(uint8_t volume)
 			if (stream1Active && stream1Handle)
 			{
 				gosAudio_SetChannelSlider(
-					STREAM1CHANNEL, gosAudio_Volume, (digitalMasterVolume * musicVolume));
+					STREAM1CHANNEL, gosAudio_Properties::volume, (digitalMasterVolume * musicVolume));
 			}
 			if (stream2Active && stream2Handle)
 			{
 				gosAudio_SetChannelSlider(
-					STREAM2CHANNEL, gosAudio_Volume, (digitalMasterVolume * musicVolume));
+					STREAM2CHANNEL, gosAudio_Properties::volume, (digitalMasterVolume * musicVolume));
 			}
 		}
 	}
@@ -1097,8 +1081,7 @@ SoundSystem::getMusicVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::setBettyVolume(uint8_t volume)
+void SoundSystem::setBettyVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1119,22 +1102,19 @@ SoundSystem::getBettyVolume(void)
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::stopABLMusic(void)
+void SoundSystem::stopABLMusic(void)
 {
 	stopDigitalMusic();
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::playABLSFX(int32_t sfxId)
+void SoundSystem::playABLSFX(int32_t sfxId)
 {
 	playDigitalSample(sfxId);
 }
 
 //---------------------------------------------------------------------------
-void
-SoundSystem::playABLDigitalMusic(int32_t musicId)
+void SoundSystem::playABLDigitalMusic(int32_t musicId)
 {
 	//	PAUSE(("Switching to Tune %d.  Playing Tune
 	//%d.",musicId,currentMusicId));

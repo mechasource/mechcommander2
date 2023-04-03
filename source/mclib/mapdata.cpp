@@ -88,15 +88,13 @@ PVOIDMapData::operator new(size_t mySize)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::operator delete(PVOID us)
+void MapData::operator delete(PVOID us)
 {
 	Terrain::terrainHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::destroy(void)
+void MapData::destroy(void)
 {
 	HeapManager::destroy();
 	if (blankVertex)
@@ -107,8 +105,7 @@ MapData::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::newInit(uint32_t numvertices)
+void MapData::newInit(uint32_t numvertices)
 {
 	if (heap)
 		destroy();
@@ -137,8 +134,7 @@ MapData::newInit(uint32_t numvertices)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::newInit(PacketFile* newFile, uint32_t numvertices)
+void MapData::newInit(PacketFile* newFile, uint32_t numvertices)
 {
 	newInit(numvertices);
 	newFile->readPacket(newFile->getCurrentPacket(), (uint8_t*)blocks);
@@ -154,8 +150,7 @@ MapData::save(PacketFile* file, int32_t whichPacket)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::highlightAllTransitionsOver2(void)
+void MapData::highlightAllTransitionsOver2(void)
 {
 	unhighlightAll();
 	PostcompVertexPtr currentvertex = blocks;
@@ -188,8 +183,7 @@ MapData::highlightAllTransitionsOver2(void)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::calcTransitions()
+void MapData::calcTransitions()
 {
 	PostcompVertexPtr currentvertex = blocks;
 	//--------------------------------------------------------------------------
@@ -233,8 +227,7 @@ int32_t lowElevation = 255; // Stores the water level for old Maps
 int32_t waterTest = 0; // Stores the water test elevation.  Everything at or
 	// below this is underwater!
 //---------------------------------------------------------------------------
-void
-MapData::calcWater(float wDepth, float sDepth, float aDepth)
+void MapData::calcWater(float wDepth, float sDepth, float aDepth)
 {
 	PostcompVertexPtr currentvertex = blocks;
 	//---------------------------------------------------------------------------
@@ -274,8 +267,7 @@ MapData::calcWater(float wDepth, float sDepth, float aDepth)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::recalcWater(void)
+void MapData::recalcWater(void)
 {
 	PostcompVertexPtr currentvertex = blocks;
 	bool odd1 = false;
@@ -307,8 +299,7 @@ MapData::recalcWater(void)
 }
 
 //---------------------------------------------------------------------------
-float
-MapData::getTopLeftElevation(void)
+float MapData::getTopLeftElevation(void)
 {
 	float result = 0.0;
 	if (blocks)
@@ -326,23 +317,20 @@ float ScrollUV2 = MAX_UV;
 
 float SCROLL_RATE = 0.005f;
 //---------------------------------------------------------------------------
-void
-MapData::setVertexheight(int32_t VertexIndex, float Val)
+void MapData::setVertexheight(int32_t VertexIndex, float Val)
 {
 	blocks[VertexIndex].elevation = Val;
 }
 
 //---------------------------------------------------------------------------
-float
-MapData::getVertexheight(int32_t VertexIndex)
+float MapData::getVertexheight(int32_t VertexIndex)
 {
 	return blocks[VertexIndex].elevation;
 }
 
 #define ContrastEnhance 1.0f
 //---------------------------------------------------------------------------
-void
-MapData::calcLight(void)
+void MapData::calcLight(void)
 {
 	Terrain::recalcLight = false;
 	//----------------------------------------
@@ -522,8 +510,7 @@ MapData::calcLight(void)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::clearShadows()
+void MapData::clearShadows()
 {
 	//----------------------------------------
 	// Let's calc the map dimensions...
@@ -650,8 +637,7 @@ MapData::update(void)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::makeLists(
+void MapData::makeLists(
 	VertexPtr vertexList, int32_t& numVerts, TerrainQuadPtr quadList, int32_t& numQuads)
 {
 	int32_t topLeftX = float2long(topLeftVertex.x);
@@ -781,8 +767,7 @@ MapData::makeLists(
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::setOverlayTile(int32_t block, int32_t vertex, int32_t offset)
+void MapData::setOverlayTile(int32_t block, int32_t vertex, int32_t offset)
 {
 	int32_t blockX = (block % Terrain::blocksMapSide);
 	int32_t blockY = (block / Terrain::blocksMapSide);
@@ -797,8 +782,7 @@ MapData::setOverlayTile(int32_t block, int32_t vertex, int32_t offset)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::setOverlay(int32_t indexY, int32_t indexX, Overlays type, uint32_t offset)
+void MapData::setOverlay(int32_t indexY, int32_t indexX, Overlays type, uint32_t offset)
 {
 	int32_t index = indexX + indexY * Terrain::realVerticesMapSide;
 	PostcompVertexPtr ourBlock = &blocks[index];
@@ -818,8 +802,7 @@ MapData::getTexture(int32_t indexY, int32_t indexX)
 }
 
 //---------------------------------------------------------------------------
-float
-MapData::terrainElevation(int32_t indexY, int32_t indexX)
+float MapData::terrainElevation(int32_t indexY, int32_t indexX)
 {
 	gosASSERT(indexX > -1 && indexX < Terrain::realVerticesMapSide);
 	gosASSERT(indexY > -1 && indexY < Terrain::realVerticesMapSide);
@@ -828,8 +811,7 @@ MapData::terrainElevation(int32_t indexY, int32_t indexX)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::setTerrain(int32_t indexY, int32_t indexX, int32_t Type)
+void MapData::setTerrain(int32_t indexY, int32_t indexX, int32_t Type)
 {
 	int32_t Vertices[4][2];
 	int32_t x = 0;
@@ -886,8 +868,7 @@ MapData::getTerrain(int32_t tileR, int32_t tileC)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::getOverlay(int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset)
+void MapData::getOverlay(int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset)
 {
 	gosASSERT(tileR < Terrain::realVerticesMapSide && tileR > -1);
 	gosASSERT(tileC < Terrain::realVerticesMapSide && tileC > -1);
@@ -910,8 +891,7 @@ MapData::getOverlayTile(int32_t block, int32_t vertex)
 }
 
 //---------------------------------------------------------------------------
-float
-MapData::terrainAngle(Stuff::Vector3D& position, Stuff::Vector3D* normal)
+float MapData::terrainAngle(Stuff::Vector3D& position, Stuff::Vector3D* normal)
 {
 	//-------------------------------------------------------------------
 	// Recoded for real 3D terrain on march 3, 1999.  Uses new triangle
@@ -1095,8 +1075,7 @@ MapData::terrainAngle(Stuff::Vector3D& position, Stuff::Vector3D* normal)
 }
 
 //---------------------------------------------------------------------------
-float
-MapData::terrainLight(Stuff::Vector3D& position)
+float MapData::terrainLight(Stuff::Vector3D& position)
 {
 	if (!Terrain::IsValidTerrainPosition(position))
 		return (1.0f);
@@ -1323,8 +1302,7 @@ MapData::terrainNormal(Stuff::Vector3D& position)
 }
 
 //---------------------------------------------------------------------------
-float
-MapData::terrainElevation(Stuff::Vector3D& position)
+float MapData::terrainElevation(Stuff::Vector3D& position)
 {
 	//-------------------------------------------------------------------
 	// Recoded for real 3D terrain on march 3, 1999.  Uses new triangle
@@ -1511,8 +1489,7 @@ MapData::terrainElevation(Stuff::Vector3D& position)
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::unselectAll()
+void MapData::unselectAll()
 {
 	for (size_t i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
 	{
@@ -1522,8 +1499,7 @@ MapData::unselectAll()
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::unhighlightAll()
+void MapData::unhighlightAll()
 {
 	for (size_t i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
 	{
@@ -1532,8 +1508,7 @@ MapData::unhighlightAll()
 }
 
 //---------------------------------------------------------------------------
-void
-MapData::selectVertex(uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle)
+void MapData::selectVertex(uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle)
 {
 	// Just return.  Don't select anything!
 	if (tileRow >= Terrain::realVerticesMapSide)
@@ -1551,8 +1526,7 @@ MapData::selectVertex(uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bTo
 }
 
 //---------------------------------------------------------------------------
-bool
-MapData::isVertexSelected(uint32_t tileRow, uint32_t tileCol)
+bool MapData::isVertexSelected(uint32_t tileRow, uint32_t tileCol)
 {
 	gosASSERT(tileRow < Terrain::realVerticesMapSide);
 	gosASSERT(tileCol < Terrain::realVerticesMapSide);

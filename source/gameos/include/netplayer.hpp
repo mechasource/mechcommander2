@@ -115,13 +115,25 @@ public:
 		}
 	}
 
-	inline PSTR GetShortName() { return shortName; }
+	inline PSTR GetShortName()
+	{
+		return shortName;
+	}
 
-	inline PSTR GetLongName() { return longName; }
+	inline PSTR GetLongName()
+	{
+		return longName;
+	}
 
-	inline DPID PlayerID() { return playerID; }
+	inline DPID PlayerID()
+	{
+		return playerID;
+	}
 
-	inline FLinkedList<FIDPMessage>* GetVerifyList() { return &verifyList; }
+	inline FLinkedList<FIDPMessage>* GetVerifyList()
+	{
+		return &verifyList;
+	}
 
 	void AddToVerifyList(FIDPMessage* msg);
 

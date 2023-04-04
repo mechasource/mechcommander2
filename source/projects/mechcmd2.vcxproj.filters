@@ -725,7 +725,7 @@
     <ClInclude Include="..\include\mechresources.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\mechutils.h">
+    <ClInclude Include="..\include\common.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
     <ClInclude Include="..\mechcmd2\resource.h">

@@ -309,7 +309,7 @@ void SoundSystem::preloadSoundBite(int32_t soundId)
 			soundFormat.nBlockAlign = waveFormat->nBlockAlign;
 			soundFormat.wBitsPerSample = bitsPerSec;
 			soundFormat.cbSize = 0;
-			gosAudio_CreateResource(&thisSoundBite->resourceHandle, gosAudio_UserMemory, nullptr,
+			gosAudio_CreateResource(&thisSoundBite->resourceHandle, gosAudio_ResourceType::usermemory, nullptr,
 				&soundFormat, dataOffset, length);
 		}
 		else
@@ -337,7 +337,7 @@ void SoundSystem::update(void)
 			if (sounds[isRaining].biteData)
 			{
 				gosAudio_AssignResourceToChannel(ourChannel, sounds[isRaining].resourceHandle);
-				gosAudio_SetChannelPlayMode(ourChannel, gosAudio_Loop);
+				gosAudio_SetChannelPlayMode(ourChannel, gosAudio_PlayMode::loop);
 			}
 			oldRaining = isRaining;
 		}
@@ -346,7 +346,7 @@ void SoundSystem::update(void)
 			// Stop the sound Effect by fading it to zero!
 			oldRaining = isRaining;
 			gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(FIRE_CHANNEL);
-			if (sampleStatus == gosAudio_PlayOnce || sampleStatus == gosAudio_Loop)
+			if (sampleStatus == gosAudio_PlayMode::playonce || sampleStatus == gosAudio_PlayMode::loop)
 			{
 				fadeDown[FIRE_CHANNEL] = TRUE;
 			}
@@ -357,7 +357,7 @@ void SoundSystem::update(void)
 		//---------------------------------------------------
 		// Check if betty is done.  If so, whack the memory
 		gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(BETTY_CHANNEL);
-		if (sampleStatus != gosAudio_PlayOnce)
+		if (sampleStatus != gosAudio_PlayMode::playonce)
 		{
 			gosAudio_DestroyResource(&bettyHandle);
 			soundHeap->Free(bettySoundBite);
@@ -369,7 +369,7 @@ void SoundSystem::update(void)
 		//---------------------------------------------------
 		// Check if betty is done.  If so, whack the memory
 		gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(SUPPORT_CHANNEL);
-		if (sampleStatus != gosAudio_PlayOnce)
+		if (sampleStatus != gosAudio_PlayMode::playonce)
 		{
 			gosAudio_DestroyResource(&supportHandle);
 			soundHeap->Free(supportSoundBite);
@@ -379,13 +379,13 @@ void SoundSystem::update(void)
 	if (useSound && stream3Handle)
 	{
 		gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(STREAM3CHANNEL);
-		if (!stream3Active && (sampleStatus != gosAudio_PlayOnce))
+		if (!stream3Active && (sampleStatus != gosAudio_PlayMode::playonce))
 		{
 			stream3Active = true;
-			gosAudio_SetChannelPlayMode(STREAM3CHANNEL, gosAudio_PlayOnce);
+			gosAudio_SetChannelPlayMode(STREAM3CHANNEL, gosAudio_PlayMode::playonce);
 		}
 		sampleStatus = gosAudio_GetChannelPlayMode(STREAM3CHANNEL);
-		if (stream3Active && sampleStatus != gosAudio_PlayOnce)
+		if (stream3Active && sampleStatus != gosAudio_PlayMode::playonce)
 		{
 			gosAudio_DestroyResource(&stream3Handle);
 			stream3Handle = 0;
@@ -404,13 +404,13 @@ void SoundSystem::update(void)
 	{
 		stream1Active = true;
 		gosAudio_SetChannelPlayMode(STREAM1CHANNEL,
-			digitalMusicLoopFlags[currentMusicId] ? gosAudio_Loop : gosAudio_PlayOnce);
+			digitalMusicLoopFlags[currentMusicId] ? gosAudio_PlayMode::loop : gosAudio_PlayMode::playonce);
 	}
 	if (stream2Handle && !stream2Active)
 	{
 		stream2Active = true;
 		gosAudio_SetChannelPlayMode(STREAM2CHANNEL,
-			digitalMusicLoopFlags[currentMusicId] ? gosAudio_Loop : gosAudio_PlayOnce);
+			digitalMusicLoopFlags[currentMusicId] ? gosAudio_PlayMode::loop : gosAudio_PlayMode::playonce);
 	}
 	if (useMusic && (stream1Active || stream2Active))
 	{
@@ -512,7 +512,7 @@ void SoundSystem::update(void)
 				}
 			}
 		}
-		if (stream1Active && stream1Handle && (gosAudio_GetChannelPlayMode(STREAM1CHANNEL) == gosAudio_Stop))
+		if (stream1Active && stream1Handle && (gosAudio_GetChannelPlayMode(STREAM1CHANNEL) == gosAudio_PlayMode::stop))
 		{
 			if (stream1Handle)
 				gosAudio_DestroyResource(&stream1Handle);
@@ -520,7 +520,7 @@ void SoundSystem::update(void)
 			stream1Time = 0.0;
 			stream1Active = FALSE;
 		}
-		if (stream2Active && stream2Handle && (gosAudio_GetChannelPlayMode(STREAM2CHANNEL) == gosAudio_Stop))
+		if (stream2Active && stream2Handle && (gosAudio_GetChannelPlayMode(STREAM2CHANNEL) == gosAudio_PlayMode::stop))
 		{
 			if (stream2Handle)
 				gosAudio_DestroyResource(&stream2Handle);
@@ -538,7 +538,7 @@ void SoundSystem::update(void)
 		for (size_t i = 0; i < MAX_DIGITAL_SAMPLES; i++)
 		{
 			gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(i);
-			if (sampleStatus == gosAudio_PlayOnce)
+			if (sampleStatus == gosAudio_PlayMode::playonce)
 			{
 				if (fadeDown[i])
 				{
@@ -551,7 +551,7 @@ void SoundSystem::update(void)
 					if (vol == 0.0f)
 					{
 						fadeDown[i] = FALSE;
-						gosAudio_SetChannelPlayMode(i, gosAudio_Stop);
+						gosAudio_SetChannelPlayMode(i, gosAudio_PlayMode::stop);
 					}
 				}
 			}
@@ -599,7 +599,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream1Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream1Handle, gosAudio_StreamedFile, (std::wstring_view)digitalStream);
+							&stream1Handle, gosAudio_ResourceType::streamedfile, (std::wstring_view)digitalStream);
 						stream1Time = streamFadeDownTime;
 						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::volume, 0.0f);
 						gosAudio_SetChannelSlider(STREAM1CHANNEL, gosAudio_Properties::panning, 0.0f);
@@ -615,7 +615,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream2Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream2Handle, gosAudio_StreamedFile, (std::wstring_view)digitalStream);
+							&stream2Handle, gosAudio_ResourceType::streamedfile, (std::wstring_view)digitalStream);
 						// Need to check if stream1 ever got all the way faded
 						// up!
 						if (stream1Time > 0.0f)
@@ -637,7 +637,7 @@ SoundSystem::playDigitalMusic(int32_t musicId)
 							stream1Handle = 0;
 						}
 						gosAudio_CreateResource(
-							&stream1Handle, gosAudio_StreamedFile, (std::wstring_view)digitalStream);
+							&stream1Handle, gosAudio_ResourceType::streamedfile, (std::wstring_view)digitalStream);
 						stream1Time = streamFadeDownTime;
 						// Need to check if stream2 ever got all the way faded
 						// up!
@@ -690,7 +690,7 @@ SoundSystem::playDigitalStream(std::wstring_view streamName)
 					stream3Handle = 0;
 				}
 				gosAudio_CreateResource(
-					&stream3Handle, gosAudio_StreamedFile, (std::wstring_view)digitalStream);
+					&stream3Handle, gosAudio_ResourceType::streamedfile, (std::wstring_view)digitalStream);
 				stream3Active = false;
 				gosAudio_AssignResourceToChannel(STREAM3CHANNEL, stream3Handle);
 				gosAudio_SetChannelSlider(
@@ -747,9 +747,9 @@ SoundSystem::playBettySample(uint32_t bettySampleId)
 		soundFormat.wBitsPerSample = bitsPerSec;
 		soundFormat.cbSize = 0;
 		gosAudio_CreateResource(
-			&bettyHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
+			&bettyHandle, gosAudio_ResourceType::usermemory, nullptr, &soundFormat, dataOffset, length);
 		gosAudio_AssignResourceToChannel(ourChannel, bettyHandle);
-		gosAudio_SetChannelPlayMode(ourChannel, gosAudio_PlayOnce);
+		gosAudio_SetChannelPlayMode(ourChannel, gosAudio_PlayMode::playonce);
 		return (BETTY_CHANNEL);
 	}
 	return (-1);
@@ -812,9 +812,9 @@ SoundSystem::playSupportSample(uint32_t supportSampleId, std::wstring_view fileN
 		soundFormat.wBitsPerSample = bitsPerSec;
 		soundFormat.cbSize = 0;
 		gosAudio_CreateResource(
-			&supportHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
+			&supportHandle, gosAudio_ResourceType::usermemory, nullptr, &soundFormat, dataOffset, length);
 		gosAudio_AssignResourceToChannel(ourChannel, supportHandle);
-		gosAudio_SetChannelPlayMode(ourChannel, gosAudio_PlayOnce);
+		gosAudio_SetChannelPlayMode(ourChannel, gosAudio_PlayMode::playonce);
 		return (SUPPORT_CHANNEL);
 	}
 	return (-1);
@@ -837,7 +837,7 @@ bool SoundSystem::isChannelPlaying(int32_t channelId)
 	if ((channelId < 0) || (channelId > MAX_DIGITAL_SAMPLES))
 		return (FALSE);
 	gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(channelId);
-	if (sampleStatus == gosAudio_PlayOnce || sampleStatus == gosAudio_Loop)
+	if (sampleStatus == gosAudio_PlayMode::playonce || sampleStatus == gosAudio_PlayMode::loop)
 		return (TRUE);
 	return FALSE;
 }
@@ -913,7 +913,7 @@ SoundSystem::playDigitalSample(uint32_t sampleId, Stuff::Vector3D pos, bool allo
 			if (sounds[sampleId].biteData && sounds[sampleId].resourceHandle)
 			{
 				gosAudio_AssignResourceToChannel(ourChannel, sounds[sampleId].resourceHandle);
-				gosAudio_SetChannelPlayMode(ourChannel, gosAudio_PlayOnce);
+				gosAudio_SetChannelPlayMode(ourChannel, gosAudio_PlayMode::playonce);
 			}
 			return (ourChannel);
 		}
@@ -927,7 +927,7 @@ void SoundSystem::stopDigitalSample(uint32_t sampleHandleNumber)
 	if (useSound)
 	{
 		gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(sampleHandleNumber);
-		if (sampleStatus == gosAudio_PlayOnce || sampleStatus == gosAudio_Loop)
+		if (sampleStatus == gosAudio_PlayMode::playonce || sampleStatus == gosAudio_PlayMode::loop)
 		{
 			fadeDown[sampleHandleNumber] = TRUE;
 		}
@@ -975,7 +975,7 @@ void SoundSystem::stopBettySample(void)
 {
 	if (bettyHandle)
 	{
-		gosAudio_SetChannelPlayMode(BETTY_CHANNEL, gosAudio_Stop);
+		gosAudio_SetChannelPlayMode(BETTY_CHANNEL, gosAudio_PlayMode::stop);
 		gosAudio_DestroyResource(&bettyHandle);
 		soundHeap->Free(bettySoundBite);
 		bettySoundBite = nullptr;

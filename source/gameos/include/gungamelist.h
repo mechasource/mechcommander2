@@ -25,8 +25,7 @@ extern PSTR GAMELIST_KEY_PASSWORD;
 extern PSTR GAMELIST_KEY_BROWSER_HANDLE;
 extern PSTR GAMELIST_KEY_PING;
 extern PSTR GAMELIST_KEY_GAME_TYPE; // rules for game (ctf, team fortress, etc...)
-extern PSTR GAMELIST_KEY_UPDATE_TIME; // whether the game was updated or not in
-	// the last EnumSessions
+extern PSTR GAMELIST_KEY_UPDATE_TIME; // whether the game was updated or not in the last EnumSessions
 extern PSTR GAMELIST_KEY_PROTOCOL;
 extern PSTR GAMELIST_KEY_FLAGS;
 extern PSTR GAMELIST_KEY_SERVER_INFO_STATUS;
@@ -45,8 +44,7 @@ extern PSTR GAMELIST_VALUE_SERVER_INFO_STATUS_NOSERVER;
 extern PSTR PLAYERLIST_KEY_SERVER_ROWID;
 extern PSTR PLAYERLIST_KEY_PLAYER_NAME;
 extern PSTR PLAYERLIST_KEY_CLAN_NAME; // not yet in MW4 - 8/1/2000
-extern PSTR PLAYERLIST_KEY_UPDATE_TIME; // whether the player was updated or
-	// not in the last EnumPlayers
+extern PSTR PLAYERLIST_KEY_UPDATE_TIME; // whether the player was updated or not in the last EnumPlayers
 extern PSTR ZONE_SERVER_KEY;
 extern PSTR ZONE_ADVERTISE_PORT_KEY;
 extern PSTR ZONE_SERVER_INTERNET_ADDRESS;

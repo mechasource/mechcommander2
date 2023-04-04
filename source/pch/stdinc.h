@@ -18,6 +18,43 @@
 
 #pragma once
 
+#if defined(__GNUC__) || defined(__clang__)
+#define MSDISABLE_WARNING(x)
+#define MSDISABLE_WARNING_PUSH(x)
+#define MSDISABLE_WARNING_POP
+#define MSSUPPRESS_WARNING(x)
+#define MSADD_LIBRARY(x)
+#define GCCPRAGMA(x)                _Pragma(#x)
+#define GCCDISABLE_WARNING(x)       GCCPRAGMA(GCC diagnostic ignored #x)
+#define GCCDISABLE_WARNING_PUSH     GCCPRAGMA(GCC diagnostic push)
+#define GCCDISABLE_WARNING_POP      GCCPRAGMA(GCC diagnostic pop)
+#elif defined(_MSC_VER)
+#define MSDISABLE_WARNING(x)		__pragma(warning(disable:x))
+#define MSDISABLE_WARNING_PUSH(x)	__pragma(warning(push));__pragma(warning(disable:x))
+#define MSDISABLE_WARNING_POP		__pragma(warning(pop))
+#define MSSUPPRESS_WARNING(x)		__pragma(warning(suppress:x))
+#define MSADD_LIBRARY(x)			__pragma(comment(lib,x))
+#define GCCDISABLE_WARNING(x)
+#define GCCDISABLE_WARNING_PUSH
+#define GCCDISABLE_WARNING_POP
+#else
+#define MSDISABLE_WARNING(x)
+#define MSDISABLE_WARNING_PUSH(x)
+#define MSDISABLE_WARNING_POP
+#define MSSUPPRESS_WARNING(x)
+#define MSADD_LIBRARY(x)
+#define GCCDISABLE_WARNING(x)
+#define GCCDISABLE_WARNING_PUSH
+#define GCCDISABLE_WARNING_POP
+#endif
+
+// disable clang warnings
+GCCDISABLE_WARNING(-Wc++98-compat-pedantic)
+GCCDISABLE_WARNING(-Wunused-command-line-argument)
+GCCDISABLE_WARNING_PUSH
+GCCDISABLE_WARNING(-Wreserved-id-macro)
+GCCDISABLE_WARNING(-Wmicrosoft-include)
+
 #define STRICT
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -29,25 +66,6 @@
 //#define NOHELP
 #define _CRTDBG_MAP_ALLOC
 
-#if defined(_MSC_VER) && !defined(__clang__)
-#define MSDISABLE_WARNING(x) __pragma(warning(disable \
-											  : x))
-#define MSDISABLE_WARNING_PUSH(x) \
-	__pragma(warning(push));      \
-	__pragma(warning(disable      \
-					 : x))
-#define MSDISABLE_WARNING_POP __pragma(warning(pop))
-#define MSSUPPRESS_WARNING(x) __pragma(warning(suppress \
-											   : x))
-#define MSADD_LIBRARY(x) __pragma(comment(lib, x))
-#else
-#define MSDISABLE_WARNING(x)
-#define MSDISABLE_WARNING_PUSH(x)
-#define MSDISABLE_WARNING_POP
-#define MSSUPPRESS_WARNING(x)
-#define MSADD_LIBRARY(x)
-#endif
-
 #define _WIN32_WINNT 0x0601 // minimum Windows 7
 #include <winsdkver.h>
 #include <sdkddkver.h>
@@ -58,7 +76,8 @@
 // #define _CRT_SECURE_NO_WARNINGS 1
 
 // temporary disable warnings when compiling with -Wall
-MSDISABLE_WARNING_PUSH(4191 4350 4355 4365 4774 4571 4619 4623 4626 4855 4946 5026 5027 5039 5040 5204 4514 4710 4711 4625 4820 5045 6385 26439 26495 28204)
+// MSDISABLE_WARNING_PUSH(4191 4350 4355 4365 4774 4571 4619 4623 4626 4855 4946 5026 5027 5039 5040 5204 4514 4710 4711 4625 4820 5045 6385 26439 26495 28204)
+MSDISABLE_WARNING_PUSH(4710 4711)
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -177,43 +196,15 @@ MSDISABLE_WARNING_POP
 // comment out for diagnostic messages
 //#pragma warning(disable : 4266 4625 4820)
 
-#pragma warning(disable : 4061) // enumerator in switch of enum is not explicitly handled by a case label
-#pragma warning(disable : 4514) // unreferenced inline function has been removed
-#pragma warning(disable : 4625) // copy constructor was implicitly defined as deleted
-#pragma warning(disable : 4626) // assignment operator was implicitly defined as deleted
-#pragma warning(disable : 4710) // function not inlined
-#pragma warning(disable : 4820) // bytes padding added
-#pragma warning(disable : 5026) // move constructor was implicitly defined as deleted
-#pragma warning(disable : 5027) // move assignment operator was implicitly defined as deleted
-#pragma warning(disable : 5045) // Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
-
-// give more meaning to temporary and disabled code
-#define CONSIDERED_OBSOLETE 0
-#define CONSIDERED_UNSUPPORTED 0
-#define CONSIDERED_DISABLED 0
-#define CONSIDERED_UNUSED 0
-#define USE_INLINE_ASSEMBLER_CODE 0
-
-#ifdef _DEBUG
-#define NODEFAULT _ASSERT(0)
-#else
-#define NODEFAULT __assume(0)
-#endif
-
-#define MECH_IMPEXP extern "C"
-#define MECH_CALL __stdcall
-
-// mechcmd2
-#ifdef _DEBUG
-// _ARMOR;LAB_ONLY;USE_PROTOTYPES;STRICT;WIN32;_DEBUG;_WINDOWS;BUGLOG
-//#define _ARMOR 1
-//#define LAB_ONLY 1
-#else
-// NDEBUG;_WINDOWS;WIN32;NOMINMAX;FINAL
-// NDEBUG;LAB_ONLY;_WINDOWS;WIN32;NOMINMAX;BUGLOG	- profile
-// #define LAB_ONLY 0
-// #define FINAL
-#endif
+MSDISABLE_WARNING(4061) // enumerator in switch of enum is not explicitly handled by a case label
+MSDISABLE_WARNING(4514) // unreferenced inline function has been removed
+MSDISABLE_WARNING(4625) // copy constructor was implicitly defined as deleted
+MSDISABLE_WARNING(4626) // assignment operator was implicitly defined as deleted
+MSDISABLE_WARNING(4710) // function not inlined
+MSDISABLE_WARNING(4820) // bytes padding added
+MSDISABLE_WARNING(5026) // move constructor was implicitly defined as deleted
+MSDISABLE_WARNING(5027) // move assignment operator was implicitly defined as deleted
+MSDISABLE_WARNING(5045) // Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
 
 #ifndef IN_TEST_MODE
 #define IN_TEST_MODE 1
@@ -228,3 +219,6 @@ MSDISABLE_WARNING_POP
 #if CONSIDERED_DISABLED
 
 #endif
+
+// *INDENT-ON*
+// clang-format on

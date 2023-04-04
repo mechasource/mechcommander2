@@ -76,7 +76,7 @@ void GameSoundSystem::purgeSoundSystem(void)
 	{
 		if (i != BETTY_CHANNEL)
 		{
-			gosAudio_SetChannelPlayMode(i, gosAudio_Stop);
+			gosAudio_SetChannelPlayMode(i, gosAudio_PlayMode::stop);
 			fadeDown[i] = FALSE;
 			channelSampleId[i] = -1;
 			channelInUse[i] = FALSE;
@@ -178,7 +178,7 @@ void GameSoundSystem::removeCurrentMessage(void)
 		msgHeap->Free(currentMessage);
 		currentMessage = nullptr;
 	}
-	gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_Stop);
+	gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayMode::stop);
 	wholeMsgDone = TRUE;
 }
 
@@ -271,7 +271,7 @@ void GameSoundSystem::update(void)
 		playDigitalSample(BUZZER1);
 		generalAlarmTimer += frameLength;
 	}
-	if (useSound && currentMessage && (gosAudio_GetChannelPlayMode(RADIO_CHANNEL) != gosAudio_PlayOnce))
+	if (useSound && currentMessage && (gosAudio_GetChannelPlayMode(RADIO_CHANNEL) != gosAudio_PlayMode::playonce))
 	{
 		if (radioHandle)
 		{
@@ -306,7 +306,7 @@ void GameSoundSystem::update(void)
 					soundFormat.nBlockAlign = waveFormat->nBlockAlign;
 					soundFormat.wBitsPerSample = bitsPerSec;
 					soundFormat.cbSize = 0;
-					gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
+					gosAudio_CreateResource(&radioHandle, gosAudio_ResourceType::usermemory, nullptr,
 						&soundFormat, dataOffset, length);
 					if (isChannelPlaying(BETTY_CHANNEL))
 						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
@@ -315,7 +315,7 @@ void GameSoundSystem::update(void)
 						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 							SoundSystem::digitalMasterVolume * radioVolume);
 					gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
-					gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
+					gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayMode::playonce);
 					if (currentMessage->pilot)
 						currentMessage->pilot->setMessagePlaying();
 				}
@@ -345,7 +345,7 @@ void GameSoundSystem::update(void)
 					soundFormat.nBlockAlign = waveFormat->nBlockAlign;
 					soundFormat.wBitsPerSample = bitsPerSec;
 					soundFormat.cbSize = 0;
-					gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
+					gosAudio_CreateResource(&radioHandle, gosAudio_ResourceType::usermemory, nullptr,
 						&soundFormat, dataOffset, length);
 					if (isChannelPlaying(BETTY_CHANNEL))
 						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
@@ -354,7 +354,7 @@ void GameSoundSystem::update(void)
 						gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 							SoundSystem::digitalMasterVolume * radioVolume);
 					gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
-					gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
+					gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayMode::playonce);
 					playingNoise = TRUE;
 					if (currentMessage->pilot)
 						currentMessage->pilot->setMessagePlaying();
@@ -382,7 +382,7 @@ void GameSoundSystem::update(void)
 						soundFormat.nBlockAlign = waveFormat->nBlockAlign;
 						soundFormat.wBitsPerSample = bitsPerSec;
 						soundFormat.cbSize = 0;
-						gosAudio_CreateResource(&radioHandle, gosAudio_UserMemory, nullptr,
+						gosAudio_CreateResource(&radioHandle, gosAudio_ResourceType::usermemory, nullptr,
 							&soundFormat, dataOffset, length);
 						if (isChannelPlaying(BETTY_CHANNEL))
 							gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
@@ -391,7 +391,7 @@ void GameSoundSystem::update(void)
 							gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 								SoundSystem::digitalMasterVolume * radioVolume);
 						gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
-						gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
+						gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayMode::playonce);
 						if (currentMessage->pilot)
 							currentMessage->pilot->setMessagePlaying();
 					}
@@ -458,7 +458,7 @@ void GameSoundSystem::update(void)
 			soundFormat.wBitsPerSample = bitsPerSec;
 			soundFormat.cbSize = 0;
 			gosAudio_CreateResource(
-				&radioHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
+				&radioHandle, gosAudio_ResourceType::usermemory, nullptr, &soundFormat, dataOffset, length);
 			if (isChannelPlaying(BETTY_CHANNEL))
 				gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 					SoundSystem::digitalMasterVolume * radioVolume * 0.5f);
@@ -466,7 +466,7 @@ void GameSoundSystem::update(void)
 				gosAudio_SetChannelSlider(
 					RADIO_CHANNEL, gosAudio_Properties::volume, SoundSystem::digitalMasterVolume * radioVolume);
 			gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
-			gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
+			gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayMode::playonce);
 			playingNoise = TRUE;
 			if (currentMessage->pilot)
 				currentMessage->pilot->setMessagePlaying();
@@ -495,7 +495,7 @@ void GameSoundSystem::update(void)
 				soundFormat.wBitsPerSample = bitsPerSec;
 				soundFormat.cbSize = 0;
 				gosAudio_CreateResource(
-					&radioHandle, gosAudio_UserMemory, nullptr, &soundFormat, dataOffset, length);
+					&radioHandle, gosAudio_ResourceType::usermemory, nullptr, &soundFormat, dataOffset, length);
 				if (isChannelPlaying(BETTY_CHANNEL))
 					gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 						SoundSystem::digitalMasterVolume * radioVolume * 0.5f);
@@ -503,7 +503,7 @@ void GameSoundSystem::update(void)
 					gosAudio_SetChannelSlider(RADIO_CHANNEL, gosAudio_Properties::volume,
 						SoundSystem::digitalMasterVolume * radioVolume);
 				gosAudio_AssignResourceToChannel(RADIO_CHANNEL, radioHandle);
-				gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayOnce);
+				gosAudio_SetChannelPlayMode(RADIO_CHANNEL, gosAudio_PlayMode::playonce);
 				if (currentMessage->pilot)
 					currentMessage->pilot->setMessagePlaying();
 			}

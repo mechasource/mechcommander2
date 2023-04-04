@@ -22,8 +22,7 @@
 #ifndef _GAMEOS_HPP_
 #define _GAMEOS_HPP_
 
-#pragma warning(push)
-#pragma warning(disable : 4820)
+#include "common.h"
 
 #ifndef MECH_IMPEXP
 #define MECH_IMPEXP extern
@@ -376,19 +375,21 @@ BOOLEAN __stdcall gos_RunMainLoop(void(__stdcall* DoGameLogic)(void) = 0);
 //////////////////////////////////////////////////////////////////////////////////
 // An enumeration of the various commands to the Video playback API.
 // not used
-enum class gosVideo_Command : uint32_t
+enum class gosVideo_Command : uint8_t
 {
-	seektime = 1, // Seek to a frame or timestamp in hVideo
-	setcoords = 2, // Set the destination coordinates of <hVideo> via <dwOriginX/Y>
-	setscale = 4, // Change the scale of <hVideo> on the fly via <fScaleOfX/Y>
-	volume = 8, // Set the volume of the multiVideo
-	panning = 16 // Set the pan of the multiVideo
+	none = 0,
+	seektime = 1 << 0, // 1 - Seek to a frame or timestamp in hVideo
+	setcoords = 1 << 1, // Set the destination coordinates of <hVideo> via <dwOriginX/Y>
+	setscale = 1 << 2, // Change the scale of <hVideo> on the fly via <fScaleOfX/Y>
+	volume = 1 << 3, // Set the volume of the multiVideo
+	panning = 1 << 4 // 16 - Set the pan of the multiVideo
 };
+ENABLE_ENUM_BITMASKS(gosVideo_Command)
 
 //////////////////////////////////////////////////////////////////////////////////
 // An enumeration of the various states the video playback can be in.
 // not used
-enum class gosVideo_PlayMode : uint32_t
+enum class gosVideo_PlayMode : uint8_t
 {
 	playoncehide, // The Video is currently playing (will hide when done)
 	playoncehold, // The Video is currently playing (will hold when done)
@@ -459,81 +460,72 @@ void __stdcall gosVideo_Command(HGOSVIDEO handle, gosVideo_Command vc, float x, 
 enum class gosAudio_Properties : uint32_t
 {
 	none                = 0,
-	common				= 1 << 0, // 0x00000001
-	volume				= 1 << 1, // Volume can be adjusted independently of mixer (0.0 = silence, 1.0 = full volume)
-	panning				= 1 << 2, // Panning can be adjusted independently of mixer (-1.0 = left, 0 = center, +1 = right)
-	frequency			= 1 << 3, // Frequency can be adjust independently of mixer (< 1.0 = lower freq, 1.0 = normal, 2 = 2x, etc.)
-	seektime			= 1 << 4, // RESERVED
-	position			= 1 << 5, // * The 3D position can be set
-	velocity			= 1 << 6, // * The 3D velocity can be set
-	frontorientation	= 1 << 7, // Mixer only: set the front and top orientation of "ears." The front vector points in the direction
-	toporientation		= 1 << 8, // of the listener's nose, and the top vector points out the top of the listener's head. By default, the front vector is (0,0,1.0) and the top vector is (0,1.0,0).
-	minmaxdistance		= 1 << 9, // * Under minimum distance, volume is max; Over maximum distance, volume is zero
-	doppler				= 1 << 10, // Mixer only: 1.0f is real world, 2.0f is twice real world
-	rolloff				= 1 << 11, // Mixer only: 1.0f is real world, 2.0f is twice real world
-	distance			= 1 << 12, // Mixer only: position/velocity adjustment: 1.0f = same, 2.0f = double position/velocity
-	reverb				= 1 << 13, // .0f to 2.0f ( < 1.0 = muffled, > 1.0 = exaggerated)
-	decay				= 1 << 14, // .1f to 20.0f (in seconds)
-	coneangles			= 1 << 15, // expressed as degrees. 1st parameters is inner (full volume), second is outer (fully attenuated)
-	coneorientation		= 1 << 16, // direction in which the cone points.
+	common              = 1 << 0, // 0x00000001
+	volume              = 1 << 1, // Volume can be adjusted independently of mixer (0.0 = silence, 1.0 = full volume)
+	panning             = 1 << 2, // Panning can be adjusted independently of mixer (-1.0 = left, 0 = center, +1 = right)
+	frequency           = 1 << 3, // Frequency can be adjust independently of mixer (< 1.0 = lower freq, 1.0 = normal, 2 = 2x, etc.)
+	seektime            = 1 << 4, // RESERVED
+	position            = 1 << 5, // * The 3D position can be set
+	velocity            = 1 << 6, // * The 3D velocity can be set
+	frontorientation    = 1 << 7, // Mixer only: set the front and top orientation of "ears." The front vector points in the direction
+	toporientation      = 1 << 8, // of the listener's nose, and the top vector points out the top of the listener's head. By default, the front vector is (0,0,1.0) and the top vector is (0,1.0,0).
+	minmaxdistance      = 1 << 9, // * Under minimum distance, volume is max; Over maximum distance, volume is zero
+	doppler             = 1 << 10, // Mixer only: 1.0f is real world, 2.0f is twice real world
+	rolloff             = 1 << 11, // Mixer only: 1.0f is real world, 2.0f is twice real world
+	distance            = 1 << 12, // Mixer only: position/velocity adjustment: 1.0f = same, 2.0f = double position/velocity
+	reverb              = 1 << 13, // .0f to 2.0f ( < 1.0 = muffled, > 1.0 = exaggerated)
+	decay               = 1 << 14, // .1f to 20.0f (in seconds)
+	coneangles          = 1 << 15, // expressed as degrees. 1st parameters is inner (full volume), second is outer (fully attenuated)
+	coneorientation     = 1 << 16, // direction in which the cone points.
 };
-// clang-format on
+ENABLE_ENUM_BITMASKS(gosAudio_Properties)
 
+#if CONSIDERED_UNUSED
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This enum is used to set or return the client's speaker configuration. Note
 // that gosAudio_DegreeArc<x> may be bitwise OR'd into the speaker type if the
 // speaker type is gosAudio_Stereo.
-//
-enum gosAudio_SpeakerConfig : uint32_t
+// not used
+enum class gosAudio_SpeakerConfig : uint32_t
 {
-	gosAudio_Headphones = 1, // The client system uses a pair of headphones for aural feedback
-	gosAudio_Monaural = 2, // The client system has only one speaker attached
-	gosAudio_Quadraphonic = 4, // The system is using a four-speaker system
-	gosAudio_Stereo = 8, // This is a typical system configuration: two
-	// speakers, left and right
-	gosAudio_Surround = 16, // The client system has several (more than four) speakers wired in
-	gosAudio_DegreeArc5 = 32, // For a stereo system, the user may specify the
-	// arc over which the two speaker lie
-	gosAudio_DegreeArc10 = 64,
-	gosAudio_DegreeArc20 = 128,
-	gosAudio_DegreeArc180 = 256
+	none                = 0,
+	headphones          = 1 << 0,  // The client system uses a pair of headphones for aural feedback
+	monaural            = 1 << 1,  // The client system has only one speaker attached
+	quadraphonic        = 1 << 2,  // The system is using a four-speaker system
+	stereo              = 1 << 3,  // This is a typical system configuration: two speakers, left and right
+	surround            = 1 << 4,  // The client system has several (more than four) speakers wired in
+	degreearc5          = 1 << 5,  // For a stereo system, the user may specify the arc over which the two speaker lie
+	degreearc10         = 1 << 6,
+	degreearc20         = 1 << 7,
+	degreearc180        = 1 << 8
 };
-
+ENABLE_ENUM_BITMASKS(gosAudio_SpeakerConfig)
+#endif // CONSIDERED_UNUSED
+// clang-format on
+ 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Sound Channels can be in one of the following states
 //
-enum gosAudio_PlayMode : uint32_t
+enum class gosAudio_PlayMode : uint32_t
 {
-	gosAudio_PlayOnce, // Play the channel's resource once and then end
-	gosAudio_Loop, // Continually play the channel's resource, looping after
-	// each iteration
-	gosAudio_Pause, // Pause the sound, a Continue will resume the sound from
-	// where it was paused
-	gosAudio_Continue, // SET ONLY: continue a sound that was paused.
-	gosAudio_Stop, // Silence the channel and stop processing the resource
+	playonce, // Play the channel's resource once and then end
+	loop, // Continually play the channel's resource, looping after each iteration
+	pause, // Pause the sound, a Continue will resume the sound from where it was paused
+	resume, // SET ONLY: continue a sound that was paused.
+	stop, // Silence the channel and stop processing the resource
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Resource Types
 //
-enum gosAudio_ResourceType : uint32_t
+enum class gosAudio_ResourceType : uint32_t
 {
-	gosAudio_CachedFile, // Pull a WAV file from disk, parse it, and copy the
-	// raw sound data into system memory
-	gosAudio_UserMemory, // Use a preloaded WAV already in the client's system
-	// memory. Note: This memory must remain intact until
-	// this resource is destroyed
-	gosAudio_UserMemoryDecode, // Use a preloaded WAV already in the client's
-	// system memory. Note: Unlike UserMemory,
-	// UserMemoryDecode deciphers the waveformat
-	// itself.
-	gosAudio_UserMemoryPlayList, // Play a series of same-format WAVs back to
-	// back, played from memory-mapped WAVs
-	gosAudio_StreamedFile, // Leave the sound data on disk, streaming only the
-	// data when needed. Note: only volume and pan affect
-	// streamed files
-	gosAudio_StreamedMusic, // Leave the sound data on disk, play a
-	// non-PCM/ADPCM song.
-	gosAudio_StreamedFP // Streamed from a file pointer
+	cachedfile, // Pull a WAV file from disk, parse it, and copy the raw sound data into system memory
+	usermemory, // Use a preloaded WAV already in the client's system memory. Note: This memory must remain intact until this resource is destroyed
+	usermemorydecode, // Use a preloaded WAV already in the client's system memory. Note: Unlike UserMemory, UserMemoryDecode deciphers the waveformat itself.
+	usermemoryplaylist, // Play a series of same-format WAVs back to back, played from memory-mapped WAVs
+	streamedfile, // Leave the sound data on disk, streaming only the data when needed. Note: only volume and pan affect streamed files
+	streamedmusic, // Leave the sound data on disk, play a non-PCM/ADPCM song.
+	streamedfp // Streamed from a file pointer
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -546,16 +538,12 @@ typedef struct _gosAudio_Format
 	uint32_t nSamplesPerSec; // Sample rate, 11025Hz, 22050Hz or 44100Hz.
 	uint32_t nAvgBytesPerSec; // Normally, nBlockAlign * nSamplesPerSec
 	uint16_t nBlockAlign; // Normally, wBitsPerSample / 8 * nChannels
-	uint16_t wBitsPerSample; // Bits per sample for the wFormatTag format type.
-		// If wFormatTag is 1 (PCM), then wBitsPerSample
-		// should be equal to 8 or 16.
-	size_t cbSize; // Size, in bytes, of extra format information appended to
-		// the end of the WAVEFORMATEX structure. For PCM's, this
-		// should be set to 0. For ADPCM, this should be set to 32.
+	uint16_t wBitsPerSample; // Bits per sample for the wFormatTag format type. If wFormatTag is 1 (PCM), then wBitsPerSample should be equal to 8 or 16.
+	size_t cbSize; // Size, in bytes, of extra format information appended to the end of the WAVEFORMATEX structure. For PCM's, this should be set to 0. For ADPCM, this should be set to 32.
 } gosAudio_Format;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-// For gosAudio_UserMemoryPlayList resources, fill in the structure below and
+// For gosAudio_ResourceType::usermemoryplaylist resources, fill in the structure below and
 // pass it in. The information in the structure itself as well as the pointers
 // within the arrays will be copied, so the structures can be discarded once the
 // resource has been created
@@ -563,8 +551,7 @@ typedef struct _gosAudio_Format
 typedef struct _gosAudio_PlayList
 {
 	size_t m_dwListLength; // Number of sample in the playlist
-	size_t* m_lpSoundData; // A array of pointers pointing to the start of each
-		// memory-mapped WAV file.
+	size_t* m_lpSoundData; // A array of pointers pointing to the start of each/ memory-mapped WAV file.
 	size_t* m_pdataLength; // The size of each corresponding sample in the playlist
 } gosAudio_PlayList;
 
@@ -588,24 +575,25 @@ typedef struct _gosAudio_ResourceInfo
 typedef struct _gosAudio_ChannelInfo
 {
 	HGOSAUDIO hAudio;
-	uint32_t dwProperties; // A bitwise flag field specifying which sliders have
-		// been allocated to it.
+	uint32_t dwProperties; // A bitwise flag field specifying which sliders have been allocated to it.
 	gosAudio_PlayMode ePlayMode; // The current playmode of the channel
 	float fVolume; // The current volume (0.0 - 1.0) of the channel
 	float fPanning; // The current panning (-1.0 - +1.0) of the channel
 	float fFrequency; // The current frequency (>0 - +#) of the channel
 	float fCompletionRatio; // 0-100.0.
-	float fPosX, fPosY,
-		fPosZ; // If the channel is 3d, the position of the emitter/listener
-	float fVelX, fVelY,
-		fVelZ; // If the channel is 3d, the velocity of the emitter/listener
-	float fMinDistance, fMaxDistance; // MinDistance under which sound is at
-		// full volume, MaxDistance after which
-		// sound too far away to be heard
-	float fConeInner,
-		fConeOuter; // The dimensions of the sound cone, in degrees
-	float fConeX, fConeY,
-		fConeZ; // The rotations applied to the sound cone, in radians
+	float fPosX; // If the channel is 3d, the position of the emitter/listener
+	float fPosY;
+	float fPosZ;
+	float fVelX; // If the channel is 3d, the velocity of the emitter/listener
+	float fVelY;
+	float fVelZ;
+	float fMinDistance; // MinDistance under which sound is at full volume, MaxDistance after which sound too far away to be heard
+	float fMaxDistance;
+	float fConeInner; // The dimensions of the sound cone, in degrees
+	float fConeOuter;
+	float fConeX; // The rotations applied to the sound cone, in radians
+	float fConeY;
+	float fConeZ;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//	Mixer (channel -1) related
@@ -616,8 +604,7 @@ typedef struct _gosAudio_ChannelInfo
 	float ftopx, ftopy, fTopZ; // The top-pointing vector of the listener
 	float fDoppler; // Typically 1.0, this can be manipulated for a desired effect
 	float fRolloff; // Typically 1.0, this can be change to match a desired effect
-	float fDistance; // Typically 1.0, this defines meters/unit within the sound
-		// system
+	float fDistance; // Typically 1.0, this defines meters/unit within the sound system
 	float fReverb; // If available, the reverbation factor of all channels
 	float fDecay; // If available, the decay factor of all channels
 } gosAudio_ChannelInfo;
@@ -625,10 +612,8 @@ typedef struct _gosAudio_ChannelInfo
 //////////////////////////////////////////////////////////////////////////////////
 // Creates a resource to be played later
 //
-void __stdcall gosAudio_CreateResource(HGOSAUDIO* hgosaudio, gosAudio_ResourceType, PSTR file_name,
-	gosAudio_Format* ga_wf = 0, PVOID data = 0, int32_t size = 0, BOOLEAN only2D = 0);
-void __stdcall gosAudio_CreateResource(
-	HGOSAUDIO* hgosaudio, PSTR identifier_name, HGOSFILE file, size_t offset, BOOLEAN only2D = 0);
+void __stdcall gosAudio_CreateResource(HGOSAUDIO* hgosaudio, gosAudio_ResourceType, PSTR file_name,gosAudio_Format* ga_wf = 0, PVOID data = 0, int32_t size = 0, BOOLEAN only2D = 0);
+void __stdcall gosAudio_CreateResource(HGOSAUDIO* hgosaudio, PSTR identifier_name, HGOSFILE file, size_t offset, BOOLEAN only2D = 0);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Destroy a resource; any sounds currently playing using the ResourceID will be
@@ -3369,5 +3354,4 @@ public:
 };
 
 #endif // __cplusplus
-#pragma warning(pop)
 #endif

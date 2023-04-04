@@ -1,54 +1,12 @@
 #!/bin/sh
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|g_XMNegIdentityR2|DirectX::g_XMNegIdentityR2|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixLookAtRH|DirectX::XMMatrixLookAtRH|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixOrthographicOffCenterRH|DirectX::XMMatrixOrthographicOffCenterRH|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixOrthographicRH|DirectX::XMMatrixOrthographicRH|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixPerspectiveFovRH|DirectX::XMMatrixPerspectiveFovRH|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixPerspectiveOffCenterRH|DirectX::XMMatrixPerspectiveOffCenterRH|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixPerspectiveRH|DirectX::XMMatrixPerspectiveRH|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixReflect|DirectX::XMMatrixReflect|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixRotationAxis|DirectX::XMMatrixRotationAxis|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixRotationQuaternion|DirectX::XMMatrixRotationQuaternion|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixRotationRollPitchYaw|DirectX::XMMatrixRotationRollPitchYaw|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixRotationX|DirectX::XMMatrixRotationX|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixRotationZ|DirectX::XMMatrixRotationZ|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixScaling|DirectX::XMMatrixScaling|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMMatrixShadow|DirectX::XMMatrixShadow|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMPlaneDot|DirectX::XMPlaneDot|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMPlaneDotCoord|DirectX::XMPlaneDotCoord|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMPlaneDotNormal|DirectX::XMPlaneDotNormal|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMPlaneEqual|DirectX::XMPlaneEqual|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMPlaneFromPointNormal|DirectX::XMPlaneFromPointNormal|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMPlaneFromPoints|DirectX::XMPlaneFromPoints|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMPlaneNormalize|DirectX::XMPlaneNormalize|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMPlaneNotEqual|DirectX::XMPlaneNotEqual|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionConjugate|DirectX::XMQuaternionConjugate|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionDot|DirectX::XMQuaternionDot|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionEqual|DirectX::XMQuaternionEqual|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionInverse|DirectX::XMQuaternionInverse|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionLength|DirectX::XMQuaternionLength|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionLengthSq|DirectX::XMQuaternionLengthSq|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionMultiply|DirectX::XMQuaternionMultiply|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionNormalize|DirectX::XMQuaternionNormalize|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionNotEqual|DirectX::XMQuaternionNotEqual|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionRotationAxis|DirectX::XMQuaternionRotationAxis|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMQuaternionRotationRollPitchYaw|DirectX::XMQuaternionRotationRollPitchYaw|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector3Dot|DirectX::XMVector3Dot|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector3InBounds|DirectX::XMVector3InBounds|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector3Length|DirectX::XMVector3Length|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector3LengthSq|DirectX::XMVector3LengthSq|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector3NotEqual|DirectX::XMVector3NotEqual|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector3Reflect|DirectX::XMVector3Reflect|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector3Refract|DirectX::XMVector3Refract|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4Cross|DirectX::XMVector4Cross|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4Dot|DirectX::XMVector4Dot|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4Equal|DirectX::XMVector4Equal|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4GreaterOrEqual|DirectX::XMVector4GreaterOrEqual|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4InBounds|DirectX::XMVector4InBounds|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4Length|DirectX::XMVector4Length|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4LengthSq|DirectX::XMVector4LengthSq|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4Normalize|DirectX::XMVector4Normalize|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4NotEqual|DirectX::XMVector4NotEqual|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4Reflect|DirectX::XMVector4Reflect|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVector4Refract|DirectX::XMVector4Refract|g' {} \;
-find ./source/directxtk -type f \( -name "*.h" -o -name "*.inl" -o -name "*.cpp" \) -exec sed -i -e 's|XMVectorAbs|DirectX::XMVectorAbs|g' {} \;
+
+find ./source -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -exec sed -i \
+-e 's|\<gosAudio_CachedFile\>|gosAudio_ResourceType::cachedfile|g' \
+-e 's|\<gosAudio_UserMemory\>|gosAudio_ResourceType::usermemory|g' \
+-e 's|\<gosAudio_UserMemoryDecode\>|gosAudio_ResourceType::usermemorydecode|g' \
+-e 's|\<gosAudio_UserMemoryPlayList\>|gosAudio_ResourceType::usermemoryplaylist|g' \
+-e 's|\<gosAudio_StreamedFile\>|gosAudio_ResourceType::streamedfile|g' \
+-e 's|\<gosAudio_StreamedMusic\>|gosAudio_ResourceType::streamedmusic|g' \
+-e 's|\<gosAudio_StreamedFP\>|gosAudio_ResourceType::streamedfp|g' \
+    {} \;
+

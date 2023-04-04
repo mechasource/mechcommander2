@@ -641,6 +641,9 @@
     <ClInclude Include="..\pch\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\common.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\gameos\src\gameos.rc">

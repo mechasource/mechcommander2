@@ -1,5 +1,5 @@
 /*******************************************************************************
- mechutils.h - MechCommander common utilities
+ common.h - MechCommander common utilities
 
  MechCommander 2 source code
 
@@ -9,23 +9,44 @@
  Creative Commons Attribution-NonCommercial 4.0 International Public License
  See the the file license.txt and https://creativecommons.org
 
- 2014-08-16 Jerker Bäck, created
+ 2014-08-16 Jerker BÃ¤ck, created
 
 ================================================================================
  RcsID = $Id$ */
 
 #pragma once
 
+#include <cstdint>
+#include <type_traits>
+
+// give more meaning to temporary and disabled code
 #define CONSIDERED_OBSOLETE 0
 #define CONSIDERED_UNSUPPORTED 0
 #define CONSIDERED_DISABLED 0
 #define CONSIDERED_UNUSED 0
+#define USE_INLINE_ASSEMBLER_CODE 0
 
 #ifdef _DEBUG
-#define NODEFAULT _ASSERTE(0)
+#define NODEFAULT _ASSERT(0)
 #else
 #define NODEFAULT __assume(0)
 #endif
+
+#define MECH_IMPEXP extern "C"
+#define MECH_CALL __stdcall
+
+// mechcmd2
+#ifdef _DEBUG
+// _ARMOR;LAB_ONLY;USE_PROTOTYPES;STRICT;WIN32;_DEBUG;_WINDOWS;BUGLOG
+//#define _ARMOR 1
+//#define LAB_ONLY 1
+#else
+// NDEBUG;_WINDOWS;WIN32;NOMINMAX;FINAL
+// NDEBUG;LAB_ONLY;_WINDOWS;WIN32;NOMINMAX;BUGLOG	- profile
+// #define LAB_ONLY 0
+// #define FINAL
+#endif
+
 
 //#include <EnumClass.h>
 //#include <magic_enum.hpp>	// https://github.com/Neargye/magic_enum
@@ -54,44 +75,44 @@ constexpr std::underlying_type_t<Tenum> std::to_underlying(Tenum e) noexcept // 
 }
 #endif
 
-#if DW_CONSIDERED_UNUSED
-[[nodiscard]] constexpr T operator~(T lhs) noexcept
+#if CONSIDERED_UNUSED
+[[nodiscard]] constexpr Tenum operator~(Tenum lhs) noexcept
 {
-	return static_cast<T>(~static_cast<std::underlying_type_t<T>>(lhs));
+	return static_cast<Tenum>(~static_cast<std::underlying_type_t<Tenum>>(lhs));
 }
-[[nodiscard]] constexpr T operator&(T lhs, T rhs) noexcept
+[[nodiscard]] constexpr Tenum operator&(Tenum lhs, Tenum rhs) noexcept
 {
-	return static_cast<T>(static_cast<std::underlying_type_t<T>>(lhs) & static_cast<std::underlying_type_t<T>>(rhs));
+	return static_cast<Tenum>(static_cast<std::underlying_type_t<Tenum>>(lhs) & static_cast<std::underlying_type_t<Tenum>>(rhs));
 }
-[[nodiscard]] constexpr T operator|(T lhs, T rhs) noexcept
+[[nodiscard]] constexpr Tenum operator|(Tenum lhs, Tenum rhs) noexcept
 {
-	return static_cast<T>(static_cast<std::underlying_type_t<T>>(lhs) | static_cast<std::underlying_type_t<T>>(rhs));
+	return static_cast<Tenum>(static_cast<std::underlying_type_t<Tenum>>(lhs) | static_cast<std::underlying_type_t<Tenum>>(rhs));
 }
-[[nodiscard]] constexpr T operator^(T lhs, T rhs) noexcept
+[[nodiscard]] constexpr Tenum operator^(Tenum lhs, Tenum rhs) noexcept
 {
-	return static_cast<T>(static_cast<std::underlying_type_t<T>>(lhs) ^ static_cast<std::underlying_type_t<T>>(rhs));
+	return static_cast<Tenum>(static_cast<std::underlying_type_t<Tenum>>(lhs) ^ static_cast<std::underlying_type_t<Tenum>>(rhs));
 }
 
-constexpr T& operator&=(T& lhs, T rhs) noexcept
+constexpr Tenum& operator&=(Tenum& lhs, Tenum rhs) noexcept
 {
 	return lhs = lhs & rhs;
 }
-constexpr T& operator|=(T& lhs, T rhs) noexcept
+constexpr Tenum& operator|=(Tenum& lhs, Tenum rhs) noexcept
 {
 	return lhs = lhs | rhs;
 }
-constexpr T& operator^=(T& lhs, T rhs) noexcept
+constexpr Tenum& operator^=(Tenum& lhs, Tenum rhs) noexcept
 {
 	return lhs = lhs ^ rhs;
 }
 
-/* return (lhs & _Elements) != T{} */
-[[nodiscard]] constexpr bool _Bitmask_includes(T lhs, T _Elements) noexcept
+template <class Tenum>
+[[nodiscard]] constexpr bool _Bitmask_includes_any(Tenum lhs, Tenum _Elements) noexcept
 {
-	return (lhs & _Elements) != T {};
+	return (lhs & _Elements) != Tenum {};
 }
-/* return (lhs & _Elements) == _Elements */
-[[nodiscard]] constexpr bool _Bitmask_includes_all(T lhs, T _Elements) noexcept
+template <class Tenum>
+[[nodiscard]] constexpr bool _Bitmask_includes_all(Tenum lhs, Tenum _Elements) noexcept
 {
 	return (lhs & _Elements) == _Elements;
 }
@@ -120,16 +141,6 @@ constexpr std::wstring_view attributeformat {L"%s%s%s%s%s%s%s%s"}; // = "%s%s%s%
 constexpr std::wstring_view hexformat8 {L"0x%08X"}; // = "0x%08X"sv;
 
 } // namespace literals
-
-
-
-
-#pragma once
-
-#include <cstdint>
-
-#ifndef _MECHUTILS_H_
-#define _MECHUTILS_H_
 
 extern "C"
 {

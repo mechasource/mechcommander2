@@ -464,6 +464,7 @@
     <ClInclude Include="..\gameos\lib\x86\gameos\ddraw_ida.h" />
     <ClInclude Include="..\gameos\lib\x86\gameos\idaref.h" />
     <ClInclude Include="..\gameos\src\resource.h" />
+    <ClInclude Include="..\include\common.h" />
     <ClInclude Include="..\include\mechresources.h" />
     <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\pch\stdinc.h" />
